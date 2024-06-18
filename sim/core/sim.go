@@ -124,7 +124,7 @@ func runSim(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, ski
 
 				errStr += "\nStack Trace:\n" + string(debug.Stack())
 				result = &proto.RaidSimResult{
-					ErrorResult: errStr,
+					Error: &proto.ErrorOutcome{Message: errStr},
 				}
 				if progress != nil {
 					progress <- &proto.ProgressMetrics{
@@ -149,7 +149,7 @@ func runSim(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, ski
 			runtime.Gosched() // allow time for message to make it back out.
 		}
 		presimResult := sim.runPresims(rsr)
-		if presimResult != nil && presimResult.ErrorResult != "" {
+		if presimResult != nil && presimResult.Error != nil {
 			if progress != nil {
 				progress <- &proto.ProgressMetrics{
 					TotalIterations: sim.Options.Iterations,
@@ -310,7 +310,7 @@ func (sim *Simulation) run() *proto.RaidSimResult {
 	var st time.Time
 	for i := int32(1); i < sim.Options.Iterations; i++ {
 		if sim.Signals.Abort.IsTriggered() {
-			quitResult := &proto.RaidSimResult{ErrorResult: "aborted"}
+			quitResult := &proto.RaidSimResult{Error: &proto.ErrorOutcome{Type: proto.ErrorOutcomeType_ErrorOutcomeAborted}}
 			if sim.ProgressReport != nil {
 				sim.ProgressReport(&proto.ProgressMetrics{FinalRaidResult: quitResult})
 			}

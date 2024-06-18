@@ -5,7 +5,7 @@ import { ref } from 'tsx-vanilla';
 
 import { REPO_RELEASES_URL } from '../../constants/other';
 import { IndividualSimUI } from '../../individual_sim_ui';
-import { BulkSettings, ProgressMetrics, TalentLoadout } from '../../proto/api';
+import { BulkSettings, ErrorOutcomeType, ProgressMetrics, TalentLoadout } from '../../proto/api';
 import { GemColor, Glyphs, ItemSpec, SimDatabase, SimEnchant, SimGem, SimItem } from '../../proto/common';
 import { SavedTalents, UIEnchant, UIGem, UIItem } from '../../proto/ui';
 import { ActionId } from '../../proto_utils/action_id';
@@ -399,7 +399,13 @@ export class BulkTab extends SimTab {
 		this.pendingResults.setPending();
 
 		try {
-			await this.simUI.sim.runBulkSim(this.createBulkSettings(), this.createBulkItemsDatabase(), onProgress);
+			const result = await this.simUI.sim.runBulkSim(this.createBulkSettings(), this.createBulkItemsDatabase(), onProgress);
+			if (result.error?.type == ErrorOutcomeType.ErrorOutcomeAborted) {
+				new Toast({
+					variant: 'info',
+					body: 'Bulk sim cancelled.',
+				});
+			}
 		} catch (e) {
 			this.simUI.handleCrash(e);
 		}

@@ -202,7 +202,7 @@ func computeStatWeights(swcr *proto.StatWeightsCalcRequest) *proto.StatWeightsRe
 		}
 	}
 	if !haveRefStat {
-		return &proto.StatWeightsResult{ErrorResult: "No result for reference stat exists!"}
+		return &proto.StatWeightsResult{Error: &proto.ErrorOutcome{Message: "No result for reference stat exists!"}}
 	}
 
 	result := NewStatWeightsResult()
@@ -320,8 +320,8 @@ func runStatWeights(request *proto.StatWeightsRequest, progress chan *proto.Prog
 	baseProgress := make(chan *proto.ProgressMetrics, 100)
 	go simFunc(requestData.BaseRequest, baseProgress, signals)
 	baselineResult := waitForResult(baseProgress)
-	if baselineResult.ErrorResult != "" {
-		return &proto.StatWeightsResult{ErrorResult: baselineResult.ErrorResult}
+	if baselineResult.Error != nil {
+		return &proto.StatWeightsResult{Error: baselineResult.Error}
 	}
 
 	statResults := []*proto.StatWeightsStatResultData{}
@@ -330,15 +330,15 @@ func runStatWeights(request *proto.StatWeightsRequest, progress chan *proto.Prog
 		lowProgress := make(chan *proto.ProgressMetrics, 100)
 		go simFunc(reqData.RequestLow, lowProgress, signals)
 		lowRes := waitForResult(lowProgress)
-		if lowRes.ErrorResult != "" {
-			return &proto.StatWeightsResult{ErrorResult: lowRes.ErrorResult}
+		if lowRes.Error != nil {
+			return &proto.StatWeightsResult{Error: lowRes.Error}
 		}
 
 		highProgress := make(chan *proto.ProgressMetrics, 100)
 		go simFunc(reqData.RequestHigh, highProgress, signals)
 		highRes := waitForResult(highProgress)
-		if highRes.ErrorResult != "" {
-			return &proto.StatWeightsResult{ErrorResult: highRes.ErrorResult}
+		if highRes.Error != nil {
+			return &proto.StatWeightsResult{Error: highRes.Error}
 		}
 
 		statResults = append(statResults, &proto.StatWeightsStatResultData{

@@ -9,6 +9,8 @@ import {
 	BulkSimRequest,
 	BulkSimResult,
 	ComputeStatsRequest,
+	ErrorOutcome,
+	ErrorOutcomeType,
 	Raid as RaidProto,
 	RaidSimRequest,
 	RaidSimResult,
@@ -250,7 +252,7 @@ export class Sim {
 		});
 	}
 
-	async runBulkSim(bulkSettings: BulkSettings, bulkItemsDb: SimDatabase, onProgress: WorkerProgressCallback): Promise<BulkSimResult | null> {
+	async runBulkSim(bulkSettings: BulkSettings, bulkItemsDb: SimDatabase, onProgress: WorkerProgressCallback): Promise<BulkSimResult> {
 		if (this.raid.isEmpty()) {
 			throw new Error('Raid is empty! Try adding some players first.');
 		} else if (this.encounter.targets.length < 1) {
@@ -284,12 +286,10 @@ export class Sim {
 		try {
 			const signals = this.signalManager.registerRunning(request.requestId, RequestTypes.BulkSim);
 			const result = await this.workerPool.bulkSimAsync(request, onProgress, signals);
-			if (result.errorResult != '') {
-				if (result.errorResult.includes('aborted')) {
-					// TODO: Abort feedback?
-					return null;
-				}
-				throw new SimError(result.errorResult);
+
+			if (result.error) {
+				if (result.error.type != ErrorOutcomeType.ErrorOutcomeError) return result;
+				throw new SimError(result.error.message);
 			}
 
 			this.bulkSimResultEmitter.emit(TypedEvent.nextEventID(), result);
@@ -303,7 +303,7 @@ export class Sim {
 		}
 	}
 
-	async runRaidSim(eventID: EventID, onProgress: WorkerProgressCallback): Promise<SimResult | null> {
+	async runRaidSim(eventID: EventID, onProgress: WorkerProgressCallback): Promise<SimResult | ErrorOutcome> {
 		if (this.raid.isEmpty()) {
 			throw new Error('Raid is empty! Try adding some players first.');
 		} else if (this.encounter.targets.length < 1) {
@@ -325,12 +325,9 @@ export class Sim {
 				result = await this.workerPool.raidSimAsync(request, onProgress, signals);
 			}
 
-			if (result.errorResult != '') {
-				if (result.errorResult == 'aborted') {
-					// TODO: Abort feedback?
-					return null;
-				}
-				throw new SimError(result.errorResult);
+			if (result.error) {
+				if (result.error.type != ErrorOutcomeType.ErrorOutcomeError) return result.error;
+				throw new SimError(result.error.message);
 			}
 			const simResult = await SimResult.makeNew(request, result);
 			this.simResultEmitter.emit(eventID, simResult);
@@ -356,8 +353,8 @@ export class Sim {
 			const request = this.makeRaidSimRequest(true);
 			const signals = this.signalManager.registerRunning(request.requestId, RequestTypes.RaidSim);
 			const result = await this.workerPool.raidSimAsync(request, noop, signals);
-			if (result.errorResult != '') {
-				throw new SimError(result.errorResult);
+			if (result.error) {
+				throw new SimError(result.error.message);
 			}
 			const simResult = await SimResult.makeNew(request, result);
 			this.simResultEmitter.emit(eventID, simResult);
@@ -426,7 +423,7 @@ export class Sim {
 		epPseudoStats: Array<PseudoStat>,
 		epReferenceStat: Stat,
 		onProgress: WorkerProgressCallback,
-	): Promise<StatWeightsResult | null> {
+	): Promise<StatWeightsResult> {
 		if (this.raid.isEmpty()) {
 			throw new Error('Raid is empty! Try adding some players first.');
 		} else if (this.encounter.targets.length < 1) {
@@ -472,12 +469,9 @@ export class Sim {
 				} else {
 					result = await this.workerPool.statWeightsAsync(request, onProgress, signals);
 				}
-				if (result.errorResult != '') {
-					if (result.errorResult == 'aborted') {
-						// TODO: Abort feedback?
-						return null;
-					}
-					throw new SimError(result.errorResult);
+				if (result.error) {
+					if (result.error.type != ErrorOutcomeType.ErrorOutcomeError) return result;
+					throw new SimError(result.error.message);
 				}
 				return result;
 			} catch (error) {

@@ -65,7 +65,7 @@ func TestAbort(t *testing.T) {
 		for {
 			msg := <-progress
 			if msg.FinalRaidResult != nil {
-				if msg.FinalRaidResult.ErrorResult != "aborted" {
+				if msg.FinalRaidResult.Error == nil || msg.FinalRaidResult.Error.Type != proto.ErrorOutcomeType_ErrorOutcomeAborted {
 					t.Fatal("Sim did not abort!")
 				}
 				return
@@ -90,7 +90,7 @@ func TestAbort(t *testing.T) {
 			for i, p := range progress {
 				msg, ok := <-p
 				if ok && msg.FinalRaidResult != nil {
-					if msg.FinalRaidResult.ErrorResult != "aborted" {
+					if msg.FinalRaidResult.Error == nil || msg.FinalRaidResult.Error.Type != proto.ErrorOutcomeType_ErrorOutcomeAborted {
 						t.Fatalf("Sim instance %d did not abort!", i)
 					}
 					running--
@@ -110,7 +110,7 @@ func TestAbort(t *testing.T) {
 		for {
 			msg := <-progress
 			if msg.FinalRaidResult != nil {
-				if msg.FinalRaidResult.ErrorResult != "aborted" {
+				if msg.FinalRaidResult.Error == nil || msg.FinalRaidResult.Error.Type != proto.ErrorOutcomeType_ErrorOutcomeAborted {
 					t.Fatal("Sim did not abort!")
 				}
 				return
@@ -129,7 +129,7 @@ func TestAbort(t *testing.T) {
 		for {
 			msg := <-progress
 			if msg.FinalRaidResult != nil {
-				if msg.FinalRaidResult.ErrorResult != "aborted" {
+				if msg.FinalRaidResult.Error == nil || msg.FinalRaidResult.Error.Type != proto.ErrorOutcomeType_ErrorOutcomeAborted {
 					t.Fatal("Sim did not abort!")
 				}
 				return
@@ -169,7 +169,7 @@ func TestAbort(t *testing.T) {
 
 		for msg := range progress {
 			if msg.FinalWeightResult != nil {
-				if msg.FinalWeightResult.ErrorResult != "aborted" {
+				if msg.FinalWeightResult.ErrorResult != "aborted" || msg.FinalRaidResult.Outcome != proto.SimOutcomeType_SimOutcomeAborted {
 					t.Fatalf("Sim did not abort! %s", msg.FinalWeightResult.ErrorResult)
 				}
 				return

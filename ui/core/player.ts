@@ -38,8 +38,8 @@ import {
 import {
 	DungeonDifficulty,
 	RaidFilterOption,
-	StatCapConfig,
 	SourceFilterOption,
+	StatCapConfig,
 	UIEnchant as Enchant,
 	UIGem as Gem,
 	UIItem as Item,

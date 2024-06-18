@@ -100,9 +100,9 @@ func TestBulkSim(t *testing.T) {
 		Request:             &proto.BulkSimRequest{},
 	}
 
-	got, err := bulk.Run(simsignals.CreateSignals(), nil)
-	if err != nil {
-		t.Fatalf("BulkSim() returned error: %v", err)
+	got := bulk.Run(simsignals.CreateSignals(), nil)
+	if got.Error != nil {
+		t.Fatalf("BulkSim() returned error: %v", got.Error.Message)
 	}
 
 	want := &proto.BulkSimResult{}

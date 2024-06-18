@@ -405,7 +405,7 @@ func runSimConcurrent(request *proto.RaidSimRequest, progress chan *proto.Progre
 				}
 
 				errStr += "\nStack Trace:\n" + string(debug.Stack())
-				result = &proto.RaidSimResult{ErrorResult: errStr}
+				result = &proto.RaidSimResult{Error: &proto.ErrorOutcome{Message: errStr}}
 
 				if progress != nil {
 					progress <- &proto.ProgressMetrics{FinalRaidResult: result}
@@ -464,7 +464,7 @@ func runSimConcurrent(request *proto.RaidSimRequest, progress chan *proto.Progre
 		// Wait for first message to make sure env was constructed. Otherwise concurrent map writes to simdb will happen.
 		msg := <-substituteChannels[i]
 		// First message may be due to an immediate error, otherwise it can be ignored.
-		if msg.FinalRaidResult != nil && msg.FinalRaidResult.ErrorResult != "" {
+		if msg.FinalRaidResult != nil && msg.FinalRaidResult.Error != nil {
 			if progress != nil {
 				progress <- msg
 			}
@@ -479,7 +479,7 @@ func runSimConcurrent(request *proto.RaidSimRequest, progress chan *proto.Progre
 		i, val, ok := reflect.Select(substituteCases)
 
 		if signals.Abort.IsTriggered() {
-			quitResult := &proto.RaidSimResult{ErrorResult: "aborted"}
+			quitResult := &proto.RaidSimResult{Error: &proto.ErrorOutcome{Type: proto.ErrorOutcomeType_ErrorOutcomeAborted}}
 			if progress != nil {
 				progress <- &proto.ProgressMetrics{FinalRaidResult: quitResult}
 			}
@@ -494,7 +494,7 @@ func runSimConcurrent(request *proto.RaidSimRequest, progress chan *proto.Progre
 
 		msg := val.Interface().(*proto.ProgressMetrics)
 		if csd.UpdateProgress(i, msg) {
-			if msg.FinalRaidResult != nil && msg.FinalRaidResult.ErrorResult != "" {
+			if msg.FinalRaidResult != nil && msg.FinalRaidResult.Error != nil {
 				if progress != nil {
 					progress <- msg
 				}

@@ -34,7 +34,13 @@ func StatWeightsAsync(request *proto.StatWeightsRequest, progress chan *proto.Pr
 	requestId := request.RequestId
 	signals, err := simsignals.RegisterWithId(requestId)
 	if err != nil {
-		progress <- &proto.ProgressMetrics{FinalWeightResult: &proto.StatWeightsResult{ErrorResult: "Couldn't register for signal API: " + err.Error()}}
+		progress <- &proto.ProgressMetrics{
+			FinalWeightResult: &proto.StatWeightsResult{
+				Error: &proto.ErrorOutcome{
+					Message: "Couldn't register for signal API: " + err.Error(),
+				},
+			},
+		}
 		return
 	}
 	go func() {
@@ -66,7 +72,13 @@ func RunRaidSimAsync(request *proto.RaidSimRequest, progress chan *proto.Progres
 	requestId := request.RequestId
 	signals, err := simsignals.RegisterWithId(requestId)
 	if err != nil {
-		progress <- &proto.ProgressMetrics{FinalRaidResult: &proto.RaidSimResult{ErrorResult: "Couldn't register for signal API: " + err.Error()}}
+		progress <- &proto.ProgressMetrics{
+			FinalRaidResult: &proto.RaidSimResult{
+				Error: &proto.ErrorOutcome{
+					Message: "Couldn't register for signal API: " + err.Error(),
+				},
+			},
+		}
 		return
 	}
 	go func() {
@@ -85,7 +97,13 @@ func RunRaidSimConcurrentAsync(request *proto.RaidSimRequest, progress chan *pro
 	requestId := request.RequestId
 	signals, err := simsignals.RegisterWithId(requestId)
 	if err != nil {
-		progress <- &proto.ProgressMetrics{FinalRaidResult: &proto.RaidSimResult{ErrorResult: "Couldn't register for signal API: " + err.Error()}}
+		progress <- &proto.ProgressMetrics{
+			FinalRaidResult: &proto.RaidSimResult{
+				Error: &proto.ErrorOutcome{
+					Message: "Couldn't register for signal API: " + err.Error(),
+				},
+			},
+		}
 		return
 	}
 	go func() {
@@ -102,7 +120,13 @@ func RunBulkSimAsync(request *proto.BulkSimRequest, progress chan *proto.Progres
 	requestId := request.RequestId
 	signals, err := simsignals.RegisterWithId(requestId)
 	if err != nil {
-		progress <- &proto.ProgressMetrics{FinalBulkResult: &proto.BulkSimResult{ErrorResult: "Couldn't register for signal API: " + err.Error()}}
+		progress <- &proto.ProgressMetrics{
+			FinalBulkResult: &proto.BulkSimResult{
+				Error: &proto.ErrorOutcome{
+					Message: "Couldn't register for signal API: " + err.Error(),
+				},
+			},
+		}
 		return
 	}
 	go func() {

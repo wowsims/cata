@@ -314,6 +314,16 @@ enum SimType {
 	SimTypeRaid = 2;
 }
 
+enum ErrorOutcomeType {
+	ErrorOutcomeError = 0;
+	ErrorOutcomeAborted = 1;
+}
+
+message ErrorOutcome {
+	ErrorOutcomeType type = 1; // ErrorOutcomeError by default
+	string message = 2;
+}
+
 // RPC RaidSim
 message RaidSimRequest {
 	Raid raid = 1;
@@ -336,7 +346,7 @@ message RaidSimResult {
 	double first_iteration_duration = 4;
 	double avg_iteration_duration = 6;
 
-	string error_result = 5;
+	ErrorOutcome error = 5;
 
 	int32 iterations_done = 7;
 }
@@ -493,7 +503,7 @@ message StatWeightsResult {
 	StatWeightValues dtps = 3;
 	StatWeightValues tmi = 5;
 	StatWeightValues p_death = 6;
-	string error_result = 7;
+	ErrorOutcome error = 7;
 }
 message StatWeightValues {
 	UnitStats weights = 1;
@@ -565,8 +575,8 @@ message BulkSettings {
 
 message BulkSimResult {
     repeated BulkComboResult results = 1;
-		BulkComboResult equipped_gear_result = 2;
-    string error_result = 3; // only set if sim failed.
+	BulkComboResult equipped_gear_result = 2;
+    ErrorOutcome error = 3;
 }
 
 message BulkComboResult {

@@ -1,4 +1,6 @@
 import {
+	ErrorOutcome,
+	ErrorOutcomeType,
 	ProgressMetrics,
 	RaidSimRequest,
 	RaidSimRequestSplitRequest,
@@ -105,7 +107,7 @@ const runSims = (
 				running--;
 				let errorResult: RaidSimResult | undefined;
 
-				if (pm.finalRaidResult.errorResult) {
+				if (pm.finalRaidResult.error) {
 					console.error(`Worker ${idx} had an error!`);
 					errorResult = pm.finalRaidResult;
 					signals.abort.trigger();
@@ -132,8 +134,13 @@ const runSims = (
 	});
 };
 
-const makeAndSendRaidSimError = (err: string, onProgress: WorkerProgressCallback): RaidSimResult => {
-	const errRes = RaidSimResult.create({ errorResult: err });
+const makeAndSendRaidSimError = (err: string | ErrorOutcome, onProgress: WorkerProgressCallback): RaidSimResult => {
+	const errRes = RaidSimResult.create();
+	if (typeof err === 'string') {
+		errRes.error = ErrorOutcome.create({ message: err });
+	} else {
+		errRes.error = err;
+	}
 	onProgress(ProgressMetrics.create({ finalRaidResult: errRes }));
 	console.error(err);
 	return errRes;
@@ -159,20 +166,19 @@ export const runConcurrentSim = async (
 	}
 
 	if (signals.abort.isTriggered()) {
-		return makeAndSendRaidSimError('aborted', onProgress);
+		return makeAndSendRaidSimError(ErrorOutcome.create({ type: ErrorOutcomeType.ErrorOutcomeAborted }), onProgress);
 	}
 
 	console.log(`Running ${request.simOptions!.iterations} iterations on ${splitResult.splitsDone} concurrent sims...`);
 
 	const simRes = await runSims(splitResult.requests, request.simOptions!.iterations, workerPool, onProgress, signals);
 
-	if (simRes.errorResult) {
-		console.error(simRes.errorResult.errorResult);
-		return simRes.errorResult;
+	if (simRes.errorResult && simRes.errorResult.error) {
+		return makeAndSendRaidSimError(simRes.errorResult.error, onProgress);
 	}
 
 	if (signals.abort.isTriggered()) {
-		return makeAndSendRaidSimError('aborted', onProgress);
+		return makeAndSendRaidSimError(ErrorOutcome.create({ type: ErrorOutcomeType.ErrorOutcomeAborted }), onProgress);
 	}
 
 	console.log(`All ${splitResult.splitsDone} sims finished successfully. Combining ${simRes.results.length} results.`);
@@ -183,8 +189,8 @@ export const runConcurrentSim = async (
 		}),
 	);
 
-	if (combiResult.errorResult) {
-		return makeAndSendRaidSimError(combiResult.errorResult, onProgress);
+	if (combiResult.error) {
+		return makeAndSendRaidSimError(combiResult.error, onProgress);
 	}
 
 	simRes.progressMetricsFinal.finalRaidResult = combiResult;
@@ -193,8 +199,13 @@ export const runConcurrentSim = async (
 	return combiResult;
 };
 
-const makeAndSendWeightsError = (err: string, onProgress: WorkerProgressCallback): StatWeightsResult => {
-	const errRes = StatWeightsResult.create({ errorResult: err });
+const makeAndSendWeightsError = (err: string | ErrorOutcome, onProgress: WorkerProgressCallback): StatWeightsResult => {
+	const errRes = RaidSimResult.create();
+	if (typeof err === 'string') {
+		errRes.error = ErrorOutcome.create({ message: err });
+	} else {
+		errRes.error = err;
+	}
 	onProgress(ProgressMetrics.create({ finalWeightResult: errRes }));
 	console.error(err);
 	return errRes;
@@ -210,7 +221,7 @@ export const runConcurrentStatWeights = async (
 
 	const manualResponse = await workerPool.statWeightRequests(request);
 	if (signals.abort.isTriggered()) {
-		return makeAndSendWeightsError('aborted', onProgress);
+		return makeAndSendWeightsError(ErrorOutcome.create({ type: ErrorOutcomeType.ErrorOutcomeAborted }), onProgress);
 	}
 
 	let iterationsTotal = manualResponse.baseRequest!.simOptions!.iterations;
@@ -243,7 +254,7 @@ export const runConcurrentStatWeights = async (
 	};
 
 	const baseLine = await runConcurrentSim(manualResponse.baseRequest!, workerPool, progressHandler, signals);
-	if (baseLine.errorResult) return makeAndSendWeightsError(baseLine.errorResult, onProgress);
+	if (baseLine.error) return makeAndSendWeightsError(baseLine.error, onProgress);
 
 	const calcRequest = StatWeightsCalcRequest.create({
 		baseResult: baseLine,
@@ -252,15 +263,15 @@ export const runConcurrentStatWeights = async (
 	});
 
 	for (const statReqData of manualResponse.statSimRequests) {
-		if (signals.abort.isTriggered()) return makeAndSendWeightsError('aborted', onProgress);
+		if (signals.abort.isTriggered()) return makeAndSendWeightsError(ErrorOutcome.create({ type: ErrorOutcomeType.ErrorOutcomeAborted }), onProgress);
 
 		lastIterations = 0;
 		const lowRes = await runConcurrentSim(statReqData.requestLow!, workerPool, progressHandler, signals);
-		if (lowRes.errorResult) return makeAndSendWeightsError(lowRes.errorResult, onProgress);
+		if (lowRes.error) return makeAndSendWeightsError(lowRes.error, onProgress);
 
 		lastIterations = 0;
 		const highRes = await runConcurrentSim(statReqData.requestHigh!, workerPool, progressHandler, signals);
-		if (highRes.errorResult) return makeAndSendWeightsError(highRes.errorResult, onProgress);
+		if (highRes.error) return makeAndSendWeightsError(highRes.error, onProgress);
 
 		calcRequest.statSimResults.push(
 			StatWeightsStatResultData.create({
@@ -274,7 +285,7 @@ export const runConcurrentStatWeights = async (
 	console.log(`All ${simsTotal} sims finished successfully. Computing weights.`);
 
 	const weightResult = await workerPool.statWeightCompute(calcRequest);
-	if (weightResult.errorResult) return makeAndSendWeightsError(weightResult.errorResult, onProgress);
+	if (weightResult.error) return makeAndSendWeightsError(weightResult.error, onProgress);
 	onProgress(ProgressMetrics.create({ finalWeightResult: weightResult }));
 	return weightResult;
 };

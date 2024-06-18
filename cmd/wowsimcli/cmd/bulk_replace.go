@@ -110,8 +110,8 @@ func BulkSim(input *proto.RaidSimRequest, replaceFile string, verbose bool) stri
 				return ""
 			}
 			if status.FinalBulkResult != nil {
-				if status.FinalBulkResult.ErrorResult != "" {
-					fmt.Printf("Failed: %s\n", status.FinalBulkResult.ErrorResult)
+				if status.FinalBulkResult.Error != nil {
+					fmt.Printf("Failed: %s\n", status.FinalBulkResult.Error.Message)
 				} else {
 					return printCombos(status.FinalBulkResult)
 				}

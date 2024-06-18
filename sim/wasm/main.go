@@ -298,7 +298,7 @@ func raidSimResultCombination(this js.Value, args []js.Value) interface{} {
 					errStr = errt.Error()
 				}
 				errStr += "\nStack Trace:\n" + string(debug.Stack())
-				res = &proto.RaidSimResult{ErrorResult: errStr}
+				res = &proto.RaidSimResult{Error: &proto.ErrorOutcome{Message: errStr}}
 			}
 		}()
 		return core.CombineConcurrentSimResults(combRequest.Results, false)

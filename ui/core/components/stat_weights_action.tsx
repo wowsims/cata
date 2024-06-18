@@ -4,7 +4,7 @@ import { ref } from 'tsx-vanilla';
 
 import { IndividualSimUI } from '../individual_sim_ui.jsx';
 import { Player } from '../player.js';
-import { ProgressMetrics, StatWeightsResult, StatWeightValues } from '../proto/api.js';
+import { ErrorOutcomeType, ProgressMetrics, StatWeightsResult, StatWeightValues } from '../proto/api.js';
 import { PseudoStat, Stat, UnitStats } from '../proto/common.js';
 import { getClassStatName } from '../proto_utils/names.js';
 import { Stats, UnitStat } from '../proto_utils/stats.js';
@@ -16,6 +16,7 @@ import { BooleanPicker } from './pickers/boolean_picker.js';
 import { NumberPicker } from './pickers/number_picker.js';
 import { ResultsViewer } from './results_viewer.jsx';
 import { renderSavedEPWeights } from './saved_data_managers/ep_weights';
+import Toast from './toast';
 
 export const addStatWeightsAction = (simUI: IndividualSimUI<any>) => {
 	simUI.addAction('Stat Weights', 'ep-weights-action', () => {
@@ -297,6 +298,17 @@ class EpWeightsMenu extends BaseModal {
 			if (!waitAbort) calcButton.disabled = false;
 
 			if (!result) return;
+
+			if (result.error) {
+				if (result.error.type == ErrorOutcomeType.ErrorOutcomeAborted) {
+					new Toast({
+						variant: 'info',
+						body: 'Statweight sim cancelled.',
+					});
+				}
+				return;
+			}
+
 			this.simUI.prevEpIterations = iterations;
 			this.simUI.prevEpSimResult = this.calculateEp(result);
 			this.updateTable();

@@ -64,8 +64,8 @@ func (testSuite *IndividualTestSuite) TestDPS(testName string, rsr *proto.RaidSi
 	if result.Logs != "" {
 		fmt.Printf("LOGS: %s\n", result.Logs)
 	}
-	if result.ErrorResult != "" {
-		panic("simulation failed to run: " + result.ErrorResult)
+	if result.Error != nil {
+		panic("simulation failed to run: " + result.Error.Message)
 	}
 	testSuite.testResults.DpsResults[testName] = &proto.DpsTestResult{
 		Dps:  toFixed(result.RaidMetrics.Dps.Avg, storagePrecision),
@@ -94,8 +94,8 @@ func (testSuite *IndividualTestSuite) TestCasts(testName string, rsr *proto.Raid
 	if result.Logs != "" {
 		fmt.Printf("LOGS: %s\n", result.Logs)
 	}
-	if result.ErrorResult != "" {
-		panic("simulation failed to run: " + result.ErrorResult)
+	if result.Error != nil {
+		panic("simulation failed to run: " + result.Error.Message)
 	}
 	castsByAction := make(map[string]float64, 0)
 	for _, metric := range result.RaidMetrics.Parties[0].Players[0].Actions {
