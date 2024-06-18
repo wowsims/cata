@@ -186,7 +186,7 @@ export class ReforgeOptimizer {
 			onShow: instance => {
 				const useCustomEPValuesInput = new BooleanPicker(null, this.player, {
 					id: 'reforge-optimizer-enable-custom-ep-weights',
-					label: 'Enable custom EP Weights',
+					label: 'Use custom EP Weights',
 					inline: true,
 					changedEvent: () => this.sim.useCustomEPValuesChangeEmitter,
 					getValue: () => this.sim.getUseCustomEPValues(),
@@ -198,7 +198,7 @@ export class ReforgeOptimizer {
 				if (!!this.softCapsConfig?.length) {
 					useSoftCapBreakpointsInput = new BooleanPicker(null, this.player, {
 						id: 'reforge-optimizer-enable-soft-cap-breakpoints',
-						label: 'Enable soft cap breakpoints',
+						label: 'Use soft cap breakpoints',
 						labelTooltip: this.buildReforgeButtonTooltip(),
 						inline: true,
 						changedEvent: () => this.sim.useSoftCapBreakpointsChangeEmitter,
