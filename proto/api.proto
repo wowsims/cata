@@ -140,6 +140,7 @@ message SimOptions {
 	bool is_test = 5; // Only used internally.
 	bool save_all_values = 7; // Only used internally.
 	bool interactive = 8; // Enables interactive mode.
+	bool use_labeled_rands = 9; // Use test level RNG.
 }
 
 // The aggregated results from all uses of a particular action.
@@ -456,6 +457,35 @@ message StatWeightsRequest {
 	// A unique id. Used to e.g. abort async sim requests.
 	string request_id = 11;
 }
+
+message StatWeightsStatData {
+	int32 unit_stat = 1;
+	double mod_low = 2;
+	double mod_high = 3;
+}
+
+message StatWeightsStatRequestData {
+	StatWeightsStatData stat_data = 1;
+	RaidSimRequest request_low = 2;
+	RaidSimRequest request_high = 3;
+}
+message StatWeightRequestsData {
+	RaidSimRequest base_request = 1;
+	Stat ep_reference_stat = 2;
+	repeated StatWeightsStatRequestData stat_sim_requests = 3;
+}
+
+message StatWeightsStatResultData {
+	StatWeightsStatData stat_data = 1;
+	RaidSimResult result_low = 2;
+	RaidSimResult result_high = 3;
+}
+message StatWeightsCalcRequest {
+	RaidSimResult base_result = 1;
+	Stat ep_reference_stat = 2;
+	repeated StatWeightsStatResultData stat_sim_results = 3;
+}
+
 message StatWeightsResult {
 	StatWeightValues dps = 1;
 	StatWeightValues hps = 4;

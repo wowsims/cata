@@ -44,7 +44,7 @@ export const setupHttpWorker = (baseURL: string) => {
 		const errmsg = `Tried to use ${msg} while using a http worker! This is only supported for wasm!`;
 		console.error(errmsg);
 		return new Uint8Array();
-	}
+	};
 
 	new WorkerInterface({
 		bulkSimAsync: asyncHandler,
@@ -55,8 +55,10 @@ export const setupHttpWorker = (baseURL: string) => {
 		raidSimAsync: asyncHandler,
 		statWeights: syncHandler,
 		statWeightsAsync: asyncHandler,
+		statWeightRequests: syncHandler,
+		statWeightCompute: syncHandler,
 		raidSimRequestSplit: noWasmConcurrency,
 		raidSimResultCombination: noWasmConcurrency,
-		abortById: syncHandler
+		abortById: syncHandler,
 	}).ready(false);
 };

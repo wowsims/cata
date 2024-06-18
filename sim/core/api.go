@@ -4,7 +4,6 @@ package core
 import (
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/simsignals"
-	"github.com/wowsims/cata/sim/core/stats"
 )
 
 /**
@@ -28,7 +27,7 @@ func ComputeStats(csr *proto.ComputeStatsRequest) *proto.ComputeStatsResult {
  * Returns stat weights and EP values, with standard deviations, for all stats.
  */
 func StatWeights(request *proto.StatWeightsRequest) *proto.StatWeightsResult {
-	return CalcStatWeight(request, stats.Stat(request.EpReferenceStat), nil, simsignals.CreateSignals())
+	return runStatWeights(request, nil, simsignals.CreateSignals())
 }
 
 func StatWeightsAsync(request *proto.StatWeightsRequest, progress chan *proto.ProgressMetrics) {
@@ -40,11 +39,20 @@ func StatWeightsAsync(request *proto.StatWeightsRequest, progress chan *proto.Pr
 	}
 	go func() {
 		defer simsignals.UnregisterId(requestId)
-		result := CalcStatWeight(request, stats.Stat(request.EpReferenceStat), progress, signals)
+		result := runStatWeights(request, progress, signals)
 		progress <- &proto.ProgressMetrics{
 			FinalWeightResult: result,
 		}
 	}()
+}
+
+// Get data for all requests needed for stat weights.
+func StatWeightRequests(request *proto.StatWeightsRequest) *proto.StatWeightRequestsData {
+	return buildStatWeightRequests(request)
+}
+
+func StatWeightCompute(request *proto.StatWeightsCalcRequest) *proto.StatWeightsResult {
+	return computeStatWeights(request)
 }
 
 /**

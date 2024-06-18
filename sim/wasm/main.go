@@ -33,6 +33,8 @@ func main() {
 	js.Global().Set("raidSimResultCombination", js.FuncOf(raidSimResultCombination))
 	js.Global().Set("statWeights", js.FuncOf(statWeights))
 	js.Global().Set("statWeightsAsync", js.FuncOf(statWeightsAsync))
+	js.Global().Set("statWeightRequests", js.FuncOf(statWeightRequests))
+	js.Global().Set("statWeightCompute", js.FuncOf(statWeightCompute))
 	js.Global().Set("bulkSimAsync", js.FuncOf(bulkSimAsync))
 	js.Global().Set("abortById", js.FuncOf(abortById))
 	js.Global().Call("wasmready")
@@ -204,6 +206,46 @@ func statWeightsAsync(this js.Value, args []js.Value) interface{} {
 	go core.StatWeightsAsync(rsr, reporter)
 	go processAsyncProgress(args[1], reporter)
 	return js.Undefined()
+}
+
+func statWeightRequests(this js.Value, args []js.Value) interface{} {
+	req := &proto.StatWeightsRequest{}
+	if err := googleProto.Unmarshal(getArgsBinary(args[0]), req); err != nil {
+		log.Printf("Failed to parse request: %s", err)
+		return nil
+	}
+
+	res := core.StatWeightRequests(req)
+
+	outbytes, err := googleProto.Marshal(res)
+	if err != nil {
+		log.Printf("[ERROR] Failed to marshal result: %s", err.Error())
+		return nil
+	}
+	outArray := js.Global().Get("Uint8Array").New(len(outbytes))
+	js.CopyBytesToJS(outArray, outbytes)
+
+	return outArray
+}
+
+func statWeightCompute(this js.Value, args []js.Value) interface{} {
+	req := &proto.StatWeightsCalcRequest{}
+	if err := googleProto.Unmarshal(getArgsBinary(args[0]), req); err != nil {
+		log.Printf("Failed to parse request: %s", err)
+		return nil
+	}
+
+	res := core.StatWeightCompute(req)
+
+	outbytes, err := googleProto.Marshal(res)
+	if err != nil {
+		log.Printf("[ERROR] Failed to marshal result: %s", err.Error())
+		return nil
+	}
+	outArray := js.Global().Get("Uint8Array").New(len(outbytes))
+	js.CopyBytesToJS(outArray, outbytes)
+
+	return outArray
 }
 
 func bulkSimAsync(this js.Value, args []js.Value) interface{} {
