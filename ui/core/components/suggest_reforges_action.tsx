@@ -38,10 +38,17 @@ const EXCLUDED_STATS = [
 	Stat.StatSpirit,
 	Stat.StatMana,
 	Stat.StatMP5,
+	Stat.StatBlock,
+	Stat.StatBonusArmor,
+	Stat.StatArcaneResistance,
+	Stat.StatNatureResistance,
+	Stat.StatFireResistance,
+	Stat.StatFrostResistance,
+	Stat.StatShadowResistance,
 ];
 
-const STAT_TOOLTIP: { [key in Stat]?: Element | string } = {
-	[Stat.StatMastery]: (
+const STAT_TOOLTIP: { [key in Stat]?: () => Element | string } = {
+	[Stat.StatMastery]: () => (
 		<>
 			Rating: Excludes your base mastery
 			<br />
@@ -330,7 +337,7 @@ export class ReforgeOptimizer {
 								<td>{percentagePicker.rootElem}</td>
 							</tr>
 						);
-
+						console.log(tooltipText);
 						const tooltip = tooltipText
 							? tippy(statTooltipRef.value!, {
 									content: tooltipText,
