@@ -29,10 +29,10 @@ export type WorkerProgressCallback = (progressMetrics: ProgressMetrics) => void;
  * @param type The request type to prepend.
  * @returns Random id in the format type-randomhex
  */
-export function generateRequestId(type: SimRequest) {
+export const generateRequestId = (type: SimRequest) => {
 	const chars = Array.from(Array(4)).map(() => Math.floor(Math.random() * 0x10000).toString(16));
 	return type + '-' + chars.join('');
-}
+};
 
 export class WorkerPool {
 	private readonly workers: Array<SimWorker>;

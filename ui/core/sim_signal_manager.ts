@@ -30,12 +30,12 @@ export type SimSignals = {
 	readonly abort: TriggerSignal;
 };
 
-function newSignals(id: string): SimSignals {
+const newSignals = (id: string): SimSignals => {
 	return {
 		id,
 		abort: new TriggerSignal(),
 	};
-}
+};
 
 export class SimSignalManager {
 	private readonly running: Map<string, { type: RequestTypes; signals: SimSignals }>;

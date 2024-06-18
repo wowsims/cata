@@ -79,13 +79,13 @@ interface SimRunResult {
 	progressMetricsFinal: ProgressMetrics;
 }
 
-function runSims(
+const runSims = (
 	requests: RaidSimRequest[],
 	totalIterations: number,
 	wp: WorkerPool,
 	onProgress: WorkerProgressCallback,
 	signals: SimSignals,
-): Promise<SimRunResult> {
+): Promise<SimRunResult> => {
 	return new Promise(resolve => {
 		const csp = new ConcurrentSimProgress(requests.length, totalIterations);
 		let progressCounter = 0;
@@ -130,21 +130,21 @@ function runSims(
 			wp.raidSimAsync(requests[i], pm => progressHandler(i, pm), signals);
 		}
 	});
-}
+};
 
-function makeAndSendRaidSimError(err: string, onProgress: WorkerProgressCallback): RaidSimResult {
+const makeAndSendRaidSimError = (err: string, onProgress: WorkerProgressCallback): RaidSimResult => {
 	const errRes = RaidSimResult.create({ errorResult: err });
 	onProgress(ProgressMetrics.create({ finalRaidResult: errRes }));
 	console.error(err);
 	return errRes;
-}
+};
 
-export async function runConcurrentSim(
+export const runConcurrentSim = async (
 	request: RaidSimRequest,
 	workerPool: WorkerPool,
 	onProgress: WorkerProgressCallback,
 	signals: SimSignals,
-): Promise<RaidSimResult> {
+): Promise<RaidSimResult> => {
 	console.log(`Sending requests split for ${workerPool.getNumWorkers()} splits.`);
 
 	const splitResult = await workerPool.raidSimRequestSplit(
@@ -191,21 +191,21 @@ export async function runConcurrentSim(
 	onProgress(simRes.progressMetricsFinal);
 
 	return combiResult;
-}
+};
 
-function makeAndSendWeightsError(err: string, onProgress: WorkerProgressCallback): StatWeightsResult {
+const makeAndSendWeightsError = (err: string, onProgress: WorkerProgressCallback): StatWeightsResult => {
 	const errRes = StatWeightsResult.create({ errorResult: err });
 	onProgress(ProgressMetrics.create({ finalWeightResult: errRes }));
 	console.error(err);
 	return errRes;
-}
+};
 
-export async function runConcurrentStatWeights(
+export const runConcurrentStatWeights = async (
 	request: StatWeightsRequest,
 	workerPool: WorkerPool,
 	onProgress: WorkerProgressCallback,
 	signals: SimSignals,
-): Promise<StatWeightsResult> {
+): Promise<StatWeightsResult> => {
 	console.log('Getting stat weight sim requests.');
 
 	const manualResponse = await workerPool.statWeightRequests(request);
@@ -277,4 +277,4 @@ export async function runConcurrentStatWeights(
 	if (weightResult.errorResult) return makeAndSendWeightsError(weightResult.errorResult, onProgress);
 	onProgress(ProgressMetrics.create({ finalWeightResult: weightResult }));
 	return weightResult;
-}
+};
