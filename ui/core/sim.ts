@@ -280,6 +280,8 @@ export class Sim {
 		playerDatabase.items.push(...bulkItemsDb.items);
 		playerDatabase.enchants.push(...bulkItemsDb.enchants);
 		playerDatabase.gems.push(...bulkItemsDb.gems);
+		playerDatabase.reforgeStats.push(...bulkItemsDb.reforgeStats);
+		playerDatabase.randomSuffixes.push(...bulkItemsDb.randomSuffixes);
 
 		this.bulkSimStartEmitter.emit(TypedEvent.nextEventID(), request);
 

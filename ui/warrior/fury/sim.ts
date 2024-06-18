@@ -104,7 +104,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [WarriorInputs.ShoutPicker(), WarriorInputs.Recklessness(), WarriorInputs.ShatteringThrow()],
+	playerIconInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
 		// just for Bryntroll
@@ -117,7 +117,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 			FuryInputs.SyncTypeInput,
 			WarriorInputs.StartingRage(),
 			WarriorInputs.StanceSnapshot(),
-			WarriorInputs.DisableExpertiseGemming(),
 			OtherInputs.InputDelay,
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,

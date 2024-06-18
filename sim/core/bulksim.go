@@ -505,23 +505,8 @@ func isValidEquipment(equipment *proto.EquipmentSpec) bool {
 		return false
 	}
 
-	// Validate trinkets/rings for duplicate IDs
-	if equipment.Items[proto.ItemSlot_ItemSlotFinger1].Id == equipment.Items[proto.ItemSlot_ItemSlotFinger2].Id && equipment.Items[proto.ItemSlot_ItemSlotFinger1].Id != 0 {
-		return false
-	} else if equipment.Items[proto.ItemSlot_ItemSlotTrinket1].Id == equipment.Items[proto.ItemSlot_ItemSlotTrinket2].Id && equipment.Items[proto.ItemSlot_ItemSlotTrinket1].Id != 0 {
-		return false
-	}
-
-	// Validate rings/trinkets for heroic/non-heroic (matching name)
-	f1, ok1 := ItemsByID[equipment.Items[proto.ItemSlot_ItemSlotFinger1].Id]
-	f2, ok2 := ItemsByID[equipment.Items[proto.ItemSlot_ItemSlotFinger2].Id]
-	if ok1 && ok2 && f1.Name == f2.Name {
-		return false
-	}
-
-	t1, ok1 := ItemsByID[equipment.Items[proto.ItemSlot_ItemSlotTrinket1].Id]
-	t2, ok2 := ItemsByID[equipment.Items[proto.ItemSlot_ItemSlotTrinket2].Id]
-	if ok1 && ok2 && t1.Name == t2.Name {
+	// Validate trinkets for duplicate IDs
+	if equipment.Items[proto.ItemSlot_ItemSlotTrinket1].Id == equipment.Items[proto.ItemSlot_ItemSlotTrinket2].Id && equipment.Items[proto.ItemSlot_ItemSlotTrinket1].Id != 0 {
 		return false
 	}
 

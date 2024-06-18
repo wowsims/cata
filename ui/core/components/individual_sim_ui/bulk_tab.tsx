@@ -6,7 +6,7 @@ import { ref } from 'tsx-vanilla';
 import { REPO_RELEASES_URL } from '../../constants/other';
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { BulkSettings, ErrorOutcomeType, ProgressMetrics, TalentLoadout } from '../../proto/api';
-import { GemColor, Glyphs, ItemSpec, SimDatabase, SimEnchant, SimGem, SimItem } from '../../proto/common';
+import { GemColor, Glyphs, ItemRandomSuffix, ItemSpec, ReforgeStat, SimDatabase, SimEnchant, SimGem, SimItem } from '../../proto/common';
 import { SavedTalents, UIEnchant, UIGem, UIItem } from '../../proto/ui';
 import { ActionId } from '../../proto_utils/action_id';
 import { getEmptyGemSocketIconUrl } from '../../proto_utils/gems';
@@ -273,6 +273,20 @@ export class BulkTab extends SimTab {
 					}),
 				);
 			}
+			if (item.randomSuffix) {
+				itemsDb.randomSuffixes.push(
+					ItemRandomSuffix.fromJson(ItemRandomSuffix.toJson(item.randomSuffix), {
+						ignoreUnknownFields: true,
+					}),
+				);
+			}
+			if (item.reforge) {
+				itemsDb.reforgeStats.push(
+					ReforgeStat.fromJson(ReforgeStat.toJson(item.reforge), {
+						ignoreUnknownFields: true,
+					}),
+				);
+			}
 			for (const gem of item.gems) {
 				if (gem) {
 					itemsDb.gems.push(SimGem.fromJson(UIGem.toJson(gem), { ignoreUnknownFields: true }));
@@ -407,6 +421,7 @@ export class BulkTab extends SimTab {
 				});
 			}
 		} catch (e) {
+			this.isPending = false;
 			this.simUI.handleCrash(e);
 		}
 	}
@@ -487,8 +502,20 @@ export class BulkTab extends SimTab {
 			for (const r of bulkSimResult.results) {
 				new BulkSimResultRenderer(this.resultsTabElem, this.simUI, this, r, bulkSimResult.equippedGearResult!);
 			}
+			this.isPending = false;
 			this.resultsTab.show();
 		});
+	}
+
+	private set isPending(value: boolean) {
+		if (value) {
+			this.simUI.rootElem.classList.add('blurred');
+			this.simUI.rootElem.insertAdjacentElement('afterend', this.pendingDiv);
+		} else {
+			this.simUI.rootElem.classList.remove('blurred');
+			this.pendingDiv.remove();
+			this.pendingResults.hideAll();
+		}
 	}
 
 	protected buildBatchSettings() {
@@ -526,9 +553,7 @@ export class BulkTab extends SimTab {
 			if (isRunning) return;
 			isRunning = true;
 			bulkSimButton.disabled = true;
-
-			this.simUI.rootElem.classList.add('blurred');
-			this.simUI.rootElem.insertAdjacentElement('afterend', this.pendingDiv);
+			this.isPending = true;
 
 			let simStart = new Date().getTime();
 			let lastTotal = 0;
