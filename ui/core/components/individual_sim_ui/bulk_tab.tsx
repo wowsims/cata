@@ -6,7 +6,7 @@ import { ref } from 'tsx-vanilla';
 import { REPO_RELEASES_URL } from '../../constants/other';
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { BulkSettings, ProgressMetrics, TalentLoadout } from '../../proto/api';
-import { GemColor, Glyphs, ItemSpec, SimDatabase, SimEnchant, SimGem, SimItem } from '../../proto/common';
+import { GemColor, Glyphs, ItemRandomSuffix, ItemSpec, ReforgeStat, SimDatabase, SimEnchant, SimGem, SimItem } from '../../proto/common';
 import { SavedTalents, UIEnchant, UIGem, UIItem } from '../../proto/ui';
 import { ActionId } from '../../proto_utils/action_id';
 import { getEmptyGemSocketIconUrl } from '../../proto_utils/gems';
@@ -268,6 +268,20 @@ export class BulkTab extends SimTab {
 			if (item.enchant) {
 				itemsDb.enchants.push(
 					SimEnchant.fromJson(UIEnchant.toJson(item.enchant), {
+						ignoreUnknownFields: true,
+					}),
+				);
+			}
+			if (item.randomSuffix) {
+				itemsDb.randomSuffixes.push(
+					ItemRandomSuffix.fromJson(ItemRandomSuffix.toJson(item.randomSuffix), {
+						ignoreUnknownFields: true,
+					}),
+				);
+			}
+			if (item.reforge) {
+				itemsDb.reforgeStats.push(
+					ReforgeStat.fromJson(ReforgeStat.toJson(item.reforge), {
 						ignoreUnknownFields: true,
 					}),
 				);
