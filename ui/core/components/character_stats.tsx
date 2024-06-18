@@ -51,10 +51,16 @@ export class CharacterStats extends Component {
 		this.stats.forEach(stat => {
 			const statName = getClassStatName(stat, player.getClass());
 			const valueRef = ref<HTMLTableCellElement>();
+			const hasteTooltipRef = ref<HTMLButtonElement>();
 			const row = (
 				<tr className="character-stats-table-row">
 					<td className="character-stats-table-label">
 						{statName}
+						{[Stat.StatMeleeHaste, Stat.StatSpellHaste].includes(stat) && (
+							<button ref={hasteTooltipRef} className="d-inline ms-1">
+								<i className="fa-regular fa-circle-question" />
+							</button>
+						)}
 						{stat === Stat.StatMastery && (
 							<>
 								<br />
@@ -67,6 +73,21 @@ export class CharacterStats extends Component {
 					</td>
 				</tr>
 			);
+
+			if (hasteTooltipRef.value)
+				tippy(hasteTooltipRef.value, {
+					content: (
+						<>
+							<p className="mb-1">
+								<strong>Why is buffs showing 0?</strong>
+							</p>
+							<p>Haste is a multiplicate stat, this makes it hard to properly calculate ratings on the fly (for example when reforging).</p>
+							<p className="mb-0">
+								The <strong>total</strong> value still shows the correct haste value including all (raid) buffs.
+							</p>
+						</>
+					),
+				});
 
 			table.appendChild(row);
 			this.valueElems.push(valueRef.value!);
@@ -124,6 +145,10 @@ export class CharacterStats extends Component {
 			.add(statMods.final || new Stats())
 			.add(debuffStats);
 
+		console.log(Stat.StatSpellHaste, {
+			playerStats,
+		});
+
 		if (this.overwriteDisplayStats) {
 			const statOverwrites = this.overwriteDisplayStats(this.player);
 			if (statOverwrites.stats) {
@@ -140,11 +165,20 @@ export class CharacterStats extends Component {
 
 		// Apply multiplicative Haste buffs to the final displayed value
 		const baseMeleeHasteMultiplier = 1 + finalStats.getStat(Stat.StatMeleeHaste) / (Mechanics.HASTE_RATING_PER_HASTE_PERCENT * 100);
-		const meleeHasteBuffsMultiplier = (this.player.getClass() == Class.ClassHunter) ? finalStats.getPseudoStat(PseudoStat.PseudoStatRangedSpeedMultiplier) : finalStats.getPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier);
-		finalStats = finalStats.withStat(Stat.StatMeleeHaste, (baseMeleeHasteMultiplier * meleeHasteBuffsMultiplier - 1) * 100 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT);
+		const meleeHasteBuffsMultiplier =
+			this.player.getClass() == Class.ClassHunter
+				? finalStats.getPseudoStat(PseudoStat.PseudoStatRangedSpeedMultiplier)
+				: finalStats.getPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier);
+		finalStats = finalStats.withStat(
+			Stat.StatMeleeHaste,
+			(baseMeleeHasteMultiplier * meleeHasteBuffsMultiplier - 1) * 100 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT,
+		);
 		const baseSpellHasteMultiplier = 1 + finalStats.getStat(Stat.StatSpellHaste) / (Mechanics.HASTE_RATING_PER_HASTE_PERCENT * 100);
 		const spellHasteBuffsMultiplier = finalStats.getPseudoStat(PseudoStat.PseudoStatCastSpeedMultiplier);
-		finalStats = finalStats.withStat(Stat.StatSpellHaste, (baseSpellHasteMultiplier * spellHasteBuffsMultiplier - 1) * 100 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT);
+		finalStats = finalStats.withStat(
+			Stat.StatSpellHaste,
+			(baseSpellHasteMultiplier * spellHasteBuffsMultiplier - 1) * 100 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT,
+		);
 
 		const masteryPoints =
 			this.player.getBaseMastery() + (playerStats.finalStats?.stats[Stat.StatMastery] || 0) / Mechanics.MASTERY_RATING_PER_MASTERY_POINT;

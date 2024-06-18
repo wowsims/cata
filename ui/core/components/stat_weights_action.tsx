@@ -17,10 +17,12 @@ import { ResultsViewer } from './results_viewer.jsx';
 import { renderSavedEPWeights } from './saved_data_managers/ep_weights';
 
 export const addStatWeightsAction = (simUI: IndividualSimUI<any>) => {
+	const epWeightsModal = new EpWeightsMenu(simUI);
 	simUI.addAction('Stat Weights', 'ep-weights-action', () => {
-		// TODO: Make this so we can initialize the menu once outside of this function
-		new EpWeightsMenu(simUI).open();
+		epWeightsModal.open();
 	});
+
+	return epWeightsModal;
 };
 
 // Create the config for modal in separate function, as constructor cannot
@@ -28,9 +30,7 @@ export const addStatWeightsAction = (simUI: IndividualSimUI<any>) => {
 // TMI & p(death) EP in the UI.
 const getModalConfig = (simUI: IndividualSimUI<any>) => {
 	const baseConfig = { footer: true, scrollContents: true };
-	if (simUI.sim.getShowThreatMetrics() && simUI.sim.getShowExperimental()) {
-		return { size: 'xl' as const, ...baseConfig };
-	}
+	if (simUI.sim.getShowThreatMetrics()) return { size: 'xl' as const, ...baseConfig };
 	return baseConfig;
 };
 
@@ -47,7 +47,7 @@ export const scaledEpValue = (stat: UnitStat, epRatios: number[], result: StatWe
 	);
 };
 
-class EpWeightsMenu extends BaseModal {
+export class EpWeightsMenu extends BaseModal {
 	private readonly simUI: IndividualSimUI<any>;
 	private readonly container: HTMLElement;
 	private readonly sidebar: HTMLElement;
@@ -106,7 +106,7 @@ class EpWeightsMenu extends BaseModal {
 						</div>
 						<div ref={allStatsContainerRef} className="show-all-stats-container col col-sm-3"></div>
 					</div>
-					<div className="ep-reference-options row experimental">
+					<div className="ep-reference-options row">
 						<div className="col col-sm-4 damage-metrics">
 							<span>DPS/TPS reference:</span>
 							<select ref={damageMetricsSelectRef} className="ref-stat-select form-select damage-metrics">
@@ -153,11 +153,8 @@ class EpWeightsMenu extends BaseModal {
 									<td>EP Ratio</td>
 									{statsTable
 										.filter(({ type }) => type !== 'action')
-										.map(({ metric, type, experimental, ratioRef }) => (
-											<td
-												ref={ratioRef}
-												className={clsx('type-ratio', `${metric}-metrics`, `type-${type}`, experimental && 'experimental')}
-											/>
+										.map(({ metric, type, ratioRef }) => (
+											<td ref={ratioRef} className={clsx('type-ratio', `${metric}-metrics`, `type-${type}`)} />
 										))}
 									<td className="text-center align-middle">
 										<button ref={computeEpRef} className="btn btn-primary compute-ep">
@@ -418,8 +415,8 @@ class EpWeightsMenu extends BaseModal {
 				{this.makeTableRowCells(stat, result?.hps, 'healing-metrics', rowTotalEp, epRatios[1])}
 				{this.makeTableRowCells(stat, result?.tps, 'threat-metrics', rowTotalEp, epRatios[2])}
 				{this.makeTableRowCells(stat, result?.dtps, 'threat-metrics', rowTotalEp, epRatios[3])}
-				{this.makeTableRowCells(stat, result?.tmi, 'threat-metrics experimental', rowTotalEp, epRatios[4])}
-				{this.makeTableRowCells(stat, result?.pDeath, 'threat-metrics experimental', rowTotalEp, epRatios[5])}
+				{this.makeTableRowCells(stat, result?.tmi, 'threat-metrics', rowTotalEp, epRatios[4])}
+				{this.makeTableRowCells(stat, result?.pDeath, 'threat-metrics', rowTotalEp, epRatios[5])}
 				<td ref={currentEpRef} className="current-ep"></td>
 			</tr>
 		) as HTMLElement;
@@ -679,7 +676,6 @@ class EpWeightsMenu extends BaseModal {
 				...createRefs(),
 			},
 			{
-				experimental: true,
 				metric: 'threat',
 				type: 'weight',
 				label: 'TMI Weight',
@@ -689,7 +685,6 @@ class EpWeightsMenu extends BaseModal {
 				...createRefs(),
 			},
 			{
-				experimental: true,
 				metric: 'threat',
 				type: 'ep',
 				label: 'TMI EP',
@@ -700,7 +695,6 @@ class EpWeightsMenu extends BaseModal {
 				...createRefs(),
 			},
 			{
-				experimental: true,
 				metric: 'threat',
 				type: 'weight',
 				label: 'Death Weight',
@@ -710,7 +704,6 @@ class EpWeightsMenu extends BaseModal {
 				...createRefs(),
 			},
 			{
-				experimental: true,
 				metric: 'threat',
 				type: 'ep',
 				label: 'Death EP',
@@ -733,7 +726,6 @@ class EpWeightsMenu extends BaseModal {
 }
 
 type StatsTableEntry = {
-	experimental?: boolean;
 	metric?: 'damage' | 'healing' | 'threat';
 	type: 'ep' | 'weight' | 'action';
 	label: string;

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import tippy from 'tippy.js';
+import tippy, { hideAll } from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 import { Constraint, greaterEq, lessEq, Model, Options, Solution, solve } from 'yalps';
 
@@ -384,7 +384,19 @@ export class ReforgeOptimizer {
 			event.dispose();
 		});
 
-		return savedEpWeights.rootElem;
+		return (
+			<>
+				{savedEpWeights.rootElem}
+				{this.simUI.epWeightsModal && (
+					<button
+						className="btn btn-outline-primary"
+						onclick={() => {
+							this.simUI.epWeightsModal?.open();
+							hideAll();
+						}}>Edit weights</button>
+				)}
+			</>
+		);
 	}
 
 	async optimizeReforges() {
