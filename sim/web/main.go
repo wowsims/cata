@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -25,6 +24,7 @@ import (
 	"github.com/wowsims/cata/sim"
 	"github.com/wowsims/cata/sim/core"
 	proto "github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/simsignals"
 
 	googleProto "google.golang.org/protobuf/proto"
 )
@@ -97,22 +97,31 @@ var handlers = map[string]apiHandler{
 	"/statWeights": {msg: func() googleProto.Message { return &proto.StatWeightsRequest{} }, handle: func(msg googleProto.Message) googleProto.Message {
 		return core.StatWeights(msg.(*proto.StatWeightsRequest))
 	}},
+	"/statWeightRequests": {msg: func() googleProto.Message { return &proto.StatWeightsRequest{} }, handle: func(msg googleProto.Message) googleProto.Message {
+		return core.StatWeightRequests(msg.(*proto.StatWeightsRequest))
+	}},
+	"/statWeightCompute": {msg: func() googleProto.Message { return &proto.StatWeightsCalcRequest{} }, handle: func(msg googleProto.Message) googleProto.Message {
+		return core.StatWeightCompute(msg.(*proto.StatWeightsCalcRequest))
+	}},
 	"/computeStats": {msg: func() googleProto.Message { return &proto.ComputeStatsRequest{} }, handle: func(msg googleProto.Message) googleProto.Message {
 		return core.ComputeStats(msg.(*proto.ComputeStatsRequest))
+	}},
+	"/abortById": {msg: func() googleProto.Message { return &proto.AbortRequest{} }, handle: func(msg googleProto.Message) googleProto.Message {
+		requestId := msg.(*proto.AbortRequest).RequestId
+		triggered := simsignals.AbortById(requestId)
+		return &proto.AbortResponse{RequestId: requestId, WasTriggered: triggered}
 	}},
 }
 
 var asyncAPIHandlers = map[string]asyncAPIHandler{
 	"/raidSimAsync": {msg: func() googleProto.Message { return &proto.RaidSimRequest{} }, handle: func(msg googleProto.Message, reporter chan *proto.ProgressMetrics) {
-		core.RunRaidSimAsync(msg.(*proto.RaidSimRequest), reporter)
+		core.RunRaidSimConcurrentAsync(msg.(*proto.RaidSimRequest), reporter)
 	}},
 	"/statWeightsAsync": {msg: func() googleProto.Message { return &proto.StatWeightsRequest{} }, handle: func(msg googleProto.Message, reporter chan *proto.ProgressMetrics) {
 		core.StatWeightsAsync(msg.(*proto.StatWeightsRequest), reporter)
 	}},
 	"/bulkSimAsync": {msg: func() googleProto.Message { return &proto.BulkSimRequest{} }, handle: func(msg googleProto.Message, reporter chan *proto.ProgressMetrics) {
-		// TODO: we can use context's to cancel stuff.
-		// We should have all the async APIs take in context and let it be cancelled via its async ID.
-		core.RunBulkSimAsync(context.Background(), msg.(*proto.BulkSimRequest), reporter)
+		core.RunBulkSimAsync(msg.(*proto.BulkSimRequest), reporter)
 	}},
 }
 

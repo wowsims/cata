@@ -14,6 +14,11 @@ declare global {
 	const raidSimAsync: SimRequestAsync;
 	const statWeights: SimRequestSync;
 	const statWeightsAsync: SimRequestAsync;
+	const statWeightRequests: SimRequestSync;
+	const statWeightCompute: SimRequestSync;
+	const raidSimResultCombination: SimRequestSync;
+	const raidSimRequestSplit: SimRequestSync;
+	const abortById: SimRequestSync;
 }
 
 // Wasm binary calls this function when its done loading.
@@ -28,7 +33,12 @@ globalThis.wasmready = function () {
 		raidSimAsync: (data, progress) => raidSimAsync(data, progress),
 		statWeights: statWeights,
 		statWeightsAsync: (data, progress) => statWeightsAsync(data, progress),
-	}).ready();
+		statWeightRequests: statWeightRequests,
+		statWeightCompute: statWeightCompute,
+		raidSimRequestSplit: raidSimRequestSplit,
+		raidSimResultCombination: raidSimResultCombination,
+		abortById: abortById,
+	}).ready(true);
 };
 
 const go = new Go();

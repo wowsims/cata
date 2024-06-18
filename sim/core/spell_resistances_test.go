@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/simsignals"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -26,7 +27,7 @@ func Test_PartialResistsVsPlayer(t *testing.T) {
 		SimOptions: &proto.SimOptions{},
 		Encounter:  &proto.Encounter{},
 		Raid:       &proto.Raid{},
-	})
+	}, simsignals.CreateSignals())
 
 	spell := &Spell{
 		SpellSchool: SpellSchoolFire,
@@ -96,7 +97,7 @@ func Test_PartialResistsVsBoss(t *testing.T) {
 		SimOptions: &proto.SimOptions{},
 		Encounter:  &proto.Encounter{},
 		Raid:       &proto.Raid{},
-	})
+	}, simsignals.CreateSignals())
 
 	spell := &Spell{
 		SpellSchool: SpellSchoolNature,

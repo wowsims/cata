@@ -1,4 +1,5 @@
 import { hasTouch } from '../shared/bootstrap_overrides';
+import { SimRequest } from '../worker/types';
 import { getBrowserLanguageCode, setLanguageCode } from './constants/lang';
 import * as OtherConstants from './constants/other';
 import { Encounter } from './encounter';
@@ -8,6 +9,8 @@ import {
 	BulkSimRequest,
 	BulkSimResult,
 	ComputeStatsRequest,
+	ErrorOutcome,
+	ErrorOutcomeType,
 	Raid as RaidProto,
 	RaidSimRequest,
 	RaidSimResult,
@@ -33,9 +36,11 @@ import { DatabaseFilters, RaidFilterOption, SimSettings as SimSettingsProto, Sou
 import { Database } from './proto_utils/database.js';
 import { SimResult } from './proto_utils/sim_result.js';
 import { Raid } from './raid.js';
+import { runConcurrentSim, runConcurrentStatWeights } from './sim_concurrent';
+import { RequestTypes, SimSignalManager } from './sim_signal_manager';
 import { EventID, TypedEvent } from './typed_event.js';
 import { getEnumValues, noop } from './utils.js';
-import { WorkerPool, WorkerProgressCallback } from './worker_pool.js';
+import { generateRequestId, WorkerPool, WorkerProgressCallback } from './worker_pool.js';
 
 export type RaidSimData = {
 	request: RaidSimRequest;
@@ -77,6 +82,7 @@ export class Sim {
 	private showThreatMetrics = false;
 	private showHealingMetrics = false;
 	private showExperimental = false;
+	private wasmConcurrency = 0;
 	private showQuickSwap = false;
 	private showEPValues = false;
 	private useCustomEPValues = false;
@@ -99,6 +105,7 @@ export class Sim {
 	readonly showThreatMetricsChangeEmitter = new TypedEvent<void>();
 	readonly showHealingMetricsChangeEmitter = new TypedEvent<void>();
 	readonly showExperimentalChangeEmitter = new TypedEvent<void>();
+	readonly wasmConcurrencyChangeEmitter = new TypedEvent<void>();
 	readonly showQuickSwapChangeEmitter = new TypedEvent<void>();
 	readonly showEPValuesChangeEmitter = new TypedEvent<void>();
 	readonly useCustomEPValuesChangeEmitter = new TypedEvent<void>();
@@ -129,10 +136,22 @@ export class Sim {
 	// These callbacks are needed so we can apply BuffBot modifications automatically before sending requests.
 	private modifyRaidProto: (raidProto: RaidProto) => void = noop;
 
+	readonly signalManager: SimSignalManager;
+
 	constructor({ type }: SimProps = {}) {
 		this.type = type ?? SimType.SimTypeIndividual;
 
 		this.workerPool = new WorkerPool(1);
+		this.wasmConcurrencyChangeEmitter.on(async () => {
+			// Prevent using worker concurrency when not running wasm. Local sim has native threading.
+			if (await this.workerPool.isWasm()) {
+				const nWorker = Math.max(1, Math.min(this.wasmConcurrency, navigator.hardwareConcurrency));
+				this.workerPool.setNumWorkers(nWorker);
+			}
+		});
+
+		this.signalManager = new SimSignalManager();
+
 		this._initPromise = Database.get().then(db => {
 			this.db_ = db;
 		});
@@ -149,6 +168,7 @@ export class Sim {
 			this.showThreatMetricsChangeEmitter,
 			this.showHealingMetricsChangeEmitter,
 			this.showExperimentalChangeEmitter,
+			this.wasmConcurrencyChangeEmitter,
 			this.showQuickSwapChangeEmitter,
 			this.showEPValuesChangeEmitter,
 			this.useCustomEPValuesChangeEmitter,
@@ -163,6 +183,10 @@ export class Sim {
 
 	waitForInit(): Promise<void> {
 		return this._initPromise;
+	}
+
+	isWasm() {
+		return this.workerPool.isWasm();
 	}
 
 	get db(): Database {
@@ -216,6 +240,7 @@ export class Sim {
 		// TODO: remove any replenishment from sim request here? probably makes more sense to do it inside the sim to protect against accidents
 
 		return RaidSimRequest.create({
+			requestId: generateRequestId(SimRequest.raidSim),
 			type: this.type,
 			raid: raid,
 			encounter: encounter,
@@ -227,7 +252,7 @@ export class Sim {
 		});
 	}
 
-	async runBulkSim(bulkSettings: BulkSettings, bulkItemsDb: SimDatabase, onProgress: WorkerProgressCallback): Promise<BulkSimResult | null> {
+	async runBulkSim(bulkSettings: BulkSettings, bulkItemsDb: SimDatabase, onProgress: WorkerProgressCallback): Promise<BulkSimResult> {
 		if (this.raid.isEmpty()) {
 			throw new Error('Raid is empty! Try adding some players first.');
 		} else if (this.encounter.targets.length < 1) {
@@ -237,6 +262,7 @@ export class Sim {
 		await this.waitForInit();
 
 		const request = BulkSimRequest.create({
+			requestId: generateRequestId(SimRequest.bulkSimAsync),
 			baseSettings: this.makeRaidSimRequest(false),
 			bulkSettings: bulkSettings,
 		});
@@ -258,40 +284,60 @@ export class Sim {
 		this.bulkSimStartEmitter.emit(TypedEvent.nextEventID(), request);
 
 		try {
-			const result = await this.workerPool.bulkSimAsync(request, onProgress);
-			if (result.errorResult != '') {
-				throw new SimError(result.errorResult);
+			const signals = this.signalManager.registerRunning(request.requestId, RequestTypes.BulkSim);
+			const result = await this.workerPool.bulkSimAsync(request, onProgress, signals);
+
+			if (result.error) {
+				if (result.error.type != ErrorOutcomeType.ErrorOutcomeError) return result;
+				throw new SimError(result.error.message);
 			}
 
 			this.bulkSimResultEmitter.emit(TypedEvent.nextEventID(), result);
 			return result;
 		} catch (error) {
 			if (error instanceof SimError) throw error;
+			console.error(error);
 			throw new Error('Something went wrong running your raid sim. Reload the page and try again.');
+		} finally {
+			this.signalManager.unregisterRunning(request.requestId);
 		}
 	}
 
-	async runRaidSim(eventID: EventID, onProgress: WorkerProgressCallback): Promise<SimResult | null> {
+	async runRaidSim(eventID: EventID, onProgress: WorkerProgressCallback): Promise<SimResult | ErrorOutcome> {
 		if (this.raid.isEmpty()) {
 			throw new Error('Raid is empty! Try adding some players first.');
 		} else if (this.encounter.targets.length < 1) {
 			throw new Error('Encounter has no targets! Try adding some targets first.');
 		}
+		let simId = '';
 		try {
 			await this.waitForInit();
 
 			const request = this.makeRaidSimRequest(false);
+			simId = request.requestId;
 
-			const result = await this.workerPool.raidSimAsync(request, onProgress);
-			if (result.errorResult != '') {
-				throw new SimError(result.errorResult);
+			let result;
+			const signals = this.signalManager.registerRunning(request.requestId, RequestTypes.RaidSim);
+			// Only use worker base concurrency when running wasm. Local sim has native threading.
+			if ((await this.isWasm()) && this.getWasmConcurrency() >= 2) {
+				result = await runConcurrentSim(request, this.workerPool, onProgress, signals);
+			} else {
+				result = await this.workerPool.raidSimAsync(request, onProgress, signals);
+			}
+
+			if (result.error) {
+				if (result.error.type != ErrorOutcomeType.ErrorOutcomeError) return result.error;
+				throw new SimError(result.error.message);
 			}
 			const simResult = await SimResult.makeNew(request, result);
 			this.simResultEmitter.emit(eventID, simResult);
 			return simResult;
 		} catch (error) {
 			if (error instanceof SimError) throw error;
+			console.error(error);
 			throw new Error('Something went wrong running your raid sim. Reload the page and try again.');
+		} finally {
+			this.signalManager.unregisterRunning(simId);
 		}
 	}
 
@@ -305,15 +351,17 @@ export class Sim {
 			await this.waitForInit();
 
 			const request = this.makeRaidSimRequest(true);
-			const result = await this.workerPool.raidSimAsync(request, noop);
-			if (result.errorResult != '') {
-				throw new SimError(result.errorResult);
+			const signals = this.signalManager.registerRunning(request.requestId, RequestTypes.RaidSim);
+			const result = await this.workerPool.raidSimAsync(request, noop, signals);
+			if (result.error) {
+				throw new SimError(result.error.message);
 			}
 			const simResult = await SimResult.makeNew(request, result);
 			this.simResultEmitter.emit(eventID, simResult);
 			return simResult;
 		} catch (error) {
 			if (error instanceof SimError) throw error;
+			console.error(error);
 			throw new Error('Something went wrong running your raid sim. Reload the page and try again.');
 		}
 	}
@@ -375,7 +423,7 @@ export class Sim {
 		epPseudoStats: Array<PseudoStat>,
 		epReferenceStat: Stat,
 		onProgress: WorkerProgressCallback,
-	): Promise<StatWeightsResult | null> {
+	): Promise<StatWeightsResult> {
 		if (this.raid.isEmpty()) {
 			throw new Error('Raid is empty! Try adding some players first.');
 		} else if (this.encounter.targets.length < 1) {
@@ -395,6 +443,7 @@ export class Sim {
 				? [UnitReference.create({ type: UnitType.Player, index: 0 })]
 				: [];
 			const request = StatWeightsRequest.create({
+				requestId: generateRequestId(SimRequest.statWeightsAsync),
 				player: player.toProto(false, true),
 				raidBuffs: this.raid.getBuffs(),
 				partyBuffs: player.getParty()!.getBuffs(),
@@ -412,10 +461,25 @@ export class Sim {
 				epReferenceStat: epReferenceStat,
 			});
 			try {
-				const result = await this.workerPool.statWeightsAsync(request, onProgress);
+				let result: StatWeightsResult;
+				const signals = this.signalManager.registerRunning(request.requestId, RequestTypes.StatWeights);
+				// Only use worker based concurrency when running wasm.
+				if ((await this.isWasm()) && this.getWasmConcurrency() >= 2) {
+					result = await runConcurrentStatWeights(request, this.workerPool, onProgress, signals);
+				} else {
+					result = await this.workerPool.statWeightsAsync(request, onProgress, signals);
+				}
+				if (result.error) {
+					if (result.error.type != ErrorOutcomeType.ErrorOutcomeError) return result;
+					throw new SimError(result.error.message);
+				}
 				return result;
-			} catch {
+			} catch (error) {
+				if (error instanceof SimError) throw error;
+				console.error(error);
 				throw new Error('Something went wrong calculating your stat weights. Reload the page and try again.');
+			} finally {
+				this.signalManager.unregisterRunning(request.requestId);
 			}
 		}
 	}
@@ -543,6 +607,16 @@ export class Sim {
 		}
 	}
 
+	getWasmConcurrency(): number {
+		return this.wasmConcurrency;
+	}
+	setWasmConcurrency(eventID: EventID, newWasmConcurrency: number) {
+		if (newWasmConcurrency != this.wasmConcurrency) {
+			this.wasmConcurrency = newWasmConcurrency;
+			this.wasmConcurrencyChangeEmitter.emit(eventID);
+		}
+	}
+
 	getShowQuickSwap(): boolean {
 		return !hasTouch() && this.showQuickSwap;
 	}
@@ -637,6 +711,7 @@ export class Sim {
 			showThreatMetrics: this.getShowThreatMetrics(),
 			showHealingMetrics: this.getShowHealingMetrics(),
 			showExperimental: this.getShowExperimental(),
+			wasmConcurrency: this.getWasmConcurrency(),
 			showQuickSwap: this.getShowQuickSwap(),
 			showEpValues: this.getShowEPValues(),
 			useCustomEpValues: this.getUseCustomEPValues(),
@@ -656,6 +731,7 @@ export class Sim {
 			this.setShowThreatMetrics(eventID, proto.showThreatMetrics);
 			this.setShowHealingMetrics(eventID, proto.showHealingMetrics);
 			this.setShowExperimental(eventID, proto.showExperimental);
+			this.setWasmConcurrency(eventID, proto.wasmConcurrency);
 			this.setShowQuickSwap(eventID, proto.showQuickSwap);
 			this.setShowEPValues(eventID, proto.showEpValues);
 			this.setUseCustomEPValues(eventID, proto.useCustomEpValues);

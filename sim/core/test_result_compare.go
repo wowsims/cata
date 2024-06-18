@@ -277,7 +277,7 @@ func DebugCompareLogs(rsr *proto.RaidSimRequest, showCount int) (bool, string) {
 	oldDebug := rsr.SimOptions.Debug
 	rsr.SimOptions.Debug = true
 	st := RunRaidSim(rsr)
-	mt := RunConcurrentRaidSimSync(rsr)
+	mt := RunRaidSimConcurrent(rsr)
 	rsr.SimOptions.Debug = oldDebug
 
 	str := newLogReader(st.Logs, false)

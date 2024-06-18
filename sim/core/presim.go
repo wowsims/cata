@@ -94,10 +94,10 @@ func (sim *Simulation) runPresims(request *proto.RaidSimRequest) *proto.RaidSimR
 		}
 
 		// Run the presim.
-		presimResult := runSim(presimRequest, nil, true, nil)
+		presimResult := runSim(presimRequest, nil, true, sim.Signals)
 		lastResult = presimResult
 
-		if presimResult.ErrorResult != "" {
+		if presimResult.Error != nil {
 			break
 		}
 

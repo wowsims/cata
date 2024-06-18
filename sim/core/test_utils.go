@@ -188,8 +188,8 @@ func StatWeightsTest(label string, t *testing.T, _swr *proto.StatWeightsRequest,
 
 func RaidSimTest(label string, t *testing.T, rsr *proto.RaidSimRequest, expectedDps float64) {
 	result := RunRaidSim(rsr)
-	if result.ErrorResult != "" {
-		t.Fatalf("Sim failed with error: %s", result.ErrorResult)
+	if result.Error != nil {
+		t.Fatalf("Sim failed with error: %s", result.Error.Message)
 	}
 	tolerance := 0.5
 	if result.RaidMetrics.Dps.Avg < expectedDps-tolerance || result.RaidMetrics.Dps.Avg > expectedDps+tolerance {
@@ -210,8 +210,8 @@ func RaidBenchmark(b *testing.B, rsr *proto.RaidSimRequest) {
 
 	for i := 0; i < b.N; i++ {
 		result := RunRaidSim(rsr)
-		if result.ErrorResult != "" {
-			b.Fatalf("RaidBenchmark() at iteration %d failed: %v", i, result.ErrorResult)
+		if result.Error != nil {
+			b.Fatalf("RaidBenchmark() at iteration %d failed: %v", i, result.Error.Message)
 		}
 	}
 }
