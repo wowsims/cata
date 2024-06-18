@@ -82,7 +82,7 @@ export class CharacterStats extends Component {
 								<strong>Why is buffs showing 0?</strong>
 							</p>
 							<p>Haste is a multiplicate stat, this makes it hard to properly calculate ratings on the fly (for example when reforging).</p>
-							<p className="mb-1">
+							<p className="mb-0">
 								The <strong>total</strong> value still shows the correct haste value including all (raid) buffs.
 							</p>
 						</>
