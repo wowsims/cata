@@ -35,8 +35,8 @@ func (warlock *Warlock) registerFelFlame() {
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 				if result.Landed() {
-					if warlock.ImmolateDot != nil {
-						immoDot := warlock.ImmolateDot.Dot(target)
+					if warlock.Immolate != nil {
+						immoDot := warlock.Immolate.Dot(target)
 						if immoDot.IsActive() {
 							immoDot.DurationExtendSnapshot(sim, 6*time.Second)
 						}

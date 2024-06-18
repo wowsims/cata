@@ -296,6 +296,7 @@ message SimSettings {
 	bool show_quick_swap = 12;
 	bool show_ep_values = 11;
 	bool use_custom_ep_values = 13;
+	bool use_soft_cap_breakpoints = 14;
 	string language = 9;
 	Faction faction = 6;
 	DatabaseFilters filters = 10;
@@ -318,14 +319,46 @@ message IndividualSimSettings {
 	Stat heal_ref_stat = 13;
 	Stat tank_ref_stat = 14;
 	UnitStats stat_caps = 15;
-	repeated SoftCapBreakpoints soft_cap_breakpoints = 16;
+	repeated StatCapConfig soft_cap_breakpoints = 16;
 }
 
-message SoftCapBreakpoints {
+message StatCapConfig {
 	Stat stat = 1;
+
+	// Breakpoint values in ascending order
 	repeated double breakpoints = 2;
+
+	// Should be either TypeSoftCap or TypeThreshold currently
+	StatCapType cap_type = 3;
+
+	// postCapEPs[i] is the stat weight value when between breakpoints[i]
+	// and breakpoints[i+1]. Used only for TypeSoftCap and ignored for
+	// TypeThreshold.
+	repeated double post_cap_EPs = 4;
 }
 
+enum StatCapType {
+	TypeUnknown = 0;
+
+	// Unused currently, but may be able to combine hard cap + soft cap
+	// configuration in the future.
+	TypeHardCap = 1;
+
+	// Used for stats that exhibit significant EP changes after particular
+	// breakpoint values, but where the post-cap EP remains non-zero.
+	// Examples include Spell Haste for Demonology Warlocks and Expertise
+	// for tanks.
+	TypeSoftCap = 2;
+
+	// Used for stats that exhibit discontinuities in value at discrete
+	// thresholds due to in-game rounding effects etc., but where the
+	// average value of the stat from one breakpoint to the next does not
+	// vary significantly. The most relevant example in early Cata Classic
+	// is Mastery Rating for Affliction Warlock, Demonology Warlock,
+	// Arcane Mage, Fire Mage, and Balance Druid, which gets floored in-game
+	// to the nearest integer % damage threshold.
+	TypeThreshold = 3;
+}
 
 // Local storage data for gear settings.
 message SavedGearSet {

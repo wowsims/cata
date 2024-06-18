@@ -122,10 +122,9 @@ type Shaman struct {
 	Earthquake   *core.Spell
 	Thunderstorm *core.Spell
 
-	EarthShock    *core.Spell
-	FlameShock    *core.Spell
-	FlameShockDot *core.Spell
-	FrostShock    *core.Spell
+	EarthShock *core.Spell
+	FlameShock *core.Spell
+	FrostShock *core.Spell
 
 	FeralSpirit  *core.Spell
 	SpiritWolves *SpiritWolves

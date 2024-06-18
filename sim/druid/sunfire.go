@@ -8,17 +8,17 @@ import (
 )
 
 func (druid *Druid) registerSunfireSpell() {
-	druid.registerSunfireDoTSpell()
 	druid.registerSunfireImpactSpell()
+	druid.registerSunfireDoTSpell()
 }
 
 func (druid *Druid) registerSunfireDoTSpell() {
-	druid.SunfireDoT = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 93402, Tag: 1},
+	druid.Sunfire.RelatedDotSpell = druid.Unit.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 93402}.WithTag(1),
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: DruidSpellSunfireDoT,
-		Flags:          core.SpellFlagAPL | SpellFlagOmenTrigger,
+		Flags:          SpellFlagOmenTrigger,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   druid.BalanceCritMultiplier(),
@@ -83,10 +83,12 @@ func (druid *Druid) registerSunfireImpactSpell() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
-				druid.MoonfireDoT.Dot(target).Deactivate(sim)
+				if druid.Moonfire.Dot(target).IsActive() {
+					druid.Moonfire.Dot(target).Deactivate(sim)
+				}
 
 				druid.ExtendingMoonfireStacks = 3
-				druid.SunfireDoT.Cast(sim, target)
+				druid.Sunfire.RelatedDotSpell.Cast(sim, target)
 			}
 
 			spell.DealDamage(sim, result)

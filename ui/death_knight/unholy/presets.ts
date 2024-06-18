@@ -25,14 +25,15 @@ export const P1_UNHOLY_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatArmor]: 0.03,
 			[Stat.StatAttackPower]: 1,
 			[Stat.StatExpertise]: 0.94,
-			[Stat.StatMeleeHaste]: 1.93,
+			[Stat.StatMeleeHaste]: 2.4,
 			[Stat.StatMeleeHit]: 2.6,
 			[Stat.StatMeleeCrit]: 1.43,
 			[Stat.StatSpellHit]: 0.0,
 			[Stat.StatSpellCrit]: 0.69,
+			[Stat.StatMastery]: 1.65,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 1.65,
+			[PseudoStat.PseudoStatMainHandDps]: 6.13,
 		},
 	),
 );

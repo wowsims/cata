@@ -7,6 +7,7 @@ import (
 )
 
 func (paladin *Paladin) registerSealOfTruth() {
+	hasteMultiplier := 1 + 0.01*3*float64(paladin.Talents.JudgementsOfThePure)
 
 	// Censure DoT
 	censureSpell := paladin.RegisterSpell(core.SpellConfig{
@@ -48,14 +49,20 @@ func (paladin *Paladin) registerSealOfTruth() {
 
 			if dotResult.Landed() {
 				dot := spell.Dot(target)
-				if dot.IsActive() {
-					dot.AddStack(sim)
-					dot.TakeSnapshot(sim, false)
-					dot.Refresh(sim)
-				} else {
-					dot.Apply(sim)
-					dot.SetStacks(sim, 1)
-					dot.TakeSnapshot(sim, false)
+
+				undoJotpForInitialTick := !dot.IsActive() &&
+					paladin.JudgementsOfThePureAura != nil &&
+					paladin.JudgementsOfThePureAura.IsActive()
+
+				if undoJotpForInitialTick {
+					paladin.MultiplyCastSpeed(1 / hasteMultiplier)
+				}
+
+				dot.Apply(sim)
+				dot.AddStack(sim)
+
+				if undoJotpForInitialTick {
+					paladin.MultiplyCastSpeed(hasteMultiplier)
 				}
 			}
 		},

@@ -41,7 +41,7 @@ import {
 	Spec,
 	Stat,
 } from './proto/common';
-import { IndividualSimSettings, SavedTalents, SoftCapBreakpoints } from './proto/ui';
+import { IndividualSimSettings, SavedTalents, StatCapConfig } from './proto/ui';
 import { getMetaGemConditionDescription } from './proto_utils/gems';
 import { armorTypeNames, professionNames } from './proto_utils/names';
 import { Stats } from './proto_utils/stats';
@@ -130,7 +130,7 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 		 * while ignoring any others. Then the solution is used to identify the closest
 		 * breakpoint for the second listed stat (if present), etc.
 		 */
-		softCapBreakpoints?: SoftCapBreakpoints[];
+		softCapBreakpoints?: StatCapConfig[];
 		consumes: Consumes;
 		talents: SavedTalents;
 		specOptions: SpecOptions<SpecType>;

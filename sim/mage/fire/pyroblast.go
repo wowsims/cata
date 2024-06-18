@@ -8,7 +8,7 @@ import (
 )
 
 func (fire *FireMage) registerPyroblastSpell() {
-	fire.PyroblastImpact = fire.RegisterSpell(core.SpellConfig{
+	fire.Pyroblast = fire.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 11366},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -37,14 +37,14 @@ func (fire *FireMage) registerPyroblastSpell() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				if result.Landed() {
-					fire.PyroblastDot.Cast(sim, target)
+					spell.RelatedDotSpell.Cast(sim, target)
 					spell.DealDamage(sim, result)
 				}
 			})
 		},
 	})
 
-	fire.PyroblastDot = fire.RegisterSpell(core.SpellConfig{
+	fire.Pyroblast.RelatedDotSpell = fire.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 11366}.WithTag(1),
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,

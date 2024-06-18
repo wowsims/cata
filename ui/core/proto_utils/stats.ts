@@ -1,4 +1,5 @@
 import * as Mechanics from '../constants/mechanics.js';
+import { Player } from '../player';
 import { Class, PseudoStat, Stat, UnitStats } from '../proto/common.js';
 import { getEnumValues } from '../utils.js';
 import { getClassStatName, pseudoStatNames } from './names.js';
@@ -288,7 +289,7 @@ export const statToPercentageOrPoints = (stat: Stat, value: number, stats: Stats
 			statInPercentage = value;
 			break;
 	}
-	return Number(statInPercentage.toFixed(2));
+	return statInPercentage;
 };
 
 export const statPercentageOrPointsToNumber = (stat: Stat, value: number, stats: Stats) => {

@@ -20,7 +20,6 @@ type Warlock struct {
 	CurseOfWeaknessAuras core.AuraArray
 	HauntDebuffAuras     core.AuraArray
 	Immolate             *core.Spell
-	ImmolateDot          *core.Spell
 	Metamorphosis        *core.Spell
 	Seed                 *core.Spell
 	ShadowEmbraceAuras   core.AuraArray

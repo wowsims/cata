@@ -64,7 +64,7 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 		FloatValue: 100 * core.CritRatingPerCritChance,
 	})
 
-	shaman.FlameShockDot = shaman.RegisterSpell(core.SpellConfig{
+	config.RelatedDotSpell = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 8050, Tag: 1},
 		SpellSchool:      core.SpellSchoolFire,
 		ProcMask:         core.ProcMaskSpellDamage,
@@ -105,7 +105,7 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 		baseDamage := shaman.ClassSpellScaling * 0.52899998426
 		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		if result.Landed() {
-			shaman.FlameShockDot.Cast(sim, target)
+			spell.RelatedDotSpell.Cast(sim, target)
 		}
 		spell.DealDamage(sim, result)
 	}

@@ -55,7 +55,6 @@ type Druid struct {
 	Maul                  *DruidSpell
 	MaulQueueSpell        *DruidSpell
 	Moonfire              *DruidSpell
-	MoonfireDoT           *DruidSpell
 	Pulverize             *DruidSpell
 	Rebirth               *DruidSpell
 	Rake                  *DruidSpell
@@ -67,7 +66,6 @@ type Druid struct {
 	Starfall              *DruidSpell
 	Starsurge             *DruidSpell
 	Sunfire               *DruidSpell
-	SunfireDoT            *DruidSpell
 	SurvivalInstincts     *DruidSpell
 	SwipeBear             *DruidSpell
 	SwipeCat              *DruidSpell

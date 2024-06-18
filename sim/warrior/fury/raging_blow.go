@@ -14,8 +14,8 @@ func (war *FuryWarrior) RegisterRagingBlow() {
 	ohRagingBlow := war.RegisterSpell(core.SpellConfig{
 		ActionID:       ragingBlowActionID.WithTag(2),
 		SpellSchool:    core.SpellSchoolPhysical,
-		ProcMask:       core.ProcMaskEmpty,
-		ClassSpellMask: warrior.SpellMaskRagingBlow | warrior.SpellMaskSpecialAttack | warrior.SpellDualWieldSpecMask,
+		ProcMask:       core.ProcMaskMeleeOHSpecial,
+		ClassSpellMask: warrior.SpellMaskRagingBlow | warrior.SpellMaskSpecialAttack,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
 
 		DamageMultiplier: 1.0,
