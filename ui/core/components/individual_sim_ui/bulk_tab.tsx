@@ -554,63 +554,58 @@ export class BulkTab extends SimTab {
 			isRunning = true;
 			bulkSimButton.disabled = true;
 			this.isPending = true;
-
-			let simStart = new Date().getTime();
-			let lastTotal = 0;
-			let rounds = 0;
-			let currentRound = 0;
-			let combinations = 0;
-
+			let waitAbort = false;
 			try {
 				await this.simUI.sim.signalManager.abortType(RequestTypes.All);
+
+				this.pendingResults.addAbortButton(async () => {
+					if (waitAbort) return;
+					try {
+						waitAbort = true;
+						await this.simUI.sim.signalManager.abortType(RequestTypes.BulkSim);
+					} catch (error) {
+						console.error('Error on bulk sim abort!');
+						console.error(error);
+					} finally {
+						waitAbort = false;
+						if (!isRunning) bulkSimButton.disabled = false;
+					}
+				});
+
+				let simStart = new Date().getTime();
+				let lastTotal = 0;
+				let rounds = 0;
+				let currentRound = 0;
+				let combinations = 0;
+
+				await this.runBulkSim((progressMetrics: ProgressMetrics) => {
+					const msSinceStart = new Date().getTime() - simStart;
+					const iterPerSecond = progressMetrics.completedIterations / (msSinceStart / 1000);
+
+					if (combinations === 0) {
+						combinations = progressMetrics.totalSims;
+					}
+					if (this.fastMode) {
+						if (rounds === 0 && progressMetrics.totalSims > 0) {
+							rounds = Math.ceil(Math.log(progressMetrics.totalSims / 20) / Math.log(2)) + 1;
+							currentRound = 1;
+						}
+						if (progressMetrics.totalSims < lastTotal) {
+							currentRound += 1;
+							simStart = new Date().getTime();
+						}
+					}
+
+					this.setSimProgress(progressMetrics, iterPerSecond, currentRound, rounds, combinations);
+					lastTotal = progressMetrics.totalSims;
+				});
 			} catch (error) {
 				console.error(error);
-				return;
+			} finally {
+				isRunning = false;
+				if (!waitAbort) bulkSimButton.disabled = false;
+				this.isPending = false;
 			}
-
-			let waitAbort = false;
-			this.pendingResults.addAbortButton(async () => {
-				if (waitAbort) return;
-				try {
-					waitAbort = true;
-					await this.simUI.sim.signalManager.abortType(RequestTypes.BulkSim);
-				} catch (error) {
-					console.error('Error on bulk sim abort!');
-					console.error(error);
-				} finally {
-					waitAbort = false;
-					if (!isRunning) bulkSimButton.disabled = false;
-				}
-			});
-
-			await this.runBulkSim((progressMetrics: ProgressMetrics) => {
-				const msSinceStart = new Date().getTime() - simStart;
-				const iterPerSecond = progressMetrics.completedIterations / (msSinceStart / 1000);
-
-				if (combinations === 0) {
-					combinations = progressMetrics.totalSims;
-				}
-				if (this.fastMode) {
-					if (rounds === 0 && progressMetrics.totalSims > 0) {
-						rounds = Math.ceil(Math.log(progressMetrics.totalSims / 20) / Math.log(2)) + 1;
-						currentRound = 1;
-					}
-					if (progressMetrics.totalSims < lastTotal) {
-						currentRound += 1;
-						simStart = new Date().getTime();
-					}
-				}
-
-				this.setSimProgress(progressMetrics, iterPerSecond, currentRound, rounds, combinations);
-				lastTotal = progressMetrics.totalSims;
-			});
-
-			isRunning = false;
-			if (!waitAbort) bulkSimButton.disabled = false;
-
-			this.simUI.rootElem.classList.remove('blurred');
-			this.pendingDiv.remove();
-			this.pendingResults.hideAll();
 		});
 
 		// Disabled temporarily because for the web sim 50 iterations was far too few for reliable results
