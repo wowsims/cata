@@ -46,11 +46,11 @@ export const ARCANE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation(
 export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Arcane P1',
 	Stats.fromMap({
-		[Stat.StatIntellect]: 1.74,
+		[Stat.StatIntellect]: 1.76,
 		[Stat.StatSpellPower]: 1,
-		[Stat.StatSpellHit]: 1.27,
-		[Stat.StatSpellCrit]: 0.5,
-		[Stat.StatSpellHaste]: 0.25,
+		[Stat.StatSpellHit]: 1.29,
+		[Stat.StatSpellCrit]: 0.53,
+		[Stat.StatSpellHaste]: 0.48,
 		[Stat.StatMastery]: 0.56,
 	}),
 );

@@ -7,6 +7,7 @@ import { PlayerClasses } from '../../core/player_classes';
 import { Mage } from '../../core/player_classes/mage';
 import { APLRotation } from '../../core/proto/apl';
 import { Faction, IndividualBuffs, PartyBuffs, Race, Spec, Stat } from '../../core/proto/common';
+import { StatCapType } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import * as ArcaneInputs from './inputs';
 import * as Presets from './presets';
@@ -52,6 +53,24 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
 			return new Stats().withStat(Stat.StatSpellHit, 17 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+		})(),
+		// Default soft caps for the Reforge optimizer
+		softCapBreakpoints: (() => {
+			// Sources:
+			// https://www.icy-veins.com/cataclysm-classic/arcane-mage-pve-stat-priority
+			// https://www.wowhead.com/cata/guide/classes/mage/arcane/dps-stat-priority-attributes-pve
+
+			// 2497 haste rating is the breakpoint
+			// 1343 base haste rating - totals to 2497 with raid buffs
+			const breakpoints = [1768];
+			const hasteSoftCapConfig = {
+				stat: Stat.StatSpellHaste,
+				breakpoints,
+				capType: StatCapType.TypeSoftCap,
+				postCapEPs: [0.56],
+			};
+
+			return [hasteSoftCapConfig];
 		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultArcaneConsumes,
