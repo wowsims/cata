@@ -14,7 +14,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 16413.98592
   final_stats: 695
-  final_stats: 3228.15115
+  final_stats: 3227.71069
   final_stats: 2226.0835
   final_stats: 655
   final_stats: 0
@@ -37,8 +37,8 @@ character_stats_results: {
 dps_results: {
  key: "TestFrost-AllItems-AgileShadowspiritDiamond"
  value: {
-  dps: 22115.79765
-  tps: 19977.27163
+  dps: 22115.4427
+  tps: 19976.91668
  }
 }
 dps_results: {
@@ -94,7 +94,7 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-BellofEnragingResonance-65053"
  value: {
-  dps: 21048.54814
+  dps: 21048.16615
   tps: 19125.50529
  }
 }
@@ -192,8 +192,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-BottledLightning-66879"
  value: {
-  dps: 20878.03507
-  tps: 18972.76116
+  dps: 20877.35613
+  tps: 18972.08222
  }
 }
 dps_results: {
@@ -220,7 +220,7 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-ChaoticShadowspiritDiamond"
  value: {
-  dps: 22152.55844
+  dps: 22152.48218
   tps: 20012.35455
  }
 }
@@ -297,7 +297,7 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-DestructiveShadowspiritDiamond"
  value: {
-  dps: 21849.72605
+  dps: 21849.64979
   tps: 19709.52216
  }
 }
@@ -332,7 +332,7 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-EnigmaticShadowspiritDiamond"
  value: {
-  dps: 21849.72605
+  dps: 21849.64979
   tps: 19709.52216
  }
 }
@@ -507,8 +507,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-HeartofRage-65072"
  value: {
-  dps: 22367.33948
-  tps: 20211.7406
+  dps: 22366.54471
+  tps: 20210.94584
  }
 }
 dps_results: {
@@ -542,14 +542,14 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-HeartoftheVile-66969"
  value: {
-  dps: 20949.24847
-  tps: 19032.42902
+  dps: 20948.54702
+  tps: 19031.72757
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-ImpassiveShadowspiritDiamond"
  value: {
-  dps: 21849.72605
+  dps: 21849.64979
   tps: 19709.52216
  }
 }
@@ -745,8 +745,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-MightoftheOcean-55251"
  value: {
-  dps: 21445.09335
-  tps: 19462.28883
+  dps: 21444.79987
+  tps: 19461.99535
  }
 }
 dps_results: {
@@ -794,8 +794,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-PhylacteryoftheNamelessLich-50365"
  value: {
-  dps: 20896.21647
-  tps: 18990.27444
+  dps: 20895.75319
+  tps: 18989.81117
  }
 }
 dps_results: {
@@ -878,8 +878,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
-  dps: 21008.92772
-  tps: 19101.80522
+  dps: 21008.22628
+  tps: 19101.10377
  }
 }
 dps_results: {
@@ -1074,14 +1074,14 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-Tia'sGrace-55874"
  value: {
-  dps: 21070.12177
+  dps: 21069.80343
   tps: 19161.53357
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-Tia'sGrace-56394"
  value: {
-  dps: 21108.76668
+  dps: 21108.40087
   tps: 19197.11401
  }
 }
@@ -1137,8 +1137,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-Val'anyr,HammerofAncientKings-46017"
  value: {
-  dps: 18411.77251
-  tps: 16286.17495
+  dps: 18411.37977
+  tps: 16285.78221
  }
 }
 dps_results: {
@@ -1277,8 +1277,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Average-Default"
  value: {
-  dps: 22059.74345
-  tps: 19918.541
+  dps: 22059.38228
+  tps: 19918.23944
  }
 }
 dps_results: {
@@ -1305,8 +1305,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-DefaultTalents-Basic-2h-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 41752.63816
-  tps: 40159.93238
+  dps: 41751.00244
+  tps: 40158.29666
  }
 }
 dps_results: {
@@ -1347,8 +1347,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-DefaultTalents-Basic-dw-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 41675.85778
-  tps: 40082.6075
+  dps: 41674.22206
+  tps: 40080.97179
  }
 }
 dps_results: {
@@ -1410,8 +1410,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-Masterfrost-Basic-2h-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 74095.82125
-  tps: 72002.9819
+  dps: 74095.3057
+  tps: 72002.46636
  }
 }
 dps_results: {
@@ -1431,15 +1431,15 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-Masterfrost-Basic-2h-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 48955.67194
-  tps: 47273.68741
+  dps: 48954.35884
+  tps: 47272.37431
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-Masterfrost-Basic-2h-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 20922.62526
-  tps: 19268.45414
+  dps: 20921.87266
+  tps: 19267.70155
  }
 }
 dps_results: {
@@ -1452,8 +1452,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-Masterfrost-Basic-dw-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 73262.89228
-  tps: 71171.94288
+  dps: 73262.37673
+  tps: 71171.42734
  }
 }
 dps_results: {
@@ -1473,15 +1473,15 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-Masterfrost-Basic-dw-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 48402.12015
-  tps: 46745.36379
+  dps: 48400.80705
+  tps: 46744.05069
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-Masterfrost-Basic-dw-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 20847.0309
-  tps: 19194.31945
+  dps: 20846.2783
+  tps: 19193.56685
  }
 }
 dps_results: {
@@ -1494,8 +1494,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-Masterfrost-Basic-masterfrost-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 106583.38244
-  tps: 104769.20746
+  dps: 106582.59899
+  tps: 104768.42401
  }
 }
 dps_results: {
@@ -1557,8 +1557,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-TwoHand-Basic-2h-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 41752.63816
-  tps: 40159.93238
+  dps: 41751.00244
+  tps: 40158.29666
  }
 }
 dps_results: {
@@ -1599,8 +1599,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-TwoHand-Basic-dw-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 41675.85778
-  tps: 40082.6075
+  dps: 41674.22206
+  tps: 40080.97179
  }
 }
 dps_results: {
@@ -1809,29 +1809,29 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-2h-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 49399.06927
-  tps: 47670.93482
+  dps: 49398.27294
+  tps: 47670.13849
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-2h-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 21132.23059
-  tps: 19413.83379
+  dps: 21130.67794
+  tps: 19412.28113
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-2h-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 26036.84662
-  tps: 21403.09072
+  dps: 26034.52595
+  tps: 21400.77005
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-dw-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 74116.97132
-  tps: 71942.31133
+  dps: 74115.01403
+  tps: 71940.35404
  }
 }
 dps_results: {
@@ -1851,22 +1851,22 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-dw-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 48763.22954
-  tps: 47068.84989
+  dps: 48762.43321
+  tps: 47068.05356
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-dw-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 21069.76196
-  tps: 19341.81026
+  dps: 21068.2093
+  tps: 19340.2576
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-dw-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 25972.61242
-  tps: 21318.08595
+  dps: 25970.29174
+  tps: 21315.76528
  }
 }
 dps_results: {
@@ -1893,8 +1893,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-masterfrost-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 71088.58911
-  tps: 69351.71872
+  dps: 71087.42208
+  tps: 69350.55169
  }
 }
 dps_results: {
@@ -2040,7 +2040,7 @@ dps_results: {
 dps_results: {
  key: "TestFrost-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 20614.91122
-  tps: 18608.02811
+  dps: 20614.57093
+  tps: 18607.68782
  }
 }
