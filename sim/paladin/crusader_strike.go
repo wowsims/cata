@@ -46,5 +46,4 @@ func (paladin *Paladin) registerCrusaderStrike() {
 			}
 		},
 	})
-
 }

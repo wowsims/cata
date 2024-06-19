@@ -84,10 +84,11 @@ func (paladin *Paladin) applySealsOfCommand() {
 
 	// Seals of Command
 	sealsOfCommandProc := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 20424},
-		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
+		ActionID:       core.ActionID{SpellID: 20424},
+		SpellSchool:    core.SpellSchoolHoly,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
+		ClassSpellMask: SpellMaskSealsOfCommand,
 
 		DamageMultiplier: 0.07,
 		CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),

@@ -74,8 +74,8 @@ func (ret *RetributionPaladin) RegisterSpecializationEffects() {
 	if mhWeapon != nil && mhWeapon.HandType == proto.HandType_HandTypeTwoHand {
 		ret.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.25
 		ret.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  paladin.SpellMaskJudgement,
+			Kind:       core.SpellMod_DamageDone_Pct,
+			ClassMask:  paladin.SpellMaskModifiedByTwoHandedSpec,
 			FloatValue: 0.25,
 		})
 	}
