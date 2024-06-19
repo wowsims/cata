@@ -50,6 +50,7 @@ const STAT_TOOLTIP: { [key in Stat]?: () => Element | string } = {
 };
 
 export type ReforgeOptimizerOptions = {
+	experimental?: true;
 	// Allows you to modify the stats before they are returned for the calculations
 	// For example: Adding class specific Glyphs/Talents that are not added by the backend
 	updateGearStatsModifier?: (baseStats: Stats) => Stats;
@@ -58,6 +59,7 @@ export type ReforgeOptimizerOptions = {
 export class ReforgeOptimizer {
 	protected readonly simUI: IndividualSimUI<any>;
 	protected readonly player: Player<any>;
+	protected readonly isExperimental: ReforgeOptimizerOptions['experimental'];
 	protected readonly isHybridCaster: boolean;
 	protected readonly sim: Sim;
 	protected readonly defaults: IndividualSimUI<any>['individualConfig']['defaults'];
@@ -68,6 +70,7 @@ export class ReforgeOptimizer {
 	constructor(simUI: IndividualSimUI<any>, options?: ReforgeOptimizerOptions) {
 		this.simUI = simUI;
 		this.player = simUI.player;
+		this.isExperimental = options?.experimental;
 		this.isHybridCaster = [Spec.SpecBalanceDruid, Spec.SpecShadowPriest, Spec.SpecElementalShaman].includes(this.player.getSpec());
 		this.sim = simUI.sim;
 		this.defaults = simUI.individualConfig.defaults;
@@ -122,9 +125,14 @@ export class ReforgeOptimizer {
 			),
 		};
 
-		const [startReforgeOptimizationButton, contextMenuButton] = simUI.addActionGroup([startReforgeOptimizationEntry, contextMenuEntry], {
-			cssClass: 'suggest-reforges-settings-group d-flex',
+		const {
+			group,
+			children: [startReforgeOptimizationButton, contextMenuButton],
+		} = simUI.addActionGroup([startReforgeOptimizationEntry, contextMenuEntry], {
+			cssClass: clsx('suggest-reforges-settings-group d-flex', this.isExperimental && !this.player.sim.getShowExperimental() && 'hide'),
 		});
+
+		this.bindToggleExperimental(group);
 
 		if (!!this.softCapsConfig?.length)
 			tippy(startReforgeOptimizationButton, {
@@ -139,6 +147,14 @@ export class ReforgeOptimizer {
 		});
 
 		this.buildContextMenu(contextMenuButton);
+	}
+
+	private bindToggleExperimental(element: Element) {
+		const toggle = () => element.classList[this.isExperimental && !this.player.sim.getShowExperimental() ? 'add' : 'remove']('hide');
+		toggle();
+		this.player.sim.showExperimentalChangeEmitter.on(() => {
+			toggle();
+		});
 	}
 
 	get statCaps() {
