@@ -2,6 +2,7 @@ package stats
 
 import (
 	"fmt"
+	"math"
 	"strings"
 
 	"github.com/wowsims/cata/sim/core/proto"
@@ -186,6 +187,15 @@ func (stats Stats) Subtract(other Stats) Stats {
 func (stats Stats) Invert() Stats {
 	for k, v := range stats {
 		stats[k] = -v
+	}
+	return stats
+}
+
+// Rounds all stat values down to the nearest integer, returning the new Stats.
+// Used for random suffix stats currently.
+func (stats Stats) Floor() Stats {
+	for k, v := range stats {
+		stats[k] = math.Floor(v)
 	}
 	return stats
 }
