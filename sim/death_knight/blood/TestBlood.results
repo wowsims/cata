@@ -14,7 +14,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 13710.90658
   final_stats: 972
-  final_stats: 1909.76106
+  final_stats: 1909.33022
   final_stats: 113
   final_stats: 502.16318
   final_stats: 0
@@ -469,8 +469,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-FluidDeath-58181"
  value: {
-  dps: 13992.09695
-  tps: 68149.82971
+  dps: 13989.46318
+  tps: 68136.66086
   hps: 4787.91291
  }
 }
@@ -509,8 +509,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-GearDetector-61462"
  value: {
-  dps: 14064.90352
-  tps: 68296.58634
+  dps: 14062.03148
+  tps: 68282.22616
   hps: 4818.94052
  }
 }
@@ -717,8 +717,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-KeytotheEndlessChamber-56328"
  value: {
-  dps: 13956.49012
-  tps: 67805.90053
+  dps: 13952.49599
+  tps: 67785.92989
   hps: 4787.91291
  }
 }
@@ -797,7 +797,7 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-MagmaPlatedBattlearmor"
  value: {
-  dps: 13530.94116
+  dps: 13530.88463
   tps: 65949.05496
   hps: 4341.18356
  }
@@ -1221,7 +1221,7 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-Tia'sGrace-55874"
  value: {
-  dps: 13957.63139
+  dps: 13957.24462
   tps: 67942.87676
   hps: 4787.91291
  }
@@ -1229,7 +1229,7 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-Tia'sGrace-56394"
  value: {
-  dps: 13970.95719
+  dps: 13970.64715
   tps: 68013.98157
   hps: 4787.91291
  }
@@ -1453,8 +1453,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-Average-Default"
  value: {
-  dps: 13760.88532
-  tps: 67106.31281
+  dps: 13760.58213
+  tps: 67104.81447
   hps: 4754.31545
  }
 }

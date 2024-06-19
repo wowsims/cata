@@ -385,7 +385,6 @@ func (mage *Mage) procIgnite(sim *core.Simulation, result *core.SpellResult) {
 }
 
 func (mage *Mage) applyImpact() {
-
 	if mage.Talents.Impact == 0 {
 		return
 	}

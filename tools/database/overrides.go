@@ -17,6 +17,8 @@ var OtherItemIdsToFetch = []string{
 }
 
 var ItemOverrides = []*proto.UIItem{
+	{ /** Raz's Pauldrons */ Id: 56318, SocketBonus: stats.Stats{stats.MeleeHit: 20, stats.SpellHit: 20}.ToFloatArray()},
+
 	{ /** Destruction Holo-gogs */ Id: 32494, ClassAllowlist: []proto.Class{proto.Class_ClassMage, proto.Class_ClassPriest, proto.Class_ClassWarlock}},
 	{ /** Gadgetstorm Goggles */ Id: 32476, ClassAllowlist: []proto.Class{proto.Class_ClassShaman}},
 	{ /** Magnified Moon Specs */ Id: 32480, ClassAllowlist: []proto.Class{proto.Class_ClassDruid}},
