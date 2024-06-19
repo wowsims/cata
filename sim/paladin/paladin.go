@@ -72,18 +72,6 @@ const SpellMaskCanTriggerSealOfTruth = SpellMaskCrusaderStrike |
 const SpellMaskCanTriggerAncientPower = SpellMaskCanTriggerSealOfTruth |
 	SpellMaskHolyWrath
 
-const SpellMaskModifiedByInquisition = SpellMaskHammerOfWrath |
-	SpellMaskConsecration |
-	SpellMaskExorcism |
-	SpellMaskGlyphOfExorcism |
-	SpellMaskJudgement |
-	SpellMaskSealOfTruth |
-	SpellMaskCensure |
-	SpellMaskHandOfLight |
-	SpellMaskHolyWrath |
-	SpellMaskAncientFury |
-	SpellMaskSealsOfCommand
-
 const SpellMaskCanTriggerDivinePurpose = SpellMaskHammerOfWrath |
 	SpellMaskExorcism |
 	SpellMaskJudgement |
