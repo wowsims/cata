@@ -38,6 +38,7 @@ const (
 	SpellMaskZealotry
 	SpellMaskGuardianOfAncientKings
 	SpellMaskAncientFury
+	SpellMaskSealsOfCommand
 
 	SpellMaskHolyShock
 	SpellMaskWordOfGlory
@@ -80,7 +81,8 @@ const SpellMaskModifiedByInquisition = SpellMaskHammerOfWrath |
 	SpellMaskCensure |
 	SpellMaskHandOfLight |
 	SpellMaskHolyWrath |
-	SpellMaskAncientFury
+	SpellMaskAncientFury |
+	SpellMaskSealsOfCommand
 
 const SpellMaskCanTriggerDivinePurpose = SpellMaskHammerOfWrath |
 	SpellMaskExorcism |
@@ -93,6 +95,11 @@ const SpellMaskCanTriggerDivinePurpose = SpellMaskHammerOfWrath |
 const SpellMaskCanConsumeDivinePurpose = SpellMaskInquisition |
 	SpellMaskTemplarsVerdict |
 	SpellMaskZealotry
+
+const SpellMaskModifiedByTwoHandedSpec = SpellMaskJudgement |
+	SpellMaskSealOfTruth |
+	SpellMaskSealsOfCommand |
+	SpellMaskHammerOfWrath
 
 var TalentTreeSizes = [3]int{20, 20, 20}
 

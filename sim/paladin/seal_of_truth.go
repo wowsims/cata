@@ -36,7 +36,10 @@ func (paladin *Paladin) registerSealOfTruth() {
 					.014*dot.Spell.SpellPower() +
 					.027*dot.Spell.MeleeAttackPower())
 
-				dot.Snapshot(target, tickValue)
+				dot.SnapshotBaseDamage = tickValue
+				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
+				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
