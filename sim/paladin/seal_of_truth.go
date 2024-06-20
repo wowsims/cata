@@ -17,7 +17,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 		ClassSpellMask: SpellMaskCensure,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   paladin.DefaultSpellCritMultiplier(),
+		CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
