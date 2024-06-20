@@ -81,8 +81,7 @@ const SpellMaskCanTriggerDivinePurpose = SpellMaskHammerOfWrath |
 	SpellMaskInquisition
 
 const SpellMaskCanConsumeDivinePurpose = SpellMaskInquisition |
-	SpellMaskTemplarsVerdict |
-	SpellMaskZealotry
+	SpellMaskTemplarsVerdict
 
 const SpellMaskModifiedByTwoHandedSpec = SpellMaskJudgement |
 	SpellMaskSealOfTruth |
