@@ -21,7 +21,7 @@ func createNefarianPreset(bossPrefix string, raidSize int, isHeroic bool, addNpc
 	// TODO: Add support for tanking boss instead of adds
 	targetName := fmt.Sprintf("Nefarian %d", raidSize)
 	targetNameAdd := fmt.Sprintf("Animated Bone Warrior %d", raidSize)
-	
+
 	if isHeroic {
 		targetName += " H"
 		targetNameAdd += " H"
@@ -44,7 +44,7 @@ func createNefarianPreset(bossPrefix string, raidSize int, isHeroic bool, addNpc
 			PathPrefix: bossPrefix,
 
 			Config: &proto.Target{
-				Id:        addNpcId * 100 + addIdx, // hack to guarantee distinct IDs for each add
+				Id:        addNpcId*100 + addIdx, // hack to guarantee distinct IDs for each add
 				Name:      currentAddName,
 				Level:     85,
 				MobType:   proto.MobType_MobTypeUndead,
@@ -53,7 +53,7 @@ func createNefarianPreset(bossPrefix string, raidSize int, isHeroic bool, addNpc
 				Stats: stats.Stats{
 					stats.Health:      addHealth,
 					stats.Armor:       11977, // TODO: verify add armor
-					stats.AttackPower: 0, // actual value doesn't matter in Cata, as long as damage parameters are fit consistently
+					stats.AttackPower: 0,     // actual value doesn't matter in Cata, as long as damage parameters are fit consistently
 				}.ToFloatArray(),
 
 				SpellSchool:   proto.SpellSchool_SpellSchoolPhysical,
@@ -66,10 +66,10 @@ func createNefarianPreset(bossPrefix string, raidSize int, isHeroic bool, addNpc
 			AI: makeNefarianAddAI(raidSize, isHeroic, addIdx),
 		})
 
-		targetPathNames = append(targetPathNames, bossPrefix + "/" + currentAddName)
+		targetPathNames = append(targetPathNames, bossPrefix+"/"+currentAddName)
 	}
 
-	core.AddPresetEncounter(targetName + " Adds", targetPathNames)
+	core.AddPresetEncounter(targetName+" Adds", targetPathNames)
 }
 
 func makeNefarianAddAI(raidSize int, isHeroic bool, addIdx int32) core.AIFactory {
@@ -88,7 +88,7 @@ type NefarianAddAI struct {
 	raidSize int
 	isHeroic bool
 	addIdx   int32
-	
+
 	empowerAura      *core.Aura
 	shadowblazeSpark *core.Spell
 
@@ -101,7 +101,7 @@ func (ai *NefarianAddAI) Initialize(target *core.Target, config *proto.Target) {
 	ai.Target = target
 	ai.Target.AutoAttacks.MHConfig().ActionID.Tag = 4191800 + ai.addIdx // hack for UI results parsing
 	ai.isController = (ai.addIdx == 1)
-	
+
 	if ai.isController {
 		ai.numElectrocutes = int32(config.TargetInputs[0].NumberValue)
 	}
@@ -123,7 +123,7 @@ func (ai *NefarianAddAI) registerSpells() {
 		Duration:  time.Second * 52,
 
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier *= (1.0 + empowerDamageMod * float64(newStacks)) / (1.0 + empowerDamageMod * float64(oldStacks))
+			aura.Unit.PseudoStats.DamageDealtMultiplier *= (1.0 + empowerDamageMod*float64(newStacks)) / (1.0 + empowerDamageMod*float64(oldStacks))
 		},
 
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
@@ -132,7 +132,7 @@ func (ai *NefarianAddAI) registerSpells() {
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.SetStacks(sim, 1)
-			aura.Unit.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime - aura.Unit.AutoAttacks.MainhandSwingSpeed() + 1, false)
+			aura.Unit.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime-aura.Unit.AutoAttacks.MainhandSwingSpeed()+1, false)
 
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 				Period:   time.Second * 4,
@@ -146,7 +146,7 @@ func (ai *NefarianAddAI) registerSpells() {
 		},
 
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime + time.Second*26, false)
+			aura.Unit.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+time.Second*26, false)
 		},
 	})
 
@@ -171,7 +171,7 @@ func (ai *NefarianAddAI) registerSpells() {
 				empowerAura := addUnit.GetAuraByID(empowerActionID)
 
 				// Assume that the tank is always pre-moving adds before the spark hits them, so that Empower is never refreshed on already active adds.
-				if (empowerAura != nil) && !empowerAura.IsActive() { 
+				if (empowerAura != nil) && !empowerAura.IsActive() {
 					empowerAura.Activate(sim)
 				}
 			}
@@ -208,19 +208,25 @@ func (ai *NefarianAddAI) registerSpells() {
 		ai.shadowblazeSpark.CD.Set(core.DurationFromSeconds(sim.RandomFloat("Shadowblaze Timing") * ai.shadowblazeSpark.CD.Duration.Seconds()))
 
 		// Set a "cooldown" for Electrocute to match user input
-		ai.electrocuteSpell.CD.Duration = sim.Duration / time.Duration(ai.numElectrocutes) - BossGCD / time.Duration(2)
+		ai.electrocuteSpell.CD.Duration = sim.Duration/time.Duration(ai.numElectrocutes) - BossGCD/time.Duration(2)
 		ai.electrocuteSpell.CD.Set(core.DurationFromSeconds(sim.RandomFloat("Electrocute Timing") * ai.electrocuteSpell.CD.Duration.Seconds()))
 	})
 }
 
 func (ai *NefarianAddAI) ExecuteCustomRotation(sim *core.Simulation) {
+	target := ai.Target.CurrentTarget
+	if target == nil {
+		// For individual non tank sims we still want abilities to work
+		target = &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
+	}
+
 	if ai.isController && ai.electrocuteSpell.IsReady(sim) {
-		ai.electrocuteSpell.Cast(sim, nil)
+		ai.electrocuteSpell.Cast(sim, target)
 	}
 
 	if ai.isController && ai.shadowblazeSpark.IsReady(sim) {
-		ai.shadowblazeSpark.Cast(sim, nil)
+		ai.shadowblazeSpark.Cast(sim, target)
 	}
 
-	ai.Target.ExtendGCDUntil(sim, sim.CurrentTime + BossGCD)
+	ai.Target.ExtendGCDUntil(sim, sim.CurrentTime+BossGCD)
 }
