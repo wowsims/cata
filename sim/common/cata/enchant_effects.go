@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -451,6 +452,20 @@ func init() {
 				statAura.Activate(sim)
 			},
 		})
+	})
+
+	// Enchant: 4176, Item: 59595 - R19 Threatfinder
+	core.NewEnchantEffect(4176, func(agent core.Agent) {
+		agent.GetCharacter().AddBonusRangedHitRating(88)
+	})
+
+	// Enchant: 4177, Item: 59596 - Safety Catch Removal Kit
+	core.NewEnchantEffect(4177, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		// TODO: This should be ranged-only haste. For now just make it hunter-only.
+		if character.Class == proto.Class_ClassHunter {
+			character.AddStats(stats.Stats{stats.MeleeHaste: 88, stats.SpellHaste: 88})
+		}
 	})
 
 	// Enchant: 4215, Spell: 92433, Item: 55055 - Elementium Shield Spike
