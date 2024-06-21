@@ -48,14 +48,13 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) + (280.182 + (spell.RangedAttackPower(target) * 0.021))
 			focus := 9.0
 			if hunter.Talents.Termination != 0 && sim.IsExecutePhase25() {
-				focus = float64(hunter.Talents.Termination) * 3
+				focus += float64(hunter.Talents.Termination) * 3
 			}
 
 			if hunter.Talents.MasterMarksman != 0 {
 				procChance := float64(hunter.Talents.MasterMarksman) * 0.2
 				if sim.Proc(procChance, "Master Marksman Proc") && !hunter.MasterMarksmanCounterAura.IsActive() {
 					hunter.MasterMarksmanCounterAura.Activate(sim)
-					//hunter.MasterMarksmanCounterAura.AddStack(sim)
 				}
 			}
 
