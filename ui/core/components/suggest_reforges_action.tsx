@@ -44,12 +44,18 @@ type StatTooltips = { [key in Stat]?: () => Element | string };
 const STAT_TOOLTIPS: StatTooltips = {
 	[Stat.StatMastery]: () => (
 		<>
-			Rating: Excludes your base mastery
+			Rating: <strong>excluding</strong> your base mastery
 			<br />
-			%: Includes base mastery
+			%: <strong>including</strong> your base mastery
 		</>
 	),
-	[Stat.StatSpellHaste]: () => <>This value should be excluding any external buffs that affect your haste rating.</>,
+	[Stat.StatSpellHaste]: () => (
+		<>
+			Rating: base rating required <strong>excluding</strong> any gear/buffs.
+			<br />
+			%: final value <strong>including</strong> all buffs/gear.
+		</>
+	),
 };
 
 export type ReforgeOptimizerOptions = {

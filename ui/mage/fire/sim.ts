@@ -94,7 +94,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 				stat: Stat.StatSpellHaste,
 				breakpoints,
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [2.16, 0.94, 0.75, 0.73, 0.77, 0.93, 0.73, 0.65],
+				postCapEPs: [3.85, 0.96, 0.86, 0.77, 0.77, 1.17, 0.76, 0.65],
 			};
 
 			return [hasteSoftCapConfig];
@@ -191,9 +191,6 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
 				experimental: true,
-				statTooltips: {
-					[Stat.StatSpellHaste]: () => 'This value should include all sources of Haste, including buffs.',
-				},
 				updateGearStatsModifier: baseStats => {
 					// Include all the Haste buffs to more accurately target the tick breakpoints
 					baseStats = baseStats.withStat(Stat.StatSpellHaste, CharacterStats.computedFinalStats.getStat(Stat.StatSpellHaste));

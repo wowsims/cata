@@ -60,8 +60,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 			// Sources:
 			// https://www.icy-veins.com/cataclysm-classic/arcane-mage-pve-stat-priority
 			// https://www.wowhead.com/cata/guide/classes/mage/arcane/dps-stat-priority-attributes-pve
-
-			// 2497 haste rating is the breakpoint
 			const breakpoints = [2497];
 			const hasteSoftCapConfig = {
 				stat: Stat.StatSpellHaste,
@@ -231,14 +229,6 @@ export class ArcaneMageSimUI extends IndividualSimUI<Spec.SpecArcaneMage> {
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
 				experimental: true,
-				statTooltips: {
-					[Stat.StatSpellHaste]: () => 'This value includes all sources of Haste, including buffs and debuffs.',
-				},
-				updateGearStatsModifier: baseStats => {
-					// Include all the Haste buffs to more accurately target the GCD breakpoint
-					baseStats = baseStats.withStat(Stat.StatSpellHaste, CharacterStats.computedFinalStats.getStat(Stat.StatSpellHaste));
-					return baseStats;
-				},
 			});
 		});
 	}
