@@ -34,7 +34,7 @@ func (cat *FeralDruid) OnGCDReady(sim *core.Simulation) {
 	}
 
 	// Check for an opportunity to cancel Primal Madness if we just casted a spell
-	if !cat.GCD.IsReady(sim) && cat.PrimalMadnessAura.IsActive() && (cat.CurrentEnergy() < 10.0*float64(cat.Talents.PrimalMadness)) {
+	if !cat.GCD.IsReady(sim) && cat.PrimalMadnessAura.IsActive() && (cat.CurrentEnergy() < 10.0*float64(cat.Talents.PrimalMadness)) && cat.Rotation.CancelPrimalMadness {
 		cat.PrimalMadnessAura.Deactivate(sim)
 	}
 }
@@ -727,41 +727,43 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 type FeralDruidRotation struct {
 	RotationType proto.FeralDruid_Rotation_AplType
 
-	BearWeave          bool
-	MaintainFaerieFire bool
-	MinCombosForRip    int32
-	UseRake            bool
-	UseBite            bool
-	BiteTime           time.Duration
-	BiteDuringExecute  bool
-	MinCombosForBite   int32
-	MangleSpam         bool
-	MinRoarOffset      time.Duration
-	RipLeeway          time.Duration
-	SnekWeave          bool
-	RakeDpeCheck       bool
-	UseBerserk         bool
-	MeleeWeave         bool
+	BearWeave           bool
+	MaintainFaerieFire  bool
+	MinCombosForRip     int32
+	UseRake             bool
+	UseBite             bool
+	BiteTime            time.Duration
+	BiteDuringExecute   bool
+	MinCombosForBite    int32
+	MangleSpam          bool
+	MinRoarOffset       time.Duration
+	RipLeeway           time.Duration
+	SnekWeave           bool
+	RakeDpeCheck        bool
+	UseBerserk          bool
+	MeleeWeave          bool
+	CancelPrimalMadness bool
 }
 
 func (cat *FeralDruid) setupRotation(rotation *proto.FeralDruid_Rotation) {
 	cat.Rotation = FeralDruidRotation{
-		RotationType:       rotation.RotationType,
-		BearWeave:          rotation.BearWeave,
-		MaintainFaerieFire: rotation.MaintainFaerieFire,
-		MinCombosForRip:    5,
-		UseRake:            rotation.UseRake,
-		UseBite:            rotation.UseBite,
-		BiteTime:           time.Duration(float64(rotation.BiteTime) * float64(time.Second)),
-		BiteDuringExecute:  core.Ternary(cat.Talents.BloodInTheWater > 0, rotation.BiteDuringExecute, false),
-		MinCombosForBite:   5,
-		MangleSpam:         rotation.MangleSpam,
-		MinRoarOffset:      time.Duration(float64(rotation.MinRoarOffset) * float64(time.Second)),
-		RipLeeway:          time.Duration(float64(rotation.RipLeeway) * float64(time.Second)),
-		SnekWeave:          rotation.SnekWeave,
-		RakeDpeCheck:       true,
-		UseBerserk:         cat.Talents.Berserk && ((rotation.RotationType == proto.FeralDruid_Rotation_SingleTarget) || rotation.AllowAoeBerserk),
-		MeleeWeave:         rotation.MeleeWeave && (cat.Talents.Stampede > 0) && (rotation.RotationType == proto.FeralDruid_Rotation_SingleTarget),
+		RotationType:        rotation.RotationType,
+		BearWeave:           rotation.BearWeave,
+		MaintainFaerieFire:  rotation.MaintainFaerieFire,
+		MinCombosForRip:     5,
+		UseRake:             rotation.UseRake,
+		UseBite:             rotation.UseBite,
+		BiteTime:            time.Duration(float64(rotation.BiteTime) * float64(time.Second)),
+		BiteDuringExecute:   core.Ternary(cat.Talents.BloodInTheWater > 0, rotation.BiteDuringExecute, false),
+		MinCombosForBite:    5,
+		MangleSpam:          rotation.MangleSpam,
+		MinRoarOffset:       time.Duration(float64(rotation.MinRoarOffset) * float64(time.Second)),
+		RipLeeway:           time.Duration(float64(rotation.RipLeeway) * float64(time.Second)),
+		SnekWeave:           rotation.SnekWeave,
+		RakeDpeCheck:        true,
+		UseBerserk:          cat.Talents.Berserk && ((rotation.RotationType == proto.FeralDruid_Rotation_SingleTarget) || rotation.AllowAoeBerserk),
+		MeleeWeave:          rotation.MeleeWeave && (cat.Talents.Stampede > 0) && (rotation.RotationType == proto.FeralDruid_Rotation_SingleTarget),
+		CancelPrimalMadness: rotation.CancelPrimalMadness,
 	}
 
 	// Use automatic values unless specified
@@ -772,6 +774,7 @@ func (cat *FeralDruid) setupRotation(rotation *proto.FeralDruid_Rotation) {
 	cat.Rotation.UseRake = true
 	cat.Rotation.UseBite = true
 	cat.Rotation.BiteDuringExecute = (cat.Talents.BloodInTheWater == 2)
+	cat.Rotation.CancelPrimalMadness = rotation.CancelPrimalMadness && (rotation.RotationType == proto.FeralDruid_Rotation_Aoe)
 
 	cat.Rotation.RipLeeway = 1 * time.Second
 	cat.Rotation.MinRoarOffset = 29 * time.Second

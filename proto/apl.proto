@@ -293,6 +293,7 @@ message APLActionCatOptimalRotationAction {
     bool melee_weave = 11;
     bool bear_weave = 12;
     bool snek_weave = 13;
+    bool cancel_primal_madness = 14;
 }
 
 message APLActionMove {
