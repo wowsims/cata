@@ -1,3 +1,4 @@
+import { CharacterStats } from '../../core/components/character_stats';
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
 import * as Mechanics from '../../core/constants/mechanics';
@@ -61,8 +62,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 			// https://www.wowhead.com/cata/guide/classes/mage/arcane/dps-stat-priority-attributes-pve
 
 			// 2497 haste rating is the breakpoint
-			// 1343 base haste rating - totals to 2497 with raid buffs
-			const breakpoints = [1768];
+			const breakpoints = [2497];
 			const hasteSoftCapConfig = {
 				stat: Stat.StatSpellHaste,
 				breakpoints,
@@ -229,7 +229,17 @@ export class ArcaneMageSimUI extends IndividualSimUI<Spec.SpecArcaneMage> {
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, { experimental: true });
+			new ReforgeOptimizer(this, {
+				experimental: true,
+				statTooltips: {
+					[Stat.StatSpellHaste]: () => 'This value includes all sources of Haste, including buffs and debuffs.',
+				},
+				updateGearStatsModifier: baseStats => {
+					// Include all the Haste buffs to more accurately target the GCD breakpoint
+					baseStats = baseStats.withStat(Stat.StatSpellHaste, CharacterStats.computedFinalStats.getStat(Stat.StatSpellHaste));
+					return baseStats;
+				},
+			});
 		});
 	}
 }

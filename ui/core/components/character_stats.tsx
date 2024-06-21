@@ -24,6 +24,7 @@ export class CharacterStats extends Component {
 	private readonly player: Player<any>;
 	private readonly modifyDisplayStats?: (player: Player<any>) => StatMods;
 	private readonly overwriteDisplayStats?: (player: Player<any>) => StatWrites;
+	private static _computedFinalStats: Stats = new Stats();
 
 	constructor(
 		parent: HTMLElement,
@@ -116,7 +117,6 @@ export class CharacterStats extends Component {
 
 	private updateStats(player: Player<any>) {
 		const playerStats = player.getCurrentStats();
-
 		const statMods = this.modifyDisplayStats ? this.modifyDisplayStats(this.player) : {};
 
 		const baseStats = Stats.fromProto(playerStats.baseStats);
@@ -175,6 +175,8 @@ export class CharacterStats extends Component {
 			Stat.StatSpellHaste,
 			(baseSpellHasteMultiplier * spellHasteBuffsMultiplier - 1) * 100 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT,
 		);
+
+		CharacterStats._computedFinalStats = finalStats;
 
 		const masteryPoints =
 			this.player.getBaseMastery() + (playerStats.finalStats?.stats[Stat.StatMastery] || 0) / Mechanics.MASTERY_RATING_PER_MASTERY_POINT;
@@ -316,6 +318,10 @@ export class CharacterStats extends Component {
 				content: tooltipContent,
 			});
 		}
+	}
+
+	public static get computedFinalStats(): Stats {
+		return this._computedFinalStats;
 	}
 
 	private statDisplayString(stats: Stats, deltaStats: Stats, stat: Stat, includeBase?: boolean): string {

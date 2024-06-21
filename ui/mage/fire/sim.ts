@@ -1,3 +1,4 @@
+import { CharacterStats } from '../../core/components/character_stats';
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
 import * as Mechanics from '../../core/constants/mechanics';
@@ -188,7 +189,17 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, { experimental: true });
+			new ReforgeOptimizer(this, {
+				experimental: true,
+				statTooltips: {
+					[Stat.StatSpellHaste]: () => 'This value should include all sources of Haste, including buffs.',
+				},
+				updateGearStatsModifier: baseStats => {
+					// Include all the Haste buffs to more accurately target the tick breakpoints
+					baseStats = baseStats.withStat(Stat.StatSpellHaste, CharacterStats.computedFinalStats.getStat(Stat.StatSpellHaste));
+					return baseStats;
+				},
+			});
 		});
 	}
 }

@@ -1,25 +1,6 @@
 import * as PresetUtils from '../../core/preset_utils';
-import {
-	Conjured,
-	Consumes,
-	Debuffs,
-	Flask,
-	Food,
-	Glyphs,
-	Potions,
-	Profession,
-	RaidBuffs,
-	Spec,
-	Stat,
-	TinkerHands,
-	UnitReference,
-} from '../../core/proto/common';
-import {
-	ArcaneMage_Options as MageOptions,
-	MageMajorGlyph as MajorGlyph,
-	MageMinorGlyph as MinorGlyph,
-	MagePrimeGlyph as PrimeGlyph,
-} from '../../core/proto/mage';
+import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, RaidBuffs, Stat, TinkerHands, UnitReference } from '../../core/proto/common';
+import { ArcaneMage_Options as MageOptions, MageMajorGlyph as MajorGlyph, MagePrimeGlyph as PrimeGlyph } from '../../core/proto/mage';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import ArcaneApl from './apls/arcane.apl.json';
@@ -48,10 +29,10 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	Stats.fromMap({
 		[Stat.StatIntellect]: 1.76,
 		[Stat.StatSpellPower]: 1,
-		[Stat.StatSpellHit]: 1.29,
+		[Stat.StatSpellHit]: 1.31,
 		[Stat.StatSpellCrit]: 0.53,
-		[Stat.StatSpellHaste]: 0.48,
-		[Stat.StatMastery]: 0.56,
+		[Stat.StatSpellHaste]: 0.49,
+		[Stat.StatMastery]: 0.57,
 	}),
 );
 
