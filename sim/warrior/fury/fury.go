@@ -75,10 +75,9 @@ func (war *FuryWarrior) RegisterSpecializationEffects() {
 	})
 
 	// Dual Wield specialization
-	war.AutoAttacks.OHConfig().DamageMultiplier *= 1.25
 	war.AddStaticMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
-		ClassMask:  warrior.SpellDualWieldSpecMask,
+		ProcMask:   core.ProcMaskMeleeOH,
 		FloatValue: 0.25,
 	})
 

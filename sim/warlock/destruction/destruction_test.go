@@ -169,7 +169,7 @@ func TestImmolateDoTBase(t *testing.T) {
 	lock := sim.Raid.Parties[0].Players[0].(*DestructionWarlock)
 
 	attackTable := lock.AttackTables[lock.CurrentTarget.UnitIndex]
-	checkDotTick(t, sim, lock.ImmolateDot.CurDot(), attackTable, 2560.6833, 1.781616)
+	checkDotTick(t, sim, lock.Immolate.CurDot(), attackTable, 2560.6833, 1.781616)
 }
 
 func TestImmolateDoTGlyphed(t *testing.T) {
@@ -177,7 +177,7 @@ func TestImmolateDoTGlyphed(t *testing.T) {
 	lock := sim.Raid.Parties[0].Players[0].(*DestructionWarlock)
 
 	attackTable := lock.AttackTables[lock.CurrentTarget.UnitIndex]
-	checkDotTick(t, sim, lock.ImmolateDot.CurDot(), attackTable, 2774.0736, 1.930084)
+	checkDotTick(t, sim, lock.Immolate.CurDot(), attackTable, 2774.0736, 1.930084)
 }
 
 func TestIncinerateBase(t *testing.T) {
@@ -201,7 +201,7 @@ func TestIncinerateGlyphed(t *testing.T) {
 func TestConflagrateBase(t *testing.T) {
 	sim := setupFakeSim(defStats, minimalDestroTalents, &proto.Glyphs{})
 	lock := sim.Raid.Parties[0].Players[0].(*DestructionWarlock)
-	lock.ImmolateDot.Dot(lock.CurrentTarget).Apply(sim)
+	lock.Immolate.Dot(lock.CurrentTarget).Apply(sim)
 
 	// these values are slightly off to ingame, probably different rounding
 	lock.checkSpellDamageRange(t, sim, lock.Conflagrate, 6401.7083, 6401.7084, 1.484680)
@@ -210,7 +210,7 @@ func TestConflagrateBase(t *testing.T) {
 func TestConflagrateBaseGlyphed(t *testing.T) {
 	sim := setupFakeSim(defStats, minimalDestroTalents, &immoGlyph)
 	lock := sim.Raid.Parties[0].Players[0].(*DestructionWarlock)
-	lock.ImmolateDot.Dot(lock.CurrentTarget).Apply(sim)
+	lock.Immolate.Dot(lock.CurrentTarget).Apply(sim)
 
 	// these values are slightly off to ingame, probably different rounding
 	lock.checkSpellDamageRange(t, sim, lock.Conflagrate, 7041.8792, 7041.8793, 1.633148)
@@ -219,7 +219,7 @@ func TestConflagrateBaseGlyphed(t *testing.T) {
 func TestConflagrateTalented(t *testing.T) {
 	sim := setupFakeSim(defStats, destroTalents, &proto.Glyphs{})
 	lock := sim.Raid.Parties[0].Players[0].(*DestructionWarlock)
-	lock.ImmolateDot.Dot(lock.CurrentTarget).Apply(sim)
+	lock.Immolate.Dot(lock.CurrentTarget).Apply(sim)
 
 	// these values are slightly off to ingame, probably different rounding
 	lock.checkSpellDamageRange(t, sim, lock.Conflagrate, 7682.0500, 7682.0501, 1.781616)
@@ -228,7 +228,7 @@ func TestConflagrateTalented(t *testing.T) {
 func TestConflagrateTalentedGlyphed(t *testing.T) {
 	sim := setupFakeSim(defStats, destroTalents, &immoGlyph)
 	lock := sim.Raid.Parties[0].Players[0].(*DestructionWarlock)
-	lock.ImmolateDot.Dot(lock.CurrentTarget).Apply(sim)
+	lock.Immolate.Dot(lock.CurrentTarget).Apply(sim)
 
 	// these values are slightly off to ingame, probably different rounding
 	lock.checkSpellDamageRange(t, sim, lock.Conflagrate, 8322.2208, 8322.2209, 1.930084)
@@ -237,7 +237,7 @@ func TestConflagrateTalentedGlyphed(t *testing.T) {
 func TestConflagrateTalentedGlyphedHasted(t *testing.T) {
 	sim := setupFakeSim(defHastedStats, destroTalents, &immoGlyph)
 	lock := sim.Raid.Parties[0].Players[0].(*DestructionWarlock)
-	lock.ImmolateDot.Dot(lock.CurrentTarget).Apply(sim)
+	lock.Immolate.Dot(lock.CurrentTarget).Apply(sim)
 
 	// these values are slightly off to ingame, probably different rounding
 	lock.checkSpellDamageRange(t, sim, lock.Conflagrate, 8322.2208, 8322.2209, 1.930084)
@@ -277,7 +277,7 @@ func TestImmolateHasteCap(t *testing.T) {
 		stats.SpellHaste: 2588,
 	})
 	immolate := lock.Immolate
-	immolateDot := lock.ImmolateDot.CurDot()
+	immolateDot := lock.Immolate.CurDot()
 
 	immolate.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
 	checkTicks(t, immolateDot, "Incorrect tick count for immolate at 2588 haste", 6)

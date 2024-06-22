@@ -44,7 +44,6 @@ func (dk *DeathKnight) NewGhoulPet(permanent bool) *GhoulPet {
 	}
 
 	dk.SetupGhoul(ghoulPet, 14)
-	ghoulPet.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/324.72)
 
 	return ghoulPet
 }
@@ -125,21 +124,28 @@ func (ghoulPet *GhoulPet) enable(sim *core.Simulation) {
 }
 
 func (dk *DeathKnight) ghoulBaseStats() stats.Stats {
+	nocsHit := -float64(dk.Talents.NervesOfColdSteel) * core.MeleeHitRatingPerHitChance
 	return stats.Stats{
 		stats.Stamina:     388,
 		stats.Agility:     3343 - 10, // We remove 10 to not mess with crit conversion
 		stats.Strength:    476,
 		stats.AttackPower: -20,
+
+		stats.MeleeCrit: 5 * core.CritRatingPerCritChance,
+		// Remove bonus hit that would be transfered from the DKs Nerves of Cold Steel
+		stats.MeleeHit:  nocsHit,
+		stats.Expertise: nocsHit * PetExpertiseScale,
 	}
 }
 
 func (dk *DeathKnight) ghoulStatInheritance() core.PetStatInheritance {
-	glyphBonus := core.TernaryFloat64(dk.HasPrimeGlyph(proto.DeathKnightPrimeGlyph_GlyphOfRaiseDead), 1.4, 1.0)
+	glyphBonusSta := core.TernaryFloat64(dk.HasPrimeGlyph(proto.DeathKnightPrimeGlyph_GlyphOfRaiseDead), 1.4, 1.0)
+	glyphBonusStr := core.TernaryFloat64(dk.HasPrimeGlyph(proto.DeathKnightPrimeGlyph_GlyphOfRaiseDead), 0.4254, .0)
 
 	return func(ownerStats stats.Stats) stats.Stats {
 		return stats.Stats{
-			stats.Stamina:  ownerStats[stats.Stamina] * (0.904 * glyphBonus),
-			stats.Strength: ownerStats[stats.Strength] * (1.01 + glyphBonus*0.4254),
+			stats.Stamina:  ownerStats[stats.Stamina] * (0.904 * glyphBonusSta),
+			stats.Strength: ownerStats[stats.Strength] * (1.01 + glyphBonusStr),
 
 			stats.MeleeHit:  ownerStats[stats.MeleeHit],
 			stats.Expertise: ownerStats[stats.MeleeHit] * PetExpertiseScale,

@@ -363,7 +363,7 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 				},
 			}),
 		fields: [
-			AplHelpers.actionIdFieldConfig('spellId', 'dot_spells', ''),
+			AplHelpers.actionIdFieldConfig('spellId', 'castable_dot_spells', ''),
 			AplHelpers.numberFieldConfig('maxDots', false, {
 				label: 'Max Dots',
 				labelTooltip: 'Maximum number of DoTs to simultaneously apply.',
@@ -625,6 +625,7 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 				meleeWeave: true,
 				bearWeave: true,
 				snekWeave: true,
+				cancelPrimalMadness: false,
 			}),
 		fields: [
 			AplHelpers.rotationTypeFieldConfig('rotationType'),
@@ -668,6 +669,10 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 			AplHelpers.booleanFieldConfig('biteDuringExecute', 'Bite during Execute phase', {
 				labelTooltip:
 					'Bite aggressively during Execute phase. Ignored if Blood in the Water is not talented, or if not using manual advanced parameters.',
+			}),
+			AplHelpers.booleanFieldConfig('cancelPrimalMadness', 'Enable Primal Madness cancellation', {
+				labelTooltip:
+					'Click off Primal Madness buff when doing so will result in net Energy gains. Ignored if Primal Madness is not talented, or if not using manual advanced parameters.',
 			}),
 		],
 	}),

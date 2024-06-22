@@ -67,9 +67,6 @@ const (
 	SpellMaskBladestorm
 	SpellMaskHeroicLeap
 
-	// Spec specific talents
-	SpellDualWieldSpecMask
-
 	SpellMaskShouts = SpellMaskCommandingShout | SpellMaskBattleShout
 )
 

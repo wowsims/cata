@@ -1,4 +1,4 @@
-import tippy from 'tippy.js';
+import tippy, { Content as TippyContent } from 'tippy.js';
 
 import { EventID, TypedEvent } from '../typed_event.js';
 import { existsInDOM } from '../utils';
@@ -9,7 +9,7 @@ import { Component } from './component.js';
  */
 export interface InputConfig<ModObject, T, V = T> {
 	label?: string;
-	labelTooltip?: string;
+	labelTooltip?: TippyContent;
 	inline?: boolean;
 	id?: string;
 	extraCssClasses?: Array<string>;

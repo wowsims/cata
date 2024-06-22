@@ -29,17 +29,14 @@ type Mage struct {
 	frostfireOrb *FrostfireOrb
 
 	Combustion           *core.Spell
-	CombustionImpact     *core.Spell
 	Ignite               *core.Spell
 	LivingBomb           *core.Spell
-	LivingBombImpact     *core.Spell
 	FireBlast            *core.Spell
 	FlameOrbExplode      *core.Spell
 	Flamestrike          *core.Spell
 	FlamestrikeBW        *core.Spell
 	FrostfireOrb         *core.Spell
-	PyroblastDot         *core.Spell
-	PyroblastImpact      *core.Spell
+	Pyroblast            *core.Spell
 	SummonWaterElemental *core.Spell
 	IcyVeins             *core.Spell
 

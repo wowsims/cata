@@ -143,7 +143,7 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			new ReforgeOptimizer(this, { experimental: true });
 		});
 	}
 }

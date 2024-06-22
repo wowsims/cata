@@ -22,8 +22,8 @@ func (warrior *Warrior) RegisterSlamSpell() {
 	ohSlam := warrior.RegisterSpell(core.SpellConfig{
 		ActionID:       slamActionID.WithTag(2),
 		SpellSchool:    core.SpellSchoolPhysical,
-		ProcMask:       core.ProcMaskEmpty,
-		ClassSpellMask: SpellMaskSlam | SpellMaskSpecialAttack | SpellDualWieldSpecMask,
+		ProcMask:       core.ProcMaskMeleeOHSpecial,
+		ClassSpellMask: SpellMaskSlam | SpellMaskSpecialAttack,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
 
 		DamageMultiplier: weaponDamageConfig.CalcSpellDamagePct(),
