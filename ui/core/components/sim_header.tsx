@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import tippy, { ReferenceElement as TippyReferenceElement } from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
@@ -89,25 +90,31 @@ export class SimHeader extends Component {
 		this.simTabsContainer.appendChild(tab.navItem);
 	}
 
-	addImportLink(label: string, importer: Importer, hideInRaidSim?: boolean) {
-		this.addImportExportLink('.import-dropdown', label, importer, hideInRaidSim);
+	addImportLink(label: string, importer: Importer, hideInRaidSim?: boolean, isUnsupported = false) {
+		this.addImportExportLink('.import-dropdown', label, importer, hideInRaidSim, isUnsupported);
 	}
-	addExportLink(label: string, exporter: Exporter, hideInRaidSim?: boolean) {
-		this.addImportExportLink('.export-dropdown', label, exporter, hideInRaidSim);
+	addExportLink(label: string, exporter: Exporter, hideInRaidSim?: boolean, isUnsupported = false) {
+		this.addImportExportLink('.export-dropdown', label, exporter, hideInRaidSim, isUnsupported);
 	}
-	private addImportExportLink(cssClass: string, label: string, importerExporter: Importer | Exporter, _hideInRaidSim?: boolean) {
+	private addImportExportLink(cssClass: string, label: string, importerExporter: Importer | Exporter, _hideInRaidSim?: boolean, isUnsupported?: boolean) {
 		const dropdownElem = this.rootElem.querySelector<HTMLElement>(cssClass)!;
 		const menuElem = dropdownElem.querySelector<HTMLElement>('.dropdown-menu')!;
-		const linkRef = ref<HTMLButtonElement>();
+		const buttonRef = ref<HTMLButtonElement>();
 
 		menuElem.appendChild(
 			<li>
-				<button ref={linkRef} className="dropdown-item">
+				<button ref={buttonRef} className={clsx('dropdown-item', isUnsupported && 'disabled')}>
 					{label}
 				</button>
 			</li>,
 		);
-		linkRef.value?.addEventListener('click', () => importerExporter.open());
+		if (buttonRef.value) {
+			if (isUnsupported) {
+				tippy(buttonRef.value, { content: 'Currently unsupported' });
+				return;
+			}
+			buttonRef.value.addEventListener('click', () => importerExporter.open());
+		}
 	}
 
 	private addToolbarLink({ parent, tooltip, classes, onclick, text, ...itemArgs }: ToolbarLinkArgs): HTMLElement {
