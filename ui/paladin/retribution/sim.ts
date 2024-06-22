@@ -89,9 +89,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P1_BIS_RET_PRESET.gear,
+		gear: Presets.T11_BIS_RET_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P1_EP_PRESET.epWeights,
+		epWeights: Presets.T11_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
 			const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
@@ -159,12 +159,24 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
-		rotations: [Presets.ROTATION_PRESET_DEFAULT],
+		epWeights: [
+			Presets.T11_EP_PRESET,
+			//Presets.T12_EP_PRESET,
+			//Presets.T13_EP_PRESET,
+		],
+		rotations: [
+			Presets.ROTATION_PRESET_DEFAULT,
+			Presets.ROTATION_PRESET_T13,
+		],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.RetTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.P1_BIS_RET_PRESET, Presets.PRERAID_RET_PRESET, Presets.P1_NONHC_RET_PRESET],
+		gear: [
+			Presets.T11_BIS_RET_PRESET,
+			//Presets.T12_BIS_RET_PRESET,
+			//Presets.T13_BIS_RET_PRESET,
+			Presets.PRERAID_RET_PRESET,
+		],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecRetributionPaladin>): APLRotation => {
@@ -189,10 +201,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.PRERAID_RET_PRESET.gear,
+					1: Presets.T11_BIS_RET_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.PRERAID_RET_PRESET.gear,
+					1: Presets.T11_BIS_RET_PRESET.gear,
 				},
 			},
 		},
