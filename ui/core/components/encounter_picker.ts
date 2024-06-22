@@ -114,7 +114,7 @@ export class EncounterPicker extends Component {
 			//	});
 			//}
 
-			if (simUI.isIndividualSim() && (simUI as IndividualSimUI<any>).player.getSpec().isHealingSpec) {
+			if (simUI.isIndividualSim() && (simUI as IndividualSimUI<any>).player.getPlayerSpec().isHealingSpec) {
 				new NumberPicker(this.rootElem, simUI.sim.raid, {
 					id: 'encounter-num-allies',
 					label: 'Num Allies',
@@ -127,7 +127,7 @@ export class EncounterPicker extends Component {
 				});
 			}
 
-			if (simUI.isIndividualSim() && (simUI as IndividualSimUI<any>).player.getSpec().isTankSpec) {
+			if (simUI.isIndividualSim() && (simUI as IndividualSimUI<any>).player.getPlayerSpec().isTankSpec) {
 				new NumberPicker(this.rootElem, modEncounter, {
 					id: 'encounter-min-base-damage',
 					label: 'Min Base Damage',
