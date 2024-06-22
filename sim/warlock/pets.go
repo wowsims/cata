@@ -213,7 +213,8 @@ func (pet *WarlockPet) registerShadowBiteSpell() {
 
 			activeDots := 0
 			for _, spell := range pet.Owner.Spellbook {
-				if spell.Dot(target) != nil && spell.Dot(target).IsActive() {
+				// spell.RelatedDotSpell == nil to not double count spells with a separate dot component spell
+				if spell.Dot(target) != nil && spell.RelatedDotSpell == nil && spell.Dot(target).IsActive() {
 					activeDots++
 				}
 			}

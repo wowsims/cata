@@ -62,7 +62,7 @@ func (fdk *FrostDeathKnight) ApplyTalents() {
 	fdk.ApplyArmorSpecializationEffect(stats.Strength, proto.ArmorType_ArmorTypePlate)
 
 	masteryMod := fdk.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
+		Kind:       core.SpellMod_DamageDone_Pct,
 		FloatValue: fdk.getMasteryFrostBonus(),
 		ClassMask:  death_knight.DeathKnightSpellsAll,
 		School:     core.SpellSchoolFrost,

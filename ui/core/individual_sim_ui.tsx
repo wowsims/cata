@@ -13,7 +13,7 @@ import { TalentsTab } from './components/individual_sim_ui/talents_tab';
 import * as InputHelpers from './components/input_helpers';
 import { addRaidSimAction, RaidSimResultsManager } from './components/raid_sim_action';
 import { SavedDataConfig } from './components/saved_data_manager';
-import { addStatWeightsAction } from './components/stat_weights_action';
+import { addStatWeightsAction, EpWeightsMenu } from './components/stat_weights_action';
 import * as Tooltips from './constants/tooltips';
 import { getSpecLaunchStatus, LaunchStatus, simLaunchStatuses } from './launched_sims';
 import { Player, PlayerConfig, registerSpecConfig as registerPlayerConfig } from './player';
@@ -41,7 +41,7 @@ import {
 	Spec,
 	Stat,
 } from './proto/common';
-import { IndividualSimSettings, SavedTalents, SoftCapBreakpoints } from './proto/ui';
+import { IndividualSimSettings, SavedTalents, StatCapConfig } from './proto/ui';
 import { getMetaGemConditionDescription } from './proto_utils/gems';
 import { armorTypeNames, professionNames } from './proto_utils/names';
 import { Stats } from './proto_utils/stats';
@@ -130,7 +130,7 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 		 * while ignoring any others. Then the solution is used to identify the closest
 		 * breakpoint for the second listed stat (if present), etc.
 		 */
-		softCapBreakpoints?: SoftCapBreakpoints[];
+		softCapBreakpoints?: StatCapConfig[];
 		consumes: Consumes;
 		talents: SavedTalents;
 		specOptions: SpecOptions<SpecType>;
@@ -196,6 +196,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	readonly individualConfig: IndividualSimUIConfig<SpecType>;
 
 	private raidSimResultsManager: RaidSimResultsManager | null;
+	epWeightsModal: EpWeightsMenu | null = null;
 
 	prevEpIterations: number;
 	prevEpSimResult: StatWeightsResult | null;
@@ -391,7 +392,9 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 	private addSidebarComponents() {
 		this.raidSimResultsManager = addRaidSimAction(this);
-		addStatWeightsAction(this);
+		this.sim.waitForInit().then(() => {
+			this.epWeightsModal = addStatWeightsAction(this);
+		});
 
 		new CharacterStats(
 			this.rootElem.querySelector('.sim-sidebar-stats') as HTMLElement,

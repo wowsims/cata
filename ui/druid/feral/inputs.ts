@@ -113,6 +113,14 @@ export const FeralDruidRotationConfig = {
 				ShouldShowAdvParamST(player) && player.getTalents().bloodInTheWater > 0,
 			changeEmitter: (player: Player<Spec.SpecFeralDruid>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
 		}),
+		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
+			fieldName: 'cancelPrimalMadness',
+			label: 'Enable Primal Madness cancellation',
+			labelTooltip: 'Click off Primal Madness buff when doing so will result in net Energy gains',
+			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
+				(ShouldShowAdvParamST(player) || (player.getSimpleRotation().rotationType == AplType.Aoe)) && (player.getTalents().primalMadness > 0),
+			changeEmitter: (player: Player<Spec.SpecFeralDruid>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
+		}),
 		// Can be uncommented if/when analytical bite mode is added
 		//InputHelpers.makeRotationEnumInput<Spec.SpecFeralDruid, BiteModeType>({
 		//	fieldName: 'biteModeType',

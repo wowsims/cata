@@ -1,4 +1,5 @@
 import * as Mechanics from '../constants/mechanics.js';
+import { Player } from '../player';
 import { Class, PseudoStat, Stat, UnitStats } from '../proto/common.js';
 import { getEnumValues } from '../utils.js';
 import { getClassStatName, pseudoStatNames } from './names.js';
@@ -273,10 +274,10 @@ export const statToPercentageOrPoints = (stat: Stat, value: number, stats: Stats
 			statInPercentage = value / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE + 5.0;
 			break;
 		case Stat.StatDodge:
-			statInPercentage = stats.getPseudoStat(PseudoStat.PseudoStatDodge) / 100;
+			statInPercentage = stats.getPseudoStat(PseudoStat.PseudoStatDodge) * 100;
 			break;
 		case Stat.StatParry:
-			statInPercentage = stats.getPseudoStat(PseudoStat.PseudoStatParry) / 100;
+			statInPercentage = stats.getPseudoStat(PseudoStat.PseudoStatParry) * 100;
 			break;
 		case Stat.StatResilience:
 			statInPercentage = value / Mechanics.RESILIENCE_RATING_PER_CRIT_REDUCTION_CHANCE;
@@ -288,7 +289,7 @@ export const statToPercentageOrPoints = (stat: Stat, value: number, stats: Stats
 			statInPercentage = value;
 			break;
 	}
-	return Number(statInPercentage.toFixed(2));
+	return statInPercentage;
 };
 
 export const statPercentageOrPointsToNumber = (stat: Stat, value: number, stats: Stats) => {
@@ -317,10 +318,10 @@ export const statPercentageOrPointsToNumber = (stat: Stat, value: number, stats:
 			statInPoints = value * Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE - 5.0;
 			break;
 		case Stat.StatDodge:
-			statInPoints = stats.getPseudoStat(PseudoStat.PseudoStatDodge) * 100;
+			statInPoints = stats.getPseudoStat(PseudoStat.PseudoStatDodge) / 100;
 			break;
 		case Stat.StatParry:
-			statInPoints = stats.getPseudoStat(PseudoStat.PseudoStatParry) * 100;
+			statInPoints = stats.getPseudoStat(PseudoStat.PseudoStatParry) / 100;
 			break;
 		case Stat.StatResilience:
 			statInPoints = value * Mechanics.RESILIENCE_RATING_PER_CRIT_REDUCTION_CHANCE;

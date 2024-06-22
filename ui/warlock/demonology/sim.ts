@@ -7,6 +7,7 @@ import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Faction, ItemSlot, PartyBuffs, Race, Spec, Stat } from '../../core/proto/common';
+import { StatCapType } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import * as WarlockInputs from '../inputs';
 import * as Presets from './presets';
@@ -56,10 +57,21 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 				masteryRatingBreakpoints.push((masteryPercent / 2.3) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
 			}
 
-			const masterySoftCapConfig = { stat: Stat.StatMastery, breakpoints: masteryRatingBreakpoints };
+			const masterySoftCapConfig = {
+				stat: Stat.StatMastery,
+				breakpoints: masteryRatingBreakpoints,
+				capType: StatCapType.TypeThreshold,
+				postCapEPs: Array(masteryRatingBreakpoints.length).fill(0),
+			};
 
-			const hasteSoftCapConfig = { stat: Stat.StatSpellHaste, breakpoints: [1007, 1993] };
-			return [masterySoftCapConfig, hasteSoftCapConfig];
+			const hasteSoftCapConfig = {
+				stat: Stat.StatSpellHaste,
+				breakpoints: [1007, 1993],
+				capType: StatCapType.TypeSoftCap,
+				postCapEPs: [0.64, 0.61],
+			};
+
+			return [hasteSoftCapConfig, masterySoftCapConfig];
 		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,

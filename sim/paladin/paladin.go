@@ -38,6 +38,7 @@ const (
 	SpellMaskZealotry
 	SpellMaskGuardianOfAncientKings
 	SpellMaskAncientFury
+	SpellMaskSealsOfCommand
 
 	SpellMaskHolyShock
 	SpellMaskWordOfGlory
@@ -71,17 +72,6 @@ const SpellMaskCanTriggerSealOfTruth = SpellMaskCrusaderStrike |
 const SpellMaskCanTriggerAncientPower = SpellMaskCanTriggerSealOfTruth |
 	SpellMaskHolyWrath
 
-const SpellMaskModifiedByInquisition = SpellMaskHammerOfWrath |
-	SpellMaskConsecration |
-	SpellMaskExorcism |
-	SpellMaskGlyphOfExorcism |
-	SpellMaskJudgement |
-	SpellMaskSealOfTruth |
-	SpellMaskCensure |
-	SpellMaskHandOfLight |
-	SpellMaskHolyWrath |
-	SpellMaskAncientFury
-
 const SpellMaskCanTriggerDivinePurpose = SpellMaskHammerOfWrath |
 	SpellMaskExorcism |
 	SpellMaskJudgement |
@@ -91,8 +81,12 @@ const SpellMaskCanTriggerDivinePurpose = SpellMaskHammerOfWrath |
 	SpellMaskInquisition
 
 const SpellMaskCanConsumeDivinePurpose = SpellMaskInquisition |
-	SpellMaskTemplarsVerdict |
-	SpellMaskZealotry
+	SpellMaskTemplarsVerdict
+
+const SpellMaskModifiedByTwoHandedSpec = SpellMaskJudgement |
+	SpellMaskSealOfTruth |
+	SpellMaskSealsOfCommand |
+	SpellMaskHammerOfWrath
 
 var TalentTreeSizes = [3]int{20, 20, 20}
 
@@ -107,6 +101,7 @@ type Paladin struct {
 
 	CurrentSeal      *core.Aura
 	CurrentJudgement *core.Spell
+	SnapshotGuardian bool
 
 	// Pets
 	AncientGuardian *AncientGuardianPet
@@ -148,8 +143,7 @@ type Paladin struct {
 	ZealotryAura            *core.Aura
 	InquisitionAura         *core.Aura
 	DivinePurposeAura       *core.Aura
-
-	ArtOfWarInstantCast *core.Aura
+	JudgementsOfThePureAura *core.Aura
 
 	SpiritualAttunementMetrics *core.ResourceMetrics
 }
@@ -244,10 +238,11 @@ func (paladin *Paladin) Reset(sim *core.Simulation) {
 
 func NewPaladin(character *core.Character, talentsStr string, options *proto.PaladinOptions) *Paladin {
 	paladin := &Paladin{
-		Character:   *character,
-		Talents:     &proto.PaladinTalents{},
-		Seal:        options.Seal,
-		PaladinAura: options.Aura,
+		Character:        *character,
+		Talents:          &proto.PaladinTalents{},
+		Seal:             options.Seal,
+		PaladinAura:      options.Aura,
+		SnapshotGuardian: options.SnapshotGuardian,
 	}
 
 	core.FillTalentsProto(paladin.Talents.ProtoReflect(), talentsStr, TalentTreeSizes)

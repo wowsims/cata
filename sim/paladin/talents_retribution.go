@@ -84,10 +84,11 @@ func (paladin *Paladin) applySealsOfCommand() {
 
 	// Seals of Command
 	sealsOfCommandProc := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 20424},
-		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
+		ActionID:       core.ActionID{SpellID: 20424},
+		SpellSchool:    core.SpellSchoolHoly,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
+		ClassSpellMask: SpellMaskSealsOfCommand,
 
 		DamageMultiplier: 0.07,
 		CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),
@@ -268,13 +269,14 @@ func (paladin *Paladin) applyDivinePurpose() {
 		return
 	}
 
+	duration := time.Second * 8
 	paladin.DivinePurposeAura = paladin.RegisterAura(core.Aura{
 		Label:    "Divine Purpose",
 		ActionID: core.ActionID{SpellID: 90174},
-		Duration: time.Second * 8,
+		Duration: duration,
 
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask&SpellMaskCanConsumeDivinePurpose != 0 {
+			if spell.ClassSpellMask&SpellMaskCanConsumeDivinePurpose != 0 && aura.RemainingDuration(sim) < duration {
 				aura.Deactivate(sim)
 			}
 		},

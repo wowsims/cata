@@ -153,6 +153,16 @@ func (shaman *Shaman) ApplyFlametongueImbueToItem(item *core.Item) {
 	}
 
 	enchantID := 5
+	//flametongue imbue does not stack
+	if (shaman.HasMHWeapon() && shaman.GetMHWeapon().TempEnchant == int32(enchantID)) || (shaman.HasOHWeapon() && shaman.GetOHWeapon().TempEnchant == int32(enchantID)) {
+		item.TempEnchant = int32(enchantID)
+		return
+
+	}
+	if shaman.ItemSwap.IsEnabled() && (shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotMainHand).TempEnchant == int32(enchantID) || shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotOffHand).TempEnchant == int32(enchantID)) {
+		item.TempEnchant = int32(enchantID)
+		return
+	}
 	magicDamageBonus := 1.0 + (0.05 * (1 + 0.2*float64(shaman.Talents.ElementalWeapons)))
 
 	shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= magicDamageBonus
@@ -161,7 +171,7 @@ func (shaman *Shaman) ApplyFlametongueImbueToItem(item *core.Item) {
 
 	if shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfFlametongueWeapon) {
 		newStats := stats.Stats{stats.SpellCrit: 2 * core.CritRatingPerCritChance}
-		item.Stats = item.Stats.Add(newStats)
+		shaman.AddStats(newStats)
 	}
 
 	item.TempEnchant = int32(enchantID)
@@ -174,6 +184,16 @@ func (shaman *Shaman) ApplyFlametongueImbue(procMask core.ProcMask) {
 
 	if procMask.Matches(core.ProcMaskMeleeOH) && shaman.HasOHWeapon() {
 		shaman.ApplyFlametongueImbueToItem(shaman.OffHand())
+	}
+}
+
+func (shaman *Shaman) ApplyFlametongueImbueSwap(procMask core.ProcMask) {
+	if procMask.Matches(core.ProcMaskMeleeMH) && shaman.ItemSwap.IsEnabled() {
+		shaman.ApplyFlametongueImbueToItem(shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotMainHand))
+	}
+
+	if procMask.Matches(core.ProcMaskMeleeOH) && shaman.ItemSwap.IsEnabled() {
+		shaman.ApplyFlametongueImbueToItem(shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotOffHand))
 	}
 }
 

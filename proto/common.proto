@@ -150,6 +150,9 @@ enum PseudoStat {
 	PseudoStatBlockDamageReduction = 3;
 	PseudoStatDodge = 4;
 	PseudoStatParry = 5;
+	PseudoStatRangedSpeedMultiplier = 6;
+	PseudoStatMeleeSpeedMultiplier = 7;
+	PseudoStatCastSpeedMultiplier = 8;
 }
 
 message UnitStats {

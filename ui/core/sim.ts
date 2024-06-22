@@ -80,6 +80,7 @@ export class Sim {
 	private showQuickSwap = false;
 	private showEPValues = false;
 	private useCustomEPValues = false;
+	private useSoftCapBreakpoints = true;
 	private language = '';
 
 	readonly type: SimType;
@@ -101,6 +102,7 @@ export class Sim {
 	readonly showQuickSwapChangeEmitter = new TypedEvent<void>();
 	readonly showEPValuesChangeEmitter = new TypedEvent<void>();
 	readonly useCustomEPValuesChangeEmitter = new TypedEvent<void>();
+	readonly useSoftCapBreakpointsChangeEmitter = new TypedEvent<void>();
 	readonly languageChangeEmitter = new TypedEvent<void>();
 	readonly crashEmitter = new TypedEvent<SimError>();
 
@@ -150,6 +152,7 @@ export class Sim {
 			this.showQuickSwapChangeEmitter,
 			this.showEPValuesChangeEmitter,
 			this.useCustomEPValuesChangeEmitter,
+			this.useSoftCapBreakpointsChangeEmitter,
 			this.languageChangeEmitter,
 		]);
 
@@ -251,6 +254,8 @@ export class Sim {
 		playerDatabase.items.push(...bulkItemsDb.items);
 		playerDatabase.enchants.push(...bulkItemsDb.enchants);
 		playerDatabase.gems.push(...bulkItemsDb.gems);
+		playerDatabase.reforgeStats.push(...bulkItemsDb.reforgeStats);
+		playerDatabase.randomSuffixes.push(...bulkItemsDb.randomSuffixes);
 
 		this.bulkSimStartEmitter.emit(TypedEvent.nextEventID(), request);
 
@@ -570,6 +575,16 @@ export class Sim {
 		}
 	}
 
+	getUseSoftCapBreakpoints(): boolean {
+		return this.useSoftCapBreakpoints;
+	}
+	setUseSoftCapBreakpoints(eventID: EventID, newUseSoftCapBreakpoints: boolean) {
+		if (newUseSoftCapBreakpoints !== this.useSoftCapBreakpoints) {
+			this.useSoftCapBreakpoints = newUseSoftCapBreakpoints;
+			this.useSoftCapBreakpointsChangeEmitter.emit(eventID);
+		}
+	}
+
 	getLanguage(): string {
 		return this.language;
 	}
@@ -627,6 +642,7 @@ export class Sim {
 			showQuickSwap: this.getShowQuickSwap(),
 			showEpValues: this.getShowEPValues(),
 			useCustomEpValues: this.getUseCustomEPValues(),
+			useSoftCapBreakpoints: this.getUseSoftCapBreakpoints(),
 			language: this.getLanguage(),
 			faction: this.getFaction(),
 			filters: filters,
@@ -645,6 +661,7 @@ export class Sim {
 			this.setShowQuickSwap(eventID, proto.showQuickSwap);
 			this.setShowEPValues(eventID, proto.showEpValues);
 			this.setUseCustomEPValues(eventID, proto.useCustomEpValues);
+			this.setUseSoftCapBreakpoints(eventID, proto.useSoftCapBreakpoints);
 			this.setLanguage(eventID, proto.language);
 			this.setFaction(eventID, proto.faction || Faction.Alliance);
 
@@ -686,6 +703,7 @@ export class Sim {
 				language: this.getLanguage(), // Don't change language.
 				filters: Sim.defaultFilters(),
 				showEpValues: false,
+				useSoftCapBreakpoints: true,
 			}),
 		);
 	}

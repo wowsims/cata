@@ -154,8 +154,7 @@ export class SimTitleDropdown extends Component {
 
 	private launchStatusLabel(data: SpecOptions | RaidOptions) {
 		if (
-			(data.type === 'Raid' && raidSimStatus.status === LaunchStatus.Launched) ||
-			(data.type === 'Spec' && simLaunchStatuses[data.spec.specID as Spec].status === LaunchStatus.Launched)
+			(data.type === 'Raid' && raidSimStatus.status === LaunchStatus.Launched)
 		)
 			return null;
 

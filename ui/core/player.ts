@@ -38,7 +38,7 @@ import {
 import {
 	DungeonDifficulty,
 	RaidFilterOption,
-	SoftCapBreakpoints,
+	StatCapConfig,
 	SourceFilterOption,
 	UIEnchant as Enchant,
 	UIGem as Gem,
@@ -277,7 +277,7 @@ export class Player<SpecType extends Spec> {
 	private epRatios: Array<number> = new Array<number>(Player.numEpRatios).fill(0);
 	private epWeights: Stats = new Stats();
 	private statCaps: Stats = new Stats();
-	private softCapBreakpoints: SoftCapBreakpoints[] = [];
+	private softCapBreakpoints: StatCapConfig[] = [];
 	private currentStats: PlayerStats = PlayerStats.create();
 	private metadata: UnitMetadata = new UnitMetadata();
 	private petMetadatas: UnitMetadataList = new UnitMetadataList();
@@ -299,7 +299,7 @@ export class Player<SpecType extends Spec> {
 	readonly healingModelChangeEmitter = new TypedEvent<void>('PlayerHealingModel');
 	readonly epWeightsChangeEmitter = new TypedEvent<void>('PlayerEpWeights');
 	readonly statCapsChangeEmitter = new TypedEvent<void>('StatCaps');
-	readonly softCapBreakpointsChangeEmitter = new TypedEvent<void>('StatCaps');
+	readonly softCapBreakpointsChangeEmitter = new TypedEvent<void>('SoftCapBreakpoints');
 	readonly miscOptionsChangeEmitter = new TypedEvent<void>('PlayerMiscOptions');
 
 	readonly currentStatsEmitter = new TypedEvent<void>('PlayerCurrentStats');
@@ -516,11 +516,11 @@ export class Player<SpecType extends Spec> {
 		this.statCapsChangeEmitter.emit(eventID);
 	}
 
-	getSoftCapBreakpoints(): SoftCapBreakpoints[] {
+	getSoftCapBreakpoints(): StatCapConfig[] {
 		return this.softCapBreakpoints;
 	}
 
-	setSoftCapBreakpoints(eventID: EventID, newSoftCapBreakpoints: SoftCapBreakpoints[]) {
+	setSoftCapBreakpoints(eventID: EventID, newSoftCapBreakpoints: StatCapConfig[]) {
 		this.softCapBreakpoints = newSoftCapBreakpoints;
 		this.softCapBreakpointsChangeEmitter.emit(eventID);
 	}

@@ -69,11 +69,8 @@ var PlayerOptionsFury = &proto.Player_FuryWarrior{
 	FuryWarrior: &proto.FuryWarrior{
 		Options: &proto.FuryWarrior_Options{
 			ClassOptions: &proto.WarriorOptions{
-				StartingRage:       50,
-				UseShatteringThrow: true,
-				Shout:              proto.WarriorShout_WarriorShoutBattle,
+				StartingRage: 50,
 			},
-			UseRecklessness: true,
 		},
 	},
 }

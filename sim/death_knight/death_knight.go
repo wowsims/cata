@@ -173,8 +173,8 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 	// Runic Focus
 	dk.AddStat(stats.SpellHit, 9*core.SpellHitRatingPerHitChance)
 
-	dk.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/243.7)
 	dk.AddStatDependency(stats.Strength, stats.AttackPower, 2)
+	dk.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[dk.Class]*core.CritRatingPerCritChance)
 
 	dk.AddStat(stats.Parry, -dk.GetBaseStats()[stats.Strength]*0.27)
 	dk.AddStatDependency(stats.Strength, stats.Parry, 0.27)

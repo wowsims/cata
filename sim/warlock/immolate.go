@@ -13,7 +13,36 @@ func (warlock *Warlock) registerImmolate() {
 		FloatValue: 0.05 * float64(warlock.Talents.FireAndBrimstone),
 	})
 
-	warlock.ImmolateDot = warlock.RegisterSpell(core.SpellConfig{
+	warlock.Immolate = warlock.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 348},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: WarlockSpellImmolate,
+
+		ManaCost: core.ManaCostOptions{BaseCost: 0.08},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD:      core.GCDDefault,
+				CastTime: 2000 * time.Millisecond,
+			},
+		},
+
+		DamageMultiplier: 1,
+		CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
+		BonusCoefficient: 0.21999999881,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			result := spell.CalcDamage(sim, target, warlock.CalcScalingSpellDmg(0.69199997187), spell.OutcomeMagicHitAndCrit)
+			if result.Landed() {
+				spell.RelatedDotSpell.Cast(sim, target)
+			}
+			spell.DealDamage(sim, result)
+		},
+	})
+
+	warlock.Immolate.RelatedDotSpell = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 348}.WithTag(1),
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -50,35 +79,6 @@ func (warlock *Warlock) registerImmolate() {
 			if ua != nil {
 				ua.Dot(target).Deactivate(sim)
 			}
-		},
-	})
-
-	warlock.Immolate = warlock.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 348},
-		SpellSchool:    core.SpellSchoolFire,
-		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: WarlockSpellImmolate,
-
-		ManaCost: core.ManaCostOptions{BaseCost: 0.08},
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD:      core.GCDDefault,
-				CastTime: 2000 * time.Millisecond,
-			},
-		},
-
-		DamageMultiplier: 1,
-		CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
-		ThreatMultiplier: 1,
-		BonusCoefficient: 0.21999999881,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcDamage(sim, target, warlock.CalcScalingSpellDmg(0.69199997187), spell.OutcomeMagicHitAndCrit)
-			if result.Landed() {
-				warlock.ImmolateDot.Cast(sim, target)
-			}
-			spell.DealDamage(sim, result)
 		},
 	})
 }
