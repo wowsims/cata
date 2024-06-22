@@ -326,13 +326,7 @@ func (paladin *Paladin) applyZealotry() {
 		duration += time.Second * 15
 	}
 
-	hasT132pc := paladin.HasSetBonus(ItemSetBattleplateOfRadiantGlory, 2)
-
-	dmgMod := paladin.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		ClassMask:  SpellMaskCastedAbility,
-		FloatValue: 0.18,
-	})
+	hasT134pc := paladin.HasSetBonus(ItemSetBattleplateOfRadiantGlory, 4)
 
 	paladin.ZealotryAura = paladin.RegisterAura(core.Aura{
 		Label:    "Zealotry",
@@ -340,13 +334,13 @@ func (paladin *Paladin) applyZealotry() {
 		Duration: duration,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if hasT132pc {
-				dmgMod.Activate()
+			if hasT134pc {
+				aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.18
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if hasT132pc {
-				dmgMod.Deactivate()
+			if hasT134pc {
+				aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.18
 			}
 		},
 	})
