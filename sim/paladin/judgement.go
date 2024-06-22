@@ -9,7 +9,7 @@ import (
 func (paladin *Paladin) registerJudgement() {
 	actionId := core.ActionID{SpellID: 20271}
 	hpMetrics := paladin.NewHolyPowerMetrics(actionId)
-	hasT122pc := paladin.HasSetBonus(ItemSetBattleplateOfRadiantGlory, 2)
+	hasT132pc := paladin.HasSetBonus(ItemSetBattleplateOfRadiantGlory, 2)
 
 	paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 20271},
@@ -40,7 +40,7 @@ func (paladin *Paladin) registerJudgement() {
 
 			if result.Landed() {
 				paladin.CurrentJudgement.Cast(sim, target)
-				if hasT122pc {
+				if hasT132pc {
 					paladin.GainHolyPower(sim, 1, hpMetrics)
 				}
 			}
