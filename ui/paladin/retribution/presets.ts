@@ -11,23 +11,27 @@ import {
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
-import P1_BisRetGear from './gear_sets/p1_bis.gear.json';
-import P1_NonHcRetGear from './gear_sets/p1_nonhc.gear.json';
+import T13_2Pc_Apl from './apls/t13.apl.json';
+import T11_BisRetGear from './gear_sets/t11_bis.gear.json';
+//import T12_BisRetGear from './gear_sets/t12_bis.gear.json';
+//import T13_BisRetGear from './gear_sets/t13_bis.gear.json';
 import PreraidRetGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
-// Eventually we will import these values for the raid sim too, so its good to
+// Eventually we will import these values for the raid sim too, so it's good to
 // keep them in a separate file.
 
 export const PRERAID_RET_PRESET = PresetUtils.makePresetGear('Preraid', PreraidRetGear);
-export const P1_NONHC_RET_PRESET = PresetUtils.makePresetGear('P1 non-Hc', P1_NonHcRetGear);
-export const P1_BIS_RET_PRESET = PresetUtils.makePresetGear('P1 BiS', P1_BisRetGear);
+export const T11_BIS_RET_PRESET = PresetUtils.makePresetGear('T11 BiS', T11_BisRetGear);
+//export const T12_BIS_RET_PRESET = PresetUtils.makePresetGear('T12 BiS', T12_BisRetGear);
+//export const T13_BIS_RET_PRESET = PresetUtils.makePresetGear('T13 BiS', T13_BisRetGear);
 
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
+export const ROTATION_PRESET_T13 = PresetUtils.makePresetAPLRotation('T13 2pc', T13_2Pc_Apl);
 
 // Preset options for EP weights
-export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P1',
+export const T11_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'T11',
 	Stats.fromMap(
 		{
 			[Stat.StatStrength]: 2.28,
@@ -46,7 +50,51 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 		},
 	),
 );
+/*
+// Preset options for EP weights
+export const T12_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'T12',
+	Stats.fromMap(
+		{
+			[Stat.StatStrength]: 2.32,
+			[Stat.StatAttackPower]: 1,
+			[Stat.StatSpellHit]: 0.18,
+			[Stat.StatSpellCrit]: 0.13,
+			[Stat.StatSpellHaste]: 1.12,
+			[Stat.StatMeleeHit]: 2.01,
+			[Stat.StatMeleeCrit]: 1.12,
+			[Stat.StatMeleeHaste]: 0.55,
+			[Stat.StatExpertise]: 1.83,
+			[Stat.StatMastery]: 1.54,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 8.66,
+		},
+	),
+);
 
+// Preset options for EP weights
+export const T13_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'T13',
+	Stats.fromMap(
+		{
+			[Stat.StatStrength]: 2.28,
+			[Stat.StatAttackPower]: 1,
+			[Stat.StatSpellHit]: 0.18,
+			[Stat.StatSpellCrit]: 0.15,
+			[Stat.StatSpellHaste]: 0.35,
+			[Stat.StatMeleeHit]: 2.01,
+			[Stat.StatMeleeCrit]: 1.26,
+			[Stat.StatMeleeHaste]: 0.50,
+			[Stat.StatExpertise]: 1.83,
+			[Stat.StatMastery]: 1.74,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 8.29,
+		},
+	),
+);
+*/
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.
 export const RetTalents = {
@@ -71,6 +119,7 @@ export const DefaultOptions = RetributionPaladinOptions.create({
 	classOptions: {
 		aura: PaladinAura.Retribution,
 		seal: PaladinSeal.Truth,
+		snapshotGuardian: false,
 	},
 });
 

@@ -88,6 +88,15 @@ const SpellMaskModifiedByTwoHandedSpec = SpellMaskJudgement |
 	SpellMaskSealsOfCommand |
 	SpellMaskHammerOfWrath
 
+const SpellMaskCastedAbility = SpellMaskHammerOfWrath |
+	SpellMaskConsecration |
+	SpellMaskExorcism |
+	SpellMaskJudgement |
+	SpellMaskHolyWrath |
+	SpellMaskCrusaderStrike |
+	SpellMaskTemplarsVerdict |
+	SpellMaskDivineStorm
+
 var TalentTreeSizes = [3]int{20, 20, 20}
 
 type Paladin struct {
