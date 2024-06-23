@@ -6,7 +6,7 @@ import { Constraint, greaterEq, lessEq, Model, Options, Solution, solve } from '
 import * as Mechanics from '../constants/mechanics.js';
 import { IndividualSimUI } from '../individual_sim_ui';
 import { Player } from '../player';
-import { ItemSlot, Spec, Stat } from '../proto/common';
+import { Class, ItemSlot, Spec, Stat } from '../proto/common';
 import { StatCapConfig, StatCapType } from '../proto/ui';
 import { Gear } from '../proto_utils/gear';
 import { getClassStatName } from '../proto_utils/names';
@@ -59,6 +59,7 @@ export type ReforgeOptimizerOptions = {
 export class ReforgeOptimizer {
 	protected readonly simUI: IndividualSimUI<any>;
 	protected readonly player: Player<any>;
+	protected readonly playerClass: Class;
 	protected readonly isExperimental: ReforgeOptimizerOptions['experimental'];
 	protected readonly isHybridCaster: boolean;
 	protected readonly sim: Sim;
@@ -70,6 +71,7 @@ export class ReforgeOptimizer {
 	constructor(simUI: IndividualSimUI<any>, options?: ReforgeOptimizerOptions) {
 		this.simUI = simUI;
 		this.player = simUI.player;
+		this.playerClass = this.player.getClass();
 		this.isExperimental = options?.experimental;
 		this.isHybridCaster = [Spec.SpecBalanceDruid, Spec.SpecShadowPriest, Spec.SpecElementalShaman].includes(this.player.getSpec());
 		this.sim = simUI.sim;
@@ -446,7 +448,7 @@ export class ReforgeOptimizer {
 		const baseStats = await this.updateGear(baseGear);
 		const statsToCompute = this.statsToCompute;
 		// Compute effective stat caps for just the Reforge contribution
-		const reforgeCaps = baseStats.computeStatCapsDelta(statsToCompute);
+		const reforgeCaps = baseStats.computeStatCapsDelta(statsToCompute, this.playerClass);
 		if (isDevMode()) {
 			console.log('Stat caps for Reforge contribution:');
 			console.log(reforgeCaps);
@@ -469,11 +471,12 @@ export class ReforgeOptimizer {
 		let baseStats = Stats.fromProto(this.player.getCurrentStats().finalStats);
 		baseStats = baseStats.addStat(Stat.StatMastery, this.player.getBaseMastery() * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
 		if (this.updateGearStatsModifier) baseStats = this.updateGearStatsModifier(baseStats);
-		return baseStats;
+		return baseStats.withHasteMultipliers(this.playerClass);
 	}
 
 	computeReforgeSoftCaps(baseStats: Stats): StatCapConfig[] {
 		const reforgeSoftCaps: StatCapConfig[] = [];
+		const [finalMeleeHasteMulti, meleeHasteBuffsMulti, finalSpellHasteMulti, spellHasteBuffsMulti] = baseStats.getHasteMultipliers(this.playerClass);
 
 		if (!this.isAllowedToOverrideStatCaps) {
 			this.softCapsConfig
@@ -484,7 +487,15 @@ export class ReforgeOptimizer {
 					const relativeBreakpoints = [];
 
 					for (const breakpoint of config.breakpoints) {
-						relativeBreakpoints.push(breakpoint - baseStats.getStat(config.stat));
+						let statDelta = breakpoint - baseStats.getStat(config.stat);
+
+						if (config.stat == Stat.StatMeleeHaste) {
+							statDelta /= meleeHasteBuffsMulti;
+						} else if (config.stat == Stat.StatSpellHaste) {
+							statDelta /= spellHasteBuffsMulti;
+						}
+
+						relativeBreakpoints.push(statDelta);
 					}
 
 					// For stats that are configured as thresholds rather than
