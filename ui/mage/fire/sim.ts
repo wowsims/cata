@@ -191,11 +191,6 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
 				experimental: true,
-				updateGearStatsModifier: baseStats => {
-					// Include all the Haste buffs to more accurately target the tick breakpoints
-					baseStats = baseStats.withStat(Stat.StatSpellHaste, CharacterStats.computedFinalStats.getStat(Stat.StatSpellHaste));
-					return baseStats;
-				},
 			});
 		});
 	}
