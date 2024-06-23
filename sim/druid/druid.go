@@ -116,9 +116,7 @@ type Druid struct {
 
 	ExtendingMoonfireStacks int
 
-	Treant1 *TreantPet
-	Treant2 *TreantPet
-	Treant3 *TreantPet
+	Treants *Treants
 
 	form         DruidForm
 	disabledMCDs []*core.MajorCooldown
@@ -353,11 +351,12 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 
 	// Base dodge is unaffected by Diminishing Returns
 	druid.PseudoStats.BaseDodge += 0.04951
-
 	if druid.Talents.ForceOfNature {
-		druid.Treant1 = druid.NewTreant()
-		druid.Treant2 = druid.NewTreant()
-		druid.Treant3 = druid.NewTreant()
+		druid.Treants = &Treants{
+			Treant1: druid.NewTreant(),
+			Treant2: druid.NewTreant(),
+			Treant3: druid.NewTreant(),
+		}
 	}
 
 	return druid
