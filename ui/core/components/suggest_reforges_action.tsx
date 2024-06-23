@@ -51,9 +51,9 @@ const STAT_TOOLTIPS: StatTooltips = {
 	),
 	[Stat.StatSpellHaste]: () => (
 		<>
-			Rating: base rating required <strong>excluding</strong> any gear/buffs.
+			Rating: final rating <strong>including</strong> all buffs/gear.
 			<br />
-			%: final value <strong>including</strong> all buffs/gear.
+			%: final percentage value <strong>including</strong> all buffs/gear.
 		</>
 	),
 };

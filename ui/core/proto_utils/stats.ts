@@ -192,7 +192,10 @@ export class Stats {
 
 	getHasteMultipliers(playerClass: Class): number[] {
 		const baseMeleeHasteMultiplier = 1 + this.getStat(Stat.StatMeleeHaste) / (Mechanics.HASTE_RATING_PER_HASTE_PERCENT * 100);
-		const meleeHasteBuffsMultiplier = (playerClass == Class.ClassHunter) ? this.getPseudoStat(PseudoStat.PseudoStatRangedSpeedMultiplier) : this.getPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier);
+		const meleeHasteBuffsMultiplier =
+			playerClass == Class.ClassHunter
+				? this.getPseudoStat(PseudoStat.PseudoStatRangedSpeedMultiplier)
+				: this.getPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier);
 		const baseSpellHasteMultiplier = 1 + this.getStat(Stat.StatSpellHaste) / (Mechanics.HASTE_RATING_PER_HASTE_PERCENT * 100);
 		const spellHasteBuffsMultiplier = this.getPseudoStat(PseudoStat.PseudoStatCastSpeedMultiplier);
 		return [baseMeleeHasteMultiplier, meleeHasteBuffsMultiplier, baseSpellHasteMultiplier, spellHasteBuffsMultiplier];
@@ -209,7 +212,7 @@ export class Stats {
 
 	// Assumes that Haste multipliers have already been applied to both Stats arrays
 	computeStatCapsDelta(statCaps: Stats, playerClass: Class): Stats {
-		const [finalMeleeHasteMulti, meleeHasteBuffsMulti, finalSpellHasteMulti, spellHasteBuffsMulti] = this.getHasteMultipliers(playerClass);
+		const [_finalMeleeHasteMulti, meleeHasteBuffsMulti, _finalSpellHasteMulti, spellHasteBuffsMulti] = this.getHasteMultipliers(playerClass);
 		return new Stats(
 			this.stats.map((value, stat) => {
 				if (statCaps.stats[stat] > 0) {
