@@ -52,7 +52,8 @@ func (ancientGuardian *AncientGuardianPet) GetPet() *core.Pet {
 func (ancientGuardian *AncientGuardianPet) Reset(_ *core.Simulation) {
 }
 
-func (ancientGuardian *AncientGuardianPet) ExecuteCustomRotation(_ *core.Simulation) {
+func (ancientGuardian *AncientGuardianPet) ExecuteCustomRotation(sim *core.Simulation) {
+	ancientGuardian.WaitUntil(sim, ancientGuardian.AutoAttacks.NextAttackAt())
 }
 
 func (ancientGuardian *AncientGuardianPet) registerRetributionVariant() {

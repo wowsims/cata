@@ -81,13 +81,21 @@ const SpellMaskCanTriggerDivinePurpose = SpellMaskHammerOfWrath |
 	SpellMaskInquisition
 
 const SpellMaskCanConsumeDivinePurpose = SpellMaskInquisition |
-	SpellMaskTemplarsVerdict |
-	SpellMaskZealotry
+	SpellMaskTemplarsVerdict
 
 const SpellMaskModifiedByTwoHandedSpec = SpellMaskJudgement |
 	SpellMaskSealOfTruth |
 	SpellMaskSealsOfCommand |
 	SpellMaskHammerOfWrath
+
+const SpellMaskCastedAbility = SpellMaskHammerOfWrath |
+	SpellMaskConsecration |
+	SpellMaskExorcism |
+	SpellMaskJudgement |
+	SpellMaskHolyWrath |
+	SpellMaskCrusaderStrike |
+	SpellMaskTemplarsVerdict |
+	SpellMaskDivineStorm
 
 var TalentTreeSizes = [3]int{20, 20, 20}
 

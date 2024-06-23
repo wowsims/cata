@@ -269,13 +269,14 @@ func (paladin *Paladin) applyDivinePurpose() {
 		return
 	}
 
+	duration := time.Second * 8
 	paladin.DivinePurposeAura = paladin.RegisterAura(core.Aura{
 		Label:    "Divine Purpose",
 		ActionID: core.ActionID{SpellID: 90174},
-		Duration: time.Second * 8,
+		Duration: duration,
 
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask&SpellMaskCanConsumeDivinePurpose != 0 {
+			if spell.ClassSpellMask&SpellMaskCanConsumeDivinePurpose != 0 && aura.RemainingDuration(sim) < duration {
 				aura.Deactivate(sim)
 			}
 		},
@@ -319,11 +320,29 @@ func (paladin *Paladin) applyZealotry() {
 	}
 
 	actionId := core.ActionID{SpellID: 85696}
+	duration := time.Second * 20
+
+	if paladin.HasSetBonus(ItemSetBattleplateOfImmolation, 4) {
+		duration += time.Second * 15
+	}
+
+	hasT134pc := paladin.HasSetBonus(ItemSetBattleplateOfRadiantGlory, 4)
 
 	paladin.ZealotryAura = paladin.RegisterAura(core.Aura{
 		Label:    "Zealotry",
 		ActionID: actionId,
-		Duration: 20 * time.Second,
+		Duration: duration,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			if hasT134pc {
+				aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.18
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			if hasT134pc {
+				aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.18
+			}
+		},
 	})
 
 	paladin.Zealotry = paladin.RegisterSpell(core.SpellConfig{

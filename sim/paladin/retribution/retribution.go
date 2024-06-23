@@ -91,7 +91,7 @@ func (ret *RetributionPaladin) RegisterMastery() {
 	ret.HandOfLight = ret.RegisterSpell(core.SpellConfig{
 		ActionID:    actionId,
 		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
+		ProcMask:    core.ProcMaskEmpty,
 		Flags: core.SpellFlagMeleeMetrics |
 			core.SpellFlagIgnoreModifiers |
 			core.SpellFlagNoOnCastComplete,

@@ -107,20 +107,21 @@ func (impl *APLActionCatOptimalRotationAction) GetNextAction(*core.Simulation) *
 
 func (cat *FeralDruid) newActionCatOptimalRotationAction(_ *core.APLRotation, config *proto.APLActionCatOptimalRotationAction) core.APLActionImpl {
 	rotationOptions := &proto.FeralDruid_Rotation{
-		RotationType:       config.RotationType,
-		MaintainFaerieFire: config.MaintainFaerieFire,
-		UseRake:            config.UseRake,
-		UseBite:            config.UseBite,
-		BiteTime:           config.BiteTime,
-		BiteDuringExecute:  config.BiteDuringExecute,
-		MangleSpam:         false,
-		MinRoarOffset:      config.MinRoarOffset,
-		RipLeeway:          config.RipLeeway,
-		ManualParams:       config.ManualParams,
-		AllowAoeBerserk:    config.AllowAoeBerserk,
-		MeleeWeave:         config.MeleeWeave,
-		BearWeave:          config.BearWeave,
-		SnekWeave:          config.SnekWeave,
+		RotationType:        config.RotationType,
+		MaintainFaerieFire:  config.MaintainFaerieFire,
+		UseRake:             config.UseRake,
+		UseBite:             config.UseBite,
+		BiteTime:            config.BiteTime,
+		BiteDuringExecute:   config.BiteDuringExecute,
+		MangleSpam:          false,
+		MinRoarOffset:       config.MinRoarOffset,
+		RipLeeway:           config.RipLeeway,
+		ManualParams:        config.ManualParams,
+		AllowAoeBerserk:     config.AllowAoeBerserk,
+		MeleeWeave:          config.MeleeWeave,
+		BearWeave:           config.BearWeave,
+		SnekWeave:           config.SnekWeave,
+		CancelPrimalMadness: config.CancelPrimalMadness,
 	}
 
 	cat.setupRotation(rotationOptions)
