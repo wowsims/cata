@@ -1,3 +1,4 @@
+import { CharacterStats } from '../../core/components/character_stats';
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
 import * as Mechanics from '../../core/constants/mechanics';
@@ -6,6 +7,7 @@ import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Faction, IndividualBuffs, PartyBuffs, Race, Spec, Stat } from '../../core/proto/common';
+import { StatCapType } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import * as FireInputs from './inputs';
 import * as Presets from './presets';
@@ -52,6 +54,49 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
 			return new Stats().withStat(Stat.StatSpellHit, 17 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+		})(),
+		// Default soft caps for the Reforge optimizer
+		softCapBreakpoints: (() => {
+			// Picked from Mage Discord
+			// Sources:
+			// https://docs.google.com/spreadsheets/d/17cJJUReg2uz-XxBB3oDWb1kCncdH_-X96mSb0HAu4Ko/edit?gid=0#gid=0
+			// https://docs.google.com/spreadsheets/d/1WLOZ1YevGPw_WZs0JhGzVVy906W5y0i9UqHa3ejyBkE/htmlview?gid=19
+			const breakpoints = [
+				1602, // 12.51% - 5-tick LvB + Pyro
+				1922, // 15.01% - 12-tick Combust
+				3212, // 25.08% - 13-tick Combust
+				4488, // 35.04% - 14-tick Combust
+				4805, // 37.52% - 6-tick LvB + Pyro
+				5767, // 45.03% - 15-tick Combust
+				7033, // 54.92% - 16-tick Combust
+				// 8000, // 62.47% - 7-tick LvB + Pyro
+				// 8309, // 64.88% - 17-tick Combust
+				// 9602, // 74.98% - 18-tick Combust
+				// 10887, // 85.01% - 19-tick Combust
+				// 11198, // 87.44% - 8-tick LvB + Pyro
+				// 12182, // 95.12% - 20-tick Combust
+				// 13463,
+				// 14412,
+				// 14704,
+				// 16004,
+				// 17290,
+				// 17600,
+				// 18543,
+				// 19821,
+				// 20820,
+				// 21117,
+				// 22424,
+				// 23730,
+				// 24010,
+			];
+			const hasteSoftCapConfig = {
+				stat: Stat.StatSpellHaste,
+				breakpoints,
+				capType: StatCapType.TypeSoftCap,
+				postCapEPs: [0.96, 0.86, 0.77, 0.77, 1.17, 0.76, 0.65],
+			};
+
+			return [hasteSoftCapConfig];
 		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultFireConsumes,
@@ -143,7 +188,9 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, { experimental: true });
+			new ReforgeOptimizer(this, {
+				experimental: true,
+			});
 		});
 	}
 }
