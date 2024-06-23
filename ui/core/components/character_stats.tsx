@@ -24,7 +24,6 @@ export class CharacterStats extends Component {
 	private readonly player: Player<any>;
 	private readonly modifyDisplayStats?: (player: Player<any>) => StatMods;
 	private readonly overwriteDisplayStats?: (player: Player<any>) => StatWrites;
-	private static _computedFinalStats: Stats = new Stats();
 
 	constructor(
 		parent: HTMLElement,
@@ -161,8 +160,6 @@ export class CharacterStats extends Component {
 
 		// Apply multiplicative Haste buffs to the final displayed value
 		finalStats = finalStats.withHasteMultipliers(this.player.getClass());
-
-		CharacterStats._computedFinalStats = finalStats;
 
 		const masteryPoints =
 			this.player.getBaseMastery() + (playerStats.finalStats?.stats[Stat.StatMastery] || 0) / Mechanics.MASTERY_RATING_PER_MASTERY_POINT;
@@ -304,10 +301,6 @@ export class CharacterStats extends Component {
 				content: tooltipContent,
 			});
 		}
-	}
-
-	public static get computedFinalStats(): Stats {
-		return this._computedFinalStats;
 	}
 
 	private statDisplayString(stats: Stats, deltaStats: Stats, stat: Stat, includeBase?: boolean): string {
