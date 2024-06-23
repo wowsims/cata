@@ -17,7 +17,12 @@ func TestRetribution(t *testing.T) {
 		Race:       proto.Race_RaceBloodElf,
 		OtherRaces: []proto.Race{proto.Race_RaceHuman, proto.Race_RaceDraenei, proto.Race_RaceDwarf, proto.Race_RaceTauren},
 
-		GearSet:     core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p1_bis"),
+		GearSet: core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "t11_bis"),
+		OtherGearSets: []core.GearSetCombo{
+			core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "preraid"),
+			//core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "t12_bis"),
+			//core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "t13_bis"),
+		},
 		Talents:     StandardTalents,
 		Glyphs:      StandardGlyphs,
 		Consumes:    FullConsumes,
@@ -29,6 +34,9 @@ func TestRetribution(t *testing.T) {
 			{Label: "Seal of Insight", SpecOptions: OptionsWithSealOfInsight},
 		},
 		Rotation: core.GetAplRotation("../../../ui/paladin/retribution/apls", "default"),
+		/*OtherRotations: []core.RotationCombo{
+			core.GetAplRotation("../../../ui/paladin/retribution/apls", "t13"),
+		},*/
 
 		ItemFilter: core.ItemFilter{
 			WeaponTypes: []proto.WeaponType{
@@ -51,13 +59,14 @@ func BenchmarkSimulate(b *testing.B) {
 			&proto.Player{
 				Race:           proto.Race_RaceBloodElf,
 				Class:          proto.Class_ClassPaladin,
-				Equipment:      core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p1").GearSet,
+				Equipment:      core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "t11_bis").GearSet,
 				Consumes:       FullConsumes,
 				Spec:           DefaultOptions,
 				Glyphs:         StandardGlyphs,
 				TalentsString:  StandardTalents,
 				Buffs:          core.FullIndividualBuffs,
 				ReactionTimeMs: 100,
+				Rotation:       core.GetAplRotation("../../../ui/paladin/retribution/apls", "default").Rotation,
 			},
 			core.FullPartyBuffs,
 			core.FullRaidBuffs,

@@ -194,7 +194,8 @@ export class FiltersMenu extends BaseModal {
 					sim.setFilters(eventID, filters);
 				},
 			});
-			if (player.getSpec().canDualWield) {
+
+			if (player.getPlayerSpec().canDualWield) {
 				new NumberPicker<Sim>(weaponSpeedSection, player.sim, {
 					id: 'filters-min-oh-weapon-speed',
 					label: 'Min OH Speed',

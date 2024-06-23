@@ -405,14 +405,7 @@ export class ActionId {
 					name += ' (Proc)';
 				}
 				break;
-			case 'Righteous Vengeance':
-				if (this.tag == 1) {
-					name += ' (Application)';
-				} else if (this.tag == 2) {
-					name += ' (DoT)';
-				}
-				break;
-			case 'Holy Vengeance':
+			case 'Censure':
 				if (this.tag == 1) {
 					name += ' (Application)';
 				} else if (this.tag == 2) {

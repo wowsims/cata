@@ -91,6 +91,8 @@
 
 .picker-group {
 	&.icon-group {
+		gap: var(--spacer-1);
+
 		& > * {
 			flex: 0;
 		}
