@@ -445,8 +445,8 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-Gladiator'sVestments"
  value: {
-  dps: 18961.1858
-  tps: 13462.44192
+  dps: 19301.51407
+  tps: 13704.07499
  }
 }
 dps_results: {
@@ -885,13 +885,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-Shadowblade'sBattlegear"
- value: {
-  dps: 17604.18587
-  tps: 12498.97196
- }
-}
-dps_results: {
  key: "TestSubtlety-AllItems-ShardofWoe-60233"
  value: {
   dps: 22494.11634
@@ -1120,6 +1113,13 @@ dps_results: {
  value: {
   dps: 23715.14008
   tps: 16837.74946
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-VestmentsoftheDarkPhoenix"
+ value: {
+  dps: 23244.0508
+  tps: 16503.27607
  }
 }
 dps_results: {

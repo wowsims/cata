@@ -54,6 +54,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 		gear: Presets.P1_PRESET_COMBAT.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_EP_PRESET.epWeights,
+
+    	other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -156,6 +158,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 					1: Presets.P1_PRESET_COMBAT.gear,
 				},
 			},
+			otherDefaults: Presets.OtherDefaults,
 		},
 	],
 });

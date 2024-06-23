@@ -444,8 +444,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-Gladiator'sVestments"
  value: {
-  dps: 24025.26285
-  tps: 17057.93662
+  dps: 24282.71123
+  tps: 17240.72498
  }
 }
 dps_results: {
@@ -883,13 +883,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAssassination-AllItems-Shadowblade'sBattlegear"
- value: {
-  dps: 22295.06903
-  tps: 15829.49901
- }
-}
-dps_results: {
  key: "TestAssassination-AllItems-ShardofWoe-60233"
  value: {
   dps: 28378.83547
@@ -1118,6 +1111,13 @@ dps_results: {
  value: {
   dps: 29881.87185
   tps: 21216.12901
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-VestmentsoftheDarkPhoenix"
+ value: {
+  dps: 29180.53953
+  tps: 20718.18307
  }
 }
 dps_results: {

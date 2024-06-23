@@ -75,3 +75,9 @@ export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskOfTheWinds,
 	food: Food.FoodSkeweredEel,
 });
+
+export const OtherDefaults = {
+	distanceFromTarget: 5,
+	duration: 240,
+	durationVariation: 20,
+};

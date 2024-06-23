@@ -152,11 +152,6 @@ func (rogue *Rogue) getPoisonProcMask(imbue proto.RogueOptions_PoisonImbue) core
 }
 
 func (rogue *Rogue) applyDeadlyPoison() {
-	procMask := rogue.getPoisonProcMask(proto.RogueOptions_DeadlyPoison)
-	if procMask == core.ProcMaskUnknown {
-		return
-	}
-
 	rogue.RegisterAura(core.Aura{
 		Label:    "Deadly Poison",
 		Duration: core.NeverExpires,
@@ -164,6 +159,11 @@ func (rogue *Rogue) applyDeadlyPoison() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			procMask := rogue.getPoisonProcMask(proto.RogueOptions_DeadlyPoison)
+			if procMask == core.ProcMaskUnknown {
+				return
+			}
+
 			if !result.Landed() || !spell.ProcMask.Matches(procMask) {
 				return
 			}
@@ -191,6 +191,11 @@ func (rogue *Rogue) applyWoundPoison() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !result.Landed() {
+				return
+			}
+
+			procMask := rogue.getPoisonProcMask(proto.RogueOptions_WoundPoison)
+			if procMask == core.ProcMaskUnknown {
 				return
 			}
 
@@ -328,11 +333,6 @@ func (rogue *Rogue) UpdateInstantPoisonPPM(bonusChance float64) {
 }
 
 func (rogue *Rogue) applyInstantPoison() {
-	procMask := rogue.getPoisonProcMask(proto.RogueOptions_InstantPoison)
-	if procMask == core.ProcMaskUnknown {
-		return
-	}
-
 	rogue.UpdateInstantPoisonPPM(0)
 
 	rogue.RegisterAura(core.Aura{
@@ -343,6 +343,11 @@ func (rogue *Rogue) applyInstantPoison() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !result.Landed() {
+				return
+			}
+
+			procMask := rogue.getPoisonProcMask(proto.RogueOptions_InstantPoison)
+			if procMask == core.ProcMaskUnknown {
 				return
 			}
 
