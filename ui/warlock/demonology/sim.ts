@@ -66,7 +66,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 
 			const hasteSoftCapConfig = {
 				stat: Stat.StatSpellHaste,
-				breakpoints: [1007, 1993],
+				breakpoints: [16.65 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT, 25 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
 				capType: StatCapType.TypeSoftCap,
 				postCapEPs: [0.64, 0.61],
 			};
