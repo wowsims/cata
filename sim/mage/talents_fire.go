@@ -1,6 +1,7 @@
 package mage
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -366,7 +367,7 @@ func (mage *Mage) applyIgnite() {
 func (mage *Mage) procIgnite(sim *core.Simulation, result *core.SpellResult) {
 	const IgniteTicksFresh = 2
 	const IgniteTicksRefresh = 3
-	var currentMastery float64 = 1.224 + 0.028*mage.GetMasteryPoints()
+	var currentMastery float64 = 1 + math.Floor(22.4+2.8*mage.GetMasteryPoints())/100
 
 	igniteDamageMultiplier := []float64{0.0, 0.13, 0.26, 0.40}[mage.Talents.Ignite]
 	newDamage := result.Damage * igniteDamageMultiplier * currentMastery

@@ -51,12 +51,6 @@ func (fire *FireMage) registerPyroblastSpell() {
 		ClassSpellMask: mage.MageSpellPyroblastDot,
 		Flags:          core.SpellFlagNoOnCastComplete,
 
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				NonEmpty: true,
-			},
-		},
-
 		DamageMultiplier: 1,
 		CritMultiplier:   fire.DefaultMageCritMultiplier(),
 		ThreatMultiplier: 1,
