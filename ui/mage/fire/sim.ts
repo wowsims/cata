@@ -62,7 +62,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 			// https://docs.google.com/spreadsheets/d/17cJJUReg2uz-XxBB3oDWb1kCncdH_-X96mSb0HAu4Ko/edit?gid=0#gid=0
 			// https://docs.google.com/spreadsheets/d/1WLOZ1YevGPw_WZs0JhGzVVy906W5y0i9UqHa3ejyBkE/htmlview?gid=19
 			const breakpoints = [
-				639, // 4.99% - 11-tick Combust
 				1602, // 12.51% - 5-tick LvB + Pyro
 				1922, // 15.01% - 12-tick Combust
 				3212, // 25.08% - 13-tick Combust
@@ -94,7 +93,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 				stat: Stat.StatSpellHaste,
 				breakpoints,
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [3.85, 0.96, 0.86, 0.77, 0.77, 1.17, 0.76, 0.65],
+				postCapEPs: [0.96, 0.86, 0.77, 0.77, 1.17, 0.76, 0.65],
 			};
 
 			return [hasteSoftCapConfig];
