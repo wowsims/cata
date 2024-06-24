@@ -504,12 +504,6 @@ func isValidEquipment(equipment *proto.EquipmentSpec, isFuryWarrior bool) bool {
 		return false
 	}
 
-	// Don't allow a blank off-hand if the player is a Fury warrior
-	// Don't allow a blank off-hand if the main-hand is not a two-hander
-	if (isFuryWarrior || !usesTwoHander) && !usesOffHand {
-		return false
-	}
-
 	// Validate trinkets for duplicate IDs
 	if equipment.Items[proto.ItemSlot_ItemSlotTrinket1].Id == equipment.Items[proto.ItemSlot_ItemSlotTrinket2].Id && equipment.Items[proto.ItemSlot_ItemSlotTrinket1].Id != 0 {
 		return false

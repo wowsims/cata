@@ -60,7 +60,7 @@ func TestIsValidEquipment(t *testing.T) {
 		want          bool
 	}{
 		{
-			comment:       "simple equipment set with just one mainhand weapon is valid",
+			comment:       "simple equipment set with a main-hand weapon and off-hand is valid",
 			spec:          createEquipmentFromItems(starshardEdge1, bookOfBindingWill),
 			isFuryWarrior: false,
 			want:          true,
@@ -70,12 +70,6 @@ func TestIsValidEquipment(t *testing.T) {
 			spec:          createEquipmentFromItems(ironmender),
 			isFuryWarrior: false,
 			want:          true,
-		},
-		{
-			comment:       "simple equipment set with just one mainhand weapon is not valid",
-			spec:          createEquipmentFromItems(starshardEdge1),
-			isFuryWarrior: false,
-			want:          false,
 		},
 		{
 			comment:       "cannot equip offhand and two-hander if player is not a fury warrior",
