@@ -9,17 +9,17 @@ import { BulkSimItemSlot, bulkSimSlotNames } from './utils';
 export default class BulkItemPickerGroup extends ContentBlock {
 	readonly simUI: IndividualSimUI<any>;
 	readonly bulkUI: BulkTab;
-	readonly slot: BulkSimItemSlot;
+	readonly bulkSlot: BulkSimItemSlot;
 
 	readonly pickers: Map<number, BulkItemPicker> = new Map();
 
-	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, bulkUI: BulkTab, slot: BulkSimItemSlot) {
-		const slotName = bulkSimSlotNames.get(slot)!;
+	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, bulkUI: BulkTab, bulkSlot: BulkSimItemSlot) {
+		const slotName = bulkSimSlotNames.get(bulkSlot)!;
 		super(parent, 'bulk-item-picker-group-root', { header: { title: slotName } });
 		this.rootElem.classList.add(`gear-group-${slotName.split(' ').join('-')}`);
 		this.simUI = simUI;
 		this.bulkUI = bulkUI;
-		this.slot = slot;
+		this.bulkSlot = bulkSlot;
 
 		this.addEmptyElement();
 	}
@@ -33,7 +33,7 @@ export default class BulkItemPickerGroup extends ContentBlock {
 			this.pickers.delete(idx);
 		}
 
-		this.pickers.set(idx, new BulkItemPicker(this.bodyElement, this.simUI, this.bulkUI, item, idx));
+		this.pickers.set(idx, new BulkItemPicker(this.bodyElement, this.simUI, this.bulkUI, item, this.bulkSlot, idx));
 	}
 
 	update(idx: number, newItem: EquippedItem) {

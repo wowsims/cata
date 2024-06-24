@@ -6,7 +6,7 @@ import { ref } from 'tsx-vanilla';
 import { REPO_RELEASES_URL } from '../../constants/other';
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { BulkSettings, ProgressMetrics, TalentLoadout } from '../../proto/api';
-import { GemColor, Glyphs, ItemRandomSuffix, ItemSpec, ReforgeStat, SimDatabase, SimEnchant, SimGem, SimItem } from '../../proto/common';
+import { GemColor, Glyphs, ItemRandomSuffix, ItemSlot, ItemSpec, ReforgeStat, SimDatabase, SimEnchant, SimGem, SimItem, Spec } from '../../proto/common';
 import { SavedTalents, UIEnchant, UIGem, UIItem } from '../../proto/ui';
 import { ActionId } from '../../proto_utils/action_id';
 import { getEmptyGemSocketIconUrl } from '../../proto_utils/gems';
@@ -25,7 +25,7 @@ import BulkItemPickerGroup from './bulk/bulk_item_picker_group';
 import BulkItemSearch from './bulk/bulk_item_search';
 import BulkSimResultRenderer from './bulk/bulk_sim_results_renderer';
 import GemSelectorModal from './bulk/gem_selector_modal';
-import { BulkSimItemSlot, itemSlotToBulkSimItemSlot } from './bulk/utils';
+import { BulkSimItemSlot, getBulkItemSlotFromSlot } from './bulk/utils';
 
 const WEB_DEFAULT_ITERATIONS = 1000;
 const WEB_ITERATIONS_LIMIT = 50_000;
@@ -33,6 +33,8 @@ const LOCAL_ITERATIONS_LIMIT = 1_000_000;
 
 export class BulkTab extends SimTab {
 	readonly simUI: IndividualSimUI<any>;
+	readonly playerCanDualWield: boolean;
+	readonly playerIsFuryWarrior: boolean;
 
 	readonly itemsChangedEmitter = new TypedEvent<void>();
 	readonly settingsChangedEmitter = new TypedEvent<void>();
@@ -53,7 +55,7 @@ export class BulkTab extends SimTab {
 	protected items: Array<ItemSpec | null> = new Array<ItemSpec | null>();
 	// Separate Map used to store items broken down by item slot, specifically for combination generation
 	protected itemsBySlot: Map<BulkSimItemSlot, Map<number, ItemSpec>> = new Map();
-	protected pickerGroups: Array<BulkItemPickerGroup> = new Array<BulkItemPickerGroup>();
+	protected pickerGroups: Map<BulkSimItemSlot, BulkItemPickerGroup> = new Map();
 
 	protected combinations = 0;
 	protected iterations = 0;
@@ -72,6 +74,8 @@ export class BulkTab extends SimTab {
 		super(parentElem, simUI, { identifier: 'bulk-tab', title: 'Batch (<span class="text-success">New</span>)' });
 
 		this.simUI = simUI;
+		this.playerCanDualWield = this.simUI.player.getPlayerSpec().canDualWield;
+		this.playerIsFuryWarrior = this.simUI.player.getSpec() === Spec.SpecFuryWarrior;
 
 		getEnumValues<number>(BulkSimItemSlot).forEach(slot => {
 			this.itemsBySlot.set(slot, new Map());
@@ -168,17 +172,13 @@ export class BulkTab extends SimTab {
 
 			const loadEquippedItems = () => {
 				this.simUI.player.getEquippedItems().forEach((equippedItem, slot) => {
-					if (!!equippedItem) {
-						getEligibleItemSlots(equippedItem.item).forEach(eligibleSlot => {
-							// Avoid duplicating rings/trinkets
-							if (isSecondaryItemSlot(slot) || !canEquipItem(equippedItem.item, this.simUI.player.getPlayerSpec(), eligibleSlot)) return;
-
-							const bulkSlot = itemSlotToBulkSimItemSlot.get(eligibleSlot)!;
-							const group = this.pickerGroups[bulkSlot];
-							const idx = isSecondaryItemSlot(slot) ? -2 : -1;
-
-							group.add(idx, equippedItem);
-						});
+					const bulkSlot = getBulkItemSlotFromSlot(slot, this.playerCanDualWield);
+					const group = this.pickerGroups.get(bulkSlot)!;
+					const idx = this.isSecondaryItemSlot(slot) ? -2 : -1;
+					if (equippedItem) {
+						group.add(idx, equippedItem);
+					} else {
+						group.remove(idx);
 					}
 				});
 			};
@@ -252,7 +252,7 @@ export class BulkTab extends SimTab {
 	private getDefaultIterationsCount(): number {
 		if (isExternal()) return WEB_DEFAULT_ITERATIONS;
 
-		return this.simUI.sim.getIterations() / (this.fastMode ? 10 : 1);
+		return this.simUI.sim.getIterations();
 	}
 
 	protected createBulkItemsDatabase(): SimDatabase {
@@ -300,21 +300,22 @@ export class BulkTab extends SimTab {
 		return itemsDb;
 	}
 
+	// Add an item to its eligible bulk sim item slot(s). Mainly used for importing and search
 	addItem(item: ItemSpec) {
 		this.addItems([item]);
 	}
+	// Add items to their eligible bulk sim item slot(s). Mainly used for importing and search
 	addItems(items: ItemSpec[]) {
 		items.forEach(item => {
 			const equippedItem = this.simUI.sim.db.lookupItemSpec(item);
 			if (!!equippedItem) {
-				const idx = this.items.push(item) - 1;
+				getEligibleItemSlots(equippedItem.item, this.playerIsFuryWarrior).forEach(slot => {
+					// Avoid duplicating rings/trinkets/weapons
+					if (this.isSecondaryItemSlot(slot)) return;
 
-				getEligibleItemSlots(equippedItem.item).forEach(slot => {
-					// Avoid duplicating rings/trinkets
-					if (isSecondaryItemSlot(slot) || !canEquipItem(equippedItem.item, this.simUI.player.getPlayerSpec(), slot)) return;
-
-					const bulkSlot = itemSlotToBulkSimItemSlot.get(slot)!;
-					const group = this.pickerGroups[bulkSlot];
+					const idx = this.items.push(item) - 1;
+					const bulkSlot = getBulkItemSlotFromSlot(slot, this.playerCanDualWield);
+					const group = this.pickerGroups.get(bulkSlot)!;
 					group.add(idx, equippedItem);
 					this.itemsBySlot.get(bulkSlot)?.set(idx, item);
 				});
@@ -323,18 +324,33 @@ export class BulkTab extends SimTab {
 
 		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
 	}
+	// Add an item to a particular bulk sim item slot
+	addItemToSlot(item: ItemSpec, bulkSlot: BulkSimItemSlot) {
+		const equippedItem = this.simUI.sim.db.lookupItemSpec(item);
+		if (!!equippedItem) {
+			const eligibleItemSlots = getEligibleItemSlots(equippedItem.item, this.playerIsFuryWarrior);
+			if (!canEquipItem(equippedItem.item, this.simUI.player.getPlayerSpec(), eligibleItemSlots[0])) return;
+
+			const idx = this.items.push(item) - 1;
+			const group = this.pickerGroups.get(bulkSlot)!;
+			group.add(idx, equippedItem);
+			this.itemsBySlot.get(bulkSlot)?.set(idx, item);
+
+			this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
+		}
+	}
 
 	updateItem(idx: number, newItem: ItemSpec) {
 		const equippedItem = this.simUI.sim.db.lookupItemSpec(newItem);
 		if (!!equippedItem) {
 			this.items[idx] = newItem;
 
-			getEligibleItemSlots(equippedItem.item).forEach(slot => {
-				// Avoid duplicating rings/trinkets
-				if (isSecondaryItemSlot(slot)) return;
+			getEligibleItemSlots(equippedItem.item, this.playerIsFuryWarrior).forEach(slot => {
+				// Avoid duplicating rings/trinkets/weapons
+				if (this.isSecondaryItemSlot(slot)) return;
 
-				const bulkSlot = itemSlotToBulkSimItemSlot.get(slot)!;
-				const group = this.pickerGroups[bulkSlot];
+				const bulkSlot = getBulkItemSlotFromSlot(slot, this.playerCanDualWield);
+				const group = this.pickerGroups.get(bulkSlot)!;
 				group.update(idx, equippedItem);
 				this.itemsBySlot.get(bulkSlot)?.set(idx, newItem);
 			});
@@ -344,8 +360,11 @@ export class BulkTab extends SimTab {
 	}
 
 	removeItem(item: ItemSpec) {
-		const idx = this.items.findIndex(i => !!i && ItemSpec.equals(i, item));
-		this.removeItemByIndex(idx);
+		this.items.forEach((savedItem, idx) => {
+			if (!!savedItem && savedItem.id === item.id) {
+				this.removeItemByIndex(idx);
+			}
+		});
 	}
 	removeItemByIndex(idx: number) {
 		if (idx < 0 || this.items.length < idx || !this.items[idx]) {
@@ -357,22 +376,20 @@ export class BulkTab extends SimTab {
 		}
 
 		const item = this.items[idx]!;
-
 		const equippedItem = this.simUI.sim.db.lookupItemSpec(item);
 		if (!!equippedItem) {
 			this.items[idx] = null;
 
-			getEligibleItemSlots(equippedItem.item).forEach(slot => {
-				// Avoid duplicating rings/trinkets
-				if (isSecondaryItemSlot(slot) || !canEquipItem(equippedItem.item, this.simUI.player.getPlayerSpec(), slot)) return;
-
-				const bulkSlot = itemSlotToBulkSimItemSlot.get(slot)!;
-				const group = this.pickerGroups[bulkSlot];
-				group.remove(idx);
-				this.itemsBySlot.get(bulkSlot)?.delete(idx);
+			// Try to find the matching item within its eligible groups
+			getEligibleItemSlots(equippedItem.item, this.playerIsFuryWarrior).forEach(slot => {
+				const bulkSlot = getBulkItemSlotFromSlot(slot, this.playerCanDualWield);
+				if (this.itemsBySlot.get(bulkSlot)?.has(idx)) {
+					const group = this.pickerGroups.get(bulkSlot)!;
+					group.remove(idx);
+					this.itemsBySlot.get(bulkSlot)?.delete(idx);
+					this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
+				}
 			});
-
-			this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
 		}
 	}
 
@@ -483,8 +500,11 @@ export class BulkTab extends SimTab {
 		const itemList = (<div className="bulk-gear-combo" />) as HTMLElement;
 		this.setupTabElem.appendChild(itemList);
 
-		getEnumValues<BulkSimItemSlot>(BulkSimItemSlot).forEach(slot => {
-			this.pickerGroups.push(new BulkItemPickerGroup(itemList, this.simUI, this, slot));
+		getEnumValues<BulkSimItemSlot>(BulkSimItemSlot).forEach(bulkSlot => {
+			if (this.playerCanDualWield && [BulkSimItemSlot.ItemSlotMainHand, BulkSimItemSlot.ItemSlotOffHand].includes(bulkSlot)) return;
+			if (!this.playerCanDualWield && bulkSlot === BulkSimItemSlot.ItemSlotHandWeapon) return;
+
+			this.pickerGroups.set(bulkSlot, new BulkItemPickerGroup(itemList, this.simUI, this, bulkSlot));
 		});
 	}
 
@@ -498,6 +518,12 @@ export class BulkTab extends SimTab {
 			this.isPending = false;
 			this.resultsTab.show();
 		});
+	}
+
+	// Return whether or not the slot is considered secondary and the item should be grouped
+	// This includes items in the Finger2 or Trinket2 slots, or OffHand for dual-wield specs
+	private isSecondaryItemSlot(slot: ItemSlot) {
+		return isSecondaryItemSlot(slot) || (this.playerCanDualWield && slot === ItemSlot.ItemSlotOffHand);
 	}
 
 	private set isPending(value: boolean) {
@@ -588,7 +614,7 @@ export class BulkTab extends SimTab {
 			id: 'bulk-combinations',
 			label: 'Combinations',
 			labelTooltip:
-				'When checked bulk simulator will create all possible combinations of the items. When disabled trinkets and rings will still run all combinations becausee they have two slots to fill each.',
+				'When checked bulk simulator will create all possible combinations of the items. When disabled trinkets and rings will still run all combinations because they each have two slots to fill.',
 			changedEvent: _modObj => this.settingsChangedEmitter,
 			getValue: _modObj => this.doCombos,
 			setValue: (_, _modObj, newValue: boolean) => {
@@ -779,13 +805,22 @@ export class BulkTab extends SimTab {
 
 	private getCombinationsCount(): Element {
 		let comboCount = 1;
-		this.itemsBySlot.forEach((items, _) => {
-			if (!!items.size) {
+		this.itemsBySlot.forEach((itemsMap, bulkSlot) => {
+			if (!!itemsMap.size) {
+				// TODO: This is still not matching up because of some flaws with how the bulk sim generates combinations on the back-end
+				const items = [...itemsMap.values()];
+				const eligibleSlots = getEligibleItemSlots(this.simUI.sim.db.lookupItemSpec(items[0])!.item);
+				const equippedIds = eligibleSlots.map(slot => this.simUI.player.getEquippedItem(slot)?.id);
+
 				if (this.doCombos) {
-					const uniqueItemCount = new Set([...items.values()].map(item => item.id)).size;
-					comboCount *= uniqueItemCount + 1;
+					const uniqueItemCount = new Set([...equippedIds, ...items.map(item => item.id)]).size;
+					if ([BulkSimItemSlot.ItemSlotFinger, BulkSimItemSlot.ItemSlotTrinket, BulkSimItemSlot.ItemSlotHandWeapon].includes(bulkSlot)) {
+						comboCount *= eligibleSlots.length * uniqueItemCount;
+					} else {
+						comboCount *= uniqueItemCount + 1;
+					}
 				} else {
-					comboCount += items.size;
+					comboCount += itemsMap.size;
 				}
 			}
 		});
@@ -802,7 +837,7 @@ export class BulkTab extends SimTab {
 		}
 
 		const baseNumIterations = this.getDefaultIterationsCount();
-		const iterationCount = baseNumIterations * comboCount;
+		const iterationCount = Math.min(baseNumIterations / (this.fastMode ? 10 : 1), 1000) * comboCount;
 
 		this.combinations = comboCount;
 		this.iterations = iterationCount;

@@ -149,6 +149,7 @@ func (b *bulkSimRunner) Run(pctx context.Context, progress chan *proto.ProgressM
 	}
 
 	items := b.Request.GetBulkSettings().GetItems()
+	isFuryWarrior := player.GetFuryWarrior() != nil
 	// numItems := len(items)
 	// if b.Request.BulkSettings.Combinations && numItems > maxItemCount {
 	// 	return nil, fmt.Errorf("too many items specified (%d > %d), not computationally feasible", numItems, maxItemCount)
@@ -164,7 +165,7 @@ func (b *bulkSimRunner) Run(pctx context.Context, progress chan *proto.ProgressM
 		if !ok {
 			return nil, fmt.Errorf("unknown item with id %d in bulk settings", is.Id)
 		}
-		for _, slot := range eligibleSlotsForItem(item) {
+		for _, slot := range eligibleSlotsForItem(item, isFuryWarrior) {
 			distinctItemSlotCombos = append(distinctItemSlotCombos, &itemWithSlot{
 				Item:  is,
 				Slot:  slot,
@@ -183,8 +184,9 @@ func (b *bulkSimRunner) Run(pctx context.Context, progress chan *proto.ProgressM
 		if count > 1000000 {
 			panic("over 1 million combos, abandoning attempt")
 		}
+
 		substitutedRequest, changeLog := createNewRequestWithSubstitution(b.Request.BaseSettings, sub, b.Request.BulkSettings.AutoEnchant)
-		if isValidEquipment(substitutedRequest.Raid.Parties[0].Players[0].Equipment) {
+		if isValidEquipment(substitutedRequest.Raid.Parties[0].Players[0].Equipment, isFuryWarrior) {
 			// Need to sim base dps of gear loudout
 			validCombos = append(validCombos, singleBulkSim{req: substitutedRequest, cl: changeLog, eq: sub})
 			// Todo(Netzone-GehennasEU): Make this its own step?
@@ -218,7 +220,7 @@ func (b *bulkSimRunner) Run(pctx context.Context, progress chan *proto.ProgressM
 	var baseResult *itemSubstitutionSimResult
 	newIters := int64(iterations)
 	if b.Request.BulkSettings.FastMode {
-		newIters /= 100
+		newIters /= 10
 
 		// In fast mode try to keep starting iterations between 50 and 1000.
 		if newIters < 50 {
@@ -376,7 +378,6 @@ func (b *bulkSimRunner) getRankedResults(pctx context.Context, validCombos []sin
 			// actually run the sim in here.
 			go func(sub singleBulkSim) {
 				// overwrite the requests iterations with the input for this function.
-
 				sub.req.SimOptions.Iterations = int32(iterations)
 				results <- &itemSubstitutionSimResult{
 					Request:      sub.req,
@@ -443,7 +444,12 @@ func (es *equipmentSubstitution) HasItemReplacements() bool {
 func (es *equipmentSubstitution) CanonicalHash() string {
 	slotToID := map[proto.ItemSlot]int32{}
 	for _, repl := range es.Items {
-		slotToID[repl.Slot] = repl.Item.Id
+		if repl.Item != nil {
+			slotToID[repl.Slot] = repl.Item.Id
+		} else {
+			// Use 0 as a placeholder for an empty offhand slot
+			slotToID[repl.Slot] = 0
+		}
 	}
 
 	// Canonical representation always has the ring or trinket with smaller item ID in slot1
@@ -479,19 +485,33 @@ func (es *equipmentSubstitution) CanonicalHash() string {
 	return strings.Join(parts, ":")
 }
 
-// isValidEquipment returns true if the specified equipment spec is valid. An equipment spec
-// is valid if it does not reference a two-hander and off-hand weapon combo.
-func isValidEquipment(equipment *proto.EquipmentSpec) bool {
-	var usesTwoHander, usesOffhand bool
+// isValidEquipment returns true if the specified equipment spec is valid.
+// An equipment spec is valid if:
+// - The main-hand is not empty.
+// - The off-hand is not a two-hander, unless the player is a Fury Warrior.
+// - The off-hand is not empty, unless the main-hand is a two-hander and the player is not a Fury Warrior.
+// - Two distinct trinkets are used
+func isValidEquipment(equipment *proto.EquipmentSpec, isFuryWarrior bool) bool {
+	// Don't allow empty main-hands
+	if equipment.Items[proto.ItemSlot_ItemSlotMainHand] == nil {
+		return false
+	}
 
-	// Validate weapons
+	var usesTwoHander bool
 	if knownItem, ok := ItemsByID[equipment.Items[proto.ItemSlot_ItemSlotMainHand].Id]; ok {
 		usesTwoHander = knownItem.HandType == proto.HandType_HandTypeTwoHand
 	}
-	if knownItem, ok := ItemsByID[equipment.Items[proto.ItemSlot_ItemSlotOffHand].Id]; ok {
-		usesOffhand = knownItem.HandType == proto.HandType_HandTypeOffHand
+
+	usesOffHand := equipment.Items[proto.ItemSlot_ItemSlotOffHand].Id != 0
+
+	// Don't allow a two-hander with off-hand combination unless the player is a Fury warrior
+	if usesTwoHander && usesOffHand && !isFuryWarrior {
+		return false
 	}
-	if usesTwoHander && usesOffhand {
+
+	// Don't allow a blank off-hand if the player is a Fury warrior
+	// Don't allow a blank off-hand if the main-hand is not a two-hander
+	if (isFuryWarrior || !usesTwoHander) && !usesOffHand {
 		return false
 	}
 
@@ -520,6 +540,7 @@ func generateAllEquipmentSubstitutions(_ context.Context, baseItems []*proto.Ite
 		for _, is := range distinctItemSlotCombos {
 			itemsBySlot[is.Slot] = append(itemsBySlot[is.Slot], is.Item)
 		}
+		itemsBySlot[proto.ItemSlot_ItemSlotOffHand] = append(itemsBySlot[proto.ItemSlot_ItemSlotOffHand], nil)
 
 		if !combinations {
 			// seenCombos lets us deduplicate trinket/ring combos.
@@ -603,6 +624,7 @@ func genSlotCombos(slot proto.ItemSlot, baseItems []*proto.ItemSpec, baseRepl eq
 	for _, item := range replaceBySlot[slot] {
 		// Create a new equipment substitution from the current replacements plus the new item.
 		combo := createReplacement(baseRepl, &itemWithSlot{Slot: slot, Item: item})
+
 		if comboChecker.HasCombo(combo) {
 			continue
 		}
@@ -642,26 +664,36 @@ func createNewRequestWithSubstitution(readonlyInputRequest *proto.RaidSimRequest
 	equipment := player.Equipment
 	for _, is := range substitution.Items {
 		oldItem := equipment.Items[is.Slot]
-		if autoEnchant && oldItem.Enchant > 0 && is.Item.Enchant == 0 {
-			equipment.Items[is.Slot] = goproto.Clone(is.Item).(*proto.ItemSpec)
-			equipment.Items[is.Slot].Enchant = oldItem.Enchant
-			// TODO: logic to decide if the enchant can be applied to the new item...
-			// Specifically, offhand shouldn't get shield enchant
-			// Main/One hand shouldn't get staff enchant
-			// Later: replace normal enchant if replacement is staff.
-
-			changeLog.AddedItems = append(changeLog.AddedItems, &proto.ItemSpecWithSlot{
-				Item: equipment.Items[is.Slot],
-				Slot: is.Slot,
-			})
-		} else {
-			equipment.Items[is.Slot] = is.Item
+		if is.Item == nil {
+			// Fill empty slots. Mainly for off-hand when using a two-hander
+			equipment.Items[is.Slot] = &proto.ItemSpec{}
 			changeLog.AddedItems = append(changeLog.AddedItems, &proto.ItemSpecWithSlot{
 				Item: is.Item,
 				Slot: is.Slot,
 			})
+		} else {
+			if autoEnchant && oldItem.Enchant > 0 && is.Item.Enchant == 0 {
+				equipment.Items[is.Slot] = goproto.Clone(is.Item).(*proto.ItemSpec)
+				equipment.Items[is.Slot].Enchant = oldItem.Enchant
+				// TODO: logic to decide if the enchant can be applied to the new item...
+				// Specifically, offhand shouldn't get shield enchant
+				// Main/One hand shouldn't get staff enchant
+				// Later: replace normal enchant if replacement is staff.
+
+				changeLog.AddedItems = append(changeLog.AddedItems, &proto.ItemSpecWithSlot{
+					Item: equipment.Items[is.Slot],
+					Slot: is.Slot,
+				})
+			} else {
+				equipment.Items[is.Slot] = is.Item
+				changeLog.AddedItems = append(changeLog.AddedItems, &proto.ItemSpecWithSlot{
+					Item: is.Item,
+					Slot: is.Slot,
+				})
+			}
 		}
 	}
+
 	return request, changeLog
 }
 

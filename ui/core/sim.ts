@@ -269,6 +269,7 @@ export class Sim {
 			return result;
 		} catch (error) {
 			if (error instanceof SimError) throw error;
+			console.log(error);
 			throw new Error('Something went wrong running your raid sim. Reload the page and try again.');
 		}
 	}

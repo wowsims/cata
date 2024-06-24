@@ -1,4 +1,5 @@
 import { ItemSlot } from '../../../proto/common';
+import { getEnumValues } from '../../../utils';
 
 // Combines Fingers 1 and 2 and Trinket 1 and 2 into single groups
 export enum BulkSimItemSlot {
@@ -16,8 +17,21 @@ export enum BulkSimItemSlot {
 	ItemSlotTrinket,
 	ItemSlotMainHand,
 	ItemSlotOffHand,
+	ItemSlotHandWeapon, // Weapon grouping slot for specs that can dual-wield
 	ItemSlotRanged,
 }
+
+// Return all eligible bulk item slots.
+// If the player can dual-wield, exclude main-hand/off-hand in favor of the grouped weapons slot
+// Otherwise include main-hand/off-hand instead of the grouped weapons slot
+export const getBulkItemSlots = (canDualWield: boolean) => {
+	const allSlots = getEnumValues<BulkSimItemSlot>(BulkSimItemSlot);
+	if (canDualWield) {
+		return allSlots.filter(bulkSlot => ![BulkSimItemSlot.ItemSlotMainHand, BulkSimItemSlot.ItemSlotOffHand].includes(bulkSlot));
+	} else {
+		return allSlots.filter(bulkSlot => bulkSlot !== BulkSimItemSlot.ItemSlotHandWeapon);
+	}
+};
 
 export const bulkSimSlotNames: Map<BulkSimItemSlot, string> = new Map([
 	[BulkSimItemSlot.ItemSlotHead, 'Head'],
@@ -34,6 +48,7 @@ export const bulkSimSlotNames: Map<BulkSimItemSlot, string> = new Map([
 	[BulkSimItemSlot.ItemSlotTrinket, 'Trinkets'],
 	[BulkSimItemSlot.ItemSlotMainHand, 'Main Hand'],
 	[BulkSimItemSlot.ItemSlotOffHand, 'Off Hand'],
+	[BulkSimItemSlot.ItemSlotHandWeapon, 'Weapons'],
 	[BulkSimItemSlot.ItemSlotRanged, 'Ranged'],
 ]);
 
@@ -56,3 +71,10 @@ export const itemSlotToBulkSimItemSlot: Map<ItemSlot, BulkSimItemSlot> = new Map
 	[ItemSlot.ItemSlotOffHand, BulkSimItemSlot.ItemSlotOffHand],
 	[ItemSlot.ItemSlotRanged, BulkSimItemSlot.ItemSlotRanged],
 ]);
+
+export const getBulkItemSlotFromSlot = (slot: ItemSlot, canDualWield: boolean): BulkSimItemSlot => {
+	if (canDualWield && [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand].includes(slot)) {
+		return BulkSimItemSlot.ItemSlotHandWeapon;
+	}
+	return itemSlotToBulkSimItemSlot.get(slot)!;
+};

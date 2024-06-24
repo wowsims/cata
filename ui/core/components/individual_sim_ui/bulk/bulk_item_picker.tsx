@@ -2,6 +2,7 @@ import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
 import { IndividualSimUI } from '../../../individual_sim_ui';
+import { ItemSlot } from '../../../proto/common';
 import { EquippedItem } from '../../../proto_utils/equipped_item';
 import { getEligibleItemSlots } from '../../../proto_utils/utils';
 import { TypedEvent } from '../../../typed_event';
@@ -10,11 +11,13 @@ import { ItemRenderer } from '../../gear_picker/gear_picker';
 import { GearData } from '../../gear_picker/item_list';
 import { SelectorModalTabs } from '../../gear_picker/selector_modal';
 import { BulkTab } from '../bulk_tab';
+import { BulkSimItemSlot } from './utils';
 
 export default class BulkItemPicker extends Component {
 	private readonly itemElem: ItemRenderer;
 	readonly simUI: IndividualSimUI<any>;
 	readonly bulkUI: BulkTab;
+	readonly bulkSlot: BulkSimItemSlot;
 	// If less than 0, the item is currently equipped and not stored in the batch sim's item array
 	readonly index: number;
 	protected item: EquippedItem;
@@ -24,11 +27,12 @@ export default class BulkItemPicker extends Component {
 	public abortController: AbortController;
 	public signal: AbortSignal;
 
-	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, bulkUI: BulkTab, item: EquippedItem, index: number) {
+	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, bulkUI: BulkTab, item: EquippedItem, bulkSlot: BulkSimItemSlot, index: number) {
 		super(parent, 'bulk-item-picker');
 
 		this.simUI = simUI;
 		this.bulkUI = bulkUI;
+		this.bulkSlot = bulkSlot;
 		this.index = index;
 		this.item = item;
 		this.itemElem = new ItemRenderer(parent, this.rootElem, simUI.player);
@@ -48,7 +52,7 @@ export default class BulkItemPicker extends Component {
 	}
 
 	setItem(newItem: EquippedItem) {
-		this.itemElem.clear();
+		this.itemElem.clear(ItemSlot.ItemSlotHead);
 		this.itemElem.update(newItem);
 		this.item = newItem;
 		this.setupHandlers();
@@ -144,7 +148,7 @@ export default class BulkItemPicker extends Component {
 
 		const copyBtn = copyBtnRef.value!;
 		tippy(copyBtn, { content: 'Make an editable copy of this item.' });
-		const copyItem = () => this.bulkUI.addItem(this.item.asSpec());
+		const copyItem = () => this.bulkUI.addItemToSlot(this.item.asSpec(), this.bulkSlot);
 		copyBtn.addEventListener('click', copyItem);
 		this.addOnDisposeCallback(() => copyBtn.removeEventListener('click', copyItem));
 
