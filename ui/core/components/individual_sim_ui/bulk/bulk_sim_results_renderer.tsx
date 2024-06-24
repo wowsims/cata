@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { ref } from 'tsx-vanilla';
 
 import { IndividualSimUI } from '../../../individual_sim_ui';
-import { BulkComboResult, ItemSpecWithSlot } from '../../../proto/api';
+import { BulkComboResult } from '../../../proto/api';
 import { TypedEvent } from '../../../typed_event';
 import { formatDeltaTextElem } from '../../../utils';
 import { Component } from '../../component';
@@ -11,8 +11,12 @@ import Toast from '../../toast';
 import { BulkTab } from '../bulk_tab';
 
 export default class BulkSimResultRenderer extends Component {
+	readonly simUI: IndividualSimUI<any>;
+
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, bulkSimUI: BulkTab, result: BulkComboResult, baseResult: BulkComboResult) {
 		super(parent, 'bulk-sim-result-root');
+
+		this.simUI = simUI;
 
 		if (!bulkSimUI.simTalents) {
 			this.rootElem.classList.add('bulk-sim-result-no-talents');
@@ -54,9 +58,11 @@ export default class BulkSimResultRenderer extends Component {
 		if (!!result.itemsAdded?.length) {
 			equipButtonRef.value?.addEventListener('click', () => {
 				result.itemsAdded.forEach(itemAdded => {
-					const item = simUI.sim.db.lookupItemSpec(itemAdded.item!);
-					simUI.player.equipItem(TypedEvent.nextEventID(), itemAdded.slot, item);
-					simUI.simHeader.activateTab('gear-tab');
+					if (itemAdded.item) {
+						const item = simUI.sim.db.lookupItemSpec(itemAdded.item);
+						simUI.player.equipItem(TypedEvent.nextEventID(), itemAdded.slot, item);
+						simUI.simHeader.activateTab('gear-tab');
+					}
 				});
 				new Toast({
 					variant: 'success',
@@ -65,29 +71,25 @@ export default class BulkSimResultRenderer extends Component {
 			});
 
 			const items = (<></>) as HTMLElement;
-			for (const is of result.itemsAdded) {
+			for (const spec of result.itemsAdded) {
 				const itemContainer = (<div className="bulk-result-item" />) as HTMLElement;
-				const item = simUI.sim.db.lookupItemSpec(is.item!);
 				const renderer = new ItemRenderer(items, itemContainer, simUI.player);
-				renderer.update(item!);
+				if (spec.item && spec.item.id != 0) {
+					const item = simUI.sim.db.lookupItemSpec(spec.item);
+					renderer.update(item!);
+				} else {
+					renderer.clear(spec.slot);
+				}
 				items.appendChild(itemContainer);
 			}
 			itemsContainerRef.value!.appendChild(items);
 		} else if (!result.talentLoadout || typeof result.talentLoadout !== 'object') {
 			dpsDeltaRef.value?.classList.add('hide');
-			itemsContainerRef.value!.appendChild(<p className="mb-0">Equipped</p>);
+			itemsContainerRef.value!.appendChild(<p className="mb-0">Current Gear</p>);
 		}
 	}
 
 	private formatDps(dps: number): string {
 		return (Math.round(dps * 100) / 100).toFixed(2);
-	}
-
-	private formatDpsDelta(delta: number): string {
-		return (delta >= 0 ? '+' : '') + this.formatDps(delta);
-	}
-
-	private itemSlotName(is: ItemSpecWithSlot): string {
-		return JSON.parse(ItemSpecWithSlot.toJsonString(is, { emitDefaultValues: true }))['slot'].replace('ItemSlot', '');
 	}
 }
