@@ -2,8 +2,7 @@ import clsx from 'clsx';
 import { ref } from 'tsx-vanilla';
 
 import { IndividualSimUI } from '../../../individual_sim_ui';
-import { BulkComboResult, ItemSpecWithSlot } from '../../../proto/api';
-import { ItemSlot } from '../../../proto/common';
+import { BulkComboResult } from '../../../proto/api';
 import { TypedEvent } from '../../../typed_event';
 import { formatDeltaTextElem } from '../../../utils';
 import { Component } from '../../component';
@@ -59,7 +58,6 @@ export default class BulkSimResultRenderer extends Component {
 		if (!!result.itemsAdded?.length) {
 			equipButtonRef.value?.addEventListener('click', () => {
 				result.itemsAdded.forEach(itemAdded => {
-					// This could be blank for a blank off-hand paired with a two-handed weapon
 					if (itemAdded.item) {
 						const item = simUI.sim.db.lookupItemSpec(itemAdded.item);
 						simUI.player.equipItem(TypedEvent.nextEventID(), itemAdded.slot, item);
@@ -73,10 +71,10 @@ export default class BulkSimResultRenderer extends Component {
 			});
 
 			const items = (<></>) as HTMLElement;
-			for (const spec of this.fillSecondarySlots(result.itemsAdded)) {
+			for (const spec of result.itemsAdded) {
 				const itemContainer = (<div className="bulk-result-item" />) as HTMLElement;
 				const renderer = new ItemRenderer(items, itemContainer, simUI.player);
-				if (spec.item) {
+				if (spec.item && spec.item.id != 0) {
 					const item = simUI.sim.db.lookupItemSpec(spec.item);
 					renderer.update(item!);
 				} else {
@@ -93,81 +91,5 @@ export default class BulkSimResultRenderer extends Component {
 
 	private formatDps(dps: number): string {
 		return (Math.round(dps * 100) / 100).toFixed(2);
-	}
-
-	// Take the results and inject additional specs to improve readability of paired slots (e.g. MH/OH, Ring 1/2, Trinket 1/2)
-	private fillSecondarySlots(specs: Array<ItemSpecWithSlot>): Array<ItemSpecWithSlot> {
-		const newSpecs = new Array<ItemSpecWithSlot>();
-		specs.forEach((spec, idx) => {
-			switch (spec.slot) {
-				case ItemSlot.ItemSlotMainHand:
-					newSpecs.push(spec);
-					if (specs[idx + 1]?.slot !== ItemSlot.ItemSlotOffHand) {
-						newSpecs.push(
-							ItemSpecWithSlot.create({
-								item: this.simUI.player.getEquippedItem(ItemSlot.ItemSlotOffHand)?.asSpec(),
-								slot: ItemSlot.ItemSlotOffHand,
-							}),
-						);
-					}
-					break;
-				case ItemSlot.ItemSlotOffHand:
-					if (specs[idx - 1]?.slot !== ItemSlot.ItemSlotMainHand) {
-						newSpecs.push(
-							ItemSpecWithSlot.create({
-								item: this.simUI.player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.asSpec(),
-								slot: ItemSlot.ItemSlotMainHand,
-							}),
-						);
-					}
-					newSpecs.push(spec);
-					break;
-				case ItemSlot.ItemSlotFinger1:
-					newSpecs.push(spec);
-					if (specs[idx + 1]?.slot !== ItemSlot.ItemSlotFinger2) {
-						newSpecs.push(
-							ItemSpecWithSlot.create({
-								item: this.simUI.player.getEquippedItem(ItemSlot.ItemSlotFinger2)?.asSpec(),
-								slot: ItemSlot.ItemSlotFinger2,
-							}),
-						);
-					}
-					break;
-				case ItemSlot.ItemSlotFinger2:
-					if (specs[idx - 1]?.slot !== ItemSlot.ItemSlotFinger1) {
-						newSpecs.push(
-							ItemSpecWithSlot.create({
-								item: this.simUI.player.getEquippedItem(ItemSlot.ItemSlotFinger1)?.asSpec(),
-								slot: ItemSlot.ItemSlotFinger1,
-							}),
-						);
-					}
-					newSpecs.push(spec);
-					break;
-				case ItemSlot.ItemSlotTrinket1:
-					newSpecs.push(spec);
-					if (specs[idx + 1]?.slot !== ItemSlot.ItemSlotTrinket2) {
-						newSpecs.push(
-							ItemSpecWithSlot.create({
-								item: this.simUI.player.getEquippedItem(ItemSlot.ItemSlotTrinket2)?.asSpec(),
-								slot: ItemSlot.ItemSlotTrinket2,
-							}),
-						);
-					}
-					break;
-				case ItemSlot.ItemSlotTrinket2:
-					if (specs[idx - 1]?.slot !== ItemSlot.ItemSlotTrinket1) {
-						newSpecs.push(
-							ItemSpecWithSlot.create({
-								item: this.simUI.player.getEquippedItem(ItemSlot.ItemSlotTrinket1)?.asSpec(),
-								slot: ItemSlot.ItemSlotTrinket1,
-							}),
-						);
-					}
-					newSpecs.push(spec);
-					break;
-			}
-		});
-		return newSpecs;
 	}
 }

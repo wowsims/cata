@@ -171,14 +171,22 @@ export class BulkTab extends SimTab {
 			this.loadSettings();
 
 			const loadEquippedItems = () => {
+				// Clear all previously equipped items from the pickers
+				for (const group of this.pickerGroups.values()) {
+					if (group.has(-1)) {
+						group.remove(-1);
+					}
+					if (group.has(-2)) {
+						group.remove(-2);
+					}
+				}
+
 				this.simUI.player.getEquippedItems().forEach((equippedItem, slot) => {
 					const bulkSlot = getBulkItemSlotFromSlot(slot, this.playerCanDualWield);
 					const group = this.pickerGroups.get(bulkSlot)!;
 					const idx = this.isSecondaryItemSlot(slot) ? -2 : -1;
 					if (equippedItem) {
 						group.add(idx, equippedItem);
-					} else {
-						group.remove(idx);
 					}
 				});
 			};

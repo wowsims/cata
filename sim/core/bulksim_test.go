@@ -148,6 +148,7 @@ func TestGenerateAllEquipmentSubstitutions(t *testing.T) {
 	type args struct {
 		combinations           bool
 		distinctItemSlotCombos []*itemWithSlot
+		isFuryWarrior          bool
 	}
 	tests := []struct {
 		name string
@@ -159,6 +160,7 @@ func TestGenerateAllEquipmentSubstitutions(t *testing.T) {
 			args: args{
 				combinations:           true,
 				distinctItemSlotCombos: []*itemWithSlot{},
+				isFuryWarrior:          false,
 			},
 			want: []*equipmentSubstitution{
 				{},
@@ -171,6 +173,7 @@ func TestGenerateAllEquipmentSubstitutions(t *testing.T) {
 				distinctItemSlotCombos: []*itemWithSlot{
 					{Item: item1, Slot: proto.ItemSlot_ItemSlotHead},
 				},
+				isFuryWarrior: false,
 			},
 			want: []*equipmentSubstitution{
 				{},
@@ -187,6 +190,7 @@ func TestGenerateAllEquipmentSubstitutions(t *testing.T) {
 					{Item: item1, Slot: proto.ItemSlot_ItemSlotHead},
 					{Item: item2, Slot: proto.ItemSlot_ItemSlotShoulder},
 				},
+				isFuryWarrior: false,
 			},
 			want: []*equipmentSubstitution{
 				{},
@@ -212,6 +216,7 @@ func TestGenerateAllEquipmentSubstitutions(t *testing.T) {
 					{Item: item2, Slot: proto.ItemSlot_ItemSlotTrinket1},
 					{Item: item2, Slot: proto.ItemSlot_ItemSlotTrinket2},
 				},
+				isFuryWarrior: false,
 			},
 			want: []*equipmentSubstitution{
 				{},
@@ -257,6 +262,7 @@ func TestGenerateAllEquipmentSubstitutions(t *testing.T) {
 					{Item: item2, Slot: proto.ItemSlot_ItemSlotTrinket1},
 					{Item: item2, Slot: proto.ItemSlot_ItemSlotTrinket2},
 				},
+				isFuryWarrior: false,
 			},
 			want: []*equipmentSubstitution{
 				{},
@@ -336,6 +342,7 @@ func TestGenerateAllEquipmentSubstitutions(t *testing.T) {
 					{Item: item3, Slot: proto.ItemSlot_ItemSlotFinger1},
 					{Item: item3, Slot: proto.ItemSlot_ItemSlotFinger2},
 				},
+				isFuryWarrior: false,
 			},
 			want: []*equipmentSubstitution{
 				{},
@@ -358,6 +365,7 @@ func TestGenerateAllEquipmentSubstitutions(t *testing.T) {
 					{Item: item2, Slot: proto.ItemSlot_ItemSlotFinger1},
 					{Item: item2, Slot: proto.ItemSlot_ItemSlotFinger2},
 				},
+				isFuryWarrior: false,
 			},
 			want: []*equipmentSubstitution{
 				{},
@@ -391,6 +399,7 @@ func TestGenerateAllEquipmentSubstitutions(t *testing.T) {
 					{Item: item2, Slot: proto.ItemSlot_ItemSlotOffHand},
 					{Item: item3, Slot: proto.ItemSlot_ItemSlotMainHand},
 				},
+				isFuryWarrior: false,
 			},
 			want: []*equipmentSubstitution{
 				{},
@@ -406,10 +415,6 @@ func TestGenerateAllEquipmentSubstitutions(t *testing.T) {
 					{Item: item2, Slot: proto.ItemSlot_ItemSlotOffHand},
 				}},
 				{Items: []*itemWithSlot{
-					{Item: item1, Slot: proto.ItemSlot_ItemSlotMainHand},
-					{Item: nil, Slot: proto.ItemSlot_ItemSlotOffHand},
-				}},
-				{Items: []*itemWithSlot{
 					{Item: item2, Slot: proto.ItemSlot_ItemSlotMainHand},
 				}},
 				{Items: []*itemWithSlot{
@@ -419,10 +424,6 @@ func TestGenerateAllEquipmentSubstitutions(t *testing.T) {
 				{Items: []*itemWithSlot{
 					{Item: item2, Slot: proto.ItemSlot_ItemSlotMainHand},
 					{Item: item2, Slot: proto.ItemSlot_ItemSlotOffHand},
-				}},
-				{Items: []*itemWithSlot{
-					{Item: item2, Slot: proto.ItemSlot_ItemSlotMainHand},
-					{Item: nil, Slot: proto.ItemSlot_ItemSlotOffHand},
 				}},
 				{Items: []*itemWithSlot{
 					{Item: item3, Slot: proto.ItemSlot_ItemSlotMainHand},
@@ -436,28 +437,33 @@ func TestGenerateAllEquipmentSubstitutions(t *testing.T) {
 					{Item: item2, Slot: proto.ItemSlot_ItemSlotOffHand},
 				}},
 				{Items: []*itemWithSlot{
-					{Item: item3, Slot: proto.ItemSlot_ItemSlotMainHand},
-					{Item: nil, Slot: proto.ItemSlot_ItemSlotOffHand},
-				}},
-				{Items: []*itemWithSlot{
 					{Item: item1, Slot: proto.ItemSlot_ItemSlotOffHand},
 				}},
 				{Items: []*itemWithSlot{
 					{Item: item2, Slot: proto.ItemSlot_ItemSlotOffHand},
-				}},
-				{Items: []*itemWithSlot{
-					{Item: nil, Slot: proto.ItemSlot_ItemSlotOffHand},
 				}},
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			results := generateAllEquipmentSubstitutions(context.Background(), baseItems, tt.args.combinations, tt.args.distinctItemSlotCombos)
+			results := generateAllEquipmentSubstitutions(context.Background(), baseItems, tt.args.combinations, tt.args.distinctItemSlotCombos, tt.args.isFuryWarrior)
 
 			idx := 0
 			for got := range results {
 				wanted := tt.want[idx]
+
+				// Uncomment this for easier debugging:
+				// fmt.Println("Expected:")
+				// for _, item := range wanted.Items {
+				// 	fmt.Println(item)
+				// }
+				// fmt.Println("Got:")
+				// for _, item := range got.Items {
+				// 	fmt.Println(item)
+				// }
+				// fmt.Println("===============")
+
 				if len(got.Items) != len(wanted.Items) {
 					t.Errorf("%s generateAllEquipmentSubstitutions(%d) has incorrect number of items, expected: %d, got: %d", tt.name, idx, len(wanted.Items), len(got.Items))
 				}

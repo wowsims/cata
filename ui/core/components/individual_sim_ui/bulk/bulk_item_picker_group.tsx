@@ -24,6 +24,10 @@ export default class BulkItemPickerGroup extends ContentBlock {
 		this.addEmptyElement();
 	}
 
+	has(idx: number) {
+		return !!this.pickers.get(idx);
+	}
+
 	add(idx: number, item: EquippedItem) {
 		if (!this.pickers.size) this.bodyElement.replaceChildren();
 
