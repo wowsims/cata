@@ -59,9 +59,12 @@ export default class BulkSimResultRenderer extends Component {
 		if (!!result.itemsAdded?.length) {
 			equipButtonRef.value?.addEventListener('click', () => {
 				result.itemsAdded.forEach(itemAdded => {
-					const item = simUI.sim.db.lookupItemSpec(itemAdded.item!);
-					simUI.player.equipItem(TypedEvent.nextEventID(), itemAdded.slot, item);
-					simUI.simHeader.activateTab('gear-tab');
+					// This could be blank for a blank off-hand paired with a two-handed weapon
+					if (itemAdded.item) {
+						const item = simUI.sim.db.lookupItemSpec(itemAdded.item);
+						simUI.player.equipItem(TypedEvent.nextEventID(), itemAdded.slot, item);
+						simUI.simHeader.activateTab('gear-tab');
+					}
 				});
 				new Toast({
 					variant: 'success',

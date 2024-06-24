@@ -728,6 +728,7 @@ type SubstitutionComboChecker map[string]struct{}
 
 func (ic *SubstitutionComboChecker) HasCombo(replacements equipmentSubstitution) bool {
 	key := replacements.CanonicalHash()
+	fmt.Println(key)
 	if key == "" {
 		// Invalid combo.
 		return true
