@@ -13,6 +13,7 @@ const (
 	itemStarshardEdge     = 45620
 	itemPillarOfFortitude = 46350
 	itemIronmender        = 45271
+	itemBookOfBindingWIll = 65133
 )
 
 var (
@@ -26,14 +27,14 @@ var (
 		Slot:  proto.ItemSlot_ItemSlotOffHand,
 		Index: 1,
 	}
-	starshardEdge2 = &itemWithSlot{
-		Item:  &proto.ItemSpec{Id: itemStarshardEdge},
-		Slot:  proto.ItemSlot_ItemSlotMainHand,
-		Index: 2,
-	}
 	pillarOfFortitude = &itemWithSlot{
 		Item:  &proto.ItemSpec{Id: itemPillarOfFortitude},
 		Slot:  proto.ItemSlot_ItemSlotMainHand,
+		Index: 2,
+	}
+	bookOfBindingWill = &itemWithSlot{
+		Item:  &proto.ItemSpec{Id: itemBookOfBindingWIll},
+		Slot:  proto.ItemSlot_ItemSlotOffHand,
 		Index: 3,
 	}
 
@@ -42,6 +43,7 @@ var (
 			{Id: itemStarshardEdge, Type: proto.ItemType_ItemTypeWeapon, HandType: proto.HandType_HandTypeMainHand},
 			{Id: itemPillarOfFortitude, Type: proto.ItemType_ItemTypeWeapon, HandType: proto.HandType_HandTypeTwoHand},
 			{Id: itemIronmender, Type: proto.ItemType_ItemTypeWeapon, HandType: proto.HandType_HandTypeOffHand},
+			{Id: itemBookOfBindingWIll, Type: proto.ItemType_ItemTypeWeapon, HandType: proto.HandType_HandTypeOffHand},
 		},
 	}
 )
@@ -52,22 +54,43 @@ func TestIsValidEquipment(t *testing.T) {
 	addToDatabase(tinyItemDatabase)
 
 	for _, tc := range []struct {
-		comment string
-		spec    *proto.EquipmentSpec
-		want    bool
+		comment       string
+		spec          *proto.EquipmentSpec
+		isFuryWarrior bool
+		want          bool
 	}{
 		{
-			comment: "simple equipment set with just one mainhand weapon is valid",
-			spec:    createEquipmentFromItems(starshardEdge1),
-			want:    true,
+			comment:       "simple equipment set with just one mainhand weapon is valid",
+			spec:          createEquipmentFromItems(starshardEdge1, bookOfBindingWill),
+			isFuryWarrior: false,
+			want:          true,
 		},
 		{
-			comment: "cannot equip offhand and two-hander",
-			spec:    createEquipmentFromItems(pillarOfFortitude, ironmender),
-			want:    false,
+			comment:       "simple equipment set with just one two-handed weapon is valid",
+			spec:          createEquipmentFromItems(ironmender),
+			isFuryWarrior: false,
+			want:          true,
+		},
+		{
+			comment:       "simple equipment set with just one mainhand weapon is not valid",
+			spec:          createEquipmentFromItems(starshardEdge1),
+			isFuryWarrior: false,
+			want:          false,
+		},
+		{
+			comment:       "cannot equip offhand and two-hander if player is not a fury warrior",
+			spec:          createEquipmentFromItems(pillarOfFortitude, ironmender),
+			isFuryWarrior: false,
+			want:          false,
+		},
+		{
+			comment:       "can equip offhand and two-hander if player is a fury warrior",
+			spec:          createEquipmentFromItems(ironmender, ironmender),
+			isFuryWarrior: true,
+			want:          true,
 		},
 	} {
-		if got := isValidEquipment(tc.spec); got != tc.want {
+		if got := isValidEquipment(tc.spec, tc.isFuryWarrior); got != tc.want {
 			t.Fatalf("%s: isValidEquipment(%v) = %v, want %v", tc.comment, tc.spec, got, tc.want)
 		}
 	}
@@ -356,6 +379,77 @@ func TestGenerateAllEquipmentSubstitutions(t *testing.T) {
 				}},
 			},
 		},
+
+		{
+			name: "special case weapon combo",
+			args: args{
+				combinations: true,
+				distinctItemSlotCombos: []*itemWithSlot{
+					{Item: item1, Slot: proto.ItemSlot_ItemSlotMainHand},
+					{Item: item1, Slot: proto.ItemSlot_ItemSlotOffHand},
+					{Item: item2, Slot: proto.ItemSlot_ItemSlotMainHand},
+					{Item: item2, Slot: proto.ItemSlot_ItemSlotOffHand},
+					{Item: item3, Slot: proto.ItemSlot_ItemSlotMainHand},
+				},
+			},
+			want: []*equipmentSubstitution{
+				{},
+				{Items: []*itemWithSlot{
+					{Item: item1, Slot: proto.ItemSlot_ItemSlotMainHand},
+				}},
+				{Items: []*itemWithSlot{
+					{Item: item1, Slot: proto.ItemSlot_ItemSlotMainHand},
+					{Item: item1, Slot: proto.ItemSlot_ItemSlotOffHand},
+				}},
+				{Items: []*itemWithSlot{
+					{Item: item1, Slot: proto.ItemSlot_ItemSlotMainHand},
+					{Item: item2, Slot: proto.ItemSlot_ItemSlotOffHand},
+				}},
+				{Items: []*itemWithSlot{
+					{Item: item1, Slot: proto.ItemSlot_ItemSlotMainHand},
+					{Item: nil, Slot: proto.ItemSlot_ItemSlotOffHand},
+				}},
+				{Items: []*itemWithSlot{
+					{Item: item2, Slot: proto.ItemSlot_ItemSlotMainHand},
+				}},
+				{Items: []*itemWithSlot{
+					{Item: item2, Slot: proto.ItemSlot_ItemSlotMainHand},
+					{Item: item1, Slot: proto.ItemSlot_ItemSlotOffHand},
+				}},
+				{Items: []*itemWithSlot{
+					{Item: item2, Slot: proto.ItemSlot_ItemSlotMainHand},
+					{Item: item2, Slot: proto.ItemSlot_ItemSlotOffHand},
+				}},
+				{Items: []*itemWithSlot{
+					{Item: item2, Slot: proto.ItemSlot_ItemSlotMainHand},
+					{Item: nil, Slot: proto.ItemSlot_ItemSlotOffHand},
+				}},
+				{Items: []*itemWithSlot{
+					{Item: item3, Slot: proto.ItemSlot_ItemSlotMainHand},
+				}},
+				{Items: []*itemWithSlot{
+					{Item: item3, Slot: proto.ItemSlot_ItemSlotMainHand},
+					{Item: item1, Slot: proto.ItemSlot_ItemSlotOffHand},
+				}},
+				{Items: []*itemWithSlot{
+					{Item: item3, Slot: proto.ItemSlot_ItemSlotMainHand},
+					{Item: item2, Slot: proto.ItemSlot_ItemSlotOffHand},
+				}},
+				{Items: []*itemWithSlot{
+					{Item: item3, Slot: proto.ItemSlot_ItemSlotMainHand},
+					{Item: nil, Slot: proto.ItemSlot_ItemSlotOffHand},
+				}},
+				{Items: []*itemWithSlot{
+					{Item: item1, Slot: proto.ItemSlot_ItemSlotOffHand},
+				}},
+				{Items: []*itemWithSlot{
+					{Item: item2, Slot: proto.ItemSlot_ItemSlotOffHand},
+				}},
+				{Items: []*itemWithSlot{
+					{Item: nil, Slot: proto.ItemSlot_ItemSlotOffHand},
+				}},
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -365,17 +459,17 @@ func TestGenerateAllEquipmentSubstitutions(t *testing.T) {
 			for got := range results {
 				wanted := tt.want[idx]
 				if len(got.Items) != len(wanted.Items) {
-					t.Errorf("generateAllEquipmentSubstitutions(%d) has incorrect number of items, expected: %d, got: %d", idx, len(wanted.Items), len(got.Items))
+					t.Errorf("%s generateAllEquipmentSubstitutions(%d) has incorrect number of items, expected: %d, got: %d", tt.name, idx, len(wanted.Items), len(got.Items))
 				}
 				for itemIdx, item := range got.Items {
-					if wanted.Items[itemIdx].Item.Id != item.Item.Id {
-						t.Errorf("generateAllEquipmentSubstitutions(%d) has incorrect item in list, expected: %d, got: %d", idx, wanted.Items[itemIdx].Item.Id, item.Item.Id)
+					if wanted.Items[itemIdx].Item != nil && wanted.Items[itemIdx].Item.Id != item.Item.Id {
+						t.Errorf("%s generateAllEquipmentSubstitutions(%d) has incorrect item in list, expected: %d, got: %d", tt.name, idx, wanted.Items[itemIdx].Item.Id, item.Item.Id)
 					}
 				}
 				idx++
 			}
 			if idx != len(tt.want) {
-				t.Errorf("generateAllEquipmentSubstitutions has incorrect number of items, expected: %d, got: %d", len(tt.want), idx)
+				t.Errorf("%s generateAllEquipmentSubstitutions has incorrect number of items, expected: %d, got: %d", tt.name, len(tt.want), idx)
 			}
 		})
 	}

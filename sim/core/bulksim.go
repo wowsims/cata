@@ -537,10 +537,14 @@ func generateAllEquipmentSubstitutions(_ context.Context, baseItems []*proto.Ite
 
 		// Organize everything by slot.
 		itemsBySlot := make([][]*proto.ItemSpec, 17)
-		for _, is := range distinctItemSlotCombos {
-			itemsBySlot[is.Slot] = append(itemsBySlot[is.Slot], is.Item)
+		for _, spec := range distinctItemSlotCombos {
+			itemsBySlot[spec.Slot] = append(itemsBySlot[spec.Slot], spec.Item)
 		}
-		itemsBySlot[proto.ItemSlot_ItemSlotOffHand] = append(itemsBySlot[proto.ItemSlot_ItemSlotOffHand], nil)
+
+		// Add a blank offhand to be paired with a two-handed weapon if any weapons were selected
+		if len(itemsBySlot[proto.ItemSlot_ItemSlotMainHand]) > 0 {
+			itemsBySlot[proto.ItemSlot_ItemSlotOffHand] = append(itemsBySlot[proto.ItemSlot_ItemSlotOffHand], nil)
+		}
 
 		if !combinations {
 			// seenCombos lets us deduplicate trinket/ring combos.
