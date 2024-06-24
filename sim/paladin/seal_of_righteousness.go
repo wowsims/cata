@@ -106,7 +106,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 				return
 			}
 
-			// SoR only procs on white hits, CS, DS, TV and HoW
+			// SoR only procs on white hits, CS, DS, TV, HoW and the melee part of HotR
 			if spell.ProcMask&core.ProcMaskMeleeWhiteHit == 0 &&
 				spell.ClassSpellMask&SpellMaskCanTriggerSealOfRighteousness == 0 {
 				return

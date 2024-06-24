@@ -50,13 +50,15 @@ func (paladin *Paladin) applySanctityOfBattle() {
 		return
 	}
 
+	baseSpenderCooldown := float64(paladin.sharedBuilderBaseCD.Milliseconds())
+
 	spenderCooldownMod := paladin.AddDynamicMod(core.SpellModConfig{
 		Kind:      core.SpellMod_Cooldown_Flat,
-		ClassMask: SpellMaskCrusaderStrike | SpellMaskDivineStorm,
+		ClassMask: SpellMaskBuilder,
 	})
 
 	updateTimeValue := func(castSpeed float64) {
-		spenderCooldownMod.UpdateTimeValue(-(time.Millisecond * time.Duration(4500-4500*castSpeed)))
+		spenderCooldownMod.UpdateTimeValue(-(time.Millisecond * time.Duration(baseSpenderCooldown-baseSpenderCooldown*castSpeed)))
 	}
 
 	paladin.AddOnCastSpeedChanged(func(_ float64, castSpeed float64) {
@@ -230,8 +232,8 @@ func (paladin *Paladin) applyDivineStorm() {
 			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
-				Timer:    paladin.NewTimer(),
-				Duration: 4500 * time.Millisecond,
+				Timer:    paladin.sharedBuilderTimer,
+				Duration: paladin.sharedBuilderBaseCD,
 			},
 		},
 
