@@ -475,6 +475,7 @@ export class ActionId {
 				}
 				break;
 			case 'Raging Blow':
+			case 'Whirlwind':
 			case 'Slam':
 			case 'Frost Strike':
 			case 'Plague Strike':
@@ -511,11 +512,6 @@ export class ActionId {
 			case 'Maul':
 				if (this.tag == 1) {
 					name += ' (Queue)';
-				}
-				break;
-			case 'Whirlwind':
-				if (this.tag == 1) {
-					name += ' (OH)';
 				}
 				break;
 			case 'Seed of Corruption':
