@@ -285,10 +285,12 @@ export class Individual60UImporter<SpecType extends Spec> extends Importer {
 			if (itemJson.gems) {
 				itemSpec.gems = (itemJson.gems as Array<any>).filter(gemJson => gemJson?.id).map(gemJson => gemJson.id);
 			}
+			if (itemJson.suffixId) {
+				itemSpec.randomSuffix = itemJson.suffixId;
+			}
 			if (itemJson.reforge?.id) {
 				itemSpec.reforging = itemJson.reforge.id;
 			}
-
 			equipmentSpec.items.push(itemSpec);
 		});
 
