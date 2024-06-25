@@ -58,8 +58,6 @@ export class BulkTab extends SimTab {
 
 	// The main array we will use to store items with indexes. Null values are the result of removed items to avoid having to shift pickers over and over.
 	protected items: Array<ItemSpec | null> = new Array<ItemSpec | null>();
-	// Separate Map used to store items broken down by item slot, specifically for combination generation
-	protected itemsBySlot: Map<BulkSimItemSlot, Map<number, ItemSpec>> = new Map();
 	protected pickerGroups: Map<BulkSimItemSlot, BulkItemPickerGroup> = new Map();
 
 	protected combinations = 0;
@@ -81,10 +79,6 @@ export class BulkTab extends SimTab {
 		this.simUI = simUI;
 		this.playerCanDualWield = this.simUI.player.getPlayerSpec().canDualWield;
 		this.playerIsFuryWarrior = this.simUI.player.getSpec() === Spec.SpecFuryWarrior;
-
-		getEnumValues<number>(BulkSimItemSlot).forEach(slot => {
-			this.itemsBySlot.set(slot, new Map());
-		});
 
 		const leftPanelRef = ref<HTMLDivElement>();
 		const rightPanelRef = ref<HTMLDivElement>();
@@ -239,6 +233,8 @@ export class BulkTab extends SimTab {
 				ignoreUnknownFields: true,
 			});
 
+			this.addItems(settings.items);
+
 			this.doCombos = settings.combinations;
 			this.fastMode = settings.fastMode;
 			this.autoEnchant = settings.autoEnchant;
@@ -358,7 +354,6 @@ export class BulkTab extends SimTab {
 					const bulkSlot = getBulkItemSlotFromSlot(slot, this.playerCanDualWield);
 					const group = this.pickerGroups.get(bulkSlot)!;
 					group.add(idx, equippedItem);
-					this.itemsBySlot.get(bulkSlot)?.set(idx, item);
 				});
 			}
 		});
@@ -375,7 +370,6 @@ export class BulkTab extends SimTab {
 			const idx = this.items.push(item) - 1;
 			const group = this.pickerGroups.get(bulkSlot)!;
 			group.add(idx, equippedItem);
-			this.itemsBySlot.get(bulkSlot)?.set(idx, item);
 
 			this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
 		}
@@ -393,7 +387,6 @@ export class BulkTab extends SimTab {
 				const bulkSlot = getBulkItemSlotFromSlot(slot, this.playerCanDualWield);
 				const group = this.pickerGroups.get(bulkSlot)!;
 				group.update(idx, equippedItem);
-				this.itemsBySlot.get(bulkSlot)?.set(idx, newItem);
 			});
 		}
 
@@ -424,12 +417,9 @@ export class BulkTab extends SimTab {
 			// Try to find the matching item within its eligible groups
 			getEligibleItemSlots(equippedItem.item, this.playerIsFuryWarrior).forEach(slot => {
 				const bulkSlot = getBulkItemSlotFromSlot(slot, this.playerCanDualWield);
-				if (this.itemsBySlot.get(bulkSlot)?.has(idx)) {
-					const group = this.pickerGroups.get(bulkSlot)!;
-					group.remove(idx);
-					this.itemsBySlot.get(bulkSlot)?.delete(idx);
-					this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
-				}
+				const group = this.pickerGroups.get(bulkSlot)!;
+				group.remove(idx);
+				this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
 			});
 		}
 	}
