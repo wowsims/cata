@@ -39,8 +39,6 @@ export class BulkTab extends SimTab {
 	readonly itemsChangedEmitter = new TypedEvent<void>();
 	readonly settingsChangedEmitter = new TypedEvent<void>();
 
-	private readonly leftPanel: HTMLElement;
-	private readonly rightPanel: HTMLElement;
 	private readonly setupTabElem: HTMLElement;
 	private readonly resultsTabElem: HTMLElement;
 	private readonly combinationsElem: HTMLElement;
@@ -58,8 +56,6 @@ export class BulkTab extends SimTab {
 
 	// The main array we will use to store items with indexes. Null values are the result of removed items to avoid having to shift pickers over and over.
 	protected items: Array<ItemSpec | null> = new Array<ItemSpec | null>();
-	// Separate Map used to store items broken down by item slot, specifically for combination generation
-	protected itemsBySlot: Map<BulkSimItemSlot, Map<number, ItemSpec>> = new Map();
 	protected pickerGroups: Map<BulkSimItemSlot, BulkItemPickerGroup> = new Map();
 
 	protected combinations = 0;
@@ -82,12 +78,6 @@ export class BulkTab extends SimTab {
 		this.playerCanDualWield = this.simUI.player.getPlayerSpec().canDualWield;
 		this.playerIsFuryWarrior = this.simUI.player.getSpec() === Spec.SpecFuryWarrior;
 
-		getEnumValues<number>(BulkSimItemSlot).forEach(slot => {
-			this.itemsBySlot.set(slot, new Map());
-		});
-
-		const leftPanelRef = ref<HTMLDivElement>();
-		const rightPanelRef = ref<HTMLDivElement>();
 		const setupTabBtnRef = ref<HTMLButtonElement>();
 		const setupTabRef = ref<HTMLDivElement>();
 		const resultsTabBtnRef = ref<HTMLButtonElement>();
@@ -99,7 +89,7 @@ export class BulkTab extends SimTab {
 
 		this.contentContainer.appendChild(
 			<>
-				<div className="bulk-tab-left tab-panel-left" ref={leftPanelRef}>
+				<div className="bulk-tab-left tab-panel-left">
 					<div className="bulk-tab-tabs">
 						<ul className="nav nav-tabs" attributes={{ role: 'tablist' }}>
 							<li className="nav-item" attributes={{ role: 'presentation' }}>
@@ -147,7 +137,7 @@ export class BulkTab extends SimTab {
 						</div>
 					</div>
 				</div>
-				<div className="bulk-tab-right tab-panel-right" ref={rightPanelRef}>
+				<div className="bulk-tab-right tab-panel-right">
 					<div className="bulk-settings-outer-container">
 						<div className="bulk-settings-container" ref={settingsContainerRef}>
 							<div className="bulk-combinations-count h4" ref={combinationsElemRef} />
@@ -162,8 +152,6 @@ export class BulkTab extends SimTab {
 			</>,
 		);
 
-		this.leftPanel = leftPanelRef.value!;
-		this.rightPanel = rightPanelRef.value!;
 		this.setupTabElem = setupTabRef.value!;
 		this.resultsTabElem = resultsTabRef.value!;
 		this.pendingDiv = (<div className="results-pending-overlay" />) as HTMLDivElement;
@@ -238,6 +226,8 @@ export class BulkTab extends SimTab {
 			const settings = BulkSettings.fromJsonString(storedSettings, {
 				ignoreUnknownFields: true,
 			});
+
+			this.addItems(settings.items);
 
 			this.doCombos = settings.combinations;
 			this.fastMode = settings.fastMode;
@@ -358,7 +348,6 @@ export class BulkTab extends SimTab {
 					const bulkSlot = getBulkItemSlotFromSlot(slot, this.playerCanDualWield);
 					const group = this.pickerGroups.get(bulkSlot)!;
 					group.add(idx, equippedItem);
-					this.itemsBySlot.get(bulkSlot)?.set(idx, item);
 				});
 			}
 		});
@@ -375,7 +364,6 @@ export class BulkTab extends SimTab {
 			const idx = this.items.push(item) - 1;
 			const group = this.pickerGroups.get(bulkSlot)!;
 			group.add(idx, equippedItem);
-			this.itemsBySlot.get(bulkSlot)?.set(idx, item);
 
 			this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
 		}
@@ -393,7 +381,6 @@ export class BulkTab extends SimTab {
 				const bulkSlot = getBulkItemSlotFromSlot(slot, this.playerCanDualWield);
 				const group = this.pickerGroups.get(bulkSlot)!;
 				group.update(idx, equippedItem);
-				this.itemsBySlot.get(bulkSlot)?.set(idx, newItem);
 			});
 		}
 
@@ -424,12 +411,9 @@ export class BulkTab extends SimTab {
 			// Try to find the matching item within its eligible groups
 			getEligibleItemSlots(equippedItem.item, this.playerIsFuryWarrior).forEach(slot => {
 				const bulkSlot = getBulkItemSlotFromSlot(slot, this.playerCanDualWield);
-				if (this.itemsBySlot.get(bulkSlot)?.has(idx)) {
-					const group = this.pickerGroups.get(bulkSlot)!;
-					group.remove(idx);
-					this.itemsBySlot.get(bulkSlot)?.delete(idx);
-					this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
-				}
+				const group = this.pickerGroups.get(bulkSlot)!;
+				group.remove(idx);
+				this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
 			});
 		}
 	}
