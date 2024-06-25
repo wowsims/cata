@@ -55,49 +55,6 @@ func BulkSim(ctx context.Context, request *proto.BulkSimRequest, progress chan *
 	return result
 }
 
-func BulkSimCombos(ctx context.Context, req *proto.BulkSimCombosRequest) *proto.BulkSimCombosResult {
-	// Bulk simming is only supported for the single-player use (i.e. not whole raid-wide simming).
-	// Verify that we have exactly 1 player.
-	var playerCount int
-	var player *proto.Player
-	for _, p := range req.BaseSettings.GetRaid().GetParties() {
-		for _, pl := range p.GetPlayers() {
-			// TODO(Riotdog-GehennasEU): Better way to check if a player is valid/set?
-			if pl.Name != "" {
-				player = pl
-				playerCount++
-			}
-		}
-	}
-	if playerCount != 1 || player == nil {
-		return &proto.BulkSimCombosResult{
-			ErrorResult: fmt.Sprintf("bulksim: expected exactly 1 player, found %d", playerCount),
-		}
-	}
-
-	if player.GetDatabase() != nil {
-		addToDatabase(player.GetDatabase())
-	}
-	// reduce to just base party.
-	req.BaseSettings.Raid.Parties = []*proto.Party{req.BaseSettings.Raid.Parties[0]}
-	// clean to reduce memory
-	player.Database = nil
-
-	validCombos, iterations, err := buildCombos(ctx, req.BaseSettings, req.BulkSettings, player)
-	if err != nil {
-		return &proto.BulkSimCombosResult{
-			ErrorResult: err.Error(),
-		}
-	}
-
-	result := &proto.BulkSimCombosResult{
-		NumCombinations: int32(len(validCombos)),
-		NumIterations:   int32(len(validCombos)) * iterations,
-	}
-
-	return result
-}
-
 type singleBulkSim struct {
 	req *proto.RaidSimRequest
 	cl  *raidSimRequestChangeLog
@@ -139,14 +96,121 @@ func (b *bulkSimRunner) Run(pctx context.Context, progress chan *proto.ProgressM
 	// clean to reduce memory
 	player.Database = nil
 
-	originalIterations := b.Request.BulkSettings.GetIterationsPerCombo()
-	if originalIterations <= 0 {
-		originalIterations = defaultIterationsPerCombo
+	// Gemming for now can happen before slots are decided.
+	// We might have to add logic after slot decisions if we want to enforce keeping meta gem active.
+
+	if b.Request.BulkSettings.AutoGem {
+		for _, replaceItem := range b.Request.BulkSettings.Items {
+			itemData := ItemsByID[replaceItem.Id]
+			if len(itemData.GemSockets) == 0 && itemData.Type != proto.ItemType_ItemTypeWaist {
+				continue
+			}
+
+			sockets := make([]int32, len(itemData.GemSockets))
+			if len(sockets) < len(replaceItem.Gems) {
+				// this means the extra gem was specified, just add an extra element
+				sockets = append(sockets, 0)
+			}
+			// now copy over what we have from inputs.
+			copy(sockets, replaceItem.Gems)
+			if itemData.Type == proto.ItemType_ItemTypeWaist {
+				// Assume waist always has the eternal belt buckle and add extra red gem.
+				// TODO: is there a better way to do this?
+				// Should we have a 'prismatic' standard gem in the defaults?
+				if len(sockets) == len(itemData.GemSockets) {
+					sockets = append(sockets, b.Request.BulkSettings.DefaultRedGem)
+				} else if len(sockets) > len(itemData.GemSockets) && sockets[len(sockets)-1] == 0 {
+					sockets[len(sockets)-1] = b.Request.BulkSettings.DefaultRedGem
+				}
+			}
+
+			for i, color := range itemData.GemSockets {
+				if sockets[i] > 0 {
+					// This means gem was already specified, skip autogem
+					continue
+				}
+				if ColorIntersects(color, proto.GemColor_GemColorRed) {
+					sockets[i] = b.Request.BulkSettings.DefaultRedGem
+				} else if ColorIntersects(color, proto.GemColor_GemColorYellow) {
+					sockets[i] = b.Request.BulkSettings.DefaultYellowGem
+				} else if ColorIntersects(color, proto.GemColor_GemColorBlue) {
+					sockets[i] = b.Request.BulkSettings.DefaultBlueGem
+				} else if ColorIntersects(color, proto.GemColor_GemColorMeta) {
+					sockets[i] = b.Request.BulkSettings.DefaultMetaGem
+				}
+			}
+			replaceItem.Gems = sockets
+		}
 	}
 
-	validCombos, newIters, err := buildCombos(ctx, b.Request.BaseSettings, b.Request.BulkSettings, player)
-	if err != nil {
-		return nil, err
+	iterations := b.Request.GetBulkSettings().GetIterationsPerCombo()
+	if iterations <= 0 {
+		iterations = defaultIterationsPerCombo
+	}
+
+	items := b.Request.GetBulkSettings().GetItems()
+	isFuryWarrior := player.GetFuryWarrior() != nil
+	// numItems := len(items)
+	// if b.Request.BulkSettings.Combinations && numItems > maxItemCount {
+	// 	return nil, fmt.Errorf("too many items specified (%d > %d), not computationally feasible", numItems, maxItemCount)
+	// }
+
+	// Create all distinct combinations of (item, slot). For example, let's say the only item we
+	// want to bulk sim is a one-handed item that can be worn both as an off-hand or a main-hand weapon.
+	// For each slot, we will create one itemWithSlot pair, so (item, off-hand) and (item, main-hand).
+	// We verify later that we are not emitting any invalid equipment set.
+	var distinctItemSlotCombos []*itemWithSlot
+	for index, is := range items {
+		item, ok := ItemsByID[is.Id]
+		if !ok {
+			return nil, fmt.Errorf("unknown item with id %d in bulk settings", is.Id)
+		}
+		for _, slot := range eligibleSlotsForItem(item, isFuryWarrior) {
+			distinctItemSlotCombos = append(distinctItemSlotCombos, &itemWithSlot{
+				Item:  is,
+				Slot:  slot,
+				Index: index,
+			})
+		}
+	}
+	baseItems := player.Equipment.Items
+
+	allCombos := generateAllEquipmentSubstitutions(ctx, baseItems, b.Request.BulkSettings.Combinations, distinctItemSlotCombos, isFuryWarrior)
+
+	var validCombos []singleBulkSim
+	count := 0
+	for sub := range allCombos {
+		count++
+		if count > 1000000 {
+			panic("over 1 million combos, abandoning attempt")
+		}
+
+		substitutedRequest, changeLog := createNewRequestWithSubstitution(b.Request.BaseSettings, sub, b.Request.BulkSettings.AutoEnchant, isFuryWarrior)
+		if isValidEquipment(substitutedRequest.Raid.Parties[0].Players[0].Equipment, isFuryWarrior) {
+			// Need to sim base dps of gear loudout
+			validCombos = append(validCombos, singleBulkSim{req: substitutedRequest, cl: changeLog, eq: sub})
+			// Todo(Netzone-GehennasEU): Make this its own step?
+			if !b.Request.BulkSettings.SimTalents {
+
+			} else {
+				var talentsToSim = b.Request.BulkSettings.GetTalentsToSim()
+
+				if len(talentsToSim) > 0 {
+					for _, talent := range talentsToSim {
+						sr := goproto.Clone(substitutedRequest).(*proto.RaidSimRequest)
+						cl := *changeLog
+						if sr.Raid.Parties[0].Players[0].TalentsString == talent.TalentsString && goproto.Equal(talent.Glyphs, sr.Raid.Parties[0].Players[0].Glyphs) {
+							continue
+						}
+
+						sr.Raid.Parties[0].Players[0].TalentsString = talent.TalentsString
+						sr.Raid.Parties[0].Players[0].Glyphs = talent.Glyphs
+						cl.TalentLoadout = talent
+						validCombos = append(validCombos, singleBulkSim{req: sr, cl: &cl, eq: sub})
+					}
+				}
+			}
+		}
 	}
 
 	// TODO(Riotdog-GehennasEU): Make this configurable?
@@ -154,6 +218,23 @@ func (b *bulkSimRunner) Run(pctx context.Context, progress chan *proto.ProgressM
 
 	var rankedResults []*itemSubstitutionSimResult
 	var baseResult *itemSubstitutionSimResult
+	newIters := int64(iterations)
+	if b.Request.BulkSettings.FastMode {
+		newIters /= 10
+
+		// In fast mode try to keep starting iterations between 50 and 1000.
+		if newIters < 50 {
+			newIters = 50
+		}
+		if newIters > 1000 {
+			newIters = 1000
+		}
+	}
+
+	maxIterations := newIters * int64(len(validCombos))
+	if maxIterations > math.MaxInt32 {
+		return nil, fmt.Errorf("number of total iterations %d too large", maxIterations)
+	}
 
 	for {
 		var tempBase *itemSubstitutionSimResult
@@ -175,7 +256,7 @@ func (b *bulkSimRunner) Run(pctx context.Context, progress chan *proto.ProgressM
 		}
 
 		// we have reached max accuracy now
-		if newIters >= originalIterations {
+		if newIters >= int64(iterations) {
 			break
 		}
 
@@ -235,7 +316,7 @@ func (b *bulkSimRunner) Run(pctx context.Context, progress chan *proto.ProgressM
 	return result, nil
 }
 
-func (b *bulkSimRunner) getRankedResults(pctx context.Context, validCombos []singleBulkSim, iterations int32, progress chan *proto.ProgressMetrics) ([]*itemSubstitutionSimResult, *itemSubstitutionSimResult, error) {
+func (b *bulkSimRunner) getRankedResults(pctx context.Context, validCombos []singleBulkSim, iterations int64, progress chan *proto.ProgressMetrics) ([]*itemSubstitutionSimResult, *itemSubstitutionSimResult, error) {
 	concurrency := runtime.NumCPU() + 1
 	if concurrency <= 0 {
 		concurrency = 2
@@ -249,7 +330,7 @@ func (b *bulkSimRunner) getRankedResults(pctx context.Context, validCombos []sin
 	results := make(chan *itemSubstitutionSimResult, 10)
 
 	numCombinations := int32(len(validCombos))
-	totalIterationsUpperBound := numCombinations * iterations
+	totalIterationsUpperBound := int64(numCombinations) * iterations
 
 	var totalCompletedIterations int32
 	var totalCompletedSims int32
@@ -330,142 +411,6 @@ func (b *bulkSimRunner) getRankedResults(pctx context.Context, validCombos []sin
 		return rankedResults[i].Score() > rankedResults[j].Score()
 	})
 	return rankedResults, baseResult, nil
-}
-
-func buildCombos(ctx context.Context, baseSettings *proto.RaidSimRequest, bulkSettings *proto.BulkSettings, player *proto.Player) ([]singleBulkSim, int32, error) {
-	// Gemming for now can happen before slots are decided.
-	// We might have to add logic after slot decisions if we want to enforce keeping meta gem active.
-	if bulkSettings.AutoGem {
-		for _, replaceItem := range bulkSettings.Items {
-			itemData := ItemsByID[replaceItem.Id]
-			if len(itemData.GemSockets) == 0 && itemData.Type != proto.ItemType_ItemTypeWaist {
-				continue
-			}
-
-			sockets := make([]int32, len(itemData.GemSockets))
-			if len(sockets) < len(replaceItem.Gems) {
-				// this means the extra gem was specified, just add an extra element
-				sockets = append(sockets, 0)
-			}
-			// now copy over what we have from inputs.
-			copy(sockets, replaceItem.Gems)
-			if itemData.Type == proto.ItemType_ItemTypeWaist {
-				// Assume waist always has the eternal belt buckle and add extra red gem.
-				// TODO: is there a better way to do this?
-				// Should we have a 'prismatic' standard gem in the defaults?
-				if len(sockets) == len(itemData.GemSockets) {
-					sockets = append(sockets, bulkSettings.DefaultRedGem)
-				} else if len(sockets) > len(itemData.GemSockets) && sockets[len(sockets)-1] == 0 {
-					sockets[len(sockets)-1] = bulkSettings.DefaultRedGem
-				}
-			}
-
-			for i, color := range itemData.GemSockets {
-				if sockets[i] > 0 {
-					// This means gem was already specified, skip autogem
-					continue
-				}
-				if ColorIntersects(color, proto.GemColor_GemColorRed) {
-					sockets[i] = bulkSettings.DefaultRedGem
-				} else if ColorIntersects(color, proto.GemColor_GemColorYellow) {
-					sockets[i] = bulkSettings.DefaultYellowGem
-				} else if ColorIntersects(color, proto.GemColor_GemColorBlue) {
-					sockets[i] = bulkSettings.DefaultBlueGem
-				} else if ColorIntersects(color, proto.GemColor_GemColorMeta) {
-					sockets[i] = bulkSettings.DefaultMetaGem
-				}
-			}
-			replaceItem.Gems = sockets
-		}
-	}
-
-	iterations := bulkSettings.GetIterationsPerCombo()
-	if iterations <= 0 {
-		iterations = defaultIterationsPerCombo
-	}
-
-	items := bulkSettings.GetItems()
-	isFuryWarrior := player.GetFuryWarrior() != nil
-	// numItems := len(items)
-	// if b.Request.BulkSettings.Combinations && numItems > maxItemCount {
-	// 	return nil, fmt.Errorf("too many items specified (%d > %d), not computationally feasible", numItems, maxItemCount)
-	// }
-
-	// Create all distinct combinations of (item, slot). For example, let's say the only item we
-	// want to bulk sim is a one-handed item that can be worn both as an off-hand or a main-hand weapon.
-	// For each slot, we will create one itemWithSlot pair, so (item, off-hand) and (item, main-hand).
-	// We verify later that we are not emitting any invalid equipment set.
-	var distinctItemSlotCombos []*itemWithSlot
-	for index, is := range items {
-		item, ok := ItemsByID[is.Id]
-		if !ok {
-			return nil, 0, fmt.Errorf("unknown item with id %d in bulk settings", is.Id)
-		}
-		for _, slot := range eligibleSlotsForItem(item, isFuryWarrior) {
-			distinctItemSlotCombos = append(distinctItemSlotCombos, &itemWithSlot{
-				Item:  is,
-				Slot:  slot,
-				Index: index,
-			})
-		}
-	}
-	baseItems := player.Equipment.Items
-
-	allCombos := generateAllEquipmentSubstitutions(ctx, baseItems, bulkSettings.Combinations, distinctItemSlotCombos, isFuryWarrior)
-
-	var validCombos []singleBulkSim
-	count := 0
-	for sub := range allCombos {
-		count++
-		if count > 1000000 {
-			panic("over 1 million combos, abandoning attempt")
-		}
-
-		substitutedRequest, changeLog := createNewRequestWithSubstitution(baseSettings, sub, bulkSettings.AutoEnchant, isFuryWarrior)
-		if isValidEquipment(substitutedRequest.Raid.Parties[0].Players[0].Equipment, isFuryWarrior) {
-			// Need to sim base dps of gear loudout
-			validCombos = append(validCombos, singleBulkSim{req: substitutedRequest, cl: changeLog, eq: sub})
-			// Todo(Netzone-GehennasEU): Make this its own step?
-			if !bulkSettings.SimTalents {
-
-			} else {
-				var talentsToSim = bulkSettings.GetTalentsToSim()
-
-				if len(talentsToSim) > 0 {
-					for _, talent := range talentsToSim {
-						sr := goproto.Clone(substitutedRequest).(*proto.RaidSimRequest)
-						cl := *changeLog
-						if sr.Raid.Parties[0].Players[0].TalentsString == talent.TalentsString && goproto.Equal(talent.Glyphs, sr.Raid.Parties[0].Players[0].Glyphs) {
-							continue
-						}
-
-						sr.Raid.Parties[0].Players[0].TalentsString = talent.TalentsString
-						sr.Raid.Parties[0].Players[0].Glyphs = talent.Glyphs
-						cl.TalentLoadout = talent
-						validCombos = append(validCombos, singleBulkSim{req: sr, cl: &cl, eq: sub})
-					}
-				}
-			}
-		}
-	}
-
-	// In fast mode try to keep starting iterations between 1000 and 2000
-	if bulkSettings.FastMode {
-		iterations /= 10
-
-		if iterations < 1000 {
-			iterations = 1000
-		} else if iterations > 2000 {
-			iterations = 2000
-		}
-	}
-
-	maxIterations := int64(iterations) * int64(len(validCombos))
-	if maxIterations > math.MaxInt32 {
-		return nil, 0, fmt.Errorf("number of total iterations %d too large", maxIterations)
-	}
-
-	return validCombos, iterations, nil
 }
 
 // itemSubstitutionSimResult stores the request and response of a simulation, along with the used

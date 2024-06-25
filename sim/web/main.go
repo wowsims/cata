@@ -100,12 +100,7 @@ var handlers = map[string]apiHandler{
 	"/computeStats": {msg: func() googleProto.Message { return &proto.ComputeStatsRequest{} }, handle: func(msg googleProto.Message) googleProto.Message {
 		return core.ComputeStats(msg.(*proto.ComputeStatsRequest))
 	}},
-	"/bulkSimCombos": {msg: func() googleProto.Message { return &proto.BulkSimCombosRequest{} }, handle: func(msg googleProto.Message) googleProto.Message {
-		// TODO: we can use context's to cancel stuff.
-		// We should have all the async APIs take in context and let it be cancelled via its async ID.
-		return core.RunBulkCombos(context.Background(), msg.(*proto.BulkSimCombosRequest))
-	},
-	}}
+}
 
 var asyncAPIHandlers = map[string]asyncAPIHandler{
 	"/raidSimAsync": {msg: func() googleProto.Message { return &proto.RaidSimRequest{} }, handle: func(msg googleProto.Message, reporter chan *proto.ProgressMetrics) {
