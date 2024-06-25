@@ -54,13 +54,14 @@ func (war *FuryWarrior) applyFlurry() {
 		ProcMask: core.ProcMaskMelee,
 		Outcome:  core.OutcomeLanded,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.DidCrit() {
-				if flurryAura.IsActive() {
-					flurryAura.SetStacks(sim, flurryAura.GetStacks()-1)
-				}
-			} else {
+			if result.DidCrit() {
 				flurryAura.Activate(sim)
 				flurryAura.SetStacks(sim, flurryAura.MaxStacks)
+				return
+			}
+
+			if flurryAura.IsActive() && spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
+				flurryAura.RemoveStack(sim)
 			}
 		},
 	})
@@ -117,7 +118,7 @@ func (war *FuryWarrior) applyMeatCleaver() {
 	}
 
 	buffMod := war.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  warrior.SpellMaskCleave | warrior.SpellMaskWhirlwind,
+		ClassMask:  warrior.SpellMaskCleave | warrior.SpellMaskWhirlwind | warrior.SpellMaskWhirlwindOh,
 		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: 0.0,
 	})
@@ -143,7 +144,7 @@ func (war *FuryWarrior) applyMeatCleaver() {
 	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
 		Name:           "Meat Cleaver Trigger",
 		ActionID:       actionID,
-		Callback:       core.CallbackOnSpellHitDealt,
+		Callback:       core.CallbackOnCastComplete,
 		Outcome:        core.OutcomeLanded,
 		ClassSpellMask: warrior.SpellMaskCleave | warrior.SpellMaskWhirlwind,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
