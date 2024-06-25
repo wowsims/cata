@@ -1,45 +1,45 @@
 name: Run Tests
 on:
-  pull_request:
-    branches:
-      - master
+    pull_request:
+        branches:
+            - master
 jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.21.x
+    build-and-test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Install Go
+              uses: actions/setup-go@v2
+              with:
+                  go-version: 1.21.x
 
-      - name: Install Protoc
-        uses: arduino/setup-protoc@v1
-        with:
-          version: 3.x
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+            - name: Install Protoc
+              uses: arduino/setup-protoc@v1
+              with:
+                  version: 3.x
+                  repo-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install Protoc Go plugin
-        run: go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+            - name: Install Protoc Go plugin
+              run: go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 
-      - name: Install Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: '19'
+            - name: Install Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 'lts/*'
 
-      - name: Checkout 🛎️
-        uses: actions/checkout@v2.3.1
+            - name: Checkout 🛎️
+              uses: actions/checkout@v2.3.1
 
-      - name: Check commit blacklist
-        run: |
-          if grep -q '"rollup/wasm-node"' package.json; then
-            echo "Error: 'rollup/wasm-node' found in package.json"
-            exit 1
-          fi
-         
-      - name: Build 🔧
-        run: |
-          make dist/cata/.dirstamp
+            - name: Check commit blacklist 🔎
+              run: |
+                  if grep -q '"rollup/wasm-node"' package.json; then
+                    echo "Error: 'rollup/wasm-node' found in package.json"
+                    exit 1
+                  fi
 
-      - name: Test
-        run: |
-          make test
+            - name: Build 🔧
+              run: |
+                  make dist/cata/.dirstamp
+
+            - name: Test
+              run: |
+                  make test
