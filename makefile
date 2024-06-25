@@ -96,7 +96,7 @@ ui/%/index.html: ui/index_template.html
 
 package.json:
 # Checks if the system is FreeBSD and jq is installed. This is due to the need to switch out the vite package for rollup on FreeBSD.
-ifeq ($(shell uname -s), Linux)
+ifeq ($(shell uname -s), FreeBSD)
 	@if ! command -v jq > /dev/null; then \
 		echo "jq is not installed. Please install jq to proceed."; \
 		exit 1; \
