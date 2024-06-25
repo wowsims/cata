@@ -76,7 +76,7 @@ export class WorkerPool {
 
 	// Calculate combos and return counts
 	async bulkSimCombosAsync(request: BulkSimCombosRequest): Promise<BulkSimCombosResult> {
-		console.log('bulk sim combinations request: ' + BulkSimCombosRequest.toJsonString(request, { enumAsInteger: true }));
+		// console.log('bulk sim combinations request: ' + BulkSimCombosRequest.toJsonString(request, { enumAsInteger: true }));
 		const worker = this.getLeastBusyWorker();
 		const id = worker.makeTaskId();
 

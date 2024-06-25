@@ -224,13 +224,20 @@ func bulkSimCombos(this js.Value, args []js.Value) interface{} {
 		log.Printf("Failed to parse request: %s", err)
 		return nil
 	}
-	reporter := make(chan *proto.ProgressMetrics, 100)
 	// for now just use context.Background() until we can figure out the best way to handle
 	// allowing front end to cancel.
-	core.RunBulkCombos(context.Background(), rsr)
+	result := core.RunBulkCombos(context.Background(), rsr)
 
-	result := processAsyncProgress(args[1], reporter)
-	return result
+	outbytes, err := googleProto.Marshal(result)
+	if err != nil {
+		log.Printf("[ERROR] Failed to marshal result: %s", err.Error())
+		return nil
+	}
+
+	outArray := js.Global().Get("Uint8Array").New(len(outbytes))
+	js.CopyBytesToJS(outArray, outbytes)
+
+	return outArray
 }
 
 // Assumes args[0] is a Uint8Array

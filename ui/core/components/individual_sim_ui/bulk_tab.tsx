@@ -219,6 +219,8 @@ export class BulkTab extends SimTab {
 			loadEquippedItems();
 			this.simUI.player.gearChangeEmitter.on(() => loadEquippedItems());
 
+			this.itemsChangedEmitter.on(() => this.storeSettings());
+
 			TypedEvent.onAny([this.itemsChangedEmitter, this.settingsChangedEmitter, this.simUI.sim.iterationsChangeEmitter]).on(() => {
 				this.getCombinationsCount().then(result => this.combinationsElem.replaceChildren(result));
 			});
