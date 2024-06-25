@@ -42,7 +42,6 @@ export const setupHttpWorker = (baseURL: string) => {
 
 	new WorkerInterface({
 		bulkSimAsync: asyncHandler,
-		bulkSimCombos: syncHandler,
 		computeStats: syncHandler,
 		computeStatsJson: syncHandler,
 		raidSim: syncHandler,

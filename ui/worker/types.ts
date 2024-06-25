@@ -3,7 +3,6 @@
  */
 export enum SimRequest {
 	bulkSimAsync = 'bulkSimAsync',
-	bulkSimCombos = 'bulkSimCombos',
 	computeStats = 'computeStats',
 	computeStatsJson = 'computeStatsJson',
 	raidSim = 'raidSim',

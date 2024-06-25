@@ -500,7 +500,7 @@ message BulkSettings {
 
 message BulkSimResult {
     repeated BulkComboResult results = 1;
-	BulkComboResult equipped_gear_result = 2;
+		BulkComboResult equipped_gear_result = 2;
     string error_result = 3; // only set if sim failed.
 }
 
@@ -513,16 +513,4 @@ message BulkComboResult {
 message ItemSpecWithSlot {
     ItemSpec item = 1;
     ItemSlot slot = 2;
-}
-
-// RPC: BulkSimCombos
-message BulkSimCombosRequest {
-	RaidSimRequest base_settings = 1;
-    BulkSettings bulk_settings = 2;
-}
-
-message BulkSimCombosResult {
-	int32 num_combinations = 1;
-	int32 num_iterations = 2;
-    string error_result = 3; // only set if sim failed.
 }
