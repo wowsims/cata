@@ -39,8 +39,6 @@ export class BulkTab extends SimTab {
 	readonly itemsChangedEmitter = new TypedEvent<void>();
 	readonly settingsChangedEmitter = new TypedEvent<void>();
 
-	private readonly leftPanel: HTMLElement;
-	private readonly rightPanel: HTMLElement;
 	private readonly setupTabElem: HTMLElement;
 	private readonly resultsTabElem: HTMLElement;
 	private readonly combinationsElem: HTMLElement;
@@ -80,8 +78,6 @@ export class BulkTab extends SimTab {
 		this.playerCanDualWield = this.simUI.player.getPlayerSpec().canDualWield;
 		this.playerIsFuryWarrior = this.simUI.player.getSpec() === Spec.SpecFuryWarrior;
 
-		const leftPanelRef = ref<HTMLDivElement>();
-		const rightPanelRef = ref<HTMLDivElement>();
 		const setupTabBtnRef = ref<HTMLButtonElement>();
 		const setupTabRef = ref<HTMLDivElement>();
 		const resultsTabBtnRef = ref<HTMLButtonElement>();
@@ -93,7 +89,7 @@ export class BulkTab extends SimTab {
 
 		this.contentContainer.appendChild(
 			<>
-				<div className="bulk-tab-left tab-panel-left" ref={leftPanelRef}>
+				<div className="bulk-tab-left tab-panel-left">
 					<div className="bulk-tab-tabs">
 						<ul className="nav nav-tabs" attributes={{ role: 'tablist' }}>
 							<li className="nav-item" attributes={{ role: 'presentation' }}>
@@ -141,7 +137,7 @@ export class BulkTab extends SimTab {
 						</div>
 					</div>
 				</div>
-				<div className="bulk-tab-right tab-panel-right" ref={rightPanelRef}>
+				<div className="bulk-tab-right tab-panel-right">
 					<div className="bulk-settings-outer-container">
 						<div className="bulk-settings-container" ref={settingsContainerRef}>
 							<div className="bulk-combinations-count h4" ref={combinationsElemRef} />
@@ -156,8 +152,6 @@ export class BulkTab extends SimTab {
 			</>,
 		);
 
-		this.leftPanel = leftPanelRef.value!;
-		this.rightPanel = rightPanelRef.value!;
 		this.setupTabElem = setupTabRef.value!;
 		this.resultsTabElem = resultsTabRef.value!;
 		this.pendingDiv = (<div className="results-pending-overlay" />) as HTMLDivElement;
