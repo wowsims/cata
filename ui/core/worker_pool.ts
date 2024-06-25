@@ -1,6 +1,8 @@
 import { SimRequest, WorkerReceiveMessage, WorkerSendMessage } from '../worker/types';
 import { REPO_NAME } from './constants/other.js';
 import {
+	BulkSimCombosRequest,
+	BulkSimCombosResult,
 	BulkSimRequest,
 	BulkSimResult,
 	ComputeStatsRequest,
@@ -70,6 +72,17 @@ export class WorkerPool {
 		const resultJson = BulkSimResult.toJson(result.finalBulkResult!) as any;
 		console.log('bulk sim result: ' + JSON.stringify(resultJson));
 		return result.finalBulkResult!;
+	}
+
+	// Calculate combos and return counts
+	async bulkSimCombosAsync(request: BulkSimCombosRequest): Promise<BulkSimCombosResult> {
+		console.log('bulk sim combinations request: ' + BulkSimCombosRequest.toJsonString(request, { enumAsInteger: true }));
+		const worker = this.getLeastBusyWorker();
+		const id = worker.makeTaskId();
+
+		// Now start the async sim
+		const resultData = await worker.doApiCall(SimRequest.bulkSimCombos, BulkSimCombosRequest.toBinary(request), id);
+		return BulkSimCombosResult.fromBinary(resultData);
 	}
 
 	async raidSimAsync(request: RaidSimRequest, onProgress: WorkerProgressCallback): Promise<RaidSimResult> {

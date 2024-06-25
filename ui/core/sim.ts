@@ -5,6 +5,8 @@ import { Encounter } from './encounter';
 import { Player, UnitMetadata } from './player';
 import {
 	BulkSettings,
+	BulkSimCombosRequest,
+	BulkSimCombosResult,
 	BulkSimRequest,
 	BulkSimResult,
 	ComputeStatsRequest,
@@ -266,6 +268,51 @@ export class Sim {
 			}
 
 			this.bulkSimResultEmitter.emit(TypedEvent.nextEventID(), result);
+			return result;
+		} catch (error) {
+			if (error instanceof SimError) throw error;
+			console.log(error);
+			throw new Error('Something went wrong running your raid sim. Reload the page and try again.');
+		}
+	}
+
+	async calculateBulkCombinations(bulkSettings: BulkSettings, bulkItemsDb: SimDatabase): Promise<BulkSimCombosResult | null> {
+		if (this.raid.isEmpty()) {
+			throw new Error('Raid is empty! Try adding some players first.');
+		} else if (this.encounter.targets.length < 1) {
+			throw new Error('Encounter has no targets! Try adding some targets first.');
+		}
+
+		await this.waitForInit();
+
+		const request = BulkSimCombosRequest.create({
+			baseSettings: this.makeRaidSimRequest(false),
+			bulkSettings: bulkSettings,
+		});
+
+		if (request.baseSettings != null && request.baseSettings.simOptions != null) {
+			request.baseSettings.simOptions.debugFirstIteration = false;
+		}
+
+		if (!request.baseSettings?.raid || request.baseSettings?.raid?.parties.length == 0 || request.baseSettings?.raid?.parties[0].players.length == 0) {
+			throw new Error('Raid must contain exactly 1 player for bulk sim.');
+		}
+
+		// Attach the extra database to the player.
+		const playerDatabase = request.baseSettings.raid.parties[0].players[0].database!;
+		playerDatabase.items.push(...bulkItemsDb.items);
+		playerDatabase.enchants.push(...bulkItemsDb.enchants);
+		playerDatabase.gems.push(...bulkItemsDb.gems);
+		playerDatabase.reforgeStats.push(...bulkItemsDb.reforgeStats);
+		playerDatabase.randomSuffixes.push(...bulkItemsDb.randomSuffixes);
+
+		this.bulkSimStartEmitter.emit(TypedEvent.nextEventID(), request);
+
+		try {
+			const result = await this.workerPool.bulkSimCombosAsync(request);
+			if (result.errorResult != '') {
+				throw new SimError(result.errorResult);
+			}
 			return result;
 		} catch (error) {
 			if (error instanceof SimError) throw error;
