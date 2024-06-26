@@ -18,7 +18,7 @@ sim/web/__debug_bin
 
 # temporary files
 *.results.tmp
-temp.json
+package.json.tmp
 
 #.dockerignore
 /cata/

@@ -105,9 +105,9 @@ ifeq ($(shell uname -s), FreeBSD)
 	echo "Checking and updating package.json for FreeBSD..."; \
 	\
 	if ! grep -q '"overrides"' package.json; then \
-		jq '. + { "overrides": { "vite": { "rollup": "npm:@rollup/wasm-node@4.13.0" } } }' package.json > temp.json && mv temp.json package.json && npm install; \
+		jq '. + { "overrides": { "vite": { "rollup": "npm:@rollup/wasm-node@4.13.0" } } }' package.json > package.json.tmp && mv package.json.tmp package.json && npm install; \
 	else \
-		jq '.overrides += { "vite": { "rollup": "npm:@rollup/wasm-node@4.13.0" } }' package.json > temp.json && mv temp.json package.json && npm install; \
+		jq '.overrides += { "vite": { "rollup": "npm:@rollup/wasm-node@4.13.0" } }' package.json > package.json.tmp && mv package.json.tmp package.json && npm install; \
 	fi
 endif
 
