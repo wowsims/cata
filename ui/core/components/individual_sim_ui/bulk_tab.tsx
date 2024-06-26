@@ -6,13 +6,13 @@ import { ref } from 'tsx-vanilla';
 import { REPO_RELEASES_URL } from '../../constants/other';
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { BulkSettings, ProgressMetrics, TalentLoadout } from '../../proto/api';
-import { GemColor, Glyphs, ItemRandomSuffix, ItemSlot, ItemSpec, ReforgeStat, SimDatabase, SimEnchant, SimGem, SimItem, Spec } from '../../proto/common';
+import { GemColor, ItemRandomSuffix, ItemSlot, ItemSpec, ReforgeStat, SimDatabase, SimEnchant, SimGem, SimItem, Spec } from '../../proto/common';
 import { SavedTalents, UIEnchant, UIGem, UIItem } from '../../proto/ui';
 import { ActionId } from '../../proto_utils/action_id';
 import { getEmptyGemSocketIconUrl } from '../../proto_utils/gems';
 import { canEquipItem, getEligibleItemSlots, isSecondaryItemSlot } from '../../proto_utils/utils';
 import { TypedEvent } from '../../typed_event';
-import { getEnumValues, isExternal, isLocal } from '../../utils';
+import { getEnumValues, isExternal } from '../../utils';
 import { WorkerProgressCallback } from '../../worker_pool';
 import { ItemData } from '../gear_picker/item_list';
 import SelectorModal from '../gear_picker/selector_modal';
@@ -39,10 +39,13 @@ export class BulkTab extends SimTab {
 	readonly itemsChangedEmitter = new TypedEvent<void>();
 	readonly settingsChangedEmitter = new TypedEvent<void>();
 
-	private readonly leftPanel: HTMLElement;
-	private readonly rightPanel: HTMLElement;
 	private readonly setupTabElem: HTMLElement;
 	private readonly resultsTabElem: HTMLElement;
+	private readonly combinationsElem: HTMLElement;
+	private readonly bulkSimButton: HTMLButtonElement;
+	private readonly settingsContainer: HTMLElement;
+	private readonly booleanSettingsContainer: HTMLElement;
+
 	private pendingDiv: HTMLDivElement;
 
 	private setupTab: Tab;
@@ -53,8 +56,6 @@ export class BulkTab extends SimTab {
 
 	// The main array we will use to store items with indexes. Null values are the result of removed items to avoid having to shift pickers over and over.
 	protected items: Array<ItemSpec | null> = new Array<ItemSpec | null>();
-	// Separate Map used to store items broken down by item slot, specifically for combination generation
-	protected itemsBySlot: Map<BulkSimItemSlot, Map<number, ItemSpec>> = new Map();
 	protected pickerGroups: Map<BulkSimItemSlot, BulkItemPickerGroup> = new Map();
 
 	protected combinations = 0;
@@ -77,19 +78,18 @@ export class BulkTab extends SimTab {
 		this.playerCanDualWield = this.simUI.player.getPlayerSpec().canDualWield;
 		this.playerIsFuryWarrior = this.simUI.player.getSpec() === Spec.SpecFuryWarrior;
 
-		getEnumValues<number>(BulkSimItemSlot).forEach(slot => {
-			this.itemsBySlot.set(slot, new Map());
-		});
-
-		const leftPanelRef = ref<HTMLDivElement>();
-		const rightPanelRef = ref<HTMLDivElement>();
 		const setupTabBtnRef = ref<HTMLButtonElement>();
 		const setupTabRef = ref<HTMLDivElement>();
 		const resultsTabBtnRef = ref<HTMLButtonElement>();
 		const resultsTabRef = ref<HTMLDivElement>();
+		const settingsContainerRef = ref<HTMLDivElement>();
+		const combinationsElemRef = ref<HTMLHeadingElement>();
+		const bulkSimBtnRef = ref<HTMLButtonElement>();
+		const booleanSettingsContainerRef = ref<HTMLDivElement>();
+
 		this.contentContainer.appendChild(
 			<>
-				<div className="bulk-tab-left tab-panel-left" ref={leftPanelRef}>
+				<div className="bulk-tab-left tab-panel-left">
 					<div className="bulk-tab-tabs">
 						<ul className="nav nav-tabs" attributes={{ role: 'tablist' }}>
 							<li className="nav-item" attributes={{ role: 'presentation' }}>
@@ -137,15 +137,29 @@ export class BulkTab extends SimTab {
 						</div>
 					</div>
 				</div>
-				<div className="bulk-tab-right tab-panel-right" ref={rightPanelRef} />
+				<div className="bulk-tab-right tab-panel-right">
+					<div className="bulk-settings-outer-container">
+						<div className="bulk-settings-container" ref={settingsContainerRef}>
+							<div className="bulk-combinations-count h4" ref={combinationsElemRef} />
+							<button className="btn btn-primary bulk-settings-btn" ref={bulkSimBtnRef}>
+								Simulate Batch
+							</button>
+							<div className="bulk-boolean-settings-container" ref={booleanSettingsContainerRef}></div>
+						</div>
+					</div>
+					,
+				</div>
 			</>,
 		);
 
-		this.leftPanel = leftPanelRef.value!;
-		this.rightPanel = rightPanelRef.value!;
 		this.setupTabElem = setupTabRef.value!;
 		this.resultsTabElem = resultsTabRef.value!;
 		this.pendingDiv = (<div className="results-pending-overlay" />) as HTMLDivElement;
+
+		this.combinationsElem = combinationsElemRef.value!;
+		this.bulkSimButton = bulkSimBtnRef.value!;
+		this.settingsContainer = settingsContainerRef.value!;
+		this.booleanSettingsContainer = booleanSettingsContainerRef.value!;
 
 		this.setupTab = new Tab(setupTabBtnRef.value!);
 		this.resultsTab = new Tab(resultsTabBtnRef.value!);
@@ -192,6 +206,13 @@ export class BulkTab extends SimTab {
 			};
 			loadEquippedItems();
 			this.simUI.player.gearChangeEmitter.on(() => loadEquippedItems());
+
+			this.itemsChangedEmitter.on(() => this.storeSettings());
+
+			TypedEvent.onAny([this.itemsChangedEmitter, this.settingsChangedEmitter, this.simUI.sim.iterationsChangeEmitter]).on(() => {
+				this.getCombinationsCount().then(result => this.combinationsElem.replaceChildren(result));
+			});
+			this.getCombinationsCount().then(result => this.combinationsElem.replaceChildren(result));
 		});
 	}
 
@@ -205,6 +226,8 @@ export class BulkTab extends SimTab {
 			const settings = BulkSettings.fromJsonString(storedSettings, {
 				ignoreUnknownFields: true,
 			});
+
+			this.addItems(settings.items);
 
 			this.doCombos = settings.combinations;
 			this.fastMode = settings.fastMode;
@@ -325,7 +348,6 @@ export class BulkTab extends SimTab {
 					const bulkSlot = getBulkItemSlotFromSlot(slot, this.playerCanDualWield);
 					const group = this.pickerGroups.get(bulkSlot)!;
 					group.add(idx, equippedItem);
-					this.itemsBySlot.get(bulkSlot)?.set(idx, item);
 				});
 			}
 		});
@@ -342,7 +364,6 @@ export class BulkTab extends SimTab {
 			const idx = this.items.push(item) - 1;
 			const group = this.pickerGroups.get(bulkSlot)!;
 			group.add(idx, equippedItem);
-			this.itemsBySlot.get(bulkSlot)?.set(idx, item);
 
 			this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
 		}
@@ -360,7 +381,6 @@ export class BulkTab extends SimTab {
 				const bulkSlot = getBulkItemSlotFromSlot(slot, this.playerCanDualWield);
 				const group = this.pickerGroups.get(bulkSlot)!;
 				group.update(idx, equippedItem);
-				this.itemsBySlot.get(bulkSlot)?.set(idx, newItem);
 			});
 		}
 
@@ -391,12 +411,9 @@ export class BulkTab extends SimTab {
 			// Try to find the matching item within its eligible groups
 			getEligibleItemSlots(equippedItem.item, this.playerIsFuryWarrior).forEach(slot => {
 				const bulkSlot = getBulkItemSlotFromSlot(slot, this.playerCanDualWield);
-				if (this.itemsBySlot.get(bulkSlot)?.has(idx)) {
-					const group = this.pickerGroups.get(bulkSlot)!;
-					group.remove(idx);
-					this.itemsBySlot.get(bulkSlot)?.delete(idx);
-					this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
-				}
+				const group = this.pickerGroups.get(bulkSlot)!;
+				group.remove(idx);
+				this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
 			});
 		}
 	}
@@ -440,6 +457,16 @@ export class BulkTab extends SimTab {
 			await this.simUI.sim.runBulkSim(this.createBulkSettings(), this.createBulkItemsDatabase(), onProgress);
 		} catch (e) {
 			this.isPending = false;
+			this.simUI.handleCrash(e);
+		}
+	}
+
+	protected async calculateBulkCombinations() {
+		try {
+			const result = await this.simUI.sim.calculateBulkCombinations(this.createBulkSettings(), this.createBulkItemsDatabase());
+			this.combinations = result?.numCombinations ?? 0;
+			this.iterations = result?.numIterations ?? 0;
+		} catch (e) {
 			this.simUI.handleCrash(e);
 		}
 	}
@@ -546,36 +573,7 @@ export class BulkTab extends SimTab {
 	}
 
 	protected buildBatchSettings() {
-		const settingsContainerRef = ref<HTMLDivElement>();
-		const combinationsElemRef = ref<HTMLHeadingElement>();
-		const bulkSimBtnRef = ref<HTMLButtonElement>();
-		const booleanSettingsContainerRef = ref<HTMLDivElement>();
-		this.rightPanel.append(
-			<div className="bulk-settings-outer-container">
-				<div className="bulk-settings-container" ref={settingsContainerRef}>
-					<div className="bulk-combinations-count h4" ref={combinationsElemRef}>
-						{this.getCombinationsCount()}
-					</div>
-					<button className="btn btn-primary bulk-settings-btn" ref={bulkSimBtnRef}>
-						Simulate Batch
-					</button>
-					<div className="bulk-boolean-settings-container" ref={booleanSettingsContainerRef}></div>
-				</div>
-			</div>,
-		);
-
-		const combinationsElem = combinationsElemRef.value!;
-		const bulkSimButton = bulkSimBtnRef.value!;
-		const settingsContainer = settingsContainerRef.value!;
-		const booleanSettingsContainer = booleanSettingsContainerRef.value!;
-
-		const updateComboCountEmitters = [this.itemsChangedEmitter, this.settingsChangedEmitter];
-		if (isLocal()) updateComboCountEmitters.push(this.simUI.sim.iterationsChangeEmitter);
-		TypedEvent.onAny(updateComboCountEmitters).on(() => {
-			combinationsElem.replaceChildren(this.getCombinationsCount());
-		});
-
-		bulkSimButton.addEventListener('click', () => {
+		this.bulkSimButton.addEventListener('click', () => {
 			this.isPending = true;
 
 			let simStart = new Date().getTime();
@@ -607,18 +605,19 @@ export class BulkTab extends SimTab {
 			});
 		});
 
-		// Disabled temporarily because for the web sim 50 iterations was far too few for reliable results
-		const fastModeCheckbox = new BooleanPicker<BulkTab>(null, this, {
-			id: 'bulk-fast-mode',
-			label: 'Fast Mode',
-			labelTooltip: 'Fast mode reduces accuracy but will run faster.',
-			changedEvent: _modObj => this.settingsChangedEmitter,
-			getValue: _modObj => this.fastMode,
-			setValue: (_, _modObj, newValue: boolean) => {
-				this.setFastMode(newValue);
-			},
-		});
-		const combinationsCheckbox = new BooleanPicker<BulkTab>(null, this, {
+		if (!isExternal()) {
+			new BooleanPicker<BulkTab>(this.booleanSettingsContainer, this, {
+				id: 'bulk-fast-mode',
+				label: 'Fast Mode',
+				labelTooltip: 'Fast mode reduces accuracy but will run faster.',
+				changedEvent: _modObj => this.settingsChangedEmitter,
+				getValue: _modObj => this.fastMode,
+				setValue: (_, _modObj, newValue: boolean) => {
+					this.setFastMode(newValue);
+				},
+			});
+		}
+		new BooleanPicker<BulkTab>(this.booleanSettingsContainer, this, {
 			id: 'bulk-combinations',
 			label: 'Combinations',
 			labelTooltip:
@@ -629,7 +628,7 @@ export class BulkTab extends SimTab {
 				this.setCombinations(newValue);
 			},
 		});
-		const autoEnchantCheckbox = new BooleanPicker<BulkTab>(null, this, {
+		new BooleanPicker<BulkTab>(this.booleanSettingsContainer, this, {
 			id: 'bulk-auto-enchant',
 			label: 'Auto Enchant',
 			labelTooltip: 'When checked bulk simulator apply the current enchant for a slot to each replacement item it can.',
@@ -656,7 +655,7 @@ export class BulkTab extends SimTab {
 			</div>
 		);
 
-		const autoGemCheckbox = new BooleanPicker<BulkTab>(null, this, {
+		new BooleanPicker<BulkTab>(this.booleanSettingsContainer, this, {
 			id: 'bulk-auto-gem',
 			label: 'Auto Gem',
 			labelTooltip: 'When checked bulk simulator will fill any un-filled gem sockets with default gems.',
@@ -668,7 +667,7 @@ export class BulkTab extends SimTab {
 			},
 		});
 
-		const simTalentsCheckbox = new BooleanPicker<BulkTab>(null, this, {
+		new BooleanPicker<BulkTab>(this.booleanSettingsContainer, this, {
 			id: 'bulk-sim-talents',
 			label: 'Sim Talents',
 			labelTooltip: 'When checked bulk simulator will sim chosen talent setups. Warning, it might cause the bulk sim to run for a lot longer',
@@ -680,17 +679,7 @@ export class BulkTab extends SimTab {
 			},
 		});
 
-		booleanSettingsContainer.appendChild(
-			<>
-				{!isExternal() && fastModeCheckbox.rootElem}
-				{combinationsCheckbox.rootElem}
-				{autoEnchantCheckbox.rootElem}
-				{autoGemCheckbox.rootElem}
-				{simTalentsCheckbox.rootElem}
-			</>,
-		);
-
-		settingsContainer.appendChild(
+		this.settingsContainer.appendChild(
 			<>
 				{defaultGemDiv}
 				{talentsToSimDiv}
@@ -811,52 +800,16 @@ export class BulkTab extends SimTab {
 		});
 	}
 
-	private getCombinationsCount(): Element {
-		let comboCount = 1;
-		this.itemsBySlot.forEach((itemsMap, bulkSlot) => {
-			if (!!itemsMap.size) {
-				// TODO: This is still not matching up because of some flaws with how the bulk sim generates combinations on the back-end
-				const items = [...itemsMap.values()];
-				const eligibleSlots = getEligibleItemSlots(this.simUI.sim.db.lookupItemSpec(items[0])!.item);
-				const equippedIds = eligibleSlots.map(slot => this.simUI.player.getEquippedItem(slot)?.id);
-
-				if (this.doCombos) {
-					const uniqueItemCount = new Set([...equippedIds, ...items.map(item => item.id)]).size;
-					if ([BulkSimItemSlot.ItemSlotFinger, BulkSimItemSlot.ItemSlotTrinket, BulkSimItemSlot.ItemSlotHandWeapon].includes(bulkSlot)) {
-						comboCount *= eligibleSlots.length * uniqueItemCount;
-					} else {
-						comboCount *= uniqueItemCount + 1;
-					}
-				} else {
-					comboCount += itemsMap.size;
-				}
-			}
-		});
-
-		if (this.simTalents) {
-			const uniqueLoadouts: Array<TalentLoadout> = [];
-			this.savedTalents.forEach(loadout => {
-				// Compare each loadout's talent string and glyphs to find the unique selected loadouts
-				if (!uniqueLoadouts.some(l => l.talentsString === loadout.talentsString && Glyphs.equals(l.glyphs, loadout.glyphs))) {
-					uniqueLoadouts.push(loadout);
-				}
-			});
-			comboCount *= Math.max(uniqueLoadouts.length, 1);
-		}
-
-		const baseNumIterations = this.getDefaultIterationsCount();
-		const iterationCount = Math.min(baseNumIterations / (this.fastMode ? 10 : 1), 1000) * comboCount;
-
-		this.combinations = comboCount;
-		this.iterations = iterationCount;
+	private async getCombinationsCount(): Promise<Element> {
+		await this.calculateBulkCombinations();
 
 		const warningRef = ref<HTMLButtonElement>();
 		const rtn = (
 			<>
 				<span className={clsx(this.showIterationsWarning() && 'text-danger')}>
-					{comboCount === 1 ? '1 Combination' : `${comboCount} Combinations`}
+					{this.combinations === 1 ? '1 Combination' : `${this.combinations} Combinations`}
 					<br />
-					<small>{iterationCount} Iterations</small>
+					<small>{this.iterations} Iterations</small>
 				</span>
 				{this.showIterationsWarning() && (
 					<button className="warning link-warning" ref={warningRef}>

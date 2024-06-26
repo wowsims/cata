@@ -275,6 +275,8 @@ export class Individual60UImporter<SpecType extends Spec> extends Importer {
 			talentsStr = talentSpellIdsToTalentString(charClass, talentIds);
 		}
 
+		let hasRemovedRandomSuffix = false;
+		const modifiedItemNames: string[] = [];
 		const equipmentSpec = EquipmentSpec.create();
 		(importJson.items as Array<any>).forEach(itemJson => {
 			const itemSpec = ItemSpec.create();
@@ -285,16 +287,45 @@ export class Individual60UImporter<SpecType extends Spec> extends Importer {
 			if (itemJson.gems) {
 				itemSpec.gems = (itemJson.gems as Array<any>).filter(gemJson => gemJson?.id).map(gemJson => gemJson.id);
 			}
+
+			// As long as 60U exports the wrong suffixes we should
+			// inform the user that they need to manually add them.
+			// Due to this we also remove the reforge on the item.
+			if (itemJson.suffixId) {
+				hasRemovedRandomSuffix = true;
+				if (itemJson.reforge?.id) {
+					itemJson.reforge.id = null;
+				}
+				modifiedItemNames.push(itemJson.name);
+			}
 			if (itemJson.reforge?.id) {
 				itemSpec.reforging = itemJson.reforge.id;
 			}
-
 			equipmentSpec.items.push(itemSpec);
 		});
 
 		this.simUI.sim.db.lookupEquipmentSpec(equipmentSpec);
 
 		this.finishIndividualImport(this.simUI, charClass, race, equipmentSpec, talentsStr, null, []);
+
+		if (hasRemovedRandomSuffix && modifiedItemNames.length) {
+			new Toast({
+				variant: 'warning',
+				body: (
+					<>
+						<p>60U currently exports the wrong Random Suffixes. We have removed the random suffix on the following item(s):</p>
+						<ul>
+							{modifiedItemNames.map(itemName => (
+								<li>
+									<strong>{itemName}</strong>
+								</li>
+							))}
+						</ul>
+					</>
+				),
+				delay: 8000,
+			});
+		}
 	}
 }
 
