@@ -1,6 +1,6 @@
 import { ResourceType } from '../proto/api.js';
 import { ArmorType, Class, ItemSlot, Profession, PseudoStat, Race, RangedWeaponType, Spec, Stat, WeaponType } from '../proto/common.js';
-import { DungeonDifficulty, RaidFilterOption, RepFaction, RepLevel, SourceFilterOption } from '../proto/ui.js';
+import { DungeonDifficulty, RaidFilterOption, RepFaction, RepLevel, SourceFilterOption, StatCapType } from '../proto/ui.js';
 
 export const armorTypeNames: Map<ArmorType, string> = new Map([
 	[ArmorType.ArmorTypeUnknown, 'Unknown'],
@@ -193,11 +193,7 @@ export const shortSecondaryStatNames: Map<Stat, string> = new Map([
 	[Stat.StatParry, 'Parry'],
 ]);
 
-export const pseudoStatOrder: Array<PseudoStat> = [
-	PseudoStat.PseudoStatMainHandDps,
-	PseudoStat.PseudoStatOffHandDps,
-	PseudoStat.PseudoStatRangedDps,
-];
+export const pseudoStatOrder: Array<PseudoStat> = [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatRangedDps];
 export const pseudoStatNames: Map<PseudoStat, string> = new Map([
 	[PseudoStat.PseudoStatMainHandDps, 'Main Hand DPS'],
 	[PseudoStat.PseudoStatOffHandDps, 'Off Hand DPS'],
@@ -338,8 +334,8 @@ export const REP_FACTION_NAMES: Record<RepFaction, string> = {
 	[RepFaction.RepFactionDragonmawClan]: 'Dragonmaw Clan',
 	[RepFaction.RepFactionRamkahen]: 'Ramkahen',
 	[RepFaction.RepFactionWildhammerClan]: 'Wildhammer Clan',
-	[RepFaction.RepFactionBaradinsWardens]: 'Baradin\'s Wardens',
-	[RepFaction.RepFactionHellscreamsReach]: 'Hellscream\'s Reach',
+	[RepFaction.RepFactionBaradinsWardens]: "Baradin's Wardens",
+	[RepFaction.RepFactionHellscreamsReach]: "Hellscream's Reach",
 	[RepFaction.RepFactionAvengersOfHyjal]: 'Avengers of Hyjal',
 };
 
@@ -354,7 +350,7 @@ export const REP_FACTION_QUARTERMASTERS: Record<RepFaction, number> = {
 	[RepFaction.RepFactionBaradinsWardens]: 47328,
 	[RepFaction.RepFactionHellscreamsReach]: 48531,
 	[RepFaction.RepFactionAvengersOfHyjal]: 54401,
-}
+};
 
 export const masterySpellNames: Map<Spec, string> = new Map([
 	[Spec.SpecAssassinationRogue, 'Potent Poisons'],
@@ -422,4 +418,9 @@ export const masterySpellIDs: Map<Spec, number> = new Map([
 	[Spec.SpecAfflictionWarlock, 77215],
 	[Spec.SpecDemonologyWarlock, 77219],
 	[Spec.SpecDestructionWarlock, 77220],
+]);
+export const statCapTypeNames = new Map<StatCapType, string>([
+	[StatCapType.TypeHardCap, 'Hard cap'],
+	[StatCapType.TypeSoftCap, 'Soft cap'],
+	[StatCapType.TypeThreshold, 'Threshold'],
 ]);

@@ -5,6 +5,11 @@
 		margin-bottom: 0;
 	}
 }
+.tippy-box[data-theme='suggest-reforges-softcaps'] {
+	max-height: 40vh;
+	overflow: auto;
+}
+
 .suggest-reforges-settings-group {
 	--settings-button-width: 36px;
 	position: relative;

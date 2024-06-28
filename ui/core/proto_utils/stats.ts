@@ -1,5 +1,4 @@
 import * as Mechanics from '../constants/mechanics.js';
-import { Player } from '../player';
 import { Class, PseudoStat, Stat, UnitStats } from '../proto/common.js';
 import { getEnumValues } from '../utils.js';
 import { getClassStatName, pseudoStatNames } from './names.js';
