@@ -203,7 +203,7 @@ export class ReforgeOptimizer {
 	buildReforgeButtonTooltip() {
 		return (
 			<>
-				<p>The following soft caps / breakpoints have been implemented for this spec:</p>
+				<p>The following breakpoints have been implemented for this spec:</p>
 				<table className="w-100">
 					<tbody>
 						{this.softCapsConfig?.map(({ stat, breakpoints, capType, postCapEPs }, index) => (
@@ -213,9 +213,7 @@ export class ReforgeOptimizer {
 									<td className="text-end">{statCapTypeNames.get(capType)}</td>
 								</tr>
 								<tr>
-									<th className="fw-medium">
-										Rating
-									</th>
+									<th>Rating</th>
 									<th className="text-end">
 										<em>%</em>
 									</th>
