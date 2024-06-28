@@ -9,7 +9,7 @@ import { Player } from '../player';
 import { Class, ItemSlot, Spec, Stat } from '../proto/common';
 import { StatCapConfig, StatCapType } from '../proto/ui';
 import { Gear } from '../proto_utils/gear';
-import { getClassStatName } from '../proto_utils/names';
+import { getClassStatName, statCapTypeNames } from '../proto_utils/names';
 import { statPercentageOrPointsToNumber, Stats, statToPercentageOrPoints } from '../proto_utils/stats';
 import { SpecTalents } from '../proto_utils/utils';
 import { Sim } from '../sim';
@@ -150,9 +150,11 @@ export class ReforgeOptimizer {
 
 		if (!!this.softCapsConfig?.length)
 			tippy(startReforgeOptimizationButton, {
+				theme: 'suggest-reforges-softcaps',
 				content: this.buildReforgeButtonTooltip(),
 				placement: 'bottom',
 				maxWidth: 310,
+				interactive: true,
 			});
 
 		tippy(contextMenuButton, {
@@ -201,8 +203,47 @@ export class ReforgeOptimizer {
 	buildReforgeButtonTooltip() {
 		return (
 			<>
-				The following soft caps / breakpoints have been implemented for this spec:
-				<ul className="mt-1 mb-0">{this.softCapsConfig?.map(({ stat }) => <li>{getClassStatName(stat, this.player.getClass())}</li>)}</ul>
+				<p>The following soft caps / breakpoints have been implemented for this spec:</p>
+				<table className="w-100">
+					<tbody>
+						{this.softCapsConfig?.map(({ stat, breakpoints, capType, postCapEPs }, index) => (
+							<>
+								<tr>
+									<th colSpan={2}>{getClassStatName(stat, this.player.getClass())}</th>
+									<td className="text-end">{statCapTypeNames.get(capType)}</td>
+								</tr>
+								<tr>
+									<th className="fw-medium">
+										Rating
+									</th>
+									<th className="text-end">
+										<em>%</em>
+									</th>
+									<th className="text-end">
+										<em>Post cap EP</em>
+									</th>
+								</tr>
+								{breakpoints.map((breakpoint, breakpointIndex) => (
+									<tr>
+										<td>{Math.round(breakpoint)}</td>
+										<td className="text-end">{statToPercentageOrPoints(stat, breakpoint, new Stats()).toFixed(2)}</td>
+										<td className="text-end">{postCapEPs[breakpointIndex]}</td>
+									</tr>
+								))}
+								{index !== this.softCapsConfig.length - 1 && (
+									<>
+										<tr>
+											<td colSpan={2} className="border-bottom pb-2"></td>
+										</tr>
+										<tr>
+											<td colSpan={2} className="pb-2"></td>
+										</tr>
+									</>
+								)}
+							</>
+						))}
+					</tbody>
+				</table>
 			</>
 		);
 	}
