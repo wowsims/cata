@@ -213,7 +213,7 @@ export class ReforgeOptimizer {
 									<td className="text-end">{statCapTypeNames.get(capType)}</td>
 								</tr>
 								<tr>
-									<th>Rating</th>
+									<th><em>Rating</em></th>
 									<th className="text-end">
 										<em>%</em>
 									</th>
