@@ -139,9 +139,9 @@ func (druid *Druid) RegisterEclipseEnergyGainAura() {
 				druid.AddEclipseEnergy((13+1.0/3.0)*eclipseEnergyMultiplier, LunarEnergy, sim, lunarMetric)
 			case 78674: // Starsurge
 				if druid.CanGainEnergy(SolarEnergy) {
-					druid.AddEclipseEnergy(15*eclipseEnergyMultiplier, SolarEnergy, sim, solarMetric)
+					druid.AddEclipseEnergy(15, SolarEnergy, sim, solarMetric)
 				} else {
-					druid.AddEclipseEnergy(15*eclipseEnergyMultiplier, LunarEnergy, sim, lunarMetric)
+					druid.AddEclipseEnergy(15, LunarEnergy, sim, lunarMetric)
 				}
 			}
 		},
