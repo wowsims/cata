@@ -39,6 +39,7 @@
 		left: var(--spacer-3);
 		right: var(--spacer-3);
 		grid-template-columns: repeat(var(--bulk-gear-search-results-column-count), 1fr);
+		z-index: 10; // Needs to be greater than 1 but less than the header z-index
 
 		@include media-breakpoint-up(md) {
 			--bulk-gear-search-results-column-count: 2;
@@ -55,6 +56,7 @@
 	.bulk-item-search-item {
 		display: flex;
 		width: 100%;
+		height: 100%;
 		padding: var(--spacer-2);
 		border: var(--border-default);
 		white-space: normal;
@@ -73,9 +75,10 @@
 		height: 100%;
 	}
 
-	.bulk-item-search-more-items-note {
+	.bulk-item-search-results-note {
 		border: none;
-		grid-column: 1 / var(--bulk-gear-search-results-column-count);
+		grid-column: 1 / calc(var(--bulk-gear-search-results-column-count) + 1);
+		justify-content: center;
 	}
 
 	.bulk-gear-search-ilvl-filters {

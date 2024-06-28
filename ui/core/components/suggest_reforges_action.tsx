@@ -39,18 +39,28 @@ const INCLUDED_STATS = [
 	Stat.StatParry,
 ];
 
-const STAT_TOOLTIP: { [key in Stat]?: () => Element | string } = {
+type StatTooltips = { [key in Stat]?: () => Element | string };
+
+const STAT_TOOLTIPS: StatTooltips = {
 	[Stat.StatMastery]: () => (
 		<>
-			Rating: Excludes your base mastery
+			Rating: <strong>excluding</strong> your base mastery
 			<br />
-			%: Includes base mastery
+			%: <strong>including</strong> your base mastery
+		</>
+	),
+	[Stat.StatSpellHaste]: () => (
+		<>
+			Rating: final rating <strong>including</strong> all buffs/gear.
+			<br />
+			%: final percentage value <strong>including</strong> all buffs/gear.
 		</>
 	),
 };
 
 export type ReforgeOptimizerOptions = {
 	experimental?: true;
+	statTooltips?: StatTooltips;
 	// Allows you to modify the stats before they are returned for the calculations
 	// For example: Adding class specific Glyphs/Talents that are not added by the backend
 	updateGearStatsModifier?: (baseStats: Stats) => Stats;
@@ -67,6 +77,7 @@ export class ReforgeOptimizer {
 	protected _statCaps: Stats;
 	protected updateGearStatsModifier: ReforgeOptimizerOptions['updateGearStatsModifier'];
 	protected softCapsConfig: StatCapConfig[];
+	protected statTooltips: StatTooltips = {};
 
 	constructor(simUI: IndividualSimUI<any>, options?: ReforgeOptimizerOptions) {
 		this.simUI = simUI;
@@ -78,6 +89,7 @@ export class ReforgeOptimizer {
 		this.defaults = simUI.individualConfig.defaults;
 		this.updateGearStatsModifier = options?.updateGearStatsModifier;
 		this.softCapsConfig = this.defaults.softCapBreakpoints || [];
+		this.statTooltips = { ...STAT_TOOLTIPS, ...options?.statTooltips };
 		this._statCaps = this.statCaps;
 
 		const startReforgeOptimizationEntry: ActionGroupItem = {
@@ -331,7 +343,7 @@ export class ReforgeOptimizer {
 							},
 						});
 
-						const tooltipText = STAT_TOOLTIP[stat];
+						const tooltipText = this.statTooltips[stat];
 						const statTooltipRef = ref<HTMLButtonElement>();
 
 						const row = (

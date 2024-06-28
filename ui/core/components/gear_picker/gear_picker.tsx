@@ -88,13 +88,13 @@ export class ItemRenderer extends Component {
 			<>
 				<div className="item-picker-icon-wrapper">
 					<span className="item-picker-ilvl" ref={ilvlElem} />
-					<a ref={iconElem} className="item-picker-icon" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
+					<a ref={iconElem} className="item-picker-icon" href="javascript:void(0)" attributes={{ role: 'button' }} />
 					<div ref={sce} className="item-picker-sockets-container"></div>
 				</div>
 				<div className="item-picker-labels-container">
-					<a ref={nameElem} className="item-picker-name-container" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
-					<a ref={enchantElem} className="item-picker-enchant hide" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
-					<a ref={reforgeElem} className="item-picker-reforge hide" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
+					<a ref={nameElem} className="item-picker-name-container" href="javascript:void(0)" attributes={{ role: 'button' }} />
+					<a ref={enchantElem} className="item-picker-enchant hide" href="javascript:void(0)" attributes={{ role: 'button' }} />
+					<a ref={reforgeElem} className="item-picker-reforge hide" href="javascript:void(0)" attributes={{ role: 'button' }} />
 				</div>
 			</>,
 		);
@@ -107,7 +107,7 @@ export class ItemRenderer extends Component {
 		this.socketsContainerElem = sce.value!;
 	}
 
-	clear() {
+	clear(slot: ItemSlot) {
 		this.nameElem.removeAttribute('data-wowhead');
 		this.nameElem.removeAttribute('href');
 		this.iconElem.removeAttribute('data-wowhead');
@@ -117,7 +117,7 @@ export class ItemRenderer extends Component {
 		this.enchantElem.classList.add('hide');
 		this.reforgeElem.classList.add('hide');
 
-		this.iconElem.style.backgroundImage = '';
+		this.iconElem.style.backgroundImage = `url('${getEmptySlotIconUrl(slot)}')`;
 
 		this.enchantElem.innerText = '';
 		this.reforgeElem.innerText = '';
@@ -129,17 +129,16 @@ export class ItemRenderer extends Component {
 	}
 
 	update(newItem: EquippedItem) {
-		this.nameElem.replaceChildren(<span className="item-picker-name">{newItem.item.name}</span>);
+		const nameSpan = <span className="item-picker-name">{newItem.item.name}</span>;
+		this.nameElem.replaceChildren(nameSpan);
 		this.ilvlElem.textContent = newItem.item.ilvl.toString();
 
 		if (newItem.randomSuffix) {
-			this.nameElem.textContent += ' ' + newItem.randomSuffix.name;
+			nameSpan.textContent += ' ' + newItem.randomSuffix.name;
 		}
 
 		if (newItem.item.heroic) {
-			this.nameElem.insertAdjacentElement('beforeend', createHeroicLabel());
-		} else {
-			this.nameElem.querySelector('.heroic-label')?.remove();
+			this.nameElem.appendChild(createHeroicLabel());
 		}
 
 		if (newItem.reforge) {
@@ -296,7 +295,7 @@ export class ItemPicker extends Component {
 
 	set item(newItem: EquippedItem | null) {
 		// Clear everything first
-		this.itemElem.clear();
+		this.itemElem.clear(this.slot);
 		// Clear quick swap gems array since gem sockets are rerendered every time
 		this.quickSwapGemPopover = [];
 		this.itemElem.nameElem.textContent = slotNames.get(this.slot) ?? '';
@@ -304,8 +303,6 @@ export class ItemPicker extends Component {
 
 		if (!!newItem) {
 			this.itemElem.update(newItem);
-		} else {
-			this.itemElem.iconElem.style.backgroundImage = `url('${getEmptySlotIconUrl(this.slot)}')`;
 		}
 
 		this._equippedItem = newItem;

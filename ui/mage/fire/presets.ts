@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Conjured, Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, RaidBuffs, Spec, Stat } from '../../core/proto/common';
+import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import {
 	FireMage_Options as MageOptions,
 	MageMajorGlyph as MajorGlyph,
@@ -32,12 +32,12 @@ export const FIRE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('F
 export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Fire P1',
 	Stats.fromMap({
-		[Stat.StatIntellect]: 1.32,
+		[Stat.StatIntellect]: 1.33,
 		[Stat.StatSpellPower]: 1.0,
-		[Stat.StatSpellHit]: 1.05,
-		[Stat.StatSpellCrit]: 0.56,
-		[Stat.StatSpellHaste]: 0.64,
-		[Stat.StatMastery]: 0.47,
+		[Stat.StatSpellHit]: 1.09,
+		[Stat.StatSpellCrit]: 0.61,
+		[Stat.StatSpellHaste]: 0.69,
+		[Stat.StatMastery]: 0.46,
 	}),
 );
 

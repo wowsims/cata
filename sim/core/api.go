@@ -60,3 +60,11 @@ func RunBulkSim(request *proto.BulkSimRequest) *proto.BulkSimResult {
 func RunBulkSimAsync(ctx context.Context, request *proto.BulkSimRequest, progress chan *proto.ProgressMetrics) {
 	go BulkSim(ctx, request, progress)
 }
+
+func RunBulkCombos(ctx context.Context, request *proto.BulkSimCombosRequest) *proto.BulkSimCombosResult {
+	bulkSimReq := &proto.BulkSimCombosRequest{
+		BaseSettings: request.BaseSettings,
+		BulkSettings: request.BulkSettings,
+	}
+	return BulkSimCombos(ctx, bulkSimReq)
+}

@@ -16,10 +16,10 @@ func (warrior *Warrior) RegisterWhirlwindSpell() {
 	if warrior.AutoAttacks.IsDualWielding && warrior.GetOHWeapon().WeaponType != proto.WeaponType_WeaponTypeStaff &&
 		warrior.GetOHWeapon().WeaponType != proto.WeaponType_WeaponTypePolearm {
 		whirlwindOH = warrior.RegisterSpell(core.SpellConfig{
-			ActionID:       actionID.WithTag(1),
+			ActionID:       actionID.WithTag(2),
 			SpellSchool:    core.SpellSchoolPhysical,
 			ProcMask:       core.ProcMaskMeleeOHSpecial, //TODO: needs testing to check if it procs auras, according to pre-cata it didn't
-			ClassSpellMask: SpellMaskWhirlwind,
+			ClassSpellMask: SpellMaskWhirlwindOh,
 			Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
 
 			DamageMultiplier: 1.0,
@@ -27,11 +27,27 @@ func (warrior *Warrior) RegisterWhirlwindSpell() {
 			CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 
 			BonusCoefficient: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				curTarget := target
+				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
+					baseDamage := 0.65 * spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+					results[hitIndex] = whirlwindOH.CalcDamage(sim, curTarget, baseDamage, whirlwindOH.OutcomeMeleeWeaponSpecialHitAndCrit)
+
+					curTarget = sim.Environment.NextTargetUnit(curTarget)
+				}
+
+				curTarget = target
+				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
+					whirlwindOH.DealDamage(sim, results[hitIndex])
+					curTarget = sim.Environment.NextTargetUnit(curTarget)
+				}
+			},
 		})
 	}
 
 	warrior.Whirlwind = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:       actionID,
+		ActionID:       actionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
@@ -79,24 +95,12 @@ func (warrior *Warrior) RegisterWhirlwindSpell() {
 				curTarget = sim.Environment.NextTargetUnit(curTarget)
 			}
 
-			if numLandedHits > 4 {
+			if numLandedHits >= 4 {
 				spell.CD.Reduce(time.Second * 6)
 			}
 
 			if whirlwindOH != nil {
-				curTarget = target
-				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-					baseDamage := 0.65 * spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-					results[hitIndex] = whirlwindOH.CalcDamage(sim, curTarget, baseDamage, whirlwindOH.OutcomeMeleeWeaponSpecialHitAndCrit)
-
-					curTarget = sim.Environment.NextTargetUnit(curTarget)
-				}
-
-				curTarget = target
-				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-					whirlwindOH.DealDamage(sim, results[hitIndex])
-					curTarget = sim.Environment.NextTargetUnit(curTarget)
-				}
+				whirlwindOH.Cast(sim, target)
 			}
 		},
 	})

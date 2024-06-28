@@ -2,7 +2,6 @@ package paladin
 
 import (
 	"github.com/wowsims/cata/sim/core"
-	"time"
 )
 
 func (paladin *Paladin) registerCrusaderStrike() {
@@ -26,8 +25,8 @@ func (paladin *Paladin) registerCrusaderStrike() {
 			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
-				Timer:    paladin.NewTimer(),
-				Duration: 4500 * time.Millisecond,
+				Timer:    paladin.sharedBuilderTimer,
+				Duration: paladin.sharedBuilderBaseCD,
 			},
 		},
 

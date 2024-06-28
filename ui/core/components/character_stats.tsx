@@ -116,7 +116,6 @@ export class CharacterStats extends Component {
 
 	private updateStats(player: Player<any>) {
 		const playerStats = player.getCurrentStats();
-
 		const statMods = this.modifyDisplayStats ? this.modifyDisplayStats(this.player) : {};
 
 		const baseStats = Stats.fromProto(playerStats.baseStats);

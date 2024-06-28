@@ -1,6 +1,9 @@
 package protection
 
 import (
+	"math"
+	"time"
+
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -15,7 +18,7 @@ func RegisterProtectionPaladin() {
 			return NewProtectionPaladin(character, options)
 		},
 		func(player *proto.Player, spec interface{}) {
-			playerSpec, ok := spec.(*proto.Player_ProtectionPaladin) // I don't really understand this line
+			playerSpec, ok := spec.(*proto.Player_ProtectionPaladin)
 			if !ok {
 				panic("Invalid spec value for Protection Paladin!")
 			}
@@ -32,15 +35,6 @@ func NewProtectionPaladin(character *core.Character, options *proto.Player) *Pro
 		Options: protOptions.Options,
 	}
 
-	// prot.PaladinAura = protOptions.Options.ClassOptions.Aura
-
-	// //prot.HasGlyphAS = prot.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfAvengerSShield)
-
-	// prot.EnableAutoAttacks(prot, core.AutoAttackOptions{
-	// 	MainHand:       prot.WeaponFromMainHand(0), // Set crit multiplier later when we have targets.
-	// 	AutoSwingMelee: true,
-	// })
-
 	// healingModel := options.HealingModel
 	// if healingModel != nil {
 	// 	if healingModel.InspirationUptime > 0.0 {
@@ -56,7 +50,7 @@ type ProtectionPaladin struct {
 
 	Options *proto.ProtectionPaladin_Options
 
-	HasGlyphAS bool
+	core.VengeanceTracker
 }
 
 func (prot *ProtectionPaladin) GetPaladin() *paladin.Paladin {
@@ -65,11 +59,8 @@ func (prot *ProtectionPaladin) GetPaladin() *paladin.Paladin {
 
 func (prot *ProtectionPaladin) Initialize() {
 	prot.Paladin.Initialize()
-	// prot.ActivateRighteousFury()
-
-	// if prot.Options.ClassOptions.UseAvengingWrath {
-	// 	prot.RegisterAvengingWrathCD()
-	// }
+	prot.ActivateRighteousFury()
+	prot.registerAvengersShieldSpell()
 }
 
 func (prot *ProtectionPaladin) ApplyTalents() {
@@ -79,19 +70,80 @@ func (prot *ProtectionPaladin) ApplyTalents() {
 
 func (prot *ProtectionPaladin) Reset(sim *core.Simulation) {
 	prot.Paladin.Reset(sim)
+	prot.RighteousFuryAura.Activate(sim)
+}
 
-	// switch prot.Seal {
-	// case proto.PaladinSeal_Vengeance:
-	// 	prot.CurrentSeal = prot.SealOfVengeanceAura
-	// 	prot.SealOfVengeanceAura.Activate(sim)
-	// case proto.PaladinSeal_Command:
-	// 	prot.CurrentSeal = prot.SealOfCommandAura
-	// 	prot.SealOfCommandAura.Activate(sim)
-	// case proto.PaladinSeal_Righteousness:
-	// 	prot.CurrentSeal = prot.SealOfRighteousnessAura
-	// 	prot.SealOfRighteousnessAura.Activate(sim)
-	// }
+func (prot *ProtectionPaladin) RegisterSpecializationEffects() {
+	// Divine Bulwark
+	prot.RegisterMastery()
 
-	// prot.RighteousFuryAura.Activate(sim)
-	// prot.Paladin.PseudoStats.Stunned = false
+	// Touched by the Light
+	prot.AddStatDependency(stats.Strength, stats.SpellPower, 0.6)
+	prot.AddStat(stats.SpellHit, core.SpellHitRatingPerHitChance*8)
+	prot.MultiplyStat(stats.Stamina, 1.15)
+
+	// Judgements of the Wise
+	prot.ApplyJudgementsOfTheWise()
+
+	// Vengeance
+	core.ApplyVengeanceEffect(prot.GetCharacter(), &prot.VengeanceTracker, 84839)
+}
+
+func (prot *ProtectionPaladin) RegisterMastery() {
+	// Divine Bulwark
+	masteryBlockChance := 18.0 + prot.GetMasteryPoints()*2.25
+	prot.AddStat(stats.Block, masteryBlockChance*core.BlockRatingPerBlockChance)
+
+	// Keep it updated when mastery changes
+	prot.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
+		oldBlockRating := (2.25 * core.MasteryRatingToMasteryPoints(oldMastery)) * core.BlockRatingPerBlockChance
+		newBlockRating := (2.25 * core.MasteryRatingToMasteryPoints(newMastery)) * core.BlockRatingPerBlockChance
+
+		prot.AddStatDynamic(sim, stats.Block, -oldBlockRating+newBlockRating)
+	})
+}
+
+func (prot *ProtectionPaladin) ApplyJudgementsOfTheWise() {
+	actionID := core.ActionID{SpellID: 31878}
+	manaMetrics := prot.NewManaMetrics(actionID)
+
+	// It's 30% of base mana over 10 seconds, with haste adding ticks.
+	manaPerTick := math.Round(0.30 * prot.BaseMana)
+
+	jotw := prot.RegisterSpell(core.SpellConfig{
+		ActionID: actionID,
+		Flags:    core.SpellFlagHelpful | core.SpellFlagNoMetrics | core.SpellFlagNoLogs,
+
+		Hot: core.DotConfig{
+			SelfOnly: true,
+			Aura: core.Aura{
+				Label: "Judgements of the Wise",
+			},
+			NumberOfTicks:        10,
+			TickLength:           time.Second * 1,
+			AffectedByCastSpeed:  true,
+			HasteReducesDuration: false,
+
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				prot.AddMana(sim, manaPerTick, manaMetrics)
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.SelfHot().Apply(sim)
+		},
+	})
+
+	core.MakeProcTriggerAura(&prot.Unit, core.ProcTrigger{
+		Name:           "Judgements of the Wise Trigger",
+		ActionID:       actionID,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ClassSpellMask: paladin.SpellMaskJudgement,
+		ProcChance:     1.0,
+
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			jotw.Cast(sim, &prot.Unit)
+		},
+	})
 }

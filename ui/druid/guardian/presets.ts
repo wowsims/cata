@@ -37,8 +37,8 @@ export const ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('APL Default',
 export const ROTATION_PRESET_SIMPLE = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecGuardianDruid, DefaultSimpleRotation);
 
 // Preset options for EP weights
-export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P1',
+export const SURVIVAL_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Survival',
 	Stats.fromMap(
 		{
 			[Stat.StatHealth]: 0.04,
@@ -58,6 +58,30 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 0.0,
+		},
+	),
+);
+
+export const BALANCED_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Balanced',
+	Stats.fromMap(
+		{
+			[Stat.StatHealth]: 0.02,
+			[Stat.StatStamina]: 0.76,
+			[Stat.StatAgility]: 1.0,
+			[Stat.StatArmor]: 0.62,
+			[Stat.StatBonusArmor]: 0.14,
+			[Stat.StatDodge]: 0.59,
+			[Stat.StatMastery]: 0.20,
+			[Stat.StatStrength]: 0.21,
+			[Stat.StatAttackPower]: 0.20,
+			[Stat.StatMeleeHit]: 0.60,
+			[Stat.StatExpertise]: 0.93,
+			[Stat.StatMeleeCrit]: 0.25,
+			[Stat.StatMeleeHaste]: 0.03,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 0.23,
 		},
 	),
 );
