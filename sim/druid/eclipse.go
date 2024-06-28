@@ -114,6 +114,78 @@ func (druid *Druid) RegisterEclipseAuras() {
 	})
 }
 
+func (druid *Druid) RegisterEclipseEnergyGainAura() {
+	solarMetric := druid.NewSolarEnergyMetrics(core.ActionID{SpellID: 89265})
+	lunarMetric := druid.NewLunarEnergyMetrics(core.ActionID{SpellID: 89265})
+
+	druid.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 89265},
+		Label:    "Eclipse Energy",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			var eclipseEnergyMultiplier float64 = 1.0
+
+			if druid.canEuphoriaProc() && druid.hasEuphoriaProcced(sim) {
+				eclipseEnergyMultiplier = 2
+			}
+
+			switch spell.ActionID.SpellID {
+			case 2912: // Starfire
+				druid.AddEclipseEnergy(20*eclipseEnergyMultiplier, SolarEnergy, sim, solarMetric)
+			case 5176: // Wrath
+				druid.AddEclipseEnergy((13+1.0/3.0)*eclipseEnergyMultiplier, LunarEnergy, sim, lunarMetric)
+			case 78674: // Starsurge
+				if druid.CanGainEnergy(SolarEnergy) {
+					druid.AddEclipseEnergy(15*eclipseEnergyMultiplier, SolarEnergy, sim, solarMetric)
+				} else {
+					druid.AddEclipseEnergy(15*eclipseEnergyMultiplier, LunarEnergy, sim, lunarMetric)
+				}
+			}
+		},
+	})
+}
+
+func (druid *Druid) hasEuphoriaProcced(sim *core.Simulation) bool {
+	if druid.Talents.Euphoria == 1 {
+		procChance := 0.12
+
+		return sim.Proc(procChance, "Euphoria 1/2")
+	}
+
+	if druid.Talents.Euphoria == 2 {
+		procChance := 0.24
+
+		return sim.Proc(procChance, "Euphoria 2/2")
+	}
+
+	return false
+}
+
+func (druid *Druid) canEuphoriaProc() bool {
+	if druid.Talents.Euphoria == 0 {
+		return false
+	}
+
+	if druid.currentEclipse != NoEclipse {
+		return false
+	}
+
+	if druid.Talents.Euphoria == 2 {
+		if druid.CanGainEnergy(SolarEnergy) && druid.CurrentSolarEnergy() <= 35 {
+			return true
+		}
+
+		if druid.CanGainEnergy(LunarEnergy) && druid.CurrentLunarEnergy() <= 35 {
+			return true
+		}
+	}
+
+	return false
+}
+
 func (druid *Druid) HasEclipseBar() bool {
 	return druid.eclipseEnergyBar.druid != nil
 }
