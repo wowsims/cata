@@ -27,6 +27,8 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 		}
 	}
 
+	bounceReduction := core.TernaryFloat64(shaman.HasSetBonus(ItemSetTidefury, 2), 0.83, 0.7)
+
 	baseDamage := shaman.ClassSpellScaling * 1.08800005913
 	numHits := int32(3)
 	if shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfChainLightning) {
@@ -36,7 +38,6 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 	numHits = min(numHits, shaman.Env.GetNumTargets())
 
 	spellConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		bounceReduction := 0.7
 		curTarget := target
 
 		// Damage calculation and DealDamage are in separate loops so that e.g. a spell power proc

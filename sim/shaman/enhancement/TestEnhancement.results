@@ -1114,6 +1114,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-TidefuryRaiment"
+ value: {
+  dps: 18469.39615
+  tps: 12455.6219
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-TinyAbominationinaJar-50706"
  value: {
   dps: 28781.74406
