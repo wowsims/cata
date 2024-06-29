@@ -74,6 +74,7 @@ func (demonology *DemonologyWarlock) Reset(sim *core.Simulation) {
 }
 
 func (demonology *DemonologyWarlock) registerSummonFelguard() {
+	demonology.Felguard.RegisterAura(demonology.GetSummonStunAura())
 	demonology.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 30146},
 		SpellSchool:    core.SpellSchoolShadow,
@@ -81,14 +82,14 @@ func (demonology *DemonologyWarlock) registerSummonFelguard() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: warlock.WarlockSpellSummonFelguard,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.8,
-			Multiplier: 1,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.8},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
 				CastTime: 6 * time.Second,
+			},
+			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
+				demonology.ActivePet.GetAuraByID(core.ActionID{SpellID: 32752}).Activate(sim)
 			},
 		},
 
