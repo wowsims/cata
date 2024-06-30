@@ -118,4 +118,32 @@ func init() {
 		Harmful:    false,
 		ProcChance: 1,
 	})
+
+	shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
+		Name:       "Vessel of Acceleration",
+		ID:         68995,
+		AuraID:     96980,
+		Bonus:      stats.Stats{stats.MeleeCrit: 82, stats.SpellCrit: 82},
+		MaxStacks:  5,
+		ProcMask:   core.ProcMaskMelee,
+		Duration:   time.Second * 20,
+		Outcome:    core.OutcomeCrit,
+		Callback:   core.CallbackOnSpellHitDealt,
+		Harmful:    false,
+		ProcChance: 1,
+	})
+
+	shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
+		Name:       "Vessel of Acceleration (Heroic)",
+		ID:         69167,
+		AuraID:     97142,
+		Bonus:      stats.Stats{stats.MeleeCrit: 92, stats.SpellCrit: 92},
+		MaxStacks:  5,
+		ProcMask:   core.ProcMaskMelee,
+		Duration:   time.Second * 20,
+		Outcome:    core.OutcomeCrit,
+		Callback:   core.CallbackOnSpellHitDealt,
+		Harmful:    false,
+		ProcChance: 1,
+	})
 }
