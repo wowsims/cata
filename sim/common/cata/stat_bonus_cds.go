@@ -54,6 +54,7 @@ func init() {
 	shared.NewDodgeActive(59515, 1605, time.Second*20, time.Minute*2) // Vial of Stolen Memories
 	shared.NewDodgeActive(65109, 1812, time.Second*20, time.Minute*2) // Vial of Stolen Memories (Heroic)
 	shared.NewDodgeActive(70143, 1700, time.Second*20, time.Minute*2) // Moonwell Phial
+	shared.NewDodgeActive(71338, 1700, time.Second*20, time.Minute*2) // Brawler's Trophy
 
 	// SpellPower
 	shared.NewSpellPowerActive(61429, 970, time.Second*15, time.Second*90) // Insignia of the Earthen Lord
