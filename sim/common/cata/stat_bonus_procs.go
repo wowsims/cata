@@ -869,6 +869,19 @@ func init() {
 		ProcChance: 0.15,
 		ICD:        time.Second * 55,
 	})
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Dwyer's Caber",
+		ID:         70141,
+		AuraID:     100322,
+		Bonus:      stats.Stats{stats.MeleeCrit: 1020, stats.SpellCrit: 1020},
+		Duration:   time.Second * 20,
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskDirect,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 0.15,
+		ICD:        time.Second * 50,
+	})
 }
 
 var ItemSetAgonyAndTorment = core.NewItemSet(core.ItemSet{
