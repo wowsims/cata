@@ -146,4 +146,32 @@ func init() {
 		Harmful:    false,
 		ProcChance: 1,
 	})
+
+	shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
+		Name:       "Necromantic Focus",
+		ID:         68982,
+		AuraID:     96962,
+		Bonus:      stats.Stats{stats.Mastery: 39},
+		MaxStacks:  10,
+		ProcMask:   core.ProcMaskSpellDamage,
+		Duration:   time.Second * 10,
+		Outcome:    core.OutcomeLanded,
+		Callback:   core.CallbackOnPeriodicDamageDealt,
+		Harmful:    false,
+		ProcChance: 1,
+	})
+
+	shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
+		Name:       "Necromantic Focus Heroic",
+		ID:         69139,
+		AuraID:     97131,
+		Bonus:      stats.Stats{stats.Mastery: 44},
+		MaxStacks:  10,
+		ProcMask:   core.ProcMaskSpellDamage,
+		Duration:   time.Second * 10,
+		Outcome:    core.OutcomeLanded,
+		Callback:   core.CallbackOnPeriodicDamageDealt,
+		Harmful:    false,
+		ProcChance: 1,
+	})
 }
