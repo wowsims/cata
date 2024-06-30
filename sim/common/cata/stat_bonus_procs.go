@@ -921,6 +921,32 @@ func init() {
 		ProcChance: 0.1,
 		ICD:        time.Second * 45,
 	})
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "The Hungerer",
+		ID:         68927,
+		AuraID:     96911,
+		Bonus:      stats.Stats{stats.MeleeHaste: 1532, stats.SpellHaste: 1532},
+		Duration:   time.Second * 15,
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskMeleeOrRanged,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 1, //TODO: verify proc chance, seems wrong?
+		ICD:        time.Second * 60,
+	})
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "The Hungerer Heroic",
+		ID:         69112,
+		AuraID:     97125,
+		Bonus:      stats.Stats{stats.MeleeHaste: 1730, stats.SpellHaste: 1730},
+		Duration:   time.Second * 15,
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskMeleeOrRanged,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 1, //TODO: verify proc chance, seems wrong?
+		ICD:        time.Second * 60,
+	})
 }
 
 var ItemSetAgonyAndTorment = core.NewItemSet(core.ItemSet{
