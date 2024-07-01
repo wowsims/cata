@@ -36,7 +36,6 @@ func (dk *DeathKnight) registerDeathStrikeSpell() {
 		ActionID:       DeathStrikeActionID.WithTag(3),
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskSpellHealing,
-		Flags:          core.SpellFlagIgnoreTargetModifiers,
 		ClassSpellMask: DeathKnightSpellDeathStrikeHeal,
 
 		DamageMultiplier: 1,
@@ -51,14 +50,14 @@ func (dk *DeathKnight) registerDeathStrikeSpell() {
 
 		healing := healValue
 		if healValueModed < minHeal {
-			// Remove healing modifiers for spell when doing min heal
+			// Remove caster modifiers for spell when doing min heal
 			healingSpell.Flags |= core.SpellFlagIgnoreAttackerModifiers
 			healing = minHeal
 		}
 		healingSpell.Cast(sim, healingSpell.Unit)
 		healingSpell.CalcAndDealHealing(sim, healingSpell.Unit, healing, healingSpell.OutcomeHealing)
 
-		// Add back healing modifiers
+		// Add back caster modifiers
 		healingSpell.Flags ^= core.SpellFlagIgnoreAttackerModifiers
 	}
 
