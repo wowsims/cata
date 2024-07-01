@@ -39,12 +39,12 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'P1',
 	Stats.fromMap({
 		[Stat.StatIntellect]: 1.0,
-		[Stat.StatSpirit]: 0.9,
-		[Stat.StatSpellPower]: 0.79,
-		[Stat.StatSpellHit]: 0.85,
-		[Stat.StatSpellCrit]: 0.42,
-		[Stat.StatSpellHaste]: 0.76,
-		[Stat.StatMastery]: 0.48,
+		[Stat.StatSpirit]: 0.53,
+		[Stat.StatSpellPower]: 0.82,
+		[Stat.StatSpellHit]: 0.52,
+		[Stat.StatSpellCrit]: 0.49,
+		[Stat.StatSpellHaste]: 0.21,
+		[Stat.StatMastery]: 0.46,
 	}),
 );
 
