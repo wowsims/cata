@@ -92,6 +92,25 @@ ui/core/proto/api.ts: proto/*.proto node_modules
 ui/%/index.html: ui/index_template.html
 	cat ui/index_template.html | sed -e 's/@@CLASS@@/$(shell dirname $(@D) | xargs basename)/g' -e 's/@@SPEC@@/$(shell basename $(@D))/g' > $@
 
+.PHONY: package.json
+
+package.json:
+# Checks if the system is FreeBSD and jq is installed. This is due to the need to switch out the vite package for rollup on FreeBSD.
+ifeq ($(shell uname -s), FreeBSD)
+	@if ! command -v jq > /dev/null; then \
+		echo "jq is not installed. Please install jq to proceed."; \
+		exit 1; \
+	fi; \
+	\
+	echo "Checking and updating package.json for FreeBSD..."; \
+	\
+	if ! grep -q '"overrides"' package.json; then \
+		jq '. + { "overrides": { "vite": { "rollup": "npm:@rollup/wasm-node@4.13.0" } } }' package.json > package.json.tmp && mv package.json.tmp package.json && npm install; \
+	else \
+		jq '.overrides += { "vite": { "rollup": "npm:@rollup/wasm-node@4.13.0" } }' package.json > package.json.tmp && mv package.json.tmp package.json && npm install; \
+	fi
+endif
+
 package-lock.json:
 	npm install
 
