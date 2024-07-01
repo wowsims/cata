@@ -19,7 +19,7 @@ func (dk *DeathKnight) registerBloodPresenceAura(timer *core.Timer) {
 
 	actionID := core.ActionID{SpellID: 48263}
 	rpMetrics := dk.NewRunicPowerMetrics(actionID)
-
+	healthMetrics := dk.NewHealthMetrics(actionID)
 	runeRegenSpeed := 1.0 + 0.1*float64(dk.Talents.ImprovedBloodPresence)
 
 	presenceAura := dk.GetOrRegisterAura(core.Aura{
@@ -31,6 +31,12 @@ func (dk *DeathKnight) registerBloodPresenceAura(timer *core.Timer) {
 			aura.Unit.PseudoStats.ThreatMultiplier *= threatMult
 			aura.Unit.PseudoStats.DamageTakenMultiplier *= damageTakenMult
 			aura.Unit.EnableDynamicStatDep(sim, stamDep)
+
+			if sim.CurrentTime < 0 {
+				// Fully heal the DK if the presence was activated before combat
+				aura.Unit.GainHealth(sim, aura.Unit.MaxHealth()-aura.Unit.CurrentHealth(), healthMetrics)
+			}
+
 			dk.ApplyDynamicEquipScaling(sim, stats.Armor, armorScaling)
 			dk.MultiplyRunicRegen(runicMulti)
 			dk.MultiplyRuneRegenSpeed(sim, runeRegenSpeed)
