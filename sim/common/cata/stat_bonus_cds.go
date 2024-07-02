@@ -13,8 +13,9 @@ func init() {
 	shared.NewHasteActive(60233, 1935, time.Second*10, time.Minute*1) // Shard of Woe
 
 	// CRIT
-	shared.NewCritActive(66879, 512, time.Second*20, time.Minute*2) // Bottled Lightning
-	shared.NewCritActive(61448, 970, time.Second*20, time.Minute*2) // Oremantle's Favor
+	shared.NewCritActive(66879, 512, time.Second*20, time.Minute*2)  // Bottled Lightning
+	shared.NewCritActive(61448, 970, time.Second*20, time.Minute*2)  // Oremantle's Favor
+	shared.NewCritActive(70144, 1700, time.Second*20, time.Minute*2) // Ricket's Magnetic Fireball
 
 	// STRENGTH
 	shared.NewStrengthActive(59685, 830, time.Second*10, time.Minute)     // Kvaldir Battle Standard - Alliance
@@ -29,6 +30,7 @@ func init() {
 	shared.NewStrengthActive(62464, 1605, time.Second*20, time.Minute*2)  // Impatience of Youth (Alliance)
 	shared.NewStrengthActive(62469, 1605, time.Second*20, time.Minute*2)  // Impatience of Youth (Horde)
 	shared.NewStrengthActive(61034, 1605, time.Second*20, time.Minute*2)  // Vicious Gladiator's Badge of Victory
+	shared.NewStrengthActive(69002, 1277, time.Second*15, time.Minute)    // Essence of the Eternal Flame
 
 	// AGILITY
 	shared.NewAgilityActive(63840, 1095, time.Second*15, time.Second*90) // Juju of Nimbleness
@@ -39,6 +41,7 @@ func init() {
 	shared.NewAgilityActive(62463, 1605, time.Second*20, time.Minute*2)  // Unsolvable Riddle (Horde)
 	shared.NewAgilityActive(68709, 1605, time.Second*20, time.Minute*2)  // Unsolvable Riddle (No Faction)
 	shared.NewAgilityActive(61033, 1605, time.Second*20, time.Minute*2)  // Vicious Gladiator's Badge of Conquest
+	shared.NewAgilityActive(69001, 1277, time.Second*15, time.Minute)    // Ancient Petrified Seed
 
 	// SPIRIT
 	shared.NewSpiritActive(67101, 555, time.Second*20, time.Minute*2)  // Unquenchable Flame
@@ -50,6 +53,8 @@ func init() {
 	shared.NewDodgeActive(52352, 1425, time.Second*20, time.Minute*2) // Figurine - Earthen Guardian
 	shared.NewDodgeActive(59515, 1605, time.Second*20, time.Minute*2) // Vial of Stolen Memories
 	shared.NewDodgeActive(65109, 1812, time.Second*20, time.Minute*2) // Vial of Stolen Memories (Heroic)
+	shared.NewDodgeActive(70143, 1700, time.Second*20, time.Minute*2) // Moonwell Phial
+	shared.NewDodgeActive(71338, 1700, time.Second*20, time.Minute*2) // Brawler's Trophy
 
 	// SpellPower
 	shared.NewSpellPowerActive(61429, 970, time.Second*15, time.Second*90) // Insignia of the Earthen Lord
@@ -76,7 +81,9 @@ func init() {
 	shared.NewHealthActive(61027, 16196, time.Second*15, time.Minute*2) // Vicious Gladiator's Emblem of Accuracy
 
 	// INT
-	shared.NewIntActive(67118, 567, time.Second*20, time.Minute*2) // Electrospark Heartstarter
+	shared.NewIntActive(67118, 567, time.Second*20, time.Minute*2)   // Electrospark Heartstarter
+	shared.NewIntActive(68998, 1277, time.Second*15, time.Minute)    // Rune of Zeth
+	shared.NewIntActive(69000, 1149, time.Second*25, time.Second*90) // Fiery Quintessence
 
 	// MASTERY
 	shared.NewMasteryActive(63745, 1095, time.Second*15, time.Second*90) // Za'brox's Lucky Tooth - Alliance
