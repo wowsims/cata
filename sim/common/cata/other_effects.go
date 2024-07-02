@@ -674,4 +674,90 @@ func init() {
 			},
 		})
 	})
+
+	core.NewItemEffect(68994, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		bonusStats := 1624.0
+		procAuraCrit := character.NewTemporaryStatsAura("Matrix Restabilizer Crit Proc", core.ActionID{SpellID: 96978}, stats.Stats{stats.MeleeCrit: bonusStats, stats.SpellCrit: bonusStats}, time.Second*30)
+		procAuraHaste := character.NewTemporaryStatsAura("Matrix Restabilizer Haste Proc", core.ActionID{SpellID: 96977}, stats.Stats{stats.MeleeHaste: bonusStats, stats.SpellHaste: bonusStats}, time.Second*30)
+		procAuraMastery := character.NewTemporaryStatsAura("Matrix Restabilizer Mastery Proc", core.ActionID{SpellID: 96979}, stats.Stats{stats.Mastery: bonusStats}, time.Second*30)
+
+		icd := core.Cooldown{
+			Timer:    character.NewTimer(),
+			Duration: time.Second * 105,
+		}
+
+		procAuraCrit.Icd = &icd
+		procAuraHaste.Icd = &icd
+		procAuraMastery.Icd = &icd
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Matrix Restabilizer Trigger",
+			Callback:   core.CallbackOnSpellHitDealt,
+			ProcMask:   core.ProcMaskMeleeOrRanged,
+			ProcChance: 0.2,
+			ActionID:   core.ActionID{ItemID: 68994},
+			Harmful:    true,
+			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+				if icd.IsReady(sim) {
+					statType := character.GetHighestStat([]stats.Stat{stats.MeleeCrit, stats.SpellCrit, stats.MeleeHaste, stats.SpellHaste, stats.Mastery})
+					switch statType {
+					case stats.MeleeCrit, stats.SpellCrit:
+						procAuraCrit.Activate(sim)
+					case stats.MeleeHaste, stats.SpellHaste:
+						procAuraHaste.Activate(sim)
+					case stats.Mastery:
+						procAuraMastery.Activate(sim)
+					default:
+						panic("unexpected statType")
+					}
+					icd.Use(sim)
+				}
+			},
+		})
+	})
+
+	core.NewItemEffect(69150, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		bonusStats := 1834.0
+		procAuraCrit := character.NewTemporaryStatsAura("Matrix Restabilizer Crit Proc (Heroic)", core.ActionID{SpellID: 97140}, stats.Stats{stats.MeleeCrit: bonusStats, stats.SpellCrit: bonusStats}, time.Second*30)
+		procAuraHaste := character.NewTemporaryStatsAura("Matrix Restabilizer Haste Proc (Heroic)", core.ActionID{SpellID: 97139}, stats.Stats{stats.MeleeHaste: bonusStats, stats.SpellHaste: bonusStats}, time.Second*30)
+		procAuraMastery := character.NewTemporaryStatsAura("Matrix Restabilizer Mastery Proc (Heroic)", core.ActionID{SpellID: 97141}, stats.Stats{stats.Mastery: bonusStats}, time.Second*30)
+
+		icd := core.Cooldown{
+			Timer:    character.NewTimer(),
+			Duration: time.Second * 105,
+		}
+
+		procAuraCrit.Icd = &icd
+		procAuraHaste.Icd = &icd
+		procAuraMastery.Icd = &icd
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Matrix Restabilizer Trigger (Heroic)",
+			Callback:   core.CallbackOnSpellHitDealt,
+			ProcMask:   core.ProcMaskMeleeOrRanged,
+			ProcChance: 0.2,
+			ActionID:   core.ActionID{ItemID: 69150},
+			Harmful:    true,
+			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+				if icd.IsReady(sim) {
+					statType := character.GetHighestStat([]stats.Stat{stats.MeleeCrit, stats.SpellCrit, stats.MeleeHaste, stats.SpellHaste, stats.Mastery})
+					switch statType {
+					case stats.MeleeCrit, stats.SpellCrit:
+						procAuraCrit.Activate(sim)
+					case stats.MeleeHaste, stats.SpellHaste:
+						procAuraHaste.Activate(sim)
+					case stats.Mastery:
+						procAuraMastery.Activate(sim)
+					default:
+						panic("unexpected statType")
+					}
+					icd.Use(sim)
+				}
+			},
+		})
+	})
 }
