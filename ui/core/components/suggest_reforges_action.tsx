@@ -9,12 +9,12 @@ import { Player } from '../player';
 import { Class, ItemSlot, Spec, Stat } from '../proto/common';
 import { StatCapConfig, StatCapType } from '../proto/ui';
 import { Gear } from '../proto_utils/gear';
-import { getClassStatName, statCapTypeNames } from '../proto_utils/names';
+import { getClassStatName, slotNames, statCapTypeNames } from '../proto_utils/names';
 import { statPercentageOrPointsToNumber, Stats, statToPercentageOrPoints } from '../proto_utils/stats';
 import { SpecTalents } from '../proto_utils/utils';
 import { Sim } from '../sim';
 import { ActionGroupItem } from '../sim_ui';
-import { TypedEvent } from '../typed_event';
+import { EventID, TypedEvent } from '../typed_event';
 import { isDevMode, sleep } from '../utils';
 import { BooleanPicker } from './pickers/boolean_picker';
 import { NumberPicker, NumberPickerConfig } from './pickers/number_picker';
@@ -78,6 +78,9 @@ export class ReforgeOptimizer {
 	protected updateGearStatsModifier: ReforgeOptimizerOptions['updateGearStatsModifier'];
 	protected softCapsConfig: StatCapConfig[];
 	protected statTooltips: StatTooltips = {};
+	readonly freezeItemSlotsChangeEmitter = new TypedEvent<void>();
+	protected freezeItemSlots: boolean = false;
+	protected frozenItemSlots = new Map<ItemSlot, boolean>();
 
 	constructor(simUI: IndividualSimUI<any>, options?: ReforgeOptimizerOptions) {
 		this.simUI = simUI;
@@ -246,6 +249,14 @@ export class ReforgeOptimizer {
 		);
 	}
 
+	setFreezeItemSlots(eventID: EventID, newValue: boolean) {
+		if (this.freezeItemSlots !== newValue) {
+			this.freezeItemSlots = newValue;
+			this.frozenItemSlots.clear();
+			this.freezeItemSlotsChangeEmitter.emit(eventID);
+		}
+	}
+
 	buildContextMenu(button: HTMLButtonElement) {
 		const instance = tippy(button, {
 			interactive: true,
@@ -278,6 +289,18 @@ export class ReforgeOptimizer {
 					});
 				}
 
+				const freezeItemSlotsInput = new BooleanPicker(null, this.player, {
+					id: 'reforge-optimizer-freeze-item-slots',
+					label: 'Freeze item slots',
+					labelTooltip: 'Flag one or more item slots to be "frozen", which will prevent the optimizer from changing the Reforge in that slot from its current setting. This can be useful for hybrid classes who use the same gear piece for multiple raid roles.',
+					inline: false,
+					changedEvent: () => this.freezeItemSlotsChangeEmitter,
+					getValue: () => this.freezeItemSlots,
+					setValue: (eventID, _player, newValue) => {
+						this.setFreezeItemSlots(eventID, newValue);
+					},
+				});
+
 				const descriptionRef = ref<HTMLParagraphElement>();
 				instance.setContent(
 					<>
@@ -292,6 +315,8 @@ export class ReforgeOptimizer {
 							description: descriptionRef.value!,
 						})}
 						{useSoftCapBreakpointsInput?.rootElem}
+						{freezeItemSlotsInput.rootElem}
+						{this.buildFrozenSlotsInputs()}
 						{this.buildEPWeightsToggle({ useCustomEPValuesInput: useCustomEPValuesInput })}
 					</>,
 				);
@@ -300,6 +325,48 @@ export class ReforgeOptimizer {
 				instance.setContent(<></>);
 			},
 		});
+	}
+
+	buildFrozenSlotsInputs() {
+		const allSlots = this.player.getGear().getItemSlots();
+		const numRows = Math.floor(allSlots.length / 2) + 1;
+		const slotsByRow: ItemSlot[][] = [];
+
+		for (let rowIdx = 0; rowIdx < numRows; rowIdx++) {
+			slotsByRow.push(allSlots.slice(rowIdx * 2, (rowIdx + 1) * 2));
+		}
+
+		const tableRef = ref<HTMLTableElement>();
+		const content = (
+			<table ref={tableRef}>
+			{slotsByRow.map(slots => {
+				const rowRef = ref<HTMLTableRowElement>();
+				const row = (
+					<tr ref={rowRef}>
+					{slots.map(slot => {
+						const picker = new BooleanPicker(null, this.player, {
+							id: 'reforge-optimizer-freeze-' + ItemSlot[slot],
+							label: slotNames.get(slot),
+							changedEvent: () => this.freezeItemSlotsChangeEmitter,
+							getValue: () => this.frozenItemSlots.get(slot) || false,
+							setValue: (_eventID, _player, newValue) => {
+								this.frozenItemSlots.set(slot, newValue);
+							},
+							showWhen: () => this.freezeItemSlots,
+						});
+						const column = (
+							<td>{picker.rootElem}</td>
+						);
+						return column;
+					})}
+					</tr>
+				);
+				return row;
+			})}
+			</table>
+		);
+
+		return content;
 	}
 
 	buildCapsList({ useCustomEPValuesInput, description }: { useCustomEPValuesInput: BooleanPicker<Player<any>>; description: HTMLElement }) {
@@ -494,8 +561,12 @@ export class ReforgeOptimizer {
 		if (isDevMode()) console.log('Starting Reforge optimization...');
 
 		// First, clear all existing Reforges
-		if (isDevMode()) console.log('Clearing existing Reforges...');
-		const baseGear = this.player.getGear().withoutReforges(this.player.canDualWield2H());
+		if (isDevMode()) {
+			console.log('Clearing existing Reforges...');
+			console.log('The following slots will not be cleared:');
+			console.log(Array.from(this.frozenItemSlots.keys()).filter((key) => this.frozenItemSlots.get(key)));
+		}
+		const baseGear = this.player.getGear().withoutReforges(this.player.canDualWield2H(), this.frozenItemSlots);
 		const baseStats = await this.updateGear(baseGear);
 		const statsToCompute = this.statsToCompute;
 		// Compute effective stat caps for just the Reforge contribution
@@ -577,7 +648,7 @@ export class ReforgeOptimizer {
 		for (const slot of gear.getItemSlots()) {
 			const item = gear.getEquippedItem(slot);
 
-			if (!item) {
+			if (!item || this.frozenItemSlots.get(slot)) {
 				continue;
 			}
 
@@ -678,7 +749,7 @@ export class ReforgeOptimizer {
 			console.log(solution);
 		}
 		// Apply the current solution
-		await this.applyLPSolution(gear, solution);
+		const updatedGear = await this.applyLPSolution(gear, solution);
 
 		// Check if any unconstrained stats exceeded their specified cap.
 		// If so, add these stats to the constraint list and re-run the solver.
@@ -697,7 +768,7 @@ export class ReforgeOptimizer {
 		} else {
 			if (isDevMode()) console.log('One or more stat caps were exceeded, starting constrained iteration...');
 			await sleep(100);
-			await this.solveModel(gear, updatedWeights, reforgeCaps, reforgeSoftCaps, updatedVariables, updatedConstraints);
+			await this.solveModel(updatedGear, updatedWeights, reforgeCaps, reforgeSoftCaps, updatedVariables, updatedConstraints);
 		}
 	}
 
@@ -729,8 +800,8 @@ export class ReforgeOptimizer {
 		return updatedVariables;
 	}
 
-	async applyLPSolution(gear: Gear, solution: Solution) {
-		let updatedGear = gear.withoutReforges(this.player.canDualWield2H());
+	async applyLPSolution(gear: Gear, solution: Solution): Promise<Gear> {
+		let updatedGear = gear.withoutReforges(this.player.canDualWield2H(), this.frozenItemSlots);
 
 		for (const [variableKey, _coefficient] of solution.variables) {
 			const splitKey = variableKey.split('_');
@@ -748,6 +819,7 @@ export class ReforgeOptimizer {
 		}
 
 		await this.updateGear(updatedGear);
+		return updatedGear;
 	}
 
 	checkCaps(
