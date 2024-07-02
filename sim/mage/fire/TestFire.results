@@ -49,6 +49,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFire-AllItems-AncientPetrifiedSeed-69001"
+ value: {
+  dps: 28922.63679
+  tps: 28341.53985
+ }
+}
+dps_results: {
  key: "TestFire-AllItems-Anhuur'sHymnal-55889"
  value: {
   dps: 29727.40781
@@ -60,6 +67,20 @@ dps_results: {
  value: {
   dps: 29552.67047
   tps: 28943.5734
+ }
+}
+dps_results: {
+ key: "TestFire-AllItems-ApparatusofKhaz'goroth-68972"
+ value: {
+  dps: 28318.98149
+  tps: 27746.20455
+ }
+}
+dps_results: {
+ key: "TestFire-AllItems-ApparatusofKhaz'goroth-69113"
+ value: {
+  dps: 28318.98149
+  tps: 27746.20455
  }
 }
 dps_results: {
@@ -204,6 +225,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFire-AllItems-Brawler'sTrophy-71338"
+ value: {
+  dps: 28318.98149
+  tps: 27746.20455
+ }
+}
+dps_results: {
  key: "TestFire-AllItems-BurningShadowspiritDiamond"
  value: {
   dps: 31228.14363
@@ -215,6 +243,13 @@ dps_results: {
  value: {
   dps: 31119.13536
   tps: 30486.58664
+ }
+}
+dps_results: {
+ key: "TestFire-AllItems-Coren'sChilledChromiumCoaster-71335"
+ value: {
+  dps: 29109.25123
+  tps: 28560.75864
  }
 }
 dps_results: {
@@ -295,6 +330,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFire-AllItems-Dwyer'sCaber-70141"
+ value: {
+  dps: 29081.98381
+  tps: 28500.85128
+ }
+}
+dps_results: {
  key: "TestFire-AllItems-EffulgentShadowspiritDiamond"
  value: {
   dps: 30292.94273
@@ -337,6 +379,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFire-AllItems-EssenceoftheEternalFlame-69002"
+ value: {
+  dps: 28922.63679
+  tps: 28341.53985
+ }
+}
+dps_results: {
  key: "TestFire-AllItems-EternalShadowspiritDiamond"
  value: {
   dps: 30292.94273
@@ -355,6 +404,13 @@ dps_results: {
  value: {
   dps: 29921.59556
   tps: 29283.24358
+ }
+}
+dps_results: {
+ key: "TestFire-AllItems-FieryQuintessence-69000"
+ value: {
+  dps: 30137.88567
+  tps: 29512.24607
  }
 }
 dps_results: {
@@ -736,6 +792,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFire-AllItems-MatrixRestabilizer-68994"
+ value: {
+  dps: 28318.98149
+  tps: 27746.20455
+ }
+}
+dps_results: {
+ key: "TestFire-AllItems-MatrixRestabilizer-69150"
+ value: {
+  dps: 28318.98149
+  tps: 27746.20455
+ }
+}
+dps_results: {
  key: "TestFire-AllItems-MightoftheOcean-55251"
  value: {
   dps: 28717.85104
@@ -764,6 +834,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFire-AllItems-MithrilStopwatch-71337"
+ value: {
+  dps: 30325.70338
+  tps: 29743.53457
+ }
+}
+dps_results: {
  key: "TestFire-AllItems-MoonwellChalice-70142"
  value: {
   dps: 30373.87299
@@ -771,10 +848,38 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFire-AllItems-MoonwellPhial-70143"
+ value: {
+  dps: 28318.98149
+  tps: 27746.20455
+ }
+}
+dps_results: {
+ key: "TestFire-AllItems-NecromanticFocus-68982"
+ value: {
+  dps: 30471.49968
+  tps: 29832.88464
+ }
+}
+dps_results: {
+ key: "TestFire-AllItems-NecromanticFocus-69139"
+ value: {
+  dps: 30767.5842
+  tps: 30126.69773
+ }
+}
+dps_results: {
  key: "TestFire-AllItems-Oremantle'sFavor-61448"
  value: {
   dps: 29049.36575
   tps: 28467.10158
+ }
+}
+dps_results: {
+ key: "TestFire-AllItems-PetrifiedPickledEgg-71336"
+ value: {
+  dps: 29819.22229
+  tps: 29183.70101
  }
 }
 dps_results: {
@@ -855,6 +960,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFire-AllItems-Ricket'sMagneticFireball-70144"
+ value: {
+  dps: 29392.61625
+  tps: 28798.63189
+ }
+}
+dps_results: {
  key: "TestFire-AllItems-RightEyeofRajh-56100"
  value: {
   dps: 28717.85104
@@ -866,6 +978,13 @@ dps_results: {
  value: {
   dps: 28717.85104
   tps: 28148.42576
+ }
+}
+dps_results: {
+ key: "TestFire-AllItems-RuneofZeth-68998"
+ value: {
+  dps: 30772.92704
+  tps: 30166.29457
  }
 }
 dps_results: {
@@ -1030,6 +1149,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFire-AllItems-TheHungerer-68927"
+ value: {
+  dps: 28318.98149
+  tps: 27746.20455
+ }
+}
+dps_results: {
+ key: "TestFire-AllItems-TheHungerer-69112"
+ value: {
+  dps: 28318.98149
+  tps: 27746.20455
+ }
+}
+dps_results: {
  key: "TestFire-AllItems-Theralion'sMirror-59519"
  value: {
   dps: 30300.17667
@@ -1111,6 +1244,34 @@ dps_results: {
  value: {
   dps: 28837.86793
   tps: 28256.77099
+ }
+}
+dps_results: {
+ key: "TestFire-AllItems-VariablePulseLightningCapacitor-68925"
+ value: {
+  dps: 30250.6533
+  tps: 29617.92182
+ }
+}
+dps_results: {
+ key: "TestFire-AllItems-VariablePulseLightningCapacitor-69110"
+ value: {
+  dps: 31173.10637
+  tps: 30534.87596
+ }
+}
+dps_results: {
+ key: "TestFire-AllItems-VesselofAcceleration-68995"
+ value: {
+  dps: 28318.98149
+  tps: 27746.20455
+ }
+}
+dps_results: {
+ key: "TestFire-AllItems-VesselofAcceleration-69167"
+ value: {
+  dps: 28318.98149
+  tps: 27746.20455
  }
 }
 dps_results: {

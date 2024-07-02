@@ -80,9 +80,6 @@ func init() {
 				dummyAura.AddStack(sim)
 
 				if sim.Proc(procChance, "Variable Pulse Lightning Capacitor") {
-					if dummyAura.GetStacks() == 0 {
-						return
-					}
 					lightningSpell.Cast(sim, result.Target)
 					dummyAura.SetStacks(sim, 0)
 				}
@@ -128,9 +125,6 @@ func init() {
 				dummyAura.AddStack(sim)
 
 				if sim.Proc(procChance, "Variable Pulse Lightning Capacitor Heroic") {
-					if dummyAura.GetStacks() == 0 {
-						return
-					}
 					lightningSpell.Cast(sim, result.Target)
 					dummyAura.SetStacks(sim, 0)
 				}
