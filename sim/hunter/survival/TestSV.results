@@ -428,6 +428,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSV-AllItems-Flamewaker'sBattlegear"
+ value: {
+  dps: 27649.02811
+  tps: 24886.14551
+ }
+}
+dps_results: {
  key: "TestSV-AllItems-FleetShadowspiritDiamond"
  value: {
   dps: 25566.14716
@@ -1286,6 +1293,13 @@ dps_results: {
  value: {
   dps: 24640.18493
   tps: 22285.52369
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-WyrmstalkerBattlegear"
+ value: {
+  dps: 27382.34699
+  tps: 24919.3313
  }
 }
 dps_results: {
