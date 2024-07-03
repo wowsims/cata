@@ -428,6 +428,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSV-AllItems-Flamewaker'sBattlegear"
+ value: {
+  dps: 27649.02811
+  tps: 24886.14551
+ }
+}
+dps_results: {
  key: "TestSV-AllItems-FleetShadowspiritDiamond"
  value: {
   dps: 25566.14716
@@ -1289,6 +1296,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSV-AllItems-WyrmstalkerBattlegear"
+ value: {
+  dps: 27382.34699
+  tps: 24919.3313
+ }
+}
+dps_results: {
  key: "TestSV-AllItems-Za'brox'sLuckyTooth-63742"
  value: {
   dps: 24616.55951
@@ -1319,8 +1333,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-Settings-Dwarf-preraid_sv-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
  value: {
-  dps: 103334.4298
-  tps: 100284.10817
+  dps: 125218.33983
+  tps: 100169.45548
  }
 }
 dps_results: {
@@ -1340,15 +1354,15 @@ dps_results: {
 dps_results: {
  key: "TestSV-Settings-Dwarf-preraid_sv-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
  value: {
-  dps: 72887.88127
-  tps: 70408.26957
+  dps: 87900.17088
+  tps: 70436.36991
  }
 }
 dps_results: {
  key: "TestSV-Settings-Dwarf-preraid_sv-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
  value: {
-  dps: 14546.51035
-  tps: 12877.69546
+  dps: 14546.01976
+  tps: 12876.67683
  }
 }
 dps_results: {
@@ -1445,8 +1459,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-Settings-Orc-preraid_sv-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
  value: {
-  dps: 104072.30043
-  tps: 100882.32713
+  dps: 125911.55869
+  tps: 100785.56273
  }
 }
 dps_results: {
@@ -1466,15 +1480,15 @@ dps_results: {
 dps_results: {
  key: "TestSV-Settings-Orc-preraid_sv-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
  value: {
-  dps: 73427.29436
-  tps: 70855.61354
+  dps: 88396.2029
+  tps: 70904.6728
  }
 }
 dps_results: {
  key: "TestSV-Settings-Orc-preraid_sv-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
  value: {
-  dps: 14681.41998
-  tps: 12910.83339
+  dps: 14680.9293
+  tps: 12909.81462
  }
 }
 dps_results: {

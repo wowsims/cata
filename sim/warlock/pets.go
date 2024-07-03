@@ -52,6 +52,11 @@ func (warlock *Warlock) makePet(summonType proto.WarlockOptions_Summon, baseStat
 	name := proto.WarlockOptions_Summon_name[int32(summonType)]
 	enabledOnStart := summonType == warlock.Options.Summon
 	pet := &WarlockPet{Pet: core.NewPet(name, &warlock.Character, baseStats, statInheritance, enabledOnStart, false)}
+	if enabledOnStart {
+		warlock.RegisterResetEffect(func(sim *core.Simulation) {
+			warlock.ActivePet = pet
+		})
+	}
 
 	warlock.setPetOptions(pet, meleeMod, powerModifier, aaOptions)
 

@@ -7,6 +7,138 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
+var ItemSetFlameWakersBattleGear = core.NewItemSet(core.ItemSet{
+	Name: "Flamewaker's Battlegear",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			hunter := agent.(HunterAgent).GetHunter()
+			var flamingArrowSpell = hunter.RegisterSpell(core.SpellConfig{
+				ActionID:    core.ActionID{SpellID: 99058},
+				SpellSchool: core.SpellSchoolFire,
+				ProcMask:    core.ProcMaskEmpty,
+				Flags:       core.SpellFlagNoOnCastComplete,
+
+				DamageMultiplier: 0.8,
+				CritMultiplier:   hunter.CritMultiplier(false, false, false),
+				ThreatMultiplier: 1,
+
+				BonusCoefficient: 1,
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target))
+					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+				},
+			})
+			hunter.RegisterAura(core.Aura{
+				Label:    "T12 2-set",
+				Duration: core.NeverExpires,
+				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Activate(sim)
+				},
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell != hunter.SteadyShot && spell != hunter.CobraShot {
+						return
+					}
+					procChance := 0.1
+					if sim.RandomFloat("Flaming Arrow") < procChance {
+						flamingArrowSpell.Cast(sim, result.Target)
+					}
+				},
+			})
+		},
+		4: func(agent core.Agent) {
+			hunter := agent.(HunterAgent).GetHunter()
+			var baMod = hunter.AddDynamicMod(core.SpellModConfig{
+				Kind:       core.SpellMod_PowerCost_Pct,
+				ClassMask:  HunterSpellsAll,
+				FloatValue: -1,
+			})
+			var burningAdrenaline = hunter.RegisterAura(core.Aura{
+				Label:    "Burning Adrenaline",
+				Duration: time.Second * 15,
+				// Icd: &core.Cooldown{ // Assume 10sec icd for now
+				// 	Duration: time.Second * 10,
+				// 	Timer:    hunter.NewTimer(),
+				// },
+				ActionID: core.ActionID{SpellID: 99060},
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					baMod.Activate()
+				},
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.ClassSpellMask != HunterSpellsAll {
+						return
+					}
+					baMod.Deactivate()
+					aura.Deactivate(sim)
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					baMod.Deactivate()
+				},
+			})
+			hunter.RegisterAura(core.Aura{
+				Label:    "T12 4-set",
+				Duration: core.NeverExpires,
+				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Activate(sim)
+				},
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell != hunter.AutoAttacks.RangedAuto() {
+						return
+					}
+					procChance := 0.1
+					if sim.RandomFloat("Burning Adrenaline") < procChance {
+						burningAdrenaline.Activate(sim)
+					}
+				},
+			})
+		},
+	},
+})
+var ItemSetWyrmstalkerBattleGear = core.NewItemSet(core.ItemSet{
+	Name: "Wyrmstalker Battlegear",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			// Handled in Cobra and Steady code respectively
+		},
+		4: func(agent core.Agent) {
+			hunter := agent.(HunterAgent).GetHunter()
+			var chronoHunter = hunter.RegisterAura(core.Aura{ // 105919
+				Label:    "Chronohunter",
+				Duration: time.Second * 15,
+				ActionID: core.ActionID{SpellID: 105919},
+				Icd: &core.Cooldown{ // Assume 113sec icd for now
+					Duration: time.Second * 113,
+					Timer:    hunter.NewTimer(),
+				},
+				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Activate(sim)
+				},
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Unit.MultiplyRangedSpeed(sim, 1.3)
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Unit.MultiplyRangedSpeed(sim, 1/1.3)
+				},
+			})
+			hunter.RegisterAura(core.Aura{
+				Label:    "T12 4-set",
+				Duration: core.NeverExpires,
+				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Activate(sim)
+				},
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell != hunter.ArcaneShot {
+						return
+					}
+					procChance := 0.4
+					if sim.RandomFloat("Chronohunter") < procChance {
+						chronoHunter.Activate(sim)
+					}
+				},
+			})
+		},
+	},
+})
 var ItemSetLightningChargedBattleGear = core.NewItemSet(core.ItemSet{
 	Name: "Lightning-Charged Battlegear",
 	Bonuses: map[int32]core.ApplyEffect{

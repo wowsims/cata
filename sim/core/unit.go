@@ -228,13 +228,21 @@ func (unit *Unit) GetInitialStat(stat stats.Stat) float64 {
 func (unit *Unit) GetStats() stats.Stats {
 	return unit.stats
 }
+
+// Given an array of stat types, return the highest stat type of the unit
+func (unit *Unit) GetHighestStat(stat []stats.Stat) stats.Stat {
+	other := stats.Stats{}
+	for i := range stat {
+		other[stat[i]] += unit.stats[stat[i]]
+	}
+	return stats.GetHighestStat(other)
+}
 func (unit *Unit) GetStat(stat stats.Stat) float64 {
 	return unit.stats[stat]
 }
 func (unit *Unit) GetMasteryPoints() float64 {
 	return MasteryRatingToMasteryPoints(unit.GetStat(stats.Mastery))
 }
-
 func (unit *Unit) AddStats(stat stats.Stats) {
 	if unit.Env != nil && unit.Env.IsFinalized() {
 		panic("Already finalized, use AddStatsDynamic instead!")
