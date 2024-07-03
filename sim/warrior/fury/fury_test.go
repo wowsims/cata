@@ -80,4 +80,5 @@ var FullConsumes = &proto.Consumes{
 	DefaultPotion: proto.Potions_GolembloodPotion,
 	PrepopPotion:  proto.Potions_GolembloodPotion,
 	Food:          proto.Food_FoodBeerBasedCrocolisk,
+	TinkerHands:   proto.TinkerHands_TinkerHandsSynapseSprings,
 }
