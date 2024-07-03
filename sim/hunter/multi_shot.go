@@ -51,9 +51,10 @@ func (hunter *Hunter) registerMultiShotSpell() {
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 					spell.DealDamage(sim, baseDamageArray[hitIndex])
 					if hunter.Talents.SerpentSpread > 0 {
-						duration := (3 + (hunter.Talents.SerpentSpread * 3))
+						duration := time.Duration(3+(hunter.Talents.SerpentSpread*3)) * time.Second
+
 						ss := hunter.SerpentSting.Dot(curTarget)
-						if hunter.Talents.ImprovedSerpentSting > 0 && (ss.RemainingDuration(sim) <= time.Duration(duration)) {
+						if hunter.Talents.ImprovedSerpentSting > 0 && (!ss.IsActive() || ss.RemainingDuration(sim) <= duration) {
 							hunter.ImprovedSerpentSting.Cast(sim, curTarget)
 						}
 						ss.BaseTickCount = (3 + (hunter.Talents.SerpentSpread * 3)) / 2
