@@ -47,7 +47,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		})(),
 		// Default soft caps for the Reforge optimizer
 		softCapBreakpoints: (() => {
-			// Picked from Mage Discord
+			// Picked from Priest Discord
 			// Sources:
 			// https://docs.google.com/spreadsheets/d/17cJJUReg2uz-XxBB3oDWb1kCncdH_-X96mSb0HAu4Ko/edit?gid=0#gid=0
 			// https://docs.google.com/spreadsheets/d/1WLOZ1YevGPw_WZs0JhGzVVy906W5y0i9UqHa3ejyBkE/htmlview?gid=16
@@ -55,21 +55,60 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 				801, // 9-tick DP
 				1066, // 7-tick SWP
 				1280, // 6-tick VT
+				1560, // Filler post 6-tick VT
+				2033, // Semi BP Filler post 6-tick VT
 				2400, // 10-tick DP
+				2666, // Filler post 10-tick DP
+				2933, // Filler post 10-tick DP
 				3199, // 8-tick SWP
+				3522, // Filler post 8-tick SWP
 				3844, // 7-tick VT
 				4004, // 11-tick DP
+				4395, // Semi BP - Filler post 11-tick DP
+				5004, // Filler post 11-tick DP
 				5337, // 9-tick SWP
 				5607, // 12-tick DP
+				5871, // Filler post 12-tick DP
+				6135, // Filler post 12-tick DP
 				6399, // 8-tick VT
+				6524, // Semi BP - Filler post 8-tick VT
+				6939, // Filler post 8-tick VT
 				7209, // 13-tick DP
 				7473, // 10-tick SWP
+				7807, // Filler post 10-tick SWP
+				8474, // Filler post 10-tick SWP
 			];
 			const hasteSoftCapConfig = {
 				stat: Stat.StatSpellHaste,
 				breakpoints,
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0.75, 1.07, 0.71, 0.61, 0.6, 0.83, 0.72, 0.43, 0.7, 0.49, 0.41, 0.51],
+				postCapEPs: [
+					0.71, // 9-tick DP
+					1.03, // 7-tick SWP
+					0.65, // 6-tick VT
+					0.8, // Filler post 6-tick VT
+					0.55, // Semi BP Filler post 6-tick VT
+					0.51, // 10-tick DP
+					0.52, // Filler post 10-tick DP
+					0.66, // Filler post 10-tick DP
+					0.59, // 8-tick SWP
+					0.82, // Filler post 8-tick SWP
+					0.33, // 7-tick VT
+					0.84, // 11-tick DP
+					0.58, // Semi BP - Filler post 11-tick DP
+					0.68, // Filler post 11-tick DP
+					0.41, // 9-tick SWP
+					0.48, // 12-tick DP
+					0.19, // Filler post 12-tick DP
+					1.11, // Filler post 12-tick DP
+					0.42, // 8-tick VT
+					0.48, // Semi BP - Filler post 8-tick VT
+					0.62, // Filler post 8-tick VT
+					0.33, // 13-tick DP
+					-0.03, // 10-tick SWP
+					0.36, // Filler post 10-tick SWP
+					1.17, // Filler post 10-tick SWP
+				],
 			};
 
 			return [hasteSoftCapConfig];
