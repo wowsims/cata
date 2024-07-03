@@ -134,7 +134,7 @@ func (hunter *Hunter) registerBestialWrathCD() {
 	bwCostMod := hunter.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_PowerCost_Pct,
 		ClassMask:  HunterSpellsAll,
-		FloatValue: -0.05,
+		FloatValue: -0.5,
 	})
 	actionID := core.ActionID{SpellID: 19574}
 
