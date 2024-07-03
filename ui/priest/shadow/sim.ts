@@ -63,47 +63,44 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 				3199, // 8-tick SWP
 				3844, // 7-tick VT
 				4395, // Semi BP - Filler post 11-tick DP
-				5004, // Filler post 11-tick DP
-				5337, // 9-tick SWP
-				5607, // 12-tick DP
-				5871, // Filler post 12-tick DP
-				6135, // Filler post 12-tick DP
+				5049, // Filler post 11-tick DP
+				5450, // Semi BP - Filler post 11-tick DP
+				6089, // Filler post 11-tick DP
 				6399, // 8-tick VT
-				6524, // Semi BP - Filler post 8-tick VT
-				6939, // Filler post 8-tick VT
-				7209, // 13-tick DP
-				7473, // 10-tick SWP
-				7807, // Filler post 10-tick SWP
-				8474, // Filler post 10-tick SWP
+				// Disabled for now due to P1 theoretical Haste cap
+				// 6524, // Semi BP - Filler post 8-tick VT
+				// 6939, // Semi BP - Filler post 8-tick VT
+				// 7209, // 13-tick DP
+				// 7473, // 10-tick SWP
+				// 8102, // Semi BP - Filler post 10-tick SWP
+				// 8808, // 14-tick DP
 			];
 			const hasteSoftCapConfig = {
 				stat: Stat.StatSpellHaste,
 				breakpoints,
 				capType: StatCapType.TypeSoftCap,
 				postCapEPs: [
-					0.71, // 9-tick DP
-					1.03, // 7-tick SWP
-					0.65, // 6-tick VT
-					0.8, // Filler post 6-tick VT
-					0.55, // Semi BP Filler post 6-tick VT
-					0.51, // 10-tick DP
-					0.52, // Filler post 10-tick DP
-					0.66, // Filler post 10-tick DP
-					0.7, // 8-tick SWP
-					0.69, // 7-tick VT
-					0.58, // Semi BP - Filler post 11-tick DP
-					0.68, // Filler post 11-tick DP
-					0.41, // 9-tick SWP
-					0.48, // 12-tick DP
-					0.19, // Filler post 12-tick DP
-					1.11, // Filler post 12-tick DP
-					0.42, // 8-tick VT
-					0.48, // Semi BP - Filler post 8-tick VT
-					0.62, // Filler post 8-tick VT
-					0.33, // 13-tick DP
-					0, // 10-tick SWP
-					0.36, // Filler post 10-tick SWP
-					1.17, // Filler post 10-tick SWP
+					0.78,
+					1.03,
+					0.68,
+					0.83,
+					0.58,
+					0.54,
+					0.55,
+					0.74,
+					0.72,
+					0.72,
+					0.63,
+					0.43,
+					0.66,
+					0.91,
+					0.52,
+					// Disabled for now due to P1 theoretical Haste cap
+					// 0.53,
+					// 0.41,
+					// 0.41,
+					// 0.51,
+					// 0.51,
 				],
 			};
 
