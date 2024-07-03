@@ -305,7 +305,7 @@ func SavageCombatAura(target *Unit, points int32) *Aura {
 	return bloodFrenzySavageCombatAura(target, "Savage Combat", ActionID{SpellID: 58413}, points)
 }
 func AcidSpitAura(target *Unit) *Aura {
-	return bloodFrenzySavageCombatAura(target, "Acid Spit", ActionID{SpellID: 55754}, 2)
+	return bloodFrenzySavageCombatAura(target, "Acid Spit", ActionID{SpellID: 55749}, 2)
 }
 
 func bloodFrenzySavageCombatAura(target *Unit, label string, id ActionID, points int32) *Aura {
@@ -440,7 +440,7 @@ func CorrosiveSpitAura(target *Unit) *Aura {
 	var effect *ExclusiveEffect
 	aura := target.GetOrRegisterAura(Aura{
 		Label:     "Corrosive Spit",
-		ActionID:  ActionID{SpellID: 55754},
+		ActionID:  ActionID{SpellID: 35387},
 		Duration:  time.Second * 30,
 		MaxStacks: 3,
 		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {

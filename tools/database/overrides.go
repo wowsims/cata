@@ -491,7 +491,7 @@ var SharedSpellsIcons = []int32{
 	// Raid Debuffs
 	8647,
 	47467,
-	55754,
+	55749,
 
 	770,
 	33602,
