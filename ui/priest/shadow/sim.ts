@@ -61,9 +61,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 				2666, // Filler post 10-tick DP
 				2933, // Filler post 10-tick DP
 				3199, // 8-tick SWP
-				3522, // Filler post 8-tick SWP
 				3844, // 7-tick VT
-				4004, // 11-tick DP
 				4395, // Semi BP - Filler post 11-tick DP
 				5004, // Filler post 11-tick DP
 				5337, // 9-tick SWP
@@ -91,10 +89,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 					0.51, // 10-tick DP
 					0.52, // Filler post 10-tick DP
 					0.66, // Filler post 10-tick DP
-					0.59, // 8-tick SWP
-					0.82, // Filler post 8-tick SWP
-					0.33, // 7-tick VT
-					0.84, // 11-tick DP
+					0.7, // 8-tick SWP
+					0.69, // 7-tick VT
 					0.58, // Semi BP - Filler post 11-tick DP
 					0.68, // Filler post 11-tick DP
 					0.41, // 9-tick SWP
@@ -105,7 +101,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 					0.48, // Semi BP - Filler post 8-tick VT
 					0.62, // Filler post 8-tick VT
 					0.33, // 13-tick DP
-					-0.03, // 10-tick SWP
+					0, // 10-tick SWP
 					0.36, // Filler post 10-tick SWP
 					1.17, // Filler post 10-tick SWP
 				],
