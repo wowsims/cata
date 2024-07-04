@@ -47,61 +47,18 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		})(),
 		// Default soft caps for the Reforge optimizer
 		softCapBreakpoints: (() => {
-			// Picked from Priest Discord
+			// Picked from Priest Discord and own research by InDebt
 			// Sources:
 			// https://docs.google.com/spreadsheets/d/17cJJUReg2uz-XxBB3oDWb1kCncdH_-X96mSb0HAu4Ko/edit?gid=0#gid=0
 			// https://docs.google.com/spreadsheets/d/1WLOZ1YevGPw_WZs0JhGzVVy906W5y0i9UqHa3ejyBkE/htmlview?gid=16
-			const breakpoints = [
-				801, // 9-tick DP
-				1066, // 7-tick SWP
-				1280, // 6-tick VT
-				1560, // Filler post 6-tick VT
-				2033, // Semi BP Filler post 6-tick VT
-				2400, // 10-tick DP
-				2666, // Filler post 10-tick DP
-				2933, // Filler post 10-tick DP
-				3199, // 8-tick SWP
-				3844, // 7-tick VT
-				4395, // Semi BP - Filler post 11-tick DP
-				5049, // Filler post 11-tick DP
-				5450, // Semi BP - Filler post 11-tick DP
-				6089, // Filler post 11-tick DP
-				6399, // 8-tick VT
-				// Disabled for now due to P1 theoretical Haste cap
-				// 6524, // Semi BP - Filler post 8-tick VT
-				// 6939, // Semi BP - Filler post 8-tick VT
-				// 7209, // 13-tick DP
-				// 7473, // 10-tick SWP
-				// 8102, // Semi BP - Filler post 10-tick SWP
-				// 8808, // 14-tick DP
-			];
+			// For haste peaks see:
+			// https://docs.google.com/spreadsheets/d/e/2PACX-1vSsLT0vCFzU1jo0iUbsvcrUnKSE1WgjWWYqHfIyMNiDG_Ra4GwvlZqh3ojVSLc1tb20mnAYAFhG6Ets/pubchart?oid=294472067&format=interactive
+			const breakpoints = [2400, 2451, 3955, 4010, 5570, 5625, 6517, 6739, 6962, 7296, 7352, 7853, 7909, 8076, 8132, 8577, 8633, 8912, 8967, 9803, 9858];
 			const hasteSoftCapConfig = {
 				stat: Stat.StatSpellHaste,
 				breakpoints,
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [
-					0.78,
-					1.03,
-					0.68,
-					0.83,
-					0.58,
-					0.54,
-					0.55,
-					0.74,
-					0.72,
-					0.72,
-					0.63,
-					0.43,
-					0.66,
-					0.91,
-					0.52,
-					// Disabled for now due to P1 theoretical Haste cap
-					// 0.53,
-					// 0.41,
-					// 0.41,
-					// 0.51,
-					// 0.51,
-				],
+				postCapEPs: [0.4, 0.6, 0.4, 0.6, 0.4, 0.6, 0.4, 0.6, 0.4, 0.6, 0.4, 0.6, 0.4, 0.6, 0.4, 0.6, 0.4, 0.6, 0.4, 0.6, 0.4],
 			};
 
 			return [hasteSoftCapConfig];
