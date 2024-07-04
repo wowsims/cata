@@ -8,6 +8,8 @@ import (
 )
 
 func (prot *ProtectionPaladin) registerAvengersShieldSpell() {
+	actionId := core.ActionID{SpellID: 31935}
+	hpMetrics := prot.NewHolyPowerMetrics(actionId)
 	asMinDamage, asMaxDamage := core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassPaladin, 3.024, 0.2)
 	glyphedSingleTargetAS := prot.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfFocusedShield)
 
@@ -16,7 +18,7 @@ func (prot *ProtectionPaladin) registerAvengersShieldSpell() {
 	results := make([]*core.SpellResult, numTargets)
 
 	prot.AvengersShield = prot.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 31935},
+		ActionID:    actionId,
 		SpellSchool: core.SpellSchoolHoly,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
@@ -55,6 +57,11 @@ func (prot *ProtectionPaladin) registerAvengersShieldSpell() {
 			for idx := int32(0); idx < numTargets; idx++ {
 				spell.DealDamage(sim, results[idx])
 			}
+			
+			if prot.GrandCrusaderAura.IsActive() {
+				prot.GainHolyPower(sim, 1, hpMetrics)
+			}
+			
 		},
 	})
 }

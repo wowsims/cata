@@ -30,7 +30,6 @@ const (
 	SpellMaskHammerOfTheRighteousMelee
 	SpellMaskHammerOfTheRighteousAoe
 	SpellMaskHandOfReckoning
-	SpellMaskShieldOfRighteousness
 	SpellMaskAvengersShield
 	SpellMaskDivinePlea
 	SpellMaskDivineProtection
@@ -79,7 +78,8 @@ const SpellMaskCanTriggerSealOfTruth = SpellMaskCrusaderStrike |
 	SpellMaskExorcism |
 	SpellMaskHammerOfWrath |
 	SpellMaskJudgement |
-	SpellMaskHammerOfTheRighteousMelee
+	SpellMaskHammerOfTheRighteousMelee |
+	SpellMaskShieldOfTheRighteous
 
 const SpellMaskCanTriggerAncientPower = SpellMaskCanTriggerSealOfTruth |
 	SpellMaskHolyWrath
@@ -156,11 +156,12 @@ type Paladin struct {
 	AvengingWrathAura       *core.Aura
 	DivineProtectionAura    *core.Aura
 	ForbearanceAura         *core.Aura
-	VengeanceAura           *core.Aura
 	ZealotryAura            *core.Aura
 	InquisitionAura         *core.Aura
 	DivinePurposeAura       *core.Aura
 	JudgementsOfThePureAura *core.Aura
+	GrandCrusaderAura		*core.Aura
+	SacredDutyAura			*core.Aura
 
 	SpiritualAttunementMetrics *core.ResourceMetrics
 }
@@ -284,15 +285,18 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 
 	paladin.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	paladin.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
-
+	paladin.AddStat(stats.Parry, -paladin.GetBaseStats()[stats.Strength]*0.27) // Does not apply to base Strength
+	paladin.AddStatDependency(stats.Strength, stats.Parry, 0.27)
+	
+	paladin.PseudoStats.BaseDodge += 0.034943
+	paladin.PseudoStats.BaseParry += 0.05
 	// TODO: figure out the exact tanking stat dependencies for prot pala
 	// // Paladins get 0.0167 dodge per agi. ~1% per 59.88
 	// paladin.AddStatDependency(stats.Agility, stats.Dodge, (1.0/59.88)*core.DodgeRatingPerDodgeChance)
 	// // Paladins get more melee haste from haste than other classes
 	// paladin.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
 	// // Base dodge is unaffected by Diminishing Returns
-	// paladin.PseudoStats.BaseDodge += 0.034943
-	// paladin.PseudoStats.BaseParry += 0.05
+
 
 	// Bonus Armor and Armor are treated identically for Paladins
 	paladin.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
