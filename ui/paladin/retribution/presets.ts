@@ -34,19 +34,19 @@ export const T11_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'T11',
 	Stats.fromMap(
 		{
-			[Stat.StatStrength]: 2.28,
+			[Stat.StatStrength]: 2.32,
 			[Stat.StatAttackPower]: 1,
 			[Stat.StatSpellHit]: 0.27,
 			[Stat.StatSpellCrit]: 0.06,
-			[Stat.StatSpellHaste]: 0.49,
-			[Stat.StatMeleeHit]: 2.07,
-			[Stat.StatMeleeCrit]: 1.14,
-			[Stat.StatMeleeHaste]: 0.36,
-			[Stat.StatExpertise]: 1.85,
-			[Stat.StatMastery]: 1.35,
+			[Stat.StatSpellHaste]: 0.64,
+			[Stat.StatMeleeHit]: 2.38,
+			[Stat.StatMeleeCrit]: 1.13,
+			[Stat.StatMeleeHaste]: 0.29,
+			[Stat.StatExpertise]: 1.96,
+			[Stat.StatMastery]: 1.38,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 8.48,
+			[PseudoStat.PseudoStatMainHandDps]: 8.45,
 		},
 	),
 );
