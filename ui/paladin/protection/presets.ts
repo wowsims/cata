@@ -12,13 +12,16 @@ import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
 //import P1Gear from './gear_sets/p1.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
+import T11Gear from './gear_sets/T11.gear.json';
+import T11CTCGear from './gear_sets/T11CTC.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
 export const PRERAID_PRESET = PresetUtils.makePresetGear('P1 PreRaid Preset', PreraidGear);
-//export const P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1Gear);
+export const T11_PRESET = PresetUtils.makePresetGear('T11 Balanced Preset', T11Gear);
+export const T11CTC_PRESET = PresetUtils.makePresetGear('T11 CTC Preset', T11CTCGear);
 
 export const ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
@@ -27,17 +30,17 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'P1',
 	Stats.fromMap(
 		{
-			[Stat.StatArmor]: 0.07,
-			[Stat.StatBonusArmor]: 0.06,
+			[Stat.StatArmor]: 0.04,
+			[Stat.StatBonusArmor]: 0.04,
 			[Stat.StatStamina]: 1.14,
 			[Stat.StatMastery]: 1.0,
-			[Stat.StatStrength]: 1.0,
+			[Stat.StatStrength]: 0.5,
 			[Stat.StatAgility]: 0,
-			[Stat.StatAttackPower]: 0.26,
-			[Stat.StatExpertise]: 0.5,
-			[Stat.StatMeleeHit]: 0.5,
-			[Stat.StatMeleeCrit]: 0.3,
-			[Stat.StatMeleeHaste]: 0.17,
+			[Stat.StatAttackPower]: 0.15,
+			[Stat.StatExpertise]: 0.75,
+			[Stat.StatMeleeHit]: 0.75,
+			[Stat.StatMeleeCrit]: 0.2,
+			[Stat.StatMeleeHaste]: 0.3,
 			[Stat.StatSpellPower]: 0,
 			[Stat.StatDodge]: 0.6,
 			[Stat.StatParry]: 0.6,
@@ -54,15 +57,18 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const GenericAoeTalents = {
 	name: 'Baseline Example',
 	data: SavedTalents.create({
-		// talentsString: '-05005135200132311333312321-511302012003',
-		// glyphs: {
-		// 	major1: PaladinMajorGlyph.GlyphOfSealOfVengeance,
-		// 	major2: PaladinMajorGlyph.GlyphOfRighteousDefense,
-		// 	major3: PaladinMajorGlyph.GlyphOfDivinePlea,
-		// 	minor1: PaladinMinorGlyph.GlyphOfSenseUndead,
-		// 	minor2: PaladinMinorGlyph.GlyphOfLayOnHands,
-		// 	minor3: PaladinMinorGlyph.GlyphOfBlessingOfKings,
-		// },
+		"talentsString": "-32023013122121101231-032032",
+		"glyphs": {
+		  "prime1": 45744,
+		  "prime2": 41098,
+		  "prime3": 43869,
+		  "major1": 41107,
+		  "major2": 43367,
+		  "major3": 43867,
+		  "minor1": 43368,
+		  "minor2": 43340,
+		  "minor3": 43366
+		},
 	}),
 };
 
@@ -74,8 +80,8 @@ export const DefaultOptions = ProtectionPaladinOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfStoneblood,
-	food: Food.FoodDragonfinFilet,
-	defaultPotion: Potions.EarthenPotion,
-	prepopPotion: Potions.EarthenPotion,
+	flask: Flask.FlaskOfSteelskin,
+	food: Food.FoodLavascaleMinestrone,
+	defaultPotion: Potions.GolembloodPotion,
+	prepopPotion: Potions.GolembloodPotion,
 });

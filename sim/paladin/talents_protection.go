@@ -18,6 +18,8 @@ func (paladin *Paladin) applyProtectionTalents() {
 	paladin.applyReckoning()
 	paladin.applyShieldOfTheRighteous()
 	paladin.applyShieldOfTheTemplar()
+	paladin.applyGrandCrusader()
+	paladin.applySacredDuty()
 }
 
 func (paladin *Paladin) applySealsOfThePure() {
@@ -222,6 +224,7 @@ func (paladin *Paladin) applyReckoning() {
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell == paladin.AutoAttacks.MHAuto() {
 				reckoningSpell.Cast(sim, result.Target)
+				aura.RemoveStack(sim)
 			}
 		},
 	})
@@ -230,6 +233,7 @@ func (paladin *Paladin) applyReckoning() {
 		Name:       "Reckoning",
 		ProcMask:   core.ProcMaskMelee,
 		ProcChance: procChance,
+		Callback:   core.CallbackOnSpellHitTaken,
 		Outcome:    core.OutcomeBlock,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -289,6 +293,9 @@ func (paladin *Paladin) applyShieldOfTheTemplar() {
 		return
 	}
 
+	actionId := core.ActionID{SpellID: 84854}
+	hpMetrics := paladin.NewHolyPowerMetrics(actionId)
+
 	paladin.AddStaticMod(core.SpellModConfig{
 		ClassMask: SpellMaskGuardianOfAncientKings,
 		Kind:      core.SpellMod_Cooldown_Flat,
@@ -299,5 +306,95 @@ func (paladin *Paladin) applyShieldOfTheTemplar() {
 		ClassMask: SpellMaskAvengingWrath,
 		Kind:      core.SpellMod_Cooldown_Flat,
 		TimeValue: -(time.Second * time.Duration(20*paladin.Talents.ShieldOfTheTemplar)),
+	})
+	
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:	"Divine Plea Templar Effect",
+		ActionID:	actionId,
+		Callback:	core.CallbackOnCastComplete,
+		ClassSpellMask:		SpellMaskDivinePlea,
+		ProcChance: 1,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			paladin.GainHolyPower(sim, 3, hpMetrics)
+		},
+	})
+	
+}
+
+func (paladin *Paladin) applyGrandCrusader() {
+	if paladin.Talents.GrandCrusader == 0 {
+		return
+	}
+
+	paladin.GrandCrusaderAura = paladin.RegisterAura(core.Aura{
+		Label:    "Grand Crusader (Proc)",
+		ActionID: core.ActionID{SpellID: 85043},
+		Duration: time.Second * 6,
+		
+		// Dummy effect. Implemented in avengers_shield.go
+
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.ClassSpellMask&SpellMaskAvengersShield != 0 {
+				paladin.GrandCrusaderAura.Deactivate(sim)
+			}
+		},
+	})
+
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:       "Grand Crusader",
+		ActionID:   core.ActionID{SpellID: 85416},
+		Callback:   core.CallbackOnSpellHitDealt,
+		Outcome:    core.OutcomeLanded,
+		ClassSpellMask:   SpellMaskBuilder,
+		ProcChance: []float64{0, 0.05, 0.10}[paladin.Talents.GrandCrusader],
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			paladin.AvengersShield.CD.Reset()
+			paladin.GrandCrusaderAura.Activate(sim)
+		},
+	})
+}
+
+// 25/50% chance on Judgement/AS to apply 100% crit to next SotR
+func (paladin *Paladin) applySacredDuty() {
+	if paladin.Talents.SacredDuty == 0 {
+		return
+	}
+
+	critMod := paladin.AddDynamicMod(core.SpellModConfig{
+		ClassMask: SpellMaskShieldOfTheRighteous,
+		Kind:	   core.SpellMod_BonusCrit_Rating,
+		FloatValue: 100 * core.CritRatingPerCritChance,
+	})
+
+	paladin.SacredDutyAura = paladin.RegisterAura(core.Aura{
+		Label:	"Sacred Duty (Proc)",
+		ActionID: core.ActionID{SpellID: 85433},
+		Duration: time.Second * 10,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			critMod.Activate()
+		},
+		
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			critMod.Deactivate()
+		},
+		
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ClassSpellMask&SpellMaskShieldOfTheRighteous != 0 && result.DidCrit() {
+				paladin.SacredDutyAura.Deactivate(sim)
+			}
+		},
+	})
+
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:	  "Sacred Duty",
+		ActionID: core.ActionID{SpellID: 53710},
+		Callback: core.CallbackOnSpellHitDealt,
+		Outcome:  core.OutcomeLanded,
+		ClassSpellMask: SpellMaskAvengersShield | SpellMaskJudgement,
+		ProcChance: []float64{0, 0.25, 0.50}[paladin.Talents.SacredDuty],
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			paladin.SacredDutyAura.Activate(sim)
+		},
 	})
 }
