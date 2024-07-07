@@ -63,15 +63,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 			// https://docs.google.com/spreadsheets/d/1WLOZ1YevGPw_WZs0JhGzVVy906W5y0i9UqHa3ejyBkE/htmlview?gid=19
 			const breakpoints = [
 				1602, // 12.51% - 5-tick LvB + Pyro
-				1800, // Filler
 				1922, // 15.01% - 12-tick Combust
-				2620, // Filler - Minor breakpoint
-				2850, // Filler
+				2453, // Filler
 				3212, // 25.08% - 13-tick Combust
-				3850, // Filler
 				4488, // 35.04% - 14-tick Combust
-				4600, // Filler
 				4805, // 37.52% - 6-tick LvB + Pyro
+				5118, // Filler
 				5767, // 45.03% - 15-tick Combust
 				7033, // 54.92% - 16-tick Combust
 				// 8000, // 62.47% - 7-tick LvB + Pyro
@@ -97,21 +94,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 			const hasteSoftCapConfig = {
 				stat: Stat.StatSpellHaste,
 				breakpoints,
-				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [
-					0.59, // 12.51% - 5-tick LvB + Pyro
-					0.66, // Filler
-					0.59, // 15.01% - 12-tick Combust
-					0.61, // Filler - Minor breakpoint
-					0.77, // Filler
-					0.61, // 25.08% - 13-tick Combust
-					0.77, // Filler
-					0.61, // 35.04% - 14-tick Combust
-					1.17, // Filler
-					0.76, // 37.52% - 6-tick LvB + Pyro
-					0.65, // 45.03% - 15-tick Combust
-					0.64, // 54.92% - 16-tick Combust
-				],
+				capType: StatCapType.TypeThreshold,
+				postCapEPs: Array(breakpoints.length).fill(0),
 			};
 
 			return [hasteSoftCapConfig];
