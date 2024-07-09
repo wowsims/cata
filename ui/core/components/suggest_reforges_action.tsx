@@ -17,6 +17,7 @@ import { ActionGroupItem } from '../sim_ui';
 import { EventID, TypedEvent } from '../typed_event';
 import { isDevMode, sleep } from '../utils';
 import { BooleanPicker } from './pickers/boolean_picker';
+import { EnumPicker } from './pickers/enum_picker';
 import { NumberPicker, NumberPickerConfig } from './pickers/number_picker';
 import { renderSavedEPWeights } from './saved_data_managers/ep_weights';
 import Toast from './toast';
@@ -61,6 +62,7 @@ const STAT_TOOLTIPS: StatTooltips = {
 export type ReforgeOptimizerOptions = {
 	experimental?: true;
 	statTooltips?: StatTooltips;
+	statSelectionPresets?: Map<Stat, Map<string, number>>;
 	// Allows you to modify the stats before they are returned for the calculations
 	// For example: Adding class specific Glyphs/Talents that are not added by the backend
 	updateGearStatsModifier?: (baseStats: Stats) => Stats;
@@ -78,8 +80,9 @@ export class ReforgeOptimizer {
 	protected updateGearStatsModifier: ReforgeOptimizerOptions['updateGearStatsModifier'];
 	protected softCapsConfig: StatCapConfig[];
 	protected statTooltips: StatTooltips = {};
+	protected statSelectionPresets: ReforgeOptimizerOptions['statSelectionPresets'];
 	readonly freezeItemSlotsChangeEmitter = new TypedEvent<void>();
-	protected freezeItemSlots: boolean = false;
+	protected freezeItemSlots = false;
 	protected frozenItemSlots = new Map<ItemSlot, boolean>();
 
 	constructor(simUI: IndividualSimUI<any>, options?: ReforgeOptimizerOptions) {
@@ -93,6 +96,7 @@ export class ReforgeOptimizer {
 		this.updateGearStatsModifier = options?.updateGearStatsModifier;
 		this.softCapsConfig = this.defaults.softCapBreakpoints || [];
 		this.statTooltips = { ...STAT_TOOLTIPS, ...options?.statTooltips };
+		this.statSelectionPresets = options?.statSelectionPresets;
 		this._statCaps = this.statCaps;
 
 		const startReforgeOptimizationEntry: ActionGroupItem = {
@@ -216,7 +220,9 @@ export class ReforgeOptimizer {
 									<td className="text-end">{statCapTypeNames.get(capType)}</td>
 								</tr>
 								<tr>
-									<th><em>Rating</em></th>
+									<th>
+										<em>Rating</em>
+									</th>
 									<th className="text-end">
 										<em>%</em>
 									</th>
@@ -292,7 +298,8 @@ export class ReforgeOptimizer {
 				const freezeItemSlotsInput = new BooleanPicker(null, this.player, {
 					id: 'reforge-optimizer-freeze-item-slots',
 					label: 'Freeze item slots',
-					labelTooltip: 'Flag one or more item slots to be "frozen", which will prevent the optimizer from changing the Reforge in that slot from its current setting. This can be useful for hybrid classes who use the same gear piece for multiple raid roles.',
+					labelTooltip:
+						'Flag one or more item slots to be "frozen", which will prevent the optimizer from changing the Reforge in that slot from its current setting. This can be useful for hybrid classes who use the same gear piece for multiple raid roles.',
 					inline: false,
 					changedEvent: () => this.freezeItemSlotsChangeEmitter,
 					getValue: () => this.freezeItemSlots,
@@ -339,30 +346,28 @@ export class ReforgeOptimizer {
 		const tableRef = ref<HTMLTableElement>();
 		const content = (
 			<table ref={tableRef}>
-			{slotsByRow.map(slots => {
-				const rowRef = ref<HTMLTableRowElement>();
-				const row = (
-					<tr ref={rowRef}>
-					{slots.map(slot => {
-						const picker = new BooleanPicker(null, this.player, {
-							id: 'reforge-optimizer-freeze-' + ItemSlot[slot],
-							label: slotNames.get(slot),
-							changedEvent: () => this.freezeItemSlotsChangeEmitter,
-							getValue: () => this.frozenItemSlots.get(slot) || false,
-							setValue: (_eventID, _player, newValue) => {
-								this.frozenItemSlots.set(slot, newValue);
-							},
-							showWhen: () => this.freezeItemSlots,
-						});
-						const column = (
-							<td>{picker.rootElem}</td>
-						);
-						return column;
-					})}
-					</tr>
-				);
-				return row;
-			})}
+				{slotsByRow.map(slots => {
+					const rowRef = ref<HTMLTableRowElement>();
+					const row = (
+						<tr ref={rowRef}>
+							{slots.map(slot => {
+								const picker = new BooleanPicker(null, this.player, {
+									id: 'reforge-optimizer-freeze-' + ItemSlot[slot],
+									label: slotNames.get(slot),
+									changedEvent: () => this.freezeItemSlotsChangeEmitter,
+									getValue: () => this.frozenItemSlots.get(slot) || false,
+									setValue: (_eventID, _player, newValue) => {
+										this.frozenItemSlots.set(slot, newValue);
+									},
+									showWhen: () => this.freezeItemSlots,
+								});
+								const column = <td>{picker.rootElem}</td>;
+								return column;
+							})}
+						</tr>
+					);
+					return row;
+				})}
 			</table>
 		);
 
@@ -370,12 +375,15 @@ export class ReforgeOptimizer {
 	}
 
 	buildCapsList({ useCustomEPValuesInput, description }: { useCustomEPValuesInput: BooleanPicker<Player<any>>; description: HTMLElement }) {
+		const sharedInputConfig: Pick<NumberPickerConfig<Player<any>>, 'changedEvent'> = {
+			changedEvent: _ => TypedEvent.onAny([this.sim.useSoftCapBreakpointsChangeEmitter, this.player.statCapsChangeEmitter]),
+		};
 		const numberPickerSharedConfig: Pick<NumberPickerConfig<Player<any>>, 'float' | 'showZeroes' | 'positive' | 'extraCssClasses' | 'changedEvent'> = {
 			float: true,
 			showZeroes: false,
 			positive: true,
 			extraCssClasses: ['mb-0'],
-			changedEvent: _ => TypedEvent.onAny([this.sim.useSoftCapBreakpointsChangeEmitter, this.player.statCapsChangeEmitter]),
+			...sharedInputConfig,
 		};
 
 		const tableRef = ref<HTMLTableElement>();
@@ -414,7 +422,7 @@ export class ReforgeOptimizer {
 						const statName = getClassStatName(stat, this.player.getClass());
 						const ratingPicker = new NumberPicker(null, this.player, {
 							...numberPickerSharedConfig,
-							id: `character-bonus-stat-${stat}-rating`,
+							id: `reforge-optimizer-${stat}-rating`,
 							enableWhen: () => this.isAllowedToOverrideStatCaps || !this.softCapsConfig.some(config => config.stat === stat),
 							getValue: () => {
 								let statValue = this.statCaps.getStat(stat);
@@ -431,7 +439,7 @@ export class ReforgeOptimizer {
 						});
 						const percentagePicker = new NumberPicker(null, this.player, {
 							...numberPickerSharedConfig,
-							id: `character-bonus-stat-${stat}-percentage`,
+							id: `reforge-optimizer-${stat}-percentage`,
 							enableWhen: () => this.isAllowedToOverrideStatCaps || !this.softCapsConfig.some(config => config.stat === stat),
 							getValue: () => {
 								const statValue = this.statCaps.getStat(stat);
@@ -448,25 +456,64 @@ export class ReforgeOptimizer {
 								this.setStatCap(stat, statInNumber);
 							},
 						});
+						const statPresets: Map<string, number> | undefined = this.statSelectionPresets?.get(stat);
+						const presets = !!statPresets
+							? new EnumPicker(null, this.player, {
+									id: `reforge-optimizer-${stat}-presets`,
+									extraCssClasses: ['mb-0'],
+									label: '',
+									values: [
+										{ name: 'Select preset', value: 0 },
+										...[...statPresets.keys()].map(key => {
+											const rating = statPresets.get(key)!;
+											return {
+												name: `${key} - ${rating}`,
+												value: rating,
+											};
+										}),
+									],
+									enableWhen: () => this.isAllowedToOverrideStatCaps || !this.softCapsConfig.some(config => config.stat === stat),
+									getValue: () => {
+										let statValue = this.statCaps.getStat(stat);
+										if (stat === Stat.StatMastery) statValue = this.toVisualBaseMasteryRating(statValue);
+
+										return statValue;
+									},
+									setValue: (_eventID, _player, newValue) => {
+										let statValue = newValue;
+										if (stat === Stat.StatMastery) statValue += this.baseMastery;
+										this.setStatCap(stat, statValue);
+									},
+									...sharedInputConfig,
+							  })
+							: null;
 
 						const tooltipText = this.statTooltips[stat];
 						const statTooltipRef = ref<HTMLButtonElement>();
 
 						const row = (
-							<tr ref={listElementRef} className="reforge-optimizer-stat-cap-item">
-								<td>
-									<div className="reforge-optimizer-stat-cap-item-label">
-										{statName}{' '}
-										{tooltipText && (
-											<button ref={statTooltipRef} className="d-inline">
-												<i className="fa-regular fa-circle-question" />
-											</button>
-										)}
-									</div>
-								</td>
-								<td>{ratingPicker.rootElem}</td>
-								<td>{percentagePicker.rootElem}</td>
-							</tr>
+							<>
+								<tr ref={listElementRef} className="reforge-optimizer-stat-cap-item">
+									<td>
+										<div className="reforge-optimizer-stat-cap-item-label">
+											{statName}{' '}
+											{tooltipText && (
+												<button ref={statTooltipRef} className="d-inline">
+													<i className="fa-regular fa-circle-question" />
+												</button>
+											)}
+										</div>
+									</td>
+									<td>{ratingPicker.rootElem}</td>
+									<td>{percentagePicker.rootElem}</td>
+								</tr>
+								{presets && (
+									<tr>
+										<td></td>
+										<td colSpan={2}>{presets.rootElem}</td>
+									</tr>
+								)}
+							</>
 						);
 
 						const tooltip = tooltipText
@@ -564,7 +611,7 @@ export class ReforgeOptimizer {
 		if (isDevMode()) {
 			console.log('Clearing existing Reforges...');
 			console.log('The following slots will not be cleared:');
-			console.log(Array.from(this.frozenItemSlots.keys()).filter((key) => this.frozenItemSlots.get(key)));
+			console.log(Array.from(this.frozenItemSlots.keys()).filter(key => this.frozenItemSlots.get(key)));
 		}
 		const baseGear = this.player.getGear().withoutReforges(this.player.canDualWield2H(), this.frozenItemSlots);
 		const baseStats = await this.updateGear(baseGear);

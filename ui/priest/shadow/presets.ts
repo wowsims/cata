@@ -48,6 +48,54 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	}),
 );
 
+export const SHADOW_BREAKPOINTS = new Map([
+	[
+		Stat.StatSpellHaste,
+		// Picked from Priest Discord
+		// Sources:
+		// https://docs.google.com/spreadsheets/d/17cJJUReg2uz-XxBB3oDWb1kCncdH_-X96mSb0HAu4Ko/edit?usp=sharing
+		// https://docs.google.com/spreadsheets/d/1WLOZ1YevGPw_WZs0JhGzVVy906W5y0i9UqHa3ejyBkE/htmlview?gid=19
+		new Map([
+			['7 - SWP', 1066],
+			['6 - VT', 1280],
+			['9 - DP', 2400],
+			['8 - SWP', 3199],
+			['7 - VT', 3844],
+			['10 - DP', 4004],
+			['9 - SWP', 5337],
+			['11 - DP', 5607],
+			['8 - VT', 6399],
+			['12 - DP', 7209],
+			['10 - SWP', 7473],
+			['13 - DP', 8808],
+			['9 - VT', 8967],
+			['11 - SWP', 9602],
+			['14 - DP', 10401],
+			['10 - VT', 11533],
+			['12 - SWP', 11735],
+			['15 - DP', 12004],
+			['16 - DP', 13607],
+			['13 - SWP', 13883],
+			['11 - VT', 14088],
+			// ['17-tick - DP', 15206],
+			// ['14-tick - SWP', 16004],
+			// ['12-tick - VT', 16644],
+			// ['18-tick - DP', 16803],
+			// ['15-tick - SWP', 18139],
+			// ['19-tick - DP', 18416],
+			// ['13-tick - VT', 19222],
+			// ['20-tick - DP', 20016],
+			// ['16-tick - SWP', 20270],
+			// ['21-tick - DP', 21603],
+			// ['14-tick - VT', 21758],
+			// ['17-tick - SWP', 22424],
+			// ['22-tick - DP', 23216],
+			// ['15-tick - VT', 24331],
+			// ['18-tick - SWP', 24547],
+		]),
+	],
+]);
+
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://www.wowhead.com/cata/talent-calc/priest and copy the numbers in the url.
 export const StandardTalents = {

@@ -57,41 +57,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		})(),
 		// Default soft caps for the Reforge optimizer
 		softCapBreakpoints: (() => {
-			// Picked from Mage Discord
-			// Sources:
-			// https://docs.google.com/spreadsheets/d/17cJJUReg2uz-XxBB3oDWb1kCncdH_-X96mSb0HAu4Ko/edit?gid=0#gid=0
-			// https://docs.google.com/spreadsheets/d/1WLOZ1YevGPw_WZs0JhGzVVy906W5y0i9UqHa3ejyBkE/htmlview?gid=19
-			const breakpoints = [
-				1602, // 12.51% - 5-tick LvB + Pyro
-				1922, // 15.01% - 12-tick Combust
-				3212, // 25.08% - 13-tick Combust
-				4488, // 35.04% - 14-tick Combust
-				4805, // 37.52% - 6-tick LvB + Pyro
-				5767, // 45.03% - 15-tick Combust
-				7033, // 54.92% - 16-tick Combust
-				// 8000, // 62.47% - 7-tick LvB + Pyro
-				// 8309, // 64.88% - 17-tick Combust
-				// 9602, // 74.98% - 18-tick Combust
-				// 10887, // 85.01% - 19-tick Combust
-				// 11198, // 87.44% - 8-tick LvB + Pyro
-				// 12182, // 95.12% - 20-tick Combust
-				// 13463,
-				// 14412,
-				// 14704,
-				// 16004,
-				// 17290,
-				// 17600,
-				// 18543,
-				// 19821,
-				// 20820,
-				// 21117,
-				// 22424,
-				// 23730,
-				// 24010,
-			];
 			const hasteSoftCapConfig = {
 				stat: Stat.StatSpellHaste,
-				breakpoints,
+				breakpoints: [
+					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('5-tick LvB/Pyro')!,
+					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('12-tick Combust')!,
+					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('13-tick Combust')!,
+					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('14-tick Combust')!,
+					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('6-tick LvB/Pyro')!,
+					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('15-tick Combust')!,
+				],
 				capType: StatCapType.TypeSoftCap,
 				postCapEPs: [0.86, 0.77, 0.77, 1.17, 0.76, 0.65, 0.64],
 			};
@@ -190,6 +165,7 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
 				experimental: true,
+				statSelectionPresets: Presets.FIRE_BREAKPOINTS,
 			});
 		});
 	}
