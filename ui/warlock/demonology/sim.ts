@@ -178,7 +178,9 @@ export class DemonologyWarlockSimUI extends IndividualSimUI<Spec.SpecDemonologyW
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecDemonologyWarlock>) {
 		super(parentElem, player, SPEC_CONFIG);
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			new ReforgeOptimizer(this, {
+				statSelectionPresets: Presets.DEMONOLOGY_BREAKPOINTS,
+			});
 		});
 	}
 }

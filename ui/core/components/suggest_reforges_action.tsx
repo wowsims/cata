@@ -471,7 +471,7 @@ export class ReforgeOptimizer {
 												value: rating,
 											};
 										}),
-									],
+									].sort((a, b) => a.value - b.value),
 									enableWhen: () => this.isAllowedToOverrideStatCaps || !this.softCapsConfig.some(config => config.stat === stat),
 									getValue: () => {
 										let statValue = this.statCaps.getStat(stat);
