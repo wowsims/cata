@@ -93,7 +93,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 				stat: Stat.StatSpellHaste,
 				breakpoints,
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0.96, 0.86, 0.77, 0.77, 1.17, 0.76, 0.65],
+				postCapEPs: [0.86, 0.77, 0.77, 1.17, 0.76, 0.65, 0.64],
 			};
 
 			return [hasteSoftCapConfig];

@@ -10,7 +10,7 @@ func (dk *DeathKnight) registerRuneStrikeSpell() {
 	ohSpell := dk.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       RuneStrikeActionID.WithTag(2),
 		SpellSchool:    core.SpellSchoolPhysical,
-		ProcMask:       core.ProcMaskMeleeOHSpecial,
+		ProcMask:       core.ProcMaskMeleeOH, // Rune Strike triggers white hit procs as well so we give it both masks.
 		Flags:          core.SpellFlagMeleeMetrics,
 		ClassSpellMask: DeathKnightSpellRuneStrike,
 
@@ -28,7 +28,7 @@ func (dk *DeathKnight) registerRuneStrikeSpell() {
 	dk.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       RuneStrikeActionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolPhysical,
-		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		ProcMask:       core.ProcMaskMeleeMH, // Rune Strike triggers white hit procs as well so we give it both masks.
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: DeathKnightSpellRuneStrike,
 
@@ -68,7 +68,7 @@ func (dk *DeathKnight) registerDrwRuneStrikeSpell() *core.Spell {
 	return dk.RuneWeapon.RegisterSpell(core.SpellConfig{
 		ActionID:    RuneStrikeActionID.WithTag(1),
 		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
+		ProcMask:    core.ProcMaskMeleeMH,
 		Flags:       core.SpellFlagMeleeMetrics,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

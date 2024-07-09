@@ -1,10 +1,9 @@
 import { Player } from '../../core/player';
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Faction, Flask, Food, Glyphs, HandType, ItemSlot, Potions, Profession, PseudoStat, Spec, Stat, TinkerHands } from '../../core/proto/common';
+import { Consumes, Flask, Food, Glyphs, HandType, ItemSlot, Potions, Profession, PseudoStat, Spec, Stat, TinkerHands } from '../../core/proto/common';
 import { SavedTalents } from '../../core/proto/ui';
 import { FuryWarrior_Options as WarriorOptions, WarriorMajorGlyph, WarriorMinorGlyph, WarriorPrimeGlyph } from '../../core/proto/warrior';
 import { Stats } from '../../core/proto_utils/stats';
-import { SpecType } from '../../core/proto_utils/utils';
 import FuryApl from './apls/fury.apl.json';
 import P1FurySMFGear from './gear_sets/p1_fury_smf.gear.json';
 import P1FuryTGGear from './gear_sets/p1_fury_tg.gear.json';
@@ -62,24 +61,46 @@ export const P1_FURY_TG_PRESET = PresetUtils.makePresetGear('P1 Fury TG', P1Fury
 export const ROTATION_FURY = PresetUtils.makePresetAPLRotation('Fury', FuryApl);
 
 // Preset options for EP weights
-export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P1',
+export const P1_FURY_TG_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P1 - TG',
+	Stats.fromMap(
+		{
+			[Stat.StatStrength]: 2.21,
+			[Stat.StatAgility]: 1.23,
+			[Stat.StatAttackPower]: 1,
+			[Stat.StatExpertise]: 1.78,
+			[Stat.StatMeleeHit]: 2.61,
+			[Stat.StatMeleeCrit]: 1.59,
+			[Stat.StatMeleeHaste]: 1.07,
+			[Stat.StatMastery]: 1.22,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 3.34,
+			[PseudoStat.PseudoStatOffHandDps]: 1.77,
+		},
+	),
+	FURY_TG_PRESET_OPTIONS,
+);
+
+export const P1_FURY_SMF_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P1 - SMF',
 	Stats.fromMap(
 		{
 			[Stat.StatStrength]: 2.2,
-			[Stat.StatAgility]: 1.18,
+			[Stat.StatAgility]: 1.14,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatExpertise]: 1.6,
-			[Stat.StatMeleeHit]: 1.24,
-			[Stat.StatMeleeCrit]: 1.54,
-			[Stat.StatMeleeHaste]: 1.01,
-			[Stat.StatMastery]: 0.92,
+			[Stat.StatExpertise]: 1.61,
+			[Stat.StatMeleeHit]: 2.36,
+			[Stat.StatMeleeCrit]: 1.47,
+			[Stat.StatMeleeHaste]: 0.92,
+			[Stat.StatMastery]: 0.99,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 3.63,
-			[PseudoStat.PseudoStatOffHandDps]: 1.4,
+			[PseudoStat.PseudoStatMainHandDps]: 3.23,
+			[PseudoStat.PseudoStatOffHandDps]: 1.7,
 		},
 	),
+	FURY_SMF_PRESET_OPTIONS,
 );
 
 // Default talents. Uses the wowhead calculator format, make the talents on

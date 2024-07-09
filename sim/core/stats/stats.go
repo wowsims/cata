@@ -155,6 +155,19 @@ func (s Stat) StatName() string {
 	return "none"
 }
 
+func GetHighestStat(other Stats) Stat {
+	maxStatValue := 0.0
+	maxStatIndex := 0
+
+	for i := range other {
+		if other[i] > maxStatValue {
+			maxStatValue = other[i]
+			maxStatIndex = i
+		}
+	}
+	return Stat(maxStatIndex)
+}
+
 func FromFloatArray(values []float64) Stats {
 	var stats Stats
 	copy(stats[:], values)

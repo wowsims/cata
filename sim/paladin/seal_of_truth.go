@@ -140,7 +140,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 				return
 			}
 
-			// SoT only procs on white hits, CS, TV, Exo, Judge and HoW
+			// SoT only procs on white hits, CS, TV, Exo, Judge, HoW, HotR, ShoR
 			if spell.ProcMask&core.ProcMaskMeleeWhiteHit == 0 &&
 				spell.ClassSpellMask&SpellMaskCanTriggerSealOfTruth == 0 {
 				return

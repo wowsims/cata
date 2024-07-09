@@ -1,6 +1,8 @@
 package paladin
 
 import (
+	"time"
+
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -25,9 +27,9 @@ const (
 	SpellMaskJudgementOfJustice
 	SpellMaskHolyWrath
 	SpellMaskConsecration
-	SpellMaskHammerOfTheRighteous
+	SpellMaskHammerOfTheRighteousMelee
+	SpellMaskHammerOfTheRighteousAoe
 	SpellMaskHandOfReckoning
-	SpellMaskShieldOfRighteousness
 	SpellMaskAvengersShield
 	SpellMaskDivinePlea
 	SpellMaskDivineProtection
@@ -39,6 +41,7 @@ const (
 	SpellMaskGuardianOfAncientKings
 	SpellMaskAncientFury
 	SpellMaskSealsOfCommand
+	SpellMaskShieldOfTheRighteous
 
 	SpellMaskHolyShock
 	SpellMaskWordOfGlory
@@ -48,6 +51,12 @@ const (
 	SpellMaskSealOfRighteousness
 	SpellMaskSealOfJustice
 )
+
+const SpellMaskBuilder = SpellMaskCrusaderStrike |
+	SpellMaskDivineStorm |
+	SpellMaskHammerOfTheRighteousMelee
+
+const SpellMaskHammerOfTheRighteous = SpellMaskHammerOfTheRighteousMelee | SpellMaskHammerOfTheRighteousAoe
 
 const SpellMaskJudgement = SpellMaskJudgementOfTruth |
 	SpellMaskJudgementOfInsight |
@@ -61,13 +70,16 @@ const SpellMaskCanTriggerSealOfJustice = SpellMaskCrusaderStrike |
 const SpellMaskCanTriggerSealOfInsight = SpellMaskCanTriggerSealOfJustice
 
 const SpellMaskCanTriggerSealOfRighteousness = SpellMaskCanTriggerSealOfJustice |
-	SpellMaskDivineStorm
+	SpellMaskDivineStorm |
+	SpellMaskHammerOfTheRighteousMelee
 
 const SpellMaskCanTriggerSealOfTruth = SpellMaskCrusaderStrike |
 	SpellMaskTemplarsVerdict |
 	SpellMaskExorcism |
 	SpellMaskHammerOfWrath |
-	SpellMaskJudgement
+	SpellMaskJudgement |
+	SpellMaskHammerOfTheRighteousMelee |
+	SpellMaskShieldOfTheRighteous
 
 const SpellMaskCanTriggerAncientPower = SpellMaskCanTriggerSealOfTruth |
 	SpellMaskHolyWrath
@@ -88,15 +100,6 @@ const SpellMaskModifiedByTwoHandedSpec = SpellMaskJudgement |
 	SpellMaskSealsOfCommand |
 	SpellMaskHammerOfWrath
 
-const SpellMaskCastedAbility = SpellMaskHammerOfWrath |
-	SpellMaskConsecration |
-	SpellMaskExorcism |
-	SpellMaskJudgement |
-	SpellMaskHolyWrath |
-	SpellMaskCrusaderStrike |
-	SpellMaskTemplarsVerdict |
-	SpellMaskDivineStorm
-
 var TalentTreeSizes = [3]int{20, 20, 20}
 
 type Paladin struct {
@@ -107,6 +110,10 @@ type Paladin struct {
 	Seal        proto.PaladinSeal
 
 	Talents *proto.PaladinTalents
+
+	// Used for CS/DS/HotR
+	sharedBuilderTimer  *core.Timer
+	sharedBuilderBaseCD time.Duration
 
 	CurrentSeal      *core.Aura
 	CurrentJudgement *core.Spell
@@ -137,6 +144,7 @@ type Paladin struct {
 	JudgementOfInsight       *core.Spell
 	JudgementOfRighteousness *core.Spell
 	JudgementOfJustice       *core.Spell
+	ShieldOfTheRighteous     *core.Spell
 
 	HolyShieldAura          *core.Aura
 	RighteousFuryAura       *core.Aura
@@ -148,11 +156,12 @@ type Paladin struct {
 	AvengingWrathAura       *core.Aura
 	DivineProtectionAura    *core.Aura
 	ForbearanceAura         *core.Aura
-	VengeanceAura           *core.Aura
 	ZealotryAura            *core.Aura
 	InquisitionAura         *core.Aura
 	DivinePurposeAura       *core.Aura
 	JudgementsOfThePureAura *core.Aura
+	GrandCrusaderAura		*core.Aura
+	SacredDutyAura			*core.Aura
 
 	SpiritualAttunementMetrics *core.ResourceMetrics
 }
@@ -200,6 +209,8 @@ func (paladin *Paladin) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (paladin *Paladin) Initialize() {
+	paladin.sharedBuilderTimer = paladin.NewTimer()
+
 	paladin.applyGlyphs()
 	paladin.registerSpells()
 	paladin.addBloodthirstyGloves()
@@ -247,11 +258,12 @@ func (paladin *Paladin) Reset(sim *core.Simulation) {
 
 func NewPaladin(character *core.Character, talentsStr string, options *proto.PaladinOptions) *Paladin {
 	paladin := &Paladin{
-		Character:        *character,
-		Talents:          &proto.PaladinTalents{},
-		Seal:             options.Seal,
-		PaladinAura:      options.Aura,
-		SnapshotGuardian: options.SnapshotGuardian,
+		Character:           *character,
+		Talents:             &proto.PaladinTalents{},
+		Seal:                options.Seal,
+		PaladinAura:         options.Aura,
+		SnapshotGuardian:    options.SnapshotGuardian,
+		sharedBuilderBaseCD: time.Millisecond * core.TernaryDuration(character.Spec == proto.Spec_SpecProtectionPaladin, 3000, 4500),
 	}
 
 	core.FillTalentsProto(paladin.Talents.ProtoReflect(), talentsStr, TalentTreeSizes)
@@ -273,15 +285,18 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 
 	paladin.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	paladin.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
-
+	paladin.AddStat(stats.Parry, -paladin.GetBaseStats()[stats.Strength]*0.27) // Does not apply to base Strength
+	paladin.AddStatDependency(stats.Strength, stats.Parry, 0.27)
+	
+	paladin.PseudoStats.BaseDodge += 0.034943
+	paladin.PseudoStats.BaseParry += 0.05
 	// TODO: figure out the exact tanking stat dependencies for prot pala
 	// // Paladins get 0.0167 dodge per agi. ~1% per 59.88
 	// paladin.AddStatDependency(stats.Agility, stats.Dodge, (1.0/59.88)*core.DodgeRatingPerDodgeChance)
 	// // Paladins get more melee haste from haste than other classes
 	// paladin.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
 	// // Base dodge is unaffected by Diminishing Returns
-	// paladin.PseudoStats.BaseDodge += 0.034943
-	// paladin.PseudoStats.BaseParry += 0.05
+
 
 	// Bonus Armor and Armor are treated identically for Paladins
 	paladin.AddStatDependency(stats.BonusArmor, stats.Armor, 1)

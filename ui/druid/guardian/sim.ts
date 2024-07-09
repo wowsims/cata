@@ -9,6 +9,7 @@ import { APLAction, APLListItem, APLPrepullAction, APLRotation, APLRotation_Type
 import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
 import { GuardianDruid_Rotation as DruidRotation } from '../../core/proto/druid.js';
 import * as AplUtils from '../../core/proto_utils/apl_utils.js';
+import { StatCapType } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats.js';
 import * as DruidInputs from './inputs.js';
 import * as Presets from './presets.js';
@@ -64,14 +65,27 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		// Default equipped gear.
 		gear: Presets.PRERAID_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P1_EP_PRESET.epWeights,
+		epWeights: Presets.SURVIVAL_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
-			const meleeHitCap = new Stats().withStat(Stat.StatMeleeHit, 5 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
-			const spellHitCap = new Stats().withStat(Stat.StatSpellHit, 4 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
-			const expCap = new Stats().withStat(Stat.StatExpertise, 5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+			return new Stats().withStat(Stat.StatSpellHit, 4 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+		})(),
+		softCapBreakpoints: (() => {
+			const expertiseSoftCapConfig = {
+				stat: Stat.StatExpertise,
+				breakpoints: [6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION, 14 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION],
+				capType: StatCapType.TypeSoftCap,
+				postCapEPs: [0.47, 0],
+			};
 
-			return meleeHitCap.add(spellHitCap).add(expCap);
+			const hitSoftCapConfig = {
+				stat: Stat.StatMeleeHit,
+				breakpoints: [5.5 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE, 17 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE],
+				capType: StatCapType.TypeSoftCap,
+				postCapEPs: [0.47, 0.14, 0],
+			};
+
+			return [expertiseSoftCapConfig, hitSoftCapConfig];
 		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -131,7 +145,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
+		epWeights: [Presets.SURVIVAL_EP_PRESET, Presets.BALANCED_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents],
 		// Preset rotations that the user can quickly select.

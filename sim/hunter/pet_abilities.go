@@ -90,7 +90,7 @@ type PetDebuffSpellConfig struct {
 }
 
 func (hp *HunterPet) newPetDebuff(config PetDebuffSpellConfig) *core.Spell {
-	auraArray := hp.NewEnemyAuraArray(core.CurseOfElementsAura)
+	auraArray := hp.NewEnemyAuraArray(config.DebuffAura)
 	return hp.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: config.SpellID},
 		SpellSchool: config.School, // Adjust the spell school as needed

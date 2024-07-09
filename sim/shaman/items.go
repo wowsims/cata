@@ -4,24 +4,27 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-// var ItemSetTidefury = core.NewItemSet(core.ItemSet{
-// 	Name: "Tidefury Raiment",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
-// 			// Handled in chain_lightning.go
-// 		},
-// 		4: func(agent core.Agent) {
-// 			shaman := agent.(ShamanAgent).GetShaman()
-
-// 			if shaman.SelfBuffs.Shield == proto.ShamanShield_WaterShield {
-// 				shaman.AddStat(stats.MP5, 3)
-// 			}
-// 		},
-// 	},
-// })
+// Dungeon Set 3 Tidefury Raiment
+// (2) Set: Your Chain Lightning Spell now only loses 17% of its damage per jump.
+// (4) Set: Your Water Shield ability grants an additional 56 mana each time it triggers and an additional 3 mana per 5 sec.
+var ItemSetTidefury = core.NewItemSet(core.ItemSet{
+	Name: "Tidefury Raiment",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			// Handled in chain_lightning.go
+		},
+		4: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			if shaman.SelfBuffs.Shield == proto.ShamanShield_WaterShield {
+				shaman.AddStat(stats.MP5, 3)
+			}
+		},
+	},
+})
 
 // var ItemSetSkyshatterRegalia = core.NewItemSet(core.ItemSet{
 // 	Name: "Skyshatter Regalia",

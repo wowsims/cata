@@ -59,6 +59,20 @@ func init() {
 			return
 		}
 
+		healingSpell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 53365},
+			SpellSchool: core.SpellSchoolPhysical,
+			Flags:       core.SpellFlagIgnoreModifiers,
+			ProcMask:    core.ProcMaskSpellHealing,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealHealing(sim, target, character.MaxHealth()*0.03, spell.OutcomeHealing)
+			},
+		})
+
 		procMask := character.GetProcMaskForEnchant(3368)
 
 		rfcAura := character.NewTemporaryStatsAuraWrapped("Rune Of The Fallen Crusader Proc", core.ActionID{SpellID: 53365}, stats.Stats{}, time.Second*15, func(aura *core.Aura) {
@@ -81,6 +95,7 @@ func init() {
 			ProcMask: procMask,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				rfcAura.Activate(sim)
+				healingSpell.Cast(sim, &character.Unit)
 			},
 		})
 
