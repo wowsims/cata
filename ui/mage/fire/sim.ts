@@ -62,13 +62,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 				breakpoints: [
 					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('5-tick LvB/Pyro')!,
 					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('12-tick Combust')!,
+					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('BL - 16-tick Combust')!,
 					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('13-tick Combust')!,
 					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('14-tick Combust')!,
 					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('6-tick LvB/Pyro')!,
 					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('15-tick Combust')!,
 				],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0.86, 0.77, 0.77, 1.17, 0.76, 0.65, 0.64],
+				postCapEPs: [0.8, 0.76, 0.73, 0.78, 0.95, 0.84, 0.67],
 			};
 
 			return [hasteSoftCapConfig];
