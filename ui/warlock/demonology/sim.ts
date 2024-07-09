@@ -54,7 +54,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 			const masteryRatingBreakpoints = [];
 
 			for (let masteryPercent = 19; masteryPercent <= 200; masteryPercent++) {
-				masteryRatingBreakpoints.push((masteryPercent / 2.3) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
+				masteryRatingBreakpoints.push(
+					(masteryPercent / Mechanics.masteryPercentPerPoint.get(Spec.SpecDemonologyWarlock)!) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT,
+				);
 			}
 
 			const masterySoftCapConfig = {
