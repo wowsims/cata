@@ -42,7 +42,7 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 
 	private resetCallbacks: (() => void)[] = [];
 
-	constructor(parent: HTMLElement, modObject: ModObject, config: DropdownPickerConfig<ModObject, T, V>) {
+	constructor(parent: HTMLElement | null, modObject: ModObject, config: DropdownPickerConfig<ModObject, T, V>) {
 		super(parent, 'dropdown-picker-root', modObject, config);
 		this.config = config;
 		this.valueConfigs = this.config.values.filter(vc => !vc.headerText);
@@ -267,7 +267,7 @@ export interface TextDropdownPickerConfig<ModObject, T> extends Omit<DropdownPic
 }
 
 export class TextDropdownPicker<ModObject, T> extends DropdownPicker<ModObject, T> {
-	constructor(parent: HTMLElement, modObject: ModObject, config: TextDropdownPickerConfig<ModObject, T>) {
+	constructor(parent: HTMLElement | null, modObject: ModObject, config: TextDropdownPickerConfig<ModObject, T>) {
 		super(parent, modObject, {
 			...config,
 			setOptionContent: (button: HTMLButtonElement, valueConfig: DropdownValueConfig<T>) => {
