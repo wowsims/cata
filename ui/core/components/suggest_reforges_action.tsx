@@ -234,7 +234,7 @@ export class ReforgeOptimizer {
 									<tr>
 										<td>{Math.round(breakpoint)}</td>
 										<td className="text-end">{statToPercentageOrPoints(stat, breakpoint, new Stats()).toFixed(2)}</td>
-										<td className="text-end">{postCapEPs[breakpointIndex]}</td>
+										<td className="text-end">{capType === StatCapType.TypeThreshold ? postCapEPs[0] : postCapEPs[breakpointIndex]}</td>
 									</tr>
 								))}
 								{index !== this.softCapsConfig.length - 1 && (
