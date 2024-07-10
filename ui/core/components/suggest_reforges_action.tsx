@@ -667,14 +667,15 @@ export class ReforgeOptimizer {
 						relativeBreakpoints.push(statDelta);
 					}
 
-					// For stats that are configured as thresholds rather than
-					// soft caps, reverse the order of evaluation of the
-					// breakpoints so that the largest relevant threshold is
-					// always targeted. Likewise, make sure that post-cap EPs
-					// are always 0 for these stats.
+					// For stats that are configured as thresholds rather than soft caps,
+					// reverse the order of evaluation of the breakpoints so that the
+					// largest relevant threshold is always targeted. Likewise, use a
+					// single value for the post-cap EP for these stats, which should be
+					// interpreted (and computed) as the residual stat value just after
+					// passing a threshold discontinuity.
 					if (config.capType == StatCapType.TypeThreshold) {
 						relativeBreakpoints.reverse();
-						weights = Array(relativeBreakpoints.length).fill(0);
+						weights = Array(relativeBreakpoints.length).fill(weights[0]);
 					}
 
 					reforgeSoftCaps.push({
