@@ -145,7 +145,9 @@ func (b *bulkSimRunner) Run(signals simsignals.Signals, progress chan *proto.Pro
 
 	validCombos, newIters, err := buildCombos(signals, b.Request.BaseSettings, b.Request.BulkSettings, player)
 	if err != nil {
-		return nil, err
+		return &proto.BulkSimResult{
+			Error: &proto.ErrorOutcome{Message: err.Error()},
+		}
 	}
 
 	// TODO(Riotdog-GehennasEU): Make this configurable?

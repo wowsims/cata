@@ -594,6 +594,8 @@ message ItemSpecWithSlot {
 message BulkSimCombosRequest {
 	RaidSimRequest base_settings = 1;
 	BulkSettings bulk_settings = 2;
+	// To be compatible with BulkSimRequest. This request is not implemented async and cannot be aborted.
+	string request_id = 3;
 }
 
 message BulkSimCombosResult {

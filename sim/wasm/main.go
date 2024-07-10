@@ -4,7 +4,6 @@
 package main
 
 import (
-	"context"
 	"log"
 	"runtime/debug"
 	"syscall/js"
@@ -346,9 +345,8 @@ func bulkSimCombos(this js.Value, args []js.Value) interface{} {
 		log.Printf("Failed to parse request: %s", err)
 		return nil
 	}
-	// for now just use context.Background() until we can figure out the best way to handle
-	// allowing front end to cancel.
-	result := core.RunBulkCombos(context.Background(), rsr)
+
+	result := core.RunBulkCombos(rsr)
 
 	outbytes, err := googleProto.Marshal(result)
 	if err != nil {

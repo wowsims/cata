@@ -145,10 +145,10 @@ func IsRunningInWasm() bool {
 	return runningInWasm
 }
 
-func RunBulkCombos(ctx context.Context, request *proto.BulkSimCombosRequest) *proto.BulkSimCombosResult {
+func RunBulkCombos(request *proto.BulkSimCombosRequest) *proto.BulkSimCombosResult {
 	bulkSimReq := &proto.BulkSimCombosRequest{
 		BaseSettings: request.BaseSettings,
 		BulkSettings: request.BulkSettings,
 	}
-	return BulkSimCombos(ctx, bulkSimReq)
+	return BulkSimCombos(simsignals.CreateSignals(), bulkSimReq)
 }
