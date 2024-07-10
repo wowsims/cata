@@ -206,7 +206,7 @@ func (hunter *Hunter) applyPiercingShots() {
 			dot := psSpell.Dot(result.Target)
 			newDamage := result.Damage * 0.1 * float64(hunter.Talents.PiercingShots)
 
-			dot.SnapshotBaseDamage = (dot.OutstandingDmg() + newDamage) / float64(dot.BaseTickCount)
+			dot.SnapshotBaseDamage = (dot.OutstandingDmg() + newDamage) / float64(dot.BaseTickCount+core.TernaryInt32(dot.IsActive(), 1, 0))
 			psSpell.Cast(sim, result.Target)
 		},
 	})

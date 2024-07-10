@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Conjured, Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, RaidBuffs, Spec, Stat } from '../../core/proto/common';
+import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import {
 	FireMage_Options as MageOptions,
 	MageMajorGlyph as MajorGlyph,
@@ -32,12 +32,12 @@ export const FIRE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('F
 export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Fire P1',
 	Stats.fromMap({
-		[Stat.StatIntellect]: 1.32,
+		[Stat.StatIntellect]: 1.33,
 		[Stat.StatSpellPower]: 1.0,
-		[Stat.StatSpellHit]: 1.05,
-		[Stat.StatSpellCrit]: 0.56,
-		[Stat.StatSpellHaste]: 0.64,
-		[Stat.StatMastery]: 0.47,
+		[Stat.StatSpellHit]: 1.09,
+		[Stat.StatSpellCrit]: 0.62,
+		[Stat.StatSpellHaste]: 0.82,
+		[Stat.StatMastery]: 0.46,
 	}),
 );
 
@@ -99,3 +99,45 @@ export const OtherDefaults = {
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
 };
+
+export const FIRE_BREAKPOINTS = new Map([
+	[
+		Stat.StatSpellHaste,
+		// Picked from Mage Discord
+		// Sources:
+		// https://docs.google.com/spreadsheets/d/17cJJUReg2uz-XxBB3oDWb1kCncdH_-X96mSb0HAu4Ko/edit?gid=0#gid=0
+		// https://docs.google.com/spreadsheets/d/1WLOZ1YevGPw_WZs0JhGzVVy906W5y0i9UqHa3ejyBkE/htmlview?gid=19
+		new Map([
+			['BL - 15-tick Combust', 1481],
+			['5-tick LvB/Pyro', 1602],
+			['12-tick Combust', 1922],
+			['BL - 16-tick Combust', 2455],
+			['BL - 7-tick LvB/Pyro', 3199],
+			['13-tick Combust', 3212],
+			['BL - 17-tick Combust', 3436],
+			['14-tick Combust', 4488],
+			['6-tick LvB/Pyro', 4805],
+			['15-tick Combust', 5767],
+			// ['16-tick Combust', 7033],
+			// ['7-tick LvB/Pyro', 8000],
+			// ['17-tick Combust', 8309],
+			// ['18-tick Combust', 9602],
+			// ['19-tick Combust', 10887],
+			// ['8-tick LvB/Pyro', 11198],
+			// ['20-tick Combust', 12182],
+			// ['21-tick Combust', 13463],
+			// ['9-tick LvB/Pyro', 14412],
+			// ['22-tick Combust', 14704],
+			// ['23-tick Combust', 16004],
+			// ['24-tick Combust', 17290],
+			// ['10-tick LvB/Pyro', 17600],
+			// ['25-tick Combust', 18543],
+			// ['26-tick Combust', 19821],
+			// ['11-tick LvB/Pyro', 20820],
+			// ['27-tick Combust', 21117],
+			// ['28-tick Combust', 22424],
+			// ['29-tick Combust', 23730],
+			// ['12-tick LvB/Pyro', 24010],
+		]),
+	],
+]);

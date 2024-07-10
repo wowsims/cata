@@ -306,13 +306,13 @@ export class Gear extends BaseGear {
 		return curGear;
 	}
 
-	withoutReforges(canDualWield2H: boolean): Gear {
+	withoutReforges(canDualWield2H: boolean, ignoreSlots?: Map<ItemSlot, boolean>): Gear {
 		let curGear: Gear = this;
 
 		for (const slot of this.getItemSlots()) {
 			const item = this.getEquippedItem(slot);
 
-			if (item) {
+			if (item && !ignoreSlots?.get(slot)) {
 				curGear = curGear.withEquippedItem(slot, item.withItem(item.item).withRandomSuffix(item._randomSuffix), canDualWield2H);
 			}
 		}

@@ -9,21 +9,39 @@ import (
 func (paladin *Paladin) registerSealOfTruth() {
 	hasteMultiplier := 1 + 0.01*3*float64(paladin.Talents.JudgementsOfThePure)
 
-	// Censure DoT
+	censureActionId := core.ActionID{SpellID: 31803}
+
+	// Censure DoT application
 	censureSpell := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 31803},
+		ActionID:    censureActionId.WithTag(1),
+		SpellSchool: core.SpellSchoolHoly,
+		ProcMask:    core.ProcMaskMeleeSpecial,
+		Flags:       core.SpellFlagNoMetrics | core.SpellFlagNoLogs,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			dotResult := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
+
+			if dotResult.Landed() {
+				spell.RelatedDotSpell.Cast(sim, target)
+			}
+		},
+	})
+
+	// Censure DoT
+	censureSpell.RelatedDotSpell = paladin.RegisterSpell(core.SpellConfig{
+		ActionID:       censureActionId.WithTag(2),
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagMeleeMetrics,
 		ClassSpellMask: SpellMaskCensure,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   paladin.DefaultSpellCritMultiplier(),
+		CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				ActionID:  core.ActionID{SpellID: 31803},
-				Label:     "Censure",
+				Label:     "Censure (DoT)",
 				MaxStacks: 5,
 			},
 
@@ -36,7 +54,10 @@ func (paladin *Paladin) registerSealOfTruth() {
 					.014*dot.Spell.SpellPower() +
 					.027*dot.Spell.MeleeAttackPower())
 
-				dot.Snapshot(target, tickValue)
+				dot.SnapshotBaseDamage = tickValue
+				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
+				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
@@ -44,26 +65,22 @@ func (paladin *Paladin) registerSealOfTruth() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			dotResult := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
-			spell.SpellMetrics[target.UnitIndex].Hits--
+			spell.SpellMetrics[target.UnitIndex].Casts--
+			dot := spell.Dot(target)
 
-			if dotResult.Landed() {
-				dot := spell.Dot(target)
+			undoJotpForInitialTick := !dot.IsActive() &&
+				paladin.JudgementsOfThePureAura != nil &&
+				paladin.JudgementsOfThePureAura.IsActive()
 
-				undoJotpForInitialTick := !dot.IsActive() &&
-					paladin.JudgementsOfThePureAura != nil &&
-					paladin.JudgementsOfThePureAura.IsActive()
+			if undoJotpForInitialTick {
+				paladin.MultiplyCastSpeed(1 / hasteMultiplier)
+			}
 
-				if undoJotpForInitialTick {
-					paladin.MultiplyCastSpeed(1 / hasteMultiplier)
-				}
+			dot.Apply(sim)
+			dot.AddStack(sim)
 
-				dot.Apply(sim)
-				dot.AddStack(sim)
-
-				if undoJotpForInitialTick {
-					paladin.MultiplyCastSpeed(hasteMultiplier)
-				}
+			if undoJotpForInitialTick {
+				paladin.MultiplyCastSpeed(hasteMultiplier)
 			}
 		},
 	})
@@ -123,7 +140,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 				return
 			}
 
-			// SoT only procs on white hits, CS, TV, Exo, Judge and HoW
+			// SoT only procs on white hits, CS, TV, Exo, Judge, HoW, HotR, ShoR
 			if spell.ProcMask&core.ProcMaskMeleeWhiteHit == 0 &&
 				spell.ClassSpellMask&SpellMaskCanTriggerSealOfTruth == 0 {
 				return

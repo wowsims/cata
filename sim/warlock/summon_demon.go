@@ -7,16 +7,28 @@ import (
 )
 
 func (warlock *Warlock) ChangeActivePet(sim *core.Simulation, newPet *WarlockPet) {
-	for _, pet := range warlock.Pets {
-		if !pet.IsGuardian() && pet.IsEnabled() {
-			pet.Disable(sim)
-		}
-	}
-
+	warlock.ActivePet.Disable(sim)
 	newPet.Enable(sim, newPet)
+	warlock.ActivePet = newPet
 }
 
-func (warlock *Warlock) registerSummonFelHunter() {
+func (warlock *Warlock) GetSummonStunAura() core.Aura {
+	return core.Aura{
+		Label:    "Summoning Disorientation",
+		ActionID: core.ActionID{SpellID: 32752},
+		Duration: 5 * time.Second,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.WaitUntil(sim, sim.CurrentTime+5*time.Second)
+			aura.Unit.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+5*time.Second, false)
+		},
+	}
+}
+
+func (warlock *Warlock) registerSummonDemon() {
+	stunActionID := core.ActionID{SpellID: 32752}
+
+	// Summon Felhunter
+	warlock.Felhunter.RegisterAura(warlock.GetSummonStunAura())
 	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 691},
 		SpellSchool:    core.SpellSchoolShadow,
@@ -30,6 +42,9 @@ func (warlock *Warlock) registerSummonFelHunter() {
 				GCD:      core.GCDDefault,
 				CastTime: 6 * time.Second,
 			},
+			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
+				warlock.ActivePet.GetAuraByID(stunActionID).Activate(sim)
+			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -37,9 +52,9 @@ func (warlock *Warlock) registerSummonFelHunter() {
 			warlock.ChangeActivePet(sim, warlock.Felhunter)
 		},
 	})
-}
 
-func (warlock *Warlock) registerSummonImp() {
+	// Summon Imp
+	warlock.Imp.RegisterAura(warlock.GetSummonStunAura())
 	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 688},
 		SpellSchool:    core.SpellSchoolShadow,
@@ -53,6 +68,9 @@ func (warlock *Warlock) registerSummonImp() {
 				GCD:      core.GCDDefault,
 				CastTime: 6 * time.Second,
 			},
+			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
+				warlock.ActivePet.GetAuraByID(stunActionID).Activate(sim)
+			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -60,9 +78,8 @@ func (warlock *Warlock) registerSummonImp() {
 			warlock.ChangeActivePet(sim, warlock.Imp)
 		},
 	})
-}
 
-func (warlock *Warlock) registerSummonSuccubus() {
+	warlock.Succubus.RegisterAura(warlock.GetSummonStunAura())
 	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 712},
 		SpellSchool:    core.SpellSchoolShadow,
@@ -75,6 +92,9 @@ func (warlock *Warlock) registerSummonSuccubus() {
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
 				CastTime: 6 * time.Second,
+			},
+			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
+				warlock.ActivePet.GetAuraByID(stunActionID).Activate(sim)
 			},
 		},
 

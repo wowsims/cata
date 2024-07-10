@@ -108,6 +108,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 		}),
 	},
 
+	modifyDisplayStats: (player: Player<Spec.SpecBloodDeathKnight>) => {
+		// Blood Presence is a combat buff but we want to include its bonus in the stats
+		const currentStats = player.getCurrentStats()
+		if (currentStats.finalStats) {
+			const bonusStamina = currentStats.finalStats.stats[Stat.StatStamina]*0.08
+			const bonusHealth = bonusStamina*14
+			const stats = new Stats().addStat(Stat.StatHealth, bonusHealth).addStat(Stat.StatStamina, bonusStamina)
+			return {
+				buffs: stats,
+			};
+		}
+		return {}
+	},
+
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [],
 	// Inputs to include in the 'Rotation' section on the settings tab.

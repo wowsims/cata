@@ -124,8 +124,8 @@ var EnchantOverrides = []*proto.UIEnchant{
 
 	// RANGED
 	{EffectId: 4175, ItemId: 59594, SpellId: 81932, Name: "Gnomish X-Ray Scope", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeRanged},
-	{EffectId: 4176, ItemId: 59595, SpellId: 81933, Name: "R19 Threatfinder", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.MeleeHit: 88, stats.SpellHit: 88}.ToFloatArray(), Type: proto.ItemType_ItemTypeRanged},
-	{EffectId: 4177, ItemId: 59596, SpellId: 81934, Name: "Safety Catch Removal Kit", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.MeleeHaste: 88, stats.SpellHaste: 88}.ToFloatArray(), Type: proto.ItemType_ItemTypeRanged},
+	{EffectId: 4176, ItemId: 59595, SpellId: 81933, Name: "R19 Threatfinder", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeRanged},
+	{EffectId: 4177, ItemId: 59596, SpellId: 81934, Name: "Safety Catch Removal Kit", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeRanged},
 	{EffectId: 4267, ItemId: 70139, SpellId: 99623, Name: "Flintlocke's Woodchucker", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeRanged, ClassAllowlist: []proto.Class{proto.Class_ClassHunter}},
 
 	// WAIST

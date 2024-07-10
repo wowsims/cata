@@ -1739,18 +1739,20 @@ const itemTypeToSlotsMap: Partial<Record<ItemType, Array<ItemSlot>>> = {
 	[ItemType.ItemTypeRanged]: [ItemSlot.ItemSlotRanged],
 };
 
-export function getEligibleItemSlots(item: Item): Array<ItemSlot> {
+export function getEligibleItemSlots(item: Item, isFuryWarrior?: boolean): Array<ItemSlot> {
 	if (itemTypeToSlotsMap[item.type]) {
 		return itemTypeToSlotsMap[item.type]!;
 	}
 
 	if (item.type == ItemType.ItemTypeWeapon) {
+		if (isFuryWarrior) {
+			return [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand];
+		}
+
 		if (item.handType == HandType.HandTypeMainHand) {
 			return [ItemSlot.ItemSlotMainHand];
 		} else if (item.handType == HandType.HandTypeOffHand) {
 			return [ItemSlot.ItemSlotOffHand];
-			// Missing HandTypeTwoHand
-			// We allow 2H weapons to be wielded in mainhand and offhand for Fury Warriors
 		} else {
 			return [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand];
 		}

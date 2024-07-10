@@ -38,7 +38,7 @@ func (comRogue *CombatRogue) applyMastery() {
 		// ActionID Excluded to not clog up Buffs metrics
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask.Matches(core.ProcMaskMeleeMH) && spell != comRogue.mainGauche {
+			if spell.ProcMask.Matches(core.ProcMaskMeleeMH) && spell != comRogue.mainGauche && spell != comRogue.Rupture {
 				masteryPoints := comRogue.GetStat(stats.Mastery) / core.MasteryRatingPerMasteryPoint
 				mgProcChance := masteryChancePerPoint*masteryPoints + masteryBaseEffect
 

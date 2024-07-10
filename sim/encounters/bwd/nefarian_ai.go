@@ -214,12 +214,18 @@ func (ai *NefarianAddAI) registerSpells() {
 }
 
 func (ai *NefarianAddAI) ExecuteCustomRotation(sim *core.Simulation) {
+	target := ai.Target.CurrentTarget
+	if target == nil {
+		// For individual non tank sims we still want abilities to work
+		target = &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
+	}
+
 	if ai.isController && ai.electrocuteSpell.IsReady(sim) {
-		ai.electrocuteSpell.Cast(sim, nil)
+		ai.electrocuteSpell.Cast(sim, target)
 	}
 
 	if ai.isController && ai.shadowblazeSpark.IsReady(sim) {
-		ai.shadowblazeSpark.Cast(sim, nil)
+		ai.shadowblazeSpark.Cast(sim, target)
 	}
 
 	ai.Target.ExtendGCDUntil(sim, sim.CurrentTime+BossGCD)

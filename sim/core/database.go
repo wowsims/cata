@@ -388,7 +388,7 @@ func validateReforging(item *Item, reforging ReforgeStat) bool {
 	// Validate that the item can reforge these to stats
 	stats := stats.Stats{}
 	if item.RandomSuffix.ID != 0 {
-		stats = stats.Add(item.RandomSuffix.Stats.Multiply(float64(item.RandomPropPoints) / 10000.))
+		stats = stats.Add(item.RandomSuffix.Stats.Multiply(float64(item.RandomPropPoints) / 10000.).Floor())
 	} else {
 		stats = stats.Add(item.Stats)
 	}
@@ -462,13 +462,13 @@ func ItemEquipmentStats(item Item) stats.Stats {
 
 	equipStats = equipStats.Add(item.Stats)
 
-	// TODO: Verify that random suffix stats can be re-forged (current implementation assumes yes)
+	// Random suffix stats can be Reforged, so apply those prior to any Reforges
 	rawSuffixStats := item.RandomSuffix.Stats
-	equipStats = equipStats.Add(rawSuffixStats.Multiply(float64(item.RandomPropPoints) / 10000.))
+	equipStats = equipStats.Add(rawSuffixStats.Multiply(float64(item.RandomPropPoints) / 10000.).Floor())
 
 	// Apply reforging
 	if item.Reforging != nil {
-		itemStats := item.Stats.Add(rawSuffixStats.Multiply(float64(item.RandomPropPoints) / 10000.))
+		itemStats := item.Stats.Add(rawSuffixStats.Multiply(float64(item.RandomPropPoints) / 10000.).Floor())
 
 		reforgingChanges := stats.Stats{}
 		for _, fromStat := range item.Reforging.FromStat {
@@ -560,12 +560,16 @@ var itemTypeToSlotsMap = map[proto.ItemType][]proto.ItemSlot{
 	// ItemType_ItemTypeWeapon is excluded intentionally - the slot cannot be decided based on type alone for weapons.
 }
 
-func eligibleSlotsForItem(item Item) []proto.ItemSlot {
+func eligibleSlotsForItem(item Item, isFuryWarrior bool) []proto.ItemSlot {
 	if slots, ok := itemTypeToSlotsMap[item.Type]; ok {
 		return slots
 	}
 
 	if item.Type == proto.ItemType_ItemTypeWeapon {
+		if isFuryWarrior {
+			return []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand}
+		}
+
 		switch item.HandType {
 		case proto.HandType_HandTypeTwoHand, proto.HandType_HandTypeMainHand:
 			return []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand}

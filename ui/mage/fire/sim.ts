@@ -1,3 +1,4 @@
+import { CharacterStats } from '../../core/components/character_stats';
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
 import * as Mechanics from '../../core/constants/mechanics';
@@ -6,6 +7,7 @@ import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Faction, IndividualBuffs, PartyBuffs, Race, Spec, Stat } from '../../core/proto/common';
+import { StatCapType } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import * as FireInputs from './inputs';
 import * as Presets from './presets';
@@ -52,6 +54,25 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
 			return new Stats().withStat(Stat.StatSpellHit, 17 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+		})(),
+		// Default soft caps for the Reforge optimizer
+		softCapBreakpoints: (() => {
+			const hasteSoftCapConfig = {
+				stat: Stat.StatSpellHaste,
+				breakpoints: [
+					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('5-tick LvB/Pyro')!,
+					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('12-tick Combust')!,
+					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('BL - 16-tick Combust')!,
+					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('13-tick Combust')!,
+					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('14-tick Combust')!,
+					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('6-tick LvB/Pyro')!,
+					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('15-tick Combust')!,
+				],
+				capType: StatCapType.TypeSoftCap,
+				postCapEPs: [0.8, 0.76, 0.73, 0.78, 0.95, 0.84, 0.67],
+			};
+
+			return [hasteSoftCapConfig];
 		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultFireConsumes,
@@ -143,7 +164,10 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			new ReforgeOptimizer(this, {
+				experimental: true,
+				statSelectionPresets: Presets.FIRE_BREAKPOINTS,
+			});
 		});
 	}
 }

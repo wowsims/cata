@@ -217,9 +217,10 @@ export abstract class SimUI extends Component {
 
 	addActionGroup(groups: ActionGroupItem[], groupOptions: { cssClass?: string } = {}) {
 		const refs: HTMLButtonElement[] = [];
+		const groupRef = ref<HTMLDivElement>();
 		const { cssClass } = groupOptions;
 		this.simActionsContainer.appendChild(
-			<div className={clsx('d-flex btn-group w-100', cssClass)} attributes={{ role: 'group' }}>
+			<div ref={groupRef} className={clsx('d-flex btn-group w-100', cssClass)} attributes={{ role: 'group' }}>
 				{groups.map(({ label, cssClass, children, onClick }) => (
 					<button ref={ref => refs.push(ref)} onclick={onClick} className={clsx('sim-sidebar-action-button btn btn-primary', cssClass)}>
 						{label}
@@ -232,7 +233,7 @@ export abstract class SimUI extends Component {
 			</div>,
 		);
 
-		return refs;
+		return { group: groupRef.value!, children: refs };
 	}
 
 	addTab(title: string, cssClass: string, content: HTMLElement | Element) {

@@ -1265,7 +1265,7 @@ func registerPowerInfusionCD(agent Agent, numPowerInfusions int32) {
 			AuraTag:          PowerInfusionAuraTag,
 			CooldownPriority: CooldownPriorityDefault,
 			AuraDuration:     PowerInfusionDuration,
-			AuraCD:           time.Duration(float64(PowerInfusionCD) * 0.8), // All disc priests take Ascension talent.
+			AuraCD:           PowerInfusionCD,
 			Type:             CooldownTypeDPS,
 
 			ShouldActivate: func(sim *Simulation, character *Character) bool {
@@ -1320,7 +1320,8 @@ func registerTricksOfTheTradeCD(agent Agent, numTricksOfTheTrades int32) {
 	}
 
 	// Assuming rogues have Glyph of TotT by default (which might not be the case).
-	TotTAura := TricksOfTheTradeAura(&agent.GetCharacter().Unit, -1, true)
+	// TODO (TheBackstabi) - Glyph of TotT in buff selection UI
+	TotTAura := TricksOfTheTradeAura(&agent.GetCharacter().Unit, -1, 1.10)
 
 	registerExternalConsecutiveCDApproximation(
 		agent,
@@ -1340,23 +1341,23 @@ func registerTricksOfTheTradeCD(agent Agent, numTricksOfTheTrades int32) {
 		numTricksOfTheTrades)
 }
 
-func TricksOfTheTradeAura(character *Unit, actionTag int32, glyphed bool) *Aura {
+func TricksOfTheTradeAura(character *Unit, actionTag int32, damageMult float64) *Aura {
 	actionID := ActionID{SpellID: 57933, Tag: actionTag}
 
 	aura := character.GetOrRegisterAura(Aura{
 		Label:    "TricksOfTheTrade-" + actionID.String(),
 		Tag:      TricksOfTheTradeAuraTag,
 		ActionID: actionID,
-		Duration: TernaryDuration(glyphed, time.Second*10, time.Second*6),
+		Duration: time.Second * 6,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.DamageDealtMultiplier *= 1.15
+			character.PseudoStats.DamageDealtMultiplier *= damageMult
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.DamageDealtMultiplier /= 1.15
+			character.PseudoStats.DamageDealtMultiplier /= damageMult
 		},
 	})
 
-	RegisterPercentDamageModifierEffect(aura, 1.15)
+	RegisterPercentDamageModifierEffect(aura, damageMult)
 	return aura
 }
 

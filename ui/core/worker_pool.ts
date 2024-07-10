@@ -3,6 +3,8 @@ import { REPO_NAME } from './constants/other.js';
 import {
 	AbortRequest,
 	AbortResponse,
+	BulkSimCombosRequest,
+	BulkSimCombosResult,
 	BulkSimRequest,
 	BulkSimResult,
 	ComputeStatsRequest,
@@ -19,7 +21,7 @@ import {
 	StatWeightsResult,
 } from './proto/api.js';
 import { SimSignals } from './sim_signal_manager';
-import { noop } from './utils';
+import { isDevMode, noop } from './utils';
 
 const SIM_WORKER_URL = `/${REPO_NAME}/sim_worker.js`;
 export type WorkerProgressCallback = (progressMetrics: ProgressMetrics) => void;
@@ -92,7 +94,7 @@ export class WorkerPool {
 
 	async statWeightsAsync(request: StatWeightsRequest, onProgress: WorkerProgressCallback, signals: SimSignals): Promise<StatWeightsResult> {
 		const worker = this.getLeastBusyWorker();
-		worker.log('Stat weights request: ' + StatWeightsRequest.toJsonString(request));
+		if (isDevMode()) worker.log('Stat weights request: ' + StatWeightsRequest.toJsonString(request));
 		const id = request.requestId || generateRequestId(SimRequest.statWeightsAsync);
 
 		signals.abort.onTrigger(async () => {
@@ -102,7 +104,7 @@ export class WorkerPool {
 		const iterations = request.simOptions ? request.simOptions.iterations * request.statsToWeigh.length : 30000;
 		const result = await this.doAsyncRequest(SimRequest.statWeightsAsync, StatWeightsRequest.toBinary(request), id, worker, onProgress, iterations);
 
-		worker.log('Stat weights result: ' + StatWeightsResult.toJsonString(result.finalWeightResult!));
+		if (isDevMode()) worker.log('Stat weights result: ' + StatWeightsResult.toJsonString(result.finalWeightResult!));
 		return result.finalWeightResult!;
 	}
 
@@ -118,7 +120,7 @@ export class WorkerPool {
 
 	async bulkSimAsync(request: BulkSimRequest, onProgress: WorkerProgressCallback, signals: SimSignals): Promise<BulkSimResult> {
 		const worker = this.getLeastBusyWorker();
-		worker.log('bulk sim request: ' + BulkSimRequest.toJsonString(request, { enumAsInteger: true }));
+		if (isDevMode()) worker.log('bulk sim request: ' + BulkSimRequest.toJsonString(request, { enumAsInteger: true }));
 		const id = request.requestId || generateRequestId(SimRequest.bulkSimAsync);
 
 		signals.abort.onTrigger(async () => {
@@ -129,8 +131,19 @@ export class WorkerPool {
 		const result = await this.doAsyncRequest(SimRequest.bulkSimAsync, BulkSimRequest.toBinary(request), id, worker, onProgress, iterations);
 
 		const resultJson = BulkSimResult.toJson(result.finalBulkResult!) as any;
-		worker.log('bulk sim result: ' + JSON.stringify(resultJson));
+		if (isDevMode()) worker.log('bulk sim result: ' + JSON.stringify(resultJson));
 		return result.finalBulkResult!;
+	}
+
+	// Calculate combos and return counts
+	async bulkSimCombosAsync(request: BulkSimCombosRequest): Promise<BulkSimCombosResult> {
+		if (isDevMode()) console.log('bulk sim combinations request: ' + BulkSimCombosRequest.toJsonString(request, { enumAsInteger: true }));
+		const worker = this.getLeastBusyWorker();
+		const id = generateRequestId(SimRequest.bulkSimCombos);
+
+		// Now start the async sim
+		const resultData = await worker.doApiCall(SimRequest.bulkSimCombos, BulkSimCombosRequest.toBinary(request), id);
+		return BulkSimCombosResult.fromBinary(resultData);
 	}
 
 	async raidSimAsync(request: RaidSimRequest, onProgress: WorkerProgressCallback, signals: SimSignals): Promise<RaidSimResult> {
@@ -148,7 +161,7 @@ export class WorkerPool {
 		// Don't print the logs because it just clogs the console.
 		const resultJson = RaidSimResult.toJson(result.finalRaidResult!) as any;
 		delete resultJson!['logs'];
-		worker.log('Raid sim result: ' + JSON.stringify(resultJson));
+		if (isDevMode()) worker.log('Raid sim result: ' + JSON.stringify(resultJson));
 		return result.finalRaidResult!;
 	}
 

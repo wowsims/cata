@@ -106,7 +106,7 @@ func (war *ArmsWarrior) RegisterMastery() {
 		BonusCoefficient: 1.0,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},
 	}
@@ -119,7 +119,7 @@ func (war *ArmsWarrior) RegisterMastery() {
 		Callback: core.CallbackOnSpellHitDealt,
 		Outcome:  core.OutcomeLanded,
 		ProcMask: core.ProcMaskMelee,
-		ICD:      500 * time.Millisecond,
+		ICD:      100 * time.Millisecond,
 		ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
 			// Implement the proc in here so we can get the most up to date proc chance from mastery
 			return sim.Proc(war.GetMasteryProcChance(), "Strikes of Opportunity")

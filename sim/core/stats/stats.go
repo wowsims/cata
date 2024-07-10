@@ -2,6 +2,7 @@ package stats
 
 import (
 	"fmt"
+	"math"
 	"strings"
 
 	"github.com/wowsims/cata/sim/core/proto"
@@ -154,6 +155,19 @@ func (s Stat) StatName() string {
 	return "none"
 }
 
+func GetHighestStat(other Stats) Stat {
+	maxStatValue := 0.0
+	maxStatIndex := 0
+
+	for i := range other {
+		if other[i] > maxStatValue {
+			maxStatValue = other[i]
+			maxStatIndex = i
+		}
+	}
+	return Stat(maxStatIndex)
+}
+
 func FromFloatArray(values []float64) Stats {
 	var stats Stats
 	copy(stats[:], values)
@@ -186,6 +200,15 @@ func (stats Stats) Subtract(other Stats) Stats {
 func (stats Stats) Invert() Stats {
 	for k, v := range stats {
 		stats[k] = -v
+	}
+	return stats
+}
+
+// Rounds all stat values down to the nearest integer, returning the new Stats.
+// Used for random suffix stats currently.
+func (stats Stats) Floor() Stats {
+	for k, v := range stats {
+		stats[k] = math.Floor(v)
 	}
 	return stats
 }

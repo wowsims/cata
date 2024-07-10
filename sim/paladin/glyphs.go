@@ -39,6 +39,20 @@ func (paladin *Paladin) applyGlyphs() {
 	if paladin.HasPrimeGlyph(proto.PaladinPrimeGlyph_GlyphOfExorcism) {
 		registerGlyphOfExorcism(paladin)
 	}
+	if paladin.HasPrimeGlyph(proto.PaladinPrimeGlyph_GlyphOfHammerOfTheRighteous) {
+		paladin.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Pct,
+			ClassMask:  SpellMaskHammerOfTheRighteous,
+			FloatValue: 0.1,
+		})
+	}
+	if paladin.HasPrimeGlyph(proto.PaladinPrimeGlyph_GlyphOfShieldOfTheRighteous) {
+		paladin.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Flat,
+			ClassMask:  SpellMaskShieldOfTheRighteous,
+			FloatValue: 0.1,
+		})
+	}
 
 	// Major Glyphs
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfHammerOfWrath) {

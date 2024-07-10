@@ -221,10 +221,11 @@ export default class BulkItemSearch extends ContentBlock {
 			<>
 				{items}
 				{matchCount > MAX_SEARCH_RESULTS && (
-					<li className="bulk-item-search-item bulk-item-search-more-items-note">
-						Showing {MAX_SEARCH_RESULTS} of {matchCount} total matches.
+					<li className="bulk-item-search-item bulk-item-search-results-note">
+						Showing {MAX_SEARCH_RESULTS} of {matchCount} total results.
 					</li>
 				)}
+				{matchCount === 0 && <li className="bulk-item-search-item bulk-item-search-results-note">No results found.</li>}
 			</>,
 		);
 

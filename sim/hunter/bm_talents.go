@@ -131,7 +131,11 @@ func (hunter *Hunter) registerBestialWrathCD() {
 	if hunter.Talents.TheBeastWithin {
 		hunter.PseudoStats.DamageDealtMultiplier *= 1.1
 	}
-
+	bwCostMod := hunter.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  HunterSpellsAll,
+		FloatValue: -0.5,
+	})
 	actionID := core.ActionID{SpellID: 19574}
 
 	bestialWrathPetAura := hunter.Pet.RegisterAura(core.Aura{
@@ -152,9 +156,15 @@ func (hunter *Hunter) registerBestialWrathCD() {
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.2
+			if hunter.Talents.TheBeastWithin {
+				bwCostMod.Activate()
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.2
+			if hunter.Talents.TheBeastWithin {
+				bwCostMod.Deactivate()
+			}
 		},
 	})
 	core.RegisterPercentDamageModifierEffect(bestialWrathAura, 1.2)
@@ -174,7 +184,6 @@ func (hunter *Hunter) registerBestialWrathCD() {
 				Duration: hunter.applyLongevity(time.Minute * 2),
 			},
 		},
-
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			bestialWrathPetAura.Activate(sim)
 
@@ -205,7 +214,7 @@ func (hunter *Hunter) applyFervorCD() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: 1,
+				GCD: time.Second * 1,
 			},
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),

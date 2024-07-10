@@ -44,7 +44,6 @@ func (dk *DeathKnight) NewGhoulPet(permanent bool) *GhoulPet {
 	}
 
 	dk.SetupGhoul(ghoulPet, 14)
-	ghoulPet.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/324.72)
 
 	return ghoulPet
 }
@@ -132,6 +131,7 @@ func (dk *DeathKnight) ghoulBaseStats() stats.Stats {
 		stats.Strength:    476,
 		stats.AttackPower: -20,
 
+		stats.MeleeCrit: 5 * core.CritRatingPerCritChance,
 		// Remove bonus hit that would be transfered from the DKs Nerves of Cold Steel
 		stats.MeleeHit:  nocsHit,
 		stats.Expertise: nocsHit * PetExpertiseScale,

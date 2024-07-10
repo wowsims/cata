@@ -405,14 +405,7 @@ export class ActionId {
 					name += ' (Proc)';
 				}
 				break;
-			case 'Righteous Vengeance':
-				if (this.tag == 1) {
-					name += ' (Application)';
-				} else if (this.tag == 2) {
-					name += ' (DoT)';
-				}
-				break;
-			case 'Holy Vengeance':
+			case 'Censure':
 				if (this.tag == 1) {
 					name += ' (Application)';
 				} else if (this.tag == 2) {
@@ -482,6 +475,7 @@ export class ActionId {
 				}
 				break;
 			case 'Raging Blow':
+			case 'Whirlwind':
 			case 'Slam':
 			case 'Frost Strike':
 			case 'Plague Strike':
@@ -518,11 +512,6 @@ export class ActionId {
 			case 'Maul':
 				if (this.tag == 1) {
 					name += ' (Queue)';
-				}
-				break;
-			case 'Whirlwind':
-				if (this.tag == 1) {
-					name += ' (OH)';
 				}
 				break;
 			case 'Seed of Corruption':

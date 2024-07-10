@@ -24,11 +24,11 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatStrength]: 1.05,
 			[Stat.StatAttackPower]: 1,
 			[Stat.StatSpellCrit]: 0.08,
-			[Stat.StatSpellHit]: 0.4,
-			[Stat.StatMeleeHit]: 0.83,
+			[Stat.StatSpellHit]: 0.42,
+			[Stat.StatMeleeHit]: 1.63,
 			[Stat.StatMeleeCrit]: 0.75,
-			[Stat.StatMeleeHaste]: 1.14,
-			[Stat.StatMastery]: 1.21,
+			[Stat.StatMeleeHaste]: 1.19,
+			[Stat.StatMastery]: 1.18,
 			[Stat.StatExpertise]: 1.3,
 		},
 		{
@@ -74,3 +74,9 @@ export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskOfTheWinds,
 	food: Food.FoodSkeweredEel,
 });
+
+export const OtherDefaults = {
+	distanceFromTarget: 5,
+	duration: 240,
+	durationVariation: 20,
+};

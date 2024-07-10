@@ -56,6 +56,7 @@ const (
 	SpellMaskSunderArmor
 	SpellMaskThunderClap
 	SpellMaskWhirlwind
+	SpellMaskWhirlwindOh
 	SpellMaskShieldSlam
 	SpellMaskConcussionBlow
 	SpellMaskDevastate

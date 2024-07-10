@@ -111,6 +111,11 @@ var handlers = map[string]apiHandler{
 		triggered := simsignals.AbortById(requestId)
 		return &proto.AbortResponse{RequestId: requestId, WasTriggered: triggered}
 	}},
+	"/bulkSimCombos": {msg: func() googleProto.Message { return &proto.BulkSimCombosRequest{} }, handle: func(msg googleProto.Message) googleProto.Message {
+		// TODO: we can use context's to cancel stuff.
+		// We should have all the async APIs take in context and let it be cancelled via its async ID.
+		return core.RunBulkCombos(simsignals.CreateSignals(), msg.(*proto.BulkSimCombosRequest))
+	}},
 }
 
 var asyncAPIHandlers = map[string]asyncAPIHandler{

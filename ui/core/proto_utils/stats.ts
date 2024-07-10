@@ -1,5 +1,4 @@
 import * as Mechanics from '../constants/mechanics.js';
-import { Player } from '../player';
 import { Class, PseudoStat, Stat, UnitStats } from '../proto/common.js';
 import { getEnumValues } from '../utils.js';
 import { getClassStatName, pseudoStatNames } from './names.js';
@@ -190,15 +189,46 @@ export class Stats {
 		return true;
 	}
 
-	computeStatCapsDelta(statCaps: Stats): Stats {
+	getHasteMultipliers(playerClass: Class): number[] {
+		const baseMeleeHasteMultiplier = 1 + this.getStat(Stat.StatMeleeHaste) / (Mechanics.HASTE_RATING_PER_HASTE_PERCENT * 100);
+		const meleeHasteBuffsMultiplier =
+			playerClass == Class.ClassHunter
+				? this.getPseudoStat(PseudoStat.PseudoStatRangedSpeedMultiplier)
+				: this.getPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier);
+		const baseSpellHasteMultiplier = 1 + this.getStat(Stat.StatSpellHaste) / (Mechanics.HASTE_RATING_PER_HASTE_PERCENT * 100);
+		const spellHasteBuffsMultiplier = this.getPseudoStat(PseudoStat.PseudoStatCastSpeedMultiplier);
+		return [baseMeleeHasteMultiplier, meleeHasteBuffsMultiplier, baseSpellHasteMultiplier, spellHasteBuffsMultiplier];
+	}
+
+	// Apply any multiplicative Haste buffs stored via PseudoStats to the Stats entries for MeleeHaste and SpellHaste
+	withHasteMultipliers(playerClass: Class): Stats {
+		const [baseMeleeMulti, meleeBuffsMulti, baseSpellMulti, spellBuffsMulti] = this.getHasteMultipliers(playerClass);
+		const newStats = this.stats.slice();
+		newStats[Stat.StatMeleeHaste] = (baseMeleeMulti * meleeBuffsMulti - 1) * 100 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT;
+		newStats[Stat.StatSpellHaste] = (baseSpellMulti * spellBuffsMulti - 1) * 100 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT;
+		return new Stats(newStats, this.pseudoStats);
+	}
+
+	// Assumes that Haste multipliers have already been applied to both Stats arrays
+	computeStatCapsDelta(statCaps: Stats, playerClass: Class): Stats {
+		const [_finalMeleeHasteMulti, meleeHasteBuffsMulti, _finalSpellHasteMulti, spellHasteBuffsMulti] = this.getHasteMultipliers(playerClass);
 		return new Stats(
 			this.stats.map((value, stat) => {
 				if (statCaps.stats[stat] > 0) {
-					return statCaps.stats[stat] - value;
+					let statDelta = statCaps.stats[stat] - value;
+
+					if (stat == Stat.StatMeleeHaste) {
+						statDelta /= meleeHasteBuffsMulti;
+					} else if (stat == Stat.StatSpellHaste) {
+						statDelta /= spellHasteBuffsMulti;
+					}
+
+					return statDelta;
 				}
 
 				return 0;
 			}),
+			this.pseudoStats,
 		);
 	}
 

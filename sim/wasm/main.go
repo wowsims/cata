@@ -4,6 +4,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"runtime/debug"
 	"syscall/js"
@@ -37,6 +38,7 @@ func main() {
 	js.Global().Set("statWeightCompute", js.FuncOf(statWeightCompute))
 	js.Global().Set("bulkSimAsync", js.FuncOf(bulkSimAsync))
 	js.Global().Set("abortById", js.FuncOf(abortById))
+	js.Global().Set("bulkSimCombos", js.FuncOf(bulkSimCombos))
 	js.Global().Call("wasmready")
 	<-c
 }
@@ -332,6 +334,28 @@ func abortById(this js.Value, args []js.Value) interface{} {
 		log.Printf("[ERROR] Failed to marshal AbortResponse: %s", err.Error())
 		return nil
 	}
+	outArray := js.Global().Get("Uint8Array").New(len(outbytes))
+	js.CopyBytesToJS(outArray, outbytes)
+
+	return outArray
+}
+
+func bulkSimCombos(this js.Value, args []js.Value) interface{} {
+	rsr := &proto.BulkSimCombosRequest{}
+	if err := googleProto.Unmarshal(getArgsBinary(args[0]), rsr); err != nil {
+		log.Printf("Failed to parse request: %s", err)
+		return nil
+	}
+	// for now just use context.Background() until we can figure out the best way to handle
+	// allowing front end to cancel.
+	result := core.RunBulkCombos(context.Background(), rsr)
+
+	outbytes, err := googleProto.Marshal(result)
+	if err != nil {
+		log.Printf("[ERROR] Failed to marshal result: %s", err.Error())
+		return nil
+	}
+
 	outArray := js.Global().Get("Uint8Array").New(len(outbytes))
 	js.CopyBytesToJS(outArray, outbytes)
 

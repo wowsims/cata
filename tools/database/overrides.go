@@ -17,6 +17,8 @@ var OtherItemIdsToFetch = []string{
 }
 
 var ItemOverrides = []*proto.UIItem{
+	{ /** Raz's Pauldrons */ Id: 56318, SocketBonus: stats.Stats{stats.MeleeHit: 20, stats.SpellHit: 20}.ToFloatArray()},
+
 	{ /** Destruction Holo-gogs */ Id: 32494, ClassAllowlist: []proto.Class{proto.Class_ClassMage, proto.Class_ClassPriest, proto.Class_ClassWarlock}},
 	{ /** Gadgetstorm Goggles */ Id: 32476, ClassAllowlist: []proto.Class{proto.Class_ClassShaman}},
 	{ /** Magnified Moon Specs */ Id: 32480, ClassAllowlist: []proto.Class{proto.Class_ClassDruid}},
@@ -171,6 +173,13 @@ var ItemOverrides = []*proto.UIItem{
 
 // Keep these sorted by item ID.
 var ItemAllowList = map[int32]struct{}{
+	//Shaman Dungeon Set 3 Tidefury
+	27510: {}, // Tidefury Gauntlets
+	27802: {}, // Tidefury Shoulderguards
+	27909: {}, // Tidefury Kilt
+	28231: {}, // Tidefury Chestpiece
+	28349: {}, // Tidefury Helm
+
 	45703: {}, // Spark of Hope
 }
 
@@ -482,7 +491,7 @@ var SharedSpellsIcons = []int32{
 	// Raid Debuffs
 	8647,
 	47467,
-	55754,
+	55749,
 
 	770,
 	33602,

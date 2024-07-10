@@ -180,7 +180,6 @@ func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	if hunter.Options.PetType == proto.HunterOptions_CoreHound {
 		raidBuffs.Bloodlust = true
 	}
-
 	if hunter.Options.PetType == proto.HunterOptions_Silithid {
 		raidBuffs.BloodPact = true
 	}
@@ -249,6 +248,10 @@ const (
 	HunterSpellRapidFire
 	HunterSpellBestialWrath
 	HunterPetFocusDump
+	HunterSpellsAll = HunterSpellSteadyShot | HunterSpellCobraShot |
+		HunterSpellArcaneShot | HunterSpellKillCommand | HunterSpellChimeraShot | HunterSpellExplosiveShot |
+		HunterSpellExplosiveTrap | HunterSpellBlackArrow | HunterSpellMultiShot | HunterSpellAimedShot |
+		HunterSpellSerpentSting | HunterSpellKillShot | HunterSpellRapidFire | HunterSpellBestialWrath
 )
 
 // Agent is a generic way to access underlying hunter on any of the agents.
