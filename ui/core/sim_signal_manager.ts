@@ -26,42 +26,35 @@ class TriggerSignal {
 }
 
 export type SimSignals = {
-	readonly id: string;
 	readonly abort: TriggerSignal;
 };
 
-const newSignals = (id: string): SimSignals => {
+const newSignals = (): SimSignals => {
 	return {
-		id,
 		abort: new TriggerSignal(),
 	};
 };
 
 export class SimSignalManager {
-	private readonly running: Map<string, { type: RequestTypes; signals: SimSignals }>;
-
-	constructor() {
-		this.running = new Map<string, { type: RequestTypes; signals: SimSignals }>();
-	}
+	private readonly running = new Map<SimSignals, { type: RequestTypes; signals: SimSignals }>();
 
 	/**
-	 * Create signals and register with id to make it available for manager functions.
-	 * @param id The unique id used for the request.
+	 * Create signals to control async requests with.
+	 * @param type The type of the request.
 	 * @returns The SimSignals object.
 	 */
-	registerRunning(id: string, type: RequestTypes): SimSignals {
-		if (this.running.has(id)) throw new Error('Tried to add already existing id!');
-		const signals = newSignals(id);
-		this.running.set(id, { type, signals: signals });
+	registerRunning(type: RequestTypes): SimSignals {
+		const signals = newSignals();
+		this.running.set(signals, { type, signals: signals });
 		return signals;
 	}
 
 	/**
 	 * Remove signals from internal registry.
-	 * @param id The id they were created with.
+	 * @param signals The previously registered signals.
 	 */
-	unregisterRunning(id: string) {
-		this.running.delete(id);
+	unregisterRunning(signals: SimSignals) {
+		this.running.delete(signals);
 	}
 
 	/**
@@ -73,19 +66,5 @@ export class SimSignalManager {
 			if (!(info.type & typeMask)) continue;
 			await info.signals.abort.trigger();
 		}
-	}
-
-	/**
-	 * Trigger abort for a specific request.
-	 * @param requestId The request id of the request to abort.
-	 * @returns True if signals for that id existed.
-	 */
-	async abortId(requestId: string): Promise<boolean> {
-		const cfg = this.running.get(requestId);
-		if (cfg) {
-			await cfg.signals.abort.trigger();
-			return true;
-		}
-		return false;
 	}
 }

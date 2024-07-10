@@ -35,8 +35,7 @@ func TestAbort(t *testing.T) {
 	}
 
 	rsr := &proto.RaidSimRequest{
-		RequestId: "uniqueidlol",
-		Raid:      core.SinglePlayerRaidProto(player, core.FullPartyBuffs, core.FullRaidBuffs, core.FullDebuffs),
+		Raid: core.SinglePlayerRaidProto(player, core.FullPartyBuffs, core.FullRaidBuffs, core.FullDebuffs),
 		Encounter: &proto.Encounter{
 			Duration: 300,
 			Targets: []*proto.Target{
@@ -52,10 +51,11 @@ func TestAbort(t *testing.T) {
 
 	t.Run("RunRaidSimAsync", func(t *testing.T) {
 		progress := make(chan *proto.ProgressMetrics, 10)
-		core.RunRaidSimAsync(rsr, progress)
-		simsignals.AbortById(rsr.RequestId)
-		simsignals.AbortById(rsr.RequestId)
-		simsignals.AbortById(rsr.RequestId)
+		reqId := "uniqueidlol"
+		core.RunRaidSimAsync(rsr, progress, reqId)
+		simsignals.AbortById(reqId)
+		simsignals.AbortById(reqId)
+		simsignals.AbortById(reqId)
 		for {
 			msg := <-progress
 			if msg.FinalRaidResult != nil {
@@ -68,14 +68,15 @@ func TestAbort(t *testing.T) {
 	})
 
 	t.Run("RunRaidSimAsyncMultiManual", func(t *testing.T) {
-		rsr.RequestId += "x"
+		reqId := "qwert"
 		var conc int32 = 2
 		progress := make([]chan *proto.ProgressMetrics, conc)
 		rsrSplits := core.SplitSimRequestForConcurrency(rsr, conc)
 		for i, rsrSplit := range rsrSplits.Requests {
+			reqId += "x"
 			progress[i] = make(chan *proto.ProgressMetrics, 10)
-			core.RunRaidSimAsync(rsrSplit, progress[i])
-			simsignals.AbortById(rsrSplit.RequestId)
+			core.RunRaidSimAsync(rsrSplit, progress[i], reqId)
+			simsignals.AbortById(reqId)
 		}
 
 		running := conc
@@ -97,10 +98,10 @@ func TestAbort(t *testing.T) {
 	})
 
 	t.Run("RunRaidSimConcurrentAsync", func(t *testing.T) {
-		rsr.RequestId += "x"
+		reqId := "qwer"
 		progress := make(chan *proto.ProgressMetrics, 10)
-		core.RunRaidSimConcurrentAsync(rsr, progress)
-		simsignals.AbortById(rsr.RequestId)
+		core.RunRaidSimConcurrentAsync(rsr, progress, reqId)
+		simsignals.AbortById(reqId)
 		for {
 			msg := <-progress
 			if msg.FinalRaidResult != nil {
@@ -113,12 +114,12 @@ func TestAbort(t *testing.T) {
 	})
 
 	t.Run("RunRaidSimConcurrentAsync-Delayed", func(t *testing.T) {
-		rsr.RequestId += "x"
+		reqId := "asdf"
 		progress := make(chan *proto.ProgressMetrics, 10)
-		core.RunRaidSimConcurrentAsync(rsr, progress)
+		core.RunRaidSimConcurrentAsync(rsr, progress, reqId)
 		go func() {
 			time.Sleep(time.Second)
-			simsignals.AbortById(rsr.RequestId)
+			simsignals.AbortById(reqId)
 		}()
 		for {
 			msg := <-progress
@@ -133,7 +134,6 @@ func TestAbort(t *testing.T) {
 
 	t.Run("StatWeightsAsync", func(t *testing.T) {
 		swr := &proto.StatWeightsRequest{
-			RequestId:  "lel",
 			Player:     player,
 			RaidBuffs:  core.FullRaidBuffs,
 			PartyBuffs: core.FullPartyBuffs,
@@ -153,12 +153,13 @@ func TestAbort(t *testing.T) {
 		}
 		swr.SimOptions.Iterations = 9999
 
+		reqId := "asdfstats"
 		progress := make(chan *proto.ProgressMetrics, 10)
-		core.StatWeightsAsync(swr, progress)
+		core.StatWeightsAsync(swr, progress, reqId)
 
 		go func() {
 			time.Sleep(time.Second)
-			simsignals.AbortById(swr.RequestId)
+			simsignals.AbortById(reqId)
 		}()
 
 		for msg := range progress {
@@ -173,7 +174,6 @@ func TestAbort(t *testing.T) {
 
 	t.Run("RunBulkSimAsync", func(t *testing.T) {
 		bsr := &proto.BulkSimRequest{
-			RequestId:    "lel",
 			BaseSettings: rsr,
 			BulkSettings: &proto.BulkSettings{
 				Combinations:       true,
@@ -183,12 +183,13 @@ func TestAbort(t *testing.T) {
 			},
 		}
 
+		reqId := "bulk"
 		progress := make(chan *proto.ProgressMetrics, 10)
-		core.RunBulkSimAsync(bsr, progress)
+		core.RunBulkSimAsync(bsr, progress, reqId)
 
 		go func() {
 			time.Sleep(time.Second)
-			simsignals.AbortById(bsr.RequestId)
+			simsignals.AbortById(reqId)
 		}()
 
 		for msg := range progress {

@@ -6,6 +6,7 @@ package main
 import (
 	"log"
 	"runtime/debug"
+	"strings"
 	"syscall/js"
 
 	"github.com/wowsims/cata/sim"
@@ -170,9 +171,15 @@ func raidSimAsync(this js.Value, args []js.Value) interface{} {
 		log.Printf("Failed to parse request: %s", err)
 		return nil
 	}
+
+	requestId := args[2].String()
+	if strings.HasPrefix(requestId, "<T") {
+		requestId = "" // Make it return the error for an empty id
+	}
+
 	reporter := make(chan *proto.ProgressMetrics, 100)
 
-	go core.RunRaidSimAsync(rsr, reporter)
+	go core.RunRaidSimAsync(rsr, reporter, requestId)
 	go processAsyncProgress(args[1], reporter)
 	return js.Undefined()
 }
@@ -203,8 +210,14 @@ func statWeightsAsync(this js.Value, args []js.Value) interface{} {
 		log.Printf("Failed to parse request: %s", err)
 		return nil
 	}
+
+	requestId := args[2].String()
+	if strings.HasPrefix(requestId, "<T") {
+		requestId = "" // Make it return the error for an empty id
+	}
+
 	reporter := make(chan *proto.ProgressMetrics, 100)
-	go core.StatWeightsAsync(rsr, reporter)
+	go core.StatWeightsAsync(rsr, reporter, requestId)
 	go processAsyncProgress(args[1], reporter)
 	return js.Undefined()
 }
@@ -255,8 +268,14 @@ func bulkSimAsync(this js.Value, args []js.Value) interface{} {
 		log.Printf("Failed to parse request: %s", err)
 		return nil
 	}
+
+	requestId := args[2].String()
+	if strings.HasPrefix(requestId, "<T") {
+		requestId = "" // Make it return the error for an empty id
+	}
+
 	reporter := make(chan *proto.ProgressMetrics, 100)
-	go core.RunBulkSimAsync(rsr, reporter)
+	go core.RunBulkSimAsync(rsr, reporter, requestId)
 	go processAsyncProgress(args[1], reporter)
 	return js.Undefined()
 }

@@ -117,14 +117,14 @@ var handlers = map[string]apiHandler{
 }
 
 var asyncAPIHandlers = map[string]asyncAPIHandler{
-	"/raidSimAsync": {msg: func() googleProto.Message { return &proto.RaidSimRequest{} }, handle: func(msg googleProto.Message, reporter chan *proto.ProgressMetrics) {
-		core.RunRaidSimConcurrentAsync(msg.(*proto.RaidSimRequest), reporter)
+	"/raidSimAsync": {msg: func() googleProto.Message { return &proto.RaidSimRequest{} }, handle: func(msg googleProto.Message, reporter chan *proto.ProgressMetrics, requestId string) {
+		core.RunRaidSimConcurrentAsync(msg.(*proto.RaidSimRequest), reporter, requestId)
 	}},
-	"/statWeightsAsync": {msg: func() googleProto.Message { return &proto.StatWeightsRequest{} }, handle: func(msg googleProto.Message, reporter chan *proto.ProgressMetrics) {
-		core.StatWeightsAsync(msg.(*proto.StatWeightsRequest), reporter)
+	"/statWeightsAsync": {msg: func() googleProto.Message { return &proto.StatWeightsRequest{} }, handle: func(msg googleProto.Message, reporter chan *proto.ProgressMetrics, requestId string) {
+		core.StatWeightsAsync(msg.(*proto.StatWeightsRequest), reporter, requestId)
 	}},
-	"/bulkSimAsync": {msg: func() googleProto.Message { return &proto.BulkSimRequest{} }, handle: func(msg googleProto.Message, reporter chan *proto.ProgressMetrics) {
-		core.RunBulkSimAsync(msg.(*proto.BulkSimRequest), reporter)
+	"/bulkSimAsync": {msg: func() googleProto.Message { return &proto.BulkSimRequest{} }, handle: func(msg googleProto.Message, reporter chan *proto.ProgressMetrics, requestId string) {
+		core.RunBulkSimAsync(msg.(*proto.BulkSimRequest), reporter, requestId)
 	}},
 }
 
@@ -139,7 +139,7 @@ type apiHandler struct {
 }
 type asyncAPIHandler struct {
 	msg    func() googleProto.Message
-	handle func(googleProto.Message, chan *proto.ProgressMetrics)
+	handle func(googleProto.Message, chan *proto.ProgressMetrics, string)
 }
 
 type asyncProgress struct {
@@ -185,7 +185,7 @@ func (s *server) handleAsyncAPI(w http.ResponseWriter, r *http.Request) {
 	//  as the simulation advances it will push changes to the channel
 	//  these changes will be consumed by the goroutine below so the asyncProgress endpoint can fetch the results.
 	reporter := make(chan *proto.ProgressMetrics, 100)
-	handler.handle(msg, reporter)
+	handler.handle(msg, reporter, r.URL.Query().Get("requestId"))
 
 	// Generate a new async simulation
 	simProgress := s.addNewSim()

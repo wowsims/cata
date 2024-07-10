@@ -31,7 +31,7 @@ export type WorkerProgressCallback = (progressMetrics: ProgressMetrics) => void;
  * @param type The request type to prepend.
  * @returns Random id in the format type-randomhex
  */
-export const generateRequestId = (type: SimRequest) => {
+const generateRequestId = (type: SimRequest) => {
 	const chars = Array.from(Array(4)).map(() => Math.floor(Math.random() * 0x10000).toString(16));
 	return type + '-' + chars.join('');
 };
@@ -95,7 +95,7 @@ export class WorkerPool {
 	async statWeightsAsync(request: StatWeightsRequest, onProgress: WorkerProgressCallback, signals: SimSignals): Promise<StatWeightsResult> {
 		const worker = this.getLeastBusyWorker();
 		worker.log('Stat weights request: ' + StatWeightsRequest.toJsonString(request));
-		const id = request.requestId || generateRequestId(SimRequest.statWeightsAsync);
+		const id = generateRequestId(SimRequest.statWeightsAsync);
 
 		signals.abort.onTrigger(async () => {
 			await worker.sendAbortById(id);
@@ -121,7 +121,7 @@ export class WorkerPool {
 	async bulkSimAsync(request: BulkSimRequest, onProgress: WorkerProgressCallback, signals: SimSignals): Promise<BulkSimResult> {
 		const worker = this.getLeastBusyWorker();
 		worker.log('bulk sim request: ' + BulkSimRequest.toJsonString(request, { enumAsInteger: true }));
-		const id = request.requestId || generateRequestId(SimRequest.bulkSimAsync);
+		const id = generateRequestId(SimRequest.bulkSimAsync);
 
 		signals.abort.onTrigger(async () => {
 			await worker.sendAbortById(id);
@@ -139,7 +139,7 @@ export class WorkerPool {
 	async bulkSimCombosAsync(request: BulkSimCombosRequest): Promise<BulkSimCombosResult> {
 		const worker = this.getLeastBusyWorker();
 		worker.log('bulk sim combinations request: ' + BulkSimCombosRequest.toJsonString(request, { enumAsInteger: true }));
-		const id = request.requestId || generateRequestId(SimRequest.bulkSimCombos);
+		const id = generateRequestId(SimRequest.bulkSimCombos);
 
 		// Now start the async sim
 		const resultData = await worker.doApiCall(SimRequest.bulkSimCombos, BulkSimCombosRequest.toBinary(request), id);
@@ -149,7 +149,7 @@ export class WorkerPool {
 	async raidSimAsync(request: RaidSimRequest, onProgress: WorkerProgressCallback, signals: SimSignals): Promise<RaidSimResult> {
 		const worker = this.getLeastBusyWorker();
 		worker.log('Raid sim request: ' + RaidSimRequest.toJsonString(request));
-		const id = request.requestId || generateRequestId(SimRequest.raidSimAsync);
+		const id = generateRequestId(SimRequest.raidSimAsync);
 
 		signals.abort.onTrigger(async () => {
 			await worker.sendAbortById(id);

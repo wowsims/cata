@@ -30,8 +30,7 @@ func StatWeights(request *proto.StatWeightsRequest) *proto.StatWeightsResult {
 	return runStatWeights(request, nil, simsignals.CreateSignals())
 }
 
-func StatWeightsAsync(request *proto.StatWeightsRequest, progress chan *proto.ProgressMetrics) {
-	requestId := request.RequestId
+func StatWeightsAsync(request *proto.StatWeightsRequest, progress chan *proto.ProgressMetrics, requestId string) {
 	signals, err := simsignals.RegisterWithId(requestId)
 	if err != nil {
 		progress <- &proto.ProgressMetrics{
@@ -68,8 +67,7 @@ func RunRaidSim(request *proto.RaidSimRequest) *proto.RaidSimResult {
 	return RunSim(request, nil, simsignals.CreateSignals())
 }
 
-func RunRaidSimAsync(request *proto.RaidSimRequest, progress chan *proto.ProgressMetrics) {
-	requestId := request.RequestId
+func RunRaidSimAsync(request *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, requestId string) {
 	signals, err := simsignals.RegisterWithId(requestId)
 	if err != nil {
 		progress <- &proto.ProgressMetrics{
@@ -93,8 +91,7 @@ func RunRaidSimConcurrent(request *proto.RaidSimRequest) *proto.RaidSimResult {
 }
 
 // Threading does not work in WASM!
-func RunRaidSimConcurrentAsync(request *proto.RaidSimRequest, progress chan *proto.ProgressMetrics) {
-	requestId := request.RequestId
+func RunRaidSimConcurrentAsync(request *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, requestId string) {
 	signals, err := simsignals.RegisterWithId(requestId)
 	if err != nil {
 		progress <- &proto.ProgressMetrics{
@@ -116,8 +113,7 @@ func RunBulkSim(request *proto.BulkSimRequest) *proto.BulkSimResult {
 	return BulkSim(simsignals.CreateSignals(), request, nil)
 }
 
-func RunBulkSimAsync(request *proto.BulkSimRequest, progress chan *proto.ProgressMetrics) {
-	requestId := request.RequestId
+func RunBulkSimAsync(request *proto.BulkSimRequest, progress chan *proto.ProgressMetrics, requestId string) {
 	signals, err := simsignals.RegisterWithId(requestId)
 	if err != nil {
 		progress <- &proto.ProgressMetrics{

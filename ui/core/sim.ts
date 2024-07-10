@@ -1,5 +1,4 @@
 import { hasTouch } from '../shared/bootstrap_overrides';
-import { SimRequest } from '../worker/types';
 import { getBrowserLanguageCode, setLanguageCode } from './constants/lang';
 import * as OtherConstants from './constants/other';
 import { Encounter } from './encounter';
@@ -42,7 +41,7 @@ import { runConcurrentSim, runConcurrentStatWeights } from './sim_concurrent';
 import { RequestTypes, SimSignalManager } from './sim_signal_manager';
 import { EventID, TypedEvent } from './typed_event.js';
 import { getEnumValues, noop } from './utils.js';
-import { generateRequestId, WorkerPool, WorkerProgressCallback } from './worker_pool.js';
+import { WorkerPool, WorkerProgressCallback } from './worker_pool.js';
 
 export type RaidSimData = {
 	request: RaidSimRequest;
@@ -242,7 +241,6 @@ export class Sim {
 		// TODO: remove any replenishment from sim request here? probably makes more sense to do it inside the sim to protect against accidents
 
 		return RaidSimRequest.create({
-			requestId: generateRequestId(SimRequest.raidSim),
 			type: this.type,
 			raid: raid,
 			encounter: encounter,
@@ -264,7 +262,6 @@ export class Sim {
 		await this.waitForInit();
 
 		const request = BulkSimRequest.create({
-			requestId: generateRequestId(SimRequest.bulkSimAsync),
 			baseSettings: this.makeRaidSimRequest(false),
 			bulkSettings: bulkSettings,
 		});
@@ -287,8 +284,8 @@ export class Sim {
 
 		this.bulkSimStartEmitter.emit(TypedEvent.nextEventID(), request);
 
+		const signals = this.signalManager.registerRunning(RequestTypes.BulkSim);
 		try {
-			const signals = this.signalManager.registerRunning(request.requestId, RequestTypes.BulkSim);
 			const result = await this.workerPool.bulkSimAsync(request, onProgress, signals);
 
 			if (result.error) {
@@ -303,7 +300,7 @@ export class Sim {
 			console.log(error);
 			throw new Error('Something went wrong running your raid sim. Reload the page and try again.');
 		} finally {
-			this.signalManager.unregisterRunning(request.requestId);
+			this.signalManager.unregisterRunning(signals);
 		}
 	}
 
@@ -358,15 +355,14 @@ export class Sim {
 		} else if (this.encounter.targets.length < 1) {
 			throw new Error('Encounter has no targets! Try adding some targets first.');
 		}
-		let simId = '';
+
+		const signals = this.signalManager.registerRunning(RequestTypes.RaidSim);
 		try {
 			await this.waitForInit();
 
 			const request = this.makeRaidSimRequest(false);
-			simId = request.requestId;
 
 			let result;
-			const signals = this.signalManager.registerRunning(request.requestId, RequestTypes.RaidSim);
 			// Only use worker base concurrency when running wasm. Local sim has native threading.
 			if ((await this.isWasm()) && this.getWasmConcurrency() >= 2) {
 				result = await runConcurrentSim(request, this.workerPool, onProgress, signals);
@@ -386,7 +382,7 @@ export class Sim {
 			console.error(error);
 			throw new Error('Something went wrong running your raid sim. Reload the page and try again.');
 		} finally {
-			this.signalManager.unregisterRunning(simId);
+			this.signalManager.unregisterRunning(signals);
 		}
 	}
 
@@ -396,11 +392,12 @@ export class Sim {
 		} else if (this.encounter.targets.length < 1) {
 			throw new Error('Encounter has no targets! Try adding some targets first.');
 		}
+
+		const signals = this.signalManager.registerRunning(RequestTypes.RaidSim);
 		try {
 			await this.waitForInit();
 
 			const request = this.makeRaidSimRequest(true);
-			const signals = this.signalManager.registerRunning(request.requestId, RequestTypes.RaidSim);
 			const result = await this.workerPool.raidSimAsync(request, noop, signals);
 			if (result.error) {
 				throw new SimError(result.error.message);
@@ -412,6 +409,8 @@ export class Sim {
 			if (error instanceof SimError) throw error;
 			console.error(error);
 			throw new Error('Something went wrong running your raid sim. Reload the page and try again.');
+		} finally {
+			this.signalManager.unregisterRunning(signals);
 		}
 	}
 
@@ -492,7 +491,6 @@ export class Sim {
 				? [UnitReference.create({ type: UnitType.Player, index: 0 })]
 				: [];
 			const request = StatWeightsRequest.create({
-				requestId: generateRequestId(SimRequest.statWeightsAsync),
 				player: player.toProto(false, true),
 				raidBuffs: this.raid.getBuffs(),
 				partyBuffs: player.getParty()!.getBuffs(),
@@ -509,9 +507,10 @@ export class Sim {
 				pseudoStatsToWeigh: epPseudoStats,
 				epReferenceStat: epReferenceStat,
 			});
+
+			const signals = this.signalManager.registerRunning(RequestTypes.StatWeights);
 			try {
 				let result: StatWeightsResult;
-				const signals = this.signalManager.registerRunning(request.requestId, RequestTypes.StatWeights);
 				// Only use worker based concurrency when running wasm.
 				if ((await this.isWasm()) && this.getWasmConcurrency() >= 2) {
 					result = await runConcurrentStatWeights(request, this.workerPool, onProgress, signals);
@@ -528,7 +527,7 @@ export class Sim {
 				console.error(error);
 				throw new Error('Something went wrong calculating your stat weights. Reload the page and try again.');
 			} finally {
-				this.signalManager.unregisterRunning(request.requestId);
+				this.signalManager.unregisterRunning(signals);
 			}
 		}
 	}

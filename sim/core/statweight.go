@@ -132,7 +132,6 @@ func buildStatWeightRequests(swr *proto.StatWeightsRequest) *proto.StatWeightReq
 
 	swBaseResponse := &proto.StatWeightRequestsData{
 		BaseRequest: &proto.RaidSimRequest{
-			RequestId:  swr.RequestId,
 			Raid:       raidProto,
 			Encounter:  swr.Encounter,
 			SimOptions: swr.SimOptions,

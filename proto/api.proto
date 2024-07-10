@@ -330,8 +330,6 @@ message RaidSimRequest {
 	Encounter encounter = 2;
 	SimOptions sim_options = 3;
 	SimType type = 4;
-	// A unique id. Used to e.g. abort async sim requests.
-	string request_id = 5;
 }
 
 // Result from running the raid sim.
@@ -463,9 +461,6 @@ message StatWeightsRequest {
 	repeated Stat stats_to_weigh = 6;
 	repeated PseudoStat pseudo_stats_to_weigh = 10;
 	Stat ep_reference_stat = 7;
-
-	// A unique id. Used to e.g. abort async sim requests.
-	string request_id = 11;
 }
 
 message StatWeightsStatData {
@@ -538,8 +533,6 @@ message ProgressMetrics {
 message BulkSimRequest {
     RaidSimRequest base_settings = 1;
     BulkSettings bulk_settings = 2;
-	// A unique id. Used to e.g. abort async sim requests.
-	string request_id = 3;
 }
 
 message TalentLoadout {
@@ -594,8 +587,6 @@ message ItemSpecWithSlot {
 message BulkSimCombosRequest {
 	RaidSimRequest base_settings = 1;
 	BulkSettings bulk_settings = 2;
-	// To be compatible with BulkSimRequest. This request is not implemented async and cannot be aborted.
-	string request_id = 3;
 }
 
 message BulkSimCombosResult {

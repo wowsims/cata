@@ -38,7 +38,7 @@ func simMain(cmd *cobra.Command, args []string) {
 
 	var output []byte
 	reporter := make(chan *proto.ProgressMetrics, 10)
-	core.RunRaidSimConcurrentAsync(input, reporter)
+	core.RunRaidSimConcurrentAsync(input, reporter, "cmd-raid-sim")
 
 	var finalResult *proto.RaidSimResult
 	for v := range reporter {

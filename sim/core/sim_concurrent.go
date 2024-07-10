@@ -7,7 +7,6 @@ import (
 	"reflect"
 	"runtime"
 	"runtime/debug"
-	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/simsignals"
@@ -34,7 +33,6 @@ func SplitSimRequestForConcurrency(request *proto.RaidSimRequest, splitCount int
 	iterPerSplit := request.SimOptions.Iterations / splitCount
 
 	split[0] = googleProto.Clone(request).(*proto.RaidSimRequest)
-	split[0].RequestId += "split0"
 	split[0].SimOptions.Iterations = iterPerSplit + request.SimOptions.Iterations%splitCount
 
 	// Sims increment their seed each iteration. Offset starting seed of each split to emulate that.
@@ -42,7 +40,6 @@ func SplitSimRequestForConcurrency(request *proto.RaidSimRequest, splitCount int
 
 	for i := 1; i < int(splitCount); i++ {
 		split[i] = googleProto.Clone(request).(*proto.RaidSimRequest)
-		split[i].RequestId = fmt.Sprintf("%ssplit%d", split[i].RequestId, i)
 		split[i].SimOptions.Iterations = iterPerSplit
 		split[i].SimOptions.DebugFirstIteration = false // No logs
 		split[i].SimOptions.RandomSeed = nextStartSeed
@@ -418,11 +415,6 @@ func runSimConcurrent(request *proto.RaidSimRequest, progress chan *proto.Progre
 		}
 	}()
 
-	// Make sure there's no collission when using RunRaidSimAsync if there's no Id set.
-	if request.RequestId == "" {
-		request.RequestId = fmt.Sprint(time.Now().UnixNano())
-	}
-
 	splitRes := SplitSimRequestForConcurrency(request, TernaryInt32(request.SimOptions.IsTest, 3, int32(runtime.NumCPU())))
 
 	if splitRes.ErrorResult != "" {
@@ -453,14 +445,13 @@ func runSimConcurrent(request *proto.RaidSimRequest, progress chan *proto.Progre
 	}
 
 	defer func() {
-		// Try to signal threads to abort in case we returned due to an error.
-		for _, req := range splitRes.Requests {
-			simsignals.AbortById(req.RequestId)
+		if !signals.Abort.IsTriggered() {
+			signals.Abort.Trigger()
 		}
 	}()
 
 	for i, req := range splitRes.Requests {
-		RunRaidSimAsync(req, substituteChannels[i])
+		go RunSim(req, substituteChannels[i], signals)
 		// Wait for first message to make sure env was constructed. Otherwise concurrent map writes to simdb will happen.
 		msg := <-substituteChannels[i]
 		// First message may be due to an immediate error, otherwise it can be ignored.

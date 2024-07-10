@@ -97,7 +97,7 @@ func BulkSim(input *proto.RaidSimRequest, replaceFile string, verbose bool) stri
 		},
 	}
 	progress := make(chan *proto.ProgressMetrics, 100)
-	core.RunBulkSimAsync(bsr, progress)
+	core.RunBulkSimAsync(bsr, progress, "cmd-bulk-sim")
 
 	startTime := time.Now()
 
