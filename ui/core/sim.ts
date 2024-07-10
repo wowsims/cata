@@ -69,6 +69,8 @@ interface SimProps {
 	type?: SimType;
 }
 
+const WASM_CONCURRENCY_STORAGE_KEY = `${OtherConstants.LOCAL_STORAGE_PREFIX}_wasmconcurrency`;
+
 // Core Sim module which deals only with api types, no UI-related stuff.
 export class Sim {
 	private readonly workerPool: WorkerPool;
@@ -150,6 +152,9 @@ export class Sim {
 				this.workerPool.setNumWorkers(nWorker);
 			}
 		});
+
+		const wasmConcurrencySetting = parseInt(window.localStorage.getItem(WASM_CONCURRENCY_STORAGE_KEY) ?? '0');
+		this.setWasmConcurrency(TypedEvent.nextEventID(), wasmConcurrencySetting);
 
 		this.signalManager = new SimSignalManager();
 
@@ -661,6 +666,7 @@ export class Sim {
 	setWasmConcurrency(eventID: EventID, newWasmConcurrency: number) {
 		if (newWasmConcurrency != this.wasmConcurrency) {
 			this.wasmConcurrency = newWasmConcurrency;
+			window.localStorage.setItem(WASM_CONCURRENCY_STORAGE_KEY, newWasmConcurrency.toString());
 			this.wasmConcurrencyChangeEmitter.emit(eventID);
 		}
 	}
@@ -759,7 +765,6 @@ export class Sim {
 			showThreatMetrics: this.getShowThreatMetrics(),
 			showHealingMetrics: this.getShowHealingMetrics(),
 			showExperimental: this.getShowExperimental(),
-			wasmConcurrency: this.getWasmConcurrency(),
 			showQuickSwap: this.getShowQuickSwap(),
 			showEpValues: this.getShowEPValues(),
 			useCustomEpValues: this.getUseCustomEPValues(),
@@ -779,7 +784,6 @@ export class Sim {
 			this.setShowThreatMetrics(eventID, proto.showThreatMetrics);
 			this.setShowHealingMetrics(eventID, proto.showHealingMetrics);
 			this.setShowExperimental(eventID, proto.showExperimental);
-			this.setWasmConcurrency(eventID, proto.wasmConcurrency);
 			this.setShowQuickSwap(eventID, proto.showQuickSwap);
 			this.setShowEPValues(eventID, proto.showEpValues);
 			this.setUseCustomEPValues(eventID, proto.useCustomEpValues);

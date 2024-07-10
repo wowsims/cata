@@ -300,7 +300,6 @@ message SimSettings {
 	string language = 9;
 	Faction faction = 6;
 	DatabaseFilters filters = 10;
-	int32 wasm_concurrency = 15;
 }
 
 // Contains all information that is imported/exported from an individual sim.
