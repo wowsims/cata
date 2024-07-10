@@ -407,6 +407,8 @@ func runSimConcurrent(request *proto.RaidSimRequest, progress chan *proto.Progre
 				if progress != nil {
 					progress <- &proto.ProgressMetrics{FinalRaidResult: result}
 				}
+
+				signals.Abort.Trigger()
 			}
 		}
 
@@ -444,24 +446,8 @@ func runSimConcurrent(request *proto.RaidSimRequest, progress chan *proto.Progre
 		log.Printf("Running %d iterations on %d concurrent sims.", csd.IterationsTotal, csd.Concurrency)
 	}
 
-	defer func() {
-		if !signals.Abort.IsTriggered() {
-			signals.Abort.Trigger()
-		}
-	}()
-
 	for i, req := range splitRes.Requests {
 		go RunSim(req, substituteChannels[i], signals)
-		// Wait for first message to make sure env was constructed. Otherwise concurrent map writes to simdb will happen.
-		msg := <-substituteChannels[i]
-		// First message may be due to an immediate error, otherwise it can be ignored.
-		if msg.FinalRaidResult != nil && msg.FinalRaidResult.Error != nil {
-			if progress != nil {
-				progress <- msg
-			}
-			log.Printf("Thread %d had an error. Cancelling all sims!", i)
-			return msg.FinalRaidResult
-		}
 	}
 
 	progressCounter := 0
@@ -490,6 +476,7 @@ func runSimConcurrent(request *proto.RaidSimRequest, progress chan *proto.Progre
 					progress <- msg
 				}
 				log.Printf("Thread %d had an error. Cancelling all sims!", i)
+				signals.Abort.Trigger()
 				return msg.FinalRaidResult
 			}
 			substituteCases[i].Chan = reflect.ValueOf(nil)
