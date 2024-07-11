@@ -153,7 +153,15 @@ export class Sim {
 			}
 		});
 
-		const wasmConcurrencySetting = parseInt(window.localStorage.getItem(WASM_CONCURRENCY_STORAGE_KEY) ?? '0');
+		let wasmConcurrencySetting = parseInt(window.localStorage.getItem(WASM_CONCURRENCY_STORAGE_KEY) ?? 'NaN');
+		if (isNaN(wasmConcurrencySetting)) {
+			wasmConcurrencySetting = 0;
+			// Set a default worker count if env supports multiple threads. Should not be too high as to be safe for all situations.
+			// TODO: Set based on browser/engine? E.g. Firefox has significant RAM and CPU usage per worker while Chrome can run many without a downside.
+			if (navigator.hardwareConcurrency > 1) {
+				wasmConcurrencySetting = Math.min(4, Math.floor(navigator.hardwareConcurrency / 2));
+			}
+		}
 		this.setWasmConcurrency(TypedEvent.nextEventID(), wasmConcurrencySetting);
 
 		this.signalManager = new SimSignalManager();
@@ -191,8 +199,20 @@ export class Sim {
 		return this._initPromise;
 	}
 
+	/**
+	 * Check if workers are running wasm.
+	 * @returns true if workers are running wasm.
+	 */
 	isWasm() {
 		return this.workerPool.isWasm();
+	}
+
+	/**
+	 * Whether the current environment should use wasm/worker concurrency methods.
+	 * @returns true if running wasm workers and concurrency setting is active.
+	 */
+	private async shouldUseWasmConcurrency() {
+		return (await this.isWasm()) && this.getWasmConcurrency() >= 2 && this.workerPool.getNumWorkers() >= 2;
 	}
 
 	get db(): Database {
@@ -369,7 +389,7 @@ export class Sim {
 
 			let result;
 			// Only use worker base concurrency when running wasm. Local sim has native threading.
-			if ((await this.isWasm()) && this.getWasmConcurrency() >= 2) {
+			if (await this.shouldUseWasmConcurrency()) {
 				result = await runConcurrentSim(request, this.workerPool, onProgress, signals);
 			} else {
 				result = await this.workerPool.raidSimAsync(request, onProgress, signals);
@@ -517,7 +537,7 @@ export class Sim {
 			try {
 				let result: StatWeightsResult;
 				// Only use worker based concurrency when running wasm.
-				if ((await this.isWasm()) && this.getWasmConcurrency() >= 2) {
+				if (await this.shouldUseWasmConcurrency()) {
 					result = await runConcurrentStatWeights(request, this.workerPool, onProgress, signals);
 				} else {
 					result = await this.workerPool.statWeightsAsync(request, onProgress, signals);

@@ -188,12 +188,7 @@ export class SettingsMenu extends BaseModal {
 
 			// Hide if not running wasm. Local sim has native threading.
 			this.simUI.sim.isWasm().then(isWasm => {
-				if (!isWasm) {
-					if (this.simUI.sim.getWasmConcurrency()) {
-						this.simUI.sim.setWasmConcurrency(TypedEvent.nextEventID(), 0);
-					}
-					useConcurrentWorkersWrap.value!.hidden = true;
-				}
+				if (!isWasm) useConcurrentWorkersWrap.value!.hidden = true;
 			});
 		}
 	}
