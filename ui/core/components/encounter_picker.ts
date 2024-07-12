@@ -11,7 +11,6 @@ import { BaseModal } from './base_modal.js';
 import { Component } from './component.js';
 import { Input } from './input.js';
 import { BooleanPicker } from './pickers/boolean_picker.js';
-import { TextDropdownPicker, TextDropdownValueConfig } from './pickers/dropdown_picker.jsx';
 import { EnumPicker } from './pickers/enum_picker.js';
 import { ListItemPickerConfig, ListPicker } from './pickers/list_picker.jsx';
 import { NumberPicker } from './pickers/number_picker.js';
