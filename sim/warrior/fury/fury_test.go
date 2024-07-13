@@ -17,7 +17,7 @@ func TestFury(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
 		Class:      proto.Class_ClassWarrior,
 		Race:       proto.Race_RaceTroll,
-		OtherRaces: []proto.Race{proto.Race_RaceHuman},
+		OtherRaces: []proto.Race{proto.Race_RaceWorgen},
 
 		GearSet: core.GetGearSet("../../../ui/warrior/fury/gear_sets", "p1_fury_smf"),
 		OtherGearSets: []core.GearSetCombo{
