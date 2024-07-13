@@ -6,7 +6,7 @@ import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_u
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
-import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
+import { Debuffs, Faction, HandType, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { StatCapType } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import * as WarriorInputs from '../inputs';
@@ -73,7 +73,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 				stat: Stat.StatMeleeHit,
 				breakpoints: [8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE, 27 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [1.38, 0],
+				postCapEPs: [1.31, 0],
 			};
 
 			return [meleeHitSoftCapConfig];
@@ -159,7 +159,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
-				[Faction.Alliance]: Race.RaceHuman,
+				[Faction.Alliance]: Race.RaceWorgen,
 				[Faction.Horde]: Race.RaceTroll,
 			},
 			defaultGear: {
@@ -187,7 +187,14 @@ export class FuryWarriorSimUI extends IndividualSimUI<Spec.SpecFuryWarrior> {
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			new ReforgeOptimizer(this, {
+				getEPDefaults: (player: Player<Spec.SpecFuryWarrior>) => {
+					if (player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeOneHand || !player.getTalents().titansGrip) {
+						return Presets.P1_FURY_SMF_EP_PRESET.epWeights;
+					}
+					return Presets.P1_FURY_TG_EP_PRESET.epWeights;
+				},
+			});
 		});
 	}
 }

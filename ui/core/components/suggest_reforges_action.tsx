@@ -66,6 +66,9 @@ export type ReforgeOptimizerOptions = {
 	// Allows you to modify the stats before they are returned for the calculations
 	// For example: Adding class specific Glyphs/Talents that are not added by the backend
 	updateGearStatsModifier?: (baseStats: Stats) => Stats;
+	// Allows you to get alternate default EPs
+	// For example for Fury where you have SMF and TG EPs
+	getEPDefaults?: (player: Player<any>) => Stats;
 };
 
 export class ReforgeOptimizer {
@@ -76,6 +79,7 @@ export class ReforgeOptimizer {
 	protected readonly isHybridCaster: boolean;
 	protected readonly sim: Sim;
 	protected readonly defaults: IndividualSimUI<any>['individualConfig']['defaults'];
+	protected getEPDefaults: ReforgeOptimizerOptions['getEPDefaults'];
 	protected _statCaps: Stats;
 	protected updateGearStatsModifier: ReforgeOptimizerOptions['updateGearStatsModifier'];
 	protected softCapsConfig: StatCapConfig[];
@@ -93,6 +97,7 @@ export class ReforgeOptimizer {
 		this.isHybridCaster = [Spec.SpecBalanceDruid, Spec.SpecShadowPriest, Spec.SpecElementalShaman].includes(this.player.getSpec());
 		this.sim = simUI.sim;
 		this.defaults = simUI.individualConfig.defaults;
+		this.getEPDefaults = options?.getEPDefaults;
 		this.updateGearStatsModifier = options?.updateGearStatsModifier;
 		this.softCapsConfig = this.defaults.softCapBreakpoints || [];
 		this.statTooltips = { ...STAT_TOOLTIPS, ...options?.statTooltips };
@@ -197,7 +202,7 @@ export class ReforgeOptimizer {
 	}
 
 	get preCapEPs(): Stats {
-		let weights = this.sim.getUseCustomEPValues() ? this.player.getEpWeights() : this.defaults.epWeights;
+		let weights = this.sim.getUseCustomEPValues() ? this.player.getEpWeights() : this.getEPDefaults?.(this.player) || this.defaults.epWeights;
 
 		// Replace Spirit EP for hybrid casters with a small value in order to break ties between Spirit and Hit Reforges
 		if (this.isHybridCaster) {
