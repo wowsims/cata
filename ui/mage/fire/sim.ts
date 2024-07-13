@@ -9,6 +9,7 @@ import { APLRotation } from '../../core/proto/apl';
 import { Faction, IndividualBuffs, PartyBuffs, Race, Spec, Stat } from '../../core/proto/common';
 import { StatCapType } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
+import { sharedMageDisplayStatsModifiers } from '../shared';
 import * as FireInputs from './inputs';
 import * as Presets from './presets';
 
@@ -34,17 +35,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		Stat.StatSpellHaste,
 		Stat.StatMastery,
 	],
-	// modifyDisplayStats: (player: Player<Spec.SpecFireMage>) => {
-	// 	let stats = new Stats();
-
-	// 	if (player.getTalentTree() === 0) {
-	// 		stats = stats.addStat(Stat.StatSpellHit, player.getTalents().arcaneFocus * 1 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
-	// 	}
-
-	// 	return {
-	// 		talents: stats,
-	// 	};
-	// },
+	modifyDisplayStats: (player: Player<Spec.SpecFireMage>) => {
+		return sharedMageDisplayStatsModifiers(player);
+	},
 
 	defaults: {
 		// Default equipped gear.
