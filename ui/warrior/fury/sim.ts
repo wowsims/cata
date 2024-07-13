@@ -73,7 +73,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 				stat: Stat.StatMeleeHit,
 				breakpoints: [8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE, 27 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [1.15, 0],
+				postCapEPs: [1.38, 0],
 			};
 
 			return [meleeHitSoftCapConfig];
@@ -142,13 +142,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.FurySMFTalents, Presets.FuryTGTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_FURY],
+		rotations: [Presets.FURY_SMF_ROTATION, Presets.FURY_TG_ROTATION],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PRERAID_FURY_SMF_PRESET, Presets.PRERAID_FURY_TG_PRESET, Presets.P1_FURY_SMF_PRESET, Presets.P1_FURY_TG_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecFuryWarrior>): APLRotation => {
-		return Presets.ROTATION_FURY.rotation.rotation!;
+		return Presets.FURY_SMF_ROTATION.rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -160,7 +160,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceHuman,
-				[Faction.Horde]: Race.RaceOrc,
+				[Faction.Horde]: Race.RaceTroll,
 			},
 			defaultGear: {
 				[Faction.Unknown]: {},
