@@ -15,7 +15,7 @@ This project is licensed with MIT license. We request that anyone using this sof
 -   [Windows Sim](https://github.com/wowsims/cata/releases/latest/download/wowsimcata-windows.exe.zip)
 -   [MacOS Sim](https://github.com/wowsims/cata/releases/latest/download/wowsimcata-amd64-darwin.zip)
 -   [Linux Sim](https://github.com/wowsims/cata/releases/latest/download/wowsimcata-amd64-linux.zip)
--   [Linux Sim for ARM](https://github.com/wowsims/cata/releases/latest/download/wowsimcata-amd64-linux.zip)
+-   [Linux Sim for ARM](https://github.com/wowsims/cata/releases/latest/download/wowsimcata-arm64-linux.zip)
 
 Unzip the downloaded file and open the unzipped file to launch the sim in your browser!
 
