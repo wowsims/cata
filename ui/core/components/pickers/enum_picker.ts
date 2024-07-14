@@ -15,7 +15,7 @@ export interface EnumPickerConfig<ModObject> extends InputConfig<ModObject, numb
 export class EnumPicker<ModObject> extends Input<ModObject, number> {
 	private readonly selectElem: HTMLSelectElement;
 
-	constructor(parent: HTMLElement, modObject: ModObject, config: EnumPickerConfig<ModObject>) {
+	constructor(parent: HTMLElement | null, modObject: ModObject, config: EnumPickerConfig<ModObject>) {
 		super(parent, 'enum-picker-root', modObject, config);
 
 		this.selectElem = document.createElement('select');

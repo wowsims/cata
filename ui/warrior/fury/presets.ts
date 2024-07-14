@@ -4,7 +4,8 @@ import { Consumes, Flask, Food, Glyphs, HandType, ItemSlot, Potions, Profession,
 import { SavedTalents } from '../../core/proto/ui';
 import { FuryWarrior_Options as WarriorOptions, WarriorMajorGlyph, WarriorMinorGlyph, WarriorPrimeGlyph } from '../../core/proto/warrior';
 import { Stats } from '../../core/proto_utils/stats';
-import FuryApl from './apls/fury.apl.json';
+import SMFFuryApl from './apls/smf.apl.json';
+import TGFuryApl from './apls/tg.apl.json';
 import P1FurySMFGear from './gear_sets/p1_fury_smf.gear.json';
 import P1FuryTGGear from './gear_sets/p1_fury_tg.gear.json';
 import PreraidFurySMFGear from './gear_sets/preraid_fury_smf.gear.json';
@@ -58,49 +59,50 @@ export const PRERAID_FURY_TG_PRESET = PresetUtils.makePresetGear('Preraid Fury T
 export const P1_FURY_SMF_PRESET = PresetUtils.makePresetGear('P1 Fury SMF', P1FurySMFGear, FURY_SMF_PRESET_OPTIONS);
 export const P1_FURY_TG_PRESET = PresetUtils.makePresetGear('P1 Fury TG', P1FuryTGGear, FURY_TG_PRESET_OPTIONS);
 
-export const ROTATION_FURY = PresetUtils.makePresetAPLRotation('Fury', FuryApl);
+export const FURY_SMF_ROTATION = PresetUtils.makePresetAPLRotation('Fury SMF', SMFFuryApl, FURY_SMF_PRESET_OPTIONS);
+export const FURY_TG_ROTATION = PresetUtils.makePresetAPLRotation('Fury TG', TGFuryApl, FURY_TG_PRESET_OPTIONS);
 
 // Preset options for EP weights
-export const P1_FURY_TG_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P1 - TG',
-	Stats.fromMap(
-		{
-			[Stat.StatStrength]: 2.21,
-			[Stat.StatAgility]: 1.23,
-			[Stat.StatAttackPower]: 1,
-			[Stat.StatExpertise]: 1.78,
-			[Stat.StatMeleeHit]: 2.61,
-			[Stat.StatMeleeCrit]: 1.59,
-			[Stat.StatMeleeHaste]: 1.07,
-			[Stat.StatMastery]: 1.22,
-		},
-		{
-			[PseudoStat.PseudoStatMainHandDps]: 3.34,
-			[PseudoStat.PseudoStatOffHandDps]: 1.77,
-		},
-	),
-	FURY_TG_PRESET_OPTIONS,
-);
-
 export const P1_FURY_SMF_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'P1 - SMF',
 	Stats.fromMap(
 		{
 			[Stat.StatStrength]: 2.2,
-			[Stat.StatAgility]: 1.14,
+			[Stat.StatAgility]: 1.13,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatExpertise]: 1.61,
+			[Stat.StatExpertise]: 1.51,
 			[Stat.StatMeleeHit]: 2.36,
-			[Stat.StatMeleeCrit]: 1.47,
-			[Stat.StatMeleeHaste]: 0.92,
-			[Stat.StatMastery]: 0.99,
+			[Stat.StatMeleeCrit]: 1.46,
+			[Stat.StatMeleeHaste]: 1.06,
+			[Stat.StatMastery]: 0.93,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 3.23,
-			[PseudoStat.PseudoStatOffHandDps]: 1.7,
+			[PseudoStat.PseudoStatMainHandDps]: 3.17,
+			[PseudoStat.PseudoStatOffHandDps]: 1.64,
 		},
 	),
 	FURY_SMF_PRESET_OPTIONS,
+);
+
+export const P1_FURY_TG_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P1 - TG',
+	Stats.fromMap(
+		{
+			[Stat.StatStrength]: 2.21,
+			[Stat.StatAgility]: 1.22,
+			[Stat.StatAttackPower]: 1,
+			[Stat.StatExpertise]: 1.66,
+			[Stat.StatMeleeHit]: 2.62,
+			[Stat.StatMeleeCrit]: 1.58,
+			[Stat.StatMeleeHaste]: 1.17,
+			[Stat.StatMastery]: 1.31,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 3.81,
+			[PseudoStat.PseudoStatOffHandDps]: 1.63,
+		},
+	),
+	FURY_TG_PRESET_OPTIONS,
 );
 
 // Default talents. Uses the wowhead calculator format, make the talents on
@@ -109,7 +111,7 @@ export const P1_FURY_SMF_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const FurySMFTalents = {
 	name: 'Fury SMF',
 	data: SavedTalents.create({
-		talentsString: '302203-032222031301101223201',
+		talentsString: '302003-032222031301101223201-2',
 		glyphs: Glyphs.create({
 			prime1: WarriorPrimeGlyph.GlyphOfBloodthirst,
 			prime2: WarriorPrimeGlyph.GlyphOfRagingBlow,
@@ -128,7 +130,7 @@ export const FurySMFTalents = {
 export const FuryTGTalents = {
 	name: 'Fury TG',
 	data: SavedTalents.create({
-		talentsString: '302203-03222203130110122321',
+		talentsString: '302003-03222203130110122321-2',
 		glyphs: Glyphs.create({
 			prime1: WarriorPrimeGlyph.GlyphOfBloodthirst,
 			prime2: WarriorPrimeGlyph.GlyphOfRagingBlow,

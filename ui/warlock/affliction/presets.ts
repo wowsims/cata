@@ -9,6 +9,7 @@ import {
 	WarlockPrimeGlyph as PrimeGlyph,
 } from '../../core/proto/warlock';
 import { Stats } from '../../core/proto_utils/stats';
+import { WARLOCK_BREAKPOINTS } from '../presets';
 import DefaultApl from './apls/default.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
 import P4WrathGear from './gear_sets/p4_wrath.gear.json';
@@ -117,3 +118,5 @@ export const OtherDefaults = {
 	durationVariation: 30,
 	darkIntentUptime: 90,
 };
+
+export const AFFLICTION_BREAKPOINTS = WARLOCK_BREAKPOINTS
