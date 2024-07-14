@@ -13,6 +13,8 @@ import { sharedMageDisplayStatsModifiers } from '../shared';
 import * as FireInputs from './inputs';
 import * as Presets from './presets';
 
+const hasteBreakpoints = Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!;
+
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	cssClass: 'fire-mage-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Mage),
@@ -53,15 +55,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 			const hasteSoftCapConfig = {
 				stat: Stat.StatSpellHaste,
 				breakpoints: [
-					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('5-tick LvB/Pyro')!,
-					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('12-tick Combust')!,
-					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('BL - 16-tick Combust')!,
-					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('BL - 7-tick LvB/Pyro')!,
-					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('13-tick Combust')!,
-					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('BL - 17-tick Combust')!,
-					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('14-tick Combust')!,
-					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('6-tick LvB/Pyro')!,
-					Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!.get('15-tick Combust')!,
+					hasteBreakpoints.get('5-tick LvB/Pyro')!,
+					hasteBreakpoints.get('12-tick Combust')!,
+					hasteBreakpoints.get('13-tick Combust')!,
+					hasteBreakpoints.get('14-tick Combust')!,
+					hasteBreakpoints.get('6-tick LvB/Pyro')!,
+					hasteBreakpoints.get('15-tick Combust')!,
+					hasteBreakpoints.get('16-tick Combust')!,
+					hasteBreakpoints.get('7-tick LvB/Pyro')!,
+					hasteBreakpoints.get('17-tick Combust')!,
+					hasteBreakpoints.get('18-tick Combust')!,
+					hasteBreakpoints.get('19-tick Combust')!,
+					hasteBreakpoints.get('8-tick LvB/Pyro')!,
+					hasteBreakpoints.get('20-tick Combust')!,
+					hasteBreakpoints.get('21-tick Combust')!,
 				],
 				capType: StatCapType.TypeThreshold,
 				postCapEPs: [0.61],
@@ -162,6 +169,54 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 			new ReforgeOptimizer(this, {
 				experimental: true,
 				statSelectionPresets: Presets.FIRE_BREAKPOINTS,
+				updateSoftCaps: softCaps => {
+					const hasBL = !!player.getRaid()?.getBuffs()?.bloodlust;
+					const hasPI = !!player.getBuffs().powerInfusionCount;
+					const hasBerserking = player.getRace() === Race.RaceTroll;
+
+					const modifyHaste = (rating: number, modifier: number) =>
+						Math.round(
+							((rating / Mechanics.HASTE_RATING_PER_HASTE_PERCENT / 100 + 1) / modifier - 1) * 100 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT,
+						);
+
+					this.individualConfig.defaults.softCapBreakpoints!.map(softCap => {
+						if (softCap.stat === Stat.StatSpellHaste) {
+							const adjustedHastedBreakpoints = new Set(softCap.breakpoints.slice());
+							// LvB/Pyro are not worth adjusting for
+							const excludedHasteBreakpoints = [
+								hasteBreakpoints.get('5-tick LvB/Pyro')!,
+								hasteBreakpoints.get('6-tick LvB/Pyro')!,
+								hasteBreakpoints.get('7-tick LvB/Pyro')!,
+								hasteBreakpoints.get('8-tick LvB/Pyro')!,
+							];
+							softCap.breakpoints.forEach(breakpoint => {
+								const isExcludedFromPiZerk = excludedHasteBreakpoints.includes(breakpoint);
+								if (hasBL) {
+									const blBreakpoint = modifyHaste(breakpoint, 1.3);
+									if (blBreakpoint <= 0) return;
+									adjustedHastedBreakpoints.add(blBreakpoint);
+									if (hasBerserking) {
+										const berserkingBreakpoint = modifyHaste(blBreakpoint, 1.2);
+										if (berserkingBreakpoint <= 0) return;
+										adjustedHastedBreakpoints.add(berserkingBreakpoint);
+									}
+								}
+								if (hasPI && !isExcludedFromPiZerk) {
+									const piBreakpoint = modifyHaste(breakpoint, 1.2);
+									if (piBreakpoint <= 0) return;
+									adjustedHastedBreakpoints.add(piBreakpoint);
+									if (hasBerserking) {
+										const berserkingBreakpoint = modifyHaste(piBreakpoint, 1.2);
+										if (berserkingBreakpoint <= 0) return;
+										adjustedHastedBreakpoints.add(berserkingBreakpoint);
+									}
+								}
+							});
+							softCap.breakpoints = [...adjustedHastedBreakpoints].sort((a, b) => a - b);
+						}
+					});
+					return softCaps;
+				},
 			});
 		});
 	}

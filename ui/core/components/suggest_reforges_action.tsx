@@ -69,6 +69,9 @@ export type ReforgeOptimizerOptions = {
 	// Allows you to get alternate default EPs
 	// For example for Fury where you have SMF and TG EPs
 	getEPDefaults?: (player: Player<any>) => Stats;
+	// Allows you to modify default softCaps
+	// For example you wish to add breakpoints for Berserking / Bloodlust if enabled
+	updateSoftCaps?: (softCaps: StatCapConfig[]) => StatCapConfig[];
 };
 
 export class ReforgeOptimizer {
@@ -82,7 +85,8 @@ export class ReforgeOptimizer {
 	protected getEPDefaults: ReforgeOptimizerOptions['getEPDefaults'];
 	protected _statCaps: Stats;
 	protected updateGearStatsModifier: ReforgeOptimizerOptions['updateGearStatsModifier'];
-	protected softCapsConfig: StatCapConfig[];
+	protected _softCapsConfig: StatCapConfig[];
+	protected updateSoftCaps: ReforgeOptimizerOptions['updateSoftCaps'];
 	protected statTooltips: StatTooltips = {};
 	protected statSelectionPresets: ReforgeOptimizerOptions['statSelectionPresets'];
 	readonly freezeItemSlotsChangeEmitter = new TypedEvent<void>();
@@ -98,8 +102,9 @@ export class ReforgeOptimizer {
 		this.sim = simUI.sim;
 		this.defaults = simUI.individualConfig.defaults;
 		this.getEPDefaults = options?.getEPDefaults;
+		this.updateSoftCaps = options?.updateSoftCaps;
 		this.updateGearStatsModifier = options?.updateGearStatsModifier;
-		this.softCapsConfig = this.defaults.softCapBreakpoints || [];
+		this._softCapsConfig = this.defaults.softCapBreakpoints || [];
 		this.statTooltips = { ...STAT_TOOLTIPS, ...options?.statTooltips };
 		this.statSelectionPresets = options?.statSelectionPresets;
 		this._statCaps = this.statCaps;
@@ -183,6 +188,10 @@ export class ReforgeOptimizer {
 		this.player.sim.showExperimentalChangeEmitter.on(() => {
 			toggle();
 		});
+	}
+
+	get softCapsConfig() {
+		return this.updateSoftCaps?.(this._softCapsConfig) || this._softCapsConfig;
 	}
 
 	get statCaps() {
