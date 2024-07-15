@@ -147,7 +147,9 @@ export class DestructionWarlockSimUI extends IndividualSimUI<Spec.SpecDestructio
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecDestructionWarlock>) {
 		super(parentElem, player, SPEC_CONFIG);
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			new ReforgeOptimizer(this, {
+				statSelectionPresets: Presets.DESTRUCTION_BREAKPOINTS,
+			});
 		});
 	}
 }

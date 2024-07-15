@@ -31,16 +31,17 @@ func NewProtectionPaladin(character *core.Character, options *proto.Player) *Pro
 	protOptions := options.GetProtectionPaladin()
 
 	prot := &ProtectionPaladin{
-		Paladin: paladin.NewPaladin(character, options.TalentsString, protOptions.Options.ClassOptions),
-		Options: protOptions.Options,
+		Paladin:   paladin.NewPaladin(character, options.TalentsString, protOptions.Options.ClassOptions),
+		Options:   protOptions.Options,
+		vengeance: &core.VengeanceTracker{},
 	}
 
-	// healingModel := options.HealingModel
-	// if healingModel != nil {
-	// 	if healingModel.InspirationUptime > 0.0 {
-	// 		core.ApplyInspiration(prot.GetCharacter(), healingModel.InspirationUptime)
-	// 	}
-	// }
+	healingModel := options.HealingModel
+	if healingModel != nil {
+		if healingModel.InspirationUptime > 0.0 {
+			core.ApplyInspiration(&prot.Unit, healingModel.InspirationUptime)
+		}
+	}
 
 	return prot
 }
@@ -50,7 +51,7 @@ type ProtectionPaladin struct {
 
 	Options *proto.ProtectionPaladin_Options
 
-	core.VengeanceTracker
+	vengeance *core.VengeanceTracker
 }
 
 func (prot *ProtectionPaladin) GetPaladin() *paladin.Paladin {
@@ -61,6 +62,7 @@ func (prot *ProtectionPaladin) Initialize() {
 	prot.Paladin.Initialize()
 	prot.ActivateRighteousFury()
 	prot.registerAvengersShieldSpell()
+	prot.RegisterSpecializationEffects()
 }
 
 func (prot *ProtectionPaladin) ApplyTalents() {
@@ -81,12 +83,16 @@ func (prot *ProtectionPaladin) RegisterSpecializationEffects() {
 	prot.AddStatDependency(stats.Strength, stats.SpellPower, 0.6)
 	prot.AddStat(stats.SpellHit, core.SpellHitRatingPerHitChance*8)
 	prot.MultiplyStat(stats.Stamina, 1.15)
+	core.MakePermanent(prot.GetOrRegisterAura(core.Aura{
+		Label:    "Touched by the Light",
+		ActionID: core.ActionID{SpellID: 53592},
+	}))
 
 	// Judgements of the Wise
 	prot.ApplyJudgementsOfTheWise()
 
 	// Vengeance
-	core.ApplyVengeanceEffect(prot.GetCharacter(), &prot.VengeanceTracker, 84839)
+	core.ApplyVengeanceEffect(&prot.Character, prot.vengeance, 84839)
 }
 
 func (prot *ProtectionPaladin) RegisterMastery() {
@@ -108,7 +114,7 @@ func (prot *ProtectionPaladin) ApplyJudgementsOfTheWise() {
 	manaMetrics := prot.NewManaMetrics(actionID)
 
 	// It's 30% of base mana over 10 seconds, with haste adding ticks.
-	manaPerTick := math.Round(0.30 * prot.BaseMana)
+	manaPerTick := math.Round(0.030 * prot.BaseMana)
 
 	jotw := prot.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,

@@ -17,7 +17,11 @@ func (paladin *Paladin) applyProtectionTalents() {
 	paladin.applyHammerOfTheRighteous()
 	paladin.applyReckoning()
 	paladin.applyShieldOfTheRighteous()
+	paladin.applyGrandCrusader()
+	paladin.applyHolyShield()
+	paladin.applySacredDuty()
 	paladin.applyShieldOfTheTemplar()
+	paladin.applyArdentDefender()
 }
 
 func (paladin *Paladin) applySealsOfThePure() {
@@ -222,6 +226,7 @@ func (paladin *Paladin) applyReckoning() {
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell == paladin.AutoAttacks.MHAuto() {
 				reckoningSpell.Cast(sim, result.Target)
+				aura.RemoveStack(sim)
 			}
 		},
 	})
@@ -230,6 +235,7 @@ func (paladin *Paladin) applyReckoning() {
 		Name:       "Reckoning",
 		ProcMask:   core.ProcMaskMelee,
 		ProcChance: procChance,
+		Callback:   core.CallbackOnSpellHitTaken,
 		Outcome:    core.OutcomeBlock,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -289,6 +295,9 @@ func (paladin *Paladin) applyShieldOfTheTemplar() {
 		return
 	}
 
+	actionId := core.ActionID{SpellID: 84854}
+	hpMetrics := paladin.NewHolyPowerMetrics(actionId)
+
 	paladin.AddStaticMod(core.SpellModConfig{
 		ClassMask: SpellMaskGuardianOfAncientKings,
 		Kind:      core.SpellMod_Cooldown_Flat,
@@ -299,5 +308,228 @@ func (paladin *Paladin) applyShieldOfTheTemplar() {
 		ClassMask: SpellMaskAvengingWrath,
 		Kind:      core.SpellMod_Cooldown_Flat,
 		TimeValue: -(time.Second * time.Duration(20*paladin.Talents.ShieldOfTheTemplar)),
+	})
+
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:           "Divine Plea Templar Effect",
+		ActionID:       actionId,
+		Callback:       core.CallbackOnCastComplete,
+		ClassSpellMask: SpellMaskDivinePlea,
+		ProcChance:     1,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			paladin.GainHolyPower(sim, 3, hpMetrics)
+		},
+	})
+
+}
+
+func (paladin *Paladin) applyGrandCrusader() {
+	if paladin.Talents.GrandCrusader == 0 {
+		return
+	}
+
+	paladin.GrandCrusaderAura = paladin.RegisterAura(core.Aura{
+		Label:    "Grand Crusader (Proc)",
+		ActionID: core.ActionID{SpellID: 85043},
+		Duration: time.Second * 6,
+
+		// Dummy effect. Implemented in avengers_shield.go
+
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.ClassSpellMask&SpellMaskAvengersShield != 0 {
+				paladin.GrandCrusaderAura.Deactivate(sim)
+			}
+		},
+	})
+
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:           "Grand Crusader",
+		ActionID:       core.ActionID{SpellID: 85416},
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ClassSpellMask: SpellMaskBuilder,
+		ProcChance:     []float64{0, 0.05, 0.10}[paladin.Talents.GrandCrusader],
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			paladin.AvengersShield.CD.Reset()
+			paladin.GrandCrusaderAura.Activate(sim)
+		},
+	})
+}
+
+func (paladin *Paladin) applyHolyShield() {
+	if !paladin.Talents.HolyShield {
+		return
+	}
+
+	holyShieldAura := paladin.RegisterAura(core.Aura{
+		Label:    "Holy Shield",
+		ActionID: core.ActionID{SpellID: 20925},
+		Duration: time.Second * 10,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			paladin.PseudoStats.BlockDamageReduction += 0.2
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			paladin.PseudoStats.BlockDamageReduction -= 0.2
+		},
+	})
+
+	paladin.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 20925},
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskHolyShield,
+
+		ManaCost: core.ManaCostOptions{
+			BaseCost: 0.03,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
+			CD: core.Cooldown{
+				Timer:    paladin.NewTimer(),
+				Duration: time.Second * 30,
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
+			holyShieldAura.Activate(sim)
+		},
+	})
+}
+
+// 25/50% chance on Judgement/AS to apply 100% crit to next SotR
+func (paladin *Paladin) applySacredDuty() {
+	if paladin.Talents.SacredDuty == 0 {
+		return
+	}
+
+	critMod := paladin.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  SpellMaskShieldOfTheRighteous,
+		Kind:       core.SpellMod_BonusCrit_Rating,
+		FloatValue: 100 * core.CritRatingPerCritChance,
+	})
+
+	paladin.SacredDutyAura = paladin.RegisterAura(core.Aura{
+		Label:    "Sacred Duty (Proc)",
+		ActionID: core.ActionID{SpellID: 85433},
+		Duration: time.Second * 10,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			critMod.Activate()
+		},
+
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			critMod.Deactivate()
+		},
+
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ClassSpellMask&SpellMaskShieldOfTheRighteous != 0 && result.DidCrit() {
+				paladin.SacredDutyAura.Deactivate(sim)
+			}
+		},
+	})
+
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:           "Sacred Duty",
+		ActionID:       core.ActionID{SpellID: 53710},
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ClassSpellMask: SpellMaskAvengersShield | SpellMaskJudgement,
+		ProcChance:     []float64{0, 0.25, 0.50}[paladin.Talents.SacredDuty],
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			paladin.SacredDutyAura.Activate(sim)
+		},
+	})
+}
+
+func (paladin *Paladin) applyArdentDefender() {
+	if !paladin.Talents.ArdentDefender {
+		return
+	}
+
+	actionID := core.ActionID{SpellID: 31850}
+
+	adAura := paladin.RegisterAura(core.Aura{
+		Label:    "Ardent Defender",
+		ActionID: actionID,
+		Duration: time.Second * 10,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			paladin.PseudoStats.DamageTakenMultiplier *= 0.8
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			paladin.PseudoStats.DamageTakenMultiplier /= 0.8
+		},
+	})
+
+	paladin.RegisterSpell(core.SpellConfig{
+		ActionID:       actionID,
+		Flags:          core.SpellFlagAPL,
+		SpellSchool:    core.SpellSchoolHoly,
+		ClassSpellMask: SpellMaskArdentDefender,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
+			CD: core.Cooldown{
+				Timer:    paladin.NewTimer(),
+				Duration: time.Minute * 3,
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
+			adAura.Activate(sim)
+		},
+	})
+
+	adHealAmount := 0.0
+
+	// Spell to heal you when AD has procced; fire this before fatal damage so that a Death is not detected
+	adHeal := paladin.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 66235},
+		SpellSchool: core.SpellSchoolHoly,
+		ProcMask:    core.ProcMaskSpellHealing,
+		Flags:       core.SpellFlagHelpful,
+
+		CritMultiplier:   1,
+		ThreatMultiplier: 0,
+		DamageMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.CalcAndDealHealing(sim, &paladin.Unit, adHealAmount, spell.OutcomeHealing)
+		},
+	})
+
+	// >= 15% hp, hit gets reduced so we end up at 15% without heal
+	// < 15% hp, hit gets reduced to 0 and we heal the remaining health up to 15%
+	paladin.AddDynamicDamageTakenModifier(func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+		if adAura.IsActive() && result.Damage >= paladin.CurrentHealth() {
+			maxHealth := paladin.MaxHealth()
+			currentHealth := paladin.CurrentHealth()
+			incomingDamage := result.Damage
+
+			if currentHealth/maxHealth >= 0.15 {
+				// Incoming attack gets reduced so we end up at 15% hp
+				// TODO: Overkill counted as absorb but not as healing in logs
+				result.Damage = currentHealth - maxHealth*0.15
+				if sim.Log != nil {
+					paladin.Log(sim, "Ardent Defender absorbed %.1f damage", incomingDamage-result.Damage)
+				}
+			} else {
+				// Incoming attack gets reduced to 0
+				// Heal up to 15% hp
+				// TODO: Overkill counted as absorb but not as healing in logs
+				result.Damage = 0
+				adHealAmount = maxHealth*0.15 - currentHealth
+				adHeal.Cast(sim, &paladin.Unit)
+				if sim.Log != nil {
+					paladin.Log(sim, "Ardent Defender absorbed %.1f damage and healed for %.1f", incomingDamage, adHealAmount)
+				}
+			}
+
+			adAura.Deactivate(sim)
+		}
 	})
 }
