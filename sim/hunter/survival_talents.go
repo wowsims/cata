@@ -84,7 +84,7 @@ func (hunter *Hunter) applyThrillOfTheHunt() {
 			// mask 256
 			if spell == hunter.ArcaneShot || spell == hunter.ExplosiveShot || spell == hunter.BlackArrow {
 				if sim.Proc(procChance, "ThrillOfTheHunt") {
-					hunter.AddFocus(sim, spell.CurCast.Cost*0.4, focusMetrics)
+					hunter.AddFocus(sim, spell.DefaultCast.Cost*0.4, focusMetrics)
 				}
 			}
 		},

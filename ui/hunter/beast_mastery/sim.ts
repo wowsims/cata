@@ -123,6 +123,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 	otherInputs: {
 		inputs: [
 			HunterInputs.PetUptime(),
+			HunterInputs.AQTierPrepull(),
+			HunterInputs.NaxxTierPrepull(),
 			OtherInputs.InputDelay,
 			OtherInputs.DistanceFromTarget,
 			OtherInputs.TankAssignment,

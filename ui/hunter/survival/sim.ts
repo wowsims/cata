@@ -114,6 +114,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	otherInputs: {
 		inputs: [
 			HunterInputs.PetUptime(),
+			HunterInputs.AQTierPrepull(),
+			HunterInputs.NaxxTierPrepull(),
 			SVInputs.SniperTrainingUptime,
 			OtherInputs.InputDelay,
 			OtherInputs.DistanceFromTarget,
