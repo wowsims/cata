@@ -179,7 +179,7 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 							((rating / Mechanics.HASTE_RATING_PER_HASTE_PERCENT / 100 + 1) / modifier - 1) * 100 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT,
 						);
 
-					this.individualConfig.defaults.softCapBreakpoints!.map(softCap => {
+					this.individualConfig.defaults.softCapBreakpoints!.forEach(softCap => {
 						if (softCap.stat === Stat.StatSpellHaste) {
 							const adjustedHastedBreakpoints = new Set(softCap.breakpoints.slice());
 							// LvB/Pyro are not worth adjusting for
@@ -193,22 +193,26 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 								const isExcludedFromPiZerk = excludedHasteBreakpoints.includes(breakpoint);
 								if (hasBL) {
 									const blBreakpoint = modifyHaste(breakpoint, 1.3);
-									if (blBreakpoint <= 0) return;
-									adjustedHastedBreakpoints.add(blBreakpoint);
-									if (hasBerserking) {
-										const berserkingBreakpoint = modifyHaste(blBreakpoint, 1.2);
-										if (berserkingBreakpoint <= 0) return;
-										adjustedHastedBreakpoints.add(berserkingBreakpoint);
+									if (blBreakpoint > 0) {
+										adjustedHastedBreakpoints.add(blBreakpoint);
+										if (hasBerserking) {
+											const berserkingBreakpoint = modifyHaste(blBreakpoint, 1.2);
+											if (berserkingBreakpoint > 0) {
+												adjustedHastedBreakpoints.add(berserkingBreakpoint);
+											}
+										}
 									}
 								}
 								if (hasPI && !isExcludedFromPiZerk) {
 									const piBreakpoint = modifyHaste(breakpoint, 1.2);
-									if (piBreakpoint <= 0) return;
-									adjustedHastedBreakpoints.add(piBreakpoint);
-									if (hasBerserking) {
-										const berserkingBreakpoint = modifyHaste(piBreakpoint, 1.2);
-										if (berserkingBreakpoint <= 0) return;
-										adjustedHastedBreakpoints.add(berserkingBreakpoint);
+									if (piBreakpoint > 0) {
+										adjustedHastedBreakpoints.add(piBreakpoint);
+										if (hasBerserking) {
+											const berserkingBreakpoint = modifyHaste(piBreakpoint, 1.2);
+											if (berserkingBreakpoint > 0) {
+												adjustedHastedBreakpoints.add(berserkingBreakpoint);
+											}
+										}
 									}
 								}
 							});
