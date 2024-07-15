@@ -58,8 +58,8 @@ export const SHADOW_BREAKPOINTS = new Map([
 		new Map([
 			['7-tick - SWP', 1066],
 			['6-tick - VT', 1280],
-			['BL - 8-tick - VT', 1967],
 			['BL - 12-tick - DP', 1358],
+			['BL - 8-tick - VT', 1967],
 			['9-tick - DP', 2400],
 			['BL - 13-tick - DP', 2590],
 			['BL - 10-tick - SWP', 2793],

@@ -42,6 +42,8 @@ const (
 	SpellMaskAncientFury
 	SpellMaskSealsOfCommand
 	SpellMaskShieldOfTheRighteous
+	SpellMaskHolyShield
+	SpellMaskArdentDefender
 
 	SpellMaskHolyShock
 	SpellMaskWordOfGlory
@@ -155,15 +157,12 @@ type Paladin struct {
 	SealOfJusticeAura       *core.Aura
 	AvengingWrathAura       *core.Aura
 	DivineProtectionAura    *core.Aura
-	ForbearanceAura         *core.Aura
 	ZealotryAura            *core.Aura
 	InquisitionAura         *core.Aura
 	DivinePurposeAura       *core.Aura
 	JudgementsOfThePureAura *core.Aura
 	GrandCrusaderAura       *core.Aura
 	SacredDutyAura          *core.Aura
-
-	SpiritualAttunementMetrics *core.ResourceMetrics
 }
 
 // Implemented by each Paladin spec.
@@ -231,6 +230,7 @@ func (paladin *Paladin) registerSpells() {
 	paladin.registerConsecrationSpell()
 	paladin.registerHolyWrath()
 	paladin.registerGuardianOfAncientKings()
+	paladin.registerDivineProtectionSpell()
 }
 
 func (paladin *Paladin) Reset(sim *core.Simulation) {
@@ -288,14 +288,8 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 	paladin.AddStat(stats.Parry, -paladin.GetBaseStats()[stats.Strength]*0.27) // Does not apply to base Strength
 	paladin.AddStatDependency(stats.Strength, stats.Parry, 0.27)
 
-	paladin.PseudoStats.BaseDodge += 0.034943
+	paladin.PseudoStats.BaseDodge += 0.05
 	paladin.PseudoStats.BaseParry += 0.05
-	// TODO: figure out the exact tanking stat dependencies for prot pala
-	// // Paladins get 0.0167 dodge per agi. ~1% per 59.88
-	// paladin.AddStatDependency(stats.Agility, stats.Dodge, (1.0/59.88)*core.DodgeRatingPerDodgeChance)
-	// // Paladins get more melee haste from haste than other classes
-	// paladin.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
-	// // Base dodge is unaffected by Diminishing Returns
 
 	// Bonus Armor and Armor are treated identically for Paladins
 	paladin.AddStatDependency(stats.BonusArmor, stats.Armor, 1)

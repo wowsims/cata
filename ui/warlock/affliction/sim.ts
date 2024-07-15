@@ -64,7 +64,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAfflictionWarlock, {
 				stat: Stat.StatMastery,
 				breakpoints: masteryRatingBreakpoints,
 				capType: StatCapType.TypeThreshold,
-				postCapEPs: Array(masteryRatingBreakpoints.length).fill(0),
+				postCapEPs: [0],
 			};
 
 			return [masterySoftCapConfig];

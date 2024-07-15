@@ -63,7 +63,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 				stat: Stat.StatMastery,
 				breakpoints: masteryRatingBreakpoints,
 				capType: StatCapType.TypeThreshold,
-				postCapEPs: Array(masteryRatingBreakpoints.length).fill(0),
+				postCapEPs: [0],
 			};
 
 			const hasteSoftCapConfig = {
