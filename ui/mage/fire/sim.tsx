@@ -221,6 +221,23 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 					});
 					return softCaps;
 				},
+				additionalSoftCapTooltipInformation: {
+					[Stat.StatSpellHaste]: () => {
+						const hasBL = !!player.getRaid()?.getBuffs()?.bloodlust;
+						const hasPI = !!player.getBuffs().powerInfusionCount;
+						const hasBerserking = player.getRace() === Race.RaceTroll;
+						return (
+							<>
+								<p className="mb-0">Additional breakpoints have been created using the following cooldowns:</p>
+								<ul>
+									{hasBL && <li>Bloodlust</li>}
+									{hasPI && <li>Power Infusion</li>}
+									{hasBerserking && <li>Berserking</li>}
+								</ul>
+							</>
+						);
+					},
+				},
 			});
 		});
 	}

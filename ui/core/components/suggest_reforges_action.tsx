@@ -40,9 +40,9 @@ const INCLUDED_STATS = [
 	Stat.StatParry,
 ];
 
-type StatTooltips = { [key in Stat]?: () => Element | string };
+type StatTooltipContent = { [key in Stat]?: () => Element | string };
 
-const STAT_TOOLTIPS: StatTooltips = {
+const STAT_TOOLTIPS: StatTooltipContent = {
 	[Stat.StatMastery]: () => (
 		<>
 			Rating: <strong>excluding</strong> your base mastery
@@ -61,7 +61,7 @@ const STAT_TOOLTIPS: StatTooltips = {
 
 export type ReforgeOptimizerOptions = {
 	experimental?: true;
-	statTooltips?: StatTooltips;
+	statTooltips?: StatTooltipContent;
 	statSelectionPresets?: Map<Stat, Map<string, number>>;
 	// Allows you to modify the stats before they are returned for the calculations
 	// For example: Adding class specific Glyphs/Talents that are not added by the backend
@@ -72,6 +72,8 @@ export type ReforgeOptimizerOptions = {
 	// Allows you to modify default softCaps
 	// For example you wish to add breakpoints for Berserking / Bloodlust if enabled
 	updateSoftCaps?: (softCaps: StatCapConfig[]) => StatCapConfig[];
+	// Allows you to specifiy additional information for the soft cap tooltips
+	additionalSoftCapTooltipInformation?: StatTooltipContent;
 };
 
 export class ReforgeOptimizer {
@@ -87,7 +89,8 @@ export class ReforgeOptimizer {
 	protected updateGearStatsModifier: ReforgeOptimizerOptions['updateGearStatsModifier'];
 	protected _softCapsConfig: StatCapConfig[];
 	protected updateSoftCaps: ReforgeOptimizerOptions['updateSoftCaps'];
-	protected statTooltips: StatTooltips = {};
+	protected statTooltips: StatTooltipContent = {};
+	protected additionalSoftCapTooltipInformation: StatTooltipContent = {};
 	protected statSelectionPresets: ReforgeOptimizerOptions['statSelectionPresets'];
 	readonly freezeItemSlotsChangeEmitter = new TypedEvent<void>();
 	protected freezeItemSlots = false;
@@ -106,6 +109,7 @@ export class ReforgeOptimizer {
 		this.updateGearStatsModifier = options?.updateGearStatsModifier;
 		this._softCapsConfig = this.defaults.softCapBreakpoints || [];
 		this.statTooltips = { ...STAT_TOOLTIPS, ...options?.statTooltips };
+		this.additionalSoftCapTooltipInformation = { ...options?.additionalSoftCapTooltipInformation };
 		this.statSelectionPresets = options?.statSelectionPresets;
 		this._statCaps = this.statCaps;
 
@@ -168,10 +172,10 @@ export class ReforgeOptimizer {
 		if (!!this.softCapsConfig?.length)
 			tippy(startReforgeOptimizationButton, {
 				theme: 'suggest-reforges-softcaps',
-				content: this.buildReforgeButtonTooltip(),
 				placement: 'bottom',
 				maxWidth: 310,
 				interactive: true,
+				onShow: instance => instance.setContent(this.buildReforgeButtonTooltip()),
 			});
 
 		tippy(contextMenuButton, {
@@ -233,6 +237,11 @@ export class ReforgeOptimizer {
 									<th colSpan={2}>{getClassStatName(stat, this.player.getClass())}</th>
 									<td className="text-end">{statCapTypeNames.get(capType)}</td>
 								</tr>
+								{this.additionalSoftCapTooltipInformation[stat] && (
+									<tr>
+										<td colSpan={3}>{this.additionalSoftCapTooltipInformation[stat]?.()}</td>
+									</tr>
+								)}
 								<tr>
 									<th>
 										<em>Rating</em>
@@ -299,7 +308,6 @@ export class ReforgeOptimizer {
 					useSoftCapBreakpointsInput = new BooleanPicker(null, this.player, {
 						id: 'reforge-optimizer-enable-soft-cap-breakpoints',
 						label: 'Use soft cap breakpoints',
-						labelTooltip: this.buildReforgeButtonTooltip(),
 						inline: true,
 						changedEvent: () => this.sim.useSoftCapBreakpointsChangeEmitter,
 						getValue: () => this.sim.getUseSoftCapBreakpoints(),
