@@ -195,7 +195,7 @@ export class ReforgeOptimizer {
 	}
 
 	get softCapsConfig() {
-		return this.updateSoftCaps?.(this._softCapsConfig) || this._softCapsConfig;
+		return this.updateSoftCaps?.(structuredClone(this._softCapsConfig)) || this._softCapsConfig;
 	}
 
 	get statCaps() {

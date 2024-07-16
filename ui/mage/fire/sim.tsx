@@ -1,4 +1,3 @@
-import { CharacterStats } from '../../core/components/character_stats';
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
 import * as Mechanics from '../../core/constants/mechanics';
@@ -180,8 +179,9 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 						);
 
 					this.individualConfig.defaults.softCapBreakpoints!.forEach(softCap => {
-						if (softCap.stat === Stat.StatSpellHaste) {
-							const adjustedHastedBreakpoints = new Set(softCap.breakpoints.slice());
+						const softCapToModify = softCaps.find(sc => sc.stat === softCap.stat);
+						if (softCap.stat === Stat.StatSpellHaste && softCapToModify) {
+							const adjustedHastedBreakpoints = new Set([...softCap.breakpoints]);
 							// LvB/Pyro are not worth adjusting for
 							const excludedHasteBreakpoints = [
 								hasteBreakpoints.get('5-tick LvB/Pyro')!,
@@ -216,7 +216,7 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 									}
 								}
 							});
-							softCap.breakpoints = [...adjustedHastedBreakpoints].sort((a, b) => a - b);
+							softCapToModify.breakpoints = [...adjustedHastedBreakpoints].sort((a, b) => a - b);
 						}
 					});
 					return softCaps;
@@ -226,14 +226,19 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 						const hasBL = !!player.getRaid()?.getBuffs()?.bloodlust;
 						const hasPI = !!player.getBuffs().powerInfusionCount;
 						const hasBerserking = player.getRace() === Race.RaceTroll;
+
 						return (
 							<>
-								<p className="mb-0">Additional breakpoints have been created using the following cooldowns:</p>
-								<ul className="mb-0">
-									{hasBL && <li>Bloodlust</li>}
-									{hasPI && <li>Power Infusion</li>}
-									{hasBerserking && <li>Berserking</li>}
-								</ul>
+								{(hasBL || hasPI || hasBerserking) && (
+									<>
+										<p className="mb-0">Additional breakpoints have been created using the following cooldowns:</p>
+										<ul className="mb-0">
+											{hasBL && <li>Bloodlust</li>}
+											{hasPI && <li>Power Infusion</li>}
+											{hasBerserking && <li>Berserking</li>}
+										</ul>
+									</>
+								)}
 							</>
 						);
 					},
