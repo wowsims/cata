@@ -73,6 +73,7 @@ func (mage *Mage) registerLivingBombSpell() {
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					if bombExplode {
 						livingBombExplosionSpell.Cast(sim, aura.Unit)
+						mage.WaitUntil(sim, sim.CurrentTime + mage.ReactionTime)
 						if len(activeLivingBombs) != 0 {
 							activeLivingBombs = activeLivingBombs[1:]
 						}
