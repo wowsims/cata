@@ -179,6 +179,8 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		return rot.newValueAuraIsActive(config.GetAuraIsActive())
 	case *proto.APLValue_AuraIsActiveWithReactionTime:
 		return rot.newValueAuraIsActiveWithReactionTime(config.GetAuraIsActiveWithReactionTime())
+	case *proto.APLValue_AuraIsInactiveWithReactionTime:
+		return rot.newValueAuraIsInactiveWithReactionTime(config.GetAuraIsInactiveWithReactionTime())
 	case *proto.APLValue_AuraRemainingTime:
 		return rot.newValueAuraRemainingTime(config.GetAuraRemainingTime())
 	case *proto.APLValue_AuraNumStacks:

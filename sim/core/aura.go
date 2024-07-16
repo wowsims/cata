@@ -230,7 +230,7 @@ func (aura *Aura) TimeActive(sim *Simulation) time.Duration {
 func (aura *Aura) TimeInactive(sim *Simulation) time.Duration {
 	if aura.IsActive() {
 		return 0
-	} else if aura == nil {
+	} else if (aura == nil) || (aura.fadeTime < 0) {
 		return NeverExpires
 	} else {
 		return sim.CurrentTime - aura.fadeTime
