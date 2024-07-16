@@ -136,7 +136,8 @@ func (value *APLValueAuraRemainingTime) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeDuration
 }
 func (value *APLValueAuraRemainingTime) GetDuration(sim *Simulation) time.Duration {
-	return value.aura.Get().RemainingDuration(sim)
+	aura := value.aura.Get()
+	return TernaryDuration(aura.IsActive(), aura.RemainingDuration(sim), 0)
 }
 func (value *APLValueAuraRemainingTime) String() string {
 	return fmt.Sprintf("Aura Remaining Time(%s)", value.aura.String())
