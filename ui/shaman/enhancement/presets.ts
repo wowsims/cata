@@ -46,7 +46,7 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatSpellHaste]: 0.22,
 			[Stat.StatAttackPower]: 1.0,
 			[Stat.StatMeleeHit]: 0.6,
-			[Stat.StatMeleeCrit]: 0.44,
+			[Stat.StatMeleeCrit]: 0.58,
 			[Stat.StatMeleeHaste]: 0.44,
 			[Stat.StatExpertise]: 1.3,
 			[Stat.StatMastery]: 1.21,
