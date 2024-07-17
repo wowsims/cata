@@ -66,9 +66,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 				postCapEPs: [0],
 			};
 
+			const hasteBreakpoints = Presets.DEMONOLOGY_BREAKPOINTS.get(Stat.StatSpellHaste)!;
 			const hasteSoftCapConfig = {
 				stat: Stat.StatSpellHaste,
-				breakpoints: [16.65 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT, 25 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
+				breakpoints: [hasteBreakpoints.get('4-tick - SF')!, hasteBreakpoints.get('8-tick - Corruption')!],
 				capType: StatCapType.TypeSoftCap,
 				postCapEPs: [0.64, 0.61],
 			};
