@@ -38,22 +38,22 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'P1',
 	Stats.fromMap(
 		{
-			[Stat.StatIntellect]: 1.48,
-			[Stat.StatAgility]: 1.59,
-			[Stat.StatStrength]: 1.1,
-			[Stat.StatSpellPower]: 1.13,
-			[Stat.StatSpellHit]: 0, //default EP assumes cap
-			[Stat.StatSpellCrit]: 0.91,
-			[Stat.StatSpellHaste]: 0.37,
+			[Stat.StatIntellect]: 0.07,
+			[Stat.StatAgility]: 2.47,
+			[Stat.StatSpellPower]: 0,
+			[Stat.StatSpellHit]: 0.89,
+			[Stat.StatSpellCrit]: 0.26,
+			[Stat.StatSpellHaste]: 0.22,
 			[Stat.StatAttackPower]: 1.0,
-			[Stat.StatMeleeHit]: 1.38,
-			[Stat.StatMeleeCrit]: 0.81,
-			[Stat.StatMeleeHaste]: 1.61, //haste is complicated
-			[Stat.StatExpertise]: 0, //default EP assumes cap
+			[Stat.StatMeleeHit]: 0.6,
+			[Stat.StatMeleeCrit]: 0.44,
+			[Stat.StatMeleeHaste]: 0.44,
+			[Stat.StatExpertise]: 1.3,
+			[Stat.StatMastery]: 1.21,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 5.21,
-			[PseudoStat.PseudoStatOffHandDps]: 2.21,
+			[PseudoStat.PseudoStatMainHandDps]: 3.05,
+			[PseudoStat.PseudoStatOffHandDps]: 2.56,
 		},
 	),
 );
