@@ -51,8 +51,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-AncientPetrifiedSeed-69001"
  value: {
-  dps: 26987.87755
-  tps: 37763.08403
+  dps: 26998.33873
+  tps: 37766.7805
  }
 }
 dps_results: {
@@ -72,15 +72,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-ApparatusofKhaz'goroth-68972"
  value: {
-  dps: 26010.1643
-  tps: 36366.3176
+  dps: 26010.16289
+  tps: 36366.3166
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-ApparatusofKhaz'goroth-69113"
  value: {
-  dps: 26164.81896
-  tps: 36466.50154
+  dps: 26164.81755
+  tps: 36466.50053
  }
 }
 dps_results: {
@@ -227,8 +227,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-Brawler'sTrophy-71338"
  value: {
-  dps: 24976.79848
-  tps: 35210.11948
+  dps: 24976.7971
+  tps: 35210.11851
  }
 }
 dps_results: {
@@ -248,8 +248,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-Coren'sChilledChromiumCoaster-71335"
  value: {
-  dps: 26274.92217
-  tps: 36928.41354
+  dps: 26274.9208
+  tps: 36928.41257
  }
 }
 dps_results: {
@@ -339,8 +339,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-Dwyer'sCaber-70141"
  value: {
-  dps: 25957.5019
-  tps: 36373.2207
+  dps: 25957.50049
+  tps: 36373.2197
  }
 }
 dps_results: {
@@ -388,8 +388,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-EssenceoftheEternalFlame-69002"
  value: {
-  dps: 25996.8044
-  tps: 36620.70906
+  dps: 25998.67027
+  tps: 36620.22049
  }
 }
 dps_results: {
@@ -416,8 +416,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-FieryQuintessence-69000"
  value: {
-  dps: 24979.69419
-  tps: 35302.82355
+  dps: 24979.69281
+  tps: 35302.82258
  }
 }
 dps_results: {
@@ -794,15 +794,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-MatrixRestabilizer-68994"
  value: {
-  dps: 27153.43487
-  tps: 38223.96494
+  dps: 27153.43381
+  tps: 38223.96419
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-MatrixRestabilizer-69150"
  value: {
-  dps: 27417.92519
-  tps: 38614.79024
+  dps: 27417.92915
+  tps: 38614.79305
  }
 }
 dps_results: {
@@ -836,8 +836,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-MithrilStopwatch-71337"
  value: {
-  dps: 25336.18048
-  tps: 35669.90361
+  dps: 25336.17907
+  tps: 35669.90261
  }
 }
 dps_results: {
@@ -850,22 +850,22 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-MoonwellPhial-70143"
  value: {
-  dps: 24976.79848
-  tps: 35210.11948
+  dps: 24976.7971
+  tps: 35210.11851
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-NecromanticFocus-68982"
  value: {
-  dps: 24977.3284
-  tps: 35212.2302
+  dps: 24977.32702
+  tps: 35212.22923
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-NecromanticFocus-69139"
  value: {
-  dps: 24977.3284
-  tps: 35212.15931
+  dps: 24977.32702
+  tps: 35212.15833
  }
 }
 dps_results: {
@@ -878,8 +878,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-PetrifiedPickledEgg-71336"
  value: {
-  dps: 24977.3284
-  tps: 35212.29117
+  dps: 24977.32702
+  tps: 35212.29019
  }
 }
 dps_results: {
@@ -962,8 +962,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-Ricket'sMagneticFireball-70144"
  value: {
-  dps: 26681.88242
-  tps: 37146.35174
+  dps: 26681.88118
+  tps: 37146.35086
  }
 }
 dps_results: {
@@ -983,8 +983,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-RuneofZeth-68998"
  value: {
-  dps: 25402.32951
-  tps: 35754.56948
+  dps: 25402.32811
+  tps: 35755.27199
  }
 }
 dps_results: {
@@ -1165,15 +1165,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-TheHungerer-68927"
  value: {
-  dps: 26852.42025
-  tps: 36173.39841
+  dps: 26846.9325
+  tps: 36212.76058
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-TheHungerer-69112"
  value: {
-  dps: 26995.42753
-  tps: 36802.58041
+  dps: 26972.89848
+  tps: 36893.88845
  }
 }
 dps_results: {
@@ -1277,29 +1277,29 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 24979.66148
-  tps: 35223.86716
+  dps: 24979.6601
+  tps: 35223.86618
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 24981.55439
-  tps: 35233.94999
+  dps: 24981.55301
+  tps: 35233.94901
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-VesselofAcceleration-68995"
  value: {
-  dps: 26025.45386
-  tps: 36671.52219
+  dps: 26025.45242
+  tps: 36671.52116
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-VesselofAcceleration-69167"
  value: {
-  dps: 26175.0842
-  tps: 36752.6595
+  dps: 26175.08275
+  tps: 36752.65847
  }
 }
 dps_results: {

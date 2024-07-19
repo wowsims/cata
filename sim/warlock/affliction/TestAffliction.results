@@ -51,8 +51,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-AncientPetrifiedSeed-69001"
  value: {
-  dps: 26266.93346
-  tps: 19717.13543
+  dps: 26197.53495
+  tps: 19640.36748
  }
 }
 dps_results: {
@@ -72,15 +72,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-ApparatusofKhaz'goroth-68972"
  value: {
-  dps: 26121.91929
-  tps: 19530.90397
+  dps: 25939.86646
+  tps: 19351.13037
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-ApparatusofKhaz'goroth-69113"
  value: {
-  dps: 26121.91929
-  tps: 19530.90397
+  dps: 25939.86646
+  tps: 19351.13037
  }
 }
 dps_results: {
@@ -220,8 +220,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-Brawler'sTrophy-71338"
  value: {
-  dps: 26121.91929
-  tps: 19530.90397
+  dps: 25939.86646
+  tps: 19351.13037
  }
 }
 dps_results: {
@@ -241,8 +241,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-Coren'sChilledChromiumCoaster-71335"
  value: {
-  dps: 26464.50033
-  tps: 19758.50256
+  dps: 26286.24416
+  tps: 19587.52127
  }
 }
 dps_results: {
@@ -325,8 +325,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-Dwyer'sCaber-70141"
  value: {
-  dps: 26462.93555
-  tps: 19772.96504
+  dps: 26281.55564
+  tps: 19591.72242
  }
 }
 dps_results: {
@@ -374,8 +374,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-EssenceoftheEternalFlame-69002"
  value: {
-  dps: 26266.93346
-  tps: 19717.13543
+  dps: 26197.53495
+  tps: 19640.36748
  }
 }
 dps_results: {
@@ -402,8 +402,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-FieryQuintessence-69000"
  value: {
-  dps: 27023.82143
-  tps: 20102.9316
+  dps: 27034.477
+  tps: 20155.34082
  }
 }
 dps_results: {
@@ -780,15 +780,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-MatrixRestabilizer-68994"
  value: {
-  dps: 26121.91929
-  tps: 19530.90397
+  dps: 25939.86646
+  tps: 19351.13037
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-MatrixRestabilizer-69150"
  value: {
-  dps: 26121.91929
-  tps: 19530.90397
+  dps: 25939.86646
+  tps: 19351.13037
  }
 }
 dps_results: {
@@ -822,8 +822,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-MithrilStopwatch-71337"
  value: {
-  dps: 27552.78422
-  tps: 20546.03205
+  dps: 27381.59576
+  tps: 20388.07932
  }
 }
 dps_results: {
@@ -836,22 +836,22 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-MoonwellPhial-70143"
  value: {
-  dps: 26108.12556
-  tps: 19510.45331
+  dps: 26013.04576
+  tps: 19441.18561
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-NecromanticFocus-68982"
  value: {
-  dps: 27463.94559
-  tps: 20546.88133
+  dps: 27472.88441
+  tps: 20526.94906
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-NecromanticFocus-69139"
  value: {
-  dps: 27744.64792
-  tps: 20763.5489
+  dps: 27800.38276
+  tps: 20845.28224
  }
 }
 dps_results: {
@@ -864,8 +864,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-PetrifiedPickledEgg-71336"
  value: {
-  dps: 27040.70763
-  tps: 20134.76447
+  dps: 27045.50651
+  tps: 20139.66554
  }
 }
 dps_results: {
@@ -948,8 +948,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-Ricket'sMagneticFireball-70144"
  value: {
-  dps: 26469.18084
-  tps: 19718.28617
+  dps: 26455.0368
+  tps: 19715.68083
  }
 }
 dps_results: {
@@ -969,8 +969,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-RuneofZeth-68998"
  value: {
-  dps: 27484.02263
-  tps: 20470.69505
+  dps: 27415.01592
+  tps: 20375.86851
  }
 }
 dps_results: {
@@ -1144,15 +1144,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-TheHungerer-68927"
  value: {
-  dps: 26121.91929
-  tps: 19530.90397
+  dps: 25939.86646
+  tps: 19351.13037
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-TheHungerer-69112"
  value: {
-  dps: 26121.91929
-  tps: 19530.90397
+  dps: 25939.86646
+  tps: 19351.13037
  }
 }
 dps_results: {
@@ -1249,29 +1249,29 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 27482.66176
-  tps: 20553.36119
+  dps: 27501.28156
+  tps: 20533.65947
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 27727.00389
-  tps: 20846.67086
+  dps: 27787.83005
+  tps: 20896.43197
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-VesselofAcceleration-68995"
  value: {
-  dps: 26121.91929
-  tps: 19530.90397
+  dps: 25939.86646
+  tps: 19351.13037
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-VesselofAcceleration-69167"
  value: {
-  dps: 26121.91929
-  tps: 19530.90397
+  dps: 25939.86646
+  tps: 19351.13037
  }
 }
 dps_results: {
