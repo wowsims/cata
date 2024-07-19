@@ -283,14 +283,14 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-DarkmoonCard:Hurricane-62049"
  value: {
-  dps: 28830.71731
+  dps: 28830.38786
   tps: 19457.18835
  }
 }
 dps_results: {
  key: "TestEnhancement-AllItems-DarkmoonCard:Hurricane-62051"
  value: {
-  dps: 29546.56436
+  dps: 29546.22851
   tps: 19902.99649
  }
 }
@@ -1319,8 +1319,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Average-Default"
  value: {
-  dps: 29803.85376
-  tps: 19843.50208
+  dps: 29803.90627
+  tps: 19843.53965
  }
 }
 dps_results: {
@@ -1411,21 +1411,21 @@ dps_results: {
  key: "TestEnhancement-Settings-Troll-p1draenei-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 30045.8375
-  tps: 23971.35316
+  tps: 23971.76418
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-p1draenei-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 29622.16249
-  tps: 19667.94341
+  tps: 19667.96396
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-p1draenei-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 34089.03861
-  tps: 22148.66084
+  tps: 22148.76359
  }
 }
 dps_results: {

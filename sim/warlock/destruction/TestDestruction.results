@@ -1249,8 +1249,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Average-Default"
  value: {
-  dps: 28821.63685
-  tps: 19232.93844
+  dps: 28821.75627
+  tps: 19232.9846
  }
 }
 dps_results: {
@@ -1277,15 +1277,15 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Settings-Goblin-p1-Destruction Warlock-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 18380.32263
-  tps: 25953.19557
+  dps: 18380.88269
+  tps: 25953.34912
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Goblin-p1-Destruction Warlock-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 18380.32263
-  tps: 12351.14564
+  dps: 18380.88269
+  tps: 12351.29918
  }
 }
 dps_results: {
@@ -1319,22 +1319,22 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Settings-Human-p1-Destruction Warlock-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 18276.56125
-  tps: 25765.61901
+  dps: 18319.76648
+  tps: 25733.88566
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Human-p1-Destruction Warlock-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 18276.56125
-  tps: 12304.29281
+  dps: 18319.76648
+  tps: 12311.54902
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Human-p1-Destruction Warlock-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 21353.42311
-  tps: 12898.58479
+  dps: 21466.99338
+  tps: 12982.25775
  }
 }
 dps_results: {
@@ -1361,22 +1361,22 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Settings-Orc-p1-Destruction Warlock-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 18656.64738
-  tps: 25865.05808
+  dps: 18708.0476
+  tps: 25857.8923
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-p1-Destruction Warlock-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 18656.64738
-  tps: 12412.66814
+  dps: 18708.0476
+  tps: 12418.48828
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-p1-Destruction Warlock-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 22053.78425
-  tps: 13061.70487
+  dps: 22174.37434
+  tps: 13157.13388
  }
 }
 dps_results: {
