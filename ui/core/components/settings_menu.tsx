@@ -7,7 +7,7 @@ import { SimUI } from '../sim_ui.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { BaseModal } from './base_modal.jsx';
 import { BooleanPicker } from './pickers/boolean_picker.js';
-import { EnumPicker } from './pickers/enum_picker.js';
+import { EnumPicker, EnumValueConfig } from './pickers/enum_picker.js';
 import { NumberPicker } from './pickers/number_picker.js';
 import Toast from './toast';
 
@@ -25,6 +25,9 @@ export class SettingsMenu extends BaseModal {
 		const showThreatMetrics = ref<HTMLDivElement>();
 		const showExperimental = ref<HTMLDivElement>();
 		const showQuickSwap = ref<HTMLDivElement>();
+		const useConcurrentWorkersWrap = ref<HTMLDivElement>();
+		const useConcurrentWorkers = ref<HTMLDivElement>();
+		const useConcurrentWorkersNote = ref<HTMLDivElement>();
 
 		const body = (
 			<div>
@@ -43,6 +46,10 @@ export class SettingsMenu extends BaseModal {
 				<div ref={showThreatMetrics} className="show-threat-metrics-picker w-50 pe-2"></div>
 				<div ref={showExperimental} className="show-experimental-picker w-50 pe-2"></div>
 				<div ref={showQuickSwap} className="show-quick-swap-picker w-50 pe-2"></div>
+				<div ref={useConcurrentWorkersWrap} className="use-concurrency-container w-50 pe-2">
+					<div ref={useConcurrentWorkers} className="use-concurrent-workers-picker"></div>
+					<div ref={useConcurrentWorkersNote} className="form-text" hidden></div>
+				</div>
 			</div>
 		);
 
@@ -156,5 +163,33 @@ export class SettingsMenu extends BaseModal {
 					sim.setShowQuickSwap(eventID, newValue);
 				},
 			});
+
+		if (useConcurrentWorkersWrap.value && useConcurrentWorkers.value) {
+			const values: EnumValueConfig[] = [{ value: 0, name: 'Off' }];
+			for (let i = 2; i <= navigator.hardwareConcurrency; i++) {
+				values.push({ value: i, name: i.toString() });
+			}
+
+			new EnumPicker<Sim>(useConcurrentWorkers.value, this.simUI.sim, {
+				id: 'simui-concurrent-workers-picker',
+				label: 'Use Multiple CPU Cores',
+				labelTooltip: 'Use web workers to spread sim workload over multiple CPU cores.',
+				changedEvent: (sim: Sim) => sim.wasmConcurrencyChangeEmitter,
+				getValue: (sim: Sim) => sim.getWasmConcurrency(),
+				setValue: (eventID, sim, newValue) => sim.setWasmConcurrency(eventID, newValue),
+				values: values,
+			});
+
+			if (useConcurrentWorkersNote.value && navigator.userAgent.toLowerCase().includes('firefox')) {
+				const el = useConcurrentWorkersNote.value;
+				el.hidden = false;
+				el.textContent = `Too many workers can cause significant memory usage! If sim doesn't finish due to RAM running out use a lower number.`;
+			}
+
+			// Hide if not running wasm. Local sim has native threading.
+			this.simUI.sim.isWasm().then(isWasm => {
+				if (!isWasm) useConcurrentWorkersWrap.value!.hidden = true;
+			});
+		}
 	}
 }

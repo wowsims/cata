@@ -14,8 +14,11 @@ import Toast from './components/toast';
 import { REPO_NEW_ISSUE_URL } from './constants/other';
 import { LaunchStatus, SimStatus } from './launched_sims.js';
 import { PlayerSpec } from './player_spec.js';
+import { ErrorOutcomeType } from './proto/api';
 import { ActionId } from './proto_utils/action_id.js';
+import { SimResult } from './proto_utils/sim_result';
 import { Sim, SimError } from './sim.js';
+import { RequestTypes } from './sim_signal_manager.js';
 import { EventID, TypedEvent } from './typed_event.js';
 import { WorkerProgressCallback } from './worker_pool';
 
@@ -294,7 +297,14 @@ export abstract class SimUI extends Component {
 	async runSim(onProgress: WorkerProgressCallback) {
 		this.resultsViewer.setPending();
 		try {
-			await this.sim.runRaidSim(TypedEvent.nextEventID(), onProgress);
+			await this.sim.signalManager.abortType(RequestTypes.All);
+			const result = await this.sim.runRaidSim(TypedEvent.nextEventID(), onProgress);
+			if (!(result instanceof SimResult) && result.type == ErrorOutcomeType.ErrorOutcomeAborted) {
+				new Toast({
+					variant: 'info',
+					body: 'Raid sim cancelled.',
+				});
+			}
 		} catch (e) {
 			this.resultsViewer.hideAll();
 			this.handleCrash(e);

@@ -13,6 +13,7 @@ import (
 	"github.com/wowsims/cata/sim"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/simsignals"
 	"google.golang.org/protobuf/encoding/protojson"
 	goproto "google.golang.org/protobuf/proto"
 )
@@ -22,7 +23,7 @@ var _default_rsr = proto.RaidSimRequest{
 	Encounter:  &proto.Encounter{},
 	SimOptions: &proto.SimOptions{},
 }
-var _active_sim = core.NewSim(&_default_rsr)
+var _active_sim = core.NewSim(&_default_rsr, simsignals.Signals{})
 var _active_seed int64 = 1
 var _aura_labels = []string{}
 var _target_aura_labels = []string{}
@@ -36,7 +37,7 @@ func runSim(json *C.char) *C.char {
 		log.Fatalf("failed to load input json file: %s", err)
 	}
 	sim.RegisterAll()
-	result := core.RunSim(input, nil, nil)
+	result := core.RunSim(input, nil, simsignals.Signals{})
 	out, err := protojson.Marshal(result)
 	if err != nil {
 		panic(err)
@@ -154,7 +155,7 @@ func new(json *C.char) {
 		log.Fatalf("failed to load input json file: %s", err)
 	}
 	sim.RegisterAll()
-	_active_sim = core.NewSim(input)
+	_active_sim = core.NewSim(input, simsignals.Signals{})
 	_active_sim.Reseed(_active_seed)
 	_active_seed += 1
 	_active_sim.Reset()
