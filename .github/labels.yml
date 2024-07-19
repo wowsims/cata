@@ -1,0 +1,49 @@
+Hunter:
+    - ui/hunter/**/*
+    - sim/hunter/**/*
+    - proto/hunter.proto
+
+Warrior:
+    - ui/warrior/**/*
+    - sim/warrior/**/*
+    - proto/warrior.proto
+
+Paladin:
+    - ui/paladin/**/*
+    - sim/paladin/**/*
+    - proto/paladin.proto
+
+Mage:
+    - ui/mage/**/*
+    - sim/mage/**/*
+    - proto/mage.proto
+
+Rogue:
+    - ui/rogue/**/*
+    - sim/rogue/**/*
+    - proto/rogue.proto
+
+Priest:
+    - ui/priest/**/*
+    - sim/priest/**/*
+    - proto/priest.proto
+
+Death Knight:
+    - ui/death_knight/**/*
+    - sim/deat_hknight/**/*
+    - proto/death_knight.proto
+
+Shaman:
+    - ui/shaman/**/*
+    - sim/shaman/**/*
+    - proto/shaman.proto
+
+Warlock:
+    - ui/warlock/**/*
+    - sim/warlock/**/*
+    - proto/warlock.proto
+
+Druid:
+    - ui/druid/**/*
+    - sim/druid/**/*
+    - proto/druid.proto

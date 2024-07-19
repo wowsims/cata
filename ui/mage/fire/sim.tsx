@@ -166,7 +166,6 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
-				experimental: true,
 				statSelectionPresets: Presets.FIRE_BREAKPOINTS,
 				updateSoftCaps: softCaps => {
 					const hasBL = !!player.getRaid()?.getBuffs()?.bloodlust;

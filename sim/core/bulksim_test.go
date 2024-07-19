@@ -1,11 +1,11 @@
 package core
 
 import (
-	"context"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/simsignals"
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
@@ -108,7 +108,7 @@ func createEquipmentFromItems(items ...*itemWithSlot) *proto.EquipmentSpec {
 func TestBulkSim(t *testing.T) {
 	t.Skip("TODO: Implement")
 
-	fakeRunSim := func(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, skipPresim bool, quitChan chan bool) *proto.RaidSimResult {
+	fakeRunSim := func(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, skipPresim bool, signals simsignals.Signals) *proto.RaidSimResult {
 		return &proto.RaidSimResult{}
 	}
 
@@ -117,9 +117,9 @@ func TestBulkSim(t *testing.T) {
 		Request:             &proto.BulkSimRequest{},
 	}
 
-	got, err := bulk.Run(context.Background(), nil)
-	if err != nil {
-		t.Fatalf("BulkSim() returned error: %v", err)
+	got := bulk.Run(simsignals.CreateSignals(), nil)
+	if got.Error != nil {
+		t.Fatalf("BulkSim() returned error: %v", got.Error.Message)
 	}
 
 	want := &proto.BulkSimResult{}
@@ -441,7 +441,7 @@ func TestGenerateAllEquipmentSubstitutions(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			results := generateAllEquipmentSubstitutions(context.Background(), baseItems, tt.args.combinations, tt.args.distinctItemSlotCombos, tt.args.isFuryWarrior)
+			results := generateAllEquipmentSubstitutions(simsignals.CreateSignals(), baseItems, tt.args.combinations, tt.args.distinctItemSlotCombos, tt.args.isFuryWarrior)
 
 			idx := 0
 			for got := range results {

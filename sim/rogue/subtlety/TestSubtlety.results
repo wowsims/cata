@@ -50,6 +50,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-AncientPetrifiedSeed-69001"
+ value: {
+  dps: 23746.09243
+  tps: 16859.72562
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-Anhuur'sHymnal-55889"
  value: {
   dps: 22364.69885
@@ -61,6 +68,20 @@ dps_results: {
  value: {
   dps: 22435.44405
   tps: 15929.16528
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-ApparatusofKhaz'goroth-68972"
+ value: {
+  dps: 23175.16269
+  tps: 16454.36551
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-ApparatusofKhaz'goroth-69113"
+ value: {
+  dps: 23396.77387
+  tps: 16611.70945
  }
 }
 dps_results: {
@@ -205,6 +226,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-Brawler'sTrophy-71338"
+ value: {
+  dps: 22110.32104
+  tps: 15698.32794
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-BurningShadowspiritDiamond"
  value: {
   dps: 23594.96839
@@ -216,6 +244,13 @@ dps_results: {
  value: {
   dps: 23733.49014
   tps: 16850.778
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Coren'sChilledChromiumCoaster-71335"
+ value: {
+  dps: 23139.08075
+  tps: 16428.74733
  }
 }
 dps_results: {
@@ -303,6 +338,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-Dwyer'sCaber-70141"
+ value: {
+  dps: 22923.92496
+  tps: 16275.98672
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-EffulgentShadowspiritDiamond"
  value: {
   dps: 23219.22721
@@ -345,6 +387,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-EssenceoftheEternalFlame-69002"
+ value: {
+  dps: 22655.7569
+  tps: 16085.5874
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-EternalShadowspiritDiamond"
  value: {
   dps: 23219.22721
@@ -360,6 +409,13 @@ dps_results: {
 }
 dps_results: {
  key: "TestSubtlety-AllItems-FallofMortality-65124"
+ value: {
+  dps: 22110.32104
+  tps: 15698.32794
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-FieryQuintessence-69000"
  value: {
   dps: 22110.32104
   tps: 15698.32794
@@ -738,6 +794,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-MatrixRestabilizer-68994"
+ value: {
+  dps: 24210.24528
+  tps: 17189.27415
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-MatrixRestabilizer-69150"
+ value: {
+  dps: 24507.40977
+  tps: 17400.26094
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-MightoftheOcean-55251"
  value: {
   dps: 22507.79551
@@ -766,6 +836,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-MithrilStopwatch-71337"
+ value: {
+  dps: 22415.72148
+  tps: 15915.16225
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-MoonwellChalice-70142"
  value: {
   dps: 21855.289
@@ -773,10 +850,38 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-MoonwellPhial-70143"
+ value: {
+  dps: 22110.32104
+  tps: 15698.32794
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-NecromanticFocus-68982"
+ value: {
+  dps: 22110.32104
+  tps: 15698.32794
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-NecromanticFocus-69139"
+ value: {
+  dps: 22110.32104
+  tps: 15698.32794
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-Oremantle'sFavor-61448"
  value: {
   dps: 22542.57442
   tps: 16005.22784
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-PetrifiedPickledEgg-71336"
+ value: {
+  dps: 22110.32104
+  tps: 15698.32794
  }
 }
 dps_results: {
@@ -850,6 +955,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-Ricket'sMagneticFireball-70144"
+ value: {
+  dps: 23767.47108
+  tps: 16874.90447
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-RightEyeofRajh-56100"
  value: {
   dps: 22714.12267
@@ -861,6 +973,13 @@ dps_results: {
  value: {
   dps: 22841.52898
   tps: 16217.48557
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-RuneofZeth-68998"
+ value: {
+  dps: 22469.0339
+  tps: 15953.01407
  }
 }
 dps_results: {
@@ -1025,6 +1144,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-TheHungerer-68927"
+ value: {
+  dps: 23897.41534
+  tps: 16967.16489
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-TheHungerer-69112"
+ value: {
+  dps: 24024.56404
+  tps: 17057.44047
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-Theralion'sMirror-59519"
  value: {
   dps: 22110.32104
@@ -1113,6 +1246,34 @@ dps_results: {
  value: {
   dps: 23715.14008
   tps: 16837.74946
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-VariablePulseLightningCapacitor-68925"
+ value: {
+  dps: 22110.32104
+  tps: 15698.32794
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-VariablePulseLightningCapacitor-69110"
+ value: {
+  dps: 22110.32104
+  tps: 15698.32794
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-VesselofAcceleration-68995"
+ value: {
+  dps: 22897.92192
+  tps: 16257.52457
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-VesselofAcceleration-69167"
+ value: {
+  dps: 22985.03928
+  tps: 16319.37789
  }
 }
 dps_results: {
