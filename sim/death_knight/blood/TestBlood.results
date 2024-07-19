@@ -51,6 +51,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-AncientPetrifiedSeed-69001"
+ value: {
+  dps: 13995.71959
+  tps: 67901.83019
+  hps: 3603.09015
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-Anhuur'sHymnal-55889"
  value: {
   dps: 13793.96328
@@ -63,6 +71,22 @@ dps_results: {
  value: {
   dps: 13793.96328
   tps: 66925.11387
+  hps: 3603.09015
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-ApparatusofKhaz'goroth-68972"
+ value: {
+  dps: 14312.56604
+  tps: 69575.45094
+  hps: 3603.09015
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-ApparatusofKhaz'goroth-69113"
+ value: {
+  dps: 14380.26875
+  tps: 69921.44795
   hps: 3603.09015
  }
 }
@@ -227,6 +251,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-Brawler'sTrophy-71338"
+ value: {
+  dps: 13793.96328
+  tps: 66925.11387
+  hps: 3603.09015
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-Bryntroll,theBoneArbiter-50709"
  value: {
   dps: 14748.88352
@@ -248,6 +280,14 @@ dps_results: {
   dps: 13941.17967
   tps: 67727.19725
   hps: 3576.23938
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-Coren'sChilledChromiumCoaster-71335"
+ value: {
+  dps: 14228.34764
+  tps: 69221.74539
+  hps: 3603.09015
  }
 }
 dps_results: {
@@ -347,6 +387,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-Dwyer'sCaber-70141"
+ value: {
+  dps: 14487.98832
+  tps: 70535.94159
+  hps: 3603.09015
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-EffulgentShadowspiritDiamond"
  value: {
   dps: 13779.25393
@@ -395,6 +443,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-EssenceoftheEternalFlame-69002"
+ value: {
+  dps: 14352.86478
+  tps: 69301.70696
+  hps: 3603.09015
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-EternalShadowspiritDiamond"
  value: {
   dps: 13779.25393
@@ -412,6 +468,14 @@ dps_results: {
 }
 dps_results: {
  key: "TestBlood-AllItems-FallofMortality-65124"
+ value: {
+  dps: 13793.96328
+  tps: 66925.11387
+  hps: 3603.09015
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-FieryQuintessence-69000"
  value: {
   dps: 13793.96328
   tps: 66925.11387
@@ -859,6 +923,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-MatrixRestabilizer-68994"
+ value: {
+  dps: 14333.79702
+  tps: 69805.38503
+  hps: 3603.09015
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-MatrixRestabilizer-69150"
+ value: {
+  dps: 14394.34233
+  tps: 70100.84791
+  hps: 3603.09015
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-MightoftheOcean-55251"
  value: {
   dps: 14089.88333
@@ -883,7 +963,39 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-MithrilStopwatch-71337"
+ value: {
+  dps: 14068.544
+  tps: 68376.61101
+  hps: 3603.09015
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-MoonwellChalice-70142"
+ value: {
+  dps: 13793.96328
+  tps: 66925.11387
+  hps: 3603.09015
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-MoonwellPhial-70143"
+ value: {
+  dps: 13793.96328
+  tps: 66925.11387
+  hps: 3772.1505
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-NecromanticFocus-68982"
+ value: {
+  dps: 13793.96328
+  tps: 66925.11387
+  hps: 3603.09015
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-NecromanticFocus-69139"
  value: {
   dps: 13793.96328
   tps: 66925.11387
@@ -896,6 +1008,14 @@ dps_results: {
   dps: 14210.60269
   tps: 69015.04644
   hps: 3603.09015
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-PetrifiedPickledEgg-71336"
+ value: {
+  dps: 14084.10194
+  tps: 68510.30806
+  hps: 3644.60268
  }
 }
 dps_results: {
@@ -987,6 +1107,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-Ricket'sMagneticFireball-70144"
+ value: {
+  dps: 14256.21412
+  tps: 69255.79319
+  hps: 3603.09015
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-RightEyeofRajh-56100"
  value: {
   dps: 14088.72204
@@ -999,6 +1127,14 @@ dps_results: {
  value: {
   dps: 14084.83596
   tps: 68432.26839
+  hps: 3603.09015
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-RuneofZeth-68998"
+ value: {
+  dps: 14090.71544
+  tps: 68487.52172
   hps: 3603.09015
  }
 }
@@ -1187,6 +1323,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-TheHungerer-68927"
+ value: {
+  dps: 14583.744
+  tps: 70946.83906
+  hps: 3689.6599
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-TheHungerer-69112"
+ value: {
+  dps: 14679.04793
+  tps: 71570.59395
+  hps: 3728.55604
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-Theralion'sMirror-59519"
  value: {
   dps: 13793.96328
@@ -1296,6 +1448,38 @@ dps_results: {
   dps: 8073.01299
   tps: 37631.73438
   hps: 3629.75731
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-VariablePulseLightningCapacitor-68925"
+ value: {
+  dps: 13798.55561
+  tps: 66949.75354
+  hps: 3603.09015
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-VariablePulseLightningCapacitor-69110"
+ value: {
+  dps: 13804.23147
+  tps: 66980.88542
+  hps: 3603.09015
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-VesselofAcceleration-68995"
+ value: {
+  dps: 14570.30743
+  tps: 71013.574
+  hps: 3603.09015
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-VesselofAcceleration-69167"
+ value: {
+  dps: 14668.08098
+  tps: 71527.32585
+  hps: 3603.09015
  }
 }
 dps_results: {

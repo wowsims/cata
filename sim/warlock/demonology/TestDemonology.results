@@ -49,6 +49,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-AllItems-AncientPetrifiedSeed-69001"
+ value: {
+  dps: 25719.8573
+  tps: 14521.41857
+ }
+}
+dps_results: {
  key: "TestDemonology-AllItems-Anhuur'sHymnal-55889"
  value: {
   dps: 27786.54655
@@ -60,6 +67,20 @@ dps_results: {
  value: {
   dps: 27871.79291
   tps: 14735.41707
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-ApparatusofKhaz'goroth-68972"
+ value: {
+  dps: 26808.03933
+  tps: 14222.36009
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-ApparatusofKhaz'goroth-69113"
+ value: {
+  dps: 26808.03933
+  tps: 14222.36009
  }
 }
 dps_results: {
@@ -197,6 +218,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-AllItems-Brawler'sTrophy-71338"
+ value: {
+  dps: 26808.03933
+  tps: 14222.36009
+ }
+}
+dps_results: {
  key: "TestDemonology-AllItems-BurningShadowspiritDiamond"
  value: {
   dps: 29362.83212
@@ -208,6 +236,13 @@ dps_results: {
  value: {
   dps: 29258.04565
   tps: 15385.77503
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-Coren'sChilledChromiumCoaster-71335"
+ value: {
+  dps: 27286.07992
+  tps: 14495.35112
  }
 }
 dps_results: {
@@ -288,6 +323,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-AllItems-Dwyer'sCaber-70141"
+ value: {
+  dps: 27284.24269
+  tps: 14438.20405
+ }
+}
+dps_results: {
  key: "TestDemonology-AllItems-EffulgentShadowspiritDiamond"
  value: {
   dps: 28988.36242
@@ -330,6 +372,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-AllItems-EssenceoftheEternalFlame-69002"
+ value: {
+  dps: 25719.8573
+  tps: 14521.41857
+ }
+}
+dps_results: {
  key: "TestDemonology-AllItems-EternalShadowspiritDiamond"
  value: {
   dps: 28988.36242
@@ -348,6 +397,13 @@ dps_results: {
  value: {
   dps: 27916.06272
   tps: 14793.79865
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-FieryQuintessence-69000"
+ value: {
+  dps: 26153.32534
+  tps: 14831.38675
  }
 }
 dps_results: {
@@ -722,6 +778,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-AllItems-MatrixRestabilizer-68994"
+ value: {
+  dps: 26808.03933
+  tps: 14222.36009
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-MatrixRestabilizer-69150"
+ value: {
+  dps: 26808.03933
+  tps: 14222.36009
+ }
+}
+dps_results: {
  key: "TestDemonology-AllItems-MightoftheOcean-55251"
  value: {
   dps: 25476.02569
@@ -750,6 +820,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-AllItems-MithrilStopwatch-71337"
+ value: {
+  dps: 28377.71231
+  tps: 15026.44425
+ }
+}
+dps_results: {
  key: "TestDemonology-AllItems-MoonwellChalice-70142"
  value: {
   dps: 26412.96058
@@ -757,10 +834,38 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-AllItems-MoonwellPhial-70143"
+ value: {
+  dps: 26801.75355
+  tps: 14223.44165
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-NecromanticFocus-68982"
+ value: {
+  dps: 28461.639
+  tps: 14978.01233
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-NecromanticFocus-69139"
+ value: {
+  dps: 28713.68755
+  tps: 15094.1997
+ }
+}
+dps_results: {
  key: "TestDemonology-AllItems-Oremantle'sFavor-61448"
  value: {
   dps: 25418.79184
   tps: 14397.63567
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-PetrifiedPickledEgg-71336"
+ value: {
+  dps: 27844.33389
+  tps: 14755.42793
  }
 }
 dps_results: {
@@ -841,6 +946,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-AllItems-Ricket'sMagneticFireball-70144"
+ value: {
+  dps: 25675.78022
+  tps: 14554.02587
+ }
+}
+dps_results: {
  key: "TestDemonology-AllItems-RightEyeofRajh-56100"
  value: {
   dps: 27158.78199
@@ -852,6 +964,13 @@ dps_results: {
  value: {
   dps: 27158.78199
   tps: 14393.75564
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-RuneofZeth-68998"
+ value: {
+  dps: 26502.8117
+  tps: 15045.19861
  }
 }
 dps_results: {
@@ -1023,6 +1142,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-AllItems-TheHungerer-68927"
+ value: {
+  dps: 26808.03933
+  tps: 14222.36009
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-TheHungerer-69112"
+ value: {
+  dps: 26808.03933
+  tps: 14222.36009
+ }
+}
+dps_results: {
  key: "TestDemonology-AllItems-Theralion'sMirror-59519"
  value: {
   dps: 28356.94983
@@ -1111,6 +1244,34 @@ dps_results: {
  value: {
   dps: 25617.45667
   tps: 14451.82728
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-VariablePulseLightningCapacitor-68925"
+ value: {
+  dps: 28266.68433
+  tps: 15019.8704
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-VariablePulseLightningCapacitor-69110"
+ value: {
+  dps: 28740.51269
+  tps: 15402.28336
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-VesselofAcceleration-68995"
+ value: {
+  dps: 26808.03933
+  tps: 14222.36009
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-VesselofAcceleration-69167"
+ value: {
+  dps: 26808.03933
+  tps: 14222.36009
  }
 }
 dps_results: {

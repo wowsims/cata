@@ -869,6 +869,84 @@ func init() {
 		ProcChance: 0.15,
 		ICD:        time.Second * 55,
 	})
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Dwyer's Caber",
+		ID:         70141,
+		AuraID:     100322,
+		Bonus:      stats.Stats{stats.MeleeCrit: 1020, stats.SpellCrit: 1020},
+		Duration:   time.Second * 20,
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskDirect,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 0.15,
+		ICD:        time.Second * 50,
+	})
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Coren's Chilled Chromium Coaster",
+		ID:         71335,
+		AuraID:     101287,
+		Bonus:      stats.Stats{stats.AttackPower: 4000, stats.RangedAttackPower: 4000},
+		Duration:   time.Second * 10,
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskMeleeOrRanged,
+		Outcome:    core.OutcomeCrit,
+		ProcChance: 0.1,
+		ICD:        time.Second * 50,
+	})
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Petrified Pickled Egg",
+		ID:         71336,
+		AuraID:     101289,
+		Bonus:      stats.Stats{stats.MeleeHaste: 2040, stats.SpellHaste: 2040},
+		Duration:   time.Second * 10,
+		Callback:   core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+		ProcMask:   core.ProcMaskSpellHealing,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 0.1,
+		ICD:        time.Second * 45,
+	})
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Mithril Stopwatch",
+		ID:         71337,
+		AuraID:     101291,
+		Bonus:      stats.Stats{stats.SpellPower: 2040},
+		Duration:   time.Second * 10,
+		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
+		ProcMask:   core.ProcMaskSpellDamage,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 0.1,
+		ICD:        time.Second * 45,
+	})
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "The Hungerer",
+		ID:         68927,
+		AuraID:     96911,
+		Bonus:      stats.Stats{stats.MeleeHaste: 1532, stats.SpellHaste: 1532},
+		Duration:   time.Second * 15,
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskMeleeOrRanged,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 1, //TODO: verify proc chance, seems wrong?
+		ICD:        time.Second * 60,
+	})
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "The Hungerer Heroic",
+		ID:         69112,
+		AuraID:     97125,
+		Bonus:      stats.Stats{stats.MeleeHaste: 1730, stats.SpellHaste: 1730},
+		Duration:   time.Second * 15,
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskMeleeOrRanged,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 1, //TODO: verify proc chance, seems wrong?
+		ICD:        time.Second * 60,
+	})
 }
 
 var ItemSetAgonyAndTorment = core.NewItemSet(core.ItemSet{

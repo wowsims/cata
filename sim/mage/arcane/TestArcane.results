@@ -49,6 +49,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-AncientPetrifiedSeed-69001"
+ value: {
+  dps: 28269.96582
+  tps: 28420.96667
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-Anhuur'sHymnal-55889"
  value: {
   dps: 28802.76898
@@ -60,6 +67,20 @@ dps_results: {
  value: {
   dps: 28864.21557
   tps: 28988.57619
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-ApparatusofKhaz'goroth-68972"
+ value: {
+  dps: 27722.46924
+  tps: 27857.88575
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-ApparatusofKhaz'goroth-69113"
+ value: {
+  dps: 27722.46924
+  tps: 27857.88575
  }
 }
 dps_results: {
@@ -197,6 +218,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-Brawler'sTrophy-71338"
+ value: {
+  dps: 27722.46924
+  tps: 27857.88575
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-BurningShadowspiritDiamond"
  value: {
   dps: 29703.22885
@@ -208,6 +236,13 @@ dps_results: {
  value: {
   dps: 29557.52341
   tps: 29654.40238
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-Coren'sChilledChromiumCoaster-71335"
+ value: {
+  dps: 28169.64069
+  tps: 28316.66306
  }
 }
 dps_results: {
@@ -295,6 +330,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-Dwyer'sCaber-70141"
+ value: {
+  dps: 28354.2387
+  tps: 28494.38352
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-EffulgentShadowspiritDiamond"
  value: {
   dps: 29019.40582
@@ -337,6 +379,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-EssenceoftheEternalFlame-69002"
+ value: {
+  dps: 28269.96582
+  tps: 28420.96667
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-EternalShadowspiritDiamond"
  value: {
   dps: 29019.40582
@@ -355,6 +404,13 @@ dps_results: {
  value: {
   dps: 29240.11486
   tps: 29425.39928
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-FieryQuintessence-69000"
+ value: {
+  dps: 28841.53962
+  tps: 28982.7993
  }
 }
 dps_results: {
@@ -736,6 +792,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-MatrixRestabilizer-68994"
+ value: {
+  dps: 27722.46924
+  tps: 27857.88575
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-MatrixRestabilizer-69150"
+ value: {
+  dps: 27722.46924
+  tps: 27857.88575
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-MightoftheOcean-55251"
  value: {
   dps: 28009.98281
@@ -764,6 +834,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-MithrilStopwatch-71337"
+ value: {
+  dps: 29145.87601
+  tps: 29272.73255
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-MoonwellChalice-70142"
  value: {
   dps: 29876.65079
@@ -771,10 +848,38 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-MoonwellPhial-70143"
+ value: {
+  dps: 27722.46924
+  tps: 27857.88575
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-NecromanticFocus-68982"
+ value: {
+  dps: 29291.77556
+  tps: 29468.62754
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-NecromanticFocus-69139"
+ value: {
+  dps: 29421.39098
+  tps: 29594.78502
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-Oremantle'sFavor-61448"
  value: {
   dps: 28297.8785
   tps: 28448.71117
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-PetrifiedPickledEgg-71336"
+ value: {
+  dps: 29249.46581
+  tps: 29437.17495
  }
 }
 dps_results: {
@@ -855,6 +960,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-Ricket'sMagneticFireball-70144"
+ value: {
+  dps: 28676.76313
+  tps: 28830.39496
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-RightEyeofRajh-56100"
  value: {
   dps: 28109.58754
@@ -866,6 +978,13 @@ dps_results: {
  value: {
   dps: 28109.58754
   tps: 28245.82881
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-RuneofZeth-68998"
+ value: {
+  dps: 29628.85843
+  tps: 29794.59763
  }
 }
 dps_results: {
@@ -1030,6 +1149,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-TheHungerer-68927"
+ value: {
+  dps: 27722.46924
+  tps: 27857.88575
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-TheHungerer-69112"
+ value: {
+  dps: 27722.46924
+  tps: 27857.88575
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-Theralion'sMirror-59519"
  value: {
   dps: 29833.06888
@@ -1111,6 +1244,34 @@ dps_results: {
  value: {
   dps: 28319.26249
   tps: 28469.41689
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-VariablePulseLightningCapacitor-68925"
+ value: {
+  dps: 29628.97886
+  tps: 29808.16994
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-VariablePulseLightningCapacitor-69110"
+ value: {
+  dps: 30341.09796
+  tps: 30520.46411
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-VesselofAcceleration-68995"
+ value: {
+  dps: 27722.46924
+  tps: 27857.88575
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-VesselofAcceleration-69167"
+ value: {
+  dps: 27722.46924
+  tps: 27857.88575
  }
 }
 dps_results: {
