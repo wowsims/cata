@@ -165,8 +165,6 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 						spell.Cost.SpendCost(sim, spell)
 					}
 
-					spell.applyEffects(sim, target)
-
 					if config.CD.Timer != nil {
 						spell.CD.Set(sim.CurrentTime + time.Duration(float64(spell.CD.Duration)*spell.CdMultiplier))
 					}
@@ -174,6 +172,8 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 					if config.SharedCD.Timer != nil {
 						spell.SharedCD.Set(sim.CurrentTime + time.Duration(float64(spell.SharedCD.Duration)*spell.CdMultiplier))
 					}
+
+					spell.applyEffects(sim, target)
 
 					if !spell.Flags.Matches(SpellFlagNoOnCastComplete) {
 						spell.Unit.OnCastComplete(sim, spell)
@@ -197,8 +197,6 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			spell.Cost.SpendCost(sim, spell)
 		}
 
-		spell.applyEffects(sim, target)
-
 		if config.CD.Timer != nil {
 			spell.CD.Set(sim.CurrentTime + time.Duration(float64(spell.CD.Duration)*spell.CdMultiplier))
 		}
@@ -206,6 +204,8 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 		if config.SharedCD.Timer != nil {
 			spell.SharedCD.Set(sim.CurrentTime + time.Duration(float64(spell.SharedCD.Duration)*spell.CdMultiplier))
 		}
+
+		spell.applyEffects(sim, target)
 
 		if !spell.Flags.Matches(SpellFlagNoOnCastComplete) {
 			spell.Unit.OnCastComplete(sim, spell)

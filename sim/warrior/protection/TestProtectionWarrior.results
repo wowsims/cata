@@ -1332,9 +1332,9 @@ dps_results: {
 dps_results: {
  key: "TestProtectionWarrior-Average-Default"
  value: {
-  dps: 12303.23193
-  tps: 71615.82356
-  dtps: 8010.60555
+  dps: 12303.04112
+  tps: 71616.42477
+  dtps: 8010.71299
  }
 }
 dps_results: {

@@ -255,15 +255,15 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-AllItems-CrushingWeight-59506"
  value: {
-  dps: 31256.02948
-  tps: 31268.4228
+  dps: 31221.4211
+  tps: 31232.71465
  }
 }
 dps_results: {
  key: "TestRetribution-AllItems-CrushingWeight-65118"
  value: {
-  dps: 31378.41401
-  tps: 31384.0291
+  dps: 31274.83435
+  tps: 31281.42464
  }
 }
 dps_results: {
@@ -304,8 +304,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-AllItems-Deathbringer'sWill-50363"
  value: {
-  dps: 30657.80651
-  tps: 30667.76971
+  dps: 30640.34744
+  tps: 30651.44022
  }
 }
 dps_results: {
@@ -465,8 +465,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-AllItems-GearDetector-61462"
  value: {
-  dps: 30214.41963
-  tps: 30227.875
+  dps: 30301.75137
+  tps: 30316.09681
  }
 }
 dps_results: {
@@ -829,15 +829,15 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-AllItems-Prestor'sTalismanofMachination-59441"
  value: {
-  dps: 30864.88715
-  tps: 30873.26709
+  dps: 30650.09455
+  tps: 30658.66136
  }
 }
 dps_results: {
  key: "TestRetribution-AllItems-Prestor'sTalismanofMachination-65026"
  value: {
-  dps: 30859.44752
-  tps: 30862.33583
+  dps: 30844.77227
+  tps: 30848.04035
  }
 }
 dps_results: {
@@ -934,8 +934,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-AllItems-Shrine-CleansingPurifier-63838"
  value: {
-  dps: 30854.20149
-  tps: 30867.27211
+  dps: 30867.85743
+  tps: 30880.22299
  }
 }
 dps_results: {
@@ -1032,8 +1032,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-AllItems-Tank-CommanderInsignia-63841"
  value: {
-  dps: 30960.28821
-  tps: 30971.8732
+  dps: 30899.36945
+  tps: 30908.954
  }
 }
 dps_results: {
