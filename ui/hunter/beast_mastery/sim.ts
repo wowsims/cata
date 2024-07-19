@@ -25,6 +25,7 @@ import { BeastMasteryHunter_Rotation, HunterStingType } from '../../core/proto/h
 import * as AplUtils from '../../core/proto_utils/apl_utils';
 import { Stats } from '../../core/proto_utils/stats';
 import * as HunterInputs from '../inputs';
+import { sharedHunterDisplayStatsModifiers } from '../shared';
 import * as BMInputs from './inputs';
 import * as Presets from './presets';
 
@@ -62,22 +63,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 		Stat.StatMastery,
 	],
 	modifyDisplayStats: (player: Player<Spec.SpecBeastMasteryHunter>) => {
-		let stats = new Stats();
-		//stats = stats.addStat(Stat.StatMeleeCrit, player.getTalents().lethalShots * 1 * Mechanics.MELEE_CRIT_RATING_PER_CRIT_CHANCE);
-
-		const rangedWeapon = player.getEquippedItem(ItemSlot.ItemSlotRanged);
-		if (rangedWeapon?.enchant?.effectId == 3608) {
-			stats = stats.addStat(Stat.StatMeleeCrit, 40);
-		}
-		if (player.getRace() == Race.RaceDwarf && rangedWeapon?.item.rangedWeaponType == RangedWeaponType.RangedWeaponTypeGun) {
-			stats = stats.addStat(Stat.StatMeleeCrit, 1 * Mechanics.MELEE_CRIT_RATING_PER_CRIT_CHANCE);
-		}
-		if (player.getRace() == Race.RaceTroll && rangedWeapon?.item.rangedWeaponType == RangedWeaponType.RangedWeaponTypeBow) {
-			stats = stats.addStat(Stat.StatMeleeCrit, 1 * Mechanics.MELEE_CRIT_RATING_PER_CRIT_CHANCE);
-		}
-		return {
-			talents: stats,
-		};
+		return sharedHunterDisplayStatsModifiers(player);
 	},
 	defaults: {
 		// Default equipped gear.
@@ -137,6 +123,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 	otherInputs: {
 		inputs: [
 			HunterInputs.PetUptime(),
+			HunterInputs.AQTierPrepull(),
+			HunterInputs.NaxxTierPrepull(),
 			OtherInputs.InputDelay,
 			OtherInputs.DistanceFromTarget,
 			OtherInputs.TankAssignment,

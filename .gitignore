@@ -18,6 +18,8 @@ sim/web/__debug_bin
 
 # temporary files
 *.results.tmp
+package.json.tmp
+
 #.dockerignore
 /cata/
 *.code-workspace

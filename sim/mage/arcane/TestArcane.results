@@ -3,1302 +3,1302 @@ character_stats_results: {
  value: {
   final_stats: 637.35
   final_stats: 647.85
-  final_stats: 7024.09953
-  final_stats: 5960.42701
+  final_stats: 7021.35
+  final_stats: 5959.0125
   final_stats: 211
-  final_stats: 8973.16971
+  final_stats: 8971.61375
   final_stats: 1196.9
-  final_stats: 1754.178
-  final_stats: 3556.97522
-  final_stats: 1250.9888
+  final_stats: 1754
+  final_stats: 3556.59484
+  final_stats: 1250
   final_stats: 0
   final_stats: 0
-  final_stats: 1754.178
+  final_stats: 1754
   final_stats: 2410.63346
-  final_stats: 1250.9888
+  final_stats: 1250
   final_stats: 0
-  final_stats: 108670.40511
+  final_stats: 108649.1875
   final_stats: 8479
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 135190.39342
+  final_stats: 135151.9
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 1712.1668
+  final_stats: 1711
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-AgileShadowspiritDiamond"
  value: {
-  dps: 29449.28738
-  tps: 29555.24209
+  dps: 29407.24094
+  tps: 29513.49769
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Althor'sAbacus-50366"
  value: {
-  dps: 28623.57569
-  tps: 28795.29348
+  dps: 28604.06302
+  tps: 28774.19205
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Anhuur'sHymnal-55889"
  value: {
-  dps: 28835.21545
-  tps: 28964.46991
+  dps: 28781.70589
+  tps: 28901.0203
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Anhuur'sHymnal-56407"
  value: {
-  dps: 28901.95899
-  tps: 29031.53375
+  dps: 28840.52457
+  tps: 28962.60984
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-AustereShadowspiritDiamond"
  value: {
-  dps: 29038.99944
-  tps: 29150.11472
+  dps: 28998.26814
+  tps: 29109.63166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-BaubleofTrueBlood-50726"
  value: {
-  dps: 27778.59785
-  tps: 27928.34542
+  dps: 27708.85189
+  tps: 27860.49786
   hps: 99.81156
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-BedrockTalisman-58182"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-BellofEnragingResonance-59326"
  value: {
-  dps: 29351.9026
-  tps: 29466.89075
+  dps: 29309.68271
+  tps: 29425.02013
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-BindingPromise-67037"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Blood-SoakedAleMug-63843"
  value: {
-  dps: 28098.51288
-  tps: 28265.43536
+  dps: 28085.6035
+  tps: 28253.52588
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-BloodofIsiset-55995"
  value: {
-  dps: 28130.26228
-  tps: 28269.65221
+  dps: 28061.53413
+  tps: 28197.87362
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-BloodofIsiset-56414"
  value: {
-  dps: 28175.16406
-  tps: 28314.55399
+  dps: 28106.28082
+  tps: 28242.62031
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-BloodthirstyGladiator'sBadgeofConquest-64687"
  value: {
-  dps: 27849.00089
-  tps: 27988.294
+  dps: 27870.67131
+  tps: 28015.56321
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-BloodthirstyGladiator'sBadgeofDominance-64688"
  value: {
-  dps: 29033.98517
-  tps: 29147.4577
+  dps: 29069.78427
+  tps: 29187.85438
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-BloodthirstyGladiator'sBadgeofVictory-64689"
  value: {
-  dps: 27848.82915
-  tps: 27996.80433
+  dps: 27880.60334
+  tps: 28033.11651
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-BloodthirstyGladiator'sEmblemofCruelty-64740"
  value: {
-  dps: 28176.89371
-  tps: 28323.65459
+  dps: 28134.61213
+  tps: 28281.12388
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-BloodthirstyGladiator'sEmblemofMeditation-64741"
  value: {
-  dps: 27800.6295
-  tps: 27947.9606
+  dps: 27762.29723
+  tps: 27908.03739
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-BloodthirstyGladiator'sEmblemofTenacity-64742"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-BloodthirstyGladiator'sInsigniaofConquest-64761"
  value: {
-  dps: 27787.37597
-  tps: 27926.91476
+  dps: 27719.83217
+  tps: 27856.31879
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-BloodthirstyGladiator'sInsigniaofDominance-64762"
  value: {
-  dps: 28593.6852
-  tps: 28712.73355
+  dps: 28522.31679
+  tps: 28638.05915
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-BloodthirstyGladiator'sInsigniaofVictory-64763"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-BottledLightning-66879"
  value: {
-  dps: 28602.77635
-  tps: 28777.52889
+  dps: 28588.37324
+  tps: 28761.85408
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-BracingShadowspiritDiamond"
  value: {
-  dps: 29317.45072
-  tps: 28850.01952
+  dps: 29281.7502
+  tps: 28807.95251
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-BurningShadowspiritDiamond"
  value: {
-  dps: 29735.69297
-  tps: 29834.76261
+  dps: 29698.37564
+  tps: 29790.13963
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ChaoticShadowspiritDiamond"
  value: {
-  dps: 29572.76456
-  tps: 29678.36959
+  dps: 29530.66403
+  tps: 29636.64572
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-CoreofRipeness-58184"
  value: {
-  dps: 28939.08311
-  tps: 29124.09812
+  dps: 28919.37024
+  tps: 29104.1783
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-CorpseTongueCoin-50349"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-CrushingWeight-59506"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-CrushingWeight-65118"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-DarkmoonCard:Earthquake-62048"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-DarkmoonCard:Hurricane-62049"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-DarkmoonCard:Hurricane-62051"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-DarkmoonCard:Tsunami-62050"
  value: {
-  dps: 29231.51716
-  tps: 29407.68651
+  dps: 29216.33795
+  tps: 29394.13966
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-DarkmoonCard:Volcano-62047"
  value: {
-  dps: 29354.33329
-  tps: 29525.40272
+  dps: 29178.42182
+  tps: 29344.86794
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Deathbringer'sWill-50363"
  value: {
-  dps: 27967.44088
-  tps: 28104.85771
+  dps: 27913.52932
+  tps: 28052.2719
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-DestructiveShadowspiritDiamond"
  value: {
-  dps: 29155.20604
-  tps: 29266.00631
+  dps: 29114.42243
+  tps: 29225.54557
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-DislodgedForeignObject-50348"
  value: {
-  dps: 28568.15869
-  tps: 28711.68326
+  dps: 28540.06835
+  tps: 28683.55993
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-EffulgentShadowspiritDiamond"
  value: {
-  dps: 29038.99944
-  tps: 29150.11472
+  dps: 28998.26814
+  tps: 29109.63166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ElectrosparkHeartstarter-67118"
  value: {
-  dps: 28312.49292
-  tps: 28476.86173
+  dps: 28306.99503
+  tps: 28471.92211
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-EmberShadowspiritDiamond"
  value: {
-  dps: 29396.75349
-  tps: 29516.64494
+  dps: 29392.08374
+  tps: 29511.97246
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-EnigmaticShadowspiritDiamond"
  value: {
-  dps: 29155.20604
-  tps: 29266.00631
+  dps: 29114.42243
+  tps: 29225.54557
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-EssenceoftheCyclone-59473"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-EssenceoftheCyclone-65140"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-EternalShadowspiritDiamond"
  value: {
-  dps: 29038.99944
-  tps: 29150.11472
+  dps: 28998.26814
+  tps: 29109.63166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-FallofMortality-59500"
  value: {
-  dps: 29231.51716
-  tps: 29407.68651
+  dps: 29216.33795
+  tps: 29394.13966
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-FallofMortality-65124"
  value: {
-  dps: 29314.47585
-  tps: 29498.39966
+  dps: 29235.17657
+  tps: 29420.46099
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Figurine-DemonPanther-52199"
  value: {
-  dps: 28212.27525
-  tps: 28339.01568
+  dps: 28202.97754
+  tps: 28332.41285
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Figurine-DreamOwl-52354"
  value: {
-  dps: 28757.05596
-  tps: 28933.20221
+  dps: 28760.15281
+  tps: 28942.01767
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Figurine-EarthenGuardian-52352"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Figurine-JeweledSerpent-52353"
  value: {
-  dps: 29870.1775
-  tps: 30014.20097
+  dps: 29875.69748
+  tps: 30025.39068
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Figurine-KingofBoars-52351"
  value: {
-  dps: 28240.41453
-  tps: 28388.38971
+  dps: 28273.34771
+  tps: 28425.86089
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Firelord'sVestments"
  value: {
-  dps: 26078.68555
-  tps: 26128.70307
+  dps: 26082.76421
+  tps: 26134.42191
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-FleetShadowspiritDiamond"
  value: {
-  dps: 29115.14773
-  tps: 29226.26301
+  dps: 29074.17967
+  tps: 29185.54319
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-FluidDeath-58181"
  value: {
-  dps: 28142.13102
-  tps: 28285.32547
+  dps: 28085.40682
+  tps: 28219.3476
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ForlornShadowspiritDiamond"
  value: {
-  dps: 29317.45072
-  tps: 29421.65619
+  dps: 29281.7502
+  tps: 29378.75498
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-FuryofAngerforge-59461"
  value: {
-  dps: 28188.84813
-  tps: 28335.35297
+  dps: 28145.28585
+  tps: 28291.81935
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-GaleofShadows-56138"
  value: {
-  dps: 28077.31709
-  tps: 28227.03062
+  dps: 28070.92313
+  tps: 28220.62949
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-GaleofShadows-56462"
  value: {
-  dps: 28045.17722
-  tps: 28191.09182
+  dps: 28079.59608
+  tps: 28223.28731
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-GearDetector-61462"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-GlowingTwilightScale-54589"
  value: {
-  dps: 28614.04959
-  tps: 28785.30503
+  dps: 28662.68802
+  tps: 28835.20122
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-GraceoftheHerald-55266"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-GraceoftheHerald-56295"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-HarmlightToken-63839"
  value: {
-  dps: 28819.95747
-  tps: 28993.88858
+  dps: 28772.9215
+  tps: 28944.94793
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Harrison'sInsigniaofPanache-65803"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-HeartofIgnacious-59514"
  value: {
-  dps: 29273.12218
-  tps: 29401.54778
+  dps: 29232.74341
+  tps: 29352.65227
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-HeartofIgnacious-65110"
  value: {
-  dps: 29442.51305
-  tps: 29552.12226
+  dps: 29433.2772
+  tps: 29544.50873
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-HeartofRage-59224"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-HeartofRage-65072"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-HeartofSolace-55868"
  value: {
-  dps: 28077.31709
-  tps: 28227.03062
+  dps: 28070.92313
+  tps: 28220.62949
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-HeartofSolace-56393"
  value: {
-  dps: 28045.17722
-  tps: 28191.09182
+  dps: 28079.59608
+  tps: 28223.28731
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-HeartofThunder-55845"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-HeartofThunder-56370"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-HeartoftheVile-66969"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Heartpierce-50641"
  value: {
-  dps: 29735.69297
-  tps: 29834.76261
+  dps: 29698.37564
+  tps: 29790.13963
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ImpassiveShadowspiritDiamond"
  value: {
-  dps: 29155.20604
-  tps: 29266.00631
+  dps: 29114.42243
+  tps: 29225.54557
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ImpatienceofYouth-62464"
  value: {
-  dps: 28289.87795
-  tps: 28437.85313
+  dps: 28322.95753
+  tps: 28475.4707
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ImpatienceofYouth-62469"
  value: {
-  dps: 28289.87795
-  tps: 28437.85313
+  dps: 28322.95753
+  tps: 28475.4707
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ImpetuousQuery-55881"
  value: {
-  dps: 28130.26228
-  tps: 28269.65221
+  dps: 28061.53413
+  tps: 28197.87362
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ImpetuousQuery-56406"
  value: {
-  dps: 28175.16406
-  tps: 28314.55399
+  dps: 28106.28082
+  tps: 28242.62031
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-InsigniaofDiplomacy-61433"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-InsigniaoftheEarthenLord-61429"
  value: {
-  dps: 28610.65335
-  tps: 28764.75186
+  dps: 28596.07877
+  tps: 28751.12288
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-JarofAncientRemedies-59354"
  value: {
-  dps: 27904.4738
-  tps: 28098.64271
+  dps: 27928.60871
+  tps: 28123.81423
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-JarofAncientRemedies-65029"
  value: {
-  dps: 27936.1488
-  tps: 28134.86997
+  dps: 27975.17874
+  tps: 28176.3695
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-JujuofNimbleness-63840"
  value: {
-  dps: 28098.51288
-  tps: 28265.43536
+  dps: 28085.6035
+  tps: 28253.52588
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-KeytotheEndlessChamber-55795"
  value: {
-  dps: 28142.13102
-  tps: 28285.32547
+  dps: 28085.40682
+  tps: 28219.3476
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-KeytotheEndlessChamber-56328"
  value: {
-  dps: 28142.13102
-  tps: 28285.32547
+  dps: 28085.40682
+  tps: 28219.3476
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-KvaldirBattleStandard-59685"
  value: {
-  dps: 27844.52548
-  tps: 27979.74706
+  dps: 27838.11938
+  tps: 27973.34194
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-KvaldirBattleStandard-59689"
  value: {
-  dps: 27844.52548
-  tps: 27979.74706
+  dps: 27838.11938
+  tps: 27973.34194
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-LadyLa-La'sSingingShell-67152"
  value: {
-  dps: 28052.19314
-  tps: 28184.78221
+  dps: 28006.74757
+  tps: 28130.66137
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-LeadenDespair-55816"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-LeadenDespair-56347"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-LeftEyeofRajh-56102"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-LeftEyeofRajh-56427"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-LicensetoSlay-58180"
  value: {
-  dps: 28142.13102
-  tps: 28285.32547
+  dps: 28085.40682
+  tps: 28219.3476
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-MagnetiteMirror-55814"
  value: {
-  dps: 27799.84627
-  tps: 27966.76875
+  dps: 27787.56464
+  tps: 27955.48702
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-MagnetiteMirror-56345"
  value: {
-  dps: 27799.84627
-  tps: 27966.76875
+  dps: 27787.56464
+  tps: 27955.48702
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-MandalaofStirringPatterns-62467"
  value: {
-  dps: 27800.87802
-  tps: 27948.20626
+  dps: 27762.54588
+  tps: 27908.28318
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-MandalaofStirringPatterns-62472"
  value: {
-  dps: 27800.87802
-  tps: 27948.20626
+  dps: 27762.54588
+  tps: 27908.28318
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-MarkofKhardros-56132"
  value: {
-  dps: 28222.9658
-  tps: 28389.88828
+  dps: 28210.2534
+  tps: 28378.17578
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-MarkofKhardros-56458"
  value: {
-  dps: 28277.51948
-  tps: 28444.44196
+  dps: 28264.6689
+  tps: 28432.59128
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-MightoftheOcean-55251"
  value: {
-  dps: 28012.33823
-  tps: 28180.44155
+  dps: 28021.81883
+  tps: 28179.37499
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-MightoftheOcean-56285"
  value: {
-  dps: 28012.33823
-  tps: 28180.44155
+  dps: 28021.81883
+  tps: 28179.37499
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-MirrorofBrokenImages-62466"
  value: {
-  dps: 28224.14781
-  tps: 28363.53774
+  dps: 28155.09538
+  tps: 28291.43487
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-MirrorofBrokenImages-62471"
  value: {
-  dps: 28224.14781
-  tps: 28363.53774
+  dps: 28155.09538
+  tps: 28291.43487
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-MoonwellChalice-70142"
  value: {
-  dps: 29863.90982
-  tps: 30041.6917
+  dps: 29871.19388
+  tps: 30051.23757
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Oremantle'sFavor-61448"
  value: {
-  dps: 28317.04528
-  tps: 28475.35479
+  dps: 28305.44044
+  tps: 28458.63189
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-PetrifiedTwilightScale-54591"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-PhylacteryoftheNamelessLich-50365"
  value: {
-  dps: 27972.54376
-  tps: 28109.70456
+  dps: 27918.24456
+  tps: 28056.73115
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-PorcelainCrab-55237"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-PorcelainCrab-56280"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-PowerfulShadowspiritDiamond"
  value: {
-  dps: 29038.99944
-  tps: 29150.11472
+  dps: 28998.26814
+  tps: 29109.63166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Prestor'sTalismanofMachination-59441"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Prestor'sTalismanofMachination-65026"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Rainsong-55854"
  value: {
-  dps: 27799.56088
-  tps: 27946.90424
+  dps: 27761.22793
+  tps: 27906.97878
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Rainsong-56377"
  value: {
-  dps: 27800.43069
-  tps: 27947.76406
+  dps: 27762.09832
+  tps: 27907.84076
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ReverberatingShadowspiritDiamond"
  value: {
-  dps: 29449.28738
-  tps: 29555.24209
+  dps: 29407.24094
+  tps: 29513.49769
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-RevitalizingShadowspiritDiamond"
  value: {
-  dps: 29450.1031
-  tps: 29556.04501
+  dps: 29434.75704
+  tps: 29540.06074
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-RightEyeofRajh-56100"
  value: {
-  dps: 28142.13102
-  tps: 28285.32547
+  dps: 28085.40682
+  tps: 28219.3476
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-RightEyeofRajh-56431"
  value: {
-  dps: 28142.13102
-  tps: 28285.32547
+  dps: 28085.40682
+  tps: 28219.3476
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-SeaStar-55256"
  value: {
-  dps: 28419.23167
-  tps: 28552.57343
+  dps: 28412.00373
+  tps: 28544.49829
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-SeaStar-56290"
  value: {
-  dps: 28934.60147
-  tps: 29052.97797
+  dps: 28940.39918
+  tps: 29060.05631
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ShardofWoe-60233"
  value: {
-  dps: 29700.54944
-  tps: 29742.53493
+  dps: 29761.45125
+  tps: 29807.5997
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Shrine-CleansingPurifier-63838"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Sindragosa'sFlawlessFang-50364"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Skardyn'sGrace-56115"
  value: {
-  dps: 28387.51612
-  tps: 28535.49131
+  dps: 28420.43312
+  tps: 28572.9463
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Skardyn'sGrace-56440"
  value: {
-  dps: 28457.69134
-  tps: 28605.66653
+  dps: 28490.77015
+  tps: 28643.28332
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Sorrowsong-55879"
  value: {
-  dps: 28753.38774
-  tps: 28870.68425
+  dps: 28683.57785
+  tps: 28798.34109
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Sorrowsong-56400"
  value: {
-  dps: 28881.02028
-  tps: 28995.4236
+  dps: 28810.91364
+  tps: 28922.85142
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Soul'sAnguish-66994"
  value: {
-  dps: 28012.33823
-  tps: 28180.44155
+  dps: 28021.81883
+  tps: 28179.37499
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-SoulCasket-58183"
  value: {
-  dps: 29812.06957
-  tps: 29916.32626
+  dps: 29850.31375
+  tps: 29959.18394
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Stonemother'sKiss-61411"
  value: {
-  dps: 29021.30238
-  tps: 29194.64078
+  dps: 29021.55007
+  tps: 29193.32318
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-StumpofTime-62465"
  value: {
-  dps: 29116.70592
-  tps: 29237.04423
+  dps: 29058.57981
+  tps: 29169.78998
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-StumpofTime-62470"
  value: {
-  dps: 29173.38197
-  tps: 29290.03298
+  dps: 29113.44827
+  tps: 29220.18691
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-SymbioticWorm-59332"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-SymbioticWorm-65048"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-TalismanofSinisterOrder-65804"
  value: {
-  dps: 29130.86975
-  tps: 29307.88768
+  dps: 29070.74228
+  tps: 29244.86278
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Tank-CommanderInsignia-63841"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-TearofBlood-55819"
  value: {
-  dps: 28627.03927
-  tps: 28798.39655
+  dps: 28632.62336
+  tps: 28804.18548
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-TearofBlood-56351"
  value: {
-  dps: 28990.45826
-  tps: 29161.40474
+  dps: 28968.92634
+  tps: 29138.53541
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-TendrilsofBurrowingDark-55810"
  value: {
-  dps: 28731.61758
-  tps: 28856.30049
+  dps: 28662.61659
+  tps: 28784.90686
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-TendrilsofBurrowingDark-56339"
  value: {
-  dps: 29064.13988
-  tps: 29179.49912
+  dps: 28997.81357
+  tps: 29110.12236
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Theralion'sMirror-59519"
  value: {
-  dps: 29847.9844
-  tps: 30024.15376
+  dps: 29833.12283
+  tps: 30010.92454
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Throngus'sFinger-56121"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Throngus'sFinger-56449"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Tia'sGrace-55874"
  value: {
-  dps: 28130.26228
-  tps: 28269.65221
+  dps: 28061.53413
+  tps: 28197.87362
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Tia'sGrace-56394"
  value: {
-  dps: 28175.16406
-  tps: 28314.55399
+  dps: 28106.28082
+  tps: 28242.62031
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-TinyAbominationinaJar-50706"
  value: {
-  dps: 27949.99801
-  tps: 28098.07626
+  dps: 27937.02595
+  tps: 28085.69018
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Tyrande'sFavoriteDoll-64645"
  value: {
-  dps: 29150.83842
-  tps: 29354.33552
+  dps: 29136.10306
+  tps: 29340.49862
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-UnheededWarning-59520"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-UnquenchableFlame-67101"
  value: {
-  dps: 27810.13961
-  tps: 27958.71402
+  dps: 27814.63138
+  tps: 27964.45376
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-UnsolvableRiddle-62463"
  value: {
-  dps: 28289.87795
-  tps: 28437.85313
+  dps: 28322.95753
+  tps: 28475.4707
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-UnsolvableRiddle-62468"
  value: {
-  dps: 28289.87795
-  tps: 28437.85313
+  dps: 28322.95753
+  tps: 28475.4707
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-UnsolvableRiddle-68709"
  value: {
-  dps: 28289.87795
-  tps: 28437.85313
+  dps: 28322.95753
+  tps: 28475.4707
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-VialofStolenMemories-59515"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-VialofStolenMemories-65109"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ViciousGladiator'sBadgeofConquest-61033"
  value: {
-  dps: 27848.82915
-  tps: 27996.80433
+  dps: 27880.60334
+  tps: 28033.11651
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ViciousGladiator'sBadgeofDominance-61035"
  value: {
-  dps: 29100.26034
-  tps: 29211.80345
+  dps: 29136.28452
+  tps: 29252.42854
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ViciousGladiator'sBadgeofVictory-61034"
  value: {
-  dps: 27848.82915
-  tps: 27996.80433
+  dps: 27880.60334
+  tps: 28033.11651
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ViciousGladiator'sEmblemofAccuracy-61027"
  value: {
-  dps: 28142.13102
-  tps: 28285.32547
+  dps: 28085.40682
+  tps: 28219.3476
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ViciousGladiator'sEmblemofAlacrity-61028"
  value: {
-  dps: 28045.76557
-  tps: 28178.43369
+  dps: 28069.61066
+  tps: 28202.58411
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ViciousGladiator'sEmblemofCruelty-61026"
  value: {
-  dps: 28207.39424
-  tps: 28353.96434
+  dps: 28165.76522
+  tps: 28312.36397
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ViciousGladiator'sEmblemofProficiency-61030"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ViciousGladiator'sEmblemofProwess-61029"
  value: {
-  dps: 28250.00035
-  tps: 28389.39028
+  dps: 28180.85863
+  tps: 28317.19811
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ViciousGladiator'sEmblemofTenacity-61032"
  value: {
-  dps: 27787.37597
-  tps: 27926.7659
+  dps: 27719.83217
+  tps: 27856.17166
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ViciousGladiator'sInsigniaofConquest-61047"
  value: {
-  dps: 27787.37597
-  tps: 27926.91476
+  dps: 27719.83217
+  tps: 27856.31879
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ViciousGladiator'sInsigniaofDominance-61045"
  value: {
-  dps: 28774.83459
-  tps: 28894.12986
+  dps: 28701.92525
+  tps: 28818.14177
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ViciousGladiator'sInsigniaofVictory-61046"
  value: {
-  dps: 27787.37597
-  tps: 27927.8879
+  dps: 27719.83217
+  tps: 27857.21745
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-WitchingHourglass-55787"
  value: {
-  dps: 28811.77641
-  tps: 28970.86546
+  dps: 28785.56074
+  tps: 28946.95035
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-WitchingHourglass-56320"
  value: {
-  dps: 29362.06753
-  tps: 29541.04484
+  dps: 29345.23727
+  tps: 29525.09298
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-World-QuellerFocus-63842"
  value: {
-  dps: 28149.7316
-  tps: 28297.70678
+  dps: 28182.39638
+  tps: 28334.90956
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Za'brox'sLuckyTooth-63742"
  value: {
-  dps: 28168.41211
-  tps: 28335.33459
+  dps: 28155.8379
+  tps: 28323.76028
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Za'brox'sLuckyTooth-63745"
  value: {
-  dps: 28168.41211
-  tps: 28335.33459
+  dps: 28155.8379
+  tps: 28323.76028
  }
 }
 dps_results: {
  key: "TestArcane-Average-Default"
  value: {
-  dps: 30221.19506
-  tps: 30318.47148
+  dps: 30211.52755
+  tps: 30308.34365
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Troll-p1_arcane-Arcane-arcane-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 29720.48693
-  tps: 45791.38772
+  dps: 29682.92151
+  tps: 45724.13659
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Troll-p1_arcane-Arcane-arcane-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 29735.69297
-  tps: 29834.76261
+  dps: 29698.37564
+  tps: 29790.13963
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Troll-p1_arcane-Arcane-arcane-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 44146.63617
-  tps: 43904.85865
+  dps: 44137.67456
+  tps: 43895.88606
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Troll-p1_arcane-Arcane-arcane-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 18691.26299
-  tps: 32967.98977
+  dps: 18681.728
+  tps: 32968.30556
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Troll-p1_arcane-Arcane-arcane-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 18691.26299
-  tps: 18821.19587
+  dps: 18681.728
+  tps: 18815.71648
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Troll-p1_arcane-Arcane-arcane-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 25142.56425
-  tps: 25139.10523
+  dps: 25137.11678
+  tps: 25133.60807
  }
 }
 dps_results: {
  key: "TestArcane-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 29735.69297
-  tps: 29834.76261
+  dps: 29698.37564
+  tps: 29790.13963
  }
 }

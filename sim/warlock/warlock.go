@@ -26,6 +26,7 @@ type Warlock struct {
 	Shadowburn           *core.Spell
 	UnstableAffliction   *core.Spell
 
+	ActivePet *WarlockPet
 	Felhunter *WarlockPet
 	Felguard  *WarlockPet
 	Imp       *WarlockPet
@@ -78,9 +79,7 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerSoulFire()
 	warlock.registerSoulHarvest()
 	warlock.registerSoulburn()
-	warlock.registerSummonFelHunter()
-	warlock.registerSummonImp()
-	warlock.registerSummonSuccubus()
+	warlock.registerSummonDemon()
 
 	doomguardInfernalTimer := warlock.NewTimer()
 	warlock.registerSummonDoomguard(doomguardInfernalTimer)

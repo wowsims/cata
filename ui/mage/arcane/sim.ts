@@ -1,3 +1,4 @@
+import { CharacterStats } from '../../core/components/character_stats';
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
 import * as Mechanics from '../../core/constants/mechanics';
@@ -7,7 +8,9 @@ import { PlayerClasses } from '../../core/player_classes';
 import { Mage } from '../../core/player_classes/mage';
 import { APLRotation } from '../../core/proto/apl';
 import { Faction, IndividualBuffs, PartyBuffs, Race, Spec, Stat } from '../../core/proto/common';
+import { StatCapType } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
+import { sharedMageDisplayStatsModifiers } from '../shared';
 import * as ArcaneInputs from './inputs';
 import * as Presets from './presets';
 
@@ -32,17 +35,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 		Stat.StatSpellHaste,
 		Stat.StatMastery,
 	],
-	// modifyDisplayStats: (player: Player<Spec.SpecArcaneMage>) => {
-	// 	let stats = new Stats();
-
-	// 	if (player.getTalentTree() === 0) {
-	// 		stats = stats.addStat(Stat.StatSpellHit, player.getTalents().arcaneFocus * 1 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
-	// 	}
-
-	// 	return {
-	// 		talents: stats,
-	// 	};
-	// },
+	modifyDisplayStats: (player: Player<Spec.SpecArcaneMage>) => {
+		return sharedMageDisplayStatsModifiers(player);
+	},
 
 	defaults: {
 		// Default equipped gear.
@@ -52,6 +47,21 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
 			return new Stats().withStat(Stat.StatSpellHit, 17 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+		})(),
+		// Default soft caps for the Reforge optimizer
+		softCapBreakpoints: (() => {
+			// Sources:
+			// https://www.icy-veins.com/cataclysm-classic/arcane-mage-pve-stat-priority
+			// https://www.wowhead.com/cata/guide/classes/mage/arcane/dps-stat-priority-attributes-pve
+			const breakpoints = [2497];
+			const hasteSoftCapConfig = {
+				stat: Stat.StatSpellHaste,
+				breakpoints,
+				capType: StatCapType.TypeSoftCap,
+				postCapEPs: [0.56],
+			};
+
+			return [hasteSoftCapConfig];
 		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultArcaneConsumes,
@@ -210,7 +220,9 @@ export class ArcaneMageSimUI extends IndividualSimUI<Spec.SpecArcaneMage> {
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			new ReforgeOptimizer(this, {
+				experimental: true,
+			});
 		});
 	}
 }

@@ -177,6 +177,27 @@ func (rogue *Rogue) Initialize() {
 	rogue.registerGougeSpell()
 
 	rogue.SliceAndDiceBonus = 0.4
+
+	// re-configure poisons when performing an item swap
+	rogue.RegisterOnItemSwap(func(sim *core.Simulation) {
+		if !rogue.Options.ApplyPoisonsManually {
+			if rogue.MainHand() == nil || rogue.OffHand() == nil {
+				return
+			}
+			mhWeaponSpeed := rogue.MainHand().SwingSpeed
+			ohWeaponSpeed := rogue.OffHand().SwingSpeed
+			if mhWeaponSpeed <= ohWeaponSpeed {
+				rogue.Options.MhImbue = proto.RogueOptions_DeadlyPoison
+				rogue.Options.OhImbue = proto.RogueOptions_InstantPoison
+				rogue.lastDeadlyPoisonProcMask = core.ProcMaskMeleeMH
+			} else {
+				rogue.Options.MhImbue = proto.RogueOptions_InstantPoison
+				rogue.Options.OhImbue = proto.RogueOptions_DeadlyPoison
+				rogue.lastDeadlyPoisonProcMask = core.ProcMaskMeleeOH
+			}
+			rogue.UpdateInstantPoisonPPM(0)
+		}
+	})
 }
 
 func (rogue *Rogue) ApplyAdditiveEnergyRegenBonus(sim *core.Simulation, increment float64) {
@@ -220,7 +241,7 @@ func NewRogue(character *core.Character, options *proto.RogueOptions, talents st
 	rogue.PseudoStats.CanParry = true
 
 	maxEnergy := 100.0
-	if rogue.HasSetBonus(Arena, 4) {
+	if rogue.HasSetBonus(CataPVPSet, 4) {
 		maxEnergy += 10
 	}
 	if rogue.Spec == proto.Spec_SpecAssassinationRogue &&
@@ -313,6 +334,7 @@ const (
 	RogueSpellSliceAndDice
 	RogueSpellStealth
 	RogueSpellTricksOfTheTrade
+	RogueSpellTricksOfTheTradeThreat
 	RogueSpellVanish
 	RogueSpellHemorrhage
 	RogueSpellPremeditation

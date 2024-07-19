@@ -14,7 +14,7 @@ func (warrior *Warrior) RegisterThunderClapSpell() {
 	warrior.ThunderClap = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 6343},
 		SpellSchool:    core.SpellSchoolPhysical,
-		ProcMask:       core.ProcMaskRangedSpecial,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskThunderClap | SpellMaskSpecialAttack,
 
@@ -44,7 +44,7 @@ func (warrior *Warrior) RegisterThunderClapSpell() {
 			baseDamage *= sim.Encounter.AOECapMultiplier()
 
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeRangedHitAndCrit)
+				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 				if result.Landed() {
 					warrior.ThunderClapAuras.Get(aoeTarget).Activate(sim)
 				}

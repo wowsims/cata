@@ -1,11 +1,14 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
+import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
+import * as Mechanics from '../../core/constants/mechanics.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { RogueOptions_PoisonImbue } from '../../core/proto/rogue';
+import { StatCapType } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import * as RogueInputs from '../inputs';
 // import * as CombatInputs from './inputs';
@@ -54,6 +57,29 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 		gear: Presets.P1_PRESET_COMBAT.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_EP_PRESET.epWeights,
+		// Stat caps for reforge optimizer
+		statCaps: (() => {
+			const expCap = new Stats().withStat(Stat.StatExpertise, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+			return expCap;
+		})(),
+		softCapBreakpoints: (() => {
+			const spellHitSoftCapConfig = {
+				stat: Stat.StatSpellHit,
+				breakpoints: [17 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE],
+				capType: StatCapType.TypeSoftCap,
+				postCapEPs: [0],
+			};
+
+			const meleeHitSoftCapConfig = {
+				stat: Stat.StatMeleeHit,
+				breakpoints: [8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE, 27 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE],
+				capType: StatCapType.TypeSoftCap,
+				postCapEPs: [0.86, 0],
+			};
+
+			return [meleeHitSoftCapConfig, spellHitSoftCapConfig];
+		})(),
+    	other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -108,7 +134,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 			// RogueInputs.VanishBreakTime(),
 			// RogueInputs.AssumeBleedActive(),
 			// OtherInputs.TankAssignment,
-			// OtherInputs.InFrontOfTarget,
+			OtherInputs.InFrontOfTarget,
 			OtherInputs.InputDelay,
 		],
 	},
@@ -156,6 +182,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 					1: Presets.P1_PRESET_COMBAT.gear,
 				},
 			},
+			otherDefaults: Presets.OtherDefaults,
 		},
 	],
 });
@@ -163,6 +190,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecCombatRogue>) {
 		super(parentElem, player, SPEC_CONFIG);
+
+		player.sim.waitForInit().then(() => {
+			new ReforgeOptimizer(this);
+		});
+
 		this.player.changeEmitter.on(c => {
 			const options = this.player.getSpecOptions();
 			const encounter = this.sim.encounter;

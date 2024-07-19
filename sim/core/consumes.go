@@ -938,33 +938,34 @@ func registerTinkerHandsCD(agent Agent, consumes *proto.Consumes) {
 	switch consumes.TinkerHands {
 	case proto.TinkerHands_TinkerHandsSynapseSprings:
 		// Enchant: 4179, Spell: 82174 - Synapse Springs
-		intStat := character.GetStat(stats.Intellect)
-		strStat := character.GetStat(stats.Strength)
-		agiStat := character.GetStat(stats.Agility)
+		statType := character.GetHighestStat([]stats.Stat{stats.Intellect, stats.Strength, stats.Agility})
 
-		var aura *Aura
-		if intStat > strStat && intStat > agiStat {
-			aura = character.NewTemporaryStatsAura(
-				"Synapse Springs - Int",
-				ActionID{SpellID: 96230},
-				stats.Stats{stats.Intellect: 480},
-				time.Second*10,
-			)
-		} else if agiStat > intStat && agiStat > strStat {
-			aura = character.NewTemporaryStatsAura(
-				"Synapse Springs - Agi",
-				ActionID{SpellID: 96228},
-				stats.Stats{stats.Agility: 480},
-				time.Second*10,
-			)
-		} else {
-			aura = character.NewTemporaryStatsAura(
-				"Synapse Springs - Str",
-				ActionID{SpellID: 96229},
-				stats.Stats{stats.Strength: 480},
-				time.Second*10,
-			)
+		var actionID ActionID
+		var highestStat stats.Stats
+		var label string
+		switch statType {
+		case stats.Intellect:
+			actionID = ActionID{SpellID: 96230}
+			highestStat = stats.Stats{stats.Intellect: 480}
+			label = "Synapse Springs - Int"
+		case stats.Agility:
+			actionID = ActionID{SpellID: 96228}
+			highestStat = stats.Stats{stats.Agility: 480}
+			label = "Synapse Springs - Agi"
+		case stats.Strength:
+			actionID = ActionID{SpellID: 96229}
+			highestStat = stats.Stats{stats.Strength: 480}
+			label = "Synapse Springs - Str"
+		default:
+			panic("Stat type doesn't match any defined case")
 		}
+
+		aura := character.NewTemporaryStatsAura(
+			label,
+			actionID,
+			highestStat,
+			time.Second*10,
+		)
 
 		spell := character.GetOrRegisterSpell(SpellConfig{
 			ActionID:    ActionID{SpellID: 82174},

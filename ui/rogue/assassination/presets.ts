@@ -26,11 +26,33 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAttackPower]: 1,
 			[Stat.StatSpellCrit]: 0.26,
 			[Stat.StatSpellHit]: 1.31,
-			[Stat.StatMeleeHit]: 0.7,
+			[Stat.StatMeleeHit]: 1.43,
 			[Stat.StatMeleeCrit]: 0.62,
 			[Stat.StatMeleeHaste]: 1.1,
 			[Stat.StatMastery]: 1.23,
 			[Stat.StatExpertise]: 1.04,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 2.49,
+			[PseudoStat.PseudoStatOffHandDps]: 1.0,
+		},
+	),
+);
+
+export const P1_EP_EXPERTISE_PRESET = PresetUtils.makePresetEpWeights(
+	'P1 Expertise',
+	Stats.fromMap(
+		{
+			[Stat.StatAgility]: 2.58,
+			[Stat.StatStrength]: 1.05,
+			[Stat.StatAttackPower]: 1,
+			[Stat.StatSpellCrit]: 0.26,
+			[Stat.StatSpellHit]: 1.31,
+			[Stat.StatMeleeHit]: 1.43,
+			[Stat.StatMeleeCrit]: 0.62,
+			[Stat.StatMeleeHaste]: 1.1,
+			[Stat.StatMastery]: 1.23,
+			[Stat.StatExpertise]: 2.0,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 2.49,
@@ -75,3 +97,9 @@ export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskOfTheWinds,
 	food: Food.FoodSkeweredEel,
 });
+
+export const OtherDefaults = {
+	distanceFromTarget: 5,
+	duration: 240,
+	durationVariation: 20,
+};

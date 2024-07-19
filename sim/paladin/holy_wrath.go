@@ -12,10 +12,11 @@ func (paladin *Paladin) registerHolyWrath() {
 	numTargets := paladin.Env.GetNumTargets()
 
 	paladin.HolyWrath = paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 2812},
-		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 2812},
+		SpellSchool:    core.SpellSchoolHoly,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskHolyWrath,
 
 		MissileSpeed: 20,
 		MaxRange:     10,

@@ -14,7 +14,7 @@ func (rogue *Rogue) registerGougeSpell() {
 	rogue.Gouge = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 1776},
 		SpellSchool:    core.SpellSchoolPhysical,
-		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		ProcMask:       core.ProcMaskEmpty,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | SpellFlagColdBlooded | core.SpellFlagAPL,
 		ClassSpellMask: RogueSpellGouge,
 

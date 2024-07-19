@@ -77,6 +77,15 @@
 				color: var(--bs-white);
 			}
 		}
+
+		.dropdown-item {
+			&.disabled {
+				pointer-events: auto;
+				cursor: not-allowed;
+				color: var(--bs-dropdown-link-color);
+				opacity: 0.5;
+			}
+		}
 	}
 
 	.sim-toolbar {

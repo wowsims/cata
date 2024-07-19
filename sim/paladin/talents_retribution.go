@@ -50,13 +50,15 @@ func (paladin *Paladin) applySanctityOfBattle() {
 		return
 	}
 
+	baseSpenderCooldown := float64(paladin.sharedBuilderBaseCD.Milliseconds())
+
 	spenderCooldownMod := paladin.AddDynamicMod(core.SpellModConfig{
 		Kind:      core.SpellMod_Cooldown_Flat,
-		ClassMask: SpellMaskCrusaderStrike | SpellMaskDivineStorm,
+		ClassMask: SpellMaskBuilder,
 	})
 
 	updateTimeValue := func(castSpeed float64) {
-		spenderCooldownMod.UpdateTimeValue(-(time.Millisecond * time.Duration(4500-4500*castSpeed)))
+		spenderCooldownMod.UpdateTimeValue(-(time.Millisecond * time.Duration(baseSpenderCooldown-baseSpenderCooldown*castSpeed)))
 	}
 
 	paladin.AddOnCastSpeedChanged(func(_ float64, castSpeed float64) {
@@ -84,10 +86,11 @@ func (paladin *Paladin) applySealsOfCommand() {
 
 	// Seals of Command
 	sealsOfCommandProc := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 20424},
-		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
+		ActionID:       core.ActionID{SpellID: 20424},
+		SpellSchool:    core.SpellSchoolHoly,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
+		ClassSpellMask: SpellMaskSealsOfCommand,
 
 		DamageMultiplier: 0.07,
 		CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),
@@ -229,8 +232,8 @@ func (paladin *Paladin) applyDivineStorm() {
 			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
-				Timer:    paladin.NewTimer(),
-				Duration: 4500 * time.Millisecond,
+				Timer:    paladin.sharedBuilderTimer,
+				Duration: paladin.sharedBuilderBaseCD,
 			},
 		},
 
@@ -268,13 +271,14 @@ func (paladin *Paladin) applyDivinePurpose() {
 		return
 	}
 
+	duration := time.Second * 8
 	paladin.DivinePurposeAura = paladin.RegisterAura(core.Aura{
 		Label:    "Divine Purpose",
 		ActionID: core.ActionID{SpellID: 90174},
-		Duration: time.Second * 8,
+		Duration: duration,
 
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask&SpellMaskCanConsumeDivinePurpose != 0 {
+			if spell.ClassSpellMask&SpellMaskCanConsumeDivinePurpose != 0 && aura.RemainingDuration(sim) < duration {
 				aura.Deactivate(sim)
 			}
 		},
@@ -318,11 +322,29 @@ func (paladin *Paladin) applyZealotry() {
 	}
 
 	actionId := core.ActionID{SpellID: 85696}
+	duration := time.Second * 20
+
+	if paladin.HasSetBonus(ItemSetBattleplateOfImmolation, 4) {
+		duration += time.Second * 15
+	}
+
+	hasT134pc := paladin.HasSetBonus(ItemSetBattleplateOfRadiantGlory, 4)
 
 	paladin.ZealotryAura = paladin.RegisterAura(core.Aura{
 		Label:    "Zealotry",
 		ActionID: actionId,
-		Duration: 20 * time.Second,
+		Duration: duration,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			if hasT134pc {
+				aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.18
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			if hasT134pc {
+				aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.18
+			}
+		},
 	})
 
 	paladin.Zealotry = paladin.RegisterSpell(core.SpellConfig{

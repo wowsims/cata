@@ -9,7 +9,7 @@ import (
 func (hunter *Hunter) registerCobraShotSpell() {
 
 	csMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 77767})
-
+	focus := core.TernaryFloat64(hunter.HasSetBonus(ItemSetWyrmstalkerBattleGear, 2), 9*2, 9)
 	hunter.CobraShot = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 77767},
 		SpellSchool:    core.SpellSchoolNature,
@@ -42,11 +42,11 @@ func (hunter *Hunter) registerCobraShotSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) + (276.806 + spell.RangedAttackPower(target)*0.017)
-			focus := 9.0
+			intFocus := focus
 			if hunter.Talents.Termination != 0 && sim.IsExecutePhase25() {
-				focus = float64(hunter.Talents.Termination) * 3
+				intFocus += float64(hunter.Talents.Termination) * 3
 			}
-			hunter.AddFocus(sim, focus, csMetrics)
+			hunter.AddFocus(sim, intFocus, csMetrics)
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 

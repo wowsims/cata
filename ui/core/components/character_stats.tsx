@@ -116,7 +116,6 @@ export class CharacterStats extends Component {
 
 	private updateStats(player: Player<any>) {
 		const playerStats = player.getCurrentStats();
-
 		const statMods = this.modifyDisplayStats ? this.modifyDisplayStats(this.player) : {};
 
 		const baseStats = Stats.fromProto(playerStats.baseStats);
@@ -160,21 +159,7 @@ export class CharacterStats extends Component {
 		}
 
 		// Apply multiplicative Haste buffs to the final displayed value
-		const baseMeleeHasteMultiplier = 1 + finalStats.getStat(Stat.StatMeleeHaste) / (Mechanics.HASTE_RATING_PER_HASTE_PERCENT * 100);
-		const meleeHasteBuffsMultiplier =
-			this.player.getClass() == Class.ClassHunter
-				? finalStats.getPseudoStat(PseudoStat.PseudoStatRangedSpeedMultiplier)
-				: finalStats.getPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier);
-		finalStats = finalStats.withStat(
-			Stat.StatMeleeHaste,
-			(baseMeleeHasteMultiplier * meleeHasteBuffsMultiplier - 1) * 100 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT,
-		);
-		const baseSpellHasteMultiplier = 1 + finalStats.getStat(Stat.StatSpellHaste) / (Mechanics.HASTE_RATING_PER_HASTE_PERCENT * 100);
-		const spellHasteBuffsMultiplier = finalStats.getPseudoStat(PseudoStat.PseudoStatCastSpeedMultiplier);
-		finalStats = finalStats.withStat(
-			Stat.StatSpellHaste,
-			(baseSpellHasteMultiplier * spellHasteBuffsMultiplier - 1) * 100 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT,
-		);
+		finalStats = finalStats.withHasteMultipliers(this.player.getClass());
 
 		const masteryPoints =
 			this.player.getBaseMastery() + (playerStats.finalStats?.stats[Stat.StatMastery] || 0) / Mechanics.MASTERY_RATING_PER_MASTERY_POINT;

@@ -219,6 +219,8 @@ message HunterOptions {
 	double pet_uptime = 4;
 	double time_to_trap_weave_ms = 5;
 	bool use_hunters_mark = 6;
+	bool use_aq_tier = 7;
+	bool use_naxx_tier = 8;
 }
 
 message BeastMasteryHunter {

@@ -16,7 +16,6 @@ func (paladin *Paladin) registerInquisition() {
 	inquisitionMod := paladin.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		FloatValue: 0.3,
-		ClassMask:  SpellMaskModifiedByInquisition,
 		School:     core.SpellSchoolHoly,
 	})
 

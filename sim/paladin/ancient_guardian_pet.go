@@ -15,18 +15,25 @@ type AncientGuardianPet struct {
 func (guardian *AncientGuardianPet) Initialize() {
 }
 
-const PetExpertiseScale = 3.25
+const PetExpertiseScale = 3.25 * core.ExpertisePerQuarterPercentReduction / core.MeleeHitRatingPerHitChance // 0.8125
 
 func (paladin *Paladin) NewAncientGuardian() *AncientGuardianPet {
 	ancientGuardian := &AncientGuardianPet{
 		Pet: core.NewPet("Ancient Guardian", &paladin.Character, stats.Stats{
 			stats.Stamina: 100,
 		}, func(ownerStats stats.Stats) stats.Stats {
-			return stats.Stats{
-				stats.MeleeHit:  ownerStats[stats.MeleeHit],
-				stats.Expertise: ownerStats[stats.MeleeHit] * PetExpertiseScale,
+			// Draenei Heroic Presence is not included
+			hit := ownerStats[stats.MeleeHit]
+			if paladin.Race == proto.Race_RaceDraenei {
+				hit -= 1 * core.MeleeHitRatingPerHitChance
+			}
 
-				stats.MeleeCrit: ownerStats[stats.MeleeCrit],
+			return stats.Stats{
+				stats.MeleeHit:  hit,
+				stats.Expertise: hit * PetExpertiseScale,
+
+				// Taken from combined logs with > 1600 hits, seems to be around 2%
+				stats.MeleeCrit: (5 + 1.8) * core.CritRatingPerCritChance,
 			}
 		}, false, true),
 		paladinOwner: paladin,
@@ -52,7 +59,8 @@ func (ancientGuardian *AncientGuardianPet) GetPet() *core.Pet {
 func (ancientGuardian *AncientGuardianPet) Reset(_ *core.Simulation) {
 }
 
-func (ancientGuardian *AncientGuardianPet) ExecuteCustomRotation(_ *core.Simulation) {
+func (ancientGuardian *AncientGuardianPet) ExecuteCustomRotation(sim *core.Simulation) {
+	ancientGuardian.WaitUntil(sim, ancientGuardian.AutoAttacks.NextAttackAt())
 }
 
 func (ancientGuardian *AncientGuardianPet) registerRetributionVariant() {

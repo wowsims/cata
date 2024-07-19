@@ -6,6 +6,7 @@ import {
 	APLValueAuraInternalCooldown,
 	APLValueAuraIsActive,
 	APLValueAuraIsActiveWithReactionTime,
+	APLValueAuraIsInactiveWithReactionTime,
 	APLValueAuraIsKnown,
 	APLValueAuraNumStacks,
 	APLValueAuraRemainingTime,
@@ -886,6 +887,14 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		shortDescription:
 			'<b>True</b> if the aura is currently active AND it has been active for at least as long as the player reaction time (configured in Settings), otherwise <b>False</b>.',
 		newValue: APLValueAuraIsActiveWithReactionTime.create,
+		fields: [AplHelpers.unitFieldConfig('sourceUnit', 'aura_sources'), AplHelpers.actionIdFieldConfig('auraId', 'auras', 'sourceUnit')],
+	}),
+	auraIsInactiveWithReactionTime: inputBuilder({
+		label: 'Aura Inactive (with Reaction Time)',
+		submenu: ['Aura'],
+		shortDescription:
+			'<b>True</b> if the aura is not currently active AND it has been inactive for at least as long as the player reaction time (configured in Settings), otherwise <b>False</b>.',
+		newValue: APLValueAuraIsInactiveWithReactionTime.create,
 		fields: [AplHelpers.unitFieldConfig('sourceUnit', 'aura_sources'), AplHelpers.actionIdFieldConfig('auraId', 'auras', 'sourceUnit')],
 	}),
 	auraRemainingTime: inputBuilder({

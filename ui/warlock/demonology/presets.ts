@@ -9,6 +9,7 @@ import {
 	WarlockPrimeGlyph as PrimeGlyph,
 } from '../../core/proto/warlock';
 import { Stats } from '../../core/proto_utils/stats';
+import { WARLOCK_BREAKPOINTS } from '../presets';
 import DefaultApl from './apls/default.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
 import P4WrathGear from './gear_sets/p4_wrath.gear.json';
@@ -118,3 +119,57 @@ export const OtherDefaults = {
 	durationVariation: 30,
 	darkIntentUptime: 90,
 };
+
+export const DEMONOLOGY_BREAKPOINTS = new Map([
+	[
+		Stat.StatSpellHaste,
+		new Map([
+			...[...WARLOCK_BREAKPOINTS.get(Stat.StatSpellHaste)!],
+			['16-tick - Immo Aura', 431],
+			['8-tick - Immolate:Inferno', 913],
+			['17-tick - Immo Aura', 1275],
+			['18-tick - Immo Aura', 2129],
+			['9-tick - Immolate:Inferno', 2745],
+			['19-tick - Immo Aura', 2995],
+			['20-tick - Immo Aura', 3836],
+			['10-tick - Immolate:Inferno', 4574],
+			['21-tick - Immo Aura', 4701],
+			['22-tick - Immo Aura', 5554],
+			['23-tick - Immo Aura', 6408],
+			['11-tick - Immolate:Inferno', 6408],
+			['24-tick - Immo Aura', 7251],
+			['25-tick - Immo Aura', 8102],
+			['12-tick - Immolate:Inferno', 8228],
+			['26-tick - Immo Aura', 8955],
+			['27-tick - Immo Aura', 9800],
+			['13-tick - Immolate:Inferno', 10069],
+			['28-tick - Immo Aura', 10670],
+			['29-tick - Immo Aura', 11517],
+			['14-tick - Immolate:Inferno', 11892],
+			['30-tick - Immo Aura', 12378],
+			['31-tick - Immo Aura', 13249],
+			['15-tick - Immolate:Inferno', 13717],
+			['32-tick - Immo Aura', 14069],
+			// ['33-tick - Immo Aura', 14943],
+			// ['16-tick - Immolate:Inferno', 15557],
+			// ['34-tick - Immo Aura', 15811],
+			// ['35-tick - Immo Aura', 16667],
+			// ['17-tick - Immolate:Inferno', 17385],
+			// ['36-tick - Immo Aura', 17504],
+			// ['37-tick - Immo Aura', 18390],
+			// ['38-tick - Immo Aura', 19169],
+			// ['18-tick - Immolate:Inferno', 19196],
+			// ['39-tick - Immo Aura', 20072],
+			// ['40-tick - Immo Aura', 20938],
+			// ['19-tick - Immolate:Inferno', 21028],
+			// ['41-tick - Immo Aura', 21758],
+			// ['42-tick - Immo Aura', 22619],
+			// ['20-tick - Immolate:Inferno', 22882],
+			// ['43-tick - Immo Aura', 23523],
+			// ['21-tick - Immolate:Inferno', 24693],
+			// ['22-tick - Immolate:Inferno', 26536],
+			// ['23-tick - Immolate:Inferno', 28349],
+			// ['24-tick - Immolate:Inferno', 30191],
+		]),
+	],
+]);

@@ -81,7 +81,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 75
+// NextIndex: 77
 message APLValue {
     oneof value {
         // Operators
@@ -155,6 +155,7 @@ message APLValue {
         APLValueAuraIsKnown aura_is_known = 73;
         APLValueAuraIsActive aura_is_active = 22;
         APLValueAuraIsActiveWithReactionTime aura_is_active_with_reaction_time = 50;
+        APLValueAuraIsInactiveWithReactionTime aura_is_inactive_with_reaction_time = 76;
         APLValueAuraRemainingTime aura_remaining_time = 23;
         APLValueAuraNumStacks aura_num_stacks = 24;
         APLValueAuraInternalCooldown aura_internal_cooldown = 39;
@@ -293,6 +294,7 @@ message APLActionCatOptimalRotationAction {
     bool melee_weave = 11;
     bool bear_weave = 12;
     bool snek_weave = 13;
+    bool cancel_primal_madness = 14;
 }
 
 message APLActionMove {
@@ -518,6 +520,10 @@ message APLValueAuraIsActive {
     ActionID aura_id = 1;
 }
 message APLValueAuraIsActiveWithReactionTime {
+    UnitReference source_unit = 2;
+    ActionID aura_id = 1;
+}
+message APLValueAuraIsInactiveWithReactionTime {
     UnitReference source_unit = 2;
     ActionID aura_id = 1;
 }

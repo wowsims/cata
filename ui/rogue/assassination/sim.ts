@@ -1,11 +1,14 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../../core/components/inputs/other_inputs.js';
+import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action.js';
+import * as Mechanics from '../../core/constants/mechanics.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { RogueOptions_PoisonImbue } from '../../core/proto/rogue';
+import { StatCapType } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import * as RogueInputs from '../inputs';
 // import * as SinInputs from './inputs';
@@ -54,6 +57,29 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 		gear: Presets.P1_PRESET_ASSASSINATION.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_EP_PRESET.epWeights,
+		// Stat caps for reforge optimizer
+		statCaps: (() => {
+			const expCap = new Stats().withStat(Stat.StatExpertise, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+			return expCap;
+		})(),
+		softCapBreakpoints: (() => {
+			const spellHitSoftCapConfig = {
+				stat: Stat.StatSpellHit,
+				breakpoints: [17 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE],
+				capType: StatCapType.TypeSoftCap,
+				postCapEPs: [0],
+			};
+
+			const meleeHitSoftCapConfig = {
+				stat: Stat.StatMeleeHit,
+				breakpoints: [8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE, 27 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE],
+				capType: StatCapType.TypeSoftCap,
+				postCapEPs: [0.7, 0],
+			};
+
+			return [meleeHitSoftCapConfig, spellHitSoftCapConfig];
+		})(),
+    	other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -108,17 +134,18 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 			// RogueInputs.VanishBreakTime(),
 			// RogueInputs.AssumeBleedActive(),
 			// OtherInputs.TankAssignment,
-			// OtherInputs.InFrontOfTarget,
+			OtherInputs.InFrontOfTarget,
 			OtherInputs.InputDelay,
 		],
 	},
+	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
-		showExecuteProportion: false,
+		showExecuteProportion: true,
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
+		epWeights: [Presets.P1_EP_PRESET, Presets.P1_EP_EXPERTISE_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.AssassinationTalentsDefault],
 		// Preset rotations that the user can quickly select.
@@ -156,6 +183,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 					1: Presets.P1_PRESET_ASSASSINATION.gear,
 				},
 			},
+			otherDefaults: Presets.OtherDefaults,
 		},
 	],
 });
@@ -163,50 +191,44 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 export class AssassinationRogueSimUI extends IndividualSimUI<Spec.SpecAssassinationRogue> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecAssassinationRogue>) {
 		super(parentElem, player, SPEC_CONFIG);
+
+		player.sim.waitForInit().then(() => {
+			new ReforgeOptimizer(this);
+		});
+
+		// Poison selection
 		this.player.changeEmitter.on(c => {
 			const options = this.player.getSpecOptions();
-			const encounter = this.sim.encounter;
 			if (!options.classOptions!.applyPoisonsManually) {
 				const mhWeaponSpeed = this.player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponSpeed;
 				const ohWeaponSpeed = this.player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponSpeed;
 				if (typeof mhWeaponSpeed == 'undefined' || typeof ohWeaponSpeed == 'undefined') {
 					return;
 				}
-				if (encounter.targets.length > 3) {
-					options.classOptions!.mhImbue = RogueOptions_PoisonImbue.InstantPoison;
+				if (mhWeaponSpeed <= ohWeaponSpeed) {
+					options.classOptions!.mhImbue = RogueOptions_PoisonImbue.DeadlyPoison;
 					options.classOptions!.ohImbue = RogueOptions_PoisonImbue.InstantPoison;
 				} else {
-					if (mhWeaponSpeed <= ohWeaponSpeed) {
-						options.classOptions!.mhImbue = RogueOptions_PoisonImbue.DeadlyPoison;
-						options.classOptions!.ohImbue = RogueOptions_PoisonImbue.InstantPoison;
-					} else {
-						options.classOptions!.mhImbue = RogueOptions_PoisonImbue.InstantPoison;
-						options.classOptions!.ohImbue = RogueOptions_PoisonImbue.DeadlyPoison;
-					}
+					options.classOptions!.mhImbue = RogueOptions_PoisonImbue.InstantPoison;
+					options.classOptions!.ohImbue = RogueOptions_PoisonImbue.DeadlyPoison;
 				}
 			}
 			this.player.setSpecOptions(c, options);
 		});
 		this.sim.encounter.changeEmitter.on(c => {
 			const options = this.player.getSpecOptions();
-			const encounter = this.sim.encounter;
 			if (!options.classOptions!.applyPoisonsManually) {
 				const mhWeaponSpeed = this.player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponSpeed;
 				const ohWeaponSpeed = this.player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponSpeed;
 				if (typeof mhWeaponSpeed == 'undefined' || typeof ohWeaponSpeed == 'undefined') {
 					return;
 				}
-				if (encounter.targets.length > 3) {
-					options.classOptions!.mhImbue = RogueOptions_PoisonImbue.InstantPoison;
+				if (mhWeaponSpeed <= ohWeaponSpeed) {
+					options.classOptions!.mhImbue = RogueOptions_PoisonImbue.DeadlyPoison;
 					options.classOptions!.ohImbue = RogueOptions_PoisonImbue.InstantPoison;
 				} else {
-					if (mhWeaponSpeed <= ohWeaponSpeed) {
-						options.classOptions!.mhImbue = RogueOptions_PoisonImbue.DeadlyPoison;
-						options.classOptions!.ohImbue = RogueOptions_PoisonImbue.InstantPoison;
-					} else {
-						options.classOptions!.mhImbue = RogueOptions_PoisonImbue.InstantPoison;
-						options.classOptions!.ohImbue = RogueOptions_PoisonImbue.DeadlyPoison;
-					}
+					options.classOptions!.mhImbue = RogueOptions_PoisonImbue.InstantPoison;
+					options.classOptions!.ohImbue = RogueOptions_PoisonImbue.DeadlyPoison;
 				}
 			}
 			this.player.setSpecOptions(c, options);

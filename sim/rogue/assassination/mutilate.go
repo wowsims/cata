@@ -18,16 +18,15 @@ func (sinRogue *AssassinationRogue) newMutilateHitSpell(isMH bool) *core.Spell {
 		procMask = core.ProcMaskMeleeOHSpecial
 	}
 	mutBaseDamage := sinRogue.ClassSpellScaling * 0.17900000513
-	t11Bonus := core.TernaryFloat64(sinRogue.HasSetBonus(rogue.Tier11, 2), 5*core.CritRatingPerCritChance, 0)
 
 	return sinRogue.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    procMask,
-		Flags:       core.SpellFlagMeleeMetrics | rogue.SpellFlagBuilder | rogue.SpellFlagColdBlooded,
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       procMask,
+		Flags:          core.SpellFlagMeleeMetrics | rogue.SpellFlagBuilder | rogue.SpellFlagColdBlooded,
+		ClassSpellMask: rogue.RogueSpellMutilate,
 
-		BonusCritRating: 5*core.CritRatingPerCritChance*float64(sinRogue.Talents.PuncturingWounds) +
-			t11Bonus,
+		BonusCritRating: 5 * core.CritRatingPerCritChance * float64(sinRogue.Talents.PuncturingWounds),
 
 		DamageMultiplier:         1.86, // 84 * 1.3220000267 + 75
 		DamageMultiplierAdditive: 1 + 0.1*float64(sinRogue.Talents.Opportunity),

@@ -69,6 +69,7 @@ export const DefaultRotation = FeralDruidRotation.create({
 	biteDuringExecute: true,
 	allowAoeBerserk: false,
 	meleeWeave: true,
+	cancelPrimalMadness: false,
 });
 
 export const SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('Single Target Default', Spec.SpecFeralDruid, DefaultRotation);
@@ -79,6 +80,7 @@ export const AoeRotation = FeralDruidRotation.create({
 	maintainFaerieFire: false,
 	snekWeave: true,
 	allowAoeBerserk: false,
+	cancelPrimalMadness: false,
 });
 
 export const AOE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('AoE Default', Spec.SpecFeralDruid, AoeRotation);

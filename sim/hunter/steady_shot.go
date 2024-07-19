@@ -11,6 +11,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 
 	ssMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 56641})
 
+	focus := core.TernaryFloat64(hunter.HasSetBonus(ItemSetWyrmstalkerBattleGear, 2), 9*2, 9)
 	hunter.SteadyShot = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 56641},
 		SpellSchool:    core.SpellSchoolPhysical,
@@ -45,21 +46,20 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := (hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) * 0.62) + (280.182 + spell.RangedAttackPower(target)*0.021)
-			focus := 9.0
+			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) + (280.182 + (spell.RangedAttackPower(target) * 0.021))
+			intFocus := focus
 			if hunter.Talents.Termination != 0 && sim.IsExecutePhase25() {
-				focus = float64(hunter.Talents.Termination) * 3
+				intFocus += float64(hunter.Talents.Termination) * 3
 			}
 
 			if hunter.Talents.MasterMarksman != 0 {
 				procChance := float64(hunter.Talents.MasterMarksman) * 0.2
 				if sim.Proc(procChance, "Master Marksman Proc") && !hunter.MasterMarksmanCounterAura.IsActive() {
 					hunter.MasterMarksmanCounterAura.Activate(sim)
-					//hunter.MasterMarksmanCounterAura.AddStack(sim)
 				}
 			}
 
-			hunter.AddFocus(sim, focus, ssMetrics)
+			hunter.AddFocus(sim, intFocus, ssMetrics)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
