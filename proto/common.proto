@@ -103,37 +103,44 @@ enum Profession {
 // Keep in sync with sim/core/stats/stats.go.
 // NextIndex: 31;
 enum Stat {
+	// Primary attributes ("main stat")
 	StatStrength = 0;
 	StatAgility = 1;
 	StatStamina = 2;
 	StatIntellect = 3;
+
+	// Reforge-able secondary stats
 	StatSpirit = 4;
-	StatSpellPower = 5;
-	StatMP5 = 6;
-	StatSpellHit = 7;
+	StatMeleeHit = 5;
+	StatSpellHit = 6;
+	StatMeleeCrit = 7;
 	StatSpellCrit = 8;
-	StatSpellHaste = 9;
-	StatSpellPenetration = 10;
-	StatAttackPower = 11;
-	StatMeleeHit = 12;
-	StatMeleeCrit = 13;
-	StatMeleeHaste = 14;
-	StatExpertise = 15;
-	StatMana = 16;
-	StatArmor = 17;
-	StatRangedAttackPower = 18;
-	StatBlock = 19;
-	StatDodge = 20;
-	StatParry = 21;
-	StatResilience = 22;
-	StatHealth = 23;
-	StatArcaneResistance = 24;
-	StatFireResistance = 25;
-	StatFrostResistance = 26;
-	StatNatureResistance = 27;
-	StatShadowResistance = 28;
-	StatBonusArmor = 29;
-	StatMastery = 30;
+	StatMeleeHaste = 9;
+	StatSpellHaste = 10;
+	StatExpertise = 11;
+	StatDodge = 12;
+	StatParry = 13;
+	StatMastery = 14;
+
+	// Non-reforge-able secondary stats found on gear
+	StatAttackPower = 15;
+	StatRangedAttackPower = 16;
+	StatSpellPower = 17;
+	StatMP5 = 18;
+	StatSpellPenetration = 19;
+	StatResilience = 20;
+	StatArcaneResistance = 21;
+	StatFireResistance = 22;
+	StatFrostResistance = 23;
+	StatNatureResistance = 24;
+	StatShadowResistance = 25;
+	StatArmor = 26; // "white armor" that fully scales with all multipliers
+	StatBonusArmor = 27; // "green armor" that does not scale
+
+	// Composite stats that are built up from the above gear stats + buffs
+	StatHealth = 28;
+	StatMana = 29;
+	StatBlock = 30;
 
 	// DO NOT add new stats here without discussing it first; new stats come with
 	// a performance penalty.

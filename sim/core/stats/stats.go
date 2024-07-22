@@ -22,32 +22,32 @@ const (
 	Stamina
 	Intellect
 	Spirit
-	SpellPower
-	MP5
-	SpellHit
-	SpellCrit
-	SpellHaste
-	SpellPenetration
-	AttackPower
 	MeleeHit
+	SpellHit
 	MeleeCrit
+	SpellCrit
 	MeleeHaste
+	SpellHaste
 	Expertise
-	Mana
-	Armor
-	RangedAttackPower
-	Block
 	Dodge
 	Parry
+	Mastery
+	AttackPower
+	RangedAttackPower
+	SpellPower
+	MP5
+	SpellPenetration
 	Resilience
-	Health
 	ArcaneResistance
 	FireResistance
 	FrostResistance
 	NatureResistance
 	ShadowResistance
+	Armor
 	BonusArmor
-	Mastery
+	Health
+	Mana
+	Block
 	// DO NOT add new stats here without discussing it first; new stats come with
 	// a performance penalty.
 
