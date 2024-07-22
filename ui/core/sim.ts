@@ -10,6 +10,8 @@ import {
 	BulkSimRequest,
 	BulkSimResult,
 	ComputeStatsRequest,
+	ErrorOutcome,
+	ErrorOutcomeType,
 	Raid as RaidProto,
 	RaidSimRequest,
 	RaidSimResult,
@@ -35,6 +37,8 @@ import { DatabaseFilters, RaidFilterOption, SimSettings as SimSettingsProto, Sou
 import { Database } from './proto_utils/database.js';
 import { SimResult } from './proto_utils/sim_result.js';
 import { Raid } from './raid.js';
+import { runConcurrentSim, runConcurrentStatWeights } from './sim_concurrent';
+import { RequestTypes, SimSignalManager } from './sim_signal_manager';
 import { EventID, TypedEvent } from './typed_event.js';
 import { getEnumValues, noop } from './utils.js';
 import { WorkerPool, WorkerProgressCallback } from './worker_pool.js';
@@ -65,6 +69,8 @@ interface SimProps {
 	type?: SimType;
 }
 
+const WASM_CONCURRENCY_STORAGE_KEY = `${OtherConstants.LOCAL_STORAGE_PREFIX}_wasmconcurrency`;
+
 // Core Sim module which deals only with api types, no UI-related stuff.
 export class Sim {
 	private readonly workerPool: WorkerPool;
@@ -79,6 +85,7 @@ export class Sim {
 	private showThreatMetrics = false;
 	private showHealingMetrics = false;
 	private showExperimental = false;
+	private wasmConcurrency = 0;
 	private showQuickSwap = false;
 	private showEPValues = false;
 	private useCustomEPValues = false;
@@ -101,6 +108,7 @@ export class Sim {
 	readonly showThreatMetricsChangeEmitter = new TypedEvent<void>();
 	readonly showHealingMetricsChangeEmitter = new TypedEvent<void>();
 	readonly showExperimentalChangeEmitter = new TypedEvent<void>();
+	readonly wasmConcurrencyChangeEmitter = new TypedEvent<void>();
 	readonly showQuickSwapChangeEmitter = new TypedEvent<void>();
 	readonly showEPValuesChangeEmitter = new TypedEvent<void>();
 	readonly useCustomEPValuesChangeEmitter = new TypedEvent<void>();
@@ -131,10 +139,33 @@ export class Sim {
 	// These callbacks are needed so we can apply BuffBot modifications automatically before sending requests.
 	private modifyRaidProto: (raidProto: RaidProto) => void = noop;
 
+	readonly signalManager: SimSignalManager;
+
 	constructor({ type }: SimProps = {}) {
 		this.type = type ?? SimType.SimTypeIndividual;
 
 		this.workerPool = new WorkerPool(1);
+		this.wasmConcurrencyChangeEmitter.on(async () => {
+			// Prevent using worker concurrency when not running wasm. Local sim has native threading.
+			if (await this.workerPool.isWasm()) {
+				const nWorker = Math.max(1, Math.min(this.wasmConcurrency, navigator.hardwareConcurrency));
+				this.workerPool.setNumWorkers(nWorker);
+			}
+		});
+
+		let wasmConcurrencySetting = parseInt(window.localStorage.getItem(WASM_CONCURRENCY_STORAGE_KEY) ?? 'NaN');
+		if (isNaN(wasmConcurrencySetting)) {
+			wasmConcurrencySetting = 0;
+			// Set a default worker count if env supports multiple threads. Should not be too high as to be safe for all situations.
+			// TODO: Set based on browser/engine? E.g. Firefox has significant RAM and CPU usage per worker while Chrome can run many without a downside.
+			if (navigator.hardwareConcurrency > 1) {
+				wasmConcurrencySetting = Math.min(4, Math.floor(navigator.hardwareConcurrency / 2));
+			}
+		}
+		this.setWasmConcurrency(TypedEvent.nextEventID(), wasmConcurrencySetting);
+
+		this.signalManager = new SimSignalManager();
+
 		this._initPromise = Database.get().then(db => {
 			this.db_ = db;
 		});
@@ -151,6 +182,7 @@ export class Sim {
 			this.showThreatMetricsChangeEmitter,
 			this.showHealingMetricsChangeEmitter,
 			this.showExperimentalChangeEmitter,
+			this.wasmConcurrencyChangeEmitter,
 			this.showQuickSwapChangeEmitter,
 			this.showEPValuesChangeEmitter,
 			this.useCustomEPValuesChangeEmitter,
@@ -165,6 +197,22 @@ export class Sim {
 
 	waitForInit(): Promise<void> {
 		return this._initPromise;
+	}
+
+	/**
+	 * Check if workers are running wasm.
+	 * @returns true if workers are running wasm.
+	 */
+	isWasm() {
+		return this.workerPool.isWasm();
+	}
+
+	/**
+	 * Whether the current environment should use wasm/worker concurrency methods.
+	 * @returns true if running wasm workers and concurrency setting is active.
+	 */
+	private async shouldUseWasmConcurrency() {
+		return (await this.isWasm()) && this.getWasmConcurrency() >= 2 && this.workerPool.getNumWorkers() >= 2;
 	}
 
 	get db(): Database {
@@ -229,7 +277,7 @@ export class Sim {
 		});
 	}
 
-	async runBulkSim(bulkSettings: BulkSettings, bulkItemsDb: SimDatabase, onProgress: WorkerProgressCallback): Promise<BulkSimResult | null> {
+	async runBulkSim(bulkSettings: BulkSettings, bulkItemsDb: SimDatabase, onProgress: WorkerProgressCallback): Promise<BulkSimResult> {
 		if (this.raid.isEmpty()) {
 			throw new Error('Raid is empty! Try adding some players first.');
 		} else if (this.encounter.targets.length < 1) {
@@ -261,10 +309,13 @@ export class Sim {
 
 		this.bulkSimStartEmitter.emit(TypedEvent.nextEventID(), request);
 
+		const signals = this.signalManager.registerRunning(RequestTypes.BulkSim);
 		try {
-			const result = await this.workerPool.bulkSimAsync(request, onProgress);
-			if (result.errorResult != '') {
-				throw new SimError(result.errorResult);
+			const result = await this.workerPool.bulkSimAsync(request, onProgress, signals);
+
+			if (result.error) {
+				if (result.error.type != ErrorOutcomeType.ErrorOutcomeError) return result;
+				throw new SimError(result.error.message);
 			}
 
 			this.bulkSimResultEmitter.emit(TypedEvent.nextEventID(), result);
@@ -273,6 +324,8 @@ export class Sim {
 			if (error instanceof SimError) throw error;
 			console.log(error);
 			throw new Error('Something went wrong running your raid sim. Reload the page and try again.');
+		} finally {
+			this.signalManager.unregisterRunning(signals);
 		}
 	}
 
@@ -321,27 +374,40 @@ export class Sim {
 		}
 	}
 
-	async runRaidSim(eventID: EventID, onProgress: WorkerProgressCallback): Promise<SimResult | null> {
+	async runRaidSim(eventID: EventID, onProgress: WorkerProgressCallback): Promise<SimResult | ErrorOutcome> {
 		if (this.raid.isEmpty()) {
 			throw new Error('Raid is empty! Try adding some players first.');
 		} else if (this.encounter.targets.length < 1) {
 			throw new Error('Encounter has no targets! Try adding some targets first.');
 		}
+
+		const signals = this.signalManager.registerRunning(RequestTypes.RaidSim);
 		try {
 			await this.waitForInit();
 
 			const request = this.makeRaidSimRequest(false);
 
-			const result = await this.workerPool.raidSimAsync(request, onProgress);
-			if (result.errorResult != '') {
-				throw new SimError(result.errorResult);
+			let result;
+			// Only use worker base concurrency when running wasm. Local sim has native threading.
+			if (await this.shouldUseWasmConcurrency()) {
+				result = await runConcurrentSim(request, this.workerPool, onProgress, signals);
+			} else {
+				result = await this.workerPool.raidSimAsync(request, onProgress, signals);
+			}
+
+			if (result.error) {
+				if (result.error.type != ErrorOutcomeType.ErrorOutcomeError) return result.error;
+				throw new SimError(result.error.message);
 			}
 			const simResult = await SimResult.makeNew(request, result);
 			this.simResultEmitter.emit(eventID, simResult);
 			return simResult;
 		} catch (error) {
 			if (error instanceof SimError) throw error;
+			console.error(error);
 			throw new Error('Something went wrong running your raid sim. Reload the page and try again.');
+		} finally {
+			this.signalManager.unregisterRunning(signals);
 		}
 	}
 
@@ -351,20 +417,25 @@ export class Sim {
 		} else if (this.encounter.targets.length < 1) {
 			throw new Error('Encounter has no targets! Try adding some targets first.');
 		}
+
+		const signals = this.signalManager.registerRunning(RequestTypes.RaidSim);
 		try {
 			await this.waitForInit();
 
 			const request = this.makeRaidSimRequest(true);
-			const result = await this.workerPool.raidSimAsync(request, noop);
-			if (result.errorResult != '') {
-				throw new SimError(result.errorResult);
+			const result = await this.workerPool.raidSimAsync(request, noop, signals);
+			if (result.error) {
+				throw new SimError(result.error.message);
 			}
 			const simResult = await SimResult.makeNew(request, result);
 			this.simResultEmitter.emit(eventID, simResult);
 			return simResult;
 		} catch (error) {
 			if (error instanceof SimError) throw error;
+			console.error(error);
 			throw new Error('Something went wrong running your raid sim. Reload the page and try again.');
+		} finally {
+			this.signalManager.unregisterRunning(signals);
 		}
 	}
 
@@ -425,7 +496,7 @@ export class Sim {
 		epPseudoStats: Array<PseudoStat>,
 		epReferenceStat: Stat,
 		onProgress: WorkerProgressCallback,
-	): Promise<StatWeightsResult | null> {
+	): Promise<StatWeightsResult> {
 		if (this.raid.isEmpty()) {
 			throw new Error('Raid is empty! Try adding some players first.');
 		} else if (this.encounter.targets.length < 1) {
@@ -461,11 +532,27 @@ export class Sim {
 				pseudoStatsToWeigh: epPseudoStats,
 				epReferenceStat: epReferenceStat,
 			});
+
+			const signals = this.signalManager.registerRunning(RequestTypes.StatWeights);
 			try {
-				const result = await this.workerPool.statWeightsAsync(request, onProgress);
+				let result: StatWeightsResult;
+				// Only use worker based concurrency when running wasm.
+				if (await this.shouldUseWasmConcurrency()) {
+					result = await runConcurrentStatWeights(request, this.workerPool, onProgress, signals);
+				} else {
+					result = await this.workerPool.statWeightsAsync(request, onProgress, signals);
+				}
+				if (result.error) {
+					if (result.error.type != ErrorOutcomeType.ErrorOutcomeError) return result;
+					throw new SimError(result.error.message);
+				}
 				return result;
-			} catch {
+			} catch (error) {
+				if (error instanceof SimError) throw error;
+				console.error(error);
 				throw new Error('Something went wrong calculating your stat weights. Reload the page and try again.');
+			} finally {
+				this.signalManager.unregisterRunning(signals);
 			}
 		}
 	}
@@ -590,6 +677,17 @@ export class Sim {
 		if (newShowExperimental != this.showExperimental) {
 			this.showExperimental = newShowExperimental;
 			this.showExperimentalChangeEmitter.emit(eventID);
+		}
+	}
+
+	getWasmConcurrency(): number {
+		return this.wasmConcurrency;
+	}
+	setWasmConcurrency(eventID: EventID, newWasmConcurrency: number) {
+		if (newWasmConcurrency != this.wasmConcurrency) {
+			this.wasmConcurrency = newWasmConcurrency;
+			window.localStorage.setItem(WASM_CONCURRENCY_STORAGE_KEY, newWasmConcurrency.toString());
+			this.wasmConcurrencyChangeEmitter.emit(eventID);
 		}
 	}
 

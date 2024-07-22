@@ -29,7 +29,7 @@ func (druid *Druid) registerFrenziedRegenerationCD() {
 			druid.AddStatsDynamic(sim, stats.Stats{stats.Health: bonusHealth})
 
 			if druid.CurrentHealth() < bonusHealth {
-				druid.GainHealth(sim, bonusHealth - druid.CurrentHealth(), healthMetrics)
+				druid.GainHealth(sim, bonusHealth-druid.CurrentHealth(), healthMetrics)
 			}
 		},
 
@@ -38,7 +38,7 @@ func (druid *Druid) registerFrenziedRegenerationCD() {
 			druid.AddStatsDynamic(sim, stats.Stats{stats.Health: -bonusHealth})
 
 			if druid.CurrentHealth() > druid.MaxHealth() {
-				druid.RemoveHealth(sim, druid.CurrentHealth() - druid.MaxHealth())
+				druid.RemoveHealth(sim, druid.CurrentHealth()-druid.MaxHealth())
 			}
 		},
 	})

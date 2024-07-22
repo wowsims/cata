@@ -1,12 +1,13 @@
 import { FireElementalSection } from '../../core/components/fire_elemental_inputs.js';
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs.js';
 import * as OtherInputs from '../../core/components/inputs/other_inputs.js';
+import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
+import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl.js';
-import { Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat, TristateEffect, UnitStats } from '../../core/proto/common.js';
-import { ShamanImbue } from '../../core/proto/shaman.js';
+import { Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat, UnitStats } from '../../core/proto/common.js';
 import { Stats } from '../../core/proto_utils/stats.js';
 import * as ShamanInputs from '../inputs.js';
 import * as EnhancementInputs from './inputs.js';
@@ -85,6 +86,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		gear: Presets.P1ORC_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_EP_PRESET.epWeights,
+		// Default stat caps for the Reforge optimizer
+		statCaps: (() => {
+			const spellHitCap = new Stats().withStat(Stat.StatSpellHit, 17 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+			const expCap = new Stats().withStat(Stat.StatExpertise, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+
+			return spellHitCap.add(expCap);
+		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -159,5 +167,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 export class EnhancementShamanSimUI extends IndividualSimUI<Spec.SpecEnhancementShaman> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecEnhancementShaman>) {
 		super(parentElem, player, SPEC_CONFIG);
+
+		player.sim.waitForInit().then(() => {
+			new ReforgeOptimizer(this);
+		});
 	}
 }
