@@ -57,7 +57,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.PRERAID_ARMS_PRESET.gear,
+		gear: Presets.P1_ARMS_BIS_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
@@ -112,13 +112,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			WarriorInputs.StartingRage(),
-			WarriorInputs.StanceSnapshot(),
-			OtherInputs.InputDelay,
-			OtherInputs.TankAssignment,
-			OtherInputs.InFrontOfTarget,
-		],
+		inputs: [WarriorInputs.StartingRage(), WarriorInputs.StanceSnapshot(), OtherInputs.InputDelay, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -132,7 +126,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_ARMS],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_ARMS_PRESET, Presets.P1_ARMS_PRESET],
+		gear: [Presets.PRERAID_ARMS_PRESET, Presets.P1_ARMS_BIS_PRESET, Presets.P1_ARMS_REALISTIC_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecArmsWarrior>): APLRotation => {
@@ -147,16 +141,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
-				[Faction.Alliance]: Race.RaceHuman,
+				[Faction.Alliance]: Race.RaceWorgen,
 				[Faction.Horde]: Race.RaceOrc,
 			},
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_ARMS_PRESET.gear,
+					1: Presets.P1_ARMS_BIS_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_ARMS_PRESET.gear,
+					1: Presets.P1_ARMS_BIS_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,
