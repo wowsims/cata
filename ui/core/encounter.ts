@@ -166,6 +166,7 @@ export class Encounter {
 				executeProportion35: 0.35,
 				executeProportion90: 0.9,
 				targets: [Encounter.defaultTargetProto()],
+				apiVersion: CURRENT_API_VERSION,
 			}),
 		);
 	}
