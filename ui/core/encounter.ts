@@ -139,7 +139,7 @@ export class Encounter {
 	fromProto(eventID: EventID, proto: EncounterProto) {
 		// Fix out-of-date protos before importing
 		if (proto.apiVersion < CURRENT_API_VERSION) {
-			proto = Encounter.updateProtoVersion(proto);
+			Encounter.updateProtoVersion(proto);
 		}
 
 		TypedEvent.freezeAllAndDo(() => {
@@ -191,18 +191,15 @@ export class Encounter {
 		});
 	}
 
-	static updateProtoVersion(oldProto: EncounterProto): EncounterProto {
-		let migratedProto = oldProto;
-
+	static updateProtoVersion(proto: EncounterProto) {
 		// First migrate the stats arrays embedded in each target.
-		migratedProto.targets.forEach((target) => {
-			target.stats = Stats.migrateStatsArray(target.stats, oldProto.apiVersion);
+		proto.targets.forEach((target) => {
+			target.stats = Stats.migrateStatsArray(target.stats, proto.apiVersion);
 		});
 
 		// Any other required data migration code should go here.
 
 		// Flag the version as up-to-date once all migrations are done.
-		migratedProto.apiVersion = CURRENT_API_VERSION;
-		return migratedProto;
+		proto.apiVersion = CURRENT_API_VERSION;
 	}
 }

@@ -276,7 +276,7 @@ export class Stats {
 		if (unitStats) {
 			// Fix out of-date protos before importing
 			if (unitStats.apiVersion < CURRENT_API_VERSION) {
-				unitStats = Stats.updateProtoVersion(unitStats);
+				Stats.updateProtoVersion(unitStats);
 			}
 
 			return new Stats(unitStats.stats, unitStats.pseudoStats);
@@ -285,18 +285,15 @@ export class Stats {
 		}
 	}
 
-	static updateProtoVersion(oldProto: UnitStats): UnitStats {
-		let migratedProto = oldProto;
-
+	static updateProtoVersion(proto: UnitStats) {
 		// First migrate the stats array.
-		migratedProto.stats = Stats.migrateStatsArray(oldProto.stats, oldProto.apiVersion);
+		proto.stats = Stats.migrateStatsArray(proto.stats, proto.apiVersion);
 
 		// Any other required data migration code (such as for the
 		// pseudoStats array) should go here.
 
 		// Flag the version as up-to-date once all migrations are done.
-		migratedProto.apiVersion = CURRENT_API_VERSION;
-		return migratedProto;
+		proto.apiVersion = CURRENT_API_VERSION;
 	}
 
 	// Takes in a stats array that was generated from an out-of-date proto version, and
