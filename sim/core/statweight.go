@@ -41,6 +41,7 @@ func (s *UnitStats) ToProto() *proto.UnitStats {
 	return &proto.UnitStats{
 		Stats:       s.Stats[:],
 		PseudoStats: s.PseudoStats,
+		ApiVersion:  GetCurrentProtoVersion(),
 	}
 }
 

@@ -254,6 +254,7 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 		base := &proto.UnitStats{
 			Stats:       character.SortAndApplyStatDependencies(character.stats).ToFloatArray(),
 			PseudoStats: character.GetPseudoStatsProto(),
+			ApiVersion:  GetCurrentProtoVersion(),
 		}
 
 		return base
@@ -469,6 +470,7 @@ func (character *Character) FillPlayerStats(playerStats *proto.PlayerStats) {
 	playerStats.FinalStats = &proto.UnitStats{
 		Stats:       character.GetStats().ToFloatArray(),
 		PseudoStats: character.GetPseudoStatsProto(),
+		ApiVersion:  GetCurrentProtoVersion(),
 	}
 
 	character.clearBuildPhaseAuras(CharacterBuildPhaseAll)
