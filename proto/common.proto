@@ -3,6 +3,31 @@ package proto;
 
 option go_package = "./proto";
 
+import "google/protobuf/descriptor.proto";
+
+// protobuf does not directly support constants for versioning purposes, but we
+// can emulate the functionality of a CURRENT_VERSION_NUMBER constant by
+// defining it as a custom option for a ProtoVersion message whose only purpose
+// is to house the value of this option. While a bit hacky, this allows us to
+// increment the version number directly in the proto files, rather than needing
+// to separately increment two constants in the front-end and back-end code.
+extend google.protobuf.MessageOptions {
+	int32 current_version_number = 50000;
+}
+
+message ProtoVersion {
+	// This should be incremented by 1 whenever proto files are changed in a
+	// way that will break any saved browser data or old sim links. If you
+	// are incrementing this value, then it is assumed that you are also
+	// implementing the required conversion code within the
+	// updateProtoVersion() method of any affected classes in the UI (or
+	// adding this method if it does not exist yet). Likewise, any affected
+	// protos need to define an api_version field so that the UI code knows
+	// to up-convert these protos to the new format whenever api_version is
+	// missing (0) or lower than current_version_number.
+	option (current_version_number) = 1;
+}
+
 enum Spec {
 	SpecUnknown = 0;
 
@@ -158,8 +183,8 @@ enum Stat {
 	//     when running "make test", if the only changes made were indexing
 	//     or bookkeeping adjustments. However, saved browser settings and
 	//     old sim links will be broken on the UI side.
-	// (6) Increment the CURRENT_API_VERSION constant within
-	//     ui/core/constants/other.ts .
+	// (6) Increment the current_version_number option in the ProtoVersion
+	//     message at the top of this file.
 	// (7) Add a new entry to the ProtoConversionMap within the
 	//     migrateStatsArray() method of ui/core/proto_utils/stats.ts . If
 	//     the migration function for the new version works properly, then
@@ -188,10 +213,10 @@ message UnitStats {
 	// Proto version at the time these stats were saved. If you make any
 	// breaking changes to the size, ordering, or interpretation of the
 	// stats or pseudoStats arrays, then make sure to increment the
-	// CURRENT_API_VERSION constant within ui/core/constants/other.ts, and
-	// also add a new entry to the data conversion map within the
-	// migrateStatsArray() method of ui/core/proto_utils/stats.ts . A
-	// "breaking change" here is defined as anything that will break saved
+	// current_version_number option in the ProtoVersion message at the top
+	// of this file, and also add a new entry to the data conversion map
+	// within the migrateStatsArray() method of ui/core/proto_utils/stats.ts
+	// A "breaking change" here is defined as anything that will break saved
 	// browser data or old sim links; the version need not be incremented if
 	// you simply append a new rarely-used PseudoStat to the end of the
 	// array, for example.
@@ -707,10 +732,9 @@ message Target {
 message Encounter {
 	// Proto version at the time these encounter settings were saved. If you
 	// make any changes to this proto that will break saved browser data or
-	// old sim links, then make sure to increment the CURRENT_API_VERSION
-	// constant within ui/core/constants/other.ts, and also add a new entry
-	// to the data conversion map within the updateProtoVersion() method of
-	// ui/core/encounter.ts .
+	// old sim links, then make sure to increment the current_version_number
+	// option within the ProtoVersion message at the top of this file, and
+	// also modify the updateProtoVersion() method of ui/core/encounter.ts .
 	int32 api_version = 9;
 
 	double duration = 1;

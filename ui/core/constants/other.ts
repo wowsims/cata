@@ -1,3 +1,6 @@
+import { readMessageOption } from "@protobuf-ts/runtime";
+import { ProtoVersion } from '../proto/common.js';
+
 export enum Phase {
 	Phase1 = 1,
 	Phase2,
@@ -8,12 +11,7 @@ export enum Phase {
 
 export const CURRENT_PHASE = Phase.Phase1;
 
-// This should be incremented by 1 whenever proto files are changed in a way
-// that will break any saved browser data or old sim links. If you are
-// incrementing this value, then it is assumed that you are also implementing
-// the required conversion code within the updateProtoVersion() method of any
-// affected classes (or adding this method if it does not exist yet).
-export const CURRENT_API_VERSION = 1;
+export const CURRENT_API_VERSION: number = readMessageOption(ProtoVersion, "proto.current_version_number")! as number;
 
 // Github pages serves our site under the /cata directory (because the repo name is cata)
 export const REPO_NAME = 'cata';
