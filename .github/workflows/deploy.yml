@@ -33,6 +33,20 @@ jobs:
               run: |
                   make dist/cata/.dirstamp
 
+            - name: Update proto version file
+              run: |
+                  cp sim/core/TestProtoVersioning.results .deployedprotoversion
+
+            - name: Commit updated version file
+              run: |
+                  git config --local user.name actions-user
+                  git config --local user.email "actions@github.com"
+                  if git diff --exit-code; then
+                      git add .deployedprotoversion
+                      git commit -m "Updating .deployedprotoversion file due to API version increase"
+                      git push origin master
+                  fi
+
             - name: Test
               run: |
                   make test
