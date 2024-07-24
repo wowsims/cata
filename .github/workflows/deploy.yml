@@ -41,7 +41,7 @@ jobs:
               run: |
                   git config --local user.name actions-user
                   git config --local user.email "actions@github.com"
-                  if git diff --exit-code; then
+                  if ! git diff --exit-code; then
                       git add .deployedprotoversion
                       git commit -m "Updating .deployedprotoversion file due to API version increase"
                       git push origin master
