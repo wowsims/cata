@@ -6,6 +6,8 @@ on:
 jobs:
     build-and-deploy:
         runs-on: ubuntu-latest
+        permissions:
+            contents: write
         steps:
             - name: Install Go
               uses: actions/setup-go@v2
@@ -47,6 +49,7 @@ jobs:
                       git commit -m "Auto-update .deployedprotoversion file due to API version increase"
                       git push --set-upstream origin github-actions
                       gh pr create --fill
+                      gh pr merge --merge --delete-branch
                   fi
               env:
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
