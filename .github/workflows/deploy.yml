@@ -39,13 +39,17 @@ jobs:
 
             - name: Commit updated version file
               run: |
-                  git config --local user.name actions-user
+                  git config --local user.name "GitHub Actions"
                   git config --local user.email "actions@github.com"
                   if ! git diff --exit-code; then
+                      git checkout -b github-actions
                       git add .deployedprotoversion
-                      git commit -m "Updating .deployedprotoversion file due to API version increase"
-                      git push origin master
+                      git commit -m "Auto-update .deployedprotoversion file due to API version increase"
+                      git push --set-upstream origin github-actions
+                      gh pr create --fill
                   fi
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Test
               run: |
