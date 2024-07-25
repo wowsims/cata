@@ -31,8 +31,8 @@ func NewProtectionPaladin(character *core.Character, options *proto.Player) *Pro
 	protOptions := options.GetProtectionPaladin()
 
 	prot := &ProtectionPaladin{
-		Paladin: paladin.NewPaladin(character, options.TalentsString, protOptions.Options.ClassOptions),
-		Options: protOptions.Options,
+		Paladin:   paladin.NewPaladin(character, options.TalentsString, protOptions.Options.ClassOptions),
+		Options:   protOptions.Options,
 		vengeance: &core.VengeanceTracker{},
 	}
 

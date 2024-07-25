@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/simsignals"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -120,7 +121,7 @@ func SetupFakeSim() *Simulation {
 			},
 			Duration: 180,
 		},
-	})
+	}, simsignals.CreateSignals())
 	sim.Reset()
 
 	return sim

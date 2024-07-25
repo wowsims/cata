@@ -89,9 +89,4 @@ func (mage *Mage) registerCombustionSpell() {
 			spell.Dot(target).Apply(sim)
 		},
 	})
-
-	mage.AddMajorCooldown(core.MajorCooldown{
-		Spell: mage.Combustion,
-		Type:  core.CooldownTypeDPS,
-	})
 }

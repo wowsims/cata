@@ -6,6 +6,7 @@ import { PlayerSpec } from './player_spec';
 import { PlayerSpecs } from './player_specs';
 import {
 	AuraStats as AuraStatsProto,
+	ErrorOutcomeType,
 	Player as PlayerProto,
 	PlayerStats,
 	SpellStats as SpellStatsProto,
@@ -38,8 +39,8 @@ import {
 import {
 	DungeonDifficulty,
 	RaidFilterOption,
-	StatCapConfig,
 	SourceFilterOption,
+	StatCapConfig,
 	UIEnchant as Enchant,
 	UIGem as Gem,
 	UIItem as Item,
@@ -563,8 +564,19 @@ export class Player<SpecType extends Spec> {
 	): Promise<StatWeightsResult | null> {
 		try {
 			const result = await this.sim.statWeights(this, epStats, epPseudoStats, epReferenceStat, onProgress);
+			if (result.error) {
+				if (result.error.type == ErrorOutcomeType.ErrorOutcomeAborted) {
+					new Toast({
+						variant: 'info',
+						body: 'Statweight sim cancelled.',
+					});
+				}
+				return null;
+			}
 			return result;
 		} catch (error: any) {
+			// TODO: Show crash report like for raid sim?
+			console.error(error);
 			new Toast({
 				variant: 'error',
 				body: error?.message || 'Something went wrong calculating your stat weights. Reload the page and try again.',

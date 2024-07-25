@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -98,7 +97,7 @@ func BulkSim(input *proto.RaidSimRequest, replaceFile string, verbose bool) stri
 		},
 	}
 	progress := make(chan *proto.ProgressMetrics, 100)
-	core.RunBulkSimAsync(context.Background(), bsr, progress)
+	core.RunBulkSimAsync(bsr, progress, "cmd-bulk-sim")
 
 	startTime := time.Now()
 
@@ -111,8 +110,8 @@ func BulkSim(input *proto.RaidSimRequest, replaceFile string, verbose bool) stri
 				return ""
 			}
 			if status.FinalBulkResult != nil {
-				if status.FinalBulkResult.ErrorResult != "" {
-					fmt.Printf("Failed: %s\n", status.FinalBulkResult.ErrorResult)
+				if status.FinalBulkResult.Error != nil {
+					fmt.Printf("Failed: %s\n", status.FinalBulkResult.Error.Message)
 				} else {
 					return printCombos(status.FinalBulkResult)
 				}

@@ -21,7 +21,12 @@ func (hunter *Hunter) registerRapidFireCD() {
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.MultiplyRangedSpeed(sim, hasteMultiplier)
-
+			if sim.CurrentTime <= 0 && hunter.Options.UseAqTier {
+				hunter.RapidFire.CD.Reduce(2 * time.Minute)
+			}
+			if sim.CurrentTime < 0 && hunter.Options.UseNaxxTier {
+				aura.UpdateExpires(aura.ExpiresAt() + (time.Second * 4))
+			}
 			focusPA = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 				Period:   time.Second * 3,
 				NumTicks: 5,
