@@ -58,7 +58,7 @@ func TestProtoVersioning(t *testing.T) {
 
 	// Compare this to the currently deployed version number, which is written to a text file
 	// during the build-and-deploy Github Actions workflow.
-	deployedVersionNumber, err := readExpectedProtoVersion("../../.deployedprotoversion", true) // change to false once GitHub Actions workflow is setup
+	deployedVersionNumber, err := readExpectedProtoVersion("../../.deployedprotoversion", false)
 
 	if err != nil {
 		t.Fatal("FAILURE LOADING .deployedprotoversion FILE!")
