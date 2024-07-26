@@ -315,6 +315,7 @@ export class Stats {
 		]);
 		const migratedProto = migrateOldProto<number[]>(oldStats, oldApiVersion, conversionMap);
 
+		// If there is a fallback array, use it if the lengths don't match
 		if (fallbackStats && migratedProto.length !== fallbackStats.length) return fallbackStats;
 
 		return migratedProto;
