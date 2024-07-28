@@ -1,9 +1,9 @@
 import * as Mechanics from '../constants/mechanics.js';
+import { CURRENT_API_VERSION } from '../constants/other.js';
 import { Class, PseudoStat, Stat, UnitStats } from '../proto/common.js';
 import { getEnumValues } from '../utils.js';
 import { getClassStatName, pseudoStatNames } from './names.js';
 import { migrateOldProto, ProtoConversionMap } from './utils.js';
-import { CURRENT_API_VERSION } from '../constants/other.js';
 
 const STATS_LEN = getEnumValues(Stat).length;
 const PSEUDOSTATS_LEN = getEnumValues(PseudoStat).length;
@@ -298,19 +298,27 @@ export class Stats {
 
 	// Takes in a stats array that was generated from an out-of-date proto version, and
 	// converts it to an array that is consistent with the current proto version.
-	static migrateStatsArray(oldStats: Array<number>, oldApiVersion: number): Array<number> {
-		const conversionMap: ProtoConversionMap<Array<number>> = new Map([
-			[1, (oldArray: Array<number>) => {
-				// Revision 1 simply re-orders the stats for clarity
-				const newIndices = [0, 1, 2, 3, 4, 17, 18, 6, 8, 10, 19, 15, 5, 7, 9, 11, 29, 26, 16, 30, 12, 13, 20, 28, 21, 22, 23, 24, 25, 27, 14];
-				const newArray: Array<number> = new Array(oldArray.length);
-				oldArray.forEach((value, idx) => {
-					newArray[newIndices[idx]] = value;
-				});
-				return newArray;
-			}],
+	static migrateStatsArray(oldStats: number[], oldApiVersion: number, fallbackStats?: number[]): number[] {
+		const conversionMap: ProtoConversionMap<number[]> = new Map([
+			[
+				1,
+				(oldArray: number[]) => {
+					// Revision 1 simply re-orders the stats for clarity
+					const newIndices = [0, 1, 2, 3, 4, 17, 18, 6, 8, 10, 19, 15, 5, 7, 9, 11, 29, 26, 16, 30, 12, 13, 20, 28, 21, 22, 23, 24, 25, 27, 14];
+					const newArray: number[] = new Array(oldArray.length);
+					oldArray.forEach((value, idx) => {
+						newArray[newIndices[idx]] = value;
+					});
+					return newArray;
+				},
+			],
 		]);
-		return migrateOldProto<Array<number>>(oldStats, oldApiVersion, conversionMap);
+		const migratedProto = migrateOldProto<number[]>(oldStats, oldApiVersion, conversionMap);
+
+		// If there is a fallback array, use it if the lengths don't match
+		if (fallbackStats && migratedProto.length !== fallbackStats.length) return fallbackStats;
+
+		return migratedProto;
 	}
 }
 

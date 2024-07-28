@@ -1,10 +1,10 @@
 import * as Mechanics from './constants/mechanics.js';
+import { CURRENT_API_VERSION } from './constants/other.js';
 import { UnitMetadataList } from './player.js';
 import { Encounter as EncounterProto, MobType, PresetEncounter, PresetTarget, SpellSchool, Stat, Target as TargetProto, TargetInput } from './proto/common.js';
 import { Stats } from './proto_utils/stats.js';
 import { Sim } from './sim.js';
 import { EventID, TypedEvent } from './typed_event.js';
-import { CURRENT_API_VERSION } from './constants/other.js';
 
 // Manages all the settings for an Encounter.
 export class Encounter {
@@ -193,8 +193,8 @@ export class Encounter {
 
 	static updateProtoVersion(proto: EncounterProto) {
 		// First migrate the stats arrays embedded in each target.
-		proto.targets.forEach((target) => {
-			target.stats = Stats.migrateStatsArray(target.stats, proto.apiVersion);
+		proto.targets.forEach(target => {
+			target.stats = Stats.migrateStatsArray(target.stats, proto.apiVersion, this.defaultTargetProto().stats);
 		});
 
 		// Any other required data migration code should go here.

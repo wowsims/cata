@@ -715,6 +715,8 @@ export class ReforgeOptimizer {
 	buildYalpsVariables(gear: Gear): YalpsVariables {
 		const variables = new Map<string, YalpsCoefficients>();
 
+		const epStats = this.simUI.individualConfig.epStats;
+
 		for (const slot of gear.getItemSlots()) {
 			const item = gear.getEquippedItem(slot);
 
@@ -731,11 +733,17 @@ export class ReforgeOptimizer {
 					this.applyReforgeStat(coefficients, fromStat, reforgeData.fromAmount);
 				}
 
+				let containsEpStat = false;
 				for (const toStat of reforgeData.toStat) {
+					if (epStats.includes(toStat)) {
+						containsEpStat = true;
+					}
 					this.applyReforgeStat(coefficients, toStat, reforgeData.toAmount);
 				}
 
-				variables.set(variableKey, coefficients);
+				if (containsEpStat) {
+					variables.set(variableKey, coefficients);
+				}
 			}
 		}
 
