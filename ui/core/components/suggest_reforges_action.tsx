@@ -733,10 +733,10 @@ export class ReforgeOptimizer {
 					this.applyReforgeStat(coefficients, fromStat, reforgeData.fromAmount);
 				}
 
-				let containsEpStat = false
+				let containsEpStat = false;
 				for (const toStat of reforgeData.toStat) {
 					if (epStats.includes(toStat)) {
-						containsEpStat = true
+						containsEpStat = true;
 					}
 					this.applyReforgeStat(coefficients, toStat, reforgeData.toAmount);
 				}
