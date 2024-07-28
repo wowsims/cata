@@ -128,6 +128,50 @@ enum Profession {
 	Archeology = 12;
 }
 
+// General rules for Stats vs. PseudoStats:
+// 	- Define a property as a Stat if it is a BASIC item property that is
+//        commonly found on armor slots and parsed from item tooltips. Examples
+//        include primary attributes, secondary Ratings, and Armor.
+//
+//      - In addition to the above, the Stat enum can also include DERIVED
+//        player attributes that satisfy the following two rules:
+//
+//		(1) The derived attribute depends LINEARLY on one or more basic
+//		    item properties, talents, or buffs/debuffs. This means that
+//		    the relationship can be captured using a StatDependency
+//		    struct, making it computationally efficient to define the
+//		    derived property as another Stat.
+//
+//		(2) There is a sim use case for directly manipulating this
+//		    derived property as a BonusStat in the UI, or for
+//		    calculating and storing EPs for the property separately from
+//		    the basic stats it depends on.
+//
+//	  A simple example is the PhysicalHitRating and SpellHitRating composite
+//	  stats, which depend linearly on the HitRating basic item property plus
+//	  buffs such as Heroic Presence. Storing these properties as additional
+//	  Stats is desirable so that separate EPs and stat caps / breakpoints
+//	  can be defined for each, which is relevant for classes like Rogue that
+//	  value both effects but with distinct breakpoints.
+//
+//	- If the above criteria are not satisfied, then the best practice is to
+//	  define the property as a PseudoStat rather than a Stat. For example,
+//	  the MeleeHasteRating and SpellHasteRating properties, which represent
+//	  fully buffed values despite being in units of Rating, cannot be
+//	  modeled using a linear StatDependency, due to multiplicative factors
+//	  like Windfury Totem and Bloodlust buffs, so these are instead defined
+//	  as PseudoStats. Likewise, BlockChance is also defined as a PseudoStat
+//	  rather than as a Stat in Cata, despite depending linearly on
+//	  MasteryRating for Block tanks, because there is no value in storing a
+//	  separate EP for this property in Cata on top of the MasteryRating EP.
+//
+//	- When adding new Stats or PseudoStats, make the units for each property
+//	  explicit in the name to avoid confusion. For example, append "Rating"
+//	  to the end of the field name for properties that are represented in
+//	  Rating units (regardless of how they are stored in-game), and append
+//	  "Chance" to the end of the field name for properties that represent
+//	  probabilities (between 0 and 1).
+//
 // Keep in sync with sim/core/stats/stats.go.
 // NextIndex: 31;
 enum Stat {
@@ -139,36 +183,36 @@ enum Stat {
 
 	// Reforge-able secondary stats
 	StatSpirit = 4;
-	StatMeleeHit = 5;
-	StatSpellHit = 6;
-	StatMeleeCrit = 7;
-	StatSpellCrit = 8;
-	StatMeleeHaste = 9;
-	StatSpellHaste = 10;
-	StatExpertise = 11;
-	StatDodge = 12;
-	StatParry = 13;
-	StatMastery = 14;
+	StatHitRating = 5;
+	StatCritRating = 6;
+	StatHasteRating = 7;
+	StatExpertiseRating = 8;
+	StatDodgeRating = 9;
+	StatParryRating = 10;
+	StatMasteryRating = 11;
 
 	// Non-reforge-able secondary stats found on gear
-	StatAttackPower = 15;
-	StatRangedAttackPower = 16;
-	StatSpellPower = 17;
-	StatMP5 = 18;
-	StatSpellPenetration = 19;
-	StatResilience = 20;
-	StatArcaneResistance = 21;
-	StatFireResistance = 22;
-	StatFrostResistance = 23;
-	StatNatureResistance = 24;
-	StatShadowResistance = 25;
-	StatArmor = 26; // "white armor" that fully scales with all multipliers
-	StatBonusArmor = 27; // "green armor" that does not scale
+	StatAttackPower = 12;
+	StatRangedAttackPower = 13;
+	StatSpellPower = 14;
+	StatMP5 = 15;
+	StatSpellPenetration = 16;
+	StatResilienceRating = 17;
+	StatArcaneResistance = 18;
+	StatFireResistance = 19;
+	StatFrostResistance = 20;
+	StatNatureResistance = 21;
+	StatShadowResistance = 22;
+	StatArmor = 23; // "white armor" that fully scales with all multipliers
+	StatBonusArmor = 24; // "green armor" that does not scale
 
 	// Composite stats that are built up from the above gear stats + buffs
-	StatHealth = 28;
-	StatMana = 29;
-	StatBlock = 30;
+	StatHealth = 25;
+	StatMana = 26;
+	StatPhysicalHitRating = 27;
+	StatSpellHitRating = 28;
+	StatPhysicalCritRating = 29;
+	StatSpellCritRating = 30;
 
 	// DO NOT add new stats here without discussing it first; new stats come
 	// with a performance penalty.
@@ -200,16 +244,28 @@ enum Stat {
 // between the UI and backend.
 //
 // It's also OK to include things here which aren't in the PseudoStats struct.
+// NextIndex: 12;
 enum PseudoStat {
 	PseudoStatMainHandDps = 0;
 	PseudoStatOffHandDps = 1;
 	PseudoStatRangedDps = 2;
-	PseudoStatBlockDamageReduction = 3;
-	PseudoStatDodge = 4;
-	PseudoStatParry = 5;
-	PseudoStatRangedSpeedMultiplier = 6;
-	PseudoStatMeleeSpeedMultiplier = 7;
+
+	// Final buffed values including DR, represented as fractions (0 to 1)
+	PseudoStatDodgeChance = 3;
+	PseudoStatParryChance = 4;
+	PseudoStatBlockChance = 5;
+
+	// Net impact of all multiplicative Haste buffs (Bloodlust etc.)
+	PseudoStatMeleeSpeedMultiplier = 6;
+	PseudoStatRangedSpeedMultiplier = 7;
 	PseudoStatCastSpeedMultiplier = 8;
+
+	// Final buffed Haste values after combining the above multipliers with
+	// Haste Rating from gear. Expressed in units of Rating rather than as
+	// percentages for UI convenience (stats display, auto-Reforge, etc.) .
+	PseudoStatMeleeHasteRating = 9;
+	PseudoStatRangedHasteRating = 10;
+	PseudoStatSpellHasteRating = 11;
 }
 
 message UnitStats {
@@ -230,9 +286,9 @@ message UnitStats {
 }
 
 message ReforgeStat {
-    int32 id = 1;
-	repeated Stat fromStat = 2;
-	repeated Stat toStat = 3;
+	int32 id = 1;
+	Stat fromStat = 2;
+	Stat toStat = 3;
 	double multiplier = 4;
 }
 

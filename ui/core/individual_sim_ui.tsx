@@ -44,7 +44,7 @@ import {
 import { IndividualSimSettings, SavedTalents, StatCapConfig } from './proto/ui';
 import { getMetaGemConditionDescription } from './proto_utils/gems';
 import { armorTypeNames, professionNames } from './proto_utils/names';
-import { Stats } from './proto_utils/stats';
+import { Stats, UnitStat } from './proto_utils/stats';
 import { getTalentPoints, SpecOptions, SpecRotation } from './proto_utils/utils';
 import { SimSettingCategories } from './sim';
 import { SimUI, SimWarning } from './sim_ui';
@@ -106,7 +106,7 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 	epStats: Array<Stat>;
 	epPseudoStats?: Array<PseudoStat>;
 	epReferenceStat: Stat;
-	displayStats: Array<Stat>;
+	displayStats: Array<UnitStat>;
 	modifyDisplayStats?: (player: Player<SpecType>) => StatMods;
 	overwriteDisplayStats?: (player: Player<SpecType>) => StatWrites;
 

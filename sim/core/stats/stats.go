@@ -22,22 +22,19 @@ const (
 	Stamina
 	Intellect
 	Spirit
-	MeleeHit
-	SpellHit
-	MeleeCrit
-	SpellCrit
-	MeleeHaste
-	SpellHaste
-	Expertise
-	Dodge
-	Parry
-	Mastery
+	HitRating
+	CritRating
+	HasteRating
+	ExpertiseRating
+	DodgeRating
+	ParryRating
+	MasteryRating
 	AttackPower
 	RangedAttackPower
 	SpellPower
 	MP5
 	SpellPenetration
-	Resilience
+	ResilienceRating
 	ArcaneResistance
 	FireResistance
 	FrostResistance
@@ -47,7 +44,10 @@ const (
 	BonusArmor
 	Health
 	Mana
-	Block
+	PhysicalHitRating
+	SpellHitRating
+	PhysicalCritRating
+	SpellCritRating
 	// DO NOT add new stats here without discussing it first; new stats come with
 	// a performance penalty.
 
