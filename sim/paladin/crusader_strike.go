@@ -25,7 +25,7 @@ func (paladin *Paladin) registerCrusaderStrike() {
 			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
-				Timer:    paladin.sharedBuilderTimer,
+				Timer:    paladin.BuilderCooldown(),
 				Duration: paladin.sharedBuilderBaseCD,
 			},
 		},
