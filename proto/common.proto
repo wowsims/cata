@@ -263,7 +263,7 @@ enum PseudoStat {
 	// UI convenience. These are modeled as proper Stats in the back-end due
 	// to stat dependencies, but do not need to be stored in any database
 	// files.
-	PsuedoStatPhysicalHitRating = 12;
+	PseudoStatPhysicalHitRating = 12;
 	PseudoStatSpellHitRating = 13;
 	PseudoStatPhysicalCritRating = 14;
 	PseudoStatSpellCritRating = 15;
