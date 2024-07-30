@@ -81,14 +81,11 @@ import (
     output = header
     output += f"const ExpertisePerQuarterPercentReduction = {cs.CombatRatings['expertise'][BASE_LEVEL-1]}\n"
     output += f"const HasteRatingPerHastePercent = {cs.CombatRatings['haste melee'][BASE_LEVEL-1]}\n"
-    output += f"const CritRatingPerCritChance = {cs.CombatRatings['crit melee'][BASE_LEVEL-1]}\n"
-    output += f"const MeleeHitRatingPerHitChance = {cs.CombatRatings['hit melee'][BASE_LEVEL-1]}\n"
-    output += f"const SpellHitRatingPerHitChance = {cs.CombatRatings['hit spell'][BASE_LEVEL-1]}\n"
-    output += f"const DefenseRatingPerDefense = {cs.CombatRatings['defense skill'][BASE_LEVEL-1]}\n"
-    output += f"const DodgeRatingPerDodgeChance = {cs.CombatRatings['dodge'][BASE_LEVEL-1]}\n"
-    output += f"const ParryRatingPerParryChance = {cs.CombatRatings['parry'][BASE_LEVEL-1]}\n"
-    output += f"const BlockRatingPerBlockChance = {cs.CombatRatings['block'][BASE_LEVEL-1]}\n"
-    output += f"const ResilienceRatingPerCritReductionChance = {cs.CombatRatings['crit taken melee'][BASE_LEVEL-1]}\n"
+    output += f"const CritRatingPerCritPercent = {cs.CombatRatings['crit melee'][BASE_LEVEL-1]}\n"
+    output += f"const PhysicalHitRatingPerHitPercent = {cs.CombatRatings['hit melee'][BASE_LEVEL-1]}\n"
+    output += f"const SpellHitRatingPerHitPercent = {cs.CombatRatings['hit spell'][BASE_LEVEL-1]}\n"
+    output += f"const DodgeRatingPerDodgePercent = {cs.CombatRatings['dodge'][BASE_LEVEL-1]}\n"
+    output += f"const ParryRatingPerParryPercent = {cs.CombatRatings['parry'][BASE_LEVEL-1]}\n"
     output += f"const MasteryRatingPerMasteryPoint = {cs.CombatRatings['mastery'][BASE_LEVEL-1]}\n"
 
     output += '''var CritPerAgiMaxLevel = map[proto.Class]float64{

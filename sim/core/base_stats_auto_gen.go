@@ -12,14 +12,11 @@ import (
 
 const ExpertisePerQuarterPercentReduction = 30.027197
 const HasteRatingPerHastePercent = 128.057160
-const CritRatingPerCritChance = 179.280040
-const MeleeHitRatingPerHitChance = 120.108800
-const SpellHitRatingPerHitChance = 102.445740
-const DefenseRatingPerDefense = 19.208574
-const DodgeRatingPerDodgeChance = 176.718900
-const ParryRatingPerParryChance = 176.718900
-const BlockRatingPerBlockChance = 88.359444
-const ResilienceRatingPerCritReductionChance = 0.000000
+const CritRatingPerCritPercent = 179.280040
+const PhysicalHitRatingPerHitPercent = 120.108800
+const SpellHitRatingPerHitPercent = 102.445740
+const DodgeRatingPerDodgePercent = 176.718900
+const ParryRatingPerParryPercent = 176.718900
 const MasteryRatingPerMasteryPoint = 179.280040
 var CritPerAgiMaxLevel = map[proto.Class]float64{
 proto.Class_ClassUnknown: 0.0,
