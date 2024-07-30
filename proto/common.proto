@@ -128,42 +128,33 @@ enum Profession {
 	Archeology = 12;
 }
 
-// General rules for Stats vs. PseudoStats:
-// 	- Define a property as a Stat if it is a BASIC item property that is
-//        commonly found on armor slots and parsed from item tooltips. Examples
-//        include primary attributes, secondary Ratings, and Armor.
+// General rules for Stats vs. PseudoStats at the proto level:
+//	- Define a property as a Stat if and only if it needs to be present in
+//	  one or more stats arrays embedded in the database files, local storage
+//	  data, or sim links. This generally means that the property is a BASIC
+//	  attribute that is directly found on items or enchants and parsed from
+//	  tooltips during database generation. Alternatively, if the stat is
+//	  required for reconstructing a target NPC from saved Encounter
+//	  settings, then it also belongs in the Stat enum.
 //
-//      - In addition to the above, the Stat enum can also include DERIVED
-//        player attributes that satisfy the following two rules:
-//
-//		(1) The derived attribute depends LINEARLY on one or more basic
-//		    item properties, talents, or buffs/debuffs. This means that
-//		    the relationship can be captured using a StatDependency
-//		    struct, making it computationally efficient to define the
-//		    derived property as another Stat.
-//
-//		(2) There is a sim use case for directly manipulating this
-//		    derived property as a BonusStat in the UI, or for
-//		    calculating and storing EPs for the property separately from
-//		    the basic stats it depends on.
-//
-//	  A simple example is the PhysicalHitRating and SpellHitRating composite
-//	  stats, which depend linearly on the HitRating basic item property plus
-//	  buffs such as Heroic Presence. Storing these properties as additional
-//	  Stats is desirable so that separate EPs and stat caps / breakpoints
-//	  can be defined for each, which is relevant for classes like Rogue that
-//	  value both effects but with distinct breakpoints.
-//
-//	- If the above criteria are not satisfied, then the best practice is to
+//	- If the above criterion is not satisfied, then the best practice is to
 //	  define the property as a PseudoStat rather than a Stat. For example,
-//	  the MeleeHasteRating and SpellHasteRating properties, which represent
-//	  fully buffed values despite being in units of Rating, cannot be
-//	  modeled using a linear StatDependency, due to multiplicative factors
-//	  like Windfury Totem and Bloodlust buffs, so these are instead defined
-//	  as PseudoStats. Likewise, BlockChance is also defined as a PseudoStat
-//	  rather than as a Stat in Cata, despite depending linearly on
-//	  MasteryRating for Block tanks, because there is no value in storing a
-//	  separate EP for this property in Cata on top of the MasteryRating EP.
+//	  the various school-specific versions of Hit, Crit, and Haste are all
+//	  defined as PseudoStats from Cataclysm onwards, since only the generic
+//	  Ratings need to be parsed from item data and stored in the sim
+//	  database.
+//
+//	- Note that the above rules apply only for the proto messages used for
+//	  saving and loading data in the browser. It is perfectly okay to define
+//	  additional Stats in the back-end code for convenience or performance
+//	  reasons, such as for automatically propagating linear stat
+//	  dependencies when dynamic stat changes occur in a sim iteration. For
+//	  example, the SpellHit PseudoStat mentioned above is actually modeled
+//	  as a proper Stat in the back-end code so that it can benefit from the
+//	  StatDependency tooling, but is converted to a PseudoStat when writing
+//	  UnitStats protos for character stats and stat weights requests. This
+//	  keeps the item database compact while still giving the UI access to
+//	  calculated tertiary stats like SpellHit, MeleeCrit, RangedHaste, etc.
 //
 //	- When adding new Stats or PseudoStats, make the units for each property
 //	  explicit in the name to avoid confusion. For example, append "Rating"
@@ -172,8 +163,11 @@ enum Profession {
 //	  "Chance" to the end of the field name for properties that represent
 //	  probabilities (between 0 and 1).
 //
-// Keep in sync with sim/core/stats/stats.go.
-// NextIndex: 31;
+// Keep in sync with sim/core/stats/stats.go. As mentioned above, it is okay for
+// the Go Stats array to be larger than the size of the Stat enum proto, but the
+// shared indices between the two must exactly match.
+//
+// NextIndex: 27;
 enum Stat {
 	// Primary attributes ("main stat")
 	StatStrength = 0;
@@ -195,24 +189,22 @@ enum Stat {
 	StatAttackPower = 12;
 	StatRangedAttackPower = 13;
 	StatSpellPower = 14;
-	StatMP5 = 15;
-	StatSpellPenetration = 16;
-	StatResilienceRating = 17;
-	StatArcaneResistance = 18;
-	StatFireResistance = 19;
-	StatFrostResistance = 20;
-	StatNatureResistance = 21;
-	StatShadowResistance = 22;
-	StatArmor = 23; // "white armor" that fully scales with all multipliers
-	StatBonusArmor = 24; // "green armor" that does not scale
+	StatSpellPenetration = 15;
+	StatResilienceRating = 16;
+	StatArcaneResistance = 17;
+	StatFireResistance = 18;
+	StatFrostResistance = 19;
+	StatNatureResistance = 20;
+	StatShadowResistance = 21;
+	StatArmor = 22; // "white armor" that fully scales with all multipliers
+	StatBonusArmor = 23; // "green armor" that does not scale
 
-	// Composite stats that are built up from the above gear stats + buffs
-	StatHealth = 25;
-	StatMana = 26;
-	StatPhysicalHitRating = 27;
-	StatSpellHitRating = 28;
-	StatPhysicalCritRating = 29;
-	StatSpellCritRating = 30;
+	// Composite stats that are built up from the above gear stats + buffs.
+	// These still belong in the Stat enum because they can be present on
+	// some enchants and because the base values need to be stored for NPCs.
+	StatHealth = 24;
+	StatMana = 25;
+	StatMP5 = 26;
 
 	// DO NOT add new stats here without discussing it first; new stats come
 	// with a performance penalty.
@@ -241,10 +233,10 @@ enum Stat {
 }
 
 // Not all pseudostats are included here; just the ones we want to pass
-// between the UI and backend.
+// between the UI and backend. It's also OK to include things here which aren't
+// in the PseudoStats struct.
 //
-// It's also OK to include things here which aren't in the PseudoStats struct.
-// NextIndex: 12;
+// NextIndex: 16;
 enum PseudoStat {
 	PseudoStatMainHandDps = 0;
 	PseudoStatOffHandDps = 1;
@@ -266,6 +258,15 @@ enum PseudoStat {
 	PseudoStatMeleeHasteRating = 9;
 	PseudoStatRangedHasteRating = 10;
 	PseudoStatSpellHasteRating = 11;
+
+	// School-specific fully buffed Hit/Crit stats, also in Rating units for
+	// UI convenience. These are modeled as proper Stats in the back-end due
+	// to stat dependencies, but do not need to be stored in any database
+	// files.
+	PsuedoStatPhysicalHitRating = 12;
+	PseudoStatSpellHitRating = 13;
+	PseudoStatPhysicalCritRating = 14;
+	PseudoStatSpellCritRating = 15;
 }
 
 message UnitStats {

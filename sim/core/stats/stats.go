@@ -8,14 +8,15 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-type Stats [Len]float64
+type Stats [SimStatsLen]float64
 
 type Stat byte
 
 // Use internal representation instead of proto.Stat so we can add functions
 // and use 'byte' as the data type.
 //
-// This needs to stay synced with proto.Stat.
+// This needs to stay synced with proto.Stat: it is okay for SimStatsLen to
+// exceed ProtoStatsLen, but the shared indices between the two must match 1:1 .
 const (
 	Strength Stat = iota
 	Agility
@@ -32,7 +33,6 @@ const (
 	AttackPower
 	RangedAttackPower
 	SpellPower
-	MP5
 	SpellPenetration
 	ResilienceRating
 	ArcaneResistance
@@ -44,18 +44,28 @@ const (
 	BonusArmor
 	Health
 	Mana
-	PhysicalHitRating
-	SpellHitRating
-	PhysicalCritRating
-	SpellCritRating
-	// DO NOT add new stats here without discussing it first; new stats come with
-	// a performance penalty.
+	MP5
+	// end of Stat enum in proto/common.proto
 
-	Len
+	// The remaining stats below are stored as PseudoStats rather than as
+	// Stats in UnitStats proto messages, since they are not required in the
+	// database files. However, it is valuable to keep these as proper Stats
+	// in the back-end, since they are used in various stat dependencies.
+	// The units for all 5 of these are probabilities (between 0 and 1).
+	PhysicalHitChance
+	SpellHitChance
+	PhysicalCritChance
+	SpellCritChance
+	BlockChance
+	// DO NOT add new stats here without discussing it first; new stats come
+	// with a performance penalty.
+
+	SimStatsLen
 )
 
+var ProtoStatsLen = len(proto.Stat_name)
 var PseudoStatsLen = len(proto.PseudoStat_name)
-var UnitStatsLen = int(Len) + PseudoStatsLen
+var UnitStatsLen = ProtoStatsLen + PseudoStatsLen
 
 type SchoolIndex byte
 
@@ -278,7 +288,7 @@ func (stats Stats) FlatString() string {
 }
 
 func (stats Stats) ToFloatArray() []float64 {
-	return stats[:]
+	return stats[:ProtoStatsLen]
 }
 
 type PseudoStats struct {
