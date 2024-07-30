@@ -242,10 +242,10 @@ enum PseudoStat {
 	PseudoStatOffHandDps = 1;
 	PseudoStatRangedDps = 2;
 
-	// Final buffed values including DR, represented as fractions (0 to 1)
-	PseudoStatDodgeChance = 3;
-	PseudoStatParryChance = 4;
-	PseudoStatBlockChance = 5;
+	// Final buffed values including DR, represented as percentages (0-100)
+	PseudoStatDodgePercent = 3;
+	PseudoStatParryPercent = 4;
+	PseudoStatBlockPercent = 5;
 
 	// Net impact of all multiplicative Haste buffs (Bloodlust etc.)
 	PseudoStatMeleeSpeedMultiplier = 6;

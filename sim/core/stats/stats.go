@@ -51,12 +51,12 @@ const (
 	// Stats in UnitStats proto messages, since they are not required in the
 	// database files. However, it is valuable to keep these as proper Stats
 	// in the back-end, since they are used in various stat dependencies.
-	// The units for all 5 of these are probabilities (between 0 and 1).
-	PhysicalHitChance
-	SpellHitChance
-	PhysicalCritChance
-	SpellCritChance
-	BlockChance
+	// The units for all 5 of these are percentages (between 0 and 100).
+	PhysicalHitPercent
+	SpellHitPercent
+	PhysicalCritPercent
+	SpellCritPercent
+	BlockPercent
 	// DO NOT add new stats here without discussing it first; new stats come
 	// with a performance penalty.
 
@@ -152,16 +152,16 @@ func (s Stat) StatName() string {
 		return "Mana"
 	case MP5:
 		return "MP5"
-	case PhysicalHitChance:
-		return "PhysicalHitChance"
-	case SpellHitChance:
-		return "SpellHitChance"
-	case PhysicalCritChance:
-		return "PhysicalCritChance"
-	case SpellCritChance:
-		return "SpellCritChance"
-	case BlockChance:
-		return "BlockChance"
+	case PhysicalHitPercent:
+		return "PhysicalHitPercent"
+	case SpellHitPercent:
+		return "SpellHitPercent"
+	case PhysicalCritPercent:
+		return "PhysicalCritPercent"
+	case SpellCritPercent:
+		return "SpellCritPercent"
+	case BlockPercent:
+		return "BlockPercent"
 	}
 
 	return "none"
