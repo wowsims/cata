@@ -108,58 +108,60 @@ func (s Stat) StatName() string {
 		return "Intellect"
 	case Spirit:
 		return "Spirit"
-	case SpellCrit:
-		return "SpellCrit"
-	case SpellHit:
-		return "SpellHit"
-	case SpellPower:
-		return "SpellPower"
-	case SpellHaste:
-		return "SpellHaste"
-	case MP5:
-		return "MP5"
-	case SpellPenetration:
-		return "SpellPenetration"
+	case HitRating:
+		return "HitRating"
+	case CritRating:
+		return "CritRating"
+	case HasteRating:
+		return "HasteRating"
+	case ExpertiseRating:
+		return "ExpertiseRating"
+	case DodgeRating:
+		return "DodgeRating"
+	case ParryRating:
+		return "ParryRating"
+	case MasteryRating:
+		return "MasteryRating"
 	case AttackPower:
 		return "AttackPower"
-	case MeleeHit:
-		return "MeleeHit"
-	case MeleeHaste:
-		return "MeleeHaste"
-	case MeleeCrit:
-		return "MeleeCrit"
-	case Expertise:
-		return "Expertise"
-	case Mana:
-		return "Mana"
+	case RangedAttackPower:
+		return "RangedAttackPower"
+	case SpellPower:
+		return "SpellPower"
+	case SpellPenetration:
+		return "SpellPenetration"
+	case ResilienceRating:
+		return "ResilienceRating"
+	case ArcaneResistance:
+		return "ArcaneResistance"
+	case FireResistance:
+		return "FireResistance"
+	case FrostResistance:
+		return "FrostResistance"
+	case NatureResistance:
+		return "NatureResistance"
+	case ShadowResistance:
+		return "ShadowResistance"
 	case Armor:
 		return "Armor"
 	case BonusArmor:
 		return "BonusArmor"
-	case RangedAttackPower:
-		return "RangedAttackPower"
-	case Block:
-		return "Block"
-	case Dodge:
-		return "Dodge"
-	case Parry:
-		return "Parry"
-	case Resilience:
-		return "Resilience"
 	case Health:
 		return "Health"
-	case FireResistance:
-		return "FireResistance"
-	case NatureResistance:
-		return "NatureResistance"
-	case FrostResistance:
-		return "FrostResistance"
-	case ShadowResistance:
-		return "ShadowResistance"
-	case ArcaneResistance:
-		return "ArcaneResistance"
-	case Mastery:
-		return "Mastery"
+	case Mana:
+		return "Mana"
+	case MP5:
+		return "MP5"
+	case PhysicalHitChance:
+		return "PhysicalHitChance"
+	case SpellHitChance:
+		return "SpellHitChance"
+	case PhysicalCritChance:
+		return "PhysicalCritChance"
+	case SpellCritChance:
+		return "SpellCritChance"
+	case BlockChance:
+		return "BlockChance"
 	}
 
 	return "none"
@@ -419,7 +421,7 @@ func NewPseudoStats() PseudoStats {
 
 type UnitStat int
 
-func (s UnitStat) IsStat() bool                                 { return int(s) < int(Len) }
+func (s UnitStat) IsStat() bool                                 { return int(s) < int(ProtoStatsLen) }
 func (s UnitStat) IsPseudoStat() bool                           { return !s.IsStat() }
 func (s UnitStat) EqualsStat(other Stat) bool                   { return int(s) == int(other) }
 func (s UnitStat) EqualsPseudoStat(other proto.PseudoStat) bool { return int(s) == int(other) }
@@ -433,7 +435,7 @@ func (s UnitStat) PseudoStatIdx() int {
 	if s.IsStat() {
 		panic("Is a regular stat")
 	}
-	return int(s) - int(Len)
+	return int(s) - int(ProtoStatsLen)
 }
 func (s UnitStat) AddToStatsProto(p *proto.UnitStats, value float64) {
 	if s.IsStat() {
@@ -445,4 +447,4 @@ func (s UnitStat) AddToStatsProto(p *proto.UnitStats, value float64) {
 
 func UnitStatFromIdx(s int) UnitStat                     { return UnitStat(s) }
 func UnitStatFromStat(s Stat) UnitStat                   { return UnitStat(s) }
-func UnitStatFromPseudoStat(s proto.PseudoStat) UnitStat { return UnitStat(int(s) + int(Len)) }
+func UnitStatFromPseudoStat(s proto.PseudoStat) UnitStat { return UnitStat(int(s) + int(ProtoStatsLen)) }
