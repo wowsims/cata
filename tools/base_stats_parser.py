@@ -119,8 +119,8 @@ proto.Class_ClassUnknown: {},'''
         scb = float(cs.SCritBase["1"][Offs[c]])*100
         mcb = float(cs.MCritBase["1"][Offs[c]])*100
         output += f"\n stats.Mana: {mp:.4f},"
-        output += f"\n stats.SpellCrit: {scb:.4f}*CritRatingPerCritChance,"
-        output += f"\n stats.MeleeCrit: {mcb:.4f}*CritRatingPerCritChance,"
+        output += f"\n stats.SpellCritPercent: {scb:.4f},"
+        output += f"\n stats.PhysicalCritPercent: {mcb:.4f},"
         output += "\n},"
     output += "\n}\n"
     return output
