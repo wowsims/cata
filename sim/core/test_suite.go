@@ -39,7 +39,7 @@ func (testSuite *IndividualTestSuite) TestCharacterStats(testName string, csr *p
 	testSuite.testNames = append(testSuite.testNames, testName)
 
 	result := ComputeStats(csr)
-	finalStats := stats.FromFloatArray(result.RaidStats.Parties[0].Players[0].FinalStats.Stats)
+	finalStats := StatsFromUnitStatsProto(result.RaidStats.Parties[0].Players[0].FinalStats)
 
 	testSuite.testResults.CharacterStatsResults[testName] = &proto.CharacterStatsTestResult{
 		FinalStats: toFixedStats(finalStats[:], storagePrecision),
@@ -50,7 +50,7 @@ func (testSuite *IndividualTestSuite) TestStatWeights(testName string, swr *prot
 	testSuite.testNames = append(testSuite.testNames, testName)
 
 	result := StatWeights(swr)
-	weights := stats.FromFloatArray(result.Dps.Weights.Stats)
+	weights := StatsFromUnitStatsProto(result.Dps.Weights)
 
 	testSuite.testResults.StatWeightsResults[testName] = &proto.StatWeightsTestResult{
 		Weights: toFixedStats(weights[:], storagePrecision),
@@ -202,9 +202,9 @@ func RunTestSuite(t *testing.T, suiteName string, generator TestGenerator) {
 			if csr != nil {
 				testSuite.TestCharacterStats(fullTestName, csr)
 				if actualCharacterStats, ok := testSuite.testResults.CharacterStatsResults[fullTestName]; ok {
-					actualStats := stats.FromFloatArray(actualCharacterStats.FinalStats)
+					actualStats := stats.FromProtoArray(actualCharacterStats.FinalStats)
 					if expectedCharacterStats, ok := expectedResults.CharacterStatsResults[fullTestName]; ok {
-						expectedStats := stats.FromFloatArray(expectedCharacterStats.FinalStats)
+						expectedStats := stats.FromProtoArray(expectedCharacterStats.FinalStats)
 						if !actualStats.EqualsWithTolerance(expectedStats, tolerance) {
 							t.Logf("Stats expected %v but was %v", expectedStats, actualStats)
 							t.Fail()
@@ -220,9 +220,9 @@ func RunTestSuite(t *testing.T, suiteName string, generator TestGenerator) {
 			} else if swr != nil {
 				testSuite.TestStatWeights(fullTestName, swr)
 				if actualStatWeights, ok := testSuite.testResults.StatWeightsResults[fullTestName]; ok {
-					actualWeights := stats.FromFloatArray(actualStatWeights.Weights)
+					actualWeights := stats.FromProtoArray(actualStatWeights.Weights)
 					if expectedStatWeights, ok := expectedResults.StatWeightsResults[fullTestName]; ok {
-						expectedWeights := stats.FromFloatArray(expectedStatWeights.Weights)
+						expectedWeights := stats.FromProtoArray(expectedStatWeights.Weights)
 						if !actualWeights.EqualsWithTolerance(expectedWeights, tolerance) {
 							t.Logf("Weights expected %v but was %v", expectedWeights, actualWeights)
 							t.Fail()

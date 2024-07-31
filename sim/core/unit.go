@@ -430,9 +430,13 @@ func (unit *Unit) SpellGCD() time.Duration {
 	return max(GCDMin, unit.ApplyCastSpeed(GCDDefault))
 }
 
+func (unit *Unit) TotalSpellHasteMultiplier() float64 {
+	return unit.PseudoStats.CastSpeedMultiplier * (1 + unit.stats[stats.HasteRating] / (HasteRatingPerHastePercent * 100))
+}
+
 func (unit *Unit) updateCastSpeed() {
 	oldCastSpeed := unit.CastSpeed
-	unit.CastSpeed = 1 / (unit.PseudoStats.CastSpeedMultiplier * (1 + (unit.stats[stats.SpellHaste] / (HasteRatingPerHastePercent * 100))))
+	unit.CastSpeed = 1 / unit.TotalSpellHasteMultiplier()
 	newCastSpeed := unit.CastSpeed
 
 	for i := range unit.OnCastSpeedChanged {
@@ -504,17 +508,17 @@ func (unit *Unit) MultiplyResourceRegenSpeed(sim *Simulation, amount float64) {
 	}
 }
 
-func (unit *Unit) AddBonusRangedHitRating(amount float64) {
+func (unit *Unit) AddBonusRangedHitPercent(percentage float64) {
 	unit.OnSpellRegistered(func(spell *Spell) {
 		if spell.ProcMask.Matches(ProcMaskRanged) {
-			spell.BonusHitRating += amount
+			spell.BonusHitPercent += percentage
 		}
 	})
 }
-func (unit *Unit) AddBonusRangedCritRating(amount float64) {
+func (unit *Unit) AddBonusRangedCritPercent(percentage float64) {
 	unit.OnSpellRegistered(func(spell *Spell) {
 		if spell.ProcMask.Matches(ProcMaskRanged) {
-			spell.BonusCritRating += amount
+			spell.BonusCritPercent += percentage
 		}
 	})
 }
@@ -525,6 +529,15 @@ func (unit *Unit) SetCurrentPowerBar(bar PowerBarType) {
 
 func (unit *Unit) GetCurrentPowerBar() PowerBarType {
 	return unit.currentPowerBar
+}
+
+// Stat dependencies that apply both to players/pets (represented as Character
+// structs) and to NPCs (represented as Target structs).
+func (unit *Unit) addUniversalStatDependencies() {
+	unit.AddStatDependency(stats.HitRating, stats.PhysicalHitPercent, 1 / PhysicalHitRatingPerHitPercent)
+	unit.AddStatDependency(stats.HitRating, stats.SpellHitPercent, 1 / SpellHitRatingPerHitPercent)
+	unit.AddStatDependency(stats.CritRating, stats.PhysicalCritPercent, 1 / CritRatingPerCritPercent)
+	unit.AddStatDependency(stats.CritRating, stats.SpellCritPercent, 1 / CritRatingPerCritPercent)
 }
 
 func (unit *Unit) finalize() {
