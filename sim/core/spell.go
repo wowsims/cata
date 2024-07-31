@@ -123,8 +123,8 @@ type Spell struct {
 	// The current or most recent cast data.
 	CurCast Cast
 
-	BonusHitRating           float64
-	BonusCritRating          float64
+	BonusHitPercent          float64
+	BonusCritPercent         float64
 	BonusSpellPower          float64
 	BonusExpertiseRating     float64
 	CastTimeMultiplier       float64
