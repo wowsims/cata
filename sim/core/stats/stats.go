@@ -180,7 +180,9 @@ func GetHighestStat(other Stats) Stat {
 	return Stat(maxStatIndex)
 }
 
-func FromFloatArray(values []float64) Stats {
+func FromProtoArray(values []float64) Stats {
+	// SimStatsLen can be larger than ProtoStatsLen, but the built-in copy
+	// function will only import the shared indices between the two.
 	var stats Stats
 	copy(stats[:], values)
 	return stats
@@ -289,7 +291,9 @@ func (stats Stats) FlatString() string {
 	return sb.String()
 }
 
-func (stats Stats) ToFloatArray() []float64 {
+func (stats Stats) ToProtoArray() []float64 {
+	// SimStatsLen can be larger than ProtoStatsLen, so export only the
+	// shared indices between the two.
 	return stats[:ProtoStatsLen]
 }
 
@@ -421,8 +425,8 @@ type UnitStat int
 
 func (s UnitStat) IsStat() bool                                 { return int(s) < int(ProtoStatsLen) }
 func (s UnitStat) IsPseudoStat() bool                           { return !s.IsStat() }
-func (s UnitStat) EqualsStat(other Stat) bool                   { return int(s) == int(other) }
-func (s UnitStat) EqualsPseudoStat(other proto.PseudoStat) bool { return int(s) == int(other) }
+func (s UnitStat) EqualsStat(other Stat) bool                   { return s.IsStat() && (s.StatIdx() == int(other)) }
+func (s UnitStat) EqualsPseudoStat(other proto.PseudoStat) bool { return s.IsPseudoStat() && (s.PseudoStatIdx() == int(other)) }
 func (s UnitStat) StatIdx() int {
 	if !s.IsStat() {
 		panic("Is a pseudo stat")
