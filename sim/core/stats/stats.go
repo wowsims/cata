@@ -361,8 +361,6 @@ type PseudoStats struct {
 
 	BonusRangedAttackPowerTaken float64 // Hunters mark
 	BonusSpellCritPercentTaken  float64 // Imp Shadow Bolt / Imp Scorch / Winter's Chill debuff
-	BonusMeleeHitPercentTaken   float64 // Formerly Imp FF and SW Radiance;
-	BonusSpellHitPercentTaken   float64 // Imp FF
 
 	BonusPhysicalDamageTaken float64 // Hemo, Gift of Arthas, etc
 	BonusHealingTaken        float64 // Talisman of Troll Divinity
