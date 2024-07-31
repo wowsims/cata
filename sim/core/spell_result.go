@@ -77,12 +77,12 @@ func (spell *Spell) RangedAttackPower(target *Unit) float64 {
 		target.PseudoStats.BonusRangedAttackPowerTaken
 }
 
-func (spell *Spell) ExpertisePercentage() float64 {
+func (spell *Spell) DodgeParrySuppression() float64 {
 	// As of 06/20, Blizzard has changed Expertise to no longer truncate at quarter
 	// percent intervals. Note that in-game character sheet tooltips will still
 	// display the truncated values, but it has been tested to behave continuously in
 	// reality since the patch.
-	expertiseRating := spell.Unit.stats[stats.Expertise] + spell.BonusExpertiseRating
+	expertiseRating := spell.Unit.stats[stats.ExpertiseRating] + spell.BonusExpertiseRating
 	return expertiseRating / ExpertisePerQuarterPercentReduction / 400
 }
 
