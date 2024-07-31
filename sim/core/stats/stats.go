@@ -361,7 +361,6 @@ type PseudoStats struct {
 
 	BonusRangedAttackPowerTaken float64 // Hunters mark
 	BonusSpellCritPercentTaken  float64 // Imp Shadow Bolt / Imp Scorch / Winter's Chill debuff
-	BonusCritPercentTaken       float64 // Totem of Wrath / Master Poisoner / Heart of the Crusader
 	BonusMeleeHitPercentTaken   float64 // Formerly Imp FF and SW Radiance;
 	BonusSpellHitPercentTaken   float64 // Imp FF
 
