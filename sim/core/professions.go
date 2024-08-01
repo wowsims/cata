@@ -14,7 +14,7 @@ func (character *Character) applyProfessionEffects() {
 	}
 
 	if character.HasProfession(proto.Profession_Skinning) {
-		character.AddStats(stats.Stats{stats.MeleeCrit: 80, stats.SpellCrit: 80})
+		character.AddStats(stats.Stats{stats.CritRating: 80})
 	}
 
 	if character.HasProfession(proto.Profession_Herbalism) {
@@ -23,7 +23,7 @@ func (character *Character) applyProfessionEffects() {
 		aura := character.NewTemporaryStatsAura(
 			"Lifeblood",
 			actionID,
-			stats.Stats{stats.MeleeHaste: 480, stats.SpellHaste: 480},
+			stats.Stats{stats.HasteRating: 480},
 			time.Second*20,
 		)
 

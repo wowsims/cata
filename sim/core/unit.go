@@ -310,13 +310,11 @@ func (unit *Unit) processDynamicBonus(sim *Simulation, bonus stats.Stats) {
 			unit.currentMana = unit.MaxMana()
 		}
 	}
-	if bonus[stats.MeleeHaste] != 0 {
+	if bonus[stats.HasteRating] != 0 {
 		unit.AutoAttacks.UpdateSwingTimers(sim)
 		unit.runicPowerBar.updateRegenTimes(sim)
 		unit.energyBar.processDynamicHasteRatingChange(sim)
 		unit.focusBar.processDynamicHasteRatingChange(sim)
-	}
-	if bonus[stats.SpellHaste] != 0 {
 		unit.updateCastSpeed()
 	}
 	if bonus[stats.MasteryRating] != 0 {
@@ -410,7 +408,7 @@ func (unit *Unit) ApplyCastSpeedForSpell(dur time.Duration, spell *Spell) time.D
 }
 
 func (unit *Unit) SwingSpeed() float64 {
-	return unit.PseudoStats.MeleeSpeedMultiplier * (1 + (unit.stats[stats.MeleeHaste] / (HasteRatingPerHastePercent * 100)))
+	return unit.PseudoStats.MeleeSpeedMultiplier * (1 + (unit.stats[stats.HasteRating] / (HasteRatingPerHastePercent * 100)))
 }
 
 func (unit *Unit) Armor() float64 {
@@ -422,7 +420,7 @@ func (unit *Unit) BlockDamageReduction() float64 {
 }
 
 func (unit *Unit) RangedSwingSpeed() float64 {
-	return unit.PseudoStats.RangedSpeedMultiplier * (1 + (unit.stats[stats.MeleeHaste] / (HasteRatingPerHastePercent * 100)))
+	return unit.PseudoStats.RangedSpeedMultiplier * (1 + (unit.stats[stats.HasteRating] / (HasteRatingPerHastePercent * 100)))
 }
 
 // MultiplyMeleeSpeed will alter the attack speed multiplier and change swing speed of all autoattack swings in progress.
@@ -651,14 +649,14 @@ func (unit *Unit) ExecuteCustomRotation(sim *Simulation) {
 }
 
 func (unit *Unit) GetTotalDodgeChanceAsDefender(atkTable *AttackTable) float64 {
-	chance := unit.PseudoStats.BaseDodge +
+	chance := unit.PseudoStats.BaseDodgeChance +
 		atkTable.BaseDodgeChance +
 		unit.GetDiminishedDodgeChance()
 	return math.Max(chance, 0.0)
 }
 
 func (unit *Unit) GetTotalParryChanceAsDefender(atkTable *AttackTable) float64 {
-	chance := unit.PseudoStats.BaseParry +
+	chance := unit.PseudoStats.BaseParryChance +
 		atkTable.BaseParryChance +
 		unit.GetDiminishedParryChance()
 	return math.Max(chance, 0.0)
@@ -673,7 +671,7 @@ func (unit *Unit) GetTotalChanceToBeMissedAsDefender(atkTable *AttackTable) floa
 
 func (unit *Unit) GetTotalBlockChanceAsDefender(atkTable *AttackTable) float64 {
 	chance := atkTable.BaseBlockChance +
-		unit.GetStat(stats.Block)/BlockRatingPerBlockChance/100
+		unit.GetStat(stats.BlockPercent) / 100
 	return math.Max(chance, 0.0)
 }
 

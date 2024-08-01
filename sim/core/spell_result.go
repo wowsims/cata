@@ -87,18 +87,15 @@ func (spell *Spell) DodgeParrySuppression() float64 {
 }
 
 func (spell *Spell) PhysicalHitChance(attackTable *AttackTable) float64 {
-	hitRating := spell.Unit.stats[stats.MeleeHit] +
-		spell.BonusHitRating +
-		attackTable.Defender.PseudoStats.BonusMeleeHitRatingTaken
-	return hitRating / (MeleeHitRatingPerHitChance * 100)
+	hitPercent := spell.Unit.stats[stats.PhysicalHitPercent] + spell.BonusHitPercent
+	return hitPercent / 100
 }
 
 func (spell *Spell) PhysicalCritChance(attackTable *AttackTable) float64 {
-	critRating := spell.Unit.stats[stats.MeleeCrit] +
-		spell.BonusCritRating +
-		attackTable.Defender.PseudoStats.BonusCritRatingTaken +
-		attackTable.BonusCritRating
-	return critRating/(CritRatingPerCritChance*100) - attackTable.MeleeCritSuppression
+	critPercent := spell.Unit.stats[stats.PhysicalCritPercent] +
+		spell.BonusCritPercent +
+		attackTable.BonusCritPercent
+	return critPercent / 100 - attackTable.MeleeCritSuppression
 }
 func (spell *Spell) PhysicalCritCheck(sim *Simulation, attackTable *AttackTable) bool {
 	return sim.RandomFloat("Physical Crit Roll") < spell.PhysicalCritChance(attackTable)
@@ -121,11 +118,8 @@ func (spell *Spell) SpellPower() float64 {
 }
 
 func (spell *Spell) SpellHitChance(target *Unit) float64 {
-	hitRating := spell.Unit.stats[stats.SpellHit] +
-		spell.BonusHitRating +
-		target.PseudoStats.BonusSpellHitRatingTaken
-
-	return hitRating / (SpellHitRatingPerHitChance * 100)
+	hitPercent := spell.Unit.stats[stats.SpellHitPercent] + spell.BonusHitPercent
+	return hitPercent / 100
 }
 func (spell *Spell) SpellChanceToMiss(attackTable *AttackTable) float64 {
 	return math.Max(0, attackTable.BaseSpellMissChance-spell.SpellHitChance(attackTable.Defender))
@@ -134,16 +128,13 @@ func (spell *Spell) MagicHitCheck(sim *Simulation, attackTable *AttackTable) boo
 	return sim.Proc(1.0-spell.SpellChanceToMiss(attackTable), "Magical Hit Roll")
 }
 
-func (spell *Spell) spellCritRating(target *Unit) float64 {
-	return spell.Unit.stats[stats.SpellCrit] +
-		spell.BonusCritRating +
-		target.PseudoStats.BonusCritRatingTaken +
-		target.PseudoStats.BonusSpellCritRatingTaken
-}
 func (spell *Spell) SpellCritChance(target *Unit) float64 {
-	return spell.spellCritRating(target)/(CritRatingPerCritChance*100) -
-		spell.Unit.AttackTables[target.UnitIndex].SpellCritSuppression +
-		spell.Unit.AttackTables[target.UnitIndex].BonusCritRating
+	attackTable := spell.Unit.AttackTables[target.UnitIndex]
+	critPercent := spell.Unit.stats[stats.SpellCritPercent] +
+		spell.BonusCritPercent +
+		target.PseudoStats.BonusSpellCritPercentTaken +
+		attackTable.BonusCritPercent
+	return critPercent / 100 - attackTable.SpellCritSuppression
 }
 func (spell *Spell) MagicCritCheck(sim *Simulation, target *Unit) bool {
 	critChance := spell.SpellCritChance(target)
@@ -153,11 +144,8 @@ func (spell *Spell) MagicCritCheck(sim *Simulation, target *Unit) bool {
 func (spell *Spell) HealingPower(target *Unit) float64 {
 	return spell.SpellPower() + target.PseudoStats.BonusHealingTaken
 }
-func (spell *Spell) healingCritRating() float64 {
-	return spell.Unit.GetStat(stats.SpellCrit) + spell.BonusCritRating
-}
 func (spell *Spell) HealingCritChance() float64 {
-	return spell.healingCritRating() / (CritRatingPerCritChance * 100)
+	return (spell.Unit.GetStat(stats.SpellCritPercent) + spell.BonusCritPercent) / 100
 }
 
 func (spell *Spell) HealingCritCheck(sim *Simulation) bool {

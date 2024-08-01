@@ -7,7 +7,6 @@ import (
 
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
-	googleProto "google.golang.org/protobuf/proto"
 )
 
 var DefaultSimTestOptions = &proto.SimOptions{

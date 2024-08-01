@@ -39,7 +39,7 @@ func (s *UnitStats) Get(stat stats.UnitStat) float64 {
 
 func (s *UnitStats) ToProto() *proto.UnitStats {
 	return &proto.UnitStats{
-		Stats:       s.Stats[:],
+		Stats:       s.Stats.ToProtoArray(),
 		PseudoStats: s.PseudoStats,
 		ApiVersion:  GetCurrentProtoVersion(),
 	}
@@ -106,7 +106,7 @@ func buildStatWeightRequests(swr *proto.StatWeightsRequest) *proto.StatWeightReq
 		swr.Player.BonusStats = &proto.UnitStats{}
 	}
 	if swr.Player.BonusStats.Stats == nil {
-		swr.Player.BonusStats.Stats = make([]float64, stats.Len)
+		swr.Player.BonusStats.Stats = make([]float64, stats.ProtoStatsLen)
 	}
 	if swr.Player.BonusStats.PseudoStats == nil {
 		swr.Player.BonusStats.PseudoStats = make([]float64, stats.PseudoStatsLen)
