@@ -1,6 +1,7 @@
 package fury
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -35,7 +36,12 @@ func (war *FuryWarrior) RegisterBloodthirst() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.81 * spell.MeleeAttackPower()
+			const effectBasePoints = 43
+			const baseLevel = 10
+			const maxLevel = 80
+			const effectRealPointsPerLevel = 0.52899998426
+			multiplier := effectRealPointsPerLevel*(maxLevel-baseLevel) + effectBasePoints
+			baseDamage := math.Floor(multiplier) / 100 * spell.MeleeAttackPower() //multiplier is floored, tooltip is incorrect
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			if !result.Landed() {
 				spell.IssueRefund(sim)

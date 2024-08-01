@@ -31,7 +31,7 @@ func (war *FuryWarrior) RegisterRagingBlow() {
 	war.RegisterSpell(core.SpellConfig{
 		ActionID:       ragingBlowActionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolPhysical,
-		ProcMask:       core.ProcMaskMeleeSpecial,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		ClassSpellMask: warrior.SpellMaskRagingBlow | warrior.SpellMaskSpecialAttack,
 
