@@ -167,19 +167,6 @@ func (s Stat) StatName() string {
 	return "none"
 }
 
-func GetHighestStat(other Stats) Stat {
-	maxStatValue := 0.0
-	maxStatIndex := 0
-
-	for i := range other {
-		if other[i] > maxStatValue {
-			maxStatValue = other[i]
-			maxStatIndex = i
-		}
-	}
-	return Stat(maxStatIndex)
-}
-
 func FromProtoArray(values []float64) Stats {
 	// SimStatsLen can be larger than ProtoStatsLen, but the built-in copy
 	// function will only import the shared indices between the two.
@@ -254,6 +241,26 @@ func (stats Stats) EqualsWithTolerance(other Stats, tolerance float64) bool {
 		}
 	}
 	return true
+}
+
+// Given an array of Stat types, return the Stat whose value is largest within
+// this Stats array.
+func (stats Stats) GetHighestStatType(statTypeOptions []Stat) Stat {
+	if len(statTypeOptions) < 1 {
+		panic("Must supply at least one Stat type option!")
+	}
+
+	var highestStatType Stat
+	var highestStatValue float64
+
+	for idx, statType := range statTypeOptions {
+		if (idx == 0) || (stats[statType] > highestStatValue) {
+			highestStatType = statType
+			highestStatValue = stats[statType]
+		}
+	}
+
+	return highestStatType
 }
 
 func (stats Stats) String() string {

@@ -10,7 +10,7 @@ import (
 
 type UnitType int
 type SpellRegisteredHandler func(spell *Spell)
-type OnMasteryStatChanged func(sim *Simulation, oldMastery float64, newMastery float64)
+type OnMasteryStatChanged func(sim *Simulation, oldMasteryRating float64, newMasteryRating float64)
 type OnCastSpeedChanged func(oldSpeed float64, newSpeed float64)
 
 const (
@@ -229,19 +229,16 @@ func (unit *Unit) GetStats() stats.Stats {
 	return unit.stats
 }
 
-// Given an array of stat types, return the highest stat type of the unit
-func (unit *Unit) GetHighestStat(stat []stats.Stat) stats.Stat {
-	other := stats.Stats{}
-	for i := range stat {
-		other[stat[i]] += unit.stats[stat[i]]
-	}
-	return stats.GetHighestStat(other)
+// Given an array of Stat types, return the Stat whose value is largest for this
+// Unit.
+func (unit *Unit) GetHighestStatType(statTypeOptions []stats.Stat) stats.Stat {
+	return unit.stats.GetHighestStatType(statTypeOptions)
 }
 func (unit *Unit) GetStat(stat stats.Stat) float64 {
 	return unit.stats[stat]
 }
 func (unit *Unit) GetMasteryPoints() float64 {
-	return MasteryRatingToMasteryPoints(unit.GetStat(stats.Mastery))
+	return MasteryRatingToMasteryPoints(unit.GetStat(stats.MasteryRating))
 }
 func (unit *Unit) AddStats(stat stats.Stats) {
 	if unit.Env != nil && unit.Env.IsFinalized() {
@@ -254,49 +251,6 @@ func (unit *Unit) AddStat(stat stats.Stat, amount float64) {
 		panic("Already finalized, use AddStatDynamic instead!")
 	}
 	unit.stats[stat] += amount
-}
-
-// Adds only the highest current stat of the unit from the given stat options
-func (unit *Unit) AddHighestStat(stat stats.Stats) {
-	if unit.Env != nil && unit.Env.IsFinalized() {
-		panic("Already finalized, use AddHighestStatDynamic instead!")
-	}
-
-	highestStatIndex := -1
-	for i := 0; i < int(stats.Len); i++ {
-		if highestStatIndex == -1 && stat[i] > 0 {
-			highestStatIndex = i
-		} else if unit.stats[i] > unit.stats[highestStatIndex] && stat[i] > 0 {
-			highestStatIndex = i
-		}
-	}
-
-	if highestStatIndex == -1 {
-		// this should only occur if stat was the empt stat list - so nothing todo
-		return
-	}
-
-	unit.stats[highestStatIndex] += stat[highestStatIndex]
-}
-
-// Adds only the highest current stat of the unit from the given stat options
-func (unit *Unit) AddHighestStatDynamic(sim *Simulation, stat stats.Stats) {
-	highestStatIndex := -1
-	for i := 0; i < int(stats.Len); i++ {
-		if highestStatIndex == -1 && stat[i] > 0 {
-			highestStatIndex = i
-		} else if unit.stats[i] > unit.stats[highestStatIndex] && stat[i] > 0 {
-			highestStatIndex = i
-		}
-	}
-
-	if highestStatIndex == -1 {
-		// this should only occur if stat was the empt stat list - so nothing todo
-		return
-	}
-	bonus := stats.Stats{}
-	bonus[highestStatIndex] = stat[highestStatIndex]
-	unit.AddStatsDynamic(sim, bonus)
 }
 
 func (unit *Unit) AddDynamicDamageTakenModifier(ddtm DynamicDamageTakenModifier) {
@@ -365,12 +319,12 @@ func (unit *Unit) processDynamicBonus(sim *Simulation, bonus stats.Stats) {
 	if bonus[stats.SpellHaste] != 0 {
 		unit.updateCastSpeed()
 	}
-	if bonus[stats.Mastery] != 0 {
-		newMastery := unit.stats[stats.Mastery]
-		oldMastery := newMastery - bonus[stats.Mastery]
+	if bonus[stats.MasteryRating] != 0 {
+		newMasteryRating := unit.stats[stats.MasteryRating]
+		oldMasteryRating := newMasteryRating - bonus[stats.MasteryRating]
 
 		for i := range unit.OnMasteryStatChanged {
-			unit.OnMasteryStatChanged[i](sim, oldMastery, newMastery)
+			unit.OnMasteryStatChanged[i](sim, oldMasteryRating, newMasteryRating)
 		}
 	}
 
