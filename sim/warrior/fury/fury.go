@@ -91,6 +91,11 @@ func (war *FuryWarrior) GetMasteryBonusMultiplier() float64 {
 	return 1 + (11.2+5.6*war.GetMasteryPoints())/100
 }
 
+func (war *FuryWarrior) GetMasteryBonusMultiplierFromMasteryRating(masteryRating float64) float64 {
+	masteryPoints := core.MasteryRatingToMasteryPoints(masteryRating)
+	return 1 + (11.2+5.6*masteryPoints)/100
+}
+
 func (war *FuryWarrior) GetWarrior() *warrior.Warrior {
 	return war.Warrior
 }
