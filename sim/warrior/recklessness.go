@@ -11,8 +11,8 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 
 	critMod := warrior.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  SpellMaskSpecialAttack,
-		Kind:       core.SpellMod_BonusCrit_Rating,
-		FloatValue: 50 * core.CritRatingPerCritChance,
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		FloatValue: 50,
 	})
 
 	reckAura := warrior.RegisterAura(core.Aura{
