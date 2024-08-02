@@ -6,32 +6,32 @@ character_stats_results: {
   final_stats: 12127.22438
   final_stats: 35.7
   final_stats: 65
-  final_stats: 0
-  final_stats: 326
   final_stats: 87
+  final_stats: 87
+  final_stats: 1623.12265
   final_stats: 1013.4002
   final_stats: 0
   final_stats: 0
+  final_stats: 0
+  final_stats: 1647
+  final_stats: 2271.529
+  final_stats: 2281
   final_stats: 11405.28
-  final_stats: 87
-  final_stats: 1623.12265
+  final_stats: 0
+  final_stats: 0
+  final_stats: 326
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 33491
-  final_stats: 0
-  final_stats: 3158.61755
-  final_stats: 1647
-  final_stats: 2271.529
-  final_stats: 0
+  final_stats: 250
   final_stats: 212806.14125
   final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 250
-  final_stats: 2281
+  final_stats: 3158.61755
  }
 }
 dps_results: {
@@ -56,6 +56,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-AncientPetrifiedSeed-69001"
+ value: {
+  dps: 4581.43274
+  tps: 27923.08852
+ }
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-Anhuur'sHymnal-55889"
  value: {
   dps: 4676.52016
@@ -67,6 +74,20 @@ dps_results: {
  value: {
   dps: 4687.16876
   tps: 28511.06202
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-ApparatusofKhaz'goroth-68972"
+ value: {
+  dps: 4861.84067
+  tps: 29643.07015
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-ApparatusofKhaz'goroth-69113"
+ value: {
+  dps: 4898.44745
+  tps: 29867.61083
  }
 }
 dps_results: {
@@ -217,6 +238,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-Brawler'sTrophy-71338"
+ value: {
+  dps: 4581.43274
+  tps: 27923.08852
+ }
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-Bryntroll,theBoneArbiter-50709"
  value: {
   dps: 4581.43274
@@ -249,6 +277,13 @@ dps_results: {
  value: {
   dps: 5433.99246
   tps: 32957.0694
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-Coren'sChilledChromiumCoaster-71335"
+ value: {
+  dps: 4799.60021
+  tps: 29165.5383
  }
 }
 dps_results: {
@@ -336,6 +371,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-Dwyer'sCaber-70141"
+ value: {
+  dps: 4994.10651
+  tps: 30366.97783
+ }
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-EarthenBattleplate"
  value: {
   dps: 4656.40002
@@ -392,6 +434,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-EssenceoftheEternalFlame-69002"
+ value: {
+  dps: 4581.43274
+  tps: 27923.08852
+ }
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-EternalShadowspiritDiamond"
  value: {
   dps: 4581.43274
@@ -407,6 +456,13 @@ dps_results: {
 }
 dps_results: {
  key: "TestProtectionWarrior-AllItems-FallofMortality-65124"
+ value: {
+  dps: 4581.43274
+  tps: 27923.08852
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-FieryQuintessence-69000"
  value: {
   dps: 4581.43274
   tps: 27923.08852
@@ -798,6 +854,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-MatrixRestabilizer-68994"
+ value: {
+  dps: 4699.66221
+  tps: 28564.195
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-MatrixRestabilizer-69150"
+ value: {
+  dps: 4720.98383
+  tps: 28684.83052
+ }
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-MightoftheOcean-55251"
  value: {
   dps: 4687.50748
@@ -826,6 +896,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-MithrilStopwatch-71337"
+ value: {
+  dps: 4713.46071
+  tps: 28640.61174
+ }
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-MoltenGiantBattleplate"
  value: {
   dps: 4968.14958
@@ -847,10 +924,38 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-MoonwellPhial-70143"
+ value: {
+  dps: 4581.43274
+  tps: 27923.08852
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-NecromanticFocus-68982"
+ value: {
+  dps: 4581.43274
+  tps: 27923.08852
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-NecromanticFocus-69139"
+ value: {
+  dps: 4581.43274
+  tps: 27923.08852
+ }
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-Oremantle'sFavor-61448"
  value: {
   dps: 4723.46704
   tps: 28794.30637
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-PetrifiedPickledEgg-71336"
+ value: {
+  dps: 4581.43274
+  tps: 27923.08852
  }
 }
 dps_results: {
@@ -931,6 +1036,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-Ricket'sMagneticFireball-70144"
+ value: {
+  dps: 4673.58797
+  tps: 28419.25694
+ }
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-RightEyeofRajh-56100"
  value: {
   dps: 4849.24183
@@ -942,6 +1054,13 @@ dps_results: {
  value: {
   dps: 4872.84286
   tps: 29620.49882
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-RuneofZeth-68998"
+ value: {
+  dps: 4728.23017
+  tps: 28726.49971
  }
 }
 dps_results: {
@@ -1106,6 +1225,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-TheHungerer-68927"
+ value: {
+  dps: 4772.51137
+  tps: 28923.31826
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-TheHungerer-69112"
+ value: {
+  dps: 4725.43821
+  tps: 28606.45242
+ }
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-Theralion'sMirror-59519"
  value: {
   dps: 4581.43274
@@ -1201,6 +1334,34 @@ dps_results: {
  value: {
   dps: 3706.25109
   tps: 23520.55176
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-VariablePulseLightningCapacitor-68925"
+ value: {
+  dps: 4581.43274
+  tps: 27923.08852
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-VariablePulseLightningCapacitor-69110"
+ value: {
+  dps: 4581.43274
+  tps: 27923.08852
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-VesselofAcceleration-68995"
+ value: {
+  dps: 4972.18278
+  tps: 30246.69105
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-VesselofAcceleration-69167"
+ value: {
+  dps: 5024.80998
+  tps: 30557.43975
  }
 }
 dps_results: {

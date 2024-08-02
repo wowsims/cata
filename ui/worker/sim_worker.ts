@@ -1,6 +1,6 @@
 import { WorkerInterface } from './worker_interface';
 
-type SimRequestAsync = (data: Uint8Array, progress: (result: Uint8Array) => void) => Uint8Array;
+type SimRequestAsync = (data: Uint8Array, progress: (result: Uint8Array) => void, id: string) => Uint8Array;
 type SimRequestSync = (data: Uint8Array) => Uint8Array;
 
 // Functions provided or used by the wasm lib.
@@ -15,22 +15,32 @@ declare global {
 	const raidSimAsync: SimRequestAsync;
 	const statWeights: SimRequestSync;
 	const statWeightsAsync: SimRequestAsync;
+	const statWeightRequests: SimRequestSync;
+	const statWeightCompute: SimRequestSync;
+	const raidSimResultCombination: SimRequestSync;
+	const raidSimRequestSplit: SimRequestSync;
+	const abortById: SimRequestSync;
 }
 
 // Wasm binary calls this function when its done loading.
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 globalThis.wasmready = function () {
 	new WorkerInterface({
-		bulkSimAsync: (data, progress) => bulkSimAsync(data, progress),
-		bulkSimCombos: data => bulkSimCombos(data),
+		bulkSimAsync: bulkSimAsync,
+		bulkSimCombos: bulkSimCombos,
 		computeStats: computeStats,
 		computeStatsJson: computeStatsJson,
 		raidSim: raidSim,
 		raidSimJson: raidSimJson,
-		raidSimAsync: (data, progress) => raidSimAsync(data, progress),
+		raidSimAsync: raidSimAsync,
 		statWeights: statWeights,
-		statWeightsAsync: (data, progress) => statWeightsAsync(data, progress),
-	}).ready();
+		statWeightsAsync: statWeightsAsync,
+		statWeightRequests: statWeightRequests,
+		statWeightCompute: statWeightCompute,
+		raidSimRequestSplit: raidSimRequestSplit,
+		raidSimResultCombination: raidSimResultCombination,
+		abortById: abortById,
+	}).ready(true);
 };
 
 const go = new Go();

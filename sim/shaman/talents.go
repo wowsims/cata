@@ -272,9 +272,32 @@ func (shaman *Shaman) applyLavaSurge() {
 			if spell.ClassSpellMask != SpellMaskFlameShockDot || !sim.Proc(0.1*float64(shaman.Talents.LavaSurge), "LavaSurge") {
 				return
 			}
-			shaman.LavaBurst.CD.Reset()
-			if has4PT12 {
-				instantLavaSurgeMod.Activate()
+
+			// Set up a PendingAction to reset the CD just after this
+			// timestep rather than immediately. This guarantees that
+			// an existing Lava Burst cast that is set to finish on
+			// this timestep will apply the cooldown *before* it gets
+			// reset by the Lava Surge proc.
+			pa := &core.PendingAction{
+				NextActionAt: sim.CurrentTime + time.Duration(1),
+				Priority:     core.ActionPriorityDOT,
+
+				OnAction: func(sim *core.Simulation) {
+					shaman.LavaBurst.CD.Reset()
+					if has4PT12 {
+						instantLavaSurgeMod.Activate()
+					}
+				},
+			}
+			sim.AddPendingAction(pa)
+
+			// Additionally, trigger a rotational wait so that the agent has an
+			// opportunity to cast another Lava Burst after the reset, rather
+			// than defaulting to a lower priority spell. Since this Lava Burst
+			// cannot be spell queued (the CD was only just now reset), apply
+			// input delay to the rotation call.
+			if shaman.RotationTimer.IsReady(sim) {
+				shaman.WaitUntil(sim, sim.CurrentTime + shaman.ReactionTime)
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {

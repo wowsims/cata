@@ -6,32 +6,32 @@ character_stats_results: {
   final_stats: 6970.95
   final_stats: 54.6
   final_stats: 82
-  final_stats: 0
-  final_stats: 326
+  final_stats: 967
   final_stats: 1889.01166
+  final_stats: 3508.76624
   final_stats: 2974.68024
   final_stats: 2272
-  final_stats: 0
-  final_stats: 19586.0075
-  final_stats: 967
-  final_stats: 3508.76624
   final_stats: 2272
   final_stats: 381
   final_stats: 0
-  final_stats: 21044
+  final_stats: 1998.97284
+  final_stats: 379
+  final_stats: 19586.0075
   final_stats: 209
   final_stats: 0
+  final_stats: 326
   final_stats: 0
-  final_stats: 1998.97284
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 21044
   final_stats: 0
   final_stats: 140618.3
   final_stats: 0
   final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 379
  }
 }
 dps_results: {
@@ -51,6 +51,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-AncientPetrifiedSeed-69001"
+ value: {
+  dps: 30467.30966
+  tps: 22785.47421
+  hps: 473.88367
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-Anhuur'sHymnal-55889"
  value: {
   dps: 29703.52326
@@ -63,6 +71,22 @@ dps_results: {
  value: {
   dps: 29703.52326
   tps: 22059.90612
+  hps: 473.88367
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ApparatusofKhaz'goroth-68972"
+ value: {
+  dps: 31620.29273
+  tps: 23469.5494
+  hps: 473.88367
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ApparatusofKhaz'goroth-69113"
+ value: {
+  dps: 31870.15156
+  tps: 23647.75155
   hps: 473.88367
  }
 }
@@ -227,6 +251,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-Brawler'sTrophy-71338"
+ value: {
+  dps: 29703.52326
+  tps: 22059.90612
+  hps: 473.88367
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-Bryntroll,theBoneArbiter-50709"
  value: {
   dps: 33136.24307
@@ -248,6 +280,14 @@ dps_results: {
   dps: 31749.41801
   tps: 23461.75294
   hps: 489.35168
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Coren'sChilledChromiumCoaster-71335"
+ value: {
+  dps: 30547.83685
+  tps: 22766.82822
+  hps: 473.88367
  }
 }
 dps_results: {
@@ -347,6 +387,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-Dwyer'sCaber-70141"
+ value: {
+  dps: 31585.93052
+  tps: 23432.81891
+  hps: 473.88367
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-EffulgentShadowspiritDiamond"
  value: {
   dps: 31467.261
@@ -395,6 +443,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-EssenceoftheEternalFlame-69002"
+ value: {
+  dps: 31501.43239
+  tps: 23676.76729
+  hps: 473.88367
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-EternalShadowspiritDiamond"
  value: {
   dps: 31467.261
@@ -412,6 +468,14 @@ dps_results: {
 }
 dps_results: {
  key: "TestUnholy-AllItems-FallofMortality-65124"
+ value: {
+  dps: 29703.52326
+  tps: 22059.90612
+  hps: 473.88367
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-FieryQuintessence-69000"
  value: {
   dps: 29703.52326
   tps: 22059.90612
@@ -843,6 +907,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-MatrixRestabilizer-68994"
+ value: {
+  dps: 30847.06645
+  tps: 22872.34421
+  hps: 473.88367
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-MatrixRestabilizer-69150"
+ value: {
+  dps: 30997.37264
+  tps: 23002.99428
+  hps: 473.88367
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-MightoftheOcean-55251"
  value: {
   dps: 30271.69285
@@ -875,10 +955,42 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-MithrilStopwatch-71337"
+ value: {
+  dps: 30257.62333
+  tps: 22482.50059
+  hps: 473.88367
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-MoonwellChalice-70142"
  value: {
   dps: 30210.22052
   tps: 22623.92123
+  hps: 473.88367
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-MoonwellPhial-70143"
+ value: {
+  dps: 29703.52326
+  tps: 22059.90612
+  hps: 499.14856
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-NecromanticFocus-68982"
+ value: {
+  dps: 30172.39829
+  tps: 22574.57355
+  hps: 473.88367
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-NecromanticFocus-69139"
+ value: {
+  dps: 30232.63499
+  tps: 22640.68107
   hps: 473.88367
  }
 }
@@ -888,6 +1000,14 @@ dps_results: {
   dps: 30760.48632
   tps: 22834.64931
   hps: 473.88367
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-PetrifiedPickledEgg-71336"
+ value: {
+  dps: 29888.45176
+  tps: 22182.65376
+  hps: 482.32077
  }
 }
 dps_results: {
@@ -979,6 +1099,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-Ricket'sMagneticFireball-70144"
+ value: {
+  dps: 30548.47256
+  tps: 22674.68768
+  hps: 473.88367
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-RightEyeofRajh-56100"
  value: {
   dps: 30662.43529
@@ -991,6 +1119,14 @@ dps_results: {
  value: {
   dps: 30715.37881
   tps: 22763.64789
+  hps: 473.88367
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-RuneofZeth-68998"
+ value: {
+  dps: 30317.11586
+  tps: 22522.89975
   hps: 473.88367
  }
 }
@@ -1187,6 +1323,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-TheHungerer-68927"
+ value: {
+  dps: 30658.56473
+  tps: 22790.09212
+  hps: 490.75787
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-TheHungerer-69112"
+ value: {
+  dps: 30769.78247
+  tps: 22804.747
+  hps: 493.57023
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-Theralion'sMirror-59519"
  value: {
   dps: 30184.99343
@@ -1295,6 +1447,38 @@ dps_results: {
  value: {
   dps: 22748.59433
   tps: 15877.04584
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-VariablePulseLightningCapacitor-68925"
+ value: {
+  dps: 29757.62305
+  tps: 22139.36776
+  hps: 473.88367
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-VariablePulseLightningCapacitor-69110"
+ value: {
+  dps: 29871.3464
+  tps: 22243.66805
+  hps: 473.88367
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-VesselofAcceleration-68995"
+ value: {
+  dps: 31723.3845
+  tps: 23533.27264
+  hps: 473.88367
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-VesselofAcceleration-69167"
+ value: {
+  dps: 31986.99423
+  tps: 23728.85359
+  hps: 473.88367
  }
 }
 dps_results: {

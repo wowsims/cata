@@ -2,12 +2,10 @@ package core
 
 import (
 	"math"
-	"runtime"
-	"sync"
-	"sync/atomic"
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/simsignals"
 	"github.com/wowsims/cata/sim/core/stats"
 	googleProto "google.golang.org/protobuf/proto"
 )
@@ -43,6 +41,7 @@ func (s *UnitStats) ToProto() *proto.UnitStats {
 	return &proto.UnitStats{
 		Stats:       s.Stats[:],
 		PseudoStats: s.PseudoStats,
+		ApiVersion:  GetCurrentProtoVersion(),
 	}
 }
 
@@ -102,7 +101,7 @@ func (swr *StatWeightsResult) ToProto() *proto.StatWeightsResult {
 	}
 }
 
-func CalcStatWeight(swr *proto.StatWeightsRequest, referenceStat stats.Stat, progress chan *proto.ProgressMetrics) *StatWeightsResult {
+func buildStatWeightRequests(swr *proto.StatWeightsRequest) *proto.StatWeightRequestsData {
 	if swr.Player.BonusStats == nil {
 		swr.Player.BonusStats = &proto.UnitStats{}
 	}
@@ -116,115 +115,40 @@ func CalcStatWeight(swr *proto.StatWeightsRequest, referenceStat stats.Stat, pro
 	raidProto := SinglePlayerRaidProto(swr.Player, swr.PartyBuffs, swr.RaidBuffs, swr.Debuffs)
 	raidProto.Tanks = swr.Tanks
 
-	simOptions := swr.SimOptions
-	simOptions.SaveAllValues = true
+	swr.SimOptions.SaveAllValues = true
 
 	// Cut in half since we're doing above and below separately.
 	// This number needs to be the same for the baseline sim too, so that RNG lines up perfectly.
-	simOptions.Iterations /= 2
+	swr.SimOptions.Iterations /= 2
 
 	// Make sure an RNG seed is always set because it gives more consistent results.
 	// When there is no user-supplied seed it needs to be a randomly-selected seed
 	// though, so that run-run differences still exist.
-	if simOptions.RandomSeed == 0 {
-		simOptions.RandomSeed = time.Now().UnixNano()
+	if swr.SimOptions.RandomSeed == 0 {
+		swr.SimOptions.RandomSeed = time.Now().UnixNano()
 	}
 
 	// Reduce variance even more by using test-level RNG controls.
-	simOptions.IsTest = true
+	swr.SimOptions.UseLabeledRands = true
 
-	//baseStatsResult := ComputeStats(&proto.ComputeStatsRequest{
-	//	Raid: raidProto,
-	//})
-	//baseStats := baseStatsResult.RaidStats.Parties[0].Players[0].FinalStats
-
-	baseSimRequest := &proto.RaidSimRequest{
-		Raid:       raidProto,
-		Encounter:  swr.Encounter,
-		SimOptions: simOptions,
+	swBaseResponse := &proto.StatWeightRequestsData{
+		BaseRequest: &proto.RaidSimRequest{
+			Raid:       raidProto,
+			Encounter:  swr.Encounter,
+			SimOptions: swr.SimOptions,
+		},
+		EpReferenceStat: swr.EpReferenceStat,
+		StatSimRequests: []*proto.StatWeightsStatRequestData{},
 	}
-	baselineResult := RunRaidSim(baseSimRequest)
-	if baselineResult.ErrorResult != "" {
-		// TODO: get stack trace out.
-		return &StatWeightsResult{}
-	}
-
-	var waitGroup sync.WaitGroup
 
 	// Do half the iterations with a positive, and half with a negative value for better accuracy.
-	resultsLow := make([]*proto.RaidSimResult, stats.UnitStatsLen)
-	resultsHigh := make([]*proto.RaidSimResult, stats.UnitStatsLen)
-
-	var iterationsTotal int32
-	var iterationsDone int32
-	var simsTotal int32
-	var simsCompleted int32
-
-	concurrency := (runtime.NumCPU() - 1) * 2
-	if concurrency <= 0 {
-		concurrency = 2
-	}
-
-	tickets := make(chan struct{}, concurrency)
-	for i := 0; i < concurrency; i++ {
-		tickets <- struct{}{}
-	}
-
-	doStat := func(stat stats.UnitStat, value float64, isLow bool) {
-		defer waitGroup.Done()
-		// wait until we have CPU time available.
-		<-tickets
-
-		simRequest := googleProto.Clone(baseSimRequest).(*proto.RaidSimRequest)
-		stat.AddToStatsProto(simRequest.Raid.Parties[0].Players[0].BonusStats, value)
-
-		reporter := make(chan *proto.ProgressMetrics, 10)
-		go RunSim(simRequest, reporter, nil) // RunRaidSim(simRequest)
-
-		var localIterations int32
-		var errorStr string
-		var simResult *proto.RaidSimResult
-
-		for metrics := range reporter {
-			atomic.AddInt32(&iterationsDone, metrics.CompletedIterations-localIterations)
-			localIterations = metrics.CompletedIterations
-			if metrics.FinalRaidResult != nil {
-				atomic.AddInt32(&simsCompleted, 1)
-				simResult = metrics.FinalRaidResult
-			}
-			if progress != nil {
-				progress <- &proto.ProgressMetrics{
-					TotalIterations:     atomic.LoadInt32(&iterationsTotal),
-					CompletedIterations: atomic.LoadInt32(&iterationsDone),
-					CompletedSims:       atomic.LoadInt32(&simsCompleted),
-					TotalSims:           atomic.LoadInt32(&simsTotal),
-				}
-			}
-			if metrics.FinalRaidResult != nil {
-				errorStr = metrics.FinalRaidResult.ErrorResult
-				break
-			}
-		}
-		// TODO: get stack trace out if final result error is set.
-		if errorStr != "" {
-			panic("Stat weights error: " + errorStr)
-		}
-
-		if isLow {
-			resultsLow[stat] = simResult
-		} else {
-			resultsHigh[stat] = simResult
-		}
-		tickets <- struct{}{}
-	}
-
 	const defaultStatMod = 40.0 // match to the impact of a single gem
 	statModsLow := make([]float64, stats.UnitStatsLen)
 	statModsHigh := make([]float64, stats.UnitStatsLen)
 
 	// Make sure reference stat is included.
-	statModsLow[referenceStat] = defaultStatMod
-	statModsHigh[referenceStat] = defaultStatMod
+	statModsLow[swr.EpReferenceStat] = -defaultStatMod
+	statModsHigh[swr.EpReferenceStat] = defaultStatMod
 
 	statsToWeigh := stats.ProtoArrayToStatsList(swr.StatsToWeigh)
 	for _, s := range statsToWeigh {
@@ -243,34 +167,51 @@ func CalcStatWeight(swr *proto.StatWeightsRequest, referenceStat stats.Stat, pro
 		statModsLow[stat] = -statMod
 	}
 
-	// Start all the threads.
 	for i := range statModsLow {
 		stat := stats.UnitStatFromIdx(i)
 		if statModsLow[stat] == 0 {
 			continue
 		}
-		waitGroup.Add(2)
-		atomic.AddInt32(&iterationsTotal, swr.SimOptions.Iterations*2)
-		atomic.AddInt32(&simsTotal, 2)
 
-		go doStat(stat, statModsLow[stat], true)
-		go doStat(stat, statModsHigh[stat], false)
+		lowSimRequest := googleProto.Clone(swBaseResponse.BaseRequest).(*proto.RaidSimRequest)
+		stat.AddToStatsProto(lowSimRequest.Raid.Parties[0].Players[0].BonusStats, statModsLow[stat])
+
+		highSimRequest := googleProto.Clone(swBaseResponse.BaseRequest).(*proto.RaidSimRequest)
+		stat.AddToStatsProto(highSimRequest.Raid.Parties[0].Players[0].BonusStats, statModsHigh[stat])
+
+		swBaseResponse.StatSimRequests = append(swBaseResponse.StatSimRequests, &proto.StatWeightsStatRequestData{
+			StatData: &proto.StatWeightsStatData{
+				UnitStat: int32(stat),
+				ModLow:   statModsLow[stat],
+				ModHigh:  statModsHigh[stat],
+			},
+			RequestLow:  lowSimRequest,
+			RequestHigh: highSimRequest,
+		})
 	}
 
-	// Wait for thread results.
-	waitGroup.Wait()
+	return swBaseResponse
+}
 
-	// Compute weight results.
-	result := NewStatWeightsResult()
-	for i := 0; i < stats.UnitStatsLen; i++ {
-		stat := stats.UnitStatFromIdx(i)
-		if resultsLow[stat] == nil && resultsHigh[stat] == nil {
-			continue
+func computeStatWeights(swcr *proto.StatWeightsCalcRequest) *proto.StatWeightsResult {
+	haveRefStat := false
+	for _, statResult := range swcr.StatSimResults {
+		if statResult.StatData.UnitStat == int32(swcr.EpReferenceStat) {
+			haveRefStat = true
+			break
 		}
+	}
+	if !haveRefStat {
+		return &proto.StatWeightsResult{Error: &proto.ErrorOutcome{Message: "No result for reference stat exists!"}}
+	}
 
-		baselinePlayer := baselineResult.RaidMetrics.Parties[0].Players[0]
-		modPlayerLow := resultsLow[stat].RaidMetrics.Parties[0].Players[0]
-		modPlayerHigh := resultsHigh[stat].RaidMetrics.Parties[0].Players[0]
+	result := NewStatWeightsResult()
+	for _, statResult := range swcr.StatSimResults {
+		stat := stats.UnitStatFromIdx(int(statResult.StatData.UnitStat))
+
+		baselinePlayer := swcr.BaseResult.RaidMetrics.Parties[0].Players[0]
+		modPlayerLow := statResult.ResultLow.RaidMetrics.Parties[0].Players[0]
+		modPlayerHigh := statResult.ResultHigh.RaidMetrics.Parties[0].Players[0]
 
 		// Check for hard caps. Hard caps will have results identical to the baseline because RNG is fixed.
 		// When we find a hard-capped stat, just skip it (will return 0).
@@ -280,18 +221,14 @@ func CalcStatWeight(swr *proto.StatWeightsRequest, referenceStat stats.Stat, pro
 
 		calcWeightResults := func(baselineMetrics *proto.DistributionMetrics, modLowMetrics *proto.DistributionMetrics, modHighMetrics *proto.DistributionMetrics, weightResults *StatWeightValues) {
 			var lo, hi aggregator
-			if resultsLow != nil {
-				for i := 0; i < int(simOptions.Iterations); i++ {
-					lo.add(modLowMetrics.AllValues[i] - baselineMetrics.AllValues[i])
-				}
-				lo.scale(1 / statModsLow[stat])
+			for i := 0; i < len(baselineMetrics.AllValues); i++ {
+				lo.add(modLowMetrics.AllValues[i] - baselineMetrics.AllValues[i])
 			}
-			if resultsHigh != nil {
-				for i := 0; i < int(simOptions.Iterations); i++ {
-					hi.add(modHighMetrics.AllValues[i] - baselineMetrics.AllValues[i])
-				}
-				hi.scale(1 / statModsHigh[stat])
+			lo.scale(1 / statResult.StatData.ModLow)
+			for i := 0; i < len(baselineMetrics.AllValues); i++ {
+				hi.add(modHighMetrics.AllValues[i] - baselineMetrics.AllValues[i])
 			}
+			hi.scale(1 / statResult.StatData.ModHigh)
 
 			mean, stdev := lo.merge(&hi).meanAndStdDev()
 			weightResults.Weights.AddStat(stat, mean)
@@ -303,18 +240,17 @@ func CalcStatWeight(swr *proto.StatWeightsRequest, referenceStat stats.Stat, pro
 		calcWeightResults(baselinePlayer.Threat, modPlayerLow.Threat, modPlayerHigh.Threat, &result.Tps)
 		calcWeightResults(baselinePlayer.Dtps, modPlayerLow.Dtps, modPlayerHigh.Dtps, &result.Dtps)
 		calcWeightResults(baselinePlayer.Tmi, modPlayerLow.Tmi, modPlayerHigh.Tmi, &result.Tmi)
-		meanLow := (modPlayerLow.ChanceOfDeath - baselinePlayer.ChanceOfDeath) / statModsLow[stat]
-		meanHigh := (modPlayerHigh.ChanceOfDeath - baselinePlayer.ChanceOfDeath) / statModsHigh[stat]
+		meanLow := (modPlayerLow.ChanceOfDeath - baselinePlayer.ChanceOfDeath) / statResult.StatData.ModLow
+		meanHigh := (modPlayerHigh.ChanceOfDeath - baselinePlayer.ChanceOfDeath) / statResult.StatData.ModHigh
 		result.PDeath.Weights.AddStat(stat, (meanLow+meanHigh)/2)
 		result.PDeath.WeightsStdev.AddStat(stat, 0)
 	}
 
+	referenceStat := stats.Stat(swcr.EpReferenceStat)
+
 	// Compute EP results.
-	for i := range statModsLow {
-		stat := stats.UnitStatFromIdx(i)
-		if statModsLow[stat] == 0 {
-			continue
-		}
+	for _, statData := range swcr.StatSimResults {
+		stat := stats.UnitStatFromIdx(int(statData.StatData.UnitStat))
 
 		calcEpResults := func(weightResults *StatWeightValues, refStat stats.Stat) {
 			if weightResults.Weights.Stats[refStat] == 0 {
@@ -334,5 +270,87 @@ func CalcStatWeight(swr *proto.StatWeightsRequest, referenceStat stats.Stat, pro
 		calcEpResults(&result.PDeath, DTPSReferenceStat)
 	}
 
-	return result
+	return result.ToProto()
+}
+
+// Run stat weight sims and compute weights.
+func runStatWeights(request *proto.StatWeightsRequest, progress chan *proto.ProgressMetrics, signals simsignals.Signals) *proto.StatWeightsResult {
+	requestData := buildStatWeightRequests(request)
+
+	var iterationsTotal int32 = requestData.BaseRequest.SimOptions.Iterations
+	var iterationsDone int32 = 0
+	var simsTotal int32 = 1
+	var simsCompleted int32 = 0
+
+	for _, reqData := range requestData.StatSimRequests {
+		iterationsTotal += reqData.RequestLow.SimOptions.Iterations
+		iterationsTotal += reqData.RequestHigh.SimOptions.Iterations
+		simsTotal += 2
+	}
+
+	waitForResult := func(srcProgressChannel chan *proto.ProgressMetrics) *proto.RaidSimResult {
+		var lastCompleted int32 = 0
+		for metrics := range srcProgressChannel {
+			iterationsDone += metrics.CompletedIterations - lastCompleted
+			lastCompleted = metrics.CompletedIterations
+
+			if progress != nil {
+				progress <- &proto.ProgressMetrics{
+					TotalIterations:     iterationsTotal,
+					CompletedIterations: iterationsDone,
+					CompletedSims:       simsCompleted,
+					TotalSims:           simsTotal,
+				}
+			}
+
+			if metrics.FinalRaidResult != nil {
+				simsCompleted++
+				return metrics.FinalRaidResult
+			}
+		}
+		return nil
+	}
+
+	simFunc := runSimConcurrent
+	// Don't use go threads in wasm, it just adds more overhead and makes the worker more unresponsive.
+	if IsRunningInWasm() {
+		simFunc = RunSim
+	}
+
+	baseProgress := make(chan *proto.ProgressMetrics, 100)
+	go simFunc(requestData.BaseRequest, baseProgress, signals)
+	baselineResult := waitForResult(baseProgress)
+	if baselineResult.Error != nil {
+		return &proto.StatWeightsResult{Error: baselineResult.Error}
+	}
+
+	statResults := []*proto.StatWeightsStatResultData{}
+
+	for _, reqData := range requestData.StatSimRequests {
+		lowProgress := make(chan *proto.ProgressMetrics, 100)
+		go simFunc(reqData.RequestLow, lowProgress, signals)
+		lowRes := waitForResult(lowProgress)
+		if lowRes.Error != nil {
+			return &proto.StatWeightsResult{Error: lowRes.Error}
+		}
+
+		highProgress := make(chan *proto.ProgressMetrics, 100)
+		go simFunc(reqData.RequestHigh, highProgress, signals)
+		highRes := waitForResult(highProgress)
+		if highRes.Error != nil {
+			return &proto.StatWeightsResult{Error: highRes.Error}
+		}
+
+		statResults = append(statResults, &proto.StatWeightsStatResultData{
+			StatData:   reqData.StatData,
+			ResultLow:  lowRes,
+			ResultHigh: highRes,
+		})
+	}
+
+	return computeStatWeights(&proto.StatWeightsCalcRequest{
+		BaseResult:      baselineResult,
+		EpReferenceStat: requestData.EpReferenceStat,
+		StatSimResults:  statResults,
+	})
 }

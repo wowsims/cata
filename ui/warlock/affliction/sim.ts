@@ -10,6 +10,7 @@ import { Faction, ItemSlot, PartyBuffs, Race, Spec, Stat } from '../../core/prot
 import { StatCapType } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import * as WarlockInputs from '../inputs';
+import { WARLOCK_BREAKPOINTS } from '../presets';
 import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecAfflictionWarlock, {
@@ -54,14 +55,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAfflictionWarlock, {
 			const masteryRatingBreakpoints = [];
 
 			for (let masteryPercent = 14; masteryPercent <= 200; masteryPercent++) {
-				masteryRatingBreakpoints.push((masteryPercent / 1.63) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
+				masteryRatingBreakpoints.push(
+					(masteryPercent / Mechanics.masteryPercentPerPoint.get(Spec.SpecAfflictionWarlock)!) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT,
+				);
 			}
 
 			const masterySoftCapConfig = {
 				stat: Stat.StatMastery,
 				breakpoints: masteryRatingBreakpoints,
 				capType: StatCapType.TypeThreshold,
-				postCapEPs: Array(masteryRatingBreakpoints.length).fill(0),
+				postCapEPs: [0],
 			};
 
 			return [masterySoftCapConfig];
@@ -168,7 +171,9 @@ export class AfflictionWarlockSimUI extends IndividualSimUI<Spec.SpecAfflictionW
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecAfflictionWarlock>) {
 		super(parentElem, player, SPEC_CONFIG);
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			new ReforgeOptimizer(this, {
+				statSelectionPresets: Presets.AFFLICTION_BREAKPOINTS,
+			});
 		});
 	}
 }

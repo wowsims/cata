@@ -4,19 +4,21 @@
 package main
 
 import (
-	"context"
 	"log"
 	"runtime/debug"
+	"strings"
 	"syscall/js"
 
 	"github.com/wowsims/cata/sim"
 	"github.com/wowsims/cata/sim/core"
 	proto "github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/simsignals"
 	protojson "google.golang.org/protobuf/encoding/protojson"
 	googleProto "google.golang.org/protobuf/proto"
 )
 
 func init() {
+	core.SetRunningInWasm()
 	sim.RegisterAll()
 }
 
@@ -28,9 +30,14 @@ func main() {
 	js.Global().Set("raidSim", js.FuncOf(raidSim))
 	js.Global().Set("raidSimJson", js.FuncOf(raidSimJson))
 	js.Global().Set("raidSimAsync", js.FuncOf(raidSimAsync))
+	js.Global().Set("raidSimRequestSplit", js.FuncOf(raidSimRequestSplit))
+	js.Global().Set("raidSimResultCombination", js.FuncOf(raidSimResultCombination))
 	js.Global().Set("statWeights", js.FuncOf(statWeights))
 	js.Global().Set("statWeightsAsync", js.FuncOf(statWeightsAsync))
+	js.Global().Set("statWeightRequests", js.FuncOf(statWeightRequests))
+	js.Global().Set("statWeightCompute", js.FuncOf(statWeightCompute))
 	js.Global().Set("bulkSimAsync", js.FuncOf(bulkSimAsync))
+	js.Global().Set("abortById", js.FuncOf(abortById))
 	js.Global().Set("bulkSimCombos", js.FuncOf(bulkSimCombos))
 	js.Global().Call("wasmready")
 	<-c
@@ -164,10 +171,17 @@ func raidSimAsync(this js.Value, args []js.Value) interface{} {
 		log.Printf("Failed to parse request: %s", err)
 		return nil
 	}
+
+	requestId := args[2].String()
+	if strings.HasPrefix(requestId, "<T") {
+		requestId = "" // Make it return the error for an empty id
+	}
+
 	reporter := make(chan *proto.ProgressMetrics, 100)
 
-	go core.RunRaidSimAsync(rsr, reporter)
-	return processAsyncProgress(args[1], reporter)
+	go core.RunRaidSimAsync(rsr, reporter, requestId)
+	go processAsyncProgress(args[1], reporter)
+	return js.Undefined()
 }
 
 func statWeights(this js.Value, args []js.Value) interface{} {
@@ -196,11 +210,56 @@ func statWeightsAsync(this js.Value, args []js.Value) interface{} {
 		log.Printf("Failed to parse request: %s", err)
 		return nil
 	}
-	reporter := make(chan *proto.ProgressMetrics, 100)
-	core.StatWeightsAsync(rsr, reporter)
 
-	result := processAsyncProgress(args[1], reporter)
-	return result
+	requestId := args[2].String()
+	if strings.HasPrefix(requestId, "<T") {
+		requestId = "" // Make it return the error for an empty id
+	}
+
+	reporter := make(chan *proto.ProgressMetrics, 100)
+	go core.StatWeightsAsync(rsr, reporter, requestId)
+	go processAsyncProgress(args[1], reporter)
+	return js.Undefined()
+}
+
+func statWeightRequests(this js.Value, args []js.Value) interface{} {
+	req := &proto.StatWeightsRequest{}
+	if err := googleProto.Unmarshal(getArgsBinary(args[0]), req); err != nil {
+		log.Printf("Failed to parse request: %s", err)
+		return nil
+	}
+
+	res := core.StatWeightRequests(req)
+
+	outbytes, err := googleProto.Marshal(res)
+	if err != nil {
+		log.Printf("[ERROR] Failed to marshal result: %s", err.Error())
+		return nil
+	}
+	outArray := js.Global().Get("Uint8Array").New(len(outbytes))
+	js.CopyBytesToJS(outArray, outbytes)
+
+	return outArray
+}
+
+func statWeightCompute(this js.Value, args []js.Value) interface{} {
+	req := &proto.StatWeightsCalcRequest{}
+	if err := googleProto.Unmarshal(getArgsBinary(args[0]), req); err != nil {
+		log.Printf("Failed to parse request: %s", err)
+		return nil
+	}
+
+	res := core.StatWeightCompute(req)
+
+	outbytes, err := googleProto.Marshal(res)
+	if err != nil {
+		log.Printf("[ERROR] Failed to marshal result: %s", err.Error())
+		return nil
+	}
+	outArray := js.Global().Get("Uint8Array").New(len(outbytes))
+	js.CopyBytesToJS(outArray, outbytes)
+
+	return outArray
 }
 
 func bulkSimAsync(this js.Value, args []js.Value) interface{} {
@@ -209,13 +268,94 @@ func bulkSimAsync(this js.Value, args []js.Value) interface{} {
 		log.Printf("Failed to parse request: %s", err)
 		return nil
 	}
-	reporter := make(chan *proto.ProgressMetrics, 100)
-	// for now just use context.Background() until we can figure out the best way to handle
-	// allowing front end to cancel.
-	core.RunBulkSimAsync(context.Background(), rsr, reporter)
 
-	result := processAsyncProgress(args[1], reporter)
-	return result
+	requestId := args[2].String()
+	if strings.HasPrefix(requestId, "<T") {
+		requestId = "" // Make it return the error for an empty id
+	}
+
+	reporter := make(chan *proto.ProgressMetrics, 100)
+	go core.RunBulkSimAsync(rsr, reporter, requestId)
+	go processAsyncProgress(args[1], reporter)
+	return js.Undefined()
+}
+
+func raidSimRequestSplit(this js.Value, args []js.Value) interface{} {
+	splitRequest := &proto.RaidSimRequestSplitRequest{}
+	if err := googleProto.Unmarshal(getArgsBinary(args[0]), splitRequest); err != nil {
+		log.Printf("Failed to parse RaidSimRequestSplitRequest: %s", err)
+		return nil
+	}
+
+	splitRes := core.SplitSimRequestForConcurrency(splitRequest.Request, splitRequest.SplitCount)
+
+	outbytes, err := googleProto.Marshal(splitRes)
+	if err != nil {
+		log.Printf("[ERROR] Failed to marshal RaidSimRequestSplitResult: %s", err.Error())
+		return nil
+	}
+	outArray := js.Global().Get("Uint8Array").New(len(outbytes))
+	js.CopyBytesToJS(outArray, outbytes)
+
+	return outArray
+}
+
+func raidSimResultCombination(this js.Value, args []js.Value) interface{} {
+	combRequest := &proto.RaidSimResultCombinationRequest{}
+	if err := googleProto.Unmarshal(getArgsBinary(args[0]), combRequest); err != nil {
+		log.Printf("Failed to parse RaidSimResultCombinationRequest: %s", err)
+		return nil
+	}
+
+	combineRes := func() (res *proto.RaidSimResult) {
+		defer func() {
+			if err := recover(); err != nil {
+				errStr := ""
+				switch errt := err.(type) {
+				case string:
+					errStr = errt
+				case error:
+					errStr = errt.Error()
+				}
+				errStr += "\nStack Trace:\n" + string(debug.Stack())
+				res = &proto.RaidSimResult{Error: &proto.ErrorOutcome{Message: errStr}}
+			}
+		}()
+		return core.CombineConcurrentSimResults(combRequest.Results, false)
+	}()
+
+	outbytes, err := googleProto.Marshal(combineRes)
+	if err != nil {
+		log.Printf("[ERROR] Failed to marshal RaidSimResult: %s", err.Error())
+		return nil
+	}
+	outArray := js.Global().Get("Uint8Array").New(len(outbytes))
+	js.CopyBytesToJS(outArray, outbytes)
+
+	return outArray
+}
+
+func abortById(this js.Value, args []js.Value) interface{} {
+	abortRequest := &proto.AbortRequest{}
+	if err := googleProto.Unmarshal(getArgsBinary(args[0]), abortRequest); err != nil {
+		log.Printf("Failed to parse AbortRequest: %s", err)
+		return nil
+	}
+
+	success := simsignals.AbortById(abortRequest.RequestId)
+
+	outbytes, err := googleProto.Marshal(&proto.AbortResponse{
+		RequestId:    abortRequest.RequestId,
+		WasTriggered: success,
+	})
+	if err != nil {
+		log.Printf("[ERROR] Failed to marshal AbortResponse: %s", err.Error())
+		return nil
+	}
+	outArray := js.Global().Get("Uint8Array").New(len(outbytes))
+	js.CopyBytesToJS(outArray, outbytes)
+
+	return outArray
 }
 
 func bulkSimCombos(this js.Value, args []js.Value) interface{} {
@@ -224,9 +364,8 @@ func bulkSimCombos(this js.Value, args []js.Value) interface{} {
 		log.Printf("Failed to parse request: %s", err)
 		return nil
 	}
-	// for now just use context.Background() until we can figure out the best way to handle
-	// allowing front end to cancel.
-	result := core.RunBulkCombos(context.Background(), rsr)
+
+	result := core.RunBulkCombos(rsr)
 
 	outbytes, err := googleProto.Marshal(result)
 	if err != nil {
@@ -252,19 +391,17 @@ func getArgsJson(value js.Value) []byte {
 	return []byte(str)
 }
 
-func processAsyncProgress(progFunc js.Value, reporter chan *proto.ProgressMetrics) js.Value {
-reader:
+func processAsyncProgress(progFunc js.Value, reporter chan *proto.ProgressMetrics) {
 	for {
-		// TODO: cleanup so we dont collect these
 		select {
 		case progMetric, ok := <-reporter:
 			if !ok {
-				break reader
+				return
 			}
 			outbytes, err := googleProto.Marshal(progMetric)
 			if err != nil {
 				log.Printf("[ERROR] Failed to marshal result: %s", err.Error())
-				return js.Undefined()
+				return
 			}
 
 			outArray := js.Global().Get("Uint8Array").New(len(outbytes))
@@ -272,10 +409,8 @@ reader:
 			progFunc.Invoke(outArray)
 
 			if progMetric.FinalWeightResult != nil || progMetric.FinalRaidResult != nil || progMetric.FinalBulkResult != nil {
-				return outArray
+				return
 			}
 		}
 	}
-
-	return js.Undefined()
 }

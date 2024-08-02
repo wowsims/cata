@@ -3,6 +3,34 @@ package proto;
 
 option go_package = "./proto";
 
+import "google/protobuf/descriptor.proto";
+
+// protobuf does not directly support constants for versioning purposes, but we
+// can emulate the functionality of a CURRENT_VERSION_NUMBER constant by
+// defining it as a custom option for a ProtoVersion message whose only purpose
+// is to house the value of this option. While a bit hacky, this allows us to
+// increment the version number directly in the proto files, rather than needing
+// to separately increment two constants in the front-end and back-end code.
+extend google.protobuf.MessageOptions {
+	int32 current_version_number = 50000;
+}
+
+message ProtoVersion {
+	// This should be incremented by 1 whenever proto files are changed in a
+	// way that will break any saved browser data or old sim links. If you
+	// are incrementing this value, then it is assumed that you are also
+	// implementing the required conversion code within the
+	// updateProtoVersion() method of any affected classes in the UI (or
+	// adding this method if it does not exist yet). Likewise, any affected
+	// protos need to define an api_version field so that the UI code knows
+	// to up-convert these protos to the new format whenever api_version is
+	// missing (0) or lower than current_version_number.
+	option (current_version_number) = 1;
+
+	// The actual field value is only used within unit tests.
+	int32 saved_version_number = 1;
+}
+
 enum Spec {
 	SpecUnknown = 0;
 
@@ -103,40 +131,69 @@ enum Profession {
 // Keep in sync with sim/core/stats/stats.go.
 // NextIndex: 31;
 enum Stat {
+	// Primary attributes ("main stat")
 	StatStrength = 0;
 	StatAgility = 1;
 	StatStamina = 2;
 	StatIntellect = 3;
-	StatSpirit = 4;
-	StatSpellPower = 5;
-	StatMP5 = 6;
-	StatSpellHit = 7;
-	StatSpellCrit = 8;
-	StatSpellHaste = 9;
-	StatSpellPenetration = 10;
-	StatAttackPower = 11;
-	StatMeleeHit = 12;
-	StatMeleeCrit = 13;
-	StatMeleeHaste = 14;
-	StatExpertise = 15;
-	StatMana = 16;
-	StatArmor = 17;
-	StatRangedAttackPower = 18;
-	StatBlock = 19;
-	StatDodge = 20;
-	StatParry = 21;
-	StatResilience = 22;
-	StatHealth = 23;
-	StatArcaneResistance = 24;
-	StatFireResistance = 25;
-	StatFrostResistance = 26;
-	StatNatureResistance = 27;
-	StatShadowResistance = 28;
-	StatBonusArmor = 29;
-	StatMastery = 30;
 
-	// DO NOT add new stats here without discussing it first; new stats come with
-	// a performance penalty.
+	// Reforge-able secondary stats
+	StatSpirit = 4;
+	StatMeleeHit = 5;
+	StatSpellHit = 6;
+	StatMeleeCrit = 7;
+	StatSpellCrit = 8;
+	StatMeleeHaste = 9;
+	StatSpellHaste = 10;
+	StatExpertise = 11;
+	StatDodge = 12;
+	StatParry = 13;
+	StatMastery = 14;
+
+	// Non-reforge-able secondary stats found on gear
+	StatAttackPower = 15;
+	StatRangedAttackPower = 16;
+	StatSpellPower = 17;
+	StatMP5 = 18;
+	StatSpellPenetration = 19;
+	StatResilience = 20;
+	StatArcaneResistance = 21;
+	StatFireResistance = 22;
+	StatFrostResistance = 23;
+	StatNatureResistance = 24;
+	StatShadowResistance = 25;
+	StatArmor = 26; // "white armor" that fully scales with all multipliers
+	StatBonusArmor = 27; // "green armor" that does not scale
+
+	// Composite stats that are built up from the above gear stats + buffs
+	StatHealth = 28;
+	StatMana = 29;
+	StatBlock = 30;
+
+	// DO NOT add new stats here without discussing it first; new stats come
+	// with a performance penalty.
+
+	// Checklist for making breaking changes to the Stat enum (deleting
+	// stats, re-ordering stats, changing the interpretation of stat values,
+	// etc.):
+	// (1) Make the desired change in the enum above.
+	// (2) Mirror the change in sim/core/stats/stats.go .
+	// (3) Update any required code in sim/core for proper sim behavior.
+	// (4) If the total number of stats changed, then change the size of the
+	//     Stats array type defined in tools/database/wowhead_tooltips.go .
+	// (5) Run "make items" so that the sim database reflects the stats
+	//     change. At this point, you should see no changes in DPS results
+	//     when running "make test", if the only changes made were indexing
+	//     or bookkeeping adjustments. However, saved browser settings and
+	//     old sim links will be broken on the UI side.
+	// (6) Increment the current_version_number option in the ProtoVersion
+	//     message at the top of this file.
+	// (7) Add a new entry to the ProtoConversionMap within the
+	//     migrateStatsArray() method of ui/core/proto_utils/stats.ts . If
+	//     the migration function for the new version works properly, then
+	//     you should see that stats arrays embedded in local storage data
+	//     and old links are automatically converted to new arrays that are
+	//     compatible with the new stats interpretation.
 }
 
 // Not all pseudostats are included here; just the ones we want to pass
@@ -156,6 +213,18 @@ enum PseudoStat {
 }
 
 message UnitStats {
+	// Proto version at the time these stats were saved. If you make any
+	// breaking changes to the size, ordering, or interpretation of the
+	// stats or pseudoStats arrays, then make sure to increment the
+	// current_version_number option in the ProtoVersion message at the top
+	// of this file, and also add a new entry to the data conversion map
+	// within the migrateStatsArray() method of ui/core/proto_utils/stats.ts
+	// A "breaking change" here is defined as anything that will break saved
+	// browser data or old sim links; the version need not be incremented if
+	// you simply append a new rarely-used PseudoStat to the end of the
+	// array, for example.
+	int32 api_version = 3;
+
 	repeated double stats = 1;
 	repeated double pseudo_stats = 2;
 }
@@ -664,6 +733,13 @@ message Target {
 }
 
 message Encounter {
+	// Proto version at the time these encounter settings were saved. If you
+	// make any changes to this proto that will break saved browser data or
+	// old sim links, then make sure to increment the current_version_number
+	// option within the ProtoVersion message at the top of this file, and
+	// also modify the updateProtoVersion() method of ui/core/encounter.ts .
+	int32 api_version = 9;
+
 	double duration = 1;
 
 	// Variation in the duration

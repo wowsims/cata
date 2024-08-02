@@ -1,6 +1,6 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
-import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
+import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
 import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
@@ -134,7 +134,9 @@ export class ShadowPriestSimUI extends IndividualSimUI<Spec.SpecShadowPriest> {
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			new ReforgeOptimizer(this, {
+				statSelectionPresets: Presets.SHADOW_BREAKPOINTS,
+			});
 		});
 	}
 }

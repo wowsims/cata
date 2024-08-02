@@ -1,7 +1,7 @@
 import type { SimRequest, WorkerReceiveMessage, WorkerSendMessage } from './types';
 
 export type HandlerProgressCallback = (outputData: Uint8Array) => void;
-export type HandlerFunction = (data: Uint8Array, progress: HandlerProgressCallback, msg: SimRequest) => Uint8Array | Promise<Uint8Array>;
+export type HandlerFunction = (data: Uint8Array, progress: HandlerProgressCallback, id: string, msg: SimRequest) => Uint8Array | Promise<Uint8Array>;
 export type Handlers = Record<SimRequest, HandlerFunction>;
 
 /**
@@ -38,7 +38,7 @@ export class WorkerInterface {
 				});
 			};
 
-			const outputData = await handlerFunc(inputData, progressCallback, msg);
+			const outputData = await handlerFunc(inputData, progressCallback, id, msg);
 			this.postMessage({ msg, id, outputData });
 		});
 	}
@@ -51,8 +51,11 @@ export class WorkerInterface {
 		return this._workerId;
 	}
 
-	/** Tell UI that the worker is ready. */
-	ready() {
-		this.postMessage({ msg: 'ready' });
+	/**
+	 * Tell UI that the worker is ready.
+	 * @param isWasm true if worker is using wasm.
+	 */
+	ready(isWasm: boolean) {
+		this.postMessage({ msg: 'ready', outputData: new Uint8Array([+isWasm]) });
 	}
 }

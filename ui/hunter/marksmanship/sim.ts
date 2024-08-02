@@ -24,6 +24,7 @@ import { HunterStingType, MarksmanshipHunter_Rotation } from '../../core/proto/h
 import * as AplUtils from '../../core/proto_utils/apl_utils';
 import { Stats } from '../../core/proto_utils/stats';
 import * as HunterInputs from '../inputs';
+import { sharedHunterDisplayStatsModifiers } from '../shared';
 import * as MMInputs from './inputs';
 import * as Presets from './presets';
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
@@ -60,25 +61,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 		Stat.StatMastery,
 	],
 	modifyDisplayStats: (player: Player<Spec.SpecMarksmanshipHunter>) => {
-		let stats = new Stats();
-		//stats = stats.addStat(Stat.StatMeleeCrit, player.getTalents().lethalShots * 1 * Mechanics.MELEE_CRIT_RATING_PER_CRIT_CHANCE);
-
-		const rangedWeapon = player.getEquippedItem(ItemSlot.ItemSlotRanged);
-		if (rangedWeapon?.enchant?.effectId == 3608) {
-			stats = stats.addStat(Stat.StatMeleeCrit, 40);
-		}
-		if (rangedWeapon?.enchant?.effectId == 4176) {
-			stats = stats.addStat(Stat.StatMeleeHit, 88);
-		}
-		if (player.getRace() == Race.RaceDwarf && rangedWeapon?.item.rangedWeaponType == RangedWeaponType.RangedWeaponTypeGun) {
-			stats = stats.addStat(Stat.StatMeleeCrit, 1 * Mechanics.MELEE_CRIT_RATING_PER_CRIT_CHANCE);
-		}
-		if (player.getRace() == Race.RaceTroll && rangedWeapon?.item.rangedWeaponType == RangedWeaponType.RangedWeaponTypeBow) {
-			stats = stats.addStat(Stat.StatMeleeCrit, 1 * Mechanics.MELEE_CRIT_RATING_PER_CRIT_CHANCE);
-		}
-		return {
-			talents: stats,
-		};
+		return sharedHunterDisplayStatsModifiers(player);
 	},
 
 	defaults: {
@@ -140,6 +123,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 	otherInputs: {
 		inputs: [
 			HunterInputs.PetUptime(),
+			HunterInputs.AQTierPrepull(),
+			HunterInputs.NaxxTierPrepull(),
 			OtherInputs.InputDelay,
 			OtherInputs.DistanceFromTarget,
 			OtherInputs.TankAssignment,

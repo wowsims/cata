@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/simsignals"
 )
 
 type EnvironmentState int
@@ -209,7 +210,7 @@ func (env *Environment) finalize(raidProto *proto.Raid, _ *proto.Encounter, raid
 		// prepull spells (e.g. GCD not available) in APL.
 		sim := newSimWithEnv(env, &proto.SimOptions{
 			Iterations: 1,
-		})
+		}, simsignals.CreateSignals())
 		sim.reset()
 		sim.PrePull()
 		sim.Cleanup()

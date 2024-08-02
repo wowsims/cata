@@ -1,4 +1,3 @@
-import { CharacterStats } from '../../core/components/character_stats';
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
 import * as Mechanics from '../../core/constants/mechanics';
@@ -9,8 +8,11 @@ import { APLRotation } from '../../core/proto/apl';
 import { Faction, IndividualBuffs, PartyBuffs, Race, Spec, Stat } from '../../core/proto/common';
 import { StatCapType } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
+import { sharedMageDisplayStatsModifiers } from '../shared';
 import * as FireInputs from './inputs';
 import * as Presets from './presets';
+
+const hasteBreakpoints = Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!;
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	cssClass: 'fire-mage-sim-ui',
@@ -34,17 +36,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		Stat.StatSpellHaste,
 		Stat.StatMastery,
 	],
-	// modifyDisplayStats: (player: Player<Spec.SpecFireMage>) => {
-	// 	let stats = new Stats();
-
-	// 	if (player.getTalentTree() === 0) {
-	// 		stats = stats.addStat(Stat.StatSpellHit, player.getTalents().arcaneFocus * 1 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
-	// 	}
-
-	// 	return {
-	// 		talents: stats,
-	// 	};
-	// },
+	modifyDisplayStats: (player: Player<Spec.SpecFireMage>) => {
+		return sharedMageDisplayStatsModifiers(player);
+	},
 
 	defaults: {
 		// Default equipped gear.
@@ -57,43 +51,26 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		})(),
 		// Default soft caps for the Reforge optimizer
 		softCapBreakpoints: (() => {
-			// Picked from Mage Discord
-			// Sources:
-			// https://docs.google.com/spreadsheets/d/17cJJUReg2uz-XxBB3oDWb1kCncdH_-X96mSb0HAu4Ko/edit?gid=0#gid=0
-			// https://docs.google.com/spreadsheets/d/1WLOZ1YevGPw_WZs0JhGzVVy906W5y0i9UqHa3ejyBkE/htmlview?gid=19
-			const breakpoints = [
-				1602, // 12.51% - 5-tick LvB + Pyro
-				1922, // 15.01% - 12-tick Combust
-				3212, // 25.08% - 13-tick Combust
-				4488, // 35.04% - 14-tick Combust
-				4805, // 37.52% - 6-tick LvB + Pyro
-				5767, // 45.03% - 15-tick Combust
-				7033, // 54.92% - 16-tick Combust
-				// 8000, // 62.47% - 7-tick LvB + Pyro
-				// 8309, // 64.88% - 17-tick Combust
-				// 9602, // 74.98% - 18-tick Combust
-				// 10887, // 85.01% - 19-tick Combust
-				// 11198, // 87.44% - 8-tick LvB + Pyro
-				// 12182, // 95.12% - 20-tick Combust
-				// 13463,
-				// 14412,
-				// 14704,
-				// 16004,
-				// 17290,
-				// 17600,
-				// 18543,
-				// 19821,
-				// 20820,
-				// 21117,
-				// 22424,
-				// 23730,
-				// 24010,
-			];
 			const hasteSoftCapConfig = {
 				stat: Stat.StatSpellHaste,
-				breakpoints,
-				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0.86, 0.77, 0.77, 1.17, 0.76, 0.65, 0.64],
+				breakpoints: [
+					hasteBreakpoints.get('5-tick LvB/Pyro')!,
+					hasteBreakpoints.get('12-tick Combust')!,
+					hasteBreakpoints.get('13-tick Combust')!,
+					hasteBreakpoints.get('14-tick Combust')!,
+					hasteBreakpoints.get('6-tick LvB/Pyro')!,
+					hasteBreakpoints.get('15-tick Combust')!,
+					hasteBreakpoints.get('16-tick Combust')!,
+					hasteBreakpoints.get('7-tick LvB/Pyro')!,
+					hasteBreakpoints.get('17-tick Combust')!,
+					hasteBreakpoints.get('18-tick Combust')!,
+					hasteBreakpoints.get('19-tick Combust')!,
+					hasteBreakpoints.get('8-tick LvB/Pyro')!,
+					hasteBreakpoints.get('20-tick Combust')!,
+					hasteBreakpoints.get('21-tick Combust')!,
+				],
+				capType: StatCapType.TypeThreshold,
+				postCapEPs: [0.61],
 			};
 
 			return [hasteSoftCapConfig];
@@ -189,7 +166,84 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
-				experimental: true,
+				statSelectionPresets: Presets.FIRE_BREAKPOINTS,
+				updateSoftCaps: softCaps => {
+					const raidBuffs = player.getRaid()?.getBuffs();
+					const hasBL = !!(raidBuffs?.bloodlust || raidBuffs?.timeWarp || raidBuffs?.heroism);
+					const hasPI = !!player.getBuffs().powerInfusionCount;
+					const hasBerserking = player.getRace() === Race.RaceTroll;
+
+					const modifyHaste = (rating: number, modifier: number) =>
+						Math.round(
+							((rating / Mechanics.HASTE_RATING_PER_HASTE_PERCENT / 100 + 1) / modifier - 1) * 100 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT,
+						);
+
+					this.individualConfig.defaults.softCapBreakpoints!.forEach(softCap => {
+						const softCapToModify = softCaps.find(sc => sc.stat === softCap.stat);
+						if (softCap.stat === Stat.StatSpellHaste && softCapToModify) {
+							const adjustedHastedBreakpoints = new Set([...softCap.breakpoints]);
+							// LvB/Pyro are not worth adjusting for
+							const excludedHasteBreakpoints = [
+								hasteBreakpoints.get('5-tick LvB/Pyro')!,
+								hasteBreakpoints.get('6-tick LvB/Pyro')!,
+								hasteBreakpoints.get('7-tick LvB/Pyro')!,
+								hasteBreakpoints.get('8-tick LvB/Pyro')!,
+							];
+							softCap.breakpoints.forEach(breakpoint => {
+								const isExcludedFromPiZerk = excludedHasteBreakpoints.includes(breakpoint);
+								if (hasBL) {
+									const blBreakpoint = modifyHaste(breakpoint, 1.3);
+									if (blBreakpoint > 0) {
+										adjustedHastedBreakpoints.add(blBreakpoint);
+										if (hasBerserking) {
+											const berserkingBreakpoint = modifyHaste(blBreakpoint, 1.2);
+											if (berserkingBreakpoint > 0) {
+												adjustedHastedBreakpoints.add(berserkingBreakpoint);
+											}
+										}
+									}
+								}
+								if (hasPI && !isExcludedFromPiZerk) {
+									const piBreakpoint = modifyHaste(breakpoint, 1.2);
+									if (piBreakpoint > 0) {
+										adjustedHastedBreakpoints.add(piBreakpoint);
+										if (hasBerserking) {
+											const berserkingBreakpoint = modifyHaste(piBreakpoint, 1.2);
+											if (berserkingBreakpoint > 0) {
+												adjustedHastedBreakpoints.add(berserkingBreakpoint);
+											}
+										}
+									}
+								}
+							});
+							softCapToModify.breakpoints = [...adjustedHastedBreakpoints].sort((a, b) => a - b);
+						}
+					});
+					return softCaps;
+				},
+				additionalSoftCapTooltipInformation: {
+					[Stat.StatSpellHaste]: () => {
+						const raidBuffs = player.getRaid()?.getBuffs();
+						const hasBL = !!(raidBuffs?.bloodlust || raidBuffs?.timeWarp || raidBuffs?.heroism);
+						const hasPI = !!player.getBuffs().powerInfusionCount;
+						const hasBerserking = player.getRace() === Race.RaceTroll;
+
+						return (
+							<>
+								{(hasBL || hasPI || hasBerserking) && (
+									<>
+										<p className="mb-0">Additional breakpoints have been created using the following cooldowns:</p>
+										<ul className="mb-0">
+											{hasBL && <li>Bloodlust</li>}
+											{hasPI && <li>Power Infusion</li>}
+											{hasBerserking && <li>Berserking</li>}
+										</ul>
+									</>
+								)}
+							</>
+						);
+					},
+				},
 			});
 		});
 	}
