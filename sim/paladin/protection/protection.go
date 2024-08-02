@@ -81,7 +81,7 @@ func (prot *ProtectionPaladin) RegisterSpecializationEffects() {
 
 	// Touched by the Light
 	prot.AddStatDependency(stats.Strength, stats.SpellPower, 0.6)
-	prot.AddStat(stats.SpellHit, core.SpellHitRatingPerHitChance*8)
+	prot.AddStat(stats.SpellHitPercent, 8)
 	prot.MultiplyStat(stats.Stamina, 1.15)
 	core.MakePermanent(prot.GetOrRegisterAura(core.Aura{
 		Label:    "Touched by the Light",
@@ -97,15 +97,12 @@ func (prot *ProtectionPaladin) RegisterSpecializationEffects() {
 
 func (prot *ProtectionPaladin) RegisterMastery() {
 	// Divine Bulwark
-	masteryBlockChance := 18.0 + prot.GetMasteryPoints()*2.25
-	prot.AddStat(stats.Block, masteryBlockChance*core.BlockRatingPerBlockChance)
+	masteryBlockPercent := 18.0 + prot.GetMasteryPoints()*2.25
+	prot.AddStat(stats.BlockPercent, masteryBlockPercent)
 
 	// Keep it updated when mastery changes
-	prot.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-		oldBlockRating := (2.25 * core.MasteryRatingToMasteryPoints(oldMastery)) * core.BlockRatingPerBlockChance
-		newBlockRating := (2.25 * core.MasteryRatingToMasteryPoints(newMastery)) * core.BlockRatingPerBlockChance
-
-		prot.AddStatDynamic(sim, stats.Block, -oldBlockRating+newBlockRating)
+	prot.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMasteryRating float64, newMasteryRating float64) {
+		prot.AddStatDynamic(sim, stats.BlockPercent, 2.25 * core.MasteryRatingToMasteryPoints(newMasteryRating - oldMasteryRating))
 	})
 }
 
