@@ -16,12 +16,12 @@ func (demonology *DemonologyWarlock) CurseOfGuldanDebuffAura(target *core.Unit) 
 		Duration: 15 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, pet := range demonology.Pets {
-				pet.AttackTables[aura.Unit.UnitIndex].BonusCritRating += 0.1
+				pet.AttackTables[aura.Unit.UnitIndex].BonusCritPercent += 10
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, pet := range demonology.Pets {
-				pet.AttackTables[aura.Unit.UnitIndex].BonusCritRating -= 0.1
+				pet.AttackTables[aura.Unit.UnitIndex].BonusCritPercent -= 10
 			}
 		},
 	})
