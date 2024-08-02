@@ -73,7 +73,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 				stat: Stat.StatMeleeHit,
 				breakpoints: [8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE, 27 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [1.31, 0],
+				postCapEPs: [1.23, 0],
 			};
 
 			return [meleeHitSoftCapConfig];
