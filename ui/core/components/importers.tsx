@@ -608,6 +608,8 @@ export class IndividualAddonImporter<SpecType extends Spec> extends Importer {
 
 		const gearJson = importJson['gear'];
 		gearJson.items = (gearJson.items as Array<any>).filter(item => item != null);
+		delete gearJson.version;
+
 		(gearJson.items as Array<any>).forEach(item => {
 			if (item.gems) {
 				item.gems = (item.gems as Array<any>).map(gem => gem || 0);

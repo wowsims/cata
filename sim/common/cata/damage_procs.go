@@ -44,7 +44,7 @@ func init() {
 
 	core.NewItemEffect(68925, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		procChance := 0.3 //TODO: placeholder, get real proc chance
+		procChance := 0.15 //TODO: simc proc chance, verify when available
 		dummyAura := character.GetOrRegisterAura(core.Aura{
 			Label:     "Electrical Charge",
 			ActionID:  core.ActionID{SpellID: 96890},
@@ -89,7 +89,7 @@ func init() {
 
 	core.NewItemEffect(69110, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		procChance := 0.3 //TODO: placeholder, get real proc chance
+		procChance := 0.15 //TODO: simc proc chance, verify when available
 		dummyAura := character.GetOrRegisterAura(core.Aura{
 			Label:     "Electrical Charge",
 			ActionID:  core.ActionID{SpellID: 96890},
