@@ -6,32 +6,32 @@ character_stats_results: {
   final_stats: 6897.45
   final_stats: 166.95
   final_stats: 179
-  final_stats: 9789.58222
-  final_stats: 1497.5
+  final_stats: 2553.7616
   final_stats: 1836.44574
+  final_stats: 6171.84118
   final_stats: 2702.73189
   final_stats: 927
-  final_stats: 0
-  final_stats: 15895.764
-  final_stats: 2553.7616
-  final_stats: 6171.84118
   final_stats: 927
   final_stats: 782.21758
-  final_stats: 27780.25
-  final_stats: 15326
-  final_stats: 209
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 133401.3
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 1598
+  final_stats: 15895.764
+  final_stats: 209
+  final_stats: 9789.58222
+  final_stats: 1497.5
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 15326
+  final_stats: 0
+  final_stats: 133401.3
+  final_stats: 27780.25
+  final_stats: 0
  }
 }
 dps_results: {
@@ -1312,15 +1312,15 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 28033.37912
-  tps: 18770.19817
+  dps: 27991.98336
+  tps: 18735.88667
  }
 }
 dps_results: {
  key: "TestEnhancement-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 28532.12045
-  tps: 19286.92353
+  dps: 28425.04938
+  tps: 19127.36609
  }
 }
 dps_results: {

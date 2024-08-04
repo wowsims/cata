@@ -18,3 +18,9 @@ export const SyncTypeInput = InputHelpers.makeSpecOptionsEnumInput<Spec.SpecFury
 		{ name: 'Sync', value: WarriorSyncType.WarriorSyncMainhandOffhandSwings },
 	],
 });
+
+export const PrepullMastery = InputHelpers.makeSpecOptionsNumberInput<Spec.SpecFuryWarrior>({
+	fieldName: 'prepullMastery',
+	label: 'Prepull Mastery Rating',
+	labelTooltip: 'Mastery rating in the prepull set equipped before entering combat. Only applies if value is greater than 0.',
+});

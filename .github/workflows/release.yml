@@ -74,13 +74,13 @@ jobs:
               with:
                   ref: ${{ github.event.inputs.ref }}
 
-            - name: Test
-              run: |
-                  make test
-
             - name: Build 🔧
               run: |
                   make clean && VERSION=${{ github.event.inputs.tag }} make release
+                  
+            - name: Test
+              run: |
+                  make test
 
             # Release
             - name: Build and push Docker image

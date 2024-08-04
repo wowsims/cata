@@ -168,7 +168,8 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 			new ReforgeOptimizer(this, {
 				statSelectionPresets: Presets.FIRE_BREAKPOINTS,
 				updateSoftCaps: softCaps => {
-					const hasBL = !!player.getRaid()?.getBuffs()?.bloodlust;
+					const raidBuffs = player.getRaid()?.getBuffs();
+					const hasBL = !!(raidBuffs?.bloodlust || raidBuffs?.timeWarp || raidBuffs?.heroism);
 					const hasPI = !!player.getBuffs().powerInfusionCount;
 					const hasBerserking = player.getRace() === Race.RaceTroll;
 
@@ -222,7 +223,8 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 				},
 				additionalSoftCapTooltipInformation: {
 					[Stat.StatSpellHaste]: () => {
-						const hasBL = !!player.getRaid()?.getBuffs()?.bloodlust;
+						const raidBuffs = player.getRaid()?.getBuffs();
+						const hasBL = !!(raidBuffs?.bloodlust || raidBuffs?.timeWarp || raidBuffs?.heroism);
 						const hasPI = !!player.getBuffs().powerInfusionCount;
 						const hasBerserking = player.getRace() === Race.RaceTroll;
 

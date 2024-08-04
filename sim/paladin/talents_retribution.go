@@ -232,7 +232,7 @@ func (paladin *Paladin) applyDivineStorm() {
 			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
-				Timer:    paladin.sharedBuilderTimer,
+				Timer:    paladin.BuilderCooldown(),
 				Duration: paladin.sharedBuilderBaseCD,
 			},
 		},

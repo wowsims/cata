@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	googleproto "google.golang.org/protobuf/proto"
 )
 
 func DurationFromSeconds(numSeconds float64) time.Duration {
@@ -229,4 +230,11 @@ func (x *aggregator) meanAndStdDev() (float64, float64) {
 	mean := x.sum / float64(x.n)
 	stdDev := math.Sqrt(x.sumSq/float64(x.n) - mean*mean)
 	return mean, stdDev
+}
+
+func GetCurrentProtoVersion() int32 {
+	versionMessage := &proto.ProtoVersion{}
+	options := versionMessage.ProtoReflect().Descriptor().Options()
+	optionValue := googleproto.GetExtension(options, proto.E_CurrentVersionNumber)
+	return optionValue.(int32)
 }

@@ -6,32 +6,32 @@ character_stats_results: {
   final_stats: 6447.21
   final_stats: 122.85
   final_stats: 114
-  final_stats: 0
-  final_stats: 326
   final_stats: 962
-  final_stats: 2800.4002
-  final_stats: 802
-  final_stats: 0
-  final_stats: 15418.31347
   final_stats: 962
   final_stats: 6001.68224
+  final_stats: 2800.4002
   final_stats: 802
-  final_stats: 0
-  final_stats: 0
-  final_stats: 14342
-  final_stats: 14144.45402
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 316
-  final_stats: 129037.94
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
+  final_stats: 802
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 847
+  final_stats: 15418.31347
+  final_stats: 14144.45402
+  final_stats: 0
+  final_stats: 326
+  final_stats: 0
+  final_stats: 316
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 14342
+  final_stats: 0
+  final_stats: 129037.94
+  final_stats: 0
+  final_stats: 0
  }
 }
 dps_results: {
@@ -1312,8 +1312,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 24463.25663
-  tps: 22099.7578
+  dps: 24462.37733
+  tps: 22098.81331
  }
 }
 dps_results: {

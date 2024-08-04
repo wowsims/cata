@@ -6,32 +6,32 @@ character_stats_results: {
   final_stats: 7021.35
   final_stats: 5959.0125
   final_stats: 211
-  final_stats: 8971.61375
-  final_stats: 1196.9
   final_stats: 1754
-  final_stats: 3556.59484
-  final_stats: 1250
-  final_stats: 0
-  final_stats: 0
   final_stats: 1754
   final_stats: 2410.63346
+  final_stats: 3556.59484
   final_stats: 1250
-  final_stats: 0
-  final_stats: 108649.1875
-  final_stats: 8479
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
-  final_stats: 135151.9
-  final_stats: 0
-  final_stats: 0
-  final_stats: 0
+  final_stats: 1250
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 1711
+  final_stats: 0
+  final_stats: 0
+  final_stats: 8971.61375
+  final_stats: 1196.9
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 8479
+  final_stats: 0
+  final_stats: 135151.9
+  final_stats: 108649.1875
+  final_stats: 0
  }
 }
 dps_results: {
@@ -1249,15 +1249,15 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 29612.25417
-  tps: 29791.85972
+  dps: 29503.45156
+  tps: 29675.20557
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 30304.71084
-  tps: 30485.00192
+  dps: 30143.24127
+  tps: 30315.90674
  }
 }
 dps_results: {
