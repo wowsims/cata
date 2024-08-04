@@ -15,7 +15,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 	censureSpell := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    censureActionId.WithTag(1),
 		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskMeleeSpecial,
+		ProcMask:    core.ProcMaskProc,
 		Flags:       core.SpellFlagNoMetrics | core.SpellFlagNoLogs,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
