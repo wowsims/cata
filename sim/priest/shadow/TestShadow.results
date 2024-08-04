@@ -766,7 +766,7 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-LicensetoSlay-58180"
  value: {
-  dps: 26979.3182
+  dps: 26969.25293
   tps: 25479.53123
  }
 }
@@ -1291,15 +1291,15 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 28441.79764
-  tps: 26839.47652
+  dps: 28468.58197
+  tps: 26848.62777
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 28862.30722
-  tps: 27231.26969
+  dps: 28755.20278
+  tps: 27126.77264
  }
 }
 dps_results: {
