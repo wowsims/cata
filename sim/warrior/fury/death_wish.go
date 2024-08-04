@@ -17,7 +17,14 @@ func (war *FuryWarrior) RegisterDeathWish() {
 		Tag:      warrior.EnrageTag,
 		Duration: 30 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			bonusSnapshot = 1.0 + (0.2 * war.EnrageEffectMultiplier) // UF is multiplicative on buff effects
+			if sim.CurrentTime < 0 && war.Options.PrepullMastery > 0 {
+				masteryPoints := core.MasteryRatingToMasteryPoints(float64(war.Options.PrepullMastery))
+				prepullMultiplier := war.GetMasteryBonusMultiplier(masteryPoints)
+				bonusSnapshot = 1.0 + (0.2 * prepullMultiplier)
+			} else {
+				bonusSnapshot = 1.0 + (0.2 * war.EnrageEffectMultiplier)
+			}
+
 			war.PseudoStats.DamageDealtMultiplier *= bonusSnapshot
 			if !hasGlyph {
 				war.PseudoStats.DamageTakenMultiplier *= bonusSnapshot

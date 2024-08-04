@@ -151,6 +151,7 @@ export const DefaultOptions = WarriorOptions.create({
 		startingRage: 0,
 	},
 	syncType: 0,
+	prepullMastery: 0
 });
 
 export const DefaultConsumes = Consumes.create({
