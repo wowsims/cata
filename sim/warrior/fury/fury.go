@@ -69,9 +69,9 @@ func (war *FuryWarrior) RegisterSpecializationEffects() {
 	// The actual effects of Unshackled Fury need to be handled by specific spells
 	// as it modifies the "benefit" of them (e.g. it both increases Raging Blow's damage
 	// and Enrage's damage bonus)
-	war.EnrageEffectMultiplier = war.GetMasteryBonusMultiplier()
+	war.EnrageEffectMultiplier = war.GetMasteryBonusMultiplier(war.GetMasteryPoints())
 	war.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-		war.EnrageEffectMultiplier = war.GetMasteryBonusMultiplier()
+		war.EnrageEffectMultiplier = war.GetMasteryBonusMultiplier(war.GetMasteryPoints())
 	})
 
 	// Dual Wield specialization
@@ -87,12 +87,7 @@ func (war *FuryWarrior) RegisterSpecializationEffects() {
 	war.AutoAttacks.OHConfig().DamageMultiplier *= 1.4
 }
 
-func (war *FuryWarrior) GetMasteryBonusMultiplier() float64 {
-	return 1 + (11.2+5.6*war.GetMasteryPoints())/100
-}
-
-func (war *FuryWarrior) GetMasteryBonusMultiplierFromMasteryRating(masteryRating float64) float64 {
-	masteryPoints := core.MasteryRatingToMasteryPoints(masteryRating)
+func (war *FuryWarrior) GetMasteryBonusMultiplier(masteryPoints float64) float64 {
 	return 1 + (11.2+5.6*masteryPoints)/100
 }
 

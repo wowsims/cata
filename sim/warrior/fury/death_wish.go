@@ -18,7 +18,8 @@ func (war *FuryWarrior) RegisterDeathWish() {
 		Duration: 30 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			if sim.CurrentTime < 0 && war.Options.PrepullMastery > 0 {
-				prepullMultiplier := war.GetMasteryBonusMultiplierFromMasteryRating(float64(war.Options.PrepullMastery))
+				masteryPoints := core.MasteryRatingToMasteryPoints(float64(war.Options.PrepullMastery))
+				prepullMultiplier := war.GetMasteryBonusMultiplier(masteryPoints)
 				bonusSnapshot = 1.0 + (0.2 * prepullMultiplier)
 			} else {
 				bonusSnapshot = 1.0 + (0.2 * war.EnrageEffectMultiplier)
