@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
 	googleproto "google.golang.org/protobuf/proto"
 )
 
@@ -238,23 +237,4 @@ func GetCurrentProtoVersion() int32 {
 	options := versionMessage.ProtoReflect().Descriptor().Options()
 	optionValue := googleproto.GetExtension(options, proto.E_CurrentVersionNumber)
 	return optionValue.(int32)
-}
-
-// Runs stats.FromProtoArray() on the stats array embedded in the UnitStats message, but additionally imports any PseudoStats that we want to model as
-// proper Stats in the back-end. This allows us to include only essential basic stats in database stats arrays, while still letting the back-end Stat
-// enum include derived properties when it is computationally convenient to do so (such as for automatically applying stat dependencies). Make sure to
-// update this function if you add any back-end Stat entries that are modeled as PseudoStats in the front-end.
-func StatsFromUnitStatsProto(unitStatsMessage *proto.UnitStats) stats.Stats {
-	simStats := stats.FromProtoArray(unitStatsMessage.Stats)
-
-	if unitStatsMessage.PseudoStats != nil {
-		pseudoStatsMessage := unitStatsMessage.PseudoStats
-		simStats[stats.PhysicalHitPercent] = pseudoStatsMessage[proto.PseudoStat_PseudoStatPhysicalHitRating] / PhysicalHitRatingPerHitPercent
-		simStats[stats.SpellHitPercent] = pseudoStatsMessage[proto.PseudoStat_PseudoStatSpellHitRating] / SpellHitRatingPerHitPercent
-		simStats[stats.PhysicalCritPercent] = pseudoStatsMessage[proto.PseudoStat_PseudoStatPhysicalCritRating] / CritRatingPerCritPercent
-		simStats[stats.SpellCritPercent] = pseudoStatsMessage[proto.PseudoStat_PseudoStatSpellCritRating] / CritRatingPerCritPercent
-		simStats[stats.BlockPercent] = pseudoStatsMessage[proto.PseudoStat_PseudoStatBlockPercent]
-	}
-
-	return simStats
 }

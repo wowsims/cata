@@ -175,6 +175,27 @@ func FromProtoArray(values []float64) Stats {
 	return stats
 }
 
+// Runs FromProtoArray() on the stats array embedded in the UnitStats message, but additionally imports any
+// PseudoStats that we want to model as proper Stats in the back-end. This allows us to include only essential
+// basic properties in database stats arrays, while still letting the back-end Stat enum include derived
+// properties when it is computationally convenient to do so (such as for automatically applying stat
+// dependencies). Make sure to update this function if you add any back-end Stat entries that are modeled as
+// PseudoStats in the front-end.
+func FromUnitStatsProto(unitStatsMessage *proto.UnitStats) Stats {
+	simStats := FromProtoArray(unitStatsMessage.Stats)
+
+	if unitStatsMessage.PseudoStats != nil {
+		pseudoStatsMessage := unitStatsMessage.PseudoStats
+		simStats[PhysicalHitPercent] = pseudoStatsMessage[proto.PseudoStat_PseudoStatPhysicalHitPercent]
+		simStats[SpellHitPercent] = pseudoStatsMessage[proto.PseudoStat_PseudoStatSpellHitPercent]
+		simStats[PhysicalCritPercent] = pseudoStatsMessage[proto.PseudoStat_PseudoStatPhysicalCritPercent]
+		simStats[SpellCritPercent] = pseudoStatsMessage[proto.PseudoStat_PseudoStatSpellCritPercent]
+		simStats[BlockPercent] = pseudoStatsMessage[proto.PseudoStat_PseudoStatBlockPercent]
+	}
+
+	return simStats
+}
+
 // Adds two Stats together, returning the new Stats.
 func (stats Stats) Add(other Stats) Stats {
 	for k := range stats {

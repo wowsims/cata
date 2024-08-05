@@ -253,20 +253,18 @@ enum PseudoStat {
 	PseudoStatCastSpeedMultiplier = 8;
 
 	// Final buffed Haste values after combining the above multipliers with
-	// Haste Rating from gear. Expressed in units of Rating rather than as
-	// percentages for UI convenience (stats display, auto-Reforge, etc.) .
-	PseudoStatMeleeHasteRating = 9;
-	PseudoStatRangedHasteRating = 10;
-	PseudoStatSpellHasteRating = 11;
+	// Haste Rating from gear. Expressed in percentage units (0-100).
+	PseudoStatMeleeHastePercent = 9;
+	PseudoStatRangedHastePercent = 10;
+	PseudoStatSpellHastePercent = 11;
 
-	// School-specific fully buffed Hit/Crit stats, also in Rating units for
-	// UI convenience. These are modeled as proper Stats in the back-end due
-	// to stat dependencies, but do not need to be stored in any database
-	// files.
-	PseudoStatPhysicalHitRating = 12;
-	PseudoStatSpellHitRating = 13;
-	PseudoStatPhysicalCritRating = 14;
-	PseudoStatSpellCritRating = 15;
+	// School-specific fully buffed Hit/Crit stats, also in percentage
+	// units. These are modeled as proper Stats in the back-end due to stat
+	// dependencies, but do not need to be stored in any database files.
+	PseudoStatPhysicalHitPercent = 12;
+	PseudoStatSpellHitPercent = 13;
+	PseudoStatPhysicalCritPercent = 14;
+	PseudoStatSpellCritPercent = 15;
 }
 
 message UnitStats {

@@ -163,7 +163,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 
 	if player.BonusStats != nil {
 		if player.BonusStats.Stats != nil {
-			character.bonusStats = StatsFromUnitStatsProto(player.BonusStats)
+			character.bonusStats = stats.FromUnitStatsProto(player.BonusStats)
 		}
 		if player.BonusStats.PseudoStats != nil {
 			ps := player.BonusStats.PseudoStats
@@ -637,17 +637,18 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 		proto.PseudoStat_PseudoStatRangedSpeedMultiplier: character.PseudoStats.RangedSpeedMultiplier,
 		proto.PseudoStat_PseudoStatMeleeSpeedMultiplier:  character.PseudoStats.MeleeSpeedMultiplier,
 		proto.PseudoStat_PseudoStatCastSpeedMultiplier:   character.PseudoStats.CastSpeedMultiplier,
-		proto.PseudoStat_PseudoStatMeleeHasteRating:      (character.SwingSpeed() - 1) * HasteRatingPerHastePercent,
-		proto.PseudoStat_PseudoStatRangedHasteRating:     (character.RangedSwingSpeed() - 1) * HasteRatingPerHastePercent,
-		proto.PseudoStat_PseudoStatSpellHasteRating:      (character.TotalSpellHasteMultiplier()- 1) * HasteRatingPerHastePercent,
+		proto.PseudoStat_PseudoStatMeleeHastePercent:     character.SwingSpeed() - 1,
+		proto.PseudoStat_PseudoStatRangedHastePercent:    character.RangedSwingSpeed() - 1,
+		proto.PseudoStat_PseudoStatSpellHastePercent:     character.TotalSpellHasteMultiplier() - 1,
 
-		// School-specific fully buffed Hit/Crit are represented as proper Stats in the back-end so that stat dependencies will
-		// work properly, but are stored as PseudoStats in proto messages. This is done so that the stats arrays embedded in
-		// database files and saved Encounter settings can omit these extraneous fields.
-		proto.PseudoStat_PseudoStatPhysicalHitRating:  character.GetStat(stats.PhysicalHitPercent) * PhysicalHitRatingPerHitPercent,
-		proto.PseudoStat_PseudoStatSpellHitRating:     character.GetStat(stats.SpellHitPercent) * SpellHitRatingPerHitPercent,
-		proto.PseudoStat_PseudoStatPhysicalCritRating: character.GetStat(stats.PhysicalCritPercent) * CritRatingPerCritPercent,
-		proto.PseudoStat_PseudoStatSpellCritRating:    character.GetStat(stats.SpellCritPercent) * CritRatingPerCritPercent,
+		// School-specific fully buffed Hit/Crit are represented as proper Stats in the back-end so
+		// that stat dependencies will work correctly, but are stored as PseudoStats in proto
+		// messages. This is done so that the stats arrays embedded in database files and saved
+		// Encounter settings can omit these extraneous fields.
+		proto.PseudoStat_PseudoStatPhysicalHitPercent:  character.GetStat(stats.PhysicalHitPercent),
+		proto.PseudoStat_PseudoStatSpellHitPercent:     character.GetStat(stats.SpellHitPercent),
+		proto.PseudoStat_PseudoStatPhysicalCritPercent: character.GetStat(stats.PhysicalCritPercent),
+		proto.PseudoStat_PseudoStatSpellCritPercent:    character.GetStat(stats.SpellCritPercent),
 	}
 }
 
