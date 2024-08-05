@@ -322,7 +322,7 @@ message IndividualSimSettings {
 }
 
 message StatCapConfig {
-	UnitStat unit_stat = 1;
+	UIStat unit_stat = 1;
 
 	// Breakpoint values in ascending order
 	repeated double breakpoints = 2;
@@ -340,7 +340,7 @@ message StatCapConfig {
 // Currently used only within the StatCapConfig UI message for configuring Haste
 // caps, and is therefore not versioned, since this message is not imported or
 // exported from local storage or links.
-message UnitStat {
+message UIStat {
 	// Uniquely identifies the attribute
 	oneof unit_stat {
 		Stat stat = 1;
