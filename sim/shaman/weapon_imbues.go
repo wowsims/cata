@@ -170,8 +170,7 @@ func (shaman *Shaman) ApplyFlametongueImbueToItem(item *core.Item) {
 	shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= magicDamageBonus
 
 	if shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfFlametongueWeapon) {
-		newStats := stats.Stats{stats.SpellCrit: 2 * core.CritRatingPerCritChance}
-		shaman.AddStats(newStats)
+		shaman.AddStat(stats.SpellCritPercent, 2)
 	}
 
 	item.TempEnchant = int32(enchantID)
