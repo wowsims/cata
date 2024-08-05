@@ -208,8 +208,6 @@ func (paladin *Paladin) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (paladin *Paladin) Initialize() {
-	paladin.sharedBuilderTimer = paladin.NewTimer()
-
 	paladin.applyGlyphs()
 	paladin.registerSpells()
 	paladin.addBloodthirstyGloves()
@@ -295,4 +293,9 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 	paladin.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	return paladin
+}
+
+// Shared cooldown for builders
+func (paladin *Paladin) BuilderCooldown() *core.Timer {
+	return paladin.Character.GetOrInitTimer(&paladin.sharedBuilderTimer)
 }

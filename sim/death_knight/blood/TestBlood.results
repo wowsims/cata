@@ -6,32 +6,32 @@ character_stats_results: {
   final_stats: 10707.00923
   final_stats: 33.6
   final_stats: 62
-  final_stats: 0
-  final_stats: 326
+  final_stats: 972
   final_stats: 1894.01166
+  final_stats: 1909.33022
   final_stats: 1390.68024
   final_stats: 113
-  final_stats: 0
-  final_stats: 13707.94959
-  final_stats: 972
-  final_stats: 1909.33022
   final_stats: 113
   final_stats: 502.16318
-  final_stats: 0
-  final_stats: 24758.85984
-  final_stats: 0
-  final_stats: 0
   final_stats: 976
   final_stats: 1712.62446
+  final_stats: 2319
+  final_stats: 13707.94959
   final_stats: 0
-  final_stats: 192923.12926
+  final_stats: 0
+  final_stats: 326
+  final_stats: 0
+  final_stats: 0
   final_stats: 0
   final_stats: 20
   final_stats: 0
   final_stats: 0
   final_stats: 0
+  final_stats: 24758.85984
   final_stats: 0
-  final_stats: 2319
+  final_stats: 192923.12926
+  final_stats: 0
+  final_stats: 0
  }
 }
 dps_results: {
@@ -853,8 +853,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-LicensetoSlay-58180"
  value: {
-  dps: 14289.74162
-  tps: 69529.90175
+  dps: 14293.77181
+  tps: 69541.10521
   hps: 3597.80333
  }
 }
@@ -1453,16 +1453,16 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 13808.52495
-  tps: 67014.70121
+  dps: 13806.49665
+  tps: 67001.4247
   hps: 3597.80333
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 13814.20081
-  tps: 67045.83309
+  dps: 13812.19782
+  tps: 67038.77942
   hps: 3597.80333
  }
 }

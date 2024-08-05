@@ -1,4 +1,5 @@
 import * as Mechanics from './constants/mechanics.js';
+import { CURRENT_API_VERSION } from './constants/other.js';
 import { UnitMetadataList } from './player.js';
 import { Encounter as EncounterProto, MobType, PresetEncounter, PresetTarget, SpellSchool, Stat, Target as TargetProto, TargetInput } from './proto/common.js';
 import { Stats } from './proto_utils/stats.js';
@@ -131,10 +132,16 @@ export class Encounter {
 			executeProportion90: this.executeProportion90,
 			useHealth: this.useHealth,
 			targets: this.targets,
+			apiVersion: CURRENT_API_VERSION,
 		});
 	}
 
 	fromProto(eventID: EventID, proto: EncounterProto) {
+		// Fix out-of-date protos before importing
+		if (proto.apiVersion < CURRENT_API_VERSION) {
+			Encounter.updateProtoVersion(proto);
+		}
+
 		TypedEvent.freezeAllAndDo(() => {
 			this.setDuration(eventID, proto.duration);
 			this.setDurationVariation(eventID, proto.durationVariation);
@@ -159,6 +166,7 @@ export class Encounter {
 				executeProportion35: 0.35,
 				executeProportion90: 0.9,
 				targets: [Encounter.defaultTargetProto()],
+				apiVersion: CURRENT_API_VERSION,
 			}),
 		);
 	}
@@ -181,5 +189,17 @@ export class Encounter {
 			}).asArray(),
 			targetInputs: new Array<TargetInput>(0),
 		});
+	}
+
+	static updateProtoVersion(proto: EncounterProto) {
+		// First migrate the stats arrays embedded in each target.
+		proto.targets.forEach(target => {
+			target.stats = Stats.migrateStatsArray(target.stats, proto.apiVersion, this.defaultTargetProto().stats);
+		});
+
+		// Any other required data migration code should go here.
+
+		// Flag the version as up-to-date once all migrations are done.
+		proto.apiVersion = CURRENT_API_VERSION;
 	}
 }

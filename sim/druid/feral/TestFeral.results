@@ -6,32 +6,32 @@ character_stats_results: {
   final_stats: 6321
   final_stats: 201.0078
   final_stats: 195
-  final_stats: 210.10858
-  final_stats: 1257.75
   final_stats: 961
-  final_stats: 2604.39222
-  final_stats: 532
-  final_stats: 0
-  final_stats: 20906.31675
   final_stats: 961
   final_stats: 7485.84359
+  final_stats: 2604.39222
+  final_stats: 532
   final_stats: 532
   final_stats: 781
-  final_stats: 27020.53455
-  final_stats: 10307
-  final_stats: 209
-  final_stats: 0
   final_stats: 4184.98449
   final_stats: 0
-  final_stats: 720
-  final_stats: 129743.65
-  final_stats: 0
-  final_stats: 97
-  final_stats: 97
-  final_stats: 97
-  final_stats: 97
-  final_stats: 0
   final_stats: 844
+  final_stats: 20906.31675
+  final_stats: 209
+  final_stats: 210.10858
+  final_stats: 1257.75
+  final_stats: 0
+  final_stats: 720
+  final_stats: 0
+  final_stats: 97
+  final_stats: 97
+  final_stats: 97
+  final_stats: 97
+  final_stats: 10307
+  final_stats: 0
+  final_stats: 129743.65
+  final_stats: 27020.53455
+  final_stats: 0
  }
 }
 dps_results: {
@@ -1277,8 +1277,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 24979.6601
-  tps: 35223.86618
+  dps: 24977.54104
+  tps: 35213.26669
  }
 }
 dps_results: {
