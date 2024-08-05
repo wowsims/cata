@@ -12,8 +12,8 @@ func (hp *HunterPet) ApplyTalents() {
 	// TODO:
 	// Thunderstomp
 
-	hp.AddStat(stats.MeleeCrit, 3*core.CritRatingPerCritChance*float64(talents.SpidersBite))
-	hp.AddStat(stats.SpellCrit, 3*core.CritRatingPerCritChance*float64(talents.SpidersBite))
+	hp.AddStat(stats.PhysicalCritPercent, 3*float64(talents.SpidersBite))
+	hp.AddStat(stats.SpellCritPercent, 3*float64(talents.SpidersBite))
 
 	if talents.SpikedCollar > 0 {
 		hp.AddStaticMod(core.SpellModConfig{
@@ -46,7 +46,7 @@ func (hp *HunterPet) ApplyTalents() {
 	}
 
 	if talents.PetBarding != 0 {
-		hp.AddStat(stats.Dodge, 1*core.DodgeRatingPerDodgeChance*float64(talents.PetBarding))
+		hp.PseudoStats.BaseDodgeChance += 0.01 * float64(talents.PetBarding)
 		hp.MultiplyStat(stats.Armor, 1.0+0.05*float64(talents.PetBarding))
 	}
 
