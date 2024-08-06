@@ -8,6 +8,7 @@ import (
 
 	"github.com/tailscale/hujson"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 // Example db input file: https://nether.wowhead.com/cata/data/gear-planner?dv=100
@@ -107,39 +108,35 @@ type WowheadRandomSuffixStats struct {
 }
 
 func (wrs WowheadRandomSuffix) ToProto() *proto.ItemRandomSuffix {
-	stats := Stats{
-		proto.Stat_StatStrength:          float64(wrs.Stats.Strength),
-		proto.Stat_StatAgility:           float64(wrs.Stats.Agility),
-		proto.Stat_StatStamina:           float64(wrs.Stats.Stamina),
-		proto.Stat_StatIntellect:         float64(wrs.Stats.Intellect),
-		proto.Stat_StatSpirit:            float64(wrs.Stats.Spirit),
-		proto.Stat_StatSpellPower:        float64(wrs.Stats.SpellPower),
-		proto.Stat_StatMP5:               float64(wrs.Stats.MP5),
-		proto.Stat_StatSpellHit:          float64(wrs.Stats.HitRating),
-		proto.Stat_StatSpellCrit:         float64(wrs.Stats.CritRating),
-		proto.Stat_StatSpellHaste:        float64(wrs.Stats.HasteRating),
-		proto.Stat_StatAttackPower:       float64(wrs.Stats.AttackPower),
-		proto.Stat_StatMeleeHit:          float64(wrs.Stats.HitRating),
-		proto.Stat_StatMeleeCrit:         float64(wrs.Stats.CritRating),
-		proto.Stat_StatMeleeHaste:        float64(wrs.Stats.HasteRating),
-		proto.Stat_StatExpertise:         float64(wrs.Stats.Expertise),
-		proto.Stat_StatArmor:             float64(wrs.Stats.Armor),
-		proto.Stat_StatRangedAttackPower: float64(wrs.Stats.RangedAttackPower),
-		proto.Stat_StatBlock:             float64(wrs.Stats.Block),
-		proto.Stat_StatDodge:             float64(wrs.Stats.Dodge),
-		proto.Stat_StatParry:             float64(wrs.Stats.Parry),
-		proto.Stat_StatArcaneResistance:  float64(wrs.Stats.ArcaneResistance),
-		proto.Stat_StatFireResistance:    float64(wrs.Stats.FireResistance),
-		proto.Stat_StatFrostResistance:   float64(wrs.Stats.FrostResistance),
-		proto.Stat_StatNatureResistance:  float64(wrs.Stats.NatureResistance),
-		proto.Stat_StatShadowResistance:  float64(wrs.Stats.ShadowResistance),
-		proto.Stat_StatMastery:           float64(wrs.Stats.Mastery),
+	suffixStats := stats.Stats{
+		stats.Strength:          float64(wrs.Stats.Strength),
+		stats.Agility:           float64(wrs.Stats.Agility),
+		stats.Stamina:           float64(wrs.Stats.Stamina),
+		stats.Intellect:         float64(wrs.Stats.Intellect),
+		stats.Spirit:            float64(wrs.Stats.Spirit),
+		stats.SpellPower:        float64(wrs.Stats.SpellPower),
+		stats.MP5:               float64(wrs.Stats.MP5),
+		stats.HitRating:         float64(wrs.Stats.HitRating),
+		stats.CritRating:        float64(wrs.Stats.CritRating),
+		stats.HasteRating:       float64(wrs.Stats.HasteRating),
+		stats.AttackPower:       float64(wrs.Stats.AttackPower),
+		stats.ExpertiseRating:   float64(wrs.Stats.Expertise),
+		stats.Armor:             float64(wrs.Stats.Armor),
+		stats.RangedAttackPower: float64(wrs.Stats.RangedAttackPower),
+		stats.DodgeRating:       float64(wrs.Stats.Dodge),
+		stats.ParryRating:       float64(wrs.Stats.Parry),
+		stats.ArcaneResistance:  float64(wrs.Stats.ArcaneResistance),
+		stats.FireResistance:    float64(wrs.Stats.FireResistance),
+		stats.FrostResistance:   float64(wrs.Stats.FrostResistance),
+		stats.NatureResistance:  float64(wrs.Stats.NatureResistance),
+		stats.ShadowResistance:  float64(wrs.Stats.ShadowResistance),
+		stats.MasteryRating:     float64(wrs.Stats.Mastery),
 	}
 
 	return &proto.ItemRandomSuffix{
 		Id:    wrs.ID,
 		Name:  wrs.Name,
-		Stats: toSlice(stats),
+		Stats: suffixStats.ToProtoArray(),
 	}
 }
 
