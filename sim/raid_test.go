@@ -18,7 +18,7 @@ var SimOptions = &proto.SimOptions{
 }
 
 var StandardTarget = &proto.Target{
-	Stats:   stats.Stats{stats.Armor: 7684}.ToFloatArray(),
+	Stats:   stats.Stats{stats.Armor: 7684}.ToProtoArray(),
 	MobType: proto.MobType_MobTypeDemon,
 }
 
