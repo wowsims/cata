@@ -525,154 +525,17 @@ func init() {
 		})
 	})
 
-	core.NewItemEffect(68972, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		dummyAura := character.RegisterAura(core.Aura{
-			Label:     "Titanic Power",
-			ActionID:  core.ActionID{SpellID: 96923},
-			Duration:  time.Second * 30,
-			MaxStacks: 5,
-		})
-
-		core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:       "Titanic Power Aura",
-			ActionID:   core.ActionID{ItemID: 68972},
-			Callback:   core.CallbackOnSpellHitDealt,
-			ProcMask:   core.ProcMaskMelee,
-			ProcChance: 1,
-			Outcome:    core.OutcomeCrit,
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				dummyAura.Activate(sim)
-				dummyAura.AddStack(sim)
-			},
-		}))
-
-		statBonus := float64(508 * dummyAura.MaxStacks)
-		buffAuraCrit := character.NewTemporaryStatsAura("Blessing of the Shaper Crit", core.ActionID{SpellID: 96928}, stats.Stats{stats.MeleeCrit: statBonus, stats.SpellCrit: statBonus}, time.Second*15)
-		buffAuraHaste := character.NewTemporaryStatsAura("Blessing of the Shaper Haste", core.ActionID{SpellID: 96927}, stats.Stats{stats.MeleeHaste: statBonus, stats.SpellHaste: statBonus}, time.Second*15)
-		buffAuraMastery := character.NewTemporaryStatsAura("Blessing of the Shaper Mastery", core.ActionID{SpellID: 96929}, stats.Stats{stats.Mastery: statBonus}, time.Second*15)
-
-		sharedCD := character.GetOffensiveTrinketCD()
-		trinketSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{ItemID: 68972},
-			SpellSchool: core.SpellSchoolPhysical,
-			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagNoOnCastComplete,
-			Cast: core.CastConfig{
-				SharedCD: core.Cooldown{
-					Timer:    sharedCD,
-					Duration: time.Second * 15,
-				},
-				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Minute * 2,
-				},
-			},
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				statType := character.GetHighestStat([]stats.Stat{stats.MeleeCrit, stats.SpellCrit, stats.MeleeHaste, stats.SpellHaste, stats.Mastery})
-				switch statType {
-				case stats.MeleeCrit, stats.SpellCrit:
-					buffAuraCrit.Activate(sim)
-				case stats.MeleeHaste, stats.SpellHaste:
-					buffAuraHaste.Activate(sim)
-				case stats.Mastery:
-					buffAuraMastery.Activate(sim)
-				default:
-					panic("unexpected statType")
-				}
-				dummyAura.Deactivate(sim)
-			},
-			ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-				return dummyAura.GetStacks() == 5
-			},
-		})
-
-		character.AddMajorCooldown(core.MajorCooldown{
-			Spell:    trinketSpell,
-			Priority: core.CooldownPriorityDefault,
-			Type:     core.CooldownTypeDPS,
-			ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
-				return dummyAura.GetStacks() == 5
-			},
-		})
+	// Normal
+	registerApparatusOfKhazGoroth(apparatusConfig{
+		ItemID:    68972,
+		StatBonus: 508,
 	})
 
-	core.NewItemEffect(69113, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		dummyAura := character.RegisterAura(core.Aura{
-			Label:     "Titanic Power (Heroic)",
-			ActionID:  core.ActionID{SpellID: 96923},
-			Duration:  time.Second * 30,
-			MaxStacks: 5,
-		})
-
-		core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:       "Titanic Power Aura (Heroic)",
-			ActionID:   core.ActionID{ItemID: 69113},
-			Callback:   core.CallbackOnSpellHitDealt,
-			ProcMask:   core.ProcMaskMelee,
-			ProcChance: 1,
-			Outcome:    core.OutcomeCrit,
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				dummyAura.Activate(sim)
-				dummyAura.AddStack(sim)
-			},
-		}))
-
-		// TODO: discuss the following scenario:
-		// the trinket should allow to activate at any number of stacks, should we allow this behaviour at all to the users?
-		// would also mean that we need the temporary aura to be created on the fly after an environment is finalized
-		statBonus := float64(575 * dummyAura.MaxStacks)
-		buffAuraCrit := character.NewTemporaryStatsAura("Blessing of the Shaper Crit (Heroic)", core.ActionID{SpellID: 96928}, stats.Stats{stats.MeleeCrit: statBonus, stats.SpellCrit: statBonus}, time.Second*15)
-		buffAuraHaste := character.NewTemporaryStatsAura("Blessing of the Shaper Haste (Heroic)", core.ActionID{SpellID: 96927}, stats.Stats{stats.MeleeHaste: statBonus, stats.SpellHaste: statBonus}, time.Second*15)
-		buffAuraMastery := character.NewTemporaryStatsAura("Blessing of the Shaper Mastery (Heroic)", core.ActionID{SpellID: 96929}, stats.Stats{stats.Mastery: statBonus}, time.Second*15)
-
-		sharedCD := character.GetOffensiveTrinketCD()
-		trinketSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{ItemID: 69113},
-			SpellSchool: core.SpellSchoolPhysical,
-			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagNoOnCastComplete,
-			Cast: core.CastConfig{
-				SharedCD: core.Cooldown{
-					Timer:    sharedCD,
-					Duration: time.Second * 15,
-				},
-				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Minute * 2,
-				},
-			},
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				statType := character.GetHighestStat([]stats.Stat{stats.MeleeCrit, stats.SpellCrit, stats.MeleeHaste, stats.SpellHaste, stats.Mastery})
-				switch statType {
-				case stats.MeleeCrit, stats.SpellCrit:
-					buffAuraCrit.Activate(sim)
-				case stats.MeleeHaste, stats.SpellHaste:
-					buffAuraHaste.Activate(sim)
-				case stats.Mastery:
-					buffAuraMastery.Activate(sim)
-				default:
-					panic("unexpected statType")
-				}
-				dummyAura.Deactivate(sim)
-			},
-			ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-				return dummyAura.GetStacks() == 5
-			},
-		})
-
-		character.AddMajorCooldown(core.MajorCooldown{
-			Spell:    trinketSpell,
-			Priority: core.CooldownPriorityDefault,
-			Type:     core.CooldownTypeDPS,
-			ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
-				return dummyAura.GetStacks() == 5
-			},
-		})
+	// Heroic
+	registerApparatusOfKhazGoroth(apparatusConfig{
+		ItemID:    69113,
+		StatBonus: 575,
+		Heroic:    true,
 	})
 
 	core.NewItemEffect(68994, func(agent core.Agent) {
@@ -757,6 +620,132 @@ func init() {
 					}
 					icd.Use(sim)
 				}
+			},
+		})
+	})
+}
+
+type apparatusConfig struct {
+	ItemID    int32
+	StatBonus float64
+	Heroic    bool
+}
+
+func registerApparatusOfKhazGoroth(config apparatusConfig) {
+	core.NewItemEffect(config.ItemID, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		var stacks int32
+		var buffs stats.Stats
+
+		labelSuffix := core.Ternary(config.Heroic, " (Heroic)", "")
+		buffDuration := time.Second * 15
+		buffAuraOnGain := func(aura *core.Aura, sim *core.Simulation) {
+			aura.SetStacks(sim, stacks)
+			character.AddStatsDynamic(sim, buffs)
+		}
+		buffAuraOnExpire := func(aura *core.Aura, sim *core.Simulation) {
+			character.AddStatsDynamic(sim, buffs.Invert())
+		}
+
+		buffAuraCrit := character.GetOrRegisterAura(core.Aura{
+			Label:     "Blessing of the Shaper Crit" + labelSuffix,
+			ActionID:  core.ActionID{SpellID: 96928},
+			MaxStacks: 5,
+			Duration:  buffDuration,
+			OnGain:    buffAuraOnGain,
+			OnExpire:  buffAuraOnExpire,
+		})
+
+		buffAuraHaste := character.GetOrRegisterAura(core.Aura{
+			Label:     "Blessing of the Shaper Haste" + labelSuffix,
+			ActionID:  core.ActionID{SpellID: 96927},
+			MaxStacks: 5,
+			Duration:  buffDuration,
+			OnGain:    buffAuraOnGain,
+			OnExpire:  buffAuraOnExpire,
+		})
+
+		buffAuraMastery := character.GetOrRegisterAura(core.Aura{
+			Label:     "Blessing of the Shaper Mastery" + labelSuffix,
+			ActionID:  core.ActionID{SpellID: 96929},
+			MaxStacks: 5,
+			Duration:  buffDuration,
+			OnGain:    buffAuraOnGain,
+			OnExpire:  buffAuraOnExpire,
+		})
+
+		titanicPower := character.RegisterAura(core.Aura{
+			Label:     "Titanic Power" + labelSuffix,
+			ActionID:  core.ActionID{SpellID: 96923},
+			Duration:  time.Second * 30,
+			MaxStacks: 5,
+		})
+
+		core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Titanic Power Aura" + labelSuffix,
+			ActionID:   core.ActionID{SpellID: 96924},
+			Callback:   core.CallbackOnSpellHitDealt,
+			ProcMask:   core.ProcMaskMelee,
+			ProcChance: 1,
+			Outcome:    core.OutcomeCrit,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if buffAuraCrit.IsActive() || buffAuraHaste.IsActive() || buffAuraMastery.IsActive() {
+					return
+				}
+
+				titanicPower.Activate(sim)
+				titanicPower.AddStack(sim)
+			},
+		}))
+
+		trinketSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{ItemID: config.ItemID},
+			SpellSchool: core.SpellSchoolPhysical,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete,
+			Cast: core.CastConfig{
+				SharedCD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: time.Second * 15,
+				},
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				statType := character.GetHighestStat([]stats.Stat{stats.MeleeCrit, stats.SpellCrit, stats.MeleeHaste, stats.SpellHaste, stats.Mastery})
+				stacks = titanicPower.GetStacks()
+				statBonus := config.StatBonus * float64(stacks)
+
+				switch statType {
+				case stats.MeleeCrit, stats.SpellCrit:
+					buffs = stats.Stats{stats.MeleeCrit: statBonus, stats.SpellCrit: statBonus}
+					buffAuraCrit.Activate(sim)
+				case stats.MeleeHaste, stats.SpellHaste:
+					buffs = stats.Stats{stats.MeleeHaste: statBonus, stats.SpellHaste: statBonus}
+					buffAuraHaste.Activate(sim)
+				case stats.Mastery:
+					buffs = stats.Stats{stats.Mastery: statBonus}
+					buffAuraMastery.Activate(sim)
+				default:
+					panic("unexpected statType")
+				}
+
+				titanicPower.Deactivate(sim)
+			},
+			ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+				return titanicPower.IsActive()
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell:    trinketSpell,
+			Priority: core.CooldownPriorityDefault,
+			Type:     core.CooldownTypeDPS,
+			ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
+				return titanicPower.IsActive()
 			},
 		})
 	})

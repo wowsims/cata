@@ -77,16 +77,16 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-ApparatusofKhaz'goroth-68972"
  value: {
-  dps: 31621.40757
-  tps: 23470.51463
+  dps: 31463.48524
+  tps: 23359.66173
   hps: 473.88367
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-ApparatusofKhaz'goroth-69113"
  value: {
-  dps: 31871.2664
-  tps: 23648.71678
+  dps: 31707.61605
+  tps: 23538.65395
   hps: 473.88367
  }
 }
