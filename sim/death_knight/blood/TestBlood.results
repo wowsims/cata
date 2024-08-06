@@ -309,17 +309,17 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-CrushingWeight-59506"
  value: {
-  dps: 14841.08631
-  tps: 72417.91138
-  hps: 3722.90041
+  dps: 14856.88954
+  tps: 72405.18234
+  hps: 3702.59559
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-CrushingWeight-65118"
  value: {
-  dps: 14914.86071
-  tps: 72772.6867
-  hps: 3694.3554
+  dps: 14810.32859
+  tps: 72189.61242
+  hps: 3720.6496
  }
 }
 dps_results: {
@@ -637,16 +637,16 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-HeartofRage-59224"
  value: {
-  dps: 14531.48344
-  tps: 70870.84024
+  dps: 14548.11646
+  tps: 70952.39883
   hps: 3643.61715
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-HeartofRage-65072"
  value: {
-  dps: 14626.23503
-  tps: 71380.50946
+  dps: 14622.9743
+  tps: 71369.06202
   hps: 3643.61715
  }
 }
@@ -661,8 +661,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-HeartofSolace-56393"
  value: {
-  dps: 14668.52469
-  tps: 71175.26914
+  dps: 14668.49256
+  tps: 71166.81459
   hps: 3670.08306
  }
 }

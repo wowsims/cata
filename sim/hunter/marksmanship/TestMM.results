@@ -297,15 +297,15 @@ dps_results: {
 dps_results: {
  key: "TestMM-AllItems-CrushingWeight-59506"
  value: {
-  dps: 20804.36191
-  tps: 18630.89211
+  dps: 20828.33439
+  tps: 18651.69909
  }
 }
 dps_results: {
  key: "TestMM-AllItems-CrushingWeight-65118"
  value: {
-  dps: 20804.36191
-  tps: 18630.89211
+  dps: 20812.44727
+  tps: 18637.24244
  }
 }
 dps_results: {
