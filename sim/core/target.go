@@ -221,7 +221,7 @@ type AttackTable struct {
 	HealingDealtMultiplier       float64
 	IgnoreArmor                  bool    // Ignore defender's armor for specifically this attacker's attacks
 	ArmorIgnoreFactor            float64 // Percentage of armor to ignore for this attacker's attacks
-	BonusCritPercent             float64 // Analagous to Defender.PseudoStats.BonusSpellCritPercentTaken, but for all spell schools and only for this attacker specifically
+	BonusSpellCritPercent        float64 // Analagous to Defender.PseudoStats.BonusSpellCritPercentTaken, but only for this attacker specifically
 
 	// This is for "Apply Aura: Mod Damage Done By Caster" effects.
 	// If set, the damage taken multiplier is multiplied by the callbacks result.
