@@ -56,16 +56,12 @@ var ItemSetFlameWakersBattleGear = core.NewItemSet(core.ItemSet{
 			var burningAdrenaline = hunter.RegisterAura(core.Aura{
 				Label:    "Burning Adrenaline",
 				Duration: time.Second * 15,
-				// Icd: &core.Cooldown{ // Assume 10sec icd for now
-				// 	Duration: time.Second * 10,
-				// 	Timer:    hunter.NewTimer(),
-				// },
 				ActionID: core.ActionID{SpellID: 99060},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					baMod.Activate()
 				},
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell.ClassSpellMask != HunterSpellsAll {
+					if spell.ClassSpellMask&HunterSpellsAll != spell.ClassSpellMask {
 						return
 					}
 					baMod.Deactivate()
@@ -121,7 +117,7 @@ var ItemSetWyrmstalkerBattleGear = core.NewItemSet(core.ItemSet{
 				},
 			})
 			hunter.RegisterAura(core.Aura{
-				Label:    "T12 4-set",
+				Label:    "T13 4-set",
 				Duration: core.NeverExpires,
 				OnReset: func(aura *core.Aura, sim *core.Simulation) {
 					aura.Activate(sim)
