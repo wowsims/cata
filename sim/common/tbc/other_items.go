@@ -12,7 +12,7 @@ func init() {
 				continue // not sure if this applies to guardians.
 			}
 			pet.PseudoStats.DamageDealtMultiplier *= 1.03
-			pet.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*2)
+			pet.AddStat(stats.PhysicalCritPercent, 2)
 		}
 	})
 }
