@@ -81,8 +81,13 @@ func (pet *DoomguardPet) Reset(_ *core.Simulation) {}
 func (pet *DoomguardPet) ExecuteCustomRotation(sim *core.Simulation) {
 	if pet.DoomBolt.CanCast(sim, pet.CurrentTarget) {
 		pet.DoomBolt.Cast(sim, pet.CurrentTarget)
-		// ~400ms ish delay between casts
-		pet.WaitUntil(sim, pet.NextGCDAt()+400*time.Millisecond)
+		minDelay := 150.0
+		maxDelay := 750.0
+		delayRange := maxDelay - minDelay
+		// ~150-750ms delay between casts
+		// Research: https://docs.google.com/spreadsheets/d/e/2PACX-1vSaFavGbmrd0l3r7XsPWivap9wMjeaRB6Sl5ieg_GpJ8AfdWkzdG3o2czJ60WHFIZwK0QK5yWF22p8D/pubchart?oid=586881278&format=interactive
+		randomDelay := time.Duration(minDelay+delayRange*sim.RandomFloat("Doomguard Cast Delay")) * time.Millisecond
+		pet.WaitUntil(sim, pet.NextGCDAt()+randomDelay)
 		return
 	}
 }
