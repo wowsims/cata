@@ -298,15 +298,15 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-CrushingWeight-59506"
  value: {
-  dps: 21018.25999
-  tps: 17732.21985
+  dps: 20983.59985
+  tps: 17708.19631
  }
 }
 dps_results: {
  key: "TestBM-AllItems-CrushingWeight-65118"
  value: {
-  dps: 20969.00139
-  tps: 17689.33462
+  dps: 20948.84102
+  tps: 17665.02231
  }
 }
 dps_results: {
@@ -487,8 +487,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-Flamewaker'sBattlegear"
  value: {
-  dps: 23828.34005
-  tps: 20109.69283
+  dps: 22705.27473
+  tps: 19100.40478
  }
 }
 dps_results: {
