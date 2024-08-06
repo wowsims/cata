@@ -276,15 +276,15 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-CrushingWeight-59506"
  value: {
-  dps: 26979.3182
-  tps: 25479.53123
+  dps: 27159.12314
+  tps: 25644.55002
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-CrushingWeight-65118"
  value: {
-  dps: 26979.3182
-  tps: 25479.53123
+  dps: 27135.77715
+  tps: 25605.53184
  }
 }
 dps_results: {
@@ -570,14 +570,14 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-HeartofRage-59224"
  value: {
-  dps: 26979.3182
+  dps: 26978.25147
   tps: 25479.53123
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-HeartofRage-65072"
  value: {
-  dps: 26979.3182
+  dps: 26978.0051
   tps: 25479.53123
  }
 }
@@ -591,7 +591,7 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-HeartofSolace-56393"
  value: {
-  dps: 27610.05905
+  dps: 27608.2418
   tps: 26014.4234
  }
 }
@@ -1312,15 +1312,15 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-VesselofAcceleration-68995"
  value: {
-  dps: 26979.3182
-  tps: 25479.53123
+  dps: 27016.35285
+  tps: 25499.79875
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-VesselofAcceleration-69167"
  value: {
-  dps: 26979.3182
-  tps: 25479.53123
+  dps: 27017.54871
+  tps: 25503.56958
  }
 }
 dps_results: {
