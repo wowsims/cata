@@ -177,7 +177,7 @@ var hunterPetBaseStats = stats.Stats{
 	stats.PhysicalCritPercent: 3.2 + 1.8,
 }
 
-const PetExpertiseScale = 3.25
+const PetExpertiseRatingScale = 3.25 * core.PhysicalHitRatingPerHitPercent
 
 func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
 
@@ -188,10 +188,14 @@ func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
 			stats.AttackPower:       ownerStats[stats.RangedAttackPower] * 0.425,
 			stats.RangedAttackPower: ownerStats[stats.RangedAttackPower] * 0.40,
 
-			stats.HitRating:       ownerStats[stats.HitRating],
-			stats.ExpertiseRating: ownerStats[stats.HitRating] * PetExpertiseScale,
-			stats.CritRating:      ownerStats[stats.CritRating],
-			stats.HasteRating:     ownerStats[stats.HasteRating],
+			stats.PhysicalHitPercent: ownerStats[stats.PhysicalHitPercent],
+			stats.ExpertiseRating:    ownerStats[stats.PhysicalHitPercent] * PetExpertiseRatingScale,
+			stats.SpellHitPercent:    ownerStats[stats.PhysicalHitPercent],
+
+			stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
+			stats.SpellCritPercent:    ownerStats[stats.PhysicalCritPercent],
+
+			stats.HasteRating: ownerStats[stats.HasteRating],
 		}
 	}
 }
