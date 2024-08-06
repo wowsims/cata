@@ -94,7 +94,7 @@ func (spell *Spell) PhysicalHitChance(attackTable *AttackTable) float64 {
 func (spell *Spell) PhysicalCritChance(attackTable *AttackTable) float64 {
 	critPercent := spell.Unit.stats[stats.PhysicalCritPercent] +
 		spell.BonusCritPercent +
-		attackTable.BonusCritPercent
+		attackTable.BonusCritPercent / CritRatingPerCritPercent / 100
 	return critPercent / 100 - attackTable.MeleeCritSuppression
 }
 func (spell *Spell) PhysicalCritCheck(sim *Simulation, attackTable *AttackTable) bool {
