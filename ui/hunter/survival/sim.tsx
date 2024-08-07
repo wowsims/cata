@@ -6,22 +6,9 @@ import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_u
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLAction, APLListItem, APLRotation } from '../../core/proto/apl';
-import {
-	Cooldowns,
-	Debuffs,
-	Faction,
-	IndividualBuffs,
-	ItemSlot,
-	PartyBuffs,
-	PseudoStat,
-	Race,
-	RaidBuffs,
-	RangedWeaponType,
-	RotationType,
-	Spec,
-	Stat,
-} from '../../core/proto/common';
+import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, RotationType, Spec, Stat } from '../../core/proto/common';
 import { HunterStingType, SurvivalHunter_Rotation } from '../../core/proto/hunter';
+import { StatCapType } from '../../core/proto/ui';
 import * as AplUtils from '../../core/proto_utils/apl_utils';
 import { Stats } from '../../core/proto_utils/stats';
 import * as HunterInputs from '../inputs';
@@ -65,6 +52,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 		statCaps: (() => {
 			const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
 			return hitCap;
+		})(),
+		// Default soft caps for the Reforge optimizer
+		softCapBreakpoints: (() => {
+			const hasteSoftCapConfig = {
+				stat: Stat.StatMeleeHaste,
+				breakpoints: [2650],
+				capType: StatCapType.TypeThreshold,
+				postCapEPs: [0.87],
+			};
+
+			return [hasteSoftCapConfig];
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
@@ -244,7 +242,25 @@ export class SurvivalHunterSimUI extends IndividualSimUI<Spec.SpecSurvivalHunter
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			new ReforgeOptimizer(this, {
+				updateSoftCaps: softCaps => {
+					const hasT114PC = player.getGear().getItemSetCount('Lightning-Charged Battlegear') >= 4;
+					this.individualConfig.defaults.softCapBreakpoints!.forEach(softCap => {
+						const softCapToModify = softCaps.findIndex(sc => sc.stat === softCap.stat);
+						// Remove the threshold if 4-set T11 is not found
+						if (!hasT114PC && softCap.stat === Stat.StatMeleeHaste && softCapToModify !== -1) {
+							softCaps.splice(softCapToModify, 1);
+						}
+					});
+					return softCaps;
+				},
+				additionalSoftCapTooltipInformation: {
+					[Stat.StatMeleeHaste]: () => {
+						const hasT114PC = player.getGear().getItemSetCount('Lightning-Charged Battlegear') >= 4;
+						return <>{hasT114PC && <p className="mb-0">T11 4-set was found, added haste threshold.</p>}</>;
+					},
+				},
+			});
 		});
 	}
 }

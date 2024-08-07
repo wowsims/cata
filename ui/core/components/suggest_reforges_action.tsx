@@ -169,14 +169,16 @@ export class ReforgeOptimizer {
 
 		this.bindToggleExperimental(group);
 
-		if (!!this.softCapsConfig?.length)
-			tippy(startReforgeOptimizationButton, {
-				theme: 'suggest-reforges-softcaps',
-				placement: 'bottom',
-				maxWidth: 310,
-				interactive: true,
-				onShow: instance => instance.setContent(this.buildReforgeButtonTooltip()),
-			});
+		tippy(startReforgeOptimizationButton, {
+			theme: 'suggest-reforges-softcaps',
+			placement: 'bottom',
+			maxWidth: 310,
+			interactive: true,
+			onShow: instance => {
+				if (!this.softCapsConfig.length) return false;
+				instance.setContent(this.buildReforgeButtonTooltip());
+			},
+		});
 
 		tippy(contextMenuButton, {
 			placement: 'bottom',

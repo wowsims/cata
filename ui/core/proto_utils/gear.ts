@@ -360,6 +360,25 @@ export class Gear extends BaseGear {
 	getFailedProfessionRequirements(professions: Array<Profession>): Array<Item | Gem | Enchant> {
 		return (this.asArray().filter(ei => ei != null) as Array<EquippedItem>).map(ei => ei.getFailedProfessionRequirements(professions)).flat();
 	}
+
+	getItemSetCount(name: string) {
+		if (!name) return 0;
+
+		const validSetItemSlots = [
+			ItemSlot.ItemSlotHead,
+			ItemSlot.ItemSlotShoulder,
+			ItemSlot.ItemSlotChest,
+			ItemSlot.ItemSlotHands,
+			ItemSlot.ItemSlotLegs,
+		];
+		let setItemCount = 0;
+		for (const slot of validSetItemSlots) {
+			const item = this.getEquippedItem(slot);
+			if (item?.item?.setName === name) setItemCount++;
+		}
+
+		return setItemCount;
+	}
 }
 
 /**
