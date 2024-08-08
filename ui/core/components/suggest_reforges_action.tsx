@@ -667,7 +667,6 @@ export class ReforgeOptimizer {
 		this.player.setGear(TypedEvent.nextEventID(), gear);
 		await this.sim.updateCharacterStats(TypedEvent.nextEventID());
 		let baseStats = Stats.fromProto(this.player.getCurrentStats().finalStats);
-		baseStats = baseStats.addStat(Stat.StatMastery, this.player.getBaseMastery() * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
 		if (this.updateGearStatsModifier) baseStats = this.updateGearStatsModifier(baseStats);
 		return baseStats.withHasteMultipliers(this.playerClass);
 	}
