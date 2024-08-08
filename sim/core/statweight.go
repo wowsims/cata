@@ -1,7 +1,9 @@
 package core
 
 import (
+	"fmt"
 	"math"
+	"strings"
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
@@ -162,7 +164,23 @@ func buildStatWeightRequests(swr *proto.StatWeightsRequest) *proto.StatWeightReq
 	}
 	for _, s := range swr.PseudoStatsToWeigh {
 		stat := stats.UnitStatFromPseudoStat(s)
-		statMod := defaultStatMod * 0.5
+		statName := proto.PseudoStat_name[int32(s)]
+
+		// Scale down the stat increment depending on the type of PseudoStat
+		statMod := defaultStatMod
+
+		if stat.EqualsPseudoStat(proto.PseudoStat_PseudoStatPhysicalHitPercent) {
+			statMod /= PhysicalHitRatingPerHitPercent
+		} else if stat.EqualsPseudoStat(proto.PseudoStat_PseudoStatSpellHitPercent) {
+			statMod /= SpellHitRatingPerHitPercent
+		} else if strings.Contains(statName, "Crit") {
+			statMod /= CritRatingPerCritPercent
+		} else if strings.Contains(statName, "Dps") {
+			statMod *= 0.5
+		} else {
+			panic(fmt.Sprintf("Unsupported PseudoStat in stat weights request: %s", statName))
+		}
+
 		statModsHigh[stat] = statMod
 		statModsLow[stat] = -statMod
 	}

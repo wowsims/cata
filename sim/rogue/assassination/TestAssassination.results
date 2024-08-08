@@ -35,6 +35,43 @@ character_stats_results: {
   final_stats: 5
  }
 }
+stat_weights_results: {
+ key: "TestAssassination-StatWeights-Default"
+ value: {
+  weights: 0
+  weights: 1
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.31027
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 40.00348
+  weights: 15.48816
+  weights: 0
+ }
+}
 dps_results: {
  key: "TestAssassination-AllItems-AgileShadowspiritDiamond"
  value: {

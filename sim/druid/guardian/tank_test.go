@@ -44,10 +44,6 @@ func TestGuardian(t *testing.T) {
 				proto.RangedWeaponType_RangedWeaponTypeRelic,
 			},
 		},
-
-		StatsToWeigh:       []proto.Stat{proto.Stat_StatHitRating},
-		PseudoStatsToWeigh: []proto.PseudoStat{proto.PseudoStat_PseudoStatPhysicalHitPercent, proto.PseudoStat_PseudoStatSpellHitPercent},
-		EPReferenceStat:    proto.Stat_StatAgility,
 	}))
 }
 
