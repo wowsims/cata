@@ -225,8 +225,8 @@ export interface ReforgeData {
 	id: number;
 	item: Item;
 	reforge: ReforgeStat;
-	fromStat: Stat[];
-	toStat: Stat[];
+	fromStat: Stat;
+	toStat: Stat;
 	fromAmount: number;
 	toAmount: number;
 }
@@ -469,8 +469,8 @@ export class Player<SpecType extends Spec> {
 	getReforgeData(equippedItem: EquippedItem, reforge: ReforgeStat): ReforgeData {
 		const withRandomSuffixStats = equippedItem.getWithRandomSuffixStats();
 		const item = withRandomSuffixStats.item;
-		const fromAmount = Math.ceil(-item.stats[reforge.fromStat[0]] * reforge.multiplier);
-		const toAmount = Math.floor(item.stats[reforge.fromStat[0]] * reforge.multiplier);
+		const fromAmount = Math.ceil(-item.stats[reforge.fromStat] * reforge.multiplier);
+		const toAmount = Math.floor(item.stats[reforge.fromStat] * reforge.multiplier);
 		return {
 			id: reforge.id,
 			reforge: reforge,
@@ -787,9 +787,9 @@ export class Player<SpecType extends Spec> {
 	}
 
 	getMeleeCritCapInfo(): MeleeCritCapInfo {
-		const meleeCrit = (this.currentStats.finalStats?.stats[Stat.StatMeleeCrit] || 0.0) / Mechanics.MELEE_CRIT_RATING_PER_CRIT_CHANCE;
-		const meleeHit = (this.currentStats.finalStats?.stats[Stat.StatMeleeHit] || 0.0) / Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE;
-		const expertise = (this.currentStats.finalStats?.stats[Stat.StatExpertise] || 0.0) / Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION / 4;
+		const meleeCrit = this.currentStats.finalStats?.pseudoStats[PseudoStat.PseudoStatPhysicalCritPercent] || 0.0;
+		const meleeHit = this.currentStats.finalStats?.pseudoStats[PseudoStat.PseudoStatPhysicalHitPercent] || 0.0;
+		const expertise = (this.currentStats.finalStats?.stats[Stat.StatExpertiseRating] || 0.0) / Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION / 4;
 		//const agility = (this.currentStats.finalStats?.stats[Stat.StatAgility] || 0.0) / this.getClass();
 		const suppression = 4.8;
 		const glancing = 24.0;
@@ -1147,12 +1147,8 @@ export class Player<SpecType extends Spec> {
 
 	computeReforgingEP(reforging: ReforgeData): number {
 		let stats = new Stats([]);
-		reforging.fromStat.forEach(stat => {
-			stats = stats.addStat(stat, reforging.fromAmount);
-		});
-		reforging.toStat.forEach(stat => {
-			stats = stats.addStat(stat, reforging.toAmount);
-		});
+		stats = stats.addStat(reforging.fromStat, reforging.fromAmount);
+		stats = stats.addStat(reforging.toStat, reforging.toAmount);
 		return this.computeStatsEP(stats);
 	}
 
