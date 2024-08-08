@@ -1,6 +1,7 @@
 import { ResourceType } from '../proto/api.js';
 import { ArmorType, Class, ItemSlot, Profession, PseudoStat, Race, RangedWeaponType, Spec, Stat, WeaponType } from '../proto/common.js';
 import { DungeonDifficulty, RaidFilterOption, RepFaction, RepLevel, SourceFilterOption, StatCapType } from '../proto/ui.js';
+import { UnitStat } from './stats.js';
 
 export const armorTypeNames: Map<ArmorType, string> = new Map([
 	[ArmorType.ArmorTypeUnknown, 'Unknown'],
@@ -109,108 +110,69 @@ export function nameToProfession(name: string): Profession {
 	return Profession.ProfessionUnknown;
 }
 
-export const statOrder: Array<Stat> = [
-	Stat.StatHealth,
-	Stat.StatMana,
-	Stat.StatArmor,
-	Stat.StatBonusArmor,
-	Stat.StatStamina,
-	Stat.StatStrength,
-	Stat.StatAgility,
-	Stat.StatIntellect,
-	Stat.StatSpirit,
-	Stat.StatSpellPower,
-	Stat.StatSpellHit,
-	Stat.StatSpellCrit,
-	Stat.StatSpellHaste,
-	Stat.StatSpellPenetration,
-	Stat.StatMP5,
-	Stat.StatAttackPower,
-	Stat.StatRangedAttackPower,
-	Stat.StatMeleeHit,
-	Stat.StatMeleeCrit,
-	Stat.StatMeleeHaste,
-	Stat.StatExpertise,
-	Stat.StatMastery,
-	Stat.StatBlock,
-	Stat.StatDodge,
-	Stat.StatParry,
-	Stat.StatResilience,
-	Stat.StatArcaneResistance,
-	Stat.StatFireResistance,
-	Stat.StatFrostResistance,
-	Stat.StatNatureResistance,
-	Stat.StatShadowResistance,
+export const displayStatOrder: Array<UnitStat> = [
+	UnitStat.fromStat(Stat.StatHealth),
+	UnitStat.fromStat(Stat.StatMana),
+	UnitStat.fromStat(Stat.StatArmor),
+	UnitStat.fromStat(Stat.StatBonusArmor),
+	UnitStat.fromStat(Stat.StatStamina),
+	UnitStat.fromStat(Stat.StatStrength),
+	UnitStat.fromStat(Stat.StatAgility),
+	UnitStat.fromStat(Stat.StatIntellect),
+	UnitStat.fromStat(Stat.StatSpirit),
+	UnitStat.fromStat(Stat.StatSpellPower),
+	UnitStat.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent),
+	UnitStat.fromPseudoStat(PseudoStat.PseudoStatSpellCritPercent),
+	UnitStat.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent),
+	UnitStat.fromStat(Stat.StatSpellPenetration),
+	UnitStat.fromStat(Stat.StatMP5),
+	UnitStat.fromStat(Stat.StatAttackPower),
+	UnitStat.fromStat(Stat.StatRangedAttackPower),
+	UnitStat.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent),
+	UnitStat.fromPseudoStat(PseudoStat.PseudoStatPhysicalCritPercent),
+	UnitStat.fromPseudoStat(PseudoStat.PseudoStatMeleeHastePercent),
+	UnitStat.fromPseudoStat(PseudoStat.PseudoStatRangedHastePercent),
+	UnitStat.fromStat(Stat.StatExpertiseRating),
+	UnitStat.fromStat(Stat.StatMasteryRating),
+	UnitStat.fromPseudoStat(PseudoStat.PseudoStatBlockPercent),
+	UnitStat.fromPseudoStat(PseudoStat.PseudoStatDodgePercent),
+	UnitStat.fromPseudoStat(PseudoStat.PseudoStatParryPercent),
+	UnitStat.fromStat(Stat.StatResilienceRating),
+	UnitStat.fromStat(Stat.StatArcaneResistance),
+	UnitStat.fromStat(Stat.StatFireResistance),
+	UnitStat.fromStat(Stat.StatFrostResistance),
+	UnitStat.fromStat(Stat.StatNatureResistance),
+	UnitStat.fromStat(Stat.StatShadowResistance),
 ];
 
-export const statNames: Map<Stat, string> = new Map([
-	[Stat.StatStrength, 'Strength'],
-	[Stat.StatAgility, 'Agility'],
-	[Stat.StatStamina, 'Stamina'],
-	[Stat.StatIntellect, 'Intellect'],
-	[Stat.StatSpirit, 'Spirit'],
-	[Stat.StatSpellPower, 'Spell Power'],
-	[Stat.StatMP5, 'MP5'],
-	[Stat.StatSpellHit, 'Spell Hit'],
-	[Stat.StatSpellCrit, 'Spell Crit'],
-	[Stat.StatSpellHaste, 'Spell Haste'],
-	[Stat.StatSpellPenetration, 'Spell Pen'],
-	[Stat.StatAttackPower, 'Attack Power'],
-	[Stat.StatMeleeHit, 'Melee Hit'],
-	[Stat.StatMeleeCrit, 'Melee Crit'],
-	[Stat.StatMeleeHaste, 'Melee Haste'],
-	[Stat.StatMastery, 'Mastery'],
-	[Stat.StatExpertise, 'Expertise'],
-	[Stat.StatMana, 'Mana'],
-	[Stat.StatArmor, 'Armor'],
-	[Stat.StatRangedAttackPower, 'Ranged AP'],
-	[Stat.StatBlock, 'Block'],
-	[Stat.StatDodge, 'Dodge'],
-	[Stat.StatParry, 'Parry'],
-	[Stat.StatResilience, 'Resilience'],
-	[Stat.StatHealth, 'Health'],
-	[Stat.StatArcaneResistance, 'Arcane Resistance'],
-	[Stat.StatFireResistance, 'Fire Resistance'],
-	[Stat.StatFrostResistance, 'Frost Resistance'],
-	[Stat.StatNatureResistance, 'Nature Resistance'],
-	[Stat.StatShadowResistance, 'Shadow Resistance'],
-	[Stat.StatBonusArmor, 'Bonus Armor'],
-	[Stat.StatMastery, 'Mastery'],
-]);
+export function getStatName(stat: Stat): string {
+	if (stat == Stat.StatRangedAttackPower) {
+		return 'Ranged AP';
+	} else {
+		return Stat[stat].split(/(?<![A-Z])(?=[A-Z])/).slice(1).join(' ');
+	}
+}
+
+export function getClassPseudoStatName(pseudoStat: PseudoStat, playerClass: Class): string {
+	const genericName = PseudoStat[pseudoStat].split(/(?<![A-Z])(?=[A-Z])/).slice(2).join(' ').replace('Dps', 'DPS');
+
+	if (playerClass == Class.ClassHunter) {
+		return genericName.replace('Physical', 'Ranged');
+	} else {
+		return genericName.replace('Physical', 'Melee');
+	}
+}
 
 export const shortSecondaryStatNames: Map<Stat, string> = new Map([
 	[Stat.StatSpirit, 'Spirit'],
-	[Stat.StatSpellHit, 'Hit'],
-	[Stat.StatSpellCrit, 'Crit'],
-	[Stat.StatSpellHaste, 'Haste'],
-	[Stat.StatMeleeHit, 'Hit'],
-	[Stat.StatMeleeCrit, 'Crit'],
-	[Stat.StatMeleeHaste, 'Haste'],
-	[Stat.StatExpertise, 'Expertise'],
-	[Stat.StatMastery, 'Mastery'],
-	[Stat.StatBlock, 'Block'],
-	[Stat.StatDodge, 'Dodge'],
-	[Stat.StatParry, 'Parry'],
+	[Stat.StatHitRating, 'Hit'],
+	[Stat.StatCritRating, 'Crit'],
+	[Stat.StatHasteRating, 'Haste'],
+	[Stat.StatExpertiseRating, 'Expertise'],
+	[Stat.StatMasteryRating, 'Mastery'],
+	[Stat.StatDodgeRating, 'Dodge'],
+	[Stat.StatParryRating, 'Parry'],
 ]);
-
-export const pseudoStatOrder: Array<PseudoStat> = [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatRangedDps];
-export const pseudoStatNames: Map<PseudoStat, string> = new Map([
-	[PseudoStat.PseudoStatMainHandDps, 'Main Hand DPS'],
-	[PseudoStat.PseudoStatOffHandDps, 'Off Hand DPS'],
-	[PseudoStat.PseudoStatRangedDps, 'Ranged DPS'],
-	[PseudoStat.PseudoStatDodge, 'Dodge Chance'],
-	[PseudoStat.PseudoStatParry, 'Parry Chance'],
-]);
-
-export function getClassStatName(stat: Stat, playerClass: Class): string {
-	const statName = statNames.get(stat);
-	if (!statName) return 'UnknownStat';
-	if (playerClass == Class.ClassHunter) {
-		return statName.replace('Melee', 'Ranged');
-	} else {
-		return statName;
-	}
-}
 
 export const slotNames: Map<ItemSlot, string> = new Map([
 	[ItemSlot.ItemSlotHead, 'Head'],

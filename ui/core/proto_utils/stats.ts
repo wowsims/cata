@@ -3,7 +3,7 @@ import { CURRENT_API_VERSION } from '../constants/other.js';
 import { Class, PseudoStat, Stat, UnitStats } from '../proto/common.js';
 import { UIStat as UnitStatProto } from '../proto/ui.js';
 import { getEnumValues } from '../utils.js';
-import { getClassStatName, pseudoStatNames } from './names.js';
+import { getStatName, getClassPseudoStatName } from './names.js';
 import { migrateOldProto, ProtoConversionMap } from './utils.js';
 
 const STATS_LEN = getEnumValues(Stat).length;
@@ -60,12 +60,17 @@ export class UnitStat {
 		return (this.stat == other) || (this.rootStat == other);
 	}
 
-	getName(clazz: Class): string {
+	getFullName(playerClass: Class): string {
 		if (this.isStat()) {
-			return getClassStatName(this.stat!, clazz);
+			return getStatName(this.stat!);
 		} else {
-			return pseudoStatNames.get(this.pseudoStat!)!;
+			return getClassPseudoStatName(this.getPseudoStat(), playerClass);
 		}
+	}
+
+	getShortName(playerClass: Class): string {
+		const fullName = this.getFullName(playerClass);
+		return fullName.replace(' Rating', '').replace(' Percent', '');
 	}
 
 	// Convert a UnitStat value from its Rating representation to a percentage representation

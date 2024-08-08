@@ -6,7 +6,7 @@ import { IndividualSimUI } from '../individual_sim_ui.jsx';
 import { Player } from '../player.js';
 import { ProgressMetrics, StatWeightsResult, StatWeightValues } from '../proto/api.js';
 import { PseudoStat, Stat, UnitStats } from '../proto/common.js';
-import { getClassStatName } from '../proto_utils/names.js';
+import { getStatName } from '../proto_utils/names.js';
 import { Stats, UnitStat } from '../proto_utils/stats.js';
 import { RequestTypes } from '../sim_signal_manager';
 import { EventID, TypedEvent } from '../typed_event.js';
@@ -85,7 +85,7 @@ export class EpWeightsMenu extends BaseModal {
 		const calcWeightsButtonRef = ref<HTMLButtonElement>();
 		const allStatsContainerRef = ref<HTMLDivElement>();
 
-		const getNameFromStat = (stat: Stat | undefined) => (stat !== undefined ? getClassStatName(stat, this.simUI.player.getClass()) : '??');
+		const getNameFromStat = (stat: Stat | undefined) => (stat !== undefined ? getStatName(stat) : '??');
 		const getStatFromName = (value: string) => Object.values(this.epStats).find(stat => getNameFromStat(stat) === value);
 		const epRefSelectOptions = (
 			<>
@@ -475,7 +475,7 @@ export class EpWeightsMenu extends BaseModal {
 		const currentEpRef = ref<HTMLTableCellElement>();
 		const row = (
 			<tr>
-				<td>{stat.getName(this.simUI.player.getClass())}</td>
+				<td>{stat.getFullName(this.simUI.player.getClass())}</td>
 				{this.makeTableRowCells(stat, result?.dps, 'damage-metrics', rowTotalEp, epRatios[0])}
 				{this.makeTableRowCells(stat, result?.hps, 'healing-metrics', rowTotalEp, epRatios[1])}
 				{this.makeTableRowCells(stat, result?.tps, 'threat-metrics', rowTotalEp, epRatios[2])}
