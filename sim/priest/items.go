@@ -319,7 +319,7 @@ var ItemSetRegaliaOfTheCleansingFlame = core.NewItemSet(core.ItemSet{
 
 			character.AddStaticMod(core.SpellModConfig{
 				Kind:      core.SpellMod_Cooldown_Flat,
-				TimeValue: time.Second * 75,
+				TimeValue: -time.Second * 75,
 				ClassMask: PriestSpellShadowFiend,
 			})
 
