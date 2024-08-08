@@ -1,6 +1,7 @@
 import * as Mechanics from '../constants/mechanics.js';
 import { CURRENT_API_VERSION } from '../constants/other.js';
 import { Class, PseudoStat, Stat, UnitStats } from '../proto/common.js';
+import { UIStat as UnitStatProto } from '../proto/ui.js';
 import { getEnumValues } from '../utils.js';
 import { getClassStatName, pseudoStatNames } from './names.js';
 import { migrateOldProto, ProtoConversionMap } from './utils.js';
@@ -12,9 +13,15 @@ export class UnitStat {
 	private readonly stat: Stat | null;
 	private readonly pseudoStat: PseudoStat | null;
 
-	private constructor(stat: Stat | null, pseudoStat: PseudoStat | null) {
+	// Used to link a "child" PseudoStat like PhysicalHitPercent to a
+	// "parent" Stat like HitRating, so that both values can be displayed
+	// together in the character sheet.
+	private readonly rootStat: Stat | null;
+
+	private constructor(stat: Stat | null, pseudoStat: PseudoStat | null, rootStat: Stat | null) {
 		this.stat = stat;
 		this.pseudoStat = pseudoStat;
+		this.rootStat = rootStat;
 	}
 
 	isStat(): boolean {
@@ -41,11 +48,75 @@ export class UnitStat {
 		return this.stat == other.stat && this.pseudoStat == other.pseudoStat;
 	}
 
+	equalsStat(other: Stat): boolean {
+		return this.isStat() && (this.stat == other);
+	}
+
+	equalsPseudoStat(other: PseudoStat): boolean {
+		return this.isPseudoStat() && (this.pseudoStat == other);
+	}
+
+	linkedToStat(other: Stat): boolean {
+		return (this.stat == other) || (this.rootStat == other);
+	}
+
 	getName(clazz: Class): string {
 		if (this.isStat()) {
 			return getClassStatName(this.stat!, clazz);
 		} else {
 			return pseudoStatNames.get(this.pseudoStat!)!;
+		}
+	}
+
+	// Convert a UnitStat value from its Rating representation to a percentage representation
+	// (0-100). If a percentage representation does not make sense for the stat in question
+	// (Strength for example), then null is returned. Mastery is special cased to return
+	// Mastery points rather than %.
+	getPercentOrPointsValue(ratingValue: number): number | null {
+		if (this.linkedToStat(Stat.StatCritRating)) {
+			return ratingValue / Mechanics.CRIT_RATING_PER_CRIT_PERCENT;
+		} else if (this.linkedToStat(Stat.StatHasteRating)) {
+			return ratingValue / Mechanics.HASTE_RATING_PER_HASTE_PERCENT;
+		} else if (this.equalsStat(Stat.StatExpertiseRating)) {
+			return ratingValue / Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION / 4;
+		} else if (this.linkedToStat(Stat.StatDodgeRating)) {
+			return ratingValue / Mechanics.DODGE_RATING_PER_DODGE_PERCENT;
+		} else if (this.linkedToStat(Stat.StatParryRating)) {
+			return ratingValue / Mechanics.PARRY_RATING_PER_PARRY_PERCENT;
+		} else if (this.equalsStat(Stat.StatMasteryRating)) {
+			return ratingValue / Mechanics.MASTERY_RATING_PER_MASTERY_POINT;
+		} else if (this.equalsPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent)) {
+			return ratingValue / Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT;
+		} else if (this.equalsPseudoStat(PseudoStat.PseudoStatSpellHitPercent)) {
+			return ratingValue / Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT;
+		} else {
+			return null;
+		}
+	}
+
+	// Convert a UnitStat value from its percentage representation (0-100) to the equivalent amount of
+	// Rating. If a Rating representation does not make sense for the stat in question (Block in Cata
+	// for example), then null is returned. Mastery is special cased to assume a Mastery points input
+	// rather than a percentage.
+	getRatingValue(percentOrPointsValue: number): number | null {
+		if (this.linkedToStat(Stat.StatCritRating)) {
+			return percentOrPointsValue * Mechanics.CRIT_RATING_PER_CRIT_PERCENT;
+		} else if (this.linkedToStat(Stat.StatHasteRating)) {
+			return percentOrPointsValue * Mechanics.HASTE_RATING_PER_HASTE_PERCENT;
+		} else if (this.equalsStat(Stat.StatExpertiseRating)) {
+			return percentOrPointsValue * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION * 4;
+		} else if (this.linkedToStat(Stat.StatDodgeRating)) {
+			return percentOrPointsValue * Mechanics.DODGE_RATING_PER_DODGE_PERCENT;
+		} else if (this.linkedToStat(Stat.StatParryRating)) {
+			return percentOrPointsValue * Mechanics.PARRY_RATING_PER_PARRY_PERCENT;
+		} else if (this.equalsStat(Stat.StatMasteryRating)) {
+			return percentOrPointsValue * Mechanics.MASTERY_RATING_PER_MASTERY_POINT;
+		} else if (this.equalsPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent)) {
+			return percentOrPointsValue * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT;
+		} else if (this.equalsPseudoStat(PseudoStat.PseudoStatSpellHitPercent)) {
+			return percentOrPointsValue * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT;
+		} else {
+			return null;
 		}
 	}
 
@@ -65,17 +136,99 @@ export class UnitStat {
 		}
 	}
 
+	toProto(): UnitStatProto {
+		const protoMessage = UnitStatProto.create({});
+
+		if (this.isStat()) {
+			protoMessage.unitStat = {
+				oneofKind: 'stat',
+				stat: this.stat!,
+			};
+		} else if (this.isPseudoStat()) {
+			protoMessage.unitStat = {
+				oneofKind: 'pseudoStat',
+				pseudoStat: this.pseudoStat!,
+			};
+		} else {
+			throw new Error('Neither a Stat nor a PseudoStat!');
+		}
+
+		return protoMessage;
+	}
+
+	static fromProto(protoMessage: UnitStatProto): UnitStat {
+		if (protoMessage.unitStat.oneofKind == 'stat') {
+			return UnitStat.fromStat(protoMessage.unitStat.stat);
+		} else if (protoMessage.unitStat.oneofKind == 'pseudoStat') {
+			return UnitStat.fromPseudoStat(protoMessage.unitStat.pseudoStat);
+		} else {
+			throw new Error('Neither a Stat nor a PseudoStat!');
+		}
+	}
+
 	static fromStat(stat: Stat): UnitStat {
-		return new UnitStat(stat, null);
+		return new UnitStat(stat, null, null);
 	}
 	static fromPseudoStat(pseudoStat: PseudoStat): UnitStat {
-		return new UnitStat(null, pseudoStat);
+		return new UnitStat(null, pseudoStat, UnitStat.getRootStat(pseudoStat));
 	}
 
 	static getAll(): Array<UnitStat> {
 		const allStats = getEnumValues(Stat) as Array<Stat>;
 		const allPseudoStats = getEnumValues(PseudoStat) as Array<PseudoStat>;
 		return [allStats.map(stat => UnitStat.fromStat(stat)), allPseudoStats.map(stat => UnitStat.fromPseudoStat(stat))].flat();
+	}
+
+	// Returns the "parent" Stat (such as HitRating) associated with a
+	// "child" PseudoStat (such as PhysicalHitPercent), or null if there is
+	// no such root Stat.
+	static getRootStat(pseudoStat: PseudoStat): Stat | null {
+		const pseudoStatName = PseudoStat[pseudoStat];
+
+		if (pseudoStatName.includes('Dodge')) {
+			return Stat.StatDodgeRating;
+		} else if (pseudoStatName.includes('Parry')) {
+			return Stat.StatParryRating;
+		} else if (pseudoStatName.includes('Haste')) {
+			return Stat.StatHasteRating;
+		} else if (pseudoStatName.includes('Hit')) {
+			return Stat.StatHitRating;
+		} else if (pseudoStatName.includes('Crit')) {
+			return Stat.StatCritRating;
+		} else {
+			return null;
+		}
+	}
+
+	// Returns the other school variant of a school-specific PseudoStat, or
+	// null if not applicable.
+	static getSiblingPseudoStat(pseudoStat: PseudoStat): PseudoStat | null {
+		switch (pseudoStat) {
+			case PseudoStat.PseudoStatPhysicalHitPercent:
+				return PseudoStat.PseudoStatSpellHitPercent;
+			case PseudoStat.PseudoStatSpellHitPercent:
+				return PseudoStat.PseudoStatPhysicalHitPercent;
+			case PseudoStat.PseudoStatPhysicalCritPercent:
+				return PseudoStat.PseudoStatSpellCritPercent;
+			case PseudoStat.PseudoStatSpellCritPercent:
+				return PseudoStat.PseudoStatPhysicalHitPercent;
+			default:
+				return null;
+		}
+	}
+
+	static createDisplayStatArray(statList: Stat[], pseudoStatList: PseudoStat[]): UnitStat[] {
+		const displayStats: UnitStat[] = [];
+
+		statList.forEach(stat => {
+			displayStats.push(UnitStat.fromStat(stat));
+		});
+
+		pseudoStatList.forEach(pseudoStat => {
+			displayStats.push(UnitStat.fromPseudoStat(pseudoStat));
+		});
+
+		return displayStats;
 	}
 }
 
@@ -181,56 +334,28 @@ export class Stats {
 		return total;
 	}
 
-	belowCaps(statCaps: Stats): boolean {
-		for (const [idx, stat] of this.stats.entries()) {
-			if (statCaps.stats[idx] > 0 && stat > statCaps.stats[idx]) {
-				return false;
-			}
+	computeGapToCap(unitStat: UnitStat, cap: number): number {
+		let statDelta = cap - this.getUnitStat(unitStat);
+
+		if (unitStat.equalsPseudoStat(PseudoStat.PseudoStatMeleeHastePercent)) {
+			statDelta /= this.getPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier);
+		} else if (unitStat.equalsPseudoStat(PseudoStat.PseudoStatRangedHastePercent)) {
+			statDelta /= this.getPseudoStat(PseudoStat.PseudoStatRangedSpeedMultiplier);
+		} else if (unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHastePercent)) {
+			statDelta /= this.getPseudoStat(PseudoStat.PseudoStatCastSpeedMultiplier);
 		}
 
-		return true;
+		return statDelta;
 	}
 
-	getHasteMultipliers(playerClass: Class): number[] {
-		const baseMeleeHasteMultiplier = 1 + this.getStat(Stat.StatMeleeHaste) / (Mechanics.HASTE_RATING_PER_HASTE_PERCENT * 100);
-		const meleeHasteBuffsMultiplier =
-			playerClass == Class.ClassHunter
-				? this.getPseudoStat(PseudoStat.PseudoStatRangedSpeedMultiplier)
-				: this.getPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier);
-		const baseSpellHasteMultiplier = 1 + this.getStat(Stat.StatSpellHaste) / (Mechanics.HASTE_RATING_PER_HASTE_PERCENT * 100);
-		const spellHasteBuffsMultiplier = this.getPseudoStat(PseudoStat.PseudoStatCastSpeedMultiplier);
-		return [baseMeleeHasteMultiplier, meleeHasteBuffsMultiplier, baseSpellHasteMultiplier, spellHasteBuffsMultiplier];
-	}
-
-	// Apply any multiplicative Haste buffs stored via PseudoStats to the Stats entries for MeleeHaste and SpellHaste
-	withHasteMultipliers(playerClass: Class): Stats {
-		const [baseMeleeMulti, meleeBuffsMulti, baseSpellMulti, spellBuffsMulti] = this.getHasteMultipliers(playerClass);
-		const newStats = this.stats.slice();
-		newStats[Stat.StatMeleeHaste] = (baseMeleeMulti * meleeBuffsMulti - 1) * 100 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT;
-		newStats[Stat.StatSpellHaste] = (baseSpellMulti * spellBuffsMulti - 1) * 100 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT;
-		return new Stats(newStats, this.pseudoStats);
-	}
-
-	// Assumes that Haste multipliers have already been applied to both Stats arrays
-	computeStatCapsDelta(statCaps: Stats, playerClass: Class): Stats {
-		const [_finalMeleeHasteMulti, meleeHasteBuffsMulti, _finalSpellHasteMulti, spellHasteBuffsMulti] = this.getHasteMultipliers(playerClass);
+	computeStatCapsDelta(statCaps: Stats): Stats {
 		return new Stats(
-			this.stats.map((value, stat) => {
-				if (statCaps.stats[stat] > 0) {
-					let statDelta = statCaps.stats[stat] - value;
-
-					if (stat == Stat.StatMeleeHaste) {
-						statDelta /= meleeHasteBuffsMulti;
-					} else if (stat == Stat.StatSpellHaste) {
-						statDelta /= spellHasteBuffsMulti;
-					}
-
-					return statDelta;
-				}
-
-				return 0;
+			statCaps.stats.map((value, key) => {
+				return (value > 0) ? this.computeGapToCap(UnitStat.fromStat(key), value) : 0;
 			}),
-			this.pseudoStats,
+			statCaps.pseudoStats.map((value, key) => {
+				return (value > 0) ? this.computeGapToCap(UnitStat.fromPseudoStat(key), value) : 0;
+			}),
 		);
 	}
 
@@ -322,90 +447,12 @@ export class Stats {
 	}
 }
 
-export const statToPercentageOrPoints = (stat: Stat, value: number, stats: Stats) => {
-	let statInPercentage: number | null = null;
-	switch (stat) {
-		case Stat.StatMeleeHit:
-			statInPercentage = value / Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE;
-			break;
-		case Stat.StatSpellHit:
-			statInPercentage = value / Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE;
-			break;
-		case Stat.StatMeleeCrit:
-		case Stat.StatSpellCrit:
-			statInPercentage = value / Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE;
-			break;
-		case Stat.StatMeleeHaste:
-			statInPercentage = value / Mechanics.HASTE_RATING_PER_HASTE_PERCENT;
-			break;
-		case Stat.StatSpellHaste:
-			statInPercentage = value / Mechanics.HASTE_RATING_PER_HASTE_PERCENT;
-			break;
-		case Stat.StatExpertise:
-			statInPercentage = value / Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION / 4;
-			break;
-		case Stat.StatBlock:
-			statInPercentage = value / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE + 5.0;
-			break;
-		case Stat.StatDodge:
-			statInPercentage = stats.getPseudoStat(PseudoStat.PseudoStatDodge) * 100;
-			break;
-		case Stat.StatParry:
-			statInPercentage = stats.getPseudoStat(PseudoStat.PseudoStatParry) * 100;
-			break;
-		case Stat.StatResilience:
-			statInPercentage = value / Mechanics.RESILIENCE_RATING_PER_CRIT_REDUCTION_CHANCE;
-			break;
-		case Stat.StatMastery:
-			statInPercentage = value / Mechanics.MASTERY_RATING_PER_MASTERY_POINT;
-			break;
-		default:
-			statInPercentage = value;
-			break;
-	}
-	return statInPercentage;
-};
+export function convertHastePresetBreakpointsToPercent(ratingPresets: Map<string, number>): Map<string, number> {
+	const convertedPresets = new Map<string, number>();
 
-export const statPercentageOrPointsToNumber = (stat: Stat, value: number, stats: Stats) => {
-	let statInPoints: number | null = null;
-	switch (stat) {
-		case Stat.StatMeleeHit:
-			statInPoints = value * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE;
-			break;
-		case Stat.StatSpellHit:
-			statInPoints = value * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE;
-			break;
-		case Stat.StatMeleeCrit:
-		case Stat.StatSpellCrit:
-			statInPoints = value * Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE;
-			break;
-		case Stat.StatMeleeHaste:
-			statInPoints = value * Mechanics.HASTE_RATING_PER_HASTE_PERCENT;
-			break;
-		case Stat.StatSpellHaste:
-			statInPoints = value * Mechanics.HASTE_RATING_PER_HASTE_PERCENT;
-			break;
-		case Stat.StatExpertise:
-			statInPoints = value * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION * 4;
-			break;
-		case Stat.StatBlock:
-			statInPoints = value * Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE - 5.0;
-			break;
-		case Stat.StatDodge:
-			statInPoints = stats.getPseudoStat(PseudoStat.PseudoStatDodge) / 100;
-			break;
-		case Stat.StatParry:
-			statInPoints = stats.getPseudoStat(PseudoStat.PseudoStatParry) / 100;
-			break;
-		case Stat.StatResilience:
-			statInPoints = value * Mechanics.RESILIENCE_RATING_PER_CRIT_REDUCTION_CHANCE;
-			break;
-		case Stat.StatMastery:
-			statInPoints = value * Mechanics.MASTERY_RATING_PER_MASTERY_POINT;
-			break;
-		default:
-			statInPoints = value;
-			break;
+	for (const [presetName, ratingValue] of ratingPresets.entries()) {
+		convertedPresets.set(presetName, ratingValue / Mechanics.HASTE_RATING_PER_HASTE_PERCENT);
 	}
-	return statInPoints;
-};
+
+	return convertedPresets;
+}
