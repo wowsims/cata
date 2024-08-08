@@ -56,11 +56,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 			// These should be removed once the bugfix to make Mastery
 			// continuous goes live!
 			const masteryRatingBreakpoints = [];
-
+			const masteryPercentPerPoint = Mechanics.masteryPercentPerPoint.get(Spec.SpecDemonologyWarlock)!;
 			for (let masteryPercent = 19; masteryPercent <= 200; masteryPercent++) {
-				masteryRatingBreakpoints.push(
-					(masteryPercent / Mechanics.masteryPercentPerPoint.get(Spec.SpecDemonologyWarlock)!) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT,
-				);
+				masteryRatingBreakpoints.push((masteryPercent / masteryPercentPerPoint) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
 			}
 
 			const masterySoftCapConfig = {
