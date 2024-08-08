@@ -256,17 +256,24 @@ export class ReforgeOptimizer {
 								{breakpoints.map((breakpoint, breakpointIndex) => (
 									<tr>
 										<td>{Math.round(breakpoint)}</td>
-										<td className="text-end">{statToPercentageOrPoints(stat, breakpoint, new Stats()).toFixed(2)}</td>
+										<td className="text-end">
+											{stat === Stat.StatMastery
+												? (
+														(statToPercentageOrPoints(stat, breakpoint, new Stats()) + this.player.getBaseMastery()) *
+														this.player.getMasteryPerPointModifier()
+												  ).toFixed(2)
+												: statToPercentageOrPoints(stat, breakpoint, new Stats()).toFixed(2)}
+										</td>
 										<td className="text-end">{capType === StatCapType.TypeThreshold ? postCapEPs[0] : postCapEPs[breakpointIndex]}</td>
 									</tr>
 								))}
 								{index !== this.softCapsConfig.length - 1 && (
 									<>
 										<tr>
-											<td colSpan={2} className="border-bottom pb-2"></td>
+											<td colSpan={3} className="border-bottom pb-2"></td>
 										</tr>
 										<tr>
-											<td colSpan={2} className="pb-2"></td>
+											<td colSpan={3} className="pb-2"></td>
 										</tr>
 									</>
 								)}
@@ -660,7 +667,6 @@ export class ReforgeOptimizer {
 		this.player.setGear(TypedEvent.nextEventID(), gear);
 		await this.sim.updateCharacterStats(TypedEvent.nextEventID());
 		let baseStats = Stats.fromProto(this.player.getCurrentStats().finalStats);
-		baseStats = baseStats.addStat(Stat.StatMastery, this.player.getBaseMastery() * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
 		if (this.updateGearStatsModifier) baseStats = this.updateGearStatsModifier(baseStats);
 		return baseStats.withHasteMultipliers(this.playerClass);
 	}
