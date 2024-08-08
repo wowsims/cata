@@ -340,7 +340,6 @@ export class CharacterStats extends Component {
 			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
 		} else if (stat == Stat.StatMastery) {
 			displayStr += ` (${(statAsPercentageOrPoint + (includeBase ? this.player.getBaseMastery() : 0)).toFixed(2)} Points)`;
-			console.log(statAsPercentageOrPoint, displayStr);
 		}
 
 		return displayStr;
