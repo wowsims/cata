@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>WoWSims - Cataclysm</title>
+		<meta charset="utf-8">
+
+		<link rel="icon" type="image/x-icon" href="/cata/assets/favicon_io/favicon.ico">
+
+		<meta name="description" content="Simulations for World of Warcraft® Cataclysm Classic.">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+		<script type="module" crossorigin src="/cata/bundle/index-CxS5KVR3.chunk.js"></script>
+		<link rel="stylesheet" crossorigin href="/cata/bundle/index-yW0NnnE8.style.css">
+	</head>
+	<body class="bg-black">
+		<div class="homepage-image"></div>
+		<div id="homepage">
+			<header class="homepage-header">
+				<div class="container homepage-header-container">
+					<nav class="navbar navbar-dark navbar-expand-md flex-wrap align-items-end w-100">
+						<div class="navbar-brand-container order-0">
+							<a href="#" class="navbar-brand d-flex align-items-center p-0 m-0">
+								<img class="wowsims-logo" src="/cata/assets/img/WoW-Simulator-Icon.png">
+								<div class="d-flex flex-column">
+									<h2 class="wowsims-title">WoWSims</h2>
+									<h3 class="expansion-title w-100">Cataclysm</h2>
+								</div>
+							</a>
+							<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#homepageHeaderCollapse" aria-controls="homepageHeaderCollapse" aria-expanded="false" aria-label="Toggle navigation">
+								<i class="fas fa-bars fa-2x"></i>
+							</button>
+						</div>
+						<div id="homepageHeaderCollapse" class="collapse navbar-collapse homepage-header-collapse order-2 order-md-1">
+							<div class="navbar-nav">
+								<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#homepageHeaderCollapse" aria-controls="homepageHeaderCollapse" aria-expanded="false" aria-label="Toggle navigation">
+									<i class="fas fa-times fa-2x"></i>
+								</button>
+								<a href="https://discord.gg/p3DgvmnDCS" target="_blank" class="nav-link link-alt">
+									<p class="m-0"><i class="discord-link fab fa-discord fa-2x"></i>&nbsp;</p>
+								</a>
+								<a href="https://github.com/wowsims/cata" target="_blank" class="nav-link link-alt">
+									<p class="m-0"><i class="github-link fab fa-github fa-2x"></i>&nbsp;</p>
+								</a>
+								<a href="https://patreon.com/wowsims" target="_blank" class="nav-link link-alt">
+									<i class="patreon-link fab fa-patreon fa-2x me-2"></i>
+									<span class="fs-4 d-md-none d-lg-block">Support our devs</span>
+								</a>
+							</div>
+						</div>
+					</nav>
+				</div>
+			</header>
+			<main>
+				<div class="container homepage-content-container">
+					<div class="info-container">
+						<p class="wowsims-info">
+							Welcome to WoWSims - Cataclysm! This is a community-driven project to provide class and raid simulations for
+							World of Warcraft® Cataclysm Classic together with the leading theorycrafters and class representatives.
+						</p>
+					</div>
+					<div class="sim-links-container">
+						<!-- <div class="sim-links">
+							<a href="/cata/raid/" class="sim-link raid-sim-link text-white">
+								<div class="sim-link-content">
+									<img src="/cata/assets/img/raid_icon.png" class="sim-link-icon">
+									<span class="sim-link-title">Full Raid Sim</span>
+								</div>
+							</a>
+						</div> -->
+
+						<div class="sim-links">
+							<div class="dropend sim-link-dropdown">
+								<button class="sim-link text-death-knight" data-bs-toggle="dropdown" aria-expanded="false">
+									<div class="sim-link-content">
+										<img src="https://wow.zamimg.com/images/wow/icons/large/class_deathknight.jpg" class="sim-link-icon border-death-knight">
+										<div class="d-flex flex-column">
+											<span class="sim-link-title">Death Knight</span>
+											<span class="launch-status-label text-brand">Beta</span>
+										</div>
+									</div>
+								</button>
+								<ul class="dropdown-menu w-100">
+									<li>
+										<a href="/cata/death_knight/blood/" class="sim-link text-death-knight">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_bloodpresence.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Death Knight</span>
+													<span class="sim-link-title">Blood</span>
+													<span class="launch-status-label text-brand">Beta</span>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="/cata/death_knight/frost/" class="sim-link text-death-knight">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_frostpresence.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Death Knight</span>
+													<span class="sim-link-title">Frost</span>
+													<span class="launch-status-label text-brand">Beta</span>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="/cata/death_knight/unholy/" class="sim-link text-death-knight">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_unholypresence.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Death Knight</span>
+													<span class="sim-link-title">Unholy</span>
+													<span class="launch-status-label text-brand">Beta</span>
+												</div>
+											</div>
+										</a>
+									</li>
+								</ul>
+							</div>
+
+							<div class="dropend sim-link-dropdown">
+								<button class="sim-link text-priest" data-bs-toggle="dropdown" aria-expanded="false">
+									<div class="sim-link-content">
+										<img src="https://wow.zamimg.com/images/wow/icons/large/class_priest.jpg" class="sim-link-icon border-priest">
+										<div class="d-flex flex-column">
+											<span class="sim-link-title">Priest</span>
+											<span class="launch-status-label text-brand">Beta</span>
+										</div>
+									</div>
+								</button>
+								<ul class="dropdown-menu w-100">
+									<li>
+										<a href="/cata/priest/discipline/" class="sim-link text-priest">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/spell_holy_powerwordshield.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Priest</span>
+													<span class="sim-link-title">Discipline</span>
+													<span class="launch-status-label text-brand">Not Yet Supported</span>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="/cata/priest/holy/" class="sim-link text-priest">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/spell_holy_guardianspirit.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Priest</span>
+													<span class="sim-link-title">Holy</span>
+													<span class="launch-status-label text-brand">Not Yet Supported</span>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="/cata/priest/shadow/" class="sim-link text-priest">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/spell_shadow_shadowwordpain.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Priest</span>
+													<span class="sim-link-title">Shadow</span>
+													<span class="launch-status-label text-brand">Beta</span>
+												</div>
+											</div>
+										</a>
+									</li>
+								</ul>
+							</div>
+
+							<div class="dropend sim-link-dropdown">
+								<button class="sim-link text-druid" data-bs-toggle="dropdown" aria-expanded="false">
+									<div class="sim-link-content">
+										<img src="https://wow.zamimg.com/images/wow/icons/large/class_druid.jpg" class="sim-link-icon border-druid">
+										<div class="d-flex flex-column">
+											<span class="sim-link-title">Druid</span>
+											<span class="launch-status-label text-brand">Beta</span>
+										</div>
+									</div>
+								</button>
+								<ul class="dropdown-menu w-100">
+									<li>
+										<a href="/cata/druid/balance/" class="sim-link text-druid">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/spell_nature_starfall.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Druid</span>
+													<span class="sim-link-title">Balance</span>
+													<span class="launch-status-label text-brand">Alpha</span>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="/cata/druid/feral/" class="sim-link text-druid">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/ability_druid_catform.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Druid</span>
+													<span class="sim-link-title">Feral</span>
+													<span class="launch-status-label text-brand">Launched</span>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="/cata/druid/guardian/" class="sim-link text-druid">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/ability_racial_bearform.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Druid</span>
+													<span class="sim-link-title">Guardian</span>
+													<span class="launch-status-label text-brand">Beta</span>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="/cata/druid/restoration/" class="sim-link text-druid">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/spell_nature_healingtouch.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Druid</span>
+													<span class="sim-link-title">Restoration</span>
+													<span class="launch-status-label text-brand">Not Yet Supported</span>
+												</div>
+											</div>
+										</a>
+									</li>
+								</ul>
+							</div>
+
+							<div class="dropend sim-link-dropdown">
+								<button class="sim-link text-rogue" data-bs-toggle="dropdown" aria-expanded="false">
+									<div class="sim-link-content">
+										<img src="https://wow.zamimg.com/images/wow/icons/large/class_rogue.jpg" class="sim-link-icon border-rogue">
+										<div class="d-flex flex-column">
+											<span class="sim-link-title">Rogue</span>
+											<span class="launch-status-label text-brand">Alpha</span>
+										</div>
+									</div>
+								</button>
+								<ul class="dropdown-menu w-100">
+									<li>
+										<a href="/cata/rogue/assassination/" class="sim-link text-rogue">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/ability_rogue_eviscerate.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Rogue</span>
+													<span class="sim-link-title">Assassination</span>
+													<span class="launch-status-label text-brand">Alpha</span>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="/cata/rogue/combat/" class="sim-link text-rogue">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/ability_backstab.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Rogue</span>
+													<span class="sim-link-title">Combat</span>
+													<span class="launch-status-label text-brand">Alpha</span>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="/cata/rogue/subtlety/" class="sim-link text-rogue">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/ability_stealth.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Rogue</span>
+													<span class="sim-link-title">Subtlety</span>
+													<span class="launch-status-label text-brand">Alpha</span>
+												</div>
+											</div>
+										</a>
+									</li>
+								</ul>
+							</div>
+
+							<div class="dropend sim-link-dropdown">
+								<button class="sim-link text-hunter" data-bs-toggle="dropdown" aria-expanded="false">
+									<div class="sim-link-content">
+										<img src="https://wow.zamimg.com/images/wow/icons/large/class_hunter.jpg" class="sim-link-icon border-hunter">
+										<div class="d-flex flex-column">
+											<span class="sim-link-title">Hunter</span>
+											<span class="launch-status-label text-brand">Beta</span>
+										</div>
+									</div>
+								</button>
+								<ul class="dropdown-menu w-100">
+									<li>
+										<a href="/cata/hunter/beast_mastery/" class="sim-link text-hunter">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/ability_hunter_bestialdiscipline.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Hunter</span>
+													<span class="sim-link-title">Beast mastery</span>
+													<span class="launch-status-label text-brand">Beta</span>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="/cata/hunter/marksmanship/" class="sim-link text-hunter">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/ability_hunter_focusedaim.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Hunter</span>
+													<span class="sim-link-title">Marksmanship</span>
+													<span class="launch-status-label text-brand">Beta</span>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="/cata/hunter/survival/" class="sim-link text-hunter">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/ability_hunter_camouflage.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Hunter</span>
+													<span class="sim-link-title">Survival</span>
+													<span class="launch-status-label text-brand">Launched</span>
+												</div>
+											</div>
+										</a>
+									</li>
+								</ul>
+							</div>
+
+							<div class="dropend sim-link-dropdown">
+								<button class="sim-link text-shaman" data-bs-toggle="dropdown" aria-expanded="false">
+									<div class="sim-link-content">
+										<img src="https://wow.zamimg.com/images/wow/icons/large/class_shaman.jpg" class="sim-link-icon border-shaman">
+										<div class="d-flex flex-column">
+											<span class="sim-link-title">Shaman</span>
+											<span class="launch-status-label text-brand">Alpha</span>
+										</div>
+									</div>
+								</button>
+								<ul class="dropdown-menu w-100">
+									<li>
+										<a href="/cata/shaman/elemental/" class="sim-link text-shaman">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/spell_nature_lightning.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Shaman</span>
+													<span class="sim-link-title">Elemental</span>
+													<span class="launch-status-label text-brand">Alpha</span>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="/cata/shaman/enhancement/" class="sim-link text-shaman">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/spell_nature_lightningshield.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Shaman</span>
+													<span class="sim-link-title">Enhancement</span>
+													<span class="launch-status-label text-brand">Alpha</span>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="/cata/shaman/restoration/" class="sim-link text-shaman">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/spell_nature_magicimmunity.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Shaman</span>
+													<span class="sim-link-title">Restoration</span>
+													<span class="launch-status-label text-brand">Not Yet Supported</span>
+												</div>
+											</div>
+										</a>
+									</li>
+								</ul>
+							</div>
+
+							<div class="dropend sim-link-dropdown">
+								<button class="sim-link text-mage" data-bs-toggle="dropdown" aria-expanded="false">
+									<div class="sim-link-content">
+										<img src="https://wow.zamimg.com/images/wow/icons/large/class_mage.jpg" class="sim-link-icon border-mage">
+										<div class="d-flex flex-column">
+											<span class="sim-link-title">Mage</span>
+											<span class="launch-status-label text-brand">Alpha</span>
+										</div>
+									</div>
+								</button>
+								<ul class="dropdown-menu w-100">
+									<li>
+										<a href="/cata/mage/arcane/" class="sim-link text-mage">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/spell_holy_magicalsentry.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Mage</span>
+													<span class="sim-link-title">Arcane</span>
+													<span class="launch-status-label text-brand">Alpha</span>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="/cata/mage/fire/" class="sim-link text-mage">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/spell_fire_firebolt02.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Mage</span>
+													<span class="sim-link-title">Fire</span>
+													<span class="launch-status-label text-brand">Alpha</span>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="/cata/mage/frost/" class="sim-link text-mage">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/spell_frost_frostbolt02.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Mage</span>
+													<span class="sim-link-title">Frost</span>
+													<span class="launch-status-label text-brand">Not Yet Supported</span>
+												</div>
+											</div>
+										</a>
+									</li>
+								</ul>
+							</div>
+
+							<div class="dropend sim-link-dropdown">
+								<button class="sim-link text-warlock" data-bs-toggle="dropdown" aria-expanded="false">
+									<div class="sim-link-content">
+										<img src="https://wow.zamimg.com/images/wow/icons/large/class_warlock.jpg" class="sim-link-icon border-warlock">
+										<div class="d-flex flex-column">
+											<span class="sim-link-title">Warlock</span>
+											<span class="launch-status-label text-brand">Beta</span>
+										</div>
+									</div>
+								</button>
+								<ul class="dropdown-menu w-100">
+									<li>
+										<a href="/cata/warlock/affliction/" class="sim-link text-warlock">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/spell_shadow_deathcoil.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Warlock</span>
+													<span class="sim-link-title">Affliction</span>
+													<span
+														class="launch-status-label text-brand">Beta</span>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="/cata/warlock/demonology/" class="sim-link text-warlock">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Warlock</span>
+													<span class="sim-link-title">Demonology</span>
+													<span
+														class="launch-status-label text-brand">Beta</span>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="/cata/warlock/destruction/" class="sim-link text-warlock">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/spell_shadow_rainoffire.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Warlock</span>
+													<span class="sim-link-title">Destruction</span>
+													<span
+														class="launch-status-label text-brand">beta</span>
+												</div>
+											</div>
+										</a>
+									</li>
+								</ul>
+							</div>
+
+							<div class="dropend sim-link-dropdown">
+								<button class="sim-link text-paladin" data-bs-toggle="dropdown" aria-expanded="false">
+									<div class="sim-link-content">
+										<img src="https://wow.zamimg.com/images/wow/icons/large/class_paladin.jpg" class="sim-link-icon border-paladin">
+										<div class="d-flex flex-column">
+											<span class="sim-link-title">Paladin</span>
+											<span class="launch-status-label text-brand">Alpha</span>
+										</div>
+									</div>
+								</button>
+								<ul class="dropdown-menu w-100">
+									<li>
+										<a href="/cata/paladin/holy/" class="sim-link text-paladin">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/spell_holy_holybolt.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Paladin</span>
+													<span class="sim-link-title">Holy</span>
+													<span class="launch-status-label text-brand">Not Yet Supported</span>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="/cata/paladin/protection/" class="sim-link text-paladin">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/ability_paladin_shieldofthetemplar.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Paladin</span>
+													<span class="sim-link-title">Protection</span>
+													<span class="launch-status-label text-brand">Alpha</span>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="/cata/paladin/retribution/" class="sim-link text-paladin">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/spell_holy_auraoflight.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Paladin</span>
+													<span class="sim-link-title">Retribution</span>
+													<span class="launch-status-label text-brand">Beta</span>
+												</div>
+											</div>
+										</a>
+									</li>
+								</ul>
+							</div>
+
+							<div class="dropend sim-link-dropdown">
+								<button class="sim-link text-warrior" data-bs-toggle="dropdown" aria-expanded="false">
+									<div class="sim-link-content">
+										<img src="https://wow.zamimg.com/images/wow/icons/large/class_warrior.jpg" class="sim-link-icon border-warrior">
+										<div class="d-flex flex-column">
+											<span class="sim-link-title">Warrior</span>
+											<span class="launch-status-label text-brand">Alpha</span>
+										</div>
+									</div>
+								</button>
+								<ul class="dropdown-menu w-100">
+									<li>
+										<a href="/cata/warrior/arms/" class="sim-link text-warrior">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/ability_warrior_savageblow.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Warrior</span>
+													<span class="sim-link-title">Arms</span>
+													<span class="launch-status-label text-brand">Alpha</span>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="/cata/warrior/fury/" class="sim-link text-warrior">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/ability_warrior_innerrage.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Warrior</span>
+													<span class="sim-link-title">Fury</span>
+													<span class="launch-status-label text-brand">Alpha</span>
+												</div>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="/cata/warrior/protection/" class="sim-link text-warrior">
+											<div class="sim-link-content">
+												<img src="https://wow.zamimg.com/images/wow/icons/large/ability_warrior_defensivestance.jpg" class="sim-link-icon">
+												<div class="d-flex flex-column">
+													<span class="sim-link-label">Warrior</span>
+													<span class="sim-link-title">Protection</span>
+													<span class="launch-status-label text-brand">Alpha</span>
+												</div>
+											</div>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</main>
+    </div>
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-T3HBB0LXNX"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'G-YEJ8MEHGV2');
+		</script>
+	</body>
+</html>
