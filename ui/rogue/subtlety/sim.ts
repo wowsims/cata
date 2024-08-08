@@ -9,7 +9,7 @@ import { APLRotation } from '../../core/proto/apl';
 import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { RogueOptions_PoisonImbue } from '../../core/proto/rogue';
 import { StatCapType } from '../../core/proto/ui';
-import { Stats } from '../../core/proto_utils/stats';
+import { Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as RogueInputs from '../inputs';
 import * as SubInputs from './inputs';
 import * as Presets from './presets';
@@ -26,32 +26,34 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		Stat.StatAgility,
 		Stat.StatStrength,
 		Stat.StatAttackPower,
-		Stat.StatMeleeHit,
-		Stat.StatMeleeCrit,
-		Stat.StatSpellHit,
-		Stat.StatSpellCrit,
-		Stat.StatMeleeHaste,
-		Stat.StatMastery,
-		Stat.StatExpertise,
+		Stat.StatHitRating,
+		Stat.StatCritRating,
+		Stat.StatHasteRating,
+		Stat.StatMasteryRating,
+		Stat.StatExpertiseRating,
 	],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatPhysicalHitPercent, PseudoStat.PseudoStatSpellHitPercent],
 	// Reference stat against which to calculate EP.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
-	displayStats: [
-		Stat.StatHealth,
-		Stat.StatStamina,
-		Stat.StatAgility,
-		Stat.StatStrength,
-		Stat.StatAttackPower,
-		Stat.StatMeleeHit,
-		Stat.StatSpellHit,
-		Stat.StatMeleeCrit,
-		Stat.StatSpellCrit,
-		Stat.StatMeleeHaste,
-		Stat.StatMastery,
-		Stat.StatExpertise,
-	],
+	displayStats: UnitStat.createDisplayStatArray(
+		[
+			Stat.StatHealth,
+			Stat.StatStamina,
+			Stat.StatAgility,
+			Stat.StatStrength,
+			Stat.StatAttackPower,
+			Stat.StatMasteryRating,
+			Stat.StatExpertiseRating,
+		],
+		[
+			PseudoStat.PseudoStatPhysicalHitPercent,
+			PseudoStat.PseudoStatSpellHitPercent,
+			PseudoStat.PseudoStatPhysicalCritPercent,
+			PseudoStat.PseudoStatSpellCritPercent,
+			PseudoStat.PseudoStatMeleeHastePercent,
+		],
+	),
 
 	defaults: {
 		// Default equipped gear.
@@ -60,22 +62,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Stat caps for reforge optimizer
 		statCaps: (() => {
-			const expCap = new Stats().withStat(Stat.StatExpertise, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 			return expCap;
 		})(),
 		softCapBreakpoints: (() => {
 			const spellHitSoftCapConfig = {
-				stat: Stat.StatSpellHit,
-				breakpoints: [17 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE],
+				unitStat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent).toProto(),
+				breakpoints: [17],
 				capType: StatCapType.TypeSoftCap,
 				postCapEPs: [0],
 			};
 
 			const meleeHitSoftCapConfig = {
-				stat: Stat.StatMeleeHit,
-				breakpoints: [8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE, 27 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE],
+				unitStat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent).toProto(),
+				breakpoints: [8, 27],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0.77, 0],
+				postCapEPs: [0.77 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT, 0],
 			};
 
 			return [meleeHitSoftCapConfig, spellHitSoftCapConfig];

@@ -10,7 +10,7 @@ import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, R
 import { GuardianDruid_Rotation as DruidRotation } from '../../core/proto/druid.js';
 import * as AplUtils from '../../core/proto_utils/apl_utils.js';
 import { StatCapType } from '../../core/proto/ui';
-import { Stats } from '../../core/proto_utils/stats.js';
+import { Stats, UnitStat } from '../../core/proto_utils/stats.js';
 import * as DruidInputs from './inputs.js';
 import * as Presets from './presets.js';
 
@@ -28,38 +28,42 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		Stat.StatAgility,
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
-		Stat.StatDodge,
-		Stat.StatMastery,
+		Stat.StatDodgeRating,
+		Stat.StatMasteryRating,
 		Stat.StatStrength,
 		Stat.StatAttackPower,
-		Stat.StatMeleeHit,
-		Stat.StatExpertise,
-		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
+		Stat.StatHitRating,
+		Stat.StatExpertiseRating,
+		Stat.StatCritRating,
+		Stat.StatHasteRating,
 		Stat.StatNatureResistance,
 	],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatPhysicalHitPercent, PseudoStat.PseudoStatSpellHitPercent],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAgility,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
-	displayStats: [
-		Stat.StatHealth,
-		Stat.StatStamina,
-		Stat.StatAgility,
-		Stat.StatArmor,
-		Stat.StatBonusArmor,
-		Stat.StatDodge,
-		Stat.StatMastery,
-		Stat.StatStrength,
-		Stat.StatAttackPower,
-		Stat.StatMeleeHit,
-		Stat.StatExpertise,
-		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
-		Stat.StatSpellHit,
-		Stat.StatSpellCrit,
-		Stat.StatNatureResistance,
-	],
+	displayStats: UnitStat.createDisplayStatArray(
+		[
+			Stat.StatHealth,
+			Stat.StatStamina,
+			Stat.StatAgility,
+			Stat.StatArmor,
+			Stat.StatBonusArmor,
+			Stat.StatMasteryRating,
+			Stat.StatStrength,
+			Stat.StatAttackPower,
+			Stat.StatExpertiseRating,
+			Stat.StatNatureResistance,
+		],
+		[
+			PseudoStat.PseudoStatDodgePercent,
+			PseudoStat.PseudoStatPhysicalHitPercent,
+			PseudoStat.PseudoStatPhysicalCritPercent,
+			PseudoStat.PseudoStatMeleeHastePercent,
+			PseudoStat.PseudoStatSpellHitPercent,
+			PseudoStat.PseudoStatSpellCritPercent,
+		],
+	),
 
 	defaults: {
 		// Default equipped gear.
@@ -68,21 +72,21 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		epWeights: Presets.SURVIVAL_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
-			return new Stats().withStat(Stat.StatSpellHit, 4 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 4);
 		})(),
 		softCapBreakpoints: (() => {
 			const expertiseSoftCapConfig = {
-				stat: Stat.StatExpertise,
+				unitStat: UnitStat.fromStat(Stat.StatExpertiseRating).toProto(),
 				breakpoints: [6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION, 14 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION],
 				capType: StatCapType.TypeSoftCap,
 				postCapEPs: [0.47, 0],
 			};
 
 			const hitSoftCapConfig = {
-				stat: Stat.StatMeleeHit,
-				breakpoints: [5.5 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE, 17 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE],
+				unitStat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent).toProto(),
+				breakpoints: [5.5, 8],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0.47, 0.14, 0],
+				postCapEPs: [0.47 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT, 0.14 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT],
 			};
 
 			return [expertiseSoftCapConfig, hitSoftCapConfig];
