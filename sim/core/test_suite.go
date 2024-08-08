@@ -50,7 +50,7 @@ func (testSuite *IndividualTestSuite) TestStatWeights(testName string, swr *prot
 	testSuite.testNames = append(testSuite.testNames, testName)
 
 	result := StatWeights(swr)
-	weights := stats.FromUnitStatsProto(result.Dps.Weights)
+	weights := stats.FromUnitStatsProto(result.Dps.EpValues)
 
 	testSuite.testResults.StatWeightsResults[testName] = &proto.StatWeightsTestResult{
 		Weights: toFixedStats(weights[:], storagePrecision),

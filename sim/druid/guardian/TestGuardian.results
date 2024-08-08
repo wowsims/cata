@@ -35,6 +35,43 @@ character_stats_results: {
   final_stats: 5
  }
 }
+stat_weights_results: {
+ key: "TestGuardian-StatWeights-Default"
+ value: {
+  weights: 0
+  weights: 1
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 1.28565
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 135.93128
+  weights: 13.05417
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
 dps_results: {
  key: "TestGuardian-AllItems-AgileShadowspiritDiamond"
  value: {
