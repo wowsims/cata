@@ -162,7 +162,7 @@ export class UnitStat {
 		} else if (protoMessage.unitStat.oneofKind == 'pseudoStat') {
 			return UnitStat.fromPseudoStat(protoMessage.unitStat.pseudoStat);
 		} else {
-			throw new Error('Neither a Stat nor a PseudoStat!');
+			return new UnitStat(null, null, null);
 		}
 	}
 

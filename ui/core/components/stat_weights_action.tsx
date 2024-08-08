@@ -280,7 +280,7 @@ export class EpWeightsMenu extends BaseModal {
 			const result = await this.simUI.player.computeStatWeights(
 				TypedEvent.nextEventID(),
 				this.epStats,
-				this.epPseudoStats,
+				this.makePseudoStatsForSim(),
 				this.epReferenceStat,
 				progress => {
 					this.setSimProgress(progress);
@@ -404,6 +404,35 @@ export class EpWeightsMenu extends BaseModal {
 		});
 
 		this.buildSavedEPWeightsPicker();
+	}
+
+	// Make sure that the appropriate school-specific versions of Hit/Crit for a given spec are configured as epPseudoStats before generating the back-end stat weights request. This functionality
+	// allows individual spec configs to omit these PseudoStats so that they do not appear in the menu and potentially confuse users, while still guaranteeing that the school-specific components of
+	// the Hit Rating and Crit Rating EPs are separately calculated and stored when required for auto-Reforge.
+	private makePseudoStatsForSim() {
+		const processedPseudoStatsList = this.epPseudoStats.slice();
+		const tertiaryStatList = [PseudoStat.PseudoStatPhysicalHitPercent, PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatPhysicalCritPercent, PseudoStat.PseudoStatSpellCritPercent];
+
+		// Do one pass to check that all school-specific capped stats are included.
+		for (const tertiaryStat of tertiaryStatList) {
+			if (!this.epPseudoStats.includes(tertiaryStat) && this.simUI.hasCapForPseudoStat(tertiaryStat)) {
+				processedPseudoStatsList.push(tertiaryStat);
+			}
+		}
+
+		// Then do a second pass to possibly include the *other* school as well, since the back-end will sum the two school-specific EPs to determine the EP for the
+		// parent Rating stat.
+		for (const tertiaryStat of tertiaryStatList) {
+			const siblingStat = UnitStat.getSiblingPseudoStat(tertiaryStat)!;
+
+			// The heuristic we use is to exclude sibling stats from the config if they are not even displayed in the sim UI, since this means it should be safe to
+			// assume 0 EP value for the other school variant and save on computation time.
+			if (processedPseudoStatsList.includes(tertiaryStat) && !processedPseudoStatsList.includes(siblingStat) && this.simUI.hasDisplayPseudoStat(siblingStat)) {
+				processedPseudoStatsList.push(siblingStat);
+			}
+		}
+
+		return processedPseudoStatsList;
 	}
 
 	private setSimProgress(progress: ProgressMetrics) {
@@ -620,7 +649,7 @@ export class EpWeightsMenu extends BaseModal {
 		if (stat.isStat()) {
 			return true;
 		} else {
-			return [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatRangedDps].includes(stat.getPseudoStat());
+			return [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatRangedDps, PseudoStat.PseudoStatPhysicalHitPercent, PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatPhysicalCritPercent, PseudoStat.PseudoStatSpellCritPercent].includes(stat.getPseudoStat());
 		}
 	});
 

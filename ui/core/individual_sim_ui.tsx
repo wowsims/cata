@@ -692,4 +692,40 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			}
 		});
 	}
+
+	// Determines whether this sim has either a hard cap or soft cap configured for a particular PseudoStat. Used by the stat
+	// weights code to ensure that school-specific EPs are calculated for Rating stats whenever school-specific caps are present.
+	hasCapForPseudoStat(pseudoStat: PseudoStat): boolean {
+		// First check both default and currently stored hard caps.
+		const defaultHardCaps = this.individualConfig.defaults.statCaps || new Stats();
+
+		if ((defaultHardCaps.getPseudoStat(pseudoStat) != 0) || (this.player.getStatCaps().getPseudoStat(pseudoStat) != 0)) {
+			return true;
+		}
+
+		// Then check all configured soft caps for a match.
+		const defaultSoftCaps: StatCapConfig[] = this.individualConfig.defaults.softCapBreakpoints || [];
+
+		for (const config of defaultSoftCaps) {
+			const unitStat = UnitStat.fromProto(config.unitStat!);
+
+			if (unitStat.equalsPseudoStat(pseudoStat)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	// Determines whether a particular PseudoStat has been configured as a
+	// display stat for this sim UI.
+	hasDisplayPseudoStat(pseudoStat: PseudoStat): boolean {
+		for (const unitStat of this.individualConfig.displayStats) {
+			if (unitStat.equalsPseudoStat(pseudoStat)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 }
