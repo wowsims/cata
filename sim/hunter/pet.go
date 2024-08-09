@@ -97,7 +97,7 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 
 	hp.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	hp.AddStatDependency(stats.Strength, stats.RangedAttackPower, 2)
-	hp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/324.72)
+	hp.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, 1/324.72)
 
 	hunter.AddPet(hp)
 
@@ -174,10 +174,10 @@ var hunterPetBaseStats = stats.Stats{
 	stats.AttackPower: -20, // Apparently pets and warriors have a AP penalty.
 
 	// Add 1.8% because pets aren't affected by that component of crit suppression.
-	stats.MeleeCrit: (3.2 + 1.8) * core.CritRatingPerCritChance,
+	stats.PhysicalCritPercent: 3.2 + 1.8,
 }
 
-const PetExpertiseScale = 3.25
+const PetExpertiseRatingScale = 3.25 * core.PhysicalHitRatingPerHitPercent
 
 func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
 
@@ -188,15 +188,14 @@ func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
 			stats.AttackPower:       ownerStats[stats.RangedAttackPower] * 0.425,
 			stats.RangedAttackPower: ownerStats[stats.RangedAttackPower] * 0.40,
 
-			stats.MeleeHit:  ownerStats[stats.MeleeHit],
-			stats.Expertise: ownerStats[stats.MeleeHit] * PetExpertiseScale,
-			stats.SpellHit:  ownerStats[stats.MeleeHit],
+			stats.PhysicalHitPercent: ownerStats[stats.PhysicalHitPercent],
+			stats.ExpertiseRating:    ownerStats[stats.PhysicalHitPercent] * PetExpertiseRatingScale,
+			stats.SpellHitPercent:    ownerStats[stats.PhysicalHitPercent],
 
-			stats.MeleeCrit: ownerStats[stats.MeleeCrit],
-			stats.SpellCrit: ownerStats[stats.MeleeCrit],
+			stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
+			stats.SpellCritPercent:    ownerStats[stats.PhysicalCritPercent],
 
-			stats.MeleeHaste: ownerStats[stats.MeleeHaste],
-			stats.SpellHaste: ownerStats[stats.MeleeHaste],
+			stats.HasteRating: ownerStats[stats.HasteRating],
 		}
 	}
 }

@@ -109,7 +109,7 @@ func (war *FuryWarrior) applyEnrage() {
 func (war *FuryWarrior) applyRampage() {
 	// Raid buff is handled in warrior.ApplyRaidBuffs
 
-	war.AddStat(stats.MeleeCrit, 2*core.CritRatingPerCritChance)
+	war.AddStat(stats.PhysicalCritPercent, 2)
 }
 
 func (war *FuryWarrior) applyMeatCleaver() {

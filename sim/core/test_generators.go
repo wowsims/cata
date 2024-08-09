@@ -454,8 +454,9 @@ type CharacterSuiteConfig struct {
 
 	ItemFilter ItemFilter
 
-	StatsToWeigh    []proto.Stat
-	EPReferenceStat proto.Stat
+	StatsToWeigh       []proto.Stat
+	PseudoStatsToWeigh []proto.PseudoStat
+	EPReferenceStat    proto.Stat
 
 	Cooldowns *proto.Cooldowns
 }
@@ -585,8 +586,9 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 					SimOptions: StatWeightsDefaultSimTestOptions,
 					Tanks:      defaultRaid.Tanks,
 
-					StatsToWeigh:    config.StatsToWeigh,
-					EpReferenceStat: config.EPReferenceStat,
+					StatsToWeigh:       config.StatsToWeigh,
+					PseudoStatsToWeigh: config.PseudoStatsToWeigh,
+					EpReferenceStat:    config.EPReferenceStat,
 				},
 			},
 		})

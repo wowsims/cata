@@ -23,10 +23,10 @@ func init() {
 	})
 
 	core.NewEnchantEffect(2523, func(agent core.Agent) {
-		agent.GetCharacter().AddBonusRangedHitRating(30)
+		agent.GetCharacter().AddBonusRangedHitPercent(30 / core.PhysicalHitRatingPerHitPercent)
 	})
 	core.NewEnchantEffect(2724, func(agent core.Agent) {
-		agent.GetCharacter().AddBonusRangedCritRating(28)
+		agent.GetCharacter().AddBonusRangedCritPercent(28 / core.CritRatingPerCritPercent)
 	})
 
 	core.NewEnchantEffect(2671, func(agent core.Agent) {
@@ -106,8 +106,8 @@ func init() {
 		procMask := character.GetProcMaskForEnchant(2673)
 		ppmm := character.AutoAttacks.NewPPMManager(0.73, procMask)
 
-		mhAura := character.NewTemporaryStatsAura("Lightning Speed MH", core.ActionID{SpellID: 28093, Tag: 1}, stats.Stats{stats.MeleeHaste: 30.0, stats.Agility: 120}, time.Second*15)
-		ohAura := character.NewTemporaryStatsAura("Lightning Speed OH", core.ActionID{SpellID: 28093, Tag: 2}, stats.Stats{stats.MeleeHaste: 30.0, stats.Agility: 120}, time.Second*15)
+		mhAura := character.NewTemporaryStatsAura("Lightning Speed MH", core.ActionID{SpellID: 28093, Tag: 1}, stats.Stats{stats.HasteRating: 30.0, stats.Agility: 120}, time.Second*15)
+		ohAura := character.NewTemporaryStatsAura("Lightning Speed OH", core.ActionID{SpellID: 28093, Tag: 2}, stats.Stats{stats.HasteRating: 30.0, stats.Agility: 120}, time.Second*15)
 
 		aura := character.GetOrRegisterAura(core.Aura{
 			Label:    "Mongoose Enchant",
@@ -154,7 +154,7 @@ func init() {
 		procMask := character.GetProcMaskForEnchant(3225)
 		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
 
-		procAura := character.NewTemporaryStatsAura("Executioner Proc", core.ActionID{SpellID: 42976}, stats.Stats{stats.MeleeCrit: 120, stats.SpellCrit: 120}, time.Second*15)
+		procAura := character.NewTemporaryStatsAura("Executioner Proc", core.ActionID{SpellID: 42976}, stats.Stats{stats.CritRating: 120}, time.Second*15)
 
 		aura := character.GetOrRegisterAura(core.Aura{
 			Label:    "Executioner",

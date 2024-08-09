@@ -40,8 +40,8 @@ func (paladin *Paladin) applyRuleOfLaw() {
 
 	paladin.AddStaticMod(core.SpellModConfig{
 		ClassMask:  SpellMaskCrusaderStrike | SpellMaskWordOfGlory | SpellMaskHammerOfTheRighteous,
-		Kind:       core.SpellMod_BonusCrit_Rating,
-		FloatValue: 5 * float64(paladin.Talents.RuleOfLaw) * core.CritRatingPerCritChance,
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		FloatValue: 5 * float64(paladin.Talents.RuleOfLaw),
 	})
 }
 
@@ -123,8 +123,8 @@ func (paladin *Paladin) applySanctifiedWrath() {
 
 	paladin.AddStaticMod(core.SpellModConfig{
 		ClassMask:  SpellMaskHammerOfWrath,
-		Kind:       core.SpellMod_BonusCrit_Rating,
-		FloatValue: 2 * float64(paladin.Talents.SanctifiedWrath) * core.CritRatingPerCritChance,
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		FloatValue: 2 * float64(paladin.Talents.SanctifiedWrath),
 	})
 	paladin.AddStaticMod(core.SpellModConfig{
 		ClassMask: SpellMaskAvengingWrath,

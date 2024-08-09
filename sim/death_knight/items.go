@@ -16,9 +16,9 @@ var ItemSetMagmaPlatedBattlegear = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			// Increases the critical strike chance of your Death Coil and Frost Strike abilities by 5%.
 			agent.GetCharacter().AddStaticMod(core.SpellModConfig{
-				Kind:       core.SpellMod_BonusCrit_Rating,
+				Kind:       core.SpellMod_BonusCrit_Percent,
 				ClassMask:  DeathKnightSpellDeathCoil | DeathKnightSpellFrostStrike,
-				FloatValue: 5 * core.CritRatingPerCritChance,
+				FloatValue: 5,
 			})
 		},
 		4: func(agent core.Agent) {

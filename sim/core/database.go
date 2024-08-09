@@ -58,8 +58,8 @@ func addToDatabase(newDB *proto.SimDatabase) {
 
 type ReforgeStat struct {
 	ID         int32
-	FromStat   []proto.Stat // Assuming Stat is an enum or int32 type you've defined elsewhere
-	ToStat     []proto.Stat
+	FromStat   proto.Stat
+	ToStat     proto.Stat
 	Multiplier float64
 }
 
@@ -127,9 +127,9 @@ func ItemFromProto(pData *proto.SimItem) Item {
 		WeaponDamageMin:  pData.WeaponDamageMin,
 		WeaponDamageMax:  pData.WeaponDamageMax,
 		SwingSpeed:       pData.WeaponSpeed,
-		Stats:            stats.FromFloatArray(pData.Stats),
+		Stats:            stats.FromProtoArray(pData.Stats),
 		GemSockets:       pData.GemSockets,
-		SocketBonus:      stats.FromFloatArray(pData.SocketBonus),
+		SocketBonus:      stats.FromProtoArray(pData.SocketBonus),
 		SetName:          pData.SetName,
 		SetID:            pData.SetId,
 		RandomPropPoints: pData.RandPropPoints,
@@ -165,7 +165,7 @@ func RandomSuffixFromProto(pData *proto.ItemRandomSuffix) RandomSuffix {
 	return RandomSuffix{
 		ID:    pData.Id,
 		Name:  pData.Name,
-		Stats: stats.FromFloatArray(pData.Stats),
+		Stats: stats.FromProtoArray(pData.Stats),
 	}
 }
 
@@ -177,7 +177,7 @@ type Enchant struct {
 func EnchantFromProto(pData *proto.SimEnchant) Enchant {
 	return Enchant{
 		EffectID: pData.EffectId,
-		Stats:    stats.FromFloatArray(pData.Stats),
+		Stats:    stats.FromProtoArray(pData.Stats),
 	}
 }
 
@@ -192,7 +192,7 @@ func GemFromProto(pData *proto.SimGem) Gem {
 	return Gem{
 		ID:    pData.Id,
 		Name:  pData.Name,
-		Stats: stats.FromFloatArray(pData.Stats),
+		Stats: stats.FromProtoArray(pData.Stats),
 		Color: pData.Color,
 	}
 }
@@ -386,33 +386,16 @@ func NewItem(itemSpec ItemSpec) Item {
 
 func validateReforging(item *Item, reforging ReforgeStat) bool {
 	// Validate that the item can reforge these to stats
-	stats := stats.Stats{}
+	reforgeableStats := stats.Stats{}
 	if item.RandomSuffix.ID != 0 {
-		stats = stats.Add(item.RandomSuffix.Stats.Multiply(float64(item.RandomPropPoints) / 10000.).Floor())
+		reforgeableStats = reforgeableStats.Add(item.RandomSuffix.Stats.Multiply(float64(item.RandomPropPoints) / 10000.).Floor())
 	} else {
-		stats = stats.Add(item.Stats)
-	}
-	fromStatValid := false
-	for _, fromStat := range reforging.FromStat {
-		if stats[fromStat] > 0 {
-			fromStatValid = true
-			break
-		}
-	}
-	if !fromStatValid {
-		return false
+		reforgeableStats = reforgeableStats.Add(item.Stats)
 	}
 
-	toStatValid := false
-	for _, toStat := range reforging.ToStat {
-		if stats[toStat] == 0 {
-			toStatValid = true
-			break
-		}
-	}
-
-	return toStatValid
+	return (reforgeableStats[reforging.FromStat] > 0) && (reforgeableStats[reforging.ToStat] == 0)
 }
+
 func NewEquipmentSet(equipSpec EquipmentSpec) Equipment {
 	equipment := Equipment{}
 	for _, itemSpec := range equipSpec {
@@ -469,16 +452,13 @@ func ItemEquipmentStats(item Item) stats.Stats {
 	// Apply reforging
 	if item.Reforging != nil {
 		itemStats := item.Stats.Add(rawSuffixStats.Multiply(float64(item.RandomPropPoints) / 10000.).Floor())
-
 		reforgingChanges := stats.Stats{}
-		for _, fromStat := range item.Reforging.FromStat {
-			if itemStats[fromStat] > 0 {
-				reduction := math.Floor(itemStats[fromStat] * item.Reforging.Multiplier)
-				reforgingChanges[fromStat] = -reduction
-				for _, toStat := range item.Reforging.ToStat {
-					reforgingChanges[toStat] = reduction
-				}
-			}
+		fromStat := item.Reforging.FromStat
+
+		if itemStats[fromStat] > 0 {
+			reduction := math.Floor(itemStats[fromStat] * item.Reforging.Multiplier)
+			reforgingChanges[fromStat] = -reduction
+			reforgingChanges[item.Reforging.ToStat] = reduction
 		}
 
 		equipStats = equipStats.Add(reforgingChanges)

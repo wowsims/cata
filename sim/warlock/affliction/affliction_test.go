@@ -80,10 +80,10 @@ func setupFakeSim(lockStats stats.Stats, talents string, glyphs *proto.Glyphs) *
 }
 
 var defStats = stats.Stats{
-	stats.SpellHit:   17 * core.SpellHitRatingPerHitChance,
-	stats.SpellCrit:  -100 * core.CritRatingPerCritChance,
-	stats.SpellPower: 5766,
-	stats.Mastery:    1059,
+	stats.SpellHitPercent:  17,
+	stats.SpellCritPercent: -100,
+	stats.SpellPower:       5766,
+	stats.MasteryRating:    1059,
 }
 
 func (lock *AfflictionWarlock) checkSpell(t *testing.T, sim *core.Simulation, spell *core.Spell, expected float64,
@@ -339,7 +339,7 @@ func TestCorruptionHasteCap(t *testing.T) {
 	lock.Unit.MultiplyCastSpeed(1 + 0.05) // 5% haste buff
 	lock.Unit.MultiplyCastSpeed(1 + 0.03) // dark intent
 	lock.AddStatsDynamic(sim, stats.Stats{
-		stats.SpellHaste: 2588,
+		stats.HasteRating: 2588,
 	})
 	unstableAff := lock.UnstableAffliction
 	unstableAffDot := unstableAff.CurDot()
@@ -349,7 +349,7 @@ func TestCorruptionHasteCap(t *testing.T) {
 	unstableAffDot.Deactivate(sim)
 
 	lock.AddStatsDynamic(sim, stats.Stats{
-		stats.SpellHaste: 1,
+		stats.HasteRating: 1,
 	})
 	unstableAff.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
 	checkTicks(t, unstableAffDot, "Incorrect tick count for UA at 2589 haste", 7)

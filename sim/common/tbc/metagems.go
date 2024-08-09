@@ -13,7 +13,7 @@ func init() {
 
 	core.NewItemEffect(25893, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		procAura := character.NewTemporaryStatsAura("Mystic Focus Proc", core.ActionID{ItemID: 25893}, stats.Stats{stats.SpellHaste: 320}, time.Second*4)
+		procAura := character.NewTemporaryStatsAura("Mystic Focus Proc", core.ActionID{ItemID: 25893}, stats.Stats{stats.HasteRating: 320}, time.Second*4)
 
 		icd := core.Cooldown{
 			Timer:    character.NewTimer(),
@@ -66,7 +66,7 @@ func init() {
 
 	core.NewItemEffect(32410, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		procAura := character.NewTemporaryStatsAura("Thundering Skyfire Diamond Proc", core.ActionID{ItemID: 32410}, stats.Stats{stats.MeleeHaste: 240}, time.Second*6)
+		procAura := character.NewTemporaryStatsAura("Thundering Skyfire Diamond Proc", core.ActionID{ItemID: 32410}, stats.Stats{stats.HasteRating: 240}, time.Second*6)
 
 		icd := core.Cooldown{
 			Timer:    character.NewTimer(),

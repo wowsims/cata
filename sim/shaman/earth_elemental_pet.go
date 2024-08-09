@@ -37,8 +37,8 @@ func (shaman *Shaman) NewEarthElemental(bonusSpellPower float64) *EarthElemental
 
 	if shaman.Race == proto.Race_RaceDraenei {
 		earthElemental.AddStats(stats.Stats{
-			stats.MeleeHit:  -core.MeleeHitRatingPerHitChance,
-			stats.Expertise: math.Floor(-core.SpellHitRatingPerHitChance * 27 / 16),
+			stats.HitRating:       -core.PhysicalHitRatingPerHitPercent,
+			stats.ExpertiseRating: math.Floor(-core.SpellHitRatingPerHitPercent * 27 / 16),
 		})
 	}
 
@@ -79,25 +79,25 @@ var earthElementalPetBaseStats = stats.Stats{
 	stats.Stamina:     0,
 	stats.AttackPower: 0,
 
-	stats.MeleeCrit: (5 + 1.8) * core.CritRatingPerCritChance, //TODO need testing
+	stats.PhysicalCritPercent: 6.8, //TODO need testing
 }
 
 func (shaman *Shaman) earthElementalStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
-		ownerSpellHitChance := math.Floor(ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance)
-		spellHitRatingFromOwner := ownerSpellHitChance * core.SpellHitRatingPerHitChance
+		flooredOwnerSpellHitPercent := math.Floor(ownerStats[stats.SpellHitPercent])
+		hitRatingFromOwner := flooredOwnerSpellHitPercent * core.SpellHitRatingPerHitPercent
 
 		return stats.Stats{
 			stats.Stamina:     ownerStats[stats.Stamina] * 1.06,     //TODO need to be more accurate
 			stats.AttackPower: ownerStats[stats.SpellPower] * 0.749, // 0.107 * 7 TODO need to be more accurate
 
-			stats.MeleeHit: spellHitRatingFromOwner,
+			stats.HitRating: hitRatingFromOwner,
 
 			/*
 				TODO working on figuring this out, getting close need more trials. will need to remove specific buffs,
 				ie does not gain the benefit from draenei buff.
 			*/
-			stats.Expertise: math.Floor(spellHitRatingFromOwner * 27 / 16),
+			stats.ExpertiseRating: math.Floor(hitRatingFromOwner * 27 / 16),
 		}
 	}
 }

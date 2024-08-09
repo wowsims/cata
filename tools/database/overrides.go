@@ -17,7 +17,7 @@ var OtherItemIdsToFetch = []string{
 }
 
 var ItemOverrides = []*proto.UIItem{
-	{ /** Raz's Pauldrons */ Id: 56318, SocketBonus: stats.Stats{stats.MeleeHit: 20, stats.SpellHit: 20}.ToFloatArray()},
+	{ /** Raz's Pauldrons */ Id: 56318, SocketBonus: stats.Stats{stats.HitRating: 20}.ToProtoArray()},
 
 	{ /** Destruction Holo-gogs */ Id: 32494, ClassAllowlist: []proto.Class{proto.Class_ClassMage, proto.Class_ClassPriest, proto.Class_ClassWarlock}},
 	{ /** Gadgetstorm Goggles */ Id: 32476, ClassAllowlist: []proto.Class{proto.Class_ClassShaman}},
@@ -168,7 +168,7 @@ var ItemOverrides = []*proto.UIItem{
 	{Id: 53492, Phase: 5},
 
 	// Heirloom Dwarven Handcannon, Wowhead partially glitchs out and shows us some other lvl calc for this
-	{Id: 44093, Stats: stats.Stats{stats.MeleeCrit: 30, stats.SpellCrit: 30, stats.Resilience: 13, stats.AttackPower: 34}.ToFloatArray()},
+	{Id: 44093, Stats: stats.Stats{stats.CritRating: 30, stats.ResilienceRating: 13, stats.AttackPower: 34}.ToProtoArray()},
 }
 
 // Keep these sorted by item ID.
@@ -583,7 +583,7 @@ var DenyListNameRegexes = []*regexp.Regexp{
 
 // Allows manual overriding for Gem fields in case WowHead is wrong.
 var GemOverrides = []*proto.UIGem{
-	{Id: 33131, Stats: stats.Stats{stats.AttackPower: 32, stats.RangedAttackPower: 32}.ToFloatArray()},
+	{Id: 33131, Stats: stats.Stats{stats.AttackPower: 32, stats.RangedAttackPower: 32}.ToProtoArray()},
 }
 var GemAllowList = map[int32]struct{}{
 	//22459: {}, // Void Sphere

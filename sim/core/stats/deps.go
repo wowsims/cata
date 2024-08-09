@@ -23,12 +23,15 @@ var safeDepsOrder = []Stat{
 	Health,
 	Mana,
 	MP5,
-	SpellCrit,
-	MeleeCrit,
-	Block,
-	Dodge,
-	Parry,
-	SpellHit,
+	CritRating,
+	SpellCritPercent,
+	PhysicalCritPercent,
+	BlockPercent,
+	DodgeRating,
+	ParryRating,
+	HitRating,
+	SpellHitPercent,
+	PhysicalHitPercent,
 }
 
 func isSafeDep(s Stat) bool {

@@ -133,7 +133,7 @@ var ItemSetTwinBladesOfAzzinoth = core.NewItemSet(core.ItemSet{
 			if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
 				character.PseudoStats.MobTypeAttackPower += 200
 			}
-			procAura := character.NewTemporaryStatsAura("Twin Blade of Azzinoth Proc", core.ActionID{SpellID: 41435}, stats.Stats{stats.MeleeHaste: 450}, time.Second*10)
+			procAura := character.NewTemporaryStatsAura("Twin Blade of Azzinoth Proc", core.ActionID{SpellID: 41435}, stats.Stats{stats.HasteRating: 450}, time.Second*10)
 
 			ppmm := character.AutoAttacks.NewPPMManager(1.0, core.ProcMaskMelee)
 			icd := core.Cooldown{

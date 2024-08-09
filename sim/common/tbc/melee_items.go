@@ -16,7 +16,7 @@ func init() {
 		character := agent.GetCharacter()
 
 		// Assumes that the user will swap pummelers to have the buff for the whole fight.
-		character.AddStat(stats.MeleeHaste, 500)
+		character.AddStat(stats.HasteRating, 500)
 	})
 
 	core.NewItemEffect(19019, func(agent core.Agent) {
@@ -320,7 +320,7 @@ func init() {
 	core.NewItemEffect(34473, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procAura := character.NewTemporaryStatsAura("Commendation of Kael'Thas Proc", core.ActionID{ItemID: 34473}, stats.Stats{stats.Dodge: 152}, time.Second*10)
+		procAura := character.NewTemporaryStatsAura("Commendation of Kael'Thas Proc", core.ActionID{ItemID: 34473}, stats.Stats{stats.DodgeRating: 152}, time.Second*10)
 
 		icd := core.Cooldown{
 			Timer:    character.NewTimer(),
@@ -358,7 +358,7 @@ func init() {
 		procMask := character.GetProcMaskForItem(12590)
 		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
 
-		effectAura := character.NewTemporaryStatsAura("Felstriker Proc", core.ActionID{SpellID: 16551}, stats.Stats{stats.MeleeCrit: 100 * core.CritRatingPerCritChance}, time.Second*3)
+		effectAura := character.NewTemporaryStatsAura("Felstriker Proc", core.ActionID{SpellID: 16551}, stats.Stats{stats.PhysicalCritPercent: 100}, time.Second*3)
 
 		character.GetOrRegisterAura(core.Aura{
 			Label:    "Felstriker",

@@ -49,14 +49,14 @@ type DoomguardPet struct {
 func (warlock *Warlock) NewDoomguardPet() *DoomguardPet {
 	// probably wrong, but nobody is ever going to test this
 	baseStats := stats.Stats{
-		stats.Strength:  453,
-		stats.Agility:   883,
-		stats.Stamina:   353,
-		stats.Intellect: 159,
-		stats.Spirit:    225,
-		stats.Mana:      23420,
-		stats.MeleeCrit: 0.652 * core.CritRatingPerCritChance,
-		stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+		stats.Strength:            453,
+		stats.Agility:             883,
+		stats.Stamina:             353,
+		stats.Intellect:           159,
+		stats.Spirit:              225,
+		stats.Mana:                23420,
+		stats.PhysicalCritPercent: 0.652,
+		stats.SpellCritPercent:    3.3355,
 	}
 
 	pet := &DoomguardPet{

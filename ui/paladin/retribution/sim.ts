@@ -18,7 +18,7 @@ import {
 	Stat
 } from '../../core/proto/common.js';
 import {PaladinPrimeGlyph, PaladinSeal} from '../../core/proto/paladin';
-import {Stats} from '../../core/proto_utils/stats.js';
+import { Stats, UnitStat } from '../../core/proto_utils/stats.js';
 import {TypedEvent} from '../../core/typed_event.js';
 import * as PaladinInputs from '../inputs.js';
 import * as Presets from './presets.js';
@@ -42,43 +42,44 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	epStats: [
 		Stat.StatStrength,
 		Stat.StatAttackPower,
-		Stat.StatSpellHit,
-		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
-		Stat.StatMeleeHit,
-		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
-		Stat.StatExpertise,
-		Stat.StatMastery
+		Stat.StatHitRating,
+		Stat.StatCritRating,
+		Stat.StatHasteRating,
+		Stat.StatExpertiseRating,
+		Stat.StatMasteryRating,
 	],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatPhysicalHitPercent],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
-	displayStats: [
-		Stat.StatStrength,
-		Stat.StatAgility,
-		Stat.StatIntellect,
-		Stat.StatMP5,
-		Stat.StatAttackPower,
-		Stat.StatMeleeHit,
-		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
-		Stat.StatExpertise,
-		Stat.StatSpellHaste,
-		Stat.StatSpellPower,
-		Stat.StatSpellCrit,
-		Stat.StatSpellHit,
-		Stat.StatMana,
-		Stat.StatHealth,
-		Stat.StatMastery,
-	],
+	displayStats: UnitStat.createDisplayStatArray(
+		[
+			Stat.StatStrength,
+			Stat.StatAgility,
+			Stat.StatIntellect,
+			Stat.StatMP5,
+			Stat.StatAttackPower,
+			Stat.StatExpertiseRating,
+			Stat.StatSpellPower,
+			Stat.StatMana,
+			Stat.StatHealth,
+			Stat.StatMasteryRating,
+		],
+		[
+			PseudoStat.PseudoStatPhysicalHitPercent,
+			PseudoStat.PseudoStatPhysicalCritPercent,
+			PseudoStat.PseudoStatMeleeHastePercent,
+			PseudoStat.PseudoStatSpellHastePercent,
+			PseudoStat.PseudoStatSpellCritPercent,
+			PseudoStat.PseudoStatSpellHitPercent,
+		],
+	),
 	modifyDisplayStats: (player: Player<Spec.SpecRetributionPaladin>) => {
 		let stats = new Stats();
 
 		TypedEvent.freezeAllAndDo(() => {
 			if (isGlyphOfSealOfTruthActive(player)) {
-				stats = stats.addStat(Stat.StatExpertise, 2.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+				stats = stats.addStat(Stat.StatExpertiseRating, 2.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 			}
 		});
 
@@ -94,8 +95,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		epWeights: Presets.T11_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
-			const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
-			const expCap = new Stats().withStat(Stat.StatExpertise, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+			const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 8);
+			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 
 			return hitCap.add(expCap);
 		})(),
@@ -219,7 +220,7 @@ export class RetributionPaladinSimUI extends IndividualSimUI<Spec.SpecRetributio
 			new ReforgeOptimizer(this, {
 				updateGearStatsModifier: (baseStats: Stats) => {
 					if (isGlyphOfSealOfTruthActive(player)) {
-						return baseStats.addStat(Stat.StatExpertise, 2.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+						return baseStats.addStat(Stat.StatExpertiseRating, 2.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 					} else {
 						return baseStats;
 					}

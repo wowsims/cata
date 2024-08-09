@@ -34,7 +34,7 @@ func (rogue *Rogue) registerBackstabSpell() {
 			return !rogue.PseudoStats.InFrontOfTarget && rogue.HasDagger(core.MainHand)
 		},
 
-		BonusCritRating: 10 * core.CritRatingPerCritChance * float64(rogue.Talents.PuncturingWounds),
+		BonusCritPercent: 10 * float64(rogue.Talents.PuncturingWounds),
 
 		// Opportunity and Aggression are additive
 		DamageMultiplierAdditive: 1 +

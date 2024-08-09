@@ -21,9 +21,9 @@ func (mage *Mage) applyGlyphs() {
 
 	if mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfArcaneMissiles) {
 		mage.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_BonusCrit_Rating,
+			Kind:       core.SpellMod_BonusCrit_Percent,
 			ClassMask:  MageSpellArcaneMissilesTick,
-			FloatValue: 5 * core.CritRatingPerCritChance,
+			FloatValue: 5,
 		})
 	}
 
@@ -45,17 +45,17 @@ func (mage *Mage) applyGlyphs() {
 
 	if mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfFireball) {
 		mage.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_BonusCrit_Rating,
+			Kind:       core.SpellMod_BonusCrit_Percent,
 			ClassMask:  MageSpellFireball,
-			FloatValue: 5 * core.CritRatingPerCritChance,
+			FloatValue: 5,
 		})
 	}
 
 	if mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfFrostbolt) {
 		mage.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_BonusCrit_Rating,
+			Kind:       core.SpellMod_BonusCrit_Percent,
 			ClassMask:  MageSpellFrostbolt,
-			FloatValue: 5 * core.CritRatingPerCritChance,
+			FloatValue: 5,
 		})
 	}
 
@@ -91,9 +91,9 @@ func (mage *Mage) applyGlyphs() {
 
 	if mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfPyroblast) {
 		mage.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_BonusCrit_Rating,
+			Kind:       core.SpellMod_BonusCrit_Percent,
 			ClassMask:  MageSpellPyroblast | MageSpellPyroblastDot,
-			FloatValue: 5 * core.CritRatingPerCritChance,
+			FloatValue: 5,
 		})
 	}
 

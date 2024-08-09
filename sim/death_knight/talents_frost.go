@@ -13,7 +13,7 @@ import (
 func (dk *DeathKnight) ApplyFrostTalents() {
 	// Nerves Of Cold Steel
 	if dk.Talents.NervesOfColdSteel > 0 && dk.HasMHWeapon() && dk.HasOHWeapon() {
-		dk.AddStat(stats.MeleeHit, core.MeleeHitRatingPerHitChance*float64(dk.Talents.NervesOfColdSteel))
+		dk.AddStat(stats.PhysicalHitPercent, float64(dk.Talents.NervesOfColdSteel))
 
 		dk.AddStaticMod(core.SpellModConfig{
 			Kind:       core.SpellMod_DamageDone_Pct,
@@ -168,8 +168,8 @@ func (dk *DeathKnight) applyKillingMachine() {
 	}
 
 	kmMod := dk.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_BonusCrit_Rating,
-		FloatValue: 100 * core.CritRatingPerCritChance,
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		FloatValue: 100,
 		ClassMask:  DeathKnightSpellObliterate | DeathKnightSpellFrostStrike,
 	})
 

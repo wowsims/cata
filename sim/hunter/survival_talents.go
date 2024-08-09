@@ -55,9 +55,9 @@ func (hunter *Hunter) ApplySurvivalTalents() {
 	}
 	if hunter.Talents.ImprovedSerpentSting > 0 {
 		hunter.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_BonusCrit_Rating,
+			Kind:       core.SpellMod_BonusCrit_Percent,
 			ClassMask:  HunterSpellSerpentSting,
-			FloatValue: (float64(hunter.Talents.ImprovedSerpentSting) * 5) * core.CritRatingPerCritChance,
+			FloatValue: float64(hunter.Talents.ImprovedSerpentSting) * 5,
 		})
 	}
 
@@ -123,9 +123,9 @@ func (hunter *Hunter) applySniperTraining() {
 	core.ApplyFixedUptimeAura(stAura, uptime, time.Second*15, 1)
 
 	hunter.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_BonusCrit_Rating,
+		Kind:       core.SpellMod_BonusCrit_Percent,
 		ClassMask:  HunterSpellKillShot,
-		FloatValue: (5.0 * float64(hunter.Talents.SniperTraining)) * core.CritRatingPerCritChance,
+		FloatValue: 5 * float64(hunter.Talents.SniperTraining),
 	})
 }
 

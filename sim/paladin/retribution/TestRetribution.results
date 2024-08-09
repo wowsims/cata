@@ -7,10 +7,7 @@ character_stats_results: {
   final_stats: 135.45
   final_stats: 136
   final_stats: 962
-  final_stats: 1781.56592
-  final_stats: 3051.45118
-  final_stats: 2952.814
-  final_stats: 657
+  final_stats: 1422
   final_stats: 657
   final_stats: 484
   final_stats: 0
@@ -19,7 +16,6 @@ character_stats_results: {
   final_stats: 15237.636
   final_stats: 209
   final_stats: 5166.41488
-  final_stats: 1497.1
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -31,7 +27,12 @@ character_stats_results: {
   final_stats: 0
   final_stats: 141397.4
   final_stats: 27299.75
-  final_stats: 0
+  final_stats: 1497.1
+  final_stats: 8.0094
+  final_stats: 17.39034
+  final_stats: 17.02059
+  final_stats: 16.4704
+  final_stats: 5
  }
 }
 dps_results: {
@@ -72,15 +73,15 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-AllItems-ApparatusofKhaz'goroth-68972"
  value: {
-  dps: 31403.53353
-  tps: 31417.05972
+  dps: 31683.20496
+  tps: 31696.73115
  }
 }
 dps_results: {
  key: "TestRetribution-AllItems-ApparatusofKhaz'goroth-69113"
  value: {
-  dps: 31633.63822
-  tps: 31647.16442
+  dps: 31965.28338
+  tps: 31978.80958
  }
 }
 dps_results: {
@@ -808,15 +809,15 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-AllItems-MatrixRestabilizer-68994"
  value: {
-  dps: 30823.957
-  tps: 30837.4832
+  dps: 31191.46374
+  tps: 31204.98993
  }
 }
 dps_results: {
  key: "TestRetribution-AllItems-MatrixRestabilizer-69150"
  value: {
-  dps: 31055.84626
-  tps: 31069.37246
+  dps: 31397.24583
+  tps: 31410.77203
  }
 }
 dps_results: {

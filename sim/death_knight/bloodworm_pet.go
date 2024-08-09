@@ -31,7 +31,7 @@ func (dk *DeathKnight) NewBloodwormPet(_ int) *BloodwormPet {
 	})
 
 	bloodworm.AddStatDependency(stats.Strength, stats.AttackPower, 1.0+1)
-	bloodworm.AddStatDependency(stats.Agility, stats.MeleeCrit, 1.0+(core.CritRatingPerCritChance/83.3))
+	bloodworm.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, 1 / core.CritRatingPerCritPercent + 1 / 83.3) // TODO: Was this implemented correctly to begin with?
 
 	bloodworm.OnPetEnable = bloodworm.enable
 	bloodworm.OnPetDisable = bloodworm.disable
@@ -129,14 +129,14 @@ func (bloodworm *BloodwormPet) disable(sim *core.Simulation) {
 }
 
 var bloodwormPetBaseStats = stats.Stats{
-	stats.MeleeCrit: 8 * core.CritRatingPerCritChance,
+	stats.PhysicalCritPercent: 8,
 }
 
 func (dk *DeathKnight) bloodwormStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
 		return stats.Stats{
 			stats.AttackPower: ownerStats[stats.AttackPower] * 0.112,
-			stats.MeleeHaste:  ownerStats[stats.MeleeHaste],
+			stats.HasteRating: ownerStats[stats.HasteRating],
 		}
 	}
 }

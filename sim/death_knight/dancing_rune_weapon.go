@@ -11,8 +11,8 @@ import (
 func CopySpellMultipliers(sourceSpell *core.Spell, targetSpell *core.Spell, target *core.Unit) {
 	targetSpell.DamageMultiplier = sourceSpell.DamageMultiplier
 	targetSpell.DamageMultiplierAdditive = sourceSpell.DamageMultiplierAdditive
-	targetSpell.BonusCritRating = sourceSpell.BonusCritRating
-	targetSpell.BonusHitRating = sourceSpell.BonusHitRating
+	targetSpell.BonusCritPercent = sourceSpell.BonusCritPercent
+	targetSpell.BonusHitPercent = sourceSpell.BonusHitPercent
 	targetSpell.CritMultiplier = sourceSpell.CritMultiplier
 	targetSpell.ThreatMultiplier = sourceSpell.ThreatMultiplier
 
@@ -50,13 +50,13 @@ func (dk *DeathKnight) registerDancingRuneWeaponSpell() {
 			copySpell.Cast(sim, dk.CurrentTarget)
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			dk.AddStatDynamic(sim, stats.Parry, 20*core.ParryRatingPerParryChance)
+			dk.AddStatDynamic(sim, stats.ParryRating, 20*core.ParryRatingPerParryPercent)
 			if hasGlyph {
 				dk.PseudoStats.ThreatMultiplier *= 1.5
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			dk.AddStatDynamic(sim, stats.Parry, -20*core.ParryRatingPerParryChance)
+			dk.AddStatDynamic(sim, stats.ParryRating, -20*core.ParryRatingPerParryPercent)
 			if hasGlyph {
 				dk.PseudoStats.ThreatMultiplier /= 1.5
 			}
@@ -134,15 +134,15 @@ func (dk *DeathKnight) NewRuneWeapon() *RuneWeaponPet {
 		}, func(ownerStats stats.Stats) stats.Stats {
 			return stats.Stats{
 				stats.AttackPower: ownerStats[stats.AttackPower],
-				stats.MeleeHaste:  ownerStats[stats.MeleeHaste],
+				stats.HasteRating: ownerStats[stats.HasteRating],
 
-				stats.MeleeHit: ownerStats[stats.MeleeHit],
-				stats.SpellHit: ownerStats[stats.MeleeHit] * PetSpellHitScale,
+				stats.PhysicalHitPercent: ownerStats[stats.PhysicalHitPercent],
+				stats.SpellHitPercent:    ownerStats[stats.PhysicalHitPercent] * HitCapRatio,
 
-				stats.Expertise: ownerStats[stats.MeleeHit] * PetExpertiseScale,
+				stats.ExpertiseRating: ownerStats[stats.PhysicalHitPercent] * PetExpertiseRatingScale,
 
-				stats.MeleeCrit: ownerStats[stats.MeleeCrit],
-				stats.SpellCrit: ownerStats[stats.SpellCrit],
+				stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
+				stats.SpellCritPercent:    ownerStats[stats.SpellCritPercent],
 			}
 		}, false, true),
 		dkOwner: dk,

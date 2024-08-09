@@ -145,9 +145,9 @@ func TestAbort(t *testing.T) {
 			StatsToWeigh: []proto.Stat{
 				proto.Stat_StatAgility,
 				proto.Stat_StatAttackPower,
-				proto.Stat_StatMastery,
-				proto.Stat_StatMeleeHit,
-				proto.Stat_StatExpertise,
+				proto.Stat_StatMasteryRating,
+				proto.Stat_StatHitRating,
+				proto.Stat_StatExpertiseRating,
 			},
 			EpReferenceStat: proto.Stat_StatAttackPower,
 		}

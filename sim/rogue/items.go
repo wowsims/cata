@@ -14,8 +14,8 @@ var Tier11 = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			// +5% Crit to Backstab, Mutilate, and Sinister Strike
 			agent.GetCharacter().AddStaticMod(core.SpellModConfig{
-				Kind:       core.SpellMod_BonusCrit_Rating,
-				FloatValue: 5 * core.CritRatingPerCritChance,
+				Kind:       core.SpellMod_BonusCrit_Percent,
+				FloatValue: 5,
 				ClassMask:  RogueSpellBackstab | RogueSpellMutilate | RogueSpellSinisterStrike,
 			})
 		},
@@ -29,12 +29,12 @@ var Tier11 = core.NewItemSet(core.ItemSet{
 				Duration: time.Second * 15,
 
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					rogue.Envenom.BonusCritRating += 100 * core.CritRatingPerCritChance
-					rogue.Eviscerate.BonusCritRating += 100 * core.CritRatingPerCritChance
+					rogue.Envenom.BonusCritPercent += 100
+					rogue.Eviscerate.BonusCritPercent += 100
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					rogue.Envenom.BonusCritRating -= 100 * core.CritRatingPerCritChance
-					rogue.Eviscerate.BonusCritRating -= 100 * core.CritRatingPerCritChance
+					rogue.Envenom.BonusCritPercent -= 100
+					rogue.Eviscerate.BonusCritPercent -= 100
 				},
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if spell == rogue.Envenom || spell == rogue.Eviscerate {
@@ -152,9 +152,9 @@ var Tier12 = core.NewItemSet(core.ItemSet{
 			rogue := agent.GetCharacter()
 
 			// Aura for adding 25% of current rating as extra rating
-			hasteAura := rogue.GetOrRegisterAura(MakeT12StatAura(core.ActionID{SpellID: 99186}, stats.MeleeHaste, "Future on Fire"))
-			critAura := rogue.GetOrRegisterAura(MakeT12StatAura(core.ActionID{SpellID: 99187}, stats.MeleeCrit, "Fiery Devastation"))
-			mastAura := rogue.GetOrRegisterAura(MakeT12StatAura(core.ActionID{SpellID: 99188}, stats.Mastery, "Master of the Flames"))
+			hasteAura := rogue.GetOrRegisterAura(MakeT12StatAura(core.ActionID{SpellID: 99186}, stats.HasteRating, "Future on Fire"))
+			critAura := rogue.GetOrRegisterAura(MakeT12StatAura(core.ActionID{SpellID: 99187}, stats.CritRating, "Fiery Devastation"))
+			mastAura := rogue.GetOrRegisterAura(MakeT12StatAura(core.ActionID{SpellID: 99188}, stats.MasteryRating, "Master of the Flames"))
 			auraArray := [3]*core.Aura{hasteAura, critAura, mastAura}
 
 			// Proc aura watching for ToT threat transfer start

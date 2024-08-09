@@ -192,16 +192,16 @@ func NewWarrior(character *core.Character, talents string, inputs WarriorInputs)
 	warrior.PseudoStats.CanParry = true
 	warrior.PrecisionKnown = false
 
-	warrior.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
+	warrior.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, core.CritPerAgiMaxLevel[character.Class])
 	// Dodge no longer granted from agility
 	warrior.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	warrior.AddStat(stats.Parry, -warrior.GetBaseStats()[stats.Strength]*0.27) // Does not apply to base Strength
-	warrior.AddStatDependency(stats.Strength, stats.Parry, 0.27)               // Change from block to pary in cata (4.2 Changed from 25->27 percent)
+	warrior.AddStat(stats.ParryRating, -warrior.GetBaseStats()[stats.Strength]*0.27) // Does not apply to base Strength
+	warrior.AddStatDependency(stats.Strength, stats.ParryRating, 0.27)               // Change from block to pary in cata (4.2 Changed from 25->27 percent)
 	warrior.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	// Base dodge unaffected by Diminishing Returns
-	warrior.PseudoStats.BaseDodge += 0.03664
-	warrior.PseudoStats.BaseParry += 0.05
+	warrior.PseudoStats.BaseDodgeChance += 0.03664
+	warrior.PseudoStats.BaseParryChance += 0.05
 	warrior.CriticalBlockChance = append(warrior.CriticalBlockChance, 0.0, 0.0)
 	return warrior
 }

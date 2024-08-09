@@ -41,16 +41,16 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 		[Stat.StatIntellect]: 1.0,
 		[Stat.StatSpirit]: 0.9,
 		[Stat.StatSpellPower]: 0.79,
-		[Stat.StatSpellHit]: 0.85,
-		[Stat.StatSpellCrit]: 0.42,
-		[Stat.StatSpellHaste]: 0.76,
-		[Stat.StatMastery]: 0.48,
+		[Stat.StatHitRating]: 0.85,
+		[Stat.StatCritRating]: 0.42,
+		[Stat.StatHasteRating]: 0.76,
+		[Stat.StatMasteryRating]: 0.48,
 	}),
 );
 
 export const SHADOW_BREAKPOINTS = new Map([
 	[
-		Stat.StatSpellHaste,
+		Stat.StatHasteRating,
 		// Picked from Priest Discord
 		// Sources:
 		// https://docs.google.com/spreadsheets/d/17cJJUReg2uz-XxBB3oDWb1kCncdH_-X96mSb0HAu4Ko/edit?usp=sharing

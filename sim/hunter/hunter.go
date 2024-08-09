@@ -166,7 +166,7 @@ func (hunter *Hunter) RegisterSpells() {
 func (hunter *Hunter) AddStatDependencies() {
 	hunter.AddStatDependency(stats.Agility, stats.AttackPower, 2)
 	hunter.AddStatDependency(stats.Agility, stats.RangedAttackPower, 2)
-	hunter.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[hunter.Class]*core.CritRatingPerCritChance)
+	hunter.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, core.CritPerAgiMaxLevel[hunter.Class])
 }
 
 func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
@@ -202,10 +202,6 @@ func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 }
 
 func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
-}
-
-func (hunter *Hunter) CalculateMasteryPoints() float64 {
-	return hunter.GetStat(stats.Mastery) / core.MasteryRatingPerMasteryPoint
 }
 
 func (hunter *Hunter) CritMultiplier(isRanged bool, isMFDSpell bool, doubleDipMS bool) float64 {

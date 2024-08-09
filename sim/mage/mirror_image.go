@@ -114,15 +114,16 @@ func (mi *MirrorImage) ExecuteCustomRotation(sim *core.Simulation) {
 
 var mirrorImageBaseStats = stats.Stats{
 	stats.Mana: 27020, // Confirmed via ingame bars at 80
+
+	// seems to be about 8% baseline in wotlk
+	stats.SpellCritPercent: 8,
 }
 
 var createMirrorImageInheritance = func() func(stats.Stats) stats.Stats {
 	return func(ownerStats stats.Stats) stats.Stats {
 		return stats.Stats{
-			stats.SpellHit: ownerStats[stats.SpellHit],
-			// seems to be about 8% baseline in wotlk
-			stats.SpellCrit:  8 * core.CritRatingPerCritChance,
-			stats.SpellPower: ownerStats[stats.SpellPower] * 0.33,
+			stats.SpellHitPercent: ownerStats[stats.SpellHitPercent],
+			stats.SpellPower:      ownerStats[stats.SpellPower] * 0.33,
 		}
 	}
 }

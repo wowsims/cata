@@ -211,13 +211,13 @@ const (
 	// Ueses: TimeValue
 	SpellMod_CastTime_Flat
 
-	// Add/subtract bonus crit rating
+	// Add/subtract bonus crit %
 	// Uses: FloatValue
-	SpellMod_BonusCrit_Rating
+	SpellMod_BonusCrit_Percent
 
-	// Add/subtract bonus hit rating
+	// Add/subtract bonus hit %
 	// Uses: FloatValue
-	SpellMod_BonusHit_Rating
+	SpellMod_BonusHit_Percent
 
 	// Add/subtract to the dots max ticks
 	// Uses: IntValue
@@ -298,14 +298,14 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 		Remove: removeCastTimeFlat,
 	},
 
-	SpellMod_BonusCrit_Rating: {
-		Apply:  applyBonusCritRating,
-		Remove: removeBonusCritRating,
+	SpellMod_BonusCrit_Percent: {
+		Apply:  applyBonusCritPercent,
+		Remove: removeBonusCritPercent,
 	},
 
-	SpellMod_BonusHit_Rating: {
-		Apply:  applyBonusHitRating,
-		Remove: removeBonusHitRating,
+	SpellMod_BonusHit_Percent: {
+		Apply:  applyBonusHitPercent,
+		Remove: removeBonusHitPercent,
 	},
 
 	SpellMod_DotNumberOfTicks_Flat: {
@@ -427,20 +427,20 @@ func removeCastTimeFlat(mod *SpellMod, spell *Spell) {
 	spell.DefaultCast.CastTime -= mod.timeValue
 }
 
-func applyBonusCritRating(mod *SpellMod, spell *Spell) {
-	spell.BonusCritRating += mod.floatValue
+func applyBonusCritPercent(mod *SpellMod, spell *Spell) {
+	spell.BonusCritPercent += mod.floatValue
 }
 
-func removeBonusCritRating(mod *SpellMod, spell *Spell) {
-	spell.BonusCritRating -= mod.floatValue
+func removeBonusCritPercent(mod *SpellMod, spell *Spell) {
+	spell.BonusCritPercent -= mod.floatValue
 }
 
-func applyBonusHitRating(mod *SpellMod, spell *Spell) {
-	spell.BonusHitRating += mod.floatValue
+func applyBonusHitPercent(mod *SpellMod, spell *Spell) {
+	spell.BonusHitPercent += mod.floatValue
 }
 
-func removeBonusHitRating(mod *SpellMod, spell *Spell) {
-	spell.BonusHitRating -= mod.floatValue
+func removeBonusHitPercent(mod *SpellMod, spell *Spell) {
+	spell.BonusHitPercent -= mod.floatValue
 }
 
 func applyDotNumberOfTicks(mod *SpellMod, spell *Spell) {

@@ -9,9 +9,9 @@ import (
 func (hunter *Hunter) ApplyBMTalents() {
 	if hunter.Talents.ImprovedKillCommand > 0 {
 		hunter.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_BonusCrit_Rating,
+			Kind:       core.SpellMod_BonusCrit_Percent,
 			ClassMask:  HunterSpellKillCommand,
-			FloatValue: (float64(hunter.Talents.ImprovedKillCommand) * 5) * core.CritRatingPerCritChance,
+			FloatValue: float64(hunter.Talents.ImprovedKillCommand) * 5,
 		})
 	}
 	hunter.applyKillingStreak()
@@ -36,15 +36,15 @@ func (hunter *Hunter) applyCobraStrikes() {
 		Duration:  time.Second * 10,
 		MaxStacks: 2,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.Pet.focusDump.BonusCritRating += 100 * core.CritRatingPerCritChance
+			hunter.Pet.focusDump.BonusCritPercent += 100
 			if hunter.Pet.specialAbility != nil {
-				hunter.Pet.specialAbility.BonusCritRating += 100 * core.CritRatingPerCritChance
+				hunter.Pet.specialAbility.BonusCritPercent += 100
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.Pet.focusDump.BonusCritRating -= 100 * core.CritRatingPerCritChance
+			hunter.Pet.focusDump.BonusCritPercent -= 100
 			if hunter.Pet.specialAbility != nil {
-				hunter.Pet.specialAbility.BonusCritRating -= 100 * core.CritRatingPerCritChance
+				hunter.Pet.specialAbility.BonusCritPercent -= 100
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {

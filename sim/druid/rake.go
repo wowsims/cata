@@ -34,7 +34,7 @@ func (druid *Druid) registerRakeSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: druid.RazorClawsMultiplier(druid.GetStat(stats.Mastery)),
+		DamageMultiplier: druid.RazorClawsMultiplier(druid.GetStat(stats.MasteryRating)),
 		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 		MaxRange:         core.MaxMeleeRange,

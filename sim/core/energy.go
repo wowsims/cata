@@ -117,7 +117,7 @@ func (eb *energyBar) processDynamicHasteRatingChange(sim *Simulation) {
 	}
 
 	eb.ResetEnergyTick(sim)
-	eb.hasteRatingMultiplier = 1.0 + eb.unit.GetStat(stats.MeleeHaste)/(100*HasteRatingPerHastePercent)
+	eb.hasteRatingMultiplier = 1.0 + eb.unit.GetStat(stats.HasteRating)/(100*HasteRatingPerHastePercent)
 }
 
 // Used for dynamic updates to maximum Energy, such as from the Druid Primal Madness talent
@@ -170,7 +170,7 @@ func (eb *energyBar) reset(sim *Simulation) {
 
 	eb.currentEnergy = eb.maxEnergy
 	eb.comboPoints = 0
-	eb.hasteRatingMultiplier = 1.0 + eb.unit.GetStat(stats.MeleeHaste)/(100*HasteRatingPerHastePercent)
+	eb.hasteRatingMultiplier = 1.0 + eb.unit.GetStat(stats.HasteRating)/(100*HasteRatingPerHastePercent)
 	eb.energyRegenMultiplier = 1.0
 
 	if eb.unit.Type != PetUnit {

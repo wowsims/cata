@@ -83,9 +83,9 @@ func (dk *DeathKnight) ApplyBloodTalents() {
 		})
 
 		dk.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_BonusCrit_Rating,
+			Kind:       core.SpellMod_BonusCrit_Percent,
 			ClassMask:  DeathKnightSpellDeathStrike,
-			FloatValue: 10 * core.CritRatingPerCritChance * float64(dk.Talents.ImprovedDeathStrike),
+			FloatValue: 10 * float64(dk.Talents.ImprovedDeathStrike),
 		})
 	}
 

@@ -321,14 +321,14 @@ func (druid *Druid) Reset(_ *core.Simulation) {
 	druid.RebirthUsed = false
 }
 
-func (druid *Druid) ForceSolarEclipse(sim *core.Simulation, mastery float64) {
-	mastery -= druid.GetStat(stats.Mastery)
-	if mastery > 0 {
-		druid.AddStatDynamic(sim, stats.Mastery, mastery)
+func (druid *Druid) ForceSolarEclipse(sim *core.Simulation, masteryRating float64) {
+	masteryRating -= druid.GetStat(stats.MasteryRating)
+	if masteryRating > 0 {
+		druid.AddStatDynamic(sim, stats.MasteryRating, masteryRating)
 	}
 	druid.eclipseEnergyBar.ForceEclipse(SolarEclipse, sim)
-	if mastery > 0 {
-		druid.AddStatDynamic(sim, stats.Mastery, -mastery)
+	if masteryRating > 0 {
+		druid.AddStatDynamic(sim, stats.MasteryRating, -masteryRating)
 	}
 }
 
@@ -347,12 +347,12 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 
 	druid.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 	druid.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
-	druid.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[char.Class]*core.CritRatingPerCritChance)
+	druid.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, core.CritPerAgiMaxLevel[char.Class])
 	// Druids get 0.0041 dodge per agi (before dr), roughly 1% per 244
-	druid.AddStatDependency(stats.Agility, stats.Dodge, 0.00410000*core.DodgeRatingPerDodgeChance)
+	druid.AddStatDependency(stats.Agility, stats.DodgeRating, 0.00410000*core.DodgeRatingPerDodgePercent)
 
 	// Base dodge is unaffected by Diminishing Returns
-	druid.PseudoStats.BaseDodge += 0.04951
+	druid.PseudoStats.BaseDodgeChance += 0.04951
 
 	if druid.Talents.ForceOfNature {
 		druid.Treant1 = druid.NewTreant()

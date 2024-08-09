@@ -41,6 +41,10 @@ func TestAssassination(t *testing.T) {
 				proto.WeaponType_WeaponTypeDagger,
 			},
 		},
+
+		StatsToWeigh:       []proto.Stat{proto.Stat_StatCritRating},
+		PseudoStatsToWeigh: []proto.PseudoStat{proto.PseudoStat_PseudoStatPhysicalCritPercent, proto.PseudoStat_PseudoStatSpellCritPercent},
+		EPReferenceStat:    proto.Stat_StatAgility,
 	}))
 }
 

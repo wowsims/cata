@@ -103,12 +103,13 @@ var waterElementalStatInheritance = func(ownerStats stats.Stats) stats.Stats {
 		stats.Stamina:    ownerStats[stats.Stamina] * 0.2,
 		stats.Intellect:  ownerStats[stats.Intellect] * 0.3,
 		stats.SpellPower: ownerStats[stats.SpellPower] * 0.333,
+
 		// TODO test crit chance. It does crit, so figure out how often and if it scales
 		/* Results: owner 5% crit, Waterbolt 13% crit
 		owner 18% crit, waterbolt 18% crit
 		*/
-		stats.SpellHaste: ownerStats[stats.SpellHaste],
-		stats.SpellCrit:  ownerStats[stats.SpellCrit],
+		stats.HasteRating:      ownerStats[stats.HasteRating],
+		stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
 	}
 }
 

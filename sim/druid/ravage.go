@@ -9,7 +9,7 @@ import (
 func (druid *Druid) registerRavageSpell() {
 	weaponMultiplier := 9.5
 	flatDamageBonus := 532.0 / weaponMultiplier
-	highHpCritBonus := 25.0 * float64(druid.Talents.PredatoryStrikes) * core.CritRatingPerCritChance
+	highHpCritPercentBonus := 25.0 * float64(druid.Talents.PredatoryStrikes)
 
 	druid.Ravage = druid.RegisterSpell(Cat, core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 6785},
@@ -40,7 +40,7 @@ func (druid *Druid) registerRavageSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if sim.IsExecutePhase90() {
-				spell.BonusCritRating += highHpCritBonus
+				spell.BonusCritPercent += highHpCritPercentBonus
 			}
 
 			baseDamage := flatDamageBonus + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
@@ -55,7 +55,7 @@ func (druid *Druid) registerRavageSpell() {
 			druid.StampedeCatAura.Deactivate(sim)
 
 			if sim.IsExecutePhase90() {
-				spell.BonusCritRating -= highHpCritBonus
+				spell.BonusCritPercent -= highHpCritPercentBonus
 			}
 		},
 	})

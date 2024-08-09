@@ -177,8 +177,8 @@ var ItemSetCrimsonAcolyte = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
 			character.AddStaticMod(core.SpellModConfig{
-				Kind:       core.SpellMod_BonusCrit_Rating,
-				FloatValue: 5 * core.CritRatingPerCritChance,
+				Kind:       core.SpellMod_BonusCrit_Percent,
+				FloatValue: 5,
 				ClassMask:  PriestSpellShadowWordPain | PriestSpellDevouringPlague | PriestSpellVampiricTouch | PriestSpellImprovedDevouringPlague,
 			})
 		},
@@ -263,7 +263,7 @@ var ItemSetGladiatorsInvestiture = core.NewItemSet(core.ItemSet{
 	Name: "Gladiator's Investiture",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
-			agent.GetCharacter().AddStat(stats.Resilience, 400)
+			agent.GetCharacter().AddStat(stats.ResilienceRating, 400)
 			agent.GetCharacter().AddStat(stats.Intellect, 70)
 		},
 		4: func(agent core.Agent) {
@@ -276,7 +276,7 @@ var ItemSetGladiatorsRaiment = core.NewItemSet(core.ItemSet{
 	Name: "Gladiator's Raiment",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
-			agent.GetCharacter().AddStat(stats.Resilience, 400)
+			agent.GetCharacter().AddStat(stats.ResilienceRating, 400)
 			agent.GetCharacter().AddStat(stats.Intellect, 70)
 		},
 		4: func(agent core.Agent) {
@@ -292,8 +292,8 @@ var ItemSetMercurialRegalia = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
 			character.AddStaticMod(core.SpellModConfig{
-				Kind:       core.SpellMod_BonusCrit_Rating,
-				FloatValue: 5 * core.CritRatingPerCritChance,
+				Kind:       core.SpellMod_BonusCrit_Percent,
+				FloatValue: 5,
 				ClassMask:  PriestSpellMindFlay | PriestSpellMindSear,
 			})
 		},

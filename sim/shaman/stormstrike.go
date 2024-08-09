@@ -39,10 +39,10 @@ func (shaman *Shaman) StormstrikeDebuffAura(target *core.Unit) *core.Aura {
 func (shaman *Shaman) calcDamageStormstrikeCritChance(sim *core.Simulation, target *core.Unit, baseDamage float64, spell *core.Spell) *core.SpellResult {
 	var result *core.SpellResult
 	if target.HasActiveAura("Stormstrike-" + shaman.Label) {
-		critBonus := core.CritRatingPerCritChance * core.TernaryFloat64(shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfStormstrike), 35, 25)
-		spell.BonusCritRating += critBonus
+		critPercentBonus := core.TernaryFloat64(shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfStormstrike), 35, 25)
+		spell.BonusCritPercent += critPercentBonus
 		result = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-		spell.BonusCritRating -= critBonus
+		spell.BonusCritPercent -= critPercentBonus
 	} else {
 		result = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 	}

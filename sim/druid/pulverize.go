@@ -10,7 +10,7 @@ func (druid *Druid) registerPulverizeSpell() {
 		return
 	}
 
-	statBonusPerStack := stats.Stats{stats.MeleeCrit: 3.0 * core.CritRatingPerCritChance, stats.SpellCrit: 3.0 * core.CritRatingPerCritChance}
+	statBonusPerStack := stats.Stats{stats.PhysicalCritPercent: 3, stats.SpellCritPercent: 3}
 
 	druid.PulverizeAura = druid.RegisterAura(core.Aura{
 		Label:     "Pulverize",

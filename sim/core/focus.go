@@ -131,7 +131,7 @@ func (fb *focusBar) processDynamicHasteRatingChange(sim *Simulation) {
 	}
 
 	fb.ResetFocusTick(sim)
-	fb.hasteRatingMultiplier = 1.0 + fb.unit.GetStat(stats.MeleeHaste)/(100*HasteRatingPerHastePercent)
+	fb.hasteRatingMultiplier = 1.0 + fb.unit.GetStat(stats.HasteRating)/(100*HasteRatingPerHastePercent)
 }
 
 func (fb *focusBar) RunTask(sim *Simulation) time.Duration {
@@ -149,7 +149,7 @@ func (fb *focusBar) reset(sim *Simulation) {
 	}
 
 	fb.currentFocus = fb.maxFocus
-	fb.hasteRatingMultiplier = 1.0 + fb.unit.GetStat(stats.MeleeHaste)/(100*HasteRatingPerHastePercent)
+	fb.hasteRatingMultiplier = 1.0 + fb.unit.GetStat(stats.HasteRating)/(100*HasteRatingPerHastePercent)
 
 	if fb.unit.Type != PetUnit {
 		fb.enable(sim, sim.Environment.PrepullStartTime())

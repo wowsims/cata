@@ -1,3 +1,4 @@
+import * as Mechanics from '../../core/constants/mechanics';
 import { Player } from '../../core/player';
 import * as PresetUtils from '../../core/preset_utils';
 import { makeSpecChangeWarningToast } from '../../core/preset_utils';
@@ -71,17 +72,17 @@ export const P1_MASTERFROST_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatStrength]: 2.86,
 			[Stat.StatArmor]: 0.03,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatExpertise]: 0.75,
-			[Stat.StatMeleeHaste]: 1.38,
-			[Stat.StatMeleeHit]: 1.08,
-			[Stat.StatMeleeCrit]: 0.64,
-			[Stat.StatSpellHit]: 0.59,
-			[Stat.StatSpellCrit]: 0.43,
-			[Stat.StatMastery]: 1.41,
+			[Stat.StatExpertiseRating]: 0.75,
+			[Stat.StatHasteRating]: 1.38,
+			[Stat.StatHitRating]: (1.08 + 0.59),
+			[Stat.StatCritRating]: (0.64 + 0.43),
+			[Stat.StatMasteryRating]: 1.41,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 4.5,
 			[PseudoStat.PseudoStatOffHandDps]: 2.84,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: (1.08 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT),
+			[PseudoStat.PseudoStatSpellHitPercent]: (0.59 * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT),
 		},
 	),
 	DW_PRESET_OPTIONS,

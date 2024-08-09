@@ -7,10 +7,7 @@ character_stats_results: {
   final_stats: 33.6
   final_stats: 62
   final_stats: 972
-  final_stats: 1894.01166
-  final_stats: 1909.33022
-  final_stats: 1390.68024
-  final_stats: 113
+  final_stats: 315
   final_stats: 113
   final_stats: 502.16318
   final_stats: 976
@@ -19,7 +16,6 @@ character_stats_results: {
   final_stats: 13707.94959
   final_stats: 0
   final_stats: 0
-  final_stats: 326
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -31,7 +27,12 @@ character_stats_results: {
   final_stats: 0
   final_stats: 192923.12926
   final_stats: 0
-  final_stats: 0
+  final_stats: 326
+  final_stats: 8.09266
+  final_stats: 18.48795
+  final_stats: 10.64999
+  final_stats: 7.75703
+  final_stats: 5
  }
 }
 dps_results: {
@@ -925,16 +926,16 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-MatrixRestabilizer-68994"
  value: {
-  dps: 14351.98818
-  tps: 69928.29388
+  dps: 14054.46637
+  tps: 68346.10878
   hps: 3597.80333
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-MatrixRestabilizer-69150"
  value: {
-  dps: 14406.62966
-  tps: 70191.67664
+  dps: 14074.81413
+  tps: 68428.68192
   hps: 3597.80333
  }
 }

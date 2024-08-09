@@ -30,7 +30,7 @@ func (rogue *Rogue) registerAmbushSpell() {
 			return !rogue.PseudoStats.InFrontOfTarget && rogue.IsStealthed()
 		},
 
-		BonusCritRating:  20 * core.CritRatingPerCritChance * float64(rogue.Talents.ImprovedAmbush),
+		BonusCritPercent: 20 * float64(rogue.Talents.ImprovedAmbush),
 		DamageMultiplier: core.TernaryFloat64(rogue.HasDagger(core.MainHand), 2.86, 1.97), // 77 * 1.38999998569 + 90 (*1.45 for Dagger)
 		// Imp Ambush also Additive
 		DamageMultiplierAdditive: 1 +

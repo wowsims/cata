@@ -124,17 +124,17 @@ func (ghoulPet *GhoulPet) enable(sim *core.Simulation) {
 }
 
 func (dk *DeathKnight) ghoulBaseStats() stats.Stats {
-	nocsHit := -float64(dk.Talents.NervesOfColdSteel) * core.MeleeHitRatingPerHitChance
+	nocsHitPercent := -float64(dk.Talents.NervesOfColdSteel)
 	return stats.Stats{
-		stats.Stamina:     388,
-		stats.Agility:     3343 - 10, // We remove 10 to not mess with crit conversion
-		stats.Strength:    476,
-		stats.AttackPower: -20,
+		stats.Stamina:             388,
+		stats.Agility:             3343 - 10, // We remove 10 to not mess with crit conversion
+		stats.Strength:            476,
+		stats.AttackPower:         -20,
+		stats.PhysicalCritPercent: 5,
 
-		stats.MeleeCrit: 5 * core.CritRatingPerCritChance,
 		// Remove bonus hit that would be transfered from the DKs Nerves of Cold Steel
-		stats.MeleeHit:  nocsHit,
-		stats.Expertise: nocsHit * PetExpertiseScale,
+		stats.PhysicalHitPercent: nocsHitPercent,
+		stats.ExpertiseRating:    nocsHitPercent * PetExpertiseRatingScale,
 	}
 }
 
@@ -147,11 +147,11 @@ func (dk *DeathKnight) ghoulStatInheritance() core.PetStatInheritance {
 			stats.Stamina:  ownerStats[stats.Stamina] * (0.904 * glyphBonusSta),
 			stats.Strength: ownerStats[stats.Strength] * (1.01 + glyphBonusStr),
 
-			stats.MeleeHit:  ownerStats[stats.MeleeHit],
-			stats.Expertise: ownerStats[stats.MeleeHit] * PetExpertiseScale,
+			stats.PhysicalHitPercent: ownerStats[stats.PhysicalHitPercent],
+			stats.ExpertiseRating:    ownerStats[stats.PhysicalHitPercent] * PetExpertiseRatingScale,
 
-			stats.MeleeHaste: ownerStats[stats.MeleeHaste],
-			stats.MeleeCrit:  ownerStats[stats.MeleeCrit],
+			stats.HasteRating:         ownerStats[stats.HasteRating],
+			stats.PhysicalCritPercent: ownerStats[stats.PhysicalCritPercent],
 		}
 	}
 }

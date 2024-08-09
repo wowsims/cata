@@ -32,7 +32,8 @@ func (druid *Druid) registerWrathSpell() {
 
 		BonusCoefficient: 0.879,
 
-		BonusCritRating: 1,
+		// TODO: Was the value of 1 here incorrect to begin with?
+		BonusCritPercent: 1 / core.CritRatingPerCritPercent,
 
 		DamageMultiplier: 1,
 

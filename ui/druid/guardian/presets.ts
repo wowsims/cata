@@ -1,3 +1,4 @@
+import * as Mechanics from '../../core/constants/mechanics.js';
 import * as PresetUtils from '../../core/preset_utils.js';
 import { Conjured, Consumes, Flask, Food, Glyphs, Potions, PseudoStat, Spec, Stat, TinkerHands } from '../../core/proto/common';
 import {
@@ -46,18 +47,19 @@ export const SURVIVAL_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAgility]: 1.0,
 			[Stat.StatArmor]: 1.02,
 			[Stat.StatBonusArmor]: 0.23,
-			[Stat.StatDodge]: 0.97,
-			[Stat.StatMastery]: 0.35,
+			[Stat.StatDodgeRating]: 0.97,
+			[Stat.StatMasteryRating]: 0.35,
 			[Stat.StatStrength]: 0.11,
 			[Stat.StatAttackPower]: 0.1,
-			[Stat.StatMeleeHit]: 0.075,
-			[Stat.StatSpellHit]: 0.195,
-			[Stat.StatExpertise]: 0.15,
-			[Stat.StatMeleeCrit]: 0.11,
-			[Stat.StatMeleeHaste]: 0.0,
+			[Stat.StatHitRating]: (0.075 + 0.195),
+			[Stat.StatExpertiseRating]: 0.15,
+			[Stat.StatCritRating]: 0.11,
+			[Stat.StatHasteRating]: 0.0,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 0.0,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: (0.075 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT),
+			[PseudoStat.PseudoStatSpellHitPercent]: (0.195 * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT),
 		},
 	),
 );
@@ -71,17 +73,18 @@ export const BALANCED_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAgility]: 1.0,
 			[Stat.StatArmor]: 0.62,
 			[Stat.StatBonusArmor]: 0.14,
-			[Stat.StatDodge]: 0.59,
-			[Stat.StatMastery]: 0.20,
+			[Stat.StatDodgeRating]: 0.59,
+			[Stat.StatMasteryRating]: 0.20,
 			[Stat.StatStrength]: 0.21,
 			[Stat.StatAttackPower]: 0.20,
-			[Stat.StatMeleeHit]: 0.60,
-			[Stat.StatExpertise]: 0.93,
-			[Stat.StatMeleeCrit]: 0.25,
-			[Stat.StatMeleeHaste]: 0.03,
+			[Stat.StatHitRating]: 0.60,
+			[Stat.StatExpertiseRating]: 0.93,
+			[Stat.StatCritRating]: 0.25,
+			[Stat.StatHasteRating]: 0.03,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 0.23,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: (0.60 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT),
 		},
 	),
 );

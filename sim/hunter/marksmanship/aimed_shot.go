@@ -35,7 +35,7 @@ func (mmHunter *MarksmanshipHunter) registerAimedShotSpell() {
 				return time.Duration(float64(spell.DefaultCast.CastTime) / mmHunter.RangedSwingSpeed())
 			},
 		},
-		BonusCritRating:  0,
+		BonusCritPercent: 0,
 		DamageMultiplier: 1,
 		CritMultiplier:   mmHunter.CritMultiplier(true, true, false),
 		ThreatMultiplier: 1,

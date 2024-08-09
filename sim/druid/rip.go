@@ -39,8 +39,8 @@ func (druid *Druid) registerRipSpell() {
 			return druid.ComboPoints() > 0
 		},
 
-		BonusCritRating:  0,
-		DamageMultiplier: glyphMulti * druid.RazorClawsMultiplier(druid.GetStat(stats.Mastery)),
+		BonusCritPercent: 0,
+		DamageMultiplier: glyphMulti * druid.RazorClawsMultiplier(druid.GetStat(stats.MasteryRating)),
 		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 		MaxRange:         core.MaxMeleeRange,

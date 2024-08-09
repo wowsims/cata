@@ -10,6 +10,7 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 type CataTooltipManager struct {
@@ -133,36 +134,32 @@ var wotlkdbFrostResistanceRegex = regexp.MustCompile(`\+([0-9]+) Frost Resistanc
 var wotlkdbNatureResistanceRegex = regexp.MustCompile(`\+([0-9]+) Nature Resistance`)
 var wotlkdbShadowResistanceRegex = regexp.MustCompile(`\+([0-9]+) Shadow Resistance`)
 
-func (item CataItemResponse) GetStats() Stats {
+func (item CataItemResponse) GetStats() stats.Stats {
 	sp := float64(item.GetIntValue(wotlkdbSpellPowerRegex)) + float64(item.GetIntValue(wotlkdbSpellPowerRegex2))
-	return Stats{
-		proto.Stat_StatArmor:             float64(item.GetIntValue(wotlkdbArmorRegex)),
-		proto.Stat_StatStrength:          float64(item.GetIntValue(wotlkdbStrengthRegex)),
-		proto.Stat_StatAgility:           float64(item.GetIntValue(wotlkdbAgilityRegex)),
-		proto.Stat_StatStamina:           float64(item.GetIntValue(wotlkdbStaminaRegex)),
-		proto.Stat_StatIntellect:         float64(item.GetIntValue(wotlkdbIntellectRegex)),
-		proto.Stat_StatSpirit:            float64(item.GetIntValue(wotlkdbSpiritRegex)),
-		proto.Stat_StatSpellPower:        sp,
-		proto.Stat_StatSpellHit:          float64(item.GetIntValue(wotlkdbHitRegex)),
-		proto.Stat_StatMeleeHit:          float64(item.GetIntValue(wotlkdbHitRegex)),
-		proto.Stat_StatSpellCrit:         float64(item.GetIntValue(wotlkdbCritRegex)),
-		proto.Stat_StatMeleeCrit:         float64(item.GetIntValue(wotlkdbCritRegex)),
-		proto.Stat_StatSpellHaste:        float64(item.GetIntValue(wotlkdbHasteRegex)),
-		proto.Stat_StatMeleeHaste:        float64(item.GetIntValue(wotlkdbHasteRegex)),
-		proto.Stat_StatSpellPenetration:  float64(item.GetIntValue(wotlkdbSpellPenetrationRegex)),
-		proto.Stat_StatMP5:               float64(item.GetIntValue(wotlkdbMp5Regex)),
-		proto.Stat_StatAttackPower:       float64(item.GetIntValue(wotlkdbAttackPowerRegex) + item.GetIntValue(wotlkdbAttackPowerRegex2)),
-		proto.Stat_StatRangedAttackPower: float64(item.GetIntValue(wotlkdbAttackPowerRegex) + item.GetIntValue(wotlkdbAttackPowerRegex2) + item.GetIntValue(wotlkdbRangedAttackPowerRegex)),
-		proto.Stat_StatExpertise:         float64(item.GetIntValue(wotlkdbExpertiseRegex)),
-		proto.Stat_StatBlock:             float64(item.GetIntValue(wotlkdbBlockRegex) + item.GetIntValue(wotlkdbBlockRegex2)),
-		proto.Stat_StatDodge:             float64(item.GetIntValue(wotlkdbDodgeRegex) + item.GetIntValue(wotlkdbDodgeRegex2)),
-		proto.Stat_StatParry:             float64(item.GetIntValue(wotlkdbParryRegex) + item.GetIntValue(wotlkdbParryRegex2)),
-		proto.Stat_StatResilience:        float64(item.GetIntValue(wotlkdbResilienceRegex)),
-		proto.Stat_StatArcaneResistance:  float64(item.GetIntValue(wotlkdbArcaneResistanceRegex)),
-		proto.Stat_StatFireResistance:    float64(item.GetIntValue(wotlkdbFireResistanceRegex)),
-		proto.Stat_StatFrostResistance:   float64(item.GetIntValue(wotlkdbFrostResistanceRegex)),
-		proto.Stat_StatNatureResistance:  float64(item.GetIntValue(wotlkdbNatureResistanceRegex)),
-		proto.Stat_StatShadowResistance:  float64(item.GetIntValue(wotlkdbShadowResistanceRegex)),
+	return stats.Stats{
+		stats.Armor:             float64(item.GetIntValue(wotlkdbArmorRegex)),
+		stats.Strength:          float64(item.GetIntValue(wotlkdbStrengthRegex)),
+		stats.Agility:           float64(item.GetIntValue(wotlkdbAgilityRegex)),
+		stats.Stamina:           float64(item.GetIntValue(wotlkdbStaminaRegex)),
+		stats.Intellect:         float64(item.GetIntValue(wotlkdbIntellectRegex)),
+		stats.Spirit:            float64(item.GetIntValue(wotlkdbSpiritRegex)),
+		stats.SpellPower:        sp,
+		stats.HitRating:         float64(item.GetIntValue(wotlkdbHitRegex)),
+		stats.CritRating:        float64(item.GetIntValue(wotlkdbCritRegex)),
+		stats.HasteRating:       float64(item.GetIntValue(wotlkdbHasteRegex)),
+		stats.SpellPenetration:  float64(item.GetIntValue(wotlkdbSpellPenetrationRegex)),
+		stats.MP5:               float64(item.GetIntValue(wotlkdbMp5Regex)),
+		stats.AttackPower:       float64(item.GetIntValue(wotlkdbAttackPowerRegex) + item.GetIntValue(wotlkdbAttackPowerRegex2)),
+		stats.RangedAttackPower: float64(item.GetIntValue(wotlkdbAttackPowerRegex) + item.GetIntValue(wotlkdbAttackPowerRegex2) + item.GetIntValue(wotlkdbRangedAttackPowerRegex)),
+		stats.ExpertiseRating:   float64(item.GetIntValue(wotlkdbExpertiseRegex)),
+		stats.DodgeRating:       float64(item.GetIntValue(wotlkdbDodgeRegex) + item.GetIntValue(wotlkdbDodgeRegex2)),
+		stats.ParryRating:       float64(item.GetIntValue(wotlkdbParryRegex) + item.GetIntValue(wotlkdbParryRegex2)),
+		stats.ResilienceRating:  float64(item.GetIntValue(wotlkdbResilienceRegex)),
+		stats.ArcaneResistance:  float64(item.GetIntValue(wotlkdbArcaneResistanceRegex)),
+		stats.FireResistance:    float64(item.GetIntValue(wotlkdbFireResistanceRegex)),
+		stats.FrostResistance:   float64(item.GetIntValue(wotlkdbFrostResistanceRegex)),
+		stats.NatureResistance:  float64(item.GetIntValue(wotlkdbNatureResistanceRegex)),
+		stats.ShadowResistance:  float64(item.GetIntValue(wotlkdbShadowResistanceRegex)),
 	}
 }
 
@@ -339,36 +336,32 @@ func (item CataItemResponse) GetGemSockets() []proto.GemColor {
 	return gemColors
 }
 
-func (item CataItemResponse) GetSocketBonus() Stats {
+func (item CataItemResponse) GetSocketBonus() stats.Stats {
 	match := socketBonusRegex.FindStringSubmatch(item.Tooltip)
 	if match == nil {
-		return Stats{}
+		return stats.Stats{}
 	}
 
 	bonusStr := match[1]
 	//fmt.Printf("\n%s\n", bonusStr)
 
-	stats := Stats{
-		proto.Stat_StatStrength:          float64(GetBestRegexIntValue(bonusStr, strengthSocketBonusRegexes, 1)),
-		proto.Stat_StatAgility:           float64(GetBestRegexIntValue(bonusStr, agilitySocketBonusRegexes, 1)),
-		proto.Stat_StatStamina:           float64(GetBestRegexIntValue(bonusStr, staminaSocketBonusRegexes, 1)),
-		proto.Stat_StatIntellect:         float64(GetBestRegexIntValue(bonusStr, intellectSocketBonusRegexes, 1)),
-		proto.Stat_StatSpirit:            float64(GetBestRegexIntValue(bonusStr, spiritSocketBonusRegexes, 1)),
-		proto.Stat_StatSpellHaste:        float64(GetBestRegexIntValue(bonusStr, hasteSocketBonusRegexes, 1)),
-		proto.Stat_StatSpellPower:        float64(GetBestRegexIntValue(bonusStr, spellPowerSocketBonusRegexes, 1)),
-		proto.Stat_StatSpellHit:          float64(GetBestRegexIntValue(bonusStr, spellHitSocketBonusRegexes, 1)),
-		proto.Stat_StatMeleeHit:          float64(GetBestRegexIntValue(bonusStr, spellHitSocketBonusRegexes, 1)),
-		proto.Stat_StatSpellCrit:         float64(GetBestRegexIntValue(bonusStr, spellCritSocketBonusRegexes, 1)),
-		proto.Stat_StatMeleeCrit:         float64(GetBestRegexIntValue(bonusStr, spellCritSocketBonusRegexes, 1)),
-		proto.Stat_StatMeleeHaste:        float64(GetBestRegexIntValue(bonusStr, hasteSocketBonusRegexes, 1)),
-		proto.Stat_StatMP5:               float64(GetBestRegexIntValue(bonusStr, mp5SocketBonusRegexes, 1)),
-		proto.Stat_StatAttackPower:       float64(GetBestRegexIntValue(bonusStr, attackPowerSocketBonusRegexes, 1)),
-		proto.Stat_StatRangedAttackPower: float64(GetBestRegexIntValue(bonusStr, attackPowerSocketBonusRegexes, 1)),
-		proto.Stat_StatExpertise:         float64(GetBestRegexIntValue(bonusStr, expertiseSocketBonusRegexes, 1)),
-		proto.Stat_StatBlock:             float64(GetBestRegexIntValue(bonusStr, blockSocketBonusRegexes, 1)),
-		proto.Stat_StatDodge:             float64(GetBestRegexIntValue(bonusStr, dodgeSocketBonusRegexes, 1)),
-		proto.Stat_StatParry:             float64(GetBestRegexIntValue(bonusStr, parrySocketBonusRegexes, 1)),
-		proto.Stat_StatResilience:        float64(GetBestRegexIntValue(bonusStr, resilienceSocketBonusRegexes, 1)),
+	stats := stats.Stats{
+		stats.Strength:          float64(GetBestRegexIntValue(bonusStr, strengthSocketBonusRegexes, 1)),
+		stats.Agility:           float64(GetBestRegexIntValue(bonusStr, agilitySocketBonusRegexes, 1)),
+		stats.Stamina:           float64(GetBestRegexIntValue(bonusStr, staminaSocketBonusRegexes, 1)),
+		stats.Intellect:         float64(GetBestRegexIntValue(bonusStr, intellectSocketBonusRegexes, 1)),
+		stats.Spirit:            float64(GetBestRegexIntValue(bonusStr, spiritSocketBonusRegexes, 1)),
+		stats.HasteRating:       float64(GetBestRegexIntValue(bonusStr, hasteSocketBonusRegexes, 1)),
+		stats.SpellPower:        float64(GetBestRegexIntValue(bonusStr, spellPowerSocketBonusRegexes, 1)),
+		stats.HitRating:         float64(GetBestRegexIntValue(bonusStr, spellHitSocketBonusRegexes, 1)),
+		stats.CritRating:        float64(GetBestRegexIntValue(bonusStr, spellCritSocketBonusRegexes, 1)),
+		stats.MP5:               float64(GetBestRegexIntValue(bonusStr, mp5SocketBonusRegexes, 1)),
+		stats.AttackPower:       float64(GetBestRegexIntValue(bonusStr, attackPowerSocketBonusRegexes, 1)),
+		stats.RangedAttackPower: float64(GetBestRegexIntValue(bonusStr, attackPowerSocketBonusRegexes, 1)),
+		stats.ExpertiseRating:   float64(GetBestRegexIntValue(bonusStr, expertiseSocketBonusRegexes, 1)),
+		stats.DodgeRating:       float64(GetBestRegexIntValue(bonusStr, dodgeSocketBonusRegexes, 1)),
+		stats.ParryRating:       float64(GetBestRegexIntValue(bonusStr, parrySocketBonusRegexes, 1)),
+		stats.ResilienceRating:  float64(GetBestRegexIntValue(bonusStr, resilienceSocketBonusRegexes, 1)),
 	}
 
 	return stats
@@ -384,35 +377,32 @@ func (item CataItemResponse) GetSocketColor() proto.GemColor {
 	return proto.GemColor_GemColorUnknown
 }
 
-func (item CataItemResponse) GetGemStats() Stats {
-	stats := Stats{
-		proto.Stat_StatStrength:  float64(GetBestRegexIntValue(item.Tooltip, strengthGemStatRegexes, 1)),
-		proto.Stat_StatAgility:   float64(GetBestRegexIntValue(item.Tooltip, agilityGemStatRegexes, 1)),
-		proto.Stat_StatStamina:   float64(GetBestRegexIntValue(item.Tooltip, staminaGemStatRegexes, 1)),
-		proto.Stat_StatIntellect: float64(GetBestRegexIntValue(item.Tooltip, intellectGemStatRegexes, 1)),
-		proto.Stat_StatSpirit:    float64(GetBestRegexIntValue(item.Tooltip, spiritGemStatRegexes, 1)),
+func (item CataItemResponse) GetGemStats() stats.Stats {
+	stats := stats.Stats{
+		stats.Strength:  float64(GetBestRegexIntValue(item.Tooltip, strengthGemStatRegexes, 1)),
+		stats.Agility:   float64(GetBestRegexIntValue(item.Tooltip, agilityGemStatRegexes, 1)),
+		stats.Stamina:   float64(GetBestRegexIntValue(item.Tooltip, staminaGemStatRegexes, 1)),
+		stats.Intellect: float64(GetBestRegexIntValue(item.Tooltip, intellectGemStatRegexes, 1)),
+		stats.Spirit:    float64(GetBestRegexIntValue(item.Tooltip, spiritGemStatRegexes, 1)),
 
-		proto.Stat_StatSpellHit:   float64(GetBestRegexIntValue(item.Tooltip, hitGemStatRegexes, 1)),
-		proto.Stat_StatMeleeHit:   float64(GetBestRegexIntValue(item.Tooltip, hitGemStatRegexes, 1)),
-		proto.Stat_StatSpellCrit:  float64(GetBestRegexIntValue(item.Tooltip, critGemStatRegexes, 1)),
-		proto.Stat_StatMeleeCrit:  float64(GetBestRegexIntValue(item.Tooltip, critGemStatRegexes, 1)),
-		proto.Stat_StatSpellHaste: float64(GetBestRegexIntValue(item.Tooltip, hasteGemStatRegexes, 1)),
-		proto.Stat_StatMeleeHaste: float64(GetBestRegexIntValue(item.Tooltip, hasteGemStatRegexes, 1)),
+		stats.HitRating:   float64(GetBestRegexIntValue(item.Tooltip, hitGemStatRegexes, 1)),
+		stats.CritRating:  float64(GetBestRegexIntValue(item.Tooltip, critGemStatRegexes, 1)),
+		stats.HasteRating: float64(GetBestRegexIntValue(item.Tooltip, hasteGemStatRegexes, 1)),
 
-		proto.Stat_StatSpellPower:        float64(GetBestRegexIntValue(item.Tooltip, spellPowerGemStatRegexes, 1)),
-		proto.Stat_StatAttackPower:       float64(GetBestRegexIntValue(item.Tooltip, attackPowerGemStatRegexes, 1)),
-		proto.Stat_StatRangedAttackPower: float64(GetBestRegexIntValue(item.Tooltip, attackPowerGemStatRegexes, 1)),
-		proto.Stat_StatSpellPenetration:  float64(GetBestRegexIntValue(item.Tooltip, spellPenetrationGemStatRegexes, 1)),
-		proto.Stat_StatMP5:               float64(GetBestRegexIntValue(item.Tooltip, mp5GemStatRegexes, 1)),
-		proto.Stat_StatExpertise:         float64(GetBestRegexIntValue(item.Tooltip, expertiseGemStatRegexes, 1)),
-		proto.Stat_StatDodge:             float64(GetBestRegexIntValue(item.Tooltip, dodgeGemStatRegexes, 1)),
-		proto.Stat_StatParry:             float64(GetBestRegexIntValue(item.Tooltip, parryGemStatRegexes, 1)),
-		proto.Stat_StatResilience:        float64(GetBestRegexIntValue(item.Tooltip, resilienceGemStatRegexes, 1)),
-		proto.Stat_StatArcaneResistance:  float64(GetBestRegexIntValue(item.Tooltip, allResistGemStatRegexes, 1)),
-		proto.Stat_StatFireResistance:    float64(GetBestRegexIntValue(item.Tooltip, allResistGemStatRegexes, 1)),
-		proto.Stat_StatFrostResistance:   float64(GetBestRegexIntValue(item.Tooltip, allResistGemStatRegexes, 1)),
-		proto.Stat_StatNatureResistance:  float64(GetBestRegexIntValue(item.Tooltip, allResistGemStatRegexes, 1)),
-		proto.Stat_StatShadowResistance:  float64(GetBestRegexIntValue(item.Tooltip, allResistGemStatRegexes, 1)),
+		stats.SpellPower:        float64(GetBestRegexIntValue(item.Tooltip, spellPowerGemStatRegexes, 1)),
+		stats.AttackPower:       float64(GetBestRegexIntValue(item.Tooltip, attackPowerGemStatRegexes, 1)),
+		stats.RangedAttackPower: float64(GetBestRegexIntValue(item.Tooltip, attackPowerGemStatRegexes, 1)),
+		stats.SpellPenetration:  float64(GetBestRegexIntValue(item.Tooltip, spellPenetrationGemStatRegexes, 1)),
+		stats.MP5:               float64(GetBestRegexIntValue(item.Tooltip, mp5GemStatRegexes, 1)),
+		stats.ExpertiseRating:   float64(GetBestRegexIntValue(item.Tooltip, expertiseGemStatRegexes, 1)),
+		stats.DodgeRating:       float64(GetBestRegexIntValue(item.Tooltip, dodgeGemStatRegexes, 1)),
+		stats.ParryRating:       float64(GetBestRegexIntValue(item.Tooltip, parryGemStatRegexes, 1)),
+		stats.ResilienceRating:  float64(GetBestRegexIntValue(item.Tooltip, resilienceGemStatRegexes, 1)),
+		stats.ArcaneResistance:  float64(GetBestRegexIntValue(item.Tooltip, allResistGemStatRegexes, 1)),
+		stats.FireResistance:    float64(GetBestRegexIntValue(item.Tooltip, allResistGemStatRegexes, 1)),
+		stats.FrostResistance:   float64(GetBestRegexIntValue(item.Tooltip, allResistGemStatRegexes, 1)),
+		stats.NatureResistance:  float64(GetBestRegexIntValue(item.Tooltip, allResistGemStatRegexes, 1)),
+		stats.ShadowResistance:  float64(GetBestRegexIntValue(item.Tooltip, allResistGemStatRegexes, 1)),
 	}
 
 	return stats

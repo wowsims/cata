@@ -46,7 +46,8 @@ func (druid *Druid) registerStarfireSpell() {
 
 		BonusCoefficient: 1.231,
 
-		BonusCritRating: 1,
+		// TODO: Was the value of 1 here incorrect to begin with?
+		BonusCritPercent: 1 / core.CritRatingPerCritPercent,
 
 		DamageMultiplier: 1,
 

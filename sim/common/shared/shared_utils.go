@@ -190,15 +190,15 @@ func NewSpiritActive(itemID int32, bonus float64, duration time.Duration, cooldo
 }
 
 func NewCritActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
-	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.MeleeCrit: bonus, stats.SpellCrit: bonus})
+	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.CritRating: bonus})
 }
 
 func NewHasteActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
-	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.MeleeHaste: bonus, stats.SpellHaste: bonus})
+	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.HasteRating: bonus})
 }
 
 func NewDodgeActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
-	CreateDevensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.Dodge: bonus})
+	CreateDevensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.DodgeRating: bonus})
 }
 
 func NewSpellPowerActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
@@ -210,11 +210,11 @@ func NewHealthActive(itemID int32, bonus float64, duration time.Duration, cooldo
 }
 
 func NewParryActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
-	CreateDevensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.Parry: bonus})
+	CreateDevensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.ParryRating: bonus})
 }
 
 func NewMasteryActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
-	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.Mastery: bonus})
+	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.MasteryRating: bonus})
 }
 
 type StackingStatBonusCD struct {

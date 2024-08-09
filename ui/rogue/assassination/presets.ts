@@ -1,3 +1,4 @@
+import * as Mechanics from '../../core/constants/mechanics';
 import * as PresetUtils from '../../core/preset_utils';
 import { Conjured, Consumes, Flask, Food, Glyphs, Potions, PseudoStat, Stat } from '../../core/proto/common';
 import { AssassinationRogue_Options as RogueOptions, RogueMajorGlyph, RogueOptions_PoisonImbue, RoguePrimeGlyph } from '../../core/proto/rogue';
@@ -24,17 +25,17 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAgility]: 2.58,
 			[Stat.StatStrength]: 1.05,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatSpellCrit]: 0.26,
-			[Stat.StatSpellHit]: 1.31,
-			[Stat.StatMeleeHit]: 1.43,
-			[Stat.StatMeleeCrit]: 0.62,
-			[Stat.StatMeleeHaste]: 1.1,
-			[Stat.StatMastery]: 1.23,
-			[Stat.StatExpertise]: 1.04,
+			[Stat.StatCritRating]: (0.26 + 0.62),
+			[Stat.StatHitRating]: (1.31 + 1.43),
+			[Stat.StatHasteRating]: 1.1,
+			[Stat.StatMasteryRating]: 1.23,
+			[Stat.StatExpertiseRating]: 1.04,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 2.49,
 			[PseudoStat.PseudoStatOffHandDps]: 1.0,
+			[PseudoStat.PseudoStatSpellHitPercent]: (1.31 * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT),
+			[PseudoStat.PseudoStatPhysicalHitPercent]: (1.43 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT),
 		},
 	),
 );
@@ -46,17 +47,17 @@ export const P1_EP_EXPERTISE_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAgility]: 2.58,
 			[Stat.StatStrength]: 1.05,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatSpellCrit]: 0.26,
-			[Stat.StatSpellHit]: 1.31,
-			[Stat.StatMeleeHit]: 1.43,
-			[Stat.StatMeleeCrit]: 0.62,
-			[Stat.StatMeleeHaste]: 1.1,
-			[Stat.StatMastery]: 1.23,
-			[Stat.StatExpertise]: 2.0,
+			[Stat.StatCritRating]: (0.26 + 0.62),
+			[Stat.StatHitRating]: (1.31 + 1.43),
+			[Stat.StatHasteRating]: 1.1,
+			[Stat.StatMasteryRating]: 1.23,
+			[Stat.StatExpertiseRating]: 2.0,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 2.49,
 			[PseudoStat.PseudoStatOffHandDps]: 1.0,
+			[PseudoStat.PseudoStatSpellHitPercent]: (1.31 * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT),
+			[PseudoStat.PseudoStatPhysicalHitPercent]: (1.43 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT),
 		},
 	),
 );

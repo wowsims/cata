@@ -391,14 +391,13 @@ func majorSpellCritDebuffAura(target *Unit, label string, actionID ActionID, per
 		Duration: time.Second * 30,
 	})
 
-	bonusSpellCrit := percent * CritRatingPerCritChance
 	aura.NewExclusiveEffect(SpellCritEffectCategory, true, ExclusiveEffect{
 		Priority: percent,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.BonusSpellCritRatingTaken += bonusSpellCrit
+			ee.Aura.Unit.PseudoStats.BonusSpellCritPercentTaken += percent
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.BonusSpellCritRatingTaken -= bonusSpellCrit
+			ee.Aura.Unit.PseudoStats.BonusSpellCritPercentTaken -= percent
 		},
 	})
 	return aura
@@ -743,28 +742,6 @@ func increasedMissEffect(aura *Aura, increasedMissChance float64) *ExclusiveEffe
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
 			ee.Aura.Unit.PseudoStats.IncreasedMissChance -= increasedMissChance
-		},
-	})
-}
-
-func minorCritDebuffAura(target *Unit, label string, actionID ActionID, duration time.Duration, critBonus float64) *Aura {
-	aura := target.GetOrRegisterAura(Aura{
-		Label:    label,
-		ActionID: actionID,
-		Duration: duration,
-	})
-	critBonusEffect(aura, critBonus)
-	return aura
-}
-
-func critBonusEffect(aura *Aura, critBonus float64) *ExclusiveEffect {
-	return aura.NewExclusiveEffect("CritBonus", false, ExclusiveEffect{
-		Priority: critBonus,
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.BonusCritRatingTaken += critBonus
-		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.BonusCritRatingTaken -= critBonus
 		},
 	})
 }

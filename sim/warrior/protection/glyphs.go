@@ -23,8 +23,8 @@ func (war *ProtectionWarrior) applyGlyphOfDevastate() {
 
 	war.AddStaticMod(core.SpellModConfig{
 		ClassMask:  warrior.SpellMaskDevastate,
-		Kind:       core.SpellMod_BonusCrit_Rating,
-		FloatValue: 5 * core.CritRatingPerCritChance,
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		FloatValue: 5,
 	})
 }
 

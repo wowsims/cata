@@ -240,8 +240,8 @@ func (mage *Mage) applyArcanePotency() {
 
 	arcanePotencyMod := mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  MageSpellsAllDamaging,
-		FloatValue: []float64{0.0, 7, 15}[mage.Talents.ArcanePotency] * core.CritRatingPerCritChance,
-		Kind:       core.SpellMod_BonusCrit_Rating,
+		FloatValue: []float64{0.0, 7, 15}[mage.Talents.ArcanePotency],
+		Kind:       core.SpellMod_BonusCrit_Percent,
 	})
 
 	var procTime time.Duration

@@ -31,10 +31,10 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 		[Stat.StatIntellect]: 1.3,
 		[Stat.StatSpirit]: 1.27,
 		[Stat.StatSpellPower]: 1,
-		[Stat.StatSpellHit]: 1.27,
-		[Stat.StatSpellCrit]: 0.41,
-		[Stat.StatSpellHaste]: 0.8,
-		[Stat.StatMastery]: 0.56,
+		[Stat.StatHitRating]: 1.27,
+		[Stat.StatCritRating]: 0.41,
+		[Stat.StatHasteRating]: 0.8,
+		[Stat.StatMasteryRating]: 0.56,
 	}),
 );
 

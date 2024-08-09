@@ -64,31 +64,30 @@ type InfernalPet struct {
 
 func (warlock *Warlock) NewInfernalPet() *InfernalPet {
 	statInheritance := func(ownerStats stats.Stats) stats.Stats {
-		ownerHitChance := math.Floor(ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance)
+		ownerHitPercent := math.Floor(ownerStats[stats.SpellHitPercent])
 
 		return stats.Stats{
-			stats.Stamina:          ownerStats[stats.Stamina] * 0.75,
-			stats.Intellect:        ownerStats[stats.Intellect] * 0.3,
-			stats.Armor:            ownerStats[stats.Armor] * 1.0,
-			stats.AttackPower:      ownerStats[stats.SpellPower] * 0.57,
-			stats.SpellPower:       ownerStats[stats.SpellPower] * 0.15,
-			stats.SpellPenetration: ownerStats[stats.SpellPenetration],
-			stats.MeleeHit:         ownerHitChance * core.MeleeHitRatingPerHitChance,
-			stats.SpellHit:         ownerHitChance * core.SpellHitRatingPerHitChance,
-			stats.Expertise: (ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance) *
-				PetExpertiseScale * core.ExpertisePerQuarterPercentReduction,
+			stats.Stamina:            ownerStats[stats.Stamina] * 0.75,
+			stats.Intellect:          ownerStats[stats.Intellect] * 0.3,
+			stats.Armor:              ownerStats[stats.Armor] * 1.0,
+			stats.AttackPower:        ownerStats[stats.SpellPower] * 0.57,
+			stats.SpellPower:         ownerStats[stats.SpellPower] * 0.15,
+			stats.SpellPenetration:   ownerStats[stats.SpellPenetration],
+			stats.PhysicalHitPercent: ownerHitPercent,
+			stats.SpellHitPercent:    ownerHitPercent,
+			stats.ExpertiseRating:    ownerStats[stats.SpellHitPercent] * PetExpertiseScale * core.ExpertisePerQuarterPercentReduction,
 		}
 	}
 
 	infernal := &InfernalPet{
 		Pet: core.NewPet("Infernal", &warlock.Character, stats.Stats{
-			stats.Strength:  331,
-			stats.Agility:   113,
-			stats.Stamina:   361,
-			stats.Intellect: 65,
-			stats.Spirit:    109,
-			stats.Mana:      0,
-			stats.MeleeCrit: 3.192 * core.CritRatingPerCritChance,
+			stats.Strength:            331,
+			stats.Agility:             113,
+			stats.Stamina:             361,
+			stats.Intellect:           65,
+			stats.Spirit:              109,
+			stats.Mana:                0,
+			stats.PhysicalCritPercent: 3.192,
 		}, statInheritance, false, false),
 		owner: warlock,
 	}
@@ -98,7 +97,7 @@ func (warlock *Warlock) NewInfernalPet() *InfernalPet {
 
 	// infernal is classified as a warrior class, so we assume it gets the
 	// same agi crit coefficient
-	infernal.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance*1/62.5)
+	infernal.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, 1/62.5)
 
 	// command doesn't apply to infernal
 	if warlock.Race == proto.Race_RaceOrc {

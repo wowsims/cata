@@ -26,7 +26,7 @@ func (hunter *Hunter) registerArcaneShotSpell() {
 			IgnoreHaste: true,
 		},
 
-		BonusCritRating:          0,
+		BonusCritPercent:         0,
 		DamageMultiplierAdditive: 1,
 		DamageMultiplier:         1,
 		CritMultiplier:           hunter.CritMultiplier(true, true, false),

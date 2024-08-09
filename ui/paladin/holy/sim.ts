@@ -3,8 +3,8 @@ import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_u
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl.js';
-import { Faction, IndividualBuffs, PartyBuffs, Race, Spec, Stat } from '../../core/proto/common.js';
-import { Stats } from '../../core/proto_utils/stats.js';
+import { Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common.js';
+import { Stats, UnitStat } from '../../core/proto_utils/stats.js';
 import * as HolyInputs from '../../paladin/holy/inputs.js';
 import * as PaladinInputs from '../inputs.js';
 import * as Presets from './presets.js';
@@ -16,23 +16,27 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellHaste, Stat.StatSpellCrit, Stat.StatMastery],
+	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatHasteRating, Stat.StatCritRating, Stat.StatMasteryRating],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
-	displayStats: [
-		Stat.StatHealth,
-		Stat.StatMana,
-		Stat.StatIntellect,
-		Stat.StatSpirit,
-		Stat.StatSpellPower,
-		Stat.StatSpellHaste,
-		Stat.StatSpellCrit,
-		Stat.StatSpellHit,
-		Stat.StatMastery,
-		Stat.StatArmor,
-		Stat.StatStamina,
-	],
+	displayStats: UnitStat.createDisplayStatArray(
+		[
+			Stat.StatHealth,
+			Stat.StatMana,
+			Stat.StatIntellect,
+			Stat.StatSpirit,
+			Stat.StatSpellPower,
+			Stat.StatMasteryRating,
+			Stat.StatArmor,
+			Stat.StatStamina,
+		],
+		[
+			PseudoStat.PseudoStatSpellHastePercent,
+			PseudoStat.PseudoStatSpellCritPercent,
+			PseudoStat.PseudoStatSpellHitPercent,
+		],
+	),
 	defaults: {
 		// Default equipped gear.
 		gear: Presets.P1_PRESET.gear,

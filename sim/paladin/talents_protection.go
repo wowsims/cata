@@ -197,8 +197,8 @@ func (paladin *Paladin) applyWrathOfTheLightbringer() {
 
 	paladin.AddStaticMod(core.SpellModConfig{
 		ClassMask:  SpellMaskHammerOfWrath | SpellMaskHolyWrath,
-		Kind:       core.SpellMod_BonusCrit_Rating,
-		FloatValue: 15 * float64(paladin.Talents.WrathOfTheLightbringer) * core.CritRatingPerCritChance,
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		FloatValue: 15 * float64(paladin.Talents.WrathOfTheLightbringer),
 	})
 }
 
@@ -406,8 +406,8 @@ func (paladin *Paladin) applySacredDuty() {
 
 	critMod := paladin.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  SpellMaskShieldOfTheRighteous,
-		Kind:       core.SpellMod_BonusCrit_Rating,
-		FloatValue: 100 * core.CritRatingPerCritChance,
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		FloatValue: 100,
 	})
 
 	paladin.SacredDutyAura = paladin.RegisterAura(core.Aura{
