@@ -22,6 +22,19 @@ export class MeleeMetricsTable extends MetricsTable<ActionMetrics> {
 				getDisplayString: (metric: ActionMetrics) => metric.dps.toFixed(1),
 			},
 			{
+				name: 'DPET',
+				tooltip: 'Damage / Effective (Cast) Time',
+				sort: ColumnSortType.Descending,
+				getValue: (metric: ActionMetrics) => {
+					if (!metric.avgCastTimeMs || (metric.unit?.isPet && !metric.actionId.spellId)) return 0;
+					return metric.avgCast / (metric.avgCastTimeMs / 1000);
+				},
+				getDisplayString: (metric: ActionMetrics) => {
+					if (!metric.avgCastTimeMs || (metric.unit?.isPet && !metric.actionId.spellId)) return '';
+					return (metric.avgCast / (metric.avgCastTimeMs / 1000)).toFixed(1);
+				},
+			},
+			{
 				name: 'Avg Cast',
 				tooltip: 'Damage / Casts',
 				getValue: (metric: ActionMetrics) => metric.avgCast,
