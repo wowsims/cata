@@ -1,7 +1,7 @@
 import * as Mechanics from '../constants/mechanics.js';
 import { CURRENT_API_VERSION } from '../constants/other.js';
 import { Class, PseudoStat, Stat, UnitStats } from '../proto/common.js';
-import { UIStat as UnitStatProto } from '../proto/ui.js';
+import { StatCapConfig, StatCapType, UIStat as UnitStatProto } from '../proto/ui.js';
 import { getEnumValues } from '../utils.js';
 import { getStatName, getClassPseudoStatName } from './names.js';
 import { migrateOldProto, ProtoConversionMap } from './utils.js';
@@ -449,6 +449,58 @@ export class Stats {
 		if (fallbackStats && migratedProto.length !== fallbackStats.length) return fallbackStats;
 
 		return migratedProto;
+	}
+}
+
+export interface BreakpointConfig {
+	breakpoints: number[];
+	capType: StatCapType;
+	postCapEPs: number[];
+}
+
+// Represents a StatCapConfig proto message as a proper class for UI convenience
+export class StatCap {
+	readonly unitStat: UnitStat;
+	readonly capType: StatCapType;
+	breakpoints: number[] = [];
+	postCapEPs: number[] = [];
+
+	private constructor(unitStat: UnitStat, breakpoints: number[], capType: StatCapType, postCapEPs: number[]) {
+		// Check for valid inputs
+		if (capType == StatCapType.TypeSoftCap) {
+			if (breakpoints.length != postCapEPs.length) {
+				throw new Error('Breakpoint and EP counts do not match!');
+			}
+		} else if (capType == StatCapType.TypeThreshold) {
+			if (postCapEPs.length != 1) {
+				throw new Error('Exactly 1 post-cap EP value must be specified for Threshold cap types!');
+			}
+		} else {
+			throw new Error('Only SoftCap and Threshold cap types are supported currently!');
+		}
+
+		this.unitStat = unitStat;
+		this.capType = capType;
+		this.breakpoints = breakpoints;
+		this.postCapEPs = postCapEPs;
+	}
+
+	static fromStat(stat: Stat, config: BreakpointConfig): StatCap {
+		return new StatCap(UnitStat.fromStat(stat), config.breakpoints, config.capType, config.postCapEPs);
+	}
+
+	static fromPseudoStat(pseudoStat: PseudoStat, config: BreakpointConfig): StatCap {
+		return new StatCap(UnitStat.fromPseudoStat(pseudoStat), config.breakpoints, config.capType, config.postCapEPs);
+	}
+
+	static fromProto(message: StatCapConfig[]): StatCap[] {
+		const statCapObjects: StatCap[] = [];
+
+		message.filter(config => config.unitStat).forEach(config => {
+			statCapObjects.push(new StatCap(UnitStat.fromProto(config.unitStat!), config.breakpoints, config.capType, config.postCapEPs));
+		});
+
+		return statCapObjects;
 	}
 }
 

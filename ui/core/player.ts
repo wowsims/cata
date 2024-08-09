@@ -40,7 +40,6 @@ import {
 	DungeonDifficulty,
 	RaidFilterOption,
 	SourceFilterOption,
-	StatCapConfig,
 	UIEnchant as Enchant,
 	UIGem as Gem,
 	UIItem as Item,
@@ -51,7 +50,7 @@ import { Database } from './proto_utils/database';
 import { EquippedItem, getWeaponDPS } from './proto_utils/equipped_item';
 import { Gear, ItemSwapGear } from './proto_utils/gear';
 import { gemMatchesSocket, isUnrestrictedGem } from './proto_utils/gems';
-import { Stats } from './proto_utils/stats';
+import { StatCap, Stats } from './proto_utils/stats';
 import {
 	AL_CATEGORY_HARD_MODE,
 	canEquipEnchant,
@@ -278,7 +277,7 @@ export class Player<SpecType extends Spec> {
 	private epRatios: Array<number> = new Array<number>(Player.numEpRatios).fill(0);
 	private epWeights: Stats = new Stats();
 	private statCaps: Stats = new Stats();
-	private softCapBreakpoints: StatCapConfig[] = [];
+	private softCapBreakpoints: StatCap[] = [];
 	private currentStats: PlayerStats = PlayerStats.create();
 	private metadata: UnitMetadata = new UnitMetadata();
 	private petMetadatas: UnitMetadataList = new UnitMetadataList();
@@ -517,11 +516,11 @@ export class Player<SpecType extends Spec> {
 		this.statCapsChangeEmitter.emit(eventID);
 	}
 
-	getSoftCapBreakpoints(): StatCapConfig[] {
+	getSoftCapBreakpoints(): StatCap[] {
 		return this.softCapBreakpoints;
 	}
 
-	setSoftCapBreakpoints(eventID: EventID, newSoftCapBreakpoints: StatCapConfig[]) {
+	setSoftCapBreakpoints(eventID: EventID, newSoftCapBreakpoints: StatCap[]) {
 		this.softCapBreakpoints = newSoftCapBreakpoints;
 		this.softCapBreakpointsChangeEmitter.emit(eventID);
 	}

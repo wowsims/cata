@@ -9,7 +9,7 @@ import { Mage } from '../../core/player_classes/mage';
 import { APLRotation } from '../../core/proto/apl';
 import { Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
 import { StatCapType } from '../../core/proto/ui';
-import { Stats, UnitStat } from '../../core/proto_utils/stats';
+import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import { sharedMageDisplayStatsModifiers } from '../shared';
 import * as ArcaneInputs from './inputs';
 import * as Presets from './presets';
@@ -58,12 +58,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 			// https://www.icy-veins.com/cataclysm-classic/arcane-mage-pve-stat-priority
 			// https://www.wowhead.com/cata/guide/classes/mage/arcane/dps-stat-priority-attributes-pve
 			const breakpoints = [2497 / Mechanics.HASTE_RATING_PER_HASTE_PERCENT];
-			const hasteSoftCapConfig = {
-				unitStat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent).toProto(),
+			const hasteSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent, {
 				breakpoints,
 				capType: StatCapType.TypeSoftCap,
 				postCapEPs: [0.56 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
-			};
+			});
 
 			return [hasteSoftCapConfig];
 		})(),

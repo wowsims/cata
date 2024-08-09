@@ -7,7 +7,7 @@ import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
 import { StatCapType, UIStat } from '../../core/proto/ui';
-import { convertHastePresetBreakpointsToPercent, Stats, UnitStat } from '../../core/proto_utils/stats';
+import { convertHastePresetBreakpointsToPercent, StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import { sharedMageDisplayStatsModifiers } from '../shared';
 import * as FireInputs from './inputs';
 import * as Presets from './presets';
@@ -55,8 +55,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		})(),
 		// Default soft caps for the Reforge optimizer
 		softCapBreakpoints: (() => {
-			const hasteSoftCapConfig = {
-				unitStat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent).toProto(),
+			const hasteSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent, {
 				breakpoints: [
 					hasteBreakpoints.get('5-tick LvB/Pyro')!,
 					hasteBreakpoints.get('12-tick Combust')!,
@@ -75,7 +74,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 				],
 				capType: StatCapType.TypeThreshold,
 				postCapEPs: [0.61 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
-			};
+			});
 
 			return [hasteSoftCapConfig];
 		})(),
@@ -181,8 +180,8 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 							((oldHastePercent / 100 + 1) / modifier - 1) * 100;
 
 					this.individualConfig.defaults.softCapBreakpoints!.forEach(softCap => {
-						const softCapToModify = softCaps.find(sc => UIStat.equals(sc.unitStat, softCap.unitStat));
-						if (UnitStat.fromProto(softCap.unitStat!).equalsPseudoStat(PseudoStat.PseudoStatSpellHastePercent) && softCapToModify) {
+						const softCapToModify = softCaps.find(sc => sc.unitStat.equals(softCap.unitStat));
+						if (softCap.unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHastePercent) && softCapToModify) {
 							const adjustedHastedBreakpoints = new Set([...softCap.breakpoints]);
 							// LvB/Pyro are not worth adjusting for
 							const excludedHasteBreakpoints = [

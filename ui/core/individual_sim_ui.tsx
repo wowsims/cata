@@ -41,10 +41,10 @@ import {
 	Spec,
 	Stat,
 } from './proto/common';
-import { IndividualSimSettings, SavedTalents, StatCapConfig } from './proto/ui';
+import { IndividualSimSettings, SavedTalents } from './proto/ui';
 import { getMetaGemConditionDescription } from './proto_utils/gems';
 import { armorTypeNames, professionNames } from './proto_utils/names';
-import { Stats, UnitStat } from './proto_utils/stats';
+import { StatCap, Stats, UnitStat } from './proto_utils/stats';
 import { getTalentPoints, SpecOptions, SpecRotation } from './proto_utils/utils';
 import { SimSettingCategories } from './sim';
 import { SimUI, SimWarning } from './sim_ui';
@@ -130,7 +130,7 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 		 * while ignoring any others. Then the solution is used to identify the closest
 		 * breakpoint for the second listed stat (if present), etc.
 		 */
-		softCapBreakpoints?: StatCapConfig[];
+		softCapBreakpoints?: StatCap[];
 		consumes: Consumes;
 		talents: SavedTalents;
 		specOptions: SpecOptions<SpecType>;
@@ -671,7 +671,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 				}
 
 				if (!!settings.softCapBreakpoints.length) {
-					this.player.setSoftCapBreakpoints(eventID, settings.softCapBreakpoints);
+					this.player.setSoftCapBreakpoints(eventID, StatCap.fromProto(settings.softCapBreakpoints));
 				}
 
 				if (settings.dpsRefStat) {
@@ -704,12 +704,10 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		}
 
 		// Then check all configured soft caps for a match.
-		const defaultSoftCaps: StatCapConfig[] = this.individualConfig.defaults.softCapBreakpoints || [];
+		const defaultSoftCaps: StatCap[] = this.individualConfig.defaults.softCapBreakpoints || [];
 
 		for (const config of defaultSoftCaps) {
-			const unitStat = UnitStat.fromProto(config.unitStat!);
-
-			if (unitStat.equalsPseudoStat(pseudoStat)) {
+			if (config.unitStat.equalsPseudoStat(pseudoStat)) {
 				return true;
 			}
 		}

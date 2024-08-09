@@ -7,10 +7,10 @@ import * as Mechanics from '../constants/mechanics.js';
 import { IndividualSimUI } from '../individual_sim_ui';
 import { Player } from '../player';
 import { Class, ItemSlot, Spec, Stat } from '../proto/common';
-import { StatCapConfig, StatCapType } from '../proto/ui';
+import { StatCapType } from '../proto/ui';
 import { Gear } from '../proto_utils/gear';
-import { getClassStatName, slotNames, statCapTypeNames } from '../proto_utils/names';
-import { statPercentageOrPointsToNumber, Stats, statToPercentageOrPoints } from '../proto_utils/stats';
+import { shortSecondaryStatNames, slotNames, statCapTypeNames } from '../proto_utils/names';
+import { StatCap, Stats, UnitStat } from '../proto_utils/stats';
 import { SpecTalents } from '../proto_utils/utils';
 import { Sim } from '../sim';
 import { ActionGroupItem } from '../sim_ui';
@@ -26,31 +26,19 @@ type YalpsCoefficients = Map<string, number>;
 type YalpsVariables = Map<string, YalpsCoefficients>;
 type YalpsConstraints = Map<string, Constraint>;
 
-const INCLUDED_STATS = [
-	Stat.StatMeleeHit,
-	Stat.StatSpellHit,
-	Stat.StatMeleeCrit,
-	Stat.StatSpellCrit,
-	Stat.StatMeleeHaste,
-	Stat.StatSpellHaste,
-	Stat.StatExpertise,
-	Stat.StatMastery,
-	Stat.StatSpirit,
-	Stat.StatDodge,
-	Stat.StatParry,
-];
+const INCLUDED_STATS = Array.from(shortSecondaryStatNames.keys());
 
 type StatTooltipContent = { [key in Stat]?: () => Element | string };
 
 const STAT_TOOLTIPS: StatTooltipContent = {
-	[Stat.StatMastery]: () => (
+	[Stat.StatMasteryRating]: () => (
 		<>
 			Rating: <strong>excluding</strong> your base mastery
 			<br />
 			%: <strong>including</strong> your base mastery
 		</>
 	),
-	[Stat.StatSpellHaste]: () => (
+	[Stat.StatHasteRating]: () => (
 		<>
 			Rating: final rating <strong>including</strong> all buffs/gear.
 			<br />
@@ -71,7 +59,7 @@ export type ReforgeOptimizerOptions = {
 	getEPDefaults?: (player: Player<any>) => Stats;
 	// Allows you to modify default softCaps
 	// For example you wish to add breakpoints for Berserking / Bloodlust if enabled
-	updateSoftCaps?: (softCaps: StatCapConfig[]) => StatCapConfig[];
+	updateSoftCaps?: (softCaps: StatCap[]) => StatCap[];
 	// Allows you to specifiy additional information for the soft cap tooltips
 	additionalSoftCapTooltipInformation?: StatTooltipContent;
 };

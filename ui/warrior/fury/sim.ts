@@ -8,7 +8,7 @@ import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Debuffs, Faction, HandType, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { StatCapType } from '../../core/proto/ui';
-import { Stats, UnitStat } from '../../core/proto_utils/stats';
+import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as WarriorInputs from '../inputs';
 import * as FuryInputs from './inputs';
 import * as Presets from './presets';
@@ -73,12 +73,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 			return expCap;
 		})(),
 		softCapBreakpoints: (() => {
-			const meleeHitSoftCapConfig = {
-				unitStat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent).toProto(),
+			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
 				breakpoints: [8, 27],
 				capType: StatCapType.TypeSoftCap,
 				postCapEPs: [1.23 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT, 0],
-			};
+			});
 
 			return [meleeHitSoftCapConfig];
 		})(),

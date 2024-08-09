@@ -9,7 +9,7 @@ import { APLRotation } from '../../core/proto/apl';
 import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { RogueOptions_PoisonImbue } from '../../core/proto/rogue';
 import { StatCapType } from '../../core/proto/ui';
-import { Stats, UnitStat } from '../../core/proto_utils/stats';
+import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as RogueInputs from '../inputs';
 // import * as SinInputs from './inputs';
 import * as Presets from './presets';
@@ -65,19 +65,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 			return expCap;
 		})(),
 		softCapBreakpoints: (() => {
-			const spellHitSoftCapConfig = {
-				unitStat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent).toProto(),
+			const spellHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent, {
 				breakpoints: [17],
 				capType: StatCapType.TypeSoftCap,
 				postCapEPs: [0],
-			};
+			});
 
-			const meleeHitSoftCapConfig = {
-				unitStat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent).toProto(),
+			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
 				breakpoints: [8, 27],
 				capType: StatCapType.TypeSoftCap,
 				postCapEPs: [0.7 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT, 0],
-			};
+			});
 
 			return [meleeHitSoftCapConfig, spellHitSoftCapConfig];
 		})(),

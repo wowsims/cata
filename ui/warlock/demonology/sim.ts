@@ -8,7 +8,7 @@ import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
 import { StatCapType } from '../../core/proto/ui';
-import { Stats, UnitStat } from '../../core/proto_utils/stats';
+import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as WarlockInputs from '../inputs';
 import * as Presets from './presets';
 
@@ -61,19 +61,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 				masteryRatingBreakpoints.push((masteryPercent / masteryPercentPerPoint) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
 			}
 
-			const masterySoftCapConfig = {
-				unitStat: UnitStat.fromStat(Stat.StatMasteryRating).toProto(),
+			const masterySoftCapConfig = StatCap.fromStat(Stat.StatMasteryRating, {
 				breakpoints: masteryRatingBreakpoints,
 				capType: StatCapType.TypeThreshold,
 				postCapEPs: [0],
-			};
+			});
 
-			const hasteSoftCapConfig = {
-				unitStat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent).toProto(),
+			const hasteSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent, {
 				breakpoints: [16.65, 25],
 				capType: StatCapType.TypeSoftCap,
 				postCapEPs: [0.64 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT, 0.61 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
-			};
+			});
 
 			return [hasteSoftCapConfig, masterySoftCapConfig];
 		})(),

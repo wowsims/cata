@@ -10,7 +10,7 @@ import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, R
 import { GuardianDruid_Rotation as DruidRotation } from '../../core/proto/druid.js';
 import * as AplUtils from '../../core/proto_utils/apl_utils.js';
 import { StatCapType } from '../../core/proto/ui';
-import { Stats, UnitStat } from '../../core/proto_utils/stats.js';
+import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats.js';
 import * as DruidInputs from './inputs.js';
 import * as Presets from './presets.js';
 
@@ -75,19 +75,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 4);
 		})(),
 		softCapBreakpoints: (() => {
-			const expertiseSoftCapConfig = {
-				unitStat: UnitStat.fromStat(Stat.StatExpertiseRating).toProto(),
+			const expertiseSoftCapConfig = StatCap.fromStat(Stat.StatExpertiseRating, {
 				breakpoints: [6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION, 14 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION],
 				capType: StatCapType.TypeSoftCap,
 				postCapEPs: [0.47, 0],
-			};
+			});
 
-			const hitSoftCapConfig = {
-				unitStat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent).toProto(),
+			const hitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
 				breakpoints: [5.5, 8],
 				capType: StatCapType.TypeSoftCap,
 				postCapEPs: [0.47 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT, 0.14 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT],
-			};
+			});
 
 			return [expertiseSoftCapConfig, hitSoftCapConfig];
 		})(),
