@@ -527,15 +527,15 @@ func init() {
 
 	// Normal
 	registerApparatusOfKhazGoroth(apparatusConfig{
-		ItemID:    68972,
-		StatBonus: 508,
+		ItemID:        68972,
+		BonusPerStack: 508,
 	})
 
 	// Heroic
 	registerApparatusOfKhazGoroth(apparatusConfig{
-		ItemID:    69113,
-		StatBonus: 575,
-		Heroic:    true,
+		ItemID:        69113,
+		BonusPerStack: 575,
+		Heroic:        true,
 	})
 
 	core.NewItemEffect(68994, func(agent core.Agent) {
@@ -626,54 +626,38 @@ func init() {
 }
 
 type apparatusConfig struct {
-	ItemID    int32
-	StatBonus float64
-	Heroic    bool
+	ItemID        int32
+	BonusPerStack float64
+	Heroic        bool
 }
 
 func registerApparatusOfKhazGoroth(config apparatusConfig) {
 	core.NewItemEffect(config.ItemID, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		var stacks int32
-		var buffs stats.Stats
-
 		labelSuffix := core.Ternary(config.Heroic, " (Heroic)", "")
 		buffDuration := time.Second * 15
-		buffAuraOnGain := func(aura *core.Aura, sim *core.Simulation) {
-			aura.SetStacks(sim, stacks)
-			character.AddStatsDynamic(sim, buffs)
-		}
-		buffAuraOnExpire := func(aura *core.Aura, sim *core.Simulation) {
-			character.AddStatsDynamic(sim, buffs.Invert())
-		}
 
-		buffAuraCrit := character.GetOrRegisterAura(core.Aura{
-			Label:     "Blessing of the Shaper Crit" + labelSuffix,
-			ActionID:  core.ActionID{SpellID: 96928},
-			MaxStacks: 5,
-			Duration:  buffDuration,
-			OnGain:    buffAuraOnGain,
-			OnExpire:  buffAuraOnExpire,
-		})
+		buffAuraCrit := character.NewTemporaryStatBuffWithStacks(
+			"Blessing of the Shaper Crit"+labelSuffix,
+			core.ActionID{SpellID: 96928},
+			stats.Stats{stats.MeleeCrit: config.BonusPerStack, stats.SpellCrit: config.BonusPerStack},
+			5,
+			buffDuration)
 
-		buffAuraHaste := character.GetOrRegisterAura(core.Aura{
-			Label:     "Blessing of the Shaper Haste" + labelSuffix,
-			ActionID:  core.ActionID{SpellID: 96927},
-			MaxStacks: 5,
-			Duration:  buffDuration,
-			OnGain:    buffAuraOnGain,
-			OnExpire:  buffAuraOnExpire,
-		})
+		buffAuraHaste := character.NewTemporaryStatBuffWithStacks(
+			"Blessing of the Shaper Haste"+labelSuffix,
+			core.ActionID{SpellID: 96927},
+			stats.Stats{stats.MeleeHaste: config.BonusPerStack, stats.SpellHaste: config.BonusPerStack},
+			5,
+			buffDuration)
 
-		buffAuraMastery := character.GetOrRegisterAura(core.Aura{
-			Label:     "Blessing of the Shaper Mastery" + labelSuffix,
-			ActionID:  core.ActionID{SpellID: 96929},
-			MaxStacks: 5,
-			Duration:  buffDuration,
-			OnGain:    buffAuraOnGain,
-			OnExpire:  buffAuraOnExpire,
-		})
+		buffAuraMastery := character.NewTemporaryStatBuffWithStacks(
+			"Blessing of the Shaper Mastery"+labelSuffix,
+			core.ActionID{SpellID: 96929},
+			stats.Stats{stats.Mastery: config.BonusPerStack},
+			5,
+			buffDuration)
 
 		titanicPower := character.RegisterAura(core.Aura{
 			Label:     "Titanic Power" + labelSuffix,
@@ -716,19 +700,17 @@ func registerApparatusOfKhazGoroth(config apparatusConfig) {
 			},
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				statType := character.GetHighestStat([]stats.Stat{stats.MeleeCrit, stats.SpellCrit, stats.MeleeHaste, stats.SpellHaste, stats.Mastery})
-				stacks = titanicPower.GetStacks()
-				statBonus := config.StatBonus * float64(stacks)
 
 				switch statType {
 				case stats.MeleeCrit, stats.SpellCrit:
-					buffs = stats.Stats{stats.MeleeCrit: statBonus, stats.SpellCrit: statBonus}
 					buffAuraCrit.Activate(sim)
+					buffAuraCrit.SetStacks(sim, titanicPower.GetStacks())
 				case stats.MeleeHaste, stats.SpellHaste:
-					buffs = stats.Stats{stats.MeleeHaste: statBonus, stats.SpellHaste: statBonus}
 					buffAuraHaste.Activate(sim)
+					buffAuraHaste.SetStacks(sim, titanicPower.GetStacks())
 				case stats.Mastery:
-					buffs = stats.Stats{stats.Mastery: statBonus}
 					buffAuraMastery.Activate(sim)
+					buffAuraMastery.SetStacks(sim, titanicPower.GetStacks())
 				default:
 					panic("unexpected statType")
 				}
