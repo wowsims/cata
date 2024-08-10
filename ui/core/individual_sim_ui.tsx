@@ -44,7 +44,7 @@ import {
 import { IndividualSimSettings, SavedTalents } from './proto/ui';
 import { getMetaGemConditionDescription } from './proto_utils/gems';
 import { armorTypeNames, professionNames } from './proto_utils/names';
-import { StatCap, Stats, UnitStat } from './proto_utils/stats';
+import { pseudoStatIsCapped, StatCap, Stats, UnitStat } from './proto_utils/stats';
 import { getTalentPoints, SpecOptions, SpecRotation } from './proto_utils/utils';
 import { SimSettingCategories } from './sim';
 import { SimUI, SimWarning } from './sim_ui';
@@ -693,26 +693,18 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		});
 	}
 
-	// Determines whether this sim has either a hard cap or soft cap configured for a particular PseudoStat. Used by the stat
-	// weights code to ensure that school-specific EPs are calculated for Rating stats whenever school-specific caps are present.
+	// Determines whether this sim has either a hard cap or soft cap configured for a particular
+	// PseudoStat. Used by the stat weights code to ensure that school-specific EPs are calculated for
+	// Rating stats whenever school-specific caps are present.
 	hasCapForPseudoStat(pseudoStat: PseudoStat): boolean {
-		// First check both default and currently stored hard caps.
+		// Check both default and currently stored hard caps.
 		const defaultHardCaps = this.individualConfig.defaults.statCaps || new Stats();
+		const currentHardCaps = this.player.getStatCaps();
 
-		if ((defaultHardCaps.getPseudoStat(pseudoStat) != 0) || (this.player.getStatCaps().getPseudoStat(pseudoStat) != 0)) {
-			return true;
-		}
-
-		// Then check all configured soft caps for a match.
+		// Also check all configured soft caps
 		const defaultSoftCaps: StatCap[] = this.individualConfig.defaults.softCapBreakpoints || [];
 
-		for (const config of defaultSoftCaps) {
-			if (config.unitStat.equalsPseudoStat(pseudoStat)) {
-				return true;
-			}
-		}
-
-		return false;
+		return pseudoStatIsCapped(pseudoStat, currentHardCaps.add(defaultHardCaps), defaultSoftCaps);
 	}
 
 	// Determines whether a particular PseudoStat has been configured as a

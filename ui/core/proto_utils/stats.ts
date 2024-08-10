@@ -30,6 +30,9 @@ export class UnitStat {
 	isPseudoStat(): boolean {
 		return this.pseudoStat != null;
 	}
+	isDisplayStat(): boolean {
+		return this.rootStat != null;
+	}
 
 	getStat(): Stat {
 		if (!this.isStat()) {
@@ -42,6 +45,12 @@ export class UnitStat {
 			throw new Error('Not a pseudo stat!');
 		}
 		return this.pseudoStat!;
+	}
+	getRootStat(): Stat {
+		if (!this.isDisplayStat()) {
+			throw new Error('Not a display stat!');
+		}
+		return this.rootStat!;
 	}
 
 	equals(other: UnitStat): boolean {
@@ -73,11 +82,15 @@ export class UnitStat {
 		return fullName.replace(' Rating', '').replace(' Percent', '');
 	}
 
+	getKey(): string {
+		return this.isStat() ? Stat[this.stat!] : PseudoStat[this.getPseudoStat()];
+	}
+
 	// Convert a UnitStat value from its Rating representation to a percentage representation
 	// (0-100). If a percentage representation does not make sense for the stat in question
 	// (Strength for example), then null is returned. Mastery is special cased to return
 	// Mastery points rather than %.
-	getPercentOrPointsValue(ratingValue: number): number | null {
+	convertRatingToPercent(ratingValue: number): number | null {
 		if (this.linkedToStat(Stat.StatCritRating)) {
 			return ratingValue / Mechanics.CRIT_RATING_PER_CRIT_PERCENT;
 		} else if (this.linkedToStat(Stat.StatHasteRating)) {
@@ -103,7 +116,7 @@ export class UnitStat {
 	// Rating. If a Rating representation does not make sense for the stat in question (Block in Cata
 	// for example), then null is returned. Mastery is special cased to assume a Mastery points input
 	// rather than a percentage.
-	getRatingValue(percentOrPointsValue: number): number | null {
+	convertPercentToRating(percentOrPointsValue: number): number | null {
 		if (this.linkedToStat(Stat.StatCritRating)) {
 			return percentOrPointsValue * Mechanics.CRIT_RATING_PER_CRIT_PERCENT;
 		} else if (this.linkedToStat(Stat.StatHasteRating)) {
@@ -122,6 +135,54 @@ export class UnitStat {
 			return percentOrPointsValue * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT;
 		} else {
 			return null;
+		}
+	}
+
+	convertDefaultUnitsToRating(value: number): number | null {
+		if (this.isStat()) {
+			// Proper Stats are either already in Rating units, or
+			// do not have a Rating representation.
+			if (Stat[this.stat!].includes('Rating')) {
+				return value;
+			} else {
+				return null;
+			}
+		} else {
+			// PseudoStats are either in percent units, or do not
+			// have a Rating representation.
+			return this.convertPercentToRating(value);
+		}
+	}
+
+	convertDefaultUnitsToPercent(value: number): number | null {
+		if (this.isStat()) {
+			// Proper stats are either in Rating units, or do not
+			// have a percent representation.
+			return this.convertRatingToPercent(value);
+		} else {
+			// PseudoStats are either already in percent units, or do
+			// not have a percent representation.
+			if (PseudoStat[this.getPseudoStat()].includes('Percent')) {
+				return value;
+			} else {
+				return null;
+			}
+		}
+	}
+
+	convertRatingToDefaultUnits(ratingValue: number): number | null {
+		if (this.isStat()) {
+			return Stat[this.stat!].includes('Rating') ? ratingValue : null;
+		} else {
+			return this.convertRatingToPercent(ratingValue);
+		}
+	}
+
+	convertPercentToDefaultUnits(percentValue: number): number | null {
+		if (this.isStat()) {
+			return this.convertPercentToRating(percentValue);
+		} else {
+			return PseudoStat[this.getPseudoStat()].includes('Percent') ? percentValue : null;
 		}
 	}
 
@@ -172,16 +233,22 @@ export class UnitStat {
 	}
 
 	static fromStat(stat: Stat): UnitStat {
-		return new UnitStat(stat, null, null);
+		return new UnitStat(stat, null, stat);
 	}
 	static fromPseudoStat(pseudoStat: PseudoStat): UnitStat {
 		return new UnitStat(null, pseudoStat, UnitStat.getRootStat(pseudoStat));
 	}
 
-	static getAll(): Array<UnitStat> {
+	static getAllStats(): Array<UnitStat> {
 		const allStats = getEnumValues(Stat) as Array<Stat>;
+		return allStats.map(stat => UnitStat.fromStat(stat));
+	}
+	static getAllPseudoStats(): Array<UnitStat> {
 		const allPseudoStats = getEnumValues(PseudoStat) as Array<PseudoStat>;
-		return [allStats.map(stat => UnitStat.fromStat(stat)), allPseudoStats.map(stat => UnitStat.fromPseudoStat(stat))].flat();
+		return allPseudoStats.map(pseudoStat => UnitStat.fromPseudoStat(pseudoStat));
+	}
+	static getAll(): Array<UnitStat> {
+		return [UnitStat.getAllStats(), UnitStat.getAllPseudoStats()].flat();
 	}
 
 	// Returns the "parent" Stat (such as HitRating) associated with a
@@ -202,6 +269,20 @@ export class UnitStat {
 			return Stat.StatCritRating;
 		} else {
 			return null;
+		}
+	}
+
+	// Inverse of the above
+	static getChildren(parentStat: Stat): PseudoStat[] {
+		switch (parentStat) {
+			case Stat.StatHitRating:
+				return [PseudoStat.PseudoStatPhysicalHitPercent, PseudoStat.PseudoStatSpellHitPercent];
+			case Stat.StatCritRating:
+				return [PseudoStat.PseudoStatPhysicalCritPercent, PseudoStat.PseudoStatSpellCritPercent];
+			case Stat.StatHasteRating:
+				return [PseudoStat.PseudoStatMeleeHastePercent, PseudoStat.PseudoStatRangedHastePercent, PseudoStat.PseudoStatSpellHastePercent];
+			default:
+				return [];
 		}
 	}
 
@@ -306,6 +387,9 @@ export class Stats {
 	addStat(stat: Stat, value: number): Stats {
 		return this.withStat(stat, this.getStat(stat) + value);
 	}
+	addPseudoStat(pseudoStat: PseudoStat, value: number): Stats {
+		return this.withPseudoStat(pseudoStat, this.getPseudoStat(pseudoStat) + value);
+	}
 
 	add(other: Stats): Stats {
 		return new Stats(
@@ -364,8 +448,14 @@ export class Stats {
 		);
 	}
 
-	asArray(): Array<number> {
+	asProtoArray(): Array<number> {
 		return this.stats.slice();
+	}
+
+	asUnitStatArray(): [UnitStat, number][] {
+		const statValues = this.stats.map((value, key) => [UnitStat.fromStat(key), value] as [UnitStat, number]);
+		const pseudoStatValues = this.pseudoStats.map((value, key) => [UnitStat.fromPseudoStat(key), value] as [UnitStat, number]);
+		return statValues.concat(pseudoStatValues);
 	}
 
 	toJson(): object {
@@ -465,17 +555,12 @@ export class StatCap {
 	breakpoints: number[] = [];
 	postCapEPs: number[] = [];
 
-	private constructor(unitStat: UnitStat, breakpoints: number[], capType: StatCapType, postCapEPs: number[]) {
+	constructor(unitStat: UnitStat, breakpoints: number[], capType: StatCapType, postCapEPs: number[]) {
 		// Check for valid inputs
-		if (capType == StatCapType.TypeSoftCap) {
-			if (breakpoints.length != postCapEPs.length) {
+		if ((capType == StatCapType.TypeSoftCap) && (breakpoints.length != postCapEPs.length)) {
 				throw new Error('Breakpoint and EP counts do not match!');
-			}
-		} else if (capType == StatCapType.TypeThreshold) {
-			if (postCapEPs.length != 1) {
-				throw new Error('Exactly 1 post-cap EP value must be specified for Threshold cap types!');
-			}
-		} else {
+		}
+		if ((capType != StatCapType.TypeSoftCap) && (capType != StatCapType.TypeThreshold)) {
 			throw new Error('Only SoftCap and Threshold cap types are supported currently!');
 		}
 
@@ -512,4 +597,20 @@ export function convertHastePresetBreakpointsToPercent(ratingPresets: Map<string
 	}
 
 	return convertedPresets;
+}
+
+// Helper utility to determine whether a particular PseudoStat has been configured as either a hard cap or
+// soft cap.
+export function pseudoStatIsCapped(pseudoStat: PseudoStat, hardCaps: Stats, softCaps: StatCap[]): boolean {
+	if (hardCaps.getPseudoStat(pseudoStat) != 0) {
+		return true;
+	}
+
+	for (const config of softCaps) {
+		if (config.unitStat.equalsPseudoStat(pseudoStat)) {
+			return true;
+		}
+	}
+
+	return false;
 }
