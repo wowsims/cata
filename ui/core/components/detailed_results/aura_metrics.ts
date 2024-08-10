@@ -1,3 +1,4 @@
+import { OtherAction } from '../../proto/common';
 import { AuraMetrics, SimResult, SimResultFilter } from '../../proto_utils/sim_result';
 import { ColumnSortType, MetricsTable } from './metrics_table';
 import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component';
@@ -52,10 +53,9 @@ export class AuraMetricsTable extends MetricsTable<AuraMetrics> {
 			}
 			const player = players[0];
 
-			const auras = player.auras;
+			const auras = this.filterMetrics(player.auras);
 			const actionGroups = AuraMetrics.groupById(auras);
-			const petGroups = player.pets.map(pet => pet.auras);
-
+			const petGroups = player.pets.map(pet => this.filterMetrics(pet.auras));
 			return actionGroups.concat(petGroups);
 		}
 	}
@@ -66,5 +66,9 @@ export class AuraMetricsTable extends MetricsTable<AuraMetrics> {
 
 	shouldCollapse(metric: AuraMetrics): boolean {
 		return !metric.unit?.isPet;
+	}
+
+	filterMetrics(metrics: Array<AuraMetrics>): Array<AuraMetrics> {
+		return metrics.filter(aura => aura.actionId.otherId !== OtherAction.OtherActionMove);
 	}
 }

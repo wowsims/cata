@@ -154,6 +154,9 @@ message ActionMetrics {
 	// Note that some spells are untargeted, these will always have a single
 	// element in this array.
 	repeated TargetedActionMetrics targets = 3;
+
+	SpellSchool spell_school = 4;
+
 }
 
 // Metrics for a specific action, when cast at a particular target.

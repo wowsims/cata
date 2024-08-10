@@ -8,8 +8,10 @@ import { TypedEvent } from '../typed_event';
 import { Component } from './component';
 import { AuraMetricsTable } from './detailed_results/aura_metrics';
 import { CastMetricsTable } from './detailed_results/cast_metrics';
+import { DamageMetricsTable } from './detailed_results/damage_metrics';
 import { DpsHistogram } from './detailed_results/dps_histogram';
 import { DtpsMeleeMetricsTable } from './detailed_results/dtps_melee_metrics';
+import { DtpsMetricsTable } from './detailed_results/dtps_metrics';
 import { DtpsSpellMetricsTable } from './detailed_results/dtps_spell_metrics';
 import { HealingMetricsTable } from './detailed_results/healing_metrics';
 import { LogRunner } from './detailed_results/log_runner';
@@ -38,17 +40,17 @@ const tabs: Tab[] = [
 		isActive: true,
 		targetId: 'damageTab',
 		label: 'Damage',
-		classes: ['damage-metrics'],
+		classes: ['damage-metrics-tab'],
 	},
 	{
 		targetId: 'healingTab',
 		label: 'Healing',
-		classes: ['healing-metrics'],
+		classes: ['healing-metrics-tab'],
 	},
 	{
 		targetId: 'damageTakenTab',
 		label: 'Damage Taken',
-		classes: ['threat-metrics'],
+		classes: ['threat-metrics-tab'],
 	},
 	{
 		targetId: 'buffsTab',
@@ -125,11 +127,14 @@ export abstract class DetailedResults extends Component {
 							<div className="player-damage-metrics" />
 						</div>
 						<div className="dr-row single-player-only">
+							<div className="damage-metrics" />
+						</div>
+						{/* <div className="dr-row single-player-only">
 							<div className="melee-metrics" />
 						</div>
 						<div className="dr-row single-player-only">
 							<div className="spell-metrics" />
-						</div>
+						</div> */}
 						<div className="dr-row dps-histogram" />
 					</div>
 					<div id="healingTab" className="tab-pane dr-tab-content healing-content fade">
@@ -145,10 +150,7 @@ export abstract class DetailedResults extends Component {
 							<div className="player-damage-taken-metrics" />
 						</div>
 						<div className="dr-row single-player-only">
-							<div className="dtps-melee-metrics" />
-						</div>
-						<div className="dr-row single-player-only">
-							<div className="dtps-spell-metrics" />
+							<div className="dtps-metrics" />
 						</div>
 						<div className="dr-row damage-taken-histogram single-player-only" />
 					</div>
@@ -218,14 +220,18 @@ export abstract class DetailedResults extends Component {
 			parent: this.rootElem.querySelector('.cast-metrics')!,
 			resultsEmitter: this.resultsEmitter,
 		});
-		new MeleeMetricsTable({
-			parent: this.rootElem.querySelector('.melee-metrics')!,
+		new DamageMetricsTable({
+			parent: this.rootElem.querySelector('.damage-metrics')!,
 			resultsEmitter: this.resultsEmitter,
 		});
-		new SpellMetricsTable({
-			parent: this.rootElem.querySelector('.spell-metrics')!,
-			resultsEmitter: this.resultsEmitter,
-		});
+		// new MeleeMetricsTable({
+		// 	parent: this.rootElem.querySelector('.melee-metrics')!,
+		// 	resultsEmitter: this.resultsEmitter,
+		// });
+		// new SpellMetricsTable({
+		// 	parent: this.rootElem.querySelector('.spell-metrics')!,
+		// 	resultsEmitter: this.resultsEmitter,
+		// });
 		new HealingMetricsTable({
 			parent: this.rootElem.querySelector('.healing-spell-metrics')!,
 			resultsEmitter: this.resultsEmitter,
@@ -262,14 +268,18 @@ export abstract class DetailedResults extends Component {
 			resultsEmitter: this.resultsEmitter,
 		});
 
-		new DtpsMeleeMetricsTable({
-			parent: this.rootElem.querySelector('.dtps-melee-metrics')!,
+		new DtpsMetricsTable({
+			parent: this.rootElem.querySelector('.dtps-metrics')!,
 			resultsEmitter: this.resultsEmitter,
 		});
-		new DtpsSpellMetricsTable({
-			parent: this.rootElem.querySelector('.dtps-spell-metrics')!,
-			resultsEmitter: this.resultsEmitter,
-		});
+		// new DtpsMeleeMetricsTable({
+		// 	parent: this.rootElem.querySelector('.dtps-melee-metrics')!,
+		// 	resultsEmitter: this.resultsEmitter,
+		// });
+		// new DtpsSpellMetricsTable({
+		// 	parent: this.rootElem.querySelector('.dtps-spell-metrics')!,
+		// 	resultsEmitter: this.resultsEmitter,
+		// });
 
 		const timeline = new Timeline({
 			parent: this.rootElem.querySelector('.timeline')!,

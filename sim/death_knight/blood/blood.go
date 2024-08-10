@@ -98,7 +98,7 @@ func (bdk *BloodDeathKnight) ApplyTalents() {
 	shieldSpell := bdk.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 77535},
 		ProcMask:    core.ProcMaskSpellHealing,
-		SpellSchool: core.SpellSchoolPhysical,
+		SpellSchool: core.SpellSchoolShadow,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

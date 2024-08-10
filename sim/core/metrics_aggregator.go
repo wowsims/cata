@@ -123,6 +123,8 @@ type ActionMetrics struct {
 
 	// Metrics for this action, for each possible target.
 	Targets []TargetedActionMetrics
+
+	SpellSchool SpellSchool
 }
 
 type tmiListItem struct {
@@ -137,9 +139,10 @@ func (actionMetrics *ActionMetrics) ToProto(actionID ActionID) *proto.ActionMetr
 	}
 
 	return &proto.ActionMetrics{
-		Id:      actionID.ToProto(),
-		IsMelee: actionMetrics.IsMelee,
-		Targets: targetMetrics,
+		Id:          actionID.ToProto(),
+		IsMelee:     actionMetrics.IsMelee,
+		Targets:     targetMetrics,
+		SpellSchool: actionMetrics.SpellSchool.ToProto(),
 	}
 }
 
@@ -308,7 +311,7 @@ func (unitMetrics *UnitMetrics) addSpellMetrics(spell *Spell, actionID ActionID,
 	}
 
 	if !ok {
-		actionMetrics = &ActionMetrics{IsMelee: spell.Flags.Matches(SpellFlagMeleeMetrics)}
+		actionMetrics = &ActionMetrics{IsMelee: spell.Flags.Matches(SpellFlagMeleeMetrics), SpellSchool: spell.SpellSchool}
 		unitMetrics.actions[actionID] = actionMetrics
 	}
 

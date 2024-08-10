@@ -15,30 +15,26 @@ export class SpellMetricsTable extends MetricsTable<ActionMetrics> {
 				};
 			}),
 			{
-				name: 'DPS',
-				tooltip: 'Damage / Encounter Duration',
-				sort: ColumnSortType.Descending,
-				getValue: (metric: ActionMetrics) => metric.dps,
-				getDisplayString: (metric: ActionMetrics) => metric.dps.toFixed(1),
+				name: 'Damage done',
+				tooltip: 'Total Damage done',
+				getValue: (metric: ActionMetrics) => metric.damage,
+				getDisplayString: (metric: ActionMetrics) => {
+					const metricDamageDone = new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 2 }).format(metric.avgDamage);
+					console.log({ metricDamageDone, totalDamagePercent: metric.totalDamagePercent });
+					return metricDamageDone;
+				},
+			},
+			{
+				name: 'Casts',
+				tooltip: 'Casts',
+				getValue: (metric: ActionMetrics) => metric.casts,
+				getDisplayString: (metric: ActionMetrics) => metric.casts.toFixed(1),
 			},
 			{
 				name: 'Avg Cast',
 				tooltip: 'Damage / Casts',
 				getValue: (metric: ActionMetrics) => metric.avgCast,
 				getDisplayString: (metric: ActionMetrics) => metric.avgCast.toFixed(1),
-			},
-			{
-				name: 'Avg Hit',
-				tooltip: 'Damage / Hits',
-				getValue: (metric: ActionMetrics) => metric.avgHit,
-				getDisplayString: (metric: ActionMetrics) => metric.avgHit.toFixed(1),
-			},
-			{
-				name: 'TPS',
-				tooltip: 'Threat / Encounter Duration',
-				columnClass: 'threat-metrics',
-				getValue: (metric: ActionMetrics) => metric.tps,
-				getDisplayString: (metric: ActionMetrics) => metric.tps.toFixed(1),
 			},
 			{
 				name: 'Avg Cast',
@@ -48,6 +44,18 @@ export class SpellMetricsTable extends MetricsTable<ActionMetrics> {
 				getDisplayString: (metric: ActionMetrics) => metric.avgCastThreat.toFixed(1),
 			},
 			{
+				name: 'Hits',
+				tooltip: 'Hits',
+				getValue: (metric: ActionMetrics) => metric.landedHits,
+				getDisplayString: (metric: ActionMetrics) => metric.landedHits.toFixed(1),
+			},
+			{
+				name: 'Avg Hit',
+				tooltip: 'Damage / Hits',
+				getValue: (metric: ActionMetrics) => metric.avgHit,
+				getDisplayString: (metric: ActionMetrics) => metric.avgHit.toFixed(1),
+			},
+			{
 				name: 'Avg Hit',
 				tooltip: 'Threat / Hits',
 				columnClass: 'threat-metrics',
@@ -55,16 +63,10 @@ export class SpellMetricsTable extends MetricsTable<ActionMetrics> {
 				getDisplayString: (metric: ActionMetrics) => metric.avgHitThreat.toFixed(1),
 			},
 			{
-				name: 'Casts',
-				tooltip: 'Casts',
-				getValue: (metric: ActionMetrics) => metric.casts,
-				getDisplayString: (metric: ActionMetrics) => metric.casts.toFixed(1),
-			},
-			{
-				name: 'Hits',
-				tooltip: 'Hits',
-				getValue: (metric: ActionMetrics) => metric.landedHits,
-				getDisplayString: (metric: ActionMetrics) => metric.landedHits.toFixed(1),
+				name: 'Crit %',
+				tooltip: 'Crits / Hits',
+				getValue: (metric: ActionMetrics) => metric.critPercent,
+				getDisplayString: (metric: ActionMetrics) => metric.critPercent.toFixed(2) + '%',
 			},
 			{
 				name: 'Miss %',
@@ -73,10 +75,18 @@ export class SpellMetricsTable extends MetricsTable<ActionMetrics> {
 				getDisplayString: (metric: ActionMetrics) => metric.missPercent.toFixed(2) + '%',
 			},
 			{
-				name: 'Crit %',
-				tooltip: 'Crits / Hits',
-				getValue: (metric: ActionMetrics) => metric.critPercent,
-				getDisplayString: (metric: ActionMetrics) => metric.critPercent.toFixed(2) + '%',
+				name: 'DPS',
+				tooltip: 'Damage / Encounter Duration',
+				sort: ColumnSortType.Descending,
+				getValue: (metric: ActionMetrics) => metric.dps,
+				getDisplayString: (metric: ActionMetrics) => metric.dps.toFixed(1),
+			},
+			{
+				name: 'TPS',
+				tooltip: 'Threat / Encounter Duration',
+				columnClass: 'threat-metrics',
+				getValue: (metric: ActionMetrics) => metric.tps,
+				getDisplayString: (metric: ActionMetrics) => metric.tps.toFixed(1),
 			},
 		]);
 	}
@@ -94,12 +104,15 @@ export class SpellMetricsTable extends MetricsTable<ActionMetrics> {
 		}
 		const player = players[0];
 
-		const actions = player.getSpellActions().map(action => action.forTarget(resultData.filter));
+		const actions = player.getSpellDamageActions().map(action => action.forTarget(resultData.filter));
 		const actionGroups = ActionMetrics.groupById(actions);
 
 		const petsByName = bucket(player.pets, pet => pet.name);
 		const petGroups = Object.values(petsByName).map(pets =>
-			ActionMetrics.joinById(pets.map(pet => pet.getSpellActions().map(action => action.forTarget(resultData.filter))).flat(), true),
+			ActionMetrics.joinById(
+				pets.flatMap(pet => pet.getSpellDamageActions().map(action => action.forTarget(resultData.filter))),
+				true,
+			),
 		);
 
 		return actionGroups.concat(petGroups);

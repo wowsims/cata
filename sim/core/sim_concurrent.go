@@ -152,9 +152,10 @@ func (rsrc *raidSimResultCombiner) addActionMetrics(unit *proto.UnitMetrics, add
 
 	if am == nil {
 		am = &proto.ActionMetrics{
-			Id:      add.Id,
-			IsMelee: add.IsMelee,
-			Targets: make([]*proto.TargetedActionMetrics, len(add.Targets)),
+			Id:          add.Id,
+			IsMelee:     add.IsMelee,
+			Targets:     make([]*proto.TargetedActionMetrics, len(add.Targets)),
+			SpellSchool: add.SpellSchool,
 		}
 		for i, addTgt := range add.Targets {
 			am.Targets[i] = &proto.TargetedActionMetrics{

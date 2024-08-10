@@ -315,6 +315,15 @@ export const mod = (n: number, m: number): number => {
 	return ((n % m) + m) % m;
 };
 
+export const formatToCompactNumber: typeof formatToNumber = (number: number, options?: Intl.NumberFormatOptions) =>
+	formatToNumber(number, { notation: 'compact', ...options });
+
+export const formatToPercent: typeof formatToNumber = (number: number, options?: Intl.NumberFormatOptions) =>
+	formatToNumber(number / 100, { style: 'percent', ...options });
+
+export const formatToNumber = (number: number, options?: Intl.NumberFormatOptions) =>
+	new Intl.NumberFormat('en-US', { maximumFractionDigits: 2, ...options }).format(number);
+
 type Environments = 'local' | 'external';
 
 const hostname = window.location.hostname;

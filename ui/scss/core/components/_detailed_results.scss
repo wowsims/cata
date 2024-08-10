@@ -145,20 +145,38 @@
 }
 
 .metrics-table {
+	--bs-border-default: rgba(var(--bs-white-rgb), 0.2);
+	font-size: 12px;
 	width: 100%;
+
+	th,
+	td {
+		border-left: 1px solid var(--bs-border-default);
+		border-right: 1px solid var(--bs-border-default);
+		&:first-child {
+			border-left: 0;
+		}
+		&:last-child {
+			border-right: 0;
+		}
+	}
 }
 
 .metrics-table-header-row {
-	border-bottom: 2px solid var(--bs-white);
+	border-bottom: 2px solid rgba(var(--bs-white-rgb), 0.8);
 }
 
 .metrics-table-header-cell {
-	padding: 0.25rem;
+	padding: var(--spacer-1) var(--spacer-2);
 	cursor: pointer;
 }
 
 .metrics-table-body tr {
-	border-bottom: var(--border-default);
+	border-bottom: 1px solid var(--bs-border-default);
+
+	&:nth-child(odd) {
+		background-color: rgba(var(--bs-white-rgb), 0.05);
+	}
 }
 
 .metrics-table-body tr:hover {
@@ -166,7 +184,7 @@
 }
 
 .metrics-table-body td {
-	padding: 0.25rem;
+	padding: var(--spacer-1) var(--spacer-2);
 }
 
 .metrics-table-header-cell:first-child,
@@ -180,8 +198,8 @@
 
 .metrics-action-icon {
 	@include wowhead-background-icon;
-	height: 30px;
-	width: 30px;
+	height: 24px;
+	width: 24px;
 	vertical-align: middle;
 	margin-right: 4px;
 }
@@ -201,4 +219,36 @@ tr:not(.parent-metric) .expand-toggle {
 }
 .parent-metric:not(.expand) .fa-caret-right {
 	display: none;
+}
+
+.metric-total {
+}
+
+.metrics-total-percentage,
+.metrics-total-damage {
+	flex-shrink: 0;
+}
+.metrics-total-percentage {
+	width: 7ch;
+}
+
+.metrics-total-damage {
+	width: 7ch;
+}
+
+.metrics-total-bar {
+	flex-shrink: 1;
+	flex-grow: 1;
+	width: 180px;
+	background-color: color-mix(in srgb, var(--bs-white) 5%, transparent);
+	position: relative;
+}
+
+.metrics-total-bar-fill {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: var(--percentage);
+	height: 100%;
+	background-color: currentColor;
 }

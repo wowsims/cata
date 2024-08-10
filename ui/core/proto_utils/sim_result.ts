@@ -1,3 +1,4 @@
+import { DamageMetricsTable } from '../components/detailed_results/damage_metrics';
 import { PlayerSpec } from '../player_spec.js';
 import { PlayerSpecs } from '../player_specs';
 import {
@@ -17,7 +18,7 @@ import {
 	TargetedActionMetrics as TargetedActionMetricsProto,
 	UnitMetrics as UnitMetricsProto,
 } from '../proto/api.js';
-import { Class, Encounter as EncounterProto, Target as TargetProto } from '../proto/common.js';
+import { Class, Encounter as EncounterProto, SpellSchool, Target as TargetProto } from '../proto/common.js';
 import { SimRun } from '../proto/ui.js';
 import { ActionId, defaultTargetIcon } from '../proto_utils/action_id.js';
 import { getPlayerSpecFromPlayer } from '../proto_utils/utils.js';
@@ -219,7 +220,6 @@ export class SimResult {
 	static async makeNew(request: RaidSimRequest, result: RaidSimResult): Promise<SimResult> {
 		const resultData = new SimResultData(request, result);
 		const logs = await SimLog.parseAll(result);
-
 		const raidPromise = RaidMetrics.makeNew(resultData, request.raid!, result.raidMetrics!, logs);
 		const encounterPromise = EncounterMetrics.makeNew(resultData, request.encounter!, result.encounterMetrics!, logs);
 
@@ -356,7 +356,11 @@ export class UnitMetrics {
 		this.spec = this.player ? getPlayerSpecFromPlayer(this.player) : null;
 		this.petActionId = petActionId;
 		this.iconUrl = this.isPlayer ? this.spec?.getIcon('medium') ?? '' : this.isTarget ? defaultTargetIcon : '';
-		this.classColor = this.isTarget ? '' : PlayerSpecs.getPlayerClass(this.spec as PlayerSpec<any>).friendlyName.toLowerCase().replace(/\s/g, '-') ?? '';
+		this.classColor = this.isTarget
+			? ''
+			: PlayerSpecs.getPlayerClass(this.spec as PlayerSpec<any>)
+					.friendlyName.toLowerCase()
+					.replace(/\s/g, '-') ?? '';
 		this.dps = this.metrics.dps!;
 		this.dpasp = this.metrics.dpasp!;
 		this.hps = this.metrics.hps!;
@@ -469,8 +473,20 @@ export class UnitMetrics {
 		return this.getActionsForDisplay().filter(e => e.isMeleeAction);
 	}
 
+	getMeleeDamageActions(): Array<ActionMetrics> {
+		return this.getMeleeActions().filter(e => e.dps !== 0 && e.hps === 0);
+	}
+
 	getSpellActions(): Array<ActionMetrics> {
 		return this.getActionsForDisplay().filter(e => !e.isMeleeAction);
+	}
+
+	getSpellDamageActions(): Array<ActionMetrics> {
+		return this.getSpellActions().filter(e => e.dps !== 0 && e.hps === 0);
+	}
+
+	getDamageActions(): Array<ActionMetrics> {
+		return this.getActionsForDisplay().filter(e => e.dps !== 0 && e.hps === 0);
 	}
 
 	getHealingActions(): Array<ActionMetrics> {
@@ -735,6 +751,7 @@ export class ActionMetrics {
 	readonly actionId: ActionId;
 	readonly name: string;
 	readonly iconUrl: string;
+	readonly spellSchool: SpellSchool | null;
 	readonly targets: Array<TargetedActionMetrics>;
 	private readonly resultData: SimResultData;
 	private readonly iterations: number;
@@ -752,6 +769,7 @@ export class ActionMetrics {
 		this.iterations = resultData.iterations;
 		this.duration = resultData.duration;
 		this.data = data;
+		this.spellSchool = data.spellSchool;
 		this.targets = data.targets.map(tam => new TargetedActionMetrics(this.iterations, this.duration, tam));
 		this.combinedMetrics = TargetedActionMetrics.merge(this.targets);
 		this.resources = [];
@@ -761,12 +779,38 @@ export class ActionMetrics {
 		return this.data.isMelee;
 	}
 
+	get totalDamagePercent() {
+		const totalAvgDps = this.resultData.result.raidMetrics?.dps?.avg;
+		if (!totalAvgDps) return undefined;
+
+		return (this.avgDamage / (totalAvgDps * this.duration)) * 100;
+	}
+
 	get damage() {
 		return this.combinedMetrics.damage;
 	}
 
+	get avgDamage() {
+		return this.combinedMetrics.damage / this.iterations;
+	}
+
 	get dps() {
 		return this.combinedMetrics.dps;
+	}
+
+	get totalHealingPercent() {
+		const totalAvgHps = this.resultData.result.raidMetrics?.hps?.avg;
+		if (!totalAvgHps) return undefined;
+
+		return (this.avgHealing / (totalAvgHps * this.duration)) * 100;
+	}
+
+	get healing() {
+		return this.combinedMetrics.healing;
+	}
+
+	get avgHealing() {
+		return this.combinedMetrics.healing / this.iterations;
 	}
 
 	get hps() {
@@ -803,6 +847,10 @@ export class ActionMetrics {
 		return this.combinedMetrics.healingThroughput;
 	}
 
+	get shielding() {
+		return this.combinedMetrics.shielding;
+	}
+
 	get avgCast() {
 		return this.combinedMetrics.avgCast;
 	}
@@ -833,6 +881,14 @@ export class ActionMetrics {
 
 	get critPercent() {
 		return this.combinedMetrics.critPercent;
+	}
+
+	get totalMisses() {
+		return this.misses + this.dodges + this.parries;
+	}
+
+	get totalMissesPercent() {
+		return this.missPercent + this.dodgePercent + this.parryPercent;
 	}
 
 	get misses() {
@@ -958,8 +1014,24 @@ export class TargetedActionMetrics {
 		return this.data.damage;
 	}
 
+	get avgDamage() {
+		return this.data.damage / this.iterations;
+	}
+
 	get dps() {
 		return this.data.damage / this.iterations / this.duration;
+	}
+
+	get healing() {
+		return this.data.healing + this.data.shielding;
+	}
+
+	get avgHealing() {
+		return (this.data.healing + this.data.shielding) / this.iterations;
+	}
+
+	get shielding() {
+		return this.data.shielding;
 	}
 
 	get hps() {
@@ -1022,6 +1094,14 @@ export class TargetedActionMetrics {
 
 	get critPercent() {
 		return (this.data.crits / (this.hitAttempts || 1)) * 100;
+	}
+
+	get totalMisses() {
+		return this.misses + this.dodges + this.parries;
+	}
+
+	get totalMissesPercent() {
+		return this.missPercent + this.dodgePercent + this.parryPercent;
 	}
 
 	get misses() {

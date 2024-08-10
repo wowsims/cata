@@ -445,18 +445,20 @@ export class ActionId {
 				}
 				break;
 			case 'Frozen Blows':
-				if (this.tag == 1) {
-					name += ' (Physical)';
-				} else if (this.tag == 2) {
-					name += ' (Frost)';
-				}
+				// No longer needed due to SpellSchool
+				// if (this.tag == 1) {
+				// 	name += ' (Physical)';
+				// } else if (this.tag == 2) {
+				// 	name += ' (Frost)';
+				// }
 				break;
 			case 'Scourge Strike':
-				if (this.tag == 1) {
-					name += ' (Physical)';
-				} else if (this.tag == 2) {
-					name += ' (Shadow)';
-				}
+				// No longer needed due to SpellSchool
+				// 	if (this.tag == 1) {
+				// 		name += ' (Physical)';
+				// 	} else if (this.tag == 2) {
+				// 		name += ' (Shadow)';
+				// 	}
 				break;
 			case 'Heart Strike':
 				/*if (this.tag == 1) {

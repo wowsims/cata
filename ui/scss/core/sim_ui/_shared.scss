@@ -114,14 +114,17 @@ th {
 }
 
 // TODO: Move these to an organized partial
+.hide-damage-metrics .damage-metrics-tab,
 .hide-damage-metrics .damage-metrics {
 	display: none !important;
 }
 
+.hide-threat-metrics .threat-metrics-tab,
 .hide-threat-metrics .threat-metrics {
 	display: none !important;
 }
 
+.hide-healing-metrics .healing-metrics-tab,
 .hide-healing-metrics .healing-metrics {
 	display: none !important;
 }

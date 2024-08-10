@@ -56,11 +56,11 @@ export abstract class MetricsTable<T> extends ResultComponent {
 		this.columnConfigs.forEach(columnConfig => {
 			const headerCell = document.createElement('th');
 			headerCell.classList.add('metrics-table-header-cell');
-			if (columnConfig.headerCellClass) {
-				headerCell.classList.add(columnConfig.headerCellClass);
-			}
 			if (columnConfig.columnClass) {
 				headerCell.classList.add(columnConfig.columnClass);
+			}
+			if (columnConfig.headerCellClass) {
+				headerCell.classList.add(columnConfig.headerCellClass);
 			}
 			headerCell.appendChild(<span>{columnConfig.name}</span>);
 			if (columnConfig.tooltip) {
@@ -75,6 +75,7 @@ export abstract class MetricsTable<T> extends ResultComponent {
 		const sortList = this.columnConfigs
 			.map((config, i) => [i, config.sort == ColumnSortType.Ascending ? 0 : 1])
 			.filter(sortData => this.columnConfigs[sortData[0]].sort);
+
 		$(this.tableElem).tablesorter({
 			sortList: sortList,
 			cssChildRow: 'child-metric',
@@ -102,6 +103,9 @@ export abstract class MetricsTable<T> extends ResultComponent {
 
 		this.columnConfigs.forEach(columnConfig => {
 			const cellElem = document.createElement('td');
+			if (columnConfig.getValue) {
+				cellElem.dataset.text = String(columnConfig.getValue(metric));
+			}
 			if (columnConfig.columnClass) {
 				cellElem.classList.add(columnConfig.columnClass);
 			}

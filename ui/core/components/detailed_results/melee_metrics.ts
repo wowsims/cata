@@ -15,30 +15,25 @@ export class MeleeMetricsTable extends MetricsTable<ActionMetrics> {
 				};
 			}),
 			{
-				name: 'DPS',
-				tooltip: 'Damage / Encounter Duration',
-				sort: ColumnSortType.Descending,
-				getValue: (metric: ActionMetrics) => metric.dps,
-				getDisplayString: (metric: ActionMetrics) => metric.dps.toFixed(1),
+				name: 'Damage done',
+				tooltip: 'Total Damage done',
+				getValue: (metric: ActionMetrics) => metric.damage,
+				getDisplayString: (metric: ActionMetrics) => {
+					// console.log(metric.name, metric);
+					return new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 2 }).format(metric.avgDamage);
+				},
+			},
+			{
+				name: 'Casts',
+				tooltip: 'Casts',
+				getValue: (metric: ActionMetrics) => metric.casts,
+				getDisplayString: (metric: ActionMetrics) => metric.casts.toFixed(1),
 			},
 			{
 				name: 'Avg Cast',
 				tooltip: 'Damage / Casts',
 				getValue: (metric: ActionMetrics) => metric.avgCast,
 				getDisplayString: (metric: ActionMetrics) => metric.avgCast.toFixed(1),
-			},
-			{
-				name: 'Avg Hit',
-				tooltip: 'Damage / (Hits + Crits + Glances + Blocks)',
-				getValue: (metric: ActionMetrics) => metric.avgHit,
-				getDisplayString: (metric: ActionMetrics) => metric.avgHit.toFixed(1),
-			},
-			{
-				name: 'TPS',
-				tooltip: 'Threat / Encounter Duration',
-				columnClass: 'threat-metrics',
-				getValue: (metric: ActionMetrics) => metric.tps,
-				getDisplayString: (metric: ActionMetrics) => metric.tps.toFixed(1),
 			},
 			{
 				name: 'Avg Cast',
@@ -48,6 +43,18 @@ export class MeleeMetricsTable extends MetricsTable<ActionMetrics> {
 				getDisplayString: (metric: ActionMetrics) => metric.avgCastThreat.toFixed(1),
 			},
 			{
+				name: 'Hits',
+				tooltip: 'Hits + Crits + Glances + Blocks',
+				getValue: (metric: ActionMetrics) => metric.landedHits,
+				getDisplayString: (metric: ActionMetrics) => metric.landedHits.toFixed(1),
+			},
+			{
+				name: 'Avg Hit',
+				tooltip: 'Damage / (Hits + Crits + Glances + Blocks)',
+				getValue: (metric: ActionMetrics) => metric.avgHit,
+				getDisplayString: (metric: ActionMetrics) => metric.avgHit.toFixed(1),
+			},
+			{
 				name: 'Avg Hit',
 				tooltip: 'Threat / (Hits + Crits + Glances + Blocks)',
 				columnClass: 'threat-metrics',
@@ -55,16 +62,10 @@ export class MeleeMetricsTable extends MetricsTable<ActionMetrics> {
 				getDisplayString: (metric: ActionMetrics) => metric.avgHitThreat.toFixed(1),
 			},
 			{
-				name: 'Casts',
-				tooltip: 'Casts',
-				getValue: (metric: ActionMetrics) => metric.casts,
-				getDisplayString: (metric: ActionMetrics) => metric.casts.toFixed(1),
-			},
-			{
-				name: 'Hits',
-				tooltip: 'Hits + Crits + Glances + Blocks',
-				getValue: (metric: ActionMetrics) => metric.landedHits,
-				getDisplayString: (metric: ActionMetrics) => metric.landedHits.toFixed(1),
+				name: 'Crit %',
+				tooltip: 'Crits / Swings',
+				getValue: (metric: ActionMetrics) => metric.critPercent,
+				getDisplayString: (metric: ActionMetrics) => metric.critPercent.toFixed(2) + '%',
 			},
 			{
 				name: 'Miss %',
@@ -72,37 +73,45 @@ export class MeleeMetricsTable extends MetricsTable<ActionMetrics> {
 				getValue: (metric: ActionMetrics) => metric.missPercent,
 				getDisplayString: (metric: ActionMetrics) => metric.missPercent.toFixed(2) + '%',
 			},
+			// {
+			// 	name: 'Dodge %',
+			// 	tooltip: 'Dodges / Swings',
+			// 	getValue: (metric: ActionMetrics) => metric.dodgePercent,
+			// 	getDisplayString: (metric: ActionMetrics) => metric.dodgePercent.toFixed(2) + '%',
+			// },
+			// {
+			// 	name: 'Parry %',
+			// 	tooltip: 'Parries / Swings',
+			// 	columnClass: 'in-front-of-target',
+			// 	getValue: (metric: ActionMetrics) => metric.parryPercent,
+			// 	getDisplayString: (metric: ActionMetrics) => metric.parryPercent.toFixed(2) + '%',
+			// },
+			// {
+			// 	name: 'Block %',
+			// 	tooltip: 'Blocks / Swings',
+			// 	columnClass: 'in-front-of-target',
+			// 	getValue: (metric: ActionMetrics) => metric.blockPercent,
+			// 	getDisplayString: (metric: ActionMetrics) => metric.blockPercent.toFixed(2) + '%',
+			// },
+			// {
+			// 	name: 'Glance %',
+			// 	tooltip: 'Glances / Swings',
+			// 	getValue: (metric: ActionMetrics) => metric.glancePercent,
+			// 	getDisplayString: (metric: ActionMetrics) => metric.glancePercent.toFixed(2) + '%',
+			// },
 			{
-				name: 'Dodge %',
-				tooltip: 'Dodges / Swings',
-				getValue: (metric: ActionMetrics) => metric.dodgePercent,
-				getDisplayString: (metric: ActionMetrics) => metric.dodgePercent.toFixed(2) + '%',
+				name: 'DPS',
+				tooltip: 'Damage / Encounter Duration',
+				sort: ColumnSortType.Descending,
+				getValue: (metric: ActionMetrics) => metric.dps,
+				getDisplayString: (metric: ActionMetrics) => metric.dps.toFixed(1),
 			},
 			{
-				name: 'Parry %',
-				tooltip: 'Parries / Swings',
-				columnClass: 'in-front-of-target',
-				getValue: (metric: ActionMetrics) => metric.parryPercent,
-				getDisplayString: (metric: ActionMetrics) => metric.parryPercent.toFixed(2) + '%',
-			},
-			{
-				name: 'Block %',
-				tooltip: 'Blocks / Swings',
-				columnClass: 'in-front-of-target',
-				getValue: (metric: ActionMetrics) => metric.blockPercent,
-				getDisplayString: (metric: ActionMetrics) => metric.blockPercent.toFixed(2) + '%',
-			},
-			{
-				name: 'Glance %',
-				tooltip: 'Glances / Swings',
-				getValue: (metric: ActionMetrics) => metric.glancePercent,
-				getDisplayString: (metric: ActionMetrics) => metric.glancePercent.toFixed(2) + '%',
-			},
-			{
-				name: 'Crit %',
-				tooltip: 'Crits / Swings',
-				getValue: (metric: ActionMetrics) => metric.critPercent,
-				getDisplayString: (metric: ActionMetrics) => metric.critPercent.toFixed(2) + '%',
+				name: 'TPS',
+				tooltip: 'Threat / Encounter Duration',
+				columnClass: 'threat-metrics',
+				getValue: (metric: ActionMetrics) => metric.tps,
+				getDisplayString: (metric: ActionMetrics) => metric.tps.toFixed(1),
 			},
 		]);
 	}
@@ -120,12 +129,12 @@ export class MeleeMetricsTable extends MetricsTable<ActionMetrics> {
 			this.rootElem.classList.add('hide-in-front-of-target');
 		}
 
-		const actions = player.getMeleeActions().map(action => action.forTarget(resultData.filter));
+		const actions = player.getMeleeDamageActions().map(action => action.forTarget(resultData.filter));
 		const actionGroups = ActionMetrics.groupById(actions);
 
 		const petsByName = bucket(player.pets, pet => pet.name);
 		const petGroups = Object.values(petsByName).map(pets =>
-			ActionMetrics.joinById(pets.map(pet => pet.getMeleeActions().map(action => action.forTarget(resultData.filter))).flat(), true),
+			ActionMetrics.joinById(pets.map(pet => pet.getMeleeDamageActions().map(action => action.forTarget(resultData.filter))).flat(), true),
 		);
 
 		return actionGroups.concat(petGroups);

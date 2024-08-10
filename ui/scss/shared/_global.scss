@@ -7,13 +7,13 @@
 	}
 
 	// We want to apply only to 1440p monitors, NOT 1080p Ultrawide
-	@media (min-width: map-get($grid-breakpoints, 1440p)) and (max-aspect-ratio: 16/9) {
-		--bs-body-font-size: 20px;
-	}
+	// @media (min-width: map-get($grid-breakpoints, 1440p)) and (max-aspect-ratio: 16/9) {
+	// 	--bs-body-font-size: 20px;
+	// }
 
-	@include media-breakpoint-up(4k) {
-		--bs-body-font-size: 24px;
-	}
+	// @include media-breakpoint-up(4k) {
+	// 	--bs-body-font-size: 24px;
+	// }
 
 	@include media-breakpoint-up(lg) {
 		--section-spacer: var(--section-spacer-lg) !important;

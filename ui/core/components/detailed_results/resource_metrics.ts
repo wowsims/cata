@@ -1,6 +1,6 @@
 import { ResourceType } from '../../proto/api.js';
 import { resourceNames } from '../../proto_utils/names.js';
-import { ResourceMetrics, SimResult, SimResultFilter } from '../../proto_utils/sim_result.js';
+import { ResourceMetrics } from '../../proto_utils/sim_result.js';
 import { orderedResourceTypes } from '../../proto_utils/utils.js';
 import { ColumnSortType, MetricsTable } from './metrics_table.js';
 import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component.js';
@@ -29,7 +29,8 @@ export class ResourceMetricsTable extends ResultComponent {
 		});
 	}
 
-	onSimResult(resultData: SimResultData) {}
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
+	onSimResult() {}
 }
 
 export class TypedResourceMetricsTable extends MetricsTable<ResourceMetrics> {

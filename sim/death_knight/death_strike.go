@@ -39,7 +39,7 @@ func (dk *DeathKnight) registerDeathStrikeSpell() {
 		ClassSpellMask: DeathKnightSpellDeathStrikeHeal,
 
 		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
+		ThreatMultiplier: 0,
 	})
 
 	doHealing := func(sim *core.Simulation, value float64) {
