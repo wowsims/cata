@@ -1,9 +1,10 @@
-
+import clsx from 'clsx';
 
 import { RaidSimResult, ResourceType } from '../proto/api.js';
+import { SpellSchool } from '../proto/common';
 import { bucket, getEnumValues, stringComparator, sum } from '../utils.js';
 import { ActionId } from './action_id.js';
-import { resourceNames, stringToResourceType } from './names.js';
+import { resourceNames, spellSchoolNames, stringToResourceType } from './names.js';
 
 export class Entity {
 	readonly name: string;
@@ -82,6 +83,7 @@ interface SimLogParams {
 	source: Entity | null;
 	target: Entity | null;
 	actionId: ActionId | null;
+	spellSchool: SpellSchool | null;
 	threat: number;
 }
 
@@ -100,6 +102,8 @@ export class SimLog {
 	readonly target: Entity | null;
 	readonly actionId: ActionId | null;
 
+	// Spell schoool from this event. Note that not all events have spell schools, so this will be 0null.
+	readonly spellSchool: SpellSchool | null;
 	// Amount of threat generated from this event. Note that not all events generate threat, so this will be 0.
 	readonly threat: number;
 
@@ -116,6 +120,7 @@ export class SimLog {
 		this.source = params.source;
 		this.target = params.target;
 		this.actionId = params.actionId;
+		this.spellSchool = params.spellSchool;
 		this.threat = params.threat;
 		this.activeAuras = [];
 	}
@@ -200,8 +205,13 @@ export class SimLog {
 					source: null,
 					target: null,
 					actionId: null,
+					spellSchool: null,
 					threat: 0,
 				};
+				const spellSchoolMatch = line.match(/ \(SpellSchool: (-?[0-9]+)\)/);
+				if (spellSchoolMatch) {
+					params.spellSchool = parseInt(spellSchoolMatch[1]);
+				}
 
 				const threatMatch = line.match(/ \(Threat: (-?[0-9]+\.[0-9]+)\)/);
 				if (threatMatch) {
@@ -358,6 +368,7 @@ export class DamageDealtLog extends SimLog {
 	}
 
 	result() {
+		const spellSchoolString = typeof this.spellSchool === 'number' ? spellSchoolNames.get(this.spellSchool) : undefined;
 		return (
 			<>
 				{this.isHealing() ? `Heal ` : ''}
@@ -385,7 +396,10 @@ export class DamageDealtLog extends SimLog {
 				{this.target?.toHTML() || ''}
 				{!this.miss && !this.dodge && !this.parry ? (
 					<>
-						for <strong className="text-danger">{this.amount.toFixed(2)} damage</strong>
+						for{' '}
+						<strong className={clsx('text-danger', spellSchoolString && `spell-school-${spellSchoolString.toLowerCase()}`)}>
+							{this.amount.toFixed(2)} damage{spellSchoolString && <> ({spellSchoolString})</>}
+						</strong>
 						{this.partialResist1_4 ? (
 							<> (10% Resist)</>
 						) : this.partialResist2_4 ? (
@@ -503,6 +517,7 @@ export class DpsLog extends SimLog {
 					source: ddLogGroup[0].source,
 					target: null,
 					actionId: null,
+					spellSchool: ddLogGroup[0].spellSchool,
 					threat: 0,
 				},
 				dps,
@@ -537,6 +552,7 @@ export class ThreatLogGroup extends SimLog {
 					source: logGroup[0].source,
 					target: logGroup[0].target,
 					actionId: null,
+					spellSchool: logGroup[0].spellSchool,
 					threat: newThreat,
 				},
 				curThreat,
@@ -677,6 +693,7 @@ export class AuraUptimeLog extends SimLog {
 						source: log.source,
 						target: log.target,
 						actionId: gainedLog.actionId,
+						spellSchool: log.spellSchool,
 						threat: gainedLog.threat,
 					},
 					log.timestamp,
@@ -701,6 +718,7 @@ export class AuraUptimeLog extends SimLog {
 						source: gainedLog.source,
 						target: gainedLog.target,
 						actionId: gainedLog.actionId,
+						spellSchool: gainedLog.spellSchool,
 						threat: gainedLog.threat,
 					},
 					encounterDuration,
@@ -849,6 +867,7 @@ export class ResourceChangedLogGroup extends SimLog {
 							source: logGroup[0].source,
 							target: logGroup[0].target,
 							actionId: null,
+							spellSchool: logGroup[0].spellSchool,
 							threat: 0,
 						},
 						resourceType,
@@ -983,6 +1002,7 @@ export class CastLog extends SimLog {
 			source: castBeganLog.source,
 			target: castBeganLog.target,
 			actionId: castCompletedLog?.actionId || castBeganLog.actionId, // Use completed log because of arcane blast
+			spellSchool: castCompletedLog?.spellSchool || castBeganLog.spellSchool,
 			threat: castCompletedLog?.threat || castBeganLog.threat,
 		});
 		this.castTime = castBeganLog.castTime;

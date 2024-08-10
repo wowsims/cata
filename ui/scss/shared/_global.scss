@@ -181,7 +181,6 @@ kbd {
 		color: var(--bs-#{$label}) !important;
 	}
 }
-
 @each $label, $value in $resource-colors {
 	.resource-#{$label} {
 		color: var(--bs-#{$label}) !important;
@@ -194,6 +193,11 @@ kbd {
 }
 @each $label, $value in $faction-colors {
 	.faction-#{$label} {
+		color: var(--bs-#{$label}) !important;
+	}
+}
+@each $label, $value in $spell-school-colors {
+	.spell-school-#{$label} {
 		color: var(--bs-#{$label}) !important;
 	}
 }

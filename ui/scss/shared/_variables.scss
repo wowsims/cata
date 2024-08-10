@@ -39,6 +39,17 @@ $class-colors: (
 );
 $theme-colors: map-merge($theme-colors, $class-colors);
 
+$spell-school-colors:(
+	physical: #e5cc80,
+	arcane: #8ff2ff,
+	fire: #eb4561,
+	frost: #4a80ff,
+	holy: #ffff8f,
+	nature: #d1fa99,
+	shadow: #b8a8f0,
+);
+$theme-colors: map-merge($theme-colors, $spell-school-colors);
+
 $custom-colors: (
 	expansion: $expansion,
 	brand: $brand,

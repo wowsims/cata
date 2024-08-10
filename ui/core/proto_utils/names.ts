@@ -1,5 +1,5 @@
 import { ResourceType } from '../proto/api.js';
-import { ArmorType, Class, ItemSlot, Profession, PseudoStat, Race, RangedWeaponType, Spec, Stat, WeaponType } from '../proto/common.js';
+import { ArmorType, Class, ItemSlot, Profession, PseudoStat, Race, RangedWeaponType, Spec, SpellSchool, Stat, WeaponType } from '../proto/common.js';
 import { DungeonDifficulty, RaidFilterOption, RepFaction, RepLevel, SourceFilterOption, StatCapType } from '../proto/ui.js';
 
 export const armorTypeNames: Map<ArmorType, string> = new Map([
@@ -211,6 +211,16 @@ export function getClassStatName(stat: Stat, playerClass: Class): string {
 		return statName;
 	}
 }
+
+export const spellSchoolNames: Map<SpellSchool, string> = new Map([
+	[SpellSchool.SpellSchoolPhysical, 'Physical'],
+	[SpellSchool.SpellSchoolArcane, 'Arcane'],
+	[SpellSchool.SpellSchoolFire, 'Fire'],
+	[SpellSchool.SpellSchoolFrost, 'Frost'],
+	[SpellSchool.SpellSchoolHoly, 'Holy'],
+	[SpellSchool.SpellSchoolNature, 'Nature'],
+	[SpellSchool.SpellSchoolShadow, 'Shadow'],
+]);
 
 export const slotNames: Map<ItemSlot, string> = new Map([
 	[ItemSlot.ItemSlotHead, 'Head'],
