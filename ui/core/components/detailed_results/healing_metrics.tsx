@@ -3,7 +3,8 @@ import clsx from 'clsx';
 import { spellSchoolNames } from '../../proto_utils/names';
 import { ActionMetrics } from '../../proto_utils/sim_result.js';
 import { formatToCompactNumber, formatToNumber, formatToPercent } from '../../utils.js';
-import { ColumnSortType, MetricsTable } from './metrics_table.jsx';
+import { ColumnSortType, MetricsTable } from './metrics_table/metrics_table.jsx';
+import { MetricsTotalBar } from './metrics_table/metrics_total_bar';
 import { ResultComponentConfig, SimResultData } from './result_component.js';
 
 export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
@@ -33,24 +34,15 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 				getValue: (metric: ActionMetrics) => metric.avgHealing,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
 					cellElem.classList.add('metric-total');
-					const spellSchoolString = typeof metric.spellSchool === 'number' ? spellSchoolNames.get(metric.spellSchool) : undefined;
 					cellElem.appendChild(
-						<div className="d-flex gap-1">
-							<div className="metrics-total-percentage">{formatToPercent(metric.totalHealingPercent || 0)}</div>
-							<div className="metrics-total-bar">
-								<div
-									className={clsx('metrics-total-bar-fill', spellSchoolString && `spell-school-${spellSchoolString.toLowerCase()}`)}
-									style={{ '--percentage': formatToPercent((metric.healing / (this.maxHealingAmount ?? 1)) * 100) }}
-								/>
-								{metric.shielding ? (
-									<div
-										className="metrics-total-bar-fill bg-black bg-opacity-25"
-										style={{ '--percentage': formatToPercent((metric.shielding / (this.maxHealingAmount ?? 1)) * 100) }}
-									/>
-								) : undefined}
-							</div>
-							<div className="metrics-total-damage">{formatToCompactNumber(metric.avgHealing)}</div>
-						</div>,
+						<MetricsTotalBar
+							spellSchool={metric.spellSchool}
+							percentage={metric.totalHealingPercent}
+							max={this.maxHealingAmount}
+							total={metric.avgHealing}
+							value={metric.healing}
+							overlayValue={metric.shielding}
+						/>,
 					);
 				},
 			},

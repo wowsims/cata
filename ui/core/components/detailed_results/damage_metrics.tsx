@@ -2,10 +2,12 @@ import clsx from 'clsx';
 import tippy from 'tippy.js';
 
 import { spellSchoolNames } from '../../proto_utils/names';
-import { ActionMetrics } from '../../proto_utils/sim_result.js';
-import { bucket, formatToCompactNumber, formatToNumber, formatToPercent } from '../../utils.js';
-import { ColumnSortType, MetricsTable } from './metrics_table.jsx';
-import { ResultComponentConfig, SimResultData } from './result_component.js';
+import { ActionMetrics } from '../../proto_utils/sim_result';
+import { bucket, formatToCompactNumber, formatToNumber, formatToPercent } from '../../utils';
+import { MetricsCombinedTooltipTable } from './metrics_table/metrics_combined_tooltip_table';
+import { ColumnSortType, MetricsTable } from './metrics_table/metrics_table';
+import { MetricsTotalBar } from './metrics_table/metrics_total_bar';
+import { ResultComponentConfig, SimResultData } from './result_component';
 
 export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 	maxDamageAmount: number | null = null;
@@ -34,23 +36,14 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				getValue: (metric: ActionMetrics) => metric.avgDamage,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
 					cellElem.classList.add('metric-total');
-					// console.log({
-					// 	name: metric.name,
-					// 	isPet: metric.unit?.isPet,
-					// 	otherId: metric.actionId.otherId,
-					// 	totalDamagePercent: metric.totalDamagePercent || 0,
-					// });
-					const spellSchoolString = typeof metric.spellSchool === 'number' ? spellSchoolNames.get(metric.spellSchool) : undefined;
 					cellElem.appendChild(
-						<div className="d-flex gap-1">
-							<div className="metrics-total-percentage">{formatToPercent(metric.totalDamagePercent || 0)}</div>
-							<div className="metrics-total-bar">
-								<div
-									className={clsx('metrics-total-bar-fill', spellSchoolString && `spell-school-${spellSchoolString.toLowerCase()}`)}
-									style={{ '--percentage': formatToPercent((metric.damage / (this.maxDamageAmount ?? 1)) * 100) }}></div>
-							</div>
-							<div className="metrics-total-damage">{formatToCompactNumber(metric.avgDamage)}</div>
-						</div>,
+						<MetricsTotalBar
+							spellSchool={metric.spellSchool}
+							percentage={metric.totalDamagePercent}
+							max={this.maxDamageAmount}
+							total={metric.avgDamage}
+							value={metric.damage}
+						/>,
 					);
 				},
 			},
@@ -108,43 +101,32 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 					cellElem.appendChild(<>{formatToPercent(metric.totalMissesPercent)}</>);
 
 					tippy(cellElem, {
+						placement: 'right',
+						theme: 'metrics-table',
 						content: (
 							<>
-								<table className="metrics-table">
-									<thead className="metrics-table-header">
-										<tr className="metrics-table-header-row">
-											<th className="metrics-table-header-cell">Type</th>
-											<th className="metrics-table-header-cell">Count</th>
-										</tr>
-									</thead>
-									<tbody className="metrics-table-body">
-										{metric.misses ? (
-											<tr>
-												<td>Miss</td>
-												<td>
-													{formatToPercent((metric.missPercent / metric.totalMissesPercent) * 100)} - {formatToNumber(metric.misses)}
-												</td>
-											</tr>
-										) : undefined}
-										{metric.parries ? (
-											<tr>
-												<td>Parry</td>
-												<td>
-													{formatToPercent((metric.parryPercent / metric.totalMissesPercent) * 100)} -{' '}
-													{formatToNumber(metric.parries)}
-												</td>
-											</tr>
-										) : undefined}
-										{metric.dodges ? (
-											<tr>
-												<td>Dodge</td>
-												<td>
-													{formatToPercent((metric.dodgePercent / metric.totalMissesPercent) * 100)} - {formatToNumber(metric.dodges)}
-												</td>
-											</tr>
-										) : undefined}
-									</tbody>
-								</table>
+								<MetricsCombinedTooltipTable
+									spellSchool={metric.spellSchool}
+									total={metric.totalMisses}
+									totalPercentage={metric.totalMissesPercent}
+									values={[
+										{
+											name: 'Miss',
+											value: metric.misses,
+											percentage: metric.missPercent,
+										},
+										{
+											name: 'Parry',
+											value: metric.parries,
+											percentage: metric.parryPercent,
+										},
+										{
+											name: 'Dodge',
+											value: metric.dodges,
+											percentage: metric.dodgePercent,
+										},
+									]}
+								/>
 							</>
 						),
 					});

@@ -1,9 +1,9 @@
-import { ResourceType } from '../../proto/api.js';
-import { resourceNames } from '../../proto_utils/names.js';
-import { ResourceMetrics } from '../../proto_utils/sim_result.js';
-import { orderedResourceTypes } from '../../proto_utils/utils.js';
-import { ColumnSortType, MetricsTable } from './metrics_table.js';
-import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component.js';
+import { ResourceType } from '../../proto/api';
+import { resourceNames } from '../../proto_utils/names';
+import { ResourceMetrics } from '../../proto_utils/sim_result';
+import { orderedResourceTypes } from '../../proto_utils/utils';
+import { ColumnSortType, MetricsTable } from './metrics_table/metrics_table';
+import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component';
 
 export class ResourceMetricsTable extends ResultComponent {
 	constructor(config: ResultComponentConfig) {

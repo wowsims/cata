@@ -1,6 +1,6 @@
 import { ActionMetrics, SimResult, SimResultFilter } from '../../proto_utils/sim_result.js';
 import { bucket } from '../../utils.js';
-import { ColumnSortType, MetricsTable } from './metrics_table.js';
+import { ColumnSortType, MetricsTable } from './metrics_table/metrics_table.jsx';
 import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component.js';
 
 export class MeleeMetricsTable extends MetricsTable<ActionMetrics> {

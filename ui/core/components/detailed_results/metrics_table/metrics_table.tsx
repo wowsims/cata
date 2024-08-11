@@ -1,10 +1,10 @@
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
-import { ActionId } from '../../proto_utils/action_id.js';
-import { UnitMetrics } from '../../proto_utils/sim_result';
-import { TypedEvent } from '../../typed_event.js';
-import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component.js';
+import { ActionId } from '../../../proto_utils/action_id.js';
+import { UnitMetrics } from '../../../proto_utils/sim_result.js';
+import { TypedEvent } from '../../../typed_event.js';
+import { ResultComponent, ResultComponentConfig, SimResultData } from '../result_component.js';
 
 declare let $: any;
 
@@ -203,12 +203,12 @@ export abstract class MetricsTable<T> extends ResultComponent {
 				const data = getData(metric);
 				const iconElem = ref<HTMLAnchorElement>();
 				cellElem.appendChild(
-					<>
+					<div className="metrics-action">
 						<a ref={iconElem} className="metrics-action-icon"></a>
-						<span className="metrics-action-name">{data.name}</span>
+						<span className="metrics-action-name text-truncate">{data.name}</span>
 						<span className="expand-toggle fa fa-caret-down"></span>
 						<span className="expand-toggle fa fa-caret-right"></span>
-					</>,
+					</div>,
 				);
 				if (iconElem.value) {
 					data.actionId.setBackgroundAndHref(iconElem.value);

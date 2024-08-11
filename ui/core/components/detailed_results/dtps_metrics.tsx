@@ -1,10 +1,11 @@
 import clsx from 'clsx';
 
 import { spellSchoolNames } from '../../proto_utils/names';
-import { ActionMetrics } from '../../proto_utils/sim_result.js';
+import { ActionMetrics } from '../../proto_utils/sim_result';
 import { formatToCompactNumber, formatToPercent } from '../../utils';
-import { ColumnSortType, MetricsTable } from './metrics_table.jsx';
-import { ResultComponentConfig, SimResultData } from './result_component.js';
+import { ColumnSortType, MetricsTable } from './metrics_table/metrics_table';
+import { MetricsTotalBar } from './metrics_table/metrics_total_bar';
+import { ResultComponentConfig, SimResultData } from './result_component';
 
 export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 	maxDtpsAmount: number | null = null;
@@ -33,17 +34,14 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 				getValue: (metric: ActionMetrics) => metric.avgDamage,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
 					cellElem.classList.add('metric-total');
-					const spellSchoolString = typeof metric.spellSchool === 'number' ? spellSchoolNames.get(metric.spellSchool) : undefined;
 					cellElem.appendChild(
-						<div className="d-flex gap-1">
-							<div className="metrics-total-percentage">{formatToPercent(metric.totalDamagePercent || 0)}</div>
-							<div className="metrics-total-bar">
-								<div
-									className={clsx('metrics-total-bar-fill', spellSchoolString && `spell-school-${spellSchoolString.toLowerCase()}`)}
-									style={{ '--percentage': formatToPercent((metric.damage / (this.maxDtpsAmount ?? 1)) * 100) }}></div>
-							</div>
-							<div className="metrics-total-damage">{formatToCompactNumber(metric.avgDamage)}</div>
-						</div>,
+						<MetricsTotalBar
+							spellSchool={metric.spellSchool}
+							percentage={metric.totalDamagePercent}
+							max={this.maxDtpsAmount}
+							total={metric.avgDamage}
+							value={metric.damage}
+						/>,
 					);
 				},
 			},
