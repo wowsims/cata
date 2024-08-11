@@ -1,6 +1,18 @@
-import { ResourceType } from '../proto/api.js';
-import { ArmorType, Class, ItemSlot, Profession, PseudoStat, Race, RangedWeaponType, Spec, SpellSchool, Stat, WeaponType } from '../proto/common.js';
-import { DungeonDifficulty, RaidFilterOption, RepFaction, RepLevel, SourceFilterOption, StatCapType } from '../proto/ui.js';
+import { ResourceType } from '../proto/api';
+import {
+	ArmorType,
+	Class,
+	ItemSlot,
+	Profession,
+	PseudoStat,
+	Race,
+	RangedWeaponType,
+	Spec,
+	SpellSchool as ProtoSpellSchool,
+	Stat,
+	WeaponType,
+} from '../proto/common';
+import { DungeonDifficulty, RaidFilterOption, RepFaction, RepLevel, SourceFilterOption, StatCapType } from '../proto/ui';
 
 export const armorTypeNames: Map<ArmorType, string> = new Map([
 	[ArmorType.ArmorTypeUnknown, 'Unknown'],
@@ -212,20 +224,37 @@ export function getClassStatName(stat: Stat, playerClass: Class): string {
 	}
 }
 
-export const spellSchoolNames: Map<SpellSchool, string> = new Map([
-	[SpellSchool.SpellSchoolPhysical, 'Physical'],
-	[SpellSchool.SpellSchoolArcane, 'Arcane'],
-	[SpellSchool.SpellSchoolFire, 'Fire'],
-	[SpellSchool.SpellSchoolFrost, 'Frost'],
-	[SpellSchool.SpellSchoolHoly, 'Holy'],
-	[SpellSchool.SpellSchoolNature, 'Nature'],
-	[SpellSchool.SpellSchoolShadow, 'Shadow'],
+// TODO: Make sure BE exports the spell schools properly
+export enum SpellSchool {
+	None = 0,
+	Physical = 1 << (ProtoSpellSchool.SpellSchoolPhysical + 1),
+	Arcane = 1 << (ProtoSpellSchool.SpellSchoolArcane + 1),
+	Fire = 1 << (ProtoSpellSchool.SpellSchoolFire + 1),
+	Frost = 1 << (ProtoSpellSchool.SpellSchoolFrost + 1),
+	Holy = 1 << (ProtoSpellSchool.SpellSchoolHoly + 1),
+	Nature = 1 << (ProtoSpellSchool.SpellSchoolNature + 1),
+	Shadow = 1 << (ProtoSpellSchool.SpellSchoolShadow + 1),
+}
+
+export const spellSchoolNames: Map<number, string> = new Map([
+	[SpellSchool.Physical, 'Physical'],
+	[SpellSchool.Arcane, 'Arcane'],
+	[SpellSchool.Fire, 'Fire'],
+	[SpellSchool.Frost, 'Frost'],
+	[SpellSchool.Holy, 'Holy'],
+	[SpellSchool.Nature, 'Nature'],
+	[SpellSchool.Shadow, 'Shadow'],
+	[SpellSchool.Nature + SpellSchool.Arcane, 'Astral'],
+	[SpellSchool.Shadow + SpellSchool.Fire, 'Shadowflame'],
+	[SpellSchool.Fire + SpellSchool.Arcane, 'Spellfire'],
+	[SpellSchool.Arcane + SpellSchool.Frost, 'Spellfrost'],
+	[SpellSchool.Frost + SpellSchool.Fire, 'Frostfire'],
+	[SpellSchool.Shadow + SpellSchool.Frost, 'Shadowfrost'],
 ]);
 
 export const slotNames: Map<ItemSlot, string> = new Map([
 	[ItemSlot.ItemSlotHead, 'Head'],
 	[ItemSlot.ItemSlotNeck, 'Neck'],
-	[ItemSlot.ItemSlotShoulder, 'Shoulders'],
 	[ItemSlot.ItemSlotBack, 'Back'],
 	[ItemSlot.ItemSlotChest, 'Chest'],
 	[ItemSlot.ItemSlotWrist, 'Wrist'],

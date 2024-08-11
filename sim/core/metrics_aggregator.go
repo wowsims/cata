@@ -119,7 +119,8 @@ type CharacterIterationMetrics struct {
 }
 
 type ActionMetrics struct {
-	IsMelee bool // True if melee action, false if spell action.
+	IsMelee    bool // True if melee action, false if spell action.
+	IsPeriodic bool // True if spell is periodic (DoT or HoT)
 
 	// Metrics for this action, for each possible target.
 	Targets []TargetedActionMetrics
@@ -141,8 +142,9 @@ func (actionMetrics *ActionMetrics) ToProto(actionID ActionID) *proto.ActionMetr
 	return &proto.ActionMetrics{
 		Id:          actionID.ToProto(),
 		IsMelee:     actionMetrics.IsMelee,
+		IsPeriodic:  actionMetrics.IsPeriodic,
 		Targets:     targetMetrics,
-		SpellSchool: actionMetrics.SpellSchool.ToProto(),
+		SpellSchool: int32(actionMetrics.SpellSchool),
 	}
 }
 
@@ -311,7 +313,7 @@ func (unitMetrics *UnitMetrics) addSpellMetrics(spell *Spell, actionID ActionID,
 	}
 
 	if !ok {
-		actionMetrics = &ActionMetrics{IsMelee: spell.Flags.Matches(SpellFlagMeleeMetrics), SpellSchool: spell.SpellSchool}
+		actionMetrics = &ActionMetrics{IsMelee: spell.Flags.Matches(SpellFlagMeleeMetrics), IsPeriodic: spell.dots != nil, SpellSchool: spell.SpellSchool}
 		unitMetrics.actions[actionID] = actionMetrics
 	}
 

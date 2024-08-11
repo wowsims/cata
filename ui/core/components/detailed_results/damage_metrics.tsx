@@ -70,7 +70,48 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				name: 'Hits',
 				tooltip: 'Hits',
 				getValue: (metric: ActionMetrics) => metric.landedHits,
-				getDisplayString: (metric: ActionMetrics) => formatToNumber(metric.landedHits, { minimumFractionDigits: 1 }),
+				// getDisplayString: (metric: ActionMetrics) => formatToNumber(metric.landedHits, { minimumFractionDigits: 1 }),
+				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
+					if (!metric.landedHits) return '-';
+
+					cellElem.appendChild(<>{formatToNumber(metric.landedHits)}</>);
+
+					tippy(cellElem, {
+						placement: 'right',
+						theme: 'metrics-table',
+						content: (
+							<>
+								<MetricsCombinedTooltipTable
+									spellSchool={metric.spellSchool}
+									total={metric.landedHits}
+									totalPercentage={100}
+									values={[
+										{
+											name: metric.isPeriodic ? 'Tick' : 'Hit',
+											value: metric.hits,
+											percentage: metric.hitPercent,
+										},
+										{
+											name: `Critical ${metric.isPeriodic ? 'Tick' : 'Hit'}`,
+											value: metric.crits,
+											percentage: metric.critPercent,
+										},
+										{
+											name: 'Glancing Blow',
+											value: metric.glances,
+											percentage: metric.glancePercent,
+										},
+										{
+											name: 'Blocked Blow',
+											value: metric.blocks,
+											percentage: metric.blockPercent,
+										},
+									]}
+								/>
+							</>
+						),
+					});
+				},
 			},
 			{
 				name: 'Avg Hit',
@@ -179,7 +220,6 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 	}
 
 	mergeMetrics(metrics: Array<ActionMetrics>): ActionMetrics {
-		console.log(metrics);
 		return ActionMetrics.merge(metrics, true, metrics[0]?.unit?.petActionId || undefined);
 	}
 

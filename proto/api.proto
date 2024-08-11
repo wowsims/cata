@@ -155,8 +155,8 @@ message ActionMetrics {
 	// element in this array.
 	repeated TargetedActionMetrics targets = 3;
 
-	SpellSchool spell_school = 4;
-
+	int32 spell_school = 4;
+	bool is_periodic = 5;
 }
 
 // Metrics for a specific action, when cast at a particular target.

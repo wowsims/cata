@@ -16,13 +16,12 @@ type MetricsTotalBarProps = {
 };
 export const MetricsTotalBar = ({ percentage, max, total, value, overlayValue, spellSchool }: MetricsTotalBarProps) => {
 	const spellSchoolString = typeof spellSchool === 'number' ? spellSchoolNames.get(spellSchool) : undefined;
-
 	return (
 		<div className="d-flex gap-1">
 			<div className="metrics-total-percentage">{formatToPercent(percentage || 0)}</div>
 			<div className="metrics-total-bar">
 				<div
-					className={clsx('metrics-total-bar-fill', spellSchoolString && `spell-school-${spellSchoolString.toLowerCase()}`)}
+					className={clsx('metrics-total-bar-fill', spellSchoolString && `bg-spell-school-${spellSchoolString.toLowerCase()}`)}
 					style={{ '--percentage': formatToPercent((value / (max ?? 1)) * 100) }}></div>
 				{overlayValue ? (
 					<div

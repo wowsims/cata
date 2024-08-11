@@ -200,6 +200,22 @@ kbd {
 	.spell-school-#{$label} {
 		color: var(--bs-#{$label}) !important;
 	}
+	.bg-spell-school-#{$label} {
+		background: var(--bs-#{$label}) !important;
+	}
+}
+
+@each $label, $value in $multi-spell-school-colors {
+	.spell-school-#{$label} {
+		color: var(--bs-primary);
+		background-image: $value;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+
+	.bg-spell-school-#{$label} {
+		background: $value;
+	}
 }
 
 [contenteditable='true']:active,

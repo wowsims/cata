@@ -250,28 +250,6 @@ func (ss SpellSchool) ResistanceStat() stats.Stat {
 	}
 }
 
-// Returns the proto value for this spell school.
-func (ss SpellSchool) ToProto() proto.SpellSchool {
-	switch ss {
-	case SpellSchoolPhysical:
-		return proto.SpellSchool_SpellSchoolPhysical
-	case SpellSchoolArcane:
-		return proto.SpellSchool_SpellSchoolArcane
-	case SpellSchoolFire:
-		return proto.SpellSchool_SpellSchoolFire
-	case SpellSchoolFrost:
-		return proto.SpellSchool_SpellSchoolFrost
-	case SpellSchoolHoly:
-		return proto.SpellSchool_SpellSchoolHoly
-	case SpellSchoolNature:
-		return proto.SpellSchool_SpellSchoolNature
-	case SpellSchoolShadow:
-		return proto.SpellSchool_SpellSchoolShadow
-	default:
-		return proto.SpellSchool_SpellSchoolPhysical
-	}
-}
-
 func SpellSchoolFromProto(p proto.SpellSchool) SpellSchool {
 	switch p {
 	case proto.SpellSchool_SpellSchoolPhysical:

@@ -779,6 +779,10 @@ export class ActionMetrics {
 		return this.data.isMelee;
 	}
 
+	get isPeriodic() {
+		return this.data.isPeriodic;
+	}
+
 	get totalDamagePercent() {
 		const totalAvgDps = this.resultData.result.raidMetrics?.dps?.avg;
 		if (!totalAvgDps) return undefined;
@@ -879,10 +883,6 @@ export class ActionMetrics {
 		return this.combinedMetrics.avgHitThreat;
 	}
 
-	get critPercent() {
-		return this.combinedMetrics.critPercent;
-	}
-
 	get totalMisses() {
 		return this.misses + this.dodges + this.parries;
 	}
@@ -915,6 +915,14 @@ export class ActionMetrics {
 		return this.combinedMetrics.parryPercent;
 	}
 
+	get hits() {
+		return this.combinedMetrics.hits / this.iterations;
+	}
+
+	get hitPercent() {
+		return (this.combinedMetrics.hits / (this.hitAttempts || 1)) * 100;
+	}
+
 	get blocks() {
 		return this.combinedMetrics.blocks;
 	}
@@ -929,6 +937,14 @@ export class ActionMetrics {
 
 	get glancePercent() {
 		return this.combinedMetrics.glancePercent;
+	}
+
+	get crits() {
+		return this.combinedMetrics.crits;
+	}
+
+	get critPercent() {
+		return this.combinedMetrics.critPercent;
 	}
 
 	forTarget(filter?: SimResultFilter): ActionMetrics {
@@ -969,7 +985,9 @@ export class ActionMetrics {
 			actionId,
 			ActionMetricsProto.create({
 				isMelee: firstAction.isMeleeAction,
+				isPeriodic: firstAction.isPeriodic,
 				targets: mergedTargets.map(t => t.data),
+				spellSchool: firstAction.spellSchool || undefined,
 			}),
 			firstAction.resultData,
 		);
@@ -1091,11 +1109,6 @@ export class TargetedActionMetrics {
 		const lhr = this.landedHitsRaw;
 		return lhr == 0 ? 0 : this.data.threat / lhr;
 	}
-
-	get critPercent() {
-		return (this.data.crits / (this.hitAttempts || 1)) * 100;
-	}
-
 	get totalMisses() {
 		return this.misses + this.dodges + this.parries;
 	}
@@ -1128,6 +1141,14 @@ export class TargetedActionMetrics {
 		return (this.data.parries / (this.hitAttempts || 1)) * 100;
 	}
 
+	get hits() {
+		return this.data.hits / this.iterations;
+	}
+
+	get hitPercent() {
+		return (this.data.hits / (this.hitAttempts || 1)) * 100;
+	}
+
 	get blocks() {
 		return this.data.blocks / this.iterations;
 	}
@@ -1142,6 +1163,14 @@ export class TargetedActionMetrics {
 
 	get glancePercent() {
 		return (this.data.glances / (this.hitAttempts || 1)) * 100;
+	}
+
+	get crits() {
+		return this.data.crits / this.iterations;
+	}
+
+	get critPercent() {
+		return (this.data.crits / (this.hitAttempts || 1)) * 100;
 	}
 
 	// Merges an array of metrics into a single metric.

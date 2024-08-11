@@ -39,7 +39,7 @@ $class-colors: (
 );
 $theme-colors: map-merge($theme-colors, $class-colors);
 
-$spell-school-colors:(
+$spell-school-colors: (
 	physical: #e5cc80,
 	arcane: #8ff2ff,
 	fire: #eb4561,
@@ -48,6 +48,16 @@ $spell-school-colors:(
 	nature: #d1fa99,
 	shadow: #b8a8f0,
 );
+
+$multi-spell-school-colors: (
+	astral: linear-gradient(90deg, map-get($spell-school-colors, nature), map-get($spell-school-colors, arcane)),
+	shadowflame: linear-gradient(90deg, map-get($spell-school-colors, shadow), map-get($spell-school-colors, fire)),
+	spellfire: linear-gradient(90deg, map-get($spell-school-colors, fire), map-get($spell-school-colors, arcane)),
+	spellfrost: linear-gradient(90deg, map-get($spell-school-colors, arcane), map-get($spell-school-colors, frost)),
+	frostfire: linear-gradient(90deg, map-get($spell-school-colors, frost), map-get($spell-school-colors, fire)),
+	shadowfrost: linear-gradient(90deg, map-get($spell-school-colors, shadow), map-get($spell-school-colors, frost)),
+);
+
 $theme-colors: map-merge($theme-colors, $spell-school-colors);
 
 $custom-colors: (
