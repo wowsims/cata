@@ -29,20 +29,22 @@ export const MetricsCombinedTooltipTable = ({ total, totalPercentage, values, sp
 				</tr>
 			</thead>
 			<tbody className="metrics-table-body">
-				{displayedValues.map(({ name, value, percentage }) => (
-					<tr>
-						<td>{name}</td>
-						<td>
-							<MetricsTotalBar
-								spellSchool={spellSchool}
-								percentage={(percentage / totalPercentage) * 100}
-								max={maxValue}
-								total={value}
-								value={value}
-							/>
-						</td>
-					</tr>
-				))}
+				{displayedValues
+					.sort((a, b) => b.value - a.value)
+					.map(({ name, value, percentage }) => (
+						<tr>
+							<td>{name}</td>
+							<td>
+								<MetricsTotalBar
+									spellSchool={spellSchool}
+									percentage={(percentage / totalPercentage) * 100}
+									max={maxValue}
+									total={value}
+									value={value}
+								/>
+							</td>
+						</tr>
+					))}
 			</tbody>
 			{displayedValues.length > 1 && (
 				<tfoot className="metrics-table-footer">

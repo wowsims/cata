@@ -67,7 +67,7 @@ export class DtpsSpellMetricsTable extends MetricsTable<ActionMetrics> {
 		const player = players[0];
 
 		const targets = resultData.result.getTargets(resultData.filter);
-		const targetActions = targets.map(target => target.getSpellActions().map(action => action.forTarget({player: player.unitIndex}))).flat();
+		const targetActions = targets.map(target => target.getSpellActions().map(action => action.forTarget({ player: player.unitIndex }))).flat();
 		const actionGroups = ActionMetrics.groupById(targetActions);
 
 		return actionGroups;
@@ -75,6 +75,9 @@ export class DtpsSpellMetricsTable extends MetricsTable<ActionMetrics> {
 
 	mergeMetrics(metrics: Array<ActionMetrics>): ActionMetrics {
 		// TODO: Use NPC ID here instead of pet ID.
-		return ActionMetrics.merge(metrics, true, metrics[0].unit?.petActionId || undefined);
+		return ActionMetrics.merge(metrics, {
+			removeTag: true,
+			actionIdOverride: metrics[0].unit?.petActionId || undefined,
+		});
 	}
 }

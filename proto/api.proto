@@ -143,6 +143,13 @@ message SimOptions {
 	bool use_labeled_rands = 9; // Use test level RNG.
 }
 
+enum SpellType {
+	SpellTypeCast = 0;
+	SpellTypePeriodic = 1;
+	// Needed for Frontend
+	SpellTypeAll = 2;
+}
+
 // The aggregated results from all uses of a particular action.
 message ActionMetrics {
 	ActionID id = 1;
@@ -156,7 +163,7 @@ message ActionMetrics {
 	repeated TargetedActionMetrics targets = 3;
 
 	int32 spell_school = 4;
-	bool is_periodic = 5;
+	SpellType spell_type = 5;
 }
 
 // Metrics for a specific action, when cast at a particular target.

@@ -1,7 +1,6 @@
-import clsx from 'clsx';
 import tippy from 'tippy.js';
 
-import { spellSchoolNames } from '../../proto_utils/names';
+import { SpellType } from '../../proto/api';
 import { ActionMetrics } from '../../proto_utils/sim_result';
 import { bucket, formatToCompactNumber, formatToNumber, formatToPercent } from '../../utils';
 import { MetricsCombinedTooltipTable } from './metrics_table/metrics_combined_tooltip_table';
@@ -50,8 +49,14 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 			{
 				name: 'Casts',
 				tooltip: 'Casts',
-				getValue: (metric: ActionMetrics) => metric.casts,
-				getDisplayString: (metric: ActionMetrics) => formatToNumber(metric.casts, { minimumFractionDigits: 1 }),
+				getValue: (metric: ActionMetrics, isChildRow) => {
+					if (isChildRow && metric.spellType === SpellType.SpellTypePeriodic) return 0;
+					return metric.casts;
+				},
+				getDisplayString: (metric: ActionMetrics, isChildRow) => {
+					if (isChildRow && metric.spellType === SpellType.SpellTypePeriodic) return '-';
+					return formatToNumber(metric.casts, { minimumFractionDigits: 1 });
+				},
 			},
 			{
 				name: 'Avg Cast',
@@ -70,7 +75,6 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				name: 'Hits',
 				tooltip: 'Hits',
 				getValue: (metric: ActionMetrics) => metric.landedHits,
-				// getDisplayString: (metric: ActionMetrics) => formatToNumber(metric.landedHits, { minimumFractionDigits: 1 }),
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
 					if (!metric.landedHits) return '-';
 
@@ -86,16 +90,48 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 									total={metric.landedHits}
 									totalPercentage={100}
 									values={[
-										{
-											name: metric.isPeriodic ? 'Tick' : 'Hit',
-											value: metric.hits,
-											percentage: metric.hitPercent,
-										},
-										{
-											name: `Critical ${metric.isPeriodic ? 'Tick' : 'Hit'}`,
-											value: metric.crits,
-											percentage: metric.critPercent,
-										},
+										...(metric.spellType === SpellType.SpellTypeAll
+											? [
+													{
+														name: 'Hit',
+														value: metric.hits,
+														percentage: metric.hitPercent,
+													},
+													{
+														name: `Critical`,
+														value: metric.crits,
+														percentage: metric.critPercent,
+													},
+											  ]
+											: []),
+										...(metric.spellType === SpellType.SpellTypeCast
+											? [
+													{
+														name: 'Hit',
+														value: metric.hits,
+														percentage: metric.hitPercent,
+													},
+													{
+														name: `Critical Hit`,
+														value: metric.crits,
+														percentage: metric.critPercent,
+													},
+											  ]
+											: []),
+										...(metric.spellType === SpellType.SpellTypePeriodic
+											? [
+													{
+														name: 'Tick',
+														value: metric.hits,
+														percentage: metric.hitPercent,
+													},
+													{
+														name: `Critical Tick`,
+														value: metric.crits,
+														percentage: metric.critPercent,
+													},
+											  ]
+											: []),
 										{
 											name: 'Glancing Blow',
 											value: metric.glances,
@@ -137,9 +173,8 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				tooltip: 'Misses / Casts',
 				getValue: (metric: ActionMetrics) => metric.totalMissesPercent,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
-					if (!metric.totalMissesPercent) return '-';
-
-					cellElem.appendChild(<>{formatToPercent(metric.totalMissesPercent)}</>);
+					cellElem.appendChild(<>{metric.totalMissesPercent ? formatToPercent(metric.totalMissesPercent) : '-'}</>);
+					if (!metric.totalMissesPercent) return;
 
 					tippy(cellElem, {
 						placement: 'right',
@@ -209,6 +244,7 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 		const actionGroups = ActionMetrics.groupById(actions);
 
 		const petsByName = bucket(player.pets, pet => pet.name);
+
 		const petGroups = Object.values(petsByName).map(pets =>
 			ActionMetrics.joinById(
 				pets.flatMap(pet => pet.getDamageActions().map(action => action.forTarget(resultData.filter))),
@@ -220,7 +256,13 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 	}
 
 	mergeMetrics(metrics: Array<ActionMetrics>): ActionMetrics {
-		return ActionMetrics.merge(metrics, true, metrics[0]?.unit?.petActionId || undefined);
+		const isCastSpellType = metrics.some(m => m.spellType === SpellType.SpellTypeCast);
+		const isDotSpellType = metrics.some(m => m.spellType === SpellType.SpellTypePeriodic);
+		return ActionMetrics.merge(metrics, {
+			removeTag: true,
+			actionIdOverride: metrics[0]?.unit?.petActionId || undefined,
+			spellTypeOverride: isCastSpellType && isDotSpellType ? SpellType.SpellTypeAll : undefined,
+		});
 	}
 
 	shouldCollapse(metric: ActionMetrics): boolean {

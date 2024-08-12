@@ -94,6 +94,9 @@ export class TypedResourceMetricsTable extends MetricsTable<ResourceMetrics> {
 	}
 
 	mergeMetrics(metrics: Array<ResourceMetrics>): ResourceMetrics {
-		return ResourceMetrics.merge(metrics, true, metrics[0].unit?.petActionId || undefined);
+		return ResourceMetrics.merge(metrics, {
+			removeTag: true,
+			actionIdOverride: metrics[0].unit?.petActionId || undefined,
+		});
 	}
 }

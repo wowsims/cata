@@ -61,7 +61,10 @@ export class AuraMetricsTable extends MetricsTable<AuraMetrics> {
 	}
 
 	mergeMetrics(metrics: Array<AuraMetrics>): AuraMetrics {
-		return AuraMetrics.merge(metrics, true, metrics[0].unit?.petActionId || undefined);
+		return AuraMetrics.merge(metrics, {
+			removeTag: true,
+			actionIdOverride: metrics[0].unit?.petActionId || undefined,
+		});
 	}
 
 	shouldCollapse(metric: AuraMetrics): boolean {

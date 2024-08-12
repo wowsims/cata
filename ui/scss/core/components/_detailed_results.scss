@@ -234,10 +234,8 @@
 tr:not(.parent-metric) .expand-toggle {
 	display: none;
 }
-.parent-metric.expand .fa-caret-down {
-	display: none;
-}
-.parent-metric:not(.expand) .fa-caret-right {
+.parent-metric.expand .fa-caret-right,
+.parent-metric:not(.expand) .fa-caret-down {
 	display: none;
 }
 
