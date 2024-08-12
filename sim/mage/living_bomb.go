@@ -73,7 +73,7 @@ func (mage *Mage) registerLivingBombSpell() {
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					if bombExplode {
 						livingBombExplosionSpell.Cast(sim, aura.Unit)
-						mage.WaitUntil(sim, sim.CurrentTime + mage.ReactionTime)
+						mage.WaitUntil(sim, sim.CurrentTime+mage.ReactionTime)
 						if len(activeLivingBombs) != 0 {
 							activeLivingBombs = activeLivingBombs[1:]
 						}
@@ -96,6 +96,7 @@ func (mage *Mage) registerLivingBombSpell() {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 
 			if result.Landed() {
+				spell.SpellMetrics[target.UnitIndex].Hits--
 				activeLbs := len(activeLivingBombs)
 				if activeLbs >= maxLivingBombs {
 					bombExplode = false
