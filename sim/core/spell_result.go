@@ -402,7 +402,6 @@ func (dot *Dot) SnapshotHeal(target *Unit, baseHealing float64) {
 
 // Applies the fully computed spell result to the sim.
 func (spell *Spell) dealHealingInternal(sim *Simulation, isPeriodic bool, result *SpellResult) {
-	fmt.Println("Crit healing", spell.ActionID.SpellID, result.DidCrit(), result.Damage)
 	if result.DidCrit() {
 		spell.SpellMetrics[result.Target.UnitIndex].TotalCritHealing += result.Damage
 	}

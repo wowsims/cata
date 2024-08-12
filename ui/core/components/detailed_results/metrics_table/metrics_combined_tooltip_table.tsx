@@ -18,8 +18,9 @@ type MetricsCombinedTooltipTableProps = {
 	totalPercentage: number;
 	values: MetricsCombinedTableEntry[];
 	spellSchool: SpellSchool | undefined | null;
+	hasFooter?: boolean;
 };
-export const MetricsCombinedTooltipTable = ({ total, totalPercentage, values, spellSchool }: MetricsCombinedTooltipTableProps) => {
+export const MetricsCombinedTooltipTable = ({ total, totalPercentage, values, spellSchool, hasFooter = true }: MetricsCombinedTooltipTableProps) => {
 	const displayedValues = values.filter(v => v.value);
 	const maxValue = Math.max(...displayedValues.map(a => a.value));
 	const hasAverageColumn = displayedValues.some(d => typeof d.average === 'number');
@@ -52,7 +53,7 @@ export const MetricsCombinedTooltipTable = ({ total, totalPercentage, values, sp
 						</tr>
 					))}
 			</tbody>
-			{displayedValues.length > 1 && (
+			{hasFooter && displayedValues.length > 1 && (
 				<tfoot className="metrics-table-footer">
 					<tr className="metrics-table-footer-row">
 						<td>Total</td>

@@ -45,6 +45,9 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 						/>,
 					);
 
+					const hitValues = metric.damageDone.hit;
+					const critValues = metric.damageDone.crit;
+
 					tippy(cellElem, {
 						maxWidth: 'none',
 						placement: 'auto',
@@ -55,20 +58,17 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 									spellSchool={metric.spellSchool}
 									total={metric.damage}
 									totalPercentage={100}
+									hasFooter={false}
 									values={[
 										...(metric.spellType === SpellType.SpellTypeAll
 											? [
 													{
 														name: 'Hit',
-														value: metric.damage - metric.critDamage,
-														percentage: metric.hitPercent,
-														average: metric.avgHit,
+														...hitValues,
 													},
 													{
 														name: `Critical Hit`,
-														value: metric.critDamage,
-														percentage: metric.critPercent,
-														average: metric.avgCritHit,
+														...critValues,
 													},
 											  ]
 											: []),
@@ -76,15 +76,11 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 											? [
 													{
 														name: 'Hit',
-														value: metric.damage - metric.critDamage,
-														percentage: metric.hitPercent,
-														average: metric.avgHit,
+														...hitValues,
 													},
 													{
 														name: `Critical Hit`,
-														value: metric.critDamage,
-														percentage: metric.critPercent,
-														average: metric.avgCritHit,
+														...critValues,
 													},
 											  ]
 											: []),
@@ -92,15 +88,11 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 											? [
 													{
 														name: 'Tick',
-														value: metric.damage - metric.critDamage,
-														percentage: metric.hitPercent,
-														average: metric.avgHit,
+														...hitValues,
 													},
 													{
 														name: `Critical Tick`,
-														value: metric.critDamage,
-														percentage: metric.critPercent,
-														average: metric.avgCritHit,
+														...critValues,
 													},
 											  ]
 											: []),

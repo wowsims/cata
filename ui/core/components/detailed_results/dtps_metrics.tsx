@@ -1,8 +1,11 @@
 import clsx from 'clsx';
+import tippy from 'tippy.js';
 
+import { SpellType } from '../../proto/api';
 import { spellSchoolNames } from '../../proto_utils/names';
 import { ActionMetrics } from '../../proto_utils/sim_result';
 import { formatToCompactNumber, formatToPercent } from '../../utils';
+import { MetricsCombinedTooltipTable } from './metrics_table/metrics_combined_tooltip_table';
 import { ColumnSortType, MetricsTable } from './metrics_table/metrics_table';
 import { MetricsTotalBar } from './metrics_table/metrics_total_bar';
 import { ResultComponentConfig, SimResultData } from './result_component';
@@ -43,6 +46,73 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 							value={metric.damage}
 						/>,
 					);
+
+					const hitValues = metric.damageDone.hit;
+					const critValues = metric.damageDone.crit;
+
+					tippy(cellElem, {
+						maxWidth: 'none',
+						placement: 'auto',
+						theme: 'metrics-table',
+						content: (
+							<>
+								<MetricsCombinedTooltipTable
+									spellSchool={metric.spellSchool}
+									total={metric.damage}
+									totalPercentage={100}
+									hasFooter={false}
+									values={[
+										...(metric.spellType === SpellType.SpellTypeAll
+											? [
+													{
+														name: 'Hit',
+														...hitValues,
+													},
+													{
+														name: `Critical Hit`,
+														...critValues,
+													},
+											  ]
+											: []),
+										...(metric.spellType === SpellType.SpellTypeCast
+											? [
+													{
+														name: 'Hit',
+														...hitValues,
+													},
+													{
+														name: `Critical Hit`,
+														...critValues,
+													},
+											  ]
+											: []),
+										...(metric.spellType === SpellType.SpellTypePeriodic
+											? [
+													{
+														name: 'Tick',
+														...hitValues,
+													},
+													{
+														name: `Critical Tick`,
+														...critValues,
+													},
+											  ]
+											: []),
+										// {
+										// 	name: 'Glancing Blow',
+										// 	value: metric.glances,
+										// 	percentage: metric.glancePercent,
+										// },
+										// {
+										// 	name: 'Blocked Blow',
+										// 	value: metric.blocks,
+										// 	percentage: metric.blockPercent,
+										// },
+									]}
+								/>
+							</>
+						),
+					});
 				},
 			},
 			{
@@ -72,26 +142,47 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 			{
 				name: 'Miss %',
 				tooltip: 'Misses / Swings',
-				getValue: (metric: ActionMetrics) => metric.missPercent,
-				getDisplayString: (metric: ActionMetrics) => metric.missPercent.toFixed(2) + '%',
-			},
-			{
-				name: 'Dodge %',
-				tooltip: 'Dodges / Swings',
-				getValue: (metric: ActionMetrics) => metric.dodgePercent,
-				getDisplayString: (metric: ActionMetrics) => metric.dodgePercent.toFixed(2) + '%',
-			},
-			{
-				name: 'Parry %',
-				tooltip: 'Parries / Swings',
-				getValue: (metric: ActionMetrics) => metric.parryPercent,
-				getDisplayString: (metric: ActionMetrics) => metric.parryPercent.toFixed(2) + '%',
-			},
-			{
-				name: 'Block %',
-				tooltip: 'Blocks / Swings',
-				getValue: (metric: ActionMetrics) => metric.blockPercent,
-				getDisplayString: (metric: ActionMetrics) => metric.blockPercent.toFixed(2) + '%',
+				getValue: (metric: ActionMetrics) => metric.totalMissesPercent,
+				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
+					cellElem.appendChild(<>{metric.totalMissesPercent ? formatToPercent(metric.totalMissesPercent) : '-'}</>);
+					if (!metric.totalMissesPercent) return;
+
+					tippy(cellElem, {
+						placement: 'right',
+						theme: 'metrics-table',
+						content: (
+							<>
+								<MetricsCombinedTooltipTable
+									spellSchool={metric.spellSchool}
+									total={metric.totalMisses + metric.blocks}
+									totalPercentage={metric.totalMissesPercent + metric.blockPercent}
+									values={[
+										{
+											name: 'Miss',
+											value: metric.misses,
+											percentage: metric.missPercent,
+										},
+										{
+											name: 'Parry',
+											value: metric.parries,
+											percentage: metric.parryPercent,
+										},
+										{
+											name: 'Dodge',
+											value: metric.dodges,
+											percentage: metric.dodgePercent,
+										},
+										{
+											name: 'Block',
+											value: metric.blocks,
+											percentage: metric.blockPercent,
+										},
+									]}
+								/>
+							</>
+						),
+					});
+				},
 			},
 			{
 				name: 'Crit %',

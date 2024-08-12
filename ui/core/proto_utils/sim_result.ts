@@ -905,10 +905,6 @@ export class ActionMetrics {
 		return this.combinedMetrics.avgHit;
 	}
 
-	get avgCritHit() {
-		return this.combinedMetrics.avgCritHit;
-	}
-
 	get avgHitThreat() {
 		return this.combinedMetrics.avgHitThreat;
 	}
@@ -983,6 +979,22 @@ export class ActionMetrics {
 
 	get healingCritPercent() {
 		return this.combinedMetrics.healingCritPercent;
+	}
+
+	get damageDone() {
+		const normalHitAvgDamage = this.avgDamage - this.avgCritDamage;
+		return {
+			hit: {
+				value: normalHitAvgDamage,
+				percentage: (normalHitAvgDamage / this.avgDamage) * 100,
+				average: normalHitAvgDamage / this.hits,
+			},
+			crit: {
+				value: this.avgCritDamage,
+				percentage: (this.avgCritDamage / this.avgDamage) * 100,
+				average: this.avgCritDamage / this.crits,
+			},
+		};
 	}
 
 	get isProc() {
@@ -1205,11 +1217,6 @@ export class TargetedActionMetrics {
 	get avgHit() {
 		const lhr = this.landedHitsRaw;
 		return lhr == 0 ? 0 : this.data.damage / lhr;
-	}
-
-	get avgCritHit() {
-		const lhr = this.landedHitsRaw;
-		return lhr == 0 ? 0 : this.data.critDamage / this.crits;
 	}
 
 	get avgHitThreat() {
