@@ -749,6 +749,16 @@ const petNameToActionId: Record<string, ActionId> = {
 	Ghoul: ActionId.fromSpellId(46584),
 	'Army of the Dead': ActionId.fromSpellId(42650),
 	Valkyr: ActionId.fromSpellId(71844),
+	Felguard: ActionId.fromSpellId(30146),
+	Felhunter: ActionId.fromSpellId(691),
+	'Ebon Imp': ActionId.fromSpellId(688),
+	Imp: ActionId.fromSpellId(688),
+	Succubus: ActionId.fromSpellId(712),
+	Doomguard: ActionId.fromSpellId(18540),
+	'Summon Doomguard': ActionId.fromSpellId(18540),
+	Infernal: ActionId.fromSpellId(1122),
+	'Flame Orb': ActionId.fromSpellId(82731),
+	Treant: ActionId.fromSpellId(33831),
 };
 
 // https://wowhead.com/cata/hunter-pets

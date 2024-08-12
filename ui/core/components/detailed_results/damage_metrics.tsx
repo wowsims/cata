@@ -50,12 +50,12 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				name: 'Casts',
 				tooltip: 'Casts',
 				getValue: (metric: ActionMetrics, isChildRow) => {
-					if (isChildRow && metric.spellType === SpellType.SpellTypePeriodic) return 0;
+					if (metric.isProc) return 0;
 					return metric.casts;
 				},
 				getDisplayString: (metric: ActionMetrics, isChildRow) => {
-					if (isChildRow && metric.spellType === SpellType.SpellTypePeriodic) return '-';
-					return formatToNumber(metric.casts, { minimumFractionDigits: 1 });
+					if (metric.isProc) return '-';
+					return formatToNumber(metric.casts);
 				},
 			},
 			{
@@ -242,7 +242,6 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 
 		const actions = player.getDamageActions().map(action => action.forTarget(resultData.filter));
 		const actionGroups = ActionMetrics.groupById(actions);
-
 		const petsByName = bucket(player.pets, pet => pet.name);
 
 		const petGroups = Object.values(petsByName).map(pets =>
@@ -258,6 +257,7 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 	mergeMetrics(metrics: Array<ActionMetrics>): ActionMetrics {
 		const isCastSpellType = metrics.some(m => m.spellType === SpellType.SpellTypeCast);
 		const isDotSpellType = metrics.some(m => m.spellType === SpellType.SpellTypePeriodic);
+
 		return ActionMetrics.merge(metrics, {
 			removeTag: true,
 			actionIdOverride: metrics[0]?.unit?.petActionId || undefined,

@@ -656,7 +656,6 @@ export class AuraMetrics {
 		return AuraMetrics.groupById(auras, useTag).map(aurasToJoin => AuraMetrics.merge(aurasToJoin));
 	}
 }
-
 export class ResourceMetrics {
 	unit: UnitMetrics | null;
 	readonly actionId: ActionId;
@@ -958,6 +957,43 @@ export class ActionMetrics {
 		return this.combinedMetrics.critPercent;
 	}
 
+	get isProc() {
+		return ActionMetrics.getIsProc(this.actionId);
+	}
+
+	static getIsProc(actionId: ActionId): boolean {
+		const spellId = actionId.spellId;
+		const tag = actionId.tag;
+		let isProc = false;
+		switch (spellId) {
+			case 55078: // Blood Plague
+			case 55095: // Frost Fever
+			case 49194: // Unholy Blight
+			case 89775: // Hemorrhage
+				isProc = true;
+				break;
+			case 11366: // Pyroblast - DoT
+			case 11129: // Combustion - DoT
+			case 93402: // Sunfire - DoT
+			case 8921: // Moonfire - DoT
+			case 8050: // Flame Shock - DoT
+			case 27243: // Seed of Corruption - Explosion
+				if (tag === 1) {
+					isProc = true;
+				}
+				break;
+			case 44457: // Living Bomb - Explosion
+			case 31803: // Censure - DoT
+				if (tag === 2) {
+					isProc = true;
+				}
+				break;
+			default:
+				break;
+		}
+		return isProc;
+	}
+
 	forTarget(filter?: SimResultFilter): ActionMetrics {
 		const unitIndex = this.unit!.getTargetIndex(filter);
 		if (unitIndex == null) {
@@ -989,22 +1025,6 @@ export class ActionMetrics {
 		let actionId = actionIdOverride || firstAction.actionId;
 		if (removeTag) {
 			actionId = actionId.withoutTag();
-		}
-
-		if (spellTypeOverride === SpellType.SpellTypeAll) {
-			for (let i = 0; i < actions.length; i++) {
-				const action = actions[i];
-				if (action.spellType === SpellType.SpellTypePeriodic) {
-					const modifiedData = structuredClone(action.data);
-					action.data.targets = modifiedData.targets.map(target =>
-						TargetedActionMetricsProto.create({
-							...target,
-							casts: 0,
-						}),
-					);
-					actions[i] = new ActionMetrics(action.unit, action.actionId, modifiedData, action.resultData);
-				}
-			}
 		}
 
 		const maxTargets = Math.max(...actions.map(action => action.targets.length));
