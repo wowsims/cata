@@ -198,11 +198,17 @@ message TargetedActionMetrics {
 	// Total damage done to this target by this action.
 	double damage = 9;
 
+	// Total critical damage done to this target by this action.
+	double crit_damage = 15;
+
 	// Total threat done to this target by this action.
 	double threat = 10;
 
 	// Total healing done to this target by this action.
 	double healing = 11;
+
+	// Total critical healing done to this target by this action.
+	double crit_healing = 16;
 
 	// Total shielding done to this target by this action.
 	double shielding = 13;

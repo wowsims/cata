@@ -44,6 +44,81 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 							value={metric.damage}
 						/>,
 					);
+
+					tippy(cellElem, {
+						maxWidth: 'none',
+						placement: 'auto',
+						theme: 'metrics-table',
+						content: (
+							<>
+								<MetricsCombinedTooltipTable
+									spellSchool={metric.spellSchool}
+									total={metric.damage}
+									totalPercentage={100}
+									values={[
+										...(metric.spellType === SpellType.SpellTypeAll
+											? [
+													{
+														name: 'Hit',
+														value: metric.damage - metric.critDamage,
+														percentage: metric.hitPercent,
+														average: metric.avgHit,
+													},
+													{
+														name: `Critical Hit`,
+														value: metric.critDamage,
+														percentage: metric.critPercent,
+														average: metric.avgCritHit,
+													},
+											  ]
+											: []),
+										...(metric.spellType === SpellType.SpellTypeCast
+											? [
+													{
+														name: 'Hit',
+														value: metric.damage - metric.critDamage,
+														percentage: metric.hitPercent,
+														average: metric.avgHit,
+													},
+													{
+														name: `Critical Hit`,
+														value: metric.critDamage,
+														percentage: metric.critPercent,
+														average: metric.avgCritHit,
+													},
+											  ]
+											: []),
+										...(metric.spellType === SpellType.SpellTypePeriodic
+											? [
+													{
+														name: 'Tick',
+														value: metric.damage - metric.critDamage,
+														percentage: metric.hitPercent,
+														average: metric.avgHit,
+													},
+													{
+														name: `Critical Tick`,
+														value: metric.critDamage,
+														percentage: metric.critPercent,
+														average: metric.avgCritHit,
+													},
+											  ]
+											: []),
+										// {
+										// 	name: 'Glancing Blow',
+										// 	value: metric.glances,
+										// 	percentage: metric.glancePercent,
+										// },
+										// {
+										// 	name: 'Blocked Blow',
+										// 	value: metric.blocks,
+										// 	percentage: metric.blockPercent,
+										// },
+									]}
+								/>
+							</>
+						),
+					});
 				},
 			},
 			{
@@ -81,7 +156,7 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 					cellElem.appendChild(<>{formatToNumber(metric.landedHits)}</>);
 
 					tippy(cellElem, {
-						placement: 'right',
+						placement: 'auto',
 						theme: 'metrics-table',
 						content: (
 							<>

@@ -272,6 +272,10 @@ tr:not(.parent-metric) .expand-toggle {
 }
 
 .tippy-box[data-theme='metrics-table'] {
+	@include media-breakpoint-down(sm) {
+		max-width: 300px;
+	}
+
 	thead {
 		th {
 			padding-top: 0;
@@ -290,5 +294,8 @@ tr:not(.parent-metric) .expand-toggle {
 
 	.metrics-total-bar {
 		width: 100px;
+		@include media-breakpoint-down(sm) {
+			width: 50px;
+		}
 	}
 }

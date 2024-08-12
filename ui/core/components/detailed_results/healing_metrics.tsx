@@ -1,8 +1,10 @@
 import clsx from 'clsx';
+import tippy from 'tippy.js';
 
 import { spellSchoolNames } from '../../proto_utils/names';
 import { ActionMetrics } from '../../proto_utils/sim_result.js';
 import { formatToCompactNumber, formatToNumber, formatToPercent } from '../../utils.js';
+import { MetricsCombinedTooltipTable } from './metrics_table/metrics_combined_tooltip_table';
 import { ColumnSortType, MetricsTable } from './metrics_table/metrics_table.jsx';
 import { MetricsTotalBar } from './metrics_table/metrics_total_bar';
 import { ResultComponentConfig, SimResultData } from './result_component.js';
@@ -44,6 +46,35 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 							overlayValue={metric.shielding}
 						/>,
 					);
+
+					tippy(cellElem, {
+						maxWidth: 'none',
+						placement: 'auto',
+						theme: 'metrics-table',
+						content: (
+							<>
+								<MetricsCombinedTooltipTable
+									spellSchool={metric.spellSchool}
+									total={metric.healing}
+									totalPercentage={100}
+									values={[
+										{
+											name: 'Hit',
+											value: metric.healing - metric.critHealing,
+											percentage: metric.healingPercent,
+											average: metric.avgHealing,
+										},
+										{
+											name: `Critical Hit`,
+											value: metric.critHealing,
+											percentage: metric.healingCritPercent,
+											average: metric.avgCritHealing,
+										},
+									]}
+								/>
+							</>
+						),
+					});
 				},
 			},
 			{

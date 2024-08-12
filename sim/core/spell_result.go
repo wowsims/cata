@@ -280,6 +280,9 @@ func (spell *Spell) CalcAndDealOutcome(sim *Simulation, target *Unit, outcomeApp
 func (spell *Spell) dealDamageInternal(sim *Simulation, isPeriodic bool, result *SpellResult) {
 	if sim.CurrentTime >= 0 {
 		spell.SpellMetrics[result.Target.UnitIndex].TotalDamage += result.Damage
+		if result.DidCrit() {
+			spell.SpellMetrics[result.Target.UnitIndex].TotalCritDamage += result.Damage
+		}
 		spell.SpellMetrics[result.Target.UnitIndex].TotalThreat += result.Threat
 	}
 
@@ -399,6 +402,10 @@ func (dot *Dot) SnapshotHeal(target *Unit, baseHealing float64) {
 
 // Applies the fully computed spell result to the sim.
 func (spell *Spell) dealHealingInternal(sim *Simulation, isPeriodic bool, result *SpellResult) {
+	fmt.Println("Crit healing", spell.ActionID.SpellID, result.DidCrit(), result.Damage)
+	if result.DidCrit() {
+		spell.SpellMetrics[result.Target.UnitIndex].TotalCritHealing += result.Damage
+	}
 	spell.SpellMetrics[result.Target.UnitIndex].TotalHealing += result.Damage
 	spell.SpellMetrics[result.Target.UnitIndex].TotalThreat += result.Threat
 	if result.Target.HasHealthBar() {

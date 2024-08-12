@@ -804,8 +804,16 @@ export class ActionMetrics {
 		return this.combinedMetrics.damage;
 	}
 
+	get critDamage() {
+		return this.combinedMetrics.critDamage;
+	}
+
 	get avgDamage() {
 		return this.combinedMetrics.damage / this.iterations;
+	}
+
+	get avgCritDamage() {
+		return this.combinedMetrics.critDamage / this.iterations;
 	}
 
 	get dps() {
@@ -825,6 +833,14 @@ export class ActionMetrics {
 
 	get avgHealing() {
 		return this.combinedMetrics.healing / this.iterations;
+	}
+
+	get critHealing() {
+		return this.combinedMetrics.critHealing;
+	}
+
+	get avgCritHealing() {
+		return this.combinedMetrics.critHealing / this.iterations;
 	}
 
 	get hps() {
@@ -889,6 +905,10 @@ export class ActionMetrics {
 		return this.combinedMetrics.avgHit;
 	}
 
+	get avgCritHit() {
+		return this.combinedMetrics.avgCritHit;
+	}
+
 	get avgHitThreat() {
 		return this.combinedMetrics.avgHitThreat;
 	}
@@ -930,7 +950,7 @@ export class ActionMetrics {
 	}
 
 	get hitPercent() {
-		return this.combinedMetrics.hits;
+		return this.combinedMetrics.hitPercent;
 	}
 
 	get blocks() {
@@ -955,6 +975,14 @@ export class ActionMetrics {
 
 	get critPercent() {
 		return this.combinedMetrics.critPercent;
+	}
+
+	get healingPercent() {
+		return this.combinedMetrics.healingPercent;
+	}
+
+	get healingCritPercent() {
+		return this.combinedMetrics.healingCritPercent;
 	}
 
 	get isProc() {
@@ -1094,6 +1122,14 @@ export class TargetedActionMetrics {
 		return this.data.damage / this.iterations;
 	}
 
+	get critDamage() {
+		return this.data.critDamage;
+	}
+
+	get avgCritDamage() {
+		return this.data.critDamage / this.iterations;
+	}
+
 	get dps() {
 		return this.data.damage / this.iterations / this.duration;
 	}
@@ -1104,6 +1140,14 @@ export class TargetedActionMetrics {
 
 	get avgHealing() {
 		return (this.data.healing + this.data.shielding) / this.iterations;
+	}
+
+	get critHealing() {
+		return this.data.critHealing;
+	}
+
+	get avgCritHealing() {
+		return this.data.critHealing / this.iterations;
 	}
 
 	get shielding() {
@@ -1163,10 +1207,16 @@ export class TargetedActionMetrics {
 		return lhr == 0 ? 0 : this.data.damage / lhr;
 	}
 
+	get avgCritHit() {
+		const lhr = this.landedHitsRaw;
+		return lhr == 0 ? 0 : this.data.critDamage / this.crits;
+	}
+
 	get avgHitThreat() {
 		const lhr = this.landedHitsRaw;
 		return lhr == 0 ? 0 : this.data.threat / lhr;
 	}
+
 	get totalMisses() {
 		return this.misses + this.dodges + this.parries;
 	}
@@ -1231,6 +1281,14 @@ export class TargetedActionMetrics {
 		return (this.data.crits / (this.hitAttempts || 1)) * 100;
 	}
 
+	get healingPercent() {
+		return ((this.healing - this.critHealing) / this.healing) * 100;
+	}
+
+	get healingCritPercent() {
+		return (this.data.critHealing / this.healing) * 100;
+	}
+
 	// Merges an array of metrics into a single metric.
 	static merge(actions: Array<TargetedActionMetrics>, spellType?: SpellType): TargetedActionMetrics {
 		const { iterations = 1, duration = 1 } = actions[0];
@@ -1246,8 +1304,10 @@ export class TargetedActionMetrics {
 				blocks: sum(actions.map(a => a.data.blocks)),
 				glances: sum(actions.map(a => a.data.glances)),
 				damage: sum(actions.map(a => a.data.damage)),
+				critDamage: sum(actions.map(a => a.data.critDamage)),
 				threat: sum(actions.map(a => a.data.threat)),
 				healing: sum(actions.map(a => a.data.healing)),
+				critHealing: sum(actions.map(a => a.data.critHealing)),
 				shielding: sum(actions.map(a => a.data.shielding)),
 				castTimeMs: sum(actions.map(a => a.data.castTimeMs)),
 			}),
