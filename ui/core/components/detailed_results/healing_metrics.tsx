@@ -1,7 +1,3 @@
-import clsx from 'clsx';
-import tippy from 'tippy.js';
-
-import { spellSchoolNames } from '../../proto_utils/names';
 import { ActionMetrics } from '../../proto_utils/sim_result.js';
 import { formatToCompactNumber, formatToNumber, formatToPercent } from '../../utils.js';
 import { MetricsCombinedTooltipTable } from './metrics_table/metrics_combined_tooltip_table';
@@ -32,7 +28,7 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 			{
 				name: 'Healing done',
 				tooltip: 'Total Healing done',
-				headerCellClass: 'text-start',
+				headerCellClass: 'text-center',
 				getValue: (metric: ActionMetrics) => metric.avgHealing,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
 					cellElem.classList.add('metric-total');
@@ -47,34 +43,26 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 						/>,
 					);
 
-					tippy(cellElem, {
-						maxWidth: 'none',
-						placement: 'auto',
-						theme: 'metrics-table',
-						content: (
-							<>
-								<MetricsCombinedTooltipTable
-									spellSchool={metric.spellSchool}
-									total={metric.healing}
-									totalPercentage={100}
-									values={[
-										{
-											name: 'Hit',
-											value: metric.healing - metric.critHealing,
-											percentage: metric.healingPercent,
-											average: metric.avgHealing,
-										},
-										{
-											name: `Critical Hit`,
-											value: metric.critHealing,
-											percentage: metric.healingCritPercent,
-											average: metric.avgCritHealing,
-										},
-									]}
-								/>
-							</>
-						),
-					});
+					<MetricsCombinedTooltipTable
+						tooltipElement={cellElem}
+						spellSchool={metric.spellSchool}
+						total={metric.healing}
+						totalPercentage={100}
+						values={[
+							{
+								name: 'Hit',
+								value: metric.healing - metric.critHealing,
+								percentage: metric.healingPercent,
+								average: metric.avgHealing,
+							},
+							{
+								name: `Critical Hit`,
+								value: metric.critHealing,
+								percentage: metric.healingCritPercent,
+								average: metric.avgCritHealing,
+							},
+						]}
+					/>;
 				},
 			},
 			{
@@ -105,15 +93,31 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 				name: 'Avg Cast',
 				tooltip: 'Healing / Casts',
 				getValue: (metric: ActionMetrics) => metric.avgCastHealing,
-				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.avgCastHealing),
-			},
+				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
+					cellElem.appendChild(<>{formatToCompactNumber(metric.avgCastHealing)}</>);
 
-			{
-				name: 'Avg Cast',
-				tooltip: 'Threat / Casts',
-				columnClass: 'threat-metrics',
-				getValue: (metric: ActionMetrics) => metric.avgCastThreat,
-				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.avgCastThreat),
+					<MetricsCombinedTooltipTable
+						tooltipElement={cellElem}
+						tooltipConfig={{
+							onShow: () => {
+								const hideThreatMetrics = !!document.querySelector('.hide-threat-metrics');
+								if (hideThreatMetrics) return false;
+							},
+						}}
+						headerValues={[, 'Amount']}
+						spellSchool={metric.spellSchool}
+						total={metric.avgCastThreat}
+						totalPercentage={100}
+						hasFooter={false}
+						values={[
+							{
+								name: 'Threat',
+								value: metric.avgCastThreat,
+								percentage: 100,
+							},
+						]}
+					/>;
+				},
 			},
 			{
 				name: 'Crit %',
@@ -128,20 +132,37 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.healingThroughput),
 			},
 			{
-				name: 'TPS',
-				tooltip: 'Threat / Encounter Duration',
-				columnClass: 'threat-metrics',
-				getValue: (metric: ActionMetrics) => metric.tps,
-				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.tps),
-			},
-			{
 				name: 'HPS',
 				tooltip: 'Healing / Encounter Duration',
 				sort: ColumnSortType.Descending,
 				headerCellClass: 'text-body',
 				columnClass: 'text-success',
 				getValue: (metric: ActionMetrics) => metric.hps,
-				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.hps),
+				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
+					cellElem.appendChild(<>{formatToCompactNumber(metric.hps)}</>);
+					console.log(metric.name, metric.tps, metric);
+					<MetricsCombinedTooltipTable
+						tooltipElement={cellElem}
+						tooltipConfig={{
+							onShow: () => {
+								const hideThreatMetrics = !!document.querySelector('.hide-threat-metrics');
+								if (hideThreatMetrics) return false;
+							},
+						}}
+						headerValues={[, 'Amount']}
+						spellSchool={metric.spellSchool}
+						total={metric.tps}
+						totalPercentage={100}
+						hasFooter={false}
+						values={[
+							{
+								name: 'Threat',
+								value: metric.tps,
+								percentage: 100,
+							},
+						]}
+					/>;
+				},
 			},
 		]);
 	}

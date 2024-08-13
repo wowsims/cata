@@ -1,5 +1,3 @@
-import tippy from 'tippy.js';
-
 import { SpellType } from '../../proto/api';
 import { ActionMetrics } from '../../proto_utils/sim_result';
 import { bucket, formatToCompactNumber, formatToNumber, formatToPercent } from '../../utils';
@@ -31,7 +29,7 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 			{
 				name: 'Damage done',
 				tooltip: 'Total Damage done',
-				headerCellClass: 'text-start',
+				headerCellClass: 'text-center',
 				getValue: (metric: ActionMetrics) => metric.avgDamage,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
 					cellElem.classList.add('metric-total');
@@ -48,79 +46,72 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 					const hitValues = metric.damageDone.hit;
 					const critValues = metric.damageDone.crit;
 
-					tippy(cellElem, {
-						maxWidth: 'none',
-						placement: 'auto',
-						theme: 'metrics-table',
-						content: (
-							<>
-								<MetricsCombinedTooltipTable
-									spellSchool={metric.spellSchool}
-									total={metric.damage}
-									totalPercentage={100}
-									hasFooter={false}
-									values={[
-										...(metric.spellType === SpellType.SpellTypeAll
-											? [
-													{
-														name: 'Hit',
-														...hitValues,
-													},
-													{
-														name: `Critical Hit`,
-														...critValues,
-													},
-											  ]
-											: []),
-										...(metric.spellType === SpellType.SpellTypeCast
-											? [
-													{
-														name: 'Hit',
-														...hitValues,
-													},
-													{
-														name: `Critical Hit`,
-														...critValues,
-													},
-											  ]
-											: []),
-										...(metric.spellType === SpellType.SpellTypePeriodic
-											? [
-													{
-														name: 'Tick',
-														...hitValues,
-													},
-													{
-														name: `Critical Tick`,
-														...critValues,
-													},
-											  ]
-											: []),
-										// {
-										// 	name: 'Glancing Blow',
-										// 	value: metric.glances,
-										// 	percentage: metric.glancePercent,
-										// },
-										// {
-										// 	name: 'Blocked Blow',
-										// 	value: metric.blocks,
-										// 	percentage: metric.blockPercent,
-										// },
-									]}
-								/>
-							</>
-						),
-					});
+					<MetricsCombinedTooltipTable
+						tooltipElement={cellElem}
+						headerValues={[, 'Amount']}
+						spellSchool={metric.spellSchool}
+						total={metric.damage}
+						totalPercentage={100}
+						hasFooter={false}
+						values={[
+							...(metric.spellType === SpellType.SpellTypeAll
+								? [
+										{
+											name: 'Hit',
+											...hitValues,
+										},
+										{
+											name: `Critical Hit`,
+											...critValues,
+										},
+								  ]
+								: []),
+							...(metric.spellType === SpellType.SpellTypeCast
+								? [
+										{
+											name: 'Hit',
+											...hitValues,
+										},
+										{
+											name: `Critical Hit`,
+											...critValues,
+										},
+								  ]
+								: []),
+							...(metric.spellType === SpellType.SpellTypePeriodic
+								? [
+										{
+											name: 'Tick',
+											...hitValues,
+										},
+										{
+											name: `Critical Tick`,
+											...critValues,
+										},
+								  ]
+								: []),
+							// {
+							// 	name: 'Glancing Blow',
+							// 	value: metric.glances,
+							// 	percentage: metric.glancePercent,
+							// },
+							// {
+							// 	name: 'Blocked Blow',
+							// 	value: metric.blocks,
+							// 	percentage: metric.blockPercent,
+							// },
+						]}
+					/>;
 				},
 			},
 			{
 				name: 'Casts',
 				tooltip: 'Casts',
-				getValue: (metric: ActionMetrics, isChildRow) => {
+				getValue: (metric: ActionMetrics, _isChildRow) => {
 					if (metric.isProc) return 0;
 					return metric.casts;
 				},
-				getDisplayString: (metric: ActionMetrics, isChildRow) => {
+				getDisplayString: (metric: ActionMetrics, _isChildRow) => {
 					if (metric.isProc) return '-';
 					return formatToNumber(metric.casts);
 				},
@@ -129,14 +120,31 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				name: 'Avg Cast',
 				tooltip: 'Damage / Casts',
 				getValue: (metric: ActionMetrics) => metric.avgCast,
-				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.avgCast),
-			},
-			{
-				name: 'Avg Cast',
-				tooltip: 'Threat / Casts',
-				columnClass: 'threat-metrics',
-				getValue: (metric: ActionMetrics) => metric.avgCastThreat,
-				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.avgCastThreat),
+				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
+					cellElem.appendChild(<>{formatToCompactNumber(metric.avgCast)}</>);
+
+					<MetricsCombinedTooltipTable
+						tooltipElement={cellElem}
+						tooltipConfig={{
+							onShow: () => {
+								const hideThreatMetrics = !!document.querySelector('.hide-threat-metrics');
+								if (hideThreatMetrics) return false;
+							},
+						}}
+						headerValues={[, 'Amount']}
+						spellSchool={metric.spellSchool}
+						total={metric.avgCastThreat}
+						totalPercentage={100}
+						hasFooter={false}
+						values={[
+							{
+								name: 'Threat',
+								value: metric.avgCastThreat,
+								percentage: 100,
+							},
+						]}
+					/>;
+				},
 			},
 			{
 				name: 'Hits',
@@ -147,87 +155,97 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 
 					cellElem.appendChild(<>{formatToNumber(metric.landedHits)}</>);
 
-					tippy(cellElem, {
-						placement: 'auto',
-						theme: 'metrics-table',
-						content: (
-							<>
-								<MetricsCombinedTooltipTable
-									spellSchool={metric.spellSchool}
-									total={metric.landedHits}
-									totalPercentage={100}
-									values={[
-										...(metric.spellType === SpellType.SpellTypeAll
-											? [
-													{
-														name: 'Hit',
-														value: metric.hits,
-														percentage: metric.hitPercent,
-													},
-													{
-														name: `Critical`,
-														value: metric.crits,
-														percentage: metric.critPercent,
-													},
-											  ]
-											: []),
-										...(metric.spellType === SpellType.SpellTypeCast
-											? [
-													{
-														name: 'Hit',
-														value: metric.hits,
-														percentage: metric.hitPercent,
-													},
-													{
-														name: `Critical Hit`,
-														value: metric.crits,
-														percentage: metric.critPercent,
-													},
-											  ]
-											: []),
-										...(metric.spellType === SpellType.SpellTypePeriodic
-											? [
-													{
-														name: 'Tick',
-														value: metric.hits,
-														percentage: metric.hitPercent,
-													},
-													{
-														name: `Critical Tick`,
-														value: metric.crits,
-														percentage: metric.critPercent,
-													},
-											  ]
-											: []),
+					<MetricsCombinedTooltipTable
+						tooltipElement={cellElem}
+						spellSchool={metric.spellSchool}
+						total={metric.landedHits}
+						totalPercentage={100}
+						values={[
+							...(metric.spellType === SpellType.SpellTypeAll
+								? [
 										{
-											name: 'Glancing Blow',
-											value: metric.glances,
-											percentage: metric.glancePercent,
+											name: 'Hit',
+											value: metric.hits,
+											percentage: metric.hitPercent,
 										},
 										{
-											name: 'Blocked Blow',
-											value: metric.blocks,
-											percentage: metric.blockPercent,
+											name: `Critical`,
+											value: metric.crits,
+											percentage: metric.critPercent,
 										},
-									]}
-								/>
-							</>
-						),
-					});
+								  ]
+								: []),
+							...(metric.spellType === SpellType.SpellTypeCast
+								? [
+										{
+											name: 'Hit',
+											value: metric.hits,
+											percentage: metric.hitPercent,
+										},
+										{
+											name: `Critical Hit`,
+											value: metric.crits,
+											percentage: metric.critPercent,
+										},
+								  ]
+								: []),
+							...(metric.spellType === SpellType.SpellTypePeriodic
+								? [
+										{
+											name: 'Tick',
+											value: metric.hits,
+											percentage: metric.hitPercent,
+										},
+										{
+											name: `Critical Tick`,
+											value: metric.crits,
+											percentage: metric.critPercent,
+										},
+								  ]
+								: []),
+							{
+								name: 'Glancing Blow',
+								value: metric.glances,
+								percentage: metric.glancePercent,
+							},
+							{
+								name: 'Blocked Blow',
+								value: metric.blocks,
+								percentage: metric.blockPercent,
+							},
+						]}
+					/>;
 				},
 			},
 			{
 				name: 'Avg Hit',
 				tooltip: 'Damage / Hits',
 				getValue: (metric: ActionMetrics) => metric.avgHit,
-				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.avgHit),
-			},
-			{
-				name: 'Avg Hit',
-				tooltip: 'Threat / Hits',
-				columnClass: 'threat-metrics',
-				getValue: (metric: ActionMetrics) => metric.avgHitThreat,
-				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.avgHitThreat),
+				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
+					cellElem.appendChild(<>{formatToCompactNumber(metric.avgHit)}</>);
+
+					<MetricsCombinedTooltipTable
+						tooltipElement={cellElem}
+						tooltipConfig={{
+							onShow: () => {
+								const hideThreatMetrics = !!document.querySelector('.hide-threat-metrics');
+								if (hideThreatMetrics) return false;
+							},
+						}}
+						headerValues={[, 'Amount']}
+						spellSchool={metric.spellSchool}
+						total={metric.avgHitThreat}
+						totalPercentage={100}
+						hasFooter={false}
+						values={[
+							{
+								name: 'Threat',
+								value: metric.avgHitThreat,
+								percentage: 100,
+							},
+						]}
+					/>;
+				},
 			},
 			{
 				name: 'Crit %',
@@ -243,44 +261,30 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 					cellElem.appendChild(<>{metric.totalMissesPercent ? formatToPercent(metric.totalMissesPercent) : '-'}</>);
 					if (!metric.totalMissesPercent) return;
 
-					tippy(cellElem, {
-						placement: 'right',
-						theme: 'metrics-table',
-						content: (
-							<>
-								<MetricsCombinedTooltipTable
-									spellSchool={metric.spellSchool}
-									total={metric.totalMisses}
-									totalPercentage={metric.totalMissesPercent}
-									values={[
-										{
-											name: 'Miss',
-											value: metric.misses,
-											percentage: metric.missPercent,
-										},
-										{
-											name: 'Parry',
-											value: metric.parries,
-											percentage: metric.parryPercent,
-										},
-										{
-											name: 'Dodge',
-											value: metric.dodges,
-											percentage: metric.dodgePercent,
-										},
-									]}
-								/>
-							</>
-						),
-					});
+					<MetricsCombinedTooltipTable
+						tooltipElement={cellElem}
+						spellSchool={metric.spellSchool}
+						total={metric.totalMisses}
+						totalPercentage={metric.totalMissesPercent}
+						values={[
+							{
+								name: 'Miss',
+								value: metric.misses,
+								percentage: metric.missPercent,
+							},
+							{
+								name: 'Parry',
+								value: metric.parries,
+								percentage: metric.parryPercent,
+							},
+							{
+								name: 'Dodge',
+								value: metric.dodges,
+								percentage: metric.dodgePercent,
+							},
+						]}
+					/>;
 				},
-			},
-			{
-				name: 'TPS',
-				tooltip: 'Threat / Encounter Duration',
-				columnClass: 'threat-metrics',
-				getValue: (metric: ActionMetrics) => metric.tps,
-				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.tps),
 			},
 			{
 				name: 'DPS',
@@ -289,7 +293,31 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				columnClass: 'text-success',
 				sort: ColumnSortType.Descending,
 				getValue: (metric: ActionMetrics) => metric.dps,
-				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.dps),
+				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
+					cellElem.appendChild(<>{formatToCompactNumber(metric.dps)}</>);
+
+					<MetricsCombinedTooltipTable
+						tooltipElement={cellElem}
+						tooltipConfig={{
+							onShow: () => {
+								const hideThreatMetrics = !!document.querySelector('.hide-threat-metrics');
+								if (hideThreatMetrics) return false;
+							},
+						}}
+						headerValues={[, 'Amount']}
+						spellSchool={metric.spellSchool}
+						total={metric.tps}
+						totalPercentage={100}
+						hasFooter={false}
+						values={[
+							{
+								name: 'Threat',
+								value: metric.tps,
+								percentage: 100,
+							},
+						]}
+					/>;
+				},
 			},
 		]);
 	}
