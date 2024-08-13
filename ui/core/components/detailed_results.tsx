@@ -1,5 +1,3 @@
-import { ref } from 'tsx-vanilla';
-
 import { REPO_NAME } from '../constants/other';
 import { DetailedResultsUpdate, SimRun, SimRunData } from '../proto/ui';
 import { SimResult } from '../proto_utils/sim_result';
@@ -10,18 +8,14 @@ import { AuraMetricsTable } from './detailed_results/aura_metrics';
 import { CastMetricsTable } from './detailed_results/cast_metrics';
 import { DamageMetricsTable } from './detailed_results/damage_metrics';
 import { DpsHistogram } from './detailed_results/dps_histogram';
-import { DtpsMeleeMetricsTable } from './detailed_results/dtps_melee_metrics';
 import { DtpsMetricsTable } from './detailed_results/dtps_metrics';
-import { DtpsSpellMetricsTable } from './detailed_results/dtps_spell_metrics';
 import { HealingMetricsTable } from './detailed_results/healing_metrics';
 import { LogRunner } from './detailed_results/log_runner';
-import { MeleeMetricsTable } from './detailed_results/melee_metrics';
 import { PlayerDamageMetricsTable } from './detailed_results/player_damage';
 import { PlayerDamageTakenMetricsTable } from './detailed_results/player_damage_taken';
 import { ResourceMetricsTable } from './detailed_results/resource_metrics';
 import { SimResultData } from './detailed_results/result_component';
 import { ResultsFilter } from './detailed_results/results_filter';
-import { SpellMetricsTable } from './detailed_results/spell_metrics';
 import { Timeline } from './detailed_results/timeline';
 import { ToplineResults } from './detailed_results/topline_results';
 import { RaidSimResultsManager } from './raid_sim_action';
@@ -224,14 +218,7 @@ export abstract class DetailedResults extends Component {
 			parent: this.rootElem.querySelector('.damage-metrics')!,
 			resultsEmitter: this.resultsEmitter,
 		});
-		// new MeleeMetricsTable({
-		// 	parent: this.rootElem.querySelector('.melee-metrics')!,
-		// 	resultsEmitter: this.resultsEmitter,
-		// });
-		// new SpellMetricsTable({
-		// 	parent: this.rootElem.querySelector('.spell-metrics')!,
-		// 	resultsEmitter: this.resultsEmitter,
-		// });
+
 		new HealingMetricsTable({
 			parent: this.rootElem.querySelector('.healing-spell-metrics')!,
 			resultsEmitter: this.resultsEmitter,
@@ -272,14 +259,6 @@ export abstract class DetailedResults extends Component {
 			parent: this.rootElem.querySelector('.dtps-metrics')!,
 			resultsEmitter: this.resultsEmitter,
 		});
-		// new DtpsMeleeMetricsTable({
-		// 	parent: this.rootElem.querySelector('.dtps-melee-metrics')!,
-		// 	resultsEmitter: this.resultsEmitter,
-		// });
-		// new DtpsSpellMetricsTable({
-		// 	parent: this.rootElem.querySelector('.dtps-spell-metrics')!,
-		// 	resultsEmitter: this.resultsEmitter,
-		// });
 
 		const timeline = new Timeline({
 			parent: this.rootElem.querySelector('.timeline')!,
