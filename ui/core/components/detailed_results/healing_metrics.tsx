@@ -140,7 +140,7 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 				getValue: (metric: ActionMetrics) => metric.hps,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
 					cellElem.appendChild(<>{formatToCompactNumber(metric.hps)}</>);
-					console.log(metric.name, metric.tps, metric);
+
 					<MetricsCombinedTooltipTable
 						tooltipElement={cellElem}
 						tooltipConfig={{
