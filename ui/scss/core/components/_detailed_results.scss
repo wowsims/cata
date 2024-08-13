@@ -239,7 +239,11 @@ tr:not(.parent-metric) .expand-toggle {
 	display: none;
 }
 
-.metric-total {
+.metrics-total {
+	--total-percentage-width: 7ch;
+	--total-amount-width: 7ch;
+	--total-bar-min-width: 50px;
+	min-width: calc(var(--total-percentage-width) + var(--total-amount-width) + var(--total-bar-min-width));
 }
 
 .metrics-total-percentage,
@@ -247,19 +251,21 @@ tr:not(.parent-metric) .expand-toggle {
 	flex-shrink: 0;
 }
 .metrics-total-percentage {
-	width: 7ch;
+	width: var(--total-percentage-width);
 }
 
-.metrics-total-damage {
-	width: 7ch;
+.metrics-total-amount {
+	width: var(--total-amount-width);
 }
 
 .metrics-total-bar {
+	position: absolute;
+	left: var(--total-percentage-width);
+	right: var(--total-amount-width);
+	height: 100%;
 	flex-shrink: 1;
 	flex-grow: 1;
-	width: 180px;
 	background-color: color-mix(in srgb, var(--bs-white) 5%, transparent);
-	position: relative;
 }
 
 .metrics-total-bar-fill {
@@ -292,10 +298,10 @@ tr:not(.parent-metric) .expand-toggle {
 		}
 	}
 
-	.metrics-total-bar {
-		width: 100px;
-		@include media-breakpoint-down(sm) {
-			width: 50px;
-		}
-	}
+	// .metrics-total-bar {
+	// 	width: 100px;
+	// 	@include media-breakpoint-down(sm) {
+	// 		width: 50px;
+	// 	}
+	// }
 }

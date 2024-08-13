@@ -1,6 +1,7 @@
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
+import { TOOLTIP_METRIC_LABELS } from '../../../constants/tooltips';
 import { ActionId } from '../../../proto_utils/action_id.js';
 import { ActionMetrics, AuraMetrics, ResourceMetrics, UnitMetrics } from '../../../proto_utils/sim_result.js';
 import { TypedEvent } from '../../../typed_event.js';
@@ -55,17 +56,18 @@ export abstract class MetricsTable<T extends ActionMetrics | AuraMetrics | UnitM
 		const headerRowElem = this.rootElem.getElementsByClassName('metrics-table-header-row')[0] as HTMLElement;
 		this.columnConfigs.forEach(columnConfig => {
 			const headerCell = document.createElement('th');
+			const tooltip = TOOLTIP_METRIC_LABELS[columnConfig.name as keyof typeof TOOLTIP_METRIC_LABELS] || columnConfig.tooltip;
 			headerCell.classList.add('metrics-table-header-cell');
 			if (columnConfig.columnClass) {
-				headerCell.classList.add(columnConfig.columnClass);
+				headerCell.classList.add(...columnConfig.columnClass.split(' '));
 			}
 			if (columnConfig.headerCellClass) {
-				headerCell.classList.add(columnConfig.headerCellClass);
+				headerCell.classList.add(...columnConfig.headerCellClass.split(' '));
 			}
 			headerCell.appendChild(<span>{columnConfig.name}</span>);
-			if (columnConfig.tooltip) {
+			if (tooltip) {
 				tippy(headerCell, {
-					content: columnConfig.tooltip,
+					content: tooltip,
 					ignoreAttributes: true,
 				});
 			}

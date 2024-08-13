@@ -2,6 +2,18 @@
 
 .topline-results-root {
 	padding-bottom: var(--gap-width);
-	display: flex;
-	justify-content: space-around;
+	// display: flex;
+	// justify-content: space-around;
+
+	.metrics-table {
+		width: max-content;
+		max-width: 100%;
+		width: 100%;
+	}
+
+	.metrics-table-body {
+		tr:hover {
+			background-color: transparent;
+		}
+	}
 }

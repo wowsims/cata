@@ -1,3 +1,4 @@
+import { TOOLTIP_METRIC_LABELS } from '../../constants/tooltips';
 import { SpellType } from '../../proto/api';
 import { ActionMetrics } from '../../proto_utils/sim_result';
 import { bucket, formatToCompactNumber, formatToNumber, formatToPercent } from '../../utils';
@@ -28,11 +29,9 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 			}),
 			{
 				name: 'Damage done',
-				tooltip: 'Total Damage done',
 				headerCellClass: 'text-center',
 				getValue: (metric: ActionMetrics) => metric.avgDamage,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
-					cellElem.classList.add('metric-total');
 					cellElem.appendChild(
 						<MetricsTotalBar
 							spellSchool={metric.spellSchool}
@@ -106,7 +105,6 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 			},
 			{
 				name: 'Casts',
-				tooltip: 'Casts',
 				getValue: (metric: ActionMetrics, _isChildRow) => {
 					if (metric.isProc) return 0;
 					return metric.casts;
@@ -118,7 +116,7 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 			},
 			{
 				name: 'Avg Cast',
-				tooltip: 'Damage / Casts',
+				tooltip: TOOLTIP_METRIC_LABELS['Damage Avg Cast'],
 				getValue: (metric: ActionMetrics) => metric.avgCast,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
 					cellElem.appendChild(<>{formatToCompactNumber(metric.avgCast)}</>);
@@ -148,7 +146,6 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 			},
 			{
 				name: 'Hits',
-				tooltip: 'Hits',
 				getValue: (metric: ActionMetrics) => metric.landedHits,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
 					if (!metric.landedHits) return '-';
@@ -219,7 +216,6 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 			},
 			{
 				name: 'Avg Hit',
-				tooltip: 'Damage / Hits',
 				getValue: (metric: ActionMetrics) => metric.avgHit,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
 					cellElem.appendChild(<>{formatToCompactNumber(metric.avgHit)}</>);
@@ -249,13 +245,11 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 			},
 			{
 				name: 'Crit %',
-				tooltip: 'Crits / Hits',
 				getValue: (metric: ActionMetrics) => metric.critPercent,
 				getDisplayString: (metric: ActionMetrics) => formatToPercent(metric.critPercent),
 			},
 			{
 				name: 'Miss %',
-				tooltip: 'Misses / Casts',
 				getValue: (metric: ActionMetrics) => metric.totalMissesPercent,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
 					cellElem.appendChild(<>{formatToPercent(metric.totalMissesPercent)}</>);
@@ -288,13 +282,11 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 			},
 			{
 				name: 'DPET',
-				tooltip: 'Damage / Avg Cast Time',
 				getValue: (metric: ActionMetrics) => metric.damageThroughput,
 				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.damageThroughput, { fallbackString: '-' }),
 			},
 			{
 				name: 'DPS',
-				tooltip: 'Damage / Encounter Duration',
 				headerCellClass: 'text-body',
 				columnClass: 'text-success',
 				sort: ColumnSortType.Descending,

@@ -71,7 +71,6 @@ func (rsrc *raidSimResultCombiner) newUnitMetrics(baseUnit *proto.UnitMetrics) *
 		Name:      baseUnit.Name,
 		UnitIndex: baseUnit.UnitIndex,
 		Dps:       rsrc.newDistMetrics(),
-		Dpasp:     rsrc.newDistMetrics(),
 		Threat:    rsrc.newDistMetrics(),
 		Dtps:      rsrc.newDistMetrics(),
 		Tmi:       rsrc.newDistMetrics(),
@@ -229,7 +228,6 @@ func (rsrc *raidSimResultCombiner) addResourceMetrics(unit *proto.UnitMetrics, a
 
 func (rsrc *raidSimResultCombiner) combineUnitMetrics(base *proto.UnitMetrics, add *proto.UnitMetrics, isLast bool, weight float64) {
 	rsrc.combineDistMetrics(base.Dps, add.Dps, isLast, weight)
-	rsrc.combineDistMetrics(base.Dpasp, add.Dpasp, isLast, weight)
 	rsrc.combineDistMetrics(base.Threat, add.Threat, isLast, weight)
 	rsrc.combineDistMetrics(base.Dtps, add.Dtps, isLast, weight)
 	rsrc.combineDistMetrics(base.Tmi, add.Tmi, isLast, weight)

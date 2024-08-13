@@ -1,3 +1,4 @@
+import { TOOLTIP_METRIC_LABELS } from '../../constants/tooltips';
 import { SpellType } from '../../proto/api';
 import { ActionMetrics } from '../../proto_utils/sim_result.js';
 import { formatToCompactNumber, formatToNumber, formatToPercent } from '../../utils.js';
@@ -28,11 +29,9 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 			}),
 			{
 				name: 'Healing done',
-				tooltip: 'Total Healing done',
 				headerCellClass: 'text-center',
 				getValue: (metric: ActionMetrics) => metric.avgHealing,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
-					cellElem.classList.add('metric-total');
 					cellElem.appendChild(
 						<MetricsTotalBar
 							spellSchool={metric.spellSchool}
@@ -69,25 +68,21 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 			},
 			{
 				name: 'Casts',
-				tooltip: 'Casts',
 				getValue: (metric: ActionMetrics) => metric.casts,
 				getDisplayString: (metric: ActionMetrics) => formatToNumber(metric.casts, { minimumFractionDigits: 1 }),
 			},
 			{
 				name: 'CPM',
-				tooltip: 'Casts / (Encounter Duration / 60 Seconds)',
 				getValue: (metric: ActionMetrics) => metric.castsPerMinute,
 				getDisplayString: (metric: ActionMetrics) => formatToNumber(metric.castsPerMinute, { minimumFractionDigits: 1 }),
 			},
 			{
 				name: 'Cast Time',
-				tooltip: 'Average cast time in seconds',
 				getValue: (metric: ActionMetrics) => metric.avgCastTimeMs,
 				getDisplayString: (metric: ActionMetrics) => formatToNumber(metric.avgCastTimeMs / 1000, { minimumFractionDigits: 2, fallbackString: '-' }),
 			},
 			{
 				name: 'Avg Cast',
-				tooltip: 'Healing / Casts',
 				getValue: (metric: ActionMetrics) => metric.avgCastHealing,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
 					cellElem.appendChild(<>{formatToCompactNumber(metric.avgCastHealing)}</>);
@@ -117,7 +112,6 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 			},
 			{
 				name: 'Hits',
-				tooltip: 'Hits',
 				getValue: (metric: ActionMetrics) => metric.landedHits,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
 					if (!metric.landedHits) return '-';
@@ -178,26 +172,22 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 			},
 			{
 				name: 'HPM',
-				tooltip: 'Healing / Mana',
 				getValue: (metric: ActionMetrics) => metric.hpm,
 				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.hpm, { fallbackString: '-' }),
 			},
 
 			{
 				name: 'Crit %',
-				tooltip: 'Crits / Hits',
 				getValue: (metric: ActionMetrics) => metric.healingCritPercent,
 				getDisplayString: (metric: ActionMetrics) => formatToPercent(metric.healingCritPercent),
 			},
 			{
 				name: 'HPET',
-				tooltip: 'Healing / Avg Cast Time',
 				getValue: (metric: ActionMetrics) => metric.healingThroughput,
 				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.healingThroughput, { fallbackString: '-' }),
 			},
 			{
 				name: 'HPS',
-				tooltip: 'Healing / Encounter Duration',
 				sort: ColumnSortType.Descending,
 				headerCellClass: 'text-body',
 				columnClass: 'text-success',

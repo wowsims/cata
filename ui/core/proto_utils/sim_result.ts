@@ -308,7 +308,6 @@ export class UnitMetrics {
 	readonly iconUrl: string;
 	readonly classColor: string;
 	readonly dps: DistributionMetricsProto;
-	readonly dpasp: DistributionMetricsProto;
 	readonly hps: DistributionMetricsProto;
 	readonly tps: DistributionMetricsProto;
 	readonly dtps: DistributionMetricsProto;
@@ -363,7 +362,6 @@ export class UnitMetrics {
 					.friendlyName.toLowerCase()
 					.replace(/\s/g, '-') ?? '';
 		this.dps = this.metrics.dps!;
-		this.dpasp = this.metrics.dpasp!;
 		this.hps = this.metrics.hps!;
 		this.tps = this.metrics.threat!;
 		this.dtps = this.metrics.dtps!;

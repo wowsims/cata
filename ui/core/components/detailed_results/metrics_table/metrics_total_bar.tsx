@@ -12,16 +12,21 @@ type MetricsTotalBarProps = {
 	// Used for overlayed value display, such as shielding.
 	// Will show as darkened bar on top of main bar.
 	overlayValue?: number;
-	spellSchool: SpellSchool | undefined | null;
+	spellSchool?: SpellSchool | undefined | null;
+	classColor?: string | undefined | null;
 };
-export const MetricsTotalBar = ({ percentage, max, total, value, overlayValue, spellSchool }: MetricsTotalBarProps) => {
+export const MetricsTotalBar = ({ percentage, max, total, value, overlayValue, spellSchool, classColor }: MetricsTotalBarProps) => {
 	const spellSchoolString = typeof spellSchool === 'number' ? spellSchoolNames.get(spellSchool) : undefined;
 	return (
-		<div className="d-flex gap-1">
+		<div className="metrics-total position-relative d-flex justify-content-between w-100">
 			<div className="metrics-total-percentage">{formatToPercent(percentage || 0)}</div>
-			<div className="metrics-total-bar">
+			<div className="metrics-total-bar ms-1 me-1">
 				<div
-					className={clsx('metrics-total-bar-fill', spellSchoolString && `bg-spell-school-${spellSchoolString.toLowerCase()}`)}
+					className={clsx(
+						'metrics-total-bar-fill',
+						spellSchoolString && `bg-spell-school-${spellSchoolString.toLowerCase()}`,
+						classColor && `bg-${classColor.toLowerCase()}`,
+					)}
 					style={{ '--percentage': formatToPercent((value / (max ?? 1)) * 100) }}></div>
 				{overlayValue ? (
 					<div
@@ -30,7 +35,7 @@ export const MetricsTotalBar = ({ percentage, max, total, value, overlayValue, s
 					/>
 				) : undefined}
 			</div>
-			<div className="metrics-total-damage">{formatToCompactNumber(total)}</div>
+			<div className="metrics-total-amount">{formatToCompactNumber(total)}</div>
 		</div>
 	);
 };

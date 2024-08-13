@@ -84,7 +84,6 @@ func NewDistributionMetrics() DistributionMetrics {
 
 type UnitMetrics struct {
 	dps    DistributionMetrics
-	dpasp  DistributionMetrics
 	threat DistributionMetrics
 	dtps   DistributionMetrics
 	tmi    DistributionMetrics
@@ -215,7 +214,6 @@ func (tam *TargetedActionMetrics) ToProto() *proto.TargetedActionMetrics {
 func NewUnitMetrics() UnitMetrics {
 	return UnitMetrics{
 		dps:     NewDistributionMetrics(),
-		dpasp:   NewDistributionMetrics(),
 		threat:  NewDistributionMetrics(),
 		dtps:    NewDistributionMetrics(),
 		tmi:     NewDistributionMetrics(),
@@ -390,7 +388,6 @@ func (unitMetrics *UnitMetrics) IsTanking() bool {
 
 func (unitMetrics *UnitMetrics) reset() {
 	unitMetrics.dps.reset()
-	unitMetrics.dpasp.reset()
 	unitMetrics.threat.reset()
 	unitMetrics.dtps.reset()
 	unitMetrics.tmi.reset()
@@ -435,7 +432,6 @@ func (unitMetrics *UnitMetrics) doneIteration(unit *Unit, sim *Simulation) {
 	}
 
 	unitMetrics.dps.doneIteration(sim)
-	unitMetrics.dpasp.doneIteration(sim)
 	unitMetrics.threat.doneIteration(sim)
 	unitMetrics.dtps.doneIteration(sim)
 	unitMetrics.tmi.doneIteration(sim)
@@ -524,7 +520,6 @@ func (unitMetrics *UnitMetrics) ToProto() *proto.UnitMetrics {
 	n := float64(unitMetrics.dps.n)
 	protoMetrics := &proto.UnitMetrics{
 		Dps:           unitMetrics.dps.ToProto(),
-		Dpasp:         unitMetrics.dpasp.ToProto(),
 		Threat:        unitMetrics.threat.ToProto(),
 		Dtps:          unitMetrics.dtps.ToProto(),
 		Tmi:           unitMetrics.tmi.ToProto(),

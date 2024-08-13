@@ -1,3 +1,4 @@
+import { TOOLTIP_METRIC_LABELS } from '../../constants/tooltips';
 import { ResourceType } from '../../proto/api';
 import { resourceNames } from '../../proto_utils/names';
 import { ResourceMetrics } from '../../proto_utils/sim_result';
@@ -48,32 +49,27 @@ export class TypedResourceMetricsTable extends MetricsTable<ResourceMetrics> {
 			}),
 			{
 				name: 'Casts',
-				tooltip: 'Casts',
 				getValue: (metric: ResourceMetrics) => metric.events,
 				getDisplayString: (metric: ResourceMetrics) => metric.events.toFixed(1),
 			},
 			{
 				name: 'Gain',
-				tooltip: 'Gain',
 				sort: ColumnSortType.Descending,
 				getValue: (metric: ResourceMetrics) => metric.gain,
 				getDisplayString: (metric: ResourceMetrics) => metric.gain.toFixed(1),
 			},
 			{
 				name: 'Gain / s',
-				tooltip: 'Gain / Second',
 				getValue: (metric: ResourceMetrics) => metric.gainPerSecond,
 				getDisplayString: (metric: ResourceMetrics) => metric.gainPerSecond.toFixed(1),
 			},
 			{
 				name: 'Avg Gain',
-				tooltip: 'Gain / Event',
 				getValue: (metric: ResourceMetrics) => metric.avgGain,
 				getDisplayString: (metric: ResourceMetrics) => metric.avgGain.toFixed(1),
 			},
 			{
 				name: 'Wasted Gain',
-				tooltip: 'Gain that was wasted because of resource cap.',
 				getValue: (metric: ResourceMetrics) => metric.wastedGain,
 				getDisplayString: (metric: ResourceMetrics) => metric.wastedGain.toFixed(1),
 			},
