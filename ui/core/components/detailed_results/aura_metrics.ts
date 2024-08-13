@@ -1,7 +1,7 @@
 import { OtherAction } from '../../proto/common';
-import { AuraMetrics, SimResult, SimResultFilter } from '../../proto_utils/sim_result';
+import { AuraMetrics } from '../../proto_utils/sim_result';
 import { ColumnSortType, MetricsTable } from './metrics_table/metrics_table';
-import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component';
+import { ResultComponentConfig, SimResultData } from './result_component';
 
 export class AuraMetricsTable extends MetricsTable<AuraMetrics> {
 	private readonly useDebuffs: boolean;
@@ -72,6 +72,6 @@ export class AuraMetricsTable extends MetricsTable<AuraMetrics> {
 	}
 
 	filterMetrics(metrics: Array<AuraMetrics>): Array<AuraMetrics> {
-		return metrics.filter(aura => aura.unit?.isPet && aura.actionId.otherId !== OtherAction.OtherActionMove);
+		return metrics.filter(aura => !(aura.unit?.isPet && aura.actionId.otherId === OtherAction.OtherActionMove));
 	}
 }
