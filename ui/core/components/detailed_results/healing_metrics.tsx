@@ -1,3 +1,4 @@
+import { SpellType } from '../../proto/api';
 import { ActionMetrics } from '../../proto_utils/sim_result.js';
 import { formatToCompactNumber, formatToNumber, formatToPercent } from '../../utils.js';
 import { MetricsCombinedTooltipTable } from './metrics_table/metrics_combined_tooltip_table';
@@ -46,20 +47,21 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 					<MetricsCombinedTooltipTable
 						tooltipElement={cellElem}
 						spellSchool={metric.spellSchool}
-						total={metric.healing}
+						total={metric.avgHealing}
 						totalPercentage={100}
+						hasFooter={false}
 						values={[
 							{
 								name: 'Hit',
-								value: metric.healing - metric.critHealing,
+								value: metric.avgHealing - metric.avgCritHealing,
 								percentage: metric.healingPercent,
-								average: metric.avgHealing,
+								average: (metric.avgHealing - metric.avgCritHealing) / metric.hits,
 							},
 							{
 								name: `Critical Hit`,
-								value: metric.critHealing,
+								value: metric.avgCritHealing,
 								percentage: metric.healingCritPercent,
-								average: metric.avgCritHealing,
+								average: metric.avgCritHealing / metric.crits,
 							},
 						]}
 					/>;
@@ -82,12 +84,6 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 				tooltip: 'Average cast time in seconds',
 				getValue: (metric: ActionMetrics) => metric.avgCastTimeMs,
 				getDisplayString: (metric: ActionMetrics) => (metric.avgCastTimeMs / 1000).toFixed(2),
-			},
-			{
-				name: 'HPM',
-				tooltip: 'Healing / Mana',
-				getValue: (metric: ActionMetrics) => metric.hpm,
-				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.hpm),
 			},
 			{
 				name: 'Avg Cast',
@@ -119,6 +115,74 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 					/>;
 				},
 			},
+			{
+				name: 'Hits',
+				tooltip: 'Hits',
+				getValue: (metric: ActionMetrics) => metric.landedHits,
+				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
+					if (!metric.landedHits) return '-';
+
+					cellElem.appendChild(<>{formatToNumber(metric.landedHits)}</>);
+
+					<MetricsCombinedTooltipTable
+						tooltipElement={cellElem}
+						spellSchool={metric.spellSchool}
+						total={metric.landedHits}
+						totalPercentage={100}
+						values={[
+							...(metric.spellType === SpellType.SpellTypeAll
+								? [
+										{
+											name: 'Hit',
+											value: metric.hits,
+											percentage: metric.hitPercent,
+										},
+										{
+											name: `Critical Hit`,
+											value: metric.crits,
+											percentage: metric.critPercent,
+										},
+								  ]
+								: []),
+							...(metric.spellType === SpellType.SpellTypeCast
+								? [
+										{
+											name: 'Hit',
+											value: metric.hits,
+											percentage: metric.hitPercent,
+										},
+										{
+											name: `Critical Hit`,
+											value: metric.crits,
+											percentage: metric.critPercent,
+										},
+								  ]
+								: []),
+							...(metric.spellType === SpellType.SpellTypePeriodic
+								? [
+										{
+											name: 'Tick',
+											value: metric.hits,
+											percentage: metric.hitPercent,
+										},
+										{
+											name: `Critical Tick`,
+											value: metric.crits,
+											percentage: metric.critPercent,
+										},
+								  ]
+								: []),
+						]}
+					/>;
+				},
+			},
+			{
+				name: 'HPM',
+				tooltip: 'Healing / Mana',
+				getValue: (metric: ActionMetrics) => metric.hpm,
+				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.hpm),
+			},
+
 			{
 				name: 'Crit %',
 				tooltip: 'Crits / Hits',

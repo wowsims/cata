@@ -169,7 +169,7 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 											percentage: metric.hitPercent,
 										},
 										{
-											name: `Critical`,
+											name: `Critical Hit`,
 											value: metric.crits,
 											percentage: metric.critPercent,
 										},

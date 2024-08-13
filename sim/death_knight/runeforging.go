@@ -67,9 +67,10 @@ func init() {
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
+			CritMultiplier:   2,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealHealing(sim, target, character.MaxHealth()*0.03, spell.OutcomeHealing)
+				spell.CalcAndDealHealing(sim, target, character.MaxHealth()*0.03, spell.OutcomeHealingCrit)
 			},
 		})
 
