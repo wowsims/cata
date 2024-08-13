@@ -258,7 +258,7 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				tooltip: 'Misses / Casts',
 				getValue: (metric: ActionMetrics) => metric.totalMissesPercent,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
-					cellElem.appendChild(<>{metric.totalMissesPercent ? formatToPercent(metric.totalMissesPercent) : '-'}</>);
+					cellElem.appendChild(<>{formatToPercent(metric.totalMissesPercent)}</>);
 					if (!metric.totalMissesPercent) return;
 
 					<MetricsCombinedTooltipTable
@@ -285,6 +285,12 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 						]}
 					/>;
 				},
+			},
+			{
+				name: 'DPET',
+				tooltip: 'Damage / Avg Cast Time',
+				getValue: (metric: ActionMetrics) => metric.damageThroughput,
+				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.damageThroughput, { fallbackString: '-' }),
 			},
 			{
 				name: 'DPS',

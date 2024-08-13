@@ -83,7 +83,7 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 				name: 'Cast Time',
 				tooltip: 'Average cast time in seconds',
 				getValue: (metric: ActionMetrics) => metric.avgCastTimeMs,
-				getDisplayString: (metric: ActionMetrics) => (metric.avgCastTimeMs / 1000).toFixed(2),
+				getDisplayString: (metric: ActionMetrics) => formatToNumber(metric.avgCastTimeMs / 1000, { minimumFractionDigits: 2, fallbackString: '-' }),
 			},
 			{
 				name: 'Avg Cast',
@@ -180,7 +180,7 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 				name: 'HPM',
 				tooltip: 'Healing / Mana',
 				getValue: (metric: ActionMetrics) => metric.hpm,
-				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.hpm),
+				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.hpm, { fallbackString: '-' }),
 			},
 
 			{
@@ -193,7 +193,7 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 				name: 'HPET',
 				tooltip: 'Healing / Avg Cast Time',
 				getValue: (metric: ActionMetrics) => metric.healingThroughput,
-				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.healingThroughput),
+				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.healingThroughput, { fallbackString: '-' }),
 			},
 			{
 				name: 'HPS',

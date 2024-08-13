@@ -873,6 +873,11 @@ export class ActionMetrics {
 		return 0;
 	}
 
+	get damageThroughput() {
+		if (this.unit?.isPet && !this.actionId.spellId) return 0;
+		return this.combinedMetrics.damageThroughput;
+	}
+
 	get healingThroughput() {
 		return this.combinedMetrics.healingThroughput;
 	}
@@ -1187,6 +1192,14 @@ export class TargetedActionMetrics {
 
 	get avgCastTimeMs() {
 		return this.data.castTimeMs / this.iterations / this.casts;
+	}
+
+	get damageThroughput() {
+		if (this.avgCastTimeMs) {
+			return this.avgCast / (this.avgCastTimeMs / 1000);
+		} else {
+			return 0;
+		}
 	}
 
 	get healingThroughput() {
