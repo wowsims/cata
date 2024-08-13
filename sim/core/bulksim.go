@@ -259,9 +259,11 @@ func (b *bulkSimRunner) getRankedResults(signals simsignals.Signals, validCombos
 	var totalCompletedIterations int32
 	var totalCompletedSims int32
 
+	reporterSignal := simsignals.CreateSignals()
+
 	// reporter for all sims combined.
 	go func() {
-		for !signals.Abort.IsTriggered() {
+		for !signals.Abort.IsTriggered() && !reporterSignal.Abort.IsTriggered() {
 			complIters := atomic.LoadInt32(&totalCompletedIterations)
 			complSims := atomic.LoadInt32(&totalCompletedSims)
 
@@ -320,7 +322,7 @@ func (b *bulkSimRunner) getRankedResults(signals simsignals.Signals, validCombos
 	for i := range rankedResults {
 		result := <-results
 		if result.Result == nil || result.Result.Error != nil {
-			signals.Abort.Trigger() // cancel reporter
+			reporterSignal.Abort.Trigger() // cancel reporter
 			return nil, nil, result.Result.Error
 		}
 		if !result.Substitution.HasItemReplacements() && result.ChangeLog.TalentLoadout == nil {
@@ -328,7 +330,7 @@ func (b *bulkSimRunner) getRankedResults(signals simsignals.Signals, validCombos
 		}
 		rankedResults[i] = result
 	}
-	signals.Abort.Trigger() // cancel reporter
+	reporterSignal.Abort.Trigger() // cancel reporter
 
 	sort.Slice(rankedResults, func(i, j int) bool {
 		return rankedResults[i].Score() > rankedResults[j].Score()
