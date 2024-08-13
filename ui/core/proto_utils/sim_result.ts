@@ -1000,7 +1000,7 @@ export class ActionMetrics {
 	get isProc() {
 		// Return false for now since we need to figure out
 		// how to remove casts from the combined metrics
-		return false
+		return false;
 		return ActionMetrics.getIsProc(this.actionId);
 	}
 
