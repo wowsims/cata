@@ -294,7 +294,7 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				sort: ColumnSortType.Descending,
 				getValue: (metric: ActionMetrics) => metric.dps,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
-					cellElem.appendChild(<>{formatToCompactNumber(metric.dps)}</>);
+					cellElem.appendChild(<>{formatToNumber(metric.dps, { minimumFractionDigits: 2 })}</>);
 
 					<MetricsCombinedTooltipTable
 						tooltipElement={cellElem}

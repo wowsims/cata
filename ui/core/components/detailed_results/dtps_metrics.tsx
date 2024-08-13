@@ -1,7 +1,6 @@
-
 import { SpellType } from '../../proto/api';
 import { ActionMetrics } from '../../proto_utils/sim_result';
-import { formatToPercent } from '../../utils';
+import { formatToNumber, formatToPercent } from '../../utils';
 import { MetricsCombinedTooltipTable } from './metrics_table/metrics_combined_tooltip_table';
 import { ColumnSortType, MetricsTable } from './metrics_table/metrics_table';
 import { MetricsTotalBar } from './metrics_table/metrics_total_bar';
@@ -179,7 +178,7 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 				headerCellClass: 'text-body',
 				columnClass: 'text-success',
 				getValue: (metric: ActionMetrics) => metric.dps,
-				getDisplayString: (metric: ActionMetrics) => metric.dps.toFixed(1),
+				getDisplayString: (metric: ActionMetrics) => formatToNumber(metric.dps, { minimumFractionDigits: 2 }),
 			},
 		]);
 	}

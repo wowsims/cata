@@ -122,8 +122,8 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 			{
 				name: 'Crit %',
 				tooltip: 'Crits / Hits',
-				getValue: (metric: ActionMetrics) => metric.critPercent,
-				getDisplayString: (metric: ActionMetrics) => formatToPercent(metric.critPercent / 1000),
+				getValue: (metric: ActionMetrics) => metric.healingCritPercent,
+				getDisplayString: (metric: ActionMetrics) => formatToPercent(metric.healingCritPercent),
 			},
 			{
 				name: 'HPET',
@@ -139,7 +139,7 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 				columnClass: 'text-success',
 				getValue: (metric: ActionMetrics) => metric.hps,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
-					cellElem.appendChild(<>{formatToCompactNumber(metric.hps)}</>);
+					cellElem.appendChild(<>{formatToNumber(metric.hps, { minimumFractionDigits: 2 })}</>);
 
 					<MetricsCombinedTooltipTable
 						tooltipElement={cellElem}
