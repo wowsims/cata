@@ -114,8 +114,20 @@ func checkActionMetrics(t *testing.T, loc string, st []*proto.ActionMetrics, mt 
 			continue
 		}
 
+		if stAction.SpellSchool != mtAction.SpellSchool {
+			t.Logf("%s.Actions: %s expected SpellSchool = %d but was %d in multi threaded results!", loc, stAction.Id.String(), stAction.SpellSchool, mtAction.SpellSchool)
+			t.Fail()
+			continue
+		}
+
 		if stAction.IsMelee != mtAction.IsMelee {
 			t.Logf("%s.Actions: %s expected IsMelee = %t but was %t in multi threaded results!", loc, stAction.Id.String(), stAction.IsMelee, mtAction.IsMelee)
+			t.Fail()
+			continue
+		}
+
+		if stAction.IsPassive != mtAction.IsPassive {
+			t.Logf("%s.Actions: %s expected IsPassive = %t but was %t in multi threaded results!", loc, stAction.Id.String(), stAction.IsPassive, mtAction.IsPassive)
 			t.Fail()
 			continue
 		}

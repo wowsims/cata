@@ -68,23 +68,49 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 			},
 			{
 				name: 'Casts',
-				getValue: (metric: ActionMetrics) => metric.casts,
-				getDisplayString: (metric: ActionMetrics) => formatToNumber(metric.casts, { minimumFractionDigits: 1 }),
+				getValue: (metric: ActionMetrics) => {
+					if (metric.isPassiveAction) return 0;
+					return metric.casts;
+				},
+				getDisplayString: (metric: ActionMetrics) => {
+					if (metric.isPassiveAction) return '-';
+					return formatToNumber(metric.casts);
+				},
 			},
 			{
 				name: 'CPM',
-				getValue: (metric: ActionMetrics) => metric.castsPerMinute,
-				getDisplayString: (metric: ActionMetrics) => formatToNumber(metric.castsPerMinute, { minimumFractionDigits: 1 }),
+				getValue: (metric: ActionMetrics) => {
+					if (metric.isPassiveAction) return 0;
+					return metric.castsPerMinute;
+				},
+				getDisplayString: (metric: ActionMetrics) => {
+					if (metric.isPassiveAction) return '-';
+					return formatToNumber(metric.castsPerMinute);
+				},
 			},
 			{
 				name: 'Cast Time',
-				getValue: (metric: ActionMetrics) => metric.avgCastTimeMs,
-				getDisplayString: (metric: ActionMetrics) => formatToNumber(metric.avgCastTimeMs / 1000, { minimumFractionDigits: 2, fallbackString: '-' }),
+				getValue: (metric: ActionMetrics) => {
+					if (metric.isPassiveAction) return 0;
+					return metric.avgCastTimeMs;
+				},
+				getDisplayString: (metric: ActionMetrics) => {
+					if (metric.isPassiveAction) return '-';
+					return formatToNumber(metric.avgCastTimeMs / 1000, { minimumFractionDigits: 2, fallbackString: '-' });
+				},
 			},
 			{
 				name: 'Avg Cast',
-				getValue: (metric: ActionMetrics) => metric.avgCastHealing,
+				tooltip: TOOLTIP_METRIC_LABELS['Healing Avg Cast'],
+				getValue: (metric: ActionMetrics) => {
+					if (metric.isPassiveAction) return 0;
+					return metric.avgCastHealing;
+				},
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
+					if (metric.isPassiveAction) {
+						cellElem.appendChild(<>-</>);
+						return;
+					}
 					cellElem.appendChild(<>{formatToCompactNumber(metric.avgCastHealing)}</>);
 
 					<MetricsCombinedTooltipTable
@@ -112,9 +138,13 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 			},
 			{
 				name: 'Hits',
+				tooltip: TOOLTIP_METRIC_LABELS['Healing Hits'],
 				getValue: (metric: ActionMetrics) => metric.landedHits,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
-					if (!metric.landedHits) return '-';
+					if (!metric.landedHits) {
+						cellElem.appendChild(<>-</>);
+						return;
+					}
 
 					cellElem.appendChild(<>{formatToNumber(metric.landedHits)}</>);
 
@@ -166,6 +196,36 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 										},
 								  ]
 								: []),
+						]}
+					/>;
+				},
+			},
+			{
+				name: 'Avg Hit',
+				tooltip: TOOLTIP_METRIC_LABELS['Healing Avg Hit'],
+				getValue: (metric: ActionMetrics) => metric.avgHitHealing,
+				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
+					cellElem.appendChild(<>{formatToCompactNumber(metric.avgHitHealing)}</>);
+
+					<MetricsCombinedTooltipTable
+						tooltipElement={cellElem}
+						tooltipConfig={{
+							onShow: () => {
+								const hideThreatMetrics = !!document.querySelector('.hide-threat-metrics');
+								if (hideThreatMetrics) return false;
+							},
+						}}
+						headerValues={[, 'Amount']}
+						spellSchool={metric.spellSchool}
+						total={metric.avgHitThreat}
+						totalPercentage={100}
+						hasFooter={false}
+						values={[
+							{
+								name: 'Threat',
+								value: metric.avgHitThreat,
+								percentage: 100,
+							},
 						]}
 					/>;
 				},

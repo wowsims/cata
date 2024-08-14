@@ -164,6 +164,9 @@ message ActionMetrics {
 
 	int32 spell_school = 4;
 	SpellType spell_type = 5;
+
+	// True if action is applied/cast as a result of another action
+	bool is_passive = 6;
 }
 
 // Metrics for a specific action, when cast at a particular target.

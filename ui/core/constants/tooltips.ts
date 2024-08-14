@@ -26,6 +26,8 @@ export const TOOLTIP_METRIC_LABELS = {
 	// Healing metrics
 	Healing: 'Total Healing done',
 	'Healing Avg Cast': 'Healing / Casts',
+	'Healing Avg Hit': 'Healing / Hits',
+	'Healing Hits': 'Healing / (Hits + Crits + Glances + Blocks)',
 	HPM: 'Healing / Mana',
 	HPET: 'Healing / Avg Cast Time',
 	HPS: 'Healing / Encounter Duration',

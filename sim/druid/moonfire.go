@@ -18,7 +18,7 @@ func (druid *Druid) registerMoonfireDoTSpell() {
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: DruidSpellMoonfireDoT,
-		Flags:          SpellFlagOmenTrigger,
+		Flags:          SpellFlagOmenTrigger | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   druid.BalanceCritMultiplier(),

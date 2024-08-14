@@ -105,12 +105,12 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 			},
 			{
 				name: 'Casts',
-				getValue: (metric: ActionMetrics, _isChildRow) => {
-					if (metric.isProc) return 0;
+				getValue: (metric: ActionMetrics) => {
+					if (metric.isPassiveAction) return 0;
 					return metric.casts;
 				},
-				getDisplayString: (metric: ActionMetrics, _isChildRow) => {
-					if (metric.isProc) return '-';
+				getDisplayString: (metric: ActionMetrics) => {
+					if (metric.isPassiveAction) return '-';
 					return formatToNumber(metric.casts);
 				},
 			},
@@ -148,7 +148,10 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				name: 'Hits',
 				getValue: (metric: ActionMetrics) => metric.landedHits,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
-					if (!metric.landedHits) return '-';
+					if (!metric.landedHits) {
+						cellElem.appendChild(<>-</>);
+						return;
+					}
 
 					cellElem.appendChild(<>{formatToNumber(metric.landedHits)}</>);
 

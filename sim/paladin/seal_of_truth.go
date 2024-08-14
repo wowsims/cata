@@ -32,7 +32,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 		ActionID:       censureActionId.WithTag(2),
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagMeleeMetrics,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
 		ClassSpellMask: SpellMaskCensure,
 
 		DamageMultiplier: 1,

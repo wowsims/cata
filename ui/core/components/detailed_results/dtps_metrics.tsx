@@ -1,7 +1,7 @@
 import { TOOLTIP_METRIC_LABELS } from '../../constants/tooltips';
 import { SpellType } from '../../proto/api';
 import { ActionMetrics } from '../../proto_utils/sim_result';
-import { formatToNumber, formatToPercent } from '../../utils';
+import { formatToCompactNumber, formatToNumber, formatToPercent } from '../../utils';
 import { MetricsCombinedTooltipTable } from './metrics_table/metrics_combined_tooltip_table';
 import { ColumnSortType, MetricsTable } from './metrics_table/metrics_table';
 import { MetricsTotalBar } from './metrics_table/metrics_total_bar';
@@ -104,31 +104,37 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 			},
 			{
 				name: 'Casts',
-				getValue: (metric: ActionMetrics) => metric.casts,
-				getDisplayString: (metric: ActionMetrics) => metric.casts.toFixed(1),
+				getValue: (metric: ActionMetrics) => {
+					if (metric.isPassiveAction) return 0;
+					return metric.casts;
+				},
+				getDisplayString: (metric: ActionMetrics) => {
+					if (metric.isPassiveAction) return '-';
+					return formatToNumber(metric.casts);
+				},
 			},
 			{
 				name: 'Avg Cast',
 				tooltip: TOOLTIP_METRIC_LABELS['Damage Avg Cast'],
 				getValue: (metric: ActionMetrics) => metric.avgCast,
-				getDisplayString: (metric: ActionMetrics) => metric.avgCast.toFixed(1),
+				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.avgCast),
 			},
 			{
 				name: 'Hits',
 				getValue: (metric: ActionMetrics) => metric.landedHits,
-				getDisplayString: (metric: ActionMetrics) => metric.landedHits.toFixed(1),
+				getDisplayString: (metric: ActionMetrics) => formatToNumber(metric.landedHits),
 			},
 			{
 				name: 'Avg Hit',
 				getValue: (metric: ActionMetrics) => metric.avgHit,
-				getDisplayString: (metric: ActionMetrics) => metric.avgHit.toFixed(1),
+				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.avgHit),
 			},
 			{
 				name: 'Miss %',
 				tooltip: TOOLTIP_METRIC_LABELS['Hit Miss %'],
 				getValue: (metric: ActionMetrics) => metric.totalMissesPercent,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
-					cellElem.appendChild(<>{metric.totalMissesPercent ? formatToPercent(metric.totalMissesPercent) : '-'}</>);
+					cellElem.appendChild(<>{formatToPercent(metric.totalMissesPercent, { fallbackString: '-' })}</>);
 					if (!metric.totalMissesPercent) return;
 
 					<MetricsCombinedTooltipTable
@@ -164,7 +170,7 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 			{
 				name: 'Crit %',
 				getValue: (metric: ActionMetrics) => metric.critPercent,
-				getDisplayString: (metric: ActionMetrics) => metric.critPercent.toFixed(2) + '%',
+				getDisplayString: (metric: ActionMetrics) => formatToPercent(metric.critPercent) + '%',
 			},
 			{
 				name: 'DTPS',

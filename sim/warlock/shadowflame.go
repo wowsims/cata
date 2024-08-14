@@ -45,6 +45,7 @@ func (warlock *Warlock) registerShadowflame() {
 			SpellSchool:    core.SpellSchoolFire,
 			ProcMask:       core.ProcMaskSpellDamage,
 			ClassSpellMask: WarlockSpellShadowflameDot,
+			Flags:          core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,
 			CritMultiplier:   warlock.DefaultSpellCritMultiplier(),

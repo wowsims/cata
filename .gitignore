@@ -24,6 +24,7 @@ package.json.tmp
 /cata/
 *.code-workspace
 wowsimcata
+wowsimcli
 
 # old result file
 TestAPL.results

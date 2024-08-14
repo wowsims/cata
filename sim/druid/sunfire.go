@@ -18,7 +18,7 @@ func (druid *Druid) registerSunfireDoTSpell() {
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: DruidSpellSunfireDoT,
-		Flags:          SpellFlagOmenTrigger,
+		Flags:          SpellFlagOmenTrigger | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   druid.BalanceCritMultiplier(),

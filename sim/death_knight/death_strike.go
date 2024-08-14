@@ -37,12 +37,13 @@ func (dk *DeathKnight) registerDeathStrikeSpell() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskSpellHealing,
 		ClassSpellMask: DeathKnightSpellDeathStrikeHeal,
+		Flags:          core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 0,
 	})
 
-	doHealing := func(sim *core.Simulation, value float64) {
+	doHealing := func(sim *core.Simulation, value float64, target *core.Unit) {
 		healValue := damageTakenInFive * value
 		healValueModed := healingSpell.CalcHealing(sim, healingSpell.Unit, healValue, healingSpell.OutcomeHealing).Damage
 
@@ -59,6 +60,7 @@ func (dk *DeathKnight) registerDeathStrikeSpell() {
 
 		// Add back caster modifiers
 		healingSpell.Flags ^= core.SpellFlagIgnoreAttackerModifiers
+		healingSpell.SpellMetrics[target.UnitIndex].Hits--
 	}
 
 	ohSpell := dk.GetOrRegisterSpell(core.SpellConfig{
@@ -77,7 +79,7 @@ func (dk *DeathKnight) registerDeathStrikeSpell() {
 				spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
-			doHealing(sim, 0.05)
+			doHealing(sim, 0.05, target)
 		},
 	})
 
@@ -113,7 +115,7 @@ func (dk *DeathKnight) registerDeathStrikeSpell() {
 			dk.ThreatOfThassarianProc(sim, result, ohSpell)
 
 			spell.DealDamage(sim, result)
-			doHealing(sim, 0.2)
+			doHealing(sim, 0.2, target)
 		},
 	})
 }

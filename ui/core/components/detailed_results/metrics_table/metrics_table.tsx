@@ -56,7 +56,7 @@ export abstract class MetricsTable<T extends ActionMetrics | AuraMetrics | UnitM
 		const headerRowElem = this.rootElem.getElementsByClassName('metrics-table-header-row')[0] as HTMLElement;
 		this.columnConfigs.forEach(columnConfig => {
 			const headerCell = document.createElement('th');
-			const tooltip = TOOLTIP_METRIC_LABELS[columnConfig.name as keyof typeof TOOLTIP_METRIC_LABELS] || columnConfig.tooltip;
+			const tooltip = columnConfig.tooltip || TOOLTIP_METRIC_LABELS[columnConfig.name as keyof typeof TOOLTIP_METRIC_LABELS];
 			headerCell.classList.add('metrics-table-header-cell');
 			if (columnConfig.columnClass) {
 				headerCell.classList.add(...columnConfig.columnClass.split(' '));

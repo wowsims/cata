@@ -99,6 +99,7 @@ func (bdk *BloodDeathKnight) ApplyTalents() {
 		ActionID:    core.ActionID{SpellID: 77535},
 		ProcMask:    core.ProcMaskSpellHealing,
 		SpellSchool: core.SpellSchoolShadow,
+		Flags:       core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

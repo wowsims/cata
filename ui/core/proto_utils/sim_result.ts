@@ -787,6 +787,10 @@ export class ActionMetrics {
 		return this.data.isMelee;
 	}
 
+	get isPassiveAction() {
+		return this.data.isPassive;
+	}
+
 	get spellType() {
 		return this.data.spellType;
 	}
@@ -908,6 +912,10 @@ export class ActionMetrics {
 		return this.combinedMetrics.avgHit;
 	}
 
+	get avgHitHealing() {
+		return this.combinedMetrics.avgHitHealing;
+	}
+
 	get avgHitThreat() {
 		return this.combinedMetrics.avgHitThreat;
 	}
@@ -1000,46 +1008,6 @@ export class ActionMetrics {
 		};
 	}
 
-	get isProc() {
-		// Return false for now since we need to figure out
-		// how to remove casts from the combined metrics
-		return false;
-		return ActionMetrics.getIsProc(this.actionId);
-	}
-
-	static getIsProc(actionId: ActionId): boolean {
-		const spellId = actionId.spellId;
-		const tag = actionId.tag;
-		let isProc = false;
-		switch (spellId) {
-			case 55078: // Blood Plague
-			case 55095: // Frost Fever
-			case 49194: // Unholy Blight
-			case 89775: // Hemorrhage
-				isProc = true;
-				break;
-			case 11366: // Pyroblast - DoT
-			case 11129: // Combustion - DoT
-			case 93402: // Sunfire - DoT
-			case 8921: // Moonfire - DoT
-			case 8050: // Flame Shock - DoT
-			case 27243: // Seed of Corruption - Explosion
-				if (tag === 1) {
-					isProc = true;
-				}
-				break;
-			case 44457: // Living Bomb - Explosion
-			case 31803: // Censure - DoT
-				if (tag === 2) {
-					isProc = true;
-				}
-				break;
-			default:
-				break;
-		}
-		return isProc;
-	}
-
 	forTarget(filter?: SimResultFilter): ActionMetrics {
 		const unitIndex = this.unit!.getTargetIndex(filter);
 		if (unitIndex == null) {
@@ -1081,6 +1049,7 @@ export class ActionMetrics {
 			actionId,
 			ActionMetricsProto.create({
 				isMelee: firstAction.isMeleeAction,
+				isPassive: false,
 				spellType: spellTypeOverride ?? firstAction.spellType,
 				targets: mergedTargets.map(t => t.data),
 				spellSchool: firstAction.spellSchool || undefined,
@@ -1181,7 +1150,7 @@ export class TargetedActionMetrics {
 	}
 
 	get casts() {
-		return (this.data.casts || this.hitAttempts) / this.iterations;
+		return this.data.casts / this.iterations;
 	}
 
 	get castsPerMinute() {
@@ -1231,6 +1200,10 @@ export class TargetedActionMetrics {
 	get avgHit() {
 		const lhr = this.landedHitsRaw;
 		return lhr == 0 ? 0 : this.data.damage / lhr;
+	}
+
+	get avgHitHealing() {
+		return (this.data.healing + this.data.shielding) / this.iterations / (this.landedHits || 1);
 	}
 
 	get avgHitThreat() {

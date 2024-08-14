@@ -119,6 +119,7 @@ type CharacterIterationMetrics struct {
 
 type ActionMetrics struct {
 	IsMelee   bool            // True if melee action, false if spell action.
+	IsPassive bool            // True if melee action, false if spell action.
 	SpellType proto.SpellType // Spell is cast, periodic (DoT or HoT) or both
 
 	// Metrics for this action, for each possible target.
@@ -141,6 +142,7 @@ func (actionMetrics *ActionMetrics) ToProto(actionID ActionID) *proto.ActionMetr
 	return &proto.ActionMetrics{
 		Id:          actionID.ToProto(),
 		IsMelee:     actionMetrics.IsMelee,
+		IsPassive:   actionMetrics.IsPassive,
 		SpellType:   actionMetrics.SpellType,
 		Targets:     targetMetrics,
 		SpellSchool: int32(actionMetrics.SpellSchool),
@@ -321,7 +323,12 @@ func (unitMetrics *UnitMetrics) addSpellMetrics(spell *Spell, actionID ActionID,
 		if spell.dots != nil {
 			spellType = proto.SpellType_SpellTypePeriodic
 		}
-		actionMetrics = &ActionMetrics{IsMelee: spell.Flags.Matches(SpellFlagMeleeMetrics), SpellType: spellType, SpellSchool: spell.SpellSchool}
+		actionMetrics = &ActionMetrics{
+			IsMelee:     spell.Flags.Matches(SpellFlagMeleeMetrics),
+			IsPassive:   spell.Flags.Matches(SpellFlagPassiveSpell),
+			SpellType:   spellType,
+			SpellSchool: spell.SpellSchool,
+		}
 		unitMetrics.actions[actionID] = actionMetrics
 	}
 
@@ -335,7 +342,9 @@ func (unitMetrics *UnitMetrics) addSpellMetrics(spell *Spell, actionID ActionID,
 
 	for i, spellTargetMetrics := range spellMetrics {
 		tam := &actionMetrics.Targets[i]
-		tam.Casts += spellTargetMetrics.Casts
+		if !spell.Flags.Matches(SpellFlagPassiveSpell) {
+			tam.Casts += spellTargetMetrics.Casts
+		}
 		tam.Misses += spellTargetMetrics.Misses
 		tam.Hits += spellTargetMetrics.Hits
 		tam.Crits += spellTargetMetrics.Crits
@@ -349,7 +358,9 @@ func (unitMetrics *UnitMetrics) addSpellMetrics(spell *Spell, actionID ActionID,
 		tam.Healing += spellTargetMetrics.TotalHealing
 		tam.CritHealing += spellTargetMetrics.TotalCritHealing
 		tam.Shielding += spellTargetMetrics.TotalShielding
-		tam.CastTime += spellTargetMetrics.TotalCastTime
+		if !spell.Flags.Matches(SpellFlagPassiveSpell) {
+			tam.CastTime += spellTargetMetrics.TotalCastTime
+		}
 
 		target := spell.Unit.AttackTables[i].Defender
 		target.Metrics.dtps.Total += spellTargetMetrics.TotalDamage
