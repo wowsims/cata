@@ -286,7 +286,7 @@ message UnitMetrics {
 	DistributionMetrics dps = 1;
 	DistributionMetrics threat = 8;
 	DistributionMetrics dtps = 11;
-	DistributionMetrics tmi = 17;
+	DistributionMetrics tmi = 16;
 	DistributionMetrics hps = 14;
 	DistributionMetrics tto = 15; // Time To OOM, in seconds.
 
