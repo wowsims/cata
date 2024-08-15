@@ -105,7 +105,32 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 			{
 				name: 'Casts',
 				getValue: (metric: ActionMetrics) => metric.casts,
-				getDisplayString: (metric: ActionMetrics) => formatToNumber(metric.casts, { fallbackString: '-' }),
+				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
+					cellElem.appendChild(<>{formatToNumber(metric.casts, { fallbackString: '-' })}</>);
+					if (!metric.casts) return;
+
+					const relativeHitPercent = (metric.landedHits / (metric.landedHits + metric.totalMisses)) * 100;
+
+					<MetricsCombinedTooltipTable
+						tooltipElement={cellElem}
+						spellSchool={metric.spellSchool}
+						total={metric.casts}
+						totalPercentage={100}
+						hasFooter={false}
+						values={[
+							{
+								name: 'Hits',
+								value: metric.landedHits,
+								percentage: relativeHitPercent,
+							},
+							{
+								name: `Misses`,
+								value: metric.totalMisses,
+								percentage: metric.totalMissesPercent,
+							},
+						]}
+					/>;
+				},
 			},
 			{
 				name: 'Avg Cast',
@@ -116,7 +141,77 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 			{
 				name: 'Hits',
 				getValue: (metric: ActionMetrics) => metric.landedHits,
-				getDisplayString: (metric: ActionMetrics) => formatToNumber(metric.landedHits, { fallbackString: '-' }),
+				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
+					cellElem.appendChild(<>{formatToNumber(metric.landedHits, { fallbackString: '-' })}</>);
+					if (!metric.landedHits) return;
+
+					const relativeHitPercent = (metric.hits / metric.landedHits) * 100;
+					const relativeCritPercent = (metric.crits / metric.landedHits) * 100;
+					const relativeGlancePercent = (metric.glances / metric.landedHits) * 100;
+					const relativeBlockPercent = (metric.blocks / metric.landedHits) * 100;
+
+					<MetricsCombinedTooltipTable
+						tooltipElement={cellElem}
+						spellSchool={metric.spellSchool}
+						total={metric.landedHits}
+						totalPercentage={100}
+						hasFooter={false}
+						values={[
+							...(metric.spellType === SpellType.SpellTypeAll
+								? [
+										{
+											name: 'Hit',
+											value: metric.hits,
+											percentage: relativeHitPercent,
+										},
+										{
+											name: `Critical Hit`,
+											value: metric.crits,
+											percentage: relativeCritPercent,
+										},
+								  ]
+								: []),
+							...(metric.spellType === SpellType.SpellTypeCast
+								? [
+										{
+											name: 'Hit',
+											value: metric.hits,
+											percentage: relativeHitPercent,
+										},
+										{
+											name: `Critical Hit`,
+											value: metric.crits,
+											percentage: relativeCritPercent,
+										},
+								  ]
+								: []),
+							...(metric.spellType === SpellType.SpellTypePeriodic
+								? [
+										{
+											name: 'Tick',
+											value: metric.hits,
+											percentage: relativeHitPercent,
+										},
+										{
+											name: `Critical Tick`,
+											value: metric.crits,
+											percentage: relativeCritPercent,
+										},
+								  ]
+								: []),
+							{
+								name: 'Glancing Blow',
+								value: metric.glances,
+								percentage: relativeGlancePercent,
+							},
+							{
+								name: 'Blocked Blow',
+								value: metric.blocks,
+								percentage: relativeBlockPercent,
+							},
+						]}
+					/>;
+				},
 			},
 			{
 				name: 'Avg Hit',

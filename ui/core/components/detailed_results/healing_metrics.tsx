@@ -120,6 +120,9 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 					cellElem.appendChild(<>{formatToNumber(metric.landedHits, { fallbackString: '-' })}</>);
 					if (!metric.landedHits) return;
 
+					const relativeHitPercent = (metric.hits / metric.landedHits) * 100;
+					const relativeCritPercent = (metric.crits / metric.landedHits) * 100;
+
 					<MetricsCombinedTooltipTable
 						tooltipElement={cellElem}
 						spellSchool={metric.spellSchool}
@@ -131,12 +134,12 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 										{
 											name: 'Hit',
 											value: metric.hits,
-											percentage: metric.hitPercent,
+											percentage: relativeHitPercent,
 										},
 										{
 											name: `Critical Hit`,
 											value: metric.crits,
-											percentage: metric.critPercent,
+											percentage: relativeCritPercent,
 										},
 								  ]
 								: []),
@@ -145,12 +148,12 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 										{
 											name: 'Hit',
 											value: metric.hits,
-											percentage: metric.hitPercent,
+											percentage: relativeHitPercent,
 										},
 										{
 											name: `Critical Hit`,
 											value: metric.crits,
-											percentage: metric.critPercent,
+											percentage: relativeCritPercent,
 										},
 								  ]
 								: []),
@@ -159,12 +162,12 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 										{
 											name: 'Tick',
 											value: metric.hits,
-											percentage: metric.hitPercent,
+											percentage: relativeHitPercent,
 										},
 										{
 											name: `Critical Tick`,
 											value: metric.crits,
-											percentage: metric.critPercent,
+											percentage: relativeCritPercent,
 										},
 								  ]
 								: []),
