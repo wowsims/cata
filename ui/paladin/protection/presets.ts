@@ -4,6 +4,7 @@ import {
 	PaladinAura as PaladinAura,
 	PaladinMajorGlyph,
 	PaladinMinorGlyph,
+	PaladinPrimeGlyph,
 	PaladinSeal,
 	ProtectionPaladin_Options as ProtectionPaladinOptions,
 } from '../../core/proto/paladin.js';
@@ -59,15 +60,15 @@ export const GenericAoeTalents = {
 	data: SavedTalents.create({
 		"talentsString": "-32023013122121101231-032032",
 		"glyphs": {
-		  "prime1": 45744,
-		  "prime2": 41098,
-		  "prime3": 43869,
-		  "major1": 41107,
-		  "major2": 43367,
-		  "major3": 43867,
-		  "minor1": 43368,
-		  "minor2": 43340,
-		  "minor3": 43366
+		  "prime1": PaladinPrimeGlyph.GlyphOfShieldOfTheRighteous,
+		  "prime2": PaladinPrimeGlyph.GlyphOfCrusaderStrike,
+		  "prime3": PaladinPrimeGlyph.GlyphOfSealOfTruth,
+		  "major1": PaladinMajorGlyph.GlyphOfTheAsceticCrusader,
+		  "major2": PaladinMajorGlyph.GlyphOfLayOnHands,
+		  "major3": PaladinMajorGlyph.GlyphOfHolyWrath,
+		  "minor1": PaladinMinorGlyph.GlyphOfTruth,
+		  "minor2": PaladinMinorGlyph.GlyphOfBlessingOfMight,
+		  "minor3": PaladinMinorGlyph.GlyphOfInsight,
 		},
 	}),
 };
