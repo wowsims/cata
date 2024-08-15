@@ -48,6 +48,14 @@ func (result *SpellResult) DidCrit() bool {
 	return result.Outcome.Matches(OutcomeCrit)
 }
 
+func (result *SpellResult) DidGlance() bool {
+	return result.Outcome.Matches(OutcomeGlance)
+}
+
+func (result *SpellResult) DidBlock() bool {
+	return result.Outcome.Matches(OutcomeBlock)
+}
+
 func (result *SpellResult) DamageString() string {
 	outcomeStr := result.Outcome.String()
 	if !result.Landed() {
@@ -281,7 +289,15 @@ func (spell *Spell) dealDamageInternal(sim *Simulation, isPeriodic bool, result 
 	if sim.CurrentTime >= 0 {
 		spell.SpellMetrics[result.Target.UnitIndex].TotalDamage += result.Damage
 		if result.DidCrit() {
-			spell.SpellMetrics[result.Target.UnitIndex].TotalCritDamage += result.Damage
+			if result.DidBlock() {
+				spell.SpellMetrics[result.Target.UnitIndex].TotalCritBlockDamage += result.Damage
+			} else {
+				spell.SpellMetrics[result.Target.UnitIndex].TotalCritDamage += result.Damage
+			}
+		} else if result.DidGlance() {
+			spell.SpellMetrics[result.Target.UnitIndex].TotalGlanceDamage += result.Damage
+		} else if result.DidBlock() {
+			spell.SpellMetrics[result.Target.UnitIndex].TotalBlockDamage += result.Damage
 		}
 		spell.SpellMetrics[result.Target.UnitIndex].TotalThreat += result.Threat
 	}

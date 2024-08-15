@@ -434,7 +434,11 @@ func (result *SpellResult) applyAttackTableBlock(spell *Spell, attackTable *Atta
 
 	if roll < *chance {
 		result.Outcome |= OutcomeBlock
-		spell.SpellMetrics[result.Target.UnitIndex].Blocks++
+		if result.DidCrit() {
+			spell.SpellMetrics[result.Target.UnitIndex].CritBlocks++
+		} else {
+			spell.SpellMetrics[result.Target.UnitIndex].Blocks++
+		}
 		damageReduced := result.Damage * (1 - result.Target.BlockDamageReduction())
 		result.Damage = max(0, damageReduced)
 

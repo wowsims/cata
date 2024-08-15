@@ -44,6 +44,9 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 
 					const hitValues = metric.damageDone.hit;
 					const critValues = metric.damageDone.crit;
+					const glanceValues = metric.damageDone.glance;
+					const blockValues = metric.damageDone.block;
+					const critBlockValues = metric.damageDone.critBlock;
 
 					<MetricsCombinedTooltipTable
 						tooltipElement={cellElem}
@@ -89,16 +92,18 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 										},
 								  ]
 								: []),
-							// {
-							// 	name: 'Glancing Blow',
-							// 	value: metric.glances,
-							// 	percentage: metric.glancePercent,
-							// },
-							// {
-							// 	name: 'Blocked Blow',
-							// 	value: metric.blocks,
-							// 	percentage: metric.blockPercent,
-							// },
+							{
+								name: 'Glancing Blow',
+								...glanceValues
+							},
+							{
+								name: 'Blocked Hit',
+								...blockValues
+							},
+							{
+								name: 'Blocked Critical Hit',
+								...critBlockValues
+							},
 						]}
 					/>;
 				},
@@ -178,6 +183,7 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 					const relativeCritPercent = (metric.crits / metric.landedHits) * 100;
 					const relativeGlancePercent = (metric.glances / metric.landedHits) * 100;
 					const relativeBlockPercent = (metric.blocks / metric.landedHits) * 100;
+					const relativeCritBlockPercent = (metric.critBlocks / metric.landedHits) * 100;
 
 					<MetricsCombinedTooltipTable
 						tooltipElement={cellElem}
@@ -234,9 +240,14 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 								percentage: relativeGlancePercent,
 							},
 							{
-								name: 'Blocked Blow',
+								name: 'Blocked Hit',
 								value: metric.blocks,
 								percentage: relativeBlockPercent,
+							},
+							{
+								name: 'Blocked Critical Hit',
+								value: metric.critBlocks,
+								percentage: relativeCritBlockPercent,
 							},
 						]}
 					/>;
@@ -289,6 +300,7 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 						spellSchool={metric.spellSchool}
 						total={metric.totalMisses}
 						totalPercentage={metric.totalMissesPercent}
+						hasFooter={false}
 						values={[
 							{
 								name: 'Miss',

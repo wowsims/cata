@@ -44,6 +44,9 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 
 					const hitValues = metric.damageDone.hit;
 					const critValues = metric.damageDone.crit;
+					const glanceValues = metric.damageDone.glance;
+					const blockValues = metric.damageDone.block;
+					const critBlockValues = metric.damageDone.critBlock;
 
 					<MetricsCombinedTooltipTable
 						tooltipElement={cellElem}
@@ -88,16 +91,18 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 										},
 								  ]
 								: []),
-							// {
-							// 	name: 'Glancing Blow',
-							// 	value: metric.glances,
-							// 	percentage: metric.glancePercent,
-							// },
-							// {
-							// 	name: 'Blocked Blow',
-							// 	value: metric.blocks,
-							// 	percentage: metric.blockPercent,
-							// },
+							{
+								name: 'Glancing Blow',
+								...glanceValues,
+							},
+							{
+								name: 'Blocked Hit',
+								...blockValues,
+							},
+							{
+								name: 'Blocked Critical Hit',
+								...critBlockValues,
+							},
 						]}
 					/>;
 				},
@@ -149,6 +154,7 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 					const relativeCritPercent = (metric.crits / metric.landedHits) * 100;
 					const relativeGlancePercent = (metric.glances / metric.landedHits) * 100;
 					const relativeBlockPercent = (metric.blocks / metric.landedHits) * 100;
+					const relativeCritBlockPercent = (metric.critBlocks / metric.landedHits) * 100;
 
 					<MetricsCombinedTooltipTable
 						tooltipElement={cellElem}
@@ -205,9 +211,14 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 								percentage: relativeGlancePercent,
 							},
 							{
-								name: 'Blocked Blow',
+								name: 'Blocked Hit',
 								value: metric.blocks,
 								percentage: relativeBlockPercent,
+							},
+							{
+								name: 'Blocked Critical Hit',
+								value: metric.critBlocks,
+								percentage: relativeCritBlockPercent,
 							},
 						]}
 					/>;
@@ -229,8 +240,9 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 					<MetricsCombinedTooltipTable
 						tooltipElement={cellElem}
 						spellSchool={metric.spellSchool}
-						total={metric.totalMisses + metric.blocks}
-						totalPercentage={metric.totalMissesPercent + metric.blockPercent}
+						total={metric.totalMisses}
+						totalPercentage={metric.totalMissesPercent}
+						hasFooter={false}
 						values={[
 							{
 								name: 'Miss',
@@ -246,11 +258,6 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 								name: 'Dodge',
 								value: metric.dodges,
 								percentage: metric.dodgePercent,
-							},
-							{
-								name: 'Block',
-								value: metric.blocks,
-								percentage: metric.blockPercent,
 							},
 						]}
 					/>;

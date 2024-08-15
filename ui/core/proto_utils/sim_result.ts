@@ -806,16 +806,40 @@ export class ActionMetrics {
 		return this.combinedMetrics.damage;
 	}
 
-	get critDamage() {
-		return this.combinedMetrics.critDamage;
-	}
-
 	get avgDamage() {
 		return this.combinedMetrics.damage / this.iterations;
 	}
 
+	get critDamage() {
+		return this.combinedMetrics.critDamage;
+	}
+
 	get avgCritDamage() {
 		return this.combinedMetrics.critDamage / this.iterations;
+	}
+
+	get glanceDamage() {
+		return this.combinedMetrics.glanceDamage;
+	}
+
+	get avgGlanceDamage() {
+		return this.combinedMetrics.glanceDamage / this.iterations;
+	}
+
+	get blockDamage() {
+		return this.combinedMetrics.blockDamage;
+	}
+
+	get avgBlockDamage() {
+		return this.combinedMetrics.blockDamage / this.iterations;
+	}
+
+	get critBlockDamage() {
+		return this.combinedMetrics.critBlockDamage;
+	}
+
+	get avgCritBlockDamage() {
+		return this.combinedMetrics.critBlockDamage / this.iterations;
 	}
 
 	get dps() {
@@ -974,6 +998,14 @@ export class ActionMetrics {
 		return this.combinedMetrics.blockPercent;
 	}
 
+	get critBlocks() {
+		return this.combinedMetrics.critBlocks;
+	}
+
+	get critBlockPercent() {
+		return this.combinedMetrics.critBlockPercent;
+	}
+
 	get glances() {
 		return this.combinedMetrics.glances;
 	}
@@ -999,7 +1031,7 @@ export class ActionMetrics {
 	}
 
 	get damageDone() {
-		const normalHitAvgDamage = this.avgDamage - this.avgCritDamage;
+		const normalHitAvgDamage = this.avgDamage - this.avgCritDamage - this.avgGlanceDamage - this.avgBlockDamage - this.avgCritBlockDamage;
 		return {
 			hit: {
 				value: normalHitAvgDamage,
@@ -1010,6 +1042,21 @@ export class ActionMetrics {
 				value: this.avgCritDamage,
 				percentage: (this.avgCritDamage / this.avgDamage) * 100,
 				average: this.avgCritDamage / this.crits,
+			},
+			glance: {
+				value: this.avgGlanceDamage,
+				percentage: (this.avgGlanceDamage / this.avgDamage) * 100,
+				average: this.avgGlanceDamage / this.hits,
+			},
+			block: {
+				value: this.avgBlockDamage,
+				percentage: (this.avgBlockDamage / this.avgDamage) * 100,
+				average: this.avgBlockDamage / this.hits,
+			},
+			critBlock: {
+				value: this.avgCritBlockDamage,
+				percentage: (this.avgCritBlockDamage / this.avgDamage) * 100,
+				average: this.avgCritBlockDamage / this.hits,
 			},
 		};
 	}
@@ -1103,9 +1150,17 @@ export class TargetedActionMetrics {
 		this.data = data;
 		this.spellType = spellType;
 
-		this.landedHitsRaw = this.data.hits + this.data.crits + this.data.blocks + this.data.glances;
+		this.landedHitsRaw = this.data.hits + this.data.crits + this.data.blocks + this.data.critBlocks + this.data.glances;
 
-		this.hitAttempts = this.data.misses + this.data.dodges + this.data.parries + this.data.blocks + this.data.glances + this.data.crits + this.data.hits;
+		this.hitAttempts =
+			this.data.misses +
+			this.data.dodges +
+			this.data.parries +
+			this.data.critBlocks +
+			this.data.blocks +
+			this.data.glances +
+			this.data.crits +
+			this.data.hits;
 	}
 
 	get damage() {
@@ -1122,6 +1177,30 @@ export class TargetedActionMetrics {
 
 	get avgCritDamage() {
 		return this.data.critDamage / this.iterations;
+	}
+
+	get glanceDamage() {
+		return this.data.glanceDamage;
+	}
+
+	get avgGlanceDamage() {
+		return this.data.glanceDamage / this.iterations;
+	}
+
+	get blockDamage() {
+		return this.data.blockDamage;
+	}
+
+	get avgBlockDamage() {
+		return this.data.blockDamage / this.iterations;
+	}
+
+	get critBlockDamage() {
+		return this.data.critBlockDamage;
+	}
+
+	get avgCritBlockDamage() {
+		return this.data.critBlockDamage / this.iterations;
 	}
 
 	get dps() {
@@ -1266,6 +1345,14 @@ export class TargetedActionMetrics {
 		return (this.data.blocks / (this.hitAttempts || 1)) * 100;
 	}
 
+	get critBlocks() {
+		return this.data.critBlocks / this.iterations;
+	}
+
+	get critBlockPercent() {
+		return (this.data.critBlocks / (this.hitAttempts || 1)) * 100;
+	}
+
 	get glances() {
 		return this.data.glances / this.iterations;
 	}
@@ -1303,9 +1390,13 @@ export class TargetedActionMetrics {
 				dodges: sum(actions.map(a => a.data.dodges)),
 				parries: sum(actions.map(a => a.data.parries)),
 				blocks: sum(actions.map(a => a.data.blocks)),
+				critBlocks: sum(actions.map(a => a.data.critBlocks)),
 				glances: sum(actions.map(a => a.data.glances)),
 				damage: sum(actions.map(a => a.data.damage)),
 				critDamage: sum(actions.map(a => a.data.critDamage)),
+				glanceDamage: sum(actions.map(a => a.data.glanceDamage)),
+				blockDamage: sum(actions.map(a => a.data.blockDamage)),
+				critBlockDamage: sum(actions.map(a => a.data.critBlockDamage)),
 				threat: sum(actions.map(a => a.data.threat)),
 				healing: sum(actions.map(a => a.data.healing)),
 				critHealing: sum(actions.map(a => a.data.critHealing)),

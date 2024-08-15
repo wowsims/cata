@@ -196,6 +196,9 @@ message TargetedActionMetrics {
 	// # of times this action was a Block.
 	int32 blocks = 7;
 
+	// # of times this action was a Critical Block.
+	int32 crit_blocks = 20;
+
 	// # of times this action was a Glance.
 	int32 glances = 8;
 
@@ -204,6 +207,15 @@ message TargetedActionMetrics {
 
 	// Total critical damage done to this target by this action.
 	double crit_damage = 15;
+
+	// Total glancing damage done to this target by this action.
+	double glance_damage = 17;
+
+	// Total block damage done to this target by this action.
+	double block_damage = 18;
+
+	// Total critical block damage done to this target by this action.
+	double crit_block_damage = 19;
 
 	// Total threat done to this target by this action.
 	double threat = 10;
