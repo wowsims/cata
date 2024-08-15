@@ -27,17 +27,17 @@ func (dot *Dot) OutcomeTick(_ *Simulation, result *SpellResult, _ *AttackTable) 
 
 func (dot *Dot) OutcomeTickCounted(_ *Simulation, result *SpellResult, _ *AttackTable) {
 	result.Outcome = OutcomeHit
-	dot.Spell.SpellMetrics[result.Target.UnitIndex].Hits++
+	dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
 }
 
 func (dot *Dot) OutcomeTickPhysicalCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
 	if dot.Spell.PhysicalCritCheck(sim, attackTable) {
 		result.Outcome = OutcomeCrit
 		result.Damage *= dot.Spell.CritMultiplier
-		dot.Spell.SpellMetrics[result.Target.UnitIndex].Crits++
+		dot.Spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
 	} else {
 		result.Outcome = OutcomeHit
-		dot.Spell.SpellMetrics[result.Target.UnitIndex].Hits++
+		dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
 	}
 }
 
@@ -48,10 +48,10 @@ func (dot *Dot) OutcomeSnapshotCrit(sim *Simulation, result *SpellResult, _ *Att
 	if sim.RandomFloat("Snapshot Crit Roll") < dot.SnapshotCritChance {
 		result.Outcome = OutcomeCrit
 		result.Damage *= dot.Spell.CritMultiplier
-		dot.Spell.SpellMetrics[result.Target.UnitIndex].Crits++
+		dot.Spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
 	} else {
 		result.Outcome = OutcomeHit
-		dot.Spell.SpellMetrics[result.Target.UnitIndex].Hits++
+		dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
 	}
 }
 
@@ -63,10 +63,10 @@ func (dot *Dot) OutcomeMagicHitAndSnapshotCrit(sim *Simulation, result *SpellRes
 		if sim.RandomFloat("Snapshot Crit Roll") < dot.SnapshotCritChance {
 			result.Outcome = OutcomeCrit
 			result.Damage *= dot.Spell.CritMultiplier
-			dot.Spell.SpellMetrics[result.Target.UnitIndex].Crits++
+			dot.Spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
 		} else {
 			result.Outcome = OutcomeHit
-			dot.Spell.SpellMetrics[result.Target.UnitIndex].Hits++
+			dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
 		}
 	} else {
 		result.Outcome = OutcomeMiss
@@ -522,7 +522,7 @@ func (result *SpellResult) applyAttackTableCritSeparateRollSnapshot(sim *Simulat
 	if sim.RandomFloat("Physical Crit Roll") < dot.SnapshotCritChance {
 		result.Outcome = OutcomeCrit
 		result.Damage *= dot.Spell.CritMultiplier
-		dot.Spell.SpellMetrics[result.Target.UnitIndex].Crits++
+		dot.Spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
 		return true
 	}
 	return false

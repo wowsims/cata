@@ -155,6 +155,8 @@ type SpellMetrics struct {
 	Misses     int32
 	Hits       int32
 	Crits      int32
+	Ticks      int32
+	CritTicks  int32
 	Crushes    int32
 	Dodges     int32
 	Glances    int32
@@ -164,6 +166,8 @@ type SpellMetrics struct {
 
 	TotalDamage          float64 // Damage done by all casts of this spell.
 	TotalCritDamage      float64 // Damage done by all critical casts of this spell.
+	TotalTickDamage      float64 // Damage done by all dots of this spell.
+	TotalCritTickDamage  float64 // Damage done by all critical dots of this spell.
 	TotalGlanceDamage    float64 // Damage done by all glance casts of this spell.
 	TotalBlockDamage     float64 // Damage done by all block casts of this spell.
 	TotalCritBlockDamage float64 // Damage done by all critical block casts of this spell.
@@ -180,6 +184,8 @@ type TargetedActionMetrics struct {
 	Casts      int32
 	Hits       int32
 	Crits      int32
+	Ticks      int32
+	CritTicks  int32
 	Misses     int32
 	Dodges     int32
 	Parries    int32
@@ -189,6 +195,8 @@ type TargetedActionMetrics struct {
 
 	Damage          float64
 	CritDamage      float64
+	TickDamage      float64
+	CritTickDamage  float64
 	GlanceDamage    float64
 	BlockDamage     float64
 	CritBlockDamage float64
@@ -206,6 +214,8 @@ func (tam *TargetedActionMetrics) ToProto() *proto.TargetedActionMetrics {
 		Casts:           tam.Casts,
 		Hits:            tam.Hits,
 		Crits:           tam.Crits,
+		Ticks:           tam.Ticks,
+		CritTicks:       tam.CritTicks,
 		Misses:          tam.Misses,
 		Dodges:          tam.Dodges,
 		Parries:         tam.Parries,
@@ -214,6 +224,8 @@ func (tam *TargetedActionMetrics) ToProto() *proto.TargetedActionMetrics {
 		Glances:         tam.Glances,
 		Damage:          tam.Damage,
 		CritDamage:      tam.CritDamage,
+		TickDamage:      tam.TickDamage,
+		CritTickDamage:  tam.CritTickDamage,
 		GlanceDamage:    tam.GlanceDamage,
 		BlockDamage:     tam.BlockDamage,
 		CritBlockDamage: tam.CritBlockDamage,
@@ -360,6 +372,8 @@ func (unitMetrics *UnitMetrics) addSpellMetrics(spell *Spell, actionID ActionID,
 		tam.Misses += spellTargetMetrics.Misses
 		tam.Hits += spellTargetMetrics.Hits
 		tam.Crits += spellTargetMetrics.Crits
+		tam.Ticks += spellTargetMetrics.Ticks
+		tam.CritTicks += spellTargetMetrics.CritTicks
 		tam.Dodges += spellTargetMetrics.Dodges
 		tam.Parries += spellTargetMetrics.Parries
 		tam.Blocks += spellTargetMetrics.Blocks
@@ -367,6 +381,8 @@ func (unitMetrics *UnitMetrics) addSpellMetrics(spell *Spell, actionID ActionID,
 		tam.Glances += spellTargetMetrics.Glances
 		tam.Damage += spellTargetMetrics.TotalDamage
 		tam.CritDamage += spellTargetMetrics.TotalCritDamage
+		tam.TickDamage += spellTargetMetrics.TotalTickDamage
+		tam.CritTickDamage += spellTargetMetrics.TotalCritTickDamage
 		tam.GlanceDamage += spellTargetMetrics.TotalGlanceDamage
 		tam.BlockDamage += spellTargetMetrics.TotalBlockDamage
 		tam.CritBlockDamage += spellTargetMetrics.TotalCritBlockDamage

@@ -174,6 +174,8 @@ func (rsrc *raidSimResultCombiner) addActionMetrics(unit *proto.UnitMetrics, add
 		baseTgt.Casts += addTgt.Casts
 		baseTgt.Hits += addTgt.Hits
 		baseTgt.Crits += addTgt.Crits
+		baseTgt.Ticks += addTgt.Ticks
+		baseTgt.CritTicks += addTgt.CritTicks
 		baseTgt.Misses += addTgt.Misses
 		baseTgt.Dodges += addTgt.Dodges
 		baseTgt.Parries += addTgt.Parries
@@ -182,6 +184,8 @@ func (rsrc *raidSimResultCombiner) addActionMetrics(unit *proto.UnitMetrics, add
 		baseTgt.Glances += addTgt.Glances
 		baseTgt.Damage += addTgt.Damage
 		baseTgt.CritDamage += addTgt.CritDamage
+		baseTgt.TickDamage += addTgt.TickDamage
+		baseTgt.CritTickDamage += addTgt.CritTickDamage
 		baseTgt.GlanceDamage += addTgt.GlanceDamage
 		baseTgt.BlockDamage += addTgt.BlockDamage
 		baseTgt.CritBlockDamage += addTgt.CritBlockDamage

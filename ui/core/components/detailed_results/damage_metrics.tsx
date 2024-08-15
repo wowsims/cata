@@ -32,6 +32,7 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				headerCellClass: 'text-center',
 				getValue: (metric: ActionMetrics) => metric.avgDamage,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
+					console.log(metric.name, metric);
 					cellElem.appendChild(
 						<MetricsTotalBar
 							spellSchool={metric.spellSchool}
@@ -44,6 +45,8 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 
 					const hitValues = metric.damageDone.hit;
 					const critValues = metric.damageDone.crit;
+					const tickValues = metric.damageDone.tick;
+					const critTickValues = metric.damageDone.critTick;
 					const glanceValues = metric.damageDone.glance;
 					const blockValues = metric.damageDone.block;
 					const critBlockValues = metric.damageDone.critBlock;
@@ -56,53 +59,33 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 						totalPercentage={100}
 						hasFooter={false}
 						values={[
-							...(metric.spellType === SpellType.SpellTypeAll
-								? [
-										{
-											name: 'Hit',
-											...hitValues,
-										},
-										{
-											name: `Critical Hit`,
-											...critValues,
-										},
-								  ]
-								: []),
-							...(metric.spellType === SpellType.SpellTypeCast
-								? [
-										{
-											name: 'Hit',
-											...hitValues,
-										},
-										{
-											name: `Critical Hit`,
-											...critValues,
-										},
-								  ]
-								: []),
-							...(metric.spellType === SpellType.SpellTypePeriodic
-								? [
-										{
-											name: 'Tick',
-											...hitValues,
-										},
-										{
-											name: `Critical Tick`,
-											...critValues,
-										},
-								  ]
-								: []),
+							{
+								name: 'Hit',
+								...hitValues,
+							},
+							{
+								name: `Critical Hit`,
+								...critValues,
+							},
+							{
+								name: 'Tick',
+								...tickValues,
+							},
+							{
+								name: `Critical Tick`,
+								...critTickValues,
+							},
 							{
 								name: 'Glancing Blow',
-								...glanceValues
+								...glanceValues,
 							},
 							{
 								name: 'Blocked Hit',
-								...blockValues
+								...blockValues,
 							},
 							{
 								name: 'Blocked Critical Hit',
-								...critBlockValues
+								...critBlockValues,
 							},
 						]}
 					/>;
@@ -177,10 +160,12 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				getValue: (metric: ActionMetrics) => metric.landedHits,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
 					cellElem.appendChild(<>{formatToNumber(metric.landedHits, { fallbackString: '-' })}</>);
-					if (!metric.landedHits) return;
+					if (!metric.landedHits || !metric.ticks) return;
 
 					const relativeHitPercent = (metric.hits / metric.landedHits) * 100;
 					const relativeCritPercent = (metric.crits / metric.landedHits) * 100;
+					const relativeTickPercent = (metric.ticks / metric.landedHits) * 100;
+					const relativeCritTickPercent = (metric.critTicks / metric.landedHits) * 100;
 					const relativeGlancePercent = (metric.glances / metric.landedHits) * 100;
 					const relativeBlockPercent = (metric.blocks / metric.landedHits) * 100;
 					const relativeCritBlockPercent = (metric.critBlocks / metric.landedHits) * 100;
@@ -192,48 +177,27 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 						totalPercentage={100}
 						hasFooter={false}
 						values={[
-							...(metric.spellType === SpellType.SpellTypeAll
-								? [
-										{
-											name: 'Hit',
-											value: metric.hits,
-											percentage: relativeHitPercent,
-										},
-										{
-											name: `Critical Hit`,
-											value: metric.crits,
-											percentage: relativeCritPercent,
-										},
-								  ]
-								: []),
-							...(metric.spellType === SpellType.SpellTypeCast
-								? [
-										{
-											name: 'Hit',
-											value: metric.hits,
-											percentage: relativeHitPercent,
-										},
-										{
-											name: `Critical Hit`,
-											value: metric.crits,
-											percentage: relativeCritPercent,
-										},
-								  ]
-								: []),
-							...(metric.spellType === SpellType.SpellTypePeriodic
-								? [
-										{
-											name: 'Tick',
-											value: metric.hits,
-											percentage: relativeHitPercent,
-										},
-										{
-											name: `Critical Tick`,
-											value: metric.crits,
-											percentage: relativeCritPercent,
-										},
-								  ]
-								: []),
+							{
+								name: 'Hit',
+								value: metric.hits,
+								percentage: relativeHitPercent,
+							},
+							{
+								name: `Critical Hit`,
+								value: metric.crits,
+								percentage: relativeCritPercent,
+							},
+
+							{
+								name: 'Tick',
+								value: metric.ticks,
+								percentage: relativeTickPercent,
+							},
+							{
+								name: `Critical Tick`,
+								value: metric.critTicks,
+								percentage: relativeCritTickPercent,
+							},
 							{
 								name: 'Glancing Blow',
 								value: metric.glances,

@@ -288,11 +288,18 @@ func (spell *Spell) CalcAndDealOutcome(sim *Simulation, target *Unit, outcomeApp
 func (spell *Spell) dealDamageInternal(sim *Simulation, isPeriodic bool, result *SpellResult) {
 	if sim.CurrentTime >= 0 {
 		spell.SpellMetrics[result.Target.UnitIndex].TotalDamage += result.Damage
+		if isPeriodic {
+			spell.SpellMetrics[result.Target.UnitIndex].TotalTickDamage += result.Damage
+		}
+
 		if result.DidCrit() {
 			if result.DidBlock() {
 				spell.SpellMetrics[result.Target.UnitIndex].TotalCritBlockDamage += result.Damage
 			} else {
 				spell.SpellMetrics[result.Target.UnitIndex].TotalCritDamage += result.Damage
+				if isPeriodic {
+					spell.SpellMetrics[result.Target.UnitIndex].TotalCritTickDamage += result.Damage
+				}
 			}
 		} else if result.DidGlance() {
 			spell.SpellMetrics[result.Target.UnitIndex].TotalGlanceDamage += result.Damage
