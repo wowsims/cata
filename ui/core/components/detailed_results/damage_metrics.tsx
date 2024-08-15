@@ -106,20 +106,20 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 			{
 				name: 'Casts',
 				getValue: (metric: ActionMetrics) => {
-					if (metric.isPassiveAction) return 0;
 					return metric.casts;
 				},
-				getDisplayString: (metric: ActionMetrics) => {
-					if (metric.isPassiveAction) return '-';
-					return formatToNumber(metric.casts);
-				},
+				getDisplayString: (metric: ActionMetrics) => formatToNumber(metric.casts, { fallbackString: '-' }),
 			},
 			{
 				name: 'Avg Cast',
 				tooltip: TOOLTIP_METRIC_LABELS['Damage Avg Cast'],
-				getValue: (metric: ActionMetrics) => metric.avgCast,
+				getValue: (metric: ActionMetrics) => {
+					if (metric.isPassiveAction) return 0;
+					return metric.avgCast;
+				},
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
-					cellElem.appendChild(<>{formatToCompactNumber(metric.avgCast)}</>);
+					cellElem.appendChild(<>{formatToCompactNumber(metric.avgCast, { fallbackString: '-' })}</>);
+					if (!metric.avgCast) return;
 
 					<MetricsCombinedTooltipTable
 						tooltipElement={cellElem}
@@ -148,12 +148,8 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				name: 'Hits',
 				getValue: (metric: ActionMetrics) => metric.landedHits,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
-					if (!metric.landedHits) {
-						cellElem.appendChild(<>-</>);
-						return;
-					}
-
-					cellElem.appendChild(<>{formatToNumber(metric.landedHits)}</>);
+					cellElem.appendChild(<>{formatToNumber(metric.landedHits, { fallbackString: '-' })}</>);
+					if (!metric.landedHits) return;
 
 					<MetricsCombinedTooltipTable
 						tooltipElement={cellElem}
@@ -221,7 +217,8 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				name: 'Avg Hit',
 				getValue: (metric: ActionMetrics) => metric.avgHit,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
-					cellElem.appendChild(<>{formatToCompactNumber(metric.avgHit)}</>);
+					cellElem.appendChild(<>{formatToCompactNumber(metric.avgHit, { fallbackString: '-' })}</>);
+					if (!metric.avgHit) return;
 
 					<MetricsCombinedTooltipTable
 						tooltipElement={cellElem}
@@ -249,13 +246,13 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 			{
 				name: 'Crit %',
 				getValue: (metric: ActionMetrics) => metric.critPercent,
-				getDisplayString: (metric: ActionMetrics) => formatToPercent(metric.critPercent),
+				getDisplayString: (metric: ActionMetrics) => formatToPercent(metric.critPercent, { fallbackString: '-' }),
 			},
 			{
 				name: 'Miss %',
 				getValue: (metric: ActionMetrics) => metric.totalMissesPercent,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
-					cellElem.appendChild(<>{formatToPercent(metric.totalMissesPercent)}</>);
+					cellElem.appendChild(<>{formatToPercent(metric.totalMissesPercent, { fallbackString: '-' })}</>);
 					if (!metric.totalMissesPercent) return;
 
 					<MetricsCombinedTooltipTable
@@ -295,7 +292,8 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				sort: ColumnSortType.Descending,
 				getValue: (metric: ActionMetrics) => metric.dps,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
-					cellElem.appendChild(<>{formatToNumber(metric.dps, { minimumFractionDigits: 2 })}</>);
+					cellElem.appendChild(<>{formatToNumber(metric.dps, { minimumFractionDigits: 2, fallbackString: '-' })}</>);
+					if (!metric.dps) return;
 
 					<MetricsCombinedTooltipTable
 						tooltipElement={cellElem}

@@ -13,7 +13,7 @@ ui/*/*/index.html
 dist
 binary_dist
 sim/web/__debug_bin
-/wowsimcatacli*
+/wowsimcli*
 /wowsimcata*
 
 # temporary files
@@ -24,7 +24,6 @@ package.json.tmp
 /cata/
 *.code-workspace
 wowsimcata
-wowsimcli
 
 # old result file
 TestAPL.results

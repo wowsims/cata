@@ -89,12 +89,10 @@ func (ret *RetributionPaladin) RegisterMastery() {
 
 	// Hand of Light
 	ret.HandOfLight = ret.RegisterSpell(core.SpellConfig{
-		ActionID:    actionId,
-		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags: core.SpellFlagMeleeMetrics |
-			core.SpellFlagIgnoreModifiers |
-			core.SpellFlagNoOnCastComplete,
+		ActionID:       actionId,
+		SpellSchool:    core.SpellSchoolHoly,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 		ClassSpellMask: paladin.SpellMaskHandOfLight,
 
 		DamageMultiplier: 1.0,

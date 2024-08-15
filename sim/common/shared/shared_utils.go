@@ -48,7 +48,7 @@ func NewProcStatBonusEffectWithDamageProc(config ProcStatBonusEffect, damage Dam
 			ActionID:                 core.ActionID{SpellID: damage.SpellID},
 			SpellSchool:              damage.School,
 			ProcMask:                 core.ProcMaskEmpty,
-			Flags:                    core.SpellFlagNoOnCastComplete,
+			Flags:                    core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 			DamageMultiplier:         1,
 			CritMultiplier:           character.DefaultSpellCritMultiplier(),
 			DamageMultiplierAdditive: 1,

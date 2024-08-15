@@ -104,30 +104,24 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 			},
 			{
 				name: 'Casts',
-				getValue: (metric: ActionMetrics) => {
-					if (metric.isPassiveAction) return 0;
-					return metric.casts;
-				},
-				getDisplayString: (metric: ActionMetrics) => {
-					if (metric.isPassiveAction) return '-';
-					return formatToNumber(metric.casts);
-				},
+				getValue: (metric: ActionMetrics) => metric.casts,
+				getDisplayString: (metric: ActionMetrics) => formatToNumber(metric.casts, { fallbackString: '-' }),
 			},
 			{
 				name: 'Avg Cast',
 				tooltip: TOOLTIP_METRIC_LABELS['Damage Avg Cast'],
 				getValue: (metric: ActionMetrics) => metric.avgCast,
-				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.avgCast),
+				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.avgCast, { fallbackString: '-' }),
 			},
 			{
 				name: 'Hits',
 				getValue: (metric: ActionMetrics) => metric.landedHits,
-				getDisplayString: (metric: ActionMetrics) => formatToNumber(metric.landedHits),
+				getDisplayString: (metric: ActionMetrics) => formatToNumber(metric.landedHits, { fallbackString: '-' }),
 			},
 			{
 				name: 'Avg Hit',
 				getValue: (metric: ActionMetrics) => metric.avgHit,
-				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.avgHit),
+				getDisplayString: (metric: ActionMetrics) => formatToCompactNumber(metric.avgHit, { fallbackString: '-' }),
 			},
 			{
 				name: 'Miss %',
@@ -170,7 +164,7 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 			{
 				name: 'Crit %',
 				getValue: (metric: ActionMetrics) => metric.critPercent,
-				getDisplayString: (metric: ActionMetrics) => formatToPercent(metric.critPercent) + '%',
+				getDisplayString: (metric: ActionMetrics) => formatToPercent(metric.critPercent, { fallbackString: '-' }),
 			},
 			{
 				name: 'DTPS',
@@ -178,7 +172,7 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 				headerCellClass: 'text-body',
 				columnClass: 'text-success',
 				getValue: (metric: ActionMetrics) => metric.dps,
-				getDisplayString: (metric: ActionMetrics) => formatToNumber(metric.dps, { minimumFractionDigits: 2 }),
+				getDisplayString: (metric: ActionMetrics) => formatToNumber(metric.dps, { minimumFractionDigits: 2, fallbackString: '-' }),
 			},
 		]);
 	}

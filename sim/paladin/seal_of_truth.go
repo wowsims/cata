@@ -90,7 +90,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 		ActionID:       core.ActionID{SpellID: 31804},
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskMeleeSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
+		Flags:          core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement | core.SpellFlagPassiveSpell,
 		ClassSpellMask: SpellMaskJudgementOfTruth,
 
 		DamageMultiplier: 1,

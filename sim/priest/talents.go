@@ -443,6 +443,7 @@ func (priest *Priest) applyImprovedDevouringPlague() {
 		DamageMultiplierAdditive: 1,
 		ThreatMultiplier:         1,
 		ClassSpellMask:           PriestSpellImprovedDevouringPlague,
+		Flags:                    core.SpellFlagPassiveSpell,
 		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			dot := priest.DevouringPlague.Dot(target)
@@ -630,6 +631,7 @@ func (priest *Priest) applyShadowyApparition() {
 		MissileSpeed:             3.5,
 		ProcMask:                 core.ProcMaskEmpty, // summoned guardian, should not be able to proc stuff - verify
 		ClassSpellMask:           PriestSpellShadowyApparation,
+		Flags:                    core.SpellFlagPassiveSpell,
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           priest.DefaultSpellCritMultiplier(),

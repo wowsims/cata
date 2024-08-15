@@ -24,7 +24,7 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 		ActionID:    hemoDotActionID,
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagIgnoreAttackerModifiers, // From initial testing, Hemo DoT only benefits from debuffs on target, such as 30% bleed damage
+		Flags:       core.SpellFlagIgnoreAttackerModifiers | core.SpellFlagPassiveSpell, // From initial testing, Hemo DoT only benefits from debuffs on target, such as 30% bleed damage
 
 		ThreatMultiplier: 1,
 		CritMultiplier:   subRogue.MeleeCritMultiplier(false), // Per WoWHead data, Lethality does not boost the DoT directly,

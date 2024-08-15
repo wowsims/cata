@@ -14,6 +14,7 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 		SpellSchool:              core.SpellSchoolNature,
 		ProcMask:                 core.ProcMaskDirect,
 		ClassSpellMask:           HunterSpellSerpentSting,
+		Flags:                    core.SpellFlagPassiveSpell,
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           hunter.MeleeCritMultiplier(1, 0),

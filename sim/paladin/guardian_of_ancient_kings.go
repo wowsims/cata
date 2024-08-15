@@ -1,10 +1,11 @@
 package paladin
 
 import (
+	"time"
+
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
-	"time"
 )
 
 func applyT11Prot4pcBonus(duration time.Duration) time.Duration {
@@ -150,6 +151,7 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration, snap
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: SpellMaskAncientFury,
+		Flags:          core.SpellFlagPassiveSpell,
 
 		MaxRange: 10,
 

@@ -854,14 +854,17 @@ export class ActionMetrics {
 	}
 
 	get casts() {
+		if (this.isPassiveAction) return 0;
 		return this.combinedMetrics.casts;
 	}
 
 	get castsPerMinute() {
+		if (this.isPassiveAction) return 0;
 		return this.combinedMetrics.castsPerMinute;
 	}
 
 	get avgCastTimeMs() {
+		if (this.isPassiveAction) return 0;
 		return this.combinedMetrics.avgCastTimeMs;
 	}
 
@@ -889,14 +892,17 @@ export class ActionMetrics {
 	}
 
 	get avgCast() {
+		if (this.isPassiveAction) return 0;
 		return this.combinedMetrics.avgCast;
 	}
 
 	get avgCastHealing() {
+		if (this.isPassiveAction) return 0;
 		return this.combinedMetrics.avgCastHealing;
 	}
 
 	get avgCastThreat() {
+		if (this.isPassiveAction) return 0;
 		return this.combinedMetrics.avgCastThreat;
 	}
 
@@ -1043,13 +1049,14 @@ export class ActionMetrics {
 
 		const maxTargets = Math.max(...actions.map(action => action.targets.length));
 		const mergedTargets = [...Array(maxTargets).keys()].map(i => TargetedActionMetrics.merge(actions.map(action => action.targets[i])));
+		const isAllPassiveSpells = actions.every(action => action.isPassiveAction);
 
 		return new ActionMetrics(
 			unit,
 			actionId,
 			ActionMetricsProto.create({
 				isMelee: firstAction.isMeleeAction,
-				isPassive: false,
+				isPassive: isAllPassiveSpells,
 				spellType: spellTypeOverride ?? firstAction.spellType,
 				targets: mergedTargets.map(t => t.data),
 				spellSchool: firstAction.spellSchool || undefined,
@@ -1224,7 +1231,7 @@ export class TargetedActionMetrics {
 	}
 
 	get missPercent() {
-		return (this.data.misses / (this.data.casts || 1)) * 100;
+		return (this.data.misses / (this.data.casts || this.hitAttempts || 1)) * 100;
 	}
 
 	get dodges() {
