@@ -810,12 +810,24 @@ export class ActionMetrics {
 		return this.combinedMetrics.damage / this.iterations;
 	}
 
+	get avgHitDamage() {
+		return (
+			this.avgDamage -
+			this.avgTickDamage -
+			this.avgCritDamage +
+			this.avgCritTickDamage -
+			this.avgGlanceDamage -
+			this.avgBlockDamage -
+			this.avgCritBlockDamage
+		);
+	}
+
 	get critDamage() {
 		return this.combinedMetrics.critDamage;
 	}
 
 	get avgCritDamage() {
-		return this.combinedMetrics.critDamage / this.iterations;
+		return this.combinedMetrics.avgCritDamage;
 	}
 
 	get tickDamage() {
@@ -823,7 +835,7 @@ export class ActionMetrics {
 	}
 
 	get avgTickDamage() {
-		return this.combinedMetrics.avgTickDamage / this.iterations;
+		return this.combinedMetrics.avgTickDamage;
 	}
 
 	get critTickDamage() {
@@ -831,7 +843,7 @@ export class ActionMetrics {
 	}
 
 	get avgCritTickDamage() {
-		return this.combinedMetrics.avgCritTickDamage / this.iterations;
+		return this.combinedMetrics.avgCritTickDamage;
 	}
 
 	get glanceDamage() {
@@ -839,7 +851,7 @@ export class ActionMetrics {
 	}
 
 	get avgGlanceDamage() {
-		return this.combinedMetrics.glanceDamage / this.iterations;
+		return this.combinedMetrics.avgGlanceDamage;
 	}
 
 	get blockDamage() {
@@ -847,7 +859,7 @@ export class ActionMetrics {
 	}
 
 	get avgBlockDamage() {
-		return this.combinedMetrics.blockDamage / this.iterations;
+		return this.combinedMetrics.avgBlockDamage;
 	}
 
 	get critBlockDamage() {
@@ -855,7 +867,7 @@ export class ActionMetrics {
 	}
 
 	get avgCritBlockDamage() {
-		return this.combinedMetrics.critBlockDamage / this.iterations;
+		return this.combinedMetrics.avgCritBlockDamage;
 	}
 
 	get dps() {
@@ -934,6 +946,15 @@ export class ActionMetrics {
 	get avgCast() {
 		if (this.isPassiveAction) return 0;
 		return this.combinedMetrics.avgCast;
+	}
+
+	get avgCastHit() {
+		if (!this.combinedMetrics.avgCast) return 0;
+		return this.combinedMetrics.avgCast - this.avgCastTick;
+	}
+
+	get avgCastTick() {
+		return this.combinedMetrics.avgCastTick;
 	}
 
 	get avgCastHealing() {
@@ -1070,11 +1091,14 @@ export class ActionMetrics {
 		const normalHitAvgDamage =
 			this.avgDamage -
 			this.avgTickDamage -
+			this.avgCritDamage +
 			this.avgCritTickDamage -
-			this.avgCritDamage -
 			this.avgGlanceDamage -
 			this.avgBlockDamage -
 			this.avgCritBlockDamage;
+
+		const normalTickAvgDamage = this.avgTickDamage - this.avgCritTickDamage;
+		const critHitAvgDamage = this.avgCritDamage - this.avgCritTickDamage;
 
 		return {
 			hit: {
@@ -1082,15 +1106,15 @@ export class ActionMetrics {
 				percentage: (normalHitAvgDamage / this.avgDamage) * 100,
 				average: normalHitAvgDamage / this.hits,
 			},
-			crit: {
-				value: this.avgCritDamage,
-				percentage: (this.avgCritDamage / this.avgDamage) * 100,
-				average: this.avgCritDamage / this.crits,
+			critHit: {
+				value: critHitAvgDamage,
+				percentage: (critHitAvgDamage / this.avgDamage) * 100,
+				average: critHitAvgDamage / this.crits,
 			},
 			tick: {
-				value: this.avgTickDamage,
-				percentage: (this.avgTickDamage / this.avgDamage) * 100,
-				average: this.avgTickDamage / this.ticks,
+				value: normalTickAvgDamage,
+				percentage: (normalTickAvgDamage / this.avgDamage) * 100,
+				average: normalTickAvgDamage / this.ticks,
 			},
 			critTick: {
 				value: this.avgCritTickDamage,
@@ -1216,7 +1240,7 @@ export class TargetedActionMetrics {
 			this.data.blocks +
 			this.data.glances +
 			this.data.crits +
-			this.data.hits;
+			(this.data.hits || this.data.casts);
 	}
 
 	get damage() {
@@ -1340,7 +1364,12 @@ export class TargetedActionMetrics {
 	}
 
 	get avgCast() {
+		if (!this.casts) return 0;
 		return this.data.damage / this.iterations / (this.casts || 1);
+	}
+
+	get avgCastTick() {
+		return this.data.tickDamage / this.iterations / (this.casts || 1);
 	}
 
 	get avgCastHealing() {
@@ -1370,7 +1399,7 @@ export class TargetedActionMetrics {
 	}
 
 	get avgHitHealing() {
-		return (this.data.healing + this.data.shielding) / this.iterations / (this.landedHits || 1);
+		return (this.data.healing + this.data.shielding) / this.iterations / this.landedHits;
 	}
 
 	get avgHitThreat() {
@@ -1391,7 +1420,7 @@ export class TargetedActionMetrics {
 	}
 
 	get missPercent() {
-		return (this.data.misses / (this.data.casts || this.hitAttempts || 1)) * 100;
+		return (this.data.misses / this.hitAttempts) * 100;
 	}
 
 	get dodges() {
@@ -1399,7 +1428,7 @@ export class TargetedActionMetrics {
 	}
 
 	get dodgePercent() {
-		return (this.data.dodges / (this.hitAttempts || 1)) * 100;
+		return (this.data.dodges / this.hitAttempts) * 100;
 	}
 
 	get parries() {
@@ -1407,7 +1436,7 @@ export class TargetedActionMetrics {
 	}
 
 	get parryPercent() {
-		return (this.data.parries / (this.hitAttempts || 1)) * 100;
+		return (this.data.parries / this.hitAttempts) * 100;
 	}
 
 	get hits() {
@@ -1415,11 +1444,11 @@ export class TargetedActionMetrics {
 	}
 
 	get hitPercent() {
-		return (this.data.hits / (this.hitAttempts || 1)) * 100;
+		return (this.data.hits / this.hitAttempts) * 100;
 	}
 
 	get ticks() {
-		return this.data.crits / this.iterations;
+		return this.data.ticks / this.iterations;
 	}
 
 	get critTicks() {
@@ -1427,7 +1456,7 @@ export class TargetedActionMetrics {
 	}
 
 	get critTickPercent() {
-		return (this.data.critTicks / (this.ticks || 1)) * 100;
+		return (this.data.critTicks / this.ticks) * 100;
 	}
 
 	get blocks() {
@@ -1435,7 +1464,7 @@ export class TargetedActionMetrics {
 	}
 
 	get blockPercent() {
-		return (this.data.blocks / (this.hitAttempts || 1)) * 100;
+		return (this.data.blocks / this.hitAttempts) * 100;
 	}
 
 	get critBlocks() {
@@ -1443,7 +1472,7 @@ export class TargetedActionMetrics {
 	}
 
 	get critBlockPercent() {
-		return (this.data.critBlocks / (this.hitAttempts || 1)) * 100;
+		return (this.data.critBlocks / this.hitAttempts) * 100;
 	}
 
 	get glances() {
@@ -1451,7 +1480,7 @@ export class TargetedActionMetrics {
 	}
 
 	get glancePercent() {
-		return (this.data.glances / (this.hitAttempts || 1)) * 100;
+		return (this.data.glances / this.hitAttempts) * 100;
 	}
 
 	get crits() {
@@ -1459,7 +1488,7 @@ export class TargetedActionMetrics {
 	}
 
 	get critPercent() {
-		return (this.data.ticks / (this.hitAttempts || 1)) * 100;
+		return (this.data.crits / this.hitAttempts) * 100;
 	}
 
 	get healingPercent() {

@@ -32,7 +32,6 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				headerCellClass: 'text-center',
 				getValue: (metric: ActionMetrics) => metric.avgDamage,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
-					console.log(metric.name, metric);
 					cellElem.appendChild(
 						<MetricsTotalBar
 							spellSchool={metric.spellSchool}
@@ -44,7 +43,7 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 					);
 
 					const hitValues = metric.damageDone.hit;
-					const critValues = metric.damageDone.crit;
+					const critHitValues = metric.damageDone.critHit;
 					const tickValues = metric.damageDone.tick;
 					const critTickValues = metric.damageDone.critTick;
 					const glanceValues = metric.damageDone.glance;
@@ -54,38 +53,41 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 					<MetricsCombinedTooltipTable
 						tooltipElement={cellElem}
 						headerValues={[, 'Amount']}
-						spellSchool={metric.spellSchool}
-						total={metric.damage}
-						totalPercentage={100}
-						hasFooter={false}
-						values={[
+						groups={[
 							{
-								name: 'Hit',
-								...hitValues,
-							},
-							{
-								name: `Critical Hit`,
-								...critValues,
-							},
-							{
-								name: 'Tick',
-								...tickValues,
-							},
-							{
-								name: `Critical Tick`,
-								...critTickValues,
-							},
-							{
-								name: 'Glancing Blow',
-								...glanceValues,
-							},
-							{
-								name: 'Blocked Hit',
-								...blockValues,
-							},
-							{
-								name: 'Blocked Critical Hit',
-								...critBlockValues,
+								spellSchool: metric.spellSchool,
+								total: metric.damage,
+								totalPercentage: 100,
+								data: [
+									{
+										name: 'Hit',
+										...hitValues,
+									},
+									{
+										name: `Critical Hit`,
+										...critHitValues,
+									},
+									{
+										name: 'Tick',
+										...tickValues,
+									},
+									{
+										name: `Critical Tick`,
+										...critTickValues,
+									},
+									{
+										name: 'Glancing Blow',
+										...glanceValues,
+									},
+									{
+										name: 'Blocked Hit',
+										...blockValues,
+									},
+									{
+										name: 'Blocked Critical Hit',
+										...critBlockValues,
+									},
+								],
 							},
 						]}
 					/>;
@@ -96,26 +98,29 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				getValue: (metric: ActionMetrics) => metric.casts,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
 					cellElem.appendChild(<>{formatToNumber(metric.casts, { fallbackString: '-' })}</>);
-					if (!metric.casts) return;
 
+					if (!metric.landedHits && !metric.totalMisses) return;
 					const relativeHitPercent = (metric.landedHits / (metric.landedHits + metric.totalMisses)) * 100;
 
 					<MetricsCombinedTooltipTable
 						tooltipElement={cellElem}
-						spellSchool={metric.spellSchool}
-						total={metric.casts}
-						totalPercentage={100}
-						hasFooter={false}
-						values={[
+						groups={[
 							{
-								name: 'Hits',
-								value: metric.landedHits,
-								percentage: relativeHitPercent,
-							},
-							{
-								name: `Misses`,
-								value: metric.totalMisses,
-								percentage: metric.totalMissesPercent,
+								spellSchool: metric.spellSchool,
+								total: metric.casts,
+								totalPercentage: 100,
+								data: [
+									{
+										name: 'Hits',
+										value: metric.landedHits,
+										percentage: relativeHitPercent,
+									},
+									{
+										name: `Misses`,
+										value: metric.totalMisses,
+										percentage: metric.totalMissesPercent,
+									},
+								],
 							},
 						]}
 					/>;
@@ -126,11 +131,17 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				tooltip: TOOLTIP_METRIC_LABELS['Damage Avg Cast'],
 				getValue: (metric: ActionMetrics) => {
 					if (metric.isPassiveAction) return 0;
-					return metric.avgCast;
+					return metric.avgCastHit || metric.avgCastTick;
 				},
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
-					cellElem.appendChild(<>{formatToCompactNumber(metric.avgCast, { fallbackString: '-' })}</>);
-					if (!metric.avgCast) return;
+					cellElem.appendChild(
+						<>
+							{formatToCompactNumber(metric.avgCastHit || metric.avgCastTick, { fallbackString: '-' })}
+							{metric.avgCastHit && metric.avgCastTick ? <> ({formatToCompactNumber(metric.avgCastTick, { fallbackString: '-' })})</> : undefined}
+						</>,
+					);
+
+					if (!metric.avgCastHit && !metric.avgCastTick) return;
 
 					<MetricsCombinedTooltipTable
 						tooltipElement={cellElem}
@@ -141,15 +152,18 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 							},
 						}}
 						headerValues={[, 'Amount']}
-						spellSchool={metric.spellSchool}
-						total={metric.avgCastThreat}
-						totalPercentage={100}
-						hasFooter={false}
-						values={[
+						groups={[
 							{
-								name: 'Threat',
-								value: metric.avgCastThreat,
-								percentage: 100,
+								spellSchool: metric.spellSchool,
+								total: metric.avgCastThreat,
+								totalPercentage: 100,
+								data: [
+									{
+										name: 'Threat',
+										value: metric.avgCastThreat,
+										percentage: 100,
+									},
+								],
 							},
 						]}
 					/>;
@@ -157,61 +171,75 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 			},
 			{
 				name: 'Hits',
-				getValue: (metric: ActionMetrics) => metric.landedHits,
+				getValue: (metric: ActionMetrics) => metric.landedHits || metric.landedTicks,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
-					cellElem.appendChild(<>{formatToNumber(metric.landedHits, { fallbackString: '-' })}</>);
-					if (!metric.landedHits || !metric.ticks) return;
+					cellElem.appendChild(
+						<>
+							{formatToNumber(metric.landedHits || metric.landedTicks, { fallbackString: '-' })}
+							{metric.landedHits && metric.landedTicks ? <> ({formatToNumber(metric.landedTicks, { fallbackString: '-' })})</> : undefined}
+						</>,
+					);
+					if (!metric.landedHits && !metric.landedTicks) return;
 
 					const relativeHitPercent = (metric.hits / metric.landedHits) * 100;
 					const relativeCritPercent = (metric.crits / metric.landedHits) * 100;
-					const relativeTickPercent = (metric.ticks / metric.landedHits) * 100;
-					const relativeCritTickPercent = (metric.critTicks / metric.landedHits) * 100;
+					const relativeTickPercent = (metric.ticks / metric.landedTicks) * 100;
+					const relativeCritTickPercent = (metric.critTicks / metric.landedTicks) * 100;
 					const relativeGlancePercent = (metric.glances / metric.landedHits) * 100;
 					const relativeBlockPercent = (metric.blocks / metric.landedHits) * 100;
 					const relativeCritBlockPercent = (metric.critBlocks / metric.landedHits) * 100;
 
 					<MetricsCombinedTooltipTable
 						tooltipElement={cellElem}
-						spellSchool={metric.spellSchool}
-						total={metric.landedHits}
-						totalPercentage={100}
-						hasFooter={false}
-						values={[
+						groups={[
 							{
-								name: 'Hit',
-								value: metric.hits,
-								percentage: relativeHitPercent,
+								spellSchool: metric.spellSchool,
+								total: metric.landedHits,
+								totalPercentage: 100,
+								data: [
+									{
+										name: 'Hit',
+										value: metric.hits,
+										percentage: relativeHitPercent,
+									},
+									{
+										name: `Critical Hit`,
+										value: metric.crits,
+										percentage: relativeCritPercent,
+									},
+									{
+										name: 'Glancing Blow',
+										value: metric.glances,
+										percentage: relativeGlancePercent,
+									},
+									{
+										name: 'Blocked Hit',
+										value: metric.blocks,
+										percentage: relativeBlockPercent,
+									},
+									{
+										name: 'Blocked Critical Hit',
+										value: metric.critBlocks,
+										percentage: relativeCritBlockPercent,
+									},
+								],
 							},
 							{
-								name: `Critical Hit`,
-								value: metric.crits,
-								percentage: relativeCritPercent,
-							},
-
-							{
-								name: 'Tick',
-								value: metric.ticks,
-								percentage: relativeTickPercent,
-							},
-							{
-								name: `Critical Tick`,
-								value: metric.critTicks,
-								percentage: relativeCritTickPercent,
-							},
-							{
-								name: 'Glancing Blow',
-								value: metric.glances,
-								percentage: relativeGlancePercent,
-							},
-							{
-								name: 'Blocked Hit',
-								value: metric.blocks,
-								percentage: relativeBlockPercent,
-							},
-							{
-								name: 'Blocked Critical Hit',
-								value: metric.critBlocks,
-								percentage: relativeCritBlockPercent,
+								spellSchool: metric.spellSchool,
+								total: metric.landedTicks,
+								totalPercentage: 100,
+								data: [
+									{
+										name: 'Tick',
+										value: metric.ticks,
+										percentage: relativeTickPercent,
+									},
+									{
+										name: `Critical Tick`,
+										value: metric.critTicks,
+										percentage: relativeCritTickPercent,
+									},
+								],
 							},
 						]}
 					/>;
@@ -219,10 +247,16 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 			},
 			{
 				name: 'Avg Hit',
-				getValue: (metric: ActionMetrics) => metric.avgHit,
+				getValue: (metric: ActionMetrics) => metric.avgHit || metric.avgTick,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
-					cellElem.appendChild(<>{formatToCompactNumber(metric.avgHit, { fallbackString: '-' })}</>);
-					if (!metric.avgHit) return;
+					cellElem.appendChild(
+						<>
+							{formatToCompactNumber(metric.avgHit || metric.avgTick, { fallbackString: '-' })}
+							{metric.avgHit && metric.avgTick ? <> ({formatToCompactNumber(metric.avgTick, { fallbackString: '-' })})</> : undefined}
+						</>,
+					);
+
+					if (!metric.avgHit && !metric.avgTick) return;
 
 					<MetricsCombinedTooltipTable
 						tooltipElement={cellElem}
@@ -233,15 +267,18 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 							},
 						}}
 						headerValues={[, 'Amount']}
-						spellSchool={metric.spellSchool}
-						total={metric.avgHitThreat}
-						totalPercentage={100}
-						hasFooter={false}
-						values={[
+						groups={[
 							{
-								name: 'Threat',
-								value: metric.avgHitThreat,
-								percentage: 100,
+								spellSchool: metric.spellSchool,
+								total: metric.avgHitThreat,
+								totalPercentage: 100,
+								data: [
+									{
+										name: 'Threat',
+										value: metric.avgHitThreat,
+										percentage: 100,
+									},
+								],
 							},
 						]}
 					/>;
@@ -250,7 +287,9 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 			{
 				name: 'Crit %',
 				getValue: (metric: ActionMetrics) => metric.critPercent,
-				getDisplayString: (metric: ActionMetrics) => formatToPercent(metric.critPercent, { fallbackString: '-' }),
+				getDisplayString: (metric: ActionMetrics) => {
+					return formatToPercent(metric.critPercent, { fallbackString: '-' });
+				},
 			},
 			{
 				name: 'Miss %',
@@ -261,25 +300,28 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 
 					<MetricsCombinedTooltipTable
 						tooltipElement={cellElem}
-						spellSchool={metric.spellSchool}
-						total={metric.totalMisses}
-						totalPercentage={metric.totalMissesPercent}
-						hasFooter={false}
-						values={[
+						groups={[
 							{
-								name: 'Miss',
-								value: metric.misses,
-								percentage: metric.missPercent,
-							},
-							{
-								name: 'Parry',
-								value: metric.parries,
-								percentage: metric.parryPercent,
-							},
-							{
-								name: 'Dodge',
-								value: metric.dodges,
-								percentage: metric.dodgePercent,
+								spellSchool: metric.spellSchool,
+								total: metric.totalMisses,
+								totalPercentage: metric.totalMissesPercent,
+								data: [
+									{
+										name: 'Miss',
+										value: metric.misses,
+										percentage: metric.missPercent,
+									},
+									{
+										name: 'Parry',
+										value: metric.parries,
+										percentage: metric.parryPercent,
+									},
+									{
+										name: 'Dodge',
+										value: metric.dodges,
+										percentage: metric.dodgePercent,
+									},
+								],
 							},
 						]}
 					/>;
@@ -309,15 +351,18 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 							},
 						}}
 						headerValues={[, 'Amount']}
-						spellSchool={metric.spellSchool}
-						total={metric.tps}
-						totalPercentage={100}
-						hasFooter={false}
-						values={[
+						groups={[
 							{
-								name: 'Threat',
-								value: metric.tps,
-								percentage: 100,
+								spellSchool: metric.spellSchool,
+								total: metric.tps,
+								totalPercentage: 100,
+								data: [
+									{
+										name: 'Threat',
+										value: metric.tps,
+										percentage: 100,
+									},
+								],
 							},
 						]}
 					/>;

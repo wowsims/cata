@@ -1,44 +1,44 @@
+import clsx from 'clsx';
 import tippy, { Props as TippyProps } from 'tippy.js';
 
 import { SpellSchool } from '../../../proto/common';
-import { formatToCompactNumber, sum } from '../../../utils';
-import { MetricsTotalBar } from './metrics_total_bar';
+import { formatToCompactNumber } from '../../../utils';
+import { MetricsTotalBar, MetricsTotalBarProps } from './metrics_total_bar';
 
+type MetricsCombinedGroup = {
+	name?: string;
+	cssClass?: string;
+	total?: number;
+	totalPercentage: number;
+	spellSchool: SpellSchool | undefined | null;
+	data: MetricsCombinedTableEntry[];
+};
 type MetricsCombinedTableEntry = {
 	name: string;
-	value: number;
-	percentage: number;
 	min?: number;
 	max?: number;
 	average?: number;
-};
+	percentage: number;
+} & Pick<MetricsTotalBarProps, 'value'>;
 
 type MetricsCombinedTooltipTableProps = {
 	tooltipElement: HTMLElement;
 	tooltipConfig?: Partial<TippyProps>;
-	total: number;
-	totalPercentage: number;
-	values: MetricsCombinedTableEntry[];
-	spellSchool: SpellSchool | undefined | null;
+	groups: MetricsCombinedGroup[];
 	hasMetricBars?: boolean;
-	hasFooter?: boolean;
-	headerValues?: (MetricsCombinedTableEntry['name'] | undefined)[];
+	headerValues?: (MetricsCombinedGroup['name'] | undefined)[];
 };
 export const MetricsCombinedTooltipTable = ({
 	tooltipElement,
 	tooltipConfig,
 	headerValues,
-	total,
-	totalPercentage,
-	values,
-	spellSchool,
+	groups,
 	hasMetricBars = true,
-	hasFooter = true,
 }: MetricsCombinedTooltipTableProps) => {
-	const displayedValues = values.filter(v => v.value);
-	const maxValue = Math.max(...displayedValues.map(a => a.value));
-	const hasAverageColumn = displayedValues.some(d => typeof d.average === 'number');
-	if (displayedValues.length) {
+	const displayGroups = groups.filter(group => group.data.some(d => d.value)).map(group => ({ ...group, data: group.data.filter(v => v.value) }));
+	const hasAverageColumn = displayGroups.some(group => group.data.find(d => typeof d.average === 'number'));
+
+	if (groups.length) {
 		tippy(tooltipElement, {
 			placement: 'auto',
 			theme: 'metrics-table',
@@ -54,39 +54,45 @@ export const MetricsCombinedTooltipTable = ({
 						</tr>
 					</thead>
 					<tbody className="metrics-table-body">
-						{displayedValues
-							.sort((a, b) => b.value - a.value)
-							.map(({ name, value, percentage, average }) => (
-								<tr>
-									<td>{name}</td>
-									<td>
-										{hasMetricBars ? (
-											<MetricsTotalBar
-												spellSchool={spellSchool}
-												percentage={(percentage / totalPercentage) * 100}
-												max={maxValue}
-												total={value}
-												value={value}
-											/>
-										) : (
-											formatToCompactNumber(value)
-										)}
-									</td>
-									{typeof average === 'number' ? <td>{formatToCompactNumber(average)}</td> : undefined}
-								</tr>
-							))}
+						{displayGroups.map(({ name: groupName, cssClass, data, spellSchool, totalPercentage }) => {
+							const maxValue = Math.max(...data.map(a => a.value));
+							const columnCount = data.some(d => typeof d.average === 'number') ? 3 : 2;
+							return (
+								<>
+									{groupName && displayGroups.length > 1 ? (
+										<tr className={clsx('metrics-table-group-header', cssClass)}>
+											<th className="text-start fw-normal" colSpan={columnCount}>
+												{groupName}
+											</th>
+										</tr>
+									) : undefined}
+									{data
+										.sort((a, b) => b.value - a.value)
+										.map(({ name, value, percentage, average }) => (
+											<>
+												<tr className={clsx(cssClass)}>
+													<td>{name}</td>
+													<td>
+														{hasMetricBars ? (
+															<MetricsTotalBar
+																spellSchool={spellSchool}
+																percentage={(percentage / totalPercentage) * 100}
+																max={maxValue}
+																total={value}
+																value={value}
+															/>
+														) : (
+															formatToCompactNumber(value)
+														)}
+													</td>
+													{typeof average === 'number' ? <td>{formatToCompactNumber(average)}</td> : undefined}
+												</tr>
+											</>
+										))}
+								</>
+							);
+						})}
 					</tbody>
-					{hasFooter && displayedValues.length > 1 && (
-						<tfoot className="metrics-table-footer">
-							<tr className="metrics-table-footer-row">
-								<td>Total</td>
-								<td className="text-end">{formatToCompactNumber(total)}</td>
-								{hasAverageColumn ? (
-									<td>{formatToCompactNumber(sum(displayedValues.map(v => v.average || 0)) / displayedValues.length)}</td>
-								) : undefined}
-							</tr>
-						</tfoot>
-					)}
 				</table>
 			),
 		});

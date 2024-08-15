@@ -4,7 +4,7 @@ import { SpellSchool } from '../../../proto/common';
 import { spellSchoolNames } from '../../../proto_utils/names';
 import { formatToCompactNumber, formatToPercent } from '../../../utils';
 
-type MetricsTotalBarProps = {
+export type MetricsTotalBarProps = {
 	percentage: number | undefined | null;
 	max: number | null;
 	total: number;
