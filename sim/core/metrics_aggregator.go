@@ -119,7 +119,7 @@ type CharacterIterationMetrics struct {
 
 type ActionMetrics struct {
 	IsMelee   bool            // True if melee action, false if spell action.
-	IsPassive bool            // True if melee action, false if spell action.
+	IsPassive bool            // True if action is applied/cast as a result of another action
 	SpellType proto.SpellType // Spell is cast, periodic (DoT or HoT) or both
 
 	// Metrics for this action, for each possible target.

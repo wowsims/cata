@@ -144,10 +144,11 @@ message SimOptions {
 }
 
 enum SpellType {
-	SpellTypeCast = 0;
-	SpellTypePeriodic = 1;
+	SpellTypeUnknown = 0;
+	SpellTypeCast = 1;
+	SpellTypePeriodic = 2;
 	// Needed for Frontend
-	SpellTypeAll = 2;
+	SpellTypeAll = 3;
 }
 
 // The aggregated results from all uses of a particular action.
