@@ -6,7 +6,7 @@ import * as Mechanics from '../constants/mechanics.js';
 import { Player } from '../player.js';
 import { Class, PseudoStat, Stat } from '../proto/common.js';
 import { ActionId } from '../proto_utils/action_id';
-import { displayStatOrder, getStatName, masterySpellIDs, masterySpellNames } from '../proto_utils/names.js';
+import { getStatName, masterySpellIDs, masterySpellNames } from '../proto_utils/names.js';
 import { Stats, UnitStat } from '../proto_utils/stats.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { Component } from './component.js';
@@ -33,7 +33,7 @@ export class CharacterStats extends Component {
 		overwriteDisplayStats?: (player: Player<any>) => StatWrites,
 	) {
 		super(parent, 'character-stats-root');
-		this.stats = displayStatOrder.filter(displayStat => statList.some(unitStat => unitStat.equals(displayStat)));
+		this.stats = statList;
 		this.player = player;
 		this.modifyDisplayStats = modifyDisplayStats;
 		this.overwriteDisplayStats = overwriteDisplayStats;

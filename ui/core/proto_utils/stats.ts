@@ -304,19 +304,44 @@ export class UnitStat {
 	}
 
 	static createDisplayStatArray(statList: Stat[], pseudoStatList: PseudoStat[]): UnitStat[] {
-		const displayStats: UnitStat[] = [];
-
-		statList.forEach(stat => {
-			displayStats.push(UnitStat.fromStat(stat));
-		});
-
-		pseudoStatList.forEach(pseudoStat => {
-			displayStats.push(UnitStat.fromPseudoStat(pseudoStat));
-		});
-
-		return displayStats;
+		return displayStatOrder.filter(displayStat => (displayStat.isStat() && statList.includes(displayStat.stat!)) || (displayStat.isPseudoStat() && pseudoStatList.includes(displayStat.pseudoStat!)));
 	}
 }
+
+export const displayStatOrder: Array<UnitStat> = [
+	UnitStat.fromStat(Stat.StatHealth),
+	UnitStat.fromStat(Stat.StatMana),
+	UnitStat.fromStat(Stat.StatArmor),
+	UnitStat.fromStat(Stat.StatBonusArmor),
+	UnitStat.fromStat(Stat.StatStamina),
+	UnitStat.fromStat(Stat.StatStrength),
+	UnitStat.fromStat(Stat.StatAgility),
+	UnitStat.fromStat(Stat.StatIntellect),
+	UnitStat.fromStat(Stat.StatSpirit),
+	UnitStat.fromStat(Stat.StatSpellPower),
+	UnitStat.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent),
+	UnitStat.fromPseudoStat(PseudoStat.PseudoStatSpellCritPercent),
+	UnitStat.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent),
+	UnitStat.fromStat(Stat.StatSpellPenetration),
+	UnitStat.fromStat(Stat.StatMP5),
+	UnitStat.fromStat(Stat.StatAttackPower),
+	UnitStat.fromStat(Stat.StatRangedAttackPower),
+	UnitStat.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent),
+	UnitStat.fromPseudoStat(PseudoStat.PseudoStatPhysicalCritPercent),
+	UnitStat.fromPseudoStat(PseudoStat.PseudoStatMeleeHastePercent),
+	UnitStat.fromPseudoStat(PseudoStat.PseudoStatRangedHastePercent),
+	UnitStat.fromStat(Stat.StatExpertiseRating),
+	UnitStat.fromStat(Stat.StatMasteryRating),
+	UnitStat.fromPseudoStat(PseudoStat.PseudoStatBlockPercent),
+	UnitStat.fromPseudoStat(PseudoStat.PseudoStatDodgePercent),
+	UnitStat.fromPseudoStat(PseudoStat.PseudoStatParryPercent),
+	UnitStat.fromStat(Stat.StatResilienceRating),
+	UnitStat.fromStat(Stat.StatArcaneResistance),
+	UnitStat.fromStat(Stat.StatFireResistance),
+	UnitStat.fromStat(Stat.StatFrostResistance),
+	UnitStat.fromStat(Stat.StatNatureResistance),
+	UnitStat.fromStat(Stat.StatShadowResistance),
+];
 
 /**
  * Represents values for all character stats (stam, agi, spell power, hit raiting, etc).
