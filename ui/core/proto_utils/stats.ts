@@ -30,7 +30,7 @@ export class UnitStat {
 	isPseudoStat(): boolean {
 		return this.pseudoStat != null;
 	}
-	isDisplayStat(): boolean {
+	hasRootStat(): boolean {
 		return this.rootStat != null;
 	}
 
@@ -47,8 +47,8 @@ export class UnitStat {
 		return this.pseudoStat!;
 	}
 	getRootStat(): Stat {
-		if (!this.isDisplayStat()) {
-			throw new Error('Not a display stat!');
+		if (!this.hasRootStat()) {
+			throw new Error('No root stat for this PseudoStat');
 		}
 		return this.rootStat!;
 	}

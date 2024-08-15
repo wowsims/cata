@@ -6,8 +6,8 @@ import * as Mechanics from '../constants/mechanics.js';
 import { Player } from '../player.js';
 import { Class, PseudoStat, Stat } from '../proto/common.js';
 import { ActionId } from '../proto_utils/action_id';
-import { getClassStatName, masterySpellIDs, masterySpellNames, statOrder } from '../proto_utils/names.js';
-import { Stats, statToPercentageOrPoints } from '../proto_utils/stats.js';
+import { displayStatOrder, getStatName, masterySpellIDs, masterySpellNames } from '../proto_utils/names.js';
+import { Stats, UnitStat } from '../proto_utils/stats.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { Component } from './component.js';
 import { NumberPicker } from './pickers/number_picker.js';
@@ -16,7 +16,7 @@ export type StatMods = { base?: Stats; gear?: Stats; talents?: Stats; buffs?: St
 export type StatWrites = { base: Stats; gear: Stats; talents: Stats; buffs: Stats; consumes: Stats; final: Stats; stats: Array<Stat> };
 
 export class CharacterStats extends Component {
-	readonly stats: Array<Stat>;
+	readonly stats: Array<UnitStat>;
 	readonly valueElems: Array<HTMLTableCellElement>;
 	readonly meleeCritCapValueElem: HTMLTableCellElement | undefined;
 	masteryElem: HTMLTableCellElement | undefined;
@@ -28,12 +28,12 @@ export class CharacterStats extends Component {
 	constructor(
 		parent: HTMLElement,
 		player: Player<any>,
-		stats: Array<Stat>,
+		statList: Array<UnitStat>,
 		modifyDisplayStats?: (player: Player<any>) => StatMods,
 		overwriteDisplayStats?: (player: Player<any>) => StatWrites,
 	) {
 		super(parent, 'character-stats-root');
-		this.stats = statOrder.filter(stat => stats.includes(stat));
+		this.stats = displayStatOrder.filter(displayStat => statList.some(unitStat => unitStat.equals(displayStat)));
 		this.player = player;
 		this.modifyDisplayStats = modifyDisplayStats;
 		this.overwriteDisplayStats = overwriteDisplayStats;
@@ -48,20 +48,14 @@ export class CharacterStats extends Component {
 		this.rootElem.appendChild(table);
 
 		this.valueElems = [];
-		this.stats.forEach(stat => {
-			const statName = getClassStatName(stat, player.getClass());
+		this.stats.forEach(unitStat => {
+			const statName = unitStat.getShortName(player.getClass());
 			const valueRef = ref<HTMLTableCellElement>();
-			const hasteTooltipRef = ref<HTMLButtonElement>();
 			const row = (
 				<tr className="character-stats-table-row">
 					<td className="character-stats-table-label">
 						{statName}
-						{[Stat.StatMeleeHaste, Stat.StatSpellHaste].includes(stat) && (
-							<button ref={hasteTooltipRef} className="d-inline ms-1">
-								<i className="fa-regular fa-circle-question" />
-							</button>
-						)}
-						{stat === Stat.StatMastery && (
+						{unitStat.equalsStat(Stat.StatMasteryRating) && (
 							<>
 								<br />
 								{masterySpellNames.get(this.player.getSpec())}
@@ -69,25 +63,10 @@ export class CharacterStats extends Component {
 						)}
 					</td>
 					<td ref={valueRef} className="character-stats-table-value">
-						{this.bonusStatsLink(stat)}
+						{unitStat.hasRootStat() && this.bonusStatsLink(unitStat)}
 					</td>
 				</tr>
 			);
-
-			if (hasteTooltipRef.value)
-				tippy(hasteTooltipRef.value, {
-					content: (
-						<>
-							<p className="mb-1">
-								<strong>Why is buffs showing 0?</strong>
-							</p>
-							<p>Haste is a multiplicate stat, this makes it hard to properly calculate ratings on the fly (for example when reforging).</p>
-							<p className="mb-0">
-								The <strong>total</strong> value still shows the correct haste value including all (raid) buffs.
-							</p>
-						</>
-					),
-				});
 
 			table.appendChild(row);
 			this.valueElems.push(valueRef.value!);
@@ -158,14 +137,11 @@ export class CharacterStats extends Component {
 			}
 		}
 
-		// Apply multiplicative Haste buffs to the final displayed value
-		finalStats = finalStats.withHasteMultipliers(this.player.getClass());
-
 		const masteryPoints =
-			this.player.getBaseMastery() + (playerStats.finalStats?.stats[Stat.StatMastery] || 0) / Mechanics.MASTERY_RATING_PER_MASTERY_POINT;
+			this.player.getBaseMastery() + (playerStats.finalStats?.stats[Stat.StatMasteryRating] || 0) / Mechanics.MASTERY_RATING_PER_MASTERY_POINT;
 
-		this.stats.forEach((stat, idx) => {
-			const bonusStatValue = bonusStats.getStat(stat);
+		this.stats.forEach((unitStat, idx) => {
+			const bonusStatValue = unitStat.hasRootStat() ? bonusStats.getStat(unitStat.getRootStat()) : 0;
 			let contextualClass: string;
 			if (bonusStatValue == 0) {
 				contextualClass = 'text-white';
@@ -180,9 +156,9 @@ export class CharacterStats extends Component {
 			const valueElem = (
 				<div className="stat-value-link-container">
 					<button ref={statLinkElemRef} className={clsx('stat-value-link', contextualClass)}>
-						{`${this.statDisplayString(finalStats, finalStats, stat, true)} `}
+						{`${this.statDisplayString(finalStats, unitStat, true)} `}
 					</button>
-					{stat === Stat.StatMastery && (
+					{unitStat.equalsStat(Stat.StatMasteryRating) && (
 						<a
 							href={ActionId.makeSpellUrl(masterySpellIDs.get(this.player.getSpec()) || 0)}
 							className={clsx('stat-value-link-mastery', contextualClass)}
@@ -202,39 +178,39 @@ export class CharacterStats extends Component {
 				<div>
 					<div className="character-stats-tooltip-row">
 						<span>Base:</span>
-						<span>{this.statDisplayString(baseStats, baseDelta, stat, true)}</span>
+						<span>{this.statDisplayString(baseDelta, unitStat, true)}</span>
 					</div>
 					<div className="character-stats-tooltip-row">
 						<span>Gear:</span>
-						<span>{this.statDisplayString(gearStats, gearDelta, stat)}</span>
+						<span>{this.statDisplayString(gearDelta, unitStat)}</span>
 					</div>
 					<div className="character-stats-tooltip-row">
 						<span>Talents:</span>
-						<span>{this.statDisplayString(talentsStats, talentsDelta, stat)}</span>
+						<span>{this.statDisplayString(talentsDelta, unitStat)}</span>
 					</div>
 					<div className="character-stats-tooltip-row">
 						<span>Buffs:</span>
-						<span>{this.statDisplayString(buffsStats, buffsDelta, stat)}</span>
+						<span>{this.statDisplayString(buffsDelta, unitStat)}</span>
 					</div>
 					<div className="character-stats-tooltip-row">
 						<span>Consumes:</span>
-						<span>{this.statDisplayString(consumesStats, consumesDelta, stat)}</span>
+						<span>{this.statDisplayString(consumesDelta, unitStat)}</span>
 					</div>
-					{debuffStats.getStat(stat) != 0 && (
+					{debuffStats.getUnitStat(unitStat) != 0 && (
 						<div className="character-stats-tooltip-row">
 							<span>Debuffs:</span>
-							<span>{this.statDisplayString(debuffStats, debuffStats, stat)}</span>
+							<span>{this.statDisplayString(debuffStats, unitStat)}</span>
 						</div>
 					)}
 					{bonusStatValue !== 0 && (
 						<div className="character-stats-tooltip-row">
 							<span>Bonus:</span>
-							<span>{this.statDisplayString(bonusStats, bonusStats, stat)}</span>
+							<span>{this.statDisplayString(bonusStats, unitStat)}</span>
 						</div>
 					)}
 					<div className="character-stats-tooltip-row">
 						<span>Total:</span>
-						<span>{this.statDisplayString(finalStats, finalStats, stat, true)}</span>
+						<span>{this.statDisplayString(finalStats, unitStat, true)}</span>
 					</div>
 				</div>
 			);
@@ -303,46 +279,19 @@ export class CharacterStats extends Component {
 		}
 	}
 
-	private statDisplayString(stats: Stats, deltaStats: Stats, stat: Stat, includeBase?: boolean): string {
-		let rawValue = deltaStats.getStat(stat);
+	private statDisplayString(deltaStats: Stats, unitStat: UnitStat, includeBase?: boolean): string {
+		const rootRatingValue = unitStat.hasRootStat() ? deltaStats.getStat(unitStat.getRootStat()) : null;
+		let derivedPercentOrPointsValue = unitStat.convertDefaultUnitsToPercent(deltaStats.getUnitStat(unitStat));
 
-		rawValue *= 1;
-
-		let displayStr = String(Math.round(rawValue));
-		const statAsPercentageOrPoint = statToPercentageOrPoints(stat, rawValue, stats);
-
-		if (stat == Stat.StatMeleeHit) {
-			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
-		} else if (stat == Stat.StatSpellHit) {
-			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
-		} else if (stat == Stat.StatMeleeCrit || stat == Stat.StatSpellCrit) {
-			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
-		} else if (stat == Stat.StatMeleeHaste) {
-			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
-		} else if (stat == Stat.StatSpellHaste) {
-			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
-		} else if (stat == Stat.StatExpertise) {
-			// As of 06/20, Blizzard has changed Expertise to no longer truncate at quarter percent intervals. Note that
-			// in-game character sheet tooltips will still display the truncated values, but it has been tested to behave
-			// continuously in reality since the patch.
-			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
-		} else if (stat == Stat.StatBlock) {
-			// TODO: Figure out how to display these differently for the components than the final value
-			//displayStr += ` (${(rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE).toFixed(2)}%)`;
-			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
-		} else if (stat == Stat.StatDodge) {
-			//displayStr += ` (${(rawValue / Mechanics.DODGE_RATING_PER_DODGE_CHANCE).toFixed(2)}%)`;
-			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
-		} else if (stat == Stat.StatParry) {
-			//displayStr += ` (${(rawValue / Mechanics.PARRY_RATING_PER_PARRY_CHANCE).toFixed(2)}%)`;
-			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
-		} else if (stat == Stat.StatResilience) {
-			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
-		} else if (stat == Stat.StatMastery) {
-			displayStr += ` (${(statAsPercentageOrPoint + (includeBase ? this.player.getBaseMastery() : 0)).toFixed(2)} Points)`;
+		if (unitStat.equalsStat(Stat.StatMasteryRating) && includeBase) {
+			derivedPercentOrPointsValue = derivedPercentOrPointsValue! + this.player.getBaseMastery();
 		}
 
-		return displayStr;
+		const rootRatingString = (rootRatingValue === null) ? '' : String(Math.round(rootRatingValue));
+		const percentOrPointsSuffix = unitStat.equalsStat(Stat.StatMasteryRating) ? ' Points' : '%';
+		const percentOrPointsString = (derivedPercentOrPointsValue === null) ? '' : (`${derivedPercentOrPointsValue.toFixed(2)}` + percentOrPointsSuffix);
+		const wrappedPercentOrPointsString = ((rootRatingValue === null) || (derivedPercentOrPointsValue === null)) ? percentOrPointsString : ` (${percentOrPointsString})`;
+		return rootRatingString + wrappedPercentOrPointsString;
 	}
 
 	private getDebuffStats(): Stats {
@@ -350,14 +299,15 @@ export class CharacterStats extends Component {
 
 		const debuffs = this.player.sim.raid.getDebuffs();
 		if (debuffs.criticalMass || debuffs.shadowAndFlame) {
-			debuffStats = debuffStats.addStat(Stat.StatSpellCrit, 5 * Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE);
+			debuffStats = debuffStats.addPseudoStat(PseudoStat.PseudoStatSpellCritPercent, 5);
 		}
 
 		return debuffStats;
 	}
 
-	private bonusStatsLink(stat: Stat): HTMLElement {
-		const statName = getClassStatName(stat, this.player.getClass());
+	private bonusStatsLink(unitStat: UnitStat): HTMLElement {
+		const rootStat = unitStat.getRootStat();
+		const statName = getStatName(rootStat);
 		const linkRef = ref<HTMLButtonElement>();
 		const iconRef = ref<HTMLDivElement>();
 
@@ -375,13 +325,13 @@ export class CharacterStats extends Component {
 			placement: 'right',
 			onShow: instance => {
 				const picker = new NumberPicker(null, this.player, {
-					id: `character-bonus-stat-${stat}`,
+					id: `character-bonus-stat-${rootStat}`,
 					label: `Bonus ${statName}`,
 					extraCssClasses: ['mb-0'],
 					changedEvent: (player: Player<any>) => player.bonusStatsChangeEmitter,
-					getValue: (player: Player<any>) => player.getBonusStats().getStat(stat),
+					getValue: (player: Player<any>) => player.getBonusStats().getStat(rootStat),
 					setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
-						const bonusStats = player.getBonusStats().withStat(stat, newValue);
+						const bonusStats = player.getBonusStats().withStat(rootStat, newValue);
 						player.setBonusStats(eventID, bonusStats);
 						instance?.hide();
 					},
