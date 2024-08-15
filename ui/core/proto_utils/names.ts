@@ -255,6 +255,7 @@ export const spellSchoolNames: Map<number, string> = new Map([
 export const slotNames: Map<ItemSlot, string> = new Map([
 	[ItemSlot.ItemSlotHead, 'Head'],
 	[ItemSlot.ItemSlotNeck, 'Neck'],
+	[ItemSlot.ItemSlotShoulder, 'Shoulders'],
 	[ItemSlot.ItemSlotBack, 'Back'],
 	[ItemSlot.ItemSlotChest, 'Chest'],
 	[ItemSlot.ItemSlotWrist, 'Wrist'],
