@@ -525,10 +525,12 @@ export class ReforgeOptimizer {
 									values: [
 										{ name: 'Select preset', value: 0 },
 										...[...statPresets.keys()].map(key => {
-											const rating = statPresets.get(key)!;
+											const ratingValue = statPresets.get(key)!;
+											const percentOrPointsValue = unitStat.convertRatingToPercent(ratingValue)!;
+											const percentValue = unitStat.equalsStat(Stat.StatMasteryRating) ? (percentOrPointsValue * this.player.getMasteryPerPointModifier()) : percentOrPointsValue;
 											return {
-												name: `${key} - ${rating}`,
-												value: rating,
+												name: `${key} - ${percentValue.toFixed(2)}%`,
+												value: ratingValue,
 											};
 										}),
 									].sort((a, b) => a.value - b.value),
