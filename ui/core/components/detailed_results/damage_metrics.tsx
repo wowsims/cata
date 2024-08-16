@@ -23,7 +23,7 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				return {
 					name: metric.name,
 					actionId: metric.actionId,
-					metricType: metric.constructor?.name
+					metricType: metric.constructor?.name,
 				};
 			}),
 			{
@@ -100,8 +100,7 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 					cellElem.appendChild(<>{formatToNumber(metric.casts, { fallbackString: '-' })}</>);
 
 					if (!metric.landedHits && !metric.totalMisses) return;
-					const relativeHitPercent = (metric.landedHits / (metric.landedHits + metric.totalMisses)) * 100;
-
+					const relativeHitPercent = ((metric.landedHits || metric.casts) / ((metric.landedHits || metric.casts) + metric.totalMisses)) * 100;
 					<MetricsCombinedTooltipTable
 						tooltipElement={cellElem}
 						groups={[
@@ -112,13 +111,23 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 								data: [
 									{
 										name: 'Hits',
-										value: metric.landedHits,
+										value: metric.landedHits || metric.casts - metric.totalMisses,
 										percentage: relativeHitPercent,
 									},
 									{
-										name: `Misses`,
-										value: metric.totalMisses,
-										percentage: metric.totalMissesPercent,
+										name: 'Miss',
+										value: metric.misses,
+										percentage: metric.missPercent,
+									},
+									{
+										name: 'Parry',
+										value: metric.parries,
+										percentage: metric.parryPercent,
+									},
+									{
+										name: 'Dodge',
+										value: metric.dodges,
+										percentage: metric.dodgePercent,
 									},
 								],
 							},
