@@ -318,7 +318,6 @@ message IndividualSimSettings {
 	Stat heal_ref_stat = 13;
 	Stat tank_ref_stat = 14;
 	UnitStats stat_caps = 15;
-	repeated StatCapConfig soft_cap_breakpoints = 16;
 }
 
 message StatCapConfig {

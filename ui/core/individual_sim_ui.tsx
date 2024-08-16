@@ -670,10 +670,6 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 					this.player.setStatCaps(eventID, Stats.fromProto(settings.statCaps));
 				}
 
-				if (!!settings.softCapBreakpoints.length) {
-					this.player.setSoftCapBreakpoints(eventID, StatCap.fromProto(settings.softCapBreakpoints));
-				}
-
 				if (settings.dpsRefStat) {
 					this.dpsRefStat = settings.dpsRefStat;
 				}
