@@ -531,24 +531,89 @@ export class Stats {
 	}
 
 	static updateProtoVersion(proto: UnitStats) {
-		// First migrate the stats array.
-		proto.stats = Stats.migrateStatsArray(proto.stats, proto.apiVersion);
+		// Define the conversion map between Stat/ PseudoStat schemas.
+		const conversionMap: ProtoConversionMap<UnitStats> = new Map([
+			[
+				1,
+				(oldProto: UnitStats) => {
+					oldProto.stats = Stats.migrateStatsArray(oldProto.stats, 0, new Array(31).fill(0), 1);
+					oldProto.apiVersion = 1;
+					return oldProto;
+				},
+			],
+			[
+				2,
+				(oldProto: UnitStats) => {
+					// Save the version 1 state of the stats
+					// array because we'll need it for
+					// populating the version 2 pseudoStats
+					// array.
+					const oldStats = oldProto.stats.slice();
 
-		// Any other required data migration code (such as for the
-		// pseudoStats array) should go here.
+					// Migrate the stats array using the schema below.
+					oldProto.stats = Stats.migrateStatsArray(oldProto.stats, 1, undefined, 2);
+
+					// Create a version 2 pseudoStats array with expanded
+					// fields.
+					const oldPseudoStats = oldProto.pseudoStats.slice();
+					const newPseudoStats: number[] = new Array(16).fill(0);
+
+					// MH/OH/Ranged DPS were unchanged.
+					for (let idx = 0; idx < 3; idx++) {
+						newPseudoStats[idx] = oldPseudoStats[idx] || 0;
+					}
+
+					// Dodge + Parry were converted from
+					// probability units to percent units.
+					newPseudoStats[3] = oldPseudoStats[4] * 100;
+					newPseudoStats[4] = oldPseudoStats[5] * 100;
+
+					// Block was moved from a Stat (with
+					// deprecated Rating units) to a PseudoStat
+					// (with percent units).
+					newPseudoStats[5] = oldStats[30] / 88.359444;
+
+					// Speed multipliers were re-arranged.
+					for (let idx = 6; idx < 9; idx++) {
+						const oldIdx = [7,6,8][idx - 6];
+						newPseudoStats[idx] = oldPseudoStats[oldIdx] || 1.0;
+					}
+
+					// Populate school-specific Hit/Crit/Haste PseudoStats from the version 1 stats
+					// array. Note that the multiplications below are only correct for EP values, and
+					// should be divisions instead for converting the stats themselves. However, we
+					// know that bonusStats entries for these fields will always be ignored, so it
+					// should be fine for the migration to assume an EP context.
+					newPseudoStats[9] = oldStats[9] * Mechanics.HASTE_RATING_PER_HASTE_PERCENT;
+					newPseudoStats[10] = oldStats[9] * Mechanics.HASTE_RATING_PER_HASTE_PERCENT;
+					newPseudoStats[11] = oldStats[10] * Mechanics.HASTE_RATING_PER_HASTE_PERCENT;
+					newPseudoStats[12] = oldStats[5] * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT;
+					newPseudoStats[13] = oldStats[6] * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT;
+					newPseudoStats[14] = oldStats[7] * Mechanics.CRIT_RATING_PER_CRIT_PERCENT;
+					newPseudoStats[15] = oldStats[8] * Mechanics.CRIT_RATING_PER_CRIT_PERCENT;
+
+					// Finalize and return.
+					oldProto.pseudoStats = newPseudoStats;
+					oldProto.apiVersion = 2;
+					return oldProto;
+				},
+			],
+		]);
+
+		// Run the migration utility using the above map.
+		migrateOldProto<UnitStats>(proto, proto.apiVersion, conversionMap);
 
 		// Flag the version as up-to-date once all migrations are done.
 		proto.apiVersion = CURRENT_API_VERSION;
 	}
 
-	// Takes in a stats array that was generated from an out-of-date proto version, and
-	// converts it to an array that is consistent with the current proto version.
-	static migrateStatsArray(oldStats: number[], oldApiVersion: number, fallbackStats?: number[]): number[] {
+	// Takes in a stats array that was generated from an out-of-date proto version, and converts it to an array that is consistent with the current proto version.
+	static migrateStatsArray(oldStats: number[], oldApiVersion: number, fallbackStats?: number[], targetApiVersion?: number): number[] {
 		const conversionMap: ProtoConversionMap<number[]> = new Map([
 			[
 				1,
 				(oldArray: number[]) => {
-					// Revision 1 simply re-orders the stats for clarity
+					// Revision 1 simply re-orders the stats for clarity.
 					const newIndices = [0, 1, 2, 3, 4, 17, 18, 6, 8, 10, 19, 15, 5, 7, 9, 11, 29, 26, 16, 30, 12, 13, 20, 28, 21, 22, 23, 24, 25, 27, 14];
 					const newArray: number[] = new Array(oldArray.length);
 					oldArray.forEach((value, idx) => {
@@ -557,8 +622,33 @@ export class Stats {
 					return newArray;
 				},
 			],
+			[
+				2,
+				(oldArray: number[]) => {
+					// Revision 2 collapses school-specific Hit/Crit/Haste into generic Rating stats.
+					const newArray: number[] = new Array(oldArray.length - 4).fill(0);
+					newArray[5] = oldArray[5] + oldArray[6]; // MeleeHit + SpellHit --> HitRating
+					newArray[6] = oldArray[7] + oldArray[8]; // MeleeCrit + SpellCrit --> CritRating
+					newArray[7] = oldArray[9] + oldArray[10]; // MeleeHaste + SpellHaste --> HasteRating
+					newArray[26] = oldArray[18]; // MP5 was moved
+
+					// Other entries are simply shifted over
+					// and copied.
+					for (let idx = 0; idx < 5; idx++) {
+						newArray[idx] = oldArray[idx];
+					}
+					for (let idx = 8; idx < 15; idx++) {
+						newArray[idx] = oldArray[idx + 3];
+					}
+					for (let idx = 15; idx < 26; idx++) {
+						newArray[idx] = oldArray[idx + 4];
+					}
+
+					return newArray;
+				},
+			],
 		]);
-		const migratedProto = migrateOldProto<number[]>(oldStats, oldApiVersion, conversionMap);
+		const migratedProto = migrateOldProto<number[]>(oldStats, oldApiVersion, conversionMap, targetApiVersion);
 
 		// If there is a fallback array, use it if the lengths don't match
 		if (fallbackStats && migratedProto.length !== fallbackStats.length) return fallbackStats;
