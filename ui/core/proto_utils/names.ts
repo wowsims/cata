@@ -1,17 +1,5 @@
 import { ResourceType } from '../proto/api';
-import {
-	ArmorType,
-	Class,
-	ItemSlot,
-	Profession,
-	PseudoStat,
-	Race,
-	RangedWeaponType,
-	Spec,
-	SpellSchool as ProtoSpellSchool,
-	Stat,
-	WeaponType,
-} from '../proto/common';
+import { ArmorType, Class, ItemSlot, Profession, PseudoStat, Race, RangedWeaponType, Spec, Stat, WeaponType } from '../proto/common';
 import { DungeonDifficulty, RaidFilterOption, RepFaction, RepLevel, SourceFilterOption, StatCapType } from '../proto/ui';
 
 export const armorTypeNames: Map<ArmorType, string> = new Map([
@@ -227,13 +215,13 @@ export function getClassStatName(stat: Stat, playerClass: Class): string {
 // TODO: Make sure BE exports the spell schools properly
 export enum SpellSchool {
 	None = 0,
-	Physical = 1 << (ProtoSpellSchool.SpellSchoolPhysical + 1),
-	Arcane = 1 << (ProtoSpellSchool.SpellSchoolArcane + 1),
-	Fire = 1 << (ProtoSpellSchool.SpellSchoolFire + 1),
-	Frost = 1 << (ProtoSpellSchool.SpellSchoolFrost + 1),
-	Holy = 1 << (ProtoSpellSchool.SpellSchoolHoly + 1),
-	Nature = 1 << (ProtoSpellSchool.SpellSchoolNature + 1),
-	Shadow = 1 << (ProtoSpellSchool.SpellSchoolShadow + 1),
+	Physical = 1 << 1,
+	Arcane = 1 << 2,
+	Fire = 1 << 3,
+	Frost = 1 << 4,
+	Holy = 1 << 5,
+	Nature = 1 << 6,
+	Shadow = 1 << 7,
 }
 
 export const spellSchoolNames: Map<number, string> = new Map([
