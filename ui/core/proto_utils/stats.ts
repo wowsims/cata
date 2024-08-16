@@ -702,6 +702,16 @@ export class StatCap {
 
 		return statCapObjects;
 	}
+
+	static cloneSoftCaps(softCaps: StatCap[]): StatCap[] {
+		const clonedSoftCaps: StatCap[] = [];
+
+		softCaps.forEach(config => {
+			clonedSoftCaps.push(new StatCap(config.unitStat, config.breakpoints.slice(), config.capType, config.postCapEPs.slice()));
+		});
+
+		return clonedSoftCaps;
+	}
 }
 
 export function convertHastePresetBreakpointsToPercent(ratingPresets: Map<string, number>): Map<string, number> {

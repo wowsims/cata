@@ -26,7 +26,15 @@ type YalpsCoefficients = Map<string, number>;
 type YalpsVariables = Map<string, YalpsCoefficients>;
 type YalpsConstraints = Map<string, Constraint>;
 
-const INCLUDED_STATS = Array.from(shortSecondaryStatNames.keys());
+const INCLUDED_STATS = [
+	Stat.StatHitRating,
+	Stat.StatCritRating,
+	Stat.StatHasteRating,
+	Stat.StatExpertiseRating,
+	Stat.StatMasteryRating,
+	Stat.StatDodgeRating,
+	Stat.StatParryRating,
+];
 
 type StatTooltipContent = { [key in Stat]?: () => Element | string };
 
@@ -183,7 +191,7 @@ export class ReforgeOptimizer {
 	}
 
 	get softCapsConfig() {
-		return this.updateSoftCaps?.(structuredClone(this._softCapsConfig)) || this._softCapsConfig;
+		return this.updateSoftCaps?.(StatCap.cloneSoftCaps(this._softCapsConfig)) || this._softCapsConfig;
 	}
 
 	get statCaps() {
@@ -467,6 +475,7 @@ export class ReforgeOptimizer {
 				</thead>
 				<tbody>
 					{this.simUI.individualConfig.displayStats.map(unitStat => {
+						if (!unitStat.hasRootStat()) return;
 						const rootStat = unitStat.getRootStat();
 						if (!INCLUDED_STATS.includes(rootStat)) return;
 
