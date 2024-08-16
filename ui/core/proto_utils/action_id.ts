@@ -135,7 +135,6 @@ export class ActionId {
 		this.name = name || baseName;
 		this.iconUrl = iconUrl;
 		this.spellIdTooltipOverride = this.spellTooltipOverride?.spellId || null;
-		// console.log(this.spellIdTooltipOverride);
 	}
 
 	anyId(): number {
@@ -751,14 +750,6 @@ const petNameToActionId: Record<string, ActionId> = {
 	Ghoul: ActionId.fromSpellId(46584),
 	'Army of the Dead': ActionId.fromSpellId(42650),
 	Valkyr: ActionId.fromSpellId(71844),
-	Felguard: ActionId.fromSpellId(30146),
-	Felhunter: ActionId.fromSpellId(691),
-	'Ebon Imp': ActionId.fromSpellId(688),
-	Imp: ActionId.fromSpellId(688),
-	Succubus: ActionId.fromSpellId(712),
-	Doomguard: ActionId.fromSpellId(18540),
-	'Summon Doomguard': ActionId.fromSpellId(18540),
-	Infernal: ActionId.fromSpellId(1122),
 	'Flame Orb': ActionId.fromSpellId(82731),
 	Treant: ActionId.fromSpellId(33831),
 };
@@ -781,7 +772,7 @@ const petNameToIcon: Record<string, string> = {
 	Felhunter: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelhunter.jpg',
 	Infernal: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summoninfernal.jpg',
 	Doomguard: 'https://wow.zamimg.com/images/wow/icons/large/warlock_summon_doomguard.jpg',
-	'Ebon Imp': 'https://wow.zamimg.com/images/wow/icons/large/spell-nature-removecurse.jpg',
+	'Ebon Imp': 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_removecurse.jpg',
 	Gorilla: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_gorilla.jpg',
 	Hyena: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_hyena.jpg',
 	Imp: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonimp.jpg',
