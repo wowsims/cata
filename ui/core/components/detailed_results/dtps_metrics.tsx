@@ -1,5 +1,4 @@
 import { TOOLTIP_METRIC_LABELS } from '../../constants/tooltips';
-import { SpellType } from '../../proto/api';
 import { ActionMetrics } from '../../proto_utils/sim_result';
 import { formatToCompactNumber, formatToNumber, formatToPercent } from '../../utils';
 import { MetricsCombinedTooltipTable } from './metrics_table/metrics_combined_tooltip_table';
@@ -29,7 +28,8 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 			}),
 			{
 				name: 'Damage Taken',
-				headerCellClass: 'text-center',
+				headerCellClass: 'text-center metrics-table-cell--primary-metric',
+				columnClass: 'metrics-table-cell--primary-metric',
 				getValue: (metric: ActionMetrics) => metric.avgDamage,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
 					cellElem.appendChild(
@@ -269,8 +269,11 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 			},
 			{
 				name: 'Crit %',
-				getValue: (metric: ActionMetrics) => metric.critPercent,
-				getDisplayString: (metric: ActionMetrics) => formatToPercent(metric.critPercent, { fallbackString: '-' }),
+				getValue: (metric: ActionMetrics) => metric.critPercent || metric.critTickPercent,
+				getDisplayString: (metric: ActionMetrics) =>
+					`${formatToPercent(metric.critPercent || metric.critTickPercent, { fallbackString: '-' })}${
+						metric.critPercent && metric.critTickPercent ? ` (${formatToPercent(metric.critTickPercent, { fallbackString: '-' })})` : ''
+					}`,
 			},
 			{
 				name: 'DTPS',

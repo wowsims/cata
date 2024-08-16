@@ -197,7 +197,7 @@ export abstract class MetricsTable<T extends ActionMetrics | AuraMetrics | UnitM
 			name: string;
 			actionId: ActionId;
 			metricType: string;
-		},
+		} & Pick<MetricsColumnConfig<T>, 'columnClass' | 'headerCellClass'>,
 	): MetricsColumnConfig<T> {
 		return {
 			name: 'Name',

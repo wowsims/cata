@@ -111,7 +111,7 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHitNoHitCounter)
 			if result.Landed() {
 				ssDebuffAura := ssDebuffAuras.Get(target)
 				ssDebuffAura.Activate(sim)
@@ -123,8 +123,6 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 				if shaman.AutoAttacks.IsDualWielding && shaman.HasOHWeapon() {
 					ohHit.Cast(sim, target)
 				}
-
-				shaman.Stormstrike.SpellMetrics[target.UnitIndex].Hits--
 			}
 			spell.DealOutcome(sim, result)
 		},

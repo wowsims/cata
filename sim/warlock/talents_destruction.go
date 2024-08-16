@@ -160,7 +160,6 @@ func (warlock *Warlock) registerBurningEmbers() {
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-				dot.Spell.SpellMetrics[target.UnitIndex].Hits++
 			},
 		},
 	})

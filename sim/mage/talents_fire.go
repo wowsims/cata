@@ -358,7 +358,6 @@ func (mage *Mage) applyIgnite() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.SpellMetrics[target.UnitIndex].Hits++
 			spell.Dot(target).Apply(sim)
 		},
 	})

@@ -1,5 +1,4 @@
 import { TOOLTIP_METRIC_LABELS } from '../../constants/tooltips';
-import { SpellType } from '../../proto/api';
 import { ActionMetrics } from '../../proto_utils/sim_result.js';
 import { formatToCompactNumber, formatToNumber, formatToPercent } from '../../utils.js';
 import { MetricsCombinedTooltipTable } from './metrics_table/metrics_combined_tooltip_table';
@@ -29,7 +28,8 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 			}),
 			{
 				name: 'Healing done',
-				headerCellClass: 'text-center',
+				headerCellClass: 'text-center metrics-table-cell--primary-metric',
+				columnClass: 'metrics-table-cell--primary-metric',
 				getValue: (metric: ActionMetrics) => metric.avgHealing,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
 					cellElem.appendChild(

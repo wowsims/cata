@@ -118,14 +118,12 @@ type CharacterIterationMetrics struct {
 }
 
 type ActionMetrics struct {
-	IsMelee   bool            // True if melee action, false if spell action.
-	IsPassive bool            // True if action is applied/cast as a result of another action
-	SpellType proto.SpellType // Spell is cast, periodic (DoT or HoT) or both
+	IsMelee     bool // True if melee action, false if spell action.
+	IsPassive   bool // True if action is applied/cast as a result of another action
+	SpellSchool SpellSchool
 
 	// Metrics for this action, for each possible target.
 	Targets []TargetedActionMetrics
-
-	SpellSchool SpellSchool
 }
 
 type tmiListItem struct {
@@ -143,7 +141,6 @@ func (actionMetrics *ActionMetrics) ToProto(actionID ActionID) *proto.ActionMetr
 		Id:          actionID.ToProto(),
 		IsMelee:     actionMetrics.IsMelee,
 		IsPassive:   actionMetrics.IsPassive,
-		SpellType:   actionMetrics.SpellType,
 		Targets:     targetMetrics,
 		SpellSchool: int32(actionMetrics.SpellSchool),
 	}
@@ -343,14 +340,9 @@ func (unitMetrics *UnitMetrics) addSpellMetrics(spell *Spell, actionID ActionID,
 	}
 
 	if !ok {
-		spellType := proto.SpellType_SpellTypeCast
-		if spell.dots != nil {
-			spellType = proto.SpellType_SpellTypePeriodic
-		}
 		actionMetrics = &ActionMetrics{
 			IsMelee:     spell.Flags.Matches(SpellFlagMeleeMetrics),
 			IsPassive:   spell.Flags.Matches(SpellFlagPassiveSpell),
-			SpellType:   spellType,
 			SpellSchool: spell.SpellSchool,
 		}
 		unitMetrics.actions[actionID] = actionMetrics

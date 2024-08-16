@@ -143,14 +143,6 @@ message SimOptions {
 	bool use_labeled_rands = 9; // Use test level RNG.
 }
 
-enum SpellType {
-	SpellTypeUnknown = 0;
-	SpellTypeCast = 1;
-	SpellTypePeriodic = 2;
-	// Needed for Frontend
-	SpellTypeAll = 3;
-}
-
 // The aggregated results from all uses of a particular action.
 message ActionMetrics {
 	ActionID id = 1;
@@ -164,10 +156,9 @@ message ActionMetrics {
 	repeated TargetedActionMetrics targets = 3;
 
 	int32 spell_school = 4;
-	SpellType spell_type = 5;
 
 	// True if action is applied/cast as a result of another action
-	bool is_passive = 6;
+	bool is_passive = 5;
 }
 
 // Metrics for a specific action, when cast at a particular target.

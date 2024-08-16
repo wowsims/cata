@@ -1,5 +1,4 @@
 import { TOOLTIP_METRIC_LABELS } from '../../constants/tooltips';
-import { SpellType } from '../../proto/api';
 import { ActionMetrics } from '../../proto_utils/sim_result';
 import { bucket, formatToCompactNumber, formatToNumber, formatToPercent } from '../../utils';
 import { MetricsCombinedTooltipTable } from './metrics_table/metrics_combined_tooltip_table';
@@ -24,12 +23,13 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				return {
 					name: metric.name,
 					actionId: metric.actionId,
-					metricType: metric.constructor?.name,
+					metricType: metric.constructor?.name
 				};
 			}),
 			{
 				name: 'Damage done',
-				headerCellClass: 'text-center',
+				headerCellClass: 'text-center metrics-table-cell--primary-metric',
+				columnClass: 'metrics-table-cell--primary-metric',
 				getValue: (metric: ActionMetrics) => metric.avgDamage,
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
 					cellElem.appendChild(
@@ -136,8 +136,16 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
 					cellElem.appendChild(
 						<>
-							{formatToCompactNumber(metric.avgCastHit || metric.avgCastTick, { fallbackString: '-' })}
-							{metric.avgCastHit && metric.avgCastTick ? <> ({formatToCompactNumber(metric.avgCastTick, { fallbackString: '-' })})</> : undefined}
+							{metric.isPassiveAction ? (
+								'-'
+							) : (
+								<>
+									{formatToCompactNumber(metric.avgCastHit || metric.avgCastTick, { fallbackString: '-' })}
+									{metric.avgCastHit && metric.avgCastTick ? (
+										<> ({formatToCompactNumber(metric.avgCastTick, { fallbackString: '-' })})</>
+									) : undefined}
+								</>
+							)}
 						</>,
 					);
 
@@ -286,10 +294,11 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 			},
 			{
 				name: 'Crit %',
-				getValue: (metric: ActionMetrics) => metric.critPercent,
-				getDisplayString: (metric: ActionMetrics) => {
-					return formatToPercent(metric.critPercent, { fallbackString: '-' });
-				},
+				getValue: (metric: ActionMetrics) => metric.critPercent || metric.critTickPercent,
+				getDisplayString: (metric: ActionMetrics) =>
+					`${formatToPercent(metric.critPercent || metric.critTickPercent, { fallbackString: '-' })}${
+						metric.critPercent && metric.critTickPercent ? ` (${formatToPercent(metric.critTickPercent, { fallbackString: '-' })})` : ''
+					}`,
 			},
 			{
 				name: 'Miss %',
@@ -399,13 +408,9 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 	}
 
 	mergeMetrics(metrics: Array<ActionMetrics>): ActionMetrics {
-		const isCastSpellType = metrics.some(m => m.spellType === SpellType.SpellTypeCast);
-		const isDotSpellType = metrics.some(m => m.spellType === SpellType.SpellTypePeriodic);
-
 		return ActionMetrics.merge(metrics, {
 			removeTag: true,
 			actionIdOverride: metrics[0]?.unit?.petActionId || undefined,
-			spellTypeOverride: isCastSpellType && isDotSpellType ? SpellType.SpellTypeAll : undefined,
 		});
 	}
 

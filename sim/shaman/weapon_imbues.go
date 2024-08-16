@@ -343,7 +343,6 @@ func (shaman *Shaman) newEarthlivingImbueSpell() *core.Spell {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.SpellMetrics[target.UnitIndex].Hits++
 			spell.Hot(target).Apply(sim)
 		},
 	})

@@ -1,4 +1,3 @@
-import { DamageMetricsTable } from '../components/detailed_results/damage_metrics';
 import { PlayerSpec } from '../player_spec.js';
 import { PlayerSpecs } from '../player_specs';
 import {
@@ -15,7 +14,6 @@ import {
 	RaidSimResult,
 	ResourceMetrics as ResourceMetricsProto,
 	ResourceType,
-	SpellType,
 	TargetedActionMetrics as TargetedActionMetricsProto,
 	UnitMetrics as UnitMetricsProto,
 } from '../proto/api.js';
@@ -776,10 +774,9 @@ export class ActionMetrics {
 				new TargetedActionMetrics(tam, {
 					iterations: this.iterations,
 					duration: this.duration,
-					spellType: this.spellType,
 				}),
 		);
-		this.combinedMetrics = TargetedActionMetrics.merge(this.targets, this.spellType);
+		this.combinedMetrics = TargetedActionMetrics.merge(this.targets);
 		this.resources = [];
 	}
 
@@ -789,10 +786,6 @@ export class ActionMetrics {
 
 	get isPassiveAction() {
 		return this.data.isPassive;
-	}
-
-	get spellType() {
-		return this.data.spellType;
 	}
 
 	get totalDamagePercent() {
@@ -1161,10 +1154,7 @@ export class ActionMetrics {
 	}
 
 	// Merges an array of metrics into a single metric.
-	static merge(
-		actions: Array<ActionMetrics>,
-		{ removeTag, actionIdOverride, spellTypeOverride }: { removeTag?: boolean; actionIdOverride?: ActionId; spellTypeOverride?: SpellType } = {},
-	): ActionMetrics {
+	static merge(actions: Array<ActionMetrics>, { removeTag, actionIdOverride }: { removeTag?: boolean; actionIdOverride?: ActionId } = {}): ActionMetrics {
 		const firstAction = actions[0];
 		const unit = firstAction.unit;
 		let actionId = actionIdOverride || firstAction.actionId;
@@ -1182,7 +1172,6 @@ export class ActionMetrics {
 			ActionMetricsProto.create({
 				isMelee: firstAction.isMeleeAction,
 				isPassive: isAllPassiveSpells,
-				spellType: spellTypeOverride ?? firstAction.spellType,
 				targets: mergedTargets.map(t => t.data),
 				spellSchool: firstAction.spellSchool || undefined,
 			}),
@@ -1209,7 +1198,6 @@ export class ActionMetrics {
 type TargetedActionMetricsOptions = {
 	iterations: number;
 	duration: number;
-	spellType?: SpellType | undefined;
 };
 
 // Manages the metrics for a single action applied to a specific target.
@@ -1221,13 +1209,11 @@ export class TargetedActionMetrics {
 	readonly landedHitsRaw: number;
 	readonly landedTicksRaw: number;
 	readonly hitAttempts: number;
-	readonly spellType: TargetedActionMetricsOptions['spellType'];
 
-	constructor(data: TargetedActionMetricsProto, { iterations, duration, spellType }: TargetedActionMetricsOptions) {
+	constructor(data: TargetedActionMetricsProto, { iterations, duration }: TargetedActionMetricsOptions) {
 		this.iterations = iterations;
 		this.duration = duration;
 		this.data = data;
-		this.spellType = spellType;
 
 		this.landedHitsRaw = this.data.hits + this.data.crits + this.data.blocks + this.data.critBlocks + this.data.glances;
 		this.landedTicksRaw = this.data.ticks + this.data.critTicks;
@@ -1390,7 +1376,7 @@ export class TargetedActionMetrics {
 
 	get avgHit() {
 		const lhr = this.landedHitsRaw;
-		return lhr == 0 ? 0 : this.data.damage / lhr;
+		return lhr == 0 ? 0 : (this.data.damage - this.data.tickDamage) / lhr;
 	}
 
 	get avgTick() {
@@ -1456,7 +1442,7 @@ export class TargetedActionMetrics {
 	}
 
 	get critTickPercent() {
-		return (this.data.critTicks / this.ticks) * 100;
+		return (this.data.critTicks / this.data.ticks) * 100;
 	}
 
 	get blocks() {
@@ -1500,7 +1486,7 @@ export class TargetedActionMetrics {
 	}
 
 	// Merges an array of metrics into a single metric.
-	static merge(actions: Array<TargetedActionMetrics>, spellType?: SpellType): TargetedActionMetrics {
+	static merge(actions: Array<TargetedActionMetrics>): TargetedActionMetrics {
 		const { iterations = 1, duration = 1 } = actions[0];
 
 		return new TargetedActionMetrics(
@@ -1532,7 +1518,6 @@ export class TargetedActionMetrics {
 			{
 				iterations,
 				duration,
-				spellType,
 			},
 		);
 	}

@@ -144,6 +144,28 @@
 	width: 100%;
 }
 
+.metrics-table {
+	table-layout: auto;
+
+	td,
+	th {
+		width: 0;
+	}
+
+	th {
+		white-space: nowrap;
+	}
+	td {
+		@include media-breakpoint-up(1080p) {
+			white-space: nowrap;
+		}
+	}
+
+	.metrics-table-cell--primary-metric {
+		width: 400px;
+	}
+}
+
 .tippy-box[data-theme='metrics-table'],
 .metrics-table {
 	--bs-border-default: rgba(var(--bs-white-rgb), 0.2);
@@ -210,6 +232,7 @@
 	display: flex;
 	align-items: center;
 	gap: var(--spacer-2);
+	white-space: initial;
 
 	.expand-toggle {
 		margin-left: auto;

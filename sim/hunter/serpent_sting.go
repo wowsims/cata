@@ -88,7 +88,6 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				if result.Landed() {
-					spell.SpellMetrics[target.UnitIndex].Hits--
 					spell.Dot(target).Apply(sim)
 					if hunter.Talents.ImprovedSerpentSting > 0 {
 						hunter.ImprovedSerpentSting.Cast(sim, target)
