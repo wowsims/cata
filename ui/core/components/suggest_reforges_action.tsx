@@ -296,7 +296,7 @@ export class ReforgeOptimizer {
 												? (breakpoint / Mechanics.MASTERY_RATING_PER_MASTERY_POINT * this.player.getMasteryPerPointModifier()).toFixed(2)
 												: unitStat.convertDefaultUnitsToPercent(breakpoint)!.toFixed(2)}
 										</td>
-										<td className="text-end">{capType === StatCapType.TypeThreshold ? postCapEPs[0] : postCapEPs[breakpointIndex]}</td>
+										<td className="text-end">{unitStat.convertEpToRatingScale(capType === StatCapType.TypeThreshold ? postCapEPs[0] : postCapEPs[breakpointIndex]).toFixed(2)}</td>
 									</tr>
 								))}
 								{index !== this.softCapsConfig.length - 1 && (
@@ -759,6 +759,7 @@ export class ReforgeOptimizer {
 				coefficients.set(ItemSlot[slot], 1);
 				this.applyReforgeStat(coefficients, reforgeData.fromStat, reforgeData.fromAmount, preCapEPs);
 				this.applyReforgeStat(coefficients, reforgeData.toStat, reforgeData.toAmount, preCapEPs);
+				variables.set(variableKey, coefficients);
 			}
 		}
 

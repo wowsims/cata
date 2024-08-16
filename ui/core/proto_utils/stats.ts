@@ -186,6 +186,14 @@ export class UnitStat {
 		}
 	}
 
+	convertEpToRatingScale(epValue: number): number {
+		if (this.isPseudoStat() && PseudoStat[this.pseudoStat!].includes('Percent')) {
+			return this.convertRatingToPercent(epValue)!;
+		} else {
+			return epValue;
+		}
+	}
+
 	getProtoValue(proto: UnitStats): number {
 		if (this.isStat()) {
 			return proto.stats[this.stat!];
