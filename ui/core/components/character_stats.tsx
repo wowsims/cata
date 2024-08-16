@@ -287,10 +287,11 @@ export class CharacterStats extends Component {
 			derivedPercentOrPointsValue = derivedPercentOrPointsValue! + this.player.getBaseMastery();
 		}
 
-		const rootRatingString = (rootRatingValue === null) ? '' : String(Math.round(rootRatingValue));
+		const hideRootRating = (rootRatingValue === null) || ((rootRatingValue === 0) && (derivedPercentOrPointsValue !== null));
+		const rootRatingString = hideRootRating ? '' : String(Math.round(rootRatingValue));
 		const percentOrPointsSuffix = unitStat.equalsStat(Stat.StatMasteryRating) ? ' Points' : '%';
 		const percentOrPointsString = (derivedPercentOrPointsValue === null) ? '' : (`${derivedPercentOrPointsValue.toFixed(2)}` + percentOrPointsSuffix);
-		const wrappedPercentOrPointsString = ((rootRatingValue === null) || (derivedPercentOrPointsValue === null)) ? percentOrPointsString : ` (${percentOrPointsString})`;
+		const wrappedPercentOrPointsString = (hideRootRating || (derivedPercentOrPointsValue === null)) ? percentOrPointsString : ` (${percentOrPointsString})`;
 		return rootRatingString + wrappedPercentOrPointsString;
 	}
 
