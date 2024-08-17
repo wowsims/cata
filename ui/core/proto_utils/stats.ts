@@ -587,18 +587,18 @@ export class Stats {
 						newPseudoStats[idx] = oldPseudoStats[oldIdx] || 1.0;
 					}
 
-					// Populate school-specific Hit/Crit/Haste PseudoStats from the version 1 stats
-					// array. Note that the multiplications below are only correct for EP values, and
-					// should be divisions instead for converting the stats themselves. However, we
-					// know that bonusStats entries for these fields will always be ignored, so it
-					// should be fine for the migration to assume an EP context.
-					newPseudoStats[9] = oldStats[9] * Mechanics.HASTE_RATING_PER_HASTE_PERCENT;
-					newPseudoStats[10] = oldStats[9] * Mechanics.HASTE_RATING_PER_HASTE_PERCENT;
-					newPseudoStats[11] = oldStats[10] * Mechanics.HASTE_RATING_PER_HASTE_PERCENT;
-					newPseudoStats[12] = oldStats[5] * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT;
-					newPseudoStats[13] = oldStats[6] * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT;
-					newPseudoStats[14] = oldStats[7] * Mechanics.CRIT_RATING_PER_CRIT_PERCENT;
-					newPseudoStats[15] = oldStats[8] * Mechanics.CRIT_RATING_PER_CRIT_PERCENT;
+					// Populate school-specific Hit/Crit/Haste PseudoStats from the version 1 stats array. Use the following
+					// heuristic: If both melee + spell variants were previously populated, then assume that the Stats array
+					// represented EP values, and therefore multiply rather than divide by the appropriate conversion constant.
+					// If only one variant was previously populated, then assume that the Stats array represented bonus stat
+					// values, and therefore do not populate a school-specific derivative field to avoid double-counting.
+					newPseudoStats[9] = (oldStats[10] !== 0) ? (oldStats[9] * Mechanics.HASTE_RATING_PER_HASTE_PERCENT) : 0;
+					newPseudoStats[10] = (oldStats[10] !== 0) ? (oldStats[9] * Mechanics.HASTE_RATING_PER_HASTE_PERCENT) : 0;
+					newPseudoStats[11] = (oldStats[9] !== 0) ? (oldStats[10] * Mechanics.HASTE_RATING_PER_HASTE_PERCENT) : 0;
+					newPseudoStats[12] = (oldStats[6] !== 0) ? (oldStats[5] * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT) : 0;
+					newPseudoStats[13] = (oldStats[5] !== 0) ? (oldStats[6] * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT) : 0;
+					newPseudoStats[14] = (oldStats[8] !== 0) ? (oldStats[7] * Mechanics.CRIT_RATING_PER_CRIT_PERCENT) : 0;
+					newPseudoStats[15] = (oldStats[7] !== 0) ? (oldStats[8] * Mechanics.CRIT_RATING_PER_CRIT_PERCENT) : 0;
 
 					// Finalize and return.
 					oldProto.pseudoStats = newPseudoStats;
