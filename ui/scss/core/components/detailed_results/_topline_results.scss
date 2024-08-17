@@ -9,11 +9,15 @@
 		width: max-content;
 		max-width: 100%;
 		width: 100%;
+		table-layout: fixed;
 	}
-
 	.metrics-table-body {
-		tr:hover {
-			background-color: transparent;
+		tr {
+			border-bottom: 0;
+
+			&:hover {
+				background-color: transparent;
+			}
 		}
 	}
 }
