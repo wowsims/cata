@@ -39,10 +39,6 @@
 	display: none;
 }
 
-.dr-row {
-	padding-right: 10px;
-}
-
 .dr-root {
 	display: flex;
 	flex-direction: column;
@@ -196,6 +192,7 @@
 .metrics-table-header-cell {
 	padding: var(--spacer-1) var(--spacer-2);
 	cursor: pointer;
+	text-align: center;
 }
 
 .metrics-table-body tr {
@@ -217,12 +214,10 @@
 	}
 }
 
-.metrics-table-header-cell:first-child,
 .metrics-table-body td:first-child,
 .metrics-table-footer td:first-child {
 	text-align: left;
 }
-.metrics-table-header-cell:not(:first-child),
 .metrics-table-body td:not(:first-child),
 .metrics-table-footer td:not(:first-child) {
 	text-align: right;

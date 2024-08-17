@@ -600,7 +600,7 @@ export class RaidSimResultsManager {
 					<thead className="metrics-table-header">
 						<tr className="metrics-table-header-row">
 							{data.map(({ name, classes }) => {
-								const cell = <th className={clsx('metrics-table-header-cell text-center', classes)}>{name}</th>;
+								const cell = <th className={clsx('metrics-table-header-cell', classes)}>{name}</th>;
 
 								tippy(cell, {
 									content: TOOLTIP_METRIC_LABELS[name],
