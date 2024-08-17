@@ -273,7 +273,7 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 						</>,
 					);
 
-					if (!metric.avgHit && !metric.avgTick) return;
+					if (!metric.avgHitThreat) return;
 
 					<MetricsCombinedTooltipTable
 						tooltipElement={cellElem}

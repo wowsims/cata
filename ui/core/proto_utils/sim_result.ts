@@ -1112,7 +1112,7 @@ export class ActionMetrics {
 			critTick: {
 				value: this.avgCritTickDamage,
 				percentage: (this.avgCritTickDamage / this.avgDamage) * 100,
-				average: this.avgCritTickDamage / this.ticks,
+				average: this.avgCritTickDamage / this.critTicks,
 			},
 			glance: {
 				value: this.avgGlanceDamage,
@@ -1127,7 +1127,7 @@ export class ActionMetrics {
 			critBlock: {
 				value: this.avgCritBlockDamage,
 				percentage: (this.avgCritBlockDamage / this.avgDamage) * 100,
-				average: this.avgCritBlockDamage / this.hits,
+				average: this.avgCritBlockDamage / this.crits,
 			},
 		};
 	}
