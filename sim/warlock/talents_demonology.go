@@ -113,6 +113,10 @@ func (warlock *Warlock) registerImpendingDoom() {
 
 	impendingDoomProcChance := 0.05 * float64(warlock.Talents.ImpendingDoom)
 
+	if !warlock.Talents.Metamorphosis {
+		return
+	}
+
 	core.MakePermanent(
 		warlock.RegisterAura(core.Aura{
 			Label:    "Impending Doom",

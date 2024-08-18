@@ -612,7 +612,7 @@ func (priest *Priest) applySinAndPunishment() {
 				sim.Log("Sin and Punishment Proc. New CD: %d", sim.CurrentTime)
 			}
 
-			priest.Shadowfiend.CD.Set(priest.Shadowfiend.CD.ReadyAt() - 5*time.Second)
+			priest.Shadowfiend.CD.Set(priest.Shadowfiend.CD.ReadyAt() - time.Duration(priest.Talents.SinAndPunishment)*5*time.Second)
 		},
 	})
 }
