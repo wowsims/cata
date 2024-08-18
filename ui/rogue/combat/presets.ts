@@ -1,3 +1,4 @@
+import * as Mechanics from '../../core/constants/mechanics';
 import { Rogue } from '../../core/player_classes/rogue';
 import * as PresetUtils from '../../core/preset_utils';
 import { Conjured, Consumes, Flask, Food, Glyphs, Potions, PseudoStat, Stat } from '../../core/proto/common';
@@ -23,17 +24,17 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAgility]: 2.67,
 			[Stat.StatStrength]: 1.05,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatSpellCrit]: 0.08,
-			[Stat.StatSpellHit]: 0.42,
-			[Stat.StatMeleeHit]: 1.63,
-			[Stat.StatMeleeCrit]: 0.75,
-			[Stat.StatMeleeHaste]: 1.19,
-			[Stat.StatMastery]: 1.18,
-			[Stat.StatExpertise]: 1.3,
+			[Stat.StatCritRating]: (0.08 + 0.75),
+			[Stat.StatHitRating]: (0.42 + 1.63),
+			[Stat.StatHasteRating]: 1.19,
+			[Stat.StatMasteryRating]: 1.18,
+			[Stat.StatExpertiseRating]: 1.3,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 3.95,
 			[PseudoStat.PseudoStatOffHandDps]: 1.28,
+			[PseudoStat.PseudoStatSpellHitPercent]: (0.42 * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT),
+			[PseudoStat.PseudoStatPhysicalHitPercent]: (1.63 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT),
 		},
 	),
 );

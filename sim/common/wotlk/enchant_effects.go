@@ -9,7 +9,7 @@ import (
 )
 
 func CreateBlackMagicProcAura(character *core.Character) *core.Aura {
-	return character.NewTemporaryStatsAura("Black Magic Proc", core.ActionID{SpellID: 59626}, stats.Stats{stats.MeleeHaste: 250, stats.SpellHaste: 250}, time.Second*10)
+	return character.NewTemporaryStatsAura("Black Magic Proc", core.ActionID{SpellID: 59626}, stats.Stats{stats.HasteRating: 250}, time.Second*10)
 }
 
 func init() {
@@ -103,12 +103,12 @@ func init() {
 		character := agent.GetCharacter()
 		// TODO: This should be ranged-only haste. For now just make it hunter-only.
 		if character.Class == proto.Class_ClassHunter {
-			character.AddStats(stats.Stats{stats.MeleeHaste: 40, stats.SpellHaste: 40})
+			character.AddStat(stats.HasteRating, 40)
 		}
 	})
 
 	core.NewEnchantEffect(3608, func(agent core.Agent) {
-		agent.GetCharacter().AddBonusRangedCritRating(40)
+		agent.GetCharacter().AddBonusRangedCritPercent(40 / core.CritRatingPerCritPercent)
 	})
 
 	core.NewEnchantEffect(3748, func(agent core.Agent) {
@@ -309,7 +309,7 @@ func init() {
 		character := agent.GetCharacter()
 		actionID := core.ActionID{SpellID: 54758}
 
-		procAura := character.NewTemporaryStatsAura("Hyperspeed Acceleration", actionID, stats.Stats{stats.MeleeHaste: 340, stats.SpellHaste: 340}, time.Second*12)
+		procAura := character.NewTemporaryStatsAura("Hyperspeed Acceleration", actionID, stats.Stats{stats.HasteRating: 340}, time.Second*12)
 
 		spell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    actionID,

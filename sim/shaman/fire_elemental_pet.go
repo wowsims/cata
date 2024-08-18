@@ -54,9 +54,9 @@ func (shaman *Shaman) NewFireElemental(bonusSpellPower float64) *FireElemental {
 
 	if shaman.Race == proto.Race_RaceDraenei {
 		fireElemental.AddStats(stats.Stats{
-			stats.MeleeHit:  -core.MeleeHitRatingPerHitChance,
-			stats.SpellHit:  -core.SpellHitRatingPerHitChance,
-			stats.Expertise: math.Floor(-core.SpellHitRatingPerHitChance * 0.79),
+			stats.PhysicalHitPercent: -1,
+			stats.SpellHitPercent:    -1,
+			stats.ExpertiseRating:    math.Floor(-core.SpellHitRatingPerHitPercent * 0.79),
 		})
 	}
 
@@ -150,15 +150,13 @@ var fireElementalPetBaseStats = stats.Stats{
 	stats.AttackPower: 0, //Estimated
 
 	// TODO : Log digging shows ~2% melee crit chance, and ~2% spell hit chance + 5% spell crit debuff
-	stats.MeleeCrit: (5 + 1.8) * core.CritRatingPerCritChance,
-	stats.SpellCrit: (5 + 1.8) * core.CritRatingPerCritChance,
+	stats.PhysicalCritPercent: 6.8,
+	stats.SpellCritPercent:    6.8,
 }
 
 func (shaman *Shaman) fireElementalStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
-		ownerSpellHitChance := ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance
-		spellHitRatingFromOwner := ownerSpellHitChance * core.SpellHitRatingPerHitChance
-		meleeHitRatingFromOwner := ownerSpellHitChance / 17 * 8 * core.MeleeHitRatingPerHitChance
+		ownerSpellHitPercent := ownerStats[stats.SpellHitPercent]
 
 		return stats.Stats{
 			stats.Stamina:     ownerStats[stats.Stamina] * 0.80,      //Estimated from beta testing
@@ -166,15 +164,15 @@ func (shaman *Shaman) fireElementalStatInheritance() core.PetStatInheritance {
 			stats.SpellPower:  ownerStats[stats.SpellPower] * 0.5883, //Estimated from beta testing
 			stats.AttackPower: ownerStats[stats.SpellPower] * 4.9,    // 0.7*7 Estimated from beta testing
 
-			stats.MeleeHit: meleeHitRatingFromOwner,
-			stats.SpellHit: spellHitRatingFromOwner,
+			stats.PhysicalHitPercent: ownerSpellHitPercent / 17 * 8,
+			stats.SpellHitPercent:    ownerSpellHitPercent,
 
 			/*
 				TODO working on figuring this out, getting close need more trials. will need to remove specific buffs,
 				ie does not gain the benefit from draenei buff.
 				Scaled linearly to reach Expertise Soft Cap (26) when Shaman is at 17% Spell Hit Cap
 			*/
-			stats.Expertise: math.Floor(ownerSpellHitChance / 17 * 26 * core.ExpertisePerQuarterPercentReduction),
+			stats.ExpertiseRating: math.Floor(ownerSpellHitPercent / 17 * 26 * core.ExpertisePerQuarterPercentReduction),
 		}
 	}
 }

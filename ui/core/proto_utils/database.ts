@@ -159,15 +159,7 @@ export class Database {
 	}
 
 	getAvailableReforges(item: Item): ReforgeStat[] {
-		return Array.from(this.reforgeStats.values()).filter(reforgeStat => {
-			for (let i = 0; i < reforgeStat.fromStat.length; i++) {
-				const statIndex = reforgeStat.fromStat[i];
-				if (item.stats[statIndex] > 0 && item.stats[reforgeStat.toStat[0]] <= 0) {
-					return true;
-				}
-			}
-			return false;
-		});
+		return Array.from(this.reforgeStats.values()).filter(reforgeStat => (item.stats[reforgeStat.fromStat] > 0) && (item.stats[reforgeStat.toStat] == 0));
 	}
 
 	getEnchants(slot: ItemSlot): Array<Enchant> {

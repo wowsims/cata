@@ -77,11 +77,11 @@ func applyConsumeEffects(agent Agent) {
 			}
 		case proto.Flask_LesserFlaskOfToughness:
 			character.AddStats(stats.Stats{
-				stats.Resilience: 50,
+				stats.ResilienceRating: 50,
 			})
 			if character.HasProfession(proto.Profession_Alchemy) {
 				character.AddStats(stats.Stats{
-					stats.Resilience: 82,
+					stats.ResilienceRating: 82,
 				})
 			}
 		case proto.Flask_LesserFlaskOfResistance:
@@ -106,26 +106,23 @@ func applyConsumeEffects(agent Agent) {
 		switch consumes.BattleElixir {
 		case proto.BattleElixir_ElixirOfTheMaster:
 			character.AddStats(stats.Stats{
-				stats.Mastery: 225,
+				stats.MasteryRating: 225,
 			})
 		case proto.BattleElixir_ElixirOfMightySpeed:
 			character.AddStats(stats.Stats{
-				stats.MeleeHaste: 225,
-				stats.SpellHaste: 225,
+				stats.HasteRating: 225,
 			})
 		case proto.BattleElixir_ElixirOfImpossibleAccuracy:
 			character.AddStats(stats.Stats{
-				stats.MeleeHit: 225,
-				stats.SpellHit: 225,
+				stats.HitRating: 225,
 			})
 		case proto.BattleElixir_ElixirOfTheCobra:
 			character.AddStats(stats.Stats{
-				stats.MeleeCrit: 225,
-				stats.SpellCrit: 225,
+				stats.CritRating: 225,
 			})
 		case proto.BattleElixir_ElixirOfTheNaga:
 			character.AddStats(stats.Stats{
-				stats.Expertise: 225,
+				stats.ExpertiseRating: 225,
 			})
 		case proto.BattleElixir_GhostElixir:
 			character.AddStats(stats.Stats{
@@ -133,28 +130,24 @@ func applyConsumeEffects(agent Agent) {
 			})
 		case proto.BattleElixir_ElixirOfAccuracy:
 			character.AddStats(stats.Stats{
-				stats.MeleeHit: 45,
-				stats.SpellHit: 45,
+				stats.HitRating: 45,
 			})
 		case proto.BattleElixir_ElixirOfArmorPiercing:
 			character.AddStats(stats.Stats{
-				stats.Agility:   25,
-				stats.MeleeCrit: 25,
-				stats.SpellCrit: 25,
+				stats.Agility:    25,
+				stats.CritRating: 25,
 			})
 		case proto.BattleElixir_ElixirOfDeadlyStrikes:
 			character.AddStats(stats.Stats{
-				stats.MeleeCrit: 45,
-				stats.SpellCrit: 45,
+				stats.CritRating: 45,
 			})
 		case proto.BattleElixir_ElixirOfExpertise:
 			character.AddStats(stats.Stats{
-				stats.Expertise: 45,
+				stats.ExpertiseRating: 45,
 			})
 		case proto.BattleElixir_ElixirOfLightningSpeed:
 			character.AddStats(stats.Stats{
-				stats.MeleeHaste: 45,
-				stats.SpellHaste: 45,
+				stats.HasteRating: 45,
 			})
 		case proto.BattleElixir_ElixirOfMightyAgility:
 			character.AddStats(stats.Stats{
@@ -254,9 +247,8 @@ func applyConsumeEffects(agent Agent) {
 		})
 	case proto.Food_FoodHeartyRhino:
 		character.AddStats(stats.Stats{
-			stats.MeleeCrit: 40,
-			stats.SpellCrit: 40,
-			stats.Stamina:   40,
+			stats.CritRating: 40,
+			stats.Stamina:    40,
 		})
 	case proto.Food_FoodMegaMammothMeal:
 		character.AddStats(stats.Stats{
@@ -266,26 +258,23 @@ func applyConsumeEffects(agent Agent) {
 		})
 	case proto.Food_FoodSpicedWormBurger:
 		character.AddStats(stats.Stats{
-			stats.MeleeCrit: 40,
-			stats.SpellCrit: 40,
-			stats.Stamina:   40,
+			stats.CritRating: 40,
+			stats.Stamina:    40,
 		})
 	case proto.Food_FoodRhinoliciousWormsteak:
 		character.AddStats(stats.Stats{
-			stats.Expertise: 40,
-			stats.Stamina:   40,
+			stats.ExpertiseRating: 40,
+			stats.Stamina:         40,
 		})
 	case proto.Food_FoodImperialMantaSteak:
 		character.AddStats(stats.Stats{
-			stats.MeleeHaste: 40,
-			stats.SpellHaste: 40,
-			stats.Stamina:    40,
+			stats.HasteRating: 40,
+			stats.Stamina:     40,
 		})
 	case proto.Food_FoodSnapperExtreme:
 		character.AddStats(stats.Stats{
-			stats.MeleeHit: 40,
-			stats.SpellHit: 40,
-			stats.Stamina:  40,
+			stats.HitRating: 40,
+			stats.Stamina:   40,
 		})
 	case proto.Food_FoodMightyRhinoDogs:
 		character.AddStats(stats.Stats{
@@ -330,13 +319,13 @@ func applyConsumeEffects(agent Agent) {
 		})
 	case proto.Food_FoodSkullfishSoup:
 		character.AddStats(stats.Stats{
-			stats.SpellCrit: 20,
-			stats.Spirit:    20,
+			stats.CritRating: 20,
+			stats.Spirit:     20,
 		})
 	case proto.Food_FoodSpicyHotTalbuk:
 		character.AddStats(stats.Stats{
-			stats.MeleeHit: 20,
-			stats.Spirit:   20,
+			stats.HitRating: 20,
+			stats.Spirit:    20,
 		})
 	case proto.Food_FoodFishermansFeast:
 		character.AddStats(stats.Stats{
@@ -344,23 +333,11 @@ func applyConsumeEffects(agent Agent) {
 			stats.Spirit:  20,
 		})
 	case proto.Food_FoodSeafoodFeast:
-		character.AddStats(stats.Stats{
-			stats.Stamina: 90,
-		})
-		character.AddHighestStat(stats.Stats{
-			stats.Strength:  90,
-			stats.Agility:   90,
-			stats.Intellect: 90,
-		})
+		character.AddStat(stats.Stamina, 90)
+		character.AddStat(character.GetHighestStatType([]stats.Stat{stats.Strength, stats.Agility, stats.Intellect}), 90)
 	case proto.Food_FoodFortuneCookie:
-		character.AddStats(stats.Stats{
-			stats.Stamina: 90,
-		})
-		character.AddHighestStat(stats.Stats{
-			stats.Strength:  90,
-			stats.Agility:   90,
-			stats.Intellect: 90,
-		})
+		character.AddStat(stats.Stamina, 90)
+		character.AddStat(character.GetHighestStatType([]stats.Stat{stats.Strength, stats.Agility, stats.Intellect}), 90)
 	case proto.Food_FoodSeveredSagefish:
 		character.AddStats(stats.Stats{
 			stats.Stamina:   90,
@@ -383,41 +360,38 @@ func applyConsumeEffects(agent Agent) {
 		})
 	case proto.Food_FoodBasiliskLiverdog:
 		character.AddStats(stats.Stats{
-			stats.Stamina:    90,
-			stats.MeleeHaste: 90,
-			stats.SpellHaste: 90,
+			stats.Stamina:     90,
+			stats.HasteRating: 90,
 		})
 	case proto.Food_FoodBakedRockfish:
 		character.AddStats(stats.Stats{
-			stats.Stamina:   90,
-			stats.MeleeCrit: 90,
-			stats.SpellCrit: 90,
+			stats.Stamina:    90,
+			stats.CritRating: 90,
 		})
 	case proto.Food_FoodCrocoliskAuGratin:
 		character.AddStats(stats.Stats{
-			stats.Stamina:   90,
-			stats.Expertise: 90,
+			stats.Stamina:         90,
+			stats.ExpertiseRating: 90,
 		})
 	case proto.Food_FoodGrilledDragon:
 		character.AddStats(stats.Stats{
-			stats.Stamina:  90,
-			stats.MeleeHit: 90,
-			stats.SpellHit: 90,
+			stats.Stamina:   90,
+			stats.HitRating: 90,
 		})
 	case proto.Food_FoodLavascaleMinestrone:
 		character.AddStats(stats.Stats{
-			stats.Stamina: 90,
-			stats.Mastery: 90,
+			stats.Stamina:       90,
+			stats.MasteryRating: 90,
 		})
 	case proto.Food_FoodBlackbellySushi:
 		character.AddStats(stats.Stats{
-			stats.Stamina: 90,
-			stats.Parry:   90,
+			stats.Stamina:     90,
+			stats.ParryRating: 90,
 		})
 	case proto.Food_FoodMushroomSauceMudfish:
 		character.AddStats(stats.Stats{
-			stats.Stamina: 90,
-			stats.Dodge:   90,
+			stats.Stamina:     90,
+			stats.DodgeRating: 90,
 		})
 	}
 
@@ -644,7 +618,7 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 		}
 	} else if potionType == proto.Potions_PotionOfSpeed {
 		actionID := ActionID{ItemID: 40211}
-		aura := character.NewTemporaryStatsAura("Potion of Speed", actionID, stats.Stats{stats.MeleeHaste: 500, stats.SpellHaste: 500}, time.Second*15)
+		aura := character.NewTemporaryStatsAura("Potion of Speed", actionID, stats.Stats{stats.HasteRating: 500}, time.Second*15)
 		return MajorCooldown{
 			Type: CooldownTypeDPS,
 			Spell: character.GetOrRegisterSpell(SpellConfig{
@@ -658,7 +632,7 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 		}
 	} else if potionType == proto.Potions_HastePotion {
 		actionID := ActionID{ItemID: 22838}
-		aura := character.NewTemporaryStatsAura("Haste Potion", actionID, stats.Stats{stats.MeleeHaste: 400}, time.Second*15)
+		aura := character.NewTemporaryStatsAura("Haste Potion", actionID, stats.Stats{stats.HasteRating: 400}, time.Second*15)
 		return MajorCooldown{
 			Type: CooldownTypeDPS,
 			Spell: character.GetOrRegisterSpell(SpellConfig{
@@ -861,7 +835,7 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 			},
 
 			// Explosives always have 1% resist chance, so just give them hit cap.
-			BonusHitRating:   100 * SpellHitRatingPerHitChance,
+			BonusHitPercent:  100,
 			DamageMultiplier: 1,
 			CritMultiplier:   2,
 			ThreatMultiplier: 1,
@@ -905,7 +879,7 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 			},
 
 			// Explosives always have 1% resist chance, so just give them hit cap.
-			BonusHitRating:   100 * SpellHitRatingPerHitChance,
+			BonusHitPercent:  100,
 			DamageMultiplier: 1,
 			CritMultiplier:   2,
 			ThreatMultiplier: 1,
@@ -938,7 +912,7 @@ func registerTinkerHandsCD(agent Agent, consumes *proto.Consumes) {
 	switch consumes.TinkerHands {
 	case proto.TinkerHands_TinkerHandsSynapseSprings:
 		// Enchant: 4179, Spell: 82174 - Synapse Springs
-		statType := character.GetHighestStat([]stats.Stat{stats.Intellect, stats.Strength, stats.Agility})
+		statType := character.GetHighestStatType([]stats.Stat{stats.Intellect, stats.Strength, stats.Agility})
 
 		var actionID ActionID
 		var highestStat stats.Stats

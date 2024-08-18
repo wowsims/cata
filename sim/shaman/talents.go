@@ -9,9 +9,9 @@ import (
 )
 
 func (shaman *Shaman) ApplyTalents() {
-	shaman.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.Acuity))
-	shaman.AddStat(stats.SpellCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.Acuity))
-	shaman.AddStat(stats.Expertise, 4*core.ExpertisePerQuarterPercentReduction*float64(shaman.Talents.UnleashedRage))
+	shaman.AddStat(stats.PhysicalCritPercent, 1*float64(shaman.Talents.Acuity))
+	shaman.AddStat(stats.SpellCritPercent, 1*float64(shaman.Talents.Acuity))
+	shaman.AddStat(stats.ExpertiseRating, 4*core.ExpertisePerQuarterPercentReduction*float64(shaman.Talents.UnleashedRage))
 
 	if shaman.Talents.Concussion > 0 {
 		shaman.AddStaticMod(core.SpellModConfig{
@@ -27,8 +27,8 @@ func (shaman *Shaman) ApplyTalents() {
 	}
 
 	if shaman.Talents.ElementalPrecision > 0 {
-		shaman.AddStats(stats.Stats{stats.SpellHit: []float64{0.0, -0.33, -0.66, -1.0}[shaman.Talents.ElementalPrecision] * shaman.GetBaseStats()[stats.Spirit]})
-		shaman.AddStatDependency(stats.Spirit, stats.SpellHit, []float64{0.0, 0.33, 0.66, 1.0}[shaman.Talents.ElementalPrecision])
+		shaman.AddStat(stats.SpellHitPercent, []float64{0.0, -0.33, -0.66, -1.0}[shaman.Talents.ElementalPrecision] * shaman.GetBaseStats()[stats.Spirit] / core.SpellHitRatingPerHitPercent)
+		shaman.AddStatDependency(stats.Spirit, stats.SpellHitPercent, []float64{0.0, 0.33, 0.66, 1.0}[shaman.Talents.ElementalPrecision] / core.SpellHitRatingPerHitPercent)
 		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1 + 0.01*float64(shaman.Talents.ElementalPrecision)
 		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= 1 + 0.01*float64(shaman.Talents.ElementalPrecision)
 		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1 + 0.01*float64(shaman.Talents.ElementalPrecision)
@@ -348,8 +348,8 @@ func (shaman *Shaman) applyElementalDevastation() {
 		return
 	}
 
-	critBonus := 3.0 * float64(shaman.Talents.ElementalDevastation) * core.CritRatingPerCritChance
-	procAura := shaman.NewTemporaryStatsAura("Elemental Devastation Proc", core.ActionID{SpellID: 30160}, stats.Stats{stats.MeleeCrit: critBonus}, time.Second*10)
+	critPercentBonus := 3.0 * float64(shaman.Talents.ElementalDevastation)
+	procAura := shaman.NewTemporaryStatsAura("Elemental Devastation Proc", core.ActionID{SpellID: 30160}, stats.Stats{stats.PhysicalCritPercent: critPercentBonus}, time.Second*10)
 
 	shaman.RegisterAura(core.Aura{
 		Label:    "Elemental Devastation",
@@ -395,14 +395,14 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 			shaman.MultiplyCastSpeed(1.20)
 			damageMod.Activate()
 			if has2PT13 {
-				shaman.AddStatDynamic(sim, stats.Mastery, 2000)
+				shaman.AddStatDynamic(sim, stats.MasteryRating, 2000)
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyCastSpeed(1 / 1.20)
 			damageMod.Deactivate()
 			if has2PT13 {
-				shaman.AddStatDynamic(sim, stats.Mastery, -2000)
+				shaman.AddStatDynamic(sim, stats.MasteryRating, -2000)
 			}
 		},
 	})

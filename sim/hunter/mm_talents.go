@@ -21,9 +21,9 @@ func (hunter *Hunter) ApplyMMTalents() {
 	}
 	if hunter.Talents.CarefulAim > 0 {
 		caCritMod := hunter.AddDynamicMod(core.SpellModConfig{
-			Kind:       core.SpellMod_BonusCrit_Rating,
+			Kind:       core.SpellMod_BonusCrit_Percent,
 			ClassMask:  HunterSpellAimedShot | HunterSpellCobraShot | HunterSpellSteadyShot,
-			FloatValue: (30.0 * float64(hunter.Talents.CarefulAim)) * core.CritRatingPerCritChance,
+			FloatValue: 30 * float64(hunter.Talents.CarefulAim),
 		})
 
 		hunter.RegisterResetEffect(func(sim *core.Simulation) {

@@ -1,3 +1,4 @@
+import * as Mechanics from '../../core/constants/mechanics';
 import * as PresetUtils from '../../core/preset_utils.js';
 import { Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Stat, TinkerHands } from '../../core/proto/common.js';
 import {
@@ -36,17 +37,16 @@ export const T11_EP_PRESET = PresetUtils.makePresetEpWeights(
 		{
 			[Stat.StatStrength]: 2.32,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatSpellHit]: 0.27,
-			[Stat.StatSpellCrit]: 0.06,
-			[Stat.StatSpellHaste]: 0.64,
-			[Stat.StatMeleeHit]: 2.38,
-			[Stat.StatMeleeCrit]: 1.13,
-			[Stat.StatMeleeHaste]: 0.29,
-			[Stat.StatExpertise]: 1.96,
-			[Stat.StatMastery]: 1.38,
+			[Stat.StatHitRating]: (0.27 + 2.38),
+			[Stat.StatCritRating]: (0.06 + 1.13),
+			[Stat.StatHasteRating]: (0.64 + 0.29),
+			[Stat.StatExpertiseRating]: 1.96,
+			[Stat.StatMasteryRating]: 1.38,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 8.45,
+			[PseudoStat.PseudoStatSpellHitPercent]: (0.27 * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT),
+			[PseudoStat.PseudoStatPhysicalHitPercent]: (2.38 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT),
 		},
 	),
 );

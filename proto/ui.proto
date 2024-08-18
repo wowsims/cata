@@ -318,11 +318,10 @@ message IndividualSimSettings {
 	Stat heal_ref_stat = 13;
 	Stat tank_ref_stat = 14;
 	UnitStats stat_caps = 15;
-	repeated StatCapConfig soft_cap_breakpoints = 16;
 }
 
 message StatCapConfig {
-	Stat stat = 1;
+	UIStat unit_stat = 1;
 
 	// Breakpoint values in ascending order
 	repeated double breakpoints = 2;
@@ -334,6 +333,18 @@ message StatCapConfig {
 	// and breakpoints[i+1]. Used only for TypeSoftCap and ignored for
 	// TypeThreshold.
 	repeated double post_cap_EPs = 4;
+}
+
+// Represents a single attribute that is either a Stat or a PseudoStat.
+// Currently used only within the StatCapConfig UI message for configuring Haste
+// caps, and is therefore not versioned, since this message is not imported or
+// exported from local storage or links.
+message UIStat {
+	// Uniquely identifies the attribute
+	oneof unit_stat {
+		Stat stat = 1;
+		PseudoStat pseudo_stat = 2;
+	}
 }
 
 enum StatCapType {

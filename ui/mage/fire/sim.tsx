@@ -5,14 +5,14 @@ import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_u
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
-import { Faction, IndividualBuffs, PartyBuffs, Race, Spec, Stat } from '../../core/proto/common';
-import { StatCapType } from '../../core/proto/ui';
-import { Stats } from '../../core/proto_utils/stats';
+import { Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
+import { StatCapType, UIStat } from '../../core/proto/ui';
+import { convertHastePresetBreakpointsToPercent, StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import { sharedMageDisplayStatsModifiers } from '../shared';
 import * as FireInputs from './inputs';
 import * as Presets from './presets';
 
-const hasteBreakpoints = Presets.FIRE_BREAKPOINTS.get(Stat.StatSpellHaste)!;
+const hasteBreakpoints = convertHastePresetBreakpointsToPercent(Presets.FIRE_BREAKPOINTS.get(Stat.StatHasteRating)!);
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	cssClass: 'fire-mage-sim-ui',
@@ -21,21 +21,25 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect, Stat.StatSpellPower, Stat.StatSpellHit, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMastery],
+	epStats: [Stat.StatIntellect, Stat.StatSpellPower, Stat.StatHitRating, Stat.StatCritRating, Stat.StatHasteRating, Stat.StatMasteryRating],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
-	displayStats: [
-		Stat.StatHealth,
-		Stat.StatMana,
-		Stat.StatStamina,
-		Stat.StatIntellect,
-		Stat.StatSpellPower,
-		Stat.StatSpellHit,
-		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
-		Stat.StatMastery,
-	],
+	displayStats: UnitStat.createDisplayStatArray(
+		[
+			Stat.StatHealth,
+			Stat.StatMana,
+			Stat.StatStamina,
+			Stat.StatIntellect,
+			Stat.StatSpellPower,
+			Stat.StatMasteryRating,
+		],
+		[
+			PseudoStat.PseudoStatSpellHitPercent,
+			PseudoStat.PseudoStatSpellCritPercent,
+			PseudoStat.PseudoStatSpellHastePercent,
+		],
+	),
 	modifyDisplayStats: (player: Player<Spec.SpecFireMage>) => {
 		return sharedMageDisplayStatsModifiers(player);
 	},
@@ -47,12 +51,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
-			return new Stats().withStat(Stat.StatSpellHit, 17 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 17);
 		})(),
 		// Default soft caps for the Reforge optimizer
 		softCapBreakpoints: (() => {
-			const hasteSoftCapConfig = {
-				stat: Stat.StatSpellHaste,
+			const hasteSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent, {
 				breakpoints: [
 					hasteBreakpoints.get('5-tick LvB/Pyro')!,
 					hasteBreakpoints.get('12-tick Combust')!,
@@ -70,8 +73,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 					hasteBreakpoints.get('21-tick Combust')!,
 				],
 				capType: StatCapType.TypeThreshold,
-				postCapEPs: [0.61],
-			};
+				postCapEPs: [0.61 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
+			});
 
 			return [hasteSoftCapConfig];
 		})(),
@@ -173,14 +176,12 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 					const hasPI = !!player.getBuffs().powerInfusionCount;
 					const hasBerserking = player.getRace() === Race.RaceTroll;
 
-					const modifyHaste = (rating: number, modifier: number) =>
-						Math.round(
-							((rating / Mechanics.HASTE_RATING_PER_HASTE_PERCENT / 100 + 1) / modifier - 1) * 100 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT,
-						);
+					const modifyHaste = (oldHastePercent: number, modifier: number) =>
+							((oldHastePercent / 100 + 1) / modifier - 1) * 100;
 
 					this.individualConfig.defaults.softCapBreakpoints!.forEach(softCap => {
-						const softCapToModify = softCaps.find(sc => sc.stat === softCap.stat);
-						if (softCap.stat === Stat.StatSpellHaste && softCapToModify) {
+						const softCapToModify = softCaps.find(sc => sc.unitStat.equals(softCap.unitStat));
+						if (softCap.unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHastePercent) && softCapToModify) {
 							const adjustedHastedBreakpoints = new Set([...softCap.breakpoints]);
 							// LvB/Pyro are not worth adjusting for
 							const excludedHasteBreakpoints = [
@@ -222,7 +223,7 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 					return softCaps;
 				},
 				additionalSoftCapTooltipInformation: {
-					[Stat.StatSpellHaste]: () => {
+					[Stat.StatHasteRating]: () => {
 						const raidBuffs = player.getRaid()?.getBuffs();
 						const hasBL = !!(raidBuffs?.bloodlust || raidBuffs?.timeWarp || raidBuffs?.heroism);
 						const hasPI = !!player.getBuffs().powerInfusionCount;

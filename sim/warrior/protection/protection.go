@@ -80,7 +80,7 @@ func (war *ProtectionWarrior) RegisterSpecializationEffects() {
 
 	// Sentinel stat buffs
 	war.MultiplyStat(stats.Stamina, 1.15)
-	war.MultiplyStat(stats.Block, 1.15)
+	war.MultiplyStat(stats.BlockPercent, 1.15)
 
 	// Vengeance
 	core.ApplyVengeanceEffect(war.GetCharacter(), &war.VengeanceTracker, 93098)
@@ -110,16 +110,13 @@ func (war *ProtectionWarrior) RegisterMastery() {
 	}
 
 	// Crit block mastery also applies an equal amount to regular block
-	// set initial block rating from stats
+	// set initial block % from stats
 	war.CriticalBlockChance[0] = war.CalculateCriticalBlockChance()
-	war.AddStat(stats.Block, (war.CriticalBlockChance[0]*100.0)*core.BlockRatingPerBlockChance)
+	war.AddStat(stats.BlockPercent, war.CriticalBlockChance[0]*100.0)
 
 	// and keep it updated when mastery changes
-	war.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-		oldBlockRating := (1.5 * core.MasteryRatingToMasteryPoints(oldMastery)) * core.BlockRatingPerBlockChance
-		newBlockRating := (1.5 * core.MasteryRatingToMasteryPoints(newMastery)) * core.BlockRatingPerBlockChance
-
-		war.AddStatDynamic(sim, stats.Block, -oldBlockRating+newBlockRating)
+	war.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMasteryRating float64, newMasteryRating float64) {
+		war.AddStatDynamic(sim, stats.BlockPercent, 1.5 * core.MasteryRatingToMasteryPoints(newMasteryRating - oldMasteryRating))
 		war.CriticalBlockChance[0] = war.CalculateCriticalBlockChance()
 	})
 

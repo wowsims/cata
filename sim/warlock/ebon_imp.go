@@ -13,18 +13,18 @@ type EbonImpPet struct {
 
 func (warlock *Warlock) NewEbonImp() *EbonImpPet {
 	baseStats := stats.Stats{
-		stats.MeleeCrit: 5.0 * core.CritRatingPerCritChance, // rough guess
+		stats.PhysicalCritPercent: 5, // rough guess
 
 		// rough guess; definitely some misses and dodges, even if the warlock is hit capped
 		// does not seem to scale with gear or if it does then only by a small fraction
-		stats.MeleeHit:  7 * core.MeleeHitRatingPerHitChance,
-		stats.Expertise: 24 * core.ExpertisePerQuarterPercentReduction,
+		stats.PhysicalHitPercent: 7,
+		stats.ExpertiseRating:    24 * core.ExpertisePerQuarterPercentReduction,
 	}
 
 	statInheritance := func(ownerStats stats.Stats) stats.Stats {
 		return stats.Stats{
-			stats.MeleeHaste: ownerStats[stats.SpellHaste],
-			stats.MeleeCrit:  ownerStats[stats.SpellCrit],
+			stats.HasteRating:         ownerStats[stats.HasteRating],
+			stats.PhysicalCritPercent: ownerStats[stats.SpellCritPercent],
 		}
 	}
 

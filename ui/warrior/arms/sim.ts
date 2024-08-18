@@ -7,7 +7,7 @@ import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
-import { Stats } from '../../core/proto_utils/stats';
+import { Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as WarriorInputs from '../inputs';
 import * as Presets from './presets';
 
@@ -22,28 +22,32 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 		Stat.StatStrength,
 		Stat.StatAgility,
 		Stat.StatAttackPower,
-		Stat.StatExpertise,
-		Stat.StatMeleeHit,
-		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
-		Stat.StatMastery,
+		Stat.StatExpertiseRating,
+		Stat.StatHitRating,
+		Stat.StatCritRating,
+		Stat.StatHasteRating,
+		Stat.StatMasteryRating,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
-	displayStats: [
-		Stat.StatHealth,
-		Stat.StatStamina,
-		Stat.StatStrength,
-		Stat.StatAgility,
-		Stat.StatAttackPower,
-		Stat.StatExpertise,
-		Stat.StatMeleeHit,
-		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
-		Stat.StatMastery,
-	],
+	displayStats: UnitStat.createDisplayStatArray(
+		[
+			Stat.StatHealth,
+			Stat.StatStamina,
+			Stat.StatStrength,
+			Stat.StatAgility,
+			Stat.StatAttackPower,
+			Stat.StatExpertiseRating,
+			Stat.StatMasteryRating,
+		],
+		[
+			PseudoStat.PseudoStatPhysicalHitPercent,
+			PseudoStat.PseudoStatPhysicalCritPercent,
+			PseudoStat.PseudoStatMeleeHastePercent,
+		],
+	),
 	// modifyDisplayStats: (player: Player<Spec.SpecArmsWarrior>) => {
 	// 	let stats = new Stats();
 	// 	if (!player.getInFrontOfTarget()) {
@@ -62,8 +66,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
-			const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
-			const expCap = new Stats().withStat(Stat.StatExpertise, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+			const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 8);
+			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 
 			return hitCap.add(expCap);
 		})(),

@@ -6,7 +6,7 @@ import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation, APLRotation_Type } from '../../core/proto/apl.js';
 import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
 import { PaladinPrimeGlyph, PaladinSeal } from '../../core/proto/paladin.js';
-import { Stats } from '../../core/proto_utils/stats.js';
+import { Stats, UnitStat } from '../../core/proto_utils/stats.js';
 import { TypedEvent } from '../../core/typed_event.js';
 import * as PaladinInputs from '../inputs.js';
 import * as Presets from './presets.js';
@@ -31,56 +31,58 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatStrength,
 		Stat.StatAgility,
 		Stat.StatAttackPower,
-		Stat.StatMeleeHit,
-		Stat.StatSpellHit,
-		Stat.StatMeleeCrit,
-		Stat.StatExpertise,
-		Stat.StatMeleeHaste,
+		Stat.StatHitRating,
+		Stat.StatCritRating,
+		Stat.StatExpertiseRating,
+		Stat.StatHasteRating,
 		Stat.StatSpellPower,
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
-		Stat.StatBlock,
-		Stat.StatDodge,
-		Stat.StatParry,
-		Stat.StatResilience,
+		Stat.StatDodgeRating,
+		Stat.StatParryRating,
+		Stat.StatResilienceRating,
 		Stat.StatNatureResistance,
 		Stat.StatShadowResistance,
 		Stat.StatFrostResistance,
-		Stat.StatMastery,
+		Stat.StatMasteryRating,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
-	displayStats: [
-		Stat.StatHealth,
-		Stat.StatArmor,
-		Stat.StatBonusArmor,
-		Stat.StatStamina,
-		Stat.StatStrength,
-		Stat.StatAgility,
-		Stat.StatAttackPower,
-		Stat.StatMeleeHit,
-		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
-		Stat.StatExpertise,
-		Stat.StatSpellPower,
-		Stat.StatSpellHit,
-		Stat.StatBlock,
-		Stat.StatDodge,
-		Stat.StatParry,
-		Stat.StatResilience,
-		Stat.StatNatureResistance,
-		Stat.StatShadowResistance,
-		Stat.StatFrostResistance,
-		Stat.StatMastery,
-	],
+	displayStats: UnitStat.createDisplayStatArray(
+		[
+			Stat.StatHealth,
+			Stat.StatArmor,
+			Stat.StatBonusArmor,
+			Stat.StatStamina,
+			Stat.StatStrength,
+			Stat.StatAgility,
+			Stat.StatAttackPower,
+			Stat.StatExpertiseRating,
+			Stat.StatSpellPower,
+			Stat.StatResilienceRating,
+			Stat.StatNatureResistance,
+			Stat.StatShadowResistance,
+			Stat.StatFrostResistance,
+			Stat.StatMasteryRating,
+		],
+		[
+			PseudoStat.PseudoStatPhysicalHitPercent,
+			PseudoStat.PseudoStatPhysicalCritPercent,
+			PseudoStat.PseudoStatMeleeHastePercent,
+			PseudoStat.PseudoStatSpellHitPercent,
+			PseudoStat.PseudoStatBlockPercent,
+			PseudoStat.PseudoStatDodgePercent,
+			PseudoStat.PseudoStatParryPercent,
+		],
+	),
 	modifyDisplayStats: (player: Player<Spec.SpecProtectionPaladin>) => {
 		let stats = new Stats();
 
 		TypedEvent.freezeAllAndDo(() => {
 			if (isGlyphOfSealOfTruthActive(player)) {
-				stats = stats.addStat(Stat.StatExpertise, 2.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+				stats = stats.addStat(Stat.StatExpertiseRating, 2.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 			}
 		});
 

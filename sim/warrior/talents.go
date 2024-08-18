@@ -131,8 +131,8 @@ func (warrior *Warrior) applyCruelty() {
 	}
 	warrior.AddStaticMod(core.SpellModConfig{
 		ClassMask:  SpellMaskBloodthirst | SpellMaskMortalStrike | SpellMaskShieldSlam,
-		Kind:       core.SpellMod_BonusCrit_Rating,
-		FloatValue: 5 * float64(warrior.Talents.Cruelty) * core.CritRatingPerCritChance,
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		FloatValue: 5 * float64(warrior.Talents.Cruelty),
 	})
 }
 
@@ -175,14 +175,14 @@ func (warrior *Warrior) applyIncite() {
 	}
 	warrior.AddStaticMod(core.SpellModConfig{
 		ClassMask:  SpellMaskHeroicStrike,
-		Kind:       core.SpellMod_BonusCrit_Rating,
-		FloatValue: 5 * float64(warrior.Talents.Incite) * core.CritRatingPerCritChance,
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		FloatValue: 5 * float64(warrior.Talents.Incite),
 	})
 
 	inciteMod := warrior.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  SpellMaskHeroicStrike,
-		Kind:       core.SpellMod_BonusCrit_Rating,
-		FloatValue: 200.0 * core.CritRatingPerCritChance, // This is actually how Incite is implemented
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		FloatValue: 200.0, // This is actually how Incite is implemented
 	})
 
 	actionID := core.ActionID{SpellID: 86627}
@@ -339,11 +339,11 @@ func (warrior *Warrior) applyHoldTheLine() {
 		Duration: 5 * time.Second * time.Duration(warrior.Talents.HoldTheLine),
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.CriticalBlockChance[1] += 0.1
-			warrior.AddStatDynamic(sim, stats.Block, 10*core.BlockRatingPerBlockChance)
+			warrior.AddStatDynamic(sim, stats.BlockPercent, 10)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.CriticalBlockChance[1] -= 0.1
-			warrior.AddStatDynamic(sim, stats.Block, -10*core.BlockRatingPerBlockChance)
+			warrior.AddStatDynamic(sim, stats.BlockPercent, -10)
 		},
 	})
 

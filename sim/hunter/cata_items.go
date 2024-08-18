@@ -141,9 +141,9 @@ var ItemSetLightningChargedBattleGear = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			// 5% Crit on SS
 			agent.GetCharacter().AddStaticMod(core.SpellModConfig{
-				Kind:       core.SpellMod_BonusCrit_Rating,
+				Kind:       core.SpellMod_BonusCrit_Percent,
 				ClassMask:  HunterSpellSerpentSting,
-				FloatValue: 5 * core.CritRatingPerCritChance,
+				FloatValue: 5,
 			})
 		},
 		4: func(agent core.Agent) {
