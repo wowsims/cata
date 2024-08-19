@@ -10,7 +10,7 @@ import (
 
 type UnitType int
 type SpellRegisteredHandler func(spell *Spell)
-type OnMasteryStatChanged func(sim *Simulation, oldMastery float64, newMastery float64)
+type OnMasteryStatChanged func(sim *Simulation, oldMasteryRating float64, newMasteryRating float64)
 type OnCastSpeedChanged func(oldSpeed float64, newSpeed float64)
 
 const (
@@ -229,19 +229,16 @@ func (unit *Unit) GetStats() stats.Stats {
 	return unit.stats
 }
 
-// Given an array of stat types, return the highest stat type of the unit
-func (unit *Unit) GetHighestStat(stat []stats.Stat) stats.Stat {
-	other := stats.Stats{}
-	for i := range stat {
-		other[stat[i]] += unit.stats[stat[i]]
-	}
-	return stats.GetHighestStat(other)
+// Given an array of Stat types, return the Stat whose value is largest for this
+// Unit.
+func (unit *Unit) GetHighestStatType(statTypeOptions []stats.Stat) stats.Stat {
+	return unit.stats.GetHighestStatType(statTypeOptions)
 }
 func (unit *Unit) GetStat(stat stats.Stat) float64 {
 	return unit.stats[stat]
 }
 func (unit *Unit) GetMasteryPoints() float64 {
-	return MasteryRatingToMasteryPoints(unit.GetStat(stats.Mastery))
+	return MasteryRatingToMasteryPoints(unit.GetStat(stats.MasteryRating))
 }
 func (unit *Unit) AddStats(stat stats.Stats) {
 	if unit.Env != nil && unit.Env.IsFinalized() {
@@ -254,49 +251,6 @@ func (unit *Unit) AddStat(stat stats.Stat, amount float64) {
 		panic("Already finalized, use AddStatDynamic instead!")
 	}
 	unit.stats[stat] += amount
-}
-
-// Adds only the highest current stat of the unit from the given stat options
-func (unit *Unit) AddHighestStat(stat stats.Stats) {
-	if unit.Env != nil && unit.Env.IsFinalized() {
-		panic("Already finalized, use AddHighestStatDynamic instead!")
-	}
-
-	highestStatIndex := -1
-	for i := 0; i < int(stats.Len); i++ {
-		if highestStatIndex == -1 && stat[i] > 0 {
-			highestStatIndex = i
-		} else if unit.stats[i] > unit.stats[highestStatIndex] && stat[i] > 0 {
-			highestStatIndex = i
-		}
-	}
-
-	if highestStatIndex == -1 {
-		// this should only occur if stat was the empt stat list - so nothing todo
-		return
-	}
-
-	unit.stats[highestStatIndex] += stat[highestStatIndex]
-}
-
-// Adds only the highest current stat of the unit from the given stat options
-func (unit *Unit) AddHighestStatDynamic(sim *Simulation, stat stats.Stats) {
-	highestStatIndex := -1
-	for i := 0; i < int(stats.Len); i++ {
-		if highestStatIndex == -1 && stat[i] > 0 {
-			highestStatIndex = i
-		} else if unit.stats[i] > unit.stats[highestStatIndex] && stat[i] > 0 {
-			highestStatIndex = i
-		}
-	}
-
-	if highestStatIndex == -1 {
-		// this should only occur if stat was the empt stat list - so nothing todo
-		return
-	}
-	bonus := stats.Stats{}
-	bonus[highestStatIndex] = stat[highestStatIndex]
-	unit.AddStatsDynamic(sim, bonus)
 }
 
 func (unit *Unit) AddDynamicDamageTakenModifier(ddtm DynamicDamageTakenModifier) {
@@ -356,21 +310,19 @@ func (unit *Unit) processDynamicBonus(sim *Simulation, bonus stats.Stats) {
 			unit.currentMana = unit.MaxMana()
 		}
 	}
-	if bonus[stats.MeleeHaste] != 0 {
+	if bonus[stats.HasteRating] != 0 {
 		unit.AutoAttacks.UpdateSwingTimers(sim)
 		unit.runicPowerBar.updateRegenTimes(sim)
 		unit.energyBar.processDynamicHasteRatingChange(sim)
 		unit.focusBar.processDynamicHasteRatingChange(sim)
-	}
-	if bonus[stats.SpellHaste] != 0 {
 		unit.updateCastSpeed()
 	}
-	if bonus[stats.Mastery] != 0 {
-		newMastery := unit.stats[stats.Mastery]
-		oldMastery := newMastery - bonus[stats.Mastery]
+	if bonus[stats.MasteryRating] != 0 {
+		newMasteryRating := unit.stats[stats.MasteryRating]
+		oldMasteryRating := newMasteryRating - bonus[stats.MasteryRating]
 
 		for i := range unit.OnMasteryStatChanged {
-			unit.OnMasteryStatChanged[i](sim, oldMastery, newMastery)
+			unit.OnMasteryStatChanged[i](sim, oldMasteryRating, newMasteryRating)
 		}
 	}
 
@@ -430,9 +382,13 @@ func (unit *Unit) SpellGCD() time.Duration {
 	return max(GCDMin, unit.ApplyCastSpeed(GCDDefault))
 }
 
+func (unit *Unit) TotalSpellHasteMultiplier() float64 {
+	return unit.PseudoStats.CastSpeedMultiplier * (1 + unit.stats[stats.HasteRating] / (HasteRatingPerHastePercent * 100))
+}
+
 func (unit *Unit) updateCastSpeed() {
 	oldCastSpeed := unit.CastSpeed
-	unit.CastSpeed = 1 / (unit.PseudoStats.CastSpeedMultiplier * (1 + (unit.stats[stats.SpellHaste] / (HasteRatingPerHastePercent * 100))))
+	unit.CastSpeed = 1 / unit.TotalSpellHasteMultiplier()
 	newCastSpeed := unit.CastSpeed
 
 	for i := range unit.OnCastSpeedChanged {
@@ -452,7 +408,7 @@ func (unit *Unit) ApplyCastSpeedForSpell(dur time.Duration, spell *Spell) time.D
 }
 
 func (unit *Unit) SwingSpeed() float64 {
-	return unit.PseudoStats.MeleeSpeedMultiplier * (1 + (unit.stats[stats.MeleeHaste] / (HasteRatingPerHastePercent * 100)))
+	return unit.PseudoStats.MeleeSpeedMultiplier * (1 + (unit.stats[stats.HasteRating] / (HasteRatingPerHastePercent * 100)))
 }
 
 func (unit *Unit) Armor() float64 {
@@ -464,7 +420,7 @@ func (unit *Unit) BlockDamageReduction() float64 {
 }
 
 func (unit *Unit) RangedSwingSpeed() float64 {
-	return unit.PseudoStats.RangedSpeedMultiplier * (1 + (unit.stats[stats.MeleeHaste] / (HasteRatingPerHastePercent * 100)))
+	return unit.PseudoStats.RangedSpeedMultiplier * (1 + (unit.stats[stats.HasteRating] / (HasteRatingPerHastePercent * 100)))
 }
 
 // MultiplyMeleeSpeed will alter the attack speed multiplier and change swing speed of all autoattack swings in progress.
@@ -504,17 +460,17 @@ func (unit *Unit) MultiplyResourceRegenSpeed(sim *Simulation, amount float64) {
 	}
 }
 
-func (unit *Unit) AddBonusRangedHitRating(amount float64) {
+func (unit *Unit) AddBonusRangedHitPercent(percentage float64) {
 	unit.OnSpellRegistered(func(spell *Spell) {
 		if spell.ProcMask.Matches(ProcMaskRanged) {
-			spell.BonusHitRating += amount
+			spell.BonusHitPercent += percentage
 		}
 	})
 }
-func (unit *Unit) AddBonusRangedCritRating(amount float64) {
+func (unit *Unit) AddBonusRangedCritPercent(percentage float64) {
 	unit.OnSpellRegistered(func(spell *Spell) {
 		if spell.ProcMask.Matches(ProcMaskRanged) {
-			spell.BonusCritRating += amount
+			spell.BonusCritPercent += percentage
 		}
 	})
 }
@@ -525,6 +481,15 @@ func (unit *Unit) SetCurrentPowerBar(bar PowerBarType) {
 
 func (unit *Unit) GetCurrentPowerBar() PowerBarType {
 	return unit.currentPowerBar
+}
+
+// Stat dependencies that apply both to players/pets (represented as Character
+// structs) and to NPCs (represented as Target structs).
+func (unit *Unit) addUniversalStatDependencies() {
+	unit.AddStatDependency(stats.HitRating, stats.PhysicalHitPercent, 1 / PhysicalHitRatingPerHitPercent)
+	unit.AddStatDependency(stats.HitRating, stats.SpellHitPercent, 1 / SpellHitRatingPerHitPercent)
+	unit.AddStatDependency(stats.CritRating, stats.PhysicalCritPercent, 1 / CritRatingPerCritPercent)
+	unit.AddStatDependency(stats.CritRating, stats.SpellCritPercent, 1 / CritRatingPerCritPercent)
 }
 
 func (unit *Unit) finalize() {
@@ -684,14 +649,14 @@ func (unit *Unit) ExecuteCustomRotation(sim *Simulation) {
 }
 
 func (unit *Unit) GetTotalDodgeChanceAsDefender(atkTable *AttackTable) float64 {
-	chance := unit.PseudoStats.BaseDodge +
+	chance := unit.PseudoStats.BaseDodgeChance +
 		atkTable.BaseDodgeChance +
 		unit.GetDiminishedDodgeChance()
 	return math.Max(chance, 0.0)
 }
 
 func (unit *Unit) GetTotalParryChanceAsDefender(atkTable *AttackTable) float64 {
-	chance := unit.PseudoStats.BaseParry +
+	chance := unit.PseudoStats.BaseParryChance +
 		atkTable.BaseParryChance +
 		unit.GetDiminishedParryChance()
 	return math.Max(chance, 0.0)
@@ -706,7 +671,7 @@ func (unit *Unit) GetTotalChanceToBeMissedAsDefender(atkTable *AttackTable) floa
 
 func (unit *Unit) GetTotalBlockChanceAsDefender(atkTable *AttackTable) float64 {
 	chance := atkTable.BaseBlockChance +
-		unit.GetStat(stats.Block)/BlockRatingPerBlockChance/100
+		unit.GetStat(stats.BlockPercent) / 100
 	return math.Max(chance, 0.0)
 }
 

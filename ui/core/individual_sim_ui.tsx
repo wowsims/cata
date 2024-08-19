@@ -41,10 +41,10 @@ import {
 	Spec,
 	Stat,
 } from './proto/common';
-import { IndividualSimSettings, SavedTalents, StatCapConfig } from './proto/ui';
+import { IndividualSimSettings, SavedTalents } from './proto/ui';
 import { getMetaGemConditionDescription } from './proto_utils/gems';
 import { armorTypeNames, professionNames } from './proto_utils/names';
-import { Stats } from './proto_utils/stats';
+import { pseudoStatIsCapped, StatCap, Stats, UnitStat } from './proto_utils/stats';
 import { getTalentPoints, SpecOptions, SpecRotation } from './proto_utils/utils';
 import { SimSettingCategories } from './sim';
 import { SimUI, SimWarning } from './sim_ui';
@@ -106,7 +106,7 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 	epStats: Array<Stat>;
 	epPseudoStats?: Array<PseudoStat>;
 	epReferenceStat: Stat;
-	displayStats: Array<Stat>;
+	displayStats: Array<UnitStat>;
 	modifyDisplayStats?: (player: Player<SpecType>) => StatMods;
 	overwriteDisplayStats?: (player: Player<SpecType>) => StatWrites;
 
@@ -130,7 +130,7 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 		 * while ignoring any others. Then the solution is used to identify the closest
 		 * breakpoint for the second listed stat (if present), etc.
 		 */
-		softCapBreakpoints?: StatCapConfig[];
+		softCapBreakpoints?: StatCap[];
 		consumes: Consumes;
 		talents: SavedTalents;
 		specOptions: SpecOptions<SpecType>;
@@ -670,10 +670,6 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 					this.player.setStatCaps(eventID, Stats.fromProto(settings.statCaps));
 				}
 
-				if (!!settings.softCapBreakpoints.length) {
-					this.player.setSoftCapBreakpoints(eventID, settings.softCapBreakpoints);
-				}
-
 				if (settings.dpsRefStat) {
 					this.dpsRefStat = settings.dpsRefStat;
 				}
@@ -691,5 +687,31 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 				}
 			}
 		});
+	}
+
+	// Determines whether this sim has either a hard cap or soft cap configured for a particular
+	// PseudoStat. Used by the stat weights code to ensure that school-specific EPs are calculated for
+	// Rating stats whenever school-specific caps are present.
+	hasCapForPseudoStat(pseudoStat: PseudoStat): boolean {
+		// Check both default and currently stored hard caps.
+		const defaultHardCaps = this.individualConfig.defaults.statCaps || new Stats();
+		const currentHardCaps = this.player.getStatCaps();
+
+		// Also check all configured soft caps
+		const defaultSoftCaps: StatCap[] = this.individualConfig.defaults.softCapBreakpoints || [];
+
+		return pseudoStatIsCapped(pseudoStat, currentHardCaps.add(defaultHardCaps), defaultSoftCaps);
+	}
+
+	// Determines whether a particular PseudoStat has been configured as a
+	// display stat for this sim UI.
+	hasDisplayPseudoStat(pseudoStat: PseudoStat): boolean {
+		for (const unitStat of this.individualConfig.displayStats) {
+			if (unitStat.equalsPseudoStat(pseudoStat)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

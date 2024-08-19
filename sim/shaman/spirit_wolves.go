@@ -42,7 +42,7 @@ var spiritWolfBaseStats = stats.Stats{
 	stats.AttackPower: -20,
 
 	// Add 1.8% because pets aren't affected by that component of crit suppression.
-	stats.MeleeCrit: (1.1515 + 1.8) * core.CritRatingPerCritChance,
+	stats.PhysicalCritPercent: 1.1515 + 1.8,
 }
 
 func (shaman *Shaman) NewSpiritWolf(index int) *SpiritWolf {
@@ -62,7 +62,7 @@ func (shaman *Shaman) NewSpiritWolf(index int) *SpiritWolf {
 	})
 
 	spiritWolf.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	spiritWolf.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance*core.CritPerAgiMaxLevel[proto.Class_ClassWarrior])
+	spiritWolf.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, core.CritPerAgiMaxLevel[proto.Class_ClassWarrior])
 
 	shaman.AddPet(spiritWolf)
 
@@ -73,16 +73,15 @@ const PetExpertiseScale = 3.25
 
 func (shaman *Shaman) makeStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
-		ownerHitChance := ownerStats[stats.MeleeHit] / core.MeleeHitRatingPerHitChance
-		hitRatingFromOwner := math.Floor(ownerHitChance) * core.MeleeHitRatingPerHitChance
+		flooredOwnerHitPercent := math.Floor(ownerStats[stats.PhysicalHitPercent])
 
 		return stats.Stats{
 			stats.Stamina:     ownerStats[stats.Stamina] * 0.3189,
 			stats.Armor:       ownerStats[stats.Armor] * 0.35,
 			stats.AttackPower: ownerStats[stats.AttackPower] * (core.TernaryFloat64(shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfFeralSpirit), 0.6296, 0.3296)),
 
-			stats.MeleeHit:  hitRatingFromOwner,
-			stats.Expertise: math.Floor(math.Floor(ownerHitChance)*PetExpertiseScale) * core.ExpertisePerQuarterPercentReduction,
+			stats.HitRating:       flooredOwnerHitPercent * core.PhysicalHitRatingPerHitPercent,
+			stats.ExpertiseRating: math.Floor(flooredOwnerHitPercent * PetExpertiseScale) * core.ExpertisePerQuarterPercentReduction,
 		}
 	}
 }

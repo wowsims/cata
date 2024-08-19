@@ -7,10 +7,7 @@ character_stats_results: {
   final_stats: 55.65
   final_stats: 85
   final_stats: 695
-  final_stats: 1617.01166
-  final_stats: 3226.62719
-  final_stats: 2696.4002
-  final_stats: 2225
+  final_stats: 1800
   final_stats: 2225
   final_stats: 655
   final_stats: 0
@@ -19,7 +16,6 @@ character_stats_results: {
   final_stats: 16410.75664
   final_stats: 209
   final_stats: 0
-  final_stats: 326
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -31,7 +27,12 @@ character_stats_results: {
   final_stats: 0
   final_stats: 140147.9
   final_stats: 0
-  final_stats: 0
+  final_stats: 326
+  final_stats: 5.78642
+  final_stats: 15.78408
+  final_stats: 17.99769
+  final_stats: 15.04016
+  final_stats: 5
  }
 }
 dps_results: {
@@ -77,17 +78,17 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-ApparatusofKhaz'goroth-68972"
  value: {
-  dps: 21909.90806
-  tps: 19989.14724
-  hps: 215.12703
+  dps: 21920.68689
+  tps: 19962.48269
+  hps: 217.92998
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-ApparatusofKhaz'goroth-69113"
  value: {
-  dps: 22067.1986
-  tps: 20136.09603
-  hps: 215.12703
+  dps: 22121.41929
+  tps: 20106.73742
+  hps: 217.92998
  }
 }
 dps_results: {
@@ -319,7 +320,7 @@ dps_results: {
  value: {
   dps: 21998.53427
   tps: 19961.6477
-  hps: 217.22925
+  hps: 217.22924
  }
 }
 dps_results: {
@@ -335,7 +336,7 @@ dps_results: {
  value: {
   dps: 21944.09428
   tps: 20055.84482
-  hps: 217.22925
+  hps: 217.22924
  }
 }
 dps_results: {
@@ -343,7 +344,7 @@ dps_results: {
  value: {
   dps: 21351.64308
   tps: 19499.4618
-  hps: 217.22925
+  hps: 217.22924
  }
 }
 dps_results: {
@@ -909,17 +910,17 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-MatrixRestabilizer-68994"
  value: {
-  dps: 21354.69732
-  tps: 19430.27919
-  hps: 215.12703
+  dps: 21419.89381
+  tps: 19438.24247
+  hps: 217.22925
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-MatrixRestabilizer-69150"
  value: {
-  dps: 21436.04584
-  tps: 19502.46051
-  hps: 215.12703
+  dps: 21454.89276
+  tps: 19457.55249
+  hps: 221.43368
  }
 }
 dps_results: {
@@ -1175,7 +1176,7 @@ dps_results: {
  value: {
   dps: 21465.60439
   tps: 19520.12185
-  hps: 217.22925
+  hps: 217.22924
  }
 }
 dps_results: {

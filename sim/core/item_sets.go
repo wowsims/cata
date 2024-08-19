@@ -48,7 +48,7 @@ func NewItemSet(set ItemSet) *ItemSet {
 		foundID = foundID || (item.SetID > 0 && item.SetID == set.ID)
 		foundName = foundName || item.SetName == set.Name
 		foundAlternativeName = foundAlternativeName || item.SetName == set.AlternativeName
-		if foundName && foundAlternativeName {
+		if foundID && foundName && foundAlternativeName {
 			break
 		}
 	}

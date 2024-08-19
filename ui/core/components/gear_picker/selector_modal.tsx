@@ -426,10 +426,10 @@ export default class SelectorModal extends BaseModal {
 					name: (
 						<div>
 							<span className="reforge-value negative">
-								{reforgeData.fromAmount} {shortSecondaryStatNames.get(reforgeData.fromStat[0])}
+								{reforgeData.fromAmount} {shortSecondaryStatNames.get(reforgeData.fromStat)}
 							</span>
 							<span className="reforge-value positive">
-								+{reforgeData.toAmount} {shortSecondaryStatNames.get(reforgeData.toStat[0])}
+								+{reforgeData.toAmount} {shortSecondaryStatNames.get(reforgeData.toStat)}
 							</span>
 						</div>
 					) as HTMLElement,

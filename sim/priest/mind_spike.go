@@ -9,8 +9,8 @@ import (
 func (priest *Priest) registerMindSpike() {
 	mbMod := priest.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  PriestSpellMindBlast,
-		Kind:       core.SpellMod_BonusCrit_Rating,
-		FloatValue: 30 * core.CritRatingPerCritChance,
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		FloatValue: 30,
 	})
 
 	procAura := priest.RegisterAura(core.Aura{
@@ -20,7 +20,7 @@ func (priest *Priest) registerMindSpike() {
 		MaxStacks: 3,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			if newStacks > 0 {
-				mbMod.UpdateFloatValue(float64(newStacks) * 30 * core.CritRatingPerCritChance)
+				mbMod.UpdateFloatValue(float64(newStacks) * 30)
 				mbMod.Activate()
 			} else {
 				mbMod.Deactivate()

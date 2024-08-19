@@ -295,8 +295,8 @@ func init() {
 			Duration:  time.Second * 20,
 			MaxStacks: 5,
 			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-				deltaHaste := float64(321) * float64(newStacks-oldStacks)
-				character.AddStatsDynamic(sim, stats.Stats{stats.MeleeHaste: deltaHaste, stats.SpellHaste: deltaHaste})
+				deltaHasteRating := float64(321) * float64(newStacks-oldStacks)
+				character.AddStatDynamic(sim, stats.HasteRating, deltaHasteRating)
 			},
 		})
 
@@ -366,8 +366,8 @@ func init() {
 			Duration:  time.Second * 20,
 			MaxStacks: 5,
 			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-				deltaHaste := float64(363) * float64(newStacks-oldStacks)
-				character.AddStatsDynamic(sim, stats.Stats{stats.MeleeHaste: deltaHaste, stats.SpellHaste: deltaHaste})
+				deltaHasteRating := float64(363) * float64(newStacks-oldStacks)
+				character.AddStatDynamic(sim, stats.HasteRating, deltaHasteRating)
 			},
 		})
 
@@ -542,9 +542,9 @@ func init() {
 		character := agent.GetCharacter()
 
 		bonusStats := 1624.0
-		procAuraCrit := character.NewTemporaryStatsAura("Matrix Restabilizer Crit Proc", core.ActionID{SpellID: 96978}, stats.Stats{stats.MeleeCrit: bonusStats, stats.SpellCrit: bonusStats}, time.Second*30)
-		procAuraHaste := character.NewTemporaryStatsAura("Matrix Restabilizer Haste Proc", core.ActionID{SpellID: 96977}, stats.Stats{stats.MeleeHaste: bonusStats, stats.SpellHaste: bonusStats}, time.Second*30)
-		procAuraMastery := character.NewTemporaryStatsAura("Matrix Restabilizer Mastery Proc", core.ActionID{SpellID: 96979}, stats.Stats{stats.Mastery: bonusStats}, time.Second*30)
+		procAuraCrit := character.NewTemporaryStatsAura("Matrix Restabilizer Crit Proc", core.ActionID{SpellID: 96978}, stats.Stats{stats.CritRating: bonusStats}, time.Second*30)
+		procAuraHaste := character.NewTemporaryStatsAura("Matrix Restabilizer Haste Proc", core.ActionID{SpellID: 96977}, stats.Stats{stats.HasteRating: bonusStats}, time.Second*30)
+		procAuraMastery := character.NewTemporaryStatsAura("Matrix Restabilizer Mastery Proc", core.ActionID{SpellID: 96979}, stats.Stats{stats.MasteryRating: bonusStats}, time.Second*30)
 
 		icd := core.Cooldown{
 			Timer:    character.NewTimer(),
@@ -564,13 +564,13 @@ func init() {
 			Harmful:    true,
 			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
 				if icd.IsReady(sim) {
-					statType := character.GetHighestStat([]stats.Stat{stats.MeleeCrit, stats.SpellCrit, stats.MeleeHaste, stats.SpellHaste, stats.Mastery})
+					statType := character.GetHighestStatType([]stats.Stat{stats.CritRating, stats.HasteRating, stats.MasteryRating})
 					switch statType {
-					case stats.MeleeCrit, stats.SpellCrit:
+					case stats.CritRating:
 						procAuraCrit.Activate(sim)
-					case stats.MeleeHaste, stats.SpellHaste:
+					case stats.HasteRating:
 						procAuraHaste.Activate(sim)
-					case stats.Mastery:
+					case stats.MasteryRating:
 						procAuraMastery.Activate(sim)
 					default:
 						panic("unexpected statType")
@@ -585,9 +585,9 @@ func init() {
 		character := agent.GetCharacter()
 
 		bonusStats := 1834.0
-		procAuraCrit := character.NewTemporaryStatsAura("Matrix Restabilizer Crit Proc (Heroic)", core.ActionID{SpellID: 97140}, stats.Stats{stats.MeleeCrit: bonusStats, stats.SpellCrit: bonusStats}, time.Second*30)
-		procAuraHaste := character.NewTemporaryStatsAura("Matrix Restabilizer Haste Proc (Heroic)", core.ActionID{SpellID: 97139}, stats.Stats{stats.MeleeHaste: bonusStats, stats.SpellHaste: bonusStats}, time.Second*30)
-		procAuraMastery := character.NewTemporaryStatsAura("Matrix Restabilizer Mastery Proc (Heroic)", core.ActionID{SpellID: 97141}, stats.Stats{stats.Mastery: bonusStats}, time.Second*30)
+		procAuraCrit := character.NewTemporaryStatsAura("Matrix Restabilizer Crit Proc (Heroic)", core.ActionID{SpellID: 97140}, stats.Stats{stats.CritRating: bonusStats}, time.Second*30)
+		procAuraHaste := character.NewTemporaryStatsAura("Matrix Restabilizer Haste Proc (Heroic)", core.ActionID{SpellID: 97139}, stats.Stats{stats.HasteRating: bonusStats}, time.Second*30)
+		procAuraMastery := character.NewTemporaryStatsAura("Matrix Restabilizer Mastery Proc (Heroic)", core.ActionID{SpellID: 97141}, stats.Stats{stats.MasteryRating: bonusStats}, time.Second*30)
 
 		icd := core.Cooldown{
 			Timer:    character.NewTimer(),
@@ -607,13 +607,13 @@ func init() {
 			Harmful:    true,
 			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
 				if icd.IsReady(sim) {
-					statType := character.GetHighestStat([]stats.Stat{stats.MeleeCrit, stats.SpellCrit, stats.MeleeHaste, stats.SpellHaste, stats.Mastery})
+					statType := character.GetHighestStatType([]stats.Stat{stats.CritRating, stats.HasteRating, stats.MasteryRating})
 					switch statType {
-					case stats.MeleeCrit, stats.SpellCrit:
+					case stats.CritRating:
 						procAuraCrit.Activate(sim)
-					case stats.MeleeHaste, stats.SpellHaste:
+					case stats.HasteRating:
 						procAuraHaste.Activate(sim)
-					case stats.Mastery:
+					case stats.MasteryRating:
 						procAuraMastery.Activate(sim)
 					default:
 						panic("unexpected statType")
@@ -641,21 +641,21 @@ func registerApparatusOfKhazGoroth(config apparatusConfig) {
 		buffAuraCrit := character.NewTemporaryStatBuffWithStacks(
 			"Blessing of the Shaper Crit"+labelSuffix,
 			core.ActionID{SpellID: 96928},
-			stats.Stats{stats.MeleeCrit: config.BonusPerStack, stats.SpellCrit: config.BonusPerStack},
+			stats.Stats{stats.CritRating: config.BonusPerStack},
 			5,
 			buffDuration)
 
 		buffAuraHaste := character.NewTemporaryStatBuffWithStacks(
 			"Blessing of the Shaper Haste"+labelSuffix,
 			core.ActionID{SpellID: 96927},
-			stats.Stats{stats.MeleeHaste: config.BonusPerStack, stats.SpellHaste: config.BonusPerStack},
+			stats.Stats{stats.HasteRating: config.BonusPerStack},
 			5,
 			buffDuration)
 
 		buffAuraMastery := character.NewTemporaryStatBuffWithStacks(
 			"Blessing of the Shaper Mastery"+labelSuffix,
 			core.ActionID{SpellID: 96929},
-			stats.Stats{stats.Mastery: config.BonusPerStack},
+			stats.Stats{stats.MasteryRating: config.BonusPerStack},
 			5,
 			buffDuration)
 
@@ -699,16 +699,16 @@ func registerApparatusOfKhazGoroth(config apparatusConfig) {
 				},
 			},
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				statType := character.GetHighestStat([]stats.Stat{stats.MeleeCrit, stats.SpellCrit, stats.MeleeHaste, stats.SpellHaste, stats.Mastery})
+				statType := character.GetHighestStatType([]stats.Stat{stats.CritRating, stats.HasteRating, stats.MasteryRating})
 
 				switch statType {
-				case stats.MeleeCrit, stats.SpellCrit:
+				case stats.CritRating:
 					buffAuraCrit.Activate(sim)
 					buffAuraCrit.SetStacks(sim, titanicPower.GetStacks())
-				case stats.MeleeHaste, stats.SpellHaste:
+				case stats.HasteRating:
 					buffAuraHaste.Activate(sim)
 					buffAuraHaste.SetStacks(sim, titanicPower.GetStacks())
-				case stats.Mastery:
+				case stats.MasteryRating:
 					buffAuraMastery.Activate(sim)
 					buffAuraMastery.SetStacks(sim, titanicPower.GetStacks())
 				default:

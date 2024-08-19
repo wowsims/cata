@@ -17,9 +17,9 @@ func init() {
 	core.NewSimpleStatOffensiveTrinketEffect(38287, stats.Stats{stats.AttackPower: 278, stats.RangedAttackPower: 278}, time.Second*20, time.Minute*2) // Empty Direbrew Mug
 
 	// Defensive trinkets. Keep these in order by item ID.
-	core.NewSimpleStatDefensiveTrinketEffect(29387, stats.Stats{stats.Dodge: 200}, time.Second*40, time.Minute*2)   // Gnomeregan Auto-Blocker 600 (Cata Became Auto-Dodger)
+	core.NewSimpleStatDefensiveTrinketEffect(29387, stats.Stats{stats.DodgeRating: 200}, time.Second*40, time.Minute*2)   // Gnomeregan Auto-Blocker 600 (Cata Became Auto-Dodger)
 	core.NewSimpleStatDefensiveTrinketEffect(32501, stats.Stats{stats.Health: 1750}, time.Second*20, time.Minute*3) // Shadowmoon Insignia
-	core.NewSimpleStatDefensiveTrinketEffect(38289, stats.Stats{stats.Dodge: 66}, time.Second*40, time.Minute*2)    // Coren's Lucky Coin
+	core.NewSimpleStatDefensiveTrinketEffect(38289, stats.Stats{stats.DodgeRating: 66}, time.Second*40, time.Minute*2)    // Coren's Lucky Coin
 
 	// Proc effects. Keep these in order by item ID.
 
@@ -69,7 +69,7 @@ func init() {
 
 	core.NewItemEffect(28830, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		procAura := character.NewTemporaryStatsAura("Dragonspine Trophy Proc", core.ActionID{ItemID: 28830}, stats.Stats{stats.MeleeHaste: 325}, time.Second*10)
+		procAura := character.NewTemporaryStatsAura("Dragonspine Trophy Proc", core.ActionID{ItemID: 28830}, stats.Stats{stats.HasteRating: 325}, time.Second*10)
 
 		icd := core.Cooldown{
 			Timer:    character.NewTimer(),
@@ -138,7 +138,7 @@ func init() {
 
 	core.NewItemEffect(32505, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		procAura := character.NewTemporaryStatsAura("Madness of the Betrayer Proc", core.ActionID{ItemID: 32505}, stats.Stats{stats.MeleeCrit: 42, stats.SpellCrit: 42}, time.Second*10)
+		procAura := character.NewTemporaryStatsAura("Madness of the Betrayer Proc", core.ActionID{ItemID: 32505}, stats.Stats{stats.CritRating: 42}, time.Second*10)
 
 		ppmm := character.AutoAttacks.NewPPMManager(1.0, core.ProcMaskMeleeOrRanged)
 

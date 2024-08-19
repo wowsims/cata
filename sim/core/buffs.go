@@ -751,8 +751,8 @@ func LeaderOfThePack(unit *Unit) *Aura {
 		"Leader Of The Pack",
 		ActionID{SpellID: 17007},
 		[]StatConfig{
-			{stats.MeleeCrit, 5 * CritRatingPerCritChance, false},
-			{stats.SpellCrit, 5 * CritRatingPerCritChance, false},
+			{stats.PhysicalCritPercent, 5, false},
+			{stats.SpellCritPercent, 5, false},
 		}})
 
 	return baseAura
@@ -763,8 +763,8 @@ func ElementalOath(unit *Unit) *Aura {
 		"Elemental Oath",
 		ActionID{SpellID: 51470},
 		[]StatConfig{
-			{stats.MeleeCrit, 5 * CritRatingPerCritChance, false},
-			{stats.SpellCrit, 5 * CritRatingPerCritChance, false},
+			{stats.PhysicalCritPercent, 5, false},
+			{stats.SpellCritPercent, 5, false},
 		}})
 
 	return baseAura
@@ -775,8 +775,8 @@ func HonorAmongThieves(unit *Unit) *Aura {
 		"Honor Among Thieves",
 		ActionID{SpellID: 51701},
 		[]StatConfig{
-			{stats.MeleeCrit, 5 * CritRatingPerCritChance, false},
-			{stats.SpellCrit, 5 * CritRatingPerCritChance, false},
+			{stats.PhysicalCritPercent, 5, false},
+			{stats.SpellCritPercent, 5, false},
 		}})
 
 	return baseAura
@@ -787,8 +787,8 @@ func Rampage(unit *Unit) *Aura {
 		"Rampage",
 		ActionID{SpellID: 29801},
 		[]StatConfig{
-			{stats.MeleeCrit, 5 * CritRatingPerCritChance, false},
-			{stats.SpellCrit, 5 * CritRatingPerCritChance, false},
+			{stats.PhysicalCritPercent, 5, false},
+			{stats.SpellCritPercent, 5, false},
 		}})
 
 	return baseAura
@@ -799,8 +799,8 @@ func TerrifyingRoar(unit *Unit) *Aura {
 		"Terrifying Roar",
 		ActionID{SpellID: 90309},
 		[]StatConfig{
-			{stats.MeleeCrit, 5 * CritRatingPerCritChance, false},
-			{stats.SpellCrit, 5 * CritRatingPerCritChance, false},
+			{stats.PhysicalCritPercent, 5, false},
+			{stats.SpellCritPercent, 5, false},
 		}})
 
 	return baseAura
@@ -811,8 +811,8 @@ func FuriousHowl(unit *Unit) *Aura {
 		"Furious Howl",
 		ActionID{SpellID: 24604},
 		[]StatConfig{
-			{stats.MeleeCrit, 5 * CritRatingPerCritChance, false},
-			{stats.SpellCrit, 5 * CritRatingPerCritChance, false},
+			{stats.PhysicalCritPercent, 5, false},
+			{stats.SpellCritPercent, 5, false},
 		}})
 
 	return baseAura
@@ -1894,12 +1894,12 @@ func FocusMagicAura(caster *Unit, target *Unit) (*Aura, *Aura) {
 			Duration: time.Second * 10,
 			OnGain: func(aura *Aura, sim *Simulation) {
 				aura.Unit.AddStatsDynamic(sim, stats.Stats{
-					stats.SpellCrit: 3 * CritRatingPerCritChance,
+					stats.SpellCritPercent: 3,
 				})
 			},
 			OnExpire: func(aura *Aura, sim *Simulation) {
 				aura.Unit.AddStatsDynamic(sim, stats.Stats{
-					stats.SpellCrit: -3 * CritRatingPerCritChance,
+					stats.SpellCritPercent: -3,
 				})
 			},
 		})
@@ -1926,12 +1926,12 @@ func FocusMagicAura(caster *Unit, target *Unit) (*Aura, *Aura) {
 		aura.NewExclusiveEffect("FocusMagic", true, ExclusiveEffect{
 			OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
 				ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
-					stats.SpellCrit: 3 * CritRatingPerCritChance,
+					stats.SpellCritPercent: 3,
 				})
 			},
 			OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
 				ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
-					stats.SpellCrit: -3 * CritRatingPerCritChance,
+					stats.SpellCritPercent: -3,
 				})
 			},
 		})

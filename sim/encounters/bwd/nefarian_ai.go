@@ -54,7 +54,7 @@ func createNefarianPreset(bossPrefix string, raidSize int, isHeroic bool, addNpc
 					stats.Health:      addHealth,
 					stats.Armor:       11977, // TODO: verify add armor
 					stats.AttackPower: 0,     // actual value doesn't matter in Cata, as long as damage parameters are fit consistently
-				}.ToFloatArray(),
+				}.ToProtoArray(),
 
 				SpellSchool:   proto.SpellSchool_SpellSchoolPhysical,
 				SwingSpeed:    2.0,

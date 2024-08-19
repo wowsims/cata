@@ -39,7 +39,7 @@ func (sinRogue *AssassinationRogue) Initialize() {
 
 	// Apply Mastery
 	// As far as I am able to find, Asn's Mastery is an additive bonus. To be tested.
-	masteryEffect := getMasteryBonus(sinRogue.GetStat(stats.Mastery))
+	masteryEffect := getMasteryBonus(sinRogue.GetStat(stats.MasteryRating))
 	for _, spell := range sinRogue.InstantPoison {
 		spell.DamageMultiplierAdditive += masteryEffect
 	}

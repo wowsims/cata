@@ -307,7 +307,3 @@ func (db *WowDatabase) WriteJson(jsonFilePath string) {
 	buffer.WriteString("}")
 	os.WriteFile(jsonFilePath, buffer.Bytes(), 0666)
 }
-
-func toSlice(stats Stats) []float64 {
-	return stats[:]
-}

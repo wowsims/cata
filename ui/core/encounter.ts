@@ -186,7 +186,7 @@ export class Encounter {
 			stats: Stats.fromMap({
 				[Stat.StatArmor]: 11977,
 				[Stat.StatAttackPower]: 805,
-			}).asArray(),
+			}).asProtoArray(),
 			targetInputs: new Array<TargetInput>(0),
 		});
 	}

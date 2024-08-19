@@ -35,7 +35,7 @@ func AddDefaultPresetEncounter() {
 				stats.Health:      120_016_403,
 				stats.Armor:       11977,
 				stats.AttackPower: 650,
-			}.ToFloatArray(),
+			}.ToProtoArray(),
 
 			SpellSchool:      proto.SpellSchool_SpellSchoolPhysical,
 			SwingSpeed:       2.5,
