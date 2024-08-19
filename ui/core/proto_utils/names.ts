@@ -109,106 +109,28 @@ export function nameToProfession(name: string): Profession {
 	return Profession.ProfessionUnknown;
 }
 
-export const statOrder: Array<Stat> = [
-	Stat.StatHealth,
-	Stat.StatMana,
-	Stat.StatArmor,
-	Stat.StatBonusArmor,
-	Stat.StatStamina,
-	Stat.StatStrength,
-	Stat.StatAgility,
-	Stat.StatIntellect,
-	Stat.StatSpirit,
-	Stat.StatSpellPower,
-	Stat.StatSpellHit,
-	Stat.StatSpellCrit,
-	Stat.StatSpellHaste,
-	Stat.StatSpellPenetration,
-	Stat.StatMP5,
-	Stat.StatAttackPower,
-	Stat.StatRangedAttackPower,
-	Stat.StatMeleeHit,
-	Stat.StatMeleeCrit,
-	Stat.StatMeleeHaste,
-	Stat.StatExpertise,
-	Stat.StatMastery,
-	Stat.StatBlock,
-	Stat.StatDodge,
-	Stat.StatParry,
-	Stat.StatResilience,
-	Stat.StatArcaneResistance,
-	Stat.StatFireResistance,
-	Stat.StatFrostResistance,
-	Stat.StatNatureResistance,
-	Stat.StatShadowResistance,
-];
-
-export const statNames: Map<Stat, string> = new Map([
-	[Stat.StatStrength, 'Strength'],
-	[Stat.StatAgility, 'Agility'],
-	[Stat.StatStamina, 'Stamina'],
-	[Stat.StatIntellect, 'Intellect'],
-	[Stat.StatSpirit, 'Spirit'],
-	[Stat.StatSpellPower, 'Spell Power'],
-	[Stat.StatMP5, 'MP5'],
-	[Stat.StatSpellHit, 'Spell Hit'],
-	[Stat.StatSpellCrit, 'Spell Crit'],
-	[Stat.StatSpellHaste, 'Spell Haste'],
-	[Stat.StatSpellPenetration, 'Spell Pen'],
-	[Stat.StatAttackPower, 'Attack Power'],
-	[Stat.StatMeleeHit, 'Melee Hit'],
-	[Stat.StatMeleeCrit, 'Melee Crit'],
-	[Stat.StatMeleeHaste, 'Melee Haste'],
-	[Stat.StatMastery, 'Mastery'],
-	[Stat.StatExpertise, 'Expertise'],
-	[Stat.StatMana, 'Mana'],
-	[Stat.StatArmor, 'Armor'],
-	[Stat.StatRangedAttackPower, 'Ranged AP'],
-	[Stat.StatBlock, 'Block'],
-	[Stat.StatDodge, 'Dodge'],
-	[Stat.StatParry, 'Parry'],
-	[Stat.StatResilience, 'Resilience'],
-	[Stat.StatHealth, 'Health'],
-	[Stat.StatArcaneResistance, 'Arcane Resistance'],
-	[Stat.StatFireResistance, 'Fire Resistance'],
-	[Stat.StatFrostResistance, 'Frost Resistance'],
-	[Stat.StatNatureResistance, 'Nature Resistance'],
-	[Stat.StatShadowResistance, 'Shadow Resistance'],
-	[Stat.StatBonusArmor, 'Bonus Armor'],
-	[Stat.StatMastery, 'Mastery'],
-]);
-
-export const shortSecondaryStatNames: Map<Stat, string> = new Map([
-	[Stat.StatSpirit, 'Spirit'],
-	[Stat.StatSpellHit, 'Hit'],
-	[Stat.StatSpellCrit, 'Crit'],
-	[Stat.StatSpellHaste, 'Haste'],
-	[Stat.StatMeleeHit, 'Hit'],
-	[Stat.StatMeleeCrit, 'Crit'],
-	[Stat.StatMeleeHaste, 'Haste'],
-	[Stat.StatExpertise, 'Expertise'],
-	[Stat.StatMastery, 'Mastery'],
-	[Stat.StatBlock, 'Block'],
-	[Stat.StatDodge, 'Dodge'],
-	[Stat.StatParry, 'Parry'],
-]);
-
-export const pseudoStatOrder: Array<PseudoStat> = [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatRangedDps];
-export const pseudoStatNames: Map<PseudoStat, string> = new Map([
-	[PseudoStat.PseudoStatMainHandDps, 'Main Hand DPS'],
-	[PseudoStat.PseudoStatOffHandDps, 'Off Hand DPS'],
-	[PseudoStat.PseudoStatRangedDps, 'Ranged DPS'],
-	[PseudoStat.PseudoStatDodge, 'Dodge Chance'],
-	[PseudoStat.PseudoStatParry, 'Parry Chance'],
-]);
-
-export function getClassStatName(stat: Stat, playerClass: Class): string {
-	const statName = statNames.get(stat);
-	if (!statName) return 'UnknownStat';
-	if (playerClass == Class.ClassHunter) {
-		return statName.replace('Melee', 'Ranged');
+export function getStatName(stat: Stat): string {
+	if (stat == Stat.StatRangedAttackPower) {
+		return 'Ranged AP';
 	} else {
-		return statName;
+		return Stat[stat]
+			.split(/(?<![A-Z])(?=[A-Z])/)
+			.slice(1)
+			.join(' ');
+	}
+}
+
+export function getClassPseudoStatName(pseudoStat: PseudoStat, playerClass: Class): string {
+	const genericName = PseudoStat[pseudoStat]
+		.split(/(?<![A-Z])(?=[A-Z])/)
+		.slice(2)
+		.join(' ')
+		.replace('Dps', 'DPS');
+
+	if (playerClass == Class.ClassHunter) {
+		return genericName.replace('Physical', 'Ranged');
+	} else {
+		return genericName.replace('Physical', 'Melee');
 	}
 }
 
@@ -238,6 +160,17 @@ export const spellSchoolNames: Map<number, string> = new Map([
 	[SpellSchool.Arcane + SpellSchool.Frost, 'Spellfrost'],
 	[SpellSchool.Frost + SpellSchool.Fire, 'Frostfire'],
 	[SpellSchool.Shadow + SpellSchool.Frost, 'Shadowfrost'],
+]);
+
+export const shortSecondaryStatNames: Map<Stat, string> = new Map([
+	[Stat.StatSpirit, 'Spirit'],
+	[Stat.StatHitRating, 'Hit'],
+	[Stat.StatCritRating, 'Crit'],
+	[Stat.StatHasteRating, 'Haste'],
+	[Stat.StatExpertiseRating, 'Expertise'],
+	[Stat.StatMasteryRating, 'Mastery'],
+	[Stat.StatDodgeRating, 'Dodge'],
+	[Stat.StatParryRating, 'Parry'],
 ]);
 
 export const slotNames: Map<ItemSlot, string> = new Map([

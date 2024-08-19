@@ -2,7 +2,6 @@ package combat
 
 import (
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/rogue"
 )
 
@@ -39,7 +38,7 @@ func (comRogue *CombatRogue) applyMastery() {
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ProcMask.Matches(core.ProcMaskMeleeMH) && spell != comRogue.mainGauche && spell != comRogue.Rupture {
-				masteryPoints := comRogue.GetStat(stats.Mastery) / core.MasteryRatingPerMasteryPoint
+				masteryPoints := comRogue.GetMasteryPoints()
 				mgProcChance := masteryChancePerPoint*masteryPoints + masteryBaseEffect
 
 				if sim.Proc(mgProcChance, "Main Gauche") {

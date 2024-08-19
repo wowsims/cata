@@ -154,8 +154,8 @@ func init() {
 			strAura := character.NewTemporaryStatsAura(name+" Strength Proc", core.ActionID{SpellID: auraIDs[0]}, stats.Stats{stats.Strength: amount}, time.Second*30)
 			agiAura := character.NewTemporaryStatsAura(name+" Agility Proc", core.ActionID{SpellID: auraIDs[1]}, stats.Stats{stats.Agility: amount}, time.Second*30)
 			apAura := character.NewTemporaryStatsAura(name+" AP Proc", core.ActionID{SpellID: auraIDs[2]}, stats.Stats{stats.AttackPower: amount * 2, stats.RangedAttackPower: amount * 2}, time.Second*30)
-			critAura := character.NewTemporaryStatsAura(name+" Crit Proc", core.ActionID{SpellID: auraIDs[3]}, stats.Stats{stats.MeleeCrit: amount, stats.SpellCrit: amount}, time.Second*30)
-			hasteAura := character.NewTemporaryStatsAura(name+" Haste Proc", core.ActionID{SpellID: auraIDs[4]}, stats.Stats{stats.MeleeHaste: amount, stats.SpellHaste: amount}, time.Second*30)
+			critAura := character.NewTemporaryStatsAura(name+" Crit Proc", core.ActionID{SpellID: auraIDs[3]}, stats.Stats{stats.CritRating: amount}, time.Second*30)
+			hasteAura := character.NewTemporaryStatsAura(name+" Haste Proc", core.ActionID{SpellID: auraIDs[4]}, stats.Stats{stats.HasteRating: amount}, time.Second*30)
 
 			var auras [3]*core.Aura
 			switch character.Class {
@@ -868,7 +868,7 @@ func init() {
 			character := agent.GetCharacter()
 			actionID := core.ActionID{ItemID: itemID}
 
-			procAura := character.NewTemporaryStatsAura(name+" Proc", actionID, stats.Stats{stats.Dodge: amount}, time.Second*10)
+			procAura := character.NewTemporaryStatsAura(name+" Proc", actionID, stats.Stats{stats.DodgeRating: amount}, time.Second*10)
 
 			// Handle ICD ourselves since we use a custom check.
 			icd := core.Cooldown{

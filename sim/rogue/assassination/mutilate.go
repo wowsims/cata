@@ -26,7 +26,7 @@ func (sinRogue *AssassinationRogue) newMutilateHitSpell(isMH bool) *core.Spell {
 		Flags:          core.SpellFlagMeleeMetrics | rogue.SpellFlagBuilder | rogue.SpellFlagColdBlooded,
 		ClassSpellMask: rogue.RogueSpellMutilate,
 
-		BonusCritRating: 5 * core.CritRatingPerCritChance * float64(sinRogue.Talents.PuncturingWounds),
+		BonusCritPercent: 5 * float64(sinRogue.Talents.PuncturingWounds),
 
 		DamageMultiplier:         1.86, // 84 * 1.3220000267 + 75
 		DamageMultiplierAdditive: 1 + 0.1*float64(sinRogue.Talents.Opportunity),

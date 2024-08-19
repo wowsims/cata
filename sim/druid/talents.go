@@ -137,8 +137,8 @@ func (druid *Druid) applyBalanceOfPower() {
 			Kind:       core.SpellMod_DamageDone_Pct,
 		})
 
-		druid.AddStats(stats.Stats{stats.SpellHit: -0.5 * float64(druid.Talents.BalanceOfPower) * druid.GetBaseStats()[stats.Spirit]})
-		druid.AddStatDependency(stats.Spirit, stats.SpellHit, []float64{0.0, 0.5, 1.0}[druid.Talents.BalanceOfPower])
+		druid.AddStat(stats.SpellHitPercent, -0.5*float64(druid.Talents.BalanceOfPower)*druid.GetBaseStats()[stats.Spirit]/core.SpellHitRatingPerHitPercent)
+		druid.AddStatDependency(stats.Spirit, stats.SpellHitPercent, 0.5*float64(druid.Talents.BalanceOfPower)/core.SpellHitRatingPerHitPercent)
 	}
 }
 
@@ -156,8 +156,8 @@ func (druid *Druid) applyNaturesMajesty() {
 	if druid.Talents.NaturesMajesty > 0 {
 		druid.AddStaticMod(core.SpellModConfig{
 			ClassMask:  DruidSpellsAll,
-			FloatValue: 2 * float64(druid.Talents.NaturesMajesty) * core.CritRatingPerCritChance,
-			Kind:       core.SpellMod_BonusCrit_Rating,
+			FloatValue: 2 * float64(druid.Talents.NaturesMajesty),
+			Kind:       core.SpellMod_BonusCrit_Percent,
 		})
 	}
 }
@@ -564,18 +564,18 @@ func (druid *Druid) applyRendAndTear(aura core.Aura) core.Aura {
 		return aura
 	}
 
-	bonusCrit := []float64{0.0, 8.0, 17.0, 25.0}[druid.Talents.RendAndTear] * core.CritRatingPerCritChance
+	bonusCritPercent := []float64{0.0, 8.0, 17.0, 25.0}[druid.Talents.RendAndTear]
 
 	aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
 		if druid.BleedsActive == 0 {
-			druid.FerociousBite.BonusCritRating += bonusCrit
+			druid.FerociousBite.BonusCritPercent += bonusCritPercent
 		}
 		druid.BleedsActive++
 	})
 	aura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 		druid.BleedsActive--
 		if druid.BleedsActive == 0 {
-			druid.FerociousBite.BonusCritRating -= bonusCrit
+			druid.FerociousBite.BonusCritPercent -= bonusCritPercent
 		}
 	})
 

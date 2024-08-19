@@ -36,8 +36,8 @@ type SpellConfig struct {
 	MinRange float64
 	MaxRange float64
 
-	BonusHitRating       float64
-	BonusCritRating      float64
+	BonusHitPercent      float64
+	BonusCritPercent     float64
 	BonusSpellPower      float64
 	BonusExpertiseRating float64
 
@@ -123,8 +123,8 @@ type Spell struct {
 	// The current or most recent cast data.
 	CurCast Cast
 
-	BonusHitRating           float64
-	BonusCritRating          float64
+	BonusHitPercent          float64
+	BonusCritPercent         float64
 	BonusSpellPower          float64
 	BonusExpertiseRating     float64
 	CastTimeMultiplier       float64
@@ -218,8 +218,8 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		expectedInitialDamageInternal: config.ExpectedInitialDamage,
 		expectedTickDamageInternal:    config.ExpectedTickDamage,
 
-		BonusHitRating:           config.BonusHitRating,
-		BonusCritRating:          config.BonusCritRating,
+		BonusHitPercent:          config.BonusHitPercent,
+		BonusCritPercent:         config.BonusCritPercent,
 		BonusSpellPower:          config.BonusSpellPower,
 		BonusExpertiseRating:     config.BonusExpertiseRating,
 		CastTimeMultiplier:       1,

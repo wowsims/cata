@@ -49,8 +49,8 @@ var ItemSetStormridersRegalia = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
 			character.AddStaticMod(core.SpellModConfig{
-				Kind:       core.SpellMod_BonusCrit_Rating,
-				FloatValue: 5 * core.CritRatingPerCritChance,
+				Kind:       core.SpellMod_BonusCrit_Percent,
+				FloatValue: 5,
 				ClassMask:  DruidSpellDoT | DruidSpellMoonfire | DruidSpellSunfire,
 			})
 		},
@@ -59,7 +59,7 @@ var ItemSetStormridersRegalia = core.NewItemSet(core.ItemSet{
 
 			tierSet4pMod := druid.AddDynamicMod(core.SpellModConfig{
 				School: core.SpellSchoolArcane | core.SpellSchoolNature,
-				Kind:   core.SpellMod_BonusCrit_Rating,
+				Kind:   core.SpellMod_BonusCrit_Percent,
 			})
 
 			tierSet4pAura := druid.RegisterAura(core.Aura{
@@ -70,7 +70,7 @@ var ItemSetStormridersRegalia = core.NewItemSet(core.ItemSet{
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					aura.SetStacks(sim, aura.MaxStacks)
 
-					tierSet4pMod.UpdateFloatValue(float64(aura.GetStacks()) * 5 * core.CritRatingPerCritChance)
+					tierSet4pMod.UpdateFloatValue(float64(aura.GetStacks()) * 5)
 					tierSet4pMod.Activate()
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -79,7 +79,7 @@ var ItemSetStormridersRegalia = core.NewItemSet(core.ItemSet{
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if result.DidCrit() && aura.GetStacks() > 0 {
 						aura.RemoveStack(sim)
-						tierSet4pMod.UpdateFloatValue(float64(aura.GetStacks()) * 5 * core.CritRatingPerCritChance)
+						tierSet4pMod.UpdateFloatValue(float64(aura.GetStacks()) * 5)
 					}
 				},
 			})

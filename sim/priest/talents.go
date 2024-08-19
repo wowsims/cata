@@ -145,8 +145,8 @@ func (priest *Priest) ApplyTalents() {
 		})
 
 		// Twisted Faith is not applied to base spirit
-		priest.AddStats(stats.Stats{stats.SpellHit: -0.5 * float64(priest.Talents.TwistedFaith) * priest.GetBaseStats()[stats.Spirit]})
-		priest.AddStatDependency(stats.Spirit, stats.SpellHit, 0.5*float64(priest.Talents.TwistedFaith))
+		priest.AddStat(stats.SpellHitPercent, -0.5*float64(priest.Talents.TwistedFaith)*priest.GetBaseStats()[stats.Spirit]/core.SpellHitRatingPerHitPercent)
+		priest.AddStatDependency(stats.Spirit, stats.SpellHitPercent, 0.5*float64(priest.Talents.TwistedFaith)/core.SpellHitRatingPerHitPercent)
 	}
 
 	// Shadowform
@@ -451,7 +451,7 @@ func (priest *Priest) applyImprovedDevouringPlague() {
 
 			// Improved Devouring Plague only considers haste on gear nothing else for dot tick frequency
 			// https://github.com/JamminL/cata-classic-bugs/issues/971
-			tickPeriod := float64(dot.BaseTickLength) / (1 + (priest.GetStat(stats.SpellHaste) / (core.HasteRatingPerHastePercent * 100)))
+			tickPeriod := float64(dot.BaseTickLength) / (1 + (priest.GetStat(stats.HasteRating) / (core.HasteRatingPerHastePercent * 100)))
 			ticks := math.Ceil(float64(dot.BaseDuration()) / tickPeriod)
 			dmg := ticks * dpTickDamage * float64(priest.Talents.ImprovedDevouringPlague) * 0.15
 			spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMagicCrit)
@@ -613,7 +613,7 @@ func (priest *Priest) applySinAndPunishment() {
 				sim.Log("Sin and Punishment Proc. New CD: %d", sim.CurrentTime)
 			}
 
-			priest.Shadowfiend.CD.Set(priest.Shadowfiend.CD.ReadyAt() - 5*time.Second)
+			priest.Shadowfiend.CD.Set(priest.Shadowfiend.CD.ReadyAt() - time.Duration(priest.Talents.SinAndPunishment)*5*time.Second)
 		},
 	})
 }

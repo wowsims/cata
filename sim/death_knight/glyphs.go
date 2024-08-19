@@ -60,9 +60,9 @@ func (dk *DeathKnight) ApplyGlyphs() {
 
 	if dk.HasPrimeGlyph(proto.DeathKnightPrimeGlyph_GlyphOfRuneStrike) {
 		dk.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_BonusCrit_Rating,
+			Kind:       core.SpellMod_BonusCrit_Percent,
 			ClassMask:  DeathKnightSpellRuneStrike,
-			FloatValue: 10 * core.CritRatingPerCritChance,
+			FloatValue: 10,
 		})
 	}
 

@@ -173,9 +173,9 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 func (mage *Mage) applyArmorSpells() {
 	// Molten Armor
 	// +3% spell crit, +5% with glyph
-	critToAdd := 3 * core.CritRatingPerCritChance
+	critPercentToAdd := 3.0
 	if mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfMoltenArmor) {
-		critToAdd = 5 * core.CritRatingPerCritChance
+		critPercentToAdd = 5.0
 	}
 
 	mageArmorEffectCategory := "MageArmors"
@@ -185,10 +185,10 @@ func (mage *Mage) applyArmorSpells() {
 		ActionID: core.ActionID{SpellID: 30482},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			mage.AddStatDynamic(sim, stats.SpellCrit, critToAdd)
+			mage.AddStatDynamic(sim, stats.SpellCritPercent, critPercentToAdd)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			mage.AddStatDynamic(sim, stats.SpellCrit, -critToAdd)
+			mage.AddStatDynamic(sim, stats.SpellCritPercent, -critPercentToAdd)
 		},
 	})
 

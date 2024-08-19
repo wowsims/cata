@@ -1,18 +1,23 @@
-import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs.js';
 import * as OtherInputs from '../../core/components/inputs/other_inputs.js';
 import * as Mechanics from '../../core/constants/mechanics.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
-import { APLAction, APLListItem, APLPrepullAction, APLRotation } from '../../core/proto/apl.js';
-import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common.js';
-import { PaladinMajorGlyph, PaladinSeal, ProtectionPaladin_Rotation as ProtectionPaladinRotation } from '../../core/proto/paladin.js';
-import * as AplUtils from '../../core/proto_utils/apl_utils.js';
-import { Stats } from '../../core/proto_utils/stats.js';
+import { APLRotation, APLRotation_Type } from '../../core/proto/apl.js';
+import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
+import { PaladinPrimeGlyph, PaladinSeal } from '../../core/proto/paladin.js';
+import { Stats, UnitStat } from '../../core/proto_utils/stats.js';
 import { TypedEvent } from '../../core/typed_event.js';
 import * as PaladinInputs from '../inputs.js';
-// import * as ProtInputs from './inputs.js';
 import * as Presets from './presets.js';
+
+const isGlyphOfSealOfTruthActive = (player: Player<Spec.SpecProtectionPaladin>): boolean => {
+	const currentSeal = player.getSpecOptions().classOptions?.seal;
+	return (
+		player.getPrimeGlyps().includes(PaladinPrimeGlyph.GlyphOfSealOfTruth) &&
+		(currentSeal === PaladinSeal.Truth || currentSeal === PaladinSeal.Righteousness)
+	);
+};
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 	cssClass: 'protection-paladin-sim-ui',
@@ -26,66 +31,65 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatStrength,
 		Stat.StatAgility,
 		Stat.StatAttackPower,
-		Stat.StatMeleeHit,
-		Stat.StatSpellHit,
-		Stat.StatMeleeCrit,
-		Stat.StatExpertise,
-		Stat.StatMeleeHaste,
+		Stat.StatHitRating,
+		Stat.StatCritRating,
+		Stat.StatExpertiseRating,
+		Stat.StatHasteRating,
 		Stat.StatSpellPower,
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
-		Stat.StatBlock,
-		Stat.StatDodge,
-		Stat.StatParry,
-		Stat.StatResilience,
+		Stat.StatDodgeRating,
+		Stat.StatParryRating,
+		Stat.StatResilienceRating,
 		Stat.StatNatureResistance,
 		Stat.StatShadowResistance,
 		Stat.StatFrostResistance,
-		Stat.StatMastery,
+		Stat.StatMasteryRating,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
-	displayStats: [
-		Stat.StatHealth,
-		Stat.StatArmor,
-		Stat.StatBonusArmor,
-		Stat.StatStamina,
-		Stat.StatStrength,
-		Stat.StatAgility,
-		Stat.StatAttackPower,
-		Stat.StatMeleeHit,
-		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
-		Stat.StatExpertise,
-		Stat.StatSpellPower,
-		Stat.StatSpellHit,
-		Stat.StatBlock,
-		Stat.StatDodge,
-		Stat.StatParry,
-		Stat.StatResilience,
-		Stat.StatNatureResistance,
-		Stat.StatShadowResistance,
-		Stat.StatFrostResistance,
-		Stat.StatMastery,
-	],
-	// modifyDisplayStats: (player: Player<Spec.SpecProtectionPaladin>) => {
-	// 	let stats = new Stats();
+	displayStats: UnitStat.createDisplayStatArray(
+		[
+			Stat.StatHealth,
+			Stat.StatArmor,
+			Stat.StatBonusArmor,
+			Stat.StatStamina,
+			Stat.StatStrength,
+			Stat.StatAgility,
+			Stat.StatAttackPower,
+			Stat.StatExpertiseRating,
+			Stat.StatSpellPower,
+			Stat.StatResilienceRating,
+			Stat.StatNatureResistance,
+			Stat.StatShadowResistance,
+			Stat.StatFrostResistance,
+			Stat.StatMasteryRating,
+		],
+		[
+			PseudoStat.PseudoStatPhysicalHitPercent,
+			PseudoStat.PseudoStatPhysicalCritPercent,
+			PseudoStat.PseudoStatMeleeHastePercent,
+			PseudoStat.PseudoStatSpellHitPercent,
+			PseudoStat.PseudoStatBlockPercent,
+			PseudoStat.PseudoStatDodgePercent,
+			PseudoStat.PseudoStatParryPercent,
+		],
+	),
+	modifyDisplayStats: (player: Player<Spec.SpecProtectionPaladin>) => {
+		let stats = new Stats();
 
-	// 	TypedEvent.freezeAllAndDo(() => {
-	// 		if (
-	// 			player.getMajorGlyphs().includes(PaladinMajorGlyph.GlyphOfSealOfVengeance) &&
-	// 			player.getSpecOptions().classOptions?.seal == PaladinSeal.Vengeance
-	// 		) {
-	// 			stats = stats.addStat(Stat.StatExpertise, 10 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
-	// 		}
-	// 	});
+		TypedEvent.freezeAllAndDo(() => {
+			if (isGlyphOfSealOfTruthActive(player)) {
+				stats = stats.addStat(Stat.StatExpertiseRating, 2.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+			}
+		});
 
-	// 	return {
-	// 		talents: stats,
-	// 	};
-	// },
+		return {
+			talents: stats,
+		};
+	},
 	defaults: {
 		// Default equipped gear.
 		gear: Presets.PRERAID_PRESET.gear,
@@ -129,6 +133,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			vindication: true,
 			thunderClap: true,
 		}),
+		rotationType: APLRotation_Type.TypeSimple,
+		simpleRotation: Presets.ROTATION_DEFAULT,
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
@@ -173,7 +179,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		return Presets.ROTATION_DEFAULT.rotation.rotation!;
 	},
 
-	simpleRotation: (_player: Player<Spec.SpecProtectionPaladin>, simple: ProtectionPaladinRotation, cooldowns: Cooldowns): APLRotation => {
+	simpleRotation: (_player: Player<Spec.SpecProtectionPaladin>): APLRotation => {
 		return Presets.ROTATION_DEFAULT.rotation.rotation!;
 	},
 

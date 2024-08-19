@@ -7,7 +7,9 @@ import (
 )
 
 func (warlock *Warlock) ChangeActivePet(sim *core.Simulation, newPet *WarlockPet) {
-	warlock.ActivePet.Disable(sim)
+	if warlock.ActivePet != nil {
+		warlock.ActivePet.Disable(sim)
+	}
 	newPet.Enable(sim, newPet)
 	warlock.ActivePet = newPet
 }
@@ -43,7 +45,7 @@ func (warlock *Warlock) registerSummonDemon() {
 				CastTime: 6 * time.Second,
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				warlock.ActivePet.GetAuraByID(stunActionID).Activate(sim)
+				warlock.ActivatePetSummonStun(sim, stunActionID)
 			},
 		},
 
@@ -69,7 +71,7 @@ func (warlock *Warlock) registerSummonDemon() {
 				CastTime: 6 * time.Second,
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				warlock.ActivePet.GetAuraByID(stunActionID).Activate(sim)
+				warlock.ActivatePetSummonStun(sim, stunActionID)
 			},
 		},
 
@@ -94,7 +96,7 @@ func (warlock *Warlock) registerSummonDemon() {
 				CastTime: 6 * time.Second,
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				warlock.ActivePet.GetAuraByID(stunActionID).Activate(sim)
+				warlock.ActivatePetSummonStun(sim, stunActionID)
 			},
 		},
 
@@ -103,4 +105,10 @@ func (warlock *Warlock) registerSummonDemon() {
 			warlock.ChangeActivePet(sim, warlock.Succubus)
 		},
 	})
+}
+
+func (warlock *Warlock) ActivatePetSummonStun(sim *core.Simulation, stunActionID core.ActionID) {
+	if warlock.ActivePet != nil {
+		warlock.ActivePet.GetAuraByID(stunActionID).Activate(sim)
+	}
 }

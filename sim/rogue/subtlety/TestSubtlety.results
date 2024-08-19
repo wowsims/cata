@@ -6,11 +6,8 @@ character_stats_results: {
   final_stats: 6775.65
   final_stats: 69.3
   final_stats: 93.73
-  final_stats: 1532.4352
-  final_stats: 1461.78296
-  final_stats: 6896.63627
-  final_stats: 2400.4002
-  final_stats: 1994
+  final_stats: 1052
+  final_stats: 1504
   final_stats: 1994
   final_stats: 586
   final_stats: 0
@@ -19,7 +16,6 @@ character_stats_results: {
   final_stats: 20923.3578
   final_stats: 209
   final_stats: 0
-  final_stats: 326
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -31,7 +27,12 @@ character_stats_results: {
   final_stats: 0
   final_stats: 135128.1
   final_stats: 0
-  final_stats: 0
+  final_stats: 326
+  final_stats: 12.75873
+  final_stats: 14.26885
+  final_stats: 38.46851
+  final_stats: 13.38911
+  final_stats: 5
  }
 }
 dps_results: {
@@ -72,15 +73,15 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-ApparatusofKhaz'goroth-68972"
  value: {
-  dps: 23175.16269
-  tps: 16454.36551
+  dps: 22888.03892
+  tps: 16250.50763
  }
 }
 dps_results: {
  key: "TestSubtlety-AllItems-ApparatusofKhaz'goroth-69113"
  value: {
-  dps: 23396.77387
-  tps: 16611.70945
+  dps: 22980.73498
+  tps: 16316.32184
  }
 }
 dps_results: {
@@ -794,15 +795,15 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-MatrixRestabilizer-68994"
  value: {
-  dps: 24210.24528
-  tps: 17189.27415
+  dps: 24034.36248
+  tps: 17064.39736
  }
 }
 dps_results: {
  key: "TestSubtlety-AllItems-MatrixRestabilizer-69150"
  value: {
-  dps: 24507.40977
-  tps: 17400.26094
+  dps: 24301.33112
+  tps: 17253.94509
  }
 }
 dps_results: {

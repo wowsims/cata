@@ -2,7 +2,7 @@ import { Stat } from '../core/proto/common';
 
 export const WARLOCK_BREAKPOINTS = new Map([
 	[
-		Stat.StatSpellHaste,
+		Stat.StatHasteRating,
 		new Map([
 			// Picked from Warlock Discord
 			// Sources:

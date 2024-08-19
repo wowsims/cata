@@ -83,7 +83,7 @@ func (bdk *BloodDeathKnight) ApplyTalents() {
 		TimeValue: time.Second * -30,
 	})
 	bdk.MultiplyStat(stats.Stamina, 1.09)
-	bdk.AddStat(stats.Expertise, 6*core.ExpertisePerQuarterPercentReduction)
+	bdk.AddStat(stats.ExpertiseRating, 6*core.ExpertisePerQuarterPercentReduction)
 	core.MakePermanent(bdk.GetOrRegisterAura(core.Aura{
 		Label:    "Veteran of the Third War",
 		ActionID: core.ActionID{SpellID: 50029},

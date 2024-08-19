@@ -23,8 +23,8 @@ func (mage *Mage) ApplyFireTalents() {
 	if mage.Talents.ImprovedFireBlast > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
 			ClassMask:  MageSpellFireBlast,
-			FloatValue: 4 * float64(mage.Talents.ImprovedFireBlast) * core.CritRatingPerCritChance,
-			Kind:       core.SpellMod_BonusCrit_Rating,
+			FloatValue: 4 * float64(mage.Talents.ImprovedFireBlast),
+			Kind:       core.SpellMod_BonusCrit_Percent,
 		})
 	}
 
@@ -122,7 +122,10 @@ func (mage *Mage) applyHotStreak() {
 	}
 
 	ImprovedHotStreakProcChance := float64(mage.Talents.ImprovedHotStreak) * 0.5
-	BaseHotStreakProcChance := float64(-2.7*(mage.GetStat(stats.SpellCrit)/core.CritRatingPerCritChance)/100 + 0.9) // EJ settled on -2.7*critChance+0.9
+
+	// TODO: Is this supposed to be fully buffed Spell Crit % or only from gear Rating?
+	baseCritPercent := mage.GetStat(stats.SpellCritPercent) + mage.GetStat(stats.CritRating)/core.CritRatingPerCritPercent
+	BaseHotStreakProcChance := float64(-2.7*baseCritPercent/100 + 0.9) // EJ settled on -2.7*critChance+0.9
 
 	hotStreakCostMod := mage.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_PowerCost_Pct,

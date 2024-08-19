@@ -50,8 +50,7 @@ func (character *Character) EnableManaBarWithModifier(modifier float64) {
 
 	if character.Unit.Type == PlayerUnit {
 		// Pets might have different scaling so let them handle their scaling
-		character.AddStatDependency(stats.Intellect, stats.SpellCrit,
-			CritPerIntMaxLevel[character.Class]*CritRatingPerCritChance)
+		character.AddStatDependency(stats.Intellect, stats.SpellCritPercent, CritPerIntMaxLevel[character.Class])
 
 		// Starting with cataclysm 1 intellect now provides 1 spell power
 		character.AddStatDependency(stats.Intellect, stats.SpellPower, 1.0)
