@@ -349,14 +349,9 @@ export default class ItemList<T extends ItemListType> {
 		itemIdxs = itemIdxs.filter(i => {
 			const listItemData = this.itemData[i];
 
-			// TODO @1337lutz
-			// wowhead has implemented most of the firelands items with the appropriate phase (3)
-			// our code does not take into it consideration as of now, so this needs to be disabled until 
-			// we fix all the gear to have the correct phase and add them as selectable options
-			//
-			// if (listItemData.phase > this.player.sim.getPhase()) {
-			// 	return false;
-			// }
+			if (listItemData.phase > this.player.sim.getPhase()) {
+				return false;
+			}
 
 			if (!!this.searchInput.value.length) {
 				const formatQuery = (value: string) => value.toLowerCase().replaceAll(/[^a-zA-Z0-9\s]/g, '');
