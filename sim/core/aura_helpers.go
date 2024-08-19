@@ -224,6 +224,18 @@ func MakePermanent(aura *Aura) *Aura {
 	return aura
 }
 
+func (character *Character) NewTemporaryStatBuffWithStacks(auraLabel string, actionID ActionID, bonusPerStack stats.Stats, maxStacks int32, duration time.Duration) *Aura {
+	return MakeStackingAura(character, StackingStatAura{
+		Aura: Aura{
+			Label:     auraLabel,
+			ActionID:  actionID,
+			Duration:  duration,
+			MaxStacks: maxStacks,
+		},
+		BonusPerStack: bonusPerStack,
+	})
+}
+
 // Helper for the common case of making an aura that adds stats.
 func (character *Character) NewTemporaryStatsAura(auraLabel string, actionID ActionID, tempStats stats.Stats, duration time.Duration) *Aura {
 	return character.NewTemporaryStatsAuraWrapped(auraLabel, actionID, tempStats, duration, nil)
