@@ -25,7 +25,7 @@ message ProtoVersion {
 	// protos need to define an api_version field so that the UI code knows
 	// to up-convert these protos to the new format whenever api_version is
 	// missing (0) or lower than current_version_number.
-	option (current_version_number) = 1;
+	option (current_version_number) = 2;
 
 	// The actual field value is only used within unit tests.
 	int32 saved_version_number = 1;
@@ -128,8 +128,46 @@ enum Profession {
 	Archeology = 12;
 }
 
-// Keep in sync with sim/core/stats/stats.go.
-// NextIndex: 31;
+// General rules for Stats vs. PseudoStats at the proto level:
+//	- Define a property as a Stat if and only if it needs to be present in
+//	  one or more stats arrays embedded in the database files, local storage
+//	  data, or sim links. This generally means that the property is a BASIC
+//	  attribute that is directly found on items or enchants and parsed from
+//	  tooltips during database generation. Alternatively, if the stat is
+//	  required for reconstructing a target NPC from saved Encounter
+//	  settings, then it also belongs in the Stat enum.
+//
+//	- If the above criterion is not satisfied, then the best practice is to
+//	  define the property as a PseudoStat rather than a Stat. For example,
+//	  the various school-specific versions of Hit, Crit, and Haste are all
+//	  defined as PseudoStats from Cataclysm onwards, since only the generic
+//	  Ratings need to be parsed from item data and stored in the sim
+//	  database.
+//
+//	- Note that the above rules apply only for the proto messages used for
+//	  saving and loading data in the browser. It is perfectly okay to define
+//	  additional Stats in the back-end code for convenience or performance
+//	  reasons, such as for automatically propagating linear stat
+//	  dependencies when dynamic stat changes occur in a sim iteration. For
+//	  example, the SpellHit PseudoStat mentioned above is actually modeled
+//	  as a proper Stat in the back-end code so that it can benefit from the
+//	  StatDependency tooling, but is converted to a PseudoStat when writing
+//	  UnitStats protos for character stats and stat weights requests. This
+//	  keeps the item database compact while still giving the UI access to
+//	  calculated tertiary stats like SpellHit, MeleeCrit, RangedHaste, etc.
+//
+//	- When adding new Stats or PseudoStats, make the units for each property
+//	  explicit in the name to avoid confusion. For example, append "Rating"
+//	  to the end of the field name for properties that are represented in
+//	  Rating units (regardless of how they are stored in-game), and append
+//	  "Chance" to the end of the field name for properties that represent
+//	  probabilities (between 0 and 1).
+//
+// Keep in sync with sim/core/stats/stats.go. As mentioned above, it is okay for
+// the Go Stats array to be larger than the size of the Stat enum proto, but the
+// shared indices between the two must exactly match.
+//
+// NextIndex: 27;
 enum Stat {
 	// Primary attributes ("main stat")
 	StatStrength = 0;
@@ -139,36 +177,34 @@ enum Stat {
 
 	// Reforge-able secondary stats
 	StatSpirit = 4;
-	StatMeleeHit = 5;
-	StatSpellHit = 6;
-	StatMeleeCrit = 7;
-	StatSpellCrit = 8;
-	StatMeleeHaste = 9;
-	StatSpellHaste = 10;
-	StatExpertise = 11;
-	StatDodge = 12;
-	StatParry = 13;
-	StatMastery = 14;
+	StatHitRating = 5;
+	StatCritRating = 6;
+	StatHasteRating = 7;
+	StatExpertiseRating = 8;
+	StatDodgeRating = 9;
+	StatParryRating = 10;
+	StatMasteryRating = 11;
 
 	// Non-reforge-able secondary stats found on gear
-	StatAttackPower = 15;
-	StatRangedAttackPower = 16;
-	StatSpellPower = 17;
-	StatMP5 = 18;
-	StatSpellPenetration = 19;
-	StatResilience = 20;
-	StatArcaneResistance = 21;
-	StatFireResistance = 22;
-	StatFrostResistance = 23;
-	StatNatureResistance = 24;
-	StatShadowResistance = 25;
-	StatArmor = 26; // "white armor" that fully scales with all multipliers
-	StatBonusArmor = 27; // "green armor" that does not scale
+	StatAttackPower = 12;
+	StatRangedAttackPower = 13;
+	StatSpellPower = 14;
+	StatSpellPenetration = 15;
+	StatResilienceRating = 16;
+	StatArcaneResistance = 17;
+	StatFireResistance = 18;
+	StatFrostResistance = 19;
+	StatNatureResistance = 20;
+	StatShadowResistance = 21;
+	StatArmor = 22; // "white armor" that fully scales with all multipliers
+	StatBonusArmor = 23; // "green armor" that does not scale
 
-	// Composite stats that are built up from the above gear stats + buffs
-	StatHealth = 28;
-	StatMana = 29;
-	StatBlock = 30;
+	// Composite stats that are built up from the above gear stats + buffs.
+	// These still belong in the Stat enum because they can be present on
+	// some enchants and because the base values need to be stored for NPCs.
+	StatHealth = 24;
+	StatMana = 25;
+	StatMP5 = 26;
 
 	// DO NOT add new stats here without discussing it first; new stats come
 	// with a performance penalty.
@@ -197,19 +233,38 @@ enum Stat {
 }
 
 // Not all pseudostats are included here; just the ones we want to pass
-// between the UI and backend.
+// between the UI and backend. It's also OK to include things here which aren't
+// in the PseudoStats struct.
 //
-// It's also OK to include things here which aren't in the PseudoStats struct.
+// NextIndex: 16;
 enum PseudoStat {
 	PseudoStatMainHandDps = 0;
 	PseudoStatOffHandDps = 1;
 	PseudoStatRangedDps = 2;
-	PseudoStatBlockDamageReduction = 3;
-	PseudoStatDodge = 4;
-	PseudoStatParry = 5;
-	PseudoStatRangedSpeedMultiplier = 6;
-	PseudoStatMeleeSpeedMultiplier = 7;
+
+	// Final buffed values including DR, represented as percentages (0-100)
+	PseudoStatDodgePercent = 3;
+	PseudoStatParryPercent = 4;
+	PseudoStatBlockPercent = 5;
+
+	// Net impact of all multiplicative Haste buffs (Bloodlust etc.)
+	PseudoStatMeleeSpeedMultiplier = 6;
+	PseudoStatRangedSpeedMultiplier = 7;
 	PseudoStatCastSpeedMultiplier = 8;
+
+	// Final buffed Haste values after combining the above multipliers with
+	// Haste Rating from gear. Expressed in percentage units (0-100).
+	PseudoStatMeleeHastePercent = 9;
+	PseudoStatRangedHastePercent = 10;
+	PseudoStatSpellHastePercent = 11;
+
+	// School-specific fully buffed Hit/Crit stats, also in percentage
+	// units. These are modeled as proper Stats in the back-end due to stat
+	// dependencies, but do not need to be stored in any database files.
+	PseudoStatPhysicalHitPercent = 12;
+	PseudoStatSpellHitPercent = 13;
+	PseudoStatPhysicalCritPercent = 14;
+	PseudoStatSpellCritPercent = 15;
 }
 
 message UnitStats {
@@ -230,9 +285,9 @@ message UnitStats {
 }
 
 message ReforgeStat {
-    int32 id = 1;
-	repeated Stat fromStat = 2;
-	repeated Stat toStat = 3;
+	int32 id = 1;
+	Stat fromStat = 2;
+	Stat toStat = 3;
 	double multiplier = 4;
 }
 

@@ -75,8 +75,8 @@ var ItemSetRagingElementsRegalia = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
 			character.AddStaticMod(core.SpellModConfig{
-				Kind:       core.SpellMod_BonusCrit_Rating,
-				FloatValue: 10 * core.CritRatingPerCritChance,
+				Kind:       core.SpellMod_BonusCrit_Percent,
+				FloatValue: 10,
 				ClassMask:  SpellMaskFlameShock,
 			})
 		},
@@ -137,8 +137,8 @@ var ItemSetSpiritwalkersRegalia = core.NewItemSet(core.ItemSet{
 				Duration:  4 * time.Second,
 				MaxStacks: 3,
 				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-					changedHaste := (newStacks - oldStacks) * 250
-					shaman.AddStatDynamic(sim, stats.SpellHaste, float64(changedHaste))
+					changedHasteRating := (newStacks - oldStacks) * 250
+					shaman.AddStatDynamic(sim, stats.HasteRating, float64(changedHasteRating))
 				},
 			})
 			shaman.RegisterAura(core.Aura{
@@ -175,8 +175,8 @@ var ItemSetRagingElementsBattlegear = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent) {
 			character := agent.GetCharacter()
 			character.AddStaticMod(core.SpellModConfig{
-				Kind:       core.SpellMod_BonusCrit_Rating,
-				FloatValue: 10 * core.CritRatingPerCritChance,
+				Kind:       core.SpellMod_BonusCrit_Percent,
+				FloatValue: 10,
 				ClassMask:  SpellMaskLightningBolt,
 			})
 		},

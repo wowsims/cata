@@ -161,7 +161,7 @@ func init() {
 			return character.NewTemporaryStatsAura(
 				name,
 				core.ActionID{SpellID: 74221, Tag: tag},
-				stats.Stats{stats.MeleeHaste: 450, stats.SpellHaste: 450},
+				stats.Stats{stats.HasteRating: 450},
 				time.Second*12,
 			)
 		}
@@ -298,7 +298,7 @@ func init() {
 		statAura := character.NewTemporaryStatsAura(
 			"Windwalk Proc",
 			core.ActionID{SpellID: 74243},
-			stats.Stats{stats.Dodge: 600},
+			stats.Stats{stats.DodgeRating: 600},
 			time.Second*10,
 		)
 
@@ -456,7 +456,7 @@ func init() {
 
 	// Enchant: 4176, Item: 59595 - R19 Threatfinder
 	core.NewEnchantEffect(4176, func(agent core.Agent) {
-		agent.GetCharacter().AddBonusRangedHitRating(88)
+		agent.GetCharacter().AddBonusRangedHitPercent(88 / core.PhysicalHitRatingPerHitPercent)
 	})
 
 	// Enchant: 4177, Item: 59596 - Safety Catch Removal Kit
@@ -464,7 +464,7 @@ func init() {
 		character := agent.GetCharacter()
 		// TODO: This should be ranged-only haste. For now just make it hunter-only.
 		if character.Class == proto.Class_ClassHunter {
-			character.AddStats(stats.Stats{stats.MeleeHaste: 88, stats.SpellHaste: 88})
+			character.AddStat(stats.HasteRating, 88)
 		}
 	})
 

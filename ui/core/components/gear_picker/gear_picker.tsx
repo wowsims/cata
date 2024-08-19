@@ -143,8 +143,8 @@ export class ItemRenderer extends Component {
 
 		if (newItem.reforge) {
 			const reforgeData = this.player.getReforgeData(newItem, newItem.reforge);
-			const fromText = shortSecondaryStatNames.get(newItem.reforge?.fromStat[0]);
-			const toText = shortSecondaryStatNames.get(newItem.reforge?.toStat[0]);
+			const fromText = shortSecondaryStatNames.get(newItem.reforge?.fromStat);
+			const toText = shortSecondaryStatNames.get(newItem.reforge?.toStat);
 			this.reforgeElem.innerText = `Reforged ${Math.abs(reforgeData.fromAmount)} ${fromText} → ${reforgeData.toAmount} ${toText}`;
 			this.reforgeElem.classList.remove('hide');
 		} else {

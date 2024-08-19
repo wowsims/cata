@@ -11,9 +11,9 @@ func (paladin *Paladin) applyGlyphs() {
 	// Prime Glyphs
 	if paladin.HasPrimeGlyph(proto.PaladinPrimeGlyph_GlyphOfCrusaderStrike) {
 		paladin.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_BonusCrit_Rating,
+			Kind:       core.SpellMod_BonusCrit_Percent,
 			ClassMask:  SpellMaskCrusaderStrike,
-			FloatValue: 5 * core.CritRatingPerCritChance,
+			FloatValue: 5,
 		})
 	}
 	if paladin.HasPrimeGlyph(proto.PaladinPrimeGlyph_GlyphOfJudgement) {
@@ -113,7 +113,12 @@ func registerGlyphOfExorcism(paladin *Paladin) {
 					0.2 / 3
 
 				if target.MobType == proto.MobType_MobTypeDemon || target.MobType == proto.MobType_MobTypeUndead {
-					dot.SnapshotCritChance = 100 * core.CritRatingPerCritChance
+					// TODO: Was this implemented correctly to begin with?
+					// dot.SnapshotCritChance is supposed to be in probability
+					// units, and it will be automatically overwritten when
+					// dot.Snapshot() is called, meaning that this code
+					// shouldn't be doing anything at all...
+					dot.SnapshotCritChance = 100 * core.CritRatingPerCritPercent
 				}
 
 				dot.Snapshot(target, baseDamage)

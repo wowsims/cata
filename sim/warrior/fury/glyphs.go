@@ -32,7 +32,7 @@ func (war *FuryWarrior) applyGlyphOfRagingBlow() {
 
 	war.AddStaticMod(core.SpellModConfig{
 		ClassMask:  warrior.SpellMaskRagingBlow,
-		Kind:       core.SpellMod_BonusCrit_Rating,
-		FloatValue: 5 * core.CritRatingPerCritChance,
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		FloatValue: 5,
 	})
 }

@@ -60,8 +60,8 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 
 	lavaBurstCritMod := shaman.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  SpellMaskLavaBurst | SpellMaskLavaBurstOverload,
-		Kind:       core.SpellMod_BonusCrit_Rating,
-		FloatValue: 100 * core.CritRatingPerCritChance,
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		FloatValue: 100,
 	})
 
 	config.RelatedDotSpell = shaman.RegisterSpell(core.SpellConfig{

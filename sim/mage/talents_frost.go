@@ -59,8 +59,8 @@ func (mage *Mage) ApplyFrostTalents() {
 	if mage.Talents.PiercingIce > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
 			ClassMask:  MageSpellsAll,
-			FloatValue: 1 * float64(mage.Talents.PiercingIce) * core.CritRatingPerCritChance,
-			Kind:       core.SpellMod_BonusCrit_Rating,
+			FloatValue: 1 * float64(mage.Talents.PiercingIce),
+			Kind:       core.SpellMod_BonusCrit_Percent,
 		})
 	}
 
@@ -148,8 +148,8 @@ func (mage *Mage) applyFingersOfFrost() {
 
 	fingersOfFrostFrozenCritMod := mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  MageSpellIceLance | MageSpellDeepFreeze,
-		FloatValue: mage.GetStat(stats.SpellCrit) * 2,
-		Kind:       core.SpellMod_BonusCrit_Rating,
+		FloatValue: mage.GetStat(stats.SpellCritPercent) * 2, // TODO: Shouldn't this be evaluated dynamically when the proc happens?
+		Kind:       core.SpellMod_BonusCrit_Percent,
 	})
 
 	mage.FingersOfFrostAura = mage.RegisterAura(core.Aura{

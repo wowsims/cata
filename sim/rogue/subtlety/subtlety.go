@@ -46,7 +46,7 @@ func (subRogue *SubtletyRogue) Initialize() {
 
 	// Apply Mastery
 	// From all I can find, Sub's Mastery is Additive. Will need to test.
-	masteryEffect := getMasteryBonus(subRogue.GetStat(stats.Mastery))
+	masteryEffect := getMasteryBonus(subRogue.GetStat(stats.MasteryRating))
 
 	subRogue.SliceAndDiceBonus *= (1 + masteryEffect)
 	subRogue.Eviscerate.DamageMultiplierAdditive += masteryEffect

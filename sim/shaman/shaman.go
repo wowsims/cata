@@ -46,10 +46,10 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 
 	// Add Shaman stat dependencies
 	shaman.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
-	shaman.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[shaman.Class]*core.CritRatingPerCritChance)
+	shaman.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, core.CritPerAgiMaxLevel[shaman.Class])
 	shaman.EnableManaBarWithModifier(1.0)
 	if shaman.Spec == proto.Spec_SpecEnhancementShaman {
-		shaman.AddStat(stats.MeleeHit, core.MeleeHitRatingPerHitChance*6)
+		shaman.AddStat(stats.PhysicalHitPercent, 6)
 		shaman.AddStatDependency(stats.AttackPower, stats.SpellPower, 0.55)
 		shaman.AddStatDependency(stats.Agility, stats.AttackPower, 2.0)
 		shaman.AddStatDependency(stats.Strength, stats.AttackPower, 1.0)

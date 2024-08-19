@@ -82,7 +82,7 @@ func (war *FuryWarrior) RegisterSpecializationEffects() {
 	})
 
 	// Precision
-	war.AddStat(stats.MeleeHit, 3*core.MeleeHitRatingPerHitChance)
+	war.AddStat(stats.PhysicalHitPercent, 3)
 	war.AutoAttacks.MHConfig().DamageMultiplier *= 1.4
 	war.AutoAttacks.OHConfig().DamageMultiplier *= 1.4
 }

@@ -27,22 +27,20 @@ func (warlock *Warlock) petStatInheritance(ownerStats stats.Stats) stats.Stats {
 		stats.AttackPower: ownerStats[stats.SpellPower] * scalingFactor * 2, // might also simply be pet SP * 2
 
 		// almost certainly wrong, needs more testing
-		stats.SpellCrit: ownerStats[stats.SpellCrit],
-		stats.MeleeCrit: ownerStats[stats.SpellCrit],
+		stats.SpellCritPercent:    ownerStats[stats.SpellCritPercent],
+		stats.PhysicalCritPercent: ownerStats[stats.SpellCritPercent],
 
 		// pets inherit haste rating directly, evidenced by:
 		// 1. haste staying the same if the warlock has windfury totem while the pet doesn't
 		// 2. haste staying the same if warlock benefits from wrath of air (pet doesn't get this buff regardless)
-		stats.SpellHaste: ownerStats[stats.SpellHaste],
-		stats.MeleeHaste: ownerStats[stats.SpellHaste],
+		stats.HasteRating: ownerStats[stats.HasteRating],
 
 		// unclear what exactly the scaling is here, but at hit cap they should definitely all be capped
-		stats.SpellHit:  ownerStats[stats.SpellHit],
-		stats.MeleeHit:  ownerStats[stats.SpellHit],
-		stats.Expertise: (ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance) * petExpertiseScale,
+		stats.HitRating:       ownerStats[stats.SpellHitPercent] * core.SpellHitRatingPerHitPercent,
+		stats.ExpertiseRating: ownerStats[stats.SpellHitPercent] * petExpertiseScale,
 
 		// for master demonologist
-		stats.Mastery: ownerStats[stats.Mastery],
+		stats.MasteryRating: ownerStats[stats.MasteryRating],
 	}
 }
 
@@ -70,10 +68,10 @@ func (warlock *Warlock) setPetOptions(petAgent core.PetAgent, meleeMod float64, 
 	pet.EnableManaBarWithModifier(powerModifier)
 	pet.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	pet.AddStat(stats.AttackPower, -20)
-	pet.AddStatDependency(stats.Agility, stats.MeleeCrit,
-		core.CritPerAgiMaxLevel[proto.Class_ClassPaladin]*core.CritRatingPerCritChance)
-	pet.AddStatDependency(stats.Intellect, stats.SpellCrit,
-		core.CritPerIntMaxLevel[proto.Class_ClassPaladin]*core.CritRatingPerCritChance)
+	pet.AddStatDependency(stats.Agility, stats.PhysicalCritPercent,
+		core.CritPerAgiMaxLevel[proto.Class_ClassPaladin])
+	pet.AddStatDependency(stats.Intellect, stats.SpellCritPercent,
+		core.CritPerIntMaxLevel[proto.Class_ClassPaladin])
 	pet.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= meleeMod
 	if aaOptions != nil {
 		pet.EnableAutoAttacks(petAgent, *aaOptions)
@@ -106,8 +104,8 @@ func (warlock *Warlock) registerPets() {
 		// To calculate crit per agi/int the following two spells where used:
 		// Rabies (3150) -5 int
 		// Corrupted Agility (6817) -10 agi
-		stats.MeleeCrit: 0.652 * core.CritRatingPerCritChance,
-		stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+		stats.PhysicalCritPercent: 0.652,
+		stats.SpellCritPercent:    3.3355,
 	}
 	impBaseStats := stats.Stats{
 		stats.Strength:  429,
@@ -118,8 +116,8 @@ func (warlock *Warlock) registerPets() {
 
 		stats.Mana: 17415, // x / 0.16 = 2786, x / 0.02 = 348; x ~= 17415
 
-		stats.MeleeCrit: 0.652 * core.CritRatingPerCritChance,
-		stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
+		stats.PhysicalCritPercent: 0.652,
+		stats.SpellCritPercent:    0.9075,
 	}
 
 	inheritance := warlock.petStatInheritance
@@ -148,20 +146,21 @@ func (pet *WarlockPet) Reset(_ *core.Simulation) {}
 
 func petMasteryHelper(pet *core.Pet) {
 	if pet.Owner.Spec == proto.Spec_SpecDemonologyWarlock {
-		masteryBonus := func(mastery float64) float64 {
-			return 1 + math.Floor(2.3*core.MasteryRatingToMasteryPoints(mastery))/100.0
+		// The current code convention is to not include base Mastery points in the MasteryRating stat
+		// value, only bonus Rating gained from gear / consumes. Therefore, we bake in the base points (8
+		// for Warlock but not for all classes) to the damage multiplier calculation.
+		petDamageMultiplier := func(masteryRating float64) float64 {
+			return 1 + math.Floor(2.3 * (8 + core.MasteryRatingToMasteryPoints(masteryRating))) / 100
 		}
 
-		pet.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
-			pet.PseudoStats.DamageDealtMultiplier /= masteryBonus(oldMastery)
-			pet.PseudoStats.DamageDealtMultiplier *= masteryBonus(newMastery)
-		})
+		// Set initial multiplier from base stats (should be 0 Mastery Rating at this point since
+		// owner stats have not yet been inherited).
+		pet.PseudoStats.DamageDealtMultiplier *= petDamageMultiplier(pet.GetStat(stats.MasteryRating))
 
-		// unfortunately mastery is only the *bonus* mastery and not the base value, so we add
-		// this manually here such that AddOnMasteryStatChanged() can calculate the correct values
-		// while still having 0 mastery = 0% dmg at the start
-		pet.AddStats(stats.Stats{stats.Mastery: 8 * core.MasteryRatingPerMasteryPoint})
-		pet.PseudoStats.DamageDealtMultiplier *= masteryBonus(8 * core.MasteryRatingPerMasteryPoint)
+		// Keep the multiplier updated when Mastery Rating changes.
+		pet.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMasteryRating float64, newMasteryRating float64) {
+			pet.PseudoStats.DamageDealtMultiplier *= petDamageMultiplier(newMasteryRating) / petDamageMultiplier(oldMasteryRating)
+		})
 	}
 }
 

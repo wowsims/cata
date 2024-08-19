@@ -9,10 +9,10 @@ import (
 func (warlock *Warlock) registerDemonSoul() {
 
 	impMod := warlock.AddDynamicMod(core.SpellModConfig{
-		Kind: core.SpellMod_BonusCrit_Rating,
+		Kind: core.SpellMod_BonusCrit_Percent,
 		ClassMask: WarlockSpellShadowBolt | WarlockSpellIncinerate | WarlockSpellSoulFire | WarlockSpellChaosBolt |
 			WarlockSpellImmolate | WarlockSpellImmolateDot,
-		FloatValue: 30 * core.CritRatingPerCritChance,
+		FloatValue: 30,
 	})
 
 	demonSoulImp := warlock.RegisterAura(core.Aura{
