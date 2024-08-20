@@ -103,7 +103,7 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 
 					if (!metric.landedHits && !metric.totalMisses) return;
 					const relativeHitPercent = ((metric.landedHits || metric.casts) / ((metric.landedHits || metric.casts) + metric.totalMisses)) * 100;
-					console.log('casts', metric);
+
 					cellElem.appendChild(
 						<MetricsCombinedTooltipTable
 							tooltipElement={cellElem}
