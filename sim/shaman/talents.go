@@ -27,8 +27,8 @@ func (shaman *Shaman) ApplyTalents() {
 	}
 
 	if shaman.Talents.ElementalPrecision > 0 {
-		shaman.AddStat(stats.SpellHitPercent, []float64{0.0, -0.33, -0.66, -1.0}[shaman.Talents.ElementalPrecision] * shaman.GetBaseStats()[stats.Spirit] / core.SpellHitRatingPerHitPercent)
-		shaman.AddStatDependency(stats.Spirit, stats.SpellHitPercent, []float64{0.0, 0.33, 0.66, 1.0}[shaman.Talents.ElementalPrecision] / core.SpellHitRatingPerHitPercent)
+		shaman.AddStat(stats.SpellHitPercent, []float64{0.0, -0.33, -0.66, -1.0}[shaman.Talents.ElementalPrecision]*shaman.GetBaseStats()[stats.Spirit]/core.SpellHitRatingPerHitPercent)
+		shaman.AddStatDependency(stats.Spirit, stats.SpellHitPercent, []float64{0.0, 0.33, 0.66, 1.0}[shaman.Talents.ElementalPrecision]/core.SpellHitRatingPerHitPercent)
 		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1 + 0.01*float64(shaman.Talents.ElementalPrecision)
 		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= 1 + 0.01*float64(shaman.Talents.ElementalPrecision)
 		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1 + 0.01*float64(shaman.Talents.ElementalPrecision)
@@ -36,7 +36,7 @@ func (shaman *Shaman) ApplyTalents() {
 
 	if shaman.Talents.CallOfFlame > 0 {
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskLavaBurst,
+			ClassMask:  SpellMaskLavaBurst | SpellMaskLavaBurstOverload,
 			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.05 * float64(shaman.Talents.CallOfFlame),
 		})
@@ -297,7 +297,7 @@ func (shaman *Shaman) applyLavaSurge() {
 			// cannot be spell queued (the CD was only just now reset), apply
 			// input delay to the rotation call.
 			if shaman.RotationTimer.IsReady(sim) {
-				shaman.WaitUntil(sim, sim.CurrentTime + shaman.ReactionTime)
+				shaman.WaitUntil(sim, sim.CurrentTime+shaman.ReactionTime)
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
