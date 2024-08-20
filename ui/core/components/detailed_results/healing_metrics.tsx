@@ -43,30 +43,32 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 						/>,
 					);
 
-					<MetricsCombinedTooltipTable
-						tooltipElement={cellElem}
-						groups={[
-							{
-								spellSchool: metric.spellSchool,
-								total: metric.avgHealing,
-								totalPercentage: 100,
-								data: [
-									{
-										name: 'Hit',
-										value: metric.avgHealing - metric.avgCritHealing,
-										percentage: metric.healingPercent,
-										average: (metric.avgHealing - metric.avgCritHealing) / metric.hits,
-									},
-									{
-										name: `Critical Hit`,
-										value: metric.avgCritHealing,
-										percentage: metric.healingCritPercent,
-										average: metric.avgCritHealing / metric.crits,
-									},
-								],
-							},
-						]}
-					/>;
+					cellElem.appendChild(
+						<MetricsCombinedTooltipTable
+							tooltipElement={cellElem}
+							groups={[
+								{
+									spellSchool: metric.spellSchool,
+									total: metric.avgHealing,
+									totalPercentage: 100,
+									data: [
+										{
+											name: 'Hit',
+											value: metric.avgHealing - metric.avgCritHealing,
+											percentage: metric.healingPercent,
+											average: (metric.avgHealing - metric.avgCritHealing) / metric.hits,
+										},
+										{
+											name: `Critical Hit`,
+											value: metric.avgCritHealing,
+											percentage: metric.healingCritPercent,
+											average: metric.avgCritHealing / metric.crits,
+										},
+									],
+								},
+							]}
+						/>,
+					);
 				},
 			},
 			{
@@ -92,30 +94,32 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 					cellElem.appendChild(<>{formatToCompactNumber(metric.avgCastHealing, { fallbackString: '-' })}</>);
 					if (!metric.avgCastHealing) return;
 
-					<MetricsCombinedTooltipTable
-						tooltipElement={cellElem}
-						tooltipConfig={{
-							onShow: () => {
-								const hideThreatMetrics = !!document.querySelector('.hide-threat-metrics');
-								if (hideThreatMetrics) return false;
-							},
-						}}
-						headerValues={[, 'Amount']}
-						groups={[
-							{
-								spellSchool: metric.spellSchool,
-								total: metric.avgCastThreat,
-								totalPercentage: 100,
-								data: [
-									{
-										name: 'Threat',
-										value: metric.avgCastThreat,
-										percentage: 100,
-									},
-								],
-							},
-						]}
-					/>;
+					cellElem.appendChild(
+						<MetricsCombinedTooltipTable
+							tooltipElement={cellElem}
+							tooltipConfig={{
+								onShow: () => {
+									const hideThreatMetrics = !!document.querySelector('.hide-threat-metrics');
+									if (hideThreatMetrics) return false;
+								},
+							}}
+							headerValues={[, 'Amount']}
+							groups={[
+								{
+									spellSchool: metric.spellSchool,
+									total: metric.avgCastThreat,
+									totalPercentage: 100,
+									data: [
+										{
+											name: 'Threat',
+											value: metric.avgCastThreat,
+											percentage: 100,
+										},
+									],
+								},
+							]}
+						/>,
+					);
 				},
 			},
 			{
@@ -139,62 +143,64 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 					const relativeBlockPercent = (metric.blocks / metric.landedHits) * 100;
 					const relativeCritBlockPercent = (metric.critBlocks / metric.landedHits) * 100;
 
-					<MetricsCombinedTooltipTable
-						tooltipElement={cellElem}
-						groups={[
-							{
-								spellSchool: metric.spellSchool,
-								total: metric.landedHits,
-								totalPercentage: 100,
-								name: 'Hits',
-								data: [
-									{
-										name: 'Hit',
-										value: metric.hits,
-										percentage: relativeHitPercent,
-									},
-									{
-										name: `Critical Hit`,
-										value: metric.crits,
-										percentage: relativeCritPercent,
-									},
-									{
-										name: 'Glancing Blow',
-										value: metric.glances,
-										percentage: relativeGlancePercent,
-									},
-									{
-										name: 'Blocked Hit',
-										value: metric.blocks,
-										percentage: relativeBlockPercent,
-									},
-									{
-										name: 'Blocked Critical Hit',
-										value: metric.critBlocks,
-										percentage: relativeCritBlockPercent,
-									},
-								],
-							},
-							{
-								spellSchool: metric.spellSchool,
-								total: metric.landedTicks,
-								totalPercentage: 100,
-								name: 'Ticks',
-								data: [
-									{
-										name: 'Tick',
-										value: metric.ticks,
-										percentage: relativeTickPercent,
-									},
-									{
-										name: `Critical Tick`,
-										value: metric.critTicks,
-										percentage: relativeCritTickPercent,
-									},
-								],
-							},
-						]}
-					/>;
+					cellElem.appendChild(
+						<MetricsCombinedTooltipTable
+							tooltipElement={cellElem}
+							groups={[
+								{
+									spellSchool: metric.spellSchool,
+									total: metric.landedHits,
+									totalPercentage: 100,
+									name: 'Hits',
+									data: [
+										{
+											name: 'Hit',
+											value: metric.hits,
+											percentage: relativeHitPercent,
+										},
+										{
+											name: `Critical Hit`,
+											value: metric.crits,
+											percentage: relativeCritPercent,
+										},
+										{
+											name: 'Glancing Blow',
+											value: metric.glances,
+											percentage: relativeGlancePercent,
+										},
+										{
+											name: 'Blocked Hit',
+											value: metric.blocks,
+											percentage: relativeBlockPercent,
+										},
+										{
+											name: 'Blocked Critical Hit',
+											value: metric.critBlocks,
+											percentage: relativeCritBlockPercent,
+										},
+									],
+								},
+								{
+									spellSchool: metric.spellSchool,
+									total: metric.landedTicks,
+									totalPercentage: 100,
+									name: 'Ticks',
+									data: [
+										{
+											name: 'Tick',
+											value: metric.ticks,
+											percentage: relativeTickPercent,
+										},
+										{
+											name: `Critical Tick`,
+											value: metric.critTicks,
+											percentage: relativeCritTickPercent,
+										},
+									],
+								},
+							]}
+						/>,
+					);
 				},
 			},
 			{
@@ -205,30 +211,32 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 					cellElem.appendChild(<>{formatToCompactNumber(metric.avgHitHealing, { fallbackString: '-' })}</>);
 					if (!metric.avgHitHealing) return;
 
-					<MetricsCombinedTooltipTable
-						tooltipElement={cellElem}
-						tooltipConfig={{
-							onShow: () => {
-								const hideThreatMetrics = !!document.querySelector('.hide-threat-metrics');
-								if (hideThreatMetrics) return false;
-							},
-						}}
-						headerValues={[, 'Amount']}
-						groups={[
-							{
-								spellSchool: metric.spellSchool,
-								total: metric.avgHitThreat,
-								totalPercentage: 100,
-								data: [
-									{
-										name: 'Threat',
-										value: metric.avgHitThreat,
-										percentage: 100,
-									},
-								],
-							},
-						]}
-					/>;
+					cellElem.appendChild(
+						<MetricsCombinedTooltipTable
+							tooltipElement={cellElem}
+							tooltipConfig={{
+								onShow: () => {
+									const hideThreatMetrics = !!document.querySelector('.hide-threat-metrics');
+									if (hideThreatMetrics) return false;
+								},
+							}}
+							headerValues={[, 'Amount']}
+							groups={[
+								{
+									spellSchool: metric.spellSchool,
+									total: metric.avgHitThreat,
+									totalPercentage: 100,
+									data: [
+										{
+											name: 'Threat',
+											value: metric.avgHitThreat,
+											percentage: 100,
+										},
+									],
+								},
+							]}
+						/>,
+					);
 				},
 			},
 			{
@@ -256,30 +264,32 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 				fillCell: (metric: ActionMetrics, cellElem: HTMLElement) => {
 					cellElem.appendChild(<>{formatToNumber(metric.hps, { minimumFractionDigits: 2 })}</>);
 
-					<MetricsCombinedTooltipTable
-						tooltipElement={cellElem}
-						tooltipConfig={{
-							onShow: () => {
-								const hideThreatMetrics = !!document.querySelector('.hide-threat-metrics');
-								if (hideThreatMetrics) return false;
-							},
-						}}
-						headerValues={[, 'Amount']}
-						groups={[
-							{
-								spellSchool: metric.spellSchool,
-								total: metric.tps,
-								totalPercentage: 100,
-								data: [
-									{
-										name: 'Threat',
-										value: metric.tps,
-										percentage: 100,
-									},
-								],
-							},
-						]}
-					/>;
+					cellElem.appendChild(
+						<MetricsCombinedTooltipTable
+							tooltipElement={cellElem}
+							tooltipConfig={{
+								onShow: () => {
+									const hideThreatMetrics = !!document.querySelector('.hide-threat-metrics');
+									if (hideThreatMetrics) return false;
+								},
+							}}
+							headerValues={[, 'Amount']}
+							groups={[
+								{
+									spellSchool: metric.spellSchool,
+									total: metric.tps,
+									totalPercentage: 100,
+									data: [
+										{
+											name: 'Threat',
+											value: metric.tps,
+											percentage: 100,
+										},
+									],
+								},
+							]}
+						/>,
+					);
 				},
 			},
 		]);

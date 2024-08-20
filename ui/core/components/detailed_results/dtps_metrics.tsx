@@ -50,47 +50,49 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 					const blockValues = metric.damageDone.block;
 					const critBlockValues = metric.damageDone.critBlock;
 
-					<MetricsCombinedTooltipTable
-						tooltipElement={cellElem}
-						headerValues={[, 'Amount']}
-						groups={[
-							{
-								spellSchool: metric.spellSchool,
-								total: metric.damage,
-								totalPercentage: 100,
-								data: [
-									{
-										name: 'Hit',
-										...hitValues,
-									},
-									{
-										name: `Critical Hit`,
-										...critHitValues,
-									},
-									{
-										name: 'Tick',
-										...tickValues,
-									},
-									{
-										name: `Critical Tick`,
-										...critTickValues,
-									},
-									{
-										name: 'Glancing Blow',
-										...glanceValues,
-									},
-									{
-										name: 'Blocked Hit',
-										...blockValues,
-									},
-									{
-										name: 'Blocked Critical Hit',
-										...critBlockValues,
-									},
-								],
-							},
-						]}
-					/>;
+					cellElem.appendChild(
+						<MetricsCombinedTooltipTable
+							tooltipElement={cellElem}
+							headerValues={[, 'Amount']}
+							groups={[
+								{
+									spellSchool: metric.spellSchool,
+									total: metric.damage,
+									totalPercentage: 100,
+									data: [
+										{
+											name: 'Hit',
+											...hitValues,
+										},
+										{
+											name: `Critical Hit`,
+											...critHitValues,
+										},
+										{
+											name: 'Tick',
+											...tickValues,
+										},
+										{
+											name: `Critical Tick`,
+											...critTickValues,
+										},
+										{
+											name: 'Glancing Blow',
+											...glanceValues,
+										},
+										{
+											name: 'Blocked Hit',
+											...blockValues,
+										},
+										{
+											name: 'Blocked Critical Hit',
+											...critBlockValues,
+										},
+									],
+								},
+							]}
+						/>,
+					);
 				},
 			},
 			{
@@ -101,38 +103,40 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 
 					if (!metric.landedHits && !metric.totalMisses) return;
 					const relativeHitPercent = ((metric.landedHits || metric.casts) / ((metric.landedHits || metric.casts) + metric.totalMisses)) * 100;
-					<MetricsCombinedTooltipTable
-						tooltipElement={cellElem}
-						groups={[
-							{
-								spellSchool: metric.spellSchool,
-								total: metric.casts,
-								totalPercentage: 100,
-								data: [
-									{
-										name: 'Hits',
-										value: metric.landedHits || metric.casts - metric.totalMisses,
-										percentage: relativeHitPercent,
-									},
-									{
-										name: 'Miss',
-										value: metric.misses,
-										percentage: metric.missPercent,
-									},
-									{
-										name: 'Parry',
-										value: metric.parries,
-										percentage: metric.parryPercent,
-									},
-									{
-										name: 'Dodge',
-										value: metric.dodges,
-										percentage: metric.dodgePercent,
-									},
-								],
-							},
-						]}
-					/>;
+					cellElem.appendChild(
+						<MetricsCombinedTooltipTable
+							tooltipElement={cellElem}
+							groups={[
+								{
+									spellSchool: metric.spellSchool,
+									total: metric.casts,
+									totalPercentage: 100,
+									data: [
+										{
+											name: 'Hits',
+											value: metric.landedHits || metric.casts - metric.totalMisses,
+											percentage: relativeHitPercent,
+										},
+										{
+											name: 'Miss',
+											value: metric.misses,
+											percentage: metric.missPercent,
+										},
+										{
+											name: 'Parry',
+											value: metric.parries,
+											percentage: metric.parryPercent,
+										},
+										{
+											name: 'Dodge',
+											value: metric.dodges,
+											percentage: metric.dodgePercent,
+										},
+									],
+								},
+							]}
+						/>,
+					);
 				},
 			},
 			{
@@ -171,60 +175,62 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 					const relativeBlockPercent = (metric.blocks / metric.landedHits) * 100;
 					const relativeCritBlockPercent = (metric.critBlocks / metric.landedHits) * 100;
 
-					<MetricsCombinedTooltipTable
-						tooltipElement={cellElem}
-						groups={[
-							{
-								spellSchool: metric.spellSchool,
-								total: metric.landedHits,
-								totalPercentage: 100,
-								data: [
-									{
-										name: 'Hit',
-										value: metric.hits,
-										percentage: relativeHitPercent,
-									},
-									{
-										name: `Critical Hit`,
-										value: metric.crits,
-										percentage: relativeCritPercent,
-									},
-									{
-										name: 'Glancing Blow',
-										value: metric.glances,
-										percentage: relativeGlancePercent,
-									},
-									{
-										name: 'Blocked Hit',
-										value: metric.blocks,
-										percentage: relativeBlockPercent,
-									},
-									{
-										name: 'Blocked Critical Hit',
-										value: metric.critBlocks,
-										percentage: relativeCritBlockPercent,
-									},
-								],
-							},
-							{
-								spellSchool: metric.spellSchool,
-								total: metric.landedTicks,
-								totalPercentage: 100,
-								data: [
-									{
-										name: 'Tick',
-										value: metric.ticks,
-										percentage: relativeTickPercent,
-									},
-									{
-										name: `Critical Tick`,
-										value: metric.critTicks,
-										percentage: relativeCritTickPercent,
-									},
-								],
-							},
-						]}
-					/>;
+					cellElem.appendChild(
+						<MetricsCombinedTooltipTable
+							tooltipElement={cellElem}
+							groups={[
+								{
+									spellSchool: metric.spellSchool,
+									total: metric.landedHits,
+									totalPercentage: 100,
+									data: [
+										{
+											name: 'Hit',
+											value: metric.hits,
+											percentage: relativeHitPercent,
+										},
+										{
+											name: `Critical Hit`,
+											value: metric.crits,
+											percentage: relativeCritPercent,
+										},
+										{
+											name: 'Glancing Blow',
+											value: metric.glances,
+											percentage: relativeGlancePercent,
+										},
+										{
+											name: 'Blocked Hit',
+											value: metric.blocks,
+											percentage: relativeBlockPercent,
+										},
+										{
+											name: 'Blocked Critical Hit',
+											value: metric.critBlocks,
+											percentage: relativeCritBlockPercent,
+										},
+									],
+								},
+								{
+									spellSchool: metric.spellSchool,
+									total: metric.landedTicks,
+									totalPercentage: 100,
+									data: [
+										{
+											name: 'Tick',
+											value: metric.ticks,
+											percentage: relativeTickPercent,
+										},
+										{
+											name: `Critical Tick`,
+											value: metric.critTicks,
+											percentage: relativeCritTickPercent,
+										},
+									],
+								},
+							]}
+						/>,
+					);
 				},
 			},
 			{
@@ -247,33 +253,35 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 					cellElem.appendChild(<>{formatToPercent(metric.totalMissesPercent, { fallbackString: '-' })}</>);
 					if (!metric.totalMissesPercent) return;
 
-					<MetricsCombinedTooltipTable
-						tooltipElement={cellElem}
-						groups={[
-							{
-								spellSchool: metric.spellSchool,
-								total: metric.totalMisses,
-								totalPercentage: metric.totalMissesPercent,
-								data: [
-									{
-										name: 'Miss',
-										value: metric.misses,
-										percentage: metric.missPercent,
-									},
-									{
-										name: 'Parry',
-										value: metric.parries,
-										percentage: metric.parryPercent,
-									},
-									{
-										name: 'Dodge',
-										value: metric.dodges,
-										percentage: metric.dodgePercent,
-									},
-								],
-							},
-						]}
-					/>;
+					cellElem.appendChild(
+						<MetricsCombinedTooltipTable
+							tooltipElement={cellElem}
+							groups={[
+								{
+									spellSchool: metric.spellSchool,
+									total: metric.totalMisses,
+									totalPercentage: metric.totalMissesPercent,
+									data: [
+										{
+											name: 'Miss',
+											value: metric.misses,
+											percentage: metric.missPercent,
+										},
+										{
+											name: 'Parry',
+											value: metric.parries,
+											percentage: metric.parryPercent,
+										},
+										{
+											name: 'Dodge',
+											value: metric.dodges,
+											percentage: metric.dodgePercent,
+										},
+									],
+								},
+							]}
+						/>,
+					);
 				},
 			},
 			{
