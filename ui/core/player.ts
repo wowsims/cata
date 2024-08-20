@@ -1,6 +1,5 @@
 import Toast from './components/toast';
 import * as Mechanics from './constants/mechanics';
-import { CURRENT_API_VERSION } from './constants/other';
 import { MAX_PARTY_SIZE, Party } from './party';
 import { PlayerClass } from './player_class';
 import { PlayerSpec } from './player_spec';

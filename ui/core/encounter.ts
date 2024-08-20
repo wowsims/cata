@@ -1,4 +1,3 @@
-import Toast from './components/toast';
 import * as Mechanics from './constants/mechanics';
 import { CURRENT_API_VERSION } from './constants/other';
 import { UnitMetadataList } from './player';
@@ -200,7 +199,7 @@ export class Encounter {
 
 	static updateProtoVersion(proto: EncounterProto) {
 		// First migrate the stats arrays embedded in each target.
-		proto.targets.forEach((target, index) => {
+		proto.targets.forEach(target => {
 			target.stats = Stats.migrateStatsArray(target.stats, proto.apiVersion, this.defaultTargetProto().stats);
 		});
 
