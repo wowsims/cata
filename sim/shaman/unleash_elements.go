@@ -29,8 +29,19 @@ func (shaman *Shaman) registerUnleashFlame() {
 			unleashFlameMod.Deactivate()
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spellMask&spell.ClassSpellMask > 0 && aura.StartedAt() < (sim.CurrentTime-spell.TravelTime()) {
-				aura.Deactivate(sim)
+			if spellMask&spell.ClassSpellMask > 0 && aura.StartedAt() < (sim.CurrentTime-spell.TravelTime()) { // In case unleash element is used during LvB travel time
+
+				//Unleash flame applies to both direct damage and dot,
+				//As the 2 parts are separated we wait to deactivate the aura
+				pa := &core.PendingAction{
+					NextActionAt: sim.CurrentTime + time.Duration(1),
+					Priority:     core.ActionPriorityGCD,
+
+					OnAction: func(sim *core.Simulation) {
+						aura.Deactivate(sim)
+					},
+				}
+				sim.AddPendingAction(pa)
 			}
 		},
 	})
