@@ -1,10 +1,11 @@
-import * as Mechanics from './constants/mechanics.js';
-import { CURRENT_API_VERSION } from './constants/other.js';
-import { UnitMetadataList } from './player.js';
-import { Encounter as EncounterProto, MobType, PresetEncounter, PresetTarget, SpellSchool, Stat, Target as TargetProto, TargetInput } from './proto/common.js';
-import { Stats } from './proto_utils/stats.js';
-import { Sim } from './sim.js';
-import { EventID, TypedEvent } from './typed_event.js';
+import Toast from './components/toast';
+import * as Mechanics from './constants/mechanics';
+import { CURRENT_API_VERSION } from './constants/other';
+import { UnitMetadataList } from './player';
+import { Encounter as EncounterProto, MobType, PresetEncounter, PresetTarget, SpellSchool, Stat, Target as TargetProto, TargetInput } from './proto/common';
+import { Stats } from './proto_utils/stats';
+import { Sim } from './sim';
+import { EventID, TypedEvent } from './typed_event';
 
 // Manages all the settings for an Encounter.
 export class Encounter {
@@ -172,28 +173,43 @@ export class Encounter {
 	}
 
 	static defaultTargetProto(): TargetProto {
+		// Copy default raid target used as fallback for missing DB.
+		// https://github.com/wowsims/cata/blob/3570c4fcf1a4e2cd81926019d4a1b3182f613de1/sim/encounters/register_all.go#L24
 		return TargetProto.create({
+			id: 31146,
+			name: 'Raid Target',
 			level: Mechanics.BOSS_LEVEL,
 			mobType: MobType.MobTypeGiant,
-			tankIndex: 0,
-			swingSpeed: 1.5,
-			minBaseDamage: 65000,
-			dualWield: false,
-			dualWieldPenalty: false,
-			suppressDodge: false,
-			parryHaste: true,
-			spellSchool: SpellSchool.SpellSchoolPhysical,
 			stats: Stats.fromMap({
 				[Stat.StatArmor]: 11977,
 				[Stat.StatAttackPower]: 805,
+				[Stat.StatHealth]: 120016403,
 			}).asProtoArray(),
+			minBaseDamage: 210000,
+			damageSpread: 0.4,
+			tankIndex: 0,
+			swingSpeed: 2.5,
+			suppressDodge: false,
+			parryHaste: false,
+			dualWield: false,
+			dualWieldPenalty: false,
+			spellSchool: SpellSchool.SpellSchoolPhysical,
 			targetInputs: new Array<TargetInput>(0),
 		});
 	}
 
 	static updateProtoVersion(proto: EncounterProto) {
-		// First migrate the stats arrays embedded in each target.
+		let showOutOfDateEncounterTargetWarning = false;
 		proto.targets.forEach(target => {
+			// If the old target is detected return the
+			// new default target without needing to migrate the stats
+			if (target.minBaseDamage === 65000) {
+				target = Encounter.defaultTargetProto();
+				showOutOfDateEncounterTargetWarning = true;
+				return;
+			}
+
+			// Migrate the stats arrays embedded in each target
 			target.stats = Stats.migrateStatsArray(target.stats, proto.apiVersion, this.defaultTargetProto().stats);
 		});
 
@@ -201,5 +217,12 @@ export class Encounter {
 
 		// Flag the version as up-to-date once all migrations are done.
 		proto.apiVersion = CURRENT_API_VERSION;
+
+		if (showOutOfDateEncounterTargetWarning)
+			new Toast({
+				delay: 5000,
+				variant: 'info',
+				body: 'We detected an out-of-date encounter target with WOTLK settings. It has been updated it to the latest version.',
+			});
 	}
 }
