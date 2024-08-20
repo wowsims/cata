@@ -1570,6 +1570,48 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-Settings-Orc-p1-DefaultTalents-Standard-unleash-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 53144.79758
+  tps: 9133.51394
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-p1-DefaultTalents-Standard-unleash-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 31457.76139
+  tps: 533.42151
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-p1-DefaultTalents-Standard-unleash-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 39143.37483
+  tps: 669.3354
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-p1-DefaultTalents-Standard-unleash-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 41374.75923
+  tps: 8225.92346
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-p1-DefaultTalents-Standard-unleash-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 24231.28697
+  tps: 476.74702
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-p1-DefaultTalents-Standard-unleash-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 28951.08373
+  tps: 553.16
+ }
+}
+dps_results: {
  key: "TestElemental-Settings-Orc-p1-TalentsImprovedShields-Standard-aoe-FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 103802.14477
@@ -1651,6 +1693,48 @@ dps_results: {
  value: {
   dps: 28060.87519
   tps: 584.30831
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-p1-TalentsImprovedShields-Standard-unleash-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 45104.0586
+  tps: 8960.35084
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-p1-TalentsImprovedShields-Standard-unleash-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 29265.27078
+  tps: 527.32287
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-p1-TalentsImprovedShields-Standard-unleash-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 37497.66394
+  tps: 667.447
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-p1-TalentsImprovedShields-Standard-unleash-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 34861.60836
+  tps: 7839.66888
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-p1-TalentsImprovedShields-Standard-unleash-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 22184.13341
+  tps: 457.53643
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-p1-TalentsImprovedShields-Standard-unleash-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 27541.06989
+  tps: 547.98046
  }
 }
 dps_results: {
@@ -1738,6 +1822,48 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-Settings-Troll-p1-DefaultTalents-Standard-unleash-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 51043.94823
+  tps: 9174.6354
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-p1-DefaultTalents-Standard-unleash-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 31026.61858
+  tps: 536.86182
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-p1-DefaultTalents-Standard-unleash-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 38943.78817
+  tps: 665.74723
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-p1-DefaultTalents-Standard-unleash-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 39493.13621
+  tps: 8265.76243
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-p1-DefaultTalents-Standard-unleash-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 23792.39859
+  tps: 477.99301
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-p1-DefaultTalents-Standard-unleash-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 28085.38678
+  tps: 551.54206
+ }
+}
+dps_results: {
  key: "TestElemental-Settings-Troll-p1-TalentsImprovedShields-Standard-aoe-FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 101471.19062
@@ -1819,6 +1945,48 @@ dps_results: {
  value: {
   dps: 27618.21551
   tps: 588.32089
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-p1-TalentsImprovedShields-Standard-unleash-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 43499.99847
+  tps: 8940.38165
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-p1-TalentsImprovedShields-Standard-unleash-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 28836.37483
+  tps: 525.80231
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-p1-TalentsImprovedShields-Standard-unleash-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 37177.70441
+  tps: 654.35738
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-p1-TalentsImprovedShields-Standard-unleash-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 33668.20803
+  tps: 7891.33151
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-p1-TalentsImprovedShields-Standard-unleash-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 22134.6981
+  tps: 462.84445
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-p1-TalentsImprovedShields-Standard-unleash-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 26927.16602
+  tps: 546.45164
  }
 }
 dps_results: {
