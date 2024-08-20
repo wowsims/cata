@@ -67,7 +67,7 @@ func (ret *RetributionPaladin) RegisterSpecializationEffects() {
 
 	// Sheath of Light
 	ret.AddStatDependency(stats.AttackPower, stats.SpellPower, 0.3)
-	ret.AddStat(stats.SpellHit, core.SpellHitRatingPerHitChance*8)
+	ret.AddStat(stats.SpellHitPercent, 8)
 
 	// Two-Handed Weapon Specialization
 	mhWeapon := ret.GetMHWeapon()
@@ -89,12 +89,10 @@ func (ret *RetributionPaladin) RegisterMastery() {
 
 	// Hand of Light
 	ret.HandOfLight = ret.RegisterSpell(core.SpellConfig{
-		ActionID:    actionId,
-		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags: core.SpellFlagMeleeMetrics |
-			core.SpellFlagIgnoreModifiers |
-			core.SpellFlagNoOnCastComplete,
+		ActionID:       actionId,
+		SpellSchool:    core.SpellSchoolHoly,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 		ClassSpellMask: paladin.SpellMaskHandOfLight,
 
 		DamageMultiplier: 1.0,

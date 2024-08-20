@@ -38,9 +38,7 @@ export class ReforgeSummary extends Component {
 			if (item?.reforge && item.reforge?.id !== 0) {
 				const reforge = this.player.getReforgeData(item, item.reforge);
 				if (reforge) {
-					const { fromAmount, toAmount } = reforge;
-					const fromStat = reforge.fromStat[0];
-					const toStat = reforge.toStat[0];
+					const { fromStat, toStat, fromAmount, toAmount } = reforge;
 
 					if (typeof totals[fromStat] !== 'number') {
 						totals[fromStat] = 0;

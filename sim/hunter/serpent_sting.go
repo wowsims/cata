@@ -14,6 +14,7 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 		SpellSchool:              core.SpellSchoolNature,
 		ProcMask:                 core.ProcMaskDirect,
 		ClassSpellMask:           HunterSpellSerpentSting,
+		Flags:                    core.SpellFlagPassiveSpell,
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           hunter.MeleeCritMultiplier(1, 0),
@@ -87,7 +88,6 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				if result.Landed() {
-					spell.SpellMetrics[target.UnitIndex].Hits--
 					spell.Dot(target).Apply(sim)
 					if hunter.Talents.ImprovedSerpentSting > 0 {
 						hunter.ImprovedSerpentSting.Cast(sim, target)

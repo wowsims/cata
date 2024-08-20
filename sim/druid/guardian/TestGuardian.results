@@ -7,10 +7,7 @@ character_stats_results: {
   final_stats: 177.6348
   final_stats: 175
   final_stats: 182
-  final_stats: 182
-  final_stats: 6184.13635
-  final_stats: 2971.10676
-  final_stats: 310
+  final_stats: 1695
   final_stats: 310
   final_stats: 83
   final_stats: 4012.59098
@@ -19,7 +16,6 @@ character_stats_results: {
   final_stats: 13520.25
   final_stats: 0
   final_stats: 184.39828
-  final_stats: 1257.75
   final_stats: 0
   final_stats: 158
   final_stats: 0
@@ -31,7 +27,12 @@ character_stats_results: {
   final_stats: 1629
   final_stats: 195508.64524
   final_stats: 26617.3503
-  final_stats: 0
+  final_stats: 1257.75
+  final_stats: 1.51529
+  final_stats: 1.77655
+  final_stats: 34.49428
+  final_stats: 16.57243
+  final_stats: 5
  }
 }
 dps_results: {
@@ -72,15 +73,15 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-ApparatusofKhaz'goroth-68972"
  value: {
-  dps: 7800.83542
-  tps: 39070.13604
+  dps: 7843.78516
+  tps: 39285.30684
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ApparatusofKhaz'goroth-69113"
  value: {
-  dps: 7833.11618
-  tps: 39231.31568
+  dps: 7887.29914
+  tps: 39502.63676
  }
 }
 dps_results: {

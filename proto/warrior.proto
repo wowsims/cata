@@ -137,6 +137,7 @@ message FuryWarrior {
 		WarriorOptions class_options = 1;
 		bool stance_snapshot = 2;
 		WarriorSyncType sync_type = 3;
+		int32 prepull_mastery = 4;
 	}
 	Options options = 1;
 }

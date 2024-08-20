@@ -21,9 +21,9 @@ func (hunter *Hunter) ApplyMMTalents() {
 	}
 	if hunter.Talents.CarefulAim > 0 {
 		caCritMod := hunter.AddDynamicMod(core.SpellModConfig{
-			Kind:       core.SpellMod_BonusCrit_Rating,
+			Kind:       core.SpellMod_BonusCrit_Percent,
 			ClassMask:  HunterSpellAimedShot | HunterSpellCobraShot | HunterSpellSteadyShot,
-			FloatValue: (30.0 * float64(hunter.Talents.CarefulAim)) * core.CritRatingPerCritChance,
+			FloatValue: 30 * float64(hunter.Talents.CarefulAim),
 		})
 
 		hunter.RegisterResetEffect(func(sim *core.Simulation) {
@@ -162,7 +162,7 @@ func (hunter *Hunter) applyPiercingShots() {
 		ActionID:    core.ActionID{SpellID: 53238},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreModifiers,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreModifiers | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -184,8 +184,7 @@ func (hunter *Hunter) applyPiercingShots() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.Dot(target).Apply(sim)
-			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
-
+			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHitNoHitCounter)
 		},
 	})
 

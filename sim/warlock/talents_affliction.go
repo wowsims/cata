@@ -19,8 +19,8 @@ func (warlock *Warlock) ApplyAfflictionTalents() {
 	if warlock.Talents.DoomAndGloom > 0 {
 		warlock.AddStaticMod(core.SpellModConfig{
 			ClassMask:  WarlockSpellBaneOfAgony | WarlockSpellBaneOfDoom,
-			Kind:       core.SpellMod_BonusCrit_Rating,
-			FloatValue: 4.0 * float64(warlock.Talents.DoomAndGloom) * core.CritRatingPerCritChance,
+			Kind:       core.SpellMod_BonusCrit_Percent,
+			FloatValue: 4.0 * float64(warlock.Talents.DoomAndGloom),
 		})
 	}
 
@@ -123,8 +123,8 @@ func (warlock *Warlock) registerEverlastingAffliction() {
 	warlock.AddStaticMod(core.SpellModConfig{
 		ClassMask: WarlockSpellCorruption | WarlockSpellSeedOfCorruption | WarlockSpellSeedOfCorruptionExposion |
 			WarlockSpellUnstableAffliction,
-		Kind:       core.SpellMod_BonusCrit_Rating,
-		FloatValue: 5.0 * float64(warlock.Talents.EverlastingAffliction) * core.CritRatingPerCritChance,
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		FloatValue: 5.0 * float64(warlock.Talents.EverlastingAffliction),
 	})
 
 	procChance := []float64{0, 0.33, 0.66, 1.0}[warlock.Talents.EverlastingAffliction]

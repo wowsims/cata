@@ -70,11 +70,11 @@ export const P1_FURY_SMF_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatStrength]: 2.2,
 			[Stat.StatAgility]: 1.14,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatExpertise]: 1.46,
-			[Stat.StatMeleeHit]: 2.35,
-			[Stat.StatMeleeCrit]: 1.48,
-			[Stat.StatMeleeHaste]: 1.05,
-			[Stat.StatMastery]: 0.95,
+			[Stat.StatExpertiseRating]: 1.46,
+			[Stat.StatHitRating]: 2.35,
+			[Stat.StatCritRating]: 1.48,
+			[Stat.StatHasteRating]: 1.05,
+			[Stat.StatMasteryRating]: 0.95,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 3.15,
@@ -91,11 +91,11 @@ export const P1_FURY_TG_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatStrength]: 2.21,
 			[Stat.StatAgility]: 1.23,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatExpertise]: 1.59,
-			[Stat.StatMeleeHit]: 2.56,
-			[Stat.StatMeleeCrit]: 1.59,
-			[Stat.StatMeleeHaste]: 1.15,
-			[Stat.StatMastery]: 1.31,
+			[Stat.StatExpertiseRating]: 1.59,
+			[Stat.StatHitRating]: 2.56,
+			[Stat.StatCritRating]: 1.59,
+			[Stat.StatHasteRating]: 1.15,
+			[Stat.StatMasteryRating]: 1.31,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 3.77,
@@ -151,6 +151,7 @@ export const DefaultOptions = WarriorOptions.create({
 		startingRage: 0,
 	},
 	syncType: 0,
+	prepullMastery: 0
 });
 
 export const DefaultConsumes = Consumes.create({

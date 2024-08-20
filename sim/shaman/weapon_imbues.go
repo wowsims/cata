@@ -44,7 +44,7 @@ func (shaman *Shaman) newWindfuryImbueSpell(isMH bool) *core.Spell {
 		ActionID:    core.ActionID{SpellID: 8232, Tag: int32(tag)},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    procMask,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: []float64{1, 1.20, 1.40}[shaman.Talents.ElementalWeapons],
 		CritMultiplier:   shaman.DefaultMeleeCritMultiplier(),
@@ -133,6 +133,7 @@ func (shaman *Shaman) newFlametongueImbueSpell(weapon *core.Item) *core.Spell {
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskWeaponProc,
 		ClassSpellMask: SpellMaskFlametongueWeapon,
+		Flags:          core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
@@ -170,8 +171,7 @@ func (shaman *Shaman) ApplyFlametongueImbueToItem(item *core.Item) {
 	shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= magicDamageBonus
 
 	if shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfFlametongueWeapon) {
-		newStats := stats.Stats{stats.SpellCrit: 2 * core.CritRatingPerCritChance}
-		shaman.AddStats(newStats)
+		shaman.AddStat(stats.SpellCritPercent, 2)
 	}
 
 	item.TempEnchant = int32(enchantID)
@@ -256,6 +256,7 @@ func (shaman *Shaman) newFrostbrandImbueSpell() *core.Spell {
 		ActionID:    core.ActionID{SpellID: 8033},
 		SpellSchool: core.SpellSchoolFrost,
 		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
@@ -319,6 +320,7 @@ func (shaman *Shaman) newEarthlivingImbueSpell() *core.Spell {
 		ActionID:    core.ActionID{SpellID: 51730},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -340,7 +342,6 @@ func (shaman *Shaman) newEarthlivingImbueSpell() *core.Spell {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.SpellMetrics[target.UnitIndex].Hits++
 			spell.Hot(target).Apply(sim)
 		},
 	})

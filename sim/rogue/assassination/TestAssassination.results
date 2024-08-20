@@ -6,11 +6,8 @@ character_stats_results: {
   final_stats: 6807.15
   final_stats: 69.3
   final_stats: 93.73
-  final_stats: 1755.4352
-  final_stats: 1684.78296
-  final_stats: 5234.08795
-  final_stats: 1756.4002
-  final_stats: 1222
+  final_stats: 1275
+  final_stats: 860
   final_stats: 1222
   final_stats: 66
   final_stats: 0
@@ -19,7 +16,6 @@ character_stats_results: {
   final_stats: 16524.912
   final_stats: 209
   final_stats: 0
-  final_stats: 326
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -31,7 +27,49 @@ character_stats_results: {
   final_stats: 0
   final_stats: 135569.1
   final_stats: 0
-  final_stats: 0
+  final_stats: 326
+  final_stats: 14.61538
+  final_stats: 16.44561
+  final_stats: 29.19504
+  final_stats: 9.79696
+  final_stats: 5
+ }
+}
+stat_weights_results: {
+ key: "TestAssassination-StatWeights-Default"
+ value: {
+  weights: 0
+  weights: 1
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.30952
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 40.00348
+  weights: 15.48816
+  weights: 0
  }
 }
 dps_results: {
@@ -72,15 +110,15 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-ApparatusofKhaz'goroth-68972"
  value: {
-  dps: 29041.24752
-  tps: 20619.28574
+  dps: 28995.90198
+  tps: 20587.0904
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-ApparatusofKhaz'goroth-69113"
  value: {
-  dps: 29245.3315
-  tps: 20764.18536
+  dps: 29116.68993
+  tps: 20672.84985
  }
 }
 dps_results: {
@@ -794,15 +832,15 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-MatrixRestabilizer-68994"
  value: {
-  dps: 30130.60123
-  tps: 21392.72688
+  dps: 30420.11033
+  tps: 21598.27834
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-MatrixRestabilizer-69150"
  value: {
-  dps: 30422.7596
-  tps: 21600.15932
+  dps: 30764.06557
+  tps: 21842.48656
  }
 }
 dps_results: {

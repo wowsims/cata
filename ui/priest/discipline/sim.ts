@@ -5,8 +5,8 @@ import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_u
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl.js';
-import { Faction, PartyBuffs, Race, Spec, Stat } from '../../core/proto/common.js';
-import { Stats } from '../../core/proto_utils/stats.js';
+import { Faction, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common.js';
+import { Stats, UnitStat } from '../../core/proto_utils/stats.js';
 import * as PriestInputs from '../inputs';
 import * as Presets from './presets.js';
 
@@ -21,28 +21,32 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDisciplinePriest, {
 		Stat.StatIntellect,
 		Stat.StatSpirit,
 		Stat.StatSpellPower,
-		Stat.StatSpellHit,
-		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
+		Stat.StatHitRating,
+		Stat.StatCritRating,
+		Stat.StatHasteRating,
 		Stat.StatMP5,
-		Stat.StatMastery,
+		Stat.StatMasteryRating,
 	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
-	displayStats: [
-		Stat.StatHealth,
-		Stat.StatMana,
-		Stat.StatStamina,
-		Stat.StatIntellect,
-		Stat.StatSpirit,
-		Stat.StatSpellPower,
-		Stat.StatSpellHit,
-		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
-		Stat.StatMP5,
-		Stat.StatMastery,
-	],
+	displayStats: UnitStat.createDisplayStatArray(
+		[
+			Stat.StatHealth,
+			Stat.StatMana,
+			Stat.StatStamina,
+			Stat.StatIntellect,
+			Stat.StatSpirit,
+			Stat.StatSpellPower,
+			Stat.StatMP5,
+			Stat.StatMasteryRating,
+		],
+		[
+			PseudoStat.PseudoStatSpellHitPercent,
+			PseudoStat.PseudoStatSpellCritPercent,
+			PseudoStat.PseudoStatSpellHastePercent,
+		],
+	),
 	// modifyDisplayStats: (player: Player<Spec.SpecDisciplinePriest>) => {
 	// 	let stats = new Stats();
 	// 	stats = stats.addStat(Stat.StatSpellHit, player.getTalents().shadowFocus * 1 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);

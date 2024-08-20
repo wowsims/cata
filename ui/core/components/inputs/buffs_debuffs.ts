@@ -300,12 +300,12 @@ export const RAID_BUFFS_CONFIG = [
 	{
 		config: CritBuff,
 		picker: MultiIconPicker,
-		stats: [Stat.StatMeleeCrit, Stat.StatSpellCrit],
+		stats: [Stat.StatCritRating],
 	},
 	{
 		config: MeleeHasteBuff,
 		picker: MultiIconPicker,
-		stats: [Stat.StatMeleeHaste],
+		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower],
 	},
 	{
 		config: SpellPowerBuff,
@@ -315,7 +315,7 @@ export const RAID_BUFFS_CONFIG = [
 	{
 		config: SpellHasteBuff,
 		picker: MultiIconPicker,
-		stats: [Stat.StatSpellHaste],
+		stats: [Stat.StatSpellPower],
 	},
 	{
 		config: DamagePercentBuff,
@@ -340,7 +340,7 @@ export const RAID_BUFFS_CONFIG = [
 	{
 		config: Bloodlust,
 		picker: MultiIconPicker,
-		stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste],
+		stats: [Stat.StatHasteRating],
 	},
 	{
 		config: DefensiveCooldownBuff,
@@ -353,12 +353,12 @@ export const RAID_BUFFS_MISC_CONFIG = [
 	{
 		config: DarkIntent,
 		picker: IconPicker,
-		stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste],
+		stats: [Stat.StatHasteRating],
 	},
 	{
 		config: FocusMagic,
 		picker: IconPicker,
-		stats: [Stat.StatSpellCrit],
+		stats: [Stat.StatIntellect],
 	},
 	{
 		config: RetributionAura,
@@ -416,7 +416,7 @@ export const DEBUFFS_CONFIG = [
 	{
 		config: SpellCritDebuff,
 		picker: MultiIconPicker,
-		stats: [Stat.StatSpellCrit],
+		stats: [Stat.StatIntellect],
 	},
 	{
 		config: DamageReduction,

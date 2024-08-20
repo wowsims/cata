@@ -35,6 +35,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskWeaponProc,
 		ClassSpellMask: RogueSpellDeadlyPoison,
+		Flags:          core.SpellFlagPassiveSpell,
 
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1 + 0.12*float64(rogue.Talents.VilePoisons),
@@ -223,6 +224,7 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskWeaponProc,
 		ClassSpellMask: RogueSpellInstantPoison,
+		Flags:          core.SpellFlagPassiveSpell,
 
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1 + 0.12*float64(rogue.Talents.VilePoisons),

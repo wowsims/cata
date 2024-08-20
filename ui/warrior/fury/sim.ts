@@ -8,7 +8,7 @@ import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Debuffs, Faction, HandType, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { StatCapType } from '../../core/proto/ui';
-import { Stats } from '../../core/proto_utils/stats';
+import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as WarriorInputs from '../inputs';
 import * as FuryInputs from './inputs';
 import * as Presets from './presets';
@@ -24,28 +24,32 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 		Stat.StatStrength,
 		Stat.StatAgility,
 		Stat.StatAttackPower,
-		Stat.StatExpertise,
-		Stat.StatMeleeHit,
-		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
-		Stat.StatMastery,
+		Stat.StatExpertiseRating,
+		Stat.StatHitRating,
+		Stat.StatCritRating,
+		Stat.StatHasteRating,
+		Stat.StatMasteryRating,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
-	displayStats: [
-		Stat.StatHealth,
-		Stat.StatStamina,
-		Stat.StatStrength,
-		Stat.StatAgility,
-		Stat.StatAttackPower,
-		Stat.StatExpertise,
-		Stat.StatMeleeHit,
-		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
-		Stat.StatMastery,
-	],
+	displayStats: UnitStat.createDisplayStatArray(
+		[
+			Stat.StatHealth,
+			Stat.StatStamina,
+			Stat.StatStrength,
+			Stat.StatAgility,
+			Stat.StatAttackPower,
+			Stat.StatExpertiseRating,
+			Stat.StatMasteryRating,
+		],
+		[
+			PseudoStat.PseudoStatPhysicalHitPercent,
+			PseudoStat.PseudoStatPhysicalCritPercent,
+			PseudoStat.PseudoStatMeleeHastePercent,
+		],
+	),
 	// modifyDisplayStats: (player: Player<Spec.SpecFuryWarrior>) => {
 	// 	//let stats = new Stats();
 	// 	if (!player.getInFrontOfTarget()) {
@@ -64,17 +68,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 		epWeights: Presets.P1_FURY_SMF_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
-			const expCap = new Stats().withStat(Stat.StatExpertise, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 
 			return expCap;
 		})(),
 		softCapBreakpoints: (() => {
-			const meleeHitSoftCapConfig = {
-				stat: Stat.StatMeleeHit,
-				breakpoints: [8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE, 27 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE],
+			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
+				breakpoints: [8, 27],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [1.23, 0],
-			};
+				postCapEPs: [1.23 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT, 0],
+			});
 
 			return [meleeHitSoftCapConfig];
 		})(),
@@ -130,6 +133,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 			OtherInputs.InputDelay,
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
+			FuryInputs.PrepullMastery
 		],
 	},
 	encounterPicker: {

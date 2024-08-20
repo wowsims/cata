@@ -115,9 +115,9 @@ var flameOrbBaseStats = stats.Stats{}
 var createFlameOrbInheritance = func() func(stats.Stats) stats.Stats {
 	return func(ownerStats stats.Stats) stats.Stats {
 		return stats.Stats{
-			stats.SpellHit:   ownerStats[stats.SpellHit],
-			stats.SpellCrit:  ownerStats[stats.SpellCrit],
-			stats.SpellPower: ownerStats[stats.SpellPower],
+			stats.SpellHitPercent:  ownerStats[stats.SpellHitPercent],
+			stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
+			stats.SpellPower:       ownerStats[stats.SpellPower],
 		}
 	}
 }

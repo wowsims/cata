@@ -11,14 +11,11 @@ import (
 
 const ExpertisePerQuarterPercentReduction = 30.027197
 const HasteRatingPerHastePercent = 128.057160
-const CritRatingPerCritChance = 179.280040
-const MeleeHitRatingPerHitChance = 120.108800
-const SpellHitRatingPerHitChance = 102.445740
-const DefenseRatingPerDefense = 19.208574
-const DodgeRatingPerDodgeChance = 176.718900
-const ParryRatingPerParryChance = 176.718900
-const BlockRatingPerBlockChance = 88.359444
-const ResilienceRatingPerCritReductionChance = 0.000000
+const CritRatingPerCritPercent = 179.280040
+const PhysicalHitRatingPerHitPercent = 120.108800
+const SpellHitRatingPerHitPercent = 102.445740
+const DodgeRatingPerDodgePercent = 176.718900
+const ParryRatingPerParryPercent = 176.718900
 const MasteryRatingPerMasteryPoint = 179.280040
 
 var CritPerAgiMaxLevel = map[proto.Class]float64{
@@ -50,53 +47,53 @@ var CritPerIntMaxLevel = map[proto.Class]float64{
 var ExtraClassBaseStats = map[proto.Class]stats.Stats{
 	proto.Class_ClassUnknown: {},
 	proto.Class_ClassWarrior: {
-		stats.Mana:      0.0000,
-		stats.SpellCrit: 0.0000 * CritRatingPerCritChance,
-		stats.MeleeCrit: 0.0000 * CritRatingPerCritChance,
+		stats.Mana:                0.0000,
+		stats.SpellCritPercent:    0.0000,
+		stats.PhysicalCritPercent: 0.0000,
 	},
 	proto.Class_ClassPaladin: {
-		stats.Mana:      23422.0000,
-		stats.SpellCrit: 3.3355 * CritRatingPerCritChance,
-		stats.MeleeCrit: 0.6520 * CritRatingPerCritChance,
+		stats.Mana:                23422.0000,
+		stats.SpellCritPercent:    3.3355,
+		stats.PhysicalCritPercent: 0.6520,
 	},
 	proto.Class_ClassHunter: {
-		stats.Mana:      0.0000,
-		stats.SpellCrit: 0.0000 * CritRatingPerCritChance,
-		stats.MeleeCrit: -1.5320 * CritRatingPerCritChance,
+		stats.Mana:                0.0000,
+		stats.SpellCritPercent:    0.0000,
+		stats.PhysicalCritPercent: -1.5320,
 	},
 	proto.Class_ClassRogue: {
-		stats.Mana:      0.0000,
-		stats.SpellCrit: 0.0000 * CritRatingPerCritChance,
-		stats.MeleeCrit: -0.2950 * CritRatingPerCritChance,
+		stats.Mana:                0.0000,
+		stats.SpellCritPercent:    0.0000,
+		stats.PhysicalCritPercent: -0.2950,
 	},
 	proto.Class_ClassPriest: {
-		stats.Mana:      20590.0000,
-		stats.SpellCrit: 1.2375 * CritRatingPerCritChance,
-		stats.MeleeCrit: 3.1765 * CritRatingPerCritChance,
+		stats.Mana:                20590.0000,
+		stats.SpellCritPercent:    1.2375,
+		stats.PhysicalCritPercent: 3.1765,
 	},
 	proto.Class_ClassDeathKnight: {
-		stats.Mana:      0.0000,
-		stats.SpellCrit: 0.0000 * CritRatingPerCritChance,
-		stats.MeleeCrit: 0.0000 * CritRatingPerCritChance,
+		stats.Mana:                0.0000,
+		stats.SpellCritPercent:    0.0000,
+		stats.PhysicalCritPercent: 0.0000,
 	},
 	proto.Class_ClassShaman: {
-		stats.Mana:      23430.0000,
-		stats.SpellCrit: 2.2010 * CritRatingPerCritChance,
-		stats.MeleeCrit: 2.9220 * CritRatingPerCritChance,
+		stats.Mana:                23430.0000,
+		stats.SpellCritPercent:    2.2010,
+		stats.PhysicalCritPercent: 2.9220,
 	},
 	proto.Class_ClassMage: {
-		stats.Mana:      17418.0000,
-		stats.SpellCrit: 0.9075 * CritRatingPerCritChance,
-		stats.MeleeCrit: 3.4540 * CritRatingPerCritChance,
+		stats.Mana:                17418.0000,
+		stats.SpellCritPercent:    0.9075,
+		stats.PhysicalCritPercent: 3.4540,
 	},
 	proto.Class_ClassWarlock: {
-		stats.Mana:      20553.0000,
-		stats.SpellCrit: 1.7000 * CritRatingPerCritChance,
-		stats.MeleeCrit: 2.6220 * CritRatingPerCritChance,
+		stats.Mana:                20553.0000,
+		stats.SpellCritPercent:    1.7000,
+		stats.PhysicalCritPercent: 2.6220,
 	},
 	proto.Class_ClassDruid: {
-		stats.Mana:      18635.0000,
-		stats.SpellCrit: 1.8515 * CritRatingPerCritChance,
-		stats.MeleeCrit: 7.4755 * CritRatingPerCritChance,
+		stats.Mana:                18635.0000,
+		stats.SpellCritPercent:    1.8515,
+		stats.PhysicalCritPercent: 7.4755,
 	},
 }
