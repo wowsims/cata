@@ -45,7 +45,7 @@ func (priest *Priest) newMindFlaySpell() *core.Spell {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitAndCritNoHitCounter)
 			if result.Landed() {
 				spell.Dot(target).Apply(sim)
 				spell.DealOutcome(sim, result)

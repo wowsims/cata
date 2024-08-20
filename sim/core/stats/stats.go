@@ -451,10 +451,12 @@ func NewPseudoStats() PseudoStats {
 
 type UnitStat int
 
-func (s UnitStat) IsStat() bool                                 { return int(s) < int(ProtoStatsLen) }
-func (s UnitStat) IsPseudoStat() bool                           { return !s.IsStat() }
-func (s UnitStat) EqualsStat(other Stat) bool                   { return s.IsStat() && (s.StatIdx() == int(other)) }
-func (s UnitStat) EqualsPseudoStat(other proto.PseudoStat) bool { return s.IsPseudoStat() && (s.PseudoStatIdx() == int(other)) }
+func (s UnitStat) IsStat() bool               { return int(s) < int(ProtoStatsLen) }
+func (s UnitStat) IsPseudoStat() bool         { return !s.IsStat() }
+func (s UnitStat) EqualsStat(other Stat) bool { return s.IsStat() && (s.StatIdx() == int(other)) }
+func (s UnitStat) EqualsPseudoStat(other proto.PseudoStat) bool {
+	return s.IsPseudoStat() && (s.PseudoStatIdx() == int(other))
+}
 func (s UnitStat) StatIdx() int {
 	if !s.IsStat() {
 		panic("Is a pseudo stat")
@@ -475,6 +477,8 @@ func (s UnitStat) AddToStatsProto(p *proto.UnitStats, value float64) {
 	}
 }
 
-func UnitStatFromIdx(s int) UnitStat                     { return UnitStat(s) }
-func UnitStatFromStat(s Stat) UnitStat                   { return UnitStat(s) }
-func UnitStatFromPseudoStat(s proto.PseudoStat) UnitStat { return UnitStat(int(s) + int(ProtoStatsLen)) }
+func UnitStatFromIdx(s int) UnitStat   { return UnitStat(s) }
+func UnitStatFromStat(s Stat) UnitStat { return UnitStat(s) }
+func UnitStatFromPseudoStat(s proto.PseudoStat) UnitStat {
+	return UnitStat(int(s) + int(ProtoStatsLen))
+}

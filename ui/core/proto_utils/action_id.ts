@@ -1,10 +1,10 @@
-import { getWowheadLanguagePrefix } from '../constants/lang.js';
-import { CHARACTER_LEVEL } from '../constants/mechanics.js';
-import { ResourceType } from '../proto/api.js';
-import { ActionID as ActionIdProto, ItemRandomSuffix, OtherAction, ReforgeStat } from '../proto/common.js';
-import { IconData, UIItem as Item } from '../proto/ui.js';
+import { getWowheadLanguagePrefix } from '../constants/lang';
+import { CHARACTER_LEVEL } from '../constants/mechanics';
+import { ResourceType } from '../proto/api';
+import { ActionID as ActionIdProto, ItemRandomSuffix, OtherAction, ReforgeStat } from '../proto/common';
+import { IconData, UIItem as Item } from '../proto/ui';
 import { buildWowheadTooltipDataset, WowheadTooltipItemParams, WowheadTooltipSpellParams } from '../wowhead';
-import { Database } from './database.js';
+import { Database } from './database';
 
 // If true uses wotlkdb.com, else uses wowhead.com.
 export const USE_WOTLK_DB = false;
@@ -21,6 +21,7 @@ export class ActionId {
 	readonly baseName: string; // The name without any tag additions.
 	readonly name: string;
 	readonly iconUrl: string;
+	readonly spellIdTooltipOverride: number | null;
 
 	private constructor(
 		itemId: number,
@@ -133,6 +134,7 @@ export class ActionId {
 		this.baseName = baseName;
 		this.name = name || baseName;
 		this.iconUrl = iconUrl;
+		this.spellIdTooltipOverride = this.spellTooltipOverride?.spellId || null;
 	}
 
 	anyId(): number {
@@ -204,12 +206,15 @@ export class ActionId {
 		if (this.itemId) {
 			elem.href = ActionId.makeItemUrl(this.itemId, this.randomSuffixId, this.reforgeId);
 		} else if (this.spellId) {
-			elem.href = ActionId.makeSpellUrl(this.spellId);
+			elem.href = ActionId.makeSpellUrl(this.spellIdTooltipOverride || this.spellId);
 		}
 	}
 
 	async setWowheadDataset(elem: HTMLElement, params?: Omit<WowheadTooltipItemParams, 'itemId'> | Omit<WowheadTooltipSpellParams, 'spellId'>) {
-		(this.itemId ? ActionId.makeItemTooltipData(this.itemId, params) : ActionId.makeSpellTooltipData(this.spellId, params)).then(url => {
+		(this.itemId
+			? ActionId.makeItemTooltipData(this.itemId, params)
+			: ActionId.makeSpellTooltipData(this.spellIdTooltipOverride || this.spellId, params)
+		).then(url => {
 			if (elem) elem.dataset.wowhead = url;
 		});
 	}
@@ -394,6 +399,7 @@ export class ActionId {
 					name += ' (Wasted)';
 				}
 				break;
+			case 'Shadowflame':
 			case 'Moonfire':
 			case 'Sunfire':
 				if (this.tag == 1) {
@@ -437,31 +443,8 @@ export class ActionId {
 					name = `${name} (Instant)`;
 				}
 				break;
-			case 'Darkmoon Card: Crusade':
-				if (this.tag == 1) {
-					name += ' (Melee)';
-				} else if (this.tag == 2) {
-					name += ' (Spell)';
-				}
-				break;
-			case 'Frozen Blows':
-				if (this.tag == 1) {
-					name += ' (Physical)';
-				} else if (this.tag == 2) {
-					name += ' (Frost)';
-				}
-				break;
-			case 'Scourge Strike':
-				if (this.tag == 1) {
-					name += ' (Physical)';
-				} else if (this.tag == 2) {
-					name += ' (Shadow)';
-				}
-				break;
 			case 'Heart Strike':
-				/*if (this.tag == 1) {
-					name += ' (Physical)';
-				} else */ if (this.tag == 2) {
+				if (this.tag == 2) {
 					name += ' (Off-target)';
 				}
 				break;
@@ -543,6 +526,8 @@ export class ActionId {
 					name += ' (DoT)';
 				}
 				break;
+			case 'Frozen Blows':
+			case 'Scourge Strike':
 			case 'Opportunity Strike':
 				break;
 			default:
@@ -552,9 +537,7 @@ export class ActionId {
 				break;
 		}
 
-		const idString = this.toProtoString();
-		const iconOverrideId = idOverrides[idString] || null;
-
+		const iconOverrideId = this.spellIconOverride;
 		let iconUrl = ActionId.makeIconUrl(tooltipData['icon']);
 		if (iconOverrideId) {
 			const overrideTooltipData = await ActionId.getTooltipData(iconOverrideId);
@@ -721,14 +704,34 @@ export class ActionId {
 			return await Database.getSpellIconData(actionId.spellId);
 		}
 	}
+
+	get spellIconOverride(): ActionId | null {
+		const override = spellIdIconOverrides.get(JSON.stringify({ spellId: this.spellId }));
+		if (!override) return null;
+		return override.itemId ? ActionId.fromItemId(override.itemId) : ActionId.fromItemId(override.spellId!);
+	}
+
+	get spellTooltipOverride(): ActionId | null {
+		const override = spellIdTooltipOverrides.get(JSON.stringify({ spellId: this.spellId, tag: this.tag }));
+		if (!override) return null;
+		return override.itemId ? ActionId.fromItemId(override.itemId) : ActionId.fromSpellId(override.spellId!);
+	}
 }
 
+type ActionIdOverride = { itemId?: number; spellId?: number };
+
 // Some items/spells have weird icons, so use this to show a different icon instead.
-const idOverrides: Record<string, ActionId> = {};
-idOverrides[ActionId.fromSpellId(37212).toProtoString()] = ActionId.fromItemId(29035); // Improved Wrath of Air Totem
-idOverrides[ActionId.fromSpellId(37223).toProtoString()] = ActionId.fromItemId(29040); // Improved Strength of Earth Totem
-idOverrides[ActionId.fromSpellId(37447).toProtoString()] = ActionId.fromItemId(30720); // Serpent-Coil Braid
-idOverrides[ActionId.fromSpellId(37443).toProtoString()] = ActionId.fromItemId(30196); // Robes of Tirisfal (4pc bonus)
+const spellIdIconOverrides: Map<string, ActionIdOverride> = new Map([
+	[JSON.stringify({ spellId: 37212 }), { itemId: 29035 }], // Improved Wrath of Air Totem
+	[JSON.stringify({ spellId: 37223 }), { itemId: 29040 }], // Improved Strength of Earth Totem
+	[JSON.stringify({ spellId: 37447 }), { itemId: 30720 }], // Serpent-Coil Braid
+	[JSON.stringify({ spellId: 37443 }), { itemId: 30196 }], // Robes of Tirisfal (4pc bonus)
+]);
+
+const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
+	[JSON.stringify({ spellId: 47897, tag: 1 }), { spellId: 47960 }], // Shadowflame Dot
+	[JSON.stringify({ spellId: 55090, tag: 1 }), { spellId: 70890 }], // Shadowflame Dot
+]);
 
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';
 
@@ -747,6 +750,8 @@ const petNameToActionId: Record<string, ActionId> = {
 	Ghoul: ActionId.fromSpellId(46584),
 	'Army of the Dead': ActionId.fromSpellId(42650),
 	Valkyr: ActionId.fromSpellId(71844),
+	'Flame Orb': ActionId.fromSpellId(82731),
+	Treant: ActionId.fromSpellId(33831),
 };
 
 // https://wowhead.com/cata/hunter-pets
@@ -767,7 +772,7 @@ const petNameToIcon: Record<string, string> = {
 	Felhunter: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelhunter.jpg',
 	Infernal: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summoninfernal.jpg',
 	Doomguard: 'https://wow.zamimg.com/images/wow/icons/large/warlock_summon_doomguard.jpg',
-	'Ebon Imp': 'https://wow.zamimg.com/images/wow/icons/large/spell-nature-removecurse.jpg',
+	'Ebon Imp': 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_removecurse.jpg',
 	Gorilla: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_gorilla.jpg',
 	Hyena: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_hyena.jpg',
 	Imp: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonimp.jpg',

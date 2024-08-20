@@ -85,7 +85,7 @@ func applyRaceEffects(agent Agent) {
 		character.PseudoStats.ReducedShadowHitTakenChance += 0.02
 		character.AddStats(stats.Stats{
 			stats.PhysicalHitPercent: 1,
-			stats.SpellHitPercent: 1,
+			stats.SpellHitPercent:    1,
 		})
 		// TODO: Gift of the naaru for healers
 	case proto.Race_RaceDwarf:

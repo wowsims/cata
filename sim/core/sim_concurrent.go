@@ -71,7 +71,6 @@ func (rsrc *raidSimResultCombiner) newUnitMetrics(baseUnit *proto.UnitMetrics) *
 		Name:      baseUnit.Name,
 		UnitIndex: baseUnit.UnitIndex,
 		Dps:       rsrc.newDistMetrics(),
-		Dpasp:     rsrc.newDistMetrics(),
 		Threat:    rsrc.newDistMetrics(),
 		Dtps:      rsrc.newDistMetrics(),
 		Tmi:       rsrc.newDistMetrics(),
@@ -152,9 +151,11 @@ func (rsrc *raidSimResultCombiner) addActionMetrics(unit *proto.UnitMetrics, add
 
 	if am == nil {
 		am = &proto.ActionMetrics{
-			Id:      add.Id,
-			IsMelee: add.IsMelee,
-			Targets: make([]*proto.TargetedActionMetrics, len(add.Targets)),
+			Id:          add.Id,
+			IsMelee:     add.IsMelee,
+			IsPassive:   add.IsPassive,
+			Targets:     make([]*proto.TargetedActionMetrics, len(add.Targets)),
+			SpellSchool: add.SpellSchool,
 		}
 		for i, addTgt := range add.Targets {
 			am.Targets[i] = &proto.TargetedActionMetrics{
@@ -172,14 +173,24 @@ func (rsrc *raidSimResultCombiner) addActionMetrics(unit *proto.UnitMetrics, add
 		baseTgt.Casts += addTgt.Casts
 		baseTgt.Hits += addTgt.Hits
 		baseTgt.Crits += addTgt.Crits
+		baseTgt.Ticks += addTgt.Ticks
+		baseTgt.CritTicks += addTgt.CritTicks
 		baseTgt.Misses += addTgt.Misses
 		baseTgt.Dodges += addTgt.Dodges
 		baseTgt.Parries += addTgt.Parries
 		baseTgt.Blocks += addTgt.Blocks
+		baseTgt.CritBlocks += addTgt.CritBlocks
 		baseTgt.Glances += addTgt.Glances
 		baseTgt.Damage += addTgt.Damage
+		baseTgt.CritDamage += addTgt.CritDamage
+		baseTgt.TickDamage += addTgt.TickDamage
+		baseTgt.CritTickDamage += addTgt.CritTickDamage
+		baseTgt.GlanceDamage += addTgt.GlanceDamage
+		baseTgt.BlockDamage += addTgt.BlockDamage
+		baseTgt.CritBlockDamage += addTgt.CritBlockDamage
 		baseTgt.Threat += addTgt.Threat
 		baseTgt.Healing += addTgt.Healing
+		baseTgt.CritHealing += addTgt.CritHealing
 		baseTgt.Shielding += addTgt.Shielding
 		baseTgt.CastTimeMs += addTgt.CastTimeMs
 	}
@@ -225,7 +236,6 @@ func (rsrc *raidSimResultCombiner) addResourceMetrics(unit *proto.UnitMetrics, a
 
 func (rsrc *raidSimResultCombiner) combineUnitMetrics(base *proto.UnitMetrics, add *proto.UnitMetrics, isLast bool, weight float64) {
 	rsrc.combineDistMetrics(base.Dps, add.Dps, isLast, weight)
-	rsrc.combineDistMetrics(base.Dpasp, add.Dpasp, isLast, weight)
 	rsrc.combineDistMetrics(base.Threat, add.Threat, isLast, weight)
 	rsrc.combineDistMetrics(base.Dtps, add.Dtps, isLast, weight)
 	rsrc.combineDistMetrics(base.Tmi, add.Tmi, isLast, weight)

@@ -183,7 +183,7 @@ func main() {
 
 // Uses heuristics on ilvl + source to infer release phase of an item when missing.
 func InferPhase(item *proto.UIItem) int32 {
-	if item.Ilvl  <= 352 {
+	if item.Ilvl <= 352 {
 		return 1
 	}
 

@@ -18,7 +18,7 @@ func (druid *Druid) registerSunfireDoTSpell() {
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: DruidSpellSunfireDoT,
-		Flags:          SpellFlagOmenTrigger,
+		Flags:          SpellFlagOmenTrigger | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   druid.BalanceCritMultiplier(),
@@ -43,9 +43,7 @@ func (druid *Druid) registerSunfireDoTSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeAlwaysHit)
-
-			spell.SpellMetrics[target.UnitIndex].Hits--
+			result := spell.CalcOutcome(sim, target, spell.OutcomeAlwaysHitNoHitCounter)
 
 			spell.Dot(target).Apply(sim)
 			spell.DealOutcome(sim, result)

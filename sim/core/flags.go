@@ -203,6 +203,7 @@ const (
 	SpellFlagCombatPotion                                   // Indicates this spell is the combat potion.
 	SpellFlagNoSpellMods                                    // Indicates that no spell mods should be applied to this spell
 	SpellFlagCanCastWhileMoving                             // Allows the cast to be casted while moving
+	SpellFlagPassiveSpell                                   // Indicates this spell is applied/cast as a result of another spell
 
 	// Used to let agents categorize their spells.
 	SpellFlagAgentReserved1

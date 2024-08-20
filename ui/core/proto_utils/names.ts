@@ -1,6 +1,6 @@
-import { ResourceType } from '../proto/api.js';
-import { ArmorType, Class, ItemSlot, Profession, PseudoStat, Race, RangedWeaponType, Spec, Stat, WeaponType } from '../proto/common.js';
-import { DungeonDifficulty, RaidFilterOption, RepFaction, RepLevel, SourceFilterOption, StatCapType } from '../proto/ui.js';
+import { ResourceType } from '../proto/api';
+import { ArmorType, Class, ItemSlot, Profession, PseudoStat, Race, RangedWeaponType, Spec, Stat, WeaponType } from '../proto/common';
+import { DungeonDifficulty, RaidFilterOption, RepFaction, RepLevel, SourceFilterOption, StatCapType } from '../proto/ui';
 
 export const armorTypeNames: Map<ArmorType, string> = new Map([
 	[ArmorType.ArmorTypeUnknown, 'Unknown'],
@@ -113,12 +113,19 @@ export function getStatName(stat: Stat): string {
 	if (stat == Stat.StatRangedAttackPower) {
 		return 'Ranged AP';
 	} else {
-		return Stat[stat].split(/(?<![A-Z])(?=[A-Z])/).slice(1).join(' ');
+		return Stat[stat]
+			.split(/(?<![A-Z])(?=[A-Z])/)
+			.slice(1)
+			.join(' ');
 	}
 }
 
 export function getClassPseudoStatName(pseudoStat: PseudoStat, playerClass: Class): string {
-	const genericName = PseudoStat[pseudoStat].split(/(?<![A-Z])(?=[A-Z])/).slice(2).join(' ').replace('Dps', 'DPS');
+	const genericName = PseudoStat[pseudoStat]
+		.split(/(?<![A-Z])(?=[A-Z])/)
+		.slice(2)
+		.join(' ')
+		.replace('Dps', 'DPS');
 
 	if (playerClass == Class.ClassHunter) {
 		return genericName.replace('Physical', 'Ranged');
@@ -126,6 +133,34 @@ export function getClassPseudoStatName(pseudoStat: PseudoStat, playerClass: Clas
 		return genericName.replace('Physical', 'Melee');
 	}
 }
+
+// TODO: Make sure BE exports the spell schools properly
+export enum SpellSchool {
+	None = 0,
+	Physical = 1 << 1,
+	Arcane = 1 << 2,
+	Fire = 1 << 3,
+	Frost = 1 << 4,
+	Holy = 1 << 5,
+	Nature = 1 << 6,
+	Shadow = 1 << 7,
+}
+
+export const spellSchoolNames: Map<number, string> = new Map([
+	[SpellSchool.Physical, 'Physical'],
+	[SpellSchool.Arcane, 'Arcane'],
+	[SpellSchool.Fire, 'Fire'],
+	[SpellSchool.Frost, 'Frost'],
+	[SpellSchool.Holy, 'Holy'],
+	[SpellSchool.Nature, 'Nature'],
+	[SpellSchool.Shadow, 'Shadow'],
+	[SpellSchool.Nature + SpellSchool.Arcane, 'Astral'],
+	[SpellSchool.Shadow + SpellSchool.Fire, 'Shadowflame'],
+	[SpellSchool.Fire + SpellSchool.Arcane, 'Spellfire'],
+	[SpellSchool.Arcane + SpellSchool.Frost, 'Spellfrost'],
+	[SpellSchool.Frost + SpellSchool.Fire, 'Frostfire'],
+	[SpellSchool.Shadow + SpellSchool.Frost, 'Shadowfrost'],
+]);
 
 export const shortSecondaryStatNames: Map<Stat, string> = new Map([
 	[Stat.StatSpirit, 'Spirit'],

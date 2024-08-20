@@ -1,10 +1,10 @@
-import { DeathKnight } from '../../player_classes/death_knight.js';
-import { Hunter } from '../../player_classes/hunter.js';
-import { Rogue } from '../../player_classes/rogue.js';
-import { Warrior } from '../../player_classes/warrior.js';
-import { PlayerSpecs } from '../../player_specs/index.js';
-import { RaidSimResultsManager } from '../raid_sim_action.jsx';
-import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component.js';
+import { DeathKnight } from '../../player_classes/death_knight';
+import { Hunter } from '../../player_classes/hunter';
+import { Rogue } from '../../player_classes/rogue';
+import { Warrior } from '../../player_classes/warrior';
+import { PlayerSpecs } from '../../player_specs/index';
+import { RaidSimResultsManager } from '../raid_sim_action';
+import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component';
 
 export class ToplineResults extends ResultComponent {
 	constructor(config: ResultComponentConfig) {
@@ -15,25 +15,12 @@ export class ToplineResults extends ResultComponent {
 	}
 
 	onSimResult(resultData: SimResultData) {
-		const content = RaidSimResultsManager.makeToplineResultsContent(resultData.result, resultData.filter);
-
 		const noManaClasses = [DeathKnight, Rogue, Warrior, Hunter];
-
 		const players = resultData.result.getRaidIndexedPlayers(resultData.filter);
-		if (players.length === 1 && !!players[0].spec && !noManaClasses.some(klass => PlayerSpecs.getPlayerClass(players[0].spec!) === klass)) {
-			const player = players[0];
-			const secondsOOM = player.secondsOomAvg;
-			const percentOOM = secondsOOM / resultData.result.encounterMetrics.durationSeconds;
-			const dangerLevel = percentOOM < 0.01 ? 'safe' : percentOOM < 0.05 ? 'warning' : 'danger';
+		const content = RaidSimResultsManager.makeToplineResultsContent(resultData.result, resultData.filter, {
+			showOutOfMana: players.length === 1 && !!players[0].spec && !noManaClasses.some(klass => PlayerSpecs.getPlayerClass(players[0].spec!) === klass),
+		});
 
-			content.appendChild(
-				<div className={`results-sim-percent-oom ${dangerLevel} damage-metrics`}>
-					<span className="topline-result-avg">{secondsOOM.toFixed(1)}s</span>
-				</div>,
-			);
-		}
-
-		this.rootElem.innerHTML = '';
-		this.rootElem.appendChild(content);
+		this.rootElem.replaceChildren(content);
 	}
 }

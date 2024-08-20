@@ -34,7 +34,6 @@ func (paladin *Paladin) NewAncientGuardian() *AncientGuardianPet {
 			return stats.Stats{
 				stats.HitRating:       ownerHitRating,
 				stats.ExpertiseRating: ownerHitRating * PetExpertiseScale,
-
 			}
 		}, false, true),
 		paladinOwner: paladin,

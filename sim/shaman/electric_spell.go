@@ -15,13 +15,14 @@ const (
 // Shared precomputation logic for LB and CL.
 func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost float64, baseCastTime time.Duration, isElementalOverload bool, bonusCoefficient float64) core.SpellConfig {
 	mask := core.ProcMaskSpellDamage
+	flags := SpellFlagElectric | SpellFlagFocusable
 	if isElementalOverload {
 		mask = core.ProcMaskProc
-	}
-	flags := SpellFlagElectric | SpellFlagFocusable
-	if !isElementalOverload {
+		flags |= core.SpellFlagPassiveSpell
+	} else {
 		flags |= core.SpellFlagAPL
 	}
+
 	spell := core.SpellConfig{
 		ActionID:     actionID,
 		SpellSchool:  core.SpellSchoolNature,
