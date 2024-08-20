@@ -384,7 +384,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 		this.statPickers = ALL_TARGET_STATS.map(statData => {
 			const stat = statData.stat;
 			return new NumberPicker(section2, null, {
-				id: `target-picker-stats-${statData.stat}`,
+				id: `target-${this.targetIndex}-picker-stats-${statData.stat}`,
 				inline: true,
 				extraCssClasses: statData.extraCssClasses,
 				label: getStatName(stat),
@@ -399,7 +399,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 		});
 
 		this.swingSpeedPicker = new NumberPicker(section3, null, {
-			id: 'target-picker-swing-speed',
+			id: `target-${this.targetIndex}-picker-swing-speed`,
 			label: 'Swing Speed',
 			labelTooltip: 'Time in seconds between auto attacks. Set to 0 to disable auto attacks.',
 			float: true,
@@ -411,7 +411,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			},
 		});
 		this.minBaseDamagePicker = new NumberPicker(section3, null, {
-			id: 'target-picker-min-base-damage',
+			id: `target-${this.targetIndex}-picker-min-base-damage`,
 			label: 'Min Base Damage',
 			labelTooltip: 'Base damage for auto attacks, i.e. lowest roll with 0 AP against a 0-armor Player.',
 			changedEvent: () => encounter.targetsChangeEmitter,
@@ -422,7 +422,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			},
 		});
 		this.damageSpreadPicker = new NumberPicker(section3, null, {
-			id: 'target-picker-damage-spread',
+			id: `target-${this.targetIndex}-picker-damage-spread`,
 			label: 'Damage Spread',
 			labelTooltip: 'Fractional spread between the minimum and maximum auto-attack damage from this enemy at 0 Attack Power.',
 			float: true,
@@ -434,7 +434,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			},
 		});
 		this.dualWieldPicker = new BooleanPicker(section3, null, {
-			id: 'target-picker-dual-wield',
+			id: `target-${this.targetIndex}-picker-dual-wield`,
 			label: 'Dual Wield',
 			labelTooltip: 'Uses 2 separate weapons to attack.',
 			inline: true,
@@ -447,7 +447,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			},
 		});
 		this.dwMissPenaltyPicker = new BooleanPicker(section3, null, {
-			id: 'target-picker-dw-miss-penalty',
+			id: `target-${this.targetIndex}-picker-dw-miss-penalty`,
 			label: 'DW Miss Penalty',
 			labelTooltip:
 				'Enables the Dual Wield Miss Penalty (+19% chance to miss) if dual wielding. Bosses in Hyjal/BT/SWP usually have this disabled to stop tanks from avoidance stacking.',
@@ -462,7 +462,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			enableWhen: () => this.getTarget().dualWield,
 		});
 		this.parryHastePicker = new BooleanPicker(section3, null, {
-			id: 'target-picker-parry-haste',
+			id: `target-${this.targetIndex}-picker-parry-haste`,
 			label: 'Parry Haste',
 			labelTooltip: 'Whether this enemy will gain parry haste when parrying attacks.',
 			inline: true,
@@ -475,7 +475,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			},
 		});
 		this.spellSchoolPicker = new EnumPicker<null>(section3, null, {
-			id: 'target-picker-spell-school',
+			id: `target-${this.targetIndex}-picker-spell-school`,
 			label: 'Spell School',
 			labelTooltip: 'Type of damage caused by auto attacks. This is usually Physical, but some enemies have elemental attacks.',
 			values: [

@@ -998,6 +998,12 @@ message Cooldowns {
 }
 
 message HealingModel {
+	// Proto version at the time these healing settings were saved. If you
+	// make any changes to this proto that will break saved browser data or
+	// old sim links, then make sure to increment the current_version_number
+	// option within the ProtoVersion message at the top of this file, and
+	// also modify the updateHealingModelProtoVersion() method of ui/core/player.ts.
+	int32 api_version = 6;
 	// Healing per second to apply.
 	double hps = 1;
 	// How often healing is applied.

@@ -39,7 +39,7 @@ export class Encounter {
 	}
 
 	get primaryTarget(): TargetProto {
-		return TargetProto.clone(this.targets[0]);
+		return this.targets[0];
 	}
 
 	getDurationVariation(): number {
@@ -200,11 +200,11 @@ export class Encounter {
 
 	static updateProtoVersion(proto: EncounterProto) {
 		let showOutOfDateEncounterTargetWarning = false;
-		proto.targets.forEach(target => {
+		proto.targets.forEach((target, index) => {
 			// If the old target is detected return the
 			// new default target without needing to migrate the stats
 			if (target.minBaseDamage === 65000) {
-				target = Encounter.defaultTargetProto();
+				proto.targets[index] = Encounter.defaultTargetProto();
 				showOutOfDateEncounterTargetWarning = true;
 				return;
 			}
@@ -222,7 +222,7 @@ export class Encounter {
 			new Toast({
 				delay: 5000,
 				variant: 'info',
-				body: 'We detected an out-of-date encounter target with WOTLK settings. It has been updated it to the latest version.',
+				body: 'We detected an out-of-date encounter target with WOTLK settings. Encounter settings have been updated the latest defaults.',
 			});
 	}
 }
