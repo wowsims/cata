@@ -10,9 +10,9 @@ import (
 )
 
 const (
-	HitCapRatio = 17.0/8.0 // 2.125
-	ExpertiseCapRatio = 6.5/8.0 // 0.8125
-	PetExpertiseRatingScale = ExpertiseCapRatio * (4*core.ExpertisePerQuarterPercentReduction)
+	HitCapRatio             = 17.0 / 8.0 // 2.125
+	ExpertiseCapRatio       = 6.5 / 8.0  // 0.8125
+	PetExpertiseRatingScale = ExpertiseCapRatio * (4 * core.ExpertisePerQuarterPercentReduction)
 )
 
 var TalentTreeSizes = [3]int{20, 20, 20}

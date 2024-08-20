@@ -52,7 +52,6 @@ func (druid *Druid) registerInsectSwarmSpell() {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 
 			if result.Landed() {
-				spell.SpellMetrics[target.UnitIndex].Hits--
 				spell.Dot(target).Apply(sim)
 			}
 

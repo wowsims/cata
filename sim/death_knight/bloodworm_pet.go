@@ -31,7 +31,7 @@ func (dk *DeathKnight) NewBloodwormPet(_ int) *BloodwormPet {
 	})
 
 	bloodworm.AddStatDependency(stats.Strength, stats.AttackPower, 1.0+1)
-	bloodworm.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, 1 / core.CritRatingPerCritPercent + 1 / 83.3) // TODO: Was this implemented correctly to begin with?
+	bloodworm.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, 1/core.CritRatingPerCritPercent+1/83.3) // TODO: Was this implemented correctly to begin with?
 
 	bloodworm.OnPetEnable = bloodworm.enable
 	bloodworm.OnPetDisable = bloodworm.disable

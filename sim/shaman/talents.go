@@ -27,8 +27,8 @@ func (shaman *Shaman) ApplyTalents() {
 	}
 
 	if shaman.Talents.ElementalPrecision > 0 {
-		shaman.AddStat(stats.SpellHitPercent, []float64{0.0, -0.33, -0.66, -1.0}[shaman.Talents.ElementalPrecision] * shaman.GetBaseStats()[stats.Spirit] / core.SpellHitRatingPerHitPercent)
-		shaman.AddStatDependency(stats.Spirit, stats.SpellHitPercent, []float64{0.0, 0.33, 0.66, 1.0}[shaman.Talents.ElementalPrecision] / core.SpellHitRatingPerHitPercent)
+		shaman.AddStat(stats.SpellHitPercent, []float64{0.0, -0.33, -0.66, -1.0}[shaman.Talents.ElementalPrecision]*shaman.GetBaseStats()[stats.Spirit]/core.SpellHitRatingPerHitPercent)
+		shaman.AddStatDependency(stats.Spirit, stats.SpellHitPercent, []float64{0.0, 0.33, 0.66, 1.0}[shaman.Talents.ElementalPrecision]/core.SpellHitRatingPerHitPercent)
 		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1 + 0.01*float64(shaman.Talents.ElementalPrecision)
 		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= 1 + 0.01*float64(shaman.Talents.ElementalPrecision)
 		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1 + 0.01*float64(shaman.Talents.ElementalPrecision)
@@ -297,7 +297,7 @@ func (shaman *Shaman) applyLavaSurge() {
 			// cannot be spell queued (the CD was only just now reset), apply
 			// input delay to the rotation call.
 			if shaman.RotationTimer.IsReady(sim) {
-				shaman.WaitUntil(sim, sim.CurrentTime + shaman.ReactionTime)
+				shaman.WaitUntil(sim, sim.CurrentTime+shaman.ReactionTime)
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -318,7 +318,7 @@ func (shaman *Shaman) applyFulmination() {
 		ActionID:       core.ActionID{SpellID: 88767},
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskProc,
-		Flags:          SpellFlagFocusable,
+		Flags:          SpellFlagFocusable | core.SpellFlagPassiveSpell,
 		ClassSpellMask: SpellMaskFulmination,
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0,
@@ -649,7 +649,7 @@ func (shaman *Shaman) applySearingFlames() {
 		ActionID:    core.ActionID{SpellID: 77657},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt | core.SpellFlagPassiveSpell,
 
 		DamageMultiplierAdditive: 1,
 		DamageMultiplier:         1,

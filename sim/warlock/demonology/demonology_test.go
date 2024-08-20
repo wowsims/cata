@@ -341,7 +341,7 @@ func TestShadowflameHasteCap(t *testing.T) {
 		stats.HasteRating: 1006,
 	})
 	shadowflame := lock.GetSpell(core.ActionID{SpellID: 47897})
-	shadowflameDot := lock.GetSpell(core.ActionID{SpellID: 47960}).CurDot()
+	shadowflameDot := lock.GetSpell(core.ActionID{SpellID: 47897}.WithTag(1)).CurDot()
 
 	shadowflame.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
 	checkTicks(t, shadowflameDot, "Incorrect tick count for shadowflame at 1006 haste", 3)

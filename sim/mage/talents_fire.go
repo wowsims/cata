@@ -124,8 +124,8 @@ func (mage *Mage) applyHotStreak() {
 	ImprovedHotStreakProcChance := float64(mage.Talents.ImprovedHotStreak) * 0.5
 
 	// TODO: Is this supposed to be fully buffed Spell Crit % or only from gear Rating?
-	baseCritPercent := mage.GetStat(stats.SpellCritPercent) + mage.GetStat(stats.CritRating) / core.CritRatingPerCritPercent
-	BaseHotStreakProcChance := float64(-2.7 * baseCritPercent / 100 + 0.9) // EJ settled on -2.7*critChance+0.9
+	baseCritPercent := mage.GetStat(stats.SpellCritPercent) + mage.GetStat(stats.CritRating)/core.CritRatingPerCritPercent
+	BaseHotStreakProcChance := float64(-2.7*baseCritPercent/100 + 0.9) // EJ settled on -2.7*critChance+0.9
 
 	hotStreakCostMod := mage.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_PowerCost_Pct,
@@ -361,7 +361,6 @@ func (mage *Mage) applyIgnite() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.SpellMetrics[target.UnitIndex].Hits++
 			spell.Dot(target).Apply(sim)
 		},
 	})

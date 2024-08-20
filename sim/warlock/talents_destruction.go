@@ -136,7 +136,7 @@ func (warlock *Warlock) registerBurningEmbers() {
 		ActionID:       core.ActionID{SpellID: 85421},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage, // TODO: even the imp hits can proc some trinkets, though not most
-		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete,
+		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 		ClassSpellMask: WarlockSpellBurningEmbers,
 
 		DamageMultiplier: 1,

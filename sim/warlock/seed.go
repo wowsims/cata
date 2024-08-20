@@ -13,7 +13,7 @@ func (warlock *Warlock) registerSeed() {
 		ActionID:       actionID.WithTag(1), // actually 27285
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagHauntSE | core.SpellFlagNoLogs,
+		Flags:          core.SpellFlagHauntSE | core.SpellFlagNoLogs | core.SpellFlagPassiveSpell,
 		ClassSpellMask: WarlockSpellSeedOfCorruptionExposion,
 
 		DamageMultiplierAdditive: 1,

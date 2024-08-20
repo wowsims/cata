@@ -315,6 +315,15 @@ export const mod = (n: number, m: number): number => {
 	return ((n % m) + m) % m;
 };
 
+export const formatToCompactNumber: typeof formatToNumber = (number, options) => formatToNumber(number, { notation: 'compact', ...options });
+
+export const formatToPercent: typeof formatToNumber = (number, options) => formatToNumber(number / 100, { style: 'percent', ...options });
+
+export const formatToNumber = (number: number, options?: Intl.NumberFormatOptions & { fallbackString?: string }) => {
+	if (!number && options?.fallbackString) return options.fallbackString;
+	return new Intl.NumberFormat('en-US', { maximumFractionDigits: 2, ...options }).format(number);
+};
+
 type Environments = 'local' | 'external';
 
 const hostname = window.location.hostname;
@@ -325,4 +334,6 @@ export const getEnvironment = (): Environments => {
 
 export const isLocal = () => getEnvironment() === 'local';
 export const isExternal = () => getEnvironment() === 'external';
-export const isDevMode = () => import.meta.env.DEV;
+export const isDevMode = () => {
+	return import.meta.env.DEV;
+};

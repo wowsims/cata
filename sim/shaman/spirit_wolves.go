@@ -81,7 +81,7 @@ func (shaman *Shaman) makeStatInheritance() core.PetStatInheritance {
 			stats.AttackPower: ownerStats[stats.AttackPower] * (core.TernaryFloat64(shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfFeralSpirit), 0.6296, 0.3296)),
 
 			stats.HitRating:       flooredOwnerHitPercent * core.PhysicalHitRatingPerHitPercent,
-			stats.ExpertiseRating: math.Floor(flooredOwnerHitPercent * PetExpertiseScale) * core.ExpertisePerQuarterPercentReduction,
+			stats.ExpertiseRating: math.Floor(flooredOwnerHitPercent*PetExpertiseScale) * core.ExpertisePerQuarterPercentReduction,
 		}
 	}
 }

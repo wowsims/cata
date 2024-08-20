@@ -17,7 +17,7 @@ import {
 	TargetedActionMetrics as TargetedActionMetricsProto,
 	UnitMetrics as UnitMetricsProto,
 } from '../proto/api.js';
-import { Class, Encounter as EncounterProto, Target as TargetProto } from '../proto/common.js';
+import { Class, Encounter as EncounterProto, SpellSchool, Target as TargetProto } from '../proto/common.js';
 import { SimRun } from '../proto/ui.js';
 import { ActionId, defaultTargetIcon } from '../proto_utils/action_id.js';
 import { getPlayerSpecFromPlayer } from '../proto_utils/utils.js';
@@ -219,7 +219,6 @@ export class SimResult {
 	static async makeNew(request: RaidSimRequest, result: RaidSimResult): Promise<SimResult> {
 		const resultData = new SimResultData(request, result);
 		const logs = await SimLog.parseAll(result);
-
 		const raidPromise = RaidMetrics.makeNew(resultData, request.raid!, result.raidMetrics!, logs);
 		const encounterPromise = EncounterMetrics.makeNew(resultData, request.encounter!, result.encounterMetrics!, logs);
 
@@ -307,7 +306,6 @@ export class UnitMetrics {
 	readonly iconUrl: string;
 	readonly classColor: string;
 	readonly dps: DistributionMetricsProto;
-	readonly dpasp: DistributionMetricsProto;
 	readonly hps: DistributionMetricsProto;
 	readonly tps: DistributionMetricsProto;
 	readonly dtps: DistributionMetricsProto;
@@ -356,9 +354,12 @@ export class UnitMetrics {
 		this.spec = this.player ? getPlayerSpecFromPlayer(this.player) : null;
 		this.petActionId = petActionId;
 		this.iconUrl = this.isPlayer ? this.spec?.getIcon('medium') ?? '' : this.isTarget ? defaultTargetIcon : '';
-		this.classColor = this.isTarget ? '' : PlayerSpecs.getPlayerClass(this.spec as PlayerSpec<any>).friendlyName.toLowerCase().replace(/\s/g, '-') ?? '';
+		this.classColor = this.isTarget
+			? ''
+			: PlayerSpecs.getPlayerClass(this.spec as PlayerSpec<any>)
+					.friendlyName.toLowerCase()
+					.replace(/\s/g, '-') ?? '';
 		this.dps = this.metrics.dps!;
-		this.dpasp = this.metrics.dpasp!;
 		this.hps = this.metrics.hps!;
 		this.tps = this.metrics.threat!;
 		this.dtps = this.metrics.dtps!;
@@ -469,8 +470,20 @@ export class UnitMetrics {
 		return this.getActionsForDisplay().filter(e => e.isMeleeAction);
 	}
 
+	getMeleeDamageActions(): Array<ActionMetrics> {
+		return this.getMeleeActions().filter(e => e.dps !== 0 && e.hps === 0);
+	}
+
 	getSpellActions(): Array<ActionMetrics> {
 		return this.getActionsForDisplay().filter(e => !e.isMeleeAction);
+	}
+
+	getSpellDamageActions(): Array<ActionMetrics> {
+		return this.getSpellActions().filter(e => e.dps !== 0 && e.hps === 0);
+	}
+
+	getDamageActions(): Array<ActionMetrics> {
+		return this.getActionsForDisplay().filter(e => e.dps !== 0 && e.hps === 0);
 	}
 
 	getHealingActions(): Array<ActionMetrics> {
@@ -607,7 +620,7 @@ export class AuraMetrics {
 	}
 
 	// Merges an array of metrics into a single metrics.
-	static merge(auras: Array<AuraMetrics>, removeTag?: boolean, actionIdOverride?: ActionId): AuraMetrics {
+	static merge(auras: Array<AuraMetrics>, { removeTag, actionIdOverride }: { removeTag?: boolean; actionIdOverride?: ActionId } = {}): AuraMetrics {
 		const firstAura = auras[0];
 		const unit = auras.every(aura => aura.unit == firstAura.unit) ? firstAura.unit : null;
 		let actionId = actionIdOverride || firstAura.actionId;
@@ -639,7 +652,6 @@ export class AuraMetrics {
 		return AuraMetrics.groupById(auras, useTag).map(aurasToJoin => AuraMetrics.merge(aurasToJoin));
 	}
 }
-
 export class ResourceMetrics {
 	unit: UnitMetrics | null;
 	readonly actionId: ActionId;
@@ -694,7 +706,10 @@ export class ResourceMetrics {
 	}
 
 	// Merges an array of metrics into a single metrics.
-	static merge(resources: Array<ResourceMetrics>, removeTag?: boolean, actionIdOverride?: ActionId): ResourceMetrics {
+	static merge(
+		resources: Array<ResourceMetrics>,
+		{ removeTag, actionIdOverride }: { removeTag?: boolean; actionIdOverride?: ActionId } = {},
+	): ResourceMetrics {
 		const firstResource = resources[0];
 		const unit = resources.every(resource => resource.unit == firstResource.unit) ? firstResource.unit : null;
 		let actionId = actionIdOverride || firstResource.actionId;
@@ -735,6 +750,7 @@ export class ActionMetrics {
 	readonly actionId: ActionId;
 	readonly name: string;
 	readonly iconUrl: string;
+	readonly spellSchool: SpellSchool | null;
 	readonly targets: Array<TargetedActionMetrics>;
 	private readonly resultData: SimResultData;
 	private readonly iterations: number;
@@ -752,7 +768,14 @@ export class ActionMetrics {
 		this.iterations = resultData.iterations;
 		this.duration = resultData.duration;
 		this.data = data;
-		this.targets = data.targets.map(tam => new TargetedActionMetrics(this.iterations, this.duration, tam));
+		this.spellSchool = data.spellSchool;
+		this.targets = data.targets.map(
+			tam =>
+				new TargetedActionMetrics(tam, {
+					iterations: this.iterations,
+					duration: this.duration,
+				}),
+		);
 		this.combinedMetrics = TargetedActionMetrics.merge(this.targets);
 		this.resources = [];
 	}
@@ -761,12 +784,110 @@ export class ActionMetrics {
 		return this.data.isMelee;
 	}
 
+	get isPassiveAction() {
+		return this.data.isPassive;
+	}
+
+	get totalDamagePercent() {
+		const totalAvgDps = this.resultData.result.raidMetrics?.dps?.avg;
+		if (!totalAvgDps) return undefined;
+
+		return (this.avgDamage / (totalAvgDps * this.duration)) * 100;
+	}
+
 	get damage() {
 		return this.combinedMetrics.damage;
 	}
 
+	get avgDamage() {
+		return this.combinedMetrics.damage / this.iterations;
+	}
+
+	get avgHitDamage() {
+		return (
+			this.avgDamage -
+			this.avgTickDamage -
+			this.avgCritDamage +
+			this.avgCritTickDamage -
+			this.avgGlanceDamage -
+			this.avgBlockDamage -
+			this.avgCritBlockDamage
+		);
+	}
+
+	get critDamage() {
+		return this.combinedMetrics.critDamage;
+	}
+
+	get avgCritDamage() {
+		return this.combinedMetrics.avgCritDamage;
+	}
+
+	get tickDamage() {
+		return this.combinedMetrics.tickDamage;
+	}
+
+	get avgTickDamage() {
+		return this.combinedMetrics.avgTickDamage;
+	}
+
+	get critTickDamage() {
+		return this.combinedMetrics.critTickDamage;
+	}
+
+	get avgCritTickDamage() {
+		return this.combinedMetrics.avgCritTickDamage;
+	}
+
+	get glanceDamage() {
+		return this.combinedMetrics.glanceDamage;
+	}
+
+	get avgGlanceDamage() {
+		return this.combinedMetrics.avgGlanceDamage;
+	}
+
+	get blockDamage() {
+		return this.combinedMetrics.blockDamage;
+	}
+
+	get avgBlockDamage() {
+		return this.combinedMetrics.avgBlockDamage;
+	}
+
+	get critBlockDamage() {
+		return this.combinedMetrics.critBlockDamage;
+	}
+
+	get avgCritBlockDamage() {
+		return this.combinedMetrics.avgCritBlockDamage;
+	}
+
 	get dps() {
 		return this.combinedMetrics.dps;
+	}
+
+	get totalHealingPercent() {
+		const totalAvgHps = this.resultData.result.raidMetrics?.hps?.avg;
+		if (!totalAvgHps) return undefined;
+
+		return (this.avgHealing / (totalAvgHps * this.duration)) * 100;
+	}
+
+	get healing() {
+		return this.combinedMetrics.healing;
+	}
+
+	get avgHealing() {
+		return this.combinedMetrics.healing / this.iterations;
+	}
+
+	get critHealing() {
+		return this.combinedMetrics.critHealing;
+	}
+
+	get avgCritHealing() {
+		return this.combinedMetrics.critHealing / this.iterations;
 	}
 
 	get hps() {
@@ -778,14 +899,17 @@ export class ActionMetrics {
 	}
 
 	get casts() {
+		if (this.isPassiveAction) return 0;
 		return this.combinedMetrics.casts;
 	}
 
 	get castsPerMinute() {
+		if (this.isPassiveAction) return 0;
 		return this.combinedMetrics.castsPerMinute;
 	}
 
 	get avgCastTimeMs() {
+		if (this.isPassiveAction) return 0;
 		return this.combinedMetrics.avgCastTimeMs;
 	}
 
@@ -799,24 +923,49 @@ export class ActionMetrics {
 		return 0;
 	}
 
+	get damageThroughput() {
+		if (this.unit?.isPet && !this.actionId.spellId) return 0;
+		return this.combinedMetrics.damageThroughput;
+	}
+
 	get healingThroughput() {
 		return this.combinedMetrics.healingThroughput;
 	}
 
+	get shielding() {
+		return this.combinedMetrics.shielding;
+	}
+
 	get avgCast() {
+		if (this.isPassiveAction) return 0;
 		return this.combinedMetrics.avgCast;
 	}
 
+	get avgCastHit() {
+		if (!this.combinedMetrics.avgCast) return 0;
+		return this.combinedMetrics.avgCast - this.avgCastTick;
+	}
+
+	get avgCastTick() {
+		return this.combinedMetrics.avgCastTick;
+	}
+
 	get avgCastHealing() {
+		if (this.isPassiveAction) return 0;
 		return this.combinedMetrics.avgCastHealing;
 	}
 
 	get avgCastThreat() {
+		if (this.isPassiveAction) return 0;
 		return this.combinedMetrics.avgCastThreat;
 	}
 
 	get landedHits() {
 		return this.combinedMetrics.landedHits;
+	}
+
+	get landedTicks() {
+		return this.combinedMetrics.landedTicks;
 	}
 
 	get hitAttempts() {
@@ -827,12 +976,24 @@ export class ActionMetrics {
 		return this.combinedMetrics.avgHit;
 	}
 
+	get avgTick() {
+		return this.combinedMetrics.avgTick;
+	}
+
+	get avgHitHealing() {
+		return this.combinedMetrics.avgHitHealing;
+	}
+
 	get avgHitThreat() {
 		return this.combinedMetrics.avgHitThreat;
 	}
 
-	get critPercent() {
-		return this.combinedMetrics.critPercent;
+	get totalMisses() {
+		return this.misses + this.dodges + this.parries;
+	}
+
+	get totalMissesPercent() {
+		return this.missPercent + this.dodgePercent + this.parryPercent;
 	}
 
 	get misses() {
@@ -859,6 +1020,26 @@ export class ActionMetrics {
 		return this.combinedMetrics.parryPercent;
 	}
 
+	get hits() {
+		return this.combinedMetrics.hits;
+	}
+
+	get hitPercent() {
+		return this.combinedMetrics.hitPercent;
+	}
+
+	get ticks() {
+		return this.combinedMetrics.ticks;
+	}
+
+	get critTicks() {
+		return this.combinedMetrics.critTicks;
+	}
+
+	get critTickPercent() {
+		return this.combinedMetrics.critTickPercent;
+	}
+
 	get blocks() {
 		return this.combinedMetrics.blocks;
 	}
@@ -867,12 +1048,88 @@ export class ActionMetrics {
 		return this.combinedMetrics.blockPercent;
 	}
 
+	get critBlocks() {
+		return this.combinedMetrics.critBlocks;
+	}
+
+	get critBlockPercent() {
+		return this.combinedMetrics.critBlockPercent;
+	}
+
 	get glances() {
 		return this.combinedMetrics.glances;
 	}
 
 	get glancePercent() {
 		return this.combinedMetrics.glancePercent;
+	}
+
+	get crits() {
+		return this.combinedMetrics.crits;
+	}
+
+	get critPercent() {
+		return this.combinedMetrics.critPercent;
+	}
+
+	get healingPercent() {
+		return this.combinedMetrics.healingPercent;
+	}
+
+	get healingCritPercent() {
+		return this.combinedMetrics.healingCritPercent;
+	}
+
+	get damageDone() {
+		const normalHitAvgDamage =
+			this.avgDamage -
+			this.avgTickDamage -
+			this.avgCritDamage +
+			this.avgCritTickDamage -
+			this.avgGlanceDamage -
+			this.avgBlockDamage -
+			this.avgCritBlockDamage;
+
+		const normalTickAvgDamage = this.avgTickDamage - this.avgCritTickDamage;
+		const critHitAvgDamage = this.avgCritDamage - this.avgCritTickDamage;
+
+		return {
+			hit: {
+				value: normalHitAvgDamage,
+				percentage: (normalHitAvgDamage / this.avgDamage) * 100,
+				average: normalHitAvgDamage / this.hits,
+			},
+			critHit: {
+				value: critHitAvgDamage,
+				percentage: (critHitAvgDamage / this.avgDamage) * 100,
+				average: critHitAvgDamage / this.crits,
+			},
+			tick: {
+				value: normalTickAvgDamage,
+				percentage: (normalTickAvgDamage / this.avgDamage) * 100,
+				average: normalTickAvgDamage / this.ticks,
+			},
+			critTick: {
+				value: this.avgCritTickDamage,
+				percentage: (this.avgCritTickDamage / this.avgDamage) * 100,
+				average: this.avgCritTickDamage / this.critTicks,
+			},
+			glance: {
+				value: this.avgGlanceDamage,
+				percentage: (this.avgGlanceDamage / this.avgDamage) * 100,
+				average: this.avgGlanceDamage / this.hits,
+			},
+			block: {
+				value: this.avgBlockDamage,
+				percentage: (this.avgBlockDamage / this.avgDamage) * 100,
+				average: this.avgBlockDamage / this.hits,
+			},
+			critBlock: {
+				value: this.avgCritBlockDamage,
+				percentage: (this.avgCritBlockDamage / this.avgDamage) * 100,
+				average: this.avgCritBlockDamage / this.crits,
+			},
+		};
 	}
 
 	forTarget(filter?: SimResultFilter): ActionMetrics {
@@ -897,7 +1154,7 @@ export class ActionMetrics {
 	}
 
 	// Merges an array of metrics into a single metric.
-	static merge(actions: Array<ActionMetrics>, removeTag?: boolean, actionIdOverride?: ActionId): ActionMetrics {
+	static merge(actions: Array<ActionMetrics>, { removeTag, actionIdOverride }: { removeTag?: boolean; actionIdOverride?: ActionId } = {}): ActionMetrics {
 		const firstAction = actions[0];
 		const unit = firstAction.unit;
 		let actionId = actionIdOverride || firstAction.actionId;
@@ -907,13 +1164,16 @@ export class ActionMetrics {
 
 		const maxTargets = Math.max(...actions.map(action => action.targets.length));
 		const mergedTargets = [...Array(maxTargets).keys()].map(i => TargetedActionMetrics.merge(actions.map(action => action.targets[i])));
+		const isAllPassiveSpells = actions.every(action => action.isPassiveAction);
 
 		return new ActionMetrics(
 			unit,
 			actionId,
 			ActionMetricsProto.create({
 				isMelee: firstAction.isMeleeAction,
+				isPassive: isAllPassiveSpells,
 				targets: mergedTargets.map(t => t.data),
+				spellSchool: firstAction.spellSchool || undefined,
 			}),
 			firstAction.resultData,
 		);
@@ -935,6 +1195,11 @@ export class ActionMetrics {
 	}
 }
 
+type TargetedActionMetricsOptions = {
+	iterations: number;
+	duration: number;
+};
+
 // Manages the metrics for a single action applied to a specific target.
 export class TargetedActionMetrics {
 	private readonly iterations: number;
@@ -942,24 +1207,106 @@ export class TargetedActionMetrics {
 	readonly data: TargetedActionMetricsProto;
 
 	readonly landedHitsRaw: number;
+	readonly landedTicksRaw: number;
 	readonly hitAttempts: number;
 
-	constructor(iterations: number, duration: number, data: TargetedActionMetricsProto) {
+	constructor(data: TargetedActionMetricsProto, { iterations, duration }: TargetedActionMetricsOptions) {
 		this.iterations = iterations;
 		this.duration = duration;
 		this.data = data;
 
-		this.landedHitsRaw = this.data.hits + this.data.crits + this.data.blocks + this.data.glances;
+		this.landedHitsRaw = this.data.hits + this.data.crits + this.data.blocks + this.data.critBlocks + this.data.glances;
+		this.landedTicksRaw = this.data.ticks + this.data.critTicks;
 
-		this.hitAttempts = this.data.misses + this.data.dodges + this.data.parries + this.data.blocks + this.data.glances + this.data.crits + this.data.hits;
+		this.hitAttempts =
+			this.data.misses +
+			this.data.dodges +
+			this.data.parries +
+			this.data.critBlocks +
+			this.data.blocks +
+			this.data.glances +
+			this.data.crits +
+			(this.data.hits || this.data.casts);
 	}
 
 	get damage() {
 		return this.data.damage;
 	}
 
+	get avgDamage() {
+		return this.data.damage / this.iterations;
+	}
+
+	get critDamage() {
+		return this.data.critDamage;
+	}
+
+	get avgCritDamage() {
+		return this.data.critDamage / this.iterations;
+	}
+
+	get tickDamage() {
+		return this.data.tickDamage;
+	}
+
+	get avgTickDamage() {
+		return this.data.tickDamage / this.iterations;
+	}
+
+	get critTickDamage() {
+		return this.data.critTickDamage;
+	}
+
+	get avgCritTickDamage() {
+		return this.data.critTickDamage / this.iterations;
+	}
+
+	get glanceDamage() {
+		return this.data.glanceDamage;
+	}
+
+	get avgGlanceDamage() {
+		return this.data.glanceDamage / this.iterations;
+	}
+
+	get blockDamage() {
+		return this.data.blockDamage;
+	}
+
+	get avgBlockDamage() {
+		return this.data.blockDamage / this.iterations;
+	}
+
+	get critBlockDamage() {
+		return this.data.critBlockDamage;
+	}
+
+	get avgCritBlockDamage() {
+		return this.data.critBlockDamage / this.iterations;
+	}
+
 	get dps() {
 		return this.data.damage / this.iterations / this.duration;
+	}
+
+	get healing() {
+		return this.data.healing + this.data.shielding;
+	}
+
+	get avgHealing() {
+		return (this.data.healing + this.data.shielding) / this.iterations;
+	}
+
+	get critHealing() {
+		return this.data.critHealing;
+	}
+
+	get avgCritHealing() {
+		return this.data.critHealing / this.iterations;
+	}
+
+	get shielding() {
+		return this.data.shielding;
 	}
 
 	get hps() {
@@ -971,7 +1318,7 @@ export class TargetedActionMetrics {
 	}
 
 	get casts() {
-		return (this.data.casts || this.hitAttempts) / this.iterations;
+		return this.data.casts / this.iterations;
 	}
 
 	get castsPerMinute() {
@@ -980,6 +1327,14 @@ export class TargetedActionMetrics {
 
 	get avgCastTimeMs() {
 		return this.data.castTimeMs / this.iterations / this.casts;
+	}
+
+	get damageThroughput() {
+		if (this.avgCastTimeMs) {
+			return this.avgCast / (this.avgCastTimeMs / 1000);
+		} else {
+			return 0;
+		}
 	}
 
 	get healingThroughput() {
@@ -995,7 +1350,12 @@ export class TargetedActionMetrics {
 	}
 
 	get avgCast() {
+		if (!this.casts) return 0;
 		return this.data.damage / this.iterations / (this.casts || 1);
+	}
+
+	get avgCastTick() {
+		return this.data.tickDamage / this.iterations / (this.casts || 1);
 	}
 
 	get avgCastHealing() {
@@ -1010,9 +1370,22 @@ export class TargetedActionMetrics {
 		return this.landedHitsRaw / this.iterations;
 	}
 
+	get landedTicks() {
+		return this.landedTicksRaw / this.iterations;
+	}
+
 	get avgHit() {
 		const lhr = this.landedHitsRaw;
-		return lhr == 0 ? 0 : this.data.damage / lhr;
+		return lhr == 0 ? 0 : (this.data.damage - this.data.tickDamage) / lhr;
+	}
+
+	get avgTick() {
+		const ltr = this.landedTicksRaw;
+		return ltr == 0 ? 0 : this.data.tickDamage / ltr;
+	}
+
+	get avgHitHealing() {
+		return (this.data.healing + this.data.shielding) / this.iterations / this.landedHits;
 	}
 
 	get avgHitThreat() {
@@ -1020,8 +1393,12 @@ export class TargetedActionMetrics {
 		return lhr == 0 ? 0 : this.data.threat / lhr;
 	}
 
-	get critPercent() {
-		return (this.data.crits / (this.hitAttempts || 1)) * 100;
+	get totalMisses() {
+		return this.misses + this.dodges + this.parries;
+	}
+
+	get totalMissesPercent() {
+		return this.missPercent + this.dodgePercent + this.parryPercent;
 	}
 
 	get misses() {
@@ -1029,7 +1406,7 @@ export class TargetedActionMetrics {
 	}
 
 	get missPercent() {
-		return (this.data.misses / (this.data.casts || 1)) * 100;
+		return (this.data.misses / this.hitAttempts) * 100;
 	}
 
 	get dodges() {
@@ -1037,7 +1414,7 @@ export class TargetedActionMetrics {
 	}
 
 	get dodgePercent() {
-		return (this.data.dodges / (this.hitAttempts || 1)) * 100;
+		return (this.data.dodges / this.hitAttempts) * 100;
 	}
 
 	get parries() {
@@ -1045,7 +1422,27 @@ export class TargetedActionMetrics {
 	}
 
 	get parryPercent() {
-		return (this.data.parries / (this.hitAttempts || 1)) * 100;
+		return (this.data.parries / this.hitAttempts) * 100;
+	}
+
+	get hits() {
+		return this.data.hits / this.iterations;
+	}
+
+	get hitPercent() {
+		return (this.data.hits / this.hitAttempts) * 100;
+	}
+
+	get ticks() {
+		return this.data.ticks / this.iterations;
+	}
+
+	get critTicks() {
+		return this.data.critTicks / this.iterations;
+	}
+
+	get critTickPercent() {
+		return (this.data.critTicks / this.data.ticks) * 100;
 	}
 
 	get blocks() {
@@ -1053,7 +1450,15 @@ export class TargetedActionMetrics {
 	}
 
 	get blockPercent() {
-		return (this.data.blocks / (this.hitAttempts || 1)) * 100;
+		return (this.data.blocks / this.hitAttempts) * 100;
+	}
+
+	get critBlocks() {
+		return this.data.critBlocks / this.iterations;
+	}
+
+	get critBlockPercent() {
+		return (this.data.critBlocks / this.hitAttempts) * 100;
 	}
 
 	get glances() {
@@ -1061,29 +1466,59 @@ export class TargetedActionMetrics {
 	}
 
 	get glancePercent() {
-		return (this.data.glances / (this.hitAttempts || 1)) * 100;
+		return (this.data.glances / this.hitAttempts) * 100;
+	}
+
+	get crits() {
+		return this.data.crits / this.iterations;
+	}
+
+	get critPercent() {
+		return (this.data.crits / this.hitAttempts) * 100;
+	}
+
+	get healingPercent() {
+		return ((this.healing - this.critHealing) / this.healing) * 100;
+	}
+
+	get healingCritPercent() {
+		return (this.data.critHealing / this.healing) * 100;
 	}
 
 	// Merges an array of metrics into a single metric.
 	static merge(actions: Array<TargetedActionMetrics>): TargetedActionMetrics {
+		const { iterations = 1, duration = 1 } = actions[0];
+
 		return new TargetedActionMetrics(
-			actions[0]?.iterations || 1,
-			actions[0]?.duration || 1,
 			TargetedActionMetricsProto.create({
 				casts: sum(actions.map(a => a.data.casts)),
 				hits: sum(actions.map(a => a.data.hits)),
 				crits: sum(actions.map(a => a.data.crits)),
+				ticks: sum(actions.map(a => a.data.ticks)),
+				critTicks: sum(actions.map(a => a.data.critTicks)),
 				misses: sum(actions.map(a => a.data.misses)),
 				dodges: sum(actions.map(a => a.data.dodges)),
 				parries: sum(actions.map(a => a.data.parries)),
 				blocks: sum(actions.map(a => a.data.blocks)),
+				critBlocks: sum(actions.map(a => a.data.critBlocks)),
 				glances: sum(actions.map(a => a.data.glances)),
 				damage: sum(actions.map(a => a.data.damage)),
+				critDamage: sum(actions.map(a => a.data.critDamage)),
+				tickDamage: sum(actions.map(a => a.data.tickDamage)),
+				critTickDamage: sum(actions.map(a => a.data.critTickDamage)),
+				glanceDamage: sum(actions.map(a => a.data.glanceDamage)),
+				blockDamage: sum(actions.map(a => a.data.blockDamage)),
+				critBlockDamage: sum(actions.map(a => a.data.critBlockDamage)),
 				threat: sum(actions.map(a => a.data.threat)),
 				healing: sum(actions.map(a => a.data.healing)),
+				critHealing: sum(actions.map(a => a.data.critHealing)),
 				shielding: sum(actions.map(a => a.data.shielding)),
 				castTimeMs: sum(actions.map(a => a.data.castTimeMs)),
 			}),
+			{
+				iterations,
+				duration,
+			},
 		);
 	}
 }

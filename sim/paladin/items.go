@@ -1,9 +1,10 @@
 package paladin
 
 import (
+	"time"
+
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/stats"
-	"time"
 )
 
 // Tier 11 ret
@@ -59,7 +60,7 @@ var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 					},
 
 					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-						dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+						dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 					},
 				},
 
