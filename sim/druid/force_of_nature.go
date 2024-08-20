@@ -69,7 +69,7 @@ func (druid *Druid) NewTreant() *TreantPet {
 		druidOwner: druid,
 	}
 	treant.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	treant.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/83.3)
+	treant.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, 1/83.3)
 
 	treant.PseudoStats.DamageDealtMultiplier = 1
 	treant.EnableAutoAttacks(treant, core.AutoAttackOptions{
@@ -114,12 +114,12 @@ func (treant *TreantPet) ExecuteCustomRotation(_ *core.Simulation) {
 
 // TODO : fix miss/dodge
 var treantBaseStats = stats.Stats{
-	stats.Strength:  331,
-	stats.Agility:   113,
-	stats.Stamina:   598,
-	stats.Intellect: 281,
-	stats.Spirit:    109,
-	stats.MeleeCrit: 5 * core.CritRatingPerCritChance,
-	stats.MeleeHit:  5 * core.MeleeHitRatingPerHitChance,
-	stats.Expertise: 120,
+	stats.Strength:            331,
+	stats.Agility:             113,
+	stats.Stamina:             598,
+	stats.Intellect:           281,
+	stats.Spirit:              109,
+	stats.PhysicalCritPercent: 5,
+	stats.PhysicalHitPercent:  5,
+	stats.ExpertiseRating:     120,
 }

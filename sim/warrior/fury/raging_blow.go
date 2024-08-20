@@ -31,7 +31,7 @@ func (war *FuryWarrior) RegisterRagingBlow() {
 	war.RegisterSpell(core.SpellConfig{
 		ActionID:       ragingBlowActionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolPhysical,
-		ProcMask:       core.ProcMaskMeleeSpecial,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		ClassSpellMask: warrior.SpellMaskRagingBlow | warrior.SpellMaskSpecialAttack,
 
@@ -60,14 +60,12 @@ func (war *FuryWarrior) RegisterRagingBlow() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHitNoHitCounter)
 
 			if !result.Landed() {
 				spell.IssueRefund(sim)
 				return
 			}
-			//remove hit metric from the no damage hit roll
-			spell.SpellMetrics[target.UnitIndex].Hits--
 
 			// 1 hit roll then 2 damage events
 			mhBaseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())

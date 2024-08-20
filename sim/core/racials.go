@@ -84,8 +84,8 @@ func applyRaceEffects(agent Agent) {
 	case proto.Race_RaceDraenei:
 		character.PseudoStats.ReducedShadowHitTakenChance += 0.02
 		character.AddStats(stats.Stats{
-			stats.MeleeHit: 1 * MeleeHitRatingPerHitChance,
-			stats.SpellHit: 1 * SpellHitRatingPerHitChance,
+			stats.PhysicalHitPercent: 1,
+			stats.SpellHitPercent:    1,
 		})
 		// TODO: Gift of the naaru for healers
 	case proto.Race_RaceDwarf:
@@ -93,7 +93,7 @@ func applyRaceEffects(agent Agent) {
 
 		// Gun specialization (+1% ranged crit when using a gun).
 		if character.Ranged().RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeGun {
-			character.AddBonusRangedCritRating(1 * CritRatingPerCritChance)
+			character.AddBonusRangedCritPercent(1)
 		}
 
 		applyWeaponSpecialization(character, 3*ExpertisePerQuarterPercentReduction,
@@ -194,7 +194,7 @@ func applyRaceEffects(agent Agent) {
 	case proto.Race_RaceTroll:
 		// Bow specialization (+1% ranged crit when using a bow).
 		if character.Ranged().RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeBow {
-			character.AddBonusRangedCritRating(1 * CritRatingPerCritChance)
+			character.AddBonusRangedCritPercent(1)
 		}
 
 		// Beast Slaying (+5% damage to beasts)
@@ -243,8 +243,8 @@ func applyRaceEffects(agent Agent) {
 	case proto.Race_RaceUndead:
 		character.PseudoStats.ReducedShadowHitTakenChance += 0.02
 	case proto.Race_RaceWorgen:
-		character.AddStat(stats.MeleeCrit, CritRatingPerCritChance)
-		character.AddStat(stats.SpellCrit, CritRatingPerCritChance)
+		character.AddStat(stats.PhysicalCritPercent, 1)
+		character.AddStat(stats.SpellCritPercent, 1)
 	case proto.Race_RaceGoblin:
 		character.PseudoStats.MeleeSpeedMultiplier *= 1.01
 		character.PseudoStats.RangedSpeedMultiplier *= 1.01
@@ -256,7 +256,7 @@ func applyWeaponSpecialization(character *Character, expertiseBonus float64, wea
 	mask := character.GetProcMaskForTypes(weaponTypes...)
 
 	if mask == ProcMaskMelee || (mask == ProcMaskMeleeMH && !character.HasOHWeapon()) {
-		character.AddStat(stats.Expertise, expertiseBonus)
+		character.AddStat(stats.ExpertiseRating, expertiseBonus)
 	} else {
 		character.OnSpellRegistered(func(spell *Spell) {
 			if spell.ProcMask.Matches(mask) {
@@ -270,7 +270,7 @@ func applyOneHandWeaponSpecialization(character *Character, expertiseBonus float
 	mask := character.GetProcMaskForTypesAndHand(false, weaponTypes...)
 
 	if mask == ProcMaskMelee || (mask == ProcMaskMeleeMH && !character.HasOHWeapon()) {
-		character.AddStat(stats.Expertise, expertiseBonus)
+		character.AddStat(stats.ExpertiseRating, expertiseBonus)
 	} else {
 		character.OnSpellRegistered(func(spell *Spell) {
 			if spell.ProcMask.Matches(mask) {

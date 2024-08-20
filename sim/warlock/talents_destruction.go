@@ -50,8 +50,8 @@ func (warlock *Warlock) ApplyDestructionTalents() {
 	// FireAndBrimstoneDamage mod is in Immolate
 	warlock.AddStaticMod(core.SpellModConfig{
 		ClassMask:  WarlockSpellConflagrate,
-		Kind:       core.SpellMod_BonusCrit_Rating,
-		FloatValue: 5.0 * float64(warlock.Talents.FireAndBrimstone) * core.CritRatingPerCritChance,
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		FloatValue: 5.0 * float64(warlock.Talents.FireAndBrimstone),
 	})
 
 	warlock.registerEmpoweredImp()
@@ -65,9 +65,9 @@ func (warlock *Warlock) registerImprovedSearingPain() {
 	}
 
 	improvedSearingPain := warlock.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_BonusCrit_Rating,
+		Kind:       core.SpellMod_BonusCrit_Percent,
 		ClassMask:  WarlockSpellSearingPain,
-		FloatValue: 20 * float64(warlock.Talents.ImprovedSearingPain) * core.CritRatingPerCritChance,
+		FloatValue: 20 * float64(warlock.Talents.ImprovedSearingPain),
 	})
 
 	warlock.RegisterResetEffect(func(sim *core.Simulation) {
@@ -136,7 +136,7 @@ func (warlock *Warlock) registerBurningEmbers() {
 		ActionID:       core.ActionID{SpellID: 85421},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage, // TODO: even the imp hits can proc some trinkets, though not most
-		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete,
+		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 		ClassSpellMask: WarlockSpellBurningEmbers,
 
 		DamageMultiplier: 1,

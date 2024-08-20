@@ -2,7 +2,6 @@ package combat
 
 import (
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/rogue"
 )
 
@@ -15,7 +14,7 @@ func (comRogue *CombatRogue) applyMastery() {
 		ActionID:       core.ActionID{SpellID: 86392},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial, // TODO Thebackstabi 3/20/2024 -- Validate if MG can proc things
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagPassiveSpell,
 		ClassSpellMask: rogue.RogueSpellMainGauche,
 
 		DamageMultiplier: 1,
@@ -39,7 +38,7 @@ func (comRogue *CombatRogue) applyMastery() {
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ProcMask.Matches(core.ProcMaskMeleeMH) && spell != comRogue.mainGauche && spell != comRogue.Rupture {
-				masteryPoints := comRogue.GetStat(stats.Mastery) / core.MasteryRatingPerMasteryPoint
+				masteryPoints := comRogue.GetMasteryPoints()
 				mgProcChance := masteryChancePerPoint*masteryPoints + masteryBaseEffect
 
 				if sim.Proc(mgProcChance, "Main Gauche") {

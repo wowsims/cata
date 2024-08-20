@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/simsignals"
 )
 
 type Task interface {
@@ -38,7 +39,7 @@ type Simulation struct {
 	NeedsInput     bool          // Sim is in interactive mode and needs input
 
 	ProgressReport func(*proto.ProgressMetrics)
-	QuitChannel    chan bool
+	Signals        simsignals.Signals
 
 	Log func(string, ...interface{})
 
@@ -105,11 +106,11 @@ func (sim *Simulation) RemoveTask(task Task) {
 	}
 }
 
-func RunSim(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, quitSignal chan bool) *proto.RaidSimResult {
-	return runSim(rsr, progress, false, quitSignal)
+func RunSim(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, signals simsignals.Signals) *proto.RaidSimResult {
+	return runSim(rsr, progress, false, signals)
 }
 
-func runSim(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, skipPresim bool, quitSignal chan bool) (result *proto.RaidSimResult) {
+func runSim(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, skipPresim bool, signals simsignals.Signals) (result *proto.RaidSimResult) {
 	if !rsr.SimOptions.IsTest {
 		defer func() {
 			if err := recover(); err != nil {
@@ -123,7 +124,7 @@ func runSim(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, ski
 
 				errStr += "\nStack Trace:\n" + string(debug.Stack())
 				result = &proto.RaidSimResult{
-					ErrorResult: errStr,
+					Error: &proto.ErrorOutcome{Message: errStr},
 				}
 				if progress != nil {
 					progress <- &proto.ProgressMetrics{
@@ -137,11 +138,7 @@ func runSim(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, ski
 		}()
 	}
 
-	sim := NewSim(rsr)
-
-	if quitSignal != nil {
-		sim.QuitChannel = quitSignal
-	}
+	sim := NewSim(rsr, signals)
 
 	if !skipPresim {
 		if progress != nil {
@@ -152,7 +149,7 @@ func runSim(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, ski
 			runtime.Gosched() // allow time for message to make it back out.
 		}
 		presimResult := sim.runPresims(rsr)
-		if presimResult != nil && presimResult.ErrorResult != "" {
+		if presimResult != nil && presimResult.Error != nil {
 			if progress != nil {
 				progress <- &proto.ProgressMetrics{
 					TotalIterations: sim.Options.Iterations,
@@ -185,12 +182,12 @@ func runSim(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, ski
 	return result
 }
 
-func NewSim(rsr *proto.RaidSimRequest) *Simulation {
+func NewSim(rsr *proto.RaidSimRequest, signals simsignals.Signals) *Simulation {
 	env, _, _ := NewEnvironment(rsr.Raid, rsr.Encounter, false)
-	return newSimWithEnv(env, rsr.SimOptions)
+	return newSimWithEnv(env, rsr.SimOptions, signals)
 }
 
-func newSimWithEnv(env *Environment, simOptions *proto.SimOptions) *Simulation {
+func newSimWithEnv(env *Environment, simOptions *proto.SimOptions, signals simsignals.Signals) *Simulation {
 	rseed := simOptions.RandomSeed
 	if rseed == 0 {
 		rseed = time.Now().UnixNano()
@@ -203,8 +200,10 @@ func newSimWithEnv(env *Environment, simOptions *proto.SimOptions) *Simulation {
 		rand:  NewSplitMix(uint64(rseed)),
 		rseed: rseed,
 
-		isTest:    simOptions.IsTest,
+		isTest:    simOptions.IsTest || simOptions.UseLabeledRands,
 		testRands: make(map[string]Rand),
+
+		Signals: signals,
 	}
 }
 
@@ -310,25 +309,23 @@ func (sim *Simulation) run() *proto.RaidSimResult {
 
 	var st time.Time
 	for i := int32(1); i < sim.Options.Iterations; i++ {
-		if sim.QuitChannel != nil {
-			select {
-			case <-sim.QuitChannel:
-				quitResult := &proto.RaidSimResult{
-					ErrorResult: "Canceled due to quit signal!",
-				}
-				if sim.ProgressReport != nil {
-					sim.ProgressReport(&proto.ProgressMetrics{FinalRaidResult: quitResult})
-				}
-				return quitResult
-			default:
+		if sim.Signals.Abort.IsTriggered() {
+			quitResult := &proto.RaidSimResult{Error: &proto.ErrorOutcome{Type: proto.ErrorOutcomeType_ErrorOutcomeAborted}}
+			if sim.ProgressReport != nil {
+				sim.ProgressReport(&proto.ProgressMetrics{FinalRaidResult: quitResult})
 			}
+			return quitResult
 		}
 
 		// fmt.Printf("Iteration: %d\n", i)
 		if sim.ProgressReport != nil && time.Since(st) > time.Millisecond*100 {
 			metrics := sim.Raid.GetMetrics()
 			sim.ProgressReport(&proto.ProgressMetrics{TotalIterations: sim.Options.Iterations, CompletedIterations: i, Dps: metrics.Dps.Avg, Hps: metrics.Hps.Avg})
-			runtime.Gosched() // ensure that reporting threads are given time to report, mostly only important in wasm (only 1 thread)
+			if IsRunningInWasm() {
+				time.Sleep(time.Microsecond) // Need to sleep to escape the go scheduler in wasm to give the JS event loop a chance to process requests to the worker.
+			} else {
+				runtime.Gosched() // ensure that reporting threads are given time to report, mostly only important in wasm (only 1 thread)
+			}
 			st = time.Now()
 		}
 
@@ -349,6 +346,7 @@ func (sim *Simulation) run() *proto.RaidSimResult {
 		Logs:                   logsBuffer.String(),
 		FirstIterationDuration: firstIterationDuration.Seconds(),
 		AvgIterationDuration:   totalDuration.Seconds() / float64(sim.Options.Iterations),
+		IterationsDone:         sim.Options.Iterations,
 	}
 
 	// Final progress report

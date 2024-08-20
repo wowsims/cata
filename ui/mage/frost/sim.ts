@@ -3,8 +3,9 @@ import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_u
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
-import { Debuffs, Faction, IndividualBuffs, PartyBuffs, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
-import { Stats } from '../../core/proto_utils/stats';
+import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
+import { Stats, UnitStat } from '../../core/proto_utils/stats';
+import { sharedMageDisplayStatsModifiers } from '../shared';
 import * as FrostInputs from './inputs';
 import * as Presets from './presets';
 
@@ -19,39 +20,35 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 		Stat.StatIntellect,
 		Stat.StatSpirit,
 		Stat.StatSpellPower,
-		Stat.StatSpellHit,
-		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
+		Stat.StatHitRating,
+		Stat.StatCritRating,
+		Stat.StatHasteRating,
 		Stat.StatMP5,
-		Stat.StatMastery,
+		Stat.StatMasteryRating,
 	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
-	displayStats: [
-		Stat.StatHealth,
-		Stat.StatMana,
-		Stat.StatStamina,
-		Stat.StatIntellect,
-		Stat.StatSpirit,
-		Stat.StatSpellPower,
-		Stat.StatSpellHit,
-		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
-		Stat.StatMP5,
-		Stat.StatMastery,
-	],
-	// modifyDisplayStats: (player: Player<Spec.SpecFrostMage>) => {
-	// 	let stats = new Stats();
-
-	// 	if (player.getTalentTree() === 0) {
-	// 		stats = stats.addStat(Stat.StatSpellHit, player.getTalents().arcaneFocus * 1 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
-	// 	}
-
-	// 	return {
-	// 		talents: stats,
-	// 	};
-	// },
+	displayStats: UnitStat.createDisplayStatArray(
+		[
+			Stat.StatHealth,
+			Stat.StatMana,
+			Stat.StatStamina,
+			Stat.StatIntellect,
+			Stat.StatSpirit,
+			Stat.StatSpellPower,
+			Stat.StatMP5,
+			Stat.StatMasteryRating,
+		],
+		[
+			PseudoStat.PseudoStatSpellHitPercent,
+			PseudoStat.PseudoStatSpellCritPercent,
+			PseudoStat.PseudoStatSpellHastePercent,
+		],
+	),
+	modifyDisplayStats: (player: Player<Spec.SpecFrostMage>) => {
+		return sharedMageDisplayStatsModifiers(player);
+	},
 
 	defaults: {
 		// Default equipped gear.

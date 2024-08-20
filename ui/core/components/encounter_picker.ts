@@ -1,7 +1,7 @@
 import { Encounter } from '../encounter.js';
 import { IndividualSimUI } from '../individual_sim_ui.js';
 import { InputType, MobType, SpellSchool, Stat, Target, Target as TargetProto, TargetInput } from '../proto/common.js';
-import { statNames } from '../proto_utils/names.js';
+import { getStatName } from '../proto_utils/names.js';
 import { Stats } from '../proto_utils/stats.js';
 import { Raid } from '../raid.js';
 import { SimUI } from '../sim_ui.js';
@@ -11,7 +11,6 @@ import { BaseModal } from './base_modal.js';
 import { Component } from './component.js';
 import { Input } from './input.js';
 import { BooleanPicker } from './pickers/boolean_picker.js';
-import { TextDropdownPicker, TextDropdownValueConfig } from './pickers/dropdown_picker.jsx';
 import { EnumPicker } from './pickers/enum_picker.js';
 import { ListItemPickerConfig, ListPicker } from './pickers/list_picker.jsx';
 import { NumberPicker } from './pickers/number_picker.js';
@@ -388,7 +387,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 				id: `target-picker-stats-${statData.stat}`,
 				inline: true,
 				extraCssClasses: statData.extraCssClasses,
-				label: statNames.get(stat),
+				label: getStatName(stat),
 				labelTooltip: statData.tooltip,
 				changedEvent: () => encounter.targetsChangeEmitter,
 				getValue: () => this.getTarget().stats[stat],
@@ -519,7 +518,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 				.map(picker => picker.getInputValue())
 				.map((statValue, i) => new Stats().withStat(ALL_TARGET_STATS[i].stat, statValue))
 				.reduce((totalStats, curStats) => totalStats.add(curStats))
-				.asArray(),
+				.asProtoArray(),
 			targetInputs: this.targetInputPickers.getInputValue(),
 		});
 	}

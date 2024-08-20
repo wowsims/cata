@@ -40,7 +40,7 @@ func (druid *Druid) registerWildMushrooms() {
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: DruidSpellWildMushroomDetonate,
-		Flags:          core.SpellFlagAPL | SpellFlagOmenTrigger,
+		Flags:          core.SpellFlagAPL | SpellFlagOmenTrigger | core.SpellFlagPassiveSpell,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{

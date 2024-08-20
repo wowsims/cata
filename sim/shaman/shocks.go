@@ -60,15 +60,15 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 
 	lavaBurstCritMod := shaman.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  SpellMaskLavaBurst | SpellMaskLavaBurstOverload,
-		Kind:       core.SpellMod_BonusCrit_Rating,
-		FloatValue: 100 * core.CritRatingPerCritChance,
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		FloatValue: 100,
 	})
 
 	config.RelatedDotSpell = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 8050, Tag: 1},
 		SpellSchool:      core.SpellSchoolFire,
 		ProcMask:         core.ProcMaskSpellDamage,
-		Flags:            config.Flags & ^core.SpellFlagAPL,
+		Flags:            config.Flags & ^core.SpellFlagAPL | core.SpellFlagPassiveSpell,
 		ClassSpellMask:   SpellMaskFlameShockDot,
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
@@ -96,7 +96,7 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
+			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHitNoHitCounter)
 			spell.Dot(target).Apply(sim)
 		},
 	})

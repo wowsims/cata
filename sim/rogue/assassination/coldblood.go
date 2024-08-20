@@ -22,14 +22,14 @@ func (sinRogue *AssassinationRogue) registerColdBloodCD() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range sinRogue.Spellbook {
 				if spell.Flags.Matches(rogue.SpellFlagColdBlooded) {
-					spell.BonusCritRating += 100 * core.CritRatingPerCritChance
+					spell.BonusCritPercent += 100
 				}
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range sinRogue.Spellbook {
 				if spell.Flags.Matches(rogue.SpellFlagColdBlooded) {
-					spell.BonusCritRating -= 100 * core.CritRatingPerCritChance
+					spell.BonusCritPercent -= 100
 				}
 			}
 		},

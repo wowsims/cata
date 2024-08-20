@@ -6,8 +6,9 @@ import { IndividualSimUI } from '../individual_sim_ui.jsx';
 import { Player } from '../player.js';
 import { ProgressMetrics, StatWeightsResult, StatWeightValues } from '../proto/api.js';
 import { PseudoStat, Stat, UnitStats } from '../proto/common.js';
-import { getClassStatName } from '../proto_utils/names.js';
+import { getStatName } from '../proto_utils/names.js';
 import { Stats, UnitStat } from '../proto_utils/stats.js';
+import { RequestTypes } from '../sim_signal_manager';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { stDevToConf90 } from '../utils.js';
 import { BaseModal } from './base_modal.jsx';
@@ -84,7 +85,7 @@ export class EpWeightsMenu extends BaseModal {
 		const calcWeightsButtonRef = ref<HTMLButtonElement>();
 		const allStatsContainerRef = ref<HTMLDivElement>();
 
-		const getNameFromStat = (stat: Stat | undefined) => (stat !== undefined ? getClassStatName(stat, this.simUI.player.getClass()) : '??');
+		const getNameFromStat = (stat: Stat | undefined) => (stat !== undefined ? getStatName(stat) : '??');
 		const getStatFromName = (value: string) => Object.values(this.epStats).find(stat => getNameFromStat(stat) === value);
 		const epRefSelectOptions = (
 			<>
@@ -240,7 +241,19 @@ export class EpWeightsMenu extends BaseModal {
 		}
 
 		const calcButton = calcWeightsButtonRef.value;
+		let isRunning = false;
 		calcButton?.addEventListener('click', async () => {
+			if (isRunning) return;
+			isRunning = true;
+
+			try {
+				await this.simUI.sim.signalManager.abortType(RequestTypes.All);
+			} catch (error) {
+				console.error(error);
+				return;
+			}
+
+			calcButton.disabled = true;
 			this.simUI.rootElem.classList.add('blurred');
 			this.simUI.rootElem.insertAdjacentElement('afterend', pendingDiv);
 
@@ -248,10 +261,26 @@ export class EpWeightsMenu extends BaseModal {
 			this.container.classList.add('pending');
 			this.resultsViewer.setPending();
 			const iterations = this.simUI.sim.getIterations();
+
+			let waitAbort = false;
+			this.resultsViewer.addAbortButton(async () => {
+				if (waitAbort) return;
+				try {
+					waitAbort = true;
+					await simUI.sim.signalManager.abortType(RequestTypes.StatWeights);
+				} catch (error) {
+					console.error('Error on stat weight abort!');
+					console.error(error);
+				} finally {
+					waitAbort = false;
+					if (!isRunning) calcButton.disabled = false;
+				}
+			});
+
 			const result = await this.simUI.player.computeStatWeights(
 				TypedEvent.nextEventID(),
 				this.epStats,
-				this.epPseudoStats,
+				this.makePseudoStatsForSim(),
 				this.epReferenceStat,
 				progress => {
 					this.setSimProgress(progress);
@@ -261,10 +290,17 @@ export class EpWeightsMenu extends BaseModal {
 			pendingDiv.remove();
 			this.container.classList.remove('pending');
 			this.resultsViewer.hideAll();
+			isRunning = false;
+			if (!waitAbort) calcButton.disabled = false;
+
 			if (!result) return;
 			this.simUI.prevEpIterations = iterations;
 			this.simUI.prevEpSimResult = this.calculateEp(result);
 			this.updateTable();
+		});
+
+		this.addOnHideCallback(() => {
+			this.simUI.sim.signalManager.abortType(RequestTypes.StatWeights).catch(console.error);
 		});
 
 		const makeUpdateWeights = (
@@ -370,6 +406,35 @@ export class EpWeightsMenu extends BaseModal {
 		this.buildSavedEPWeightsPicker();
 	}
 
+	// Make sure that the appropriate school-specific versions of Hit/Crit for a given spec are configured as epPseudoStats before generating the back-end stat weights request. This functionality
+	// allows individual spec configs to omit these PseudoStats so that they do not appear in the menu and potentially confuse users, while still guaranteeing that the school-specific components of
+	// the Hit Rating and Crit Rating EPs are separately calculated and stored when required for auto-Reforge.
+	private makePseudoStatsForSim() {
+		const processedPseudoStatsList = this.epPseudoStats.slice();
+		const tertiaryStatList = [PseudoStat.PseudoStatPhysicalHitPercent, PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatPhysicalCritPercent, PseudoStat.PseudoStatSpellCritPercent];
+
+		// Do one pass to check that all school-specific capped stats are included.
+		for (const tertiaryStat of tertiaryStatList) {
+			if (!this.epPseudoStats.includes(tertiaryStat) && this.simUI.hasCapForPseudoStat(tertiaryStat)) {
+				processedPseudoStatsList.push(tertiaryStat);
+			}
+		}
+
+		// Then do a second pass to possibly include the *other* school as well, since the back-end will sum the two school-specific EPs to determine the EP for the
+		// parent Rating stat.
+		for (const tertiaryStat of tertiaryStatList) {
+			const siblingStat = UnitStat.getSiblingPseudoStat(tertiaryStat)!;
+
+			// The heuristic we use is to exclude sibling stats from the config if they are not even displayed in the sim UI, since this means it should be safe to
+			// assume 0 EP value for the other school variant and save on computation time.
+			if (processedPseudoStatsList.includes(tertiaryStat) && !processedPseudoStatsList.includes(siblingStat) && this.simUI.hasDisplayPseudoStat(siblingStat)) {
+				processedPseudoStatsList.push(siblingStat);
+			}
+		}
+
+		return processedPseudoStatsList;
+	}
+
 	private setSimProgress(progress: ProgressMetrics) {
 		this.resultsViewer.setContent(
 			<div className="results-sim">
@@ -410,7 +475,7 @@ export class EpWeightsMenu extends BaseModal {
 		const currentEpRef = ref<HTMLTableCellElement>();
 		const row = (
 			<tr>
-				<td>{stat.getName(this.simUI.player.getClass())}</td>
+				<td>{stat.getFullName(this.simUI.player.getClass())}</td>
 				{this.makeTableRowCells(stat, result?.dps, 'damage-metrics', rowTotalEp, epRatios[0])}
 				{this.makeTableRowCells(stat, result?.hps, 'healing-metrics', rowTotalEp, epRatios[1])}
 				{this.makeTableRowCells(stat, result?.tps, 'threat-metrics', rowTotalEp, epRatios[2])}
@@ -584,7 +649,7 @@ export class EpWeightsMenu extends BaseModal {
 		if (stat.isStat()) {
 			return true;
 		} else {
-			return [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatRangedDps].includes(stat.getPseudoStat());
+			return [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatRangedDps, PseudoStat.PseudoStatPhysicalHitPercent, PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatPhysicalCritPercent, PseudoStat.PseudoStatSpellCritPercent].includes(stat.getPseudoStat());
 		}
 	});
 

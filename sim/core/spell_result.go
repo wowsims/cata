@@ -48,6 +48,14 @@ func (result *SpellResult) DidCrit() bool {
 	return result.Outcome.Matches(OutcomeCrit)
 }
 
+func (result *SpellResult) DidGlance() bool {
+	return result.Outcome.Matches(OutcomeGlance)
+}
+
+func (result *SpellResult) DidBlock() bool {
+	return result.Outcome.Matches(OutcomeBlock)
+}
+
 func (result *SpellResult) DamageString() string {
 	outcomeStr := result.Outcome.String()
 	if !result.Landed() {
@@ -77,28 +85,23 @@ func (spell *Spell) RangedAttackPower(target *Unit) float64 {
 		target.PseudoStats.BonusRangedAttackPowerTaken
 }
 
-func (spell *Spell) ExpertisePercentage() float64 {
+func (spell *Spell) DodgeParrySuppression() float64 {
 	// As of 06/20, Blizzard has changed Expertise to no longer truncate at quarter
 	// percent intervals. Note that in-game character sheet tooltips will still
 	// display the truncated values, but it has been tested to behave continuously in
 	// reality since the patch.
-	expertiseRating := spell.Unit.stats[stats.Expertise] + spell.BonusExpertiseRating
+	expertiseRating := spell.Unit.stats[stats.ExpertiseRating] + spell.BonusExpertiseRating
 	return expertiseRating / ExpertisePerQuarterPercentReduction / 400
 }
 
 func (spell *Spell) PhysicalHitChance(attackTable *AttackTable) float64 {
-	hitRating := spell.Unit.stats[stats.MeleeHit] +
-		spell.BonusHitRating +
-		attackTable.Defender.PseudoStats.BonusMeleeHitRatingTaken
-	return hitRating / (MeleeHitRatingPerHitChance * 100)
+	hitPercent := spell.Unit.stats[stats.PhysicalHitPercent] + spell.BonusHitPercent
+	return hitPercent / 100
 }
 
 func (spell *Spell) PhysicalCritChance(attackTable *AttackTable) float64 {
-	critRating := spell.Unit.stats[stats.MeleeCrit] +
-		spell.BonusCritRating +
-		attackTable.Defender.PseudoStats.BonusCritRatingTaken +
-		attackTable.BonusCritRating
-	return critRating/(CritRatingPerCritChance*100) - attackTable.MeleeCritSuppression
+	critPercent := spell.Unit.stats[stats.PhysicalCritPercent] + spell.BonusCritPercent
+	return critPercent/100 - attackTable.MeleeCritSuppression
 }
 func (spell *Spell) PhysicalCritCheck(sim *Simulation, attackTable *AttackTable) bool {
 	return sim.RandomFloat("Physical Crit Roll") < spell.PhysicalCritChance(attackTable)
@@ -121,11 +124,8 @@ func (spell *Spell) SpellPower() float64 {
 }
 
 func (spell *Spell) SpellHitChance(target *Unit) float64 {
-	hitRating := spell.Unit.stats[stats.SpellHit] +
-		spell.BonusHitRating +
-		target.PseudoStats.BonusSpellHitRatingTaken
-
-	return hitRating / (SpellHitRatingPerHitChance * 100)
+	hitPercent := spell.Unit.stats[stats.SpellHitPercent] + spell.BonusHitPercent
+	return hitPercent / 100
 }
 func (spell *Spell) SpellChanceToMiss(attackTable *AttackTable) float64 {
 	return math.Max(0, attackTable.BaseSpellMissChance-spell.SpellHitChance(attackTable.Defender))
@@ -134,16 +134,13 @@ func (spell *Spell) MagicHitCheck(sim *Simulation, attackTable *AttackTable) boo
 	return sim.Proc(1.0-spell.SpellChanceToMiss(attackTable), "Magical Hit Roll")
 }
 
-func (spell *Spell) spellCritRating(target *Unit) float64 {
-	return spell.Unit.stats[stats.SpellCrit] +
-		spell.BonusCritRating +
-		target.PseudoStats.BonusCritRatingTaken +
-		target.PseudoStats.BonusSpellCritRatingTaken
-}
 func (spell *Spell) SpellCritChance(target *Unit) float64 {
-	return spell.spellCritRating(target)/(CritRatingPerCritChance*100) -
-		spell.Unit.AttackTables[target.UnitIndex].SpellCritSuppression +
-		spell.Unit.AttackTables[target.UnitIndex].BonusCritRating
+	attackTable := spell.Unit.AttackTables[target.UnitIndex]
+	critPercent := spell.Unit.stats[stats.SpellCritPercent] +
+		spell.BonusCritPercent +
+		target.PseudoStats.BonusSpellCritPercentTaken +
+		attackTable.BonusSpellCritPercent
+	return critPercent/100 - attackTable.SpellCritSuppression
 }
 func (spell *Spell) MagicCritCheck(sim *Simulation, target *Unit) bool {
 	critChance := spell.SpellCritChance(target)
@@ -153,11 +150,8 @@ func (spell *Spell) MagicCritCheck(sim *Simulation, target *Unit) bool {
 func (spell *Spell) HealingPower(target *Unit) float64 {
 	return spell.SpellPower() + target.PseudoStats.BonusHealingTaken
 }
-func (spell *Spell) healingCritRating() float64 {
-	return spell.Unit.GetStat(stats.SpellCrit) + spell.BonusCritRating
-}
 func (spell *Spell) HealingCritChance() float64 {
-	return spell.healingCritRating() / (CritRatingPerCritChance * 100)
+	return (spell.Unit.GetStat(stats.SpellCritPercent) + spell.BonusCritPercent) / 100
 }
 
 func (spell *Spell) HealingCritCheck(sim *Simulation) bool {
@@ -280,6 +274,24 @@ func (spell *Spell) CalcAndDealOutcome(sim *Simulation, target *Unit, outcomeApp
 func (spell *Spell) dealDamageInternal(sim *Simulation, isPeriodic bool, result *SpellResult) {
 	if sim.CurrentTime >= 0 {
 		spell.SpellMetrics[result.Target.UnitIndex].TotalDamage += result.Damage
+		if isPeriodic {
+			spell.SpellMetrics[result.Target.UnitIndex].TotalTickDamage += result.Damage
+		}
+
+		if result.DidCrit() {
+			if result.DidBlock() {
+				spell.SpellMetrics[result.Target.UnitIndex].TotalCritBlockDamage += result.Damage
+			} else {
+				spell.SpellMetrics[result.Target.UnitIndex].TotalCritDamage += result.Damage
+				if isPeriodic {
+					spell.SpellMetrics[result.Target.UnitIndex].TotalCritTickDamage += result.Damage
+				}
+			}
+		} else if result.DidGlance() {
+			spell.SpellMetrics[result.Target.UnitIndex].TotalGlanceDamage += result.Damage
+		} else if result.DidBlock() {
+			spell.SpellMetrics[result.Target.UnitIndex].TotalBlockDamage += result.Damage
+		}
 		spell.SpellMetrics[result.Target.UnitIndex].TotalThreat += result.Threat
 	}
 
@@ -291,9 +303,9 @@ func (spell *Spell) dealDamageInternal(sim *Simulation, isPeriodic bool, result 
 
 	if sim.Log != nil {
 		if isPeriodic {
-			spell.Unit.Log(sim, "%s %s tick %s. (Threat: %0.3f)", result.Target.LogLabel(), spell.ActionID, result.DamageString(), result.Threat)
+			spell.Unit.Log(sim, "%s %s tick %s (SpellSchool: %d). (Threat: %0.3f)", result.Target.LogLabel(), spell.ActionID, result.DamageString(), spell.SpellSchool, result.Threat)
 		} else {
-			spell.Unit.Log(sim, "%s %s %s. (Threat: %0.3f)", result.Target.LogLabel(), spell.ActionID, result.DamageString(), result.Threat)
+			spell.Unit.Log(sim, "%s %s %s (SpellSchool: %d). (Threat: %0.3f)", result.Target.LogLabel(), spell.ActionID, result.DamageString(), spell.SpellSchool, result.Threat)
 		}
 	}
 
@@ -399,6 +411,9 @@ func (dot *Dot) SnapshotHeal(target *Unit, baseHealing float64) {
 
 // Applies the fully computed spell result to the sim.
 func (spell *Spell) dealHealingInternal(sim *Simulation, isPeriodic bool, result *SpellResult) {
+	if result.DidCrit() {
+		spell.SpellMetrics[result.Target.UnitIndex].TotalCritHealing += result.Damage
+	}
 	spell.SpellMetrics[result.Target.UnitIndex].TotalHealing += result.Damage
 	spell.SpellMetrics[result.Target.UnitIndex].TotalThreat += result.Threat
 	if result.Target.HasHealthBar() {

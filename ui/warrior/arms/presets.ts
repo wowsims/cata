@@ -5,6 +5,7 @@ import { ArmsWarrior_Options as WarriorOptions, WarriorMajorGlyph, WarriorMinorG
 import { Stats } from '../../core/proto_utils/stats';
 import ArmsApl from './apls/arms.apl.json';
 import P1ArmsBisGear from './gear_sets/p1_arms_bis.gear.json';
+import P1ArmsRealisticBisGear from './gear_sets/p1_arms_realistic_bis.gear.json';
 import PreraidArmsGear from './gear_sets/preraid_arms.gear.json';
 
 // Preset options for this spec.
@@ -12,7 +13,8 @@ import PreraidArmsGear from './gear_sets/preraid_arms.gear.json';
 // keep them in a separate file.
 
 export const PRERAID_ARMS_PRESET = PresetUtils.makePresetGear('Preraid Arms', PreraidArmsGear);
-export const P1_ARMS_PRESET = PresetUtils.makePresetGear('P1 Arms', P1ArmsBisGear);
+export const P1_ARMS_BIS_PRESET = PresetUtils.makePresetGear('P1 Arms - BIS', P1ArmsBisGear);
+export const P1_ARMS_REALISTIC_PRESET = PresetUtils.makePresetGear('P1 Arms - Realistic', P1ArmsRealisticBisGear);
 
 export const ROTATION_ARMS = PresetUtils.makePresetAPLRotation('Arms', ArmsApl);
 
@@ -24,11 +26,11 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatStrength]: 2.21,
 			[Stat.StatAgility]: 1.12,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatExpertise]: 1.75,
-			[Stat.StatMeleeHit]: 2.77,
-			[Stat.StatMeleeCrit]: 1.45,
-			[Stat.StatMeleeHaste]: 0.68,
-			[Stat.StatMastery]: 0.89,
+			[Stat.StatExpertiseRating]: 1.75,
+			[Stat.StatHitRating]: 2.77,
+			[Stat.StatCritRating]: 1.45,
+			[Stat.StatHasteRating]: 0.68,
+			[Stat.StatMasteryRating]: 0.89,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 9.22,

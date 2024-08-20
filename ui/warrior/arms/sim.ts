@@ -7,7 +7,7 @@ import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
-import { Stats } from '../../core/proto_utils/stats';
+import { Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as WarriorInputs from '../inputs';
 import * as Presets from './presets';
 
@@ -22,28 +22,32 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 		Stat.StatStrength,
 		Stat.StatAgility,
 		Stat.StatAttackPower,
-		Stat.StatExpertise,
-		Stat.StatMeleeHit,
-		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
-		Stat.StatMastery,
+		Stat.StatExpertiseRating,
+		Stat.StatHitRating,
+		Stat.StatCritRating,
+		Stat.StatHasteRating,
+		Stat.StatMasteryRating,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
-	displayStats: [
-		Stat.StatHealth,
-		Stat.StatStamina,
-		Stat.StatStrength,
-		Stat.StatAgility,
-		Stat.StatAttackPower,
-		Stat.StatExpertise,
-		Stat.StatMeleeHit,
-		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
-		Stat.StatMastery,
-	],
+	displayStats: UnitStat.createDisplayStatArray(
+		[
+			Stat.StatHealth,
+			Stat.StatStamina,
+			Stat.StatStrength,
+			Stat.StatAgility,
+			Stat.StatAttackPower,
+			Stat.StatExpertiseRating,
+			Stat.StatMasteryRating,
+		],
+		[
+			PseudoStat.PseudoStatPhysicalHitPercent,
+			PseudoStat.PseudoStatPhysicalCritPercent,
+			PseudoStat.PseudoStatMeleeHastePercent,
+		],
+	),
 	// modifyDisplayStats: (player: Player<Spec.SpecArmsWarrior>) => {
 	// 	let stats = new Stats();
 	// 	if (!player.getInFrontOfTarget()) {
@@ -57,13 +61,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.PRERAID_ARMS_PRESET.gear,
+		gear: Presets.P1_ARMS_BIS_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
-			const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
-			const expCap = new Stats().withStat(Stat.StatExpertise, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+			const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 8);
+			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 
 			return hitCap.add(expCap);
 		})(),
@@ -112,13 +116,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			WarriorInputs.StartingRage(),
-			WarriorInputs.StanceSnapshot(),
-			OtherInputs.InputDelay,
-			OtherInputs.TankAssignment,
-			OtherInputs.InFrontOfTarget,
-		],
+		inputs: [WarriorInputs.StartingRage(), WarriorInputs.StanceSnapshot(), OtherInputs.InputDelay, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -132,7 +130,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_ARMS],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_ARMS_PRESET, Presets.P1_ARMS_PRESET],
+		gear: [Presets.PRERAID_ARMS_PRESET, Presets.P1_ARMS_BIS_PRESET, Presets.P1_ARMS_REALISTIC_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecArmsWarrior>): APLRotation => {
@@ -147,16 +145,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
-				[Faction.Alliance]: Race.RaceHuman,
+				[Faction.Alliance]: Race.RaceWorgen,
 				[Faction.Horde]: Race.RaceOrc,
 			},
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_ARMS_PRESET.gear,
+					1: Presets.P1_ARMS_BIS_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_ARMS_PRESET.gear,
+					1: Presets.P1_ARMS_BIS_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,

@@ -42,8 +42,8 @@ func (rogue *Rogue) registerEviscerate() {
 			return rogue.ComboPoints() > 0
 		},
 
-		BonusCritRating: core.TernaryFloat64(
-			rogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfEviscerate), 10*core.CritRatingPerCritChance, 0.0),
+		BonusCritPercent: core.TernaryFloat64(
+			rogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfEviscerate), 10, 0),
 		DamageMultiplier: 1,
 		DamageMultiplierAdditive: 1 +
 			[]float64{0.0, 0.07, 0.14, 0.2}[rogue.Talents.CoupDeGrace] +

@@ -1,3 +1,4 @@
+import * as Mechanics from '../../core/constants/mechanics';
 import * as PresetUtils from '../../core/preset_utils.js';
 import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, PseudoStat, RaidBuffs, Stat, TinkerHands } from '../../core/proto/common.js';
 import {
@@ -38,22 +39,21 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'P1',
 	Stats.fromMap(
 		{
-			[Stat.StatIntellect]: 1.48,
-			[Stat.StatAgility]: 1.59,
-			[Stat.StatStrength]: 1.1,
-			[Stat.StatSpellPower]: 1.13,
-			[Stat.StatSpellHit]: 0, //default EP assumes cap
-			[Stat.StatSpellCrit]: 0.91,
-			[Stat.StatSpellHaste]: 0.37,
+			[Stat.StatIntellect]: 0.07,
+			[Stat.StatAgility]: 2.47,
+			[Stat.StatSpellPower]: 0,
+			[Stat.StatHitRating]: (0.89 + 0.6),
+			[Stat.StatCritRating]: (0.26 + 0.58),
+			[Stat.StatHasteRating]: (0.22 + 0.44),
 			[Stat.StatAttackPower]: 1.0,
-			[Stat.StatMeleeHit]: 1.38,
-			[Stat.StatMeleeCrit]: 0.81,
-			[Stat.StatMeleeHaste]: 1.61, //haste is complicated
-			[Stat.StatExpertise]: 0, //default EP assumes cap
+			[Stat.StatExpertiseRating]: 1.3,
+			[Stat.StatMasteryRating]: 1.21,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 5.21,
-			[PseudoStat.PseudoStatOffHandDps]: 2.21,
+			[PseudoStat.PseudoStatMainHandDps]: 3.05,
+			[PseudoStat.PseudoStatOffHandDps]: 2.56,
+			[PseudoStat.PseudoStatSpellHitPercent]: (0.89 * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT),
+			[PseudoStat.PseudoStatPhysicalHitPercent]: (0.6 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT),
 		},
 	),
 );

@@ -1,8 +1,9 @@
 import tippy from 'tippy.js';
 
-import { SimResult, SimResultFilter,UnitMetrics } from '../../proto_utils/sim_result.js';
+import { SimResult, SimResultFilter, UnitMetrics } from '../../proto_utils/sim_result.js';
 import { maxIndex, sum } from '../../utils.js';
-import { ColumnSortType, MetricsTable } from './metrics_table.js';
+import { ColumnSortType, MetricsTable } from './metrics_table/metrics_table.js';
+import { MetricsTotalBar } from './metrics_table/metrics_total_bar';
 import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component.js';
 import { ResultsFilter } from './results_filter.js';
 import { SourceChart } from './source_chart.js';
@@ -21,7 +22,7 @@ export class PlayerDamageMetricsTable extends MetricsTable<UnitMetrics> {
 			{
 				name: 'Amount',
 				tooltip: 'Player Damage / Raid Damage',
-				headerCellClass: 'amount-header-cell',
+				headerCellClass: 'amount-header-cell text-center',
 				fillCell: (player: UnitMetrics, cellElem: HTMLElement, rowElem: HTMLElement) => {
 					cellElem.classList.add('amount-cell');
 
@@ -29,7 +30,10 @@ export class PlayerDamageMetricsTable extends MetricsTable<UnitMetrics> {
 					const makeChart = () => {
 						const chartContainer = document.createElement('div');
 						rowElem.appendChild(chartContainer);
-						const playerActions = player.getPlayerAndPetActions().map(action => action.forTarget(this.resultsFilter.getFilter())).flat();
+						const playerActions = player
+							.getPlayerAndPetActions()
+							.map(action => action.forTarget(this.resultsFilter.getFilter()))
+							.flat();
 						const sourceChart = new SourceChart(chartContainer, playerActions);
 						return chartContainer;
 					};
@@ -46,18 +50,17 @@ export class PlayerDamageMetricsTable extends MetricsTable<UnitMetrics> {
 						},
 					});
 
-					const playerDps = this.getPlayerDps(player)
-					cellElem.innerHTML = `
-						<div class="player-damage-percent">
-							<span>${(playerDps / this.raidDps * 100).toFixed(2)}%</span>
-						</div>
-						<div class="player-damage-bar-container">
-							<div class="player-damage-bar bg-${player.classColor}" style="width:${playerDps / this.maxDps * 100}%"></div>
-						</div>
-						<div class="player-damage-total">
-							<span>${(playerDps * this.getLastSimResult().result.duration / 1000).toFixed(1)}k</span>
-						</div>
-					`;
+					const playerDps = this.getPlayerDps(player);
+
+					cellElem.appendChild(
+						<MetricsTotalBar
+							classColor={player.classColor}
+							max={this.maxDps}
+							percentage={(playerDps / this.raidDps) * 100}
+							value={playerDps}
+							total={playerDps * this.getLastSimResult().result.duration}
+						/>,
+					);
 				},
 			},
 			{
@@ -74,10 +77,13 @@ export class PlayerDamageMetricsTable extends MetricsTable<UnitMetrics> {
 		this.maxDps = 0;
 	}
 
-	private getPlayerDps(player:UnitMetrics): number {
-		const playerActions = player.getPlayerAndPetActions().map(action => action.forTarget(this.resultsFilter.getFilter())).flat();
-		const playerDps = sum(playerActions.map(action => action.dps))
-		return playerDps
+	private getPlayerDps(player: UnitMetrics): number {
+		const playerActions = player
+			.getPlayerAndPetActions()
+			.map(action => action.forTarget(this.resultsFilter.getFilter()))
+			.flat();
+		const playerDps = sum(playerActions.map(action => action.dps));
+		return playerDps;
 	}
 
 	customizeRowElem(player: UnitMetrics, rowElem: HTMLElement) {
@@ -93,12 +99,20 @@ export class PlayerDamageMetricsTable extends MetricsTable<UnitMetrics> {
 		const targetActions = players.map(player => player.getPlayerAndPetActions().map(action => action.forTarget(resultData.filter))).flat();
 
 		this.raidDps = sum(targetActions.map(action => action.dps));
-		const maxDpsIndex = maxIndex(players.map(player => {
-			const targetActions = player.getPlayerAndPetActions().map(action => action.forTarget(resultData.filter)).flat();
-			return sum(targetActions.map(action => action.dps));
-		}))!;
+		const maxDpsIndex = maxIndex(
+			players.map(player => {
+				const targetActions = player
+					.getPlayerAndPetActions()
+					.map(action => action.forTarget(resultData.filter))
+					.flat();
+				return sum(targetActions.map(action => action.dps));
+			}),
+		)!;
 
-		const maxDpsTargetActions = players[maxDpsIndex].getPlayerAndPetActions().map(action => action.forTarget(resultData.filter)).flat();
+		const maxDpsTargetActions = players[maxDpsIndex]
+			.getPlayerAndPetActions()
+			.map(action => action.forTarget(resultData.filter))
+			.flat();
 		this.maxDps = sum(maxDpsTargetActions.map(action => action.dps));
 
 		return players.map(player => [player]);

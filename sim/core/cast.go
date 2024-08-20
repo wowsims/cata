@@ -110,8 +110,8 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 		}
 
 		if !config.IgnoreHaste {
-			spell.CurCast.GCD = max(0, spell.Unit.ApplyCastSpeed(spell.CurCast.GCD))
-			spell.CurCast.CastTime = spell.Unit.ApplyCastSpeedForSpell(spell.CurCast.CastTime, spell)
+			spell.CurCast.GCD = max(0, spell.Unit.ApplyCastSpeed(spell.CurCast.GCD)).Round(time.Millisecond)
+			spell.CurCast.CastTime = spell.Unit.ApplyCastSpeedForSpell(spell.CurCast.CastTime, spell).Round(time.Millisecond)
 		}
 
 		if config.CD.Timer != nil {
@@ -119,7 +119,6 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			if !spell.CD.IsReady(sim) {
 				return spell.castFailureHelper(sim, "still on cooldown for %s, curTime = %s", spell.CD.TimeToReady(sim), sim.CurrentTime)
 			}
-			spell.CD.Set(sim.CurrentTime + spell.CurCast.CastTime + time.Duration(float64(spell.CD.Duration)*spell.CdMultiplier))
 		}
 
 		if config.SharedCD.Timer != nil {
@@ -127,7 +126,6 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			if !spell.SharedCD.IsReady(sim) {
 				return spell.castFailureHelper(sim, "still on shared cooldown for %s, curTime = %s", spell.SharedCD.TimeToReady(sim), sim.CurrentTime)
 			}
-			spell.SharedCD.Set(sim.CurrentTime + spell.CurCast.CastTime + time.Duration(float64(spell.SharedCD.Duration)*spell.CdMultiplier))
 		}
 
 		// By panicking if spell is on CD, we force each sim to properly check for their own CDs.
@@ -140,7 +138,13 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 		}
 
 		if effectiveTime := spell.CurCast.EffectiveTime(); effectiveTime != 0 {
-			spell.SpellMetrics[target.UnitIndex].TotalCastTime += effectiveTime
+
+			// do not add channeled time here as they have variable cast length
+			// cast time for channels is handled in dot.OnExpire
+			if !spell.Flags.Matches(SpellFlagChanneled) {
+				spell.SpellMetrics[target.UnitIndex].TotalCastTime += effectiveTime
+			}
+
 			spell.Unit.SetGCDTimer(sim, max(sim.CurrentTime+effectiveTime, spell.Unit.NextGCDAt()))
 		}
 
@@ -167,6 +171,14 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 						spell.Cost.SpendCost(sim, spell)
 					}
 
+					if config.CD.Timer != nil {
+						spell.CD.Set(sim.CurrentTime + time.Duration(float64(spell.CD.Duration)*spell.CdMultiplier))
+					}
+
+					if config.SharedCD.Timer != nil {
+						spell.SharedCD.Set(sim.CurrentTime + time.Duration(float64(spell.SharedCD.Duration)*spell.CdMultiplier))
+					}
+
 					spell.applyEffects(sim, target)
 
 					if !spell.Flags.Matches(SpellFlagNoOnCastComplete) {
@@ -189,6 +201,14 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 
 		if spell.Cost != nil {
 			spell.Cost.SpendCost(sim, spell)
+		}
+
+		if config.CD.Timer != nil {
+			spell.CD.Set(sim.CurrentTime + time.Duration(float64(spell.CD.Duration)*spell.CdMultiplier))
+		}
+
+		if config.SharedCD.Timer != nil {
+			spell.SharedCD.Set(sim.CurrentTime + time.Duration(float64(spell.SharedCD.Duration)*spell.CdMultiplier))
 		}
 
 		spell.applyEffects(sim, target)

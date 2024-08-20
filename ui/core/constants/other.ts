@@ -1,12 +1,16 @@
+import { readMessageOption } from "@protobuf-ts/runtime";
+import { ProtoVersion } from '../proto/common.js';
+
 export enum Phase {
 	Phase1 = 1,
 	Phase2,
 	Phase3,
 	Phase4,
-	Phase5,
 }
 
-export const CURRENT_PHASE = Phase.Phase1;
+export const CURRENT_PHASE = Phase.Phase2;
+
+export const CURRENT_API_VERSION: number = readMessageOption(ProtoVersion, "proto.current_version_number")! as number;
 
 // Github pages serves our site under the /cata directory (because the repo name is cata)
 export const REPO_NAME = 'cata';

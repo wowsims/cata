@@ -8,54 +8,64 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-type Stats [Len]float64
+type Stats [SimStatsLen]float64
 
 type Stat byte
 
 // Use internal representation instead of proto.Stat so we can add functions
 // and use 'byte' as the data type.
 //
-// This needs to stay synced with proto.Stat.
+// This needs to stay synced with proto.Stat: it is okay for SimStatsLen to
+// exceed ProtoStatsLen, but the shared indices between the two must match 1:1 .
 const (
 	Strength Stat = iota
 	Agility
 	Stamina
 	Intellect
 	Spirit
-	SpellPower
-	MP5
-	SpellHit
-	SpellCrit
-	SpellHaste
-	SpellPenetration
+	HitRating
+	CritRating
+	HasteRating
+	ExpertiseRating
+	DodgeRating
+	ParryRating
+	MasteryRating
 	AttackPower
-	MeleeHit
-	MeleeCrit
-	MeleeHaste
-	Expertise
-	Mana
-	Armor
 	RangedAttackPower
-	Block
-	Dodge
-	Parry
-	Resilience
-	Health
+	SpellPower
+	SpellPenetration
+	ResilienceRating
 	ArcaneResistance
 	FireResistance
 	FrostResistance
 	NatureResistance
 	ShadowResistance
+	Armor
 	BonusArmor
-	Mastery
-	// DO NOT add new stats here without discussing it first; new stats come with
-	// a performance penalty.
+	Health
+	Mana
+	MP5
+	// end of Stat enum in proto/common.proto
 
-	Len
+	// The remaining stats below are stored as PseudoStats rather than as
+	// Stats in UnitStats proto messages, since they are not required in the
+	// database files. However, it is valuable to keep these as proper Stats
+	// in the back-end, since they are used in various stat dependencies.
+	// The units for all 5 of these are percentages (between 0 and 100).
+	PhysicalHitPercent
+	SpellHitPercent
+	PhysicalCritPercent
+	SpellCritPercent
+	BlockPercent
+	// DO NOT add new stats here without discussing it first; new stats come
+	// with a performance penalty.
+
+	SimStatsLen
 )
 
+var ProtoStatsLen = len(proto.Stat_name)
 var PseudoStatsLen = len(proto.PseudoStat_name)
-var UnitStatsLen = int(Len) + PseudoStatsLen
+var UnitStatsLen = ProtoStatsLen + PseudoStatsLen
 
 type SchoolIndex byte
 
@@ -98,80 +108,92 @@ func (s Stat) StatName() string {
 		return "Intellect"
 	case Spirit:
 		return "Spirit"
-	case SpellCrit:
-		return "SpellCrit"
-	case SpellHit:
-		return "SpellHit"
-	case SpellPower:
-		return "SpellPower"
-	case SpellHaste:
-		return "SpellHaste"
-	case MP5:
-		return "MP5"
-	case SpellPenetration:
-		return "SpellPenetration"
+	case HitRating:
+		return "HitRating"
+	case CritRating:
+		return "CritRating"
+	case HasteRating:
+		return "HasteRating"
+	case ExpertiseRating:
+		return "ExpertiseRating"
+	case DodgeRating:
+		return "DodgeRating"
+	case ParryRating:
+		return "ParryRating"
+	case MasteryRating:
+		return "MasteryRating"
 	case AttackPower:
 		return "AttackPower"
-	case MeleeHit:
-		return "MeleeHit"
-	case MeleeHaste:
-		return "MeleeHaste"
-	case MeleeCrit:
-		return "MeleeCrit"
-	case Expertise:
-		return "Expertise"
-	case Mana:
-		return "Mana"
+	case RangedAttackPower:
+		return "RangedAttackPower"
+	case SpellPower:
+		return "SpellPower"
+	case SpellPenetration:
+		return "SpellPenetration"
+	case ResilienceRating:
+		return "ResilienceRating"
+	case ArcaneResistance:
+		return "ArcaneResistance"
+	case FireResistance:
+		return "FireResistance"
+	case FrostResistance:
+		return "FrostResistance"
+	case NatureResistance:
+		return "NatureResistance"
+	case ShadowResistance:
+		return "ShadowResistance"
 	case Armor:
 		return "Armor"
 	case BonusArmor:
 		return "BonusArmor"
-	case RangedAttackPower:
-		return "RangedAttackPower"
-	case Block:
-		return "Block"
-	case Dodge:
-		return "Dodge"
-	case Parry:
-		return "Parry"
-	case Resilience:
-		return "Resilience"
 	case Health:
 		return "Health"
-	case FireResistance:
-		return "FireResistance"
-	case NatureResistance:
-		return "NatureResistance"
-	case FrostResistance:
-		return "FrostResistance"
-	case ShadowResistance:
-		return "ShadowResistance"
-	case ArcaneResistance:
-		return "ArcaneResistance"
-	case Mastery:
-		return "Mastery"
+	case Mana:
+		return "Mana"
+	case MP5:
+		return "MP5"
+	case PhysicalHitPercent:
+		return "PhysicalHitPercent"
+	case SpellHitPercent:
+		return "SpellHitPercent"
+	case PhysicalCritPercent:
+		return "PhysicalCritPercent"
+	case SpellCritPercent:
+		return "SpellCritPercent"
+	case BlockPercent:
+		return "BlockPercent"
 	}
 
 	return "none"
 }
 
-func GetHighestStat(other Stats) Stat {
-	maxStatValue := 0.0
-	maxStatIndex := 0
-
-	for i := range other {
-		if other[i] > maxStatValue {
-			maxStatValue = other[i]
-			maxStatIndex = i
-		}
-	}
-	return Stat(maxStatIndex)
-}
-
-func FromFloatArray(values []float64) Stats {
+func FromProtoArray(values []float64) Stats {
+	// SimStatsLen can be larger than ProtoStatsLen, but the built-in copy
+	// function will only import the shared indices between the two.
 	var stats Stats
 	copy(stats[:], values)
 	return stats
+}
+
+// Runs FromProtoArray() on the stats array embedded in the UnitStats message, but additionally imports any
+// PseudoStats that we want to model as proper Stats in the back-end. This allows us to include only essential
+// basic properties in database stats arrays, while still letting the back-end Stat enum include derived
+// properties when it is computationally convenient to do so (such as for automatically applying stat
+// dependencies). Make sure to update this function if you add any back-end Stat entries that are modeled as
+// PseudoStats in the front-end.
+func FromUnitStatsProto(unitStatsMessage *proto.UnitStats) Stats {
+	simStats := FromProtoArray(unitStatsMessage.Stats)
+
+	if unitStatsMessage.PseudoStats != nil {
+		pseudoStatsMessage := unitStatsMessage.PseudoStats
+		simStats[PhysicalHitPercent] = pseudoStatsMessage[proto.PseudoStat_PseudoStatPhysicalHitPercent]
+		simStats[SpellHitPercent] = pseudoStatsMessage[proto.PseudoStat_PseudoStatSpellHitPercent]
+		simStats[PhysicalCritPercent] = pseudoStatsMessage[proto.PseudoStat_PseudoStatPhysicalCritPercent]
+		simStats[SpellCritPercent] = pseudoStatsMessage[proto.PseudoStat_PseudoStatSpellCritPercent]
+		simStats[BlockPercent] = pseudoStatsMessage[proto.PseudoStat_PseudoStatBlockPercent]
+	}
+
+	return simStats
 }
 
 // Adds two Stats together, returning the new Stats.
@@ -242,6 +264,26 @@ func (stats Stats) EqualsWithTolerance(other Stats, tolerance float64) bool {
 	return true
 }
 
+// Given an array of Stat types, return the Stat whose value is largest within
+// this Stats array.
+func (stats Stats) GetHighestStatType(statTypeOptions []Stat) Stat {
+	if len(statTypeOptions) < 1 {
+		panic("Must supply at least one Stat type option!")
+	}
+
+	var highestStatType Stat
+	var highestStatValue float64
+
+	for idx, statType := range statTypeOptions {
+		if (idx == 0) || (stats[statType] > highestStatValue) {
+			highestStatType = statType
+			highestStatValue = stats[statType]
+		}
+	}
+
+	return highestStatType
+}
+
 func (stats Stats) String() string {
 	var sb strings.Builder
 	sb.WriteString("\n{\n")
@@ -277,8 +319,10 @@ func (stats Stats) FlatString() string {
 	return sb.String()
 }
 
-func (stats Stats) ToFloatArray() []float64 {
-	return stats[:]
+func (stats Stats) ToProtoArray() []float64 {
+	// SimStatsLen can be larger than ProtoStatsLen, so export only the
+	// shared indices between the two.
+	return stats[:ProtoStatsLen]
 }
 
 type PseudoStats struct {
@@ -339,18 +383,16 @@ type PseudoStats struct {
 
 	ParryHaste bool
 
-	// Avoidance % not affected by Diminishing Returns
-	BaseDodge float64
-	BaseParry float64
+	// Avoidance % not affected by Diminishing Returns, represented as
+	// probabilities (between 0 and 1).
+	BaseDodgeChance float64
+	BaseParryChance float64
 	//BaseMiss is not needed, this is always 5%
 
 	ReducedCritTakenChance float64 // Reduces chance to be crit.
 
 	BonusRangedAttackPowerTaken float64 // Hunters mark
-	BonusSpellCritRatingTaken   float64 // Imp Shadow Bolt / Imp Scorch / Winter's Chill debuff
-	BonusCritRatingTaken        float64 // Totem of Wrath / Master Poisoner / Heart of the Crusader
-	BonusMeleeHitRatingTaken    float64 // Formerly Imp FF and SW Radiance;
-	BonusSpellHitRatingTaken    float64 // Imp FF
+	BonusSpellCritPercentTaken  float64 // Imp Shadow Bolt / Imp Scorch / Winter's Chill debuff
 
 	BonusPhysicalDamageTaken float64 // Hemo, Gift of Arthas, etc
 	BonusHealingTaken        float64 // Talisman of Troll Divinity
@@ -409,10 +451,12 @@ func NewPseudoStats() PseudoStats {
 
 type UnitStat int
 
-func (s UnitStat) IsStat() bool                                 { return int(s) < int(Len) }
-func (s UnitStat) IsPseudoStat() bool                           { return !s.IsStat() }
-func (s UnitStat) EqualsStat(other Stat) bool                   { return int(s) == int(other) }
-func (s UnitStat) EqualsPseudoStat(other proto.PseudoStat) bool { return int(s) == int(other) }
+func (s UnitStat) IsStat() bool               { return int(s) < int(ProtoStatsLen) }
+func (s UnitStat) IsPseudoStat() bool         { return !s.IsStat() }
+func (s UnitStat) EqualsStat(other Stat) bool { return s.IsStat() && (s.StatIdx() == int(other)) }
+func (s UnitStat) EqualsPseudoStat(other proto.PseudoStat) bool {
+	return s.IsPseudoStat() && (s.PseudoStatIdx() == int(other))
+}
 func (s UnitStat) StatIdx() int {
 	if !s.IsStat() {
 		panic("Is a pseudo stat")
@@ -423,7 +467,7 @@ func (s UnitStat) PseudoStatIdx() int {
 	if s.IsStat() {
 		panic("Is a regular stat")
 	}
-	return int(s) - int(Len)
+	return int(s) - int(ProtoStatsLen)
 }
 func (s UnitStat) AddToStatsProto(p *proto.UnitStats, value float64) {
 	if s.IsStat() {
@@ -433,6 +477,8 @@ func (s UnitStat) AddToStatsProto(p *proto.UnitStats, value float64) {
 	}
 }
 
-func UnitStatFromIdx(s int) UnitStat                     { return UnitStat(s) }
-func UnitStatFromStat(s Stat) UnitStat                   { return UnitStat(s) }
-func UnitStatFromPseudoStat(s proto.PseudoStat) UnitStat { return UnitStat(int(s) + int(Len)) }
+func UnitStatFromIdx(s int) UnitStat   { return UnitStat(s) }
+func UnitStatFromStat(s Stat) UnitStat { return UnitStat(s) }
+func UnitStatFromPseudoStat(s proto.PseudoStat) UnitStat {
+	return UnitStat(int(s) + int(ProtoStatsLen))
+}

@@ -57,11 +57,11 @@ func (prot *ProtectionPaladin) registerAvengersShieldSpell() {
 			for idx := int32(0); idx < numTargets; idx++ {
 				spell.DealDamage(sim, results[idx])
 			}
-			
+
 			if prot.GrandCrusaderAura.IsActive() {
 				prot.GainHolyPower(sim, 1, hpMetrics)
 			}
-			
+
 		},
 	})
 }

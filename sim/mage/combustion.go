@@ -49,7 +49,7 @@ func (mage *Mage) registerCombustionSpell() {
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskEmpty,
 		ClassSpellMask: MageSpellCombustion,
-		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete,
+		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   mage.DefaultMageCritMultiplier(),
@@ -88,10 +88,5 @@ func (mage *Mage) registerCombustionSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.Dot(target).Apply(sim)
 		},
-	})
-
-	mage.AddMajorCooldown(core.MajorCooldown{
-		Spell: mage.Combustion,
-		Type:  core.CooldownTypeDPS,
 	})
 }

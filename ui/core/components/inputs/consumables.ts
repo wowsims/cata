@@ -256,7 +256,7 @@ export const FLASKS_CONFIG = [
 	{ config: FlaskOfEndlessRage, stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower] },
 	{ config: FlaskOfPureMojo, stats: [Stat.StatMP5] },
 	{ config: FlaskOfStoneblood, stats: [Stat.StatStamina] },
-	{ config: LesserFlaskOfToughness, stats: [Stat.StatResilience] },
+	{ config: LesserFlaskOfToughness, stats: [Stat.StatResilienceRating] },
 	{
 		config: LesserFlaskOfResistance,
 		stats: [Stat.StatArcaneResistance, Stat.StatFireResistance, Stat.StatFrostResistance, Stat.StatNatureResistance, Stat.StatShadowResistance],
@@ -351,16 +351,16 @@ export const ElixirOfDemonslaying = {
 };
 
 export const BATTLE_ELIXIRS_CONFIG = [
-	{ config: ElixirOfTheMaster, stats: [Stat.StatMastery] },
-	{ config: ElixirOfMightySpeed, stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste] },
-	{ config: ElixirOfImpossibleAccuracy, stats: [Stat.StatMeleeHit, Stat.StatSpellHit] },
-	{ config: ElixirOfTheCobra, stats: [Stat.StatMeleeCrit, Stat.StatSpellCrit] },
-	{ config: ElixirOfTheNaga, stats: [Stat.StatExpertise] },
+	{ config: ElixirOfTheMaster, stats: [Stat.StatMasteryRating] },
+	{ config: ElixirOfMightySpeed, stats: [Stat.StatHasteRating] },
+	{ config: ElixirOfImpossibleAccuracy, stats: [Stat.StatHitRating] },
+	{ config: ElixirOfTheCobra, stats: [Stat.StatCritRating] },
+	{ config: ElixirOfTheNaga, stats: [Stat.StatExpertiseRating] },
 	{ config: GhostElixir, stats: [Stat.StatSpirit] },
-	{ config: ElixirOfAccuracy, stats: [Stat.StatMeleeHit, Stat.StatSpellHit] },
-	{ config: ElixirOfDeadlyStrikes, stats: [Stat.StatMeleeCrit, Stat.StatSpellCrit] },
-	{ config: ElixirOfExpertise, stats: [Stat.StatExpertise] },
-	{ config: ElixirOfLightningSpeed, stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste] },
+	{ config: ElixirOfAccuracy, stats: [Stat.StatHitRating] },
+	{ config: ElixirOfDeadlyStrikes, stats: [Stat.StatCritRating] },
+	{ config: ElixirOfExpertise, stats: [Stat.StatExpertiseRating] },
+	{ config: ElixirOfLightningSpeed, stats: [Stat.StatHasteRating] },
 	{ config: ElixirOfMightyAgility, stats: [Stat.StatAgility] },
 	{ config: ElixirOfMightyStrength, stats: [Stat.StatStrength] },
 	{
@@ -580,13 +580,13 @@ export const FOOD_CONFIG = [
 	{ config: FoodBeerBastedCrocolisk, stats: [Stat.StatStrength] },
 	{ config: FoodSkeweredEll, stats: [Stat.StatAgility] },
 	{ config: FoodDeliciousSagefishTail, stats: [Stat.StatSpirit] },
-	{ config: FoodBakedRockfish, stats: [Stat.StatMeleeCrit, Stat.StatSpellCrit] },
-	{ config: FoodBasiliskLiverdog, stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste] },
-	{ config: FoodLavascaleMinestrone, stats: [Stat.StatMastery] },
-	{ config: FoodGrilledDragon, stats: [Stat.StatMeleeHit, Stat.StatSpellHit] },
-	{ config: FoodCrocoliskAuGratin, stats: [Stat.StatExpertise] },
-	{ config: FoodMushroomSauceMudfish, stats: [Stat.StatDodge] },
-	{ config: FoodBlackbellySushi, stats: [Stat.StatParry] },
+	{ config: FoodBakedRockfish, stats: [Stat.StatCritRating] },
+	{ config: FoodBasiliskLiverdog, stats: [Stat.StatHasteRating] },
+	{ config: FoodLavascaleMinestrone, stats: [Stat.StatMasteryRating] },
+	{ config: FoodGrilledDragon, stats: [Stat.StatHitRating] },
+	{ config: FoodCrocoliskAuGratin, stats: [Stat.StatExpertiseRating] },
+	{ config: FoodMushroomSauceMudfish, stats: [Stat.StatDodgeRating] },
+	{ config: FoodBlackbellySushi, stats: [Stat.StatParryRating] },
 	{
 		config: FoodFishFeast,
 		stats: [Stat.StatStamina, Stat.StatAttackPower, Stat.StatRangedAttackPower, Stat.StatSpellPower],
@@ -599,12 +599,12 @@ export const FOOD_CONFIG = [
 	{ config: FoodDragonfinFilet, stats: [Stat.StatStrength] },
 	{ config: FoodCuttlesteak, stats: [Stat.StatSpirit] },
 	{ config: FoodMegaMammothMeal, stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower] },
-	{ config: FoodHeartyRhino, stats: [Stat.StatMeleeCrit, Stat.StatSpellCrit] },
-	{ config: FoodRhinoliciousWormsteak, stats: [Stat.StatExpertise] },
+	{ config: FoodHeartyRhino, stats: [Stat.StatCritRating] },
+	{ config: FoodRhinoliciousWormsteak, stats: [Stat.StatExpertiseRating] },
 	{ config: FoodFirecrackerSalmon, stats: [Stat.StatSpellPower] },
-	{ config: FoodSnapperExtreme, stats: [Stat.StatMeleeHit, Stat.StatSpellHit] },
-	{ config: FoodSpicedWormBurger, stats: [Stat.StatMeleeCrit, Stat.StatSpellCrit] },
-	{ config: FoodImperialMantaSteak, stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste] },
+	{ config: FoodSnapperExtreme, stats: [Stat.StatHitRating] },
+	{ config: FoodSpicedWormBurger, stats: [Stat.StatCritRating] },
+	{ config: FoodImperialMantaSteak, stats: [Stat.StatHasteRating] },
 	{ config: FoodMightyRhinoDogs, stats: [Stat.StatMP5] },
 ] as ConsumableStatOption<Food>[];
 
@@ -687,7 +687,7 @@ export const POTIONS_CONFIG = [
 	{ config: MightyRejuvenationPotion, stats: [Stat.StatIntellect, Stat.StatHealth] },
 	{ config: MythicalHealingPotion, stats: [Stat.StatHealth] },
 	{ config: MythicalManaPotion, stats: [Stat.StatIntellect] },
-	{ config: PotionOfSpeed, stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste] },
+	{ config: PotionOfSpeed, stats: [Stat.StatHasteRating] },
 	{ config: FlameCap, stats: [] },
 ] as ConsumableStatOption<Potions>[];
 
@@ -696,7 +696,7 @@ export const PRE_POTIONS_CONFIG = [
 	{ config: PotionOfTheTolvir, stats: [Stat.StatAgility] },
 	{ config: VolcanicPotion, stats: [Stat.StatIntellect] },
 	{ config: EarthenPotion, stats: [Stat.StatArmor] },
-	{ config: PotionOfSpeed, stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste] },
+	{ config: PotionOfSpeed, stats: [Stat.StatHasteRating] },
 	{ config: FlameCap, stats: [] },
 ] as ConsumableStatOption<Potions>[];
 

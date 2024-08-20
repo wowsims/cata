@@ -163,7 +163,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 
 	if player.BonusStats != nil {
 		if player.BonusStats.Stats != nil {
-			character.bonusStats = stats.FromFloatArray(player.BonusStats.Stats)
+			character.bonusStats = stats.FromUnitStatsProto(player.BonusStats)
 		}
 		if player.BonusStats.PseudoStats != nil {
 			ps := player.BonusStats.PseudoStats
@@ -242,6 +242,7 @@ func (character *Character) applyEquipment() {
 }
 
 func (character *Character) addUniversalStatDependencies() {
+	character.Unit.addUniversalStatDependencies()
 	character.AddStat(stats.Health, 20-14*20)
 	character.AddStatDependency(stats.Stamina, stats.Health, 14)
 }
@@ -251,12 +252,15 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 	playerStats := &proto.PlayerStats{}
 
 	measureStats := func() *proto.UnitStats {
-		base := &proto.UnitStats{
-			Stats:       character.SortAndApplyStatDependencies(character.stats).ToFloatArray(),
+		baseStats := character.GetStats()
+		character.stats = character.SortAndApplyStatDependencies(character.stats)
+		measuredStatsProto := &proto.UnitStats{
+			Stats:       character.GetStats().ToProtoArray(),
 			PseudoStats: character.GetPseudoStatsProto(),
+			ApiVersion:  GetCurrentProtoVersion(),
 		}
-
-		return base
+		character.stats = baseStats
+		return measuredStatsProto
 	}
 
 	applyRaceEffects(agent)
@@ -310,7 +314,7 @@ func (character *Character) clearBuildPhaseAuras(phase CharacterBuildPhase) {
 	character.Env.MeasuringStats = false
 }
 func (character *Character) CalculateMasteryPoints() float64 {
-	return character.GetStat(stats.Mastery) / MasteryRatingPerMasteryPoint
+	return character.GetStat(stats.MasteryRating) / MasteryRatingPerMasteryPoint
 }
 
 // Apply effects from all equipped core.
@@ -467,8 +471,9 @@ func (character *Character) FillPlayerStats(playerStats *proto.PlayerStats) {
 
 	character.applyBuildPhaseAuras(CharacterBuildPhaseAll)
 	playerStats.FinalStats = &proto.UnitStats{
-		Stats:       character.GetStats().ToFloatArray(),
+		Stats:       character.GetStats().ToProtoArray(),
 		PseudoStats: character.GetPseudoStatsProto(),
+		ApiVersion:  GetCurrentProtoVersion(),
 	}
 
 	character.clearBuildPhaseAuras(CharacterBuildPhaseAll)
@@ -622,14 +627,28 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 		proto.PseudoStat_PseudoStatMainHandDps: character.AutoAttacks.MH().DPS(),
 		proto.PseudoStat_PseudoStatOffHandDps:  character.AutoAttacks.OH().DPS(),
 		proto.PseudoStat_PseudoStatRangedDps:   character.AutoAttacks.Ranged().DPS(),
+
 		// Base values are modified by Enemy attackTables, but we display for LVL 80 enemy as paperdoll default
-		proto.PseudoStat_PseudoStatDodge: character.PseudoStats.BaseDodge + character.GetDiminishedDodgeChance(),
-		proto.PseudoStat_PseudoStatParry: character.PseudoStats.BaseParry + character.GetDiminishedParryChance(),
+		proto.PseudoStat_PseudoStatDodgePercent: (character.PseudoStats.BaseDodgeChance + character.GetDiminishedDodgeChance()) * 100,
+		proto.PseudoStat_PseudoStatParryPercent: (character.PseudoStats.BaseParryChance + character.GetDiminishedParryChance()) * 100,
+		proto.PseudoStat_PseudoStatBlockPercent: 5 + character.GetStat(stats.BlockPercent),
 
 		// Used by UI to incorporate multiplicative Haste buffs into final character stats display.
 		proto.PseudoStat_PseudoStatRangedSpeedMultiplier: character.PseudoStats.RangedSpeedMultiplier,
 		proto.PseudoStat_PseudoStatMeleeSpeedMultiplier:  character.PseudoStats.MeleeSpeedMultiplier,
 		proto.PseudoStat_PseudoStatCastSpeedMultiplier:   character.PseudoStats.CastSpeedMultiplier,
+		proto.PseudoStat_PseudoStatMeleeHastePercent:     (character.SwingSpeed() - 1) * 100,
+		proto.PseudoStat_PseudoStatRangedHastePercent:    (character.RangedSwingSpeed() - 1) * 100,
+		proto.PseudoStat_PseudoStatSpellHastePercent:     (character.TotalSpellHasteMultiplier() - 1) * 100,
+
+		// School-specific fully buffed Hit/Crit are represented as proper Stats in the back-end so
+		// that stat dependencies will work correctly, but are stored as PseudoStats in proto
+		// messages. This is done so that the stats arrays embedded in database files and saved
+		// Encounter settings can omit these extraneous fields.
+		proto.PseudoStat_PseudoStatPhysicalHitPercent:  character.GetStat(stats.PhysicalHitPercent),
+		proto.PseudoStat_PseudoStatSpellHitPercent:     character.GetStat(stats.SpellHitPercent),
+		proto.PseudoStat_PseudoStatPhysicalCritPercent: character.GetStat(stats.PhysicalCritPercent),
+		proto.PseudoStat_PseudoStatSpellCritPercent:    character.GetStat(stats.SpellCritPercent),
 	}
 }
 

@@ -1,6 +1,7 @@
-import { AuraMetrics, SimResult, SimResultFilter } from '../../proto_utils/sim_result';
-import { ColumnSortType, MetricsTable } from './metrics_table';
-import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component';
+import { OtherAction } from '../../proto/common';
+import { AuraMetrics } from '../../proto_utils/sim_result';
+import { ColumnSortType, MetricsTable } from './metrics_table/metrics_table';
+import { ResultComponentConfig, SimResultData } from './result_component';
 
 export class AuraMetricsTable extends MetricsTable<AuraMetrics> {
 	private readonly useDebuffs: boolean;
@@ -21,19 +22,16 @@ export class AuraMetricsTable extends MetricsTable<AuraMetrics> {
 			}),
 			{
 				name: 'Procs',
-				tooltip: 'Procs',
 				getValue: (metric: AuraMetrics) => metric.averageProcs,
 				getDisplayString: (metric: AuraMetrics) => metric.averageProcs.toFixed(2),
 			},
 			{
 				name: 'PPM',
-				tooltip: 'Procs Per Minute',
 				getValue: (metric: AuraMetrics) => metric.ppm,
 				getDisplayString: (metric: AuraMetrics) => metric.ppm.toFixed(2),
 			},
 			{
 				name: 'Uptime',
-				tooltip: 'Uptime / Encounter Duration',
 				sort: ColumnSortType.Descending,
 				getValue: (metric: AuraMetrics) => metric.uptimePercent,
 				getDisplayString: (metric: AuraMetrics) => metric.uptimePercent.toFixed(2) + '%',
@@ -52,19 +50,25 @@ export class AuraMetricsTable extends MetricsTable<AuraMetrics> {
 			}
 			const player = players[0];
 
-			const auras = player.auras;
+			const auras = this.filterMetrics(player.auras);
 			const actionGroups = AuraMetrics.groupById(auras);
-			const petGroups = player.pets.map(pet => pet.auras);
-
+			const petGroups = player.pets.map(pet => this.filterMetrics(pet.auras));
 			return actionGroups.concat(petGroups);
 		}
 	}
 
 	mergeMetrics(metrics: Array<AuraMetrics>): AuraMetrics {
-		return AuraMetrics.merge(metrics, true, metrics[0].unit?.petActionId || undefined);
+		return AuraMetrics.merge(metrics, {
+			removeTag: true,
+			actionIdOverride: metrics[0].unit?.petActionId || undefined,
+		});
 	}
 
 	shouldCollapse(metric: AuraMetrics): boolean {
 		return !metric.unit?.isPet;
+	}
+
+	filterMetrics(metrics: Array<AuraMetrics>): Array<AuraMetrics> {
+		return metrics.filter(aura => !(aura.unit?.isPet && aura.actionId.otherId === OtherAction.OtherActionMove));
 	}
 }

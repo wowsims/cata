@@ -8,6 +8,7 @@ import (
 	_ "github.com/wowsims/cata/sim/common"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/simsignals"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -52,7 +53,7 @@ func setupFakeSim(lockStats stats.Stats, glyphs *proto.Glyphs, duration float64)
 			},
 			Duration: duration,
 		},
-	})
+	}, simsignals.CreateSignals())
 
 	sim.Options.Debug = true
 	sim.Log = func(message string, vals ...interface{}) {
@@ -71,10 +72,10 @@ func setupFakeSim(lockStats stats.Stats, glyphs *proto.Glyphs, duration float64)
 }
 
 var defStats = stats.Stats{
-	stats.SpellHit:   17 * core.SpellHitRatingPerHitChance,
-	stats.SpellCrit:  -100 * core.CritRatingPerCritChance,
-	stats.SpellPower: 6343,
-	stats.Mastery:    1059,
+	stats.SpellHitPercent:  17,
+	stats.SpellCritPercent: -100,
+	stats.SpellPower:       6343,
+	stats.MasteryRating:    1059,
 }
 
 func (lock *DemonologyWarlock) checkSpell(t *testing.T, sim *core.Simulation, spell *core.Spell, expected float64,
@@ -337,17 +338,17 @@ func TestShadowflameHasteCap(t *testing.T) {
 	lock.Unit.MultiplyCastSpeed(1 + 0.05) // 5% haste buff
 	lock.Unit.MultiplyCastSpeed(1 + 0.03) // dark intent
 	lock.AddStatsDynamic(sim, stats.Stats{
-		stats.SpellHaste: 1006,
+		stats.HasteRating: 1006,
 	})
 	shadowflame := lock.GetSpell(core.ActionID{SpellID: 47897})
-	shadowflameDot := lock.GetSpell(core.ActionID{SpellID: 47960}).CurDot()
+	shadowflameDot := lock.GetSpell(core.ActionID{SpellID: 47897}.WithTag(1)).CurDot()
 
 	shadowflame.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
 	checkTicks(t, shadowflameDot, "Incorrect tick count for shadowflame at 1006 haste", 3)
 	shadowflameDot.Deactivate(sim)
 
 	lock.AddStatsDynamic(sim, stats.Stats{
-		stats.SpellHaste: 1,
+		stats.HasteRating: 1,
 	})
 	shadowflame.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
 	checkTicks(t, shadowflameDot, "Incorrect tick count for shadowflame at 1007 haste", 4)
@@ -359,7 +360,7 @@ func TestImmolateHasteCap(t *testing.T) {
 	lock.Unit.MultiplyCastSpeed(1 + 0.05) // 5% haste buff
 	lock.Unit.MultiplyCastSpeed(1 + 0.03) // dark intent
 	lock.AddStatsDynamic(sim, stats.Stats{
-		stats.SpellHaste: 1572,
+		stats.HasteRating: 1572,
 	})
 	immolate := lock.Immolate
 	immolateDot := lock.Immolate.CurDot()
@@ -369,7 +370,7 @@ func TestImmolateHasteCap(t *testing.T) {
 	immolateDot.Deactivate(sim)
 
 	lock.AddStatsDynamic(sim, stats.Stats{
-		stats.SpellHaste: 1,
+		stats.HasteRating: 1,
 	})
 	immolate.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
 	checkTicks(t, immolateDot, "Incorrect tick count for immolate at 1573 haste", 9)
@@ -381,7 +382,7 @@ func TestCorruptionHasteCap(t *testing.T) {
 	lock.Unit.MultiplyCastSpeed(1 + 0.05) // 5% haste buff
 	lock.Unit.MultiplyCastSpeed(1 + 0.03) // dark intent
 	lock.AddStatsDynamic(sim, stats.Stats{
-		stats.SpellHaste: 1992,
+		stats.HasteRating: 1992,
 	})
 	corruption := lock.Corruption
 	corruptionDot := corruption.CurDot()
@@ -391,7 +392,7 @@ func TestCorruptionHasteCap(t *testing.T) {
 	corruptionDot.Deactivate(sim)
 
 	lock.AddStatsDynamic(sim, stats.Stats{
-		stats.SpellHaste: 1,
+		stats.HasteRating: 1,
 	})
 	corruption.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
 	checkTicks(t, corruptionDot, "Incorrect tick count for corruption at 1993 haste", 8)

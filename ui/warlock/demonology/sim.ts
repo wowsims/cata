@@ -6,9 +6,9 @@ import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_u
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
-import { Faction, ItemSlot, PartyBuffs, Race, Spec, Stat } from '../../core/proto/common';
+import { Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
 import { StatCapType } from '../../core/proto/ui';
-import { Stats } from '../../core/proto_utils/stats';
+import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as WarlockInputs from '../inputs';
 import * as Presets from './presets';
 
@@ -19,22 +19,26 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect, Stat.StatSpellPower, Stat.StatSpellHit, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMastery],
+	epStats: [Stat.StatIntellect, Stat.StatSpellPower, Stat.StatHitRating, Stat.StatCritRating, Stat.StatHasteRating, Stat.StatMasteryRating],
 	// Reference stat against which to calculate EP. DPS classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
-	displayStats: [
-		Stat.StatHealth,
-		Stat.StatMana,
-		Stat.StatStamina,
-		Stat.StatIntellect,
-		Stat.StatSpellPower,
-		Stat.StatSpellHit,
-		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
-		Stat.StatMastery,
-		Stat.StatMP5,
-	],
+	displayStats: UnitStat.createDisplayStatArray(
+		[
+			Stat.StatHealth,
+			Stat.StatMana,
+			Stat.StatStamina,
+			Stat.StatIntellect,
+			Stat.StatSpellPower,
+			Stat.StatMasteryRating,
+			Stat.StatMP5,
+		],
+		[
+			PseudoStat.PseudoStatSpellHitPercent,
+			PseudoStat.PseudoStatSpellCritPercent,
+			PseudoStat.PseudoStatSpellHastePercent,
+		],
+	),
 
 	defaults: {
 		// Default equipped gear.
@@ -44,7 +48,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge optimizer
 		statCaps: (() => {
-			return new Stats().withStat(Stat.StatSpellHit, 17 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 17);
 		})(),
 		// Default soft caps for the Reforge optimizer
 		softCapBreakpoints: (() => {
@@ -52,24 +56,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 			// These should be removed once the bugfix to make Mastery
 			// continuous goes live!
 			const masteryRatingBreakpoints = [];
-
+			const masteryPercentPerPoint = Mechanics.masteryPercentPerPoint.get(Spec.SpecDemonologyWarlock)!;
 			for (let masteryPercent = 19; masteryPercent <= 200; masteryPercent++) {
-				masteryRatingBreakpoints.push((masteryPercent / 2.3) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
+				masteryRatingBreakpoints.push((masteryPercent / masteryPercentPerPoint) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
 			}
 
-			const masterySoftCapConfig = {
-				stat: Stat.StatMastery,
+			const masterySoftCapConfig = StatCap.fromStat(Stat.StatMasteryRating, {
 				breakpoints: masteryRatingBreakpoints,
 				capType: StatCapType.TypeThreshold,
-				postCapEPs: Array(masteryRatingBreakpoints.length).fill(0),
-			};
+				postCapEPs: [0],
+			});
 
-			const hasteSoftCapConfig = {
-				stat: Stat.StatSpellHaste,
-				breakpoints: [16.65 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT, 25 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
+			const hasteSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent, {
+				breakpoints: [16.65, 25],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0.64, 0.61],
-			};
+				postCapEPs: [0.64 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT, 0.61 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
+			});
 
 			return [hasteSoftCapConfig, masterySoftCapConfig];
 		})(),
@@ -176,7 +178,9 @@ export class DemonologyWarlockSimUI extends IndividualSimUI<Spec.SpecDemonologyW
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecDemonologyWarlock>) {
 		super(parentElem, player, SPEC_CONFIG);
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			new ReforgeOptimizer(this, {
+				statSelectionPresets: Presets.DEMONOLOGY_BREAKPOINTS,
+			});
 		});
 	}
 }

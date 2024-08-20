@@ -39,7 +39,7 @@ func (testSuite *IndividualTestSuite) TestCharacterStats(testName string, csr *p
 	testSuite.testNames = append(testSuite.testNames, testName)
 
 	result := ComputeStats(csr)
-	finalStats := stats.FromFloatArray(result.RaidStats.Parties[0].Players[0].FinalStats.Stats)
+	finalStats := stats.FromUnitStatsProto(result.RaidStats.Parties[0].Players[0].FinalStats)
 
 	testSuite.testResults.CharacterStatsResults[testName] = &proto.CharacterStatsTestResult{
 		FinalStats: toFixedStats(finalStats[:], storagePrecision),
@@ -50,7 +50,7 @@ func (testSuite *IndividualTestSuite) TestStatWeights(testName string, swr *prot
 	testSuite.testNames = append(testSuite.testNames, testName)
 
 	result := StatWeights(swr)
-	weights := stats.FromFloatArray(result.Dps.Weights.Stats)
+	weights := stats.FromUnitStatsProto(result.Dps.EpValues)
 
 	testSuite.testResults.StatWeightsResults[testName] = &proto.StatWeightsTestResult{
 		Weights: toFixedStats(weights[:], storagePrecision),
@@ -64,8 +64,8 @@ func (testSuite *IndividualTestSuite) TestDPS(testName string, rsr *proto.RaidSi
 	if result.Logs != "" {
 		fmt.Printf("LOGS: %s\n", result.Logs)
 	}
-	if result.ErrorResult != "" {
-		panic("simulation failed to run: " + result.ErrorResult)
+	if result.Error != nil {
+		panic("simulation failed to run: " + result.Error.Message)
 	}
 	testSuite.testResults.DpsResults[testName] = &proto.DpsTestResult{
 		Dps:  toFixed(result.RaidMetrics.Dps.Avg, storagePrecision),
@@ -94,8 +94,8 @@ func (testSuite *IndividualTestSuite) TestCasts(testName string, rsr *proto.Raid
 	if result.Logs != "" {
 		fmt.Printf("LOGS: %s\n", result.Logs)
 	}
-	if result.ErrorResult != "" {
-		panic("simulation failed to run: " + result.ErrorResult)
+	if result.Error != nil {
+		panic("simulation failed to run: " + result.Error.Message)
 	}
 	castsByAction := make(map[string]float64, 0)
 	for _, metric := range result.RaidMetrics.Parties[0].Players[0].Actions {
@@ -202,9 +202,9 @@ func RunTestSuite(t *testing.T, suiteName string, generator TestGenerator) {
 			if csr != nil {
 				testSuite.TestCharacterStats(fullTestName, csr)
 				if actualCharacterStats, ok := testSuite.testResults.CharacterStatsResults[fullTestName]; ok {
-					actualStats := stats.FromFloatArray(actualCharacterStats.FinalStats)
+					actualStats := stats.FromProtoArray(actualCharacterStats.FinalStats)
 					if expectedCharacterStats, ok := expectedResults.CharacterStatsResults[fullTestName]; ok {
-						expectedStats := stats.FromFloatArray(expectedCharacterStats.FinalStats)
+						expectedStats := stats.FromProtoArray(expectedCharacterStats.FinalStats)
 						if !actualStats.EqualsWithTolerance(expectedStats, tolerance) {
 							t.Logf("Stats expected %v but was %v", expectedStats, actualStats)
 							t.Fail()
@@ -220,9 +220,9 @@ func RunTestSuite(t *testing.T, suiteName string, generator TestGenerator) {
 			} else if swr != nil {
 				testSuite.TestStatWeights(fullTestName, swr)
 				if actualStatWeights, ok := testSuite.testResults.StatWeightsResults[fullTestName]; ok {
-					actualWeights := stats.FromFloatArray(actualStatWeights.Weights)
+					actualWeights := stats.FromProtoArray(actualStatWeights.Weights)
 					if expectedStatWeights, ok := expectedResults.StatWeightsResults[fullTestName]; ok {
-						expectedWeights := stats.FromFloatArray(expectedStatWeights.Weights)
+						expectedWeights := stats.FromProtoArray(expectedStatWeights.Weights)
 						if !actualWeights.EqualsWithTolerance(expectedWeights, tolerance) {
 							t.Logf("Weights expected %v but was %v", expectedWeights, actualWeights)
 							t.Fail()
@@ -280,7 +280,7 @@ func RunTestSuite(t *testing.T, suiteName string, generator TestGenerator) {
 				if rsr != nil {
 
 					t.Run(testName+"/CompareResults", func(t *testing.T) {
-						mtResult := RunConcurrentRaidSimSync(rsr)
+						mtResult := RunRaidSimConcurrent(rsr)
 						CompareConcurrentSimResultsTest(t, currentTestName, simResult, mtResult, 0.001)
 						if t.Failed() {
 							t.Log("You can debug the first failed comparison further by starting tests with DEBUG_FIRST_COMPARE=1")

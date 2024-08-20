@@ -63,7 +63,7 @@ func (dk *DeathKnight) registerFrostFever() {
 		ActionID:       core.ActionID{SpellID: 55095},
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagDisease,
+		Flags:          core.SpellFlagDisease | core.SpellFlagPassiveSpell,
 		ClassSpellMask: DeathKnightSpellFrostFever,
 
 		DamageMultiplier: 1.15,
@@ -103,7 +103,7 @@ func (dk *DeathKnight) registerBloodPlague() {
 		ActionID:       core.ActionID{SpellID: 55078},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagDisease,
+		Flags:          core.SpellFlagDisease | core.SpellFlagPassiveSpell,
 		ClassSpellMask: DeathKnightSpellBloodPlague,
 
 		DamageMultiplier: 1.15,
@@ -171,7 +171,7 @@ func (dk *DeathKnight) registerDrwFrostFever() {
 		ActionID:    core.ActionID{SpellID: 55095},
 		SpellSchool: core.SpellSchoolFrost,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagDisease,
+		Flags:       core.SpellFlagDisease | core.SpellFlagPassiveSpell,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -199,7 +199,7 @@ func (dk *DeathKnight) registerDrwBloodPlague() {
 		ActionID:    core.ActionID{SpellID: 55078},
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagDisease,
+		Flags:       core.SpellFlagDisease | core.SpellFlagPassiveSpell,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

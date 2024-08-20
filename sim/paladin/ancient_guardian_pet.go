@@ -15,18 +15,25 @@ type AncientGuardianPet struct {
 func (guardian *AncientGuardianPet) Initialize() {
 }
 
-const PetExpertiseScale = 3.25
+const PetExpertiseScale = 3.25 * core.ExpertisePerQuarterPercentReduction / core.PhysicalHitRatingPerHitPercent // 0.8125
 
 func (paladin *Paladin) NewAncientGuardian() *AncientGuardianPet {
 	ancientGuardian := &AncientGuardianPet{
 		Pet: core.NewPet("Ancient Guardian", &paladin.Character, stats.Stats{
 			stats.Stamina: 100,
-		}, func(ownerStats stats.Stats) stats.Stats {
-			return stats.Stats{
-				stats.MeleeHit:  ownerStats[stats.MeleeHit],
-				stats.Expertise: ownerStats[stats.MeleeHit] * PetExpertiseScale,
 
-				stats.MeleeCrit: ownerStats[stats.MeleeCrit],
+			// Taken from combined logs with > 1600 hits, seems to
+			// be around 2% final Crit chance after the 4.8%
+			// suppression from boss level mobs.
+			stats.PhysicalCritPercent: 6.8,
+		}, func(ownerStats stats.Stats) stats.Stats {
+			// Draenei Heroic Presence is not included, so inherit HitRating
+			// rather than PhysicalHitPercent.
+			ownerHitRating := ownerStats[stats.HitRating]
+
+			return stats.Stats{
+				stats.HitRating:       ownerHitRating,
+				stats.ExpertiseRating: ownerHitRating * PetExpertiseScale,
 			}
 		}, false, true),
 		paladinOwner: paladin,

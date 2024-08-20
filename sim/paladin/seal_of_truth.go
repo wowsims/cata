@@ -15,7 +15,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 	censureSpell := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    censureActionId.WithTag(1),
 		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskMeleeSpecial,
+		ProcMask:    core.ProcMaskProc,
 		Flags:       core.SpellFlagNoMetrics | core.SpellFlagNoLogs,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -32,7 +32,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 		ActionID:       censureActionId.WithTag(2),
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagMeleeMetrics,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
 		ClassSpellMask: SpellMaskCensure,
 
 		DamageMultiplier: 1,
@@ -90,7 +90,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 		ActionID:       core.ActionID{SpellID: 31804},
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskMeleeSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
+		Flags:          core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement | core.SpellFlagPassiveSpell,
 		ClassSpellMask: SpellMaskJudgementOfTruth,
 
 		DamageMultiplier: 1,

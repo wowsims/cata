@@ -7,7 +7,6 @@ import (
 
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
-	googleProto "google.golang.org/protobuf/proto"
 )
 
 var DefaultSimTestOptions = &proto.SimOptions{
@@ -37,7 +36,7 @@ var DefaultTargetProto = &proto.Target{
 	Stats: stats.Stats{
 		stats.Armor:       11977,
 		stats.AttackPower: 805,
-	}.ToFloatArray(),
+	}.ToProtoArray(),
 	MobType: proto.MobType_MobTypeGiant,
 
 	SwingSpeed:    1.5,
@@ -156,40 +155,10 @@ func MakeSingleTargetEncounter(variation float64) *proto.Encounter {
 	}
 }
 
-func CharacterStatsTest(label string, t *testing.T, raid *proto.Raid, expectedStats stats.Stats) {
-	csr := &proto.ComputeStatsRequest{
-		Raid: raid,
-	}
-
-	result := ComputeStats(csr)
-	finalStats := stats.FromFloatArray(result.RaidStats.Parties[0].Players[0].FinalStats.Stats)
-
-	const tolerance = 0.5
-	if !finalStats.EqualsWithTolerance(expectedStats, tolerance) {
-		t.Fatalf("%s failed: CharacterStats() = %v, expected %v", label, finalStats, expectedStats)
-	}
-}
-
-func StatWeightsTest(label string, t *testing.T, _swr *proto.StatWeightsRequest, expectedStatWeights stats.Stats) {
-	// Make a copy so we can safely change fields.
-	swr := googleProto.Clone(_swr).(*proto.StatWeightsRequest)
-
-	swr.Encounter.Duration = LongDuration
-	swr.SimOptions.Iterations = 5000
-
-	result := StatWeights(swr)
-	resultWeights := stats.FromFloatArray(result.Dps.Weights.Stats)
-
-	const tolerance = 0.05
-	if !resultWeights.EqualsWithTolerance(expectedStatWeights, tolerance) {
-		t.Fatalf("%s failed: CalcStatWeight() = %v, expected %v", label, resultWeights, expectedStatWeights)
-	}
-}
-
 func RaidSimTest(label string, t *testing.T, rsr *proto.RaidSimRequest, expectedDps float64) {
 	result := RunRaidSim(rsr)
-	if result.ErrorResult != "" {
-		t.Fatalf("Sim failed with error: %s", result.ErrorResult)
+	if result.Error != nil {
+		t.Fatalf("Sim failed with error: %s", result.Error.Message)
 	}
 	tolerance := 0.5
 	if result.RaidMetrics.Dps.Avg < expectedDps-tolerance || result.RaidMetrics.Dps.Avg > expectedDps+tolerance {
@@ -210,8 +179,8 @@ func RaidBenchmark(b *testing.B, rsr *proto.RaidSimRequest) {
 
 	for i := 0; i < b.N; i++ {
 		result := RunRaidSim(rsr)
-		if result.ErrorResult != "" {
-			b.Fatalf("RaidBenchmark() at iteration %d failed: %v", i, result.ErrorResult)
+		if result.Error != nil {
+			b.Fatalf("RaidBenchmark() at iteration %d failed: %v", i, result.Error.Message)
 		}
 	}
 }

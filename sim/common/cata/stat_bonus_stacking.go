@@ -112,9 +112,65 @@ func init() {
 		AuraID:     91810,
 		Bonus:      stats.Stats{stats.Strength: 38},
 		MaxStacks:  10,
-		ProcMask:   core.ProcMaskMelee,
+		ProcMask:   core.ProcMaskMeleeOrProc,
 		Duration:   time.Second * 15,
 		Callback:   core.CallbackOnSpellHitDealt,
+		Harmful:    false,
+		ProcChance: 1,
+	})
+
+	shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
+		Name:       "Vessel of Acceleration",
+		ID:         68995,
+		AuraID:     96980,
+		Bonus:      stats.Stats{stats.CritRating: 82},
+		MaxStacks:  5,
+		ProcMask:   core.ProcMaskMeleeOrProc,
+		Duration:   time.Second * 20,
+		Outcome:    core.OutcomeCrit,
+		Callback:   core.CallbackOnSpellHitDealt,
+		Harmful:    false,
+		ProcChance: 1,
+	})
+
+	shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
+		Name:       "Vessel of Acceleration (Heroic)",
+		ID:         69167,
+		AuraID:     97142,
+		Bonus:      stats.Stats{stats.CritRating: 92},
+		MaxStacks:  5,
+		ProcMask:   core.ProcMaskMeleeOrProc,
+		Duration:   time.Second * 20,
+		Outcome:    core.OutcomeCrit,
+		Callback:   core.CallbackOnSpellHitDealt,
+		Harmful:    false,
+		ProcChance: 1,
+	})
+
+	shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
+		Name:       "Necromantic Focus",
+		ID:         68982,
+		AuraID:     96962,
+		Bonus:      stats.Stats{stats.MasteryRating: 39},
+		MaxStacks:  10,
+		ProcMask:   core.ProcMaskSpellDamage,
+		Duration:   time.Second * 10,
+		Outcome:    core.OutcomeLanded,
+		Callback:   core.CallbackOnPeriodicDamageDealt,
+		Harmful:    false,
+		ProcChance: 1,
+	})
+
+	shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
+		Name:       "Necromantic Focus Heroic",
+		ID:         69139,
+		AuraID:     97131,
+		Bonus:      stats.Stats{stats.MasteryRating: 44},
+		MaxStacks:  10,
+		ProcMask:   core.ProcMaskSpellDamage,
+		Duration:   time.Second * 10,
+		Outcome:    core.OutcomeLanded,
+		Callback:   core.CallbackOnPeriodicDamageDealt,
 		Harmful:    false,
 		ProcChance: 1,
 	})

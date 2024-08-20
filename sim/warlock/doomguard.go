@@ -49,14 +49,14 @@ type DoomguardPet struct {
 func (warlock *Warlock) NewDoomguardPet() *DoomguardPet {
 	// probably wrong, but nobody is ever going to test this
 	baseStats := stats.Stats{
-		stats.Strength:  453,
-		stats.Agility:   883,
-		stats.Stamina:   353,
-		stats.Intellect: 159,
-		stats.Spirit:    225,
-		stats.Mana:      23420,
-		stats.MeleeCrit: 0.652 * core.CritRatingPerCritChance,
-		stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+		stats.Strength:            453,
+		stats.Agility:             883,
+		stats.Stamina:             353,
+		stats.Intellect:           159,
+		stats.Spirit:              225,
+		stats.Mana:                23420,
+		stats.PhysicalCritPercent: 0.652,
+		stats.SpellCritPercent:    3.3355,
 	}
 
 	pet := &DoomguardPet{
@@ -81,8 +81,13 @@ func (pet *DoomguardPet) Reset(_ *core.Simulation) {}
 func (pet *DoomguardPet) ExecuteCustomRotation(sim *core.Simulation) {
 	if pet.DoomBolt.CanCast(sim, pet.CurrentTarget) {
 		pet.DoomBolt.Cast(sim, pet.CurrentTarget)
-		// ~400ms ish delay between casts
-		pet.WaitUntil(sim, pet.NextGCDAt()+400*time.Millisecond)
+		minDelay := 150.0
+		maxDelay := 750.0
+		delayRange := maxDelay - minDelay
+		// ~150-750ms delay between casts
+		// Research: https://docs.google.com/spreadsheets/d/e/2PACX-1vSaFavGbmrd0l3r7XsPWivap9wMjeaRB6Sl5ieg_GpJ8AfdWkzdG3o2czJ60WHFIZwK0QK5yWF22p8D/pubchart?oid=586881278&format=interactive
+		randomDelay := time.Duration(minDelay+delayRange*sim.RandomFloat("Doomguard Cast Delay")) * time.Millisecond
+		pet.WaitUntil(sim, pet.NextGCDAt()+randomDelay)
 		return
 	}
 }

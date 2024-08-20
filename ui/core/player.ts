@@ -6,6 +6,7 @@ import { PlayerSpec } from './player_spec';
 import { PlayerSpecs } from './player_specs';
 import {
 	AuraStats as AuraStatsProto,
+	ErrorOutcomeType,
 	Player as PlayerProto,
 	PlayerStats,
 	SpellStats as SpellStatsProto,
@@ -38,7 +39,6 @@ import {
 import {
 	DungeonDifficulty,
 	RaidFilterOption,
-	StatCapConfig,
 	SourceFilterOption,
 	UIEnchant as Enchant,
 	UIGem as Gem,
@@ -50,7 +50,7 @@ import { Database } from './proto_utils/database';
 import { EquippedItem, getWeaponDPS } from './proto_utils/equipped_item';
 import { Gear, ItemSwapGear } from './proto_utils/gear';
 import { gemMatchesSocket, isUnrestrictedGem } from './proto_utils/gems';
-import { Stats } from './proto_utils/stats';
+import { StatCap, Stats } from './proto_utils/stats';
 import {
 	AL_CATEGORY_HARD_MODE,
 	canEquipEnchant,
@@ -224,8 +224,8 @@ export interface ReforgeData {
 	id: number;
 	item: Item;
 	reforge: ReforgeStat;
-	fromStat: Stat[];
-	toStat: Stat[];
+	fromStat: Stat;
+	toStat: Stat;
 	fromAmount: number;
 	toAmount: number;
 }
@@ -277,7 +277,7 @@ export class Player<SpecType extends Spec> {
 	private epRatios: Array<number> = new Array<number>(Player.numEpRatios).fill(0);
 	private epWeights: Stats = new Stats();
 	private statCaps: Stats = new Stats();
-	private softCapBreakpoints: StatCapConfig[] = [];
+	private softCapBreakpoints: StatCap[] = [];
 	private currentStats: PlayerStats = PlayerStats.create();
 	private metadata: UnitMetadata = new UnitMetadata();
 	private petMetadatas: UnitMetadataList = new UnitMetadataList();
@@ -468,8 +468,8 @@ export class Player<SpecType extends Spec> {
 	getReforgeData(equippedItem: EquippedItem, reforge: ReforgeStat): ReforgeData {
 		const withRandomSuffixStats = equippedItem.getWithRandomSuffixStats();
 		const item = withRandomSuffixStats.item;
-		const fromAmount = Math.ceil(-item.stats[reforge.fromStat[0]] * reforge.multiplier);
-		const toAmount = Math.floor(item.stats[reforge.fromStat[0]] * reforge.multiplier);
+		const fromAmount = Math.ceil(-item.stats[reforge.fromStat] * reforge.multiplier);
+		const toAmount = Math.floor(item.stats[reforge.fromStat] * reforge.multiplier);
 		return {
 			id: reforge.id,
 			reforge: reforge,
@@ -516,11 +516,11 @@ export class Player<SpecType extends Spec> {
 		this.statCapsChangeEmitter.emit(eventID);
 	}
 
-	getSoftCapBreakpoints(): StatCapConfig[] {
+	getSoftCapBreakpoints(): StatCap[] {
 		return this.softCapBreakpoints;
 	}
 
-	setSoftCapBreakpoints(eventID: EventID, newSoftCapBreakpoints: StatCapConfig[]) {
+	setSoftCapBreakpoints(eventID: EventID, newSoftCapBreakpoints: StatCap[]) {
 		this.softCapBreakpoints = newSoftCapBreakpoints;
 		this.softCapBreakpointsChangeEmitter.emit(eventID);
 	}
@@ -563,8 +563,19 @@ export class Player<SpecType extends Spec> {
 	): Promise<StatWeightsResult | null> {
 		try {
 			const result = await this.sim.statWeights(this, epStats, epPseudoStats, epReferenceStat, onProgress);
+			if (result.error) {
+				if (result.error.type == ErrorOutcomeType.ErrorOutcomeAborted) {
+					new Toast({
+						variant: 'info',
+						body: 'Statweight sim cancelled.',
+					});
+				}
+				return null;
+			}
 			return result;
 		} catch (error: any) {
+			// TODO: Show crash report like for raid sim?
+			console.error(error);
 			new Toast({
 				variant: 'error',
 				body: error?.message || 'Something went wrong calculating your stat weights. Reload the page and try again.',
@@ -775,9 +786,9 @@ export class Player<SpecType extends Spec> {
 	}
 
 	getMeleeCritCapInfo(): MeleeCritCapInfo {
-		const meleeCrit = (this.currentStats.finalStats?.stats[Stat.StatMeleeCrit] || 0.0) / Mechanics.MELEE_CRIT_RATING_PER_CRIT_CHANCE;
-		const meleeHit = (this.currentStats.finalStats?.stats[Stat.StatMeleeHit] || 0.0) / Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE;
-		const expertise = (this.currentStats.finalStats?.stats[Stat.StatExpertise] || 0.0) / Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION / 4;
+		const meleeCrit = this.currentStats.finalStats?.pseudoStats[PseudoStat.PseudoStatPhysicalCritPercent] || 0.0;
+		const meleeHit = this.currentStats.finalStats?.pseudoStats[PseudoStat.PseudoStatPhysicalHitPercent] || 0.0;
+		const expertise = (this.currentStats.finalStats?.stats[Stat.StatExpertiseRating] || 0.0) / Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION / 4;
 		//const agility = (this.currentStats.finalStats?.stats[Stat.StatAgility] || 0.0) / this.getClass();
 		const suppression = 4.8;
 		const glancing = 24.0;
@@ -1135,12 +1146,8 @@ export class Player<SpecType extends Spec> {
 
 	computeReforgingEP(reforging: ReforgeData): number {
 		let stats = new Stats([]);
-		reforging.fromStat.forEach(stat => {
-			stats = stats.addStat(stat, reforging.fromAmount);
-		});
-		reforging.toStat.forEach(stat => {
-			stats = stats.addStat(stat, reforging.toAmount);
-		});
+		stats = stats.addStat(reforging.fromStat, reforging.fromAmount);
+		stats = stats.addStat(reforging.toStat, reforging.toAmount);
 		return this.computeStatsEP(stats);
 	}
 

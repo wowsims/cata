@@ -5,12 +5,13 @@ import { ref } from 'tsx-vanilla';
 
 import { REPO_RELEASES_URL } from '../../constants/other';
 import { IndividualSimUI } from '../../individual_sim_ui';
-import { BulkSettings, ProgressMetrics, TalentLoadout } from '../../proto/api';
+import { BulkSettings, ErrorOutcomeType, ProgressMetrics, TalentLoadout } from '../../proto/api';
 import { GemColor, ItemRandomSuffix, ItemSlot, ItemSpec, ReforgeStat, SimDatabase, SimEnchant, SimGem, SimItem, Spec } from '../../proto/common';
 import { SavedTalents, UIEnchant, UIGem, UIItem } from '../../proto/ui';
 import { ActionId } from '../../proto_utils/action_id';
 import { getEmptyGemSocketIconUrl } from '../../proto_utils/gems';
 import { canEquipItem, getEligibleItemSlots, isSecondaryItemSlot } from '../../proto_utils/utils';
+import { RequestTypes } from '../../sim_signal_manager';
 import { TypedEvent } from '../../typed_event';
 import { getEnumValues, isExternal } from '../../utils';
 import { WorkerProgressCallback } from '../../worker_pool';
@@ -454,7 +455,13 @@ export class BulkTab extends SimTab {
 		this.pendingResults.setPending();
 
 		try {
-			await this.simUI.sim.runBulkSim(this.createBulkSettings(), this.createBulkItemsDatabase(), onProgress);
+			const result = await this.simUI.sim.runBulkSim(this.createBulkSettings(), this.createBulkItemsDatabase(), onProgress);
+			if (result.error?.type == ErrorOutcomeType.ErrorOutcomeAborted) {
+				new Toast({
+					variant: 'info',
+					body: 'Bulk sim cancelled.',
+				});
+			}
 		} catch (e) {
 			this.isPending = false;
 			this.simUI.handleCrash(e);
@@ -573,36 +580,64 @@ export class BulkTab extends SimTab {
 	}
 
 	protected buildBatchSettings() {
-		this.bulkSimButton.addEventListener('click', () => {
+		let isRunning = false;
+		this.bulkSimButton.addEventListener('click', async () => {
+			if (isRunning) return;
+			isRunning = true;
+			this.bulkSimButton.disabled = true;
 			this.isPending = true;
+			let waitAbort = false;
+			try {
+				await this.simUI.sim.signalManager.abortType(RequestTypes.All);
 
-			let simStart = new Date().getTime();
-			let lastTotal = 0;
-			let rounds = 0;
-			let currentRound = 0;
-			let combinations = 0;
-
-			this.runBulkSim((progressMetrics: ProgressMetrics) => {
-				const msSinceStart = new Date().getTime() - simStart;
-				const iterPerSecond = progressMetrics.completedIterations / (msSinceStart / 1000);
-
-				if (combinations === 0) {
-					combinations = progressMetrics.totalSims;
-				}
-				if (this.fastMode) {
-					if (rounds === 0 && progressMetrics.totalSims > 0) {
-						rounds = Math.ceil(Math.log(progressMetrics.totalSims / 20) / Math.log(2)) + 1;
-						currentRound = 1;
+				this.pendingResults.addAbortButton(async () => {
+					if (waitAbort) return;
+					try {
+						waitAbort = true;
+						await this.simUI.sim.signalManager.abortType(RequestTypes.BulkSim);
+					} catch (error) {
+						console.error('Error on bulk sim abort!');
+						console.error(error);
+					} finally {
+						waitAbort = false;
+						if (!isRunning) this.bulkSimButton.disabled = false;
 					}
-					if (progressMetrics.totalSims < lastTotal) {
-						currentRound += 1;
-						simStart = new Date().getTime();
-					}
-				}
+				});
 
-				this.setSimProgress(progressMetrics, iterPerSecond, currentRound, rounds, combinations);
-				lastTotal = progressMetrics.totalSims;
-			});
+				let simStart = new Date().getTime();
+				let lastTotal = 0;
+				let rounds = 0;
+				let currentRound = 0;
+				let combinations = 0;
+
+				await this.runBulkSim((progressMetrics: ProgressMetrics) => {
+					const msSinceStart = new Date().getTime() - simStart;
+					const iterPerSecond = progressMetrics.completedIterations / (msSinceStart / 1000);
+
+					if (combinations === 0) {
+						combinations = progressMetrics.totalSims;
+					}
+					if (this.fastMode) {
+						if (rounds === 0 && progressMetrics.totalSims > 0) {
+							rounds = Math.ceil(Math.log(progressMetrics.totalSims / 20) / Math.log(2)) + 1;
+							currentRound = 1;
+						}
+						if (progressMetrics.totalSims < lastTotal) {
+							currentRound += 1;
+							simStart = new Date().getTime();
+						}
+					}
+
+					this.setSimProgress(progressMetrics, iterPerSecond, currentRound, rounds, combinations);
+					lastTotal = progressMetrics.totalSims;
+				});
+			} catch (error) {
+				console.error(error);
+			} finally {
+				isRunning = false;
+				if (!waitAbort) this.bulkSimButton.disabled = false;
+				this.isPending = false;
+			}
 		});
 
 		if (!isExternal()) {

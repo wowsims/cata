@@ -26,6 +26,7 @@ export class ResultsViewer extends Component {
 	readonly pendingElem: HTMLDivElement;
 	readonly contentElem: HTMLDivElement;
 	readonly warningElem: HTMLDivElement;
+	readonly buttonElem: HTMLDivElement;
 	private warningsLink: HTMLElement;
 
 	private warnings: Array<SimWarning> = [];
@@ -37,6 +38,7 @@ export class ResultsViewer extends Component {
 		const pendingElemRef = ref<HTMLDivElement>();
 		const contentElemRef = ref<HTMLDivElement>();
 		const warningElemRef = ref<HTMLDivElement>();
+		const buttonElemRef = ref<HTMLDivElement>();
 
 		this.rootElem.appendChild(
 			<>
@@ -44,12 +46,14 @@ export class ResultsViewer extends Component {
 					<div className="loader"></div>
 				</div>
 				<div ref={contentElemRef} className="results-content"></div>
-				<div ref={warningElemRef} className="warning-zone" style="text-align: center"></div>
+				<div ref={buttonElemRef} className="button-zone text-center"></div>
+				<div ref={warningElemRef} className="warning-zone text-center"></div>
 			</>,
 		);
 		this.pendingElem = pendingElemRef.value!;
 		this.contentElem = contentElemRef.value!;
 		this.warningElem = warningElemRef.value!;
+		this.buttonElem = buttonElemRef.value!;
 
 		this.warningsLink = this.addWarningsLink();
 		this.updateWarnings();
@@ -110,6 +114,7 @@ export class ResultsViewer extends Component {
 	hideAll() {
 		this.contentElem.style.display = 'none';
 		this.pendingElem.style.display = 'none';
+		this.buttonElem.style.display = 'none';
 	}
 
 	setPending() {
@@ -126,5 +131,20 @@ export class ResultsViewer extends Component {
 		}
 		this.contentElem.style.display = 'block';
 		this.pendingElem.style.display = 'none';
+	}
+
+	addAbortButton(abortClicked: (event: MouseEvent) => void) {
+		this.buttonElem.replaceChildren(
+			<button className="sim-abort-button" onclick={abortClicked}>
+				<i className="fa fa-times fa-lg me-1" />
+				Stop
+			</button>,
+		);
+		this.buttonElem.style.display = 'block';
+	}
+
+	removeAbortButton() {
+		this.buttonElem.replaceChildren();
+		this.buttonElem.style.display = 'none';
 	}
 }
