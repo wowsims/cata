@@ -78,17 +78,17 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-ApparatusofKhaz'goroth-68972"
  value: {
-  dps: 22067.2198
-  tps: 20055.76419
+  dps: 21920.68689
+  tps: 19962.48269
   hps: 246.6603
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-ApparatusofKhaz'goroth-69113"
  value: {
-  dps: 22238.03054
-  tps: 20224.97843
-  hps: 245.95956
+  dps: 22121.41929
+  tps: 20106.73742
+  hps: 246.6603
  }
 }
 dps_results: {
