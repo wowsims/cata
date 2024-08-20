@@ -1506,11 +1506,6 @@ export class Player<SpecType extends Spec> {
 	fromProto(eventID: EventID, proto: PlayerProto, includeCategories?: Array<SimSettingCategories>) {
 		const loadCategory = (cat: SimSettingCategories) => !includeCategories || includeCategories.length == 0 || includeCategories.includes(cat);
 
-		// Fix out-of-date protos before importing
-		if (proto.healingModel && proto.healingModel.apiVersion < CURRENT_API_VERSION) {
-			Player.updateHealingModelProtoVersion(proto);
-		}
-
 		TypedEvent.freezeAllAndDo(() => {
 			if (loadCategory(SimSettingCategories.Gear)) {
 				this.setGear(eventID, proto.equipment ? this.sim.db.lookupEquipmentSpec(proto.equipment) : new Gear({}));
@@ -1552,15 +1547,6 @@ export class Player<SpecType extends Spec> {
 				this.setBuffs(eventID, proto.buffs || IndividualBuffs.create());
 			}
 		});
-	}
-
-	static updateHealingModelProtoVersion(proto: PlayerProto) {
-		// API version null -> 3: Added new encounter target defaults
-		// This means we should reset the healing model to prevent incorrect behavior
-		// due to automatic defaults being calculated based on encounter target stats.
-		if (proto.healingModel && proto.healingModel.apiVersion < 3) {
-			proto.healingModel = HealingModel.create();
-		}
 	}
 
 	clone(eventID: EventID): Player<SpecType> {

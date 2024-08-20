@@ -199,17 +199,8 @@ export class Encounter {
 	}
 
 	static updateProtoVersion(proto: EncounterProto) {
-		let showOutOfDateEncounterTargetWarning = false;
+		// First migrate the stats arrays embedded in each target.
 		proto.targets.forEach((target, index) => {
-			// If the old target is detected return the
-			// new default target without needing to migrate the stats
-			if (target.minBaseDamage === 65000) {
-				proto.targets[index] = Encounter.defaultTargetProto();
-				showOutOfDateEncounterTargetWarning = true;
-				return;
-			}
-
-			// Migrate the stats arrays embedded in each target
 			target.stats = Stats.migrateStatsArray(target.stats, proto.apiVersion, this.defaultTargetProto().stats);
 		});
 
@@ -217,12 +208,5 @@ export class Encounter {
 
 		// Flag the version as up-to-date once all migrations are done.
 		proto.apiVersion = CURRENT_API_VERSION;
-
-		if (showOutOfDateEncounterTargetWarning)
-			new Toast({
-				delay: 5000,
-				variant: 'info',
-				body: 'We detected an out-of-date encounter target with WOTLK settings. Encounter settings have been updated the latest defaults.',
-			});
 	}
 }
