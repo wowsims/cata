@@ -97,5 +97,5 @@ export const MetricsCombinedTooltipTable = ({
 			),
 		});
 	}
-	return null;
+	return <></>;
 };
