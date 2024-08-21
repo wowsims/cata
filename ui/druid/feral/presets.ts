@@ -141,4 +141,5 @@ export const OtherDefaults = {
 	duration: 240,
 	durationVariation: 15,
 	highHpThreshold: 0.8,
+	iterationCount: 25000,
 };
