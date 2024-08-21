@@ -168,13 +168,15 @@ export default class ItemList<T extends ItemListType> {
 							</label>
 						</>
 					)}
-					<span className="ep-label interactive" onclick={sortByEP}>
-						<small>EP</small>
-						<i className="fa-solid fa-plus-minus fa-2xs"></i>
-						<button ref={epButtonRef} className="btn btn-link p-0 ms-1">
-							<i className="far fa-question-circle fa-lg"></i>
-						</button>
-					</span>
+					{![ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2].includes(currentSlot) && (
+						<span className="ep-label interactive" onclick={sortByEP}>
+							<small>EP</small>
+							<i className="fa-solid fa-plus-minus fa-2xs"></i>
+							<button ref={epButtonRef} className="btn btn-link p-0 ms-1">
+								<i className="far fa-question-circle fa-lg"></i>
+							</button>
+						</span>
+					)}
 					<span className="favorite-label"></span>
 					<span ref={compareLabelRef} className="compare-label hide"></span>
 				</div>
@@ -200,7 +202,9 @@ export default class ItemList<T extends ItemListType> {
 			if (show2hWeaponRef.value) makeShow2hWeaponsSelector(show2hWeaponRef.value, player.sim);
 		}
 
-		if (showEpValuesRef.value) makeShowEPValuesSelector(showEpValuesRef.value, player.sim);
+		if (![ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2].includes(currentSlot)) {
+			if (showEpValuesRef.value) makeShowEPValuesSelector(showEpValuesRef.value, player.sim);
+		}
 
 		if (matchingGemsRef.value) {
 			makeShowMatchingGemsSelector(matchingGemsRef.value, player.sim);
