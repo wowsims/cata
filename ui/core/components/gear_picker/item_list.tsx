@@ -136,7 +136,7 @@ export default class ItemList<T extends ItemListType> {
 		const removeButtonRef = ref<HTMLButtonElement>();
 		const compareLabelRef = ref<HTMLElement>();
 
-		const showEPOptions = ![ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2].includes(currentSlot)
+		const showEPOptions = ![ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2].includes(currentSlot);
 
 		this.tabContent = (
 			<div id={this.id} className={`selector-modal-tab-pane tab-pane fade ${selected ? 'active show' : ''}`}>
@@ -151,7 +151,7 @@ export default class ItemList<T extends ItemListType> {
 					<div ref={show1hWeaponRef} className="sim-input selector-modal-boolean-option selector-modal-show-1h-weapons hide" />
 					<div ref={show2hWeaponRef} className="sim-input selector-modal-boolean-option selector-modal-show-2h-weapons hide" />
 					<div ref={matchingGemsRef} className="sim-input selector-modal-boolean-option selector-modal-show-matching-gems" />
-					<div ref={showEpValuesRef} className="sim-input selector-modal-boolean-option selector-modal-show-ep-values" />
+					{showEPOptions && <div ref={showEpValuesRef} className="sim-input selector-modal-boolean-option selector-modal-show-ep-values" />}
 					<button ref={removeButtonRef} className="selector-modal-remove-button btn btn-danger">
 						Unequip Item
 					</button>
@@ -192,10 +192,6 @@ export default class ItemList<T extends ItemListType> {
 			this.bindToggleCompare(compareLabelRef.value!);
 		}
 
-		tippy(epButtonRef.value!, {
-			content: EP_TOOLTIP,
-		});
-
 		if (
 			label === SelectorModalTabs.Items &&
 			(currentSlot === ItemSlot.ItemSlotMainHand || (currentSlot === ItemSlot.ItemSlotOffHand && player.getClass() === Class.ClassWarrior))
@@ -206,6 +202,10 @@ export default class ItemList<T extends ItemListType> {
 
 		if (showEPOptions) {
 			if (showEpValuesRef.value) makeShowEPValuesSelector(showEpValuesRef.value, player.sim);
+
+			tippy(epButtonRef.value!, {
+				content: EP_TOOLTIP,
+			});
 		}
 
 		if (matchingGemsRef.value) {
