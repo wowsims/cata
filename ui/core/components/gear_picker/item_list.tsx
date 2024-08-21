@@ -136,6 +136,8 @@ export default class ItemList<T extends ItemListType> {
 		const removeButtonRef = ref<HTMLButtonElement>();
 		const compareLabelRef = ref<HTMLElement>();
 
+		const showEPOptions = ![ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2].includes(currentSlot)
+
 		this.tabContent = (
 			<div id={this.id} className={`selector-modal-tab-pane tab-pane fade ${selected ? 'active show' : ''}`}>
 				<div className="selector-modal-filters">
@@ -168,7 +170,7 @@ export default class ItemList<T extends ItemListType> {
 							</label>
 						</>
 					)}
-					{![ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2].includes(currentSlot) && (
+					{showEPOptions && (
 						<span className="ep-label interactive" onclick={sortByEP}>
 							<small>EP</small>
 							<i className="fa-solid fa-plus-minus fa-2xs"></i>
@@ -202,7 +204,7 @@ export default class ItemList<T extends ItemListType> {
 			if (show2hWeaponRef.value) makeShow2hWeaponsSelector(show2hWeaponRef.value, player.sim);
 		}
 
-		if (![ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2].includes(currentSlot)) {
+		if (showEPOptions) {
 			if (showEpValuesRef.value) makeShowEPValuesSelector(showEpValuesRef.value, player.sim);
 		}
 
