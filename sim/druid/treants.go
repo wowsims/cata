@@ -1,7 +1,6 @@
 package druid
 
 import (
-	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -15,7 +14,7 @@ func (druid *Druid) NewTreant() *Treant {
 	}
 
 	treant.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	treant.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/83.3)
+	treant.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, 1/83.3)
 
 	treant.PseudoStats.DamageDealtMultiplier = 1
 
@@ -104,14 +103,14 @@ var treantBaseStats = stats.Stats{
 	stats.Strength:    476,
 	stats.AttackPower: -20,
 
-	stats.MeleeCrit: 0.05,
+	//stats.PhysicalCritPercent: 5,
 }
 
 const PetExpertiseScale = 3.25
 
 func (druid *Druid) makeStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
-		treantHitChance := (ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance) * 0.08 / 0.17
+		//treantHitChance := (ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance) * 0.08 / 0.17
 		//hitRatingFromOwner := math.Floor(ownerHitChance) * core.MeleeHitRatingPerHitChance
 
 		return stats.Stats{
@@ -119,8 +118,8 @@ func (druid *Druid) makeStatInheritance() core.PetStatInheritance {
 			stats.Armor:       ownerStats[stats.Armor] * 0.35,
 			stats.AttackPower: ownerStats[stats.AttackPower] * 0.65,
 
-			stats.MeleeHit:  math.Floor(treantHitChance) * core.MeleeHitRatingPerHitChance,
-			stats.Expertise: math.Floor(math.Floor(treantHitChance)*PetExpertiseScale) * core.ExpertisePerQuarterPercentReduction,
+			// stats.MeleeHit:  math.Floor(treantHitChance) * core.MeleeHitRatingPerHitChance,
+			// stats.Expertise: math.Floor(math.Floor(treantHitChance)*PetExpertiseScale) * core.ExpertisePerQuarterPercentReduction,
 		}
 	}
 }
