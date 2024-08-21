@@ -7,10 +7,7 @@ character_stats_results: {
   final_stats: 122.85
   final_stats: 114
   final_stats: 962
-  final_stats: 962
-  final_stats: 6001.68224
-  final_stats: 2800.4002
-  final_stats: 802
+  final_stats: 1904
   final_stats: 802
   final_stats: 0
   final_stats: 0
@@ -19,7 +16,6 @@ character_stats_results: {
   final_stats: 15418.31347
   final_stats: 14144.45402
   final_stats: 0
-  final_stats: 326
   final_stats: 0
   final_stats: 316
   final_stats: 0
@@ -31,7 +27,12 @@ character_stats_results: {
   final_stats: 0
   final_stats: 129037.94
   final_stats: 0
-  final_stats: 0
+  final_stats: 326
+  final_stats: 8.0094
+  final_stats: 9.39034
+  final_stats: 33.47658
+  final_stats: 15.62026
+  final_stats: 5
  }
 }
 dps_results: {
@@ -86,15 +87,15 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-ApparatusofKhaz'goroth-68972"
  value: {
-  dps: 24461.81628
-  tps: 22098.30071
+  dps: 24475.60132
+  tps: 22111.63781
  }
 }
 dps_results: {
  key: "TestSV-AllItems-ApparatusofKhaz'goroth-69113"
  value: {
-  dps: 24461.81628
-  tps: 22098.30071
+  dps: 24478.64407
+  tps: 22114.68056
  }
 }
 dps_results: {
@@ -297,8 +298,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-CrushingWeight-59506"
  value: {
-  dps: 24461.81628
-  tps: 22098.30071
+  dps: 24497.31912
+  tps: 22120.20603
  }
 }
 dps_results: {
@@ -486,8 +487,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-Flamewaker'sBattlegear"
  value: {
-  dps: 27761.41362
-  tps: 24969.68925
+  dps: 26440.76421
+  tps: 23871.81479
  }
 }
 dps_results: {

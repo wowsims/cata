@@ -55,7 +55,6 @@ func (svHunter *SurvivalHunter) registerExplosiveShotSpell() {
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				if result.Landed() {
-					spell.SpellMetrics[target.UnitIndex].Hits--
 					dot := spell.Dot(target)
 					dot.Apply(sim)
 					dot.TickOnce(sim)

@@ -25,19 +25,15 @@ func ParseWowheadReforgeStats(contents string) WowheadReforgeStats {
 }
 
 // statStringToEnum maps wowhead stat strings to their corresponding proto.Stat enum values
-var statStringToEnum = map[string][]proto.Stat{
-	"spi":          {proto.Stat_StatSpirit},
-	"dodgertng":    {proto.Stat_StatDodge},
-	"parryrtng":    {proto.Stat_StatParry},
-	"hitrtng":      {proto.Stat_StatMeleeHit, proto.Stat_StatSpellHit},
-	"critstrkrtng": {proto.Stat_StatMeleeCrit, proto.Stat_StatSpellCrit},
-	"hastertng":    {proto.Stat_StatMeleeHaste, proto.Stat_StatSpellHaste},
-	"exprtng":      {proto.Stat_StatExpertise},
-	"mastrtng":  {proto.Stat_StatMastery},
-}
-
-func mapStringToStat(statString string) []proto.Stat {
-	return statStringToEnum[statString] // Directly return the slice from the map.
+var statStringToEnum = map[string]proto.Stat{
+	"spi":          proto.Stat_StatSpirit,
+	"dodgertng":    proto.Stat_StatDodgeRating,
+	"parryrtng":    proto.Stat_StatParryRating,
+	"hitrtng":      proto.Stat_StatHitRating,
+	"critstrkrtng": proto.Stat_StatCritRating,
+	"hastertng":    proto.Stat_StatHasteRating,
+	"exprtng":      proto.Stat_StatExpertiseRating,
+	"mastrtng":     proto.Stat_StatMasteryRating,
 }
 
 func (reforgeStats WowheadReforgeStats) ToProto() map[int32]*proto.ReforgeStat {
@@ -45,8 +41,8 @@ func (reforgeStats WowheadReforgeStats) ToProto() map[int32]*proto.ReforgeStat {
 	for _, stat := range reforgeStats {
 		protoStat := &proto.ReforgeStat{
 			Id:         int32(stat.ReforgeID),
-			FromStat:   mapStringToStat(stat.FromStat), // Assuming you have S1 and S2 fields in your struct
-			ToStat:     mapStringToStat(stat.ToStat),
+			FromStat:   statStringToEnum[stat.FromStat],
+			ToStat:     statStringToEnum[stat.ToStat],
 			Multiplier: stat.ReforgeMultiplier,
 		}
 		protoStatsMap[protoStat.Id] = protoStat

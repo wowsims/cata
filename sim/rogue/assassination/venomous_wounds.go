@@ -37,9 +37,11 @@ func (sinRogue *AssassinationRogue) registerVenomousWounds() {
 	}))
 
 	sinRogue.VenomousWounds = sinRogue.RegisterSpell(core.SpellConfig{
-		ActionID:         vwActionID,
-		SpellSchool:      core.SpellSchoolNature,
-		ProcMask:         core.ProcMaskSpellDamage,
+		ActionID:    vwActionID,
+		SpellSchool: core.SpellSchoolNature,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       core.SpellFlagPassiveSpell,
+
 		CritMultiplier:   sinRogue.MeleeCritMultiplier(false),
 		ThreatMultiplier: 1,
 		DamageMultiplier: 1,

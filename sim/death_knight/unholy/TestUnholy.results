@@ -7,10 +7,7 @@ character_stats_results: {
   final_stats: 54.6
   final_stats: 82
   final_stats: 967
-  final_stats: 1889.01166
-  final_stats: 3508.76624
-  final_stats: 2974.68024
-  final_stats: 2272
+  final_stats: 1899
   final_stats: 2272
   final_stats: 381
   final_stats: 0
@@ -19,7 +16,6 @@ character_stats_results: {
   final_stats: 19586.0075
   final_stats: 209
   final_stats: 0
-  final_stats: 326
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -31,15 +27,20 @@ character_stats_results: {
   final_stats: 0
   final_stats: 140618.3
   final_stats: 0
-  final_stats: 0
+  final_stats: 326
+  final_stats: 8.05103
+  final_stats: 18.43914
+  final_stats: 19.57143
+  final_stats: 16.59237
+  final_stats: 5
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-AgileShadowspiritDiamond"
  value: {
-  dps: 31712.08756
-  tps: 23433.25675
-  hps: 489.35168
+  dps: 31781.14739
+  tps: 23471.61882
+  hps: 556.14538
  }
 }
 dps_results: {
@@ -47,7 +48,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 585.5071
+  hps: 642.82052
  }
 }
 dps_results: {
@@ -55,7 +56,7 @@ dps_results: {
  value: {
   dps: 30468.49906
   tps: 22786.50156
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -63,7 +64,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -71,31 +72,31 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-ApparatusofKhaz'goroth-68972"
  value: {
-  dps: 31621.40757
-  tps: 23470.51463
-  hps: 473.88367
+  dps: 31461.98752
+  tps: 23327.34034
+  hps: 552.62992
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-ApparatusofKhaz'goroth-69113"
  value: {
-  dps: 31871.2664
-  tps: 23648.71678
-  hps: 473.88367
+  dps: 31713.08283
+  tps: 23495.50639
+  hps: 551.92683
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-AustereShadowspiritDiamond"
  value: {
-  dps: 31480.41223
-  tps: 23202.23925
-  hps: 493.49532
+  dps: 31550.22835
+  tps: 23241.10167
+  hps: 560.85459
  }
 }
 dps_results: {
@@ -103,7 +104,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 570.59297
+  hps: 628.98026
  }
 }
 dps_results: {
@@ -111,7 +112,7 @@ dps_results: {
  value: {
   dps: 29741.25834
   tps: 22097.29373
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -119,7 +120,7 @@ dps_results: {
  value: {
   dps: 30234.97081
   tps: 22460.88173
-  hps: 473.88367
+  hps: 547.00519
  }
 }
 dps_results: {
@@ -127,7 +128,7 @@ dps_results: {
  value: {
   dps: 30292.81587
   tps: 22504.86295
-  hps: 473.88367
+  hps: 549.11446
  }
 }
 dps_results: {
@@ -135,7 +136,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -143,7 +144,7 @@ dps_results: {
  value: {
   dps: 30165.18129
   tps: 22493.01114
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -151,7 +152,7 @@ dps_results: {
  value: {
   dps: 30023.42503
   tps: 22411.38848
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -159,7 +160,7 @@ dps_results: {
  value: {
   dps: 30065.22665
   tps: 22457.34524
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -167,7 +168,7 @@ dps_results: {
  value: {
   dps: 30025.50266
   tps: 22282.77405
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -175,7 +176,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -183,7 +184,7 @@ dps_results: {
  value: {
   dps: 30972.35045
   tps: 23005.69951
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -191,7 +192,7 @@ dps_results: {
  value: {
   dps: 30205.04634
   tps: 22439.96737
-  hps: 480.92857
+  hps: 554.64877
  }
 }
 dps_results: {
@@ -199,7 +200,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 480.92857
+  hps: 547.54128
  }
 }
 dps_results: {
@@ -207,7 +208,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 480.92857
+  hps: 547.54128
  }
 }
 dps_results: {
@@ -215,7 +216,7 @@ dps_results: {
  value: {
   dps: 29977.49568
   tps: 22243.92043
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -223,7 +224,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -231,7 +232,7 @@ dps_results: {
  value: {
   dps: 30938.22832
   tps: 22932.9084
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -239,15 +240,15 @@ dps_results: {
  value: {
   dps: 29878.79906
   tps: 22193.91488
-  hps: 473.88367
+  hps: 539.97427
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-BracingShadowspiritDiamond"
  value: {
-  dps: 31468.39315
-  tps: 22726.48659
-  hps: 489.35168
+  dps: 31538.20927
+  tps: 22764.57177
+  hps: 556.14538
  }
 }
 dps_results: {
@@ -255,31 +256,31 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-Bryntroll,theBoneArbiter-50709"
  value: {
-  dps: 33136.24307
-  tps: 24600.84985
-  hps: 454.53745
+  dps: 33121.97775
+  tps: 24575.65588
+  hps: 516.81265
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-BurningShadowspiritDiamond"
  value: {
-  dps: 31666.18192
-  tps: 23399.4489
-  hps: 489.35168
+  dps: 31736.16063
+  tps: 23438.57731
+  hps: 556.14538
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-ChaoticShadowspiritDiamond"
  value: {
-  dps: 31750.55655
-  tps: 23462.7276
-  hps: 489.35168
+  dps: 31819.61638
+  tps: 23501.08966
+  hps: 556.84847
  }
 }
 dps_results: {
@@ -287,7 +288,7 @@ dps_results: {
  value: {
   dps: 30548.96481
   tps: 22767.80656
-  hps: 473.88367
+  hps: 548.41137
  }
 }
 dps_results: {
@@ -295,7 +296,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -303,23 +304,23 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-CrushingWeight-59506"
  value: {
-  dps: 31408.9033
-  tps: 23308.06616
-  hps: 490.75787
+  dps: 31562.22184
+  tps: 23391.25053
+  hps: 560.36393
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-CrushingWeight-65118"
  value: {
-  dps: 31725.74798
-  tps: 23597.10527
-  hps: 495.67951
+  dps: 31707.1593
+  tps: 23553.80027
+  hps: 561.77011
  }
 }
 dps_results: {
@@ -327,7 +328,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 481.01367
+  hps: 547.64118
  }
 }
 dps_results: {
@@ -335,7 +336,7 @@ dps_results: {
  value: {
   dps: 31265.27473
   tps: 23351.43809
-  hps: 480.21149
+  hps: 547.00519
  }
 }
 dps_results: {
@@ -343,7 +344,7 @@ dps_results: {
  value: {
   dps: 30390.75448
   tps: 22694.51183
-  hps: 480.21149
+  hps: 547.00519
  }
 }
 dps_results: {
@@ -351,7 +352,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -359,7 +360,7 @@ dps_results: {
  value: {
   dps: 30116.87154
   tps: 22552.01401
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -367,15 +368,15 @@ dps_results: {
  value: {
   dps: 30480.36565
   tps: 22642.58984
-  hps: 482.32077
+  hps: 555.44228
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-DestructiveShadowspiritDiamond"
  value: {
-  dps: 31549.34277
-  tps: 23249.98932
-  hps: 489.35168
+  dps: 31618.28338
+  tps: 23288.12879
+  hps: 556.84847
  }
 }
 dps_results: {
@@ -383,7 +384,7 @@ dps_results: {
  value: {
   dps: 29910.84908
   tps: 22172.63597
-  hps: 482.32077
+  hps: 548.41137
  }
 }
 dps_results: {
@@ -391,15 +392,15 @@ dps_results: {
  value: {
   dps: 31587.10342
   tps: 23433.83001
-  hps: 473.88367
+  hps: 554.0361
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-EffulgentShadowspiritDiamond"
  value: {
-  dps: 31468.39315
-  tps: 23190.29244
-  hps: 493.49532
+  dps: 31538.20927
+  tps: 23229.15486
+  hps: 560.85459
  }
 }
 dps_results: {
@@ -407,23 +408,23 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-EmberShadowspiritDiamond"
  value: {
-  dps: 31468.39315
-  tps: 23190.29244
-  hps: 489.35168
+  dps: 31538.20927
+  tps: 23229.15486
+  hps: 556.14538
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-EnigmaticShadowspiritDiamond"
  value: {
-  dps: 31549.34277
-  tps: 23249.98932
-  hps: 489.35168
+  dps: 31618.28338
+  tps: 23288.12879
+  hps: 556.84847
  }
 }
 dps_results: {
@@ -431,7 +432,7 @@ dps_results: {
  value: {
   dps: 30476.8888
   tps: 22619.93475
-  hps: 473.88367
+  hps: 546.3021
  }
 }
 dps_results: {
@@ -439,7 +440,7 @@ dps_results: {
  value: {
   dps: 30603.46781
   tps: 22734.14431
-  hps: 473.88367
+  hps: 553.33301
  }
 }
 dps_results: {
@@ -447,15 +448,15 @@ dps_results: {
  value: {
   dps: 31502.56865
   tps: 23677.75838
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-EternalShadowspiritDiamond"
  value: {
-  dps: 31468.39315
-  tps: 23190.29244
-  hps: 493.49532
+  dps: 31538.20927
+  tps: 23229.15486
+  hps: 560.85459
  }
 }
 dps_results: {
@@ -463,7 +464,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -471,7 +472,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -479,7 +480,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -487,7 +488,7 @@ dps_results: {
  value: {
   dps: 29965.59734
   tps: 22237.46129
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -495,7 +496,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -503,7 +504,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 495.03682
+  hps: 563.34309
  }
 }
 dps_results: {
@@ -511,7 +512,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -519,15 +520,15 @@ dps_results: {
  value: {
   dps: 31268.94911
   tps: 23360.38505
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-FleetShadowspiritDiamond"
  value: {
-  dps: 31539.85151
-  tps: 23268.86272
-  hps: 489.35168
+  dps: 31609.80658
+  tps: 23307.8895
+  hps: 556.14538
  }
 }
 dps_results: {
@@ -535,15 +536,15 @@ dps_results: {
  value: {
   dps: 30030.87762
   tps: 22279.4354
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-ForlornShadowspiritDiamond"
  value: {
-  dps: 31468.39315
-  tps: 23190.29244
-  hps: 489.35168
+  dps: 31538.20927
+  tps: 23229.15486
+  hps: 556.14538
  }
 }
 dps_results: {
@@ -551,7 +552,7 @@ dps_results: {
  value: {
   dps: 31599.28173
   tps: 23460.31074
-  hps: 473.88367
+  hps: 547.00519
  }
 }
 dps_results: {
@@ -559,7 +560,7 @@ dps_results: {
  value: {
   dps: 30055.93376
   tps: 22304.7763
-  hps: 485.83623
+  hps: 552.62992
  }
 }
 dps_results: {
@@ -567,7 +568,7 @@ dps_results: {
  value: {
   dps: 30164.73208
   tps: 22431.42954
-  hps: 487.24241
+  hps: 554.0361
  }
 }
 dps_results: {
@@ -575,7 +576,7 @@ dps_results: {
  value: {
   dps: 30211.93066
   tps: 22440.02001
-  hps: 485.13314
+  hps: 551.92683
  }
 }
 dps_results: {
@@ -583,7 +584,7 @@ dps_results: {
  value: {
   dps: 29694.43696
   tps: 22055.89335
-  hps: 504.53576
+  hps: 569.92327
  }
 }
 dps_results: {
@@ -591,7 +592,7 @@ dps_results: {
  value: {
   dps: 30005.4634
   tps: 22277.61367
-  hps: 473.88367
+  hps: 541.38045
  }
 }
 dps_results: {
@@ -599,7 +600,7 @@ dps_results: {
  value: {
   dps: 30225.39236
   tps: 22430.9268
-  hps: 473.88367
+  hps: 546.3021
  }
 }
 dps_results: {
@@ -607,7 +608,7 @@ dps_results: {
  value: {
   dps: 29824.39345
   tps: 22189.66837
-  hps: 473.18058
+  hps: 538.56809
  }
 }
 dps_results: {
@@ -615,7 +616,7 @@ dps_results: {
  value: {
   dps: 30803.28392
   tps: 22944.3259
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -623,7 +624,7 @@ dps_results: {
  value: {
   dps: 30256.7988
   tps: 22483.1516
-  hps: 489.35168
+  hps: 556.14538
  }
 }
 dps_results: {
@@ -631,15 +632,15 @@ dps_results: {
  value: {
   dps: 30251.91932
   tps: 22459.55234
-  hps: 492.16405
+  hps: 559.66083
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-HeartofRage-59224"
  value: {
-  dps: 31390.74266
-  tps: 23265.72025
-  hps: 483.72695
+  dps: 31413.79757
+  tps: 23264.54391
+  hps: 549.81755
  }
 }
 dps_results: {
@@ -647,15 +648,15 @@ dps_results: {
  value: {
   dps: 30055.93376
   tps: 22304.7763
-  hps: 485.83623
+  hps: 552.62992
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-HeartofSolace-56393"
  value: {
-  dps: 31588.61801
-  tps: 23388.00496
-  hps: 487.24241
+  dps: 31619.7653
+  tps: 23365.91669
+  hps: 554.0361
  }
 }
 dps_results: {
@@ -663,7 +664,7 @@ dps_results: {
  value: {
   dps: 29729.17508
   tps: 22085.27576
-  hps: 476.39917
+  hps: 542.25108
  }
 }
 dps_results: {
@@ -671,7 +672,7 @@ dps_results: {
  value: {
   dps: 29737.09759
   tps: 22093.15547
-  hps: 477.21817
+  hps: 543.22128
  }
 }
 dps_results: {
@@ -679,15 +680,15 @@ dps_results: {
  value: {
   dps: 30055.32881
   tps: 22299.55814
-  hps: 473.88367
+  hps: 541.38045
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-ImpassiveShadowspiritDiamond"
  value: {
-  dps: 31549.34277
-  tps: 23249.98932
-  hps: 489.35168
+  dps: 31618.28338
+  tps: 23288.12879
+  hps: 556.84847
  }
 }
 dps_results: {
@@ -695,7 +696,7 @@ dps_results: {
  value: {
   dps: 31468.78617
   tps: 23527.06161
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -703,7 +704,7 @@ dps_results: {
  value: {
   dps: 31468.78617
   tps: 23527.06161
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -711,7 +712,7 @@ dps_results: {
  value: {
   dps: 30023.42503
   tps: 22411.38848
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -719,7 +720,7 @@ dps_results: {
  value: {
   dps: 30065.22665
   tps: 22457.34524
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -727,7 +728,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 476.1538
+  hps: 541.96041
  }
 }
 dps_results: {
@@ -735,7 +736,7 @@ dps_results: {
  value: {
   dps: 29949.98678
   tps: 22330.64724
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -743,7 +744,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -751,7 +752,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -759,7 +760,7 @@ dps_results: {
  value: {
   dps: 30165.18129
   tps: 22493.01114
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -767,7 +768,7 @@ dps_results: {
  value: {
   dps: 29896.94458
   tps: 22181.3456
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -775,7 +776,7 @@ dps_results: {
  value: {
   dps: 29984.99942
   tps: 22245.24111
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -783,7 +784,7 @@ dps_results: {
  value: {
   dps: 30461.06226
   tps: 22582.62289
-  hps: 479.5084
+  hps: 545.599
  }
 }
 dps_results: {
@@ -791,7 +792,7 @@ dps_results: {
  value: {
   dps: 30461.06226
   tps: 22582.62289
-  hps: 479.5084
+  hps: 545.599
  }
 }
 dps_results: {
@@ -799,15 +800,15 @@ dps_results: {
  value: {
   dps: 29949.63207
   tps: 22222.40024
-  hps: 483.02386
+  hps: 549.11446
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-LastWord-50708"
  value: {
-  dps: 32368.90702
-  tps: 23899.99935
-  hps: 441.62031
+  dps: 32342.2916
+  tps: 23857.57782
+  hps: 503.39035
  }
 }
 dps_results: {
@@ -815,7 +816,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 489.88477
+  hps: 557.48014
  }
 }
 dps_results: {
@@ -823,7 +824,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 495.03682
+  hps: 563.34309
  }
 }
 dps_results: {
@@ -831,7 +832,7 @@ dps_results: {
  value: {
   dps: 30062.61916
   tps: 22379.53345
-  hps: 486.53932
+  hps: 552.62992
  }
 }
 dps_results: {
@@ -839,23 +840,23 @@ dps_results: {
  value: {
   dps: 30167.39592
   tps: 22479.78611
-  hps: 485.83623
+  hps: 551.92683
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-MagmaPlatedBattlearmor"
  value: {
-  dps: 26257.83828
-  tps: 19267.92766
-  hps: 444.82803
+  dps: 26338.39458
+  tps: 19308.27569
+  hps: 486.92532
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-MagmaPlatedBattlegear"
  value: {
-  dps: 28833.67021
-  tps: 21359.25275
-  hps: 479.20748
+  dps: 28884.57608
+  tps: 21376.83895
+  hps: 532.53072
  }
 }
 dps_results: {
@@ -863,7 +864,7 @@ dps_results: {
  value: {
   dps: 30627.5439
   tps: 22883.65869
-  hps: 485.13313
+  hps: 551.22374
  }
 }
 dps_results: {
@@ -871,7 +872,7 @@ dps_results: {
  value: {
   dps: 30980.57043
   tps: 23164.41179
-  hps: 485.83623
+  hps: 551.92683
  }
 }
 dps_results: {
@@ -879,7 +880,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -887,7 +888,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -895,7 +896,7 @@ dps_results: {
  value: {
   dps: 30999.36224
   tps: 23144.50168
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -903,23 +904,23 @@ dps_results: {
  value: {
   dps: 31170.86997
   tps: 23288.59772
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-MatrixRestabilizer-68994"
  value: {
-  dps: 30848.26744
-  tps: 22873.37999
-  hps: 473.88367
+  dps: 30784.87619
+  tps: 22785.04406
+  hps: 562.4732
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-MatrixRestabilizer-69150"
  value: {
-  dps: 30998.57624
-  tps: 23004.03501
-  hps: 473.88367
+  dps: 30832.36046
+  tps: 22821.32887
+  hps: 565.98866
  }
 }
 dps_results: {
@@ -927,7 +928,7 @@ dps_results: {
  value: {
   dps: 30272.8077
   tps: 22527.10155
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -935,7 +936,7 @@ dps_results: {
  value: {
   dps: 30762.99323
   tps: 22929.33937
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -943,7 +944,7 @@ dps_results: {
  value: {
   dps: 30110.84314
   tps: 22507.49461
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -951,7 +952,7 @@ dps_results: {
  value: {
   dps: 30110.84314
   tps: 22507.49461
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -959,7 +960,7 @@ dps_results: {
  value: {
   dps: 30258.75129
   tps: 22483.47893
-  hps: 473.88367
+  hps: 548.41137
  }
 }
 dps_results: {
@@ -967,7 +968,7 @@ dps_results: {
  value: {
   dps: 30211.43064
   tps: 22625.00144
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -975,7 +976,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 499.14856
+  hps: 568.02218
  }
 }
 dps_results: {
@@ -983,7 +984,7 @@ dps_results: {
  value: {
   dps: 30173.5233
   tps: 22575.55101
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -991,7 +992,7 @@ dps_results: {
  value: {
   dps: 30233.76131
   tps: 22641.66011
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -999,7 +1000,7 @@ dps_results: {
  value: {
   dps: 30761.65662
   tps: 22835.65548
-  hps: 473.88367
+  hps: 542.08355
  }
 }
 dps_results: {
@@ -1007,7 +1008,7 @@ dps_results: {
  value: {
   dps: 29889.56298
   tps: 22183.61537
-  hps: 482.32077
+  hps: 547.70828
  }
 }
 dps_results: {
@@ -1015,7 +1016,7 @@ dps_results: {
  value: {
   dps: 29725.6128
   tps: 22081.73273
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1023,7 +1024,7 @@ dps_results: {
  value: {
   dps: 29962.06929
   tps: 22252.36412
-  hps: 473.88367
+  hps: 542.78664
  }
 }
 dps_results: {
@@ -1031,7 +1032,7 @@ dps_results: {
  value: {
   dps: 29954.56978
   tps: 22333.7748
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1039,15 +1040,15 @@ dps_results: {
  value: {
   dps: 30168.03511
   tps: 22566.48375
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-PowerfulShadowspiritDiamond"
  value: {
-  dps: 31468.39315
-  tps: 23190.29244
-  hps: 493.49532
+  dps: 31538.20927
+  tps: 23229.15486
+  hps: 560.85459
  }
 }
 dps_results: {
@@ -1055,7 +1056,7 @@ dps_results: {
  value: {
   dps: 30491.35448
   tps: 22644.15434
-  hps: 489.35168
+  hps: 556.84847
  }
 }
 dps_results: {
@@ -1063,7 +1064,7 @@ dps_results: {
  value: {
   dps: 30541.51756
   tps: 22629.63628
-  hps: 494.27332
+  hps: 561.06702
  }
 }
 dps_results: {
@@ -1071,7 +1072,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1079,23 +1080,23 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-ReverberatingShadowspiritDiamond"
  value: {
-  dps: 31864.5844
-  tps: 23542.76229
-  hps: 489.35168
+  dps: 31934.56365
+  tps: 23581.8917
+  hps: 556.14538
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-RevitalizingShadowspiritDiamond"
  value: {
-  dps: 31666.18192
-  tps: 23399.4489
-  hps: 489.35168
+  dps: 31736.16063
+  tps: 23438.57731
+  hps: 556.14538
  }
 }
 dps_results: {
@@ -1103,7 +1104,7 @@ dps_results: {
  value: {
   dps: 30549.67616
   tps: 22675.7284
-  hps: 473.88367
+  hps: 544.19282
  }
 }
 dps_results: {
@@ -1111,7 +1112,7 @@ dps_results: {
  value: {
   dps: 30663.55014
   tps: 22736.4619
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1119,7 +1120,7 @@ dps_results: {
  value: {
   dps: 30716.49366
   tps: 22764.61312
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1127,7 +1128,7 @@ dps_results: {
  value: {
   dps: 30318.24695
   tps: 22523.87809
-  hps: 473.88367
+  hps: 549.81755
  }
 }
 dps_results: {
@@ -1135,7 +1136,7 @@ dps_results: {
  value: {
   dps: 30133.2599
   tps: 22439.17151
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1143,7 +1144,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1151,15 +1152,15 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-Shadowmourne-49623"
  value: {
-  dps: 34203.19658
-  tps: 25339.18964
-  hps: 453.91181
+  dps: 34200.60227
+  tps: 25279.30823
+  hps: 518.96286
  }
 }
 dps_results: {
@@ -1167,7 +1168,7 @@ dps_results: {
  value: {
   dps: 30193.70396
   tps: 22463.94005
-  hps: 490.75787
+  hps: 558.25465
  }
 }
 dps_results: {
@@ -1175,7 +1176,7 @@ dps_results: {
  value: {
   dps: 30938.22917
   tps: 23034.70153
-  hps: 485.13313
+  hps: 551.22374
  }
 }
 dps_results: {
@@ -1183,7 +1184,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 486.66473
+  hps: 553.8158
  }
 }
 dps_results: {
@@ -1191,7 +1192,7 @@ dps_results: {
  value: {
   dps: 30300.25721
   tps: 22615.97876
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1199,7 +1200,7 @@ dps_results: {
  value: {
   dps: 30388.4495
   tps: 22699.98419
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1207,7 +1208,7 @@ dps_results: {
  value: {
   dps: 30023.42503
   tps: 22411.38848
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1215,7 +1216,7 @@ dps_results: {
  value: {
   dps: 30065.22665
   tps: 22457.34524
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1223,7 +1224,7 @@ dps_results: {
  value: {
   dps: 30272.8077
   tps: 22527.10155
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1231,7 +1232,7 @@ dps_results: {
  value: {
   dps: 30110.84314
   tps: 22507.49461
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1239,7 +1240,7 @@ dps_results: {
  value: {
   dps: 30086.97414
   tps: 22345.659
-  hps: 473.88367
+  hps: 545.599
  }
 }
 dps_results: {
@@ -1247,7 +1248,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1255,7 +1256,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1263,7 +1264,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 497.76147
+  hps: 566.44369
  }
 }
 dps_results: {
@@ -1271,7 +1272,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 500.83289
+  hps: 569.93891
  }
 }
 dps_results: {
@@ -1279,7 +1280,7 @@ dps_results: {
  value: {
   dps: 29952.03388
   tps: 22330.28016
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1287,7 +1288,7 @@ dps_results: {
  value: {
   dps: 30828.13881
   tps: 22946.54755
-  hps: 487.9455
+  hps: 553.33301
  }
 }
 dps_results: {
@@ -1295,7 +1296,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1303,7 +1304,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1311,7 +1312,7 @@ dps_results: {
  value: {
   dps: 29976.57189
   tps: 22359.87653
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1319,7 +1320,7 @@ dps_results: {
  value: {
   dps: 30065.22665
   tps: 22457.34524
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1327,7 +1328,7 @@ dps_results: {
  value: {
   dps: 30659.51974
   tps: 22790.90077
-  hps: 490.75787
+  hps: 558.25465
  }
 }
 dps_results: {
@@ -1335,7 +1336,7 @@ dps_results: {
  value: {
   dps: 30770.74693
   tps: 22805.56511
-  hps: 493.57023
+  hps: 560.36393
  }
 }
 dps_results: {
@@ -1343,7 +1344,7 @@ dps_results: {
  value: {
   dps: 30186.13859
   tps: 22591.4665
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1351,7 +1352,7 @@ dps_results: {
  value: {
   dps: 30278.09464
   tps: 22679.30116
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1359,7 +1360,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1367,7 +1368,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1375,7 +1376,7 @@ dps_results: {
  value: {
   dps: 30290.12011
   tps: 22589.22435
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1383,7 +1384,7 @@ dps_results: {
  value: {
   dps: 30370.54654
   tps: 22663.89372
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1391,7 +1392,7 @@ dps_results: {
  value: {
   dps: 30029.97889
   tps: 22401.71987
-  hps: 529.4279
+  hps: 600.44014
  }
 }
 dps_results: {
@@ -1399,7 +1400,7 @@ dps_results: {
  value: {
   dps: 29693.39787
   tps: 22078.23337
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1407,7 +1408,7 @@ dps_results: {
  value: {
   dps: 30301.94704
   tps: 22560.29254
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1415,7 +1416,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1423,7 +1424,7 @@ dps_results: {
  value: {
   dps: 30393.05131
   tps: 22694.34061
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1431,7 +1432,7 @@ dps_results: {
  value: {
   dps: 30393.05131
   tps: 22694.34061
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1439,14 +1440,14 @@ dps_results: {
  value: {
   dps: 30393.05131
   tps: 22694.34061
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-Val'anyr,HammerofAncientKings-46017"
  value: {
-  dps: 22748.59433
-  tps: 15877.04584
+  dps: 22748.87546
+  tps: 15852.56828
  }
 }
 dps_results: {
@@ -1454,7 +1455,7 @@ dps_results: {
  value: {
   dps: 29778.30664
   tps: 22144.43473
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1462,7 +1463,7 @@ dps_results: {
  value: {
   dps: 29839.04288
   tps: 22234.81983
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1470,7 +1471,7 @@ dps_results: {
  value: {
   dps: 31724.49935
   tps: 23534.23787
-  hps: 473.88367
+  hps: 549.11446
  }
 }
 dps_results: {
@@ -1478,7 +1479,7 @@ dps_results: {
  value: {
   dps: 31988.10908
   tps: 23729.81882
-  hps: 473.88367
+  hps: 549.11446
  }
 }
 dps_results: {
@@ -1486,7 +1487,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 497.76147
+  hps: 566.44369
  }
 }
 dps_results: {
@@ -1494,7 +1495,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 500.83289
+  hps: 569.93891
  }
 }
 dps_results: {
@@ -1502,7 +1503,7 @@ dps_results: {
  value: {
   dps: 29985.08501
   tps: 22245.95608
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1510,7 +1511,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1518,7 +1519,7 @@ dps_results: {
  value: {
   dps: 31043.24226
   tps: 23058.53529
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1526,7 +1527,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 481.33383
+  hps: 548.01702
  }
 }
 dps_results: {
@@ -1534,7 +1535,7 @@ dps_results: {
  value: {
   dps: 30282.60451
   tps: 22471.66133
-  hps: 501.48054
+  hps: 569.40796
  }
 }
 dps_results: {
@@ -1542,7 +1543,7 @@ dps_results: {
  value: {
   dps: 30258.75129
   tps: 22483.47893
-  hps: 481.33383
+  hps: 557.23819
  }
 }
 dps_results: {
@@ -1550,7 +1551,7 @@ dps_results: {
  value: {
   dps: 29871.50359
   tps: 22257.44758
-  hps: 492.1784
+  hps: 559.72664
  }
 }
 dps_results: {
@@ -1558,7 +1559,7 @@ dps_results: {
  value: {
   dps: 30134.9247
   tps: 22533.96853
-  hps: 481.33383
+  hps: 548.01702
  }
 }
 dps_results: {
@@ -1566,7 +1567,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 481.33383
+  hps: 548.01702
  }
 }
 dps_results: {
@@ -1574,7 +1575,7 @@ dps_results: {
  value: {
   dps: 29998.47228
   tps: 22268.24455
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1582,7 +1583,7 @@ dps_results: {
  value: {
   dps: 29704.6381
   tps: 22060.87135
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1590,7 +1591,7 @@ dps_results: {
  value: {
   dps: 31001.86368
   tps: 23010.438
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1598,7 +1599,7 @@ dps_results: {
  value: {
   dps: 30027.63489
   tps: 22306.24709
-  hps: 485.13314
+  hps: 551.22374
  }
 }
 dps_results: {
@@ -1606,7 +1607,7 @@ dps_results: {
  value: {
   dps: 30248.59377
   tps: 22498.00992
-  hps: 489.35168
+  hps: 556.14538
  }
 }
 dps_results: {
@@ -1614,7 +1615,7 @@ dps_results: {
  value: {
   dps: 29981.63631
   tps: 22365.44461
-  hps: 473.88367
+  hps: 539.27118
  }
 }
 dps_results: {
@@ -1622,7 +1623,7 @@ dps_results: {
  value: {
   dps: 30023.71433
   tps: 22416.5309
-  hps: 490.182
+  hps: 557.81839
  }
 }
 dps_results: {
@@ -1630,118 +1631,118 @@ dps_results: {
  value: {
   dps: 30023.71433
   tps: 22416.5309
-  hps: 490.182
+  hps: 557.81839
  }
 }
 dps_results: {
  key: "TestUnholy-Average-Default"
  value: {
-  dps: 31913.79282
-  tps: 23610.48314
-  hps: 458.03938
+  dps: 31950.88907
+  tps: 23613.84898
+  hps: 534.54142
  }
 }
 dps_results: {
  key: "TestUnholy-Settings-Goblin-p1-Basic-st-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 57163.29189
-  tps: 68925.22637
-  hps: 494.27332
+  dps: 57263.19532
+  tps: 69002.94658
+  hps: 555.44228
  }
 }
 dps_results: {
  key: "TestUnholy-Settings-Goblin-p1-Basic-st-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 31672.5576
-  tps: 23326.79199
-  hps: 491.46096
+  dps: 31747.91383
+  tps: 23371.17918
+  hps: 552.62992
  }
 }
 dps_results: {
  key: "TestUnholy-Settings-Goblin-p1-Basic-st-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 44170.78664
-  tps: 28390.71502
-  hps: 632.78235
+  dps: 44216.36384
+  tps: 28375.75626
+  hps: 713.63787
  }
 }
 dps_results: {
  key: "TestUnholy-Settings-Goblin-p1-Basic-st-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 36516.94101
-  tps: 43373.76197
-  hps: 405.49981
+  dps: 36641.88016
+  tps: 43507.98957
+  hps: 436.49745
  }
 }
 dps_results: {
  key: "TestUnholy-Settings-Goblin-p1-Basic-st-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 20483.41986
-  tps: 15190.11159
-  hps: 407.39762
+  dps: 20528.90421
+  tps: 15221.1583
+  hps: 438.39527
  }
 }
 dps_results: {
  key: "TestUnholy-Settings-Goblin-p1-Basic-st-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 25554.08883
-  tps: 16982.59888
-  hps: 455.4756
+  dps: 25599.6748
+  tps: 16988.80483
+  hps: 487.10585
  }
 }
 dps_results: {
  key: "TestUnholy-Settings-Worgen-p1-Basic-st-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 57901.23266
-  tps: 70177.48488
-  hps: 487.9455
+  dps: 57960.32791
+  tps: 70158.47341
+  hps: 555.44229
  }
 }
 dps_results: {
  key: "TestUnholy-Settings-Worgen-p1-Basic-st-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 31864.5844
-  tps: 23542.76229
-  hps: 489.35168
+  dps: 31934.56365
+  tps: 23581.8917
+  hps: 556.14538
  }
 }
 dps_results: {
  key: "TestUnholy-Settings-Worgen-p1-Basic-st-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 44367.23063
-  tps: 28782.24542
-  hps: 636.29781
+  dps: 44406.53839
+  tps: 28761.68961
+  hps: 727.6997
  }
 }
 dps_results: {
  key: "TestUnholy-Settings-Worgen-p1-Basic-st-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 36833.11472
-  tps: 43957.04225
-  hps: 402.33678
+  dps: 36941.55572
+  tps: 44082.02047
+  hps: 435.86485
  }
 }
 dps_results: {
  key: "TestUnholy-Settings-Worgen-p1-Basic-st-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 20712.63036
-  tps: 15371.31673
-  hps: 406.13241
+  dps: 20786.8003
+  tps: 15392.05876
+  hps: 439.66048
  }
 }
 dps_results: {
  key: "TestUnholy-Settings-Worgen-p1-Basic-st-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 25874.13286
-  tps: 17223.04566
-  hps: 458.63863
+  dps: 25906.81834
+  tps: 17219.5478
+  hps: 493.4319
  }
 }
 dps_results: {
  key: "TestUnholy-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 30118.05856
-  tps: 22376.42473
-  hps: 452.08783
+  dps: 30194.54667
+  tps: 22440.60101
+  hps: 514.66298
  }
 }

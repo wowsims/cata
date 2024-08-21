@@ -37,8 +37,8 @@ func (war *ArmsWarrior) applyTasteForBlood() {
 
 	war.AddStaticMod(core.SpellModConfig{
 		ClassMask:  warrior.SpellMaskOverpower,
-		Kind:       core.SpellMod_BonusCrit_Rating,
-		FloatValue: 20.0 * float64(war.Talents.TasteForBlood) * core.CritRatingPerCritChance,
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		FloatValue: 20.0 * float64(war.Talents.TasteForBlood),
 	})
 
 	procChance := []float64{0, 0.33, 0.66, 1}[war.Talents.TasteForBlood]
@@ -207,8 +207,8 @@ func (war *ArmsWarrior) applyJuggernaut() {
 	})
 
 	modJuggernaut := war.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_BonusCrit_Rating,
-		FloatValue: 25 * core.CritRatingPerCritChance,
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		FloatValue: 25,
 		ClassMask:  warrior.SpellMaskMortalStrike | warrior.SpellMaskSlam,
 	})
 	actionId := core.ActionID{SpellID: 65156}

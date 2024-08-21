@@ -91,15 +91,13 @@ func (priest *Priest) makePenanceSpell(isHeal bool) *core.Spell {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if isHeal {
-				spell.SpellMetrics[target.UnitIndex].Hits--
 				hot := spell.Hot(target)
 				hot.Apply(sim)
 				// Do immediate tick
 				hot.TickOnce(sim)
 			} else {
-				result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+				result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 				if result.Landed() {
-					spell.SpellMetrics[target.UnitIndex].Hits--
 					dot := spell.Dot(target)
 					dot.Apply(sim)
 					// Do immediate tick

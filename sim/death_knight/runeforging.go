@@ -28,14 +28,14 @@ func init() {
 	core.NewEnchantEffect(3594, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		character.PseudoStats.BaseParry += 0.02
+		character.PseudoStats.BaseParryChance += 0.02
 	})
 
 	// Rune of Swordshattering
 	core.NewEnchantEffect(3365, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		character.PseudoStats.BaseParry += 0.04
+		character.PseudoStats.BaseParryChance += 0.04
 	})
 
 	// Rune of the Spellbreaking
@@ -67,9 +67,10 @@ func init() {
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
+			CritMultiplier:   2,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealHealing(sim, target, character.MaxHealth()*0.03, spell.OutcomeHealing)
+				spell.CalcAndDealHealing(sim, target, character.MaxHealth()*0.03, spell.OutcomeHealingCrit)
 			},
 		})
 

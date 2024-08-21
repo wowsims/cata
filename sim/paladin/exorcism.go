@@ -45,14 +45,14 @@ func (paladin *Paladin) registerExorcism() {
 			baseDamage := sim.Roll(exorcismMinDamage, exorcismMaxDamage) +
 				0.344*max(spell.SpellPower(), spell.MeleeAttackPower())
 
-			bonusCrit := core.TernaryFloat64(
+			bonusCritPercent := core.TernaryFloat64(
 				target.MobType == proto.MobType_MobTypeDemon || target.MobType == proto.MobType_MobTypeUndead,
-				100*core.CritRatingPerCritChance,
+				100,
 				0)
 
-			spell.BonusCritRating += bonusCrit
+			spell.BonusCritPercent += bonusCritPercent
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			spell.BonusCritRating -= bonusCrit
+			spell.BonusCritPercent -= bonusCritPercent
 		},
 	})
 }

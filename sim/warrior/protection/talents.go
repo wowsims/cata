@@ -230,8 +230,8 @@ func (war *ProtectionWarrior) applySwordAndBoard() {
 
 	war.AddStaticMod(core.SpellModConfig{
 		ClassMask:  warrior.SpellMaskDevastate,
-		Kind:       core.SpellMod_BonusCrit_Rating,
-		FloatValue: 5 * float64(war.Talents.SwordAndBoard) * core.CritRatingPerCritChance,
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		FloatValue: 5 * float64(war.Talents.SwordAndBoard),
 	})
 
 	costMod := war.AddDynamicMod(core.SpellModConfig{

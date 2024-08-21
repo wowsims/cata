@@ -1,6 +1,6 @@
-import { ActionMetrics, SimResult, SimResultFilter } from '../../proto_utils/sim_result.js';
-import { ColumnSortType, MetricsTable } from './metrics_table.js';
-import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component.js';
+import { ActionMetrics } from '../../proto_utils/sim_result.js';
+import { ColumnSortType, MetricsTable } from './metrics_table/metrics_table.jsx';
+import { ResultComponentConfig, SimResultData } from './result_component.js';
 
 export class CastMetricsTable extends MetricsTable<ActionMetrics> {
 	constructor(config: ResultComponentConfig) {
@@ -15,14 +15,12 @@ export class CastMetricsTable extends MetricsTable<ActionMetrics> {
 			}),
 			{
 				name: 'Casts',
-				tooltip: 'Casts',
 				sort: ColumnSortType.Descending,
 				getValue: (metric: ActionMetrics) => metric.casts,
 				getDisplayString: (metric: ActionMetrics) => metric.casts.toFixed(1),
 			},
 			{
 				name: 'CPM',
-				tooltip: 'Casts / (Encounter Duration / 60 Seconds)',
 				getValue: (metric: ActionMetrics) => metric.castsPerMinute,
 				getDisplayString: (metric: ActionMetrics) => metric.castsPerMinute.toFixed(1),
 			},
@@ -45,7 +43,10 @@ export class CastMetricsTable extends MetricsTable<ActionMetrics> {
 	}
 
 	mergeMetrics(metrics: Array<ActionMetrics>): ActionMetrics {
-		return ActionMetrics.merge(metrics, true, metrics[0].unit?.petActionId || undefined);
+		return ActionMetrics.merge(metrics, {
+			removeTag: true,
+			actionIdOverride: metrics[0].unit?.petActionId || undefined,
+		});
 	}
 
 	shouldCollapse(metric: ActionMetrics): boolean {

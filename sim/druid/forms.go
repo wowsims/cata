@@ -78,8 +78,8 @@ func (druid *Druid) registerCatFormSpell() {
 	srm := druid.GetSavageRoarMultiplier()
 
 	statBonus := stats.Stats{
-		stats.AttackPower: -20, // This offset is needed because the first 10 points of Agility do not contribute any Attack Power.
-		stats.MeleeCrit:   core.TernaryFloat64(druid.Talents.MasterShapeshifter, 4.0*core.CritRatingPerCritChance, 0.0),
+		stats.AttackPower:         -20, // This offset is needed because the first 10 points of Agility do not contribute any Attack Power.
+		stats.PhysicalCritPercent: core.TernaryFloat64(druid.Talents.MasterShapeshifter, 4, 0),
 	}
 
 	agiApDep := druid.NewDynamicStatDependency(stats.Agility, stats.AttackPower, 2)
@@ -112,7 +112,7 @@ func (druid *Druid) registerCatFormSpell() {
 
 			druid.PseudoStats.ThreatMultiplier *= 0.71
 			druid.PseudoStats.SpiritRegenMultiplier *= AnimalSpiritRegenSuppression
-			druid.PseudoStats.BaseDodge += 0.02 * float64(druid.Talents.FeralSwiftness)
+			druid.PseudoStats.BaseDodgeChance += 0.02 * float64(druid.Talents.FeralSwiftness)
 			druid.PseudoStats.MovementSpeedMultiplier *= 1.0 + 0.15*float64(druid.Talents.FeralSwiftness)
 
 			druid.AddStatsDynamic(sim, statBonus)
@@ -146,7 +146,7 @@ func (druid *Druid) registerCatFormSpell() {
 
 			druid.PseudoStats.ThreatMultiplier /= 0.71
 			druid.PseudoStats.SpiritRegenMultiplier /= AnimalSpiritRegenSuppression
-			druid.PseudoStats.BaseDodge -= 0.02 * float64(druid.Talents.FeralSwiftness)
+			druid.PseudoStats.BaseDodgeChance -= 0.02 * float64(druid.Talents.FeralSwiftness)
 			druid.PseudoStats.MovementSpeedMultiplier /= 1.0 + 0.15*float64(druid.Talents.FeralSwiftness)
 
 			druid.AddStatsDynamic(sim, statBonus.Invert())
@@ -254,7 +254,7 @@ func (druid *Druid) registerBearFormSpell() {
 			druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= core.TernaryFloat64(druid.Talents.MasterShapeshifter, 1.04, 1.0)
 			druid.PseudoStats.DamageTakenMultiplier *= nrdtm
 			druid.PseudoStats.SpiritRegenMultiplier *= AnimalSpiritRegenSuppression
-			druid.PseudoStats.BaseDodge += 0.02*float64(druid.Talents.FeralSwiftness) + 0.03*float64(druid.Talents.NaturalReaction)
+			druid.PseudoStats.BaseDodgeChance += 0.02*float64(druid.Talents.FeralSwiftness) + 0.03*float64(druid.Talents.NaturalReaction)
 
 			druid.AddStatsDynamic(sim, statBonus)
 			druid.ApplyDynamicEquipScaling(sim, stats.Armor, druid.BearArmorMultiplier())
@@ -284,7 +284,7 @@ func (druid *Druid) registerBearFormSpell() {
 			druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= core.TernaryFloat64(druid.Talents.MasterShapeshifter, 1.04, 1.0)
 			druid.PseudoStats.DamageTakenMultiplier /= nrdtm
 			druid.PseudoStats.SpiritRegenMultiplier /= AnimalSpiritRegenSuppression
-			druid.PseudoStats.BaseDodge -= 0.02*float64(druid.Talents.FeralSwiftness) + 0.03*float64(druid.Talents.NaturalReaction)
+			druid.PseudoStats.BaseDodgeChance -= 0.02*float64(druid.Talents.FeralSwiftness) + 0.03*float64(druid.Talents.NaturalReaction)
 
 			druid.AddStatsDynamic(sim, statBonus.Invert())
 			druid.RemoveDynamicEquipScaling(sim, stats.Armor, druid.BearArmorMultiplier())

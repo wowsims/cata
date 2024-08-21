@@ -33,10 +33,10 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	Stats.fromMap({
 		[Stat.StatIntellect]: 1.27,
 		[Stat.StatSpellPower]: 1.0,
-		[Stat.StatSpellHit]: 0.92,
-		[Stat.StatSpellCrit]: 0.51,
-		[Stat.StatSpellHaste]: 2.75,
-		[Stat.StatMastery]: 0.76,
+		[Stat.StatHitRating]: 0.92,
+		[Stat.StatCritRating]: 0.51,
+		[Stat.StatHasteRating]: 2.75,
+		[Stat.StatMasteryRating]: 0.76,
 	}),
 );
 
@@ -122,9 +122,9 @@ export const OtherDefaults = {
 
 export const DEMONOLOGY_BREAKPOINTS = new Map([
 	[
-		Stat.StatSpellHaste,
+		Stat.StatHasteRating,
 		new Map([
-			...[...WARLOCK_BREAKPOINTS.get(Stat.StatSpellHaste)!],
+			...[...WARLOCK_BREAKPOINTS.get(Stat.StatHasteRating)!],
 			['16-tick - Immo Aura', 431],
 			['8-tick - Immolate:Inferno', 913],
 			['17-tick - Immo Aura', 1275],

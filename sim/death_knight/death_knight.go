@@ -10,8 +10,9 @@ import (
 )
 
 const (
-	PetSpellHitScale  = 17.0 / 8.0 * core.SpellHitRatingPerHitChance / core.MeleeHitRatingPerHitChance    // 1.7
-	PetExpertiseScale = 3.25 * core.ExpertisePerQuarterPercentReduction / core.MeleeHitRatingPerHitChance // 0.8125
+	HitCapRatio             = 17.0 / 8.0 // 2.125
+	ExpertiseCapRatio       = 6.5 / 8.0  // 0.8125
+	PetExpertiseRatingScale = ExpertiseCapRatio * (4 * core.ExpertisePerQuarterPercentReduction)
 )
 
 var TalentTreeSizes = [3]int{20, 20, 20}
@@ -171,21 +172,21 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 	)
 
 	// Runic Focus
-	dk.AddStat(stats.SpellHit, 9*core.SpellHitRatingPerHitChance)
+	dk.AddStat(stats.SpellHitPercent, 9)
 
 	dk.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	dk.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[dk.Class]*core.CritRatingPerCritChance)
+	dk.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, core.CritPerAgiMaxLevel[dk.Class])
 
-	dk.AddStat(stats.Parry, -dk.GetBaseStats()[stats.Strength]*0.27)
-	dk.AddStatDependency(stats.Strength, stats.Parry, 0.27)
+	dk.AddStat(stats.ParryRating, -dk.GetBaseStats()[stats.Strength]*0.27)
+	dk.AddStatDependency(stats.Strength, stats.ParryRating, 0.27)
 
 	dk.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	dk.PseudoStats.CanParry = true
 
 	// 	// Base dodge unaffected by Diminishing Returns
-	dk.PseudoStats.BaseDodge += 0.05
-	dk.PseudoStats.BaseParry += 0.05
+	dk.PseudoStats.BaseDodgeChance += 0.05
+	dk.PseudoStats.BaseParryChance += 0.05
 
 	if dk.Talents.SummonGargoyle {
 		dk.Gargoyle = dk.NewGargoyle()

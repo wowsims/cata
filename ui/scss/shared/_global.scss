@@ -7,13 +7,13 @@
 	}
 
 	// We want to apply only to 1440p monitors, NOT 1080p Ultrawide
-	@media (min-width: map-get($grid-breakpoints, 1440p)) and (max-aspect-ratio: 16/9) {
-		--bs-body-font-size: 20px;
-	}
+	// @media (min-width: map-get($grid-breakpoints, 1440p)) and (max-aspect-ratio: 16/9) {
+	// 	--bs-body-font-size: 20px;
+	// }
 
-	@include media-breakpoint-up(4k) {
-		--bs-body-font-size: 24px;
-	}
+	// @include media-breakpoint-up(4k) {
+	// 	--bs-body-font-size: 24px;
+	// }
 
 	@include media-breakpoint-up(lg) {
 		--section-spacer: var(--section-spacer-lg) !important;
@@ -181,7 +181,6 @@ kbd {
 		color: var(--bs-#{$label}) !important;
 	}
 }
-
 @each $label, $value in $resource-colors {
 	.resource-#{$label} {
 		color: var(--bs-#{$label}) !important;
@@ -195,6 +194,27 @@ kbd {
 @each $label, $value in $faction-colors {
 	.faction-#{$label} {
 		color: var(--bs-#{$label}) !important;
+	}
+}
+@each $label, $value in $spell-school-colors {
+	.spell-school-#{$label} {
+		color: var(--bs-#{$label}) !important;
+	}
+	.bg-spell-school-#{$label} {
+		background: var(--bs-#{$label}) !important;
+	}
+}
+
+@each $label, $value in $multi-spell-school-colors {
+	.spell-school-#{$label} {
+		color: var(--bs-primary);
+		background-image: $value;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+
+	.bg-spell-school-#{$label} {
+		background: $value;
 	}
 }
 

@@ -14,7 +14,7 @@ func (warrior *Warrior) RegisterRendSpell() {
 		ActionID:       core.ActionID{SpellID: 772},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics | SpellFlagBleed,
+		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics | SpellFlagBleed | core.SpellFlagPassiveSpell,
 		ClassSpellMask: SpellMaskRend,
 
 		RageCost: core.RageCostOptions{

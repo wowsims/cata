@@ -18,16 +18,16 @@ func (hunter *Hunter) ApplyGlyphs() {
 	}
 	if hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfExplosiveShot) {
 		hunter.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_BonusCrit_Rating,
+			Kind:       core.SpellMod_BonusCrit_Percent,
 			ClassMask:  HunterSpellExplosiveShot,
-			FloatValue: 6 * core.CritRatingPerCritChance,
+			FloatValue: 6,
 		})
 	}
 	if hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfSerpentSting) {
 		hunter.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_BonusCrit_Rating,
+			Kind:       core.SpellMod_BonusCrit_Percent,
 			ClassMask:  HunterSpellSerpentSting,
-			FloatValue: 6 * core.CritRatingPerCritChance,
+			FloatValue: 6,
 		})
 	}
 	if hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfKillCommand) {

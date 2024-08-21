@@ -121,7 +121,7 @@ type Target struct {
 func NewTarget(options *proto.Target, targetIndex int32) *Target {
 	unitStats := stats.Stats{}
 	if options.Stats != nil {
-		copy(unitStats[:], options.Stats)
+		unitStats = stats.FromProtoArray(options.Stats)
 	}
 
 	target := &Target{
@@ -147,10 +147,14 @@ func NewTarget(options *proto.Target, targetIndex int32) *Target {
 	if target.Level == 0 {
 		target.Level = defaultRaidBossLevel
 	}
-	if target.stats[stats.MeleeCrit] == 0 {
-		// Treat any % crit buff an enemy would gain as though it was scaled with level 80 ratings
-		target.stats[stats.MeleeCrit] = UnitLevelFloat64(target.Level, 5.0, 5.2, 5.4, 5.6) * CritRatingPerCritChance
-	}
+
+	// Default Crit chance for NPCs depends only on their level relative to the level of their
+	// player target. If there is a need to model a custom Crit % for a Target, this can be
+	// accomplished by specifying the extra (or reduced) Crit within the CritRating field of the
+	// proto stats array. Any specified CritRating will be applied as an OFFSET to the default
+	// level-based values, rather than as a replacement.
+	target.stats[stats.PhysicalCritPercent] = UnitLevelFloat64(target.Level, 5.0, 5.2, 5.4, 5.6)
+	target.addUniversalStatDependencies()
 
 	target.PseudoStats.CanBlock = true
 	target.PseudoStats.CanParry = true
@@ -217,7 +221,7 @@ type AttackTable struct {
 	HealingDealtMultiplier       float64
 	IgnoreArmor                  bool    // Ignore defender's armor for specifically this attacker's attacks
 	ArmorIgnoreFactor            float64 // Percentage of armor to ignore for this attacker's attacks
-	BonusCritRating              float64 // crit rating modifier
+	BonusSpellCritPercent        float64 // Analagous to Defender.PseudoStats.BonusSpellCritPercentTaken, but only for this attacker specifically
 
 	// This is for "Apply Aura: Mod Damage Done By Caster" effects.
 	// If set, the damage taken multiplier is multiplied by the callbacks result.
