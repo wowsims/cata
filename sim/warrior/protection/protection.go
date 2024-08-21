@@ -116,7 +116,7 @@ func (war *ProtectionWarrior) RegisterMastery() {
 
 	// and keep it updated when mastery changes
 	war.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMasteryRating float64, newMasteryRating float64) {
-		war.AddStatDynamic(sim, stats.BlockPercent, 1.5 * core.MasteryRatingToMasteryPoints(newMasteryRating - oldMasteryRating))
+		war.AddStatDynamic(sim, stats.BlockPercent, 1.5*core.MasteryRatingToMasteryPoints(newMasteryRating-oldMasteryRating))
 		war.CriticalBlockChance[0] = war.CalculateCriticalBlockChance()
 	})
 

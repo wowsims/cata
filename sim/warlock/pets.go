@@ -150,7 +150,7 @@ func petMasteryHelper(pet *core.Pet) {
 		// value, only bonus Rating gained from gear / consumes. Therefore, we bake in the base points (8
 		// for Warlock but not for all classes) to the damage multiplier calculation.
 		petDamageMultiplier := func(masteryRating float64) float64 {
-			return 1 + math.Floor(2.3 * (8 + core.MasteryRatingToMasteryPoints(masteryRating))) / 100
+			return 1 + math.Floor(2.3*(8+core.MasteryRatingToMasteryPoints(masteryRating)))/100
 		}
 
 		// Set initial multiplier from base stats (should be 0 Mastery Rating at this point since

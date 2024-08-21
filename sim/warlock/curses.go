@@ -141,9 +141,8 @@ func (warlock *Warlock) registerBaneOfAgony() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 			if result.Landed() {
-				spell.SpellMetrics[target.UnitIndex].Hits--
 				warlock.BaneOfDoom.Dot(target).Deactivate(sim)
 				//TODO: Cancel BaneOfHavoc
 				spell.Dot(target).Apply(sim)

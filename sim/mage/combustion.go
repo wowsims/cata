@@ -33,7 +33,6 @@ func (mage *Mage) registerCombustionSpell() {
 			baseDamage := 0.429 * mage.ClassSpellScaling
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
-				spell.SpellMetrics[target.UnitIndex].Hits--
 				spell.DealDamage(sim, result)
 				spell.RelatedDotSpell.Cast(sim, target)
 			}
@@ -50,7 +49,7 @@ func (mage *Mage) registerCombustionSpell() {
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskEmpty,
 		ClassSpellMask: MageSpellCombustion,
-		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete,
+		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   mage.DefaultMageCritMultiplier(),

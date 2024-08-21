@@ -102,7 +102,7 @@ func (prot *ProtectionPaladin) RegisterMastery() {
 
 	// Keep it updated when mastery changes
 	prot.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMasteryRating float64, newMasteryRating float64) {
-		prot.AddStatDynamic(sim, stats.BlockPercent, 2.25 * core.MasteryRatingToMasteryPoints(newMasteryRating - oldMasteryRating))
+		prot.AddStatDynamic(sim, stats.BlockPercent, 2.25*core.MasteryRatingToMasteryPoints(newMasteryRating-oldMasteryRating))
 	})
 }
 

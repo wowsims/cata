@@ -318,7 +318,7 @@ func (shaman *Shaman) applyFulmination() {
 		ActionID:       core.ActionID{SpellID: 88767},
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskProc,
-		Flags:          SpellFlagFocusable,
+		Flags:          SpellFlagFocusable | core.SpellFlagPassiveSpell,
 		ClassSpellMask: SpellMaskFulmination,
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0,
@@ -649,7 +649,7 @@ func (shaman *Shaman) applySearingFlames() {
 		ActionID:    core.ActionID{SpellID: 77657},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt | core.SpellFlagPassiveSpell,
 
 		DamageMultiplierAdditive: 1,
 		DamageMultiplier:         1,

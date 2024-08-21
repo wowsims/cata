@@ -1,9 +1,10 @@
-import { ResourceType } from '../../proto/api.js';
-import { resourceNames } from '../../proto_utils/names.js';
-import { ResourceMetrics, SimResult, SimResultFilter } from '../../proto_utils/sim_result.js';
-import { orderedResourceTypes } from '../../proto_utils/utils.js';
-import { ColumnSortType, MetricsTable } from './metrics_table.js';
-import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component.js';
+import { TOOLTIP_METRIC_LABELS } from '../../constants/tooltips';
+import { ResourceType } from '../../proto/api';
+import { resourceNames } from '../../proto_utils/names';
+import { ResourceMetrics } from '../../proto_utils/sim_result';
+import { orderedResourceTypes } from '../../proto_utils/utils';
+import { ColumnSortType, MetricsTable } from './metrics_table/metrics_table';
+import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component';
 
 export class ResourceMetricsTable extends ResultComponent {
 	constructor(config: ResultComponentConfig) {
@@ -29,7 +30,8 @@ export class ResourceMetricsTable extends ResultComponent {
 		});
 	}
 
-	onSimResult(resultData: SimResultData) {}
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
+	onSimResult() {}
 }
 
 export class TypedResourceMetricsTable extends MetricsTable<ResourceMetrics> {
@@ -47,32 +49,27 @@ export class TypedResourceMetricsTable extends MetricsTable<ResourceMetrics> {
 			}),
 			{
 				name: 'Casts',
-				tooltip: 'Casts',
 				getValue: (metric: ResourceMetrics) => metric.events,
 				getDisplayString: (metric: ResourceMetrics) => metric.events.toFixed(1),
 			},
 			{
 				name: 'Gain',
-				tooltip: 'Gain',
 				sort: ColumnSortType.Descending,
 				getValue: (metric: ResourceMetrics) => metric.gain,
 				getDisplayString: (metric: ResourceMetrics) => metric.gain.toFixed(1),
 			},
 			{
 				name: 'Gain / s',
-				tooltip: 'Gain / Second',
 				getValue: (metric: ResourceMetrics) => metric.gainPerSecond,
 				getDisplayString: (metric: ResourceMetrics) => metric.gainPerSecond.toFixed(1),
 			},
 			{
 				name: 'Avg Gain',
-				tooltip: 'Gain / Event',
 				getValue: (metric: ResourceMetrics) => metric.avgGain,
 				getDisplayString: (metric: ResourceMetrics) => metric.avgGain.toFixed(1),
 			},
 			{
 				name: 'Wasted Gain',
-				tooltip: 'Gain that was wasted because of resource cap.',
 				getValue: (metric: ResourceMetrics) => metric.wastedGain,
 				getDisplayString: (metric: ResourceMetrics) => metric.wastedGain.toFixed(1),
 			},
@@ -93,6 +90,9 @@ export class TypedResourceMetricsTable extends MetricsTable<ResourceMetrics> {
 	}
 
 	mergeMetrics(metrics: Array<ResourceMetrics>): ResourceMetrics {
-		return ResourceMetrics.merge(metrics, true, metrics[0].unit?.petActionId || undefined);
+		return ResourceMetrics.merge(metrics, {
+			removeTag: true,
+			actionIdOverride: metrics[0].unit?.petActionId || undefined,
+		});
 	}
 }

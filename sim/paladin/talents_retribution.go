@@ -1,8 +1,9 @@
 package paladin
 
 import (
-	"github.com/wowsims/cata/sim/core"
 	"time"
+
+	"github.com/wowsims/cata/sim/core"
 )
 
 func (paladin *Paladin) applyRetributionTalents() {
@@ -89,7 +90,7 @@ func (paladin *Paladin) applySealsOfCommand() {
 		ActionID:       core.ActionID{SpellID: 20424},
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskEmpty,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 		ClassSpellMask: SpellMaskSealsOfCommand,
 
 		DamageMultiplier: 0.07,

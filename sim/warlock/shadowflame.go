@@ -41,10 +41,11 @@ func (warlock *Warlock) registerShadowflame() {
 		},
 
 		RelatedDotSpell: warlock.RegisterSpell(core.SpellConfig{
-			ActionID:       core.ActionID{SpellID: 47960},
+			ActionID:       core.ActionID{SpellID: 47897}.WithTag(1), // actually 47960
 			SpellSchool:    core.SpellSchoolFire,
 			ProcMask:       core.ProcMaskSpellDamage,
 			ClassSpellMask: WarlockSpellShadowflameDot,
+			Flags:          core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,
 			CritMultiplier:   warlock.DefaultSpellCritMultiplier(),

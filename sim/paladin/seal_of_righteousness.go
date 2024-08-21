@@ -20,7 +20,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 		ActionID:       core.ActionID{SpellID: 20187},
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskMeleeSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
+		Flags:          core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement | core.SpellFlagPassiveSpell,
 		ClassSpellMask: SpellMaskJudgementOfRighteousness,
 
 		DamageMultiplier: 1,

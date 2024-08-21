@@ -154,6 +154,11 @@ message ActionMetrics {
 	// Note that some spells are untargeted, these will always have a single
 	// element in this array.
 	repeated TargetedActionMetrics targets = 3;
+
+	int32 spell_school = 4;
+
+	// True if action is applied/cast as a result of another action
+	bool is_passive = 5;
 }
 
 // Metrics for a specific action, when cast at a particular target.
@@ -170,6 +175,12 @@ message TargetedActionMetrics {
 	// # of times this action was a critical strike.
 	int32 crits = 3;
 
+	// # of times this action ticked on a target.
+	int32 ticks = 21;
+
+	// # of times this action was a critical tick on a target.
+	int32 crit_ticks = 22;
+
 	// # of times this action was a Miss or Resist.
 	int32 misses = 4;
 
@@ -182,17 +193,41 @@ message TargetedActionMetrics {
 	// # of times this action was a Block.
 	int32 blocks = 7;
 
+	// # of times this action was a Critical Block.
+	int32 crit_blocks = 20;
+
 	// # of times this action was a Glance.
 	int32 glances = 8;
 
 	// Total damage done to this target by this action.
 	double damage = 9;
 
+	// Total critical damage done to this target by this action.
+	double crit_damage = 15;
+
+	// Total tick damage done to this target by this action.
+	double tick_damage = 23;
+
+	// Total critical tick damage done to this target by this action.
+	double crit_tick_damage = 24;
+
+	// Total glancing damage done to this target by this action.
+	double glance_damage = 17;
+
+	// Total block damage done to this target by this action.
+	double block_damage = 18;
+
+	// Total critical block damage done to this target by this action.
+	double crit_block_damage = 19;
+
 	// Total threat done to this target by this action.
 	double threat = 10;
 
 	// Total healing done to this target by this action.
 	double healing = 11;
+
+	// Total critical healing done to this target by this action.
+	double crit_healing = 16;
 
 	// Total shielding done to this target by this action.
 	double shielding = 13;
@@ -268,10 +303,9 @@ message UnitMetrics {
 	int32 unit_index = 13;
 
 	DistributionMetrics dps = 1;
-	DistributionMetrics dpasp = 16;
 	DistributionMetrics threat = 8;
 	DistributionMetrics dtps = 11;
-	DistributionMetrics tmi = 17;
+	DistributionMetrics tmi = 16;
 	DistributionMetrics hps = 14;
 	DistributionMetrics tto = 15; // Time To OOM, in seconds.
 

@@ -1,5 +1,5 @@
-import { SimResult, SimResultFilter } from '../..//proto_utils/sim_result.js';
 import { Component } from '../../components/component.js';
+import { SimResult, SimResultFilter } from '../../proto_utils/sim_result.js';
 import { EventID, TypedEvent } from '../../typed_event.js';
 
 export interface SimResultData {
@@ -16,7 +16,7 @@ export interface ResultComponentConfig {
 };
 
 export abstract class ResultComponent extends Component {
-	private lastSimResult: SimResultData | null;
+	lastSimResult: SimResultData | null;
 
 	constructor(config: ResultComponentConfig) {
 		super(config.parent, config.rootCssClass || 'result-component');

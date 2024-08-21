@@ -24,7 +24,19 @@ func (priest *Priest) getMindSearTickSpell() *core.Spell {
 	config.ActionID = core.ActionID{SpellID: 48045}
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		damage := priest.ClassSpellScaling * 0.23
-		spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+
+		// Calc spell damage but deal as periodic for metric purposes
+		result := spell.CalcDamage(sim, target, damage, spell.OutcomeMagicHitAndCritNoHitCounter)
+		spell.DealPeriodicDamage(sim, result)
+
+		// Adjust metrics just for Mind Sear as it is a edgecase and needs to be handled manually
+		if result.DidCrit() {
+			spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
+		} else {
+			spell.SpellMetrics[result.Target.UnitIndex].Ticks++
+		}
+
+		spell.SpellMetrics[result.Target.UnitIndex].Casts--
 	}
 	return priest.RegisterSpell(config)
 }
@@ -34,7 +46,7 @@ func (priest *Priest) newMindSearSpell() *core.Spell {
 
 	config := priest.getMindSearBaseConfig()
 	config.ActionID = core.ActionID{SpellID: 48045}
-	config.Flags = core.SpellFlagChanneled | core.SpellFlagNoMetrics | core.SpellFlagAPL
+	config.Flags = core.SpellFlagChanneled | core.SpellFlagAPL
 	config.ManaCost = core.ManaCostOptions{
 		BaseCost: 0.28,
 	}
@@ -55,7 +67,6 @@ func (priest *Priest) newMindSearSpell() *core.Spell {
 		OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				mindSearTickSpell.Cast(sim, aoeTarget)
-				mindSearTickSpell.SpellMetrics[target.UnitIndex].Casts -= 1
 			}
 		},
 	}
@@ -63,7 +74,6 @@ func (priest *Priest) newMindSearSpell() *core.Spell {
 		result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
 		if result.Landed() {
 			spell.Dot(target).Apply(sim)
-			mindSearTickSpell.SpellMetrics[target.UnitIndex].Casts += 1
 		}
 	}
 	config.ExpectedTickDamage = func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {

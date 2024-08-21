@@ -137,8 +137,8 @@ func (druid *Druid) applyBalanceOfPower() {
 			Kind:       core.SpellMod_DamageDone_Pct,
 		})
 
-		druid.AddStat(stats.SpellHitPercent, -0.5 * float64(druid.Talents.BalanceOfPower) * druid.GetBaseStats()[stats.Spirit] / core.SpellHitRatingPerHitPercent)
-		druid.AddStatDependency(stats.Spirit, stats.SpellHitPercent, 0.5 * float64(druid.Talents.BalanceOfPower) / core.SpellHitRatingPerHitPercent)
+		druid.AddStat(stats.SpellHitPercent, -0.5*float64(druid.Talents.BalanceOfPower)*druid.GetBaseStats()[stats.Spirit]/core.SpellHitRatingPerHitPercent)
+		druid.AddStatDependency(stats.Spirit, stats.SpellHitPercent, 0.5*float64(druid.Talents.BalanceOfPower)/core.SpellHitRatingPerHitPercent)
 	}
 }
 
@@ -427,7 +427,7 @@ func (druid *Druid) applyFurySwipes() {
 		ActionID:         core.ActionID{SpellID: 80861},
 		SpellSchool:      core.SpellSchoolPhysical,
 		ProcMask:         core.ProcMaskMeleeMHSpecial,
-		Flags:            core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:            core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL | core.SpellFlagPassiveSpell,
 		DamageMultiplier: 3.1,
 		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,

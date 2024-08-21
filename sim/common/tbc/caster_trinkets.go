@@ -10,7 +10,7 @@ import (
 func init() {
 	core.AddEffectsToTest = false
 	// Offensive trinkets. Keep these in order by item ID.
-	core.NewSimpleStatOffensiveTrinketEffect(32483, stats.Stats{stats.HasteRating: 175}, time.Second*20, time.Minute*2)  // Skull of Gul'dan
+	core.NewSimpleStatOffensiveTrinketEffect(32483, stats.Stats{stats.HasteRating: 175}, time.Second*20, time.Minute*2) // Skull of Gul'dan
 	core.NewSimpleStatOffensiveTrinketEffect(33829, stats.Stats{stats.SpellPower: 211}, time.Second*20, time.Minute*2)  // Hex Shrunken Head
 	core.NewSimpleStatOffensiveTrinketEffect(34429, stats.Stats{stats.SpellPower: 320}, time.Second*15, time.Second*90) // Shifting Naaru Sliver
 

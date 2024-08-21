@@ -383,7 +383,7 @@ func (unit *Unit) SpellGCD() time.Duration {
 }
 
 func (unit *Unit) TotalSpellHasteMultiplier() float64 {
-	return unit.PseudoStats.CastSpeedMultiplier * (1 + unit.stats[stats.HasteRating] / (HasteRatingPerHastePercent * 100))
+	return unit.PseudoStats.CastSpeedMultiplier * (1 + unit.stats[stats.HasteRating]/(HasteRatingPerHastePercent*100))
 }
 
 func (unit *Unit) updateCastSpeed() {
@@ -486,10 +486,10 @@ func (unit *Unit) GetCurrentPowerBar() PowerBarType {
 // Stat dependencies that apply both to players/pets (represented as Character
 // structs) and to NPCs (represented as Target structs).
 func (unit *Unit) addUniversalStatDependencies() {
-	unit.AddStatDependency(stats.HitRating, stats.PhysicalHitPercent, 1 / PhysicalHitRatingPerHitPercent)
-	unit.AddStatDependency(stats.HitRating, stats.SpellHitPercent, 1 / SpellHitRatingPerHitPercent)
-	unit.AddStatDependency(stats.CritRating, stats.PhysicalCritPercent, 1 / CritRatingPerCritPercent)
-	unit.AddStatDependency(stats.CritRating, stats.SpellCritPercent, 1 / CritRatingPerCritPercent)
+	unit.AddStatDependency(stats.HitRating, stats.PhysicalHitPercent, 1/PhysicalHitRatingPerHitPercent)
+	unit.AddStatDependency(stats.HitRating, stats.SpellHitPercent, 1/SpellHitRatingPerHitPercent)
+	unit.AddStatDependency(stats.CritRating, stats.PhysicalCritPercent, 1/CritRatingPerCritPercent)
+	unit.AddStatDependency(stats.CritRating, stats.SpellCritPercent, 1/CritRatingPerCritPercent)
 }
 
 func (unit *Unit) finalize() {
@@ -671,7 +671,7 @@ func (unit *Unit) GetTotalChanceToBeMissedAsDefender(atkTable *AttackTable) floa
 
 func (unit *Unit) GetTotalBlockChanceAsDefender(atkTable *AttackTable) float64 {
 	chance := atkTable.BaseBlockChance +
-		unit.GetStat(stats.BlockPercent) / 100
+		unit.GetStat(stats.BlockPercent)/100
 	return math.Max(chance, 0.0)
 }
 

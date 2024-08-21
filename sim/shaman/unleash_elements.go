@@ -52,7 +52,7 @@ func (shaman *Shaman) registerUnleashFlame() {
 		ProcMask:         core.ProcMaskSpellDamage,
 		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
 		ClassSpellMask:   SpellMaskUnleashFlame,
-		Flags:            SpellFlagFocusable,
+		Flags:            SpellFlagFocusable | core.SpellFlagPassiveSpell,
 		DamageMultiplier: 1,
 		BonusCoefficient: 0.429,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -70,6 +70,7 @@ func (shaman *Shaman) registerUnleashFrost() {
 		SpellSchool:      core.SpellSchoolFrost,
 		ProcMask:         core.ProcMaskSpellDamage,
 		ClassSpellMask:   SpellMaskUnleashFrost,
+		Flags:            core.SpellFlagPassiveSpell,
 		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
 		DamageMultiplier: 1,
 		BonusCoefficient: 0.386,
@@ -107,6 +108,7 @@ func (shaman *Shaman) registerUnleashWind() {
 		ActionID:         core.ActionID{SpellID: 73681},
 		SpellSchool:      core.SpellSchoolPhysical,
 		ProcMask:         core.ProcMaskRangedSpecial,
+		Flags:            core.SpellFlagPassiveSpell,
 		DamageMultiplier: 1.75,
 		CritMultiplier:   shaman.DefaultMeleeCritMultiplier(),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -149,7 +151,7 @@ func (shaman *Shaman) registerUnleashLife() {
 		ActionID:         core.ActionID{SpellID: 73685},
 		SpellSchool:      core.SpellSchoolNature,
 		ProcMask:         core.ProcMaskSpellHealing,
-		Flags:            core.SpellFlagHelpful,
+		Flags:            core.SpellFlagHelpful | core.SpellFlagPassiveSpell,
 		CritMultiplier:   shaman.DefaultHealingCritMultiplier(),
 		BonusCoefficient: 0.201,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

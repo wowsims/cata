@@ -1,10 +1,10 @@
-import * as Mechanics from './constants/mechanics.js';
-import { CURRENT_API_VERSION } from './constants/other.js';
-import { UnitMetadataList } from './player.js';
-import { Encounter as EncounterProto, MobType, PresetEncounter, PresetTarget, SpellSchool, Stat, Target as TargetProto, TargetInput } from './proto/common.js';
-import { Stats } from './proto_utils/stats.js';
-import { Sim } from './sim.js';
-import { EventID, TypedEvent } from './typed_event.js';
+import * as Mechanics from './constants/mechanics';
+import { CURRENT_API_VERSION } from './constants/other';
+import { UnitMetadataList } from './player';
+import { Encounter as EncounterProto, MobType, PresetEncounter, PresetTarget, SpellSchool, Stat, Target as TargetProto, TargetInput } from './proto/common';
+import { Stats } from './proto_utils/stats';
+import { Sim } from './sim';
+import { EventID, TypedEvent } from './typed_event';
 
 // Manages all the settings for an Encounter.
 export class Encounter {
@@ -38,7 +38,7 @@ export class Encounter {
 	}
 
 	get primaryTarget(): TargetProto {
-		return TargetProto.clone(this.targets[0]);
+		return this.targets[0];
 	}
 
 	getDurationVariation(): number {
@@ -172,21 +172,27 @@ export class Encounter {
 	}
 
 	static defaultTargetProto(): TargetProto {
+		// Copy default raid target used as fallback for missing DB.
+		// https://github.com/wowsims/cata/blob/3570c4fcf1a4e2cd81926019d4a1b3182f613de1/sim/encounters/register_all.go#L24
 		return TargetProto.create({
+			id: 31146,
+			name: 'Raid Target',
 			level: Mechanics.BOSS_LEVEL,
 			mobType: MobType.MobTypeGiant,
-			tankIndex: 0,
-			swingSpeed: 1.5,
-			minBaseDamage: 65000,
-			dualWield: false,
-			dualWieldPenalty: false,
-			suppressDodge: false,
-			parryHaste: true,
-			spellSchool: SpellSchool.SpellSchoolPhysical,
 			stats: Stats.fromMap({
 				[Stat.StatArmor]: 11977,
 				[Stat.StatAttackPower]: 805,
+				[Stat.StatHealth]: 120016403,
 			}).asProtoArray(),
+			minBaseDamage: 210000,
+			damageSpread: 0.4,
+			tankIndex: 0,
+			swingSpeed: 2.5,
+			suppressDodge: false,
+			parryHaste: false,
+			dualWield: false,
+			dualWieldPenalty: false,
+			spellSchool: SpellSchool.SpellSchoolPhysical,
 			targetInputs: new Array<TargetInput>(0),
 		});
 	}

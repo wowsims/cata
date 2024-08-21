@@ -46,9 +46,10 @@ func (rogue *Rogue) registerRecuperate() {
 				rogue.RecuperateAura = dot.Aura
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				// Disabled heal for now due to Ticks not resetting properly between ST and MT tests
 				// Maybe implement Recup heal?
-				healValue := rogue.MaxHealth() * (.03 + .005*float64(rogue.Talents.ImprovedRecuperate))
-				dot.Spell.CalcAndDealPeriodicHealing(sim, target, healValue, dot.OutcomeTick)
+				// healValue := rogue.MaxHealth() * (.03 + .005*float64(rogue.Talents.ImprovedRecuperate))
+				// dot.Spell.CalcAndDealPeriodicHealing(sim, target, healValue, dot.OutcomeTick)
 
 				if rogue.Talents.EnergeticRecovery > 0 {
 					energyRegen := float64(rogue.Talents.EnergeticRecovery) * 4.0
