@@ -8,8 +8,6 @@ import (
 )
 
 func (druid *Druid) registerStarfireSpell() {
-	solarMetric := druid.NewSolarEnergyMetrics(core.ActionID{SpellID: 2912})
-
 	hasStarfireGlyph := druid.HasMajorGlyph(proto.DruidMajorGlyph(proto.DruidPrimeGlyph_GlyphOfStarfire))
 
 	starfireGlyphSpell := druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
@@ -61,8 +59,6 @@ func (druid *Druid) registerStarfireSpell() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
-				druid.AddEclipseEnergy(20, SolarEnergy, sim, solarMetric)
-
 				if hasStarfireGlyph {
 					starfireGlyphSpell.Cast(sim, target)
 				}
