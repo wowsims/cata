@@ -1442,7 +1442,7 @@ export class TargetedActionMetrics {
 	}
 
 	get critTickPercent() {
-		return (this.data.critTicks / this.data.ticks) * 100;
+		return (this.data.critTicks / (this.data.ticks + this.data.critTicks)) * 100;
 	}
 
 	get blocks() {
