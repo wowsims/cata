@@ -252,16 +252,6 @@ func (shaman *Shaman) applyLavaSurge() {
 
 	has4PT12 := shaman.HasSetBonus(ItemSetVolcanicRegalia, 4)
 
-	var instantLavaSurgeMod *core.SpellMod
-
-	if has4PT12 {
-		instantLavaSurgeMod = shaman.AddDynamicMod(core.SpellModConfig{
-			Kind:       core.SpellMod_CastTime_Pct,
-			FloatValue: -1,
-			ClassMask:  SpellMaskLavaBurst,
-		})
-	}
-
 	shaman.RegisterAura(core.Aura{
 		Label:    "Lava Surge",
 		Duration: core.NeverExpires,
@@ -283,9 +273,12 @@ func (shaman *Shaman) applyLavaSurge() {
 				Priority:     core.ActionPriorityDOT,
 
 				OnAction: func(sim *core.Simulation) {
+					if shaman.LavaBurst.CD.IsReady(sim) {
+						return
+					}
 					shaman.LavaBurst.CD.Reset()
 					if has4PT12 {
-						instantLavaSurgeMod.Activate()
+						shaman.GetAura("Volcano").Activate(sim)
 					}
 				},
 			}
@@ -304,7 +297,7 @@ func (shaman *Shaman) applyLavaSurge() {
 			if spell.ClassSpellMask != SpellMaskLavaBurst || !has4PT12 {
 				return
 			}
-			instantLavaSurgeMod.Deactivate()
+			shaman.GetAura("Volcano").Deactivate(sim)
 		},
 	})
 }

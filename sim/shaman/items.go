@@ -115,6 +115,23 @@ var ItemSetVolcanicRegalia = core.NewItemSet(core.ItemSet{
 			})
 		},
 		4: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			instantLavaSurgeMod := shaman.AddDynamicMod(core.SpellModConfig{
+				Kind:       core.SpellMod_CastTime_Pct,
+				FloatValue: -1,
+				ClassMask:  SpellMaskLavaBurst,
+			})
+			shaman.RegisterAura(core.Aura{
+				Label:    "Volcano",
+				ActionID: core.ActionID{SpellID: 99207},
+				Duration: 10 * time.Second,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					instantLavaSurgeMod.Activate()
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					instantLavaSurgeMod.Deactivate()
+				},
+			})
 			//in talents.go under lava surge proc
 		},
 	},
