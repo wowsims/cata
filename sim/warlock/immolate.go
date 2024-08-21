@@ -47,6 +47,7 @@ func (warlock *Warlock) registerImmolate() {
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: WarlockSpellImmolateDot,
+		Flags:          core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   warlock.DefaultSpellCritMultiplier(),

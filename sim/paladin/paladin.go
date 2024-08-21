@@ -282,12 +282,12 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 	})
 
 	paladin.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	paladin.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
-	paladin.AddStat(stats.Parry, -paladin.GetBaseStats()[stats.Strength]*0.27) // Does not apply to base Strength
-	paladin.AddStatDependency(stats.Strength, stats.Parry, 0.27)
+	paladin.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, core.CritPerAgiMaxLevel[character.Class])
+	paladin.AddStat(stats.ParryRating, -paladin.GetBaseStats()[stats.Strength]*0.27) // Does not apply to base Strength
+	paladin.AddStatDependency(stats.Strength, stats.ParryRating, 0.27)
 
-	paladin.PseudoStats.BaseDodge += 0.05
-	paladin.PseudoStats.BaseParry += 0.05
+	paladin.PseudoStats.BaseDodgeChance += 0.05
+	paladin.PseudoStats.BaseParryChance += 0.05
 
 	// Bonus Armor and Armor are treated identically for Paladins
 	paladin.AddStatDependency(stats.BonusArmor, stats.Armor, 1)

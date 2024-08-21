@@ -34,10 +34,10 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	Stats.fromMap({
 		[Stat.StatIntellect]: 1.33,
 		[Stat.StatSpellPower]: 1.0,
-		[Stat.StatSpellHit]: 1.09,
-		[Stat.StatSpellCrit]: 0.62,
-		[Stat.StatSpellHaste]: 0.82,
-		[Stat.StatMastery]: 0.46,
+		[Stat.StatHitRating]: 1.09,
+		[Stat.StatCritRating]: 0.62,
+		[Stat.StatHasteRating]: 0.82,
+		[Stat.StatMasteryRating]: 0.46,
 	}),
 );
 
@@ -102,7 +102,7 @@ export const OtherDefaults = {
 
 export const FIRE_BREAKPOINTS = new Map([
 	[
-		Stat.StatSpellHaste,
+		Stat.StatHasteRating,
 		// Picked from Mage Discord
 		// Sources:
 		// https://docs.google.com/spreadsheets/d/17cJJUReg2uz-XxBB3oDWb1kCncdH_-X96mSb0HAu4Ko/edit?gid=0#gid=0

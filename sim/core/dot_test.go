@@ -58,7 +58,7 @@ func NewFakeElementalShaman(char *Character, _ *proto.Player) Agent {
 			Flags:       SpellFlagIgnoreResists,
 			Cast:        CastConfig{},
 
-			BonusCritRating:  3 * CritRatingPerCritChance,
+			BonusCritPercent: 3,
 			DamageMultiplier: 1.5,
 			ThreatMultiplier: 1,
 

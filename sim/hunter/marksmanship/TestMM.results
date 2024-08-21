@@ -7,10 +7,7 @@ character_stats_results: {
   final_stats: 122.85
   final_stats: 114
   final_stats: 962
-  final_stats: 962
-  final_stats: 5623.72809
-  final_stats: 2800.4002
-  final_stats: 802
+  final_stats: 1904
   final_stats: 802
   final_stats: 0
   final_stats: 0
@@ -19,7 +16,6 @@ character_stats_results: {
   final_stats: 13786.176
   final_stats: 12648.328
   final_stats: 0
-  final_stats: 326
   final_stats: 0
   final_stats: 316
   final_stats: 0
@@ -31,7 +27,12 @@ character_stats_results: {
   final_stats: 0
   final_stats: 120832.4
   final_stats: 0
-  final_stats: 0
+  final_stats: 326
+  final_stats: 8.0094
+  final_stats: 9.39034
+  final_stats: 31.3684
+  final_stats: 15.62026
+  final_stats: 5
  }
 }
 dps_results: {
@@ -297,15 +298,15 @@ dps_results: {
 dps_results: {
  key: "TestMM-AllItems-CrushingWeight-59506"
  value: {
-  dps: 20804.36191
-  tps: 18630.89211
+  dps: 20828.33439
+  tps: 18651.69909
  }
 }
 dps_results: {
  key: "TestMM-AllItems-CrushingWeight-65118"
  value: {
-  dps: 20804.36191
-  tps: 18630.89211
+  dps: 20812.44727
+  tps: 18637.24244
  }
 }
 dps_results: {
@@ -486,8 +487,8 @@ dps_results: {
 dps_results: {
  key: "TestMM-AllItems-Flamewaker'sBattlegear"
  value: {
-  dps: 23753.38084
-  tps: 21393.64298
+  dps: 22947.67392
+  tps: 20595.99734
  }
 }
 dps_results: {

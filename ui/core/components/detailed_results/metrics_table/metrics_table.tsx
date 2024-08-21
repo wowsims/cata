@@ -1,10 +1,11 @@
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
-import { ActionId } from '../../proto_utils/action_id.js';
-import { UnitMetrics } from '../../proto_utils/sim_result';
-import { TypedEvent } from '../../typed_event.js';
-import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component.js';
+import { TOOLTIP_METRIC_LABELS } from '../../../constants/tooltips';
+import { ActionId } from '../../../proto_utils/action_id.js';
+import { ActionMetrics, AuraMetrics, ResourceMetrics, UnitMetrics } from '../../../proto_utils/sim_result.js';
+import { TypedEvent } from '../../../typed_event.js';
+import { ResultComponent, ResultComponentConfig, SimResultData } from '../result_component.js';
 
 declare let $: any;
 
@@ -21,14 +22,14 @@ export interface MetricsColumnConfig<T> {
 	columnClass?: string;
 	sort?: ColumnSortType;
 
-	getValue?: (metric: T) => number;
+	getValue?: (metric: T, isChildRow?: boolean) => number;
 
 	// Either getDisplayString or fillCell must be specified.
-	getDisplayString?: (metric: T) => string;
-	fillCell?: (metric: T, cellElem: HTMLElement, rowElem: HTMLElement) => void;
+	getDisplayString?: (metric: T, isChildRow?: boolean) => string;
+	fillCell?: (metric: T, cellElem: HTMLElement, rowElem: HTMLElement, isChildRow?: boolean) => void;
 }
 
-export abstract class MetricsTable<T> extends ResultComponent {
+export abstract class MetricsTable<T extends ActionMetrics | AuraMetrics | UnitMetrics | ResourceMetrics> extends ResultComponent {
 	private readonly columnConfigs: Array<MetricsColumnConfig<T>>;
 
 	protected readonly tableElem: HTMLElement;
@@ -55,17 +56,18 @@ export abstract class MetricsTable<T> extends ResultComponent {
 		const headerRowElem = this.rootElem.getElementsByClassName('metrics-table-header-row')[0] as HTMLElement;
 		this.columnConfigs.forEach(columnConfig => {
 			const headerCell = document.createElement('th');
+			const tooltip = columnConfig.tooltip || TOOLTIP_METRIC_LABELS[columnConfig.name as keyof typeof TOOLTIP_METRIC_LABELS];
 			headerCell.classList.add('metrics-table-header-cell');
-			if (columnConfig.headerCellClass) {
-				headerCell.classList.add(columnConfig.headerCellClass);
-			}
 			if (columnConfig.columnClass) {
-				headerCell.classList.add(columnConfig.columnClass);
+				headerCell.classList.add(...columnConfig.columnClass.split(' '));
+			}
+			if (columnConfig.headerCellClass) {
+				headerCell.classList.add(...columnConfig.headerCellClass.split(' '));
 			}
 			headerCell.appendChild(<span>{columnConfig.name}</span>);
-			if (columnConfig.tooltip) {
+			if (tooltip) {
 				tippy(headerCell, {
-					content: columnConfig.tooltip,
+					content: tooltip,
 					ignoreAttributes: true,
 				});
 			}
@@ -75,6 +77,7 @@ export abstract class MetricsTable<T> extends ResultComponent {
 		const sortList = this.columnConfigs
 			.map((config, i) => [i, config.sort == ColumnSortType.Ascending ? 0 : 1])
 			.filter(sortData => this.columnConfigs[sortData[0]].sort);
+
 		$(this.tableElem).tablesorter({
 			sortList: sortList,
 			cssChildRow: 'child-metric',
@@ -96,26 +99,29 @@ export abstract class MetricsTable<T> extends ResultComponent {
 			});
 	}
 
-	private addRow(metric: T): HTMLElement {
+	private addRow(metric: T, isChildRow = false): HTMLElement {
 		const rowElem = document.createElement('tr');
 		this.bodyElem.appendChild(rowElem);
 
 		this.columnConfigs.forEach(columnConfig => {
 			const cellElem = document.createElement('td');
+			if (columnConfig.getValue) {
+				cellElem.dataset.text = String(columnConfig.getValue(metric, isChildRow));
+			}
 			if (columnConfig.columnClass) {
 				cellElem.classList.add(columnConfig.columnClass);
 			}
 			if (columnConfig.fillCell) {
-				columnConfig.fillCell(metric, cellElem, rowElem);
+				columnConfig.fillCell(metric, cellElem, rowElem, isChildRow);
 			} else if (columnConfig.getDisplayString) {
-				cellElem.textContent = columnConfig.getDisplayString(metric);
+				cellElem.textContent = columnConfig.getDisplayString(metric, isChildRow);
 			} else {
 				throw new Error('Metrics column config does not provide content function: ' + columnConfig.name);
 			}
 			rowElem.appendChild(cellElem);
 		});
 
-		this.customizeRowElem(metric, rowElem);
+		this.customizeRowElem(metric, rowElem, isChildRow);
 		return rowElem;
 	}
 
@@ -134,7 +140,7 @@ export abstract class MetricsTable<T> extends ResultComponent {
 
 		const mergedMetrics = this.mergeMetrics(metrics);
 		const parentRow = this.addRow(mergedMetrics);
-		const childRows = metrics.map(metric => this.addRow(metric));
+		const childRows = metrics.map(metric => this.addRow(metric, true));
 		childRows.forEach(childRow => childRow.classList.add('child-metric'));
 
 		let expand = true;
@@ -174,7 +180,7 @@ export abstract class MetricsTable<T> extends ResultComponent {
 	}
 
 	// Override this to customize rowElem after it has been populated.
-	protected customizeRowElem(metric: T, rowElem: HTMLElement) {
+	protected customizeRowElem(metric: T, rowElem: HTMLElement, isChildRow = false) {
 		return;
 	}
 
@@ -191,7 +197,7 @@ export abstract class MetricsTable<T> extends ResultComponent {
 			name: string;
 			actionId: ActionId;
 			metricType: string;
-		},
+		} & Pick<MetricsColumnConfig<T>, 'columnClass' | 'headerCellClass'>,
 	): MetricsColumnConfig<T> {
 		return {
 			name: 'Name',
@@ -199,12 +205,12 @@ export abstract class MetricsTable<T> extends ResultComponent {
 				const data = getData(metric);
 				const iconElem = ref<HTMLAnchorElement>();
 				cellElem.appendChild(
-					<>
+					<div className="metrics-action">
 						<a ref={iconElem} className="metrics-action-icon"></a>
-						<span className="metrics-action-name">{data.name}</span>
-						<span className="expand-toggle fa fa-caret-down"></span>
+						<span className="metrics-action-name text-truncate">{data.name}</span>
 						<span className="expand-toggle fa fa-caret-right"></span>
-					</>,
+						<span className="expand-toggle fa fa-caret-down"></span>
+					</div>,
 				);
 				if (iconElem.value) {
 					data.actionId.setBackgroundAndHref(iconElem.value);

@@ -724,7 +724,7 @@ func (rp *runicPowerBar) MultiplyRunicRegen(multiply float64) {
 }
 
 func (rp *runicPowerBar) getTotalRegenMultiplier() float64 {
-	hasteMultiplier := 1.0 + rp.unit.GetStat(stats.MeleeHaste)/(100*HasteRatingPerHastePercent)
+	hasteMultiplier := 1.0 + rp.unit.GetStat(stats.HasteRating)/(100*HasteRatingPerHastePercent)
 	totalMultiplier := 1 / (hasteMultiplier * rp.runeRegenMultiplier)
 	return totalMultiplier
 }

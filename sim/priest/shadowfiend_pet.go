@@ -26,9 +26,10 @@ var baseStats = stats.Stats{
 	stats.Stamina:     348,
 	stats.Intellect:   350,
 	stats.AttackPower: 350,
+	stats.Mana:        12295,
+
 	// with 3% crit debuff, shadowfiend crits around 9-12% (TODO: verify and narrow down)
-	stats.MeleeCrit: 8 * core.CritRatingPerCritChance,
-	stats.Mana:      12295,
+	stats.PhysicalCritPercent: 8,
 }
 
 func (priest *Priest) NewShadowfiend() *Shadowfiend {
@@ -85,8 +86,8 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 
 	// never misses
 	shadowfiend.AddStats(stats.Stats{
-		stats.MeleeHit:  8 * core.MeleeHitRatingPerHitChance,
-		stats.Expertise: 14 * core.ExpertisePerQuarterPercentReduction * 4,
+		stats.HitRating:       8 * core.PhysicalHitRatingPerHitPercent,
+		stats.ExpertiseRating: 14 * core.ExpertisePerQuarterPercentReduction * 4,
 	})
 
 	shadowfiend.EnableAutoAttacks(shadowfiend, core.AutoAttackOptions{
@@ -112,10 +113,10 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 func (priest *Priest) shadowfiendStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
 		return stats.Stats{ //still need to nail down shadow fiend crit scaling, but removing owner crit scaling after further investigation
-			stats.MeleeCrit:   ownerStats[stats.SpellCrit],
-			stats.Intellect:   (ownerStats[stats.Intellect] - 10) * 0.5333,
-			stats.Stamina:     ownerStats[stats.Stamina] * 0.3,
-			stats.AttackPower: 4.9 * (ownerStats[stats.SpellPower] - priest.GetBaseStats()[stats.Intellect] + 10),
+			stats.PhysicalCritPercent: ownerStats[stats.SpellCritPercent],
+			stats.Intellect:           (ownerStats[stats.Intellect] - 10) * 0.5333,
+			stats.Stamina:             ownerStats[stats.Stamina] * 0.3,
+			stats.AttackPower:         4.9 * (ownerStats[stats.SpellPower] - priest.GetBaseStats()[stats.Intellect] + 10),
 		}
 	}
 }

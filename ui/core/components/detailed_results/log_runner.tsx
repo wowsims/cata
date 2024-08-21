@@ -89,8 +89,7 @@ export class LogRunner extends ResultComponent {
 		});
 
 		this.showDebugChangeEmitter.on(() => {
-			const lastResults = this.getLastSimResult();
-			this.onSimResult(lastResults);
+			onSearchHandler();
 		});
 		this.initializeClusterize();
 	}
@@ -114,6 +113,10 @@ export class LogRunner extends ResultComponent {
 		}
 		const filteredLogs = this.cacheOutput.logsAsHTML?.filter((_, index) => {
 			const logText = this.cacheOutput.logsAsText![index];
+			const logRaw = this.cacheOutput.logs![index].raw;
+
+			if (!this.showDebug && logRaw.match(/.*\[DEBUG\].*/)) return false;
+
 			return keywords.every(keyword => {
 				if (keyword.startsWith('"') && keyword.endsWith('"')) {
 					// Remove quotes for exact phrase match

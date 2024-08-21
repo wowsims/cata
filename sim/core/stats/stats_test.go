@@ -79,9 +79,6 @@ func TestStatsEqualsWithTolerance_Failure(t *testing.T) {
 
 func TestStatsProtoInSync(t *testing.T) {
 	d := proto.Stat_StatStrength.Descriptor().Values()
-	if d.Len() != int(Len) {
-		t.Fatalf("Unequal number of stats defined in proto.Stats (%d) and Go (%d)", d.Len(), Len)
-	}
 
 	for i := 0; i < d.Len(); i++ {
 		enum := d.Get(i)

@@ -37,14 +37,15 @@ func (dk *DeathKnight) registerDeathStrikeSpell() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskSpellHealing,
 		ClassSpellMask: DeathKnightSpellDeathStrikeHeal,
+		Flags:          core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
+		ThreatMultiplier: 0,
 	})
 
 	doHealing := func(sim *core.Simulation, value float64) {
 		healValue := damageTakenInFive * value
-		healValueModed := healingSpell.CalcHealing(sim, healingSpell.Unit, healValue, healingSpell.OutcomeHealing).Damage
+		healValueModed := healingSpell.CalcHealing(sim, healingSpell.Unit, healValue, healingSpell.OutcomeHealingNoHitCounter).Damage
 
 		minHeal := healingSpell.Unit.MaxHealth() * 0.07
 

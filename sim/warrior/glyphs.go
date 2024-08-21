@@ -19,8 +19,8 @@ func (warrior *Warrior) applyPrimeGlyphs() {
 	if warrior.HasPrimeGlyph(proto.WarriorPrimeGlyph_GlyphOfSlam) {
 		warrior.AddStaticMod(core.SpellModConfig{
 			ClassMask:  SpellMaskSlam,
-			Kind:       core.SpellMod_BonusCrit_Rating,
-			FloatValue: 5 * core.CritRatingPerCritChance,
+			Kind:       core.SpellMod_BonusCrit_Percent,
+			FloatValue: 5,
 		})
 	}
 

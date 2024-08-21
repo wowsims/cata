@@ -74,7 +74,12 @@ export function makePhaseSelector(parent: HTMLElement, sim: Sim): EnumPicker<Sim
 	return new EnumPicker<Sim>(parent, sim, {
 		id: 'phase-selector',
 		extraCssClasses: ['phase-selector'],
-		values: [{ name: 'Phase 1 (Cataclysm)', value: 1 }],
+		values: [
+			{ name: 'Phase 1 (Tier 11)', value: 1 },
+			{ name: 'Phase 2 (ZG/ZA)', value: 2 },
+			{ name: 'Phase 3 (Firelands)', value: 3},
+			{ name: 'Phase 4 (Dragon Soul)', value: 4},
+		],
 		changedEvent: (sim: Sim) => sim.phaseChangeEmitter,
 		getValue: (sim: Sim) => sim.getPhase(),
 		setValue: (eventID: EventID, sim: Sim, newValue: number) => {

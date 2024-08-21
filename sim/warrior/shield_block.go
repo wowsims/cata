@@ -27,7 +27,7 @@ func (warrior *Warrior) RegisterShieldBlockCD() {
 		ActionID: actionID,
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.AddStatDynamic(sim, stats.Block, 25*core.BlockRatingPerBlockChance)
+			warrior.AddStatDynamic(sim, stats.BlockPercent, 25)
 
 			avoidance := warrior.GetTotalAvoidanceChance(atkTable)
 			if avoidance > core.CombatTableCoverageCap {
@@ -38,7 +38,7 @@ func (warrior *Warrior) RegisterShieldBlockCD() {
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.AddStatDynamic(sim, stats.Block, -25*core.BlockRatingPerBlockChance)
+			warrior.AddStatDynamic(sim, stats.BlockPercent, -25)
 
 			if extraAvoidance > 0.0 {
 				warrior.CriticalBlockChance[1] -= extraAvoidance

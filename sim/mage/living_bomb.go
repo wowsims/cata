@@ -29,7 +29,7 @@ func (mage *Mage) registerLivingBombSpell() {
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: MageSpellLivingBombExplosion,
-		Flags:          core.SpellFlagNoOnCastComplete,
+		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           mage.DefaultMageCritMultiplier(),
@@ -73,7 +73,7 @@ func (mage *Mage) registerLivingBombSpell() {
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					if bombExplode {
 						livingBombExplosionSpell.Cast(sim, aura.Unit)
-						mage.WaitUntil(sim, sim.CurrentTime + mage.ReactionTime)
+						mage.WaitUntil(sim, sim.CurrentTime+mage.ReactionTime)
 						if len(activeLivingBombs) != 0 {
 							activeLivingBombs = activeLivingBombs[1:]
 						}
@@ -93,7 +93,7 @@ func (mage *Mage) registerLivingBombSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 
 			if result.Landed() {
 				activeLbs := len(activeLivingBombs)

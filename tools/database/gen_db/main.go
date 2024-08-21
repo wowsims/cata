@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -150,6 +151,11 @@ func main() {
 		if len(item.RandomSuffixOptions) > 0 {
 			item.RandPropPoints = randomPropAllocations.CalcItemAllocation(item)
 		}
+
+		// Auto-populate phase information if missing on Wowhead
+		if item.Phase < 2 {
+			item.Phase = InferPhase(item)
+		}
 	}
 
 	for _, spellId := range database.SharedSpellsIcons {
@@ -173,6 +179,52 @@ func main() {
 	db.MergeNpcs(atlasDBProto.Npcs)
 
 	db.WriteBinaryAndJson(fmt.Sprintf("%s/db.bin", dbDir), fmt.Sprintf("%s/db.json", dbDir))
+}
+
+// Uses heuristics on ilvl + source to infer release phase of an item when missing.
+func InferPhase(item *proto.UIItem) int32 {
+	if item.Ilvl <= 352 {
+		return 1
+	}
+
+	if item.Ilvl >= 397 {
+		return 4 // Heroic Rag loot should already be tagged correctly by Wowhead.
+	}
+
+	switch item.Ilvl {
+	case 359, 371, 372, 379:
+		return 1
+	case 353:
+		return 2
+	case 358, 391:
+		return 3
+	case 377:
+		return 4
+	case 365:
+		if strings.Contains(item.Name, "Vicious") {
+			return 1
+		}
+
+		return 3
+	case 378:
+		for _, itemSource := range item.Sources {
+			dropSource := itemSource.GetDrop()
+
+			if (dropSource != nil) && slices.Contains([]int32{5788, 5789, 5844}, dropSource.ZoneId) {
+				return 4
+			}
+		}
+
+		return 3
+	case 384, 390:
+		if strings.Contains(item.Name, "Ruthless") {
+			return 3
+		}
+
+		return 4
+	default:
+		return 0
+	}
 }
 
 // Filters out entities which shouldn't be included anywhere.
