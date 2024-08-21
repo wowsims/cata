@@ -55,6 +55,7 @@ func (druid *Druid) ApplyTalents() {
 	druid.applyGaleWinds()
 	druid.applyEarthAndMoon()
 	druid.applyMoonkinForm()
+	druid.applyLunarShower()
 	// if druid.Talents.PrimalPrecision > 0 {
 	// 	druid.AddStat(stats.Expertise, 5.0*float64(druid.Talents.PrimalPrecision)*core.ExpertisePerQuarterPercentReduction)
 	// }
@@ -313,6 +314,14 @@ func (druid *Druid) applyEarthAndMoon() {
 			Kind:       core.SpellMod_DamageDone_Pct,
 		})
 	}
+}
+
+func (druid *Druid) applyLunarShower() {
+	if druid.Talents.LunarShower == 0 {
+		return
+	}
+
+	
 }
 
 // func (druid *Druid) registerNaturesSwiftnessCD() {
