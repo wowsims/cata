@@ -371,35 +371,44 @@ export class DamageDealtLog extends SimLog {
 		const spellSchoolString = typeof this.spellSchool === 'number' ? spellSchoolNames.get(this.spellSchool) : undefined;
 		return (
 			<>
-				{this.isHealing() ? `Heal ` : ''}
-				{this.isShielding() ? `Shield ` : ''}
-				{this.miss
-					? 'Miss'
-					: this.dodge
-					? 'Dodge'
-					: this.parry
-					? 'Parry'
-					: this.glance
-					? 'Glance'
-					: this.block
-					? this.crit
-						? 'Critical Block'
-						: 'Block'
-					: this.crit
-					? 'Crit'
-					: this.crush
-					? 'Crush'
-					: this.tick
-					? 'Tick'
-					: 'Hit'}
+				{this.isHealing() ? `Healed ` : ''}
+				{this.isShielding() ? `Shielded ` : ''}
+				{!(this.isHealing() || this.isShielding()) && (
+					<>
+						{this.miss
+							? 'Miss'
+							: this.dodge
+							? 'Dodge'
+							: this.parry
+							? 'Parry'
+							: this.glance
+							? 'Glance'
+							: this.block
+							? this.crit
+								? 'Critical Block'
+								: 'Block'
+							: this.crit
+							? 'Crit'
+							: this.crush
+							? 'Crush'
+							: this.tick
+							? 'Tick'
+							: 'Hit'}
+					</>
+				)}
 				{` `}
 				{this.target?.toHTML() || ''}
 				{!this.miss && !this.dodge && !this.parry ? (
 					<>
 						for{' '}
-						<strong className={clsx('text-danger', spellSchoolString && `spell-school-${spellSchoolString.toLowerCase()}`)}>
-							{this.amount.toFixed(2)} damage{spellSchoolString && <> ({spellSchoolString})</>}
-						</strong>
+						{this.isHealing() ? (
+							<strong className={clsx('resource-health')}>{this.amount.toFixed(2)} health</strong>
+						) : (
+							<strong className={clsx('text-danger', spellSchoolString && `spell-school-${spellSchoolString.toLowerCase()}`)}>
+								{this.amount.toFixed(2)} damage
+								{spellSchoolString && <> ({spellSchoolString})</>}
+							</strong>
+						)}
 						{this.partialResist1_4 ? (
 							<> (10% Resist)</>
 						) : this.partialResist2_4 ? (
