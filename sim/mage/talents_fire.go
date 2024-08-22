@@ -392,29 +392,32 @@ func (mage *Mage) applyImpact() {
 		return
 	}
 
+	var duplicatableDots []*core.Spell
 	impactAura := mage.RegisterAura(core.Aura{
 		Label:    "Impact",
 		ActionID: core.ActionID{SpellID: 64343},
 		Duration: time.Second * 10,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			duplicatableDots = []*core.Spell{mage.LivingBomb, mage.Pyroblast.RelatedDotSpell, mage.Ignite, mage.Combustion.RelatedDotSpell}
+		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.ClassSpellMask == MageSpellFireBlast {
 
 				originalTarget := mage.CurrentTarget
-				duplicatableDots := []*core.Spell{mage.LivingBomb, mage.Pyroblast.RelatedDotSpell, mage.Ignite, mage.Combustion.RelatedDotSpell}
 
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					if aoeTarget == originalTarget {
 						continue
 					}
-					for _, spell := range duplicatableDots {
-						originaldot := spell.Dot(originalTarget)
+					for _, dotSpell := range duplicatableDots {
+						originaldot := dotSpell.Dot(originalTarget)
 						if !originaldot.IsActive() {
 							continue
 						}
 
-						// newdot := spell.Dot(aoeTarget)
-						if spell != mage.Ignite {
-							// newdot.CopyDotAndApply(sim, originaldot) // See attached .go file
+						newdot := dotSpell.Dot(aoeTarget)
+						if dotSpell != mage.Ignite {
+							newdot.CopyDotAndApply(sim, originaldot) // See attached .go file
 						} else {
 							// TODO Impact Ignite
 						}
