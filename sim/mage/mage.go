@@ -13,12 +13,6 @@ var TalentTreeSizes = [3]int{21, 21, 19}
 type Mage struct {
 	core.Character
 
-	arcaneMissilesTickSpell   *core.Spell
-	arcaneMissileCritSnapshot float64
-
-	arcanePowerGCDmod  *core.SpellMod
-	arcanePowerCostMod *core.SpellMod
-
 	Talents       *proto.MageTalents
 	Options       *proto.MageOptions
 	ArcaneOptions *proto.ArcaneMage_Options
@@ -31,24 +25,29 @@ type Mage struct {
 
 	t12MirrorImage *T12MirrorImage
 
-	Combustion           *core.Spell
-	Ignite               *core.Spell
-	LivingBomb           *core.Spell
-	FireBlast            *core.Spell
-	FlameOrbExplode      *core.Spell
-	Flamestrike          *core.Spell
-	FlamestrikeBW        *core.Spell
-	FrostfireOrb         *core.Spell
-	Pyroblast            *core.Spell
-	SummonWaterElemental *core.Spell
-	IcyVeins             *core.Spell
+	arcaneMissilesTickSpell *core.Spell
+	Combustion              *core.Spell
+	Ignite                  *core.Spell
+	LivingBomb              *core.Spell
+	FireBlast               *core.Spell
+	FlameOrbExplode         *core.Spell
+	Flamestrike             *core.Spell
+	FlamestrikeBW           *core.Spell
+	FrostfireOrb            *core.Spell
+	Pyroblast               *core.Spell
+	SummonWaterElemental    *core.Spell
+	IcyVeins                *core.Spell
+
+	arcanePowerGCDmod  *core.SpellMod
+	arcanePowerCostMod *core.SpellMod
 
 	arcaneMissilesProcAura *core.Aura
 	arcanePotencyAura      *core.Aura
 	FingersOfFrostAura     *core.Aura
 
-	brainFreezeProcChance float64
-	hotStreakProcChance   float64
+	arcaneMissileCritSnapshot float64
+	brainFreezeProcChance     float64
+	hotStreakProcChance       float64
 
 	ClassSpellScaling float64
 }
@@ -156,6 +155,7 @@ func (mage *Mage) applyArcaneMissileProc() {
 }
 
 func (mage *Mage) Reset(sim *core.Simulation) {
+	mage.arcaneMissileCritSnapshot = 0.0
 }
 
 func NewMage(character *core.Character, options *proto.Player, mageOptions *proto.MageOptions) *Mage {
