@@ -681,5 +681,3 @@ type ResultMetric = {
 	classes?: string;
 	unit?: 'percentage' | 'number' | 'seconds' | undefined;
 };
-
-Intl.NumberFormat;
