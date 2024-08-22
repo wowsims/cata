@@ -223,6 +223,7 @@ func (ai *MagmawAI) ExecuteCustomRotation(sim *core.Simulation) {
 	if target == nil {
 		// For individual non tank sims we still want abilities to work
 		target = &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
+		ai.individualTankSwap = true
 	}
 
 	// Mangle
