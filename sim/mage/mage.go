@@ -13,11 +13,6 @@ var TalentTreeSizes = [3]int{21, 21, 19}
 type Mage struct {
 	core.Character
 
-	arcaneMissilesTickSpell   *core.Spell
-	arcaneMissileCritSnapshot float64
-
-	arcanePowerGCDmod *core.SpellMod
-
 	Talents       *proto.MageTalents
 	Options       *proto.MageOptions
 	ArcaneOptions *proto.ArcaneMage_Options
@@ -28,21 +23,31 @@ type Mage struct {
 	flameOrb     *FlameOrb
 	frostfireOrb *FrostfireOrb
 
-	Combustion           *core.Spell
-	Ignite               *core.Spell
-	LivingBomb           *core.Spell
-	FireBlast            *core.Spell
-	FlameOrbExplode      *core.Spell
-	Flamestrike          *core.Spell
-	FlamestrikeBW        *core.Spell
-	FrostfireOrb         *core.Spell
-	Pyroblast            *core.Spell
-	SummonWaterElemental *core.Spell
-	IcyVeins             *core.Spell
+	t12MirrorImage *T12MirrorImage
+
+	arcaneMissilesTickSpell *core.Spell
+	Combustion              *core.Spell
+	Ignite                  *core.Spell
+	LivingBomb              *core.Spell
+	FireBlast               *core.Spell
+	FlameOrbExplode         *core.Spell
+	Flamestrike             *core.Spell
+	FlamestrikeBW           *core.Spell
+	FrostfireOrb            *core.Spell
+	Pyroblast               *core.Spell
+	SummonWaterElemental    *core.Spell
+	IcyVeins                *core.Spell
+
+	arcanePowerGCDmod  *core.SpellMod
+	arcanePowerCostMod *core.SpellMod
 
 	arcaneMissilesProcAura *core.Aura
 	arcanePotencyAura      *core.Aura
 	FingersOfFrostAura     *core.Aura
+
+	arcaneMissileCritSnapshot float64
+	brainFreezeProcChance     float64
+	hotStreakProcChance       float64
 
 	ClassSpellScaling float64
 }
@@ -84,7 +89,6 @@ func (mage *Mage) ApplyTalents() {
 }
 
 func (mage *Mage) Initialize() {
-
 	mage.applyArmorSpells()
 	mage.registerArcaneBlastSpell()
 	mage.registerArcaneExplosionSpell()
@@ -151,6 +155,7 @@ func (mage *Mage) applyArcaneMissileProc() {
 }
 
 func (mage *Mage) Reset(sim *core.Simulation) {
+	mage.arcaneMissileCritSnapshot = 0.0
 }
 
 func NewMage(character *core.Character, options *proto.Player, mageOptions *proto.MageOptions) *Mage {
@@ -163,10 +168,16 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 
 	core.FillTalentsProto(mage.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 
+	mage.EnableManaBar()
+
 	mage.mirrorImage = mage.NewMirrorImage()
 	mage.flameOrb = mage.NewFlameOrb()
 	mage.frostfireOrb = mage.NewFrostfireOrb()
-	mage.EnableManaBar()
+
+	if mage.HasSetBonus(ItemSetFirehawkRobesOfConflagration, 2) {
+		mage.t12MirrorImage = mage.NewT12MirrorImage()
+	}
+
 	return mage
 }
 

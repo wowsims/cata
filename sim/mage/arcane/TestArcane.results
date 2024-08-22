@@ -450,6 +450,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-FirehawkRobesofConflagration"
+ value: {
+  dps: 27620.76202
+  tps: 26893.59015
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-Firelord'sVestments"
  value: {
   dps: 26082.76421
@@ -1196,6 +1203,13 @@ dps_results: {
  value: {
   dps: 28106.41298
   tps: 28242.75247
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-TimeLord'sRegalia"
+ value: {
+  dps: 25608.63511
+  tps: 25716.14214
  }
 }
 dps_results: {

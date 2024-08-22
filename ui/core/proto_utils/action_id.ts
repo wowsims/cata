@@ -736,23 +736,24 @@ const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';
 
 const petNameToActionId: Record<string, ActionId> = {
+	'Ancient Guardian': ActionId.fromSpellId(86150),
+  'Army of the Dead': ActionId.fromSpellId(42650),
+	Bloodworm: ActionId.fromSpellId(50452),
+	'Flame Orb': ActionId.fromSpellId(82731),
+	Gargoyle: ActionId.fromSpellId(49206),
+	Ghoul: ActionId.fromSpellId(46584),
 	'Gnomish Flame Turret': ActionId.fromItemId(23841),
-	'Mirror Image': ActionId.fromSpellId(55342),
-	'Water Elemental': ActionId.fromSpellId(31687),
-	'Greater Fire Elemental': ActionId.fromSpellId(2894),
 	'Greater Earth Elemental': ActionId.fromSpellId(2062),
+	'Greater Fire Elemental': ActionId.fromSpellId(2894),
+	'Mirror Image': ActionId.fromSpellId(55342),
+	'Mirror Image T12 2pc': ActionId.fromSpellId(55342),
+	'Rune Weapon': ActionId.fromSpellId(49028),
 	Shadowfiend: ActionId.fromSpellId(34433),
 	'Spirit Wolf 1': ActionId.fromSpellId(51533),
 	'Spirit Wolf 2': ActionId.fromSpellId(51533),
-	'Rune Weapon': ActionId.fromSpellId(49028),
-	Bloodworm: ActionId.fromSpellId(50452),
-	Gargoyle: ActionId.fromSpellId(49206),
-	Ghoul: ActionId.fromSpellId(46584),
-	'Army of the Dead': ActionId.fromSpellId(42650),
 	Valkyr: ActionId.fromSpellId(71844),
-	'Flame Orb': ActionId.fromSpellId(82731),
 	Treant: ActionId.fromSpellId(33831),
-	'Ancient Guardian': ActionId.fromSpellId(86150),
+	'Water Elemental': ActionId.fromSpellId(31687),
 };
 
 // https://wowhead.com/cata/hunter-pets
@@ -777,7 +778,6 @@ const petNameToIcon: Record<string, string> = {
 	Gorilla: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_gorilla.jpg',
 	Hyena: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_hyena.jpg',
 	Imp: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonimp.jpg',
-	'Mirror Image': 'https://wow.zamimg.com/images/wow/icons/large/spell_magic_lesserinvisibilty.jpg',
 	Moth: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_moth.jpg',
 	'Nether Ray': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_netherray.jpg',
 	Owl: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_owl.jpg',

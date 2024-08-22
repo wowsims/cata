@@ -282,7 +282,7 @@ func (mage *Mage) registerArcanePowerCD() {
 
 	actionID := core.ActionID{SpellID: 12042}
 
-	arcanePowerCostMod := mage.AddDynamicMod(core.SpellModConfig{
+	mage.arcanePowerCostMod = mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  MageSpellsAllDamaging,
 		FloatValue: 0.1,
 		Kind:       core.SpellMod_PowerCost_Pct,
@@ -302,14 +302,14 @@ func (mage *Mage) registerArcanePowerCD() {
 			if mage.arcanePowerGCDmod != nil {
 				mage.arcanePowerGCDmod.Activate()
 			}
-			arcanePowerCostMod.Activate()
+			mage.arcanePowerCostMod.Activate()
 			arcanePowerDmgMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			if mage.arcanePowerGCDmod != nil {
 				mage.arcanePowerGCDmod.Deactivate()
 			}
-			arcanePowerCostMod.Deactivate()
+			mage.arcanePowerCostMod.Deactivate()
 			arcanePowerDmgMod.Deactivate()
 		},
 	})
