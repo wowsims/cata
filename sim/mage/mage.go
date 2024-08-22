@@ -16,7 +16,8 @@ type Mage struct {
 	arcaneMissilesTickSpell   *core.Spell
 	arcaneMissileCritSnapshot float64
 
-	arcanePowerGCDmod *core.SpellMod
+	arcanePowerGCDmod  *core.SpellMod
+	arcanePowerCostMod *core.SpellMod
 
 	Talents       *proto.MageTalents
 	Options       *proto.MageOptions
@@ -27,6 +28,8 @@ type Mage struct {
 	mirrorImage  *MirrorImage
 	flameOrb     *FlameOrb
 	frostfireOrb *FrostfireOrb
+
+	t12MirrorImage *T12MirrorImage
 
 	Combustion           *core.Spell
 	Ignite               *core.Spell
@@ -43,6 +46,9 @@ type Mage struct {
 	arcaneMissilesProcAura *core.Aura
 	arcanePotencyAura      *core.Aura
 	FingersOfFrostAura     *core.Aura
+
+	brainFreezeProcChance float64
+	hotStreakProcChance   float64
 
 	ClassSpellScaling float64
 }
@@ -84,7 +90,6 @@ func (mage *Mage) ApplyTalents() {
 }
 
 func (mage *Mage) Initialize() {
-
 	mage.applyArmorSpells()
 	mage.registerArcaneBlastSpell()
 	mage.registerArcaneExplosionSpell()
@@ -163,10 +168,16 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 
 	core.FillTalentsProto(mage.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 
+	mage.EnableManaBar()
+
 	mage.mirrorImage = mage.NewMirrorImage()
 	mage.flameOrb = mage.NewFlameOrb()
 	mage.frostfireOrb = mage.NewFrostfireOrb()
-	mage.EnableManaBar()
+
+	if mage.HasSetBonus(ItemSetFirehawkRobesOfConflagration, 2) {
+		mage.t12MirrorImage = mage.NewT12MirrorImage()
+	}
+
 	return mage
 }
 

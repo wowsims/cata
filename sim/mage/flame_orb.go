@@ -123,7 +123,6 @@ var createFlameOrbInheritance = func() func(stats.Stats) stats.Stats {
 }
 
 func (fo *FlameOrb) registerFlameOrbTickSpell() {
-
 	fo.FlameOrbTick = fo.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 82739},
 		SpellSchool:    core.SpellSchoolFire,

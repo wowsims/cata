@@ -151,8 +151,6 @@ func (dot *Dot) CopyDotAndApply(sim *Simulation, originaldot *Dot) {
 	dot.Duration = originaldot.ExpiresAt() - sim.CurrentTime // originaldot.Duration
 	dot.UpdateExpires(originaldot.ExpiresAt())
 
-	dot.Activate(sim)
-
 	// recreate with new period, resetting the next tick.
 	pa := &PendingAction{
 		NextActionAt: originaldot.tickAction.NextActionAt,
@@ -160,6 +158,7 @@ func (dot *Dot) CopyDotAndApply(sim *Simulation, originaldot *Dot) {
 	}
 	dot.tickAction = pa
 	sim.AddPendingAction(dot.tickAction)
+	dot.Activate(sim)
 }
 
 // This is the incredibly cursed way fel flame uses to increase dot duration, don't use unless you know what you're

@@ -123,9 +123,10 @@ func (mage *Mage) applyHotStreak() {
 
 	ImprovedHotStreakProcChance := float64(mage.Talents.ImprovedHotStreak) * 0.5
 
-	// TODO: Is this supposed to be fully buffed Spell Crit % or only from gear Rating?
+	// Simcraft uses a reference from ElitistJerks that's no longer available, but their formula is
+	// max(0, -2.73 * player crit + 0.95)
 	baseCritPercent := mage.GetStat(stats.SpellCritPercent) + mage.GetStat(stats.CritRating)/core.CritRatingPerCritPercent
-	BaseHotStreakProcChance := float64(-2.7*baseCritPercent/100 + 0.9) // EJ settled on -2.7*critChance+0.9
+	mage.hotStreakProcChance = max(0, -2.73*baseCritPercent/100+0.95)
 
 	hotStreakCostMod := mage.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_PowerCost_Pct,
@@ -190,7 +191,7 @@ func (mage *Mage) applyHotStreak() {
 			}
 			// Hot Streak Base Talent Proc
 			if result.DidCrit() {
-				if sim.Proc(BaseHotStreakProcChance, "Hot Streak") {
+				if sim.Proc(mage.hotStreakProcChance, "Hot Streak") {
 					hotStreakAura.Activate(sim)
 				}
 			}
@@ -238,6 +239,7 @@ func (mage *Mage) applyPyromaniac() {
 	pyromaniacAura := mage.GetOrRegisterAura(core.Aura{
 		Label:    "Pyromaniac",
 		ActionID: core.ActionID{SpellID: 83582},
+		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			mage.MultiplyCastSpeed(hasteBonus)
 		},
@@ -246,16 +248,14 @@ func (mage *Mage) applyPyromaniac() {
 		},
 	})
 
-	mage.RegisterAura(core.Aura{
+	if len(mage.Env.Encounter.TargetUnits) < 3 {
+		return
+	}
+
+	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label:    "Pyromaniac Trackers",
 		ActionID: core.ActionID{SpellID: 83582},
 		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			if len(sim.AllUnits) < 3 {
-				return
-			}
-			aura.Activate(sim)
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			dotSpells := []*core.Spell{mage.LivingBomb, mage.Ignite, mage.Pyroblast, mage.Combustion}
 			activeDotTargets := 0
@@ -273,7 +273,7 @@ func (mage *Mage) applyPyromaniac() {
 				pyromaniacAura.Deactivate(sim)
 			}
 		},
-	})
+	}))
 }
 
 func (mage *Mage) applyMoltenFury() {
@@ -412,9 +412,9 @@ func (mage *Mage) applyImpact() {
 							continue
 						}
 
-						newdot := spell.Dot(aoeTarget)
+						// newdot := spell.Dot(aoeTarget)
 						if spell != mage.Ignite {
-							newdot.CopyDotAndApply(sim, originaldot) // See attached .go file
+							// newdot.CopyDotAndApply(sim, originaldot) // See attached .go file
 						} else {
 							// TODO Impact Ignite
 						}

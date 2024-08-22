@@ -100,7 +100,6 @@ var createFrostfireOrbInheritance = func() func(stats.Stats) stats.Stats {
 }
 
 func (ffo *FrostfireOrb) registerFrostfireOrbTickSpell() {
-
 	procChance := []float64{0, 0.07, 0.14, 0.20}[ffo.mageOwner.Talents.FingersOfFrost]
 
 	ffo.FrostfireOrbTick = ffo.RegisterSpell(core.SpellConfig{
