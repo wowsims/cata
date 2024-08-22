@@ -32,21 +32,40 @@ import AoeApl from './apls/aoe.apl.json';
 export const APL_ROTATION_AOE = PresetUtils.makePresetAPLRotation('APL AoE', AoeApl);
 
 // Preset options for EP weights
-export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P1',
+export const BEARWEAVE_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Bear-Weave',
 	Stats.fromMap(
 		{
 			[Stat.StatStrength]: 0.39,
 			[Stat.StatAgility]: 1.0,
 			[Stat.StatAttackPower]: 0.37,
-			[Stat.StatHitRating]: 0.33,
+			[Stat.StatHitRating]: 0.34,
 			[Stat.StatExpertiseRating]: 0.32,
 			[Stat.StatCritRating]: 0.31,
-			[Stat.StatHasteRating]: 0.26,
-			[Stat.StatMasteryRating]: 0.3,
+			[Stat.StatHasteRating]: 0.30,
+			[Stat.StatMasteryRating]: 0.325,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 1.53,
+			[PseudoStat.PseudoStatMainHandDps]: 1.61,
+		},
+	),
+);
+
+export const MONOCAT_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Mono-Cat',
+	Stats.fromMap(
+		{
+			[Stat.StatStrength]: 0.39,
+			[Stat.StatAgility]: 1.0,
+			[Stat.StatAttackPower]: 0.37,
+			[Stat.StatHitRating]: 0.31,
+			[Stat.StatExpertiseRating]: 0.31,
+			[Stat.StatCritRating]: 0.31,
+			[Stat.StatHasteRating]: 0.30,
+			[Stat.StatMasteryRating]: 0.33,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 1.56,
 		},
 	),
 );
@@ -141,4 +160,5 @@ export const OtherDefaults = {
 	duration: 240,
 	durationVariation: 15,
 	highHpThreshold: 0.8,
+	iterationCount: 25000,
 };

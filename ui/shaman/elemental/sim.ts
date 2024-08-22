@@ -58,13 +58,16 @@ const totems = simUI.player.getSpecOptions().classOptions?.totems;
 			PseudoStat.PseudoStatSpellHastePercent,
 		],
 	),
-	// modifyDisplayStats: (player: Player<Spec.SpecElementalShaman>) => {
-	// 	let stats = new Stats();
-	// 	stats = stats.addStat(Stat.StatSpellCrit, player.getTalents().tidalMastery * 1 * Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE);
-	// 	return {
-	// 		talents: stats,
-	// 	};
-	// },
+	modifyDisplayStats: (player: Player<Spec.SpecElementalShaman>) => {
+		const playerStats = player.getCurrentStats();
+		const gearStats = Stats.fromProto(playerStats.gearStats);
+		const talentsStats = Stats.fromProto(playerStats.talentsStats);
+		const talentsDelta = talentsStats.subtract(gearStats);
+
+		return {
+			talents: new Stats().withStat(Stat.StatHitRating, talentsDelta.getPseudoStat(PseudoStat.PseudoStatSpellHitPercent) * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT),
+		};
+	},
 
 	defaults: {
 		// Default equipped gear.
