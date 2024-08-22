@@ -39,14 +39,14 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatStrength]: 0.39,
 			[Stat.StatAgility]: 1.0,
 			[Stat.StatAttackPower]: 0.37,
-			[Stat.StatHitRating]: 0.33,
+			[Stat.StatHitRating]: 0.34,
 			[Stat.StatExpertiseRating]: 0.32,
 			[Stat.StatCritRating]: 0.31,
-			[Stat.StatHasteRating]: 0.26,
-			[Stat.StatMasteryRating]: 0.3,
+			[Stat.StatHasteRating]: 0.30,
+			[Stat.StatMasteryRating]: 0.325,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 1.53,
+			[PseudoStat.PseudoStatMainHandDps]: 1.61,
 		},
 	),
 );
