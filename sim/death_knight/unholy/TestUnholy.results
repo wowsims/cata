@@ -1453,16 +1453,16 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 29778.30664
-  tps: 22144.43473
+  dps: 29876.9123
+  tps: 22230.97869
   hps: 539.27118
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 29839.04288
-  tps: 22234.81983
+  dps: 30140.60359
+  tps: 22534.72386
   hps: 539.27118
  }
 }
