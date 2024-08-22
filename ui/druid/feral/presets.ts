@@ -32,8 +32,8 @@ import AoeApl from './apls/aoe.apl.json';
 export const APL_ROTATION_AOE = PresetUtils.makePresetAPLRotation('APL AoE', AoeApl);
 
 // Preset options for EP weights
-export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P1',
+export const BEARWEAVE_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Bear-Weave',
 	Stats.fromMap(
 		{
 			[Stat.StatStrength]: 0.39,
@@ -47,6 +47,25 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 1.61,
+		},
+	),
+);
+
+export const MONOCAT_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Mono-Cat',
+	Stats.fromMap(
+		{
+			[Stat.StatStrength]: 0.39,
+			[Stat.StatAgility]: 1.0,
+			[Stat.StatAttackPower]: 0.37,
+			[Stat.StatHitRating]: 0.31,
+			[Stat.StatExpertiseRating]: 0.31,
+			[Stat.StatCritRating]: 0.31,
+			[Stat.StatHasteRating]: 0.30,
+			[Stat.StatMasteryRating]: 0.33,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 1.56,
 		},
 	),
 );
