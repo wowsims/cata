@@ -185,3 +185,40 @@ var ItemSetBattlearmorOfImmolation = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+// Tier 13 prot
+var ItemSetArmorOfRadiantGlory = core.NewItemSet(core.ItemSet{
+	Name: "Armor of Radiant Glory",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			paladin := agent.(PaladinAgent).GetPaladin()
+
+			actionID := core.ActionID{SpellID: 105801}
+			duration := time.Second * 6
+
+			shieldStrength := 0.0
+			shield := paladin.NewDamageAbsorptionAura("Delayed Judgement", actionID, duration, func(unit *core.Unit) float64 {
+				return shieldStrength
+			})
+
+			core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+				Name:           "Delayed Judgement Proc",
+				Callback:       core.CallbackOnSpellHitDealt,
+				ClassSpellMask: SpellMaskJudgement,
+				Outcome:        core.OutcomeLanded,
+
+				ProcChance: 1,
+
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					shieldStrength = result.Damage * 0.25
+					if shieldStrength > 1 {
+						shield.Activate(sim)
+					}
+				},
+			})
+		},
+		4: func(agent core.Agent) {
+			// Divine Guardian not implemented since it's a raid cooldown and doesn't affect the Paladin
+		},
+	},
+})
