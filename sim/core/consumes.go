@@ -15,6 +15,7 @@ func applyConsumeEffects(agent Agent) {
 		return
 	}
 	alchemyFlaskBonus := TernaryFloat64(character.HasProfession(proto.Profession_Alchemy), 80, 0)
+	alchemyBattleElixirBonus := TernaryFloat64(character.HasProfession(proto.Profession_Alchemy), 40, 0)
 	if consumes.Flask != proto.Flask_FlaskUnknown {
 		switch consumes.Flask {
 		case proto.Flask_FlaskOfTitanicStrength:
@@ -27,7 +28,7 @@ func applyConsumeEffects(agent Agent) {
 			})
 		case proto.Flask_FlaskOfSteelskin:
 			character.AddStats(stats.Stats{
-				stats.Stamina: 450,
+				stats.Stamina: 450 + alchemyFlaskBonus * 1.5,
 			})
 		case proto.Flask_FlaskOfFlowingWater:
 			character.AddStats(stats.Stats{
@@ -106,27 +107,27 @@ func applyConsumeEffects(agent Agent) {
 		switch consumes.BattleElixir {
 		case proto.BattleElixir_ElixirOfTheMaster:
 			character.AddStats(stats.Stats{
-				stats.MasteryRating: 225,
+				stats.MasteryRating: 225 + alchemyBattleElixirBonus,
 			})
 		case proto.BattleElixir_ElixirOfMightySpeed:
 			character.AddStats(stats.Stats{
-				stats.HasteRating: 225,
+				stats.HasteRating: 225 + alchemyBattleElixirBonus,
 			})
 		case proto.BattleElixir_ElixirOfImpossibleAccuracy:
 			character.AddStats(stats.Stats{
-				stats.HitRating: 225,
+				stats.HitRating: 225 + alchemyBattleElixirBonus,
 			})
 		case proto.BattleElixir_ElixirOfTheCobra:
 			character.AddStats(stats.Stats{
-				stats.CritRating: 225,
+				stats.CritRating: 225 + alchemyBattleElixirBonus,
 			})
 		case proto.BattleElixir_ElixirOfTheNaga:
 			character.AddStats(stats.Stats{
-				stats.ExpertiseRating: 225,
+				stats.ExpertiseRating: 225 + alchemyBattleElixirBonus,
 			})
 		case proto.BattleElixir_GhostElixir:
 			character.AddStats(stats.Stats{
-				stats.Spirit: 225,
+				stats.Spirit: 225 + alchemyBattleElixirBonus,
 			})
 		case proto.BattleElixir_ElixirOfAccuracy:
 			character.AddStats(stats.Stats{

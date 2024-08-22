@@ -92,6 +92,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-BattlearmorofImmolation"
+ value: {
+  dps: 26995.87784
+  tps: 27002.47928
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-BattleplateofImmolation"
  value: {
   dps: 30282.36712
