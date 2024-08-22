@@ -400,8 +400,9 @@ export class DamageDealtLog extends SimLog {
 				{this.target?.toHTML() || ''}
 				{!this.miss && !this.dodge && !this.parry ? (
 					<>
+						{' '}
 						for{' '}
-						{this.isHealing() ? (
+						{this.isHealing() || this.isShielding() ? (
 							<strong className={clsx('resource-health')}>{this.amount.toFixed(2)} health</strong>
 						) : (
 							<strong className={clsx('text-danger', spellSchoolString && `spell-school-${spellSchoolString.toLowerCase()}`)}>
