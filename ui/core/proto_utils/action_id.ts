@@ -399,6 +399,11 @@ export class ActionId {
 					name += ' (Wasted)';
 				}
 				break;
+			case 'Crescendo of Suffering':
+				if (this.tag == 1){
+					name += ' (Pre-Pull)'
+				}
+			break;
 			case 'Shadowflame':
 			case 'Moonfire':
 			case 'Sunfire':

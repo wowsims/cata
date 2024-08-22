@@ -263,6 +263,8 @@ func (shaman *Shaman) Initialize() {
 
 	shaman.registerBloodlustCD()
 	// shaman.NewTemporaryStatsAura("DC Pre-Pull SP Proc", core.ActionID{SpellID: 60494}, stats.Stats{stats.SpellPower: 765}, time.Second*10)
+
+	shaman.NewTemporaryStatsAura("Sorrowsong Pre-Pull", core.ActionID{SpellID: 91002, Tag: 1}, stats.Stats{stats.SpellPower: 1710}, 10*time.Second)
 }
 
 func (shaman *Shaman) RegisterHealingSpells() {
