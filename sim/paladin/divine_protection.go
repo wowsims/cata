@@ -40,6 +40,10 @@ func (paladin *Paladin) registerDivineProtectionSpell() {
 			} else {
 				paladin.PseudoStats.DamageTakenMultiplier /= 0.8
 			}
+
+			if paladin.FlamingAegis != nil {
+				paladin.FlamingAegis.Activate(sim)
+			}
 		},
 	})
 

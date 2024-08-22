@@ -1214,6 +1214,7 @@ const idToCategoryMap: Record<number, number> = {
 	[42463]: MELEE_ACTION_CATEGORY + 0.5, // Seal of Truth (on-hit)
 	[20424]: MELEE_ACTION_CATEGORY + 0.6, // Seals of Command
 	[53600]: MELEE_ACTION_CATEGORY + 0.7, // Shield of the Righteous
+	[99075]: MELEE_ACTION_CATEGORY + 0.71, // Righteous Flames (prot T12 2pc)
 	[53595]: MELEE_ACTION_CATEGORY + 0.8, // Hammer of the Righteous
 	[20271]: SPELL_ACTION_CATEGORY + 0.1, // Judgement
 	[31804]: SPELL_ACTION_CATEGORY + 0.11, // Judgement of Truth
@@ -1228,9 +1229,11 @@ const idToCategoryMap: Record<number, number> = {
 	[24275]: SPELL_ACTION_CATEGORY + 0.7, // Hammer of Wrath
 	[84963]: SPELL_ACTION_CATEGORY + 0.8, // Inquisition
 	[54428]: SPELL_ACTION_CATEGORY + 0.9, // Divine Plea
-	[66233]: SPELL_ACTION_CATEGORY + 0.91, // Ardent Defender
-	[31884]: SPELL_ACTION_CATEGORY + 0.92, // Avenging Wrath
-	[85696]: SPELL_ACTION_CATEGORY + 0.93, // Zealotry
+	[498]: SPELL_ACTION_CATEGORY + 0.91, // Divine Protection
+	[99090]: SPELL_ACTION_CATEGORY + 0.92, // Flaming Aegis (Prot T12 4pc)
+	[66233]: SPELL_ACTION_CATEGORY + 0.93, // Ardent Defender
+	[31884]: SPELL_ACTION_CATEGORY + 0.94, // Avenging Wrath
+	[85696]: SPELL_ACTION_CATEGORY + 0.95, // Zealotry
 
 	// Priest
 	[48300]: SPELL_ACTION_CATEGORY + 0.11, // Devouring Plague
