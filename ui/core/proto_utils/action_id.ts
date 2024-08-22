@@ -736,7 +736,8 @@ const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';
 
 const petNameToActionId: Record<string, ActionId> = {
-	'Army of the Dead': ActionId.fromSpellId(42650),
+	'Ancient Guardian': ActionId.fromSpellId(86150),
+  'Army of the Dead': ActionId.fromSpellId(42650),
 	Bloodworm: ActionId.fromSpellId(50452),
 	'Flame Orb': ActionId.fromSpellId(82731),
 	Gargoyle: ActionId.fromSpellId(49206),
@@ -820,7 +821,7 @@ export const resourceTypeToIcon: Record<ResourceType, string> = {
 	[ResourceType.ResourceTypeDeathRune]: '/cata/assets/img/death_rune.png',
 	[ResourceType.ResourceTypeSolarEnergy]: 'https://wow.zamimg.com/images/wow/icons/large/ability_druid_eclipseorange.jpg',
 	[ResourceType.ResourceTypeLunarEnergy]: 'https://wow.zamimg.com/images/wow/icons/large/ability_druid_eclipse.jpg',
-	[ResourceType.ResourceTypeHolyPower]: 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_testoffaith.jpg',
+	[ResourceType.ResourceTypeHolyPower]: 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_holybolt.jpg',
 };
 
 // Use this to connect a buff row to a cast row in the timeline view

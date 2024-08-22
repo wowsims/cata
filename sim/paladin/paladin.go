@@ -163,6 +163,9 @@ type Paladin struct {
 	JudgementsOfThePureAura *core.Aura
 	GrandCrusaderAura       *core.Aura
 	SacredDutyAura          *core.Aura
+
+	// Prot T12 4pc
+	FlamingAegis *core.Aura
 }
 
 // Implemented by each Paladin spec.
