@@ -752,6 +752,7 @@ const petNameToActionId: Record<string, ActionId> = {
 	Valkyr: ActionId.fromSpellId(71844),
 	'Flame Orb': ActionId.fromSpellId(82731),
 	Treant: ActionId.fromSpellId(33831),
+	'Ancient Guardian': ActionId.fromSpellId(86150),
 };
 
 // https://wowhead.com/cata/hunter-pets
@@ -820,7 +821,7 @@ export const resourceTypeToIcon: Record<ResourceType, string> = {
 	[ResourceType.ResourceTypeDeathRune]: '/cata/assets/img/death_rune.png',
 	[ResourceType.ResourceTypeSolarEnergy]: 'https://wow.zamimg.com/images/wow/icons/large/ability_druid_eclipseorange.jpg',
 	[ResourceType.ResourceTypeLunarEnergy]: 'https://wow.zamimg.com/images/wow/icons/large/ability_druid_eclipse.jpg',
-	[ResourceType.ResourceTypeHolyPower]: 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_testoffaith.jpg',
+	[ResourceType.ResourceTypeHolyPower]: 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_holybolt.jpg',
 };
 
 // Use this to connect a buff row to a cast row in the timeline view

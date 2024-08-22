@@ -44,9 +44,11 @@ func (paladin *Paladin) registerGuardianOfAncientKings() {
 }
 
 func (paladin *Paladin) registerHolyGuardian(duration time.Duration) *core.Spell {
+	actionID := core.ActionID{SpellID: 86150}
+
 	goakAura := paladin.RegisterAura(core.Aura{
 		Label:    "Guardian of Ancient Kings",
-		ActionID: core.ActionID{SpellID: 86669},
+		ActionID: actionID,
 		Duration: duration,
 
 		OnHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -58,7 +60,7 @@ func (paladin *Paladin) registerHolyGuardian(duration time.Duration) *core.Spell
 	})
 
 	return paladin.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 86150},
+		ActionID:       actionID,
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskGuardianOfAncientKings,
 
@@ -81,9 +83,11 @@ func (paladin *Paladin) registerHolyGuardian(duration time.Duration) *core.Spell
 }
 
 func (paladin *Paladin) registerProtectionGuardian(duration time.Duration) *core.Spell {
+	actionID := core.ActionID{SpellID: 86150}
+
 	goakAura := paladin.RegisterAura(core.Aura{
 		Label:    "Guardian of Ancient Kings",
-		ActionID: core.ActionID{SpellID: 86659},
+		ActionID: actionID,
 		Duration: duration,
 
 		// TODO: Perhaps refactor this to also be a pet with a channeled cast?
@@ -96,7 +100,7 @@ func (paladin *Paladin) registerProtectionGuardian(duration time.Duration) *core
 	})
 
 	return paladin.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 86150},
+		ActionID:       actionID,
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskGuardianOfAncientKings,
 
@@ -185,9 +189,11 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration, snap
 		},
 	})
 
+	actionID := core.ActionID{SpellID: 86150}
+
 	goakAura := paladin.RegisterAura(core.Aura{
 		Label:    "Guardian of Ancient Kings",
-		ActionID: core.ActionID{SpellID: 86698},
+		ActionID: actionID,
 		Duration: duration,
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -214,7 +220,7 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration, snap
 	})
 
 	return paladin.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 86150},
+		ActionID:       actionID,
 		Flags:          core.SpellFlagAPL,
 		ProcMask:       core.ProcMaskEmpty,
 		ClassSpellMask: SpellMaskGuardianOfAncientKings,
