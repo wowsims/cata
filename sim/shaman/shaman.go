@@ -167,6 +167,8 @@ type Shaman struct {
 	EarthShield            *core.Spell
 
 	waterShieldManaMetrics *core.ResourceMetrics
+
+	VolcanicRegalia4PT12Aura *core.Aura
 }
 
 // Implemented by each Shaman spec.

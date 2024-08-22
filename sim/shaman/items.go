@@ -121,7 +121,7 @@ var ItemSetVolcanicRegalia = core.NewItemSet(core.ItemSet{
 				FloatValue: -1,
 				ClassMask:  SpellMaskLavaBurst,
 			})
-			shaman.RegisterAura(core.Aura{
+			shaman.VolcanicRegalia4PT12Aura = shaman.RegisterAura(core.Aura{
 				Label:    "Volcano",
 				ActionID: core.ActionID{SpellID: 99207},
 				Duration: 10 * time.Second,

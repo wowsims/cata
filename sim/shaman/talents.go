@@ -278,7 +278,7 @@ func (shaman *Shaman) applyLavaSurge() {
 					}
 					shaman.LavaBurst.CD.Reset()
 					if has4PT12 {
-						shaman.GetAura("Volcano").Activate(sim)
+						shaman.VolcanicRegalia4PT12Aura.Activate(sim)
 					}
 				},
 			}
@@ -297,7 +297,7 @@ func (shaman *Shaman) applyLavaSurge() {
 			if spell.ClassSpellMask != SpellMaskLavaBurst || !has4PT12 {
 				return
 			}
-			shaman.GetAura("Volcano").Deactivate(sim)
+			shaman.VolcanicRegalia4PT12Aura.Deactivate(sim)
 		},
 	})
 }
