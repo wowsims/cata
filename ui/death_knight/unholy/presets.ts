@@ -4,9 +4,9 @@ import { DeathKnightMajorGlyph, DeathKnightMinorGlyph, DeathKnightPrimeGlyph, Un
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import SingleTargetApl from '../../death_knight/unholy/apls/st.apl.json';
-import P1RealisticBISGear from '../../death_knight/unholy/gear_sets/p1.bis.gear.json';
+import P1BISGear from '../../death_knight/unholy/gear_sets/p1.bis.gear.json';
 import P1PreBISGear from '../../death_knight/unholy/gear_sets/p1.prebis.gear.json';
-import P1BISGear from '../../death_knight/unholy/gear_sets/p1.realistic-bis.gear.json';
+import P1RealisticBISGear from '../../death_knight/unholy/gear_sets/p1.realistic-bis.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
