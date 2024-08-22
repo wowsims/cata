@@ -287,26 +287,28 @@ func (ai *MagmawAI) registerSpells() {
 			} else if isIndividualSim {
 				// Individual sim fake tank swaps
 				if tankUnit.Metrics.IsTanking() {
-					if ai.Target.Env.GetNumTargets() > 1 {
-						if !ai.individualTankSwap {
-							// Remove boss target
-							ai.individualTankSwap = true
-							ai.Target.CurrentTarget = nil
+					if !ai.individualTankSwap {
+						// Remove boss target
+						ai.individualTankSwap = true
+						ai.Target.CurrentTarget = nil
 
-							// Set add target
+						// Set add target
+						if ai.Target.Env.GetNumTargets() > 1 {
 							addTarget := ai.Target.Env.NextTargetUnit(&ai.Target.Unit)
 							tankUnit.CurrentTarget = addTarget
 
 							addTarget.CurrentTarget = tankUnit
 							addTarget.AutoAttacks.EnableAutoSwing(sim)
-						} else {
-							ai.individualTankSwap = false
+						}
+					} else {
+						ai.individualTankSwap = false
 
-							// Set boss target
-							ai.Target.CurrentTarget = tankUnit
-							tankUnit.CurrentTarget = &ai.Target.Unit
+						// Set boss target
+						ai.Target.CurrentTarget = tankUnit
+						tankUnit.CurrentTarget = &ai.Target.Unit
 
-							// Remove add target
+						// Remove add target
+						if ai.Target.Env.GetNumTargets() > 1 {
 							addTarget := ai.Target.Env.NextTargetUnit(&ai.Target.Unit)
 							addTarget.AutoAttacks.CancelAutoSwing(sim)
 							addTarget.CurrentTarget = nil
