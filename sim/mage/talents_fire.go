@@ -1,6 +1,7 @@
 package mage
 
 import (
+	"fmt"
 	"math"
 	"time"
 
@@ -125,8 +126,12 @@ func (mage *Mage) applyHotStreak() {
 
 	// Simcraft uses a reference from ElitistJerks that's no longer available, but their formula is
 	// max(0, -2.73 * player crit + 0.95)
+	// https://web.archive.org/web/20120208064232/http://elitistjerks.com/f75/t110326-cataclysm_fire_mage_compendium/p6/#post1831143 or
+	// https://web.archive.org/web/20120208064232/http://elitistjerks.com/f75/t110326-cataclysm_fire_mage_compendium/p6/#post1831207
 	baseCritPercent := mage.GetStat(stats.SpellCritPercent) + mage.GetStat(stats.CritRating)/core.CritRatingPerCritPercent
-	mage.hotStreakProcChance = max(0, -2.73*baseCritPercent/100+0.95)
+	mage.hotStreakProcChance = max(0, float64(-2.7*baseCritPercent/100+0.9)) // EJ settled on -2.7*critChance+0.9
+
+	fmt.Println(baseCritPercent, mage.hotStreakProcChance)
 
 	hotStreakCostMod := mage.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_PowerCost_Pct,
@@ -192,6 +197,7 @@ func (mage *Mage) applyHotStreak() {
 			// Hot Streak Base Talent Proc
 			if result.DidCrit() {
 				if sim.Proc(mage.hotStreakProcChance, "Hot Streak") {
+					fmt.Println(mage.hotStreakProcChance)
 					hotStreakAura.Activate(sim)
 				}
 			}

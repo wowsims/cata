@@ -315,8 +315,9 @@ func (mage *Mage) registerArcanePowerCD() {
 	})
 
 	arcanePower := mage.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagNoOnCastComplete,
+		ActionID:       actionID,
+		ClassSpellMask: MageSpellArcanePower,
+		Flags:          core.SpellFlagNoOnCastComplete,
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    mage.NewTimer(),
