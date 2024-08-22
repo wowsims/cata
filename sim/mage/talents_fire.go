@@ -1,7 +1,6 @@
 package mage
 
 import (
-	"fmt"
 	"math"
 	"time"
 
@@ -131,8 +130,6 @@ func (mage *Mage) applyHotStreak() {
 	baseCritPercent := mage.GetStat(stats.SpellCritPercent) + mage.GetStat(stats.CritRating)/core.CritRatingPerCritPercent
 	mage.hotStreakProcChance = max(0, float64(-2.7*baseCritPercent/100+0.9)) // EJ settled on -2.7*critChance+0.9
 
-	fmt.Println(baseCritPercent, mage.hotStreakProcChance)
-
 	hotStreakCostMod := mage.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_PowerCost_Pct,
 		FloatValue: -1,
@@ -197,7 +194,6 @@ func (mage *Mage) applyHotStreak() {
 			// Hot Streak Base Talent Proc
 			if result.DidCrit() {
 				if sim.Proc(mage.hotStreakProcChance, "Hot Streak") {
-					fmt.Println(mage.hotStreakProcChance)
 					hotStreakAura.Activate(sim)
 				}
 			}

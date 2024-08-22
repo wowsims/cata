@@ -66,9 +66,11 @@ var ItemSetFirehawkRobesOfConflagration = core.NewItemSet(core.ItemSet{
 				},
 			}))
 
-			if mage.arcanePowerCostMod != nil {
-				mage.arcanePowerCostMod.UpdateFloatValue(-0.1)
-			}
+			mage.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.ClassSpellMask == MageSpellArcanePower {
+					mage.arcanePowerCostMod.UpdateFloatValue(-0.1)
+				}
+			})
 		},
 	},
 })

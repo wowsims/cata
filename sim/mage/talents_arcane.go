@@ -3,6 +3,7 @@ package mage
 import (
 	//"github.com/wowsims/cata/sim/core/proto"
 
+	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -326,6 +327,7 @@ func (mage *Mage) registerArcanePowerCD() {
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			arcanePowerAura.Activate(sim)
+			fmt.Println(mage.arcanePowerCostMod.GetFloatValue())
 		},
 	})
 	mage.AddMajorCooldown(core.MajorCooldown{
