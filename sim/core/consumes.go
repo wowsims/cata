@@ -27,7 +27,7 @@ func applyConsumeEffects(agent Agent) {
 			})
 		case proto.Flask_FlaskOfSteelskin:
 			character.AddStats(stats.Stats{
-				stats.Stamina: 450,
+				stats.Stamina: 450 + alchemyFlaskBonus * 1.5,
 			})
 		case proto.Flask_FlaskOfFlowingWater:
 			character.AddStats(stats.Stats{
