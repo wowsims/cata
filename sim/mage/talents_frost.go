@@ -192,7 +192,7 @@ func (mage *Mage) applyBrainFreeze() {
 		return
 	}
 
-	procChance := .05 * float64(mage.Talents.BrainFreeze)
+	mage.brainFreezeProcChance = .05 * float64(mage.Talents.BrainFreeze)
 
 	brainFreezeCostMod := mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  MageSpellBrainFreeze,
@@ -232,7 +232,7 @@ func (mage *Mage) applyBrainFreeze() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if mage.hasChillEffect(spell) && sim.Proc(procChance, "Brain Freeze") {
+			if mage.hasChillEffect(spell) && sim.Proc(mage.brainFreezeProcChance, "Brain Freeze") {
 				brainFreezeAura.Activate(sim)
 			}
 		},

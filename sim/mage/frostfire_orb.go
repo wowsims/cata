@@ -100,14 +100,12 @@ var createFrostfireOrbInheritance = func() func(stats.Stats) stats.Stats {
 }
 
 func (ffo *FrostfireOrb) registerFrostfireOrbTickSpell() {
-
 	procChance := []float64{0, 0.07, 0.14, 0.20}[ffo.mageOwner.Talents.FingersOfFrost]
 
 	ffo.FrostfireOrbTick = ffo.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 95969},
 		SpellSchool:    core.SpellSchoolFrost | core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
-		Flags:          core.SpellFlagNoLogs,
 		ClassSpellMask: MageSpellFrostfireOrb,
 
 		Cast: core.CastConfig{
