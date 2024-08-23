@@ -121,3 +121,7 @@ export const DefaultConsumes = Consumes.create({
 	defaultConjured: Conjured.ConjuredHealthstone,
 	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
 });
+
+export const OtherDefaults = {
+	iterationCount: 50000,
+};
