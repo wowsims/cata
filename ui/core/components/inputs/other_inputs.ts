@@ -187,7 +187,7 @@ export const IncomingHps = {
 	label: 'Incoming HPS',
 	labelTooltip: `
 		<p>Average amount of healing received per second. Used for calculating chance of death.</p>
-		<p>If set to 0, defaults to 17.5% of the primary target's base DPS.</p>
+		<p>If set to 0, defaults to 25% of the primary target's base DPS.</p>
 	`,
 	changedEvent: (player: Player<any>) => player.getRaid()!.changeEmitter,
 	getValue: (player: Player<any>) => player.getHealingModel().hps,
@@ -207,7 +207,7 @@ export const HealingCadence = {
 	labelTooltip: `
 		<p>How often the incoming heal 'ticks', in seconds. Generally, longer durations favor Effective Hit Points (EHP) for minimizing Chance of Death, while shorter durations favor avoidance.</p>
 		<p>Example: if Incoming HPS is set to 1000 and this is set to 1s, then every 1s a heal will be received for 1000. If this is instead set to 2s, then every 2s a heal will be recieved for 2000.</p>
-		<p>If set to 0, defaults to 1.5 times the primary target's base swing timer, and half that for dual wielding targets.</p>
+		<p>If set to 0, default values for Healing Cadence and Cadence +/- are inferred from boss damage parameters.</p>
 	`,
 	changedEvent: (player: Player<any>) => player.getRaid()!.changeEmitter,
 	getValue: (player: Player<any>) => player.getHealingModel().cadenceSeconds,

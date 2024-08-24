@@ -24,19 +24,21 @@ func (priest *Priest) getMindSearTickSpell() *core.Spell {
 	config.ActionID = core.ActionID{SpellID: 48045}
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		damage := priest.ClassSpellScaling * 0.23
+		for _, aoeTarget := range sim.Encounter.TargetUnits {
 
-		// Calc spell damage but deal as periodic for metric purposes
-		result := spell.CalcDamage(sim, target, damage, spell.OutcomeMagicHitAndCritNoHitCounter)
-		spell.DealPeriodicDamage(sim, result)
+			// Calc spell damage but deal as periodic for metric purposes
+			result := spell.CalcDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCritNoHitCounter)
+			spell.DealPeriodicDamage(sim, result)
 
-		// Adjust metrics just for Mind Sear as it is a edgecase and needs to be handled manually
-		if result.DidCrit() {
-			spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
-		} else {
-			spell.SpellMetrics[result.Target.UnitIndex].Ticks++
+			// Adjust metrics just for Mind Sear as it is a edgecase and needs to be handled manually
+			if result.DidCrit() {
+				spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
+			} else {
+				spell.SpellMetrics[result.Target.UnitIndex].Ticks++
+			}
 		}
 
-		spell.SpellMetrics[result.Target.UnitIndex].Casts--
+		spell.SpellMetrics[target.UnitIndex].Casts--
 	}
 	return priest.RegisterSpell(config)
 }
@@ -65,9 +67,7 @@ func (priest *Priest) newMindSearSpell() *core.Spell {
 		TickLength:          time.Second,
 		AffectedByCastSpeed: true,
 		OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				mindSearTickSpell.Cast(sim, aoeTarget)
-			}
+			mindSearTickSpell.Cast(sim, target)
 		},
 	}
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

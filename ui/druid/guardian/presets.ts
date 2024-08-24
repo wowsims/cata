@@ -13,9 +13,9 @@ import { SavedTalents } from '../../core/proto/ui.js';
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 import PreraidGear from './gear_sets/preraid.gear.json';
-export const PRERAID_PRESET = PresetUtils.makePresetGear('Preraid Preset', PreraidGear);
+export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-Raid BiS', PreraidGear);
 import P1Gear from './gear_sets/p1.gear.json';
-export const P1_PRESET = PresetUtils.makePresetGear('P1', P1Gear);
+export const P1_PRESET = PresetUtils.makePresetGear('P1/P2 BiS', P1Gear);
 import P2Gear from './gear_sets/p2.gear.json';
 export const P2_PRESET = PresetUtils.makePresetGear('P2', P2Gear);
 import P3Gear from './gear_sets/p3.gear.json';
@@ -33,7 +33,11 @@ export const DefaultSimpleRotation = DruidRotation.create({
 
 import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
+import CleaveApl from './apls/cleave.apl.json';
+import NefApl from './apls/nef.apl.json';
 export const ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('APL Default', DefaultApl);
+export const ROTATION_CLEAVE = PresetUtils.makePresetAPLRotation('2-Target Cleave', CleaveApl);
+export const ROTATION_NEF = PresetUtils.makePresetAPLRotation('AoE (Nef Adds)', NefApl);
 
 export const ROTATION_PRESET_SIMPLE = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecGuardianDruid, DefaultSimpleRotation);
 
@@ -121,3 +125,7 @@ export const DefaultConsumes = Consumes.create({
 	defaultConjured: Conjured.ConjuredHealthstone,
 	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
 });
+
+export const OtherDefaults = {
+	iterationCount: 50000,
+};

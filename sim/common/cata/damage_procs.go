@@ -70,7 +70,7 @@ func init() {
 		core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Electrical Charge Aura",
 			ActionID:   core.ActionID{ItemID: 68925},
-			Callback:   core.CallbackOnSpellHitDealt,
+			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 			ProcMask:   core.ProcMaskSpellOrProc,
 			ProcChance: 1,
 			Outcome:    core.OutcomeCrit,
@@ -115,7 +115,7 @@ func init() {
 		core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Electrical Charge Aura",
 			ActionID:   core.ActionID{ItemID: 69110},
-			Callback:   core.CallbackOnSpellHitDealt,
+			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 			ProcMask:   core.ProcMaskSpellOrProc,
 			ProcChance: 1,
 			Outcome:    core.OutcomeCrit,

@@ -1060,13 +1060,15 @@ export class Player<SpecType extends Spec> {
 		const boss = this.sim.encounter.primaryTarget;
 		const dualWield = boss.dualWield;
 		if (hm.cadenceSeconds == 0) {
-			hm.cadenceSeconds = 1.5 * boss.swingSpeed;
+			let maxCadence = 1.5 * boss.swingSpeed;
 			if (dualWield) {
-				hm.cadenceSeconds /= 2;
+				maxCadence /= 2;
 			}
+			hm.cadenceSeconds = 0.4;
+			hm.cadenceVariation = maxCadence - hm.cadenceSeconds;
 		}
 		if (hm.hps == 0) {
-			hm.hps = (0.175 * boss.minBaseDamage) / boss.swingSpeed;
+			hm.hps = (0.25 * boss.minBaseDamage) / boss.swingSpeed;
 			if (dualWield) {
 				hm.hps *= 1.5;
 			}

@@ -28,7 +28,7 @@ func applyConsumeEffects(agent Agent) {
 			})
 		case proto.Flask_FlaskOfSteelskin:
 			character.AddStats(stats.Stats{
-				stats.Stamina: 450 + alchemyFlaskBonus * 1.5,
+				stats.Stamina: 450 + alchemyFlaskBonus*1.5,
 			})
 		case proto.Flask_FlaskOfFlowingWater:
 			character.AddStats(stats.Stats{
@@ -788,9 +788,15 @@ func registerConjuredCD(agent Agent, consumes *proto.Consumes) {
 			ActionID: actionID,
 			Flags:    SpellFlagNoOnCastComplete,
 			Cast: CastConfig{
-				CD: Cooldown{
+				SharedCD: Cooldown{
 					Timer:    character.GetConjuredCD(),
 					Duration: time.Minute * 2,
+				},
+
+				// Enforce only one HS per fight
+				CD: Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 60,
 				},
 			},
 			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {

@@ -178,10 +178,10 @@ export class Encounter {
 			id: 31146,
 			name: 'Raid Target',
 			level: Mechanics.BOSS_LEVEL,
-			mobType: MobType.MobTypeGiant,
+			mobType: MobType.MobTypeMechanical,
 			stats: Stats.fromMap({
 				[Stat.StatArmor]: 11977,
-				[Stat.StatAttackPower]: 805,
+				[Stat.StatAttackPower]: 650,
 				[Stat.StatHealth]: 120016403,
 			}).asProtoArray(),
 			minBaseDamage: 210000,

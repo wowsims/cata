@@ -450,6 +450,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFire-AllItems-FirehawkRobesofConflagration"
+ value: {
+  dps: 28459.41166
+  tps: 27119.426
+ }
+}
+dps_results: {
  key: "TestFire-AllItems-Firelord'sVestments"
  value: {
   dps: 27119.50201
@@ -1199,6 +1206,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFire-AllItems-TimeLord'sRegalia"
+ value: {
+  dps: 25881.77875
+  tps: 25346.72403
+ }
+}
+dps_results: {
  key: "TestFire-AllItems-TinyAbominationinaJar-50706"
  value: {
   dps: 28990.6347
@@ -1250,15 +1264,15 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 30289.47261
-  tps: 29662.71572
+  dps: 30563.83507
+  tps: 29920.8788
  }
 }
 dps_results: {
  key: "TestFire-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 31122.71035
-  tps: 30467.58986
+  dps: 31324.58515
+  tps: 30685.69637
  }
 }
 dps_results: {

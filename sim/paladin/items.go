@@ -180,3 +180,64 @@ var ItemSetReinforcedSapphiriumBattlearmor = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+// Tier 12 prot
+var ItemSetBattlearmorOfImmolation = core.NewItemSet(core.ItemSet{
+	Name: "Battlearmor of Immolation",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			paladin := agent.(PaladinAgent).GetPaladin()
+
+			procDamage := 0.0
+
+			righteousFlames := paladin.RegisterSpell(core.SpellConfig{
+				ActionID:    core.ActionID{SpellID: 99075},
+				SpellSchool: core.SpellSchoolFire,
+				ProcMask:    core.ProcMaskEmpty,
+				Flags: core.SpellFlagIgnoreModifiers |
+					core.SpellFlagBinary |
+					core.SpellFlagNoOnCastComplete |
+					core.SpellFlagNoOnDamageDealt,
+
+				DamageMultiplier: 1,
+				ThreatMultiplier: 1,
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					spell.CalcAndDealDamage(sim, target, procDamage, spell.OutcomeAlwaysHit)
+				},
+			})
+
+			core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+				Name:           "Righteous Flames",
+				Callback:       core.CallbackOnSpellHitDealt,
+				ClassSpellMask: SpellMaskShieldOfTheRighteous,
+				Outcome:        core.OutcomeLanded,
+
+				ProcChance: 1,
+
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					procDamage = result.Damage * 0.2
+					righteousFlames.Cast(sim, result.Target)
+				},
+			})
+		},
+		4: func(agent core.Agent) {
+			paladin := agent.(PaladinAgent).GetPaladin()
+
+			paladin.FlamingAegis = paladin.GetOrRegisterAura(core.Aura{
+				Label:    "Flaming Aegis",
+				ActionID: core.ActionID{SpellID: 99090},
+				Duration: time.Second * 10,
+
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					paladin.AddStatDynamic(sim, stats.ParryRating, 12*core.ParryRatingPerParryPercent)
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					paladin.AddStatDynamic(sim, stats.ParryRating, -12*core.ParryRatingPerParryPercent)
+				},
+			})
+
+			// Trigger in divine_protection.go
+		},
+	},
+})
