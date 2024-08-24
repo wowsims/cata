@@ -123,6 +123,12 @@ type Druid struct {
 }
 
 const (
+	WrathBaseEnergyGain     float64 = 13 + 1.0/3
+	StarsurgeBaseEnergyGain float64 = 15
+	StarfireBaseEnergyGain  float64 = 20
+)
+
+const (
 	DruidSpellFlagNone int64 = 0
 	DruidSpellBarkskin int64 = 1 << iota
 	DruidSpellCyclone
@@ -351,7 +357,7 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 
 	// Base dodge is unaffected by Diminishing Returns
 	druid.PseudoStats.BaseDodgeChance += 0.04951
-  
+
 	if druid.Talents.ForceOfNature {
 		druid.Treants = &Treants{
 			Treant1: druid.NewTreant(),

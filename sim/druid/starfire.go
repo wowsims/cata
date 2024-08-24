@@ -8,6 +8,8 @@ import (
 )
 
 func (druid *Druid) registerStarfireSpell() {
+	druid.SetSpellEclipseEnergy(2912, StarfireBaseEnergyGain, StarfireBaseEnergyGain)
+
 	hasStarfireGlyph := druid.HasMajorGlyph(proto.DruidMajorGlyph(proto.DruidPrimeGlyph_GlyphOfStarfire))
 
 	starfireGlyphSpell := druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{

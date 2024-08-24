@@ -1,6 +1,8 @@
 package druid
 
 import (
+	"fmt"
+
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 )
@@ -132,16 +134,18 @@ func (druid *Druid) RegisterEclipseEnergyGainAura() {
 				eclipseEnergyMultiplier = 2
 			}
 
+			var energyGain = druid.GetSpellEclipseEnergy(spell.ActionID.SpellID, druid.currentEclipse != NoEclipse)
+
 			switch spell.ActionID.SpellID {
 			case 2912: // Starfire
-				druid.AddEclipseEnergy(20*eclipseEnergyMultiplier, SolarEnergy, sim, solarMetric)
+				druid.AddEclipseEnergy(energyGain*eclipseEnergyMultiplier, SolarEnergy, sim, solarMetric)
 			case 5176: // Wrath
-				druid.AddEclipseEnergy((13+1.0/3.0)*eclipseEnergyMultiplier, LunarEnergy, sim, lunarMetric)
+				druid.AddEclipseEnergy(energyGain*eclipseEnergyMultiplier, LunarEnergy, sim, lunarMetric)
 			case 78674: // Starsurge
 				if druid.CanGainEnergy(SolarEnergy) {
-					druid.AddEclipseEnergy(15, SolarEnergy, sim, solarMetric)
+					druid.AddEclipseEnergy(energyGain, SolarEnergy, sim, solarMetric)
 				} else {
-					druid.AddEclipseEnergy(15, LunarEnergy, sim, lunarMetric)
+					druid.AddEclipseEnergy(energyGain, LunarEnergy, sim, lunarMetric)
 				}
 			}
 		},
@@ -149,19 +153,7 @@ func (druid *Druid) RegisterEclipseEnergyGainAura() {
 }
 
 func (druid *Druid) hasEuphoriaProcced(sim *core.Simulation) bool {
-	if druid.Talents.Euphoria == 1 {
-		procChance := 0.12
-
-		return sim.Proc(procChance, "Euphoria 1/2")
-	}
-
-	if druid.Talents.Euphoria == 2 {
-		procChance := 0.24
-
-		return sim.Proc(procChance, "Euphoria 2/2")
-	}
-
-	return false
+	return sim.Proc(0.12*float64(druid.Talents.Euphoria), fmt.Sprintf("Euphoria %d/2", druid.Talents.Euphoria))
 }
 
 func (druid *Druid) canEuphoriaProc() bool {
@@ -171,6 +163,10 @@ func (druid *Druid) canEuphoriaProc() bool {
 
 	if druid.currentEclipse != NoEclipse {
 		return false
+	}
+
+	if druid.Talents.Euphoria == 1 {
+		return true
 	}
 
 	if druid.Talents.Euphoria == 2 {
