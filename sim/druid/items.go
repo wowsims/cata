@@ -106,13 +106,14 @@ var ItemSetObsidianArborweaveRegalia = core.NewItemSet(core.ItemSet{
 			druid := agent.(DruidAgent).GetDruid()
 
 			core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
+				ActionID:       core.ActionID{SpellID: 99019},
 				Name:           "Item - Druid T12 2P Bonus",
 				Callback:       core.CallbackOnCastComplete,
 				ClassSpellMask: DruidSpellWrath | DruidSpellStarfire,
 				ProcChance:     0.20,
 				ICD:            time.Second * 45,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					// handle the treant
+					druid.BurningTreant.EnableWithTimeout(sim, druid.BurningTreant, time.Second*15)
 				},
 			})
 		},

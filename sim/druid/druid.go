@@ -116,7 +116,8 @@ type Druid struct {
 
 	ExtendingMoonfireStacks int
 
-	Treants *Treants
+	Treants       *Treants
+	BurningTreant *BurningTreant
 
 	form         DruidForm
 	disabledMCDs []*core.MajorCooldown
@@ -364,6 +365,10 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 			Treant2: druid.NewTreant(),
 			Treant3: druid.NewTreant(),
 		}
+	}
+
+	if druid.HasSetBonus(ItemSetObsidianArborweaveRegalia, 2) {
+		druid.BurningTreant = druid.NewBurningTreant()
 	}
 
 	return druid
