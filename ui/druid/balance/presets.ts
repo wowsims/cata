@@ -19,9 +19,11 @@ import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 import T11Gear from './gear_sets/t11.gear.json';
+import T12Gear from './gear_sets/t12.gear.json';
 
 export const PreraidPresetGear = PresetUtils.makePresetGear('Pre-raid', PreraidGear);
 export const T11PresetGear = PresetUtils.makePresetGear('T11', T11Gear);
+export const T12PresetGear = PresetUtils.makePresetGear('T12 (WIP)', T12Gear);
 
 export const PresetRotationDefault = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
