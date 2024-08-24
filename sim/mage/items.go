@@ -55,7 +55,8 @@ var ItemSetFirehawkRobesOfConflagration = core.NewItemSet(core.ItemSet{
 			mage := agent.(MageAgent).GetMage()
 
 			core.MakePermanent(mage.RegisterAura(core.Aura{
-				Label: "Item - Mage T12 4P Bonus",
+				Label:    "Item - Mage T12 4P Bonus",
+				ActionID: core.ActionID{SpellID: 99064},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					mage.brainFreezeProcChance += .15
 					mage.hotStreakProcChance += 0.30
