@@ -1,24 +1,31 @@
 package druid
 
+import (
+	"sync"
+)
+
 type EclipseEnergyValues struct {
 	InEclipse float64
 	NoEclipse float64
 }
 
 var EclipseEnergyMap = map[int32]EclipseEnergyValues{}
+var rwMutex sync.RWMutex
 
 func (druid *Druid) SetSpellEclipseEnergy(spellID int32, inEclipseEnergy float64, noEclipseEnergy float64) {
+	rwMutex.Lock()
+	defer rwMutex.Unlock()
+
 	EclipseEnergyMap[spellID] = EclipseEnergyValues{
 		InEclipse: inEclipseEnergy,
 		NoEclipse: noEclipseEnergy,
 	}
 }
 
-func (druid *Druid) SetSpellEclipseEnergyValues(spellID int32, values EclipseEnergyValues) {
-	EclipseEnergyMap[spellID] = values
-}
-
 func (druid *Druid) GetSpellEclipseEnergy(spellID int32, inEclipse bool) float64 {
+	rwMutex.RLock()
+	defer rwMutex.RUnlock()
+
 	energyValue := EclipseEnergyMap[spellID]
 
 	if inEclipse {
@@ -26,10 +33,4 @@ func (druid *Druid) GetSpellEclipseEnergy(spellID int32, inEclipse bool) float64
 	}
 
 	return energyValue.NoEclipse
-}
-
-func (druid *Druid) GetSpellEclipseEnergyValues(spellID int32) EclipseEnergyValues {
-	energyValues := EclipseEnergyMap[spellID]
-
-	return energyValues
 }
