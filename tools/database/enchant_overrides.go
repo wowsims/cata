@@ -173,7 +173,6 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 3820, ItemId: 44877, SpellId: 59970, Name: "Arcanum of Burning Mysteries", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.SpellPower: 30, stats.CritRating: 20}.ToProtoArray(), Type: proto.ItemType_ItemTypeHead},
 	{EffectId: 3818, ItemId: 44878, SpellId: 59955, Name: "Arcanum of the Stalwart Protector", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.Stamina: 37, stats.DodgeRating: 20}.ToProtoArray(), Type: proto.ItemType_ItemTypeHead},
 	{EffectId: 3817, ItemId: 44879, SpellId: 59954, Name: "Arcanum of Torment", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.AttackPower: 50, stats.RangedAttackPower: 50, stats.CritRating: 20}.ToProtoArray(), Type: proto.ItemType_ItemTypeHead},
-	{EffectId: 4222, SpellId: 67839, Name: "Mind Amplification Dish", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Stamina: 45}.ToProtoArray(), Type: proto.ItemType_ItemTypeHead, RequiredProfession: proto.Profession_Engineering},
 
 	// Shoulder
 	{EffectId: 2998, ItemId: 29187, SpellId: 35441, Name: "Inscription of Endurance", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.ArcaneResistance: 7, stats.FireResistance: 7, stats.FrostResistance: 7, stats.NatureResistance: 7, stats.ShadowResistance: 7}.ToProtoArray(), Type: proto.ItemType_ItemTypeShoulder},
@@ -208,11 +207,9 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 3825, SpellId: 60609, Name: "Speed", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.HasteRating: 15}.ToProtoArray(), Type: proto.ItemType_ItemTypeBack},
 	{EffectId: 983, SpellId: 44500, Name: "Superior Agility", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Agility: 16}.ToProtoArray(), Type: proto.ItemType_ItemTypeBack},
 	{EffectId: 1099, SpellId: 60663, Name: "Major Agility", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Agility: 22}.ToProtoArray(), Type: proto.ItemType_ItemTypeBack},
-	{EffectId: 3605, SpellId: 55002, Name: "Flexweave Underlay", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToProtoArray(), Type: proto.ItemType_ItemTypeBack, RequiredProfession: proto.Profession_Engineering},
 	{EffectId: 3722, SpellId: 55642, Name: "Lightweave Embroidery", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToProtoArray(), Type: proto.ItemType_ItemTypeBack, RequiredProfession: proto.Profession_Tailoring},
 	{EffectId: 3728, SpellId: 55769, Name: "Darkglow Embroidery", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToProtoArray(), Type: proto.ItemType_ItemTypeBack, RequiredProfession: proto.Profession_Tailoring},
 	{EffectId: 3730, SpellId: 55777, Name: "Swordguard Embroidery", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToProtoArray(), Type: proto.ItemType_ItemTypeBack, RequiredProfession: proto.Profession_Tailoring},
-	{EffectId: 3859, SpellId: 63765, Name: "Springy Arachnoweave", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.SpellPower: 27}.ToProtoArray(), Type: proto.ItemType_ItemTypeBack, RequiredProfession: proto.Profession_Engineering},
 
 	// Chest
 	{EffectId: 3245, ItemId: 37340, SpellId: 44588, Name: "Exceptional Resilience", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.ResilienceRating: 20}.ToProtoArray(), Type: proto.ItemType_ItemTypeChest},
@@ -252,13 +249,8 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 3829, SpellId: 44513, Name: "Greater Assult", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.AttackPower: 35, stats.RangedAttackPower: 35}.ToProtoArray(), Type: proto.ItemType_ItemTypeHands},
 	{EffectId: 3222, SpellId: 44529, Name: "Major Agility", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Agility: 20}.ToProtoArray(), Type: proto.ItemType_ItemTypeHands},
 	{EffectId: 3234, SpellId: 44488, Name: "Precision", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.HitRating: 20}.ToProtoArray(), Type: proto.ItemType_ItemTypeHands},
-	{EffectId: 3603, SpellId: 54998, Name: "Hand-Mounted Pyro Rocket", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToProtoArray(), Type: proto.ItemType_ItemTypeHands, RequiredProfession: proto.Profession_Engineering},
-	{EffectId: 3604, SpellId: 54999, Name: "Hyperspeed Accelerators", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToProtoArray(), Type: proto.ItemType_ItemTypeHands, RequiredProfession: proto.Profession_Engineering},
-	{EffectId: 3860, SpellId: 63770, Name: "Reticulated Armor Webbing", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.BonusArmor: 885}.ToProtoArray(), Type: proto.ItemType_ItemTypeHands, RequiredProfession: proto.Profession_Engineering},
 
 	// Waist
-	{EffectId: 3599, SpellId: 54736, Name: "Personal Electromagnetic Pulse Generator", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToProtoArray(), Type: proto.ItemType_ItemTypeWaist, RequiredProfession: proto.Profession_Engineering},
-	{EffectId: 3601, SpellId: 54793, Name: "Frag Belt", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToProtoArray(), Type: proto.ItemType_ItemTypeWaist, RequiredProfession: proto.Profession_Engineering},
 
 	// Legs
 	{EffectId: 3325, ItemId: 38371, SpellId: 50901, Name: "Jormungar Leg Armor", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.Stamina: 45, stats.Agility: 15}.ToProtoArray(), Type: proto.ItemType_ItemTypeLegs},
@@ -284,7 +276,6 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 3244, SpellId: 44584, Name: "Greater Vitality", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.MP5: 7}.ToProtoArray(), Type: proto.ItemType_ItemTypeFeet},
 	{EffectId: 3826, SpellId: 60623, Name: "Icewalker", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.HitRating: 12, stats.CritRating: 12}.ToProtoArray(), Type: proto.ItemType_ItemTypeFeet},
 	{EffectId: 983, SpellId: 44589, Name: "Superior Agility", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Agility: 16}.ToProtoArray(), Type: proto.ItemType_ItemTypeFeet},
-	{EffectId: 4223, SpellId: 55016, Name: "Nitro Boosts", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.CritRating: 24}.ToProtoArray(), Type: proto.ItemType_ItemTypeFeet, RequiredProfession: proto.Profession_Engineering},
 
 	// Weapon
 	{EffectId: 1103, SpellId: 44633, Name: "Exceptional Agility", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Agility: 26}.ToProtoArray(), Type: proto.ItemType_ItemTypeWeapon},
