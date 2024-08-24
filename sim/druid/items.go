@@ -46,6 +46,7 @@ var ItemSetStormridersBattlegarb = core.NewItemSet(core.ItemSet{
 var ItemSetStormridersRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Stormrider's Regalia",
 	Bonuses: map[int32]core.ApplyEffect{
+		// Increases the critical strike chance of your Insect Swarm and Moonfire spells by 5%
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
 			character.AddStaticMod(core.SpellModConfig{
@@ -54,6 +55,7 @@ var ItemSetStormridersRegalia = core.NewItemSet(core.ItemSet{
 				ClassMask:  DruidSpellDoT | DruidSpellMoonfire | DruidSpellSunfire,
 			})
 		},
+		// Whenever Eclipse triggers, your critical strike chance with spells is increased by 15% for 8 sec.  Each critical strike you achieve reduces that bonus by 5%
 		4: func(agent core.Agent) {
 			druid := agent.(DruidAgent).GetDruid()
 
@@ -89,6 +91,42 @@ var ItemSetStormridersRegalia = core.NewItemSet(core.ItemSet{
 					tierSet4pAura.Activate(sim)
 				} else {
 					tierSet4pAura.Deactivate(sim)
+				}
+			})
+		},
+	},
+})
+
+// T12 Balance
+var ItemSetObsidianArborweaveRegalia = core.NewItemSet(core.ItemSet{
+	Name: "Obsidian Arborweave Regalia",
+	Bonuses: map[int32]core.ApplyEffect{
+		// You have a chance to summon a Burning Treant to assist you in battle for 15 sec when you cast Wrath or Starfire. (Proc chance: 20%, 45s cooldown)
+		2: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+
+			core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
+				Name:           "Item - Druid T12 2P Bonus",
+				Callback:       core.CallbackOnCastComplete,
+				ClassSpellMask: DruidSpellWrath | DruidSpellStarfire,
+				ProcChance:     0.20,
+				ICD:            time.Second * 45,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					// handle the treant
+				},
+			})
+		},
+		// While not in an Eclipse state, your Wrath generates 3 additional Lunar Energy and your Starfire generates 5 additional Solar Energy.
+		4: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+
+			druid.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.ClassSpellMask == DruidSpellWrath {
+					druid.SetSpellEclipseEnergy(spell.SpellID, WrathBaseEnergyGain, WrathBaseEnergyGain+3)
+				}
+
+				if spell.ClassSpellMask == DruidSpellStarfire {
+					druid.SetSpellEclipseEnergy(spell.SpellID, StarfireBaseEnergyGain, StarfireBaseEnergyGain+5)
 				}
 			})
 		},
