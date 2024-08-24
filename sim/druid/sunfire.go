@@ -52,6 +52,8 @@ func (druid *Druid) registerSunfireDoTSpell() {
 }
 
 func (druid *Druid) registerSunfireImpactSpell() {
+	druid.SetSpellEclipseEnergy(93402, SunfireBaseEnergyGain, SunfireBaseEnergyGain)
+
 	druid.Sunfire = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 93402},
 		SpellSchool:    core.SpellSchoolNature,

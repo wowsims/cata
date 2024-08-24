@@ -134,17 +134,21 @@ func (druid *Druid) RegisterEclipseEnergyGainAura() {
 				eclipseEnergyMultiplier = 2
 			}
 
-			var energyGain = druid.GetSpellEclipseEnergy(spell.ActionID.SpellID, druid.currentEclipse != NoEclipse)
-
-			switch spell.ActionID.SpellID {
-			case 2912: // Starfire
-				druid.AddEclipseEnergy(energyGain*eclipseEnergyMultiplier, SolarEnergy, sim, solarMetric)
-			case 5176: // Wrath
-				druid.AddEclipseEnergy(energyGain*eclipseEnergyMultiplier, LunarEnergy, sim, lunarMetric)
-			case 78674: // Starsurge
-				if druid.CanGainEnergy(SolarEnergy) {
+			if energyGain := druid.GetSpellEclipseEnergy(spell.ActionID.SpellID, druid.currentEclipse != NoEclipse); energyGain != 0 {
+				switch spell.ActionID.SpellID {
+				case 2912: // Starfire
+					druid.AddEclipseEnergy(energyGain*eclipseEnergyMultiplier, SolarEnergy, sim, solarMetric)
+				case 5176: // Wrath
+					druid.AddEclipseEnergy(energyGain*eclipseEnergyMultiplier, LunarEnergy, sim, lunarMetric)
+				case 78674: // Starsurge
+					if druid.CanGainEnergy(SolarEnergy) {
+						druid.AddEclipseEnergy(energyGain, SolarEnergy, sim, solarMetric)
+					} else {
+						druid.AddEclipseEnergy(energyGain, LunarEnergy, sim, lunarMetric)
+					}
+				case 8921: // Moonfire (under the effect of Lunar Shower)
 					druid.AddEclipseEnergy(energyGain, SolarEnergy, sim, solarMetric)
-				} else {
+				case 93402: // Sunfire (under the effect of Lunar Shower)
 					druid.AddEclipseEnergy(energyGain, LunarEnergy, sim, lunarMetric)
 				}
 			}

@@ -127,6 +127,8 @@ const (
 	WrathBaseEnergyGain     float64 = 13 + 1.0/3
 	StarsurgeBaseEnergyGain float64 = 15
 	StarfireBaseEnergyGain  float64 = 20
+	MoonfireBaseEnergyGain  float64 = 0
+	SunfireBaseEnergyGain   float64 = 0
 )
 
 const (
