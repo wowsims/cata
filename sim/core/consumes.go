@@ -788,9 +788,15 @@ func registerConjuredCD(agent Agent, consumes *proto.Consumes) {
 			ActionID: actionID,
 			Flags:    SpellFlagNoOnCastComplete,
 			Cast: CastConfig{
-				CD: Cooldown{
+				SharedCD: Cooldown{
 					Timer:    character.GetConjuredCD(),
 					Duration: time.Minute * 2,
+				},
+
+				// Enforce only one HS per fight
+				CD: Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 60,
 				},
 			},
 			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
