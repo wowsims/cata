@@ -41,6 +41,18 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	}),
 );
 
+export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Fire P3',
+	Stats.fromMap({
+		[Stat.StatIntellect]: 1.33,
+		[Stat.StatSpellPower]: 1.0,
+		[Stat.StatHitRating]: 1.22,
+		[Stat.StatCritRating]: 0.65,
+		[Stat.StatHasteRating]: 1.22,
+		[Stat.StatMasteryRating]: 0.51,
+	}),
+);
+
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.
 export const FireTalents = {

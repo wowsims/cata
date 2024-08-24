@@ -26,19 +26,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[
-			Stat.StatHealth,
-			Stat.StatMana,
-			Stat.StatStamina,
-			Stat.StatIntellect,
-			Stat.StatSpellPower,
-			Stat.StatMasteryRating,
-		],
-		[
-			PseudoStat.PseudoStatSpellHitPercent,
-			PseudoStat.PseudoStatSpellCritPercent,
-			PseudoStat.PseudoStatSpellHastePercent,
-		],
+		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpellPower, Stat.StatMasteryRating],
+		[PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatSpellCritPercent, PseudoStat.PseudoStatSpellHastePercent],
 	),
 	modifyDisplayStats: (player: Player<Spec.SpecFireMage>) => {
 		return sharedMageDisplayStatsModifiers(player);
@@ -55,6 +44,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		})(),
 		// Default soft caps for the Reforge optimizer
 		softCapBreakpoints: (() => {
+			// Set up Mastery breakpoints for integer % damage increments.
+			// These should be removed once the bugfix to make Mastery
+			// continuous goes live!
+			const masterySoftCapConfig = StatCap.fromStat(Stat.StatMasteryRating, {
+				breakpoints: [(23 / Mechanics.masteryPercentPerPoint.get(Spec.SpecFireMage)!) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT],
+				capType: StatCapType.TypeThreshold,
+				postCapEPs: [0],
+			});
+
 			const hasteSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent, {
 				breakpoints: [
 					hasteBreakpoints.get('5-tick LvB/Pyro')!,
@@ -76,7 +74,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 				postCapEPs: [0.61 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
 			});
 
-			return [hasteSoftCapConfig];
+			return [masterySoftCapConfig, hasteSoftCapConfig];
 		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultFireConsumes,
@@ -117,7 +115,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
+		epWeights: [Presets.P1_EP_PRESET, Presets.P3_EP_PRESET],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.FIRE_ROTATION_PRESET_DEFAULT],
 		// Preset talents that the user can quickly select.
@@ -176,8 +174,7 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 					const hasPI = !!player.getBuffs().powerInfusionCount;
 					const hasBerserking = player.getRace() === Race.RaceTroll;
 
-					const modifyHaste = (oldHastePercent: number, modifier: number) =>
-							((oldHastePercent / 100 + 1) / modifier - 1) * 100;
+					const modifyHaste = (oldHastePercent: number, modifier: number) => ((oldHastePercent / 100 + 1) / modifier - 1) * 100;
 
 					this.individualConfig.defaults.softCapBreakpoints!.forEach(softCap => {
 						const softCapToModify = softCaps.find(sc => sc.unitStat.equals(softCap.unitStat));
