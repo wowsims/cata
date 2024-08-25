@@ -72,12 +72,9 @@ export class PresetConfigurationPicker extends Component {
 
 				checkActive();
 				TypedEvent.onAny([
-					this.simUI.player.gearChangeEmitter,
-					this.simUI.player.talentsChangeEmitter,
-					this.simUI.player.rotationChangeEmitter,
-					this.simUI.player.epWeightsChangeEmitter,
-					this.simUI.player.healingModelChangeEmitter,
+					this.simUI.player.changeEmitter,
 					this.simUI.sim.settingsChangeEmitter,
+					this.simUI.sim.raid.changeEmitter,
 					this.simUI.sim.encounter.changeEmitter,
 				]).on(checkActive);
 			});
@@ -107,6 +104,10 @@ export class PresetConfigurationPicker extends Component {
 			if (encounter) {
 				if (encounter.encounter) this.simUI.sim.encounter.fromProto(eventID, encounter.encounter);
 				if (encounter.healingModel) this.simUI.player.setHealingModel(eventID, encounter.healingModel);
+				if (encounter.tanks) this.simUI.sim.raid.setTanks(eventID, encounter.tanks);
+				if (encounter.buffs) this.simUI.player.setBuffs(eventID, encounter.buffs);
+				if (encounter.debuffs) this.simUI.sim.raid.setDebuffs(eventID, encounter.debuffs);
+				if (encounter.raidBuffs) this.simUI.sim.raid.setBuffs(eventID, encounter.raidBuffs);
 			}
 		});
 	}

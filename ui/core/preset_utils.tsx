@@ -4,7 +4,18 @@ import * as Tooltips from './constants/tooltips.js';
 import { Encounter } from './encounter';
 import { Player } from './player';
 import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
-import { Cooldowns, Encounter as EncounterProto, EquipmentSpec, Faction, HealingModel, Spec } from './proto/common';
+import {
+	Cooldowns,
+	Debuffs,
+	Encounter as EncounterProto,
+	EquipmentSpec,
+	Faction,
+	HealingModel,
+	IndividualBuffs,
+	RaidBuffs,
+	Spec,
+	UnitReference,
+} from './proto/common';
 import { SavedRotation, SavedTalents } from './proto/ui';
 import { Stats } from './proto_utils/stats';
 import { SpecRotation, specTypeFunctions } from './proto_utils/utils';
@@ -54,10 +65,12 @@ export interface PresetEpWeightsOptions extends PresetOptionsBase {}
 export interface PresetEncounter extends PresetBase {
 	encounter?: EncounterProto;
 	healingModel?: HealingModel;
+	tanks?: UnitReference[];
+	raidBuffs?: RaidBuffs;
+	debuffs?: Debuffs;
+	buffs?: IndividualBuffs;
 }
-export interface PresetEncounterOptions extends PresetOptionsBase {
-	includeHealingModel?: boolean;
-}
+export interface PresetEncounterOptions extends PresetOptionsBase {}
 
 export interface PresetBuild {
 	name: string;
@@ -176,17 +189,30 @@ const makePresetRotationHelper = (name: string, rotation: SavedRotation, options
 
 export const makePresetEncounter = (name: string, encounter?: PresetEncounter['encounter'] | string, options?: PresetEncounterOptions): PresetEncounter => {
 	let healingModel: PresetEncounter['healingModel'] = undefined;
+	let tanks: PresetEncounter['tanks'] = undefined;
+	let raidBuffs: PresetEncounter['raidBuffs'] = undefined;
+	let debuffs: PresetEncounter['debuffs'] = undefined;
+	let buffs: PresetEncounter['buffs'] = undefined;
 	if (typeof encounter === 'string') {
 		const parsedUrl = IndividualLinkImporter.tryParseUrlLocation(new URL(encounter));
-		if (parsedUrl?.settings.encounter) Encounter.updateProtoVersion(parsedUrl?.settings.encounter);
-		encounter = parsedUrl?.settings.encounter;
-		healingModel = !!options?.includeHealingModel ? parsedUrl?.settings.player?.healingModel : undefined;
+		const settings = parsedUrl?.settings;
+		if (settings?.encounter) Encounter.updateProtoVersion(settings.encounter);
+		encounter = settings?.encounter;
+		healingModel = settings?.player?.healingModel;
+		tanks = settings?.tanks;
+		raidBuffs = settings?.raidBuffs;
+		debuffs = settings?.debuffs;
+		buffs = settings?.player?.buffs;
 	}
 
 	return {
 		name,
 		encounter,
+		tanks,
 		healingModel,
+		raidBuffs,
+		debuffs,
+		buffs,
 		...options,
 	};
 };
