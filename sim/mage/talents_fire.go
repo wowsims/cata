@@ -129,8 +129,7 @@ func (mage *Mage) applyHotStreak() {
 	// https://web.archive.org/web/20120208064232/http://elitistjerks.com/f75/t110326-cataclysm_fire_mage_compendium/p6/#post1831207
 	baseCritPercent := mage.GetStat(stats.SpellCritPercent) + (mage.GetStat(stats.CritRating) / core.CritRatingPerCritPercent) + 1*float64(mage.Talents.PiercingIce)
 	mage.hotStreakProcChance = max(0, float64(-2.7*baseCritPercent/100+0.9)) // EJ settled on -2.7*critChance+0.9
-	// fmt.Println("baseCritPercent", baseCritPercent)
-	// fmt.Println("hotStreakProcChance", mage.hotStreakProcChance)
+
 	hotStreakCostMod := mage.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_PowerCost_Pct,
 		FloatValue: -1,
