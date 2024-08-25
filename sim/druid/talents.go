@@ -344,15 +344,15 @@ func (druid *Druid) applyLunarShower() {
 			lunarShowerResourceMod.Activate()
 
 			// While under the effects of Lunar Shower, Moonfire and Sunfire generate 8 eclipse energy
-			druid.SetSpellEclipseEnergy(93402, SunfireBaseEnergyGain+8, SunfireBaseEnergyGain+8)
-			druid.SetSpellEclipseEnergy(8921, MoonfireBaseEnergyGain+8, MoonfireBaseEnergyGain+8)
+			druid.SetSpellEclipseEnergy(DruidSpellMoonfire, MoonfireLunarShowerEnergyGain, MoonfireLunarShowerEnergyGain)
+			druid.SetSpellEclipseEnergy(DruidSpellSunfire, SunfireLunarShowerEnergyGain, SunfireLunarShowerEnergyGain)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			lunarShowerDmgMod.Deactivate()
 			lunarShowerResourceMod.Deactivate()
 
-			druid.SetSpellEclipseEnergy(93402, SunfireBaseEnergyGain, SunfireBaseEnergyGain)
-			druid.SetSpellEclipseEnergy(8921, MoonfireBaseEnergyGain, MoonfireBaseEnergyGain)
+			druid.SetSpellEclipseEnergy(DruidSpellMoonfire, MoonfireBaseEnergyGain, MoonfireBaseEnergyGain)
+			druid.SetSpellEclipseEnergy(DruidSpellSunfire, SunfireBaseEnergyGain, SunfireBaseEnergyGain)
 		},
 	})
 

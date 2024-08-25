@@ -123,11 +123,11 @@ var ItemSetObsidianArborweaveRegalia = core.NewItemSet(core.ItemSet{
 
 			druid.OnSpellRegistered(func(spell *core.Spell) {
 				if spell.ClassSpellMask == DruidSpellWrath {
-					druid.SetSpellEclipseEnergy(spell.SpellID, WrathBaseEnergyGain, WrathBaseEnergyGain+3)
+					druid.SetSpellEclipseEnergy(DruidSpellWrath, WrathBaseEnergyGain, Wrath4PT12EnergyGain)
 				}
 
 				if spell.ClassSpellMask == DruidSpellStarfire {
-					druid.SetSpellEclipseEnergy(spell.SpellID, StarfireBaseEnergyGain, StarfireBaseEnergyGain+5)
+					druid.SetSpellEclipseEnergy(DruidSpellStarfire, StarfireBaseEnergyGain, Starfire4PT12EnergyGain)
 				}
 			})
 		},

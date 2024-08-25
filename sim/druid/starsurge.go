@@ -8,7 +8,7 @@ import (
 )
 
 func (druid *Druid) registerStarsurgeSpell() {
-	druid.SetSpellEclipseEnergy(78674, StarsurgeBaseEnergyGain, StarsurgeBaseEnergyGain)
+	druid.SetSpellEclipseEnergy(DruidSpellStarsurge, StarsurgeBaseEnergyGain, StarsurgeBaseEnergyGain)
 
 	druid.Starsurge = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 78674},

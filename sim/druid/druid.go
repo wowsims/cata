@@ -129,6 +129,12 @@ const (
 	StarfireBaseEnergyGain  float64 = 20
 	MoonfireBaseEnergyGain  float64 = 0
 	SunfireBaseEnergyGain   float64 = 0
+
+	MoonfireLunarShowerEnergyGain float64 = MoonfireBaseEnergyGain + 8
+	SunfireLunarShowerEnergyGain  float64 = SunfireBaseEnergyGain + 8
+
+	Wrath4PT12EnergyGain    float64 = WrathBaseEnergyGain + 3
+	Starfire4PT12EnergyGain float64 = StarfireBaseEnergyGain + 5
 )
 
 const (

@@ -8,7 +8,7 @@ import (
 )
 
 func (druid *Druid) registerStarfireSpell() {
-	druid.SetSpellEclipseEnergy(2912, StarfireBaseEnergyGain, StarfireBaseEnergyGain)
+	druid.SetSpellEclipseEnergy(DruidSpellStarfire, StarfireBaseEnergyGain, StarfireBaseEnergyGain)
 
 	hasStarfireGlyph := druid.HasMajorGlyph(proto.DruidMajorGlyph(proto.DruidPrimeGlyph_GlyphOfStarfire))
 

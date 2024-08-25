@@ -8,7 +8,7 @@ import (
 )
 
 func (druid *Druid) registerWrathSpell() {
-	druid.SetSpellEclipseEnergy(5176, WrathBaseEnergyGain, WrathBaseEnergyGain)
+	druid.SetSpellEclipseEnergy(DruidSpellWrath, WrathBaseEnergyGain, WrathBaseEnergyGain)
 
 	druid.Wrath = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 5176},

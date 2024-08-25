@@ -52,7 +52,7 @@ func (druid *Druid) registerMoonfireDoTSpell() {
 }
 
 func (druid *Druid) registerMoonfireImpactSpell() {
-	druid.SetSpellEclipseEnergy(8921, MoonfireBaseEnergyGain, MoonfireBaseEnergyGain)
+	druid.SetSpellEclipseEnergy(DruidSpellMoonfire, MoonfireBaseEnergyGain, MoonfireBaseEnergyGain)
 
 	druid.Moonfire = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 8921},
