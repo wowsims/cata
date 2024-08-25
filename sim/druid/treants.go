@@ -1,78 +1,18 @@
 package druid
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-func (druid *Druid) NewTreant() *Treant {
-	treant := &Treant{
-		Pet:        core.NewPet("Treant", &druid.Character, treantBaseStats, druid.makeStatInheritance(), false, false),
-		druidOwner: druid,
-	}
-
-	treant.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	treant.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, 1/83.3)
-
-	treant.PseudoStats.DamageDealtMultiplier = 1
-
-	treant.EnableAutoAttacks(treant, core.AutoAttackOptions{
-		MainHand: core.Weapon{
-			BaseDamageMin:  252,
-			BaseDamageMax:  357,
-			SwingSpeed:     1.65,
-			CritMultiplier: druid.BalanceCritMultiplier(),
-		},
-		AutoSwingMelee: true,
-	})
-
-	treant.Pet.OnPetEnable = treant.enable
-	treant.Pet.OnPetDisable = treant.disable
-
-	druid.AddPet(treant)
-	return treant
-}
-
-func (treant *Treant) GetPet() *core.Pet {
-	return &treant.Pet
-}
-
-func (treant *Treant) enable(sim *core.Simulation) {
-	treant.snapshotStat = stats.Stats{
-		stats.AttackPower: treant.druidOwner.GetStat(stats.SpellPower) * 0.65,
-
-		stats.ArcaneResistance: treant.druidOwner.GetStat(stats.ArcaneResistance) * 0.4,
-		stats.FireResistance:   treant.druidOwner.GetStat(stats.FireResistance) * 0.4,
-		stats.FrostResistance:  treant.druidOwner.GetStat(stats.FrostResistance) * 0.4,
-		stats.NatureResistance: treant.druidOwner.GetStat(stats.NatureResistance) * 0.4,
-		stats.ShadowResistance: treant.druidOwner.GetStat(stats.ShadowResistance) * 0.4,
-	}
-
-	treant.AddStatsDynamic(sim, treant.snapshotStat)
-}
-
-func (treant *Treant) disable(sim *core.Simulation) {
-	treant.AddStatsDynamic(sim, treant.snapshotStat.Invert())
-}
-
-func (treant *Treant) Reset(sim *core.Simulation) {
-	treant.Disable(sim)
-	if sim.Log != nil {
-		treant.Log(sim, "Base Stats: %s", treantBaseStats)
-		inheritedStats := treant.druidOwner.makeStatInheritance()(treant.druidOwner.GetStats())
-		treant.Log(sim, "Inherited Stats: %s", inheritedStats)
-		treant.Log(sim, "Total Stats: %s", treant.GetStats())
-	}
-}
-
-// ///////////////////////////////////////
 type Treant struct {
 	core.Pet
-	druidOwner *Druid
 
-	snapshotStat stats.Stats
+	druidOwner *Druid
 }
 
 type Treants struct {
@@ -103,29 +43,64 @@ var treantBaseStats = stats.Stats{
 	stats.Strength:    476,
 	stats.AttackPower: -20,
 
-	//stats.PhysicalCritPercent: 5,
+	stats.PhysicalCritPercent: 1.1515 + 1.8,
+}
+
+func (druid *Druid) NewTreant() *Treant {
+	treant := &Treant{
+		Pet:        core.NewPet("Treant", &druid.Character, treantBaseStats, druid.makeStatInheritance(), false, false),
+		druidOwner: druid,
+	}
+
+	treant.AddStatDependency(stats.Strength, stats.AttackPower, 2)
+	treant.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, core.CritPerAgiMaxLevel[proto.Class_ClassWarrior])
+
+	treant.EnableAutoAttacks(treant, core.AutoAttackOptions{
+		MainHand: core.Weapon{
+			BaseDamageMin:  252,
+			BaseDamageMax:  357,
+			SwingSpeed:     1.9,
+			CritMultiplier: druid.BalanceCritMultiplier(),
+		},
+		AutoSwingMelee: true,
+	})
+
+	druid.AddPet(treant)
+	return treant
+}
+
+func (treant *Treant) GetPet() *core.Pet {
+	return &treant.Pet
+}
+
+func (treant *Treant) Reset(sim *core.Simulation) {
+	treant.Disable(sim)
+	if sim.Log != nil {
+		treant.Log(sim, "Base Stats: %s", treantBaseStats)
+		inheritedStats := treant.druidOwner.makeStatInheritance()(treant.druidOwner.GetStats())
+		treant.Log(sim, "Inherited Stats: %s", inheritedStats)
+		treant.Log(sim, "Total Stats: %s", treant.GetStats())
+	}
 }
 
 const PetExpertiseScale = 3.25
 
 func (druid *Druid) makeStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
-		//treantHitChance := (ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance) * 0.08 / 0.17
-		//hitRatingFromOwner := math.Floor(ownerHitChance) * core.MeleeHitRatingPerHitChance
+		treantHitChance := ownerStats[stats.SpellHitPercent] * 8 / 17
 
 		return stats.Stats{
 			stats.Stamina:     ownerStats[stats.Stamina] * 0.3189,
 			stats.Armor:       ownerStats[stats.Armor] * 0.35,
-			stats.AttackPower: ownerStats[stats.AttackPower] * 0.65,
+			stats.AttackPower: ownerStats[stats.SpellPower] * 0.65,
 
-			// stats.MeleeHit:  math.Floor(treantHitChance) * core.MeleeHitRatingPerHitChance,
-			// stats.Expertise: math.Floor(math.Floor(treantHitChance)*PetExpertiseScale) * core.ExpertisePerQuarterPercentReduction,
+			stats.HitRating:       treantHitChance * core.PhysicalHitRatingPerHitPercent,
+			stats.ExpertiseRating: math.Floor(treantHitChance*PetExpertiseScale) * core.ExpertisePerQuarterPercentReduction,
 		}
 	}
 }
 
 func (treant *Treant) Initialize() {
-	// Nothing
 }
 
 func (treant *Treant) ExecuteCustomRotation(_ *core.Simulation) {
