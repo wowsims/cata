@@ -35,20 +35,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[
-			Stat.StatHealth,
-			Stat.StatStamina,
-			Stat.StatStrength,
-			Stat.StatAgility,
-			Stat.StatAttackPower,
-			Stat.StatExpertiseRating,
-			Stat.StatMasteryRating,
-		],
-		[
-			PseudoStat.PseudoStatPhysicalHitPercent,
-			PseudoStat.PseudoStatPhysicalCritPercent,
-			PseudoStat.PseudoStatMeleeHastePercent,
-		],
+		[Stat.StatHealth, Stat.StatStamina, Stat.StatStrength, Stat.StatAgility, Stat.StatAttackPower, Stat.StatExpertiseRating, Stat.StatMasteryRating],
+		[PseudoStat.PseudoStatPhysicalHitPercent, PseudoStat.PseudoStatPhysicalCritPercent, PseudoStat.PseudoStatMeleeHastePercent],
 	),
 	// modifyDisplayStats: (player: Player<Spec.SpecFuryWarrior>) => {
 	// 	//let stats = new Stats();
@@ -63,7 +51,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P1_FURY_SMF_PRESET.gear,
+		gear: Presets.P1_BIS_FURY_SMF_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_FURY_SMF_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
@@ -133,7 +121,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 			OtherInputs.InputDelay,
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
-			FuryInputs.PrepullMastery
+			FuryInputs.PrepullMastery,
 		],
 	},
 	encounterPicker: {
@@ -148,7 +136,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.FURY_SMF_ROTATION, Presets.FURY_TG_ROTATION],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_FURY_SMF_PRESET, Presets.PRERAID_FURY_TG_PRESET, Presets.P1_FURY_SMF_PRESET, Presets.P1_FURY_TG_PRESET],
+		gear: [Presets.P1_PRERAID_FURY_SMF_PRESET, Presets.P1_PRERAID_FURY_TG_PRESET, Presets.P1_BIS_FURY_SMF_PRESET, Presets.P1_BIS_FURY_TG_PRESET],
+		builds: [Presets.PRESET_BUILD_SMF, Presets.PRESET_BUILD_TG],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecFuryWarrior>): APLRotation => {
@@ -169,16 +158,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_FURY_SMF_PRESET.gear,
-					2: Presets.P1_FURY_TG_PRESET.gear,
-					3: Presets.PRERAID_FURY_SMF_PRESET.gear,
-					4: Presets.PRERAID_FURY_TG_PRESET.gear,
+					1: Presets.P1_BIS_FURY_SMF_PRESET.gear,
+					2: Presets.P1_BIS_FURY_TG_PRESET.gear,
+					3: Presets.P1_PRERAID_FURY_SMF_PRESET.gear,
+					4: Presets.P1_PRERAID_FURY_TG_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_FURY_SMF_PRESET.gear,
-					2: Presets.P1_FURY_TG_PRESET.gear,
-					3: Presets.PRERAID_FURY_SMF_PRESET.gear,
-					4: Presets.PRERAID_FURY_TG_PRESET.gear,
+					1: Presets.P1_BIS_FURY_SMF_PRESET.gear,
+					2: Presets.P1_BIS_FURY_TG_PRESET.gear,
+					3: Presets.P1_PRERAID_FURY_SMF_PRESET.gear,
+					4: Presets.P1_PRERAID_FURY_TG_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,
