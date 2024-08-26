@@ -25,7 +25,7 @@ const DW_PRESET_OPTIONS = {
 				{
 					condition: (player: Player<Spec.SpecFrostDeathKnight>) =>
 						player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeTwoHand,
-					message: "Check your gear: You have a two-handed weapon equipped, but the selected option is for dual wield.",
+					message: 'Check your gear: You have a two-handed weapon equipped, but the selected option is for dual wield.',
 				},
 				{
 					condition: (player: Player<Spec.SpecFrostDeathKnight>) => !player.getTalents().threatOfThassarian,
@@ -44,7 +44,7 @@ const TWOHAND_PRESET_OPTIONS = {
 				{
 					condition: (player: Player<Spec.SpecFrostDeathKnight>) =>
 						player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeOneHand,
-					message: "Check your gear: You have a one-handed weapon equipped, but the selected option is for dual wield",
+					message: 'Check your gear: You have a one-handed weapon equipped, but the selected option is for dual wield',
 				},
 				{
 					condition: (player: Player<Spec.SpecFrostDeathKnight>) => !player.getTalents().mightOfTheFrozenWastes,
@@ -60,7 +60,7 @@ export const P1_DW_GEAR_PRESET = PresetUtils.makePresetGear('P1 Dual Wield', P1D
 export const P1_2H_GEAR_PRESET = PresetUtils.makePresetGear('P1 Two Hand', P12HGear, TWOHAND_PRESET_OPTIONS);
 export const P1_MASTERFROST_GEAR_PRESET = PresetUtils.makePresetGear('P1 Masterfrost', P1MasterfrostGear, DW_PRESET_OPTIONS);
 
-export const DUAL_WIELD_ROTATION_RESET_DEFAULT = PresetUtils.makePresetAPLRotation('Dual Wield', DualWieldAPL, DW_PRESET_OPTIONS);
+export const DUAL_WIELD_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Dual Wield', DualWieldAPL, DW_PRESET_OPTIONS);
 export const TWO_HAND_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Two Hand', TwoHandAPL, TWOHAND_PRESET_OPTIONS);
 export const MASTERFROST_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Masterfrost', MasterFrostAPL, DW_PRESET_OPTIONS);
 
@@ -74,15 +74,15 @@ export const P1_MASTERFROST_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAttackPower]: 1,
 			[Stat.StatExpertiseRating]: 0.75,
 			[Stat.StatHasteRating]: 1.38,
-			[Stat.StatHitRating]: (1.08 + 0.59),
-			[Stat.StatCritRating]: (0.64 + 0.43),
+			[Stat.StatHitRating]: 1.08 + 0.59,
+			[Stat.StatCritRating]: 0.64 + 0.43,
 			[Stat.StatMasteryRating]: 1.41,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 4.5,
 			[PseudoStat.PseudoStatOffHandDps]: 2.84,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: (1.08 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT),
-			[PseudoStat.PseudoStatSpellHitPercent]: (0.59 * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT),
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 1.08 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT,
+			[PseudoStat.PseudoStatSpellHitPercent]: 0.59 * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT,
 		},
 	),
 	DW_PRESET_OPTIONS,
@@ -167,4 +167,22 @@ export const DefaultConsumes = Consumes.create({
 	defaultPotion: Potions.GolembloodPotion,
 	prepopPotion: Potions.GolembloodPotion,
 	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
+});
+
+export const PRESET_BUILD_DW = PresetUtils.makePresetBuild('Dual Wield', {
+	gear: P1_DW_GEAR_PRESET,
+	talents: DualWieldTalents,
+	rotation: DUAL_WIELD_ROTATION_PRESET_DEFAULT,
+});
+
+export const PRESET_BUILD_2H = PresetUtils.makePresetBuild('Two Hand', {
+	gear: P1_2H_GEAR_PRESET,
+	talents: TwoHandTalents,
+	rotation: TWO_HAND_ROTATION_PRESET_DEFAULT,
+});
+
+export const PRESET_BUILD_MASTERFROST = PresetUtils.makePresetBuild('Masterfrost', {
+	gear: P1_MASTERFROST_GEAR_PRESET,
+	talents: MasterfrostTalents,
+	rotation: MASTERFROST_ROTATION_PRESET_DEFAULT,
 });

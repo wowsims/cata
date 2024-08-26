@@ -54,10 +54,10 @@ const FURY_TG_PRESET_OPTIONS = {
 	},
 };
 
-export const PRERAID_FURY_SMF_PRESET = PresetUtils.makePresetGear('Preraid Fury SMF', PreraidFurySMFGear, FURY_SMF_PRESET_OPTIONS);
-export const PRERAID_FURY_TG_PRESET = PresetUtils.makePresetGear('Preraid Fury TG', PreraidFuryTGGear, FURY_TG_PRESET_OPTIONS);
-export const P1_FURY_SMF_PRESET = PresetUtils.makePresetGear('P1 Fury SMF', P1FurySMFGear, FURY_SMF_PRESET_OPTIONS);
-export const P1_FURY_TG_PRESET = PresetUtils.makePresetGear('P1 Fury TG', P1FuryTGGear, FURY_TG_PRESET_OPTIONS);
+export const P1_PRERAID_FURY_SMF_PRESET = PresetUtils.makePresetGear('Preraid Fury SMF', PreraidFurySMFGear, FURY_SMF_PRESET_OPTIONS);
+export const P1_PRERAID_FURY_TG_PRESET = PresetUtils.makePresetGear('Preraid Fury TG', PreraidFuryTGGear, FURY_TG_PRESET_OPTIONS);
+export const P1_BIS_FURY_SMF_PRESET = PresetUtils.makePresetGear('P1 Fury SMF', P1FurySMFGear, FURY_SMF_PRESET_OPTIONS);
+export const P1_BIS_FURY_TG_PRESET = PresetUtils.makePresetGear('P1 Fury TG', P1FuryTGGear, FURY_TG_PRESET_OPTIONS);
 
 export const FURY_SMF_ROTATION = PresetUtils.makePresetAPLRotation('Fury SMF', SMFFuryApl, FURY_SMF_PRESET_OPTIONS);
 export const FURY_TG_ROTATION = PresetUtils.makePresetAPLRotation('Fury TG', TGFuryApl, FURY_TG_PRESET_OPTIONS);
@@ -99,7 +99,7 @@ export const P1_FURY_TG_EP_PRESET = PresetUtils.makePresetEpWeights(
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 3.77,
-			[PseudoStat.PseudoStatOffHandDps]: 1.60,
+			[PseudoStat.PseudoStatOffHandDps]: 1.6,
 		},
 	),
 	FURY_TG_PRESET_OPTIONS,
@@ -151,7 +151,7 @@ export const DefaultOptions = WarriorOptions.create({
 		startingRage: 0,
 	},
 	syncType: 0,
-	prepullMastery: 0
+	prepullMastery: 0,
 });
 
 export const DefaultConsumes = Consumes.create({
@@ -167,3 +167,17 @@ export const OtherDefaults = {
 	profession2: Profession.Blacksmithing,
 	distanceFromTarget: 5,
 };
+
+export const PRESET_BUILD_SMF = PresetUtils.makePresetBuild('Fury SMF', {
+	gear: P1_BIS_FURY_SMF_PRESET,
+	talents: FurySMFTalents,
+	rotation: FURY_SMF_ROTATION,
+	epWeights: P1_FURY_SMF_EP_PRESET,
+});
+
+export const PRESET_BUILD_TG = PresetUtils.makePresetBuild('Fury TG', {
+	gear: P1_BIS_FURY_TG_PRESET,
+	talents: FuryTGTalents,
+	rotation: FURY_TG_ROTATION,
+	epWeights: P1_FURY_TG_EP_PRESET,
+});
