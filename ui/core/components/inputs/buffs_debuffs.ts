@@ -182,7 +182,7 @@ export const ManaTideTotem = makeMultistateRaidBuffInput({ actionId: ActionId.fr
 export const Innervate = makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(29166), numStates: 11, fieldName: 'innervateCount' });
 export const PowerInfusion = makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(10060), numStates: 11, fieldName: 'powerInfusionCount' });
 export const FocusMagic = makeBooleanIndividualBuffInput({ actionId: ActionId.fromSpellId(54648), fieldName: 'focusMagic' });
-export const TricksOfTheTrade = makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(57933), numStates: 20, fieldName: 'tricksOfTheTradeCount' });
+export const TricksOfTheTrade = makeTristateIndividualBuffInput({ actionId: ActionId.fromItemId(45767), impId: ActionId.fromSpellId(57933), fieldName: 'tricksOfTheTrade' });
 export const UnholyFrenzy = makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(49016), numStates: 11, fieldName: 'unholyFrenzyCount' });
 export const DarkIntent = makeBooleanIndividualBuffInput({ actionId: ActionId.fromSpellId(85759), fieldName: 'darkIntent' });
 
