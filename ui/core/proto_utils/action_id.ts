@@ -534,35 +534,35 @@ export class ActionId {
 			case 'Scourge Strike':
 			case 'Opportunity Strike':
 				break;
-			// Warrior - T12 4P proc
+			// Warrior - T12 2P proc
 			case 'Shield Slam':
 				if (this.tag === 3) {
-					name = 'Combust';
+					name = 'Combust (T12 2P)';
 				}
 				break;
 			// Warrior - T12 4P proc
 			case 'Mortal Strike':
 				if (this.tag === 3) {
-					name = 'Fiery attack';
+					name = 'Fiery attack (T12 4P)';
 				}
 				break;
-			// Hunter - T12 4P proc
+			// Hunter - T12 2P proc
 			case 'Steady Shot':
 			case 'Cobra Shot':
 				if (this.tag === 3) {
-					name = 'Flaming Arrow';
+					name = 'Flaming Arrow (T12 2P)';
 				}
 				break;
 			// Paladin - T12 4P proc
 			case 'Shield of the Righteous':
 				if (this.tag === 3) {
-					name = 'Righteous Flames';
+					name = 'Righteous Flames (T12 4P)';
 				}
 				break;
 			// Paladin - T12 4P proc
 			case 'Crusader Strike':
 				if (this.tag === 3) {
-					name = 'Flames of the Faithful';
+					name = 'Flames of the Faithful (T12 4P)';
 				}
 				break;
 			default:
@@ -768,11 +768,11 @@ const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 55090, tag: 1 }), { spellId: 70890 }], // Shadowflame Dot
 	[JSON.stringify({ spellId: 12294, tag: 3 }), { spellId: 99237 }], // Warrior - T12 4P Fiery Attack - Mortal Strike
 	[JSON.stringify({ spellId: 85288, tag: 3 }), { spellId: 99237 }], // Warrior - T12 4P Fiery Attack - Raging Blow
-	[JSON.stringify({ spellId: 23922, tag: 3 }), { spellId: 99240 }], // Warrior - T12 4P Combust - Shield Slam
-	[JSON.stringify({ spellId: 77767, tag: 3 }), { spellId: 99058 }], // Hunter - T12 4P Flaming Arrow - Cobra shot
-	[JSON.stringify({ spellId: 56641, tag: 3 }), { spellId: 99058 }], // Hunter - T12 4P Flaming Arrow - Steady shot
-	[JSON.stringify({ spellId: 35395, tag: 3 }), { spellId: 99092 }], // Paladin - T12 4P Flames of the Faithful
-	[JSON.stringify({ spellId: 53600, tag: 3 }), { spellId: 99075 }], // Paladin - T12 4P Flames of the Faithful
+	[JSON.stringify({ spellId: 23922, tag: 3 }), { spellId: 99240 }], // Warrior - T12 2P Combust - Shield Slam
+	[JSON.stringify({ spellId: 77767, tag: 3 }), { spellId: 99058 }], // Hunter - T12 2P Flaming Arrow - Cobra shot
+	[JSON.stringify({ spellId: 56641, tag: 3 }), { spellId: 99058 }], // Hunter - T12 2P Flaming Arrow - Steady shot
+	[JSON.stringify({ spellId: 35395, tag: 3 }), { spellId: 99092 }], // Paladin - T12 2P Flames of the Faithful
+	[JSON.stringify({ spellId: 53600, tag: 3 }), { spellId: 99075 }], // Paladin - T12 2P Righteous Flames
 ]);
 
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';
