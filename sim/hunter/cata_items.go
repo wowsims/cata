@@ -1,6 +1,7 @@
 package hunter
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -11,7 +12,7 @@ func (hunter *Hunter) newFlamingArrowSpell(spellID int32) core.SpellConfig {
 	actionID := core.ActionID{SpellID: spellID} // action 99058
 
 	return core.SpellConfig{
-		ActionID:    actionID,
+		ActionID:    actionID.WithTag(3),
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
@@ -50,6 +51,7 @@ var ItemSetFlameWakersBattleGear = core.NewItemSet(core.ItemSet{
 					}
 					procChance := 0.1
 					if sim.RandomFloat("Flaming Arrow") < procChance {
+						fmt.Printf("Flaming Arrow procced on %s\n", spell.ActionID.SpellID)
 						if spell == hunter.SteadyShot {
 							flamingArrowSpellForSteadyShot.Cast(sim, result.Target)
 						} else {
