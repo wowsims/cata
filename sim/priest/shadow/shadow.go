@@ -1,6 +1,7 @@
 package shadow
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -92,6 +93,10 @@ func (spriest *ShadowPriest) ApplyTalents() {
 		},
 	)
 
+	var floorPercent = func(val float64) float64 {
+		return math.Floor(val*100) / 100
+	}
+
 	// Shadow Power
 	spriest.AddStaticMod(core.SpellModConfig{
 		Kind:       core.SpellMod_CritMultiplier_Pct,
@@ -102,7 +107,7 @@ func (spriest *ShadowPriest) ApplyTalents() {
 
 	shadowOrbMod := spriest.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  int64(priest.PriestSpellMindBlast) | int64(priest.PriestSpellMindSpike),
-		FloatValue: 0.216 + spriest.GetMasteryPoints()*0.0145,
+		FloatValue: floorPercent(0.216 + spriest.GetMasteryPoints()*0.0145),
 		Kind:       core.SpellMod_DamageDone_Pct,
 	})
 
@@ -113,7 +118,7 @@ func (spriest *ShadowPriest) ApplyTalents() {
 		Duration:  time.Minute,
 		MaxStacks: 3,
 		OnStacksChange: func(_ *core.Aura, _ *core.Simulation, oldStacks int32, newStacks int32) {
-			shadowOrbMod.UpdateFloatValue((0.216 + spriest.GetMasteryPoints()*0.0145) * float64(newStacks))
+			shadowOrbMod.UpdateFloatValue(floorPercent((0.216 + spriest.GetMasteryPoints()*0.0145) * float64(newStacks)))
 			shadowOrbMod.Activate()
 		},
 
@@ -133,13 +138,13 @@ func (spriest *ShadowPriest) ApplyTalents() {
 	})
 
 	spriest.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-		shadowOrbMod.UpdateFloatValue((0.216 + core.MasteryRatingToMasteryPoints(newMastery)*0.0145) * float64(spriest.shadowOrbsAura.GetStacks()))
+		shadowOrbMod.UpdateFloatValue(floorPercent((0.216 + core.MasteryRatingToMasteryPoints(newMastery)*0.0145) * float64(spriest.shadowOrbsAura.GetStacks())))
 	})
 
 	empoweredShadowMod := spriest.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  priest.PriestSpellDoT | priest.PriestSpellMindSear,
 		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.216 + spriest.GetMasteryPoints()*0.0145,
+		FloatValue: floorPercent(0.216 + spriest.GetMasteryPoints()*0.0145),
 	})
 
 	spriest.empoweredShadowAura = spriest.RegisterAura(core.Aura{
@@ -147,7 +152,7 @@ func (spriest *ShadowPriest) ApplyTalents() {
 		ActionID: core.ActionID{SpellID: 95799},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			empoweredShadowMod.UpdateFloatValue(0.216 + aura.Unit.GetMasteryPoints()*0.0145)
+			empoweredShadowMod.UpdateFloatValue(floorPercent(0.216 + aura.Unit.GetMasteryPoints()*0.0145))
 			empoweredShadowMod.Activate()
 		},
 
