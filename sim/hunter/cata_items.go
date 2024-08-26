@@ -9,7 +9,7 @@ import (
 )
 
 func (hunter *Hunter) newFlamingArrowSpell(spellID int32) core.SpellConfig {
-	actionID := core.ActionID{SpellID: spellID} // action 99058
+	actionID := core.ActionID{SpellID: spellID} // actually 99058
 
 	return core.SpellConfig{
 		ActionID:    actionID.WithTag(3),
