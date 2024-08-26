@@ -31,7 +31,7 @@ export class PresetConfigurationPicker extends Component {
 
 		const contentBlock = new ContentBlock(this.rootElem, 'saved-data', {
 			header: {
-				title: 'Preset configurations',
+				title: 'Preset Configurations',
 				tooltip: 'Preset configurations can apply an optimal combination of gear, talents, rotation and encounter settings.',
 			},
 		});
