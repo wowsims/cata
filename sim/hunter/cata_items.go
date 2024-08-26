@@ -1,7 +1,6 @@
 package hunter
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -51,7 +50,6 @@ var ItemSetFlameWakersBattleGear = core.NewItemSet(core.ItemSet{
 					}
 					procChance := 0.1
 					if sim.RandomFloat("Flaming Arrow") < procChance {
-						fmt.Printf("Flaming Arrow procced on %s\n", spell.ActionID.SpellID)
 						if spell == hunter.SteadyShot {
 							flamingArrowSpellForSteadyShot.Cast(sim, result.Target)
 						} else {
