@@ -556,13 +556,13 @@ export class ActionId {
 			// Paladin - T12 4P proc
 			case 'Shield of the Righteous':
 				if (this.tag === 3) {
-					name = 'Righteous Flames (T12 4P)';
+					name = 'Righteous Flames (T12 2P)';
 				}
 				break;
 			// Paladin - T12 4P proc
 			case 'Crusader Strike':
 				if (this.tag === 3) {
-					name = 'Flames of the Faithful (T12 4P)';
+					name = 'Flames of the Faithful (T12 2P)';
 				}
 				break;
 			default:
