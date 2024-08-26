@@ -108,6 +108,7 @@ export class PresetConfigurationPicker extends Component {
 				if (encounter.buffs) this.simUI.player.setBuffs(eventID, encounter.buffs);
 				if (encounter.debuffs) this.simUI.sim.raid.setDebuffs(eventID, encounter.debuffs);
 				if (encounter.raidBuffs) this.simUI.sim.raid.setBuffs(eventID, encounter.raidBuffs);
+				if (encounter.consumes) this.simUI.player.setConsumes(eventID, encounter.consumes);
 			}
 		});
 	}

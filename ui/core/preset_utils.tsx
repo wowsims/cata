@@ -5,6 +5,7 @@ import { Encounter } from './encounter';
 import { Player } from './player';
 import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
 import {
+	Consumes,
 	Cooldowns,
 	Debuffs,
 	Encounter as EncounterProto,
@@ -69,6 +70,7 @@ export interface PresetEncounter extends PresetBase {
 	raidBuffs?: RaidBuffs;
 	debuffs?: Debuffs;
 	buffs?: IndividualBuffs;
+	consumes?: Consumes;
 }
 export interface PresetEncounterOptions extends PresetOptionsBase {}
 
@@ -193,6 +195,7 @@ export const makePresetEncounter = (name: string, encounter?: PresetEncounter['e
 	let raidBuffs: PresetEncounter['raidBuffs'] = undefined;
 	let debuffs: PresetEncounter['debuffs'] = undefined;
 	let buffs: PresetEncounter['buffs'] = undefined;
+	let consumes: PresetEncounter['consumes'] = undefined;
 	if (typeof encounter === 'string') {
 		const parsedUrl = IndividualLinkImporter.tryParseUrlLocation(new URL(encounter));
 		const settings = parsedUrl?.settings;
@@ -203,6 +206,7 @@ export const makePresetEncounter = (name: string, encounter?: PresetEncounter['e
 		raidBuffs = settings?.raidBuffs;
 		debuffs = settings?.debuffs;
 		buffs = settings?.player?.buffs;
+		consumes = settings?.player?.consumes;
 	}
 
 	return {
@@ -213,6 +217,7 @@ export const makePresetEncounter = (name: string, encounter?: PresetEncounter['e
 		raidBuffs,
 		debuffs,
 		buffs,
+		consumes,
 		...options,
 	};
 };
