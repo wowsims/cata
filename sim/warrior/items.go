@@ -133,7 +133,7 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 				ActionID:    actionID,
 				SpellSchool: core.SpellSchoolFire,
 				ProcMask:    core.ProcMaskEmpty, // TODO (4.2) Test this
-				Flags:       core.SpellFlagMeleeMetrics,
+				Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
 
 				CritMultiplier:   character.DefaultMeleeCritMultiplier(),
 				DamageMultiplier: 1,
