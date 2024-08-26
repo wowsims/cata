@@ -88,17 +88,7 @@ export class PresetConfigurationPicker extends Component {
 			if (gear) this.simUI.player.setGear(eventID, this.simUI.sim.db.lookupEquipmentSpec(gear.gear));
 			if (talents) this.simUI.player.setTalentsString(eventID, talents.data.talentsString);
 			if (rotation?.rotation.rotation) {
-				const type = rotation.rotation.rotation?.type;
-				switch (type) {
-					case APLRotation_Type.TypeAPL:
-						this.simUI.player.setAplRotation(eventID, rotation.rotation.rotation);
-						break;
-					case APLRotation_Type.TypeSimple:
-						this.simUI.player.setSimpleRotation(eventID, rotation.rotation.rotation);
-						break;
-					default:
-						break;
-				}
+				this.simUI.player.setAplRotation(eventID, rotation.rotation.rotation);
 			}
 			if (epWeights) this.simUI.player.setEpWeights(eventID, epWeights.epWeights);
 			if (encounter) {
@@ -116,7 +106,7 @@ export class PresetConfigurationPicker extends Component {
 	private isBuildActive({ gear, rotation, talents, epWeights, encounter }: PresetBuild): boolean {
 		const hasGear = gear ? EquipmentSpec.equals(gear.gear, this.simUI.player.getGear().asSpec()) : true;
 		const hasTalents = talents ? talents.data.talentsString == this.simUI.player.getTalentsString() : true;
-		const hasRotation = rotation ? APLRotation.equals(rotation.rotation.rotation, this.simUI.player.getResolvedAplRotation()) : true;
+		const hasRotation = rotation ? APLRotation.equals(rotation.rotation.rotation, this.simUI.player.aplRotation) : true;
 		const hasEpWeights = epWeights ? this.simUI.player.getEpWeights().equals(epWeights.epWeights) : true;
 		const hasEncounter = encounter?.encounter ? Encounter.equals(encounter.encounter, this.simUI.sim.encounter.toProto()) : true;
 		const hasHealingModel = encounter?.healingModel ? HealingModel.equals(encounter.healingModel, this.simUI.player.getHealingModel()) : true;
