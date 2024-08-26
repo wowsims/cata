@@ -870,6 +870,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-ObsidianArborweaveRegalia"
+ value: {
+  dps: 19316.40579
+  tps: 25835.53156
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-Oremantle'sFavor-61448"
  value: {
   dps: 25933.548
