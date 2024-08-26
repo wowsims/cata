@@ -7,28 +7,37 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
+func (hunter *Hunter) newFlamingArrowSpell(spellID int32) core.SpellConfig {
+	actionID := core.ActionID{SpellID: spellID} // action 99058
+
+	return core.SpellConfig{
+		ActionID:    actionID,
+		SpellSchool: core.SpellSchoolFire,
+		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+		DamageMultiplier: 0.8,
+		CritMultiplier:   hunter.CritMultiplier(false, false, false),
+		ThreatMultiplier: 1,
+
+		BonusCoefficient: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target))
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+		},
+	}
+}
+
 var ItemSetFlameWakersBattleGear = core.NewItemSet(core.ItemSet{
 	Name: "Flamewaker's Battlegear",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
-			var flamingArrowSpell = hunter.RegisterSpell(core.SpellConfig{
-				ActionID:    core.ActionID{SpellID: 99058},
-				SpellSchool: core.SpellSchoolFire,
-				ProcMask:    core.ProcMaskEmpty,
-				Flags:       core.SpellFlagNoOnCastComplete,
 
-				DamageMultiplier: 0.8,
-				CritMultiplier:   hunter.CritMultiplier(false, false, false),
-				ThreatMultiplier: 1,
+			var flamingArrowSpellForSteadyShot = hunter.RegisterSpell(hunter.newFlamingArrowSpell(56641))
+			var flamingArrowSpellForCobraShot = hunter.RegisterSpell(hunter.newFlamingArrowSpell(77767))
 
-				BonusCoefficient: 1,
-
-				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target))
-					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
-				},
-			})
 			hunter.RegisterAura(core.Aura{
 				Label:    "T12 2-set",
 				Duration: core.NeverExpires,
@@ -41,7 +50,11 @@ var ItemSetFlameWakersBattleGear = core.NewItemSet(core.ItemSet{
 					}
 					procChance := 0.1
 					if sim.RandomFloat("Flaming Arrow") < procChance {
-						flamingArrowSpell.Cast(sim, result.Target)
+						if spell == hunter.SteadyShot {
+							flamingArrowSpellForSteadyShot.Cast(sim, result.Target)
+						} else {
+							flamingArrowSpellForCobraShot.Cast(sim, result.Target)
+						}
 					}
 				},
 			})

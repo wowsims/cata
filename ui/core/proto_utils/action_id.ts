@@ -475,6 +475,10 @@ export class ActionId {
 				} else if (this.tag == 2) {
 					name += ' (Off Hand)';
 				}
+				// Warrior - T12 4P proc
+				if (baseName === 'Raging Blow' && this.tag === 3) {
+					name = 'Fiery attack';
+				}
 				break;
 			case 'Death Strike':
 				if (this.tag == 1) {
@@ -530,6 +534,37 @@ export class ActionId {
 			case 'Scourge Strike':
 			case 'Opportunity Strike':
 				break;
+			// Warrior - T12 4P proc
+			case 'Shield Slam':
+				if (this.tag === 3) {
+					name = 'Combust';
+				}
+				break;
+			// Warrior - T12 4P proc
+			case 'Mortal Strike':
+				if (this.tag === 3) {
+					name = 'Fiery attack';
+				}
+				break;
+			// Hunter - T12 4P proc
+			case 'Steady Shot':
+			case 'Cobra Shot':
+				if (this.tag === 3) {
+					name = 'Flaming Arrow';
+				}
+				break;
+			// Paladin - T12 4P proc
+			case 'Shield of the Righteous':
+				if (this.tag === 3) {
+					name = 'Righteous Flames';
+				}
+				break;
+			// Paladin - T12 4P proc
+			case 'Crusader Strike':
+				if (this.tag === 3) {
+					name = 'Flames of the Faithful';
+				}
+				break;
 			default:
 				if (this.tag) {
 					name += ' (??)';
@@ -537,7 +572,7 @@ export class ActionId {
 				break;
 		}
 
-		const iconOverrideId = this.spellIconOverride;
+		const iconOverrideId = this.spellTooltipOverride || this.spellIconOverride;
 		let iconUrl = ActionId.makeIconUrl(tooltipData['icon']);
 		if (iconOverrideId) {
 			const overrideTooltipData = await ActionId.getTooltipData(iconOverrideId);
@@ -731,13 +766,19 @@ const spellIdIconOverrides: Map<string, ActionIdOverride> = new Map([
 const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 47897, tag: 1 }), { spellId: 47960 }], // Shadowflame Dot
 	[JSON.stringify({ spellId: 55090, tag: 1 }), { spellId: 70890 }], // Shadowflame Dot
+	[JSON.stringify({ spellId: 12294, tag: 3 }), { spellId: 99237 }], // Warrior - T12 4P Fiery Attack - Mortal Strike
+	[JSON.stringify({ spellId: 85288, tag: 3 }), { spellId: 99237 }], // Warrior - T12 4P Fiery Attack - Raging Blow
+	[JSON.stringify({ spellId: 23922, tag: 3 }), { spellId: 99240 }], // Warrior - T12 4P Combust - Shield Slam
+	[JSON.stringify({ spellId: 77767, tag: 3 }), { spellId: 99058 }], // Hunter - T12 4P Flaming Arrow - Cobra shot
+	[JSON.stringify({ spellId: 56641, tag: 3 }), { spellId: 99058 }], // Hunter - T12 4P Flaming Arrow - Steady shot
+	[JSON.stringify({ spellId: 35395, tag: 3 }), { spellId: 99092 }], // Paladin - T12 4P Flames of the Faithful
 ]);
 
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';
 
 const petNameToActionId: Record<string, ActionId> = {
 	'Ancient Guardian': ActionId.fromSpellId(86150),
-  'Army of the Dead': ActionId.fromSpellId(42650),
+	'Army of the Dead': ActionId.fromSpellId(42650),
 	Bloodworm: ActionId.fromSpellId(50452),
 	'Flame Orb': ActionId.fromSpellId(82731),
 	Gargoyle: ActionId.fromSpellId(49206),
