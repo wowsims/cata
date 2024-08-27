@@ -555,6 +555,21 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 		return this.encounter.targets[this.targetIndex].targetInputs[this.targetInputIndex] || TargetInput.create();
 	}
 
+	private clearPickers() {
+		if (this.boolPicker) {
+			this.boolPicker.rootElem.remove();
+			this.boolPicker = null;
+		}
+		if (this.numberPicker) {
+			this.numberPicker.rootElem.remove();
+			this.numberPicker = null;
+		}
+		if (this.enumPicker) {
+			this.enumPicker.rootElem.remove();
+			this.enumPicker = null;
+		}
+	}
+
 	constructor(
 		parent: HTMLElement,
 		encounter: Encounter,
@@ -587,16 +602,13 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 		if (!newValue) {
 			return;
 		}
-		if (newValue.inputType == InputType.Number && !this.numberPicker) {
-			if (this.boolPicker) {
-				this.boolPicker.rootElem.remove();
-				this.boolPicker = null;
-			}
-			if (this.enumPicker) {
-				this.enumPicker.rootElem.remove();
-				this.enumPicker = null;
+
+		if (newValue.inputType == InputType.Number) {
+			if (this.numberPicker && (this.numberPicker.inputConfig.label === newValue.label)) {
+				return;
 			}
 
+			this.clearPickers();
 			this.numberPicker = new NumberPicker(this.rootElem, null, {
 				id: randomUUID(),
 				label: newValue.label,
@@ -608,15 +620,12 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 					this.encounter.targetsChangeEmitter.emit(eventID);
 				},
 			});
-		} else if (newValue.inputType == InputType.Bool && !this.boolPicker) {
-			if (this.numberPicker) {
-				this.numberPicker.rootElem.remove();
-				this.numberPicker = null;
+		} else if (newValue.inputType == InputType.Bool) {
+			if (this.boolPicker && (this.boolPicker.inputConfig.label === newValue.label)) {
+				return;
 			}
-			if (this.enumPicker) {
-				this.enumPicker.rootElem.remove();
-				this.enumPicker = null;
-			}
+
+			this.clearPickers();
 			this.boolPicker = new BooleanPicker(this.rootElem, null, {
 				id: randomUUID(),
 				label: newValue.label,
@@ -630,18 +639,7 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 				},
 			});
 		} else if (newValue.inputType == InputType.Enum) {
-			if (this.boolPicker) {
-				this.boolPicker.rootElem.remove();
-				this.boolPicker = null;
-			}
-			if (this.numberPicker) {
-				this.numberPicker.rootElem.remove();
-				this.numberPicker = null;
-			}
-			if (this.enumPicker) {
-				this.enumPicker.rootElem.remove();
-				this.enumPicker = null;
-			}
+			this.clearPickers();
 			this.enumPicker = new EnumPicker<null>(this.rootElem, null, {
 				id: randomUUID(),
 				label: newValue.label,
