@@ -61,7 +61,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 			const hasteSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent, {
 				breakpoints,
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0.56 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
+				postCapEPs: [0.56],
 			});
 
 			return [hasteSoftCapConfig];
