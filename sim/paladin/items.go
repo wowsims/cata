@@ -34,13 +34,14 @@ var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 			paladin := agent.(PaladinAgent).GetPaladin()
 
 			flamesOfTheFaithful := paladin.RegisterSpell(core.SpellConfig{
-				ActionID:    core.ActionID{SpellID: 99092},
+				ActionID:    core.ActionID{SpellID: 35395}.WithTag(3), // actual 99092
 				SpellSchool: core.SpellSchoolFire,
 				ProcMask:    core.ProcMaskEmpty,
 				Flags: core.SpellFlagIgnoreModifiers |
 					core.SpellFlagBinary |
 					core.SpellFlagNoOnCastComplete |
-					core.SpellFlagNoOnDamageDealt,
+					core.SpellFlagNoOnDamageDealt |
+					core.SpellFlagPassiveSpell,
 
 				DamageMultiplier: 1,
 				ThreatMultiplier: 1,
@@ -191,7 +192,7 @@ var ItemSetBattlearmorOfImmolation = core.NewItemSet(core.ItemSet{
 			procDamage := 0.0
 
 			righteousFlames := paladin.RegisterSpell(core.SpellConfig{
-				ActionID:    core.ActionID{SpellID: 99075},
+				ActionID:    core.ActionID{SpellID: 53600}.WithTag(3), // actual 99075
 				SpellSchool: core.SpellSchoolFire,
 				ProcMask:    core.ProcMaskEmpty,
 				Flags: core.SpellFlagIgnoreModifiers |
