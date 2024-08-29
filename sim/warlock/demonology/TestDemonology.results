@@ -92,6 +92,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-AllItems-Balespider'sBurningVestments"
+ value: {
+  dps: 29222.86129
+  tps: 15046.10284
+ }
+}
+dps_results: {
  key: "TestDemonology-AllItems-BaubleofTrueBlood-50726"
  value: {
   dps: 26806.17199

@@ -92,6 +92,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAffliction-AllItems-Balespider'sBurningVestments"
+ value: {
+  dps: 27681.7312
+  tps: 20422.79393
+ }
+}
+dps_results: {
  key: "TestAffliction-AllItems-BaubleofTrueBlood-50726"
  value: {
   dps: 26002.99422
