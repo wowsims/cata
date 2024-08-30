@@ -6,7 +6,7 @@ import (
 )
 
 func init() {
-	cata.CreateDTRClassConfig(proto.Spec_SpecShadowPriest, 0.082).
+	cata.CreateDTRClassConfig(proto.Spec_SpecShadowPriest, 0.085).
 		AddSpell(2944, cata.NewDragonwrathSpellConfig().SupressImpact()).                 // Improved Devouring Plague
 		AddSpell(48045, cata.NewDragonwrathSpellConfig().ProcPerCast().TreatTickAsCast()) // Mind sear
 }

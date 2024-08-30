@@ -141,16 +141,11 @@ func defaultSpellHandler(sim *core.Simulation, spell *core.Spell, result *core.S
 
 func GetDRTSpellConfig(spell *core.Spell) core.SpellConfig {
 	baseConfig := core.SpellConfig{
-		ActionID:     spell.WithTag(71086),
-		SpellSchool:  spell.SpellSchool,
-		ProcMask:     core.ProcMaskEmpty,
-		ApplyEffects: spell.ApplyEffects,
-		ManaCost:     core.ManaCostOptions{},
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				NonEmpty: true,
-			},
-		},
+		ActionID:                 spell.WithTag(71086),
+		SpellSchool:              spell.SpellSchool,
+		ProcMask:                 core.ProcMaskEmpty,
+		ApplyEffects:             spell.ApplyEffects,
+		ManaCost:                 core.ManaCostOptions{},
 		CritMultiplier:           spell.Unit.Env.Raid.GetPlayerFromUnit(spell.Unit).GetCharacter().DefaultSpellCritMultiplier(),
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
@@ -276,11 +271,6 @@ func registerDotSpell(unit *core.Unit) {
 		Flags:                    core.SpellFlagNoSpellMods | core.SpellFlagIgnoreModifiers,
 		ProcMask:                 core.ProcMaskEmpty,
 		ManaCost:                 core.ManaCostOptions{},
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				NonEmpty: true,
-			},
-		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.CalcAndDealDamage(sim, target, spell.BonusSpellPower, spell.OutcomeAlwaysHit)
 		},
