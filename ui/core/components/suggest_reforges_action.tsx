@@ -509,28 +509,26 @@ export class ReforgeOptimizer {
 									values: [
 										{ name: 'Select preset', value: 0 },
 										...[...statPresets.keys()].map(key => {
-											const ratingValue = statPresets.get(key)!;
-											const percentOrPointsValue = unitStat.convertRatingToPercent(ratingValue)!;
+											const percentOrPointsValue = statPresets.get(key)!;
 											const percentValue = unitStat.equalsStat(Stat.StatMasteryRating)
 												? percentOrPointsValue * this.player.getMasteryPerPointModifier()
 												: percentOrPointsValue;
+
 											return {
 												name: `${key} - ${percentValue.toFixed(2)}%`,
-												value: ratingValue,
+												value: percentOrPointsValue,
 											};
 										}),
 									].sort((a, b) => a.value - b.value),
 									enableWhen: () => this.isAllowedToOverrideStatCaps || !this.softCapsConfig.some(config => config.unitStat.equals(unitStat)),
 									getValue: () => {
-										let ratingValue = unitStat.convertDefaultUnitsToRating(this.statCaps.getUnitStat(unitStat))!;
+										let ratingValue = this.statCaps.getUnitStat(unitStat);
 										if (unitStat.equalsStat(Stat.StatMasteryRating)) ratingValue = this.toVisualBaseMasteryRating(ratingValue);
 
 										return ratingValue;
 									},
 									setValue: (_eventID, _player, newValue) => {
-										const statValue = unitStat.equalsStat(Stat.StatMasteryRating)
-											? newValue + this.baseMastery
-											: unitStat.convertRatingToDefaultUnits(newValue)!;
+										const statValue = unitStat.equalsStat(Stat.StatMasteryRating) ? newValue + this.baseMastery : newValue;
 										this.setStatCap(unitStat, statValue);
 									},
 									...sharedInputConfig,
