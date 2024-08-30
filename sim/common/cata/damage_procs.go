@@ -55,8 +55,7 @@ func init() {
 		lightningSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:         core.ActionID{SpellID: 96891},
 			SpellSchool:      core.SpellSchoolNature,
-			ProcMask:         core.ProcMaskEmpty,
-			Flags:            core.SpellFlagNoOnDamageDealt,
+			ProcMask:         core.ProcMaskProc,
 			DamageMultiplier: 1,
 			CritMultiplier:   character.DefaultSpellCritMultiplier(),
 			ThreatMultiplier: 1,
@@ -100,8 +99,7 @@ func init() {
 		lightningSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:         core.ActionID{SpellID: 96891},
 			SpellSchool:      core.SpellSchoolNature,
-			ProcMask:         core.ProcMaskEmpty,
-			Flags:            core.SpellFlagNoOnDamageDealt,
+			ProcMask:         core.ProcMaskProc,
 			DamageMultiplier: 1,
 			CritMultiplier:   character.DefaultSpellCritMultiplier(),
 			ThreatMultiplier: 1,
