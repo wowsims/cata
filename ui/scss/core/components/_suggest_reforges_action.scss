@@ -75,6 +75,11 @@
 	}
 }
 
+.reforge-optimizer-stat-cap-item {
+	td:first-child {
+		width: 0;
+	}
+}
 .reforge-optimizer-stat-cap-item-label {
 	white-space: nowrap;
 }

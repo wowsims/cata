@@ -439,13 +439,6 @@ export class ReforgeOptimizer {
 		const sharedInputConfig: Pick<NumberPickerConfig<Player<any>>, 'changedEvent'> = {
 			changedEvent: _ => TypedEvent.onAny([this.sim.useSoftCapBreakpointsChangeEmitter, this.player.statCapsChangeEmitter]),
 		};
-		const numberPickerSharedConfig: Pick<NumberPickerConfig<Player<any>>, 'float' | 'showZeroes' | 'positive' | 'extraCssClasses' | 'changedEvent'> = {
-			float: true,
-			showZeroes: false,
-			positive: true,
-			extraCssClasses: ['mb-0'],
-			...sharedInputConfig,
-		};
 
 		const tableRef = ref<HTMLTableElement>();
 		const statCapTooltipRef = ref<HTMLButtonElement>();
@@ -469,7 +462,9 @@ export class ReforgeOptimizer {
 					</tr>
 					<tr>
 						<th>Stat</th>
-						<th className="text-end">%</th>
+						<th colSpan={2} className="text-end">
+							%
+						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -482,8 +477,13 @@ export class ReforgeOptimizer {
 						const statName = unitStat.getShortName(this.player.getClass());
 
 						const percentagePicker = new NumberPicker(null, this.player, {
-							...numberPickerSharedConfig,
 							id: `reforge-optimizer-${statName}-percentage`,
+							float: true,
+							fractionCount: 5,
+							showZeroes: false,
+							positive: true,
+							extraCssClasses: ['mb-0'],
+							...sharedInputConfig,
 							enableWhen: () => this.isAllowedToOverrideStatCaps || !this.softCapsConfig.some(config => config.unitStat.equals(unitStat)),
 							getValue: () => {
 								const rawStatValue = this.statCaps.getUnitStat(unitStat);
@@ -551,12 +551,12 @@ export class ReforgeOptimizer {
 											)}
 										</div>
 									</td>
-									<td>{percentagePicker.rootElem}</td>
+									<td colSpan={2}>{percentagePicker.rootElem}</td>
 								</tr>
 								{presets && (
 									<tr>
 										<td></td>
-										<td>{presets.rootElem}</td>
+										<td colSpan={2}>{presets.rootElem}</td>
 									</tr>
 								)}
 							</>
