@@ -21,75 +21,99 @@ const (
 
 type SpellHandler func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult)
 
+type DragonwrathSpellConfig struct {
+	spellHandler SpellHandler
+	procPerCast  bool
+	tickIsCast   bool // some spells deal periodic damage but should be treated as casts
+	supress      int8
+}
+
 type DragonwrathClassConfig struct {
-	procChance   float64
-	spellHandler map[int32]SpellHandler
-	spellConfig  map[int32]int8
+	procChance  float64
+	spellConfig map[int32]DragonwrathSpellConfig
 }
 
 var classConfig = map[proto.Spec]*DragonwrathClassConfig{}
-var globalSpellHandler = map[int32]SpellHandler{}
+var globalSpellConfig = map[int32]DragonwrathSpellConfig{}
 
 func (config *DragonwrathClassConfig) getDoTHandler(spellId int32) SpellHandler {
-	if val, ok := config.spellHandler[spellId]; ok {
-		return val
+	if val, ok := config.spellConfig[spellId]; ok && val.spellHandler != nil {
+		return val.spellHandler
 	}
 
-	if val, ok := globalSpellHandler[spellId]; ok {
-		return val
+	if val, ok := globalSpellConfig[spellId]; ok && val.spellHandler != nil {
+		return val.spellHandler
 	}
 
 	return defaultDoTHandler
 }
 
 func (config *DragonwrathClassConfig) getImpactHandler(spellId int32) SpellHandler {
-	if val, ok := config.spellHandler[spellId]; ok {
-		return val
+	if val, ok := config.spellConfig[spellId]; ok && val.spellHandler != nil {
+		return val.spellHandler
 	}
 
-	if val, ok := globalSpellHandler[spellId]; ok {
-		return val
+	if val, ok := globalSpellConfig[spellId]; ok && val.spellHandler != nil {
+		return val.spellHandler
 	}
 
 	return defaultSpellHandler
 }
 
-func (config *DragonwrathClassConfig) supressInternal(spellId int32, supressionType int8) {
-	if _, ok := config.spellConfig[spellId]; !ok {
-		config.spellConfig[spellId] = 0
-	}
-
-	config.spellConfig[spellId] |= supressionType
+func (config DragonwrathSpellConfig) SupressImpact() DragonwrathSpellConfig {
+	config.supress |= supressImpact
+	return config
 }
 
-func (config *DragonwrathClassConfig) SupressImpact(spellId int32) {
-	config.supressInternal(spellId, supressImpact)
+func (config DragonwrathSpellConfig) SupressDoT() DragonwrathSpellConfig {
+	config.supress |= supressDoT
+	return config
 }
 
-func (config *DragonwrathClassConfig) SupressDoT(spellId int32) {
-	config.supressInternal(spellId, supressDoT)
+func (config DragonwrathSpellConfig) SupressSpell() DragonwrathSpellConfig {
+	config.supress = supressAll
+	return config
 }
 
-func (config *DragonwrathClassConfig) SupressSpell(spellId int32) {
-	config.supressInternal(spellId, supressAll)
+func (config DragonwrathSpellConfig) WithSpellHandler(handler SpellHandler) DragonwrathSpellConfig {
+	config.spellHandler = handler
+	return config
+}
+
+func (config DragonwrathSpellConfig) TreatTickAsCast() DragonwrathSpellConfig {
+	config.tickIsCast = true
+	return config
+}
+
+func (config DragonwrathSpellConfig) ProcPerCast() DragonwrathSpellConfig {
+	config.procPerCast = true
+	return config
+}
+
+func NewDragonwrathSpellConfig() DragonwrathSpellConfig {
+	return DragonwrathSpellConfig{}
 }
 
 func GetDragonwrathDoTSpell(unit *core.Unit) *core.Spell {
 	return unit.GetSpell(core.ActionID{SpellID: 101085})
 }
 
-func AddClassConfig(spec proto.Spec, procChance float64) *DragonwrathClassConfig {
+func CreateDTRClassConfig(spec proto.Spec, procChance float64) *DragonwrathClassConfig {
 	if classConfig[spec] != nil {
 		panic("Class config already registered")
 	}
 
 	classConfig[spec] = &DragonwrathClassConfig{
-		procChance:   procChance,
-		spellHandler: map[int32]SpellHandler{},
-		spellConfig:  map[int32]int8{},
+		procChance:  procChance,
+		spellConfig: map[int32]DragonwrathSpellConfig{},
 	}
 
 	return classConfig[spec]
+}
+
+func (config *DragonwrathClassConfig) AddSpell(id int32, spellConfig DragonwrathSpellConfig) *DragonwrathClassConfig {
+	config.spellConfig[id] = spellConfig
+	return config
 }
 
 func defaultDoTHandler(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -175,22 +199,26 @@ func init() {
 					panic("DTR not supported for this spec yet")
 				}
 
-				if val, ok := config.spellConfig[spell.SpellID]; ok && val&supressImpact > 0 {
-					return
-				}
+				if val, ok := config.spellConfig[spell.SpellID]; ok {
+					if val.supress&supressImpact > 0 {
+						return
+					}
 
-				// make sure the same spell impact can only trigger once per timestamp (AoE Impact spells like Arcane Explosion or Mind Sear)
-				if lastTimestamp != sim.CurrentTime {
-					lastTimestamp = sim.CurrentTime
-					spellList = map[int32]bool{}
-				}
+					// make sure the same spell impact can only trigger once per timestamp (AoE Impact spells like Arcane Explosion or Mind Sear)
+					if val.procPerCast {
+						if lastTimestamp != sim.CurrentTime {
+							lastTimestamp = sim.CurrentTime
+							spellList = map[int32]bool{}
+						}
 
-				if _, ok := spellList[spell.SpellID]; ok {
-					return
-				}
+						if _, ok := spellList[spell.SpellID]; ok {
+							return
+						}
 
-				// spell has not been checked yet, add it
-				spellList[spell.SpellID] = true
+						// spell has not been checked yet, add it
+						spellList[spell.SpellID] = true
+					}
+				}
 
 				if !sim.Proc(config.procChance, "Dragonwrath, Tarecgosa's Rest - DoT Proc") {
 					return
@@ -210,8 +238,15 @@ func init() {
 					panic("DTR not supported for this spec yet")
 				}
 
-				if val, ok := config.spellConfig[spell.SpellID]; ok && val&supressDoT > 0 {
-					return
+				if val, ok := config.spellConfig[spell.SpellID]; ok {
+					if val.supress&supressDoT > 0 {
+						return
+					}
+
+					if val.tickIsCast {
+						aura.OnSpellHitDealt(aura, sim, spell, result)
+						return
+					}
 				}
 
 				if !sim.Proc(config.procChance, "Dragonwrath, Tarecgosa's Rest - DoT Proc") {
@@ -253,28 +288,29 @@ func registerDotSpell(unit *core.Unit) {
 }
 
 func registerPulseLightningCapacitor() {
-	globalSpellHandler[96891] = func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-		copySpell := spell.Unit.GetSpell(spell.WithTag(71086))
-		if copySpell == nil {
-			copyConfig := GetDRTSpellConfig(spell)
-			copyConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealDamage(sim, target, spell.BonusSpellPower, spell.OutcomeMagicHitAndCrit)
+	globalSpellConfig[96891] = NewDragonwrathSpellConfig().
+		WithSpellHandler(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			copySpell := spell.Unit.GetSpell(spell.WithTag(71086))
+			if copySpell == nil {
+				copyConfig := GetDRTSpellConfig(spell)
+				copyConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					spell.CalcAndDealDamage(sim, target, spell.BonusSpellPower, spell.OutcomeMagicHitAndCrit)
+				}
+				copySpell = spell.Unit.RegisterSpell(copyConfig)
 			}
-			copySpell = spell.Unit.RegisterSpell(copyConfig)
-		}
 
-		sim.AddPendingAction(
-			&core.PendingAction{
-				NextActionAt: sim.CurrentTime + time.Millisecond*200, // add slight delay
-				Priority:     core.ActionPriorityAuto,
-				OnAction: func(sim *core.Simulation) {
-					// for now use the same roll as the old one as we don't carry any
-					// meta data of the auras
-					// only use BonusDamage fields for spells with 0 spell scaling
-					copySpell.BonusSpellPower = result.PreOutcomeDamage
-					copySpell.Cast(sim, result.Target)
+			sim.AddPendingAction(
+				&core.PendingAction{
+					NextActionAt: sim.CurrentTime + time.Millisecond*200, // add slight delay
+					Priority:     core.ActionPriorityAuto,
+					OnAction: func(sim *core.Simulation) {
+						// for now use the same roll as the old one as we don't carry any
+						// meta data of the auras
+						// only use BonusDamage fields for spells with 0 spell scaling
+						copySpell.BonusSpellPower = result.PreOutcomeDamage
+						copySpell.Cast(sim, result.Target)
+					},
 				},
-			},
-		)
-	}
+			)
+		})
 }
