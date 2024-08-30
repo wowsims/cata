@@ -116,13 +116,26 @@ type Druid struct {
 
 	ExtendingMoonfireStacks int
 
-	Treant1 *TreantPet
-	Treant2 *TreantPet
-	Treant3 *TreantPet
+	Treants       *Treants
+	BurningTreant *BurningTreant
 
 	form         DruidForm
 	disabledMCDs []*core.MajorCooldown
 }
+
+const (
+	WrathBaseEnergyGain     float64 = 13 + 1.0/3
+	StarsurgeBaseEnergyGain float64 = 15
+	StarfireBaseEnergyGain  float64 = 20
+	MoonfireBaseEnergyGain  float64 = 0
+	SunfireBaseEnergyGain   float64 = 0
+
+	MoonfireLunarShowerEnergyGain float64 = MoonfireBaseEnergyGain + 8
+	SunfireLunarShowerEnergyGain  float64 = SunfireBaseEnergyGain + 8
+
+	Wrath4PT12EnergyGain    float64 = WrathBaseEnergyGain + 3
+	Starfire4PT12EnergyGain float64 = StarfireBaseEnergyGain + 5
+)
 
 const (
 	DruidSpellFlagNone int64 = 0
@@ -355,9 +368,15 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 	druid.PseudoStats.BaseDodgeChance += 0.04951
 
 	if druid.Talents.ForceOfNature {
-		druid.Treant1 = druid.NewTreant()
-		druid.Treant2 = druid.NewTreant()
-		druid.Treant3 = druid.NewTreant()
+		druid.Treants = &Treants{
+			Treant1: druid.NewTreant(),
+			Treant2: druid.NewTreant(),
+			Treant3: druid.NewTreant(),
+		}
+	}
+
+	if druid.HasSetBonus(ItemSetObsidianArborweaveRegalia, 2) {
+		druid.BurningTreant = druid.NewBurningTreant()
 	}
 
 	return druid

@@ -125,7 +125,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			communion: true,
 		}),
 		partyBuffs: PartyBuffs.create({}),
-		individualBuffs: IndividualBuffs.create({}),
+		individualBuffs: IndividualBuffs.create({
+			communion: true,
+		}),
 		debuffs: Debuffs.create({
 			exposeArmor: true,
 			bloodFrenzy: true,
@@ -149,7 +151,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		BuffDebuffInputs.SpellHasteBuff,
 		BuffDebuffInputs.PowerInfusion,
 	],
-	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff],
+	excludeBuffDebuffInputs: [
+		BuffDebuffInputs.BleedDebuff,
+		BuffDebuffInputs.DamagePercentBuff,
+	],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [OtherInputs.InputDelay, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],

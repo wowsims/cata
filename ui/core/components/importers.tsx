@@ -160,7 +160,7 @@ export class IndividualLinkImporter {
 		return map;
 	})();
 
-	static tryParseUrlLocation(location: Location): UrlParseData | null {
+	static tryParseUrlLocation(location: Location | URL): UrlParseData | null {
 		let hash = location.hash;
 		if (hash.length <= 1) {
 			return null;
