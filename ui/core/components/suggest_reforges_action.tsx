@@ -41,7 +41,7 @@ type StatTooltipContent = { [key in Stat]?: () => Element | string };
 const STAT_TOOLTIPS: StatTooltipContent = {
 	[Stat.StatMasteryRating]: () => (
 		<>
-			<strong>Including</strong> your base mastery
+			Total <strong>percentage</strong>
 		</>
 	),
 	[Stat.StatHasteRating]: () => (
@@ -488,7 +488,6 @@ export class ReforgeOptimizer {
 							setValue: (_eventID, _player, newValue) => {
 								let statValue = unitStat.convertPercentToDefaultUnits(newValue)!;
 								if (unitStat.equalsStat(Stat.StatMasteryRating)) statValue /= this.player.getMasteryPerPointModifier();
-
 								this.setStatCap(unitStat, statValue);
 							},
 						};
@@ -513,10 +512,7 @@ export class ReforgeOptimizer {
 									values: [
 										{ name: 'Select preset', value: 0 },
 										...[...statPresets.keys()].map(key => {
-											const percentOrPointsValue = statPresets.get(key)!;
-											const percentValue = unitStat.equalsStat(Stat.StatMasteryRating)
-												? percentOrPointsValue * this.player.getMasteryPerPointModifier()
-												: percentOrPointsValue;
+											const percentValue = statPresets.get(key)!;
 
 											return {
 												name: `${key} - ${percentValue.toFixed(2)}%`,
@@ -1004,17 +1000,5 @@ export class ReforgeOptimizer {
 			statPoints *= this.player.getMasteryPerPointModifier();
 		}
 		return statPoints;
-	}
-
-	private toVisualBaseMasteryRating(value: number) {
-		// If the value is less than or equal to the base mastery, then set it to 0,
-		// because we assume you want to reset this stat cap.
-		if (value <= this.baseMastery) {
-			value = 0;
-		} else {
-			// Visually we show the mastery rating without the base mastery included
-			value -= this.baseMastery;
-		}
-		return value;
 	}
 }

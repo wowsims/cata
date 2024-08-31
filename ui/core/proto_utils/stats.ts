@@ -674,6 +674,7 @@ export class Stats {
 // as a easy to access reference
 export interface UnitStatPresets {
 	unitStat: UnitStat;
+	// Name of the preset and the value in percentage
 	presets: Map<string, number>;
 }
 
