@@ -1,5 +1,18 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Debuffs, Flask, Food, Glyphs, IndividualBuffs, Potions, Profession, RaidBuffs, Stat, TinkerHands } from '../../core/proto/common';
+import {
+	Consumes,
+	Debuffs,
+	Flask,
+	Food,
+	Glyphs,
+	IndividualBuffs,
+	Potions,
+	Profession,
+	PseudoStat,
+	RaidBuffs,
+	Stat,
+	TinkerHands,
+} from '../../core/proto/common';
 import { SavedTalents } from '../../core/proto/ui';
 import {
 	DemonologyWarlock_Options as WarlockOptions,
@@ -8,7 +21,7 @@ import {
 	WarlockOptions_Summon as Summon,
 	WarlockPrimeGlyph as PrimeGlyph,
 } from '../../core/proto/warlock';
-import { Stats } from '../../core/proto_utils/stats';
+import { Stats, UnitStat } from '../../core/proto_utils/stats';
 import { WARLOCK_BREAKPOINTS } from '../presets';
 import DefaultApl from './apls/default.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
@@ -120,11 +133,11 @@ export const OtherDefaults = {
 	darkIntentUptime: 90,
 };
 
-export const DEMONOLOGY_BREAKPOINTS = new Map([
-	[
-		Stat.StatHasteRating,
-		new Map([
-			...[...WARLOCK_BREAKPOINTS.get(Stat.StatHasteRating)!],
+export const DEMONOLOGY_BREAKPOINTS = [
+	{
+		unitStat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent),
+		presets: new Map([
+			...[...WARLOCK_BREAKPOINTS.find(entry => entry.unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHastePercent))!.presets!],
 			['16-tick - Immo Aura', 3.35918],
 			['8-tick - Immolate:Inferno', 7.12373],
 			['17-tick - Immo Aura', 9.95053],
@@ -171,5 +184,5 @@ export const DEMONOLOGY_BREAKPOINTS = new Map([
 			// ['23-tick - Immolate:Inferno', 221.37122],
 			// ['24-tick - Immolate:Inferno', 235.75829],
 		]),
-	],
-]);
+	},
+];

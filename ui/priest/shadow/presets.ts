@@ -8,10 +8,10 @@ import {
 	IndividualBuffs,
 	Potions,
 	Profession,
+	PseudoStat,
 	RaidBuffs,
 	Stat,
 	TinkerHands,
-	TristateEffect,
 } from '../../core/proto/common.js';
 import {
 	PriestMajorGlyph as MajorGlyph,
@@ -21,7 +21,7 @@ import {
 	ShadowPriest_Options as Options,
 } from '../../core/proto/priest.js';
 import { SavedTalents } from '../../core/proto/ui.js';
-import { Stats } from '../../core/proto_utils/stats';
+import { Stats, UnitStat, UnitStatPresets } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
 import PreRaidGear from './gear_sets/preraid.gear.json';
@@ -48,14 +48,14 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	}),
 );
 
-export const SHADOW_BREAKPOINTS = new Map([
-	[
-		Stat.StatHasteRating,
+export const SHADOW_BREAKPOINTS: UnitStatPresets[] = [
+	{
 		// Picked from Priest Discord
 		// Sources:
 		// https://docs.google.com/spreadsheets/d/17cJJUReg2uz-XxBB3oDWb1kCncdH_-X96mSb0HAu4Ko/edit?usp=sharing
 		// https://docs.google.com/spreadsheets/d/1WLOZ1YevGPw_WZs0JhGzVVy906W5y0i9UqHa3ejyBkE/htmlview?gid=19
-		new Map([
+		unitStat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent),
+		presets: new Map([
 			['9-tick - DP', 6.25111],
 			['7-tick - SWP', 8.32281],
 			['BL - 9-tick - SWP', 8.98193],
@@ -124,8 +124,8 @@ export const SHADOW_BREAKPOINTS = new Map([
 			// ['15-tick - VT', 189.99519],
 			// ['18-tick - SWP', 191.68695],
 		]),
-	],
-]);
+	},
+];
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://www.wowhead.com/cata/talent-calc/priest and copy the numbers in the url.

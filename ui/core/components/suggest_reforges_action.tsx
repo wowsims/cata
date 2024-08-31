@@ -10,7 +10,7 @@ import { Class, ItemSlot, PseudoStat, Spec, Stat } from '../proto/common';
 import { StatCapType } from '../proto/ui';
 import { Gear } from '../proto_utils/gear';
 import { slotNames, statCapTypeNames } from '../proto_utils/names';
-import { pseudoStatIsCapped, StatCap, Stats, UnitStat } from '../proto_utils/stats';
+import { pseudoStatIsCapped, StatCap, Stats, UnitStat, UnitStatPresets } from '../proto_utils/stats';
 import { SpecTalents } from '../proto_utils/utils';
 import { Sim } from '../sim';
 import { ActionGroupItem } from '../sim_ui';
@@ -54,7 +54,7 @@ const STAT_TOOLTIPS: StatTooltipContent = {
 export type ReforgeOptimizerOptions = {
 	experimental?: true;
 	statTooltips?: StatTooltipContent;
-	statSelectionPresets?: Map<Stat, Map<string, number>>;
+	statSelectionPresets?: UnitStatPresets[];
 	// Allows you to modify the stats before they are returned for the calculations
 	// For example: Adding class specific Glyphs/Talents that are not added by the backend
 	updateGearStatsModifier?: (baseStats: Stats) => Stats;
@@ -504,7 +504,7 @@ export class ReforgeOptimizer {
 							...sharedInputConfig,
 							...sharedStatInputConfig,
 						});
-						const statPresets: Map<string, number> | undefined = this.statSelectionPresets?.get(rootStat);
+						const statPresets = this.statSelectionPresets?.find(entry => entry.unitStat.equals(unitStat))?.presets;
 						const presets = !!statPresets
 							? new EnumPicker(null, this.player, {
 									id: `reforge-optimizer-${statName}-presets`,

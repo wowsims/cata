@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, RaidBuffs, Spec, Stat } from '../../core/proto/common';
+import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, PseudoStat, RaidBuffs, Stat } from '../../core/proto/common';
 import {
 	FireMage_Options as MageOptions,
 	MageMajorGlyph as MajorGlyph,
@@ -7,7 +7,7 @@ import {
 	MagePrimeGlyph as PrimeGlyph,
 } from '../../core/proto/mage';
 import { SavedTalents } from '../../core/proto/ui';
-import { Stats } from '../../core/proto_utils/stats';
+import { Stats, UnitStat, UnitStatPresets } from '../../core/proto_utils/stats';
 import FireApl from './apls/fire.apl.json';
 //import FireAoeApl from './apls/fire_aoe.apl.json';
 import P1FireBisGear from './gear_sets/p1_fire.gear.json';
@@ -100,14 +100,14 @@ export const OtherDefaults = {
 	profession2: Profession.Tailoring,
 };
 
-export const FIRE_BREAKPOINTS = new Map([
-	[
-		Stat.StatHasteRating,
+export const FIRE_BREAKPOINTS: UnitStatPresets[] = [
+	{
 		// Picked from Mage Discord
 		// Sources:
 		// https://docs.google.com/spreadsheets/d/17cJJUReg2uz-XxBB3oDWb1kCncdH_-X96mSb0HAu4Ko/edit?gid=0#gid=0
 		// https://docs.google.com/spreadsheets/d/1WLOZ1YevGPw_WZs0JhGzVVy906W5y0i9UqHa3ejyBkE/htmlview?gid=19
-		new Map([
+		unitStat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent),
+		presets: new Map([
 			['11-tick - Combust', 4.98689],
 			['5-tick - LvB/Pyro', 12.50704],
 			['12-tick - Combust', 15.00864],
@@ -139,5 +139,5 @@ export const FIRE_BREAKPOINTS = new Map([
 			// ['29-tick - Combust', 185.30679],
 			// ['12-tick - LvB/Pyro', 187.49404],
 		]),
-	],
-]);
+	},
+];

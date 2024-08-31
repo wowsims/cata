@@ -1,9 +1,10 @@
-import { Stat } from '../core/proto/common';
+import { PseudoStat } from '../core/proto/common';
+import { UnitStat, UnitStatPresets } from '../core/proto_utils/stats';
 
-export const WARLOCK_BREAKPOINTS = new Map([
-	[
-		Stat.StatHasteRating,
-		new Map([
+export const WARLOCK_BREAKPOINTS: UnitStatPresets[] = [
+	{
+		unitStat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent),
+		presets: new Map([
 			// Picked from Warlock Discord
 			// Sources:
 			// https://docs.google.com/spreadsheets/d/1plPkROOiRxDO3lBNc6ejowUgXDrt_zXd7FaYPU1wyVQ/edit?gid=497073075#gid=497073075
@@ -70,5 +71,5 @@ export const WARLOCK_BREAKPOINTS = new Map([
 			// ['46-tick - Agony', 279.14699],
 			// ['47-tick - Agony', 287.22176],
 		]),
-	],
-]);
+	},
+];
