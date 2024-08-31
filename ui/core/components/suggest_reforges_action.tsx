@@ -479,7 +479,7 @@ export class ReforgeOptimizer {
 						const percentagePicker = new NumberPicker(null, this.player, {
 							id: `reforge-optimizer-${statName}-percentage`,
 							float: true,
-							fractionCount: 5,
+							maxDecimalDigits: 5,
 							showZeroes: false,
 							positive: true,
 							extraCssClasses: ['mb-0'],

@@ -9,7 +9,7 @@ export interface NumberPickerConfig<ModObject> extends InputConfig<ModObject, nu
 	id: string;
 	// Whether the picker represents a float value. Default `false`
 	float?: boolean;
-	fractionCount?: number;
+	maxDecimalDigits?: number;
 	// Whether to only allow positive values. Default `false`
 	positive?: boolean;
 	// Whether to show values of zero within the input. Default `true`
@@ -22,12 +22,12 @@ export class NumberPicker<ModObject> extends Input<ModObject, number> {
 	private float: boolean;
 	private positive: boolean;
 	private showZeroes: boolean;
-	private fractionCount: number;
+	private maxDecimalDigits: number;
 
 	constructor(parent: HTMLElement | null, modObject: ModObject, config: NumberPickerConfig<ModObject>) {
 		super(parent, 'number-picker-root', modObject, config);
 		this.float = config.float ?? false;
-		this.fractionCount = config.fractionCount ?? 2;
+		this.maxDecimalDigits = config.maxDecimalDigits ?? 2;
 		this.positive = config.positive ?? false;
 		this.showZeroes = config.showZeroes ?? true;
 
@@ -43,7 +43,7 @@ export class NumberPicker<ModObject> extends Input<ModObject, number> {
 					if (this.float) {
 						this.inputElem.value = formatToNumber(Math.abs(Number(this.inputElem.value)), {
 							minimumFractionDigits: 2,
-							maximumFractionDigits: this.fractionCount,
+							maximumFractionDigits: this.maxDecimalDigits,
 						});
 					} else {
 						this.inputElem.value = Math.abs(parseInt(this.inputElem.value)).toString();
@@ -94,7 +94,7 @@ export class NumberPicker<ModObject> extends Input<ModObject, number> {
 		}
 
 		if (this.float) {
-			this.inputElem.value = formatToNumber(newValue, { minimumFractionDigits: 2, maximumFractionDigits: this.fractionCount });
+			this.inputElem.value = formatToNumber(newValue, { minimumFractionDigits: 2, maximumFractionDigits: this.maxDecimalDigits });
 		} else {
 			this.inputElem.value = String(newValue);
 		}
