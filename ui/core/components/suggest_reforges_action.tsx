@@ -520,7 +520,7 @@ export class ReforgeOptimizer {
 
 											return {
 												name: `${key} - ${percentValue.toFixed(2)}%`,
-												value: percentOrPointsValue,
+												value: percentValue,
 											};
 										}),
 									].sort((a, b) => a.value - b.value),
