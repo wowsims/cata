@@ -476,15 +476,7 @@ export class ReforgeOptimizer {
 						const listElementRef = ref<HTMLTableRowElement>();
 						const statName = unitStat.getShortName(this.player.getClass());
 
-						const percentagePicker = new NumberPicker(null, this.player, {
-							id: `reforge-optimizer-${statName}-percentage`,
-							float: true,
-							maxDecimalDigits: 5,
-							showZeroes: false,
-							positive: true,
-							extraCssClasses: ['mb-0'],
-							...sharedInputConfig,
-							enableWhen: () => this.isAllowedToOverrideStatCaps || !this.softCapsConfig.some(config => config.unitStat.equals(unitStat)),
+						const sharedStatInputConfig: Pick<NumberPickerConfig<Player<any>>, 'getValue' | 'setValue'> = {
 							getValue: () => {
 								const rawStatValue = this.statCaps.getUnitStat(unitStat);
 								let percentOrPointsValue = unitStat.convertDefaultUnitsToPercent(rawStatValue)!;
@@ -499,6 +491,18 @@ export class ReforgeOptimizer {
 
 								this.setStatCap(unitStat, statValue);
 							},
+						};
+
+						const percentagePicker = new NumberPicker(null, this.player, {
+							id: `reforge-optimizer-${statName}-percentage`,
+							float: true,
+							maxDecimalDigits: 5,
+							showZeroes: false,
+							positive: true,
+							extraCssClasses: ['mb-0'],
+							enableWhen: () => this.isAllowedToOverrideStatCaps || !this.softCapsConfig.some(config => config.unitStat.equals(unitStat)),
+							...sharedInputConfig,
+							...sharedStatInputConfig,
 						});
 						const statPresets: Map<string, number> | undefined = this.statSelectionPresets?.get(rootStat);
 						const presets = !!statPresets
@@ -521,17 +525,8 @@ export class ReforgeOptimizer {
 										}),
 									].sort((a, b) => a.value - b.value),
 									enableWhen: () => this.isAllowedToOverrideStatCaps || !this.softCapsConfig.some(config => config.unitStat.equals(unitStat)),
-									getValue: () => {
-										let ratingValue = this.statCaps.getUnitStat(unitStat);
-										if (unitStat.equalsStat(Stat.StatMasteryRating)) ratingValue = this.toVisualBaseMasteryRating(ratingValue);
-
-										return ratingValue;
-									},
-									setValue: (_eventID, _player, newValue) => {
-										const statValue = unitStat.equalsStat(Stat.StatMasteryRating) ? newValue + this.baseMastery : newValue;
-										this.setStatCap(unitStat, statValue);
-									},
 									...sharedInputConfig,
+									...sharedStatInputConfig,
 							  })
 							: null;
 
