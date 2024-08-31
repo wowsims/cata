@@ -87,7 +87,10 @@ const buildList = <T extends QuickSwapAllowedItem>(data: QuickSwapListConfig<T>)
 									ref={anchorElem}
 									href="javascript:void(0)"
 									className={`tooltip-quick-swap__anchor d-flex align-items-center ${item.active ? ' active' : ''}`}
-									onclick={() => data.onItemClick(item.item)}>
+									onclick={event => {
+										event?.preventDefault();
+										data.onItemClick(item.item);
+									}}>
 									<img ref={iconElem} alt={item.item.name} className="tooltip-quick-swap__icon gem-icon flex-shrink-0" />
 									<span ref={labelElem} className="tooltip-quick-swap__label text-start">
 										{item.item.name}
