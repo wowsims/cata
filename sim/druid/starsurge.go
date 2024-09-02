@@ -8,8 +8,7 @@ import (
 )
 
 func (druid *Druid) registerStarsurgeSpell() {
-	solarMetric := druid.NewSolarEnergyMetrics(core.ActionID{SpellID: 78674})
-	lunarMetric := druid.NewLunarEnergyMetrics(core.ActionID{SpellID: 78674})
+	druid.SetSpellEclipseEnergy(DruidSpellStarsurge, StarsurgeBaseEnergyGain, StarsurgeBaseEnergyGain)
 
 	druid.Starsurge = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 78674},
@@ -47,12 +46,6 @@ func (druid *Druid) registerStarsurgeSpell() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
-				if druid.CanGainEnergy(SolarEnergy) {
-					druid.AddEclipseEnergy(15, SolarEnergy, sim, solarMetric)
-				} else {
-					druid.AddEclipseEnergy(15, LunarEnergy, sim, lunarMetric)
-				}
-
 				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)
 				})

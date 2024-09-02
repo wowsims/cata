@@ -1,28 +1,18 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs.js';
 import * as OtherInputs from '../../core/components/inputs/other_inputs.js';
-import {ReforgeOptimizer} from '../../core/components/suggest_reforges_action';
+import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
 import * as Mechanics from '../../core/constants/mechanics.js';
-import {IndividualSimUI, registerSpecConfig} from '../../core/individual_sim_ui.js';
-import {Player} from '../../core/player.js';
-import {PlayerClasses} from '../../core/player_classes';
-import {APLRotation, APLRotation_Type} from '../../core/proto/apl.js';
-import {
-	Debuffs,
-	Faction,
-	IndividualBuffs,
-	PartyBuffs,
-	PseudoStat,
-	Race,
-	RaidBuffs,
-	Spec,
-	Stat
-} from '../../core/proto/common.js';
-import {PaladinPrimeGlyph, PaladinSeal} from '../../core/proto/paladin';
+import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
+import { Player } from '../../core/player.js';
+import { PlayerClasses } from '../../core/player_classes';
+import { APLRotation, APLRotation_Type } from '../../core/proto/apl.js';
+import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
+import { PaladinPrimeGlyph, PaladinSeal } from '../../core/proto/paladin';
 import { Stats, UnitStat } from '../../core/proto_utils/stats.js';
-import {TypedEvent} from '../../core/typed_event.js';
+import { TypedEvent } from '../../core/typed_event.js';
 import * as PaladinInputs from '../inputs.js';
-import * as Presets from './presets.js';
 import * as RetributionInputs from './inputs.js';
+import * as Presets from './presets.js';
 
 const isGlyphOfSealOfTruthActive = (player: Player<Spec.SpecRetributionPaladin>): boolean => {
 	const currentSeal = player.getSpecOptions().classOptions?.seal;
@@ -103,7 +93,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.RetTalents.data,
+		talents: Presets.T11Talents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		other: Presets.OtherDefaults,
@@ -125,7 +115,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			communion: true,
 		}),
 		partyBuffs: PartyBuffs.create({}),
-		individualBuffs: IndividualBuffs.create({}),
+		individualBuffs: IndividualBuffs.create({
+			communion: true,
+		}),
 		debuffs: Debuffs.create({
 			exposeArmor: true,
 			bloodFrenzy: true,
@@ -133,8 +125,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			ebonPlaguebringer: true,
 			criticalMass: true,
 		}),
-		rotationType: APLRotation_Type.TypeSimple,
-		simpleRotation: Presets.ROTATION_PRESET_DEFAULT,
+		rotationType: APLRotation_Type.TypeAuto,
 	},
 
 	playerInputs: {
@@ -143,13 +134,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [PaladinInputs.AuraSelection(), PaladinInputs.StartingSealSelection()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-		BuffDebuffInputs.SpellDamageDebuff,
-		BuffDebuffInputs.ManaBuff,
-		BuffDebuffInputs.SpellHasteBuff,
-		BuffDebuffInputs.PowerInfusion,
-	],
-	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff],
+	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff, BuffDebuffInputs.ManaBuff, BuffDebuffInputs.SpellHasteBuff, BuffDebuffInputs.PowerInfusion],
+	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff, BuffDebuffInputs.DamagePercentBuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [OtherInputs.InputDelay, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
@@ -162,36 +148,37 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	presets: {
 		epWeights: [
 			Presets.T11_EP_PRESET,
-			//Presets.T12_EP_PRESET,
+			Presets.T12_EP_PRESET,
 			//Presets.T13_EP_PRESET,
 		],
-		rotations: [
-			Presets.ROTATION_PRESET_DEFAULT,
-			Presets.ROTATION_PRESET_T13,
-		],
+		rotations: [Presets.ROTATION_PRESET_DEFAULT, Presets.ROTATION_PRESET_T13],
 		// Preset talents that the user can quickly select.
-		talents: [Presets.RetTalents],
+		talents: [Presets.T11Talents, Presets.T12T13Talents],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			Presets.T11_BIS_RET_PRESET,
-			//Presets.T12_BIS_RET_PRESET,
+			Presets.T12_BIS_RET_PRESET,
 			//Presets.T13_BIS_RET_PRESET,
 			Presets.PRERAID_RET_PRESET,
 		],
 	},
 
-	autoRotation: (_player: Player<Spec.SpecRetributionPaladin>): APLRotation => {
-		return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
+	autoRotation: (player: Player<Spec.SpecRetributionPaladin>): APLRotation => {
+		return player.getEquippedItems().filter(x => x?.item.setName === 'Battleplate of Radiant Glory').length >= 2
+			? Presets.ROTATION_PRESET_T13.rotation.rotation!
+			: Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
 
-	simpleRotation: (_player: Player<Spec.SpecRetributionPaladin>): APLRotation => {
-		return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
+	simpleRotation: (player: Player<Spec.SpecRetributionPaladin>): APLRotation => {
+		return player.getEquippedItems().filter(x => x?.item.setName === 'Battleplate of Radiant Glory').length >= 2
+			? Presets.ROTATION_PRESET_T13.rotation.rotation!
+			: Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
 
 	raidSimPresets: [
 		{
 			spec: Spec.SpecRetributionPaladin,
-			talents: Presets.RetTalents.data,
+			talents: Presets.T11Talents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {

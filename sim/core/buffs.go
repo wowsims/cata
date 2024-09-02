@@ -298,7 +298,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 		}
 
 		registerUnholyFrenzyCD(agent, individualBuffs.UnholyFrenzyCount)
-		registerTricksOfTheTradeCD(agent, individualBuffs.TricksOfTheTradeCount)
+		registerTricksOfTheTradeCD(agent, individualBuffs.TricksOfTheTrade)
 		registerPowerInfusionCD(agent, individualBuffs.PowerInfusionCount)
 		registerManaTideTotemCD(agent, raidBuffs.ManaTideTotemCount)
 		registerInnervateCD(agent, individualBuffs.InnervateCount)
@@ -1014,7 +1014,7 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	individualBuffs.HandOfSacrificeCount = 0
 	individualBuffs.PainSuppressionCount = 0
 	individualBuffs.PowerInfusionCount = 0
-	individualBuffs.TricksOfTheTradeCount = 0
+	individualBuffs.TricksOfTheTrade = proto.TristateEffect_TristateEffectMissing
 	individualBuffs.UnholyFrenzyCount = 0
 
 	if !petAgent.GetPet().enabledOnStart {
@@ -1313,15 +1313,20 @@ func multiplyCastSpeedEffect(aura *Aura, multiplier float64) *ExclusiveEffect {
 
 var TricksOfTheTradeAuraTag = "TricksOfTheTrade"
 
-const TricksOfTheTradeCD = time.Second * 3600 // CD is 30s from the time buff ends (so 40s with glyph) but that's in order to be able to set the number of TotT you'll have during the fight
-func registerTricksOfTheTradeCD(agent Agent, numTricksOfTheTrades int32) {
-	if numTricksOfTheTrades == 0 {
+func registerTricksOfTheTradeCD(agent Agent, tristateConfig proto.TristateEffect) {
+	if tristateConfig == proto.TristateEffect_TristateEffectMissing {
 		return
 	}
 
-	// Assuming rogues have Glyph of TotT by default (which might not be the case).
-	// TODO (TheBackstabi) - Glyph of TotT in buff selection UI
-	TotTAura := TricksOfTheTradeAura(&agent.GetCharacter().Unit, -1, 1.10)
+	// TristateEffectRegular is interpreted as the Glyphed version (since it
+	// is weaker).
+	damageMultiplier := GetTristateValueFloat(tristateConfig, 1.1, 1.15)
+	unit := &agent.GetCharacter().Unit
+	tricksAura := TricksOfTheTradeAura(unit, -1, damageMultiplier)
+
+	// Add a small offset to the tooltip CD to account for input delays
+	// between the Rogue pressing Tricks and hitting a target.
+	effectiveCD := time.Second*30 + unit.ReactionTime
 
 	registerExternalConsecutiveCDApproximation(
 		agent,
@@ -1329,16 +1334,16 @@ func registerTricksOfTheTradeCD(agent Agent, numTricksOfTheTrades int32) {
 			ActionID:         ActionID{SpellID: 57933, Tag: -1},
 			AuraTag:          TricksOfTheTradeAuraTag,
 			CooldownPriority: CooldownPriorityDefault,
-			AuraDuration:     TotTAura.Duration,
-			AuraCD:           TricksOfTheTradeCD,
+			AuraDuration:     tricksAura.Duration,
+			AuraCD:           effectiveCD,
 			Type:             CooldownTypeDPS,
 
 			ShouldActivate: func(sim *Simulation, character *Character) bool {
 				return !character.GetExclusiveEffectCategory("PercentDamageModifier").AnyActive()
 			},
-			AddAura: func(sim *Simulation, character *Character) { TotTAura.Activate(sim) },
+			AddAura: func(sim *Simulation, character *Character) { tricksAura.Activate(sim) },
 		},
-		numTricksOfTheTrades)
+		1)
 }
 
 func TricksOfTheTradeAura(character *Unit, actionTag int32, damageMult float64) *Aura {
@@ -1783,7 +1788,7 @@ func replenishmentAura(unit *Unit, _ ActionID) *Aura {
 		return unit.ReplenishmentAura
 	}
 
-	replenishmentDep := unit.NewDynamicStatDependency(stats.Mana, stats.MP5, 0.01)
+	replenishmentDep := unit.NewDynamicStatDependency(stats.Mana, stats.MP5, 0.005)
 
 	unit.ReplenishmentAura = unit.RegisterAura(Aura{
 		Label:    "Replenishment",

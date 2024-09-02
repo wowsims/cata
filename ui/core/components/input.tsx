@@ -40,7 +40,7 @@ export interface InputConfig<ModObject, T, V = T> {
 
 // Shared logic for UI elements that are mapped to a value for some modifiable object.
 export abstract class Input<ModObject, T, V = T> extends Component {
-	private readonly inputConfig: InputConfig<ModObject, T, V>;
+	readonly inputConfig: InputConfig<ModObject, T, V>;
 	readonly modObject: ModObject;
 
 	protected enabled = true;

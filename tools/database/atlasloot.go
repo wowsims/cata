@@ -82,6 +82,9 @@ func readAtlasLootDungeonData(db *WowDatabase, expansion proto.Expansion, srcUrl
 		log.Fatalf("Error reading atlasloot file %s", err)
 	}
 
+	// Substitute the raw string for END_TIME_ECHO_LOOT wherever it is referenced in the lua source.
+	srcTxt = strings.ReplaceAll(srcTxt, "END_TIME_ECHO_LOOT,", EndTimeEchoLootString)
+
 	// Convert newline to '@@@' so we can do regexes on the whole file as 1 line.
 	srcTxt = strings.ReplaceAll(srcTxt, "\n", "@@@")
 
@@ -380,3 +383,31 @@ var AtlasLootDungeonToRaidDifficulty = map[string]string{
 	"NORMAL_DIFF": "RAID25_DIFF",
 	"HEROIC_DIFF": "RAID25H_DIFF",
 }
+
+const EndTimeEchoLootString = `{
+    { 1, "INV_Box_01", nil, AL["Echo of Baine"], nil },	--Echo of Baine
+    { 2, 72815 },	-- Bloodhoof Legguards
+    { 3, 72814 },	-- Axe of the Tauren Chieftains
+    { 4, "INV_Box_01", nil, AL["Echo of Jaina"], nil },	--Echo of Jaina
+    { 5, 72808 },	-- Jaina's Staff
+    { 6, 72809 },	-- Ward of Incantations
+    { 7, "INV_Box_01", nil, AL["Echo of Sylvanas"], nil },	--Echo of Sylvanas
+    { 8, 72811 },	-- Cloak of the Banshee Queen
+    { 9, 72810 },	-- Windrunner's Bow
+    { 10, "ac6130" },
+    { 11, "INV_Box_01", nil, AL["Echo of Tyrande"], nil },	--Echo of Tyrande
+    { 12, 72813 },	-- Whisperwind Robes
+    { 13, 72812 },	-- Crescent Moon
+    { 14, "ac5995" },
+    { 16, "INV_Box_01", nil, AL["Shared"], nil },	--Shared
+    { 17, 72802 },	-- Time Traveler's Leggings
+    { 18, 72805 },	-- Gloves of the Hollow
+    { 19, 72798 },	-- Cord of Lost Hope
+    { 20, 72806 },	-- Echoing Headguard
+    { 21, 72799 },	-- Dead End Boots
+    { 22, 72801 },	-- Breastplate of Sorrow
+    { 23, 72800 },	-- Gauntlets of Temporal Interference
+    { 24, 72803 },	-- Girdle of Lost Heroes
+    { 25, 72807 },	-- Waistguard of Lost Time
+    { 26, 72804 },	-- Dragonshrine Scepter
+},`

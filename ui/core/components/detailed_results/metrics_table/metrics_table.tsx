@@ -2,10 +2,10 @@ import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
 import { TOOLTIP_METRIC_LABELS } from '../../../constants/tooltips';
-import { ActionId } from '../../../proto_utils/action_id.js';
-import { ActionMetrics, AuraMetrics, ResourceMetrics, UnitMetrics } from '../../../proto_utils/sim_result.js';
-import { TypedEvent } from '../../../typed_event.js';
-import { ResultComponent, ResultComponentConfig, SimResultData } from '../result_component.js';
+import { ActionId } from '../../../proto_utils/action_id';
+import { ActionMetrics, AuraMetrics, ResourceMetrics, UnitMetrics } from '../../../proto_utils/sim_result';
+import { TypedEvent } from '../../../typed_event';
+import { ResultComponent, ResultComponentConfig, SimResultData } from '../result_component';
 
 declare let $: any;
 

@@ -46,21 +46,21 @@ var DefaultTalents = "032212--322032210201222100231"
 var DefaultGlyphs = &proto.Glyphs{
 	Prime1: int32(proto.PriestPrimeGlyph_GlyphOfMindFlay),
 	Prime2: int32(proto.PriestPrimeGlyph_GlyphOfShadowWordPain),
-	Prime3: int32(proto.PriestPrimeGlyph_GlyphOfMindFlay),
-	Major1: 0,
-	Major2: 0,
-	Major3: 0,
-	Minor1: 0,
-	Minor2: 0,
-	Minor3: 0,
+	Prime3: int32(proto.PriestPrimeGlyph_GlyphOfShadowWordDeath),
+	Major1: int32(proto.PriestMajorGlyph_GlyphOfFade),
+	Major2: int32(proto.PriestMajorGlyph_GlyphOfInnerFire),
+	Major3: int32(proto.PriestMajorGlyph_GlyphOfSpiritTap),
+	Minor1: int32(proto.PriestMinorGlyph_GlyphOfFading),
+	Minor2: int32(proto.PriestMinorGlyph_GlyphOfFortitude),
+	Minor3: int32(proto.PriestMinorGlyph_GlyphOfShadowfiend),
 }
 
 var FullConsumes = &proto.Consumes{
-	Flask:           proto.Flask_FlaskOfTheDraconicMind,
-	Food:            proto.Food_FoodSeafoodFeast,
-	DefaultPotion:   proto.Potions_VolcanicPotion,
-	PrepopPotion:    proto.Potions_VolcanicPotion,
-	DefaultConjured: proto.Conjured_ConjuredDarkRune,
+	Flask:         proto.Flask_FlaskOfTheDraconicMind,
+	Food:          proto.Food_FoodSeafoodFeast,
+	DefaultPotion: proto.Potions_VolcanicPotion,
+	PrepopPotion:  proto.Potions_VolcanicPotion,
+	TinkerHands:   proto.TinkerHands_TinkerHandsSynapseSprings,
 }
 
 var PlayerOptionsBasic = &proto.Player_ShadowPriest{

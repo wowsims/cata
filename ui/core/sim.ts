@@ -75,7 +75,7 @@ const WASM_CONCURRENCY_STORAGE_KEY = `${OtherConstants.LOCAL_STORAGE_PREFIX}_was
 export class Sim {
 	private readonly workerPool: WorkerPool;
 
-	iterations = 3000;
+	iterations = 12500;
 
 	private phase: number = OtherConstants.CURRENT_PHASE;
 	private faction: Faction = Faction.Alliance;
@@ -797,7 +797,7 @@ export class Sim {
 
 	fromProto(eventID: EventID, proto: SimSettingsProto) {
 		TypedEvent.freezeAllAndDo(() => {
-			this.setIterations(eventID, proto.iterations || 3000);
+			this.setIterations(eventID, proto.iterations || 12500);
 			this.setPhase(eventID, proto.phase || OtherConstants.CURRENT_PHASE);
 			this.setFixedRngSeed(eventID, Number(proto.fixedRngSeed));
 			this.setShowDamageMetrics(eventID, proto.showDamageMetrics);
@@ -840,7 +840,7 @@ export class Sim {
 		this.fromProto(
 			eventID,
 			SimSettingsProto.create({
-				iterations: 3000,
+				iterations: 12500,
 				phase: OtherConstants.CURRENT_PHASE,
 				faction: Faction.Alliance,
 				showDamageMetrics: !isHealingSim,

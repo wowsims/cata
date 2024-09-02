@@ -8,8 +8,8 @@ import { PlayerClasses } from '../../core/player_classes';
 import { APLAction, APLListItem, APLPrepullAction, APLRotation, APLRotation_Type as APLRotationType, SimpleRotation } from '../../core/proto/apl.js';
 import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
 import { GuardianDruid_Rotation as DruidRotation } from '../../core/proto/druid.js';
-import * as AplUtils from '../../core/proto_utils/apl_utils.js';
 import { StatCapType } from '../../core/proto/ui';
+import * as AplUtils from '../../core/proto_utils/apl_utils.js';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats.js';
 import * as DruidInputs from './inputs.js';
 import * as Presets from './presets.js';
@@ -89,6 +89,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 
 			return [expertiseSoftCapConfig, hitSoftCapConfig];
 		})(),
+		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default rotation settings.
@@ -151,9 +152,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_PRESET_SIMPLE, Presets.ROTATION_DEFAULT],
+		rotations: [Presets.ROTATION_PRESET_SIMPLE, Presets.ROTATION_DEFAULT, Presets.ROTATION_CLEAVE, Presets.ROTATION_NEF],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET],
+		builds: [Presets.PRESET_BUILD_BOSS_DUMMY, Presets.PRESET_BUILD_MAGMAW, Presets.PRESET_BUILD_NEF],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecGuardianDruid>): APLRotation => {
@@ -170,36 +172,36 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 
 		const emergencySpellId = player.getTalents().pulverize ? 80313 : 33745;
 		const emergencyPulverize = APLAction.fromJsonString(
-			`{"condition":{"and":{"vals":[{"dotIsActive":{"spellId":{"spellId":33745}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":33745}}},"rhs":{"const":{"val":"3"}}}},{"cmp":{"op":"OpLe","lhs":{"dotRemainingTime":{"spellId":{"spellId":33745}}},"rhs":{"const":{"val":"${simple.pulverizeTime.toFixed(
+			`{"condition":{"and":{"vals":[{"dotIsActive":{"targetUnit":{"type":"Target"},"spellId":{"spellId":33745}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":33745}}},"rhs":{"const":{"val":"3"}}}},{"cmp":{"op":"OpLe","lhs":{"dotRemainingTime":{"targetUnit":{"type":"Target"},"spellId":{"spellId":33745}}},"rhs":{"const":{"val":"${simple.pulverizeTime.toFixed(
 				1,
-			)}s"}}}}]}},"castSpell":{"spellId":{"spellId":${emergencySpellId.toFixed(0)}}}}`,
+			)}s"}}}}]}},"castSpell":{"spellId":{"spellId":${emergencySpellId.toFixed(0)}},"target":{"type":"Target"}}}`,
 		);
 		const faerieFireMaintain = APLAction.fromJsonString(
-			`{"condition":{"or":{"vals":[{"not":{"val":{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":770}}}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":770}}},"rhs":{"const":{"val":"6s"}}}}]}},"castSpell":{"spellId":{"spellId":16857}}}`,
+			`{"condition":{"or":{"vals":[{"not":{"val":{"auraIsActive":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":770}}}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":770}}},"rhs":{"const":{"val":"6s"}}}}]}},"castSpell":{"spellId":{"spellId":16857},"target":{"type":"Target"}}}`,
 		);
 		const demoRoar = APLAction.fromJsonString(
-			`{"condition":{"auraShouldRefresh":{"auraId":{"spellId":99},"maxOverlap":{"const":{"val":"${simple.demoTime.toFixed(
+			`{"condition":{"auraShouldRefresh":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":99},"maxOverlap":{"const":{"val":"${simple.demoTime.toFixed(
 				1,
-			)}s"}}}},"castSpell":{"spellId":{"spellId":99}}}`,
+			)}s"}}}},"castSpell":{"spellId":{"spellId":99},"target":{"type":"Target"}}}`,
 		);
 		const berserk = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":50334}}}`);
 		const enrage = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":5229}}}`);
 		const synapseSprings = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":82174}}}`);
 		const lacerateForProcs = APLAction.fromJsonString(
-			`{"condition":{"and":{"vals":[{"not":{"val":{"dotIsActive":{"spellId":{"spellId":33745}}}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":50334}}}}}]}},"castSpell":{"spellId":{"spellId":33745}}}`,
+			`{"condition":{"and":{"vals":[{"not":{"val":{"dotIsActive":{"targetUnit":{"type":"Target"},"spellId":{"spellId":33745}}}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":50334}}}}}]}},"castSpell":{"spellId":{"spellId":33745},"target":{"type":"Target"}}}`,
 		);
-		const mangle = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":33878}}}`);
-		const thrash = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":77758}}}`);
-		const faerieFireFiller = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":16857}}}`);
+		const mangle = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":33878},"target":{"type":"Target"}}}`);
+		const thrash = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":77758},"target":{"type":"Target"}}}`);
+		const faerieFireFiller = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":16857},"target":{"type":"Target"}}}`);
 		const pulverize = APLAction.fromJsonString(
-			`{"condition":{"and":{"vals":[{"dotIsActive":{"spellId":{"spellId":33745}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":33745}}},"rhs":{"const":{"val":"3"}}}},{"or":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":80951}}}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":80951}}},"rhs":{"const":{"val":"${simple.pulverizeTime.toFixed(
+			`{"condition":{"and":{"vals":[{"dotIsActive":{"targetUnit":{"type":"Target"},"spellId":{"spellId":33745}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":33745}}},"rhs":{"const":{"val":"3"}}}},{"or":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":80951}}}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":80951}}},"rhs":{"const":{"val":"${simple.pulverizeTime.toFixed(
 				1,
-			)}s"}}}}]}}]}},"castSpell":{"spellId":{"spellId":80313}}}`,
+			)}s"}}}}]}}]}},"castSpell":{"spellId":{"spellId":80313},"target":{"type":"Target"}}}`,
 		);
 		const lacerateBuild = APLAction.fromJsonString(
-			`{"condition":{"cmp":{"op":"OpLt","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":33745}}},"rhs":{"const":{"val":"3"}}}},"castSpell":{"spellId":{"spellId":33745}}}`,
+			`{"condition":{"cmp":{"op":"OpLt","lhs":{"auraNumStacks":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":33745}}},"rhs":{"const":{"val":"3"}}}},"castSpell":{"spellId":{"spellId":33745},"target":{"type":"Target"}}}`,
 		);
-		const maul = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":6807}}}`);
+		const maul = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":6807},"target":{"type":"Target"}}}`);
 
 		prepullActions.push(...([simple.prepullStampede ? preStampede : null].filter(a => a) as Array<APLPrepullAction>));
 
@@ -262,6 +264,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 					4: Presets.P4_PRESET.gear,
 				},
 			},
+			otherDefaults: Presets.OtherDefaults,
 		},
 	],
 });

@@ -8,7 +8,6 @@ import (
 )
 
 func (mage *Mage) registerArcaneBlastSpell() {
-
 	abDamageScalar := core.TernaryFloat64(mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfArcaneBlast), 0.13, 0.1)
 	abDamageMod := mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  MageSpellArcaneBlast | MageSpellArcaneExplosion,

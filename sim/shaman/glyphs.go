@@ -26,7 +26,7 @@ func (shaman *Shaman) ApplyGlyphs() {
 
 	if shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfLavaBurst) {
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskLavaBurst,
+			ClassMask:  SpellMaskLavaBurst | SpellMaskLavaBurstOverload,
 			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.1,
 		})

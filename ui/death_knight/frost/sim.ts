@@ -27,19 +27,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		Stat.StatHasteRating,
 		Stat.StatMasteryRating,
 	],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatPhysicalHitPercent, PseudoStat.PseudoStatSpellHitPercent],
+	epPseudoStats: [
+		PseudoStat.PseudoStatMainHandDps,
+		PseudoStat.PseudoStatOffHandDps,
+		PseudoStat.PseudoStatPhysicalHitPercent,
+		PseudoStat.PseudoStatSpellHitPercent,
+	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[
-			Stat.StatHealth,
-			Stat.StatArmor,
-			Stat.StatStrength,
-			Stat.StatAttackPower,
-			Stat.StatMasteryRating,
-			Stat.StatExpertiseRating,
-		],
+		[Stat.StatHealth, Stat.StatArmor, Stat.StatStrength, Stat.StatAttackPower, Stat.StatMasteryRating, Stat.StatExpertiseRating],
 		[
 			PseudoStat.PseudoStatSpellHitPercent,
 			PseudoStat.PseudoStatSpellCritPercent,
@@ -125,8 +123,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	presets: {
 		epWeights: [Presets.P1_MASTERFROST_EP_PRESET],
 		talents: [Presets.DualWieldTalents, Presets.TwoHandTalents, Presets.MasterfrostTalents],
-		rotations: [Presets.DUAL_WIELD_ROTATION_RESET_DEFAULT, Presets.TWO_HAND_ROTATION_PRESET_DEFAULT, Presets.MASTERFROST_ROTATION_PRESET_DEFAULT],
+		rotations: [Presets.DUAL_WIELD_ROTATION_PRESET_DEFAULT, Presets.TWO_HAND_ROTATION_PRESET_DEFAULT, Presets.MASTERFROST_ROTATION_PRESET_DEFAULT],
 		gear: [Presets.P1_DW_GEAR_PRESET, Presets.P1_2H_GEAR_PRESET, Presets.P1_MASTERFROST_GEAR_PRESET],
+		builds: [Presets.PRESET_BUILD_DW, Presets.PRESET_BUILD_2H, Presets.PRESET_BUILD_MASTERFROST],
 	},
 
 	raidSimPresets: [

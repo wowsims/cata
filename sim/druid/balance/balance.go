@@ -71,6 +71,7 @@ func (moonkin *BalanceDruid) ApplyTalents() {
 
 	moonkin.EnableEclipseBar()
 	moonkin.RegisterEclipseAuras()
+	moonkin.RegisterEclipseEnergyGainAura()
 
 	// Moonfury passive
 	moonkin.RegisterAura(

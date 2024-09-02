@@ -4,13 +4,16 @@ import { DeathKnightMajorGlyph, DeathKnightMinorGlyph, DeathKnightPrimeGlyph, Un
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import SingleTargetApl from '../../death_knight/unholy/apls/st.apl.json';
-import P1Gear from '../../death_knight/unholy/gear_sets/p1.gear.json';
+import P1BISGear from '../../death_knight/unholy/gear_sets/p1.bis.gear.json';
+import P1PreBISGear from '../../death_knight/unholy/gear_sets/p1.prebis.gear.json';
+import P1RealisticBISGear from '../../death_knight/unholy/gear_sets/p1.realistic-bis.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
-
-export const P1_GEAR_PRESET = PresetUtils.makePresetGear('P1', P1Gear);
+export const P1_PREBIS_GEAR_PRESET = PresetUtils.makePresetGear('P1 - Preraid', P1PreBISGear);
+export const P1_REALISTIC_BIS_GEAR_PRESET = PresetUtils.makePresetGear('P1 - Realistic BIS', P1RealisticBISGear);
+export const P1_BIS_GEAR_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1BISGear);
 
 export const SINGLE_TARGET_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Single Target', SingleTargetApl);
 
@@ -42,7 +45,7 @@ export const P1_UNHOLY_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const SingleTargetTalents = {
 	name: 'Single Target',
 	data: SavedTalents.create({
-		talentsString: '2031--13300321230331121231',
+		talentsString: '203-1-13300321230331121231',
 		glyphs: Glyphs.create({
 			prime1: DeathKnightPrimeGlyph.GlyphOfDeathCoil,
 			prime2: DeathKnightPrimeGlyph.GlyphOfScourgeStrike,

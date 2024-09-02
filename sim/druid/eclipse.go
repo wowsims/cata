@@ -1,6 +1,8 @@
 package druid
 
 import (
+	"fmt"
+
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 )
@@ -112,6 +114,80 @@ func (druid *Druid) RegisterEclipseAuras() {
 			}
 		}
 	})
+}
+
+func (druid *Druid) RegisterEclipseEnergyGainAura() {
+	solarMetric := druid.NewSolarEnergyMetrics(core.ActionID{SpellID: 89265})
+	lunarMetric := druid.NewLunarEnergyMetrics(core.ActionID{SpellID: 89265})
+
+	druid.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 89265},
+		Label:    "Eclipse Energy",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			var eclipseEnergyMultiplier float64 = 1.0
+
+			if druid.canEuphoriaProc(spell) && druid.hasEuphoriaProcced(sim) {
+				eclipseEnergyMultiplier = 2
+			}
+
+			if energyGain := druid.GetSpellEclipseEnergy(spell.ClassSpellMask, druid.currentEclipse != NoEclipse); energyGain != 0 {
+				switch spell.ClassSpellMask {
+				case DruidSpellStarfire:
+					druid.AddEclipseEnergy(energyGain*eclipseEnergyMultiplier, SolarEnergy, sim, solarMetric)
+				case DruidSpellWrath:
+					druid.AddEclipseEnergy(energyGain*eclipseEnergyMultiplier, LunarEnergy, sim, lunarMetric)
+				case DruidSpellStarsurge:
+					if druid.CanGainEnergy(SolarEnergy) {
+						druid.AddEclipseEnergy(energyGain, SolarEnergy, sim, solarMetric)
+					} else {
+						druid.AddEclipseEnergy(energyGain, LunarEnergy, sim, lunarMetric)
+					}
+				case DruidSpellMoonfire: // Moonfire (under the effect of Lunar Shower)
+					druid.AddEclipseEnergy(energyGain, SolarEnergy, sim, solarMetric)
+				case DruidSpellSunfire: // Sunfire (under the effect of Lunar Shower)
+					druid.AddEclipseEnergy(energyGain, LunarEnergy, sim, lunarMetric)
+				}
+			}
+		},
+	})
+}
+
+func (druid *Druid) hasEuphoriaProcced(sim *core.Simulation) bool {
+	return sim.Proc(0.12*float64(druid.Talents.Euphoria), fmt.Sprintf("Euphoria %d/2", druid.Talents.Euphoria))
+}
+
+func (druid *Druid) canEuphoriaProc(spell *core.Spell) bool {
+	if druid.Talents.Euphoria == 0 {
+		return false
+	}
+
+	if druid.currentEclipse != NoEclipse {
+		return false
+	}
+
+	if spell.ClassSpellMask != DruidSpellStarfire && spell.ClassSpellMask != DruidSpellWrath {
+		return false
+	}
+
+	if druid.Talents.Euphoria == 1 {
+		return true
+	}
+
+	if druid.Talents.Euphoria == 2 {
+		if druid.CanGainEnergy(SolarEnergy) && druid.CurrentSolarEnergy() <= 35 {
+			return true
+		}
+
+		if druid.CanGainEnergy(LunarEnergy) && druid.CurrentLunarEnergy() <= 35 {
+			return true
+		}
+	}
+
+	return false
 }
 
 func (druid *Druid) HasEclipseBar() bool {
