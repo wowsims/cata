@@ -3,11 +3,13 @@ import { Spec } from '../proto/common';
 
 const DTR_PARTIAL_IMPLEMENTATION_WARNING = (
 	<>
-		<p>The following interactions are most likely inaccurate:</p>
-		<ul className="mb-0">
-			<li>Proc chance</li>
-			<li>Replication of various spells</li>
-		</ul>
+		<p className="fw-bold">This item is not implemented!</p>
+		<p>
+			We are working hard on gathering all the old resources to allow for an initial implementation.
+		</p>
+		<p className="mb-0">
+			Want to help out by providing additional information? Contact us on our Discord!
+		</p>
 	</>
 );
 
