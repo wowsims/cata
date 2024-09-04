@@ -1,9 +1,10 @@
 import tippy, { Instance as TippyInstance } from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
-import { ITEM_NOTICES } from '../../constants/item_notices';
+import { GENERIC_MISSING_SET_BONUS_NOTICE_DATA, ITEM_NOTICES, SET_BONUS_NOTICES } from '../../constants/item_notices';
 import { Player } from '../../player';
 import { Spec } from '../../proto/common';
+import { Database } from '../../proto_utils/database';
 import { Component } from '../component';
 
 export type ItemNoticeData = {
@@ -14,6 +15,11 @@ export type ItemNoticeData = {
 type ItemNoticeConfig = {
 	itemId: number;
 };
+
+// Keys are item counts for each set bonus (typically 2 and 4), values are the
+// notice that should be displayed for each bonus. If null, will default to
+// GENERIC_MISSING_SET_BONUS_NOTICE_DATA.
+export type SetBonusNoticeData = Map<number, string> | null;
 
 export class ItemNotice extends Component {
 	itemId: number;
@@ -56,5 +62,23 @@ export class ItemNotice extends Component {
 		});
 
 		return template;
+	}
+
+	static registerSetBonusNotices(db: Database) {
+		SET_BONUS_NOTICES.forEach((value: SetBonusNoticeData, key: number) => {
+			const noticeData = value || GENERIC_MISSING_SET_BONUS_NOTICE_DATA;
+			const noticeContent = (
+				<>
+					<p className="mb-1"> This item set has the following warnings:</p>
+					<ul className="mb-0">
+						{Array.from(noticeData.keys()).map(key => <li>{key.toFixed(0)}-piece: {noticeData.get(key)!}</li>)}
+					</ul>
+				</>
+			);
+
+			for (const id of db.getItemIdsForSet(key)) {
+				ITEM_NOTICES.set(id, { [Spec.SpecUnknown]: noticeContent });
+			}
+		});
 	}
 }
