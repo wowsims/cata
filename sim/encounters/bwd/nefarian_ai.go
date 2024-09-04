@@ -29,16 +29,18 @@ func createNefarianPreset(bossPrefix string, raidSize int, isHeroic bool, addNpc
 
 	var targetPathNames []string
 
-	for i := 1; i <= 12; i++ {
-		addIdx := int32(i)
+	for addIdx := int32(1); addIdx <= 12; addIdx++ {
 		currentAddName := targetNameAdd + fmt.Sprintf(" - %d", addIdx)
 		targetInputs := []*proto.TargetInput{}
-		targetInputs = append(targetInputs, &proto.TargetInput{
-			Label:       "Electrocute Count",
-			Tooltip:     "Number of Electrocute casts to model. Total count will be spread evenly over the encounter duration with a randomized offset.",
-			InputType:   proto.InputType_Number,
-			NumberValue: 5,
-		})
+
+		if addIdx == 1 {
+			targetInputs = append(targetInputs, &proto.TargetInput{
+				Label:       "Electrocute Count",
+				Tooltip:     "Number of Electrocute casts to model. Total count will be spread evenly over the encounter duration with a randomized offset.",
+				InputType:   proto.InputType_Number,
+				NumberValue: 6,
+			})
+		}
 
 		core.AddPresetTarget(&core.PresetTarget{
 			PathPrefix: bossPrefix,
