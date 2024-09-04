@@ -24,6 +24,7 @@ import {
 	makeShowEPValuesSelector,
 	makeShowMatchingGemsSelector,
 } from '../inputs/other_inputs';
+import { ItemNotice } from '../item_notice/item_notice';
 import Toast from '../toast';
 import { Clusterize } from '../virtual_scroll/clusterize';
 import { FiltersMenu } from './filters_menu';
@@ -136,6 +137,8 @@ export default class ItemList<T extends ItemListType> {
 		const removeButtonRef = ref<HTMLButtonElement>();
 		const compareLabelRef = ref<HTMLElement>();
 
+		const showEPOptions = ![ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2].includes(currentSlot);
+
 		this.tabContent = (
 			<div id={this.id} className={`selector-modal-tab-pane tab-pane fade ${selected ? 'active show' : ''}`}>
 				<div className="selector-modal-filters">
@@ -149,7 +152,7 @@ export default class ItemList<T extends ItemListType> {
 					<div ref={show1hWeaponRef} className="sim-input selector-modal-boolean-option selector-modal-show-1h-weapons hide" />
 					<div ref={show2hWeaponRef} className="sim-input selector-modal-boolean-option selector-modal-show-2h-weapons hide" />
 					<div ref={matchingGemsRef} className="sim-input selector-modal-boolean-option selector-modal-show-matching-gems" />
-					<div ref={showEpValuesRef} className="sim-input selector-modal-boolean-option selector-modal-show-ep-values" />
+					{showEPOptions && <div ref={showEpValuesRef} className="sim-input selector-modal-boolean-option selector-modal-show-ep-values" />}
 					<button ref={removeButtonRef} className="selector-modal-remove-button btn btn-danger">
 						Unequip Item
 					</button>
@@ -168,13 +171,15 @@ export default class ItemList<T extends ItemListType> {
 							</label>
 						</>
 					)}
-					<span className="ep-label interactive" onclick={sortByEP}>
-						<small>EP</small>
-						<i className="fa-solid fa-plus-minus fa-2xs"></i>
-						<button ref={epButtonRef} className="btn btn-link p-0 ms-1">
-							<i className="far fa-question-circle fa-lg"></i>
-						</button>
-					</span>
+					{showEPOptions && (
+						<span className="ep-label interactive" onclick={sortByEP}>
+							<small>EP</small>
+							<i className="fa-solid fa-plus-minus fa-2xs"></i>
+							<button ref={epButtonRef} className="btn btn-link p-0 ms-1">
+								<i className="far fa-question-circle fa-lg"></i>
+							</button>
+						</span>
+					)}
 					<span className="favorite-label"></span>
 					<span ref={compareLabelRef} className="compare-label hide"></span>
 				</div>
@@ -188,10 +193,6 @@ export default class ItemList<T extends ItemListType> {
 			this.bindToggleCompare(compareLabelRef.value!);
 		}
 
-		tippy(epButtonRef.value!, {
-			content: EP_TOOLTIP,
-		});
-
 		if (
 			label === SelectorModalTabs.Items &&
 			(currentSlot === ItemSlot.ItemSlotMainHand || (currentSlot === ItemSlot.ItemSlotOffHand && player.getClass() === Class.ClassWarrior))
@@ -200,7 +201,13 @@ export default class ItemList<T extends ItemListType> {
 			if (show2hWeaponRef.value) makeShow2hWeaponsSelector(show2hWeaponRef.value, player.sim);
 		}
 
-		if (showEpValuesRef.value) makeShowEPValuesSelector(showEpValuesRef.value, player.sim);
+		if (showEPOptions) {
+			if (showEpValuesRef.value) makeShowEPValuesSelector(showEpValuesRef.value, player.sim);
+
+			tippy(epButtonRef.value!, {
+				content: EP_TOOLTIP,
+			});
+		}
 
 		if (matchingGemsRef.value) {
 			makeShowMatchingGemsSelector(matchingGemsRef.value, player.sim);
@@ -450,6 +457,7 @@ export default class ItemList<T extends ItemListType> {
 		const equippedItemID = this.getItemIdByItemType(equippedItem);
 		const equippedItemEP = equippedItem ? this.computeEP(equippedItem) : 0;
 
+		const labelCellElem = ref<HTMLDivElement>();
 		const nameElem = ref<HTMLLabelElement>();
 		const anchorElem = ref<HTMLAnchorElement>();
 		const iconElem = ref<HTMLImageElement>();
@@ -460,7 +468,7 @@ export default class ItemList<T extends ItemListType> {
 
 		const listItemElem = (
 			<li className={`selector-modal-list-item ${equippedItemID === itemData.id ? 'active' : ''}`} dataset={{ idx: item.idx.toString() }}>
-				<div className="selector-modal-list-label-cell">
+				<div className="selector-modal-list-label-cell gap-1" ref={labelCellElem}>
 					<a className="selector-modal-list-item-link" ref={anchorElem} dataset={{ whtticon: 'false' }}>
 						<img className="selector-modal-list-item-icon" ref={iconElem}></img>
 						<label className="selector-modal-list-item-name" ref={nameElem}>
@@ -610,6 +618,9 @@ export default class ItemList<T extends ItemListType> {
 		});
 
 		setItemQualityCssClass(nameElem.value!, itemData.quality);
+
+		const notice = new ItemNotice(this.player, { itemId: itemData.id });
+		if (notice.hasNotice) labelCellElem.value?.appendChild(notice.rootElem);
 
 		return listItemElem;
 	}

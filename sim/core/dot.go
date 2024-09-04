@@ -140,6 +140,8 @@ func (dot *Dot) BaseDuration() time.Duration {
 	return time.Duration(dot.BaseTickCount) * dot.BaseTickLength
 }
 
+// Copy's the original DoT's period and duration to the current DoT.
+// This is only currently used for Mage's Impact DoT spreading.
 func (dot *Dot) CopyDotAndApply(sim *Simulation, originaldot *Dot) {
 	dot.TakeSnapshot(sim, false)
 	dot.SnapshotBaseDamage = originaldot.SnapshotBaseDamage
@@ -154,9 +156,12 @@ func (dot *Dot) CopyDotAndApply(sim *Simulation, originaldot *Dot) {
 	dot.Activate(sim)
 
 	// recreate with new period, resetting the next tick.
+	if dot.tickAction != nil {
+		dot.tickAction.Cancel(sim)
+	}
 	pa := &PendingAction{
 		NextActionAt: originaldot.tickAction.NextActionAt,
-		OnAction:     dot.tickAction.OnAction,
+		OnAction:     dot.periodicTick,
 	}
 	dot.tickAction = pa
 	sim.AddPendingAction(dot.tickAction)

@@ -41,10 +41,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	),
 
 	modifyDisplayStats: (player: Player<Spec.SpecBalanceDruid>) => {
-		let stats = new Stats().withPseudoStat(PseudoStat.PseudoStatSpellCritPercent, player.getTalents().naturesMajesty * 2);
+		const playerStats = player.getCurrentStats();
+		const gearStats = Stats.fromProto(playerStats.gearStats);
+		const talentsStats = Stats.fromProto(playerStats.talentsStats);
+		const talentsDelta = talentsStats.subtract(gearStats);
+		let talentsMod = new Stats().withPseudoStat(PseudoStat.PseudoStatSpellCritPercent, player.getTalents().naturesMajesty * 2);
+		talentsMod = talentsMod.addStat(Stat.StatHitRating, talentsDelta.getPseudoStat(PseudoStat.PseudoStatSpellHitPercent) * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT);
 
 		return {
-			talents: stats,
+			talents: talentsMod,
 		};
 	},
 
@@ -106,7 +111,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		talents: [Presets.StandardTalents],
 		rotations: [Presets.PresetRotationDefault],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PreraidPresetGear, Presets.T11PresetGear],
+		gear: [Presets.PreraidPresetGear, Presets.T11PresetGear, Presets.T12PresetGear],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecBalanceDruid>): APLRotation => {

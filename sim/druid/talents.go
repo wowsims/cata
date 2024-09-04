@@ -55,6 +55,7 @@ func (druid *Druid) ApplyTalents() {
 	druid.applyGaleWinds()
 	druid.applyEarthAndMoon()
 	druid.applyMoonkinForm()
+	druid.applyLunarShower()
 	// if druid.Talents.PrimalPrecision > 0 {
 	// 	druid.AddStat(stats.Expertise, 5.0*float64(druid.Talents.PrimalPrecision)*core.ExpertisePerQuarterPercentReduction)
 	// }
@@ -313,6 +314,70 @@ func (druid *Druid) applyEarthAndMoon() {
 			Kind:       core.SpellMod_DamageDone_Pct,
 		})
 	}
+}
+
+func (druid *Druid) applyLunarShower() {
+	if druid.Talents.LunarShower == 0 {
+		return
+	}
+
+	lunarShowerDmgMod := druid.AddDynamicMod(core.SpellModConfig{
+		ClassMask: DruidSpellMoonfire | DruidSpellSunfire,
+		Kind:      core.SpellMod_DamageDone_Pct,
+	})
+
+	lunarShowerResourceMod := druid.AddDynamicMod(core.SpellModConfig{
+		ClassMask: DruidSpellMoonfire | DruidSpellSunfire,
+		Kind:      core.SpellMod_PowerCost_Pct,
+	})
+
+	var lunarShowerAura = druid.RegisterAura(core.Aura{
+		Label:     "Lunar Shower",
+		Duration:  time.Second * 3,
+		ActionID:  core.ActionID{SpellID: 33603},
+		MaxStacks: 3,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			lunarShowerDmgMod.UpdateFloatValue(float64(aura.GetStacks()) * 0.15)
+			lunarShowerDmgMod.Activate()
+
+			lunarShowerResourceMod.UpdateFloatValue(float64(aura.GetStacks()) * -0.1)
+			lunarShowerResourceMod.Activate()
+
+			// While under the effects of Lunar Shower, Moonfire and Sunfire generate 8 eclipse energy
+			druid.SetSpellEclipseEnergy(DruidSpellMoonfire, MoonfireLunarShowerEnergyGain, MoonfireLunarShowerEnergyGain)
+			druid.SetSpellEclipseEnergy(DruidSpellSunfire, SunfireLunarShowerEnergyGain, SunfireLunarShowerEnergyGain)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			lunarShowerDmgMod.Deactivate()
+			lunarShowerResourceMod.Deactivate()
+
+			druid.SetSpellEclipseEnergy(DruidSpellMoonfire, MoonfireBaseEnergyGain, MoonfireBaseEnergyGain)
+			druid.SetSpellEclipseEnergy(DruidSpellSunfire, SunfireBaseEnergyGain, SunfireBaseEnergyGain)
+		},
+	})
+
+	druid.RegisterAura(core.Aura{
+		Label:    "Lunar Shower Handler",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ClassSpellMask != DruidSpellMoonfire && spell.ClassSpellMask != DruidSpellSunfire {
+				return
+			}
+
+			if lunarShowerAura.IsActive() {
+				if lunarShowerAura.GetStacks() < 3 {
+					lunarShowerAura.AddStack(sim)
+					lunarShowerAura.Refresh(sim)
+				}
+			} else {
+				lunarShowerAura.Activate(sim)
+				lunarShowerAura.SetStacks(sim, 1)
+			}
+		},
+	})
 }
 
 // func (druid *Druid) registerNaturesSwiftnessCD() {

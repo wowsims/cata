@@ -18,7 +18,7 @@ import * as Tooltips from './constants/tooltips';
 import { getSpecLaunchStatus, LaunchStatus, simLaunchStatuses } from './launched_sims';
 import { Player, PlayerConfig, registerSpecConfig as registerPlayerConfig } from './player';
 import { PlayerSpecs } from './player_specs';
-import { PresetEpWeights, PresetGear, PresetRotation } from './preset_utils';
+import { PresetBuild, PresetEpWeights, PresetGear, PresetRotation } from './preset_utils';
 import { StatWeightsResult } from './proto/api';
 import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
 import {
@@ -77,6 +77,7 @@ export interface OtherDefaults {
 	duration?: number;
 	durationVariation?: number;
 	highHpThreshold?: number;
+	iterationCount?: number;
 }
 
 export interface RaidSimPreset<SpecType extends Spec> {
@@ -169,6 +170,7 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 		gear: Array<PresetGear>;
 		talents: Array<SavedDataConfig<Player<SpecType>, SavedTalents>>;
 		rotations: Array<PresetRotation>;
+		builds?: Array<PresetBuild>;
 	};
 
 	raidSimPresets: Array<RaidSimPreset<SpecType>>;
@@ -542,6 +544,10 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 				this.sim.encounter.setExecuteProportion90(eventID, this.individualConfig.defaults.other?.highHpThreshold || 0.9);
 				this.sim.raid.setDebuffs(eventID, this.individualConfig.defaults.debuffs);
 				this.sim.applyDefaults(eventID, tankSpec, healingSpec);
+
+				if (this.individualConfig.defaults.other?.iterationCount) {
+					this.sim.setIterations(eventID, this.individualConfig.defaults.other!.iterationCount!);
+				}
 
 				if (tankSpec) {
 					this.sim.raid.setTanks(eventID, [this.player.makeUnitReference()]);

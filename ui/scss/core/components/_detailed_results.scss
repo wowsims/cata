@@ -162,10 +162,16 @@
 	}
 }
 
+.damage-content .metrics-table,
+.threat-content .metrics-table,
+.healing-content .metrics-table,
+.tippy-box[data-theme='metrics-table'] {
+	font-size: 12px;
+}
+
 .tippy-box[data-theme='metrics-table'],
 .metrics-table {
 	--bs-border-default: rgba(var(--bs-white-rgb), 0.2);
-	font-size: 12px;
 	width: 100%;
 
 	th,
@@ -315,11 +321,4 @@ tr:not(.parent-metric) .expand-toggle {
 			}
 		}
 	}
-
-	// .metrics-total-bar {
-	// 	width: 100px;
-	// 	@include media-breakpoint-down(sm) {
-	// 		width: 50px;
-	// 	}
-	// }
 }

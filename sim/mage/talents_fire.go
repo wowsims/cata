@@ -123,9 +123,12 @@ func (mage *Mage) applyHotStreak() {
 
 	ImprovedHotStreakProcChance := float64(mage.Talents.ImprovedHotStreak) * 0.5
 
-	// TODO: Is this supposed to be fully buffed Spell Crit % or only from gear Rating?
-	baseCritPercent := mage.GetStat(stats.SpellCritPercent) + mage.GetStat(stats.CritRating)/core.CritRatingPerCritPercent
-	BaseHotStreakProcChance := float64(-2.7*baseCritPercent/100 + 0.9) // EJ settled on -2.7*critChance+0.9
+	// Simcraft uses a reference from ElitistJerks that's no longer available, but their formula is
+	// max(0, -2.73 * player crit + 0.95)
+	// https://web.archive.org/web/20120208064232/http://elitistjerks.com/f75/t110326-cataclysm_fire_mage_compendium/p6/#post1831143 or
+	// https://web.archive.org/web/20120208064232/http://elitistjerks.com/f75/t110326-cataclysm_fire_mage_compendium/p6/#post1831207
+	baseCritPercent := mage.GetStat(stats.SpellCritPercent) + (mage.GetStat(stats.CritRating) / core.CritRatingPerCritPercent) + 1*float64(mage.Talents.PiercingIce)
+	mage.hotStreakProcChance = max(0, float64(-2.7*baseCritPercent/100+0.9)) // EJ settled on -2.7*critChance+0.9
 
 	hotStreakCostMod := mage.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_PowerCost_Pct,
@@ -190,7 +193,7 @@ func (mage *Mage) applyHotStreak() {
 			}
 			// Hot Streak Base Talent Proc
 			if result.DidCrit() {
-				if sim.Proc(BaseHotStreakProcChance, "Hot Streak") {
+				if sim.Proc(mage.hotStreakProcChance, "Hot Streak") {
 					hotStreakAura.Activate(sim)
 				}
 			}
@@ -238,6 +241,7 @@ func (mage *Mage) applyPyromaniac() {
 	pyromaniacAura := mage.GetOrRegisterAura(core.Aura{
 		Label:    "Pyromaniac",
 		ActionID: core.ActionID{SpellID: 83582},
+		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			mage.MultiplyCastSpeed(hasteBonus)
 		},
@@ -246,16 +250,14 @@ func (mage *Mage) applyPyromaniac() {
 		},
 	})
 
-	mage.RegisterAura(core.Aura{
+	if len(mage.Env.Encounter.TargetUnits) < 3 {
+		return
+	}
+
+	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label:    "Pyromaniac Trackers",
 		ActionID: core.ActionID{SpellID: 83582},
 		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			if len(sim.AllUnits) < 3 {
-				return
-			}
-			aura.Activate(sim)
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			dotSpells := []*core.Spell{mage.LivingBomb, mage.Ignite, mage.Pyroblast, mage.Combustion}
 			activeDotTargets := 0
@@ -273,7 +275,7 @@ func (mage *Mage) applyPyromaniac() {
 				pyromaniacAura.Deactivate(sim)
 			}
 		},
-	})
+	}))
 }
 
 func (mage *Mage) applyMoltenFury() {
@@ -392,28 +394,31 @@ func (mage *Mage) applyImpact() {
 		return
 	}
 
+	var duplicatableDots []*core.Spell
 	impactAura := mage.RegisterAura(core.Aura{
 		Label:    "Impact",
 		ActionID: core.ActionID{SpellID: 64343},
 		Duration: time.Second * 10,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			duplicatableDots = []*core.Spell{mage.LivingBomb, mage.Pyroblast.RelatedDotSpell, mage.Ignite, mage.Combustion.RelatedDotSpell}
+		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.ClassSpellMask == MageSpellFireBlast {
 
 				originalTarget := mage.CurrentTarget
-				duplicatableDots := []*core.Spell{mage.LivingBomb, mage.Pyroblast.RelatedDotSpell, mage.Ignite, mage.Combustion.RelatedDotSpell}
 
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					if aoeTarget == originalTarget {
 						continue
 					}
-					for _, spell := range duplicatableDots {
-						originaldot := spell.Dot(originalTarget)
+					for _, dotSpell := range duplicatableDots {
+						originaldot := dotSpell.Dot(originalTarget)
 						if !originaldot.IsActive() {
 							continue
 						}
 
-						newdot := spell.Dot(aoeTarget)
-						if spell != mage.Ignite {
+						newdot := dotSpell.Dot(aoeTarget)
+						if dotSpell != mage.Ignite {
 							newdot.CopyDotAndApply(sim, originaldot) // See attached .go file
 						} else {
 							// TODO Impact Ignite

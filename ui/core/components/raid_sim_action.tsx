@@ -195,14 +195,14 @@ export class RaidSimResultsManager {
 				tippy(resultDivElem, { content, placement: 'right' });
 			}
 		};
-		setResultTooltip('.results-sim-dps', 'Damage Per Second');
-		setResultTooltip('.results-sim-tto', 'Time To OOM');
-		setResultTooltip('.results-sim-hps', 'Healing+Shielding Per Second, including overhealing.');
-		setResultTooltip('.results-sim-tps', 'Threat Per Second');
-		setResultTooltip('.results-sim-dtps', 'Damage Taken Per Second');
-		setResultTooltip('.results-sim-dur', 'Average Fight Duration');
+		setResultTooltip(`.${RaidSimResultsManager.resultMetricClasses['dps']}`, 'Damage Per Second');
+		setResultTooltip(`.${RaidSimResultsManager.resultMetricClasses['tto']}`, 'Time To OOM');
+		setResultTooltip(`.${RaidSimResultsManager.resultMetricClasses['hps']}`, 'Healing+Shielding Per Second, including overhealing.');
+		setResultTooltip(`.${RaidSimResultsManager.resultMetricClasses['tps']}`, 'Threat Per Second');
+		setResultTooltip(`.${RaidSimResultsManager.resultMetricClasses['dtps']}`, 'Damage Taken Per Second');
+		setResultTooltip(`.${RaidSimResultsManager.resultMetricClasses['dur']}`, 'Average Fight Duration');
 		setResultTooltip(
-			'.results-sim-tmi',
+			`.${RaidSimResultsManager.resultMetricClasses['tmi']}`,
 			<>
 				<p>Theck-Meloree Index (TMI)</p>
 				<p>A measure of incoming damage smoothness which combines the benefits of avoidance with effective health.</p>
@@ -212,7 +212,7 @@ export class RaidSimResultsManager {
 			</>,
 		);
 		setResultTooltip(
-			'.results-sim-cod',
+			`.${RaidSimResultsManager.resultMetricClasses['cod']}`,
 			<>
 				<p>Chance of Death</p>
 				<p>
@@ -227,13 +227,12 @@ export class RaidSimResultsManager {
 		);
 
 		if (!this.simUI.isIndividualSim()) {
-			[...this.simUI.resultsViewer.contentElem.querySelectorAll('results-sim-reference-diff-separator')].forEach(e => e.remove());
-			[...this.simUI.resultsViewer.contentElem.querySelectorAll('results-sim-tto')].forEach(e => e.remove());
-			[...this.simUI.resultsViewer.contentElem.querySelectorAll('results-sim-hps')].forEach(e => e.remove());
-			[...this.simUI.resultsViewer.contentElem.querySelectorAll('results-sim-tps')].forEach(e => e.remove());
-			[...this.simUI.resultsViewer.contentElem.querySelectorAll('results-sim-dtps')].forEach(e => e.remove());
-			[...this.simUI.resultsViewer.contentElem.querySelectorAll('results-sim-tmi')].forEach(e => e.remove());
-			[...this.simUI.resultsViewer.contentElem.querySelectorAll('results-sim-cod')].forEach(e => e.remove());
+			[...this.simUI.resultsViewer.contentElem.querySelectorAll(`.${RaidSimResultsManager.resultMetricClasses['tto']}`)].forEach(e => e.remove());
+			[...this.simUI.resultsViewer.contentElem.querySelectorAll(`.${RaidSimResultsManager.resultMetricClasses['hps']}`)].forEach(e => e.remove());
+			[...this.simUI.resultsViewer.contentElem.querySelectorAll(`.${RaidSimResultsManager.resultMetricClasses['tps']}`)].forEach(e => e.remove());
+			[...this.simUI.resultsViewer.contentElem.querySelectorAll(`.${RaidSimResultsManager.resultMetricClasses['dtps']}`)].forEach(e => e.remove());
+			[...this.simUI.resultsViewer.contentElem.querySelectorAll(`.${RaidSimResultsManager.resultMetricClasses['tmi']}`)].forEach(e => e.remove());
+			[...this.simUI.resultsViewer.contentElem.querySelectorAll(`.${RaidSimResultsManager.resultMetricClasses['cod']}`)].forEach(e => e.remove());
 		}
 
 		const simReferenceSetButton = this.simUI.resultsViewer.contentElem.querySelector<HTMLSpanElement>('.results-sim-set-reference');
@@ -681,5 +680,3 @@ type ResultMetric = {
 	classes?: string;
 	unit?: 'percentage' | 'number' | 'seconds' | undefined;
 };
-
-Intl.NumberFormat;

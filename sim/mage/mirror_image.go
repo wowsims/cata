@@ -15,7 +15,6 @@ if a frost bolt is mid-air when mirror images expire, frostbolt does not land
 */
 
 func (mage *Mage) registerMirrorImageCD() {
-
 	spell := mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 55342},
 		SpellSchool:    core.SpellSchoolArcane,
@@ -107,6 +106,7 @@ func (mi *MirrorImage) ExecuteCustomRotation(sim *core.Simulation) {
 			spell = mi.Fireblast
 		}
 	}
+
 	if success := spell.Cast(sim, mi.CurrentTarget); !success {
 		mi.Disable(sim)
 	}
@@ -129,7 +129,6 @@ var createMirrorImageInheritance = func() func(stats.Stats) stats.Stats {
 }
 
 func (mi *MirrorImage) registerFrostboltSpell() {
-
 	mi.Frostbolt = mi.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: 59638}, // Confirmed via logs
 		SpellSchool:  core.SpellSchoolFrost,
@@ -165,7 +164,6 @@ func (mi *MirrorImage) registerFrostboltSpell() {
 // If Fire spec with glyph, will chain cast Fireball
 // *******************************************************
 func (mi *MirrorImage) registerFireballSpell() {
-
 	mi.Fireball = mi.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: 88082}, // confirmed via logs
 		SpellSchool:  core.SpellSchoolFire,
@@ -201,7 +199,6 @@ func (mi *MirrorImage) registerFireballSpell() {
 // If Arcane spec with glyph, will chain cast Arcane Blast
 // *******************************************************
 func (mi *MirrorImage) registerArcaneBlastSpell() {
-
 	mi.ArcaneBlast = mi.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 88084}, //Confirmed via logs
 		SpellSchool: core.SpellSchoolArcane,

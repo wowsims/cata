@@ -8,7 +8,7 @@ import (
 )
 
 func (druid *Druid) registerWrathSpell() {
-	lunarMetric := druid.NewLunarEnergyMetrics(core.ActionID{SpellID: 5176})
+	druid.SetSpellEclipseEnergy(DruidSpellWrath, WrathBaseEnergyGain, WrathBaseEnergyGain)
 
 	druid.Wrath = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 5176},
@@ -47,8 +47,6 @@ func (druid *Druid) registerWrathSpell() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
-				druid.AddEclipseEnergy(13+1.0/3.0, LunarEnergy, sim, lunarMetric)
-
 				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)
 				})

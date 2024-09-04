@@ -25,7 +25,6 @@ func (mage *Mage) OutcomeArcaneMissiles(sim *core.Simulation, result *core.Spell
 }
 
 func (mage *Mage) registerArcaneMissilesSpell() {
-
 	mage.arcaneMissilesTickSpell = mage.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 7268},
 		SpellSchool:    core.SpellSchoolArcane,
