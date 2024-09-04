@@ -6,34 +6,36 @@ import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import SubtletyApl from './apls/subtlety.apl.json';
 import P1SubtletyGear from './gear_sets/p1_subtlety.gear.json';
+import P2SubtletyGear from './gear_sets/p2_subtlety.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
 export const P1_PRESET_SUB = PresetUtils.makePresetGear('P1 Sub', P1SubtletyGear);
+export const P2_PRESET_SUB = PresetUtils.makePresetGear('P2 Sub', P2SubtletyGear);
 
 export const ROTATION_PRESET_SUBTLETY = PresetUtils.makePresetAPLRotation('Subtlety', SubtletyApl);
 
 // Preset options for EP weights
 export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P1',
+	'Subtlety',
 	Stats.fromMap(
 		{
-			[Stat.StatAgility]: 3.7,
+			[Stat.StatAgility]: 3.84,
 			[Stat.StatStrength]: 1.05,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatCritRating]: (0.06 + 1.04),
-			[Stat.StatHitRating]: (0.36 + 1.67),
-			[Stat.StatHasteRating]: 1.27,
-			[Stat.StatMasteryRating]: 0.79,
-			[Stat.StatExpertiseRating]: 1.33,
+			[Stat.StatCritRating]: 1.42,
+			[Stat.StatHitRating]: 2.19,
+			[Stat.StatHasteRating]: 1.58,
+			[Stat.StatMasteryRating]: 0.95,
+			[Stat.StatExpertiseRating]: 1.76,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 7.0,
-			[PseudoStat.PseudoStatOffHandDps]: 1.0,
-			[PseudoStat.PseudoStatSpellHitPercent]: (0.36 * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT),
-			[PseudoStat.PseudoStatPhysicalHitPercent]: (1.67 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT),
+			[PseudoStat.PseudoStatMainHandDps]: 7.16,
+			[PseudoStat.PseudoStatOffHandDps]: 1.07,
+			[PseudoStat.PseudoStatSpellHitPercent]: 39.59,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 216.76,
 		},
 	),
 );

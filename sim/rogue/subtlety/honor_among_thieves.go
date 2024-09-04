@@ -33,6 +33,7 @@ func (subRogue *SubtletyRogue) registerHonorAmongThieves() {
 	subRogue.HonorAmongThieves = core.MakePermanent(subRogue.RegisterAura(core.Aura{
 		Label:    "Honor Among Thieves",
 		ActionID: honorAmongThievesID,
+		Icd:      &icd,
 		OnGain: func(_ *core.Aura, sim *core.Simulation) {
 			// In an ideal party, you'd probably get up to 6 ability crits/s (Rate = 600).
 			//  Survival Hunters, Enhancement Shamans, and Assassination Rogues are particularly good.
