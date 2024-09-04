@@ -1,4 +1,4 @@
-import { ItemNoticeData } from '../components/item_notice/item_notice';
+import { ItemNoticeData, SetBonusNoticeData } from '../components/item_notice/item_notice';
 import { Spec } from '../proto/common';
 
 const DTR_MISSING_IMPLEMENTATION_WARNING = (
@@ -26,4 +26,23 @@ export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 			[Spec.SpecDestructionWarlock]: DTR_MISSING_IMPLEMENTATION_WARNING,
 		},
 	],
+]);
+
+export const GENERIC_MISSING_SET_BONUS_NOTICE_DATA = new Map<number, string>([
+	[2, "Not yet implemented"],
+	[4, "Not yet implemented"],
+]);
+
+export const SET_BONUS_NOTICES = new Map<number, SetBonusNoticeData>([
+	// Custom notices
+	[
+		1002, // Feral T12
+		new Map<number, string>([
+			[2, "Requires PTR testing for implementation"],
+			[4, "Will be implemented in the next few days"],
+		]),
+	],
+
+	// Generic "not yet implemented" notices
+	[1058, null], // Feral T13
 ]);
