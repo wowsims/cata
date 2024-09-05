@@ -148,7 +148,7 @@ var Tier12 = core.NewItemSet(core.ItemSet{
 			// Cannot pick the same stat twice in a row. No other logic appears to exist
 			// Not a dynamic 1.25% mod; snapshots stats and applies that much as bonus rating for duration
 			// Links to all buffs: https://www.wowhead.com/spell=99175/item-rogue-t12-4p-bonus#comments:id=1507073
-			rogue := agent.GetCharacter()
+			rogue := agent.(RogueAgent).GetRogue()
 
 			// Aura for adding 25% of current rating as extra rating
 			hasteAura := rogue.GetOrRegisterAura(MakeT12StatAura(core.ActionID{SpellID: 99186}, stats.HasteRating, "Future on Fire"))
@@ -157,20 +157,19 @@ var Tier12 = core.NewItemSet(core.ItemSet{
 			auraArray := [3]*core.Aura{hasteAura, critAura, mastAura}
 
 			// Proc aura watching for ToT threat transfer start
-			lastStat := 3
 			core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
 				Name:           "Rogue T12 4P Bonus",
 				Callback:       core.CallbackOnApplyEffects,
 				ClassSpellMask: RogueSpellTricksOfTheTradeThreat,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if lastStat == 3 { // any of 3
-						randomStat := int(math.Mod(sim.RandomFloat("Rogue T12 4P Bonus")*10, 3))
-						lastStat = randomStat
-						auraArray[lastStat].Activate(sim)
+					if rogue.T12ToTLastBuff == 3 { // any of 3
+						randomStat := int(math.Mod(sim.RandomFloat("Rogue T12 4P Bonus Initial")*10, 3))
+						rogue.T12ToTLastBuff = randomStat
+						auraArray[rogue.T12ToTLastBuff].Activate(sim)
 					} else { // cannot re-roll same
 						randomStat := int(math.Mod(sim.RandomFloat("Rogue T12 4P Bonus")*10, 1)) + 1
-						lastStat = (lastStat + randomStat) % 3
-						auraArray[lastStat].Activate(sim)
+						rogue.T12ToTLastBuff = (rogue.T12ToTLastBuff + randomStat) % 3
+						auraArray[rogue.T12ToTLastBuff].Activate(sim)
 					}
 				},
 			})
