@@ -134,7 +134,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [PaladinInputs.AuraSelection(), PaladinInputs.StartingSealSelection()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff, BuffDebuffInputs.ManaBuff, BuffDebuffInputs.SpellHasteBuff, BuffDebuffInputs.PowerInfusion],
+	includeBuffDebuffInputs: [
+		BuffDebuffInputs.SpellDamageDebuff,
+		BuffDebuffInputs.SpellPowerBuff,
+		BuffDebuffInputs.ManaBuff,
+		BuffDebuffInputs.SpellHasteBuff,
+		BuffDebuffInputs.PowerInfusion
+	],
 	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff, BuffDebuffInputs.DamagePercentBuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
