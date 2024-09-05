@@ -244,6 +244,9 @@ const (
 	HunterSpellRapidFire
 	HunterSpellBestialWrath
 	HunterPetFocusDump
+	HunterSpellsTierTwelve = HunterSpellArcaneShot | HunterSpellKillCommand | HunterSpellChimeraShot | HunterSpellExplosiveShot |
+		HunterSpellBlackArrow | HunterSpellMultiShot | HunterSpellAimedShot |
+		HunterSpellSerpentSting
 	HunterSpellsAll = HunterSpellSteadyShot | HunterSpellCobraShot |
 		HunterSpellArcaneShot | HunterSpellKillCommand | HunterSpellChimeraShot | HunterSpellExplosiveShot |
 		HunterSpellExplosiveTrap | HunterSpellBlackArrow | HunterSpellMultiShot | HunterSpellAimedShot |
