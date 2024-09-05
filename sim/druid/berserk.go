@@ -92,3 +92,19 @@ func (druid *Druid) registerBerserkCD() {
 		},
 	})
 }
+
+func (druid *Druid) ApplyFeral4pT12(sim *core.Simulation) {
+	if !druid.Feral4pT12Active || !druid.BerserkAura.IsActive() {
+		return
+	}
+
+	berserkExtensionChance := 0.2 * float64(druid.ComboPoints())
+
+	if sim.Proc(berserkExtensionChance, "Feral 4pT12") {
+		druid.BerserkAura.UpdateExpires(druid.BerserkAura.ExpiresAt() + time.Second*2)
+
+		if sim.Log != nil {
+			druid.Log(sim, "Berserk extended by 2 seconds from finisher proc.")
+		}
+	}
+}

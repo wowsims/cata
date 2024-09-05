@@ -870,6 +870,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-ObsidianArborweaveBattlegarb"
+ value: {
+  dps: 26518.95905
+  tps: 34825.16855
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-ObsidianArborweaveRegalia"
  value: {
   dps: 19316.40579
