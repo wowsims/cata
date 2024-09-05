@@ -6,14 +6,14 @@ import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import SubtletyApl from './apls/subtlety.apl.json';
 import P1SubtletyGear from './gear_sets/p1_subtlety.gear.json';
-import P2SubtletyGear from './gear_sets/p2_subtlety.gear.json';
+import P3SubtletyGear from './gear_sets/p3_subtlety.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
 export const P1_PRESET_SUB = PresetUtils.makePresetGear('P1 Sub', P1SubtletyGear);
-export const P2_PRESET_SUB = PresetUtils.makePresetGear('P2 Sub', P2SubtletyGear);
+export const P3_PRESET_SUB = PresetUtils.makePresetGear('P3 Sub', P3SubtletyGear);
 
 export const ROTATION_PRESET_SUBTLETY = PresetUtils.makePresetAPLRotation('Subtlety', SubtletyApl);
 

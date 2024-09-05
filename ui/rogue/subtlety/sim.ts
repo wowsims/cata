@@ -57,7 +57,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P2_PRESET_SUB.gear,
+		gear: Presets.P3_PRESET_SUB.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Stat caps for reforge optimizer
@@ -153,7 +153,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_SUBTLETY],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.P1_PRESET_SUB, Presets.P2_PRESET_SUB],
+		gear: [Presets.P1_PRESET_SUB, Presets.P3_PRESET_SUB],
 	},
 
 	autoRotation: (player: Player<Spec.SpecSubtletyRogue>): APLRotation => {
