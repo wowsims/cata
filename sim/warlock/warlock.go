@@ -35,6 +35,7 @@ type Warlock struct {
 	Doomguard *DoomguardPet
 	Infernal  *InfernalPet
 	EbonImp   *EbonImpPet
+	FieryImp  *FieryImpPet
 
 	SoulShards   int32
 	SoulBurnAura *core.Aura
@@ -143,6 +144,7 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 	warlock.EbonImp = warlock.NewEbonImp()
 	warlock.Infernal = warlock.NewInfernalPet()
 	warlock.Doomguard = warlock.NewDoomguardPet()
+	warlock.FieryImp = warlock.NewFieryImp()
 
 	warlock.registerPets()
 
