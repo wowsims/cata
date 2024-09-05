@@ -30,6 +30,7 @@ type Druid struct {
 	BleedsActive      int
 	AssumeBleedActive bool
 	LeatherSpecActive bool
+	Feral4pT12Active  bool
 	RipTfSnapshot     bool
 
 	MHAutoSpell       *core.Spell

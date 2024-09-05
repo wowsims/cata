@@ -97,6 +97,21 @@ var ItemSetStormridersRegalia = core.NewItemSet(core.ItemSet{
 	},
 })
 
+// T12 Feral
+var ItemSetObsidianArborweaveBattlegarb = core.NewItemSet(core.ItemSet{
+	Name: "Obsidian Arborweave Battlegarb",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			// TODO: Implement after PTR testing
+		},
+		4: func(agent core.Agent) {
+			// Full implementation in berserk.go and barkskin.go
+			druid := agent.(DruidAgent).GetDruid()
+			druid.Feral4pT12Active = true
+		},
+	},
+})
+
 // T12 Balance
 var ItemSetObsidianArborweaveRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Obsidian Arborweave Regalia",

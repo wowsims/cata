@@ -870,6 +870,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-ObsidianArborweaveBattlegarb"
+ value: {
+  dps: 9048.58927
+  tps: 45312.13551
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-ObsidianArborweaveRegalia"
  value: {
   dps: 6342.4841
