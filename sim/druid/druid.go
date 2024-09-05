@@ -100,6 +100,7 @@ type Druid struct {
 	PulverizeAura            *core.Aura
 	SavageDefenseAura        *core.Aura
 	SavageRoarAura           *core.Aura
+	SmokescreenAura          *core.Aura
 	SolarEclipseProcAura     *core.Aura
 	StampedeCatAura          *core.Aura
 	StampedeBearAura         *core.Aura
