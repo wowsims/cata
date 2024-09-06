@@ -75,8 +75,15 @@ export const SET_BONUS_NOTICES = new Map<number, SetBonusNoticeData>([
 	[
 		1002, // Feral T12
 		new Map<number, string>([
-			[2, "Requires PTR testing for implementation"],
-			[4, "Will be implemented in the next few days"],
+			[2, "Not implemented, requires PTR testing!"],
+			[4, "Implemented and working for both cat and bear"],
+		]),
+	],
+	[
+		1008, // Warlock T12
+		new Map<number, string>([
+			[2, "Requires PTR testing to confirm exact pet behaviour & stats"],
+			[4, "Exact proc behaviour may vary, needs PTR testing to confirm"],
 		]),
 	],
 

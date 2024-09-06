@@ -92,6 +92,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-AllItems-Balespider'sBurningVestments"
+ value: {
+  dps: 25337.2033
+  tps: 15526.13359
+ }
+}
+dps_results: {
  key: "TestDestruction-AllItems-BaubleofTrueBlood-50726"
  value: {
   dps: 26568.96511

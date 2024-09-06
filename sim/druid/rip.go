@@ -77,6 +77,7 @@ func (druid *Druid) registerRipSpell() {
 				dot.BaseTickCount = RipBaseNumTicks
 				comboPointSnapshot = druid.ComboPoints()
 				dot.Apply(sim)
+				druid.ApplyFeral4pT12(sim)
 				druid.SpendComboPoints(sim, spell.ComboPointMetrics())
 			} else {
 				spell.IssueRefund(sim)
