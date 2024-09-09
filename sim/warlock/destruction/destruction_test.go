@@ -197,6 +197,22 @@ func TestIncinerateGlyphed(t *testing.T) {
 	lock.checkSpellDamageRange(t, sim, incinerate, 6284.6278, 6428.3061, 1.737076)
 }
 
+func TestIncinerateImmoCoE(t *testing.T) {
+	var testStats = stats.Stats{
+		stats.SpellHitPercent:  17,
+		stats.SpellCritPercent: -100,
+		stats.SpellPower:       5073,
+		stats.MasteryRating:    832,
+	}
+	sim := setupFakeSim(testStats, destroTalents, &proto.Glyphs{})
+	lock := sim.Raid.Parties[0].Players[0].(*DestructionWarlock)
+	incinerate := lock.GetSpell(core.ActionID{SpellID: 29722})
+	lock.Immolate.CurDot().Apply(sim)
+	lock.CurseOfElementsAuras.Get(lock.CurrentTarget).Activate(sim)
+
+	lock.checkSpellDamageRange(t, sim, incinerate, 7704.7629, 7901.1877, 1.884747)
+}
+
 // TODO: incinerate test with immolation
 
 func TestConflagrateBase(t *testing.T) {
