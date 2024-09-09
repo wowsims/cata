@@ -141,7 +141,53 @@ func applyRaceEffects(agent Agent) {
 	case proto.Race_RaceNightElf:
 		character.PseudoStats.ReducedNatureHitTakenChance += 0.02
 		character.PseudoStats.ReducedPhysicalHitTakenChance += 0.02
-		// TODO: Shadowmeld?
+
+		// Shadowmeld
+		actionID := ActionID{SpellID: 58984}
+
+		shmeldAura := character.RegisterAura(Aura{
+			Label:    "Shadowmeld",
+			ActionID: actionID,
+			Duration: NeverExpires,
+			// Shadowmeld counts as a stealth stance for (most?) spell requirements, but does not enable any additional bonuses/auras tied to stealth.
+			// Implementation vaguely mirrors Rogue Vanish
+			OnCastComplete: func(aura *Aura, sim *Simulation, spell *Spell) {
+				if spell.ActionID != actionID {
+					aura.Deactivate(sim)
+				}
+			},
+			OnExpire: func(aura *Aura, sim *Simulation) {
+				if character.AutoAttacks.MHConfig() != nil {
+					character.AutoAttacks.EnableAutoSwing(sim)
+				}
+			},
+		})
+
+		shmeldSpell := character.RegisterSpell(SpellConfig{
+			ActionID: actionID,
+
+			Cast: CastConfig{
+				CD: Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
+
+			ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
+				shmeldAura.Activate(sim)
+				character.AutoAttacks.CancelAutoSwing(sim)
+			},
+		})
+
+		character.AddMajorCooldown(MajorCooldown{
+			Spell: shmeldSpell,
+			Type:  CooldownTypeUnknown,
+			ShouldActivate: func(s *Simulation, c *Character) bool {
+				// No reason to auto-cast this
+				return false
+			},
+		})
+
 	case proto.Race_RaceOrc:
 		// Command (Pet damage +5%)
 		for _, pet := range character.Pets {

@@ -56,7 +56,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P1_PRESET_COMBAT.gear,
+		gear: Presets.P3_PRESET_COMBAT.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Stat caps for reforge optimizer
@@ -74,7 +74,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
 				breakpoints: [8, 27],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0.86 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT, 0],
+				postCapEPs: [117.16, 0],
 			});
 
 			return [meleeHitSoftCapConfig, spellHitSoftCapConfig];
@@ -150,7 +150,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_COMBAT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.P1_PRESET_COMBAT],
+		gear: [Presets.P1_PRESET_COMBAT, Presets.P3_PRESET_COMBAT],
 	},
 
 	autoRotation: (player: Player<Spec.SpecCombatRogue>): APLRotation => {

@@ -14,8 +14,8 @@ func (rogue *Rogue) registerGougeSpell() {
 	rogue.Gouge = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 1776},
 		SpellSchool:    core.SpellSchoolPhysical,
-		ProcMask:       core.ProcMaskEmpty,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | SpellFlagColdBlooded | core.SpellFlagAPL,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | core.SpellFlagAPL,
 		ClassSpellMask: RogueSpellGouge,
 
 		EnergyCost: core.EnergyCostOptions{
@@ -47,6 +47,10 @@ func (rogue *Rogue) registerGougeSpell() {
 			rogue.BreakStealth(sim)
 			calcBaseDamage := baseDamage +
 				0.20999999344*spell.MeleeAttackPower()
+
+			// Gouge has a Suppress Weapon Procs flag, but respects bonuses to MH such as expertise.
+			// This models that effect without introducing a new spell flag/proc mask for this specific case
+			spell.ProcMask = core.ProcMaskEmpty
 			result := spell.CalcAndDealDamage(sim, target, calcBaseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			// Gouge disables auto attacks, requiring a macro to re-enable, retaining whatever the remaining swing timer is.

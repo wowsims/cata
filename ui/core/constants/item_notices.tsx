@@ -26,6 +26,43 @@ export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 			[Spec.SpecDestructionWarlock]: DTR_MISSING_IMPLEMENTATION_WARNING,
 		},
 	],
+	// Rogue Legendary Daggers (All Stages)
+	[ // Fear
+		77945,
+		{
+			[Spec.SpecUnknown]: DTR_MISSING_IMPLEMENTATION_WARNING
+		},
+	],
+	[ // Vengeance
+		77946,
+		{
+			[Spec.SpecUnknown]: DTR_MISSING_IMPLEMENTATION_WARNING
+		},
+	],
+	[ // Sleeper
+		77947,
+		{
+			[Spec.SpecUnknown]: DTR_MISSING_IMPLEMENTATION_WARNING
+		},
+	],
+	[ // Dreamer
+		77948,
+		{
+			[Spec.SpecUnknown]: DTR_MISSING_IMPLEMENTATION_WARNING
+		},
+	],
+	[ // Golad
+		77949,
+		{
+			[Spec.SpecUnknown]: DTR_MISSING_IMPLEMENTATION_WARNING
+		},
+	],
+	[ // Tiriosh
+		77950,
+		{
+			[Spec.SpecUnknown]: DTR_MISSING_IMPLEMENTATION_WARNING
+		},
+	],
 ]);
 
 export const GENERIC_MISSING_SET_BONUS_NOTICE_DATA = new Map<number, string>([
