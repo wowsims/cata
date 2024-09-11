@@ -331,13 +331,9 @@ func (cat *FeralDruid) calcRipRefreshTime(sim *core.Simulation, ripDot *core.Dot
 	// First calculate the maximum number of buffed Rip ticks we can get out before the fight ends.
 	buffedTickCount := min(cat.maxRipTicks, int32((sim.Duration-targetClipTime)/ripDot.BaseTickLength))
 
-	// Subtract out any ticks that would already be buffed by an existing snapshot
-	if cat.RipTfSnapshot {
-		buffedTickCount -= ripDot.RemainingTicks()
-	}
-
 	// Perform a DPE comparison vs. Shred
-	expectedDamageGain := cat.Rip.ExpectedTickDamage(sim, cat.CurrentTarget) * (1.0 - 1.0/1.15) * float64(buffedTickCount)
+	bleedPowerRatio := core.TernaryFloat64(cat.RipTfSnapshot, 1.0, 1.0/1.15)
+	expectedDamageGain := cat.Rip.ExpectedTickDamage(sim, cat.CurrentTarget) * (1.0 - bleedPowerRatio) * float64(buffedTickCount)
 	energyEquivalent := expectedDamageGain / cat.Shred.ExpectedInitialDamage(sim, cat.CurrentTarget) * cat.Shred.DefaultCast.Cost
 
 	if sim.Log != nil {
