@@ -61,6 +61,7 @@ func (druid *Druid) registerFerociousBiteSpell() {
 
 			if result.Landed() {
 				druid.SpendEnergy(sim, excessEnergy, spell.Cost.(*core.EnergyCost).ResourceMetrics)
+				druid.ApplyFeral4pT12(sim)
 				druid.SpendComboPoints(sim, spell.ComboPointMetrics())
 
 				// Blood in the Water

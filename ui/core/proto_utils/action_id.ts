@@ -399,6 +399,11 @@ export class ActionId {
 					name += ' (Wasted)';
 				}
 				break;
+			case 'Crescendo of Suffering':
+				if (this.tag == 1){
+					name += ' (Pre-Pull)'
+				}
+			break;
 			case 'Shadowflame':
 			case 'Moonfire':
 			case 'Sunfire':
@@ -821,6 +826,7 @@ const petNameToIcon: Record<string, string> = {
 	Infernal: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summoninfernal.jpg',
 	Doomguard: 'https://wow.zamimg.com/images/wow/icons/large/warlock_summon_doomguard.jpg',
 	'Ebon Imp': 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_removecurse.jpg',
+	'Fiery Imp': 'https://wow.zamimg.com/images/wow/icons/large/ability_warlock_empoweredimp.jpg',
 	Gorilla: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_gorilla.jpg',
 	Hyena: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_hyena.jpg',
 	Imp: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonimp.jpg',

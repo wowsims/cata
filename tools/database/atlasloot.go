@@ -383,6 +383,7 @@ var AtlasLootDungeonToRaidDifficulty = map[string]string{
 	"NORMAL_DIFF": "RAID25_DIFF",
 	"HEROIC_DIFF": "RAID25H_DIFF",
 }
+
 const EndTimeEchoLootString = `{
     { 1, "INV_Box_01", nil, AL["Echo of Baine"], nil },	--Echo of Baine
     { 2, 72815 },	-- Bloodhoof Legguards

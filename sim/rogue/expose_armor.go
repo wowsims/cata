@@ -53,14 +53,15 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 			rogue.BreakStealth(sim)
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 			if result.Landed() {
+				spentPoints := rogue.ComboPoints()
 				debuffAura := rogue.ExposeArmorAuras.Get(target)
-				debuffAura.Duration = rogue.exposeArmorDurations[rogue.ComboPoints()]
+				debuffAura.Duration = rogue.exposeArmorDurations[spentPoints]
 				debuffAura.Activate(sim)
 				rogue.ApplyFinisher(sim, spell)
 				if rogue.Talents.ImprovedExposeArmor > 0 {
 					procChance := 0.5 * float64(rogue.Talents.ImprovedExposeArmor)
 					if sim.Proc(procChance, "Improved Expose Armor") {
-						rogue.AddComboPoints(sim, 5, spell.ComboPointMetrics())
+						rogue.AddComboPoints(sim, spentPoints, spell.ComboPointMetrics())
 					}
 				}
 			} else {

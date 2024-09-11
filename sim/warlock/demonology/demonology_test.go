@@ -442,7 +442,7 @@ func TestDemonology(t *testing.T) {
 		Prime3: int32(proto.WarlockPrimeGlyph_GlyphOfMetamorphosis),
 		Major1: int32(proto.WarlockMajorGlyph_GlyphOfLifeTap),
 		Major2: int32(proto.WarlockMajorGlyph_GlyphOfShadowBolt),
-		Major3: int32(proto.WarlockMajorGlyph_GlyphOfSoulLink),
+		Major3: int32(proto.WarlockMajorGlyph_GlyphOfFelhunter),
 	}
 
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{

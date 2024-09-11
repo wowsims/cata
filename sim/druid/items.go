@@ -97,6 +97,39 @@ var ItemSetStormridersRegalia = core.NewItemSet(core.ItemSet{
 	},
 })
 
+// T12 Feral
+var ItemSetObsidianArborweaveBattlegarb = core.NewItemSet(core.ItemSet{
+	Name: "Obsidian Arborweave Battlegarb",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			// TODO: Implement after PTR testing
+		},
+		4: func(agent core.Agent) {
+			// Full implementation in berserk.go and barkskin.go
+			druid := agent.(DruidAgent).GetDruid()
+			druid.Feral4pT12Active = true
+
+			if !druid.InForm(Bear) {
+				return
+			}
+
+			druid.SmokescreenAura = druid.RegisterAura(core.Aura{
+				Label:    "Smokescreen",
+				ActionID: core.ActionID{SpellID: 99011},
+				Duration: time.Second * 12,
+
+				OnGain: func(_ *core.Aura, _ *core.Simulation) {
+					druid.PseudoStats.BaseDodgeChance += 0.1
+				},
+
+				OnExpire: func(_ *core.Aura, _ *core.Simulation) {
+					druid.PseudoStats.BaseDodgeChance -= 0.1
+				},
+			})
+		},
+	},
+})
+
 // T12 Balance
 var ItemSetObsidianArborweaveRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Obsidian Arborweave Regalia",
