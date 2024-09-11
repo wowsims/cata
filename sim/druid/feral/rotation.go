@@ -329,7 +329,7 @@ func (cat *FeralDruid) calcRipRefreshTime(sim *core.Simulation, ripDot *core.Dot
 
 	// If the clip costs us a Rip cast (30 Energy), then we need to determine whether the damage gain is worth the spend.
 	// First calculate the maximum number of buffed Rip ticks we can get out before the fight ends.
-	buffedTickCount := min(cat.maxRipTicks+1, int32((sim.Duration-targetClipTime)/ripDot.BaseTickLength))
+	buffedTickCount := min(cat.maxRipTicks, int32((sim.Duration-targetClipTime)/ripDot.BaseTickLength))
 
 	// Subtract out any ticks that would already be buffed by an existing snapshot
 	if cat.RipTfSnapshot {

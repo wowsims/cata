@@ -501,8 +501,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-Gladiator'sSanctuary"
  value: {
-  dps: 23032.76562
-  tps: 30973.8538
+  dps: 23031.13815
+  tps: 30831.92297
  }
 }
 dps_results: {
@@ -1096,8 +1096,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-Stormrider'sBattlegarb"
  value: {
-  dps: 25066.2667
-  tps: 34904.10733
+  dps: 24980.01191
+  tps: 33854.91771
  }
 }
 dps_results: {
