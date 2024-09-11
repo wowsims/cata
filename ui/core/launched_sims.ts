@@ -43,8 +43,8 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 	},
 	// Druid
 	[Spec.SpecBalanceDruid]: {
-		phase: Phase.Phase1,
-		status: LaunchStatus.Alpha,
+		phase: Phase.Phase2,
+		status: LaunchStatus.Beta,
 	},
 	[Spec.SpecFeralDruid]: {
 		phase: Phase.Phase2,
