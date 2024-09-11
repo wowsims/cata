@@ -308,7 +308,8 @@ func (cat *FeralDruid) calcRipRefreshTime(sim *core.Simulation, ripDot *core.Dot
 	}
 
 	// If we're not gaining a new Tiger's Fury snapshot, then use the standard 1 tick refresh window
-	standardRefreshTime := ripDot.ExpiresAt() - ripDot.BaseTickLength
+	ripEnd := ripDot.ExpiresAt()
+	standardRefreshTime := ripEnd - ripDot.BaseTickLength
 
 	if !cat.TigersFuryAura.IsActive() || isExecutePhase || (cat.ComboPoints() < cat.Rotation.MinCombosForRip) {
 		return standardRefreshTime
@@ -323,21 +324,12 @@ func (cat *FeralDruid) calcRipRefreshTime(sim *core.Simulation, ripDot *core.Dot
 
 	// Potential clips for a TF snapshot should be done as late as possible
 	latestPossibleSnapshot := tfEnd - cat.ReactionTime*time.Duration(2)
-
-	// Determine if an early clip would cost us an extra Rip cast over the course of the fight
-	maxRipDur := time.Duration(cat.maxRipTicks) * ripDot.BaseTickLength
-	finalPossibleRipCast := core.TernaryDuration(cat.Rotation.BiteDuringExecute, core.DurationFromSeconds(0.75*sim.Duration.Seconds())-cat.ReactionTime, sim.Duration-cat.cachedRipEndThresh)
-	minRipsPossible := (finalPossibleRipCast - standardRefreshTime) / maxRipDur
-	projectedRipCasts := (finalPossibleRipCast - latestPossibleSnapshot) / maxRipDur
-
-	// If the clip is free, then always allow it
-	if projectedRipCasts == minRipsPossible {
-		return latestPossibleSnapshot
-	}
+	numClippedTicks := (ripEnd - latestPossibleSnapshot) / ripDot.BaseTickLength
+	targetClipTime := standardRefreshTime - numClippedTicks * ripDot.BaseTickLength
 
 	// If the clip costs us a Rip cast (30 Energy), then we need to determine whether the damage gain is worth the spend.
 	// First calculate the maximum number of buffed Rip ticks we can get out before the fight ends.
-	buffedTickCount := min(cat.maxRipTicks+1, int32((sim.Duration-latestPossibleSnapshot)/ripDot.BaseTickLength))
+	buffedTickCount := min(cat.maxRipTicks+1, int32((sim.Duration-targetClipTime)/ripDot.BaseTickLength))
 
 	// Subtract out any ticks that would already be buffed by an existing snapshot
 	if cat.RipTfSnapshot {
@@ -352,7 +344,7 @@ func (cat *FeralDruid) calcRipRefreshTime(sim *core.Simulation, ripDot *core.Dot
 		cat.Log(sim, "Rip TF snapshot is worth %.1f Energy", energyEquivalent)
 	}
 
-	return core.TernaryDuration(energyEquivalent > cat.Rip.DefaultCast.Cost, latestPossibleSnapshot, standardRefreshTime)
+	return core.TernaryDuration(energyEquivalent > cat.Rip.DefaultCast.Cost, targetClipTime, standardRefreshTime)
 }
 
 func (cat *FeralDruid) canMeleeWeave(sim *core.Simulation, regenRate float64, currentEnergy float64, isClearcast bool, upcomingTimers *PoolingActions) bool {
