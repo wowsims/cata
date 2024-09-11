@@ -30,6 +30,10 @@ func (druid *Druid) registerBarkskinCD() {
 			if hasGlyph {
 				druid.PseudoStats.ReducedCritTakenChance -= 0.25
 			}
+
+			if druid.Feral4pT12Active {
+				druid.SmokescreenAura.Activate(sim)
+			}
 		},
 	})
 

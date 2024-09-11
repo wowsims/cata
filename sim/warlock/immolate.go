@@ -9,7 +9,7 @@ import (
 func (warlock *Warlock) registerImmolate() {
 	fireAndBrimstoneMod := warlock.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  WarlockSpellIncinerate | WarlockSpellChaosBolt,
-		Kind:       core.SpellMod_DamageDone_Flat,
+		Kind:       core.SpellMod_DamageDone_Pct,
 		FloatValue: 0.05 * float64(warlock.Talents.FireAndBrimstone),
 	})
 

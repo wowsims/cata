@@ -30,6 +30,7 @@ type Druid struct {
 	BleedsActive      int
 	AssumeBleedActive bool
 	LeatherSpecActive bool
+	Feral4pT12Active  bool
 	RipTfSnapshot     bool
 
 	MHAutoSpell       *core.Spell
@@ -99,6 +100,7 @@ type Druid struct {
 	PulverizeAura            *core.Aura
 	SavageDefenseAura        *core.Aura
 	SavageRoarAura           *core.Aura
+	SmokescreenAura          *core.Aura
 	SolarEclipseProcAura     *core.Aura
 	StampedeCatAura          *core.Aura
 	StampedeBearAura         *core.Aura

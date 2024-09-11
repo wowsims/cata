@@ -10,7 +10,6 @@ import { Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as WarlockInputs from '../inputs';
-import { WARLOCK_BREAKPOINTS } from '../presets';
 import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecAfflictionWarlock, {

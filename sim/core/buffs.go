@@ -1326,7 +1326,7 @@ func registerTricksOfTheTradeCD(agent Agent, tristateConfig proto.TristateEffect
 
 	// Add a small offset to the tooltip CD to account for input delays
 	// between the Rogue pressing Tricks and hitting a target.
-	effectiveCD := time.Second * 30 + unit.ReactionTime
+	effectiveCD := time.Second*30 + unit.ReactionTime
 
 	registerExternalConsecutiveCDApproximation(
 		agent,
@@ -1788,7 +1788,7 @@ func replenishmentAura(unit *Unit, _ ActionID) *Aura {
 		return unit.ReplenishmentAura
 	}
 
-	replenishmentDep := unit.NewDynamicStatDependency(stats.Mana, stats.MP5, 0.01)
+	replenishmentDep := unit.NewDynamicStatDependency(stats.Mana, stats.MP5, 0.005)
 
 	unit.ReplenishmentAura = unit.RegisterAura(Aura{
 		Label:    "Replenishment",

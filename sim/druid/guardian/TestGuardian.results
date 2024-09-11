@@ -348,7 +348,7 @@ dps_results: {
  key: "TestGuardian-AllItems-ElectrosparkHeartstarter-67118"
  value: {
   dps: 7812.79531
-  tps: 39154.28703
+  tps: 39155.22445
  }
 }
 dps_results: {
@@ -411,7 +411,7 @@ dps_results: {
  key: "TestGuardian-AllItems-FieryQuintessence-69000"
  value: {
   dps: 7790.92127
-  tps: 39092.23054
+  tps: 39093.13976
  }
 }
 dps_results: {
@@ -867,6 +867,13 @@ dps_results: {
  value: {
   dps: 7812.79531
   tps: 39126.51635
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-ObsidianArborweaveBattlegarb"
+ value: {
+  dps: 9048.58927
+  tps: 45312.13551
  }
 }
 dps_results: {
