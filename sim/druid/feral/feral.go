@@ -68,6 +68,7 @@ type FeralDruid struct {
 	maxRipTicks        int32
 	berserkUsed        bool
 	bleedAura          *core.Aura
+	tempSnapshotAura   *core.Aura
 	lastShift          time.Duration
 	cachedRipEndThresh time.Duration
 	nextActionAt       time.Duration
@@ -81,6 +82,25 @@ func (cat *FeralDruid) GetDruid() *druid.Druid {
 func (cat *FeralDruid) Initialize() {
 	cat.Druid.Initialize()
 	cat.RegisterFeralCatSpells()
+
+	snapshotHandler := func(aura *core.Aura, sim *core.Simulation) {
+		previousSnapshotPower := core.TernaryFloat64(cat.tempSnapshotAura.IsActive(), cat.Rip.NewSnapshotPower, cat.Rip.CurrentSnapshotPower)
+		cat.UpdateBleedPower(cat.Rip, sim, cat.CurrentTarget, false, true)
+
+		if cat.Rip.NewSnapshotPower > previousSnapshotPower {
+			cat.tempSnapshotAura = aura
+		} else if cat.tempSnapshotAura.IsActive() {
+			cat.Rip.NewSnapshotPower = previousSnapshotPower
+		} else {
+			cat.tempSnapshotAura = nil
+		}
+	}
+
+	cat.TigersFuryAura.ApplyOnGain(snapshotHandler)
+	cat.TigersFuryAura.ApplyOnExpire(snapshotHandler)
+	cat.AddOnTemporaryStatsChange(func(sim *core.Simulation, buffAura *core.Aura, _ stats.Stats) {
+		snapshotHandler(buffAura, sim)
+	})
 }
 
 func (cat *FeralDruid) ApplyTalents() {
@@ -96,4 +116,11 @@ func (cat *FeralDruid) Reset(sim *core.Simulation) {
 	cat.waitingForTick = false
 	cat.berserkUsed = false
 	cat.nextActionAt = -core.NeverExpires
+
+	// Reset snapshot power values until first cast
+	cat.Rip.CurrentSnapshotPower = 0
+	cat.Rip.NewSnapshotPower = 0
+	cat.Rake.CurrentSnapshotPower = 0
+	cat.Rake.NewSnapshotPower = 0
+	cat.tempSnapshotAura = nil
 }

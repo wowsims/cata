@@ -74,7 +74,7 @@ func (cat *FeralDruid) shiftBearCat(sim *core.Simulation, powershift bool) bool 
 }
 
 func (cat *FeralDruid) canBite(sim *core.Simulation, isExecutePhase bool) bool {
-	if cat.TigersFuryAura.IsActive() && isExecutePhase {
+	if cat.tempSnapshotAura.IsActive() && isExecutePhase {
 		return true
 	}
 
@@ -83,7 +83,7 @@ func (cat *FeralDruid) canBite(sim *core.Simulation, isExecutePhase bool) bool {
 	}
 
 	if isExecutePhase {
-		return !cat.RipTfSnapshot
+		return cat.Rip.NewSnapshotPower >= cat.Rip.CurrentSnapshotPower
 	}
 
 	return cat.Rip.CurDot().RemainingDuration(sim) >= cat.Rotation.BiteTime
@@ -307,23 +307,26 @@ func (cat *FeralDruid) calcRipRefreshTime(sim *core.Simulation, ripDot *core.Dot
 		return sim.CurrentTime - cat.ReactionTime
 	}
 
-	// If we're not gaining a new Tiger's Fury snapshot, then use the standard 1 tick refresh window
+	// If we're not gaining a stronger snapshot, then use the standard 1 tick refresh window
 	ripEnd := ripDot.ExpiresAt()
 	standardRefreshTime := ripEnd - ripDot.BaseTickLength
 
-	if !cat.TigersFuryAura.IsActive() || isExecutePhase || (cat.ComboPoints() < cat.Rotation.MinCombosForRip) {
+	if !cat.tempSnapshotAura.IsActive() || isExecutePhase || (cat.ComboPoints() < cat.Rotation.MinCombosForRip) {
 		return standardRefreshTime
 	}
 
-	// Likewise, if the existing TF buff will still be up at the start of the normal window, then don't clip unnecessarily
-	tfEnd := cat.TigersFuryAura.ExpiresAt()
+	// Likewise, if the existing buff will still be up at the start of the normal window, then don't clip unnecessarily
+	buffRemains := cat.tempSnapshotAura.RemainingDuration(sim)
+	maxRipDur := ripDot.BaseTickLength * time.Duration(cat.maxRipTicks)
+	numCastsCovered := buffRemains / maxRipDur
+	buffEnd := cat.tempSnapshotAura.ExpiresAt() - numCastsCovered * maxRipDur
 
-	if tfEnd > standardRefreshTime+cat.ReactionTime {
+	if buffEnd > standardRefreshTime+cat.ReactionTime {
 		return standardRefreshTime
 	}
 
-	// Potential clips for a TF snapshot should be done as late as possible
-	latestPossibleSnapshot := tfEnd - cat.ReactionTime*time.Duration(2)
+	// Potential clips for a buff snapshot should be done as late as possible
+	latestPossibleSnapshot := buffEnd - cat.ReactionTime*time.Duration(2)
 	numClippedTicks := (ripEnd - latestPossibleSnapshot) / ripDot.BaseTickLength
 	targetClipTime := standardRefreshTime - numClippedTicks * ripDot.BaseTickLength
 
@@ -332,12 +335,11 @@ func (cat *FeralDruid) calcRipRefreshTime(sim *core.Simulation, ripDot *core.Dot
 	buffedTickCount := min(cat.maxRipTicks, int32((sim.Duration-targetClipTime)/ripDot.BaseTickLength))
 
 	// Perform a DPE comparison vs. Shred
-	bleedPowerRatio := core.TernaryFloat64(cat.RipTfSnapshot, 1.0, 1.0/1.15)
-	expectedDamageGain := cat.Rip.ExpectedTickDamage(sim, cat.CurrentTarget) * (1.0 - bleedPowerRatio) * float64(buffedTickCount)
+	expectedDamageGain := (cat.Rip.NewSnapshotPower - cat.Rip.CurrentSnapshotPower) * float64(buffedTickCount)
 	energyEquivalent := expectedDamageGain / cat.Shred.ExpectedInitialDamage(sim, cat.CurrentTarget) * cat.Shred.DefaultCast.Cost
 
 	if sim.Log != nil {
-		cat.Log(sim, "Rip TF snapshot is worth %.1f Energy", energyEquivalent)
+		cat.Log(sim, "Rip buff snapshot is worth %.1f Energy", energyEquivalent)
 	}
 
 	return core.TernaryDuration(energyEquivalent > cat.Rip.DefaultCast.Cost, targetClipTime, standardRefreshTime)
@@ -479,7 +481,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	biteAtEnd := (curCp >= rotation.MinCombosForBite) && ((simTimeRemain < endThreshForClip) || (ripDot.IsActive() && (simTimeRemain-ripDot.RemainingDuration(sim) < baseEndThresh)))
 
 	// Delay Rip refreshes if Tiger's Fury will be usable soon enough for the snapshot to outweigh the lost Rip ticks from waiting
-	if ripNow && !tfActive {
+	if ripNow && !tfActive && !cat.tempSnapshotAura.IsActive() {
 		buffedTickCount := min(cat.maxRipTicks, int32((simTimeRemain-finalTickLeeway)/ripDot.BaseTickLength))
 		delayBreakpoint := finalTickLeeway + core.DurationFromSeconds(0.15*float64(buffedTickCount)*ripDot.BaseTickLength.Seconds())
 
