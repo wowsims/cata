@@ -317,6 +317,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-DeepEarthRegalia"
+ value: {
+  dps: 6278.94543
+  tps: 31456.13778
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-DestructiveShadowspiritDiamond"
  value: {
   dps: 7822.34711
