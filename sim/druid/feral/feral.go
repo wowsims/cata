@@ -84,13 +84,16 @@ func (cat *FeralDruid) Initialize() {
 	cat.RegisterFeralCatSpells()
 
 	snapshotHandler := func(aura *core.Aura, sim *core.Simulation) {
-		previousSnapshotPower := core.TernaryFloat64(cat.tempSnapshotAura.IsActive(), cat.Rip.NewSnapshotPower, cat.Rip.CurrentSnapshotPower)
+		previousRipSnapshotPower := core.TernaryFloat64(cat.tempSnapshotAura.IsActive(), cat.Rip.NewSnapshotPower, cat.Rip.CurrentSnapshotPower)
+		previousRakeSnapshotPower := core.TernaryFloat64(cat.tempSnapshotAura.IsActive(), cat.Rake.NewSnapshotPower, cat.Rake.CurrentSnapshotPower)
 		cat.UpdateBleedPower(cat.Rip, sim, cat.CurrentTarget, false, true)
+		cat.UpdateBleedPower(cat.Rake, sim, cat.CurrentTarget, false, true)
 
-		if cat.Rip.NewSnapshotPower > previousSnapshotPower {
+		if cat.Rip.NewSnapshotPower > previousRipSnapshotPower {
 			cat.tempSnapshotAura = aura
 		} else if cat.tempSnapshotAura.IsActive() {
-			cat.Rip.NewSnapshotPower = previousSnapshotPower
+			cat.Rip.NewSnapshotPower = previousRipSnapshotPower
+			cat.Rake.NewSnapshotPower = previousRakeSnapshotPower
 		} else {
 			cat.tempSnapshotAura = nil
 		}
