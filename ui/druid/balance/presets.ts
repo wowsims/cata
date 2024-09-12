@@ -16,7 +16,8 @@ import {
 import { BalanceDruid_Options as BalanceDruidOptions, DruidMajorGlyph, DruidMinorGlyph, DruidPrimeGlyph } from '../../core/proto/druid.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
-import DefaultApl from './apls/default.apl.json';
+import T11Apl from './apls/t11.apl.json';
+import T12Apl from './apls/t12.apl.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 import T11Gear from './gear_sets/t11.gear.json';
 import T12Gear from './gear_sets/t12.gear.json';
@@ -27,10 +28,11 @@ export const T11PresetGear = PresetUtils.makePresetGear('T11', T11Gear);
 export const T12PresetGear = PresetUtils.makePresetGear('T12', T12Gear);
 export const T13PresetGear = PresetUtils.makePresetGear('T13 (WIP)', T13Gear);
 
-export const PresetRotationDefault = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
+export const T11PresetRotation = PresetUtils.makePresetAPLRotation('T11 4P', T11Apl);
+export const T12PresetRotation = PresetUtils.makePresetAPLRotation('T12', T12Apl);
 
-export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'T11',
+export const StandardEPWeights = PresetUtils.makePresetEpWeights(
+	'Standard',
 	Stats.fromMap({
 		[Stat.StatIntellect]: 1.3,
 		[Stat.StatSpirit]: 1.27,

@@ -106,16 +106,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
+		epWeights: [Presets.StandardEPWeights],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents],
-		rotations: [Presets.PresetRotationDefault],
+		rotations: [Presets.T11PresetRotation, Presets.T12PresetRotation],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PreraidPresetGear, Presets.T11PresetGear, Presets.T12PresetGear, Presets.T13PresetGear],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecBalanceDruid>): APLRotation => {
-		return Presets.PresetRotationDefault.rotation.rotation!;
+		return Presets.T11PresetRotation.rotation.rotation!;
 	},
 
 	raidSimPresets: [
