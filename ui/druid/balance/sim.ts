@@ -92,8 +92,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	otherInputs: {
 		inputs: [
 			BalanceInputs.OkfUptime,
-			BalanceInputs.StartInSolar,
-			BalanceInputs.MasterySnapshot,
 			OtherInputs.TankAssignment,
 			OtherInputs.InputDelay,
 			OtherInputs.DistanceFromTarget,
