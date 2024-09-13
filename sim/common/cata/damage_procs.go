@@ -44,7 +44,9 @@ func init() {
 
 	core.NewItemEffect(68925, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		procChance := 0.15 //TODO: simc proc chance, verify when available
+		// Proc chance determined to be p=.48 by video research - Researched by InDebt & Frostbitten
+		// Research: https://github.com/wowsims/cata/pull/1009#issuecomment-2348700653
+		procChance := 0.5
 		dummyAura := character.GetOrRegisterAura(core.Aura{
 			Label:     "Electrical Charge",
 			ActionID:  core.ActionID{SpellID: 96890},
@@ -89,7 +91,9 @@ func init() {
 
 	core.NewItemEffect(69110, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		procChance := 0.15 //TODO: simc proc chance, verify when available
+		// Proc chance determined to be p=.48 by video research - Researched by InDebt & Frostbitten
+		// Research: https://github.com/wowsims/cata/pull/1009#issuecomment-2348700653
+		procChance := 0.5
 		dummyAura := character.GetOrRegisterAura(core.Aura{
 			Label:     "Electrical Charge",
 			ActionID:  core.ActionID{SpellID: 96890},

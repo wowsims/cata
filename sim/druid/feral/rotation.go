@@ -330,21 +330,21 @@ func (cat *FeralDruid) calcBleedRefreshTime(sim *core.Simulation, bleedSpell *dr
 	maxTickCount := core.TernaryInt32(isRip, cat.maxRipTicks, bleedDot.BaseTickCount)
 	maxBleedDur := bleedDot.BaseTickLength * time.Duration(maxTickCount)
 	numCastsCovered := buffRemains / maxBleedDur
-	buffEnd := cat.tempSnapshotAura.ExpiresAt() - numCastsCovered * maxBleedDur
+	buffEnd := cat.tempSnapshotAura.ExpiresAt() - numCastsCovered*maxBleedDur
 
-	if buffEnd > standardRefreshTime + cat.ReactionTime {
+	if buffEnd > standardRefreshTime+cat.ReactionTime {
 		return standardRefreshTime
 	}
 
 	// Potential clips for a buff snapshot should be done as late as possible
-	latestPossibleSnapshot := buffEnd - cat.ReactionTime * time.Duration(2)
+	latestPossibleSnapshot := buffEnd - cat.ReactionTime*time.Duration(2)
 	numClippedTicks := (bleedEnd - latestPossibleSnapshot) / bleedDot.BaseTickLength
-	targetClipTime := standardRefreshTime - numClippedTicks * bleedDot.BaseTickLength
+	targetClipTime := standardRefreshTime - numClippedTicks*bleedDot.BaseTickLength
 
 	// Since the clip can cost us 30-35 Energy, we need to determine whether the damage gain is worth the
 	// spend. First calculate the maximum number of buffed bleed ticks we can get out before the fight
 	// ends.
-	buffedTickCount := min(maxTickCount, int32((sim.Duration - targetClipTime) / bleedDot.BaseTickLength))
+	buffedTickCount := min(maxTickCount, int32((sim.Duration-targetClipTime)/bleedDot.BaseTickLength))
 
 	// Perform a DPE comparison vs. Shred
 	expectedDamageGain := (bleedSpell.NewSnapshotPower - bleedSpell.CurrentSnapshotPower) * float64(buffedTickCount)
