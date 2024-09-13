@@ -320,7 +320,7 @@ dps_results: {
  value: {
   dps: 21998.53427
   tps: 19961.6477
-  hps: 245.25882
+  hps: 245.25883
  }
 }
 dps_results: {
@@ -336,7 +336,7 @@ dps_results: {
  value: {
   dps: 21944.09428
   tps: 20055.84482
-  hps: 245.25882
+  hps: 245.25883
  }
 }
 dps_results: {
@@ -344,7 +344,7 @@ dps_results: {
  value: {
   dps: 21351.64308
   tps: 19499.4618
-  hps: 245.25882
+  hps: 245.25883
  }
 }
 dps_results: {
@@ -368,7 +368,7 @@ dps_results: {
  value: {
   dps: 21150.92099
   tps: 19199.08409
-  hps: 245.25882
+  hps: 245.25883
  }
 }
 dps_results: {
@@ -1024,7 +1024,7 @@ dps_results: {
  value: {
   dps: 20899.85176
   tps: 19038.60319
-  hps: 245.25882
+  hps: 245.25883
  }
 }
 dps_results: {
@@ -1454,17 +1454,17 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 20888.44098
-  tps: 19046.66966
-  hps: 243.15661
+  dps: 20923.14355
+  tps: 19076.10728
+  hps: 245.25883
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 21169.41677
-  tps: 19320.66477
-  hps: 244.55809
+  dps: 21205.37782
+  tps: 19356.3376
+  hps: 243.85735
  }
 }
 dps_results: {
