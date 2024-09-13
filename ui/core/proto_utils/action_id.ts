@@ -130,6 +130,10 @@ export class ActionId {
 				baseName = 'Moving';
 				iconUrl = 'https://wow.zamimg.com/images/wow/icons/medium/inv_boots_cloth_03.jpg';
 				break;
+			case OtherAction.OtherActionPrepull:
+				baseName = 'Prepull';
+				iconUrl = 'https://wow.zamimg.com/images/wow/icons/medium/inv_misc_pocketwatch_02.jpg';
+				break;
 		}
 		this.baseName = baseName;
 		this.name = name || baseName;
@@ -400,10 +404,10 @@ export class ActionId {
 				}
 				break;
 			case 'Crescendo of Suffering':
-				if (this.tag == 1){
-					name += ' (Pre-Pull)'
+				if (this.tag == 1) {
+					name += ' (Pre-Pull)';
 				}
-			break;
+				break;
 			case 'Shadowflame':
 			case 'Moonfire':
 			case 'Sunfire':
