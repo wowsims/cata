@@ -32,7 +32,7 @@ func (warrior *Warrior) RegisterInnerRage() {
 
 	ir := warrior.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete | core.SpellFlagMCD | core.SpellFlagAPL,
+		Flags:          core.SpellFlagHelpful | core.SpellFlagMCD | core.SpellFlagAPL,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ClassSpellMask: SpellMaskInnerRage,
 

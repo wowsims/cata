@@ -12,6 +12,7 @@ type UnitType int
 type SpellRegisteredHandler func(spell *Spell)
 type OnMasteryStatChanged func(sim *Simulation, oldMasteryRating float64, newMasteryRating float64)
 type OnCastSpeedChanged func(oldSpeed float64, newSpeed float64)
+type OnTemporaryStatsChange func(sim *Simulation, buffAura *Aura, statsChangeWithoutDeps stats.Stats)
 
 const (
 	PlayerUnit UnitType = iota
@@ -181,6 +182,9 @@ type Unit struct {
 	// Used for reacting to cast speed changes if a spec needs it (e.g. for cds reduced by haste)
 	OnCastSpeedChanged []OnCastSpeedChanged
 
+	// Used for reacting to transient stat changes if a spec needs if (e.g. for caching snapshotting calculations)
+	OnTemporaryStatsChanges []OnTemporaryStatsChange
+
 	GetSpellPowerValue GetSpellpowerValue
 }
 
@@ -272,6 +276,13 @@ func (unit *Unit) AddOnCastSpeedChanged(ocsc OnCastSpeedChanged) {
 		panic("Already finalized, cannot add on casting speed changed callback!")
 	}
 	unit.OnCastSpeedChanged = append(unit.OnCastSpeedChanged, ocsc)
+}
+
+func (unit *Unit) AddOnTemporaryStatsChange(otsc OnTemporaryStatsChange) {
+	if unit.Env != nil && unit.Env.IsFinalized() {
+		panic("Already finalized, cannot add on temporary stats change callback!")
+	}
+	unit.OnTemporaryStatsChanges = append(unit.OnTemporaryStatsChanges, otsc)
 }
 
 func (unit *Unit) AddStatsDynamic(sim *Simulation, bonus stats.Stats) {
