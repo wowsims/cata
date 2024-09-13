@@ -135,12 +135,7 @@
 		{
 			"action": {
 				"condition": {
-					"and": {
-						"vals": [
-							{ "auraIsKnown": { "auraId": { "spellId": 89937 } } },
-							{ "cmp": { "op": "OpGe", "lhs": { "auraNumStacks": { "auraId": { "spellId": 89937 } } }, "rhs": { "const": { "val": "1" } } } }
-						]
-					}
+					"and": { "vals": [{ "auraIsKnown": { "auraId": { "spellId": 89937 } } }, { "auraIsActive": { "auraId": { "spellId": 89937 } } }] }
 				},
 				"castSpell": { "spellId": { "spellId": 77799 } }
 			}
