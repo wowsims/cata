@@ -138,6 +138,10 @@ message BalanceDruid {
   message Options {
     DruidOptions class_options = 1;
 	float okf_uptime = 2;
+
+	// deprecated fields
+	bool start_in_solar = 3 [deprecated=true];
+	int32 mastery_snapshot = 4 [deprecated=true];
   }
   Options options = 3;
 }
