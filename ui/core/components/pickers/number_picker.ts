@@ -1,4 +1,5 @@
 import { TypedEvent } from '../../typed_event';
+import { formatToNumber } from '../../utils';
 import { Input, InputConfig } from '../input';
 
 /**
@@ -8,6 +9,7 @@ export interface NumberPickerConfig<ModObject> extends InputConfig<ModObject, nu
 	id: string;
 	// Whether the picker represents a float value. Default `false`
 	float?: boolean;
+	maxDecimalDigits?: number;
 	// Whether to only allow positive values. Default `false`
 	positive?: boolean;
 	// Whether to show values of zero within the input. Default `true`
@@ -20,10 +22,12 @@ export class NumberPicker<ModObject> extends Input<ModObject, number> {
 	private float: boolean;
 	private positive: boolean;
 	private showZeroes: boolean;
+	private maxDecimalDigits: number;
 
 	constructor(parent: HTMLElement | null, modObject: ModObject, config: NumberPickerConfig<ModObject>) {
 		super(parent, 'number-picker-root', modObject, config);
 		this.float = config.float ?? false;
+		this.maxDecimalDigits = config.maxDecimalDigits ?? 2;
 		this.positive = config.positive ?? false;
 		this.showZeroes = config.showZeroes ?? true;
 
@@ -37,7 +41,10 @@ export class NumberPicker<ModObject> extends Input<ModObject, number> {
 				'change',
 				() => {
 					if (this.float) {
-						this.inputElem.value = Math.abs(parseFloat(this.inputElem.value)).toFixed(2);
+						this.inputElem.value = formatToNumber(Math.abs(Number(this.inputElem.value)), {
+							minimumFractionDigits: 2,
+							maximumFractionDigits: this.maxDecimalDigits,
+						});
 					} else {
 						this.inputElem.value = Math.abs(parseInt(this.inputElem.value)).toString();
 					}
@@ -74,7 +81,7 @@ export class NumberPicker<ModObject> extends Input<ModObject, number> {
 
 	getInputValue(): number {
 		if (this.float) {
-			return parseFloat(this.inputElem.value || '') || 0;
+			return Number(this.inputElem.value || '') || 0;
 		} else {
 			return parseInt(this.inputElem.value || '') || 0;
 		}
@@ -87,7 +94,7 @@ export class NumberPicker<ModObject> extends Input<ModObject, number> {
 		}
 
 		if (this.float) {
-			this.inputElem.value = newValue.toFixed(2);
+			this.inputElem.value = formatToNumber(newValue, { minimumFractionDigits: 2, maximumFractionDigits: this.maxDecimalDigits });
 		} else {
 			this.inputElem.value = String(newValue);
 		}

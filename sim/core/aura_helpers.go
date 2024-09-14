@@ -267,6 +267,10 @@ func (character *Character) NewTemporaryStatsAuraWrapped(auraLabel string, actio
 			if includesHealthBuff {
 				character.UpdateMaxHealth(sim, amountHealed, healthMetrics)
 			}
+
+			for i := range character.OnTemporaryStatsChanges {
+				character.OnTemporaryStatsChanges[i](sim, aura, buffs)
+			}
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			if sim.Log != nil {
@@ -276,6 +280,10 @@ func (character *Character) NewTemporaryStatsAuraWrapped(auraLabel string, actio
 
 			if includesHealthBuff {
 				character.UpdateMaxHealth(sim, -amountHealed, healthMetrics)
+			}
+
+			for i := range character.OnTemporaryStatsChanges {
+				character.OnTemporaryStatsChanges[i](sim, aura, buffs.Invert())
 			}
 		},
 	}

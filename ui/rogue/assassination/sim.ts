@@ -56,7 +56,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P1_PRESET_ASSASSINATION.gear,
+		gear: Presets.P3_PRESET_ASSASSINATION.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Stat caps for reforge optimizer
@@ -74,7 +74,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
 				breakpoints: [8, 27],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0.7 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT, 0],
+				postCapEPs: [94.15, 0],
 			});
 
 			return [meleeHitSoftCapConfig, spellHitSoftCapConfig];
@@ -151,7 +151,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_MUTILATE],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.P1_PRESET_ASSASSINATION, Presets.P1_PRESET_ASN_EXPERTISE],
+		gear: [Presets.P1_PRESET_ASSASSINATION, Presets.P1_PRESET_ASN_EXPERTISE, Presets.P3_PRESET_ASSASSINATION],
 	},
 
 	autoRotation: (player: Player<Spec.SpecAssassinationRogue>): APLRotation => {

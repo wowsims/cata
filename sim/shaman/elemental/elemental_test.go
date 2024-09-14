@@ -33,6 +33,7 @@ func TestElemental(t *testing.T) {
 		Rotation:    core.GetAplRotation("../../../ui/shaman/elemental/apls", "default"),
 		OtherRotations: []core.RotationCombo{
 			core.GetAplRotation("../../../ui/shaman/elemental/apls", "aoe"),
+			core.GetAplRotation("../../../ui/shaman/elemental/apls", "unleash"),
 		},
 
 		ItemFilter: core.ItemFilter{

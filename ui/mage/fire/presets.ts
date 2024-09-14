@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, RaidBuffs, Spec, Stat } from '../../core/proto/common';
+import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, PseudoStat, RaidBuffs, Stat } from '../../core/proto/common';
 import {
 	FireMage_Options as MageOptions,
 	MageMajorGlyph as MajorGlyph,
@@ -7,7 +7,7 @@ import {
 	MagePrimeGlyph as PrimeGlyph,
 } from '../../core/proto/mage';
 import { SavedTalents } from '../../core/proto/ui';
-import { Stats } from '../../core/proto_utils/stats';
+import { Stats, UnitStat, UnitStatPresets } from '../../core/proto_utils/stats';
 import FireApl from './apls/fire.apl.json';
 //import FireAoeApl from './apls/fire_aoe.apl.json';
 import P1FireBisGear from './gear_sets/p1_fire.gear.json';
@@ -100,44 +100,44 @@ export const OtherDefaults = {
 	profession2: Profession.Tailoring,
 };
 
-export const FIRE_BREAKPOINTS = new Map([
-	[
-		Stat.StatHasteRating,
+export const FIRE_BREAKPOINTS: UnitStatPresets[] = [
+	{
 		// Picked from Mage Discord
 		// Sources:
 		// https://docs.google.com/spreadsheets/d/17cJJUReg2uz-XxBB3oDWb1kCncdH_-X96mSb0HAu4Ko/edit?gid=0#gid=0
 		// https://docs.google.com/spreadsheets/d/1WLOZ1YevGPw_WZs0JhGzVVy906W5y0i9UqHa3ejyBkE/htmlview?gid=19
-		new Map([
-			['BL - 15-tick Combust', 1481],
-			['5-tick LvB/Pyro', 1602],
-			['12-tick Combust', 1922],
-			['BL - 16-tick Combust', 2455],
-			['BL - 7-tick LvB/Pyro', 3199],
-			['13-tick Combust', 3212],
-			['BL - 17-tick Combust', 3436],
-			['14-tick Combust', 4488],
-			['6-tick LvB/Pyro', 4805],
-			['15-tick Combust', 5767],
-			['16-tick Combust', 7033],
-			['7-tick LvB/Pyro', 8000],
-			['17-tick Combust', 8309],
-			['18-tick Combust', 9602],
-			['19-tick Combust', 10887],
-			['8-tick LvB/Pyro', 11198],
-			['20-tick Combust', 12182],
-			['21-tick Combust', 13463],
-			// ['9-tick LvB/Pyro', 14412],
-			// ['22-tick Combust', 14704],
-			// ['23-tick Combust', 16004],
-			// ['24-tick Combust', 17290],
-			// ['10-tick LvB/Pyro', 17600],
-			// ['25-tick Combust', 18543],
-			// ['26-tick Combust', 19821],
-			// ['11-tick LvB/Pyro', 20820],
-			// ['27-tick Combust', 21117],
-			// ['28-tick Combust', 22424],
-			// ['29-tick Combust', 23730],
-			// ['12-tick LvB/Pyro', 24010],
+		unitStat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent),
+		presets: new Map([
+			['11-tick - Combust', 4.98689],
+			['5-tick - LvB/Pyro', 12.50704],
+			['12-tick - Combust', 15.00864],
+			['BL - 15-tick - Combust', 20.86054],
+			['13-tick - Combust', 25.07819],
+			['BL - 16-tick - Combust', 29.09891],
+			['14-tick - Combust', 35.04391],
+			['BL - 17-tick - Combust', 37.40041],
+			['6-tick - LvB/Pyro', 37.52006],
+			['15-tick - Combust', 45.03265],
+			['16-tick - Combust', 54.91869],
+			['7-tick - LvB/Pyro', 62.46955],
+			['17-tick - Combust', 64.88049],
+			['18-tick - Combust', 74.97816],
+			['19-tick - Combust', 85.01391],
+			['8-tick - LvB/Pyro', 87.44144],
+			['20-tick - Combust', 95.12199],
+			['21-tick - Combust', 105.12825],
+			// ['9-tick - LvB/Pyro', 112.53987],
+			// ['22-tick - Combust', 114.82282],
+			// ['23-tick - Combust', 124.97193],
+			// ['24-tick - Combust', 135.01768],
+			// ['10-tick - LvB/Pyro', 137.43571],
+			// ['25-tick - Combust', 144.7981],
+			// ['26-tick - Combust', 154.77713],
+			// ['11-tick - LvB/Pyro', 162.58208],
+			// ['27-tick - Combust', 164.90073],
+			// ['28-tick - Combust', 175.10324],
+			// ['29-tick - Combust', 185.30679],
+			// ['12-tick - LvB/Pyro', 187.49404],
 		]),
-	],
-]);
+	},
+];

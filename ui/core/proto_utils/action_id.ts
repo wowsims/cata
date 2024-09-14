@@ -399,6 +399,11 @@ export class ActionId {
 					name += ' (Wasted)';
 				}
 				break;
+			case 'Crescendo of Suffering':
+				if (this.tag == 1){
+					name += ' (Pre-Pull)'
+				}
+			break;
 			case 'Shadowflame':
 			case 'Moonfire':
 			case 'Sunfire':
@@ -412,10 +417,13 @@ export class ActionId {
 				}
 				break;
 			case 'Censure':
-				if (this.tag == 1) {
-					name += ' (Application)';
-				} else if (this.tag == 2) {
+				if (this.tag == 2) {
 					name += ' (DoT)';
+				}
+				break;
+			case 'Exorcism':
+				if (this.tag === 3) {
+					name = 'Glyph of Exorcism (DoT)';
 				}
 				break;
 			// For targetted buffs, tag is the source player's raid index or -1 if none.
@@ -773,6 +781,7 @@ const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 56641, tag: 3 }), { spellId: 99058 }], // Hunter - T12 2P Flaming Arrow - Steady shot
 	[JSON.stringify({ spellId: 35395, tag: 3 }), { spellId: 99092 }], // Paladin - T12 2P Flames of the Faithful
 	[JSON.stringify({ spellId: 53600, tag: 3 }), { spellId: 99075 }], // Paladin - T12 2P Righteous Flames
+	[JSON.stringify({ spellId: 879, tag: 3 }), { spellId: 54934 }], // Paladin - Glyph of Exorcism
 ]);
 
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';
@@ -817,6 +826,7 @@ const petNameToIcon: Record<string, string> = {
 	Infernal: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summoninfernal.jpg',
 	Doomguard: 'https://wow.zamimg.com/images/wow/icons/large/warlock_summon_doomguard.jpg',
 	'Ebon Imp': 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_removecurse.jpg',
+	'Fiery Imp': 'https://wow.zamimg.com/images/wow/icons/large/ability_warlock_empoweredimp.jpg',
 	Gorilla: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_gorilla.jpg',
 	Hyena: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_hyena.jpg',
 	Imp: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonimp.jpg',

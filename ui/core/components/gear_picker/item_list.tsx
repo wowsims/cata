@@ -24,6 +24,7 @@ import {
 	makeShowEPValuesSelector,
 	makeShowMatchingGemsSelector,
 } from '../inputs/other_inputs';
+import { ItemNotice } from '../item_notice/item_notice';
 import Toast from '../toast';
 import { Clusterize } from '../virtual_scroll/clusterize';
 import { FiltersMenu } from './filters_menu';
@@ -456,6 +457,7 @@ export default class ItemList<T extends ItemListType> {
 		const equippedItemID = this.getItemIdByItemType(equippedItem);
 		const equippedItemEP = equippedItem ? this.computeEP(equippedItem) : 0;
 
+		const labelCellElem = ref<HTMLDivElement>();
 		const nameElem = ref<HTMLLabelElement>();
 		const anchorElem = ref<HTMLAnchorElement>();
 		const iconElem = ref<HTMLImageElement>();
@@ -466,7 +468,7 @@ export default class ItemList<T extends ItemListType> {
 
 		const listItemElem = (
 			<li className={`selector-modal-list-item ${equippedItemID === itemData.id ? 'active' : ''}`} dataset={{ idx: item.idx.toString() }}>
-				<div className="selector-modal-list-label-cell">
+				<div className="selector-modal-list-label-cell gap-1" ref={labelCellElem}>
 					<a className="selector-modal-list-item-link" ref={anchorElem} dataset={{ whtticon: 'false' }}>
 						<img className="selector-modal-list-item-icon" ref={iconElem}></img>
 						<label className="selector-modal-list-item-name" ref={nameElem}>
@@ -616,6 +618,9 @@ export default class ItemList<T extends ItemListType> {
 		});
 
 		setItemQualityCssClass(nameElem.value!, itemData.quality);
+
+		const notice = new ItemNotice(this.player, { itemId: itemData.id });
+		if (notice.hasNotice) labelCellElem.value?.appendChild(notice.rootElem);
 
 		return listItemElem;
 	}

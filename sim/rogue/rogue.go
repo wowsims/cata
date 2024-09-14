@@ -101,6 +101,8 @@ type Rogue struct {
 	SavageCombatDebuffAuras   core.AuraArray
 	WoundPoisonDebuffAuras    core.AuraArray
 
+	T12ToTLastBuff int
+
 	ruthlessnessMetrics      *core.ResourceMetrics
 	relentlessStrikesMetrics *core.ResourceMetrics
 }
@@ -178,6 +180,8 @@ func (rogue *Rogue) Initialize() {
 
 	rogue.SliceAndDiceBonus = 0.4
 
+	rogue.T12ToTLastBuff = 3
+
 	// re-configure poisons when performing an item swap
 	rogue.RegisterOnItemSwap(func(sim *core.Simulation) {
 		if !rogue.Options.ApplyPoisonsManually {
@@ -213,6 +217,8 @@ func (rogue *Rogue) Reset(sim *core.Simulation) {
 	}
 
 	rogue.MultiplyEnergyRegenSpeed(sim, 1.0+rogue.AdditiveEnergyRegenBonus)
+
+	rogue.T12ToTLastBuff = 3
 }
 
 func (rogue *Rogue) MeleeCritMultiplier(applyLethality bool) float64 {
