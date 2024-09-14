@@ -7,9 +7,9 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-// TODO: T12
 // TODO: T13
 
+// T11 - DPS
 var ItemSetMagmaPlatedBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Magma Plated Battlegear",
 	Bonuses: map[int32]core.ApplyEffect{
@@ -60,6 +60,7 @@ var ItemSetMagmaPlatedBattlegear = core.NewItemSet(core.ItemSet{
 	},
 })
 
+// T11 - Tank
 var ItemSetMagmaPlatedBattlearmor = core.NewItemSet(core.ItemSet{
 	Name: "Magma Plated Battlearmor",
 	Bonuses: map[int32]core.ApplyEffect{
@@ -77,6 +78,97 @@ var ItemSetMagmaPlatedBattlearmor = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+// TODO: T12 - DPS
+
+var ItemSetElementiumDeathplateBattlegear = core.NewItemSet(core.ItemSet{
+	Name: "Elementium Deathplate Battlegear",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			dk := agent.(DeathKnightAgent).GetDeathKnight()
+
+			actionID := core.ActionID{SpellID: 98971}
+			rpMetrics := dk.NewRunicPowerMetrics(actionID)
+			var pa *core.PendingAction
+
+			buff := dk.RegisterAura(core.Aura{
+				Label:    "Smoldering Rune",
+				ActionID: actionID,
+				Duration: time.Minute * 2,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					pa = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+						Period: time.Second * 5,
+						OnAction: func(sim *core.Simulation) {
+							dk.AddRunicPower(sim, 3, rpMetrics)
+						},
+					})
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					pa.Cancel(sim)
+				},
+			})
+
+			core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
+				Name:           "Smolering Rune Trigger",
+				ActionID:       actionID,
+				ClassSpellMask: DeathKnightSpellHornOfWinter,
+				Callback:       core.CallbackOnCastComplete,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					buff.Activate(sim)
+				},
+			})
+
+		},
+		4: func(agent core.Agent) {
+
+			dk := agent.(DeathKnightAgent).GetDeathKnight()
+			damage := 0.0
+
+			newFlamingTormentSpell := func(spellID int32) core.SpellConfig {
+				actionID := core.ActionID{SpellID: spellID} // actually 99000
+
+				return core.SpellConfig{
+					ActionID:    actionID.WithTag(3),
+					SpellSchool: core.SpellSchoolFire,
+					ProcMask:    core.ProcMaskEmpty,
+					Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagNoOnDamageDealt | core.SpellFlagIgnoreModifiers | core.SpellFlagPassiveSpell,
+
+					DamageMultiplier: 1,
+					ThreatMultiplier: 1,
+
+					ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+						spell.CalcAndDealDamage(sim, spell.Unit.CurrentTarget, damage, spell.OutcomeAlwaysHit)
+					},
+				}
+			}
+
+			var flamingTormentSpellForObliterate = dk.RegisterSpell(newFlamingTormentSpell(49020))
+			var flamingTormentSpellForScourgeStrike = dk.RegisterSpell(newFlamingTormentSpell(55090))
+
+			dk.RegisterAura(core.Aura{
+				Label:    "T12 2-set - DPS",
+				Duration: core.NeverExpires,
+				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Activate(sim)
+				},
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.ClassSpellMask != DeathKnightSpellObliterate && spell.ClassSpellMask != DeathKnightSpellScourgeStrike && spell.ClassSpellMask != DeathKnightSpellScourgeStrikeShadow {
+						return
+					}
+					damage = result.Damage * 0.06
+					if spell.ClassSpellMask == DeathKnightSpellObliterate {
+						flamingTormentSpellForObliterate.Cast(sim, result.Target)
+					} else {
+						flamingTormentSpellForScourgeStrike.Cast(sim, result.Target)
+					}
+				},
+			})
+
+		},
+	},
+})
+
+// TODO: T12 - Tank
 
 func init() {
 }
