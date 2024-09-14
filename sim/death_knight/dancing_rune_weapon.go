@@ -36,8 +36,8 @@ func (dk *DeathKnight) registerDancingRuneWeaponSpell() {
 
 	hasT12Set := dk.HasSetBonus(ItemSetElementiumDeathplateBattlearmor, 4)
 	t124PAura := dk.NewTemporaryStatsAura(
-		"T12 Blood 4P Bonus",
-		core.ActionID{SpellID: 98966},
+		"Flaming Rune Weapon",
+		core.ActionID{SpellID: 101162},
 		stats.Stats{stats.ParryRating: 15 * core.ParryRatingPerParryPercent},
 		time.Second*12,
 	)
