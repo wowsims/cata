@@ -145,7 +145,7 @@ var ItemSetElementiumDeathplateBattlegear = core.NewItemSet(core.ItemSet{
 			var flamingTormentSpellForScourgeStrike = dk.RegisterSpell(newFlamingTormentSpell(55090))
 
 			dk.RegisterAura(core.Aura{
-				Label:    "T12 2-set - DPS",
+				Label:    "T12 4-set - DPS",
 				Duration: core.NeverExpires,
 				OnReset: func(aura *core.Aura, sim *core.Simulation) {
 					aura.Activate(sim)
