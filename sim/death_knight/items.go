@@ -144,16 +144,12 @@ var ItemSetElementiumDeathplateBattlegear = core.NewItemSet(core.ItemSet{
 			var flamingTormentSpellForObliterate = dk.RegisterSpell(newFlamingTormentSpell(49020))
 			var flamingTormentSpellForScourgeStrike = dk.RegisterSpell(newFlamingTormentSpell(55090))
 
-			dk.RegisterAura(core.Aura{
-				Label:    "T12 4-set - DPS",
-				Duration: core.NeverExpires,
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Activate(sim)
-				},
-				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell.ClassSpellMask != DeathKnightSpellObliterate && spell.ClassSpellMask != DeathKnightSpellScourgeStrike && spell.ClassSpellMask != DeathKnightSpellScourgeStrikeShadow {
-						return
-					}
+			core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
+				Name:           "Flaming Torment Trigger",
+				Callback:       core.CallbackOnSpellHitDealt,
+				ClassSpellMask: DeathKnightSpellObliterate | DeathKnightSpellScourgeStrike | DeathKnightSpellScourgeStrikeShadow,
+				Outcome:        core.OutcomeLanded,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					damage = result.Damage * 0.06
 					if spell.ClassSpellMask == DeathKnightSpellObliterate {
 						flamingTormentSpellForObliterate.Cast(sim, result.Target)
@@ -167,7 +163,67 @@ var ItemSetElementiumDeathplateBattlegear = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// TODO: T12 - Tank
+// T12 - Tank
+var ItemSetElementiumDeathplateBattlearmor = core.NewItemSet(core.ItemSet{
+	Name: "Elementium Deathplate Battlearmor",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+
+			dk := agent.(DeathKnightAgent).GetDeathKnight()
+
+			dk.BurningBloodSpell = dk.RegisterSpell(core.SpellConfig{
+				ActionID:         core.ActionID{SpellID: 98957},
+				SpellSchool:      core.SpellSchoolFire,
+				Flags:            core.SpellFlagIgnoreModifiers | core.SpellFlagAPL | core.SpellFlagPassiveSpell,
+				ProcMask:         core.ProcMaskEmpty,
+				DamageMultiplier: 1,
+				CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
+				ThreatMultiplier: 1,
+
+				Dot: core.DotConfig{
+					Aura: core.Aura{
+						Label: "Burning Blood" + dk.Label,
+					},
+					NumberOfTicks: 3,
+					TickLength:    time.Second * 2,
+
+					OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+						baseDamage := 800.0
+						if target.HasActiveAuraWithTag(core.SpellDamageEffectAuraTag) {
+							baseDamage *= 1.08
+						}
+						dot.Snapshot(target, baseDamage)
+					},
+					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+						dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+					},
+				},
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					spell.Dot(target).Apply(sim)
+				},
+			})
+
+			core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
+				Name:       "Burning Blood Trigger",
+				ActionID:   core.ActionID{SpellID: 98956},
+				ProcMask:   core.ProcMaskMelee,
+				Callback:   core.CallbackOnSpellHitDealt,
+				Outcome:    core.OutcomeLanded,
+				ProcChance: 1,
+				Harmful:    true,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					dk.BurningBloodSpell.Cast(sim, result.Target)
+				},
+			})
+
+		},
+		4: func(agent core.Agent) {
+			// When your Dancing Rune Weapon expires, you gain 15% additional parry chance for 12 sec.
+			// Implemented in dancing_rune_weapon.go
+		},
+	},
+})
 
 func init() {
 }

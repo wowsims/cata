@@ -582,6 +582,10 @@ export class ActionId {
 					name = 'Flaming Torment (T12 4P)';
 				}
 				break;
+			// Death Knight - T12 4P proc
+			case 'Burning Blood':
+					name += ' (T12 4P)';
+				break;
 			default:
 				if (this.tag) {
 					name += ' (??)';
