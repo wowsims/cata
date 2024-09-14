@@ -412,6 +412,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-ElementiumDeathplateBattlegear"
+ value: {
+  dps: 14651.09747
+  tps: 70884.65958
+  hps: 3637.17429
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-EmberShadowspiritDiamond"
  value: {
   dps: 13789.21706

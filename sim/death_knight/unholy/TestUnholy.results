@@ -412,6 +412,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-ElementiumDeathplateBattlegear"
+ value: {
+  dps: 30951.79977
+  tps: 22891.57891
+  hps: 583.03218
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-EmberShadowspiritDiamond"
  value: {
   dps: 32218.2754

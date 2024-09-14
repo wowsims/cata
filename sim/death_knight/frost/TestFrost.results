@@ -412,6 +412,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrost-AllItems-ElementiumDeathplateBattlegear"
+ value: {
+  dps: 21024.43743
+  tps: 18951.45763
+  hps: 257.63255
+ }
+}
+dps_results: {
  key: "TestFrost-AllItems-EmberShadowspiritDiamond"
  value: {
   dps: 21707.03316
