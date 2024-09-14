@@ -98,7 +98,11 @@ var ItemSetElementiumDeathplateBattlegear = core.NewItemSet(core.ItemSet{
 					pa = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 						Period: time.Second * 5,
 						OnAction: func(sim *core.Simulation) {
+							// Make sure the multiplier is always 1 as this effect doesn't seem to scale
+							runicMulti := dk.GetRunicRegenMultiplier()
+							dk.MultiplyRunicRegen(1 / runicMulti)
 							dk.AddRunicPower(sim, 3, rpMetrics)
+							dk.MultiplyRunicRegen(runicMulti)
 						},
 					})
 				},

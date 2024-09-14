@@ -412,6 +412,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-ElementiumDeathplateBattlearmor"
+ value: {
+  dps: 27761.66056
+  tps: 20670.48197
+  hps: 519.07712
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-ElementiumDeathplateBattlegear"
  value: {
   dps: 30951.79977
