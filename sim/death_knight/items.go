@@ -79,8 +79,7 @@ var ItemSetMagmaPlatedBattlearmor = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// TODO: T12 - DPS
-
+// T12 - DPS
 var ItemSetElementiumDeathplateBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Elementium Deathplate Battlegear",
 	Bonuses: map[int32]core.ApplyEffect{
