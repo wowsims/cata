@@ -95,6 +95,7 @@
 			}
 		},
 		{ "action": { "castSpell": { "spellId": { "spellId": 23881 } } } },
+		{ "action": { "condition": { "auraIsKnown": { "auraId": { "spellId": 99233 } } }, "castSpell": { "spellId": { "spellId": 6673 } } } },
 		{
 			"action": {
 				"condition": {
@@ -232,6 +233,11 @@
 			}
 		},
 		{ "action": { "condition": { "and": {} }, "castSpell": { "spellId": { "spellId": 18499 } } } },
-		{ "action": { "castSpell": { "spellId": { "spellId": 6673 } } } }
+		{
+			"action": {
+				"condition": { "not": { "val": { "auraIsKnown": { "auraId": { "spellId": 99233 } } } } },
+				"castSpell": { "spellId": { "spellId": 6673 } }
+			}
+		}
 	]
 }

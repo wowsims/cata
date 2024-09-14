@@ -87,8 +87,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-ApparatusofKhaz'goroth-69113"
  value: {
-  dps: 31706.28991
-  tps: 26348.15785
+  dps: 31702.89146
+  tps: 26360.31922
  }
 }
 dps_results: {
@@ -900,8 +900,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-MoltenGiantWarplate"
  value: {
-  dps: 29792.49616
-  tps: 24695.30035
+  dps: 29568.23004
+  tps: 24833.23026
  }
 }
 dps_results: {
