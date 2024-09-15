@@ -171,12 +171,16 @@ func (rp *runicPowerBar) maybeFireChange(sim *Simulation, changeType RuneChangeT
 	}
 }
 
-func (rp *runicPowerBar) addRunicPowerInternal(sim *Simulation, amount float64, metrics *ResourceMetrics) {
+func (rp *runicPowerBar) addRunicPowerInternal(sim *Simulation, amount float64, metrics *ResourceMetrics, shouldScale bool) {
 	if amount < 0 {
 		panic("Trying to add negative runic power!")
 	}
 
-	newRunicPower := min(rp.currentRunicPower+(amount*rp.runicRegenMultiplier), rp.maxRunicPower)
+	runicRegenMultiplier := rp.runicRegenMultiplier
+	if !shouldScale {
+		runicRegenMultiplier = 1.0
+	}
+	newRunicPower := min(rp.currentRunicPower+(amount*runicRegenMultiplier), rp.maxRunicPower)
 
 	metrics.AddEvent(amount, newRunicPower-rp.currentRunicPower)
 
@@ -188,7 +192,14 @@ func (rp *runicPowerBar) addRunicPowerInternal(sim *Simulation, amount float64, 
 }
 
 func (rp *runicPowerBar) AddRunicPower(sim *Simulation, amount float64, metrics *ResourceMetrics) {
-	rp.addRunicPowerInternal(sim, amount, metrics)
+	rp.addRunicPowerInternal(sim, amount, metrics, true)
+	if rp.onRunicPowerGain != nil {
+		rp.onRunicPowerGain(sim)
+	}
+}
+
+func (rp *runicPowerBar) AddUnscaledRunicPower(sim *Simulation, amount float64, metrics *ResourceMetrics) {
+	rp.addRunicPowerInternal(sim, amount, metrics, false)
 	if rp.onRunicPowerGain != nil {
 		rp.onRunicPowerGain(sim)
 	}
@@ -721,10 +732,6 @@ func (rp *runicPowerBar) MultiplyRuneRegenSpeed(sim *Simulation, multiplier floa
 
 func (rp *runicPowerBar) MultiplyRunicRegen(multiply float64) {
 	rp.runicRegenMultiplier *= multiply
-}
-
-func (rp *runicPowerBar) GetRunicRegenMultiplier() float64 {
-	return rp.runicRegenMultiplier
 }
 
 func (rp *runicPowerBar) getTotalRegenMultiplier() float64 {
