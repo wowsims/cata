@@ -1437,6 +1437,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-VolcanicBattlegear"
+ value: {
+  dps: 28755.2613
+  tps: 19163.38003
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-VolcanicRegalia"
  value: {
   dps: 20570.98306
