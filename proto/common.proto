@@ -956,6 +956,7 @@ enum OtherAction {
 	OtherActionSolarEnergyGain = 18; // For balance druid solar energy
 	OtherActionLunarEnergyGain = 19; // For balance druid lunar energy
 	OtherActionMove = 20; // Used by movement to be able to show it in timeline
+	OtherActionPrepull = 21; // Indicated prepull specific action
 }
 
 message ActionID {
