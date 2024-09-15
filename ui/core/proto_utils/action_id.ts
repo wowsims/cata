@@ -491,6 +491,10 @@ export class ActionId {
 				if (baseName === 'Raging Blow' && this.tag === 3) {
 					name = 'Fiery attack';
 				}
+				// Death Knight - T12 4P proc
+				if (baseName === 'Obliterate' && this.tag === 3) {
+					name = 'Flaming Torment (T12 4P)';
+				}
 				break;
 			case 'Death Strike':
 				if (this.tag == 1) {
@@ -543,7 +547,6 @@ export class ActionId {
 				}
 				break;
 			case 'Frozen Blows':
-			case 'Scourge Strike':
 			case 'Opportunity Strike':
 				break;
 			// Warrior - T12 2P proc
@@ -576,6 +579,20 @@ export class ActionId {
 				if (this.tag === 3) {
 					name = 'Flames of the Faithful (T12 2P)';
 				}
+				break;
+			// Death Knight - T12 4P proc
+			case 'Scourge Strike':
+				if (this.tag === 3) {
+					name = 'Flaming Torment (T12 4P)';
+				}
+				break;
+			// Death Knight - T12 4P proc
+			case 'Burning Blood':
+					name += ' (T12 4P)';
+				break;
+			// Death Knight - T12 4P proc
+			case 'Flaming Rune Weapon':
+					name += ' (T12 4P)';
 				break;
 			default:
 				if (this.tag) {
@@ -786,6 +803,8 @@ const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 35395, tag: 3 }), { spellId: 99092 }], // Paladin - T12 2P Flames of the Faithful
 	[JSON.stringify({ spellId: 53600, tag: 3 }), { spellId: 99075 }], // Paladin - T12 2P Righteous Flames
 	[JSON.stringify({ spellId: 879, tag: 3 }), { spellId: 54934 }], // Paladin - Glyph of Exorcism
+	[JSON.stringify({ spellId: 49020, tag: 3 }), { spellId: 99000 }], // Death Knight - T12 4P Flaming Torment
+	[JSON.stringify({ spellId: 55090, tag: 3 }), { spellId: 99000 }], // Death Knight - T12 4P Flaming Torment
 ]);
 
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';
