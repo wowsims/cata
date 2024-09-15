@@ -98,11 +98,7 @@ var ItemSetElementiumDeathplateBattlegear = core.NewItemSet(core.ItemSet{
 					pa = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 						Period: time.Second * 5,
 						OnAction: func(sim *core.Simulation) {
-							// Make sure the multiplier is always 1 as this effect doesn't seem to scale
-							runicMulti := dk.GetRunicRegenMultiplier()
-							dk.MultiplyRunicRegen(1 / runicMulti)
-							dk.AddRunicPower(sim, 3, rpMetrics)
-							dk.MultiplyRunicRegen(runicMulti)
+							dk.AddUnscaledRunicPower(sim, 3, rpMetrics)
 						},
 					})
 				},
@@ -178,7 +174,7 @@ var ItemSetElementiumDeathplateBattlearmor = core.NewItemSet(core.ItemSet{
 			dk.BurningBloodSpell = dk.RegisterSpell(core.SpellConfig{
 				ActionID:         core.ActionID{SpellID: 98957},
 				SpellSchool:      core.SpellSchoolFire,
-				Flags:            core.SpellFlagIgnoreModifiers | core.SpellFlagAPL | core.SpellFlagPassiveSpell,
+				Flags:            core.SpellFlagAPL | core.SpellFlagPassiveSpell,
 				ProcMask:         core.ProcMaskEmpty,
 				DamageMultiplier: 1,
 				CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
@@ -193,9 +189,6 @@ var ItemSetElementiumDeathplateBattlearmor = core.NewItemSet(core.ItemSet{
 
 					OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 						baseDamage := 800.0
-						if target.HasActiveAuraWithTag(core.SpellDamageEffectAuraTag) {
-							baseDamage *= 1.08
-						}
 						dot.Snapshot(target, baseDamage)
 					},
 					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
