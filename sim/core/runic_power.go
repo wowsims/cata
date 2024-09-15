@@ -171,13 +171,13 @@ func (rp *runicPowerBar) maybeFireChange(sim *Simulation, changeType RuneChangeT
 	}
 }
 
-func (rp *runicPowerBar) addRunicPowerInternal(sim *Simulation, amount float64, metrics *ResourceMetrics, shouldScale bool) {
+func (rp *runicPowerBar) addRunicPowerInternal(sim *Simulation, amount float64, metrics *ResourceMetrics, withMultiplier bool) {
 	if amount < 0 {
 		panic("Trying to add negative runic power!")
 	}
 
 	runicRegenMultiplier := rp.runicRegenMultiplier
-	if !shouldScale {
+	if !withMultiplier {
 		runicRegenMultiplier = 1.0
 	}
 	newRunicPower := min(rp.currentRunicPower+(amount*runicRegenMultiplier), rp.maxRunicPower)
