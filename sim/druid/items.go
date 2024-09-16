@@ -179,7 +179,6 @@ var ItemSetDeepEarthRegalia = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		// Insect Swarm increases all damage done by your Starfire, Starsurge, and Wrath spells against that target by 3%
 		2: func(agent core.Agent) {
-			//druid := agent.(DruidAgent).GetDruid()
 		},
 		// Reduces the cooldown of Starsurge by 5 sec and increases its damage by 10%
 		4: func(agent core.Agent) {
