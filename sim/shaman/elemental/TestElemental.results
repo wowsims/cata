@@ -1313,15 +1313,15 @@ dps_results: {
 dps_results: {
  key: "TestElemental-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 31939.1747
-  tps: 932.33833
+  dps: 32028.6894
+  tps: 1001.35867
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 32743.07347
-  tps: 1543.69563
+  dps: 32930.54117
+  tps: 1767.73688
  }
 }
 dps_results: {
@@ -1434,6 +1434,13 @@ dps_results: {
  value: {
   dps: 30105.59576
   tps: 581.33731
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-VolcanicBattlegear"
+ value: {
+  dps: 22199.18741
+  tps: 416.02439
  }
 }
 dps_results: {

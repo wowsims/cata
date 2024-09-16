@@ -53,17 +53,19 @@ func (druid *Druid) registerRipSpell() {
 			TickLength:    time.Second * 2,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				if isRollover {
+					panic("Rip cannot roll-over snapshots!")
+				}
+
 				cp := float64(comboPointSnapshot)
 				ap := dot.Spell.MeleeAttackPower()
-
 				dot.SnapshotBaseDamage = baseDamage + comboPointCoeff*cp + attackPowerCoeff*cp*ap
+				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
+				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
 
-				if !isRollover {
-					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
-					dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
-					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
-					druid.RipTfSnapshot = druid.TigersFuryAura.IsActive()
-				}
+				// Store snapshot power parameters for later use.
+				druid.UpdateBleedPower(druid.Rip, sim, target, true, true)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
@@ -86,7 +88,7 @@ func (druid *Druid) registerRipSpell() {
 		},
 
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			cp := float64(druid.ComboPoints())
+			cp := 5.0 // Hard-code this so that snapshotting calculations can be performed at any CP value.
 			ap := spell.MeleeAttackPower()
 			baseTickDamage := baseDamage + comboPointCoeff*cp + attackPowerCoeff*cp*ap
 			result := spell.CalcPeriodicDamage(sim, target, baseTickDamage, spell.OutcomeExpectedMagicAlwaysHit)
@@ -101,6 +103,8 @@ func (druid *Druid) registerRipSpell() {
 	druid.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
 		druid.Rip.DamageMultiplier *= druid.RazorClawsMultiplier(newMastery) / druid.RazorClawsMultiplier(oldMastery)
 	})
+
+	druid.Rip.ShortName = "Rip"
 }
 
 func (druid *Druid) MaxRipTicks() int32 {

@@ -3,7 +3,7 @@ import { ref } from 'tsx-vanilla';
 
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { PresetBuild } from '../../preset_utils';
-import { APLRotation, APLRotation_Type } from '../../proto/apl';
+import { APLRotation } from '../../proto/apl';
 import { Encounter, EquipmentSpec, HealingModel, Spec } from '../../proto/common';
 import { TypedEvent } from '../../typed_event';
 import { Component } from '../component';

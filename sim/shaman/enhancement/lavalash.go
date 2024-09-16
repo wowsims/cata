@@ -38,16 +38,16 @@ func (enh *EnhancementShaman) registerLavaLashSpell() {
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-			searingFlamesBounus := 1.0
+			searingFlamesBonus := 1.0
 
 			var searingFlames *core.Dot
 
 			if enh.Talents.SearingFlames > 0 {
 				searingFlames = enh.SearingFlames.Dot(target)
-				searingFlamesBounus += 0.1 * float64(enh.Talents.ImprovedLavaLash) * float64(searingFlames.GetStacks())
+				searingFlamesBonus += enh.SearingFlamesMultiplier * float64(searingFlames.GetStacks())
 			}
 
-			baseDamage *= searingFlamesBounus
+			baseDamage *= searingFlamesBonus
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if !result.Landed() {
