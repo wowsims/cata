@@ -63,7 +63,7 @@ var ItemSetFlameWakersBattleGear = core.NewItemSet(core.ItemSet{
 			hunter := agent.(HunterAgent).GetHunter()
 			var baMod = hunter.AddDynamicMod(core.SpellModConfig{
 				Kind:       core.SpellMod_PowerCost_Pct,
-				ClassMask:  HunterSpellsAll,
+				ClassMask:  HunterSpellsTierTwelve,
 				FloatValue: -1,
 			})
 			var burningAdrenaline = hunter.RegisterAura(core.Aura{
@@ -73,8 +73,8 @@ var ItemSetFlameWakersBattleGear = core.NewItemSet(core.ItemSet{
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					baMod.Activate()
 				},
-				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell.ClassSpellMask&HunterSpellsAll != spell.ClassSpellMask {
+				OnApplyEffects: func(aura *core.Aura, sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					if spell.ClassSpellMask&^HunterSpellsTierTwelve != 0 || spell.ActionID.SpellID == 0 {
 						return
 					}
 					baMod.Deactivate()
