@@ -140,7 +140,7 @@ var ItemSetObsidianArborweaveRegalia = core.NewItemSet(core.ItemSet{
 
 			core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
 				ActionID:       core.ActionID{SpellID: 99019},
-				Name:           "Item - Druid T12 2P Bonus",
+				Name:           "Item - Druid T12 Balance 2P Bonus",
 				Callback:       core.CallbackOnCastComplete,
 				ClassSpellMask: DruidSpellWrath | DruidSpellStarfire,
 				ProcChance:     0.20,
@@ -162,6 +162,38 @@ var ItemSetObsidianArborweaveRegalia = core.NewItemSet(core.ItemSet{
 				if spell.ClassSpellMask == DruidSpellStarfire {
 					druid.SetSpellEclipseEnergy(DruidSpellStarfire, StarfireBaseEnergyGain, Starfire4PT12EnergyGain)
 				}
+			})
+
+			core.MakePermanent(druid.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 99049},
+				Label:    "Item - Druid T12 Balance 4P Bonus",
+				Duration: core.NeverExpires,
+			}))
+		},
+	},
+})
+
+// T13 Balance
+var ItemSetDeepEarthRegalia = core.NewItemSet(core.ItemSet{
+	Name: "Deep Earth Regalia",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Insect Swarm increases all damage done by your Starfire, Starsurge, and Wrath spells against that target by 3%
+		2: func(agent core.Agent) {
+		},
+		// Reduces the cooldown of Starsurge by 5 sec and increases its damage by 10%
+		4: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+
+			druid.AddStaticMod(core.SpellModConfig{
+				Kind:       core.SpellMod_DamageDone_Pct,
+				FloatValue: 0.05,
+				ClassMask:  DruidSpellStarsurge,
+			})
+
+			druid.AddStaticMod(core.SpellModConfig{
+				Kind:      core.SpellMod_Cooldown_Flat,
+				TimeValue: time.Second * -5,
+				ClassMask: DruidSpellStarsurge,
 			})
 		},
 	},
