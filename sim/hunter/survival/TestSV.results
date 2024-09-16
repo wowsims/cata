@@ -487,8 +487,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-Flamewaker'sBattlegear"
  value: {
-  dps: 26578.98545
-  tps: 24005.0804
+  dps: 26633.74628
+  tps: 24069.21807
  }
 }
 dps_results: {
@@ -1313,15 +1313,15 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 24665.32864
-  tps: 22301.67209
+  dps: 24717.98168
+  tps: 22354.32052
  }
 }
 dps_results: {
  key: "TestSV-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 25051.9613
-  tps: 22688.42367
+  dps: 25189.74485
+  tps: 22826.0256
  }
 }
 dps_results: {

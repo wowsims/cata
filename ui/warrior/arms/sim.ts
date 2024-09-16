@@ -33,20 +33,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[
-			Stat.StatHealth,
-			Stat.StatStamina,
-			Stat.StatStrength,
-			Stat.StatAgility,
-			Stat.StatAttackPower,
-			Stat.StatExpertiseRating,
-			Stat.StatMasteryRating,
-		],
-		[
-			PseudoStat.PseudoStatPhysicalHitPercent,
-			PseudoStat.PseudoStatPhysicalCritPercent,
-			PseudoStat.PseudoStatMeleeHastePercent,
-		],
+		[Stat.StatHealth, Stat.StatStamina, Stat.StatStrength, Stat.StatAgility, Stat.StatAttackPower, Stat.StatExpertiseRating, Stat.StatMasteryRating],
+		[PseudoStat.PseudoStatPhysicalHitPercent, PseudoStat.PseudoStatPhysicalCritPercent, PseudoStat.PseudoStatMeleeHastePercent],
 	),
 	// modifyDisplayStats: (player: Player<Spec.SpecArmsWarrior>) => {
 	// 	let stats = new Stats();
@@ -130,7 +118,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_ARMS],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_ARMS_PRESET, Presets.P1_ARMS_BIS_PRESET, Presets.P1_ARMS_REALISTIC_PRESET],
+		gear: [Presets.PRERAID_ARMS_PRESET, Presets.P1_ARMS_BIS_PRESET, Presets.P1_ARMS_REALISTIC_PRESET, Presets.P3_ARMS_BIS_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecArmsWarrior>): APLRotation => {
