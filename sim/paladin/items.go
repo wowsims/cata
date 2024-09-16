@@ -36,11 +36,10 @@ var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 			flamesOfTheFaithful := paladin.RegisterSpell(core.SpellConfig{
 				ActionID:    core.ActionID{SpellID: 35395}.WithTag(3), // actual 99092
 				SpellSchool: core.SpellSchoolFire,
-				ProcMask:    core.ProcMaskEmpty,
+				ProcMask:    core.ProcMaskProc,
 				Flags: core.SpellFlagIgnoreModifiers |
-					core.SpellFlagBinary |
+					core.SpellFlagNoSpellMods |
 					core.SpellFlagNoOnCastComplete |
-					core.SpellFlagNoOnDamageDealt |
 					core.SpellFlagPassiveSpell,
 
 				DamageMultiplier: 1,
@@ -56,12 +55,11 @@ var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 					TickLength:          2 * time.Second,
 
 					OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-						dot.SnapshotAttackerMultiplier = 1
-						dot.SnapshotCritChance = 0
 					},
 
 					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-						dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+						result := dot.Spell.CalcPeriodicDamage(sim, target, dot.SnapshotBaseDamage, dot.OutcomeTick)
+						dot.Spell.DealPeriodicDamage(sim, result)
 					},
 				},
 
@@ -75,8 +73,6 @@ var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 				Callback:       core.CallbackOnSpellHitDealt,
 				ClassSpellMask: SpellMaskCrusaderStrike,
 				Outcome:        core.OutcomeLanded,
-
-				ProcChance: 1,
 
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					dot := flamesOfTheFaithful.Dot(result.Target)
