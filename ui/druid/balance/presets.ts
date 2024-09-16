@@ -117,3 +117,17 @@ export const OtherDefaults = {
 	profession2: Profession.Tailoring,
 	darkIntentUptime: 100,
 };
+
+export const PresetBuildT11 = PresetUtils.makePresetBuild('Balance T11', {
+	gear: T11PresetGear,
+	talents: StandardTalents,
+	rotation: T11PresetRotation,
+	epWeights: StandardEPWeights,
+});
+
+export const PresetBuildT12 = PresetUtils.makePresetBuild('Balance T12', {
+	gear: T12PresetGear,
+	talents: StandardTalents,
+	rotation: T12PresetRotation,
+	epWeights: StandardEPWeights,
+});
