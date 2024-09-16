@@ -11,16 +11,3 @@ export const OkfUptime = InputHelpers.makeSpecOptionsNumberInput<Spec.SpecBalanc
 	labelTooltip: 'Percentage of fight uptime for Owlkin Frenzy',
 	percent: true,
 });
-
-export const StartInSolar = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecBalanceDruid>({
-	fieldName: 'startInSolar',
-	label: 'Start in Solar Eclipse',
-	labelTooltip: 'Starts the fight in solar eclipse at full energy',
-});
-
-export const MasterySnapshot = InputHelpers.makeSpecOptionsNumberInput<Spec.SpecBalanceDruid>({
-	fieldName: 'masterySnapshot',
-	label: 'Mastery snapshot amount (rating)',
-	labelTooltip: 'Mastery amount to use when starting in Solar Eclipse',
-	showWhen: (player: Player<Spec.SpecBalanceDruid>) => player.getSpecOptions().startInSolar,
-});

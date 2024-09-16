@@ -335,17 +335,6 @@ func (druid *Druid) Reset(_ *core.Simulation) {
 	druid.RebirthUsed = false
 }
 
-func (druid *Druid) ForceSolarEclipse(sim *core.Simulation, masteryRating float64) {
-	masteryRating -= druid.GetStat(stats.MasteryRating)
-	if masteryRating > 0 {
-		druid.AddStatDynamic(sim, stats.MasteryRating, masteryRating)
-	}
-	druid.eclipseEnergyBar.ForceEclipse(SolarEclipse, sim)
-	if masteryRating > 0 {
-		druid.AddStatDynamic(sim, stats.MasteryRating, -masteryRating)
-	}
-}
-
 func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents string) *Druid {
 	druid := &Druid{
 		Character:         *char,

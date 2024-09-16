@@ -324,6 +324,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-DeepEarthRegalia"
+ value: {
+  dps: 19018.70131
+  tps: 25268.935
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-DestructiveShadowspiritDiamond"
  value: {
   dps: 26527.38014
