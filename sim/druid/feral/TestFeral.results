@@ -935,8 +935,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-Prestor'sTalismanofMachination-59441"
  value: {
-  dps: 27074.77605
-  tps: 37726.12505
+  dps: 27086.93356
+  tps: 37666.38124
  }
 }
 dps_results: {
@@ -1250,8 +1250,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-UnheededWarning-59520"
  value: {
-  dps: 27277.15596
-  tps: 38725.54254
+  dps: 27279.23332
+  tps: 38771.52963
  }
 }
 dps_results: {
@@ -1453,8 +1453,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Average-Default"
  value: {
-  dps: 27428.86995
-  tps: 38099.78544
+  dps: 27428.77673
+  tps: 38099.92512
  }
 }
 dps_results: {
@@ -1509,8 +1509,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-p1-DefaultTalents-ExternalBleed-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 30596.73369
-  tps: 42742.1699
+  dps: 30588.39549
+  tps: 42776.31444
  }
 }
 dps_results: {
@@ -1530,8 +1530,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-p1-DefaultTalents-ExternalBleed-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 19508.92026
-  tps: 28537.42221
+  dps: 19514.51073
+  tps: 28535.8614
  }
 }
 dps_results: {
