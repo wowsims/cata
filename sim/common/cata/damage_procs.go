@@ -7,10 +7,6 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-type SpellCritProvider interface {
-	DefaultSpellCritMultiplier() float64
-}
-
 func init() {
 	shared.NewProcDamageEffect(shared.ProcDamageEffect{
 		ItemID:  62049,
