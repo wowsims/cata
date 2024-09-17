@@ -691,7 +691,7 @@ func registerApparatusOfKhazGoroth(config apparatusConfig) {
 			Cast: core.CastConfig{
 				SharedCD: core.Cooldown{
 					Timer:    character.GetOffensiveTrinketCD(),
-					Duration: time.Second * 15,
+					Duration: time.Second * 20,
 				},
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
@@ -816,7 +816,7 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 			applyDotAt := sim.CurrentTime + waitTime
 
 			// Check for max duration munching
-			if dot.RemainingDuration(sim) > time.Second*4 + waitTime {
+			if dot.RemainingDuration(sim) > time.Second*4+waitTime {
 				if sim.Log != nil {
 					unit.Log(sim, "New %s proc was munched due to max %s duration", config.DotAuraLabel, config.DotAuraLabel)
 				}

@@ -80,8 +80,8 @@ dps_results: {
 dps_results: {
  key: "TestArms-AllItems-ApparatusofKhaz'goroth-69113"
  value: {
-  dps: 33942.40247
-  tps: 22143.24753
+  dps: 33942.6615
+  tps: 22143.50333
  }
 }
 dps_results: {
@@ -1530,8 +1530,8 @@ dps_results: {
 dps_results: {
  key: "TestArms-Settings-Orc-p3_arms_bis-Basic-arms-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 41483.8493
-  tps: 27564.34681
+  dps: 41483.39564
+  tps: 27564.11385
  }
 }
 dps_results: {
