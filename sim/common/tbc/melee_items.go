@@ -33,7 +33,7 @@ func init() {
 			ProcMask:    core.ProcMaskEmpty,
 
 			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			CritMultiplier:   agent.GetDefaultSpellValueProvider().DefaultSpellCritMultiplier(),
 			ThreatMultiplier: 0.5,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -222,7 +222,7 @@ func init() {
 			ProcMask:    core.ProcMaskEmpty,
 
 			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			CritMultiplier:   agent.GetDefaultSpellValueProvider().DefaultSpellCritMultiplier(),
 			ThreatMultiplier: 1,
 
 			BonusCoefficient: 1,
@@ -258,7 +258,7 @@ func init() {
 			ProcMask:    core.ProcMaskEmpty,
 
 			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			CritMultiplier:   agent.GetDefaultSpellValueProvider().DefaultSpellCritMultiplier(),
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

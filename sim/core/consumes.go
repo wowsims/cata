@@ -679,7 +679,7 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 			SpellSchool: SpellSchoolFire,
 
 			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			CritMultiplier:   character.Env.GetAgentFromUnit(&character.Unit).GetDefaultSpellValueProvider().DefaultSpellCritMultiplier(),
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
@@ -1020,7 +1020,7 @@ func registerTinkerHandsCD(agent Agent, consumes *proto.Consumes) {
 			},
 
 			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			CritMultiplier:   character.Env.GetAgentFromUnit(&character.Unit).GetDefaultSpellValueProvider().DefaultSpellCritMultiplier(),
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *Simulation, unit *Unit, spell *Spell) {

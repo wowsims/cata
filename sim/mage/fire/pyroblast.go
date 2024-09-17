@@ -28,7 +28,7 @@ func (fire *FireMage) registerPyroblastSpell() {
 
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           fire.DefaultMageCritMultiplier(),
+		CritMultiplier:           fire.DefaultSpellCritMultiplier(),
 		BonusCoefficient:         1.545,
 		ThreatMultiplier:         1,
 
@@ -52,7 +52,7 @@ func (fire *FireMage) registerPyroblastSpell() {
 		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   fire.DefaultMageCritMultiplier(),
+		CritMultiplier:   fire.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{

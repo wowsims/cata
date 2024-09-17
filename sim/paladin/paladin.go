@@ -302,3 +302,5 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 func (paladin *Paladin) BuilderCooldown() *core.Timer {
 	return paladin.Character.GetOrInitTimer(&paladin.sharedBuilderTimer)
 }
+
+func (paladin *Paladin) GetDefaultSpellValueProvider() core.DefaultSpellValueProvider { return paladin }

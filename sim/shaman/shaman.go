@@ -302,6 +302,8 @@ func (shaman *Shaman) Reset(sim *core.Simulation) {
 
 }
 
+func (shaman *Shaman) GetDefaultSpellValueProvider() core.DefaultSpellValueProvider { return shaman }
+
 func (shaman *Shaman) GetOverloadChance() float64 {
 	overloadChance := 0.0
 

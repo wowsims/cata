@@ -46,7 +46,7 @@ func newCapacitorDamageEffect(config CapacitorDamageEffect) {
 			ProcMask:    core.ProcMaskEmpty,
 
 			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			CritMultiplier:   agent.GetDefaultSpellValueProvider().DefaultSpellCritMultiplier(),
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

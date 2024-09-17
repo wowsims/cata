@@ -432,3 +432,5 @@ func (druid *Druid) UpdateBleedPower(bleedSpell *DruidSpell, sim *core.Simulatio
 type DruidAgent interface {
 	GetDruid() *Druid
 }
+
+func (druid *Druid) GetDefaultSpellValueProvider() core.DefaultSpellValueProvider { return druid }

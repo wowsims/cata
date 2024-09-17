@@ -30,7 +30,7 @@ func (mage *Mage) registerDragonsBreathSpell() {
 			},
 		},
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultMageCritMultiplier(),
+		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
 		BonusCoefficient:         0.193,
 		ThreatMultiplier:         1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

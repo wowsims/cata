@@ -71,7 +71,7 @@ func init() {
 			DamageMultiplier:         1,
 			DamageMultiplierAdditive: 1,
 			ThreatMultiplier:         1,
-			CritMultiplier:           character.DefaultSpellCritMultiplier(),
+			CritMultiplier:           agent.GetDefaultSpellValueProvider().DefaultSpellCritMultiplier(),
 			ProcMask:                 core.ProcMaskEmpty,
 			Flags:                    core.SpellFlagNoOnCastComplete,
 			Dot: core.DotConfig{
@@ -113,7 +113,7 @@ func init() {
 			ThreatMultiplier:         1,
 			ProcMask:                 core.ProcMaskEmpty,
 			Flags:                    core.SpellFlagNoOnCastComplete,
-			CritMultiplier:           character.DefaultSpellCritMultiplier(),
+			CritMultiplier:           agent.GetDefaultSpellValueProvider().DefaultSpellCritMultiplier(),
 			Dot: core.DotConfig{
 				Aura: core.Aura{
 					Label: "Vengful Wisp - 1",
@@ -179,7 +179,7 @@ func init() {
 			DamageMultiplier:         1,
 			DamageMultiplierAdditive: 1,
 			ThreatMultiplier:         1,
-			CritMultiplier:           character.DefaultSpellCritMultiplier(),
+			CritMultiplier:           agent.GetDefaultSpellValueProvider().DefaultSpellCritMultiplier(),
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Duration: time.Minute * 1,

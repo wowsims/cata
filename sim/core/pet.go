@@ -289,7 +289,8 @@ func (pet *Pet) Disable(sim *Simulation) {
 func (pet *Pet) GetCharacter() *Character {
 	return &pet.Character
 }
-func (pet *Pet) AddRaidBuffs(_ *proto.RaidBuffs)   {}
-func (pet *Pet) AddPartyBuffs(_ *proto.PartyBuffs) {}
-func (pet *Pet) ApplyTalents()                     {}
-func (pet *Pet) OnGCDReady(_ *Simulation)          {}
+func (pet *Pet) AddRaidBuffs(_ *proto.RaidBuffs)                         {}
+func (pet *Pet) AddPartyBuffs(_ *proto.PartyBuffs)                       {}
+func (pet *Pet) ApplyTalents()                                           {}
+func (pet *Pet) OnGCDReady(_ *Simulation)                                {}
+func (pet *Pet) GetDefaultSpellValueProvider() DefaultSpellValueProvider { return pet.character }

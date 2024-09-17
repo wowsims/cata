@@ -236,3 +236,5 @@ func (warrior *Warrior) GetCriticalBlockChance() float64 {
 type WarriorAgent interface {
 	GetWarrior() *Warrior
 }
+
+func (warrior *Warrior) GetDefaultSpellValueProvider() core.DefaultSpellValueProvider { return warrior }

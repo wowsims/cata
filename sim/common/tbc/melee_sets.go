@@ -22,7 +22,7 @@ var ItemSetFistsOfFury = core.NewItemSet(core.ItemSet{
 				ProcMask:    core.ProcMaskEmpty,
 
 				DamageMultiplier: 1,
-				CritMultiplier:   character.DefaultSpellCritMultiplier(),
+				CritMultiplier:   agent.GetDefaultSpellValueProvider().DefaultSpellCritMultiplier(),
 				ThreatMultiplier: 1,
 
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -63,7 +63,7 @@ var ItemSetStormshroud = core.NewItemSet(core.ItemSet{
 				ProcMask:    core.ProcMaskEmpty,
 
 				DamageMultiplier: 1,
-				CritMultiplier:   char.DefaultSpellCritMultiplier(),
+				CritMultiplier:   a.GetDefaultSpellValueProvider().DefaultSpellCritMultiplier(),
 				ThreatMultiplier: 1,
 
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

@@ -14,6 +14,8 @@ type Agent interface {
 	// The Character controlled by this Agent.
 	GetCharacter() *Character
 
+	GetDefaultSpellValueProvider() DefaultSpellValueProvider
+
 	// Called once after all Players/Pets/Targets have finished the construction phase.
 	// Use this to register spells and any initialization steps that require
 	// other raid members or auras.

@@ -50,7 +50,7 @@ func NewProcStatBonusEffectWithDamageProc(config ProcStatBonusEffect, damage Dam
 			ProcMask:                 core.ProcMaskEmpty,
 			Flags:                    core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 			DamageMultiplier:         1,
-			CritMultiplier:           character.DefaultSpellCritMultiplier(),
+			CritMultiplier:           agent.GetDefaultSpellValueProvider().DefaultSpellCritMultiplier(),
 			DamageMultiplierAdditive: 1,
 			ThreatMultiplier:         1,
 			BonusCoefficient:         damage.BonusCoefficient,
@@ -430,7 +430,7 @@ func NewProcDamageEffect(config ProcDamageEffect) {
 			Flags:       config.Flags,
 
 			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			CritMultiplier:   agent.GetDefaultSpellValueProvider().DefaultSpellCritMultiplier(),
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

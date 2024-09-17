@@ -237,6 +237,7 @@ const (
 	PetExpertiseScale = 1.53 * core.ExpertisePerQuarterPercentReduction
 )
 
+func (warlock *Warlock) GetDefaultSpellValueProvider() core.DefaultSpellValueProvider { return warlock }
 func (warlock *Warlock) DefaultSpellCritMultiplier() float64 {
 	return warlock.SpellCritMultiplier(1.33, 0.0)
 }

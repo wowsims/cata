@@ -7,6 +7,10 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
+type SpellCritProvider interface {
+	DefaultSpellCritMultiplier() float64
+}
+
 func init() {
 	shared.NewProcDamageEffect(shared.ProcDamageEffect{
 		ItemID:  62049,
@@ -60,7 +64,7 @@ func init() {
 			ProcMask:         core.ProcMaskEmpty,
 			Flags:            core.SpellFlagNoOnDamageDealt,
 			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			CritMultiplier:   agent.GetDefaultSpellValueProvider().DefaultSpellCritMultiplier(),
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -107,7 +111,7 @@ func init() {
 			ProcMask:         core.ProcMaskEmpty,
 			Flags:            core.SpellFlagNoOnDamageDealt,
 			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			CritMultiplier:   agent.GetDefaultSpellValueProvider().DefaultSpellCritMultiplier(),
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

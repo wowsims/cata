@@ -230,6 +230,8 @@ type DeathKnightAgent interface {
 	GetDeathKnight() *DeathKnight
 }
 
+func (dk *DeathKnight) GetDefaultSpellValueProvider() core.DefaultSpellValueProvider { return dk }
+
 const (
 	DeathKnightSpellFlagNone int64 = 0
 	DeathKnightSpellIcyTouch int64 = 1 << iota

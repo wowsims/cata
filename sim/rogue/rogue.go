@@ -322,6 +322,8 @@ type RogueAgent interface {
 	GetRogue() *Rogue
 }
 
+func (rogue *Rogue) GetDefaultSpellValueProvider() core.DefaultSpellValueProvider { return rogue }
+
 const (
 	RogueSpellFlagNone int64 = 0
 	RogueSpellAmbush   int64 = 1 << iota

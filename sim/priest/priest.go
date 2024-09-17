@@ -159,6 +159,8 @@ type PriestAgent interface {
 	GetPriest() *Priest
 }
 
+func (priest *Priest) GetDefaultSpellValueProvider() core.DefaultSpellValueProvider { return priest }
+
 func (hunter *Priest) HasPrimeGlyph(glyph proto.PriestPrimeGlyph) bool {
 	return hunter.HasGlyph(int32(glyph))
 }

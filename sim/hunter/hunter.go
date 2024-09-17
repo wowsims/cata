@@ -256,3 +256,5 @@ const (
 type HunterAgent interface {
 	GetHunter() *Hunter
 }
+
+func (hunter *Hunter) GetDefaultSpellValueProvider() core.DefaultSpellValueProvider { return hunter }

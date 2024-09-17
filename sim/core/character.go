@@ -30,6 +30,12 @@ const (
 
 const CharacterBuildPhaseAll = CharacterBuildPhaseBase | CharacterBuildPhaseGear | CharacterBuildPhaseTalents | CharacterBuildPhaseBuffs | CharacterBuildPhaseConsumes
 
+type DefaultSpellValueProvider interface {
+	DefaultSpellCritMultiplier() float64
+	DefaultMeleeCritMultiplier() float64
+	DefaultHealingCritMultiplier() float64
+}
+
 // Character is a data structure to hold all the shared values that all
 // class logic shares.
 // All players have stats, equipment, auras, etc

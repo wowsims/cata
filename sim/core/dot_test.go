@@ -35,6 +35,8 @@ func (fa *FakeAgent) GetCharacter() *Character {
 	return &fa.Character
 }
 
+func (fa *FakeAgent) GetDefaultSpellValueProvider() DefaultSpellValueProvider { return fa.character }
+
 func (fa *FakeAgent) Initialize() {
 	if fa.Init != nil {
 		fa.Init()

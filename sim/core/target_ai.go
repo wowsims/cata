@@ -49,11 +49,12 @@ func (target *Target) initialize(config *proto.Target) {
 }
 
 // Empty Agent interface functions.
-func (target *Target) AddRaidBuffs(_ *proto.RaidBuffs)   {}
-func (target *Target) AddPartyBuffs(_ *proto.PartyBuffs) {}
-func (target *Target) ApplyTalents()                     {}
-func (target *Target) GetCharacter() *Character          { return nil }
-func (target *Target) Initialize()                       {}
+func (target *Target) AddRaidBuffs(_ *proto.RaidBuffs)                         {}
+func (target *Target) AddPartyBuffs(_ *proto.PartyBuffs)                       {}
+func (target *Target) ApplyTalents()                                           {}
+func (target *Target) GetCharacter() *Character                                { return nil }
+func (target *Target) Initialize()                                             {}
+func (target *Target) GetDefaultSpellValueProvider() DefaultSpellValueProvider { return nil }
 
 func (target *Target) ExecuteCustomRotation(sim *Simulation) {
 	if target.AI != nil {
