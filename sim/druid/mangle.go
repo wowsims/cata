@@ -13,10 +13,11 @@ func (druid *Druid) registerMangleBearSpell() {
 	maxHits := min(druid.Env.GetNumTargets(), 3)
 
 	druid.MangleBear = druid.RegisterSpell(Bear, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 33878},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 33878},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		ClassSpellMask: DruidSpellMangleBear,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
 			Cost:   15,
@@ -78,10 +79,11 @@ func (druid *Druid) registerMangleCatSpell() {
 	hasBloodletting := druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfBloodletting)
 
 	druid.MangleCat = druid.RegisterSpell(Cat, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 33876},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 33876},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		ClassSpellMask: DruidSpellMangleCat,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   35.0,

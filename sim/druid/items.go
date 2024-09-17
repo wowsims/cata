@@ -3,6 +3,7 @@ package druid
 import (
 	"time"
 
+	"github.com/wowsims/cata/sim/common/cata"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/stats"
 )
@@ -102,7 +103,24 @@ var ItemSetObsidianArborweaveBattlegarb = core.NewItemSet(core.ItemSet{
 	Name: "Obsidian Arborweave Battlegarb",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
-			// TODO: Implement after PTR testing
+			// TODO: Verify behavior after PTR testing
+			druid := agent.(DruidAgent).GetDruid()
+			cata.RegisterIgniteEffect(&druid.Unit, cata.IgniteConfig{
+				ActionID:         core.ActionID{SpellID: 99002},
+				DotAuraLabel:     "Fiery Claws",
+				IncludeAuraDelay: false,
+
+				ProcTrigger: core.ProcTrigger{
+					Name:           "Fiery Claws Trigger",
+					Callback:       core.CallbackOnSpellHitDealt,
+					ClassSpellMask: DruidSpellMangle | DruidSpellMaul | DruidSpellShred,
+					Outcome:        core.OutcomeLanded,
+				},
+
+				DamageCalculator: func(result *core.SpellResult) float64 {
+					return result.Damage * 0.1
+				},
+			})
 		},
 		4: func(agent core.Agent) {
 			// Full implementation in berserk.go and barkskin.go
