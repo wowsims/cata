@@ -481,15 +481,15 @@ export const GENERIC_MISSING_SET_BONUS_NOTICE_DATA = new Map<number, string>([
 	[4, 'Not yet implemented'],
 ]);
 
+export const IGNITE_BONUS_WARNING = new Map<number, string>([
+	[2, 'Tentative implementation, requires PTR testing to validate munching / roll-over model'],
+])
+
 export const SET_BONUS_NOTICES = new Map<number, SetBonusNoticeData>([
 	// Custom notices
-	[
-		1002, // Feral T12
-		new Map<number, string>([
-			[2, 'Not implemented, requires PTR testing!'],
-			[4, 'Implemented and working for both cat and bear'],
-		]),
-	],
+	[1002, IGNITE_BONUS_WARNING], // Feral T12
+	[1006, IGNITE_BONUS_WARNING], // Rogue T12
+	[1012, IGNITE_BONUS_WARNING], // Ret T12
 	[
 		1008, // Warlock T12
 		new Map<number, string>([
