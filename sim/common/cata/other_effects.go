@@ -785,10 +785,11 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 		},
 	})
 
-	refreshIgnite := func(sim *core.Simulation, target *core.Unit, dot *core.Dot, totalDamage float64) {
+	refreshIgnite := func(sim *core.Simulation, target *core.Unit, totalDamage float64) {
 		// Cata Ignite
 		// 1st ignite application = 4s, split into 2 ticks (2s, 0s)
 		// Ignite refreshes: Duration = 4s + MODULO(remaining duration, 2), max 6s. Split damage over 3 ticks at 4s, 2s, 0s.
+		dot := igniteSpell.Dot(target)
 		newTickCount := dot.BaseTickCount + core.TernaryInt32(dot.IsActive(), 1, 0)
 		dot.SnapshotBaseDamage = totalDamage / float64(newTickCount)
 		igniteSpell.Cast(sim, target)
@@ -797,7 +798,8 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 
 	procTrigger := config.ProcTrigger
 	procTrigger.Handler = func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-		dot := igniteSpell.Dot(result.Target)
+		target := result.Target
+		dot := igniteSpell.Dot(target)
 		outstandingDamage := dot.OutstandingDmg()
 		newDamage := config.DamageCalculator(result)
 		totalDamage := outstandingDamage + newDamage
@@ -819,11 +821,11 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 				Priority: core.ActionPriorityDOT,
 
 				OnAction: func(_ *core.Simulation) {
-					refreshIgnite(sim, result.Target, dot, totalDamage)
+					refreshIgnite(sim, target, totalDamage)
 				},
 			})
 		} else {
-			refreshIgnite(sim, result.Target, dot, totalDamage)
+			refreshIgnite(sim, target, totalDamage)
 		}
 	}
 
