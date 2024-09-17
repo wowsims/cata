@@ -414,16 +414,16 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-ElementiumDeathplateBattlearmor"
  value: {
-  dps: 13682.51911
-  tps: 66746.16372
+  dps: 14202.64392
+  tps: 69622.42644
   hps: 3461.04681
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-ElementiumDeathplateBattlegear"
  value: {
-  dps: 14651.09747
-  tps: 70884.65958
+  dps: 15214.14265
+  tps: 73981.98978
   hps: 3637.17429
  }
 }
