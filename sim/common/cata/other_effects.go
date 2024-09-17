@@ -805,9 +805,20 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 		totalDamage := outstandingDamage + newDamage
 
 		if config.IncludeAuraDelay {
+			// TODO: Update these simc aura delay parameters to the correct values for Classic servers
 			waitTime := time.Millisecond * time.Duration(sim.Roll(375, 625))
 			applyDotAt := sim.CurrentTime + waitTime
 
+			// Check for max duration munching
+			if dot.RemainingDuration(sim) > time.Second*4 + waitTime {
+				if sim.Log != nil {
+					unit.Log(sim, "New %s proc was munched due to max %s duration", config.DotAuraLabel, config.DotAuraLabel)
+				}
+
+				return
+			}
+
+			// Schedule a delayed refresh of the DoT with cached outstandingDamage value (allowing for "free roll-overs")
 			if sim.Log != nil {
 				unit.Log(sim, "Schedule travel (%0.2f s) for %s", waitTime.Seconds(), config.DotAuraLabel)
 
