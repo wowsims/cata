@@ -414,16 +414,16 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-ElementiumDeathplateBattlearmor"
  value: {
-  dps: 18988.77758
-  tps: 17173.92712
+  dps: 19360.42977
+  tps: 17545.57931
   hps: 232.60539
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-ElementiumDeathplateBattlegear"
  value: {
-  dps: 21052.59863
-  tps: 18969.68576
+  dps: 21463.68443
+  tps: 19380.77156
   hps: 256.89646
  }
 }
