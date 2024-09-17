@@ -38,8 +38,8 @@ character_stats_results: {
 dps_results: {
  key: "TestAffliction-AllItems-AgileShadowspiritDiamond"
  value: {
-  dps: 28431.53506
-  tps: 20689.87416
+  dps: 28439.17184
+  tps: 20697.51094
  }
 }
 dps_results: {
@@ -87,15 +87,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-AustereShadowspiritDiamond"
  value: {
-  dps: 28097.71094
-  tps: 20360.85654
+  dps: 28106.00317
+  tps: 20369.14877
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-Balespider'sBurningVestments"
  value: {
-  dps: 28399.11308
-  tps: 20422.79393
+  dps: 28406.96593
+  tps: 20430.64678
  }
 }
 dps_results: {
@@ -221,8 +221,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-BracingShadowspiritDiamond"
  value: {
-  dps: 28294.87158
-  tps: 20119.60443
+  dps: 28302.79172
+  tps: 20127.36617
  }
 }
 dps_results: {
@@ -235,15 +235,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-BurningShadowspiritDiamond"
  value: {
-  dps: 28585.84371
-  tps: 20804.39172
+  dps: 28594.00145
+  tps: 20812.54946
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-ChaoticShadowspiritDiamond"
  value: {
-  dps: 28521.24178
-  tps: 20749.7843
+  dps: 28528.87856
+  tps: 20757.42108
  }
 }
 dps_results: {
@@ -319,8 +319,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-DestructiveShadowspiritDiamond"
  value: {
-  dps: 28228.07103
-  tps: 20465.58018
+  dps: 28235.48538
+  tps: 20472.99453
  }
 }
 dps_results: {
@@ -340,8 +340,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-EffulgentShadowspiritDiamond"
  value: {
-  dps: 28097.71094
-  tps: 20360.85654
+  dps: 28106.00317
+  tps: 20369.14877
  }
 }
 dps_results: {
@@ -354,15 +354,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-EmberShadowspiritDiamond"
  value: {
-  dps: 28272.56825
-  tps: 20533.00261
+  dps: 28280.36381
+  tps: 20540.79816
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-EnigmaticShadowspiritDiamond"
  value: {
-  dps: 28228.07103
-  tps: 20465.58018
+  dps: 28235.48538
+  tps: 20472.99453
  }
 }
 dps_results: {
@@ -389,8 +389,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-EternalShadowspiritDiamond"
  value: {
-  dps: 28097.71094
-  tps: 20360.85654
+  dps: 28106.00317
+  tps: 20369.14877
  }
 }
 dps_results: {
@@ -452,8 +452,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-FleetShadowspiritDiamond"
  value: {
-  dps: 28244.13765
-  tps: 20511.28753
+  dps: 28251.552
+  tps: 20518.70188
  }
 }
 dps_results: {
@@ -466,8 +466,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-ForlornShadowspiritDiamond"
  value: {
-  dps: 28294.87158
-  tps: 20522.47401
+  dps: 28302.79172
+  tps: 20530.39414
  }
 }
 dps_results: {
@@ -501,8 +501,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-Gladiator'sFelshroud"
  value: {
-  dps: 23432.46907
-  tps: 16973.6794
+  dps: 23441.06483
+  tps: 16982.27515
  }
 }
 dps_results: {
@@ -529,8 +529,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-HarmlightToken-63839"
  value: {
-  dps: 27721.55191
-  tps: 20094.45548
+  dps: 27732.89052
+  tps: 20105.79409
  }
 }
 dps_results: {
@@ -606,8 +606,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-ImpassiveShadowspiritDiamond"
  value: {
-  dps: 28228.07103
-  tps: 20465.58018
+  dps: 28235.48538
+  tps: 20472.99453
  }
 }
 dps_results: {
@@ -907,8 +907,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-PowerfulShadowspiritDiamond"
  value: {
-  dps: 28097.71094
-  tps: 20360.85654
+  dps: 28106.00317
+  tps: 20369.14877
  }
 }
 dps_results: {
@@ -942,15 +942,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-ReverberatingShadowspiritDiamond"
  value: {
-  dps: 28431.53506
-  tps: 20689.87416
+  dps: 28439.17184
+  tps: 20697.51094
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-RevitalizingShadowspiritDiamond"
  value: {
-  dps: 28431.53506
-  tps: 20689.87416
+  dps: 28439.17184
+  tps: 20697.51094
  }
 }
 dps_results: {
@@ -1005,8 +1005,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-ShadowflameRegalia"
  value: {
-  dps: 25938.474
-  tps: 18954.54693
+  dps: 25946.47428
+  tps: 18962.54722
  }
 }
 dps_results: {
@@ -1215,8 +1215,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-Tyrande'sFavoriteDoll-64645"
  value: {
-  dps: 27462.47571
-  tps: 20089.10678
+  dps: 27472.20524
+  tps: 20098.83631
  }
 }
 dps_results: {
@@ -1257,15 +1257,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 28224.11236
-  tps: 20616.2025
+  dps: 28259.23143
+  tps: 20651.32157
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 28955.09941
-  tps: 21363.131
+  dps: 29065.94318
+  tps: 21473.97478
  }
 }
 dps_results: {
@@ -1418,182 +1418,182 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Average-Default"
  value: {
-  dps: 28860.66401
-  tps: 21111.63823
+  dps: 28869.55198
+  tps: 21120.5262
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Goblin-p1-Affliction Warlock-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 29105.30892
-  tps: 29211.11679
+  dps: 29113.17302
+  tps: 29218.98089
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Goblin-p1-Affliction Warlock-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 28146.09638
-  tps: 20811.32111
+  dps: 28155.00762
+  tps: 20820.23236
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Goblin-p1-Affliction Warlock-default-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 36194.71613
-  tps: 24021.16869
+  dps: 36203.89684
+  tps: 24030.34939
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Goblin-p1-Affliction Warlock-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 18751.78555
-  tps: 21425.57542
+  dps: 18756.75236
+  tps: 21430.54223
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Goblin-p1-Affliction Warlock-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 18751.78555
-  tps: 13629.67037
+  dps: 18756.75236
+  tps: 13634.63719
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Goblin-p1-Affliction Warlock-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 21443.40293
-  tps: 13091.70371
+  dps: 21454.50588
+  tps: 13102.80665
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Human-p1-Affliction Warlock-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 28848.65541
-  tps: 28813.57574
+  dps: 28857.22827
+  tps: 28822.1486
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Human-p1-Affliction Warlock-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 27979.74751
-  tps: 20623.82545
+  dps: 27987.8943
+  tps: 20631.97224
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Human-p1-Affliction Warlock-default-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 36331.3681
-  tps: 24273.98329
+  dps: 36336.994
+  tps: 24279.60919
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Human-p1-Affliction Warlock-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 18573.82727
-  tps: 21257.48303
+  dps: 18578.75999
+  tps: 21262.41576
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Human-p1-Affliction Warlock-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 18573.82727
-  tps: 13461.57799
+  dps: 18578.75999
+  tps: 13466.51071
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Human-p1-Affliction Warlock-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 21339.60642
-  tps: 12973.61424
+  dps: 21349.6781
+  tps: 12983.68593
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-p1-Affliction Warlock-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 29453.88984
-  tps: 28992.93466
+  dps: 29462.49181
+  tps: 29001.53663
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-p1-Affliction Warlock-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 28585.84371
-  tps: 20804.39172
+  dps: 28594.00145
+  tps: 20812.54946
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-p1-Affliction Warlock-default-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 35870.13023
-  tps: 24295.65662
+  dps: 35879.16502
+  tps: 24304.69141
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-p1-Affliction Warlock-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 19007.61533
-  tps: 21378.72221
+  dps: 19012.56226
+  tps: 21383.66914
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-p1-Affliction Warlock-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 19007.61533
-  tps: 13581.9266
+  dps: 19012.56226
+  tps: 13586.87353
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Orc-p1-Affliction Warlock-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 21133.89438
-  tps: 13181.82292
+  dps: 21139.88727
+  tps: 13187.81581
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Troll-p1-Affliction Warlock-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 29165.10489
-  tps: 29188.79265
+  dps: 29174.24651
+  tps: 29197.93427
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Troll-p1-Affliction Warlock-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 28239.14249
-  tps: 20906.8622
+  dps: 28249.11976
+  tps: 20916.83947
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Troll-p1-Affliction Warlock-default-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 36872.27252
-  tps: 24689.1798
+  dps: 36884.08018
+  tps: 24700.98745
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Troll-p1-Affliction Warlock-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 18839.53613
-  tps: 21513.59137
+  dps: 18844.16514
+  tps: 21518.22038
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Troll-p1-Affliction Warlock-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 18839.53613
-  tps: 13675.77285
+  dps: 18844.16514
+  tps: 13680.40186
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Troll-p1-Affliction Warlock-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 22026.0208
-  tps: 13686.48677
+  dps: 22034.09878
+  tps: 13694.56474
  }
 }
 dps_results: {
  key: "TestAffliction-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 28472.78643
-  tps: 20804.39172
+  dps: 28480.94417
+  tps: 20812.54946
  }
 }
