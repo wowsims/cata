@@ -101,8 +101,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-AllItems-BattleplateofImmolation"
  value: {
-  dps: 30042.56926
-  tps: 30030.05964
+  dps: 30005.5424
+  tps: 29993.03278
  }
 }
 dps_results: {
@@ -2300,421 +2300,421 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 43088.56868
-  tps: 46970.56914
+  dps: 43053.43147
+  tps: 46935.43193
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 37688.71077
-  tps: 37679.18857
+  dps: 37652.11858
+  tps: 37643.38317
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 49614.78448
-  tps: 48622.41467
+  dps: 49637.84446
+  tps: 48645.47465
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 24616.47825
-  tps: 27648.0479
+  dps: 24595.51365
+  tps: 27627.08329
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 23323.89243
-  tps: 23272.4494
+  dps: 23313.96975
+  tps: 23262.52672
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 27681.26675
-  tps: 26725.45464
+  dps: 27669.71718
+  tps: 26713.90506
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Seal of Insight-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 35883.23278
-  tps: 42089.88543
+  dps: 35829.23257
+  tps: 42036.97428
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Seal of Insight-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 30010.64386
-  tps: 30129.91673
+  dps: 29966.46016
+  tps: 30085.77781
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Seal of Insight-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 40367.06747
-  tps: 39550.42116
+  dps: 40391.75818
+  tps: 39575.11187
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Seal of Insight-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 21431.14695
-  tps: 27028.27454
+  dps: 21408.42323
+  tps: 27005.55082
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Seal of Insight-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 18963.73322
-  tps: 19060.49103
+  dps: 18951.14182
+  tps: 19047.89964
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Seal of Insight-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 22791.91806
-  tps: 21993.86979
+  dps: 22780.775
+  tps: 21982.72673
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Seal of Justice-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 36445.66078
-  tps: 40325.38825
+  dps: 36393.15268
+  tps: 40272.88015
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Seal of Justice-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 31440.64698
-  tps: 31430.22721
+  dps: 31407.63477
+  tps: 31397.85023
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Seal of Justice-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 42504.96692
-  tps: 41503.38128
+  dps: 42523.73912
+  tps: 41522.15347
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Seal of Justice-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 21280.29548
-  tps: 24309.61641
+  dps: 21257.45877
+  tps: 24286.77969
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Seal of Justice-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 19652.84376
-  tps: 19604.48685
+  dps: 19644.43695
+  tps: 19596.08005
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Seal of Justice-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 24181.24728
-  tps: 23241.69559
+  dps: 24172.40648
+  tps: 23232.85478
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 107259.67443
-  tps: 111142.02162
+  dps: 107231.4471
+  tps: 111113.79429
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 33300.19872
-  tps: 33289.77895
+  dps: 33267.10303
+  tps: 33257.31849
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 44943.06449
-  tps: 43941.47884
+  dps: 44961.83669
+  tps: 43960.25104
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 59856.71285
-  tps: 62888.07311
+  dps: 59838.42264
+  tps: 62869.7829
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 20602.20746
-  tps: 20553.85056
+  dps: 20593.80066
+  tps: 20545.44375
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 25285.60987
-  tps: 24346.05818
+  dps: 25276.76907
+  tps: 24337.21737
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 43438.70206
-  tps: 47177.48379
+  dps: 43389.77179
+  tps: 47128.55352
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 38065.00728
-  tps: 37933.70363
+  dps: 38022.94442
+  tps: 37891.64077
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 51250.64779
-  tps: 49641.57441
+  dps: 51267.72565
+  tps: 49658.65227
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 24893.94322
-  tps: 27811.67965
+  dps: 24871.60007
+  tps: 27789.3365
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 23530.25155
-  tps: 23363.44866
+  dps: 23521.18654
+  tps: 23354.38365
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 28844.1441
-  tps: 27312.23529
+  dps: 28832.99841
+  tps: 27301.0896
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 43110.45925
-  tps: 46992.45971
+  dps: 43077.26465
+  tps: 46959.26511
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 37720.67843
-  tps: 37711.15622
+  dps: 37685.33923
+  tps: 37676.60382
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 49394.85089
-  tps: 48402.48109
+  dps: 49416.8676
+  tps: 48424.49779
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 24543.68052
-  tps: 27575.25016
+  dps: 24522.54548
+  tps: 27554.11512
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 23208.5055
-  tps: 23157.06248
+  dps: 23198.48448
+  tps: 23147.04145
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 27481.32079
-  tps: 26525.50867
+  dps: 27469.58414
+  tps: 26513.77202
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Seal of Insight-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 35895.66
-  tps: 42102.31265
+  dps: 35843.6199
+  tps: 42051.36161
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Seal of Insight-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 29983.6773
-  tps: 30102.95017
+  dps: 29941.84374
+  tps: 30061.1614
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Seal of Insight-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 40186.49128
-  tps: 39369.84497
+  dps: 40209.82619
+  tps: 39393.17988
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Seal of Insight-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 21335.60156
-  tps: 26932.72915
+  dps: 21314.82508
+  tps: 26911.95268
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Seal of Insight-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 18907.12891
-  tps: 19003.88672
+  dps: 18894.3264
+  tps: 18991.08421
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Seal of Insight-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 22620.59276
-  tps: 21822.54448
+  dps: 22610.02071
+  tps: 21811.97243
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Seal of Justice-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 36470.73056
-  tps: 40350.45803
+  dps: 36423.898
+  tps: 40303.62546
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Seal of Justice-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 31456.2368
-  tps: 31445.81703
+  dps: 31425.29251
+  tps: 31415.50798
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Seal of Justice-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 42140.43209
-  tps: 41138.84644
+  dps: 42159.2211
+  tps: 41157.63545
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Seal of Justice-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 21182.59153
-  tps: 24211.91245
+  dps: 21161.58377
+  tps: 24190.9047
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Seal of Justice-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 19605.36413
-  tps: 19557.00723
+  dps: 19597.72708
+  tps: 19549.37018
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Seal of Justice-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 24080.02899
-  tps: 23140.4773
+  dps: 24072.9155
+  tps: 23133.36381
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Seal of Righteousness-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 107214.57737
-  tps: 111096.92456
+  dps: 107188.9149
+  tps: 111071.2621
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Seal of Righteousness-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 33315.78855
-  tps: 33305.36878
+  dps: 33284.76077
+  tps: 33274.97624
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Seal of Righteousness-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 44578.52965
-  tps: 43576.94401
+  dps: 44597.31867
+  tps: 43595.73302
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Seal of Righteousness-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 59739.19234
-  tps: 62770.5526
+  dps: 59720.99553
+  tps: 62752.3558
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Seal of Righteousness-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 20554.72784
-  tps: 20506.37094
+  dps: 20547.09079
+  tps: 20498.73388
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Seal of Righteousness-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 25184.39158
-  tps: 24244.83989
+  dps: 25177.27809
+  tps: 24237.7264
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Snapshot Guardian-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 43439.50471
-  tps: 47178.28645
+  dps: 43392.90783
+  tps: 47131.68957
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Snapshot Guardian-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 38117.67969
-  tps: 37986.37604
+  dps: 38077.00431
+  tps: 37945.70066
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Snapshot Guardian-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 51030.29608
-  tps: 49421.2227
+  dps: 51046.35275
+  tps: 49437.27936
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Snapshot Guardian-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 24824.24568
-  tps: 27741.98211
+  dps: 24802.08908
+  tps: 27719.82551
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Snapshot Guardian-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 23400.17339
-  tps: 23233.3705
+  dps: 23390.97346
+  tps: 23224.17057
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-t12_bis-DefaultTalents-Snapshot Guardian-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 28631.82427
-  tps: 27099.91546
+  dps: 28620.61308
+  tps: 27088.70427
  }
 }
 dps_results: {
@@ -3560,421 +3560,421 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 42977.86869
-  tps: 46744.04789
+  dps: 42945.47221
+  tps: 46711.65141
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 37715.14988
-  tps: 37700.53707
+  dps: 37679.29151
+  tps: 37664.6787
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 49629.78251
-  tps: 48629.57177
+  dps: 49652.84884
+  tps: 48652.63809
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 24282.9097
-  tps: 27077.99233
+  dps: 24255.494
+  tps: 27050.57663
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 22965.52883
-  tps: 22905.37219
+  dps: 22957.34609
+  tps: 22897.18945
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 27631.35338
-  tps: 26663.42883
+  dps: 27619.7088
+  tps: 26651.78425
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Seal of Insight-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 35882.52163
-  tps: 42080.60174
+  dps: 35828.50503
+  tps: 42027.67404
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Seal of Insight-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 30019.86851
-  tps: 30138.43821
+  dps: 29975.67152
+  tps: 30094.286
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Seal of Insight-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 40378.77954
-  tps: 39560.64704
+  dps: 40403.47692
+  tps: 39585.34442
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Seal of Insight-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 21434.88423
-  tps: 27020.06509
+  dps: 21412.15365
+  tps: 26997.33451
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Seal of Insight-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 18963.09729
-  tps: 19059.28773
+  dps: 18950.48253
+  tps: 19046.67297
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Seal of Insight-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 22798.62663
-  tps: 21998.98901
+  dps: 22787.48025
+  tps: 21987.84264
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Seal of Justice-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 36415.14402
-  tps: 40168.24613
+  dps: 36366.01499
+  tps: 40119.1171
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Seal of Justice-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 31648.53244
-  tps: 31632.22546
+  dps: 31608.11402
+  tps: 31591.80704
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Seal of Justice-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 42517.47802
-  tps: 41508.05143
+  dps: 42536.25542
+  tps: 41526.82883
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Seal of Justice-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 20798.41914
-  tps: 23590.57819
+  dps: 20769.86941
+  tps: 23562.02846
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Seal of Justice-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 19493.95574
-  tps: 19437.03188
+  dps: 19487.83535
+  tps: 19430.91149
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Seal of Justice-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 24185.05037
-  tps: 23233.38625
+  dps: 24176.74328
+  tps: 23225.07916
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 107201.05057
-  tps: 110956.84696
+  dps: 107173.50908
+  tps: 110929.30547
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 33508.20245
-  tps: 33491.89548
+  dps: 33468.02708
+  tps: 33451.72011
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 44956.15514
-  tps: 43946.72856
+  dps: 44974.93255
+  tps: 43965.50596
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 59623.29244
-  tps: 62417.59
+  dps: 59598.08084
+  tps: 62392.3784
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 20438.76639
-  tps: 20381.84253
+  dps: 20432.646
+  tps: 20375.72214
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 25288.86396
-  tps: 24337.19983
+  dps: 25280.55686
+  tps: 24328.89274
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 43307.14179
-  tps: 46960.59014
+  dps: 43257.90391
+  tps: 46911.35226
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 38029.63903
-  tps: 37891.74908
+  dps: 37990.89793
+  tps: 37853.00798
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 51266.32305
-  tps: 49649.40872
+  dps: 51283.40525
+  tps: 49666.49092
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 24572.15651
-  tps: 27251.64479
+  dps: 24543.31088
+  tps: 27222.79917
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 23161.75152
-  tps: 22986.29847
+  dps: 23153.69953
+  tps: 22978.24648
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 28784.91878
-  tps: 27240.89753
+  dps: 28773.77018
+  tps: 27229.74893
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 42958.36631
-  tps: 46724.54551
+  dps: 42928.19846
+  tps: 46694.37766
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 37695.34953
-  tps: 37680.73672
+  dps: 37661.08167
+  tps: 37646.46886
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 49409.80324
-  tps: 48409.5925
+  dps: 49431.82603
+  tps: 48431.61528
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 24211.58307
-  tps: 27006.6657
+  dps: 24184.95841
+  tps: 26980.04104
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 22854.47528
-  tps: 22794.31864
+  dps: 22846.68981
+  tps: 22786.53318
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 27455.93083
-  tps: 26488.00628
+  dps: 27444.19098
+  tps: 26476.26643
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Seal of Insight-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 35889.74658
-  tps: 42087.82669
+  dps: 35837.69069
+  tps: 42036.8597
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Seal of Insight-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 29992.91717
-  tps: 30111.48688
+  dps: 29951.07105
+  tps: 30069.68554
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Seal of Insight-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 40198.16065
-  tps: 39380.02814
+  dps: 40221.50184
+  tps: 39403.36934
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Seal of Insight-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 21342.28145
-  tps: 26927.46231
+  dps: 21321.49868
+  tps: 26906.67954
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Seal of Insight-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 18909.25064
-  tps: 19005.44108
+  dps: 18896.59859
+  tps: 18992.78903
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Seal of Insight-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 22627.26146
-  tps: 21827.62385
+  dps: 22616.6863
+  tps: 21817.04868
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Seal of Justice-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 36444.96872
-  tps: 40198.07083
+  dps: 36401.97831
+  tps: 40155.08042
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Seal of Justice-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 31654.37677
-  tps: 31638.0698
+  dps: 31615.07368
+  tps: 31598.7667
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Seal of Justice-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 42152.84585
-  tps: 41143.41926
+  dps: 42171.64007
+  tps: 41162.21348
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Seal of Justice-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 20723.34098
-  tps: 23515.50003
+  dps: 20697.07183
+  tps: 23489.23088
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Seal of Justice-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 19465.07636
-  tps: 19408.1525
+  dps: 19459.81642
+  tps: 19402.89256
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Seal of Justice-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 24104.6188
-  tps: 23152.95468
+  dps: 24097.50329
+  tps: 23145.83917
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Seal of Righteousness-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 107164.27334
-  tps: 110920.06974
+  dps: 107139.83776
+  tps: 110895.63416
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Seal of Righteousness-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 33514.04679
-  tps: 33497.73981
+  dps: 33474.98674
+  tps: 33458.67977
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Seal of Righteousness-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 44591.52297
-  tps: 43582.09639
+  dps: 44610.3172
+  tps: 43600.89061
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Seal of Righteousness-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 59506.63699
-  tps: 62300.93455
+  dps: 59481.53483
+  tps: 62275.83239
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Seal of Righteousness-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 20409.88701
-  tps: 20352.96315
+  dps: 20404.62707
+  tps: 20347.70321
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Seal of Righteousness-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 25208.43238
-  tps: 24256.76826
+  dps: 25201.31688
+  tps: 24249.65275
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Snapshot Guardian-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 43281.94539
-  tps: 46935.39374
+  dps: 43234.93041
+  tps: 46888.37876
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Snapshot Guardian-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 38032.79496
-  tps: 37894.90501
+  dps: 37995.57925
+  tps: 37857.6893
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Snapshot Guardian-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 51045.92531
-  tps: 49429.01099
+  dps: 51061.98606
+  tps: 49445.07174
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Snapshot Guardian-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 24497.36218
-  tps: 27176.85046
+  dps: 24469.66997
+  tps: 27149.15825
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Snapshot Guardian-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 23047.94688
-  tps: 22872.49383
+  dps: 23040.27712
+  tps: 22864.82407
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Draenei-t12_bis-DefaultTalents-Snapshot Guardian-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 28597.11806
-  tps: 27053.09682
+  dps: 28585.90392
+  tps: 27041.88268
  }
 }
 dps_results: {
@@ -4820,421 +4820,421 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 42992.35845
-  tps: 46758.545
+  dps: 42959.95168
+  tps: 46726.13824
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 37727.68372
-  tps: 37713.07135
+  dps: 37691.81424
+  tps: 37677.20187
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 49645.18475
-  tps: 48644.97432
+  dps: 49668.25742
+  tps: 48668.04699
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 24291.12395
-  tps: 27086.20658
+  dps: 24263.70022
+  tps: 27058.78285
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 23018.71842
-  tps: 22957.65385
+  dps: 23009.74054
+  tps: 22948.67597
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 27640.23286
-  tps: 26672.30831
+  dps: 27628.5851
+  tps: 26660.66055
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Seal of Insight-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 35892.80998
-  tps: 42090.94884
+  dps: 35838.77699
+  tps: 42038.0047
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Seal of Insight-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 30027.90634
-  tps: 30146.47955
+  dps: 29983.69607
+  tps: 30102.31406
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Seal of Insight-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 40390.71704
-  tps: 39572.58738
+  dps: 40415.42108
+  tps: 39597.29142
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Seal of Insight-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 21440.90486
-  tps: 27026.08572
+  dps: 21418.16742
+  tps: 27003.34828
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Seal of Insight-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 18969.06731
-  tps: 19065.25774
+  dps: 18956.44883
+  tps: 19052.63927
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Seal of Insight-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 22805.50587
-  tps: 22005.86825
+  dps: 22794.35618
+  tps: 21994.71857
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Seal of Justice-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 36427.1017
-  tps: 40180.21116
+  dps: 36377.95751
+  tps: 40131.06697
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Seal of Justice-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 31657.2061
-  tps: 31640.89956
+  dps: 31616.77632
+  tps: 31600.46978
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Seal of Justice-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 42522.91838
-  tps: 41513.49211
+  dps: 42541.70099
+  tps: 41532.27472
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Seal of Justice-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 20805.15243
-  tps: 23597.31148
+  dps: 20776.59429
+  tps: 23568.75334
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Seal of Justice-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 19450.69971
-  tps: 19393.55007
+  dps: 19443.99936
+  tps: 19386.84973
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Seal of Justice-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 24192.54048
-  tps: 23240.87636
+  dps: 24184.23105
+  tps: 23232.56693
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 107238.60129
-  tps: 110994.40504
+  dps: 107211.0512
+  tps: 110966.85494
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 33517.26513
-  tps: 33500.9586
+  dps: 33477.07855
+  tps: 33460.77202
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 44960.63352
-  tps: 43951.20724
+  dps: 44979.41612
+  tps: 43969.98985
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 59646.06798
-  tps: 62440.36554
+  dps: 59620.84898
+  tps: 62415.14654
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 20396.02785
-  tps: 20338.87821
+  dps: 20389.32751
+  tps: 20332.17787
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 25296.85718
-  tps: 24345.19306
+  dps: 25288.54775
+  tps: 24336.88363
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 43321.75156
-  tps: 46975.20726
+  dps: 43272.49863
+  tps: 46925.95433
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 38042.29661
-  tps: 37904.40747
+  dps: 38003.54348
+  tps: 37865.65433
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 51282.38486
-  tps: 49665.47085
+  dps: 51299.4714
+  tps: 49682.55739
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 24580.46279
-  tps: 27259.95108
+  dps: 24551.6087
+  tps: 27231.09698
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 23203.31374
-  tps: 23027.59908
+  dps: 23194.59868
+  tps: 23018.88403
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 28794.21102
-  tps: 27250.18978
+  dps: 28783.05952
+  tps: 27239.03827
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 42972.86676
-  tps: 46739.05331
+  dps: 42942.68929
+  tps: 46708.87584
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 37707.90217
-  tps: 37693.28981
+  dps: 37673.62371
+  tps: 37659.01134
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 49425.16098
-  tps: 48424.95055
+  dps: 49447.18984
+  tps: 48446.97941
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 24219.78753
-  tps: 27014.87016
+  dps: 24193.15506
+  tps: 26988.23769
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 22901.28386
-  tps: 22840.21929
+  dps: 22892.63578
+  tps: 22831.57121
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 27464.76787
-  tps: 26496.84332
+  dps: 27453.02484
+  tps: 26485.10029
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Seal of Insight-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 35900.05949
-  tps: 42098.19834
+  dps: 35847.9878
+  tps: 42047.21551
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Seal of Insight-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 30000.97023
-  tps: 30119.54344
+  dps: 29959.11156
+  tps: 30077.72954
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Seal of Insight-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 40210.05543
-  tps: 39391.92577
+  dps: 40233.40291
+  tps: 39415.27325
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Seal of Insight-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 21348.28888
-  tps: 26933.46974
+  dps: 21327.4998
+  tps: 26912.68067
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Seal of Insight-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 18915.21817
-  tps: 19011.4086
+  dps: 18902.56238
+  tps: 18998.75282
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Seal of Insight-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 22634.10085
-  tps: 21834.46323
+  dps: 22623.52256
+  tps: 21823.88495
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Seal of Justice-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 36456.95988
-  tps: 40210.06934
+  dps: 36413.95627
+  tps: 40167.06574
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Seal of Justice-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 31663.07623
-  tps: 31646.76969
+  dps: 31623.76208
+  tps: 31607.45555
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Seal of Justice-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 42158.18888
-  tps: 41148.76261
+  dps: 42176.98832
+  tps: 41167.56204
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Seal of Justice-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 20730.06471
-  tps: 23522.22376
+  dps: 20703.78783
+  tps: 23495.94688
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Seal of Justice-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 19433.91286
-  tps: 19376.76323
+  dps: 19427.82305
+  tps: 19370.67342
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Seal of Justice-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 24112.09736
-  tps: 23160.43323
+  dps: 24104.97983
+  tps: 23153.31571
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Seal of Righteousness-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 107201.83706
-  tps: 110957.64081
+  dps: 107177.39384
+  tps: 110933.19758
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Seal of Righteousness-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 33523.13526
-  tps: 33506.82873
+  dps: 33484.06432
+  tps: 33467.75778
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Seal of Righteousness-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 44595.90401
-  tps: 43586.47774
+  dps: 44614.70345
+  tps: 43605.27718
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Seal of Righteousness-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 59529.3899
-  tps: 62323.68746
+  dps: 59504.28036
+  tps: 62298.57792
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Seal of Righteousness-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 20379.241
-  tps: 20322.09137
+  dps: 20373.1512
+  tps: 20316.00156
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Seal of Righteousness-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 25216.41406
-  tps: 24264.74994
+  dps: 25209.29654
+  tps: 24257.63241
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Snapshot Guardian-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 43296.56494
-  tps: 46950.02064
+  dps: 43249.53557
+  tps: 46902.99128
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Snapshot Guardian-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 38045.47798
-  tps: 37907.58884
+  dps: 38008.25072
+  tps: 37870.36158
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Snapshot Guardian-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 51061.94229
-  tps: 49445.02828
+  dps: 51078.00713
+  tps: 49461.09311
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Snapshot Guardian-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 24505.65649
-  tps: 27185.14477
+  dps: 24477.95614
+  tps: 27157.44443
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Snapshot Guardian-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 23081.74384
-  tps: 22906.02919
+  dps: 23073.33867
+  tps: 22897.62402
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Dwarf-t12_bis-DefaultTalents-Snapshot Guardian-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 28606.36344
-  tps: 27062.3422
+  dps: 28595.14635
+  tps: 27051.12511
  }
 }
 dps_results: {
@@ -6080,421 +6080,421 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 42976.9973
-  tps: 46743.1765
+  dps: 42944.60339
+  tps: 46710.78259
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 37719.62388
-  tps: 37705.01107
+  dps: 37683.76829
+  tps: 37669.15548
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 49625.88143
-  tps: 48625.67068
+  dps: 49648.94617
+  tps: 48648.73542
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 24288.10215
-  tps: 27083.18478
+  dps: 24260.68838
+  tps: 27055.77101
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 22970.41524
-  tps: 22910.2586
+  dps: 22962.25145
+  tps: 22902.09481
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 27658.8301
-  tps: 26690.90555
+  dps: 27647.27815
+  tps: 26679.3536
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Seal of Insight-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 35879.50757
-  tps: 42077.58767
+  dps: 35825.49506
+  tps: 42024.66407
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Seal of Insight-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 30017.47553
-  tps: 30136.04523
+  dps: 29973.28186
+  tps: 30091.89634
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Seal of Insight-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 40375.76699
-  tps: 39557.63449
+  dps: 40400.4627
+  tps: 39582.3302
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Seal of Insight-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 21436.05407
-  tps: 27021.23493
+  dps: 21413.3252
+  tps: 26998.50606
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Seal of Insight-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 18968.04753
-  tps: 19064.23796
+  dps: 18955.45335
+  tps: 19051.64378
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Seal of Insight-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 22796.88548
-  tps: 21997.24787
+  dps: 22785.73994
+  tps: 21986.10232
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Seal of Justice-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 36412.70316
-  tps: 40165.80527
+  dps: 36363.57792
+  tps: 40116.68003
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Seal of Justice-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 31646.1393
-  tps: 31629.83232
+  dps: 31605.72373
+  tps: 31589.41675
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Seal of Justice-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 42514.25995
-  tps: 41504.83336
+  dps: 42533.03605
+  tps: 41523.60946
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Seal of Justice-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 20800.82919
-  tps: 23592.98824
+  dps: 20772.23245
+  tps: 23564.3915
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Seal of Justice-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 19500.37677
-  tps: 19443.45291
+  dps: 19494.14946
+  tps: 19437.2256
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Seal of Justice-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 24204.63911
-  tps: 23252.97498
+  dps: 24195.7964
+  tps: 23244.13228
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 107204.67573
-  tps: 110960.47212
+  dps: 107177.13639
+  tps: 110932.93278
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 33505.99363
-  tps: 33489.68666
+  dps: 33465.82107
+  tps: 33449.51409
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 44952.65659
-  tps: 43943.23
+  dps: 44971.43269
+  tps: 43962.0061
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 59621.58636
-  tps: 62415.88392
+  dps: 59596.37662
+  tps: 62390.67417
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 20445.28217
-  tps: 20388.35831
+  dps: 20439.05485
+  tps: 20382.13099
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 25308.29828
-  tps: 24356.63415
+  dps: 25299.45557
+  tps: 24347.79145
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 43306.2415
-  tps: 46959.68985
+  dps: 43257.00738
+  tps: 46910.45574
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 38034.08425
-  tps: 37896.19429
+  dps: 37995.34616
+  tps: 37857.45621
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 51262.25927
-  tps: 49645.34495
+  dps: 51279.34039
+  tps: 49662.42606
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 24579.62605
-  tps: 27259.11433
+  dps: 24550.78254
+  tps: 27230.27082
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 23166.59137
-  tps: 22991.13832
+  dps: 23158.53993
+  tps: 22983.08688
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 28812.21839
-  tps: 27268.19715
+  dps: 28801.07052
+  tps: 27257.04928
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 42956.34912
-  tps: 46722.52832
+  dps: 42926.18367
+  tps: 46692.36287
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 37704.28559
-  tps: 37689.67278
+  dps: 37670.02038
+  tps: 37655.40757
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 49405.91313
-  tps: 48405.70239
+  dps: 49427.9344
+  tps: 48427.72365
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 24210.30651
-  tps: 27005.38914
+  dps: 24183.68381
+  tps: 26978.76644
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 22853.78452
-  tps: 22793.62788
+  dps: 22845.9996
+  tps: 22785.84296
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 27455.50384
-  tps: 26487.57929
+  dps: 27443.76479
+  tps: 26475.84024
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Seal of Insight-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 35891.95421
-  tps: 42090.03431
+  dps: 35839.90226
+  tps: 42039.07127
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Seal of Insight-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 29990.52038
-  tps: 30109.09009
+  dps: 29948.67741
+  tps: 30067.29189
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Seal of Insight-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 40195.15877
-  tps: 39377.02627
+  dps: 40218.4984
+  tps: 39400.36589
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Seal of Insight-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 21340.49806
-  tps: 26925.67892
+  dps: 21319.71686
+  tps: 26904.89772
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Seal of Insight-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 18907.74047
-  tps: 19003.93091
+  dps: 18895.08935
+  tps: 18991.27978
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Seal of Insight-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 22625.53028
-  tps: 21825.89267
+  dps: 22614.95589
+  tps: 21815.31828
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Seal of Justice-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 36442.51949
-  tps: 40195.6216
+  dps: 36399.53238
+  tps: 40152.63449
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Seal of Justice-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 31657.88688
-  tps: 31641.57991
+  dps: 31618.58656
+  tps: 31602.27959
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Seal of Justice-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 42149.65211
-  tps: 41140.22553
+  dps: 42168.44503
+  tps: 41159.01845
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Seal of Justice-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 20722.21848
-  tps: 23514.37753
+  dps: 20695.95126
+  tps: 23488.11031
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Seal of Justice-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 19464.08727
-  tps: 19407.16341
+  dps: 19458.8277
+  tps: 19401.90384
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Seal of Justice-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 24103.40634
-  tps: 23151.74222
+  dps: 24096.29134
+  tps: 23144.62721
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Seal of Righteousness-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 107167.89525
-  tps: 110923.69165
+  dps: 107143.46159
+  tps: 110899.25798
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Seal of Righteousness-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 33517.74122
-  tps: 33501.43424
+  dps: 33478.6839
+  tps: 33462.37692
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Seal of Righteousness-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 44588.04875
-  tps: 43578.62216
+  dps: 44606.84167
+  tps: 43597.41508
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Seal of Righteousness-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 59508.1729
-  tps: 62302.47046
+  dps: 59482.9998
+  tps: 62277.29736
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Seal of Righteousness-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 20408.99266
-  tps: 20352.0688
+  dps: 20403.73309
+  tps: 20346.80923
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Seal of Righteousness-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 25207.06552
-  tps: 24255.40139
+  dps: 25199.95051
+  tps: 24248.28639
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Snapshot Guardian-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 43279.89954
-  tps: 46933.34789
+  dps: 43232.88815
+  tps: 46886.33651
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Snapshot Guardian-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 38042.38736
-  tps: 37904.49741
+  dps: 38005.17454
+  tps: 37867.28458
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Snapshot Guardian-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 51041.8726
-  tps: 49424.95827
+  dps: 51057.93233
+  tps: 49441.018
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Snapshot Guardian-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 24496.04936
-  tps: 27175.53764
+  dps: 24468.35918
+  tps: 27147.84746
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Snapshot Guardian-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 23047.20968
-  tps: 22871.75663
+  dps: 23039.54045
+  tps: 22864.0874
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Human-t12_bis-DefaultTalents-Snapshot Guardian-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 28596.51508
-  tps: 27052.49383
+  dps: 28585.30168
+  tps: 27041.28043
  }
 }
 dps_results: {
@@ -7340,421 +7340,421 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 42991.18478
-  tps: 46757.39338
+  dps: 42958.77801
+  tps: 46724.98661
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 37744.29508
-  tps: 37730.32357
+  dps: 37711.3841
+  tps: 37697.41258
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 49644.57845
-  tps: 48644.36896
+  dps: 49667.65112
+  tps: 48667.44163
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 24227.02438
-  tps: 26985.64781
+  dps: 24201.07227
+  tps: 26959.69569
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 22813.44955
-  tps: 22749.60698
+  dps: 22805.95716
+  tps: 22742.11458
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 27639.80319
-  tps: 26671.87864
+  dps: 27628.15543
+  tps: 26660.23088
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Seal of Insight-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 35891.81722
-  tps: 42090.13231
+  dps: 35837.78423
+  tps: 42037.18802
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Seal of Insight-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 30027.45354
-  tps: 30146.03726
+  dps: 29983.24327
+  tps: 30101.87175
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Seal of Insight-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 40390.37891
-  tps: 39572.2578
+  dps: 40415.08296
+  tps: 39596.96184
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Seal of Insight-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 21440.37725
-  tps: 27025.55811
+  dps: 21417.63982
+  tps: 27002.82068
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Seal of Insight-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 18968.84778
-  tps: 19065.03822
+  dps: 18956.22931
+  tps: 19052.41974
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Seal of Insight-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 22805.24985
-  tps: 22005.61224
+  dps: 22794.10017
+  tps: 21994.46256
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Seal of Justice-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 36423.91656
-  tps: 40177.04807
+  dps: 36374.77237
+  tps: 40127.90388
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Seal of Justice-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 31627.8458
-  tps: 31612.21364
+  dps: 31582.3371
+  tps: 31566.70494
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Seal of Justice-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 42522.55862
-  tps: 41513.13329
+  dps: 42541.34123
+  tps: 41531.9159
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Seal of Justice-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 20730.59256
-  tps: 23486.2118
+  dps: 20703.54909
+  tps: 23459.16832
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Seal of Justice-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 19333.48869
-  tps: 19273.2517
+  dps: 19327.7415
+  tps: 19267.5045
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Seal of Justice-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 24192.26139
-  tps: 23240.59727
+  dps: 24183.95196
+  tps: 23232.28784
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 107227.81919
-  tps: 110983.64499
+  dps: 107200.26909
+  tps: 110956.09489
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 33488.34438
-  tps: 33472.71222
+  dps: 33443.36245
+  tps: 33427.73029
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 44959.73175
-  tps: 43950.30642
+  dps: 44978.51436
+  tps: 43969.08903
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 59501.97685
-  tps: 62259.5251
+  dps: 59478.19987
+  tps: 62235.74813
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 20273.95663
-  tps: 20213.71963
+  dps: 20268.20943
+  tps: 20207.97244
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Seal of Righteousness-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 25296.23453
-  tps: 24344.5704
+  dps: 25287.9251
+  tps: 24336.26097
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 43308.47545
-  tps: 46951.1203
+  dps: 43259.66907
+  tps: 46902.31391
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 38067.00821
-  tps: 37929.49106
+  dps: 38028.3552
+  tps: 37890.83806
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 51281.80502
-  tps: 49664.89196
+  dps: 51298.89157
+  tps: 49681.9785
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 24497.82869
-  tps: 27140.97563
+  dps: 24470.45503
+  tps: 27113.60197
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 23020.61528
-  tps: 22841.7034
+  dps: 23013.31312
+  tps: 22834.40124
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-Crusader Strike Glyph-Snapshot Guardian-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 28793.7943
-  tps: 27249.77306
+  dps: 28782.6428
+  tps: 27238.62156
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 42971.69575
-  tps: 46737.90435
+  dps: 42941.51827
+  tps: 46707.72687
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 37719.03941
-  tps: 37705.0679
+  dps: 37687.31173
+  tps: 37673.34021
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 49424.55289
-  tps: 48424.34341
+  dps: 49446.58176
+  tps: 48446.37227
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 24155.26342
-  tps: 26913.88685
+  dps: 24130.25256
+  tps: 26888.87599
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 22697.27259
-  tps: 22633.43002
+  dps: 22690.15787
+  tps: 22626.3153
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 27464.33683
-  tps: 26496.41228
+  dps: 27452.5938
+  tps: 26484.66925
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Seal of Insight-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 35899.06673
-  tps: 42097.38182
+  dps: 35846.99504
+  tps: 42046.39883
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Seal of Insight-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 30000.51743
-  tps: 30119.10115
+  dps: 29958.65875
+  tps: 30077.28724
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Seal of Insight-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 40209.7173
-  tps: 39391.59619
+  dps: 40233.06478
+  tps: 39414.94367
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Seal of Insight-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 21347.76127
-  tps: 26932.94213
+  dps: 21326.9722
+  tps: 26912.15306
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Seal of Insight-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 18914.99864
-  tps: 19011.18908
+  dps: 18902.34286
+  tps: 18998.5333
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Seal of Insight-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 22633.84483
-  tps: 21834.20722
+  dps: 22623.26655
+  tps: 21823.62893
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Seal of Justice-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 36453.77474
-  tps: 40206.90626
+  dps: 36410.77113
+  tps: 40163.90265
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Seal of Justice-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 31628.07595
-  tps: 31612.44379
+  dps: 31583.87315
+  tps: 31568.24099
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Seal of Justice-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 42157.82912
-  tps: 41148.40379
+  dps: 42176.62855
+  tps: 41167.20323
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Seal of Justice-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 20680.13897
-  tps: 23435.7582
+  dps: 20655.34808
+  tps: 23410.96731
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Seal of Justice-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 19313.92105
-  tps: 19253.68406
+  dps: 19308.78439
+  tps: 19248.5474
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Seal of Justice-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 24111.81827
-  tps: 23160.15414
+  dps: 24104.70074
+  tps: 23153.03662
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Seal of Righteousness-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 107191.05496
-  tps: 110946.88075
+  dps: 107166.61173
+  tps: 110922.43753
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Seal of Righteousness-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 33488.57452
-  tps: 33472.94237
+  dps: 33444.8985
+  tps: 33429.26634
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Seal of Righteousness-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 44595.00225
-  tps: 43585.57692
+  dps: 44613.80168
+  tps: 43604.37636
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Seal of Righteousness-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 59403.48605
-  tps: 62161.03431
+  dps: 59379.77912
+  tps: 62137.32737
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Seal of Righteousness-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 20254.38898
-  tps: 20194.15199
+  dps: 20249.25233
+  tps: 20189.01533
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Seal of Righteousness-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 25215.7914
-  tps: 24264.12728
+  dps: 25208.67388
+  tps: 24257.00975
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Snapshot Guardian-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 43283.11189
-  tps: 46925.75674
+  dps: 43236.52907
+  tps: 46879.17392
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Snapshot Guardian-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 38056.27977
-  tps: 37918.76263
+  dps: 38018.60763
+  tps: 37881.09049
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Snapshot Guardian-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 51061.36067
-  tps: 49444.4476
+  dps: 51077.42551
+  tps: 49460.51244
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Snapshot Guardian-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 24420.9211
-  tps: 27064.06804
+  dps: 24394.8382
+  tps: 27037.98515
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Snapshot Guardian-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 22900.66017
-  tps: 22721.74829
+  dps: 22893.70556
+  tps: 22714.79368
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-Tauren-t12_bis-DefaultTalents-Snapshot Guardian-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 28605.94535
-  tps: 27061.92411
+  dps: 28594.72826
+  tps: 27050.70702
  }
 }
 dps_results: {

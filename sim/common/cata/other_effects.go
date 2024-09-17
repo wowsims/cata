@@ -806,8 +806,13 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 		totalDamage := outstandingDamage + newDamage
 
 		if config.IncludeAuraDelay {
-			// TODO: Update these simc aura delay parameters to the correct values for Classic servers
-			waitTime := time.Millisecond * time.Duration(sim.Roll(375, 625))
+			// For now, assume that the mechanism driving random aura update
+			// delays is the same as for random auto delays after rapidly
+			// changing position. Therefore, use the fit delay parameters
+			// from cat leap tests (see sim/druid/feral_charge.go) for
+			// modeling consistency.
+			// TODO: Measure the aura update delay distribution on PTR.
+			waitTime := time.Millisecond * time.Duration(sim.Roll(150, 750))
 			applyDotAt := sim.CurrentTime + waitTime
 
 			// Check for max duration munching
