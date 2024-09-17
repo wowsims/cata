@@ -4,6 +4,7 @@ import (
 	"math"
 	"time"
 
+	"github.com/wowsims/cata/sim/common/cata"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/stats"
 )
@@ -314,76 +315,35 @@ func (mage *Mage) applyIgnite() {
 		return
 	}
 
-	// Ignite proc listener
-	core.MakeProcTriggerAura(&mage.Unit, core.ProcTrigger{
-		Name:     "Ignite Talent",
-		Callback: core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskSpellDamage,
-		Outcome:  core.OutcomeCrit,
-
-		ExtraCondition: func(_ *core.Simulation, spell *core.Spell, _ *core.SpellResult) bool {
-			if !spell.SpellSchool.Matches(core.SpellSchoolFire) {
-				return false
-			}
-
-			// EJ post says combustion crits do not proc ignite
-			// https://web.archive.org/web/20120219014159/http://elitistjerks.com/f75/t110187-cataclysm_mage_simulators_formulators/p3/#post1824829
-			return spell.ClassSpellMask&(MageSpellLivingBombDot|MageSpellCombustion|MageSpellLivingBomb) == 0
-		},
-
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			mage.procIgnite(sim, result)
-		},
-	})
-
-	// The ignite dot
-	mage.Ignite = mage.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 12846},
-		SpellSchool:    core.SpellSchoolFire,
-		ProcMask:       core.ProcMaskProc,
-		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete,
-		ClassSpellMask: MageSpellIgnite,
-
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-
-		Dot: core.DotConfig{
-			Aura: core.Aura{
-				Label:     "Ignite",
-				Tag:       "IgniteDot",
-				MaxStacks: math.MaxInt32,
-			},
-			NumberOfTicks:       2,
-			TickLength:          time.Second * 2,
-			AffectedByCastSpeed: false,
-
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				result := dot.Spell.CalcPeriodicDamage(sim, target, dot.SnapshotBaseDamage, dot.OutcomeTick)
-				dot.Spell.DealPeriodicDamage(sim, result)
-			},
-		},
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.Dot(target).Apply(sim)
-		},
-	})
-}
-
-func (mage *Mage) procIgnite(sim *core.Simulation, result *core.SpellResult) {
-	var currentMastery float64 = 1 + math.Floor(22.4+2.8*mage.GetMasteryPoints())/100
 	igniteDamageMultiplier := []float64{0.0, 0.13, 0.26, 0.40}[mage.Talents.Ignite]
-	newDamage := result.Damage * igniteDamageMultiplier * currentMastery
-	dot := mage.Ignite.Dot(result.Target)
-	outstandingDamage := dot.OutstandingDmg()
-	totalDamage := outstandingDamage + newDamage
 
-	// Cata Ignite
-	// 1st ignite application = 4s, split into 2 ticks (2s, 0s)
-	// Ignite refreshes: Duration = 4s + MODULO(remaining duration, 2), max 6s. Split damage over 3 ticks at 4s, 2s, 0s.
-	newTickCount := dot.BaseTickCount + core.TernaryInt32(dot.IsActive(), 1, 0)
-	dot.SnapshotBaseDamage = totalDamage / float64(newTickCount)
-	mage.Ignite.Cast(sim, result.Target)
-	dot.Aura.SetStacks(sim, int32(dot.SnapshotBaseDamage))
+	mage.Ignite = cata.RegisterIgniteEffect(&mage.Unit, cata.IgniteConfig{
+		ActionID:     core.ActionID{SpellID: 12846},
+		DotAuraLabel: "Ignite",
+		DotAuraTag:   "IgniteDot",
+
+		ProcTrigger: core.ProcTrigger{
+			Name:     "Ignite Talent",
+			Callback: core.CallbackOnSpellHitDealt,
+			ProcMask: core.ProcMaskSpellDamage,
+			Outcome:  core.OutcomeCrit,
+
+			ExtraCondition: func(_ *core.Simulation, spell *core.Spell, _ *core.SpellResult) bool {
+				if !spell.SpellSchool.Matches(core.SpellSchoolFire) {
+					return false
+				}
+
+				// EJ post says combustion crits do not proc ignite
+				// https://web.archive.org/web/20120219014159/http://elitistjerks.com/f75/t110187-cataclysm_mage_simulators_formulators/p3/#post1824829
+				return spell.ClassSpellMask&(MageSpellLivingBombDot|MageSpellCombustion|MageSpellLivingBomb) == 0
+			},
+		},
+
+		DamageCalculator: func(result *core.SpellResult) float64 {
+			var masteryMultiplier float64 = 1 + math.Floor(22.4+2.8*mage.GetMasteryPoints())/100
+			return result.Damage * igniteDamageMultiplier * masteryMultiplier
+		},
+	})
 }
 
 func (mage *Mage) applyImpact() {

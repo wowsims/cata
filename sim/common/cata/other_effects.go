@@ -732,3 +732,101 @@ func registerApparatusOfKhazGoroth(config apparatusConfig) {
 		})
 	})
 }
+
+// Takes in the SpellResult for the triggering spell, and returns the damage per
+// tick of a *fresh* Ignite triggered by that spell. Roll-over damage
+// calculations for existing Ignites are handled internally.
+type IgniteDamageCalculator func(result *core.SpellResult) float64
+
+type IgniteConfig struct {
+	ActionID           core.ActionID
+	DisableCastMetrics bool
+	DotAuraLabel       string
+	DotAuraTag         string
+	ProcTrigger        core.ProcTrigger // Ignores the Handler field and creates a custom one, but uses all others.
+	DamageCalculator   IgniteDamageCalculator
+	IncludeAuraDelay   bool // "munching" and "free roll-over" interactions
+}
+
+func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
+	spellFlags := core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete
+
+	if config.DisableCastMetrics {
+		spellFlags = spellFlags | core.SpellFlagPassiveSpell
+	}
+
+	igniteSpell := unit.RegisterSpell(core.SpellConfig{
+		ActionID:         config.ActionID,
+		SpellSchool:      core.SpellSchoolFire,
+		ProcMask:         core.ProcMaskProc,
+		Flags:            spellFlags,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+
+		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label:     config.DotAuraLabel,
+				Tag:       config.DotAuraTag,
+				MaxStacks: math.MaxInt32,
+			},
+
+			NumberOfTicks:       2,
+			TickLength:          time.Second * 2,
+			AffectedByCastSpeed: false,
+
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				result := dot.Spell.CalcPeriodicDamage(sim, target, dot.SnapshotBaseDamage, dot.OutcomeTick)
+				dot.Spell.DealPeriodicDamage(sim, result)
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.Dot(target).Apply(sim)
+		},
+	})
+
+	refreshIgnite := func(sim *core.Simulation, target *core.Unit, dot *core.Dot, totalDamage float64) {
+		// Cata Ignite
+		// 1st ignite application = 4s, split into 2 ticks (2s, 0s)
+		// Ignite refreshes: Duration = 4s + MODULO(remaining duration, 2), max 6s. Split damage over 3 ticks at 4s, 2s, 0s.
+		newTickCount := dot.BaseTickCount + core.TernaryInt32(dot.IsActive(), 1, 0)
+		dot.SnapshotBaseDamage = totalDamage / float64(newTickCount)
+		igniteSpell.Cast(sim, target)
+		dot.Aura.SetStacks(sim, int32(dot.SnapshotBaseDamage))
+	}
+
+	procTrigger := config.ProcTrigger
+	procTrigger.Handler = func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		dot := igniteSpell.Dot(result.Target)
+		outstandingDamage := dot.OutstandingDmg()
+		newDamage := config.DamageCalculator(result)
+		totalDamage := outstandingDamage + newDamage
+
+		if config.IncludeAuraDelay {
+			waitTime := time.Millisecond * time.Duration(sim.Roll(375, 625))
+			applyDotAt := sim.CurrentTime + waitTime
+
+			if sim.Log != nil {
+				unit.Log(sim, "Schedule travel (%0.2f s) for %s", waitTime.Seconds(), config.DotAuraLabel)
+
+				if dot.IsActive() && (dot.NextTickAt() < applyDotAt) {
+					unit.Log(sim, "%s rolled with %0.3f damage both ticking and rolled into next", config.DotAuraLabel, outstandingDamage)
+				}
+			}
+
+			core.StartDelayedAction(sim, core.DelayedActionOptions{
+				DoAt:     applyDotAt,
+				Priority: core.ActionPriorityDOT,
+
+				OnAction: func(_ *core.Simulation) {
+					refreshIgnite(sim, result.Target, dot, totalDamage)
+				},
+			})
+		} else {
+			refreshIgnite(sim, result.Target, dot, totalDamage)
+		}
+	}
+
+	core.MakeProcTriggerAura(unit, procTrigger)
+	return igniteSpell
+}
