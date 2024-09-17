@@ -83,8 +83,9 @@ var Tier12 = core.NewItemSet(core.ItemSet{
 			// Tentatively, this is just Ignite. Testing required to validate behavior.
 			rogue := agent.GetCharacter()
 			cata.RegisterIgniteEffect(&rogue.Unit, cata.IgniteConfig{
-				ActionID:     core.ActionID{SpellID: 99173},
-				DotAuraLabel: "Burning Wounds",
+				ActionID:         core.ActionID{SpellID: 99173},
+				DotAuraLabel:     "Burning Wounds",
+				IncludeAuraDelay: true,
 
 				ProcTrigger: core.ProcTrigger{
 					Name:     "Rogue T12 2P Bonus",
