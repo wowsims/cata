@@ -796,6 +796,7 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 		dot.Aura.SetStacks(sim, int32(dot.SnapshotBaseDamage))
 	}
 
+	var scheduledRefresh *core.PendingAction
 	procTrigger := config.ProcTrigger
 	procTrigger.Handler = func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 		target := result.Target
@@ -818,6 +819,15 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 				return
 			}
 
+			// Cancel any prior aura updates already in the queue
+			if (scheduledRefresh != nil) && (scheduledRefresh.NextActionAt > sim.CurrentTime) {
+				scheduledRefresh.Cancel(sim)
+
+				if sim.Log != nil {
+					unit.Log(sim, "Previous %s proc was munched due to server aura delay", config.DotAuraLabel)
+				}
+			}
+
 			// Schedule a delayed refresh of the DoT with cached outstandingDamage value (allowing for "free roll-overs")
 			if sim.Log != nil {
 				unit.Log(sim, "Schedule travel (%0.2f s) for %s", waitTime.Seconds(), config.DotAuraLabel)
@@ -827,7 +837,7 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 				}
 			}
 
-			core.StartDelayedAction(sim, core.DelayedActionOptions{
+			scheduledRefresh = core.StartDelayedAction(sim, core.DelayedActionOptions{
 				DoAt:     applyDotAt,
 				Priority: core.ActionPriorityDOT,
 
