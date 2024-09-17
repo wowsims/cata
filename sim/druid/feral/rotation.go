@@ -74,7 +74,7 @@ func (cat *FeralDruid) shiftBearCat(sim *core.Simulation, powershift bool) bool 
 }
 
 func (cat *FeralDruid) canBite(sim *core.Simulation, isExecutePhase bool) bool {
-	if cat.TigersFuryAura.IsActive() && isExecutePhase {
+	if cat.tempSnapshotAura.IsActive() && isExecutePhase {
 		return true
 	}
 
@@ -83,7 +83,7 @@ func (cat *FeralDruid) canBite(sim *core.Simulation, isExecutePhase bool) bool {
 	}
 
 	if isExecutePhase {
-		return !cat.RipTfSnapshot
+		return cat.Rip.NewSnapshotPower > cat.Rip.CurrentSnapshotPower - 0.001
 	}
 
 	return cat.Rip.CurDot().RemainingDuration(sim) >= cat.Rotation.BiteTime
@@ -302,57 +302,65 @@ func (cat *FeralDruid) postRotation(sim *core.Simulation, nextAction time.Durati
 	}
 }
 
-func (cat *FeralDruid) calcRipRefreshTime(sim *core.Simulation, ripDot *core.Dot, isExecutePhase bool) time.Duration {
-	if !ripDot.IsActive() {
+func (cat *FeralDruid) calcBleedRefreshTime(sim *core.Simulation, bleedSpell *druid.DruidSpell, bleedDot *core.Dot, isExecutePhase bool, isRip bool) time.Duration {
+	if !bleedDot.IsActive() {
 		return sim.CurrentTime - cat.ReactionTime
 	}
 
-	// If we're not gaining a new Tiger's Fury snapshot, then use the standard 1 tick refresh window
-	standardRefreshTime := ripDot.ExpiresAt() - ripDot.BaseTickLength
+	// If we're not gaining a stronger snapshot, then use the standard 1
+	// tick refresh window.
+	bleedEnd := bleedDot.ExpiresAt()
+	standardRefreshTime := bleedEnd - bleedDot.BaseTickLength
 
-	if !cat.TigersFuryAura.IsActive() || isExecutePhase || (cat.ComboPoints() < cat.Rotation.MinCombosForRip) {
+	if !cat.tempSnapshotAura.IsActive() {
 		return standardRefreshTime
 	}
 
-	// Likewise, if the existing TF buff will still be up at the start of the normal window, then don't clip unnecessarily
-	tfEnd := cat.TigersFuryAura.ExpiresAt()
-
-	if tfEnd > standardRefreshTime+cat.ReactionTime {
+	// For Rip specifically, also bypass clipping calculations during Execute phase or
+	// if CP count is too low for the calculation to be relevant.
+	if isRip && (isExecutePhase || (cat.ComboPoints() < cat.Rotation.MinCombosForRip)) {
 		return standardRefreshTime
 	}
 
-	// Potential clips for a TF snapshot should be done as late as possible
-	latestPossibleSnapshot := tfEnd - cat.ReactionTime*time.Duration(2)
+	// Likewise, if the existing buff will still be up at the start of the normal
+	// window, then don't clip unnecessarily. For long buffs that cover a full bleed
+	// duration, project "buffEnd" forward in time such that we block clips if we are
+	// already maxing out the number of full durations we can snapshot.
+	buffRemains := cat.tempSnapshotAura.RemainingDuration(sim)
+	maxTickCount := core.TernaryInt32(isRip, cat.maxRipTicks, bleedDot.BaseTickCount)
+	maxBleedDur := bleedDot.BaseTickLength * time.Duration(maxTickCount)
+	numCastsCovered := buffRemains / maxBleedDur
+	buffEnd := cat.tempSnapshotAura.ExpiresAt() - numCastsCovered*maxBleedDur
 
-	// Determine if an early clip would cost us an extra Rip cast over the course of the fight
-	maxRipDur := time.Duration(cat.maxRipTicks) * ripDot.BaseTickLength
-	finalPossibleRipCast := core.TernaryDuration(cat.Rotation.BiteDuringExecute, core.DurationFromSeconds(0.75*sim.Duration.Seconds())-cat.ReactionTime, sim.Duration-cat.cachedRipEndThresh)
-	minRipsPossible := (finalPossibleRipCast - standardRefreshTime) / maxRipDur
-	projectedRipCasts := (finalPossibleRipCast - latestPossibleSnapshot) / maxRipDur
-
-	// If the clip is free, then always allow it
-	if projectedRipCasts == minRipsPossible {
-		return latestPossibleSnapshot
+	if buffEnd > standardRefreshTime+cat.ReactionTime {
+		return standardRefreshTime
 	}
 
-	// If the clip costs us a Rip cast (30 Energy), then we need to determine whether the damage gain is worth the spend.
-	// First calculate the maximum number of buffed Rip ticks we can get out before the fight ends.
-	buffedTickCount := min(cat.maxRipTicks+1, int32((sim.Duration-latestPossibleSnapshot)/ripDot.BaseTickLength))
+	// Potential clips for a buff snapshot should be done as late as possible
+	latestPossibleSnapshot := buffEnd - cat.ReactionTime*time.Duration(2)
+	numClippedTicks := (bleedEnd - latestPossibleSnapshot) / bleedDot.BaseTickLength
+	targetClipTime := standardRefreshTime - numClippedTicks*bleedDot.BaseTickLength
 
-	// Subtract out any ticks that would already be buffed by an existing snapshot
-	if cat.RipTfSnapshot {
-		buffedTickCount -= ripDot.RemainingTicks()
-	}
+	// Since the clip can cost us 30-35 Energy, we need to determine whether the damage gain is worth the
+	// spend. First calculate the maximum number of buffed bleed ticks we can get out before the fight
+	// ends.
+	buffedTickCount := min(maxTickCount, int32((sim.Duration-targetClipTime)/bleedDot.BaseTickLength))
 
 	// Perform a DPE comparison vs. Shred
-	expectedDamageGain := cat.Rip.ExpectedTickDamage(sim, cat.CurrentTarget) * (1.0 - 1.0/1.15) * float64(buffedTickCount)
+	expectedDamageGain := (bleedSpell.NewSnapshotPower - bleedSpell.CurrentSnapshotPower) * float64(buffedTickCount)
+
+	// For Rake specifically, we get 1 free "tick" immediately upon cast.
+	if !isRip {
+		expectedDamageGain += bleedSpell.NewSnapshotPower
+	}
+
 	energyEquivalent := expectedDamageGain / cat.Shred.ExpectedInitialDamage(sim, cat.CurrentTarget) * cat.Shred.DefaultCast.Cost
 
 	if sim.Log != nil {
-		cat.Log(sim, "Rip TF snapshot is worth %.1f Energy", energyEquivalent)
+		cat.Log(sim, "%s buff snapshot is worth %.1f Energy", bleedSpell.ShortName, energyEquivalent)
 	}
 
-	return core.TernaryDuration(energyEquivalent > cat.Rip.DefaultCast.Cost, latestPossibleSnapshot, standardRefreshTime)
+	return core.TernaryDuration(energyEquivalent > bleedSpell.DefaultCast.Cost, targetClipTime, standardRefreshTime)
 }
 
 func (cat *FeralDruid) canMeleeWeave(sim *core.Simulation, regenRate float64, currentEnergy float64, isClearcast bool, upcomingTimers *PoolingActions) bool {
@@ -486,12 +494,12 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	baseEndThresh := cat.calcRipEndThresh(sim)
 	finalTickLeeway := core.TernaryDuration(ripDot.IsActive(), ripDot.TimeUntilNextTick(sim), 0)
 	endThreshForClip := baseEndThresh + finalTickLeeway
-	ripRefreshTime := cat.calcRipRefreshTime(sim, ripDot, isExecutePhase)
+	ripRefreshTime := cat.calcBleedRefreshTime(sim, cat.Rip, ripDot, isExecutePhase, true)
 	ripNow := (curCp >= rotation.MinCombosForRip) && (!ripDot.IsActive() || ((sim.CurrentTime > ripRefreshTime) && !isExecutePhase)) && (simTimeRemain >= endThreshForClip) && ripCcCheck
 	biteAtEnd := (curCp >= rotation.MinCombosForBite) && ((simTimeRemain < endThreshForClip) || (ripDot.IsActive() && (simTimeRemain-ripDot.RemainingDuration(sim) < baseEndThresh)))
 
 	// Delay Rip refreshes if Tiger's Fury will be usable soon enough for the snapshot to outweigh the lost Rip ticks from waiting
-	if ripNow && !tfActive {
+	if ripNow && !tfActive && !cat.tempSnapshotAura.IsActive() {
 		buffedTickCount := min(cat.maxRipTicks, int32((simTimeRemain-finalTickLeeway)/ripDot.BaseTickLength))
 		delayBreakpoint := finalTickLeeway + core.DurationFromSeconds(0.15*float64(buffedTickCount)*ripDot.BaseTickLength.Seconds())
 
@@ -531,7 +539,8 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	biteNow = (biteNow || emergencyBiteNow) && !t11RefreshNext
 
 	// Rake calcs
-	rakeNow := rotation.UseRake && (!rakeDot.IsActive() || (rakeDot.RemainingDuration(sim) < rakeDot.BaseTickLength)) && (simTimeRemain > rakeDot.BaseTickLength) && rakeCcCheck
+	rakeRefreshTime := cat.calcBleedRefreshTime(sim, cat.Rake, rakeDot, isExecutePhase, false)
+	rakeNow := rotation.UseRake && (!rakeDot.IsActive() || (sim.CurrentTime > rakeRefreshTime)) && (simTimeRemain > rakeDot.BaseTickLength) && rakeCcCheck
 
 	// Additionally, don't Rake if the current Shred DPE is higher due to
 	// trinket procs etc.
@@ -585,8 +594,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 		refreshCost := core.Ternary(cat.berserkExpectedAt(sim, ripRefreshTime), baseCost*0.5, baseCost)
 		pendingPool.addAction(ripRefreshTime, refreshCost)
 	}
-	if rakeRefreshPending && (rakeDot.RemainingDuration(sim) > rakeDot.BaseTickLength) {
-		rakeRefreshTime := rakeDot.ExpiresAt() - rakeDot.BaseTickLength
+	if rakeRefreshPending && (sim.CurrentTime < rakeRefreshTime) {
 		rakeCost := core.Ternary(cat.berserkExpectedAt(sim, rakeRefreshTime), cat.Rake.DefaultCast.Cost*0.5, cat.Rake.DefaultCast.Cost)
 		pendingPool.addAction(rakeRefreshTime, rakeCost)
 	}

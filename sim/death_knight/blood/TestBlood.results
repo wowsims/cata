@@ -412,6 +412,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-ElementiumDeathplateBattlearmor"
+ value: {
+  dps: 14202.64392
+  tps: 69622.42644
+  hps: 3461.04681
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-ElementiumDeathplateBattlegear"
+ value: {
+  dps: 15214.14265
+  tps: 73981.98978
+  hps: 3637.17429
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-EmberShadowspiritDiamond"
  value: {
   dps: 13789.21706
@@ -1454,16 +1470,16 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 13867.989
-  tps: 67355.20233
+  dps: 13894.55341
+  tps: 67491.94038
   hps: 3597.80333
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 13994.66585
-  tps: 68006.57714
+  dps: 14072.10466
+  tps: 68453.99466
   hps: 3597.80333
  }
 }

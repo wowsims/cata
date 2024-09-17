@@ -412,6 +412,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrost-AllItems-ElementiumDeathplateBattlearmor"
+ value: {
+  dps: 19360.42977
+  tps: 17545.57931
+  hps: 232.60539
+ }
+}
+dps_results: {
+ key: "TestFrost-AllItems-ElementiumDeathplateBattlegear"
+ value: {
+  dps: 21463.68443
+  tps: 19380.77156
+  hps: 256.89646
+ }
+}
+dps_results: {
  key: "TestFrost-AllItems-EmberShadowspiritDiamond"
  value: {
   dps: 21707.03316
@@ -1454,17 +1470,17 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 20888.44098
-  tps: 19046.66966
-  hps: 243.15661
+  dps: 20923.14355
+  tps: 19076.10728
+  hps: 245.25883
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 21169.41677
-  tps: 19320.66477
-  hps: 244.55809
+  dps: 21205.37782
+  tps: 19356.3376
+  hps: 243.85735
  }
 }
 dps_results: {

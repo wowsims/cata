@@ -412,6 +412,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-ElementiumDeathplateBattlearmor"
+ value: {
+  dps: 28174.04249
+  tps: 21084.51915
+  hps: 519.07712
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ElementiumDeathplateBattlegear"
+ value: {
+  dps: 31391.06515
+  tps: 23330.3422
+  hps: 583.03218
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-EmberShadowspiritDiamond"
  value: {
   dps: 32218.2754
@@ -1453,16 +1469,16 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 30689.34267
-  tps: 22722.60867
+  dps: 30717.84199
+  tps: 22775.15024
   hps: 546.10701
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 30903.73701
-  tps: 22921.83641
+  dps: 31040.44147
+  tps: 23096.88086
   hps: 546.10701
  }
 }

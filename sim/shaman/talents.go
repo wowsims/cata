@@ -111,6 +111,10 @@ func (shaman *Shaman) ApplyTalents() {
 		shaman.registerFeralSpirit()
 	}
 
+	if shaman.Talents.ImprovedLavaLash > 0 {
+		shaman.SearingFlamesMultiplier += 0.1 * float64(shaman.Talents.ImprovedLavaLash)
+	}
+
 	shaman.registerElementalMasteryCD()
 	shaman.registerNaturesSwiftnessCD()
 	shaman.registerShamanisticRageCD()

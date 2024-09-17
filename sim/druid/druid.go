@@ -31,7 +31,6 @@ type Druid struct {
 	AssumeBleedActive bool
 	LeatherSpecActive bool
 	Feral4pT12Active  bool
-	RipTfSnapshot     bool
 
 	MHAutoSpell       *core.Spell
 	ReplaceBearMHFunc core.ReplaceMHSwing
@@ -336,17 +335,6 @@ func (druid *Druid) Reset(_ *core.Simulation) {
 	druid.RebirthUsed = false
 }
 
-func (druid *Druid) ForceSolarEclipse(sim *core.Simulation, masteryRating float64) {
-	masteryRating -= druid.GetStat(stats.MasteryRating)
-	if masteryRating > 0 {
-		druid.AddStatDynamic(sim, stats.MasteryRating, masteryRating)
-	}
-	druid.eclipseEnergyBar.ForceEclipse(SolarEclipse, sim)
-	if masteryRating > 0 {
-		druid.AddStatDynamic(sim, stats.MasteryRating, -masteryRating)
-	}
-}
-
 func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents string) *Druid {
 	druid := &Druid{
 		Character:         *char,
@@ -387,6 +375,11 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 type DruidSpell struct {
 	*core.Spell
 	FormMask DruidForm
+
+	// Optional fields used in snapshotting calculations
+	CurrentSnapshotPower float64
+	NewSnapshotPower     float64
+	ShortName            string
 }
 
 func (ds *DruidSpell) IsReady(sim *core.Simulation) bool {
@@ -408,6 +401,31 @@ func (ds *DruidSpell) IsEqual(s *core.Spell) bool {
 		return false
 	}
 	return ds.Spell == s
+}
+
+func (druid *Druid) UpdateBleedPower(bleedSpell *DruidSpell, sim *core.Simulation, target *core.Unit, updateCurrent bool, updateNew bool) {
+	snapshotPower := bleedSpell.ExpectedTickDamage(sim, target)
+
+	// Assume that Mangle will be up soon if not currently active.
+	if !druid.BleedCategories.Get(target).AnyActive() {
+		snapshotPower *= 1.3
+	}
+
+	if updateCurrent {
+		bleedSpell.CurrentSnapshotPower = snapshotPower
+
+		if sim.Log != nil {
+			druid.Log(sim, "%s Snapshot Power: %.1f", bleedSpell.ShortName, snapshotPower)
+		}
+	}
+
+	if updateNew {
+		bleedSpell.NewSnapshotPower = snapshotPower
+
+		if (sim.Log != nil) && !updateCurrent {
+			druid.Log(sim, "%s Projected Power: %.1f", bleedSpell.ShortName, snapshotPower)
+		}
+	}
 }
 
 // Agent is a generic way to access underlying druid on any of the agents (for example balance druid.)

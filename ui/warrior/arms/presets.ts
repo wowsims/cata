@@ -6,21 +6,23 @@ import { Stats } from '../../core/proto_utils/stats';
 import ArmsApl from './apls/arms.apl.json';
 import P1ArmsBisGear from './gear_sets/p1_arms_bis.gear.json';
 import P1ArmsRealisticBisGear from './gear_sets/p1_arms_realistic_bis.gear.json';
+import P3ArmsBisGear from './gear_sets/p3_arms_bis.gear.json';
 import PreraidArmsGear from './gear_sets/preraid_arms.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const PRERAID_ARMS_PRESET = PresetUtils.makePresetGear('Preraid Arms', PreraidArmsGear);
-export const P1_ARMS_BIS_PRESET = PresetUtils.makePresetGear('P1 Arms - BIS', P1ArmsBisGear);
-export const P1_ARMS_REALISTIC_PRESET = PresetUtils.makePresetGear('P1 Arms - Realistic', P1ArmsRealisticBisGear);
+export const PRERAID_ARMS_PRESET = PresetUtils.makePresetGear('Preraid', PreraidArmsGear);
+export const P1_ARMS_BIS_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1ArmsBisGear);
+export const P1_ARMS_REALISTIC_PRESET = PresetUtils.makePresetGear('P1 - Realistic', P1ArmsRealisticBisGear);
+export const P3_ARMS_BIS_PRESET = PresetUtils.makePresetGear('P3 - BIS', P3ArmsBisGear);
 
-export const ROTATION_ARMS = PresetUtils.makePresetAPLRotation('Arms', ArmsApl);
+export const ROTATION_ARMS = PresetUtils.makePresetAPLRotation('Default', ArmsApl);
 
 // Preset options for EP weights
 export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P1',
+	'Default',
 	Stats.fromMap(
 		{
 			[Stat.StatStrength]: 2.21,
@@ -43,7 +45,7 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 // https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.
 
 export const ArmsTalents = {
-	name: 'Arms',
+	name: 'Default',
 	data: SavedTalents.create({
 		talentsString: '30220303120212312211-0322-3',
 		glyphs: Glyphs.create({
