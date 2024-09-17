@@ -3,6 +3,7 @@ package paladin
 import (
 	"time"
 
+	"github.com/wowsims/cata/sim/common/cata"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/stats"
 )
@@ -32,79 +33,21 @@ var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			paladin := agent.(PaladinAgent).GetPaladin()
+			cata.RegisterIgniteEffect(&paladin.Unit, cata.IgniteConfig{
+				ActionID:           core.ActionID{SpellID: 35395}.WithTag(3), // actual 99092
+				DisableCastMetrics: true,
+				DotAuraLabel:       "Flames of the Faithful",
+				IncludeAuraDelay:   true,
 
-			flamesOfTheFaithful := paladin.RegisterSpell(core.SpellConfig{
-				ActionID:    core.ActionID{SpellID: 35395}.WithTag(3), // actual 99092
-				SpellSchool: core.SpellSchoolFire,
-				ProcMask:    core.ProcMaskEmpty,
-				Flags: core.SpellFlagIgnoreModifiers |
-					core.SpellFlagBinary |
-					core.SpellFlagNoOnCastComplete |
-					core.SpellFlagNoOnDamageDealt |
-					core.SpellFlagPassiveSpell,
-
-				DamageMultiplier: 1,
-				ThreatMultiplier: 1,
-
-				Dot: core.DotConfig{
-					Aura: core.Aura{
-						Label:    "Flames of the Faithful",
-						Duration: time.Second * 4,
-					},
-					NumberOfTicks:       2,
-					AffectedByCastSpeed: false,
-					TickLength:          2 * time.Second,
-
-					OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-						dot.SnapshotAttackerMultiplier = 1
-						dot.SnapshotCritChance = 0
-					},
-
-					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-						dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-					},
+				ProcTrigger: core.ProcTrigger{
+					Name:           "Flames of the Faithful",
+					Callback:       core.CallbackOnSpellHitDealt,
+					ClassSpellMask: SpellMaskCrusaderStrike,
+					Outcome:        core.OutcomeLanded,
 				},
 
-				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					spell.Dot(target).Apply(sim)
-				},
-			})
-
-			core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-				Name:           "Flames of the Faithful",
-				Callback:       core.CallbackOnSpellHitDealt,
-				ClassSpellMask: SpellMaskCrusaderStrike,
-				Outcome:        core.OutcomeLanded,
-
-				ProcChance: 1,
-
-				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					dot := flamesOfTheFaithful.Dot(result.Target)
-
-					outstandingDamage := dot.OutstandingDmg()
-					newDamage := result.Damage * 0.15
-					totalDamage := outstandingDamage + newDamage
-
-					waitTime := time.Millisecond * time.Duration(sim.Roll(375, 625))
-					applyDotAt := sim.CurrentTime + waitTime
-
-					if sim.Log != nil {
-						paladin.Log(sim, "Schedule travel (%0.2f) for Flames of the Faithful", waitTime.Seconds())
-						if dot.IsActive() && dot.NextTickAt() < applyDotAt {
-							paladin.Log(sim, "Flames of the Faithful rolled with %0.3f damage both ticking and rolled into next", outstandingDamage)
-						}
-					}
-
-					core.StartDelayedAction(sim, core.DelayedActionOptions{
-						DoAt:     applyDotAt,
-						Priority: core.ActionPriorityDOT,
-						OnAction: func(simulation *core.Simulation) {
-							ticks := float64(dot.BaseTickCount + core.TernaryInt32(dot.IsActive(), 1, 0))
-							dot.SnapshotBaseDamage = totalDamage / ticks
-
-							flamesOfTheFaithful.Cast(sim, result.Target)
-						},
-					})
+				DamageCalculator: func(result *core.SpellResult) float64 {
+					return result.Damage * 0.15
 				},
 			})
 		},

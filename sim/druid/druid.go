@@ -148,9 +148,13 @@ const (
 	DruidSpellHurricane
 	DruidSpellInnervate
 	DruidSpellInsectSwarm
+	DruidSpellMangleBear
+	DruidSpellMangleCat
+	DruidSpellMaul
 	DruidSpellMoonfire
 	DruidSpellMoonfireDoT
 	DruidSpellNaturesGrasp
+	DruidSpellShred
 	DruidSpellStarfall
 	DruidSpellStarfire
 	DruidSpellStarsurge
@@ -177,6 +181,7 @@ const (
 	DruidSpellDoT       = DruidSpellInsectSwarm | DruidSpellMoonfireDoT | DruidSpellSunfireDoT
 	DruidSpellHoT       = DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellRegrowth | DruidSpellWildGrowth
 	DruidSpellInstant   = DruidSpellBarkskin | DruidSpellInsectSwarm | DruidSpellMoonfire | DruidSpellStarfall | DruidSpellSunfire | DruidSpellFearieFire | DruidSpellBarkskin
+	DruidSpellMangle    = DruidSpellMangleBear | DruidSpellMangleCat
 	DruidArcaneSpells   = DruidSpellMoonfire | DruidSpellMoonfireDoT | DruidSpellStarfire | DruidSpellStarsurge | DruidSpellStarfall
 	DruidNatureSpells   = DruidSpellInsectSwarm | DruidSpellStarsurge | DruidSpellSunfire | DruidSpellSunfireDoT | DruidSpellTyphoon | DruidSpellHurricane
 	DruidHealingSpells  = DruidSpellHealingTouch | DruidSpellRegrowth | DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellNourish | DruidSpellSwiftmend

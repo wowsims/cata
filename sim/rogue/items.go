@@ -4,6 +4,7 @@ import (
 	"math"
 	"time"
 
+	"github.com/wowsims/cata/sim/common/cata"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/stats"
 )
@@ -81,65 +82,20 @@ var Tier12 = core.NewItemSet(core.ItemSet{
 			// Rolls like ignite
 			// Tentatively, this is just Ignite. Testing required to validate behavior.
 			rogue := agent.GetCharacter()
+			cata.RegisterIgniteEffect(&rogue.Unit, cata.IgniteConfig{
+				ActionID:         core.ActionID{SpellID: 99173},
+				DotAuraLabel:     "Burning Wounds",
+				IncludeAuraDelay: true,
 
-			burningWounds := rogue.RegisterSpell(core.SpellConfig{
-				ActionID:    core.ActionID{SpellID: 99173},
-				SpellSchool: core.SpellSchoolFire,
-				ProcMask:    core.ProcMaskProc,
-				Flags:       core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete,
-
-				DamageMultiplier: 1,
-				ThreatMultiplier: 1,
-
-				Dot: core.DotConfig{
-					Aura: core.Aura{
-						Label:     "Burning Wounds",
-						MaxStacks: 1000000,
-					},
-					NumberOfTicks:       2,
-					TickLength:          time.Second * 2,
-					AffectedByCastSpeed: false,
-					OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-
-					},
-					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-						result := dot.Spell.CalcPeriodicDamage(sim, target, dot.SnapshotBaseDamage, dot.OutcomeTick)
-						dot.Spell.DealPeriodicDamage(sim, result)
-					},
+				ProcTrigger: core.ProcTrigger{
+					Name:     "Rogue T12 2P Bonus",
+					Callback: core.CallbackOnSpellHitDealt,
+					ProcMask: core.ProcMaskMelee,
+					Outcome:  core.OutcomeCrit,
 				},
 
-				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					spell.Dot(target).Apply(sim)
-				},
-			})
-
-			var applyBurningWounds = func(sim *core.Simulation, result *core.SpellResult) {
-				const IgniteTicksFresh = 2
-				const IgniteTicksRefresh = 3
-
-				newDamage := result.Damage * .06
-				dot := burningWounds.Dot(result.Target)
-
-				// Cata Ignite
-				// 1st ignite application = 4s, split into 2 ticks (2s, 0s)
-				// Ignite refreshes: Duration = 4s + MODULO(remaining duration, 2), max 6s. Split damage over 3 ticks at 4s, 2s, 0s.
-				if dot.IsActive() {
-					dot.SnapshotBaseDamage = (dot.OutstandingDmg() + newDamage) / float64(IgniteTicksRefresh)
-				} else {
-					dot.SnapshotBaseDamage = newDamage / IgniteTicksFresh
-				}
-				burningWounds.Cast(sim, result.Target)
-				dot.Aura.SetStacks(sim, int32(dot.SnapshotBaseDamage))
-			}
-
-			core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
-				Name:     "Rogue T12 2P Bonus",
-				Callback: core.CallbackOnSpellHitDealt,
-				ProcMask: core.ProcMaskMelee,
-				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if result.Landed() && result.DidCrit() {
-						applyBurningWounds(sim, result)
-					}
+				DamageCalculator: func(result *core.SpellResult) float64 {
+					return result.Damage * .06
 				},
 			})
 		},
