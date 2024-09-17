@@ -56,6 +56,24 @@ const NON_EXISTING_ITEMS = [
 	71400,
 	// Belt of the Seven Seals - 391
 	71398,
+    // Gigantiform Bracers, - 391
+    71584,
+    // Bracers of Forked Lightning, - 391
+    71570,
+    // Bracers of Misting Ash, - 391
+    71582,
+    // Flamebinder Bracers, - 391
+    71569,
+    // Firesoul Wristguards, - 391
+    71572,
+    // Emberflame Bracers, - 391
+    71571,
+    // Bracers of Regal Force, - 391
+    71585,
+    // Smolderskull Bindings, - 391
+    71581,
+    // Bracers of Imperious Truths - 391
+    71583,
 ];
 
 export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
