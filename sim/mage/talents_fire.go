@@ -313,25 +313,28 @@ func (mage *Mage) applyIgnite() {
 	if mage.Talents.Ignite == 0 {
 		return
 	}
-	const IgniteTicksFresh = 2
 
 	// Ignite proc listener
-	core.MakePermanent(mage.RegisterAura(core.Aura{
-		Label: "Ignite Talent",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
-				return
-			}
+	core.MakeProcTriggerAura(&mage.Unit, core.ProcTrigger{
+		Name:     "Ignite Talent",
+		Callback: core.CallbackOnSpellHitDealt,
+		ProcMask: core.ProcMaskSpellDamage,
+		Outcome:  core.OutcomeCrit,
+
+		ExtraCondition: func(_ *core.Simulation, spell *core.Spell, _ *core.SpellResult) bool {
 			if !spell.SpellSchool.Matches(core.SpellSchoolFire) {
-				return
+				return false
 			}
+
 			// EJ post says combustion crits do not proc ignite
 			// https://web.archive.org/web/20120219014159/http://elitistjerks.com/f75/t110187-cataclysm_mage_simulators_formulators/p3/#post1824829
-			if spell.ClassSpellMask&(MageSpellLivingBombDot|MageSpellCombustion|MageSpellLivingBomb) == 0 && result.DidCrit() {
-				mage.procIgnite(sim, result)
-			}
+			return spell.ClassSpellMask&(MageSpellLivingBombDot|MageSpellCombustion|MageSpellLivingBomb) == 0
 		},
-	}))
+
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			mage.procIgnite(sim, result)
+		},
+	})
 
 	// The ignite dot
 	mage.Ignite = mage.RegisterSpell(core.SpellConfig{
@@ -348,14 +351,12 @@ func (mage *Mage) applyIgnite() {
 			Aura: core.Aura{
 				Label:     "Ignite",
 				Tag:       "IgniteDot",
-				MaxStacks: 1000000,
+				MaxStacks: math.MaxInt32,
 			},
-			NumberOfTicks:       IgniteTicksFresh,
+			NumberOfTicks:       2,
 			TickLength:          time.Second * 2,
 			AffectedByCastSpeed: false,
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 
-			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				result := dot.Spell.CalcPeriodicDamage(sim, target, dot.SnapshotBaseDamage, dot.OutcomeTick)
 				dot.Spell.DealPeriodicDamage(sim, result)
@@ -369,22 +370,18 @@ func (mage *Mage) applyIgnite() {
 }
 
 func (mage *Mage) procIgnite(sim *core.Simulation, result *core.SpellResult) {
-	const IgniteTicksFresh = 2
-	const IgniteTicksRefresh = 3
 	var currentMastery float64 = 1 + math.Floor(22.4+2.8*mage.GetMasteryPoints())/100
-
 	igniteDamageMultiplier := []float64{0.0, 0.13, 0.26, 0.40}[mage.Talents.Ignite]
 	newDamage := result.Damage * igniteDamageMultiplier * currentMastery
 	dot := mage.Ignite.Dot(result.Target)
+	outstandingDamage := dot.OutstandingDmg()
+	totalDamage := outstandingDamage + newDamage
 
 	// Cata Ignite
 	// 1st ignite application = 4s, split into 2 ticks (2s, 0s)
 	// Ignite refreshes: Duration = 4s + MODULO(remaining duration, 2), max 6s. Split damage over 3 ticks at 4s, 2s, 0s.
-	if dot.IsActive() {
-		dot.SnapshotBaseDamage = (dot.OutstandingDmg() + newDamage) / float64(IgniteTicksRefresh)
-	} else {
-		dot.SnapshotBaseDamage = newDamage / IgniteTicksFresh
-	}
+	newTickCount := dot.BaseTickCount + core.TernaryInt32(dot.IsActive(), 1, 0)
+	dot.SnapshotBaseDamage = totalDamage / float64(newTickCount)
 	mage.Ignite.Cast(sim, result.Target)
 	dot.Aura.SetStacks(sim, int32(dot.SnapshotBaseDamage))
 }

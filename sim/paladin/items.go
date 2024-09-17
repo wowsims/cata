@@ -1,6 +1,7 @@
 package paladin
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -47,15 +48,12 @@ var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 
 				Dot: core.DotConfig{
 					Aura: core.Aura{
-						Label:    "Flames of the Faithful",
-						Duration: time.Second * 4,
+						Label:     "Flames of the Faithful",
+						MaxStacks: math.MaxInt32,
 					},
 					NumberOfTicks:       2,
 					AffectedByCastSpeed: false,
 					TickLength:          2 * time.Second,
-
-					OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-					},
 
 					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 						result := dot.Spell.CalcPeriodicDamage(sim, target, dot.SnapshotBaseDamage, dot.OutcomeTick)
@@ -95,10 +93,10 @@ var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 						DoAt:     applyDotAt,
 						Priority: core.ActionPriorityDOT,
 						OnAction: func(simulation *core.Simulation) {
-							ticks := float64(dot.BaseTickCount + core.TernaryInt32(dot.IsActive(), 1, 0))
-							dot.SnapshotBaseDamage = totalDamage / ticks
-
+							newTickCount := dot.BaseTickCount + core.TernaryInt32(dot.IsActive(), 1, 0)
+							dot.SnapshotBaseDamage = totalDamage / float64(newTickCount)
 							flamesOfTheFaithful.Cast(sim, result.Target)
+							dot.Aura.SetStacks(sim, int32(dot.SnapshotBaseDamage))
 						},
 					})
 				},

@@ -94,14 +94,12 @@ var Tier12 = core.NewItemSet(core.ItemSet{
 				Dot: core.DotConfig{
 					Aura: core.Aura{
 						Label:     "Burning Wounds",
-						MaxStacks: 1000000,
+						MaxStacks: math.MaxInt32,
 					},
 					NumberOfTicks:       2,
 					TickLength:          time.Second * 2,
 					AffectedByCastSpeed: false,
-					OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 
-					},
 					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 						result := dot.Spell.CalcPeriodicDamage(sim, target, dot.SnapshotBaseDamage, dot.OutcomeTick)
 						dot.Spell.DealPeriodicDamage(sim, result)
@@ -114,20 +112,16 @@ var Tier12 = core.NewItemSet(core.ItemSet{
 			})
 
 			var applyBurningWounds = func(sim *core.Simulation, result *core.SpellResult) {
-				const IgniteTicksFresh = 2
-				const IgniteTicksRefresh = 3
-
-				newDamage := result.Damage * .06
 				dot := burningWounds.Dot(result.Target)
+				outstandingDamage := dot.OutstandingDmg()
+				newDamage := result.Damage * .06
+				totalDamage := outstandingDamage + newDamage
 
 				// Cata Ignite
 				// 1st ignite application = 4s, split into 2 ticks (2s, 0s)
 				// Ignite refreshes: Duration = 4s + MODULO(remaining duration, 2), max 6s. Split damage over 3 ticks at 4s, 2s, 0s.
-				if dot.IsActive() {
-					dot.SnapshotBaseDamage = (dot.OutstandingDmg() + newDamage) / float64(IgniteTicksRefresh)
-				} else {
-					dot.SnapshotBaseDamage = newDamage / IgniteTicksFresh
-				}
+				newTickCount := dot.BaseTickCount + core.TernaryInt32(dot.IsActive(), 1, 0)
+				dot.SnapshotBaseDamage = totalDamage / float64(newTickCount)
 				burningWounds.Cast(sim, result.Target)
 				dot.Aura.SetStacks(sim, int32(dot.SnapshotBaseDamage))
 			}
@@ -136,10 +130,10 @@ var Tier12 = core.NewItemSet(core.ItemSet{
 				Name:     "Rogue T12 2P Bonus",
 				Callback: core.CallbackOnSpellHitDealt,
 				ProcMask: core.ProcMaskMelee,
+				Outcome:  core.OutcomeCrit,
+
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if result.Landed() && result.DidCrit() {
-						applyBurningWounds(sim, result)
-					}
+					applyBurningWounds(sim, result)
 				},
 			})
 		},
