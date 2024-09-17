@@ -108,7 +108,7 @@ var ItemSetObsidianArborweaveBattlegarb = core.NewItemSet(core.ItemSet{
 			cata.RegisterIgniteEffect(&druid.Unit, cata.IgniteConfig{
 				ActionID:         core.ActionID{SpellID: 99002},
 				DotAuraLabel:     "Fiery Claws",
-				IncludeAuraDelay: false,
+				IncludeAuraDelay: true,
 
 				ProcTrigger: core.ProcTrigger{
 					Name:           "Fiery Claws Trigger",
