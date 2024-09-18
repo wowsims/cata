@@ -103,10 +103,6 @@ const NON_EXISTING_ITEMS = [
 const NOT_YET_IMPLEMENTED_WARNING = <>The equip/use effect on this item is not yet implemented!</>;
 
 const NOT_YET_IMPLEMENTED_ITEMS = [
-	// Jaws of Defeat - 378
-	68926,
-	// Jaws of Defeat - 391
-	69111,
 	// Spidersilk Spindle- 378
 	68981,
 	// Spidersilk Spindle- 391

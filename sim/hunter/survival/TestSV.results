@@ -716,6 +716,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSV-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 24461.81628
+  tps: 22098.30071
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 24461.81628
+  tps: 22098.30071
+ }
+}
+dps_results: {
  key: "TestSV-AllItems-JujuofNimbleness-63840"
  value: {
   dps: 25280.63561

@@ -772,6 +772,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrost-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 20745.1798
+  tps: 18901.58265
+  hps: 242.45587
+ }
+}
+dps_results: {
+ key: "TestFrost-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 20745.1798
+  tps: 18901.58265
+  hps: 242.45587
+ }
+}
+dps_results: {
  key: "TestFrost-AllItems-JujuofNimbleness-63840"
  value: {
   dps: 21012.60482

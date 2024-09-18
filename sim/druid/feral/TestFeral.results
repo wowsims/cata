@@ -681,6 +681,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 25439.58027
+  tps: 36362.26815
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 25439.58027
+  tps: 36362.22816
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-JujuofNimbleness-63840"
  value: {
   dps: 26867.90737

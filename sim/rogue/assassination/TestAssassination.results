@@ -711,6 +711,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAssassination-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 27441.96409
+  tps: 19483.7945
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 27441.96409
+  tps: 19483.7945
+ }
+}
+dps_results: {
  key: "TestAssassination-AllItems-JujuofNimbleness-63840"
  value: {
   dps: 28617.42272

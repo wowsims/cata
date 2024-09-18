@@ -729,6 +729,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 4659.08749
+  tps: 28426.12721
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 4659.08749
+  tps: 28426.12721
+ }
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-JujuofNimbleness-63840"
  value: {
   dps: 4659.08749

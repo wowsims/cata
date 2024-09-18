@@ -681,6 +681,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 7790.0918
+  tps: 39013.00627
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 7790.0918
+  tps: 39013.00627
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-JujuofNimbleness-63840"
  value: {
   dps: 8040.21465

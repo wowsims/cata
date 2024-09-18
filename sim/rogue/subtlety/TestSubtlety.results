@@ -674,6 +674,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 21639.32405
+  tps: 15363.92008
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 21639.32405
+  tps: 15363.92008
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-JujuofNimbleness-63840"
  value: {
   dps: 22909.13088

@@ -534,6 +534,87 @@ func init() {
 				},
 			})
 		})
+
+		jawsItemID := core.TernaryInt32(heroic, 69111, 68926)
+		core.NewItemEffect(jawsItemID, func(agent core.Agent) {
+			character := agent.GetCharacter()
+
+			if !character.HasManaBar() {
+				return
+			}
+
+			manaMod := character.AddDynamicMod(core.SpellModConfig{
+				School:     core.SpellSchoolHoly | core.SpellSchoolNature,
+				FloatValue: 0,
+				Kind:       core.SpellMod_PowerCost_Flat,
+			})
+
+			icd := core.Cooldown{
+				Timer:    character.NewTimer(),
+				Duration: time.Millisecond * 900,
+			}
+
+			manaReturn := core.TernaryFloat64(heroic, -115, -110)
+
+			victoriousAura := character.GetOrRegisterAura(core.Aura{
+				Label:     "Victorious" + labelSuffix,
+				ActionID:  core.ActionID{SpellID: core.TernaryInt32(heroic, 97120, 96907)},
+				Duration:  time.Second * 20,
+				MaxStacks: 10,
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if spell.ProcMask&(core.ProcMaskSpellDamage|core.ProcMaskSpellHealing) == 0 {
+						return
+					}
+
+					if !icd.IsReady(sim) {
+						return
+					}
+
+					icd.Use(sim)
+
+					aura.AddStack(sim)
+				},
+				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Deactivate(sim)
+				},
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					manaMod.Activate()
+				},
+				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+					manaMod.UpdateFloatValue(manaReturn * float64(newStacks))
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					manaMod.Deactivate()
+					manaMod.UpdateFloatValue(0)
+				},
+			})
+
+			trinketSpell := character.RegisterSpell(core.SpellConfig{
+				ActionID:    core.ActionID{ItemID: jawsItemID},
+				SpellSchool: core.SpellSchoolPhysical,
+				ProcMask:    core.ProcMaskEmpty,
+				Flags:       core.SpellFlagNoOnCastComplete,
+				Cast: core.CastConfig{
+					SharedCD: core.Cooldown{
+						Timer:    character.GetOffensiveTrinketCD(),
+						Duration: time.Second * 20,
+					},
+					CD: core.Cooldown{
+						Timer:    character.NewTimer(),
+						Duration: time.Minute * 2,
+					},
+				},
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					victoriousAura.Activate(sim)
+				},
+			})
+
+			character.AddMajorCooldown(core.MajorCooldown{
+				Spell:    trinketSpell,
+				Priority: core.CooldownPriorityDefault,
+				Type:     core.CooldownTypeMana,
+			})
+		})
 	}
 }
 

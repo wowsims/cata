@@ -780,6 +780,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-JujuofNimbleness-63840"
  value: {
   dps: 13934.12024

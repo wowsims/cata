@@ -764,6 +764,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 30574.59353
+  tps: 22630.58823
+  hps: 546.10701
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 30574.59353
+  tps: 22630.58823
+  hps: 546.10701
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-JujuofNimbleness-63840"
  value: {
   dps: 31016.77288

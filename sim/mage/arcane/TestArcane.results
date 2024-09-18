@@ -681,6 +681,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 28903.78531
+  tps: 29092.92309
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 29095.66398
+  tps: 29292.88951
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-JujuofNimbleness-63840"
  value: {
   dps: 27931.53727
