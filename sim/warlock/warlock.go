@@ -135,6 +135,7 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 	}
 	core.FillTalentsProto(warlock.Talents.ProtoReflect(), options.TalentsString, [3]int{18, 19, 19})
 	warlock.EnableManaBar()
+	warlock.SetDefaultSpellCritMultiplier(warlock.SpellCritMultiplier(1.33, 0.0))
 
 	warlock.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 
@@ -236,7 +237,3 @@ const (
 const (
 	PetExpertiseScale = 1.53 * core.ExpertisePerQuarterPercentReduction
 )
-
-func (warlock *Warlock) DefaultSpellCritMultiplier() float64 {
-	return warlock.SpellCritMultiplier(1.33, 0.0)
-}

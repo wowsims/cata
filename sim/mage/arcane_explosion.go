@@ -23,7 +23,7 @@ func (mage *Mage) registerArcaneExplosionSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.DefaultMageCritMultiplier(),
+		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
 		BonusCoefficient: 0.186,
 		ThreatMultiplier: 1 - 0.4*float64(mage.Talents.ImprovedArcaneExplosion),
 

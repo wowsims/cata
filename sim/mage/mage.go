@@ -169,6 +169,7 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 	core.FillTalentsProto(mage.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 
 	mage.EnableManaBar()
+	mage.SetDefaultSpellCritMultiplier(mage.SpellCritMultiplier(1.33, 0.0))
 
 	mage.mirrorImage = mage.NewMirrorImage()
 	mage.flameOrb = mage.NewFlameOrb()
@@ -282,10 +283,6 @@ type MageAgent interface {
 
 func (mage *Mage) hasChillEffect(spell *core.Spell) bool {
 	return spell.ClassSpellMask&MageSpellChill > 0 || (spell.ClassSpellMask == MageSpellBlizzard && mage.Talents.IceShards > 0)
-}
-
-func (mage *Mage) DefaultMageCritMultiplier() float64 {
-	return mage.SpellCritMultiplier(1.33, 0)
 }
 
 const (

@@ -115,7 +115,9 @@ func (ffo *FrostfireOrb) registerFrostfireOrbTickSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   ffo.mageOwner.DefaultSpellCritMultiplier(),
+
+		// should FFO benefit from meta gem?
+		CritMultiplier:   ffo.DefaultSpellCritMultiplier(),
 		BonusCoefficient: 0.134,
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
