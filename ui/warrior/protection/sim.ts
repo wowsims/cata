@@ -6,7 +6,7 @@ import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl.js';
 import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
-import { UnitStat } from '../../core/proto_utils/stats.js';
+import { Stats, UnitStat } from '../../core/proto_utils/stats.js';
 import * as ProtectionWarriorInputs from '../inputs.js';
 import * as Presets from './presets.js';
 
@@ -65,6 +65,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 			PseudoStat.PseudoStatParryPercent,
 		],
 	),
+
+	modifyDisplayStats: (player: Player<Spec.SpecProtectionWarrior>) => {
+		const playerStats = player.getCurrentStats();
+		const gearStats = Stats.fromProto(playerStats.gearStats);
+		const gearArmor = gearStats.getStat(Stat.StatArmor);
+		const gearBonusArmor = gearStats.getStat(Stat.StatBonusArmor);
+
+		const toughnessValues = [0, 0.03, 0.06, 0.1];
+		const talentsMod = new Stats().addStat(Stat.StatArmor, (gearArmor - gearBonusArmor) * toughnessValues[player.getTalents().toughness]);
+
+		return {
+			talents: talentsMod,
+		};
+	},
 
 	defaults: {
 		// Default equipped gear.
