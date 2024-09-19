@@ -21,8 +21,8 @@ func (dk *DeathKnight) GetDiseaseMulti(target *core.Unit, base float64, increase
 	if dk.EbonPlagueAura.Get(target).IsActive() {
 		count++
 	}
-	if count < 2 && dk.BurningBloodSpell != nil && dk.BurningBloodSpell.Dot(target).IsActive() {
-		count = 2
+	if dk.BurningBloodSpell != nil && dk.BurningBloodSpell.Dot(target).IsActive() {
+		count += 2
 	}
 	return base + increase*float64(count)
 }
