@@ -128,7 +128,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		],
 	},
 	encounterPicker: {
-		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
+		// Whether to include 'Execute DuratFion (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,
 	},
 
@@ -139,7 +139,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_DEFAULT, Presets.ROTATION_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_BALANCED_PRESET, Presets.P1_BALANCED_PRESET],
+		gear: [Presets.PRERAID_BALANCED_PRESET, Presets.P1_BALANCED_PRESET, Presets.P3_BALANCED_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecProtectionWarrior>): APLRotation => {
@@ -154,7 +154,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
-				[Faction.Alliance]: Race.RaceHuman,
+				[Faction.Alliance]: Race.RaceNightElf,
 				[Faction.Horde]: Race.RaceOrc,
 			},
 			defaultGear: {
@@ -162,10 +162,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 				[Faction.Alliance]: {
 					1: Presets.P1_BALANCED_PRESET.gear,
 					2: Presets.PRERAID_BALANCED_PRESET.gear,
+					3: Presets.P3_BALANCED_PRESET.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.P1_BALANCED_PRESET.gear,
 					2: Presets.PRERAID_BALANCED_PRESET.gear,
+					3: Presets.P3_BALANCED_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,
