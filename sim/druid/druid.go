@@ -154,6 +154,7 @@ const (
 	DruidSpellMoonfire
 	DruidSpellMoonfireDoT
 	DruidSpellNaturesGrasp
+	DruidSpellRavage
 	DruidSpellShred
 	DruidSpellStarfall
 	DruidSpellStarfire

@@ -15,6 +15,7 @@ func (druid *Druid) registerRavageSpell() {
 		ActionID:         core.ActionID{SpellID: 6785},
 		SpellSchool:      core.SpellSchoolPhysical,
 		ProcMask:         core.ProcMaskMeleeMHSpecial,
+		ClassSpellMask:   DruidSpellRavage,
 		Flags:            core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		DamageMultiplier: weaponMultiplier,
 		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
