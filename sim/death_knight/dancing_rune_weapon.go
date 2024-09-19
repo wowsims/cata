@@ -35,12 +35,17 @@ func (dk *DeathKnight) registerDancingRuneWeaponSpell() {
 	hasGlyph := dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfDancingRuneWeapon)
 
 	hasT12Set := dk.HasSetBonus(ItemSetElementiumDeathplateBattlearmor, 4)
-	t124PAura := dk.NewTemporaryStatsAura(
-		"Flaming Rune Weapon",
-		core.ActionID{SpellID: 101162},
-		stats.Stats{stats.ParryRating: 15 * core.ParryRatingPerParryPercent},
-		time.Second*12,
-	)
+	t124PAura := dk.RegisterAura(core.Aura{
+		Label:    "Flaming Rune Weapon",
+		ActionID: core.ActionID{SpellID: 101162},
+		Duration: time.Second * 12,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			dk.PseudoStats.BaseParryChance += 0.15
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			dk.PseudoStats.BaseParryChance -= 0.15
+		},
+	})
 
 	dancingRuneWeaponAura := dk.RegisterAura(core.Aura{
 		Label:    "Dancing Rune Weapon",
@@ -58,13 +63,13 @@ func (dk *DeathKnight) registerDancingRuneWeaponSpell() {
 			copySpell.Cast(sim, dk.CurrentTarget)
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			dk.AddStatDynamic(sim, stats.ParryRating, 20*core.ParryRatingPerParryPercent)
+			dk.PseudoStats.BaseParryChance += 0.20
 			if hasGlyph {
 				dk.PseudoStats.ThreatMultiplier *= 1.5
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			dk.AddStatDynamic(sim, stats.ParryRating, -20*core.ParryRatingPerParryPercent)
+			dk.PseudoStats.BaseParryChance -= 0.20
 			if hasGlyph {
 				dk.PseudoStats.ThreatMultiplier /= 1.5
 			}

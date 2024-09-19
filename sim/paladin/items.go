@@ -174,10 +174,10 @@ var ItemSetBattlearmorOfImmolation = core.NewItemSet(core.ItemSet{
 				Duration: time.Second * 10,
 
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					paladin.AddStatDynamic(sim, stats.ParryRating, 12*core.ParryRatingPerParryPercent)
+					paladin.PseudoStats.BaseParryChance += 0.12
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					paladin.AddStatDynamic(sim, stats.ParryRating, -12*core.ParryRatingPerParryPercent)
+					paladin.PseudoStats.BaseParryChance -= 0.12
 				},
 			})
 
