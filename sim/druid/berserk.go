@@ -40,6 +40,10 @@ func (druid *Druid) registerBerserkCD() {
 			if druid.PrimalMadnessAura != nil {
 				druid.PrimalMadnessAura.Activate(sim)
 			}
+
+			if druid.MangleBear != nil {
+				druid.MangleBear.CD.Reset()
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
