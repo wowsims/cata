@@ -51,8 +51,10 @@ func (paladin *Paladin) registerExorcism() {
 				0)
 
 			spell.BonusCritPercent += bonusCritPercent
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.BonusCritPercent -= bonusCritPercent
+
+			spell.DealOutcome(sim, result)
 		},
 	})
 }
