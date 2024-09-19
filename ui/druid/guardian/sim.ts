@@ -150,7 +150,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 	presets: {
 		epWeights: [Presets.SURVIVAL_EP_PRESET, Presets.BALANCED_EP_PRESET],
 		// Preset talents that the user can quickly select.
-		talents: [Presets.StandardTalents],
+		talents: [Presets.StandardTalents, Presets.InfectedWoundsBuild],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_SIMPLE, Presets.ROTATION_DEFAULT, Presets.ROTATION_CLEAVE, Presets.ROTATION_NEF],
 		// Preset gear configurations that the user can quickly select.

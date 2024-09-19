@@ -113,6 +113,24 @@ export const StandardTalents = {
 	}),
 };
 
+export const InfectedWoundsBuild = {
+	name: 'Infected Wounds',
+	data: SavedTalents.create({
+		talentsString: '-2302322310310001220311-020331',
+		glyphs: Glyphs.create({
+			prime1: DruidPrimeGlyph.GlyphOfMangle,
+			prime2: DruidPrimeGlyph.GlyphOfLacerate,
+			prime3: DruidPrimeGlyph.GlyphOfBerserk,
+			major1: DruidMajorGlyph.GlyphOfFrenziedRegeneration,
+			major2: DruidMajorGlyph.GlyphOfMaul,
+			major3: DruidMajorGlyph.GlyphOfRebirth,
+			minor1: DruidMinorGlyph.GlyphOfDash,
+			minor2: DruidMinorGlyph.GlyphOfChallengingRoar,
+			minor3: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
+		}),
+	}),
+};
+
 export const DefaultOptions = DruidOptions.create({
 	startingRage: 15,
 });
