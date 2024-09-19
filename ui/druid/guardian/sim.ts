@@ -188,7 +188,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		const enrage = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":5229}}}`);
 		const synapseSprings = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":82174}}}`);
 		const lacerateForProcs = APLAction.fromJsonString(
-			`{"condition":{"and":{"vals":[{"not":{"val":{"dotIsActive":{"targetUnit":{"type":"Target"},"spellId":{"spellId":33745}}}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":50334}}}}}]}},"castSpell":{"spellId":{"spellId":33745},"target":{"type":"Target"}}}`,
+			`{"condition":{"and":{"vals":[{"not":{"val":{"dotIsActive":{"targetUnit":{"type":"Target"},"spellId":{"spellId":33745}}}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":50334}}}}},{"cmp":{"op":"OpGt","lhs":{"spellTimeToReady":{"spellId":{"spellId":50334}}},"rhs":{"const":{"val":"3s"}}}}]}},"castSpell":{"spellId":{"spellId":33745},"target":{"type":"Target"}}}`,
 		);
 		const mangle = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":33878},"target":{"type":"Target"}}}`);
 		const thrash = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":77758},"target":{"type":"Target"}}}`);
