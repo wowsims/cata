@@ -228,10 +228,10 @@ var ItemSetMoltenGiantBattleplate = core.NewItemSet(core.ItemSet{
 				ActionID: core.ActionID{SpellID: 99242},
 				Duration: 10 * time.Second,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					character.PseudoStats.BaseParryChance += 0.6
+					character.PseudoStats.BaseParryChance += 0.06
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					character.PseudoStats.BaseParryChance -= 0.6
+					character.PseudoStats.BaseParryChance -= 0.06
 				},
 			})
 
