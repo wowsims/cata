@@ -32,7 +32,7 @@ import PreraidBISGear from './gear_sets/preraid.gear.json';
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const PRERAID_BALANCED_PRESET = PresetUtils.makePresetGear('P1 PreRaid Preset', PreraidBISGear);
+export const PRERAID_BALANCED_PRESET = PresetUtils.makePresetGear('P3 PreRaid Preset', PreraidBISGear);
 export const P1_BALANCED_PRESET = PresetUtils.makePresetGear('P1 BIS Preset', P1BISGear);
 export const P3_BALANCED_PRESET = PresetUtils.makePresetGear('P3 BIS Preset', P3BISGear);
 
