@@ -74,6 +74,26 @@ const NON_EXISTING_ITEMS = [
 	71581,
 	// Bracers of Imperious Truths - 391
 	71583,
+	// Crystalline Brimstone Ring - 391
+	71574,
+	// Soothing Brimstone Circle - 391
+	71578,
+	// Splintered Brimstone Seal - 391
+	71566,
+	// Serrated Brimstone Signet - 391
+	71588,
+	// Deflecting Brimstone Band - 391
+	71591,
+	// Necklace of Smoke Signals - 391
+	71565,
+	// Stoneheart Necklace - 391
+	71589,
+	// Stoneheart Choker - 391
+	71586,
+	// Amulet of Burning Brilliance - 391
+	71573,
+	// Firemind Pendant - 391
+	71576,
 ];
 
 const NOT_YET_IMPLEMENTED_WARNING = <>The equip/use effect on this item is not yet implemented!</>;
@@ -188,9 +208,7 @@ export const GENERIC_MISSING_SET_BONUS_NOTICE_DATA = new Map<number, string>([
 	[4, 'Not yet implemented'],
 ]);
 
-export const IGNITE_BONUS_WARNING = new Map<number, string>([
-	[2, 'Tentative implementation, requires PTR testing to validate munching / roll-over model'],
-])
+export const IGNITE_BONUS_WARNING = new Map<number, string>([[2, 'Tentative implementation, requires PTR testing to validate munching / roll-over model']]);
 
 export const SET_BONUS_NOTICES = new Map<number, SetBonusNoticeData>([
 	// Custom notices
