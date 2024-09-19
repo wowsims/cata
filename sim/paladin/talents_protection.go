@@ -164,12 +164,14 @@ func (paladin *Paladin) applyHammerOfTheRighteous() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
-				hammerOfTheRighteousAoe.Cast(sim, target)
 				paladin.GainHolyPower(sim, 1, hpMetrics)
+				hammerOfTheRighteousAoe.Cast(sim, target)
 			}
+
+			spell.DealOutcome(sim, result)
 		},
 	})
 }
@@ -277,15 +279,16 @@ func (paladin *Paladin) applyShieldOfTheRighteous() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-
 			baseDamage := []float64{0, 1, 3, 6}[paladin.GetHolyPowerValue()] *
 				(shieldDmg + 0.1*spell.MeleeAttackPower())
 
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
 				paladin.SpendHolyPower(sim, hpMetrics)
 			}
+
+			spell.DealOutcome(sim, result)
 		},
 	})
 }

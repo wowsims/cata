@@ -6,7 +6,7 @@ import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl.js';
 import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
-import { Stats, UnitStat } from '../../core/proto_utils/stats.js';
+import { UnitStat } from '../../core/proto_utils/stats.js';
 import * as ProtectionWarriorInputs from '../inputs.js';
 import * as Presets from './presets.js';
 
@@ -65,20 +65,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 			PseudoStat.PseudoStatParryPercent,
 		],
 	),
-
-	modifyDisplayStats: (player: Player<Spec.SpecProtectionWarrior>) => {
-		const playerStats = player.getCurrentStats();
-		const gearStats = Stats.fromProto(playerStats.gearStats);
-		const gearArmor = gearStats.getStat(Stat.StatArmor);
-		const gearBonusArmor = gearStats.getStat(Stat.StatBonusArmor);
-
-		const toughnessValues = [0, 0.03, 0.06, 0.1];
-		const talentsMod = new Stats().addStat(Stat.StatArmor, (gearArmor - gearBonusArmor) * toughnessValues[player.getTalents().toughness]);
-
-		return {
-			talents: talentsMod,
-		};
-	},
 
 	defaults: {
 		// Default equipped gear.
@@ -142,7 +128,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		],
 	},
 	encounterPicker: {
-		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
+		// Whether to include 'Execute DuratFion (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,
 	},
 
@@ -153,7 +139,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_DEFAULT, Presets.ROTATION_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_BALANCED_PRESET, Presets.P1_BALANCED_PRESET],
+		gear: [Presets.PRERAID_BALANCED_PRESET, Presets.P1_BALANCED_PRESET, Presets.P3_BALANCED_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecProtectionWarrior>): APLRotation => {
@@ -168,7 +154,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
-				[Faction.Alliance]: Race.RaceHuman,
+				[Faction.Alliance]: Race.RaceNightElf,
 				[Faction.Horde]: Race.RaceOrc,
 			},
 			defaultGear: {
@@ -176,10 +162,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 				[Faction.Alliance]: {
 					1: Presets.P1_BALANCED_PRESET.gear,
 					2: Presets.PRERAID_BALANCED_PRESET.gear,
+					3: Presets.P3_BALANCED_PRESET.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.P1_BALANCED_PRESET.gear,
 					2: Presets.PRERAID_BALANCED_PRESET.gear,
+					3: Presets.P3_BALANCED_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,
