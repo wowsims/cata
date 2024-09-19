@@ -1080,6 +1080,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-StayofExecution-68996"
+ value: {
+  dps: 21639.32405
+  tps: 15363.92008
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-Stonemother'sKiss-61411"
  value: {
   dps: 21639.32405

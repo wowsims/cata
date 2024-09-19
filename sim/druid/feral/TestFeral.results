@@ -1108,6 +1108,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-StayofExecution-68996"
+ value: {
+  dps: 25439.58027
+  tps: 36362.5747
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-Stonemother'sKiss-61411"
  value: {
   dps: 25477.60379

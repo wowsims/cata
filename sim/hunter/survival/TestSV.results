@@ -1143,6 +1143,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSV-AllItems-StayofExecution-68996"
+ value: {
+  dps: 24461.81628
+  tps: 22098.30071
+ }
+}
+dps_results: {
  key: "TestSV-AllItems-Stonemother'sKiss-61411"
  value: {
   dps: 24474.26667

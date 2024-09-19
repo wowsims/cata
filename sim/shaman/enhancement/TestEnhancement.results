@@ -1129,6 +1129,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-StayofExecution-68996"
+ value: {
+  dps: 27910.67917
+  tps: 18567.02518
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-Stonemother'sKiss-61411"
  value: {
   dps: 28199.81651

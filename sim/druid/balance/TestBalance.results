@@ -1115,6 +1115,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBalance-AllItems-StayofExecution-68996"
+ value: {
+  dps: 26258.64645
+  tps: 26265.2223
+ }
+}
+dps_results: {
  key: "TestBalance-AllItems-Stonemother'sKiss-61411"
  value: {
   dps: 27220.9425

@@ -1129,6 +1129,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-AllItems-StayofExecution-68996"
+ value: {
+  dps: 30105.59576
+  tps: 581.33731
+ }
+}
+dps_results: {
  key: "TestElemental-AllItems-Stonemother'sKiss-61411"
  value: {
   dps: 31053.04638

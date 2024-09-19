@@ -1094,6 +1094,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-StayofExecution-68996"
+ value: {
+  dps: 27381.61965
+  tps: 27507.52299
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-Stonemother'sKiss-61411"
  value: {
   dps: 28592.03804

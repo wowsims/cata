@@ -1268,6 +1268,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrost-AllItems-StayofExecution-68996"
+ value: {
+  dps: 20745.1798
+  tps: 18901.58265
+  hps: 242.45587
+ }
+}
+dps_results: {
  key: "TestFrost-AllItems-Stonemother'sKiss-61411"
  value: {
   dps: 20878.61931

@@ -115,8 +115,6 @@ const NOT_YET_IMPLEMENTED_ITEMS = [
 	68915,
 	// Scales of Life - 391
 	69109,
-	// Stay of Execution - 378
-	68996,
 ];
 
 export const ITEM_NOTICES = new Map<number, ItemNoticeData>([

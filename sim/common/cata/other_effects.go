@@ -208,6 +208,84 @@ func init() {
 		})
 	})
 
+	core.NewItemEffect(68996, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		absorbAmount := 0.0
+		stayWithdrawnAura := character.RegisterAura(core.Aura{
+			Label:    "Stay Withdrawn",
+			Duration: time.Second * 10,
+			ActionID: core.ActionID{SpellID: 96993},
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				tickAmount := absorbAmount * 0.08
+
+				core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+					Period:   time.Second * 2,
+					NumTicks: 5,
+					OnAction: func(sim *core.Simulation) {
+						character.RemoveHealth(sim, tickAmount)
+
+						// Hacky way to force a fake stacks change log for the timeline to mimic ticks
+						if sim.Log != nil {
+							stacks := aura.GetStacks()
+							aura.Unit.Log(sim, "%s stacks: %d --> %d", aura.ActionID, stacks, stacks)
+						}
+					},
+					CleanUp: func(sim *core.Simulation) {
+						absorbAmount = 0
+					},
+				})
+			},
+		})
+
+		absorbAura := character.RegisterAura(core.Aura{
+			Label:    "Stay of Execution",
+			ActionID: core.ActionID{ItemID: 68996, SpellID: 96988},
+			Duration: time.Second * 30,
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Damage > 0 {
+					absorbAmount = math.Min(56980, absorbAmount+result.Damage*0.2)
+				}
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				if absorbAmount > 0 {
+					stayWithdrawnAura.Activate(sim)
+					stacks := int32(absorbAmount * 0.08)
+					if stacks > 0 {
+						stayWithdrawnAura.MaxStacks = stacks
+						stayWithdrawnAura.SetStacks(sim, stacks)
+					}
+				}
+			},
+		})
+
+		trinketSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{ItemID: 68996},
+			SpellSchool: core.SpellSchoolHoly,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete,
+			Cast: core.CastConfig{
+				SharedCD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: time.Second * 20,
+				},
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				absorbAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell:    trinketSpell,
+			Priority: core.CooldownPriorityDefault,
+			Type:     core.CooldownTypeSurvival,
+		})
+	})
+
 	for _, hc := range []bool{false, true} {
 		heroic := hc // Need to copy value because iterator variables are not captured by closure
 		labelSuffix := core.Ternary(heroic, " (Heroic)", "")

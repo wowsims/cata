@@ -1117,6 +1117,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAssassination-AllItems-StayofExecution-68996"
+ value: {
+  dps: 27441.96409
+  tps: 19483.7945
+ }
+}
+dps_results: {
  key: "TestAssassination-AllItems-Stonemother'sKiss-61411"
  value: {
   dps: 27680.42918

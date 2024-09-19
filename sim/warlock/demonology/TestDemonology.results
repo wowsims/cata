@@ -1087,6 +1087,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-AllItems-StayofExecution-68996"
+ value: {
+  dps: 26255.46545
+  tps: 14252.99982
+ }
+}
+dps_results: {
  key: "TestDemonology-AllItems-Stonemother'sKiss-61411"
  value: {
   dps: 28907.54744
