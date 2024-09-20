@@ -65,10 +65,8 @@ func (arcaneMage *ArcaneMage) ApplyTalents() {
 	})
 
 	// Arcane Mastery
-
 	arcaneMastery := arcaneMage.AddDynamicMod(core.SpellModConfig{
-		ClassMask: mage.MageSpellsAll,
-		Kind:      core.SpellMod_DamageDone_Pct,
+		Kind: core.SpellMod_DamageDone_Pct,
 	})
 
 	arcaneMage.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
