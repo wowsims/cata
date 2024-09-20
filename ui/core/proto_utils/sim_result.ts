@@ -438,8 +438,14 @@ export class UnitMetrics {
 		}
 	}
 
-	get chanceOfDeath(): number {
-		return this.metrics.chanceOfDeath * 100;
+	get chanceOfDeath(): DistributionMetricsProto {
+		const p = this.metrics.chanceOfDeath;
+		const err = Math.sqrt(p * (1 - p) / this.iterations);
+
+		return DistributionMetricsProto.create({
+			avg: p * 100,
+			stdev: err * 100,
+		});
 	}
 
 	get maxThreat() {

@@ -49,12 +49,12 @@ func init() {
 	shared.NewSpiritActive(58184, 1926, time.Second*20, time.Minute*2) // Core of Ripeness
 
 	// DODGE
-	shared.NewDodgeActive(67037, 512, time.Second*20, time.Minute*2)  // Binding Promise
-	shared.NewDodgeActive(52352, 1425, time.Second*20, time.Minute*2) // Figurine - Earthen Guardian
-	shared.NewDodgeActive(59515, 1605, time.Second*20, time.Minute*2) // Vial of Stolen Memories
-	shared.NewDodgeActive(65109, 1812, time.Second*20, time.Minute*2) // Vial of Stolen Memories (Heroic)
-	shared.NewDodgeActive(70143, 1700, time.Second*20, time.Minute*2) // Moonwell Phial
-	shared.NewDodgeActive(71338, 1700, time.Second*20, time.Minute*2) // Brawler's Trophy
+	shared.NewDodgeActive(67037, 512, time.Second*20, time.Minute*2)   // Binding Promise
+	shared.NewDodgeActive(52352, 1425, time.Second*20, time.Minute*2)  // Figurine - Earthen Guardian
+	shared.NewDodgeActive(59515, 1605, time.Second*20, time.Minute*2)  // Vial of Stolen Memories
+	shared.NewDodgeActive(65109, 1812, time.Second*20, time.Minute*2)  // Vial of Stolen Memories (Heroic)
+	shared.NewDodgeActive(70143, 1700, time.Second*20, time.Minute*2)  // Moonwell Phial
+	shared.NewDodgeActive(232015, 1520, time.Second*20, time.Minute*2) // Brawler's Trophy
 
 	// SpellPower
 	shared.NewSpellPowerActive(61429, 970, time.Second*15, time.Second*90) // Insignia of the Earthen Lord

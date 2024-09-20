@@ -38,8 +38,8 @@ character_stats_results: {
 dps_results: {
  key: "TestDestruction-AllItems-AgileShadowspiritDiamond"
  value: {
-  dps: 29420.75624
-  tps: 19058.80791
+  dps: 29432.34848
+  tps: 19070.40015
  }
 }
 dps_results: {
@@ -87,15 +87,15 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-AustereShadowspiritDiamond"
  value: {
-  dps: 29136.56103
-  tps: 18850.14413
+  dps: 29147.43659
+  tps: 18861.01969
  }
 }
 dps_results: {
  key: "TestDestruction-AllItems-Balespider'sBurningVestments"
  value: {
-  dps: 25337.2033
-  tps: 15526.13359
+  dps: 25350.89583
+  tps: 15539.82612
  }
 }
 dps_results: {
@@ -221,12 +221,12 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-BracingShadowspiritDiamond"
  value: {
-  dps: 29291.45282
-  tps: 18585.99131
+  dps: 29303.12994
+  tps: 18597.43489
  }
 }
 dps_results: {
- key: "TestDestruction-AllItems-Brawler'sTrophy-71338"
+ key: "TestDestruction-AllItems-Brawler'sTrophy-232015"
  value: {
   dps: 27354.947
   tps: 17743.96331
@@ -235,22 +235,22 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-BurningShadowspiritDiamond"
  value: {
-  dps: 29577.5445
-  tps: 19163.02943
+  dps: 29589.57194
+  tps: 19175.05687
  }
 }
 dps_results: {
  key: "TestDestruction-AllItems-ChaoticShadowspiritDiamond"
  value: {
-  dps: 29478.98445
-  tps: 19100.85647
+  dps: 29491.33634
+  tps: 19113.20836
  }
 }
 dps_results: {
- key: "TestDestruction-AllItems-Coren'sChilledChromiumCoaster-71335"
+ key: "TestDestruction-AllItems-Coren'sChilledChromiumCoaster-232012"
  value: {
-  dps: 27778.1743
-  tps: 18031.90047
+  dps: 27726.50244
+  tps: 17996.56547
  }
 }
 dps_results: {
@@ -319,8 +319,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-DestructiveShadowspiritDiamond"
  value: {
-  dps: 29191.63627
-  tps: 18886.51958
+  dps: 29203.62839
+  tps: 18898.5117
  }
 }
 dps_results: {
@@ -340,8 +340,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-EffulgentShadowspiritDiamond"
  value: {
-  dps: 29136.56103
-  tps: 18850.14413
+  dps: 29147.43659
+  tps: 18861.01969
  }
 }
 dps_results: {
@@ -354,15 +354,15 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-EmberShadowspiritDiamond"
  value: {
-  dps: 29316.10612
-  tps: 18984.77923
+  dps: 29327.73364
+  tps: 18996.40675
  }
 }
 dps_results: {
  key: "TestDestruction-AllItems-EnigmaticShadowspiritDiamond"
  value: {
-  dps: 29191.63627
-  tps: 18886.51958
+  dps: 29203.62839
+  tps: 18898.5117
  }
 }
 dps_results: {
@@ -389,8 +389,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-EternalShadowspiritDiamond"
  value: {
-  dps: 29136.56103
-  tps: 18850.14413
+  dps: 29147.43659
+  tps: 18861.01969
  }
 }
 dps_results: {
@@ -452,8 +452,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-FleetShadowspiritDiamond"
  value: {
-  dps: 29199.83993
-  tps: 18891.85831
+  dps: 29211.1331
+  tps: 18903.15148
  }
 }
 dps_results: {
@@ -466,8 +466,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-ForlornShadowspiritDiamond"
  value: {
-  dps: 29291.45282
-  tps: 18949.65206
+  dps: 29303.12994
+  tps: 18961.32918
  }
 }
 dps_results: {
@@ -501,8 +501,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-Gladiator'sFelshroud"
  value: {
-  dps: 21439.26119
-  tps: 13524.54725
+  dps: 21450.06553
+  tps: 13535.35159
  }
 }
 dps_results: {
@@ -529,8 +529,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-HarmlightToken-63839"
  value: {
-  dps: 28193.2409
-  tps: 18350.28365
+  dps: 28206.46928
+  tps: 18363.51203
  }
 }
 dps_results: {
@@ -606,8 +606,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-ImpassiveShadowspiritDiamond"
  value: {
-  dps: 29191.63627
-  tps: 18886.51958
+  dps: 29203.62839
+  tps: 18898.5117
  }
 }
 dps_results: {
@@ -828,10 +828,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestDestruction-AllItems-MithrilStopwatch-71337"
+ key: "TestDestruction-AllItems-MithrilStopwatch-232013"
  value: {
-  dps: 28937.7575
-  tps: 18736.63203
+  dps: 28760.80243
+  tps: 18625.38771
  }
 }
 dps_results: {
@@ -870,10 +870,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestDestruction-AllItems-PetrifiedPickledEgg-71336"
+ key: "TestDestruction-AllItems-PetrifiedPickledEgg-232014"
  value: {
-  dps: 28452.83972
-  tps: 18466.04097
+  dps: 28345.43219
+  tps: 18394.39912
  }
 }
 dps_results: {
@@ -907,8 +907,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-PowerfulShadowspiritDiamond"
  value: {
-  dps: 29136.56103
-  tps: 18850.14413
+  dps: 29147.43659
+  tps: 18861.01969
  }
 }
 dps_results: {
@@ -942,15 +942,15 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-ReverberatingShadowspiritDiamond"
  value: {
-  dps: 29420.75624
-  tps: 19058.80791
+  dps: 29432.34848
+  tps: 19070.40015
  }
 }
 dps_results: {
  key: "TestDestruction-AllItems-RevitalizingShadowspiritDiamond"
  value: {
-  dps: 29420.75624
-  tps: 19058.79898
+  dps: 29432.34848
+  tps: 19070.39122
  }
 }
 dps_results: {
@@ -1005,8 +1005,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-ShadowflameRegalia"
  value: {
-  dps: 26741.45353
-  tps: 17338.00731
+  dps: 26754.26642
+  tps: 17350.8202
  }
 }
 dps_results: {
@@ -1215,8 +1215,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-Tyrande'sFavoriteDoll-64645"
  value: {
-  dps: 28235.28801
-  tps: 18396.93239
+  dps: 28242.0869
+  tps: 18403.73128
  }
 }
 dps_results: {
@@ -1257,15 +1257,15 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 29014.1718
-  tps: 18960.26042
+  dps: 29048.64625
+  tps: 18994.73487
  }
 }
 dps_results: {
  key: "TestDestruction-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 29730.91062
-  tps: 19565.41333
+  dps: 29824.60529
+  tps: 19659.108
  }
 }
 dps_results: {
@@ -1418,182 +1418,182 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Average-Default"
  value: {
-  dps: 29975.72287
-  tps: 19514.5603
+  dps: 29988.9574
+  tps: 19527.79483
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Goblin-p1-Destruction Warlock-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 30932.13499
-  tps: 35541.53281
+  dps: 30944.55015
+  tps: 35553.94797
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Goblin-p1-Destruction Warlock-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 29232.03221
-  tps: 19116.66568
+  dps: 29243.24577
+  tps: 19127.87924
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Goblin-p1-Destruction Warlock-default-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 39606.59339
-  tps: 23811.61334
+  dps: 39628.43095
+  tps: 23833.4509
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Goblin-p1-Destruction Warlock-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 18871.38948
-  tps: 26030.27767
+  dps: 18878.3363
+  tps: 26037.2245
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Goblin-p1-Destruction Warlock-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 18871.38948
-  tps: 12414.26859
+  dps: 18878.3363
+  tps: 12421.21542
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Goblin-p1-Destruction Warlock-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 22010.13303
-  tps: 13069.64738
+  dps: 22023.66669
+  tps: 13083.18104
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Human-p1-Destruction Warlock-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 30774.66502
-  tps: 35336.65379
+  dps: 30788.26856
+  tps: 35350.25733
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Human-p1-Destruction Warlock-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 29037.21811
-  tps: 19007.92888
+  dps: 29049.20842
+  tps: 19019.91918
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Human-p1-Destruction Warlock-default-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 39626.13596
-  tps: 23787.44984
+  dps: 39644.20571
+  tps: 23805.5196
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Human-p1-Destruction Warlock-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 18803.87743
-  tps: 25773.68552
+  dps: 18811.39643
+  tps: 25781.20452
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Human-p1-Destruction Warlock-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 18803.87743
-  tps: 12454.59356
+  dps: 18811.39643
+  tps: 12462.11256
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Human-p1-Destruction Warlock-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 21866.92854
-  tps: 13037.37585
+  dps: 21879.11477
+  tps: 13049.56207
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-p1-Destruction Warlock-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 31317.48938
-  tps: 35487.62972
+  dps: 31331.13957
+  tps: 35501.27991
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-p1-Destruction Warlock-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 29577.5445
-  tps: 19163.02943
+  dps: 29589.57194
+  tps: 19175.05687
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-p1-Destruction Warlock-default-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 40726.16363
-  tps: 24089.32292
+  dps: 40744.3767
+  tps: 24107.53598
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-p1-Destruction Warlock-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 19179.57248
-  tps: 25799.13976
+  dps: 19187.0579
+  tps: 25806.62518
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-p1-Destruction Warlock-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 19179.57248
-  tps: 12549.00792
+  dps: 19187.0579
+  tps: 12556.49334
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Orc-p1-Destruction Warlock-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 22577.43887
-  tps: 13212.5835
+  dps: 22589.74275
+  tps: 13224.88738
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Troll-p1-Destruction Warlock-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 31071.36748
-  tps: 35900.62111
+  dps: 31084.99479
+  tps: 35914.24842
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Troll-p1-Destruction Warlock-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 29388.11391
-  tps: 19261.43189
+  dps: 29399.58917
+  tps: 19272.90715
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Troll-p1-Destruction Warlock-default-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 40315.17852
-  tps: 24200.93926
+  dps: 40336.6087
+  tps: 24222.36944
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Troll-p1-Destruction Warlock-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 19040.28597
-  tps: 26183.56555
+  dps: 19049.27039
+  tps: 26192.54997
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Troll-p1-Destruction Warlock-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 19040.28597
-  tps: 12567.60874
+  dps: 19049.27039
+  tps: 12576.59316
  }
 }
 dps_results: {
  key: "TestDestruction-Settings-Troll-p1-Destruction Warlock-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 22810.04684
-  tps: 13647.78941
+  dps: 22824.72289
+  tps: 13662.46545
  }
 }
 dps_results: {
  key: "TestDestruction-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 29570.38563
-  tps: 19163.02943
+  dps: 29582.41307
+  tps: 19175.05687
  }
 }

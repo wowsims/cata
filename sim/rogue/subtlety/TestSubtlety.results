@@ -226,7 +226,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-Brawler'sTrophy-71338"
+ key: "TestSubtlety-AllItems-Brawler'sTrophy-232015"
  value: {
   dps: 21650.73928
   tps: 15372.02489
@@ -247,10 +247,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-Coren'sChilledChromiumCoaster-71335"
+ key: "TestSubtlety-AllItems-Coren'sChilledChromiumCoaster-232012"
  value: {
-  dps: 22813.2823
-  tps: 16197.43044
+  dps: 22682.3186
+  tps: 16104.44621
  }
 }
 dps_results: {
@@ -835,10 +835,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-MithrilStopwatch-71337"
+ key: "TestSubtlety-AllItems-MithrilStopwatch-232013"
  value: {
-  dps: 22081.80844
-  tps: 15678.084
+  dps: 22037.25152
+  tps: 15646.44858
  }
 }
 dps_results: {
@@ -877,7 +877,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSubtlety-AllItems-PetrifiedPickledEgg-71336"
+ key: "TestSubtlety-AllItems-PetrifiedPickledEgg-232014"
  value: {
   dps: 21650.73928
   tps: 15372.02489
@@ -1278,8 +1278,8 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-VestmentsoftheDarkPhoenix"
  value: {
-  dps: 23326.86311
-  tps: 16562.07281
+  dps: 23180.9483
+  tps: 16458.47329
  }
 }
 dps_results: {

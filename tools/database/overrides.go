@@ -265,6 +265,14 @@ var ItemDenyList = map[int32]struct{}{
 	68713: {}, // Mirror of Broken Images Duplicate
 	65104: {}, // DONTUSEUnheeded Warning
 	65015: {}, // DONTUSEFury of Angerforge
+	71331: {}, // Direbrew's Bloodied Shanker - 365
+	71332: {}, // Tremendous Tankard O' Terror - 365
+	71333: {}, // Bubblier Brightbrew Charm - 365
+	71334: {}, // Bitterer Balebrew Charm - 365
+	71335: {}, // Coren's Chilled Chromium Coaster - 365
+	71336: {}, // Petrified Pickled Egg - 365
+	71337: {}, // Mithril Stopwatch - 365
+	71338: {}, // Brawler's Trophy - 365
 }
 
 // Item icons to include in the DB, so they don't need to be separately loaded in the UI.

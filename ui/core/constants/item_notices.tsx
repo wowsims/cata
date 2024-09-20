@@ -56,24 +56,67 @@ const NON_EXISTING_ITEMS = [
 	71400,
 	// Belt of the Seven Seals - 391
 	71398,
-    // Gigantiform Bracers, - 391
-    71584,
-    // Bracers of Forked Lightning, - 391
-    71570,
-    // Bracers of Misting Ash, - 391
-    71582,
-    // Flamebinder Bracers, - 391
-    71569,
-    // Firesoul Wristguards, - 391
-    71572,
-    // Emberflame Bracers, - 391
-    71571,
-    // Bracers of Regal Force, - 391
-    71585,
-    // Smolderskull Bindings, - 391
-    71581,
-    // Bracers of Imperious Truths - 391
-    71583,
+	// Gigantiform Bracers, - 391
+	71584,
+	// Bracers of Forked Lightning, - 391
+	71570,
+	// Bracers of Misting Ash, - 391
+	71582,
+	// Flamebinder Bracers, - 391
+	71569,
+	// Firesoul Wristguards, - 391
+	71572,
+	// Emberflame Bracers, - 391
+	71571,
+	// Bracers of Regal Force, - 391
+	71585,
+	// Smolderskull Bindings, - 391
+	71581,
+	// Bracers of Imperious Truths - 391
+	71583,
+	// Crystalline Brimstone Ring - 391
+	71574,
+	// Soothing Brimstone Circle - 391
+	71578,
+	// Splintered Brimstone Seal - 391
+	71566,
+	// Serrated Brimstone Signet - 391
+	71588,
+	// Deflecting Brimstone Band - 391
+	71591,
+	// Necklace of Smoke Signals - 391
+	71565,
+	// Stoneheart Necklace - 391
+	71589,
+	// Stoneheart Choker - 391
+	71586,
+	// Amulet of Burning Brilliance - 391
+	71573,
+	// Firemind Pendant - 391
+	71576,
+];
+
+const NOT_YET_IMPLEMENTED_WARNING = <>The equip/use effect on this item is not yet implemented!</>;
+
+const NOT_YET_IMPLEMENTED_ITEMS = [
+	// Jaws of Defeat - 378
+	68926,
+	// Jaws of Defeat - 391
+	69111,
+	// Spidersilk Spindle- 378
+	68981,
+	// Spidersilk Spindle- 391
+	69138,
+	// Eye of Blazing Power - 378
+	68983,
+	// Eye of Blazing Power - 391
+	69149,
+	// Scales of Life - 378
+	68915,
+	// Scales of Life - 391
+	69109,
+	// Stay of Execution - 378
+	68996,
 ];
 
 export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
@@ -81,6 +124,12 @@ export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 		itemID,
 		{
 			[Spec.SpecUnknown]: ITEM_DOESNT_EXIST_WARNING,
+		},
+	]),
+	...NOT_YET_IMPLEMENTED_ITEMS.map((itemID): [number, ItemNoticeData] => [
+		itemID,
+		{
+			[Spec.SpecUnknown]: NOT_YET_IMPLEMENTED_WARNING,
 		},
 	]),
 	// Dragonwrath, Tarecgosa's Rest
@@ -159,15 +208,13 @@ export const GENERIC_MISSING_SET_BONUS_NOTICE_DATA = new Map<number, string>([
 	[4, 'Not yet implemented'],
 ]);
 
+export const IGNITE_BONUS_WARNING = new Map<number, string>([[2, 'Tentative implementation, requires PTR testing to validate munching / roll-over model']]);
+
 export const SET_BONUS_NOTICES = new Map<number, SetBonusNoticeData>([
 	// Custom notices
-	[
-		1002, // Feral T12
-		new Map<number, string>([
-			[2, 'Not implemented, requires PTR testing!'],
-			[4, 'Implemented and working for both cat and bear'],
-		]),
-	],
+	[1002, IGNITE_BONUS_WARNING], // Feral T12
+	[1006, IGNITE_BONUS_WARNING], // Rogue T12
+	[1012, IGNITE_BONUS_WARNING], // Ret T12
 	[
 		1008, // Warlock T12
 		new Map<number, string>([

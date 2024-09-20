@@ -247,7 +247,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestMM-AllItems-Brawler'sTrophy-71338"
+ key: "TestMM-AllItems-Brawler'sTrophy-232015"
  value: {
   dps: 20804.38157
   tps: 18630.91177
@@ -275,10 +275,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestMM-AllItems-Coren'sChilledChromiumCoaster-71335"
+ key: "TestMM-AllItems-Coren'sChilledChromiumCoaster-232012"
  value: {
-  dps: 21715.66557
-  tps: 19449.28938
+  dps: 21626.2412
+  tps: 19369.40625
  }
 }
 dps_results: {
@@ -884,10 +884,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestMM-AllItems-MithrilStopwatch-71337"
+ key: "TestMM-AllItems-MithrilStopwatch-232013"
  value: {
-  dps: 21194.34533
-  tps: 18992.87126
+  dps: 21161.09656
+  tps: 18961.50398
  }
 }
 dps_results: {
@@ -926,7 +926,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestMM-AllItems-PetrifiedPickledEgg-71336"
+ key: "TestMM-AllItems-PetrifiedPickledEgg-232014"
  value: {
   dps: 20804.36191
   tps: 18630.89211

@@ -27,7 +27,7 @@ func newProcDamageEffect(config ProcDamageEffect) {
 			ProcMask:    core.ProcMaskEmpty,
 
 			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			CritMultiplier:   character.GetSpellCritMultiplier(),
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
