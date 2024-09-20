@@ -1,19 +1,23 @@
 import { ItemNoticeData, SetBonusNoticeData } from '../components/item_notice/item_notice';
 import { Spec } from '../proto/common';
 
+const WantToHelpMessage = () => <p className="mb-0">Want to help out by providing additional information? Contact us on our Discord!</p>;
+
 const MISSING_IMPLEMENTATION_WARNING = (
 	<>
 		<p className="fw-bold">This item is not implemented!</p>
 		<p>We are working hard on gathering all the old resources to allow for an initial implementation.</p>
-		<p className="mb-0">Want to help out by providing additional information? Contact us on our Discord!</p>
+		<WantToHelpMessage />
 	</>
 );
 
-const PROC_IMPLEMENTATION_WARNING = (
+const VPLC_IMPLEMENTATION_WARNING = (
 	<>
-		<p className="fw-bold">The proc rate for this item might not be correct!</p>
-		<p>Current proc rate is 50%, based on old video data.</p>
-		<p className="mb-0">Want to help out by providing additional information? Contact us on our Discord!</p>
+		<p>
+			Current proc rate is <span className="fw-bold">50%</span> confirmed on PTR.
+		</p>
+		<p>Scales with: 3% Damage buff & 8% Spell Damage debuff.</p>
+		<WantToHelpMessage />
 	</>
 );
 
@@ -194,12 +198,28 @@ export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 	[
 		// VPLC - Normal
 		68925,
-		{ [Spec.SpecUnknown]: PROC_IMPLEMENTATION_WARNING },
+		{
+			[Spec.SpecUnknown]: VPLC_IMPLEMENTATION_WARNING,
+			[Spec.SpecArcaneMage]: false,
+			[Spec.SpecFireMage]: false,
+			[Spec.SpecDemonologyWarlock]: false,
+			[Spec.SpecAfflictionWarlock]: false,
+			[Spec.SpecDestructionWarlock]: false,
+			[Spec.SpecShadowPriest]: false,
+		},
 	],
 	[
 		// VPLC - Heroic
 		69110,
-		{ [Spec.SpecUnknown]: PROC_IMPLEMENTATION_WARNING },
+		{
+			[Spec.SpecUnknown]: VPLC_IMPLEMENTATION_WARNING,
+			[Spec.SpecArcaneMage]: false,
+			[Spec.SpecFireMage]: false,
+			[Spec.SpecDemonologyWarlock]: false,
+			[Spec.SpecAfflictionWarlock]: false,
+			[Spec.SpecDestructionWarlock]: false,
+			[Spec.SpecShadowPriest]: false,
+		},
 	],
 ]);
 
