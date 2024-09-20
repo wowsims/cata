@@ -119,6 +119,23 @@ const NOT_YET_IMPLEMENTED_ITEMS = [
 	68996,
 ];
 
+const ITEM_DOESNT_EXIST_BREWFEST_WARNING = <>The brewfest items for cata classic are Item Level 353. This version is not implemented!</>;
+
+const NON_EXISTING_BREWFEST_ITEMS = [
+	// Bubblier Brightbrew Charm - 365
+	71333,
+	// Bitterer Balebrew Charm - 365
+	71334,
+	// Coren's Chilled Chromium Coaster - 365
+	71335,
+	// Petrified Pickled Egg - 365
+	71336,
+	// Mithril Stopwatch - 365
+	71337,
+	// Brawler's Trophy - 365
+	71338,
+];
+
 export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 	...NON_EXISTING_ITEMS.map((itemID): [number, ItemNoticeData] => [
 		itemID,
@@ -130,6 +147,12 @@ export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 		itemID,
 		{
 			[Spec.SpecUnknown]: NOT_YET_IMPLEMENTED_WARNING,
+		},
+	]),
+	...NON_EXISTING_BREWFEST_ITEMS.map((itemID): [number, ItemNoticeData] => [
+		itemID,
+		{
+			[Spec.SpecUnknown]: ITEM_DOESNT_EXIST_BREWFEST_WARNING,
 		},
 	]),
 	// Dragonwrath, Tarecgosa's Rest
