@@ -586,9 +586,9 @@ export class ActionId {
 					name = 'Flaming Torment (T12 4P)';
 				}
 				break;
-			// Death Knight - T12 4P proc
+			// Death Knight - T12 2P proc
 			case 'Burning Blood':
-					name += ' (T12 4P)';
+					name += ' (T12 2P)';
 				break;
 			// Death Knight - T12 4P proc
 			case 'Flaming Rune Weapon':
