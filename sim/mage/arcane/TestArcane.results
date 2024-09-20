@@ -96,7 +96,7 @@ dps_results: {
  value: {
   dps: 27594.12743
   tps: 27748.06659
-  hps: 99.81156
+  hps: 127.42647
  }
 }
 dps_results: {
@@ -305,8 +305,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-DarkmoonCard:Volcano-62047"
  value: {
-  dps: 29181.40498
-  tps: 29339.65485
+  dps: 29198.44185
+  tps: 29356.69172
  }
 }
 dps_results: {
@@ -536,8 +536,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-HarmlightToken-63839"
  value: {
-  dps: 28481.62314
-  tps: 28658.3363
+  dps: 28515.17753
+  tps: 28691.8907
  }
 }
 dps_results: {
@@ -1222,8 +1222,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-Tyrande'sFavoriteDoll-64645"
  value: {
-  dps: 28536.09397
-  tps: 28754.33228
+  dps: 28564.47786
+  tps: 28782.71618
  }
 }
 dps_results: {
@@ -1264,15 +1264,15 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 29161.04171
-  tps: 29341.00223
+  dps: 29225.64619
+  tps: 29405.6067
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 30154.98801
-  tps: 30328.68996
+  dps: 30336.24574
+  tps: 30509.9477
  }
 }
 dps_results: {
