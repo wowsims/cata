@@ -97,7 +97,7 @@ type BethtilacAI struct {
 func (ai *BethtilacAI) Initialize(target *core.Target, config *proto.Target) {
 	ai.Target = target
 	ai.preNerf = config.TargetInputs[0].BoolValue
-	ai.includeFrenzy = config.TargetInputs[1].BoolValue 
+	ai.includeFrenzy = config.TargetInputs[1].BoolValue
 	ai.registerEmberFlameSpell()
 	ai.registerFrenzySpell()
 
@@ -175,7 +175,7 @@ func (ai *BethtilacAI) registerEmberFlameSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Raid.AllPlayerUnits {
-				damageRoll := emberFlameBase + emberFlameVariance * sim.RandomFloat("Ember Flame Damage")
+				damageRoll := emberFlameBase + emberFlameVariance*sim.RandomFloat("Ember Flame Damage")
 				spell.CalcAndDealDamage(sim, aoeTarget, damageRoll, spell.OutcomeAlwaysHit)
 			}
 		},
@@ -193,5 +193,5 @@ func (ai *BethtilacAI) ExecuteCustomRotation(sim *core.Simulation) {
 		ai.emberFlame.Cast(sim, target)
 	}
 
-	ai.Target.ExtendGCDUntil(sim, sim.CurrentTime + core.BossGCD)
+	ai.Target.ExtendGCDUntil(sim, sim.CurrentTime+core.BossGCD)
 }
