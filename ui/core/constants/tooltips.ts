@@ -35,6 +35,7 @@ export const TOOLTIP_METRIC_LABELS = {
 	'Damage Taken': 'Total Damage taken',
 	DTPS: 'Damage Taken / Encounter Duration',
 	COD: 'Chance of Death',
+	TMI: 'Theck-Meloree Index',
 	// Cast metrics
 	Casts: 'Casts',
 	CPM: 'Casts / (Encounter Duration / 60 Seconds)',

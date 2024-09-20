@@ -5,13 +5,14 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/encounters/bwd"
+	"github.com/wowsims/cata/sim/encounters/firelands"
 )
 
 func init() {
 	AddDefaultPresetEncounter()
 	addMovementAI()
 	bwd.Register()
-
+	firelands.Register()
 }
 
 func AddSingleTargetBossEncounter(presetTarget *core.PresetTarget) {

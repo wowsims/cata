@@ -81,7 +81,7 @@ func (druid *Druid) ApplyTalents() {
 	// druid.applyPredatoryInstincts()
 	druid.applyNaturalReaction()
 	// druid.applyOwlkinFrenzy()
-	// druid.applyInfectedWounds()
+	druid.applyInfectedWounds()
 	druid.applyFurySwipes()
 	druid.applyPrimalMadness()
 	druid.applyStampede()
@@ -850,39 +850,32 @@ func (druid *Druid) applyNaturalReaction() {
 	})
 }
 
-// func (druid *Druid) applyInfectedWounds() {
-// 	if druid.Talents.InfectedWounds == 0 {
-// 		return
-// 	}
+func (druid *Druid) applyInfectedWounds() {
+	if druid.Talents.InfectedWounds == 0 {
+		return
+	}
 
-// 	iwAuras := druid.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-// 		return core.InfectedWoundsAura(target, druid.Talents.InfectedWounds)
-// 	})
-// 	druid.Env.RegisterPreFinalizeEffect(func() {
-// 		if druid.Shred != nil {
-// 			druid.Shred.RelatedAuras = append(druid.Shred.RelatedAuras, iwAuras)
-// 		}
-// 		if druid.MangleCat != nil {
-// 			druid.MangleCat.RelatedAuras = append(druid.MangleCat.RelatedAuras, iwAuras)
-// 		}
-// 		if druid.MangleBear != nil {
-// 			druid.MangleBear.RelatedAuras = append(druid.MangleBear.RelatedAuras, iwAuras)
-// 		}
-// 		if druid.Maul != nil {
-// 			druid.Maul.RelatedAuras = append(druid.Maul.RelatedAuras, iwAuras)
-// 		}
-// 	})
+	iwAuras := druid.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+		return core.InfectedWoundsAura(target, druid.Talents.InfectedWounds)
+	})
+	druid.Env.RegisterPreFinalizeEffect(func() {
+		triggeringSpells := []*DruidSpell{druid.Shred, druid.Ravage, druid.Maul, druid.MangleCat, druid.MangleBear}
 
-// 	druid.RegisterAura(core.Aura{
-// 		Label:    "Infected Wounds Talent",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if result.Landed() && (druid.Shred.IsEqual(spell) || druid.Maul.IsEqual(spell) || druid.MangleCat.IsEqual(spell) || druid.MangleBear.IsEqual(spell)) {
-// 				iwAuras.Get(result.Target).Activate(sim)
-// 			}
-// 		},
-// 	})
-// }
+		for _, spell := range triggeringSpells {
+			if spell != nil {
+				spell.RelatedAuras = append(spell.RelatedAuras, iwAuras)
+			}
+		}
+	})
+
+	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
+		Name:           "Infected Wounds Trigger",
+		Callback:       core.CallbackOnSpellHitDealt,
+		ClassSpellMask: DruidSpellShred | DruidSpellRavage | DruidSpellMaul | DruidSpellMangle,
+		Outcome:        core.OutcomeLanded,
+
+		Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+			iwAuras.Get(result.Target).Activate(sim)
+		},
+	})
+}
