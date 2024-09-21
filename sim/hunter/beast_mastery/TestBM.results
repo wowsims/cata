@@ -1052,6 +1052,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBM-AllItems-ScalesofLife-68915"
+ value: {
+  dps: 20882.39663
+  tps: 17632.35153
+ }
+}
+dps_results: {
+ key: "TestBM-AllItems-ScalesofLife-69109"
+ value: {
+  dps: 20882.39663
+  tps: 17632.35153
+ }
+}
+dps_results: {
  key: "TestBM-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 21567.03803

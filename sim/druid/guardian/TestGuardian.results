@@ -1024,6 +1024,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-ScalesofLife-68915"
+ value: {
+  dps: 7800.93141
+  tps: 39067.10435
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-ScalesofLife-69109"
+ value: {
+  dps: 7800.93141
+  tps: 39067.10435
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 8074.79408

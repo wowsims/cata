@@ -1038,6 +1038,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestShadow-AllItems-ScalesofLife-68915"
+ value: {
+  dps: 27699.74157
+  tps: 25794.72689
+ }
+}
+dps_results: {
+ key: "TestShadow-AllItems-ScalesofLife-69109"
+ value: {
+  dps: 27699.74157
+  tps: 25794.72689
+ }
+}
+dps_results: {
  key: "TestShadow-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 27699.74157

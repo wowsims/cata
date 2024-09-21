@@ -1024,6 +1024,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-ScalesofLife-68915"
+ value: {
+  dps: 25439.58027
+  tps: 36362.5747
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-ScalesofLife-69109"
+ value: {
+  dps: 25439.58027
+  tps: 36362.5747
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 26587.05699

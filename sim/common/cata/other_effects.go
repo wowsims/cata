@@ -774,6 +774,67 @@ func init() {
 				},
 			}))
 		})
+
+		scalesOfLifeItemID := core.TernaryInt32(heroic, 69109, 68915)
+		core.NewItemEffect(scalesOfLifeItemID, func(agent core.Agent) {
+			character := agent.GetCharacter()
+
+			weightOfAFeather := character.RegisterAura(core.Aura{
+				Label:    "Weight of a Feather",
+				ActionID: core.ActionID{SpellID: core.TernaryInt32(heroic, 97117, 96879)},
+				Duration: time.Second * 20,
+			})
+
+			core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+				Label: "Scales of Life Trigger",
+				OnHealTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if result.Damage <= 0 {
+						return
+					}
+
+					weightOfAFeather.Activate(sim)
+				},
+			}))
+
+			// Assuming full stack since sim doesn't track overhealing
+			maxHeal := core.TernaryFloat64(heroic, 19283, 17095)
+			trinketSpell := character.RegisterSpell(core.SpellConfig{
+				ActionID:    core.ActionID{ItemID: scalesOfLifeItemID},
+				SpellSchool: core.SpellSchoolHoly,
+				ProcMask:    core.ProcMaskSpellHealing,
+				Flags:       core.SpellFlagNoOnCastComplete,
+
+				Cast: core.CastConfig{
+					SharedCD: core.Cooldown{
+						Timer:    character.GetDefensiveTrinketCD(),
+						Duration: time.Second * 20,
+					},
+					CD: core.Cooldown{
+						Timer:    character.NewTimer(),
+						Duration: time.Minute * 1,
+					},
+				},
+
+				DamageMultiplier: 1,
+				CritMultiplier:   character.DefaultSpellCritMultiplier(),
+				ThreatMultiplier: 1,
+
+				ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+					return weightOfAFeather.IsActive()
+				},
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					spell.CalcAndDealHealing(sim, spell.Unit, maxHeal, spell.OutcomeHealingCrit)
+					weightOfAFeather.Deactivate(sim)
+				},
+			})
+
+			character.AddMajorCooldown(core.MajorCooldown{
+				Spell:    trinketSpell,
+				Priority: core.CooldownPriorityDefault,
+				Type:     core.CooldownTypeSurvival,
+			})
+		})
 	}
 }
 

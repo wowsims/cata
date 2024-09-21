@@ -996,6 +996,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-ScalesofLife-68915"
+ value: {
+  dps: 21639.32405
+  tps: 15363.92008
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-ScalesofLife-69109"
+ value: {
+  dps: 21639.32405
+  tps: 15363.92008
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 22716.20002

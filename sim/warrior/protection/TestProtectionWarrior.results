@@ -1079,6 +1079,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-ScalesofLife-68915"
+ value: {
+  dps: 4659.08749
+  tps: 28426.12721
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-ScalesofLife-69109"
+ value: {
+  dps: 4659.08749
+  tps: 28426.12721
+ }
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 4714.685

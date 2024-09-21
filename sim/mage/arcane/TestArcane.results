@@ -1010,6 +1010,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-ScalesofLife-68915"
+ value: {
+  dps: 27584.0859
+  tps: 27718.80004
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-ScalesofLife-69109"
+ value: {
+  dps: 27584.0859
+  tps: 27718.80004
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 27584.0859

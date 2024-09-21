@@ -996,6 +996,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-AllItems-ScalesofLife-68915"
+ value: {
+  dps: 27925.65786
+  tps: 14230.85394
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-ScalesofLife-69109"
+ value: {
+  dps: 27925.93816
+  tps: 14231.32287
+ }
+}
+dps_results: {
  key: "TestDemonology-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 27916.05747

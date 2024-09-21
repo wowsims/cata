@@ -1031,6 +1031,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-ScalesofLife-68915"
+ value: {
+  dps: 29056.27505
+  tps: 29071.6183
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-ScalesofLife-69109"
+ value: {
+  dps: 29056.27505
+  tps: 29071.6183
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 29735.39546
