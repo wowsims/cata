@@ -1108,6 +1108,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 25878.17637
+  tps: 37076.63242
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 25935.43434
+  tps: 37169.85145
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-StayofExecution-68996"
  value: {
   dps: 25439.58027

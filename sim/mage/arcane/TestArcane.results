@@ -1094,6 +1094,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 28088.73162
+  tps: 28223.44576
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 28154.61227
+  tps: 28289.3264
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-StayofExecution-68996"
  value: {
   dps: 27381.61965

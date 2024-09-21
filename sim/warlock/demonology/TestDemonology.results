@@ -1087,6 +1087,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 28609.66893
+  tps: 14482.80385
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 28748.39123
+  tps: 14534.08606
+ }
+}
+dps_results: {
  key: "TestDemonology-AllItems-StayofExecution-68996"
  value: {
   dps: 26255.46545

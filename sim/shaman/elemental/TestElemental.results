@@ -1122,6 +1122,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 30428.14406
+  tps: 592.31769
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 30608.8098
+  tps: 595.21472
+ }
+}
+dps_results: {
  key: "TestElemental-AllItems-Spiritwalker'sRegalia"
  value: {
   dps: 29413.12564

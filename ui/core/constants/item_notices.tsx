@@ -103,10 +103,6 @@ const NON_EXISTING_ITEMS = [
 const NOT_YET_IMPLEMENTED_WARNING = <>The equip/use effect on this item is not yet implemented!</>;
 
 const NOT_YET_IMPLEMENTED_ITEMS = [
-	// Spidersilk Spindle- 378
-	68981,
-	// Spidersilk Spindle- 391
-	69138,
 	// Eye of Blazing Power - 378
 	68983,
 	// Eye of Blazing Power - 391

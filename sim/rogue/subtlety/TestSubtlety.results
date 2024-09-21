@@ -1080,6 +1080,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 21829.92243
+  tps: 15499.24493
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 21852.57497
+  tps: 15515.32823
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-StayofExecution-68996"
  value: {
   dps: 21639.32405

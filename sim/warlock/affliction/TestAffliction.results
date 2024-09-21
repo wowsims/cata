@@ -1087,6 +1087,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAffliction-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 27038.56737
+  tps: 19823.42335
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 27137.41802
+  tps: 19922.274
+ }
+}
+dps_results: {
  key: "TestAffliction-AllItems-StayofExecution-68996"
  value: {
   dps: 26632.48919

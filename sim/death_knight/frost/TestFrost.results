@@ -1268,6 +1268,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrost-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 21046.64751
+  tps: 19203.05037
+  hps: 242.45587
+ }
+}
+dps_results: {
+ key: "TestFrost-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 21086.00361
+  tps: 19242.40647
+  hps: 242.45587
+ }
+}
+dps_results: {
  key: "TestFrost-AllItems-StayofExecution-68996"
  value: {
   dps: 20745.1798

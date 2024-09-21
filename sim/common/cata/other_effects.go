@@ -693,6 +693,87 @@ func init() {
 				Type:     core.CooldownTypeMana,
 			})
 		})
+
+		spindleItemID := core.TernaryInt32(heroic, 69138, 68981)
+		core.NewItemEffect(spindleItemID, func(agent core.Agent) {
+			character := agent.GetCharacter()
+
+			shieldAmount := core.TernaryFloat64(heroic, 19283, 17095)
+			currentShield := 0.0
+			var shieldSpell *core.Spell
+			shieldSpell = character.GetOrRegisterSpell(core.SpellConfig{
+				ActionID:    core.ActionID{SpellID: core.TernaryInt32(heroic, 97129, 96945)},
+				ProcMask:    core.ProcMaskSpellHealing,
+				SpellSchool: core.SpellSchoolHoly,
+				Flags: core.SpellFlagHelpful |
+					core.SpellFlagPassiveSpell |
+					core.SpellFlagIgnoreModifiers |
+					core.SpellFlagNoSpellMods,
+
+				DamageMultiplier: 1,
+				ThreatMultiplier: 1,
+
+				Shield: core.ShieldConfig{
+					SelfOnly: true,
+					Aura: core.Aura{
+						Label:     "Loom of Fate",
+						Duration:  time.Second * 30,
+						MaxStacks: int32(shieldAmount),
+						OnReset: func(aura *core.Aura, sim *core.Simulation) {
+							currentShield = 0.0
+						},
+						OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+							if currentShield <= 0 || result.Damage <= 0 {
+								return
+							}
+
+							damageReduced := min(result.Damage, currentShield)
+							currentShield -= damageReduced
+							aura.SetStacks(sim, int32(currentShield))
+
+							character.GainHealth(sim, damageReduced, shieldSpell.HealthMetrics(result.Target))
+
+							if currentShield <= 0 {
+								shieldSpell.SelfShield().Deactivate(sim)
+							}
+						},
+						OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+							currentShield = 0
+						},
+					},
+				},
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					currentShield = shieldAmount
+					shield := shieldSpell.SelfShield()
+					shield.Apply(sim, shieldAmount)
+					shield.Aura.SetStacks(sim, shield.Aura.MaxStacks)
+				},
+			})
+
+			core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+				Label: "Spidersilk Spindle",
+				Icd: &core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute,
+				},
+				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if !spell.SpellSchool.Matches(core.SpellSchoolPhysical) {
+						return
+					}
+
+					if !aura.Icd.IsReady(sim) || result.Damage == 0 {
+						return
+					}
+
+					preHitHp := character.CurrentHealth() + result.Damage
+					if character.CurrentHealthPercent() < 0.35 && preHitHp >= 0.35 {
+						aura.Icd.Use(sim)
+						shieldSpell.Cast(sim, result.Target)
+					}
+				},
+			}))
+		})
 	}
 }
 

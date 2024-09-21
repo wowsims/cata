@@ -1268,6 +1268,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 31071.47193
+  tps: 23176.55359
+  hps: 546.10701
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 31136.47029
+  tps: 23247.96017
+  hps: 546.10701
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-StayofExecution-68996"
  value: {
   dps: 30574.59353

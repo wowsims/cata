@@ -1276,6 +1276,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-StayofExecution-68996"
  value: {
   dps: 13803.93262

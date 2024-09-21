@@ -1108,6 +1108,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 7800.93141
+  tps: 39067.10435
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 7800.93141
+  tps: 39067.10435
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-StayofExecution-68996"
  value: {
   dps: 7800.93141
