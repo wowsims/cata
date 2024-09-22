@@ -233,7 +233,6 @@ func (druid *Druid) applyMoonkinForm() {
 	if druid.Talents.MoonkinForm {
 		druid.AddStaticMod(core.SpellModConfig{
 			School:     core.SpellSchoolArcane | core.SpellSchoolNature,
-			ClassMask:  DruidSpellsAll,
 			FloatValue: 0.1,
 			Kind:       core.SpellMod_DamageDone_Pct,
 		})
