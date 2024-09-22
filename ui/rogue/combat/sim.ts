@@ -18,7 +18,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	cssClass: 'combat-rogue-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Rogue),
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: ['Rotations are not fully optimized, especially for non-standard setups.'],
+	knownIssues: [],
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -74,7 +74,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
 				breakpoints: [8, 27],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [117.16, 0],
+				postCapEPs: [115, 0],
 			});
 
 			return [meleeHitSoftCapConfig, spellHitSoftCapConfig];
@@ -192,7 +192,29 @@ export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			const optimizer = new ReforgeOptimizer(this);
+
+			this.sim.showExperimentalChangeEmitter.on(c => {
+				if (this.sim.getShowExperimental() == true) {
+					const masteryRatingBreakpoints = [];
+					const masteryPercentPerPoint = Mechanics.masteryPercentPerPoint.get(Spec.SpecCombatRogue)!;
+					for (let masteryPercent = 20; masteryPercent <= 200; masteryPercent++) {
+						masteryRatingBreakpoints.push((masteryPercent / masteryPercentPerPoint) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
+					}
+
+					const masterySoftCapConfig = StatCap.fromStat(Stat.StatMasteryRating, {
+						breakpoints: masteryRatingBreakpoints,
+						capType: StatCapType.TypeThreshold,
+						postCapEPs: [0],
+					});
+
+					optimizer.softCapsConfig.push(masterySoftCapConfig);
+				}
+				else
+				{
+					optimizer.softCapsConfig.splice(2, 1);
+				}
+			})
 		});
 
 		this.player.changeEmitter.on(c => {
