@@ -688,6 +688,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 29084.03281
+  tps: 29102.7746
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 29066.14065
+  tps: 29086.80611
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-JujuofNimbleness-63840"
  value: {
   dps: 29760.50253
@@ -1017,6 +1031,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-ScalesofLife-68915"
+ value: {
+  dps: 29056.27505
+  tps: 29071.6183
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-ScalesofLife-69109"
+ value: {
+  dps: 29056.27505
+  tps: 29071.6183
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 29735.39546
@@ -1105,6 +1133,27 @@ dps_results: {
  value: {
   dps: 29623.33264
   tps: 29638.67589
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 29648.87565
+  tps: 29664.2189
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 29726.23866
+  tps: 29741.58191
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-StayofExecution-68996"
+ value: {
+  dps: 29056.39382
+  tps: 29071.73707
  }
 }
 dps_results: {

@@ -729,6 +729,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 4659.08749
+  tps: 28426.12721
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 4659.08749
+  tps: 28426.12721
+ }
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-JujuofNimbleness-63840"
  value: {
   dps: 4659.08749
@@ -1065,6 +1079,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-ScalesofLife-68915"
+ value: {
+  dps: 4659.08749
+  tps: 28426.12721
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-ScalesofLife-69109"
+ value: {
+  dps: 4659.08749
+  tps: 28426.12721
+ }
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 4714.685
@@ -1150,6 +1178,27 @@ dps_results: {
 }
 dps_results: {
  key: "TestProtectionWarrior-AllItems-SoulCasket-58183"
+ value: {
+  dps: 4659.08749
+  tps: 28426.12721
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 4659.08749
+  tps: 28426.12721
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 4659.08749
+  tps: 28426.12721
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-StayofExecution-68996"
  value: {
   dps: 4659.08749
   tps: 28426.12721

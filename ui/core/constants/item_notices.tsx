@@ -100,28 +100,7 @@ const NON_EXISTING_ITEMS = [
 	71576,
 ];
 
-const NOT_YET_IMPLEMENTED_WARNING = <>The equip/use effect on this item is not yet implemented!</>;
-
-const NOT_YET_IMPLEMENTED_ITEMS = [
-	// Jaws of Defeat - 378
-	68926,
-	// Jaws of Defeat - 391
-	69111,
-	// Spidersilk Spindle- 378
-	68981,
-	// Spidersilk Spindle- 391
-	69138,
-	// Eye of Blazing Power - 378
-	68983,
-	// Eye of Blazing Power - 391
-	69149,
-	// Scales of Life - 378
-	68915,
-	// Scales of Life - 391
-	69109,
-	// Stay of Execution - 378
-	68996,
-];
+const WILL_NOT_BE_IMPLEMENTED_WARNING = <>The equip/use effect on this item is will not be implemented!</>;
 
 export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 	...NON_EXISTING_ITEMS.map((itemID): [number, ItemNoticeData] => [
@@ -130,12 +109,20 @@ export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 			[Spec.SpecUnknown]: ITEM_DOESNT_EXIST_WARNING,
 		},
 	]),
-	...NOT_YET_IMPLEMENTED_ITEMS.map((itemID): [number, ItemNoticeData] => [
-		itemID,
+	[
+		// Eye of Blazing Power - 378
+		68983,
 		{
-			[Spec.SpecUnknown]: NOT_YET_IMPLEMENTED_WARNING,
+			[Spec.SpecUnknown]: WILL_NOT_BE_IMPLEMENTED_WARNING,
 		},
-	]),
+	],
+	[
+		// Eye of Blazing Power - 391
+		69149,
+		{
+			[Spec.SpecUnknown]: WILL_NOT_BE_IMPLEMENTED_WARNING,
+		},
+	],
 	// Dragonwrath, Tarecgosa's Rest
 	[
 		71086,

@@ -711,6 +711,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAssassination-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 27441.96409
+  tps: 19483.7945
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 27441.96409
+  tps: 19483.7945
+ }
+}
+dps_results: {
  key: "TestAssassination-AllItems-JujuofNimbleness-63840"
  value: {
   dps: 28617.42272
@@ -1019,6 +1033,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAssassination-AllItems-ScalesofLife-68915"
+ value: {
+  dps: 27441.96409
+  tps: 19483.7945
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-ScalesofLife-69109"
+ value: {
+  dps: 27441.96409
+  tps: 19483.7945
+ }
+}
+dps_results: {
  key: "TestAssassination-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 28667.06727
@@ -1100,6 +1128,27 @@ dps_results: {
  value: {
   dps: 27945.83202
   tps: 19841.54073
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 28043.15231
+  tps: 19910.63814
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 28121.63641
+  tps: 19966.36185
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-StayofExecution-68996"
+ value: {
+  dps: 27441.96409
+  tps: 19483.7945
  }
 }
 dps_results: {
