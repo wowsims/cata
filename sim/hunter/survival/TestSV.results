@@ -1313,15 +1313,15 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 25127.04148
-  tps: 22763.38032
+  dps: 25127.15989
+  tps: 22763.49873
  }
 }
 dps_results: {
  key: "TestSV-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 25189.62644
-  tps: 22825.90719
+  dps: 25189.74485
+  tps: 22826.0256
  }
 }
 dps_results: {

@@ -1257,15 +1257,15 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 29599.4129
-  tps: 19545.50153
+  dps: 29599.57252
+  tps: 19545.66115
  }
 }
 dps_results: {
  key: "TestDestruction-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 29824.45112
-  tps: 19658.95383
+  dps: 29824.60529
+  tps: 19659.108
  }
 }
 dps_results: {

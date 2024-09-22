@@ -1470,16 +1470,16 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 21147.43523
-  tps: 19300.39897
+  dps: 21147.49567
+  tps: 19300.4594
   hps: 245.25883
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 21205.31583
-  tps: 19356.27561
+  dps: 21205.37782
+  tps: 19356.3376
   hps: 243.85735
  }
 }
