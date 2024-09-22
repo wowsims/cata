@@ -198,7 +198,7 @@ export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 				if (this.sim.getShowExperimental() == true) {
 					const masteryRatingBreakpoints = [];
 					const masteryPercentPerPoint = Mechanics.masteryPercentPerPoint.get(Spec.SpecCombatRogue)!;
-					for (let masteryPercent = 20; masteryPercent <= 200; masteryPercent++) {
+					for (let masteryPercent = 16; masteryPercent <= 200; masteryPercent++) {
 						masteryRatingBreakpoints.push((masteryPercent / masteryPercentPerPoint) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
 					}
 
