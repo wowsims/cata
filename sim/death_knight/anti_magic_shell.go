@@ -11,6 +11,7 @@ import (
 func (dk *DeathKnight) registerAntiMagicShellSpell() {
 	actionID := core.ActionID{SpellID: 48707}
 
+	dmgReductionModifier := 0.75 + []float64{0, 0.08, 0.16, 0.25}[dk.Talents.MagicSuppression]
 	currentShield := 0.0
 
 	var shieldSpell *core.Spell
@@ -20,9 +21,6 @@ func (dk *DeathKnight) registerAntiMagicShellSpell() {
 		SpellSchool: core.SpellSchoolShadow,
 		Flags:       core.SpellFlagAPL,
 
-		RuneCost: core.RuneCostOptions{
-			RunicPowerCost: 20,
-		},
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    dk.NewTimer(),
@@ -49,7 +47,7 @@ func (dk *DeathKnight) registerAntiMagicShellSpell() {
 						return
 					}
 
-					damageReduced := min(result.Damage, currentShield)
+					damageReduced := min(result.Damage*dmgReductionModifier, currentShield)
 					currentShield -= damageReduced
 
 					dk.GainHealth(sim, damageReduced, shieldSpell.HealthMetrics(result.Target))
