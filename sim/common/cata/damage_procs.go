@@ -64,7 +64,9 @@ func init() {
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				baseDamage := sim.Roll(985, 1266) * float64(dummyAura.GetStacks())
+				// Tooltip is wrong:
+				// https://wago.tools/db2/SpellEffect?build=4.4.1.56574&filter[SpellID]=96887%7C96891%7C97119&page=1&sort[SpellID]=asc
+				baseDamage := sim.Roll(2561, 3292) * float64(dummyAura.GetStacks())
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			},
 		})
