@@ -25,6 +25,8 @@ type Druid struct {
 
 	StartingForm DruidForm
 
+	EclipseEnergyMap EclipseEnergyMap
+
 	RebirthUsed       bool
 	RebirthTiming     float64
 	BleedsActive      int
@@ -349,6 +351,7 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 		StartingForm:      form,
 		form:              form,
 		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassDruid),
+		EclipseEnergyMap:  make(EclipseEnergyMap),
 	}
 
 	core.FillTalentsProto(druid.Talents.ProtoReflect(), talents, TalentTreeSizes)
