@@ -80,15 +80,15 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-ApparatusofKhaz'goroth-68972"
  value: {
-  dps: 31145.43495
-  tps: 25959.5066
+  dps: 31114.55069
+  tps: 25928.37532
  }
 }
 dps_results: {
  key: "TestFury-AllItems-ApparatusofKhaz'goroth-69113"
  value: {
-  dps: 31702.89146
-  tps: 26360.31922
+  dps: 31671.135
+  tps: 26332.48921
  }
 }
 dps_results: {
@@ -716,6 +716,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFury-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 28663.09175
+  tps: 23757.76147
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 28663.09175
+  tps: 23757.76147
+ }
+}
+dps_results: {
  key: "TestFury-AllItems-JujuofNimbleness-63840"
  value: {
   dps: 29576.94297
@@ -1052,6 +1066,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFury-AllItems-ScalesofLife-68915"
+ value: {
+  dps: 28663.09175
+  tps: 23757.76147
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-ScalesofLife-69109"
+ value: {
+  dps: 28663.09175
+  tps: 23757.76147
+ }
+}
+dps_results: {
  key: "TestFury-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 29582.34405
@@ -1140,6 +1168,27 @@ dps_results: {
  value: {
   dps: 29125.00088
   tps: 24005.84037
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 29547.92044
+  tps: 24259.89393
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 29438.25767
+  tps: 24148.0935
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-StayofExecution-68996"
+ value: {
+  dps: 28613.10708
+  tps: 23785.19572
  }
 }
 dps_results: {

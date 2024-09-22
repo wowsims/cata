@@ -133,7 +133,6 @@ func (druid *Druid) applyBalanceOfPower() {
 	if druid.Talents.BalanceOfPower > 0 {
 		druid.AddStaticMod(core.SpellModConfig{
 			School:     core.SpellSchoolArcane | core.SpellSchoolNature,
-			ClassMask:  DruidSpellsAll,
 			FloatValue: 0.01 * float64(druid.Talents.BalanceOfPower),
 			Kind:       core.SpellMod_DamageDone_Pct,
 		})
@@ -234,7 +233,6 @@ func (druid *Druid) applyMoonkinForm() {
 	if druid.Talents.MoonkinForm {
 		druid.AddStaticMod(core.SpellModConfig{
 			School:     core.SpellSchoolArcane | core.SpellSchoolNature,
-			ClassMask:  DruidSpellsAll,
 			FloatValue: 0.1,
 			Kind:       core.SpellMod_DamageDone_Pct,
 		})

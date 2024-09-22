@@ -772,6 +772,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrost-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 20745.1798
+  tps: 18901.58265
+  hps: 242.45587
+ }
+}
+dps_results: {
+ key: "TestFrost-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 20745.1798
+  tps: 18901.58265
+  hps: 242.45587
+ }
+}
+dps_results: {
  key: "TestFrost-AllItems-JujuofNimbleness-63840"
  value: {
   dps: 21012.60482
@@ -1148,6 +1164,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrost-AllItems-ScalesofLife-68915"
+ value: {
+  dps: 20745.1798
+  tps: 18901.58265
+  hps: 531.88082
+ }
+}
+dps_results: {
+ key: "TestFrost-AllItems-ScalesofLife-69109"
+ value: {
+  dps: 20745.1798
+  tps: 18901.58265
+  hps: 568.96024
+ }
+}
+dps_results: {
  key: "TestFrost-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 21015.29714
@@ -1248,6 +1280,30 @@ dps_results: {
  value: {
   dps: 20997.84595
   tps: 19154.2488
+  hps: 242.45587
+ }
+}
+dps_results: {
+ key: "TestFrost-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 21046.64751
+  tps: 19203.05037
+  hps: 242.45587
+ }
+}
+dps_results: {
+ key: "TestFrost-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 21086.00361
+  tps: 19242.40647
+  hps: 242.45587
+ }
+}
+dps_results: {
+ key: "TestFrost-AllItems-StayofExecution-68996"
+ value: {
+  dps: 20745.1798
+  tps: 18901.58265
   hps: 242.45587
  }
 }
@@ -1470,8 +1526,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 20923.14355
-  tps: 19076.10728
+  dps: 21147.49567
+  tps: 19300.4594
   hps: 245.25883
  }
 }

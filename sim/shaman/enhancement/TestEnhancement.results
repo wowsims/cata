@@ -688,6 +688,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 27955.43636
+  tps: 18584.33601
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 27961.31232
+  tps: 18585.34984
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-JujuofNimbleness-63840"
  value: {
   dps: 29092.60549
@@ -1017,6 +1031,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-ScalesofLife-68915"
+ value: {
+  dps: 27910.67917
+  tps: 18567.02518
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-ScalesofLife-69109"
+ value: {
+  dps: 27910.67917
+  tps: 18567.02518
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 29085.53877
@@ -1108,10 +1136,31 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 28522.50042
+  tps: 18862.85609
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 28602.37264
+  tps: 18901.47631
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-Spiritwalker'sRegalia"
  value: {
   dps: 20599.32485
   tps: 13439.56234
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-StayofExecution-68996"
+ value: {
+  dps: 27910.67917
+  tps: 18567.02518
  }
 }
 dps_results: {
@@ -1313,8 +1362,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 28124.51387
-  tps: 18870.43779
+  dps: 28671.39799
+  tps: 19417.32191
  }
 }
 dps_results: {
