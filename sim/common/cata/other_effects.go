@@ -211,13 +211,13 @@ func init() {
 	core.NewItemEffect(68996, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		absorbAmount := 0.0
+		totalAbsorbed := 0.0
 		stayWithdrawnAura := character.RegisterAura(core.Aura{
 			Label:    "Stay Withdrawn",
 			Duration: time.Second * 10,
 			ActionID: core.ActionID{SpellID: 96993},
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				tickAmount := absorbAmount * 0.08
+				tickAmount := totalAbsorbed * 0.08
 
 				core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 					Period:   time.Second * 2,
@@ -232,31 +232,42 @@ func init() {
 						}
 					},
 					CleanUp: func(sim *core.Simulation) {
-						absorbAmount = 0
+						totalAbsorbed = 0
 					},
 				})
 			},
 		})
 
+		maxShieldStrength := 56980.0
 		absorbAura := character.RegisterAura(core.Aura{
-			Label:    "Stay of Execution",
-			ActionID: core.ActionID{ItemID: 68996, SpellID: 96988},
-			Duration: time.Second * 30,
-			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Damage > 0 {
-					absorbAmount = math.Min(56980, absorbAmount+result.Damage*0.2)
-				}
-			},
+			Label:     "Stay of Execution",
+			ActionID:  core.ActionID{ItemID: 68996, SpellID: 96988},
+			Duration:  time.Second * 30,
+			MaxStacks: int32(maxShieldStrength),
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				if absorbAmount > 0 {
+				if totalAbsorbed > 0 {
 					stayWithdrawnAura.Activate(sim)
-					stacks := int32(absorbAmount * 0.08)
+					stacks := int32(totalAbsorbed * 0.08)
 					if stacks > 0 {
 						stayWithdrawnAura.MaxStacks = stacks
 						stayWithdrawnAura.SetStacks(sim, stacks)
 					}
 				}
 			},
+		})
+
+		character.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if absorbAura.IsActive() && result.Damage > 0 && totalAbsorbed < maxShieldStrength {
+				remainingAbsorb := maxShieldStrength - totalAbsorbed
+				absorbedDamage := min(result.Damage*0.2, remainingAbsorb)
+				result.Damage -= absorbedDamage
+				totalAbsorbed = min(maxShieldStrength, totalAbsorbed+absorbedDamage)
+				absorbAura.SetStacks(sim, int32(totalAbsorbed))
+
+				if sim.Log != nil {
+					character.Log(sim, "Stay of Execution absorbed %.1f damage", absorbedDamage)
+				}
+			}
 		})
 
 		trinketSpell := character.RegisterSpell(core.SpellConfig{
