@@ -667,6 +667,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAffliction-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 27832.64175
+  tps: 20284.68809
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 27940.09765
+  tps: 20379.69507
+ }
+}
+dps_results: {
  key: "TestAffliction-AllItems-JujuofNimbleness-63840"
  value: {
   dps: 26799.45893
@@ -982,6 +996,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAffliction-AllItems-ScalesofLife-68915"
+ value: {
+  dps: 26625.26751
+  tps: 19448.52951
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-ScalesofLife-69109"
+ value: {
+  dps: 26639.05967
+  tps: 19476.99847
+ }
+}
+dps_results: {
  key: "TestAffliction-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 26742.01542
@@ -1070,6 +1098,27 @@ dps_results: {
  value: {
   dps: 28069.76717
   tps: 20550.06844
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 27038.56737
+  tps: 19823.42335
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 27137.41802
+  tps: 19922.274
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-StayofExecution-68996"
+ value: {
+  dps: 26632.48919
+  tps: 19449.56118
  }
 }
 dps_results: {
@@ -1257,8 +1306,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 28259.23143
-  tps: 20651.32157
+  dps: 28835.12644
+  tps: 21227.21658
  }
 }
 dps_results: {

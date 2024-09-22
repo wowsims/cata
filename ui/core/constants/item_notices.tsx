@@ -1,19 +1,23 @@
 import { ItemNoticeData, SetBonusNoticeData } from '../components/item_notice/item_notice';
 import { Spec } from '../proto/common';
 
+const WantToHelpMessage = () => <p className="mb-0">Want to help out by providing additional information? Contact us on our Discord!</p>;
+
 const MISSING_IMPLEMENTATION_WARNING = (
 	<>
 		<p className="fw-bold">This item is not implemented!</p>
 		<p>We are working hard on gathering all the old resources to allow for an initial implementation.</p>
-		<p className="mb-0">Want to help out by providing additional information? Contact us on our Discord!</p>
+		<WantToHelpMessage />
 	</>
 );
 
-const PROC_IMPLEMENTATION_WARNING = (
+const VPLC_IMPLEMENTATION_WARNING = (
 	<>
-		<p className="fw-bold">The proc rate for this item might not be correct!</p>
-		<p>Current proc rate is 50%, based on old video data.</p>
-		<p className="mb-0">Want to help out by providing additional information? Contact us on our Discord!</p>
+		<p>
+			Current proc rate is <span className="fw-bold">50%</span> confirmed on PTR.
+		</p>
+		<p>Scales with: 3% Damage buff & 8% Spell Damage debuff.</p>
+		<WantToHelpMessage />
 	</>
 );
 
@@ -96,28 +100,7 @@ const NON_EXISTING_ITEMS = [
 	71576,
 ];
 
-const NOT_YET_IMPLEMENTED_WARNING = <>The equip/use effect on this item is not yet implemented!</>;
-
-const NOT_YET_IMPLEMENTED_ITEMS = [
-	// Jaws of Defeat - 378
-	68926,
-	// Jaws of Defeat - 391
-	69111,
-	// Spidersilk Spindle- 378
-	68981,
-	// Spidersilk Spindle- 391
-	69138,
-	// Eye of Blazing Power - 378
-	68983,
-	// Eye of Blazing Power - 391
-	69149,
-	// Scales of Life - 378
-	68915,
-	// Scales of Life - 391
-	69109,
-	// Stay of Execution - 378
-	68996,
-];
+const WILL_NOT_BE_IMPLEMENTED_WARNING = <>The equip/use effect on this item is will not be implemented!</>;
 
 export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 	...NON_EXISTING_ITEMS.map((itemID): [number, ItemNoticeData] => [
@@ -126,12 +109,20 @@ export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 			[Spec.SpecUnknown]: ITEM_DOESNT_EXIST_WARNING,
 		},
 	]),
-	...NOT_YET_IMPLEMENTED_ITEMS.map((itemID): [number, ItemNoticeData] => [
-		itemID,
+	[
+		// Eye of Blazing Power - 378
+		68983,
 		{
-			[Spec.SpecUnknown]: NOT_YET_IMPLEMENTED_WARNING,
+			[Spec.SpecUnknown]: WILL_NOT_BE_IMPLEMENTED_WARNING,
 		},
-	]),
+	],
+	[
+		// Eye of Blazing Power - 391
+		69149,
+		{
+			[Spec.SpecUnknown]: WILL_NOT_BE_IMPLEMENTED_WARNING,
+		},
+	],
 	// Dragonwrath, Tarecgosa's Rest
 	[
 		71086,
@@ -194,12 +185,28 @@ export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 	[
 		// VPLC - Normal
 		68925,
-		{ [Spec.SpecUnknown]: PROC_IMPLEMENTATION_WARNING },
+		{
+			[Spec.SpecUnknown]: VPLC_IMPLEMENTATION_WARNING,
+			[Spec.SpecArcaneMage]: false,
+			[Spec.SpecFireMage]: false,
+			[Spec.SpecDemonologyWarlock]: false,
+			[Spec.SpecAfflictionWarlock]: false,
+			[Spec.SpecDestructionWarlock]: false,
+			[Spec.SpecShadowPriest]: false,
+		},
 	],
 	[
 		// VPLC - Heroic
 		69110,
-		{ [Spec.SpecUnknown]: PROC_IMPLEMENTATION_WARNING },
+		{
+			[Spec.SpecUnknown]: VPLC_IMPLEMENTATION_WARNING,
+			[Spec.SpecArcaneMage]: false,
+			[Spec.SpecFireMage]: false,
+			[Spec.SpecDemonologyWarlock]: false,
+			[Spec.SpecAfflictionWarlock]: false,
+			[Spec.SpecDestructionWarlock]: false,
+			[Spec.SpecShadowPriest]: false,
+		},
 	],
 ]);
 

@@ -681,6 +681,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 7790.0918
+  tps: 39013.00627
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 7790.0918
+  tps: 39013.00627
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-JujuofNimbleness-63840"
  value: {
   dps: 8040.21465
@@ -1010,6 +1024,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-ScalesofLife-68915"
+ value: {
+  dps: 7800.93141
+  tps: 39067.10435
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-ScalesofLife-69109"
+ value: {
+  dps: 7800.93141
+  tps: 39067.10435
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 8074.79408
@@ -1088,6 +1116,27 @@ dps_results: {
 }
 dps_results: {
  key: "TestGuardian-AllItems-SoulCasket-58183"
+ value: {
+  dps: 7800.93141
+  tps: 39067.10435
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 7800.93141
+  tps: 39067.10435
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 7800.93141
+  tps: 39067.10435
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-StayofExecution-68996"
  value: {
   dps: 7800.93141
   tps: 39067.10435
@@ -1299,8 +1348,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 7791.15931
-  tps: 39018.30886
+  dps: 7826.29242
+  tps: 39193.97439
  }
 }
 dps_results: {

@@ -780,6 +780,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-JujuofNimbleness-63840"
  value: {
   dps: 13934.12024
@@ -1156,6 +1172,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-ScalesofLife-68915"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 4078.69022
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-ScalesofLife-69109"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 4140.70429
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 13976.3816
@@ -1253,6 +1285,30 @@ dps_results: {
 }
 dps_results: {
  key: "TestBlood-AllItems-SoulCasket-58183"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-StayofExecution-68996"
  value: {
   dps: 13803.93262
   tps: 66990.06155
@@ -1470,8 +1526,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 13894.55341
-  tps: 67491.94038
+  dps: 14039.50678
+  tps: 68280.62609
   hps: 3597.80333
  }
 }

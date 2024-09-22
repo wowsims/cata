@@ -80,8 +80,8 @@ dps_results: {
 dps_results: {
  key: "TestArms-AllItems-ApparatusofKhaz'goroth-69113"
  value: {
-  dps: 33942.40247
-  tps: 22143.24753
+  dps: 33942.6615
+  tps: 22143.50333
  }
 }
 dps_results: {
@@ -695,6 +695,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArms-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 31488.55325
+  tps: 20471.84565
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 31488.55325
+  tps: 20471.84565
+ }
+}
+dps_results: {
  key: "TestArms-AllItems-JujuofNimbleness-63840"
  value: {
   dps: 32105.66145
@@ -1031,6 +1045,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArms-AllItems-ScalesofLife-68915"
+ value: {
+  dps: 31488.55325
+  tps: 20471.84565
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-ScalesofLife-69109"
+ value: {
+  dps: 31488.55325
+  tps: 20471.84565
+ }
+}
+dps_results: {
  key: "TestArms-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 32015.47399
@@ -1119,6 +1147,27 @@ dps_results: {
  value: {
   dps: 32027.81008
   tps: 21027.0325
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 32077.49846
+  tps: 21071.54983
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 32053.97389
+  tps: 21193.61065
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-StayofExecution-68996"
+ value: {
+  dps: 31507.77555
+  tps: 20491.39159
  }
 }
 dps_results: {
@@ -1530,8 +1579,8 @@ dps_results: {
 dps_results: {
  key: "TestArms-Settings-Orc-p3_arms_bis-Basic-arms-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 41483.8493
-  tps: 27564.34681
+  dps: 41483.39564
+  tps: 27564.11385
  }
 }
 dps_results: {

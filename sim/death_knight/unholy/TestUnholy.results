@@ -764,6 +764,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 30574.59353
+  tps: 22630.58823
+  hps: 546.10701
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 30574.59353
+  tps: 22630.58823
+  hps: 546.10701
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-JujuofNimbleness-63840"
  value: {
   dps: 31016.77288
@@ -1148,6 +1164,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-ScalesofLife-68915"
+ value: {
+  dps: 30574.59353
+  tps: 22630.58823
+  hps: 879.08437
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ScalesofLife-69109"
+ value: {
+  dps: 30574.59353
+  tps: 22630.58823
+  hps: 921.60089
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 31051.98354
@@ -1248,6 +1280,30 @@ dps_results: {
  value: {
   dps: 30990.91621
   tps: 23088.05168
+  hps: 546.10701
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 31071.47193
+  tps: 23176.55359
+  hps: 546.10701
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 31136.47029
+  tps: 23247.96017
+  hps: 546.10701
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-StayofExecution-68996"
+ value: {
+  dps: 30574.59353
+  tps: 22630.58823
   hps: 546.10701
  }
 }
@@ -1469,8 +1525,8 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 30717.84199
-  tps: 22775.15024
+  dps: 30989.46744
+  tps: 23046.7757
   hps: 546.10701
  }
 }
