@@ -194,7 +194,7 @@ export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 		player.sim.waitForInit().then(() => {
 			const optimizer = new ReforgeOptimizer(this);
 
-			this.sim.showExperimentalChangeEmitter.on(c => {
+			this.sim.showExperimentalChangeEmitter.on(() => {
 				if (this.sim.getShowExperimental() == true) {
 					const masteryRatingBreakpoints = [];
 					const masteryPercentPerPoint = Mechanics.masteryPercentPerPoint.get(Spec.SpecCombatRogue)!;
