@@ -1257,15 +1257,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 28259.23143
-  tps: 20651.32157
+  dps: 28834.9713
+  tps: 21227.06144
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 29065.94318
-  tps: 21473.97478
+  dps: 29065.77756
+  tps: 21473.80915
  }
 }
 dps_results: {
