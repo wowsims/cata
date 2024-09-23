@@ -65,10 +65,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 			return expCap;
 		})(),
 		softCapBreakpoints: (() => {
+			// Running just under spell cap is typically preferrable to being over.
 			const spellHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent, {
-				breakpoints: [17],
+				breakpoints: [16.95, 16.96, 16.97, 16.98, 16.99, 17],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0],
+				postCapEPs: [0, 0, 0, 0, 0, 0],
 			});
 
 			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {

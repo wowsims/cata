@@ -19,8 +19,8 @@ export const P3_PRESET_COMBAT = PresetUtils.makePresetGear('P3 Combat', P3Combat
 export const ROTATION_PRESET_COMBAT = PresetUtils.makePresetAPLRotation('Combat', CombatApl);
 
 // Preset options for EP weights
-export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'Combat',
+export const CBAT_HASTE_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Combat Haste',
 	Stats.fromMap(
 		{
 			[Stat.StatAgility]: 2.85,
@@ -28,18 +28,40 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAttackPower]: 1,
 			[Stat.StatCritRating]: 1.2,
 			[Stat.StatHitRating]: 2.21,
-			[Stat.StatHasteRating]: 1.4,
-			[Stat.StatMasteryRating]: 1.38,
+			[Stat.StatHasteRating]: 1.44,
+			[Stat.StatMasteryRating]: 1.42,
 			[Stat.StatExpertiseRating]: 1.74,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 4.18,
 			[PseudoStat.PseudoStatOffHandDps]: 1.4,
-			[PseudoStat.PseudoStatSpellHitPercent]: 46.57,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 210.98,
+			[PseudoStat.PseudoStatSpellHitPercent]: 45,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 210,
 		},
 	),
 );
+
+export const CBAT_MASTERY_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Combat Mastery',
+	Stats.fromMap(
+		{
+			[Stat.StatAgility]: 2.85,
+			[Stat.StatStrength]: 1.05,
+			[Stat.StatAttackPower]: 1,
+			[Stat.StatCritRating]: 1.2,
+			[Stat.StatHitRating]: 2.21,
+			[Stat.StatHasteRating]: 1.42,
+			[Stat.StatMasteryRating]: 1.44,
+			[Stat.StatExpertiseRating]: 1.74,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 4.18,
+			[PseudoStat.PseudoStatOffHandDps]: 1.4,
+			[PseudoStat.PseudoStatSpellHitPercent]: 45,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 210,
+		},
+	),
+)
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.
