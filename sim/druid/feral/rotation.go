@@ -34,7 +34,7 @@ func (cat *FeralDruid) OnGCDReady(sim *core.Simulation) {
 	}
 
 	// Check for an opportunity to cancel Primal Madness if we just casted a spell.
-	if !cat.GCD.IsReady(sim) && cat.PrimalMadnessAura.IsActive() && !cat.BerserkAura.IsActive() && cat.Rotation.CancelPrimalMadness {
+	if !cat.GCD.IsReady(sim) && cat.PrimalMadnessAura.IsActive() && cat.Rotation.CancelPrimalMadness {
 		// Determine cancellation threshold based on the expected Energy
 		// loss when Primal Madness will naturally expire.
 		energyThresh := 10.0 * float64(cat.Talents.PrimalMadness)
