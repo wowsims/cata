@@ -18,7 +18,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	cssClass: 'combat-rogue-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Rogue),
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: [],
+	knownIssues: ['Mastery - Main Gauche is likely rounded down to the closest whole number. You can enable "Show Experimental" via the gear button to optimize reforging for these breakpoints, but it will take significantly longer to complete.'],
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -67,9 +67,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 		softCapBreakpoints: (() => {
 			// Running just under spell cap is typically preferrable to being over.
 			const spellHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent, {
-				breakpoints: [16.95, 16.96, 16.97, 16.98, 16.99, 17],
+				breakpoints: [14, 15, 16.95, 16.96, 16.97, 16.98, 16.99, 17],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0, 0, 0, 0, 0, 0],
+				postCapEPs: [42, 40, 0, 0, 0, 0, 0, 0],
 			});
 
 			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
@@ -145,7 +145,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	},
 
 	presets: {
-		epWeights: [Presets.CBAT_HASTE_EP_PRESET, Presets.CBAT_MASTERY_EP_PRESET],
+		epWeights: [Presets.CBAT_HASTE_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.CombatTalents],
 		// Preset rotations that the user can quickly select.
