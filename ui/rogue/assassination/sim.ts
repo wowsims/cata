@@ -18,7 +18,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 	cssClass: 'assassination-rogue-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Rogue),
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: ['Rotations are not fully optimized, especially for non-standard setups.'],
+	knownIssues: [],
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -65,10 +65,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 			return expCap;
 		})(),
 		softCapBreakpoints: (() => {
+			// Running just under spell cap is typically preferrable to being over.
 			const spellHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent, {
-				breakpoints: [17],
+				breakpoints: [16.95, 16.96, 16.97, 16.98, 16.99, 17],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0],
+				postCapEPs: [0, 0, 0, 0, 0, 0],
 			});
 
 			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
@@ -77,7 +78,19 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 				postCapEPs: [94.15, 0],
 			});
 
-			return [meleeHitSoftCapConfig, spellHitSoftCapConfig];
+			const masteryRatingBreakpoints = [];
+			const masteryPercentPerPoint = Mechanics.masteryPercentPerPoint.get(Spec.SpecAssassinationRogue)!;
+			for (let masteryPercent = 28; masteryPercent <= 200; masteryPercent++) {
+				masteryRatingBreakpoints.push((masteryPercent / masteryPercentPerPoint) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
+			}
+
+			const masterySoftCapConfig = StatCap.fromStat(Stat.StatMasteryRating, {
+				breakpoints: masteryRatingBreakpoints,
+				capType: StatCapType.TypeThreshold,
+				postCapEPs: [0],
+			});
+
+			return [meleeHitSoftCapConfig, spellHitSoftCapConfig, masterySoftCapConfig];
 		})(),
     	other: Presets.OtherDefaults,
 		// Default consumes settings.

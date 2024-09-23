@@ -78,7 +78,19 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 				postCapEPs: [98.02, 0],
 			});
 
-			return [meleeHitSoftCapConfig, spellHitSoftCapConfig];
+			const masteryRatingBreakpoints = [];
+			const masteryPercentPerPoint = Mechanics.masteryPercentPerPoint.get(Spec.SpecSubtletyRogue)!;
+			for (let masteryPercent = 20; masteryPercent <= 200; masteryPercent++) {
+				masteryRatingBreakpoints.push((masteryPercent / masteryPercentPerPoint) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
+			}
+
+			const masterySoftCapConfig = StatCap.fromStat(Stat.StatMasteryRating, {
+				breakpoints: masteryRatingBreakpoints,
+				capType: StatCapType.TypeThreshold,
+				postCapEPs: [0],
+			});
+
+			return [meleeHitSoftCapConfig, spellHitSoftCapConfig, masterySoftCapConfig];
 		})(),
     	other: Presets.OtherDefaults,
 		// Default consumes settings.

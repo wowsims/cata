@@ -14,12 +14,16 @@ func init() {
 
 func TestCombat(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-		Class:       proto.Class_ClassRogue,
-		Race:        proto.Race_RaceHuman,
-		OtherRaces:  []proto.Race{proto.Race_RaceOrc},
-		GearSet:     core.GetGearSet("../../../ui/rogue/combat/gear_sets", "p1_combat_test"),
-		Talents:     SubtletyTalents,
-		Glyphs:      SubtletyGlyphs,
+		Class:      proto.Class_ClassRogue,
+		Race:       proto.Race_RaceHuman,
+		OtherRaces: []proto.Race{proto.Race_RaceOrc},
+		GearSet:    core.GetGearSet("../../../ui/rogue/combat/gear_sets", "p1_combat"),
+		OtherGearSets: []core.GearSetCombo{
+			core.GetGearSet("../../../ui/rogue/combat/gear_sets", "p3_combat"),
+			//core.GetGearSet("../../../ui/rogue/combat/gear_sets", "p4_combat"),
+		},
+		Talents:     CombatTalents,
+		Glyphs:      CombatGlyphs,
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Combat", SpecOptions: PlayerOptionsID},
 		OtherSpecOptions: []core.SpecOptionsCombo{
@@ -48,9 +52,9 @@ func TestCombat(t *testing.T) {
 	}))
 }
 
-var SubtletyTalents = "0322-2332030310230012321-003"
+var CombatTalents = "0322-2332030310230012321-003"
 
-var SubtletyGlyphs = &proto.Glyphs{
+var CombatGlyphs = &proto.Glyphs{
 	Prime1: int32(proto.RoguePrimeGlyph_GlyphOfSinisterStrike),
 	Prime2: int32(proto.RoguePrimeGlyph_GlyphOfSliceAndDice),
 	Prime3: int32(proto.RoguePrimeGlyph_GlyphOfAdrenalineRush),

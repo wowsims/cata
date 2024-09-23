@@ -14,13 +14,14 @@ func init() {
 
 func TestAssassination(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-		Class:       proto.Class_ClassRogue,
-		Race:        proto.Race_RaceHuman,
-		OtherRaces:  []proto.Race{proto.Race_RaceOrc},
-		GearSet:     core.GetGearSet("../../../ui/rogue/assassination/gear_sets", "p1_assassination_test"),
+		Class:      proto.Class_ClassRogue,
+		Race:       proto.Race_RaceHuman,
+		OtherRaces: []proto.Race{proto.Race_RaceOrc},
+		GearSet:    core.GetGearSet("../../../ui/rogue/assassination/gear_sets", "p1_assassination"),
 
 		OtherGearSets: []core.GearSetCombo{
 			core.GetGearSet("../../../ui/rogue/assassination/gear_sets", "p3_assassination"),
+			//core.GetGearSet("../../../ui/rogue/assassination/gear_sets", "p4_assassination"),
 		},
 
 		Talents:     AssassinationTalents,
