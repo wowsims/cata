@@ -28,14 +28,36 @@ export const CBAT_HASTE_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAttackPower]: 1,
 			[Stat.StatCritRating]: 1.2,
 			[Stat.StatHitRating]: 2.21,
-			[Stat.StatHasteRating]: 1.42,
+			[Stat.StatHasteRating]: 1.44,
 			[Stat.StatMasteryRating]: 1.42,
 			[Stat.StatExpertiseRating]: 1.74,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 4.18,
 			[PseudoStat.PseudoStatOffHandDps]: 1.4,
-			[PseudoStat.PseudoStatSpellHitPercent]: 45,
+			[PseudoStat.PseudoStatSpellHitPercent]: 46,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 210,
+		},
+	),
+);
+
+export const CBAT_4PT12_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Combat 4PT12',
+	Stats.fromMap(
+		{
+			[Stat.StatAgility]: 2.85,
+			[Stat.StatStrength]: 1.05,
+			[Stat.StatAttackPower]: 1,
+			[Stat.StatCritRating]: 1.2,
+			[Stat.StatHitRating]: 2.21,
+			[Stat.StatHasteRating]: 1.44,
+			[Stat.StatMasteryRating]: 1.44,
+			[Stat.StatExpertiseRating]: 1.74,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 4.18,
+			[PseudoStat.PseudoStatOffHandDps]: 1.4,
+			[PseudoStat.PseudoStatSpellHitPercent]: 46,
 			[PseudoStat.PseudoStatPhysicalHitPercent]: 210,
 		},
 	),

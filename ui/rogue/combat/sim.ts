@@ -67,9 +67,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 		softCapBreakpoints: (() => {
 			// Running just under spell cap is typically preferrable to being over.
 			const spellHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent, {
-				breakpoints: [14, 15, 16.95, 16.96, 16.97, 16.98, 16.99, 17],
+				breakpoints: [16.95, 16.96, 16.97, 16.98, 16.99, 17],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [42, 40, 0, 0, 0, 0, 0, 0],
+				postCapEPs: [0, 0, 0, 0, 0, 0],
 			});
 
 			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
@@ -145,7 +145,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	},
 
 	presets: {
-		epWeights: [Presets.CBAT_HASTE_EP_PRESET],
+		epWeights: [Presets.CBAT_HASTE_EP_PRESET, Presets.CBAT_4PT12_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.CombatTalents],
 		// Preset rotations that the user can quickly select.
@@ -188,7 +188,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	],
 });
 
-function getMasterySoftCapConfig(): StatCap {
+const getMasterySoftCapConfig = (): StatCap => {
 	const masteryRatingBreakpoints = [];
 	const masteryPercentPerPoint = Mechanics.masteryPercentPerPoint.get(Spec.SpecCombatRogue)!;
 	for (let masteryPercent = 16; masteryPercent <= 200; masteryPercent++) {
@@ -202,13 +202,13 @@ function getMasterySoftCapConfig(): StatCap {
 	});
 }
 
-function AddOrRemoveMasteryBreakpoint(optimizer: ReforgeOptimizer, isShown: boolean): void {
+const addOrRemoveMasteryBreakpoint = (softCaps: StatCap[], isShown: boolean): void => {
 	if (isShown == true) {
-		optimizer.softCapsConfig.push(getMasterySoftCapConfig());
+		softCaps.push(getMasterySoftCapConfig());
 	}
 	else
 	{
-		optimizer.softCapsConfig.splice(2, 1);
+		softCaps.splice(2, 1);
 	}
 }
 
@@ -217,12 +217,12 @@ export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			const optimizer = new ReforgeOptimizer(this);
-			AddOrRemoveMasteryBreakpoint(optimizer, this.sim.getShowExperimental())
-
-			this.sim.showExperimentalChangeEmitter.on(() => {
-				AddOrRemoveMasteryBreakpoint(optimizer, this.sim.getShowExperimental())
-			})
+			new ReforgeOptimizer(this, {
+				updateSoftCaps: (softCaps: StatCap[]) => {
+					addOrRemoveMasteryBreakpoint(softCaps, this.sim.getShowExperimental())
+					return softCaps
+				}
+			});
 		});
 
 		this.player.changeEmitter.on(c => {
