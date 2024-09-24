@@ -947,6 +947,127 @@ func init() {
 		ProcChance: 1, //TODO: verify proc chance, seems wrong?
 		ICD:        time.Second * 60,
 	})
+
+	for version, _ := range []ItemVersion{ItemVersionLFR, ItemVersionNormal, ItemVersionHeroic} {
+		labelSuffix := []string{" (LFR)", "", " (Heroic)"}[version]
+
+		shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+			Name:       "Creche of the Final Dragon" + labelSuffix,
+			ID:         []int32{77972, 77205, 77992}[version],
+			AuraID:     []int32{109742, 107988, 109744}[version],
+			Bonus:      stats.Stats{stats.CritRating: []float64{2573, 2904, 3278}[version]},
+			Duration:   time.Second * 20,
+			Callback:   core.CallbackOnSpellHitDealt,
+			ProcMask:   core.ProcMaskMeleeOrRanged | core.ProcMaskProc,
+			Outcome:    core.OutcomeLanded,
+			ProcChance: 0.15,
+			ICD:        time.Second * 115,
+		})
+
+		shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+			Name:       "Insignia of the Corrupted Mind" + labelSuffix,
+			ID:         []int32{77971, 77203, 77991}[version],
+			AuraID:     []int32{109787, 107982, 109789}[version],
+			Bonus:      stats.Stats{stats.HasteRating: []float64{2573, 2904, 3278}[version]},
+			Duration:   time.Second * 20,
+			Callback:   core.CallbackOnSpellHitDealt,
+			ProcMask:   core.ProcMaskDirect | core.ProcMaskProc,
+			Outcome:    core.OutcomeLanded,
+			ProcChance: 0.15,
+			ICD:        time.Second * 115,
+		})
+
+		shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+			Name:       "Soulshifter Vortex" + labelSuffix,
+			ID:         []int32{77970, 77206, 77990}[version],
+			AuraID:     []int32{109774, 107986, 109776}[version],
+			Bonus:      stats.Stats{stats.MasteryRating: []float64{2573, 2904, 3278}[version]},
+			Duration:   time.Second * 20,
+			Callback:   core.CallbackOnSpellHitDealt,
+			ProcMask:   core.ProcMaskDirect | core.ProcMaskProc,
+			Outcome:    core.OutcomeLanded,
+			ProcChance: 0.15,
+			ICD:        time.Second * 115,
+		})
+
+		shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+			Name:       "Starcatcher Compass" + labelSuffix,
+			ID:         []int32{77973, 77202, 77993}[version],
+			AuraID:     []int32{109709, 107982, 109711}[version],
+			Bonus:      stats.Stats{stats.HasteRating: []float64{2573, 2904, 3278}[version]},
+			Duration:   time.Second * 20,
+			Callback:   core.CallbackOnSpellHitDealt,
+			ProcMask:   core.ProcMaskDirect | core.ProcMaskProc,
+			Outcome:    core.OutcomeLanded,
+			ProcChance: 0.15,
+			ICD:        time.Second * 115,
+		})
+	}
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Veil of Lies",
+		ID:         72900,
+		AuraID:     102667,
+		Bonus:      stats.Stats{stats.DodgeRating: 1149},
+		Duration:   time.Second * 20,
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskMelee,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 0.20,
+		ICD:        time.Second * 50,
+	})
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Foul Gift of the Demon Lord",
+		ID:         72898,
+		AuraID:     102662,
+		Bonus:      stats.Stats{stats.MasteryRating: 1149},
+		Duration:   time.Second * 20,
+		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt,
+		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskProc,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 0.15,
+		ICD:        time.Second * 50,
+	})
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Arrow of Time",
+		ID:         72897,
+		AuraID:     102659,
+		Bonus:      stats.Stats{stats.HasteRating: 1149},
+		Duration:   time.Second * 20,
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskMeleeOrRanged | core.ProcMaskProc,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 0.20,
+		ICD:        time.Second * 50,
+	})
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Rosary of Light",
+		ID:         72901,
+		AuraID:     102660,
+		Bonus:      stats.Stats{stats.CritRating: 1149},
+		Duration:   time.Second * 20,
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskMeleeOrRanged | core.ProcMaskProc,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 0.15,
+		ICD:        time.Second * 50,
+	})
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Varo'then's Brooch",
+		ID:         72899,
+		AuraID:     102664,
+		Bonus:      stats.Stats{stats.MasteryRating: 1149},
+		Duration:   time.Second * 20,
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskMeleeOrRanged | core.ProcMaskProc,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 0.20,
+		ICD:        time.Second * 50,
+	})
 }
 
 var ItemSetAgonyAndTorment = core.NewItemSet(core.ItemSet{

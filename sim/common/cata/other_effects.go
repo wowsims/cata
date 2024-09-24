@@ -8,6 +8,14 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
+type ItemVersion int32
+
+const (
+	ItemVersionLFR    ItemVersion = 0
+	ItemVersionNormal ItemVersion = 1 << iota
+	ItemVersionHeroic
+)
+
 func init() {
 	core.NewItemEffect(63839, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -297,8 +305,8 @@ func init() {
 		})
 	})
 
-	for _, hc := range []bool{false, true} {
-		heroic := hc // Need to copy value because iterator variables are not captured by closure
+	for _, version := range []ItemVersion{ItemVersionNormal, ItemVersionHeroic} {
+		heroic := version == ItemVersionHeroic
 		labelSuffix := core.Ternary(heroic, " (Heroic)", "")
 
 		leadenItemID := core.TernaryInt32(heroic, 56347, 55816)
@@ -822,6 +830,253 @@ func init() {
 				Spell:    trinketSpell,
 				Priority: core.CooldownPriorityDefault,
 				Type:     core.CooldownTypeSurvival,
+			})
+		})
+	}
+
+	for version, _ := range []ItemVersion{ItemVersionLFR, ItemVersionNormal, ItemVersionHeroic} {
+		labelSuffix := []string{" (LFR)", "", " (Heroic)"}[version]
+
+		vialItemID := []int32{77979, 77207, 77999}[version]
+		core.NewItemEffect(vialItemID, func(agent core.Agent) {
+			character := agent.GetCharacter()
+
+			actionID := core.ActionID{SpellID: []int32{109721, 107994, 109724}[version]}
+			minDmg := []float64{3568, 4028, 4546}[version]
+			maxDmg := []float64{5353, 6042, 6819}[version]
+
+			lightningStrike := character.RegisterSpell(core.SpellConfig{
+				ActionID:    actionID,
+				SpellSchool: core.SpellSchoolPhysical,
+				ProcMask:    core.ProcMaskEmpty,
+				Flags:       core.SpellFlagPassiveSpell,
+
+				Cast: core.CastConfig{
+					DefaultCast: core.Cast{
+						NonEmpty: true,
+					},
+				},
+
+				DamageMultiplier: 1,
+				CritMultiplier:   character.DefaultMeleeCritMultiplier(),
+				ThreatMultiplier: 1,
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					spell.CalcAndDealDamage(sim, target, sim.Roll(minDmg, maxDmg), spell.OutcomeMeleeSpecialCritOnly)
+				},
+			})
+
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:       "Vial of Shadows Trigger" + labelSuffix,
+				ActionID:   core.ActionID{ItemID: vialItemID},
+				Callback:   core.CallbackOnSpellHitDealt,
+				ProcMask:   core.ProcMaskMeleeOrRanged | core.ProcMaskProc,
+				Outcome:    core.OutcomeLanded,
+				Harmful:    true,
+				ProcChance: 0.45,
+				ICD:        time.Second * 9,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					lightningStrike.Cast(sim, result.Target)
+				},
+			})
+		})
+
+		fetishItemID := []int32{77982, 77210, 78002}[version]
+		core.NewItemEffect(fetishItemID, func(agent core.Agent) {
+			character := agent.GetCharacter()
+			numTargets := character.Env.GetNumTargets()
+
+			actionID := core.ActionID{SpellID: []int32{109753, 107998, 109755}[version]}
+			minDmg := []float64{8029, 9063, 10230}[version]
+			maxDmg := []float64{12044, 13594, 15345}[version]
+			apMod := []float64{0.598, 0.675, 0.762}[version]
+
+			whirlingMaw := character.RegisterSpell(core.SpellConfig{
+				ActionID:    actionID,
+				SpellSchool: core.SpellSchoolPhysical,
+				ProcMask:    core.ProcMaskEmpty,
+				Flags:       core.SpellFlagPassiveSpell,
+
+				Cast: core.CastConfig{
+					DefaultCast: core.Cast{
+						NonEmpty: true,
+					},
+				},
+
+				DamageMultiplier: 1,
+				CritMultiplier:   character.DefaultMeleeCritMultiplier(),
+				ThreatMultiplier: 1,
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					results := make([]*core.SpellResult, numTargets)
+
+					for idx := int32(0); idx < numTargets; idx++ {
+						baseDamage := sim.Roll(minDmg, maxDmg) +
+							apMod*spell.MeleeAttackPower()
+						results[idx] = spell.CalcDamage(sim, sim.Environment.GetTargetUnit(idx), baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+					}
+
+					for idx := int32(0); idx < numTargets; idx++ {
+						spell.DealDamage(sim, results[idx])
+					}
+				},
+			})
+
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:       "Bone-Link Fetish Trigger" + labelSuffix,
+				ActionID:   core.ActionID{ItemID: fetishItemID},
+				Callback:   core.CallbackOnSpellHitDealt,
+				ProcMask:   core.ProcMaskMeleeOrRanged | core.ProcMaskProc,
+				Outcome:    core.OutcomeLanded,
+				Harmful:    true,
+				ProcChance: 0.15,
+				ICD:        time.Second * 27,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					whirlingMaw.Cast(sim, result.Target)
+				},
+			})
+		})
+
+		cunningItemID := []int32{77980, 77208, 78000}[version]
+		core.NewItemEffect(cunningItemID, func(agent core.Agent) {
+			character := agent.GetCharacter()
+			numTargets := character.Env.GetNumTargets()
+
+			actionID := core.ActionID{SpellID: []int32{109798, 108005, 109800}[version]}
+			minDmg := []float64{2498, 2820, 3183}[version]
+			maxDmg := []float64{3747, 4230, 4774}[version]
+			spMod := []float64{0.277, 0.313, 0.353}[version]
+
+			shadowboltVolley := character.RegisterSpell(core.SpellConfig{
+				ActionID:    actionID,
+				SpellSchool: core.SpellSchoolShadow,
+				ProcMask:    core.ProcMaskEmpty,
+				Flags:       core.SpellFlagPassiveSpell,
+
+				MissileSpeed: 20,
+
+				Cast: core.CastConfig{
+					DefaultCast: core.Cast{
+						NonEmpty: true,
+					},
+				},
+
+				DamageMultiplier: 1,
+				CritMultiplier:   character.DefaultSpellCritMultiplier(),
+				ThreatMultiplier: 1,
+
+				BonusCoefficient: spMod,
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					results := make([]*core.SpellResult, numTargets)
+
+					for idx := int32(0); idx < numTargets; idx++ {
+						results[idx] = spell.CalcDamage(sim, sim.Environment.GetTargetUnit(idx), sim.Roll(minDmg, maxDmg), spell.OutcomeMagicCrit)
+					}
+
+					spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+						for idx := int32(0); idx < numTargets; idx++ {
+							spell.DealDamage(sim, results[idx])
+						}
+					})
+				},
+			})
+
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:       "Cunning of the Cruel Trigger" + labelSuffix,
+				ActionID:   core.ActionID{ItemID: cunningItemID},
+				Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
+				ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskProc,
+				Outcome:    core.OutcomeLanded,
+				Harmful:    true,
+				ProcChance: 0.45,
+				ICD:        time.Second * 9,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					shadowboltVolley.Cast(sim, result.Target)
+				},
+			})
+		})
+
+		prideItemID := []int32{77983, 77211, 78003}[version]
+		core.NewItemEffect(prideItemID, func(agent core.Agent) {
+			character := agent.GetCharacter()
+
+			absorbModifier := []float64{0.43, 0.50, 0.56}[version]
+
+			currentShield := 0.0
+			var shieldSpell *core.Spell
+			shieldSpell = character.GetOrRegisterSpell(core.SpellConfig{
+				ActionID:    core.ActionID{SpellID: 108008},
+				ProcMask:    core.ProcMaskSpellHealing,
+				SpellSchool: core.SpellSchoolHoly,
+				Flags: core.SpellFlagHelpful |
+					core.SpellFlagPassiveSpell |
+					core.SpellFlagIgnoreModifiers |
+					core.SpellFlagNoSpellMods,
+
+				DamageMultiplier: 1,
+				ThreatMultiplier: 1,
+
+				Shield: core.ShieldConfig{
+					SelfOnly: true,
+					Aura: core.Aura{
+						Label:    "Indomitable",
+						Duration: time.Second * 6,
+						OnReset: func(aura *core.Aura, sim *core.Simulation) {
+							currentShield = 0
+						},
+						OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+							currentShield = 0
+						},
+					},
+				},
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					shield := shieldSpell.SelfShield()
+					shield.Apply(sim, currentShield)
+					shield.Aura.MaxStacks = int32(currentShield)
+					shield.Aura.SetStacks(sim, shield.Aura.MaxStacks)
+				},
+			})
+
+			character.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				shield := shieldSpell.SelfShield()
+				if shield.IsActive() && result.Damage > 0 {
+					absorbedDamage := min(currentShield, result.Damage)
+					result.Damage -= absorbedDamage
+					currentShield -= absorbedDamage
+					shield.Aura.SetStacks(sim, int32(currentShield))
+
+					if sim.Log != nil {
+						character.Log(sim, "Indomitable Pride absorbed %.1f damage", absorbedDamage)
+					}
+
+					if currentShield <= 0 {
+						shield.Deactivate(sim)
+					}
+				}
+			})
+
+			icd := core.Cooldown{
+				Timer:    character.NewTimer(),
+				Duration: time.Minute,
+			}
+
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:       "Indomitable Pride Trigger" + labelSuffix,
+				ActionID:   core.ActionID{ItemID: prideItemID},
+				Callback:   core.CallbackOnSpellHitTaken,
+				Outcome:    core.OutcomeLanded,
+				Harmful:    true,
+				ProcChance: 1,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					preHitHp := character.CurrentHealth() + result.Damage
+					if icd.IsReady(sim) && character.CurrentHealthPercent() < 0.50 && preHitHp >= 0.50 {
+						icd.Use(sim)
+						currentShield = result.Damage * absorbModifier
+						shieldSpell.Cast(sim, result.Target)
+					}
+				},
 			})
 		})
 	}
