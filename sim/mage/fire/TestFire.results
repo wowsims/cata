@@ -1012,15 +1012,17 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-ScalesofLife-68915"
  value: {
-  dps: 27980.06567
-  tps: 27497.51044
+  dps: 27984.37289
+  tps: 27502.25287
+  hps: 360.05275
  }
 }
 dps_results: {
  key: "TestFire-AllItems-ScalesofLife-69109"
  value: {
-  dps: 27980.06567
-  tps: 27497.51044
+  dps: 27984.37289
+  tps: 27502.25287
+  hps: 406.13614
  }
 }
 dps_results: {
