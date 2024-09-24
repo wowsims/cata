@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, RaidBuffs, Spec, Stat } from '../../core/proto/common';
+import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, PseudoStat, RaidBuffs, Stat, TinkerHands } from '../../core/proto/common';
 import {
 	FireMage_Options as MageOptions,
 	MageMajorGlyph as MajorGlyph,
@@ -12,13 +12,15 @@ import FireApl from './apls/fire.apl.json';
 //import FireAoeApl from './apls/fire_aoe.apl.json';
 import P1FireBisGear from './gear_sets/p1_fire.gear.json';
 import P1FirePrebisGear from './gear_sets/p1_fire_prebis_gear.json';
+import P3FireBisGear from './gear_sets/p3_fire.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const FIRE_P1_PRESET = PresetUtils.makePresetGear('Fire P1 Preset', P1FireBisGear, { talentTree: 1 });
-export const FIRE_P1_PREBIS = PresetUtils.makePresetGear('Fire P1 Pre-raid', P1FirePrebisGear, { talentTree: 1 });
+export const FIRE_P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1FireBisGear, { talentTree: 1 });
+export const FIRE_P1_PREBIS = PresetUtils.makePresetGear('P1 Pre-raid', P1FirePrebisGear, { talentTree: 1 });
+export const FIRE_P3_PRESET = PresetUtils.makePresetGear('P3 Preset', P3FireBisGear, { talentTree: 1 });
 
 /* export const DefaultSimpleRotation = MageRotation.create({
 	primaryFireSpell: PrimaryFireSpell.Fireball,
@@ -29,8 +31,8 @@ export const FIRE_P1_PREBIS = PresetUtils.makePresetGear('Fire P1 Pre-raid', P1F
 export const FIRE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Fire', FireApl, { talentTree: 1 });
 
 // Preset options for EP weights
-export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'Fire P1',
+export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Default',
 	Stats.fromMap({
 		[Stat.StatIntellect]: 1.33,
 		[Stat.StatSpellPower]: 1.0,
@@ -99,6 +101,7 @@ export const DefaultFireConsumes = Consumes.create({
 	food: Food.FoodSeafoodFeast,
 	defaultPotion: Potions.VolcanicPotion,
 	prepopPotion: Potions.VolcanicPotion,
+	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
 });
 
 export const DefaultDebuffs = Debuffs.create({
