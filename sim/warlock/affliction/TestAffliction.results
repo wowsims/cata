@@ -998,15 +998,17 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-ScalesofLife-68915"
  value: {
-  dps: 26625.26751
-  tps: 19448.52951
+  dps: 26641.68512
+  tps: 19521.80503
+  hps: 354.04187
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-ScalesofLife-69109"
  value: {
-  dps: 26639.05967
-  tps: 19476.99847
+  dps: 26640.35472
+  tps: 19530.31362
+  hps: 399.35591
  }
 }
 dps_results: {

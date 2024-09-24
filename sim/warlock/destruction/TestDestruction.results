@@ -998,15 +998,17 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-ScalesofLife-68915"
  value: {
-  dps: 27353.05069
-  tps: 17742.37066
+  dps: 27402.1002
+  tps: 17790.10306
+  hps: 351.03642
  }
 }
 dps_results: {
  key: "TestDestruction-AllItems-ScalesofLife-69109"
  value: {
-  dps: 27353.05069
-  tps: 17742.58565
+  dps: 27402.1002
+  tps: 17790.35112
+  hps: 395.9658
  }
 }
 dps_results: {

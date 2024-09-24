@@ -1040,15 +1040,17 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-ScalesofLife-68915"
  value: {
-  dps: 27699.74157
-  tps: 25794.72689
+  dps: 27699.19405
+  tps: 25794.00843
+  hps: 363.36847
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-ScalesofLife-69109"
  value: {
-  dps: 27699.74157
-  tps: 25794.72689
+  dps: 27699.19405
+  tps: 25794.00843
+  hps: 409.87623
  }
 }
 dps_results: {

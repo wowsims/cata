@@ -998,15 +998,17 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-AllItems-ScalesofLife-68915"
  value: {
-  dps: 27925.65786
-  tps: 14230.85394
+  dps: 27924.88434
+  tps: 14239.28694
+  hps: 351.03642
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ScalesofLife-69109"
  value: {
-  dps: 27925.93816
-  tps: 14231.32287
+  dps: 27925.16463
+  tps: 14239.75588
+  hps: 395.9658
  }
 }
 dps_results: {

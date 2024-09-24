@@ -1033,15 +1033,17 @@ dps_results: {
 dps_results: {
  key: "TestElemental-AllItems-ScalesofLife-68915"
  value: {
-  dps: 30105.59576
-  tps: 581.33731
+  dps: 30116.72618
+  tps: 580.80155
+  hps: 320.63097
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-ScalesofLife-69109"
  value: {
-  dps: 30105.59576
-  tps: 581.33731
+  dps: 30116.72618
+  tps: 580.80155
+  hps: 361.66873
  }
 }
 dps_results: {

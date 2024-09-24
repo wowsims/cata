@@ -1026,15 +1026,17 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-ScalesofLife-68915"
  value: {
-  dps: 25439.58027
-  tps: 36362.5747
+  dps: 25486.94855
+  tps: 36344.22563
+  hps: 309.23259
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-ScalesofLife-69109"
  value: {
-  dps: 25439.58027
-  tps: 36362.5747
+  dps: 25486.94855
+  tps: 36344.22563
+  hps: 348.81147
  }
 }
 dps_results: {
