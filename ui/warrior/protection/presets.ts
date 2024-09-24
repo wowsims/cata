@@ -76,9 +76,9 @@ export const StandardTalents = {
 			major1: WarriorMajorGlyph.GlyphOfShieldWall,
 			major2: WarriorMajorGlyph.GlyphOfShockwave,
 			major3: WarriorMajorGlyph.GlyphOfThunderClap,
-			minor1: WarriorMinorGlyph.GlyphOfShatteringThrow,
-			minor2: WarriorMinorGlyph.GlyphOfDemoralizingShout,
-			minor3: WarriorMinorGlyph.GlyphOfCommand,
+			minor1: WarriorMinorGlyph.GlyphOfBattle,
+			minor2: WarriorMinorGlyph.GlyphOfBerserkerRage,
+			minor3: WarriorMinorGlyph.GlyphOfDemoralizingShout,
 		}),
 	}),
 };
