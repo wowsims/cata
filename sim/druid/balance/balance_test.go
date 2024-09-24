@@ -1,99 +1,76 @@
 package balance
 
 import (
+	"testing"
+
 	_ "github.com/wowsims/cata/sim/common" // imported to get caster sets included. (we use spellfire here)
+	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func init() {
 	RegisterBalanceDruid()
 }
 
-// func TestBalance(t *testing.T) {
-// 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-// 		Class: proto.Class_ClassDruid,
-// 		Race:  proto.Race_RaceTauren,
+func TestBalance(t *testing.T) {
+	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
+		Class: proto.Class_ClassDruid,
+		Race:  proto.Race_RaceNightElf,
 
-// 		GearSet: core.GetGearSet("../../../ui/balance_druid/gear_sets", "p1"),
-// 		OtherGearSets: []core.GearSetCombo{
-// 			core.GetGearSet("../../../ui/balance_druid/gear_sets", "p2"),
-// 			core.GetGearSet("../../../ui/balance_druid/gear_sets", "p3_alliance"),
-// 		},
-// 		Talents:     StandardTalents,
-// 		Glyphs:      StandardGlyphs,
-// 		Consumes:    FullConsumes,
-// 		SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsAdaptive},
-// 		Rotation:    core.GetAplRotation("../../../ui/balance_druid/apls", "basic_p3"),
+		GearSet: core.GetGearSet("../../../ui/druid/balance/gear_sets", "t11"),
+		OtherGearSets: []core.GearSetCombo{
+			core.GetGearSet("../../../ui/druid/balance/gear_sets", "t12"),
+		},
+		Talents:     StandardTalents,
+		Glyphs:      StandardGlyphs,
+		Consumes:    FullConsumes,
+		SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsBalance},
+		Rotation:    core.GetAplRotation("../../../ui/druid/balance/apls", "t11"),
+		OtherRotations: []core.RotationCombo{
+			core.GetAplRotation("../../../ui/druid/balance/apls", "t12"),
+		},
+		ItemFilter: ItemFilter,
+	}))
+}
 
-// 		ItemFilter: ItemFilter,
-// 	}))
-// }
+var StandardTalents = "33230221123212111001-01-020331"
+var StandardGlyphs = &proto.Glyphs{
+	Prime1: int32(proto.DruidPrimeGlyph_GlyphOfInsectSwarm),
+	Prime2: int32(proto.DruidPrimeGlyph_GlyphOfMoonfire),
+	Prime3: int32(proto.DruidPrimeGlyph_GlyphOfWrath),
+	Major1: int32(proto.DruidMajorGlyph_GlyphOfStarfall),
+	Major2: int32(proto.DruidMajorGlyph_GlyphOfRebirth),
+	Major3: int32(proto.DruidMajorGlyph_GlyphOfFocus),
+	Minor1: int32(proto.DruidMinorGlyph_GlyphOfTyphoon),
+	Minor2: int32(proto.DruidMinorGlyph_GlyphOfUnburdenedRebirth),
+	Minor3: int32(proto.DruidMinorGlyph_GlyphOfMarkOfTheWild),
+}
 
-// func TestBalancePhase3(t *testing.T) {
-// 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-// 		Class: proto.Class_ClassDruid,
-// 		Race:  proto.Race_RaceTauren,
+var PlayerOptionsBalance = &proto.Player_BalanceDruid{
+	BalanceDruid: &proto.BalanceDruid{
+		Options: &proto.BalanceDruid_Options{
+			ClassOptions: &proto.DruidOptions{},
+		},
+	},
+}
 
-// 		GearSet: core.GetGearSet("../../../ui/balance_druid/gear_sets", "p3_alliance"),
-// 		Talents: "5102233115331303213305311031--205003002",
-// 		Glyphs: &proto.Glyphs{
-// 			Major1: int32(proto.DruidMajorGlyph_GlyphOfStarfire),
-// 			Major2: int32(proto.DruidMajorGlyph_GlyphOfMoonfire),
-// 			Major3: int32(proto.DruidMajorGlyph_GlyphOfStarfall),
-// 		},
-// 		Consumes:    FullConsumes,
-// 		SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsAdaptive},
-// 		Rotation:    core.GetAplRotation("../../../ui/balance_druid/apls", "basic_p3"),
+var FullConsumes = &proto.Consumes{
+	Flask:         proto.Flask_FlaskOfTheDraconicMind,
+	Food:          proto.Food_FoodSeveredSagefish,
+	DefaultPotion: proto.Potions_VolcanicPotion,
+	PrepopPotion:  proto.Potions_VolcanicPotion,
+}
 
-// 		ItemFilter: core.ItemFilter{
-// 			WeaponTypes: []proto.WeaponType{
-// 				proto.WeaponType_WeaponTypeDagger,
-// 				proto.WeaponType_WeaponTypeMace,
-// 				proto.WeaponType_WeaponTypeOffHand,
-// 				proto.WeaponType_WeaponTypeStaff,
-// 				proto.WeaponType_WeaponTypePolearm,
-// 			},
-// 			ArmorType: proto.ArmorType_ArmorTypeLeather,
-// 			RangedWeaponTypes: []proto.RangedWeaponType{
-// 				proto.RangedWeaponType_RangedWeaponTypeRelic,
-// 			},
-// 		},
-// 	}))
-// }
-
-// // Extra point in Owlkin Frenzy for testing
-// var StandardTalents = "5012203115331303213315311231--205003012"
-// var StandardGlyphs = &proto.Glyphs{
-// 	Major1: int32(proto.DruidMajorGlyph_GlyphOfStarfire),
-// 	Major2: int32(proto.DruidMajorGlyph_GlyphOfInsectSwarm),
-// 	Major3: int32(proto.DruidMajorGlyph_GlyphOfStarfall),
-// 	Minor1: int32(proto.DruidMinorGlyph_GlyphOfTyphoon),
-// }
-
-// var FullConsumes = &proto.Consumes{
-// 	Flask:         proto.Flask_FlaskOfTheFrostWyrm,
-// 	Food:          proto.Food_FoodFishFeast,
-// 	DefaultPotion: proto.Potions_PotionOfSpeed,
-// 	PrepopPotion:  proto.Potions_PotionOfWildMagic,
-// }
-
-// var PlayerOptionsAdaptive = &proto.Player_BalanceDruid{
-// 	BalanceDruid: &proto.BalanceDruid{
-// 		Options: &proto.BalanceDruid_Options{
-// 			OkfUptime: 0.2,
-// 		},
-// 	},
-// }
-
-// var ItemFilter = core.ItemFilter{
-// 	WeaponTypes: []proto.WeaponType{
-// 		proto.WeaponType_WeaponTypeDagger,
-// 		proto.WeaponType_WeaponTypeMace,
-// 		proto.WeaponType_WeaponTypeOffHand,
-// 		proto.WeaponType_WeaponTypeStaff,
-// 		proto.WeaponType_WeaponTypePolearm,
-// 	},
-// 	ArmorType: proto.ArmorType_ArmorTypeLeather,
-// 	RangedWeaponTypes: []proto.RangedWeaponType{
-// 		proto.RangedWeaponType_RangedWeaponTypeRelic,
-// 	},
-// }
+var ItemFilter = core.ItemFilter{
+	WeaponTypes: []proto.WeaponType{
+		proto.WeaponType_WeaponTypeDagger,
+		proto.WeaponType_WeaponTypeMace,
+		proto.WeaponType_WeaponTypeOffHand,
+		proto.WeaponType_WeaponTypeStaff,
+		proto.WeaponType_WeaponTypePolearm,
+	},
+	ArmorType: proto.ArmorType_ArmorTypeLeather,
+	RangedWeaponTypes: []proto.RangedWeaponType{
+		proto.RangedWeaponType_RangedWeaponTypeRelic,
+	},
+}

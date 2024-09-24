@@ -14,34 +14,49 @@ func init() {
 
 func TestAssassination(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-		Class:       proto.Class_ClassRogue,
-		Race:        proto.Race_RaceHuman,
-		OtherRaces:  []proto.Race{proto.Race_RaceOrc},
-		GearSet:     core.GetGearSet("../../../ui/rogue/assassination/gear_sets", "p1_assassination_test"),
+		Class:      proto.Class_ClassRogue,
+		Race:       proto.Race_RaceHuman,
+		OtherRaces: []proto.Race{proto.Race_RaceOrc},
+		GearSet:    core.GetGearSet("../../../ui/rogue/assassination/gear_sets", "p1_assassination"),
+
+		OtherGearSets: []core.GearSetCombo{
+			core.GetGearSet("../../../ui/rogue/assassination/gear_sets", "p3_assassination"),
+			//core.GetGearSet("../../../ui/rogue/assassination/gear_sets", "p4_assassination"),
+		},
+
 		Talents:     AssassinationTalents,
 		Glyphs:      AssassinationGlyphs,
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Assassination", SpecOptions: PlayerOptionsAssassinationDI},
+
 		OtherSpecOptions: []core.SpecOptionsCombo{
 			{Label: "MH Instant OH Deadly", SpecOptions: PlayerOptionsAssassinationID},
 			{Label: "MH Instant OH Instant", SpecOptions: PlayerOptionsAssassinationII},
 			{Label: "MH Deadly OH Deadly", SpecOptions: PlayerOptionsAssassinationDD},
 		},
+
 		Rotation:       core.GetAplRotation("../../../ui/rogue/assassination/apls", "mutilate"),
 		OtherRotations: []core.RotationCombo{},
+
 		ItemFilter: core.ItemFilter{
 			ArmorType: proto.ArmorType_ArmorTypeLeather,
+
 			RangedWeaponTypes: []proto.RangedWeaponType{
 				proto.RangedWeaponType_RangedWeaponTypeBow,
 				proto.RangedWeaponType_RangedWeaponTypeCrossbow,
 				proto.RangedWeaponType_RangedWeaponTypeGun,
 				proto.RangedWeaponType_RangedWeaponTypeThrown,
 			},
+
 			WeaponTypes: []proto.WeaponType{
 				proto.WeaponType_WeaponTypeDagger,
 			},
 		},
 
+		// General practice is to not include stat weights in test suite configs to speed up test execution, but at least one spec should
+		// include them so the core functionality is tested. Assassination Rogue was chosen for this since it has appreciable EP
+		// contributions from both physical and spell Crit, and therefore provides a good test case of school-specific EP consolidation for
+		// Rating stats.
 		StatsToWeigh:       []proto.Stat{proto.Stat_StatCritRating},
 		PseudoStatsToWeigh: []proto.PseudoStat{proto.PseudoStat_PseudoStatPhysicalCritPercent, proto.PseudoStat_PseudoStatSpellCritPercent},
 		EPReferenceStat:    proto.Stat_StatAgility,

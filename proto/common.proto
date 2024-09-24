@@ -652,13 +652,18 @@ message IndividualBuffs {
 	// Other Buffs
 	int32 power_infusion_count = 11;
 	int32 unholy_frenzy_count = 12;
-	int32 tricks_of_the_trade_count = 19;
+	TristateEffect tricks_of_the_trade = 101; // "Regular" = Glyphed, "Improved" = un-Glyphed
 	int32 divine_guardian_count = 23;
 	int32 pain_suppression_count = 24;
 	int32 hand_of_sacrifice_count = 25;
 	int32 guardian_spirit_count = 26;
 	bool focus_magic = 22;
 	bool dark_intent = 27;
+
+	// Deprecated Fields: leave these in the message to avoid breaking user
+	// data in live sims. Next expansion launches are a convenient time to
+	// clear out these fields.
+	int32 tricks_of_the_trade_count = 19 [deprecated=true];
 }
 
 message Debuffs {
@@ -951,6 +956,7 @@ enum OtherAction {
 	OtherActionSolarEnergyGain = 18; // For balance druid solar energy
 	OtherActionLunarEnergyGain = 19; // For balance druid lunar energy
 	OtherActionMove = 20; // Used by movement to be able to show it in timeline
+	OtherActionPrepull = 21; // Indicated prepull specific action
 }
 
 message ActionID {

@@ -25,12 +25,14 @@ type Druid struct {
 
 	StartingForm DruidForm
 
+	EclipseEnergyMap EclipseEnergyMap
+
 	RebirthUsed       bool
 	RebirthTiming     float64
 	BleedsActive      int
 	AssumeBleedActive bool
 	LeatherSpecActive bool
-	RipTfSnapshot     bool
+	Feral4pT12Active  bool
 
 	MHAutoSpell       *core.Spell
 	ReplaceBearMHFunc core.ReplaceMHSwing
@@ -99,6 +101,7 @@ type Druid struct {
 	PulverizeAura            *core.Aura
 	SavageDefenseAura        *core.Aura
 	SavageRoarAura           *core.Aura
+	SmokescreenAura          *core.Aura
 	SolarEclipseProcAura     *core.Aura
 	StampedeCatAura          *core.Aura
 	StampedeBearAura         *core.Aura
@@ -116,13 +119,26 @@ type Druid struct {
 
 	ExtendingMoonfireStacks int
 
-	Treant1 *TreantPet
-	Treant2 *TreantPet
-	Treant3 *TreantPet
+	Treants       *Treants
+	BurningTreant *BurningTreant
 
 	form         DruidForm
 	disabledMCDs []*core.MajorCooldown
 }
+
+const (
+	WrathBaseEnergyGain     float64 = 13 + 1.0/3
+	StarsurgeBaseEnergyGain float64 = 15
+	StarfireBaseEnergyGain  float64 = 20
+	MoonfireBaseEnergyGain  float64 = 0
+	SunfireBaseEnergyGain   float64 = 0
+
+	MoonfireLunarShowerEnergyGain float64 = MoonfireBaseEnergyGain + 8
+	SunfireLunarShowerEnergyGain  float64 = SunfireBaseEnergyGain + 8
+
+	Wrath4PT12EnergyGain    float64 = WrathBaseEnergyGain + 3
+	Starfire4PT12EnergyGain float64 = StarfireBaseEnergyGain + 5
+)
 
 const (
 	DruidSpellFlagNone int64 = 0
@@ -134,9 +150,14 @@ const (
 	DruidSpellHurricane
 	DruidSpellInnervate
 	DruidSpellInsectSwarm
+	DruidSpellMangleBear
+	DruidSpellMangleCat
+	DruidSpellMaul
 	DruidSpellMoonfire
 	DruidSpellMoonfireDoT
 	DruidSpellNaturesGrasp
+	DruidSpellRavage
+	DruidSpellShred
 	DruidSpellStarfall
 	DruidSpellStarfire
 	DruidSpellStarsurge
@@ -163,6 +184,7 @@ const (
 	DruidSpellDoT       = DruidSpellInsectSwarm | DruidSpellMoonfireDoT | DruidSpellSunfireDoT
 	DruidSpellHoT       = DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellRegrowth | DruidSpellWildGrowth
 	DruidSpellInstant   = DruidSpellBarkskin | DruidSpellInsectSwarm | DruidSpellMoonfire | DruidSpellStarfall | DruidSpellSunfire | DruidSpellFearieFire | DruidSpellBarkskin
+	DruidSpellMangle    = DruidSpellMangleBear | DruidSpellMangleCat
 	DruidArcaneSpells   = DruidSpellMoonfire | DruidSpellMoonfireDoT | DruidSpellStarfire | DruidSpellStarsurge | DruidSpellStarfall
 	DruidNatureSpells   = DruidSpellInsectSwarm | DruidSpellStarsurge | DruidSpellSunfire | DruidSpellSunfireDoT | DruidSpellTyphoon | DruidSpellHurricane
 	DruidHealingSpells  = DruidSpellHealingTouch | DruidSpellRegrowth | DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellNourish | DruidSpellSwiftmend
@@ -321,17 +343,6 @@ func (druid *Druid) Reset(_ *core.Simulation) {
 	druid.RebirthUsed = false
 }
 
-func (druid *Druid) ForceSolarEclipse(sim *core.Simulation, masteryRating float64) {
-	masteryRating -= druid.GetStat(stats.MasteryRating)
-	if masteryRating > 0 {
-		druid.AddStatDynamic(sim, stats.MasteryRating, masteryRating)
-	}
-	druid.eclipseEnergyBar.ForceEclipse(SolarEclipse, sim)
-	if masteryRating > 0 {
-		druid.AddStatDynamic(sim, stats.MasteryRating, -masteryRating)
-	}
-}
-
 func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents string) *Druid {
 	druid := &Druid{
 		Character:         *char,
@@ -340,6 +351,7 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 		StartingForm:      form,
 		form:              form,
 		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassDruid),
+		EclipseEnergyMap:  make(EclipseEnergyMap),
 	}
 
 	core.FillTalentsProto(druid.Talents.ProtoReflect(), talents, TalentTreeSizes)
@@ -355,9 +367,15 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 	druid.PseudoStats.BaseDodgeChance += 0.04951
 
 	if druid.Talents.ForceOfNature {
-		druid.Treant1 = druid.NewTreant()
-		druid.Treant2 = druid.NewTreant()
-		druid.Treant3 = druid.NewTreant()
+		druid.Treants = &Treants{
+			Treant1: druid.NewTreant(),
+			Treant2: druid.NewTreant(),
+			Treant3: druid.NewTreant(),
+		}
+	}
+
+	if druid.HasSetBonus(ItemSetObsidianArborweaveRegalia, 2) {
+		druid.BurningTreant = druid.NewBurningTreant()
 	}
 
 	return druid
@@ -366,6 +384,11 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 type DruidSpell struct {
 	*core.Spell
 	FormMask DruidForm
+
+	// Optional fields used in snapshotting calculations
+	CurrentSnapshotPower float64
+	NewSnapshotPower     float64
+	ShortName            string
 }
 
 func (ds *DruidSpell) IsReady(sim *core.Simulation) bool {
@@ -387,6 +410,31 @@ func (ds *DruidSpell) IsEqual(s *core.Spell) bool {
 		return false
 	}
 	return ds.Spell == s
+}
+
+func (druid *Druid) UpdateBleedPower(bleedSpell *DruidSpell, sim *core.Simulation, target *core.Unit, updateCurrent bool, updateNew bool) {
+	snapshotPower := bleedSpell.ExpectedTickDamage(sim, target)
+
+	// Assume that Mangle will be up soon if not currently active.
+	if !druid.BleedCategories.Get(target).AnyActive() {
+		snapshotPower *= 1.3
+	}
+
+	if updateCurrent {
+		bleedSpell.CurrentSnapshotPower = snapshotPower
+
+		if sim.Log != nil {
+			druid.Log(sim, "%s Snapshot Power: %.1f", bleedSpell.ShortName, snapshotPower)
+		}
+	}
+
+	if updateNew {
+		bleedSpell.NewSnapshotPower = snapshotPower
+
+		if (sim.Log != nil) && !updateCurrent {
+			druid.Log(sim, "%s Projected Power: %.1f", bleedSpell.ShortName, snapshotPower)
+		}
+	}
 }
 
 // Agent is a generic way to access underlying druid on any of the agents (for example balance druid.)

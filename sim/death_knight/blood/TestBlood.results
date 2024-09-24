@@ -252,7 +252,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBlood-AllItems-Brawler'sTrophy-71338"
+ key: "TestBlood-AllItems-Brawler'sTrophy-232015"
  value: {
   dps: 13803.93262
   tps: 66990.06155
@@ -284,10 +284,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBlood-AllItems-Coren'sChilledChromiumCoaster-71335"
+ key: "TestBlood-AllItems-Coren'sChilledChromiumCoaster-232012"
  value: {
-  dps: 14242.29045
-  tps: 69316.56291
+  dps: 14203.99298
+  tps: 69134.14115
   hps: 3597.80333
  }
 }
@@ -409,6 +409,22 @@ dps_results: {
   dps: 13803.93262
   tps: 66990.06155
   hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-ElementiumDeathplateBattlearmor"
+ value: {
+  dps: 14202.64392
+  tps: 69622.42644
+  hps: 3461.04681
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-ElementiumDeathplateBattlegear"
+ value: {
+  dps: 15214.14265
+  tps: 73981.98978
+  hps: 3637.17429
  }
 }
 dps_results: {
@@ -764,6 +780,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-JujuofNimbleness-63840"
  value: {
   dps: 13934.12024
@@ -964,10 +996,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBlood-AllItems-MithrilStopwatch-71337"
+ key: "TestBlood-AllItems-MithrilStopwatch-232013"
  value: {
-  dps: 14083.41621
-  tps: 68468.82101
+  dps: 14062.27118
+  tps: 68376.98463
   hps: 3597.80333
  }
 }
@@ -1012,11 +1044,11 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBlood-AllItems-PetrifiedPickledEgg-71336"
+ key: "TestBlood-AllItems-PetrifiedPickledEgg-232014"
  value: {
-  dps: 14077.5226
-  tps: 68425.0634
-  hps: 3642.212
+  dps: 13906.63841
+  tps: 67516.99556
+  hps: 3642.80332
  }
 }
 dps_results: {
@@ -1140,6 +1172,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-ScalesofLife-68915"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 4078.69022
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-ScalesofLife-69109"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 4140.70429
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 13976.3816
@@ -1237,6 +1285,30 @@ dps_results: {
 }
 dps_results: {
  key: "TestBlood-AllItems-SoulCasket-58183"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-StayofExecution-68996"
  value: {
   dps: 13803.93262
   tps: 66990.06155
@@ -1454,16 +1526,16 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 13867.989
-  tps: 67355.20233
+  dps: 14039.50678
+  tps: 68280.62609
   hps: 3597.80333
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 13994.66585
-  tps: 68006.57714
+  dps: 14072.10466
+  tps: 68453.99466
   hps: 3597.80333
  }
 }

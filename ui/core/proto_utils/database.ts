@@ -142,12 +142,20 @@ export class Database {
 		return Array.from(this.items.values());
 	}
 
+	getAllItemIds(): Array<number> {
+		return Array.from(this.items.keys());
+	}
+
 	getItems(slot: ItemSlot): Array<Item> {
 		return this.getAllItems().filter(item => getEligibleItemSlots(item).includes(slot));
 	}
 
 	getItemById(id: number): Item | undefined {
 		return this.items.get(id);
+	}
+
+	getItemIdsForSet(setId: number): Array<number> {
+		return this.getAllItemIds().filter(itemId => this.getItemById(itemId)!.setId === setId);
 	}
 
 	getRandomSuffixById(id: number): ItemRandomSuffix | undefined {

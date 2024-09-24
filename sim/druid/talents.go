@@ -55,6 +55,7 @@ func (druid *Druid) ApplyTalents() {
 	druid.applyGaleWinds()
 	druid.applyEarthAndMoon()
 	druid.applyMoonkinForm()
+	druid.applyLunarShower()
 	// if druid.Talents.PrimalPrecision > 0 {
 	// 	druid.AddStat(stats.Expertise, 5.0*float64(druid.Talents.PrimalPrecision)*core.ExpertisePerQuarterPercentReduction)
 	// }
@@ -80,7 +81,7 @@ func (druid *Druid) ApplyTalents() {
 	// druid.applyPredatoryInstincts()
 	druid.applyNaturalReaction()
 	// druid.applyOwlkinFrenzy()
-	// druid.applyInfectedWounds()
+	druid.applyInfectedWounds()
 	druid.applyFurySwipes()
 	druid.applyPrimalMadness()
 	druid.applyStampede()
@@ -132,7 +133,6 @@ func (druid *Druid) applyBalanceOfPower() {
 	if druid.Talents.BalanceOfPower > 0 {
 		druid.AddStaticMod(core.SpellModConfig{
 			School:     core.SpellSchoolArcane | core.SpellSchoolNature,
-			ClassMask:  DruidSpellsAll,
 			FloatValue: 0.01 * float64(druid.Talents.BalanceOfPower),
 			Kind:       core.SpellMod_DamageDone_Pct,
 		})
@@ -233,7 +233,6 @@ func (druid *Druid) applyMoonkinForm() {
 	if druid.Talents.MoonkinForm {
 		druid.AddStaticMod(core.SpellModConfig{
 			School:     core.SpellSchoolArcane | core.SpellSchoolNature,
-			ClassMask:  DruidSpellsAll,
 			FloatValue: 0.1,
 			Kind:       core.SpellMod_DamageDone_Pct,
 		})
@@ -313,6 +312,70 @@ func (druid *Druid) applyEarthAndMoon() {
 			Kind:       core.SpellMod_DamageDone_Pct,
 		})
 	}
+}
+
+func (druid *Druid) applyLunarShower() {
+	if druid.Talents.LunarShower == 0 {
+		return
+	}
+
+	lunarShowerDmgMod := druid.AddDynamicMod(core.SpellModConfig{
+		ClassMask: DruidSpellMoonfire | DruidSpellSunfire,
+		Kind:      core.SpellMod_DamageDone_Pct,
+	})
+
+	lunarShowerResourceMod := druid.AddDynamicMod(core.SpellModConfig{
+		ClassMask: DruidSpellMoonfire | DruidSpellSunfire,
+		Kind:      core.SpellMod_PowerCost_Pct,
+	})
+
+	var lunarShowerAura = druid.RegisterAura(core.Aura{
+		Label:     "Lunar Shower",
+		Duration:  time.Second * 3,
+		ActionID:  core.ActionID{SpellID: 33603},
+		MaxStacks: 3,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			lunarShowerDmgMod.UpdateFloatValue(float64(aura.GetStacks()) * 0.15)
+			lunarShowerDmgMod.Activate()
+
+			lunarShowerResourceMod.UpdateFloatValue(float64(aura.GetStacks()) * -0.1)
+			lunarShowerResourceMod.Activate()
+
+			// While under the effects of Lunar Shower, Moonfire and Sunfire generate 8 eclipse energy
+			druid.SetSpellEclipseEnergy(DruidSpellMoonfire, MoonfireLunarShowerEnergyGain, MoonfireLunarShowerEnergyGain)
+			druid.SetSpellEclipseEnergy(DruidSpellSunfire, SunfireLunarShowerEnergyGain, SunfireLunarShowerEnergyGain)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			lunarShowerDmgMod.Deactivate()
+			lunarShowerResourceMod.Deactivate()
+
+			druid.SetSpellEclipseEnergy(DruidSpellMoonfire, MoonfireBaseEnergyGain, MoonfireBaseEnergyGain)
+			druid.SetSpellEclipseEnergy(DruidSpellSunfire, SunfireBaseEnergyGain, SunfireBaseEnergyGain)
+		},
+	})
+
+	druid.RegisterAura(core.Aura{
+		Label:    "Lunar Shower Handler",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ClassSpellMask != DruidSpellMoonfire && spell.ClassSpellMask != DruidSpellSunfire {
+				return
+			}
+
+			if lunarShowerAura.IsActive() {
+				if lunarShowerAura.GetStacks() < 3 {
+					lunarShowerAura.AddStack(sim)
+					lunarShowerAura.Refresh(sim)
+				}
+			} else {
+				lunarShowerAura.Activate(sim)
+				lunarShowerAura.SetStacks(sim, 1)
+			}
+		},
+	})
 }
 
 // func (druid *Druid) registerNaturesSwiftnessCD() {
@@ -785,39 +848,32 @@ func (druid *Druid) applyNaturalReaction() {
 	})
 }
 
-// func (druid *Druid) applyInfectedWounds() {
-// 	if druid.Talents.InfectedWounds == 0 {
-// 		return
-// 	}
+func (druid *Druid) applyInfectedWounds() {
+	if druid.Talents.InfectedWounds == 0 {
+		return
+	}
 
-// 	iwAuras := druid.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-// 		return core.InfectedWoundsAura(target, druid.Talents.InfectedWounds)
-// 	})
-// 	druid.Env.RegisterPreFinalizeEffect(func() {
-// 		if druid.Shred != nil {
-// 			druid.Shred.RelatedAuras = append(druid.Shred.RelatedAuras, iwAuras)
-// 		}
-// 		if druid.MangleCat != nil {
-// 			druid.MangleCat.RelatedAuras = append(druid.MangleCat.RelatedAuras, iwAuras)
-// 		}
-// 		if druid.MangleBear != nil {
-// 			druid.MangleBear.RelatedAuras = append(druid.MangleBear.RelatedAuras, iwAuras)
-// 		}
-// 		if druid.Maul != nil {
-// 			druid.Maul.RelatedAuras = append(druid.Maul.RelatedAuras, iwAuras)
-// 		}
-// 	})
+	iwAuras := druid.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+		return core.InfectedWoundsAura(target, druid.Talents.InfectedWounds)
+	})
+	druid.Env.RegisterPreFinalizeEffect(func() {
+		triggeringSpells := []*DruidSpell{druid.Shred, druid.Ravage, druid.Maul, druid.MangleCat, druid.MangleBear}
 
-// 	druid.RegisterAura(core.Aura{
-// 		Label:    "Infected Wounds Talent",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if result.Landed() && (druid.Shred.IsEqual(spell) || druid.Maul.IsEqual(spell) || druid.MangleCat.IsEqual(spell) || druid.MangleBear.IsEqual(spell)) {
-// 				iwAuras.Get(result.Target).Activate(sim)
-// 			}
-// 		},
-// 	})
-// }
+		for _, spell := range triggeringSpells {
+			if spell != nil {
+				spell.RelatedAuras = append(spell.RelatedAuras, iwAuras)
+			}
+		}
+	})
+
+	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
+		Name:           "Infected Wounds Trigger",
+		Callback:       core.CallbackOnSpellHitDealt,
+		ClassSpellMask: DruidSpellShred | DruidSpellRavage | DruidSpellMaul | DruidSpellMangle,
+		Outcome:        core.OutcomeLanded,
+
+		Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+			iwAuras.Get(result.Target).Activate(sim)
+		},
+	})
+}

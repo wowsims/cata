@@ -252,7 +252,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestFrost-AllItems-Brawler'sTrophy-71338"
+ key: "TestFrost-AllItems-Brawler'sTrophy-232015"
  value: {
   dps: 20745.1798
   tps: 18901.58265
@@ -284,11 +284,11 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestFrost-AllItems-Coren'sChilledChromiumCoaster-71335"
+ key: "TestFrost-AllItems-Coren'sChilledChromiumCoaster-232012"
  value: {
-  dps: 21505.95518
-  tps: 19628.07733
-  hps: 247.36104
+  dps: 21429.26831
+  tps: 19556.82022
+  hps: 246.6603
  }
 }
 dps_results: {
@@ -409,6 +409,22 @@ dps_results: {
   dps: 20745.1798
   tps: 18901.58265
   hps: 242.45587
+ }
+}
+dps_results: {
+ key: "TestFrost-AllItems-ElementiumDeathplateBattlearmor"
+ value: {
+  dps: 19360.42977
+  tps: 17545.57931
+  hps: 232.60539
+ }
+}
+dps_results: {
+ key: "TestFrost-AllItems-ElementiumDeathplateBattlegear"
+ value: {
+  dps: 21463.68443
+  tps: 19380.77156
+  hps: 256.89646
  }
 }
 dps_results: {
@@ -756,6 +772,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrost-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 20745.1798
+  tps: 18901.58265
+  hps: 242.45587
+ }
+}
+dps_results: {
+ key: "TestFrost-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 20745.1798
+  tps: 18901.58265
+  hps: 242.45587
+ }
+}
+dps_results: {
  key: "TestFrost-AllItems-JujuofNimbleness-63840"
  value: {
   dps: 21012.60482
@@ -956,11 +988,11 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestFrost-AllItems-MithrilStopwatch-71337"
+ key: "TestFrost-AllItems-MithrilStopwatch-232013"
  value: {
-  dps: 21042.40753
-  tps: 19164.52968
-  hps: 247.36104
+  dps: 21016.67633
+  tps: 19144.22823
+  hps: 246.6603
  }
 }
 dps_results: {
@@ -1004,10 +1036,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestFrost-AllItems-PetrifiedPickledEgg-71336"
+ key: "TestFrost-AllItems-PetrifiedPickledEgg-232014"
  value: {
-  dps: 20789.85631
-  tps: 18970.93897
+  dps: 20759.74244
+  tps: 18950.52402
   hps: 241.75513
  }
 }
@@ -1132,6 +1164,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrost-AllItems-ScalesofLife-68915"
+ value: {
+  dps: 20745.1798
+  tps: 18901.58265
+  hps: 562.31529
+ }
+}
+dps_results: {
+ key: "TestFrost-AllItems-ScalesofLife-69109"
+ value: {
+  dps: 20745.1798
+  tps: 18901.58265
+  hps: 603.64838
+ }
+}
+dps_results: {
  key: "TestFrost-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 21015.29714
@@ -1232,6 +1280,30 @@ dps_results: {
  value: {
   dps: 20997.84595
   tps: 19154.2488
+  hps: 242.45587
+ }
+}
+dps_results: {
+ key: "TestFrost-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 21046.64751
+  tps: 19203.05037
+  hps: 242.45587
+ }
+}
+dps_results: {
+ key: "TestFrost-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 21086.00361
+  tps: 19242.40647
+  hps: 242.45587
+ }
+}
+dps_results: {
+ key: "TestFrost-AllItems-StayofExecution-68996"
+ value: {
+  dps: 20745.1798
+  tps: 18901.58265
   hps: 242.45587
  }
 }
@@ -1454,17 +1526,17 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 20888.44098
-  tps: 19046.66966
-  hps: 243.15661
+  dps: 21147.49567
+  tps: 19300.4594
+  hps: 245.25883
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 21169.41677
-  tps: 19320.66477
-  hps: 244.55809
+  dps: 21205.37782
+  tps: 19356.3376
+  hps: 243.85735
  }
 }
 dps_results: {

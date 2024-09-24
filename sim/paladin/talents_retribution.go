@@ -256,12 +256,12 @@ func (paladin *Paladin) applyDivineStorm() {
 				results[idx] = result
 			}
 
-			for idx := int32(0); idx < numTargets; idx++ {
-				spell.DealDamage(sim, results[idx])
-			}
-
 			if numHits >= 4 {
 				paladin.GainHolyPower(sim, 1, hpMetrics)
+			}
+
+			for idx := int32(0); idx < numTargets; idx++ {
+				spell.DealDamage(sim, results[idx])
 			}
 		},
 	})
@@ -285,20 +285,23 @@ func (paladin *Paladin) applyDivinePurpose() {
 		},
 	})
 
+	procChance := []float64{0, 0.07, 0.15}[paladin.Talents.DivinePurpose]
 	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
 		Name:           "Divine Purpose (proc)",
 		ActionID:       core.ActionID{SpellID: 90174},
 		Callback:       core.CallbackOnSpellHitDealt | core.CallbackOnCastComplete,
 		Outcome:        core.OutcomeLanded,
 		ClassSpellMask: SpellMaskCanTriggerDivinePurpose,
-		ProcChance:     []float64{0, 0.07, 0.15}[paladin.Talents.DivinePurpose],
+		ProcChance:     1,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result == nil && spell.ClassSpellMask&SpellMaskInquisition == 0 {
 				return
 			}
 
-			paladin.DivinePurposeAura.Activate(sim)
+			if sim.Proc(procChance, "Divine Purpose") {
+				paladin.DivinePurposeAura.Activate(sim)
+			}
 		},
 	})
 }

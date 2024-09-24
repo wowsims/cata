@@ -6,13 +6,14 @@ import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
-import { StatCapType, UIStat } from '../../core/proto/ui';
-import { convertHastePresetBreakpointsToPercent, StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
+import { StatCapType } from '../../core/proto/ui';
+import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
+import { formatToNumber } from '../../core/utils';
 import { sharedMageDisplayStatsModifiers } from '../shared';
 import * as FireInputs from './inputs';
 import * as Presets from './presets';
 
-const hasteBreakpoints = convertHastePresetBreakpointsToPercent(Presets.FIRE_BREAKPOINTS.get(Stat.StatHasteRating)!);
+const hasteBreakpoints = Presets.FIRE_BREAKPOINTS.find(entry => entry.unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHastePercent))!.presets!;
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	cssClass: 'fire-mage-sim-ui',
@@ -55,20 +56,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 
 			const hasteSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent, {
 				breakpoints: [
-					hasteBreakpoints.get('5-tick LvB/Pyro')!,
-					hasteBreakpoints.get('12-tick Combust')!,
-					hasteBreakpoints.get('13-tick Combust')!,
-					hasteBreakpoints.get('14-tick Combust')!,
-					hasteBreakpoints.get('6-tick LvB/Pyro')!,
-					hasteBreakpoints.get('15-tick Combust')!,
-					hasteBreakpoints.get('16-tick Combust')!,
-					hasteBreakpoints.get('7-tick LvB/Pyro')!,
-					hasteBreakpoints.get('17-tick Combust')!,
-					hasteBreakpoints.get('18-tick Combust')!,
-					hasteBreakpoints.get('19-tick Combust')!,
-					hasteBreakpoints.get('8-tick LvB/Pyro')!,
-					hasteBreakpoints.get('20-tick Combust')!,
-					hasteBreakpoints.get('21-tick Combust')!,
+					hasteBreakpoints.get('5-tick - LvB/Pyro')!,
+					hasteBreakpoints.get('12-tick - Combust')!,
+					hasteBreakpoints.get('13-tick - Combust')!,
+					hasteBreakpoints.get('14-tick - Combust')!,
+					hasteBreakpoints.get('6-tick - LvB/Pyro')!,
+					hasteBreakpoints.get('15-tick - Combust')!,
+					hasteBreakpoints.get('16-tick - Combust')!,
+					hasteBreakpoints.get('7-tick - LvB/Pyro')!,
+					hasteBreakpoints.get('17-tick - Combust')!,
+					hasteBreakpoints.get('18-tick - Combust')!,
+					hasteBreakpoints.get('19-tick - Combust')!,
+					hasteBreakpoints.get('8-tick - LvB/Pyro')!,
+					hasteBreakpoints.get('20-tick - Combust')!,
+					hasteBreakpoints.get('21-tick - Combust')!,
 				],
 				capType: StatCapType.TypeThreshold,
 				postCapEPs: [0.61 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
@@ -174,28 +175,33 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 					const hasPI = !!player.getBuffs().powerInfusionCount;
 					const hasBerserking = player.getRace() === Race.RaceTroll;
 
-					const modifyHaste = (oldHastePercent: number, modifier: number) => ((oldHastePercent / 100 + 1) / modifier - 1) * 100;
+					const modifyHaste = (oldHastePercent: number, modifier: number) =>
+						Number(formatToNumber(((oldHastePercent / 100 + 1) / modifier - 1) * 100, { maximumFractionDigits: 5 }));
 
 					this.individualConfig.defaults.softCapBreakpoints!.forEach(softCap => {
 						const softCapToModify = softCaps.find(sc => sc.unitStat.equals(softCap.unitStat));
 						if (softCap.unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHastePercent) && softCapToModify) {
 							const adjustedHastedBreakpoints = new Set([...softCap.breakpoints]);
+							const hasCloseMatchingValue = (value: number) =>
+								[...adjustedHastedBreakpoints.values()].find(bp => bp.toFixed(2) === value.toFixed(2));
+
 							// LvB/Pyro are not worth adjusting for
 							const excludedHasteBreakpoints = [
-								hasteBreakpoints.get('5-tick LvB/Pyro')!,
-								hasteBreakpoints.get('6-tick LvB/Pyro')!,
-								hasteBreakpoints.get('7-tick LvB/Pyro')!,
-								hasteBreakpoints.get('8-tick LvB/Pyro')!,
+								hasteBreakpoints.get('5-tick - LvB/Pyro')!,
+								hasteBreakpoints.get('6-tick - LvB/Pyro')!,
+								hasteBreakpoints.get('7-tick - LvB/Pyro')!,
+								hasteBreakpoints.get('8-tick - LvB/Pyro')!,
 							];
 							softCap.breakpoints.forEach(breakpoint => {
 								const isExcludedFromPiZerk = excludedHasteBreakpoints.includes(breakpoint);
 								if (hasBL) {
 									const blBreakpoint = modifyHaste(breakpoint, 1.3);
+
 									if (blBreakpoint > 0) {
-										adjustedHastedBreakpoints.add(blBreakpoint);
+										if (!hasCloseMatchingValue(blBreakpoint)) adjustedHastedBreakpoints.add(blBreakpoint);
 										if (hasBerserking) {
 											const berserkingBreakpoint = modifyHaste(blBreakpoint, 1.2);
-											if (berserkingBreakpoint > 0) {
+											if (berserkingBreakpoint > 0 && !hasCloseMatchingValue(blBreakpoint)) {
 												adjustedHastedBreakpoints.add(berserkingBreakpoint);
 											}
 										}
@@ -204,10 +210,10 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 								if (hasPI && !isExcludedFromPiZerk) {
 									const piBreakpoint = modifyHaste(breakpoint, 1.2);
 									if (piBreakpoint > 0) {
-										adjustedHastedBreakpoints.add(piBreakpoint);
+										if (!hasCloseMatchingValue(piBreakpoint)) adjustedHastedBreakpoints.add(piBreakpoint);
 										if (hasBerserking) {
 											const berserkingBreakpoint = modifyHaste(piBreakpoint, 1.2);
-											if (berserkingBreakpoint > 0) {
+											if (berserkingBreakpoint > 0 && !hasCloseMatchingValue(piBreakpoint)) {
 												adjustedHastedBreakpoints.add(berserkingBreakpoint);
 											}
 										}

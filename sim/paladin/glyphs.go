@@ -88,10 +88,11 @@ func registerGlyphOfExorcism(paladin *Paladin) {
 		core.CalcScalingSpellAverageEffect(proto.Class_ClassPaladin, 2.663)
 
 	glyphOfExorcismDot := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 54934},
+		ActionID:       core.ActionID{SpellID: 879}.WithTag(3), // actual 54934
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: SpellMaskGlyphOfExorcism,
+		Flags:          core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   paladin.DefaultSpellCritMultiplier(),
@@ -112,16 +113,14 @@ func registerGlyphOfExorcism(paladin *Paladin) {
 					0.344*max(dot.Spell.SpellPower(), dot.Spell.MeleeAttackPower())) *
 					0.2 / 3
 
+				bonusCritPercent := dot.Spell.BonusCritPercent
 				if target.MobType == proto.MobType_MobTypeDemon || target.MobType == proto.MobType_MobTypeUndead {
-					// TODO: Was this implemented correctly to begin with?
-					// dot.SnapshotCritChance is supposed to be in probability
-					// units, and it will be automatically overwritten when
-					// dot.Snapshot() is called, meaning that this code
-					// shouldn't be doing anything at all...
-					dot.SnapshotCritChance = 100 * core.CritRatingPerCritPercent
+					dot.Spell.BonusCritPercent += 100
 				}
 
 				dot.Snapshot(target, baseDamage)
+
+				dot.Spell.BonusCritPercent = bonusCritPercent
 			},
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {

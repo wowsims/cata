@@ -44,7 +44,6 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 		{
 			[Stat.StatStamina]: 0.5,
 			[Stat.StatAgility]: 3.27,
-			[Stat.StatIntellect]: 1.1,
 			[Stat.StatRangedAttackPower]: 1.0,
 			[Stat.StatHitRating]: 2.16,
 			[Stat.StatCritRating]: 1.17,
@@ -53,6 +52,24 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 		},
 		{
 			[PseudoStat.PseudoStatRangedDps]: 3.75,
+		},
+	),
+);
+
+export const P2_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'SV P2 (T12 4 set)',
+	Stats.fromMap(
+		{
+			[Stat.StatStamina]: 0.5,
+			[Stat.StatAgility]: 3.37,
+			[Stat.StatRangedAttackPower]: 1.0,
+			[Stat.StatHitRating]: 2.56,
+			[Stat.StatCritRating]: 1.27,
+			[Stat.StatHasteRating]: 0.94,
+			[Stat.StatMasteryRating]: 1.04,
+		},
+		{
+			[PseudoStat.PseudoStatRangedDps]: 4.16,
 		},
 	),
 );

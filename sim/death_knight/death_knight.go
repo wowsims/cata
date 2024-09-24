@@ -63,6 +63,9 @@ type DeathKnight struct {
 	BloodPlagueSpell *core.Spell
 	EbonPlagueAura   core.AuraArray
 	ScarletFeverAura core.AuraArray
+
+	// T12 spell
+	BurningBloodSpell *core.Spell
 }
 
 func (dk *DeathKnight) GetCharacter() *core.Character {

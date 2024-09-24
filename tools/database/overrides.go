@@ -17,6 +17,31 @@ var OtherItemIdsToFetch = []string{
 }
 
 var ItemOverrides = []*proto.UIItem{
+	// TODO: Remove these when blizzard fixes the item data
+	{ /** Alysra's Razor (H) */ Id: 71427, WeaponDamageMin: 610, WeaponDamageMax: 1134, WeaponSpeed: 1.4},
+	{ /** Arathar, the Eye of Flame (H) */ Id: 71611, WeaponDamageMin: 1865, WeaponDamageMax: 3465, WeaponSpeed: 3.0},
+	{ /** Arbalest of Erupting Fury (H) */ Id: 71414, WeaponDamageMin: 2015, WeaponDamageMax: 3024, WeaponSpeed: 3.0},
+	{ /** Avool's Incendiary Shanker */ Id: 71779, WeaponDamageMin: 695, WeaponDamageMax: 1291, WeaponSpeed: 1.8},
+	{ /** Avool's Incendiary Shanker (H) */ Id: 71778, WeaponDamageMin: 784, WeaponDamageMax: 1458, WeaponSpeed: 1.8},
+	{ /** Deflecting Star (H) */ Id: 71592, WeaponDamageMin: 1410, WeaponDamageMax: 2116, WeaponSpeed: 2.1},
+	{ /** Entrail Disgorger */ Id: 71787, WeaponDamageMin: 618, WeaponDamageMax: 927, WeaponSpeed: 1.4},
+	{ /** Entrail Disgorger (H) */ Id: 71786, WeaponDamageMin: 697, WeaponDamageMax: 1046, WeaponSpeed: 1.4},
+	{ /** Eye of Purification */ Id: 71776, WeaponDamageMin: 463, WeaponDamageMax: 861, WeaponSpeed: 2.4},
+	{ /** Eye of Purification (H) */ Id: 71777, WeaponDamageMin: 523, WeaponDamageMax: 972, WeaponSpeed: 2.4},
+	{ /** Feeding Frenzy (H) */ Id: 71441, WeaponDamageMin: 896, WeaponDamageMax: 1345, WeaponSpeed: 1.8},
+	{ /** Funeral Pyre (H) */ Id: 71409, WeaponDamageMin: 597, WeaponDamageMax: 897, WeaponSpeed: 2.4},
+	{ /** Gatecrasher (H) */ Id: 71454, WeaponDamageMin: 1133, WeaponDamageMax: 2105, WeaponSpeed: 2.6},
+	{ /** Giantslicer (H) */ Id: 71593, WeaponDamageMin: 1410, WeaponDamageMax: 2116, WeaponSpeed: 2.1},
+	{ /** Ko'gun, Hammer of the Firelord (H) */ Id: 71615, WeaponDamageMin: 484, WeaponDamageMax: 899, WeaponSpeed: 2.1},
+	{ /** Morningstar Shard (H) */ Id: 71568, WeaponDamageMin: 1343, WeaponDamageMax: 2016, WeaponSpeed: 2.0},
+	{ /** Sho'ravon, Greatstaff of Annihilation */ Id: 71798, WeaponDamageMin: 560, WeaponDamageMax: 840, WeaponSpeed: 2.4},
+	{ /** Skullstealer Greataxe (H) */ Id: 71445, WeaponDamageMin: 2418, WeaponDamageMax: 3628, WeaponSpeed: 3.6},
+	{ /** Smoldering Censer of Purity */ Id: 71775, WeaponDamageMin: 640, WeaponDamageMax: 960, WeaponSpeed: 2.9},
+	{ /** Smoldering Censer of Purity (H) */ Id: 71774, WeaponDamageMin: 722, WeaponDamageMax: 1084, WeaponSpeed: 2.9},
+	{ /** Volcanospike (H) */ Id: 71422, WeaponDamageMin: 348, WeaponDamageMax: 648, WeaponSpeed: 1.6},
+	{ /** Zoid's Firelit Greatsword */ Id: 71780, WeaponDamageMin: 2142, WeaponDamageMax: 3214, WeaponSpeed: 3.6},
+	{ /** Zoid's Firelit Greatsword (H) */ Id: 71781, WeaponDamageMin: 2418, WeaponDamageMax: 3628, WeaponSpeed: 3.6},
+
 	{ /** Raz's Pauldrons */ Id: 56318, SocketBonus: stats.Stats{stats.HitRating: 20}.ToProtoArray()},
 
 	{ /** Destruction Holo-gogs */ Id: 32494, ClassAllowlist: []proto.Class{proto.Class_ClassMage, proto.Class_ClassPriest, proto.Class_ClassWarlock}},
@@ -240,6 +265,14 @@ var ItemDenyList = map[int32]struct{}{
 	68713: {}, // Mirror of Broken Images Duplicate
 	65104: {}, // DONTUSEUnheeded Warning
 	65015: {}, // DONTUSEFury of Angerforge
+	71331: {}, // Direbrew's Bloodied Shanker - 365
+	71332: {}, // Tremendous Tankard O' Terror - 365
+	71333: {}, // Bubblier Brightbrew Charm - 365
+	71334: {}, // Bitterer Balebrew Charm - 365
+	71335: {}, // Coren's Chilled Chromium Coaster - 365
+	71336: {}, // Petrified Pickled Egg - 365
+	71337: {}, // Mithril Stopwatch - 365
+	71338: {}, // Brawler's Trophy - 365
 }
 
 // Item icons to include in the DB, so they don't need to be separately loaded in the UI.

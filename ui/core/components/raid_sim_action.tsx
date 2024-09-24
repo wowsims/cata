@@ -195,14 +195,14 @@ export class RaidSimResultsManager {
 				tippy(resultDivElem, { content, placement: 'right' });
 			}
 		};
-		setResultTooltip('.results-sim-dps', 'Damage Per Second');
-		setResultTooltip('.results-sim-tto', 'Time To OOM');
-		setResultTooltip('.results-sim-hps', 'Healing+Shielding Per Second, including overhealing.');
-		setResultTooltip('.results-sim-tps', 'Threat Per Second');
-		setResultTooltip('.results-sim-dtps', 'Damage Taken Per Second');
-		setResultTooltip('.results-sim-dur', 'Average Fight Duration');
+		setResultTooltip(`.${RaidSimResultsManager.resultMetricClasses['dps']}`, 'Damage Per Second');
+		setResultTooltip(`.${RaidSimResultsManager.resultMetricClasses['tto']}`, 'Time To OOM');
+		setResultTooltip(`.${RaidSimResultsManager.resultMetricClasses['hps']}`, 'Healing+Shielding Per Second, including overhealing.');
+		setResultTooltip(`.${RaidSimResultsManager.resultMetricClasses['tps']}`, 'Threat Per Second');
+		setResultTooltip(`.${RaidSimResultsManager.resultMetricClasses['dtps']}`, 'Damage Taken Per Second');
+		setResultTooltip(`.${RaidSimResultsManager.resultMetricClasses['dur']}`, 'Average Fight Duration');
 		setResultTooltip(
-			'.results-sim-tmi',
+			`.${RaidSimResultsManager.resultMetricClasses['tmi']}`,
 			<>
 				<p>Theck-Meloree Index (TMI)</p>
 				<p>A measure of incoming damage smoothness which combines the benefits of avoidance with effective health.</p>
@@ -212,7 +212,7 @@ export class RaidSimResultsManager {
 			</>,
 		);
 		setResultTooltip(
-			'.results-sim-cod',
+			`.${RaidSimResultsManager.resultMetricClasses['cod']}`,
 			<>
 				<p>Chance of Death</p>
 				<p>
@@ -227,13 +227,12 @@ export class RaidSimResultsManager {
 		);
 
 		if (!this.simUI.isIndividualSim()) {
-			[...this.simUI.resultsViewer.contentElem.querySelectorAll('results-sim-reference-diff-separator')].forEach(e => e.remove());
-			[...this.simUI.resultsViewer.contentElem.querySelectorAll('results-sim-tto')].forEach(e => e.remove());
-			[...this.simUI.resultsViewer.contentElem.querySelectorAll('results-sim-hps')].forEach(e => e.remove());
-			[...this.simUI.resultsViewer.contentElem.querySelectorAll('results-sim-tps')].forEach(e => e.remove());
-			[...this.simUI.resultsViewer.contentElem.querySelectorAll('results-sim-dtps')].forEach(e => e.remove());
-			[...this.simUI.resultsViewer.contentElem.querySelectorAll('results-sim-tmi')].forEach(e => e.remove());
-			[...this.simUI.resultsViewer.contentElem.querySelectorAll('results-sim-cod')].forEach(e => e.remove());
+			[...this.simUI.resultsViewer.contentElem.querySelectorAll(`.${RaidSimResultsManager.resultMetricClasses['tto']}`)].forEach(e => e.remove());
+			[...this.simUI.resultsViewer.contentElem.querySelectorAll(`.${RaidSimResultsManager.resultMetricClasses['hps']}`)].forEach(e => e.remove());
+			[...this.simUI.resultsViewer.contentElem.querySelectorAll(`.${RaidSimResultsManager.resultMetricClasses['tps']}`)].forEach(e => e.remove());
+			[...this.simUI.resultsViewer.contentElem.querySelectorAll(`.${RaidSimResultsManager.resultMetricClasses['dtps']}`)].forEach(e => e.remove());
+			[...this.simUI.resultsViewer.contentElem.querySelectorAll(`.${RaidSimResultsManager.resultMetricClasses['tmi']}`)].forEach(e => e.remove());
+			[...this.simUI.resultsViewer.contentElem.querySelectorAll(`.${RaidSimResultsManager.resultMetricClasses['cod']}`)].forEach(e => e.remove());
 		}
 
 		const simReferenceSetButton = this.simUI.resultsViewer.contentElem.querySelector<HTMLSpanElement>('.results-sim-set-reference');
@@ -313,7 +312,8 @@ export class RaidSimResultsManager {
 			this.formatToplineResult(
 				`.${RaidSimResultsManager.resultMetricClasses['cod']} .results-reference-diff`,
 				res => res.getFirstPlayer()!.chanceOfDeath,
-				1,
+				2,
+				true,
 				true,
 			);
 		} else {
@@ -331,6 +331,7 @@ export class RaidSimResultsManager {
 		getMetrics: (result: SimResult) => DistributionMetricsProto | number,
 		precision: number,
 		lowerIsBetter?: boolean,
+		preNormalizedErrors?: boolean,
 	) {
 		const elem = this.simUI.resultsViewer.contentElem.querySelector<HTMLSpanElement>(querySelector);
 		if (!elem) {
@@ -348,15 +349,15 @@ export class RaidSimResultsManager {
 		} else {
 			const curMetrics = curMetricsTemp as DistributionMetricsProto;
 			const refMetrics = refMetricsTemp as DistributionMetricsProto;
-			const isDiff = this.applyZTestTooltip(elem, ref.iterations, refMetrics.avg, refMetrics.stdev, cur.iterations, curMetrics.avg, curMetrics.stdev);
+			const isDiff = this.applyZTestTooltip(elem, ref.iterations, refMetrics.avg, refMetrics.stdev, cur.iterations, curMetrics.avg, curMetrics.stdev, !!preNormalizedErrors);
 			formatDeltaTextElem(elem, refMetrics.avg, curMetrics.avg, precision, lowerIsBetter, !isDiff);
 		}
 	}
 
-	private applyZTestTooltip(elem: HTMLElement, n1: number, avg1: number, stdev1: number, n2: number, avg2: number, stdev2: number): boolean {
+	private applyZTestTooltip(elem: HTMLElement, n1: number, avg1: number, stdev1: number, n2: number, avg2: number, stdev2: number, preNormalized: boolean): boolean {
 		const delta = avg1 - avg2;
-		const err1 = stdev1 / Math.sqrt(n1);
-		const err2 = stdev2 / Math.sqrt(n2);
+		const err1 = preNormalized ? stdev1 : stdev1 / Math.sqrt(n1);
+		const err2 = preNormalized ? stdev2 : stdev2 / Math.sqrt(n2);
 		const denom = Math.sqrt(Math.pow(err1, 2) + Math.pow(err2, 2));
 		const z = Math.abs(delta / denom);
 		const isDiff = z > 1.96;
@@ -456,15 +457,17 @@ export class RaidSimResultsManager {
 				}
 
 				resultColumns.push({
-					name: 'HPS',
+					name: 'TMI',
 					average: tmiMetrics.avg,
 					stdev: tmiMetrics.stdev,
 					classes: this.getResultsLineClasses('tmi'),
+					unit: 'percentage',
 				});
 
 				resultColumns.push({
 					name: 'COD',
-					average: chanceOfDeath,
+					average: chanceOfDeath.avg,
+					stdev: chanceOfDeath.stdev,
 					classes: this.getResultsLineClasses('cod'),
 					unit: 'percentage',
 				});
@@ -615,9 +618,11 @@ export class RaidSimResultsManager {
 						<tr>
 							{data.map(({ average, stdev, classes, unit }) => {
 								let value = '';
+								let errorDecimals = 0;
 								switch (unit) {
 									case 'percentage':
 										value = formatToPercent(average);
+										errorDecimals = 2;
 										break;
 									case 'seconds':
 										value = formatToNumber(average, { style: 'unit', unit: 'second', unitDisplay: 'narrow' });
@@ -631,7 +636,7 @@ export class RaidSimResultsManager {
 										<div className="topline-result-avg">{value}</div>
 										{stdev ? (
 											<div className="topline-result-stdev">
-												<i className="fas fa-plus-minus fa-xs"></i> {formatToNumber(stdev, { maximumFractionDigits: 0 })}
+												<i className="fas fa-plus-minus fa-xs"></i> {formatToNumber(stdev, { maximumFractionDigits: errorDecimals })}
 											</div>
 										) : undefined}
 										<div className="results-reference hide">
@@ -650,20 +655,23 @@ export class RaidSimResultsManager {
 	private static buildResultsList(data: ResultMetric[]): Element {
 		return (
 			<>
-				{data.map(column => (
-					<div className={`results-metric ${column.classes}`}>
-						<span className="topline-result-avg">{column.average.toFixed(2)}</span>
-						{column.stdev && (
-							<span className="topline-result-stdev">
-								(<i className="fas fa-plus-minus fa-xs"></i>
-								{column.stdev.toFixed()})
-							</span>
-						)}
-						<div className="results-reference hide">
-							<span className="results-reference-diff"></span> vs reference
+				{data.map(column => {
+					const errorDecimals = (column.unit === 'percentage') ? 2 : 0;
+					return (
+						<div className={`results-metric ${column.classes}`}>
+							<span className="topline-result-avg">{column.average.toFixed(2)}</span>
+							{column.stdev && (
+								<span className="topline-result-stdev">
+									(<i className="fas fa-plus-minus fa-xs"></i>
+									{column.stdev.toFixed(errorDecimals)})
+								</span>
+							)}
+							<div className="results-reference hide">
+								<span className="results-reference-diff"></span> vs reference
+							</div>
 						</div>
-					</div>
-				))}
+					);
+				})}
 			</>
 		);
 	}

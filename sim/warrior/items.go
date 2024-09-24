@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -127,13 +128,22 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 		},
 		4: func(agent core.Agent) {
 			character := agent.GetCharacter()
+
 			actionID := core.ActionID{SpellID: 99237}
 
+			fieryAttackActionID := core.ActionID{} // actual ID = 99237
+			if character.Spec == proto.Spec_SpecArmsWarrior {
+				fieryAttackActionID.SpellID = 12294
+			}
+			if character.Spec == proto.Spec_SpecFuryWarrior {
+				fieryAttackActionID.SpellID = 85288
+			}
+
 			fieryAttack := character.RegisterSpell(core.SpellConfig{
-				ActionID:    actionID,
+				ActionID:    fieryAttackActionID.WithTag(3),
 				SpellSchool: core.SpellSchoolFire,
 				ProcMask:    core.ProcMaskEmpty, // TODO (4.2) Test this
-				Flags:       core.SpellFlagMeleeMetrics,
+				Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
 
 				CritMultiplier:   character.DefaultMeleeCritMultiplier(),
 				DamageMultiplier: 1,
@@ -165,14 +175,15 @@ var ItemSetMoltenGiantBattleplate = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			actionID := core.ActionID{SpellID: 99240}
+			actionID := core.ActionID{SpellID: 23922} // Actual 99240
 
 			// TODO (4.2): Test if this rolls damage over like deep wounds or just resets it
 			var shieldSlamDamage float64 = 0.0
 			debuff := character.RegisterSpell(core.SpellConfig{
-				ActionID:    actionID,
+				ActionID:    actionID.WithTag(3),
 				SpellSchool: core.SpellSchoolFire,
 				ProcMask:    core.ProcMaskEmpty,
+				Flags:       core.SpellFlagPassiveSpell,
 
 				DamageMultiplier: 1,
 				ThreatMultiplier: 1,
@@ -217,10 +228,10 @@ var ItemSetMoltenGiantBattleplate = core.NewItemSet(core.ItemSet{
 				ActionID: core.ActionID{SpellID: 99242},
 				Duration: 10 * time.Second,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					character.AddStatDynamic(sim, stats.ParryRating, 6*core.ParryRatingPerParryPercent)
+					character.PseudoStats.BaseParryChance += 0.06
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					character.AddStatDynamic(sim, stats.ParryRating, -6*core.ParryRatingPerParryPercent)
+					character.PseudoStats.BaseParryChance -= 0.06
 				},
 			})
 

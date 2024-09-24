@@ -3,7 +3,7 @@ import { CURRENT_API_VERSION } from '../constants/other.js';
 import { Class, PseudoStat, Stat, UnitStats } from '../proto/common.js';
 import { StatCapConfig, StatCapType, UIStat as UnitStatProto } from '../proto/ui.js';
 import { getEnumValues } from '../utils.js';
-import { getStatName, getClassPseudoStatName } from './names.js';
+import { getClassPseudoStatName, getStatName } from './names.js';
 import { migrateOldProto, ProtoConversionMap } from './utils.js';
 
 const STATS_LEN = getEnumValues(Stat).length;
@@ -58,15 +58,15 @@ export class UnitStat {
 	}
 
 	equalsStat(other: Stat): boolean {
-		return this.isStat() && (this.stat == other);
+		return this.isStat() && this.stat == other;
 	}
 
 	equalsPseudoStat(other: PseudoStat): boolean {
-		return this.isPseudoStat() && (this.pseudoStat == other);
+		return this.isPseudoStat() && this.pseudoStat == other;
 	}
 
 	linkedToStat(other: Stat): boolean {
-		return (this.stat == other) || (this.rootStat == other);
+		return this.stat == other || this.rootStat == other;
 	}
 
 	getFullName(playerClass: Class): string {
@@ -312,7 +312,11 @@ export class UnitStat {
 	}
 
 	static createDisplayStatArray(statList: Stat[], pseudoStatList: PseudoStat[]): UnitStat[] {
-		return displayStatOrder.filter(displayStat => (displayStat.isStat() && statList.includes(displayStat.stat!)) || (displayStat.isPseudoStat() && pseudoStatList.includes(displayStat.pseudoStat!)));
+		return displayStatOrder.filter(
+			displayStat =>
+				(displayStat.isStat() && statList.includes(displayStat.stat!)) ||
+				(displayStat.isPseudoStat() && pseudoStatList.includes(displayStat.pseudoStat!)),
+		);
 	}
 }
 
@@ -473,10 +477,10 @@ export class Stats {
 	computeStatCapsDelta(statCaps: Stats): Stats {
 		return new Stats(
 			statCaps.stats.map((value, key) => {
-				return (value > 0) ? this.computeGapToCap(UnitStat.fromStat(key), value) : 0;
+				return value > 0 ? this.computeGapToCap(UnitStat.fromStat(key), value) : 0;
 			}),
 			statCaps.pseudoStats.map((value, key) => {
-				return (value > 0) ? this.computeGapToCap(UnitStat.fromPseudoStat(key), value) : 0;
+				return value > 0 ? this.computeGapToCap(UnitStat.fromPseudoStat(key), value) : 0;
 			}),
 		);
 	}
@@ -528,9 +532,7 @@ export class Stats {
 	static fromProto(unitStats?: UnitStats): Stats {
 		if (unitStats) {
 			// Fix out of-date protos before importing
-			if (unitStats.apiVersion < CURRENT_API_VERSION) {
-				Stats.updateProtoVersion(unitStats);
-			}
+			Stats.updateProtoVersion(unitStats);
 
 			return new Stats(unitStats.stats, unitStats.pseudoStats);
 		} else {
@@ -539,6 +541,9 @@ export class Stats {
 	}
 
 	static updateProtoVersion(proto: UnitStats) {
+		if (!(proto.apiVersion < CURRENT_API_VERSION)) {
+			return;
+		}
 		// Define the conversion map between Stat/ PseudoStat schemas.
 		const conversionMap: ProtoConversionMap<UnitStats> = new Map([
 			[
@@ -583,7 +588,7 @@ export class Stats {
 
 					// Speed multipliers were re-arranged.
 					for (let idx = 6; idx < 9; idx++) {
-						const oldIdx = [7,6,8][idx - 6];
+						const oldIdx = [7, 6, 8][idx - 6];
 						newPseudoStats[idx] = oldPseudoStats[oldIdx] || 1.0;
 					}
 
@@ -592,13 +597,13 @@ export class Stats {
 					// represented EP values, and therefore multiply rather than divide by the appropriate conversion constant.
 					// If only one variant was previously populated, then assume that the Stats array represented bonus stat
 					// values, and therefore do not populate a school-specific derivative field to avoid double-counting.
-					newPseudoStats[9] = (oldStats[10] !== 0) ? (oldStats[9] * Mechanics.HASTE_RATING_PER_HASTE_PERCENT) : 0;
-					newPseudoStats[10] = (oldStats[10] !== 0) ? (oldStats[9] * Mechanics.HASTE_RATING_PER_HASTE_PERCENT) : 0;
-					newPseudoStats[11] = (oldStats[9] !== 0) ? (oldStats[10] * Mechanics.HASTE_RATING_PER_HASTE_PERCENT) : 0;
-					newPseudoStats[12] = (oldStats[6] !== 0) ? (oldStats[5] * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT) : 0;
-					newPseudoStats[13] = (oldStats[5] !== 0) ? (oldStats[6] * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT) : 0;
-					newPseudoStats[14] = (oldStats[8] !== 0) ? (oldStats[7] * Mechanics.CRIT_RATING_PER_CRIT_PERCENT) : 0;
-					newPseudoStats[15] = (oldStats[7] !== 0) ? (oldStats[8] * Mechanics.CRIT_RATING_PER_CRIT_PERCENT) : 0;
+					newPseudoStats[9] = oldStats[10] !== 0 ? oldStats[9] * Mechanics.HASTE_RATING_PER_HASTE_PERCENT : 0;
+					newPseudoStats[10] = oldStats[10] !== 0 ? oldStats[9] * Mechanics.HASTE_RATING_PER_HASTE_PERCENT : 0;
+					newPseudoStats[11] = oldStats[9] !== 0 ? oldStats[10] * Mechanics.HASTE_RATING_PER_HASTE_PERCENT : 0;
+					newPseudoStats[12] = oldStats[6] !== 0 ? oldStats[5] * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT : 0;
+					newPseudoStats[13] = oldStats[5] !== 0 ? oldStats[6] * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT : 0;
+					newPseudoStats[14] = oldStats[8] !== 0 ? oldStats[7] * Mechanics.CRIT_RATING_PER_CRIT_PERCENT : 0;
+					newPseudoStats[15] = oldStats[7] !== 0 ? oldStats[8] * Mechanics.CRIT_RATING_PER_CRIT_PERCENT : 0;
 
 					// Finalize and return.
 					oldProto.pseudoStats = newPseudoStats;
@@ -665,6 +670,14 @@ export class Stats {
 	}
 }
 
+// Used for spec specific stat presets to be used
+// as a easy to access reference
+export interface UnitStatPresets {
+	unitStat: UnitStat;
+	// Name of the preset and the value in percentage
+	presets: Map<string, number>;
+}
+
 export interface BreakpointConfig {
 	breakpoints: number[];
 	capType: StatCapType;
@@ -680,10 +693,10 @@ export class StatCap {
 
 	constructor(unitStat: UnitStat, breakpoints: number[], capType: StatCapType, postCapEPs: number[]) {
 		// Check for valid inputs
-		if ((capType == StatCapType.TypeSoftCap) && (breakpoints.length != postCapEPs.length)) {
-				throw new Error('Breakpoint and EP counts do not match!');
+		if (capType == StatCapType.TypeSoftCap && breakpoints.length != postCapEPs.length) {
+			throw new Error('Breakpoint and EP counts do not match!');
 		}
-		if ((capType != StatCapType.TypeSoftCap) && (capType != StatCapType.TypeThreshold)) {
+		if (capType != StatCapType.TypeSoftCap && capType != StatCapType.TypeThreshold) {
 			throw new Error('Only SoftCap and Threshold cap types are supported currently!');
 		}
 
@@ -704,9 +717,11 @@ export class StatCap {
 	static fromProto(message: StatCapConfig[]): StatCap[] {
 		const statCapObjects: StatCap[] = [];
 
-		message.filter(config => config.unitStat).forEach(config => {
-			statCapObjects.push(new StatCap(UnitStat.fromProto(config.unitStat!), config.breakpoints, config.capType, config.postCapEPs));
-		});
+		message
+			.filter(config => config.unitStat)
+			.forEach(config => {
+				statCapObjects.push(new StatCap(UnitStat.fromProto(config.unitStat!), config.breakpoints, config.capType, config.postCapEPs));
+			});
 
 		return statCapObjects;
 	}

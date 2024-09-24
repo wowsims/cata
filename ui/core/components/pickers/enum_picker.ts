@@ -50,7 +50,7 @@ export class EnumPicker<ModObject> extends Input<ModObject, number> {
 	}
 
 	getInputValue(): number {
-		return parseInt(this.selectElem.value);
+		return Number(this.selectElem.value);
 	}
 
 	setInputValue(newValue: number) {

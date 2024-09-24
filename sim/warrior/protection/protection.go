@@ -80,7 +80,7 @@ func (war *ProtectionWarrior) RegisterSpecializationEffects() {
 
 	// Sentinel stat buffs
 	war.MultiplyStat(stats.Stamina, 1.15)
-	war.MultiplyStat(stats.BlockPercent, 1.15)
+	war.AddStat(stats.BlockPercent, 15)
 
 	// Vengeance
 	core.ApplyVengeanceEffect(war.GetCharacter(), &war.VengeanceTracker, 93098)

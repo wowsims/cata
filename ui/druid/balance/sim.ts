@@ -55,9 +55,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.PreraidPresetGear.gear,
+		gear: Presets.T11PresetGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P1_EP_PRESET.epWeights,
+		epWeights: Presets.StandardEPWeights.epWeights,
 		// Default stat caps for the Reforge optimizer
 		statCaps: (() => {
 			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 17);
@@ -92,8 +92,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	otherInputs: {
 		inputs: [
 			BalanceInputs.OkfUptime,
-			BalanceInputs.StartInSolar,
-			BalanceInputs.MasterySnapshot,
 			OtherInputs.TankAssignment,
 			OtherInputs.InputDelay,
 			OtherInputs.DistanceFromTarget,
@@ -106,16 +104,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
+		epWeights: [Presets.StandardEPWeights],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents],
-		rotations: [Presets.PresetRotationDefault],
+		rotations: [Presets.T11PresetRotation, Presets.T12PresetRotation],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PreraidPresetGear, Presets.T11PresetGear],
+		gear: [Presets.PreraidPresetGear, Presets.T11PresetGear, Presets.T12PresetGear, Presets.T13PresetGear],
+		builds: [Presets.PresetBuildT11, Presets.PresetBuildT12]
 	},
 
 	autoRotation: (_player: Player<Spec.SpecBalanceDruid>): APLRotation => {
-		return Presets.PresetRotationDefault.rotation.rotation!;
+		return Presets.T11PresetRotation.rotation.rotation!;
 	},
 
 	raidSimPresets: [

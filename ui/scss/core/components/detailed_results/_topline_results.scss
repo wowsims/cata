@@ -9,6 +9,11 @@
 		width: 100%;
 		table-layout: fixed;
 	}
+
+	.metrics-table-header-row {
+		border-bottom: 0;
+	}
+
 	.metrics-table-body {
 		tr {
 			border-bottom: 0;

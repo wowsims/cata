@@ -71,6 +71,7 @@ func (moonkin *BalanceDruid) ApplyTalents() {
 
 	moonkin.EnableEclipseBar()
 	moonkin.RegisterEclipseAuras()
+	moonkin.RegisterEclipseEnergyGainAura()
 
 	// Moonfury passive
 	moonkin.RegisterAura(
@@ -106,8 +107,4 @@ func (moonkin *BalanceDruid) ApplyTalents() {
 func (moonkin *BalanceDruid) Reset(sim *core.Simulation) {
 	moonkin.Druid.Reset(sim)
 	//moonkin.RebirthTiming = moonkin.Env.BaseDuration.Seconds() * sim.RandomFloat("Rebirth Timing")
-
-	if moonkin.Options.StartInSolar {
-		moonkin.Druid.ForceSolarEclipse(sim, float64(moonkin.Options.MasterySnapshot))
-	}
 }

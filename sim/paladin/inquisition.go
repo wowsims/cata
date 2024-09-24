@@ -59,8 +59,8 @@ func (paladin *Paladin) registerInquisition() {
 			}
 
 			paladin.InquisitionAura.Duration = inquisitionDuration * time.Duration(holyPower)
-			paladin.InquisitionAura.Activate(sim)
 			paladin.SpendHolyPower(sim, hpMetrics)
+			paladin.InquisitionAura.Activate(sim)
 		},
 	})
 }

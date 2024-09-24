@@ -80,6 +80,7 @@ func NewPet(name string, owner *Character, baseStats stats.Stats, statInheritanc
 		enabledOnStart:  enabledOnStart,
 		isGuardian:      isGuardian,
 	}
+	pet.spellCritMultiplier = pet.defaultSpellCritMultiplier()
 	pet.GCD = pet.NewTimer()
 	pet.RotationTimer = pet.NewTimer()
 

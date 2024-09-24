@@ -374,6 +374,10 @@ func (pet *WarlockPet) registerLashOfPainSpell() {
 				GCD: core.GCDDefault,
 			},
 			IgnoreHaste: true,
+			CD: core.Cooldown{
+				Timer:    pet.NewTimer(),
+				Duration: 12 * time.Second,
+			},
 		},
 
 		DamageMultiplier: 1,

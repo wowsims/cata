@@ -8,6 +8,7 @@ const CharacterLevel = 85
 
 const GCDMin = time.Second * 1
 const GCDDefault = time.Millisecond * 1500
+const BossGCD = time.Millisecond * 1620
 const MaxSpellQueueWindow = time.Millisecond * 400
 const MaxMeleeRange = 5.0 // in yards
 

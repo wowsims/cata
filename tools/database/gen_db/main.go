@@ -192,13 +192,13 @@ func InferPhase(item *proto.UIItem) int32 {
 	}
 
 	switch item.Ilvl {
-	case 359, 371, 372, 379:
+	case 359, 372, 379:
 		return 1
 	case 353:
 		return 2
-	case 358, 391:
+	case 358, 371, 391:
 		return 3
-	case 377:
+	case 377, 390:
 		return 4
 	case 365:
 		if strings.Contains(item.Name, "Vicious") {
@@ -216,7 +216,7 @@ func InferPhase(item *proto.UIItem) int32 {
 		}
 
 		return 3
-	case 384, 390:
+	case 384:
 		if strings.Contains(item.Name, "Ruthless") {
 			return 3
 		}

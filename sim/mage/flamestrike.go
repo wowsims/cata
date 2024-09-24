@@ -26,7 +26,7 @@ func (mage *Mage) registerFlamestrikeSpell() {
 		},
 
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultMageCritMultiplier(),
+		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
 		BonusCoefficient:         0.146,
 		ThreatMultiplier:         1,
 
