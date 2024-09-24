@@ -6,7 +6,7 @@ import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_u
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation, APLRotation_Type } from '../../core/proto/apl.js';
-import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
+import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
 import { PaladinPrimeGlyph, PaladinSeal } from '../../core/proto/paladin';
 import { Stats, UnitStat } from '../../core/proto_utils/stats.js';
 import { TypedEvent } from '../../core/typed_event.js';
@@ -20,6 +20,27 @@ const isGlyphOfSealOfTruthActive = (player: Player<Spec.SpecRetributionPaladin>)
 		player.getPrimeGlyps().includes(PaladinPrimeGlyph.GlyphOfSealOfTruth) &&
 		(currentSeal === PaladinSeal.Truth || currentSeal === PaladinSeal.Righteousness)
 	);
+};
+
+const pickRotation = (player: Player<Spec.SpecRetributionPaladin>): APLRotation => {
+	const has2pcT13 = player.getEquippedItems().filter(x => x?.item.setName === 'Battleplate of Radiant Glory').length >= 2;
+	const hasApparatus =
+		player.getEquippedItem(ItemSlot.ItemSlotTrinket1)?.item.name === "Apparatus of Khaz'goroth" ||
+		player.getEquippedItem(ItemSlot.ItemSlotTrinket2)?.item.name === "Apparatus of Khaz'goroth";
+
+	if (has2pcT13) {
+		if (hasApparatus) {
+			return Presets.ROTATION_PRESET_T13_APPARATUS.rotation.rotation!;
+		}
+
+		return Presets.ROTATION_PRESET_T13.rotation.rotation!;
+	}
+
+	if (hasApparatus) {
+		return Presets.ROTATION_PRESET_APPARATUS.rotation.rotation!;
+	}
+
+	return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
 };
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
@@ -139,7 +160,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		BuffDebuffInputs.SpellPowerBuff,
 		BuffDebuffInputs.ManaBuff,
 		BuffDebuffInputs.SpellHasteBuff,
-		BuffDebuffInputs.PowerInfusion
+		BuffDebuffInputs.PowerInfusion,
 	],
 	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff, BuffDebuffInputs.DamagePercentBuff],
 	// Inputs to include in the 'Other' section on the settings tab.
@@ -157,7 +178,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			Presets.T12_EP_PRESET,
 			//Presets.T13_EP_PRESET,
 		],
-		rotations: [Presets.ROTATION_PRESET_DEFAULT, Presets.ROTATION_PRESET_T13],
+		rotations: [Presets.ROTATION_PRESET_DEFAULT, Presets.ROTATION_PRESET_APPARATUS, Presets.ROTATION_PRESET_T13, Presets.ROTATION_PRESET_T13_APPARATUS],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.T11Talents, Presets.T12T13Talents],
 		// Preset gear configurations that the user can quickly select.
@@ -169,17 +190,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		],
 	},
 
-	autoRotation: (player: Player<Spec.SpecRetributionPaladin>): APLRotation => {
-		return player.getEquippedItems().filter(x => x?.item.setName === 'Battleplate of Radiant Glory').length >= 2
-			? Presets.ROTATION_PRESET_T13.rotation.rotation!
-			: Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
-	},
-
-	simpleRotation: (player: Player<Spec.SpecRetributionPaladin>): APLRotation => {
-		return player.getEquippedItems().filter(x => x?.item.setName === 'Battleplate of Radiant Glory').length >= 2
-			? Presets.ROTATION_PRESET_T13.rotation.rotation!
-			: Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
-	},
+	autoRotation: pickRotation,
+	simpleRotation: pickRotation,
 
 	raidSimPresets: [
 		{
