@@ -12,6 +12,7 @@ import MasterFrostAPL from '../../death_knight/frost/apls/masterfrost.apl.json';
 import P12HGear from '../../death_knight/frost/gear_sets/p1.2h.gear.json';
 import P1DWGear from '../../death_knight/frost/gear_sets/p1.dw.gear.json';
 import P1MasterfrostGear from '../../death_knight/frost/gear_sets/p1.masterfrost.gear.json';
+import P3MasterfrostGear from '../../death_knight/frost/gear_sets/p3.masterfrost.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -59,6 +60,7 @@ const TWOHAND_PRESET_OPTIONS = {
 export const P1_DW_GEAR_PRESET = PresetUtils.makePresetGear('P1 Dual Wield', P1DWGear, DW_PRESET_OPTIONS);
 export const P1_2H_GEAR_PRESET = PresetUtils.makePresetGear('P1 Two Hand', P12HGear, TWOHAND_PRESET_OPTIONS);
 export const P1_MASTERFROST_GEAR_PRESET = PresetUtils.makePresetGear('P1 Masterfrost', P1MasterfrostGear, DW_PRESET_OPTIONS);
+export const P3_MASTERFROST_GEAR_PRESET = PresetUtils.makePresetGear('P3 Masterfrost', P3MasterfrostGear, DW_PRESET_OPTIONS);
 
 export const DUAL_WIELD_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Dual Wield', DualWieldAPL, DW_PRESET_OPTIONS);
 export const TWO_HAND_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Two Hand', TwoHandAPL, TWOHAND_PRESET_OPTIONS);
@@ -157,7 +159,7 @@ export const DefaultOptions = FrostDeathKnight_Options.create({
 
 export const OtherDefaults = {
 	profession1: Profession.Engineering,
-	profession2: Profession.Enchanting,
+	profession2: Profession.Jewelcrafting,
 	distanceFromTarget: 5,
 };
 
@@ -182,7 +184,7 @@ export const PRESET_BUILD_2H = PresetUtils.makePresetBuild('Two Hand', {
 });
 
 export const PRESET_BUILD_MASTERFROST = PresetUtils.makePresetBuild('Masterfrost', {
-	gear: P1_MASTERFROST_GEAR_PRESET,
+	gear: P3_MASTERFROST_GEAR_PRESET,
 	talents: MasterfrostTalents,
 	rotation: MASTERFROST_ROTATION_PRESET_DEFAULT,
 });
