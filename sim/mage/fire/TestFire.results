@@ -1523,6 +1523,48 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFire-Settings-Troll-p3_fire-Fire-fire-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 63220.5719
+  tps: 63489.21954
+ }
+}
+dps_results: {
+ key: "TestFire-Settings-Troll-p3_fire-Fire-fire-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 39082.10141
+  tps: 37470.64419
+ }
+}
+dps_results: {
+ key: "TestFire-Settings-Troll-p3_fire-Fire-fire-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 49650.74417
+  tps: 47726.22147
+ }
+}
+dps_results: {
+ key: "TestFire-Settings-Troll-p3_fire-Fire-fire-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 43625.34615
+  tps: 46545.92351
+ }
+}
+dps_results: {
+ key: "TestFire-Settings-Troll-p3_fire-Fire-fire-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 26495.1196
+  tps: 25325.90584
+ }
+}
+dps_results: {
+ key: "TestFire-Settings-Troll-p3_fire-Fire-fire-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 29936.7804
+  tps: 28325.80597
+ }
+}
+dps_results: {
  key: "TestFire-SwitchInFrontOfTarget-Default"
  value: {
   dps: 30929.70841
