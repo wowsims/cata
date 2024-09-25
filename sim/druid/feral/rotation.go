@@ -33,9 +33,22 @@ func (cat *FeralDruid) OnGCDReady(sim *core.Simulation) {
 		}
 	}
 
-	// Check for an opportunity to cancel Primal Madness if we just casted a spell
-	if !cat.GCD.IsReady(sim) && cat.PrimalMadnessAura.IsActive() && !cat.BerserkAura.IsActive() && (cat.CurrentEnergy() < 10.0*float64(cat.Talents.PrimalMadness)) && cat.Rotation.CancelPrimalMadness {
-		cat.PrimalMadnessAura.Deactivate(sim)
+	// Check for an opportunity to cancel Primal Madness if we just casted a spell.
+	if !cat.GCD.IsReady(sim) && cat.PrimalMadnessAura.IsActive() && cat.Rotation.CancelPrimalMadness {
+		// Determine cancellation threshold based on the expected Energy
+		// loss when Primal Madness will naturally expire.
+		energyThresh := 10.0 * float64(cat.Talents.PrimalMadness)
+
+		// Apply a conservative correction to account for the cost of losing one final buffed Shred at the very
+		// end of the TF or Zerk window due to an early cancellation.
+		energyThresh -= core.TernaryFloat64(cat.BerserkAura.IsActive(), 0.5, 0.15) * cat.Shred.DefaultCast.Cost
+
+		// Apply input delay realism to Energy measurement for a real player.
+		energyThresh += cat.EnergyRegenPerSecond() * cat.ReactionTime.Seconds()
+
+		if cat.CurrentEnergy() < energyThresh {
+			cat.PrimalMadnessAura.Deactivate(sim)
+		}
 	}
 }
 

@@ -1033,15 +1033,17 @@ dps_results: {
 dps_results: {
  key: "TestBalance-AllItems-ScalesofLife-68915"
  value: {
-  dps: 26258.64645
-  tps: 26265.2223
+  dps: 26257.45085
+  tps: 26264.04343
+  hps: 301.94329
  }
 }
 dps_results: {
  key: "TestBalance-AllItems-ScalesofLife-69109"
  value: {
-  dps: 26258.64645
-  tps: 26265.2223
+  dps: 26257.45085
+  tps: 26264.04343
+  hps: 340.5892
  }
 }
 dps_results: {

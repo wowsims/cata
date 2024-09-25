@@ -1012,15 +1012,17 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-ScalesofLife-68915"
  value: {
-  dps: 27584.0859
-  tps: 27718.80004
+  dps: 27496.01335
+  tps: 27642.23324
+  hps: 444.96343
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ScalesofLife-69109"
  value: {
-  dps: 27584.0859
-  tps: 27718.80004
+  dps: 27496.01335
+  tps: 27642.23324
+  hps: 501.91458
  }
 }
 dps_results: {

@@ -42,9 +42,11 @@ func TestRetribution(t *testing.T) {
 			{Label: "Seal of Insight", SpecOptions: OptionsWithSealOfInsight},
 		},
 		Rotation: core.GetAplRotation("../../../ui/paladin/retribution/apls", "default"),
-		/*OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../../ui/paladin/retribution/apls", "t13"),
-		},*/
+		OtherRotations: []core.RotationCombo{
+			core.GetAplRotation("../../../ui/paladin/retribution/apls", "apparatus"),
+			//core.GetAplRotation("../../../ui/paladin/retribution/apls", "t13"),
+			//core.GetAplRotation("../../../ui/paladin/retribution/apls", "t13-apparatus"),
+		},
 
 		ItemFilter: core.ItemFilter{
 			WeaponTypes: []proto.WeaponType{
