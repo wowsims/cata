@@ -4,7 +4,7 @@ import { ref } from 'tsx-vanilla';
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { PresetBuild } from '../../preset_utils';
 import { APLRotation } from '../../proto/apl';
-import { Encounter, EquipmentSpec, HealingModel, Spec } from '../../proto/common';
+import { Encounter, EquipmentSpec, Glyphs, HealingModel, Spec } from '../../proto/common';
 import { TypedEvent } from '../../typed_event';
 import { Component } from '../component';
 import { ContentBlock } from '../content_block';
@@ -86,7 +86,10 @@ export class PresetConfigurationPicker extends Component {
 		const eventID = TypedEvent.nextEventID();
 		TypedEvent.freezeAllAndDo(() => {
 			if (gear) this.simUI.player.setGear(eventID, this.simUI.sim.db.lookupEquipmentSpec(gear.gear));
-			if (talents) this.simUI.player.setTalentsString(eventID, talents.data.talentsString);
+			if (talents) {
+				this.simUI.player.setTalentsString(eventID, talents.data.talentsString);
+				if (talents.data.glyphs) this.simUI.player.setGlyphs(eventID, talents.data.glyphs);
+			}
 			if (rotation?.rotation.rotation) {
 				this.simUI.player.setAplRotation(eventID, rotation.rotation.rotation);
 			}
@@ -106,11 +109,12 @@ export class PresetConfigurationPicker extends Component {
 	private isBuildActive({ gear, rotation, talents, epWeights, encounter }: PresetBuild): boolean {
 		const hasGear = gear ? EquipmentSpec.equals(gear.gear, this.simUI.player.getGear().asSpec()) : true;
 		const hasTalents = talents ? talents.data.talentsString == this.simUI.player.getTalentsString() : true;
+		const hasGlyphs = talents?.data.glyphs ? Glyphs.equals(this.simUI.player.getGlyphs(), talents.data.glyphs) : true;
 		const hasRotation = rotation ? APLRotation.equals(rotation.rotation.rotation, this.simUI.player.aplRotation) : true;
 		const hasEpWeights = epWeights ? this.simUI.player.getEpWeights().equals(epWeights.epWeights) : true;
 		const hasEncounter = encounter?.encounter ? Encounter.equals(encounter.encounter, this.simUI.sim.encounter.toProto()) : true;
 		const hasHealingModel = encounter?.healingModel ? HealingModel.equals(encounter.healingModel, this.simUI.player.getHealingModel()) : true;
 
-		return hasGear && hasTalents && hasRotation && hasEpWeights && hasEncounter && hasHealingModel;
+		return hasGear && hasTalents && hasGlyphs && hasRotation && hasEpWeights && hasEncounter && hasHealingModel;
 	}
 }
