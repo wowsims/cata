@@ -43,7 +43,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	),
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P3_BIS_GEAR_PRESET.gear,
+		gear: Presets.P1_BIS_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_UNHOLY_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer

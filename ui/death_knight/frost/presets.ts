@@ -184,7 +184,7 @@ export const PRESET_BUILD_2H = PresetUtils.makePresetBuild('Two Hand', {
 });
 
 export const PRESET_BUILD_MASTERFROST = PresetUtils.makePresetBuild('Masterfrost', {
-	gear: P3_MASTERFROST_GEAR_PRESET,
+	gear: P1_MASTERFROST_GEAR_PRESET,
 	talents: MasterfrostTalents,
 	rotation: MASTERFROST_ROTATION_PRESET_DEFAULT,
 });

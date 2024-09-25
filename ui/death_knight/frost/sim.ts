@@ -48,7 +48,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	),
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P3_MASTERFROST_GEAR_PRESET.gear,
+		gear: Presets.P1_MASTERFROST_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_MASTERFROST_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
