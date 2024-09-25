@@ -18,8 +18,8 @@ func TestFrost(t *testing.T) {
 		Race:       proto.Race_RaceOrc,
 		OtherRaces: []proto.Race{proto.Race_RaceHuman},
 
-		GearSet: core.GetGearSet("../../../ui/death_knight/frost/gear_sets", "p1.dw"),
-		Talents: TwoHandTalents,
+		GearSet: core.GetGearSet("../../../ui/death_knight/frost/gear_sets", "p3.masterfrost"),
+		Talents: MasterfrostTalents,
 		OtherTalentSets: []core.TalentsCombo{
 			{
 				Label:   "TwoHand",
@@ -27,18 +27,18 @@ func TestFrost(t *testing.T) {
 				Glyphs:  FrostDefaultGlyphs,
 			},
 			{
-				Label:   "Masterfrost",
-				Talents: MasterfrostTalents,
+				Label:   "DualWield",
+				Talents: DualWieldTalents,
 				Glyphs:  FrostDefaultGlyphs,
 			},
 		},
 		Glyphs:      FrostDefaultGlyphs,
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsFrost},
-		Rotation:    core.GetAplRotation("../../../ui/death_knight/frost/apls", "dw"),
+		Rotation:    core.GetAplRotation("../../../ui/death_knight/frost/apls", "masterfrost"),
 		OtherRotations: []core.RotationCombo{
 			core.GetAplRotation("../../../ui/death_knight/frost/apls", "2h"),
-			core.GetAplRotation("../../../ui/death_knight/frost/apls", "masterfrost"),
+			core.GetAplRotation("../../../ui/death_knight/frost/apls", "dw"),
 		},
 
 		ItemFilter: ItemFilter,
