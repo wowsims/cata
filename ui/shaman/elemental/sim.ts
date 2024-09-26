@@ -7,6 +7,7 @@ import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl.js';
 import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
+import { SavedEPWeights } from '../../core/proto/ui';
 import { Stats, UnitStat } from '../../core/proto_utils/stats.js';
 import { TypedEvent } from '../../core/typed_event.js';
 import * as ShamanInputs from '../inputs.js';
@@ -64,7 +65,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		// Default equipped gear.
 		gear: Presets.P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P1_EP_PRESET.epWeights,
+		epWeights: Presets.EP_PRESET_DEFAULT.epWeights,
 		// Default stat caps for the Reforge optimizer
 		statCaps: (() => {
 			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 17);
@@ -118,13 +119,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
+		epWeights: [Presets.EP_PRESET_DEFAULT, Presets.EP_PRESET_CLEAVE, Presets.EP_PRESET_AOE],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.TalentsTotemDuration, Presets.TalentsImprovedShields, Presets.TalentsAoE],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_DEFAULT, Presets.ROTATION_PRESET_AOE],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET, Presets.P3_PRESET_AOE],
+		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET, Presets.P3_PRESET_CLEAVE, Presets.P3_PRESET_AOE],
 		builds: [Presets.P1_PRESET_BUILD_DEFAULT, Presets.P3_PRESET_BUILD_DEFAULT, Presets.P3_PRESET_BUILD_CLEAVE, Presets.P3_PRESET_BUILD_AOE],
 	},
 
@@ -161,7 +162,20 @@ export class ElementalShamanSimUI extends IndividualSimUI<Spec.SpecElementalSham
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecElementalShaman>) {
 		super(parentElem, player, SPEC_CONFIG);
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			new ReforgeOptimizer(this, {
+				getEPDefaults: (player: Player<Spec.SpecFuryWarrior>) => {
+					const playerWeights = player.getEpWeights();
+					const defaultWeights = Presets.EP_PRESET_DEFAULT.epWeights;
+					const cleaveWeights = Presets.EP_PRESET_CLEAVE.epWeights;
+					const aoeWeights = Presets.EP_PRESET_AOE.epWeights;
+
+					if (playerWeights.equals(defaultWeights)) return defaultWeights;
+					if (playerWeights.equals(cleaveWeights)) return cleaveWeights;
+					if (playerWeights.equals(aoeWeights)) return aoeWeights;
+
+					return playerWeights;
+				},
+			});
 		});
 	}
 }
