@@ -52,25 +52,12 @@ export const EP_PRESET_DEFAULT = PresetUtils.makePresetEpWeights(
 );
 
 export const EP_PRESET_CLEAVE = PresetUtils.makePresetEpWeights(
-	'Cleave',
+	'Cleave/AoE',
 	Stats.fromMap({
 		[Stat.StatIntellect]: 1.33,
 		[Stat.StatSpellPower]: 1,
 		[Stat.StatCritRating]: 0.54,
 		[Stat.StatHasteRating]: 0.57,
-		[Stat.StatHitRating]: 1.09,
-		[Stat.StatSpirit]: 1.09,
-		[Stat.StatMasteryRating]: 1,
-	}),
-);
-
-export const EP_PRESET_AOE = PresetUtils.makePresetEpWeights(
-	'AoE (4+)',
-	Stats.fromMap({
-		[Stat.StatIntellect]: 1.33,
-		[Stat.StatSpellPower]: 1,
-		[Stat.StatCritRating]: 0.57,
-		[Stat.StatHasteRating]: 0.54,
 		[Stat.StatHitRating]: 1.09,
 		[Stat.StatSpirit]: 1.09,
 		[Stat.StatMasteryRating]: 1,
@@ -214,5 +201,5 @@ export const P3_PRESET_BUILD_AOE = PresetUtils.makePresetBuild('P3 - AoE (4+)', 
 	talents: TalentsAoE,
 	rotation: ROTATION_PRESET_AOE,
 	encounter: ENCOUNTER_AOE,
-	epWeights: EP_PRESET_AOE,
+	epWeights: EP_PRESET_CLEAVE,
 });

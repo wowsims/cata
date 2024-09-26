@@ -119,7 +119,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	},
 
 	presets: {
-		epWeights: [Presets.EP_PRESET_DEFAULT, Presets.EP_PRESET_CLEAVE, Presets.EP_PRESET_AOE],
+		epWeights: [Presets.EP_PRESET_DEFAULT, Presets.EP_PRESET_CLEAVE],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.TalentsTotemDuration, Presets.TalentsImprovedShields, Presets.TalentsAoE],
 		// Preset rotations that the user can quickly select.
@@ -167,11 +167,9 @@ export class ElementalShamanSimUI extends IndividualSimUI<Spec.SpecElementalSham
 					const playerWeights = player.getEpWeights();
 					const defaultWeights = Presets.EP_PRESET_DEFAULT.epWeights;
 					const cleaveWeights = Presets.EP_PRESET_CLEAVE.epWeights;
-					const aoeWeights = Presets.EP_PRESET_AOE.epWeights;
 
 					if (playerWeights.equals(defaultWeights)) return defaultWeights;
 					if (playerWeights.equals(cleaveWeights)) return cleaveWeights;
-					if (playerWeights.equals(aoeWeights)) return aoeWeights;
 
 					return playerWeights;
 				},
