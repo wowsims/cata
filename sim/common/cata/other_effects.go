@@ -739,22 +739,7 @@ func init() {
 						Duration:  time.Second * 30,
 						MaxStacks: int32(shieldAmount),
 						OnReset: func(aura *core.Aura, sim *core.Simulation) {
-							currentShield = 0.0
-						},
-						OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-							if currentShield <= 0 || result.Damage <= 0 {
-								return
-							}
-
-							damageReduced := min(result.Damage, currentShield)
-							currentShield -= damageReduced
-							aura.SetStacks(sim, int32(currentShield))
-
-							character.GainHealth(sim, damageReduced, shieldSpell.HealthMetrics(result.Target))
-
-							if currentShield <= 0 {
-								shieldSpell.SelfShield().Deactivate(sim)
-							}
+							currentShield = 0
 						},
 						OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 							currentShield = 0
@@ -768,6 +753,24 @@ func init() {
 					shield.Apply(sim, shieldAmount)
 					shield.Aura.SetStacks(sim, shield.Aura.MaxStacks)
 				},
+			})
+
+			character.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				shield := shieldSpell.SelfShield()
+				if shield.IsActive() && result.Damage > 0 {
+					absorbedDamage := min(currentShield, result.Damage)
+					result.Damage -= absorbedDamage
+					currentShield -= absorbedDamage
+					shield.Aura.SetStacks(sim, int32(currentShield))
+
+					if sim.Log != nil {
+						character.Log(sim, "Loom of Fate absorbed %.1f damage", absorbedDamage)
+					}
+
+					if currentShield <= 0 {
+						shield.Deactivate(sim)
+					}
+				}
 			})
 
 			core.MakePermanent(character.GetOrRegisterAura(core.Aura{
