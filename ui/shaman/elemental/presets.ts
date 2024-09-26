@@ -16,22 +16,30 @@ import {
 } from '../../core/proto/shaman.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
+import AoEApl from './apls/aoe.apl.json';
 import DefaultApl from './apls/default.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
+import P3GearAoETidefury from './gear_sets/p3.aoe-tidefury.gear.json';
+import P3GearCleaveAoE from './gear_sets/p3.cleave-aoe.gear.json';
+import P3GearDefault from './gear_sets/p3.default.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid Preset', PreraidGear);
-export const P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1Gear);
+export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidGear);
+export const P1_PRESET = PresetUtils.makePresetGear('P1 - Default', P1Gear);
+export const P3_PRESET = PresetUtils.makePresetGear('P3 - Default', P3GearDefault);
+export const P3_PRESET_CLEAVE_AOE = PresetUtils.makePresetGear('P3 - Cleave/AoE', P3GearCleaveAoE);
+export const P3_PRESET_AOE_TIDEFURY = PresetUtils.makePresetGear('P3 - AoE (Tidefury)', P3GearAoETidefury);
 
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
+export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AoE', AoEApl);
 
 // Preset options for EP weights
-export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P1',
+export const EP_PRESET_DEFAULT = PresetUtils.makePresetEpWeights(
+	'Default',
 	Stats.fromMap({
 		[Stat.StatIntellect]: 1.24,
 		[Stat.StatSpellPower]: 1,
@@ -40,6 +48,19 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 		[Stat.StatHitRating]: 0.59,
 		[Stat.StatSpirit]: 0.59,
 		[Stat.StatMasteryRating]: 0.49,
+	}),
+);
+
+export const EP_PRESET_CLEAVE = PresetUtils.makePresetEpWeights(
+	'Cleave/AoE',
+	Stats.fromMap({
+		[Stat.StatIntellect]: 1.33,
+		[Stat.StatSpellPower]: 1,
+		[Stat.StatCritRating]: 0.54,
+		[Stat.StatHasteRating]: 0.57,
+		[Stat.StatHitRating]: 1.09,
+		[Stat.StatSpirit]: 1.09,
+		[Stat.StatMasteryRating]: 1,
 	}),
 );
 
@@ -81,6 +102,17 @@ export const TalentsImprovedShields = {
 	}),
 };
 
+export const TalentsAoE = {
+	name: 'AoE (4+)',
+	data: SavedTalents.create({
+		...TalentsTotemDuration.data,
+		glyphs: Glyphs.create({
+			...TalentsTotemDuration.data.glyphs,
+			major2: ShamanMajorGlyph.GlyphOfChainLightning,
+		}),
+	}),
+};
+
 export const DefaultOptions = ElementalShamanOptions.create({
 	classOptions: {
 		shield: ShamanShield.LightningShield,
@@ -114,7 +146,7 @@ export const OtherDefaults = {
 	distanceFromTarget: 20,
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
-	duration: 300,
+	duration: 180,
 };
 
 export const DefaultConsumes = Consumes.create({
@@ -123,4 +155,51 @@ export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskOfTheDraconicMind,
 	food: Food.FoodSeafoodFeast,
 	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
+});
+
+const ENCOUNTER_SINGLE_TARGET = PresetUtils.makePresetEncounter(
+	'Single Target Dummy',
+	'http://localhost:5173/cata/shaman/elemental/?i=e#eJyTYhJgVzrO5MHMyQACDWkOgmAGg4iD5KyZIHDS3hIicsFeMQ0Mrtk7nj0DAm/sjXqYClZ9ZqziDkrMTFEISSxKTy1RiJBg17rByEAPENDiQE3jGlKOI5vnYzF3jiO6GnBoNCzidJzJCAmgm/ZQNSwOAHLgKDE=',
+);
+
+const ENCOUNTER_CLEAVE = PresetUtils.makePresetEncounter(
+	'Cleave',
+	'http://localhost:5173/cata/shaman/elemental/?i=e#eJyTYhJgV7rG4sHMyQACDWkOgmAGg4iD5KyZIHDS3hIicsFeMQ0Mrtk7nj0DAm/sjXqYClZ9ZqziDkrMTFEISSxKTy1RiJBg17rByEAPENDiQE3jGlKOI5vnYzF3jiO6GnBoNCzidJzJCAmgm/ZQNSwOo8GBEhwAGew9pg==',
+);
+
+const ENCOUNTER_AOE = PresetUtils.makePresetEncounter(
+	'AOE (4+)',
+	'http://localhost:5173/cata/shaman/elemental/?i=e#eJyTYhJgV/rC4cHMyQACDWkOgmAGg4iD5KyZIHDS3hIicsFeMQ0Mrtk7nj0DAm/sjXqYClZ9ZqziDkrMTFEISSxKTy1RiJBg17rByEAPENDiQE3jGlKOI5vnYzF3jiO6GnBoNCzidJzJCAmgm/ZQNSwOo8ExGhwMo8GBAPiCAwDGf2iQ',
+);
+
+export const P1_PRESET_BUILD_DEFAULT = PresetUtils.makePresetBuild('P1 - Default', {
+	gear: P1_PRESET,
+	talents: TalentsTotemDuration,
+	rotation: ROTATION_PRESET_DEFAULT,
+	encounter: ENCOUNTER_SINGLE_TARGET,
+	epWeights: EP_PRESET_DEFAULT,
+});
+
+export const P3_PRESET_BUILD_DEFAULT = PresetUtils.makePresetBuild('P3 - Default', {
+	gear: P3_PRESET,
+	talents: TalentsTotemDuration,
+	rotation: ROTATION_PRESET_DEFAULT,
+	encounter: ENCOUNTER_SINGLE_TARGET,
+	epWeights: EP_PRESET_DEFAULT,
+});
+
+export const P3_PRESET_BUILD_CLEAVE = PresetUtils.makePresetBuild('P3 - Cleave', {
+	gear: P3_PRESET_CLEAVE_AOE,
+	talents: TalentsTotemDuration,
+	rotation: ROTATION_PRESET_AOE,
+	encounter: ENCOUNTER_CLEAVE,
+	epWeights: EP_PRESET_CLEAVE,
+});
+
+export const P3_PRESET_BUILD_AOE = PresetUtils.makePresetBuild('P3 - AoE (4+)', {
+	gear: P3_PRESET_CLEAVE_AOE,
+	talents: TalentsAoE,
+	rotation: ROTATION_PRESET_AOE,
+	encounter: ENCOUNTER_AOE,
+	epWeights: EP_PRESET_CLEAVE,
 });

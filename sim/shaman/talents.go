@@ -231,7 +231,7 @@ func (shaman *Shaman) applyRollingThunder() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if (spell == shaman.LightningBolt || spell == shaman.ChainLightning || spell == shaman.LightningBoltOverload) && shaman.SelfBuffs.Shield == proto.ShamanShield_LightningShield {
+			if (spell.Matches(SpellMaskLightningBolt | SpellMaskLightningBoltOverload | SpellMaskChainLightning | SpellMaskChainLightningOverload)) && shaman.SelfBuffs.Shield == proto.ShamanShield_LightningShield {
 				// for _, allowedSpell := range allowedSpells {
 				// 	if spell == allowedSpell {
 				if sim.RandomFloat("Rolling Thunder") < 0.3*float64(shaman.Talents.RollingThunder) {
