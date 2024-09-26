@@ -21,8 +21,7 @@ func TestElemental(t *testing.T) {
 		GearSet: core.GetGearSet("../../../ui/shaman/elemental/gear_sets", "p1"),
 		OtherGearSets: []core.GearSetCombo{
 			core.GetGearSet("../../../ui/shaman/elemental/gear_sets", "p3.default"),
-			core.GetGearSet("../../../ui/shaman/elemental/gear_sets", "p3.cleave"),
-			core.GetGearSet("../../../ui/shaman/elemental/gear_sets", "p3.aoe"),
+			core.GetGearSet("../../../ui/shaman/elemental/gear_sets", "p3.cleave-aoe"),
 		},
 		Talents: TalentsTotemDuration,
 		Glyphs:  StandardGlyphs,

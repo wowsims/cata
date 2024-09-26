@@ -125,7 +125,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_DEFAULT, Presets.ROTATION_PRESET_AOE],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET, Presets.P3_PRESET_CLEAVE, Presets.P3_PRESET_AOE],
+		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET, Presets.P3_PRESET_CLEAVE_AOE, Presets.P3_PRESET_AOE_TIDEFURY],
 		builds: [Presets.P1_PRESET_BUILD_DEFAULT, Presets.P3_PRESET_BUILD_DEFAULT, Presets.P3_PRESET_BUILD_CLEAVE, Presets.P3_PRESET_BUILD_AOE],
 	},
 

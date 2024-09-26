@@ -19,8 +19,8 @@ import { Stats } from '../../core/proto_utils/stats';
 import AoEApl from './apls/aoe.apl.json';
 import DefaultApl from './apls/default.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
-import P3GearAoE from './gear_sets/p3.aoe.gear.json';
-import P3GearCleave from './gear_sets/p3.cleave.gear.json';
+import P3GearAoETidefury from './gear_sets/p3.aoe-tidefury.gear.json';
+import P3GearCleaveAoE from './gear_sets/p3.cleave-aoe.gear.json';
 import P3GearDefault from './gear_sets/p3.default.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 
@@ -31,8 +31,8 @@ import PreraidGear from './gear_sets/preraid.gear.json';
 export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidGear);
 export const P1_PRESET = PresetUtils.makePresetGear('P1 - Default', P1Gear);
 export const P3_PRESET = PresetUtils.makePresetGear('P3 - Default', P3GearDefault);
-export const P3_PRESET_CLEAVE = PresetUtils.makePresetGear('P3 - Cleave', P3GearCleave);
-export const P3_PRESET_AOE = PresetUtils.makePresetGear('P3 - AoE', P3GearAoE);
+export const P3_PRESET_CLEAVE_AOE = PresetUtils.makePresetGear('P3 - Cleave/AoE', P3GearCleaveAoE);
+export const P3_PRESET_AOE_TIDEFURY = PresetUtils.makePresetGear('P3 - AoE (Tidefury)', P3GearAoETidefury);
 
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AoE', AoEApl);
@@ -202,7 +202,7 @@ export const P3_PRESET_BUILD_DEFAULT = PresetUtils.makePresetBuild('P3 - Default
 });
 
 export const P3_PRESET_BUILD_CLEAVE = PresetUtils.makePresetBuild('P3 - Cleave', {
-	gear: P3_PRESET_CLEAVE,
+	gear: P3_PRESET_CLEAVE_AOE,
 	talents: TalentsTotemDuration,
 	rotation: ROTATION_PRESET_AOE,
 	encounter: ENCOUNTER_CLEAVE,
@@ -210,7 +210,7 @@ export const P3_PRESET_BUILD_CLEAVE = PresetUtils.makePresetBuild('P3 - Cleave',
 });
 
 export const P3_PRESET_BUILD_AOE = PresetUtils.makePresetBuild('P3 - AoE (4+)', {
-	gear: P3_PRESET_AOE,
+	gear: P3_PRESET_CLEAVE_AOE,
 	talents: TalentsAoE,
 	rotation: ROTATION_PRESET_AOE,
 	encounter: ENCOUNTER_AOE,
