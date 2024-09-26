@@ -30,8 +30,7 @@ import PreraidGear from './gear_sets/preraid.gear.json';
 export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidGear);
 export const P1_PRESET = PresetUtils.makePresetGear('P1 - Default', P1Gear);
 export const P3_PRESET = PresetUtils.makePresetGear('P3 - Default', P3GearDefault);
-export const P3_PRESET_CLEAVE = PresetUtils.makePresetGear('P3 - Cleave', P3GearAoE);
-export const P3_PRESET_AOE = PresetUtils.makePresetGear('P3 - AoE (4+)', P3GearAoE);
+export const P3_PRESET_AOE = PresetUtils.makePresetGear('P3 - Cleave/AoE', P3GearAoE);
 
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AoE', AoEApl);
