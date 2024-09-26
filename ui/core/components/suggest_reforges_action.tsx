@@ -1044,7 +1044,7 @@ export class ReforgeOptimizer {
 				new CopyButton(copyButtonContainerRef.value!, {
 					extraCssClasses: ['btn-outline-primary'],
 					getContent: () => JSON.stringify(settingsExport),
-					text: 'Copy to WoWSims',
+					text: 'Copy to Reforge Lite',
 				});
 		}
 
