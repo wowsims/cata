@@ -5,17 +5,19 @@ import { Constraint, greaterEq, lessEq, Model, Options, Solution, solve } from '
 
 import * as Mechanics from '../constants/mechanics.js';
 import { IndividualSimUI } from '../individual_sim_ui';
-import { Player } from '../player';
-import { Class, ItemSlot, PseudoStat, Spec, Stat } from '../proto/common';
-import { StatCapType } from '../proto/ui';
+import { Player, ReforgeData } from '../player';
+import { Class, ItemSlot, PseudoStat, ReforgeStat, Spec, Stat } from '../proto/common';
+import { IndividualSimSettings, StatCapType } from '../proto/ui';
+import { EquippedItem } from '../proto_utils/equipped_item';
 import { Gear } from '../proto_utils/gear';
-import { slotNames, statCapTypeNames } from '../proto_utils/names';
+import { shortSecondaryStatNames, slotNames, statCapTypeNames } from '../proto_utils/names';
 import { pseudoStatIsCapped, StatCap, Stats, UnitStat, UnitStatPresets } from '../proto_utils/stats';
 import { SpecTalents } from '../proto_utils/utils';
 import { Sim } from '../sim';
 import { ActionGroupItem } from '../sim_ui';
 import { EventID, TypedEvent } from '../typed_event';
 import { isDevMode, sleep } from '../utils';
+import { CopyButton } from './copy_button';
 import { BooleanPicker } from './pickers/boolean_picker';
 import { EnumPicker } from './pickers/enum_picker';
 import { NumberPicker, NumberPickerConfig } from './pickers/number_picker';
@@ -87,6 +89,8 @@ export class ReforgeOptimizer {
 	readonly freezeItemSlotsChangeEmitter = new TypedEvent<void>();
 	protected freezeItemSlots = false;
 	protected frozenItemSlots = new Map<ItemSlot, boolean>();
+	protected previousGear: (EquippedItem | null)[] | null = null;
+	protected currentGear: (EquippedItem | null)[] | null = null;
 
 	constructor(simUI: IndividualSimUI<any>, options?: ReforgeOptimizerOptions) {
 		this.simUI = simUI;
@@ -117,15 +121,10 @@ export class ReforgeOptimizer {
 				try {
 					performance.mark('reforge-optimization-start');
 					await this.optimizeReforges();
-					new Toast({
-						variant: 'success',
-						body: 'Reforge optimization complete!',
-					});
-				} catch {
-					new Toast({
-						variant: 'error',
-						body: 'Reforge optimization failed. Please try again, or report the issue if it persists.',
-					});
+					this.onReforgeDone();
+				} catch (error) {
+					console.log(error);
+					this.onReforgeError();
 				} finally {
 					performance.mark('reforge-optimization-end');
 					if (isDevMode())
@@ -650,7 +649,9 @@ export class ReforgeOptimizer {
 			console.log('The following slots will not be cleared:');
 			console.log(Array.from(this.frozenItemSlots.keys()).filter(key => this.frozenItemSlots.get(key)));
 		}
-		const baseGear = this.player.getGear().withoutReforges(this.player.canDualWield2H(), this.frozenItemSlots);
+		const previousGear = this.player.getGear();
+		this.previousGear = previousGear.getEquippedItems();
+		const baseGear = previousGear.withoutReforges(this.player.canDualWield2H(), this.frozenItemSlots);
 		const baseStats = await this.updateGear(baseGear);
 
 		// Compute effective stat caps for just the Reforge contribution
@@ -673,6 +674,7 @@ export class ReforgeOptimizer {
 
 		// Solve in multiple passes to enforce caps
 		await this.solveModel(baseGear, validatedWeights, reforgeCaps, reforgeSoftCaps, variables, constraints);
+		this.currentGear = this.player.getGear().getEquippedItems();
 	}
 
 	async updateGear(gear: Gear): Promise<Stats> {
@@ -1000,5 +1002,63 @@ export class ReforgeOptimizer {
 			statPoints *= this.player.getMasteryPerPointModifier();
 		}
 		return statPoints;
+	}
+
+	onReforgeDone() {
+		const itemSlots = this.player.getGear().getItemSlots();
+		const changedSlots: (ReforgeData | undefined)[] = Array(itemSlots.length);
+		for (const slot of itemSlots) {
+			const prev = this.previousGear?.[slot];
+			const current = this.currentGear?.[slot];
+			const currentReforge = current?.reforge ? this.player.getReforgeData(current, current?.reforge) : undefined;
+			if (!ReforgeStat.equals(prev?.reforge || undefined, current?.reforge || undefined)) changedSlots[slot] = currentReforge;
+		}
+		const hasReforgeChanges = changedSlots.some(Boolean);
+
+		const copyButtonContainerRef = ref<HTMLDivElement>();
+		const changedReforgeMessage = (
+			<>
+				<p className="mb-0">The following items were reforged:</p>
+				<ul>
+					{changedSlots.map((reforge, slot) => {
+						if (reforge) {
+							const slotName = slotNames.get(slot);
+							const { fromStat, toStat } = reforge;
+							const fromText = shortSecondaryStatNames.get(fromStat);
+							const toText = shortSecondaryStatNames.get(toStat);
+							return (
+								<li>
+									{slotName}: {fromText} → {toText}
+								</li>
+							);
+						}
+					})}
+				</ul>
+				<div ref={copyButtonContainerRef} />
+			</>
+		);
+
+		if (hasReforgeChanges) {
+			const settingsExport = IndividualSimSettings.toJson(this.simUI.toProto());
+			if (settingsExport)
+				new CopyButton(copyButtonContainerRef.value!, {
+					extraCssClasses: ['btn-outline-primary'],
+					getContent: () => JSON.stringify(settingsExport),
+					text: 'Copy to WoWSims',
+				});
+		}
+
+		new Toast({
+			variant: 'success',
+			body: hasReforgeChanges ? changedReforgeMessage : <>No reforge changes were made!</>,
+			delay: hasReforgeChanges ? 5000 : 3000,
+		});
+	}
+
+	onReforgeError() {
+		new Toast({
+			variant: 'error',
+			body: 'Reforge optimization failed. Please try again, or report the issue if it persists.',
+		});
 	}
 }
