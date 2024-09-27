@@ -355,22 +355,16 @@ func TestDestruction(t *testing.T) {
 	}
 
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-		Class:      proto.Class_ClassWarlock,
-		Race:       proto.Race_RaceOrc,
-		OtherRaces: []proto.Race{proto.Race_RaceTroll, proto.Race_RaceGoblin, proto.Race_RaceHuman},
-		GearSet:    core.GetGearSet("../../../ui/warlock/destruction/gear_sets", "p1"),
-		OtherGearSets: []core.GearSetCombo{
-			core.GetGearSet("../../../ui/warlock/destruction/gear_sets", "p3"),
-		},
+		Class:            proto.Class_ClassWarlock,
+		Race:             proto.Race_RaceOrc,
+		OtherRaces:       []proto.Race{proto.Race_RaceTroll, proto.Race_RaceGoblin, proto.Race_RaceHuman},
+		GearSet:          core.GetGearSet("../../../ui/warlock/destruction/gear_sets", "p3"),
 		Talents:          destructionTalents,
 		Glyphs:           destructionGlyphs,
 		Consumes:         fullConsumes,
 		SpecOptions:      core.SpecOptionsCombo{Label: "Destruction Warlock", SpecOptions: defaultDestructionWarlock},
 		OtherSpecOptions: []core.SpecOptionsCombo{},
-		Rotation:         core.GetAplRotation("../../../ui/warlock/destruction/apls", "p1"),
-		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../../ui/warlock/destruction/apls", "p3"),
-		},
+		Rotation:         core.GetAplRotation("../../../ui/warlock/destruction/apls", "default"),
 		ItemFilter:       itemFilter,
 		StartingDistance: 25,
 	}))

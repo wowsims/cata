@@ -461,12 +461,9 @@ func TestDemonology(t *testing.T) {
 		Class:      proto.Class_ClassWarlock,
 		Race:       proto.Race_RaceOrc,
 		OtherRaces: []proto.Race{proto.Race_RaceTroll, proto.Race_RaceGoblin, proto.Race_RaceHuman},
-		GearSet:    core.GetGearSet("../../../ui/warlock/demonology/gear_sets", "p1"),
-		OtherGearSets: []core.GearSetCombo{
-			core.GetGearSet("../../../ui/warlock/demonology/gear_sets", "p3"),
-		},
-		Talents: demonologyTalentsShadowBolt,
-		Glyphs:  demonologyGlyphsShadowBolt,
+		GearSet:    core.GetGearSet("../../../ui/warlock/demonology/gear_sets", "p3"),
+		Talents:    demonologyTalentsShadowBolt,
+		Glyphs:     demonologyGlyphsShadowBolt,
 		OtherTalentSets: []core.TalentsCombo{
 			{
 				Label:   "Incinerate",

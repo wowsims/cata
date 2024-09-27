@@ -50,7 +50,7 @@ export const AfflictionTalents = {
 			prime2: PrimeGlyph.GlyphOfUnstableAffliction,
 			prime3: PrimeGlyph.GlyphOfCorruption,
 			major1: MajorGlyph.GlyphOfShadowBolt,
-			major2: MajorGlyph.GlyphOfFelhunter,
+			major2: MajorGlyph.GlyphOfSoulLink,
 			major3: MajorGlyph.GlyphOfSoulSwap,
 			minor1: MinorGlyph.GlyphOfDrainSoul,
 			minor2: MinorGlyph.GlyphOfRitualOfSouls,

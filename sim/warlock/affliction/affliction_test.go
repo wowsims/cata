@@ -400,13 +400,10 @@ func TestAffliction(t *testing.T) {
 	}
 
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-		Class:      proto.Class_ClassWarlock,
-		Race:       proto.Race_RaceOrc,
-		OtherRaces: []proto.Race{proto.Race_RaceTroll, proto.Race_RaceGoblin, proto.Race_RaceHuman},
-		GearSet:    core.GetGearSet("../../../ui/warlock/affliction/gear_sets", "p1"),
-		OtherGearSets: []core.GearSetCombo{
-			core.GetGearSet("../../../ui/warlock/affliction/gear_sets", "p3"),
-		},
+		Class:            proto.Class_ClassWarlock,
+		Race:             proto.Race_RaceOrc,
+		OtherRaces:       []proto.Race{proto.Race_RaceTroll, proto.Race_RaceGoblin, proto.Race_RaceHuman},
+		GearSet:          core.GetGearSet("../../../ui/warlock/affliction/gear_sets", "p3"),
 		Talents:          afflictionTalents,
 		Glyphs:           afflictionGlyphs,
 		Consumes:         fullConsumes,

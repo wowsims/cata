@@ -83,7 +83,7 @@ export const DemonologyTalentsIncinerate = {
 			prime3: PrimeGlyph.GlyphOfMetamorphosis,
 			major1: MajorGlyph.GlyphOfSoulstone,
 			major2: MajorGlyph.GlyphOfLifeTap,
-			major3: MajorGlyph.GlyphOfFelhunter,
+			major3: MajorGlyph.GlyphOfSoulLink,
 			minor1: MinorGlyph.GlyphOfDrainSoul,
 			minor2: MinorGlyph.GlyphOfRitualOfSouls,
 			minor3: MinorGlyph.GlyphOfUnendingBreath,

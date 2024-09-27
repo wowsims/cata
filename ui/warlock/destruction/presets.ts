@@ -10,8 +10,7 @@ import {
 } from '../../core/proto/warlock';
 import { Stats } from '../../core/proto_utils/stats';
 import { WARLOCK_BREAKPOINTS } from '../presets';
-import P1Apl from './apls/p1.apl.json';
-import P3Apl from './apls/p3.apl.json';
+import DefaultApl from './apls/default.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
 import P3Gear from './gear_sets/p3.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
@@ -26,18 +25,7 @@ export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidGear
 export const P1_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1Gear);
 export const P3_PRESET = PresetUtils.makePresetGear('P3 - BIS', P3Gear);
 
-export const P1_APL = PresetUtils.makePresetAPLRotation('P1', P1Apl);
-export const P3_APL = PresetUtils.makePresetAPLRotation('P3', P3Apl);
-
-export const P1_PRESET_BUILD = PresetUtils.makePresetBuild('P1 - Default', {
-	gear: P1_PRESET,
-	rotation: P1_APL,
-});
-
-export const P3_PRESET_BUILD = PresetUtils.makePresetBuild('P3 - Default', {
-	gear: P3_PRESET,
-	rotation: P3_APL,
-});
+export const DEFAULT_APL = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
 // Preset options for EP weights
 export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(

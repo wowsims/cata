@@ -95,16 +95,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.DestructionTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.P1_APL, Presets.P3_APL],
+		rotations: [Presets.DEFAULT_APL],
 
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET],
-
-		builds: [Presets.P1_PRESET_BUILD, Presets.P3_PRESET_BUILD],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecDestructionWarlock>): APLRotation => {
-		return Presets.P1_APL.rotation.rotation!;
+		return Presets.DEFAULT_APL.rotation.rotation!;
 	},
 
 	raidSimPresets: [
