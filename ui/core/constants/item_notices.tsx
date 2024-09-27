@@ -30,7 +30,15 @@ const TENTATIVE_IMPLEMENTATION_WARNING = (
 	</>
 );
 
-const ITEM_DOESNT_EXIST_WARNING = <>This item didn't exist in the game and thus is not implemented!</>;
+const ITEM_DOESNT_EXIST_WARNING = <>
+	<p>
+		This item never existed in the original game, therefore any effects or procs it might have are not implemented.
+	</p>
+	<p>
+		Once we get a clear indication from Blizzard whether they decide to include it or not, we will either implement it and remove this notice or remove the item entirely.
+	</p>
+	<WantToHelpMessage />
+</>;
 
 const NON_EXISTING_ITEMS = [
 	// Rune of Zeth - 391
