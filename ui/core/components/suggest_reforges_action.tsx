@@ -122,8 +122,7 @@ export class ReforgeOptimizer {
 					await this.optimizeReforges();
 					this.onReforgeDone();
 				} catch (error) {
-					console.log(error);
-					this.onReforgeError();
+					this.onReforgeError(error);
 				} finally {
 					performance.mark('reforge-optimization-end');
 					if (isDevMode())
@@ -1053,7 +1052,9 @@ export class ReforgeOptimizer {
 		});
 	}
 
-	onReforgeError() {
+	onReforgeError(error: any) {
+		if (isDevMode()) console.log(error);
+
 		new Toast({
 			variant: 'error',
 			body: 'Reforge optimization failed. Please try again, or report the issue if it persists.',
