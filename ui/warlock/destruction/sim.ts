@@ -1,7 +1,6 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
-import * as Mechanics from '../../core/constants/mechanics.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
@@ -23,20 +22,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[
-			Stat.StatHealth,
-			Stat.StatMana,
-			Stat.StatStamina,
-			Stat.StatIntellect,
-			Stat.StatSpellPower,
-			Stat.StatMasteryRating,
-			Stat.StatMP5,
-		],
-		[
-			PseudoStat.PseudoStatSpellHitPercent,
-			PseudoStat.PseudoStatSpellCritPercent,
-			PseudoStat.PseudoStatSpellHastePercent,
-		],
+		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpellPower, Stat.StatMasteryRating, Stat.StatMP5],
+		[PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatSpellCritPercent, PseudoStat.PseudoStatSpellHastePercent],
 	),
 
 	defaults: {
@@ -44,7 +31,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 		gear: Presets.P1_PRESET.gear,
 
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P1_EP_PRESET.epWeights,
+		epWeights: Presets.EP_PRESET_DEFAULT.epWeights,
 		// Default stat caps for the Reforge optimizer
 		statCaps: (() => {
 			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 17);
@@ -104,18 +91,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
+		epWeights: [Presets.EP_PRESET_DEFAULT],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.DestructionTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.APL_Default],
+		rotations: [Presets.P1_APL, Presets.P3_APL],
 
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P4_WOTLK_PRESET],
+		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET],
+
+		builds: [Presets.P1_PRESET_BUILD, Presets.P3_PRESET_BUILD],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecDestructionWarlock>): APLRotation => {
-		return Presets.APL_Default.rotation.rotation!;
+		return Presets.P1_APL.rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -134,12 +123,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 				[Faction.Alliance]: {
 					1: Presets.PRERAID_PRESET.gear,
 					2: Presets.P1_PRESET.gear,
-					3: Presets.P4_WOTLK_PRESET.gear,
+					3: Presets.P3_PRESET.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.PRERAID_PRESET.gear,
 					2: Presets.P1_PRESET.gear,
-					3: Presets.P4_WOTLK_PRESET.gear,
+					3: Presets.P3_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,

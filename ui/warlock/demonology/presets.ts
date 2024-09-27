@@ -33,9 +33,9 @@ import PreraidGear from './gear_sets/preraid.gear.json';
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid Preset', PreraidGear);
-export const P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1Gear);
-export const P3_PRESET = PresetUtils.makePresetGear('P3 Preset', P3Gear);
+export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidGear);
+export const P1_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1Gear);
+export const P3_PRESET = PresetUtils.makePresetGear('P3 - BIS', P3Gear);
 
 export const APL_ShadowBolt = PresetUtils.makePresetAPLRotation('Shadow Bolt', ShadowBoltAPL);
 export const APL_Incinerate = PresetUtils.makePresetAPLRotation('Incinerate', IncinerateAPL);

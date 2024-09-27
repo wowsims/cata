@@ -10,9 +10,10 @@ import {
 } from '../../core/proto/warlock';
 import { Stats } from '../../core/proto_utils/stats';
 import { WARLOCK_BREAKPOINTS } from '../presets';
-import DefaultApl from './apls/default.apl.json';
+import P1Apl from './apls/p1.apl.json';
+import P3Apl from './apls/p3.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
-import P4WrathGear from './gear_sets/p4_wrath.gear.json';
+import P3Gear from './gear_sets/p3.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
@@ -21,15 +22,26 @@ import PreraidGear from './gear_sets/preraid.gear.json';
 
 export const BIS_TOOLTIP = "This gear preset is inspired from Zephan's Affliction guide: https://www.warcrafttavern.com/wotlk/guides/pve-affliction-warlock/";
 
-export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid Preset', PreraidGear);
-export const P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1Gear);
-export const P4_WOTLK_PRESET = PresetUtils.makePresetGear('P4 Wrath', P4WrathGear, { tooltip: BIS_TOOLTIP });
+export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidGear);
+export const P1_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1Gear);
+export const P3_PRESET = PresetUtils.makePresetGear('P3 - BIS', P3Gear);
 
-export const APL_Default = PresetUtils.makePresetAPLRotation('Destro', DefaultApl);
+export const P1_APL = PresetUtils.makePresetAPLRotation('P1', P1Apl);
+export const P3_APL = PresetUtils.makePresetAPLRotation('P3', P3Apl);
+
+export const P1_PRESET_BUILD = PresetUtils.makePresetBuild('P1 - Default', {
+	gear: P1_PRESET,
+	rotation: P1_APL,
+});
+
+export const P3_PRESET_BUILD = PresetUtils.makePresetBuild('P3 - Default', {
+	gear: P3_PRESET,
+	rotation: P3_APL,
+});
 
 // Preset options for EP weights
-export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P1',
+export const EP_PRESET_DEFAULT = PresetUtils.makePresetEpWeights(
+	'Default',
 	Stats.fromMap({
 		[Stat.StatIntellect]: 1.25,
 		[Stat.StatSpellPower]: 1,
