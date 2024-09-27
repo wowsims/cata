@@ -50,18 +50,6 @@
 		{
 			"action": {
 				"condition": {
-					"cmp": {
-						"op": "OpLt",
-						"lhs": { "dotRemainingTime": { "spellId": { "spellId": 603 } } },
-						"rhs": { "dotTickFrequency": { "spellId": { "spellId": 603 } } }
-					}
-				},
-				"castSpell": { "spellId": { "spellId": 603 } }
-			}
-		},
-		{
-			"action": {
-				"condition": {
 					"or": {
 						"vals": [
 							{
@@ -112,6 +100,18 @@
 			}
 		},
 		{ "action": { "condition": { "spellCanCast": { "spellId": { "spellId": 17962 } } }, "castSpell": { "spellId": { "spellId": 17962 } } } },
+		{
+			"action": {
+				"condition": {
+					"cmp": {
+						"op": "OpLt",
+						"lhs": { "dotRemainingTime": { "spellId": { "spellId": 603 } } },
+						"rhs": { "dotTickFrequency": { "spellId": { "spellId": 603 } } }
+					}
+				},
+				"castSpell": { "spellId": { "spellId": 603 } }
+			}
+		},
 		{
 			"action": {
 				"condition": {
