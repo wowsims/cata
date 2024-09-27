@@ -1,10 +1,9 @@
-import { Player, ReforgeData } from '../player';
 import { EquipmentSpec, GemColor, ItemSlot, ItemSpec, ItemSwap, Profession, SimDatabase, SimEnchant, SimGem, SimItem } from '../proto/common.js';
 import { UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../proto/ui.js';
 import { isBluntWeaponType, isSharpWeaponType } from '../proto_utils/utils.js';
 import { distinct, equalsOrBothNull, getEnumValues } from '../utils.js';
 import { Database } from './database';
-import { EquippedItem } from './equipped_item.js';
+import { EquippedItem, ReforgeData } from './equipped_item.js';
 import { gemMatchesSocket, isMetaGemActive } from './gems.js';
 import { Stats } from './stats.js';
 import { validWeaponCombo } from './utils.js';
@@ -377,8 +376,8 @@ export class Gear extends BaseGear {
 	getAllReforges() {
 		const reforgedItems = new Map<ItemSlot, ReforgeData>();
 		this.getEquippedItems().forEach((item, slot) => {
-			if (!item?.reforge) return;
-			const reforgeData = Player.getReforgeData(item, item.reforge);
+			const reforgeData = item?.getReforgeData();
+			if (!reforgeData) return;
 			reforgedItems.set(slot, reforgeData);
 		});
 		return reforgedItems;

@@ -47,7 +47,7 @@ import {
 } from './proto/ui';
 import { ActionId } from './proto_utils/action_id';
 import { Database } from './proto_utils/database';
-import { EquippedItem, getWeaponDPS } from './proto_utils/equipped_item';
+import { EquippedItem, getWeaponDPS, ReforgeData } from './proto_utils/equipped_item';
 import { Gear, ItemSwapGear } from './proto_utils/gear';
 import { gemMatchesSocket, isUnrestrictedGem } from './proto_utils/gems';
 import { StatCap, Stats } from './proto_utils/stats';
@@ -218,16 +218,6 @@ export function getSpecConfig<SpecType extends Spec>(spec: SpecType): PlayerConf
 		throw new Error('No config registered for Spec: ' + spec);
 	}
 	return config;
-}
-
-export interface ReforgeData {
-	id: number;
-	item: Item;
-	reforge: ReforgeStat;
-	fromStat: Stat;
-	toStat: Stat;
-	fromAmount: number;
-	toAmount: number;
 }
 
 // Manages all the gear / consumes / other settings for a single Player.
@@ -455,30 +445,12 @@ export class Player<SpecType extends Spec> {
 	// Returns all reforgings that are valid with a given item
 	getAvailableReforgings(equippedItem: EquippedItem): Array<ReforgeData> {
 		const withRandomSuffixStats = equippedItem.getWithRandomSuffixStats();
-		return this.sim.db.getAvailableReforges(withRandomSuffixStats.item).map(reforge => {
-			return Player.getReforgeData(equippedItem, reforge);
-		});
+		return this.sim.db.getAvailableReforges(withRandomSuffixStats.item).map(reforge => equippedItem.getReforgeData(reforge)!);
 	}
 
 	// Returns reforge given an id
 	getReforge(id: number): ReforgeStat | undefined {
 		return this.sim.db.getReforgeById(id);
-	}
-
-	static getReforgeData(equippedItem: EquippedItem, reforge: ReforgeStat): ReforgeData {
-		const withRandomSuffixStats = equippedItem.getWithRandomSuffixStats();
-		const item = withRandomSuffixStats.item;
-		const fromAmount = Math.ceil(-item.stats[reforge.fromStat] * reforge.multiplier);
-		const toAmount = Math.floor(item.stats[reforge.fromStat] * reforge.multiplier);
-		return {
-			id: reforge.id,
-			reforge: reforge,
-			item: item,
-			fromStat: reforge.fromStat,
-			fromAmount: fromAmount,
-			toStat: reforge.toStat,
-			toAmount,
-		};
 	}
 
 	// Returns all enchants that this player can wear in the given slot.

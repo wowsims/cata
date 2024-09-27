@@ -31,26 +31,21 @@ export class ReforgeSummary extends Component {
 
 	private updateTable() {
 		const body = <></>;
-		let gear = this.player.getGear();
+		const reforges = this.player.getGear().getAllReforges();
 		const totals: ReforgeSummaryTotal = {};
-		gear.getItemSlots().forEach(itemSlot => {
-			const item = gear.getEquippedItem(itemSlot);
-			if (item?.reforge && item.reforge?.id !== 0) {
-				const reforge = Player.getReforgeData(item, item.reforge);
-				if (reforge) {
-					const { fromStat, toStat, fromAmount, toAmount } = reforge;
 
-					if (typeof totals[fromStat] !== 'number') {
-						totals[fromStat] = 0;
-					}
-					if (typeof totals[toStat] !== 'number') {
-						totals[toStat] = 0;
-					}
-					if (fromAmount) totals[fromStat]! += fromAmount;
-					if (toAmount) totals[toStat]! += toAmount;
-				}
+		for (const [_, reforgeData] of reforges) {
+			const { fromStat, toStat, fromAmount, toAmount } = reforgeData;
+
+			if (typeof totals[fromStat] !== 'number') {
+				totals[fromStat] = 0;
 			}
-		});
+			if (typeof totals[toStat] !== 'number') {
+				totals[toStat] = 0;
+			}
+			if (fromAmount) totals[fromStat]! += fromAmount;
+			if (toAmount) totals[toStat]! += toAmount;
+		}
 
 		const hasReforgedItems = !!Object.keys(totals).length;
 		this.rootElem.classList[!hasReforgedItems ? 'add' : 'remove']('hide');
@@ -77,7 +72,7 @@ export class ReforgeSummary extends Component {
 				<button
 					className="btn btn-sm btn-link btn-reset summary-table-reset-button"
 					onclick={() => {
-						gear = gear.withoutReforges(this.player.canDualWield2H());
+						const gear = this.player.getGear().withoutReforges(this.player.canDualWield2H());
 						this.player.setGear(TypedEvent.nextEventID(), gear);
 					}}>
 					<i className="fas fa-times me-1"></i>
