@@ -1362,27 +1362,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBM-AllItems-SealoftheSevenSigns-77204"
- value: {
-  dps: 21299.13437
-  tps: 17940.74128
- }
-}
-dps_results: {
- key: "TestBM-AllItems-SealoftheSevenSigns-77969"
- value: {
-  dps: 21150.37677
-  tps: 17823.83553
- }
-}
-dps_results: {
- key: "TestBM-AllItems-SealoftheSevenSigns-77989"
- value: {
-  dps: 21419.90552
-  tps: 18041.15989
- }
-}
-dps_results: {
  key: "TestBM-AllItems-Shadowmourne-49623"
  value: {
   dps: 22496.2595

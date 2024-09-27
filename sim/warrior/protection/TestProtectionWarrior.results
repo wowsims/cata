@@ -1387,27 +1387,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestProtectionWarrior-AllItems-SealoftheSevenSigns-77204"
- value: {
-  dps: 4782.59014
-  tps: 29025.74714
- }
-}
-dps_results: {
- key: "TestProtectionWarrior-AllItems-SealoftheSevenSigns-77969"
- value: {
-  dps: 4753.2046
-  tps: 28848.18693
- }
-}
-dps_results: {
- key: "TestProtectionWarrior-AllItems-SealoftheSevenSigns-77989"
- value: {
-  dps: 4759.34705
-  tps: 28834.0648
- }
-}
-dps_results: {
  key: "TestProtectionWarrior-AllItems-Shadowmourne-49623"
  value: {
   dps: 4659.08749
