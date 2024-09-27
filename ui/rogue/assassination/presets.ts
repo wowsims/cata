@@ -24,14 +24,14 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Asn',
 	Stats.fromMap(
 		{
-			[Stat.StatAgility]: 2.71,
+			[Stat.StatAgility]: 2.64,
 			[Stat.StatStrength]: 1.05,
 			[Stat.StatAttackPower]: 1,
 			[Stat.StatCritRating]: 1.18,
 			[Stat.StatHitRating]: 2.62,
-			[Stat.StatHasteRating]: 1.2,
-			[Stat.StatMasteryRating]: 1.32,
-			[Stat.StatExpertiseRating]: 1.22,
+			[Stat.StatHasteRating]: 1.27,
+			[Stat.StatMasteryRating]: 1.35,
+			[Stat.StatExpertiseRating]: 1.2,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 3.0,

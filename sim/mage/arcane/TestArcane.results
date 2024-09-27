@@ -96,7 +96,7 @@ dps_results: {
  value: {
   dps: 27594.12743
   tps: 27748.06659
-  hps: 99.81156
+  hps: 127.42647
  }
 }
 dps_results: {
@@ -219,7 +219,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestArcane-AllItems-Brawler'sTrophy-71338"
+ key: "TestArcane-AllItems-Brawler'sTrophy-232015"
  value: {
   dps: 27584.0859
   tps: 27718.80004
@@ -240,10 +240,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestArcane-AllItems-Coren'sChilledChromiumCoaster-71335"
+ key: "TestArcane-AllItems-Coren'sChilledChromiumCoaster-232012"
  value: {
-  dps: 28023.05787
-  tps: 28155.69386
+  dps: 28009.12673
+  tps: 28142.66244
  }
 }
 dps_results: {
@@ -305,8 +305,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-DarkmoonCard:Volcano-62047"
  value: {
-  dps: 29174.60313
-  tps: 29332.853
+  dps: 29198.44185
+  tps: 29356.69172
  }
 }
 dps_results: {
@@ -536,8 +536,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-HarmlightToken-63839"
  value: {
-  dps: 28468.61709
-  tps: 28645.33026
+  dps: 28515.17753
+  tps: 28691.8907
  }
 }
 dps_results: {
@@ -678,6 +678,20 @@ dps_results: {
  value: {
   dps: 27687.8285
   tps: 27888.15788
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 28903.78531
+  tps: 29092.92309
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 29095.66398
+  tps: 29292.88951
  }
 }
 dps_results: {
@@ -842,10 +856,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestArcane-AllItems-MithrilStopwatch-71337"
+ key: "TestArcane-AllItems-MithrilStopwatch-232013"
  value: {
-  dps: 28994.72685
-  tps: 29104.29047
+  dps: 28876.96717
+  tps: 28989.87346
  }
 }
 dps_results: {
@@ -884,10 +898,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestArcane-AllItems-PetrifiedPickledEgg-71336"
+ key: "TestArcane-AllItems-PetrifiedPickledEgg-232014"
  value: {
-  dps: 28813.72323
-  tps: 28997.92919
+  dps: 28720.75994
+  tps: 28909.41739
  }
 }
 dps_results: {
@@ -996,6 +1010,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-ScalesofLife-68915"
+ value: {
+  dps: 27496.01335
+  tps: 27642.23324
+  hps: 444.96343
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-ScalesofLife-69109"
+ value: {
+  dps: 27496.01335
+  tps: 27642.23324
+  hps: 501.91458
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 27584.0859
@@ -1077,6 +1107,27 @@ dps_results: {
  value: {
   dps: 29326.35982
   tps: 29408.45027
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 28088.73162
+  tps: 28223.44576
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 28154.61227
+  tps: 28289.3264
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-StayofExecution-68996"
+ value: {
+  dps: 27381.61965
+  tps: 27507.52299
  }
 }
 dps_results: {
@@ -1222,8 +1273,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-Tyrande'sFavoriteDoll-64645"
  value: {
-  dps: 28525.05283
-  tps: 28743.29115
+  dps: 28564.47786
+  tps: 28782.71618
  }
 }
 dps_results: {
@@ -1264,15 +1315,15 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 29251.62308
-  tps: 29433.74735
+  dps: 29782.89197
+  tps: 29962.85248
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 29975.37267
-  tps: 30159.46652
+  dps: 30336.24574
+  tps: 30509.9477
  }
 }
 dps_results: {

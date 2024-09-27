@@ -227,7 +227,7 @@ func (warrior *Warrior) applyToughness() {
 	if warrior.Talents.Toughness == 0 {
 		return
 	}
-	warrior.PseudoStats.ArmorMultiplier *= 1.0 + []float64{0.0, 0.03, 0.06, 0.1}[warrior.Talents.Toughness]
+	warrior.ApplyEquipScaling(stats.Armor, []float64{1.0, 1.03, 1.06, 1.1}[warrior.Talents.Toughness])
 }
 
 func (warrior *Warrior) applyBloodAndThunder() {

@@ -14,19 +14,19 @@ export class Mage extends PlayerClass<Class.ClassMage> {
 		[FrostMage.friendlyName]: FrostMage,
 	};
 	static races: Race[] = [
+		// [H]
+		Race.RaceTroll,
+		Race.RaceGoblin,
+		Race.RaceOrc,
+		Race.RaceUndead,
+		Race.RaceBloodElf,
 		// [A]
+		Race.RaceGnome,
+		Race.RaceWorgen,
 		Race.RaceHuman,
 		Race.RaceDwarf,
 		Race.RaceNightElf,
-		Race.RaceGnome,
 		Race.RaceDraenei,
-		Race.RaceWorgen,
-		// [H]
-		Race.RaceOrc,
-		Race.RaceUndead,
-		Race.RaceTroll,
-		Race.RaceBloodElf,
-		Race.RaceGoblin,
 	];
 	static armorTypes: ArmorType[] = [ArmorType.ArmorTypeCloth];
 	static weaponTypes: EligibleWeaponType[] = [

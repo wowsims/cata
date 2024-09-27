@@ -37,12 +37,14 @@ func (paladin *Paladin) registerCrusaderStrike() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
 				holyPowerGain := core.TernaryInt32(paladin.ZealotryAura.IsActive(), 3, 1)
 				paladin.GainHolyPower(sim, holyPowerGain, hpMetrics)
 			}
+
+			spell.DealOutcome(sim, result)
 		},
 	})
 }

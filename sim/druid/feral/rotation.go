@@ -33,9 +33,22 @@ func (cat *FeralDruid) OnGCDReady(sim *core.Simulation) {
 		}
 	}
 
-	// Check for an opportunity to cancel Primal Madness if we just casted a spell
-	if !cat.GCD.IsReady(sim) && cat.PrimalMadnessAura.IsActive() && (cat.CurrentEnergy() < 10.0*float64(cat.Talents.PrimalMadness)) && cat.Rotation.CancelPrimalMadness {
-		cat.PrimalMadnessAura.Deactivate(sim)
+	// Check for an opportunity to cancel Primal Madness if we just casted a spell.
+	if !cat.GCD.IsReady(sim) && cat.PrimalMadnessAura.IsActive() && cat.Rotation.CancelPrimalMadness {
+		// Determine cancellation threshold based on the expected Energy
+		// loss when Primal Madness will naturally expire.
+		energyThresh := 10.0 * float64(cat.Talents.PrimalMadness)
+
+		// Apply a conservative correction to account for the cost of losing one final buffed Shred at the very
+		// end of the TF or Zerk window due to an early cancellation.
+		energyThresh -= core.TernaryFloat64(cat.BerserkAura.IsActive(), 0.5, 0.15) * cat.Shred.DefaultCast.Cost
+
+		// Apply input delay realism to Energy measurement for a real player.
+		energyThresh += cat.EnergyRegenPerSecond() * cat.ReactionTime.Seconds()
+
+		if cat.CurrentEnergy() < energyThresh {
+			cat.PrimalMadnessAura.Deactivate(sim)
+		}
 	}
 }
 
@@ -83,7 +96,7 @@ func (cat *FeralDruid) canBite(sim *core.Simulation, isExecutePhase bool) bool {
 	}
 
 	if isExecutePhase {
-		return cat.Rip.NewSnapshotPower >= cat.Rip.CurrentSnapshotPower
+		return cat.Rip.NewSnapshotPower > cat.Rip.CurrentSnapshotPower-0.001
 	}
 
 	return cat.Rip.CurDot().RemainingDuration(sim) >= cat.Rotation.BiteTime
@@ -330,21 +343,21 @@ func (cat *FeralDruid) calcBleedRefreshTime(sim *core.Simulation, bleedSpell *dr
 	maxTickCount := core.TernaryInt32(isRip, cat.maxRipTicks, bleedDot.BaseTickCount)
 	maxBleedDur := bleedDot.BaseTickLength * time.Duration(maxTickCount)
 	numCastsCovered := buffRemains / maxBleedDur
-	buffEnd := cat.tempSnapshotAura.ExpiresAt() - numCastsCovered * maxBleedDur
+	buffEnd := cat.tempSnapshotAura.ExpiresAt() - numCastsCovered*maxBleedDur
 
-	if buffEnd > standardRefreshTime + cat.ReactionTime {
+	if buffEnd > standardRefreshTime+cat.ReactionTime {
 		return standardRefreshTime
 	}
 
 	// Potential clips for a buff snapshot should be done as late as possible
-	latestPossibleSnapshot := buffEnd - cat.ReactionTime * time.Duration(2)
+	latestPossibleSnapshot := buffEnd - cat.ReactionTime*time.Duration(2)
 	numClippedTicks := (bleedEnd - latestPossibleSnapshot) / bleedDot.BaseTickLength
-	targetClipTime := standardRefreshTime - numClippedTicks * bleedDot.BaseTickLength
+	targetClipTime := standardRefreshTime - numClippedTicks*bleedDot.BaseTickLength
 
 	// Since the clip can cost us 30-35 Energy, we need to determine whether the damage gain is worth the
 	// spend. First calculate the maximum number of buffed bleed ticks we can get out before the fight
 	// ends.
-	buffedTickCount := min(maxTickCount, int32((sim.Duration - targetClipTime) / bleedDot.BaseTickLength))
+	buffedTickCount := min(maxTickCount, int32((sim.Duration-targetClipTime)/bleedDot.BaseTickLength))
 
 	// Perform a DPE comparison vs. Shred
 	expectedDamageGain := (bleedSpell.NewSnapshotPower - bleedSpell.CurrentSnapshotPower) * float64(buffedTickCount)

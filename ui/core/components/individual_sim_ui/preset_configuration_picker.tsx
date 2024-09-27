@@ -4,7 +4,7 @@ import { ref } from 'tsx-vanilla';
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { PresetBuild } from '../../preset_utils';
 import { APLRotation, APLRotation_Type } from '../../proto/apl';
-import { Encounter, EquipmentSpec, HealingModel, Spec } from '../../proto/common';
+import { Encounter, EquipmentSpec, Glyphs, HealingModel, Spec } from '../../proto/common';
 import { SavedTalents } from '../../proto/ui';
 import { TypedEvent } from '../../typed_event';
 import { Component } from '../component';
@@ -118,7 +118,13 @@ export class PresetConfigurationPicker extends Component {
 					}),
 			  )
 			: true;
-		const hasRotation = rotation ? APLRotation.equals(rotation.rotation.rotation, this.simUI.player.aplRotation) : true;
+		let hasRotation = true;
+		if (rotation) {
+			const activeRotation = this.simUI.player.getResolvedAplRotation();
+			// Ensure that the auto rotation can be matched with a preset
+			if (activeRotation.type === APLRotation_Type.TypeAuto) activeRotation.type = APLRotation_Type.TypeAPL;
+			hasRotation = APLRotation.equals(rotation.rotation.rotation, activeRotation);
+		}
 		const hasEpWeights = epWeights ? this.simUI.player.getEpWeights().equals(epWeights.epWeights) : true;
 		const hasEncounter = encounter?.encounter ? Encounter.equals(encounter.encounter, this.simUI.sim.encounter.toProto()) : true;
 		const hasHealingModel = encounter?.healingModel ? HealingModel.equals(encounter.healingModel, this.simUI.player.getHealingModel()) : true;

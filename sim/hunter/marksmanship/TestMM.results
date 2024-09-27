@@ -247,7 +247,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestMM-AllItems-Brawler'sTrophy-71338"
+ key: "TestMM-AllItems-Brawler'sTrophy-232015"
  value: {
   dps: 20804.38157
   tps: 18630.91177
@@ -275,10 +275,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestMM-AllItems-Coren'sChilledChromiumCoaster-71335"
+ key: "TestMM-AllItems-Coren'sChilledChromiumCoaster-232012"
  value: {
-  dps: 21715.66557
-  tps: 19449.28938
+  dps: 21626.2412
+  tps: 19369.40625
  }
 }
 dps_results: {
@@ -716,6 +716,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestMM-AllItems-JawsofDefeat-68926"
+ value: {
+  dps: 20804.36191
+  tps: 18630.89211
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-JawsofDefeat-69111"
+ value: {
+  dps: 20804.36191
+  tps: 18630.89211
+ }
+}
+dps_results: {
  key: "TestMM-AllItems-JujuofNimbleness-63840"
  value: {
   dps: 21461.55365
@@ -884,10 +898,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestMM-AllItems-MithrilStopwatch-71337"
+ key: "TestMM-AllItems-MithrilStopwatch-232013"
  value: {
-  dps: 21194.34533
-  tps: 18992.87126
+  dps: 21161.09656
+  tps: 18961.50398
  }
 }
 dps_results: {
@@ -926,7 +940,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestMM-AllItems-PetrifiedPickledEgg-71336"
+ key: "TestMM-AllItems-PetrifiedPickledEgg-232014"
  value: {
   dps: 20804.36191
   tps: 18630.89211
@@ -1038,6 +1052,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestMM-AllItems-ScalesofLife-68915"
+ value: {
+  dps: 20804.36191
+  tps: 18630.89211
+  hps: 312.86699
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-ScalesofLife-69109"
+ value: {
+  dps: 20804.36191
+  tps: 18630.89211
+  hps: 352.91104
+ }
+}
+dps_results: {
  key: "TestMM-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 21420.1186
@@ -1126,6 +1156,27 @@ dps_results: {
  value: {
   dps: 21379.089
   tps: 19196.64467
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-SpidersilkSpindle-68981"
+ value: {
+  dps: 21211.72465
+  tps: 19028.51013
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-SpidersilkSpindle-69138"
+ value: {
+  dps: 21251.98386
+  tps: 19085.24799
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-StayofExecution-68996"
+ value: {
+  dps: 20804.36191
+  tps: 18630.89211
  }
 }
 dps_results: {
@@ -1313,15 +1364,15 @@ dps_results: {
 dps_results: {
  key: "TestMM-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 20878.62799
-  tps: 18705.32714
+  dps: 21094.69474
+  tps: 18921.16187
  }
 }
 dps_results: {
  key: "TestMM-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 21048.40117
-  tps: 18874.99622
+  dps: 21128.00061
+  tps: 18954.65458
  }
 }
 dps_results: {

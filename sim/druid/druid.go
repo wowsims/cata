@@ -25,6 +25,8 @@ type Druid struct {
 
 	StartingForm DruidForm
 
+	EclipseEnergyMap EclipseEnergyMap
+
 	RebirthUsed       bool
 	RebirthTiming     float64
 	BleedsActive      int
@@ -148,9 +150,14 @@ const (
 	DruidSpellHurricane
 	DruidSpellInnervate
 	DruidSpellInsectSwarm
+	DruidSpellMangleBear
+	DruidSpellMangleCat
+	DruidSpellMaul
 	DruidSpellMoonfire
 	DruidSpellMoonfireDoT
 	DruidSpellNaturesGrasp
+	DruidSpellRavage
+	DruidSpellShred
 	DruidSpellStarfall
 	DruidSpellStarfire
 	DruidSpellStarsurge
@@ -177,6 +184,7 @@ const (
 	DruidSpellDoT       = DruidSpellInsectSwarm | DruidSpellMoonfireDoT | DruidSpellSunfireDoT
 	DruidSpellHoT       = DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellRegrowth | DruidSpellWildGrowth
 	DruidSpellInstant   = DruidSpellBarkskin | DruidSpellInsectSwarm | DruidSpellMoonfire | DruidSpellStarfall | DruidSpellSunfire | DruidSpellFearieFire | DruidSpellBarkskin
+	DruidSpellMangle    = DruidSpellMangleBear | DruidSpellMangleCat
 	DruidArcaneSpells   = DruidSpellMoonfire | DruidSpellMoonfireDoT | DruidSpellStarfire | DruidSpellStarsurge | DruidSpellStarfall
 	DruidNatureSpells   = DruidSpellInsectSwarm | DruidSpellStarsurge | DruidSpellSunfire | DruidSpellSunfireDoT | DruidSpellTyphoon | DruidSpellHurricane
 	DruidHealingSpells  = DruidSpellHealingTouch | DruidSpellRegrowth | DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellNourish | DruidSpellSwiftmend
@@ -335,17 +343,6 @@ func (druid *Druid) Reset(_ *core.Simulation) {
 	druid.RebirthUsed = false
 }
 
-func (druid *Druid) ForceSolarEclipse(sim *core.Simulation, masteryRating float64) {
-	masteryRating -= druid.GetStat(stats.MasteryRating)
-	if masteryRating > 0 {
-		druid.AddStatDynamic(sim, stats.MasteryRating, masteryRating)
-	}
-	druid.eclipseEnergyBar.ForceEclipse(SolarEclipse, sim)
-	if masteryRating > 0 {
-		druid.AddStatDynamic(sim, stats.MasteryRating, -masteryRating)
-	}
-}
-
 func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents string) *Druid {
 	druid := &Druid{
 		Character:         *char,
@@ -354,6 +351,7 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 		StartingForm:      form,
 		form:              form,
 		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassDruid),
+		EclipseEnergyMap:  make(EclipseEnergyMap),
 	}
 
 	core.FillTalentsProto(druid.Talents.ProtoReflect(), talents, TalentTreeSizes)

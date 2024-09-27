@@ -44,7 +44,9 @@ func init() {
 
 	core.NewItemEffect(68925, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		procChance := 0.15 //TODO: simc proc chance, verify when available
+		// Proc chance determined to be p=.48 by video research - Researched by InDebt & Frostbitten
+		// Research: https://github.com/wowsims/cata/pull/1009#issuecomment-2348700653
+		procChance := 0.5
 		dummyAura := character.GetOrRegisterAura(core.Aura{
 			Label:     "Electrical Charge",
 			ActionID:  core.ActionID{SpellID: 96890},
@@ -62,7 +64,9 @@ func init() {
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				baseDamage := sim.Roll(985, 1266) * float64(dummyAura.GetStacks())
+				// Tooltip is wrong:
+				// https://wago.tools/db2/SpellEffect?build=4.4.1.56574&filter[SpellID]=96887%7C96891%7C97119&page=1&sort[SpellID]=asc
+				baseDamage := sim.Roll(2561, 3292) * float64(dummyAura.GetStacks())
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			},
 		})
@@ -89,7 +93,9 @@ func init() {
 
 	core.NewItemEffect(69110, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		procChance := 0.15 //TODO: simc proc chance, verify when available
+		// Proc chance determined to be p=.48 by video research - Researched by InDebt & Frostbitten
+		// Research: https://github.com/wowsims/cata/pull/1009#issuecomment-2348700653
+		procChance := 0.5
 		dummyAura := character.GetOrRegisterAura(core.Aura{
 			Label:     "Electrical Charge",
 			ActionID:  core.ActionID{SpellID: 96890},

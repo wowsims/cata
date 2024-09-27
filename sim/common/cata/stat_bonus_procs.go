@@ -885,9 +885,9 @@ func init() {
 
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Coren's Chilled Chromium Coaster",
-		ID:         71335,
-		AuraID:     101287,
-		Bonus:      stats.Stats{stats.AttackPower: 4000, stats.RangedAttackPower: 4000},
+		ID:         232012,
+		AuraID:     469349,
+		Bonus:      stats.Stats{stats.AttackPower: 3576, stats.RangedAttackPower: 3576},
 		Duration:   time.Second * 10,
 		Callback:   core.CallbackOnSpellHitDealt,
 		ProcMask:   core.ProcMaskMeleeOrRanged,
@@ -898,9 +898,9 @@ func init() {
 
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Petrified Pickled Egg",
-		ID:         71336,
-		AuraID:     101289,
-		Bonus:      stats.Stats{stats.HasteRating: 2040},
+		ID:         232014,
+		AuraID:     469355,
+		Bonus:      stats.Stats{stats.HasteRating: 1824},
 		Duration:   time.Second * 10,
 		Callback:   core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask:   core.ProcMaskSpellHealing,
@@ -911,9 +911,9 @@ func init() {
 
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Mithril Stopwatch",
-		ID:         71337,
-		AuraID:     101291,
-		Bonus:      stats.Stats{stats.SpellPower: 2040},
+		ID:         232013,
+		AuraID:     469352,
+		Bonus:      stats.Stats{stats.SpellPower: 1824},
 		Duration:   time.Second * 10,
 		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask:   core.ProcMaskSpellDamage,

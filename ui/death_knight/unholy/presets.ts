@@ -7,6 +7,7 @@ import SingleTargetApl from '../../death_knight/unholy/apls/st.apl.json';
 import P1BISGear from '../../death_knight/unholy/gear_sets/p1.bis.gear.json';
 import P1PreBISGear from '../../death_knight/unholy/gear_sets/p1.prebis.gear.json';
 import P1RealisticBISGear from '../../death_knight/unholy/gear_sets/p1.realistic-bis.gear.json';
+import P3BISGear from '../../death_knight/unholy/gear_sets/p3.bis.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -14,6 +15,7 @@ import P1RealisticBISGear from '../../death_knight/unholy/gear_sets/p1.realistic
 export const P1_PREBIS_GEAR_PRESET = PresetUtils.makePresetGear('P1 - Preraid', P1PreBISGear);
 export const P1_REALISTIC_BIS_GEAR_PRESET = PresetUtils.makePresetGear('P1 - Realistic BIS', P1RealisticBISGear);
 export const P1_BIS_GEAR_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1BISGear);
+export const P3_BIS_GEAR_PRESET = PresetUtils.makePresetGear('P3 - BIS', P3BISGear);
 
 export const SINGLE_TARGET_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Single Target', SingleTargetApl);
 

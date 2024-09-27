@@ -38,13 +38,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		// Default equipped gear.
 		gear: Presets.FIRE_P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P1_EP_PRESET.epWeights,
+		epWeights: Presets.DEFAULT_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
 			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 17);
 		})(),
 		// Default soft caps for the Reforge optimizer
 		softCapBreakpoints: (() => {
+			// Set up Mastery breakpoints for integer % damage increments.
+			// These should be removed once the bugfix to make Mastery
+			// continuous goes live!
+			const masterySoftCapConfig = StatCap.fromStat(Stat.StatMasteryRating, {
+				breakpoints: [(23 / Mechanics.masteryPercentPerPoint.get(Spec.SpecFireMage)!) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT],
+				capType: StatCapType.TypeThreshold,
+				postCapEPs: [0],
+			});
+
 			const hasteSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent, {
 				breakpoints: [
 					hasteBreakpoints.get('5-tick - LvB/Pyro')!,
@@ -66,7 +75,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 				postCapEPs: [0.61 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
 			});
 
-			return [hasteSoftCapConfig];
+			return [masterySoftCapConfig, hasteSoftCapConfig];
 		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultFireConsumes,
@@ -107,16 +116,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
+		epWeights: [Presets.DEFAULT_EP_PRESET],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.FIRE_ROTATION_PRESET_DEFAULT],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.FireTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.FIRE_P1_PRESET, Presets.FIRE_P1_PREBIS],
+		gear: [Presets.FIRE_P1_PRESET, Presets.FIRE_P1_PREBIS, Presets.FIRE_P3_PRESET],
 	},
 
-	autoRotation: (player: Player<Spec.SpecFireMage>): APLRotation => {
+	autoRotation: (_player): APLRotation => {
 		/*const numTargets = player.sim.encounter.targets.length;
  		if (numTargets > 3) {
 			return Presets.FIRE_ROTATION_PRESET_AOE.rotation.rotation!;
