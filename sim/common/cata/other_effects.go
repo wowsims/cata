@@ -717,84 +717,34 @@ func init() {
 		core.NewItemEffect(spindleItemID, func(agent core.Agent) {
 			character := agent.GetCharacter()
 
-			shieldAmount := core.TernaryFloat64(heroic, 19283, 17095)
-			currentShield := 0.0
-			var shieldSpell *core.Spell
-			shieldSpell = character.GetOrRegisterSpell(core.SpellConfig{
-				ActionID:    core.ActionID{SpellID: core.TernaryInt32(heroic, 97129, 96945)},
-				ProcMask:    core.ProcMaskSpellHealing,
-				SpellSchool: core.SpellSchoolHoly,
-				Flags: core.SpellFlagHelpful |
-					core.SpellFlagPassiveSpell |
-					core.SpellFlagIgnoreModifiers |
-					core.SpellFlagNoSpellMods,
+			shieldStrength := core.TernaryFloat64(heroic, 19283, 17095)
+			actionID := core.ActionID{ItemID: spindleItemID, SpellID: core.TernaryInt32(heroic, 97129, 96945)}
+			duration := time.Second * 30
 
-				DamageMultiplier: 1,
-				ThreatMultiplier: 1,
-
-				Shield: core.ShieldConfig{
-					SelfOnly: true,
-					Aura: core.Aura{
-						Label:     "Loom of Fate",
-						Duration:  time.Second * 30,
-						MaxStacks: int32(shieldAmount),
-						OnReset: func(aura *core.Aura, sim *core.Simulation) {
-							currentShield = 0
-						},
-						OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-							currentShield = 0
-						},
-					},
-				},
-
-				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					currentShield = shieldAmount
-					shield := shieldSpell.SelfShield()
-					shield.Apply(sim, shieldAmount)
-					shield.Aura.SetStacks(sim, shield.Aura.MaxStacks)
-				},
+			shield := character.NewDamageAbsorptionAura("Loom of Fate"+labelSuffix, actionID, duration, func(unit *core.Unit) float64 {
+				return shieldStrength
 			})
 
-			character.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				shield := shieldSpell.SelfShield()
-				if shield.IsActive() && result.Damage > 0 {
-					absorbedDamage := min(currentShield, result.Damage)
-					result.Damage -= absorbedDamage
-					currentShield -= absorbedDamage
-					shield.Aura.SetStacks(sim, int32(currentShield))
+			icd := core.Cooldown{
+				Timer:    character.NewTimer(),
+				Duration: time.Minute,
+			}
 
-					if sim.Log != nil {
-						character.Log(sim, "Loom of Fate absorbed %.1f damage", absorbedDamage)
-					}
-
-					if currentShield <= 0 {
-						shield.Deactivate(sim)
-					}
-				}
-			})
-
-			core.MakePermanent(character.GetOrRegisterAura(core.Aura{
-				Label: "Spidersilk Spindle",
-				Icd: &core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Minute,
-				},
-				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if !spell.SpellSchool.Matches(core.SpellSchoolPhysical) {
-						return
-					}
-
-					if !aura.Icd.IsReady(sim) || result.Damage == 0 {
-						return
-					}
-
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:       "Spidersilk Spindle Trigger" + labelSuffix,
+				Callback:   core.CallbackOnSpellHitTaken,
+				Outcome:    core.OutcomeLanded,
+				Harmful:    true,
+				ProcChance: 1,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					preHitHp := character.CurrentHealth() + result.Damage
-					if character.CurrentHealthPercent() < 0.35 && preHitHp >= 0.35 {
-						aura.Icd.Use(sim)
-						shieldSpell.Cast(sim, result.Target)
+					if icd.IsReady(sim) && spell.SpellSchool == core.SpellSchoolPhysical &&
+						character.CurrentHealthPercent() < 0.35 && preHitHp >= 0.35 {
+						icd.Use(sim)
+						shield.Activate(sim)
 					}
 				},
-			}))
+			})
 		})
 
 		scalesOfLifeItemID := core.TernaryInt32(heroic, 69109, 68915)
@@ -1005,59 +955,12 @@ func init() {
 			character := agent.GetCharacter()
 
 			absorbModifier := []float64{0.43, 0.50, 0.56}[version]
+			actionID := core.ActionID{ItemID: prideItemID, SpellID: 108008}
+			duration := time.Second * 6
 
-			currentShield := 0.0
-			var shieldSpell *core.Spell
-			shieldSpell = character.GetOrRegisterSpell(core.SpellConfig{
-				ActionID:    core.ActionID{SpellID: 108008},
-				ProcMask:    core.ProcMaskSpellHealing,
-				SpellSchool: core.SpellSchoolHoly,
-				Flags: core.SpellFlagHelpful |
-					core.SpellFlagPassiveSpell |
-					core.SpellFlagIgnoreModifiers |
-					core.SpellFlagNoSpellMods,
-
-				DamageMultiplier: 1,
-				ThreatMultiplier: 1,
-
-				Shield: core.ShieldConfig{
-					SelfOnly: true,
-					Aura: core.Aura{
-						Label:    "Indomitable",
-						Duration: time.Second * 6,
-						OnReset: func(aura *core.Aura, sim *core.Simulation) {
-							currentShield = 0
-						},
-						OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-							currentShield = 0
-						},
-					},
-				},
-
-				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					shield := shieldSpell.SelfShield()
-					shield.Apply(sim, currentShield)
-					shield.Aura.MaxStacks = int32(currentShield)
-					shield.Aura.SetStacks(sim, shield.Aura.MaxStacks)
-				},
-			})
-
-			character.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				shield := shieldSpell.SelfShield()
-				if shield.IsActive() && result.Damage > 0 {
-					absorbedDamage := min(currentShield, result.Damage)
-					result.Damage -= absorbedDamage
-					currentShield -= absorbedDamage
-					shield.Aura.SetStacks(sim, int32(currentShield))
-
-					if sim.Log != nil {
-						character.Log(sim, "Indomitable Pride absorbed %.1f damage", absorbedDamage)
-					}
-
-					if currentShield <= 0 {
-						shield.Deactivate(sim)
-					}
-				}
+			shieldStrength := 0.0
+			shield := character.NewDamageAbsorptionAura("Indomitable"+labelSuffix, actionID, duration, func(unit *core.Unit) float64 {
+				return shieldStrength
 			})
 
 			icd := core.Cooldown{
@@ -1067,7 +970,6 @@ func init() {
 
 			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       "Indomitable Pride Trigger" + labelSuffix,
-				ActionID:   core.ActionID{ItemID: prideItemID},
 				Callback:   core.CallbackOnSpellHitTaken,
 				Outcome:    core.OutcomeLanded,
 				Harmful:    true,
@@ -1075,9 +977,11 @@ func init() {
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					preHitHp := character.CurrentHealth() + result.Damage
 					if icd.IsReady(sim) && character.CurrentHealthPercent() < 0.50 && preHitHp >= 0.50 {
-						icd.Use(sim)
-						currentShield = result.Damage * absorbModifier
-						shieldSpell.Cast(sim, result.Target)
+						shieldStrength = result.Damage * absorbModifier
+						if shieldStrength > 1 {
+							icd.Use(sim)
+							shield.Activate(sim)
+						}
 					}
 				},
 			})
