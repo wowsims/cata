@@ -11,8 +11,8 @@ import (
 type ItemVersion int32
 
 const (
-	ItemVersionLFR    ItemVersion = 0
-	ItemVersionNormal ItemVersion = 1 << iota
+	ItemVersionLFR ItemVersion = iota
+	ItemVersionNormal
 	ItemVersionHeroic
 )
 
@@ -837,7 +837,7 @@ func init() {
 		})
 	}
 
-	for version, _ := range []ItemVersion{ItemVersionLFR, ItemVersionNormal, ItemVersionHeroic} {
+	for _, version := range []ItemVersion{ItemVersionLFR, ItemVersionNormal, ItemVersionHeroic} {
 		labelSuffix := []string{" (LFR)", "", " (Heroic)"}[version]
 
 		vialItemID := []int32{77979, 77207, 77999}[version]

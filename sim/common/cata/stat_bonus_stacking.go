@@ -175,7 +175,7 @@ func init() {
 		ProcChance: 1,
 	})
 
-	for version, _ := range []ItemVersion{ItemVersionLFR, ItemVersionNormal, ItemVersionHeroic} {
+	for _, version := range []ItemVersion{ItemVersionLFR, ItemVersionNormal, ItemVersionHeroic} {
 		labelSuffix := []string{" (LFR)", "", " (Heroic)"}[version]
 
 		shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{

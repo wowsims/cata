@@ -948,7 +948,7 @@ func init() {
 		ICD:        time.Second * 60,
 	})
 
-	for version, _ := range []ItemVersion{ItemVersionLFR, ItemVersionNormal, ItemVersionHeroic} {
+	for _, version := range []ItemVersion{ItemVersionLFR, ItemVersionNormal, ItemVersionHeroic} {
 		labelSuffix := []string{" (LFR)", "", " (Heroic)"}[version]
 
 		shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
