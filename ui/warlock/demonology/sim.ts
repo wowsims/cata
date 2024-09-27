@@ -24,20 +24,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[
-			Stat.StatHealth,
-			Stat.StatMana,
-			Stat.StatStamina,
-			Stat.StatIntellect,
-			Stat.StatSpellPower,
-			Stat.StatMasteryRating,
-			Stat.StatMP5,
-		],
-		[
-			PseudoStat.PseudoStatSpellHitPercent,
-			PseudoStat.PseudoStatSpellCritPercent,
-			PseudoStat.PseudoStatSpellHastePercent,
-		],
+		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpellPower, Stat.StatMasteryRating, Stat.StatMP5],
+		[PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatSpellCritPercent, PseudoStat.PseudoStatSpellHastePercent],
 	),
 
 	defaults: {
@@ -45,7 +33,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 		gear: Presets.P1_PRESET.gear,
 
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P1_EP_PRESET.epWeights,
+		epWeights: Presets.EP_PRESET_DEFAULT.epWeights,
 		// Default stat caps for the Reforge optimizer
 		statCaps: (() => {
 			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 17);
@@ -132,16 +120,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
+		epWeights: [Presets.EP_PRESET_DEFAULT],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.DemonologyTalentsShadowBolt, Presets.DemonologyTalentsIncinerate],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.APL_ShadowBolt, Presets.APL_Incinerate],
 
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P4_WOTLK_PRESET],
+		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET],
 
-		builds: [Presets.PRESET_BUILD_SHADOWBOLT, Presets.PRESET_BUILD_INCINERATE]
+		builds: [Presets.PRESET_BUILD_SHADOWBOLT, Presets.PRESET_BUILD_INCINERATE],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecDemonologyWarlock>): APLRotation => {
@@ -164,12 +152,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 				[Faction.Alliance]: {
 					1: Presets.PRERAID_PRESET.gear,
 					2: Presets.P1_PRESET.gear,
-					3: Presets.P4_WOTLK_PRESET.gear,
+					3: Presets.P3_PRESET.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.PRERAID_PRESET.gear,
 					2: Presets.P1_PRESET.gear,
-					3: Presets.P4_WOTLK_PRESET.gear,
+					3: Presets.P3_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,

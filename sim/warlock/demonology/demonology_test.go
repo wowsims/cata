@@ -435,28 +435,52 @@ func TestDemonology(t *testing.T) {
 		TinkerHands:       proto.TinkerHands_TinkerHandsSynapseSprings,
 	}
 
-	var demonologyTalents = "-3312222300310212211-33202"
-	var demonologyGlyphs = &proto.Glyphs{
+	// Shadow Bolt
+	var demonologyTalentsShadowBolt = "-3312222300310212211-33202"
+	var demonologyGlyphsShadowBolt = &proto.Glyphs{
 		Prime1: int32(proto.WarlockPrimeGlyph_GlyphOfImmolate),
 		Prime2: int32(proto.WarlockPrimeGlyph_GlyphOfCorruption),
 		Prime3: int32(proto.WarlockPrimeGlyph_GlyphOfMetamorphosis),
-		Major1: int32(proto.WarlockMajorGlyph_GlyphOfLifeTap),
-		Major2: int32(proto.WarlockMajorGlyph_GlyphOfShadowBolt),
+		Major1: int32(proto.WarlockMajorGlyph_GlyphOfShadowBolt),
+		Major2: int32(proto.WarlockMajorGlyph_GlyphOfLifeTap),
+		Major3: int32(proto.WarlockMajorGlyph_GlyphOfFelhunter),
+	}
+
+	// Incinerate
+	var demonologyTalentsIncenerate = "003-3312222300310212211-03202"
+	var demonologyGlyphsIncenerate = &proto.Glyphs{
+		Prime1: int32(proto.WarlockPrimeGlyph_GlyphOfImmolate),
+		Prime2: int32(proto.WarlockPrimeGlyph_GlyphOfIncinerate),
+		Prime3: int32(proto.WarlockPrimeGlyph_GlyphOfMetamorphosis),
+		Major1: int32(proto.WarlockMajorGlyph_GlyphOfSoulstone),
+		Major2: int32(proto.WarlockMajorGlyph_GlyphOfLifeTap),
 		Major3: int32(proto.WarlockMajorGlyph_GlyphOfFelhunter),
 	}
 
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-		Class:            proto.Class_ClassWarlock,
-		Race:             proto.Race_RaceOrc,
-		OtherRaces:       []proto.Race{proto.Race_RaceTroll, proto.Race_RaceGoblin, proto.Race_RaceHuman},
-		GearSet:          core.GetGearSet("../../../ui/warlock/demonology/gear_sets", "p1"),
-		Talents:          demonologyTalents,
-		Glyphs:           demonologyGlyphs,
+		Class:      proto.Class_ClassWarlock,
+		Race:       proto.Race_RaceOrc,
+		OtherRaces: []proto.Race{proto.Race_RaceTroll, proto.Race_RaceGoblin, proto.Race_RaceHuman},
+		GearSet:    core.GetGearSet("../../../ui/warlock/demonology/gear_sets", "p1"),
+		OtherGearSets: []core.GearSetCombo{
+			core.GetGearSet("../../../ui/warlock/demonology/gear_sets", "p3"),
+		},
+		Talents: demonologyTalentsShadowBolt,
+		Glyphs:  demonologyGlyphsShadowBolt,
+		OtherTalentSets: []core.TalentsCombo{
+			{
+				Label:   "Incinerate",
+				Talents: demonologyTalentsIncenerate,
+				Glyphs:  demonologyGlyphsIncenerate,
+			},
+		},
 		Consumes:         fullConsumes,
 		SpecOptions:      core.SpecOptionsCombo{Label: "Demonology Warlock", SpecOptions: defaultDemonologyWarlock},
 		OtherSpecOptions: []core.SpecOptionsCombo{},
 		Rotation:         core.GetAplRotation("../../../ui/warlock/demonology/apls", "shadow-bolt"),
-		OtherRotations:   []core.RotationCombo{},
+		OtherRotations: []core.RotationCombo{
+			core.GetAplRotation("../../../ui/warlock/demonology/apls", "incinerate"),
+		},
 		ItemFilter:       itemFilter,
 		StartingDistance: 25,
 	}))

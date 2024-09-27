@@ -26,25 +26,23 @@ import { WARLOCK_BREAKPOINTS } from '../presets';
 import IncinerateAPL from './apls/incinerate.apl.json';
 import ShadowBoltAPL from './apls/shadow-bolt.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
-import P4WrathGear from './gear_sets/p4_wrath.gear.json';
+import P3Gear from './gear_sets/p3.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const BIS_TOOLTIP = "This gear preset is inspired from Zephan's Affliction guide: https://www.warcrafttavern.com/wotlk/guides/pve-affliction-warlock/";
-
 export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid Preset', PreraidGear);
 export const P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1Gear);
-export const P4_WOTLK_PRESET = PresetUtils.makePresetGear('P4 Wrath', P4WrathGear, { tooltip: BIS_TOOLTIP });
+export const P3_PRESET = PresetUtils.makePresetGear('P3 Preset', P3Gear);
 
 export const APL_ShadowBolt = PresetUtils.makePresetAPLRotation('Shadow Bolt', ShadowBoltAPL);
 export const APL_Incinerate = PresetUtils.makePresetAPLRotation('Incinerate', IncinerateAPL);
 
 // Preset options for EP weights
-export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P1',
+export const EP_PRESET_DEFAULT = PresetUtils.makePresetEpWeights(
+	'Default',
 	Stats.fromMap({
 		[Stat.StatIntellect]: 1.27,
 		[Stat.StatSpellPower]: 1.0,
@@ -68,7 +66,7 @@ export const DemonologyTalentsShadowBolt = {
 			prime3: PrimeGlyph.GlyphOfMetamorphosis,
 			major1: MajorGlyph.GlyphOfShadowBolt,
 			major2: MajorGlyph.GlyphOfLifeTap,
-			major3: MajorGlyph.GlyphOfSoulLink,
+			major3: MajorGlyph.GlyphOfFelhunter,
 			minor1: MinorGlyph.GlyphOfDrainSoul,
 			minor2: MinorGlyph.GlyphOfRitualOfSouls,
 			minor3: MinorGlyph.GlyphOfUnendingBreath,
@@ -85,7 +83,7 @@ export const DemonologyTalentsIncinerate = {
 			prime3: PrimeGlyph.GlyphOfMetamorphosis,
 			major1: MajorGlyph.GlyphOfSoulstone,
 			major2: MajorGlyph.GlyphOfLifeTap,
-			major3: MajorGlyph.GlyphOfSoulLink,
+			major3: MajorGlyph.GlyphOfFelhunter,
 			minor1: MinorGlyph.GlyphOfDrainSoul,
 			minor2: MinorGlyph.GlyphOfRitualOfSouls,
 			minor3: MinorGlyph.GlyphOfUnendingBreath,
