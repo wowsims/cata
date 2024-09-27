@@ -41,7 +41,7 @@ export const APL_ShadowBolt = PresetUtils.makePresetAPLRotation('Shadow Bolt', S
 export const APL_Incinerate = PresetUtils.makePresetAPLRotation('Incinerate', IncinerateAPL);
 
 // Preset options for EP weights
-export const EP_PRESET_DEFAULT = PresetUtils.makePresetEpWeights(
+export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Default',
 	Stats.fromMap({
 		[Stat.StatIntellect]: 1.27,

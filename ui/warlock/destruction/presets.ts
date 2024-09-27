@@ -40,7 +40,7 @@ export const P3_PRESET_BUILD = PresetUtils.makePresetBuild('P3 - Default', {
 });
 
 // Preset options for EP weights
-export const EP_PRESET_DEFAULT = PresetUtils.makePresetEpWeights(
+export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Default',
 	Stats.fromMap({
 		[Stat.StatIntellect]: 1.25,

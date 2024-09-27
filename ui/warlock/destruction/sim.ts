@@ -31,7 +31,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 		gear: Presets.P1_PRESET.gear,
 
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.EP_PRESET_DEFAULT.epWeights,
+		epWeights: Presets.DEFAULT_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge optimizer
 		statCaps: (() => {
 			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 17);
@@ -91,7 +91,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 	},
 
 	presets: {
-		epWeights: [Presets.EP_PRESET_DEFAULT],
+		epWeights: [Presets.DEFAULT_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.DestructionTalents],
 		// Preset rotations that the user can quickly select.
