@@ -448,7 +448,7 @@ export default class SelectorModal extends BaseModal {
 			}),
 			computeEP: (reforge: ReforgeData) => this.player.computeReforgingEP(reforge),
 			equippedToItemFn: (equippedItem: EquippedItem | null) =>
-				equippedItem?.reforge ? this.player.getReforgeData(equippedItem, equippedItem.reforge) : null,
+				equippedItem?.reforge ? Player.getReforgeData(equippedItem, equippedItem.reforge) : null,
 			onRemove: (eventID: number) => {
 				const equippedItem = gearData.getEquippedItem();
 				if (equippedItem) {

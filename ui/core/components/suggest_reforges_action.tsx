@@ -8,7 +8,6 @@ import { IndividualSimUI } from '../individual_sim_ui';
 import { Player, ReforgeData } from '../player';
 import { Class, ItemSlot, PseudoStat, ReforgeStat, Spec, Stat } from '../proto/common';
 import { IndividualSimSettings, StatCapType } from '../proto/ui';
-import { EquippedItem } from '../proto_utils/equipped_item';
 import { Gear } from '../proto_utils/gear';
 import { shortSecondaryStatNames, slotNames, statCapTypeNames } from '../proto_utils/names';
 import { pseudoStatIsCapped, StatCap, Stats, UnitStat, UnitStatPresets } from '../proto_utils/stats';
@@ -89,8 +88,8 @@ export class ReforgeOptimizer {
 	readonly freezeItemSlotsChangeEmitter = new TypedEvent<void>();
 	protected freezeItemSlots = false;
 	protected frozenItemSlots = new Map<ItemSlot, boolean>();
-	protected previousGear: (EquippedItem | null)[] | null = null;
-	protected currentGear: (EquippedItem | null)[] | null = null;
+	protected previousGear = new Map<ItemSlot, ReforgeData>();
+	protected currentGear = new Map<ItemSlot, ReforgeData>();
 
 	constructor(simUI: IndividualSimUI<any>, options?: ReforgeOptimizerOptions) {
 		this.simUI = simUI;
@@ -650,7 +649,7 @@ export class ReforgeOptimizer {
 			console.log(Array.from(this.frozenItemSlots.keys()).filter(key => this.frozenItemSlots.get(key)));
 		}
 		const previousGear = this.player.getGear();
-		this.previousGear = previousGear.getEquippedItems();
+		this.previousGear = previousGear.getAllReforges();
 		const baseGear = previousGear.withoutReforges(this.player.canDualWield2H(), this.frozenItemSlots);
 		const baseStats = await this.updateGear(baseGear);
 
@@ -674,7 +673,7 @@ export class ReforgeOptimizer {
 
 		// Solve in multiple passes to enforce caps
 		await this.solveModel(baseGear, validatedWeights, reforgeCaps, reforgeSoftCaps, variables, constraints);
-		this.currentGear = this.player.getGear().getEquippedItems();
+		this.currentGear = this.player.getGear().getAllReforges();
 	}
 
 	async updateGear(gear: Gear): Promise<Stats> {
@@ -1006,21 +1005,20 @@ export class ReforgeOptimizer {
 
 	onReforgeDone() {
 		const itemSlots = this.player.getGear().getItemSlots();
-		const changedSlots: (ReforgeData | undefined)[] = Array(itemSlots.length);
+		const changedSlots = new Map<ItemSlot, ReforgeData | undefined>();
 		for (const slot of itemSlots) {
-			const prev = this.previousGear?.[slot];
-			const current = this.currentGear?.[slot];
-			const currentReforge = current?.reforge ? this.player.getReforgeData(current, current?.reforge) : undefined;
-			if (!ReforgeStat.equals(prev?.reforge || undefined, current?.reforge || undefined)) changedSlots[slot] = currentReforge;
+			const prev = this.previousGear.get(slot);
+			const current = this.currentGear.get(slot);
+			if (!ReforgeStat.equals(prev?.reforge, current?.reforge)) changedSlots.set(slot, current);
 		}
-		const hasReforgeChanges = changedSlots.some(Boolean);
+		const hasReforgeChanges = changedSlots.size;
 
 		const copyButtonContainerRef = ref<HTMLDivElement>();
 		const changedReforgeMessage = (
 			<>
 				<p className="mb-0">The following items were reforged:</p>
 				<ul>
-					{changedSlots.map((reforge, slot) => {
+					{[...changedSlots].map(([slot, reforge]) => {
 						if (reforge) {
 							const slotName = slotNames.get(slot);
 							const { fromStat, toStat } = reforge;

@@ -456,7 +456,7 @@ export class Player<SpecType extends Spec> {
 	getAvailableReforgings(equippedItem: EquippedItem): Array<ReforgeData> {
 		const withRandomSuffixStats = equippedItem.getWithRandomSuffixStats();
 		return this.sim.db.getAvailableReforges(withRandomSuffixStats.item).map(reforge => {
-			return this.getReforgeData(equippedItem, reforge);
+			return Player.getReforgeData(equippedItem, reforge);
 		});
 	}
 
@@ -465,7 +465,7 @@ export class Player<SpecType extends Spec> {
 		return this.sim.db.getReforgeById(id);
 	}
 
-	getReforgeData(equippedItem: EquippedItem, reforge: ReforgeStat): ReforgeData {
+	static getReforgeData(equippedItem: EquippedItem, reforge: ReforgeStat): ReforgeData {
 		const withRandomSuffixStats = equippedItem.getWithRandomSuffixStats();
 		const item = withRandomSuffixStats.item;
 		const fromAmount = Math.ceil(-item.stats[reforge.fromStat] * reforge.multiplier);

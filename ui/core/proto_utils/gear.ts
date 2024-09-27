@@ -1,3 +1,4 @@
+import { Player, ReforgeData } from '../player';
 import { EquipmentSpec, GemColor, ItemSlot, ItemSpec, ItemSwap, Profession, SimDatabase, SimEnchant, SimGem, SimItem } from '../proto/common.js';
 import { UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../proto/ui.js';
 import { isBluntWeaponType, isSharpWeaponType } from '../proto_utils/utils.js';
@@ -371,6 +372,16 @@ export class Gear extends BaseGear {
 		}
 
 		return setItemCount;
+	}
+
+	getAllReforges() {
+		const reforgedItems = new Map<ItemSlot, ReforgeData>();
+		this.getEquippedItems().forEach((item, slot) => {
+			if (!item?.reforge) return;
+			const reforgeData = Player.getReforgeData(item, item.reforge);
+			reforgedItems.set(slot, reforgeData);
+		});
+		return reforgedItems;
 	}
 }
 
