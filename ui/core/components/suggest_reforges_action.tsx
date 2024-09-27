@@ -1029,6 +1029,8 @@ export class ReforgeOptimizer {
 									{slotName}: {fromText} → {toText}
 								</li>
 							);
+						} else {
+							return <li>{slotNames.get(slot)}: Removed reforge</li>;
 						}
 					})}
 				</ul>
