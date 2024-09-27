@@ -36,6 +36,9 @@ func (mage *Mage) registerCombustionSpell() {
 				spell.DealDamage(sim, result)
 				spell.RelatedDotSpell.Cast(sim, target)
 			}
+			if mage.t13ProcAura != nil {
+				spell.CD.Reduce(time.Second * time.Duration(5*mage.t13ProcAura.GetStacks()))
+			}
 		},
 	})
 
@@ -82,6 +85,9 @@ func (mage *Mage) registerCombustionSpell() {
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+				if mage.t13ProcAura != nil && !dot.IsActive() {
+					mage.t13ProcAura.SetStacks(sim, 0)
+				}
 			},
 		},
 

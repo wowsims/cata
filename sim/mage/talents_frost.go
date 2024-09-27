@@ -93,6 +93,9 @@ func (mage *Mage) registerIcyVeinsCD() {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			icyVeinsMod.Deactivate()
+			if mage.t13ProcAura != nil {
+				mage.t13ProcAura.SetStacks(sim, 0)
+			}
 		},
 	})
 
@@ -106,7 +109,6 @@ func (mage *Mage) registerIcyVeinsCD() {
 		},
 
 		Cast: core.CastConfig{
-
 			CD: core.Cooldown{
 				Timer:    mage.NewTimer(),
 				Duration: time.Second * time.Duration(180*[]float64{1, .93, .86, .80}[mage.Talents.IceFloes]),
@@ -121,8 +123,11 @@ func (mage *Mage) registerIcyVeinsCD() {
 			return !icyVeinsAura.IsActive() && !mage.frostfireOrb.IsEnabled()
 		},
 
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			icyVeinsAura.Activate(sim)
+			if mage.t13ProcAura != nil {
+				spell.CD.Reduce(time.Second * time.Duration(15*mage.t13ProcAura.GetStacks()))
+			}
 		},
 	})
 
