@@ -61,6 +61,11 @@ func (mage *Mage) registerCombustionSpell() {
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "Combustion Dot",
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					if mage.t13ProcAura != nil {
+						mage.t13ProcAura.Deactivate(sim)
+					}
+				},
 			},
 			NumberOfTicks:       10,
 			TickLength:          time.Second,
@@ -85,9 +90,6 @@ func (mage *Mage) registerCombustionSpell() {
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
-				if mage.t13ProcAura != nil && !dot.IsActive() {
-					mage.t13ProcAura.SetStacks(sim, 0)
-				}
 			},
 		},
 

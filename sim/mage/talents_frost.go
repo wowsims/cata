@@ -91,10 +91,10 @@ func (mage *Mage) registerIcyVeinsCD() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			icyVeinsMod.Activate()
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+		OnExpire: func(_ *core.Aura, sim *core.Simulation) {
 			icyVeinsMod.Deactivate()
 			if mage.t13ProcAura != nil {
-				mage.t13ProcAura.SetStacks(sim, 0)
+				mage.t13ProcAura.Deactivate(sim)
 			}
 		},
 	})

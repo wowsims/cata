@@ -305,14 +305,14 @@ func (mage *Mage) registerArcanePowerCD() {
 			mage.arcanePowerCostMod.Activate()
 			arcanePowerDmgMod.Activate()
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+		OnExpire: func(_ *core.Aura, sim *core.Simulation) {
 			if mage.arcanePowerGCDmod != nil {
 				mage.arcanePowerGCDmod.Deactivate()
 			}
 			mage.arcanePowerCostMod.Deactivate()
 			arcanePowerDmgMod.Deactivate()
 			if mage.t13ProcAura != nil {
-				mage.t13ProcAura.SetStacks(sim, 0)
+				mage.t13ProcAura.Deactivate(sim)
 			}
 		},
 	})

@@ -102,10 +102,10 @@ var ItemSetTimeLordsRegalia = core.NewItemSet(core.ItemSet{
 			})
 
 			newStolenTimeTrigger := func(procChance float64, spellMask int64) {
-				core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 					Name:           "Stolen Time Trigger",
 					ActionID:       core.ActionID{ItemID: 105788},
-					Callback:       core.CallbackOnCastComplete,
+					Callback:       core.CallbackOnSpellHitDealt,
 					ClassSpellMask: spellMask,
 					ProcChance:     procChance,
 					Outcome:        core.OutcomeLanded,
@@ -113,7 +113,7 @@ var ItemSetTimeLordsRegalia = core.NewItemSet(core.ItemSet{
 						mage.t13ProcAura.Activate(sim)
 						mage.t13ProcAura.AddStack(sim)
 					},
-				}))
+				})
 			}
 
 			newStolenTimeTrigger(1, MageSpellArcaneBlast)
