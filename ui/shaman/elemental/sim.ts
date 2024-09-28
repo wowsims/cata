@@ -7,6 +7,7 @@ import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl.js';
 import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
+import { SavedEPWeights } from '../../core/proto/ui';
 import { Stats, UnitStat } from '../../core/proto_utils/stats.js';
 import { TypedEvent } from '../../core/typed_event.js';
 import * as ShamanInputs from '../inputs.js';
@@ -25,7 +26,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 				updateOn: TypedEvent.onAny([simUI.player.rotationChangeEmitter, simUI.player.currentStatsEmitter]),
 				getContent: () => {
 					const hasT62P = simUI.player.getCurrentStats().sets.includes('Skyshatter Regalia (2pc)');
-const totems = simUI.player.getSpecOptions().classOptions?.totems;
+					const totems = simUI.player.getSpecOptions().classOptions?.totems;
 					const hasAll4Totems = totems && totems.earth && totems.air && totems.fire && totems.water;
 					if (hasT62P && !hasAll4Totems) {
 						return 'T6 2pc bonus is equipped, but inactive because not all 4 totem types are being used.';
@@ -43,20 +44,8 @@ const totems = simUI.player.getSpecOptions().classOptions?.totems;
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[
-			Stat.StatHealth,
-			Stat.StatMana,
-			Stat.StatStamina,
-			Stat.StatIntellect,
-			Stat.StatSpirit,
-			Stat.StatSpellPower,
-			Stat.StatMasteryRating,
-		],
-		[
-			PseudoStat.PseudoStatSpellHitPercent,
-			PseudoStat.PseudoStatSpellCritPercent,
-			PseudoStat.PseudoStatSpellHastePercent,
-		],
+		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatMasteryRating],
+		[PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatSpellCritPercent, PseudoStat.PseudoStatSpellHastePercent],
 	),
 	modifyDisplayStats: (player: Player<Spec.SpecElementalShaman>) => {
 		const playerStats = player.getCurrentStats();
@@ -65,7 +54,10 @@ const totems = simUI.player.getSpecOptions().classOptions?.totems;
 		const talentsDelta = talentsStats.subtract(gearStats);
 
 		return {
-			talents: new Stats().withStat(Stat.StatHitRating, talentsDelta.getPseudoStat(PseudoStat.PseudoStatSpellHitPercent) * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT),
+			talents: new Stats().withStat(
+				Stat.StatHitRating,
+				talentsDelta.getPseudoStat(PseudoStat.PseudoStatSpellHitPercent) * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT,
+			),
 		};
 	},
 
@@ -73,7 +65,7 @@ const totems = simUI.player.getSpecOptions().classOptions?.totems;
 		// Default equipped gear.
 		gear: Presets.P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P1_EP_PRESET.epWeights,
+		epWeights: Presets.EP_PRESET_DEFAULT.epWeights,
 		// Default stat caps for the Reforge optimizer
 		statCaps: (() => {
 			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 17);
@@ -127,13 +119,14 @@ const totems = simUI.player.getSpecOptions().classOptions?.totems;
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
+		epWeights: [Presets.EP_PRESET_DEFAULT, Presets.EP_PRESET_CLEAVE],
 		// Preset talents that the user can quickly select.
-		talents: [Presets.TalentsTotemDuration, Presets.TalentsImprovedShields],
+		talents: [Presets.TalentsTotemDuration, Presets.TalentsImprovedShields, Presets.TalentsAoE],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_PRESET_DEFAULT],
+		rotations: [Presets.ROTATION_PRESET_DEFAULT, Presets.ROTATION_PRESET_AOE],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET],
+		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET, Presets.P3_PRESET_CLEAVE_AOE, Presets.P3_PRESET_AOE_TIDEFURY],
+		builds: [Presets.P1_PRESET_BUILD_DEFAULT, Presets.P3_PRESET_BUILD_DEFAULT, Presets.P3_PRESET_BUILD_CLEAVE, Presets.P3_PRESET_BUILD_AOE],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecElementalShaman>): APLRotation => {
@@ -169,7 +162,18 @@ export class ElementalShamanSimUI extends IndividualSimUI<Spec.SpecElementalSham
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecElementalShaman>) {
 		super(parentElem, player, SPEC_CONFIG);
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			new ReforgeOptimizer(this, {
+				getEPDefaults: (player: Player<Spec.SpecFuryWarrior>) => {
+					const playerWeights = player.getEpWeights();
+					const defaultWeights = Presets.EP_PRESET_DEFAULT.epWeights;
+					const cleaveWeights = Presets.EP_PRESET_CLEAVE.epWeights;
+
+					if (playerWeights.equals(defaultWeights)) return defaultWeights;
+					if (playerWeights.equals(cleaveWeights)) return cleaveWeights;
+
+					return playerWeights;
+				},
+			});
 		});
 	}
 }

@@ -23,26 +23,26 @@ import {
 } from '../../core/proto/warlock';
 import { Stats, UnitStat } from '../../core/proto_utils/stats';
 import { WARLOCK_BREAKPOINTS } from '../presets';
-import DefaultApl from './apls/default.apl.json';
+import IncinerateAPL from './apls/incinerate.apl.json';
+import ShadowBoltAPL from './apls/shadow-bolt.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
-import P4WrathGear from './gear_sets/p4_wrath.gear.json';
+import P3Gear from './gear_sets/p3.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const BIS_TOOLTIP = "This gear preset is inspired from Zephan's Affliction guide: https://www.warcrafttavern.com/wotlk/guides/pve-affliction-warlock/";
+export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidGear);
+export const P1_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1Gear);
+export const P3_PRESET = PresetUtils.makePresetGear('P3 - BIS', P3Gear);
 
-export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid Preset', PreraidGear);
-export const P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1Gear);
-export const P4_WOTLK_PRESET = PresetUtils.makePresetGear('P4 Wrath', P4WrathGear, { tooltip: BIS_TOOLTIP });
-
-export const APL_Default = PresetUtils.makePresetAPLRotation('Demo', DefaultApl);
+export const APL_ShadowBolt = PresetUtils.makePresetAPLRotation('Shadow Bolt', ShadowBoltAPL);
+export const APL_Incinerate = PresetUtils.makePresetAPLRotation('Incinerate', IncinerateAPL);
 
 // Preset options for EP weights
-export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P1',
+export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Default',
 	Stats.fromMap({
 		[Stat.StatIntellect]: 1.27,
 		[Stat.StatSpellPower]: 1.0,
@@ -56,8 +56,8 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wotlk.wowhead.com/talent-calc and copy the numbers in the url.
 
-export const DemonologyTalents = {
-	name: 'Demonology',
+export const DemonologyTalentsShadowBolt = {
+	name: 'Shadow bolt',
 	data: SavedTalents.create({
 		talentsString: '-3312222300310212211-33202',
 		glyphs: Glyphs.create({
@@ -65,6 +65,23 @@ export const DemonologyTalents = {
 			prime2: PrimeGlyph.GlyphOfCorruption,
 			prime3: PrimeGlyph.GlyphOfMetamorphosis,
 			major1: MajorGlyph.GlyphOfShadowBolt,
+			major2: MajorGlyph.GlyphOfLifeTap,
+			major3: MajorGlyph.GlyphOfFelhunter,
+			minor1: MinorGlyph.GlyphOfDrainSoul,
+			minor2: MinorGlyph.GlyphOfRitualOfSouls,
+			minor3: MinorGlyph.GlyphOfUnendingBreath,
+		}),
+	}),
+};
+export const DemonologyTalentsIncinerate = {
+	name: 'Incinerate',
+	data: SavedTalents.create({
+		talentsString: '003-3312222300310212211-03202',
+		glyphs: Glyphs.create({
+			prime1: PrimeGlyph.GlyphOfImmolate,
+			prime2: PrimeGlyph.GlyphOfIncinerate,
+			prime3: PrimeGlyph.GlyphOfMetamorphosis,
+			major1: MajorGlyph.GlyphOfSoulstone,
 			major2: MajorGlyph.GlyphOfLifeTap,
 			major3: MajorGlyph.GlyphOfSoulLink,
 			minor1: MinorGlyph.GlyphOfDrainSoul,
@@ -133,6 +150,16 @@ export const OtherDefaults = {
 	durationVariation: 30,
 	darkIntentUptime: 90,
 };
+
+export const PRESET_BUILD_SHADOWBOLT = PresetUtils.makePresetBuild('Shadow Bolt', {
+	talents: DemonologyTalentsShadowBolt,
+	rotation: APL_ShadowBolt,
+});
+
+export const PRESET_BUILD_INCINERATE = PresetUtils.makePresetBuild('Incinerate', {
+	talents: DemonologyTalentsIncinerate,
+	rotation: APL_Incinerate,
+});
 
 export const DEMONOLOGY_BREAKPOINTS = [
 	{

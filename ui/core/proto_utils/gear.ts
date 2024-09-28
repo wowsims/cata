@@ -3,7 +3,7 @@ import { UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../proto/ui.
 import { isBluntWeaponType, isSharpWeaponType } from '../proto_utils/utils.js';
 import { distinct, equalsOrBothNull, getEnumValues } from '../utils.js';
 import { Database } from './database';
-import { EquippedItem } from './equipped_item.js';
+import { EquippedItem, ReforgeData } from './equipped_item.js';
 import { gemMatchesSocket, isMetaGemActive } from './gems.js';
 import { Stats } from './stats.js';
 import { validWeaponCombo } from './utils.js';
@@ -371,6 +371,16 @@ export class Gear extends BaseGear {
 		}
 
 		return setItemCount;
+	}
+
+	getAllReforges() {
+		const reforgedItems = new Map<ItemSlot, ReforgeData>();
+		this.getEquippedItems().forEach((item, slot) => {
+			const reforgeData = item?.getReforgeData();
+			if (!reforgeData) return;
+			reforgedItems.set(slot, reforgeData);
+		});
+		return reforgedItems;
 	}
 }
 
