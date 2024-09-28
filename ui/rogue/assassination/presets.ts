@@ -1,4 +1,3 @@
-import * as Mechanics from '../../core/constants/mechanics';
 import * as PresetUtils from '../../core/preset_utils';
 import { Conjured, Consumes, Flask, Food, Glyphs, Potions, PseudoStat, Stat } from '../../core/proto/common';
 import { AssassinationRogue_Options as RogueOptions, RogueMajorGlyph, RogueOptions_PoisonImbue, RoguePrimeGlyph } from '../../core/proto/rogue';
