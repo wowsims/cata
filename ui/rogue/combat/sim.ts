@@ -11,14 +11,13 @@ import { RogueOptions_PoisonImbue } from '../../core/proto/rogue';
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as RogueInputs from '../inputs';
-// import * as CombatInputs from './inputs';
 import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	cssClass: 'combat-rogue-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Rogue),
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: ['Mastery - Main Gauche is likely rounded down to the closest whole number. You can enable "Show Experimental" via the gear button to optimize reforging for these breakpoints, but it will take significantly longer to complete.'],
+	knownIssues: ['Mastery - Main Gauche is potentially rounded down to the closest whole number. You can enable "Show Experimental" via the gear button to optimize reforging for these breakpoints, but it will take significantly longer to complete.'],
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -75,10 +74,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
 				breakpoints: [8, 27],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [115, 0],
+				postCapEPs: [110, 0],
 			});
 
-			return [meleeHitSoftCapConfig, spellHitSoftCapConfig];
+			const hasteRatingSoftCapConfig = StatCap.fromStat(Stat.StatHasteRating, {
+				breakpoints: [2070, 2150, 2250],
+				capType: StatCapType.TypeSoftCap,
+				// These are set by the active EP weight in the updateSoftCaps callback
+				postCapEPs: [0, 0, 0],
+			})
+
+			return [meleeHitSoftCapConfig, spellHitSoftCapConfig, hasteRatingSoftCapConfig];
 		})(),
     	other: Presets.OtherDefaults,
 		// Default consumes settings.
@@ -208,7 +214,7 @@ const addOrRemoveMasteryBreakpoint = (softCaps: StatCap[], isShown: boolean): vo
 	}
 	else
 	{
-		softCaps.splice(2, 1);
+		softCaps.splice(3, 1);
 	}
 }
 
@@ -219,6 +225,12 @@ export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
 				updateSoftCaps: (softCaps: StatCap[]) => {
+					const hasteEP = player.getEpWeights().getStat(Stat.StatHasteRating)
+					const hasteSoftCap = softCaps.find(v => v.unitStat.equalsStat(Stat.StatHasteRating))
+					if (hasteSoftCap) {
+						hasteSoftCap.postCapEPs = [hasteEP - 0.1, hasteEP - 0.2, hasteEP - 0.3]
+					}
+
 					addOrRemoveMasteryBreakpoint(softCaps, this.sim.getShowExperimental())
 					return softCaps
 				}

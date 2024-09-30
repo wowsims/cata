@@ -26,21 +26,22 @@ export const CBAT_HASTE_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAgility]: 2.85,
 			[Stat.StatStrength]: 1.05,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatCritRating]: 1.2,
+			[Stat.StatCritRating]: 0.9,
 			[Stat.StatHitRating]: 2.21,
-			[Stat.StatHasteRating]: 1.44,
-			[Stat.StatMasteryRating]: 1.42,
+			[Stat.StatHasteRating]: 1.36,
+			[Stat.StatMasteryRating]: 1.33,
 			[Stat.StatExpertiseRating]: 1.74,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 4.18,
-			[PseudoStat.PseudoStatOffHandDps]: 1.4,
+			[PseudoStat.PseudoStatMainHandDps]: 4.31,
+			[PseudoStat.PseudoStatOffHandDps]: 1.32,
 			[PseudoStat.PseudoStatSpellHitPercent]: 46,
 			[PseudoStat.PseudoStatPhysicalHitPercent]: 210,
 		},
 	),
 );
 
+// 4PT12 pushes Haste, Mastery, and Crit up moderately (Crit also gains from 2P but has no affect on reforging); Haste and Mastery overtake Hit for reforging
 export const CBAT_4PT12_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Combat 4PT12',
 	Stats.fromMap(
@@ -48,15 +49,15 @@ export const CBAT_4PT12_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAgility]: 2.85,
 			[Stat.StatStrength]: 1.05,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatCritRating]: 1.2,
+			[Stat.StatCritRating]: 1.09,
 			[Stat.StatHitRating]: 2.21,
-			[Stat.StatHasteRating]: 1.44,
-			[Stat.StatMasteryRating]: 1.44,
+			[Stat.StatHasteRating]: 1.52,
+			[Stat.StatMasteryRating]: 1.41,
 			[Stat.StatExpertiseRating]: 1.74,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 4.18,
-			[PseudoStat.PseudoStatOffHandDps]: 1.4,
+			[PseudoStat.PseudoStatMainHandDps]: 4.31,
+			[PseudoStat.PseudoStatOffHandDps]: 1.32,
 			[PseudoStat.PseudoStatSpellHitPercent]: 46,
 			[PseudoStat.PseudoStatPhysicalHitPercent]: 210,
 		},
