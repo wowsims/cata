@@ -6,16 +6,18 @@ import { Constraint, greaterEq, lessEq, Model, Options, Solution, solve } from '
 import * as Mechanics from '../constants/mechanics.js';
 import { IndividualSimUI } from '../individual_sim_ui';
 import { Player } from '../player';
-import { Class, ItemSlot, PseudoStat, Spec, Stat } from '../proto/common';
-import { StatCapType } from '../proto/ui';
+import { Class, ItemSlot, PseudoStat, ReforgeStat, Spec, Stat } from '../proto/common';
+import { IndividualSimSettings, StatCapType } from '../proto/ui';
+import { ReforgeData } from '../proto_utils/equipped_item';
 import { Gear } from '../proto_utils/gear';
 import { shortSecondaryStatNames, slotNames, statCapTypeNames } from '../proto_utils/names';
-import { pseudoStatIsCapped, StatCap, Stats, UnitStat } from '../proto_utils/stats';
+import { pseudoStatIsCapped, StatCap, Stats, UnitStat, UnitStatPresets } from '../proto_utils/stats';
 import { SpecTalents } from '../proto_utils/utils';
 import { Sim } from '../sim';
 import { ActionGroupItem } from '../sim_ui';
 import { EventID, TypedEvent } from '../typed_event';
 import { isDevMode, sleep } from '../utils';
+import { CopyButton } from './copy_button';
 import { BooleanPicker } from './pickers/boolean_picker';
 import { EnumPicker } from './pickers/enum_picker';
 import { NumberPicker, NumberPickerConfig } from './pickers/number_picker';
@@ -41,16 +43,12 @@ type StatTooltipContent = { [key in Stat]?: () => Element | string };
 const STAT_TOOLTIPS: StatTooltipContent = {
 	[Stat.StatMasteryRating]: () => (
 		<>
-			Rating: <strong>excluding</strong> your base mastery
-			<br />
-			%: <strong>including</strong> your base mastery
+			Total <strong>percentage</strong>
 		</>
 	),
 	[Stat.StatHasteRating]: () => (
 		<>
-			Rating: final rating <strong>including</strong> all buffs/gear.
-			<br />
-			%: final percentage value <strong>including</strong> all buffs/gear.
+			Final percentage value <strong>including</strong> all buffs/gear.
 		</>
 	),
 };
@@ -58,7 +56,7 @@ const STAT_TOOLTIPS: StatTooltipContent = {
 export type ReforgeOptimizerOptions = {
 	experimental?: true;
 	statTooltips?: StatTooltipContent;
-	statSelectionPresets?: Map<Stat, Map<string, number>>;
+	statSelectionPresets?: UnitStatPresets[];
 	// Allows you to modify the stats before they are returned for the calculations
 	// For example: Adding class specific Glyphs/Talents that are not added by the backend
 	updateGearStatsModifier?: (baseStats: Stats) => Stats;
@@ -91,6 +89,8 @@ export class ReforgeOptimizer {
 	readonly freezeItemSlotsChangeEmitter = new TypedEvent<void>();
 	protected freezeItemSlots = false;
 	protected frozenItemSlots = new Map<ItemSlot, boolean>();
+	protected previousReforges = new Map<ItemSlot, ReforgeData>();
+	protected currentReforges = new Map<ItemSlot, ReforgeData>();
 
 	constructor(simUI: IndividualSimUI<any>, options?: ReforgeOptimizerOptions) {
 		this.simUI = simUI;
@@ -121,15 +121,9 @@ export class ReforgeOptimizer {
 				try {
 					performance.mark('reforge-optimization-start');
 					await this.optimizeReforges();
-					new Toast({
-						variant: 'success',
-						body: 'Reforge optimization complete!',
-					});
-				} catch {
-					new Toast({
-						variant: 'error',
-						body: 'Reforge optimization failed. Please try again, or report the issue if it persists.',
-					});
+					this.onReforgeDone();
+				} catch (error) {
+					this.onReforgeError(error);
 				} finally {
 					performance.mark('reforge-optimization-end');
 					if (isDevMode())
@@ -263,40 +257,44 @@ export class ReforgeOptimizer {
 						{this.softCapsConfig?.map(({ unitStat, breakpoints, capType, postCapEPs }, index) => (
 							<>
 								<tr>
-									<th colSpan={2}>{unitStat.getShortName(this.player.getClass())}</th>
+									<th className="text-nowrap" colSpan={2}>
+										{unitStat.getShortName(this.player.getClass())}
+									</th>
 									<td className="text-end">{statCapTypeNames.get(capType)}</td>
 								</tr>
 								{this.additionalSoftCapTooltipInformation[unitStat.getRootStat()] && (
-									<tr>
-										<td colSpan={3}>{this.additionalSoftCapTooltipInformation[unitStat.getRootStat()]?.()}</td>
-									</tr>
+									<>
+										<tr>
+											<td colSpan={3}>{this.additionalSoftCapTooltipInformation[unitStat.getRootStat()]?.()}</td>
+										</tr>
+										<tr>
+											<td colSpan={3} className="pb-2"></td>
+										</tr>
+									</>
 								)}
 								<tr>
-									<th>
-										<em>Rating</em>
-									</th>
 									<th className="text-end">
 										<em>%</em>
 									</th>
-									<th className="text-end">
+									<th colSpan={2} className="text-nowrap text-end">
 										<em>Post cap EP</em>
 									</th>
 								</tr>
 								{breakpoints.map((breakpoint, breakpointIndex) => (
 									<tr>
-										<td>
-											{Math.ceil(
-												unitStat.equalsStat(Stat.StatMasteryRating)
-													? breakpoint - this.player.getBaseMastery() * Mechanics.MASTERY_RATING_PER_MASTERY_POINT
-													: unitStat.convertDefaultUnitsToRating(breakpoint)!,
-											)}
-										</td>
 										<td className="text-end">
 											{unitStat.equalsStat(Stat.StatMasteryRating)
-												? (breakpoint / Mechanics.MASTERY_RATING_PER_MASTERY_POINT * this.player.getMasteryPerPointModifier()).toFixed(2)
+												? (
+														(breakpoint / Mechanics.MASTERY_RATING_PER_MASTERY_POINT) *
+														this.player.getMasteryPerPointModifier()
+												  ).toFixed(2)
 												: unitStat.convertDefaultUnitsToPercent(breakpoint)!.toFixed(2)}
 										</td>
-										<td className="text-end">{unitStat.convertEpToRatingScale(capType === StatCapType.TypeThreshold ? postCapEPs[0] : postCapEPs[breakpointIndex]).toFixed(2)}</td>
+										<td colSpan={2} className="text-end">
+											{unitStat
+												.convertEpToRatingScale(capType === StatCapType.TypeThreshold ? postCapEPs[0] : postCapEPs[breakpointIndex])
+												.toFixed(2)}
+										</td>
 									</tr>
 								))}
 								{index !== this.softCapsConfig.length - 1 && (
@@ -439,13 +437,6 @@ export class ReforgeOptimizer {
 		const sharedInputConfig: Pick<NumberPickerConfig<Player<any>>, 'changedEvent'> = {
 			changedEvent: _ => TypedEvent.onAny([this.sim.useSoftCapBreakpointsChangeEmitter, this.player.statCapsChangeEmitter]),
 		};
-		const numberPickerSharedConfig: Pick<NumberPickerConfig<Player<any>>, 'float' | 'showZeroes' | 'positive' | 'extraCssClasses' | 'changedEvent'> = {
-			float: true,
-			showZeroes: false,
-			positive: true,
-			extraCssClasses: ['mb-0'],
-			...sharedInputConfig,
-		};
 
 		const tableRef = ref<HTMLTableElement>();
 		const statCapTooltipRef = ref<HTMLButtonElement>();
@@ -469,8 +460,9 @@ export class ReforgeOptimizer {
 					</tr>
 					<tr>
 						<th>Stat</th>
-						<th className="text-end">Rating</th>
-						<th className="text-end">%</th>
+						<th colSpan={2} className="text-end">
+							%
+						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -481,26 +473,8 @@ export class ReforgeOptimizer {
 
 						const listElementRef = ref<HTMLTableRowElement>();
 						const statName = unitStat.getShortName(this.player.getClass());
-						const ratingPicker = new NumberPicker(null, this.player, {
-							...numberPickerSharedConfig,
-							id: `reforge-optimizer-${statName}-rating`,
-							enableWhen: () => this.isAllowedToOverrideStatCaps || !this.softCapsConfig.some(config => config.unitStat.equals(unitStat)),
-							getValue: () => {
-								let ratingValue = unitStat.convertDefaultUnitsToRating(this.statCaps.getUnitStat(unitStat))!;
-								if (unitStat.equalsStat(Stat.StatMasteryRating)) ratingValue = this.toVisualBaseMasteryRating(ratingValue);
 
-								return ratingValue;
-							},
-							setValue: (_eventID, _player, newValue) => {
-								const statValue = unitStat.equalsStat(Stat.StatMasteryRating) ? (newValue + this.baseMastery) : unitStat.convertRatingToDefaultUnits(newValue)!;
-
-								this.setStatCap(unitStat, statValue);
-							},
-						});
-						const percentagePicker = new NumberPicker(null, this.player, {
-							...numberPickerSharedConfig,
-							id: `reforge-optimizer-${statName}-percentage`,
-							enableWhen: () => this.isAllowedToOverrideStatCaps || !this.softCapsConfig.some(config => config.unitStat.equals(unitStat)),
+						const sharedStatInputConfig: Pick<NumberPickerConfig<Player<any>>, 'getValue' | 'setValue'> = {
 							getValue: () => {
 								const rawStatValue = this.statCaps.getUnitStat(unitStat);
 								let percentOrPointsValue = unitStat.convertDefaultUnitsToPercent(rawStatValue)!;
@@ -512,11 +486,22 @@ export class ReforgeOptimizer {
 							setValue: (_eventID, _player, newValue) => {
 								let statValue = unitStat.convertPercentToDefaultUnits(newValue)!;
 								if (unitStat.equalsStat(Stat.StatMasteryRating)) statValue /= this.player.getMasteryPerPointModifier();
-
 								this.setStatCap(unitStat, statValue);
 							},
+						};
+
+						const percentagePicker = new NumberPicker(null, this.player, {
+							id: `reforge-optimizer-${statName}-percentage`,
+							float: true,
+							maxDecimalDigits: 5,
+							showZeroes: false,
+							positive: true,
+							extraCssClasses: ['mb-0'],
+							enableWhen: () => this.isAllowedToOverrideStatCaps || !this.softCapsConfig.some(config => config.unitStat.equals(unitStat)),
+							...sharedInputConfig,
+							...sharedStatInputConfig,
 						});
-						const statPresets: Map<string, number> | undefined = this.statSelectionPresets?.get(rootStat);
+						const statPresets = this.statSelectionPresets?.find(entry => entry.unitStat.equals(unitStat))?.presets;
 						const presets = !!statPresets
 							? new EnumPicker(null, this.player, {
 									id: `reforge-optimizer-${statName}-presets`,
@@ -525,27 +510,17 @@ export class ReforgeOptimizer {
 									values: [
 										{ name: 'Select preset', value: 0 },
 										...[...statPresets.keys()].map(key => {
-											const ratingValue = statPresets.get(key)!;
-											const percentOrPointsValue = unitStat.convertRatingToPercent(ratingValue)!;
-											const percentValue = unitStat.equalsStat(Stat.StatMasteryRating) ? (percentOrPointsValue * this.player.getMasteryPerPointModifier()) : percentOrPointsValue;
+											const percentValue = statPresets.get(key)!;
+
 											return {
 												name: `${key} - ${percentValue.toFixed(2)}%`,
-												value: ratingValue,
+												value: percentValue,
 											};
 										}),
 									].sort((a, b) => a.value - b.value),
 									enableWhen: () => this.isAllowedToOverrideStatCaps || !this.softCapsConfig.some(config => config.unitStat.equals(unitStat)),
-									getValue: () => {
-										let ratingValue = unitStat.convertDefaultUnitsToRating(this.statCaps.getUnitStat(unitStat))!;
-										if (unitStat.equalsStat(Stat.StatMasteryRating)) ratingValue = this.toVisualBaseMasteryRating(ratingValue);
-
-										return ratingValue;
-									},
-									setValue: (_eventID, _player, newValue) => {
-										const statValue = unitStat.equalsStat(Stat.StatMasteryRating) ? (newValue + this.baseMastery) : unitStat.convertRatingToDefaultUnits(newValue)!;
-										this.setStatCap(unitStat, statValue);
-									},
 									...sharedInputConfig,
+									...sharedStatInputConfig,
 							  })
 							: null;
 
@@ -565,8 +540,7 @@ export class ReforgeOptimizer {
 											)}
 										</div>
 									</td>
-									<td>{ratingPicker.rootElem}</td>
-									<td>{percentagePicker.rootElem}</td>
+									<td colSpan={2}>{percentagePicker.rootElem}</td>
 								</tr>
 								{presets && (
 									<tr>
@@ -674,7 +648,9 @@ export class ReforgeOptimizer {
 			console.log('The following slots will not be cleared:');
 			console.log(Array.from(this.frozenItemSlots.keys()).filter(key => this.frozenItemSlots.get(key)));
 		}
-		const baseGear = this.player.getGear().withoutReforges(this.player.canDualWield2H(), this.frozenItemSlots);
+		const previousGear = this.player.getGear();
+		this.previousReforges = previousGear.getAllReforges();
+		const baseGear = previousGear.withoutReforges(this.player.canDualWield2H(), this.frozenItemSlots);
 		const baseStats = await this.updateGear(baseGear);
 
 		// Compute effective stat caps for just the Reforge contribution
@@ -697,6 +673,7 @@ export class ReforgeOptimizer {
 
 		// Solve in multiple passes to enforce caps
 		await this.solveModel(baseGear, validatedWeights, reforgeCaps, reforgeSoftCaps, variables, constraints);
+		this.currentReforges = this.player.getGear().getAllReforges();
 	}
 
 	async updateGear(gear: Gear): Promise<Stats> {
@@ -712,29 +689,27 @@ export class ReforgeOptimizer {
 		const reforgeSoftCaps: StatCap[] = [];
 
 		if (!this.isAllowedToOverrideStatCaps) {
-			this.softCapsConfig
-				.slice()
-				.forEach(config => {
-					let weights = config.postCapEPs.slice();
-					const relativeBreakpoints = [];
+			this.softCapsConfig.slice().forEach(config => {
+				let weights = config.postCapEPs.slice();
+				const relativeBreakpoints = [];
 
-					for (const breakpoint of config.breakpoints) {
-						relativeBreakpoints.push(baseStats.computeGapToCap(config.unitStat, breakpoint));
-					}
+				for (const breakpoint of config.breakpoints) {
+					relativeBreakpoints.push(baseStats.computeGapToCap(config.unitStat, breakpoint));
+				}
 
-					// For stats that are configured as thresholds rather than soft caps,
-					// reverse the order of evaluation of the breakpoints so that the
-					// largest relevant threshold is always targeted. Likewise, use a
-					// single value for the post-cap EP for these stats, which should be
-					// interpreted (and computed) as the residual stat value just after
-					// passing a threshold discontinuity.
-					if (config.capType == StatCapType.TypeThreshold) {
-						relativeBreakpoints.reverse();
-						weights = Array(relativeBreakpoints.length).fill(weights[0]);
-					}
+				// For stats that are configured as thresholds rather than soft caps,
+				// reverse the order of evaluation of the breakpoints so that the
+				// largest relevant threshold is always targeted. Likewise, use a
+				// single value for the post-cap EP for these stats, which should be
+				// interpreted (and computed) as the residual stat value just after
+				// passing a threshold discontinuity.
+				if (config.capType == StatCapType.TypeThreshold) {
+					relativeBreakpoints.reverse();
+					weights = Array(relativeBreakpoints.length).fill(weights[0]);
+				}
 
-					reforgeSoftCaps.push(new StatCap(config.unitStat, relativeBreakpoints, config.capType, weights));
-				});
+				reforgeSoftCaps.push(new StatCap(config.unitStat, relativeBreakpoints, config.capType, weights));
+			});
 		}
 
 		return reforgeSoftCaps;
@@ -772,7 +747,7 @@ export class ReforgeOptimizer {
 	applyReforgeStat(coefficients: YalpsCoefficients, stat: Stat, amount: number, preCapEPs: Stats) {
 		// Handle Spirit to Spell Hit conversion for hybrid casters separately from standard dependencies
 		if (stat == Stat.StatSpirit && this.isHybridCaster) {
-			let appliedAmount = amount / Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT
+			let appliedAmount = amount / Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT;
 
 			switch (this.player.getSpec()) {
 				case Spec.SpecBalanceDruid:
@@ -820,14 +795,7 @@ export class ReforgeOptimizer {
 		return constraints;
 	}
 
-	async solveModel(
-		gear: Gear,
-		weights: Stats,
-		reforgeCaps: Stats,
-		reforgeSoftCaps: StatCap[],
-		variables: YalpsVariables,
-		constraints: YalpsConstraints,
-	) {
+	async solveModel(gear: Gear, weights: Stats, reforgeCaps: Stats, reforgeSoftCaps: StatCap[], variables: YalpsVariables, constraints: YalpsConstraints) {
 		// Calculate EP scores for each Reforge option
 		if (isDevMode()) {
 			console.log('Stat weights for this iteration:');
@@ -1035,15 +1003,64 @@ export class ReforgeOptimizer {
 		return statPoints;
 	}
 
-	private toVisualBaseMasteryRating(value: number) {
-		// If the value is less than or equal to the base mastery, then set it to 0,
-		// because we assume you want to reset this stat cap.
-		if (value <= this.baseMastery) {
-			value = 0;
-		} else {
-			// Visually we show the mastery rating without the base mastery included
-			value -= this.baseMastery;
+	onReforgeDone() {
+		const itemSlots = this.player.getGear().getItemSlots();
+		const changedSlots = new Map<ItemSlot, ReforgeData | undefined>();
+		for (const slot of itemSlots) {
+			const prev = this.previousReforges.get(slot);
+			const current = this.currentReforges.get(slot);
+			if (!ReforgeStat.equals(prev?.reforge, current?.reforge)) changedSlots.set(slot, current);
 		}
-		return value;
+		const hasReforgeChanges = changedSlots.size;
+
+		const copyButtonContainerRef = ref<HTMLDivElement>();
+		const changedReforgeMessage = (
+			<>
+				<p className="mb-0">The following items were reforged:</p>
+				<ul>
+					{[...changedSlots].map(([slot, reforge]) => {
+						if (reforge) {
+							const slotName = slotNames.get(slot);
+							const { fromStat, toStat } = reforge;
+							const fromText = shortSecondaryStatNames.get(fromStat);
+							const toText = shortSecondaryStatNames.get(toStat);
+							return (
+								<li>
+									{slotName}: {fromText} → {toText}
+								</li>
+							);
+						} else {
+							return <li>{slotNames.get(slot)}: Removed reforge</li>;
+						}
+					})}
+				</ul>
+				<div ref={copyButtonContainerRef} />
+			</>
+		);
+
+		if (hasReforgeChanges) {
+			const settingsExport = IndividualSimSettings.toJson(this.simUI.toProto());
+			if (settingsExport)
+				new CopyButton(copyButtonContainerRef.value!, {
+					extraCssClasses: ['btn-outline-primary'],
+					getContent: () => JSON.stringify(settingsExport),
+					text: 'Copy to Reforge Lite',
+				});
+		}
+
+		new Toast({
+			variant: 'success',
+			body: hasReforgeChanges ? changedReforgeMessage : <>No reforge changes were made!</>,
+			delay: hasReforgeChanges ? 5000 : 3000,
+		});
+	}
+
+	onReforgeError(error: any) {
+		if (isDevMode()) console.log(error);
+
+		new Toast({
+			variant: 'error',
+			body: 'Reforge optimization failed. Please try again, or report the issue if it persists.',
+		});
 	}
 }

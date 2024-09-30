@@ -130,6 +130,10 @@ export class ActionId {
 				baseName = 'Moving';
 				iconUrl = 'https://wow.zamimg.com/images/wow/icons/medium/inv_boots_cloth_03.jpg';
 				break;
+			case OtherAction.OtherActionPrepull:
+				baseName = 'Prepull';
+				iconUrl = 'https://wow.zamimg.com/images/wow/icons/medium/inv_misc_pocketwatch_02.jpg';
+				break;
 		}
 		this.baseName = baseName;
 		this.name = name || baseName;
@@ -250,10 +254,10 @@ export class ActionId {
 
 		const baseName = tooltipData['name'];
 		let name = baseName;
-		
-		// handle DRT 
+
+		// Handle DTR
 		if (this.tag == 71086) {
-			name = "Dragonwrath - " + name;
+			name = 'Dragonwrath - ' + name;
 		} else {
 			switch (baseName) {
 				case 'Explosive Shot':
@@ -404,6 +408,11 @@ export class ActionId {
 						name += ' (Wasted)';
 					}
 					break;
+				case 'Crescendo of Suffering':
+					if (this.tag == 1) {
+						name += ' (Pre-Pull)';
+					}
+					break;
 				case 'Shadowflame':
 				case 'Moonfire':
 				case 'Sunfire':
@@ -487,6 +496,10 @@ export class ActionId {
 					if (baseName === 'Raging Blow' && this.tag === 3) {
 						name = 'Fiery attack';
 					}
+					// Death Knight - T12 4P proc
+					if (baseName === 'Obliterate' && this.tag === 3) {
+						name = 'Flaming Torment (T12 4P)';
+					}
 					break;
 				case 'Death Strike':
 					if (this.tag == 1) {
@@ -539,7 +552,6 @@ export class ActionId {
 					}
 					break;
 				case 'Frozen Blows':
-				case 'Scourge Strike':
 				case 'Opportunity Strike':
 					break;
 				// Warrior - T12 2P proc
@@ -572,6 +584,20 @@ export class ActionId {
 					if (this.tag === 3) {
 						name = 'Flames of the Faithful (T12 2P)';
 					}
+					break;
+				// Death Knight - T12 4P proc
+				case 'Scourge Strike':
+					if (this.tag === 3) {
+						name = 'Flaming Torment (T12 4P)';
+					}
+					break;
+				// Death Knight - T12 2P proc
+				case 'Burning Blood':
+					name += ' (T12 2P)';
+					break;
+				// Death Knight - T12 4P proc
+				case 'Flaming Rune Weapon':
+					name += ' (T12 4P)';
 					break;
 				default:
 					if (this.tag) {
@@ -783,6 +809,8 @@ const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 35395, tag: 3 }), { spellId: 99092 }], // Paladin - T12 2P Flames of the Faithful
 	[JSON.stringify({ spellId: 53600, tag: 3 }), { spellId: 99075 }], // Paladin - T12 2P Righteous Flames
 	[JSON.stringify({ spellId: 879, tag: 3 }), { spellId: 54934 }], // Paladin - Glyph of Exorcism
+	[JSON.stringify({ spellId: 49020, tag: 3 }), { spellId: 99000 }], // Death Knight - T12 4P Flaming Torment
+	[JSON.stringify({ spellId: 55090, tag: 3 }), { spellId: 99000 }], // Death Knight - T12 4P Flaming Torment
 ]);
 
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';
@@ -827,6 +855,7 @@ const petNameToIcon: Record<string, string> = {
 	Infernal: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summoninfernal.jpg',
 	Doomguard: 'https://wow.zamimg.com/images/wow/icons/large/warlock_summon_doomguard.jpg',
 	'Ebon Imp': 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_removecurse.jpg',
+	'Fiery Imp': 'https://wow.zamimg.com/images/wow/icons/large/ability_warlock_empoweredimp.jpg',
 	Gorilla: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_gorilla.jpg',
 	Hyena: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_hyena.jpg',
 	Imp: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonimp.jpg',

@@ -25,7 +25,7 @@ func (mage *Mage) registerCombustionSpell() {
 			},
 		},
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultMageCritMultiplier(),
+		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
 		BonusCoefficient:         1.113,
 		ThreatMultiplier:         1,
 
@@ -35,6 +35,9 @@ func (mage *Mage) registerCombustionSpell() {
 			if result.Landed() {
 				spell.DealDamage(sim, result)
 				spell.RelatedDotSpell.Cast(sim, target)
+			}
+			if mage.t13ProcAura != nil {
+				spell.CD.Reduce(time.Second * time.Duration(5*mage.t13ProcAura.GetStacks()))
 			}
 		},
 	})
@@ -52,12 +55,17 @@ func (mage *Mage) registerCombustionSpell() {
 		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.DefaultMageCritMultiplier(),
+		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "Combustion Dot",
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					if mage.t13ProcAura != nil {
+						mage.t13ProcAura.Deactivate(sim)
+					}
+				},
 			},
 			NumberOfTicks:       10,
 			TickLength:          time.Second,

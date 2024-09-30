@@ -76,7 +76,7 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.DefaultMageCritMultiplier(),
+		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
 		BonusCoefficient: 1.0,
 		ThreatMultiplier: 1,
 

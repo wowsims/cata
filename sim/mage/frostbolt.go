@@ -33,7 +33,7 @@ func (mage *Mage) registerFrostboltSpell() {
 		},
 
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultMageCritMultiplier(),
+		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
 		BonusCoefficient:         0.943,
 		ThreatMultiplier:         1,
 

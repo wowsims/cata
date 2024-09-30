@@ -8,6 +8,17 @@
 .tippy-box[data-theme='suggest-reforges-softcaps'] {
 	max-height: 40vh;
 	overflow: auto;
+
+	table {
+		width: 100%;
+		table-layout: auto;
+
+		tr {
+			> *:first-child {
+				width: 0;
+			}
+		}
+	}
 }
 
 .suggest-reforges-settings-group {
@@ -25,6 +36,7 @@
 	border-collapse: collapse;
 	border-spacing: 0;
 	padding: 0;
+	width: 100%;
 
 	tr {
 		td,
@@ -63,6 +75,11 @@
 	}
 }
 
+.reforge-optimizer-stat-cap-item {
+	td:first-child {
+		width: 0;
+	}
+}
 .reforge-optimizer-stat-cap-item-label {
 	white-space: nowrap;
 }

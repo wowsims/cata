@@ -305,12 +305,15 @@ func (mage *Mage) registerArcanePowerCD() {
 			mage.arcanePowerCostMod.Activate()
 			arcanePowerDmgMod.Activate()
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+		OnExpire: func(_ *core.Aura, sim *core.Simulation) {
 			if mage.arcanePowerGCDmod != nil {
 				mage.arcanePowerGCDmod.Deactivate()
 			}
 			mage.arcanePowerCostMod.Deactivate()
 			arcanePowerDmgMod.Deactivate()
+			if mage.t13ProcAura != nil {
+				mage.t13ProcAura.Deactivate(sim)
+			}
 		},
 	})
 
@@ -323,8 +326,11 @@ func (mage *Mage) registerArcanePowerCD() {
 				Duration: time.Second * 120,
 			},
 		},
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			arcanePowerAura.Activate(sim)
+			if mage.t13ProcAura != nil {
+				spell.CD.Reduce(time.Second * time.Duration(7*mage.t13ProcAura.GetStacks()))
+			}
 		},
 	})
 	mage.AddMajorCooldown(core.MajorCooldown{

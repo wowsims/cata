@@ -35,6 +35,7 @@ type Warlock struct {
 	Doomguard *DoomguardPet
 	Infernal  *InfernalPet
 	EbonImp   *EbonImpPet
+	FieryImp  *FieryImpPet
 
 	SoulShards   int32
 	SoulBurnAura *core.Aura
@@ -134,6 +135,7 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 	}
 	core.FillTalentsProto(warlock.Talents.ProtoReflect(), options.TalentsString, [3]int{18, 19, 19})
 	warlock.EnableManaBar()
+	warlock.SetDefaultSpellCritMultiplier(warlock.SpellCritMultiplier(1.33, 0.0))
 
 	warlock.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 
@@ -143,6 +145,7 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 	warlock.EbonImp = warlock.NewEbonImp()
 	warlock.Infernal = warlock.NewInfernalPet()
 	warlock.Doomguard = warlock.NewDoomguardPet()
+	warlock.FieryImp = warlock.NewFieryImp()
 
 	warlock.registerPets()
 
@@ -234,7 +237,3 @@ const (
 const (
 	PetExpertiseScale = 1.53 * core.ExpertisePerQuarterPercentReduction
 )
-
-func (warlock *Warlock) DefaultSpellCritMultiplier() float64 {
-	return warlock.SpellCritMultiplier(1.33, 0.0)
-}

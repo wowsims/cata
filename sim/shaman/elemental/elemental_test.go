@@ -19,9 +19,18 @@ func TestElemental(t *testing.T) {
 		OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
 		GearSet: core.GetGearSet("../../../ui/shaman/elemental/gear_sets", "p1"),
+		OtherGearSets: []core.GearSetCombo{
+			core.GetGearSet("../../../ui/shaman/elemental/gear_sets", "p3.default"),
+			core.GetGearSet("../../../ui/shaman/elemental/gear_sets", "p3.cleave-aoe"),
+		},
 		Talents: TalentsTotemDuration,
 		Glyphs:  StandardGlyphs,
 		OtherTalentSets: []core.TalentsCombo{
+			{
+				Label:   "TalentsAoE",
+				Talents: TalentsImprovedShields,
+				Glyphs:  AoEGlyphs,
+			},
 			{
 				Label:   "TalentsImprovedShields",
 				Talents: TalentsImprovedShields,
@@ -33,6 +42,7 @@ func TestElemental(t *testing.T) {
 		Rotation:    core.GetAplRotation("../../../ui/shaman/elemental/apls", "default"),
 		OtherRotations: []core.RotationCombo{
 			core.GetAplRotation("../../../ui/shaman/elemental/apls", "aoe"),
+			core.GetAplRotation("../../../ui/shaman/elemental/apls", "unleash"),
 		},
 
 		ItemFilter: core.ItemFilter{
@@ -60,16 +70,24 @@ var StandardGlyphs = &proto.Glyphs{
 	Prime2: int32(proto.ShamanPrimeGlyph_GlyphOfLavaBurst),
 	Prime3: int32(proto.ShamanPrimeGlyph_GlyphOfLightningBolt),
 	Major1: int32(proto.ShamanMajorGlyph_GlyphOfLightningShield),
-	Major2: int32(proto.ShamanMajorGlyph_GlyphOfThunder),
-	Major3: int32(proto.ShamanMajorGlyph_GlyphOfFireNova),
+	Major2: int32(proto.ShamanMajorGlyph_GlyphOfHealingStreamTotem),
+	Major3: int32(proto.ShamanMajorGlyph_GlyphOfStoneclawTotem),
+}
+var AoEGlyphs = &proto.Glyphs{
+	Prime1: int32(proto.ShamanPrimeGlyph_GlyphOfFlameShock),
+	Prime2: int32(proto.ShamanPrimeGlyph_GlyphOfLavaBurst),
+	Prime3: int32(proto.ShamanPrimeGlyph_GlyphOfLightningBolt),
+	Major1: int32(proto.ShamanMajorGlyph_GlyphOfLightningShield),
+	Major2: int32(proto.ShamanMajorGlyph_GlyphOfChainLightning),
+	Major3: int32(proto.ShamanMajorGlyph_GlyphOfStoneclawTotem),
 }
 var AlternateGlyphs = &proto.Glyphs{
 	Prime1: int32(proto.FireTotem_FireElementalTotem),
 	Prime2: int32(proto.ShamanImbue_FlametongueWeapon),
 	Prime3: int32(proto.ShamanPrimeGlyph_GlyphOfUnleashedLightning),
 	Major1: int32(proto.ShamanMajorGlyph_GlyphOfLightningShield),
-	Major2: int32(proto.ShamanMajorGlyph_GlyphOfThunder),
-	Major3: int32(proto.ShamanMajorGlyph_GlyphOfChainLightning),
+	Major2: int32(proto.ShamanMajorGlyph_GlyphOfHealingStreamTotem),
+	Major3: int32(proto.ShamanMajorGlyph_GlyphOfStoneclawTotem),
 }
 
 var NoTotems = &proto.ShamanTotems{}
@@ -120,4 +138,5 @@ var FullConsumes = &proto.Consumes{
 	DefaultPotion:   proto.Potions_VolcanicPotion,
 	PrepopPotion:    proto.Potions_VolcanicPotion,
 	DefaultConjured: proto.Conjured_ConjuredDarkRune,
+	TinkerHands:     proto.TinkerHands_TinkerHandsSynapseSprings,
 }

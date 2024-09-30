@@ -6,13 +6,14 @@ import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
-import { StatCapType, UIStat } from '../../core/proto/ui';
-import { convertHastePresetBreakpointsToPercent, StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
+import { StatCapType } from '../../core/proto/ui';
+import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
+import { formatToNumber } from '../../core/utils';
 import { sharedMageDisplayStatsModifiers } from '../shared';
 import * as FireInputs from './inputs';
 import * as Presets from './presets';
 
-const hasteBreakpoints = convertHastePresetBreakpointsToPercent(Presets.FIRE_BREAKPOINTS.get(Stat.StatHasteRating)!);
+const hasteBreakpoints = Presets.FIRE_BREAKPOINTS.find(entry => entry.unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHastePercent))!.presets!;
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	cssClass: 'fire-mage-sim-ui',
@@ -26,19 +27,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[
-			Stat.StatHealth,
-			Stat.StatMana,
-			Stat.StatStamina,
-			Stat.StatIntellect,
-			Stat.StatSpellPower,
-			Stat.StatMasteryRating,
-		],
-		[
-			PseudoStat.PseudoStatSpellHitPercent,
-			PseudoStat.PseudoStatSpellCritPercent,
-			PseudoStat.PseudoStatSpellHastePercent,
-		],
+		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpellPower, Stat.StatMasteryRating],
+		[PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatSpellCritPercent, PseudoStat.PseudoStatSpellHastePercent],
 	),
 	modifyDisplayStats: (player: Player<Spec.SpecFireMage>) => {
 		return sharedMageDisplayStatsModifiers(player);
@@ -48,35 +38,44 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		// Default equipped gear.
 		gear: Presets.FIRE_P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P1_EP_PRESET.epWeights,
+		epWeights: Presets.DEFAULT_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
 			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 17);
 		})(),
 		// Default soft caps for the Reforge optimizer
 		softCapBreakpoints: (() => {
+			// Set up Mastery breakpoints for integer % damage increments.
+			// These should be removed once the bugfix to make Mastery
+			// continuous goes live!
+			const masterySoftCapConfig = StatCap.fromStat(Stat.StatMasteryRating, {
+				breakpoints: [(23 / Mechanics.masteryPercentPerPoint.get(Spec.SpecFireMage)!) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT],
+				capType: StatCapType.TypeThreshold,
+				postCapEPs: [0],
+			});
+
 			const hasteSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent, {
 				breakpoints: [
-					hasteBreakpoints.get('5-tick LvB/Pyro')!,
-					hasteBreakpoints.get('12-tick Combust')!,
-					hasteBreakpoints.get('13-tick Combust')!,
-					hasteBreakpoints.get('14-tick Combust')!,
-					hasteBreakpoints.get('6-tick LvB/Pyro')!,
-					hasteBreakpoints.get('15-tick Combust')!,
-					hasteBreakpoints.get('16-tick Combust')!,
-					hasteBreakpoints.get('7-tick LvB/Pyro')!,
-					hasteBreakpoints.get('17-tick Combust')!,
-					hasteBreakpoints.get('18-tick Combust')!,
-					hasteBreakpoints.get('19-tick Combust')!,
-					hasteBreakpoints.get('8-tick LvB/Pyro')!,
-					hasteBreakpoints.get('20-tick Combust')!,
-					hasteBreakpoints.get('21-tick Combust')!,
+					hasteBreakpoints.get('5-tick - LvB/Pyro')!,
+					hasteBreakpoints.get('12-tick - Combust')!,
+					hasteBreakpoints.get('13-tick - Combust')!,
+					hasteBreakpoints.get('14-tick - Combust')!,
+					hasteBreakpoints.get('6-tick - LvB/Pyro')!,
+					hasteBreakpoints.get('15-tick - Combust')!,
+					hasteBreakpoints.get('16-tick - Combust')!,
+					hasteBreakpoints.get('7-tick - LvB/Pyro')!,
+					hasteBreakpoints.get('17-tick - Combust')!,
+					hasteBreakpoints.get('18-tick - Combust')!,
+					hasteBreakpoints.get('19-tick - Combust')!,
+					hasteBreakpoints.get('8-tick - LvB/Pyro')!,
+					hasteBreakpoints.get('20-tick - Combust')!,
+					hasteBreakpoints.get('21-tick - Combust')!,
 				],
 				capType: StatCapType.TypeThreshold,
 				postCapEPs: [0.61 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
 			});
 
-			return [hasteSoftCapConfig];
+			return [masterySoftCapConfig, hasteSoftCapConfig];
 		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultFireConsumes,
@@ -117,16 +116,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
+		epWeights: [Presets.DEFAULT_EP_PRESET],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.FIRE_ROTATION_PRESET_DEFAULT],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.FireTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.FIRE_P1_PRESET, Presets.FIRE_P1_PREBIS],
+		gear: [Presets.FIRE_P1_PRESET, Presets.FIRE_P1_PREBIS, Presets.FIRE_P3_PRESET],
 	},
 
-	autoRotation: (player: Player<Spec.SpecFireMage>): APLRotation => {
+	autoRotation: (_player): APLRotation => {
 		/*const numTargets = player.sim.encounter.targets.length;
  		if (numTargets > 3) {
 			return Presets.FIRE_ROTATION_PRESET_AOE.rotation.rotation!;
@@ -177,28 +176,32 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 					const hasBerserking = player.getRace() === Race.RaceTroll;
 
 					const modifyHaste = (oldHastePercent: number, modifier: number) =>
-							((oldHastePercent / 100 + 1) / modifier - 1) * 100;
+						Number(formatToNumber(((oldHastePercent / 100 + 1) / modifier - 1) * 100, { maximumFractionDigits: 5 }));
 
 					this.individualConfig.defaults.softCapBreakpoints!.forEach(softCap => {
 						const softCapToModify = softCaps.find(sc => sc.unitStat.equals(softCap.unitStat));
 						if (softCap.unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHastePercent) && softCapToModify) {
 							const adjustedHastedBreakpoints = new Set([...softCap.breakpoints]);
+							const hasCloseMatchingValue = (value: number) =>
+								[...adjustedHastedBreakpoints.values()].find(bp => bp.toFixed(2) === value.toFixed(2));
+
 							// LvB/Pyro are not worth adjusting for
 							const excludedHasteBreakpoints = [
-								hasteBreakpoints.get('5-tick LvB/Pyro')!,
-								hasteBreakpoints.get('6-tick LvB/Pyro')!,
-								hasteBreakpoints.get('7-tick LvB/Pyro')!,
-								hasteBreakpoints.get('8-tick LvB/Pyro')!,
+								hasteBreakpoints.get('5-tick - LvB/Pyro')!,
+								hasteBreakpoints.get('6-tick - LvB/Pyro')!,
+								hasteBreakpoints.get('7-tick - LvB/Pyro')!,
+								hasteBreakpoints.get('8-tick - LvB/Pyro')!,
 							];
 							softCap.breakpoints.forEach(breakpoint => {
 								const isExcludedFromPiZerk = excludedHasteBreakpoints.includes(breakpoint);
 								if (hasBL) {
 									const blBreakpoint = modifyHaste(breakpoint, 1.3);
+
 									if (blBreakpoint > 0) {
-										adjustedHastedBreakpoints.add(blBreakpoint);
+										if (!hasCloseMatchingValue(blBreakpoint)) adjustedHastedBreakpoints.add(blBreakpoint);
 										if (hasBerserking) {
 											const berserkingBreakpoint = modifyHaste(blBreakpoint, 1.2);
-											if (berserkingBreakpoint > 0) {
+											if (berserkingBreakpoint > 0 && !hasCloseMatchingValue(blBreakpoint)) {
 												adjustedHastedBreakpoints.add(berserkingBreakpoint);
 											}
 										}
@@ -207,10 +210,10 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 								if (hasPI && !isExcludedFromPiZerk) {
 									const piBreakpoint = modifyHaste(breakpoint, 1.2);
 									if (piBreakpoint > 0) {
-										adjustedHastedBreakpoints.add(piBreakpoint);
+										if (!hasCloseMatchingValue(piBreakpoint)) adjustedHastedBreakpoints.add(piBreakpoint);
 										if (hasBerserking) {
 											const berserkingBreakpoint = modifyHaste(piBreakpoint, 1.2);
-											if (berserkingBreakpoint > 0) {
+											if (berserkingBreakpoint > 0 && !hasCloseMatchingValue(piBreakpoint)) {
 												adjustedHastedBreakpoints.add(berserkingBreakpoint);
 											}
 										}

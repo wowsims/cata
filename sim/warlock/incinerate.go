@@ -33,11 +33,11 @@ func (warlock *Warlock) registerIncinerate() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := warlock.CalcAndRollDamageRange(sim, 0.57300001383, 0.15000000596)
 
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			if warlock.Immolate.Dot(target).IsActive() {
-				baseDamage += baseDamage / 6
+				result.Damage *= 7.0 / 6.0
 			}
 
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 				if result.Landed() && sim.Proc(shadowAndFlameProcChance, "S&F Proc") {

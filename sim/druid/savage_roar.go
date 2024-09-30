@@ -58,6 +58,7 @@ func (druid *Druid) registerSavageRoarSpell() {
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			druid.SavageRoarAura.Duration = druid.SavageRoarDurationTable[druid.ComboPoints()]
 			druid.SavageRoarAura.Activate(sim)
+			druid.ApplyFeral4pT12(sim)
 			druid.SpendComboPoints(sim, spell.ComboPointMetrics())
 		},
 	})

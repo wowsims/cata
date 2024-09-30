@@ -1,6 +1,7 @@
 .tippy-box {
 	font-size: var(--btn-font-size);
 	max-width: var(--bs-tooltip-max-width);
+	border-radius: 0;
 
 	@include media-breakpoint-down(xl) {
 		--bs-tooltip-max-width: var(--bs-tooltip-max-width-lg);

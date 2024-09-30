@@ -1,19 +1,26 @@
 import tippy, { Instance as TippyInstance } from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
-import { ITEM_NOTICES } from '../../constants/item_notices';
+import { GENERIC_MISSING_SET_BONUS_NOTICE_DATA, ITEM_NOTICES, SET_BONUS_NOTICES } from '../../constants/item_notices';
 import { Player } from '../../player';
 import { Spec } from '../../proto/common';
+import { Database } from '../../proto_utils/database';
 import { Component } from '../component';
 
 export type ItemNoticeData = {
 	// SpecUnknown is used as default and should always be present
+	// False is used to disable the notice for a specific spec
 	[Spec.SpecUnknown]: JSX.Element;
-} & Record<number, JSX.Element>;
+} & Record<number, JSX.Element | false>;
 
 type ItemNoticeConfig = {
 	itemId: number;
 };
+
+// Keys are item counts for each set bonus (typically 2 and 4), values are the
+// notice that should be displayed for each bonus. If null, will default to
+// GENERIC_MISSING_SET_BONUS_NOTICE_DATA.
+export type SetBonusNoticeData = Map<number, string> | null;
 
 export class ItemNotice extends Component {
 	itemId: number;
@@ -25,7 +32,7 @@ export class ItemNotice extends Component {
 		this.itemId = config.itemId;
 		this.player = player;
 
-		if (this.hasNotice) this.rootElem.appendChild(this.template!);
+		if (this.hasNotice && this.template) this.rootElem.appendChild(this.template!);
 
 		this.addOnDisposeCallback(() => {
 			this.tooltip?.destroy();
@@ -40,7 +47,8 @@ export class ItemNotice extends Component {
 	private get noticeContent() {
 		if (!this.hasNotice) return null;
 		const itemNotice = ITEM_NOTICES.get(this.itemId)!;
-		return itemNotice[this.player.getSpec()] || itemNotice[Spec.SpecUnknown];
+		const specNotice = itemNotice[this.player.getSpec()];
+		return typeof specNotice === 'boolean' ? null : specNotice || itemNotice[Spec.SpecUnknown];
 	}
 
 	private get template() {
@@ -56,5 +64,27 @@ export class ItemNotice extends Component {
 		});
 
 		return template;
+	}
+
+	static registerSetBonusNotices(db: Database) {
+		SET_BONUS_NOTICES.forEach((value: SetBonusNoticeData, key: number) => {
+			const noticeData = value || GENERIC_MISSING_SET_BONUS_NOTICE_DATA;
+			const noticeContent = (
+				<>
+					<p className="mb-1"> This item set has the following warnings:</p>
+					<ul className="mb-0">
+						{Array.from(noticeData.keys()).map(key => (
+							<li>
+								{key.toFixed(0)}-piece: {noticeData.get(key)!}
+							</li>
+						))}
+					</ul>
+				</>
+			);
+
+			for (const id of db.getItemIdsForSet(key)) {
+				ITEM_NOTICES.set(id, { [Spec.SpecUnknown]: noticeContent });
+			}
+		});
 	}
 }

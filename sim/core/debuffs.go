@@ -630,7 +630,7 @@ func ThunderClapAura(target *Unit) *Aura {
 func InfectedWoundsAura(target *Unit, points int32) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "InfectedWounds-" + strconv.Itoa(int(points)),
-		ActionID: ActionID{SpellID: 48485},
+		ActionID: ActionID{SpellID: 58178 + points},
 		Duration: time.Second * 12,
 	})
 	AtkSpeedReductionEffect(aura, 1+0.1*float64(points))

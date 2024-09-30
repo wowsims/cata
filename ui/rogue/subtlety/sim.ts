@@ -19,7 +19,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 	cssClass: 'subtlety-rogue-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Rogue),
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: ['Rotations are not fully optimized, especially for non-standard setups.'],
+	knownIssues: [],
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -57,7 +57,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P1_PRESET_SUB.gear,
+		gear: Presets.P3_PRESET_SUB.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Stat caps for reforge optimizer
@@ -75,10 +75,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
 				breakpoints: [8, 27],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0.77 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT, 0],
+				postCapEPs: [98.02, 0],
 			});
 
-			return [meleeHitSoftCapConfig, spellHitSoftCapConfig];
+			const masteryRatingBreakpoints = [];
+			const masteryPercentPerPoint = Mechanics.masteryPercentPerPoint.get(Spec.SpecSubtletyRogue)!;
+			for (let masteryPercent = 20; masteryPercent <= 200; masteryPercent++) {
+				masteryRatingBreakpoints.push((masteryPercent / masteryPercentPerPoint) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
+			}
+
+			const masterySoftCapConfig = StatCap.fromStat(Stat.StatMasteryRating, {
+				breakpoints: masteryRatingBreakpoints,
+				capType: StatCapType.TypeThreshold,
+				postCapEPs: [0],
+			});
+
+			return [meleeHitSoftCapConfig, spellHitSoftCapConfig, masterySoftCapConfig];
 		})(),
     	other: Presets.OtherDefaults,
 		// Default consumes settings.
@@ -153,7 +165,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_SUBTLETY],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.P1_PRESET_SUB],
+		gear: [Presets.P1_PRESET_SUB, Presets.P3_PRESET_SUB],
 	},
 
 	autoRotation: (player: Player<Spec.SpecSubtletyRogue>): APLRotation => {

@@ -36,7 +36,7 @@ func (shaman *Shaman) ApplyTalents() {
 
 	if shaman.Talents.CallOfFlame > 0 {
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskLavaBurst,
+			ClassMask:  SpellMaskLavaBurst | SpellMaskLavaBurstOverload,
 			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.05 * float64(shaman.Talents.CallOfFlame),
 		})
@@ -109,6 +109,10 @@ func (shaman *Shaman) ApplyTalents() {
 
 	if shaman.Talents.FeralSpirit {
 		shaman.registerFeralSpirit()
+	}
+
+	if shaman.Talents.ImprovedLavaLash > 0 {
+		shaman.SearingFlamesMultiplier += 0.1 * float64(shaman.Talents.ImprovedLavaLash)
 	}
 
 	shaman.registerElementalMasteryCD()
@@ -227,7 +231,7 @@ func (shaman *Shaman) applyRollingThunder() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if (spell == shaman.LightningBolt || spell == shaman.ChainLightning || spell == shaman.LightningBoltOverload) && shaman.SelfBuffs.Shield == proto.ShamanShield_LightningShield {
+			if (spell.Matches(SpellMaskLightningBolt | SpellMaskLightningBoltOverload | SpellMaskChainLightning | SpellMaskChainLightningOverload)) && shaman.SelfBuffs.Shield == proto.ShamanShield_LightningShield {
 				// for _, allowedSpell := range allowedSpells {
 				// 	if spell == allowedSpell {
 				if sim.RandomFloat("Rolling Thunder") < 0.3*float64(shaman.Talents.RollingThunder) {
@@ -252,16 +256,6 @@ func (shaman *Shaman) applyLavaSurge() {
 
 	has4PT12 := shaman.HasSetBonus(ItemSetVolcanicRegalia, 4)
 
-	var instantLavaSurgeMod *core.SpellMod
-
-	if has4PT12 {
-		instantLavaSurgeMod = shaman.AddDynamicMod(core.SpellModConfig{
-			Kind:       core.SpellMod_CastTime_Pct,
-			FloatValue: -1,
-			ClassMask:  SpellMaskLavaBurst,
-		})
-	}
-
 	shaman.RegisterAura(core.Aura{
 		Label:    "Lava Surge",
 		Duration: core.NeverExpires,
@@ -283,9 +277,12 @@ func (shaman *Shaman) applyLavaSurge() {
 				Priority:     core.ActionPriorityDOT,
 
 				OnAction: func(sim *core.Simulation) {
+					if shaman.LavaBurst.CD.IsReady(sim) {
+						return
+					}
 					shaman.LavaBurst.CD.Reset()
 					if has4PT12 {
-						instantLavaSurgeMod.Activate()
+						shaman.VolcanicRegalia4PT12Aura.Activate(sim)
 					}
 				},
 			}
@@ -304,7 +301,7 @@ func (shaman *Shaman) applyLavaSurge() {
 			if spell.ClassSpellMask != SpellMaskLavaBurst || !has4PT12 {
 				return
 			}
-			instantLavaSurgeMod.Deactivate()
+			shaman.VolcanicRegalia4PT12Aura.Deactivate(sim)
 		},
 	})
 }

@@ -394,7 +394,7 @@ func TestAffliction(t *testing.T) {
 		Prime1: int32(proto.WarlockPrimeGlyph_GlyphOfHaunt),
 		Prime2: int32(proto.WarlockPrimeGlyph_GlyphOfUnstableAffliction),
 		Prime3: int32(proto.WarlockPrimeGlyph_GlyphOfCorruption),
-		Major1: int32(proto.WarlockMajorGlyph_GlyphOfLifeTap),
+		Major1: int32(proto.WarlockMajorGlyph_GlyphOfFelhunter),
 		Major2: int32(proto.WarlockMajorGlyph_GlyphOfShadowBolt),
 		Major3: int32(proto.WarlockMajorGlyph_GlyphOfSoulSwap),
 	}
@@ -403,7 +403,7 @@ func TestAffliction(t *testing.T) {
 		Class:            proto.Class_ClassWarlock,
 		Race:             proto.Race_RaceOrc,
 		OtherRaces:       []proto.Race{proto.Race_RaceTroll, proto.Race_RaceGoblin, proto.Race_RaceHuman},
-		GearSet:          core.GetGearSet("../../../ui/warlock/affliction/gear_sets", "p1"),
+		GearSet:          core.GetGearSet("../../../ui/warlock/affliction/gear_sets", "p3"),
 		Talents:          afflictionTalents,
 		Glyphs:           afflictionGlyphs,
 		Consumes:         fullConsumes,

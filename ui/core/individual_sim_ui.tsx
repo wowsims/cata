@@ -11,6 +11,7 @@ import { RotationTab } from './components/individual_sim_ui/rotation_tab';
 import { SettingsTab } from './components/individual_sim_ui/settings_tab';
 import { TalentsTab } from './components/individual_sim_ui/talents_tab';
 import * as InputHelpers from './components/input_helpers';
+import { ItemNotice } from './components/item_notice/item_notice';
 import { addRaidSimAction, RaidSimResultsManager } from './components/raid_sim_action';
 import { SavedDataConfig } from './components/saved_data_manager';
 import { addStatWeightsAction, EpWeightsMenu } from './components/stat_weights_action';
@@ -332,6 +333,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			// This needs to go before all the UI components so that gear loading is the
 			// first callback invoked from waitForInit().
 			this.sim.waitForInit().then(() => {
+				ItemNotice.registerSetBonusNotices(this.sim.db);
 				this.loadSettings();
 
 				if (this.player.getPlayerSpec().isHealingSpec) {

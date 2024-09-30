@@ -4,6 +4,7 @@ import (
 	"math"
 	"time"
 
+	"github.com/wowsims/cata/sim/common/cata"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/stats"
 )
@@ -81,65 +82,20 @@ var Tier12 = core.NewItemSet(core.ItemSet{
 			// Rolls like ignite
 			// Tentatively, this is just Ignite. Testing required to validate behavior.
 			rogue := agent.GetCharacter()
+			cata.RegisterIgniteEffect(&rogue.Unit, cata.IgniteConfig{
+				ActionID:         core.ActionID{SpellID: 99173},
+				DotAuraLabel:     "Burning Wounds",
+				IncludeAuraDelay: true,
 
-			burningWounds := rogue.RegisterSpell(core.SpellConfig{
-				ActionID:    core.ActionID{SpellID: 99173},
-				SpellSchool: core.SpellSchoolFire,
-				ProcMask:    core.ProcMaskProc,
-				Flags:       core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete,
-
-				DamageMultiplier: 1,
-				ThreatMultiplier: 1,
-
-				Dot: core.DotConfig{
-					Aura: core.Aura{
-						Label:     "Burning Wounds",
-						MaxStacks: 1000000,
-					},
-					NumberOfTicks:       2,
-					TickLength:          time.Second * 2,
-					AffectedByCastSpeed: false,
-					OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-
-					},
-					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-						result := dot.Spell.CalcPeriodicDamage(sim, target, dot.SnapshotBaseDamage, dot.OutcomeTick)
-						dot.Spell.DealPeriodicDamage(sim, result)
-					},
+				ProcTrigger: core.ProcTrigger{
+					Name:     "Rogue T12 2P Bonus",
+					Callback: core.CallbackOnSpellHitDealt,
+					ProcMask: core.ProcMaskMelee,
+					Outcome:  core.OutcomeCrit,
 				},
 
-				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					spell.Dot(target).Apply(sim)
-				},
-			})
-
-			var applyBurningWounds = func(sim *core.Simulation, result *core.SpellResult) {
-				const IgniteTicksFresh = 2
-				const IgniteTicksRefresh = 3
-
-				newDamage := result.Damage * .06
-				dot := burningWounds.Dot(result.Target)
-
-				// Cata Ignite
-				// 1st ignite application = 4s, split into 2 ticks (2s, 0s)
-				// Ignite refreshes: Duration = 4s + MODULO(remaining duration, 2), max 6s. Split damage over 3 ticks at 4s, 2s, 0s.
-				if dot.IsActive() {
-					dot.SnapshotBaseDamage = (dot.OutstandingDmg() + newDamage) / float64(IgniteTicksRefresh)
-				} else {
-					dot.SnapshotBaseDamage = newDamage / IgniteTicksFresh
-				}
-				burningWounds.Cast(sim, result.Target)
-				dot.Aura.SetStacks(sim, int32(dot.SnapshotBaseDamage))
-			}
-
-			core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
-				Name:     "Rogue T12 2P Bonus",
-				Callback: core.CallbackOnSpellHitDealt,
-				ProcMask: core.ProcMaskMelee,
-				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if result.Landed() && result.DidCrit() {
-						applyBurningWounds(sim, result)
-					}
+				DamageCalculator: func(result *core.SpellResult) float64 {
+					return result.Damage * .06
 				},
 			})
 		},
@@ -148,7 +104,7 @@ var Tier12 = core.NewItemSet(core.ItemSet{
 			// Cannot pick the same stat twice in a row. No other logic appears to exist
 			// Not a dynamic 1.25% mod; snapshots stats and applies that much as bonus rating for duration
 			// Links to all buffs: https://www.wowhead.com/spell=99175/item-rogue-t12-4p-bonus#comments:id=1507073
-			rogue := agent.GetCharacter()
+			rogue := agent.(RogueAgent).GetRogue()
 
 			// Aura for adding 25% of current rating as extra rating
 			hasteAura := rogue.GetOrRegisterAura(MakeT12StatAura(core.ActionID{SpellID: 99186}, stats.HasteRating, "Future on Fire"))
@@ -157,20 +113,19 @@ var Tier12 = core.NewItemSet(core.ItemSet{
 			auraArray := [3]*core.Aura{hasteAura, critAura, mastAura}
 
 			// Proc aura watching for ToT threat transfer start
-			lastStat := 3
 			core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
 				Name:           "Rogue T12 4P Bonus",
 				Callback:       core.CallbackOnApplyEffects,
 				ClassSpellMask: RogueSpellTricksOfTheTradeThreat,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if lastStat == 3 { // any of 3
-						randomStat := int(math.Mod(sim.RandomFloat("Rogue T12 4P Bonus")*10, 3))
-						lastStat = randomStat
-						auraArray[lastStat].Activate(sim)
+					if rogue.T12ToTLastBuff == 3 { // any of 3
+						randomStat := int(math.Mod(sim.RandomFloat("Rogue T12 4P Bonus Initial")*10, 3))
+						rogue.T12ToTLastBuff = randomStat
+						auraArray[rogue.T12ToTLastBuff].Activate(sim)
 					} else { // cannot re-roll same
 						randomStat := int(math.Mod(sim.RandomFloat("Rogue T12 4P Bonus")*10, 1)) + 1
-						lastStat = (lastStat + randomStat) % 3
-						auraArray[lastStat].Activate(sim)
+						rogue.T12ToTLastBuff = (rogue.T12ToTLastBuff + randomStat) % 3
+						auraArray[rogue.T12ToTLastBuff].Activate(sim)
 					}
 				},
 			})
