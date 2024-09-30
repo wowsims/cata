@@ -36,6 +36,9 @@ func (mage *Mage) registerCombustionSpell() {
 				spell.DealDamage(sim, result)
 				spell.RelatedDotSpell.Cast(sim, target)
 			}
+			if mage.t13ProcAura != nil {
+				spell.CD.Reduce(time.Second * time.Duration(5*mage.t13ProcAura.GetStacks()))
+			}
 		},
 	})
 
@@ -58,6 +61,11 @@ func (mage *Mage) registerCombustionSpell() {
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "Combustion Dot",
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					if mage.t13ProcAura != nil {
+						mage.t13ProcAura.Deactivate(sim)
+					}
+				},
 			},
 			NumberOfTicks:       10,
 			TickLength:          time.Second,

@@ -24,6 +24,7 @@ type Mage struct {
 	frostfireOrb *FrostfireOrb
 
 	t12MirrorImage *T12MirrorImage
+	t13ProcAura    *core.Aura
 
 	arcaneMissilesTickSpell *core.Spell
 	Combustion              *core.Spell
