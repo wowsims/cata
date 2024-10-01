@@ -62,6 +62,25 @@ func (mage *Mage) ApplyFireTalents() {
 			FloatValue: -0.5 * float64(mage.Talents.ImprovedFlamestrike),
 			Kind:       core.SpellMod_CastTime_Pct,
 		})
+
+		mage.Unit.RegisterSpell(mage.GetFlameStrikeConfig(88148, true))
+		core.MakePermanent(core.MakeProcTriggerAura(&mage.Unit, core.ProcTrigger{
+			Name:           "Improved Flame Strike - Talent",
+			ActionID:       core.ActionID{SpellID: 84674},
+			Callback:       core.CallbackOnSpellHitDealt,
+			ProcChance:     1,
+			Outcome:        core.OutcomeLanded,
+			ProcMask:       core.ProcMaskSpellDamage,
+			ClassSpellMask: MageSpellBlastWave,
+			ICD:            time.Millisecond * 1,
+			ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
+				return len(spell.Unit.Env.Encounter.Targets) >= 2
+			},
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				flameStrikeCopy := spell.Unit.GetSpell(core.ActionID{SpellID: 88148, Tag: core.TernaryInt32(spell.ActionID.Tag == 0, 1, spell.ActionID.Tag)})
+				flameStrikeCopy.Cast(sim, result.Target)
+			},
+		}))
 	}
 
 	// Critical Mass

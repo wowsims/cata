@@ -1,8 +1,6 @@
 package destruction
 
 import (
-	"time"
-
 	"github.com/wowsims/cata/sim/common/cata"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
@@ -34,13 +32,5 @@ func customImmolateHandler(sim *core.Simulation, spell *core.Spell, result *core
 		copySpell = spell.Unit.RegisterSpell(copyConfig)
 	}
 
-	sim.AddPendingAction(
-		&core.PendingAction{
-			NextActionAt: sim.CurrentTime + time.Millisecond*200, // add slight delay
-			Priority:     core.ActionPriorityAuto,
-			OnAction: func(sim *core.Simulation) {
-				copySpell.Cast(sim, result.Target)
-			},
-		},
-	)
+	cata.CastDTRSpell(sim, copySpell, result.Target)
 }

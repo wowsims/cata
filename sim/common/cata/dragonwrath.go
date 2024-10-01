@@ -1,6 +1,7 @@
 package cata
 
 import (
+	"log"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -20,18 +21,23 @@ const (
 )
 
 type SpellHandler func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult)
+type SpellCopyHandler func(unit *core.Unit, spell *core.Spell)
 
 type DragonwrathSpellConfig struct {
-	spellHandler SpellHandler
-	procPerCast  bool
-	tickIsCast   bool // some spells deal periodic damage but should be treated as casts
-	supress      int8
+	spellHandler     SpellHandler
+	spellCopyHandler SpellCopyHandler
+	procPerCast      bool
+	tickIsCast       bool // some spells deal periodic damage but should be treated as casts
+	supress          int8
 }
 
 type DragonwrathClassConfig struct {
 	procChance  float64
 	spellConfig map[int32]DragonwrathSpellConfig
 }
+
+// Should be used in all places where copy spells are delayed to have it consistent
+var DTRDelay = time.Millisecond * 200
 
 var classConfig = map[proto.Spec]*DragonwrathClassConfig{}
 var globalSpellConfig = map[int32]DragonwrathSpellConfig{}
@@ -80,6 +86,11 @@ func (config DragonwrathSpellConfig) WithSpellHandler(handler SpellHandler) Drag
 	return config
 }
 
+func (config DragonwrathSpellConfig) WithCustomSpell(handler SpellCopyHandler) DragonwrathSpellConfig {
+	config.spellCopyHandler = handler
+	return config
+}
+
 func (config DragonwrathSpellConfig) TreatTickAsCast() DragonwrathSpellConfig {
 	config.tickIsCast = true
 	return config
@@ -123,27 +134,30 @@ func defaultDoTHandler(sim *core.Simulation, spell *core.Spell, result *core.Spe
 }
 
 func defaultSpellHandler(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-	copySpell := spell.Unit.GetSpell(spell.WithTag(71086))
+
+	// Add DTR item ID as tag for all duplicated spells
+	copySpell := spell.Unit.GetSpell(spell.WithTag(spell.Tag + 71086))
 	if copySpell == nil {
 		copySpell = spell.Unit.RegisterSpell(GetDRTSpellConfig(spell))
+
+		// copy BonusCoefficient as spells might have spell mods applied to them
+		// we dont know the original in the base spell config so they might have been applied twice
+		copySpell.BonusCoefficient = spell.BonusCoefficient
 	}
 
-	sim.AddPendingAction(
-		&core.PendingAction{
-			NextActionAt: sim.CurrentTime + time.Millisecond*200, // add slight delay
-			Priority:     core.ActionPriorityAuto,
-			OnAction: func(sim *core.Simulation) {
-				copySpell.Cast(sim, result.Target)
-			},
-		},
-	)
+	CastDTRSpell(sim, copySpell, result.Target)
 }
 
 func GetDRTSpellConfig(spell *core.Spell) core.SpellConfig {
+	// create a copy with 0 tag as we don't use spell split metrics for dtr copies
+	oldTag := spell.ActionID.Tag
+	if spell.GetMetricSplitCount() > 1 {
+		spell.ActionID.Tag = 0
+	}
 	baseConfig := core.SpellConfig{
-		ActionID:                 spell.WithTag(71086),
+		ActionID:                 spell.WithTag(spell.Tag + 71086),
 		SpellSchool:              spell.SpellSchool,
-		ProcMask:                 core.ProcMaskEmpty,
+		ProcMask:                 spell.ProcMask,
 		ApplyEffects:             spell.ApplyEffects,
 		ManaCost:                 core.ManaCostOptions{},
 		CritMultiplier:           spell.Unit.Env.Raid.GetPlayerFromUnit(spell.Unit).GetCharacter().DefaultSpellCritMultiplier(),
@@ -153,11 +167,10 @@ func GetDRTSpellConfig(spell *core.Spell) core.SpellConfig {
 		ClassSpellMask:           spell.ClassSpellMask,
 		BonusCoefficient:         spell.BonusCoefficient,
 		Flags:                    spell.Flags &^ core.SpellFlagAPL,
+		RelatedDotSpell:          spell.RelatedDotSpell,
 	}
 
-	// copy BonusCoefficient as spells might have spell mods applied to them
-	// we dont know the original in the base spell config so they might have been applied twice
-	baseConfig.BonusCoefficient = spell.BonusCoefficient
+	spell.ActionID.Tag = oldTag
 	return baseConfig
 }
 
@@ -165,6 +178,16 @@ func init() {
 	core.NewItemEffect(71086, func(a core.Agent) {
 		unit := &a.GetCharacter().Unit
 		registerSpells(unit)
+
+		unit.OnSpellRegistered(func(spell *core.Spell) {
+			if val, ok := classConfig[a.GetCharacter().Spec]; ok {
+				for id, c := range val.spellConfig {
+					if c.spellCopyHandler != nil && id == spell.SpellID && spell.ActionID.Tag < 71086 {
+						c.spellCopyHandler(unit, spell)
+					}
+				}
+			}
+		})
 
 		lastTimestamp := time.Duration(0)
 		spellList := map[int32]bool{}
@@ -174,7 +197,7 @@ func init() {
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 
 				// Handle direct damage only and make sure we're not proccing of our own spell
-				if !result.Landed() || spell.ActionID.Tag == 71086 {
+				if !result.Landed() || spell.ActionID.Tag >= 71086 {
 					return
 				}
 
@@ -190,8 +213,18 @@ func init() {
 
 				config := classConfig[a.GetCharacter().Spec]
 				if config == nil {
-					// TODO: HANDLE BETTER
-					panic("DTR not supported for this spec yet")
+
+					// Create an empty config for this spell
+					config = CreateDTRClassConfig(a.GetCharacter().Spec, 0.0)
+					classConfig[a.GetCharacter().Spec] = config
+
+					log.Printf("Using DTR for spec %s which is not implemented. Using default config", a.GetCharacter().Spec)
+				}
+
+				// for now make it generic, might change this later
+				// this rule should disable impact replication of related dot spells
+				if spell.ActionID.Tag > 0 && spell.CurDot() != nil {
+					return
 				}
 
 				if val, ok := config.spellConfig[spell.SpellID]; ok {
@@ -229,8 +262,12 @@ func init() {
 
 				config := classConfig[a.GetCharacter().Spec]
 				if config == nil {
-					// TODO: HANDLE BETTER
-					panic("DTR not supported for this spec yet")
+
+					// Create an empty config for this spell
+					config = CreateDTRClassConfig(a.GetCharacter().Spec, 0.0)
+					classConfig[a.GetCharacter().Spec] = config
+
+					log.Printf("Using DTR for spec %s which is not implemented. Using default config", a.GetCharacter().Spec)
 				}
 
 				if val, ok := config.spellConfig[spell.SpellID]; ok {
@@ -289,18 +326,22 @@ func registerPulseLightningCapacitor() {
 				copySpell = spell.Unit.RegisterSpell(copyConfig)
 			}
 
-			sim.AddPendingAction(
-				&core.PendingAction{
-					NextActionAt: sim.CurrentTime + time.Millisecond*200, // add slight delay
-					Priority:     core.ActionPriorityAuto,
-					OnAction: func(sim *core.Simulation) {
-						// for now use the same roll as the old one as we don't carry any
-						// meta data of the auras
-						// only use BonusDamage fields for spells with 0 spell scaling
-						copySpell.BonusSpellPower = result.PreOutcomeDamage
-						copySpell.Cast(sim, result.Target)
-					},
-				},
-			)
+			// for now use the same roll as the old one as we don't carry any
+			// meta data of the auras
+			// only use BonusDamage fields for spells with 0 spell scaling
+			copySpell.BonusSpellPower = result.PreOutcomeDamage
+			CastDTRSpell(sim, copySpell, result.Target)
 		})
+}
+
+func CastDTRSpell(sim *core.Simulation, spell *core.Spell, target *core.Unit) {
+	sim.AddPendingAction(
+		&core.PendingAction{
+			NextActionAt: sim.CurrentTime + DTRDelay, // add slight delay
+			Priority:     core.ActionPriorityAuto,
+			OnAction: func(sim *core.Simulation) {
+				spell.Cast(sim, target)
+			},
+		},
+	)
 }

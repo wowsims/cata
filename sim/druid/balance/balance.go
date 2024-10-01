@@ -89,7 +89,7 @@ func (moonkin *BalanceDruid) ApplyTalents() {
 
 	moonkin.AddStaticMod(core.SpellModConfig{
 		ClassMask:  druid.DruidSpellWrath | druid.DruidSpellStarfire | druid.DruidSpellStarsurge | druid.DruidSpellStarfall | druid.DruidSpellDoT,
-		Kind:       core.SpellMod_CritMultiplier_Pct,
+		Kind:       core.SpellMod_CritMultiplier_Flat,
 		FloatValue: 1.0,
 	})
 
