@@ -233,14 +233,14 @@ $gray-800: #323232;
 .toast {
 	--icon-color: var(--bs-warning);
 
-	i {
-		line-height: 1;
-		color: var(--icon-color);
-	}
-
 	.toast-header {
 		border-bottom: 0;
 		padding-bottom: 0;
+
+		i {
+			line-height: 1;
+			color: var(--icon-color);
+		}
 	}
 
 	.btn-close {

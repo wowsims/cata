@@ -2,11 +2,11 @@ import clsx from 'clsx';
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
-import { Player, ReforgeData } from '../../player';
+import { Player } from '../../player';
 import { GemColor, ItemQuality, ItemRandomSuffix, ItemSlot } from '../../proto/common';
 import { UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../../proto/ui';
 import { ActionId } from '../../proto_utils/action_id';
-import { EquippedItem } from '../../proto_utils/equipped_item';
+import { EquippedItem, ReforgeData } from '../../proto_utils/equipped_item';
 import { gemMatchesSocket, getEmptyGemSocketIconUrl } from '../../proto_utils/gems';
 import { shortSecondaryStatNames, slotNames } from '../../proto_utils/names';
 import { Stats } from '../../proto_utils/stats';
@@ -447,8 +447,7 @@ export default class SelectorModal extends BaseModal {
 				};
 			}),
 			computeEP: (reforge: ReforgeData) => this.player.computeReforgingEP(reforge),
-			equippedToItemFn: (equippedItem: EquippedItem | null) =>
-				equippedItem?.reforge ? this.player.getReforgeData(equippedItem, equippedItem.reforge) : null,
+			equippedToItemFn: (equippedItem: EquippedItem | null) => equippedItem?.getReforgeData() || null,
 			onRemove: (eventID: number) => {
 				const equippedItem = gearData.getEquippedItem();
 				if (equippedItem) {

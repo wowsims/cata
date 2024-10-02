@@ -1,0 +1,42 @@
+{
+	"type": "TypeAPL",
+	"prepullActions": [
+		{"action":{"castSpell":{"spellId":{"spellId":30146}}},"doAtValue":{"const":{"val":"-10s"}}},
+		{"action":{"castSpell":{"spellId":{"spellId":77801}}},"doAtValue":{"const":{"val":"-4.0s"}}},
+		{"action":{"castSpell":{"spellId":{"spellId":74434}}},"doAtValue":{"const":{"val":"-4.0s"}}},
+		{"action":{"castSpell":{"spellId":{"spellId":691}}},"doAtValue":{"const":{"val":"-4.0s"}}},
+		{"action":{"castSpell":{"spellId":{"otherId":"OtherActionPotion"}}},"doAtValue":{"const":{"val":"-2.5s"}}},
+		{"action":{"castSpell":{"spellId":{"spellId":59672}}},"doAtValue":{"const":{"val":"-2.5s"}}},
+		{"action":{"castSpell":{"spellId":{"spellId":686}}},"doAtValue":{"const":{"val":"-2.5s"}}},
+		{"action":{"castSpell":{"spellId":{"spellId":348}}},"doAtValue":{"const":{"val":"-0.7s"}}},
+		{"action":{"castSpell":{"spellId":{"itemId":58183}}},"doAtValue":{"const":{"val":"-0.7s"}}},
+		{"action":{"castSpell":{"spellId":{"itemId":56290}}},"doAtValue":{"const":{"val":"-0.7s"}}},
+		{"action":{"castSpell":{"spellId":{"itemId":52353}}},"doAtValue":{"const":{"val":"-0.7s"}}},
+		{"action":{"castSpell":{"spellId":{"itemId":68998}}},"doAtValue":{"const":{"val":"-0.7s"}}},
+		{"action":{"castSpell":{"spellId":{"itemId":69000}}},"doAtValue":{"const":{"val":"-0.7s"}}},
+		{"action":{"castSpell":{"spellId":{"spellId":82174}}},"doAtValue":{"const":{"val":"-0.7s"}}},
+		{"action":{"castSpell":{"spellId":{"spellId":33697}}},"doAtValue":{"const":{"val":"-0.7s"}}}
+	],
+	"priorityList": [
+		{"action":{"autocastOtherCooldowns":{}}},
+		{"action":{"condition":{"and":{"vals":[{"or":{"vals":[{"and":{"vals":[{"auraIsActive":{"auraId":{"spellId":92318}}},{"auraIsActive":{"auraId":{"spellId":89091}}},{"auraIsActive":{"auraId":{"spellId":91047}}},{"auraIsActive":{"auraId":{"spellId":90898}}},{"auraIsActive":{"auraId":{"spellId":90992}}},{"auraIsActive":{"auraId":{"spellId":91002}}},{"cmp":{"op":"OpGe","lhs":{"auraNumStacks":{"auraId":{"spellId":92325}}},"rhs":{"const":{"val":"5"}}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":90953}}},"rhs":{"const":{"val":"20"}}}},{"auraIsActive":{"auraId":{"spellId":92320}}}]}},{"and":{"vals":[{"auraIsActive":{"auraId":{"spellId":92318}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":92318}}},"rhs":{"const":{"val":"1s"}}}},{"auraIsActive":{"auraId":{"spellId":91047}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":91047}}},"rhs":{"const":{"val":"1s"}}}},{"auraIsActive":{"auraId":{"spellId":89091}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":89091}}},"rhs":{"const":{"val":"1s"}}}},{"auraIsActive":{"auraId":{"spellId":90898}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":90898}}},"rhs":{"const":{"val":"1s"}}}},{"auraIsActive":{"auraId":{"spellId":91002}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":91002}}},"rhs":{"const":{"val":"1s"}}}},{"auraIsActive":{"auraId":{"spellId":90992}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":90992}}},"rhs":{"const":{"val":"1s"}}}},{"auraIsActive":{"auraId":{"spellId":92320}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":92320}}},"rhs":{"const":{"val":"1s"}}}}]}},{"and":{"vals":[{"auraIsActive":{"auraId":{"itemId":58091}}},{"or":{"vals":[{"and":{"vals":[{"auraIsActive":{"auraId":{"spellId":75170}}},{"auraIsActive":{"auraId":{"spellId":74241}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"itemId":58091}}},"rhs":{"const":{"val":"1s"}}}}]}},{"cmp":{"op":"OpLe","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"120s"}}}}]}},{"or":{"vals":[{"auraIsActive":{"auraId":{"spellId":90898}}},{"auraIsActive":{"auraId":{"spellId":92318}}},{"auraIsActive":{"auraId":{"spellId":91047}}},{"auraIsActive":{"auraId":{"spellId":90992}}},{"auraIsActive":{"auraId":{"spellId":91002}}},{"auraIsActive":{"auraId":{"spellId":89091}}},{"cmp":{"op":"OpGe","lhs":{"auraNumStacks":{"auraId":{"spellId":92325}}},"rhs":{"const":{"val":"5"}}}},{"cmp":{"op":"OpGe","lhs":{"auraNumStacks":{"auraId":{"spellId":90985}}},"rhs":{"const":{"val":"20"}}}},{"auraIsActive":{"auraId":{"spellId":92320}}}]}}]}},{"and":{"vals":[{"auraIsActive":{"auraId":{"itemId":58091}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"itemId":58091}}},"rhs":{"const":{"val":"3s"}}}}]}}]}},{"spellCanCast":{"spellId":{"spellId":18540}}}]}},"strictSequence":{"actions":[{"castSpell":{"spellId":{"spellId":18540}}}]}}},
+		{"action":{"condition":{"and":{}},"sequence":{"name":"burst","actions":[{"castSpell":{"spellId":{"spellId":77801}}},{"castSpell":{"spellId":{"spellId":74434}}},{"castSpell":{"spellId":{"spellId":691}}},{"castSpell":{"spellId":{"spellId":59672}}},{"castSpell":{"spellId":{"spellId":603}}},{"castSpell":{"spellId":{"spellId":348}}},{"castSpell":{"spellId":{"spellId":172}}}]}}},
+		{"action":{"condition":{"and":{"vals":[{"sequenceIsComplete":{"sequenceName":"burst"}},{"spellCanCast":{"spellId":{"spellId":77801}}},{"spellCanCast":{"spellId":{"spellId":59672}}}]}},"resetSequence":{"sequenceName":"burst"}}},
+		{"action":{"condition":{"and":{"vals":[{"auraIsActive":{"auraId":{"spellId":59672}}},{"auraIsKnown":{"auraId":{"spellId":59672}}}]}},"castSpell":{"spellId":{"itemId":58091}}}},
+		{"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpLe","lhs":{"currentMana":{}},"rhs":{"const":{"val":"67000"}}}},{"cmp":{"op":"OpLe","lhs":{"sequenceTimeToReady":{"sequenceName":"burst"}},"rhs":{"const":{"val":"10s"}}}}]}},"castSpell":{"spellId":{"spellId":1454}}}},
+		{"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpGe","lhs":{"sequenceTimeToReady":{"sequenceName":"burst"}},"rhs":{"const":{"val":"121s"}}}},{"cmp":{"op":"OpGt","lhs":{"currentTime":{}},"rhs":{"const":{"val":"60s"}}}}]}},"castSpell":{"spellId":{"spellId":33697}}}},
+		{"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpLe","lhs":{"sequenceTimeToReady":{"sequenceName":"burst"}},"rhs":{"spellCastTime":{"spellId":{"spellId":30146}}}}},{"cmp":{"op":"OpLe","lhs":{"spellCpm":{"spellId":{"spellId":30146}}},"rhs":{"const":{"val":"1"}}}}]}},"castSpell":{"spellId":{"spellId":30146}}}},
+		{"action":{"condition":{"cmp":{"op":"OpLt","lhs":{"dotRemainingTime":{"spellId":{"spellId":348,"tag":1}}},"rhs":{"math":{"op":"OpAdd","lhs":{"spellCastTime":{"spellId":{"spellId":348}}},"rhs":{"dotTickFrequency":{"spellId":{"spellId":348,"tag":1}}}}}}},"castSpell":{"spellId":{"spellId":348}}}},
+		{"action":{"condition":{"cmp":{"op":"OpLt","lhs":{"dotRemainingTime":{"spellId":{"spellId":172}}},"rhs":{"dotTickFrequency":{"spellId":{"spellId":172}}}}},"castSpell":{"spellId":{"spellId":172}}}},
+		{"action":{"condition":{"spellIsReady":{"spellId":{"spellId":71521}}},"castSpell":{"spellId":{"spellId":71521}}}},
+		{"action":{"condition":{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":89937}}},{"auraIsActive":{"auraId":{"spellId":89937}}}]}},"castSpell":{"spellId":{"spellId":77799}}}},
+		{"action":{"condition":{"spellIsReady":{"spellId":{"spellId":47897}}},"castSpell":{"spellId":{"spellId":47897}}}},
+		{"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpLt","lhs":{"dotRemainingTime":{"spellId":{"spellId":603}}},"rhs":{"dotTickFrequency":{"spellId":{"spellId":603}}}}},{"cmp":{"op":"OpGt","lhs":{"remainingTime":{}},"rhs":{"math":{"op":"OpMul","lhs":{"dotTickFrequency":{"spellId":{"spellId":603}}},"rhs":{"const":{"val":"2"}}}}}}]}},"castSpell":{"spellId":{"spellId":603}}}},
+		{"action":{"castSpell":{"spellId":{"spellId":50589}}}},
+		{"action":{"condition":{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":17941}}},{"auraIsActive":{"auraId":{"spellId":17941}}}]}},"castSpell":{"spellId":{"spellId":686}}}},
+		{"action":{"condition":{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":71165}}},{"auraIsActive":{"auraId":{"spellId":71165}}}]}},"castSpell":{"spellId":{"spellId":29722}}}},
+		{"action":{"condition":{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":63167}}},{"auraIsActive":{"auraId":{"spellId":63167}}}]}},"castSpell":{"spellId":{"spellId":6353}}}},
+		{"action":{"castSpell":{"spellId":{"spellId":686}}}},
+		{"action":{"castSpell":{"spellId":{"spellId":1454}}}}
+	]
+}
