@@ -16,8 +16,8 @@ import { Stats } from '../../core/proto_utils/stats';
 import { ferocityDefault } from '../../core/talents/hunter_pet';
 import AoeApl from './apls/aoe.apl.json';
 import SvApl from './apls/sv.apl.json';
-import SvAdvApl from './apls/sv_advanced.apl.json';
 import P1SVGear from './gear_sets/p1_sv.gear.json';
+import P3SVGear from './gear_sets/p3_sv.gear.json';
 import PreraidSVGear from './gear_sets/preraid_sv.gear.json';
 
 // Preset options for this spec.
@@ -25,16 +25,10 @@ import PreraidSVGear from './gear_sets/preraid_sv.gear.json';
 // keep them in a separate file.
 
 export const SV_PRERAID_PRESET = PresetUtils.makePresetGear('SV PreRaid Preset', PreraidSVGear);
-export const SV_P1_PRESET = PresetUtils.makePresetGear('SV P1 Preset', P1SVGear);
-export const DefaultSimpleRotation = HunterRotation.create({
-	type: RotationType.SingleTarget,
-	sting: HunterStingType.SerpentSting,
-	multiDotSerpentSting: true,
-});
+export const SV_P1_PRESET = PresetUtils.makePresetGear('SV T11 Preset', P1SVGear);
+export const SV_P3_PRESET = PresetUtils.makePresetGear('SV T12 Preset', P3SVGear);
 
-export const ROTATION_PRESET_SIMPLE_DEFAULT = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecSurvivalHunter, DefaultSimpleRotation);
 export const ROTATION_PRESET_SV = PresetUtils.makePresetAPLRotation('SV', SvApl);
-export const ROTATION_PRESET_SV_ADVANCED = PresetUtils.makePresetAPLRotation('SV (Advanced)', SvAdvApl);
 export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AOE', AoeApl);
 
 // Preset options for EP weights
@@ -56,8 +50,8 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	),
 );
 
-export const P2_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'SV P2 (T12 4 set)',
+export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'SV P3 (T12 4 set)',
 	Stats.fromMap(
 		{
 			[Stat.StatStamina]: 0.5,
@@ -80,7 +74,7 @@ export const P2_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const SurvivalTalents = {
 	name: 'Survival',
 	data: SavedTalents.create({
-		talentsString: '03-2302-23203003023022121311',
+		talentsString: '03-2302-03203203023022121311',
 		glyphs: Glyphs.create({
 			prime1: PrimeGlyph.GlyphOfExplosiveShot,
 			prime2: PrimeGlyph.GlyphOfKillShot,

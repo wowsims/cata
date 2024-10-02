@@ -14,6 +14,7 @@ import { Stats } from '../../core/proto_utils/stats';
 import AoeApl from './apls/aoe.apl.json';
 import BmApl from './apls/bm.apl.json';
 import P1BMGear from './gear_sets/p1_bm.gear.json';
+import P3BMGear from './gear_sets/p3_bm.gear.json';
 import PreraidBMGear from './gear_sets/preraid_bm.gear.json';
 
 // Preset options for this spec.
@@ -22,6 +23,7 @@ import PreraidBMGear from './gear_sets/preraid_bm.gear.json';
 
 export const BM_PRERAID_PRESET = PresetUtils.makePresetGear('BM PreRaid Preset', PreraidBMGear);
 export const BM_P1_PRESET = PresetUtils.makePresetGear('BM P1 Preset', P1BMGear);
+export const BM_P3_PRESET = PresetUtils.makePresetGear('BM T12 Preset', P3BMGear);
 
 export const DefaultSimpleRotation = BeastMasteryRotation.create({
 	type: RotationType.SingleTarget,
@@ -40,13 +42,28 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'BM P1',
 	Stats.fromMap(
 		{
-			[Stat.StatStamina]: 0.5,
 			[Stat.StatAgility]: 2.65,
 			[Stat.StatRangedAttackPower]: 1.0,
 			[Stat.StatHitRating]: 2.12,
 			[Stat.StatCritRating]: 1.19,
 			[Stat.StatHasteRating]: 0.97,
 			[Stat.StatMasteryRating]: 0.55,
+		},
+		{
+			[PseudoStat.PseudoStatRangedDps]: 6.32,
+		},
+	),
+);
+export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'BM T12',
+	Stats.fromMap(
+		{
+			[Stat.StatAgility]: 3.03,
+			[Stat.StatRangedAttackPower]: 1.0,
+			[Stat.StatHitRating]: 2.52,
+			[Stat.StatCritRating]: 1.32,
+			[Stat.StatHasteRating]: 1.14,
+			[Stat.StatMasteryRating]: 0.64,
 		},
 		{
 			[PseudoStat.PseudoStatRangedDps]: 6.32,

@@ -60,9 +60,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.SV_P1_PRESET.gear,
+		gear: Presets.SV_P3_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P1_EP_PRESET.epWeights,
+		epWeights: Presets.P3_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
 			const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 8);
@@ -132,13 +132,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
+		epWeights: [Presets.P1_EP_PRESET, Presets.P3_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.SurvivalTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_PRESET_SIMPLE_DEFAULT, Presets.ROTATION_PRESET_SV, Presets.ROTATION_PRESET_SV_ADVANCED, Presets.ROTATION_PRESET_AOE],
+		rotations: [Presets.ROTATION_PRESET_SV, Presets.ROTATION_PRESET_AOE],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.SV_PRERAID_PRESET, Presets.SV_P1_PRESET],
+		gear: [Presets.SV_P3_PRESET, Presets.SV_P1_PRESET, Presets.SV_PRERAID_PRESET],
 	},
 
 	autoRotation: (player: Player<Spec.SpecSurvivalHunter>): APLRotation => {
@@ -251,7 +251,10 @@ export class SurvivalHunterSimUI extends IndividualSimUI<Spec.SpecSurvivalHunter
 					if (player.getGear().getItemSetCount('Lightning-Charged Battlegear') >= 4) {
 						return Presets.P1_EP_PRESET.epWeights;
 					}
-					return Presets.P2_EP_PRESET.epWeights;
+					if (player.getGear().getItemSetCount("Flamewaker's Battlegear") >= 4) {
+						return Presets.P3_EP_PRESET.epWeights;
+					}
+					return Presets.P1_EP_PRESET.epWeights;
 				},
 			});
 		});
