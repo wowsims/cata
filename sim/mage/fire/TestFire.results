@@ -1565,6 +1565,90 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFire-Settings-Worgen-p1_fire-Fire-fire-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 49213.17558
+  tps: 52692.94463
+ }
+}
+dps_results: {
+ key: "TestFire-Settings-Worgen-p1_fire-Fire-fire-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 29603.64295
+  tps: 29117.26499
+ }
+}
+dps_results: {
+ key: "TestFire-Settings-Worgen-p1_fire-Fire-fire-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 38374.11511
+  tps: 37560.51679
+ }
+}
+dps_results: {
+ key: "TestFire-Settings-Worgen-p1_fire-Fire-fire-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 36430.80862
+  tps: 39931.81529
+ }
+}
+dps_results: {
+ key: "TestFire-Settings-Worgen-p1_fire-Fire-fire-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 20841.21854
+  tps: 20419.71875
+ }
+}
+dps_results: {
+ key: "TestFire-Settings-Worgen-p1_fire-Fire-fire-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 23432.23785
+  tps: 22628.59545
+ }
+}
+dps_results: {
+ key: "TestFire-Settings-Worgen-p3_fire-Fire-fire-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 61584.58712
+  tps: 61857.51834
+ }
+}
+dps_results: {
+ key: "TestFire-Settings-Worgen-p3_fire-Fire-fire-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 37981.6808
+  tps: 36401.21923
+ }
+}
+dps_results: {
+ key: "TestFire-Settings-Worgen-p3_fire-Fire-fire-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 48168.02936
+  tps: 46295.05831
+ }
+}
+dps_results: {
+ key: "TestFire-Settings-Worgen-p3_fire-Fire-fire-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 44210.64525
+  tps: 46963.74351
+ }
+}
+dps_results: {
+ key: "TestFire-Settings-Worgen-p3_fire-Fire-fire-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 26096.47804
+  tps: 24832.88235
+ }
+}
+dps_results: {
+ key: "TestFire-Settings-Worgen-p3_fire-Fire-fire-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 27976.44563
+  tps: 26269.06275
+ }
+}
+dps_results: {
  key: "TestFire-SwitchInFrontOfTarget-Default"
  value: {
   dps: 30929.70841
