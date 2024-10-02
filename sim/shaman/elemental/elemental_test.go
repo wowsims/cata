@@ -18,11 +18,7 @@ func TestElemental(t *testing.T) {
 		Race:       proto.Race_RaceTroll,
 		OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
-		GearSet: core.GetGearSet("../../../ui/shaman/elemental/gear_sets", "p1"),
-		OtherGearSets: []core.GearSetCombo{
-			core.GetGearSet("../../../ui/shaman/elemental/gear_sets", "p3.default"),
-			core.GetGearSet("../../../ui/shaman/elemental/gear_sets", "p3.cleave-aoe"),
-		},
+		GearSet: core.GetGearSet("../../../ui/shaman/elemental/gear_sets", "p3.default"),
 		Talents: TalentsTotemDuration,
 		Glyphs:  StandardGlyphs,
 		OtherTalentSets: []core.TalentsCombo{
@@ -68,7 +64,7 @@ var TalentsImprovedShields = "3032023212231101321-2030022"
 var StandardGlyphs = &proto.Glyphs{
 	Prime1: int32(proto.ShamanPrimeGlyph_GlyphOfFlameShock),
 	Prime2: int32(proto.ShamanPrimeGlyph_GlyphOfLavaBurst),
-	Prime3: int32(proto.ShamanPrimeGlyph_GlyphOfLightningBolt),
+	Prime3: int32(proto.ShamanPrimeGlyph_GlyphOfUnleashedLightning),
 	Major1: int32(proto.ShamanMajorGlyph_GlyphOfLightningShield),
 	Major2: int32(proto.ShamanMajorGlyph_GlyphOfHealingStreamTotem),
 	Major3: int32(proto.ShamanMajorGlyph_GlyphOfStoneclawTotem),
@@ -76,7 +72,7 @@ var StandardGlyphs = &proto.Glyphs{
 var AoEGlyphs = &proto.Glyphs{
 	Prime1: int32(proto.ShamanPrimeGlyph_GlyphOfFlameShock),
 	Prime2: int32(proto.ShamanPrimeGlyph_GlyphOfLavaBurst),
-	Prime3: int32(proto.ShamanPrimeGlyph_GlyphOfLightningBolt),
+	Prime3: int32(proto.ShamanPrimeGlyph_GlyphOfUnleashedLightning),
 	Major1: int32(proto.ShamanMajorGlyph_GlyphOfLightningShield),
 	Major2: int32(proto.ShamanMajorGlyph_GlyphOfChainLightning),
 	Major3: int32(proto.ShamanMajorGlyph_GlyphOfStoneclawTotem),
