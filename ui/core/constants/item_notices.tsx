@@ -21,7 +21,24 @@ const VPLC_IMPLEMENTATION_WARNING = (
 	</>
 );
 
-const ITEM_DOESNT_EXIST_WARNING = <>This item didn't exist in the game and thus is not implemented!</>;
+const TENTATIVE_IMPLEMENTATION_WARNING = (
+	<>
+		<p>
+			This item <span className="fw-bold">is</span> implemented, but detailed proc behavior will be confirmed on PTR.
+		</p>
+		<WantToHelpMessage />
+	</>
+);
+
+const ITEM_DOESNT_EXIST_WARNING = <>
+	<p>
+		This item never existed in the original game, therefore any effects or procs it might have are not implemented.
+	</p>
+	<p>
+		Once we get a clear indication from Blizzard whether they decide to include it or not, we will either implement it and remove this notice or remove the item entirely.
+	</p>
+	<WantToHelpMessage />
+</>;
 
 const NON_EXISTING_ITEMS = [
 	// Rune of Zeth - 391
@@ -98,9 +115,67 @@ const NON_EXISTING_ITEMS = [
 	71573,
 	// Firemind Pendant - 391
 	71576,
+	// Rotting Skull - 384, 410
+	77987, 78007,
+	// Kiroptyric Sigil - 384, 410
+	77984, 78004,
+	// Fire of the Deep - 384, 410
+	77988, 78008,
+	// Reflection of the Light - 384, 410
+	77986, 78006,
+	// Bottled Wishes - 384, 410
+	77985, 78005,
 ];
 
 const WILL_NOT_BE_IMPLEMENTED_WARNING = <>The equip/use effect on this item is will not be implemented!</>;
+
+const WILL_NOT_BE_IMPLEMENTED_ITEMS = [
+	// Eye of Blazing Power - Normal, Heroic
+	68983, 69149,
+	// Windward Heart - LFR, Normal, Heroic
+	77981, 77209, 78001,
+	// Heart of Unliving - LFR, Normal, Heroic
+	77976, 77199, 77996,
+	// Seal of the Seven Signs - LFR, Normal, Heroic
+	77969, 77204, 77989,
+];
+
+const TENTATIVE_IMPLEMENTATION_ITEMS = [
+	// Vial of Shadows - LFR, Normal, Heroic
+	77979, 77207, 77999,
+	// Bone-Link Fetish - LFR, Normal, Heroic
+	77982, 77210, 78002,
+	// Cunning of the Cruel - LFR, Normal, Heroic
+	77980, 77208, 78000,
+	// Indomitable Pride - LFR, Normal, Heroic
+	77983, 77211, 78003,
+	// Creche of the Final Dragon - LFR, Normal, Heroic
+	77972, 77205, 77992,
+	// Insignia of the Corrupted Mind - LFR, Normal, Heroic
+	77971, 77203, 77991,
+	// Soulshifter Vortex - LFR, Normal, Heroic
+	77970, 77206, 77990,
+	// Starcatcher Compass - LFR, Normal, Heroic
+	77973, 77202, 77993,
+	// Eye of Unmaking - LFR, Normal, Heroic
+	77977, 77200, 77997,
+	// Resolve of Undying - LFR, Normal, Heroic
+	77978, 77201, 77998,
+	// Will of Unbinding - LFR, Normal, Heroic
+	77975, 77198, 77995,
+	// Wrath of Unchaining - LFR, Normal, Heroic
+	77974, 77197, 77994,
+	// Veil of Lies
+	72900,
+	// Foul Gift of the Demon Lord
+	72898,
+	// Arrow of Time
+	72897,
+	// Rosary of Light
+	72901,
+	// Varo'then's Brooch
+	72899,
+];
 
 export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 	...NON_EXISTING_ITEMS.map((itemID): [number, ItemNoticeData] => [
@@ -109,20 +184,18 @@ export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 			[Spec.SpecUnknown]: ITEM_DOESNT_EXIST_WARNING,
 		},
 	]),
-	[
-		// Eye of Blazing Power - 378
-		68983,
+	...WILL_NOT_BE_IMPLEMENTED_ITEMS.map((itemID): [number, ItemNoticeData] => [
+		itemID,
 		{
 			[Spec.SpecUnknown]: WILL_NOT_BE_IMPLEMENTED_WARNING,
 		},
-	],
-	[
-		// Eye of Blazing Power - 391
-		69149,
+	]),
+	...TENTATIVE_IMPLEMENTATION_ITEMS.map((itemID): [number, ItemNoticeData] => [
+		itemID,
 		{
-			[Spec.SpecUnknown]: WILL_NOT_BE_IMPLEMENTED_WARNING,
+			[Spec.SpecUnknown]: TENTATIVE_IMPLEMENTATION_WARNING,
 		},
-	],
+	]),
 	// Dragonwrath, Tarecgosa's Rest
 	[
 		71086,

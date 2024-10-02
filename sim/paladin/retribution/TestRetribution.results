@@ -85,6 +85,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-ArrowofTime-72897"
+ value: {
+  dps: 30245.55973
+  tps: 30270.43781
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-AustereShadowspiritDiamond"
  value: {
   dps: 30568.96176
@@ -233,10 +240,52 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-Bone-LinkFetish-77210"
+ value: {
+  dps: 31625.67763
+  tps: 31641.02088
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-Bone-LinkFetish-77982"
+ value: {
+  dps: 31490.91036
+  tps: 31506.25361
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-Bone-LinkFetish-78002"
+ value: {
+  dps: 31851.95842
+  tps: 31867.30167
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-BottledLightning-66879"
  value: {
   dps: 29329.17965
   tps: 29347.83369
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-BottledWishes-77114"
+ value: {
+  dps: 29719.72179
+  tps: 29736.08938
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-BottledWishes-77985"
+ value: {
+  dps: 29643.98264
+  tps: 29661.67642
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-BottledWishes-78005"
+ value: {
+  dps: 29647.11804
+  tps: 29678.60746
  }
 }
 dps_results: {
@@ -296,6 +345,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-CrecheoftheFinalDragon-77205"
+ value: {
+  dps: 31455.19138
+  tps: 31470.53463
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-CrecheoftheFinalDragon-77972"
+ value: {
+  dps: 31214.6596
+  tps: 31230.00285
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-CrecheoftheFinalDragon-77992"
+ value: {
+  dps: 31795.73105
+  tps: 31811.0743
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-CrushingWeight-59506"
  value: {
   dps: 30161.01512
@@ -307,6 +377,27 @@ dps_results: {
  value: {
   dps: 30580.58713
   tps: 30590.75572
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-CunningoftheCruel-77208"
+ value: {
+  dps: 29957.21805
+  tps: 29976.43303
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-CunningoftheCruel-77980"
+ value: {
+  dps: 29867.96137
+  tps: 29885.17708
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-CunningoftheCruel-78000"
+ value: {
+  dps: 30048.50735
+  tps: 30067.72353
  }
 }
 dps_results: {
@@ -429,6 +520,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-EyeofUnmaking-77200"
+ value: {
+  dps: 31621.63514
+  tps: 31636.97839
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-EyeofUnmaking-77977"
+ value: {
+  dps: 31330.11695
+  tps: 31345.4602
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-EyeofUnmaking-77997"
+ value: {
+  dps: 31942.30515
+  tps: 31957.6484
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-FallofMortality-59500"
  value: {
   dps: 29026.80023
@@ -485,6 +597,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-FireoftheDeep-77117"
+ value: {
+  dps: 29765.03893
+  tps: 29780.38218
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-FireoftheDeep-77988"
+ value: {
+  dps: 29684.58141
+  tps: 29699.92466
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-FireoftheDeep-78008"
+ value: {
+  dps: 29856.32727
+  tps: 29871.67052
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-FleetShadowspiritDiamond"
  value: {
   dps: 30655.91679
@@ -503,6 +636,13 @@ dps_results: {
  value: {
   dps: 30561.76815
   tps: 30576.75029
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-FoulGiftoftheDemonLord-72898"
+ value: {
+  dps: 29828.42737
+  tps: 29846.90518
  }
 }
 dps_results: {
@@ -660,10 +800,52 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-IndomitablePride-77211"
+ value: {
+  dps: 29056.27505
+  tps: 29071.6183
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-IndomitablePride-77983"
+ value: {
+  dps: 29056.27505
+  tps: 29071.6183
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-IndomitablePride-78003"
+ value: {
+  dps: 29056.27505
+  tps: 29071.6183
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-InsigniaofDiplomacy-61433"
  value: {
   dps: 29056.39382
   tps: 29071.73707
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-InsigniaoftheCorruptedMind-77203"
+ value: {
+  dps: 29843.01834
+  tps: 29846.68184
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-InsigniaoftheCorruptedMind-77971"
+ value: {
+  dps: 29603.84985
+  tps: 29602.06127
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-InsigniaoftheCorruptedMind-77991"
+ value: {
+  dps: 29838.09796
+  tps: 29841.28065
  }
 }
 dps_results: {
@@ -720,6 +902,27 @@ dps_results: {
  value: {
   dps: 29591.54877
   tps: 29606.89202
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-KiroptyricSigil-77113"
+ value: {
+  dps: 30384.51498
+  tps: 30400.88258
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-KiroptyricSigil-77984"
+ value: {
+  dps: 30221.50705
+  tps: 30239.20083
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-KiroptyricSigil-78004"
+ value: {
+  dps: 30479.8214
+  tps: 30511.31082
  }
 }
 dps_results: {
@@ -975,6 +1178,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-ReflectionoftheLight-77115"
+ value: {
+  dps: 29109.39456
+  tps: 29124.73781
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-ReflectionoftheLight-77986"
+ value: {
+  dps: 29103.35387
+  tps: 29118.69712
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-ReflectionoftheLight-78006"
+ value: {
+  dps: 29116.22217
+  tps: 29131.56542
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-ReinforcedSapphiriumBattlearmor"
  value: {
   dps: 26349.26733
@@ -986,6 +1210,27 @@ dps_results: {
  value: {
   dps: 28361.71324
   tps: 28378.15756
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-ResolveofUndying-77201"
+ value: {
+  dps: 29056.27505
+  tps: 29071.6183
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-ResolveofUndying-77978"
+ value: {
+  dps: 29056.27505
+  tps: 29071.6183
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-ResolveofUndying-77998"
+ value: {
+  dps: 29056.27505
+  tps: 29071.6183
  }
 }
 dps_results: {
@@ -1021,6 +1266,34 @@ dps_results: {
  value: {
   dps: 29904.29383
   tps: 29919.63708
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-RosaryofLight-72901"
+ value: {
+  dps: 30919.95396
+  tps: 30935.29721
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-RottingSkull-77116"
+ value: {
+  dps: 31245.15426
+  tps: 31260.49751
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-RottingSkull-77987"
+ value: {
+  dps: 31002.76644
+  tps: 31018.10969
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-RottingSkull-78007"
+ value: {
+  dps: 31541.87651
+  tps: 31557.21976
  }
 }
 dps_results: {
@@ -1138,6 +1411,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-SoulshifterVortex-77206"
+ value: {
+  dps: 30236.48875
+  tps: 30251.832
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-SoulshifterVortex-77970"
+ value: {
+  dps: 30078.71069
+  tps: 30094.05394
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-SoulshifterVortex-77990"
+ value: {
+  dps: 30429.18977
+  tps: 30444.53302
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-SpidersilkSpindle-68981"
  value: {
   dps: 29648.87565
@@ -1149,6 +1443,27 @@ dps_results: {
  value: {
   dps: 29726.23866
   tps: 29741.58191
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-StarcatcherCompass-77202"
+ value: {
+  dps: 30200.46569
+  tps: 30201.5801
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-StarcatcherCompass-77973"
+ value: {
+  dps: 29985.84575
+  tps: 29990.91145
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-StarcatcherCompass-77993"
+ value: {
+  dps: 30279.436
+  tps: 30285.9284
  }
 }
 dps_results: {
@@ -1355,6 +1670,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-Varo'then'sBrooch-72899"
+ value: {
+  dps: 30959.5385
+  tps: 30974.88175
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-VeilofLies-72900"
+ value: {
+  dps: 29056.39382
+  tps: 29071.73707
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-VesselofAcceleration-68995"
  value: {
   dps: 30807.44068
@@ -1366,6 +1695,27 @@ dps_results: {
  value: {
   dps: 31028.89196
   tps: 31044.23521
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-VialofShadows-77207"
+ value: {
+  dps: 30374.36808
+  tps: 30389.71133
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-VialofShadows-77979"
+ value: {
+  dps: 30211.35888
+  tps: 30226.70213
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-VialofShadows-77999"
+ value: {
+  dps: 30262.72974
+  tps: 30278.07299
  }
 }
 dps_results: {
@@ -1467,6 +1817,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-WillofUnbinding-77198"
+ value: {
+  dps: 29026.95347
+  tps: 29046.8613
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-WillofUnbinding-77975"
+ value: {
+  dps: 29018.36892
+  tps: 29037.39831
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-WillofUnbinding-77995"
+ value: {
+  dps: 28984.24526
+  tps: 29003.19732
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-WitchingHourglass-55787"
  value: {
   dps: 29047.17046
@@ -1485,6 +1856,27 @@ dps_results: {
  value: {
   dps: 29395.125
   tps: 29410.46825
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-WrathofUnchaining-77197"
+ value: {
+  dps: 30073.18893
+  tps: 30088.53218
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-WrathofUnchaining-77974"
+ value: {
+  dps: 29977.34007
+  tps: 29992.68332
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-WrathofUnchaining-77994"
+ value: {
+  dps: 30191.33489
+  tps: 30206.67814
  }
 }
 dps_results: {

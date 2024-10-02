@@ -174,4 +174,60 @@ func init() {
 		Harmful:    false,
 		ProcChance: 1,
 	})
+
+	for _, version := range []ItemVersion{ItemVersionLFR, ItemVersionNormal, ItemVersionHeroic} {
+		labelSuffix := []string{" (LFR)", "", " (Heroic)"}[version]
+
+		shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
+			Name:       "Eye of Unmaking" + labelSuffix,
+			ID:         []int32{77977, 77200, 77997}[version],
+			AuraID:     []int32{109748, 107966, 109750}[version],
+			Bonus:      stats.Stats{stats.Strength: []float64{78, 88, 99}[version]},
+			MaxStacks:  10,
+			Callback:   core.CallbackOnSpellHitDealt,
+			Outcome:    core.OutcomeLanded,
+			ProcMask:   core.ProcMaskMelee,
+			Duration:   time.Second * 10,
+			ProcChance: 1,
+		})
+
+		shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
+			Name:       "Resolve of Undying" + labelSuffix,
+			ID:         []int32{77978, 77201, 77998}[version],
+			AuraID:     []int32{109780, 107968, 109782}[version],
+			Bonus:      stats.Stats{stats.DodgeRating: []float64{78, 88, 99}[version]},
+			MaxStacks:  10,
+			Callback:   core.CallbackOnSpellHitDealt,
+			Outcome:    core.OutcomeLanded,
+			ProcMask:   core.ProcMaskMelee,
+			Duration:   time.Second * 10,
+			ProcChance: 1,
+		})
+
+		shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
+			Name:       "Will of Unbinding" + labelSuffix,
+			ID:         []int32{77975, 77198, 77995}[version],
+			AuraID:     []int32{109793, 107970, 109795}[version],
+			Bonus:      stats.Stats{stats.Intellect: []float64{78, 88, 99}[version]},
+			MaxStacks:  10,
+			Callback:   core.CallbackOnSpellHitDealt,
+			Outcome:    core.OutcomeLanded,
+			ProcMask:   core.ProcMaskSpellDamage,
+			Duration:   time.Second * 10,
+			ProcChance: 1,
+		})
+
+		shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
+			Name:       "Wrath of Unchaining" + labelSuffix,
+			ID:         []int32{77974, 77197, 77994}[version],
+			AuraID:     []int32{109717, 107960, 109719}[version],
+			Bonus:      stats.Stats{stats.Agility: []float64{78, 88, 99}[version]},
+			MaxStacks:  10,
+			Callback:   core.CallbackOnSpellHitDealt,
+			Outcome:    core.OutcomeLanded,
+			ProcMask:   core.ProcMaskMeleeOrRanged,
+			Duration:   time.Second * 10,
+			ProcChance: 1,
+		})
+	}
 }

@@ -92,6 +92,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-ArrowofTime-72897"
+ value: {
+  dps: 37264.92034
+  tps: 27837.65832
+  hps: 655.78992
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-AustereShadowspiritDiamond"
  value: {
   dps: 37892.17188
@@ -236,11 +244,59 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-Bone-LinkFetish-77210"
+ value: {
+  dps: 38899.10794
+  tps: 29394.004
+  hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Bone-LinkFetish-77982"
+ value: {
+  dps: 38643.18669
+  tps: 29174.08904
+  hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Bone-LinkFetish-78002"
+ value: {
+  dps: 39168.80231
+  tps: 29588.89916
+  hps: 630.7179
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-BottledLightning-66879"
  value: {
   dps: 35945.64964
   tps: 26826.0659
   hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BottledWishes-77114"
+ value: {
+  dps: 36936.75828
+  tps: 27618.18295
+  hps: 654.22292
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BottledWishes-77985"
+ value: {
+  dps: 36877.44139
+  tps: 27660.64081
+  hps: 658.14042
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BottledWishes-78005"
+ value: {
+  dps: 37170.39954
+  tps: 27831.78453
+  hps: 658.14042
  }
 }
 dps_results: {
@@ -308,6 +364,30 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-CrecheoftheFinalDragon-77205"
+ value: {
+  dps: 38953.73377
+  tps: 29018.31588
+  hps: 648.73841
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-CrecheoftheFinalDragon-77972"
+ value: {
+  dps: 38676.44616
+  tps: 28838.92277
+  hps: 643.25391
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-CrecheoftheFinalDragon-77992"
+ value: {
+  dps: 39264.83804
+  tps: 29245.47479
+  hps: 654.22292
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-CrushingWeight-59506"
  value: {
   dps: 38061.87252
@@ -321,6 +401,30 @@ dps_results: {
   dps: 38368.08231
   tps: 28700.0414
   hps: 654.22292
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-CunningoftheCruel-77208"
+ value: {
+  dps: 36588.71997
+  tps: 27487.46128
+  hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-CunningoftheCruel-77980"
+ value: {
+  dps: 36572.61229
+  tps: 27472.35318
+  hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-CunningoftheCruel-78000"
+ value: {
+  dps: 36554.20339
+  tps: 27469.44713
+  hps: 630.7179
  }
 }
 dps_results: {
@@ -476,6 +580,30 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-EyeofUnmaking-77200"
+ value: {
+  dps: 39160.00705
+  tps: 29164.75507
+  hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-EyeofUnmaking-77977"
+ value: {
+  dps: 38794.73917
+  tps: 28898.99494
+  hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-EyeofUnmaking-77997"
+ value: {
+  dps: 39561.80173
+  tps: 29457.09122
+  hps: 630.7179
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-FallofMortality-59500"
  value: {
   dps: 35945.64964
@@ -540,6 +668,30 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-FireoftheDeep-77117"
+ value: {
+  dps: 36629.53982
+  tps: 27575.8975
+  hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-FireoftheDeep-77988"
+ value: {
+  dps: 36551.74948
+  tps: 27490.62036
+  hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-FireoftheDeep-78008"
+ value: {
+  dps: 36717.84644
+  tps: 27672.69875
+  hps: 630.7179
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-FleetShadowspiritDiamond"
  value: {
   dps: 37963.61944
@@ -561,6 +713,14 @@ dps_results: {
   dps: 37878.92407
   tps: 28159.89051
   hps: 642.47041
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-FoulGiftoftheDemonLord-72898"
+ value: {
+  dps: 36657.40404
+  tps: 27610.40967
+  hps: 630.7179
  }
 }
 dps_results: {
@@ -740,11 +900,59 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-IndomitablePride-77211"
+ value: {
+  dps: 35945.64964
+  tps: 26826.0659
+  hps: 671.36598
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-IndomitablePride-77983"
+ value: {
+  dps: 35945.64964
+  tps: 26826.0659
+  hps: 666.75091
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-IndomitablePride-78003"
+ value: {
+  dps: 35945.64964
+  tps: 26826.0659
+  hps: 676.57271
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-InsigniaofDiplomacy-61433"
  value: {
   dps: 35945.64964
   tps: 26826.0659
   hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-InsigniaoftheCorruptedMind-77203"
+ value: {
+  dps: 37125.28065
+  tps: 27743.62324
+  hps: 661.27442
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-InsigniaoftheCorruptedMind-77971"
+ value: {
+  dps: 36967.67771
+  tps: 27659.65723
+  hps: 657.35692
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-InsigniaoftheCorruptedMind-77991"
+ value: {
+  dps: 37168.63533
+  tps: 27819.27958
+  hps: 660.49092
  }
 }
 dps_results: {
@@ -809,6 +1017,30 @@ dps_results: {
   dps: 36252.94146
   tps: 27024.02757
   hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-KiroptyricSigil-77113"
+ value: {
+  dps: 36936.75828
+  tps: 27618.18295
+  hps: 654.22292
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-KiroptyricSigil-77984"
+ value: {
+  dps: 36877.44139
+  tps: 27660.64081
+  hps: 658.14042
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-KiroptyricSigil-78004"
+ value: {
+  dps: 37170.39954
+  tps: 27831.78453
+  hps: 658.14042
  }
 }
 dps_results: {
@@ -1124,6 +1356,54 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-ReflectionoftheLight-77115"
+ value: {
+  dps: 35945.64964
+  tps: 26826.0659
+  hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ReflectionoftheLight-77986"
+ value: {
+  dps: 35945.64964
+  tps: 26826.0659
+  hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ReflectionoftheLight-78006"
+ value: {
+  dps: 35945.64964
+  tps: 26826.0659
+  hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ResolveofUndying-77201"
+ value: {
+  dps: 35945.64964
+  tps: 26826.0659
+  hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ResolveofUndying-77978"
+ value: {
+  dps: 35945.64964
+  tps: 26826.0659
+  hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ResolveofUndying-77998"
+ value: {
+  dps: 35945.64964
+  tps: 26826.0659
+  hps: 630.7179
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-ReverberatingShadowspiritDiamond"
  value: {
   dps: 38359.02258
@@ -1161,6 +1441,38 @@ dps_results: {
   dps: 36994.22975
   tps: 27591.2924
   hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-RosaryofLight-72901"
+ value: {
+  dps: 38218.77689
+  tps: 28506.64057
+  hps: 647.17141
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-RottingSkull-77116"
+ value: {
+  dps: 36758.97964
+  tps: 27438.31243
+  hps: 644.03741
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-RottingSkull-77987"
+ value: {
+  dps: 36666.64683
+  tps: 27371.67308
+  hps: 643.25391
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-RottingSkull-78007"
+ value: {
+  dps: 36872.74049
+  tps: 27531.47444
+  hps: 646.38791
  }
 }
 dps_results: {
@@ -1292,6 +1604,30 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-SoulshifterVortex-77206"
+ value: {
+  dps: 36981.35428
+  tps: 27967.84308
+  hps: 671.36598
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SoulshifterVortex-77970"
+ value: {
+  dps: 36871.68927
+  tps: 27849.06264
+  hps: 666.75091
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SoulshifterVortex-77990"
+ value: {
+  dps: 37079.09628
+  tps: 28072.25251
+  hps: 676.57271
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-SpidersilkSpindle-68981"
  value: {
   dps: 36517.35393
@@ -1305,6 +1641,30 @@ dps_results: {
   dps: 36592.13603
   tps: 27534.89429
   hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-StarcatcherCompass-77202"
+ value: {
+  dps: 37697.35191
+  tps: 28145.30084
+  hps: 662.05792
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-StarcatcherCompass-77973"
+ value: {
+  dps: 37551.65527
+  tps: 28055.4723
+  hps: 659.70742
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-StarcatcherCompass-77993"
+ value: {
+  dps: 37831.09532
+  tps: 28186.04734
+  hps: 667.54243
  }
 }
 dps_results: {
@@ -1547,11 +1907,51 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-Varo'then'sBrooch-72899"
+ value: {
+  dps: 38106.14223
+  tps: 28670.75537
+  hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-VeilofLies-72900"
+ value: {
+  dps: 35945.64964
+  tps: 26826.0659
+  hps: 664.73922
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-VesselofAcceleration-68995"
  value: {
   dps: 38096.55557
   tps: 28415.52359
   hps: 641.68691
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-VialofShadows-77207"
+ value: {
+  dps: 37037.83365
+  tps: 27785.11177
+  hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-VialofShadows-77979"
+ value: {
+  dps: 37025.56643
+  tps: 27788.87595
+  hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-VialofShadows-77999"
+ value: {
+  dps: 37014.65157
+  tps: 27716.76406
+  hps: 630.7179
  }
 }
 dps_results: {
@@ -1667,6 +2067,30 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-WillofUnbinding-77198"
+ value: {
+  dps: 35945.64964
+  tps: 26826.0659
+  hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-WillofUnbinding-77975"
+ value: {
+  dps: 35945.64964
+  tps: 26826.0659
+  hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-WillofUnbinding-77995"
+ value: {
+  dps: 35945.64964
+  tps: 26826.0659
+  hps: 630.7179
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-WitchingHourglass-55787"
  value: {
   dps: 36521.03837
@@ -1687,6 +2111,30 @@ dps_results: {
  value: {
   dps: 36272.30705
   tps: 27184.25425
+  hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-WrathofUnchaining-77197"
+ value: {
+  dps: 36745.35721
+  tps: 27377.8837
+  hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-WrathofUnchaining-77974"
+ value: {
+  dps: 36648.38017
+  tps: 27300.30748
+  hps: 630.7179
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-WrathofUnchaining-77994"
+ value: {
+  dps: 36835.35768
+  tps: 27431.35793
   hps: 630.7179
  }
 }

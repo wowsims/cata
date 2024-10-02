@@ -92,6 +92,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-ArrowofTime-72897"
+ value: {
+  dps: 14466.59814
+  tps: 70413.42318
+  hps: 3723.46311
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-AustereShadowspiritDiamond"
  value: {
   dps: 13803.93262
@@ -236,11 +244,59 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-Bone-LinkFetish-77210"
+ value: {
+  dps: 15061.57207
+  tps: 73699.51982
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-Bone-LinkFetish-77982"
+ value: {
+  dps: 14995.97709
+  tps: 73440.89398
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-Bone-LinkFetish-78002"
+ value: {
+  dps: 15215.46124
+  tps: 74497.18931
+  hps: 3597.80333
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-BottledLightning-66879"
  value: {
   dps: 13898.10501
   tps: 67426.3477
   hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-BottledWishes-77114"
+ value: {
+  dps: 14269.44285
+  tps: 69487.20453
+  hps: 3684.73868
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-BottledWishes-77985"
+ value: {
+  dps: 14356.36301
+  tps: 70051.1006
+  hps: 3713.36954
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-BottledWishes-78005"
+ value: {
+  dps: 14462.00868
+  tps: 70185.27021
+  hps: 3740.42356
  }
 }
 dps_results: {
@@ -308,6 +364,30 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-CrecheoftheFinalDragon-77205"
+ value: {
+  dps: 14834.94181
+  tps: 72267.57752
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-CrecheoftheFinalDragon-77972"
+ value: {
+  dps: 14745.55425
+  tps: 71740.48886
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-CrecheoftheFinalDragon-77992"
+ value: {
+  dps: 14936.19753
+  tps: 72751.48612
+  hps: 3597.80333
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-CrushingWeight-59506"
  value: {
   dps: 14856.88954
@@ -321,6 +401,30 @@ dps_results: {
   dps: 14810.32859
   tps: 72189.61242
   hps: 3720.6496
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-CunningoftheCruel-77208"
+ value: {
+  dps: 14288.23936
+  tps: 69627.80891
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-CunningoftheCruel-77980"
+ value: {
+  dps: 14271.76151
+  tps: 69524.61134
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-CunningoftheCruel-78000"
+ value: {
+  dps: 14274.94728
+  tps: 69546.68775
+  hps: 3597.80333
  }
 }
 dps_results: {
@@ -476,6 +580,30 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-EyeofUnmaking-77200"
+ value: {
+  dps: 14928.01982
+  tps: 72869.19846
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-EyeofUnmaking-77977"
+ value: {
+  dps: 14800.28264
+  tps: 72201.11472
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-EyeofUnmaking-77997"
+ value: {
+  dps: 15068.53072
+  tps: 73604.09057
+  hps: 3597.80333
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-FallofMortality-59500"
  value: {
   dps: 13803.93262
@@ -540,6 +668,30 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-FireoftheDeep-77117"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-FireoftheDeep-77988"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-FireoftheDeep-78008"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-FleetShadowspiritDiamond"
  value: {
   dps: 13789.21706
@@ -561,6 +713,14 @@ dps_results: {
   dps: 13789.21706
   tps: 66908.97863
   hps: 3570.99981
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-FoulGiftoftheDemonLord-72898"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
  }
 }
 dps_results: {
@@ -748,11 +908,59 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-IndomitablePride-77211"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3825.13687
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-IndomitablePride-77983"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3799.32608
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-IndomitablePride-78003"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3854.25674
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-InsigniaofDiplomacy-61433"
  value: {
   dps: 13803.93262
   tps: 66990.06155
   hps: 3631.68058
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-InsigniaoftheCorruptedMind-77203"
+ value: {
+  dps: 14551.07716
+  tps: 70717.76179
+  hps: 3812.50618
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-InsigniaoftheCorruptedMind-77971"
+ value: {
+  dps: 14444.10496
+  tps: 70369.59001
+  hps: 3739.24092
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-InsigniaoftheCorruptedMind-77991"
+ value: {
+  dps: 14613.15597
+  tps: 71147.52893
+  hps: 3732.18337
  }
 }
 dps_results: {
@@ -817,6 +1025,30 @@ dps_results: {
   dps: 13981.88166
   tps: 67919.50255
   hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-KiroptyricSigil-77113"
+ value: {
+  dps: 14559.94764
+  tps: 70706.93612
+  hps: 3684.73868
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-KiroptyricSigil-77984"
+ value: {
+  dps: 14583.96156
+  tps: 70914.20492
+  hps: 3713.36954
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-KiroptyricSigil-78004"
+ value: {
+  dps: 14763.44129
+  tps: 71372.83786
+  hps: 3740.42356
  }
 }
 dps_results: {
@@ -1124,6 +1356,54 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-ReflectionoftheLight-77115"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-ReflectionoftheLight-77986"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-ReflectionoftheLight-78006"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-ResolveofUndying-77201"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-ResolveofUndying-77978"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-ResolveofUndying-77998"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-ReverberatingShadowspiritDiamond"
  value: {
   dps: 13978.39478
@@ -1160,6 +1440,38 @@ dps_results: {
  value: {
   dps: 14097.40375
   tps: 68498.06049
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-RosaryofLight-72901"
+ value: {
+  dps: 14569.44888
+  tps: 70948.66338
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-RottingSkull-77116"
+ value: {
+  dps: 15062.91295
+  tps: 72313.75475
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-RottingSkull-77987"
+ value: {
+  dps: 14923.4154
+  tps: 71747.37958
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-RottingSkull-78007"
+ value: {
+  dps: 15213.35279
+  tps: 72934.33425
   hps: 3597.80333
  }
 }
@@ -1292,6 +1604,30 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-SoulshifterVortex-77206"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3825.13687
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-SoulshifterVortex-77970"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3799.32608
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-SoulshifterVortex-77990"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3854.25674
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-SpidersilkSpindle-68981"
  value: {
   dps: 13803.93262
@@ -1305,6 +1641,30 @@ dps_results: {
   dps: 13803.93262
   tps: 66990.06155
   hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-StarcatcherCompass-77202"
+ value: {
+  dps: 14787.4789
+  tps: 72012.91676
+  hps: 3760.47403
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-StarcatcherCompass-77973"
+ value: {
+  dps: 14627.18689
+  tps: 71275.08285
+  hps: 3749.50619
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-StarcatcherCompass-77993"
+ value: {
+  dps: 14694.9302
+  tps: 71466.21512
+  hps: 3774.70683
  }
 }
 dps_results: {
@@ -1540,6 +1900,22 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-Varo'then'sBrooch-72899"
+ value: {
+  dps: 14322.808
+  tps: 69642.08093
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-VeilofLies-72900"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3788.07522
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-VesselofAcceleration-68995"
  value: {
   dps: 14584.1114
@@ -1552,6 +1928,30 @@ dps_results: {
  value: {
   dps: 14685.65476
   tps: 71631.38916
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-VialofShadows-77207"
+ value: {
+  dps: 14492.20801
+  tps: 70611.90711
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-VialofShadows-77979"
+ value: {
+  dps: 14455.86838
+  tps: 70603.4618
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-VialofShadows-77999"
+ value: {
+  dps: 14491.26742
+  tps: 70693.94212
   hps: 3597.80333
  }
 }
@@ -1668,6 +2068,30 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-WillofUnbinding-77198"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-WillofUnbinding-77975"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-WillofUnbinding-77995"
+ value: {
+  dps: 13803.93262
+  tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-WitchingHourglass-55787"
  value: {
   dps: 13807.09013
@@ -1688,6 +2112,30 @@ dps_results: {
  value: {
   dps: 13803.93262
   tps: 66990.06155
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-WrathofUnchaining-77197"
+ value: {
+  dps: 14229.58461
+  tps: 69358.16156
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-WrathofUnchaining-77974"
+ value: {
+  dps: 14175.28097
+  tps: 69044.94512
+  hps: 3597.80333
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-WrathofUnchaining-77994"
+ value: {
+  dps: 14252.04727
+  tps: 69489.02935
   hps: 3597.80333
  }
 }

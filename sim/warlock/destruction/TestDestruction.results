@@ -85,6 +85,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-AllItems-ArrowofTime-72897"
+ value: {
+  dps: 35160.19912
+  tps: 22457.9452
+ }
+}
+dps_results: {
  key: "TestDestruction-AllItems-AustereShadowspiritDiamond"
  value: {
   dps: 36838.27116
@@ -219,10 +226,52 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-AllItems-Bone-LinkFetish-77210"
+ value: {
+  dps: 35160.19912
+  tps: 22457.9452
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-Bone-LinkFetish-77982"
+ value: {
+  dps: 35160.19912
+  tps: 22457.9452
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-Bone-LinkFetish-78002"
+ value: {
+  dps: 35160.19912
+  tps: 22457.9452
+ }
+}
+dps_results: {
  key: "TestDestruction-AllItems-BottledLightning-66879"
  value: {
   dps: 35801.76804
   tps: 22843.46051
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-BottledWishes-77114"
+ value: {
+  dps: 37005.1923
+  tps: 23508.87308
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-BottledWishes-77985"
+ value: {
+  dps: 36803.85562
+  tps: 23387.56747
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-BottledWishes-78005"
+ value: {
+  dps: 37316.02323
+  tps: 23742.59685
  }
 }
 dps_results: {
@@ -275,6 +324,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-AllItems-CrecheoftheFinalDragon-77205"
+ value: {
+  dps: 35160.19912
+  tps: 22457.9452
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-CrecheoftheFinalDragon-77972"
+ value: {
+  dps: 35160.19912
+  tps: 22457.9452
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-CrecheoftheFinalDragon-77992"
+ value: {
+  dps: 35160.19912
+  tps: 22457.9452
+ }
+}
+dps_results: {
  key: "TestDestruction-AllItems-CrushingWeight-59506"
  value: {
   dps: 35160.19912
@@ -286,6 +356,27 @@ dps_results: {
  value: {
   dps: 35160.19912
   tps: 22457.9452
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-CunningoftheCruel-77208"
+ value: {
+  dps: 37289.04198
+  tps: 23995.5962
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-CunningoftheCruel-77980"
+ value: {
+  dps: 37045.51125
+  tps: 23805.34628
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-CunningoftheCruel-78000"
+ value: {
+  dps: 37442.62819
+  tps: 24078.63769
  }
 }
 dps_results: {
@@ -401,6 +492,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-AllItems-EyeofUnmaking-77200"
+ value: {
+  dps: 35160.19912
+  tps: 22457.9452
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-EyeofUnmaking-77977"
+ value: {
+  dps: 35160.19912
+  tps: 22457.9452
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-EyeofUnmaking-77997"
+ value: {
+  dps: 35160.19912
+  tps: 22457.9452
+ }
+}
+dps_results: {
  key: "TestDestruction-AllItems-FallofMortality-59500"
  value: {
   dps: 36174.4002
@@ -457,6 +569,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-AllItems-FireoftheDeep-77117"
+ value: {
+  dps: 35793.89157
+  tps: 22894.16512
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-FireoftheDeep-77988"
+ value: {
+  dps: 35721.94395
+  tps: 22844.63797
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-FireoftheDeep-78008"
+ value: {
+  dps: 35875.52444
+  tps: 22950.35939
+ }
+}
+dps_results: {
  key: "TestDestruction-AllItems-FleetShadowspiritDiamond"
  value: {
   dps: 36915.78356
@@ -475,6 +608,13 @@ dps_results: {
  value: {
   dps: 37076.69648
   tps: 23657.61108
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-FoulGiftoftheDemonLord-72898"
+ value: {
+  dps: 37059.51119
+  tps: 23666.89936
  }
 }
 dps_results: {
@@ -646,10 +786,52 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-AllItems-IndomitablePride-77211"
+ value: {
+  dps: 35139.26715
+  tps: 22444.93473
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-IndomitablePride-77983"
+ value: {
+  dps: 35139.26715
+  tps: 22444.74554
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-IndomitablePride-78003"
+ value: {
+  dps: 35139.26715
+  tps: 22445.14817
+ }
+}
+dps_results: {
  key: "TestDestruction-AllItems-InsigniaofDiplomacy-61433"
  value: {
   dps: 35160.19912
   tps: 22457.9452
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-InsigniaoftheCorruptedMind-77203"
+ value: {
+  dps: 37966.61314
+  tps: 24354.27537
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-InsigniaoftheCorruptedMind-77971"
+ value: {
+  dps: 37543.29308
+  tps: 24043.85586
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-InsigniaoftheCorruptedMind-77991"
+ value: {
+  dps: 38427.66602
+  tps: 24598.2085
  }
 }
 dps_results: {
@@ -706,6 +888,27 @@ dps_results: {
  value: {
   dps: 35160.19912
   tps: 22457.9452
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-KiroptyricSigil-77113"
+ value: {
+  dps: 35619.66733
+  tps: 22743.82238
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-KiroptyricSigil-77984"
+ value: {
+  dps: 35588.58987
+  tps: 22721.85714
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-KiroptyricSigil-78004"
+ value: {
+  dps: 35763.36948
+  tps: 22887.63952
  }
 }
 dps_results: {
@@ -961,6 +1164,48 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-AllItems-ReflectionoftheLight-77115"
+ value: {
+  dps: 36467.0838
+  tps: 23172.28178
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-ReflectionoftheLight-77986"
+ value: {
+  dps: 36310.54846
+  tps: 23086.47377
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-ReflectionoftheLight-78006"
+ value: {
+  dps: 36644.01071
+  tps: 23269.26779
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-ResolveofUndying-77201"
+ value: {
+  dps: 35160.19912
+  tps: 22457.9452
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-ResolveofUndying-77978"
+ value: {
+  dps: 35160.19912
+  tps: 22457.9452
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-ResolveofUndying-77998"
+ value: {
+  dps: 35160.19912
+  tps: 22457.9452
+ }
+}
+dps_results: {
  key: "TestDestruction-AllItems-ReverberatingShadowspiritDiamond"
  value: {
   dps: 37227.16767
@@ -993,6 +1238,34 @@ dps_results: {
  value: {
   dps: 35160.19912
   tps: 22457.9452
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-RosaryofLight-72901"
+ value: {
+  dps: 35160.19912
+  tps: 22457.9452
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-RottingSkull-77116"
+ value: {
+  dps: 35740.20938
+  tps: 22830.61077
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-RottingSkull-77987"
+ value: {
+  dps: 35705.46357
+  tps: 22821.91625
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-RottingSkull-78007"
+ value: {
+  dps: 35862.37879
+  tps: 22937.2862
  }
 }
 dps_results: {
@@ -1110,6 +1383,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-AllItems-SoulshifterVortex-77206"
+ value: {
+  dps: 36134.11472
+  tps: 23110.85257
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-SoulshifterVortex-77970"
+ value: {
+  dps: 35993.40089
+  tps: 23026.38565
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-SoulshifterVortex-77990"
+ value: {
+  dps: 36176.00616
+  tps: 23163.52273
+ }
+}
+dps_results: {
  key: "TestDestruction-AllItems-SpidersilkSpindle-68981"
  value: {
   dps: 35690.12097
@@ -1121,6 +1415,27 @@ dps_results: {
  value: {
   dps: 35759.30137
   tps: 22870.35399
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-StarcatcherCompass-77202"
+ value: {
+  dps: 36270.38912
+  tps: 23237.34969
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-StarcatcherCompass-77973"
+ value: {
+  dps: 36139.09485
+  tps: 23143.60041
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-StarcatcherCompass-77993"
+ value: {
+  dps: 36497.40312
+  tps: 23339.07681
  }
 }
 dps_results: {
@@ -1320,6 +1635,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-AllItems-Varo'then'sBrooch-72899"
+ value: {
+  dps: 35160.19912
+  tps: 22457.9452
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-VeilofLies-72900"
+ value: {
+  dps: 35139.26715
+  tps: 22444.66307
+ }
+}
+dps_results: {
  key: "TestDestruction-AllItems-VesselofAcceleration-68995"
  value: {
   dps: 35160.19912
@@ -1328,6 +1657,27 @@ dps_results: {
 }
 dps_results: {
  key: "TestDestruction-AllItems-VesselofAcceleration-69167"
+ value: {
+  dps: 35160.19912
+  tps: 22457.9452
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-VialofShadows-77207"
+ value: {
+  dps: 35160.19912
+  tps: 22457.9452
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-VialofShadows-77979"
+ value: {
+  dps: 35160.19912
+  tps: 22457.9452
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-VialofShadows-77999"
  value: {
   dps: 35160.19912
   tps: 22457.9452
@@ -1432,6 +1782,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-AllItems-WillofUnbinding-77198"
+ value: {
+  dps: 37975.06269
+  tps: 24282.70179
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-WillofUnbinding-77975"
+ value: {
+  dps: 37617.68365
+  tps: 24032.73686
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-WillofUnbinding-77995"
+ value: {
+  dps: 38339.73475
+  tps: 24517.88038
+ }
+}
+dps_results: {
  key: "TestDestruction-AllItems-WitchingHourglass-55787"
  value: {
   dps: 36318.15686
@@ -1450,6 +1821,27 @@ dps_results: {
  value: {
   dps: 35348.28098
   tps: 22561.08401
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-WrathofUnchaining-77197"
+ value: {
+  dps: 35160.19912
+  tps: 22457.9452
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-WrathofUnchaining-77974"
+ value: {
+  dps: 35160.19912
+  tps: 22457.9452
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-WrathofUnchaining-77994"
+ value: {
+  dps: 35160.19912
+  tps: 22457.9452
  }
 }
 dps_results: {
