@@ -53,27 +53,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 	epReferenceStat: Stat.StatRangedAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[
-			Stat.StatHealth,
-			Stat.StatStamina,
-			Stat.StatAgility,
-			Stat.StatRangedAttackPower,
-			Stat.StatMasteryRating,
-		],
-		[
-			PseudoStat.PseudoStatPhysicalHitPercent,
-			PseudoStat.PseudoStatPhysicalCritPercent,
-			PseudoStat.PseudoStatRangedHastePercent,
-		],
+		[Stat.StatHealth, Stat.StatStamina, Stat.StatAgility, Stat.StatRangedAttackPower, Stat.StatMasteryRating],
+		[PseudoStat.PseudoStatPhysicalHitPercent, PseudoStat.PseudoStatPhysicalCritPercent, PseudoStat.PseudoStatRangedHastePercent],
 	),
 	modifyDisplayStats: (player: Player<Spec.SpecBeastMasteryHunter>) => {
 		return sharedHunterDisplayStatsModifiers(player);
 	},
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.BM_P1_PRESET.gear,
+		gear: Presets.BM_P3_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P1_EP_PRESET.epWeights,
+		epWeights: Presets.P3_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
 			const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 8);
@@ -142,13 +132,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
+		epWeights: [Presets.P1_EP_PRESET, Presets.P3_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.BeastMasteryTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_PRESET_SIMPLE_DEFAULT, Presets.ROTATION_PRESET_BM, Presets.ROTATION_PRESET_AOE],
+		rotations: [Presets.ROTATION_PRESET_BM, Presets.ROTATION_PRESET_AOE],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.BM_PRERAID_PRESET, Presets.BM_P1_PRESET],
+		gear: [Presets.BM_P3_PRESET, Presets.BM_PRERAID_PRESET, Presets.BM_P1_PRESET],
 	},
 
 	autoRotation: (player: Player<Spec.SpecBeastMasteryHunter>): APLRotation => {
@@ -249,7 +239,17 @@ export class BeastMasteryHunterSimUI extends IndividualSimUI<Spec.SpecBeastMaste
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			new ReforgeOptimizer(this, {
+				getEPDefaults: (player: Player<Spec.SpecFuryWarrior>) => {
+					if (player.getGear().getItemSetCount('Lightning-Charged Battlegear') >= 4) {
+						return Presets.P1_EP_PRESET.epWeights;
+					}
+					if (player.getGear().getItemSetCount("Flamewaker's Battlegear") >= 4) {
+						return Presets.P3_EP_PRESET.epWeights;
+					}
+					return Presets.P1_EP_PRESET.epWeights;
+				},
+			});
 		});
 	}
 }
