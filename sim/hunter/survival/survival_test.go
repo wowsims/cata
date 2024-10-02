@@ -25,11 +25,10 @@ func TestSV(t *testing.T) {
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
 		Rotation:    core.GetAplRotation("../../../ui/hunter/survival/apls", "sv"),
 		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../../ui/hunter/survival/apls", "sv_advanced"),
 			core.GetAplRotation("../../../ui/hunter/survival/apls", "aoe"),
 		},
-		StartingDistance:   5.1,
-		ItemFilter:         ItemFilter,
+		StartingDistance: 5.1,
+		ItemFilter:       ItemFilter,
 	}))
 }
 
