@@ -27,7 +27,7 @@ func (rogue *Rogue) registerGarrote() {
 			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return !rogue.PseudoStats.InFrontOfTarget && rogue.IsStealthed()
+			return !rogue.PseudoStats.InFrontOfTarget && (rogue.IsStealthed() || rogue.HasActiveAura("Shadowmeld"))
 		},
 
 		DamageMultiplierAdditive: 1 + 0.10*float64(rogue.Talents.Opportunity),

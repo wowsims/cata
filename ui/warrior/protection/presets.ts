@@ -12,6 +12,7 @@ import {
 	PseudoStat,
 	Spec,
 	Stat,
+	TinkerHands,
 } from '../../core/proto/common.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import {
@@ -24,14 +25,16 @@ import {
 import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
 import P1BISGear from './gear_sets/p1_bis.gear.json';
+import P3BISGear from './gear_sets/p3_bis.gear.json';
 import PreraidBISGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const PRERAID_BALANCED_PRESET = PresetUtils.makePresetGear('P1 PreRaid Preset', PreraidBISGear);
+export const PRERAID_BALANCED_PRESET = PresetUtils.makePresetGear('P3 PreRaid Preset', PreraidBISGear);
 export const P1_BALANCED_PRESET = PresetUtils.makePresetGear('P1 BIS Preset', P1BISGear);
+export const P3_BALANCED_PRESET = PresetUtils.makePresetGear('P3 BIS Preset', P3BISGear);
 
 export const ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('Default APL', DefaultApl);
 
@@ -73,9 +76,9 @@ export const StandardTalents = {
 			major1: WarriorMajorGlyph.GlyphOfShieldWall,
 			major2: WarriorMajorGlyph.GlyphOfShockwave,
 			major3: WarriorMajorGlyph.GlyphOfThunderClap,
-			minor1: WarriorMinorGlyph.GlyphOfShatteringThrow,
-			minor2: WarriorMinorGlyph.GlyphOfDemoralizingShout,
-			minor3: WarriorMinorGlyph.GlyphOfCommand,
+			minor1: WarriorMinorGlyph.GlyphOfBattle,
+			minor2: WarriorMinorGlyph.GlyphOfBerserkerRage,
+			minor3: WarriorMinorGlyph.GlyphOfDemoralizingShout,
 		}),
 	}),
 };
@@ -87,12 +90,14 @@ export const DefaultOptions = ProtectionWarriorOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfSteelskin,
-	// battleElixir: BattleElixir.ElixirOfExpertise,
-	// guardianElixir: GuardianElixir.ElixirOfProtection,
+	// flask: Flask.FlaskOfSteelskin,
+	battleElixir: BattleElixir.ElixirOfTheMaster,
+	guardianElixir: GuardianElixir.ElixirOfDeepEarth,
 	food: Food.FoodBeerBasedCrocolisk,
 	defaultPotion: Potions.EarthenPotion,
 	prepopPotion: Potions.EarthenPotion,
+	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
+	explosiveBigDaddy: true,
 });
 
 export const OtherDefaults = {

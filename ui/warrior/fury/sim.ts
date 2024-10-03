@@ -136,8 +136,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.FURY_SMF_ROTATION, Presets.FURY_TG_ROTATION],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.P1_PRERAID_FURY_SMF_PRESET, Presets.P1_PRERAID_FURY_TG_PRESET, Presets.P1_BIS_FURY_SMF_PRESET, Presets.P1_BIS_FURY_TG_PRESET],
-		builds: [Presets.PRESET_BUILD_SMF, Presets.PRESET_BUILD_TG],
+		gear: [
+			Presets.P1_PRERAID_FURY_SMF_PRESET,
+			Presets.P1_PRERAID_FURY_TG_PRESET,
+			Presets.P1_BIS_FURY_SMF_PRESET,
+			Presets.P1_BIS_FURY_TG_PRESET,
+			Presets.P3_BIS_FURY_SMF_PRESET,
+			Presets.P3_BIS_FURY_TG_PRESET,
+		],
+		builds: [Presets.P1_PRESET_BUILD_SMF, Presets.P1_PRESET_BUILD_TG, Presets.P3_PRESET_BUILD_SMF, Presets.P3_PRESET_BUILD_TG],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecFuryWarrior>): APLRotation => {
@@ -182,10 +189,15 @@ export class FuryWarriorSimUI extends IndividualSimUI<Spec.SpecFuryWarrior> {
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
 				getEPDefaults: (player: Player<Spec.SpecFuryWarrior>) => {
+					const hasP3Setup = player
+						.getGear()
+						.getEquippedItems()
+						.some(item => (item?.item.phase || 0) >= 3);
+
 					if (player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeOneHand || !player.getTalents().titansGrip) {
-						return Presets.P1_FURY_SMF_EP_PRESET.epWeights;
+						return hasP3Setup ? Presets.P3_FURY_SMF_EP_PRESET.epWeights : Presets.P1_FURY_SMF_EP_PRESET.epWeights;
 					}
-					return Presets.P1_FURY_TG_EP_PRESET.epWeights;
+					return hasP3Setup ? Presets.P3_FURY_TG_EP_PRESET.epWeights : Presets.P1_FURY_TG_EP_PRESET.epWeights;
 				},
 			});
 		});

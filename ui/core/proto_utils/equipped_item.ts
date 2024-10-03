@@ -1,4 +1,4 @@
-import { GemColor, ItemRandomSuffix, ItemSpec, ItemType, Profession, ReforgeStat } from '../proto/common.js';
+import { GemColor, ItemRandomSuffix, ItemSpec, ItemType, Profession, ReforgeStat, Stat } from '../proto/common.js';
 import { UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../proto/ui.js';
 import { distinct } from '../utils.js';
 import { ActionId } from './action_id.js';
@@ -8,6 +8,16 @@ import { enchantAppliesToItem } from './utils.js';
 
 export function getWeaponDPS(item: Item): number {
 	return (item.weaponDamageMin + item.weaponDamageMax) / 2 / (item.weaponSpeed || 1);
+}
+
+export interface ReforgeData {
+	id: number;
+	item: Item;
+	reforge: ReforgeStat;
+	fromStat: Stat;
+	toStat: Stat;
+	fromAmount: number;
+	toAmount: number;
 }
 
 /**
@@ -62,6 +72,26 @@ export class EquippedItem {
 	get gems(): Array<Gem | null> {
 		// Make a defensive copy
 		return this._gems.map(gem => (gem == null ? null : Gem.clone(gem)));
+	}
+
+	getReforgeData(reforge?: ReforgeStat | null): ReforgeData | null {
+		reforge = reforge || this.reforge;
+		if (!reforge) return null;
+		const { id, fromStat, toStat, multiplier } = reforge;
+		const withRandomSuffixStats = this.getWithRandomSuffixStats();
+		const item = withRandomSuffixStats.item;
+		const fromAmount = Math.ceil(-item.stats[fromStat] * multiplier);
+		const toAmount = Math.floor(item.stats[fromStat] * multiplier);
+
+		return {
+			id,
+			reforge,
+			item,
+			fromStat,
+			fromAmount,
+			toStat,
+			toAmount,
+		};
 	}
 
 	equals(other: EquippedItem) {

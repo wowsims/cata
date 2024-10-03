@@ -46,9 +46,9 @@ func (rogue *Rogue) registerShivSpell() {
 				case proto.RogueOptions_DeadlyPoison:
 					rogue.DeadlyPoison.Cast(sim, target)
 				case proto.RogueOptions_InstantPoison:
-					//rogue.InstantPoison[ShivProc].Cast(sim, target)
+					rogue.InstantPoison[ShivProc].Cast(sim, target)
 				case proto.RogueOptions_WoundPoison:
-					//rogue.WoundPoison[ShivProc].Cast(sim, target)
+					rogue.WoundPoison[ShivProc].Cast(sim, target)
 				}
 			}
 		},

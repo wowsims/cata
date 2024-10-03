@@ -7,34 +7,59 @@ import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import CombatApl from './apls/combat.apl.json';
 import P1CombatGear from './gear_sets/p1_combat.gear.json';
+import P3CombatGear from './gear_sets/p3_combat.gear.json'
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
 export const P1_PRESET_COMBAT = PresetUtils.makePresetGear('P1 Combat', P1CombatGear);
+export const P3_PRESET_COMBAT = PresetUtils.makePresetGear('P3 Combat', P3CombatGear);
 
 export const ROTATION_PRESET_COMBAT = PresetUtils.makePresetAPLRotation('Combat', CombatApl);
 
 // Preset options for EP weights
-export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P1',
+export const CBAT_HASTE_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Combat',
 	Stats.fromMap(
 		{
-			[Stat.StatAgility]: 2.67,
+			[Stat.StatAgility]: 2.85,
 			[Stat.StatStrength]: 1.05,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatCritRating]: (0.08 + 0.75),
-			[Stat.StatHitRating]: (0.42 + 1.63),
-			[Stat.StatHasteRating]: 1.19,
-			[Stat.StatMasteryRating]: 1.18,
-			[Stat.StatExpertiseRating]: 1.3,
+			[Stat.StatCritRating]: 0.9,
+			[Stat.StatHitRating]: 2.21,
+			[Stat.StatHasteRating]: 1.36,
+			[Stat.StatMasteryRating]: 1.33,
+			[Stat.StatExpertiseRating]: 1.74,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 3.95,
-			[PseudoStat.PseudoStatOffHandDps]: 1.28,
-			[PseudoStat.PseudoStatSpellHitPercent]: (0.42 * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT),
-			[PseudoStat.PseudoStatPhysicalHitPercent]: (1.63 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT),
+			[PseudoStat.PseudoStatMainHandDps]: 4.31,
+			[PseudoStat.PseudoStatOffHandDps]: 1.32,
+			[PseudoStat.PseudoStatSpellHitPercent]: 46,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 210,
+		},
+	),
+);
+
+// 4PT12 pushes Haste, Mastery, and Crit up moderately (Crit also gains from 2P but has no affect on reforging); Haste and Mastery overtake Hit for reforging
+export const CBAT_4PT12_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Combat 4PT12',
+	Stats.fromMap(
+		{
+			[Stat.StatAgility]: 2.85,
+			[Stat.StatStrength]: 1.05,
+			[Stat.StatAttackPower]: 1,
+			[Stat.StatCritRating]: 1.09,
+			[Stat.StatHitRating]: 2.21,
+			[Stat.StatHasteRating]: 1.52,
+			[Stat.StatMasteryRating]: 1.41,
+			[Stat.StatExpertiseRating]: 1.74,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 4.31,
+			[PseudoStat.PseudoStatOffHandDps]: 1.32,
+			[PseudoStat.PseudoStatSpellHitPercent]: 46,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 210,
 		},
 	),
 );

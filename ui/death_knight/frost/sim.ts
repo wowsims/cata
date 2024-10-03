@@ -90,8 +90,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		}),
 	},
 
-	autoRotation: (player: Player<Spec.SpecFrostDeathKnight>): APLRotation => {
-		const _numTargets = player.sim.encounter.targets.length;
+	autoRotation: (_: Player<Spec.SpecFrostDeathKnight>): APLRotation => {
 		return Presets.MASTERFROST_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
 
@@ -124,7 +123,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		epWeights: [Presets.P1_MASTERFROST_EP_PRESET],
 		talents: [Presets.DualWieldTalents, Presets.TwoHandTalents, Presets.MasterfrostTalents],
 		rotations: [Presets.DUAL_WIELD_ROTATION_PRESET_DEFAULT, Presets.TWO_HAND_ROTATION_PRESET_DEFAULT, Presets.MASTERFROST_ROTATION_PRESET_DEFAULT],
-		gear: [Presets.P1_DW_GEAR_PRESET, Presets.P1_2H_GEAR_PRESET, Presets.P1_MASTERFROST_GEAR_PRESET],
+		gear: [Presets.P1_DW_GEAR_PRESET, Presets.P1_2H_GEAR_PRESET, Presets.P1_MASTERFROST_GEAR_PRESET, Presets.P3_MASTERFROST_GEAR_PRESET],
 		builds: [Presets.PRESET_BUILD_DW, Presets.PRESET_BUILD_2H, Presets.PRESET_BUILD_MASTERFROST],
 	},
 

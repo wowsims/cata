@@ -3,6 +3,7 @@ package druid
 import (
 	"time"
 
+	"github.com/wowsims/cata/sim/common/cata"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/stats"
 )
@@ -97,6 +98,56 @@ var ItemSetStormridersRegalia = core.NewItemSet(core.ItemSet{
 	},
 })
 
+// T12 Feral
+var ItemSetObsidianArborweaveBattlegarb = core.NewItemSet(core.ItemSet{
+	Name: "Obsidian Arborweave Battlegarb",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			// TODO: Verify behavior after PTR testing
+			druid := agent.(DruidAgent).GetDruid()
+			cata.RegisterIgniteEffect(&druid.Unit, cata.IgniteConfig{
+				ActionID:         core.ActionID{SpellID: 99002},
+				DotAuraLabel:     "Fiery Claws",
+				IncludeAuraDelay: true,
+
+				ProcTrigger: core.ProcTrigger{
+					Name:           "Fiery Claws Trigger",
+					Callback:       core.CallbackOnSpellHitDealt,
+					ClassSpellMask: DruidSpellMangle | DruidSpellMaul | DruidSpellShred,
+					Outcome:        core.OutcomeLanded,
+				},
+
+				DamageCalculator: func(result *core.SpellResult) float64 {
+					return result.Damage * 0.1
+				},
+			})
+		},
+		4: func(agent core.Agent) {
+			// Full implementation in berserk.go and barkskin.go
+			druid := agent.(DruidAgent).GetDruid()
+			druid.Feral4pT12Active = true
+
+			if !druid.InForm(Bear) {
+				return
+			}
+
+			druid.SmokescreenAura = druid.RegisterAura(core.Aura{
+				Label:    "Smokescreen",
+				ActionID: core.ActionID{SpellID: 99011},
+				Duration: time.Second * 12,
+
+				OnGain: func(_ *core.Aura, _ *core.Simulation) {
+					druid.PseudoStats.BaseDodgeChance += 0.1
+				},
+
+				OnExpire: func(_ *core.Aura, _ *core.Simulation) {
+					druid.PseudoStats.BaseDodgeChance -= 0.1
+				},
+			})
+		},
+	},
+})
+
 // T12 Balance
 var ItemSetObsidianArborweaveRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Obsidian Arborweave Regalia",
@@ -107,7 +158,7 @@ var ItemSetObsidianArborweaveRegalia = core.NewItemSet(core.ItemSet{
 
 			core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
 				ActionID:       core.ActionID{SpellID: 99019},
-				Name:           "Item - Druid T12 2P Bonus",
+				Name:           "Item - Druid T12 Balance 2P Bonus",
 				Callback:       core.CallbackOnCastComplete,
 				ClassSpellMask: DruidSpellWrath | DruidSpellStarfire,
 				ProcChance:     0.20,
@@ -129,6 +180,38 @@ var ItemSetObsidianArborweaveRegalia = core.NewItemSet(core.ItemSet{
 				if spell.ClassSpellMask == DruidSpellStarfire {
 					druid.SetSpellEclipseEnergy(DruidSpellStarfire, StarfireBaseEnergyGain, Starfire4PT12EnergyGain)
 				}
+			})
+
+			core.MakePermanent(druid.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 99049},
+				Label:    "Item - Druid T12 Balance 4P Bonus",
+				Duration: core.NeverExpires,
+			}))
+		},
+	},
+})
+
+// T13 Balance
+var ItemSetDeepEarthRegalia = core.NewItemSet(core.ItemSet{
+	Name: "Deep Earth Regalia",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Insect Swarm increases all damage done by your Starfire, Starsurge, and Wrath spells against that target by 3%
+		2: func(agent core.Agent) {
+		},
+		// Reduces the cooldown of Starsurge by 5 sec and increases its damage by 10%
+		4: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+
+			druid.AddStaticMod(core.SpellModConfig{
+				Kind:       core.SpellMod_DamageDone_Pct,
+				FloatValue: 0.05,
+				ClassMask:  DruidSpellStarsurge,
+			})
+
+			druid.AddStaticMod(core.SpellModConfig{
+				Kind:      core.SpellMod_Cooldown_Flat,
+				TimeValue: time.Second * -5,
+				ClassMask: DruidSpellStarsurge,
 			})
 		},
 	},

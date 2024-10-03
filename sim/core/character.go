@@ -56,10 +56,6 @@ type Character struct {
 	// Handles scaling that only affects stats from items
 	itemStatMultipliers stats.Stats
 
-	// Used to track if we need to separately apply multipliers, because
-	// equipment was already applied
-	equipStatsApplied bool
-
 	// Bonus stats for this Character, specified in the UI and/or EP
 	// calculator
 	bonusStats     stats.Stats
@@ -67,10 +63,16 @@ type Character struct {
 	bonusOHDps     float64
 	bonusRangedDps float64
 
+	spellCritMultiplier float64
+
 	professions [2]proto.Profession
 
 	glyphs            [9]int32
 	PrimaryTalentTree uint8
+
+	// Used to track if we need to separately apply multipliers, because
+	// equipment was already applied
+	equipStatsApplied bool
 
 	// Provides major cooldown management behavior.
 	majorCooldownManager
@@ -127,7 +129,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 
 		majorCooldownManager: newMajorCooldownManager(player.Cooldowns),
 	}
-
+	character.spellCritMultiplier = character.defaultSpellCritMultiplier()
 	character.GCD = character.NewTimer()
 	character.RotationTimer = character.NewTimer()
 
@@ -404,7 +406,7 @@ func (character *Character) MeleeCritMultiplier(primaryModifiers float64, second
 func (character *Character) HealingCritMultiplier(primaryModifiers float64, secondaryModifiers float64) float64 {
 	return character.calculateHealingCritMultiplier(2.0, primaryModifiers, secondaryModifiers)
 }
-func (character *Character) DefaultSpellCritMultiplier() float64 {
+func (character *Character) defaultSpellCritMultiplier() float64 {
 	return character.SpellCritMultiplier(1, 0)
 }
 func (character *Character) DefaultMeleeCritMultiplier() float64 {
@@ -412,6 +414,17 @@ func (character *Character) DefaultMeleeCritMultiplier() float64 {
 }
 func (character *Character) DefaultHealingCritMultiplier() float64 {
 	return character.HealingCritMultiplier(1, 0)
+}
+
+func (character *Character) SetDefaultSpellCritMultiplier(spellCritMultiplier float64) {
+	if character.Env != nil {
+		panic("Spell crit multiplier must be set during construction!")
+	}
+	character.spellCritMultiplier = spellCritMultiplier
+}
+
+func (character *Character) DefaultSpellCritMultiplier() float64 {
+	return character.spellCritMultiplier
 }
 
 func (character *Character) AddRaidBuffs(_ *proto.RaidBuffs) {

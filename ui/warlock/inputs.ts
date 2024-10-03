@@ -39,3 +39,10 @@ export const PrepullMastery =
 	label: 'Prepull Mastery',
 	labelTooltip: 'Mastery in the prepull set equipped at the start. Only applies if it\'s value is > 0 and only before combat.',
 });
+
+export const PrepullPostSnapshotMana =
+	InputHelpers.makeClassOptionsNumberInput<Spec.SpecDemonologyWarlock>({
+	fieldName: 'prepullPostSnapshotMana',
+	label: 'Mana after prepull Mastery snapshot',
+	labelTooltip: 'Total starting mana after swapping from the prepull set to your normal set. Only applies if the \'Prepull Mastery\' value is > 0.',
+});

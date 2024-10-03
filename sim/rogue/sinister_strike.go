@@ -32,7 +32,7 @@ func (rogue *Rogue) registerSinisterStrikeSpell() {
 		DamageMultiplier: 1.04, // 84 * .73500001431 + 42
 		DamageMultiplierAdditive: 1 +
 			[]float64{0.0, .07, .14, .20}[rogue.Talents.Aggression] +
-			0.01*float64(rogue.Talents.ImprovedSinisterStrike),
+			0.1*float64(rogue.Talents.ImprovedSinisterStrike),
 		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 

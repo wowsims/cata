@@ -32,7 +32,7 @@ func (mage *Mage) registerBlastWaveSpell() {
 			},
 		},
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultMageCritMultiplier(),
+		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
 		BonusCoefficient:         0.193,
 		ThreatMultiplier:         1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -63,12 +63,10 @@ func (mage *Mage) registerBlastWaveSpell() {
 	// 			NonEmpty: true,
 	// 		},
 	// 	},
-
 	// 	DamageMultiplierAdditive: 1,
-	// 	CritMultiplier:           mage.DefaultMageCritMultiplier(),
+	// 	CritMultiplier:           mage.DefaultSpellCritMultiplier(),
 	// 	BonusCoefficient:         0.146,
 	// 	ThreatMultiplier:         1,
-
 	// 	Dot: core.DotConfig{
 	// 		IsAOE: true,
 	// 		Aura: core.Aura{

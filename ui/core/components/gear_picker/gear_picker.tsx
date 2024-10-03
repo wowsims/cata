@@ -11,6 +11,7 @@ import { shortSecondaryStatNames, slotNames } from '../../proto_utils/names';
 import { SimUI } from '../../sim_ui';
 import { EventID } from '../../typed_event';
 import { Component } from '../component';
+import { ItemNotice } from '../item_notice/item_notice';
 import QuickSwapList from '../quick_swap';
 import { GearData } from './item_list';
 import { addQuickEnchantPopover } from './quick_enchant_popover';
@@ -67,11 +68,13 @@ export class ItemRenderer extends Component {
 	private readonly player: Player<any>;
 
 	readonly iconElem: HTMLAnchorElement;
+	readonly nameContainerElem: HTMLDivElement;
 	readonly nameElem: HTMLAnchorElement;
 	readonly ilvlElem: HTMLSpanElement;
 	readonly enchantElem: HTMLAnchorElement;
 	readonly reforgeElem: HTMLAnchorElement;
 	readonly socketsContainerElem: HTMLElement;
+	private notice: ItemNotice | null = null;
 	socketsElem: HTMLAnchorElement[] = [];
 
 	constructor(parent: HTMLElement, root: HTMLElement, player: Player<any>) {
@@ -79,6 +82,7 @@ export class ItemRenderer extends Component {
 		this.player = player;
 
 		const iconElem = ref<HTMLAnchorElement>();
+		const nameContainerElem = ref<HTMLDivElement>();
 		const nameElem = ref<HTMLAnchorElement>();
 		const ilvlElem = ref<HTMLSpanElement>();
 		const enchantElem = ref<HTMLAnchorElement>();
@@ -92,7 +96,9 @@ export class ItemRenderer extends Component {
 					<div ref={sce} className="item-picker-sockets-container"></div>
 				</div>
 				<div className="item-picker-labels-container">
-					<a ref={nameElem} className="item-picker-name-container" href="javascript:void(0)" attributes={{ role: 'button' }} />
+					<div ref={nameContainerElem} className="item-picker-name-row d-flex gap-1">
+						<a ref={nameElem} className="item-picker-name-container" href="javascript:void(0)" attributes={{ role: 'button' }} />
+					</div>
 					<a ref={enchantElem} className="item-picker-enchant hide" href="javascript:void(0)" attributes={{ role: 'button' }} />
 					<a ref={reforgeElem} className="item-picker-reforge hide" href="javascript:void(0)" attributes={{ role: 'button' }} />
 				</div>
@@ -100,6 +106,7 @@ export class ItemRenderer extends Component {
 		);
 
 		this.iconElem = iconElem.value!;
+		this.nameContainerElem = nameContainerElem.value!;
 		this.nameElem = nameElem.value!;
 		this.ilvlElem = ilvlElem.value!;
 		this.reforgeElem = reforgeElem.value!;
@@ -110,6 +117,8 @@ export class ItemRenderer extends Component {
 	clear(slot: ItemSlot) {
 		this.nameElem.removeAttribute('data-wowhead');
 		this.nameElem.removeAttribute('href');
+		this.notice?.dispose();
+		this.notice = null;
 		this.iconElem.removeAttribute('data-wowhead');
 		this.iconElem.removeAttribute('href');
 		this.enchantElem.removeAttribute('data-wowhead');
@@ -119,11 +128,11 @@ export class ItemRenderer extends Component {
 
 		this.iconElem.style.backgroundImage = `url('${getEmptySlotIconUrl(slot)}')`;
 
-		this.enchantElem.innerText = '';
-		this.reforgeElem.innerText = '';
-		this.socketsContainerElem.innerText = '';
-		this.nameElem.textContent = '';
-		this.ilvlElem.textContent = '';
+		this.enchantElem.replaceChildren();
+		this.reforgeElem.replaceChildren();
+		this.socketsContainerElem.replaceChildren();
+		this.nameElem.replaceChildren();
+		this.ilvlElem.replaceChildren();
 
 		this.socketsElem = [];
 	}
@@ -141,10 +150,15 @@ export class ItemRenderer extends Component {
 			this.nameElem.appendChild(createHeroicLabel());
 		}
 
-		if (newItem.reforge) {
-			const reforgeData = this.player.getReforgeData(newItem, newItem.reforge);
-			const fromText = shortSecondaryStatNames.get(newItem.reforge?.fromStat);
-			const toText = shortSecondaryStatNames.get(newItem.reforge?.toStat);
+		this.notice = new ItemNotice(this.player, { itemId: newItem.item.id });
+		if (this.notice.hasNotice) {
+			this.nameContainerElem.appendChild(this.notice.rootElem);
+		}
+
+		const reforgeData = newItem.getReforgeData();
+		if (reforgeData) {
+			const fromText = shortSecondaryStatNames.get(reforgeData.reforge?.fromStat);
+			const toText = shortSecondaryStatNames.get(reforgeData.reforge?.toStat);
 			this.reforgeElem.innerText = `Reforged ${Math.abs(reforgeData.fromAmount)} ${fromText} → ${reforgeData.toAmount} ${toText}`;
 			this.reforgeElem.classList.remove('hide');
 		} else {

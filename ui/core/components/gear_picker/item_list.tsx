@@ -5,12 +5,12 @@ import { SortDirection } from '../../constants/other';
 import { EP_TOOLTIP } from '../../constants/tooltips';
 import { setItemQualityCssClass } from '../../css_utils';
 import { IndividualSimUI } from '../../individual_sim_ui';
-import { Player, ReforgeData } from '../../player';
+import { Player } from '../../player';
 import { Class, GemColor, ItemQuality, ItemRandomSuffix, ItemSlot, ItemSpec } from '../../proto/common';
 import { DatabaseFilters, RepFaction, UIEnchant as Enchant, UIGem as Gem, UIItem as Item, UIItem_FactionRestriction } from '../../proto/ui';
 import { ActionId } from '../../proto_utils/action_id';
 import { getUniqueEnchantString } from '../../proto_utils/enchants';
-import { EquippedItem } from '../../proto_utils/equipped_item';
+import { EquippedItem, ReforgeData } from '../../proto_utils/equipped_item';
 import { difficultyNames, professionNames, REP_FACTION_NAMES, REP_FACTION_QUARTERMASTERS, REP_LEVEL_NAMES } from '../../proto_utils/names';
 import { getPVPSeasonFromItem, isPVPItem } from '../../proto_utils/utils';
 import { Sim } from '../../sim';
@@ -24,6 +24,7 @@ import {
 	makeShowEPValuesSelector,
 	makeShowMatchingGemsSelector,
 } from '../inputs/other_inputs';
+import { ItemNotice } from '../item_notice/item_notice';
 import Toast from '../toast';
 import { Clusterize } from '../virtual_scroll/clusterize';
 import { FiltersMenu } from './filters_menu';
@@ -456,6 +457,7 @@ export default class ItemList<T extends ItemListType> {
 		const equippedItemID = this.getItemIdByItemType(equippedItem);
 		const equippedItemEP = equippedItem ? this.computeEP(equippedItem) : 0;
 
+		const labelCellElem = ref<HTMLDivElement>();
 		const nameElem = ref<HTMLLabelElement>();
 		const anchorElem = ref<HTMLAnchorElement>();
 		const iconElem = ref<HTMLImageElement>();
@@ -466,7 +468,7 @@ export default class ItemList<T extends ItemListType> {
 
 		const listItemElem = (
 			<li className={`selector-modal-list-item ${equippedItemID === itemData.id ? 'active' : ''}`} dataset={{ idx: item.idx.toString() }}>
-				<div className="selector-modal-list-label-cell">
+				<div className="selector-modal-list-label-cell gap-1" ref={labelCellElem}>
 					<a className="selector-modal-list-item-link" ref={anchorElem} dataset={{ whtticon: 'false' }}>
 						<img className="selector-modal-list-item-icon" ref={iconElem}></img>
 						<label className="selector-modal-list-item-name" ref={nameElem}>
@@ -616,6 +618,9 @@ export default class ItemList<T extends ItemListType> {
 		});
 
 		setItemQualityCssClass(nameElem.value!, itemData.quality);
+
+		const notice = new ItemNotice(this.player, { itemId: itemData.id });
+		if (notice.hasNotice) labelCellElem.value?.appendChild(notice.rootElem);
 
 		return listItemElem;
 	}

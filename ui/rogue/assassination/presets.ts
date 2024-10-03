@@ -1,4 +1,3 @@
-import * as Mechanics from '../../core/constants/mechanics';
 import * as PresetUtils from '../../core/preset_utils';
 import { Conjured, Consumes, Flask, Food, Glyphs, Potions, PseudoStat, Stat } from '../../core/proto/common';
 import { AssassinationRogue_Options as RogueOptions, RogueMajorGlyph, RogueOptions_PoisonImbue, RoguePrimeGlyph } from '../../core/proto/rogue';
@@ -7,6 +6,7 @@ import { Stats } from '../../core/proto_utils/stats';
 import MutilateApl from './apls/mutilate.apl.json';
 import P1AssassinationGear from './gear_sets/p1_assassination.gear.json';
 import P1ExpertiseGear from './gear_sets/p1_expertise.gear.json';
+import P3AssassinationGear from './gear_sets/p3_assassination.gear.json'
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -14,50 +14,51 @@ import P1ExpertiseGear from './gear_sets/p1_expertise.gear.json';
 
 export const P1_PRESET_ASSASSINATION = PresetUtils.makePresetGear('P1 Assassination', P1AssassinationGear);
 export const P1_PRESET_ASN_EXPERTISE = PresetUtils.makePresetGear('P1 Expertise', P1ExpertiseGear);
+export const P3_PRESET_ASSASSINATION = PresetUtils.makePresetGear('P3 Assassination', P3AssassinationGear);
 
 export const ROTATION_PRESET_MUTILATE = PresetUtils.makePresetAPLRotation('Assassination', MutilateApl);
 
 // Preset options for EP weights
 export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P1',
+	'Asn',
 	Stats.fromMap(
 		{
-			[Stat.StatAgility]: 2.58,
+			[Stat.StatAgility]: 2.64,
 			[Stat.StatStrength]: 1.05,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatCritRating]: (0.26 + 0.62),
-			[Stat.StatHitRating]: (1.31 + 1.43),
-			[Stat.StatHasteRating]: 1.1,
-			[Stat.StatMasteryRating]: 1.23,
-			[Stat.StatExpertiseRating]: 1.04,
+			[Stat.StatCritRating]: 1.18,
+			[Stat.StatHitRating]: 2.62,
+			[Stat.StatHasteRating]: 1.27,
+			[Stat.StatMasteryRating]: 1.35,
+			[Stat.StatExpertiseRating]: 1.2,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 2.49,
-			[PseudoStat.PseudoStatOffHandDps]: 1.0,
-			[PseudoStat.PseudoStatSpellHitPercent]: (1.31 * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT),
-			[PseudoStat.PseudoStatPhysicalHitPercent]: (1.43 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT),
+			[PseudoStat.PseudoStatMainHandDps]: 3.0,
+			[PseudoStat.PseudoStatOffHandDps]: 0.97,
+			[PseudoStat.PseudoStatSpellHitPercent]: 130.5,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 162.0,
 		},
 	),
 );
 
 export const P1_EP_EXPERTISE_PRESET = PresetUtils.makePresetEpWeights(
-	'P1 Expertise',
+	'Asn Expertise',
 	Stats.fromMap(
 		{
-			[Stat.StatAgility]: 2.58,
+			[Stat.StatAgility]: 2.71,
 			[Stat.StatStrength]: 1.05,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatCritRating]: (0.26 + 0.62),
-			[Stat.StatHitRating]: (1.31 + 1.43),
-			[Stat.StatHasteRating]: 1.1,
-			[Stat.StatMasteryRating]: 1.23,
+			[Stat.StatCritRating]: 1.18,
+			[Stat.StatHitRating]: 2.62,
+			[Stat.StatHasteRating]: 1.2,
+			[Stat.StatMasteryRating]: 1.32,
 			[Stat.StatExpertiseRating]: 2.0,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 2.49,
-			[PseudoStat.PseudoStatOffHandDps]: 1.0,
-			[PseudoStat.PseudoStatSpellHitPercent]: (1.31 * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT),
-			[PseudoStat.PseudoStatPhysicalHitPercent]: (1.43 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT),
+			[PseudoStat.PseudoStatMainHandDps]: 3.0,
+			[PseudoStat.PseudoStatOffHandDps]: 0.97,
+			[PseudoStat.PseudoStatSpellHitPercent]: 130.5,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 162.0,
 		},
 	),
 );

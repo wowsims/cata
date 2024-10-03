@@ -23,7 +23,7 @@ func (mage *Mage) registerIceLanceSpell() {
 		},
 
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultMageCritMultiplier(),
+		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
 		BonusCoefficient:         0.378,
 		ThreatMultiplier:         1,
 

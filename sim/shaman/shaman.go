@@ -15,8 +15,8 @@ const TotemRefreshTime5M = time.Second * 295
 
 // Damage Done By Caster setup
 const (
-	DDBC_T12P2 int = iota
-	DDBC_FrostbranWeapon
+	DDBC_4pcT12 int = iota
+	DDBC_FrostbrandWeapon
 
 	DDBC_Total
 )
@@ -155,6 +155,8 @@ type Shaman struct {
 	MaelstromWeaponAura *core.Aura
 	SearingFlames       *core.Spell
 
+	SearingFlamesMultiplier float64
+
 	// Healing Spells
 	tidalWaveProc          *core.Aura
 	ancestralHealingAmount float64
@@ -167,6 +169,8 @@ type Shaman struct {
 	EarthShield            *core.Spell
 
 	waterShieldManaMetrics *core.ResourceMetrics
+
+	VolcanicRegalia4PT12Aura *core.Aura
 }
 
 // Implemented by each Shaman spec.
@@ -261,6 +265,8 @@ func (shaman *Shaman) Initialize() {
 
 	shaman.registerBloodlustCD()
 	// shaman.NewTemporaryStatsAura("DC Pre-Pull SP Proc", core.ActionID{SpellID: 60494}, stats.Stats{stats.SpellPower: 765}, time.Second*10)
+
+	shaman.NewTemporaryStatsAura("Sorrowsong Pre-Pull", core.ActionID{SpellID: 91002, Tag: 1}, stats.Stats{stats.SpellPower: 1710}, 10*time.Second)
 }
 
 func (shaman *Shaman) RegisterHealingSpells() {
@@ -337,7 +343,8 @@ const (
 	SpellMaskMagmaTotem
 	SpellMaskSearingTotem
 	SpellMaskPrimalStrike
-	SpellMaskStormstrike
+	SpellMaskStormstrikeCast
+	SpellMaskStormstrikeDamage
 	SpellMaskEarthShield
 	SpellMaskFulmination
 	SpellMaskFrostShock
@@ -346,9 +353,10 @@ const (
 	SpellMaskEarthquake
 	SpellMaskFlametongueWeapon
 
-	SpellMaskFlameShock = SpellMaskFlameShockDirect | SpellMaskFlameShockDot
-	SpellMaskFire       = SpellMaskFlameShock | SpellMaskLavaBurst | SpellMaskLavaBurstOverload | SpellMaskLavaLash | SpellMaskFireNova | SpellMaskUnleashFlame
-	SpellMaskNature     = SpellMaskLightningBolt | SpellMaskLightningBoltOverload | SpellMaskChainLightning | SpellMaskChainLightningOverload | SpellMaskEarthShock | SpellMaskThunderstorm | SpellMaskFulmination
-	SpellMaskFrost      = SpellMaskUnleashFrost | SpellMaskFrostShock
-	SpellMaskOverload   = SpellMaskLavaBurstOverload | SpellMaskLightningBoltOverload | SpellMaskChainLightningOverload
+	SpellMaskStormstrike = SpellMaskStormstrikeCast | SpellMaskStormstrikeDamage
+	SpellMaskFlameShock  = SpellMaskFlameShockDirect | SpellMaskFlameShockDot
+	SpellMaskFire        = SpellMaskFlameShock | SpellMaskLavaBurst | SpellMaskLavaBurstOverload | SpellMaskLavaLash | SpellMaskFireNova | SpellMaskUnleashFlame
+	SpellMaskNature      = SpellMaskLightningBolt | SpellMaskLightningBoltOverload | SpellMaskChainLightning | SpellMaskChainLightningOverload | SpellMaskEarthShock | SpellMaskThunderstorm | SpellMaskFulmination
+	SpellMaskFrost       = SpellMaskUnleashFrost | SpellMaskFrostShock
+	SpellMaskOverload    = SpellMaskLavaBurstOverload | SpellMaskLightningBoltOverload | SpellMaskChainLightningOverload
 )

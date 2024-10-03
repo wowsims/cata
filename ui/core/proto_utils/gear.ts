@@ -3,7 +3,7 @@ import { UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../proto/ui.
 import { isBluntWeaponType, isSharpWeaponType } from '../proto_utils/utils.js';
 import { distinct, equalsOrBothNull, getEnumValues } from '../utils.js';
 import { Database } from './database';
-import { EquippedItem } from './equipped_item.js';
+import { EquippedItem, ReforgeData } from './equipped_item.js';
 import { gemMatchesSocket, isMetaGemActive } from './gems.js';
 import { Stats } from './stats.js';
 import { validWeaponCombo } from './utils.js';
@@ -359,6 +359,28 @@ export class Gear extends BaseGear {
 	}
 	getFailedProfessionRequirements(professions: Array<Profession>): Array<Item | Gem | Enchant> {
 		return (this.asArray().filter(ei => ei != null) as Array<EquippedItem>).map(ei => ei.getFailedProfessionRequirements(professions)).flat();
+	}
+	getItemSetCount(name: string) {
+		if (!name) return 0;
+
+		const validSetItemSlots = [ItemSlot.ItemSlotHead, ItemSlot.ItemSlotShoulder, ItemSlot.ItemSlotChest, ItemSlot.ItemSlotHands, ItemSlot.ItemSlotLegs];
+		let setItemCount = 0;
+		for (const slot of validSetItemSlots) {
+			const item = this.getEquippedItem(slot);
+			if (item?.item?.setName === name) setItemCount++;
+		}
+
+		return setItemCount;
+	}
+
+	getAllReforges() {
+		const reforgedItems = new Map<ItemSlot, ReforgeData>();
+		this.getEquippedItems().forEach((item, slot) => {
+			const reforgeData = item?.getReforgeData();
+			if (!reforgeData) return;
+			reforgedItems.set(slot, reforgeData);
+		});
+		return reforgedItems;
 	}
 }
 

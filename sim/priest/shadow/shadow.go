@@ -76,7 +76,6 @@ func (spriest *ShadowPriest) ApplyTalents() {
 	// make it an aura so it's visible that it's used in the timeline
 	spriest.AddStaticMod(core.SpellModConfig{
 		FloatValue: 0.15,
-		ClassMask:  int64(priest.PriestSpellsAll),
 		Kind:       core.SpellMod_DamageDone_Pct,
 	})
 

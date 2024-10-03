@@ -11,14 +11,13 @@ import { RogueOptions_PoisonImbue } from '../../core/proto/rogue';
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as RogueInputs from '../inputs';
-// import * as CombatInputs from './inputs';
 import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	cssClass: 'combat-rogue-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Rogue),
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: ['Rotations are not fully optimized, especially for non-standard setups.'],
+	knownIssues: ['Mastery - Main Gauche is potentially rounded down to the closest whole number. You can enable "Show Experimental" via the gear button to optimize reforging for these breakpoints, but it will take significantly longer to complete.'],
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -56,28 +55,36 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P1_PRESET_COMBAT.gear,
+		gear: Presets.P3_PRESET_COMBAT.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P1_EP_PRESET.epWeights,
+		epWeights: Presets.CBAT_HASTE_EP_PRESET.epWeights,
 		// Stat caps for reforge optimizer
 		statCaps: (() => {
 			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 			return expCap;
 		})(),
 		softCapBreakpoints: (() => {
+			// Running just under spell cap is typically preferrable to being over.
 			const spellHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent, {
-				breakpoints: [17],
+				breakpoints: [16.95, 16.96, 16.97, 16.98, 16.99, 17],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0],
+				postCapEPs: [0, 0, 0, 0, 0, 0],
 			});
 
 			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
 				breakpoints: [8, 27],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0.86 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT, 0],
+				postCapEPs: [110, 0],
 			});
 
-			return [meleeHitSoftCapConfig, spellHitSoftCapConfig];
+			const hasteRatingSoftCapConfig = StatCap.fromStat(Stat.StatHasteRating, {
+				breakpoints: [2070, 2150, 2250],
+				capType: StatCapType.TypeSoftCap,
+				// These are set by the active EP weight in the updateSoftCaps callback
+				postCapEPs: [0, 0, 0],
+			})
+
+			return [meleeHitSoftCapConfig, spellHitSoftCapConfig, hasteRatingSoftCapConfig];
 		})(),
     	other: Presets.OtherDefaults,
 		// Default consumes settings.
@@ -144,13 +151,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
+		epWeights: [Presets.CBAT_HASTE_EP_PRESET, Presets.CBAT_4PT12_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.CombatTalents],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_COMBAT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.P1_PRESET_COMBAT],
+		gear: [Presets.P1_PRESET_COMBAT, Presets.P3_PRESET_COMBAT],
 	},
 
 	autoRotation: (player: Player<Spec.SpecCombatRogue>): APLRotation => {
@@ -187,12 +194,47 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	],
 });
 
+const getMasterySoftCapConfig = (): StatCap => {
+	const masteryRatingBreakpoints = [];
+	const masteryPercentPerPoint = Mechanics.masteryPercentPerPoint.get(Spec.SpecCombatRogue)!;
+	for (let masteryPercent = 16; masteryPercent <= 200; masteryPercent++) {
+		masteryRatingBreakpoints.push((masteryPercent / masteryPercentPerPoint) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
+	}
+
+	return StatCap.fromStat(Stat.StatMasteryRating, {
+		breakpoints: masteryRatingBreakpoints,
+		capType: StatCapType.TypeThreshold,
+		postCapEPs: [0],
+	});
+}
+
+const addOrRemoveMasteryBreakpoint = (softCaps: StatCap[], isShown: boolean): void => {
+	if (isShown == true) {
+		softCaps.push(getMasterySoftCapConfig());
+	}
+	else
+	{
+		softCaps.splice(3, 1);
+	}
+}
+
 export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecCombatRogue>) {
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			new ReforgeOptimizer(this, {
+				updateSoftCaps: (softCaps: StatCap[]) => {
+					const hasteEP = player.getEpWeights().getStat(Stat.StatHasteRating)
+					const hasteSoftCap = softCaps.find(v => v.unitStat.equalsStat(Stat.StatHasteRating))
+					if (hasteSoftCap) {
+						hasteSoftCap.postCapEPs = [hasteEP - 0.1, hasteEP - 0.2, hasteEP - 0.3]
+					}
+
+					addOrRemoveMasteryBreakpoint(softCaps, this.sim.getShowExperimental())
+					return softCaps
+				}
+			});
 		});
 
 		this.player.changeEmitter.on(c => {

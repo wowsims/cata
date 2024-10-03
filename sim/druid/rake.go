@@ -51,6 +51,9 @@ func (druid *Druid) registerRakeSpell() {
 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
 				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
+
+				// Store snapshot power parameters for later use.
+				druid.UpdateBleedPower(druid.Rake, sim, target, true, true)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
@@ -99,6 +102,8 @@ func (druid *Druid) registerRakeSpell() {
 	druid.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
 		druid.Rake.DamageMultiplier *= druid.RazorClawsMultiplier(newMastery) / druid.RazorClawsMultiplier(oldMastery)
 	})
+
+	druid.Rake.ShortName = "Rake"
 }
 
 func (druid *Druid) CurrentRakeCost() float64 {

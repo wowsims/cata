@@ -14,10 +14,14 @@ func init() {
 
 func TestSubtlety(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-		Class:       proto.Class_ClassRogue,
-		Race:        proto.Race_RaceHuman,
-		OtherRaces:  []proto.Race{proto.Race_RaceOrc},
-		GearSet:     core.GetGearSet("../../../ui/rogue/subtlety/gear_sets", "p1_subtlety_test"),
+		Class:      proto.Class_ClassRogue,
+		Race:       proto.Race_RaceHuman,
+		OtherRaces: []proto.Race{proto.Race_RaceOrc},
+		GearSet:    core.GetGearSet("../../../ui/rogue/subtlety/gear_sets", "p1_subtlety"),
+		OtherGearSets: []core.GearSetCombo{
+			core.GetGearSet("../../../ui/rogue/subtlety/gear_sets", "p3_subtlety"),
+			//core.GetGearSet("../../../ui/rogue/subtlety/gear_sets", "p4_subtlety"),
+		},
 		Talents:     SubtletyTalents,
 		Glyphs:      SubtletyGlyphs,
 		Consumes:    FullConsumes,

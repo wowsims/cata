@@ -278,18 +278,6 @@ func (eb *eclipseEnergyBar) addLunarEnergy(amount float64, sim *core.Simulation,
 	metrics.AddEvent(amount, gain)
 }
 
-func (eb *eclipseEnergyBar) ForceEclipse(eclipse Eclipse, sim *core.Simulation) {
-	eb.reset()
-
-	if eclipse == SolarEclipse {
-		eb.solarEnergy = 100
-	} else if eclipse == LunarEclipse {
-		eb.lunarEnergy = 100
-	}
-
-	eb.SetEclipse(eclipse, sim)
-}
-
 func (eb *eclipseEnergyBar) SetEclipse(eclipse Eclipse, sim *core.Simulation) {
 	if eb.currentEclipse == eclipse {
 		return

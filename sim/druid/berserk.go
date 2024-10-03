@@ -40,6 +40,10 @@ func (druid *Druid) registerBerserkCD() {
 			if druid.PrimalMadnessAura != nil {
 				druid.PrimalMadnessAura.Activate(sim)
 			}
+
+			if druid.MangleBear != nil {
+				druid.MangleBear.CD.Reset()
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
@@ -91,4 +95,20 @@ func (druid *Druid) registerBerserkCD() {
 			druid.MangleBear.CostMultiplier += 1.0
 		},
 	})
+}
+
+func (druid *Druid) ApplyFeral4pT12(sim *core.Simulation) {
+	if !druid.Feral4pT12Active || !druid.BerserkAura.IsActive() {
+		return
+	}
+
+	berserkExtensionChance := 0.2 * float64(druid.ComboPoints())
+
+	if sim.Proc(berserkExtensionChance, "Feral 4pT12") {
+		druid.BerserkAura.UpdateExpires(druid.BerserkAura.ExpiresAt() + time.Second*2)
+
+		if sim.Log != nil {
+			druid.Log(sim, "Berserk extended by 2 seconds from finisher proc.")
+		}
+	}
 }

@@ -3,7 +3,7 @@ import { CURRENT_API_VERSION } from '../constants/other.js';
 import { Class, PseudoStat, Stat, UnitStats } from '../proto/common.js';
 import { StatCapConfig, StatCapType, UIStat as UnitStatProto } from '../proto/ui.js';
 import { getEnumValues } from '../utils.js';
-import { getClassPseudoStatName,getStatName } from './names.js';
+import { getClassPseudoStatName, getStatName } from './names.js';
 import { migrateOldProto, ProtoConversionMap } from './utils.js';
 
 const STATS_LEN = getEnumValues(Stat).length;
@@ -668,6 +668,14 @@ export class Stats {
 
 		return migratedProto;
 	}
+}
+
+// Used for spec specific stat presets to be used
+// as a easy to access reference
+export interface UnitStatPresets {
+	unitStat: UnitStat;
+	// Name of the preset and the value in percentage
+	presets: Map<string, number>;
 }
 
 export interface BreakpointConfig {
