@@ -70,7 +70,7 @@ export class CooldownsPicker extends Component {
 			`;
 			const deleteButton = deleteButtonFragment.children[0] as HTMLElement;
 			const deleteButtonTooltip = tippy(deleteButton, { content: 'Delete Cooldown' });
-			deleteButton.addEventListener('click', event => {
+			deleteButton.addEventListener('click', () => {
 				const newCooldowns = this.player.getSimpleCooldowns();
 				newCooldowns.cooldowns.splice(i, 1);
 				this.player.setSimpleCooldowns(TypedEvent.nextEventID(), newCooldowns);
@@ -103,6 +103,7 @@ export class CooldownsPicker extends Component {
 			changedEvent: (player: Player<any>) => player.rotationChangeEmitter,
 			getValue: (player: Player<any>) => player.getSimpleCooldowns().cooldowns[cooldownIndex]?.id || ActionIdProto.create(),
 			setValue: (eventID: EventID, player: Player<any>, newValue: ActionIdProto) => {
+				if (!newValue.rawId.oneofKind) return;
 				const newCooldowns = player.getSimpleCooldowns();
 
 				while (newCooldowns.cooldowns.length < cooldownIndex) {
