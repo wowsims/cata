@@ -20,9 +20,6 @@ func (dk *DeathKnight) registerAntiMagicShellSpell() {
 		SpellSchool: core.SpellSchoolShadow,
 		Flags:       core.SpellFlagAPL,
 
-		RuneCost: core.RuneCostOptions{
-			RunicPowerCost: 20,
-		},
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    dk.NewTimer(),
