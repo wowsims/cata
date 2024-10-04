@@ -2,6 +2,7 @@ import * as PresetUtils from '../../core/preset_utils';
 import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, PseudoStat, RaidBuffs, Stat, TinkerHands } from '../../core/proto/common';
 import {
 	FireMage_Options as MageOptions,
+	FireMage_Rotation,
 	MageMajorGlyph as MajorGlyph,
 	MageMinorGlyph as MinorGlyph,
 	MagePrimeGlyph as PrimeGlyph,
@@ -22,10 +23,9 @@ export const FIRE_P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1FireBisG
 export const FIRE_P1_PREBIS = PresetUtils.makePresetGear('P1 Pre-raid', P1FirePrebisGear, { talentTree: 1 });
 export const FIRE_P3_PRESET = PresetUtils.makePresetGear('P3 Preset', P3FireBisGear, { talentTree: 1 });
 
-/* export const DefaultSimpleRotation = MageRotation.create({
-	primaryFireSpell: PrimaryFireSpell.Fireball,
-	maintainImprovedScorch: false,
-}); */
+export const DefaultSimpleRotation = FireMage_Rotation.create({
+	igniteCombustThreshold: 30000,
+});
 
 //export const ROTATION_PRESET_SIMPLE = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecFireMage, DefaultSimpleRotation);
 export const FIRE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Fire', FireApl, { talentTree: 1 });

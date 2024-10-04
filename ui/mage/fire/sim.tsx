@@ -4,8 +4,8 @@ import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
-import { APLRotation } from '../../core/proto/apl';
-import { Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
+import { APLAction, APLListItem, APLRotation, APLRotation_Type, SimpleRotation } from '../../core/proto/apl';
+import { Cooldowns, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import { formatToNumber } from '../../core/utils';
@@ -79,6 +79,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultFireConsumes,
+		// Default rotation settings.
+		rotationType: APLRotation_Type.TypeSimple,
+		simpleRotation: Presets.DefaultSimpleRotation,
 		// Default talents.
 		talents: Presets.FireTalents.data,
 		// Default spec-specific settings.
@@ -125,15 +128,75 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		gear: [Presets.FIRE_P1_PRESET, Presets.FIRE_P1_PREBIS, Presets.FIRE_P3_PRESET],
 	},
 
-	autoRotation: (_player): APLRotation => {
-		/*const numTargets = player.sim.encounter.targets.length;
- 		if (numTargets > 3) {
-			return Presets.FIRE_ROTATION_PRESET_AOE.rotation.rotation!;
-		} else {
-			return Presets.FIRE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-		} */
+	autoRotation: (): APLRotation => {
 		return Presets.FIRE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
+
+	simpleRotation: (_, simple): APLRotation => {
+		const rotation = Presets.FIRE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+		const igniteCombustThreshold = simple.igniteCombustThreshold || 30000;
+
+		const maxCombustDuringLust = APLAction.fromJsonString(
+			`{"condition":{"and":{"vals":[{"or":{"vals":[{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":26297}}},{"auraIsActive":{"auraId":{"spellId":26297}}},{"cmp":{"op":"OpLe","lhs":{"currentTime":{}},"rhs":{"const":{"val":"17s"}}}}]}},{"and":{"vals":[{"not":{"val":{"auraIsKnown":{"auraId":{"spellId":26297}}}}},{"cmp":{"op":"OpGt","lhs":{"auraRemainingTime":{"auraId":{"spellId":2825,"tag":-1}}},"rhs":{"const":{"val":"2s"}}}}]}}]}},{"cmp":{"op":"OpGt","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12846}}},"rhs":{"const":{"val":"${igniteCombustThreshold}"}}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12846}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":44457}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":11366,"tag":1}}}]}},"castSpell":{"spellId":{"spellId":11129}}}`,
+		);
+		const lastMomentCombustDuringLust = APLAction.fromJsonString(
+			`{"condition":{"and":{"vals":[{"or":{"vals":[{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":26297}}},{"auraIsActive":{"auraId":{"spellId":26297}}},{"cmp":{"op":"OpLt","lhs":{"auraRemainingTime":{"auraId":{"spellId":26297}}},"rhs":{"const":{"val":"2.5s"}}}},{"cmp":{"op":"OpLe","lhs":{"currentTime":{}},"rhs":{"const":{"val":"17s"}}}}]}},{"and":{"vals":[{"not":{"val":{"auraIsKnown":{"auraId":{"spellId":26297}}}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":2825,"tag":-1}}},"rhs":{"const":{"val":"2s"}}}}]}}]}},{"cmp":{"op":"OpGt","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12846}}},"rhs":{"const":{"val":"${
+				igniteCombustThreshold / 3
+			}"}}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12846}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":44457}}}]}},"castSpell":{"spellId":{"spellId":11129}}}`,
+		);
+		const combustOutsideOfLustAndBerserking = APLAction.fromJsonString(
+			`{"condition":{"and":{"vals":[{"or":{"vals":[{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":26297}}},{"cmp":{"op":"OpGt","lhs":{"currentTime":{}},"rhs":{"const":{"val":"17s"}}}}]}},{"and":{"vals":[{"not":{"val":{"auraIsKnown":{"auraId":{"spellId":26297}}}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":2825,"tag":-1}}}}}]}}]}},{"cmp":{"op":"OpGt","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12846}}},"rhs":{"const":{"val":"${
+				igniteCombustThreshold / 2
+			}"}}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12846}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":44457}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":11366,"tag":1}}}]}},"castSpell":{"spellId":{"spellId":11129}}}`,
+		);
+		const lastMomentCombustBeforeEncounter = APLAction.fromJsonString(
+			`{"condition":{"and":{"vals":[{"cmp":{"op":"OpLt","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"15s"}}}},{"cmp":{"op":"OpGt","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12846}}},"rhs":{"const":{"val":"${
+				igniteCombustThreshold / 3
+			}"}}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12846}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":44457}}}]}},"castSpell":{"spellId":{"spellId":11129}}}`,
+		);
+
+		const modifiedSimpleRotation = rotation;
+
+		modifiedSimpleRotation.priorityList[5] = APLListItem.create({
+			action: maxCombustDuringLust,
+		});
+		modifiedSimpleRotation.priorityList[6] = APLListItem.create({
+			action: lastMomentCombustDuringLust,
+		});
+		modifiedSimpleRotation.priorityList[7] = APLListItem.create({
+			action: combustOutsideOfLustAndBerserking,
+		});
+		modifiedSimpleRotation.priorityList[8] = APLListItem.create({
+			action: lastMomentCombustBeforeEncounter,
+		});
+
+		return APLRotation.create({
+			simple: SimpleRotation.create({
+				cooldowns: Cooldowns.create(),
+			}),
+			prepullActions: modifiedSimpleRotation.prepullActions,
+			priorityList: modifiedSimpleRotation.priorityList,
+		});
+	},
+	// Hide all the MCDs since the simeple rotation handles them.
+	hiddenMCDs: [
+		// Berserking
+		26297,
+		// Bloodlust
+		2825,
+		// Evocation
+		12051,
+		// Flame Orb
+		82731,
+		// Mana Gem
+		36799,
+		// Mirror Image
+		55342,
+		// Synapse Springs
+		82174,
+		// Volcanic Potion
+		58091
+	],
 
 	raidSimPresets: [
 		{

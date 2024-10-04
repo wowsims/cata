@@ -134,6 +134,8 @@ message ArcaneMage {
 
 message FireMage {
 	message Rotation {
+		// Minimum Ignite threshold to combust at during lust
+		int32 ignite_combust_threshold = 1;
 	}
 
 	message Options {
