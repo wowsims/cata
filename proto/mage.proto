@@ -136,6 +136,8 @@ message FireMage {
 	message Rotation {
 		// Minimum Ignite threshold to combust at during lust
 		int32 ignite_combust_threshold = 1;
+		double ignite_last_moment_lust_percentage = 2;
+		double ignite_no_lust_percentage = 3;
 	}
 
 	message Options {

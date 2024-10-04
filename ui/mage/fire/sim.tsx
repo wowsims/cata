@@ -81,7 +81,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		consumes: Presets.DefaultFireConsumes,
 		// Default rotation settings.
 		rotationType: APLRotation_Type.TypeSimple,
-		simpleRotation: Presets.DefaultSimpleRotation,
+		simpleRotation: Presets.P1DefaultSimpleRotation,
 		// Default talents.
 		talents: Presets.FireTalents.data,
 		// Default spec-specific settings.
@@ -121,11 +121,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	presets: {
 		epWeights: [Presets.DEFAULT_EP_PRESET],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.FIRE_ROTATION_PRESET_DEFAULT],
+		rotations: [Presets.P1_SIMPLE_ROTATION_DEFAULT, Presets.P3_SIMPLE_ROTATION_DEFAULT, Presets.FIRE_ROTATION_PRESET_DEFAULT],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.FireTalents],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.FIRE_P1_PRESET, Presets.FIRE_P1_PREBIS, Presets.FIRE_P3_PRESET],
+		builds: [Presets.P1_PRESET_BUILD, Presets.P3_PRESET_BUILD],
 	},
 
 	autoRotation: (): APLRotation => {
@@ -134,24 +135,24 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 
 	simpleRotation: (_, simple): APLRotation => {
 		const rotation = Presets.FIRE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-		const igniteCombustThreshold = simple.igniteCombustThreshold || 30000;
+		const { igniteCombustThreshold, igniteLastMomentLustPercentage, igniteNoLustPercentage } = simple;
 
 		const maxCombustDuringLust = APLAction.fromJsonString(
 			`{"condition":{"and":{"vals":[{"or":{"vals":[{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":26297}}},{"auraIsActive":{"auraId":{"spellId":26297}}},{"cmp":{"op":"OpLe","lhs":{"currentTime":{}},"rhs":{"const":{"val":"17s"}}}}]}},{"and":{"vals":[{"not":{"val":{"auraIsKnown":{"auraId":{"spellId":26297}}}}},{"cmp":{"op":"OpGt","lhs":{"auraRemainingTime":{"auraId":{"spellId":2825,"tag":-1}}},"rhs":{"const":{"val":"2s"}}}}]}}]}},{"cmp":{"op":"OpGt","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12846}}},"rhs":{"const":{"val":"${igniteCombustThreshold}"}}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12846}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":44457}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":11366,"tag":1}}}]}},"castSpell":{"spellId":{"spellId":11129}}}`,
 		);
 		const lastMomentCombustDuringLust = APLAction.fromJsonString(
-			`{"condition":{"and":{"vals":[{"or":{"vals":[{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":26297}}},{"auraIsActive":{"auraId":{"spellId":26297}}},{"cmp":{"op":"OpLt","lhs":{"auraRemainingTime":{"auraId":{"spellId":26297}}},"rhs":{"const":{"val":"2.5s"}}}},{"cmp":{"op":"OpLe","lhs":{"currentTime":{}},"rhs":{"const":{"val":"17s"}}}}]}},{"and":{"vals":[{"not":{"val":{"auraIsKnown":{"auraId":{"spellId":26297}}}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":2825,"tag":-1}}},"rhs":{"const":{"val":"2s"}}}}]}}]}},{"cmp":{"op":"OpGt","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12846}}},"rhs":{"const":{"val":"${
-				igniteCombustThreshold / 3
+			`{"condition":{"and":{"vals":[{"or":{"vals":[{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":26297}}},{"auraIsActive":{"auraId":{"spellId":26297}}},{"cmp":{"op":"OpLt","lhs":{"auraRemainingTime":{"auraId":{"spellId":26297}}},"rhs":{"const":{"val":"2.5s"}}}},{"cmp":{"op":"OpLe","lhs":{"currentTime":{}},"rhs":{"const":{"val":"17s"}}}}]}},{"and":{"vals":[{"not":{"val":{"auraIsKnown":{"auraId":{"spellId":26297}}}}},{"auraIsActive":{"auraId":{"spellId":2825,"tag":-1}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":2825,"tag":-1}}},"rhs":{"const":{"val":"2s"}}}}]}}]}},{"cmp":{"op":"OpGt","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12846}}},"rhs":{"const":{"val":"${
+				igniteCombustThreshold * igniteLastMomentLustPercentage
 			}"}}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12846}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":44457}}}]}},"castSpell":{"spellId":{"spellId":11129}}}`,
 		);
 		const combustOutsideOfLustAndBerserking = APLAction.fromJsonString(
 			`{"condition":{"and":{"vals":[{"or":{"vals":[{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":26297}}},{"cmp":{"op":"OpGt","lhs":{"currentTime":{}},"rhs":{"const":{"val":"17s"}}}}]}},{"and":{"vals":[{"not":{"val":{"auraIsKnown":{"auraId":{"spellId":26297}}}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":2825,"tag":-1}}}}}]}}]}},{"cmp":{"op":"OpGt","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12846}}},"rhs":{"const":{"val":"${
-				igniteCombustThreshold / 2
+				igniteCombustThreshold * igniteNoLustPercentage
 			}"}}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12846}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":44457}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":11366,"tag":1}}}]}},"castSpell":{"spellId":{"spellId":11129}}}`,
 		);
 		const lastMomentCombustBeforeEncounter = APLAction.fromJsonString(
 			`{"condition":{"and":{"vals":[{"cmp":{"op":"OpLt","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"15s"}}}},{"cmp":{"op":"OpGt","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12846}}},"rhs":{"const":{"val":"${
-				igniteCombustThreshold / 3
+				igniteCombustThreshold * igniteLastMomentLustPercentage
 			}"}}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12846}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":44457}}}]}},"castSpell":{"spellId":{"spellId":11129}}}`,
 		);
 
@@ -195,7 +196,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		// Synapse Springs
 		82174,
 		// Volcanic Potion
-		58091
+		58091,
 	],
 
 	raidSimPresets: [

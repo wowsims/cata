@@ -94,7 +94,7 @@ export class NumberPicker<ModObject> extends Input<ModObject, number> {
 		}
 
 		if (this.float) {
-			this.inputElem.value = formatToNumber(newValue, { minimumFractionDigits: 2, maximumFractionDigits: this.maxDecimalDigits });
+			this.inputElem.value = formatToNumber(newValue, { useGrouping: false, minimumFractionDigits: 2, maximumFractionDigits: this.maxDecimalDigits });
 		} else {
 			this.inputElem.value = String(newValue);
 		}

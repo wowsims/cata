@@ -3,7 +3,7 @@ import { Spec } from '../proto/common.js';
 import { ActionId } from '../proto_utils/action_id.js';
 import { ClassOptions, SpecOptions, SpecRotation } from '../proto_utils/utils.js';
 import { EventID, TypedEvent } from '../typed_event.js';
-import { randomUUID } from '../utils';
+import { formatToNumber, randomUUID } from '../utils';
 import { BooleanPickerConfig } from './pickers/boolean_picker.js';
 import { EnumPickerConfig, EnumValueConfig } from './pickers/enum_picker.js';
 import { IconEnumPickerConfig, IconEnumValueConfig } from './pickers/icon_enum_picker.jsx';
@@ -160,6 +160,8 @@ function makeWrappedNumberInput<SpecType extends Spec, ModObject>(
 		labelTooltip: config.labelTooltip,
 		description: config.description,
 		float: config.float,
+		showZeroes: config.showZeroes,
+		maxDecimalDigits: config.maxDecimalDigits,
 		positive: config.positive,
 		changedEvent: (player: Player<SpecType>) => config.changedEvent(getModObject(player)),
 		getValue: (player: Player<SpecType>) => config.getValue(getModObject(player)),
@@ -169,19 +171,23 @@ function makeWrappedNumberInput<SpecType extends Spec, ModObject>(
 		extraCssClasses: config.extraCssClasses,
 	};
 }
-export interface PlayerNumberInputConfig<SpecType extends Spec, Message> extends BasePlayerConfig<SpecType, number> {
+export interface PlayerNumberInputConfig<SpecType extends Spec, Message>
+	extends BasePlayerConfig<SpecType, number>,
+		Pick<NumberPickerConfig<Player<SpecType>>, 'labelTooltip' | 'description' | 'showZeroes' | 'maxDecimalDigits' | 'float' | 'positive'> {
 	fieldName: keyof Message;
 	label: string;
-	labelTooltip?: string;
-	description?: string | Element;
 	percent?: boolean;
 	max?: number;
-	float?: boolean;
-	positive?: boolean;
 	enableWhen?: (player: Player<SpecType>) => boolean;
 	showWhen?: (player: Player<SpecType>) => boolean;
 	changeEmitter?: (player: Player<SpecType>) => TypedEvent<any>;
 }
+
+export const numberInputValueToPercentage = (value: number, config: PlayerNumberInputConfig<any, any>) =>
+	Number(formatToNumber(value / 100, { maximumFractionDigits: config.maxDecimalDigits, useGrouping: false }));
+
+export const numberInputPercentToValue = (value: number, config: PlayerNumberInputConfig<any, any>) =>
+	Number(formatToNumber(value * 100, { maximumFractionDigits: config.maxDecimalDigits, useGrouping: false }));
 
 export function makeClassOptionsNumberInput<SpecType extends Spec>(
 	config: PlayerNumberInputConfig<SpecType, ClassOptions<SpecType>>,
@@ -192,6 +198,8 @@ export function makeClassOptionsNumberInput<SpecType extends Spec>(
 		labelTooltip: config.labelTooltip,
 		description: config.description,
 		float: config.float,
+		showZeroes: config.showZeroes,
+		maxDecimalDigits: config.maxDecimalDigits,
 		positive: config.positive,
 		getModObject: (player: Player<SpecType>) => player,
 		getValue: config.getValue || ((player: Player<SpecType>) => player.getClassOptions()[config.fieldName] as unknown as number),
@@ -212,9 +220,10 @@ export function makeClassOptionsNumberInput<SpecType extends Spec>(
 	};
 	if (config.percent) {
 		const getValue = internalConfig.getValue;
-		internalConfig.getValue = (player: Player<SpecType>) => getValue(player) * 100;
+		internalConfig.getValue = (player: Player<SpecType>) => numberInputPercentToValue(getValue(player), config);
 		const setValue = internalConfig.setValue;
-		internalConfig.setValue = (eventID: EventID, player: Player<SpecType>, newVal: number) => setValue(eventID, player, newVal / 100);
+		internalConfig.setValue = (eventID: EventID, player: Player<SpecType>, newVal: number) =>
+			setValue(eventID, player, numberInputValueToPercentage(newVal, config));
 	}
 	return makeWrappedNumberInput<SpecType, Player<SpecType>>(internalConfig);
 }
@@ -227,6 +236,8 @@ export function makeSpecOptionsNumberInput<SpecType extends Spec>(
 		labelTooltip: config.labelTooltip,
 		description: config.description,
 		float: config.float,
+		showZeroes: config.showZeroes,
+		maxDecimalDigits: config.maxDecimalDigits,
 		positive: config.positive,
 		getModObject: (player: Player<SpecType>) => player,
 		getValue: config.getValue || ((player: Player<SpecType>) => player.getSpecOptions()[config.fieldName] as unknown as number),
@@ -248,9 +259,10 @@ export function makeSpecOptionsNumberInput<SpecType extends Spec>(
 
 	if (config.percent) {
 		const getValue = internalConfig.getValue;
-		internalConfig.getValue = (player: Player<SpecType>) => getValue(player) * 100;
+		internalConfig.getValue = (player: Player<SpecType>) => numberInputPercentToValue(getValue(player), config);
 		const setValue = internalConfig.setValue;
-		internalConfig.setValue = (eventID: EventID, player: Player<SpecType>, newVal: number) => setValue(eventID, player, newVal / 100);
+		internalConfig.setValue = (eventID: EventID, player: Player<SpecType>, newVal: number) =>
+			setValue(eventID, player, numberInputValueToPercentage(newVal, config));
 	}
 	return makeWrappedNumberInput<SpecType, Player<SpecType>>(internalConfig);
 }
@@ -263,6 +275,7 @@ export function makeRotationNumberInput<SpecType extends Spec>(
 		labelTooltip: config.labelTooltip,
 		description: config.description,
 		float: config.float,
+		showZeroes: config.showZeroes,
 		positive: config.positive,
 		getModObject: (player: Player<SpecType>) => player,
 		getValue: config.getValue || ((player: Player<SpecType>) => player.getSimpleRotation()[config.fieldName] as unknown as number),
@@ -283,9 +296,10 @@ export function makeRotationNumberInput<SpecType extends Spec>(
 	};
 	if (config.percent) {
 		const getValue = internalConfig.getValue;
-		internalConfig.getValue = (player: Player<SpecType>) => getValue(player) * 100;
+		internalConfig.getValue = (player: Player<SpecType>) => numberInputPercentToValue(getValue(player), config);
 		const setValue = internalConfig.setValue;
-		internalConfig.setValue = (eventID: EventID, player: Player<SpecType>, newVal: number) => setValue(eventID, player, newVal / 100);
+		internalConfig.setValue = (eventID: EventID, player: Player<SpecType>, newVal: number) =>
+			setValue(eventID, player, numberInputValueToPercentage(newVal, config));
 	}
 	return makeWrappedNumberInput<SpecType, Player<SpecType>>(internalConfig);
 }
