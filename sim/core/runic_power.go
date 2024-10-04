@@ -210,6 +210,8 @@ func (rp *runicPowerBar) spendRunicPower(sim *Simulation, amount float64, metric
 		panic("Trying to spend negative runic power!")
 	}
 
+	amount = min(amount, rp.currentRunicPower)
+
 	newRunicPower := rp.currentRunicPower - amount
 
 	metrics.AddEvent(-amount, -amount)
