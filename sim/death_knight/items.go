@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -93,7 +94,7 @@ var ItemSetElementiumDeathplateBattlegear = core.NewItemSet(core.ItemSet{
 			buff := dk.RegisterAura(core.Aura{
 				Label:    "Smoldering Rune",
 				ActionID: actionID,
-				Duration: time.Minute * 2,
+				Duration: time.Minute * core.TernaryDuration(dk.HasMinorGlyph(proto.DeathKnightMinorGlyph_GlyphOfHornOfWinter), 3, 2),
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					pa = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 						Period: time.Second * 5,
