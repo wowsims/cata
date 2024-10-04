@@ -27,8 +27,8 @@ func ReadAtlasLootData() *WowDatabase {
 
 	// Cata addon
 	readAtlasLootSourceData(db, proto.Expansion_ExpansionCata, "https://raw.githubusercontent.com/snowflame0/AtlasLootClassic_Cata/main/AtlasLootClassic_Data/source-cata.lua")
-	readAtlasLootDungeonData(db, proto.Expansion_ExpansionCata, "https://raw.githubusercontent.com/snowflame0/AtlasLootClassic_Cata/master/AtlasLootClassic_DungeonsAndRaids/data-cata.lua")
-	readAtlasLootFactionData(db, "https://raw.githubusercontent.com/snowflame0/AtlasLootClassic_Cata/master/AtlasLootClassic_Factions/data-cata.lua")
+	readAtlasLootDungeonData(db, proto.Expansion_ExpansionCata, "https://raw.githubusercontent.com/snowflame0/AtlasLootClassic_Cata/main/AtlasLootClassic_DungeonsAndRaids/data-cata.lua")
+	readAtlasLootFactionData(db, "https://raw.githubusercontent.com/snowflame0/AtlasLootClassic_Cata/main/AtlasLootClassic_Factions/data-cata.lua")
 
 	readZoneData(db)
 
