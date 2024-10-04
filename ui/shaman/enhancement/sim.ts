@@ -84,7 +84,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P1ORC_PRESET.gear,
+		gear: Presets.P1_ORC_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge optimizer
@@ -133,7 +133,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET, Presets.P1ORC_PRESET, Presets.P1DRAENEI_PRESET],
+		gear: [Presets.PRERAID_PRESET, Presets.P1_ORC_PRESET, Presets.P1_DRAENEI_PRESET,Presets.P3_ORC_PRESET, Presets.P3_DRAENEI_PRESET],
 	},
 
 	autoRotation: (player: Player<Spec.SpecEnhancementShaman>): APLRotation => {
@@ -153,10 +153,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 			},
 			defaultGear: {
 				[Faction.Alliance]: {
-					1: Presets.P1DRAENEI_PRESET.gear,
+					1: Presets.P1_DRAENEI_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1ORC_PRESET.gear,
+					1: Presets.P1_ORC_PRESET.gear,
 				},
 				[Faction.Unknown]: {},
 			},
