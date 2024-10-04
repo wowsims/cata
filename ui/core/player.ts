@@ -204,6 +204,7 @@ export type SimpleRotationGenerator<SpecType extends Spec> = (
 export interface PlayerConfig<SpecType extends Spec> {
 	autoRotation: AutoRotationGenerator<SpecType>;
 	simpleRotation?: SimpleRotationGenerator<SpecType>;
+	hiddenMCDs?: Array<number>; // spell IDs for any MCDs that should be omitted from the Simple Cooldowns UI
 }
 
 const SPEC_CONFIGS: Partial<Record<Spec, PlayerConfig<any>>> = {};
@@ -254,6 +255,7 @@ export class Player<SpecType extends Spec> {
 
 	private readonly autoRotationGenerator: AutoRotationGenerator<SpecType> | null = null;
 	private readonly simpleRotationGenerator: SimpleRotationGenerator<SpecType> | null = null;
+	readonly hiddenMCDs: Array<number>;
 
 	private itemEPCache = new Array<Map<number, number>>();
 	private gemEPCache = new Map<number, number>();
@@ -321,6 +323,7 @@ export class Player<SpecType extends Spec> {
 		} else {
 			this.simpleRotationGenerator = null;
 		}
+		this.hiddenMCDs = specConfig.hiddenMCDs || new Array<number>();
 
 		for (let i = 0; i < ItemSlot.ItemSlotRanged + 1; ++i) {
 			this.itemEPCache[i] = new Map();
