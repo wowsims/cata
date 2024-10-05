@@ -265,6 +265,14 @@ var ItemDenyList = map[int32]struct{}{
 	68713: {}, // Mirror of Broken Images Duplicate
 	65104: {}, // DONTUSEUnheeded Warning
 	65015: {}, // DONTUSEFury of Angerforge
+
+	71325: {}, // The Horseman's Sinister Saber - 365
+	71326: {}, // The Horseman's Horrific Helmet - 365
+	71327: {}, // Band of Ghoulish Glee - 365
+	71328: {}, // The Horseman's Signet - 365
+	71329: {}, // Wicked Witch's Ring - 365
+	71330: {}, // Seal of the Petrified Pumpkin - 365
+
 	71331: {}, // Direbrew's Bloodied Shanker - 365
 	71332: {}, // Tremendous Tankard O' Terror - 365
 	71333: {}, // Bubblier Brightbrew Charm - 365
@@ -273,6 +281,7 @@ var ItemDenyList = map[int32]struct{}{
 	71336: {}, // Petrified Pickled Egg - 365
 	71337: {}, // Mithril Stopwatch - 365
 	71338: {}, // Brawler's Trophy - 365
+
 }
 
 // Item icons to include in the DB, so they don't need to be separately loaded in the UI.
