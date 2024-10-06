@@ -23,7 +23,7 @@ export const MageRotationConfig = {
 						<li>Cast Combust whilst Bloodlust is active when Ignite exceeds 30.000 (100%) damage.</li>
 						<li>Cast Combust at the last moment when Bloodlust (+ Berserking) is running out when Ignite exceeds 10.000 (33%) damage</li>
 						<li>Cast Combust outside of Bloodlust when Ignite exceeds 15.000 (50%) damage</li>
-						<li>Cast Combust when encounter is ending in 15 secodns when Ignite exceeds 10.000 (33%) damage</li>
+						<li>Cast Combust when encounter is ending in 15 seconds when Ignite exceeds 10.000 (33%) damage</li>
 					</ul>
 				</>
 			),
@@ -34,7 +34,7 @@ export const MageRotationConfig = {
 		InputHelpers.makeRotationNumberInput<Spec.SpecFireMage>({
 			fieldName: 'igniteLastMomentLustPercentage',
 			label: 'Max Ignite % - Last moment during Bloodlust',
-			labelTooltip: 'Using a % of Ignite Combust Threshold to use Combustion when Bloodlust (+ Berserking) is about to run out.',
+			labelTooltip: 'Using a % of the "Ignite Combust Threshold" to use Combustion when Bloodlust (+ Berserking) is about to run out.',
 			changeEmitter: player => player.rotationChangeEmitter,
 			getValue: player => player.getSimpleRotation().igniteLastMomentLustPercentage,
 			percent: true,
@@ -44,7 +44,7 @@ export const MageRotationConfig = {
 		InputHelpers.makeRotationNumberInput<Spec.SpecFireMage>({
 			fieldName: 'igniteNoLustPercentage',
 			label: 'Max Ignite % - Outside of Bloodlust',
-			labelTooltip: 'Using a % of Ignite Combust Threshold to use Combustion when Bloodlust is not up.',
+			labelTooltip: 'Using a % of the "Ignite Combust Threshold" to use Combustion when Bloodlust is not up.',
 			changeEmitter: player => player.rotationChangeEmitter,
 			getValue: player => player.getSimpleRotation().igniteNoLustPercentage,
 			percent: true,
