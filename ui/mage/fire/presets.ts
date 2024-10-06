@@ -1,7 +1,8 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, PseudoStat, RaidBuffs, Stat, TinkerHands } from '../../core/proto/common';
+import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, PseudoStat, RaidBuffs, Spec, Stat, TinkerHands } from '../../core/proto/common';
 import {
 	FireMage_Options as MageOptions,
+	FireMage_Rotation,
 	MageMajorGlyph as MajorGlyph,
 	MageMinorGlyph as MinorGlyph,
 	MagePrimeGlyph as PrimeGlyph,
@@ -22,13 +23,23 @@ export const FIRE_P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1FireBisG
 export const FIRE_P1_PREBIS = PresetUtils.makePresetGear('P1 Pre-raid', P1FirePrebisGear, { talentTree: 1 });
 export const FIRE_P3_PRESET = PresetUtils.makePresetGear('P3 Preset', P3FireBisGear, { talentTree: 1 });
 
-/* export const DefaultSimpleRotation = MageRotation.create({
-	primaryFireSpell: PrimaryFireSpell.Fireball,
-	maintainImprovedScorch: false,
-}); */
+export const P1DefaultSimpleRotation = FireMage_Rotation.create({
+	igniteCombustThreshold: 30000,
+	igniteLastMomentLustPercentage: 0.3,
+	igniteNoLustPercentage: 0.6,
+});
+
+export const P3DefaultSimpleRotation = FireMage_Rotation.create({
+	igniteCombustThreshold: 34000,
+	igniteLastMomentLustPercentage: 0.33,
+	igniteNoLustPercentage: 0.65,
+});
+
+export const P1_SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('P1 - Default', Spec.SpecFireMage, P1DefaultSimpleRotation);
+export const P3_SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('P3 - Default', Spec.SpecFireMage, P3DefaultSimpleRotation);
 
 //export const ROTATION_PRESET_SIMPLE = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecFireMage, DefaultSimpleRotation);
-export const FIRE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Fire', FireApl, { talentTree: 1 });
+export const FIRE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('APL', FireApl, { talentTree: 1 });
 
 // Preset options for EP weights
 export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(
@@ -144,3 +155,13 @@ export const FIRE_BREAKPOINTS: UnitStatPresets[] = [
 		]),
 	},
 ];
+
+export const P1_PRESET_BUILD = PresetUtils.makePresetBuild('P1 - Default', {
+	gear: FIRE_P1_PRESET,
+	rotation: P1_SIMPLE_ROTATION_DEFAULT,
+});
+
+export const P3_PRESET_BUILD = PresetUtils.makePresetBuild('P3 - Default', {
+	gear: FIRE_P3_PRESET,
+	rotation: P3_SIMPLE_ROTATION_DEFAULT,
+});

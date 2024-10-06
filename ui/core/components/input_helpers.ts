@@ -3,7 +3,7 @@ import { Spec } from '../proto/common.js';
 import { ActionId } from '../proto_utils/action_id.js';
 import { ClassOptions, SpecOptions, SpecRotation } from '../proto_utils/utils.js';
 import { EventID, TypedEvent } from '../typed_event.js';
-import { randomUUID } from '../utils';
+import { formatToNumber, randomUUID } from '../utils';
 import { BooleanPickerConfig } from './pickers/boolean_picker.js';
 import { EnumPickerConfig, EnumValueConfig } from './pickers/enum_picker.js';
 import { IconEnumPickerConfig, IconEnumValueConfig } from './pickers/icon_enum_picker.jsx';
@@ -52,6 +52,7 @@ function makeWrappedBooleanInput<SpecType extends Spec, ModObject>(
 		type: 'boolean',
 		label: config.label,
 		labelTooltip: config.labelTooltip,
+		description: config.description,
 		changedEvent: (player: Player<SpecType>) => config.changedEvent(getModObject(player)),
 		getValue: (player: Player<SpecType>) => config.getValue(getModObject(player)),
 		setValue: (eventID: EventID, player: Player<SpecType>, newValue: boolean) => config.setValue(eventID, getModObject(player), newValue),
@@ -64,6 +65,7 @@ export interface PlayerBooleanInputConfig<SpecType extends Spec, Message> extend
 	fieldName: keyof Message;
 	label: string;
 	labelTooltip?: string;
+	description?: string | Element;
 	enableWhen?: (player: Player<SpecType>) => boolean;
 	showWhen?: (player: Player<SpecType>) => boolean;
 }
@@ -74,6 +76,7 @@ export function makeClassOptionsBooleanInput<SpecType extends Spec>(
 		id: `${String(config.fieldName) || randomUUID()}`,
 		label: config.label,
 		labelTooltip: config.labelTooltip,
+		description: config.description,
 		getModObject: (player: Player<SpecType>) => player,
 		getValue: config.getValue || ((player: Player<SpecType>) => player.getClassOptions()[config.fieldName] as unknown as boolean),
 		setValue:
@@ -96,6 +99,7 @@ export function makeSpecOptionsBooleanInput<SpecType extends Spec>(
 		id: `${String(config.fieldName) || randomUUID()}`,
 		label: config.label,
 		labelTooltip: config.labelTooltip,
+		description: config.description,
 		getModObject: (player: Player<SpecType>) => player,
 		getValue: config.getValue || ((player: Player<SpecType>) => player.getSpecOptions()[config.fieldName] as unknown as boolean),
 		setValue:
@@ -118,6 +122,7 @@ export function makeRotationBooleanInput<SpecType extends Spec>(
 		id: `${String(config.fieldName) || randomUUID()}`,
 		label: config.label,
 		labelTooltip: config.labelTooltip,
+		description: config.description,
 		getModObject: (player: Player<SpecType>) => player,
 		getValue: config.getValue || ((player: Player<SpecType>) => player.getSimpleRotation()[config.fieldName] as unknown as boolean),
 		setValue:
@@ -153,7 +158,10 @@ function makeWrappedNumberInput<SpecType extends Spec, ModObject>(
 		type: 'number',
 		label: config.label,
 		labelTooltip: config.labelTooltip,
+		description: config.description,
 		float: config.float,
+		showZeroes: config.showZeroes,
+		maxDecimalDigits: config.maxDecimalDigits,
 		positive: config.positive,
 		changedEvent: (player: Player<SpecType>) => config.changedEvent(getModObject(player)),
 		getValue: (player: Player<SpecType>) => config.getValue(getModObject(player)),
@@ -163,17 +171,24 @@ function makeWrappedNumberInput<SpecType extends Spec, ModObject>(
 		extraCssClasses: config.extraCssClasses,
 	};
 }
-export interface PlayerNumberInputConfig<SpecType extends Spec, Message> extends BasePlayerConfig<SpecType, number> {
+export interface PlayerNumberInputConfig<SpecType extends Spec, Message>
+	extends BasePlayerConfig<SpecType, number>,
+		Pick<NumberPickerConfig<Player<SpecType>>, 'labelTooltip' | 'description' | 'showZeroes' | 'maxDecimalDigits' | 'float' | 'positive'> {
 	fieldName: keyof Message;
 	label: string;
-	labelTooltip?: string;
 	percent?: boolean;
-	float?: boolean;
-	positive?: boolean;
+	max?: number;
 	enableWhen?: (player: Player<SpecType>) => boolean;
 	showWhen?: (player: Player<SpecType>) => boolean;
 	changeEmitter?: (player: Player<SpecType>) => TypedEvent<any>;
 }
+
+export const numberInputValueToPercentage = (value: number, config: PlayerNumberInputConfig<any, any>) =>
+	Number(formatToNumber(value / 100, { maximumFractionDigits: config.maxDecimalDigits, useGrouping: false }));
+
+export const numberInputPercentToValue = (value: number, config: PlayerNumberInputConfig<any, any>) =>
+	Number(formatToNumber(value * 100, { maximumFractionDigits: config.maxDecimalDigits, useGrouping: false }));
+
 export function makeClassOptionsNumberInput<SpecType extends Spec>(
 	config: PlayerNumberInputConfig<SpecType, ClassOptions<SpecType>>,
 ): TypedNumberPickerConfig<Player<SpecType>> {
@@ -181,7 +196,10 @@ export function makeClassOptionsNumberInput<SpecType extends Spec>(
 		id: `${String(config.fieldName) || randomUUID()}`,
 		label: config.label,
 		labelTooltip: config.labelTooltip,
+		description: config.description,
 		float: config.float,
+		showZeroes: config.showZeroes,
+		maxDecimalDigits: config.maxDecimalDigits,
 		positive: config.positive,
 		getModObject: (player: Player<SpecType>) => player,
 		getValue: config.getValue || ((player: Player<SpecType>) => player.getClassOptions()[config.fieldName] as unknown as number),
@@ -189,6 +207,9 @@ export function makeClassOptionsNumberInput<SpecType extends Spec>(
 			config.setValue ||
 			((eventID: EventID, player: Player<SpecType>, newVal: number) => {
 				const newMessage = player.getClassOptions();
+				if (config?.max && newVal > config.max) {
+					newVal = config.max;
+				}
 				(newMessage[config.fieldName] as unknown as number) = newVal;
 				player.setClassOptions(eventID, newMessage);
 			}),
@@ -199,9 +220,10 @@ export function makeClassOptionsNumberInput<SpecType extends Spec>(
 	};
 	if (config.percent) {
 		const getValue = internalConfig.getValue;
-		internalConfig.getValue = (player: Player<SpecType>) => getValue(player) * 100;
+		internalConfig.getValue = (player: Player<SpecType>) => numberInputPercentToValue(getValue(player), config);
 		const setValue = internalConfig.setValue;
-		internalConfig.setValue = (eventID: EventID, player: Player<SpecType>, newVal: number) => setValue(eventID, player, newVal / 100);
+		internalConfig.setValue = (eventID: EventID, player: Player<SpecType>, newVal: number) =>
+			setValue(eventID, player, numberInputValueToPercentage(newVal, config));
 	}
 	return makeWrappedNumberInput<SpecType, Player<SpecType>>(internalConfig);
 }
@@ -212,7 +234,10 @@ export function makeSpecOptionsNumberInput<SpecType extends Spec>(
 		id: `${String(config.fieldName) || randomUUID()}`,
 		label: config.label,
 		labelTooltip: config.labelTooltip,
+		description: config.description,
 		float: config.float,
+		showZeroes: config.showZeroes,
+		maxDecimalDigits: config.maxDecimalDigits,
 		positive: config.positive,
 		getModObject: (player: Player<SpecType>) => player,
 		getValue: config.getValue || ((player: Player<SpecType>) => player.getSpecOptions()[config.fieldName] as unknown as number),
@@ -220,6 +245,9 @@ export function makeSpecOptionsNumberInput<SpecType extends Spec>(
 			config.setValue ||
 			((eventID: EventID, player: Player<SpecType>, newVal: number) => {
 				const newMessage = player.getSpecOptions();
+				if (config?.max && newVal > config.max) {
+					newVal = config.max;
+				}
 				(newMessage[config.fieldName] as unknown as number) = newVal;
 				player.setSpecOptions(eventID, newMessage);
 			}),
@@ -228,11 +256,13 @@ export function makeSpecOptionsNumberInput<SpecType extends Spec>(
 		showWhen: config.showWhen,
 		extraCssClasses: config.extraCssClasses,
 	};
+
 	if (config.percent) {
 		const getValue = internalConfig.getValue;
-		internalConfig.getValue = (player: Player<SpecType>) => getValue(player) * 100;
+		internalConfig.getValue = (player: Player<SpecType>) => numberInputPercentToValue(getValue(player), config);
 		const setValue = internalConfig.setValue;
-		internalConfig.setValue = (eventID: EventID, player: Player<SpecType>, newVal: number) => setValue(eventID, player, newVal / 100);
+		internalConfig.setValue = (eventID: EventID, player: Player<SpecType>, newVal: number) =>
+			setValue(eventID, player, numberInputValueToPercentage(newVal, config));
 	}
 	return makeWrappedNumberInput<SpecType, Player<SpecType>>(internalConfig);
 }
@@ -243,7 +273,9 @@ export function makeRotationNumberInput<SpecType extends Spec>(
 		id: `${String(config.fieldName) || randomUUID()}`,
 		label: config.label,
 		labelTooltip: config.labelTooltip,
+		description: config.description,
 		float: config.float,
+		showZeroes: config.showZeroes,
 		positive: config.positive,
 		getModObject: (player: Player<SpecType>) => player,
 		getValue: config.getValue || ((player: Player<SpecType>) => player.getSimpleRotation()[config.fieldName] as unknown as number),
@@ -251,6 +283,9 @@ export function makeRotationNumberInput<SpecType extends Spec>(
 			config.setValue ||
 			((eventID: EventID, player: Player<SpecType>, newVal: number) => {
 				const newMessage = player.getSimpleRotation();
+				if (config?.max && newVal > config.max) {
+					newVal = config.max;
+				}
 				(newMessage[config.fieldName] as unknown as number) = newVal;
 				player.setSimpleRotation(eventID, newMessage);
 			}),
@@ -261,9 +296,10 @@ export function makeRotationNumberInput<SpecType extends Spec>(
 	};
 	if (config.percent) {
 		const getValue = internalConfig.getValue;
-		internalConfig.getValue = (player: Player<SpecType>) => getValue(player) * 100;
+		internalConfig.getValue = (player: Player<SpecType>) => numberInputPercentToValue(getValue(player), config);
 		const setValue = internalConfig.setValue;
-		internalConfig.setValue = (eventID: EventID, player: Player<SpecType>, newVal: number) => setValue(eventID, player, newVal / 100);
+		internalConfig.setValue = (eventID: EventID, player: Player<SpecType>, newVal: number) =>
+			setValue(eventID, player, numberInputValueToPercentage(newVal, config));
 	}
 	return makeWrappedNumberInput<SpecType, Player<SpecType>>(internalConfig);
 }
@@ -285,6 +321,7 @@ function makeWrappedEnumInput<SpecType extends Spec, ModObject>(config: WrappedE
 		type: 'enum',
 		label: config.label,
 		labelTooltip: config.labelTooltip,
+		description: config.description,
 		values: config.values,
 		changedEvent: (player: Player<SpecType>) => config.changedEvent(getModObject(player)),
 		getValue: (player: Player<SpecType>) => config.getValue(getModObject(player)),
@@ -298,6 +335,7 @@ export interface PlayerEnumInputConfig<SpecType extends Spec, Message> {
 	fieldName: keyof Message;
 	label: string;
 	labelTooltip?: string;
+	description?: string | Element;
 	values: Array<EnumValueConfig>;
 	getValue?: (player: Player<SpecType>) => number;
 	setValue?: (eventID: EventID, player: Player<SpecType>, newValue: number) => void;
@@ -313,6 +351,7 @@ export function makeClassOptionsEnumInput<SpecType extends Spec, _T>(
 		id: `${String(config.fieldName) || randomUUID()}`,
 		label: config.label,
 		labelTooltip: config.labelTooltip,
+		description: config.description,
 		values: config.values,
 		getModObject: (player: Player<SpecType>) => player,
 		getValue: config.getValue || ((player: Player<SpecType>) => player.getClassOptions()[config.fieldName] as unknown as number),
@@ -336,6 +375,7 @@ export function makeSpecOptionsEnumInput<SpecType extends Spec, _T>(
 		id: `${String(config.fieldName) || randomUUID()}`,
 		label: config.label,
 		labelTooltip: config.labelTooltip,
+		description: config.description,
 		values: config.values,
 		getModObject: (player: Player<SpecType>) => player,
 		getValue: config.getValue || ((player: Player<SpecType>) => player.getSpecOptions()[config.fieldName] as unknown as number),
@@ -359,6 +399,7 @@ export function makeRotationEnumInput<SpecType extends Spec, _T>(
 		id: `${String(config.fieldName) || randomUUID()}`,
 		label: config.label,
 		labelTooltip: config.labelTooltip,
+		description: config.description,
 		values: config.values,
 		getModObject: (player: Player<SpecType>) => player,
 		getValue: config.getValue || ((player: Player<SpecType>) => player.getSimpleRotation()[config.fieldName] as unknown as number),

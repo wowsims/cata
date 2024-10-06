@@ -17,6 +17,10 @@
 			max-width: 100%;
 		}
 	}
+
+	&:has(.input-description) {
+		flex-wrap: wrap;
+	}
 }
 
 .input-inline {
@@ -32,6 +36,19 @@
 	input:not(.form-check-input),
 	select {
 		width: 5rem;
+	}
+}
+
+.input-description {
+	margin-top: var(--spacer-1);
+	order: 3;
+	padding: var(--spacer-2);
+	background-color: $input-bg;
+	font-size: var(--content-font-size);
+	width: 100%;
+
+	*:last-child {
+		margin-bottom: 0;
 	}
 }
 

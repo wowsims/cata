@@ -120,7 +120,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		talents: [Presets.StandardTalents],
 		rotations: [Presets.ROTATION_PRESET_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRE_RAID, Presets.P1_PRESET],
+		gear: [Presets.PRE_RAID, Presets.P1_PRESET, Presets.P3_PRESET],
 	},
 
 	autoRotation: (player: Player<Spec.SpecShadowPriest>): APLRotation => {
