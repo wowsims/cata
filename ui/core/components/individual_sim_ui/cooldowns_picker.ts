@@ -88,7 +88,12 @@ export class CooldownsPicker extends Component {
 			.getSpells()
 			.filter(spell => spell.data.isMajorCooldown)
 			.map(spell => spell.id)
-			.filter(actionId => !this.player.hiddenMCDs.includes(actionId.spellId));
+			.filter(actionId => {
+				const id = actionId.spellId !== 0 ? actionId.spellId : actionId.itemId;
+				return !this.player.hiddenMCDs.includes(id);
+			});
+
+		this.rootElem.closest('.cooldown-settings')?.classList[availableCooldowns.length ? 'remove' : 'add']('hide');
 
 		const actionPicker = new IconEnumPicker<Player<any>, ActionIdProto>(parentElem, this.player, {
 			extraCssClasses: ['cooldown-action-picker'],
