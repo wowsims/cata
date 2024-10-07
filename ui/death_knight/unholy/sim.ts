@@ -8,6 +8,7 @@ import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { Stats, UnitStat } from '../../core/proto_utils/stats';
+import * as DeathKnightInputs from '../inputs';
 import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
@@ -100,14 +101,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
-			// DeathKnightInputs.StartingRunicPower(),
+			DeathKnightInputs.StartingRunicPower(),
 			// DeathKnightInputs.PetUptime(),
 			// UnholyInputs.SelfUnholyFrenzy,
 			// UnholyInputs.UseAMSInput,
 			// UnholyInputs.AvgAMSSuccessRateInput,
 			// UnholyInputs.AvgAMSHitInput,
 			// OtherInputs.TankAssignment,
-			// OtherInputs.InFrontOfTarget,
+			OtherInputs.InFrontOfTarget,
 			OtherInputs.InputDelay,
 			OtherInputs.DarkIntentUptime,
 		],

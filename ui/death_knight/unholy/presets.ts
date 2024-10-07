@@ -55,7 +55,7 @@ export const SingleTargetTalents = {
 			major1: DeathKnightMajorGlyph.GlyphOfPestilence,
 			major2: DeathKnightMajorGlyph.GlyphOfBloodBoil,
 			major3: DeathKnightMajorGlyph.GlyphOfAntiMagicShell,
-			minor1: DeathKnightMinorGlyph.GlyphOfDeathGate,
+			minor1: DeathKnightMinorGlyph.GlyphOfDeathSEmbrace,
 			minor2: DeathKnightMinorGlyph.GlyphOfPathOfFrost,
 			minor3: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
 		}),
@@ -79,7 +79,7 @@ export const AoeTalents = {
 
 export const DefaultOptions = UnholyDeathKnight_Options.create({
 	classOptions: {
-		startingRunicPower: 0,
+		startingRunicPower: 80,
 		petUptime: 1,
 	},
 	unholyFrenzyTarget: UnitReference.create(),
