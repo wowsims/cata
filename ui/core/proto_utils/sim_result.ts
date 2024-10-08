@@ -794,6 +794,13 @@ export class ActionMetrics {
 		return this.data.isPassive;
 	}
 
+	get totalDamageTakenPercent() {
+		const totalAvgDtps = this.resultData.result.encounterMetrics?.targets?.[this.unit?.unitIndex || 0].dps?.avg;
+		if (!totalAvgDtps) return undefined;
+
+		return (this.avgDamage / (totalAvgDtps * this.duration)) * 100;
+	}
+
 	get totalDamagePercent() {
 		const totalAvgDps = this.resultData.result.raidMetrics?.dps?.avg;
 		if (!totalAvgDps) return undefined;
