@@ -48,6 +48,7 @@ import {
 	APLValueInputDelay,
 	APLValueIsExecutePhase,
 	APLValueIsExecutePhase_ExecutePhaseThreshold as ExecutePhaseThreshold,
+	APLValueMageCurrentCombustionDotEstimate,
 	APLValueMath,
 	APLValueMath_MathOperator as MathOperator,
 	APLValueMax,
@@ -1039,5 +1040,13 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		newValue: APLValueWarlockShouldRefreshCorruption.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassWarlock,
 		fields: [AplHelpers.unitFieldConfig('targetUnit', 'targets')],
+	}),
+	mageCurrentCombustionDotEstimate: inputBuilder({
+		label: 'Combustion Dot Value',
+		submenu: ['Mage'],
+		shortDescription: 'Returns the current estimated size of your Combustion Dot.',
+		newValue: APLValueMageCurrentCombustionDotEstimate.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() == Spec.SpecFireMage,
+		fields: [],
 	}),
 };

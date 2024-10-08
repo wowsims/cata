@@ -24,15 +24,15 @@ export const FIRE_P1_PREBIS = PresetUtils.makePresetGear('P1 Pre-raid', P1FirePr
 export const FIRE_P3_PRESET = PresetUtils.makePresetGear('P3 Preset', P3FireBisGear, { talentTree: 1 });
 
 export const P1DefaultSimpleRotation = FireMage_Rotation.create({
-	igniteCombustThreshold: 30000,
-	igniteLastMomentLustPercentage: 0.3,
-	igniteNoLustPercentage: 0.6,
+	combustThreshold: 400000,
+	combustLastMomentLustPercentage: 190000,
+	combustNoLustPercentage: 230000,
 });
 
 export const P3DefaultSimpleRotation = FireMage_Rotation.create({
-	igniteCombustThreshold: 34000,
-	igniteLastMomentLustPercentage: 0.33,
-	igniteNoLustPercentage: 0.65,
+	combustThreshold: 510000,
+	combustLastMomentLustPercentage: 190000,
+	combustNoLustPercentage: 260000,
 });
 
 export const P1_SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('P1 - Default', Spec.SpecFireMage, P1DefaultSimpleRotation);
