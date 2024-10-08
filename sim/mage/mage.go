@@ -50,6 +50,8 @@ type Mage struct {
 	brainFreezeProcChance     float64
 	hotStreakProcChance       float64
 
+	previousCombustionDotEstimate int32
+
 	ClassSpellScaling float64
 }
 

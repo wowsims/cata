@@ -11,8 +11,10 @@ func (mage *Mage) registerCombustionSpell() {
 		return
 	}
 
+	actionID := core.ActionID{SpellID: 11129}
+
 	mage.Combustion = mage.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 11129},
+		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage, // need to check proc mask for impact damage
 		ClassSpellMask: MageSpellCombustionApplication,
@@ -66,7 +68,7 @@ func (mage *Mage) registerCombustionSpell() {
 	}
 
 	mage.Combustion.RelatedDotSpell = mage.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 11129}.WithTag(1),
+		ActionID:       actionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskEmpty,
 		ClassSpellMask: MageSpellCombustion,
@@ -107,10 +109,8 @@ func (mage *Mage) registerCombustionSpell() {
 
 			return result
 		},
-
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.Dot(target).Apply(sim)
 		},
 	})
-
 }
