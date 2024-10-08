@@ -75,6 +75,7 @@ export const DefensiveCooldownBuff = InputHelpers.makeMultiIconInput(
 		// 		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(53530), numStates: 11, fieldName: 'divineGuardians' }),
 		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(33206), numStates: 11, fieldName: 'painSuppressionCount' }),
 		// 		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(47788), numStates: 11, fieldName: 'guardianSpirits' }),
+		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(97462), numStates: 11, fieldName: 'rallyingCryCount' }),
 	],
 	'Defensive CDs',
 );
