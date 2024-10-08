@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 // TODO: Cleanup death strike the same way we did for plague strike
@@ -11,6 +12,8 @@ var DeathStrikeActionID = core.ActionID{SpellID: 49998}
 
 func (dk *DeathKnight) registerDeathStrikeSpell() {
 	damageTakenInFive := 0.0
+
+	hasBloodRites := dk.Inputs.Spec == proto.Spec_SpecBloodDeathKnight
 
 	core.MakePermanent(dk.GetOrRegisterAura(core.Aura{
 		Label: "Death Strike Damage Taken",
@@ -93,6 +96,10 @@ func (dk *DeathKnight) registerDeathStrikeSpell() {
 			FrostRuneCost:  1,
 			UnholyRuneCost: 1,
 			RunicPowerGain: 20,
+			// Not actually refundable, but setting this to `true` if specced into blood
+			// makes the default SpendCost function skip handling the rune cost and
+			// lets us manually spend it with death rune conversion in ApplyEffects.
+			Refundable: hasBloodRites,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -111,6 +118,9 @@ func (dk *DeathKnight) registerDeathStrikeSpell() {
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
+			if hasBloodRites {
+				spell.SpendCostAndConvertFrostOrUnholyRune(sim, result, 1)
+			}
 			dk.ThreatOfThassarianProc(sim, result, ohSpell)
 
 			spell.DealDamage(sim, result)
