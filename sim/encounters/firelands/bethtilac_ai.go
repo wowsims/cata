@@ -11,7 +11,7 @@ import (
 )
 
 func addBethtilac(raidPrefix string) {
-	createBethtilacPreset(raidPrefix, 25, true, 52498, 83_658_808, 151_332)
+	createBethtilacPreset(raidPrefix, 25, true, 52498, 98_518_124, 170_101)
 }
 
 func createBethtilacPreset(raidPrefix string, raidSize int32, isHeroic bool, bossNpcId int32, bossHealth float64, bossMinBaseDamage float64) {
@@ -40,7 +40,7 @@ func createBethtilacPreset(raidPrefix string, raidSize int32, isHeroic bool, bos
 			SpellSchool:   proto.SpellSchool_SpellSchoolPhysical,
 			SwingSpeed:    2.0,
 			MinBaseDamage: bossMinBaseDamage,
-			DamageSpread:  0.4711,
+			DamageSpread:  0.4832,
 			TargetInputs:  bethtilacTargetInputs(),
 		},
 
@@ -54,12 +54,6 @@ func createBethtilacPreset(raidPrefix string, raidSize int32, isHeroic bool, bos
 
 func bethtilacTargetInputs() []*proto.TargetInput {
 	return []*proto.TargetInput{
-		{
-			Label:     "Model pre-nerf damage",
-			Tooltip:   "Extrapolate pre-nerf boss damage parameters rather than using nerfed values from PTR logs.",
-			InputType: proto.InputType_Bool,
-			BoolValue: false,
-		},
 		{
 			Label:     "Include Frenzy",
 			Tooltip:   "Model the burn phase of the encounter with the stacking boss damage amp. Note that The Widow's Kiss will not be modeled even if this option is selected, since it is assumed that an off-tank will be pre-taunting to soak the debuff.",
@@ -86,7 +80,6 @@ type BethtilacAI struct {
 	isHeroic bool
 
 	// Dynamic parameters taken from user inputs
-	preNerf       bool
 	includeFrenzy bool
 
 	// Spell + aura references
@@ -96,15 +89,9 @@ type BethtilacAI struct {
 
 func (ai *BethtilacAI) Initialize(target *core.Target, config *proto.Target) {
 	ai.Target = target
-	ai.preNerf = config.TargetInputs[0].BoolValue
-	ai.includeFrenzy = config.TargetInputs[1].BoolValue
+	ai.includeFrenzy = config.TargetInputs[0].BoolValue
 	ai.registerEmberFlameSpell()
 	ai.registerFrenzySpell()
-
-	// "Undo" the 15% damage nerf on the PTR patch state if requested
-	if ai.preNerf {
-		ai.Target.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 0.85
-	}
 }
 
 func (ai *BethtilacAI) Reset(sim *core.Simulation) {
@@ -151,11 +138,19 @@ func (ai *BethtilacAI) registerFrenzySpell() {
 func (ai *BethtilacAI) registerEmberFlameSpell() {
 	// 0 - 10N, 1 - 25N, 2 - 10H, 3 - 25H
 	scalingIndex := core.TernaryInt(ai.raidSize == 10, core.TernaryInt(ai.isHeroic, 2, 0), core.TernaryInt(ai.isHeroic, 3, 1))
-	phase1BaseDamageValues := []float64{14152, 15725, 20229, 25858}
+
+	// Update from second PTR test: it looks like Blizz is now using the damage parameters for the Phase 2 version of the spell in Phase
+	// 1 as well. The spell ID for Phase 1 Ember Flame is still logged as 98934, but the damage values are consistent with 99859 instead,
+	// suggesting that the tooltip for 98934 just hasn't been updated yet. To avoid confusion, the sim model will use 99859 for both
+	// phases.
+	//
+	//phase1BaseDamageValues := []float64{14152, 15725, 20229, 25858}
 	phase2BaseDamageValues := []float64{15660, 17400, 23809, 30421}
-	emberFlameBase := core.TernaryFloat64(ai.includeFrenzy, phase2BaseDamageValues[scalingIndex], phase1BaseDamageValues[scalingIndex])
+	//emberFlameBase := core.TernaryFloat64(ai.includeFrenzy, phase2BaseDamageValues[scalingIndex], phase1BaseDamageValues[scalingIndex])
+	emberFlameBase := phase2BaseDamageValues[scalingIndex]
 	emberFlameVariance := emberFlameBase * 0.1622
-	emberFlameSpellID := core.TernaryInt32(ai.includeFrenzy, 99859, 98934)
+	//emberFlameSpellID := core.TernaryInt32(ai.includeFrenzy, 99859, 98934)
+	emberFlameSpellID := int32(99859)
 
 	ai.emberFlame = ai.Target.RegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: emberFlameSpellID},
