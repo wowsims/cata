@@ -329,16 +329,26 @@ func (dk *DeathKnight) applyButchery() {
 	actionID := core.ActionID{SpellID: 49483}
 	amountOfRunicPower := 1.0 * float64(dk.Talents.Butchery)
 	rpMetrics := dk.NewRunicPowerMetrics(actionID)
+	// Butchery adds 1 RP every 2.5s if talented 2/2, and 1 RP every 5s if 1/2
+	period := []time.Duration{0, time.Second * 5, time.Millisecond * 2500}[dk.Talents.Butchery]
 
 	var pa *core.PendingAction
 	core.MakePermanent(dk.RegisterAura(core.Aura{
 		ActionID: actionID,
 		Label:    "Butchery",
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			pa = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-				Period: time.Second * 5,
+			// Adding a separate action for the first tick since the it should add the whole talents worth of RP instead of just 1
+			sim.AddPendingAction(&core.PendingAction{
+				NextActionAt: 0,
 				OnAction: func(sim *core.Simulation) {
 					dk.AddRunicPower(sim, amountOfRunicPower, rpMetrics)
+				},
+			})
+
+			pa = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+				Period: period,
+				OnAction: func(sim *core.Simulation) {
+					dk.AddRunicPower(sim, 1, rpMetrics)
 				},
 			})
 		},

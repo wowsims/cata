@@ -29,7 +29,7 @@ func TestUnholy(t *testing.T) {
 	}))
 }
 
-var UnholyTalents = "2031--13300321230331121231"
+var UnholyTalents = "203-1-13300321230331121231"
 var UnholyDefaultGlyphs = &proto.Glyphs{
 	Prime1: int32(proto.DeathKnightPrimeGlyph_GlyphOfDeathCoil),
 	Prime2: int32(proto.DeathKnightPrimeGlyph_GlyphOfScourgeStrike),
@@ -37,13 +37,16 @@ var UnholyDefaultGlyphs = &proto.Glyphs{
 	Major1: int32(proto.DeathKnightMajorGlyph_GlyphOfPestilence),
 	Major2: int32(proto.DeathKnightMajorGlyph_GlyphOfBloodBoil),
 	Major3: int32(proto.DeathKnightMajorGlyph_GlyphOfAntiMagicShell),
+	Minor1: int32(proto.DeathKnightMinorGlyph_GlyphOfDeathSEmbrace),
+	Minor2: int32(proto.DeathKnightMinorGlyph_GlyphOfHornOfWinter),
 }
 
 var PlayerOptionsUnholy = &proto.Player_UnholyDeathKnight{
 	UnholyDeathKnight: &proto.UnholyDeathKnight{
 		Options: &proto.UnholyDeathKnight_Options{
 			ClassOptions: &proto.DeathKnightOptions{
-				PetUptime: 1.0,
+				PetUptime:          1.0,
+				StartingRunicPower: 100,
 			},
 		},
 	},

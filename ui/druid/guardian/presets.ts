@@ -35,9 +35,11 @@ import { Stats } from '../../core/proto_utils/stats';
 import CleaveApl from './apls/cleave.apl.json';
 import DefaultApl from './apls/default.apl.json';
 import NefApl from './apls/nef.apl.json';
+import BethApl from './apls/bethtilac.apl.json';
 export const ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('APL Default', DefaultApl);
 export const ROTATION_CLEAVE = PresetUtils.makePresetAPLRotation('2-Target Cleave', CleaveApl);
 export const ROTATION_NEF = PresetUtils.makePresetAPLRotation('AoE (Nef Adds)', NefApl);
+export const ROTATION_BETH = PresetUtils.makePresetAPLRotation("Beth'tilac Phase 2", BethApl);
 
 export const ROTATION_PRESET_SIMPLE = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecGuardianDruid, DefaultSimpleRotation);
 
@@ -119,7 +121,7 @@ export const InfectedWoundsBuild = {
 		talentsString: '-2302322310310001220311-020331',
 		glyphs: Glyphs.create({
 			prime1: DruidPrimeGlyph.GlyphOfMangle,
-			prime2: DruidPrimeGlyph.GlyphOfLacerate,
+			prime2: DruidPrimeGlyph.GlyphOfRip,
 			prime3: DruidPrimeGlyph.GlyphOfBerserk,
 			major1: DruidMajorGlyph.GlyphOfFrenziedRegeneration,
 			major2: DruidMajorGlyph.GlyphOfMaul,
@@ -172,11 +174,11 @@ export const PRESET_BUILD_NEF = PresetUtils.makePresetBuild('Nef Adds OT', {
 	),
 });
 
-export const PRESET_BUILD_BETHTILAC = PresetUtils.makePresetBuild("Beth'tilac Phase 1 MT", {
+export const PRESET_BUILD_BETHTILAC = PresetUtils.makePresetBuild("Beth'tilac Phase 2", {
 	talents: InfectedWoundsBuild,
-	rotation: ROTATION_DEFAULT,
+	rotation: ROTATION_BETH,
 	encounter: PresetUtils.makePresetEncounter(
-		"Beth'tilac Phase 1 MT",
-		'http://localhost:5173/cata/druid/guardian/?i=trcmxe#eJzVUk1sG0UU9syu3fXECc5AhDNCYWKFNljYWq9bVCKEN5EoLn9KUVUCJ9becbzNetfaWTckB2QIFT9CAoUDNAKkXnuoUC7QHBooFQVBpVKJCnKg5UcICbjAJT2AmN2NWwflwpEnS973ve9973tPg4YUoIMG6ADwBgAdCN6H4BIEU4k02A8qYAKmAY6R84kVKTFtGwvMU/rSINuvSOrwNJyBz8RF11TslNRHkoOxMMb0NTiS10qqVtK0UlEVP1Utapr4KOZV8VcqnoNjyvl1mH7ndTlz8idIP1qH4x+vQ/XiOty/8jXUP70MK59chp9BeQN2Za+Vf4AvxjNStg/fhNAgShAZwcxgdheKIylf5GgIKUcTSFaub8rZJBJwXi0UOZYJnIjhEXIHwrm0ImFpA8RI2FRS7yJBw9oq2LG+d6v+9lUJz5AjqIIPoJSGMExDgX71EkQkl1EA7j8HekAiOhEohTUZp472loQagns5QSI/86ccVLBOHkAqKaB0dgClVkEypEvKC4muwloPFincGyl8uwRChVFyJ7p1A6ZDFlRqN8YoQRZSEFHCVd57RcJJsivwqPw+fgP++/k4fpQ8jO7HE5GPbVv2Z/tQchVs9aPbc0NKHCdPdYFoXCnyJPjhwAGSCvMrL2/Pz16Vt+XdHRqkjmbwkf9w3xwZ73X2waYcOpNxcq0L7HjvoC/QlXbW3bZFPxHPW5zqrX1B+gs0NyE4KUWP8Cn9VWl3MvjqjF7QB4//eujDkeM/lu+ufL942+mH/ioPp8bGn3vtzBdlmsiejVekkBrTXX3rEcf04ZUTQXxevi8CLpVH62FcKU9e/DKI38raUry1vCIt3jLF/MYe37KNGtX20QqdyYDcNyD2P4yOeUHvSa/RP96c/DcnvAhdgJMnwNKhg+92dn9X7nL0ZcDx0GOuyWza8ljeYV6dmkbTmGW5px981veMlmsbPrtZrLqcbzFoy/CMJvOZx6ln+A3mUb9hOLTNLWeWBmxm0mOG3Wac1j23SacPP0Ftd5YXlsF1gAcOOjW7bTJ6wGPO4kLuZxD5EEK02vYc2moYnFG3HiLMqbltR8yi85bfCCHuG7W5YFSvJ6PZKtDHXWFZePHpYcF70jLd+T2cPmIJ2rxl29RxfVpltBnMEx7ZMeZQK5hjceq2fMsVKadcFGs+M++hYqEao5YfoAbn7aZoCuXFtm69nvcNZy5Srkan8g3hNbDmu5S7xlzo12TVdr1e+AeYXTnZ',
+		"Beth'tilac Phase 2",
+		'http://localhost:5173/cata/druid/guardian/?i=trcmxe#eJzVVV1oHFUU3ntnsp25+enu1NjNra03Y2jjkoTZ3SSmQd1JKCG2VmqtNEaKTnZuupPszmx3Zhu6UogWsfqi9KU2FDH6UkofYh78yYMbW4lVLMRKayzVghQRrSAIElHUOzO7ycbqg48eZrh7vvPd737nwNxFjQJQQRpMAvAKAJMQzECwCEG/GAI9YBAsAdALQ0AK4F/EKS64J6MdoXmhNgTkWoFTmvbAp2vYtn5xHoCLAM4E4VmuFovhgBct6hzc0h5PKPFEPJ6IKexRlFg8zn7E2hW2JGLnYYvwYQmGFkowMn0TkvkSbP2gBJVLJdgzdQWqC5fh4IXL8CLkFyF3DYrhhBefJ7+B54QIlN+A6NAzclYzTIe9AxrNG3TAyFO518kXaNtKZQfNWnktYxQN8+BeS8tX6jrD9xlZxu9sk3OFzGEmUKSrSJ4yMPOYo2VzVC+rHpXOARRBvHB6Fkghv9UB1V+HVRRilVdvcJLgAeqIj8wxro8EHveQ0JXfK5zyrtD0QgWZ3K2iTWi98PYxSP6sREVA1VQkowbhdHd1rWzkgG9k/il1ZVQojIKYRzASltehGsS1x2zUiISxILP16zIvi4jB7UpHzJZ4DHsD0ma8qdiE6js7OxS7jcQUd5UEHCy3fCe+oyihYKyzexV3G27EG4phVNNTRZ+rolfJeL2X6V3bV2F3AM347uJmRk/0uPgGHL59DK14a7EFNcRi3b7B+H0uVcKh24YyjIfQTmkQ1cWRBEOQOfrsBYhwNCIAqf48qAIxGwwCCXRXFAu8VDdWXRIQM+e6x4gh7/3MuzVJxQ8iBXegkNyA6maB6G3ghOeCnj7TmKvC3PYQ7PYVvjwGPIV7cDNqvAYljwWFVNVBgpt7JIT9Ub72IieJeJ3rU/ixdQX+49ka6WG8E90v9fpO1nRaL9cicRaU96ON0UahRhLPVgDfVcJ3xfjegQ24zsuvHl+bv3+DX5NXuhjDaTQsDf2HGbfhaLWzd5Z51BTdyEYmzlWAf5l5FLd6ytw/K6/pox6zm4gN62SXm34H9WUIpjn/K3lCfYnbKnpf2vfX1fDed7c8/8OjS8l7Dz2Avngz91Wy6XjqwPUB7maSBOVP+EHOowZeT6nlm+2nZNPUKTc+Tm73kcVk86gXV5N9lz5141Yy/jKfOzHFFdf3Uye9zTEyWorEu8ggGYqA6BII/A9jUv9IrUpnwkdP9v2d403kzAW+7xRI7n/yrdKtr5MVjnoC/AakhofMVKagUzKQp2bxSPRbsNvSaYY4aUpGCnmT5NKaTYk16iHUTFkF06F5MmE4aQ+yHS01zm5yMmLZNtG1rHaQEnZFd5BHLIcyiuaQfYy339CtiW022WUw2oSRyRDTcsgIJVn3PKoTepiaxHDPMWxi5RzDYqlNbFZMOVRvI7ZhpigxHBfVbLuQZZs8ec1k/kbbHc0c95WZKvu3YADz6lpzLGJb2rjnV6cjhdHRjgj4C39AlKw=',
 	),
 });

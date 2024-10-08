@@ -2,11 +2,15 @@ package death_knight
 
 import (
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 var DeathCoilActionID = core.ActionID{SpellID: 47541}
 
 func (dk *DeathKnight) registerDeathCoilSpell() {
+	rpMetrics := dk.NewRunicPowerMetrics(DeathCoilActionID)
+	hasGlyphOfDeathsEmbrace := dk.HasMinorGlyph(proto.DeathKnightMinorGlyph_GlyphOfDeathSEmbrace)
+
 	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       DeathCoilActionID,
 		Flags:          core.SpellFlagAPL,
@@ -30,6 +34,13 @@ func (dk *DeathKnight) registerDeathCoilSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := dk.ClassSpellScaling*0.87599998713 + spell.MeleeAttackPower()*0.23
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+
+			// Instead of actually healing the ghoul, we just add the runic power
+			// to not have to deal with healing metrics and other weird stuff.
+			// Damage doesn't count before 0 anyway.
+			if hasGlyphOfDeathsEmbrace && sim.CurrentTime < 0 {
+				dk.AddRunicPower(sim, 20, rpMetrics)
+			}
 		},
 	})
 }
