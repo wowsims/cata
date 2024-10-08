@@ -1061,12 +1061,12 @@ func (spell *Spell) SpendRefundableCostAndConvertBloodRune(sim *Simulation, resu
 	spell.Cost.(*RuneCostImpl).spendRefundableCostAndConvertBloodRune(sim, spell, result, convertChance)
 }
 
-func (rc *RuneCostImpl) spendRefundableCostAndConvertFrostOrUnholyRune(sim *Simulation, spell *Spell, result *SpellResult, convertChance float64) {
+func (rc *RuneCostImpl) spendCostAndConvertFrostOrUnholyRune(sim *Simulation, spell *Spell, result *SpellResult, convertChance float64, refundable bool) {
 	cost := RuneCost(spell.CurCast.Cost) // cost was already optimized in RuneSpell.Cast
 	if cost == 0 {
 		return // it was free this time. we don't care
 	}
-	if !result.Landed() {
+	if refundable && !result.Landed() {
 		// misses just don't get spent as a way to avoid having to cancel regeneration PAs
 		// only spend RP
 		if rc.RefundCost > 0 {
@@ -1096,7 +1096,11 @@ func (rc *RuneCostImpl) spendRefundableCostAndConvertFrostOrUnholyRune(sim *Simu
 }
 
 func (spell *Spell) SpendRefundableCostAndConvertFrostOrUnholyRune(sim *Simulation, result *SpellResult, convertChance float64) {
-	spell.Cost.(*RuneCostImpl).spendRefundableCostAndConvertFrostOrUnholyRune(sim, spell, result, convertChance)
+	spell.Cost.(*RuneCostImpl).spendCostAndConvertFrostOrUnholyRune(sim, spell, result, convertChance, true)
+}
+
+func (spell *Spell) SpendCostAndConvertFrostOrUnholyRune(sim *Simulation, result *SpellResult, convertChance float64) {
+	spell.Cost.(*RuneCostImpl).spendCostAndConvertFrostOrUnholyRune(sim, spell, result, convertChance, false)
 }
 
 func (rc *RuneCostImpl) spendRefundableCostAndConvertBloodOrFrostRune(sim *Simulation, spell *Spell, result *SpellResult, convertChance float64) {
