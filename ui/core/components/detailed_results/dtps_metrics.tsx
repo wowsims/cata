@@ -35,7 +35,7 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 					cellElem.appendChild(
 						<MetricsTotalBar
 							spellSchool={metric.spellSchool}
-							percentage={metric.totalDamagePercent}
+							percentage={metric.totalDamageTakenPercent}
 							max={this.maxDtpsAmount}
 							total={metric.avgDamage}
 							value={metric.damage}
