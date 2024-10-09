@@ -27,7 +27,7 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 		}
 	}
 
-	bounceReduction := core.TernaryFloat64(shaman.HasSetBonus(ItemSetTidefury, 2), 0.83, 0.7)
+	bounceReduction := core.TernaryFloat64(shaman.HasSetBonus(ItemSetTidefury, 2) && !isElementalOverload, 0.83, 0.7)
 
 	baseDamage := shaman.ClassSpellScaling * 1.08800005913
 	numHits := int32(3)

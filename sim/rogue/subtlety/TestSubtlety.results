@@ -85,6 +85,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-ArrowofTime-72897"
+ value: {
+  dps: 23864.64215
+  tps: 16943.89593
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-AustereShadowspiritDiamond"
  value: {
   dps: 23530.91192
@@ -212,10 +219,52 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-Bone-LinkFetish-77210"
+ value: {
+  dps: 23911.004
+  tps: 16976.81284
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Bone-LinkFetish-77982"
+ value: {
+  dps: 23811.30793
+  tps: 16906.02863
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Bone-LinkFetish-78002"
+ value: {
+  dps: 23976.9921
+  tps: 17023.66439
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-BottledLightning-66879"
  value: {
   dps: 22194.65076
   tps: 15758.20204
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-BottledWishes-77114"
+ value: {
+  dps: 22757.30678
+  tps: 16157.68781
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-BottledWishes-77985"
+ value: {
+  dps: 22764.33273
+  tps: 16162.67624
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-BottledWishes-78005"
+ value: {
+  dps: 22777.55863
+  tps: 16172.06662
  }
 }
 dps_results: {
@@ -268,6 +317,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-CrecheoftheFinalDragon-77205"
+ value: {
+  dps: 23506.40673
+  tps: 16689.54878
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-CrecheoftheFinalDragon-77972"
+ value: {
+  dps: 23451.85718
+  tps: 16650.8186
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-CrecheoftheFinalDragon-77992"
+ value: {
+  dps: 23658.27853
+  tps: 16797.37775
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-CrushingWeight-59506"
  value: {
   dps: 22935.65658
@@ -279,6 +349,27 @@ dps_results: {
  value: {
   dps: 22964.09757
   tps: 16304.50928
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-CunningoftheCruel-77208"
+ value: {
+  dps: 22028.10137
+  tps: 15639.95197
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-CunningoftheCruel-77980"
+ value: {
+  dps: 22028.10137
+  tps: 15639.95197
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-CunningoftheCruel-78000"
+ value: {
+  dps: 22028.10137
+  tps: 15639.95197
  }
 }
 dps_results: {
@@ -394,6 +485,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-EyeofUnmaking-77200"
+ value: {
+  dps: 22857.64218
+  tps: 16228.92595
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-EyeofUnmaking-77977"
+ value: {
+  dps: 22763.37618
+  tps: 16161.99709
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-EyeofUnmaking-77997"
+ value: {
+  dps: 22961.33478
+  tps: 16302.54769
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-FallofMortality-59500"
  value: {
   dps: 22028.10137
@@ -450,6 +562,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-FireoftheDeep-77117"
+ value: {
+  dps: 22292.32587
+  tps: 15827.55136
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-FireoftheDeep-77988"
+ value: {
+  dps: 22292.32587
+  tps: 15827.55136
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-FireoftheDeep-78008"
+ value: {
+  dps: 22385.12299
+  tps: 15893.43732
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-FleetShadowspiritDiamond"
  value: {
   dps: 23327.92989
@@ -468,6 +601,13 @@ dps_results: {
  value: {
   dps: 23530.91192
   tps: 16706.94746
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-FoulGiftoftheDemonLord-72898"
+ value: {
+  dps: 22028.10137
+  tps: 15639.95197
  }
 }
 dps_results: {
@@ -646,10 +786,52 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-IndomitablePride-77211"
+ value: {
+  dps: 22028.10137
+  tps: 15639.95197
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-IndomitablePride-77983"
+ value: {
+  dps: 22028.10137
+  tps: 15639.95197
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-IndomitablePride-78003"
+ value: {
+  dps: 22028.10137
+  tps: 15639.95197
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-InsigniaofDiplomacy-61433"
  value: {
   dps: 22028.10137
   tps: 15639.95197
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-InsigniaoftheCorruptedMind-77203"
+ value: {
+  dps: 22907.59442
+  tps: 16264.39204
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-InsigniaoftheCorruptedMind-77971"
+ value: {
+  dps: 22826.46836
+  tps: 16206.79253
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-InsigniaoftheCorruptedMind-77991"
+ value: {
+  dps: 22939.7746
+  tps: 16287.23997
  }
 }
 dps_results: {
@@ -706,6 +888,27 @@ dps_results: {
  value: {
   dps: 23901.61861
   tps: 16970.14922
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-KiroptyricSigil-77113"
+ value: {
+  dps: 25193.33026
+  tps: 17887.26449
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-KiroptyricSigil-77984"
+ value: {
+  dps: 24789.33664
+  tps: 17600.42901
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-KiroptyricSigil-78004"
+ value: {
+  dps: 25498.24474
+  tps: 18103.75376
  }
 }
 dps_results: {
@@ -954,6 +1157,48 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-ReflectionoftheLight-77115"
+ value: {
+  dps: 22028.10137
+  tps: 15639.95197
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-ReflectionoftheLight-77986"
+ value: {
+  dps: 22028.10137
+  tps: 15639.95197
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-ReflectionoftheLight-78006"
+ value: {
+  dps: 22028.10137
+  tps: 15639.95197
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-ResolveofUndying-77201"
+ value: {
+  dps: 22028.10137
+  tps: 15639.95197
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-ResolveofUndying-77978"
+ value: {
+  dps: 22028.10137
+  tps: 15639.95197
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-ResolveofUndying-77998"
+ value: {
+  dps: 22028.10137
+  tps: 15639.95197
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-ReverberatingShadowspiritDiamond"
  value: {
   dps: 23983.62213
@@ -986,6 +1231,34 @@ dps_results: {
  value: {
   dps: 22810.58648
   tps: 16195.5164
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-RosaryofLight-72901"
+ value: {
+  dps: 23103.84211
+  tps: 16403.7279
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-RottingSkull-77116"
+ value: {
+  dps: 23043.67029
+  tps: 16361.0059
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-RottingSkull-77987"
+ value: {
+  dps: 22981.50081
+  tps: 16316.86558
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-RottingSkull-78007"
+ value: {
+  dps: 23278.9455
+  tps: 16528.05131
  }
 }
 dps_results: {
@@ -1096,6 +1369,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-SoulshifterVortex-77206"
+ value: {
+  dps: 22537.6181
+  tps: 16001.70885
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-SoulshifterVortex-77970"
+ value: {
+  dps: 22561.44479
+  tps: 16018.6258
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-SoulshifterVortex-77990"
+ value: {
+  dps: 22642.65079
+  tps: 16076.28206
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-SpidersilkSpindle-68981"
  value: {
   dps: 22353.40665
@@ -1107,6 +1401,27 @@ dps_results: {
  value: {
   dps: 22292.32587
   tps: 15827.55136
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-StarcatcherCompass-77202"
+ value: {
+  dps: 24493.67896
+  tps: 17390.51206
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-StarcatcherCompass-77973"
+ value: {
+  dps: 24317.75311
+  tps: 17265.60471
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-StarcatcherCompass-77993"
+ value: {
+  dps: 25008.82284
+  tps: 17756.26422
  }
 }
 dps_results: {
@@ -1313,6 +1628,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-Varo'then'sBrooch-72899"
+ value: {
+  dps: 22628.88675
+  tps: 16066.50959
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-VeilofLies-72900"
+ value: {
+  dps: 22028.10137
+  tps: 15639.95197
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-VesselofAcceleration-68995"
  value: {
   dps: 22910.14687
@@ -1331,6 +1660,27 @@ dps_results: {
  value: {
   dps: 23505.35261
   tps: 16688.80035
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-VialofShadows-77207"
+ value: {
+  dps: 24455.01996
+  tps: 17363.06417
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-VialofShadows-77979"
+ value: {
+  dps: 24254.73338
+  tps: 17220.8607
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-VialofShadows-77999"
+ value: {
+  dps: 24651.68904
+  tps: 17502.69922
  }
 }
 dps_results: {
@@ -1432,6 +1782,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-WillofUnbinding-77198"
+ value: {
+  dps: 22028.10137
+  tps: 15639.95197
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-WillofUnbinding-77975"
+ value: {
+  dps: 22028.10137
+  tps: 15639.95197
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-WillofUnbinding-77995"
+ value: {
+  dps: 22028.10137
+  tps: 15639.95197
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-WindDancer'sRegalia"
  value: {
   dps: 21147.93913
@@ -1457,6 +1828,27 @@ dps_results: {
  value: {
   dps: 22041.55533
   tps: 15649.50429
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-WrathofUnchaining-77197"
+ value: {
+  dps: 25304.26055
+  tps: 17966.02499
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-WrathofUnchaining-77974"
+ value: {
+  dps: 24912.64098
+  tps: 17687.97509
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-WrathofUnchaining-77994"
+ value: {
+  dps: 25674.07071
+  tps: 18228.5902
  }
 }
 dps_results: {

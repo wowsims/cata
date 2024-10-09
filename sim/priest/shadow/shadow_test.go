@@ -18,7 +18,7 @@ func TestShadow(t *testing.T) {
 		Race:       proto.Race_RaceTroll,
 		OtherRaces: []proto.Race{proto.Race_RaceNightElf, proto.Race_RaceDraenei},
 
-		GearSet:  core.GetGearSet("../../../ui/priest/shadow/gear_sets", "p1"),
+		GearSet:  core.GetGearSet("../../../ui/priest/shadow/gear_sets", "p3"),
 		Talents:  DefaultTalents,
 		Glyphs:   DefaultGlyphs,
 		Consumes: FullConsumes,

@@ -14,22 +14,16 @@ func init() {
 
 func TestFire(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-		Class: proto.Class_ClassMage,
-		Race:  proto.Race_RaceTroll,
-
-		GearSet: core.GetGearSet("../../../ui/mage/fire/gear_sets", "p1_fire"),
-		OtherGearSets: []core.GearSetCombo{
-			core.GetGearSet("../../../ui/mage/fire/gear_sets", "p3_fire"),
-		},
-		Talents:  FireTalents,
-		Glyphs:   FireGlyphs,
-		Consumes: FullFireConsumes,
+		Class:      proto.Class_ClassMage,
+		Race:       proto.Race_RaceTroll,
+		OtherRaces: []proto.Race{proto.Race_RaceWorgen},
+		GearSet:    core.GetGearSet("../../../ui/mage/fire/gear_sets", "p3_fire"),
+		Talents:    FireTalents,
+		Glyphs:     FireGlyphs,
+		Consumes:   FullFireConsumes,
 
 		SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
 		Rotation:    core.GetAplRotation("../../../ui/mage/fire/apls", "fire"),
-		// OtherRotations: []core.RotationCombo{
-		// 	core.GetAplRotation("../../ui/mage/apls", "fire_aoe"),
-		// },
 
 		ItemFilter: ItemFilter,
 	}))

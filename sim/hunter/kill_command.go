@@ -18,7 +18,7 @@ func (hunter *Hunter) registerKillCommandSpell() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMelee,
 		ClassSpellMask: HunterSpellKillCommand,
-		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 
 		FocusCost: core.FocusCostOptions{
 			Cost: 40,

@@ -27,6 +27,7 @@ import * as HunterInputs from '../inputs';
 import { sharedHunterDisplayStatsModifiers } from '../shared';
 import * as MMInputs from './inputs';
 import * as Presets from './presets';
+import { MM_T12_PRESET, P3_EP_PRESET } from './presets';
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 	cssClass: 'marksmanship-hunter-sim-ui',
 	cssScheme: 'hunter',
@@ -51,18 +52,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 	epReferenceStat: Stat.StatRangedAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[
-			Stat.StatHealth,
-			Stat.StatStamina,
-			Stat.StatAgility,
-			Stat.StatRangedAttackPower,
-			Stat.StatMasteryRating,
-		],
-		[
-			PseudoStat.PseudoStatPhysicalHitPercent,
-			PseudoStat.PseudoStatPhysicalCritPercent,
-			PseudoStat.PseudoStatRangedHastePercent,
-		],
+		[Stat.StatHealth, Stat.StatStamina, Stat.StatAgility, Stat.StatRangedAttackPower, Stat.StatMasteryRating],
+		[PseudoStat.PseudoStatPhysicalHitPercent, PseudoStat.PseudoStatPhysicalCritPercent, PseudoStat.PseudoStatRangedHastePercent],
 	),
 	modifyDisplayStats: (player: Player<Spec.SpecMarksmanshipHunter>) => {
 		return sharedHunterDisplayStatsModifiers(player);
@@ -70,9 +61,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.MM_P1_PRESET.gear,
+		gear: Presets.MM_T12_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P1_EP_PRESET.epWeights,
+		epWeights: Presets.P3_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
 			const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 8);
@@ -142,13 +133,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
+		epWeights: [Presets.P1_EP_PRESET, P3_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.MarksmanTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_PRESET_SIMPLE_DEFAULT, Presets.ROTATION_PRESET_MM, Presets.ROTATION_PRESET_MM_ADVANCED, Presets.ROTATION_PRESET_AOE],
+		rotations: [Presets.ROTATION_PRESET_MM, Presets.ROTATION_PRESET_MM_ADVANCED, Presets.ROTATION_PRESET_AOE],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.MM_PRERAID_PRESET, Presets.MM_P1_PRESET],
+		gear: [MM_T12_PRESET, Presets.MM_PRERAID_PRESET, Presets.MM_P1_PRESET],
 	},
 
 	autoRotation: (player: Player<Spec.SpecMarksmanshipHunter>): APLRotation => {
@@ -255,7 +246,17 @@ export class MarksmanshipHunterSimUI extends IndividualSimUI<Spec.SpecMarksmansh
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			new ReforgeOptimizer(this, {
+				getEPDefaults: (player: Player<Spec.SpecFuryWarrior>) => {
+					if (player.getGear().getItemSetCount('Lightning-Charged Battlegear') >= 4) {
+						return Presets.P1_EP_PRESET.epWeights;
+					}
+					if (player.getGear().getItemSetCount("Flamewaker's Battlegear") >= 4) {
+						return Presets.P3_EP_PRESET.epWeights;
+					}
+					return Presets.P1_EP_PRESET.epWeights;
+				},
+			});
 		});
 	}
 }

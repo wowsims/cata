@@ -7,7 +7,6 @@ import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl.js';
 import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
-import { SavedEPWeights } from '../../core/proto/ui';
 import { Stats, UnitStat } from '../../core/proto_utils/stats.js';
 import { TypedEvent } from '../../core/typed_event.js';
 import * as ShamanInputs from '../inputs.js';
@@ -119,14 +118,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	},
 
 	presets: {
-		epWeights: [Presets.EP_PRESET_DEFAULT, Presets.EP_PRESET_CLEAVE],
+		epWeights: [Presets.EP_PRESET_DEFAULT],
 		// Preset talents that the user can quickly select.
-		talents: [Presets.TalentsTotemDuration, Presets.TalentsImprovedShields, Presets.TalentsAoE],
+		talents: [Presets.TalentsTotemDuration, Presets.TalentsImprovedShields],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_DEFAULT, Presets.ROTATION_PRESET_AOE],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET, Presets.P3_PRESET_CLEAVE_AOE, Presets.P3_PRESET_AOE_TIDEFURY],
-		builds: [Presets.P1_PRESET_BUILD_DEFAULT, Presets.P3_PRESET_BUILD_DEFAULT, Presets.P3_PRESET_BUILD_CLEAVE, Presets.P3_PRESET_BUILD_AOE],
+		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET],
+		builds: [Presets.P3_PRESET_BUILD_DEFAULT, Presets.P3_PRESET_BUILD_CLEAVE],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecElementalShaman>): APLRotation => {
@@ -166,10 +165,8 @@ export class ElementalShamanSimUI extends IndividualSimUI<Spec.SpecElementalSham
 				getEPDefaults: (player: Player<Spec.SpecFuryWarrior>) => {
 					const playerWeights = player.getEpWeights();
 					const defaultWeights = Presets.EP_PRESET_DEFAULT.epWeights;
-					const cleaveWeights = Presets.EP_PRESET_CLEAVE.epWeights;
 
 					if (playerWeights.equals(defaultWeights)) return defaultWeights;
-					if (playerWeights.equals(cleaveWeights)) return cleaveWeights;
 
 					return playerWeights;
 				},

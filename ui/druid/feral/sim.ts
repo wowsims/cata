@@ -155,6 +155,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		});
 	},
 
+	hiddenMCDs: [50334],
+
 	raidSimPresets: [
 		{
 			spec: Spec.SpecFeralDruid,

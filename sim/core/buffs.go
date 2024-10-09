@@ -306,6 +306,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 		registerHandOfSacrificeCD(agent, individualBuffs.HandOfSacrificeCount)
 		registerPainSuppressionCD(agent, individualBuffs.PainSuppressionCount)
 		registerGuardianSpiritCD(agent, individualBuffs.GuardianSpiritCount)
+		registerRallyingCryCD(agent, individualBuffs.RallyingCryCount)
 
 		if individualBuffs.FocusMagic {
 			FocusMagicAura(nil, &character.Unit)
@@ -1016,6 +1017,7 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	individualBuffs.PowerInfusionCount = 0
 	individualBuffs.TricksOfTheTrade = proto.TristateEffect_TristateEffectMissing
 	individualBuffs.UnholyFrenzyCount = 0
+	individualBuffs.RallyingCryCount = 0
 
 	if !petAgent.GetPet().enabledOnStart {
 		// What do we do with permanent pets that are not enabled at start?
@@ -1620,6 +1622,63 @@ func GuardianSpiritAura(character *Character, actionTag int32) *Aura {
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			character.PseudoStats.HealingTakenMultiplier /= 1.4
+		},
+	})
+}
+
+var RallyingCryAuraTag = "RallyingCry"
+
+const RallyingCryDuration = time.Second * 10
+const RallyingCryCD = time.Minute * 3
+
+func registerRallyingCryCD(agent Agent, numRallyingCries int32) {
+	if numRallyingCries == 0 {
+		return
+	}
+
+	buffAura := RallyingCryAura(agent.GetCharacter(), -1)
+
+	registerExternalConsecutiveCDApproximation(
+		agent,
+		externalConsecutiveCDApproximation{
+			ActionID:         ActionID{SpellID: 97462, Tag: -1},
+			AuraTag:          RallyingCryAuraTag,
+			CooldownPriority: CooldownPriorityLow,
+			AuraDuration:     RallyingCryDuration,
+			AuraCD:           RallyingCryCD,
+			Type:             CooldownTypeSurvival,
+
+			ShouldActivate: func(_ *Simulation, _ *Character) bool {
+				return true
+			},
+
+			AddAura: func(sim *Simulation, _ *Character) {
+				buffAura.Activate(sim)
+			},
+		},
+		numRallyingCries,
+	)
+}
+
+func RallyingCryAura(character *Character, actionTag int32) *Aura {
+	actionID := ActionID{SpellID: 97462, Tag: actionTag}
+	healthMetrics := character.NewHealthMetrics(actionID)
+
+	var bonusHealth float64
+
+	return character.GetOrRegisterAura(Aura{
+		Label:    "RallyingCry-" + actionID.String(),
+		Tag:      RallyingCryAuraTag,
+		ActionID: actionID,
+		Duration: RallyingCryDuration,
+
+		OnGain: func(_ *Aura, sim *Simulation) {
+			bonusHealth = character.MaxHealth() * 0.2
+			character.UpdateMaxHealth(sim, bonusHealth, healthMetrics)
+		},
+
+		OnExpire: func(_ *Aura, sim *Simulation) {
+			character.UpdateMaxHealth(sim, -bonusHealth, healthMetrics)
 		},
 	})
 }

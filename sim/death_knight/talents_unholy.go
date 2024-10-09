@@ -123,7 +123,11 @@ func (dk *DeathKnight) applyRunicEmpowerementCorruption() {
 		})
 
 		handler = func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-			regenAura.Activate(sim)
+			if regenAura.IsActive() {
+				regenAura.UpdateExpires(regenAura.ExpiresAt() + time.Second*3)
+			} else {
+				regenAura.Activate(sim)
+			}
 		}
 	} else {
 		// Runic Empowerement refreshes random runes on cd

@@ -295,6 +295,59 @@ func (character *Character) NewTemporaryStatsAuraWrapped(auraLabel string, actio
 	return character.GetOrRegisterAura(config)
 }
 
+type ShieldStrengthCalculator func(unit *Unit) float64
+
+type DamageAbsorptionAura struct {
+	*Aura
+	ShieldStrength                float64
+	FreshShieldStrengthCalculator ShieldStrengthCalculator
+}
+
+func (aura *DamageAbsorptionAura) Activate(sim *Simulation) {
+	aura.Aura.Activate(sim)
+	aura.ShieldStrength = aura.FreshShieldStrengthCalculator(aura.Unit)
+	stacks := max(1, int32(aura.ShieldStrength))
+	aura.Aura.MaxStacks = stacks
+	aura.Aura.SetStacks(sim, stacks)
+}
+
+func (character *Character) NewDamageAbsorptionAura(auraLabel string, actionID ActionID, duration time.Duration, calculator ShieldStrengthCalculator) *DamageAbsorptionAura {
+	return CreateDamageAbsorptionAura(character, auraLabel, actionID, duration, calculator, nil)
+}
+
+func (character *Character) NewDamageAbsorptionAuraForSchool(auraLabel string, actionID ActionID, duration time.Duration, school SpellSchool, calculator ShieldStrengthCalculator) *DamageAbsorptionAura {
+	return CreateDamageAbsorptionAura(character, auraLabel, actionID, duration, calculator, func(spell *Spell) bool {
+		return spell.SpellSchool.Matches(school)
+	})
+}
+
+func CreateDamageAbsorptionAura(character *Character, auraLabel string, actionID ActionID, duration time.Duration, calculator ShieldStrengthCalculator, extraSpellCheck func(spell *Spell) bool) *DamageAbsorptionAura {
+	aura := &DamageAbsorptionAura{
+		Aura: character.RegisterAura(Aura{
+			Label:    auraLabel,
+			ActionID: actionID,
+			Duration: duration,
+		}),
+		FreshShieldStrengthCalculator: calculator,
+	}
+
+	character.AddDynamicDamageTakenModifier(func(sim *Simulation, spell *Spell, result *SpellResult) {
+		if aura.Aura.IsActive() && result.Damage > 0 && (extraSpellCheck == nil || extraSpellCheck(spell)) {
+			absorbedDamage := min(aura.ShieldStrength, result.Damage)
+			result.Damage -= absorbedDamage
+			aura.ShieldStrength -= absorbedDamage
+
+			if sim.Log != nil {
+				character.Log(sim, "%s absorbed %.1f damage, new shield strength: %.1f", auraLabel, absorbedDamage, aura.ShieldStrength)
+			}
+
+			aura.Aura.SetStacks(sim, int32(aura.ShieldStrength))
+		}
+	})
+
+	return aura
+}
+
 func ApplyFixedUptimeAura(aura *Aura, uptime float64, tickLength time.Duration, startTime time.Duration) {
 	auraDuration := aura.Duration
 	ticksPerAura := float64(auraDuration) / float64(tickLength)

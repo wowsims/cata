@@ -20,31 +20,37 @@ import {
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
-import P1DraeneiGear from './gear_sets/p1draenei.gear.json';
-import P1OrcGear from './gear_sets/p1orc.gear.json';
+import P1DraeneiGear from './gear_sets/p1.draenei.gear.json';
+import P1OrcGear from './gear_sets/p1.orc.gear.json';
+import P3DraeneiGear from './gear_sets/p3.draenei.gear.json';
+import P3OrcGear from './gear_sets/p3.orc.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid Preset', PreraidGear);
-export const P1ORC_PRESET = PresetUtils.makePresetGear('P1 Orc Preset', P1OrcGear);
-export const P1DRAENEI_PRESET = PresetUtils.makePresetGear('P1 Draenei Preset', P1DraeneiGear);
+export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidGear);
+
+export const P1_ORC_PRESET = PresetUtils.makePresetGear('P1 - Orc', P1OrcGear);
+export const P1_DRAENEI_PRESET = PresetUtils.makePresetGear('P1 - Draenei', P1DraeneiGear);
+
+export const P3_ORC_PRESET = PresetUtils.makePresetGear('P3 - Orc', P3OrcGear);
+export const P3_DRAENEI_PRESET = PresetUtils.makePresetGear('P3 - Draenei', P3DraeneiGear);
 
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
 // Preset options for EP weights
 export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P1',
+	'Default',
 	Stats.fromMap(
 		{
 			[Stat.StatIntellect]: 0.07,
 			[Stat.StatAgility]: 2.47,
 			[Stat.StatSpellPower]: 0,
-			[Stat.StatHitRating]: (0.89 + 0.6),
-			[Stat.StatCritRating]: (0.26 + 0.58),
-			[Stat.StatHasteRating]: (0.22 + 0.44),
+			[Stat.StatHitRating]: 0.89 + 0.6,
+			[Stat.StatCritRating]: 0.26 + 0.58,
+			[Stat.StatHasteRating]: 0.22 + 0.44,
 			[Stat.StatAttackPower]: 1.0,
 			[Stat.StatExpertiseRating]: 1.3,
 			[Stat.StatMasteryRating]: 1.21,
@@ -52,8 +58,8 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 3.05,
 			[PseudoStat.PseudoStatOffHandDps]: 2.56,
-			[PseudoStat.PseudoStatSpellHitPercent]: (0.89 * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT),
-			[PseudoStat.PseudoStatPhysicalHitPercent]: (0.6 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT),
+			[PseudoStat.PseudoStatSpellHitPercent]: 0.89 * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 0.6 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT,
 		},
 	),
 );
@@ -69,7 +75,7 @@ export const StandardTalents = {
 			prime2: ShamanPrimeGlyph.GlyphOfStormstrike,
 			prime3: ShamanPrimeGlyph.GlyphOfFeralSpirit,
 			major1: ShamanMajorGlyph.GlyphOfLightningShield,
-			major2: ShamanMajorGlyph.GlyphOfChainLightning,
+			major2: ShamanMajorGlyph.GlyphOfHealingStreamTotem,
 			major3: ShamanMajorGlyph.GlyphOfFireNova,
 			minor1: ShamanMinorGlyph.GlyphOfWaterWalking,
 			minor2: ShamanMinorGlyph.GlyphOfRenewedLife,
@@ -113,9 +119,10 @@ export const DefaultOptions = EnhancementShamanOptions.create({
 });
 
 export const OtherDefaults = {
+	duration: 180,
+	distanceFromTarget: 5,
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
-	distanceFromTarget: 5,
 };
 
 export const DefaultConsumes = Consumes.create({

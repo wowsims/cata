@@ -24,6 +24,7 @@ import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats, UnitStat, UnitStatPresets } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
+import P3Gear from './gear_sets/p3.gear.json';
 import PreRaidGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
@@ -31,12 +32,13 @@ import PreRaidGear from './gear_sets/preraid.gear.json';
 // keep them in a separate file.
 export const PRE_RAID = PresetUtils.makePresetGear('Pre Raid', PreRaidGear);
 export const P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1Gear);
+export const P3_PRESET = PresetUtils.makePresetGear('P3 Preset', P3Gear);
 
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
 // Preset options for EP weights
 export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P1',
+	'Default',
 	Stats.fromMap({
 		[Stat.StatIntellect]: 1.0,
 		[Stat.StatSpirit]: 0.9,
@@ -198,5 +200,5 @@ export const OtherDefaults = {
 	distanceFromTarget: 20,
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
-	darkIntentUptime: 100,
+	darkIntentUptime: 90,
 };

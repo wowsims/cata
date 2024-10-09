@@ -189,8 +189,11 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 
 		if (!itemElem) itemElem = (<li className="dropdown-picker-item" />) as HTMLLIElement;
 
-		if (!buttonElem)
-			buttonElem = (<button className="dropdown-item" dataset={{ bsToggle: 'dropdown' }} attributes={{ 'aria-expanded': false }} />) as HTMLButtonElement;
+		if (!buttonElem) buttonElem = (<button className="dropdown-item" />) as HTMLButtonElement;
+
+		buttonElem.setAttribute('data-bs-toggle', 'dropdown');
+		buttonElem.setAttribute('aria-expanded', 'false');
+
 		if (!buttonElem.childNodes.length) buttonElem.replaceChildren(path[path.length - 1] + ' \u00bb');
 
 		const listRef = ref<HTMLUListElement>();

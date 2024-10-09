@@ -16,6 +16,7 @@ import AoeApl from './apls/aoe.apl.json';
 import MmApl from './apls/mm.apl.json';
 import MmAdvApl from './apls/mm_advanced.apl.json';
 import P1MMGear from './gear_sets/p1_mm.gear.json';
+import T12MMGear from './gear_sets/p3_mm.gear.json';
 import PreraidMMGear from './gear_sets/preraid_mm.gear.json';
 
 // Preset options for this spec.
@@ -24,6 +25,7 @@ import PreraidMMGear from './gear_sets/preraid_mm.gear.json';
 
 export const MM_PRERAID_PRESET = PresetUtils.makePresetGear('MM PreRaid Preset', PreraidMMGear);
 export const MM_P1_PRESET = PresetUtils.makePresetGear('MM P1 Preset', P1MMGear);
+export const MM_T12_PRESET = PresetUtils.makePresetGear('MM T12 Preset', T12MMGear);
 
 export const DefaultSimpleRotation = HunterRotation.create({
 	type: RotationType.SingleTarget,
@@ -43,7 +45,6 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'MM P1',
 	Stats.fromMap(
 		{
-			[Stat.StatStamina]: 0.5,
 			[Stat.StatAgility]: 3.05,
 			[Stat.StatRangedAttackPower]: 1.0,
 			[Stat.StatHitRating]: 2.25,
@@ -53,6 +54,22 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 		},
 		{
 			[PseudoStat.PseudoStatRangedDps]: 6.32,
+		},
+	),
+);
+export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'MM P3 (T12 4-set)',
+	Stats.fromMap(
+		{
+			[Stat.StatAgility]: 3.05,
+			[Stat.StatRangedAttackPower]: 1.0,
+			[Stat.StatHitRating]: 2.79,
+			[Stat.StatCritRating]: 1.39,
+			[Stat.StatHasteRating]: 0.9,
+			[Stat.StatMasteryRating]: 1.47,
+		},
+		{
+			[PseudoStat.PseudoStatRangedDps]: 7.33,
 		},
 	),
 );

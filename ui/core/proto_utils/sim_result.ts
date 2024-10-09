@@ -440,7 +440,7 @@ export class UnitMetrics {
 
 	get chanceOfDeath(): DistributionMetricsProto {
 		const p = this.metrics.chanceOfDeath;
-		const err = Math.sqrt(p * (1 - p) / this.iterations);
+		const err = Math.sqrt((p * (1 - p)) / this.iterations);
 
 		return DistributionMetricsProto.create({
 			avg: p * 100,
@@ -792,6 +792,13 @@ export class ActionMetrics {
 
 	get isPassiveAction() {
 		return this.data.isPassive;
+	}
+
+	get totalDamageTakenPercent() {
+		const totalAvgDtps = this.resultData.result.encounterMetrics?.targets?.[this.unit?.unitIndex || 0].dps?.avg;
+		if (!totalAvgDtps) return undefined;
+
+		return (this.avgDamage / (totalAvgDtps * this.duration)) * 100;
 	}
 
 	get totalDamagePercent() {
@@ -1225,14 +1232,13 @@ export class TargetedActionMetrics {
 		this.landedTicksRaw = this.data.ticks + this.data.critTicks;
 
 		this.hitAttempts =
-			this.data.misses +
-			this.data.dodges +
-			this.data.parries +
-			this.data.critBlocks +
-			this.data.blocks +
-			this.data.glances +
-			this.data.crits +
-			(this.data.hits || this.data.casts);
+			this.data.misses + this.data.dodges + this.data.parries + this.data.critBlocks + this.data.blocks + this.data.glances + this.data.crits;
+
+		if (this.data.hits !== 0) {
+			this.hitAttempts += this.data.hits;
+		} else if (this.data.hits === 0 && this.data.ticks > 0) {
+			this.hitAttempts += this.data.casts;
+		}
 	}
 
 	get damage() {

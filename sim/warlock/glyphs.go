@@ -76,7 +76,7 @@ func (warlock *Warlock) ApplyGlyphs() {
 		warlock.AddStaticMod(core.SpellModConfig{
 			ClassMask: WarlockSpellUnstableAffliction,
 			Kind:      core.SpellMod_CastTime_Flat,
-			TimeValue: 200 * time.Millisecond,
+			TimeValue: -200 * time.Millisecond,
 		})
 	}
 

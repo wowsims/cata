@@ -182,7 +182,9 @@ func (rp *runicPowerBar) addRunicPowerInternal(sim *Simulation, amount float64, 
 	}
 	newRunicPower := min(rp.currentRunicPower+(amount*runicRegenMultiplier), rp.maxRunicPower)
 
-	metrics.AddEvent(amount, newRunicPower-rp.currentRunicPower)
+	if sim.CurrentTime > 0 {
+		metrics.AddEvent(amount, newRunicPower-rp.currentRunicPower)
+	}
 
 	if sim.Log != nil {
 		rp.unit.Log(sim, "Gained %0.3f runic power from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, rp.currentRunicPower, newRunicPower, rp.maxRunicPower)
@@ -210,9 +212,13 @@ func (rp *runicPowerBar) spendRunicPower(sim *Simulation, amount float64, metric
 		panic("Trying to spend negative runic power!")
 	}
 
+	amount = min(amount, rp.currentRunicPower)
+
 	newRunicPower := rp.currentRunicPower - amount
 
-	metrics.AddEvent(-amount, -amount)
+	if sim.CurrentTime > 0 {
+		metrics.AddEvent(-amount, -amount)
+	}
 
 	if sim.Log != nil {
 		rp.unit.Log(sim, "Spent %0.3f runic power from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, rp.currentRunicPower, newRunicPower, rp.maxRunicPower)
@@ -1055,12 +1061,12 @@ func (spell *Spell) SpendRefundableCostAndConvertBloodRune(sim *Simulation, resu
 	spell.Cost.(*RuneCostImpl).spendRefundableCostAndConvertBloodRune(sim, spell, result, convertChance)
 }
 
-func (rc *RuneCostImpl) spendRefundableCostAndConvertFrostOrUnholyRune(sim *Simulation, spell *Spell, result *SpellResult, convertChance float64) {
+func (rc *RuneCostImpl) spendCostAndConvertFrostOrUnholyRune(sim *Simulation, spell *Spell, result *SpellResult, convertChance float64, refundable bool) {
 	cost := RuneCost(spell.CurCast.Cost) // cost was already optimized in RuneSpell.Cast
 	if cost == 0 {
 		return // it was free this time. we don't care
 	}
-	if !result.Landed() {
+	if refundable && !result.Landed() {
 		// misses just don't get spent as a way to avoid having to cancel regeneration PAs
 		// only spend RP
 		if rc.RefundCost > 0 {
@@ -1090,7 +1096,11 @@ func (rc *RuneCostImpl) spendRefundableCostAndConvertFrostOrUnholyRune(sim *Simu
 }
 
 func (spell *Spell) SpendRefundableCostAndConvertFrostOrUnholyRune(sim *Simulation, result *SpellResult, convertChance float64) {
-	spell.Cost.(*RuneCostImpl).spendRefundableCostAndConvertFrostOrUnholyRune(sim, spell, result, convertChance)
+	spell.Cost.(*RuneCostImpl).spendCostAndConvertFrostOrUnholyRune(sim, spell, result, convertChance, true)
+}
+
+func (spell *Spell) SpendCostAndConvertFrostOrUnholyRune(sim *Simulation, result *SpellResult, convertChance float64) {
+	spell.Cost.(*RuneCostImpl).spendCostAndConvertFrostOrUnholyRune(sim, spell, result, convertChance, false)
 }
 
 func (rc *RuneCostImpl) spendRefundableCostAndConvertBloodOrFrostRune(sim *Simulation, spell *Spell, result *SpellResult, convertChance float64) {
