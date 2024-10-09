@@ -17,20 +17,22 @@ func init() {
 // TODO: Verify this is how it's supposed to work
 func customImmolateHandler(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 	copySpell := spell.Unit.GetSpell(spell.WithTag(71086))
-
-	// some closure magic
 	warlock := spell.Unit.Env.Raid.GetPlayerFromUnit(spell.Unit).(warlock.WarlockAgent).GetWarlock()
 	baseDamage := warlock.CalcScalingSpellDmg(0.43900001049)
-	mulitplier := spell.DamageMultiplier
+
 	if copySpell == nil {
 		copyConfig := cata.GetDRTSpellConfig(spell)
-		copyConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.DamageMultiplier *= mulitplier
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			spell.DamageMultiplier /= mulitplier
-		}
 		copySpell = spell.Unit.RegisterSpell(copyConfig)
 	}
 
+	copySpell.ApplyEffects = immolationFactory(baseDamage, float64(warlock.Immolate.Dot(result.Target).HastedTickCount())*0.6)
 	cata.CastDTRSpell(sim, copySpell, result.Target)
+}
+
+func immolationFactory(damage float64, multiplier float64) func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+	return func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		spell.DamageMultiplier *= multiplier
+		spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+		spell.DamageMultiplier /= multiplier
+	}
 }

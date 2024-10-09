@@ -134,7 +134,6 @@ func defaultDoTHandler(sim *core.Simulation, spell *core.Spell, result *core.Spe
 }
 
 func defaultSpellHandler(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-
 	// Add DTR item ID as tag for all duplicated spells
 	copySpell := spell.Unit.GetSpell(spell.WithTag(spell.Tag + 71086))
 	if copySpell == nil {

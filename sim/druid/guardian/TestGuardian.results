@@ -429,6 +429,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-Dragonwrath,Tarecgosa'sRest-71086"
+ value: {
+  dps: 8180.53101
+  tps: 40967.969
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-Dwyer'sCaber-70141"
  value: {
   dps: 8105.92539
@@ -1665,15 +1672,15 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 7832.35358
-  tps: 39224.13771
+  dps: 7844.82838
+  tps: 39286.8342
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 7867.2418
-  tps: 39398.23714
+  dps: 7865.16473
+  tps: 39387.98593
  }
 }
 dps_results: {

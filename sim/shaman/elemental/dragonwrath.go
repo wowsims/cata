@@ -35,12 +35,16 @@ func customFulminationHandler(sim *core.Simulation, spell *core.Spell, result *c
 	totalDamage := (shaman.ClassSpellScaling*0.38899999857 + 0.267*spell.SpellPower()) * (float64(shaman.LightningShieldAura.GetStacks()) - 3)
 	if copySpell == nil {
 		copyConfig := cata.GetDRTSpellConfig(spell)
-		copyConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			copySpell.CalcAndDealDamage(sim, result.Target, totalDamage, spell.OutcomeMagicHitAndCrit)
-		}
 		copyConfig.Cast.ModifyCast = nil
 		copySpell = spell.Unit.RegisterSpell(copyConfig)
 	}
 
+	copySpell.ApplyEffects = fulminationFactory(totalDamage)
 	cata.CastDTRSpell(sim, copySpell, result.Target)
+}
+
+func fulminationFactory(damage float64) func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+	return func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+	}
 }
