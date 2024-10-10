@@ -208,7 +208,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 			otherDefaults: Presets.OtherDefaults,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
-				[Faction.Alliance]: Race.RaceGnome,
+				[Faction.Alliance]: Race.RaceWorgen,
 				[Faction.Horde]: Race.RaceTroll,
 			},
 			defaultGear: {
