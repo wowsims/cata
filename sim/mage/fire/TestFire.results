@@ -438,8 +438,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-ElectrosparkHeartstarter-67118"
  value: {
-  dps: 36133.75003
-  tps: 34537.63031
+  dps: 36204.69862
+  tps: 34610.06501
  }
 }
 dps_results: {
@@ -571,8 +571,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-Firelord'sVestments"
  value: {
-  dps: 32425.69148
-  tps: 31921.73528
+  dps: 32477.16134
+  tps: 31966.74191
  }
 }
 dps_results: {
@@ -592,8 +592,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-FireoftheDeep-78008"
  value: {
-  dps: 36543.94723
-  tps: 34960.06104
+  dps: 36520.97277
+  tps: 34938.65367
  }
 }
 dps_results: {
@@ -690,15 +690,15 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-HeartofIgnacious-59514"
  value: {
-  dps: 37358.5034
-  tps: 35771.08867
+  dps: 37354.76252
+  tps: 35766.75253
  }
 }
 dps_results: {
  key: "TestFire-AllItems-HeartofIgnacious-65110"
  value: {
-  dps: 37400.51084
-  tps: 35809.55172
+  dps: 37300.61644
+  tps: 35703.9091
  }
 }
 dps_results: {
@@ -1061,8 +1061,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-MithrilStopwatch-232013"
  value: {
-  dps: 37200.74369
-  tps: 35618.92523
+  dps: 37253.39257
+  tps: 35674.74278
  }
 }
 dps_results: {
@@ -1173,15 +1173,15 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-ReflectionoftheLight-77115"
  value: {
-  dps: 37095.42048
-  tps: 35512.00367
+  dps: 37121.93768
+  tps: 35532.15459
  }
 }
 dps_results: {
  key: "TestFire-AllItems-ReflectionoftheLight-77986"
  value: {
-  dps: 36994.184
-  tps: 35410.73987
+  dps: 37047.11965
+  tps: 35460.17268
  }
 }
 dps_results: {
@@ -1322,8 +1322,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-ShardofWoe-60233"
  value: {
-  dps: 36608.045
-  tps: 35034.18241
+  dps: 36621.17019
+  tps: 35047.3076
  }
 }
 dps_results: {
@@ -1392,8 +1392,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-SoulshifterVortex-77970"
  value: {
-  dps: 36616.81159
-  tps: 35041.05215
+  dps: 36640.2979
+  tps: 35066.41184
  }
 }
 dps_results: {
@@ -1427,8 +1427,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-StarcatcherCompass-77973"
  value: {
-  dps: 37013.44392
-  tps: 35428.33689
+  dps: 37191.67185
+  tps: 35606.65942
  }
 }
 dps_results: {
@@ -1868,8 +1868,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-Average-Default"
  value: {
-  dps: 39445.91272
-  tps: 37807.34031
+  dps: 39439.58621
+  tps: 37801.07618
  }
 }
 dps_results: {
