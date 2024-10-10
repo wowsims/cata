@@ -21,6 +21,16 @@ const VPLC_IMPLEMENTATION_WARNING = (
 	</>
 );
 
+const DTR_PARTIAL_IMPLEMENTATION_WARNING = (
+	<>
+		<p>The following interactions are most likely inaccurate:</p>
+		<ul className="mb-0">
+			<li>Proc chance</li>
+			<li>Replication of various spells</li>
+		</ul>
+	</>
+);
+
 const TENTATIVE_IMPLEMENTATION_WARNING = (
 	<>
 		<p>
@@ -200,16 +210,16 @@ export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 	[
 		71086,
 		{
-			[Spec.SpecUnknown]: MISSING_IMPLEMENTATION_WARNING,
-			[Spec.SpecBalanceDruid]: MISSING_IMPLEMENTATION_WARNING,
-			[Spec.SpecArcaneMage]: MISSING_IMPLEMENTATION_WARNING,
-			[Spec.SpecFireMage]: MISSING_IMPLEMENTATION_WARNING,
-			[Spec.SpecFrostMage]: MISSING_IMPLEMENTATION_WARNING,
-			[Spec.SpecShadowPriest]: MISSING_IMPLEMENTATION_WARNING,
-			[Spec.SpecElementalShaman]: MISSING_IMPLEMENTATION_WARNING,
-			[Spec.SpecAfflictionWarlock]: MISSING_IMPLEMENTATION_WARNING,
-			[Spec.SpecDemonologyWarlock]: MISSING_IMPLEMENTATION_WARNING,
-			[Spec.SpecDestructionWarlock]: MISSING_IMPLEMENTATION_WARNING,
+			[Spec.SpecUnknown]: <p>This item is unsupported for this spec.</p>,
+			[Spec.SpecBalanceDruid]: DTR_PARTIAL_IMPLEMENTATION_WARNING,
+			[Spec.SpecArcaneMage]: DTR_PARTIAL_IMPLEMENTATION_WARNING,
+			[Spec.SpecFireMage]: DTR_PARTIAL_IMPLEMENTATION_WARNING,
+			[Spec.SpecFrostMage]: DTR_PARTIAL_IMPLEMENTATION_WARNING,
+			[Spec.SpecShadowPriest]: DTR_PARTIAL_IMPLEMENTATION_WARNING,
+			[Spec.SpecElementalShaman]: DTR_PARTIAL_IMPLEMENTATION_WARNING,
+			[Spec.SpecAfflictionWarlock]: DTR_PARTIAL_IMPLEMENTATION_WARNING,
+			[Spec.SpecDemonologyWarlock]: DTR_PARTIAL_IMPLEMENTATION_WARNING,
+			[Spec.SpecDestructionWarlock]: DTR_PARTIAL_IMPLEMENTATION_WARNING,
 		},
 	],
 	// Rogue Legendary Daggers (All Stages)

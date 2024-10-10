@@ -72,10 +72,9 @@ func (eleShaman *ElementalShaman) Initialize() {
 
 	// Elemental Fury
 	eleShaman.AddStaticMod(core.SpellModConfig{
-		// Lava Burst handled separately due to Lava Flows
-		ClassMask: shaman.SpellMaskFire & ^shaman.SpellMaskLavaBurst & ^shaman.SpellMaskLavaBurstOverload | shaman.SpellMaskNature |
+		ClassMask: shaman.SpellMaskFire | shaman.SpellMaskNature |
 			shaman.SpellMaskFrost | shaman.SpellMaskMagmaTotem | shaman.SpellMaskSearingTotem | shaman.SpellMaskEarthquake,
-		Kind:       core.SpellMod_CritMultiplier_Pct,
+		Kind:       core.SpellMod_CritMultiplier_Flat,
 		FloatValue: 1.0,
 	})
 

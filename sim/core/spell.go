@@ -44,6 +44,7 @@ type SpellConfig struct {
 	DamageMultiplier         float64
 	DamageMultiplierAdditive float64
 	CritMultiplier           float64
+	CritMultiplierAddative   float64 // Addative extra crit damage %
 
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
 
@@ -133,6 +134,7 @@ type Spell struct {
 	DamageMultiplier         float64
 	DamageMultiplierAdditive float64
 	CritMultiplier           float64
+	CritMultiplierAddative   float64 // Addative critical damage bonus
 
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
 
@@ -228,6 +230,7 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		DamageMultiplier:         config.DamageMultiplier,
 		DamageMultiplierAdditive: config.DamageMultiplierAdditive,
 		CritMultiplier:           config.CritMultiplier,
+		CritMultiplierAddative:   config.CritMultiplierAddative,
 
 		BonusCoefficient: config.BonusCoefficient,
 
@@ -449,6 +452,10 @@ func (spell *Spell) SetMetricsSplit(splitIdx int32) {
 	spell.ActionID.Tag = splitIdx
 }
 
+func (spell *Spell) GetMetricSplitCount() int {
+	return len(spell.splitSpellMetrics)
+}
+
 func (spell *Spell) doneIteration() {
 	if spell.Flags.Matches(SpellFlagNoMetrics) {
 		return
@@ -658,4 +665,8 @@ type SpellCost interface {
 
 func (spell *Spell) IssueRefund(sim *Simulation) {
 	spell.Cost.IssueRefund(sim, spell)
+}
+
+func (spell *Spell) EffectiveCritDamageMultiplier() float64 {
+	return (spell.CritMultiplier-1)*(spell.CritMultiplierAddative+1) + 1
 }

@@ -1627,6 +1627,7 @@ func GuardianSpiritAura(character *Character, actionTag int32) *Aura {
 }
 
 var RallyingCryAuraTag = "RallyingCry"
+
 const RallyingCryDuration = time.Second * 10
 const RallyingCryCD = time.Minute * 3
 
