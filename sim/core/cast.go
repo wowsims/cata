@@ -234,8 +234,6 @@ func (spell *Spell) makeCastFuncSimple() CastSuccessFunc {
 			if !spell.CD.IsReady(sim) {
 				return spell.castFailureHelper(sim, "still on cooldown for %s, curTime = %s", spell.CD.TimeToReady(sim), sim.CurrentTime)
 			}
-
-			spell.CD.Set(sim.CurrentTime + time.Duration(float64(spell.CD.Duration)*spell.CdMultiplier))
 		}
 
 		if spell.SharedCD.Timer != nil {
@@ -243,14 +241,20 @@ func (spell *Spell) makeCastFuncSimple() CastSuccessFunc {
 			if !spell.SharedCD.IsReady(sim) {
 				return spell.castFailureHelper(sim, "still on shared cooldown for %s, curTime = %s", spell.SharedCD.TimeToReady(sim), sim.CurrentTime)
 			}
-
-			spell.SharedCD.Set(sim.CurrentTime + time.Duration(float64(spell.SharedCD.Duration)*spell.CdMultiplier))
 		}
 
 		if sim.Log != nil && !spell.Flags.Matches(SpellFlagNoLogs) {
 			spell.Unit.Log(sim, "Casting %s (Cost = %0.03f, Cast Time = %s, Effective Time = %s)",
 				spell.ActionID, 0.0, "0s", "0s")
 			spell.Unit.Log(sim, "Completed cast %s", spell.ActionID)
+		}
+
+		if spell.CD.Timer != nil {
+			spell.CD.Set(sim.CurrentTime + time.Duration(float64(spell.CD.Duration)*spell.CdMultiplier))
+		}
+
+		if spell.SharedCD.Timer != nil {
+			spell.SharedCD.Set(sim.CurrentTime + time.Duration(float64(spell.SharedCD.Duration)*spell.CdMultiplier))
 		}
 
 		spell.applyEffects(sim, target)
