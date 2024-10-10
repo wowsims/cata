@@ -204,18 +204,28 @@ wowsimcata-windows.exe: wowsimcata
 	mv ./sim/web/wowsimcata-windows.exe ./wowsimcata-windows.exe
 	mv ./cmd/wowsimcli/wowsimcli-windows.exe ./wowsimcli-windows.exe
 
+
 release: wowsimcata wowsimcata-windows.exe
+	# Build for Darwin (macOS)
 	GOOS=darwin GOARCH=amd64 GOAMD64=v2 go build -o wowsimcata-amd64-darwin -ldflags="-X 'main.Version=$(VERSION)' -s -w" ./sim/web/main.go
 	GOOS=darwin GOARCH=arm64 go build -o wowsimcata-arm64-darwin -ldflags="-X 'main.Version=$(VERSION)' -s -w" ./sim/web/main.go
-	GOOS=linux GOARCH=amd64 GOAMD64=v2 go build -o wowsimcata-amd64-linux   -ldflags="-X 'main.Version=$(VERSION)' -s -w" ./sim/web/main.go
+
+	# Build for Linux
+	GOOS=linux GOARCH=amd64 GOAMD64=v2 go build -o wowsimcata-amd64-linux -ldflags="-X 'main.Version=$(VERSION)' -s -w" ./sim/web/main.go
 	GOOS=linux GOARCH=amd64 GOAMD64=v2 go build -o wowsimcli-amd64-linux --tags=with_db -ldflags="-X 'main.Version=$(VERSION)' -s -w" ./cmd/wowsimcli/cli_main.go
-# Now compress into a zip because the files are getting large.
+	GOOS=linux GOARCH=arm64 go build -o wowsimcata-arm64-linux -ldflags="-X 'main.Version=$(VERSION)' -s -w" ./sim/web/main.go
+	GOOS=linux GOARCH=arm64 go build -o wowsimcli-arm64-linux --tags=with_db -ldflags="-X 'main.Version=$(VERSION)' -s -w" ./cmd/wowsimcli/cli_main.go
+
+	# Compress into zip
 	zip wowsimcata-windows.exe.zip wowsimcata-windows.exe
 	zip wowsimcata-amd64-darwin.zip wowsimcata-amd64-darwin
 	zip wowsimcata-arm64-darwin.zip wowsimcata-arm64-darwin
 	zip wowsimcata-amd64-linux.zip wowsimcata-amd64-linux
 	zip wowsimcli-amd64-linux.zip wowsimcli-amd64-linux
+	zip wowsimcata-arm64-linux.zip wowsimcata-arm64-linux
+	zip wowsimcli-arm64-linux.zip wowsimcli-arm64-linux
 	zip wowsimcli-windows.exe.zip wowsimcli-windows.exe
+
 
 sim/core/proto/api.pb.go: proto/*.proto
 	protoc -I=./proto --go_out=./sim/core ./proto/*.proto
