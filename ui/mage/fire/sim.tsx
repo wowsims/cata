@@ -121,12 +121,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	presets: {
 		epWeights: [Presets.DEFAULT_EP_PRESET],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.P1_SIMPLE_ROTATION_DEFAULT, Presets.P3_SIMPLE_ROTATION_DEFAULT, Presets.FIRE_ROTATION_PRESET_DEFAULT],
+		rotations: [
+			Presets.P1_SIMPLE_ROTATION_DEFAULT,
+			Presets.P3_SIMPLE_ROTATION_DEFAULT,
+			Presets.P3_SIMPLE_ROTATION_NO_TROLL,
+			Presets.FIRE_ROTATION_PRESET_DEFAULT,
+		],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.FireTalents],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.FIRE_P1_PRESET, Presets.FIRE_P1_PREBIS, Presets.FIRE_P3_PRESET],
-		builds: [Presets.P1_PRESET_BUILD, Presets.P3_PRESET_BUILD],
+		builds: [Presets.P1_PRESET_BUILD, Presets.P3_PRESET_BUILD, Presets.P3_PRESET_NO_TROLL],
 	},
 
 	autoRotation: (): APLRotation => {

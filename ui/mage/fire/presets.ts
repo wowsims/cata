@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, PseudoStat, RaidBuffs, Spec, Stat, TinkerHands } from '../../core/proto/common';
+import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Race, RaidBuffs, Spec, Stat, TinkerHands } from '../../core/proto/common';
 import {
 	FireMage_Options as MageOptions,
 	FireMage_Rotation,
@@ -29,14 +29,21 @@ export const P1DefaultSimpleRotation = FireMage_Rotation.create({
 	combustNoLustPercentage: 230000,
 });
 
-export const P3DefaultSimpleRotation = FireMage_Rotation.create({
-	combustThreshold: 510000,
+export const P3TrollDefaultSimpleRotation = FireMage_Rotation.create({
+	combustThreshold: 515000,
 	combustLastMomentLustPercentage: 190000,
 	combustNoLustPercentage: 260000,
 });
 
+export const P3NoTrollDefaultSimpleRotation = FireMage_Rotation.create({
+	combustThreshold: 370000,
+	combustLastMomentLustPercentage: 210000,
+	combustNoLustPercentage: 250000,
+});
+
 export const P1_SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('P1 - Default', Spec.SpecFireMage, P1DefaultSimpleRotation);
-export const P3_SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('P3 - Default', Spec.SpecFireMage, P3DefaultSimpleRotation);
+export const P3_SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('P3 - Default', Spec.SpecFireMage, P3TrollDefaultSimpleRotation);
+export const P3_SIMPLE_ROTATION_NO_TROLL = PresetUtils.makePresetSimpleRotation('P3 - Not Troll', Spec.SpecFireMage, P3NoTrollDefaultSimpleRotation);
 
 //export const ROTATION_PRESET_SIMPLE = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecFireMage, DefaultSimpleRotation);
 export const FIRE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('APL', FireApl, { talentTree: 1 });
@@ -157,11 +164,19 @@ export const FIRE_BREAKPOINTS: UnitStatPresets[] = [
 ];
 
 export const P1_PRESET_BUILD = PresetUtils.makePresetBuild('P1 - Default', {
+	race: Race.RaceTroll,
 	gear: FIRE_P1_PRESET,
 	rotation: P1_SIMPLE_ROTATION_DEFAULT,
 });
 
-export const P3_PRESET_BUILD = PresetUtils.makePresetBuild('P3 - Default', {
+export const P3_PRESET_BUILD = PresetUtils.makePresetBuild('P3 - Default (Troll)', {
+	race: Race.RaceTroll,
 	gear: FIRE_P3_PRESET,
 	rotation: P3_SIMPLE_ROTATION_DEFAULT,
+});
+
+export const P3_PRESET_NO_TROLL = PresetUtils.makePresetBuild('P3 - Default (Worgen)', {
+	race: Race.RaceWorgen,
+	gear: FIRE_P3_PRESET,
+	rotation: P3_SIMPLE_ROTATION_NO_TROLL,
 });
