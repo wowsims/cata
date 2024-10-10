@@ -247,7 +247,7 @@ export class SettingsTab extends SimTab {
 	}
 
 	private buildPresetConfigurationPicker() {
-		new PresetConfigurationPicker(this.rightPanel, this.simUI, 'encounter');
+		new PresetConfigurationPicker(this.rightPanel, this.simUI, ['encounter', 'race']);
 	}
 
 	private buildSavedDataPickers() {

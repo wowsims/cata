@@ -119,9 +119,22 @@ func (dot *Dot) TimeUntilNextTick(sim *Simulation) time.Duration {
 	return dot.NextTickAt() - sim.CurrentTime
 }
 
+func (dot *Dot) calculateHastedTickCount(baseDuration time.Duration, tickPeriod time.Duration) int32 {
+	return int32(math.Round(float64(baseDuration) / float64(tickPeriod)))
+}
+
 // Returns the total amount of ticks with the snapshotted haste
 func (dot *Dot) HastedTickCount() int32 {
-	return int32(math.Round(float64(dot.BaseDuration()) / float64(dot.tickPeriod)))
+	return dot.calculateHastedTickCount(dot.BaseDuration(), dot.tickPeriod)
+}
+
+func (dot *Dot) ExpectedTickCount() int32 {
+	tickCount := dot.BaseTickCount
+	if dot.affectedByCastSpeed && !dot.hasteReducesDuration {
+		tickPeriod := dot.Spell.Unit.ApplyCastSpeedForSpell(dot.BaseTickLength, dot.Spell).Round(time.Millisecond)
+		tickCount = dot.calculateHastedTickCount(dot.BaseDuration(), tickPeriod)
+	}
+	return tickCount
 }
 
 func (dot *Dot) RemainingTicks() int32 {

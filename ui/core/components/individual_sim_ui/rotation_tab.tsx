@@ -189,7 +189,7 @@ export class RotationTab extends SimTab {
 	}
 
 	private buildPresetConfigurationPicker() {
-		new PresetConfigurationPicker(this.rightPanel, this.simUI, 'rotation');
+		new PresetConfigurationPicker(this.rightPanel, this.simUI, ['rotation']);
 	}
 
 	private buildSavedDataPickers() {

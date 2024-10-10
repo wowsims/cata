@@ -81,7 +81,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 77
+// NextIndex: 78
 message APLValue {
     oneof value {
         // Operators
@@ -184,6 +184,7 @@ message APLValue {
         APLValueWarlockShouldRecastDrainSoul warlock_should_recast_drain_soul = 59;
         APLValueWarlockShouldRefreshCorruption warlock_should_refresh_corruption = 60;
         APLValueCurrentEclipsePhase druid_current_eclipse_phase = 70;
+		APLValueMageCurrentCombustionDotEstimate mage_current_combustion_dot_estimate = 77;
     }
 }
 
@@ -583,4 +584,6 @@ message APLValueWarlockShouldRecastDrainSoul {
 }
 message APLValueWarlockShouldRefreshCorruption {
     UnitReference target_unit = 1;
+}
+message APLValueMageCurrentCombustionDotEstimate {
 }
