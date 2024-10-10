@@ -8,6 +8,7 @@ import { APLAction, APLListItem, APLRotation, APLRotation_Type, SimpleRotation }
 import { Cooldowns, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
+import { TypedEvent } from '../../core/typed_event';
 import { formatToNumber } from '../../core/utils';
 import { sharedMageDisplayStatsModifiers } from '../shared';
 import * as FireInputs from './inputs';
@@ -138,7 +139,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		return Presets.FIRE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
 
-	simpleRotation: (_, simple): APLRotation => {
+	simpleRotation: (player, simple): APLRotation => {
+		// Migrate old Ignite based settings to new format by defaulting to the P3 rotation.
+		if (simple.igniteCombustThreshold !== 0 || simple.igniteLastMomentLustPercentage !== 0 || simple.igniteNoLustPercentage !== 0) {
+			const rotation = player.getRace() === Race.RaceTroll ? Presets.P3TrollDefaultSimpleRotation : Presets.P3NoTrollDefaultSimpleRotation;
+			player.setSimpleRotation(TypedEvent.nextEventID(), rotation);
+		}
+
 		const rotation = Presets.FIRE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 		const { combustThreshold, combustLastMomentLustPercentage, combustNoLustPercentage } = simple;
 
