@@ -72,22 +72,28 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		epWeights: Presets.SURVIVAL_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
-			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 4);
+			return new Stats();
 		})(),
 		softCapBreakpoints: (() => {
 			const expertiseSoftCapConfig = StatCap.fromStat(Stat.StatExpertiseRating, {
 				breakpoints: [6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION, 14 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0.47, 0],
+				postCapEPs: [0.495, 0],
 			});
 
 			const hitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
-				breakpoints: [5.5, 8],
+				breakpoints: [8],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0.47 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT, 0.14 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT],
+				postCapEPs: [0],
 			});
 
-			return [expertiseSoftCapConfig, hitSoftCapConfig];
+			const spellHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent, {
+				breakpoints: [17],
+				capType: StatCapType.TypeSoftCap,
+				postCapEPs: [0],
+			});
+
+			return [expertiseSoftCapConfig, hitSoftCapConfig, spellHitSoftCapConfig];
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
