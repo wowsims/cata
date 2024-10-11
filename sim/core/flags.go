@@ -195,6 +195,7 @@ const (
 	SpellFlagNoLogs                                         // Disables logs for a spell.
 	SpellFlagAPL                                            // Indicates this spell can be used from an APL rotation.
 	SpellFlagMCD                                            // Indicates this spell is a MajorCooldown.
+	SpellFlagReactive                                       // Allows a spell flagged as an MCD to be cast off-GCD. Used for instant cast defensive CDs.
 	SpellFlagNoOnDamageDealt                                // Disables OnSpellHitDealt and OnPeriodicDamageDealt aura callbacks for this spell.
 	SpellFlagPrepullOnly                                    // Indicates this spell should only be used during prepull. Not enforced, just a signal for the APL UI.
 	SpellFlagEncounterOnly                                  // Indicates this spell should only be used during the encounter (not prepull). Not enforced, just a signal for the APL UI.

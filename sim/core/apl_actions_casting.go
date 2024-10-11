@@ -27,7 +27,7 @@ func (rot *APLRotation) newActionCastSpell(config *proto.APLActionCastSpell) APL
 	}
 }
 func (action *APLActionCastSpell) IsReady(sim *Simulation) bool {
-	return action.spell.CanCastOrQueue(sim, action.target.Get()) && (!action.spell.Flags.Matches(SpellFlagMCD) || action.spell.Unit.GCD.IsReady(sim) || action.spell.Unit.Rotation.inSequence)
+	return action.spell.CanCastOrQueue(sim, action.target.Get()) && (!action.spell.Flags.Matches(SpellFlagMCD) || action.spell.Flags.Matches(SpellFlagReactive) || action.spell.Unit.GCD.IsReady(sim) || action.spell.Unit.Rotation.inSequence)
 }
 func (action *APLActionCastSpell) Execute(sim *Simulation) {
 	action.spell.CastOrQueue(sim, action.target.Get())
@@ -57,7 +57,7 @@ func (rot *APLRotation) newActionCastFriendlySpell(config *proto.APLActionCastFr
 	}
 }
 func (action *APLActionCastFriendlySpell) IsReady(sim *Simulation) bool {
-	return action.spell.CanCastOrQueue(sim, action.target.Get()) && (!action.spell.Flags.Matches(SpellFlagMCD) || action.spell.Unit.GCD.IsReady(sim) || action.spell.Unit.Rotation.inSequence)
+	return action.spell.CanCastOrQueue(sim, action.target.Get()) && (!action.spell.Flags.Matches(SpellFlagMCD) || action.spell.Flags.Matches(SpellFlagReactive) || action.spell.Unit.GCD.IsReady(sim) || action.spell.Unit.Rotation.inSequence)
 }
 func (action *APLActionCastFriendlySpell) Execute(sim *Simulation) {
 	action.spell.CastOrQueue(sim, action.target.Get())
@@ -278,7 +278,7 @@ func (action *APLActionAutocastOtherCooldowns) IsReady(sim *Simulation) bool {
 	// true even for MCDs which do not require the GCD. The one exception to this rule
 	// is Engineering explosives, which should instead be cast right *after* incurring
 	// a GCD, since they are off-GCD but have small cast times.
-	return (action.nextReadyMCD != nil) && (action.character.GCD.IsReady(sim) != action.nextReadyMCD.Type.Matches(CooldownTypeExplosive))
+	return (action.nextReadyMCD != nil) && ((action.character.GCD.IsReady(sim) != action.nextReadyMCD.Type.Matches(CooldownTypeExplosive)) || action.nextReadyMCD.Spell.Flags.Matches(SpellFlagReactive))
 }
 func (action *APLActionAutocastOtherCooldowns) Execute(sim *Simulation) {
 	action.nextReadyMCD.tryActivateHelper(sim, action.character)

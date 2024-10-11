@@ -479,8 +479,8 @@ dps_results: {
 dps_results: {
  key: "TestProtectionWarrior-AllItems-EarthenWarplate"
  value: {
-  dps: 5242.42067
-  tps: 31716.33422
+  dps: 5238.00055
+  tps: 31691.50824
  }
 }
 dps_results: {
@@ -1935,9 +1935,9 @@ dps_results: {
 dps_results: {
  key: "TestProtectionWarrior-Average-Default"
  value: {
-  dps: 14597.59284
-  tps: 84091.26201
-  dtps: 14659.32641
+  dps: 14596.88538
+  tps: 84084.22982
+  dtps: 14665.21819
  }
 }
 dps_results: {
@@ -2076,8 +2076,8 @@ dps_results: {
 dps_results: {
  key: "TestProtectionWarrior-Settings-Orc-p1_bis-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 5233.05254
-  tps: 31924.34491
+  dps: 5231.25574
+  tps: 31917.22316
  }
 }
 dps_results: {
@@ -2195,8 +2195,8 @@ dps_results: {
 dps_results: {
  key: "TestProtectionWarrior-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 16974.20751
-  tps: 97427.49502
-  dtps: 14745.81306
+  dps: 16921.6699
+  tps: 97216.20763
+  dtps: 14796.67444
  }
 }

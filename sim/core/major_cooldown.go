@@ -249,6 +249,10 @@ func (mcdm *majorCooldownManager) AddMajorCooldown(mcd MajorCooldown) {
 	}
 	mcd.Spell.Flags |= SpellFlagAPL | SpellFlagMCD
 
+	if mcd.Type.Matches(CooldownTypeSurvival) && (mcd.Spell.DefaultCast.EffectiveTime() == 0) {
+		mcd.Spell.Flags |= SpellFlagReactive
+	}
+
 	if mcd.ShouldActivate == nil {
 		mcd.ShouldActivate = func(sim *Simulation, character *Character) bool {
 			return true
