@@ -10,19 +10,19 @@ import { TypedEvent } from '../../typed_event';
 import { Component } from '../component';
 import { ContentBlock } from '../content_block';
 
-type PresetConfigurationCategory = 'gear' | 'talents' | 'rotation' | 'encounter';
+type PresetConfigurationCategory = 'gear' | 'talents' | 'rotation' | 'encounter' | 'race';
 
 export class PresetConfigurationPicker extends Component {
 	readonly simUI: IndividualSimUI<Spec>;
 	readonly builds: Array<PresetBuild>;
 
-	constructor(parentElem: HTMLElement, simUI: IndividualSimUI<Spec>, type?: PresetConfigurationCategory) {
+	constructor(parentElem: HTMLElement, simUI: IndividualSimUI<Spec>, types?: PresetConfigurationCategory[]) {
 		super(parentElem, 'preset-configuration-picker-root');
 		this.rootElem.classList.add('saved-data-manager-root');
 
 		this.simUI = simUI;
 		this.builds = (this.simUI.individualConfig.presets.builds ?? []).filter(build =>
-			Object.keys(build).some(category => category === type && !!build[category]),
+			Object.keys(build).some(category => types?.includes(category as PresetConfigurationCategory) && !!build[category as PresetConfigurationCategory]),
 		);
 
 		if (!this.builds.length) {
@@ -83,10 +83,11 @@ export class PresetConfigurationPicker extends Component {
 		});
 	}
 
-	private applyBuild({ gear, rotation, talents, epWeights, encounter }: PresetBuild) {
+	private applyBuild({ gear, rotation, talents, epWeights, encounter, race }: PresetBuild) {
 		const eventID = TypedEvent.nextEventID();
 		TypedEvent.freezeAllAndDo(() => {
 			if (gear) this.simUI.player.setGear(eventID, this.simUI.sim.db.lookupEquipmentSpec(gear.gear));
+			if (race) this.simUI.player.setRace(eventID, race);
 			if (talents) {
 				this.simUI.player.setTalentsString(eventID, talents.data.talentsString);
 				if (talents.data.glyphs) this.simUI.player.setGlyphs(eventID, talents.data.glyphs);
@@ -107,8 +108,9 @@ export class PresetConfigurationPicker extends Component {
 		});
 	}
 
-	private isBuildActive({ gear, rotation, talents, epWeights, encounter }: PresetBuild): boolean {
+	private isBuildActive({ gear, rotation, talents, epWeights, encounter, race }: PresetBuild): boolean {
 		const hasGear = gear ? EquipmentSpec.equals(gear.gear, this.simUI.player.getGear().asSpec()) : true;
+		const hasRace = typeof race === 'number' ? race === this.simUI.player.getRace() : true;
 		const hasTalents = talents
 			? SavedTalents.equals(
 					talents.data,
@@ -124,7 +126,10 @@ export class PresetConfigurationPicker extends Component {
 			// Ensure that the auto rotation can be matched with a preset
 			if (activeRotation.type === APLRotation_Type.TypeAuto) activeRotation.type = APLRotation_Type.TypeAPL;
 			if (rotation.rotation?.rotation?.type === APLRotation_Type.TypeSimple && rotation.rotation.rotation?.simple?.specRotationJson) {
-				hasRotation = this.simUI.player.specTypeFunctions.rotationEquals(this.simUI.player.specTypeFunctions.rotationFromJson(JSON.parse(rotation.rotation.rotation.simple.specRotationJson)), this.simUI.player.getSimpleRotation());
+				hasRotation = this.simUI.player.specTypeFunctions.rotationEquals(
+					this.simUI.player.specTypeFunctions.rotationFromJson(JSON.parse(rotation.rotation.rotation.simple.specRotationJson)),
+					this.simUI.player.getSimpleRotation(),
+				);
 			} else {
 				hasRotation = APLRotation.equals(rotation.rotation.rotation, activeRotation);
 			}
@@ -133,6 +138,6 @@ export class PresetConfigurationPicker extends Component {
 		const hasEncounter = encounter?.encounter ? Encounter.equals(encounter.encounter, this.simUI.sim.encounter.toProto()) : true;
 		const hasHealingModel = encounter?.healingModel ? HealingModel.equals(encounter.healingModel, this.simUI.player.getHealingModel()) : true;
 
-		return hasGear && hasTalents && hasRotation && hasEpWeights && hasEncounter && hasHealingModel;
+		return hasGear && hasRace && hasTalents && hasRotation && hasEpWeights && hasEncounter && hasHealingModel;
 	}
 }

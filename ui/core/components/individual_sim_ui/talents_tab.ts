@@ -107,7 +107,7 @@ export class TalentsTab<SpecType extends Spec> extends SimTab {
 	}
 
 	private buildPresetConfigurationPicker() {
-		new PresetConfigurationPicker(this.rightPanel, this.simUI, 'talents');
+		new PresetConfigurationPicker(this.rightPanel, this.simUI, ['talents']);
 	}
 
 	private buildSavedTalentsPicker() {
