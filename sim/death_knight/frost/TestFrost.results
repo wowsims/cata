@@ -1260,6 +1260,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrost-AllItems-NecroticBoneplateBattlegear"
+ value: {
+  dps: 35595.64524
+  tps: 32949.45297
+  hps: 506.37997
+ }
+}
+dps_results: {
  key: "TestFrost-AllItems-Oremantle'sFavor-61448"
  value: {
   dps: 38257.59593
