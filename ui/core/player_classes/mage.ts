@@ -21,8 +21,8 @@ export class Mage extends PlayerClass<Class.ClassMage> {
 		Race.RaceUndead,
 		Race.RaceBloodElf,
 		// [A]
-		Race.RaceGnome,
 		Race.RaceWorgen,
+		Race.RaceGnome,
 		Race.RaceHuman,
 		Race.RaceDwarf,
 		Race.RaceNightElf,
