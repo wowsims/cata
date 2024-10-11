@@ -72,22 +72,28 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		epWeights: Presets.SURVIVAL_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
-			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 4);
+			return new Stats();
 		})(),
 		softCapBreakpoints: (() => {
 			const expertiseSoftCapConfig = StatCap.fromStat(Stat.StatExpertiseRating, {
 				breakpoints: [6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION, 14 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0.47, 0],
+				postCapEPs: [0.495, 0],
 			});
 
 			const hitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
-				breakpoints: [5.5, 8],
+				breakpoints: [8],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0.47 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT, 0.14 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT],
+				postCapEPs: [0],
 			});
 
-			return [expertiseSoftCapConfig, hitSoftCapConfig];
+			const spellHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent, {
+				breakpoints: [17],
+				capType: StatCapType.TypeSoftCap,
+				postCapEPs: [0],
+			});
+
+			return [expertiseSoftCapConfig, hitSoftCapConfig, spellHitSoftCapConfig];
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
@@ -154,7 +160,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_SIMPLE, Presets.ROTATION_DEFAULT, Presets.ROTATION_CLEAVE, Presets.ROTATION_NEF],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET],
+		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET],
 		builds: [Presets.PRESET_BUILD_BOSS_DUMMY, Presets.PRESET_BUILD_MAGMAW, Presets.PRESET_BUILD_NEF, Presets.PRESET_BUILD_BETHTILAC],
 	},
 

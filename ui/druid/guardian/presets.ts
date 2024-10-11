@@ -13,9 +13,9 @@ import { SavedTalents } from '../../core/proto/ui.js';
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 import PreraidGear from './gear_sets/preraid.gear.json';
-export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-Raid BiS', PreraidGear);
+export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-Raid', PreraidGear);
 import P1Gear from './gear_sets/p1.gear.json';
-export const P1_PRESET = PresetUtils.makePresetGear('P1/P2 BiS', P1Gear);
+export const P1_PRESET = PresetUtils.makePresetGear('P1/P2', P1Gear);
 import P2Gear from './gear_sets/p2.gear.json';
 export const P2_PRESET = PresetUtils.makePresetGear('P2', P2Gear);
 import P3Gear from './gear_sets/p3.gear.json';
@@ -48,24 +48,23 @@ export const SURVIVAL_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Survival',
 	Stats.fromMap(
 		{
-			[Stat.StatHealth]: 0.04,
-			[Stat.StatStamina]: 0.99,
+			[Stat.StatHealth]: 0.06,
+			[Stat.StatStamina]: 1.18,
 			[Stat.StatAgility]: 1.0,
-			[Stat.StatArmor]: 1.02,
-			[Stat.StatBonusArmor]: 0.23,
-			[Stat.StatDodgeRating]: 0.97,
-			[Stat.StatMasteryRating]: 0.35,
-			[Stat.StatStrength]: 0.11,
-			[Stat.StatAttackPower]: 0.1,
-			[Stat.StatHitRating]: 0.075 + 0.195,
-			[Stat.StatExpertiseRating]: 0.15,
-			[Stat.StatCritRating]: 0.11,
-			[Stat.StatHasteRating]: 0.0,
+			[Stat.StatArmor]: 1.44,
+			[Stat.StatBonusArmor]: 0.33,
+			[Stat.StatDodgeRating]: 0.69,
+			[Stat.StatMasteryRating]: 0.31,
+			[Stat.StatStrength]: 0.10,
+			[Stat.StatAttackPower]: 0.09,
+			[Stat.StatHitRating]: 0.23,
+			[Stat.StatExpertiseRating]: 0.46,
+			[Stat.StatCritRating]: 0.41,
+			[Stat.StatHasteRating]: 0.06,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 0.0,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 0.075 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT,
-			[PseudoStat.PseudoStatSpellHitPercent]: 0.195 * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 0.23 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT,
 		},
 	),
 );
@@ -74,23 +73,24 @@ export const BALANCED_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Balanced',
 	Stats.fromMap(
 		{
-			[Stat.StatHealth]: 0.02,
-			[Stat.StatStamina]: 0.76,
+			[Stat.StatHealth]: 0.04,
+			[Stat.StatStamina]: 1.0,
 			[Stat.StatAgility]: 1.0,
-			[Stat.StatArmor]: 0.62,
-			[Stat.StatBonusArmor]: 0.14,
-			[Stat.StatDodgeRating]: 0.59,
-			[Stat.StatMasteryRating]: 0.2,
-			[Stat.StatStrength]: 0.21,
-			[Stat.StatAttackPower]: 0.2,
-			[Stat.StatHitRating]: 0.6,
-			[Stat.StatExpertiseRating]: 0.93,
-			[Stat.StatCritRating]: 0.25,
-			[Stat.StatHasteRating]: 0.03,
+			[Stat.StatArmor]: 1.11,
+			[Stat.StatBonusArmor]: 0.25,
+			[Stat.StatDodgeRating]: 0.52,
+			[Stat.StatMasteryRating]: 0.23,
+			[Stat.StatStrength]: 0.16,
+			[Stat.StatAttackPower]: 0.15,
+			[Stat.StatHitRating]: 0.53,
+			[Stat.StatExpertiseRating]: 0.99,
+			[Stat.StatCritRating]: 0.44,
+			[Stat.StatHasteRating]: 0.11,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 0.23,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 0.6 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT,
+			[PseudoStat.PseudoStatMainHandDps]: 0.45,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 0.495 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT,
+			[PseudoStat.PseudoStatSpellHitPercent]: 0.035 * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT,
 		},
 	),
 );
@@ -175,10 +175,9 @@ export const PRESET_BUILD_NEF = PresetUtils.makePresetBuild('Nef Adds OT', {
 });
 
 export const PRESET_BUILD_BETHTILAC = PresetUtils.makePresetBuild("Beth'tilac Phase 2", {
-	talents: InfectedWoundsBuild,
 	rotation: ROTATION_BETH,
 	encounter: PresetUtils.makePresetEncounter(
 		"Beth'tilac Phase 2",
-		'http://localhost:5173/cata/druid/guardian/?i=trcmxe#eJzVVV1oHFUU3ntnsp25+enu1NjNra03Y2jjkoTZ3SSmQd1JKCG2VmqtNEaKTnZuupPszmx3Zhu6UogWsfqi9KU2FDH6UkofYh78yYMbW4lVLMRKayzVghQRrSAIElHUOzO7ycbqg48eZrh7vvPd737nwNxFjQJQQRpMAvAKAJMQzECwCEG/GAI9YBAsAdALQ0AK4F/EKS64J6MdoXmhNgTkWoFTmvbAp2vYtn5xHoCLAM4E4VmuFovhgBct6hzc0h5PKPFEPJ6IKexRlFg8zn7E2hW2JGLnYYvwYQmGFkowMn0TkvkSbP2gBJVLJdgzdQWqC5fh4IXL8CLkFyF3DYrhhBefJ7+B54QIlN+A6NAzclYzTIe9AxrNG3TAyFO518kXaNtKZQfNWnktYxQN8+BeS8tX6jrD9xlZxu9sk3OFzGEmUKSrSJ4yMPOYo2VzVC+rHpXOARRBvHB6Fkghv9UB1V+HVRRilVdvcJLgAeqIj8wxro8EHveQ0JXfK5zyrtD0QgWZ3K2iTWi98PYxSP6sREVA1VQkowbhdHd1rWzkgG9k/il1ZVQojIKYRzASltehGsS1x2zUiISxILP16zIvi4jB7UpHzJZ4DHsD0ma8qdiE6js7OxS7jcQUd5UEHCy3fCe+oyihYKyzexV3G27EG4phVNNTRZ+rolfJeL2X6V3bV2F3AM347uJmRk/0uPgGHL59DK14a7EFNcRi3b7B+H0uVcKh24YyjIfQTmkQ1cWRBEOQOfrsBYhwNCIAqf48qAIxGwwCCXRXFAu8VDdWXRIQM+e6x4gh7/3MuzVJxQ8iBXegkNyA6maB6G3ghOeCnj7TmKvC3PYQ7PYVvjwGPIV7cDNqvAYljwWFVNVBgpt7JIT9Ub72IieJeJ3rU/ixdQX+49ka6WG8E90v9fpO1nRaL9cicRaU96ON0UahRhLPVgDfVcJ3xfjegQ24zsuvHl+bv3+DX5NXuhjDaTQsDf2HGbfhaLWzd5Z51BTdyEYmzlWAf5l5FLd6ytw/K6/pox6zm4gN62SXm34H9WUIpjn/K3lCfYnbKnpf2vfX1fDed7c8/8OjS8l7Dz2Avngz91Wy6XjqwPUB7maSBOVP+EHOowZeT6nlm+2nZNPUKTc+Tm73kcVk86gXV5N9lz5141Yy/jKfOzHFFdf3Uye9zTEyWorEu8ggGYqA6BII/A9jUv9IrUpnwkdP9v2d403kzAW+7xRI7n/yrdKtr5MVjnoC/AakhofMVKagUzKQp2bxSPRbsNvSaYY4aUpGCnmT5NKaTYk16iHUTFkF06F5MmE4aQ+yHS01zm5yMmLZNtG1rHaQEnZFd5BHLIcyiuaQfYy339CtiW022WUw2oSRyRDTcsgIJVn3PKoTepiaxHDPMWxi5RzDYqlNbFZMOVRvI7ZhpigxHBfVbLuQZZs8ec1k/kbbHc0c95WZKvu3YADz6lpzLGJb2rjnV6cjhdHRjgj4C39AlKw=',
+		'http://localhost:5173/cata/druid/guardian/?i=rcmxe#eJzVVF1oHFUY3Xtndjtzk2x3b43dvbV6M5Y2LknYzZ9pUGcSSojVSi2VxkjRye7d7iS7M+vObENXCtEiVn1QAlIbilh8KaUPNQ/+5EGLglZRqIg1lmpBREQrCL7EH9Q7d3bTjdUHH/1gGL7znXvu+Q7MoHYFGKAA5gB4HoA5CM5CcAGCUTUGhsA4WAZgGMYADpF5dUGK7C6ah1hFaYkBrUWR0snd8JEwPzYaOQfAeQBPSy1EjYdEbTHOQ/kSVON9oj7Vv4YvKAmoPQvR5GNaybRsjz9jJqtYbMyqMG3Yq1RZ1+pkBys5FbNo1Sz7wB7HrDTmOY7vtUqc39+llavFg1ygxurIYXwGoASSlROLAMcCIzuM4D1poBifvHhFwooAjKkAWeLcAAk9IJDYZ783OPVTsZPvNZC5XQbahNYrrx2B9M9GNQQM00AaiionBptndSP7AyPnHjZWM0FxFCEygom4tg6FkdSdcVE7UqYj3NYvK7KmIg53p3syLpYJHA7hzWRTLYna+tM9abeLZtL9/I0VEqmvfCO5oYZRJNM/eA33F24nG2pxFB5qoi810ZtkxO51+sD2a7AfQAe5pbaZ0/uGfHwDiV8fQyfZWtuCopnMYGCw93afiknsulAmyQTaicdRay/CMAa5o0+egoikEgrAbe+AJpDwYBDoQzeliCLj1unmkYK4Od89QRx582fZn2GD3IXSpAfFtChqXQSqOCApT0SEPtdYasL89RAcDBS+OAKEwq2kA7VfgliwoJJtukjxe0FCJIjypaclrJJ1vk/lx85V+I/Hw/heshPdgYcDJ2s2bdNakLoI6ufRxlS7Esbq6QYQuOoLXHG+uDBKWkV/8eja/q0r8pq+scU0KaBJPPEfMu4iqWZnr6/IKJnayCNTlxrAv2SeIp1CWfpn5TV7tBH+n+BhHRvw2+/gr2AFgpNS8Jk8aDwjbVXFp/b9ZSO+542bn/zh/mX9tkfvRJ+/Uv5STx7N7r88Jn2j04j2oTwuCWro5axR//H8pCcXjvv1gb49QC7oHXlRF/WRjz/y66re+5xcnl+QautHmVfY5llFM0t7B+g4nUiA1DII/Q9rLve+0dSejR8+NvJ3jkjk1LvyyHGg73vo1bevfqU3OMY8+A3g6N12tljNMTpWYXbtUOpbsMvJsSL1CoxOVSs2LRdMl1EnLxBmZ52q7bEKnbW8goBcz8zO8H82nXJcl+bMknmAUbNU7qH3OR7jFNOjezlvn5VzZre59B6L02atYpHajkenGC3597EcZQeZTS3/HsulTtmzHN661OXDrMdyXdS17CyjluejputWS/yQkDdt7i/f7Zn2TKDMVcsVxgHu1bfmOdR1zBnhN8emqvl8TwL8BQ0Xc7A=',
 	),
 });
