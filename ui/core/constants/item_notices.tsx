@@ -175,6 +175,9 @@ const TENTATIVE_IMPLEMENTATION_ITEMS = [
 	// Ti'tahk, the Steps of Time - LFR, Normal, Heroic
 	78486, 77190, 78477,
 
+	// Souldrinker - LFR, Normal, Heroic
+	78488, 77193, 78479,
+
 	// Veil of Lies
 	72900,
 	// Foul Gift of the Demon Lord

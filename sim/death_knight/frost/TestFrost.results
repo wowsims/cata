@@ -1604,6 +1604,30 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrost-AllItems-Souldrinker-77193"
+ value: {
+  dps: 40056.94678
+  tps: 37345.69765
+  hps: 515.38823
+ }
+}
+dps_results: {
+ key: "TestFrost-AllItems-Souldrinker-78479"
+ value: {
+  dps: 40056.94678
+  tps: 37345.69765
+  hps: 515.38823
+ }
+}
+dps_results: {
+ key: "TestFrost-AllItems-Souldrinker-78488"
+ value: {
+  dps: 40056.94678
+  tps: 37345.69765
+  hps: 515.38823
+ }
+}
+dps_results: {
  key: "TestFrost-AllItems-SoulshifterVortex-77206"
  value: {
   dps: 38668.53246

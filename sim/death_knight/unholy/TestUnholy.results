@@ -1604,6 +1604,30 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-Souldrinker-77193"
+ value: {
+  dps: 41494.66656
+  tps: 31179.58227
+  hps: 1719.04235
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Souldrinker-78479"
+ value: {
+  dps: 41715.52822
+  tps: 31370.35338
+  hps: 1876.86408
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Souldrinker-78488"
+ value: {
+  dps: 41295.70805
+  tps: 31006.56391
+  hps: 1562.94283
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-SoulshifterVortex-77206"
  value: {
   dps: 37800.0038

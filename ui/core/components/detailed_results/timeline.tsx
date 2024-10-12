@@ -1388,6 +1388,11 @@ const idToCategoryMap: Record<number, number> = {
 	[40536]: SPELL_ACTION_CATEGORY + 0.942, // Explosive Decoy
 	[41119]: SPELL_ACTION_CATEGORY + 0.943, // Saronite Bomb
 	[40771]: SPELL_ACTION_CATEGORY + 0.944, // Cobalt Frag Bomb
+	
+	// Souldrinker - to pair up the damage part with the healing
+	[109828]: SPELL_ACTION_CATEGORY + 0.945, // Drain Life 1.3%
+	[108022]: SPELL_ACTION_CATEGORY + 0.946, // Drain Life 1.5%
+	[109831]: SPELL_ACTION_CATEGORY + 0.947, // Drain Life 1.7%
 };
 
 const idsToGroupForRotation: Array<number> = [

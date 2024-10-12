@@ -1446,6 +1446,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFury-AllItems-Souldrinker-77193"
+ value: {
+  dps: 31382.1484
+  tps: 26206.495
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-Souldrinker-78479"
+ value: {
+  dps: 31382.1484
+  tps: 26206.495
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-Souldrinker-78488"
+ value: {
+  dps: 31382.1484
+  tps: 26206.495
+ }
+}
+dps_results: {
  key: "TestFury-AllItems-SoulshifterVortex-77206"
  value: {
   dps: 29578.67457
