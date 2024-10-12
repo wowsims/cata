@@ -1157,6 +1157,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-Rathrak,thePoisonousMind-77195"
+ value: {
+  dps: 23311.33777
+  tps: 16551.04982
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Rathrak,thePoisonousMind-78475"
+ value: {
+  dps: 23796.82102
+  tps: 16895.74293
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Rathrak,thePoisonousMind-78484"
+ value: {
+  dps: 22880.00269
+  tps: 16244.80191
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-ReflectionoftheLight-77115"
  value: {
   dps: 22028.10137

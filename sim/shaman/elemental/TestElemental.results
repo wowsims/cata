@@ -1213,6 +1213,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-AllItems-Rathrak,thePoisonousMind-77195"
+ value: {
+  dps: 34574.25197
+  tps: 2234.6662
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-Rathrak,thePoisonousMind-78475"
+ value: {
+  dps: 35641.10732
+  tps: 2325.68059
+ }
+}
+dps_results: {
+ key: "TestElemental-AllItems-Rathrak,thePoisonousMind-78484"
+ value: {
+  dps: 33603.99292
+  tps: 2223.15712
+ }
+}
+dps_results: {
  key: "TestElemental-AllItems-ReflectionoftheLight-77115"
  value: {
   dps: 35881.15774

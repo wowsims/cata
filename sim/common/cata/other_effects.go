@@ -1171,6 +1171,66 @@ func init() {
 				},
 			})
 		})
+
+		// Rathrak, the Poisonous Mind
+		// Equip: Your harmful spellcasts have a chance to poison all enemies near your target for 7715/8710/9830 nature damage over 10 sec.
+		// (Proc chance: 15%, 17s cooldown)
+		rathrakItemID := []int32{78484, 77195, 78475}[version]
+		core.NewItemEffect(rathrakItemID, func(agent core.Agent) {
+			character := agent.GetCharacter()
+
+			tickDamage := []float64{7715, 8710, 9830}[version] / 5
+
+			blastOfCorruption := character.RegisterSpell(core.SpellConfig{
+				ActionID:    core.ActionID{SpellID: []int32{109851, 107831, 109854}[version]},
+				SpellSchool: core.SpellSchoolNature,
+				ProcMask:    core.ProcMaskEmpty,
+				Flags:       core.SpellFlagPassiveSpell,
+
+				Dot: core.DotConfig{
+					IsAOE: true,
+					Aura: core.Aura{
+						Label: "Blast of Corruption",
+					},
+					NumberOfTicks:       5,
+					TickLength:          time.Second * 2,
+					AffectedByCastSpeed: false,
+
+					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+						for _, aoeTarget := range sim.Encounter.TargetUnits {
+							result := dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, tickDamage, dot.Spell.OutcomeMagicCritNoHitCounter)
+
+							if result.DidCrit() {
+								dot.Spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
+							} else {
+								dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
+							}
+						}
+					},
+				},
+
+				DamageMultiplier: 1,
+				CritMultiplier:   character.DefaultSpellCritMultiplier(),
+				ThreatMultiplier: 1,
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					spell.AOEDot().Apply(sim)
+				},
+			})
+
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:       "Rathrak Trigger" + labelSuffix,
+				ActionID:   core.ActionID{ItemID: rathrakItemID},
+				Callback:   core.CallbackOnSpellHitDealt,
+				ProcMask:   core.ProcMaskSpellOrProc,
+				Outcome:    core.OutcomeLanded,
+				ProcChance: 0.15,
+				ICD:        time.Second * 17,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					blastOfCorruption.Cast(sim, result.Target)
+				},
+			})
+		})
 	}
 }
 

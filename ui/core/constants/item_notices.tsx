@@ -171,12 +171,12 @@ const TENTATIVE_IMPLEMENTATION_ITEMS = [
 
 	// Kiril, Fury of Beasts - LFR, Normal, Heroic
 	78482, 77194, 78473,
-
 	// Ti'tahk, the Steps of Time - LFR, Normal, Heroic
 	78486, 77190, 78477,
-
 	// Souldrinker - LFR, Normal, Heroic
 	78488, 77193, 78479,
+	// Rathrak, the Poisonous Mind - LFR, Normal, Heroic
+	78484, 77195, 78475,
 
 	// Veil of Lies
 	72900,

@@ -1199,6 +1199,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestShadow-AllItems-Rathrak,thePoisonousMind-77195"
+ value: {
+  dps: 35739.01841
+  tps: 32684.38569
+ }
+}
+dps_results: {
+ key: "TestShadow-AllItems-Rathrak,thePoisonousMind-78475"
+ value: {
+  dps: 36987.71391
+  tps: 33777.97404
+ }
+}
+dps_results: {
+ key: "TestShadow-AllItems-Rathrak,thePoisonousMind-78484"
+ value: {
+  dps: 34858.7225
+  tps: 31900.0077
+ }
+}
+dps_results: {
  key: "TestShadow-AllItems-ReflectionoftheLight-77115"
  value: {
   dps: 36859.15303
