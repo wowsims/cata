@@ -57,13 +57,11 @@ func (shaman *Shaman) ApplyTalents() {
 			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.20 * float64(shaman.Talents.LavaFlows),
 		})
-		/* TODO: Use if CritMultiplier_Flat gets added
 		shaman.AddStaticMod(core.SpellModConfig{
 			ClassMask:  SpellMaskLavaBurst | SpellMaskLavaBurstOverload,
 			Kind:       core.SpellMod_CritMultiplier_Flat,
 			FloatValue: 0.08 * float64(shaman.Talents.LavaFlows),
 		})
-		*/
 	}
 
 	shaman.applyLavaSurge()

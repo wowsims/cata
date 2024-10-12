@@ -98,11 +98,11 @@ func (ai *BethtilacAI) Reset(sim *core.Simulation) {
 	// Add random auto delay to avoid artificial Haste breakpoints coming from APL evaluations after tank autos synchronizing with
 	// damage taken events.
 	randomAutoOffset := core.DurationFromSeconds(sim.RandomFloat("Melee Timing") * ai.Target.AutoAttacks.MainhandSwingSpeed().Seconds())
-	ai.Target.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime - randomAutoOffset, false)
+	ai.Target.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime-randomAutoOffset, false)
 
 	// Do the same for boss GCD as well.
 	randomSpecialsOffset := core.DurationFromSeconds(sim.RandomFloat("Specials Timing") * core.BossGCD.Seconds())
-	ai.Target.ExtendGCDUntil(sim, sim.CurrentTime + randomSpecialsOffset)
+	ai.Target.ExtendGCDUntil(sim, sim.CurrentTime+randomSpecialsOffset)
 	ai.emberFlame.CD.Set(core.DurationFromSeconds(sim.RandomFloat("Ember Flame Timing") * ai.emberFlame.CD.Duration.Seconds()))
 }
 

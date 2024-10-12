@@ -457,6 +457,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestMM-AllItems-Dragonwrath,Tarecgosa'sRest-71086"
+ value: {
+  dps: 23695.33406
+  tps: 21333.16326
+ }
+}
+dps_results: {
  key: "TestMM-AllItems-Dwyer'sCaber-70141"
  value: {
   dps: 21228.59205
