@@ -787,7 +787,8 @@ func init() {
 		})
 	}
 
-	for _, version := range []ItemVersion{ItemVersionLFR, ItemVersionNormal, ItemVersionHeroic} {
+	for _, v := range []ItemVersion{ItemVersionLFR, ItemVersionNormal, ItemVersionHeroic} {
+		version := v // Gotta scope this for the closure
 		labelSuffix := []string{" (LFR)", "", " (Heroic)"}[version]
 
 		vialItemID := []int32{77979, 77207, 77999}[version]

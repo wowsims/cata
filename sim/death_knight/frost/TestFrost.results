@@ -238,16 +238,16 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-Bone-LinkFetish-77210"
  value: {
-  dps: 40124.47609
-  tps: 37917.02514
+  dps: 40021.81348
+  tps: 37814.36252
   hps: 506.11588
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-Bone-LinkFetish-77982"
  value: {
-  dps: 39952.81756
-  tps: 37757.20893
+  dps: 39755.3019
+  tps: 37559.69327
   hps: 506.88858
  }
 }
@@ -398,16 +398,16 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-CunningoftheCruel-77208"
  value: {
-  dps: 38017.28694
-  tps: 35888.20402
+  dps: 37964.91383
+  tps: 35835.8309
   hps: 506.11588
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-CunningoftheCruel-77980"
  value: {
-  dps: 37942.18621
-  tps: 35813.10328
+  dps: 37844.36212
+  tps: 35715.27919
   hps: 506.11588
  }
 }
@@ -1942,16 +1942,16 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-VialofShadows-77207"
  value: {
-  dps: 38252.19824
-  tps: 36080.74432
+  dps: 38197.01157
+  tps: 36025.55765
   hps: 506.11588
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-VialofShadows-77979"
  value: {
-  dps: 38224.63628
-  tps: 36061.37321
+  dps: 38120.22082
+  tps: 35956.95775
   hps: 507.66127
  }
 }
