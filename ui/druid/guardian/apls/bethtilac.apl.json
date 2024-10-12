@@ -1,7 +1,7 @@
 {
       "type": "TypeSimple",
       "simple": {
-        "specRotationJson": "{\"maintainFaerieFire\":true,\"maintainDemoralizingRoar\":true,\"demoTime\":4,\"pulverizeTime\":4,\"prepullStampede\":true}",
+        "specRotationJson": "{\"maintainFaerieFire\":true,\"maintainDemoralizingRoar\":true,\"demoTime\":4,\"pulverizeTime\":4}",
         "cooldowns": {
           "cooldowns": [
             {
@@ -9,13 +9,13 @@
                 "spellId": 22812
               },
               "timings": [
-                44,
+                40,
                 104
               ]
             },
             {
               "id": {
-"spellId": 61336
+                "spellId": 61336
               },
               "timings": [
                 146
@@ -74,7 +74,7 @@
       ],
       "priorityList": [
         {"action":{"autocastOtherCooldowns":{}}},
-        {"action":{"schedule":{"schedule":"44.0s, 104.0s","innerAction":{"castSpell":{"spellId":{"spellId":22812}}}}}},
+        {"action":{"schedule":{"schedule":"40.0s, 104.0s","innerAction":{"castSpell":{"spellId":{"spellId":22812}}}}}},
         {"action":{"schedule":{"schedule":"146.0s","innerAction":{"castSpell":{"spellId":{"spellId":61336}}}}}},
         {"action":{"schedule":{"schedule":"84.0s","innerAction":{"castSpell":{"spellId":{"spellId":22842}}}}}},
         {"action":{"schedule":{"schedule":"104.0s","innerAction":{"castSpell":{"spellId":{"itemId":65109}}}}}},

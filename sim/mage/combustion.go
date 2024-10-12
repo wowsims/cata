@@ -11,8 +11,10 @@ func (mage *Mage) registerCombustionSpell() {
 		return
 	}
 
+	actionID := core.ActionID{SpellID: 11129}
+
 	mage.Combustion = mage.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 11129},
+		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage, // need to check proc mask for impact damage
 		ClassSpellMask: MageSpellCombustionApplication,
@@ -47,8 +49,26 @@ func (mage *Mage) registerCombustionSpell() {
 		MageSpellPyroblastDot:  0.175 * mage.ClassSpellScaling,
 	}
 
+	calculatedDotTick := func(target *core.Unit) float64 {
+		tickDamage := 0.0
+		dotSpells := []*core.Spell{mage.LivingBomb, mage.Ignite, mage.Pyroblast.RelatedDotSpell}
+		for _, spell := range dotSpells {
+			dot := spell.Dot(target)
+			if dot.IsActive() {
+				if spell.ClassSpellMask&(MageSpellLivingBombDot|MageSpellPyroblastDot) != 0 {
+					dps := dotBase[spell.ClassSpellMask] + dot.BonusCoefficient*dot.Spell.SpellPower()
+					dps *= spell.DamageMultiplier * spell.DamageMultiplierAdditive
+					tickDamage += dps / dot.BaseTickLength.Seconds()
+				} else {
+					tickDamage += dot.SnapshotBaseDamage / 2
+				}
+			}
+		}
+		return tickDamage
+	}
+
 	mage.Combustion.RelatedDotSpell = mage.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 11129}.WithTag(1),
+		ActionID:       actionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskEmpty,
 		ClassSpellMask: MageSpellCombustion,
@@ -72,27 +92,23 @@ func (mage *Mage) registerCombustionSpell() {
 			AffectedByCastSpeed: true,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				combustionDotDamage := 0.0
-				dotSpells := []*core.Spell{mage.LivingBomb, mage.Ignite, mage.Pyroblast.RelatedDotSpell}
-				for _, spell := range dotSpells {
-					dot := spell.Dot(target)
-					if dot.IsActive() {
-						if spell.ClassSpellMask&(MageSpellLivingBombDot|MageSpellPyroblastDot) != 0 {
-							dps := dotBase[spell.ClassSpellMask] + dot.BonusCoefficient*dot.Spell.SpellPower()
-							dps *= spell.DamageMultiplier * spell.DamageMultiplierAdditive
-							combustionDotDamage += dps / dot.BaseTickLength.Seconds()
-						} else {
-							combustionDotDamage += dot.SnapshotBaseDamage / 2
-						}
-					}
-				}
-				dot.Snapshot(target, combustionDotDamage)
+				tickBase := calculatedDotTick(target)
+				dot.Snapshot(target, tickBase)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
+		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
+			tickBase := calculatedDotTick(target)
+			result := spell.CalcPeriodicDamage(sim, target, tickBase, spell.OutcomeExpectedMagicAlwaysHit)
 
+			critChance := spell.SpellCritChance(target)
+			critMod := (critChance * (spell.CritMultiplier - 1))
+			result.Damage *= 1 + critMod
+
+			return result
+		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.Dot(target).Apply(sim)
 		},

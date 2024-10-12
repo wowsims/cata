@@ -200,7 +200,7 @@ dps_results: {
  value: {
   dps: 13836.47567
   tps: 66956.73127
-  hps: 3696.58341
+  hps: 3696.76208
  }
 }
 dps_results: {
@@ -208,7 +208,7 @@ dps_results: {
  value: {
   dps: 13612.42604
   tps: 65775.31888
-  hps: 3696.58341
+  hps: 3696.76208
  }
 }
 dps_results: {
@@ -216,7 +216,7 @@ dps_results: {
  value: {
   dps: 13612.42604
   tps: 65775.31888
-  hps: 3696.58341
+  hps: 3696.76208
  }
 }
 dps_results: {
@@ -432,7 +432,7 @@ dps_results: {
  value: {
   dps: 13612.42604
   tps: 65775.31888
-  hps: 3697.57994
+  hps: 3697.76077
  }
 }
 dps_results: {
@@ -1268,6 +1268,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-NecroticBoneplateBattlegear"
+ value: {
+  dps: 14596.83762
+  tps: 71128.30165
+  hps: 3597.96533
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-Oremantle'sFavor-61448"
  value: {
   dps: 14006.6511
@@ -2000,7 +2008,7 @@ dps_results: {
  value: {
   dps: 13612.42604
   tps: 65775.31888
-  hps: 3701.32906
+  hps: 3701.51801
  }
 }
 dps_results: {
@@ -2008,7 +2016,7 @@ dps_results: {
  value: {
   dps: 13853.93329
   tps: 67201.34359
-  hps: 3779.42491
+  hps: 3779.23596
  }
 }
 dps_results: {
@@ -2016,7 +2024,7 @@ dps_results: {
  value: {
   dps: 13855.35454
   tps: 67048.08924
-  hps: 3701.32906
+  hps: 3701.51801
  }
 }
 dps_results: {
@@ -2032,7 +2040,7 @@ dps_results: {
  value: {
   dps: 13612.42604
   tps: 65775.31888
-  hps: 3701.32906
+  hps: 3701.51801
  }
 }
 dps_results: {
@@ -2040,7 +2048,7 @@ dps_results: {
  value: {
   dps: 13612.42604
   tps: 65775.31888
-  hps: 3701.32906
+  hps: 3701.51801
  }
 }
 dps_results: {

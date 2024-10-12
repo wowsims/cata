@@ -1260,6 +1260,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-NecroticBoneplateBattlegear"
+ value: {
+  dps: 34668.38644
+  tps: 26079.67199
+  hps: 619.5916
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-Oremantle'sFavor-61448"
  value: {
   dps: 37686.44844

@@ -230,13 +230,15 @@ func (druid *Druid) applyEuphoria() {
 }
 
 func (druid *Druid) applyMoonkinForm() {
-	if druid.Talents.MoonkinForm {
-		druid.AddStaticMod(core.SpellModConfig{
-			School:     core.SpellSchoolArcane | core.SpellSchoolNature,
-			FloatValue: 0.1,
-			Kind:       core.SpellMod_DamageDone_Pct,
-		})
+	if !druid.Talents.MoonkinForm {
+		return
 	}
+
+	druid.AddStaticMod(core.SpellModConfig{
+		School:     core.SpellSchoolArcane | core.SpellSchoolNature,
+		FloatValue: 0.1,
+		Kind:       core.SpellMod_DamageDone_Pct,
+	})
 
 	if druid.Talents.MasterShapeshifter {
 		druid.AddStaticMod(core.SpellModConfig{

@@ -8,6 +8,7 @@ import { APLAction, APLListItem, APLRotation, APLRotation_Type, SimpleRotation }
 import { Cooldowns, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
+import { TypedEvent } from '../../core/typed_event';
 import { formatToNumber } from '../../core/utils';
 import { sharedMageDisplayStatsModifiers } from '../shared';
 import * as FireInputs from './inputs';
@@ -121,39 +122,44 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	presets: {
 		epWeights: [Presets.DEFAULT_EP_PRESET],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.P1_SIMPLE_ROTATION_DEFAULT, Presets.P3_SIMPLE_ROTATION_DEFAULT, Presets.FIRE_ROTATION_PRESET_DEFAULT],
+		rotations: [
+			Presets.P1_SIMPLE_ROTATION_DEFAULT,
+			Presets.P3_SIMPLE_ROTATION_DEFAULT,
+			Presets.P3_SIMPLE_ROTATION_NO_TROLL,
+			Presets.FIRE_ROTATION_PRESET_DEFAULT,
+		],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.FireTalents],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.FIRE_P1_PRESET, Presets.FIRE_P1_PREBIS, Presets.FIRE_P3_PRESET],
-		builds: [Presets.P1_PRESET_BUILD, Presets.P3_PRESET_BUILD],
+		builds: [Presets.P1_PRESET_BUILD, Presets.P3_PRESET_BUILD, Presets.P3_PRESET_NO_TROLL],
 	},
 
 	autoRotation: (): APLRotation => {
 		return Presets.FIRE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
 
-	simpleRotation: (_, simple): APLRotation => {
+	simpleRotation: (player, simple): APLRotation => {
+		// Migrate old Ignite based settings to new format by defaulting to the P3 rotation.
+		if (simple.igniteCombustThreshold !== 0 || simple.igniteLastMomentLustPercentage !== 0 || simple.igniteNoLustPercentage !== 0) {
+			const rotation = player.getRace() === Race.RaceTroll ? Presets.P3TrollDefaultSimpleRotation : Presets.P3NoTrollDefaultSimpleRotation;
+			player.setSimpleRotation(TypedEvent.nextEventID(), rotation);
+		}
+
 		const rotation = Presets.FIRE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-		const { igniteCombustThreshold, igniteLastMomentLustPercentage, igniteNoLustPercentage } = simple;
+		const { combustThreshold, combustLastMomentLustPercentage, combustNoLustPercentage } = simple;
 
 		const maxCombustDuringLust = APLAction.fromJsonString(
-			`{"condition":{"and":{"vals":[{"or":{"vals":[{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":26297}}},{"auraIsActive":{"auraId":{"spellId":26297}}},{"cmp":{"op":"OpLe","lhs":{"currentTime":{}},"rhs":{"const":{"val":"17s"}}}}]}},{"and":{"vals":[{"not":{"val":{"auraIsKnown":{"auraId":{"spellId":26297}}}}},{"cmp":{"op":"OpGt","lhs":{"auraRemainingTime":{"auraId":{"spellId":2825,"tag":-1}}},"rhs":{"const":{"val":"2s"}}}}]}}]}},{"cmp":{"op":"OpGt","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12846}}},"rhs":{"const":{"val":"${igniteCombustThreshold}"}}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12846}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":44457}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":11366,"tag":1}}}]}},"castSpell":{"spellId":{"spellId":11129}}}`,
+			`{"condition":{"and":{"vals":[{"or":{"vals":[{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":26297}}},{"auraIsActive":{"auraId":{"spellId":26297}}},{"cmp":{"op":"OpLe","lhs":{"currentTime":{}},"rhs":{"const":{"val":"17s"}}}}]}},{"and":{"vals":[{"not":{"val":{"auraIsKnown":{"auraId":{"spellId":26297}}}}},{"cmp":{"op":"OpGt","lhs":{"auraRemainingTime":{"auraId":{"spellId":2825,"tag":-1}}},"rhs":{"const":{"val":"2s"}}}}]}}]}},{"cmp":{"op":"OpGt","lhs":{"mageCurrentCombustionDotEstimate":{}},"rhs":{"const":{"val":"${combustThreshold}"}}}}]}},"castSpell":{"spellId":{"spellId":11129}}}`,
 		);
 		const lastMomentCombustDuringLust = APLAction.fromJsonString(
-			`{"condition":{"and":{"vals":[{"or":{"vals":[{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":26297}}},{"auraIsActive":{"auraId":{"spellId":26297}}},{"cmp":{"op":"OpLt","lhs":{"auraRemainingTime":{"auraId":{"spellId":26297}}},"rhs":{"const":{"val":"2.5s"}}}},{"cmp":{"op":"OpLe","lhs":{"currentTime":{}},"rhs":{"const":{"val":"17s"}}}}]}},{"and":{"vals":[{"not":{"val":{"auraIsKnown":{"auraId":{"spellId":26297}}}}},{"auraIsActive":{"auraId":{"spellId":2825,"tag":-1}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":2825,"tag":-1}}},"rhs":{"const":{"val":"2s"}}}}]}}]}},{"cmp":{"op":"OpGt","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12846}}},"rhs":{"const":{"val":"${
-				igniteCombustThreshold * igniteLastMomentLustPercentage
-			}"}}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12846}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":44457}}}]}},"castSpell":{"spellId":{"spellId":11129}}}`,
+			`{"condition":{"and":{"vals":[{"or":{"vals":[{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":26297}}},{"auraIsActive":{"auraId":{"spellId":26297}}},{"cmp":{"op":"OpLt","lhs":{"auraRemainingTime":{"auraId":{"spellId":26297}}},"rhs":{"const":{"val":"2.5s"}}}},{"cmp":{"op":"OpLe","lhs":{"currentTime":{}},"rhs":{"const":{"val":"17s"}}}}]}},{"and":{"vals":[{"not":{"val":{"auraIsKnown":{"auraId":{"spellId":26297}}}}},{"auraIsActive":{"auraId":{"spellId":2825,"tag":-1}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":2825,"tag":-1}}},"rhs":{"const":{"val":"2s"}}}}]}}]}},{"cmp":{"op":"OpGt","lhs":{"mageCurrentCombustionDotEstimate":{}},"rhs":{"const":{"val":"${combustLastMomentLustPercentage}"}}}}]}},"castSpell":{"spellId":{"spellId":11129}}}`,
 		);
 		const combustOutsideOfLustAndBerserking = APLAction.fromJsonString(
-			`{"condition":{"and":{"vals":[{"or":{"vals":[{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":26297}}},{"cmp":{"op":"OpGt","lhs":{"currentTime":{}},"rhs":{"const":{"val":"17s"}}}}]}},{"and":{"vals":[{"not":{"val":{"auraIsKnown":{"auraId":{"spellId":26297}}}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":2825,"tag":-1}}}}}]}}]}},{"cmp":{"op":"OpGt","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12846}}},"rhs":{"const":{"val":"${
-				igniteCombustThreshold * igniteNoLustPercentage
-			}"}}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12846}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":44457}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":11366,"tag":1}}}]}},"castSpell":{"spellId":{"spellId":11129}}}`,
+			`{"condition":{"and":{"vals":[{"or":{"vals":[{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":26297}}},{"cmp":{"op":"OpGt","lhs":{"currentTime":{}},"rhs":{"const":{"val":"17s"}}}}]}},{"and":{"vals":[{"not":{"val":{"auraIsKnown":{"auraId":{"spellId":26297}}}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":2825,"tag":-1}}}}}]}}]}},{"cmp":{"op":"OpGt","lhs":{"mageCurrentCombustionDotEstimate":{}},"rhs":{"const":{"val":"${combustNoLustPercentage}"}}}}]}},"castSpell":{"spellId":{"spellId":11129}}}`,
 		);
 		const lastMomentCombustBeforeEncounter = APLAction.fromJsonString(
-			`{"condition":{"and":{"vals":[{"cmp":{"op":"OpLt","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"15s"}}}},{"cmp":{"op":"OpGt","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12846}}},"rhs":{"const":{"val":"${
-				igniteCombustThreshold * igniteLastMomentLustPercentage
-			}"}}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12846}}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":44457}}}]}},"castSpell":{"spellId":{"spellId":11129}}}`,
+			`{"condition":{"and":{"vals":[{"cmp":{"op":"OpLt","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"15s"}}}},{"cmp":{"op":"OpGt","lhs":{"mageCurrentCombustionDotEstimate":{}},"rhs":{"const":{"val":"${combustLastMomentLustPercentage}"}}}}]}},"castSpell":{"spellId":{"spellId":11129}}}`,
 		);
 
 		const modifiedSimpleRotation = rotation;
