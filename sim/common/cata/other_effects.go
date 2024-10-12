@@ -985,6 +985,56 @@ func init() {
 				},
 			})
 		})
+
+		// Kiril, Fury of Beasts
+		// Equip: Your melee and ranged attacks have a chance to trigger Fury of the Beast, granting 107 Agility and 10% increased size every 1 sec.
+		// This effect stacks a maximum of 10 times and lasts 20 sec.
+		// (Proc chance: 15%, 55s cooldown)
+		// TODO: Verify if the aura is cancelled when swapping druid forms
+		// Video from 4.3.0 showing that it doesn't: https://www.youtube.com/watch?v=A6PYbDRaH6E'
+		// Comment from 4.3.3 stating that it does: https://www.wowhead.com/cata/item=77194/kiril-fury-of-beasts#comments:id=1639024
+		kirilItemID := []int32{78482, 77194, 78473}[version]
+		core.NewItemEffect(kirilItemID, func(agent core.Agent) {
+			character := agent.GetCharacter()
+
+			beastFuryAura := core.MakeStackingAura(character, core.StackingStatAura{
+				Aura: core.Aura{
+					Label:     "Beast Fury",
+					ActionID:  core.ActionID{SpellID: []int32{109860, 108016, 109863}[version]},
+					Duration:  time.Second * 20,
+					MaxStacks: 10,
+				},
+				BonusPerStack: stats.Stats{stats.Agility: []float64{95, 107, 120}[version]},
+			})
+
+			furyOfTheBeastAura := character.RegisterAura(core.Aura{
+				Label:    "Fury of the Beast",
+				ActionID: core.ActionID{SpellID: []int32{109861, 108011, 109864}[version]},
+				Duration: time.Second * 20,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					beastFuryAura.Activate(sim)
+					core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+						Period:   time.Second,
+						NumTicks: 10,
+						OnAction: func(sim *core.Simulation) {
+							beastFuryAura.AddStack(sim)
+						},
+					})
+				},
+			})
+
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:       "Fury of the Beast Trigger",
+				Callback:   core.CallbackOnSpellHitDealt,
+				ProcMask:   core.ProcMaskMeleeOrRanged | core.ProcMaskProc,
+				Outcome:    core.OutcomeLanded,
+				ProcChance: 0.15,
+				ICD:        time.Second * 55,
+				Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+					furyOfTheBeastAura.Activate(sim)
+				},
+			})
+		})
 	}
 }
 

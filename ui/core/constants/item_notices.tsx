@@ -168,6 +168,10 @@ const TENTATIVE_IMPLEMENTATION_ITEMS = [
 	77975, 77198, 77995,
 	// Wrath of Unchaining - LFR, Normal, Heroic
 	77974, 77197, 77994,
+
+	// Kiril, Fury of Beasts - LFR, Normal, Heroic
+	78482, 77194, 78473,
+
 	// Veil of Lies
 	72900,
 	// Foul Gift of the Demon Lord

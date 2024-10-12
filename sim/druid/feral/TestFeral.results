@@ -898,6 +898,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-Kiril,FuryofBeasts-77194"
+ value: {
+  dps: 30322.05151
+  tps: 42146.79516
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-Kiril,FuryofBeasts-78473"
+ value: {
+  dps: 30726.88519
+  tps: 43093.93563
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-Kiril,FuryofBeasts-78482"
+ value: {
+  dps: 29885.69294
+  tps: 41440.01447
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-KiroptyricSigil-77113"
  value: {
   dps: 28086.28698

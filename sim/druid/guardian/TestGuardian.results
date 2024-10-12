@@ -898,6 +898,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-Kiril,FuryofBeasts-77194"
+ value: {
+  dps: 8578.5484
+  tps: 42955.98744
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-Kiril,FuryofBeasts-78473"
+ value: {
+  dps: 8687.6802
+  tps: 43501.59911
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-Kiril,FuryofBeasts-78482"
+ value: {
+  dps: 8458.10378
+  tps: 42353.701
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-KiroptyricSigil-77113"
  value: {
   dps: 8478.03833

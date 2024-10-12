@@ -926,6 +926,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestMM-AllItems-Kiril,FuryofBeasts-77194"
+ value: {
+  dps: 24342.98819
+  tps: 21774.62277
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-Kiril,FuryofBeasts-78473"
+ value: {
+  dps: 24620.45059
+  tps: 22023.44998
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-Kiril,FuryofBeasts-78482"
+ value: {
+  dps: 24104.76938
+  tps: 21561.60662
+ }
+}
+dps_results: {
  key: "TestMM-AllItems-KiroptyricSigil-77113"
  value: {
   dps: 22286.02722
