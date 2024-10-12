@@ -221,15 +221,15 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-Bone-LinkFetish-77210"
  value: {
-  dps: 23911.004
-  tps: 16976.81284
+  dps: 23751.34352
+  tps: 16863.4539
  }
 }
 dps_results: {
  key: "TestSubtlety-AllItems-Bone-LinkFetish-77982"
  value: {
-  dps: 23811.30793
-  tps: 16906.02863
+  dps: 23516.06256
+  tps: 16696.40442
  }
 }
 dps_results: {
@@ -1665,15 +1665,15 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-VialofShadows-77207"
  value: {
-  dps: 24455.01996
-  tps: 17363.06417
+  dps: 24369.4009
+  tps: 17302.27464
  }
 }
 dps_results: {
  key: "TestSubtlety-AllItems-VialofShadows-77979"
  value: {
-  dps: 24254.73338
-  tps: 17220.8607
+  dps: 24096.88604
+  tps: 17108.78909
  }
 }
 dps_results: {

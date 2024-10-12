@@ -258,15 +258,15 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-Bone-LinkFetish-77210"
  value: {
-  dps: 29112.27663
-  tps: 20669.71641
+  dps: 28988.55009
+  tps: 20581.87057
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-Bone-LinkFetish-77982"
  value: {
-  dps: 28992.63055
-  tps: 20584.76769
+  dps: 28746.5186
+  tps: 20410.0282
  }
 }
 dps_results: {
@@ -391,15 +391,15 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-CunningoftheCruel-77208"
  value: {
-  dps: 27521.73657
-  tps: 19540.43297
+  dps: 27483.15357
+  tps: 19513.03903
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-CunningoftheCruel-77980"
  value: {
-  dps: 27520.81683
-  tps: 19539.77995
+  dps: 27450.54924
+  tps: 19489.88996
  }
 }
 dps_results: {
@@ -1702,15 +1702,15 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-VialofShadows-77207"
  value: {
-  dps: 29783.17659
-  tps: 21146.05538
+  dps: 29700.98
+  tps: 21087.6958
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-VialofShadows-77979"
  value: {
-  dps: 29583.46216
-  tps: 21004.25813
+  dps: 29429.28669
+  tps: 20894.79355
  }
 }
 dps_results: {

@@ -221,15 +221,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-Bone-LinkFetish-77210"
  value: {
-  dps: 27245.33216
-  tps: 38845.54284
+  dps: 27120.02454
+  tps: 38689.58284
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-Bone-LinkFetish-77982"
  value: {
-  dps: 27135.7745
-  tps: 38441.44383
+  dps: 26898.80709
+  tps: 38123.71123
  }
 }
 dps_results: {
@@ -354,15 +354,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-CunningoftheCruel-77208"
  value: {
-  dps: 25485.51678
-  tps: 36406.02053
+  dps: 25480.35072
+  tps: 36380.19023
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-CunningoftheCruel-77980"
  value: {
-  dps: 25480.64776
-  tps: 36385.70227
+  dps: 25472.08793
+  tps: 36342.90314
  }
 }
 dps_results: {
@@ -1707,15 +1707,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-VialofShadows-77207"
  value: {
-  dps: 27849.93311
-  tps: 39229.18821
+  dps: 27779.8327
+  tps: 39127.99166
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-VialofShadows-77979"
  value: {
-  dps: 27616.26549
-  tps: 39384.92951
+  dps: 27481.69067
+  tps: 39185.27416
  }
 }
 dps_results: {

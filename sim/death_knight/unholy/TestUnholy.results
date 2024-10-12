@@ -246,16 +246,16 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-Bone-LinkFetish-77210"
  value: {
-  dps: 39628.93605
-  tps: 29827.33837
+  dps: 39517.34096
+  tps: 29715.74329
   hps: 628.42635
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-Bone-LinkFetish-77982"
  value: {
-  dps: 39429.86268
-  tps: 29684.65295
+  dps: 39206.15106
+  tps: 29460.94133
   hps: 628.42635
  }
 }
@@ -406,16 +406,16 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-CunningoftheCruel-77208"
  value: {
-  dps: 37600.37561
-  tps: 28287.75024
+  dps: 37526.96589
+  tps: 28214.34053
   hps: 628.42635
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-CunningoftheCruel-77980"
  value: {
-  dps: 37547.44988
-  tps: 28230.80932
+  dps: 37411.33942
+  tps: 28094.69885
   hps: 628.42635
  }
 }
@@ -1941,16 +1941,16 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-VialofShadows-77207"
  value: {
-  dps: 37938.28976
-  tps: 28436.98777
+  dps: 37882.04528
+  tps: 28380.74329
   hps: 628.42635
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-VialofShadows-77979"
  value: {
-  dps: 37831.32101
-  tps: 28392.04085
+  dps: 37722.2398
+  tps: 28282.95964
   hps: 628.42635
  }
 }
