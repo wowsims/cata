@@ -172,6 +172,9 @@ const TENTATIVE_IMPLEMENTATION_ITEMS = [
 	// Kiril, Fury of Beasts - LFR, Normal, Heroic
 	78482, 77194, 78473,
 
+	// Ti'tahk, the Steps of Time - LFR, Normal, Heroic
+	78486, 77190, 78477,
+
 	// Veil of Lies
 	72900,
 	// Foul Gift of the Demon Lord

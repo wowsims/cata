@@ -1614,6 +1614,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-Ti'tahk,theStepsofTime-77190"
+ value: {
+  dps: 27123.71416
+  tps: 38003.67064
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-Ti'tahk,theStepsofTime-78477"
+ value: {
+  dps: 27213.38808
+  tps: 38272.53617
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-Ti'tahk,theStepsofTime-78486"
+ value: {
+  dps: 27113.26295
+  tps: 38085.98045
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-Tia'sGrace-55874"
  value: {
   dps: 26892.75958

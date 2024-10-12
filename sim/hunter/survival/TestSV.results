@@ -1635,6 +1635,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSV-AllItems-Ti'tahk,theStepsofTime-77190"
+ value: {
+  dps: 25045.1354
+  tps: 22513.41704
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-Ti'tahk,theStepsofTime-78477"
+ value: {
+  dps: 25072.03002
+  tps: 22538.06147
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-Ti'tahk,theStepsofTime-78486"
+ value: {
+  dps: 25109.6594
+  tps: 22589.39456
+ }
+}
+dps_results: {
  key: "TestSV-AllItems-Tia'sGrace-55874"
  value: {
   dps: 24557.03601
