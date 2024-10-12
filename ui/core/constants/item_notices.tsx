@@ -138,6 +138,9 @@ const WILL_NOT_BE_IMPLEMENTED_ITEMS = [
 	77976, 77199, 77996,
 	// Seal of the Seven Signs - LFR, Normal, Heroic
 	77969, 77204, 77989,
+
+	// Maw of the Dragonlord - LFR, Normal, Heroic
+	78485, 77196, 78476,
 ];
 
 const TENTATIVE_IMPLEMENTATION_ITEMS = [
