@@ -608,6 +608,18 @@ export class ActionId {
 					name += ' (Heal)';
 				}
 				break;
+			// No'Kaled
+			case 'Flameblast':
+			case 'Iceblast':
+			case 'Shadowblast':
+				if (this.spellId === 109871 || this.spellId === 109869 || this.spellId === 109867) {
+					name += ' (LFR)';
+				} else if (this.spellId === 107785 || this.spellId === 107789 || this.spellId === 107787) {
+					name += ' (Normal)';
+				} else if (this.spellId === 109872 || this.spellId === 109870 || this.spellId === 109868) {
+					name += ' (Heroic)';
+				}
+				break;
 			default:
 				if (this.tag) {
 					name += ' (??)';

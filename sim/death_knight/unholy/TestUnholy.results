@@ -1268,6 +1268,30 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-No'Kaled,theElementsofDeath-77188"
+ value: {
+  dps: 41134.42933
+  tps: 30986.55385
+  hps: 588.96092
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-No'Kaled,theElementsofDeath-78472"
+ value: {
+  dps: 41291.82662
+  tps: 31133.07388
+  hps: 591.21135
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-No'Kaled,theElementsofDeath-78481"
+ value: {
+  dps: 40997.34242
+  tps: 30857.89694
+  hps: 586.92483
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-Oremantle'sFavor-61448"
  value: {
   dps: 37686.44844

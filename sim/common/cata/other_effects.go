@@ -1036,6 +1036,13 @@ func init() {
 			})
 		})
 
+		// These spells ignore the slot the weapon is in.
+		// Any other ability should only trigger the proc if the weapon is in the right slot.
+		ignoresSlot := make(map[int32]bool)
+		ignoresSlot[23881] = true // Bloodthirst
+		ignoresSlot[6544] = true  // Heroic Leap
+		ignoresSlot[6343] = true  // Thunder Clap
+
 		// Souldrinker
 		// Equip: Your melee attacks have a chance to drain your target's health, damaging the target for an amount equal to 1.3%/1.5%/1.7% of your maximum health and healing you for twice that amount.
 		// (Proc chance: 15%)
@@ -1045,13 +1052,6 @@ func init() {
 			actionID := core.ActionID{SpellID: []int32{109828, 108022, 109831}[version]}
 			hpModifier := []float64{0.013, 0.015, 0.017}[version]
 			procMask := character.GetProcMaskForItem(souldrinkerItemID) | core.ProcMaskProc
-
-			// These spells ignore the slot the weapon is in.
-			// Any other ability should only trigger the proc if the weapon is in the right slot.
-			ignoresSlot := make(map[int32]bool)
-			ignoresSlot[23881] = true // Bloodthirst
-			ignoresSlot[6544] = true  // Heroic Leap
-			ignoresSlot[6343] = true  // Thunder Clap
 
 			var damageDealt float64
 			drainLifeHeal := character.RegisterSpell(core.SpellConfig{
@@ -1102,6 +1102,71 @@ func init() {
 
 					if sim.Proc(0.15, "Souldrinker") {
 						drainLife.Cast(sim, result.Target)
+					}
+				},
+			})
+		})
+
+		// No'Kaled, the Elements of Death
+		// Equip: Your melee attacks have a chance to blast your enemy with Fire, Shadow, or Frost, dealing 6781/7654/8640 to 10171/11481/12960 damage.
+		// (Proc chance: 7%)
+		nokaledItemID := []int32{78481, 77188, 78472}[version]
+		core.NewItemEffect(nokaledItemID, func(agent core.Agent) {
+			character := agent.GetCharacter()
+
+			procMask := character.GetProcMaskForItem(nokaledItemID) | core.ProcMaskProc
+			minDamage := []float64{6781, 7654, 8640}[version]
+			maxDamage := []float64{10171, 11481, 12960}[version]
+
+			registerSpell := func(actionID core.ActionID, spellSchool core.SpellSchool) *core.Spell {
+				return character.RegisterSpell(core.SpellConfig{
+					ActionID:    actionID,
+					SpellSchool: spellSchool,
+					ProcMask:    core.ProcMaskEmpty,
+					Flags:       core.SpellFlagPassiveSpell,
+					MaxRange:    45,
+
+					DamageMultiplier: 1,
+					CritMultiplier:   character.DefaultSpellCritMultiplier(),
+					ThreatMultiplier: 1,
+
+					ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+						baseDamage := sim.Roll(minDamage, maxDamage)
+						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
+					},
+				})
+			}
+
+			flameblast := registerSpell(
+				core.ActionID{SpellID: []int32{109871, 107785, 109872}[version]},
+				core.SpellSchoolFire)
+
+			iceblast := registerSpell(
+				core.ActionID{SpellID: []int32{109869, 107789, 109870}[version]},
+				core.SpellSchoolFrost)
+
+			shadowblast := registerSpell(
+				core.ActionID{SpellID: []int32{109867, 107787, 109868}[version]},
+				core.SpellSchoolShadow)
+
+			spells := []*core.Spell{flameblast, iceblast, shadowblast}
+
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:     "No'Kaled Trigger" + labelSuffix,
+				ActionID: core.ActionID{ItemID: nokaledItemID},
+				Callback: core.CallbackOnSpellHitDealt,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if !result.Landed() {
+						return
+					}
+
+					if _, ignore := ignoresSlot[spell.ActionID.SpellID]; !spell.ProcMask.Matches(procMask) && !ignore {
+						return
+					}
+
+					if sim.Proc(0.07, "No'Kaled, the Elements of Death") {
+						spell := spells[int(sim.RollWithLabel(0, float64(len(spells)), "No'Kaled spell to cast"))]
+						spell.Cast(sim, result.Target)
 					}
 				},
 			})

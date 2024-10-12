@@ -64,7 +64,6 @@ func (fdk *FrostDeathKnight) ApplyTalents() {
 	masteryMod := fdk.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		FloatValue: fdk.getMasteryFrostBonus(),
-		ClassMask:  death_knight.DeathKnightSpellsAll,
 		School:     core.SpellSchoolFrost,
 	})
 

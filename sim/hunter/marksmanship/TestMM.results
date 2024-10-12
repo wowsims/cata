@@ -1157,6 +1157,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestMM-AllItems-No'Kaled,theElementsofDeath-77188"
+ value: {
+  dps: 22743.40953
+  tps: 20351.57506
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-No'Kaled,theElementsofDeath-78472"
+ value: {
+  dps: 22836.98019
+  tps: 20436.28094
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-No'Kaled,theElementsofDeath-78481"
+ value: {
+  dps: 22673.20778
+  tps: 20289.22352
+ }
+}
+dps_results: {
  key: "TestMM-AllItems-Oremantle'sFavor-61448"
  value: {
   dps: 20980.10294
