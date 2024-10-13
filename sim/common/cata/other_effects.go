@@ -819,12 +819,6 @@ func init() {
 				ProcMask:    core.ProcMaskEmpty,
 				Flags:       core.SpellFlagPassiveSpell,
 
-				Cast: core.CastConfig{
-					DefaultCast: core.Cast{
-						NonEmpty: true,
-					},
-				},
-
 				DamageMultiplier: 1,
 				CritMultiplier:   character.DefaultMeleeCritMultiplier(),
 				ThreatMultiplier: 1,
@@ -866,12 +860,6 @@ func init() {
 				SpellSchool: core.SpellSchoolPhysical,
 				ProcMask:    core.ProcMaskEmpty,
 				Flags:       core.SpellFlagPassiveSpell,
-
-				Cast: core.CastConfig{
-					DefaultCast: core.Cast{
-						NonEmpty: true,
-					},
-				},
 
 				DamageMultiplier: 1,
 				CritMultiplier:   character.DefaultMeleeCritMultiplier(),
@@ -924,12 +912,6 @@ func init() {
 				Flags:       core.SpellFlagPassiveSpell,
 
 				MissileSpeed: 20,
-
-				Cast: core.CastConfig{
-					DefaultCast: core.Cast{
-						NonEmpty: true,
-					},
-				},
 
 				DamageMultiplier: 1,
 				CritMultiplier:   character.DefaultSpellCritMultiplier(),

@@ -242,22 +242,22 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-Bone-LinkFetish-77210"
  value: {
-  dps: 21533.27613
-  tps: 18313.92206
+  dps: 21715.29456
+  tps: 18477.6717
  }
 }
 dps_results: {
  key: "TestBM-AllItems-Bone-LinkFetish-77982"
  value: {
-  dps: 21387.59006
-  tps: 18149.41797
+  dps: 21674.95829
+  tps: 18432.80316
  }
 }
 dps_results: {
  key: "TestBM-AllItems-Bone-LinkFetish-78002"
  value: {
-  dps: 21552.52716
-  tps: 18277.94862
+  dps: 22048.12244
+  tps: 18786.29877
  }
 }
 dps_results: {
@@ -382,22 +382,22 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-CunningoftheCruel-77208"
  value: {
-  dps: 21074.31734
-  tps: 17824.3529
+  dps: 21287.65557
+  tps: 18037.79792
  }
 }
 dps_results: {
  key: "TestBM-AllItems-CunningoftheCruel-77980"
  value: {
-  dps: 21041.95694
-  tps: 17791.90909
+  dps: 21223.91023
+  tps: 17973.9861
  }
 }
 dps_results: {
  key: "TestBM-AllItems-CunningoftheCruel-78000"
  value: {
-  dps: 21109.31232
-  tps: 17859.39709
+  dps: 21336.75786
+  tps: 18086.91593
  }
 }
 dps_results: {
@@ -1721,22 +1721,22 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-VialofShadows-77207"
  value: {
-  dps: 22468.44859
-  tps: 19037.17573
+  dps: 22914.20207
+  tps: 19464.43273
  }
 }
 dps_results: {
  key: "TestBM-AllItems-VialofShadows-77979"
  value: {
-  dps: 22306.26164
-  tps: 18883.66712
+  dps: 22475.45083
+  tps: 19042.30272
  }
 }
 dps_results: {
  key: "TestBM-AllItems-VialofShadows-77999"
  value: {
-  dps: 22572.71502
-  tps: 19093.7136
+  dps: 22848.58254
+  tps: 19363.12081
  }
 }
 dps_results: {
