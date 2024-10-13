@@ -808,6 +808,7 @@ func init() {
 			dbc: https://wago.tools/db2/SpellEffect?build=4.4.1.56574&filter%5BSpellID%5D=109724&page=1
 			wowpedia: https://wowpedia.fandom.com/wiki/Vial_of_Shadows
 			issue: https://github.com/ClassicWoWCommunity/cata-classic-bugs/issues/1516
+			bluetracker, January 9: https://www.bluetracker.gg/wow/topic/us-en/4023884-patch-43-hotfixes/
 
 			*/
 			//apMod := []float64{0.266, 0.3, 0.339}[version]
