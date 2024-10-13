@@ -1231,6 +1231,64 @@ func init() {
 				},
 			})
 		})
+
+		// Vishanka, Jaws of the Earth
+		// Equip: Your ranged attacks have a chance to deal 7040/7950/8970 damage over 2 sec.
+		// (Proc chance: 15%, 17s cooldown)
+		// Time between ticks: 200ms
+		vishankaItemID := []int32{78480, 78359, 78471}[version]
+		core.NewItemEffect(vishankaItemID, func(agent core.Agent) {
+			character := agent.GetCharacter()
+
+			tickDamage := []float64{7040, 7950, 8970}[version] / 10
+
+			speakingOfRage := character.RegisterSpell(core.SpellConfig{
+				ActionID:    core.ActionID{SpellID: []int32{109856, 107821, 109858}[version]},
+				SpellSchool: core.SpellSchoolFire,
+				ProcMask:    core.ProcMaskEmpty,
+				Flags:       core.SpellFlagPassiveSpell,
+
+				Dot: core.DotConfig{
+					Aura: core.Aura{
+						Label: "Speaking of Rage" + labelSuffix,
+					},
+					NumberOfTicks:       10,
+					TickLength:          time.Millisecond * 200,
+					AffectedByCastSpeed: false,
+
+					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+						result := dot.Spell.CalcAndDealPeriodicDamage(sim, target, tickDamage, dot.Spell.OutcomeRangedCritOnlyNoHitCounter)
+
+						if result.DidCrit() {
+							dot.Spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
+						} else {
+							dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
+						}
+					},
+				},
+
+				DamageMultiplier: 1,
+				CritMultiplier:   character.SpellCritMultiplier(1, 0),
+				ThreatMultiplier: 1,
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					spell.Dot(target).Apply(sim)
+				},
+			})
+
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:       "Vishanka Trigger" + labelSuffix,
+				ActionID:   core.ActionID{ItemID: vishankaItemID},
+				Callback:   core.CallbackOnSpellHitDealt,
+				ProcMask:   core.ProcMaskRanged | core.ProcMaskProc,
+				Outcome:    core.OutcomeLanded,
+				ProcChance: 0.15,
+				ICD:        time.Second * 17,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					speakingOfRage.Cast(sim, result.Target)
+				},
+			})
+		})
 	}
 }
 

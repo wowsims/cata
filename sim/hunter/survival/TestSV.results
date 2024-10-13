@@ -1946,6 +1946,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSV-AllItems-Vishanka,JawsoftheEarth-78359"
+ value: {
+  dps: 27116.40256
+  tps: 24588.94485
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-Vishanka,JawsoftheEarth-78471"
+ value: {
+  dps: 27790.83622
+  tps: 25260.50722
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-Vishanka,JawsoftheEarth-78480"
+ value: {
+  dps: 26585.50849
+  tps: 24075.34844
+ }
+}
+dps_results: {
  key: "TestSV-AllItems-WillofUnbinding-77198"
  value: {
   dps: 23445.11725

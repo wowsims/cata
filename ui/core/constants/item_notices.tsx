@@ -177,6 +177,8 @@ const TENTATIVE_IMPLEMENTATION_ITEMS = [
 	78488, 77193, 78479,
 	// Rathrak, the Poisonous Mind - LFR, Normal, Heroic
 	78484, 77195, 78475,
+	// Vishanka, Jaws of the Earth - LFR, Normal, Heroic
+	78480, 78359, 78471,
 
 	// Veil of Lies
 	72900,

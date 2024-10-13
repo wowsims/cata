@@ -1803,6 +1803,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-Vishanka,JawsoftheEarth-78359"
+ value: {
+  dps: 23767.09464
+  tps: 16874.6372
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Vishanka,JawsoftheEarth-78471"
+ value: {
+  dps: 23825.45442
+  tps: 16916.07264
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Vishanka,JawsoftheEarth-78480"
+ value: {
+  dps: 23650.39795
+  tps: 16791.78254
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-WillofUnbinding-77198"
  value: {
   dps: 22028.10137

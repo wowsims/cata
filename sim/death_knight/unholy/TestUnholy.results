@@ -1060,14 +1060,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestUnholy-AllItems-LastWord-50708"
- value: {
-  dps: 40449.86094
-  tps: 30345.96376
-  hps: 582.58597
- }
-}
-dps_results: {
  key: "TestUnholy-AllItems-LeadenDespair-55816"
  value: {
   dps: 36948.26873
@@ -1265,30 +1257,6 @@ dps_results: {
   dps: 34668.38644
   tps: 26079.67199
   hps: 619.5916
- }
-}
-dps_results: {
- key: "TestUnholy-AllItems-No'Kaled,theElementsofDeath-77188"
- value: {
-  dps: 41134.42933
-  tps: 30986.55385
-  hps: 588.96092
- }
-}
-dps_results: {
- key: "TestUnholy-AllItems-No'Kaled,theElementsofDeath-78472"
- value: {
-  dps: 41291.82662
-  tps: 31133.07388
-  hps: 591.21135
- }
-}
-dps_results: {
- key: "TestUnholy-AllItems-No'Kaled,theElementsofDeath-78481"
- value: {
-  dps: 40997.34242
-  tps: 30857.89694
-  hps: 586.92483
  }
 }
 dps_results: {
@@ -1628,30 +1596,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestUnholy-AllItems-Souldrinker-77193"
- value: {
-  dps: 41494.66656
-  tps: 31179.58227
-  hps: 1719.04235
- }
-}
-dps_results: {
- key: "TestUnholy-AllItems-Souldrinker-78479"
- value: {
-  dps: 41715.52822
-  tps: 31370.35338
-  hps: 1876.86408
- }
-}
-dps_results: {
- key: "TestUnholy-AllItems-Souldrinker-78488"
- value: {
-  dps: 41295.70805
-  tps: 31006.56391
-  hps: 1562.94283
- }
-}
-dps_results: {
  key: "TestUnholy-AllItems-SoulshifterVortex-77206"
  value: {
   dps: 37800.0038
@@ -1929,13 +1873,6 @@ dps_results: {
   dps: 37442.49082
   tps: 28185.31665
   hps: 628.42635
- }
-}
-dps_results: {
- key: "TestUnholy-AllItems-Val'anyr,HammerofAncientKings-46017"
- value: {
-  dps: 28015.10329
-  tps: 19392.01002
  }
 }
 dps_results: {
