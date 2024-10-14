@@ -39,8 +39,7 @@ type Mage struct {
 	SummonWaterElemental    *core.Spell
 	IcyVeins                *core.Spell
 
-	arcanePowerGCDmod  *core.SpellMod
-	arcanePowerCostMod *core.SpellMod
+	arcanePowerGCDmod *core.SpellMod
 
 	arcaneMissilesProcAura *core.Aura
 	arcanePotencyAura      *core.Aura

@@ -282,9 +282,9 @@ func (mage *Mage) registerArcanePowerCD() {
 
 	actionID := core.ActionID{SpellID: 12042}
 
-	mage.arcanePowerCostMod = mage.AddDynamicMod(core.SpellModConfig{
+	arcanePowerCostMod := mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  MageSpellsAllDamaging,
-		FloatValue: 0.1,
+		FloatValue: core.TernaryFloat64(mage.HasSetBonus(ItemSetFirehawkRobesOfConflagration, 4), -0.1, 0.2),
 		Kind:       core.SpellMod_PowerCost_Pct,
 	})
 
@@ -302,14 +302,14 @@ func (mage *Mage) registerArcanePowerCD() {
 			if mage.arcanePowerGCDmod != nil {
 				mage.arcanePowerGCDmod.Activate()
 			}
-			mage.arcanePowerCostMod.Activate()
+			arcanePowerCostMod.Activate()
 			arcanePowerDmgMod.Activate()
 		},
 		OnExpire: func(_ *core.Aura, sim *core.Simulation) {
 			if mage.arcanePowerGCDmod != nil {
 				mage.arcanePowerGCDmod.Deactivate()
 			}
-			mage.arcanePowerCostMod.Deactivate()
+			arcanePowerCostMod.Deactivate()
 			arcanePowerDmgMod.Deactivate()
 			if mage.t13ProcAura != nil {
 				mage.t13ProcAura.Deactivate(sim)
