@@ -46,7 +46,8 @@ func (dk *DeathKnight) registerDeathPactSpell() {
 			Spell: spell,
 			Type:  core.CooldownTypeSurvival,
 			ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
-				return dk.CurrentHealthPercent() < 0.1
+				// Should be dk.CurrentHealthPercent() < 0.1 but thanks to platform differences, we get rounding errors on arm64
+				return dk.CurrentHealthPercent()-0.1 < 1e-9
 			},
 		})
 	}
