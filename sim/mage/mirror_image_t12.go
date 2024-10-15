@@ -96,7 +96,7 @@ func (mi *T12MirrorImage) registerFireballSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(6490, 7543)
+			baseDamage := sim.RollWithLabel(6490, 7543, "T12 Mirror Image Fireball")
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
