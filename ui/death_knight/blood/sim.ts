@@ -157,7 +157,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.BloodTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_BLOOD_PRESET, Presets.P1_BLOOD_PRESET, Presets.P3_BLOOD_BALANCED_PRESET],
+		gear: [Presets.PRERAID_BLOOD_PRESET, Presets.P1_BLOOD_PRESET, Presets.P3_BLOOD_BALANCED_PRESET, Presets.P3_BLOOD_DEFENSIVE_PRESET, Presets.P3_BLOOD_OFFENSIVE_PRESET],
 		builds: [Presets.P1_PRESET, Presets.P3_PRESET],
 	},
 

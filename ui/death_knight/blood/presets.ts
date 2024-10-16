@@ -7,11 +7,15 @@ import DefensiveBloodApl from './apls/defensive.apl.json';
 import SimpleBloodApl from './apls/simple.apl.json';
 import P1BloodGear from './gear_sets/p1.gear.json';
 import P3BloodBalancedGear from './gear_sets/p3-balanced.gear.json';
+import P3BloodDefensiveGear from './gear_sets/p3-defensive.gear.json';
+import P3BloodOffensiveGear from './gear_sets/p3-offensive.gear.json';
 import PreRaidBloodGear from './gear_sets/preraid.gear.json';
 
 export const PRERAID_BLOOD_PRESET = PresetUtils.makePresetGear('Pre-Raid', PreRaidBloodGear);
 export const P1_BLOOD_PRESET = PresetUtils.makePresetGear('P1', P1BloodGear);
 export const P3_BLOOD_BALANCED_PRESET = PresetUtils.makePresetGear('P3-Balanced', P3BloodBalancedGear);
+export const P3_BLOOD_DEFENSIVE_PRESET = PresetUtils.makePresetGear('P3-Defensive', P3BloodDefensiveGear);
+export const P3_BLOOD_OFFENSIVE_PRESET = PresetUtils.makePresetGear('P3-Offensive', P3BloodOffensiveGear);
 
 export const BLOOD_SIMPLE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Simple', SimpleBloodApl);
 export const BLOOD_DEFENSIVE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Defensive', DefensiveBloodApl);
