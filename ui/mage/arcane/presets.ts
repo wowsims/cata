@@ -29,12 +29,12 @@ export const ARCANE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation(
 export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Default',
 	Stats.fromMap({
-		[Stat.StatIntellect]: 1.76,
+		[Stat.StatIntellect]: 1.8,
 		[Stat.StatSpellPower]: 1,
-		[Stat.StatHitRating]: 1.31,
-		[Stat.StatCritRating]: 0.53,
-		[Stat.StatHasteRating]: 0.91,
-		[Stat.StatMasteryRating]: 0.57,
+		[Stat.StatHitRating]: 1.52,
+		[Stat.StatCritRating]: 0.65,
+		[Stat.StatHasteRating]: 0.70,
+		[Stat.StatMasteryRating]: 0.67,
 	}),
 );
 
@@ -93,5 +93,5 @@ export const DefaultDebuffs = Debuffs.create({
 export const OtherDefaults = {
 	distanceFromTarget: 20,
 	profession1: Profession.Engineering,
-	profession2: Profession.Tailoring,
+	profession2: Profession.Enchanting,
 };
