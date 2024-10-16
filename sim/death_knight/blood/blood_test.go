@@ -15,32 +15,41 @@ func init() {
 func TestBlood(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
 		Class:      proto.Class_ClassDeathKnight,
-		Race:       proto.Race_RaceWorgen,
-		OtherRaces: []proto.Race{proto.Race_RaceGoblin},
+		Race:       proto.Race_RaceOrc,
+		OtherRaces: []proto.Race{proto.Race_RaceWorgen},
 
-		GearSet:  core.GetGearSet("../../../ui/death_knight/blood/gear_sets", "p1"),
-		Talents:  BloodTalents,
-		Glyphs:   BloodDefaultGlyphs,
-		Consumes: FullConsumes,
+		GearSet: core.GetGearSet("../../../ui/death_knight/blood/gear_sets", "p3-balanced"),
+		OtherGearSets: []core.GearSetCombo{
+			core.GetGearSet("../../../ui/death_knight/blood/gear_sets", "p1"),
+		},
 
-		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsUnholy},
+		Talents:     BloodTalents,
+		Glyphs:      BloodDefaultGlyphs,
+		Consumes:    FullConsumes,
+		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBlood},
 		Rotation:    core.GetAplRotation("../../../ui/death_knight/blood/apls", "simple"),
+
+		InFrontOfTarget: true,
+		IsTank:          true,
 
 		ItemFilter: ItemFilter,
 	}))
 }
 
-var BloodTalents = "03323203132212311321--003"
+var BloodTalents = "02323203102122111321-3-033"
 var BloodDefaultGlyphs = &proto.Glyphs{
 	Prime1: int32(proto.DeathKnightPrimeGlyph_GlyphOfDeathStrike),
 	Prime2: int32(proto.DeathKnightPrimeGlyph_GlyphOfHeartStrike),
 	Prime3: int32(proto.DeathKnightPrimeGlyph_GlyphOfRuneStrike),
-	Major1: int32(proto.DeathKnightMajorGlyph_GlyphOfVampiricBlood),
+	Major1: int32(proto.DeathKnightMajorGlyph_GlyphOfAntiMagicShell),
 	Major2: int32(proto.DeathKnightMajorGlyph_GlyphOfDancingRuneWeapon),
 	Major3: int32(proto.DeathKnightMajorGlyph_GlyphOfBoneShield),
+	Minor1: int32(proto.DeathKnightMinorGlyph_GlyphOfDeathGate),
+	Minor2: int32(proto.DeathKnightMinorGlyph_GlyphOfPathOfFrost),
+	Minor3: int32(proto.DeathKnightMinorGlyph_GlyphOfHornOfWinter),
 }
 
-var PlayerOptionsUnholy = &proto.Player_BloodDeathKnight{
+var PlayerOptionsBlood = &proto.Player_BloodDeathKnight{
 	BloodDeathKnight: &proto.BloodDeathKnight{
 		Options: &proto.BloodDeathKnight_Options{
 			ClassOptions: &proto.DeathKnightOptions{},
@@ -49,18 +58,25 @@ var PlayerOptionsUnholy = &proto.Player_BloodDeathKnight{
 }
 
 var FullConsumes = &proto.Consumes{
-	Flask:         proto.Flask_FlaskOfTitanicStrength,
+	Flask:         proto.Flask_FlaskOfSteelskin,
 	DefaultPotion: proto.Potions_GolembloodPotion,
 	PrepopPotion:  proto.Potions_GolembloodPotion,
 	Food:          proto.Food_FoodBeerBasedCrocolisk,
+	TinkerHands:   proto.TinkerHands_TinkerHandsSynapseSprings,
 }
 
 var ItemFilter = core.ItemFilter{
 	ArmorType: proto.ArmorType_ArmorTypePlate,
 
+	HandTypes: []proto.HandType{
+		proto.HandType_HandTypeTwoHand,
+	},
 	WeaponTypes: []proto.WeaponType{
 		proto.WeaponType_WeaponTypeAxe,
 		proto.WeaponType_WeaponTypeSword,
 		proto.WeaponType_WeaponTypeMace,
+	},
+	RangedWeaponTypes: []proto.RangedWeaponType{
+		proto.RangedWeaponType_RangedWeaponTypeRelic,
 	},
 }
