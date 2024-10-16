@@ -2150,10 +2150,10 @@ dps_results: {
 dps_results: {
  key: "TestBlood-Average-Default"
  value: {
-  dps: 32683.04166
-  tps: 176655.53162
-  dtps: 24904.75464
-  hps: 19365.40819
+  dps: 32516.48578
+  tps: 176448.20178
+  dtps: 24903.81759
+  hps: 19412.53132
  }
 }
 dps_results: {
@@ -2351,9 +2351,9 @@ dps_results: {
 dps_results: {
  key: "TestBlood-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 34487.53709
-  tps: 183899.49124
-  dtps: 24825.13557
-  hps: 19713.3461
+  dps: 34386.36236
+  tps: 184622.24126
+  dtps: 24784.4277
+  hps: 19828.98039
  }
 }
