@@ -266,12 +266,12 @@ var ItemDenyList = map[int32]struct{}{
 	65104: {}, // DONTUSEUnheeded Warning
 	65015: {}, // DONTUSEFury of Angerforge
 
-	71325: {}, // The Horseman's Sinister Saber - 365
-	71326: {}, // The Horseman's Horrific Helmet - 365
-	71327: {}, // Band of Ghoulish Glee - 365
-	71328: {}, // The Horseman's Signet - 365
-	71329: {}, // Wicked Witch's Ring - 365
-	71330: {}, // Seal of the Petrified Pumpkin - 365
+	232548: {}, // The Horseman's Sinister Saber - 353
+	232544: {}, // The Horseman's Horrific Helmet - 353
+	232536: {}, // Band of Ghoulish Glee - 353
+	232537: {}, // The Horseman's Signet - 353
+	232540: {}, // Wicked Witch's Ring - 353
+	232538: {}, // Seal of the Petrified Pumpkin - 353
 
 	71331: {}, // Direbrew's Bloodied Shanker - 365
 	71332: {}, // Tremendous Tankard O' Terror - 365
