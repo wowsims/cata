@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (shaman *Shaman) registerLightningBoltSpell() {
@@ -13,6 +14,10 @@ func (shaman *Shaman) registerLightningBoltSpell() {
 
 func (shaman *Shaman) newLightningBoltSpellConfig(isElementalOverload bool) core.SpellConfig {
 	spellConfig := shaman.newElectricSpellConfig(core.ActionID{SpellID: 403}, 0.06, time.Millisecond*2500, isElementalOverload, 0.714)
+
+	if !isElementalOverload && shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfUnleashedLightning) {
+		spellConfig.Flags |= core.SpellFlagCanCastWhileMoving
+	}
 
 	spellConfig.ClassSpellMask = core.TernaryInt64(isElementalOverload, SpellMaskLightningBoltOverload, SpellMaskLightningBolt)
 	spellConfig.MissileSpeed = core.TernaryFloat64(isElementalOverload, 20, 35)
