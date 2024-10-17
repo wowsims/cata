@@ -991,7 +991,7 @@ func init() {
 		// This effect stacks a maximum of 10 times and lasts 20 sec.
 		// (Proc chance: 15%, 55s cooldown)
 		// TODO: Verify if the aura is cancelled when swapping druid forms
-		// Video from 4.3.0 showing that it doesn't: https://www.youtube.com/watch?v=A6PYbDRaH6E'
+		// Video from 4.3.0 showing that it doesn't: https://www.youtube.com/watch?v=A6PYbDRaH6E
 		// Comment from 4.3.3 stating that it does: https://www.wowhead.com/cata/item=77194/kiril-fury-of-beasts#comments:id=1639024
 		kirilItemID := []int32{78482, 77194, 78473}[version]
 		core.NewItemEffect(kirilItemID, func(agent core.Agent) {
@@ -1131,7 +1131,7 @@ func init() {
 					ThreatMultiplier: 1,
 
 					ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-						baseDamage := sim.Roll(minDamage, maxDamage)
+						baseDamage := sim.RollWithLabel(minDamage, maxDamage, "No'Kaled, the Elements of Death")
 						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
 					},
 				})
