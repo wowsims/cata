@@ -808,6 +808,7 @@ func init() {
 			dbc: https://wago.tools/db2/SpellEffect?build=4.4.1.56574&filter%5BSpellID%5D=109724&page=1
 			wowpedia: https://wowpedia.fandom.com/wiki/Vial_of_Shadows
 			issue: https://github.com/ClassicWoWCommunity/cata-classic-bugs/issues/1516
+			bluetracker, January 9: https://www.bluetracker.gg/wow/topic/us-en/4023884-patch-43-hotfixes/
 
 			*/
 			//apMod := []float64{0.266, 0.3, 0.339}[version]
@@ -817,12 +818,6 @@ func init() {
 				SpellSchool: core.SpellSchoolPhysical,
 				ProcMask:    core.ProcMaskEmpty,
 				Flags:       core.SpellFlagPassiveSpell,
-
-				Cast: core.CastConfig{
-					DefaultCast: core.Cast{
-						NonEmpty: true,
-					},
-				},
 
 				DamageMultiplier: 1,
 				CritMultiplier:   character.DefaultMeleeCritMultiplier(),
@@ -865,12 +860,6 @@ func init() {
 				SpellSchool: core.SpellSchoolPhysical,
 				ProcMask:    core.ProcMaskEmpty,
 				Flags:       core.SpellFlagPassiveSpell,
-
-				Cast: core.CastConfig{
-					DefaultCast: core.Cast{
-						NonEmpty: true,
-					},
-				},
 
 				DamageMultiplier: 1,
 				CritMultiplier:   character.DefaultMeleeCritMultiplier(),
@@ -923,12 +912,6 @@ func init() {
 				Flags:       core.SpellFlagPassiveSpell,
 
 				MissileSpeed: 20,
-
-				Cast: core.CastConfig{
-					DefaultCast: core.Cast{
-						NonEmpty: true,
-					},
-				},
 
 				DamageMultiplier: 1,
 				CritMultiplier:   character.DefaultSpellCritMultiplier(),
@@ -999,6 +982,310 @@ func init() {
 							shield.Activate(sim)
 						}
 					}
+				},
+			})
+		})
+
+		// Kiril, Fury of Beasts
+		// Equip: Your melee and ranged attacks have a chance to trigger Fury of the Beast, granting 107 Agility and 10% increased size every 1 sec.
+		// This effect stacks a maximum of 10 times and lasts 20 sec.
+		// (Proc chance: 15%, 55s cooldown)
+		// TODO: Verify if the aura is cancelled when swapping druid forms
+		// Video from 4.3.0 showing that it doesn't: https://www.youtube.com/watch?v=A6PYbDRaH6E
+		// Comment from 4.3.3 stating that it does: https://www.wowhead.com/cata/item=77194/kiril-fury-of-beasts#comments:id=1639024
+		kirilItemID := []int32{78482, 77194, 78473}[version]
+		core.NewItemEffect(kirilItemID, func(agent core.Agent) {
+			character := agent.GetCharacter()
+
+			beastFuryAura := core.MakeStackingAura(character, core.StackingStatAura{
+				Aura: core.Aura{
+					Label:     "Beast Fury",
+					ActionID:  core.ActionID{SpellID: []int32{109860, 108016, 109863}[version]},
+					Duration:  time.Second * 20,
+					MaxStacks: 10,
+				},
+				BonusPerStack: stats.Stats{stats.Agility: []float64{95, 107, 120}[version]},
+			})
+
+			furyOfTheBeastAura := character.RegisterAura(core.Aura{
+				Label:    "Fury of the Beast",
+				ActionID: core.ActionID{SpellID: []int32{109861, 108011, 109864}[version]},
+				Duration: time.Second * 20,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					beastFuryAura.Activate(sim)
+					core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+						Period:   time.Second,
+						NumTicks: 10,
+						OnAction: func(sim *core.Simulation) {
+							beastFuryAura.AddStack(sim)
+						},
+					})
+				},
+			})
+
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:       "Fury of the Beast Trigger",
+				Callback:   core.CallbackOnSpellHitDealt,
+				ProcMask:   core.ProcMaskMeleeOrRanged | core.ProcMaskProc,
+				Outcome:    core.OutcomeLanded,
+				ProcChance: 0.15,
+				ICD:        time.Second * 55,
+				Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+					furyOfTheBeastAura.Activate(sim)
+				},
+			})
+		})
+
+		// These spells ignore the slot the weapon is in.
+		// Any other ability should only trigger the proc if the weapon is in the right slot.
+		ignoresSlot := make(map[int32]bool)
+		ignoresSlot[23881] = true // Bloodthirst
+		ignoresSlot[6544] = true  // Heroic Leap
+		ignoresSlot[6343] = true  // Thunder Clap
+
+		// Souldrinker
+		// Equip: Your melee attacks have a chance to drain your target's health, damaging the target for an amount equal to 1.3%/1.5%/1.7% of your maximum health and healing you for twice that amount.
+		// (Proc chance: 15%)
+		souldrinkerItemID := []int32{78488, 77193, 78479}[version]
+		core.NewItemEffect(souldrinkerItemID, func(agent core.Agent) {
+			character := agent.GetCharacter()
+			actionID := core.ActionID{SpellID: []int32{109828, 108022, 109831}[version]}
+			hpModifier := []float64{0.013, 0.015, 0.017}[version]
+			procMask := character.GetProcMaskForItem(souldrinkerItemID) | core.ProcMaskProc
+
+			var damageDealt float64
+			drainLifeHeal := character.RegisterSpell(core.SpellConfig{
+				ActionID:    actionID.WithTag(2),
+				SpellSchool: core.SpellSchoolShadow,
+				ProcMask:    core.ProcMaskEmpty,
+				Flags:       core.SpellFlagPassiveSpell | core.SpellFlagHelpful,
+
+				DamageMultiplier: 1,
+				CritMultiplier:   character.DefaultSpellCritMultiplier(),
+				ThreatMultiplier: 1,
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					spell.CalcAndDealHealing(sim, target, damageDealt*2, spell.OutcomeAlwaysHit)
+				},
+			})
+
+			drainLife := character.RegisterSpell(core.SpellConfig{
+				ActionID:    actionID.WithTag(1),
+				SpellSchool: core.SpellSchoolShadow,
+				ProcMask:    core.ProcMaskEmpty,
+				Flags:       core.SpellFlagPassiveSpell,
+
+				DamageMultiplier: 1,
+				CritMultiplier:   character.DefaultSpellCritMultiplier(),
+				ThreatMultiplier: 1,
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					baseDamage := character.MaxHealth() * hpModifier
+					damageDealt = spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeAlwaysHit).Damage
+
+					drainLifeHeal.Cast(sim, &character.Unit)
+				},
+			})
+
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:     "Drain Life Trigger" + labelSuffix,
+				ActionID: core.ActionID{ItemID: souldrinkerItemID},
+				Callback: core.CallbackOnSpellHitDealt,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if !result.Landed() {
+						return
+					}
+
+					if _, ignore := ignoresSlot[spell.ActionID.SpellID]; !spell.ProcMask.Matches(procMask) && !ignore {
+						return
+					}
+
+					if sim.Proc(0.15, "Souldrinker") {
+						drainLife.Cast(sim, result.Target)
+					}
+				},
+			})
+		})
+
+		// No'Kaled, the Elements of Death
+		// Equip: Your melee attacks have a chance to blast your enemy with Fire, Shadow, or Frost, dealing 6781/7654/8640 to 10171/11481/12960 damage.
+		// (Proc chance: 7%)
+		nokaledItemID := []int32{78481, 77188, 78472}[version]
+		core.NewItemEffect(nokaledItemID, func(agent core.Agent) {
+			character := agent.GetCharacter()
+
+			procMask := character.GetProcMaskForItem(nokaledItemID) | core.ProcMaskProc
+			minDamage := []float64{6781, 7654, 8640}[version]
+			maxDamage := []float64{10171, 11481, 12960}[version]
+
+			registerSpell := func(actionID core.ActionID, spellSchool core.SpellSchool) *core.Spell {
+				return character.RegisterSpell(core.SpellConfig{
+					ActionID:    actionID,
+					SpellSchool: spellSchool,
+					ProcMask:    core.ProcMaskEmpty,
+					Flags:       core.SpellFlagPassiveSpell,
+					MaxRange:    45,
+
+					DamageMultiplier: 1,
+					CritMultiplier:   character.DefaultSpellCritMultiplier(),
+					ThreatMultiplier: 1,
+
+					ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+						baseDamage := sim.RollWithLabel(minDamage, maxDamage, "No'Kaled, the Elements of Death")
+						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
+					},
+				})
+			}
+
+			flameblast := registerSpell(
+				core.ActionID{SpellID: []int32{109871, 107785, 109872}[version]},
+				core.SpellSchoolFire)
+
+			iceblast := registerSpell(
+				core.ActionID{SpellID: []int32{109869, 107789, 109870}[version]},
+				core.SpellSchoolFrost)
+
+			shadowblast := registerSpell(
+				core.ActionID{SpellID: []int32{109867, 107787, 109868}[version]},
+				core.SpellSchoolShadow)
+
+			spells := []*core.Spell{flameblast, iceblast, shadowblast}
+
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:     "No'Kaled Trigger" + labelSuffix,
+				ActionID: core.ActionID{ItemID: nokaledItemID},
+				Callback: core.CallbackOnSpellHitDealt,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if !result.Landed() {
+						return
+					}
+
+					if _, ignore := ignoresSlot[spell.ActionID.SpellID]; !spell.ProcMask.Matches(procMask) && !ignore {
+						return
+					}
+
+					if sim.Proc(0.07, "No'Kaled, the Elements of Death") {
+						spell := spells[int(sim.RollWithLabel(0, float64(len(spells)), "No'Kaled spell to cast"))]
+						spell.Cast(sim, result.Target)
+					}
+				},
+			})
+		})
+
+		// Rathrak, the Poisonous Mind
+		// Equip: Your harmful spellcasts have a chance to poison all enemies near your target for 7715/8710/9830 nature damage over 10 sec.
+		// (Proc chance: 15%, 17s cooldown)
+		rathrakItemID := []int32{78484, 77195, 78475}[version]
+		core.NewItemEffect(rathrakItemID, func(agent core.Agent) {
+			character := agent.GetCharacter()
+
+			tickDamage := []float64{7715, 8710, 9830}[version] / 5
+
+			blastOfCorruption := character.RegisterSpell(core.SpellConfig{
+				ActionID:    core.ActionID{SpellID: []int32{109851, 107831, 109854}[version]},
+				SpellSchool: core.SpellSchoolNature,
+				ProcMask:    core.ProcMaskEmpty,
+				Flags:       core.SpellFlagPassiveSpell,
+
+				Dot: core.DotConfig{
+					IsAOE: true,
+					Aura: core.Aura{
+						Label: "Blast of Corruption",
+					},
+					NumberOfTicks:       5,
+					TickLength:          time.Second * 2,
+					AffectedByCastSpeed: false,
+
+					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+						for _, aoeTarget := range sim.Encounter.TargetUnits {
+							result := dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, tickDamage, dot.Spell.OutcomeMagicCritNoHitCounter)
+
+							if result.DidCrit() {
+								dot.Spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
+							} else {
+								dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
+							}
+						}
+					},
+				},
+
+				DamageMultiplier: 1,
+				CritMultiplier:   character.DefaultSpellCritMultiplier(),
+				ThreatMultiplier: 1,
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					spell.AOEDot().Apply(sim)
+				},
+			})
+
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:       "Rathrak Trigger" + labelSuffix,
+				ActionID:   core.ActionID{ItemID: rathrakItemID},
+				Callback:   core.CallbackOnSpellHitDealt,
+				ProcMask:   core.ProcMaskSpellOrProc,
+				Outcome:    core.OutcomeLanded,
+				ProcChance: 0.15,
+				ICD:        time.Second * 17,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					blastOfCorruption.Cast(sim, result.Target)
+				},
+			})
+		})
+
+		// Vishanka, Jaws of the Earth
+		// Equip: Your ranged attacks have a chance to deal 7040/7950/8970 damage over 2 sec.
+		// (Proc chance: 15%, 17s cooldown)
+		// Time between ticks: 200ms
+		vishankaItemID := []int32{78480, 78359, 78471}[version]
+		core.NewItemEffect(vishankaItemID, func(agent core.Agent) {
+			character := agent.GetCharacter()
+
+			tickDamage := []float64{7040, 7950, 8970}[version] / 10
+
+			speakingOfRage := character.RegisterSpell(core.SpellConfig{
+				ActionID:    core.ActionID{SpellID: []int32{109856, 107821, 109858}[version]},
+				SpellSchool: core.SpellSchoolFire,
+				ProcMask:    core.ProcMaskEmpty,
+				Flags:       core.SpellFlagPassiveSpell,
+
+				Dot: core.DotConfig{
+					Aura: core.Aura{
+						Label: "Speaking of Rage" + labelSuffix,
+					},
+					NumberOfTicks:       10,
+					TickLength:          time.Millisecond * 200,
+					AffectedByCastSpeed: false,
+
+					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+						result := dot.Spell.CalcAndDealPeriodicDamage(sim, target, tickDamage, dot.Spell.OutcomeRangedCritOnlyNoHitCounter)
+
+						if result.DidCrit() {
+							dot.Spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
+						} else {
+							dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
+						}
+					},
+				},
+
+				DamageMultiplier: 1,
+				CritMultiplier:   character.SpellCritMultiplier(1, 0),
+				ThreatMultiplier: 1,
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					spell.Dot(target).Apply(sim)
+				},
+			})
+
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:       "Vishanka Trigger" + labelSuffix,
+				ActionID:   core.ActionID{ItemID: vishankaItemID},
+				Callback:   core.CallbackOnSpellHitDealt,
+				ProcMask:   core.ProcMaskRanged | core.ProcMaskProc,
+				Outcome:    core.OutcomeLanded,
+				ProcChance: 0.15,
+				ICD:        time.Second * 17,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					speakingOfRage.Cast(sim, result.Target)
 				},
 			})
 		})

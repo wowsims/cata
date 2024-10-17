@@ -1388,6 +1388,22 @@ const idToCategoryMap: Record<number, number> = {
 	[40536]: SPELL_ACTION_CATEGORY + 0.942, // Explosive Decoy
 	[41119]: SPELL_ACTION_CATEGORY + 0.943, // Saronite Bomb
 	[40771]: SPELL_ACTION_CATEGORY + 0.944, // Cobalt Frag Bomb
+	
+	// Souldrinker - to pair up the damage part with the healing
+	[109828]: SPELL_ACTION_CATEGORY + 0.945, // Drain Life - LFR
+	[108022]: SPELL_ACTION_CATEGORY + 0.946, // Drain Life - Normal
+	[109831]: SPELL_ACTION_CATEGORY + 0.947, // Drain Life - Heroic
+	
+	// No'Kaled - to pair up the different spells it can proc
+	[109871]: SPELL_ACTION_CATEGORY + 0.948, // Flameblast - LFR
+	[109869]: SPELL_ACTION_CATEGORY + 0.949, // Iceblast - LFR
+	[109867]: SPELL_ACTION_CATEGORY + 0.950, // Shadowblast - LFR
+	[107785]: SPELL_ACTION_CATEGORY + 0.951, // Flameblast - Normal
+	[107789]: SPELL_ACTION_CATEGORY + 0.952, // Iceblast - Normal
+	[107787]: SPELL_ACTION_CATEGORY + 0.953, // Shadowblast - Normal
+	[109872]: SPELL_ACTION_CATEGORY + 0.954, // Flameblast - Heroic
+	[109870]: SPELL_ACTION_CATEGORY + 0.955, // Iceblast - Heroic
+	[109868]: SPELL_ACTION_CATEGORY + 0.956, // Shadowblast - Heroic
 };
 
 const idsToGroupForRotation: Array<number> = [

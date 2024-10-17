@@ -375,22 +375,22 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-CunningoftheCruel-77208"
  value: {
-  dps: 35255.81506
-  tps: 22982.94719
+  dps: 35316.03007
+  tps: 23052.01205
  }
 }
 dps_results: {
  key: "TestEnhancement-AllItems-CunningoftheCruel-77980"
  value: {
-  dps: 35174.06791
-  tps: 22880.43868
+  dps: 35191.83296
+  tps: 22935.99285
  }
 }
 dps_results: {
  key: "TestEnhancement-AllItems-CunningoftheCruel-78000"
  value: {
-  dps: 35406.93807
-  tps: 23143.06486
+  dps: 35378.08541
+  tps: 23159.78271
  }
 }
 dps_results: {
@@ -1108,6 +1108,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-No'Kaled,theElementsofDeath-77188"
+ value: {
+  dps: 36692.44319
+  tps: 23549.25954
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-No'Kaled,theElementsofDeath-78472"
+ value: {
+  dps: 36692.44319
+  tps: 23549.25954
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-No'Kaled,theElementsofDeath-78481"
+ value: {
+  dps: 36692.44319
+  tps: 23549.25954
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-Oremantle'sFavor-61448"
  value: {
   dps: 35068.61603
@@ -1182,6 +1203,27 @@ dps_results: {
  value: {
   dps: 34484.87017
   tps: 22264.46192
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Rathrak,thePoisonousMind-77195"
+ value: {
+  dps: 32351.57686
+  tps: 21641.60067
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Rathrak,thePoisonousMind-78475"
+ value: {
+  dps: 32807.67633
+  tps: 22073.18072
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Rathrak,thePoisonousMind-78484"
+ value: {
+  dps: 32049.29316
+  tps: 21399.27619
  }
 }
 dps_results: {
@@ -1597,6 +1639,27 @@ dps_results: {
  value: {
   dps: 34484.87017
   tps: 22264.52896
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Ti'tahk,theStepsofTime-77190"
+ value: {
+  dps: 36692.44319
+  tps: 23549.25954
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Ti'tahk,theStepsofTime-78477"
+ value: {
+  dps: 36692.44319
+  tps: 23549.25954
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Ti'tahk,theStepsofTime-78486"
+ value: {
+  dps: 36692.44319
+  tps: 23549.25954
  }
 }
 dps_results: {

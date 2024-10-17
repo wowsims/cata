@@ -594,6 +594,32 @@ export class ActionId {
 			case 'Flaming Rune Weapon':
 					name += ' (T12 4P)';
 				break;
+			// Souldrinker - Drain Life
+			case 'Drain Life':
+				if (this.spellId === 109828) {
+					name += ' 1.3%'
+				} else if (this.spellId === 108022) {
+					name += ' 1.5%'
+				} else if (this.spellId === 109831) {
+					name += ' 1.7%'
+				}
+
+				if (this.tag === 2) {
+					name += ' (Heal)';
+				}
+				break;
+			// No'Kaled
+			case 'Flameblast':
+			case 'Iceblast':
+			case 'Shadowblast':
+				if (this.spellId === 109871 || this.spellId === 109869 || this.spellId === 109867) {
+					name += ' (LFR)';
+				} else if (this.spellId === 107785 || this.spellId === 107789 || this.spellId === 107787) {
+					name += ' (Normal)';
+				} else if (this.spellId === 109872 || this.spellId === 109870 || this.spellId === 109868) {
+					name += ' (Heroic)';
+				}
+				break;
 			default:
 				if (this.tag) {
 					name += ' (??)';

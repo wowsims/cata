@@ -1060,14 +1060,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestUnholy-AllItems-LastWord-50708"
- value: {
-  dps: 40449.86094
-  tps: 30345.96376
-  hps: 582.58597
- }
-}
-dps_results: {
  key: "TestUnholy-AllItems-LeadenDespair-55816"
  value: {
   dps: 36948.26873
@@ -1881,13 +1873,6 @@ dps_results: {
   dps: 37442.49082
   tps: 28185.31665
   hps: 628.42635
- }
-}
-dps_results: {
- key: "TestUnholy-AllItems-Val'anyr,HammerofAncientKings-46017"
- value: {
-  dps: 28015.10329
-  tps: 19392.01002
  }
 }
 dps_results: {

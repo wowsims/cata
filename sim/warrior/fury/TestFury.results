@@ -1150,6 +1150,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFury-AllItems-No'Kaled,theElementsofDeath-77188"
+ value: {
+  dps: 31382.1484
+  tps: 26206.495
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-No'Kaled,theElementsofDeath-78472"
+ value: {
+  dps: 31382.1484
+  tps: 26206.495
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-No'Kaled,theElementsofDeath-78481"
+ value: {
+  dps: 31382.1484
+  tps: 26206.495
+ }
+}
+dps_results: {
  key: "TestFury-AllItems-Oremantle'sFavor-61448"
  value: {
   dps: 29781.95405
@@ -1224,6 +1245,27 @@ dps_results: {
  value: {
   dps: 28663.09175
   tps: 23757.76147
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-Rathrak,thePoisonousMind-77195"
+ value: {
+  dps: 28640.67399
+  tps: 23929.74375
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-Rathrak,thePoisonousMind-78475"
+ value: {
+  dps: 29023.25254
+  tps: 24270.50531
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-Rathrak,thePoisonousMind-78484"
+ value: {
+  dps: 28300.77194
+  tps: 23626.99247
  }
 }
 dps_results: {
@@ -1443,6 +1485,27 @@ dps_results: {
  value: {
   dps: 29125.00088
   tps: 24005.84037
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-Souldrinker-77193"
+ value: {
+  dps: 31382.1484
+  tps: 26206.495
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-Souldrinker-78479"
+ value: {
+  dps: 31382.1484
+  tps: 26206.495
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-Souldrinker-78488"
+ value: {
+  dps: 31382.1484
+  tps: 26206.495
  }
 }
 dps_results: {
@@ -1856,6 +1919,27 @@ dps_results: {
  value: {
   dps: 29989.79949
   tps: 24837.47184
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-Vishanka,JawsoftheEarth-78359"
+ value: {
+  dps: 31025.55299
+  tps: 25871.52766
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-Vishanka,JawsoftheEarth-78471"
+ value: {
+  dps: 31044.11331
+  tps: 25881.41962
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-Vishanka,JawsoftheEarth-78480"
+ value: {
+  dps: 31029.05686
+  tps: 25835.2588
  }
 }
 dps_results: {

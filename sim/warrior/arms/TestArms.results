@@ -1129,6 +1129,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArms-AllItems-No'Kaled,theElementsofDeath-77188"
+ value: {
+  dps: 34145.84509
+  tps: 22290.66669
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-No'Kaled,theElementsofDeath-78472"
+ value: {
+  dps: 34214.2956
+  tps: 22352.76057
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-No'Kaled,theElementsofDeath-78481"
+ value: {
+  dps: 34080.28162
+  tps: 22227.11933
+ }
+}
+dps_results: {
  key: "TestArms-AllItems-Oremantle'sFavor-61448"
  value: {
   dps: 32596.67225
@@ -1422,6 +1443,30 @@ dps_results: {
  value: {
   dps: 32027.81008
   tps: 21027.0325
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Souldrinker-77193"
+ value: {
+  dps: 34364.72802
+  tps: 22341.5219
+  hps: 295.97361
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Souldrinker-78479"
+ value: {
+  dps: 34476.28084
+  tps: 22420.11472
+  hps: 336.85027
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Souldrinker-78488"
+ value: {
+  dps: 34265.96048
+  tps: 22271.16815
+  hps: 255.53248
  }
 }
 dps_results: {
@@ -1835,6 +1880,27 @@ dps_results: {
  value: {
   dps: 32568.94498
   tps: 21179.26962
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Vishanka,JawsoftheEarth-78359"
+ value: {
+  dps: 32972.06443
+  tps: 21489.09789
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Vishanka,JawsoftheEarth-78471"
+ value: {
+  dps: 32993.68096
+  tps: 21500.96999
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Vishanka,JawsoftheEarth-78480"
+ value: {
+  dps: 32947.44765
+  tps: 21466.10867
  }
 }
 dps_results: {

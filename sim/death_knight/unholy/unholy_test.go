@@ -61,10 +61,16 @@ var FullConsumes = &proto.Consumes{
 
 var ItemFilter = core.ItemFilter{
 	ArmorType: proto.ArmorType_ArmorTypePlate,
+	HandTypes: []proto.HandType{
+		proto.HandType_HandTypeTwoHand,
+	},
 
 	WeaponTypes: []proto.WeaponType{
 		proto.WeaponType_WeaponTypeAxe,
 		proto.WeaponType_WeaponTypeSword,
 		proto.WeaponType_WeaponTypeMace,
+	},
+	RangedWeaponTypes: []proto.RangedWeaponType{
+		proto.RangedWeaponType_RangedWeaponTypeRelic,
 	},
 }

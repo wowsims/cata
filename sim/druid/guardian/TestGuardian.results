@@ -898,6 +898,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-Kiril,FuryofBeasts-77194"
+ value: {
+  dps: 8578.5484
+  tps: 42955.98744
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-Kiril,FuryofBeasts-78473"
+ value: {
+  dps: 8687.6802
+  tps: 43501.59911
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-Kiril,FuryofBeasts-78482"
+ value: {
+  dps: 8458.10378
+  tps: 42353.701
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-KiroptyricSigil-77113"
  value: {
   dps: 8478.03833
@@ -1182,6 +1203,27 @@ dps_results: {
  value: {
   dps: 7791.60576
   tps: 39020.27278
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-Rathrak,thePoisonousMind-77195"
+ value: {
+  dps: 7765.47181
+  tps: 38888.4974
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-Rathrak,thePoisonousMind-78475"
+ value: {
+  dps: 7913.64198
+  tps: 39629.77804
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-Rathrak,thePoisonousMind-78484"
+ value: {
+  dps: 7654.46978
+  tps: 38333.40328
  }
 }
 dps_results: {
@@ -1590,6 +1632,27 @@ dps_results: {
  value: {
   dps: 7791.60576
   tps: 39020.27278
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-Ti'tahk,theStepsofTime-77190"
+ value: {
+  dps: 7821.74302
+  tps: 39171.4174
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-Ti'tahk,theStepsofTime-78477"
+ value: {
+  dps: 7876.80417
+  tps: 39446.9823
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-Ti'tahk,theStepsofTime-78486"
+ value: {
+  dps: 7820.81272
+  tps: 39166.78296
  }
 }
 dps_results: {

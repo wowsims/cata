@@ -1115,6 +1115,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestCombat-AllItems-No'Kaled,theElementsofDeath-77188"
+ value: {
+  dps: 29966.48987
+  tps: 21276.20781
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-No'Kaled,theElementsofDeath-78472"
+ value: {
+  dps: 29966.48987
+  tps: 21276.20781
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-No'Kaled,theElementsofDeath-78481"
+ value: {
+  dps: 29966.48987
+  tps: 21276.20781
+ }
+}
+dps_results: {
  key: "TestCombat-AllItems-Oremantle'sFavor-61448"
  value: {
   dps: 28394.24592
@@ -1182,6 +1203,27 @@ dps_results: {
  value: {
   dps: 27844.47743
   tps: 19769.57898
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Rathrak,thePoisonousMind-77195"
+ value: {
+  dps: 26458.18014
+  tps: 18785.3079
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Rathrak,thePoisonousMind-78475"
+ value: {
+  dps: 26886.90573
+  tps: 19089.70307
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Rathrak,thePoisonousMind-78484"
+ value: {
+  dps: 26077.27247
+  tps: 18514.86345
  }
 }
 dps_results: {
@@ -1401,6 +1443,27 @@ dps_results: {
  value: {
   dps: 28283.79907
   tps: 20081.49734
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Souldrinker-77193"
+ value: {
+  dps: 29966.48987
+  tps: 21276.20781
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Souldrinker-78479"
+ value: {
+  dps: 29966.48987
+  tps: 21276.20781
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Souldrinker-78488"
+ value: {
+  dps: 29966.48987
+  tps: 21276.20781
  }
 }
 dps_results: {
@@ -1821,6 +1884,27 @@ dps_results: {
  value: {
   dps: 28439.79053
   tps: 20192.25127
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Vishanka,JawsoftheEarth-78359"
+ value: {
+  dps: 29914.56723
+  tps: 21239.34273
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Vishanka,JawsoftheEarth-78471"
+ value: {
+  dps: 29997.61218
+  tps: 21298.30464
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Vishanka,JawsoftheEarth-78480"
+ value: {
+  dps: 29846.7949
+  tps: 21191.22438
  }
 }
 dps_results: {

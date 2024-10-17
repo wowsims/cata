@@ -1157,6 +1157,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-Rathrak,thePoisonousMind-77195"
+ value: {
+  dps: 23311.33777
+  tps: 16551.04982
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Rathrak,thePoisonousMind-78475"
+ value: {
+  dps: 23796.82102
+  tps: 16895.74293
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Rathrak,thePoisonousMind-78484"
+ value: {
+  dps: 22880.00269
+  tps: 16244.80191
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-ReflectionoftheLight-77115"
  value: {
   dps: 22028.10137
@@ -1779,6 +1800,27 @@ dps_results: {
  value: {
   dps: 22392.72437
   tps: 15898.83431
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Vishanka,JawsoftheEarth-78359"
+ value: {
+  dps: 23767.09464
+  tps: 16874.6372
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Vishanka,JawsoftheEarth-78471"
+ value: {
+  dps: 23825.45442
+  tps: 16916.07264
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-Vishanka,JawsoftheEarth-78480"
+ value: {
+  dps: 23650.39795
+  tps: 16791.78254
  }
 }
 dps_results: {

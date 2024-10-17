@@ -1163,6 +1163,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-No'Kaled,theElementsofDeath-77188"
+ value: {
+  dps: 4659.08749
+  tps: 28426.12721
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-No'Kaled,theElementsofDeath-78472"
+ value: {
+  dps: 4659.08749
+  tps: 28426.12721
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-No'Kaled,theElementsofDeath-78481"
+ value: {
+  dps: 4659.08749
+  tps: 28426.12721
+ }
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-Oremantle'sFavor-61448"
  value: {
   dps: 4799.83483
@@ -1237,6 +1258,27 @@ dps_results: {
  value: {
   dps: 4659.08749
   tps: 28426.12721
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-Rathrak,thePoisonousMind-77195"
+ value: {
+  dps: 4162.58906
+  tps: 25862.7909
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-Rathrak,thePoisonousMind-78475"
+ value: {
+  dps: 4279.04846
+  tps: 26445.08789
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-Rathrak,thePoisonousMind-78484"
+ value: {
+  dps: 4059.11737
+  tps: 25345.43243
  }
 }
 dps_results: {
@@ -1451,6 +1493,27 @@ dps_results: {
 }
 dps_results: {
  key: "TestProtectionWarrior-AllItems-SoulCasket-58183"
+ value: {
+  dps: 4659.08749
+  tps: 28426.12721
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-Souldrinker-77193"
+ value: {
+  dps: 4659.08749
+  tps: 28426.12721
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-Souldrinker-78479"
+ value: {
+  dps: 4659.08749
+  tps: 28426.12721
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-Souldrinker-78488"
  value: {
   dps: 4659.08749
   tps: 28426.12721
@@ -1853,6 +1916,27 @@ dps_results: {
  value: {
   dps: 4888.17326
   tps: 29820.75036
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-Vishanka,JawsoftheEarth-78359"
+ value: {
+  dps: 4631.38672
+  tps: 28182.81722
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-Vishanka,JawsoftheEarth-78471"
+ value: {
+  dps: 4731.82386
+  tps: 28719.46275
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-Vishanka,JawsoftheEarth-78480"
+ value: {
+  dps: 4615.83833
+  tps: 28112.84179
  }
 }
 dps_results: {

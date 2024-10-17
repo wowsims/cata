@@ -368,22 +368,22 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-CunningoftheCruel-77208"
  value: {
-  dps: 38039.06205
-  tps: 34542.95877
+  dps: 38365.82676
+  tps: 34893.60639
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-CunningoftheCruel-77980"
  value: {
-  dps: 37808.73654
-  tps: 34280.15939
+  dps: 38051.24661
+  tps: 34592.77695
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-CunningoftheCruel-78000"
  value: {
-  dps: 38398.95165
-  tps: 34886.38205
+  dps: 38725.91396
+  tps: 35193.20031
  }
 }
 dps_results: {
@@ -1199,6 +1199,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestShadow-AllItems-Rathrak,thePoisonousMind-77195"
+ value: {
+  dps: 35739.01841
+  tps: 32684.38569
+ }
+}
+dps_results: {
+ key: "TestShadow-AllItems-Rathrak,thePoisonousMind-78475"
+ value: {
+  dps: 36987.71391
+  tps: 33777.97404
+ }
+}
+dps_results: {
+ key: "TestShadow-AllItems-Rathrak,thePoisonousMind-78484"
+ value: {
+  dps: 34858.7225
+  tps: 31900.0077
+ }
+}
+dps_results: {
  key: "TestShadow-AllItems-ReflectionoftheLight-77115"
  value: {
   dps: 36859.15303
@@ -1597,6 +1618,27 @@ dps_results: {
  value: {
   dps: 34982.75218
   tps: 31779.72139
+ }
+}
+dps_results: {
+ key: "TestShadow-AllItems-Ti'tahk,theStepsofTime-77190"
+ value: {
+  dps: 49564.29312
+  tps: 44883.72374
+ }
+}
+dps_results: {
+ key: "TestShadow-AllItems-Ti'tahk,theStepsofTime-78477"
+ value: {
+  dps: 51192.28236
+  tps: 46327.0104
+ }
+}
+dps_results: {
+ key: "TestShadow-AllItems-Ti'tahk,theStepsofTime-78486"
+ value: {
+  dps: 48104.84477
+  tps: 43635.40961
  }
 }
 dps_results: {

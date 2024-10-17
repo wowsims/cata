@@ -1178,6 +1178,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-Rathrak,thePoisonousMind-77195"
+ value: {
+  dps: 33885.84181
+  tps: 33088.3632
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-Rathrak,thePoisonousMind-78475"
+ value: {
+  dps: 35011.36412
+  tps: 34204.856
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-Rathrak,thePoisonousMind-78484"
+ value: {
+  dps: 33235.21079
+  tps: 32454.12524
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-ReflectionoftheLight-77115"
  value: {
   dps: 34682.95074
@@ -1390,6 +1411,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-Souldrinker-77193"
+ value: {
+  dps: 36783.07742
+  tps: 35919.74483
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-Souldrinker-78479"
+ value: {
+  dps: 36783.07742
+  tps: 35919.74483
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-Souldrinker-78488"
+ value: {
+  dps: 36783.07742
+  tps: 35919.74483
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-SoulshifterVortex-77206"
  value: {
   dps: 34902.77634
@@ -1562,6 +1604,27 @@ dps_results: {
  value: {
   dps: 33518.5517
   tps: 32664.64738
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-Ti'tahk,theStepsofTime-77190"
+ value: {
+  dps: 47594.6601
+  tps: 46548.89686
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-Ti'tahk,theStepsofTime-78477"
+ value: {
+  dps: 49211.06158
+  tps: 48148.39993
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-Ti'tahk,theStepsofTime-78486"
+ value: {
+  dps: 46456.72017
+  tps: 45466.91242
  }
 }
 dps_results: {

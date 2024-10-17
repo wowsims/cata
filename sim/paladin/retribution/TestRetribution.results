@@ -912,6 +912,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-Kiril,FuryofBeasts-77194"
+ value: {
+  dps: 32044.17043
+  tps: 32059.51368
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-Kiril,FuryofBeasts-78473"
+ value: {
+  dps: 32184.30288
+  tps: 32199.64613
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-Kiril,FuryofBeasts-78482"
+ value: {
+  dps: 31954.49387
+  tps: 31969.83712
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-KiroptyricSigil-77113"
  value: {
   dps: 30384.51498

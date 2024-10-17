@@ -138,6 +138,9 @@ const WILL_NOT_BE_IMPLEMENTED_ITEMS = [
 	77976, 77199, 77996,
 	// Seal of the Seven Signs - LFR, Normal, Heroic
 	77969, 77204, 77989,
+
+	// Maw of the Dragonlord - LFR, Normal, Heroic
+	78485, 77196, 78476,
 ];
 
 const TENTATIVE_IMPLEMENTATION_ITEMS = [
@@ -165,6 +168,18 @@ const TENTATIVE_IMPLEMENTATION_ITEMS = [
 	77975, 77198, 77995,
 	// Wrath of Unchaining - LFR, Normal, Heroic
 	77974, 77197, 77994,
+
+	// Kiril, Fury of Beasts - LFR, Normal, Heroic
+	78482, 77194, 78473,
+	// Ti'tahk, the Steps of Time - LFR, Normal, Heroic
+	78486, 77190, 78477,
+	// Souldrinker - LFR, Normal, Heroic
+	78488, 77193, 78479,
+	// Rathrak, the Poisonous Mind - LFR, Normal, Heroic
+	78484, 77195, 78475,
+	// Vishanka, Jaws of the Earth - LFR, Normal, Heroic
+	78480, 78359, 78471,
+
 	// Veil of Lies
 	72900,
 	// Foul Gift of the Demon Lord

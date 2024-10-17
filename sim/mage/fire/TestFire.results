@@ -354,22 +354,22 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-CunningoftheCruel-77208"
  value: {
-  dps: 37223.29917
-  tps: 35646.03563
+  dps: 38363.02445
+  tps: 36744.04337
  }
 }
 dps_results: {
  key: "TestFire-AllItems-CunningoftheCruel-77980"
  value: {
-  dps: 37565.40733
-  tps: 35963.03131
+  dps: 38377.07125
+  tps: 36786.37114
  }
 }
 dps_results: {
  key: "TestFire-AllItems-CunningoftheCruel-78000"
  value: {
-  dps: 38268.84865
-  tps: 36666.22119
+  dps: 38869.81299
+  tps: 37251.32663
  }
 }
 dps_results: {
@@ -1171,6 +1171,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFire-AllItems-Rathrak,thePoisonousMind-77195"
+ value: {
+  dps: 35958.46746
+  tps: 34468.47737
+ }
+}
+dps_results: {
+ key: "TestFire-AllItems-Rathrak,thePoisonousMind-78475"
+ value: {
+  dps: 37238.01708
+  tps: 35697.89076
+ }
+}
+dps_results: {
+ key: "TestFire-AllItems-Rathrak,thePoisonousMind-78484"
+ value: {
+  dps: 34723.28008
+  tps: 33251.0129
+ }
+}
+dps_results: {
  key: "TestFire-AllItems-ReflectionoftheLight-77115"
  value: {
   dps: 37117.29982
@@ -1383,6 +1404,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFire-AllItems-Souldrinker-77193"
+ value: {
+  dps: 38670.24363
+  tps: 37043.25651
+ }
+}
+dps_results: {
+ key: "TestFire-AllItems-Souldrinker-78479"
+ value: {
+  dps: 38670.24363
+  tps: 37043.25651
+ }
+}
+dps_results: {
+ key: "TestFire-AllItems-Souldrinker-78488"
+ value: {
+  dps: 38670.24363
+  tps: 37043.25651
+ }
+}
+dps_results: {
  key: "TestFire-AllItems-SoulshifterVortex-77206"
  value: {
   dps: 36742.40219
@@ -1562,6 +1604,27 @@ dps_results: {
  value: {
   dps: 35695.09124
   tps: 34128.06803
+ }
+}
+dps_results: {
+ key: "TestFire-AllItems-Ti'tahk,theStepsofTime-77190"
+ value: {
+  dps: 51940.70481
+  tps: 50033.95629
+ }
+}
+dps_results: {
+ key: "TestFire-AllItems-Ti'tahk,theStepsofTime-78477"
+ value: {
+  dps: 53206.50896
+  tps: 51264.5364
+ }
+}
+dps_results: {
+ key: "TestFire-AllItems-Ti'tahk,theStepsofTime-78486"
+ value: {
+  dps: 50204.65067
+  tps: 48340.2012
  }
 }
 dps_results: {
