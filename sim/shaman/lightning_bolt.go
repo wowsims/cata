@@ -16,7 +16,7 @@ func (shaman *Shaman) newLightningBoltSpellConfig(isElementalOverload bool) core
 	spellConfig := shaman.newElectricSpellConfig(core.ActionID{SpellID: 403}, 0.06, time.Millisecond*2500, isElementalOverload, 0.714)
 
 	if !isElementalOverload && shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfUnleashedLightning) {
-		spellConfig.Flags = core.SpellFlagCanCastWhileMoving
+		spellConfig.Flags |= core.SpellFlagCanCastWhileMoving
 	}
 
 	spellConfig.ClassSpellMask = core.TernaryInt64(isElementalOverload, SpellMaskLightningBoltOverload, SpellMaskLightningBolt)
