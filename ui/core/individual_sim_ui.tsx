@@ -58,8 +58,6 @@ const SAVED_EP_WEIGHTS_STORAGE_KEY = '__savedEPWeights__';
 const SAVED_ROTATION_STORAGE_KEY = '__savedRotation__';
 const SAVED_SETTINGS_STORAGE_KEY = '__savedSettings__';
 const SAVED_TALENTS_STORAGE_KEY = '__savedTalents__';
-const SAVED_BREAKPOINTS_LIMIT_STORAGE_KEY = '__breakpointsLimit__';
-
 
 export type InputConfig<ModObject> =
 	| InputHelpers.TypedBooleanPickerConfig<ModObject>
@@ -582,10 +580,6 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		return this.getStorageKey(SAVED_TALENTS_STORAGE_KEY);
 	}
 
-	getSavedBreakpointsLimitStorageKey(): string {
-		return this.getStorageKey(SAVED_BREAKPOINTS_LIMIT_STORAGE_KEY);
-	}
-
 	// Returns the actual key to use for local storage, based on the given key part and the site context.
 	getStorageKey(keyPart: string): string {
 		// Local storage is shared by all sites under the same domain, so we need to use
@@ -624,6 +618,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 				epWeightsStats: this.player.getEpWeights().toProto(),
 				epRatios: this.player.getEpRatios(),
 				statCaps: this.player.getStatCaps().toProto(),
+				breakpointLimits: this.player.getBreakpointLimits().toProto(),
 				dpsRefStat: this.dpsRefStat,
 				healRefStat: this.healRefStat,
 				tankRefStat: this.tankRefStat,
@@ -682,6 +677,10 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 				if (settings.statCaps) {
 					this.player.setStatCaps(eventID, Stats.fromProto(settings.statCaps));
+				}
+
+				if (settings.breakpointLimits) {
+					this.player.setBreakpointLimits(eventID, Stats.fromProto(settings.breakpointLimits));
 				}
 
 				if (settings.dpsRefStat) {

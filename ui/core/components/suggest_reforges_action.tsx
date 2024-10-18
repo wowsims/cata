@@ -57,6 +57,8 @@ export type ReforgeOptimizerOptions = {
 	experimental?: true;
 	statTooltips?: StatTooltipContent;
 	statSelectionPresets?: UnitStatPresets[];
+	// Allows you to enable breakpoint limits for Treshold type caps
+	enableBreakpointLimits?: boolean;
 	// Allows you to modify the stats before they are returned for the calculations
 	// For example: Adding class specific Glyphs/Talents that are not added by the backend
 	updateGearStatsModifier?: (baseStats: Stats) => Stats;
@@ -83,7 +85,7 @@ export class ReforgeOptimizer {
 	protected updateGearStatsModifier: ReforgeOptimizerOptions['updateGearStatsModifier'];
 	protected _softCapsConfig: StatCap[];
 	protected updateSoftCaps: ReforgeOptimizerOptions['updateSoftCaps'];
-	protected _softCapsBreakpointLimits: Map<string, number>;
+	protected enableBreakpointLimits: ReforgeOptimizerOptions['enableBreakpointLimits'];
 	protected statTooltips: StatTooltipContent = {};
 	protected additionalSoftCapTooltipInformation: StatTooltipContent = {};
 	protected statSelectionPresets: ReforgeOptimizerOptions['statSelectionPresets'];
@@ -109,7 +111,7 @@ export class ReforgeOptimizer {
 		this.additionalSoftCapTooltipInformation = { ...options?.additionalSoftCapTooltipInformation };
 		this.statSelectionPresets = options?.statSelectionPresets;
 		this._statCaps = this.statCaps;
-		this._softCapsBreakpointLimits = this.getBreakpointsLimitsFromStorage();
+		this.enableBreakpointLimits = !!options?.enableBreakpointLimits;
 
 		const startReforgeOptimizationEntry: ActionGroupItem = {
 			label: 'Suggest Reforges',
@@ -191,10 +193,12 @@ export class ReforgeOptimizer {
 	}
 
 	get softCapsConfigWithLimits() {
+		if (!this.enableBreakpointLimits) return this.softCapsConfig;
+
 		const softCaps = StatCap.cloneSoftCaps(this.softCapsConfig);
-		for (const [unitStat, limit] of this.getBreakpointsLimits()) {
-			if (!limit) break;
-			const config = softCaps.find(config => config.unitStat.getFullName(this.playerClass) === unitStat);
+		for (const [unitStat, limit] of this.player.getBreakpointLimits().asUnitStatArray()) {
+			if (!limit) continue;
+			const config = softCaps.find(config => config.unitStat.equals(unitStat));
 			if (config) config.breakpoints = config.breakpoints.filter(breakpoint => breakpoint <= limit);
 		}
 		return softCaps;
@@ -628,7 +632,7 @@ export class ReforgeOptimizer {
 		if (!useSoftCapBreakpointsInput) return null;
 
 		const tableRef = ref<HTMLTableElement>();
-		const breakpointLimitTooltipRef = ref<HTMLButtonElement>();
+		const breakpointsLimitTooltipRef = ref<HTMLButtonElement>();
 
 		const content = (
 			<table ref={tableRef} className={clsx('reforge-optimizer-stat-cap-table mb-2', !this.sim.getUseSoftCapBreakpoints() && 'hide')}>
@@ -636,8 +640,8 @@ export class ReforgeOptimizer {
 					<tr>
 						<th colSpan={3} className="pb-3">
 							<div className="d-flex">
-								<h6 className="content-block-title mb-0 me-1">Set breakpoint limit</h6>
-								<button ref={breakpointLimitTooltipRef} className="d-inline">
+								<h6 className="content-block-title mb-0 me-1">Breakpoint limit</h6>
+								<button ref={breakpointsLimitTooltipRef} className="d-inline">
 									<i className="fa-regular fa-circle-question" />
 								</button>
 							</div>
@@ -646,7 +650,7 @@ export class ReforgeOptimizer {
 				</thead>
 				<tbody>
 					{this.softCapsConfig
-						.filter(config => config.breakpoints.length > 1)
+						.filter(config => config.capType === StatCapType.TypeThreshold && config.breakpoints.length > 1)
 						.map(({ breakpoints, unitStat }) => {
 							if (!unitStat.hasRootStat()) return;
 							const rootStat = unitStat.getRootStat();
@@ -668,13 +672,10 @@ export class ReforgeOptimizer {
 										].sort((a, b) => a.value - b.value),
 										changedEvent: _ => TypedEvent.onAny([this.sim.useSoftCapBreakpointsChangeEmitter]),
 										getValue: () => {
-											return this.toVisualUnitStatPercentage(
-												this.getBreakpointsLimits().get(unitStat.getFullName(this.playerClass)) || 0,
-												unitStat,
-											);
+											return this.player.getBreakpointLimits().getUnitStat(unitStat) || 0;
 										},
-										setValue: (_eventID, _player, newValue) => {
-											this.setBreakpointsLimits(this.toDefaultUnitStatValue(newValue, unitStat), unitStat);
+										setValue: (eventID, _player, newValue) => {
+											this.player.setBreakpointLimits(eventID, this.player.getBreakpointLimits().withUnitStat(unitStat, newValue));
 										},
 								  })
 								: null;
@@ -698,8 +699,8 @@ export class ReforgeOptimizer {
 			</table>
 		);
 
-		if (breakpointLimitTooltipRef.value) {
-			const tooltip = tippy(breakpointLimitTooltipRef.value, {
+		if (breakpointsLimitTooltipRef.value) {
+			const tooltip = tippy(breakpointsLimitTooltipRef.value, {
 				content: 'Allows you to set a custom breakpoint limit.',
 			});
 			useSoftCapBreakpointsInput.addOnDisposeCallback(() => tooltip.destroy());
@@ -1175,34 +1176,5 @@ export class ReforgeOptimizer {
 			variant: 'error',
 			body: 'Reforge optimization failed. Please try again, or report the issue if it persists.',
 		});
-	}
-
-	getBreakpointsLimits() {
-		return this._softCapsBreakpointLimits;
-	}
-
-	setBreakpointsLimits(value: number, unitStat: UnitStat) {
-		this._softCapsBreakpointLimits.set(unitStat.getFullName(this.playerClass), value);
-		window.localStorage.setItem(this.simUI.getSavedBreakpointsLimitStorageKey(), JSON.stringify([...this._softCapsBreakpointLimits]));
-	}
-
-	getBreakpointsLimitsFromStorage() {
-		const breakpointLimits: typeof this._softCapsBreakpointLimits = new Map();
-		try {
-			const data = window.localStorage.getItem(this.simUI.getSavedBreakpointsLimitStorageKey());
-			if (!data) throw new Error('No data found in storage');
-			const parsedData = JSON.parse(data);
-			for (const entry of parsedData) {
-				if (!Array.isArray(entry)) break;
-				const unitStat = entry[0];
-				const limit = entry[1];
-				if (!unitStat || !limit) break;
-				breakpointLimits.set(unitStat, limit);
-			}
-			return breakpointLimits;
-		} catch {
-			window.localStorage.removeItem(this.simUI.getSavedBreakpointsLimitStorageKey());
-			return breakpointLimits;
-		}
 	}
 }
