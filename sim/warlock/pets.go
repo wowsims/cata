@@ -349,6 +349,9 @@ func (pet *WarlockPet) registerFireboltSpell(warlock *Warlock) {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			if warlock.Talents.BurningEmbers > 0 && result.Landed() {
 				dot := warlock.BurningEmbers.Dot(result.Target)
+				if !dot.IsActive() {
+					dot.SnapshotBaseDamage = 0.0 // ensure we don't use old dot data
+				}
 				dot.SnapshotBaseDamage += result.Damage * 0.25 * float64(warlock.Talents.BurningEmbers)
 				dot.Apply(sim)
 			}
