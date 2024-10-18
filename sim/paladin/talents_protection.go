@@ -118,7 +118,7 @@ func (paladin *Paladin) applyHammerOfTheRighteous() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(aoeMinDamage, aoeMaxDamage) +
+			baseDamage := sim.RollWithLabel(aoeMinDamage, aoeMaxDamage, "Hammer of the Righteous") +
 				0.18*spell.MeleeAttackPower()
 			results := make([]*core.SpellResult, numTargets)
 
