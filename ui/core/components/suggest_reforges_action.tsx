@@ -629,7 +629,7 @@ export class ReforgeOptimizer {
 	}
 
 	buildSoftCapBreakpointsLimiter({ useSoftCapBreakpointsInput }: { useSoftCapBreakpointsInput: BooleanPicker<Player<any>> | null }) {
-		if (!useSoftCapBreakpointsInput) return null;
+		if (!this.enableBreakpointLimits || !useSoftCapBreakpointsInput) return null;
 
 		const tableRef = ref<HTMLTableElement>();
 		const breakpointsLimitTooltipRef = ref<HTMLButtonElement>();
