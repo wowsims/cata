@@ -332,23 +332,11 @@ func (paladin *Paladin) applyZealotry() {
 		duration += time.Second * 15
 	}
 
-	hasT134pc := paladin.HasSetBonus(ItemSetBattleplateOfRadiantGlory, 4)
-
 	paladin.ZealotryAura = paladin.RegisterAura(core.Aura{
 		Label:    "Zealotry",
 		ActionID: actionId,
 		Duration: duration,
-
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if hasT134pc {
-				aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.18
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if hasT134pc {
-				aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.18
-			}
-		},
+		// Holy Power logic is handled for each ability
 	})
 
 	paladin.Zealotry = paladin.RegisterSpell(core.SpellConfig{
