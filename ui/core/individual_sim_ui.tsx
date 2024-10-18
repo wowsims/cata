@@ -58,6 +58,8 @@ const SAVED_EP_WEIGHTS_STORAGE_KEY = '__savedEPWeights__';
 const SAVED_ROTATION_STORAGE_KEY = '__savedRotation__';
 const SAVED_SETTINGS_STORAGE_KEY = '__savedSettings__';
 const SAVED_TALENTS_STORAGE_KEY = '__savedTalents__';
+const SAVED_BREAKPOINTS_LIMIT_STORAGE_KEY = '__breakpointsLimit__';
+
 
 export type InputConfig<ModObject> =
 	| InputHelpers.TypedBooleanPickerConfig<ModObject>
@@ -578,6 +580,10 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 	getSavedTalentsStorageKey(): string {
 		return this.getStorageKey(SAVED_TALENTS_STORAGE_KEY);
+	}
+
+	getSavedBreakpointsLimitStorageKey(): string {
+		return this.getStorageKey(SAVED_BREAKPOINTS_LIMIT_STORAGE_KEY);
 	}
 
 	// Returns the actual key to use for local storage, based on the given key part and the site context.

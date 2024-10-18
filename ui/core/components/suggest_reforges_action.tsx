@@ -83,6 +83,7 @@ export class ReforgeOptimizer {
 	protected updateGearStatsModifier: ReforgeOptimizerOptions['updateGearStatsModifier'];
 	protected _softCapsConfig: StatCap[];
 	protected updateSoftCaps: ReforgeOptimizerOptions['updateSoftCaps'];
+	protected _softCapsBreakpointLimits: Map<string, number>;
 	protected statTooltips: StatTooltipContent = {};
 	protected additionalSoftCapTooltipInformation: StatTooltipContent = {};
 	protected statSelectionPresets: ReforgeOptimizerOptions['statSelectionPresets'];
@@ -108,6 +109,7 @@ export class ReforgeOptimizer {
 		this.additionalSoftCapTooltipInformation = { ...options?.additionalSoftCapTooltipInformation };
 		this.statSelectionPresets = options?.statSelectionPresets;
 		this._statCaps = this.statCaps;
+		this._softCapsBreakpointLimits = this.getBreakpointsLimitsFromStorage();
 
 		const startReforgeOptimizationEntry: ActionGroupItem = {
 			label: 'Suggest Reforges',
@@ -188,6 +190,16 @@ export class ReforgeOptimizer {
 		return this.updateSoftCaps?.(StatCap.cloneSoftCaps(this._softCapsConfig)) || this._softCapsConfig;
 	}
 
+	get softCapsConfigWithLimits() {
+		const softCaps = StatCap.cloneSoftCaps(this.softCapsConfig);
+		for (const [unitStat, limit] of this.getBreakpointsLimits()) {
+			if (!limit) break;
+			const config = softCaps.find(config => config.unitStat.getFullName(this.playerClass) === unitStat);
+			if (config) config.breakpoints = config.breakpoints.filter(breakpoint => breakpoint <= limit);
+		}
+		return softCaps;
+	}
+
 	get statCaps() {
 		return this.sim.getUseCustomEPValues() ? this.player.getStatCaps() : this.defaults.statCaps || new Stats();
 	}
@@ -254,11 +266,11 @@ export class ReforgeOptimizer {
 				<p>The following breakpoints have been implemented for this spec:</p>
 				<table className="w-100">
 					<tbody>
-						{this.softCapsConfig?.map(({ unitStat, breakpoints, capType, postCapEPs }, index) => (
+						{this.softCapsConfigWithLimits?.map(({ unitStat, breakpoints, capType, postCapEPs }, index) => (
 							<>
 								<tr>
 									<th className="text-nowrap" colSpan={2}>
-										{unitStat.getShortName(this.player.getClass())}
+										{unitStat.getShortName(this.playerClass)}
 									</th>
 									<td className="text-end">{statCapTypeNames.get(capType)}</td>
 								</tr>
@@ -282,14 +294,7 @@ export class ReforgeOptimizer {
 								</tr>
 								{breakpoints.map((breakpoint, breakpointIndex) => (
 									<tr>
-										<td className="text-end">
-											{unitStat.equalsStat(Stat.StatMasteryRating)
-												? (
-														(breakpoint / Mechanics.MASTERY_RATING_PER_MASTERY_POINT) *
-														this.player.getMasteryPerPointModifier()
-												  ).toFixed(2)
-												: unitStat.convertDefaultUnitsToPercent(breakpoint)!.toFixed(2)}
-										</td>
+										<td className="text-end">{this.breakpointValueToDisplayPercentage(breakpoint, unitStat)}</td>
 										<td colSpan={2} className="text-end">
 											{unitStat
 												.convertEpToRatingScale(capType === StatCapType.TypeThreshold ? postCapEPs[0] : postCapEPs[breakpointIndex])
@@ -297,7 +302,7 @@ export class ReforgeOptimizer {
 										</td>
 									</tr>
 								))}
-								{index !== this.softCapsConfig.length - 1 && (
+								{index !== this.softCapsConfigWithLimits.length - 1 && (
 									<>
 										<tr>
 											<td colSpan={3} className="border-bottom pb-2"></td>
@@ -381,6 +386,7 @@ export class ReforgeOptimizer {
 							description: descriptionRef.value!,
 						})}
 						{useSoftCapBreakpointsInput?.rootElem}
+						{this.buildSoftCapBreakpointsLimiter({ useSoftCapBreakpointsInput })}
 						{freezeItemSlotsInput.rootElem}
 						{this.buildFrozenSlotsInputs()}
 						{this.buildEPWeightsToggle({ useCustomEPValuesInput: useCustomEPValuesInput })}
@@ -476,17 +482,10 @@ export class ReforgeOptimizer {
 
 						const sharedStatInputConfig: Pick<NumberPickerConfig<Player<any>>, 'getValue' | 'setValue'> = {
 							getValue: () => {
-								const rawStatValue = this.statCaps.getUnitStat(unitStat);
-								let percentOrPointsValue = unitStat.convertDefaultUnitsToPercent(rawStatValue)!;
-								if (unitStat.equalsStat(Stat.StatMasteryRating))
-									percentOrPointsValue = this.toVisualTotalMasteryPercentage(percentOrPointsValue, rawStatValue);
-
-								return percentOrPointsValue;
+								return this.toVisualUnitStatPercentage(this.statCaps.getUnitStat(unitStat), unitStat);
 							},
 							setValue: (_eventID, _player, newValue) => {
-								let statValue = unitStat.convertPercentToDefaultUnits(newValue)!;
-								if (unitStat.equalsStat(Stat.StatMasteryRating)) statValue /= this.player.getMasteryPerPointModifier();
-								this.setStatCap(unitStat, statValue);
+								this.setStatCap(unitStat, this.toDefaultUnitStatValue(newValue, unitStat));
 							},
 						};
 
@@ -625,6 +624,100 @@ export class ReforgeOptimizer {
 		);
 	}
 
+	buildSoftCapBreakpointsLimiter({ useSoftCapBreakpointsInput }: { useSoftCapBreakpointsInput: BooleanPicker<Player<any>> | null }) {
+		if (!useSoftCapBreakpointsInput) return null;
+
+		const tableRef = ref<HTMLTableElement>();
+		const breakpointLimitTooltipRef = ref<HTMLButtonElement>();
+
+		const content = (
+			<table ref={tableRef} className={clsx('reforge-optimizer-stat-cap-table mb-2', !this.sim.getUseSoftCapBreakpoints() && 'hide')}>
+				<thead>
+					<tr>
+						<th colSpan={3} className="pb-3">
+							<div className="d-flex">
+								<h6 className="content-block-title mb-0 me-1">Set breakpoint limit</h6>
+								<button ref={breakpointLimitTooltipRef} className="d-inline">
+									<i className="fa-regular fa-circle-question" />
+								</button>
+							</div>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					{this.softCapsConfig
+						.filter(config => config.breakpoints.length > 1)
+						.map(({ breakpoints, unitStat }) => {
+							if (!unitStat.hasRootStat()) return;
+							const rootStat = unitStat.getRootStat();
+							if (!INCLUDED_STATS.includes(rootStat)) return;
+
+							const listElementRef = ref<HTMLTableRowElement>();
+							const statName = unitStat.getShortName(this.player.getClass());
+							const picker = !!breakpoints
+								? new EnumPicker(null, this.player, {
+										id: `reforge-optimizer-${statName}-presets`,
+										extraCssClasses: ['mb-0'],
+										label: '',
+										values: [
+											{ name: 'No limit set', value: 0 },
+											...breakpoints.map(breakpoint => ({
+												name: `${this.breakpointValueToDisplayPercentage(breakpoint, unitStat)}%`,
+												value: breakpoint,
+											})),
+										].sort((a, b) => a.value - b.value),
+										changedEvent: _ => TypedEvent.onAny([this.sim.useSoftCapBreakpointsChangeEmitter]),
+										getValue: () => {
+											return this.toVisualUnitStatPercentage(
+												this.getBreakpointsLimits().get(unitStat.getFullName(this.playerClass)) || 0,
+												unitStat,
+											);
+										},
+										setValue: (_eventID, _player, newValue) => {
+											this.setBreakpointsLimits(this.toDefaultUnitStatValue(newValue, unitStat), unitStat);
+										},
+								  })
+								: null;
+
+							if (!picker?.rootElem) return null;
+
+							const row = (
+								<>
+									<tr ref={listElementRef} className="reforge-optimizer-stat-cap-item">
+										<td>
+											<div className="reforge-optimizer-stat-cap-item-label">{statName}</div>
+										</td>
+										<td colSpan={2}>{picker.rootElem}</td>
+									</tr>
+								</>
+							);
+
+							return row;
+						})}
+				</tbody>
+			</table>
+		);
+
+		if (breakpointLimitTooltipRef.value) {
+			const tooltip = tippy(breakpointLimitTooltipRef.value, {
+				content: 'Allows you to set a custom breakpoint limit.',
+			});
+			useSoftCapBreakpointsInput.addOnDisposeCallback(() => tooltip.destroy());
+		}
+
+		const event = this.sim.useSoftCapBreakpointsChangeEmitter.on(() => {
+			const isUsingBreakpoints = this.sim.getUseSoftCapBreakpoints();
+			tableRef.value?.classList[isUsingBreakpoints ? 'remove' : 'add']('hide');
+		});
+
+		useSoftCapBreakpointsInput.addOnDisposeCallback(() => {
+			content.remove();
+			event?.dispose();
+		});
+
+		return content;
+	}
+
 	get isAllowedToOverrideStatCaps() {
 		return !(this.sim.getUseSoftCapBreakpoints() && this.softCapsConfig);
 	}
@@ -632,7 +725,7 @@ export class ReforgeOptimizer {
 	get processedStatCaps() {
 		let statCaps = this.statCaps;
 		if (!this.isAllowedToOverrideStatCaps)
-			this.softCapsConfig.forEach(({ unitStat }) => {
+			this.softCapsConfigWithLimits.forEach(({ unitStat }) => {
 				statCaps = statCaps.withUnitStat(unitStat, 0);
 			});
 
@@ -689,7 +782,7 @@ export class ReforgeOptimizer {
 		const reforgeSoftCaps: StatCap[] = [];
 
 		if (!this.isAllowedToOverrideStatCaps) {
-			this.softCapsConfig.slice().forEach(config => {
+			this.softCapsConfigWithLimits.slice().forEach(config => {
 				let weights = config.postCapEPs.slice();
 				const relativeBreakpoints = [];
 
@@ -1003,6 +1096,26 @@ export class ReforgeOptimizer {
 		return statPoints;
 	}
 
+	private toVisualUnitStatPercentage(statValue: number, unitStat: UnitStat) {
+		const rawStatValue = statValue;
+		let percentOrPointsValue = unitStat.convertDefaultUnitsToPercent(rawStatValue)!;
+		if (unitStat.equalsStat(Stat.StatMasteryRating)) percentOrPointsValue = this.toVisualTotalMasteryPercentage(percentOrPointsValue, rawStatValue);
+
+		return percentOrPointsValue;
+	}
+
+	private toDefaultUnitStatValue(value: number, unitStat: UnitStat) {
+		let statValue = unitStat.convertPercentToDefaultUnits(value)!;
+		if (unitStat.equalsStat(Stat.StatMasteryRating)) statValue /= this.player.getMasteryPerPointModifier();
+		return statValue;
+	}
+
+	private breakpointValueToDisplayPercentage(value: number, unitStat: UnitStat) {
+		return unitStat.equalsStat(Stat.StatMasteryRating)
+			? ((value / Mechanics.MASTERY_RATING_PER_MASTERY_POINT) * this.player.getMasteryPerPointModifier()).toFixed(2)
+			: unitStat.convertDefaultUnitsToPercent(value)!.toFixed(2);
+	}
+
 	onReforgeDone() {
 		const itemSlots = this.player.getGear().getItemSlots();
 		const changedSlots = new Map<ItemSlot, ReforgeData | undefined>();
@@ -1062,5 +1175,34 @@ export class ReforgeOptimizer {
 			variant: 'error',
 			body: 'Reforge optimization failed. Please try again, or report the issue if it persists.',
 		});
+	}
+
+	getBreakpointsLimits() {
+		return this._softCapsBreakpointLimits;
+	}
+
+	setBreakpointsLimits(value: number, unitStat: UnitStat) {
+		this._softCapsBreakpointLimits.set(unitStat.getFullName(this.playerClass), value);
+		window.localStorage.setItem(this.simUI.getSavedBreakpointsLimitStorageKey(), JSON.stringify([...this._softCapsBreakpointLimits]));
+	}
+
+	getBreakpointsLimitsFromStorage() {
+		const breakpointLimits: typeof this._softCapsBreakpointLimits = new Map();
+		try {
+			const data = window.localStorage.getItem(this.simUI.getSavedBreakpointsLimitStorageKey());
+			if (!data) throw new Error('No data found in storage');
+			const parsedData = JSON.parse(data);
+			for (const entry of parsedData) {
+				if (!Array.isArray(entry)) break;
+				const unitStat = entry[0];
+				const limit = entry[1];
+				if (!unitStat || !limit) break;
+				breakpointLimits.set(unitStat, limit);
+			}
+			return breakpointLimits;
+		} catch {
+			window.localStorage.removeItem(this.simUI.getSavedBreakpointsLimitStorageKey());
+			return breakpointLimits;
+		}
 	}
 }

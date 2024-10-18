@@ -271,7 +271,7 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 										if (!hasCloseMatchingValue(blBreakpoint)) adjustedHastedBreakpoints.add(blBreakpoint);
 										if (hasBerserking) {
 											const berserkingBreakpoint = modifyHaste(blBreakpoint, 1.2);
-											if (berserkingBreakpoint > 0 && !hasCloseMatchingValue(blBreakpoint)) {
+											if (berserkingBreakpoint > 0 && !hasCloseMatchingValue(berserkingBreakpoint)) {
 												adjustedHastedBreakpoints.add(berserkingBreakpoint);
 											}
 										}
@@ -283,7 +283,7 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 										if (!hasCloseMatchingValue(piBreakpoint)) adjustedHastedBreakpoints.add(piBreakpoint);
 										if (hasBerserking) {
 											const berserkingBreakpoint = modifyHaste(piBreakpoint, 1.2);
-											if (berserkingBreakpoint > 0 && !hasCloseMatchingValue(piBreakpoint)) {
+											if (berserkingBreakpoint > 0 && !hasCloseMatchingValue(berserkingBreakpoint)) {
 												adjustedHastedBreakpoints.add(berserkingBreakpoint);
 											}
 										}
