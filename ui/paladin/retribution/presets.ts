@@ -14,19 +14,19 @@ import ApparatusApl from './apls/apparatus.apl.json';
 import DefaultApl from './apls/default.apl.json';
 import T13_2Pc_Apl from './apls/t13.apl.json';
 import T13_2Pc_Apparatus_Apl from './apls/t13-apparatus.apl.json';
-//import T13_BisRetGear from './gear_sets/t13_bis.gear.json';
+import P2_BisRetGear from './gear_sets/p2_bis.gear.json';
+import P3_BisRetGear from './gear_sets/p3_bis.gear.json';
+import P4_BisRetGear from './gear_sets/p4_bis.gear.json';
 import PreraidRetGear from './gear_sets/preraid.gear.json';
-import T11_BisRetGear from './gear_sets/t11_bis.gear.json';
-import T12_BisRetGear from './gear_sets/t12_bis.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so it's good to
 // keep them in a separate file.
 
-export const PRERAID_RET_PRESET = PresetUtils.makePresetGear('Preraid', PreraidRetGear);
-export const T11_BIS_RET_PRESET = PresetUtils.makePresetGear('T11 BiS', T11_BisRetGear);
-export const T12_BIS_RET_PRESET = PresetUtils.makePresetGear('T12 BiS', T12_BisRetGear);
-//export const T13_BIS_RET_PRESET = PresetUtils.makePresetGear('T13 BiS', T13_BisRetGear);
+export const PRERAID_RET_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidRetGear);
+export const P2_BIS_RET_PRESET = PresetUtils.makePresetGear('P2', P2_BisRetGear);
+export const P3_BIS_RET_PRESET = PresetUtils.makePresetGear('P3', P3_BisRetGear);
+export const P4_BIS_RET_PRESET = PresetUtils.makePresetGear('P4', P4_BisRetGear);
 
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 export const ROTATION_PRESET_APPARATUS = PresetUtils.makePresetAPLRotation('Apparatus', ApparatusApl);
@@ -34,71 +34,69 @@ export const ROTATION_PRESET_T13 = PresetUtils.makePresetAPLRotation('T13 2pc', 
 export const ROTATION_PRESET_T13_APPARATUS = PresetUtils.makePresetAPLRotation('T13 2pc + Apparatus', T13_2Pc_Apparatus_Apl);
 
 // Preset options for EP weights
-export const T11_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'T11',
-	Stats.fromMap(
-		{
-			[Stat.StatStrength]: 2.32,
-			[Stat.StatAttackPower]: 1,
-			[Stat.StatHitRating]: 2.31,
-			[Stat.StatCritRating]: 1.15,
-			[Stat.StatHasteRating]: 1.02,
-			[Stat.StatExpertiseRating]: 1.91,
-			[Stat.StatMasteryRating]: 1.34,
-		},
-		{
-			[PseudoStat.PseudoStatMainHandDps]: 8.40,
-			[PseudoStat.PseudoStatSpellHitPercent]: 28.48,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 260.99,
-		},
-	),
-);
-export const T12_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'T12',
-	Stats.fromMap(
-		{
-			[Stat.StatStrength]: 2.32,
-			[Stat.StatAttackPower]: 1,
-			[Stat.StatHitRating]: 2.74,
-			[Stat.StatCritRating]: 1.33,
-			[Stat.StatHasteRating]: 1.01,
-			[Stat.StatExpertiseRating]: 2.39,
-			[Stat.StatMasteryRating]: 1.51,
-		},
-		{
-			[PseudoStat.PseudoStatMainHandDps]: 8.94,
-			[PseudoStat.PseudoStatSpellHitPercent]: 24.15,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 313.72,
-		},
-	),
-);
-/*
-// Preset options for EP weights
-export const T13_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'T13',
+export const P2_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P2',
 	Stats.fromMap(
 		{
 			[Stat.StatStrength]: 2.28,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatSpellHit]: 0.18,
-			[Stat.StatSpellCrit]: 0.15,
-			[Stat.StatSpellHaste]: 0.35,
-			[Stat.StatMeleeHit]: 2.01,
-			[Stat.StatMeleeCrit]: 1.26,
-			[Stat.StatMeleeHaste]: 0.50,
-			[Stat.StatExpertise]: 1.83,
-			[Stat.StatMastery]: 1.74,
+			[Stat.StatHitRating]: 2.26,
+			[Stat.StatCritRating]: 1.10,
+			[Stat.StatHasteRating]: 1.04,
+			[Stat.StatExpertiseRating]: 1.82,
+			[Stat.StatMasteryRating]: 1.26,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 8.29,
+			[PseudoStat.PseudoStatMainHandDps]: 8.28,
+			[PseudoStat.PseudoStatSpellHitPercent]: 30.23,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 261.35,
 		},
 	),
 );
-*/
+export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P3',
+	Stats.fromMap(
+		{
+			[Stat.StatStrength]: 2.28,
+			[Stat.StatAttackPower]: 1,
+			[Stat.StatHitRating]: 2.66,
+			[Stat.StatCritRating]: 1.24,
+			[Stat.StatHasteRating]: 0.99,
+			[Stat.StatExpertiseRating]: 2.25,
+			[Stat.StatMasteryRating]: 1.40,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 8.77,
+			[PseudoStat.PseudoStatSpellHitPercent]: 26.02,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 296.98,
+		},
+	),
+);
+
+export const P4_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P4',
+	Stats.fromMap(
+		{
+			[Stat.StatStrength]: 2.28,
+			[Stat.StatAttackPower]: 1,
+			[Stat.StatHitRating]: 2.93,
+			[Stat.StatCritRating]: 1.47,
+			[Stat.StatHasteRating]: 1.06,
+			[Stat.StatExpertiseRating]: 2.43,
+			[Stat.StatMasteryRating]: 1.76,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 8.39,
+			[PseudoStat.PseudoStatSpellHitPercent]: 33.56,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 342.82,
+		},
+	),
+);
+
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.
-export const T11Talents = {
-	name: 'T11',
+export const P2_Talents = {
+	name: 'P2',
 	data: SavedTalents.create({
 		talentsString: '203002-02-23203213211113002311',
 		glyphs: Glyphs.create({
@@ -115,8 +113,8 @@ export const T11Talents = {
 	}),
 };
 
-export const T12T13Talents = {
-	name: 'T12/T13',
+export const P3_P4_Talents = {
+	name: 'P3 / P4',
 	data: SavedTalents.create({
 		talentsString: '203002-02-23203213211113002311',
 		glyphs: Glyphs.create({
@@ -132,6 +130,27 @@ export const T12T13Talents = {
 		}),
 	}),
 };
+
+export const P2_PRESET = PresetUtils.makePresetBuild('P2', {
+	gear: P2_BIS_RET_PRESET,
+	epWeights: P2_EP_PRESET,
+	talents: P2_Talents,
+	rotation: ROTATION_PRESET_DEFAULT,
+})
+
+export const P3_PRESET = PresetUtils.makePresetBuild('P3', {
+	gear: P3_BIS_RET_PRESET,
+	epWeights: P3_EP_PRESET,
+	talents: P3_P4_Talents,
+	rotation: ROTATION_PRESET_APPARATUS,
+})
+
+export const P4_PRESET = PresetUtils.makePresetBuild('P4', {
+	gear: P4_BIS_RET_PRESET,
+	epWeights: P4_EP_PRESET,
+	talents: P3_P4_Talents,
+	rotation: ROTATION_PRESET_T13,
+})
 
 export const DefaultOptions = RetributionPaladinOptions.create({
 	classOptions: {
@@ -153,4 +172,7 @@ export const OtherDefaults = {
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
 	distanceFromTarget: 5,
+	duration: 300,
+	durationVariation: 30,
+	iterationCount: 20000,
 };

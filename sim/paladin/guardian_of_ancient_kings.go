@@ -170,7 +170,7 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration, snap
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(ancientFuryMinDamage, ancientFuryMaxDamage) +
+			baseDamage := sim.RollWithLabel(ancientFuryMinDamage, ancientFuryMaxDamage, "Ancient Fury") +
 				0.061*spell.SpellPower()
 
 			// Deals X Holy damage per application of Ancient Power,

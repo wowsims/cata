@@ -7,8 +7,7 @@ import (
 )
 
 func (paladin *Paladin) registerJudgement() {
-	actionId := core.ActionID{SpellID: 20271}
-	hpMetrics := paladin.NewHolyPowerMetrics(actionId)
+	hpMetrics := paladin.NewHolyPowerMetrics(core.ActionID{SpellID: 105767})
 	hasT132pc := paladin.HasSetBonus(ItemSetBattleplateOfRadiantGlory, 2)
 
 	paladin.RegisterSpell(core.SpellConfig{
@@ -41,7 +40,16 @@ func (paladin *Paladin) registerJudgement() {
 			if result.Landed() {
 				paladin.CurrentJudgement.Cast(sim, target)
 				if hasT132pc {
-					paladin.GainHolyPower(sim, 1, hpMetrics)
+					// TODO: Measure the aura update delay distribution on PTR.
+					waitTime := time.Millisecond * time.Duration(sim.RollWithLabel(150, 750, "T13 2pc"))
+					core.StartDelayedAction(sim, core.DelayedActionOptions{
+						DoAt:     sim.CurrentTime + waitTime,
+						Priority: core.ActionPriorityRegen,
+
+						OnAction: func(_ *core.Simulation) {
+							paladin.GainHolyPower(sim, 1, hpMetrics)
+						},
+					})
 				}
 			}
 		},

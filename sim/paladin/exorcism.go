@@ -42,7 +42,7 @@ func (paladin *Paladin) registerExorcism() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(exorcismMinDamage, exorcismMaxDamage) +
+			baseDamage := sim.RollWithLabel(exorcismMinDamage, exorcismMaxDamage, "Exorcism") +
 				0.344*max(spell.SpellPower(), spell.MeleeAttackPower())
 
 			bonusCritPercent := core.TernaryFloat64(

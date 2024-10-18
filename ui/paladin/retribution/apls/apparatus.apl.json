@@ -139,6 +139,39 @@
 		{
 			"action": {
 				"condition": {
+					"and": {
+						"vals": [
+							{ "auraIsActive": { "auraId": { "spellId": 85696 } } },
+							{ "auraIsActive": { "auraId": { "spellId": 84963 } } },
+							{
+								"or": {
+									"vals": [
+										{
+											"cmp": {
+												"op": "OpLe",
+												"lhs": { "auraRemainingTime": { "auraId": { "spellId": 85696 } } },
+												"rhs": { "const": { "val": "16s" } }
+											}
+										},
+										{
+											"cmp": {
+												"op": "OpEq",
+												"lhs": { "auraNumStacks": { "auraId": { "spellId": 96923 } } },
+												"rhs": { "const": { "val": "5" } }
+											}
+										}
+									]
+								}
+							}
+						]
+					}
+				},
+				"castSpell": { "spellId": { "itemId": 68972 } }
+			}
+		},
+		{
+			"action": {
+				"condition": {
 					"and": { "vals": [{ "auraIsActive": { "auraId": { "spellId": 85696 } } }, { "auraIsActive": { "auraId": { "spellId": 84963 } } }] }
 				},
 				"autocastOtherCooldowns": {}

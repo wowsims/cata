@@ -18,12 +18,12 @@ func TestRetribution(t *testing.T) {
 		Race:       proto.Race_RaceBloodElf,
 		OtherRaces: []proto.Race{proto.Race_RaceHuman, proto.Race_RaceDraenei, proto.Race_RaceDwarf, proto.Race_RaceTauren},
 
-		GearSet:     core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "t11_bis"),
+		GearSet:     core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p3_bis"),
 		Talents:     StandardTalents,
 		Glyphs:      StandardGlyphs,
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: DefaultOptions},
-		Rotation:    core.GetAplRotation("../../../ui/paladin/retribution/apls", "default"),
+		Rotation:    core.GetAplRotation("../../../ui/paladin/retribution/apls", "apparatus"),
 
 		ItemFilter: core.ItemFilter{
 			WeaponTypes: []proto.WeaponType{
@@ -49,20 +49,21 @@ func BenchmarkSimulate(b *testing.B) {
 			&proto.Player{
 				Race:           proto.Race_RaceBloodElf,
 				Class:          proto.Class_ClassPaladin,
-				Equipment:      core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "t11_bis").GearSet,
+				Equipment:      core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p3_bis").GearSet,
 				Consumes:       FullConsumes,
 				Spec:           DefaultOptions,
 				Glyphs:         StandardGlyphs,
 				TalentsString:  StandardTalents,
 				Buffs:          core.FullIndividualBuffs,
 				ReactionTimeMs: 100,
-				Rotation:       core.GetAplRotation("../../../ui/paladin/retribution/apls", "default").Rotation,
+				Rotation:       core.GetAplRotation("../../../ui/paladin/retribution/apls", "apparatus").Rotation,
 			},
 			core.FullPartyBuffs,
 			core.FullRaidBuffs,
 			core.FullDebuffs),
 		Encounter: &proto.Encounter{
-			Duration: 300,
+			Duration:          300,
+			DurationVariation: 30,
 			Targets: []*proto.Target{
 				core.NewDefaultTarget(),
 			},
@@ -77,7 +78,7 @@ var StandardTalents = "203002-02-23203213211113002311"
 var StandardGlyphs = &proto.Glyphs{
 	Prime1: int32(proto.PaladinPrimeGlyph_GlyphOfTemplarSVerdict),
 	Prime2: int32(proto.PaladinPrimeGlyph_GlyphOfSealOfTruth),
-	Prime3: int32(proto.PaladinPrimeGlyph_GlyphOfExorcism),
+	Prime3: int32(proto.PaladinPrimeGlyph_GlyphOfCrusaderStrike),
 	Major1: int32(proto.PaladinMajorGlyph_GlyphOfHammerOfWrath),
 	Major2: int32(proto.PaladinMajorGlyph_GlyphOfTheAsceticCrusader),
 	Major3: int32(proto.PaladinMajorGlyph_GlyphOfConsecration),
@@ -92,7 +93,7 @@ var DefaultOptions = &proto.Player_RetributionPaladin{
 			ClassOptions: &proto.PaladinOptions{
 				Seal:             proto.PaladinSeal_Truth,
 				Aura:             proto.PaladinAura_Retribution,
-				SnapshotGuardian: false,
+				SnapshotGuardian: true,
 			},
 		},
 	},

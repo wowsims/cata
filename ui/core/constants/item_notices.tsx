@@ -296,6 +296,27 @@ export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 			[Spec.SpecShadowPriest]: false,
 		},
 	],
+	[
+		// Gurthalak, Voice of the Deeps - LFR
+		78487,
+		{
+			[Spec.SpecUnknown]: MISSING_IMPLEMENTATION_WARNING,
+		}
+	],
+	[
+		// Gurthalak, Voice of the Deeps - Normal
+		77191,
+		{
+			[Spec.SpecUnknown]: MISSING_IMPLEMENTATION_WARNING,
+		}
+	],
+	[
+		// Gurthalak, Voice of the Deeps - Heroic
+		78478,
+		{
+			[Spec.SpecUnknown]: MISSING_IMPLEMENTATION_WARNING,
+		}
+	],
 ]);
 
 export const GENERIC_MISSING_SET_BONUS_NOTICE_DATA = new Map<number, string>([

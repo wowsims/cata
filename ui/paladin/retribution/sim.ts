@@ -22,6 +22,27 @@ const isGlyphOfSealOfTruthActive = (player: Player<Spec.SpecRetributionPaladin>)
 	);
 };
 
+const modifyDisplayStats = (player: Player<Spec.SpecRetributionPaladin>) => {
+	let stats = new Stats();
+
+	TypedEvent.freezeAllAndDo(() => {
+		if (isGlyphOfSealOfTruthActive(player)) {
+			stats = stats.addStat(Stat.StatExpertiseRating, 2.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+		}
+	});
+
+	return {
+		talents: stats,
+	};
+};
+
+const getStatCaps = () => {
+	const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 8);
+	const expCap = new Stats().withStat(Stat.StatExpertiseRating, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+
+	return hitCap.add(expCap);
+};
+
 const pickRotation = (player: Player<Spec.SpecRetributionPaladin>): APLRotation => {
 	const has2pcT13 = player.getEquippedItems().filter(x => x?.item.setName === 'Battleplate of Radiant Glory').length >= 2;
 	const hasApparatus =
@@ -41,6 +62,32 @@ const pickRotation = (player: Player<Spec.SpecRetributionPaladin>): APLRotation 
 	}
 
 	return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
+};
+
+const updateGearStatsModifier = (player: Player<Spec.SpecRetributionPaladin>) => (baseStats: Stats) => {
+	if (isGlyphOfSealOfTruthActive(player)) {
+		return baseStats.addStat(Stat.StatExpertiseRating, 2.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+	} else {
+		return baseStats;
+	}
+};
+
+const getEPDefaults = (player: Player<Spec.SpecFuryWarrior>) => {
+	let hasP3Setup = false;
+	let hasP4Setup = false;
+
+	const items = player.getGear().getEquippedItems();
+
+	for (const item of items) {
+		const phase = item?.item.phase || 0;
+		if (phase > 3) {
+			hasP4Setup = true;
+		} else if (phase > 2) {
+			hasP3Setup = true;
+		}
+	}
+
+	return hasP4Setup ? Presets.P4_EP_PRESET.epWeights : hasP3Setup ? Presets.P3_EP_PRESET.epWeights : Presets.P2_EP_PRESET.epWeights;
 };
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
@@ -85,36 +132,19 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			PseudoStat.PseudoStatSpellHitPercent,
 		],
 	),
-	modifyDisplayStats: (player: Player<Spec.SpecRetributionPaladin>) => {
-		let stats = new Stats();
-
-		TypedEvent.freezeAllAndDo(() => {
-			if (isGlyphOfSealOfTruthActive(player)) {
-				stats = stats.addStat(Stat.StatExpertiseRating, 2.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
-			}
-		});
-
-		return {
-			talents: stats,
-		};
-	},
+	modifyDisplayStats,
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.T11_BIS_RET_PRESET.gear,
+		gear: Presets.P2_BIS_RET_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.T11_EP_PRESET.epWeights,
+		epWeights: Presets.P2_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
-		statCaps: (() => {
-			const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 8);
-			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
-
-			return hitCap.add(expCap);
-		})(),
+		statCaps: getStatCaps(),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.T11Talents.data,
+		talents: Presets.P2_Talents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		other: Presets.OtherDefaults,
@@ -173,30 +203,21 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	},
 
 	presets: {
-		epWeights: [
-			Presets.T11_EP_PRESET,
-			Presets.T12_EP_PRESET,
-			//Presets.T13_EP_PRESET,
-		],
+		epWeights: [Presets.P2_EP_PRESET, Presets.P3_EP_PRESET, Presets.P4_EP_PRESET],
 		rotations: [Presets.ROTATION_PRESET_DEFAULT, Presets.ROTATION_PRESET_APPARATUS, Presets.ROTATION_PRESET_T13, Presets.ROTATION_PRESET_T13_APPARATUS],
 		// Preset talents that the user can quickly select.
-		talents: [Presets.T11Talents, Presets.T12T13Talents],
+		talents: [Presets.P2_Talents, Presets.P3_P4_Talents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.T11_BIS_RET_PRESET,
-			Presets.T12_BIS_RET_PRESET,
-			//Presets.T13_BIS_RET_PRESET,
-			Presets.PRERAID_RET_PRESET,
-		],
+		gear: [Presets.PRERAID_RET_PRESET, Presets.P2_BIS_RET_PRESET, Presets.P3_BIS_RET_PRESET, Presets.P4_BIS_RET_PRESET],
+		builds: [Presets.P2_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
 	},
 
 	autoRotation: pickRotation,
-	simpleRotation: pickRotation,
 
 	raidSimPresets: [
 		{
 			spec: Spec.SpecRetributionPaladin,
-			talents: Presets.T11Talents.data,
+			talents: Presets.P2_Talents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -207,10 +228,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.T11_BIS_RET_PRESET.gear,
+					1: Presets.P2_BIS_RET_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.T11_BIS_RET_PRESET.gear,
+					1: Presets.P2_BIS_RET_PRESET.gear,
 				},
 			},
 		},
@@ -223,13 +244,8 @@ export class RetributionPaladinSimUI extends IndividualSimUI<Spec.SpecRetributio
 
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
-				updateGearStatsModifier: (baseStats: Stats) => {
-					if (isGlyphOfSealOfTruthActive(player)) {
-						return baseStats.addStat(Stat.StatExpertiseRating, 2.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
-					} else {
-						return baseStats;
-					}
-				},
+				updateGearStatsModifier: updateGearStatsModifier(player),
+				getEPDefaults,
 			});
 		});
 	}
