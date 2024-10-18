@@ -101,8 +101,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-Balespider'sBurningVestments"
  value: {
-  dps: 34333.28691
-  tps: 21951.03685
+  dps: 34333.72011
+  tps: 21951.47005
  }
 }
 dps_results: {
@@ -648,8 +648,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-Gladiator'sFelshroud"
  value: {
-  dps: 28123.49529
-  tps: 18282.18876
+  dps: 28131.74994
+  tps: 18290.44341
  }
 }
 dps_results: {
@@ -1315,8 +1315,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-ShadowflameRegalia"
  value: {
-  dps: 31021.52776
-  tps: 20184.20732
+  dps: 31021.94734
+  tps: 20184.62689
  }
 }
 dps_results: {

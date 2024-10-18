@@ -148,10 +148,6 @@ func (warlock *Warlock) registerBurningEmbers() {
 			TickLength:    1 * time.Second,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				if !dot.IsActive() {
-					dot.SnapshotBaseDamage = 0.0 // ensure we don't use old dot data
-				}
-
 				// damage is capped to a limit that depends on SP; the spell will not "remember" the damage from
 				// previous hits even if our SP increases so it's safe to do this here
 				dot.SnapshotAttackerMultiplier = 1
@@ -172,6 +168,9 @@ func (warlock *Warlock) registerBurningEmbers() {
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Matches(WarlockSpellSoulFire) && result.Landed() {
 				dot := warlock.BurningEmbers.Dot(result.Target)
+				if !dot.IsActive() {
+					dot.SnapshotBaseDamage = 0.0 // ensure we don't use old dot data
+				}
 				dot.SnapshotBaseDamage += result.Damage * 0.25 * float64(warlock.Talents.BurningEmbers)
 				dot.Apply(sim)
 			}
