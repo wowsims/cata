@@ -284,6 +284,19 @@ func (stats Stats) GetHighestStatType(statTypeOptions []Stat) Stat {
 	return highestStatType
 }
 
+// Returns all Stat types with positive representation in this Stats array.
+func (stats Stats) GetBuffedStatTypes() []Stat {
+	buffedStatTypes := make([]Stat, 0, SimStatsLen)
+
+	for statIdx, statValue := range stats {
+		if statValue > 0 {
+			buffedStatTypes = append(buffedStatTypes, Stat(statIdx))
+		}
+	}
+
+	return buffedStatTypes
+}
+
 func (stats Stats) String() string {
 	var sb strings.Builder
 	sb.WriteString("\n{\n")

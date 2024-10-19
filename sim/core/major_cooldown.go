@@ -56,6 +56,10 @@ type MajorCooldown struct {
 	// automatic timing.
 	ShouldActivate CooldownActivationCondition
 
+	// All Stat types that are buffed (before dependencies) when this MCD is
+	// activated. Used within APL snapshotting wrappers.
+	BuffedStatTypes []stats.Stat
+
 	// Fixed timings at which to use this cooldown. If these are specified, they
 	// are used instead of ShouldActivate.
 	timings []time.Duration
@@ -311,6 +315,21 @@ func (mcdm *majorCooldownManager) GetMajorCooldownIDs() []*proto.ActionID {
 	return ids
 }
 
+func (mcdm *majorCooldownManager) GetMatchingStatBuffSpells(statTypesToMatch []stats.Stat) []*Spell {
+	matchingSpells := make([]*Spell, 0, len(mcdm.initialMajorCooldowns))
+	matchFunc := func(statType stats.Stat) bool {
+		return slices.Contains(statTypesToMatch, statType)
+	}
+
+	for _, mcd := range mcdm.initialMajorCooldowns {
+		if slices.ContainsFunc(mcd.BuffedStatTypes, matchFunc) && (mcd.Spell.DefaultCast.EffectiveTime() == 0) {
+			matchingSpells = append(matchingSpells, mcd.Spell)
+		}
+	}
+
+	return matchingSpells
+}
+
 func (mcdm *majorCooldownManager) getFirstReadyMCD(sim *Simulation) *MajorCooldown {
 	if sim.CurrentTime < mcdm.minReady {
 		return nil
@@ -367,8 +386,9 @@ func RegisterTemporaryStatsOnUseCD(character *Character, auraLabel string, tempS
 	spell := character.RegisterSpell(config)
 
 	character.AddMajorCooldown(MajorCooldown{
-		Spell: spell,
-		Type:  cdType,
+		Spell:           spell,
+		Type:            cdType,
+		BuffedStatTypes: tempStats.GetBuffedStatTypes(),
 	})
 }
 
