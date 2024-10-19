@@ -185,8 +185,10 @@ func (env *Environment) finalize(raidProto *proto.Raid, _ *proto.Encounter, raid
 		}
 	}
 
-	for _, finalizeEffect := range env.postFinalizeEffects {
-		finalizeEffect()
+	// Use a traditional for loop here to accomodate callback chains that
+	// queue up additional delayed evaluations.
+	for i := 0; i < len(env.postFinalizeEffects); i++ {
+		env.postFinalizeEffects[i]()
 	}
 	env.postFinalizeEffects = nil
 

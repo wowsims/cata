@@ -5,6 +5,7 @@ import {
 	APLActionActivateAura,
 	APLActionAutocastOtherCooldowns,
 	APLActionCancelAura,
+	APLActionCastAllStatBuffCooldowns,
 	APLActionCastFriendlySpell,
 	APLActionCastSpell,
 	APLActionCatOptimalRotationAction,
@@ -436,6 +437,27 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 			AplHelpers.booleanFieldConfig('allowRecast', 'Recast', {
 				labelTooltip: 'If checked, interrupts of this channel will recast the spell.',
 			}),
+		],
+	}),
+	['castAllStatBuffCooldowns']: inputBuilder({
+		label: 'Cast All Stat Buff Cooldowns',
+		submenu: ['Casting'],
+		shortDescription: 'Casts all cooldowns that buff the specified stat type(s).',
+		fullDescription: `
+			<ul>
+				<li>Does not cast cooldowns which are already controlled by other actions in the priority list.</li>
+				<li>By default, this action will cast such cooldowns greedily as they become available. However, when embedded in a sequence, the action will only fire when ALL cooldowns matching the specified buff type(s) are ready.</li>
+			</ul>
+		`,
+		includeIf: (player: Player<any>, isPrepull: boolean) => !isPrepull,
+		newValue: () =>
+			APLActionCastAllStatBuffCooldowns.create({
+				statType1: -1,
+				statType2: -1,
+			}),
+		fields: [
+			AplHelpers.statTypeFieldConfig('statType1'),
+			AplHelpers.statTypeFieldConfig('statType2'),
 		],
 	}),
 	['autocastOtherCooldowns']: inputBuilder({

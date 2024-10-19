@@ -2,8 +2,10 @@ package core
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 type APLActionCastSpell struct {
@@ -252,6 +254,78 @@ func (action *APLActionMultishield) Execute(sim *Simulation) {
 }
 func (action *APLActionMultishield) String() string {
 	return fmt.Sprintf("Multishield(%s)", action.spell.ActionID)
+}
+
+type APLActionCastAllStatBuffCooldowns struct {
+	defaultAPLActionImpl
+	character *Character
+
+	statTypesToMatch []stats.Stat
+
+	allSubactions   []*APLActionCastSpell
+	readySubactions []*APLActionCastSpell
+}
+
+func (rot *APLRotation) newActionCastAllStatBuffCooldowns(config *proto.APLActionCastAllStatBuffCooldowns) APLActionImpl {
+	unit := rot.unit
+	actionImpl := &APLActionCastAllStatBuffCooldowns{
+		character:        unit.Env.Raid.GetPlayerFromUnit(unit).GetCharacter(),
+		statTypesToMatch: make([]stats.Stat, 0, 2),
+	}
+
+	for _, statIdx := range []int32{config.StatType1, config.StatType2} {
+		if (statIdx >= 0) {
+			actionImpl.statTypesToMatch = append(actionImpl.statTypesToMatch, stats.Stat(statIdx))
+		}
+	}
+
+	unit.Env.RegisterPostFinalizeEffect(func() {
+		// This needs to happen after the rotation is finalized so that
+		// all manually casted MCDs are removed from the cooldown list
+		// before it is filtered for the desired buff types.
+		actionImpl.processMajorCooldowns()
+	})
+
+	return actionImpl
+}
+func (action *APLActionCastAllStatBuffCooldowns) processMajorCooldowns() {
+	matchingSpells := action.character.GetMatchingStatBuffSpells(action.statTypesToMatch)
+	action.allSubactions = MapSlice(matchingSpells, func(buffSpell *Spell) *APLActionCastSpell {
+		return &APLActionCastSpell{
+			spell:  buffSpell,
+			target: action.character.Rotation.GetTargetUnit(nil),
+		}
+	})
+
+	action.character.Env.RegisterPostFinalizeEffect(func() {
+		// We again need a delayed evaluation here so that other instances of
+		// this action within the rotation can assemble their spell lists
+		// before the filtered spells are irreversibly removed from the MCD
+		// manager.
+		for _, buffSpell := range matchingSpells {
+			action.character.removeInitialMajorCooldown(buffSpell.ActionID)
+		}
+	})
+}
+func (action *APLActionCastAllStatBuffCooldowns) IsReady(sim *Simulation) bool {
+	action.readySubactions = FilterSlice(action.allSubactions, func(subaction *APLActionCastSpell) bool {
+		return subaction.IsReady(sim)
+	})
+
+	return Ternary(action.character.Rotation.inSequence, len(action.readySubactions) == len(action.allSubactions), len(action.readySubactions) > 0)
+	//return (len(action.readySubactions) > 0) && (!action.character.Rotation.inSequence || (len(action.readySubactions) == len(action.allSubactions)))
+}
+func (action *APLActionCastAllStatBuffCooldowns) Execute(sim *Simulation) {
+	for _, subaction := range action.readySubactions {
+		subaction.Execute(sim)
+	}
+}
+func (action *APLActionCastAllStatBuffCooldowns) String() string {
+	statNames := MapSlice(action.statTypesToMatch, func(statType stats.Stat) string {
+		return statType.StatName()
+	})
+
+	return fmt.Sprintf("Cast All Buff Cooldowns For: %s", strings.Join(statNames, ","))
 }
 
 type APLActionAutocastOtherCooldowns struct {
