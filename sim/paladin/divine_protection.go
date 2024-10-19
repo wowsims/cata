@@ -40,10 +40,6 @@ func (paladin *Paladin) registerDivineProtectionSpell() {
 			} else {
 				paladin.PseudoStats.DamageTakenMultiplier /= 0.8
 			}
-
-			if paladin.FlamingAegis != nil {
-				paladin.FlamingAegis.Activate(sim)
-			}
 		},
 	})
 
@@ -70,11 +66,10 @@ func (paladin *Paladin) registerDivineProtectionSpell() {
 		},
 	})
 
-	paladin.AddMajorCooldown(core.MajorCooldown{
-		Spell: paladin.DivineProtection,
-		Type:  core.CooldownTypeSurvival,
-		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
-			return character.Spec == proto.Spec_SpecProtectionPaladin
-		},
-	})
+	if paladin.Spec == proto.Spec_SpecProtectionPaladin {
+		paladin.AddMajorCooldown(core.MajorCooldown{
+			Spell: paladin.DivineProtection,
+			Type:  core.CooldownTypeSurvival,
+		})
+	}
 }

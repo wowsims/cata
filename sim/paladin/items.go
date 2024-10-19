@@ -62,10 +62,63 @@ var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 	Name: "Battleplate of Radiant Glory",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
-			// Handled in judgement.go
+			paladin := agent.(PaladinAgent).GetPaladin()
+			// Actual buff credited with the Holy Power gain is Virtuous Empowerment
+			hpMetrics := paladin.NewHolyPowerMetrics(core.ActionID{SpellID: 105767})
+
+			core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+				Name:           "T13 2pc trigger",
+				ActionID:       core.ActionID{SpellID: 105765},
+				Callback:       core.CallbackOnSpellHitDealt,
+				ClassSpellMask: SpellMaskJudgement,
+				ProcChance:     1,
+
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					// TODO: Measure the aura update delay distribution on PTR.
+					waitTime := time.Millisecond * time.Duration(sim.RollWithLabel(150, 750, "T13 2pc"))
+					core.StartDelayedAction(sim, core.DelayedActionOptions{
+						DoAt:     sim.CurrentTime + waitTime,
+						Priority: core.ActionPriorityRegen,
+
+						OnAction: func(_ *core.Simulation) {
+							paladin.GainHolyPower(sim, 1, hpMetrics)
+						},
+					})
+				},
+			})
 		},
 		4: func(agent core.Agent) {
-			// Handled in talents_retribution.go
+			paladin := agent.(PaladinAgent).GetPaladin()
+
+			damageMod := paladin.AddDynamicMod(core.SpellModConfig{
+				Kind:       core.SpellMod_DamageDone_Pct,
+				ClassMask:  SpellMaskModifiedByZealOfTheCrusader,
+				FloatValue: 0.18,
+			})
+
+			zealOfTheCrusader := paladin.RegisterAura(core.Aura{
+				Label:    "Zeal of the Crusader",
+				ActionID: core.ActionID{SpellID: 105819},
+				Duration: time.Second * 20,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					damageMod.Activate()
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					damageMod.Deactivate()
+				},
+			})
+
+			core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+				Name:           "T13 4pc trigger",
+				ActionID:       core.ActionID{SpellID: 105820},
+				Callback:       core.CallbackOnCastComplete,
+				ClassSpellMask: SpellMaskZealotry,
+				ProcChance:     1,
+
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					zealOfTheCrusader.Activate(sim)
+				},
+			})
 		},
 	},
 })
@@ -156,8 +209,7 @@ var ItemSetBattlearmorOfImmolation = core.NewItemSet(core.ItemSet{
 				Callback:       core.CallbackOnSpellHitDealt,
 				ClassSpellMask: SpellMaskShieldOfTheRighteous,
 				Outcome:        core.OutcomeLanded,
-
-				ProcChance: 1,
+				ProcChance:     1,
 
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					procDamage = result.Damage * 0.2
@@ -168,7 +220,7 @@ var ItemSetBattlearmorOfImmolation = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent) {
 			paladin := agent.(PaladinAgent).GetPaladin()
 
-			paladin.FlamingAegis = paladin.GetOrRegisterAura(core.Aura{
+			flamingAegis := paladin.GetOrRegisterAura(core.Aura{
 				Label:    "Flaming Aegis",
 				ActionID: core.ActionID{SpellID: 99090},
 				Duration: time.Second * 10,
@@ -181,7 +233,23 @@ var ItemSetBattlearmorOfImmolation = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			// Trigger in divine_protection.go
+			core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+				Name:           "T12 4pc trigger",
+				Callback:       core.CallbackOnCastComplete,
+				ClassSpellMask: SpellMaskDivineProtection,
+				ProcChance:     1,
+
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					core.StartDelayedAction(sim, core.DelayedActionOptions{
+						DoAt:     sim.CurrentTime + paladin.DivineProtectionAura.Duration,
+						Priority: core.ActionPriorityLow,
+
+						OnAction: func(_ *core.Simulation) {
+							flamingAegis.Activate(sim)
+						},
+					})
+				},
+			})
 		},
 	},
 })
