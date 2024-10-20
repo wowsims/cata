@@ -566,6 +566,19 @@ func init() {
 				MaxStacks: 5,
 			})
 
+			offHandBlacklist := map[int32]bool{
+				// DK: Threat of Thassarian crits doesn't proc
+				49143: true, // Frost Strike
+				49998: true, // Death Strike
+				85948: true, // Festering Strike
+				49020: true, // Obliterate
+				45462: true, // Plague Strike
+				56815: true, // Rune Strike
+
+				// Warrior: Whirlwind off-hand crits doesn't trigger procs
+				1680: true, // Whirlwind
+			}
+
 			core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       "Titanic Power Aura" + labelSuffix,
 				ActionID:   core.ActionID{SpellID: 96924},
@@ -575,6 +588,16 @@ func init() {
 				Outcome:    core.OutcomeCrit,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if buffAuraCrit.IsActive() || buffAuraHaste.IsActive() || buffAuraMastery.IsActive() {
+						return
+					}
+
+					// Warrior: Raging Blow crits doesn't trigger procs (both MH and OH)
+					if spell.ActionID.SpellID == 85288 {
+						return
+					}
+
+					// Off-hand blacklist
+					if _, blacklisted := offHandBlacklist[spell.ActionID.SpellID]; spell.ProcMask.Matches(core.ProcMaskMeleeOHSpecial) && blacklisted {
 						return
 					}
 
@@ -1038,10 +1061,11 @@ func init() {
 
 		// These spells ignore the slot the weapon is in.
 		// Any other ability should only trigger the proc if the weapon is in the right slot.
-		ignoresSlot := make(map[int32]bool)
-		ignoresSlot[23881] = true // Bloodthirst
-		ignoresSlot[6544] = true  // Heroic Leap
-		ignoresSlot[6343] = true  // Thunder Clap
+		ignoresSlot := map[int32]bool{
+			23881: true, // Bloodthirst
+			6544:  true, // Heroic Leap
+			6343:  true, // Thunder Clap
+		}
 
 		// Souldrinker
 		// Equip: Your melee attacks have a chance to drain your target's health, damaging the target for an amount equal to 1.3%/1.5%/1.7% of your maximum health and healing you for twice that amount.
