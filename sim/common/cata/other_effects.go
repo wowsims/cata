@@ -655,6 +655,46 @@ func init() {
 			})
 		})
 
+		vesselItemID := core.TernaryInt32(heroic, 69167, 68995)
+		core.NewItemEffect(vesselItemID, func(agent core.Agent) {
+			character := agent.GetCharacter()
+
+			procAura := core.MakeStackingAura(character, core.StackingStatAura{
+				Aura: core.Aura{
+					Label:     "Accelerated",
+					ActionID:  core.ActionID{SpellID: core.TernaryInt32(heroic, 97142, 96980)},
+					Duration:  time.Second * 20,
+					MaxStacks: 5,
+				},
+				BonusPerStack: stats.Stats{stats.CritRating: core.TernaryFloat64(heroic, 92, 82)},
+			})
+
+			offHandBlacklist := map[int32]bool{
+				// Warrior: Slam and Whirlwind off-hand crits doesn't trigger procs
+				1464: true, // Slam
+				1680: true, // Whirlwind
+			}
+
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				ActionID:   core.ActionID{ItemID: vesselItemID},
+				Name:       "Vessel of Acceleration" + labelSuffix,
+				Callback:   core.CallbackOnSpellHitDealt,
+				ProcMask:   core.ProcMaskMeleeOrProc,
+				Outcome:    core.OutcomeCrit,
+				ProcChance: 1,
+				Harmful:    false,
+				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+					// Off-hand blacklist
+					if _, blacklisted := offHandBlacklist[spell.ActionID.SpellID]; spell.ProcMask.Matches(core.ProcMaskMeleeOHSpecial) && blacklisted {
+						return
+					}
+
+					procAura.Activate(sim)
+					procAura.AddStack(sim)
+				},
+			})
+		})
+
 		jawsItemID := core.TernaryInt32(heroic, 69111, 68926)
 		core.NewItemEffect(jawsItemID, func(agent core.Agent) {
 			character := agent.GetCharacter()
