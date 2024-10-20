@@ -16,10 +16,16 @@ type BurningTreant struct {
 }
 
 func (druid *Druid) NewBurningTreant() *BurningTreant {
-	var burningTreantBaseStats = stats.Stats{stats.SpellCritPercent: 5}
+	baseStats := stats.Stats{stats.SpellCritPercent: 0}
+
+	statInheritance := func(ownerStats stats.Stats) stats.Stats {
+		return stats.Stats{
+			stats.SpellHitPercent: ownerStats[stats.SpellHitPercent],
+		}
+	}
 
 	burningTreant := &BurningTreant{
-		Pet:   core.NewPet("Burning Treant", &druid.Character, burningTreantBaseStats, createStatInheritance(), false, true),
+		Pet:   core.NewPet("Burning Treant", &druid.Character, baseStats, statInheritance, false, true),
 		owner: druid,
 	}
 
@@ -41,14 +47,6 @@ func (treant *BurningTreant) Reset(_ *core.Simulation) {
 func (treant *BurningTreant) ExecuteCustomRotation(sim *core.Simulation) {
 	if success := treant.Fireseed.Cast(sim, treant.CurrentTarget); !success {
 		treant.Disable(sim)
-	}
-}
-
-func createStatInheritance() func(stats.Stats) stats.Stats {
-	return func(ownerStats stats.Stats) stats.Stats {
-		return stats.Stats{
-			stats.SpellHitPercent: ownerStats[stats.SpellHitPercent],
-		}
 	}
 }
 
