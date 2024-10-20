@@ -19,7 +19,7 @@ func (druid *Druid) NewBurningTreant() *BurningTreant {
 	var burningTreantBaseStats = stats.Stats{stats.SpellCritPercent: 5}
 
 	burningTreant := &BurningTreant{
-		Pet:   core.NewPet("Burning Treant (Druid T12 Balance 2P Bonus)", &druid.Character, burningTreantBaseStats, createStatInheritance(), false, true),
+		Pet:   core.NewPet("Burning Treant", &druid.Character, burningTreantBaseStats, createStatInheritance(), false, true),
 		owner: druid,
 	}
 
