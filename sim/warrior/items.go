@@ -142,7 +142,7 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 			fieryAttack := character.RegisterSpell(core.SpellConfig{
 				ActionID:    fieryAttackActionID.WithTag(3),
 				SpellSchool: core.SpellSchoolFire,
-				ProcMask:    core.ProcMaskEmpty, // TODO (4.2) Test this
+				ProcMask:    core.ProcMaskEmpty,
 				Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
 
 				CritMultiplier:   character.DefaultMeleeCritMultiplier(),
@@ -151,7 +151,7 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 					baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit) // TODO (4.1) Test hit table
+					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 				},
 			})
 
