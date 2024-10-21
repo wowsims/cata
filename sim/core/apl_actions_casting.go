@@ -313,7 +313,6 @@ func (action *APLActionCastAllStatBuffCooldowns) IsReady(sim *Simulation) bool {
 	})
 
 	return Ternary(action.character.Rotation.inSequence, len(action.readySubactions) == len(action.allSubactions), len(action.readySubactions) > 0)
-	//return (len(action.readySubactions) > 0) && (!action.character.Rotation.inSequence || (len(action.readySubactions) == len(action.allSubactions)))
 }
 func (action *APLActionCastAllStatBuffCooldowns) Execute(sim *Simulation) {
 	for _, subaction := range action.readySubactions {

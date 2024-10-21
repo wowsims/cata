@@ -315,7 +315,7 @@ func (shaman *Shaman) applyFulmination() {
 		ActionID:       core.ActionID{SpellID: 88767},
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskProc,
-		Flags:          SpellFlagFocusable | core.SpellFlagPassiveSpell,
+		Flags:          core.SpellFlagPassiveSpell,
 		ClassSpellMask: SpellMaskFulmination,
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0,

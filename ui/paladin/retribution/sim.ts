@@ -72,7 +72,7 @@ const updateGearStatsModifier = (player: Player<Spec.SpecRetributionPaladin>) =>
 	}
 };
 
-const getEPDefaults = (player: Player<Spec.SpecFuryWarrior>) => {
+const getEPDefaults = (player: Player<Spec.SpecRetributionPaladin>) => {
 	let hasP3Setup = false;
 	let hasP4Setup = false;
 
