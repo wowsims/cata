@@ -5,6 +5,7 @@ import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { Stats, UnitStat } from '../../core/proto_utils/stats';
+import { sharedMageDisplayStatsModifiers } from '../shared';
 import * as FrostInputs from './inputs';
 import * as Presets from './presets';
 
@@ -45,6 +46,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 			PseudoStat.PseudoStatSpellHastePercent,
 		],
 	),
+	modifyDisplayStats: (player: Player<Spec.SpecFrostMage>) => {
+		return sharedMageDisplayStatsModifiers(player);
+	},
 
 	defaults: {
 		// Default equipped gear.
