@@ -97,7 +97,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, customHandler CustomPro
 
 		handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if customHandler != nil {
-				customHandler(sim, spell, result, procAura)
+				customHandler(sim, spell, result, procAura.Aura)
 
 			} else {
 				procAura.Activate(sim)
@@ -112,7 +112,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, customHandler CustomPro
 			handler = func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if !spell.IsSpellAction(ignoreSpellID) {
 					if customHandler != nil {
-						customHandler(sim, spell, result, procAura)
+						customHandler(sim, spell, result, procAura.Aura)
 					} else {
 						procAura.Activate(sim)
 						if procSpell.Spell != nil {
@@ -258,7 +258,7 @@ func NewStackingStatBonusCD(config StackingStatBonusCD) {
 		})
 
 		// If trinket limits duration create a separate proc aura
-		var procAura *core.Aura = statAura
+		var procAura *core.Aura = statAura.Aura
 		if config.TrinketLimitsDuration {
 			procAura = character.RegisterAura(core.Aura{
 				Label:    config.Name + " Aura",

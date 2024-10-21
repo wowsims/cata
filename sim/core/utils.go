@@ -167,6 +167,18 @@ func Flatten[T any](src [][]T) []T {
 	return dst
 }
 
+// Returns true if two slices share any common elements, and false otherwise.
+func CheckSliceOverlap[T comparable](s1 []T, s2 []T) bool {
+	for _, v1 := range s1 {
+		for _, v2 := range s2 {
+			if v1 == v2 {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 func MasteryRatingToMasteryPoints(masteryRating float64) float64 {
 	return masteryRating / MasteryRatingPerMasteryPoint
 }
