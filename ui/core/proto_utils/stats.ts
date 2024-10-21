@@ -210,6 +210,14 @@ export class UnitStat {
 		}
 	}
 
+	toJson(): object {
+		return UnitStatProto.toJson(this.toProto()) as object;
+	}
+
+	static fromJson(obj: any): UnitStat {
+		return UnitStat.fromProto(UnitStatProto.fromJson(obj));
+	}
+
 	toProto(): UnitStatProto {
 		const protoMessage = UnitStatProto.create({});
 
