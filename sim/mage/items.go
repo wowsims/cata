@@ -63,11 +63,11 @@ var ItemSetFirehawkRobesOfConflagration = core.NewItemSet(core.ItemSet{
 				ActionID: core.ActionID{SpellID: 99064},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					mage.brainFreezeProcChance += .15
-					mage.hotStreakProcChance += 0.30
+					mage.baseHotStreakProcChance += 0.30
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					mage.brainFreezeProcChance -= .15
-					mage.hotStreakProcChance -= .30
+					mage.baseHotStreakProcChance -= .30
 				},
 			}))
 

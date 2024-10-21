@@ -47,7 +47,7 @@ type Mage struct {
 
 	arcaneMissileCritSnapshot float64
 	brainFreezeProcChance     float64
-	hotStreakProcChance       float64
+	baseHotStreakProcChance   float64
 
 	previousCombustionDotEstimate int32
 
