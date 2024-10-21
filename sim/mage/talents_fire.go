@@ -122,14 +122,11 @@ func (mage *Mage) applyHotStreak() {
 		return
 	}
 
-	ImprovedHotStreakProcChance := float64(mage.Talents.ImprovedHotStreak) * 0.5
+	improvedHotStreakProcChance := float64(mage.Talents.ImprovedHotStreak) * 0.5
 
 	// This is the new formula as the old Simcraft / EJ has been debunked by PTR testing.
 	calculateHotStreakProcChance := func(x float64) float64 {
-		if x >= 0 && x < 0.34 {
-			return -2.6*x + 0.9
-		}
-		return 0.015
+		return -2.67*min(x, 0.3402) + 0.9230
 	}
 
 	hotStreakCostMod := mage.AddDynamicMod(core.SpellModConfig{
@@ -195,7 +192,7 @@ func (mage *Mage) applyHotStreak() {
 			}
 			// Hot Streak Base Talent Proc
 			if result.DidCrit() {
-				baseCritPercent := mage.GetStat(stats.SpellCritPercent) + 1*float64(mage.Talents.PiercingIce)
+				baseCritPercent := mage.GetStat(stats.SpellCritPercent)
 				hotStreakProcChance := mage.baseHotStreakProcChance + calculateHotStreakProcChance(baseCritPercent/100)
 
 				if sim.Proc(hotStreakProcChance, "Hot Streak") {
@@ -215,7 +212,7 @@ func (mage *Mage) applyHotStreak() {
 				// If you did crit, check against talents to see if you proc
 				// If you proc and had 1 stack, set crit counter to 0 and give hot streak.
 				if hotStreakCritAura.GetStacks() == 1 {
-					if sim.Proc(ImprovedHotStreakProcChance, "Improved Hot Streak") {
+					if sim.Proc(improvedHotStreakProcChance, "Improved Hot Streak") {
 						hotStreakCritAura.SetStacks(sim, 0)
 						hotStreakCritAura.Deactivate(sim)
 
