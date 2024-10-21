@@ -139,6 +139,25 @@ export class RotationTab extends SimTab {
 	private buildAplContent() {
 		const contentRef = ref<HTMLDivElement>();
 		this.leftPanel.appendChild(<div ref={contentRef} className="rotation-tab-apl" />);
+		this.simUI.player.lockAPLChangeEmitter.on(() => {
+			const lockAPL = this.simUI.player.getLockAPL()
+			const classListFunc = lockAPL ? 'add' : 'remove';
+			contentRef.value?.classList[classListFunc]('lock-apl');
+
+			const setDisabled = lockAPL ? (e: Element) => e.setAttribute("disabled", "") : (e: Element) => e.removeAttribute("disabled")
+			const dropdowns = contentRef.value?.getElementsByClassName("dropdown-picker-button")
+			if (dropdowns) {
+				for (const dropdown of dropdowns) {
+					setDisabled(dropdown)
+				}
+			}
+			const inputs = contentRef.value?.getElementsByClassName('form-control')
+			if (inputs) {
+				for (const input of inputs) {
+					setDisabled(input)
+				}
+			}
+		})
 
 		new APLRotationPicker(contentRef.value!, this.simUI, this.simUI.player);
 	}

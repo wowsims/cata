@@ -1,0 +1,14 @@
+.lock-apl {
+	.list-picker-item-header,
+	.list-picker-new-button {
+		display: none !important;
+	}
+
+	.dropdown-picker-button {
+		opacity: 1.0;
+
+		&::after {
+			display: none;
+		}
+	}
+}
