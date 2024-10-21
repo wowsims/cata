@@ -24,9 +24,6 @@ export class RotationTab extends SimTab {
 	readonly leftPanel: HTMLElement;
 	readonly rightPanel: HTMLElement;
 
-	private lockAPL: boolean;
-	readonly lockAPLChangeEmitter = new TypedEvent<boolean>();
-
 	constructor(parentElem: HTMLElement, simUI: IndividualSimUI<any>) {
 		super(parentElem, simUI, { identifier: 'rotation-tab', title: 'Rotation' });
 		this.simUI = simUI;
@@ -42,8 +39,6 @@ export class RotationTab extends SimTab {
 
 		this.updateSections();
 		this.simUI.player.rotationChangeEmitter.on(() => this.updateSections());
-
-		this.lockAPL = true;
 	}
 
 	protected buildTabContent() {
@@ -95,11 +90,10 @@ export class RotationTab extends SimTab {
 				label: 'Lock APL',
 				labelTooltip: 'Lock the APL, preventing changes & simplifying the display.',
 				showWhen: player => player.getRotationType() === APLRotationType.TypeAPL,
-				changedEvent: player => player.rotationChangeEmitter,
-				getValue: _modObj => this.lockAPL,
-				setValue: (eventID, _modObj, newValue: boolean) => {
-					this.lockAPL = newValue;
-					this.lockAPLChangeEmitter.emit(eventID, newValue)
+				changedEvent: player => player.lockAPLChangeEmitter,
+				getValue: player => player.getLockAPL(),
+				setValue: (eventID, player, newValue: boolean) => {
+					player.setLockAPL(eventID, newValue)
 				},
 			}
 		)

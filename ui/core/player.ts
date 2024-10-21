@@ -242,6 +242,7 @@ export class Player<SpecType extends Spec> {
 	private profession1: Profession = 0;
 	private profession2: Profession = 0;
 	aplRotation: APLRotation = APLRotation.create();
+	private lockAPL = false;
 	private talentsString = '';
 	private glyphs: Glyphs = Glyphs.create();
 	private specOptions: SpecOptions<SpecType>;
@@ -283,6 +284,7 @@ export class Player<SpecType extends Spec> {
 	readonly professionChangeEmitter = new TypedEvent<void>('PlayerProfession');
 	readonly raceChangeEmitter = new TypedEvent<void>('PlayerRace');
 	readonly rotationChangeEmitter = new TypedEvent<void>('PlayerRotation');
+	readonly lockAPLChangeEmitter = new TypedEvent<void>('PlayerLockAPL')
 	readonly talentsChangeEmitter = new TypedEvent<void>('PlayerTalents');
 	readonly glyphsChangeEmitter = new TypedEvent<void>('PlayerGlyphs');
 	readonly specOptionsChangeEmitter = new TypedEvent<void>('PlayerSpecOptions');
@@ -340,6 +342,7 @@ export class Player<SpecType extends Spec> {
 				this.professionChangeEmitter,
 				this.raceChangeEmitter,
 				this.rotationChangeEmitter,
+				this.lockAPLChangeEmitter,
 				this.talentsChangeEmitter,
 				this.glyphsChangeEmitter,
 				this.specOptionsChangeEmitter,
@@ -890,6 +893,17 @@ export class Player<SpecType extends Spec> {
 		} else {
 			return this.aplRotation;
 		}
+	}
+
+	getLockAPL(): boolean {
+		return this.lockAPL;
+	}
+
+	setLockAPL(eventID: EventID, newLockAPL: boolean) {
+		if (newLockAPL == this.lockAPL) return;
+
+		this.lockAPL = newLockAPL;
+		this.lockAPLChangeEmitter.emit(eventID);
 	}
 
 	getTalents(): SpecTalents<SpecType> {
@@ -1449,6 +1463,7 @@ export class Player<SpecType extends Spec> {
 					hpPercentForDefensives: this.getSimpleCooldowns().hpPercentForDefensives,
 				}),
 				rotation: aplRotation,
+				lockApl: this.lockAPL,
 			});
 		}
 		if (exportCategory(SimSettingCategories.Consumes)) {
@@ -1502,6 +1517,7 @@ export class Player<SpecType extends Spec> {
 					proto.rotation.type = APLRotationType.TypeAuto;
 				}
 				this.setAplRotation(eventID, proto.rotation || APLRotation.create());
+				this.setLockAPL(eventID, proto.lockApl)
 			}
 			if (loadCategory(SimSettingCategories.Consumes)) {
 				this.setConsumes(eventID, proto.consumes || Consumes.create());

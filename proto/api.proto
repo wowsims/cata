@@ -16,7 +16,7 @@ import "shaman.proto";
 import "warlock.proto";
 import "warrior.proto";
 
-// NextIndex: 54
+// NextIndex: 55
 message Player {
 	// Label used for logging.
 	string name = 51;
@@ -84,6 +84,7 @@ message Player {
 	Cooldowns cooldowns = 43;
 
 	APLRotation rotation = 44;
+	bool lock_apl = 54;
 
 	// TODO: Move most of the remaining fields into a 'MiscellaneousPlayerOptions' message.
 	// This will remove a lot of the boilerplate code in the UI for each new field.
