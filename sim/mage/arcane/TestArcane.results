@@ -38,8 +38,8 @@ character_stats_results: {
 dps_results: {
  key: "TestArcane-AllItems-AgileShadowspiritDiamond"
  value: {
-  dps: 36611.63225
-  tps: 35742.94161
+  dps: 36594.94136
+  tps: 35726.25072
  }
 }
 dps_results: {
@@ -94,8 +94,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-AustereShadowspiritDiamond"
  value: {
-  dps: 36079.79637
-  tps: 35217.59954
+  dps: 36064.05249
+  tps: 35201.85566
  }
 }
 dps_results: {
@@ -103,7 +103,7 @@ dps_results: {
  value: {
   dps: 33457.19232
   tps: 32604.05892
-  hps: 138.15086
+  hps: 134.44735
  }
 }
 dps_results: {
@@ -270,8 +270,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-BracingShadowspiritDiamond"
  value: {
-  dps: 36276.93293
-  tps: 34729.02908
+  dps: 36251.5546
+  tps: 34704.15832
  }
 }
 dps_results: {
@@ -284,15 +284,15 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-BurningShadowspiritDiamond"
  value: {
-  dps: 36809.98228
-  tps: 35946.64969
+  dps: 36783.07742
+  tps: 35919.74483
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ChaoticShadowspiritDiamond"
  value: {
-  dps: 36707.88032
-  tps: 35840.03855
+  dps: 36679.12426
+  tps: 35811.28248
  }
 }
 dps_results: {
@@ -354,22 +354,22 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-CunningoftheCruel-77208"
  value: {
-  dps: 36943.80134
-  tps: 36076.85585
+  dps: 36920.37144
+  tps: 36053.42595
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-CunningoftheCruel-77980"
  value: {
-  dps: 36421.09811
-  tps: 35557.92157
+  dps: 36391.70439
+  tps: 35528.52785
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-CunningoftheCruel-78000"
  value: {
-  dps: 37194.4101
-  tps: 36329.88444
+  dps: 37144.75384
+  tps: 36280.22818
  }
 }
 dps_results: {
@@ -403,8 +403,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-DarkmoonCard:Volcano-62047"
  value: {
-  dps: 35582.75421
-  tps: 34711.29607
+  dps: 35581.31857
+  tps: 34709.86044
  }
 }
 dps_results: {
@@ -417,8 +417,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-DestructiveShadowspiritDiamond"
  value: {
-  dps: 36170.40312
-  tps: 35309.13467
+  dps: 36143.27862
+  tps: 35282.01016
  }
 }
 dps_results: {
@@ -438,8 +438,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-EffulgentShadowspiritDiamond"
  value: {
-  dps: 36079.79637
-  tps: 35217.59954
+  dps: 36064.05249
+  tps: 35201.85566
  }
 }
 dps_results: {
@@ -452,15 +452,15 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-EmberShadowspiritDiamond"
  value: {
-  dps: 36456.77913
-  tps: 35628.11638
+  dps: 36429.24049
+  tps: 35600.57773
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-EnigmaticShadowspiritDiamond"
  value: {
-  dps: 36170.40312
-  tps: 35309.13467
+  dps: 36143.27862
+  tps: 35282.01016
  }
 }
 dps_results: {
@@ -487,8 +487,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-EternalShadowspiritDiamond"
  value: {
-  dps: 36079.79637
-  tps: 35217.59954
+  dps: 36064.05249
+  tps: 35201.85566
  }
 }
 dps_results: {
@@ -571,15 +571,15 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-FirehawkRobesofConflagration"
  value: {
-  dps: 32338.64276
-  tps: 31569.18021
+  dps: 32312.23913
+  tps: 31542.77658
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Firelord'sVestments"
  value: {
-  dps: 30947.40218
-  tps: 31098.96009
+  dps: 30937.42409
+  tps: 31088.982
  }
 }
 dps_results: {
@@ -606,8 +606,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-FleetShadowspiritDiamond"
  value: {
-  dps: 36174.3078
-  tps: 35312.11097
+  dps: 36158.51821
+  tps: 35296.32138
  }
 }
 dps_results: {
@@ -620,8 +620,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-ForlornShadowspiritDiamond"
  value: {
-  dps: 36276.93293
-  tps: 35420.28389
+  dps: 36251.5546
+  tps: 35394.90556
  }
 }
 dps_results: {
@@ -683,8 +683,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-HarmlightToken-63839"
  value: {
-  dps: 34858.87701
-  tps: 33981.88738
+  dps: 34854.5311
+  tps: 33977.54147
  }
 }
 dps_results: {
@@ -760,15 +760,15 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-Heartpierce-50641"
  value: {
-  dps: 36809.98228
-  tps: 35946.64969
+  dps: 36783.07742
+  tps: 35919.74483
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-ImpassiveShadowspiritDiamond"
  value: {
-  dps: 36170.40312
-  tps: 35309.13467
+  dps: 36143.27862
+  tps: 35282.01016
  }
 }
 dps_results: {
@@ -1145,8 +1145,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-PowerfulShadowspiritDiamond"
  value: {
-  dps: 36079.79637
-  tps: 35217.59954
+  dps: 36064.05249
+  tps: 35201.85566
  }
 }
 dps_results: {
@@ -1180,22 +1180,22 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-Rathrak,thePoisonousMind-77195"
  value: {
-  dps: 33936.13556
-  tps: 33138.65695
+  dps: 33885.84181
+  tps: 33088.3632
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Rathrak,thePoisonousMind-78475"
  value: {
-  dps: 35053.96169
-  tps: 34247.45357
+  dps: 35011.36412
+  tps: 34204.856
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Rathrak,thePoisonousMind-78484"
  value: {
-  dps: 33262.0896
-  tps: 32481.00405
+  dps: 33235.21079
+  tps: 32454.12524
  }
 }
 dps_results: {
@@ -1243,15 +1243,15 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-ReverberatingShadowspiritDiamond"
  value: {
-  dps: 36611.63225
-  tps: 35742.94161
+  dps: 36594.94136
+  tps: 35726.25072
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-RevitalizingShadowspiritDiamond"
  value: {
-  dps: 36610.74872
-  tps: 35742.12055
+  dps: 36594.05769
+  tps: 35725.42953
  }
 }
 dps_results: {
@@ -1315,7 +1315,7 @@ dps_results: {
  value: {
   dps: 33518.5517
   tps: 32664.64738
-  hps: 470.80536
+  hps: 458.74708
  }
 }
 dps_results: {
@@ -1323,7 +1323,7 @@ dps_results: {
  value: {
   dps: 33518.5517
   tps: 32664.64738
-  hps: 531.06404
+  hps: 517.46242
  }
 }
 dps_results: {
@@ -1413,22 +1413,22 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-Souldrinker-77193"
  value: {
-  dps: 36809.98228
-  tps: 35946.64969
+  dps: 36783.07742
+  tps: 35919.74483
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Souldrinker-78479"
  value: {
-  dps: 36809.98228
-  tps: 35946.64969
+  dps: 36783.07742
+  tps: 35919.74483
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Souldrinker-78488"
  value: {
-  dps: 36809.98228
-  tps: 35946.64969
+  dps: 36783.07742
+  tps: 35919.74483
  }
 }
 dps_results: {
@@ -1609,22 +1609,22 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-Ti'tahk,theStepsofTime-77190"
  value: {
-  dps: 47642.21623
-  tps: 46596.453
+  dps: 47594.6601
+  tps: 46548.89686
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Ti'tahk,theStepsofTime-78477"
  value: {
-  dps: 49256.00569
-  tps: 48193.34403
+  dps: 49211.06158
+  tps: 48148.39993
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Ti'tahk,theStepsofTime-78486"
  value: {
-  dps: 46485.84503
-  tps: 45496.03728
+  dps: 46456.72017
+  tps: 45466.91242
  }
 }
 dps_results: {
@@ -1644,8 +1644,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-TimeLord'sRegalia"
  value: {
-  dps: 30457.38837
-  tps: 30612.32184
+  dps: 30441.45749
+  tps: 30596.39097
  }
 }
 dps_results: {
@@ -1658,8 +1658,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-Tyrande'sFavoriteDoll-64645"
  value: {
-  dps: 35114.9285
-  tps: 34327.38263
+  dps: 35112.12854
+  tps: 34324.58268
  }
 }
 dps_results: {
@@ -1700,8 +1700,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 36552.30128
-  tps: 35711.53303
+  dps: 36526.69406
+  tps: 35685.92581
  }
 }
 dps_results: {
@@ -1931,43 +1931,43 @@ dps_results: {
 dps_results: {
  key: "TestArcane-Average-Default"
  value: {
-  dps: 37360.79991
-  tps: 36492.61931
+  dps: 37332.2973
+  tps: 36464.1167
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Troll-p3-Arcane-arcane-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 36789.10897
-  tps: 52239.97529
+  dps: 36762.20411
+  tps: 52213.07044
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Troll-p3-Arcane-arcane-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 36809.98228
-  tps: 35946.64969
+  dps: 36783.07742
+  tps: 35919.74483
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Troll-p3-Arcane-arcane-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 54794.42231
-  tps: 54140.09468
+  dps: 54783.07759
+  tps: 54128.74996
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Troll-p3-Arcane-arcane-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 23454.1525
-  tps: 38135.27221
+  dps: 23440.3075
+  tps: 38121.42722
  }
 }
 dps_results: {
  key: "TestArcane-Settings-Troll-p3-Arcane-arcane-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 23454.1525
-  tps: 22842.7998
+  dps: 23440.3075
+  tps: 22828.95481
  }
 }
 dps_results: {
@@ -1980,7 +1980,7 @@ dps_results: {
 dps_results: {
  key: "TestArcane-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 36809.98228
-  tps: 35946.64969
+  dps: 36783.07742
+  tps: 35919.74483
  }
 }

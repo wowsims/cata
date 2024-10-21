@@ -58,8 +58,9 @@ func (mage *Mage) ApplyFrostTalents() {
 	// Piercing Ice
 	if mage.Talents.PiercingIce > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_BonusCrit_Percent,
+			ClassMask:  MageSpellsAll,
 			FloatValue: 1 * float64(mage.Talents.PiercingIce),
+			Kind:       core.SpellMod_BonusCrit_Percent,
 		})
 	}
 
