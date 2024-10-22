@@ -1420,7 +1420,7 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 
 	var scheduledRefresh *core.PendingAction
 	procTrigger := config.ProcTrigger
-	procTrigger.Handler = func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+	procTrigger.Handler = func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
 		target := result.Target
 		dot := igniteSpell.Dot(target)
 		outstandingDamage := dot.OutstandingDmg()
@@ -1430,23 +1430,22 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 		damagePerTick := totalDamage / float64(newTickCount)
 
 		if config.IncludeAuraDelay {
-			// For now, assume that the mechanism driving random aura update
-			// delays is the same as for random auto delays after rapidly
-			// changing position. Therefore, use the fit delay parameters
-			// from cat leap tests (see sim/druid/feral_charge.go) for
-			// modeling consistency.
-			// TODO: Measure the aura update delay distribution on PTR.
-			waitTime := time.Millisecond * time.Duration(sim.Roll(150, 750))
-			applyDotAt := sim.CurrentTime + waitTime
+			// Rough 2-bucket model for the aura update delay distribution based
+			// on PTR measurements. Most updates occur on either the same or very
+			// next spell batch after the proc, and can therefore be modeled by a
+			// 0-10 ms random draw. But a reasonable minority fraction take ~10x
+			// longer than this to fire. The origin of these longer delays is
+			// likely not actually random in reality, but can be treated that way
+			// in practice since the player cannot play around them.
+			var delaySeconds float64
 
-			// Check for max duration munching
-			if dot.RemainingDuration(sim) > time.Second*4+waitTime {
-				if sim.Log != nil {
-					unit.Log(sim, "New %s proc was munched due to max %s duration", config.DotAuraLabel, config.DotAuraLabel)
-				}
-
-				return
+			if sim.Proc(0.75, "Aura Delay") {
+				delaySeconds = 0.010 * sim.RandomFloat("Aura Delay")
+			} else {
+				delaySeconds = 0.090 + 0.020 * sim.RandomFloat("Aura Delay")
 			}
+
+			applyDotAt := sim.CurrentTime + core.DurationFromSeconds(delaySeconds)
 
 			// Cancel any prior aura updates already in the queue
 			if (scheduledRefresh != nil) && (scheduledRefresh.NextActionAt > sim.CurrentTime) {
@@ -1457,9 +1456,9 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 				}
 			}
 
-			// Schedule a delayed refresh of the DoT with cached outstandingDamage value (allowing for "free roll-overs")
+			// Schedule a delayed refresh of the DoT with cached damagePerTick value (allowing for "free roll-overs")
 			if sim.Log != nil {
-				unit.Log(sim, "Schedule travel (%0.2f s) for %s", waitTime.Seconds(), config.DotAuraLabel)
+				unit.Log(sim, "Schedule travel (%0.1f ms) for %s", delaySeconds * 1000, config.DotAuraLabel)
 
 				if dot.IsActive() && (dot.NextTickAt() < applyDotAt) {
 					unit.Log(sim, "%s rolled with %0.3f damage both ticking and rolled into next", config.DotAuraLabel, outstandingDamage)
