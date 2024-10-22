@@ -9,7 +9,6 @@ import { APLRotation } from '../../core/proto/apl';
 import { Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
-import { sharedMageDisplayStatsModifiers } from '../shared';
 import * as ArcaneInputs from './inputs';
 import * as Presets from './presets';
 
@@ -27,9 +26,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpellPower, Stat.StatMasteryRating],
 		[PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatSpellCritPercent, PseudoStat.PseudoStatSpellHastePercent],
 	),
-	modifyDisplayStats: (player: Player<Spec.SpecArcaneMage>) => {
-		return sharedMageDisplayStatsModifiers(player);
-	},
 
 	defaults: {
 		// Default equipped gear.
