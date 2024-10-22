@@ -1375,7 +1375,7 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 	spellFlags := core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete
 
 	if config.DisableCastMetrics {
-		spellFlags = spellFlags | core.SpellFlagPassiveSpell
+		spellFlags |= core.SpellFlagPassiveSpell
 	}
 
 	igniteSpell := unit.RegisterSpell(core.SpellConfig{
@@ -1408,13 +1408,12 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 		},
 	})
 
-	refreshIgnite := func(sim *core.Simulation, target *core.Unit, totalDamage float64) {
+	refreshIgnite := func(sim *core.Simulation, target *core.Unit, damagePerTick float64) {
 		// Cata Ignite
 		// 1st ignite application = 4s, split into 2 ticks (2s, 0s)
 		// Ignite refreshes: Duration = 4s + MODULO(remaining duration, 2), max 6s. Split damage over 3 ticks at 4s, 2s, 0s.
 		dot := igniteSpell.Dot(target)
-		newTickCount := dot.BaseTickCount + core.TernaryInt32(dot.IsActive(), 1, 0)
-		dot.SnapshotBaseDamage = totalDamage / float64(newTickCount)
+		dot.SnapshotBaseDamage = damagePerTick
 		igniteSpell.Cast(sim, target)
 		dot.Aura.SetStacks(sim, int32(dot.SnapshotBaseDamage))
 	}
@@ -1427,6 +1426,8 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 		outstandingDamage := dot.OutstandingDmg()
 		newDamage := config.DamageCalculator(result)
 		totalDamage := outstandingDamage + newDamage
+		newTickCount := dot.BaseTickCount + core.TernaryInt32(dot.IsActive(), 1, 0)
+		damagePerTick := totalDamage / float64(newTickCount)
 
 		if config.IncludeAuraDelay {
 			// For now, assume that the mechanism driving random aura update
@@ -1470,11 +1471,11 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 				Priority: core.ActionPriorityDOT,
 
 				OnAction: func(_ *core.Simulation) {
-					refreshIgnite(sim, target, totalDamage)
+					refreshIgnite(sim, target, damagePerTick)
 				},
 			})
 		} else {
-			refreshIgnite(sim, target, totalDamage)
+			refreshIgnite(sim, target, damagePerTick)
 		}
 	}
 
