@@ -1,6 +1,7 @@
 import { Player } from '../../player.js';
 import {
 	APLValue,
+	APLValueAllTrinketStatProcsActive,
 	APLValueAnd,
 	APLValueAuraICDIsReadyWithReactionTime,
 	APLValueAuraInternalCooldown,
@@ -953,6 +954,25 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				label: 'Overlap',
 				labelTooltip: 'Maximum amount of time before the aura expires when it may be refreshed.',
 			}),
+		],
+	}),
+
+	// Aura Sets
+	allTrinketStatProcsActive: inputBuilder({
+		label: 'All Trinket Proc Buffs Active',
+		submenu: ['Aura Sets'],
+		shortDescription: "<b>True</b> if all trinket procs that buff the specified stat type(s) are currently active, otherwise <b>False</b>.",
+		fullDescription: `
+		<p>For stacking proc buffs, this condition also checks that the buff has been stacked to its maximum possible strength.</p>
+		`,
+		newValue: () =>
+			APLValueAllTrinketStatProcsActive.create({
+				statType1: -1,
+				statType2: -1,
+			}),
+		fields: [
+			AplHelpers.statTypeFieldConfig('statType1'),
+			AplHelpers.statTypeFieldConfig('statType2'),
 		],
 	}),
 

@@ -137,6 +137,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, customHandler CustomPro
 		})
 
 		procAura.Icd = triggerAura.Icd
+		character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
 	})
 }
 
@@ -366,6 +367,8 @@ func NewStackingStatBonusEffect(config StackingStatBonusEffect) {
 				procAura.AddStack(sim)
 			},
 		})
+
+		character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
 	})
 }
 

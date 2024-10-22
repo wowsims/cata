@@ -96,6 +96,18 @@ func ProtoArrayToStatsList(protoStats []proto.Stat) []Stat {
 	return stats
 }
 
+func IntTupleToStatsList(statType1 int32, statType2 int32) []Stat {
+	statTypes := make([]Stat, 0, 2)
+
+	for _, statIdx := range []int32{statType1, statType2} {
+		if statIdx >= 0 {
+			statTypes = append(statTypes, Stat(statIdx))
+		}
+	}
+
+	return statTypes
+}
+
 func (s Stat) StatName() string {
 	switch s {
 	case Strength:

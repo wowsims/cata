@@ -2,7 +2,6 @@ package core
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -270,13 +269,7 @@ func (rot *APLRotation) newActionCastAllStatBuffCooldowns(config *proto.APLActio
 	unit := rot.unit
 	actionImpl := &APLActionCastAllStatBuffCooldowns{
 		character:        unit.Env.Raid.GetPlayerFromUnit(unit).GetCharacter(),
-		statTypesToMatch: make([]stats.Stat, 0, 2),
-	}
-
-	for _, statIdx := range []int32{config.StatType1, config.StatType2} {
-		if (statIdx >= 0) {
-			actionImpl.statTypesToMatch = append(actionImpl.statTypesToMatch, stats.Stat(statIdx))
-		}
+		statTypesToMatch: stats.IntTupleToStatsList(config.StatType1, config.StatType2),
 	}
 
 	unit.Env.RegisterPostFinalizeEffect(func() {
@@ -320,11 +313,7 @@ func (action *APLActionCastAllStatBuffCooldowns) Execute(sim *Simulation) {
 	}
 }
 func (action *APLActionCastAllStatBuffCooldowns) String() string {
-	statNames := MapSlice(action.statTypesToMatch, func(statType stats.Stat) string {
-		return statType.StatName()
-	})
-
-	return fmt.Sprintf("Cast All Buff Cooldowns For: %s", strings.Join(statNames, ","))
+	return fmt.Sprintf("Cast All Buff Cooldowns For: %s", StringFromStatTypes(action.statTypesToMatch))
 }
 
 type APLActionAutocastOtherCooldowns struct {

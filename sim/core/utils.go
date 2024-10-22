@@ -3,14 +3,24 @@ package core
 import (
 	"hash/fnv"
 	"math"
+	"strings"
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	googleproto "google.golang.org/protobuf/proto"
 )
 
 func DurationFromSeconds(numSeconds float64) time.Duration {
 	return time.Duration(float64(time.Second) * numSeconds)
+}
+
+func StringFromStatTypes(statTypes []stats.Stat) string {
+	statNames := MapSlice(statTypes, func(statType stats.Stat) string {
+		return statType.StatName()
+	})
+
+	return strings.Join(statNames, ", ")
 }
 
 func GetTristateValueInt32(effect proto.TristateEffect, regularValue int32, impValue int32) int32 {

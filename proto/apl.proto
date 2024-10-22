@@ -82,7 +82,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 78
+// NextIndex: 79
 message APLValue {
     oneof value {
         // Operators
@@ -162,6 +162,9 @@ message APLValue {
         APLValueAuraInternalCooldown aura_internal_cooldown = 39;
         APLValueAuraICDIsReadyWithReactionTime aura_icd_is_ready_with_reaction_time = 51;
         APLValueAuraShouldRefresh aura_should_refresh = 43;
+
+        // Aggregate Aura set values
+        APLValueAllTrinketStatProcsActive all_trinket_stat_procs_active = 78;
 
         // Dot values
         APLValueDotIsActive dot_is_active = 6;
@@ -554,6 +557,11 @@ message APLValueAuraShouldRefresh {
     UnitReference source_unit = 2;
     ActionID aura_id = 1;
     APLValue max_overlap = 3;
+}
+
+message APLValueAllTrinketStatProcsActive {
+    int32 stat_type1 = 1;
+    int32 stat_type2 = 2;
 }
 
 message APLValueDotIsActive {
