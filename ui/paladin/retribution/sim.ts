@@ -50,18 +50,12 @@ const pickRotation = (player: Player<Spec.SpecRetributionPaladin>): APLRotation 
 		player.getEquippedItem(ItemSlot.ItemSlotTrinket2)?.item.name === "Apparatus of Khaz'goroth";
 
 	if (has2pcT13) {
-		if (hasApparatus) {
-			return Presets.ROTATION_PRESET_T13_APPARATUS.rotation.rotation!;
-		}
-
 		return Presets.ROTATION_PRESET_T13.rotation.rotation!;
-	}
-
-	if (hasApparatus) {
+	} else if (hasApparatus) {
 		return Presets.ROTATION_PRESET_APPARATUS.rotation.rotation!;
+	} else {
+		return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	}
-
-	return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
 };
 
 const updateGearStatsModifier = (player: Player<Spec.SpecRetributionPaladin>) => (baseStats: Stats) => {
@@ -204,7 +198,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 
 	presets: {
 		epWeights: [Presets.P2_EP_PRESET, Presets.P3_EP_PRESET, Presets.P4_EP_PRESET],
-		rotations: [Presets.ROTATION_PRESET_DEFAULT, Presets.ROTATION_PRESET_APPARATUS, Presets.ROTATION_PRESET_T13, Presets.ROTATION_PRESET_T13_APPARATUS],
+		rotations: [Presets.ROTATION_PRESET_DEFAULT, Presets.ROTATION_PRESET_APPARATUS, Presets.ROTATION_PRESET_T13],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.P2_Talents, Presets.P3_P4_Talents],
 		// Preset gear configurations that the user can quickly select.
