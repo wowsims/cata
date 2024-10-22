@@ -10,7 +10,6 @@ import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import { TypedEvent } from '../../core/typed_event';
 import { formatToNumber } from '../../core/utils';
-import { sharedMageDisplayStatsModifiers } from '../shared';
 import * as FireInputs from './inputs';
 import * as Presets from './presets';
 
@@ -31,9 +30,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpellPower, Stat.StatMasteryRating],
 		[PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatSpellCritPercent, PseudoStat.PseudoStatSpellHastePercent],
 	),
-	modifyDisplayStats: (player: Player<Spec.SpecFireMage>) => {
-		return sharedMageDisplayStatsModifiers(player);
-	},
 
 	defaults: {
 		// Default equipped gear.
