@@ -248,7 +248,7 @@ func init() {
 				// Special case for spells that aren't spells that can proc black magic.
 				specialCaseSpell := spell.ActionID.SpellID == 47465 || spell.ActionID.SpellID == 12867
 
-				if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskSpellDamage|core.ProcMaskWeaponProc) && !specialCaseSpell {
+				if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskSpellOrSpellProc) && !specialCaseSpell {
 					return
 				}
 

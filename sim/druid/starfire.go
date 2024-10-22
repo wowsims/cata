@@ -14,7 +14,7 @@ func (druid *Druid) registerStarfireSpell() {
 
 	starfireGlyphSpell := druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID: core.ActionID{SpellID: 54845},
-		ProcMask: core.ProcMaskSuppressedProc,
+		ProcMask: core.ProcMaskEmpty,
 		Flags:    core.SpellFlagNoLogs,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			moonfireDot := druid.Moonfire.Dot(target)

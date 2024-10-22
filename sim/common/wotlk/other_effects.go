@@ -180,7 +180,7 @@ func init() {
 			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       name,
 				Callback:   core.CallbackOnSpellHitDealt,
-				ProcMask:   core.ProcMaskMeleeOrRanged | core.ProcMaskProc,
+				ProcMask:   core.ProcMaskMeleeOrRanged | core.ProcMaskMeleeProc,
 				Outcome:    core.OutcomeLanded,
 				ProcChance: 0.35,
 				ActionID:   core.ActionID{ItemID: itemID},
@@ -493,7 +493,7 @@ func init() {
 			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       name + " Trigger",
 				Callback:   core.CallbackOnCastComplete,
-				ProcMask:   core.ProcMaskSpellOrProc,
+				ProcMask:   core.ProcMaskSpellOrSpellProc,
 				Harmful:    true,
 				ProcChance: 0.10,
 				ActionID:   core.ActionID{ItemID: itemID},
@@ -1122,7 +1122,7 @@ func init() {
 				Name:       triggerName,
 				ActionID:   core.ActionID{SpellID: triggerSpellId},
 				Callback:   core.CallbackOnSpellHitDealt,
-				ProcMask:   core.ProcMaskMeleeOrProc,
+				ProcMask:   core.ProcMaskMeleeOrMeleeProc,
 				ProcChance: 0.37,
 				Outcome:    core.OutcomeLanded,
 				Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
