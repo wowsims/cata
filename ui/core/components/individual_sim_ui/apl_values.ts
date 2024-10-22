@@ -77,6 +77,7 @@ import {
 	APLValueSpellTimeToReady,
 	APLValueSpellTravelTime,
 	APLValueTotemRemainingTime,
+	APLValueTrinketProcsMinRemainingTime,
 	APLValueUnitIsMoving,
 	APLValueWarlockShouldRecastDrainSoul,
 	APLValueWarlockShouldRefreshCorruption,
@@ -985,6 +986,20 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		`,
 		newValue: () =>
 			APLValueAnyTrinketStatProcsActive.create({
+				statType1: -1,
+				statType2: -1,
+			}),
+		fields: [
+			AplHelpers.statTypeFieldConfig('statType1'),
+			AplHelpers.statTypeFieldConfig('statType2'),
+		],
+	}),
+	trinketProcsMinRemainingTime: inputBuilder({
+		label: 'Trinket Procs Min Remaining Time',
+		submenu: ['Aura Sets'],
+		shortDescription: "Shortest remaining duration on any active trinket procs that buff the specified stat type(s), or infinity if none are currently active.",
+		newValue: () =>
+			APLValueTrinketProcsMinRemainingTime.create({
 				statType1: -1,
 				statType2: -1,
 			}),

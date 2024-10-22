@@ -197,6 +197,8 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		return rot.newValueAllTrinketStatProcsActive(config.GetAllTrinketStatProcsActive())
 	case *proto.APLValue_AnyTrinketStatProcsActive:
 		return rot.newValueAnyTrinketStatProcsActive(config.GetAnyTrinketStatProcsActive())
+	case *proto.APLValue_TrinketProcsMinRemainingTime:
+		return rot.newValueTrinketProcsMinRemainingTime(config.GetTrinketProcsMinRemainingTime())
 
 	// Dots
 	case *proto.APLValue_DotIsActive:

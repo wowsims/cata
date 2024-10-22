@@ -82,7 +82,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 80
+// NextIndex: 81
 message APLValue {
     oneof value {
         // Operators
@@ -166,6 +166,7 @@ message APLValue {
         // Aggregate Aura set values
         APLValueAllTrinketStatProcsActive all_trinket_stat_procs_active = 78;
         APLValueAnyTrinketStatProcsActive any_trinket_stat_procs_active = 79;
+        APLValueTrinketProcsMinRemainingTime trinket_procs_min_remaining_time = 80;
 
         // Dot values
         APLValueDotIsActive dot_is_active = 6;
@@ -565,6 +566,10 @@ message APLValueAllTrinketStatProcsActive {
     int32 stat_type2 = 2;
 }
 message APLValueAnyTrinketStatProcsActive {
+    int32 stat_type1 = 1;
+    int32 stat_type2 = 2;
+}
+message APLValueTrinketProcsMinRemainingTime {
     int32 stat_type1 = 1;
     int32 stat_type2 = 2;
 }

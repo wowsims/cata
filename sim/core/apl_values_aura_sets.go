@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -77,4 +78,43 @@ func (value *APLValueAnyTrinketStatProcsActive) GetBool(sim *Simulation) bool {
 }
 func (value *APLValueAnyTrinketStatProcsActive) String() string {
 	return fmt.Sprintf("Any Trinket Stat Procs Active(%s)", StringFromStatTypes(value.statTypesToMatch))
+}
+
+type APLValueTrinketProcsMinRemainingTime struct {
+	DefaultAPLValueImpl
+
+	statTypesToMatch []stats.Stat
+	matchingAuras    []*StatBuffAura
+}
+
+
+func (rot *APLRotation) newValueTrinketProcsMinRemainingTime(config *proto.APLValueTrinketProcsMinRemainingTime) APLValue {
+	statTypesToMatch := stats.IntTupleToStatsList(config.StatType1, config.StatType2)
+	matchingAuras := rot.GetAPLTrinketProcAuras(statTypesToMatch)
+
+	if len(matchingAuras) == 0 {
+		return nil
+	}
+
+	return &APLValueTrinketProcsMinRemainingTime{
+		statTypesToMatch: statTypesToMatch,
+		matchingAuras:    matchingAuras,
+	}
+}
+func (value *APLValueTrinketProcsMinRemainingTime) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeDuration
+}
+func (value *APLValueTrinketProcsMinRemainingTime) GetDuration(sim *Simulation) time.Duration {
+	minRemainingTime := NeverExpires
+
+	for _, aura := range value.matchingAuras {
+		if aura.IsActive() {
+			minRemainingTime = min(minRemainingTime, aura.RemainingDuration(sim))
+		}
+	}
+
+	return minRemainingTime
+}
+func (value *APLValueTrinketProcsMinRemainingTime) String() string {
+	return fmt.Sprintf("Trinket Procs Min Remaining Time(%s)", StringFromStatTypes(value.statTypesToMatch))
 }
