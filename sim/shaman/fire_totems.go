@@ -36,7 +36,7 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 			NumberOfTicks: int32(40*(1.0+0.20*float64(shaman.Talents.TotemicFocus))) - 1,
 			TickLength:    time.Millisecond * (1500 + 20),
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := shaman.ClassSpellScaling * 0.09600000083
+				baseDamage := shaman.CalcAndRollDamageRange(sim, 0.09600000083, 0.30000001192)
 				dot.Spell.CalcAndDealDamage(sim, target, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
 			},
 		},
