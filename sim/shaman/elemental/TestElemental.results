@@ -94,8 +94,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-AllItems-ArrowofTime-72897"
  value: {
-  dps: 34920.12108
-  tps: 612.8783
+  dps: 34322.55827
+  tps: 599.81111
  }
 }
 dps_results: {
@@ -242,22 +242,22 @@ dps_results: {
 dps_results: {
  key: "TestElemental-AllItems-Bone-LinkFetish-77210"
  value: {
-  dps: 34535.61197
-  tps: 812.9438
+  dps: 34322.55827
+  tps: 599.81111
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-Bone-LinkFetish-77982"
  value: {
-  dps: 34511.21609
-  tps: 788.55733
+  dps: 34322.55827
+  tps: 599.81111
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-Bone-LinkFetish-78002"
  value: {
-  dps: 34585.86194
-  tps: 863.13345
+  dps: 34322.55827
+  tps: 599.81111
  }
 }
 dps_results: {
@@ -347,36 +347,36 @@ dps_results: {
 dps_results: {
  key: "TestElemental-AllItems-CrecheoftheFinalDragon-77205"
  value: {
-  dps: 34849.39255
-  tps: 600.26176
+  dps: 34322.55827
+  tps: 599.81111
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-CrecheoftheFinalDragon-77972"
  value: {
-  dps: 34862.25852
-  tps: 598.98748
+  dps: 34322.55827
+  tps: 599.81111
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-CrecheoftheFinalDragon-77992"
  value: {
-  dps: 34947.64437
-  tps: 598.66915
+  dps: 34322.55827
+  tps: 599.81111
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-CrushingWeight-59506"
  value: {
-  dps: 34793.52657
-  tps: 604.62377
+  dps: 34322.55827
+  tps: 599.81111
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-CrushingWeight-65118"
  value: {
-  dps: 34767.936
-  tps: 612.44765
+  dps: 34322.55827
+  tps: 599.81111
  }
 }
 dps_results: {
@@ -431,8 +431,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-AllItems-Deathbringer'sWill-50363"
  value: {
-  dps: 34571.10005
-  tps: 601.25712
+  dps: 34543.65719
+  tps: 600.11051
  }
 }
 dps_results: {
@@ -837,22 +837,22 @@ dps_results: {
 dps_results: {
  key: "TestElemental-AllItems-InsigniaoftheCorruptedMind-77203"
  value: {
-  dps: 36749.56316
-  tps: 635.78252
+  dps: 36861.1655
+  tps: 638.33265
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-InsigniaoftheCorruptedMind-77971"
  value: {
-  dps: 36659.03496
-  tps: 635.26512
+  dps: 36688.04884
+  tps: 631.54486
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-InsigniaoftheCorruptedMind-77991"
  value: {
-  dps: 37143.90898
-  tps: 642.40694
+  dps: 37247.08366
+  tps: 637.59723
  }
 }
 dps_results: {
@@ -1117,22 +1117,22 @@ dps_results: {
 dps_results: {
  key: "TestElemental-AllItems-No'Kaled,theElementsofDeath-77188"
  value: {
-  dps: 37327.18376
-  tps: 2037.06249
+  dps: 37149.59763
+  tps: 1796.25404
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-No'Kaled,theElementsofDeath-78472"
  value: {
-  dps: 37358.84826
-  tps: 2068.72699
+  dps: 37149.59763
+  tps: 1796.25404
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-No'Kaled,theElementsofDeath-78481"
  value: {
-  dps: 37299.14186
-  tps: 2009.0206
+  dps: 37149.59763
+  tps: 1796.25404
  }
 }
 dps_results: {
@@ -1320,8 +1320,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-AllItems-RosaryofLight-72901"
  value: {
-  dps: 34719.21492
-  tps: 599.1145
+  dps: 34322.55827
+  tps: 599.81111
  }
 }
 dps_results: {
@@ -1462,22 +1462,22 @@ dps_results: {
 dps_results: {
  key: "TestElemental-AllItems-SoulshifterVortex-77206"
  value: {
-  dps: 35188.59272
-  tps: 617.56746
+  dps: 35161.3498
+  tps: 616.53742
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-SoulshifterVortex-77970"
  value: {
-  dps: 35141.73168
-  tps: 614.91392
+  dps: 35249.20677
+  tps: 612.57704
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-SoulshifterVortex-77990"
  value: {
-  dps: 35391.59178
-  tps: 618.30001
+  dps: 35402.2003
+  tps: 618.38538
  }
 }
 dps_results: {
@@ -1504,22 +1504,22 @@ dps_results: {
 dps_results: {
  key: "TestElemental-AllItems-StarcatcherCompass-77202"
  value: {
-  dps: 35006.2117
-  tps: 608.87352
+  dps: 35093.25524
+  tps: 611.51093
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-StarcatcherCompass-77973"
  value: {
-  dps: 35262.134
-  tps: 609.50066
+  dps: 35332.82789
+  tps: 609.50032
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-StarcatcherCompass-77993"
  value: {
-  dps: 35329.17488
-  tps: 613.63033
+  dps: 35476.4157
+  tps: 614.5079
  }
 }
 dps_results: {
@@ -1756,8 +1756,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-AllItems-Varo'then'sBrooch-72899"
  value: {
-  dps: 34822.66889
-  tps: 610.53176
+  dps: 34322.55827
+  tps: 599.81111
  }
 }
 dps_results: {
@@ -1770,36 +1770,36 @@ dps_results: {
 dps_results: {
  key: "TestElemental-AllItems-VesselofAcceleration-68995"
  value: {
-  dps: 34606.81962
-  tps: 599.26159
+  dps: 34322.55827
+  tps: 599.81111
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-VesselofAcceleration-69167"
  value: {
-  dps: 34636.04611
-  tps: 599.22557
+  dps: 34322.55827
+  tps: 599.81111
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-VialofShadows-77207"
  value: {
-  dps: 34595.75552
-  tps: 873.06919
+  dps: 34322.55827
+  tps: 599.81111
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-VialofShadows-77979"
  value: {
-  dps: 34562.79565
-  tps: 840.07632
+  dps: 34322.55827
+  tps: 599.81111
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-VialofShadows-77999"
  value: {
-  dps: 34609.74811
-  tps: 887.01457
+  dps: 34322.55827
+  tps: 599.81111
  }
 }
 dps_results: {
