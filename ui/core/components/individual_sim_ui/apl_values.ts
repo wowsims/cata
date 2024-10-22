@@ -58,6 +58,7 @@ import {
 	APLValueNextRuneCooldown,
 	APLValueNot,
 	APLValueNumberTargets,
+	APLValueNumEquippedStatProcTrinkets,
 	APLValueOr,
 	APLValueRemainingTime,
 	APLValueRemainingTimePercent,
@@ -1000,6 +1001,20 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		shortDescription: "Shortest remaining duration on any active trinket procs that buff the specified stat type(s), or infinity if none are currently active.",
 		newValue: () =>
 			APLValueTrinketProcsMinRemainingTime.create({
+				statType1: -1,
+				statType2: -1,
+			}),
+		fields: [
+			AplHelpers.statTypeFieldConfig('statType1'),
+			AplHelpers.statTypeFieldConfig('statType2'),
+		],
+	}),
+	numEquippedStatProcTrinkets: inputBuilder({
+		label: 'Num Equipped Stat Proc Trinkets',
+		submenu: ['Aura Sets'],
+		shortDescription: "Number of equipped passive trinkets that buff the specified stat type(s) when they proc.",
+		newValue: () =>
+			APLValueNumEquippedStatProcTrinkets.create({
 				statType1: -1,
 				statType2: -1,
 			}),

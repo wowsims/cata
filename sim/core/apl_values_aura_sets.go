@@ -17,7 +17,7 @@ type APLValueAllTrinketStatProcsActive struct {
 
 func (rot *APLRotation) newValueAllTrinketStatProcsActive(config *proto.APLValueAllTrinketStatProcsActive) APLValue {
 	statTypesToMatch := stats.IntTupleToStatsList(config.StatType1, config.StatType2)
-	matchingAuras := rot.GetAPLTrinketProcAuras(statTypesToMatch)
+	matchingAuras := rot.GetAPLTrinketProcAuras(statTypesToMatch, true)
 
 	if len(matchingAuras) == 0 {
 		return nil
@@ -53,7 +53,7 @@ type APLValueAnyTrinketStatProcsActive struct {
 
 func (rot *APLRotation) newValueAnyTrinketStatProcsActive(config *proto.APLValueAnyTrinketStatProcsActive) APLValue {
 	statTypesToMatch := stats.IntTupleToStatsList(config.StatType1, config.StatType2)
-	matchingAuras := rot.GetAPLTrinketProcAuras(statTypesToMatch)
+	matchingAuras := rot.GetAPLTrinketProcAuras(statTypesToMatch, true)
 
 	if len(matchingAuras) == 0 {
 		return nil
@@ -90,7 +90,7 @@ type APLValueTrinketProcsMinRemainingTime struct {
 
 func (rot *APLRotation) newValueTrinketProcsMinRemainingTime(config *proto.APLValueTrinketProcsMinRemainingTime) APLValue {
 	statTypesToMatch := stats.IntTupleToStatsList(config.StatType1, config.StatType2)
-	matchingAuras := rot.GetAPLTrinketProcAuras(statTypesToMatch)
+	matchingAuras := rot.GetAPLTrinketProcAuras(statTypesToMatch, true)
 
 	if len(matchingAuras) == 0 {
 		return nil
@@ -117,4 +117,31 @@ func (value *APLValueTrinketProcsMinRemainingTime) GetDuration(sim *Simulation) 
 }
 func (value *APLValueTrinketProcsMinRemainingTime) String() string {
 	return fmt.Sprintf("Trinket Procs Min Remaining Time(%s)", StringFromStatTypes(value.statTypesToMatch))
+}
+
+type APLValueNumEquippedStatProcTrinkets struct {
+	DefaultAPLValueImpl
+
+	statTypesToMatch []stats.Stat
+	matchingAuras    []*StatBuffAura
+}
+
+
+func (rot *APLRotation) newValueNumEquippedStatProcTrinkets(config *proto.APLValueNumEquippedStatProcTrinkets) APLValue {
+	statTypesToMatch := stats.IntTupleToStatsList(config.StatType1, config.StatType2)
+	matchingAuras := rot.GetAPLTrinketProcAuras(statTypesToMatch, false)
+
+	return &APLValueNumEquippedStatProcTrinkets{
+		statTypesToMatch: statTypesToMatch,
+		matchingAuras:    matchingAuras,
+	}
+}
+func (value *APLValueNumEquippedStatProcTrinkets) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeInt
+}
+func (value *APLValueNumEquippedStatProcTrinkets) GetInt(sim *Simulation) int32 {
+	return int32(len(value.matchingAuras))
+}
+func (value *APLValueNumEquippedStatProcTrinkets) String() string {
+	return fmt.Sprintf("Num Equipped Stat Proc Trinkets(%s)", StringFromStatTypes(value.statTypesToMatch))
 }
