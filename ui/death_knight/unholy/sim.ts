@@ -11,6 +11,34 @@ import { Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as DeathKnightInputs from '../inputs';
 import * as Presets from './presets';
 
+const pickRotation = (player: Player<Spec.SpecUnholyDeathKnight>): APLRotation => {
+	const hasHcSolace =
+		player.getEquippedItem(ItemSlot.ItemSlotTrinket1)?.item.id === 56393 ||
+		player.getEquippedItem(ItemSlot.ItemSlotTrinket2)?.item.id === 56393;
+
+	if (hasHcSolace) {
+		return Presets.SOLACE_SNAPSHOT_ROTATION_PRESET.rotation.rotation!;
+	}
+
+	return Presets.DEFAULT_ROTATION_PRESET.rotation.rotation!;
+};
+
+const getEPDefaults = (player: Player<Spec.SpecUnholyDeathKnight>) => {
+	let hasP3Setup = false;
+
+	const items = player.getGear().getEquippedItems();
+
+	for (const item of items) {
+		const phase = item?.item.phase || 0;
+		if (phase > 2) {
+			hasP3Setup = true;
+			break;
+		}
+	}
+
+	return hasP3Setup ? Presets.P3_UNHOLY_EP_PRESET.epWeights : Presets.P2_UNHOLY_EP_PRESET.epWeights;
+};
+
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	cssClass: 'unholy-death-knight-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.DeathKnight),
@@ -28,7 +56,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 		Stat.StatHasteRating,
 		Stat.StatMasteryRating,
 	],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
+	epPseudoStats: [
+		PseudoStat.PseudoStatMainHandDps,
+		PseudoStat.PseudoStatPhysicalHitPercent,
+		PseudoStat.PseudoStatSpellHitPercent,
+	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -44,9 +76,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	),
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P1_BIS_GEAR_PRESET.gear,
+		gear: Presets.P2_BIS_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P1_UNHOLY_EP_PRESET.epWeights,
+		epWeights: Presets.P2_UNHOLY_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
 			const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 8);
@@ -58,7 +90,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.SingleTargetTalents.data,
+		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
@@ -83,14 +115,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 		}),
 	},
 
-	autoRotation: (player: Player<Spec.SpecUnholyDeathKnight>): APLRotation => {
-		const numTargets = player.sim.encounter.targets.length;
-		if (numTargets > 1) {
-			return Presets.AOE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-		} else {
-			return Presets.SINGLE_TARGET_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-		}
-	},
+	autoRotation: pickRotation,
 
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [],
@@ -120,45 +145,45 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_UNHOLY_EP_PRESET],
+		epWeights: [Presets.P2_UNHOLY_EP_PRESET, Presets.P3_UNHOLY_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [
-			Presets.SingleTargetTalents,
-			//Presets.AoeTalents,
+			Presets.DefaultTalents,
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
-			Presets.SINGLE_TARGET_ROTATION_PRESET_DEFAULT,
-			//Presets.AOE_ROTATION_PRESET_DEFAULT,
+			Presets.DEFAULT_ROTATION_PRESET,
+			Presets.SOLACE_SNAPSHOT_ROTATION_PRESET,
 		],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.P1_PREBIS_GEAR_PRESET, Presets.P1_BIS_GEAR_PRESET, Presets.P1_REALISTIC_BIS_GEAR_PRESET, Presets.P3_BIS_GEAR_PRESET],
+		gear: [Presets.PREBIS_GEAR_PRESET, Presets.P2_BIS_GEAR_PRESET, Presets.P3_BIS_GEAR_PRESET],
+		builds: [Presets.PREBIS_PRESET, Presets.P2_PRESET, Presets.P3_PRESET],
 	},
 
 	raidSimPresets: [
 		{
 			spec: Spec.SpecUnholyDeathKnight,
-			talents: Presets.SingleTargetTalents.data,
+			talents: Presets.DefaultTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceWorgen,
-				[Faction.Horde]: Race.RaceTroll,
+				[Faction.Horde]: Race.RaceOrc,
 			},
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_BIS_GEAR_PRESET.gear,
-					2: Presets.P1_BIS_GEAR_PRESET.gear,
-					3: Presets.P1_BIS_GEAR_PRESET.gear,
-					4: Presets.P1_BIS_GEAR_PRESET.gear,
+					1: Presets.P2_BIS_GEAR_PRESET.gear,
+					2: Presets.P2_BIS_GEAR_PRESET.gear,
+					3: Presets.P2_BIS_GEAR_PRESET.gear,
+					4: Presets.P2_BIS_GEAR_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_BIS_GEAR_PRESET.gear,
-					2: Presets.P1_BIS_GEAR_PRESET.gear,
-					3: Presets.P1_BIS_GEAR_PRESET.gear,
-					4: Presets.P1_BIS_GEAR_PRESET.gear,
+					1: Presets.P2_BIS_GEAR_PRESET.gear,
+					2: Presets.P2_BIS_GEAR_PRESET.gear,
+					3: Presets.P2_BIS_GEAR_PRESET.gear,
+					4: Presets.P2_BIS_GEAR_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,
@@ -170,7 +195,9 @@ export class UnholyDeathKnightSimUI extends IndividualSimUI<Spec.SpecUnholyDeath
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecUnholyDeathKnight>) {
 		super(parentElem, player, SPEC_CONFIG);
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			new ReforgeOptimizer(this, {
+				getEPDefaults,
+			});
 		});
 	}
 }

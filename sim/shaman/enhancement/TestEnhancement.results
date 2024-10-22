@@ -235,15 +235,15 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-Bone-LinkFetish-77210"
  value: {
-  dps: 36363.11292
-  tps: 23855.00735
+  dps: 36242.8812
+  tps: 23734.77562
  }
 }
 dps_results: {
  key: "TestEnhancement-AllItems-Bone-LinkFetish-77982"
  value: {
-  dps: 36311.65611
-  tps: 23847.12171
+  dps: 36082.81992
+  tps: 23618.28552
  }
 }
 dps_results: {
@@ -375,22 +375,22 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-CunningoftheCruel-77208"
  value: {
-  dps: 35344.03216
-  tps: 23071.16429
+  dps: 35316.03007
+  tps: 23052.01205
  }
 }
 dps_results: {
  key: "TestEnhancement-AllItems-CunningoftheCruel-77980"
  value: {
-  dps: 35341.52063
-  tps: 23047.8914
+  dps: 35191.83296
+  tps: 22935.99285
  }
 }
 dps_results: {
  key: "TestEnhancement-AllItems-CunningoftheCruel-78000"
  value: {
-  dps: 35406.93807
-  tps: 23143.06486
+  dps: 35378.08541
+  tps: 23159.78271
  }
 }
 dps_results: {
@@ -1115,6 +1115,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-No'Kaled,theElementsofDeath-77188"
+ value: {
+  dps: 36692.44319
+  tps: 23549.25954
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-No'Kaled,theElementsofDeath-78472"
+ value: {
+  dps: 36692.44319
+  tps: 23549.25954
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-No'Kaled,theElementsofDeath-78481"
+ value: {
+  dps: 36692.44319
+  tps: 23549.25954
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-Oremantle'sFavor-61448"
  value: {
   dps: 35068.61603
@@ -1189,6 +1210,27 @@ dps_results: {
  value: {
   dps: 34484.87017
   tps: 22264.46192
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Rathrak,thePoisonousMind-77195"
+ value: {
+  dps: 32351.57686
+  tps: 21641.60067
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Rathrak,thePoisonousMind-78475"
+ value: {
+  dps: 32807.67633
+  tps: 22073.18072
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Rathrak,thePoisonousMind-78484"
+ value: {
+  dps: 32049.29316
+  tps: 21399.27619
  }
 }
 dps_results: {
@@ -1607,6 +1649,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-Ti'tahk,theStepsofTime-77190"
+ value: {
+  dps: 36692.44319
+  tps: 23549.25954
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Ti'tahk,theStepsofTime-78477"
+ value: {
+  dps: 36692.44319
+  tps: 23549.25954
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Ti'tahk,theStepsofTime-78486"
+ value: {
+  dps: 36692.44319
+  tps: 23549.25954
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-Tia'sGrace-55874"
  value: {
   dps: 36116.17271
@@ -1728,15 +1791,15 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-VialofShadows-77207"
  value: {
-  dps: 36947.34765
-  tps: 24022.21334
+  dps: 36877.00833
+  tps: 23951.87402
  }
 }
 dps_results: {
  key: "TestEnhancement-AllItems-VialofShadows-77979"
  value: {
-  dps: 36737.02832
-  tps: 23917.82961
+  dps: 36603.16342
+  tps: 23783.96471
  }
 }
 dps_results: {

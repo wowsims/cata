@@ -221,15 +221,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-Bone-LinkFetish-77210"
  value: {
-  dps: 27245.33216
-  tps: 38845.54284
+  dps: 27120.02454
+  tps: 38689.58284
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-Bone-LinkFetish-77982"
  value: {
-  dps: 27135.7745
-  tps: 38441.44383
+  dps: 26898.80709
+  tps: 38123.71123
  }
 }
 dps_results: {
@@ -354,15 +354,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-CunningoftheCruel-77208"
  value: {
-  dps: 25485.51678
-  tps: 36406.02053
+  dps: 25480.35072
+  tps: 36380.19023
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-CunningoftheCruel-77980"
  value: {
-  dps: 25480.64776
-  tps: 36385.70227
+  dps: 25472.08793
+  tps: 36342.90314
  }
 }
 dps_results: {
@@ -905,6 +905,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-Kiril,FuryofBeasts-77194"
+ value: {
+  dps: 30322.05151
+  tps: 42146.79516
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-Kiril,FuryofBeasts-78473"
+ value: {
+  dps: 30726.88519
+  tps: 43093.93563
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-Kiril,FuryofBeasts-78482"
+ value: {
+  dps: 29885.69294
+  tps: 41440.01447
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-KiroptyricSigil-77113"
  value: {
   dps: 28086.28698
@@ -1189,6 +1210,27 @@ dps_results: {
  value: {
   dps: 25430.82653
   tps: 36330.27303
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-Rathrak,thePoisonousMind-77195"
+ value: {
+  dps: 25229.17807
+  tps: 35085.24069
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-Rathrak,thePoisonousMind-78475"
+ value: {
+  dps: 25741.72499
+  tps: 35679.91942
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-Rathrak,thePoisonousMind-78484"
+ value: {
+  dps: 24797.98338
+  tps: 34604.99118
  }
 }
 dps_results: {
@@ -1600,6 +1642,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-Ti'tahk,theStepsofTime-77190"
+ value: {
+  dps: 27123.71416
+  tps: 38003.67064
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-Ti'tahk,theStepsofTime-78477"
+ value: {
+  dps: 27213.38808
+  tps: 38272.53617
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-Ti'tahk,theStepsofTime-78486"
+ value: {
+  dps: 27113.26295
+  tps: 38085.98045
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-Tia'sGrace-55874"
  value: {
   dps: 26892.75958
@@ -1714,15 +1777,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-VialofShadows-77207"
  value: {
-  dps: 27849.93311
-  tps: 39229.18821
+  dps: 27779.8327
+  tps: 39127.99166
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-VialofShadows-77979"
  value: {
-  dps: 27616.26549
-  tps: 39384.92951
+  dps: 27481.69067
+  tps: 39185.27416
  }
 }
 dps_results: {

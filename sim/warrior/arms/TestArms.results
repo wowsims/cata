@@ -221,15 +221,15 @@ dps_results: {
 dps_results: {
  key: "TestArms-AllItems-Bone-LinkFetish-77210"
  value: {
-  dps: 33907.49693
-  tps: 22429.78187
+  dps: 33760.91585
+  tps: 22283.20079
  }
 }
 dps_results: {
  key: "TestArms-AllItems-Bone-LinkFetish-77982"
  value: {
-  dps: 33867.38785
-  tps: 22390.18092
+  dps: 33594.84139
+  tps: 22117.63446
  }
 }
 dps_results: {
@@ -1096,8 +1096,8 @@ dps_results: {
 dps_results: {
  key: "TestArms-AllItems-MoltenGiantWarplate"
  value: {
-  dps: 32468.65379
-  tps: 21569.99943
+  dps: 32653.00883
+  tps: 21804.31918
  }
 }
 dps_results: {
@@ -1126,6 +1126,27 @@ dps_results: {
  value: {
   dps: 31488.55325
   tps: 20471.84565
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-No'Kaled,theElementsofDeath-77188"
+ value: {
+  dps: 34145.84509
+  tps: 22290.66669
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-No'Kaled,theElementsofDeath-78472"
+ value: {
+  dps: 34214.2956
+  tps: 22352.76057
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-No'Kaled,theElementsofDeath-78481"
+ value: {
+  dps: 34080.28162
+  tps: 22227.11933
  }
 }
 dps_results: {
@@ -1425,6 +1446,30 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArms-AllItems-Souldrinker-77193"
+ value: {
+  dps: 34364.72802
+  tps: 22341.5219
+  hps: 295.97361
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Souldrinker-78479"
+ value: {
+  dps: 34476.28084
+  tps: 22420.11472
+  hps: 336.85027
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Souldrinker-78488"
+ value: {
+  dps: 34265.96048
+  tps: 22271.16815
+  hps: 255.53248
+ }
+}
+dps_results: {
  key: "TestArms-AllItems-SoulshifterVortex-77206"
  value: {
   dps: 32149.08629
@@ -1721,15 +1766,15 @@ dps_results: {
 dps_results: {
  key: "TestArms-AllItems-VialofShadows-77207"
  value: {
-  dps: 32722.91642
-  tps: 21611.35538
+  dps: 32632.65802
+  tps: 21521.09699
  }
 }
 dps_results: {
  key: "TestArms-AllItems-VialofShadows-77979"
  value: {
-  dps: 32833.81075
-  tps: 21586.74473
+  dps: 32668.45824
+  tps: 21421.39223
  }
 }
 dps_results: {
@@ -1835,6 +1880,27 @@ dps_results: {
  value: {
   dps: 32568.94498
   tps: 21179.26962
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Vishanka,JawsoftheEarth-78359"
+ value: {
+  dps: 32972.06443
+  tps: 21489.09789
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Vishanka,JawsoftheEarth-78471"
+ value: {
+  dps: 32993.68096
+  tps: 21500.96999
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-Vishanka,JawsoftheEarth-78480"
+ value: {
+  dps: 32947.44765
+  tps: 21466.10867
  }
 }
 dps_results: {
@@ -1966,43 +2032,43 @@ dps_results: {
 dps_results: {
  key: "TestArms-Settings-Orc-p3_arms_bis-Basic-arms-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 85556.67224
-  tps: 44925.20211
+  dps: 85972.12569
+  tps: 44756.50131
  }
 }
 dps_results: {
  key: "TestArms-Settings-Orc-p3_arms_bis-Basic-arms-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 41483.39564
-  tps: 27564.11385
+  dps: 41450.89426
+  tps: 27530.7984
  }
 }
 dps_results: {
  key: "TestArms-Settings-Orc-p3_arms_bis-Basic-arms-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 48541.46748
-  tps: 33093.61842
+  dps: 48017.07134
+  tps: 32647.17767
  }
 }
 dps_results: {
  key: "TestArms-Settings-Orc-p3_arms_bis-Basic-arms-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 61282.98214
-  tps: 30617.97779
+  dps: 61289.30781
+  tps: 30672.48907
  }
 }
 dps_results: {
  key: "TestArms-Settings-Orc-p3_arms_bis-Basic-arms-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 28926.13679
-  tps: 19155.84997
+  dps: 28898.88936
+  tps: 19043.51136
  }
 }
 dps_results: {
  key: "TestArms-Settings-Orc-p3_arms_bis-Basic-arms-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 32385.99032
-  tps: 21577.94391
+  dps: 31706.97049
+  tps: 21533.53119
  }
 }
 dps_results: {
@@ -2050,43 +2116,43 @@ dps_results: {
 dps_results: {
  key: "TestArms-Settings-Worgen-p3_arms_bis-Basic-arms-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 85791.63672
-  tps: 44850.40275
+  dps: 86258.7272
+  tps: 44739.15679
  }
 }
 dps_results: {
  key: "TestArms-Settings-Worgen-p3_arms_bis-Basic-arms-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 41749.4276
-  tps: 27727.66052
+  dps: 41592.59172
+  tps: 27673.48306
  }
 }
 dps_results: {
  key: "TestArms-Settings-Worgen-p3_arms_bis-Basic-arms-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 48121.74383
-  tps: 32791.61334
+  dps: 47880.4054
+  tps: 32498.57175
  }
 }
 dps_results: {
  key: "TestArms-Settings-Worgen-p3_arms_bis-Basic-arms-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 61537.8221
-  tps: 30638.32184
+  dps: 61557.86129
+  tps: 30662.27879
  }
 }
 dps_results: {
  key: "TestArms-Settings-Worgen-p3_arms_bis-Basic-arms-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 29104.18014
-  tps: 19335.07726
+  dps: 29072.54331
+  tps: 19224.72017
  }
 }
 dps_results: {
  key: "TestArms-Settings-Worgen-p3_arms_bis-Basic-arms-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 32366.82932
-  tps: 21538.35697
+  dps: 31570.41496
+  tps: 21441.21328
  }
 }
 dps_results: {

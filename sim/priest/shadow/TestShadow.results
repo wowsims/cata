@@ -221,22 +221,22 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-Bone-LinkFetish-77210"
  value: {
-  dps: 37516.88608
-  tps: 32066.72223
+  dps: 37510.83511
+  tps: 32060.4414
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-Bone-LinkFetish-77982"
  value: {
-  dps: 37513.46935
-  tps: 32065.21125
+  dps: 37492.01354
+  tps: 32043.97545
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-Bone-LinkFetish-78002"
  value: {
-  dps: 37532.17422
-  tps: 32083.74544
+  dps: 37548.51919
+  tps: 32100.1334
  }
 }
 dps_results: {
@@ -368,22 +368,22 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-CunningoftheCruel-77208"
  value: {
-  dps: 40629.56607
-  tps: 34852.16654
+  dps: 40656.44871
+  tps: 34826.93174
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-CunningoftheCruel-77980"
  value: {
-  dps: 40307.47713
-  tps: 34521.70233
+  dps: 40289.76691
+  tps: 34533.57503
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-CunningoftheCruel-78000"
  value: {
-  dps: 40941.41954
-  tps: 35090.52607
+  dps: 41136.06799
+  tps: 35292.49977
  }
 }
 dps_results: {
@@ -1199,6 +1199,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestShadow-AllItems-Rathrak,thePoisonousMind-77195"
+ value: {
+  dps: 35829.45565
+  tps: 32742.43783
+ }
+}
+dps_results: {
+ key: "TestShadow-AllItems-Rathrak,thePoisonousMind-78475"
+ value: {
+  dps: 37204.56751
+  tps: 33969.58669
+ }
+}
+dps_results: {
+ key: "TestShadow-AllItems-Rathrak,thePoisonousMind-78484"
+ value: {
+  dps: 34787.05781
+  tps: 31829.48239
+ }
+}
+dps_results: {
  key: "TestShadow-AllItems-ReflectionoftheLight-77115"
  value: {
   dps: 39267.82911
@@ -1600,6 +1621,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestShadow-AllItems-Ti'tahk,theStepsofTime-77190"
+ value: {
+  dps: 52662.53725
+  tps: 44932.26737
+ }
+}
+dps_results: {
+ key: "TestShadow-AllItems-Ti'tahk,theStepsofTime-78477"
+ value: {
+  dps: 54477.32368
+  tps: 46409.61592
+ }
+}
+dps_results: {
+ key: "TestShadow-AllItems-Ti'tahk,theStepsofTime-78486"
+ value: {
+  dps: 51347.94938
+  tps: 43774.53648
+ }
+}
+dps_results: {
  key: "TestShadow-AllItems-Tia'sGrace-55874"
  value: {
   dps: 37811.50706
@@ -1707,22 +1749,22 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-VialofShadows-77207"
  value: {
-  dps: 37587.79936
-  tps: 32139.46124
+  dps: 37590.57857
+  tps: 32142.21724
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-VialofShadows-77979"
  value: {
-  dps: 37608.99299
-  tps: 32160.28182
+  dps: 37565.10755
+  tps: 32116.22102
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-VialofShadows-77999"
  value: {
-  dps: 37567.69721
-  tps: 32118.65786
+  dps: 37590.47819
+  tps: 32141.98981
  }
 }
 dps_results: {

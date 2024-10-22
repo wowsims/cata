@@ -52,6 +52,7 @@ func (dk *DeathKnight) registerDeathStrikeSpell() {
 
 		minHeal := healingSpell.Unit.MaxHealth() * 0.07
 
+		flags := healingSpell.Flags
 		healing := healValue
 		if healValueModed < minHeal {
 			// Remove caster modifiers for spell when doing min heal
@@ -62,7 +63,7 @@ func (dk *DeathKnight) registerDeathStrikeSpell() {
 		healingSpell.CalcAndDealHealing(sim, healingSpell.Unit, healing, healingSpell.OutcomeHealing)
 
 		// Add back caster modifiers
-		healingSpell.Flags ^= core.SpellFlagIgnoreAttackerModifiers
+		healingSpell.Flags = flags
 	}
 
 	ohSpell := dk.GetOrRegisterSpell(core.SpellConfig{

@@ -6,10 +6,16 @@ import { Stats } from '../../core/proto_utils/stats';
 import DefensiveBloodApl from './apls/defensive.apl.json';
 import SimpleBloodApl from './apls/simple.apl.json';
 import P1BloodGear from './gear_sets/p1.gear.json';
+import P3BloodBalancedGear from './gear_sets/p3-balanced.gear.json';
+import P3BloodDefensiveGear from './gear_sets/p3-defensive.gear.json';
+import P3BloodOffensiveGear from './gear_sets/p3-offensive.gear.json';
 import PreRaidBloodGear from './gear_sets/preraid.gear.json';
 
 export const PRERAID_BLOOD_PRESET = PresetUtils.makePresetGear('Pre-Raid', PreRaidBloodGear);
 export const P1_BLOOD_PRESET = PresetUtils.makePresetGear('P1', P1BloodGear);
+export const P3_BLOOD_BALANCED_PRESET = PresetUtils.makePresetGear('P3-Balanced', P3BloodBalancedGear);
+export const P3_BLOOD_DEFENSIVE_PRESET = PresetUtils.makePresetGear('P3-Defensive', P3BloodDefensiveGear);
+export const P3_BLOOD_OFFENSIVE_PRESET = PresetUtils.makePresetGear('P3-Offensive', P3BloodOffensiveGear);
 
 export const BLOOD_SIMPLE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Simple', SimpleBloodApl);
 export const BLOOD_DEFENSIVE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Defensive', DefensiveBloodApl);
@@ -40,13 +46,39 @@ export const P1_BLOOD_EP_PRESET = PresetUtils.makePresetEpWeights(
 	),
 );
 
+// Preset options for EP weights
+export const P3_BLOOD_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P3',
+	Stats.fromMap(
+		{
+			[Stat.StatStrength]: 2.47,
+			[Stat.StatAgility]: 1.46,
+			[Stat.StatStamina]: 7,
+			[Stat.StatAttackPower]: 1,
+			[Stat.StatHitRating]: 6,
+			[Stat.StatCritRating]: 1,
+			[Stat.StatHasteRating]: 4,
+			[Stat.StatExpertiseRating]: 5,
+			[Stat.StatArmor]: 1,
+			[Stat.StatDodgeRating]: 0.5,
+			[Stat.StatParryRating]: 0.5,
+			[Stat.StatBonusArmor]: 1,
+			[Stat.StatMasteryRating]: 3,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 12.34,
+			[PseudoStat.PseudoStatOffHandDps]: 0.0,
+		},
+	),
+);
+
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wotlk.wowhead.com/talent-calc and copy the numbers in the url.
 
 export const BloodTalents = {
 	name: 'Blood',
 	data: SavedTalents.create({
-		talentsString: '03323200132222311321-2-003',
+		talentsString: '02323203102122111321-3-033',
 		glyphs: Glyphs.create({
 			prime1: DeathKnightPrimeGlyph.GlyphOfDeathStrike,
 			prime2: DeathKnightPrimeGlyph.GlyphOfHeartStrike,
@@ -60,6 +92,16 @@ export const BloodTalents = {
 		}),
 	}),
 };
+
+export const P1_PRESET = PresetUtils.makePresetBuild('P1', {
+	gear: P1_BLOOD_PRESET,
+	epWeights: P1_BLOOD_EP_PRESET,
+})
+
+export const P3_PRESET = PresetUtils.makePresetBuild('P3', {
+	gear: P3_BLOOD_BALANCED_PRESET,
+	epWeights: P3_BLOOD_EP_PRESET,
+})
 
 export const DefaultOptions = BloodDeathKnight_Options.create({
 	classOptions: {

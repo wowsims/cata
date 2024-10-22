@@ -45,9 +45,6 @@ func (dk *DeathKnight) registerDeathPactSpell() {
 		dk.AddMajorCooldown(core.MajorCooldown{
 			Spell: spell,
 			Type:  core.CooldownTypeSurvival,
-			ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
-				return dk.CurrentHealthPercent() < 0.1
-			},
 		})
 	}
 }

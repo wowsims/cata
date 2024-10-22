@@ -15,21 +15,21 @@ func init() {
 func TestUnholy(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
 		Class:      proto.Class_ClassDeathKnight,
-		Race:       proto.Race_RaceWorgen,
-		OtherRaces: []proto.Race{proto.Race_RaceGoblin},
+		Race:       proto.Race_RaceOrc,
+		OtherRaces: []proto.Race{proto.Race_RaceWorgen},
 
 		GearSet:     core.GetGearSet("../../../ui/death_knight/unholy/gear_sets", "p3.bis"),
 		Talents:     UnholyTalents,
 		Glyphs:      UnholyDefaultGlyphs,
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsUnholy},
-		Rotation:    core.GetAplRotation("../../../ui/death_knight/unholy/apls", "st"),
+		Rotation:    core.GetAplRotation("../../../ui/death_knight/unholy/apls", "default"),
 
 		ItemFilter: ItemFilter,
 	}))
 }
 
-var UnholyTalents = "203-1-13300321230331121231"
+var UnholyTalents = "2032-1-13300321230231021231"
 var UnholyDefaultGlyphs = &proto.Glyphs{
 	Prime1: int32(proto.DeathKnightPrimeGlyph_GlyphOfDeathCoil),
 	Prime2: int32(proto.DeathKnightPrimeGlyph_GlyphOfScourgeStrike),
@@ -61,10 +61,16 @@ var FullConsumes = &proto.Consumes{
 
 var ItemFilter = core.ItemFilter{
 	ArmorType: proto.ArmorType_ArmorTypePlate,
+	HandTypes: []proto.HandType{
+		proto.HandType_HandTypeTwoHand,
+	},
 
 	WeaponTypes: []proto.WeaponType{
 		proto.WeaponType_WeaponTypeAxe,
 		proto.WeaponType_WeaponTypeSword,
 		proto.WeaponType_WeaponTypeMace,
+	},
+	RangedWeaponTypes: []proto.RangedWeaponType{
+		proto.RangedWeaponType_RangedWeaponTypeRelic,
 	},
 }

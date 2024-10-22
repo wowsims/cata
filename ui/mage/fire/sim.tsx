@@ -10,7 +10,6 @@ import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import { TypedEvent } from '../../core/typed_event';
 import { formatToNumber } from '../../core/utils';
-import { sharedMageDisplayStatsModifiers } from '../shared';
 import * as FireInputs from './inputs';
 import * as Presets from './presets';
 
@@ -31,9 +30,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpellPower, Stat.StatMasteryRating],
 		[PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatSpellCritPercent, PseudoStat.PseudoStatSpellHastePercent],
 	),
-	modifyDisplayStats: (player: Player<Spec.SpecFireMage>) => {
-		return sharedMageDisplayStatsModifiers(player);
-	},
 
 	defaults: {
 		// Default equipped gear.
@@ -239,6 +235,7 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
 				statSelectionPresets: Presets.FIRE_BREAKPOINTS,
+				enableBreakpointLimits: true,
 				updateSoftCaps: softCaps => {
 					const raidBuffs = player.getRaid()?.getBuffs();
 					const hasBL = !!(raidBuffs?.bloodlust || raidBuffs?.timeWarp || raidBuffs?.heroism);
@@ -271,7 +268,7 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 										if (!hasCloseMatchingValue(blBreakpoint)) adjustedHastedBreakpoints.add(blBreakpoint);
 										if (hasBerserking) {
 											const berserkingBreakpoint = modifyHaste(blBreakpoint, 1.2);
-											if (berserkingBreakpoint > 0 && !hasCloseMatchingValue(blBreakpoint)) {
+											if (berserkingBreakpoint > 0 && !hasCloseMatchingValue(berserkingBreakpoint)) {
 												adjustedHastedBreakpoints.add(berserkingBreakpoint);
 											}
 										}
@@ -283,7 +280,7 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 										if (!hasCloseMatchingValue(piBreakpoint)) adjustedHastedBreakpoints.add(piBreakpoint);
 										if (hasBerserking) {
 											const berserkingBreakpoint = modifyHaste(piBreakpoint, 1.2);
-											if (berserkingBreakpoint > 0 && !hasCloseMatchingValue(piBreakpoint)) {
+											if (berserkingBreakpoint > 0 && !hasCloseMatchingValue(berserkingBreakpoint)) {
 												adjustedHastedBreakpoints.add(berserkingBreakpoint);
 											}
 										}

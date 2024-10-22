@@ -242,22 +242,22 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-Bone-LinkFetish-77210"
  value: {
-  dps: 23980.239
-  tps: 21634.37927
+  dps: 24293.72311
+  tps: 21947.76964
  }
 }
 dps_results: {
  key: "TestSV-AllItems-Bone-LinkFetish-77982"
  value: {
-  dps: 23968.46583
-  tps: 21627.64712
+  dps: 24183.97129
+  tps: 21841.25258
  }
 }
 dps_results: {
  key: "TestSV-AllItems-Bone-LinkFetish-78002"
  value: {
-  dps: 23962.53501
-  tps: 21625.37425
+  dps: 24477.52886
+  tps: 22122.15857
  }
 }
 dps_results: {
@@ -382,22 +382,22 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-CunningoftheCruel-77208"
  value: {
-  dps: 23642.37557
-  tps: 21287.87082
+  dps: 23892.88636
+  tps: 21538.617
  }
 }
 dps_results: {
  key: "TestSV-AllItems-CunningoftheCruel-77980"
  value: {
-  dps: 23640.27202
-  tps: 21285.85167
+  dps: 23823.18533
+  tps: 21468.8519
  }
 }
 dps_results: {
  key: "TestSV-AllItems-CunningoftheCruel-78000"
  value: {
-  dps: 23637.67034
-  tps: 21283.39083
+  dps: 23945.53866
+  tps: 21591.05461
  }
 }
 dps_results: {
@@ -933,6 +933,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSV-AllItems-Kiril,FuryofBeasts-77194"
+ value: {
+  dps: 27731.65096
+  tps: 24923.8929
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-Kiril,FuryofBeasts-78473"
+ value: {
+  dps: 28092.89332
+  tps: 25247.912
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-Kiril,FuryofBeasts-78482"
+ value: {
+  dps: 27410.55331
+  tps: 24635.53856
+ }
+}
+dps_results: {
  key: "TestSV-AllItems-KiroptyricSigil-77113"
  value: {
   dps: 24965.22546
@@ -1143,6 +1164,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSV-AllItems-No'Kaled,theElementsofDeath-77188"
+ value: {
+  dps: 25849.74647
+  tps: 23244.51424
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-No'Kaled,theElementsofDeath-78472"
+ value: {
+  dps: 25958.77003
+  tps: 23344.08149
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-No'Kaled,theElementsofDeath-78481"
+ value: {
+  dps: 25756.08467
+  tps: 23158.76332
+ }
+}
+dps_results: {
  key: "TestSV-AllItems-Oremantle'sFavor-61448"
  value: {
   dps: 23612.95159
@@ -1217,6 +1259,27 @@ dps_results: {
  value: {
   dps: 23445.11725
   tps: 21091.11185
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-Rathrak,thePoisonousMind-77195"
+ value: {
+  dps: 23204.22338
+  tps: 20871.04021
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-Rathrak,thePoisonousMind-78475"
+ value: {
+  dps: 23207.49471
+  tps: 20874.31154
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-Rathrak,thePoisonousMind-78484"
+ value: {
+  dps: 23198.92324
+  tps: 20865.74007
  }
 }
 dps_results: {
@@ -1439,6 +1502,30 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSV-AllItems-Souldrinker-77193"
+ value: {
+  dps: 25106.71449
+  tps: 22579.4005
+  hps: 80.47838
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-Souldrinker-78479"
+ value: {
+  dps: 25112.31017
+  tps: 22584.99619
+  hps: 91.66976
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-Souldrinker-78488"
+ value: {
+  dps: 25101.18981
+  tps: 22573.87582
+  hps: 69.42903
+ }
+}
+dps_results: {
  key: "TestSV-AllItems-SoulshifterVortex-77206"
  value: {
   dps: 24046.8203
@@ -1621,6 +1708,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSV-AllItems-Ti'tahk,theStepsofTime-77190"
+ value: {
+  dps: 25045.1354
+  tps: 22513.41704
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-Ti'tahk,theStepsofTime-78477"
+ value: {
+  dps: 25072.03002
+  tps: 22538.06147
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-Ti'tahk,theStepsofTime-78486"
+ value: {
+  dps: 25109.6594
+  tps: 22589.39456
+ }
+}
+dps_results: {
  key: "TestSV-AllItems-Tia'sGrace-55874"
  value: {
   dps: 24557.03601
@@ -1728,22 +1836,22 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-VialofShadows-77207"
  value: {
-  dps: 25208.92744
-  tps: 22702.60109
+  dps: 25417.09106
+  tps: 22908.59845
  }
 }
 dps_results: {
  key: "TestSV-AllItems-VialofShadows-77979"
  value: {
-  dps: 25161.88322
-  tps: 22674.78443
+  dps: 25227.5418
+  tps: 22744.06759
  }
 }
 dps_results: {
  key: "TestSV-AllItems-VialofShadows-77999"
  value: {
-  dps: 25352.10072
-  tps: 22842.13608
+  dps: 25690.28135
+  tps: 23167.74696
  }
 }
 dps_results: {
@@ -1842,6 +1950,27 @@ dps_results: {
  value: {
   dps: 23445.11725
   tps: 21091.11185
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-Vishanka,JawsoftheEarth-78359"
+ value: {
+  dps: 27116.40256
+  tps: 24588.94485
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-Vishanka,JawsoftheEarth-78471"
+ value: {
+  dps: 27790.83622
+  tps: 25260.50722
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-Vishanka,JawsoftheEarth-78480"
+ value: {
+  dps: 26585.50849
+  tps: 24075.34844
  }
 }
 dps_results: {

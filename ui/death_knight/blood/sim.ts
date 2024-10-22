@@ -151,13 +151,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_BLOOD_EP_PRESET],
+		epWeights: [Presets.P1_BLOOD_EP_PRESET, Presets.P3_BLOOD_EP_PRESET],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.BLOOD_SIMPLE_ROTATION_PRESET_DEFAULT, Presets.BLOOD_DEFENSIVE_ROTATION_PRESET_DEFAULT],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.BloodTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_BLOOD_PRESET, Presets.P1_BLOOD_PRESET],
+		gear: [Presets.PRERAID_BLOOD_PRESET, Presets.P1_BLOOD_PRESET, Presets.P3_BLOOD_BALANCED_PRESET, Presets.P3_BLOOD_DEFENSIVE_PRESET, Presets.P3_BLOOD_OFFENSIVE_PRESET],
+		builds: [Presets.P1_PRESET, Presets.P3_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecBloodDeathKnight>): APLRotation => {
@@ -173,7 +174,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceWorgen,
-				[Faction.Horde]: Race.RaceTroll,
+				[Faction.Horde]: Race.RaceOrc,
 			},
 			defaultGear: {
 				[Faction.Unknown]: {},
@@ -199,7 +200,16 @@ export class BloodDeathKnightSimUI extends IndividualSimUI<Spec.SpecBloodDeathKn
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecBloodDeathKnight>) {
 		super(parentElem, player, SPEC_CONFIG);
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			new ReforgeOptimizer(this, {
+				getEPDefaults: (player: Player<Spec.SpecFuryWarrior>) => {
+					const hasP3Setup = player
+						.getGear()
+						.getEquippedItems()
+						.some(item => (item?.item.phase || 0) >= 3);
+
+					return hasP3Setup ? Presets.P3_BLOOD_EP_PRESET.epWeights : Presets.P1_BLOOD_EP_PRESET.epWeights;
+				},
+			});
 		});
 	}
 }

@@ -53,6 +53,9 @@ var ItemSetFirehawkRobesOfConflagration = core.NewItemSet(core.ItemSet{
 		// Your spells have an increased chance to trigger Brain Freeze or Hot Streak.
 		// In addition, Arcane Power decreases the cost of your damaging spells by 10% instead of increasing their cost.
 		4: func(agent core.Agent) {
+			// Arcane Power Cost reduction implemented in:
+			// talents_arcane.go#278
+
 			mage := agent.(MageAgent).GetMage()
 
 			core.MakePermanent(mage.RegisterAura(core.Aura{
@@ -60,19 +63,14 @@ var ItemSetFirehawkRobesOfConflagration = core.NewItemSet(core.ItemSet{
 				ActionID: core.ActionID{SpellID: 99064},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					mage.brainFreezeProcChance += .15
-					mage.hotStreakProcChance += 0.30
+					mage.baseHotStreakProcChance += 0.30
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					mage.brainFreezeProcChance -= .15
-					mage.hotStreakProcChance -= .30
+					mage.baseHotStreakProcChance -= .30
 				},
 			}))
 
-			mage.OnSpellRegistered(func(spell *core.Spell) {
-				if spell.ClassSpellMask == MageSpellArcanePower {
-					mage.arcanePowerCostMod.UpdateFloatValue(-0.1)
-				}
-			})
 		},
 	},
 })

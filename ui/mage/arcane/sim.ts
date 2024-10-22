@@ -9,7 +9,6 @@ import { APLRotation } from '../../core/proto/apl';
 import { Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
-import { sharedMageDisplayStatsModifiers } from '../shared';
 import * as ArcaneInputs from './inputs';
 import * as Presets from './presets';
 
@@ -24,23 +23,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[
-			Stat.StatHealth,
-			Stat.StatMana,
-			Stat.StatStamina,
-			Stat.StatIntellect,
-			Stat.StatSpellPower,
-			Stat.StatMasteryRating,
-		],
-		[
-			PseudoStat.PseudoStatSpellHitPercent,
-			PseudoStat.PseudoStatSpellCritPercent,
-			PseudoStat.PseudoStatSpellHastePercent,
-		],
+		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpellPower, Stat.StatMasteryRating],
+		[PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatSpellCritPercent, PseudoStat.PseudoStatSpellHastePercent],
 	),
-	modifyDisplayStats: (player: Player<Spec.SpecArcaneMage>) => {
-		return sharedMageDisplayStatsModifiers(player);
-	},
 
 	defaults: {
 		// Default equipped gear.
@@ -56,11 +41,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 			// Sources:
 			// https://www.icy-veins.com/cataclysm-classic/arcane-mage-pve-stat-priority
 			// https://www.wowhead.com/cata/guide/classes/mage/arcane/dps-stat-priority-attributes-pve
-			const breakpoints = [2497 / Mechanics.HASTE_RATING_PER_HASTE_PERCENT];
+			const breakpoints = [23.14];
 			const hasteSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent, {
 				breakpoints,
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0.56 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
+				postCapEPs: [0.48 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
 			});
 
 			return [hasteSoftCapConfig];
@@ -222,7 +207,21 @@ export class ArcaneMageSimUI extends IndividualSimUI<Spec.SpecArcaneMage> {
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			new ReforgeOptimizer(this, {
+				updateSoftCaps: softCaps => {
+					const gear = player.getGear();
+					const hasT114P = gear.getItemSetCount("Firelord's Vestments") >= 4;
+
+					if (hasT114P) {
+						const softCapToModify = softCaps.find(sc => sc.unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHastePercent));
+						if (softCapToModify) {
+							softCapToModify.breakpoints[0] = 17.48;
+						}
+					}
+
+					return softCaps;
+				},
+			});
 		});
 	}
 }

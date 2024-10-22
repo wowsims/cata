@@ -101,8 +101,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-Balespider'sBurningVestments"
  value: {
-  dps: 37270.67872
-  tps: 22032.58189
+  dps: 37271.11191
+  tps: 22033.01509
  }
 }
 dps_results: {
@@ -228,22 +228,22 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-Bone-LinkFetish-77210"
  value: {
-  dps: 38093.77957
-  tps: 22543.69682
+  dps: 38185.76133
+  tps: 22635.71919
  }
 }
 dps_results: {
  key: "TestDestruction-AllItems-Bone-LinkFetish-77982"
  value: {
-  dps: 38123.45808
-  tps: 22571.98183
+  dps: 38165.41826
+  tps: 22617.26217
  }
 }
 dps_results: {
  key: "TestDestruction-AllItems-Bone-LinkFetish-78002"
  value: {
-  dps: 38113.31285
-  tps: 22560.74853
+  dps: 38216.50586
+  tps: 22664.28533
  }
 }
 dps_results: {
@@ -361,22 +361,22 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-CunningoftheCruel-77208"
  value: {
-  dps: 40612.86291
-  tps: 24283.38431
+  dps: 41176.903
+  tps: 24923.54311
  }
 }
 dps_results: {
  key: "TestDestruction-AllItems-CunningoftheCruel-77980"
  value: {
-  dps: 40138.99209
-  tps: 23959.75332
+  dps: 40693.00845
+  tps: 24488.17463
  }
 }
 dps_results: {
  key: "TestDestruction-AllItems-CunningoftheCruel-78000"
  value: {
-  dps: 40562.54259
-  tps: 24194.76686
+  dps: 41488.72072
+  tps: 25145.36074
  }
 }
 dps_results: {
@@ -648,8 +648,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-Gladiator'sFelshroud"
  value: {
-  dps: 30402.79603
-  tps: 18291.72265
+  dps: 30411.83919
+  tps: 18299.56302
  }
 }
 dps_results: {
@@ -1315,8 +1315,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-ShadowflameRegalia"
  value: {
-  dps: 33616.25704
-  tps: 20222.68049
+  dps: 33616.67661
+  tps: 20223.10006
  }
 }
 dps_results: {
@@ -1665,22 +1665,22 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-VialofShadows-77207"
  value: {
-  dps: 38130.2224
-  tps: 22583.39218
+  dps: 38234.8031
+  tps: 22682.76856
  }
 }
 dps_results: {
  key: "TestDestruction-AllItems-VialofShadows-77979"
  value: {
-  dps: 38124.52924
-  tps: 22571.85666
+  dps: 38210.93542
+  tps: 22661.75846
  }
 }
 dps_results: {
  key: "TestDestruction-AllItems-VialofShadows-77999"
  value: {
-  dps: 38113.98425
-  tps: 22561.49481
+  dps: 38241.86601
+  tps: 22688.28072
  }
 }
 dps_results: {
