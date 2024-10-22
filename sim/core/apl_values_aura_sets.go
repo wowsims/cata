@@ -42,3 +42,39 @@ func (value *APLValueAllTrinketStatProcsActive) GetBool(sim *Simulation) bool {
 func (value *APLValueAllTrinketStatProcsActive) String() string {
 	return fmt.Sprintf("All Trinket Stat Procs Active(%s)", StringFromStatTypes(value.statTypesToMatch))
 }
+
+type APLValueAnyTrinketStatProcsActive struct {
+	DefaultAPLValueImpl
+
+	statTypesToMatch []stats.Stat
+	matchingAuras    []*StatBuffAura
+}
+
+func (rot *APLRotation) newValueAnyTrinketStatProcsActive(config *proto.APLValueAnyTrinketStatProcsActive) APLValue {
+	statTypesToMatch := stats.IntTupleToStatsList(config.StatType1, config.StatType2)
+	matchingAuras := rot.GetAPLTrinketProcAuras(statTypesToMatch)
+
+	if len(matchingAuras) == 0 {
+		return nil
+	}
+
+	return &APLValueAnyTrinketStatProcsActive{
+		statTypesToMatch: statTypesToMatch,
+		matchingAuras:    matchingAuras,
+	}
+}
+func (value *APLValueAnyTrinketStatProcsActive) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeBool
+}
+func (value *APLValueAnyTrinketStatProcsActive) GetBool(sim *Simulation) bool {
+	for _, aura := range value.matchingAuras {
+		if aura.IsActive() && (aura.GetStacks() == aura.MaxStacks) {
+			return true
+		}
+	}
+
+	return false
+}
+func (value *APLValueAnyTrinketStatProcsActive) String() string {
+	return fmt.Sprintf("Any Trinket Stat Procs Active(%s)", StringFromStatTypes(value.statTypesToMatch))
+}

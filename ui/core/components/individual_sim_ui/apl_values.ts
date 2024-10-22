@@ -3,6 +3,7 @@ import {
 	APLValue,
 	APLValueAllTrinketStatProcsActive,
 	APLValueAnd,
+	APLValueAnyTrinketStatProcsActive,
 	APLValueAuraICDIsReadyWithReactionTime,
 	APLValueAuraInternalCooldown,
 	APLValueAuraIsActive,
@@ -967,6 +968,23 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		`,
 		newValue: () =>
 			APLValueAllTrinketStatProcsActive.create({
+				statType1: -1,
+				statType2: -1,
+			}),
+		fields: [
+			AplHelpers.statTypeFieldConfig('statType1'),
+			AplHelpers.statTypeFieldConfig('statType2'),
+		],
+	}),
+	anyTrinketStatProcsActive: inputBuilder({
+		label: 'Any Trinket Proc Buffs Active',
+		submenu: ['Aura Sets'],
+		shortDescription: "<b>True</b> if any trinket procs that buff the specified stat type(s) are currently active, otherwise <b>False</b>.",
+		fullDescription: `
+		<p>For stacking proc buffs, this condition also checks that the buff has been stacked to its maximum possible strength.</p>
+		`,
+		newValue: () =>
+			APLValueAnyTrinketStatProcsActive.create({
 				statType1: -1,
 				statType2: -1,
 			}),
