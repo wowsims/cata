@@ -60,6 +60,10 @@
 
 	.rotation-tab-header {
 		width: 100%;
+
+		.btn {
+			margin-bottom: var(--block-spacer);
+		}
 	}
 
 	.rotation-tab-auto {

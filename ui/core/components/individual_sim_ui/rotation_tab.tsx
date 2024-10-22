@@ -74,29 +74,19 @@ export class RotationTab extends SimTab {
 
 	private buildHeader() {
 		const headerRef = ref<HTMLDivElement>();
-		const resetButtonRef = ref<HTMLButtonElement>();
 		const rotationTypeSelectRef = ref<HTMLDivElement>();
+		const lockAPLRef = ref<HTMLDivElement>();
+		const resetButtonRef = ref<HTMLButtonElement>();
 		this.leftPanel.appendChild(
-			<div ref={headerRef} className="rotation-tab-header d-flex justify-content-between align-items-baseline">
-				<div ref={rotationTypeSelectRef} />
+			<div ref={headerRef} className="rotation-tab-header d-flex align-items-center">
+				<div ref={rotationTypeSelectRef} className="me-auto"/>
+				<div ref={lockAPLRef}/>
 				<button ref={resetButtonRef} className="btn btn-sm btn-link btn-reset summary-table-reset-button">
 					<i className="fas fa-times me-1"></i>
 					Reset APL
 				</button>
 			</div>,
 		);
-		new BooleanPicker(headerRef.value!, this.simUI.player, {
-				id: 'lock-apl',
-				label: 'Lock APL',
-				labelTooltip: 'Lock the APL, preventing changes & simplifying the display.',
-				showWhen: player => player.getRotationType() === APLRotationType.TypeAPL,
-				changedEvent: player => player.lockAPLChangeEmitter,
-				getValue: player => player.getLockAPL(),
-				setValue: (eventID, player, newValue: boolean) => {
-					player.setLockAPL(eventID, newValue)
-				},
-			}
-		)
 
 		resetButtonRef.value!.addEventListener('click', () => {
 			this.simUI.applyEmptyAplRotation(TypedEvent.nextEventID());
@@ -128,6 +118,19 @@ export class RotationTab extends SimTab {
 			setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
 				player.aplRotation.type = newValue;
 				player.rotationChangeEmitter.emit(eventID);
+			},
+		});
+
+		new BooleanPicker(lockAPLRef.value!, this.simUI.player, {
+			id: 'lock-apl',
+			label: 'Lock APL',
+			labelTooltip: 'Lock the APL, preventing changes & simplifying the display.',
+			inline: true,
+			showWhen: player => player.getRotationType() === APLRotationType.TypeAPL,
+			changedEvent: player => player.rotationChangeEmitter,
+			getValue: player => player.getLockAPL(),
+			setValue: (eventID, player, newValue: boolean) => {
+				player.setLockAPL(eventID, newValue)
 			},
 		});
 	}
