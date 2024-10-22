@@ -192,7 +192,7 @@ func (mage *Mage) applyHotStreak() {
 			}
 			// Hot Streak Base Talent Proc
 			if result.DidCrit() {
-				baseCritPercent := mage.GetStat(stats.SpellCritPercent) + 1*float64(mage.Talents.PiercingIce)
+				baseCritPercent := mage.GetStat(stats.SpellCritPercent)
 				hotStreakProcChance := mage.baseHotStreakProcChance + calculateHotStreakProcChance(baseCritPercent/100)
 
 				if sim.Proc(hotStreakProcChance, "Hot Streak") {
