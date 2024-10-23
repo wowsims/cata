@@ -6,7 +6,8 @@ import (
 )
 
 func init() {
-	cata.CreateDTRClassConfig(proto.Spec_SpecBalanceDruid, 0.072).
-		AddSpell(8921, cata.NewDragonwrathSpellConfig().SupressImpact()). // Moonfire
-		AddSpell(93402, cata.NewDragonwrathSpellConfig().SupressImpact()) // Sunfire
+	// https://docs.google.com/spreadsheets/d/e/2PACX-1vTaCACFb7dqXpF2qwAZIAgXX-p2VTuJWqmyWXqaJ3c49FNWm61E9-unEdN3cn7YHevoGWWPmqkqJv6h/pubhtml
+	cata.CreateDTRClassConfig(proto.Spec_SpecBalanceDruid, 0.08).
+		AddSpell(42231, cata.NewDragonwrathSpellConfig().IsAoESpell()).
+		AddSpell(88751, cata.NewDragonwrathSpellConfig().IsAoESpell())
 }

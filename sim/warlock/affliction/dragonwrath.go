@@ -6,7 +6,6 @@ import (
 )
 
 func init() {
-	cata.CreateDTRClassConfig(proto.Spec_SpecAfflictionWarlock, 0.085).
-		AddSpell(348, cata.NewDragonwrathSpellConfig().SupressImpact()).  // Immolate
-		AddSpell(47897, cata.NewDragonwrathSpellConfig().SupressImpact()) // Shadowflame
+	// https://docs.google.com/spreadsheets/d/12jnHZgMAYDTBmkeFjApaHL5yiiDlxXHYDbTXy2QCEBA/edit?gid=552198772#gid=552198772
+	cata.CreateDTRClassConfig(proto.Spec_SpecAfflictionWarlock, 0.105)
 }

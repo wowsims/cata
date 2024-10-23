@@ -8,12 +8,12 @@ import (
 )
 
 func init() {
-	cata.CreateDTRClassConfig(proto.Spec_SpecElementalShaman, 1.0/12.0). // TODO: Proc chance unknown for now
-										AddSpell(8050, cata.NewDragonwrathSpellConfig().SupressImpact()).                             // Flame Shock
-										AddSpell(88767, cata.NewDragonwrathSpellConfig().WithSpellHandler(customFulminationHandler)). // Fullmination
-										AddSpell(403, cata.NewDragonwrathSpellConfig().WithCustomSpell(overloadCopyHandler)).         // Lightning Bold
-										AddSpell(1, cata.NewDragonwrathSpellConfig().WithCustomSpell(overloadCopyHandler)).           // Chain Lightning
-										AddSpell(1, cata.NewDragonwrathSpellConfig().WithCustomSpell(overloadCopyHandler))            // Lava Burst
+	cata.CreateDTRClassConfig(proto.Spec_SpecElementalShaman, 0.108).
+		AddSpell(88767, cata.NewDragonwrathSpellConfig().WithSpellHandler(customFulminationHandler)). // Fullmination
+		AddSpell(403, cata.NewDragonwrathSpellConfig().WithCustomSpell(overloadCopyHandler)).         // Lightning Bold
+		AddSpell(421, cata.NewDragonwrathSpellConfig().WithCustomSpell(overloadCopyHandler)).         // Chain Lightning
+		AddSpell(51505, cata.NewDragonwrathSpellConfig().WithCustomSpell(overloadCopyHandler)).       // Lava Burst
+		AddSpell(3599, cata.NewDragonwrathSpellConfig().SupressSpell())                               // Searing Totem
 }
 
 func overloadCopyHandler(unit *core.Unit, spell *core.Spell) {

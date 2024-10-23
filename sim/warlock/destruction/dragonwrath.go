@@ -8,9 +8,8 @@ import (
 )
 
 func init() {
-	cata.CreateDTRClassConfig(proto.Spec_SpecDestructionWarlock, 0.11).
-		AddSpell(348, cata.NewDragonwrathSpellConfig().SupressImpact()).                          // Immolate
-		AddSpell(47897, cata.NewDragonwrathSpellConfig().SupressImpact()).                        // Shadowflame
+	// https://docs.google.com/spreadsheets/d/12jnHZgMAYDTBmkeFjApaHL5yiiDlxXHYDbTXy2QCEBA/edit?gid=1393367300#gid=1393367300
+	cata.CreateDTRClassConfig(proto.Spec_SpecDestructionWarlock, 0.116).
 		AddSpell(17962, cata.NewDragonwrathSpellConfig().WithSpellHandler(customImmolateHandler)) // Conflagrate
 }
 

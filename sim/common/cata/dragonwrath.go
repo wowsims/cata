@@ -28,6 +28,7 @@ type DragonwrathSpellConfig struct {
 	spellCopyHandler SpellCopyHandler
 	procPerCast      bool
 	tickIsCast       bool // some spells deal periodic damage but should be treated as casts
+	isAoESpell       bool // AoE Spells use reduced proc chance
 	supress          int8
 }
 
@@ -37,7 +38,7 @@ type DragonwrathClassConfig struct {
 }
 
 // Should be used in all places where copy spells are delayed to have it consistent
-var DTRDelay = time.Millisecond * 200
+var DTRDelay = time.Millisecond * 0
 
 var classConfig = map[proto.Spec]*DragonwrathClassConfig{}
 var globalSpellConfig = map[int32]DragonwrathSpellConfig{}
@@ -88,6 +89,11 @@ func (config DragonwrathSpellConfig) WithSpellHandler(handler SpellHandler) Drag
 
 func (config DragonwrathSpellConfig) WithCustomSpell(handler SpellCopyHandler) DragonwrathSpellConfig {
 	config.spellCopyHandler = handler
+	return config
+}
+
+func (config DragonwrathSpellConfig) IsAoESpell() DragonwrathSpellConfig {
+	config.isAoESpell = true
 	return config
 }
 
@@ -206,7 +212,8 @@ func init() {
 					return
 				}
 
-				if !spell.ProcMask.Matches(core.ProcMaskSpellOrProc) {
+				// only proc damage spells or class spells
+				if !spell.ProcMask.Matches(core.ProcMaskSpellDamage) && spell.ClassSpellMask == 0 {
 					return
 				}
 
@@ -226,6 +233,7 @@ func init() {
 					return
 				}
 
+				procChance := config.procChance
 				if val, ok := config.spellConfig[spell.SpellID]; ok {
 					if val.supress&supressImpact > 0 {
 						return
@@ -245,9 +253,14 @@ func init() {
 						// spell has not been checked yet, add it
 						spellList[spell.SpellID] = true
 					}
+
+					// reduce proc chance for AoE Spells
+					if val.isAoESpell {
+						procChance *= 2.0 / 9.0
+					}
 				}
 
-				if !sim.Proc(config.procChance, "Dragonwrath, Tarecgosa's Rest - DoT Proc") {
+				if !sim.Proc(procChance, "Dragonwrath, Tarecgosa's Rest - DoT Proc") {
 					return
 				}
 
@@ -290,7 +303,6 @@ func init() {
 	})
 
 	// register custom global spell handlers
-	registerPulseLightningCapacitor()
 }
 
 func registerSpells(unit *core.Unit) {
@@ -313,34 +325,6 @@ func registerDotSpell(unit *core.Unit) {
 	})
 }
 
-func registerPulseLightningCapacitor() {
-	globalSpellConfig[96891] = NewDragonwrathSpellConfig().
-		WithSpellHandler(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			copySpell := spell.Unit.GetSpell(spell.WithTag(71086))
-			if copySpell == nil {
-				copyConfig := GetDRTSpellConfig(spell)
-				copyConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					spell.CalcAndDealDamage(sim, target, spell.BonusSpellPower, spell.OutcomeMagicHitAndCrit)
-				}
-				copySpell = spell.Unit.RegisterSpell(copyConfig)
-			}
-
-			// for now use the same roll as the old one as we don't carry any
-			// meta data of the auras
-			// only use BonusDamage fields for spells with 0 spell scaling
-			copySpell.BonusSpellPower = result.PreOutcomeDamage
-			CastDTRSpell(sim, copySpell, result.Target)
-		})
-}
-
 func CastDTRSpell(sim *core.Simulation, spell *core.Spell, target *core.Unit) {
-	sim.AddPendingAction(
-		&core.PendingAction{
-			NextActionAt: sim.CurrentTime + DTRDelay, // add slight delay
-			Priority:     core.ActionPriorityAuto,
-			OnAction: func(sim *core.Simulation) {
-				spell.Cast(sim, target)
-			},
-		},
-	)
+	spell.Cast(sim, target)
 }

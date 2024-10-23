@@ -74,8 +74,10 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isElementalOverload bool) core.Spe
 		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 		spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-			if !isElementalOverload && result.Landed() && sim.Proc(shaman.GetOverloadChance(), "Lava Burst Elemental Overload") {
-				shaman.LavaBurstOverload.Cast(sim, target)
+			if !spell.ProcMask.Matches(core.ProcMaskSpellProc) {
+				if !isElementalOverload && result.Landed() && sim.Proc(shaman.GetOverloadChance(), "Lava Burst Elemental Overload") {
+					shaman.LavaBurstOverload.Cast(sim, target)
+				}
 			}
 
 			spell.DealDamage(sim, result)
