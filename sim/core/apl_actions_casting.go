@@ -308,7 +308,9 @@ func (action *APLActionCastAllStatBuffCooldowns) IsReady(sim *Simulation) bool {
 	return Ternary(action.character.Rotation.inSequence, len(action.readySubactions) == len(action.allSubactions), len(action.readySubactions) > 0)
 }
 func (action *APLActionCastAllStatBuffCooldowns) Execute(sim *Simulation) {
-	for _, subaction := range action.readySubactions {
+	actionSetToUse := Ternary(sim.CurrentTime < 0, action.allSubactions, action.readySubactions)
+
+	for _, subaction := range actionSetToUse {
 		subaction.Execute(sim)
 	}
 }

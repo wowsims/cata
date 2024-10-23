@@ -449,7 +449,6 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 				<li>By default, this action will cast such cooldowns greedily as they become available. However, when embedded in a sequence, the action will only fire when ALL cooldowns matching the specified buff type(s) are ready.</li>
 			</ul>
 		`,
-		includeIf: (player: Player<any>, isPrepull: boolean) => !isPrepull,
 		newValue: () =>
 			APLActionCastAllStatBuffCooldowns.create({
 				statType1: -1,
