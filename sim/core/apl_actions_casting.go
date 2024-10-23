@@ -269,7 +269,7 @@ func (rot *APLRotation) newActionCastAllStatBuffCooldowns(config *proto.APLActio
 	unit := rot.unit
 	actionImpl := &APLActionCastAllStatBuffCooldowns{
 		character:        unit.Env.Raid.GetPlayerFromUnit(unit).GetCharacter(),
-		statTypesToMatch: stats.IntTupleToStatsList(config.StatType1, config.StatType2),
+		statTypesToMatch: stats.IntTupleToStatsList(config.StatType1, config.StatType2, config.StatType3),
 	}
 
 	unit.Env.RegisterPostFinalizeEffect(func() {

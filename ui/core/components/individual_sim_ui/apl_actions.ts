@@ -453,10 +453,12 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 			APLActionCastAllStatBuffCooldowns.create({
 				statType1: -1,
 				statType2: -1,
+				statType3: -1,
 			}),
 		fields: [
 			AplHelpers.statTypeFieldConfig('statType1'),
 			AplHelpers.statTypeFieldConfig('statType2'),
+			AplHelpers.statTypeFieldConfig('statType3'),
 		],
 	}),
 	['autocastOtherCooldowns']: inputBuilder({

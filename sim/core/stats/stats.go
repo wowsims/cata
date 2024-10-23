@@ -96,10 +96,10 @@ func ProtoArrayToStatsList(protoStats []proto.Stat) []Stat {
 	return stats
 }
 
-func IntTupleToStatsList(statType1 int32, statType2 int32) []Stat {
-	statTypes := make([]Stat, 0, 2)
+func IntTupleToStatsList(statType1 int32, statType2 int32, statType3 int32) []Stat {
+	statTypes := make([]Stat, 0, 3)
 
-	for _, statIdx := range []int32{statType1, statType2} {
+	for _, statIdx := range []int32{statType1, statType2, statType3} {
 		if statIdx >= 0 {
 			statTypes = append(statTypes, Stat(statIdx))
 		}

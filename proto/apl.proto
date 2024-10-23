@@ -232,6 +232,7 @@ message APLActionMultishield {
 message APLActionCastAllStatBuffCooldowns {
 	int32 stat_type1 = 1;
 	int32 stat_type2 = 2;
+	int32 stat_type3 = 3;
 }
 
 message APLActionAutocastOtherCooldowns {
@@ -565,18 +566,22 @@ message APLValueAuraShouldRefresh {
 message APLValueAllTrinketStatProcsActive {
     int32 stat_type1 = 1;
     int32 stat_type2 = 2;
+    int32 stat_type3 = 3;
 }
 message APLValueAnyTrinketStatProcsActive {
     int32 stat_type1 = 1;
     int32 stat_type2 = 2;
+    int32 stat_type3 = 3;
 }
 message APLValueTrinketProcsMinRemainingTime {
     int32 stat_type1 = 1;
     int32 stat_type2 = 2;
+    int32 stat_type3 = 3;
 }
 message APLValueNumEquippedStatProcTrinkets {
     int32 stat_type1 = 1;
     int32 stat_type2 = 2;
+    int32 stat_type3 = 3;
 }
 
 message APLValueDotIsActive {

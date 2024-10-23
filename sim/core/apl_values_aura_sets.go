@@ -16,7 +16,7 @@ type APLValueAllTrinketStatProcsActive struct {
 }
 
 func (rot *APLRotation) newValueAllTrinketStatProcsActive(config *proto.APLValueAllTrinketStatProcsActive) APLValue {
-	statTypesToMatch := stats.IntTupleToStatsList(config.StatType1, config.StatType2)
+	statTypesToMatch := stats.IntTupleToStatsList(config.StatType1, config.StatType2, config.StatType3)
 	matchingAuras := rot.GetAPLTrinketProcAuras(statTypesToMatch, true)
 
 	if len(matchingAuras) == 0 {
@@ -52,7 +52,7 @@ type APLValueAnyTrinketStatProcsActive struct {
 }
 
 func (rot *APLRotation) newValueAnyTrinketStatProcsActive(config *proto.APLValueAnyTrinketStatProcsActive) APLValue {
-	statTypesToMatch := stats.IntTupleToStatsList(config.StatType1, config.StatType2)
+	statTypesToMatch := stats.IntTupleToStatsList(config.StatType1, config.StatType2, config.StatType3)
 	matchingAuras := rot.GetAPLTrinketProcAuras(statTypesToMatch, true)
 
 	if len(matchingAuras) == 0 {
@@ -89,7 +89,7 @@ type APLValueTrinketProcsMinRemainingTime struct {
 
 
 func (rot *APLRotation) newValueTrinketProcsMinRemainingTime(config *proto.APLValueTrinketProcsMinRemainingTime) APLValue {
-	statTypesToMatch := stats.IntTupleToStatsList(config.StatType1, config.StatType2)
+	statTypesToMatch := stats.IntTupleToStatsList(config.StatType1, config.StatType2, config.StatType3)
 	matchingAuras := rot.GetAPLTrinketProcAuras(statTypesToMatch, true)
 
 	if len(matchingAuras) == 0 {
@@ -128,7 +128,7 @@ type APLValueNumEquippedStatProcTrinkets struct {
 
 
 func (rot *APLRotation) newValueNumEquippedStatProcTrinkets(config *proto.APLValueNumEquippedStatProcTrinkets) APLValue {
-	statTypesToMatch := stats.IntTupleToStatsList(config.StatType1, config.StatType2)
+	statTypesToMatch := stats.IntTupleToStatsList(config.StatType1, config.StatType2, config.StatType3)
 	matchingAuras := rot.GetAPLTrinketProcAuras(statTypesToMatch, false)
 
 	return &APLValueNumEquippedStatProcTrinkets{

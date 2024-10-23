@@ -972,10 +972,12 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 			APLValueAllTrinketStatProcsActive.create({
 				statType1: -1,
 				statType2: -1,
+				statType3: -1,
 			}),
 		fields: [
 			AplHelpers.statTypeFieldConfig('statType1'),
 			AplHelpers.statTypeFieldConfig('statType2'),
+			AplHelpers.statTypeFieldConfig('statType3'),
 		],
 	}),
 	anyTrinketStatProcsActive: inputBuilder({
@@ -989,10 +991,12 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 			APLValueAnyTrinketStatProcsActive.create({
 				statType1: -1,
 				statType2: -1,
+				statType3: -1,
 			}),
 		fields: [
 			AplHelpers.statTypeFieldConfig('statType1'),
 			AplHelpers.statTypeFieldConfig('statType2'),
+			AplHelpers.statTypeFieldConfig('statType3'),
 		],
 	}),
 	trinketProcsMinRemainingTime: inputBuilder({
@@ -1003,10 +1007,12 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 			APLValueTrinketProcsMinRemainingTime.create({
 				statType1: -1,
 				statType2: -1,
+				statType3: -1,
 			}),
 		fields: [
 			AplHelpers.statTypeFieldConfig('statType1'),
 			AplHelpers.statTypeFieldConfig('statType2'),
+			AplHelpers.statTypeFieldConfig('statType3'),
 		],
 	}),
 	numEquippedStatProcTrinkets: inputBuilder({
@@ -1017,10 +1023,12 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 			APLValueNumEquippedStatProcTrinkets.create({
 				statType1: -1,
 				statType2: -1,
+				statType3: -1,
 			}),
 		fields: [
 			AplHelpers.statTypeFieldConfig('statType1'),
 			AplHelpers.statTypeFieldConfig('statType2'),
+			AplHelpers.statTypeFieldConfig('statType3'),
 		],
 	}),
 
