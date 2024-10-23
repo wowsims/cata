@@ -56,7 +56,7 @@ func (shaman *Shaman) registerUnleashFlame() {
 		DamageMultiplier: 1,
 		BonusCoefficient: 0.429,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := shaman.ClassSpellScaling * 1.11300003529
+			baseDamage := shaman.CalcAndRollDamageRange(sim, 1.11300003529, 0.17000000179)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			unleashFlameAura.Activate(sim)
 		},
@@ -75,7 +75,7 @@ func (shaman *Shaman) registerUnleashFrost() {
 		DamageMultiplier: 1,
 		BonusCoefficient: 0.386,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := shaman.ClassSpellScaling * 0.86900001764
+			baseDamage := shaman.CalcAndRollDamageRange(sim, 0.86900001764, 0.15000000596)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
