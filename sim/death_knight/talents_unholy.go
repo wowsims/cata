@@ -103,7 +103,7 @@ func (dk *DeathKnight) applyRunicEmpowerementCorruption() {
 
 	has4pcT13 := dk.HasSetBonus(ItemSetNecroticBoneplateBattlegear, 4)
 
-	var runicMasteryAura *core.Aura
+	var runicMasteryAura *core.StatBuffAura
 	if has4pcT13 {
 		runicMasteryAura = dk.NewTemporaryStatsAura("Runic Mastery", core.ActionID{SpellID: 105647}, stats.Stats{stats.MasteryRating: 710}, time.Second*12)
 	}

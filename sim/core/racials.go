@@ -210,25 +210,17 @@ func applyRaceEffects(agent Agent) {
 		default:
 			apBonus = 1169.0
 		}
-		bloodFuryAura := character.NewTemporaryStatsAura("Blood Fury", actionID, stats.Stats{stats.AttackPower: apBonus, stats.RangedAttackPower: apBonus, stats.SpellPower: spBonus}, time.Second*15)
 
-		spell := character.RegisterSpell(SpellConfig{
+		buffStats := stats.Stats{stats.AttackPower: apBonus, stats.RangedAttackPower: apBonus, stats.SpellPower: spBonus}
+		RegisterTemporaryStatsOnUseCD(character, "Blood Fury", buffStats, time.Second*15, SpellConfig{
 			ActionID: actionID,
-			Flags:    SpellFlagNoOnCastComplete,
+
 			Cast: CastConfig{
 				CD: Cooldown{
 					Timer:    character.NewTimer(),
 					Duration: time.Minute * 2,
 				},
 			},
-			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
-				bloodFuryAura.Activate(sim)
-			},
-		})
-
-		character.AddMajorCooldown(MajorCooldown{
-			Spell: spell,
-			Type:  CooldownTypeDPS,
 		})
 
 		// Axe specialization

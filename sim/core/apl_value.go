@@ -192,6 +192,16 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 	case *proto.APLValue_AuraShouldRefresh:
 		return rot.newValueAuraShouldRefresh(config.GetAuraShouldRefresh())
 
+	// Aura sets
+	case *proto.APLValue_AllTrinketStatProcsActive:
+		return rot.newValueAllTrinketStatProcsActive(config.GetAllTrinketStatProcsActive())
+	case *proto.APLValue_AnyTrinketStatProcsActive:
+		return rot.newValueAnyTrinketStatProcsActive(config.GetAnyTrinketStatProcsActive())
+	case *proto.APLValue_TrinketProcsMinRemainingTime:
+		return rot.newValueTrinketProcsMinRemainingTime(config.GetTrinketProcsMinRemainingTime())
+	case *proto.APLValue_NumEquippedStatProcTrinkets:
+		return rot.newValueNumEquippedStatProcTrinkets(config.GetNumEquippedStatProcTrinkets())
+
 	// Dots
 	case *proto.APLValue_DotIsActive:
 		return rot.newValueDotIsActive(config.GetDotIsActive())

@@ -41,7 +41,7 @@ message APLListItem {
     APLAction action = 3; // The action to be performed.
 }
 
-// NextIndex: 23
+// NextIndex: 24
 message APLAction {
     APLValue condition = 1; // If set, action will only execute if value is true or != 0.
 
@@ -52,6 +52,7 @@ message APLAction {
         APLActionChannelSpell channel_spell = 16;
         APLActionMultidot multidot = 8;
         APLActionMultishield multishield = 12;
+        APLActionCastAllStatBuffCooldowns cast_all_stat_buff_cooldowns = 23;
         APLActionAutocastOtherCooldowns autocast_other_cooldowns = 7;
 
         // Timing
@@ -81,7 +82,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 78
+// NextIndex: 82
 message APLValue {
     oneof value {
         // Operators
@@ -162,6 +163,12 @@ message APLValue {
         APLValueAuraICDIsReadyWithReactionTime aura_icd_is_ready_with_reaction_time = 51;
         APLValueAuraShouldRefresh aura_should_refresh = 43;
 
+        // Aggregate Aura set values
+        APLValueAllTrinketStatProcsActive all_trinket_stat_procs_active = 78;
+        APLValueAnyTrinketStatProcsActive any_trinket_stat_procs_active = 79;
+        APLValueTrinketProcsMinRemainingTime trinket_procs_min_remaining_time = 80;
+        APLValueNumEquippedStatProcTrinkets num_equipped_stat_proc_trinkets = 81;
+
         // Dot values
         APLValueDotIsActive dot_is_active = 6;
         APLValueDotRemainingTime dot_remaining_time = 13;
@@ -220,6 +227,12 @@ message APLActionMultishield {
     ActionID spell_id = 1;
     int32 max_shields = 2;
     APLValue max_overlap = 3;
+}
+
+message APLActionCastAllStatBuffCooldowns {
+	int32 stat_type1 = 1;
+	int32 stat_type2 = 2;
+	int32 stat_type3 = 3;
 }
 
 message APLActionAutocastOtherCooldowns {
@@ -548,6 +561,27 @@ message APLValueAuraShouldRefresh {
     UnitReference source_unit = 2;
     ActionID aura_id = 1;
     APLValue max_overlap = 3;
+}
+
+message APLValueAllTrinketStatProcsActive {
+    int32 stat_type1 = 1;
+    int32 stat_type2 = 2;
+    int32 stat_type3 = 3;
+}
+message APLValueAnyTrinketStatProcsActive {
+    int32 stat_type1 = 1;
+    int32 stat_type2 = 2;
+    int32 stat_type3 = 3;
+}
+message APLValueTrinketProcsMinRemainingTime {
+    int32 stat_type1 = 1;
+    int32 stat_type2 = 2;
+    int32 stat_type3 = 3;
+}
+message APLValueNumEquippedStatProcTrinkets {
+    int32 stat_type1 = 1;
+    int32 stat_type2 = 2;
+    int32 stat_type3 = 3;
 }
 
 message APLValueDotIsActive {

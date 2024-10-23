@@ -83,6 +83,7 @@ type APLActionImpl interface {
 
 	// Performs optional post-processing.
 	Finalize(*APLRotation)
+	PostFinalize(*APLRotation)
 
 	// Invoked before each sim iteration.
 	Reset(*Simulation)
@@ -107,6 +108,7 @@ type defaultAPLActionImpl struct {
 func (impl defaultAPLActionImpl) GetInnerActions() []*APLAction        { return nil }
 func (impl defaultAPLActionImpl) GetAPLValues() []APLValue             { return nil }
 func (impl defaultAPLActionImpl) Finalize(*APLRotation)                {}
+func (impl defaultAPLActionImpl) PostFinalize(*APLRotation)            {}
 func (impl defaultAPLActionImpl) Reset(*Simulation)                    {}
 func (impl defaultAPLActionImpl) GetNextAction(*Simulation) *APLAction { return nil }
 
@@ -149,6 +151,8 @@ func (rot *APLRotation) newAPLActionImpl(config *proto.APLAction) APLActionImpl 
 		return rot.newActionMultidot(config.GetMultidot())
 	case *proto.APLAction_Multishield:
 		return rot.newActionMultishield(config.GetMultishield())
+	case *proto.APLAction_CastAllStatBuffCooldowns:
+		return rot.newActionCastAllStatBuffCooldowns(config.GetCastAllStatBuffCooldowns())
 	case *proto.APLAction_AutocastOtherCooldowns:
 		return rot.newActionAutocastOtherCooldowns(config.GetAutocastOtherCooldowns())
 

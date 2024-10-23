@@ -39,6 +39,11 @@ func (action *APLActionSequence) Finalize(rot *APLRotation) {
 		subaction.impl.Finalize(rot)
 	}
 }
+func (action *APLActionSequence) PostFinalize(rot *APLRotation) {
+	for _, subaction := range action.subactions {
+		subaction.impl.PostFinalize(rot)
+	}
+}
 func (action *APLActionSequence) Reset(*Simulation) {
 	action.curIdx = 0
 }
@@ -137,6 +142,11 @@ func (action *APLActionStrictSequence) Finalize(rot *APLRotation) {
 	for _, subaction := range action.subactions {
 		subaction.impl.Finalize(rot)
 		action.subactionSpells = append(action.subactionSpells, subaction.GetAllSpells()...)
+	}
+}
+func (action *APLActionStrictSequence) PostFinalize(rot *APLRotation) {
+	for _, subaction := range action.subactions {
+		subaction.impl.PostFinalize(rot)
 	}
 }
 func (action *APLActionStrictSequence) Reset(*Simulation) {

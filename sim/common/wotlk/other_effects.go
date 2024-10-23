@@ -157,22 +157,22 @@ func init() {
 			critAura := character.NewTemporaryStatsAura(name+" Crit Proc", core.ActionID{SpellID: auraIDs[3]}, stats.Stats{stats.CritRating: amount}, time.Second*30)
 			hasteAura := character.NewTemporaryStatsAura(name+" Haste Proc", core.ActionID{SpellID: auraIDs[4]}, stats.Stats{stats.HasteRating: amount}, time.Second*30)
 
-			var auras [3]*core.Aura
+			var auras [3]*core.StatBuffAura
 			switch character.Class {
 			case proto.Class_ClassDeathKnight:
-				auras = [3]*core.Aura{strAura, critAura, hasteAura}
+				auras = [3]*core.StatBuffAura{strAura, critAura, hasteAura}
 			case proto.Class_ClassDruid:
-				auras = [3]*core.Aura{strAura, agiAura, hasteAura}
+				auras = [3]*core.StatBuffAura{strAura, agiAura, hasteAura}
 			case proto.Class_ClassHunter:
-				auras = [3]*core.Aura{agiAura, critAura, apAura}
+				auras = [3]*core.StatBuffAura{agiAura, critAura, apAura}
 			case proto.Class_ClassPaladin:
-				auras = [3]*core.Aura{strAura, critAura, hasteAura}
+				auras = [3]*core.StatBuffAura{strAura, critAura, hasteAura}
 			case proto.Class_ClassRogue:
-				auras = [3]*core.Aura{agiAura, apAura, hasteAura}
+				auras = [3]*core.StatBuffAura{agiAura, apAura, hasteAura}
 			case proto.Class_ClassShaman:
-				auras = [3]*core.Aura{agiAura, apAura, hasteAura}
+				auras = [3]*core.StatBuffAura{agiAura, apAura, hasteAura}
 			case proto.Class_ClassWarrior:
-				auras = [3]*core.Aura{strAura, critAura, hasteAura}
+				auras = [3]*core.StatBuffAura{strAura, critAura, hasteAura}
 			default:
 				return
 			}

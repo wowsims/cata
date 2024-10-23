@@ -101,6 +101,7 @@ type APLActionCatOptimalRotationAction struct {
 func (impl *APLActionCatOptimalRotationAction) GetInnerActions() []*core.APLAction { return nil }
 func (impl *APLActionCatOptimalRotationAction) GetAPLValues() []core.APLValue      { return nil }
 func (impl *APLActionCatOptimalRotationAction) Finalize(*core.APLRotation)         {}
+func (impl *APLActionCatOptimalRotationAction) PostFinalize(*core.APLRotation)     {}
 func (impl *APLActionCatOptimalRotationAction) GetNextAction(*core.Simulation) *core.APLAction {
 	return nil
 }

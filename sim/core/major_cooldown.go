@@ -41,6 +41,9 @@ type MajorCooldown struct {
 	// Spell that is cast when this MCD is activated.
 	Spell *Spell
 
+	// Associated buff aura that is activated when the above spell is cast.
+	BuffAura *StatBuffAura
+
 	// Cooldowns with higher priority get used first. This is important when some
 	// cooldowns have a non-zero cast time. For example, Drums should be used
 	// before Bloodlust.
@@ -311,6 +314,18 @@ func (mcdm *majorCooldownManager) GetMajorCooldownIDs() []*proto.ActionID {
 	return ids
 }
 
+func (mcdm *majorCooldownManager) GetMatchingStatBuffSpells(statTypesToMatch []stats.Stat) []*Spell {
+	matchingSpells := make([]*Spell, 0, len(mcdm.initialMajorCooldowns))
+
+	for _, mcd := range mcdm.initialMajorCooldowns {
+		if mcd.BuffAura.BuffsMatchingStat(statTypesToMatch) && (mcd.Spell.DefaultCast.EffectiveTime() == 0) {
+			matchingSpells = append(matchingSpells, mcd.Spell)
+		}
+	}
+
+	return matchingSpells
+}
+
 func (mcdm *majorCooldownManager) getFirstReadyMCD(sim *Simulation) *MajorCooldown {
 	if sim.CurrentTime < mcdm.minReady {
 		return nil
@@ -367,8 +382,9 @@ func RegisterTemporaryStatsOnUseCD(character *Character, auraLabel string, tempS
 	spell := character.RegisterSpell(config)
 
 	character.AddMajorCooldown(MajorCooldown{
-		Spell: spell,
-		Type:  cdType,
+		Spell:    spell,
+		Type:     cdType,
+		BuffAura: aura,
 	})
 }
 

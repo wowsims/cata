@@ -22,7 +22,7 @@ func (hunter *Hunter) registerAspectOfTheHawkSpell() {
 		core.NeverExpires,
 		func(aura *core.Aura) {
 		})
-	hunter.applySharedAspectConfig(true, hunter.AspectOfTheHawkAura)
+	hunter.applySharedAspectConfig(true, hunter.AspectOfTheHawkAura.Aura)
 
 	hunter.AspectOfTheHawk = hunter.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
