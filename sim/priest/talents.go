@@ -388,7 +388,7 @@ func (priest *Priest) applyImprovedMindBlast() {
 
 	mindTraumaSpell := priest.RegisterSpell(core.SpellConfig{
 		ActionID:                 core.ActionID{SpellID: 48301},
-		ProcMask:                 core.ProcMaskProc,
+		ProcMask:                 core.ProcMaskSpellProc,
 		SpellSchool:              core.SpellSchoolShadow,
 		ClassSpellMask:           PriestSpellMindTrauma,
 		DamageMultiplier:         1,

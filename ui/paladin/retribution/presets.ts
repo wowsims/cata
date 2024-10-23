@@ -1,4 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils.js';
+import { APLRotation_Type as APLRotationType } from '../../core/proto/apl.js';
 import { Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Stat, TinkerHands } from '../../core/proto/common.js';
 import {
 	PaladinAura as PaladinAura,
@@ -13,7 +14,6 @@ import { Stats } from '../../core/proto_utils/stats';
 import ApparatusApl from './apls/apparatus.apl.json';
 import DefaultApl from './apls/default.apl.json';
 import T13_2Pc_Apl from './apls/t13.apl.json';
-import T13_2Pc_Apparatus_Apl from './apls/t13-apparatus.apl.json';
 import P2_BisRetGear from './gear_sets/p2_bis.gear.json';
 import P3_BisRetGear from './gear_sets/p3_bis.gear.json';
 import P4_BisRetGear from './gear_sets/p4_bis.gear.json';
@@ -31,7 +31,6 @@ export const P4_BIS_RET_PRESET = PresetUtils.makePresetGear('P4', P4_BisRetGear)
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 export const ROTATION_PRESET_APPARATUS = PresetUtils.makePresetAPLRotation('Apparatus', ApparatusApl);
 export const ROTATION_PRESET_T13 = PresetUtils.makePresetAPLRotation('T13 2pc', T13_2Pc_Apl);
-export const ROTATION_PRESET_T13_APPARATUS = PresetUtils.makePresetAPLRotation('T13 2pc + Apparatus', T13_2Pc_Apparatus_Apl);
 
 // Preset options for EP weights
 export const P2_EP_PRESET = PresetUtils.makePresetEpWeights(
@@ -135,21 +134,21 @@ export const P2_PRESET = PresetUtils.makePresetBuild('P2', {
 	gear: P2_BIS_RET_PRESET,
 	epWeights: P2_EP_PRESET,
 	talents: P2_Talents,
-	rotation: ROTATION_PRESET_DEFAULT,
+	rotationType: APLRotationType.TypeAuto,
 })
 
 export const P3_PRESET = PresetUtils.makePresetBuild('P3', {
 	gear: P3_BIS_RET_PRESET,
 	epWeights: P3_EP_PRESET,
 	talents: P3_P4_Talents,
-	rotation: ROTATION_PRESET_APPARATUS,
+	rotationType: APLRotationType.TypeAuto,
 })
 
 export const P4_PRESET = PresetUtils.makePresetBuild('P4', {
 	gear: P4_BIS_RET_PRESET,
 	epWeights: P4_EP_PRESET,
 	talents: P3_P4_Talents,
-	rotation: ROTATION_PRESET_T13,
+	rotationType: APLRotationType.TypeAuto,
 })
 
 export const DefaultOptions = RetributionPaladinOptions.create({

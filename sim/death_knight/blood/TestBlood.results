@@ -406,24 +406,24 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-CunningoftheCruel-77208"
  value: {
-  dps: 22208.48603
-  tps: 111295.84833
+  dps: 22199.40273
+  tps: 111254.59495
   hps: 5314.81299
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-CunningoftheCruel-77980"
  value: {
-  dps: 22149.33957
-  tps: 110987.52064
+  dps: 22140.35255
+  tps: 110952.11531
   hps: 5314.81299
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-CunningoftheCruel-78000"
  value: {
-  dps: 22257.10763
-  tps: 111572.44129
+  dps: 22245.4478
+  tps: 111496.49705
   hps: 5314.81299
  }
 }

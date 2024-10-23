@@ -33,7 +33,7 @@ func (shaman *Shaman) registerFireNovaSpell() {
 		BonusCoefficient: 0.164,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			results := make([][]*core.SpellResult, shaman.Env.GetNumTargets())
-			baseDamage := shaman.ClassSpellScaling * 0.78500002623
+			baseDamage := shaman.CalcAndRollDamageRange(sim, 0.78500002623, 0.11200000346)
 			for i, aoeTarget := range sim.Encounter.TargetUnits {
 				if shaman.FlameShock.Dot(aoeTarget).IsActive() {
 					results[i] = make([]*core.SpellResult, shaman.Env.GetNumTargets())

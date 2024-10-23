@@ -75,9 +75,15 @@ var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					// TODO: Measure the aura update delay distribution on PTR.
-					waitTime := time.Millisecond * time.Duration(sim.RollWithLabel(150, 750, "T13 2pc"))
+					var delaySeconds float64
+					if sim.Proc(0.75, "T13 2pc") {
+						delaySeconds = 0.010 * sim.RandomFloat("T13 2pc")
+					} else {
+						delaySeconds = 0.090 + 0.020*sim.RandomFloat("T13 2pc")
+					}
+
 					core.StartDelayedAction(sim, core.DelayedActionOptions{
-						DoAt:     sim.CurrentTime + waitTime,
+						DoAt:     sim.CurrentTime + core.DurationFromSeconds(delaySeconds),
 						Priority: core.ActionPriorityRegen,
 
 						OnAction: func(_ *core.Simulation) {

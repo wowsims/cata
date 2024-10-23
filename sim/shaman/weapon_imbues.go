@@ -131,7 +131,7 @@ func (shaman *Shaman) newFlametongueImbueSpell(weapon *core.Item) *core.Spell {
 	return shaman.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: int32(8024)},
 		SpellSchool:    core.SpellSchoolFire,
-		ProcMask:       core.ProcMaskWeaponProc,
+		ProcMask:       core.ProcMaskSpellDamageProc,
 		ClassSpellMask: SpellMaskFlametongueWeapon,
 		Flags:          core.SpellFlagPassiveSpell,
 
@@ -255,8 +255,10 @@ func (shaman *Shaman) newFrostbrandImbueSpell() *core.Spell {
 	return shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 8033},
 		SpellSchool: core.SpellSchoolFrost,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagPassiveSpell,
+
+		// TODO: Is this correct?
+		ProcMask: core.ProcMaskEmpty,
+		Flags:    core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),

@@ -232,7 +232,7 @@ func init() {
 			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       name + " Trigger",
 				Callback:   core.CallbackOnSpellHitDealt,
-				ProcMask:   core.ProcMaskMeleeOrProc,
+				ProcMask:   core.ProcMaskMeleeOrMeleeProc,
 				Outcome:    core.OutcomeLanded,
 				ActionID:   core.ActionID{ItemID: itemID},
 				ProcChance: 0.5,
@@ -241,7 +241,7 @@ func init() {
 						return
 					}
 					if !capacitorAura.IsActive() {
-						if spell.ProcMask.Matches(core.ProcMaskMeleeMH | core.ProcMaskProc) {
+						if spell.ProcMask.Matches(core.ProcMaskMeleeMH | core.ProcMaskMeleeProc) {
 							firstProc = core.MainHand
 						} else {
 							firstProc = core.OffHand

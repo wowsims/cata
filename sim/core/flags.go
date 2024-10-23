@@ -55,14 +55,10 @@ const (
 	ProcMaskRangedSpecial
 	ProcMaskSpellDamage
 	ProcMaskSpellHealing
-	// Special mask for procs that can trigger things
-	ProcMaskProc
-	// Mask for FT weapon and rogue poisons, seems to be spell procs from a weapon imbue
-	ProcMaskWeaponProc
-	// Mind Flay
-	ProcMaskNotInSpellbook
-	// Can proc Talisman of Volatile power, but nothing else?
-	ProcMaskSuppressedProc
+	ProcMaskSpellProc       // Special mask for Spell procs that can trigger things (Can be used together with damage proc mask or alone)
+	ProcMaskMeleeProc       // Special mask for Melee procs that can trigger things (Can be used together with damage proc mask or alone)
+	ProcMaskSpellDamageProc // Mask for procs triggering from spell damage procs like FT weapon and rogue poisons
+	ProcMaskMeleeDamageProc // Mask for procs (e.g.  War Rune / Focuessed Attacks) triggering from melee damage procs
 )
 
 const (
@@ -87,8 +83,10 @@ const (
 
 	ProcMaskSpecial = ProcMaskMeleeOrRangedSpecial | ProcMaskSpellDamage
 
-	ProcMaskMeleeOrProc = ProcMaskMelee | ProcMaskProc
-	ProcMaskSpellOrProc = ProcMaskSpellDamage | ProcMaskProc
+	ProcMaskMeleeOrMeleeProc = ProcMaskMelee | ProcMaskMeleeProc
+	ProcMaskSpellOrSpellProc = ProcMaskSpellDamage | ProcMaskSpellProc
+	ProcMaskProc             = ProcMaskSpellProc | ProcMaskMeleeProc
+	ProcMaskDamageProc       = ProcMaskSpellDamageProc | ProcMaskMeleeDamageProc // Mask for Fiery Weapon and Blazefury Medalion that trigger melee and spell procs
 )
 
 // Possible outcomes of any hit/damage roll.

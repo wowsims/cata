@@ -40,7 +40,7 @@ func (shaman *Shaman) registerEarthShockSpell(shockTimer *core.Timer) {
 	config := shaman.newShockSpellConfig(8042, core.SpellSchoolNature, 0.18, shockTimer, 0.386)
 	config.ClassSpellMask = SpellMaskEarthShock
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := shaman.ClassSpellScaling * 0.92699998617
+		baseDamage := shaman.CalcAndRollDamageRange(sim, 0.92699998617, 0.05299999937)
 		result := shaman.calcDamageStormstrikeCritChance(sim, target, baseDamage, spell)
 		spell.DealDamage(sim, result)
 
@@ -118,7 +118,7 @@ func (shaman *Shaman) registerFrostShockSpell(shockTimer *core.Timer) {
 	config.ClassSpellMask = SpellMaskFrostShock
 	config.ThreatMultiplier *= 2
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := shaman.ClassSpellScaling * 0.86900001764
+		baseDamage := shaman.CalcAndRollDamageRange(sim, 0.86900001764, 0.05600000173)
 		spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 	}
 

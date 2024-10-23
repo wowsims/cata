@@ -32,7 +32,7 @@ func (paladin *Paladin) registerSealOfJustice() {
 	onSpecialOrSwingProc := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 20170},
 		SpellSchool:    core.SpellSchoolHoly,
-		ProcMask:       core.ProcMaskProc,
+		ProcMask:       core.ProcMaskMeleeProc,
 		Flags:          core.SpellFlagMeleeMetrics,
 		ClassSpellMask: SpellMaskSealOfJustice,
 

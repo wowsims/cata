@@ -3,8 +3,7 @@
 	"prepullActions": [
 		{ "action": { "castSpell": { "spellId": { "otherId": "OtherActionPotion" } } }, "doAtValue": { "const": { "val": "-0.1s" } } },
 		{ "action": { "castSpell": { "spellId": { "spellId": 86150 } } }, "doAtValue": { "const": { "val": "-0.1s" } } },
-		{ "action": { "castSpell": { "spellId": { "spellId": 2825, "tag": -1 } } }, "doAtValue": { "const": { "val": "-0s" } } },
-		{ "action": { "castSpell": { "spellId": { "spellId": 20271 } } }, "doAtValue": { "const": { "val": "-0s" } } }
+		{ "action": { "castSpell": { "spellId": { "spellId": 2825, "tag": -1 } } }, "doAtValue": { "const": { "val": "-0s" } } }
 	],
 	"priorityList": [
 		{ "action": { "castSpell": { "spellId": { "spellId": 57933, "tag": -1 } } } },
@@ -176,7 +175,45 @@
 								"and": {
 									"vals": [
 										{ "auraIsActive": { "auraId": { "spellId": 90174 } } },
-										{ "not": { "val": { "spellCanCast": { "spellId": { "spellId": 35395 } } } } }
+										{ "not": { "val": { "spellCanCast": { "spellId": { "spellId": 35395 } } } } },
+										{
+											"or": {
+												"vals": [
+													{ "not": { "val": { "spellCanCast": { "spellId": { "spellId": 20271 } } } } },
+													{
+														"not": {
+															"val": {
+																"and": {
+																	"vals": [
+																		{
+																			"or": {
+																				"vals": [
+																					{
+																						"not": {
+																							"val": {
+																								"auraIsActive": { "auraId": { "spellId": 2825, "tag": -1 } }
+																							}
+																						}
+																					},
+																					{
+																						"cmp": {
+																							"op": "OpGe",
+																							"lhs": { "spellTimeToReady": { "spellId": { "spellId": 35395 } } },
+																							"rhs": { "const": { "val": "1s" } }
+																						}
+																					}
+																				]
+																			}
+																		},
+																		{ "not": { "val": { "auraIsActive": { "auraId": { "spellId": 85696 } } } } }
+																	]
+																}
+															}
+														}
+													}
+												]
+											}
+										}
 									]
 								}
 							}

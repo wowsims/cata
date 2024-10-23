@@ -83,7 +83,7 @@ export class PresetConfigurationPicker extends Component {
 		});
 	}
 
-	private applyBuild({ gear, rotation, talents, epWeights, encounter, race }: PresetBuild) {
+	private applyBuild({ gear, rotation, rotationType, talents, epWeights, encounter, race }: PresetBuild) {
 		const eventID = TypedEvent.nextEventID();
 		TypedEvent.freezeAllAndDo(() => {
 			if (gear) this.simUI.player.setGear(eventID, this.simUI.sim.db.lookupEquipmentSpec(gear.gear));
@@ -92,7 +92,10 @@ export class PresetConfigurationPicker extends Component {
 				this.simUI.player.setTalentsString(eventID, talents.data.talentsString);
 				if (talents.data.glyphs) this.simUI.player.setGlyphs(eventID, talents.data.glyphs);
 			}
-			if (rotation?.rotation.rotation) {
+			if (rotationType) {
+				this.simUI.player.aplRotation.type = rotationType;
+				this.simUI.player.rotationChangeEmitter.emit(eventID);
+			} else  if (rotation?.rotation.rotation) {
 				this.simUI.player.setAplRotation(eventID, rotation.rotation.rotation);
 			}
 			if (epWeights) this.simUI.player.setEpWeights(eventID, epWeights.epWeights);
@@ -108,7 +111,7 @@ export class PresetConfigurationPicker extends Component {
 		});
 	}
 
-	private isBuildActive({ gear, rotation, talents, epWeights, encounter, race }: PresetBuild): boolean {
+	private isBuildActive({ gear, rotation, rotationType, talents, epWeights, encounter, race }: PresetBuild): boolean {
 		const hasGear = gear ? EquipmentSpec.equals(gear.gear, this.simUI.player.getGear().asSpec()) : true;
 		const hasRace = typeof race === 'number' ? race === this.simUI.player.getRace() : true;
 		const hasTalents = talents
@@ -121,7 +124,9 @@ export class PresetConfigurationPicker extends Component {
 			  )
 			: true;
 		let hasRotation = true;
-		if (rotation) {
+		if (rotationType) {
+			hasRotation = rotationType === this.simUI.player.getRotationType();
+		} else if (rotation) {
 			const activeRotation = this.simUI.player.getResolvedAplRotation();
 			// Ensure that the auto rotation can be matched with a preset
 			if (activeRotation.type === APLRotation_Type.TypeAuto) activeRotation.type = APLRotation_Type.TypeAPL;
