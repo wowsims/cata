@@ -23,6 +23,14 @@ func StringFromStatTypes(statTypes []stats.Stat) string {
 	return strings.Join(statNames, ", ")
 }
 
+func StringFromActionIDs(actionIDs []ActionID) string {
+	names := MapSlice(actionIDs, func(actionID ActionID) string {
+		return actionID.String()
+	})
+
+	return strings.Join(names, ", ")
+}
+
 func GetTristateValueInt32(effect proto.TristateEffect, regularValue int32, impValue int32) int32 {
 	if effect == proto.TristateEffect_TristateEffectRegular {
 		return regularValue

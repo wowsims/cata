@@ -313,7 +313,18 @@ func (action *APLActionCastAllStatBuffCooldowns) Execute(sim *Simulation) {
 	}
 }
 func (action *APLActionCastAllStatBuffCooldowns) String() string {
-	return fmt.Sprintf("Cast All Buff Cooldowns For: %s", StringFromStatTypes(action.statTypesToMatch))
+	return fmt.Sprintf("CastAllBuffCooldownsFor(%s)", StringFromStatTypes(action.statTypesToMatch))
+}
+func (action *APLActionCastAllStatBuffCooldowns) PostFinalize(rot *APLRotation) {
+	if len(action.allSubactions) == 0 {
+		rot.ValidationWarning("%s will not cast any spells! There are either no major cooldowns buffing the specified stat type(s), or all of them are manually cast in the APL.", action)
+	} else {
+		actionIDs := MapSlice(action.allSubactions, func(subaction *APLActionCastSpell) ActionID {
+			return subaction.spell.ActionID
+		})
+
+		rot.ValidationWarning("%s will cast the following spells: %s", action, StringFromActionIDs(actionIDs))
+	}
 }
 
 type APLActionAutocastOtherCooldowns struct {
@@ -348,4 +359,15 @@ func (action *APLActionAutocastOtherCooldowns) Execute(sim *Simulation) {
 }
 func (action *APLActionAutocastOtherCooldowns) String() string {
 	return "Autocast Other Cooldowns"
+}
+func (action *APLActionAutocastOtherCooldowns) PostFinalize(rot *APLRotation) {
+	if len(action.character.initialMajorCooldowns) == 0 {
+		rot.ValidationWarning("%s will not cast any spells! There are either no major cooldowns configured for this character, or all of them are manually cast in the APL.", action)
+	} else {
+		actionIDs := MapSlice(action.character.initialMajorCooldowns, func(mcd MajorCooldown) ActionID {
+			return mcd.Spell.ActionID
+		})
+
+		rot.ValidationWarning("%s will cast the following spells: %s", action, StringFromActionIDs(actionIDs))
+	}
 }

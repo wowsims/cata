@@ -171,6 +171,13 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 	return rotation
 }
 func (rot *APLRotation) getStats() *proto.APLStats {
+	// Perform one final round of validation after post-finalize effects.
+	for i, action := range rot.priorityList {
+		rot.doAndRecordWarnings(&rot.priorityListWarnings[i], false, func() {
+			action.impl.PostFinalize(rot)
+		})
+	}
+
 	return &proto.APLStats{
 		PrepullActions: MapSlice(rot.prepullWarnings, func(warnings []string) *proto.APLActionStats { return &proto.APLActionStats{Warnings: warnings} }),
 		PriorityList:   MapSlice(rot.priorityListWarnings, func(warnings []string) *proto.APLActionStats { return &proto.APLActionStats{Warnings: warnings} }),
