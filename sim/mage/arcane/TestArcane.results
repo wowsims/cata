@@ -1180,15 +1180,15 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-Rathrak,thePoisonousMind-77195"
  value: {
-  dps: 34100.86622
-  tps: 33273.67844
+  dps: 34100.76125
+  tps: 33273.57347
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Rathrak,thePoisonousMind-78475"
  value: {
-  dps: 35142.92343
-  tps: 34251.18342
+  dps: 35142.85425
+  tps: 34251.11424
  }
 }
 dps_results: {
@@ -1413,25 +1413,25 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-Souldrinker-77193"
  value: {
-  dps: 36887.94589
-  tps: 36000.39716
-  hps: 131.20345
+  dps: 36887.76981
+  tps: 36000.22108
+  hps: 130.45322
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Souldrinker-78479"
  value: {
-  dps: 36895.35087
-  tps: 36007.80215
-  hps: 149.27983
+  dps: 36895.15374
+  tps: 36007.60502
+  hps: 148.42623
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Souldrinker-78488"
  value: {
-  dps: 36880.61444
-  tps: 35993.06571
-  hps: 113.30658
+  dps: 36880.4592
+  tps: 35992.91047
+  hps: 112.65869
  }
 }
 dps_results: {
@@ -1612,22 +1612,22 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-Ti'tahk,theStepsofTime-77190"
  value: {
-  dps: 47732.49808
-  tps: 46654.86812
+  dps: 47763.70873
+  tps: 46688.26613
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Ti'tahk,theStepsofTime-78477"
  value: {
-  dps: 49272.9181
-  tps: 48192.63423
+  dps: 49346.65115
+  tps: 48272.61319
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Ti'tahk,theStepsofTime-78486"
  value: {
-  dps: 46232.70601
-  tps: 45200.36079
+  dps: 46234.62785
+  tps: 45203.60887
  }
 }
 dps_results: {
