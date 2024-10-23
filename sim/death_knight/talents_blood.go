@@ -206,7 +206,7 @@ func (dk *DeathKnight) bloodCakedBladeHit(isMh bool) *core.Spell {
 	return dk.Unit.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 50463}.WithTag(core.TernaryInt32(isMh, 1, 2)),
 		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskProc,
+		ProcMask:    core.ProcMaskMeleeProc,
 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagMeleeMetrics,
 
 		DamageMultiplier: 1,

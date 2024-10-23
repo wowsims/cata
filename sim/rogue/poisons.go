@@ -33,7 +33,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 	rogue.DeadlyPoison = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 96648},
 		SpellSchool:    core.SpellSchoolNature,
-		ProcMask:       core.ProcMaskWeaponProc,
+		ProcMask:       core.ProcMaskSpellDamageProc,
 		ClassSpellMask: RogueSpellDeadlyPoison,
 		Flags:          core.SpellFlagPassiveSpell,
 
@@ -222,7 +222,7 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 8680, Tag: int32(procSource)},
 		SpellSchool:    core.SpellSchoolNature,
-		ProcMask:       core.ProcMaskWeaponProc,
+		ProcMask:       core.ProcMaskSpellDamageProc,
 		ClassSpellMask: RogueSpellInstantPoison,
 		Flags:          core.SpellFlagPassiveSpell,
 
@@ -248,7 +248,7 @@ func (rogue *Rogue) makeWoundPoison(procSource PoisonProcSource) *core.Spell {
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 13218, Tag: int32(procSource)},
 		SpellSchool:    core.SpellSchoolNature,
-		ProcMask:       core.ProcMaskWeaponProc,
+		ProcMask:       core.ProcMaskSpellDamageProc,
 		ClassSpellMask: RogueSpellWoundPoison,
 
 		DamageMultiplier:         1,

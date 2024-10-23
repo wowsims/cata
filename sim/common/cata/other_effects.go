@@ -679,7 +679,7 @@ func init() {
 				ActionID:   core.ActionID{ItemID: vesselItemID},
 				Name:       "Vessel of Acceleration" + labelSuffix,
 				Callback:   core.CallbackOnSpellHitDealt,
-				ProcMask:   core.ProcMaskMeleeOrProc,
+				ProcMask:   core.ProcMaskMeleeOrMeleeProc,
 				Outcome:    core.OutcomeCrit,
 				ProcChance: 1,
 				Harmful:    false,
@@ -897,7 +897,7 @@ func init() {
 				Name:       "Vial of Shadows Trigger" + labelSuffix,
 				ActionID:   core.ActionID{ItemID: vialItemID},
 				Callback:   core.CallbackOnSpellHitDealt,
-				ProcMask:   core.ProcMaskMeleeOrRanged | core.ProcMaskProc,
+				ProcMask:   core.ProcMaskMeleeOrRanged | core.ProcMaskMeleeProc,
 				Outcome:    core.OutcomeLanded,
 				Harmful:    true,
 				ProcChance: 0.45,
@@ -947,7 +947,7 @@ func init() {
 				Name:       "Bone-Link Fetish Trigger" + labelSuffix,
 				ActionID:   core.ActionID{ItemID: fetishItemID},
 				Callback:   core.CallbackOnSpellHitDealt,
-				ProcMask:   core.ProcMaskMeleeOrRanged | core.ProcMaskProc,
+				ProcMask:   core.ProcMaskMeleeOrRanged | core.ProcMaskMeleeProc,
 				Outcome:    core.OutcomeLanded,
 				Harmful:    true,
 				ProcChance: 0.15,
@@ -1001,7 +1001,7 @@ func init() {
 				Name:       "Cunning of the Cruel Trigger" + labelSuffix,
 				ActionID:   core.ActionID{ItemID: cunningItemID},
 				Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
-				ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskProc,
+				ProcMask:   core.ProcMaskSpellOrSpellProc,
 				Outcome:    core.OutcomeLanded,
 				Harmful:    true,
 				ProcChance: 0.45,
@@ -1089,7 +1089,7 @@ func init() {
 			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       "Fury of the Beast Trigger",
 				Callback:   core.CallbackOnSpellHitDealt,
-				ProcMask:   core.ProcMaskMeleeOrRanged | core.ProcMaskProc,
+				ProcMask:   core.ProcMaskMeleeOrRanged | core.ProcMaskMeleeProc,
 				Outcome:    core.OutcomeLanded,
 				ProcChance: 0.15,
 				ICD:        time.Second * 55,
@@ -1115,7 +1115,7 @@ func init() {
 			character := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: []int32{109828, 108022, 109831}[version]}
 			hpModifier := []float64{0.013, 0.015, 0.017}[version]
-			procMask := character.GetProcMaskForItem(souldrinkerItemID) | core.ProcMaskProc
+			procMask := character.GetProcMaskForItem(souldrinkerItemID) | core.ProcMaskMeleeProc
 
 			var damageDealt float64
 			drainLifeHeal := character.RegisterSpell(core.SpellConfig{
@@ -1178,7 +1178,7 @@ func init() {
 		core.NewItemEffect(nokaledItemID, func(agent core.Agent) {
 			character := agent.GetCharacter()
 
-			procMask := character.GetProcMaskForItem(nokaledItemID) | core.ProcMaskProc
+			procMask := character.GetProcMaskForItem(nokaledItemID) | core.ProcMaskMeleeProc
 			minDamage := []float64{6781, 7654, 8640}[version]
 			maxDamage := []float64{10171, 11481, 12960}[version]
 
@@ -1286,7 +1286,7 @@ func init() {
 				Name:       "Rathrak Trigger" + labelSuffix,
 				ActionID:   core.ActionID{ItemID: rathrakItemID},
 				Callback:   core.CallbackOnSpellHitDealt,
-				ProcMask:   core.ProcMaskSpellOrProc,
+				ProcMask:   core.ProcMaskSpellOrSpellProc,
 				Outcome:    core.OutcomeLanded,
 				ProcChance: 0.15,
 				ICD:        time.Second * 17,
@@ -1344,7 +1344,7 @@ func init() {
 				Name:       "Vishanka Trigger" + labelSuffix,
 				ActionID:   core.ActionID{ItemID: vishankaItemID},
 				Callback:   core.CallbackOnSpellHitDealt,
-				ProcMask:   core.ProcMaskRanged | core.ProcMaskProc,
+				ProcMask:   core.ProcMaskRanged | core.ProcMaskMeleeProc,
 				Outcome:    core.OutcomeLanded,
 				ProcChance: 0.15,
 				ICD:        time.Second * 17,
@@ -1381,7 +1381,7 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 	igniteSpell := unit.RegisterSpell(core.SpellConfig{
 		ActionID:         config.ActionID,
 		SpellSchool:      core.SpellSchoolFire,
-		ProcMask:         core.ProcMaskProc,
+		ProcMask:         core.ProcMaskSpellProc,
 		Flags:            spellFlags,
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -1442,7 +1442,7 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 			if sim.Proc(0.75, "Aura Delay") {
 				delaySeconds = 0.010 * sim.RandomFloat("Aura Delay")
 			} else {
-				delaySeconds = 0.090 + 0.020 * sim.RandomFloat("Aura Delay")
+				delaySeconds = 0.090 + 0.020*sim.RandomFloat("Aura Delay")
 			}
 
 			applyDotAt := sim.CurrentTime + core.DurationFromSeconds(delaySeconds)
@@ -1458,7 +1458,7 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 
 			// Schedule a delayed refresh of the DoT with cached damagePerTick value (allowing for "free roll-overs")
 			if sim.Log != nil {
-				unit.Log(sim, "Schedule travel (%0.1f ms) for %s", delaySeconds * 1000, config.DotAuraLabel)
+				unit.Log(sim, "Schedule travel (%0.1f ms) for %s", delaySeconds*1000, config.DotAuraLabel)
 
 				if dot.IsActive() && (dot.NextTickAt() < applyDotAt) {
 					unit.Log(sim, "%s rolled with %0.3f damage both ticking and rolled into next", config.DotAuraLabel, outstandingDamage)

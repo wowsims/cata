@@ -320,7 +320,7 @@ func (shaman *Shaman) applyFulmination() {
 	shaman.Fulmination = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 88767},
 		SpellSchool:    core.SpellSchoolNature,
-		ProcMask:       core.ProcMaskProc,
+		ProcMask:       core.ProcMaskSpellProc,
 		Flags:          core.SpellFlagPassiveSpell,
 		ClassSpellMask: SpellMaskFulmination,
 		ManaCost: core.ManaCostOptions{
@@ -367,6 +367,12 @@ func (shaman *Shaman) applyElementalDevastation() {
 			if !result.Outcome.Matches(core.OutcomeCrit) {
 				return
 			}
+
+			// Only procs off class abilities
+			if spell.ClassSpellMask == 0 {
+				return
+			}
+
 			procAura.Activate(sim)
 		},
 	})

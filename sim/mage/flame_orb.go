@@ -51,7 +51,7 @@ func (mage *Mage) registerFlameOrbExplodeSpell() {
 	mage.FlameOrbExplode = mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 83619},
 		SpellSchool:    core.SpellSchoolFire,
-		ProcMask:       core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
+		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: MageSpellFlameOrb,
 
 		DamageMultiplier: 1,
@@ -126,7 +126,7 @@ func (fo *FlameOrb) registerFlameOrbTickSpell() {
 	fo.FlameOrbTick = fo.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 82739},
 		SpellSchool:    core.SpellSchoolFire,
-		ProcMask:       core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
+		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: MageSpellFlameOrb,
 
 		Cast: core.CastConfig{

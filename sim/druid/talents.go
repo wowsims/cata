@@ -367,6 +367,11 @@ func (druid *Druid) applyLunarShower() {
 				return
 			}
 
+			// does not proc off procs
+			if spell.ProcMask.Matches(core.ProcMaskProc) {
+				return
+			}
+
 			if lunarShowerAura.IsActive() {
 				if lunarShowerAura.GetStacks() < 3 {
 					lunarShowerAura.AddStack(sim)
