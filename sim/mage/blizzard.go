@@ -18,7 +18,7 @@ func (mage *Mage) registerBlizzardSpell() {
 		})
 		iceShardsProcApplication = mage.RegisterSpell(core.SpellConfig{
 			ActionID:       core.ActionID{SpellID: 12488},
-			ProcMask:       core.ProcMaskProc,
+			ProcMask:       core.ProcMaskSpellProc,
 			Flags:          core.SpellFlagNoLogs,
 			ClassSpellMask: MageSpellChill,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

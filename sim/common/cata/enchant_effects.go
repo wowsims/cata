@@ -55,7 +55,7 @@ func init() {
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 74196},
 			SpellSchool: core.SpellSchoolNature,
-			ProcMask:    core.ProcMaskProc,
+			ProcMask:    core.ProcMaskSpellProc,
 
 			DamageMultiplier: 1,
 			CritMultiplier:   character.DefaultSpellCritMultiplier(),
@@ -123,7 +123,7 @@ func init() {
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 74208},
 			SpellSchool: core.SpellSchoolNature,
-			ProcMask:    core.ProcMaskProc,
+			ProcMask:    core.ProcMaskSpellProc,
 
 			DamageMultiplier: 1,
 			CritMultiplier:   character.DefaultSpellCritMultiplier(),

@@ -46,7 +46,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 	onHitSingleTarget := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 25742},
 		SpellSchool:    core.SpellSchoolHoly,
-		ProcMask:       core.ProcMaskProc,
+		ProcMask:       core.ProcMaskMeleeProc,
 		Flags:          core.SpellFlagMeleeMetrics,
 		ClassSpellMask: SpellMaskSealOfRighteousness,
 
@@ -69,7 +69,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 	onHitMultiTarget := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 25742},
 		SpellSchool:    core.SpellSchoolHoly,
-		ProcMask:       core.ProcMaskProc,
+		ProcMask:       core.ProcMaskMeleeProc,
 		Flags:          core.SpellFlagMeleeMetrics,
 		ClassSpellMask: SpellMaskSealOfRighteousness,
 

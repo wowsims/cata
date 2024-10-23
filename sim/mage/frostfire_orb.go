@@ -105,7 +105,7 @@ func (ffo *FrostfireOrb) registerFrostfireOrbTickSpell() {
 	ffo.FrostfireOrbTick = ffo.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 95969},
 		SpellSchool:    core.SpellSchoolFrost | core.SpellSchoolFire,
-		ProcMask:       core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
+		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: MageSpellFrostfireOrb,
 
 		Cast: core.CastConfig{

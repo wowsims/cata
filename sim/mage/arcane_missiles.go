@@ -28,7 +28,7 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 	mage.arcaneMissilesTickSpell = mage.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 7268},
 		SpellSchool:    core.SpellSchoolArcane,
-		ProcMask:       core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
+		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: MageSpellArcaneMissilesTick,
 		MissileSpeed:   20,
 

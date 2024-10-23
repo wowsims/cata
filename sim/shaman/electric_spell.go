@@ -17,7 +17,7 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 	mask := core.ProcMaskSpellDamage
 	flags := SpellFlagElectric | SpellFlagFocusable
 	if isElementalOverload {
-		mask = core.ProcMaskProc
+		mask = core.ProcMaskSpellProc
 		flags |= core.SpellFlagPassiveSpell
 	} else {
 		flags |= core.SpellFlagAPL
