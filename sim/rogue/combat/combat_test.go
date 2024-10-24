@@ -48,6 +48,11 @@ func TestCombat(t *testing.T) {
 				proto.WeaponType_WeaponTypeMace,
 				proto.WeaponType_WeaponTypeSword,
 			},
+			HandTypes: []proto.HandType{
+				proto.HandType_HandTypeMainHand,
+				proto.HandType_HandTypeOffHand,
+				proto.HandType_HandTypeOneHand,
+			},
 		},
 	}))
 }
