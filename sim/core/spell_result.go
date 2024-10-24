@@ -33,6 +33,7 @@ func (spell *Spell) NewResult(target *Unit) *SpellResult {
 	result.Threat = 0
 	result.Outcome = OutcomeEmpty // for blocks
 	result.inUse = true
+	result.PreOutcomeDamage = 0
 
 	return result
 }

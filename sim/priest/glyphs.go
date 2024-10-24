@@ -48,6 +48,10 @@ func (priest *Priest) ApplyGlyphs() {
 
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell.ClassSpellMask == PriestSpellShadowWordDeath && sim.IsExecutePhase25() && aura.Icd.IsReady(sim) {
+					if spell.CD.Timer == nil {
+						return
+					}
+
 					aura.Icd.Use(sim)
 					spell.CD.Reset()
 				}

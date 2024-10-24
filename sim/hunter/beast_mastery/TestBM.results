@@ -431,8 +431,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-DarkmoonCard:Volcano-62047"
  value: {
-  dps: 21031.43685
-  tps: 17701.26923
+  dps: 21067.05058
+  tps: 17737.06578
  }
 }
 dps_results: {
@@ -454,6 +454,13 @@ dps_results: {
  value: {
   dps: 21017.51581
   tps: 17746.84838
+ }
+}
+dps_results: {
+ key: "TestBM-AllItems-Dragonwrath,Tarecgosa'sRest-71086"
+ value: {
+  dps: 22561.37065
+  tps: 19018.0046
  }
 }
 dps_results: {

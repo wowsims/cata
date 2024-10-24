@@ -98,7 +98,7 @@ func (spriest *ShadowPriest) ApplyTalents() {
 
 	// Shadow Power
 	spriest.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_CritMultiplier_Pct,
+		Kind:       core.SpellMod_CritMultiplier_Flat,
 		FloatValue: 1.0,
 		School:     core.SpellSchoolShadow,
 		ClassMask:  int64(priest.PriestShadowSpells),

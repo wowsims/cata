@@ -1878,16 +1878,16 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 22019.67378
-  tps: 110274.56136
+  dps: 22023.54651
+  tps: 110305.40898
   hps: 5314.81299
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 22049.15567
-  tps: 110441.0102
+  dps: 22051.71549
+  tps: 110465.34577
   hps: 5314.81299
  }
 }

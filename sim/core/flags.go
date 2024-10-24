@@ -167,7 +167,7 @@ func (ho HitOutcome) PartialResistString() string {
 }
 
 // Other flags
-type SpellFlag uint32
+type SpellFlag uint64
 
 // Returns whether there is any overlap between the given masks.
 func (se SpellFlag) Matches(other SpellFlag) bool {
@@ -203,6 +203,7 @@ const (
 	SpellFlagNoSpellMods                                    // Indicates that no spell mods should be applied to this spell
 	SpellFlagCanCastWhileMoving                             // Allows the cast to be casted while moving
 	SpellFlagPassiveSpell                                   // Indicates this spell is applied/cast as a result of another spell
+	SpellFlagSupressDoTApply                                // If present this spell will not apply dots (Used for DTR dot supression)
 
 	// Used to let agents categorize their spells.
 	SpellFlagAgentReserved1

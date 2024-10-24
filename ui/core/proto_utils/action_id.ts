@@ -254,6 +254,14 @@ export class ActionId {
 
 		const baseName = tooltipData['name'];
 		let name = baseName;
+
+		// handle DRT 
+		let tag = this.tag
+		if (tag >= 71086) {
+			name = "Dragonwrath - " + name;
+			tag -= 71086
+		}
+
 		switch (baseName) {
 			case 'Explosive Shot':
 				if (this.spellId == 60053) {
@@ -263,67 +271,67 @@ export class ActionId {
 				}
 				break;
 			case 'Explosive Trap':
-				if (this.tag == 1) {
+				if (tag == 1) {
 					name += ' (Weaving)';
 				}
 				break;
 			case 'Arcane Blast':
-				if (this.tag == 1) {
+				if (tag == 1) {
 					name += ' (No Stacks)';
-				} else if (this.tag == 2) {
+				} else if (tag == 2) {
 					name += ` (1 Stack)`;
-				} else if (this.tag > 2) {
-					name += ` (${this.tag - 1} Stacks)`;
+				} else if (tag > 2) {
+					name += ` (${tag - 1} Stacks)`;
 				}
 				break;
 			case 'Hot Streak':
-				if (this.tag) name += ' (Crits)';
+				if (tag) name += ' (Crits)';
 				break;
 			case 'Fireball':
 			case 'Flamestrike':
-				if (this.tag == 1) name += ' (Blast Wave)';
+				if (tag == 1) name += ' (Blast Wave)';
 				break;
 			case 'Pyroblast':
 			case 'Combustion':
-				if (this.tag) name += ' (DoT)';
+				if (tag) name += ' (DoT)';
 				break;
 			case 'Living Bomb':
-				if (this.tag == 1) name += ' (DoT)';
-				else if (this.tag == 2) name += ' (Explosion)';
+				if (tag == 1) name += ' (DoT)';
+				else if (tag == 2) name += ' (Explosion)';
 				break;
 			case 'Evocation':
-				if (this.tag == 1) {
+				if (tag == 1) {
 					name += ' (1 Tick)';
-				} else if (this.tag == 2) {
+				} else if (tag == 2) {
 					name += ' (2 Tick)';
-				} else if (this.tag == 3) {
+				} else if (tag == 3) {
 					name += ' (3 Tick)';
-				} else if (this.tag == 4) {
+				} else if (tag == 4) {
 					name += ' (4 Tick)';
-				} else if (this.tag == 5) {
+				} else if (tag == 5) {
 					name += ' (5 Tick)';
 				}
 				break;
 			case 'Mind Flay':
-				if (this.tag == 1) {
+				if (tag == 1) {
 					name += ' (1 Tick)';
-				} else if (this.tag == 2) {
+				} else if (tag == 2) {
 					name += ' (2 Tick)';
-				} else if (this.tag == 3) {
+				} else if (tag == 3) {
 					name += ' (3 Tick)';
 				}
 				break;
 			case 'Mind Sear':
-				if (this.tag == 1) {
+				if (tag == 1) {
 					name += ' (1 Tick)';
-				} else if (this.tag == 2) {
+				} else if (tag == 2) {
 					name += ' (2 Tick)';
-				} else if (this.tag == 3) {
+				} else if (tag == 3) {
 					name += ' (3 Tick)';
 				}
 				break;
 			case 'Shattering Throw':
-				if (this.tag === playerIndex) {
+				if (tag === playerIndex) {
 					name += ` (self)`;
 				}
 				break;
@@ -333,37 +341,37 @@ export class ActionId {
 			case 'Rupture':
 			case 'Slice and Dice':
 			case 'Recuperate':
-				if (this.tag) name += ` (${this.tag} CP)`;
+				if (tag) name += ` (${tag} CP)`;
 				break;
 			case 'Instant Poison':
 			case 'Wound Poison':
-				if (this.tag == 1) {
+				if (tag == 1) {
 					name += ' (Deadly)';
-				} else if (this.tag == 2) {
+				} else if (tag == 2) {
 					name += ' (Shiv)';
-				} else if (this.tag == 3) {
+				} else if (tag == 3) {
 					name += ' (Fan of Knives)';
 				}
 				break;
 			case 'Fan of Knives':
 			case 'Killing Spree':
-				if (this.tag == 1) {
+				if (tag == 1) {
 					name += ' (Main Hand)';
-				} else if (this.tag == 2) {
+				} else if (tag == 2) {
 					name += ' (Off Hand)';
 				}
 				break;
 			case 'Tricks of the Trade':
-				if (this.tag == 1) {
+				if (tag == 1) {
 					name += ' (Not Self)';
 				}
 				break;
 			case 'Mutilate':
-				if (this.tag == 0) {
+				if (tag == 0) {
 					name += ' (Cast)';
-				} else if (this.tag == 1) {
+				} else if (tag == 1) {
 					name += ' (Main Hand)';
-				} else if (this.tag == 2) {
+				} else if (tag == 2) {
 					name += ' (Off Hand)';
 				}
 				break;
@@ -373,60 +381,60 @@ export class ActionId {
 				}
 				break;
 			case 'Stormstrike':
-				if (this.tag == 0) {
+				if (tag == 0) {
 					name += ' (Cast)';
-				} else if (this.tag == 1) {
+				} else if (tag == 1) {
 					name += ' (Main Hand)';
-				} else if (this.tag == 2) {
+				} else if (tag == 2) {
 					name += ' (Off Hand)';
 				}
 				break;
 			case 'Chain Lightning':
 			case 'Lightning Bolt':
 			case 'Lava Burst':
-				if (this.tag == 6) {
+				if (tag == 6) {
 					name += ' (Overload)';
-				} else if (this.tag) {
-					name += ` (${this.tag} MW)`;
+				} else if (tag) {
+					name += ` (${tag} MW)`;
 				}
 				break;
 			case 'Flame Shock':
-				if (this.tag == 1) {
+				if (tag == 1) {
 					name += ' (DoT)';
 				}
 				break;
 			case 'Fulmination':
-				name += ` (${this.tag + 3})`;
+				name += ` (${tag + 3})`;
 				break;
 			case 'Lightning Shield':
-				if (this.tag == 1) {
+				if (tag == 1) {
 					name += ' (Wasted)';
 				}
 				break;
 			case 'Crescendo of Suffering':
-				if (this.tag == 1) {
+				if (tag == 1) {
 					name += ' (Pre-Pull)';
 				}
 				break;
 			case 'Shadowflame':
 			case 'Moonfire':
 			case 'Sunfire':
-				if (this.tag == 1) {
+				if (tag == 1) {
 					name += ' (DoT)';
 				}
 				break;
 			case 'Holy Shield':
-				if (this.tag == 1) {
+				if (tag == 1) {
 					name += ' (Proc)';
 				}
 				break;
 			case 'Censure':
-				if (this.tag == 2) {
+				if (tag == 2) {
 					name += ' (DoT)';
 				}
 				break;
 			case 'Exorcism':
-				if (this.tag === 3) {
+				if (tag === 3) {
 					name = 'Glyph of Exorcism (DoT)';
 				}
 				break;
@@ -438,16 +446,16 @@ export class ActionId {
 			case 'Mana Tide Totem':
 			case 'Unholy Frenzy':
 			case 'Power Infusion':
-				if (this.tag != -1) {
-					if (this.tag === playerIndex || playerIndex == undefined) {
+				if (tag != -1) {
+					if (tag === playerIndex || playerIndex == undefined) {
 						name += ` (self)`;
 					} else {
-						name += ` (from #${this.tag + 1})`;
+							name += ` (from #${tag + 1})`;
+						}
+					} else {
+						name += ' (raid)';
 					}
-				} else {
-					name += ' (raid)';
-				}
-				break;
+					break;
 			case 'Elemental Mastery':
 				if (this.spellId === 64701) {
 					name = `${name} (Buff)`;
@@ -456,16 +464,16 @@ export class ActionId {
 				}
 				break;
 			case 'Heart Strike':
-				if (this.tag == 2) {
+				if (tag == 2) {
 					name += ' (Off-target)';
 				}
 				break;
 			case 'Rune Strike':
-				if (this.tag == 0) {
+				if (tag == 0) {
 					name += ' (Queue)';
-				} else if (this.tag == 1) {
+				} else if (tag == 1) {
 					name += ' (Main Hand)';
-				} else if (this.tag == 2) {
+				} else if (tag == 2) {
 					name += ' (Off Hand)';
 				}
 				break;
@@ -482,67 +490,67 @@ export class ActionId {
 			case 'Lightning Speed':
 			case 'Windfury Weapon':
 			case 'Berserk':
-				if (this.tag == 1) {
+				if (tag == 1) {
 					name += ' (Main Hand)';
-				} else if (this.tag == 2) {
+				} else if (tag == 2) {
 					name += ' (Off Hand)';
 				}
 				// Warrior - T12 4P proc
-				if (baseName === 'Raging Blow' && this.tag === 3) {
+				if (baseName === 'Raging Blow' && tag === 3) {
 					name = 'Fiery attack';
 				}
 				// Death Knight - T12 4P proc
-				if (baseName === 'Obliterate' && this.tag === 3) {
+				if (baseName === 'Obliterate' && tag === 3) {
 					name = 'Flaming Torment (T12 4P)';
 				}
 				break;
 			case 'Death Strike':
-				if (this.tag == 1) {
+				if (tag == 1) {
 					name += ' (Main Hand)';
-				} else if (this.tag == 2) {
+				} else if (tag == 2) {
 					name += ' (Off Hand)';
-				} else if (this.tag == 3) {
+				} else if (tag == 3) {
 					name += ' (Heal)';
 				}
 				break;
 			case 'Battle Shout':
-				if (this.tag == 1) {
+				if (tag == 1) {
 					name += ' (Snapshot)';
 				}
 				break;
 			case 'Heroic Strike':
 			case 'Cleave':
 			case 'Maul':
-				if (this.tag == 1) {
+				if (tag == 1) {
 					name += ' (Queue)';
 				}
 				break;
 			case 'Seed of Corruption':
-				if (this.tag == 0) {
+				if (tag == 0) {
 					name += ' (DoT)';
-				} else if (this.tag == 1) {
+				} else if (tag == 1) {
 					name += ' (Explosion)';
 				}
 				break;
 			case 'Thunderfury':
-				if (this.tag == 1) {
+				if (tag == 1) {
 					name += ' (ST)';
-				} else if (this.tag == 2) {
+				} else if (tag == 2) {
 					name += ' (MT)';
 				}
 				break;
 			case 'Devouring Plague':
-				if (this.tag == 1) {
+				if (tag == 1) {
 					name += ' (Improved)';
 					break;
 				}
 			case 'Improved Steady Shot':
-				if (this.tag == 2) {
+				if (tag == 2) {
 					name += ' (pre)';
 				}
 				break;
 			case 'Immolate':
-				if (this.tag == 1) {
+				if (tag == 1) {
 					name += ' (DoT)';
 				}
 				break;
@@ -551,48 +559,48 @@ export class ActionId {
 				break;
 			// Warrior - T12 2P proc
 			case 'Shield Slam':
-				if (this.tag === 3) {
+				if (tag === 3) {
 					name = 'Combust (T12 2P)';
 				}
 				break;
 			// Warrior - T12 4P proc
 			case 'Mortal Strike':
-				if (this.tag === 3) {
+				if (tag === 3) {
 					name = 'Fiery attack (T12 4P)';
 				}
 				break;
 			// Hunter - T12 2P proc
 			case 'Steady Shot':
 			case 'Cobra Shot':
-				if (this.tag === 3) {
+				if (tag === 3) {
 					name = 'Flaming Arrow (T12 2P)';
 				}
 				break;
 			// Paladin - T12 4P proc
 			case 'Shield of the Righteous':
-				if (this.tag === 3) {
+				if (tag === 3) {
 					name = 'Righteous Flames (T12 2P)';
 				}
 				break;
 			// Paladin - T12 4P proc
 			case 'Crusader Strike':
-				if (this.tag === 3) {
+				if (tag === 3) {
 					name = 'Flames of the Faithful (T12 2P)';
 				}
 				break;
 			// Death Knight - T12 4P proc
 			case 'Scourge Strike':
-				if (this.tag === 3) {
+				if (tag === 3) {
 					name = 'Flaming Torment (T12 4P)';
 				}
 				break;
 			// Death Knight - T12 2P proc
 			case 'Burning Blood':
-					name += ' (T12 2P)';
+				name += ' (T12 2P)';
 				break;
 			// Death Knight - T12 4P proc
 			case 'Flaming Rune Weapon':
-					name += ' (T12 4P)';
+				name += ' (T12 4P)';
 				break;
 			// Souldrinker - Drain Life
 			case 'Drain Life':
@@ -621,7 +629,7 @@ export class ActionId {
 				}
 				break;
 			default:
-				if (this.tag) {
+				if (tag) {
 					name += ' (??)';
 				}
 				break;

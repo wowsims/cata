@@ -527,7 +527,7 @@ func init() {
 		Bonus:      stats.Stats{stats.Intellect: 1600},
 		Duration:   time.Second * 12,
 		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
-		ProcMask:   core.ProcMaskSpellDamage,
+		ProcMask:   core.ProcMaskSpellOrSpellProc,
 		Outcome:    core.OutcomeLanded,
 		ProcChance: 0.3,
 		ICD:        time.Second * 45,
@@ -537,6 +537,7 @@ func init() {
 		MinDmg:           900,
 		MaxDmg:           1500,
 		BonusCoefficient: 0.1,
+		ProcMask:         core.ProcMaskSpellDamageProc,
 	})
 
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{

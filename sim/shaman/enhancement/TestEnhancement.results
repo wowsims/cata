@@ -450,6 +450,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-Dragonwrath,Tarecgosa'sRest-71086"
+ value: {
+  dps: 36693.78273
+  tps: 23549.18863
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-Dwyer'sCaber-70141"
  value: {
   dps: 35522.31966
