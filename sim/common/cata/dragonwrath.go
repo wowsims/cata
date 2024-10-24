@@ -28,6 +28,7 @@ type DragonwrathSpellConfig struct {
 	spellCopyHandler SpellCopyHandler
 	procPerCast      bool
 	tickIsCast       bool // some spells deal periodic damage but should be treated as casts
+	castIsTick       bool // some spells are implemented as casts but should be treated as periodic (Treat as Periodic flag)
 	isAoESpell       bool // AoE Spells use reduced proc chance
 	supress          int8
 }
@@ -67,6 +68,12 @@ func (config *DragonwrathClassConfig) getImpactHandler(spellId int32) SpellHandl
 	return defaultSpellHandler
 }
 
+func (config DragonwrathSpellConfig) TreatCastAsTick() DragonwrathSpellConfig {
+	config.castIsTick = true
+	config.tickIsCast = false
+	return config
+}
+
 func (config DragonwrathSpellConfig) SupressImpact() DragonwrathSpellConfig {
 	config.supress |= supressImpact
 	return config
@@ -99,6 +106,7 @@ func (config DragonwrathSpellConfig) IsAoESpell() DragonwrathSpellConfig {
 
 func (config DragonwrathSpellConfig) TreatTickAsCast() DragonwrathSpellConfig {
 	config.tickIsCast = true
+	config.castIsTick = false
 	return config
 }
 
@@ -241,6 +249,11 @@ func init() {
 				procChance := config.procChance
 				if val, ok := config.spellConfig[spell.SpellID]; ok {
 					if val.supress&supressImpact > 0 {
+						return
+					}
+
+					if val.castIsTick {
+						aura.OnPeriodicDamageDealt(aura, sim, spell, result)
 						return
 					}
 
