@@ -78,7 +78,7 @@ func (mage *Mage) ApplyFireTalents() {
 				return len(spell.Unit.Env.Encounter.Targets) >= 2
 			},
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				flameStrikeCopy := spell.Unit.GetSpell(core.ActionID{SpellID: 88148, Tag: core.TernaryInt32(spell.ActionID.Tag == 0, 1, spell.ActionID.Tag)})
+				flameStrikeCopy := spell.Unit.GetSpell(core.ActionID{SpellID: 88148, Tag: 1})
 				flameStrikeCopy.Cast(sim, result.Target)
 			},
 		}))

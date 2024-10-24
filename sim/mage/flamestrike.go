@@ -56,7 +56,10 @@ func (mage *Mage) GetFlameStrikeConfig(spellId int32, isProc bool) core.SpellCon
 				baseDamage *= sim.Encounter.AOECapMultiplier()
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
-			spell.AOEDot().Apply(sim)
+
+			if spell.AOEDot() != nil {
+				spell.AOEDot().Apply(sim)
+			}
 		},
 	}
 
@@ -72,6 +75,7 @@ func (mage *Mage) GetFlameStrikeConfig(spellId int32, isProc bool) core.SpellCon
 			BaseCost: 0.30,
 		}
 	} else {
+		config.ProcMask = core.ProcMaskSpellProc
 		config.ActionID = config.ActionID.WithTag(1)
 	}
 

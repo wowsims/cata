@@ -10,7 +10,8 @@ import (
 func init() {
 	// https://docs.google.com/spreadsheets/d/12jnHZgMAYDTBmkeFjApaHL5yiiDlxXHYDbTXy2QCEBA/edit?gid=1393367300#gid=1393367300
 	cata.CreateDTRClassConfig(proto.Spec_SpecDestructionWarlock, 0.116).
-		AddSpell(17962, cata.NewDragonwrathSpellConfig().WithSpellHandler(customImmolateHandler)) // Conflagrate
+		AddSpell(17962, cata.NewDragonwrathSpellConfig().WithSpellHandler(customImmolateHandler)). // Conflagrate
+		AddSpell(47897, cata.NewDragonwrathSpellConfig().IsAoESpell())                             // Shadowflame
 }
 
 // TODO: Verify this is how it's supposed to work
