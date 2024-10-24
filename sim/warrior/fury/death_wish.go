@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/warrior"
 )
 
@@ -25,13 +26,13 @@ func (war *FuryWarrior) RegisterDeathWish() {
 				bonusSnapshot = 1.0 + (0.2 * war.EnrageEffectMultiplier)
 			}
 
-			war.PseudoStats.DamageDealtMultiplier *= bonusSnapshot
+			war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= bonusSnapshot
 			if !hasGlyph {
 				war.PseudoStats.DamageTakenMultiplier *= bonusSnapshot
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			war.PseudoStats.DamageDealtMultiplier /= bonusSnapshot
+			war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= bonusSnapshot
 			if !hasGlyph {
 				war.PseudoStats.DamageTakenMultiplier /= bonusSnapshot
 			}

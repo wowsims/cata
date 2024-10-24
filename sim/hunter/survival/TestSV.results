@@ -709,6 +709,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSV-AllItems-Gurthalak,VoiceoftheDeeps-77191"
+ value: {
+  dps: 25066.47529
+  tps: 22539.16131
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-Gurthalak,VoiceoftheDeeps-78478"
+ value: {
+  dps: 25066.47529
+  tps: 22539.16131
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-Gurthalak,VoiceoftheDeeps-78487"
+ value: {
+  dps: 25066.47529
+  tps: 22539.16131
+ }
+}
+dps_results: {
  key: "TestSV-AllItems-HarmlightToken-63839"
  value: {
   dps: 23452.53083

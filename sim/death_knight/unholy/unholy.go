@@ -72,11 +72,14 @@ func (uhdk *UnholyDeathKnight) ApplyTalents() {
 
 	// Mastery: Dreadblade
 	masteryMod := uhdk.AddDynamicMod(core.SpellModConfig{
-		Kind:   core.SpellMod_DamageDone_Pct,
-		School: core.SpellSchoolShadow,
+		Kind:      core.SpellMod_DamageDone_Pct,
+		School:    core.SpellSchoolShadow,
+		ClassMask: death_knight.DeathKnightSpellScourgeStrikeShadow | death_knight.DeathKnightSpellUnholyBlight,
 	})
 
 	uhdk.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
+		uhdk.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *=
+			(1.2 + 0.025*core.MasteryRatingToMasteryPoints(newMastery)) / (1.2 + 0.025*core.MasteryRatingToMasteryPoints(oldMastery))
 		masteryMod.UpdateFloatValue(uhdk.getMasteryShadowBonus())
 	})
 
@@ -84,6 +87,7 @@ func (uhdk *UnholyDeathKnight) ApplyTalents() {
 		Label:    "Dreadblade",
 		ActionID: core.ActionID{SpellID: 77515},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			uhdk.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.2 + 0.025*uhdk.GetMasteryPoints()
 			masteryMod.UpdateFloatValue(uhdk.getMasteryShadowBonus())
 			masteryMod.Activate()
 		},

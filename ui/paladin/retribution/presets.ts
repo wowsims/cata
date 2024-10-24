@@ -76,18 +76,18 @@ export const P4_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'P4',
 	Stats.fromMap(
 		{
-			[Stat.StatStrength]: 2.28,
+			[Stat.StatStrength]: 2.26,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatHitRating]: 2.93,
-			[Stat.StatCritRating]: 1.47,
-			[Stat.StatHasteRating]: 1.06,
-			[Stat.StatExpertiseRating]: 2.43,
+			[Stat.StatHitRating]: 3.25,
+			[Stat.StatCritRating]: 1.50,
+			[Stat.StatHasteRating]: 1.07,
+			[Stat.StatExpertiseRating]: 2.52,
 			[Stat.StatMasteryRating]: 1.76,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 8.39,
-			[PseudoStat.PseudoStatSpellHitPercent]: 33.56,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 342.82,
+			[PseudoStat.PseudoStatMainHandDps]: 8.36,
+			[PseudoStat.PseudoStatSpellHitPercent]: 48.35,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 360.12,
 		},
 	),
 );

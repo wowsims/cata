@@ -296,13 +296,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestCombat-AllItems-Bryntroll,theBoneArbiter-50709"
- value: {
-  dps: 29966.48987
-  tps: 21276.20781
- }
-}
-dps_results: {
  key: "TestCombat-AllItems-BurningShadowspiritDiamond"
  value: {
   dps: 29756.19126
@@ -1373,13 +1366,6 @@ dps_results: {
  value: {
   dps: 27844.47743
   tps: 19769.57898
- }
-}
-dps_results: {
- key: "TestCombat-AllItems-Shadowmourne-49623"
- value: {
-  dps: 29966.48987
-  tps: 21276.20781
  }
 }
 dps_results: {

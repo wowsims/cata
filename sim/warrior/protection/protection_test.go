@@ -39,6 +39,11 @@ func TestProtectionWarrior(t *testing.T) {
 var ItemFilter = core.ItemFilter{
 	ArmorType: proto.ArmorType_ArmorTypePlate,
 
+	HandTypes: []proto.HandType{
+		proto.HandType_HandTypeMainHand,
+		proto.HandType_HandTypeOneHand,
+	},
+
 	WeaponTypes: []proto.WeaponType{
 		proto.WeaponType_WeaponTypeAxe,
 		proto.WeaponType_WeaponTypeSword,
