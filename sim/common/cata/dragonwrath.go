@@ -162,7 +162,7 @@ func GetDRTSpellConfig(spell *core.Spell) core.SpellConfig {
 	baseConfig := core.SpellConfig{
 		ActionID:                 spell.WithTag(spell.Tag + 71086),
 		SpellSchool:              spell.SpellSchool,
-		ProcMask:                 spell.ProcMask,
+		ProcMask:                 core.ProcMaskSpellProc,
 		ApplyEffects:             spell.ApplyEffects,
 		ManaCost:                 core.ManaCostOptions{},
 		CritMultiplier:           spell.Unit.Env.Raid.GetPlayerFromUnit(spell.Unit).GetCharacter().DefaultSpellCritMultiplier(),
