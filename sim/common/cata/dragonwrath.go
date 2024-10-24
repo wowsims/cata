@@ -175,6 +175,11 @@ func GetDRTSpellConfig(spell *core.Spell) core.SpellConfig {
 		RelatedDotSpell:          spell.RelatedDotSpell,
 	}
 
+	// instant spells will not refresh dots if they're duplicated
+	if baseConfig.MissileSpeed == 0 && baseConfig.Cast.DefaultCast.CastTime == 0 {
+		baseConfig.Flags |= core.SpellFlagSupressDoTApply
+	}
+
 	spell.ActionID.Tag = oldTag
 	return baseConfig
 }
@@ -326,5 +331,14 @@ func registerDotSpell(unit *core.Unit) {
 }
 
 func CastDTRSpell(sim *core.Simulation, spell *core.Spell, target *core.Unit) {
+	// instant spells will not refresh dots if they're duplicated
+	if spell.Flags&core.SpellFlagSupressDoTApply > 0 && spell.RelatedDotSpell != nil {
+		oldFlags := spell.RelatedDotSpell.Flags
+		spell.RelatedDotSpell.Flags |= core.SpellFlagSupressDoTApply
+		spell.Cast(sim, target)
+		spell.RelatedDotSpell.Flags = oldFlags
+		return
+	}
+
 	spell.Cast(sim, target)
 }
