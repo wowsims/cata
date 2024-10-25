@@ -62,12 +62,16 @@ func init() {
 			DamageMultiplier: 1,
 			CritMultiplier:   character.DefaultSpellCritMultiplier(),
 			ThreatMultiplier: 1,
+			MissileSpeed:     20,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				// Tooltip is wrong:
 				// https://wago.tools/db2/SpellEffect?build=4.4.1.56574&filter[SpellID]=96887%7C96891%7C97119&page=1&sort[SpellID]=asc
 				baseDamage := sim.Roll(2561, 3292) * float64(dummyAura.GetStacks())
-				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+					spell.DealDamage(sim, result)
+				})
 			},
 		})
 
@@ -75,7 +79,7 @@ func init() {
 			Name:       "Electrical Charge Aura",
 			ActionID:   core.ActionID{ItemID: 68925},
 			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
-			ProcMask:   core.ProcMaskSpellOrProc,
+			ProcMask:   core.ProcMaskSpellOrSpellProc,
 			ProcChance: 1,
 			Outcome:    core.OutcomeCrit,
 			ICD:        time.Millisecond * 2500,
@@ -111,10 +115,14 @@ func init() {
 			DamageMultiplier: 1,
 			CritMultiplier:   character.DefaultSpellCritMultiplier(),
 			ThreatMultiplier: 1,
+			MissileSpeed:     20,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				baseDamage := sim.Roll(2889, 3713) * float64(dummyAura.GetStacks())
-				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+					spell.DealDamage(sim, result)
+				})
 			},
 		})
 
@@ -122,7 +130,7 @@ func init() {
 			Name:       "Electrical Charge Aura",
 			ActionID:   core.ActionID{ItemID: 69110},
 			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
-			ProcMask:   core.ProcMaskSpellOrProc,
+			ProcMask:   core.ProcMaskSpellOrSpellProc,
 			ProcChance: 1,
 			Outcome:    core.OutcomeCrit,
 			ICD:        time.Millisecond * 2500,

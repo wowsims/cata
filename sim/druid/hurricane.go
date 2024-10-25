@@ -10,7 +10,7 @@ func (druid *Druid) registerHurricaneSpell() {
 	druid.HurricaneTickSpell = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 42231},
 		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskProc,
+		ProcMask:    core.ProcMaskSpellProc,
 		Flags:       SpellFlagOmenTrigger,
 
 		CritMultiplier:   druid.BalanceCritMultiplier(),

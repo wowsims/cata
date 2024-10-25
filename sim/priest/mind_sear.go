@@ -9,7 +9,7 @@ import (
 func (priest *Priest) getMindSearBaseConfig() core.SpellConfig {
 	return core.SpellConfig{
 		SpellSchool:              core.SpellSchoolShadow,
-		ProcMask:                 core.ProcMaskProc,
+		ProcMask:                 core.ProcMaskSpellProc,
 		ClassSpellMask:           PriestSpellMindSear,
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,

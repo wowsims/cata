@@ -11,7 +11,7 @@ func (dk *UnholyDeathKnight) registerScourgeStrikeShadowDamageSpell() *core.Spel
 	return dk.Unit.RegisterSpell(core.SpellConfig{
 		ActionID:       scourgeStrikeActionID.WithTag(2),
 		SpellSchool:    core.SpellSchoolShadow,
-		ProcMask:       core.ProcMaskSpellOrProc,
+		ProcMask:       core.ProcMaskSpellDamageProc,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreModifiers,
 		ClassSpellMask: death_knight.DeathKnightSpellScourgeStrikeShadow,
 

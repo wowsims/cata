@@ -80,6 +80,7 @@ export interface PresetBuild {
 	gear?: PresetGear;
 	talents?: PresetTalents;
 	rotation?: PresetRotation;
+	rotationType?: APLRotationType;
 	epWeights?: PresetEpWeights;
 	encounter?: PresetEncounter;
 	race?: Race;
@@ -224,8 +225,8 @@ export const makePresetEncounter = (name: string, encounter?: PresetEncounter['e
 	};
 };
 
-export const makePresetBuild = (name: string, { gear, talents, rotation, epWeights, encounter, race }: PresetBuildOptions): PresetBuild => {
-	return { name, gear, talents, rotation, epWeights, encounter, race };
+export const makePresetBuild = (name: string, { gear, talents, rotation, rotationType, epWeights, encounter, race }: PresetBuildOptions): PresetBuild => {
+	return { name, gear, talents, rotation, rotationType, epWeights, encounter, race };
 };
 
 export type SpecCheckWarning = {

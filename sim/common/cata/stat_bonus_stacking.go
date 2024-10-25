@@ -112,7 +112,7 @@ func init() {
 		AuraID:     91810,
 		Bonus:      stats.Stats{stats.Strength: 38},
 		MaxStacks:  10,
-		ProcMask:   core.ProcMaskMeleeOrProc,
+		ProcMask:   core.ProcMaskMeleeOrMeleeProc,
 		Duration:   time.Second * 15,
 		Callback:   core.CallbackOnSpellHitDealt,
 		Harmful:    false,

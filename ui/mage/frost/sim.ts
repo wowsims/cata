@@ -4,8 +4,7 @@ import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
-import { Stats, UnitStat } from '../../core/proto_utils/stats';
-import { sharedMageDisplayStatsModifiers } from '../shared';
+import { UnitStat } from '../../core/proto_utils/stats';
 import * as FrostInputs from './inputs';
 import * as Presets from './presets';
 
@@ -30,25 +29,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[
-			Stat.StatHealth,
-			Stat.StatMana,
-			Stat.StatStamina,
-			Stat.StatIntellect,
-			Stat.StatSpirit,
-			Stat.StatSpellPower,
-			Stat.StatMP5,
-			Stat.StatMasteryRating,
-		],
-		[
-			PseudoStat.PseudoStatSpellHitPercent,
-			PseudoStat.PseudoStatSpellCritPercent,
-			PseudoStat.PseudoStatSpellHastePercent,
-		],
+		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatMP5, Stat.StatMasteryRating],
+		[PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatSpellCritPercent, PseudoStat.PseudoStatSpellHastePercent],
 	),
-	modifyDisplayStats: (player: Player<Spec.SpecFrostMage>) => {
-		return sharedMageDisplayStatsModifiers(player);
-	},
 
 	defaults: {
 		// Default equipped gear.
