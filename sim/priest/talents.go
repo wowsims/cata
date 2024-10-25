@@ -594,7 +594,6 @@ func (priest *Priest) applyMindMelt() {
 		ProcChance:     1,
 		ClassSpellMask: PriestSpellMindSpike,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			println("mm proc")
 			procAura.Activate(sim)
 			procAura.AddStack(sim)
 		},
