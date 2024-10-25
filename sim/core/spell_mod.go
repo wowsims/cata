@@ -199,9 +199,9 @@ const (
 	// Uses FloatValue
 	SpellMod_Cooldown_Multiplier
 
-	// Will increase the CritMultiplier. +100% = 1.0
+	// Will increase the AddativeCritMultiplier. +100% = 1.0
 	// Uses FloatValue
-	SpellMod_CritMultiplier_Pct
+	SpellMod_CritMultiplier_Flat
 
 	// Will add / substract % amount from the cast time multiplier.
 	// Ueses: FloatValue
@@ -283,9 +283,9 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 		Remove: removeCooldownMultiplier,
 	},
 
-	SpellMod_CritMultiplier_Pct: {
-		Apply:  applyCritMultiplier,
-		Remove: removeCritMultiplier,
+	SpellMod_CritMultiplier_Flat: {
+		Apply:  applyCritMultiplierFlat,
+		Remove: removeCritMultiplierFlat,
 	},
 
 	SpellMod_CastTime_Pct: {
@@ -403,12 +403,12 @@ func removeCooldownMultiplier(mod *SpellMod, spell *Spell) {
 	spell.CdMultiplier -= mod.floatValue
 }
 
-func applyCritMultiplier(mod *SpellMod, spell *Spell) {
-	spell.CritMultiplier = 1 + (spell.CritMultiplier-1)*(mod.floatValue+1)
+func applyCritMultiplierFlat(mod *SpellMod, spell *Spell) {
+	spell.CritMultiplierAddative += mod.floatValue
 }
 
-func removeCritMultiplier(mod *SpellMod, spell *Spell) {
-	spell.CritMultiplier = 1 + (spell.CritMultiplier-1)/(mod.floatValue+1)
+func removeCritMultiplierFlat(mod *SpellMod, spell *Spell) {
+	spell.CritMultiplierAddative -= mod.floatValue
 }
 
 func applyCastTimePercent(mod *SpellMod, spell *Spell) {

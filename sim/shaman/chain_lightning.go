@@ -51,8 +51,10 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 		}
 
 		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-			if !isElementalOverload && results[hitIndex].Landed() && sim.Proc(shaman.GetOverloadChance()/3, "Chain Lightning Elemental Overload") {
-				shaman.ChainLightningOverloads[hitIndex].Cast(sim, results[hitIndex].Target)
+			if !spell.ProcMask.Matches(core.ProcMaskSpellProc) {
+				if !isElementalOverload && results[hitIndex].Landed() && sim.Proc(shaman.GetOverloadChance()/3, "Chain Lightning Elemental Overload") {
+					shaman.ChainLightningOverloads[hitIndex].Cast(sim, results[hitIndex].Target)
+				}
 			}
 
 			spell.DealDamage(sim, results[hitIndex])

@@ -116,7 +116,7 @@ var Tier12 = core.NewItemSet(core.ItemSet{
 			core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
 				Name:           "Rogue T12 4P Bonus",
 				Callback:       core.CallbackOnApplyEffects,
-				ClassSpellMask: RogueSpellTricksOfTheTradeThreat,
+				ClassSpellMask: RogueSpellTricksOfTheTrade,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if rogue.T12ToTLastBuff == 3 { // any of 3
 						randomStat := int(math.Mod(sim.RandomFloat("Rogue T12 4P Bonus Initial")*10, 3))

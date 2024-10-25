@@ -1,27 +1,27 @@
 package mage
 
 import (
+	"strconv"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (mage *Mage) registerFlamestrikeSpell() {
+func (mage *Mage) GetFlameStrikeConfig(spellId int32, isProc bool) core.SpellConfig {
+	label := "Flamestrike - " + strconv.Itoa(int(spellId))
+	if isProc {
+		label += " - Proc"
+	}
 
-	mage.Flamestrike = mage.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 2120},
+	config := core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: spellId},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlag(core.TernaryInt32(isProc, 0, int32(core.SpellFlagAPL))),
 		ClassSpellMask: MageSpellFlamestrike,
-
-		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.30,
-		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 2000,
+				NonEmpty: true,
 			},
 		},
 
@@ -33,7 +33,7 @@ func (mage *Mage) registerFlamestrikeSpell() {
 		Dot: core.DotConfig{
 			IsAOE: true,
 			Aura: core.Aura{
-				Label: "Flamestrike",
+				Label: label,
 			},
 			NumberOfTicks: 4,
 			TickLength:    time.Second * 2,
@@ -56,7 +56,31 @@ func (mage *Mage) registerFlamestrikeSpell() {
 				baseDamage *= sim.Encounter.AOECapMultiplier()
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
-			spell.AOEDot().Apply(sim)
+
+			if spell.AOEDot() != nil {
+				spell.AOEDot().Apply(sim)
+			}
 		},
-	})
+	}
+
+	if !isProc {
+		config.Cast = core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD:      core.GCDDefault,
+				CastTime: time.Millisecond * 2000,
+			},
+		}
+
+		config.ManaCost = core.ManaCostOptions{
+			BaseCost: 0.30,
+		}
+	} else {
+		config.ProcMask = core.ProcMaskSpellProc
+		config.ActionID = config.ActionID.WithTag(1)
+	}
+
+	return config
+}
+func (mage *Mage) registerFlamestrikeSpell() {
+	mage.Flamestrike = mage.RegisterSpell(mage.GetFlameStrikeConfig(2120, false))
 }

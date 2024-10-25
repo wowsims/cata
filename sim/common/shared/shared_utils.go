@@ -31,6 +31,7 @@ type DamageEffect struct {
 	MinDmg           float64
 	MaxDmg           float64
 	BonusCoefficient float64
+	ProcMask         core.ProcMask
 }
 
 type ExtraSpellInfo struct {
@@ -42,12 +43,17 @@ type CustomProcHandler func(sim *core.Simulation, spell *core.Spell, result *cor
 type ProcCondition func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool
 
 func NewProcStatBonusEffectWithDamageProc(config ProcStatBonusEffect, damage DamageEffect) {
+	procMask := core.ProcMaskEmpty
+	if damage.ProcMask != core.ProcMaskUnknown {
+		procMask = damage.ProcMask
+	}
+
 	factory_StatBonusEffect(config, nil, func(agent core.Agent) ExtraSpellInfo {
 		character := agent.GetCharacter()
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:                 core.ActionID{SpellID: damage.SpellID},
 			SpellSchool:              damage.School,
-			ProcMask:                 core.ProcMaskEmpty,
+			ProcMask:                 procMask,
 			Flags:                    core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 			DamageMultiplier:         1,
 			CritMultiplier:           character.DefaultSpellCritMultiplier(),

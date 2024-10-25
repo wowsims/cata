@@ -33,7 +33,6 @@ func (priest *Priest) registerMindBlastSpell() {
 			},
 		},
 		ThreatMultiplier: 1,
-
 		BonusCoefficient: 1.104,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
