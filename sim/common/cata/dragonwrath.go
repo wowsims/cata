@@ -353,5 +353,11 @@ func CastDTRSpell(sim *core.Simulation, spell *core.Spell, target *core.Unit) {
 		return
 	}
 
-	spell.Cast(sim, target)
+	sim.AddPendingAction(&core.PendingAction{
+		NextActionAt: sim.CurrentTime,
+		Priority:     core.ActionPriorityAuto,
+		OnAction: func(sim *core.Simulation) {
+			spell.Cast(sim, target)
+		},
+	})
 }
