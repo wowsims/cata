@@ -567,8 +567,11 @@ func (priest *Priest) applyMindMelt() {
 	procAura := priest.RegisterAura(core.Aura{
 		Label:     "Mind Melt Proc",
 		ActionID:  core.ActionID{SpellID: 87160},
-		Duration:  time.Second * 15,
+		Duration:  time.Second * 6,
 		MaxStacks: 2,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			mindMeltMod.Activate()
+		},
 		OnStacksChange: func(_ *core.Aura, _ *core.Simulation, oldStacks int32, newStacks int32) {
 			mindMeltMod.UpdateFloatValue(-0.5 * float64(newStacks))
 		},
@@ -591,6 +594,7 @@ func (priest *Priest) applyMindMelt() {
 		ProcChance:     1,
 		ClassSpellMask: PriestSpellMindSpike,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			println("mm proc")
 			procAura.Activate(sim)
 			procAura.AddStack(sim)
 		},
