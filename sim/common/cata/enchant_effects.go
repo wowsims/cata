@@ -157,7 +157,7 @@ func init() {
 	core.NewEnchantEffect(4083, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procBuilder := func(name string, tag int32) *core.Aura {
+		procBuilder := func(name string, tag int32) *core.StatBuffAura {
 			return character.NewTemporaryStatsAura(
 				name,
 				core.ActionID{SpellID: 74221, Tag: tag},

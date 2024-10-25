@@ -409,6 +409,8 @@ func init() {
 					return procAura.GetStacks() == 5
 				},
 			})
+
+			character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
 		})
 
 		jarItemID := core.TernaryInt32(heroic, 65029, 59354)

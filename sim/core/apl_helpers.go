@@ -2,6 +2,7 @@ package core
 
 import (
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 // Struct for handling unit references, to account for values that can
@@ -125,6 +126,18 @@ func (rot *APLRotation) GetAPLICDAura(sourceUnit UnitReference, auraId *proto.Ac
 		rot.ValidationWarning("No aura found on %s for: %s", sourceUnit.Get().Label, ProtoToActionID(auraId))
 	}
 	return aura
+}
+
+func (rot *APLRotation) GetAPLTrinketProcAuras(statTypesToMatch []stats.Stat, warnIfNoneFound bool) []*StatBuffAura {
+	unit := rot.unit
+	character := unit.Env.Raid.GetPlayerFromUnit(unit).GetCharacter()
+	matchingAuras := character.GetMatchingTrinketProcAuras(statTypesToMatch)
+
+	if (len(matchingAuras) == 0) && warnIfNoneFound {
+		rot.ValidationWarning("No trinket proc buffs found for: %s", StringFromStatTypes(statTypesToMatch))
+	}
+
+	return matchingAuras
 }
 
 func (rot *APLRotation) GetAPLSpell(spellId *proto.ActionID) *Spell {
