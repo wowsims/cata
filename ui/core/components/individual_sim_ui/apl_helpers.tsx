@@ -771,7 +771,7 @@ export function statTypeFieldConfig(field: string): APLPickerBuilderFieldConfig<
 	return {
 		field: field,
 		label: 'Buff Type',
-		newValue: () => -1,
+		newValue: () => 0,
 		factory: (parent, player, config) =>
 			new TextDropdownPicker(parent, player, {
 				id: randomUUID(),
