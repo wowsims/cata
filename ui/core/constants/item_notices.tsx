@@ -21,13 +21,11 @@ const VPLC_IMPLEMENTATION_WARNING = (
 	</>
 );
 
-const DTR_PARTIAL_IMPLEMENTATION_WARNING = (
+const DTR_FIRST_IMPLEMENTATION_WARNING = (
 	<>
-		<p>The following interactions are most likely inaccurate:</p>
-		<ul className="mb-0">
-			<li>Proc chance</li>
-			<li>Replication of various spells</li>
-		</ul>
+		<p className="fw-bold">This item was implemented based on the first round of testing on PTR.</p>
+		<p>Results may change as we get more logs and reports on interactions.</p>
+		<WantToHelpMessage />
 	</>
 );
 
@@ -226,15 +224,15 @@ export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 		71086,
 		{
 			[Spec.SpecUnknown]: <p>This item is unsupported for this spec.</p>,
-			[Spec.SpecBalanceDruid]: DTR_PARTIAL_IMPLEMENTATION_WARNING,
-			[Spec.SpecArcaneMage]: DTR_PARTIAL_IMPLEMENTATION_WARNING,
-			[Spec.SpecFireMage]: DTR_PARTIAL_IMPLEMENTATION_WARNING,
-			[Spec.SpecFrostMage]: DTR_PARTIAL_IMPLEMENTATION_WARNING,
-			[Spec.SpecShadowPriest]: DTR_PARTIAL_IMPLEMENTATION_WARNING,
-			[Spec.SpecElementalShaman]: DTR_PARTIAL_IMPLEMENTATION_WARNING,
-			[Spec.SpecAfflictionWarlock]: DTR_PARTIAL_IMPLEMENTATION_WARNING,
-			[Spec.SpecDemonologyWarlock]: DTR_PARTIAL_IMPLEMENTATION_WARNING,
-			[Spec.SpecDestructionWarlock]: DTR_PARTIAL_IMPLEMENTATION_WARNING,
+			[Spec.SpecBalanceDruid]: DTR_FIRST_IMPLEMENTATION_WARNING,
+			[Spec.SpecArcaneMage]: DTR_FIRST_IMPLEMENTATION_WARNING,
+			[Spec.SpecFireMage]: DTR_FIRST_IMPLEMENTATION_WARNING,
+			[Spec.SpecFrostMage]: DTR_FIRST_IMPLEMENTATION_WARNING,
+			[Spec.SpecShadowPriest]: DTR_FIRST_IMPLEMENTATION_WARNING,
+			[Spec.SpecElementalShaman]: DTR_FIRST_IMPLEMENTATION_WARNING,
+			[Spec.SpecAfflictionWarlock]: DTR_FIRST_IMPLEMENTATION_WARNING,
+			[Spec.SpecDemonologyWarlock]: DTR_FIRST_IMPLEMENTATION_WARNING,
+			[Spec.SpecDestructionWarlock]: DTR_FIRST_IMPLEMENTATION_WARNING,
 		},
 	],
 	// Rogue Legendary Daggers (All Stages)
