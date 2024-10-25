@@ -2,6 +2,7 @@ package druid
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
@@ -35,6 +36,7 @@ type eclipseEnergyBar struct {
 	currentEclipse   Eclipse
 	gainMask         EclipseEnergy // which energy the unit is currently allowed to accumulate
 	eclipseCallbacks []EclipseCallback
+	eclipseTrigger   func(spell *core.Spell) bool // used to deactivate eclipse spells
 }
 
 func (eb *eclipseEnergyBar) reset() {
@@ -127,7 +129,7 @@ func (druid *Druid) RegisterEclipseEnergyGainAura() {
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			var eclipseEnergyMultiplier float64 = 1.0
 
 			if druid.canEuphoriaProc(spell) && druid.hasEuphoriaProcced(sim) {
@@ -137,20 +139,26 @@ func (druid *Druid) RegisterEclipseEnergyGainAura() {
 			if energyGain := druid.GetSpellEclipseEnergy(spell.ClassSpellMask, druid.currentEclipse != NoEclipse); energyGain != 0 {
 				switch spell.ClassSpellMask {
 				case DruidSpellStarfire:
-					druid.AddEclipseEnergy(energyGain*eclipseEnergyMultiplier, SolarEnergy, sim, solarMetric)
+					druid.AddEclipseEnergy(energyGain*eclipseEnergyMultiplier, SolarEnergy, sim, solarMetric, spell)
 				case DruidSpellWrath:
-					druid.AddEclipseEnergy(energyGain*eclipseEnergyMultiplier, LunarEnergy, sim, lunarMetric)
+					druid.AddEclipseEnergy(energyGain*eclipseEnergyMultiplier, LunarEnergy, sim, lunarMetric, spell)
 				case DruidSpellStarsurge:
 					if druid.CanGainEnergy(SolarEnergy) {
-						druid.AddEclipseEnergy(energyGain, SolarEnergy, sim, solarMetric)
+						druid.AddEclipseEnergy(energyGain, SolarEnergy, sim, solarMetric, spell)
 					} else {
-						druid.AddEclipseEnergy(energyGain, LunarEnergy, sim, lunarMetric)
+						druid.AddEclipseEnergy(energyGain, LunarEnergy, sim, lunarMetric, spell)
 					}
 				case DruidSpellMoonfire: // Moonfire (under the effect of Lunar Shower)
-					druid.AddEclipseEnergy(energyGain, SolarEnergy, sim, solarMetric)
+					druid.AddEclipseEnergy(energyGain, SolarEnergy, sim, solarMetric, spell)
 				case DruidSpellSunfire: // Sunfire (under the effect of Lunar Shower)
-					druid.AddEclipseEnergy(energyGain, LunarEnergy, sim, lunarMetric)
+					druid.AddEclipseEnergy(energyGain, LunarEnergy, sim, lunarMetric, spell)
 				}
+			}
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			// chekc if trigger is supposed to handle spell hit, then clear
+			if druid.eclipseTrigger != nil && druid.eclipseTrigger(spell) {
+				druid.eclipseTrigger = nil
 			}
 		},
 	})
@@ -198,7 +206,7 @@ func (eb *eclipseEnergyBar) AddEclipseCallback(callback EclipseCallback) {
 	eb.eclipseCallbacks = append(eb.eclipseCallbacks, callback)
 }
 
-func (eb *eclipseEnergyBar) AddEclipseEnergy(amount float64, kind EclipseEnergy, sim *core.Simulation, metrics *core.ResourceMetrics) {
+func (eb *eclipseEnergyBar) AddEclipseEnergy(amount float64, kind EclipseEnergy, sim *core.Simulation, metrics *core.ResourceMetrics, spell *core.Spell) {
 	if eb.druid == nil {
 		return
 	}
@@ -209,13 +217,13 @@ func (eb *eclipseEnergyBar) AddEclipseEnergy(amount float64, kind EclipseEnergy,
 	}
 
 	if kind&SolarEnergy > 0 {
-		remainder := eb.spendLunarEnergy(amount, sim, metrics)
-		eb.addSolarEnergy(remainder, sim, metrics)
+		remainder := eb.spendLunarEnergy(amount, sim, metrics, spell)
+		eb.addSolarEnergy(remainder, sim, metrics, spell)
 		return
 	}
 
-	remainder := eb.spendSolarEnergy(amount, sim, metrics)
-	eb.addLunarEnergy(remainder, sim, metrics)
+	remainder := eb.spendSolarEnergy(amount, sim, metrics, spell)
+	eb.addLunarEnergy(remainder, sim, metrics, spell)
 }
 
 func (eb *eclipseEnergyBar) CurrentSolarEnergy() int32 {
@@ -232,7 +240,7 @@ func (eb *eclipseEnergyBar) CanGainEnergy(kind EclipseEnergy) bool {
 
 // spends the given amount of energy and returns how much energy remains
 // this might be added to the solar energy
-func (eb *eclipseEnergyBar) spendLunarEnergy(amount float64, sim *core.Simulation, metrics *core.ResourceMetrics) float64 {
+func (eb *eclipseEnergyBar) spendLunarEnergy(amount float64, sim *core.Simulation, metrics *core.ResourceMetrics, spell *core.Spell) float64 {
 	if amount == 0 || eb.lunarEnergy == 0 {
 		return amount
 	}
@@ -247,13 +255,13 @@ func (eb *eclipseEnergyBar) spendLunarEnergy(amount float64, sim *core.Simulatio
 	}
 
 	if eb.lunarEnergy == 0 {
-		eb.SetEclipse(NoEclipse, sim)
+		eb.SetEclipse(NoEclipse, sim, spell)
 	}
 
 	return remainder
 }
 
-func (eb *eclipseEnergyBar) addLunarEnergy(amount float64, sim *core.Simulation, metrics *core.ResourceMetrics) {
+func (eb *eclipseEnergyBar) addLunarEnergy(amount float64, sim *core.Simulation, metrics *core.ResourceMetrics, spell *core.Spell) {
 	if amount < 0 {
 		panic("Tried to add negative amount of lunar energy.")
 	}
@@ -272,13 +280,13 @@ func (eb *eclipseEnergyBar) addLunarEnergy(amount float64, sim *core.Simulation,
 	}
 
 	if eb.lunarEnergy == 100 {
-		eb.SetEclipse(LunarEclipse, sim)
+		eb.SetEclipse(LunarEclipse, sim, spell)
 	}
 
 	metrics.AddEvent(amount, gain)
 }
 
-func (eb *eclipseEnergyBar) SetEclipse(eclipse Eclipse, sim *core.Simulation) {
+func (eb *eclipseEnergyBar) SetEclipse(eclipse Eclipse, sim *core.Simulation, spell *core.Spell) {
 	if eb.currentEclipse == eclipse {
 		return
 	}
@@ -286,14 +294,40 @@ func (eb *eclipseEnergyBar) SetEclipse(eclipse Eclipse, sim *core.Simulation) {
 	if eclipse == LunarEclipse {
 		eb.gainMask = SolarEnergy
 		eb.invokeCallback(eclipse, true, sim)
+		eb.currentEclipse = eclipse
 	} else if eclipse == SolarEclipse {
 		eb.gainMask = LunarEnergy
 		eb.invokeCallback(eclipse, true, sim)
+		eb.currentEclipse = eclipse
 	} else {
-		eb.invokeCallback(eb.currentEclipse, false, sim)
-	}
+		if spell.ClassSpellMask&DruidSpellWrath > 0 {
+			eb.eclipseTrigger = func(triggerSpell *core.Spell) bool {
+				if spell.ClassSpellMask == triggerSpell.ClassSpellMask && !(triggerSpell.ProcMask&core.ProcMaskSpellProc > 0) {
+					eb.invokeCallback(eb.currentEclipse, false, sim)
+					eb.currentEclipse = eclipse
+					return true
+				}
 
-	eb.currentEclipse = eclipse
+				return false
+			}
+
+			// eclipse state is only removed for non procced spells
+		} else if !(spell.ProcMask&core.ProcMaskSpellProc > 0) {
+			sim.AddPendingAction(&core.PendingAction{
+				NextActionAt: sim.CurrentTime + time.Millisecond*10,
+				Priority:     core.ActionPriorityAuto,
+				OnAction: func(sim *core.Simulation) {
+					// make sure we're not triggering twice for edge cases
+					if eb.currentEclipse == eclipse {
+						return
+					}
+
+					eb.invokeCallback(eb.currentEclipse, false, sim)
+					eb.currentEclipse = eclipse
+				},
+			})
+		}
+	}
 }
 
 func (eb *eclipseEnergyBar) invokeCallback(eclipse Eclipse, gained bool, sim *core.Simulation) {
@@ -302,7 +336,7 @@ func (eb *eclipseEnergyBar) invokeCallback(eclipse Eclipse, gained bool, sim *co
 	}
 }
 
-func (eb *eclipseEnergyBar) spendSolarEnergy(amount float64, sim *core.Simulation, metrics *core.ResourceMetrics) float64 {
+func (eb *eclipseEnergyBar) spendSolarEnergy(amount float64, sim *core.Simulation, metrics *core.ResourceMetrics, spell *core.Spell) float64 {
 	if amount == 0 || eb.solarEnergy == 0 {
 		return amount
 	}
@@ -317,13 +351,13 @@ func (eb *eclipseEnergyBar) spendSolarEnergy(amount float64, sim *core.Simulatio
 	}
 
 	if eb.solarEnergy == 0 {
-		eb.SetEclipse(NoEclipse, sim)
+		eb.SetEclipse(NoEclipse, sim, spell)
 	}
 
 	return remainder
 }
 
-func (eb *eclipseEnergyBar) addSolarEnergy(amount float64, sim *core.Simulation, metrics *core.ResourceMetrics) {
+func (eb *eclipseEnergyBar) addSolarEnergy(amount float64, sim *core.Simulation, metrics *core.ResourceMetrics, spell *core.Spell) {
 	if amount < 0 {
 		panic("Tried to add negative amount of solar energy.")
 	}
@@ -342,7 +376,7 @@ func (eb *eclipseEnergyBar) addSolarEnergy(amount float64, sim *core.Simulation,
 	}
 
 	if eb.solarEnergy == 100 {
-		eb.SetEclipse(SolarEclipse, sim)
+		eb.SetEclipse(SolarEclipse, sim, spell)
 	}
 
 	metrics.AddEvent(amount, gain)

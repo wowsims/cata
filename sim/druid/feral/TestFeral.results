@@ -436,6 +436,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-Dragonwrath,Tarecgosa'sRest-71086"
+ value: {
+  dps: 27389.95079
+  tps: 38347.52402
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-Dwyer'sCaber-70141"
  value: {
   dps: 26369.25347
@@ -1729,7 +1736,7 @@ dps_results: {
  key: "TestFeral-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
   dps: 25438.28328
-  tps: 36359.25198
+  tps: 36359.26031
  }
 }
 dps_results: {
