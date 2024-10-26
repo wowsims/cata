@@ -178,10 +178,11 @@ func (dk *DeathKnight) applyUnholyBlight() {
 	}
 
 	unholyBlight := dk.Unit.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 49194},
-		SpellSchool: core.SpellSchoolShadow,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt | core.SpellFlagPassiveSpell,
+		ActionID:       core.ActionID{SpellID: 49194},
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt | core.SpellFlagPassiveSpell,
+		ClassSpellMask: DeathKnightSpellUnholyBlight,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
