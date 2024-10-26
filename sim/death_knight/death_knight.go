@@ -4,6 +4,7 @@ import (
 	"math"
 	"time"
 
+	"github.com/wowsims/cata/sim/common/cata"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -69,6 +70,19 @@ type DeathKnight struct {
 
 	// Runic power decay, used during pre pull
 	RunicPowerDecayAura *core.Aura
+
+	// Cached Gurthalak tentacles
+	gurthalakTentacles []*cata.TentacleOfTheOldOnesPet
+}
+
+func (deathKnight *DeathKnight) GetTentacles() []*cata.TentacleOfTheOldOnesPet {
+	return deathKnight.gurthalakTentacles
+}
+
+func (dk *DeathKnight) NewTentacleOfTheOldOnesPet() *cata.TentacleOfTheOldOnesPet {
+	pet := cata.NewTentacleOfTheOldOnesPet(&dk.Character)
+	dk.AddPet(pet)
+	return pet
 }
 
 func (dk *DeathKnight) GetCharacter() *core.Character {
@@ -229,6 +243,14 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 		AutoSwingMelee: true,
 	})
 
+	if mh := dk.MainHand(); mh.Name == "Gurthalak, Voice of the Deeps" {
+		dk.gurthalakTentacles = make([]*cata.TentacleOfTheOldOnesPet, 10)
+
+		for i := 0; i < 10; i++ {
+			dk.gurthalakTentacles[i] = dk.NewTentacleOfTheOldOnesPet()
+		}
+	}
+
 	return dk
 }
 
@@ -327,6 +349,7 @@ const (
 	DeathKnightSpellBoneShield
 	DeathKnightSpellDancingRuneWeapon
 	DeathKnightSpellDeathPact
+	DeathKnightSpellUnholyBlight
 
 	DeathKnightSpellKillingMachine     // Used to react to km procs
 	DeathKnightSpellConvertToDeathRune // Used to react to death rune gains

@@ -2,11 +2,12 @@ import { ref } from 'tsx-vanilla';
 
 import { Player, UnitMetadata } from '../../player.js';
 import { APLValueEclipsePhase, APLValueRuneSlot, APLValueRuneType } from '../../proto/apl.js';
-import { ActionID, OtherAction, UnitReference, UnitReference_Type as UnitType } from '../../proto/common.js';
+import { ActionID, OtherAction, Stat, UnitReference, UnitReference_Type as UnitType } from '../../proto/common.js';
 import { FeralDruid_Rotation_AplType } from '../../proto/druid.js';
 import { ActionId, defaultTargetIcon, getPetIconFromName } from '../../proto_utils/action_id.js';
+import { getStatName } from '../../proto_utils/names.js';
 import { EventID } from '../../typed_event.js';
-import { bucket, randomUUID } from '../../utils.js';
+import { bucket, getEnumValues, randomUUID } from '../../utils.js';
 import { Input, InputConfig } from '../input.jsx';
 import { BooleanPicker } from '../pickers/boolean_picker.js';
 import { DropdownPicker, DropdownPickerConfig, DropdownValueConfig, TextDropdownPicker } from '../pickers/dropdown_picker.jsx';
@@ -755,6 +756,27 @@ export function rotationTypeFieldConfig(field: string): APLPickerBuilderFieldCon
 				id: randomUUID(),
 				...config,
 				defaultLabel: 'Single Target',
+				equals: (a, b) => a == b,
+				values: values,
+			}),
+	};
+}
+
+export function statTypeFieldConfig(field: string): APLPickerBuilderFieldConfig<any, any> {
+	const allStats = getEnumValues(Stat) as Array<Stat>;
+	const values = [{ value: -1, label: 'None' }].concat(allStats.map(stat => {
+		return { value: stat, label: getStatName(stat) };
+	}));
+
+	return {
+		field: field,
+		label: 'Buff Type',
+		newValue: () => 0,
+		factory: (parent, player, config) =>
+			new TextDropdownPicker(parent, player, {
+				id: randomUUID(),
+				...config,
+				defaultLabel: 'None',
 				equals: (a, b) => a == b,
 				values: values,
 			}),

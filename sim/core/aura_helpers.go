@@ -194,17 +194,38 @@ func MakeProcTriggerAura(unit *Unit, config ProcTrigger) *Aura {
 	return unit.GetOrRegisterAura(aura)
 }
 
+// Analog to an Aura "sub-class" that additionally links the Aura to one or more
+// Stats. Used within APL snapshotting wrappers.
+type StatBuffAura struct {
+	*Aura
+
+	// All Stat types that are buffed (before dependencies) when this Aura
+	// is activated.
+	BuffedStatTypes []stats.Stat
+}
+
+func (aura *StatBuffAura) BuffsMatchingStat(statTypesToMatch []stats.Stat) bool {
+	if aura == nil {
+		return false
+	}
+
+	return CheckSliceOverlap(aura.BuffedStatTypes, statTypesToMatch)
+}
+
 type StackingStatAura struct {
 	Aura          Aura
 	BonusPerStack stats.Stats
 }
 
-func MakeStackingAura(character *Character, config StackingStatAura) *Aura {
+func MakeStackingAura(character *Character, config StackingStatAura) *StatBuffAura {
 	bonusPerStack := config.BonusPerStack
 	config.Aura.OnStacksChange = func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
 		character.AddStatsDynamic(sim, bonusPerStack.Multiply(float64(newStacks-oldStacks)))
 	}
-	return character.RegisterAura(config.Aura)
+	return &StatBuffAura{
+		Aura:            character.RegisterAura(config.Aura),
+		BuffedStatTypes: bonusPerStack.GetBuffedStatTypes(),
+	}
 }
 
 // Returns the same Aura for chaining.
@@ -224,7 +245,7 @@ func MakePermanent(aura *Aura) *Aura {
 	return aura
 }
 
-func (character *Character) NewTemporaryStatBuffWithStacks(auraLabel string, actionID ActionID, bonusPerStack stats.Stats, maxStacks int32, duration time.Duration) *Aura {
+func (character *Character) NewTemporaryStatBuffWithStacks(auraLabel string, actionID ActionID, bonusPerStack stats.Stats, maxStacks int32, duration time.Duration) *StatBuffAura {
 	return MakeStackingAura(character, StackingStatAura{
 		Aura: Aura{
 			Label:     auraLabel,
@@ -237,12 +258,12 @@ func (character *Character) NewTemporaryStatBuffWithStacks(auraLabel string, act
 }
 
 // Helper for the common case of making an aura that adds stats.
-func (character *Character) NewTemporaryStatsAura(auraLabel string, actionID ActionID, tempStats stats.Stats, duration time.Duration) *Aura {
+func (character *Character) NewTemporaryStatsAura(auraLabel string, actionID ActionID, tempStats stats.Stats, duration time.Duration) *StatBuffAura {
 	return character.NewTemporaryStatsAuraWrapped(auraLabel, actionID, tempStats, duration, nil)
 }
 
 // Alternative that allows modifying the Aura config.
-func (character *Character) NewTemporaryStatsAuraWrapped(auraLabel string, actionID ActionID, buffs stats.Stats, duration time.Duration, modConfig func(*Aura)) *Aura {
+func (character *Character) NewTemporaryStatsAuraWrapped(auraLabel string, actionID ActionID, buffs stats.Stats, duration time.Duration, modConfig func(*Aura)) *StatBuffAura {
 	// If one of the stat bonuses is a health bonus, then set up healing metrics for the associated
 	// heal, since all temporary max health bonuses also instantaneously heal the player.
 	var healthMetrics *ResourceMetrics
@@ -292,7 +313,10 @@ func (character *Character) NewTemporaryStatsAuraWrapped(auraLabel string, actio
 		modConfig(&config)
 	}
 
-	return character.GetOrRegisterAura(config)
+	return &StatBuffAura{
+		Aura:            character.GetOrRegisterAura(config),
+		BuffedStatTypes: buffs.GetBuffedStatTypes(),
+	}
 }
 
 type ShieldStrengthCalculator func(unit *Unit) float64

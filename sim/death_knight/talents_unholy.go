@@ -103,7 +103,7 @@ func (dk *DeathKnight) applyRunicEmpowerementCorruption() {
 
 	has4pcT13 := dk.HasSetBonus(ItemSetNecroticBoneplateBattlegear, 4)
 
-	var runicMasteryAura *core.Aura
+	var runicMasteryAura *core.StatBuffAura
 	if has4pcT13 {
 		runicMasteryAura = dk.NewTemporaryStatsAura("Runic Mastery", core.ActionID{SpellID: 105647}, stats.Stats{stats.MasteryRating: 710}, time.Second*12)
 	}
@@ -178,10 +178,11 @@ func (dk *DeathKnight) applyUnholyBlight() {
 	}
 
 	unholyBlight := dk.Unit.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 49194},
-		SpellSchool: core.SpellSchoolShadow,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt | core.SpellFlagPassiveSpell,
+		ActionID:       core.ActionID{SpellID: 49194},
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt | core.SpellFlagPassiveSpell,
+		ClassSpellMask: DeathKnightSpellUnholyBlight,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

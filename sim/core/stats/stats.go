@@ -96,6 +96,18 @@ func ProtoArrayToStatsList(protoStats []proto.Stat) []Stat {
 	return stats
 }
 
+func IntTupleToStatsList(statType1 int32, statType2 int32, statType3 int32) []Stat {
+	statTypes := make([]Stat, 0, 3)
+
+	for _, statIdx := range []int32{statType1, statType2, statType3} {
+		if statIdx >= 0 {
+			statTypes = append(statTypes, Stat(statIdx))
+		}
+	}
+
+	return statTypes
+}
+
 func (s Stat) StatName() string {
 	switch s {
 	case Strength:
@@ -282,6 +294,19 @@ func (stats Stats) GetHighestStatType(statTypeOptions []Stat) Stat {
 	}
 
 	return highestStatType
+}
+
+// Returns all Stat types with positive representation in this Stats array.
+func (stats Stats) GetBuffedStatTypes() []Stat {
+	buffedStatTypes := make([]Stat, 0, SimStatsLen)
+
+	for statIdx, statValue := range stats {
+		if statValue > 0 {
+			buffedStatTypes = append(buffedStatTypes, Stat(statIdx))
+		}
+	}
+
+	return buffedStatTypes
 }
 
 func (stats Stats) String() string {

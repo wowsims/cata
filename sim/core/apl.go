@@ -37,6 +37,10 @@ type APLRotation struct {
 	curWarnings          []string
 	prepullWarnings      [][]string
 	priorityListWarnings [][]string
+
+	// Maps indices in filtered sim lists to indices in configs.
+	prepullIdxMap      []int
+	priorityListIdxMap []int
 }
 
 func (rot *APLRotation) ValidationWarning(message string, vals ...interface{}) {
@@ -94,6 +98,7 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 						action := rotation.newAPLAction(prepullItem.Action)
 						if action != nil {
 							rotation.prepullActions = append(rotation.prepullActions, action)
+							rotation.prepullIdxMap = append(rotation.prepullIdxMap, prepullIdx)
 							unit.RegisterPrepullAction(doAt, func(sim *Simulation) {
 								// Warnings for prepull cast failure are detected by running a fake prepull,
 								// so this action.Execute needs to record warnings.
@@ -109,14 +114,13 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 	}
 
 	// Parse priority list
-	var configIdxs []int
 	for i, aplItem := range config.PriorityList {
 		rotation.doAndRecordWarnings(&rotation.priorityListWarnings[i], false, func() {
 			if !aplItem.Hide {
 				action := rotation.newAPLAction(aplItem.Action)
 				if action != nil {
 					rotation.priorityList = append(rotation.priorityList, action)
-					configIdxs = append(configIdxs, i)
+					rotation.priorityListIdxMap = append(rotation.priorityListIdxMap, i)
 				}
 			}
 		})
@@ -124,12 +128,12 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 
 	// Finalize
 	for i, action := range rotation.prepullActions {
-		rotation.doAndRecordWarnings(&rotation.prepullWarnings[i], true, func() {
+		rotation.doAndRecordWarnings(&rotation.prepullWarnings[rotation.prepullIdxMap[i]], true, func() {
 			action.Finalize(rotation)
 		})
 	}
 	for i, action := range rotation.priorityList {
-		rotation.doAndRecordWarnings(&rotation.priorityListWarnings[i], false, func() {
+		rotation.doAndRecordWarnings(&rotation.priorityListWarnings[rotation.priorityListIdxMap[i]], false, func() {
 			action.Finalize(rotation)
 		})
 	}
@@ -171,6 +175,18 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 	return rotation
 }
 func (rot *APLRotation) getStats() *proto.APLStats {
+	// Perform one final round of validation after post-finalize effects.
+	for i, action := range rot.prepullActions {
+		rot.doAndRecordWarnings(&rot.prepullWarnings[rot.prepullIdxMap[i]], true, func() {
+			action.impl.PostFinalize(rot)
+		})
+	}
+	for i, action := range rot.priorityList {
+		rot.doAndRecordWarnings(&rot.priorityListWarnings[rot.priorityListIdxMap[i]], false, func() {
+			action.impl.PostFinalize(rot)
+		})
+	}
+
 	return &proto.APLStats{
 		PrepullActions: MapSlice(rot.prepullWarnings, func(warnings []string) *proto.APLActionStats { return &proto.APLActionStats{Warnings: warnings} }),
 		PriorityList:   MapSlice(rot.priorityListWarnings, func(warnings []string) *proto.APLActionStats { return &proto.APLActionStats{Warnings: warnings} }),
