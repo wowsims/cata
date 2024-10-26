@@ -6,5 +6,5 @@ import (
 )
 
 func init() {
-	cata.CreateDTRClassConfig(proto.Spec_SpecArcaneMage, 1/12)
+	cata.CreateDTRClassConfig(proto.Spec_SpecArcaneMage, 1.0/12)
 }
