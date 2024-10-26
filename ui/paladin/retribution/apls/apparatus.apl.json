@@ -9,7 +9,29 @@
 		{ "action": { "castSpell": { "spellId": { "spellId": 57933, "tag": -1 } } } },
 		{
 			"action": {
-				"condition": { "cmp": { "op": "OpLt", "lhs": { "currentHolyPower": {} }, "rhs": { "const": { "val": "3" } } } },
+				"condition": {
+					"or": {
+						"vals": [
+							{
+								"and": {
+									"vals": [
+										{ "cmp": { "op": "OpLt", "lhs": { "currentHolyPower": {} }, "rhs": { "const": { "val": "2" } } } },
+										{ "spellIsReady": { "spellId": { "spellId": 85696 } } },
+										{ "not": { "val": { "auraIsActive": { "auraId": { "spellId": 90174 } } } } }
+									]
+								}
+							},
+							{
+								"and": {
+									"vals": [
+										{ "auraIsActive": { "auraId": { "spellId": 90174 } } },
+										{ "cmp": { "op": "OpEq", "lhs": { "currentHolyPower": {} }, "rhs": { "const": { "val": "2" } } } }
+									]
+								}
+							}
+						]
+					}
+				},
 				"castSpell": { "spellId": { "spellId": 35395 } }
 			}
 		},
@@ -37,34 +59,6 @@
 					}
 				},
 				"strictSequence": { "actions": [{ "castSpell": { "spellId": { "spellId": 85696 } } }, { "castSpell": { "spellId": { "spellId": 84963 } } }] }
-			}
-		},
-		{
-			"action": {
-				"condition": {
-					"and": {
-						"vals": [
-							{
-								"or": {
-									"vals": [
-										{ "not": { "val": { "auraIsActive": { "auraId": { "spellId": 84963 } } } } },
-										{
-											"cmp": {
-												"op": "OpLt",
-												"lhs": { "auraRemainingTime": { "auraId": { "spellId": 84963 } } },
-												"rhs": { "const": { "val": "1s" } }
-											}
-										}
-									]
-								}
-							},
-							{ "cmp": { "op": "OpGt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "6s" } } } },
-							{ "not": { "val": { "spellCanCast": { "spellId": { "spellId": 85696 } } } } },
-							{ "not": { "val": { "spellIsReady": { "spellId": { "spellId": 85696 } } } } }
-						]
-					}
-				},
-				"castSpell": { "spellId": { "spellId": 84963 } }
 			}
 		},
 		{
@@ -193,6 +187,40 @@
 		},
 		{
 			"action": {
+				"condition": { "cmp": { "op": "OpLt", "lhs": { "currentHolyPower": {} }, "rhs": { "const": { "val": "3" } } } },
+				"castSpell": { "spellId": { "spellId": 35395 } }
+			}
+		},
+		{
+			"action": {
+				"condition": {
+					"and": {
+						"vals": [
+							{
+								"or": {
+									"vals": [
+										{ "not": { "val": { "auraIsActive": { "auraId": { "spellId": 84963 } } } } },
+										{
+											"cmp": {
+												"op": "OpLt",
+												"lhs": { "auraRemainingTime": { "auraId": { "spellId": 84963 } } },
+												"rhs": { "const": { "val": "1s" } }
+											}
+										}
+									]
+								}
+							},
+							{ "cmp": { "op": "OpGt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "6s" } } } },
+							{ "not": { "val": { "spellCanCast": { "spellId": { "spellId": 85696 } } } } },
+							{ "not": { "val": { "spellIsReady": { "spellId": { "spellId": 85696 } } } } }
+						]
+					}
+				},
+				"castSpell": { "spellId": { "spellId": 84963 } }
+			}
+		},
+		{
+			"action": {
 				"condition": {
 					"or": {
 						"vals": [
@@ -201,10 +229,17 @@
 									"vals": [
 										{ "cmp": { "op": "OpEq", "lhs": { "currentHolyPower": {} }, "rhs": { "const": { "val": "3" } } } },
 										{
-											"cmp": {
-												"op": "OpLe",
-												"lhs": { "spellTimeToReady": { "spellId": { "spellId": 35395 } } },
-												"rhs": { "const": { "val": "1.25" } }
+											"or": {
+												"vals": [
+													{
+														"cmp": {
+															"op": "OpLe",
+															"lhs": { "spellTimeToReady": { "spellId": { "spellId": 35395 } } },
+															"rhs": { "const": { "val": "1.25s" } }
+														}
+													},
+													{ "auraIsActive": { "auraId": { "spellId": 85696 } } }
+												]
 											}
 										}
 									]
@@ -228,7 +263,7 @@
 								"cmp": {
 									"op": "OpGt",
 									"lhs": { "spellTimeToReady": { "spellId": { "spellId": 35395 } } },
-									"rhs": { "const": { "val": "1.25" } }
+									"rhs": { "const": { "val": "1.25s" } }
 								}
 							}
 						]

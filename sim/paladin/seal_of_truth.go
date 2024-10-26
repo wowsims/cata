@@ -112,7 +112,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 		ActionID:       core.ActionID{SpellID: 42463},
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskEmpty,
-		Flags:          core.SpellFlagMeleeMetrics,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
 		ClassSpellMask: SpellMaskSealOfTruth,
 
 		DamageMultiplier: 1,
