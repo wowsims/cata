@@ -780,6 +780,30 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-Gurthalak,VoiceoftheDeeps-77191"
+ value: {
+  dps: 44041.15678
+  tps: 32881.9536
+  hps: 639.53641
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Gurthalak,VoiceoftheDeeps-78478"
+ value: {
+  dps: 44376.72271
+  tps: 33143.17469
+  hps: 645.07383
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Gurthalak,VoiceoftheDeeps-78487"
+ value: {
+  dps: 43745.4969
+  tps: 32651.76157
+  hps: 634.55833
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-HarmlightToken-63839"
  value: {
   dps: 38792.83815

@@ -187,6 +187,8 @@ const TENTATIVE_IMPLEMENTATION_ITEMS = [
 	78484, 77195, 78475,
 	// Vishanka, Jaws of the Earth - LFR, Normal, Heroic
 	78480, 78359, 78471,
+	// Gurthalak, Voice of the Deeps - LFR, Normal, Heroic
+	78487, 77191, 78478,
 
 	// Veil of Lies
 	72900,
@@ -303,27 +305,6 @@ export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 			[Spec.SpecDestructionWarlock]: false,
 			[Spec.SpecShadowPriest]: false,
 		},
-	],
-	[
-		// Gurthalak, Voice of the Deeps - LFR
-		78487,
-		{
-			[Spec.SpecUnknown]: MISSING_IMPLEMENTATION_WARNING,
-		}
-	],
-	[
-		// Gurthalak, Voice of the Deeps - Normal
-		77191,
-		{
-			[Spec.SpecUnknown]: MISSING_IMPLEMENTATION_WARNING,
-		}
-	],
-	[
-		// Gurthalak, Voice of the Deeps - Heroic
-		78478,
-		{
-			[Spec.SpecUnknown]: MISSING_IMPLEMENTATION_WARNING,
-		}
 	],
 ]);
 

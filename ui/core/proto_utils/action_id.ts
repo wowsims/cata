@@ -313,12 +313,23 @@ export class ActionId {
 				}
 				break;
 			case 'Mind Flay':
-				if (tag == 1) {
-					name += ' (1 Tick)';
-				} else if (tag == 2) {
-					name += ' (2 Tick)';
-				} else if (tag == 3) {
-					name += ' (3 Tick)';
+				if (this.spellId === 15407) {
+					if (tag == 1) {
+						name += ' (1 Tick)';
+					} else if (tag == 2) {
+						name += ' (2 Tick)';
+					} else if (tag == 3) {
+						name += ' (3 Tick)';
+					}
+				} else {
+					// Gurthalak, Voice of the Deeps
+					if (tag === 0) {
+						name += ' (LFR)';
+					} else if (tag === 1) {
+						name += ' (Normal)';
+					} else if (tag === 2) {
+						name += ' (Heroic)';
+					}
 				}
 				break;
 			case 'Mind Sear':
@@ -605,11 +616,11 @@ export class ActionId {
 			// Souldrinker - Drain Life
 			case 'Drain Life':
 				if (this.spellId === 109828) {
-					name += ' 1.3%'
+					name += ' 1.3%';
 				} else if (this.spellId === 108022) {
-					name += ' 1.5%'
+					name += ' 1.5%';
 				} else if (this.spellId === 109831) {
-					name += ' 1.7%'
+					name += ' 1.7%';
 				}
 
 				if (this.tag === 2) {
@@ -860,6 +871,7 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Spirit Wolf 1': ActionId.fromSpellId(51533),
 	'Spirit Wolf 2': ActionId.fromSpellId(51533),
 	Valkyr: ActionId.fromSpellId(71844),
+	'Tentacle of the Old Ones': ActionId.fromSpellId(107818),
 	Treant: ActionId.fromSpellId(33831),
 	'Water Elemental': ActionId.fromSpellId(31687),
 };
