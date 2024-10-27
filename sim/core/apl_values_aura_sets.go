@@ -140,7 +140,6 @@ type APLValueNumEquippedStatProcTrinkets struct {
 	*APLValueTrinketStatProcCheck
 }
 
-
 func (rot *APLRotation) newValueNumEquippedStatProcTrinkets(config *proto.APLValueNumEquippedStatProcTrinkets) APLValue {
 	parentImpl := rot.newTrinketStatProcValue("NumEquippedStatProcTrinkets", config.StatType1, config.StatType2, config.StatType3, false)
 

@@ -2,6 +2,7 @@ package druid
 
 import (
 	"fmt"
+	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -60,19 +61,24 @@ func (druid *Druid) EnableEclipseBar() {
 	}
 }
 
+func getEclipseMasteryBonus(masteryPoints float64) float64 {
+	return math.Floor(16+masteryPoints*2) / 100
+}
+
 func (druid *Druid) RegisterEclipseAuras() {
 	baselineEclipsePct := 0.25
+	initialEclipseMasteryBonus := getEclipseMasteryBonus(druid.GetMasteryPoints())
 
 	lunarSpellMod := druid.AddDynamicMod(core.SpellModConfig{
 		School:     core.SpellSchoolArcane,
 		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: baselineEclipsePct + (0.16 + druid.GetMasteryPoints()*0.02),
+		FloatValue: baselineEclipsePct + initialEclipseMasteryBonus,
 	})
 
 	solarSpellMod := druid.AddDynamicMod(core.SpellModConfig{
 		School:     core.SpellSchoolNature,
 		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: baselineEclipsePct + (0.16 + druid.GetMasteryPoints()*0.02),
+		FloatValue: baselineEclipsePct + initialEclipseMasteryBonus,
 	})
 
 	lunarEclipse := druid.RegisterAura(core.Aura{
@@ -80,7 +86,7 @@ func (druid *Druid) RegisterEclipseAuras() {
 		Label:    "Eclipse (Lunar)",
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			lunarSpellMod.UpdateFloatValue(baselineEclipsePct + (0.16 + druid.GetMasteryPoints()*0.02))
+			lunarSpellMod.UpdateFloatValue(baselineEclipsePct + getEclipseMasteryBonus(druid.GetMasteryPoints()))
 			lunarSpellMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -93,7 +99,7 @@ func (druid *Druid) RegisterEclipseAuras() {
 		Label:    "Eclipse (Solar)",
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			solarSpellMod.UpdateFloatValue(baselineEclipsePct + (0.16 + druid.GetMasteryPoints()*0.02))
+			solarSpellMod.UpdateFloatValue(baselineEclipsePct + getEclipseMasteryBonus(druid.GetMasteryPoints()))
 			solarSpellMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {

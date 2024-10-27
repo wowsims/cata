@@ -7,7 +7,8 @@ import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Faction, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
-import { Stats, UnitStat } from '../../core/proto_utils/stats';
+import { StatCapType } from '../../core/proto/ui';
+import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as DruidInputs from '../inputs';
 import * as BalanceInputs from './inputs';
 import * as Presets from './presets';
@@ -24,20 +25,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[
-			Stat.StatHealth,
-			Stat.StatMana,
-			Stat.StatStamina,
-			Stat.StatIntellect,
-			Stat.StatSpirit,
-			Stat.StatSpellPower,
-			Stat.StatMasteryRating,
-		],
-		[
-			PseudoStat.PseudoStatSpellHitPercent,
-			PseudoStat.PseudoStatSpellCritPercent,
-			PseudoStat.PseudoStatSpellHastePercent,
-		],
+		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatMasteryRating],
+		[PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatSpellCritPercent, PseudoStat.PseudoStatSpellHastePercent],
 	),
 
 	modifyDisplayStats: (player: Player<Spec.SpecBalanceDruid>) => {
@@ -46,7 +35,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		const talentsStats = Stats.fromProto(playerStats.talentsStats);
 		const talentsDelta = talentsStats.subtract(gearStats);
 		let talentsMod = new Stats().withPseudoStat(PseudoStat.PseudoStatSpellCritPercent, player.getTalents().naturesMajesty * 2);
-		talentsMod = talentsMod.addStat(Stat.StatHitRating, talentsDelta.getPseudoStat(PseudoStat.PseudoStatSpellHitPercent) * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT);
+		talentsMod = talentsMod.addStat(
+			Stat.StatHitRating,
+			talentsDelta.getPseudoStat(PseudoStat.PseudoStatSpellHitPercent) * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT,
+		);
 
 		return {
 			talents: talentsMod,
@@ -61,6 +53,24 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		// Default stat caps for the Reforge optimizer
 		statCaps: (() => {
 			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 17);
+		})(),
+		// Default soft caps for the Reforge optimizer
+		softCapBreakpoints: (() => {
+			// Set up Mastery breakpoints for integer % damage increments.
+			// These should be removed once the bugfix to make Mastery
+			// continuous goes live!
+			const masteryRatingBreakpoints = [];
+			const masteryPercentPerPoint = Mechanics.masteryPercentPerPoint.get(Spec.SpecBalanceDruid)!;
+			for (let masteryPercent = 16; masteryPercent <= 200; masteryPercent++) {
+				masteryRatingBreakpoints.push((masteryPercent / masteryPercentPerPoint) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
+			}
+
+			const masterySoftCapConfig = StatCap.fromStat(Stat.StatMasteryRating, {
+				breakpoints: masteryRatingBreakpoints,
+				capType: StatCapType.TypeThreshold,
+				postCapEPs: [0],
+			});
+			return [masterySoftCapConfig];
 		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -90,13 +100,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			BalanceInputs.OkfUptime,
-			OtherInputs.TankAssignment,
-			OtherInputs.InputDelay,
-			OtherInputs.DistanceFromTarget,
-			OtherInputs.DarkIntentUptime,
-		],
+		inputs: [BalanceInputs.OkfUptime, OtherInputs.TankAssignment, OtherInputs.InputDelay, OtherInputs.DistanceFromTarget, OtherInputs.DarkIntentUptime],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -110,7 +114,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		rotations: [Presets.T11PresetRotation, Presets.T12PresetRotation],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PreraidPresetGear, Presets.T11PresetGear, Presets.T12PresetGear, Presets.T13PresetGear],
-		builds: [Presets.PresetBuildT11, Presets.PresetBuildT12]
+		builds: [Presets.PresetBuildT11, Presets.PresetBuildT12],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecBalanceDruid>): APLRotation => {

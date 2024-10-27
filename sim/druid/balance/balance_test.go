@@ -40,7 +40,7 @@ var StandardGlyphs = &proto.Glyphs{
 	Prime3: int32(proto.DruidPrimeGlyph_GlyphOfWrath),
 	Major1: int32(proto.DruidMajorGlyph_GlyphOfStarfall),
 	Major2: int32(proto.DruidMajorGlyph_GlyphOfRebirth),
-	Major3: int32(proto.DruidMajorGlyph_GlyphOfFocus),
+	Major3: int32(proto.DruidMajorGlyph_GlyphOfMonsoon),
 	Minor1: int32(proto.DruidMinorGlyph_GlyphOfTyphoon),
 	Minor2: int32(proto.DruidMinorGlyph_GlyphOfUnburdenedRebirth),
 	Minor3: int32(proto.DruidMinorGlyph_GlyphOfMarkOfTheWild),
