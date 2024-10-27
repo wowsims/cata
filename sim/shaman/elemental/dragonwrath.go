@@ -47,14 +47,8 @@ func customFulminationHandler(sim *core.Simulation, spell *core.Spell, result *c
 		copySpell = spell.Unit.RegisterSpell(copyConfig)
 	}
 
-	copySpell.ApplyEffects = fulminationFactory(totalDamage)
+	copySpell.ApplyEffects = damageFactory(totalDamage)
 	cata.CastDTRSpell(sim, copySpell, result.Target)
-}
-
-func fulminationFactory(damage float64) func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-	return func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
-	}
 }
 
 func customEarthquakeHandler(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -70,12 +64,12 @@ func customEarthquakeHandler(sim *core.Simulation, spell *core.Spell, result *co
 		copySpell = spell.Unit.RegisterSpell(copyConfig)
 	}
 
-	copySpell.ApplyEffects = earthquakeFactory(baseDamage)
+	copySpell.ApplyEffects = damageFactory(baseDamage)
 
 	cata.CastDTRSpell(sim, copySpell, result.Target)
 }
 
-func earthquakeFactory(damage float64) func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+func damageFactory(damage float64) func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 	return func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 	}
