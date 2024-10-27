@@ -204,7 +204,7 @@ var ItemSetDeepEarthRegalia = core.NewItemSet(core.ItemSet{
 
 			druid.AddStaticMod(core.SpellModConfig{
 				Kind:       core.SpellMod_DamageDone_Pct,
-				FloatValue: 0.05,
+				FloatValue: 0.1,
 				ClassMask:  DruidSpellStarsurge,
 			})
 
