@@ -45,8 +45,11 @@ func (treant *BurningTreant) Reset(_ *core.Simulation) {
 }
 
 func (treant *BurningTreant) ExecuteCustomRotation(sim *core.Simulation) {
-	if success := treant.Fireseed.Cast(sim, treant.CurrentTarget); !success {
-		treant.Disable(sim)
+	if treant.Fireseed.CanCast(sim, treant.CurrentTarget) {
+		treant.Fireseed.Cast(sim, treant.CurrentTarget)
+		delay := time.Duration(sim.RollWithLabel(250.0, 1000.0, "Fireseed cast delay")) * time.Millisecond
+		treant.WaitUntil(sim, treant.NextGCDAt()+delay)
+		return
 	}
 }
 
