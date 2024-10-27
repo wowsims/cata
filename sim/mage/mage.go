@@ -24,7 +24,7 @@ type Mage struct {
 	frostfireOrb *FrostfireOrb
 
 	t12MirrorImage *T12MirrorImage
-	t13ProcAura    *core.Aura
+	t13ProcAura    *core.StatBuffAura
 
 	arcaneMissilesTickSpell *core.Spell
 	Combustion              *core.Spell
@@ -47,7 +47,7 @@ type Mage struct {
 
 	arcaneMissileCritSnapshot float64
 	brainFreezeProcChance     float64
-	hotStreakProcChance       float64
+	baseHotStreakProcChance   float64
 
 	previousCombustionDotEstimate int32
 

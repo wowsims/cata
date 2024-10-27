@@ -406,24 +406,24 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-CunningoftheCruel-77208"
  value: {
-  dps: 22208.48603
-  tps: 111295.84833
+  dps: 22199.40273
+  tps: 111254.59495
   hps: 5314.81299
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-CunningoftheCruel-77980"
  value: {
-  dps: 22149.33957
-  tps: 110987.52064
+  dps: 22140.35255
+  tps: 110952.11531
   hps: 5314.81299
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-CunningoftheCruel-78000"
  value: {
-  dps: 22257.10763
-  tps: 111572.44129
+  dps: 22245.4478
+  tps: 111496.49705
   hps: 5314.81299
  }
 }
@@ -777,6 +777,30 @@ dps_results: {
   dps: 22180.55964
   tps: 111047.81218
   hps: 5328.52493
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-Gurthalak,VoiceoftheDeeps-77191"
+ value: {
+  dps: 23636.0766
+  tps: 118220.30064
+  hps: 6340.27181
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-Gurthalak,VoiceoftheDeeps-78478"
+ value: {
+  dps: 23818.43258
+  tps: 119197.74564
+  hps: 6386.79742
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-Gurthalak,VoiceoftheDeeps-78487"
+ value: {
+  dps: 23475.3602
+  tps: 117358.84325
+  hps: 6298.44576
  }
 }
 dps_results: {
@@ -1878,16 +1902,16 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 22019.67378
-  tps: 110274.56136
+  dps: 22023.54651
+  tps: 110305.40898
   hps: 5314.81299
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 22049.15567
-  tps: 110441.0102
+  dps: 22051.71549
+  tps: 110465.34577
   hps: 5314.81299
  }
 }

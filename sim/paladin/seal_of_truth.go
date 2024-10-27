@@ -111,8 +111,8 @@ func (paladin *Paladin) registerSealOfTruth() {
 	onSpecialOrSwingProc := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 42463},
 		SpellSchool:    core.SpellSchoolHoly,
-		ProcMask:       core.ProcMaskProc, // does proc certain spell damage-based items, e.g. Black Magic, Pendulum of Telluric Currents
-		Flags:          core.SpellFlagMeleeMetrics,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
 		ClassSpellMask: SpellMaskSealOfTruth,
 
 		DamageMultiplier: 1,

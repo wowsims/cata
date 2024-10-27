@@ -1,7 +1,9 @@
 import { Player } from '../../player.js';
 import {
 	APLValue,
+	APLValueAllTrinketStatProcsActive,
 	APLValueAnd,
+	APLValueAnyTrinketStatProcsActive,
 	APLValueAuraICDIsReadyWithReactionTime,
 	APLValueAuraInternalCooldown,
 	APLValueAuraIsActive,
@@ -56,6 +58,7 @@ import {
 	APLValueNextRuneCooldown,
 	APLValueNot,
 	APLValueNumberTargets,
+	APLValueNumEquippedStatProcTrinkets,
 	APLValueOr,
 	APLValueRemainingTime,
 	APLValueRemainingTimePercent,
@@ -75,6 +78,7 @@ import {
 	APLValueSpellTimeToReady,
 	APLValueSpellTravelTime,
 	APLValueTotemRemainingTime,
+	APLValueTrinketProcsMinRemainingTime,
 	APLValueUnitIsMoving,
 	APLValueWarlockShouldRecastDrainSoul,
 	APLValueWarlockShouldRefreshCorruption,
@@ -953,6 +957,78 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				label: 'Overlap',
 				labelTooltip: 'Maximum amount of time before the aura expires when it may be refreshed.',
 			}),
+		],
+	}),
+
+	// Aura Sets
+	allTrinketStatProcsActive: inputBuilder({
+		label: 'All Trinket Proc Buffs Active',
+		submenu: ['Aura Sets'],
+		shortDescription: "<b>True</b> if all trinket procs that buff the specified stat type(s) are currently active, otherwise <b>False</b>.",
+		fullDescription: `
+		<p>For stacking proc buffs, this condition also checks that the buff has been stacked to its maximum possible strength.</p>
+		`,
+		newValue: () =>
+			APLValueAllTrinketStatProcsActive.create({
+				statType1: -1,
+				statType2: -1,
+				statType3: -1,
+			}),
+		fields: [
+			AplHelpers.statTypeFieldConfig('statType1'),
+			AplHelpers.statTypeFieldConfig('statType2'),
+			AplHelpers.statTypeFieldConfig('statType3'),
+		],
+	}),
+	anyTrinketStatProcsActive: inputBuilder({
+		label: 'Any Trinket Proc Buffs Active',
+		submenu: ['Aura Sets'],
+		shortDescription: "<b>True</b> if any trinket procs that buff the specified stat type(s) are currently active, otherwise <b>False</b>.",
+		fullDescription: `
+		<p>For stacking proc buffs, this condition also checks that the buff has been stacked to its maximum possible strength.</p>
+		`,
+		newValue: () =>
+			APLValueAnyTrinketStatProcsActive.create({
+				statType1: -1,
+				statType2: -1,
+				statType3: -1,
+			}),
+		fields: [
+			AplHelpers.statTypeFieldConfig('statType1'),
+			AplHelpers.statTypeFieldConfig('statType2'),
+			AplHelpers.statTypeFieldConfig('statType3'),
+		],
+	}),
+	trinketProcsMinRemainingTime: inputBuilder({
+		label: 'Trinket Procs Min Remaining Time',
+		submenu: ['Aura Sets'],
+		shortDescription: "Shortest remaining duration on any active trinket procs that buff the specified stat type(s), or infinity if none are currently active.",
+		newValue: () =>
+			APLValueTrinketProcsMinRemainingTime.create({
+				statType1: -1,
+				statType2: -1,
+				statType3: -1,
+			}),
+		fields: [
+			AplHelpers.statTypeFieldConfig('statType1'),
+			AplHelpers.statTypeFieldConfig('statType2'),
+			AplHelpers.statTypeFieldConfig('statType3'),
+		],
+	}),
+	numEquippedStatProcTrinkets: inputBuilder({
+		label: 'Num Equipped Stat Proc Trinkets',
+		submenu: ['Aura Sets'],
+		shortDescription: "Number of equipped passive trinkets that buff the specified stat type(s) when they proc.",
+		newValue: () =>
+			APLValueNumEquippedStatProcTrinkets.create({
+				statType1: -1,
+				statType2: -1,
+				statType3: -1,
+			}),
+		fields: [
+			AplHelpers.statTypeFieldConfig('statType1'),
+			AplHelpers.statTypeFieldConfig('statType2'),
+			AplHelpers.statTypeFieldConfig('statType3'),
 		],
 	}),
 

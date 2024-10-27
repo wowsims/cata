@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 type APLActionCastSpell struct {
@@ -254,6 +255,80 @@ func (action *APLActionMultishield) String() string {
 	return fmt.Sprintf("Multishield(%s)", action.spell.ActionID)
 }
 
+type APLActionCastAllStatBuffCooldowns struct {
+	defaultAPLActionImpl
+	character *Character
+
+	statTypesToMatch []stats.Stat
+
+	allSubactions   []*APLActionCastSpell
+	readySubactions []*APLActionCastSpell
+}
+
+func (rot *APLRotation) newActionCastAllStatBuffCooldowns(config *proto.APLActionCastAllStatBuffCooldowns) APLActionImpl {
+	unit := rot.unit
+	actionImpl := &APLActionCastAllStatBuffCooldowns{
+		character:        unit.Env.Raid.GetPlayerFromUnit(unit).GetCharacter(),
+		statTypesToMatch: stats.IntTupleToStatsList(config.StatType1, config.StatType2, config.StatType3),
+	}
+
+	unit.Env.RegisterPostFinalizeEffect(func() {
+		// This needs to happen after the rotation is finalized so that
+		// all manually casted MCDs are removed from the cooldown list
+		// before it is filtered for the desired buff types.
+		actionImpl.processMajorCooldowns()
+	})
+
+	return actionImpl
+}
+func (action *APLActionCastAllStatBuffCooldowns) processMajorCooldowns() {
+	matchingSpells := action.character.GetMatchingStatBuffSpells(action.statTypesToMatch)
+	action.allSubactions = MapSlice(matchingSpells, func(buffSpell *Spell) *APLActionCastSpell {
+		return &APLActionCastSpell{
+			spell:  buffSpell,
+			target: action.character.Rotation.GetTargetUnit(nil),
+		}
+	})
+
+	action.character.Env.RegisterPostFinalizeEffect(func() {
+		// We again need a delayed evaluation here so that other instances of
+		// this action within the rotation can assemble their spell lists
+		// before the filtered spells are irreversibly removed from the MCD
+		// manager.
+		for _, buffSpell := range matchingSpells {
+			action.character.removeInitialMajorCooldown(buffSpell.ActionID)
+		}
+	})
+}
+func (action *APLActionCastAllStatBuffCooldowns) IsReady(sim *Simulation) bool {
+	action.readySubactions = FilterSlice(action.allSubactions, func(subaction *APLActionCastSpell) bool {
+		return subaction.IsReady(sim)
+	})
+
+	return Ternary(action.character.Rotation.inSequence, len(action.readySubactions) == len(action.allSubactions), len(action.readySubactions) > 0)
+}
+func (action *APLActionCastAllStatBuffCooldowns) Execute(sim *Simulation) {
+	actionSetToUse := Ternary(sim.CurrentTime < 0, action.allSubactions, action.readySubactions)
+
+	for _, subaction := range actionSetToUse {
+		subaction.Execute(sim)
+	}
+}
+func (action *APLActionCastAllStatBuffCooldowns) String() string {
+	return fmt.Sprintf("CastAllBuffCooldownsFor(%s)", StringFromStatTypes(action.statTypesToMatch))
+}
+func (action *APLActionCastAllStatBuffCooldowns) PostFinalize(rot *APLRotation) {
+	if len(action.allSubactions) == 0 {
+		rot.ValidationWarning("%s will not cast any spells! There are either no major cooldowns buffing the specified stat type(s), or all of them are manually cast in the APL.", action)
+	} else {
+		actionIDs := MapSlice(action.allSubactions, func(subaction *APLActionCastSpell) ActionID {
+			return subaction.spell.ActionID
+		})
+
+		rot.ValidationWarning("%s will cast the following spells: %s", action, StringFromActionIDs(actionIDs))
+	}
+}
+
 type APLActionAutocastOtherCooldowns struct {
 	defaultAPLActionImpl
 	character *Character
@@ -286,4 +361,15 @@ func (action *APLActionAutocastOtherCooldowns) Execute(sim *Simulation) {
 }
 func (action *APLActionAutocastOtherCooldowns) String() string {
 	return "Autocast Other Cooldowns"
+}
+func (action *APLActionAutocastOtherCooldowns) PostFinalize(rot *APLRotation) {
+	if len(action.character.initialMajorCooldowns) == 0 {
+		rot.ValidationWarning("%s will not cast any spells! There are either no major cooldowns configured for this character, or all of them are manually cast in the APL.", action)
+	} else {
+		actionIDs := MapSlice(action.character.initialMajorCooldowns, func(mcd MajorCooldown) ActionID {
+			return mcd.Spell.ActionID
+		})
+
+		rot.ValidationWarning("%s will cast the following spells: %s", action, StringFromActionIDs(actionIDs))
+	}
 }

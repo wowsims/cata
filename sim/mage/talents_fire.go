@@ -63,6 +63,25 @@ func (mage *Mage) ApplyFireTalents() {
 			FloatValue: -0.5 * float64(mage.Talents.ImprovedFlamestrike),
 			Kind:       core.SpellMod_CastTime_Pct,
 		})
+
+		mage.Unit.RegisterSpell(mage.GetFlameStrikeConfig(88148, true))
+		core.MakePermanent(core.MakeProcTriggerAura(&mage.Unit, core.ProcTrigger{
+			Name:           "Improved Flame Strike - Talent",
+			ActionID:       core.ActionID{SpellID: 84674},
+			Callback:       core.CallbackOnSpellHitDealt,
+			ProcChance:     1,
+			Outcome:        core.OutcomeLanded,
+			ProcMask:       core.ProcMaskSpellDamage,
+			ClassSpellMask: MageSpellBlastWave,
+			ICD:            time.Millisecond * 1,
+			ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
+				return len(spell.Unit.Env.Encounter.Targets) >= 2
+			},
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				flameStrikeCopy := spell.Unit.GetSpell(core.ActionID{SpellID: 88148, Tag: 1})
+				flameStrikeCopy.Cast(sim, result.Target)
+			},
+		}))
 	}
 
 	// Critical Mass
@@ -122,14 +141,12 @@ func (mage *Mage) applyHotStreak() {
 		return
 	}
 
-	ImprovedHotStreakProcChance := float64(mage.Talents.ImprovedHotStreak) * 0.5
+	improvedHotStreakProcChance := float64(mage.Talents.ImprovedHotStreak) * 0.5
 
-	// Simcraft uses a reference from ElitistJerks that's no longer available, but their formula is
-	// max(0, -2.73 * player crit + 0.95)
-	// https://web.archive.org/web/20120208064232/http://elitistjerks.com/f75/t110326-cataclysm_fire_mage_compendium/p6/#post1831143 or
-	// https://web.archive.org/web/20120208064232/http://elitistjerks.com/f75/t110326-cataclysm_fire_mage_compendium/p6/#post1831207
-	baseCritPercent := mage.GetStat(stats.SpellCritPercent) + (mage.GetStat(stats.CritRating) / core.CritRatingPerCritPercent) + 1*float64(mage.Talents.PiercingIce)
-	mage.hotStreakProcChance = max(0, float64(-2.7*baseCritPercent/100+0.9)) // EJ settled on -2.7*critChance+0.9
+	// This is the new formula as the old Simcraft / EJ has been debunked by PTR testing.
+	calculateHotStreakProcChance := func(x float64) float64 {
+		return -2.67*min(x, 0.3402) + 0.9230
+	}
 
 	hotStreakCostMod := mage.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_PowerCost_Pct,
@@ -194,7 +211,10 @@ func (mage *Mage) applyHotStreak() {
 			}
 			// Hot Streak Base Talent Proc
 			if result.DidCrit() {
-				if sim.Proc(mage.hotStreakProcChance, "Hot Streak") {
+				baseCritPercent := mage.GetStat(stats.SpellCritPercent)
+				hotStreakProcChance := mage.baseHotStreakProcChance + calculateHotStreakProcChance(baseCritPercent/100)
+
+				if sim.Proc(hotStreakProcChance, "Hot Streak") {
 					hotStreakAura.Activate(sim)
 				}
 			}
@@ -211,7 +231,7 @@ func (mage *Mage) applyHotStreak() {
 				// If you did crit, check against talents to see if you proc
 				// If you proc and had 1 stack, set crit counter to 0 and give hot streak.
 				if hotStreakCritAura.GetStacks() == 1 {
-					if sim.Proc(ImprovedHotStreakProcChance, "Improved Hot Streak") {
+					if sim.Proc(improvedHotStreakProcChance, "Improved Hot Streak") {
 						hotStreakCritAura.SetStacks(sim, 0)
 						hotStreakCritAura.Deactivate(sim)
 

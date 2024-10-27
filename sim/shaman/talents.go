@@ -57,13 +57,11 @@ func (shaman *Shaman) ApplyTalents() {
 			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.20 * float64(shaman.Talents.LavaFlows),
 		})
-		/* TODO: Use if CritMultiplier_Flat gets added
 		shaman.AddStaticMod(core.SpellModConfig{
 			ClassMask:  SpellMaskLavaBurst | SpellMaskLavaBurstOverload,
 			Kind:       core.SpellMod_CritMultiplier_Flat,
 			FloatValue: 0.08 * float64(shaman.Talents.LavaFlows),
 		})
-		*/
 	}
 
 	shaman.applyLavaSurge()
@@ -277,9 +275,6 @@ func (shaman *Shaman) applyLavaSurge() {
 				Priority:     core.ActionPriorityDOT,
 
 				OnAction: func(sim *core.Simulation) {
-					if shaman.LavaBurst.CD.IsReady(sim) {
-						return
-					}
 					shaman.LavaBurst.CD.Reset()
 					if has4PT12 {
 						shaman.VolcanicRegalia4PT12Aura.Activate(sim)
@@ -301,6 +296,15 @@ func (shaman *Shaman) applyLavaSurge() {
 			if spell.ClassSpellMask != SpellMaskLavaBurst || !has4PT12 {
 				return
 			}
+			//If volcano procs during LvB cast time, it is not consumed
+			if spell.CurCast.CastTime > 0 {
+				return
+			}
+			//If both EM and 4PT12 buffs are active, only EM gets consumed.
+			//As i don't know which OnCastComplete is going to be executed first, check here if EM has not just been consumed/is active
+			if shaman.Talents.ElementalMastery && shaman.GetAuraByID(eleMasterActionID).TimeInactive(sim) == 0 {
+				return
+			}
 			shaman.VolcanicRegalia4PT12Aura.Deactivate(sim)
 		},
 	})
@@ -314,8 +318,8 @@ func (shaman *Shaman) applyFulmination() {
 	shaman.Fulmination = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 88767},
 		SpellSchool:    core.SpellSchoolNature,
-		ProcMask:       core.ProcMaskProc,
-		Flags:          SpellFlagFocusable | core.SpellFlagPassiveSpell,
+		ProcMask:       core.ProcMaskSpellProc,
+		Flags:          core.SpellFlagPassiveSpell,
 		ClassSpellMask: SpellMaskFulmination,
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0,
@@ -361,6 +365,12 @@ func (shaman *Shaman) applyElementalDevastation() {
 			if !result.Outcome.Matches(core.OutcomeCrit) {
 				return
 			}
+
+			// Only procs off class abilities
+			if spell.ClassSpellMask == 0 {
+				return
+			}
+
 			procAura.Activate(sim)
 		},
 	})
@@ -414,7 +424,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 	emAura := shaman.RegisterAura(core.Aura{
 		Label:    "Elemental Mastery",
 		ActionID: eleMasterActionID,
-		Duration: core.NeverExpires,
+		Duration: time.Second * 30,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			castTimeMod.Activate()
 		},

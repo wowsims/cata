@@ -55,7 +55,7 @@ func init() {
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 74196},
 			SpellSchool: core.SpellSchoolNature,
-			ProcMask:    core.ProcMaskProc,
+			ProcMask:    core.ProcMaskSpellProc,
 
 			DamageMultiplier: 1,
 			CritMultiplier:   character.DefaultSpellCritMultiplier(),
@@ -123,7 +123,7 @@ func init() {
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 74208},
 			SpellSchool: core.SpellSchoolNature,
-			ProcMask:    core.ProcMaskProc,
+			ProcMask:    core.ProcMaskSpellProc,
 
 			DamageMultiplier: 1,
 			CritMultiplier:   character.DefaultSpellCritMultiplier(),
@@ -157,7 +157,7 @@ func init() {
 	core.NewEnchantEffect(4083, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procBuilder := func(name string, tag int32) *core.Aura {
+		procBuilder := func(name string, tag int32) *core.StatBuffAura {
 			return character.NewTemporaryStatsAura(
 				name,
 				core.ActionID{SpellID: 74221, Tag: tag},

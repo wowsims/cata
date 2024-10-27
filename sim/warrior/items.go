@@ -3,6 +3,7 @@ package warrior
 import (
 	"time"
 
+	"github.com/wowsims/cata/sim/common/cata"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -142,7 +143,7 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 			fieryAttack := character.RegisterSpell(core.SpellConfig{
 				ActionID:    fieryAttackActionID.WithTag(3),
 				SpellSchool: core.SpellSchoolFire,
-				ProcMask:    core.ProcMaskEmpty, // TODO (4.2) Test this
+				ProcMask:    core.ProcMaskEmpty,
 				Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
 
 				CritMultiplier:   character.DefaultMeleeCritMultiplier(),
@@ -151,7 +152,7 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 					baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit) // TODO (4.1) Test hit table
+					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 				},
 			})
 
@@ -175,48 +176,22 @@ var ItemSetMoltenGiantBattleplate = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			actionID := core.ActionID{SpellID: 23922} // Actual 99240
 
-			// TODO (4.2): Test if this rolls damage over like deep wounds or just resets it
-			var shieldSlamDamage float64 = 0.0
-			debuff := character.RegisterSpell(core.SpellConfig{
-				ActionID:    actionID.WithTag(3),
-				SpellSchool: core.SpellSchoolFire,
-				ProcMask:    core.ProcMaskEmpty,
-				Flags:       core.SpellFlagPassiveSpell,
+			cata.RegisterIgniteEffect(&character.Unit, cata.IgniteConfig{
+				ActionID:           core.ActionID{SpellID: 23922}.WithTag(3), // actual 99240
+				DisableCastMetrics: true,
+				DotAuraLabel:       "Combust",
+				IncludeAuraDelay:   true,
 
-				DamageMultiplier: 1,
-				ThreatMultiplier: 1,
-
-				Dot: core.DotConfig{
-					Aura: core.Aura{
-						Label: "Combust",
-					},
-					NumberOfTicks: 2,
-					TickLength:    2 * time.Second,
-					OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-						dot.Snapshot(target, shieldSlamDamage/float64(dot.BaseTickCount))
-					},
-					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-						dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-					},
+				ProcTrigger: core.ProcTrigger{
+					Name:           "Combust",
+					Callback:       core.CallbackOnSpellHitDealt,
+					ClassSpellMask: SpellMaskShieldSlam,
+					Outcome:        core.OutcomeLanded,
 				},
 
-				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					spell.Dot(target).Apply(sim)
-				},
-			})
-
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-				Name:           "Combust Trigger",
-				ActionID:       actionID,
-				Callback:       core.CallbackOnSpellHitDealt,
-				ClassSpellMask: SpellMaskShieldSlam,
-				Outcome:        core.OutcomeLanded,
-
-				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					shieldSlamDamage = result.Damage * 0.2
-					debuff.Cast(sim, result.Target)
+				DamageCalculator: func(result *core.SpellResult) float64 {
+					return result.Damage * 0.2
 				},
 			})
 		},

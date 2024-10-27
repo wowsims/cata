@@ -3,6 +3,7 @@ package paladin
 import (
 	"time"
 
+	"github.com/wowsims/cata/sim/common/cata"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -182,6 +183,19 @@ type Paladin struct {
 	JudgementsOfThePureAura *core.Aura
 	GrandCrusaderAura       *core.Aura
 	SacredDutyAura          *core.Aura
+
+	// Cached Gurthalak tentacles
+	gurthalakTentacles []*cata.TentacleOfTheOldOnesPet
+}
+
+func (paladin *Paladin) GetTentacles() []*cata.TentacleOfTheOldOnesPet {
+	return paladin.gurthalakTentacles
+}
+
+func (paladin *Paladin) NewTentacleOfTheOldOnesPet() *cata.TentacleOfTheOldOnesPet {
+	pet := cata.NewTentacleOfTheOldOnesPet(&paladin.Character)
+	paladin.AddPet(pet)
+	return pet
 }
 
 // Implemented by each Paladin spec.
@@ -310,6 +324,14 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 
 	// Bonus Armor and Armor are treated identically for Paladins
 	paladin.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
+
+	if mh := paladin.MainHand(); mh.Name == "Gurthalak, Voice of the Deeps" {
+		paladin.gurthalakTentacles = make([]*cata.TentacleOfTheOldOnesPet, 10)
+
+		for i := 0; i < 10; i++ {
+			paladin.gurthalakTentacles[i] = paladin.NewTentacleOfTheOldOnesPet()
+		}
+	}
 
 	return paladin
 }

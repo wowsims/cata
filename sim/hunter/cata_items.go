@@ -77,7 +77,7 @@ var ItemSetFlameWakersBattleGear = core.NewItemSet(core.ItemSet{
 					if spell.ClassSpellMask&^HunterSpellsTierTwelve != 0 || spell.ActionID.SpellID == 0 {
 						return
 					}
-					if hunter.HasActiveAura("Lock and Load Proc") && spell.ClassSpellMask == HunterSpellExplosiveShot {
+					if hunter.HasActiveAura("Lock and Load Proc") && (spell.ClassSpellMask == HunterSpellExplosiveShot || spell.ClassSpellMask == HunterSpellArcaneShot) {
 						return
 					}
 					if hunter.HasActiveAura("Ready, Set, Aim...") && spell.ClassSpellMask == HunterSpellAimedShot {

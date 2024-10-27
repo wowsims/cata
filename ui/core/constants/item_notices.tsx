@@ -21,6 +21,14 @@ const VPLC_IMPLEMENTATION_WARNING = (
 	</>
 );
 
+const DTR_FIRST_IMPLEMENTATION_WARNING = (
+	<>
+		<p className="fw-bold">This item was implemented based on the first round of testing on PTR.</p>
+		<p>Results may change as we get more logs and reports on interactions.</p>
+		<WantToHelpMessage />
+	</>
+);
+
 const TENTATIVE_IMPLEMENTATION_WARNING = (
 	<>
 		<p>
@@ -179,6 +187,8 @@ const TENTATIVE_IMPLEMENTATION_ITEMS = [
 	78484, 77195, 78475,
 	// Vishanka, Jaws of the Earth - LFR, Normal, Heroic
 	78480, 78359, 78471,
+	// Gurthalak, Voice of the Deeps - LFR, Normal, Heroic
+	78487, 77191, 78478,
 
 	// Veil of Lies
 	72900,
@@ -215,16 +225,16 @@ export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 	[
 		71086,
 		{
-			[Spec.SpecUnknown]: MISSING_IMPLEMENTATION_WARNING,
-			[Spec.SpecBalanceDruid]: MISSING_IMPLEMENTATION_WARNING,
-			[Spec.SpecArcaneMage]: MISSING_IMPLEMENTATION_WARNING,
-			[Spec.SpecFireMage]: MISSING_IMPLEMENTATION_WARNING,
-			[Spec.SpecFrostMage]: MISSING_IMPLEMENTATION_WARNING,
-			[Spec.SpecShadowPriest]: MISSING_IMPLEMENTATION_WARNING,
-			[Spec.SpecElementalShaman]: MISSING_IMPLEMENTATION_WARNING,
-			[Spec.SpecAfflictionWarlock]: MISSING_IMPLEMENTATION_WARNING,
-			[Spec.SpecDemonologyWarlock]: MISSING_IMPLEMENTATION_WARNING,
-			[Spec.SpecDestructionWarlock]: MISSING_IMPLEMENTATION_WARNING,
+			[Spec.SpecUnknown]: <p>This item is unsupported for this spec.</p>,
+			[Spec.SpecBalanceDruid]: DTR_FIRST_IMPLEMENTATION_WARNING,
+			[Spec.SpecArcaneMage]: DTR_FIRST_IMPLEMENTATION_WARNING,
+			[Spec.SpecFireMage]: DTR_FIRST_IMPLEMENTATION_WARNING,
+			[Spec.SpecFrostMage]: DTR_FIRST_IMPLEMENTATION_WARNING,
+			[Spec.SpecShadowPriest]: DTR_FIRST_IMPLEMENTATION_WARNING,
+			[Spec.SpecElementalShaman]: DTR_FIRST_IMPLEMENTATION_WARNING,
+			[Spec.SpecAfflictionWarlock]: DTR_FIRST_IMPLEMENTATION_WARNING,
+			[Spec.SpecDemonologyWarlock]: DTR_FIRST_IMPLEMENTATION_WARNING,
+			[Spec.SpecDestructionWarlock]: DTR_FIRST_IMPLEMENTATION_WARNING,
 		},
 	],
 	// Rogue Legendary Daggers (All Stages)
@@ -296,27 +306,6 @@ export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 			[Spec.SpecShadowPriest]: false,
 		},
 	],
-	[
-		// Gurthalak, Voice of the Deeps - LFR
-		78487,
-		{
-			[Spec.SpecUnknown]: MISSING_IMPLEMENTATION_WARNING,
-		}
-	],
-	[
-		// Gurthalak, Voice of the Deeps - Normal
-		77191,
-		{
-			[Spec.SpecUnknown]: MISSING_IMPLEMENTATION_WARNING,
-		}
-	],
-	[
-		// Gurthalak, Voice of the Deeps - Heroic
-		78478,
-		{
-			[Spec.SpecUnknown]: MISSING_IMPLEMENTATION_WARNING,
-		}
-	],
 ]);
 
 export const GENERIC_MISSING_SET_BONUS_NOTICE_DATA = new Map<number, string>([
@@ -324,13 +313,8 @@ export const GENERIC_MISSING_SET_BONUS_NOTICE_DATA = new Map<number, string>([
 	[4, 'Not yet implemented'],
 ]);
 
-export const IGNITE_BONUS_WARNING = new Map<number, string>([[2, 'Tentative implementation, requires PTR testing to validate munching / roll-over model']]);
-
 export const SET_BONUS_NOTICES = new Map<number, SetBonusNoticeData>([
 	// Custom notices
-	[1002, IGNITE_BONUS_WARNING], // Feral T12
-	[1006, IGNITE_BONUS_WARNING], // Rogue T12
-	[1012, IGNITE_BONUS_WARNING], // Ret T12
 	[
 		1008, // Warlock T12
 		new Map<number, string>([

@@ -8,7 +8,7 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-func CreateBlackMagicProcAura(character *core.Character) *core.Aura {
+func CreateBlackMagicProcAura(character *core.Character) *core.StatBuffAura {
 	return character.NewTemporaryStatsAura("Black Magic Proc", core.ActionID{SpellID: 59626}, stats.Stats{stats.HasteRating: 250}, time.Second*10)
 }
 
@@ -248,7 +248,7 @@ func init() {
 				// Special case for spells that aren't spells that can proc black magic.
 				specialCaseSpell := spell.ActionID.SpellID == 47465 || spell.ActionID.SpellID == 12867
 
-				if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskSpellDamage|core.ProcMaskWeaponProc) && !specialCaseSpell {
+				if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskSpellOrSpellProc) && !specialCaseSpell {
 					return
 				}
 

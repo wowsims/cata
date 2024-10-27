@@ -3,14 +3,32 @@ package core
 import (
 	"hash/fnv"
 	"math"
+	"strings"
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	googleproto "google.golang.org/protobuf/proto"
 )
 
 func DurationFromSeconds(numSeconds float64) time.Duration {
 	return time.Duration(float64(time.Second) * numSeconds)
+}
+
+func StringFromStatTypes(statTypes []stats.Stat) string {
+	statNames := MapSlice(statTypes, func(statType stats.Stat) string {
+		return statType.StatName()
+	})
+
+	return strings.Join(statNames, ", ")
+}
+
+func StringFromActionIDs(actionIDs []ActionID) string {
+	names := MapSlice(actionIDs, func(actionID ActionID) string {
+		return actionID.String()
+	})
+
+	return strings.Join(names, ", ")
 }
 
 func GetTristateValueInt32(effect proto.TristateEffect, regularValue int32, impValue int32) int32 {
@@ -165,6 +183,18 @@ func Flatten[T any](src [][]T) []T {
 		dst = append(dst, sublist...)
 	}
 	return dst
+}
+
+// Returns true if two slices share any common elements, and false otherwise.
+func CheckSliceOverlap[T comparable](s1 []T, s2 []T) bool {
+	for _, v1 := range s1 {
+		for _, v2 := range s2 {
+			if v1 == v2 {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 func MasteryRatingToMasteryPoints(masteryRating float64) float64 {

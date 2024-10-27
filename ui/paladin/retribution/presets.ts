@@ -1,4 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils.js';
+import { APLRotation_Type as APLRotationType } from '../../core/proto/apl.js';
 import { Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Stat, TinkerHands } from '../../core/proto/common.js';
 import {
 	PaladinAura as PaladinAura,
@@ -13,7 +14,6 @@ import { Stats } from '../../core/proto_utils/stats';
 import ApparatusApl from './apls/apparatus.apl.json';
 import DefaultApl from './apls/default.apl.json';
 import T13_2Pc_Apl from './apls/t13.apl.json';
-import T13_2Pc_Apparatus_Apl from './apls/t13-apparatus.apl.json';
 import P2_BisRetGear from './gear_sets/p2_bis.gear.json';
 import P3_BisRetGear from './gear_sets/p3_bis.gear.json';
 import P4_BisRetGear from './gear_sets/p4_bis.gear.json';
@@ -31,25 +31,27 @@ export const P4_BIS_RET_PRESET = PresetUtils.makePresetGear('P4', P4_BisRetGear)
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 export const ROTATION_PRESET_APPARATUS = PresetUtils.makePresetAPLRotation('Apparatus', ApparatusApl);
 export const ROTATION_PRESET_T13 = PresetUtils.makePresetAPLRotation('T13 2pc', T13_2Pc_Apl);
-export const ROTATION_PRESET_T13_APPARATUS = PresetUtils.makePresetAPLRotation('T13 2pc + Apparatus', T13_2Pc_Apparatus_Apl);
 
 // Preset options for EP weights
 export const P2_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'P2',
 	Stats.fromMap(
 		{
-			[Stat.StatStrength]: 2.28,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatHitRating]: 2.26,
-			[Stat.StatCritRating]: 1.10,
-			[Stat.StatHasteRating]: 1.04,
-			[Stat.StatExpertiseRating]: 1.82,
-			[Stat.StatMasteryRating]: 1.26,
+			[Stat.StatStrength]: 2.32,
+
+			[Stat.StatCritRating]: 1.14,
+			[Stat.StatHasteRating]: 1.06,
+			[Stat.StatMasteryRating]: 1.31,
+
+			[Stat.StatHitRating]: 2.30,
+			[Stat.StatExpertiseRating]: 1.94,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 8.28,
-			[PseudoStat.PseudoStatSpellHitPercent]: 30.23,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 261.35,
+			[PseudoStat.PseudoStatMainHandDps]: 8.26,
+
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 265.22,
+			[PseudoStat.PseudoStatSpellHitPercent]: 32.55,
 		},
 	),
 );
@@ -57,18 +59,21 @@ export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'P3',
 	Stats.fromMap(
 		{
-			[Stat.StatStrength]: 2.28,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatHitRating]: 2.66,
-			[Stat.StatCritRating]: 1.24,
-			[Stat.StatHasteRating]: 0.99,
-			[Stat.StatExpertiseRating]: 2.25,
-			[Stat.StatMasteryRating]: 1.40,
+			[Stat.StatStrength]: 2.3,
+
+			[Stat.StatCritRating]: 1.29,
+			[Stat.StatHasteRating]: 1.15,
+			[Stat.StatMasteryRating]: 1.4,
+
+			[Stat.StatHitRating]: 2.68,
+			[Stat.StatExpertiseRating]: 2.24,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 8.77,
-			[PseudoStat.PseudoStatSpellHitPercent]: 26.02,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 296.98,
+			[PseudoStat.PseudoStatMainHandDps]: 8.58,
+
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 306.86,
+			[PseudoStat.PseudoStatSpellHitPercent]: 31.87,
 		},
 	),
 );
@@ -77,18 +82,21 @@ export const P4_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'P4',
 	Stats.fromMap(
 		{
-			[Stat.StatStrength]: 2.28,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatHitRating]: 2.93,
-			[Stat.StatCritRating]: 1.47,
-			[Stat.StatHasteRating]: 1.06,
-			[Stat.StatExpertiseRating]: 2.43,
-			[Stat.StatMasteryRating]: 1.76,
+			[Stat.StatStrength]: 2.29,
+
+			[Stat.StatCritRating]: 1.52,
+			[Stat.StatHasteRating]: 1.04,
+			[Stat.StatMasteryRating]: 1.79,
+
+			[Stat.StatHitRating]: 3.26,
+			[Stat.StatExpertiseRating]: 2.55,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 8.39,
-			[PseudoStat.PseudoStatSpellHitPercent]: 33.56,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 342.82,
+			[PseudoStat.PseudoStatMainHandDps]: 8.38,
+
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 363.57,
+			[PseudoStat.PseudoStatSpellHitPercent]: 49.58,
 		},
 	),
 );
@@ -135,28 +143,28 @@ export const P2_PRESET = PresetUtils.makePresetBuild('P2', {
 	gear: P2_BIS_RET_PRESET,
 	epWeights: P2_EP_PRESET,
 	talents: P2_Talents,
-	rotation: ROTATION_PRESET_DEFAULT,
-})
+	rotationType: APLRotationType.TypeAuto,
+});
 
 export const P3_PRESET = PresetUtils.makePresetBuild('P3', {
 	gear: P3_BIS_RET_PRESET,
 	epWeights: P3_EP_PRESET,
 	talents: P3_P4_Talents,
-	rotation: ROTATION_PRESET_APPARATUS,
-})
+	rotationType: APLRotationType.TypeAuto,
+});
 
 export const P4_PRESET = PresetUtils.makePresetBuild('P4', {
 	gear: P4_BIS_RET_PRESET,
 	epWeights: P4_EP_PRESET,
 	talents: P3_P4_Talents,
-	rotation: ROTATION_PRESET_T13,
-})
+	rotationType: APLRotationType.TypeAuto,
+});
 
 export const DefaultOptions = RetributionPaladinOptions.create({
 	classOptions: {
 		aura: PaladinAura.Retribution,
 		seal: PaladinSeal.Truth,
-		snapshotGuardian: false,
+		snapshotGuardian: true,
 	},
 });
 
@@ -172,7 +180,7 @@ export const OtherDefaults = {
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
 	distanceFromTarget: 5,
-	duration: 300,
-	durationVariation: 30,
-	iterationCount: 20000,
+	duration: 240,
+	durationVariation: 15,
+	iterationCount: 25000,
 };

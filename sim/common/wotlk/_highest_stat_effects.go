@@ -116,7 +116,7 @@ func init() {
 			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       name,
 				Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
-				ProcMask:   core.ProcMaskDirect | core.ProcMaskProc,
+				ProcMask:   core.ProcMaskDirect | core.ProcMaskMeleeProc,
 				Harmful:    true,
 				ProcChance: 0.35,
 				ActionID:   core.ActionID{ItemID: itemID},

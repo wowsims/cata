@@ -23,12 +23,14 @@ func (shaman *Shaman) newLightningBoltSpellConfig(isElementalOverload bool) core
 	spellConfig.MissileSpeed = core.TernaryFloat64(isElementalOverload, 20, 35)
 
 	spellConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := shaman.ClassSpellScaling * 0.76700001955
+		baseDamage := shaman.CalcAndRollDamageRange(sim, 0.76700001955, 0.13300000131)
 		result := shaman.calcDamageStormstrikeCritChance(sim, target, baseDamage, spell)
 
 		spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-			if !isElementalOverload && result.Landed() && sim.Proc(shaman.GetOverloadChance(), "Lightning Bolt Elemental Overload") {
-				shaman.LightningBoltOverload.Cast(sim, target)
+			if !spell.ProcMask.Matches(core.ProcMaskSpellProc) {
+				if !isElementalOverload && result.Landed() && sim.Proc(shaman.GetOverloadChance(), "Lightning Bolt Elemental Overload") {
+					shaman.LightningBoltOverload.Cast(sim, target)
+				}
 			}
 
 			spell.DealDamage(sim, result)

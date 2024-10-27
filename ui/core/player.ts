@@ -270,6 +270,7 @@ export class Player<SpecType extends Spec> {
 	private epWeights: Stats = new Stats();
 	private statCaps: Stats = new Stats();
 	private softCapBreakpoints: StatCap[] = [];
+	private breakpointLimits: Stats = new Stats();
 	private currentStats: PlayerStats = PlayerStats.create();
 	private metadata: UnitMetadata = new UnitMetadata();
 	private petMetadatas: UnitMetadataList = new UnitMetadataList();
@@ -292,6 +293,7 @@ export class Player<SpecType extends Spec> {
 	readonly epWeightsChangeEmitter = new TypedEvent<void>('PlayerEpWeights');
 	readonly statCapsChangeEmitter = new TypedEvent<void>('StatCaps');
 	readonly softCapBreakpointsChangeEmitter = new TypedEvent<void>('SoftCapBreakpoints');
+	readonly breakpointLimitsChangeEmitter = new TypedEvent<void>('BreakpointLimits');
 	readonly miscOptionsChangeEmitter = new TypedEvent<void>('PlayerMiscOptions');
 
 	readonly currentStatsEmitter = new TypedEvent<void>('PlayerCurrentStats');
@@ -351,6 +353,7 @@ export class Player<SpecType extends Spec> {
 				this.epRatiosChangeEmitter,
 				this.epRefStatChangeEmitter,
 				this.statCapsChangeEmitter,
+				this.breakpointLimitsChangeEmitter,
 			],
 			'PlayerChange',
 		);
@@ -498,6 +501,14 @@ export class Player<SpecType extends Spec> {
 	setSoftCapBreakpoints(eventID: EventID, newSoftCapBreakpoints: StatCap[]) {
 		this.softCapBreakpoints = newSoftCapBreakpoints;
 		this.softCapBreakpointsChangeEmitter.emit(eventID);
+	}
+	getBreakpointLimits(): Stats {
+		return this.breakpointLimits;
+	}
+
+	setBreakpointLimits(eventID: EventID, newLimits: Stats) {
+		this.breakpointLimits = newLimits;
+		this.breakpointLimitsChangeEmitter.emit(eventID);
 	}
 
 	getDefaultEpRatios(isTankSpec: boolean, isHealingSpec: boolean): Array<number> {

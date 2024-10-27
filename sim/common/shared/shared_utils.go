@@ -31,6 +31,7 @@ type DamageEffect struct {
 	MinDmg           float64
 	MaxDmg           float64
 	BonusCoefficient float64
+	ProcMask         core.ProcMask
 }
 
 type ExtraSpellInfo struct {
@@ -42,12 +43,17 @@ type CustomProcHandler func(sim *core.Simulation, spell *core.Spell, result *cor
 type ProcCondition func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool
 
 func NewProcStatBonusEffectWithDamageProc(config ProcStatBonusEffect, damage DamageEffect) {
+	procMask := core.ProcMaskEmpty
+	if damage.ProcMask != core.ProcMaskUnknown {
+		procMask = damage.ProcMask
+	}
+
 	factory_StatBonusEffect(config, nil, func(agent core.Agent) ExtraSpellInfo {
 		character := agent.GetCharacter()
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:                 core.ActionID{SpellID: damage.SpellID},
 			SpellSchool:              damage.School,
-			ProcMask:                 core.ProcMaskEmpty,
+			ProcMask:                 procMask,
 			Flags:                    core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 			DamageMultiplier:         1,
 			CritMultiplier:           character.DefaultSpellCritMultiplier(),
@@ -97,7 +103,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, customHandler CustomPro
 
 		handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if customHandler != nil {
-				customHandler(sim, spell, result, procAura)
+				customHandler(sim, spell, result, procAura.Aura)
 
 			} else {
 				procAura.Activate(sim)
@@ -112,7 +118,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, customHandler CustomPro
 			handler = func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if !spell.IsSpellAction(ignoreSpellID) {
 					if customHandler != nil {
-						customHandler(sim, spell, result, procAura)
+						customHandler(sim, spell, result, procAura.Aura)
 					} else {
 						procAura.Activate(sim)
 						if procSpell.Spell != nil {
@@ -137,6 +143,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, customHandler CustomPro
 		})
 
 		procAura.Icd = triggerAura.Icd
+		character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
 	})
 }
 
@@ -258,7 +265,7 @@ func NewStackingStatBonusCD(config StackingStatBonusCD) {
 		})
 
 		// If trinket limits duration create a separate proc aura
-		var procAura *core.Aura = statAura
+		var procAura *core.Aura = statAura.Aura
 		if config.TrinketLimitsDuration {
 			procAura = character.RegisterAura(core.Aura{
 				Label:    config.Name + " Aura",
@@ -366,6 +373,8 @@ func NewStackingStatBonusEffect(config StackingStatBonusEffect) {
 				procAura.AddStack(sim)
 			},
 		})
+
+		character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
 	})
 }
 

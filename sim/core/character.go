@@ -44,6 +44,9 @@ type Character struct {
 	// Current gear.
 	Equipment
 
+	// Stat buff auras associated with any equipped proc trinkets.
+	TrinketProcBuffs []*StatBuffAura
+
 	//Item Swap Handler
 	ItemSwap ItemSwap
 
@@ -687,6 +690,11 @@ func (character *Character) GetOffensiveTrinketCD() *Timer {
 }
 func (character *Character) GetConjuredCD() *Timer {
 	return character.GetOrInitTimer(&character.conjuredCD)
+}
+func (character *Character) GetMatchingTrinketProcAuras(statTypesToMatch []stats.Stat) []*StatBuffAura {
+	return FilterSlice(character.TrinketProcBuffs, func(aura *StatBuffAura) bool {
+		return aura.BuffsMatchingStat(statTypesToMatch)
+	})
 }
 
 // Returns the talent tree (0, 1, or 2) of the tree with the most points.

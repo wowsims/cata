@@ -409,6 +409,8 @@ func init() {
 					return procAura.GetStacks() == 5
 				},
 			})
+
+			character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
 		})
 
 		jarItemID := core.TernaryInt32(heroic, 65029, 59354)
@@ -566,6 +568,19 @@ func init() {
 				MaxStacks: 5,
 			})
 
+			offHandBlacklist := map[int32]bool{
+				// DK: Threat of Thassarian crits doesn't proc
+				49143: true, // Frost Strike
+				49998: true, // Death Strike
+				85948: true, // Festering Strike
+				49020: true, // Obliterate
+				45462: true, // Plague Strike
+				56815: true, // Rune Strike
+
+				// Warrior: Whirlwind off-hand crits doesn't trigger procs
+				1680: true, // Whirlwind
+			}
+
 			core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       "Titanic Power Aura" + labelSuffix,
 				ActionID:   core.ActionID{SpellID: 96924},
@@ -575,6 +590,16 @@ func init() {
 				Outcome:    core.OutcomeCrit,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if buffAuraCrit.IsActive() || buffAuraHaste.IsActive() || buffAuraMastery.IsActive() {
+						return
+					}
+
+					// Warrior: Raging Blow crits doesn't trigger procs (both MH and OH)
+					if spell.ActionID.SpellID == 85288 {
+						return
+					}
+
+					// Off-hand blacklist
+					if _, blacklisted := offHandBlacklist[spell.ActionID.SpellID]; spell.ProcMask.Matches(core.ProcMaskMeleeOHSpecial) && blacklisted {
 						return
 					}
 
@@ -628,6 +653,46 @@ func init() {
 				Type:     core.CooldownTypeDPS,
 				ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
 					return titanicPower.IsActive()
+				},
+			})
+		})
+
+		vesselItemID := core.TernaryInt32(heroic, 69167, 68995)
+		core.NewItemEffect(vesselItemID, func(agent core.Agent) {
+			character := agent.GetCharacter()
+
+			procAura := core.MakeStackingAura(character, core.StackingStatAura{
+				Aura: core.Aura{
+					Label:     "Accelerated",
+					ActionID:  core.ActionID{SpellID: core.TernaryInt32(heroic, 97142, 96980)},
+					Duration:  time.Second * 20,
+					MaxStacks: 5,
+				},
+				BonusPerStack: stats.Stats{stats.CritRating: core.TernaryFloat64(heroic, 92, 82)},
+			})
+
+			offHandBlacklist := map[int32]bool{
+				// Warrior: Slam and Whirlwind off-hand crits doesn't trigger procs
+				1464: true, // Slam
+				1680: true, // Whirlwind
+			}
+
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				ActionID:   core.ActionID{ItemID: vesselItemID},
+				Name:       "Vessel of Acceleration" + labelSuffix,
+				Callback:   core.CallbackOnSpellHitDealt,
+				ProcMask:   core.ProcMaskMeleeOrMeleeProc,
+				Outcome:    core.OutcomeCrit,
+				ProcChance: 1,
+				Harmful:    false,
+				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+					// Off-hand blacklist
+					if _, blacklisted := offHandBlacklist[spell.ActionID.SpellID]; spell.ProcMask.Matches(core.ProcMaskMeleeOHSpecial) && blacklisted {
+						return
+					}
+
+					procAura.Activate(sim)
+					procAura.AddStack(sim)
 				},
 			})
 		})
@@ -834,7 +899,7 @@ func init() {
 				Name:       "Vial of Shadows Trigger" + labelSuffix,
 				ActionID:   core.ActionID{ItemID: vialItemID},
 				Callback:   core.CallbackOnSpellHitDealt,
-				ProcMask:   core.ProcMaskMeleeOrRanged | core.ProcMaskProc,
+				ProcMask:   core.ProcMaskMeleeOrRanged | core.ProcMaskMeleeProc,
 				Outcome:    core.OutcomeLanded,
 				Harmful:    true,
 				ProcChance: 0.45,
@@ -884,7 +949,7 @@ func init() {
 				Name:       "Bone-Link Fetish Trigger" + labelSuffix,
 				ActionID:   core.ActionID{ItemID: fetishItemID},
 				Callback:   core.CallbackOnSpellHitDealt,
-				ProcMask:   core.ProcMaskMeleeOrRanged | core.ProcMaskProc,
+				ProcMask:   core.ProcMaskMeleeOrRanged | core.ProcMaskMeleeProc,
 				Outcome:    core.OutcomeLanded,
 				Harmful:    true,
 				ProcChance: 0.15,
@@ -938,7 +1003,7 @@ func init() {
 				Name:       "Cunning of the Cruel Trigger" + labelSuffix,
 				ActionID:   core.ActionID{ItemID: cunningItemID},
 				Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
-				ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskProc,
+				ProcMask:   core.ProcMaskSpellOrSpellProc,
 				Outcome:    core.OutcomeLanded,
 				Harmful:    true,
 				ProcChance: 0.45,
@@ -1026,7 +1091,7 @@ func init() {
 			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       "Fury of the Beast Trigger",
 				Callback:   core.CallbackOnSpellHitDealt,
-				ProcMask:   core.ProcMaskMeleeOrRanged | core.ProcMaskProc,
+				ProcMask:   core.ProcMaskMeleeOrRanged | core.ProcMaskMeleeProc,
 				Outcome:    core.OutcomeLanded,
 				ProcChance: 0.15,
 				ICD:        time.Second * 55,
@@ -1038,10 +1103,11 @@ func init() {
 
 		// These spells ignore the slot the weapon is in.
 		// Any other ability should only trigger the proc if the weapon is in the right slot.
-		ignoresSlot := make(map[int32]bool)
-		ignoresSlot[23881] = true // Bloodthirst
-		ignoresSlot[6544] = true  // Heroic Leap
-		ignoresSlot[6343] = true  // Thunder Clap
+		ignoresSlot := map[int32]bool{
+			23881: true, // Bloodthirst
+			6544:  true, // Heroic Leap
+			6343:  true, // Thunder Clap
+		}
 
 		// Souldrinker
 		// Equip: Your melee attacks have a chance to drain your target's health, damaging the target for an amount equal to 1.3%/1.5%/1.7% of your maximum health and healing you for twice that amount.
@@ -1051,7 +1117,7 @@ func init() {
 			character := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: []int32{109828, 108022, 109831}[version]}
 			hpModifier := []float64{0.013, 0.015, 0.017}[version]
-			procMask := character.GetProcMaskForItem(souldrinkerItemID) | core.ProcMaskProc
+			procMask := character.GetProcMaskForItem(souldrinkerItemID) | core.ProcMaskMeleeProc
 
 			var damageDealt float64
 			drainLifeHeal := character.RegisterSpell(core.SpellConfig{
@@ -1114,7 +1180,7 @@ func init() {
 		core.NewItemEffect(nokaledItemID, func(agent core.Agent) {
 			character := agent.GetCharacter()
 
-			procMask := character.GetProcMaskForItem(nokaledItemID) | core.ProcMaskProc
+			procMask := character.GetProcMaskForItem(nokaledItemID) | core.ProcMaskMeleeProc
 			minDamage := []float64{6781, 7654, 8640}[version]
 			maxDamage := []float64{10171, 11481, 12960}[version]
 
@@ -1222,7 +1288,7 @@ func init() {
 				Name:       "Rathrak Trigger" + labelSuffix,
 				ActionID:   core.ActionID{ItemID: rathrakItemID},
 				Callback:   core.CallbackOnSpellHitDealt,
-				ProcMask:   core.ProcMaskSpellOrProc,
+				ProcMask:   core.ProcMaskSpellOrSpellProc,
 				Outcome:    core.OutcomeLanded,
 				ProcChance: 0.15,
 				ICD:        time.Second * 17,
@@ -1280,7 +1346,7 @@ func init() {
 				Name:       "Vishanka Trigger" + labelSuffix,
 				ActionID:   core.ActionID{ItemID: vishankaItemID},
 				Callback:   core.CallbackOnSpellHitDealt,
-				ProcMask:   core.ProcMaskRanged | core.ProcMaskProc,
+				ProcMask:   core.ProcMaskRanged | core.ProcMaskMeleeProc,
 				Outcome:    core.OutcomeLanded,
 				ProcChance: 0.15,
 				ICD:        time.Second * 17,
@@ -1311,13 +1377,13 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 	spellFlags := core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete
 
 	if config.DisableCastMetrics {
-		spellFlags = spellFlags | core.SpellFlagPassiveSpell
+		spellFlags |= core.SpellFlagPassiveSpell
 	}
 
 	igniteSpell := unit.RegisterSpell(core.SpellConfig{
 		ActionID:         config.ActionID,
 		SpellSchool:      core.SpellSchoolFire,
-		ProcMask:         core.ProcMaskProc,
+		ProcMask:         core.ProcMaskSpellProc,
 		Flags:            spellFlags,
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -1344,44 +1410,44 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 		},
 	})
 
-	refreshIgnite := func(sim *core.Simulation, target *core.Unit, totalDamage float64) {
+	refreshIgnite := func(sim *core.Simulation, target *core.Unit, damagePerTick float64) {
 		// Cata Ignite
 		// 1st ignite application = 4s, split into 2 ticks (2s, 0s)
 		// Ignite refreshes: Duration = 4s + MODULO(remaining duration, 2), max 6s. Split damage over 3 ticks at 4s, 2s, 0s.
 		dot := igniteSpell.Dot(target)
-		newTickCount := dot.BaseTickCount + core.TernaryInt32(dot.IsActive(), 1, 0)
-		dot.SnapshotBaseDamage = totalDamage / float64(newTickCount)
+		dot.SnapshotBaseDamage = damagePerTick
 		igniteSpell.Cast(sim, target)
 		dot.Aura.SetStacks(sim, int32(dot.SnapshotBaseDamage))
 	}
 
 	var scheduledRefresh *core.PendingAction
 	procTrigger := config.ProcTrigger
-	procTrigger.Handler = func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+	procTrigger.Handler = func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
 		target := result.Target
 		dot := igniteSpell.Dot(target)
 		outstandingDamage := dot.OutstandingDmg()
 		newDamage := config.DamageCalculator(result)
 		totalDamage := outstandingDamage + newDamage
+		newTickCount := dot.BaseTickCount + core.TernaryInt32(dot.IsActive(), 1, 0)
+		damagePerTick := totalDamage / float64(newTickCount)
 
 		if config.IncludeAuraDelay {
-			// For now, assume that the mechanism driving random aura update
-			// delays is the same as for random auto delays after rapidly
-			// changing position. Therefore, use the fit delay parameters
-			// from cat leap tests (see sim/druid/feral_charge.go) for
-			// modeling consistency.
-			// TODO: Measure the aura update delay distribution on PTR.
-			waitTime := time.Millisecond * time.Duration(sim.Roll(150, 750))
-			applyDotAt := sim.CurrentTime + waitTime
+			// Rough 2-bucket model for the aura update delay distribution based
+			// on PTR measurements. Most updates occur on either the same or very
+			// next spell batch after the proc, and can therefore be modeled by a
+			// 0-10 ms random draw. But a reasonable minority fraction take ~10x
+			// longer than this to fire. The origin of these longer delays is
+			// likely not actually random in reality, but can be treated that way
+			// in practice since the player cannot play around them.
+			var delaySeconds float64
 
-			// Check for max duration munching
-			if dot.RemainingDuration(sim) > time.Second*4+waitTime {
-				if sim.Log != nil {
-					unit.Log(sim, "New %s proc was munched due to max %s duration", config.DotAuraLabel, config.DotAuraLabel)
-				}
-
-				return
+			if sim.Proc(0.75, "Aura Delay") {
+				delaySeconds = 0.010 * sim.RandomFloat("Aura Delay")
+			} else {
+				delaySeconds = 0.090 + 0.020*sim.RandomFloat("Aura Delay")
 			}
+
+			applyDotAt := sim.CurrentTime + core.DurationFromSeconds(delaySeconds)
 
 			// Cancel any prior aura updates already in the queue
 			if (scheduledRefresh != nil) && (scheduledRefresh.NextActionAt > sim.CurrentTime) {
@@ -1392,9 +1458,9 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 				}
 			}
 
-			// Schedule a delayed refresh of the DoT with cached outstandingDamage value (allowing for "free roll-overs")
+			// Schedule a delayed refresh of the DoT with cached damagePerTick value (allowing for "free roll-overs")
 			if sim.Log != nil {
-				unit.Log(sim, "Schedule travel (%0.2f s) for %s", waitTime.Seconds(), config.DotAuraLabel)
+				unit.Log(sim, "Schedule travel (%0.1f ms) for %s", delaySeconds*1000, config.DotAuraLabel)
 
 				if dot.IsActive() && (dot.NextTickAt() < applyDotAt) {
 					unit.Log(sim, "%s rolled with %0.3f damage both ticking and rolled into next", config.DotAuraLabel, outstandingDamage)
@@ -1406,11 +1472,11 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 				Priority: core.ActionPriorityDOT,
 
 				OnAction: func(_ *core.Simulation) {
-					refreshIgnite(sim, target, totalDamage)
+					refreshIgnite(sim, target, damagePerTick)
 				},
 			})
 		} else {
-			refreshIgnite(sim, target, totalDamage)
+			refreshIgnite(sim, target, damagePerTick)
 		}
 	}
 
