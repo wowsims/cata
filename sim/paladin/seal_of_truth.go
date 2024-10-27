@@ -90,7 +90,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 		ActionID:       core.ActionID{SpellID: 31804},
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskMeleeSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement | core.SpellFlagPassiveSpell,
+		Flags:          core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
 		ClassSpellMask: SpellMaskJudgementOfTruth,
 
 		DamageMultiplier: 1,
@@ -103,7 +103,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 				.142*spell.MeleeAttackPower()
 
 			baseDamage *= 1 + .2*float64(censureSpell.Dot(target).GetStacks())
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 		},
 	})
 
