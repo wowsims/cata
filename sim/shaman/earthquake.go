@@ -12,7 +12,7 @@ func (shaman *Shaman) registerEarthquakeSpell() {
 		Flags:            core.SpellFlagAPL | SpellFlagFocusable,
 		SpellSchool:      core.SpellSchoolPhysical,
 		ClassSpellMask:   SpellMaskEarthquake,
-		ProcMask:         core.ProcMaskEmpty,
+		ProcMask:         core.ProcMaskSpellProc,
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),

@@ -123,8 +123,8 @@ dps_results: {
 dps_results: {
  key: "TestBalance-AllItems-BellofEnragingResonance-65053"
  value: {
-  dps: 28468.36418
-  tps: 28461.74889
+  dps: 28468.7951
+  tps: 28462.17981
  }
 }
 dps_results: {
@@ -410,8 +410,8 @@ dps_results: {
 dps_results: {
  key: "TestBalance-AllItems-DeepEarthRegalia"
  value: {
-  dps: 25888.15517
-  tps: 25923.52434
+  dps: 25893.53031
+  tps: 25928.89948
  }
 }
 dps_results: {
@@ -655,8 +655,8 @@ dps_results: {
 dps_results: {
  key: "TestBalance-AllItems-Gladiator'sSanctuary"
  value: {
-  dps: 17669.87626
-  tps: 17663.81347
+  dps: 17668.03107
+  tps: 17661.57562
  }
 }
 dps_results: {
@@ -1131,8 +1131,8 @@ dps_results: {
 dps_results: {
  key: "TestBalance-AllItems-ObsidianArborweaveBattlegarb"
  value: {
-  dps: 19460.89178
-  tps: 19442.73165
+  dps: 19450.18134
+  tps: 19431.63974
  }
 }
 dps_results: {
@@ -1525,15 +1525,15 @@ dps_results: {
 dps_results: {
  key: "TestBalance-AllItems-Stormrider'sBattlegarb"
  value: {
-  dps: 19343.93887
-  tps: 19349.22882
+  dps: 19356.02182
+  tps: 19360.9191
  }
 }
 dps_results: {
  key: "TestBalance-AllItems-Stormrider'sRegalia"
  value: {
-  dps: 25340.04487
-  tps: 25379.25882
+  dps: 25340.92971
+  tps: 25380.55872
  }
 }
 dps_results: {
@@ -1973,15 +1973,15 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Average-Default"
  value: {
-  dps: 29439.48088
-  tps: 29462.56729
+  dps: 29439.44593
+  tps: 29462.53233
  }
 }
 dps_results: {
  key: "TestBalance-Settings-NightElf-t11-Default-t11-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 34381.31494
-  tps: 42617.83897
+  dps: 34386.67428
+  tps: 42629.20616
  }
 }
 dps_results: {
@@ -2001,15 +2001,15 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Settings-NightElf-t11-Default-t11-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 23098.12292
-  tps: 31224.12672
+  dps: 23071.04351
+  tps: 31236.24331
  }
 }
 dps_results: {
  key: "TestBalance-Settings-NightElf-t11-Default-t11-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 19399.20529
-  tps: 19557.14017
+  dps: 19388.53725
+  tps: 19546.46271
  }
 }
 dps_results: {
@@ -2022,8 +2022,8 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Settings-NightElf-t11-Default-t12-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 34369.47889
-  tps: 42597.30995
+  dps: 34382.67142
+  tps: 42616.51032
  }
 }
 dps_results: {
@@ -2043,15 +2043,15 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Settings-NightElf-t11-Default-t12-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 23125.23215
-  tps: 31222.07341
+  dps: 23092.67596
+  tps: 31236.57126
  }
 }
 dps_results: {
  key: "TestBalance-Settings-NightElf-t11-Default-t12-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 19449.96455
-  tps: 19606.4393
+  dps: 19448.88913
+  tps: 19605.74712
  }
 }
 dps_results: {
@@ -2064,85 +2064,85 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Settings-NightElf-t12-Default-t11-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 52599.82179
-  tps: 51489.71529
+  dps: 52662.00672
+  tps: 51580.42715
  }
 }
 dps_results: {
  key: "TestBalance-Settings-NightElf-t12-Default-t11-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 39010.28843
-  tps: 35606.2812
+  dps: 39004.03333
+  tps: 35594.46558
  }
 }
 dps_results: {
  key: "TestBalance-Settings-NightElf-t12-Default-t11-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 47657.50826
-  tps: 43080.4127
+  dps: 47669.34137
+  tps: 43090.7169
  }
 }
 dps_results: {
  key: "TestBalance-Settings-NightElf-t12-Default-t11-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 35732.52723
-  tps: 38079.06582
+  dps: 35721.58701
+  tps: 38097.92848
  }
 }
 dps_results: {
  key: "TestBalance-Settings-NightElf-t12-Default-t11-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 26362.80281
-  tps: 24081.05109
+  dps: 26388.80009
+  tps: 24108.97942
  }
 }
 dps_results: {
  key: "TestBalance-Settings-NightElf-t12-Default-t11-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 26966.83582
-  tps: 24347.16823
+  dps: 26976.16897
+  tps: 24360.71194
  }
 }
 dps_results: {
  key: "TestBalance-Settings-NightElf-t12-Default-t12-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 52580.21952
-  tps: 51552.97708
+  dps: 52578.35995
+  tps: 51567.96831
  }
 }
 dps_results: {
  key: "TestBalance-Settings-NightElf-t12-Default-t12-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 38656.7604
-  tps: 35418.44893
+  dps: 38603.62694
+  tps: 35355.71942
  }
 }
 dps_results: {
  key: "TestBalance-Settings-NightElf-t12-Default-t12-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 47627.58621
-  tps: 43280.68474
+  dps: 47624.2739
+  tps: 43277.30631
  }
 }
 dps_results: {
  key: "TestBalance-Settings-NightElf-t12-Default-t12-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 35868.22386
-  tps: 38189.53305
+  dps: 35864.34253
+  tps: 38174.24015
  }
 }
 dps_results: {
  key: "TestBalance-Settings-NightElf-t12-Default-t12-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 26389.7501
-  tps: 24221.31255
+  dps: 26374.78895
+  tps: 24205.43361
  }
 }
 dps_results: {
  key: "TestBalance-Settings-NightElf-t12-Default-t12-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 27036.46387
-  tps: 24337.24948
+  dps: 27021.88268
+  tps: 24322.65026
  }
 }
 dps_results: {

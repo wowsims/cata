@@ -184,7 +184,7 @@ func (shaman *Shaman) applyElementalFocus() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.Flags.Matches(SpellFlagShock|SpellFlagFocusable) || (spell.ClassSpellMask&(SpellMaskOverload|SpellMaskUnleashFlame) != 0) || spell == shaman.Earthquake {
+			if !spell.Flags.Matches(SpellFlagShock|SpellFlagFocusable) || (spell.ClassSpellMask&(SpellMaskOverload|SpellMaskUnleashFlame|SpellMaskEarthquake) != 0) {
 				return
 			}
 			if !result.Outcome.Matches(core.OutcomeCrit) {
