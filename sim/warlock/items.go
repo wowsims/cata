@@ -116,7 +116,7 @@ func (pet *FieryImpPet) registerFlameBlast(warlock *Warlock) {
 		},
 
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           2,
+		CritMultiplier:           pet.DefaultSpellCritMultiplier(),
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
