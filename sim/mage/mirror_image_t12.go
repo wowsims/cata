@@ -58,18 +58,14 @@ func (mi *T12MirrorImage) ExecuteCustomRotation(sim *core.Simulation) {
 }
 
 var t12MirrorImageBaseStats = stats.Stats{
-	stats.Mana: 27020, // Confirmed via ingame bars at 80
-
-	// seems to be about 8% baseline in wotlk
-	stats.SpellCritPercent: 8,
+	stats.Mana:             27020, // Confirmed via ingame bars at 80
+	stats.SpellCritPercent: 0,
 }
 
 func createT12MirrorImageInheritance() func(stats.Stats) stats.Stats {
 	return func(ownerStats stats.Stats) stats.Stats {
 		return stats.Stats{
-			// According to the simcraft implementation, the T12 Mirror Images snapshot the owner's crit
-			stats.SpellCritPercent: ownerStats[stats.SpellCritPercent],
-			stats.SpellHitPercent:  ownerStats[stats.SpellHitPercent],
+			stats.SpellHitPercent: ownerStats[stats.SpellHitPercent],
 		}
 	}
 }
