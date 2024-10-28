@@ -216,7 +216,7 @@ var ItemSetDeepEarthRegalia = core.NewItemSet(core.ItemSet{
 			t13InsectSwarmBonusDummyAuras := druid.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 				return target.GetOrRegisterAura(core.Aura{
 					ActionID: core.ActionID{SpellID: 105722},
-					Label:    "Item - Druid T13 Balance 2P Bonus (Insect Swarm)",
+					Label:    "Item - Druid T13 Balance 2P Bonus (Insect Swarm) - " + druid.Label,
 					Duration: core.NeverExpires,
 					OnGain: func(aura *core.Aura, sim *core.Simulation) {
 						core.EnableDamageDoneByCaster(DDBC_2pcT13, DDBC_Total, druid.AttackTables[aura.Unit.UnitIndex], t13InsectSwarmBonus)
