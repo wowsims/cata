@@ -7,15 +7,29 @@ import (
 )
 
 func (shaman *Shaman) registerEarthquakeSpell() {
-	shaman.Earthquake = shaman.RegisterSpell(core.SpellConfig{
+
+	earthquakePulse := shaman.RegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 77478},
-		Flags:            core.SpellFlagAPL | SpellFlagFocusable,
+		Flags:            SpellFlagFocusable | core.SpellFlagIgnoreResists,
 		SpellSchool:      core.SpellSchoolPhysical,
 		ClassSpellMask:   SpellMaskEarthquake,
 		ProcMask:         core.ProcMaskSpellProc,
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.SpellMetrics[target.UnitIndex].Casts-- // Do not count pulses as casts
+			// Coefficient damage calculated manually because it's a Nature spell but deals Physical damage
+			baseDamage := shaman.ClassSpellScaling*0.32400000095 + 0.11*spell.SpellPower()
+			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+			}
+		},
+	})
+
+	shaman.Earthquake = shaman.RegisterSpell(core.SpellConfig{
+		ActionID: core.ActionID{SpellID: 77478},
+		Flags:    core.SpellFlagAPL,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -29,7 +43,6 @@ func (shaman *Shaman) registerEarthquakeSpell() {
 		},
 
 		Dot: core.DotConfig{
-			IsAOE: true,
 			Aura: core.Aura{
 				Label: "Earthquake",
 			},
@@ -38,16 +51,12 @@ func (shaman *Shaman) registerEarthquakeSpell() {
 			AffectedByCastSpeed:  true,
 			HasteReducesDuration: true,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				// Coefficient damage calculated manually because it's a Nature spell but deals Physical damage
-				baseDamage := shaman.ClassSpellScaling*0.32400000095 + 0.11*dot.Spell.SpellPower()
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
-				}
+				earthquakePulse.Cast(sim, target)
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			dot := spell.AOEDot()
+			dot := spell.Dot(target)
 			dot.Apply(sim)
 		},
 	})

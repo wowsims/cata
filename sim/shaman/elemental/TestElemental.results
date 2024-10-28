@@ -2127,8 +2127,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsAoE-Standard-aoe-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 134119.36619
-  tps: 85632.10917
+  dps: 146880.28354
+  tps: 83443.20479
  }
 }
 dps_results: {
@@ -2148,8 +2148,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsAoE-Standard-aoe-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 106222.29283
-  tps: 75833.14422
+  dps: 119668.13519
+  tps: 76373.70208
  }
 }
 dps_results: {
@@ -2253,8 +2253,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsImprovedShields-Standard-aoe-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 116850.11694
-  tps: 84497.63686
+  dps: 130155.05447
+  tps: 82659.02396
  }
 }
 dps_results: {
@@ -2274,8 +2274,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsImprovedShields-Standard-aoe-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 92413.11457
-  tps: 75009.6357
+  dps: 106039.4885
+  tps: 75649.6572
  }
 }
 dps_results: {
@@ -2505,8 +2505,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsAoE-Standard-aoe-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 132466.58647
-  tps: 86117.65889
+  dps: 145163.51439
+  tps: 84097.74899
  }
 }
 dps_results: {
@@ -2526,8 +2526,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsAoE-Standard-aoe-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 104625.57403
-  tps: 76167.54796
+  dps: 118066.2596
+  tps: 76525.20515
  }
 }
 dps_results: {
@@ -2631,8 +2631,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsImprovedShields-Standard-aoe-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 115643.95829
-  tps: 84901.38594
+  dps: 128828.82637
+  tps: 82952.45883
  }
 }
 dps_results: {
@@ -2652,8 +2652,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsImprovedShields-Standard-aoe-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 91105.54054
-  tps: 75308.74642
+  dps: 104750.18839
+  tps: 75775.87568
  }
 }
 dps_results: {
