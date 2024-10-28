@@ -20,7 +20,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 		ActionID:       core.ActionID{SpellID: 20187},
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskMeleeSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement | core.SpellFlagPassiveSpell,
+		Flags:          core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
 		ClassSpellMask: SpellMaskJudgementOfRighteousness,
 
 		DamageMultiplier: 1,
@@ -32,7 +32,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 				0.32*spell.SpellPower() +
 				0.2*spell.MeleeAttackPower()
 
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 		},
 	})
 

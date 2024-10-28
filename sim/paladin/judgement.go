@@ -32,11 +32,7 @@ func (paladin *Paladin) registerJudgement() {
 				return
 			}
 
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCrit)
-
-			if result.Landed() {
-				paladin.CurrentJudgement.Cast(sim, target)
-			}
+			paladin.CurrentJudgement.Cast(sim, target)
 		},
 	})
 }
