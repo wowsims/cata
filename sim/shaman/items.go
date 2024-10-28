@@ -163,6 +163,7 @@ var ItemSetSpiritwalkersRegalia = core.NewItemSet(core.ItemSet{
 				OnReset: func(aura *core.Aura, sim *core.Simulation) {
 					aura.Activate(sim)
 				},
+				//TODO does dtr overloads proc this ?
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 					if spell.ClassSpellMask&SpellMaskOverload > 0 {
 						procAura.Activate(sim)

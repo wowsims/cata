@@ -130,15 +130,15 @@ dps_results: {
 dps_results: {
  key: "TestMM-AllItems-BellofEnragingResonance-59326"
  value: {
-  dps: 21215.58752
-  tps: 19015.36461
+  dps: 21323.7942
+  tps: 19123.57128
  }
 }
 dps_results: {
  key: "TestMM-AllItems-BellofEnragingResonance-65053"
  value: {
-  dps: 21251.47167
-  tps: 19048.01913
+  dps: 21370.25734
+  tps: 19166.80479
  }
 }
 dps_results: {
@@ -431,8 +431,8 @@ dps_results: {
 dps_results: {
  key: "TestMM-AllItems-DarkmoonCard:Volcano-62047"
  value: {
-  dps: 21224.47684
-  tps: 19041.87267
+  dps: 21198.59938
+  tps: 19016.24123
  }
 }
 dps_results: {

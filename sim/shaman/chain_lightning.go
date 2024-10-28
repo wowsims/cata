@@ -51,7 +51,7 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 		}
 
 		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-			if !spell.ProcMask.Matches(core.ProcMaskSpellProc) {
+			if !spell.ProcMask.Matches(core.ProcMaskSpellProc) { //So that procs from DTR does not cast an overload
 				if !isElementalOverload && results[hitIndex].Landed() && sim.Proc(shaman.GetOverloadChance()/3, "Chain Lightning Elemental Overload") {
 					shaman.ChainLightningOverloads[hitIndex].Cast(sim, results[hitIndex].Target)
 				}
