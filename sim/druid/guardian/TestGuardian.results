@@ -1772,6 +1772,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-SymbioticWorm-65048"
+ value: {
+  dps: 9597.44853
+  tps: 48054.14472
+  hps: 314.83292
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-TalismanofSinisterOrder-65804"
  value: {
   dps: 9619.33261
@@ -2052,14 +2060,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestGuardian-AllItems-VialofStolenMemories-65109"
- value: {
-  dps: 9597.44853
-  tps: 48054.14472
-  hps: 314.83292
- }
-}
-dps_results: {
  key: "TestGuardian-AllItems-ViciousGladiator'sBadgeofConquest-61033"
  value: {
   dps: 10054.36983
@@ -2246,10 +2246,10 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-Average-Default"
  value: {
-  dps: 17705.79917
-  tps: 88610.27349
-  dtps: 12973.59986
-  hps: 337.88452
+  dps: 17657.60743
+  tps: 88369.3566
+  dtps: 12790.38841
+  hps: 337.95576
  }
 }
 dps_results: {
@@ -2351,9 +2351,9 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 20468.48068
-  tps: 102430.78735
-  dtps: 12788.08126
+  dps: 20415.75022
+  tps: 102167.16405
+  dtps: 12634.12178
   hps: 319.10667
  }
 }
