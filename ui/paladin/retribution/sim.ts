@@ -100,7 +100,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		Stat.StatExpertiseRating,
 		Stat.StatMasteryRating,
 	],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatPhysicalHitPercent],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -109,7 +109,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			Stat.StatStrength,
 			Stat.StatAgility,
 			Stat.StatIntellect,
-			Stat.StatMP5,
 			Stat.StatAttackPower,
 			Stat.StatExpertiseRating,
 			Stat.StatSpellPower,
@@ -130,15 +129,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P2_BIS_RET_PRESET.gear,
+		gear: Presets.P3_BIS_RET_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P2_EP_PRESET.epWeights,
+		epWeights: Presets.P3_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: getStatCaps(),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.P2_Talents.data,
+		talents: Presets.P3_Talents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		other: Presets.OtherDefaults,
@@ -200,7 +199,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		epWeights: [Presets.P2_EP_PRESET, Presets.P3_EP_PRESET, Presets.P4_EP_PRESET],
 		rotations: [Presets.ROTATION_PRESET_DEFAULT, Presets.ROTATION_PRESET_APPARATUS, Presets.ROTATION_PRESET_T13],
 		// Preset talents that the user can quickly select.
-		talents: [Presets.P2_Talents, Presets.P3_P4_Talents],
+		talents: [Presets.P2_P4_Talents, Presets.P3_Talents],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PRERAID_RET_PRESET, Presets.P2_BIS_RET_PRESET, Presets.P3_BIS_RET_PRESET, Presets.P4_BIS_RET_PRESET],
 		builds: [Presets.P2_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
@@ -211,7 +210,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecRetributionPaladin,
-			talents: Presets.P2_Talents.data,
+			talents: Presets.P3_Talents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -223,9 +222,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.P2_BIS_RET_PRESET.gear,
+					2: Presets.P2_BIS_RET_PRESET.gear,
+					3: Presets.P3_BIS_RET_PRESET.gear,
+					4: Presets.P4_BIS_RET_PRESET.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.P2_BIS_RET_PRESET.gear,
+					2: Presets.P2_BIS_RET_PRESET.gear,
+					3: Presets.P3_BIS_RET_PRESET.gear,
+					4: Presets.P4_BIS_RET_PRESET.gear,
 				},
 			},
 		},
