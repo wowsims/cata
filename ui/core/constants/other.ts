@@ -9,7 +9,7 @@ export enum Phase {
 	Phase4,
 }
 
-export const CURRENT_PHASE = Phase.Phase2;
+export const CURRENT_PHASE = Phase.Phase3;
 
 export const CURRENT_API_VERSION: number = readMessageOption(ProtoVersion, 'proto.current_version_number')! as number;
 
