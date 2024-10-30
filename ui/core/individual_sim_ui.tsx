@@ -75,8 +75,6 @@ export interface OtherDefaults {
 	distanceFromTarget?: number;
 	channelClipDelay?: number;
 	darkIntentUptime?: number;
-	duration?: number;
-	durationVariation?: number;
 	highHpThreshold?: number;
 	iterationCount?: number;
 }
@@ -548,8 +546,6 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			} else {
 				this.sim.raid.setTargetDummies(eventID, healingSpec ? 9 : 0);
 				this.sim.encounter.applyDefaults(eventID);
-				this.sim.encounter.setDuration(eventID, this.individualConfig.defaults.other?.duration || 180);
-				this.sim.encounter.setDurationVariation(eventID, this.individualConfig.defaults.other?.durationVariation || 5);
 				this.sim.encounter.setExecuteProportion90(eventID, this.individualConfig.defaults.other?.highHpThreshold || 0.9);
 				this.sim.raid.setDebuffs(eventID, this.individualConfig.defaults.debuffs);
 				this.sim.applyDefaults(eventID, tankSpec, healingSpec);

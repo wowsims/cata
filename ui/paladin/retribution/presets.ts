@@ -180,7 +180,5 @@ export const OtherDefaults = {
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
 	distanceFromTarget: 5,
-	duration: 240,
-	durationVariation: 15,
 	iterationCount: 25000,
 };

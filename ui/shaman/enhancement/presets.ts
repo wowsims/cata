@@ -119,7 +119,6 @@ export const DefaultOptions = EnhancementShamanOptions.create({
 });
 
 export const OtherDefaults = {
-	duration: 180,
 	distanceFromTarget: 5,
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
