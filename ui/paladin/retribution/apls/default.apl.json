@@ -213,20 +213,7 @@
 		{ "action": { "condition": { "auraIsActive": { "auraId": { "spellId": 59578 } } }, "castSpell": { "spellId": { "spellId": 879 } } } },
 		{
 			"action": {
-				"condition": {
-					"and": {
-						"vals": [
-							{ "cmp": { "op": "OpEq", "lhs": { "currentHolyPower": {} }, "rhs": { "const": { "val": "3" } } } },
-							{
-								"cmp": {
-									"op": "OpGe",
-									"lhs": { "spellTimeToReady": { "spellId": { "spellId": 35395 } } },
-									"rhs": { "const": { "val": "1.25s" } }
-								}
-							}
-						]
-					}
-				},
+				"condition": { "cmp": { "op": "OpEq", "lhs": { "currentHolyPower": {} }, "rhs": { "const": { "val": "3" } } } },
 				"castSpell": { "spellId": { "spellId": 85256 } }
 			}
 		},
