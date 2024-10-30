@@ -1,7 +1,6 @@
 package demonology
 
 import (
-	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -23,10 +22,10 @@ func (demonology *DemonologyWarlock) registerMetamorphosis() {
 		ActionID: core.ActionID{SpellID: 59672},
 		Duration: (30 + glyphBonus) * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			metaDmgMod = 1.2 + math.Floor(18.4+2.3*demonology.GetMasteryPoints())/100.0
+			metaDmgMod = 1.2 + 0.184 + 0.023*demonology.GetMasteryPoints()
 			if sim.CurrentTime <= 0 && demonology.prepullMastery > 0 {
 				masteryPoints := core.MasteryRatingToMasteryPoints(float64(demonology.prepullMastery))
-				metaDmgMod = 1.2 + math.Floor(18.4+2.3*masteryPoints)/100.0
+				metaDmgMod = 1.2 + 0.184 + 0.023*masteryPoints
 
 				if demonology.prepullPostSnapshotMana > 0 {
 					prepullPostSnapshotManaMetric := demonology.NewManaMetrics(core.ActionID{OtherID: proto.OtherAction_OtherActionPrepull})
