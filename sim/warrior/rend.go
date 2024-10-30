@@ -45,7 +45,11 @@ func (warrior *Warrior) RegisterRendSpell() {
 			NumberOfTicks: dotTicks,
 			TickLength:    time.Second * 3,
 
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				if isRollover {
+					return
+				}
+
 				weaponMH := warrior.AutoAttacks.MH()
 				avgMHDamage := weaponMH.CalculateAverageWeaponDamage(dot.Spell.MeleeAttackPower())
 
