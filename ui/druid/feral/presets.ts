@@ -36,17 +36,17 @@ export const BEARWEAVE_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Bear-Weave',
 	Stats.fromMap(
 		{
-			[Stat.StatStrength]: 0.39,
+			[Stat.StatStrength]: 0.38,
 			[Stat.StatAgility]: 1.0,
 			[Stat.StatAttackPower]: 0.37,
-			[Stat.StatHitRating]: 0.34,
-			[Stat.StatExpertiseRating]: 0.32,
-			[Stat.StatCritRating]: 0.31,
+			[Stat.StatHitRating]: 0.36,
+			[Stat.StatExpertiseRating]: 0.34,
+			[Stat.StatCritRating]: 0.32,
 			[Stat.StatHasteRating]: 0.30,
-			[Stat.StatMasteryRating]: 0.325,
+			[Stat.StatMasteryRating]: 0.33,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 1.61,
+			[PseudoStat.PseudoStatMainHandDps]: 1.54,
 		},
 	),
 );
