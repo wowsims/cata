@@ -157,8 +157,6 @@ export const DefaultConsumes = Consumes.create({
 
 export const OtherDefaults = {
 	distanceFromTarget: 25,
-	duration: 240,
-	durationVariation: 15,
 	highHpThreshold: 0.8,
 	iterationCount: 25000,
 	profession1: Profession.Engineering,

@@ -102,6 +102,4 @@ export const DefaultConsumes = Consumes.create({
 
 export const OtherDefaults = {
 	distanceFromTarget: 5,
-	duration: 240,
-	durationVariation: 20,
 };

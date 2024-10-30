@@ -146,8 +146,6 @@ export const OtherDefaults = {
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
 	channelClipDelay: 150,
-	duration: 180,
-	durationVariation: 30,
 	darkIntentUptime: 90,
 };
 
