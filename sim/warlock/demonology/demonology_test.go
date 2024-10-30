@@ -75,7 +75,9 @@ var defStats = stats.Stats{
 	stats.SpellHitPercent:  17,
 	stats.SpellCritPercent: -100,
 	stats.SpellPower:       6343,
-	stats.MasteryRating:    1059,
+	// this was tested before Blizzard fixed mastery flooring, true mastery in these tests was 1059
+	// which was rounded down to 31%. So the "effective" mastery was ((31 / 2.3) - 8) * 179.280040
+	stats.MasteryRating: 982.1428278260872,
 }
 
 func (lock *DemonologyWarlock) checkSpell(t *testing.T, sim *core.Simulation, spell *core.Spell, expected float64,
