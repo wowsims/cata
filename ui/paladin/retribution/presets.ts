@@ -49,9 +49,6 @@ export const P2_EP_PRESET = PresetUtils.makePresetEpWeights(
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 8.26,
-
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 265.22,
-			[PseudoStat.PseudoStatSpellHitPercent]: 32.55,
 		},
 	),
 );
@@ -60,20 +57,17 @@ export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
 	Stats.fromMap(
 		{
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatStrength]: 2.3,
+			[Stat.StatStrength]: 2.29,
 
 			[Stat.StatCritRating]: 1.29,
-			[Stat.StatHasteRating]: 1.15,
-			[Stat.StatMasteryRating]: 1.4,
+			[Stat.StatHasteRating]: 1.05,
+			[Stat.StatMasteryRating]: 1.42,
 
-			[Stat.StatHitRating]: 2.68,
-			[Stat.StatExpertiseRating]: 2.24,
+			[Stat.StatHitRating]: 2.65,
+			[Stat.StatExpertiseRating]: 2.25,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 8.58,
-
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 306.86,
-			[PseudoStat.PseudoStatSpellHitPercent]: 31.87,
+			[PseudoStat.PseudoStatMainHandDps]: 8.75,
 		},
 	),
 );
@@ -83,28 +77,25 @@ export const P4_EP_PRESET = PresetUtils.makePresetEpWeights(
 	Stats.fromMap(
 		{
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatStrength]: 2.29,
+			[Stat.StatStrength]: 2.28,
 
-			[Stat.StatCritRating]: 1.52,
-			[Stat.StatHasteRating]: 1.04,
-			[Stat.StatMasteryRating]: 1.79,
+			[Stat.StatCritRating]: 1.51,
+			[Stat.StatHasteRating]: 1.23,
+			[Stat.StatMasteryRating]: 1.69,
 
-			[Stat.StatHitRating]: 3.26,
-			[Stat.StatExpertiseRating]: 2.55,
+			[Stat.StatHitRating]: 3.11,
+			[Stat.StatExpertiseRating]: 2.51,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 8.38,
-
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 363.57,
-			[PseudoStat.PseudoStatSpellHitPercent]: 49.58,
+			[PseudoStat.PseudoStatMainHandDps]: 8.10,
 		},
 	),
 );
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.
-export const P2_Talents = {
-	name: 'P2',
+export const P2_P4_Talents = {
+	name: 'P2 / P4',
 	data: SavedTalents.create({
 		talentsString: '203002-02-23203213211113002311',
 		glyphs: Glyphs.create({
@@ -121,8 +112,8 @@ export const P2_Talents = {
 	}),
 };
 
-export const P3_P4_Talents = {
-	name: 'P3 / P4',
+export const P3_Talents = {
+	name: 'P3',
 	data: SavedTalents.create({
 		talentsString: '203002-02-23203213211113002311',
 		glyphs: Glyphs.create({
@@ -142,21 +133,21 @@ export const P3_P4_Talents = {
 export const P2_PRESET = PresetUtils.makePresetBuild('P2', {
 	gear: P2_BIS_RET_PRESET,
 	epWeights: P2_EP_PRESET,
-	talents: P2_Talents,
+	talents: P2_P4_Talents,
 	rotationType: APLRotationType.TypeAuto,
 });
 
 export const P3_PRESET = PresetUtils.makePresetBuild('P3', {
 	gear: P3_BIS_RET_PRESET,
 	epWeights: P3_EP_PRESET,
-	talents: P3_P4_Talents,
+	talents: P3_Talents,
 	rotationType: APLRotationType.TypeAuto,
 });
 
 export const P4_PRESET = PresetUtils.makePresetBuild('P4', {
 	gear: P4_BIS_RET_PRESET,
 	epWeights: P4_EP_PRESET,
-	talents: P3_P4_Talents,
+	talents: P2_P4_Talents,
 	rotationType: APLRotationType.TypeAuto,
 });
 

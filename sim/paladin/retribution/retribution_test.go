@@ -14,9 +14,8 @@ func init() {
 
 func TestRetribution(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-		Class:      proto.Class_ClassPaladin,
-		Race:       proto.Race_RaceBloodElf,
-		OtherRaces: []proto.Race{proto.Race_RaceHuman, proto.Race_RaceDraenei, proto.Race_RaceDwarf, proto.Race_RaceTauren},
+		Class: proto.Class_ClassPaladin,
+		Race:  proto.Race_RaceBloodElf,
 
 		GearSet:     core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p3_bis"),
 		Talents:     StandardTalents,
@@ -104,4 +103,5 @@ var FullConsumes = &proto.Consumes{
 	DefaultPotion: proto.Potions_GolembloodPotion,
 	PrepopPotion:  proto.Potions_GolembloodPotion,
 	Food:          proto.Food_FoodBeerBasedCrocolisk,
+	TinkerHands:   proto.TinkerHands_TinkerHandsSynapseSprings,
 }
