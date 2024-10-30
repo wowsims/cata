@@ -61,7 +61,7 @@ func (warrior *Warrior) RegisterRendSpell() {
 			if result.Landed() {
 				dot := spell.Dot(target)
 
-				// Rend ticks once on application, including on refreshes
+				// Rend ticks once on application
 				dot.Apply(sim)
 				dot.TickOnce(sim)
 			} else {
