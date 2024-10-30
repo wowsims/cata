@@ -15,7 +15,7 @@ func init() {
 func TestGuardian(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
 		Class: proto.Class_ClassDruid,
-		Race:  proto.Race_RaceTauren,
+		Race:  proto.Race_RaceWorgen,
 
 		GearSet: core.GetGearSet("../../../ui/druid/guardian/gear_sets", "preraid"),
 		OtherGearSets: []core.GearSetCombo{

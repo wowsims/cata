@@ -1,6 +1,6 @@
 import * as Mechanics from '../../core/constants/mechanics.js';
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Conjured, Consumes, Flask, Food, Glyphs, Potions, PseudoStat, Spec, Stat, TinkerHands } from '../../core/proto/common';
+import { Conjured, Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Spec, Stat, TinkerHands } from '../../core/proto/common';
 import {
 	DruidMajorGlyph,
 	DruidMinorGlyph,
@@ -148,6 +148,8 @@ export const DefaultConsumes = Consumes.create({
 
 export const OtherDefaults = {
 	iterationCount: 50000,
+	profession1: Profession.Engineering,
+	profession2: Profession.ProfessionUnknown,
 };
 
 export const PRESET_BUILD_BOSS_DUMMY = PresetUtils.makePresetBuild('Single Target Dummy', {

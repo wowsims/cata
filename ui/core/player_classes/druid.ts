@@ -17,11 +17,11 @@ export class Druid extends PlayerClass<Class.ClassDruid> {
 
 	static races: Race[] = [
 		// [A]
-		Race.RaceNightElf,
 		Race.RaceWorgen,
+		Race.RaceNightElf,
 		// [H]
-		Race.RaceTauren,
 		Race.RaceTroll,
+		Race.RaceTauren,
 	];
 	static armorTypes: ArmorType[] = [ArmorType.ArmorTypeLeather, ArmorType.ArmorTypeCloth];
 	static weaponTypes: EligibleWeaponType[] = [

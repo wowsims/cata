@@ -532,7 +532,13 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 				this.player.setSoftCapBreakpoints(eventID, this.individualConfig.defaults.softCapBreakpoints);
 			this.player.setBreakpointLimits(eventID, new Stats());
 			this.player.setProfession1(eventID, this.individualConfig.defaults.other?.profession1 || Profession.Engineering);
-			this.player.setProfession2(eventID, this.individualConfig.defaults.other?.profession2 || Profession.Jewelcrafting);
+
+			if (this.individualConfig.defaults.other?.profession2 === undefined) {
+				this.player.setProfession2(eventID, Profession.Jewelcrafting);
+			} else {
+				this.player.setProfession2(eventID, this.individualConfig.defaults.other.profession2);
+			}
+
 			this.player.setDistanceFromTarget(eventID, this.individualConfig.defaults.other?.distanceFromTarget || 0);
 			this.player.setChannelClipDelay(eventID, this.individualConfig.defaults.other?.channelClipDelay || 0);
 			this.player.setDarkIntentUptime(eventID, this.individualConfig.defaults.other?.darkIntentUptime || 100);
