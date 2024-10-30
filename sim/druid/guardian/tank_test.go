@@ -19,7 +19,7 @@ func TestGuardian(t *testing.T) {
 
 		GearSet: core.GetGearSet("../../../ui/druid/guardian/gear_sets", "preraid"),
 		OtherGearSets: []core.GearSetCombo{
-			core.GetGearSet("../../../ui/druid/guardian/gear_sets", "p1"),
+			core.GetGearSet("../../../ui/druid/guardian/gear_sets", "p3"),
 		},
 
 		Talents:     StandardTalents,
