@@ -56,14 +56,6 @@ func (warlock *Warlock) ApplyGlyphs() {
 		})
 	}
 
-	if warlock.HasMajorGlyph(proto.WarlockMajorGlyph_GlyphOfFelhunter) {
-		warlock.Felhunter.AddStaticMod(core.SpellModConfig{
-			ClassMask:  WarlockSpellFelHunterShadowBite,
-			Kind:       core.SpellMod_DamageDone_Flat,
-			FloatValue: 0.2,
-		})
-	}
-
 	if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfBaneOfAgony) {
 		warlock.AddStaticMod(core.SpellModConfig{
 			ClassMask: WarlockSpellBaneOfAgony,
