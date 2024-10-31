@@ -365,8 +365,7 @@ enum StatCapType {
 	// thresholds due to in-game rounding effects etc., but where the
 	// average value of the stat from one breakpoint to the next does not
 	// vary significantly. The most relevant example in early Cata Classic
-	// is Mastery Rating for Affliction Warlock, Demonology Warlock,
-	// Arcane Mage, Fire Mage, and Balance Druid, which gets floored in-game
+	// is Mastery Rating for Demonology Warlock, which gets floored in-game
 	// to the nearest integer % damage threshold.
 	TypeThreshold = 3;
 }

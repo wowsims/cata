@@ -17,7 +17,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	cssClass: 'combat-rogue-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Rogue),
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: ['Mastery - Main Gauche is potentially rounded down to the closest whole number. You can enable "Show Experimental" via the gear button to optimize reforging for these breakpoints, but it will take significantly longer to complete.'],
+	knownIssues: [],
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -30,20 +30,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 		Stat.StatMasteryRating,
 		Stat.StatExpertiseRating,
 	],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatPhysicalHitPercent, PseudoStat.PseudoStatSpellHitPercent],
+	epPseudoStats: [
+		PseudoStat.PseudoStatMainHandDps,
+		PseudoStat.PseudoStatOffHandDps,
+		PseudoStat.PseudoStatPhysicalHitPercent,
+		PseudoStat.PseudoStatSpellHitPercent,
+	],
 	// Reference stat against which to calculate EP.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[
-			Stat.StatHealth,
-			Stat.StatStamina,
-			Stat.StatAgility,
-			Stat.StatStrength,
-			Stat.StatAttackPower,
-			Stat.StatMasteryRating,
-			Stat.StatExpertiseRating,
-		],
+		[Stat.StatHealth, Stat.StatStamina, Stat.StatAgility, Stat.StatStrength, Stat.StatAttackPower, Stat.StatMasteryRating, Stat.StatExpertiseRating],
 		[
 			PseudoStat.PseudoStatPhysicalHitPercent,
 			PseudoStat.PseudoStatSpellHitPercent,
@@ -82,11 +79,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 				capType: StatCapType.TypeSoftCap,
 				// These are set by the active EP weight in the updateSoftCaps callback
 				postCapEPs: [0, 0, 0],
-			})
+			});
 
 			return [meleeHitSoftCapConfig, spellHitSoftCapConfig, hasteRatingSoftCapConfig];
 		})(),
-    	other: Presets.OtherDefaults,
+		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -194,30 +191,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	],
 });
 
-const getMasterySoftCapConfig = (): StatCap => {
-	const masteryRatingBreakpoints = [];
-	const masteryPercentPerPoint = Mechanics.masteryPercentPerPoint.get(Spec.SpecCombatRogue)!;
-	for (let masteryPercent = 16; masteryPercent <= 200; masteryPercent++) {
-		masteryRatingBreakpoints.push((masteryPercent / masteryPercentPerPoint) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
-	}
-
-	return StatCap.fromStat(Stat.StatMasteryRating, {
-		breakpoints: masteryRatingBreakpoints,
-		capType: StatCapType.TypeThreshold,
-		postCapEPs: [0],
-	});
-}
-
-const addOrRemoveMasteryBreakpoint = (softCaps: StatCap[], isShown: boolean): void => {
-	if (isShown == true) {
-		softCaps.push(getMasterySoftCapConfig());
-	}
-	else
-	{
-		softCaps.splice(3, 1);
-	}
-}
-
 export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecCombatRogue>) {
 		super(parentElem, player, SPEC_CONFIG);
@@ -225,15 +198,14 @@ export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
 				updateSoftCaps: (softCaps: StatCap[]) => {
-					const hasteEP = player.getEpWeights().getStat(Stat.StatHasteRating)
-					const hasteSoftCap = softCaps.find(v => v.unitStat.equalsStat(Stat.StatHasteRating))
+					const hasteEP = player.getEpWeights().getStat(Stat.StatHasteRating);
+					const hasteSoftCap = softCaps.find(v => v.unitStat.equalsStat(Stat.StatHasteRating));
 					if (hasteSoftCap) {
-						hasteSoftCap.postCapEPs = [hasteEP - 0.1, hasteEP - 0.2, hasteEP - 0.3]
+						hasteSoftCap.postCapEPs = [hasteEP - 0.1, hasteEP - 0.2, hasteEP - 0.3];
 					}
 
-					addOrRemoveMasteryBreakpoint(softCaps, this.sim.getShowExperimental())
-					return softCaps
-				}
+					return softCaps;
+				},
 			});
 		});
 

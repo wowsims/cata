@@ -2,7 +2,6 @@ package druid
 
 import (
 	"fmt"
-	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -62,7 +61,7 @@ func (druid *Druid) EnableEclipseBar() {
 }
 
 func getEclipseMasteryBonus(masteryPoints float64) float64 {
-	return math.Floor(16+masteryPoints*2) / 100
+	return (16 + masteryPoints*2) / 100
 }
 
 func (druid *Druid) RegisterEclipseAuras() {

@@ -14,7 +14,6 @@ import * as RogueInputs from '../inputs';
 import * as SubInputs from './inputs';
 import * as Presets from './presets';
 
-
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 	cssClass: 'subtlety-rogue-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Rogue),
@@ -32,20 +31,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		Stat.StatMasteryRating,
 		Stat.StatExpertiseRating,
 	],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatPhysicalHitPercent, PseudoStat.PseudoStatSpellHitPercent],
+	epPseudoStats: [
+		PseudoStat.PseudoStatMainHandDps,
+		PseudoStat.PseudoStatOffHandDps,
+		PseudoStat.PseudoStatPhysicalHitPercent,
+		PseudoStat.PseudoStatSpellHitPercent,
+	],
 	// Reference stat against which to calculate EP.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[
-			Stat.StatHealth,
-			Stat.StatStamina,
-			Stat.StatAgility,
-			Stat.StatStrength,
-			Stat.StatAttackPower,
-			Stat.StatMasteryRating,
-			Stat.StatExpertiseRating,
-		],
+		[Stat.StatHealth, Stat.StatStamina, Stat.StatAgility, Stat.StatStrength, Stat.StatAttackPower, Stat.StatMasteryRating, Stat.StatExpertiseRating],
 		[
 			PseudoStat.PseudoStatPhysicalHitPercent,
 			PseudoStat.PseudoStatSpellHitPercent,
@@ -78,21 +74,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 				postCapEPs: [98.02, 0],
 			});
 
-			const masteryRatingBreakpoints = [];
-			const masteryPercentPerPoint = Mechanics.masteryPercentPerPoint.get(Spec.SpecSubtletyRogue)!;
-			for (let masteryPercent = 20; masteryPercent <= 200; masteryPercent++) {
-				masteryRatingBreakpoints.push((masteryPercent / masteryPercentPerPoint) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
-			}
-
-			const masterySoftCapConfig = StatCap.fromStat(Stat.StatMasteryRating, {
-				breakpoints: masteryRatingBreakpoints,
-				capType: StatCapType.TypeThreshold,
-				postCapEPs: [0],
-			});
-
-			return [meleeHitSoftCapConfig, spellHitSoftCapConfig, masterySoftCapConfig];
+			return [meleeHitSoftCapConfig, spellHitSoftCapConfig];
 		})(),
-    	other: Presets.OtherDefaults,
+		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
