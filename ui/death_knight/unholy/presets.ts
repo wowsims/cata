@@ -1,10 +1,10 @@
 import * as PresetUtils from '../../core/preset_utils';
+import { APLRotation_Type as APLRotationType } from '../../core/proto/apl.js';
 import { Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Stat, TinkerHands, UnitReference } from '../../core/proto/common';
 import { DeathKnightMajorGlyph, DeathKnightMinorGlyph, DeathKnightPrimeGlyph, UnholyDeathKnight_Options } from '../../core/proto/death_knight';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from '../../death_knight/unholy/apls/default.apl.json';
-import SolaceApl from '../../death_knight/unholy/apls/solace.apl.json';
 import P2BISGear from '../../death_knight/unholy/gear_sets/p2.bis.gear.json';
 import P3BISGear from '../../death_knight/unholy/gear_sets/p3.bis.gear.json';
 import PreBISGear from '../../death_knight/unholy/gear_sets/prebis.gear.json';
@@ -17,7 +17,6 @@ export const P2_BIS_GEAR_PRESET = PresetUtils.makePresetGear('P2 - BIS', P2BISGe
 export const P3_BIS_GEAR_PRESET = PresetUtils.makePresetGear('P3 - BIS', P3BISGear);
 
 export const DEFAULT_ROTATION_PRESET = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
-export const SOLACE_SNAPSHOT_ROTATION_PRESET = PresetUtils.makePresetAPLRotation('Solace Snapshot', SolaceApl);
 
 // Preset options for EP weights
 export const P2_UNHOLY_EP_PRESET = PresetUtils.makePresetEpWeights(
@@ -43,19 +42,17 @@ export const P3_UNHOLY_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'P3',
 	Stats.fromMap(
 		{
-			[Stat.StatStrength]: 4.28,
+			[Stat.StatStrength]: 4.29,
 			[Stat.StatArmor]: 0.03,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatExpertiseRating]: 1.03,
-			[Stat.StatHasteRating]: 2.38,
-			[Stat.StatHitRating]: 2.62,
+			[Stat.StatExpertiseRating]: 1.13,
+			[Stat.StatHasteRating]: 2.40,
+			[Stat.StatHitRating]: 2.61,
 			[Stat.StatCritRating]: 2.33,
 			[Stat.StatMasteryRating]: 1.87,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 6.40,
-			[PseudoStat.PseudoStatSpellHitPercent]: 156.60,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 320.54,
+			[PseudoStat.PseudoStatMainHandDps]: 6.39,
 		},
 	),
 );
@@ -84,16 +81,19 @@ export const DefaultTalents = {
 export const PREBIS_PRESET = PresetUtils.makePresetBuild('Pre-bis', {
 	gear: PREBIS_GEAR_PRESET,
 	epWeights: P2_UNHOLY_EP_PRESET,
+	rotationType: APLRotationType.TypeAuto,
 })
 
 export const P2_PRESET = PresetUtils.makePresetBuild('P2', {
 	gear: P2_BIS_GEAR_PRESET,
 	epWeights: P2_UNHOLY_EP_PRESET,
+	rotationType: APLRotationType.TypeAuto,
 })
 
 export const P3_PRESET = PresetUtils.makePresetBuild('P3', {
 	gear: P3_BIS_GEAR_PRESET,
 	epWeights: P3_UNHOLY_EP_PRESET,
+	rotationType: APLRotationType.TypeAuto,
 })
 
 export const DefaultOptions = UnholyDeathKnight_Options.create({
