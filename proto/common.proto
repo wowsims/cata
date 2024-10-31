@@ -785,9 +785,13 @@ message Target {
 	bool suppress_dodge = 16; // Sunwell Radiance
 	SpellSchool spell_school = 13; // Allows elemental attacks.
 
-	// Index in Raid.tanks indicating the player tanking this mob.
+	// Index in Raid.tanks indicating the player tanking this mob at the
+	// start of each pull.
 	// -1 or invalid index indicates not being tanked.
 	int32 tank_index = 6;
+
+	// Used in tank swap AIs.
+	int32 second_tank_index = 100;
 
 	// Custom Target AI parameters
 	repeated TargetInput target_inputs = 18;

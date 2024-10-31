@@ -103,7 +103,7 @@ var ChanceOfDeathAuraLabel = "Chance of Death"
 func (character *Character) trackChanceOfDeath(healingModel *proto.HealingModel) {
 	character.Unit.Metrics.isTanking = false
 	for _, target := range character.Env.Encounter.TargetUnits {
-		if target.CurrentTarget == &character.Unit {
+		if (target.CurrentTarget == &character.Unit) || (target.SecondaryTarget == &character.Unit) {
 			character.Unit.Metrics.isTanking = true
 		}
 	}
