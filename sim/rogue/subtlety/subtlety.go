@@ -1,8 +1,6 @@
 package subtlety
 
 import (
-	"math"
-
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -11,7 +9,6 @@ import (
 
 const masteryDamagePerPoint = .025
 const masteryBaseEffect = 0.2
-const masteryFloored = true // Toggled locally for stat weight calculations
 
 func RegisterSubtletyRogue() {
 	core.RegisterAgentFactory(
@@ -69,11 +66,7 @@ func (subRogue *SubtletyRogue) Initialize() {
 }
 
 func getMasteryBonus(masteryRating float64) float64 {
-	var effect = masteryBaseEffect + core.MasteryRatingToMasteryPoints(masteryRating)*masteryDamagePerPoint
-	if masteryFloored {
-		return math.Floor(effect*100) / 100
-	}
-	return effect
+	return masteryBaseEffect + core.MasteryRatingToMasteryPoints(masteryRating)*masteryDamagePerPoint
 }
 
 func NewSubtletyRogue(character *core.Character, options *proto.Player) *SubtletyRogue {

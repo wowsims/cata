@@ -1,8 +1,6 @@
 package fire
 
 import (
-	"math"
-
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/mage"
@@ -55,7 +53,7 @@ func (fireMage *FireMage) Initialize() {
 }
 
 func (fireMage *FireMage) GetMasteryBonus() float64 {
-	return math.Floor(22.4+2.8*fireMage.GetMasteryPoints()) / 100
+	return (22.4 + 2.8*fireMage.GetMasteryPoints()) / 100
 }
 
 func (fireMage *FireMage) ApplyTalents() {

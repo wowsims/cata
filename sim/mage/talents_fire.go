@@ -1,7 +1,6 @@
 package mage
 
 import (
-	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/common/cata"
@@ -360,7 +359,7 @@ func (mage *Mage) applyIgnite() {
 		},
 
 		DamageCalculator: func(result *core.SpellResult) float64 {
-			var masteryMultiplier float64 = 1 + math.Floor(22.4+2.8*mage.GetMasteryPoints())/100
+			var masteryMultiplier float64 = 1 + (22.4+2.8*mage.GetMasteryPoints())/100
 			return result.Damage * igniteDamageMultiplier * masteryMultiplier
 		},
 	})

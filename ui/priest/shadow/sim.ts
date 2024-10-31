@@ -7,8 +7,7 @@ import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Faction, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
-import { StatCapType } from '../../core/proto/ui';
-import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
+import { Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as PriestInputs from '../inputs';
 // import * as ShadowPriestInputs from './inputs';
 import * as Presets from './presets';
@@ -49,25 +48,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		statCaps: (() => {
 			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 17);
-		})(),
-		// Default soft caps for the Reforge optimizer
-		softCapBreakpoints: (() => {
-			// Set up Mastery breakpoints for integer % damage increments.
-			// These should be removed once the bugfix to make Mastery
-			// continuous goes live!
-			const masteryRatingBreakpoints = [];
-			const masteryPercentPerPoint = Mechanics.masteryPercentPerPoint.get(Spec.SpecShadowPriest)!;
-			for (let masteryPercent = 12; masteryPercent <= 200; masteryPercent++) {
-				masteryRatingBreakpoints.push((masteryPercent / masteryPercentPerPoint) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
-			}
-
-			const masterySoftCapConfig = StatCap.fromStat(Stat.StatMasteryRating, {
-				breakpoints: masteryRatingBreakpoints,
-				capType: StatCapType.TypeThreshold,
-				postCapEPs: [0],
-			});
-
-			return [masterySoftCapConfig];
 		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,

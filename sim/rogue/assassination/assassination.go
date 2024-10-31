@@ -1,8 +1,6 @@
 package assassination
 
 import (
-	"math"
-
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -11,7 +9,6 @@ import (
 
 const masteryDamagePerPoint = 0.035
 const masteryBaseEffect = 0.28
-const masteryFloored = true // Toggled locally for stat weight calculations
 
 func RegisterAssassinationRogue() {
 	core.RegisterAgentFactory(
@@ -84,11 +81,7 @@ func (sinRogue *AssassinationRogue) Initialize() {
 }
 
 func getMasteryBonus(masteryRating float64) float64 {
-	var effect = masteryBaseEffect + core.MasteryRatingToMasteryPoints(masteryRating)*masteryDamagePerPoint
-	if masteryFloored {
-		return math.Floor(effect*100) / 100
-	}
-	return effect
+	return masteryBaseEffect + core.MasteryRatingToMasteryPoints(masteryRating)*masteryDamagePerPoint
 }
 
 func NewAssassinationRogue(character *core.Character, options *proto.Player) *AssassinationRogue {

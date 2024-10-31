@@ -42,15 +42,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		})(),
 		// Default soft caps for the Reforge optimizer
 		softCapBreakpoints: (() => {
-			// Set up Mastery breakpoints for integer % damage increments.
-			// These should be removed once the bugfix to make Mastery
-			// continuous goes live!
-			const masterySoftCapConfig = StatCap.fromStat(Stat.StatMasteryRating, {
-				breakpoints: [(23 / Mechanics.masteryPercentPerPoint.get(Spec.SpecFireMage)!) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT],
-				capType: StatCapType.TypeThreshold,
-				postCapEPs: [0],
-			});
-
 			const hasteSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent, {
 				breakpoints: [
 					hasteBreakpoints.get('5-tick - LvB/Pyro')!,
@@ -72,7 +63,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 				postCapEPs: [0.61 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
 			});
 
-			return [masterySoftCapConfig, hasteSoftCapConfig];
+			return [hasteSoftCapConfig];
 		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultFireConsumes,
