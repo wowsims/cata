@@ -38,15 +38,16 @@ const TENTATIVE_IMPLEMENTATION_WARNING = (
 	</>
 );
 
-const ITEM_DOESNT_EXIST_WARNING = <>
-	<p>
-		This item never existed in the original game, therefore any effects or procs it might have are not implemented.
-	</p>
-	<p>
-		Once we get a clear indication from Blizzard whether they decide to include it or not, we will either implement it and remove this notice or remove the item entirely.
-	</p>
-	<WantToHelpMessage />
-</>;
+const ITEM_DOESNT_EXIST_WARNING = (
+	<>
+		<p>This item never existed in the original game, therefore any effects or procs it might have are not implemented.</p>
+		<p>
+			Once we get a clear indication from Blizzard whether they decide to include it or not, we will either implement it and remove this notice or remove
+			the item entirely.
+		</p>
+		<WantToHelpMessage />
+	</>
+);
 
 const NON_EXISTING_ITEMS = [
 	// Rotting Skull - 384, 410
@@ -242,10 +243,12 @@ export const GENERIC_MISSING_SET_BONUS_NOTICE_DATA = new Map<number, string>([
 export const SET_BONUS_NOTICES = new Map<number, SetBonusNoticeData>([
 	// Custom notices
 	[
-		1008, // Warlock T12
+		1016, // Shaman T12
 		new Map<number, string>([
-			[2, 'Requires PTR testing to confirm exact pet behaviour & stats'],
-			[4, 'Exact proc behaviour may vary, needs PTR testing to confirm'],
+			[
+				2,
+				'Requires testing to confirm exact proc behaviour for the 4.2 effect: Your damaging spells have a chance to reset the remaining cooldown on your Fire Elemental Totem.',
+			],
 		]),
 	],
 

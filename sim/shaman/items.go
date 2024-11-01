@@ -99,19 +99,38 @@ var ItemSetVolcanicRegalia = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
-			shaman.RegisterAura(core.Aura{
-				Label:    "Volcanic Regalia 2P",
-				Duration: core.NeverExpires,
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Activate(sim)
-				},
-				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell.ClassSpellMask != SpellMaskLightningBolt || !sim.Proc(0.3, "Volcanic Regalia 2P") || shaman.FireElementalTotem == nil {
-						return
-					}
-					shaman.FireElementalTotem.CD.Reduce(4 * time.Second)
-				},
-			})
+
+			if shaman.useDragonSoul_2PT12 {
+				shaman.RegisterAura(core.Aura{
+					Label:    "Volcanic Regalia 2P",
+					Duration: core.NeverExpires,
+					OnReset: func(aura *core.Aura, sim *core.Simulation) {
+						aura.Activate(sim)
+					},
+					OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+						if spell.ClassSpellMask != SpellMaskLightningBolt || !sim.Proc(0.3, "Volcanic Regalia 2P") || shaman.FireElementalTotem == nil {
+							return
+						}
+						shaman.FireElementalTotem.CD.Reduce(4 * time.Second)
+					},
+				})
+			} else {
+				core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+					Name:       "Volcanic Regalia 2P",
+					Callback:   core.CallbackOnSpellHitDealt,
+					ProcMask:   core.ProcMaskSpellDamage,
+					Outcome:    core.OutcomeLanded,
+					ProcChance: 0.08,
+					ICD:        time.Second * 105,
+					ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
+						return !spell.Matches(SpellMaskOverload)
+					},
+					Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+						shaman.FireElementalTotem.CD.Reset()
+					},
+				})
+			}
+
 		},
 		4: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()

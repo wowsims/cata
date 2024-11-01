@@ -40,7 +40,7 @@ func NewElementalShaman(character *core.Character, options *proto.Player) *Eleme
 
 	inRange := eleOptions.ThunderstormRange == proto.ElementalShaman_Options_TSInRange
 	ele := &ElementalShaman{
-		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, inRange),
+		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, inRange, eleOptions.ClassOptions.UseDragonSoul_2PT12),
 	}
 
 	if mh := ele.GetMHWeapon(); mh != nil {
@@ -92,6 +92,7 @@ func (ele *ElementalShaman) ApplyTalents() {
 
 type ElementalShaman struct {
 	*shaman.Shaman
+	useDragonSoul_2PT12 bool
 }
 
 func (eleShaman *ElementalShaman) GetShaman() *shaman.Shaman {
