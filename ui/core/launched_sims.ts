@@ -138,28 +138,28 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 	},
 	// Warlock
 	[Spec.SpecAfflictionWarlock]: {
-		phase: Phase.Phase2,
+		phase: Phase.Phase3,
 		status: LaunchStatus.Launched,
 	},
 	[Spec.SpecDemonologyWarlock]: {
-		phase: Phase.Phase2,
+		phase: Phase.Phase3,
 		status: LaunchStatus.Launched,
 	},
 	[Spec.SpecDestructionWarlock]: {
-		phase: Phase.Phase2,
+		phase: Phase.Phase3,
 		status: LaunchStatus.Launched,
 	},
 	// Warrior
 	[Spec.SpecArmsWarrior]: {
-		phase: Phase.Phase2,
+		phase: Phase.Phase3,
 		status: LaunchStatus.Launched,
 	},
 	[Spec.SpecFuryWarrior]: {
-		phase: Phase.Phase2,
+		phase: Phase.Phase3,
 		status: LaunchStatus.Launched,
 	},
 	[Spec.SpecProtectionWarrior]: {
-		phase: Phase.Phase2,
+		phase: Phase.Phase3,
 		status: LaunchStatus.Launched,
 	},
 };
