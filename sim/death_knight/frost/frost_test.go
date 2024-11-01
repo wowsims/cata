@@ -16,7 +16,7 @@ func TestFrost(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
 		Class:      proto.Class_ClassDeathKnight,
 		Race:       proto.Race_RaceOrc,
-		OtherRaces: []proto.Race{proto.Race_RaceHuman},
+		OtherRaces: []proto.Race{proto.Race_RaceWorgen},
 
 		GearSet: core.GetGearSet("../../../ui/death_knight/frost/gear_sets", "p3.masterfrost"),
 		Talents: MasterfrostTalents,
@@ -36,16 +36,12 @@ func TestFrost(t *testing.T) {
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsFrost},
 		Rotation:    core.GetAplRotation("../../../ui/death_knight/frost/apls", "masterfrost"),
-		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../../ui/death_knight/frost/apls", "2h"),
-			core.GetAplRotation("../../../ui/death_knight/frost/apls", "dw"),
-		},
 
 		ItemFilter: ItemFilter,
 	}))
 }
 
-var DualWieldTalents = "103-32030022233112012031-033"
+var DualWieldTalents = "2032-20330022233112012301-003"
 var TwoHandTalents = "103-32030022233112012031-033"
 var MasterfrostTalents = "2032-20330022233112012301-03"
 
@@ -74,11 +70,18 @@ var FullConsumes = &proto.Consumes{
 	DefaultPotion: proto.Potions_GolembloodPotion,
 	PrepopPotion:  proto.Potions_GolembloodPotion,
 	Food:          proto.Food_FoodBeerBasedCrocolisk,
+	TinkerHands:   proto.TinkerHands_TinkerHandsSynapseSprings,
 }
 
 var ItemFilter = core.ItemFilter{
 	ArmorType: proto.ArmorType_ArmorTypePlate,
 
+	HandTypes: []proto.HandType{
+		proto.HandType_HandTypeMainHand,
+		proto.HandType_HandTypeOffHand,
+		proto.HandType_HandTypeOneHand,
+		proto.HandType_HandTypeTwoHand,
+	},
 	WeaponTypes: []proto.WeaponType{
 		proto.WeaponType_WeaponTypeAxe,
 		proto.WeaponType_WeaponTypeSword,
