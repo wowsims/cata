@@ -37,7 +37,7 @@ func NewRestorationShaman(character *core.Character, options *proto.Player) *Res
 	}
 
 	resto := &RestorationShaman{
-		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, false),
+		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, false, restoOptions.ClassOptions.UseDragonSoul_2PT12),
 	}
 
 	if resto.HasMHWeapon() {
