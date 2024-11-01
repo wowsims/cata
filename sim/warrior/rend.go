@@ -45,7 +45,11 @@ func (warrior *Warrior) RegisterRendSpell() {
 			NumberOfTicks: dotTicks,
 			TickLength:    time.Second * 3,
 
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				if isRollover {
+					return
+				}
+
 				weaponMH := warrior.AutoAttacks.MH()
 				avgMHDamage := weaponMH.CalculateAverageWeaponDamage(dot.Spell.MeleeAttackPower())
 
@@ -61,7 +65,7 @@ func (warrior *Warrior) RegisterRendSpell() {
 			if result.Landed() {
 				dot := spell.Dot(target)
 
-				// Rend ticks once on application, including on refreshes
+				// Rend ticks once on application
 				dot.Apply(sim)
 				dot.TickOnce(sim)
 			} else {
