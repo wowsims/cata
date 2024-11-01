@@ -214,6 +214,7 @@ message ShamanOptions {
 	ShamanTotems totems = 2;
 	CallTotem call = 3;
 	ShamanImbue imbue_mh = 4;
+	bool use_dragon_soul_2PT12 = 5;
 }
 
 message ElementalShaman {

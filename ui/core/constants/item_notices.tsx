@@ -38,91 +38,18 @@ const TENTATIVE_IMPLEMENTATION_WARNING = (
 	</>
 );
 
-const ITEM_DOESNT_EXIST_WARNING = <>
-	<p>
-		This item never existed in the original game, therefore any effects or procs it might have are not implemented.
-	</p>
-	<p>
-		Once we get a clear indication from Blizzard whether they decide to include it or not, we will either implement it and remove this notice or remove the item entirely.
-	</p>
-	<WantToHelpMessage />
-</>;
+const ITEM_DOESNT_EXIST_WARNING = (
+	<>
+		<p>This item never existed in the original game, therefore any effects or procs it might have are not implemented.</p>
+		<p>
+			Once we get a clear indication from Blizzard whether they decide to include it or not, we will either implement it and remove this notice or remove
+			the item entirely.
+		</p>
+		<WantToHelpMessage />
+	</>
+);
 
 const NON_EXISTING_ITEMS = [
-	// Rune of Zeth - 391
-	69185,
-	// Bladed Flamewrath Cover - 391
-	71391,
-	// Sleek Flamewrath Cloak - 391
-	71388,
-	// Cinch of the Flaming Ember - 391
-	71399,
-	// Fiery Quintessence - 391
-	69198,
-	// Rippling Flamewrath Drape - 391
-	71389,
-	// Ancient Petrified Seed - 391
-	69199,
-	// Essence of the Eternal Flame - 391
-	69200,
-	// Flowing Flamewrath Cape - 391
-	71390,
-	// Firemend Cinch - 391
-	71397,
-	// Stay of Execution - 391
-	69184,
-	// Durable Flamewrath Greatcloak - 391
-	71392,
-	// Embereye Belt - 391
-	71393,
-	// Flamebinding Girdle - 391
-	71394,
-	// Firearrow Belt - 391
-	71396,
-	// Firescar Sash - 391
-	71395,
-	// Girdle of the Indomitable Flame - 391
-	71400,
-	// Belt of the Seven Seals - 391
-	71398,
-	// Gigantiform Bracers, - 391
-	71584,
-	// Bracers of Forked Lightning, - 391
-	71570,
-	// Bracers of Misting Ash, - 391
-	71582,
-	// Flamebinder Bracers, - 391
-	71569,
-	// Firesoul Wristguards, - 391
-	71572,
-	// Emberflame Bracers, - 391
-	71571,
-	// Bracers of Regal Force, - 391
-	71585,
-	// Smolderskull Bindings, - 391
-	71581,
-	// Bracers of Imperious Truths - 391
-	71583,
-	// Crystalline Brimstone Ring - 391
-	71574,
-	// Soothing Brimstone Circle - 391
-	71578,
-	// Splintered Brimstone Seal - 391
-	71566,
-	// Serrated Brimstone Signet - 391
-	71588,
-	// Deflecting Brimstone Band - 391
-	71591,
-	// Necklace of Smoke Signals - 391
-	71565,
-	// Stoneheart Necklace - 391
-	71589,
-	// Stoneheart Choker - 391
-	71586,
-	// Amulet of Burning Brilliance - 391
-	71573,
-	// Firemind Pendant - 391
-	71576,
 	// Rotting Skull - 384, 410
 	77987, 78007,
 	// Kiroptyric Sigil - 384, 410
@@ -135,7 +62,7 @@ const NON_EXISTING_ITEMS = [
 	77985, 78005,
 ];
 
-const WILL_NOT_BE_IMPLEMENTED_WARNING = <>The equip/use effect on this item is will not be implemented!</>;
+const WILL_NOT_BE_IMPLEMENTED_WARNING = <>The equip/use effect on this item will not be implemented!</>;
 
 const WILL_NOT_BE_IMPLEMENTED_ITEMS = [
 	// Eye of Blazing Power - Normal, Heroic
@@ -314,6 +241,17 @@ export const GENERIC_MISSING_SET_BONUS_NOTICE_DATA = new Map<number, string>([
 ]);
 
 export const SET_BONUS_NOTICES = new Map<number, SetBonusNoticeData>([
+	// Custom notices
+	[
+		1016, // Shaman T12
+		new Map<number, string>([
+			[
+				2,
+				'Requires testing to confirm exact proc behaviour for the 4.2 effect: Your damaging spells have a chance to reset the remaining cooldown on your Fire Elemental Totem.',
+			],
+		]),
+	],
+
 	// Generic "not yet implemented" notices
 	[1058, null], // Feral T13
 ]);

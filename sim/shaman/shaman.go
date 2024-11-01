@@ -28,7 +28,7 @@ const (
 	SpellFlagFocusable = core.SpellFlagAgentReserved4
 )
 
-func NewShaman(character *core.Character, talents string, totems *proto.ShamanTotems, selfBuffs SelfBuffs, thunderstormRange bool) *Shaman {
+func NewShaman(character *core.Character, talents string, totems *proto.ShamanTotems, selfBuffs SelfBuffs, thunderstormRange bool, useDragonSoul_2PT12 bool) *Shaman {
 	shaman := &Shaman{
 		Character:           *character,
 		Talents:             &proto.ShamanTalents{},
@@ -39,6 +39,7 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 		SelfBuffs:           selfBuffs,
 		ThunderstormInRange: thunderstormRange,
 		ClassSpellScaling:   core.GetClassSpellScalingCoefficient(proto.Class_ClassShaman),
+		useDragonSoul_2PT12: useDragonSoul_2PT12,
 	}
 	// shaman.waterShieldManaMetrics = shaman.NewManaMetrics(core.ActionID{SpellID: 57960})
 
@@ -64,6 +65,7 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 
 	shaman.FireElemental = shaman.NewFireElemental(float64(totems.BonusSpellpower))
 	shaman.EarthElemental = shaman.NewEarthElemental(float64(totems.BonusSpellpower))
+
 	return shaman
 }
 
@@ -171,6 +173,8 @@ type Shaman struct {
 	waterShieldManaMetrics *core.ResourceMetrics
 
 	VolcanicRegalia4PT12Aura *core.Aura
+
+	useDragonSoul_2PT12 bool
 }
 
 // Implemented by each Shaman spec.
