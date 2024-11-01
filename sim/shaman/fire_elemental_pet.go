@@ -154,15 +154,17 @@ var fireElementalPetBaseStats = stats.Stats{
 	stats.SpellCritPercent:    6.8,
 }
 
+var FireElementalSpellPowerScaling = 0.5883
+
 func (shaman *Shaman) fireElementalStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
 		ownerSpellHitPercent := ownerStats[stats.SpellHitPercent]
 
 		return stats.Stats{
-			stats.Stamina:     ownerStats[stats.Stamina] * 0.80,      //Estimated from beta testing
-			stats.Intellect:   ownerStats[stats.Intellect] * 0.3198,  //Estimated from beta testing
-			stats.SpellPower:  ownerStats[stats.SpellPower] * 0.5883, //Estimated from beta testing
-			stats.AttackPower: ownerStats[stats.SpellPower] * 4.9,    // 0.7*7 Estimated from beta testing
+			stats.Stamina:     ownerStats[stats.Stamina] * 0.80,                              //Estimated from beta testing
+			stats.Intellect:   ownerStats[stats.Intellect] * 0.3198,                          //Estimated from beta testing
+			stats.SpellPower:  ownerStats[stats.SpellPower] * FireElementalSpellPowerScaling, //Estimated from beta testing
+			stats.AttackPower: ownerStats[stats.SpellPower] * 4.9,                            // 0.7*7 Estimated from beta testing
 
 			stats.PhysicalHitPercent: ownerSpellHitPercent / 17 * 8,
 			stats.SpellHitPercent:    ownerSpellHitPercent,
