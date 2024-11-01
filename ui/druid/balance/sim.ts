@@ -46,7 +46,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.T11PresetGear.gear,
+		gear: Presets.T12PresetGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.StandardEPWeights.epWeights,
 		// Default stat caps for the Reforge optimizer
@@ -99,7 +99,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	},
 
 	autoRotation: (_player: Player<Spec.SpecBalanceDruid>): APLRotation => {
-		return Presets.T11PresetRotation.rotation.rotation!;
+		return Presets.T12PresetRotation.rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -117,10 +117,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.PreraidPresetGear.gear,
+					1: Presets.T13PresetGear.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.PreraidPresetGear.gear,
+					1: Presets.T13PresetGear.gear,
 				},
 			},
 		},
