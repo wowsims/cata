@@ -29,7 +29,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.ARCANE_P1_PRESET.gear,
+		gear: Presets.ARCANE_P3_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
@@ -94,7 +94,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.ArcaneTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.ARCANE_P1_PRESET, Presets.ARCANE_P1_PREBIS_PRESET, Presets.ARCANE_P3_PRESET],
+		gear: [Presets.ARCANE_P1_PRESET, Presets.ARCANE_P3_PREBIS_PRESET, Presets.ARCANE_P3_PRESET],
 	},
 
 	autoRotation: (player: Player<Spec.SpecArcaneMage>): APLRotation => {
@@ -190,12 +190,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.ARCANE_P1_PRESET.gear,
-					2: Presets.ARCANE_P1_PREBIS_PRESET.gear,
+					1: Presets.ARCANE_P3_PRESET.gear,
+					2: Presets.ARCANE_P3_PREBIS_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.ARCANE_P1_PRESET.gear,
-					2: Presets.ARCANE_P1_PREBIS_PRESET.gear,
+					1: Presets.ARCANE_P3_PRESET.gear,
+					2: Presets.ARCANE_P3_PREBIS_PRESET.gear,
 				},
 			},
 		},

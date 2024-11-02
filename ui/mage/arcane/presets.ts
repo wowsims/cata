@@ -6,13 +6,13 @@ import { Stats } from '../../core/proto_utils/stats';
 import ArcaneApl from './apls/arcane.apl.json';
 import P1ArcaneBisGear from './gear_sets/p1.gear.json';
 import P3ArcaneBisGear from './gear_sets/p3.gear.json';
-import P1ArcanePrebisGear from './gear_sets/prebis.gear.json';
+import P3ArcanePrebisGear from './gear_sets/prebis.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 export const ARCANE_P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1ArcaneBisGear, { talentTree: 0 });
-export const ARCANE_P1_PREBIS_PRESET = PresetUtils.makePresetGear('P1 Pre-raid ', P1ArcanePrebisGear, { talentTree: 0 });
+export const ARCANE_P3_PREBIS_PRESET = PresetUtils.makePresetGear('Pre-raid ', P3ArcanePrebisGear, { talentTree: 0 });
 export const ARCANE_P3_PRESET = PresetUtils.makePresetGear('P3 Preset', P3ArcaneBisGear, { talentTree: 0 });
 /* export const DefaultSimpleRotation = MageRotation.create({
 	only3ArcaneBlastStacksBelowManaPercent: 0.15,

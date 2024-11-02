@@ -49,9 +49,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P1_ARMS_BIS_PRESET.gear,
+		gear: Presets.P3_ARMS_BIS_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P1_EP_PRESET.epWeights,
+		epWeights: Presets.P3_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
 			const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 8);
@@ -112,7 +112,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
+		epWeights: [Presets.P3_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.ArmsTalents],
 		// Preset rotations that the user can quickly select.
@@ -139,10 +139,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_ARMS_BIS_PRESET.gear,
+					1: Presets.P3_ARMS_BIS_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_ARMS_BIS_PRESET.gear,
+					1: Presets.P3_ARMS_BIS_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,

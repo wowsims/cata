@@ -253,13 +253,8 @@ func (warrior *Warrior) applyBloodAndThunder() {
 				rend := warrior.Rend.Dot(target)
 				lastAppliedTime = int64(sim.CurrentTime)
 
-				if rend.IsActive() {
-					rend.ApplyRollover(sim)
-				} else {
-					rend.Apply(sim)
-					rend.TickOnce(sim)
-				}
-
+				rend.Apply(sim)
+				rend.TickOnce(sim)
 			}
 		},
 	})

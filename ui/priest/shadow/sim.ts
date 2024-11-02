@@ -43,9 +43,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P1_PRESET.gear,
+		gear: Presets.P3_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P1_EP_PRESET.epWeights,
+		epWeights: Presets.P3_EP_PRESET.epWeights,
 		statCaps: (() => {
 			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 17);
 		})(),
@@ -95,7 +95,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
+		epWeights: [Presets.P3_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents],
 		rotations: [Presets.ROTATION_PRESET_DEFAULT],
@@ -123,11 +123,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					0: Presets.PRE_RAID.gear,
-					1: Presets.P1_PRESET.gear,
+					1: Presets.P3_PRESET.gear,
 				},
 				[Faction.Horde]: {
 					0: Presets.PRE_RAID.gear,
-					1: Presets.P1_PRESET.gear,
+					1: Presets.P3_PRESET.gear,
 				},
 			},
 		},
