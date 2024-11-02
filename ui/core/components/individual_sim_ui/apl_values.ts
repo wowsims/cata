@@ -67,6 +67,7 @@ import {
 	APLValueSequenceIsComplete,
 	APLValueSequenceIsReady,
 	APLValueSequenceTimeToReady,
+	APLValueShamanCanSnapshotStrongerFireElemental,
 	APLValueSpellCanCast,
 	APLValueSpellCastTime,
 	APLValueSpellChanneledTicks,
@@ -964,7 +965,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 	allTrinketStatProcsActive: inputBuilder({
 		label: 'All Trinket Proc Buffs Active',
 		submenu: ['Aura Sets'],
-		shortDescription: "<b>True</b> if all trinket procs that buff the specified stat type(s) are currently active, otherwise <b>False</b>.",
+		shortDescription: '<b>True</b> if all trinket procs that buff the specified stat type(s) are currently active, otherwise <b>False</b>.',
 		fullDescription: `
 		<p>For stacking proc buffs, this condition also checks that the buff has been stacked to its maximum possible strength.</p>
 		`,
@@ -974,16 +975,12 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [
-			AplHelpers.statTypeFieldConfig('statType1'),
-			AplHelpers.statTypeFieldConfig('statType2'),
-			AplHelpers.statTypeFieldConfig('statType3'),
-		],
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3')],
 	}),
 	anyTrinketStatProcsActive: inputBuilder({
 		label: 'Any Trinket Proc Buffs Active',
 		submenu: ['Aura Sets'],
-		shortDescription: "<b>True</b> if any trinket procs that buff the specified stat type(s) are currently active, otherwise <b>False</b>.",
+		shortDescription: '<b>True</b> if any trinket procs that buff the specified stat type(s) are currently active, otherwise <b>False</b>.',
 		fullDescription: `
 		<p>For stacking proc buffs, this condition also checks that the buff has been stacked to its maximum possible strength.</p>
 		`,
@@ -993,43 +990,32 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [
-			AplHelpers.statTypeFieldConfig('statType1'),
-			AplHelpers.statTypeFieldConfig('statType2'),
-			AplHelpers.statTypeFieldConfig('statType3'),
-		],
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3')],
 	}),
 	trinketProcsMinRemainingTime: inputBuilder({
 		label: 'Trinket Procs Min Remaining Time',
 		submenu: ['Aura Sets'],
-		shortDescription: "Shortest remaining duration on any active trinket procs that buff the specified stat type(s), or infinity if none are currently active.",
+		shortDescription:
+			'Shortest remaining duration on any active trinket procs that buff the specified stat type(s), or infinity if none are currently active.',
 		newValue: () =>
 			APLValueTrinketProcsMinRemainingTime.create({
 				statType1: -1,
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [
-			AplHelpers.statTypeFieldConfig('statType1'),
-			AplHelpers.statTypeFieldConfig('statType2'),
-			AplHelpers.statTypeFieldConfig('statType3'),
-		],
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3')],
 	}),
 	numEquippedStatProcTrinkets: inputBuilder({
 		label: 'Num Equipped Stat Proc Trinkets',
 		submenu: ['Aura Sets'],
-		shortDescription: "Number of equipped passive trinkets that buff the specified stat type(s) when they proc.",
+		shortDescription: 'Number of equipped passive trinkets that buff the specified stat type(s) when they proc.',
 		newValue: () =>
 			APLValueNumEquippedStatProcTrinkets.create({
 				statType1: -1,
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [
-			AplHelpers.statTypeFieldConfig('statType1'),
-			AplHelpers.statTypeFieldConfig('statType2'),
-			AplHelpers.statTypeFieldConfig('statType3'),
-		],
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3')],
 	}),
 
 	// DoT
@@ -1084,6 +1070,14 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		newValue: APLValueTotemRemainingTime.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassShaman,
 		fields: [totemTypeFieldConfig('totemType')],
+	}),
+	shamanCanSnapshotStrongerFireElemental: inputBuilder({
+		label: 'Can snapshot stronger Fire Elemental',
+		submenu: ['Shaman'],
+		shortDescription: 'Returns true if a new Fire Elemental would be stronger than the current.',
+		newValue: APLValueShamanCanSnapshotStrongerFireElemental.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassShaman,
+		fields: [],
 	}),
 	catExcessEnergy: inputBuilder({
 		label: 'Excess Energy',
