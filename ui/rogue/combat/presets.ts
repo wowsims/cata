@@ -7,7 +7,8 @@ import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import CombatApl from './apls/combat.apl.json';
 import P1CombatGear from './gear_sets/p1_combat.gear.json';
-import P3CombatGear from './gear_sets/p3_combat.gear.json'
+import P3CombatGear from './gear_sets/p3_combat.gear.json';
+import PreraidCombatGear from './gear_sets/preraid_combat.gear.json'
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -15,6 +16,7 @@ import P3CombatGear from './gear_sets/p3_combat.gear.json'
 
 export const P1_PRESET_COMBAT = PresetUtils.makePresetGear('P1 Combat', P1CombatGear);
 export const P3_PRESET_COMBAT = PresetUtils.makePresetGear('P3 Combat', P3CombatGear);
+export const PRERAID_PRESET_COMBAT = PresetUtils.makePresetGear('Pre-Raid Combat', PreraidCombatGear);
 
 export const ROTATION_PRESET_COMBAT = PresetUtils.makePresetAPLRotation('Combat', CombatApl);
 
