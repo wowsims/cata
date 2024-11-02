@@ -15,9 +15,6 @@ type FireElemental struct {
 	FireBlast *core.Spell
 	FireNova  *core.Spell
 
-	maxFireBlastCasts int32
-	maxFireNovaCasts  int32
-
 	FireShieldAura *core.Aura
 
 	shamanOwner *Shaman
@@ -25,10 +22,8 @@ type FireElemental struct {
 
 func (shaman *Shaman) NewFireElemental(bonusSpellPower float64) *FireElemental {
 	fireElemental := &FireElemental{
-		Pet:               core.NewPet("Greater Fire Elemental", &shaman.Character, fireElementalPetBaseStats, shaman.fireElementalStatInheritance(), false, true),
-		shamanOwner:       shaman,
-		maxFireBlastCasts: 15,
-		maxFireNovaCasts:  15,
+		Pet:         core.NewPet("Greater Fire Elemental", &shaman.Character, fireElementalPetBaseStats, shaman.fireElementalStatInheritance(), false, true),
+		shamanOwner: shaman,
 	}
 	fireElemental.EnableManaBar()
 	fireElemental.AddStatDependency(stats.Intellect, stats.SpellPower, 1.0)
