@@ -97,12 +97,6 @@ func (fireElemental *FireElemental) ExecuteCustomRotation(sim *core.Simulation) 
 		the random AI is hard to emulate.
 	*/
 	target := fireElemental.CurrentTarget
-	fireBlastCasts := fireElemental.FireBlast.SpellMetrics[0].Casts
-	fireNovaCasts := fireElemental.FireNova.SpellMetrics[0].Casts
-
-	if fireBlastCasts == fireElemental.maxFireBlastCasts && fireNovaCasts == fireElemental.maxFireNovaCasts {
-		return
-	}
 
 	if fireElemental.FireNova.DefaultCast.Cost > fireElemental.CurrentMana() {
 		return
@@ -111,15 +105,18 @@ func (fireElemental *FireElemental) ExecuteCustomRotation(sim *core.Simulation) 
 	random := sim.RandomFloat("Fire Elemental Pet Spell")
 
 	//Melee the other 30%
-	if random >= .65 {
-		if !fireElemental.TryCast(sim, target, fireElemental.FireNova, fireElemental.maxFireNovaCasts) {
-			fireElemental.TryCast(sim, target, fireElemental.FireBlast, fireElemental.maxFireBlastCasts)
-		}
-	} else if random >= .35 {
-		if !fireElemental.TryCast(sim, target, fireElemental.FireBlast, fireElemental.maxFireBlastCasts) {
-			fireElemental.TryCast(sim, target, fireElemental.FireNova, fireElemental.maxFireNovaCasts)
-		}
+	if random >= .75 {
+		fireElemental.TryCast(sim, target, fireElemental.FireBlast)
+	} else if random >= .40 && random < 0.75 {
+		fireElemental.TryCast(sim, target, fireElemental.FireNova)
 	}
+
+	if !fireElemental.GCD.IsReady(sim) {
+		return
+	}
+
+	minCd := min(fireElemental.FireBlast.CD.ReadyAt(), fireElemental.FireNova.CD.ReadyAt())
+	fireElemental.ExtendGCDUntil(sim, max(minCd, sim.CurrentTime+time.Second))
 
 	if !fireElemental.GCD.IsReady(sim) {
 		return
@@ -128,11 +125,7 @@ func (fireElemental *FireElemental) ExecuteCustomRotation(sim *core.Simulation) 
 	fireElemental.ExtendGCDUntil(sim, sim.CurrentTime+time.Second)
 }
 
-func (fireElemental *FireElemental) TryCast(sim *core.Simulation, target *core.Unit, spell *core.Spell, maxCastCount int32) bool {
-	if maxCastCount == spell.SpellMetrics[0].Casts {
-		return false
-	}
-
+func (fireElemental *FireElemental) TryCast(sim *core.Simulation, target *core.Unit, spell *core.Spell) bool {
 	if !spell.Cast(sim, target) {
 		return false
 	}

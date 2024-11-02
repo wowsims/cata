@@ -47,6 +47,7 @@ func (shaman *Shaman) registerFireElementalTotem() {
 				searingTotemDot.Deactivate(sim)
 			}
 
+			shaman.FireElemental.Disable(sim)
 			shaman.FireElemental.EnableWithTimeout(sim, shaman.FireElemental, totalDuration)
 
 			// Add a dummy aura to show in metrics
