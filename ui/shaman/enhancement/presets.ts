@@ -41,7 +41,7 @@ export const P3_DRAENEI_PRESET = PresetUtils.makePresetGear('P3 - Draenei', P3Dr
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
 // Preset options for EP weights
-export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Default',
 	Stats.fromMap(
 		{
