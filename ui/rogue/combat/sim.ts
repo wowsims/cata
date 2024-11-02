@@ -1,3 +1,4 @@
+import { unitFieldConfig } from '../../core/components/individual_sim_ui/apl_helpers';
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
@@ -75,11 +76,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 			});
 
 			const hasteRatingSoftCapConfig = StatCap.fromStat(Stat.StatHasteRating, {
-				breakpoints: [2070, 2150, 2250],
+				breakpoints: [2070, 2150, 2250, 2450, 2650],
 				capType: StatCapType.TypeSoftCap,
 				// These are set by the active EP weight in the updateSoftCaps callback
-				postCapEPs: [0, 0, 0],
-			});
+				postCapEPs: [0, 0, 0, 0, 0],
+			})
 
 			return [meleeHitSoftCapConfig, spellHitSoftCapConfig, hasteRatingSoftCapConfig];
 		})(),
@@ -148,7 +149,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	},
 
 	presets: {
-		epWeights: [Presets.CBAT_HASTE_EP_PRESET, Presets.CBAT_4PT12_EP_PRESET],
+		epWeights: [Presets.CBAT_HASTE_EP_PRESET, Presets.CBAT_4PT12_EP_PRESET, Presets.CBAT_T13_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.CombatTalents],
 		// Preset rotations that the user can quickly select.
@@ -201,11 +202,16 @@ export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 					const hasteEP = player.getEpWeights().getStat(Stat.StatHasteRating);
 					const hasteSoftCap = softCaps.find(v => v.unitStat.equalsStat(Stat.StatHasteRating));
 					if (hasteSoftCap) {
-						hasteSoftCap.postCapEPs = [hasteEP - 0.1, hasteEP - 0.2, hasteEP - 0.3];
+						// If wearing either Fear or Sleeper in MH, Haste EP remains high until ~2650 rating
+						const mHWep = player.getEquippedItem(ItemSlot.ItemSlotMainHand)
+						if (mHWep != null && (mHWep.id == 77945 || mHWep.id == 77947))
+							hasteSoftCap.postCapEPs = [hasteEP, hasteEP, hasteEP, hasteEP, hasteEP - 0.5]
+						else
+							hasteSoftCap.postCapEPs = [hasteEP - 0.1, hasteEP - 0.2, hasteEP - 0.3, hasteEP - 0.4, hasteEP - 0.5]
 					}
 
-					return softCaps;
-				},
+					return softCaps
+				}
 			});
 		});
 

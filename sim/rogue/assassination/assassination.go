@@ -9,6 +9,7 @@ import (
 
 const masteryDamagePerPoint = 0.035
 const masteryBaseEffect = 0.28
+const masteryFloored = false // Firelands patch appears to have fixed this issue
 
 func RegisterAssassinationRogue() {
 	core.RegisterAgentFactory(

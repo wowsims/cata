@@ -6,6 +6,7 @@ import (
 
 	"github.com/wowsims/cata/sim/common/cata"
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -109,7 +110,7 @@ var Tier12 = core.NewItemSet(core.ItemSet{
 			// Aura for adding 25% of current rating as extra rating
 			hasteAura := rogue.GetOrRegisterAura(MakeT12StatAura(core.ActionID{SpellID: 99186}, stats.HasteRating, "Future on Fire"))
 			critAura := rogue.GetOrRegisterAura(MakeT12StatAura(core.ActionID{SpellID: 99187}, stats.CritRating, "Fiery Devastation"))
-			mastAura := rogue.GetOrRegisterAura(MakeT12StatAura(core.ActionID{SpellID: 99188}, stats.MasteryRating, "Master of the Flames"))
+			mastAura := rogue.GetOrRegisterAura(MakeT12StatAura(core.ActionID{SpellID: 99188}, stats.MasteryRating, "Master of Flames"))
 			auraArray := [3]*core.Aura{hasteAura, critAura, mastAura}
 
 			// Proc aura watching for ToT threat transfer start
@@ -133,6 +134,245 @@ var Tier12 = core.NewItemSet(core.ItemSet{
 	},
 })
 
+var Tier13 = core.NewItemSet(core.ItemSet{
+	Name: "Blackfang Battleweave",
+	Bonuses: map[int32]core.ApplyEffect{
+		// After triggering Tricks of the Trade, your abilities cost 20% less energy for 6 sec.
+		// This is implemented as it is because the 20% reduction is applied -before- talents/glyphs/passives, which is not how SpellMod_PowerCost_Pct operates
+		2: func(agent core.Agent) {
+			rogue := agent.(RogueAgent).GetRogue()
+
+			bonus60e := rogue.AddDynamicMod(core.SpellModConfig{
+				Kind:       core.SpellMod_PowerCost_Flat,
+				FloatValue: -12,
+				ClassMask:  RogueSpellAmbush | RogueSpellBackstab | RogueSpellMutilate,
+			})
+
+			bonus45e := rogue.AddDynamicMod(core.SpellModConfig{
+				Kind:       core.SpellMod_PowerCost_Flat,
+				FloatValue: -9,
+				ClassMask:  RogueSpellSinisterStrike | RogueSpellGouge | RogueSpellGarrote,
+			})
+
+			bonus40e := rogue.AddDynamicMod(core.SpellModConfig{
+				Kind:       core.SpellMod_PowerCost_Flat,
+				FloatValue: -8,
+				ClassMask:  RogueSpellRevealingStrike,
+			})
+
+			bonus35e := rogue.AddDynamicMod(core.SpellModConfig{
+				Kind:       core.SpellMod_PowerCost_Flat,
+				FloatValue: -7,
+				ClassMask:  RogueSpellEviscerate | RogueSpellEnvenom | RogueSpellHemorrhage,
+			})
+
+			bonus30e := rogue.AddDynamicMod(core.SpellModConfig{
+				Kind:       core.SpellMod_PowerCost_Flat,
+				FloatValue: -6,
+				ClassMask:  RogueSpellRecuperate,
+			})
+
+			bonus25e := rogue.AddDynamicMod(core.SpellModConfig{
+				Kind:       core.SpellMod_PowerCost_Flat,
+				FloatValue: -5,
+				ClassMask:  RogueSpellSliceAndDice | RogueSpellRupture,
+			})
+
+			aura := rogue.GetOrRegisterAura(core.Aura{
+				Label:    "Tricks of Time",
+				ActionID: core.ActionID{SpellID: 105864},
+				Duration: time.Second * 6,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					bonus60e.Activate()
+					bonus45e.Activate()
+					bonus40e.Activate()
+					bonus35e.Activate()
+					bonus30e.Activate()
+					bonus25e.Activate()
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					bonus60e.Deactivate()
+					bonus45e.Deactivate()
+					bonus40e.Deactivate()
+					bonus35e.Deactivate()
+					bonus30e.Deactivate()
+					bonus25e.Deactivate()
+				},
+			})
+
+			core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
+				Name:           "Rogue T13 2P Bonus",
+				Callback:       core.CallbackOnApplyEffects,
+				ClassSpellMask: RogueSpellTricksOfTheTrade,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					aura.Activate(sim)
+				},
+			})
+		},
+		// Increases the duration of Shadow Dance by 2 sec, Adrenaline Rush by 3 sec, and Vendetta by 9 sec.
+		// Implemented in respective spells
+		4: func(agent core.Agent) {
+
+		},
+	},
+})
+
+// Pulled from old Shadowcraft/SimC logic
+// There exists Blizzard sourced numbers, but those were from MoP beta. TBD which is valid.
+// The final difference between the Blizzard numbers and old TC numbers is exceedlingly small either way.
+func getFangsProcRate(character *core.Character) float64 {
+	switch character.Spec {
+	case proto.Spec_SpecSubtletyRogue:
+		return 0.275
+	case proto.Spec_SpecAssassinationRogue:
+		return 0.235
+	default:
+		return 0.095
+	}
+}
+
+// Fear + Vengeance
+var JawsOfRetribution = core.NewItemSet(core.ItemSet{
+	Name: "Jaws of Retribution",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your melee attacks have a chance to grant Suffering, increasing your Agility by 2, stacking up to 50 times.
+		2: func(agent core.Agent) {
+			agiAura := agent.GetCharacter().GetOrRegisterAura(core.Aura{
+				Label:     "Suffering",
+				ActionID:  core.ActionID{SpellID: 109959},
+				MaxStacks: 50,
+				Duration:  30 * time.Second,
+				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+					aura.Unit.AddStatDynamic(sim, stats.Agility, -2*float64(oldStacks))
+					aura.Unit.AddStatDynamic(sim, stats.Agility, 2*float64(newStacks))
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					aura.SetStacks(sim, 0)
+				},
+			})
+
+			core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
+				Name:       "Rogue Legendary Daggers Stage 1",
+				Callback:   core.CallbackOnSpellHitDealt,
+				ProcMask:   core.ProcMaskMelee,
+				Outcome:    core.OutcomeLanded,
+				ProcChance: getFangsProcRate(agent.GetCharacter()),
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					agiAura.Activate(sim)
+					agiAura.AddStack(sim)
+				},
+			})
+		},
+	},
+})
+
+// Sleeper + Dreamer
+var MawOfOblivion = core.NewItemSet(core.ItemSet{
+	Name: "Maw of Oblivion",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your melee attacks have a chance to grant Nightmare, increasing your Agility by 5, stacking up to 50 times.
+		2: func(agent core.Agent) {
+			agiAura := agent.GetCharacter().GetOrRegisterAura(core.Aura{
+				Label:     "Nightmare",
+				ActionID:  core.ActionID{SpellID: 109955},
+				MaxStacks: 50,
+				Duration:  30 * time.Second,
+				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+					aura.Unit.AddStatDynamic(sim, stats.Agility, -5*float64(oldStacks))
+					aura.Unit.AddStatDynamic(sim, stats.Agility, 5*float64(newStacks))
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					aura.SetStacks(sim, 0)
+				},
+			})
+
+			core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
+				Name:       "Rogue Legendary Daggers Stage 2",
+				Callback:   core.CallbackOnSpellHitDealt,
+				ProcMask:   core.ProcMaskMelee,
+				Outcome:    core.OutcomeLanded,
+				ProcChance: getFangsProcRate(agent.GetCharacter()),
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					agiAura.Activate(sim)
+					agiAura.AddStack(sim)
+				},
+			})
+		},
+	},
+})
+
+// Golad + Tiriosh
+var FangsOfTheFather = core.NewItemSet(core.ItemSet{
+	Name: "Fangs of the Father",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your melee attacks have a chance to grant Shadows of the Destroyer, increasing your Agility by 17, stacking up to 50 times.
+		// Each application past 30 grants an increasing chance to trigger Fury of the Destroyer.
+		// When triggered, this consumes all applications of Shadows of the Destroyer, immediately granting 5 combo points and cause your finishing moves to generate 5 combo points.
+		// Lasts 6 sec.
+
+		// Tooltip is deceptive. The stacks of Shadows of the Destroyer only clear when the 5 Combo Point effect ends
+		2: func(agent core.Agent) {
+			cpMetrics := agent.GetCharacter().NewComboPointMetrics(core.ActionID{SpellID: 109950})
+
+			agiAura := agent.GetCharacter().GetOrRegisterAura(core.Aura{
+				Label:     "Shadows of the Destroyer",
+				ActionID:  core.ActionID{SpellID: 109941},
+				MaxStacks: 50,
+				Duration:  30 * time.Second,
+				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+					aura.Unit.AddStatDynamic(sim, stats.Agility, -17*float64(oldStacks))
+					aura.Unit.AddStatDynamic(sim, stats.Agility, 17*float64(newStacks))
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					aura.SetStacks(sim, 0)
+				},
+			})
+
+			wingsProc := agent.GetCharacter().GetOrRegisterAura(core.Aura{
+				Label:    "Fury of the Destroyer",
+				ActionID: core.ActionID{SpellID: 109949},
+				Duration: time.Second * 6,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Unit.AddComboPoints(sim, 5, cpMetrics)
+				},
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if spell.Flags.Matches(SpellFlagFinisher) {
+						aura.Unit.AddComboPoints(sim, 5, cpMetrics)
+					}
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					agiAura.SetStacks(sim, 0)
+					agiAura.Deactivate(sim)
+				},
+			})
+
+			core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
+				Name:       "Rogue Legendary Daggers Stage 3",
+				Callback:   core.CallbackOnSpellHitDealt,
+				ProcMask:   core.ProcMaskMelee,
+				Outcome:    core.OutcomeLanded,
+				ProcChance: getFangsProcRate(agent.GetCharacter()),
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					// Adding a stack and activating the combo point effect is mutually exclusive.
+					// Agility bonus is lost when combo point effect ends
+					stacks := float64(agiAura.GetStacks())
+					if stacks > 30 && !wingsProc.IsActive() {
+						if stacks == 50 || sim.Proc(1.0/(50-stacks), "Fangs of the Father") {
+							wingsProc.Activate(sim)
+						} else {
+							agiAura.Activate(sim)
+							agiAura.AddStack(sim)
+						}
+					} else {
+						agiAura.Activate(sim)
+						agiAura.AddStack(sim)
+					}
+				},
+			})
+		},
+	},
+})
+
 var CataPVPSet = core.NewItemSet(core.ItemSet{
 	Name: "Gladiator's Vestments",
 	ID:   914,
@@ -146,3 +386,20 @@ var CataPVPSet = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+// 45% SS/RvS Modifier for Legendary MH Dagger
+func makeWeightedBladesModifier(itemID int32) {
+	core.NewItemEffect(itemID, func(agent core.Agent) {
+		agent.GetCharacter().AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: 0.45,
+			ClassMask:  RogueSpellWeightedBlades,
+		})
+	})
+}
+
+func init() {
+	makeWeightedBladesModifier(77945)
+	makeWeightedBladesModifier(77947)
+	makeWeightedBladesModifier(77949)
+}

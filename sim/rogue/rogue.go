@@ -95,7 +95,6 @@ type Rogue struct {
 	HonorAmongThieves    *core.Aura
 	StealthAura          *core.Aura
 	BanditsGuileAura     *core.Aura
-	RestlessBladesAura   *core.Aura
 
 	MasterPoisonerDebuffAuras core.AuraArray
 	SavageCombatDebuffAuras   core.AuraArray
@@ -123,7 +122,7 @@ func (rogue *Rogue) ApplyFinisher(sim *core.Simulation, spell *core.Spell) {
 	numPoints := rogue.ComboPoints()
 	rogue.SpendComboPoints(sim, spell.ComboPointMetrics())
 
-	if rogue.Talents.Ruthlessness > 0 && (spell.ClassSpellMask&RogueSpellProcRuthlessness != 0) {
+	if rogue.Talents.Ruthlessness > 0 && (spell.ClassSpellMask&RogueSpellDamagingFinisher != 0) {
 		procChance := 0.2 * float64(rogue.Talents.Ruthlessness)
 		if sim.Proc(procChance, "Ruthlessness") {
 			rogue.AddComboPoints(sim, 1, rogue.ruthlessnessMetrics)
@@ -133,6 +132,28 @@ func (rogue *Rogue) ApplyFinisher(sim *core.Simulation, spell *core.Spell) {
 		procChance := []float64{0.0, 0.07, 0.14, 0.2}[rogue.Talents.RelentlessStrikes] * float64(numPoints)
 		if sim.Proc(procChance, "Relentless Strikes") {
 			rogue.AddEnergy(sim, 25, rogue.relentlessStrikesMetrics)
+		}
+	}
+	if rogue.Talents.RestlessBlades > 0 && (spell.ClassSpellMask&RogueSpellDamagingFinisher != 0) {
+		cdReduction := time.Duration(rogue.Talents.RestlessBlades) * time.Second * time.Duration(numPoints)
+
+		if rogue.KillingSpree != nil {
+			ksNewTime := rogue.KillingSpree.CD.Timer.ReadyAt() - cdReduction
+			rogue.KillingSpree.CD.Timer.Set(ksNewTime)
+		}
+		if rogue.AdrenalineRush != nil {
+			arNewTime := rogue.AdrenalineRush.CD.Timer.ReadyAt() - cdReduction
+			rogue.AdrenalineRush.CD.Timer.Set(arNewTime)
+		}
+	}
+	if rogue.Talents.SerratedBlades > 0 && spell == rogue.Eviscerate {
+		chancePerPoint := 0.1 * float64(rogue.Talents.SerratedBlades)
+		procChance := float64(numPoints) * chancePerPoint
+		if sim.Proc(procChance, "Serrated Blades") {
+			rupAura := rogue.Rupture.Dot(spell.Unit.CurrentTarget)
+			if rupAura.IsActive() {
+				rupAura.Activate(sim)
+			}
 		}
 	}
 }
@@ -364,5 +385,6 @@ const (
 	RogueSpellsAll = RogueSpellLast<<1 - 1
 
 	RogueSpellPoisons          = RogueSpellVenomousWounds | RogueSpellWoundPoison | RogueSpellInstantPoison | RogueSpellDeadlyPoison
-	RogueSpellProcRuthlessness = RogueSpellEnvenom | RogueSpellEviscerate | RogueSpellRupture
+	RogueSpellDamagingFinisher = RogueSpellEnvenom | RogueSpellEviscerate | RogueSpellRupture
+	RogueSpellWeightedBlades   = RogueSpellSinisterStrike | RogueSpellRevealingStrike
 )

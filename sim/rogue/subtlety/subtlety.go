@@ -9,6 +9,7 @@ import (
 
 const masteryDamagePerPoint = .025
 const masteryBaseEffect = 0.2
+const masteryFloored = false // Firelands patch appears to have fixed this issue
 
 func RegisterSubtletyRogue() {
 	core.RegisterAgentFactory(
@@ -36,7 +37,6 @@ func (subRogue *SubtletyRogue) Initialize() {
 	subRogue.registerHonorAmongThieves()
 
 	subRogue.applyInitiative()
-	subRogue.applySerratedBlades()
 	subRogue.applyFindWeakness()
 
 	subRogue.registerMasterOfSubtletyCD()

@@ -14,10 +14,9 @@ func (subRogue *SubtletyRogue) registerShadowDanceCD() {
 		return
 	}
 
-	duration := time.Second * 6
-	if subRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfShadowDance) {
-		duration = time.Second * 8
-	}
+	hasGlyph := subRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfShadowDance)
+	t13Bonus := subRogue.HasSetBonus(rogue.Tier13, 4)
+	duration := core.TernaryDuration(hasGlyph, time.Second*8, time.Second*6) + core.TernaryDuration(t13Bonus, time.Second*2, 0)
 
 	actionID := core.ActionID{SpellID: 51713}
 
