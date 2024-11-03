@@ -201,7 +201,7 @@ func (character *Character) applyHealingModel(healingModel *proto.HealingModel) 
 			healPerTick = healingModel.Hps * (float64(timeToNextHeal) / float64(time.Second))
 
 			// Execute the heal
-			character.GainHealth(sim, healPerTick*character.PseudoStats.HealingTakenMultiplier, healthMetrics)
+			character.GainHealth(sim, healPerTick*character.PseudoStats.HealingTakenMultiplier*character.PseudoStats.ExternalHealingTakenMultiplier, healthMetrics)
 
 			// Might use this again in the future to track "absorb" metrics but currently disabled
 			//if ardentDefenderAura != nil && character.CurrentHealthPercent() >= 0.35 {

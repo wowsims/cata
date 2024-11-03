@@ -391,6 +391,7 @@ type PseudoStats struct {
 	DamageDealtMultiplier       float64            // All damage
 	SchoolDamageDealtMultiplier [SchoolLen]float64 // For specific spell schools (arcane, fire, shadow, etc).
 	DotDamageMultiplierAdditive float64            // All periodic damage
+	HealingDealtMultiplier      float64            // All non-shield healing
 
 	// Important when unit is attacker or target
 	BlockDamageReduction float64
@@ -437,8 +438,9 @@ type PseudoStats struct {
 	ReducedNatureHitTakenChance   float64
 	ReducedShadowHitTakenChance   float64
 
-	HealingTakenMultiplier  float64
-	MovementSpeedMultiplier float64 // Multiplier for movement speed, default to 1. Player base movement 7 yards/s. All effects affecting movements are multipliers.
+	HealingTakenMultiplier         float64 // All healing sources including self-healing
+	ExternalHealingTakenMultiplier float64 // Modulates the output of the individual tank sim healing model
+	MovementSpeedMultiplier        float64 // Multiplier for movement speed, default to 1. Player base movement 7 yards/s. All effects affecting movements are multipliers.
 }
 
 func NewPseudoStats() PseudoStats {
@@ -455,6 +457,7 @@ func NewPseudoStats() PseudoStats {
 		DamageDealtMultiplier:       1,
 		SchoolDamageDealtMultiplier: NewSchoolFloatArray(),
 		DotDamageMultiplierAdditive: 1,
+		HealingDealtMultiplier:      1,
 
 		BlockDamageReduction: 0.3,
 
@@ -469,8 +472,9 @@ func NewPseudoStats() PseudoStats {
 
 		ArmorMultiplier: 1,
 
-		HealingTakenMultiplier:  1,
-		MovementSpeedMultiplier: 1,
+		HealingTakenMultiplier:         1,
+		ExternalHealingTakenMultiplier: 1,
+		MovementSpeedMultiplier:        1,
 	}
 }
 
