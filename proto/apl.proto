@@ -192,6 +192,7 @@ message APLValue {
         APLValueWarlockShouldRefreshCorruption warlock_should_refresh_corruption = 60;
         APLValueCurrentEclipsePhase druid_current_eclipse_phase = 70;
 		APLValueMageCurrentCombustionDotEstimate mage_current_combustion_dot_estimate = 77;
+		APLValueShamanCanSnapshotStrongerFireElemental shaman_can_snapshot_stronger_fire_elemental = 82;
     }
 }
 
@@ -620,4 +621,6 @@ message APLValueWarlockShouldRefreshCorruption {
     UnitReference target_unit = 1;
 }
 message APLValueMageCurrentCombustionDotEstimate {
+}
+message APLValueShamanCanSnapshotStrongerFireElemental {
 }
