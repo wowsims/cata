@@ -80,6 +80,19 @@ func (dot *Dot) Apply(sim *Simulation) {
 	dot.Activate(sim)
 }
 
+// Rolls over and activates the Dot
+// If the Dot is already active it's duration will be refreshed and the last tick from the previous application will be
+// transfered to the new one
+func (dot *Dot) ApplyRollover(sim *Simulation) {
+	if dot.Spell.Flags&SpellFlagSupressDoTApply > 0 {
+		return
+	}
+
+	dot.TakeSnapshot(sim, true)
+	dot.recomputeAuraDuration(sim)
+	dot.Activate(sim)
+}
+
 func (dot *Dot) recomputeAuraDuration(sim *Simulation) {
 	nextTick := dot.TimeUntilNextTick(sim)
 

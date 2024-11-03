@@ -6,12 +6,15 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func (shaman *Shaman) NewAPLValue(rot *core.APLRotation, config *proto.APLValue) core.APLValue {
 	switch config.Value.(type) {
 	case *proto.APLValue_TotemRemainingTime:
 		return shaman.newValueTotemRemainingTime(rot, config.GetTotemRemainingTime())
+	case *proto.APLValue_ShamanCanSnapshotStrongerFireElemental:
+		return shaman.newValueCanSnapshotStrongerFireElemental(config.GetShamanCanSnapshotStrongerFireElemental())
 	default:
 		return nil
 	}
@@ -51,4 +54,34 @@ func (value *APLValueTotemRemainingTime) GetDuration(sim *core.Simulation) time.
 }
 func (value *APLValueTotemRemainingTime) String() string {
 	return fmt.Sprintf("Totem Remaining Time(%s)", value.totemType.String())
+}
+
+type APLValueShamanCanSnapshotStrongerFireElemental struct {
+	core.DefaultAPLValueImpl
+	shaman *Shaman
+}
+
+func (shaman *Shaman) newValueCanSnapshotStrongerFireElemental(_ *proto.APLValueShamanCanSnapshotStrongerFireElemental) core.APLValue {
+	return &APLValueShamanCanSnapshotStrongerFireElemental{
+		shaman: shaman,
+	}
+}
+func (value *APLValueShamanCanSnapshotStrongerFireElemental) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeBool
+}
+func (value *APLValueShamanCanSnapshotStrongerFireElemental) GetBool(sim *core.Simulation) bool {
+	shaman := value.shaman
+
+	if shaman.FireElemental.IsEnabled() {
+		simulatedStats := shaman.fireElementalStatInheritance()(shaman.GetStats())
+		potentialFireElementalSpellPower := simulatedStats[stats.SpellPower]
+		currentFireElementalSpellPower := shaman.FireElemental.GetPet().GetInheritedStats()[stats.SpellPower]
+		return potentialFireElementalSpellPower > currentFireElementalSpellPower
+	}
+
+	return true
+}
+
+func (value *APLValueShamanCanSnapshotStrongerFireElemental) String() string {
+	return "Can Snapshot Stronger Fire Elemental"
 }

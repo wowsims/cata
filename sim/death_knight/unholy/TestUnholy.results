@@ -838,17 +838,17 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-HeartofRage-59224"
  value: {
-  dps: 41550.44112
-  tps: 30772.59537
-  hps: 659.04755
+  dps: 41651.47082
+  tps: 30852.7826
+  hps: 655.91296
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-HeartofSolace-55868"
  value: {
-  dps: 39862.95271
-  tps: 29502.12027
-  hps: 652.77837
+  dps: 41581.70927
+  tps: 30689.63805
+  hps: 655.12931
  }
 }
 dps_results: {

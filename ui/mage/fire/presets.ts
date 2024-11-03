@@ -12,15 +12,15 @@ import { Stats, UnitStat, UnitStatPresets } from '../../core/proto_utils/stats';
 import FireApl from './apls/fire.apl.json';
 //import FireAoeApl from './apls/fire_aoe.apl.json';
 import P1FireBisGear from './gear_sets/p1_fire.gear.json';
-import P1FirePrebisGear from './gear_sets/p1_fire_prebis_gear.json';
 import P3FireBisGear from './gear_sets/p3_fire.gear.json';
+import P3FirePrebisGear from './gear_sets/p3_fire_prebis.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
 export const FIRE_P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1FireBisGear, { talentTree: 1 });
-export const FIRE_P1_PREBIS = PresetUtils.makePresetGear('P1 Pre-raid', P1FirePrebisGear, { talentTree: 1 });
+export const FIRE_P3_PREBIS = PresetUtils.makePresetGear('P3 Pre-raid', P3FirePrebisGear, { talentTree: 1 });
 export const FIRE_P3_PRESET = PresetUtils.makePresetGear('P3 Preset', P3FireBisGear, { talentTree: 1 });
 
 export const P1DefaultSimpleRotation = FireMage_Rotation.create({

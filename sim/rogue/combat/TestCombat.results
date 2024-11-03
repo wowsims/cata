@@ -725,8 +725,8 @@ dps_results: {
 dps_results: {
  key: "TestCombat-AllItems-HeartofSolace-55868"
  value: {
-  dps: 28250.03858
-  tps: 20057.52739
+  dps: 28751.81201
+  tps: 20413.78653
  }
 }
 dps_results: {
@@ -2321,6 +2321,174 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-Combat-combat-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 29408.18836
+  tps: 20879.81373
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-Combat-combat-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 29760.01161
+  tps: 21129.60824
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-Combat-combat-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 36392.11724
+  tps: 25838.40324
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-Combat-combat-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 16633.83965
+  tps: 11810.02615
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-Combat-combat-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 16792.66754
+  tps: 11922.79396
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-Combat-combat-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 16717.824
+  tps: 11869.65504
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 25565.09821
+  tps: 18151.21973
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 25499.48797
+  tps: 18104.63646
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 31206.54894
+  tps: 22156.64975
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 14625.95823
+  tps: 10384.43035
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 14552.31333
+  tps: 10332.14246
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 14531.48939
+  tps: 10317.35747
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 28439.74024
+  tps: 20192.21557
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 28738.70249
+  tps: 20404.47877
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 35003.63983
+  tps: 24852.58428
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 16150.10508
+  tps: 11466.57461
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 16279.09972
+  tps: 11558.1608
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 16112.27012
+  tps: 11439.71179
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 26717.96757
+  tps: 18969.75697
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 27053.66957
+  tps: 19208.1054
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 33652.02918
+  tps: 23892.94072
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 14526.37357
+  tps: 10313.72524
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 14646.21206
+  tps: 10398.81057
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Human-preraid_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 14785.01206
+  tps: 10497.35856
+ }
+}
+dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-Combat-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 29911.99172
@@ -2654,6 +2822,174 @@ dps_results: {
  value: {
   dps: 20433.35669
   tps: 14507.68325
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-Combat-combat-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 29667.04295
+  tps: 21063.60049
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-Combat-combat-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 30044.98611
+  tps: 21331.94014
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-Combat-combat-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 36971.93748
+  tps: 26250.07561
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-Combat-combat-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 16800.02215
+  tps: 11928.01573
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-Combat-combat-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 16960.8449
+  tps: 12042.19988
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-Combat-combat-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 17047.48555
+  tps: 12103.71474
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 25789.26966
+  tps: 18310.38146
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 25736.12225
+  tps: 18272.6468
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 31709.44129
+  tps: 22513.70331
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 14772.99424
+  tps: 10488.82591
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 14698.23167
+  tps: 10435.74449
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 14819.39664
+  tps: 10521.77162
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 28687.52339
+  tps: 20368.14161
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 29007.4947
+  tps: 20595.32124
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 35562.7441
+  tps: 25249.54831
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 16312.12748
+  tps: 11581.61051
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 16443.58025
+  tps: 11674.94198
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 16432.0707
+  tps: 11666.7702
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 26954.57825
+  tps: 19137.75056
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 27309.08043
+  tps: 19389.44711
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 34210.14888
+  tps: 24289.2057
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 14674.07314
+  tps: 10418.59193
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 14795.48641
+  tps: 10504.79535
+ }
+}
+dps_results: {
+ key: "TestCombat-Settings-Orc-preraid_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 15090.33126
+  tps: 10714.1352
  }
 }
 dps_results: {

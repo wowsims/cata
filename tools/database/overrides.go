@@ -282,6 +282,63 @@ var ItemDenyList = map[int32]struct{}{
 	71337: {}, // Mithril Stopwatch - 365
 	71338: {}, // Brawler's Trophy - 365
 
+	// T11 BoE items which are not available in the game
+	65005: {}, // Claws of Agony - 372
+	65006: {}, // Claws of Torment - 372
+	65008: {}, // Shadowforge's Lightbound Smock - 372
+	65009: {}, // Hide of Chromaggus - 372
+	65010: {}, // Ironstar's Impenetrable Cover - 372
+	65011: {}, // Corehammer's Riveted Girdle - 372
+	65012: {}, // Treads of Savage Beatings - 372
+	65013: {}, // Maldo's Sword Cane - 372
+	65014: {}, // Maimgor's Bite - 372
+	65016: {}, // Theresa's Booklight - 372
+	65097: {}, // Bracers of the Dark Pool - 372
+	65098: {}, // Crossfire Carbine - 372
+	65099: {}, // Tsanga's Helm - 372
+	65100: {}, // Phase-Twister Leggings - 372
+	65101: {}, // Heaving Plates of Protection - 372
+	65102: {}, // Chelley's Staff of Dark Mending - 372
+	65103: {}, // Soul Blade - 372
+
+	// Firelands "upgraded" items which are not available in the game
+	69184: {}, // Stay of Execution - 391
+	69185: {}, // Rune of Zeth - 391
+	69198: {}, // Fiery Quintessence - 391
+	69199: {}, // Ancient Petrified Seed - 391
+	69200: {}, // Essence of the Eternal Flame - 391
+	71388: {}, // Sleek Flamewrath Cloak - 391
+	71389: {}, // Rippling Flamewrath Drape - 391
+	71390: {}, // Flowing Flamewrath Cape - 391
+	71391: {}, // Bladed Flamewrath Cover - 391
+	71392: {}, // Durable Flamewrath Greatcloak - 391
+	71393: {}, // Embereye Belt - 391
+	71394: {}, // Flamebinding Girdle - 391
+	71395: {}, // Firescar Sash - 391
+	71396: {}, // Firearrow Belt - 391
+	71397: {}, // Firemend Cinch - 391
+	71398: {}, // Belt of the Seven Seals - 391
+	71399: {}, // Cinch of the Flaming Ember - 391
+	71400: {}, // Girdle of the Indomitable Flame - 391
+	71565: {}, // Necklace of Smoke Signals - 391
+	71566: {}, // Splintered Brimstone Seal - 391
+	71569: {}, // Flamebinder Bracers, - 391
+	71570: {}, // Bracers of Forked Lightning, - 391
+	71571: {}, // Emberflame Bracers, - 391
+	71572: {}, // Firesoul Wristguards, - 391
+	71573: {}, // Amulet of Burning Brilliance - 391
+	71574: {}, // Crystalline Brimstone Ring - 391
+	71576: {}, // Firemind Pendant - 391
+	71578: {}, // Soothing Brimstone Circle - 391
+	71581: {}, // Smolderskull Bindings, - 391
+	71582: {}, // Bracers of Misting Ash, - 391
+	71583: {}, // Bracers of Imperious Truths - 391
+	71584: {}, // Gigantiform Bracers, - 391
+	71585: {}, // Bracers of Regal Force, - 391
+	71586: {}, // Stoneheart Choker - 391
+	71588: {}, // Serrated Brimstone Signet - 391
+	71589: {}, // Stoneheart Necklace - 391
+	71591: {}, // Deflecting Brimstone Band - 391
 }
 
 // Item icons to include in the DB, so they don't need to be separately loaded in the UI.

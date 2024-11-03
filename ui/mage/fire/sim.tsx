@@ -33,7 +33,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.FIRE_P1_PRESET.gear,
+		gear: Presets.FIRE_P3_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.DEFAULT_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
@@ -69,7 +69,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		consumes: Presets.DefaultFireConsumes,
 		// Default rotation settings.
 		rotationType: APLRotation_Type.TypeSimple,
-		simpleRotation: Presets.P1DefaultSimpleRotation,
+		simpleRotation: Presets.P3TrollDefaultSimpleRotation,
 		// Default talents.
 		talents: Presets.FireTalents.data,
 		// Default spec-specific settings.
@@ -118,7 +118,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.FireTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.FIRE_P1_PRESET, Presets.FIRE_P1_PREBIS, Presets.FIRE_P3_PRESET],
+		gear: [Presets.FIRE_P1_PRESET, Presets.FIRE_P3_PREBIS, Presets.FIRE_P3_PRESET],
 		builds: [Presets.P1_PRESET_BUILD, Presets.P3_PRESET_BUILD, Presets.P3_PRESET_NO_TROLL],
 	},
 
@@ -207,12 +207,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.FIRE_P1_PRESET.gear,
-					2: Presets.FIRE_P1_PREBIS.gear,
+					1: Presets.FIRE_P3_PRESET.gear,
+					2: Presets.FIRE_P3_PREBIS.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.FIRE_P1_PRESET.gear,
-					2: Presets.FIRE_P1_PREBIS.gear,
+					1: Presets.FIRE_P3_PRESET.gear,
+					2: Presets.FIRE_P3_PREBIS.gear,
 				},
 			},
 		},
