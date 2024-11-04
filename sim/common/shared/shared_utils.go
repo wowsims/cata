@@ -143,7 +143,10 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, customHandler CustomPro
 		})
 
 		procAura.Icd = triggerAura.Icd
-		character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
+
+		if customHandler == nil {
+			character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
+		}
 	})
 }
 
