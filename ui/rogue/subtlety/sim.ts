@@ -143,7 +143,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
+		epWeights: [Presets.P1_EP_PRESET, Presets.P4_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.SubtletyTalents],
 		// Preset rotations that the user can quickly select.

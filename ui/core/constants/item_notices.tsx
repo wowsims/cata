@@ -164,49 +164,6 @@ export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 			[Spec.SpecDestructionWarlock]: DTR_FIRST_IMPLEMENTATION_WARNING,
 		},
 	],
-	// Rogue Legendary Daggers (All Stages)
-	[
-		// Fear
-		77945,
-		{
-			[Spec.SpecUnknown]: MISSING_IMPLEMENTATION_WARNING,
-		},
-	],
-	[
-		// Vengeance
-		77946,
-		{
-			[Spec.SpecUnknown]: MISSING_IMPLEMENTATION_WARNING,
-		},
-	],
-	[
-		// Sleeper
-		77947,
-		{
-			[Spec.SpecUnknown]: MISSING_IMPLEMENTATION_WARNING,
-		},
-	],
-	[
-		// Dreamer
-		77948,
-		{
-			[Spec.SpecUnknown]: MISSING_IMPLEMENTATION_WARNING,
-		},
-	],
-	[
-		// Golad
-		77949,
-		{
-			[Spec.SpecUnknown]: MISSING_IMPLEMENTATION_WARNING,
-		},
-	],
-	[
-		// Tiriosh
-		77950,
-		{
-			[Spec.SpecUnknown]: MISSING_IMPLEMENTATION_WARNING,
-		},
-	],
 	[
 		// VPLC - Normal
 		68925,

@@ -21,8 +21,8 @@ export const PRERAID_PRESET_COMBAT = PresetUtils.makePresetGear('Pre-Raid Combat
 export const ROTATION_PRESET_COMBAT = PresetUtils.makePresetAPLRotation('Combat', CombatApl);
 
 // Preset options for EP weights
-export const CBAT_HASTE_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'Combat',
+export const CBAT_STANDARD_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Combat Standard',
 	Stats.fromMap(
 		{
 			[Stat.StatAgility]: 2.85,
@@ -67,7 +67,7 @@ export const CBAT_4PT12_EP_PRESET = PresetUtils.makePresetEpWeights(
 );
 
 // Haste vs Mastery balancing changes when using Fear or Sleeper in MH
-export const CBAT_T13_EP_PRESET = PresetUtils.makePresetEpWeights(
+export const CBAT_DAGS_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Fear/Sleeper MH',
 	Stats.fromMap(
 		{
@@ -84,6 +84,28 @@ export const CBAT_T13_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[PseudoStat.PseudoStatMainHandDps]: 4.31,
 			[PseudoStat.PseudoStatOffHandDps]: 1.32,
 			[PseudoStat.PseudoStatSpellHitPercent]: 46,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 210,
+		},
+	),
+);
+
+export const CBAT_LEGO_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Legendary MH',
+	Stats.fromMap(
+		{
+			[Stat.StatAgility]: 2.89,
+			[Stat.StatStrength]: 1.05,
+			[Stat.StatAttackPower]: 1,
+			[Stat.StatCritRating]: 1.18,
+			[Stat.StatHitRating]: 2.21,
+			[Stat.StatHasteRating]: 1.94,
+			[Stat.StatMasteryRating]: 1.57,
+			[Stat.StatExpertiseRating]: 2.1,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 4.31,
+			[PseudoStat.PseudoStatOffHandDps]: 1.32,
+			[PseudoStat.PseudoStatSpellHitPercent]: 49,
 			[PseudoStat.PseudoStatPhysicalHitPercent]: 210,
 		},
 	),

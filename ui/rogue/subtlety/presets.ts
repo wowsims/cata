@@ -21,7 +21,7 @@ export const ROTATION_PRESET_SUBTLETY = PresetUtils.makePresetAPLRotation('Subtl
 
 // Preset options for EP weights
 export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'Subtlety',
+	'Sub Default',
 	Stats.fromMap(
 		{
 			[Stat.StatAgility]: 3.84,
@@ -37,6 +37,28 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[PseudoStat.PseudoStatMainHandDps]: 7.16,
 			[PseudoStat.PseudoStatOffHandDps]: 1.07,
 			[PseudoStat.PseudoStatSpellHitPercent]: 39.59,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 216.76,
+		},
+	),
+);
+
+export const P4_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Sub Legendary Dags',
+	Stats.fromMap(
+		{
+			[Stat.StatAgility]: 3.84,
+			[Stat.StatStrength]: 1.05,
+			[Stat.StatAttackPower]: 1,
+			[Stat.StatCritRating]: 1.42,
+			[Stat.StatHitRating]: 2.19,
+			[Stat.StatHasteRating]: 1.67,
+			[Stat.StatMasteryRating]: 1.32,
+			[Stat.StatExpertiseRating]: 1.76,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 7.16,
+			[PseudoStat.PseudoStatOffHandDps]: 1.07,
+			[PseudoStat.PseudoStatSpellHitPercent]: 49.09,
 			[PseudoStat.PseudoStatPhysicalHitPercent]: 216.76,
 		},
 	),

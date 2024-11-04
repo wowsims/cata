@@ -7,7 +7,7 @@ import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_u
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
-import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
+import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, WeaponType } from '../../core/proto/common';
 import { RogueOptions_PoisonImbue } from '../../core/proto/rogue';
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
@@ -55,7 +55,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 		// Default equipped gear.
 		gear: Presets.P3_PRESET_COMBAT.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.CBAT_HASTE_EP_PRESET.epWeights,
+		epWeights: Presets.CBAT_STANDARD_EP_PRESET.epWeights,
 		// Stat caps for reforge optimizer
 		statCaps: (() => {
 			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
@@ -149,7 +149,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	},
 
 	presets: {
-		epWeights: [Presets.CBAT_HASTE_EP_PRESET, Presets.CBAT_4PT12_EP_PRESET, Presets.CBAT_T13_EP_PRESET],
+		epWeights: [Presets.CBAT_STANDARD_EP_PRESET, Presets.CBAT_4PT12_EP_PRESET, Presets.CBAT_DAGS_EP_PRESET, Presets.CBAT_LEGO_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.CombatTalents],
 		// Preset rotations that the user can quickly select.
@@ -208,6 +208,15 @@ export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 							hasteSoftCap.postCapEPs = [hasteEP, hasteEP, hasteEP, hasteEP, hasteEP - 0.5]
 						else
 							hasteSoftCap.postCapEPs = [hasteEP - 0.1, hasteEP - 0.2, hasteEP - 0.3, hasteEP - 0.4, hasteEP - 0.5]
+					}
+
+					const mhWepType = player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponType;
+					const ohWepType = player.getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponType;
+					if (mhWepType == WeaponType.WeaponTypeDagger && ohWepType == WeaponType.WeaponTypeDagger) {
+						const whiteHitEP = softCaps.find(x => x.unitStat.equalsPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent))
+						if (whiteHitEP) {
+							whiteHitEP.postCapEPs = [128, 0]
+						}
 					}
 
 					return softCaps
