@@ -82,6 +82,7 @@ type Druid struct {
 	BearForm *DruidSpell
 
 	BarkskinAura             *core.Aura
+	BlazeOfGloryAura         *core.Aura
 	BearFormAura             *core.Aura
 	BerserkAura              *core.Aura
 	BerserkProcAura          *core.Aura
@@ -266,6 +267,7 @@ func (druid *Druid) Initialize() {
 
 	druid.Env.RegisterPostFinalizeEffect(func() {
 		druid.MHAutoSpell = druid.AutoAttacks.MHAuto()
+		druid.BlazeOfGloryAura = druid.GetAura("Blaze of Glory")
 	})
 
 	// Leather spec would always provide 5% intellect regardless of the Druid spec or form

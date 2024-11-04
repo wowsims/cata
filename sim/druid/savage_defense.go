@@ -17,8 +17,14 @@ func (druid *Druid) registerSavageDefensePassive() {
 		core.ActionID{SpellID: 62606},
 		10*time.Second,
 		core.SpellSchoolPhysical,
-		func(unit *core.Unit) float64 {
-			return 0.35 * druid.GetStat(stats.AttackPower) * (1.32 + 0.04*core.MasteryRatingToMasteryPoints(druid.GetStat(stats.MasteryRating)))
+		func(_ *core.Unit) float64 {
+			freshShieldStrength := 0.35 * druid.GetStat(stats.AttackPower) * (1.32 + 0.04*druid.GetMasteryPoints())
+
+			if druid.BlazeOfGloryAura.IsActive() {
+				freshShieldStrength *= 1.0 + 0.2*float64(druid.BlazeOfGloryAura.GetStacks())
+			}
+
+			return freshShieldStrength
 		})
 
 	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{

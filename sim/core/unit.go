@@ -167,8 +167,9 @@ type Unit struct {
 
 	CastSpeed float64
 
-	CurrentTarget *Unit
-	defaultTarget *Unit
+	CurrentTarget   *Unit
+	defaultTarget   *Unit
+	SecondaryTarget *Unit // Only used for NPCs in tank swap AIs currently.
 
 	// The currently-channeled DOT spell, otherwise nil.
 	ChanneledDot *Dot
