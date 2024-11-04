@@ -1015,6 +1015,8 @@ message HealingModel {
 	double cadence_seconds = 2;
 	// Variation in the cadence.
 	double cadence_variation = 5;
+	// Fraction of each heal to model as an absorb shield.
+	double absorb_frac = 6;
 	// % Inspiration buff uptime
 	double inspiration_uptime = 3;
 	// TMI burst window bin size
