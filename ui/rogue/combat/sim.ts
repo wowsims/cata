@@ -65,7 +65,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 			// Running just under spell cap is typically preferrable to being over.
 			const spellHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent, {
 				breakpoints: [16.95, 16.96, 16.97, 16.98, 16.99, 17],
-				capType: StatCapType.TypeSoftCap,
+				capType: StatCapType.TypeThreshold,
 				postCapEPs: [0, 0, 0, 0, 0, 0],
 			});
 
@@ -76,7 +76,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 			});
 
 			const hasteRatingSoftCapConfig = StatCap.fromStat(Stat.StatHasteRating, {
-				breakpoints: [2070, 2150, 2250, 2450, 2650],
+				breakpoints: [2070, 2150, 2250, 2450, 2700],
 				capType: StatCapType.TypeSoftCap,
 				// These are set by the active EP weight in the updateSoftCaps callback
 				postCapEPs: [0, 0, 0, 0, 0],
@@ -149,7 +149,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	},
 
 	presets: {
-		epWeights: [Presets.CBAT_STANDARD_EP_PRESET, Presets.CBAT_4PT12_EP_PRESET, Presets.CBAT_DAGS_EP_PRESET, Presets.CBAT_LEGO_EP_PRESET],
+		epWeights: [Presets.CBAT_STANDARD_EP_PRESET, Presets.CBAT_4PT12_EP_PRESET, Presets.CBAT_LEGO_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.CombatTalents],
 		// Preset rotations that the user can quickly select.
@@ -199,20 +199,19 @@ export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
 				updateSoftCaps: (softCaps: StatCap[]) => {
+					const mhWepId = player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.id
 					const hasteEP = player.getEpWeights().getStat(Stat.StatHasteRating);
 					const hasteSoftCap = softCaps.find(v => v.unitStat.equalsStat(Stat.StatHasteRating));
 					if (hasteSoftCap) {
-						// If wearing either Fear or Sleeper in MH, Haste EP remains high until ~2650 rating
-						const mHWep = player.getEquippedItem(ItemSlot.ItemSlotMainHand)
-						if (mHWep != null && (mHWep.id == 77945 || mHWep.id == 77947))
+						// If wearing either Fear or Sleeper in MH, Haste EP remains high until ~2700 rating
+						if (mhWepId == 77945 || mhWepId == 77947)
 							hasteSoftCap.postCapEPs = [hasteEP, hasteEP, hasteEP, hasteEP, hasteEP - 0.5]
 						else
 							hasteSoftCap.postCapEPs = [hasteEP - 0.1, hasteEP - 0.2, hasteEP - 0.3, hasteEP - 0.4, hasteEP - 0.5]
 					}
 
-					const mhWepType = player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponType;
-					const ohWepType = player.getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponType;
-					if (mhWepType == WeaponType.WeaponTypeDagger && ohWepType == WeaponType.WeaponTypeDagger) {
+					// Any legendary stage MH pushes up hit EP
+					if (mhWepId == 77945 || mhWepId == 77947 || mhWepId == 77949) {
 						const whiteHitEP = softCaps.find(x => x.unitStat.equalsPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent))
 						if (whiteHitEP) {
 							whiteHitEP.postCapEPs = [128, 0]

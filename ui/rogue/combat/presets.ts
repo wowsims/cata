@@ -66,34 +66,11 @@ export const CBAT_4PT12_EP_PRESET = PresetUtils.makePresetEpWeights(
 	),
 );
 
-// Haste vs Mastery balancing changes when using Fear or Sleeper in MH
-export const CBAT_DAGS_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'Fear/Sleeper MH',
+export const CBAT_LEGO_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Combat Legendary',
 	Stats.fromMap(
 		{
 			[Stat.StatAgility]: 2.85,
-			[Stat.StatStrength]: 1.05,
-			[Stat.StatAttackPower]: 1,
-			[Stat.StatCritRating]: 1.05,
-			[Stat.StatHitRating]: 2.21,
-			[Stat.StatHasteRating]: 1.66,
-			[Stat.StatMasteryRating]: 1.33,
-			[Stat.StatExpertiseRating]: 1.74,
-		},
-		{
-			[PseudoStat.PseudoStatMainHandDps]: 4.31,
-			[PseudoStat.PseudoStatOffHandDps]: 1.32,
-			[PseudoStat.PseudoStatSpellHitPercent]: 46,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 210,
-		},
-	),
-);
-
-export const CBAT_LEGO_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'Legendary MH',
-	Stats.fromMap(
-		{
-			[Stat.StatAgility]: 2.89,
 			[Stat.StatStrength]: 1.05,
 			[Stat.StatAttackPower]: 1,
 			[Stat.StatCritRating]: 1.18,
