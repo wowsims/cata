@@ -321,7 +321,7 @@ func init() {
 		ICD:        time.Second * 50,
 	})
 
-	shared.NewProcStatBonusEffectWithCustomCondition(shared.ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Sorrowsong",
 		ID:         55879,
 		AuraID:     90990,
@@ -332,11 +332,13 @@ func init() {
 		Outcome:    core.OutcomeLanded,
 		ProcChance: 1.0,
 		ICD:        time.Second * 20,
-	}, func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) bool {
-		return sim.IsExecutePhase35()
+
+		CustomProcCondition: func(sim *core.Simulation, _ *core.Aura) bool {
+			return sim.IsExecutePhase35()
+		},
 	})
 
-	shared.NewProcStatBonusEffectWithCustomCondition(shared.ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Sorrowsong (Heroic)",
 		ID:         56400,
 		AuraID:     91002,
@@ -347,8 +349,10 @@ func init() {
 		Outcome:    core.OutcomeLanded,
 		ProcChance: 1.0,
 		ICD:        time.Second * 20,
-	}, func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) bool {
-		return sim.IsExecutePhase35()
+
+		CustomProcCondition: func(sim *core.Simulation, _ *core.Aura) bool {
+			return sim.IsExecutePhase35()
+		},
 	})
 
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
@@ -605,7 +609,7 @@ func init() {
 		ICD:        time.Second * 100,
 	})
 
-	shared.NewProcStatBonusEffectWithCustomCondition(shared.ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Symbiotic Worm",
 		ID:         59332,
 		AuraID:     92235,
@@ -616,11 +620,13 @@ func init() {
 		Outcome:    core.OutcomeLanded,
 		ProcChance: 1,
 		ICD:        time.Second * 30,
-	}, func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
-		return result.Target.CurrentHealthPercent() < 0.35
+
+		CustomProcCondition: func(_ *core.Simulation, aura *core.Aura) bool {
+			return aura.Unit.CurrentHealthPercent() < 0.35
+		},
 	})
 
-	shared.NewProcStatBonusEffectWithCustomCondition(shared.ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Symbiotic Worm (Heroic)",
 		ID:         65048,
 		AuraID:     92355,
@@ -631,8 +637,10 @@ func init() {
 		Outcome:    core.OutcomeLanded,
 		ProcChance: 1,
 		ICD:        time.Second * 30,
-	}, func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
-		return result.Target.CurrentHealthPercent() < 0.35
+
+		CustomProcCondition: func(_ *core.Simulation, aura *core.Aura) bool {
+			return aura.Unit.CurrentHealthPercent() < 0.35
+		},
 	})
 
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
@@ -739,7 +747,7 @@ func init() {
 		ICD:        time.Second * 75,
 	})
 
-	shared.NewProcStatBonusEffectWithCustomCondition(shared.ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Bedrock Talisman",
 		ID:         58182,
 		AuraID:     92233,
@@ -750,8 +758,10 @@ func init() {
 		Outcome:    core.OutcomeLanded,
 		ProcChance: 1,
 		ICD:        time.Second * 30,
-	}, func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
-		return result.Target.CurrentHealthPercent() < 0.35
+
+		CustomProcCondition: func(_ *core.Simulation, aura *core.Aura) bool {
+			return aura.Unit.CurrentHealthPercent() < 0.35
+		},
 	})
 
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
