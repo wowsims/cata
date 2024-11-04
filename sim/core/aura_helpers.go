@@ -194,6 +194,8 @@ func MakeProcTriggerAura(unit *Unit, config ProcTrigger) *Aura {
 	return unit.GetOrRegisterAura(aura)
 }
 
+type CustomStatBuffProcCondition func(sim *Simulation, aura *Aura) bool
+
 // Analog to an Aura "sub-class" that additionally links the Aura to one or more
 // Stats. Used within APL snapshotting wrappers.
 type StatBuffAura struct {
@@ -202,6 +204,10 @@ type StatBuffAura struct {
 	// All Stat types that are buffed (before dependencies) when this Aura
 	// is activated.
 	BuffedStatTypes []stats.Stat
+
+	// Any special conditions (beyond standard ICD checks etc.) that must be
+	// satisfied before this Aura can be activated.
+	CustomProcCondition CustomStatBuffProcCondition
 }
 
 func (aura *StatBuffAura) BuffsMatchingStat(statTypesToMatch []stats.Stat) bool {
@@ -210,6 +216,10 @@ func (aura *StatBuffAura) BuffsMatchingStat(statTypesToMatch []stats.Stat) bool 
 	}
 
 	return CheckSliceOverlap(aura.BuffedStatTypes, statTypesToMatch)
+}
+
+func (aura *StatBuffAura) CanProc(sim *Simulation) bool {
+	return (aura.CustomProcCondition == nil) || aura.CustomProcCondition(sim, aura.Aura)
 }
 
 type StackingStatAura struct {

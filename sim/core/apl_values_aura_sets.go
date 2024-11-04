@@ -70,7 +70,7 @@ func (value *APLValueAllTrinketStatProcsActive) Type() proto.APLValueType {
 }
 func (value *APLValueAllTrinketStatProcsActive) GetBool(sim *Simulation) bool {
 	for _, aura := range value.matchingAuras {
-		if !aura.IsActive() || (aura.GetStacks() < aura.MaxStacks) {
+		if (!aura.IsActive() || (aura.GetStacks() < aura.MaxStacks)) && aura.CanProc(sim) {
 			return false
 		}
 	}
