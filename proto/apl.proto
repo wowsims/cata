@@ -82,7 +82,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 82
+// NextIndex: 84
 message APLValue {
     oneof value {
         // Operators
@@ -193,6 +193,7 @@ message APLValue {
         APLValueCurrentEclipsePhase druid_current_eclipse_phase = 70;
 		APLValueMageCurrentCombustionDotEstimate mage_current_combustion_dot_estimate = 77;
 		APLValueShamanCanSnapshotStrongerFireElemental shaman_can_snapshot_stronger_fire_elemental = 82;
+        APLValueShamanFireElementalDuration shaman_fire_elemental_duration = 83;
     }
 }
 
@@ -623,4 +624,6 @@ message APLValueWarlockShouldRefreshCorruption {
 message APLValueMageCurrentCombustionDotEstimate {
 }
 message APLValueShamanCanSnapshotStrongerFireElemental {
+}
+message APLValueShamanFireElementalDuration {
 }

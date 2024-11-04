@@ -15,6 +15,8 @@ func (shaman *Shaman) NewAPLValue(rot *core.APLRotation, config *proto.APLValue)
 		return shaman.newValueTotemRemainingTime(rot, config.GetTotemRemainingTime())
 	case *proto.APLValue_ShamanCanSnapshotStrongerFireElemental:
 		return shaman.newValueCanSnapshotStrongerFireElemental(config.GetShamanCanSnapshotStrongerFireElemental())
+	case *proto.APLValue_ShamanFireElementalDuration:
+		return shaman.newValueFireElementalDuration(config.GetShamanFireElementalDuration())
 	default:
 		return nil
 	}
@@ -84,4 +86,29 @@ func (value *APLValueShamanCanSnapshotStrongerFireElemental) GetBool(sim *core.S
 
 func (value *APLValueShamanCanSnapshotStrongerFireElemental) String() string {
 	return "Can Snapshot Stronger Fire Elemental"
+}
+
+type APLValueShamanFireElementalDuration struct {
+	core.DefaultAPLValueImpl
+	shaman   *Shaman
+	duration time.Duration
+}
+
+func (shaman *Shaman) newValueFireElementalDuration(_ *proto.APLValueShamanFireElementalDuration) core.APLValue {
+	return &APLValueShamanFireElementalDuration{
+		shaman:   shaman,
+		duration: time.Second * time.Duration(120*(1.0+0.20*float64(shaman.Talents.TotemicFocus))),
+	}
+}
+
+func (value *APLValueShamanFireElementalDuration) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeDuration
+}
+
+func (value *APLValueShamanFireElementalDuration) GetDuration(sim *core.Simulation) time.Duration {
+	return value.duration
+}
+
+func (value *APLValueShamanFireElementalDuration) String() string {
+	return "Fire Elemental Total Duration"
 }
