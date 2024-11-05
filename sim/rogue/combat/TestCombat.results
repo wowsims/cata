@@ -324,6 +324,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestCombat-AllItems-CataclysmicGladiator'sInsigniaofConquest-73643"
+ value: {
+  dps: 30135.83435
+  tps: 21396.44239
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-CataclysmicGladiator'sInsigniaofDominance-73497"
+ value: {
+  dps: 27844.47743
+  tps: 19769.57898
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-CataclysmicGladiator'sInsigniaofVictory-73491"
+ value: {
+  dps: 28742.36461
+  tps: 20407.07887
+ }
+}
+dps_results: {
  key: "TestCombat-AllItems-ChaoticShadowspiritDiamond"
  value: {
   dps: 29807.2584
@@ -1395,6 +1416,48 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestCombat-AllItems-RuthlessGladiator'sInsigniaofConquest-70404"
+ value: {
+  dps: 29823.5389
+  tps: 21174.71262
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-RuthlessGladiator'sInsigniaofConquest-72309"
+ value: {
+  dps: 29904.6229
+  tps: 21232.28226
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-RuthlessGladiator'sInsigniaofDominance-70402"
+ value: {
+  dps: 27844.47743
+  tps: 19769.57898
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-RuthlessGladiator'sInsigniaofDominance-72449"
+ value: {
+  dps: 27844.47743
+  tps: 19769.57898
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-RuthlessGladiator'sInsigniaofVictory-70403"
+ value: {
+  dps: 28583.83273
+  tps: 20294.52124
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-RuthlessGladiator'sInsigniaofVictory-72455"
+ value: {
+  dps: 28639.6684
+  tps: 20334.16457
+ }
+}
+dps_results: {
  key: "TestCombat-AllItems-ScalesofLife-68915"
  value: {
   dps: 27844.47743
@@ -1938,8 +2001,15 @@ dps_results: {
 dps_results: {
  key: "TestCombat-AllItems-ViciousGladiator'sInsigniaofConquest-61047"
  value: {
-  dps: 29392.24657
-  tps: 20868.49506
+  dps: 29398.75794
+  tps: 20873.11814
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-ViciousGladiator'sInsigniaofConquest-70577"
+ value: {
+  dps: 29568.95471
+  tps: 20993.95785
  }
 }
 dps_results: {
@@ -1950,10 +2020,24 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestCombat-AllItems-ViciousGladiator'sInsigniaofDominance-70578"
+ value: {
+  dps: 27844.47743
+  tps: 19769.57898
+ }
+}
+dps_results: {
  key: "TestCombat-AllItems-ViciousGladiator'sInsigniaofVictory-61046"
  value: {
-  dps: 28439.79053
-  tps: 20192.25127
+  dps: 28430.90655
+  tps: 20185.94365
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-ViciousGladiator'sInsigniaofVictory-70579"
+ value: {
+  dps: 28509.88053
+  tps: 20242.01518
  }
 }
 dps_results: {

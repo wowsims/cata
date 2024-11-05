@@ -310,6 +310,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-CataclysmicGladiator'sInsigniaofConquest-73643"
+ value: {
+  dps: 24214.17409
+  tps: 17192.06361
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-CataclysmicGladiator'sInsigniaofDominance-73497"
+ value: {
+  dps: 22185.24075
+  tps: 15751.52093
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-CataclysmicGladiator'sInsigniaofVictory-73491"
+ value: {
+  dps: 22759.05098
+  tps: 16158.9262
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-ChaoticShadowspiritDiamond"
  value: {
   dps: 23779.79405
@@ -1353,6 +1374,48 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-RuthlessGladiator'sInsigniaofConquest-70404"
+ value: {
+  dps: 23937.46573
+  tps: 16995.60067
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-RuthlessGladiator'sInsigniaofConquest-72309"
+ value: {
+  dps: 23941.76285
+  tps: 16998.65162
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-RuthlessGladiator'sInsigniaofDominance-70402"
+ value: {
+  dps: 22185.24075
+  tps: 15751.52093
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-RuthlessGladiator'sInsigniaofDominance-72449"
+ value: {
+  dps: 22185.24075
+  tps: 15751.52093
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-RuthlessGladiator'sInsigniaofVictory-70403"
+ value: {
+  dps: 22644.9101
+  tps: 16077.88617
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-RuthlessGladiator'sInsigniaofVictory-72455"
+ value: {
+  dps: 22693.32798
+  tps: 16112.26286
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-ScalesofLife-68915"
  value: {
   dps: 22185.24075
@@ -1868,8 +1931,15 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-ViciousGladiator'sInsigniaofConquest-61047"
  value: {
-  dps: 23614.13142
-  tps: 16766.03331
+  dps: 23584.62298
+  tps: 16745.08232
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-ViciousGladiator'sInsigniaofConquest-70577"
+ value: {
+  dps: 23654.01733
+  tps: 16794.3523
  }
 }
 dps_results: {
@@ -1880,10 +1950,24 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-ViciousGladiator'sInsigniaofDominance-70578"
+ value: {
+  dps: 22185.24075
+  tps: 15751.52093
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-ViciousGladiator'sInsigniaofVictory-61046"
  value: {
-  dps: 22559.29937
-  tps: 16017.10255
+  dps: 22559.78963
+  tps: 16017.45064
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-ViciousGladiator'sInsigniaofVictory-70579"
+ value: {
+  dps: 22590.7513
+  tps: 16039.43343
  }
 }
 dps_results: {

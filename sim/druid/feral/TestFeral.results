@@ -310,6 +310,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-CataclysmicGladiator'sInsigniaofConquest-73643"
+ value: {
+  dps: 32789.56075
+  tps: 44025.75567
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-CataclysmicGladiator'sInsigniaofDominance-73497"
+ value: {
+  dps: 30451.89097
+  tps: 42178.62167
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-CataclysmicGladiator'sInsigniaofVictory-73491"
+ value: {
+  dps: 31411.46698
+  tps: 43168.02993
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-ChaoticShadowspiritDiamond"
  value: {
   dps: 32403.59284
@@ -1409,6 +1430,48 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-RuthlessGladiator'sInsigniaofConquest-70404"
+ value: {
+  dps: 32426.45577
+  tps: 43963.55541
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-RuthlessGladiator'sInsigniaofConquest-72309"
+ value: {
+  dps: 32466.1948
+  tps: 44398.17973
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-RuthlessGladiator'sInsigniaofDominance-70402"
+ value: {
+  dps: 30459.43575
+  tps: 42110.96042
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-RuthlessGladiator'sInsigniaofDominance-72449"
+ value: {
+  dps: 30456.52233
+  tps: 42111.61948
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-RuthlessGladiator'sInsigniaofVictory-70403"
+ value: {
+  dps: 31229.73342
+  tps: 43650.11261
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-RuthlessGladiator'sInsigniaofVictory-72455"
+ value: {
+  dps: 31291.05062
+  tps: 43279.80907
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-ScalesofLife-68915"
  value: {
   dps: 30459.43575
@@ -1959,22 +2022,43 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-ViciousGladiator'sInsigniaofConquest-61047"
  value: {
-  dps: 32092.5365
-  tps: 44697.51398
+  dps: 32036.80804
+  tps: 44828.14074
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-ViciousGladiator'sInsigniaofConquest-70577"
+ value: {
+  dps: 32242.20239
+  tps: 44018.99287
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-ViciousGladiator'sInsigniaofDominance-61045"
  value: {
-  dps: 30459.43575
-  tps: 42110.96042
+  dps: 30476.82925
+  tps: 42312.27644
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-ViciousGladiator'sInsigniaofDominance-70578"
+ value: {
+  dps: 30446.93736
+  tps: 41946.74216
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-ViciousGladiator'sInsigniaofVictory-61046"
  value: {
-  dps: 31161.43527
-  tps: 43117.5235
+  dps: 31168.62141
+  tps: 43254.31545
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-ViciousGladiator'sInsigniaofVictory-70579"
+ value: {
+  dps: 31154.60415
+  tps: 44015.80547
  }
 }
 dps_results: {

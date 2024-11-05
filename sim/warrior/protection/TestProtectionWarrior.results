@@ -323,6 +323,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-CataclysmicGladiator'sInsigniaofConquest-73643"
+ value: {
+  dps: 4824.07974
+  tps: 29350.90468
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-CataclysmicGladiator'sInsigniaofDominance-73497"
+ value: {
+  dps: 4688.32477
+  tps: 28597.5739
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-CataclysmicGladiator'sInsigniaofVictory-73491"
+ value: {
+  dps: 5045.62069
+  tps: 30784.62672
+ }
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-ChaoticShadowspiritDiamond"
  value: {
   dps: 4736.57086
@@ -1450,6 +1471,48 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-RuthlessGladiator'sInsigniaofConquest-70404"
+ value: {
+  dps: 4798.63716
+  tps: 29195.53656
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-RuthlessGladiator'sInsigniaofConquest-72309"
+ value: {
+  dps: 4807.99237
+  tps: 29255.66345
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-RuthlessGladiator'sInsigniaofDominance-70402"
+ value: {
+  dps: 4688.32477
+  tps: 28597.5739
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-RuthlessGladiator'sInsigniaofDominance-72449"
+ value: {
+  dps: 4688.32477
+  tps: 28597.5739
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-RuthlessGladiator'sInsigniaofVictory-70403"
+ value: {
+  dps: 4988.59152
+  tps: 30442.31011
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-RuthlessGladiator'sInsigniaofVictory-72455"
+ value: {
+  dps: 5000.48574
+  tps: 30506.31952
+ }
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-ScalesofLife-68915"
  value: {
   dps: 4688.32477
@@ -1970,8 +2033,15 @@ dps_results: {
 dps_results: {
  key: "TestProtectionWarrior-AllItems-ViciousGladiator'sInsigniaofConquest-61047"
  value: {
-  dps: 4774.59278
-  tps: 29066.37732
+  dps: 4770.30777
+  tps: 29040.91761
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-ViciousGladiator'sInsigniaofConquest-70577"
+ value: {
+  dps: 4797.61413
+  tps: 29200.71884
  }
 }
 dps_results: {
@@ -1982,10 +2052,24 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-ViciousGladiator'sInsigniaofDominance-70578"
+ value: {
+  dps: 4688.32477
+  tps: 28597.5739
+ }
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-ViciousGladiator'sInsigniaofVictory-61046"
  value: {
-  dps: 4925.14006
-  tps: 30044.40838
+  dps: 4925.105
+  tps: 30051.21194
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-ViciousGladiator'sInsigniaofVictory-70579"
+ value: {
+  dps: 4953.89904
+  tps: 30231.54253
  }
 }
 dps_results: {
