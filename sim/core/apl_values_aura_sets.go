@@ -151,5 +151,7 @@ func (value *APLValueNumEquippedStatProcTrinkets) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeInt
 }
 func (value *APLValueNumEquippedStatProcTrinkets) GetInt(sim *Simulation) int32 {
-	return int32(len(value.matchingAuras))
+	return int32(len(FilterSlice(value.matchingAuras, func(aura *StatBuffAura) bool {
+		return aura.CanProc(sim)
+	})))
 }
