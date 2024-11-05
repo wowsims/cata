@@ -14,9 +14,11 @@ type EarthElemental struct {
 	shamanOwner *Shaman
 }
 
+var EarthElementalSpellPowerScaling = 0.749
+
 func (shaman *Shaman) NewEarthElemental(bonusSpellPower float64) *EarthElemental {
 	earthElemental := &EarthElemental{
-		Pet:         core.NewPet("Greater Earth Elemental", &shaman.Character, earthElementalPetBaseStats, shaman.earthElementalStatInheritance(), false, true),
+		Pet:         core.NewPet("Greater Earth Elemental", &shaman.Character, earthElementalPetBaseStats, shaman.earthElementalStatInheritance(bonusSpellPower), false, true),
 		shamanOwner: shaman,
 	}
 	earthElemental.EnableManaBar()
@@ -51,7 +53,7 @@ func (shaman *Shaman) NewEarthElemental(bonusSpellPower float64) *EarthElemental
 }
 
 func (earthElemental *EarthElemental) enable(sim *core.Simulation) {
-
+	earthElemental.ChangeStatInheritance(earthElemental.shamanOwner.earthElementalStatInheritance(0))
 }
 
 func (earthElemental *EarthElemental) disable(sim *core.Simulation) {
@@ -82,14 +84,14 @@ var earthElementalPetBaseStats = stats.Stats{
 	stats.PhysicalCritPercent: 6.8, //TODO need testing
 }
 
-func (shaman *Shaman) earthElementalStatInheritance() core.PetStatInheritance {
+func (shaman *Shaman) earthElementalStatInheritance(bonusSpellPower float64) core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
 		flooredOwnerSpellHitPercent := math.Floor(ownerStats[stats.SpellHitPercent])
 		hitRatingFromOwner := flooredOwnerSpellHitPercent * core.SpellHitRatingPerHitPercent
 
 		return stats.Stats{
-			stats.Stamina:     ownerStats[stats.Stamina] * 1.06,     //TODO need to be more accurate
-			stats.AttackPower: ownerStats[stats.SpellPower] * 0.749, // 0.107 * 7 TODO need to be more accurate
+			stats.Stamina:     ownerStats[stats.Stamina] * 1.06,                                                   //TODO need to be more accurate
+			stats.AttackPower: (ownerStats[stats.SpellPower] + bonusSpellPower) * EarthElementalSpellPowerScaling, // 0.107 * 7 TODO need to be more accurate
 
 			stats.HitRating: hitRatingFromOwner,
 

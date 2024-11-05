@@ -75,7 +75,7 @@ func (value *APLValueShamanCanSnapshotStrongerFireElemental) GetBool(sim *core.S
 	shaman := value.shaman
 
 	if shaman.FireElemental.IsEnabled() {
-		simulatedStats := shaman.fireElementalStatInheritance()(shaman.GetStats())
+		simulatedStats := shaman.fireElementalStatInheritance(0, 0)(shaman.GetStats())
 		potentialFireElementalSpellPower := simulatedStats[stats.SpellPower]
 		currentFireElementalSpellPower := shaman.FireElemental.GetPet().GetInheritedStats()[stats.SpellPower]
 		return potentialFireElementalSpellPower > currentFireElementalSpellPower

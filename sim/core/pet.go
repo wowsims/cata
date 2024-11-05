@@ -286,6 +286,10 @@ func (pet *Pet) Disable(sim *Simulation) {
 	}
 }
 
+func (pet *Pet) ChangeStatInheritance(statInheritance PetStatInheritance) {
+	pet.statInheritance = statInheritance
+}
+
 func (pet *Pet) GetInheritedStats() stats.Stats {
 	return pet.inheritedStats
 }
