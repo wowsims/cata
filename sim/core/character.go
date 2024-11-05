@@ -691,9 +691,9 @@ func (character *Character) GetOffensiveTrinketCD() *Timer {
 func (character *Character) GetConjuredCD() *Timer {
 	return character.GetOrInitTimer(&character.conjuredCD)
 }
-func (character *Character) GetMatchingTrinketProcAuras(statTypesToMatch []stats.Stat) []*StatBuffAura {
+func (character *Character) GetMatchingTrinketProcAuras(statTypesToMatch []stats.Stat, excludeStackingProcs bool) []*StatBuffAura {
 	return FilterSlice(character.TrinketProcBuffs, func(aura *StatBuffAura) bool {
-		return aura.BuffsMatchingStat(statTypesToMatch)
+		return aura.BuffsMatchingStat(statTypesToMatch) && (!excludeStackingProcs || (aura.MaxStacks <= 1))
 	})
 }
 
