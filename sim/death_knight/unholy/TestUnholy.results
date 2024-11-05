@@ -238,9 +238,9 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-BloodthirstyGladiator'sInsigniaofVictory-64763"
  value: {
-  dps: 40752.95483
-  tps: 30180.52187
-  hps: 650.42743
+  dps: 40702.55079
+  tps: 30089.51851
+  hps: 646.50919
  }
 }
 dps_results: {
@@ -366,17 +366,17 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-CrecheoftheFinalDragon-77205"
  value: {
-  dps: 42817.63301
-  tps: 31639.4242
-  hps: 666.88402
+  dps: 42713.86239
+  tps: 31561.79944
+  hps: 662.96579
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-CrecheoftheFinalDragon-77972"
  value: {
-  dps: 42456.19347
-  tps: 31423.66525
-  hps: 666.10038
+  dps: 42392.0488
+  tps: 31378.17935
+  hps: 659.8312
  }
 }
 dps_results: {
@@ -494,9 +494,9 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-Dwyer'sCaber-70141"
  value: {
-  dps: 41609.12403
-  tps: 30825.91377
-  hps: 665.31673
+  dps: 41588.66192
+  tps: 30801.38261
+  hps: 663.74943
  }
 }
 dps_results: {
@@ -550,17 +550,17 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-EssenceoftheCyclone-59473"
  value: {
-  dps: 40490.03885
-  tps: 30007.86725
-  hps: 658.2639
+  dps: 40314.67277
+  tps: 29802.76068
+  hps: 651.99472
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-EssenceoftheCyclone-65140"
  value: {
-  dps: 40675.28629
-  tps: 30131.57388
-  hps: 661.39849
+  dps: 40614.87311
+  tps: 30089.04382
+  hps: 656.69661
  }
 }
 dps_results: {
@@ -582,17 +582,17 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-EyeofUnmaking-77200"
  value: {
-  dps: 42812.96149
-  tps: 31678.83179
-  hps: 650.42743
+  dps: 42772.41642
+  tps: 31608.8427
+  hps: 649.64378
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-EyeofUnmaking-77977"
  value: {
-  dps: 42429.1085
-  tps: 31403.01457
-  hps: 650.42743
+  dps: 42387.81778
+  tps: 31333.2138
+  hps: 649.64378
  }
 }
 dps_results: {
@@ -766,17 +766,17 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-GraceoftheHerald-55266"
  value: {
-  dps: 39914.24352
-  tps: 29573.22244
-  hps: 653.56202
+  dps: 39871.93312
+  tps: 29475.66556
+  hps: 644.94189
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-GraceoftheHerald-56295"
  value: {
-  dps: 40161.30497
-  tps: 29750.15471
-  hps: 657.48025
+  dps: 39915.82911
+  tps: 29509.36276
+  hps: 647.29284
  }
 }
 dps_results: {
@@ -838,17 +838,17 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-HeartofRage-59224"
  value: {
-  dps: 41550.44112
-  tps: 30772.59537
-  hps: 659.04755
+  dps: 41492.19894
+  tps: 30671.14713
+  hps: 652.77837
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-HeartofSolace-55868"
  value: {
-  dps: 41355.84588
-  tps: 30519.27702
-  hps: 652.77837
+  dps: 41458.34656
+  tps: 30598.3368
+  hps: 658.2639
  }
 }
 dps_results: {
@@ -878,9 +878,9 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-HeartoftheVile-66969"
  value: {
-  dps: 39930.65117
-  tps: 29591.25436
-  hps: 654.34566
+  dps: 39836.79043
+  tps: 29480.18006
+  hps: 644.94189
  }
 }
 dps_results: {
@@ -1454,25 +1454,25 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-RightEyeofRajh-56100"
  value: {
-  dps: 40474.74386
-  tps: 29966.90224
-  hps: 650.42743
+  dps: 40417.59402
+  tps: 29836.06483
+  hps: 648.07648
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-RightEyeofRajh-56431"
  value: {
-  dps: 40570.44126
-  tps: 30031.02918
-  hps: 650.42743
+  dps: 40439.73849
+  tps: 29892.12824
+  hps: 644.94189
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-RosaryofLight-72901"
  value: {
-  dps: 41903.25223
-  tps: 31049.8158
-  hps: 671.58591
+  dps: 41749.454
+  tps: 30885.99354
+  hps: 664.53308
  }
 }
 dps_results: {
@@ -1702,9 +1702,9 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-Stonemother'sKiss-61411"
  value: {
-  dps: 39993.11548
-  tps: 29635.64883
-  hps: 659.8312
+  dps: 39882.88523
+  tps: 29489.94035
+  hps: 655.12931
  }
 }
 dps_results: {
@@ -2078,9 +2078,9 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-ViciousGladiator'sInsigniaofVictory-61046"
  value: {
-  dps: 40765.88725
-  tps: 30200.91085
-  hps: 650.42743
+  dps: 40718.64748
+  tps: 30148.10487
+  hps: 640.24001
  }
 }
 dps_results: {
