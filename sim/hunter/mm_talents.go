@@ -312,14 +312,14 @@ func (hunter *Hunter) registerSicEm() {
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: "Sic'Em Mod",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell == hunter.ArcaneShot || spell == hunter.AimedShot || spell == hunter.ExplosiveShot {
+			if spell == hunter.ArcaneShot || spell == hunter.AimedShot || spell.ClassSpellMask == HunterSpellExplosiveShot {
 				if result.DidCrit() {
 					sicEmAura.Activate(sim)
 				}
 			}
 		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell == hunter.ExplosiveShot {
+			if spell.ClassSpellMask == HunterSpellExplosiveShot {
 				if result.DidCrit() {
 					sicEmAura.Activate(sim)
 				}
