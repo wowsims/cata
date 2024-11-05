@@ -183,6 +183,8 @@ message ShamanTotems {
 
 	// Bonus spell power for fire elemental snapshotting.
 	int32 bonus_spellpower = 13;
+	// Bonus intellect for fire elemental snapshotting.
+	int32 bonus_intellect = 15;
 
 	// Snapshot fire elemental using Tier 10 4 set bonus.
 	bool enh_tier_ten_bonus = 14;
