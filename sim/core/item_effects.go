@@ -111,6 +111,12 @@ func NewSimpleStatItemActiveEffect(itemID int32, bonus stats.Stats, duration tim
 			}
 		},
 		sharedCDFunc,
+		func(character *Character) Cooldown {
+			return Cooldown{
+				Timer:    character.NewTimer(),
+				Duration: time.Second * 30,
+			}
+		},
 	)
 
 	if otherEffects == nil {

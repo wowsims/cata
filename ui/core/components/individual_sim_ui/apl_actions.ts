@@ -26,6 +26,7 @@ import {
 	APLActionWait,
 	APLActionWaitUntil,
 	APLValue,
+	APLActionTriggerGSCD,
 } from '../../proto/apl.js';
 import { Spec } from '../../proto/common.js';
 import { FeralDruid_Rotation_AplType } from '../../proto/druid.js';
@@ -585,6 +586,14 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 		includeIf: (player: Player<any>, isPrepull: boolean) => isPrepull,
 		newValue: () => APLActionTriggerICD.create(),
 		fields: [AplHelpers.actionIdFieldConfig('auraId', 'icd_auras')],
+	}),
+	['triggerGscd']: inputBuilder({
+		label: 'Trigger Gear Swap CD',
+		submenu: ['Misc'],
+		shortDescription: "Triggers an item's spell CD of 30s when swapped in, putting it on cooldown. Example usage would be to emulate a trinket swap before combat starts.",
+		includeIf: (player: Player<any>, isPrepull: boolean) => isPrepull,
+		newValue: () => APLActionTriggerGSCD.create(),
+		fields: [AplHelpers.actionIdFieldConfig('spellId', 'gscd_spells')],
 	}),
 	['itemSwap']: inputBuilder({
 		label: 'Item Swap',

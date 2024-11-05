@@ -187,6 +187,8 @@ func (rot *APLRotation) newAPLActionImpl(config *proto.APLAction) APLActionImpl 
 		return rot.newActionMove(config.GetMove())
 	case *proto.APLAction_MoveDuration:
 		return rot.newActionMoveDuration(config.GetMoveDuration())
+	case *proto.APLAction_TriggerGscd:
+		return rot.newActionTriggerGSCD(config.GetTriggerGscd())
 	case *proto.APLAction_CustomRotation:
 		return rot.newActionCustomRotation(config.GetCustomRotation())
 

@@ -431,6 +431,7 @@ message SpellStats {
 	bool encounter_only = 8; // Whether this spell may only be cast during the encounter (not prepull).
 	bool has_cast_time = 9; // Whether this spell has a cast time or not.
 	bool is_friendly = 10; // Whether this spell should be cast on player units
+	bool has_gscd = 11; // Wether this spell is associated to an item that incurs a 30s cd when equipped.
 }
 message APLActionStats {
 	repeated string warnings = 1;

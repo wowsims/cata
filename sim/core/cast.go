@@ -33,8 +33,9 @@ type CastConfig struct {
 	// Automatically set if GCD and cast times are all 0, e.g. for empty casts.
 	IgnoreHaste bool
 
-	CD       Cooldown
-	SharedCD Cooldown
+	CD         Cooldown
+	SharedCD   Cooldown
+	GearSwapCD Cooldown
 
 	CastTime func(spell *Spell) time.Duration
 }
@@ -125,6 +126,13 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			// By panicking if spell is on CD, we force each sim to properly check for their own CDs.
 			if !spell.SharedCD.IsReady(sim) {
 				return spell.castFailureHelper(sim, "still on shared cooldown for %s, curTime = %s", spell.SharedCD.TimeToReady(sim), sim.CurrentTime)
+			}
+		}
+
+		if config.GearSwapCD.Timer != nil {
+			// By panicking if spell is on CD, we force each sim to properly check for their own CDs.
+			if !spell.GearSwapCD.IsReady(sim) {
+				return spell.castFailureHelper(sim, "still on swapped gear cooldown for %s, curTime = %s", spell.GearSwapCD.TimeToReady(sim), sim.CurrentTime)
 			}
 		}
 
@@ -240,6 +248,13 @@ func (spell *Spell) makeCastFuncSimple() CastSuccessFunc {
 			// By panicking if spell is on CD, we force each sim to properly check for their own CDs.
 			if !spell.SharedCD.IsReady(sim) {
 				return spell.castFailureHelper(sim, "still on shared cooldown for %s, curTime = %s", spell.SharedCD.TimeToReady(sim), sim.CurrentTime)
+			}
+		}
+
+		if spell.GearSwapCD.Timer != nil {
+			// By panicking if spell is on CD, we force each sim to properly check for their own CDs.
+			if !spell.GearSwapCD.IsReady(sim) {
+				return spell.castFailureHelper(sim, "still on swapped gear cooldown for %s, curTime = %s", spell.GearSwapCD.TimeToReady(sim), sim.CurrentTime)
 			}
 		}
 
