@@ -783,6 +783,11 @@ export function statTypeFieldConfig(field: string): APLPickerBuilderFieldConfig<
 	};
 }
 
+export const excludeStackingProcsInput = booleanFieldConfig('excludeStackingProcs', 'Exclude stacking procs', {
+	labelTooltip:
+		'Filter out any stacking stat buffs from the list of auras checked by this value. This can be useful for certain snapshotting checks, since stacking proc trinkets are often permanently active.',
+})
+
 export function aplInputBuilder<T>(
 	newValue: () => T,
 	fields: Array<APLPickerBuilderFieldConfig<T, keyof T>>,
