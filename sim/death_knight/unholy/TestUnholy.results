@@ -332,6 +332,54 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-CataclysmicGladiator'sBadgeofConquest-73648"
+ value: {
+  dps: 39435.0552
+  tps: 29251.64027
+  hps: 650.42743
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-CataclysmicGladiator'sBadgeofDominance-73498"
+ value: {
+  dps: 39435.0552
+  tps: 29251.64027
+  hps: 650.42743
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-CataclysmicGladiator'sBadgeofVictory-73496"
+ value: {
+  dps: 39435.0552
+  tps: 29251.64027
+  hps: 650.42743
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-CataclysmicGladiator'sInsigniaofConquest-73643"
+ value: {
+  dps: 39937.49206
+  tps: 29567.0732
+  hps: 650.42743
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-CataclysmicGladiator'sInsigniaofDominance-73497"
+ value: {
+  dps: 39435.09186
+  tps: 29251.70993
+  hps: 650.42743
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-CataclysmicGladiator'sInsigniaofVictory-73491"
+ value: {
+  dps: 40969.2121
+  tps: 30398.30302
+  hps: 644.15825
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-ChaoticShadowspiritDiamond"
  value: {
   dps: 41967.69769
@@ -1508,6 +1556,102 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-RuthlessGladiator'sBadgeofConquest-70399"
+ value: {
+  dps: 39435.0552
+  tps: 29251.64027
+  hps: 650.42743
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-RuthlessGladiator'sBadgeofConquest-72304"
+ value: {
+  dps: 39435.0552
+  tps: 29251.64027
+  hps: 650.42743
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-RuthlessGladiator'sBadgeofDominance-70401"
+ value: {
+  dps: 39435.0552
+  tps: 29251.64027
+  hps: 650.42743
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-RuthlessGladiator'sBadgeofDominance-72448"
+ value: {
+  dps: 39435.0552
+  tps: 29251.64027
+  hps: 650.42743
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-RuthlessGladiator'sBadgeofVictory-70400"
+ value: {
+  dps: 39435.0552
+  tps: 29251.64027
+  hps: 650.42743
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-RuthlessGladiator'sBadgeofVictory-72450"
+ value: {
+  dps: 39435.0552
+  tps: 29251.64027
+  hps: 650.42743
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-RuthlessGladiator'sInsigniaofConquest-70404"
+ value: {
+  dps: 39899.17667
+  tps: 29548.23364
+  hps: 650.42743
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-RuthlessGladiator'sInsigniaofConquest-72309"
+ value: {
+  dps: 39883.22787
+  tps: 29530.7963
+  hps: 650.42743
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-RuthlessGladiator'sInsigniaofDominance-70402"
+ value: {
+  dps: 39435.0552
+  tps: 29251.64027
+  hps: 650.42743
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-RuthlessGladiator'sInsigniaofDominance-72449"
+ value: {
+  dps: 39435.0552
+  tps: 29251.64027
+  hps: 650.42743
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-RuthlessGladiator'sInsigniaofVictory-70403"
+ value: {
+  dps: 40731.89899
+  tps: 30194.08766
+  hps: 644.94189
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-RuthlessGladiator'sInsigniaofVictory-72455"
+ value: {
+  dps: 40854.62401
+  tps: 30270.91016
+  hps: 644.94189
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-ScalesofLife-68915"
  value: {
   dps: 39435.0552
@@ -1996,6 +2140,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-ViciousGladiator'sBadgeofConquest-70517"
+ value: {
+  dps: 39435.0552
+  tps: 29251.64027
+  hps: 650.42743
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-ViciousGladiator'sBadgeofDominance-61035"
  value: {
   dps: 39435.0552
@@ -2004,7 +2156,23 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-ViciousGladiator'sBadgeofDominance-70518"
+ value: {
+  dps: 39435.0552
+  tps: 29251.64027
+  hps: 650.42743
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-ViciousGladiator'sBadgeofVictory-61034"
+ value: {
+  dps: 39435.0552
+  tps: 29251.64027
+  hps: 650.42743
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ViciousGladiator'sBadgeofVictory-70519"
  value: {
   dps: 39435.0552
   tps: 29251.64027
@@ -2062,25 +2230,49 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-ViciousGladiator'sInsigniaofConquest-61047"
  value: {
-  dps: 39828.74366
-  tps: 29499.13691
+  dps: 39823.82527
+  tps: 29501.32889
+  hps: 650.42743
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ViciousGladiator'sInsigniaofConquest-70577"
+ value: {
+  dps: 39831.14892
+  tps: 29490.24612
   hps: 650.42743
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-ViciousGladiator'sInsigniaofDominance-61045"
  value: {
-  dps: 39435.08337
-  tps: 29251.69379
+  dps: 39435.0552
+  tps: 29251.64027
+  hps: 650.42743
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ViciousGladiator'sInsigniaofDominance-70578"
+ value: {
+  dps: 39435.09186
+  tps: 29251.70993
   hps: 650.42743
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-ViciousGladiator'sInsigniaofVictory-61046"
  value: {
-  dps: 40565.9416
-  tps: 30045.45791
-  hps: 644.15825
+  dps: 40401.45566
+  tps: 29989.90786
+  hps: 648.86013
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ViciousGladiator'sInsigniaofVictory-70579"
+ value: {
+  dps: 40656.89784
+  tps: 30147.77781
+  hps: 645.72554
  }
 }
 dps_results: {

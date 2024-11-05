@@ -317,6 +317,48 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestMM-AllItems-CataclysmicGladiator'sBadgeofConquest-73648"
+ value: {
+  dps: 22082.42029
+  tps: 19786.08917
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-CataclysmicGladiator'sBadgeofDominance-73498"
+ value: {
+  dps: 21005.51626
+  tps: 18832.04646
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-CataclysmicGladiator'sBadgeofVictory-73496"
+ value: {
+  dps: 20804.36191
+  tps: 18630.89211
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-CataclysmicGladiator'sInsigniaofConquest-73643"
+ value: {
+  dps: 22222.85564
+  tps: 19896.70657
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-CataclysmicGladiator'sInsigniaofDominance-73497"
+ value: {
+  dps: 21049.62144
+  tps: 18876.15165
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-CataclysmicGladiator'sInsigniaofVictory-73491"
+ value: {
+  dps: 20804.36191
+  tps: 18630.89211
+ }
+}
+dps_results: {
  key: "TestMM-AllItems-ChaoticShadowspiritDiamond"
  value: {
   dps: 22052.90526
@@ -1416,6 +1458,90 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestMM-AllItems-RuthlessGladiator'sBadgeofConquest-70399"
+ value: {
+  dps: 21867.22482
+  tps: 19590.79769
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-RuthlessGladiator'sBadgeofConquest-72304"
+ value: {
+  dps: 21932.9742
+  tps: 19651.28986
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-RuthlessGladiator'sBadgeofDominance-70401"
+ value: {
+  dps: 20973.08542
+  tps: 18799.61563
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-RuthlessGladiator'sBadgeofDominance-72448"
+ value: {
+  dps: 20982.64836
+  tps: 18809.17857
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-RuthlessGladiator'sBadgeofVictory-70400"
+ value: {
+  dps: 20804.36191
+  tps: 18630.89211
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-RuthlessGladiator'sBadgeofVictory-72450"
+ value: {
+  dps: 20804.36191
+  tps: 18630.89211
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-RuthlessGladiator'sInsigniaofConquest-70404"
+ value: {
+  dps: 21997.91671
+  tps: 19683.9682
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-RuthlessGladiator'sInsigniaofConquest-72309"
+ value: {
+  dps: 22071.77557
+  tps: 19759.35578
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-RuthlessGladiator'sInsigniaofDominance-70402"
+ value: {
+  dps: 21007.44702
+  tps: 18833.97722
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-RuthlessGladiator'sInsigniaofDominance-72449"
+ value: {
+  dps: 21015.89841
+  tps: 18842.42861
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-RuthlessGladiator'sInsigniaofVictory-70403"
+ value: {
+  dps: 20804.36191
+  tps: 18630.89211
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-RuthlessGladiator'sInsigniaofVictory-72455"
+ value: {
+  dps: 20804.36191
+  tps: 18630.89211
+ }
+}
+dps_results: {
  key: "TestMM-AllItems-ScalesofLife-68915"
  value: {
   dps: 20804.36191
@@ -1897,6 +2023,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestMM-AllItems-ViciousGladiator'sBadgeofConquest-70517"
+ value: {
+  dps: 21738.24377
+  tps: 19474.49509
+ }
+}
+dps_results: {
  key: "TestMM-AllItems-ViciousGladiator'sBadgeofDominance-61035"
  value: {
   dps: 20937.82728
@@ -1904,7 +2037,21 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestMM-AllItems-ViciousGladiator'sBadgeofDominance-70518"
+ value: {
+  dps: 20953.54377
+  tps: 18780.07397
+ }
+}
+dps_results: {
  key: "TestMM-AllItems-ViciousGladiator'sBadgeofVictory-61034"
+ value: {
+  dps: 20804.36191
+  tps: 18630.89211
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-ViciousGladiator'sBadgeofVictory-70519"
  value: {
   dps: 20804.36191
   tps: 18630.89211
@@ -1955,19 +2102,40 @@ dps_results: {
 dps_results: {
  key: "TestMM-AllItems-ViciousGladiator'sInsigniaofConquest-61047"
  value: {
-  dps: 21740.12197
-  tps: 19455.285
+  dps: 21724.12282
+  tps: 19445.7229
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-ViciousGladiator'sInsigniaofConquest-70577"
+ value: {
+  dps: 21881.85027
+  tps: 19586.07686
  }
 }
 dps_results: {
  key: "TestMM-AllItems-ViciousGladiator'sInsigniaofDominance-61045"
  value: {
-  dps: 20810.74148
-  tps: 18637.27168
+  dps: 20962.14898
+  tps: 18788.67918
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-ViciousGladiator'sInsigniaofDominance-70578"
+ value: {
+  dps: 20983.32073
+  tps: 18809.85093
  }
 }
 dps_results: {
  key: "TestMM-AllItems-ViciousGladiator'sInsigniaofVictory-61046"
+ value: {
+  dps: 20804.36191
+  tps: 18630.89211
+ }
+}
+dps_results: {
+ key: "TestMM-AllItems-ViciousGladiator'sInsigniaofVictory-70579"
  value: {
   dps: 20804.36191
   tps: 18630.89211
