@@ -976,7 +976,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3')],
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.excludeStackingProcsInput],
 	}),
 	anyTrinketStatProcsActive: inputBuilder({
 		label: 'Any Trinket Proc Buffs Active',
@@ -991,7 +991,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3')],
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.excludeStackingProcsInput],
 	}),
 	trinketProcsMinRemainingTime: inputBuilder({
 		label: 'Trinket Procs Min Remaining Time',
@@ -1004,7 +1004,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3')],
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.excludeStackingProcsInput],
 	}),
 	numEquippedStatProcTrinkets: inputBuilder({
 		label: 'Num Equipped Stat Proc Trinkets',
@@ -1016,7 +1016,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3')],
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.excludeStackingProcsInput],
 	}),
 
 	// DoT

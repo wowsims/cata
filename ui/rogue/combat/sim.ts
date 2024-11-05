@@ -6,7 +6,7 @@ import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_u
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
-import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
+import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, WeaponType } from '../../core/proto/common';
 import { RogueOptions_PoisonImbue } from '../../core/proto/rogue';
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
@@ -205,6 +205,16 @@ export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 					}
 
 					return softCaps;
+				},
+				updateGearStatsModifier(baseStats: Stats) {
+					// Human/Orc racials for MH. Maxing Expertise for OH is a DPS loss when the MH matches the racial.
+					const mhWepType = player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponType;
+					if ((player.getRace() == Race.RaceHuman && (mhWepType == WeaponType.WeaponTypeSword || mhWepType ==  WeaponType.WeaponTypeMace) ||
+						(player.getRace() == Race.RaceOrc && mhWepType == WeaponType.WeaponTypeAxe)))
+					{
+						return baseStats.addStat(Stat.StatExpertiseRating, 90);
+					}
+					return baseStats
 				},
 			});
 		});
