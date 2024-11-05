@@ -289,6 +289,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-CataclysmicGladiator'sBadgeofConquest-73648"
+ value: {
+  dps: 32693.36993
+  tps: 42960.81121
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-CataclysmicGladiator'sBadgeofDominance-73498"
+ value: {
+  dps: 30472.70688
+  tps: 42209.9693
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-CataclysmicGladiator'sBadgeofVictory-73496"
+ value: {
+  dps: 31297.18817
+  tps: 43087.80585
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-ChaoticShadowspiritDiamond"
  value: {
   dps: 32403.59284
@@ -1346,6 +1367,48 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-RuthlessGladiator'sBadgeofConquest-70399"
+ value: {
+  dps: 32268.09222
+  tps: 43007.85616
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-RuthlessGladiator'sBadgeofConquest-72304"
+ value: {
+  dps: 32413.22328
+  tps: 43139.70921
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-RuthlessGladiator'sBadgeofDominance-70401"
+ value: {
+  dps: 30472.70688
+  tps: 42209.9693
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-RuthlessGladiator'sBadgeofDominance-72448"
+ value: {
+  dps: 30472.70688
+  tps: 42209.9693
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-RuthlessGladiator'sBadgeofVictory-70400"
+ value: {
+  dps: 31158.67861
+  tps: 42947.23016
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-RuthlessGladiator'sBadgeofVictory-72450"
+ value: {
+  dps: 31200.39009
+  tps: 42998.27281
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-ScalesofLife-68915"
  value: {
   dps: 30459.43575
@@ -1817,7 +1880,21 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-ViciousGladiator'sBadgeofConquest-70517"
+ value: {
+  dps: 32016.64642
+  tps: 42696.75934
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-ViciousGladiator'sBadgeofDominance-61035"
+ value: {
+  dps: 30472.70688
+  tps: 42209.9693
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-ViciousGladiator'sBadgeofDominance-70518"
  value: {
   dps: 30472.70688
   tps: 42209.9693
@@ -1828,6 +1905,13 @@ dps_results: {
  value: {
   dps: 31033.36514
   tps: 42654.77938
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-ViciousGladiator'sBadgeofVictory-70519"
+ value: {
+  dps: 31093.59001
+  tps: 42741.64226
  }
 }
 dps_results: {

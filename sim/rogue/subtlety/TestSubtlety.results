@@ -289,6 +289,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-CataclysmicGladiator'sBadgeofConquest-73648"
+ value: {
+  dps: 24574.18353
+  tps: 17447.6703
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-CataclysmicGladiator'sBadgeofDominance-73498"
+ value: {
+  dps: 22185.24075
+  tps: 15751.52093
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-CataclysmicGladiator'sBadgeofVictory-73496"
+ value: {
+  dps: 22788.83992
+  tps: 16180.07634
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-ChaoticShadowspiritDiamond"
  value: {
   dps: 23779.79405
@@ -1290,6 +1311,48 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-RuthlessGladiator'sBadgeofConquest-70399"
+ value: {
+  dps: 24258.35022
+  tps: 17223.42865
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-RuthlessGladiator'sBadgeofConquest-72304"
+ value: {
+  dps: 24355.55737
+  tps: 17292.44574
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-RuthlessGladiator'sBadgeofDominance-70401"
+ value: {
+  dps: 22185.24075
+  tps: 15751.52093
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-RuthlessGladiator'sBadgeofDominance-72448"
+ value: {
+  dps: 22185.24075
+  tps: 15751.52093
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-RuthlessGladiator'sBadgeofVictory-70400"
+ value: {
+  dps: 22691.52546
+  tps: 16110.98308
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-RuthlessGladiator'sBadgeofVictory-72450"
+ value: {
+  dps: 22720.22075
+  tps: 16131.35673
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-ScalesofLife-68915"
  value: {
   dps: 22185.24075
@@ -1726,7 +1789,21 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-ViciousGladiator'sBadgeofConquest-70517"
+ value: {
+  dps: 23986.04085
+  tps: 17030.089
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-ViciousGladiator'sBadgeofDominance-61035"
+ value: {
+  dps: 22185.24075
+  tps: 15751.52093
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-ViciousGladiator'sBadgeofDominance-70518"
  value: {
   dps: 22185.24075
   tps: 15751.52093
@@ -1737,6 +1814,13 @@ dps_results: {
  value: {
   dps: 22585.72718
   tps: 16035.8663
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-ViciousGladiator'sBadgeofVictory-70519"
+ value: {
+  dps: 22632.88726
+  tps: 16069.34996
  }
 }
 dps_results: {

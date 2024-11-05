@@ -324,6 +324,30 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-CataclysmicGladiator'sBadgeofConquest-73648"
+ value: {
+  dps: 10267.64375
+  tps: 51404.86147
+  hps: 319.10667
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-CataclysmicGladiator'sBadgeofDominance-73498"
+ value: {
+  dps: 9610.92565
+  tps: 48121.43617
+  hps: 314.83292
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-CataclysmicGladiator'sBadgeofVictory-73496"
+ value: {
+  dps: 9859.01736
+  tps: 49361.8947
+  hps: 314.83292
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-ChaoticShadowspiritDiamond"
  value: {
   dps: 9805.09222
@@ -1548,6 +1572,54 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-RuthlessGladiator'sBadgeofConquest-70399"
+ value: {
+  dps: 10194.62371
+  tps: 51040.14124
+  hps: 320.53125
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-RuthlessGladiator'sBadgeofConquest-72304"
+ value: {
+  dps: 10216.2333
+  tps: 51148.0742
+  hps: 320.53125
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-RuthlessGladiator'sBadgeofDominance-70401"
+ value: {
+  dps: 9610.92565
+  tps: 48121.43617
+  hps: 314.83292
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-RuthlessGladiator'sBadgeofDominance-72448"
+ value: {
+  dps: 9610.92565
+  tps: 48121.43617
+  hps: 314.83292
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-RuthlessGladiator'sBadgeofVictory-70400"
+ value: {
+  dps: 9819.01911
+  tps: 49161.90345
+  hps: 314.83292
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-RuthlessGladiator'sBadgeofVictory-72450"
+ value: {
+  dps: 9830.81346
+  tps: 49220.87523
+  hps: 314.83292
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-ScalesofLife-69109"
  value: {
   dps: 9597.44853
@@ -2068,7 +2140,23 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-ViciousGladiator'sBadgeofConquest-70517"
+ value: {
+  dps: 10144.86654
+  tps: 50791.10813
+  hps: 320.53125
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-ViciousGladiator'sBadgeofDominance-61035"
+ value: {
+  dps: 9610.92565
+  tps: 48121.43617
+  hps: 314.83292
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-ViciousGladiator'sBadgeofDominance-70518"
  value: {
   dps: 9610.92565
   tps: 48121.43617
@@ -2080,6 +2168,14 @@ dps_results: {
  value: {
   dps: 9775.53383
   tps: 48944.47707
+  hps: 314.83292
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-ViciousGladiator'sBadgeofVictory-70519"
+ value: {
+  dps: 9794.9176
+  tps: 49041.39591
   hps: 314.83292
  }
 }

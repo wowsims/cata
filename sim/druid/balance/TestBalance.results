@@ -289,6 +289,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBalance-AllItems-CataclysmicGladiator'sBadgeofConquest-73648"
+ value: {
+  dps: 26853.23227
+  tps: 26872.90784
+ }
+}
+dps_results: {
+ key: "TestBalance-AllItems-CataclysmicGladiator'sBadgeofDominance-73498"
+ value: {
+  dps: 28375.47506
+  tps: 28370.18429
+ }
+}
+dps_results: {
+ key: "TestBalance-AllItems-CataclysmicGladiator'sBadgeofVictory-73496"
+ value: {
+  dps: 26853.23227
+  tps: 26872.90784
+ }
+}
+dps_results: {
  key: "TestBalance-AllItems-ChaoticShadowspiritDiamond"
  value: {
   dps: 29131.76349
@@ -1353,6 +1374,48 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBalance-AllItems-RuthlessGladiator'sBadgeofConquest-70399"
+ value: {
+  dps: 26853.23227
+  tps: 26872.90784
+ }
+}
+dps_results: {
+ key: "TestBalance-AllItems-RuthlessGladiator'sBadgeofConquest-72304"
+ value: {
+  dps: 26853.23227
+  tps: 26872.90784
+ }
+}
+dps_results: {
+ key: "TestBalance-AllItems-RuthlessGladiator'sBadgeofDominance-70401"
+ value: {
+  dps: 28130.05353
+  tps: 28128.78792
+ }
+}
+dps_results: {
+ key: "TestBalance-AllItems-RuthlessGladiator'sBadgeofDominance-72448"
+ value: {
+  dps: 28202.42142
+  tps: 28199.9689
+ }
+}
+dps_results: {
+ key: "TestBalance-AllItems-RuthlessGladiator'sBadgeofVictory-70400"
+ value: {
+  dps: 26853.23227
+  tps: 26872.90784
+ }
+}
+dps_results: {
+ key: "TestBalance-AllItems-RuthlessGladiator'sBadgeofVictory-72450"
+ value: {
+  dps: 26853.23227
+  tps: 26872.90784
+ }
+}
+dps_results: {
  key: "TestBalance-AllItems-ScalesofLife-68915"
  value: {
   dps: 26856.45712
@@ -1817,6 +1880,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBalance-AllItems-ViciousGladiator'sBadgeofConquest-70517"
+ value: {
+  dps: 26853.23227
+  tps: 26872.90784
+ }
+}
+dps_results: {
  key: "TestBalance-AllItems-ViciousGladiator'sBadgeofDominance-61035"
  value: {
   dps: 27863.23627
@@ -1824,7 +1894,21 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBalance-AllItems-ViciousGladiator'sBadgeofDominance-70518"
+ value: {
+  dps: 27982.17132
+  tps: 27983.33114
+ }
+}
+dps_results: {
  key: "TestBalance-AllItems-ViciousGladiator'sBadgeofVictory-61034"
+ value: {
+  dps: 26853.23227
+  tps: 26872.90784
+ }
+}
+dps_results: {
+ key: "TestBalance-AllItems-ViciousGladiator'sBadgeofVictory-70519"
  value: {
   dps: 26853.23227
   tps: 26872.90784

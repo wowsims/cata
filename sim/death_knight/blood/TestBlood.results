@@ -332,6 +332,30 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-CataclysmicGladiator'sBadgeofConquest-73648"
+ value: {
+  dps: 22083.26415
+  tps: 110584.81114
+  hps: 5314.81299
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-CataclysmicGladiator'sBadgeofDominance-73498"
+ value: {
+  dps: 21735.85069
+  tps: 108775.77583
+  hps: 5314.81299
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-CataclysmicGladiator'sBadgeofVictory-73496"
+ value: {
+  dps: 22721.88212
+  tps: 113804.19054
+  hps: 5314.81299
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-ChaoticShadowspiritDiamond"
  value: {
   dps: 21740.58158
@@ -1508,6 +1532,54 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-RuthlessGladiator'sBadgeofConquest-70399"
+ value: {
+  dps: 22025.49296
+  tps: 110241.87238
+  hps: 5314.81299
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-RuthlessGladiator'sBadgeofConquest-72304"
+ value: {
+  dps: 22039.90004
+  tps: 110312.24819
+  hps: 5314.81299
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-RuthlessGladiator'sBadgeofDominance-70401"
+ value: {
+  dps: 21735.85069
+  tps: 108775.77583
+  hps: 5314.81299
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-RuthlessGladiator'sBadgeofDominance-72448"
+ value: {
+  dps: 21735.85069
+  tps: 108775.77583
+  hps: 5314.81299
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-RuthlessGladiator'sBadgeofVictory-70400"
+ value: {
+  dps: 22562.91054
+  tps: 112993.49119
+  hps: 5314.81299
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-RuthlessGladiator'sBadgeofVictory-72450"
+ value: {
+  dps: 22609.78677
+  tps: 113232.54356
+  hps: 5314.81299
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-ScalesofLife-68915"
  value: {
   dps: 21778.66598
@@ -1996,7 +2068,23 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-ViciousGladiator'sBadgeofConquest-70517"
+ value: {
+  dps: 21988.47894
+  tps: 110039.12889
+  hps: 5314.81299
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-ViciousGladiator'sBadgeofDominance-61035"
+ value: {
+  dps: 21735.85069
+  tps: 108775.77583
+  hps: 5314.81299
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-ViciousGladiator'sBadgeofDominance-70518"
  value: {
   dps: 21735.85069
   tps: 108775.77583
@@ -2008,6 +2096,14 @@ dps_results: {
  value: {
   dps: 22390.07989
   tps: 112112.11548
+  hps: 5314.81299
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-ViciousGladiator'sBadgeofVictory-70519"
+ value: {
+  dps: 22467.11997
+  tps: 112504.99286
   hps: 5314.81299
  }
 }
