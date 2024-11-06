@@ -962,15 +962,12 @@ func registerTinkerHandsCD(agent Agent, consumes *proto.Consumes) {
 					Timer:    character.GetOffensiveTrinketCD(),
 					Duration: time.Second * 10,
 				},
-				GearSwapCD: Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Second * 30,
-				},
 			},
 
 			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
 				aura.Activate(sim)
 			},
+			IsFromGear: true,
 		})
 
 		character.AddMajorCooldown(MajorCooldown{

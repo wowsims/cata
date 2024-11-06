@@ -96,7 +96,7 @@ func (spell *Spell) CanQueue(sim *Simulation, target *Unit) bool {
 	}
 
 	// Spells that are within one SQW of coming off cooldown can also be queued
-	if MaxTimeToReady(spell.CD.Timer, spell.SharedCD.Timer, spell.GearSwapCD.Timer, sim) > MaxSpellQueueWindow {
+	if MaxTimeToReady(spell.CD.Timer, spell.SharedCD.Timer, sim) > MaxSpellQueueWindow {
 		return false
 	}
 
@@ -121,7 +121,7 @@ func (spell *Spell) CastOrQueue(sim *Simulation, target *Unit) {
 		spell.Cast(sim, target)
 	} else if spell.CanQueue(sim, target) {
 		// Determine which timer the spell is waiting on
-		queueTime := max(spell.Unit.Hardcast.Expires, AllTimersReadyAt(spell.CD.Timer, spell.SharedCD.Timer, spell.GearSwapCD.Timer))
+		queueTime := max(spell.Unit.Hardcast.Expires, BothTimersReadyAt(spell.CD.Timer, spell.SharedCD.Timer))
 
 		if (spell.DefaultCast.GCD > 0) || spell.Flags.Matches(SpellFlagMCD) {
 			queueTime = max(queueTime, spell.Unit.GCD.ReadyAt())

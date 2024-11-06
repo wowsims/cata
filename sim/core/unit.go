@@ -638,7 +638,7 @@ func (unit *Unit) GetMetadata() *proto.UnitMetadata {
 			EncounterOnly:   spell.Flags.Matches(SpellFlagEncounterOnly),
 			HasCastTime:     spell.DefaultCast.CastTime > 0,
 			IsFriendly:      spell.Flags.Matches(SpellFlagHelpful),
-			HasGscd:         spell.GearSwapCD.Timer != nil,
+			HasGscd:         spell.IsFromGear(),
 		}
 	})
 

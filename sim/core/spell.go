@@ -65,6 +65,8 @@ type SpellConfig struct {
 
 	RelatedAuras    []AuraArray
 	RelatedDotSpell *Spell
+
+	IsFromGear bool
 }
 
 type Spell struct {
@@ -99,7 +101,6 @@ type Spell struct {
 	DefaultCast        Cast      // Default cast parameters with all static effects applied.
 	CD                 Cooldown
 	SharedCD           Cooldown
-	GearSwapCD         Cooldown
 	ExtraCastCondition CanCastCondition
 
 	// Optional range constraints. If supplied, these are used to modify the ExtraCastCondition above to additionally check for DistanceFromTarget.
@@ -156,6 +157,9 @@ type Spell struct {
 	// Per-target auras that are related to this spell, usually buffs or debuffs applied by the spell.
 	RelatedAuras    []AuraArray
 	RelatedDotSpell *Spell
+
+	// Wether this spell comes with gear or not
+	isFromGear bool
 }
 
 func (unit *Unit) OnSpellRegistered(handler SpellRegisteredHandler) {
@@ -194,10 +198,6 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		panic("Cast.SharedCD w/o Duration specified for spell " + config.ActionID.String())
 	}
 
-	if config.Cast.GearSwapCD.Timer != nil && config.Cast.GearSwapCD.Duration == 0 {
-		panic("Cast.SwapGearCD w/o Duration specified for spell " + config.ActionID.String())
-	}
-
 	if config.Cast.CastTime == nil {
 		config.Cast.CastTime = func(spell *Spell) time.Duration {
 			return spell.Unit.ApplyCastSpeedForSpell(spell.DefaultCast.CastTime, spell)
@@ -216,7 +216,6 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		DefaultCast:        config.Cast.DefaultCast,
 		CD:                 config.Cast.CD,
 		SharedCD:           config.Cast.SharedCD,
-		GearSwapCD:         config.Cast.GearSwapCD,
 		ExtraCastCondition: config.ExtraCastCondition,
 
 		castTimeFn: config.Cast.CastTime,
@@ -247,6 +246,8 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 
 		RelatedAuras:    config.RelatedAuras,
 		RelatedDotSpell: config.RelatedDotSpell,
+
+		isFromGear: config.IsFromGear,
 	}
 
 	switch {
@@ -294,7 +295,7 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 	}
 
 	if spell.DefaultCast == emptyCast {
-		if config.ExtraCastCondition == nil && config.Cast.CD.Timer == nil && config.Cast.SharedCD.Timer == nil && config.Cast.GearSwapCD.Timer == nil {
+		if config.ExtraCastCondition == nil && config.Cast.CD.Timer == nil && config.Cast.SharedCD.Timer == nil {
 			spell.castFn = spell.makeCastFuncAutosOrProcs()
 		} else {
 			spell.castFn = spell.makeCastFuncSimple()
@@ -487,18 +488,18 @@ func (spell *Spell) HealthMetrics(target *Unit) *ResourceMetrics {
 }
 
 func (spell *Spell) ReadyAt() time.Duration {
-	return AllTimersReadyAt(spell.CD.Timer, spell.SharedCD.Timer, spell.GearSwapCD.Timer)
+	return BothTimersReadyAt(spell.CD.Timer, spell.SharedCD.Timer)
 }
 
 func (spell *Spell) IsReady(sim *Simulation) bool {
 	if spell == nil {
 		return false
 	}
-	return AllTimersReady(spell.CD.Timer, spell.SharedCD.Timer, spell.GearSwapCD.Timer, sim)
+	return BothTimersReady(spell.CD.Timer, spell.SharedCD.Timer, sim)
 }
 
 func (spell *Spell) TimeToReady(sim *Simulation) time.Duration {
-	return MaxTimeToReady(spell.CD.Timer, spell.SharedCD.Timer, spell.GearSwapCD.Timer, sim)
+	return MaxTimeToReady(spell.CD.Timer, spell.SharedCD.Timer, sim)
 }
 
 // Returns whether a call to Cast() would be successful, without actually
@@ -538,7 +539,7 @@ func (spell *Spell) CanCast(sim *Simulation, target *Unit) bool {
 		return false
 	}
 
-	if !AllTimersReady(spell.CD.Timer, spell.SharedCD.Timer, spell.GearSwapCD.Timer, sim) {
+	if !BothTimersReady(spell.CD.Timer, spell.SharedCD.Timer, sim) {
 		//if sim.Log != nil {
 		//	sim.Log("Cant cast because of CDs")
 		//}
@@ -675,4 +676,8 @@ func (spell *Spell) IssueRefund(sim *Simulation) {
 
 func (spell *Spell) EffectiveCritDamageMultiplier() float64 {
 	return (spell.CritMultiplier-1)*(spell.CritMultiplierAddative+1) + 1
+}
+
+func (spell *Spell) IsFromGear() bool {
+	return spell.isFromGear
 }

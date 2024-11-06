@@ -62,7 +62,7 @@ func (cd *Cooldown) Reduce(t time.Duration) {
 	cd.Set(cd.ReadyAt() - t)
 }
 
-func AllTimersReadyAt(t1 *Timer, t2 *Timer, t3 *Timer) time.Duration {
+func BothTimersReadyAt(t1 *Timer, t2 *Timer) time.Duration {
 	readyAt := time.Duration(0)
 	if t1 != nil {
 		readyAt = t1.ReadyAt()
@@ -70,26 +70,20 @@ func AllTimersReadyAt(t1 *Timer, t2 *Timer, t3 *Timer) time.Duration {
 	if t2 != nil {
 		readyAt = max(readyAt, t2.ReadyAt())
 	}
-	if t3 != nil {
-		readyAt = max(readyAt, t3.ReadyAt())
-	}
 	return readyAt
 }
 
-func AllTimersReady(t1 *Timer, t2 *Timer, t3 *Timer, sim *Simulation) bool {
-	return (t1 == nil || t1.IsReady(sim)) && (t2 == nil || t2.IsReady(sim)) && (t3 == nil || t3.IsReady(sim))
+func BothTimersReady(t1 *Timer, t2 *Timer, sim *Simulation) bool {
+	return (t1 == nil || t1.IsReady(sim)) && (t2 == nil || t2.IsReady(sim))
 }
 
-func MaxTimeToReady(t1 *Timer, t2 *Timer, t3 *Timer, sim *Simulation) time.Duration {
+func MaxTimeToReady(t1 *Timer, t2 *Timer, sim *Simulation) time.Duration {
 	remaining := time.Duration(0)
 	if t1 != nil {
 		remaining = t1.TimeToReady(sim)
 	}
 	if t2 != nil {
 		remaining = max(remaining, t2.TimeToReady(sim))
-	}
-	if t3 != nil {
-		remaining = max(remaining, t3.TimeToReady(sim))
 	}
 	return remaining
 }

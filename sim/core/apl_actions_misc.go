@@ -272,13 +272,13 @@ func (rot *APLRotation) newActionTriggerGSCD(config *proto.APLActionTriggerGSCD)
 	}
 }
 func (action *APLActionTriggerGSCD) IsReady(sim *Simulation) bool {
-	return action.spell.GearSwapCD.IsReady(sim)
+	return action.spell.CD.IsReady(sim)
 }
 func (action *APLActionTriggerGSCD) Execute(sim *Simulation) {
 	if sim.Log != nil {
 		action.spell.Unit.Log(sim, "Triggering Gear Swap CD %s", action.spell.ActionID)
 	}
-	action.spell.GearSwapCD.Use(sim)
+	action.spell.CD.Set(sim.CurrentTime + time.Second*30)
 }
 func (action *APLActionTriggerGSCD) String() string {
 	return fmt.Sprintf("Trigger Gear Swap CD(%s)", action.spell.ActionID)
