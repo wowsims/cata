@@ -136,6 +136,36 @@ func (value *APLValueTrinketProcsMinRemainingTime) GetDuration(sim *Simulation) 
 	return minRemainingTime
 }
 
+type APLValueTrinketProcsMaxRemainingICD struct {
+	*APLValueTrinketStatProcCheck
+}
+
+func (rot *APLRotation) newValueTrinketProcsMaxRemainingICD(config *proto.APLValueTrinketProcsMaxRemainingICD) APLValue {
+	parentImpl := rot.newTrinketStatProcValue("TrinketProcsMaxRemainingICD", config.StatType1, config.StatType2, config.StatType3, config.ExcludeStackingProcs, true)
+
+	if parentImpl == nil {
+		return nil
+	}
+
+	return &APLValueTrinketProcsMaxRemainingICD{
+		APLValueTrinketStatProcCheck: parentImpl,
+	}
+}
+func (value *APLValueTrinketProcsMaxRemainingICD) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeDuration
+}
+func (value *APLValueTrinketProcsMaxRemainingICD) GetDuration(sim *Simulation) time.Duration {
+	var maxRemainingICD time.Duration
+
+	for _, aura := range value.matchingAuras {
+		if !aura.IsActive() && (aura.Icd != nil) {
+			maxRemainingICD = max(maxRemainingICD, aura.Icd.TimeToReady(sim))
+		}
+	}
+
+	return maxRemainingICD
+}
+
 type APLValueNumEquippedStatProcTrinkets struct {
 	*APLValueTrinketStatProcCheck
 }

@@ -80,6 +80,7 @@ import {
 	APLValueSpellTimeToReady,
 	APLValueSpellTravelTime,
 	APLValueTotemRemainingTime,
+	APLValueTrinketProcsMaxRemainingICD,
 	APLValueTrinketProcsMinRemainingTime,
 	APLValueUnitIsMoving,
 	APLValueWarlockShouldRecastDrainSoul,
@@ -1000,6 +1001,19 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 			'Shortest remaining duration on any active trinket procs that buff the specified stat type(s), or infinity if none are currently active.',
 		newValue: () =>
 			APLValueTrinketProcsMinRemainingTime.create({
+				statType1: -1,
+				statType2: -1,
+				statType3: -1,
+			}),
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.excludeStackingProcsInput],
+	}),
+	trinketProcsMaxRemainingIcd: inputBuilder({
+		label: 'Trinket Procs Max Remaining ICD',
+		submenu: ['Aura Sets'],
+		shortDescription:
+			'Longest remaining ICD on any inactive trinket procs that buff the specified stat type(s), or 0 if all are currently active.',
+		newValue: () =>
+			APLValueTrinketProcsMaxRemainingICD.create({
 				statType1: -1,
 				statType2: -1,
 				statType3: -1,
