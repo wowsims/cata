@@ -11,6 +11,8 @@ import (
 type EarthElemental struct {
 	core.Pet
 
+	bonusSpellPower float64
+
 	shamanOwner *Shaman
 }
 
@@ -33,16 +35,14 @@ func (shaman *Shaman) NewEarthElemental(bonusSpellPower float64) *EarthElemental
 		AutoSwingMelee: true,
 	})
 
-	if bonusSpellPower > 0 {
-		earthElemental.AddStat(stats.AttackPower, float64(bonusSpellPower)*0.749) // 0.107 * 7
-	}
-
 	if shaman.Race == proto.Race_RaceDraenei {
 		earthElemental.AddStats(stats.Stats{
 			stats.HitRating:       -core.PhysicalHitRatingPerHitPercent,
 			stats.ExpertiseRating: math.Floor(-core.SpellHitRatingPerHitPercent * 27 / 16),
 		})
 	}
+
+	earthElemental.bonusSpellPower = bonusSpellPower
 
 	earthElemental.OnPetEnable = earthElemental.enable
 	earthElemental.OnPetDisable = earthElemental.disable
