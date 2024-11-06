@@ -366,8 +366,8 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-CrecheoftheFinalDragon-77205"
  value: {
-  dps: 42766.9519
-  tps: 31614.27229
+  dps: 42752.97224
+  tps: 31595.01928
   hps: 671.58591
  }
 }
@@ -494,9 +494,9 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-Dwyer'sCaber-70141"
  value: {
-  dps: 41361.03363
-  tps: 30750.21395
-  hps: 661.39849
+  dps: 41319.53336
+  tps: 30744.92451
+  hps: 662.96579
  }
 }
 dps_results: {
@@ -550,16 +550,16 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-EssenceoftheCyclone-59473"
  value: {
-  dps: 40375.13276
-  tps: 29917.26563
+  dps: 40381.16317
+  tps: 29925.60571
   hps: 657.48025
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-EssenceoftheCyclone-65140"
  value: {
-  dps: 40372.15884
-  tps: 29975.85713
+  dps: 40445.42149
+  tps: 30054.78753
   hps: 661.39849
  }
 }
@@ -766,17 +766,17 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-GraceoftheHerald-55266"
  value: {
-  dps: 39672.87717
-  tps: 29404.60669
-  hps: 648.07648
+  dps: 39705.03153
+  tps: 29408.2828
+  hps: 647.29284
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-GraceoftheHerald-56295"
  value: {
-  dps: 39845.41659
-  tps: 29528.3966
-  hps: 651.21107
+  dps: 39891.39075
+  tps: 29559.13964
+  hps: 654.34566
  }
 }
 dps_results: {
@@ -878,9 +878,9 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-HeartoftheVile-66969"
  value: {
-  dps: 39931.87037
-  tps: 29648.53167
-  hps: 650.42743
+  dps: 39973.3572
+  tps: 29681.99187
+  hps: 651.99472
  }
 }
 dps_results: {
@@ -1470,9 +1470,9 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-RosaryofLight-72901"
  value: {
-  dps: 41636.34457
-  tps: 30826.49839
-  hps: 667.66767
+  dps: 41600.02374
+  tps: 30816.23457
+  hps: 668.45132
  }
 }
 dps_results: {
@@ -1702,9 +1702,9 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-Stonemother'sKiss-61411"
  value: {
-  dps: 39710.63211
-  tps: 29488.83891
-  hps: 654.34566
+  dps: 39713.91143
+  tps: 29469.20265
+  hps: 655.91296
  }
 }
 dps_results: {
