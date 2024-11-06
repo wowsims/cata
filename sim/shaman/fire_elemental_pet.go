@@ -17,6 +17,9 @@ type FireElemental struct {
 
 	FireShieldAura *core.Aura
 
+	BonusSpellpower float64
+	BonusIntellect  float64
+
 	shamanOwner *Shaman
 }
 
@@ -52,6 +55,9 @@ func (shaman *Shaman) NewFireElemental(bonusSpellPower float64, bonusIntellect f
 			stats.ExpertiseRating:    math.Floor(-core.SpellHitRatingPerHitPercent * 0.79),
 		})
 	}
+
+	fireElemental.BonusIntellect = bonusIntellect
+	fireElemental.BonusSpellpower = bonusSpellPower
 
 	fireElemental.OnPetEnable = fireElemental.enable
 	fireElemental.OnPetDisable = fireElemental.disable
