@@ -82,7 +82,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 84
+// NextIndex: 85
 message APLValue {
     oneof value {
         // Operators
@@ -167,6 +167,7 @@ message APLValue {
         APLValueAllTrinketStatProcsActive all_trinket_stat_procs_active = 78;
         APLValueAnyTrinketStatProcsActive any_trinket_stat_procs_active = 79;
         APLValueTrinketProcsMinRemainingTime trinket_procs_min_remaining_time = 80;
+        APLValueTrinketProcsMaxRemainingICD trinket_procs_max_remaining_icd = 84;
         APLValueNumEquippedStatProcTrinkets num_equipped_stat_proc_trinkets = 81;
 
         // Dot values
@@ -578,6 +579,12 @@ message APLValueAnyTrinketStatProcsActive {
     bool exclude_stacking_procs = 4;
 }
 message APLValueTrinketProcsMinRemainingTime {
+    int32 stat_type1 = 1;
+    int32 stat_type2 = 2;
+    int32 stat_type3 = 3;
+    bool exclude_stacking_procs = 4;
+}
+message APLValueTrinketProcsMaxRemainingICD {
     int32 stat_type1 = 1;
     int32 stat_type2 = 2;
     int32 stat_type3 = 3;
