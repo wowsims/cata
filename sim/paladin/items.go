@@ -36,7 +36,7 @@ var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 			cata.RegisterIgniteEffect(&paladin.Unit, cata.IgniteConfig{
 				ActionID:           core.ActionID{SpellID: 35395}.WithTag(3), // actual 99092
 				DisableCastMetrics: true,
-				DotAuraLabel:       "Flames of the Faithful",
+				DotAuraLabel:       "Flames of the Faithful" + paladin.Label,
 				IncludeAuraDelay:   true,
 
 				ProcTrigger: core.ProcTrigger{
@@ -65,6 +65,12 @@ var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 			paladin := agent.(PaladinAgent).GetPaladin()
 			// Actual buff credited with the Holy Power gain is Virtuous Empowerment
 			hpMetrics := paladin.NewHolyPowerMetrics(core.ActionID{SpellID: 105767})
+
+			// Used for checking "Is Aura Known" in the APL
+			paladin.GetOrRegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 105767},
+				Label:    "Virtuous Empowerment" + paladin.Label,
+			})
 
 			core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
 				Name:           "T13 2pc trigger",
@@ -103,7 +109,7 @@ var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 			})
 
 			zealOfTheCrusader := paladin.RegisterAura(core.Aura{
-				Label:    "Zeal of the Crusader",
+				Label:    "Zeal of the Crusader" + paladin.Label,
 				ActionID: core.ActionID{SpellID: 105819},
 				Duration: time.Second * 20,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -227,7 +233,7 @@ var ItemSetBattlearmorOfImmolation = core.NewItemSet(core.ItemSet{
 			paladin := agent.(PaladinAgent).GetPaladin()
 
 			flamingAegis := paladin.GetOrRegisterAura(core.Aura{
-				Label:    "Flaming Aegis",
+				Label:    "Flaming Aegis" + paladin.Label,
 				ActionID: core.ActionID{SpellID: 99090},
 				Duration: time.Second * 10,
 
@@ -271,7 +277,7 @@ var ItemSetArmorOfRadiantGlory = core.NewItemSet(core.ItemSet{
 			duration := time.Second * 6
 
 			shieldStrength := 0.0
-			shield := paladin.NewDamageAbsorptionAura("Delayed Judgement", actionID, duration, func(unit *core.Unit) float64 {
+			shield := paladin.NewDamageAbsorptionAura("Delayed Judgement"+paladin.Label, actionID, duration, func(unit *core.Unit) float64 {
 				return shieldStrength
 			})
 
