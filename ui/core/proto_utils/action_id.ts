@@ -623,7 +623,7 @@ export class ActionId {
 					name += ' 1.7%';
 				}
 
-				if (this.tag === 2) {
+				if (tag === 2) {
 					name += ' (Heal)';
 				}
 				break;
@@ -637,6 +637,11 @@ export class ActionId {
 					name += ' (Normal)';
 				} else if (this.spellId === 109872 || this.spellId === 109870 || this.spellId === 109868) {
 					name += ' (Heroic)';
+				}
+				break;
+			case 'Death Coil':
+				if (tag === 2) {
+					name += ' (Heal)';
 				}
 				break;
 			default:

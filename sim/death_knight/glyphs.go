@@ -17,7 +17,7 @@ func (dk *DeathKnight) ApplyGlyphs() {
 	if dk.HasPrimeGlyph(proto.DeathKnightPrimeGlyph_GlyphOfDeathCoil) {
 		dk.AddStaticMod(core.SpellModConfig{
 			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  DeathKnightSpellDeathCoil,
+			ClassMask:  DeathKnightSpellDeathCoil | DeathKnightSpellDeathCoilHeal,
 			FloatValue: 0.15,
 		})
 	}
