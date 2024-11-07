@@ -145,6 +145,7 @@ func (dk *DeathKnight) Initialize() {
 	dk.registerDeathPactSpell()
 	dk.registerAntiMagicShellSpell()
 	dk.registerRunicPowerDecay()
+	dk.registerBloodStrikeSpell()
 }
 
 func (dk *DeathKnight) Reset(sim *core.Simulation) {
@@ -351,6 +352,7 @@ const (
 	DeathKnightSpellDancingRuneWeapon
 	DeathKnightSpellDeathPact
 	DeathKnightSpellUnholyBlight
+	DeathKnightSpellBloodStrike
 
 	DeathKnightSpellKillingMachine     // Used to react to km procs
 	DeathKnightSpellConvertToDeathRune // Used to react to death rune gains
