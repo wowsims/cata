@@ -32,9 +32,13 @@ func (dk *DeathKnight) registerDeathCoilSpell() {
 		CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1.0,
 
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight
+		},
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseHealing := dk.ClassSpellScaling*0.87599998713 + spell.MeleeAttackPower()*0.23
-			spell.CalcAndDealHealing(sim, target, baseHealing, spell.OutcomeHealingCrit)
+			spell.CalcAndDealHealing(sim, &dk.Ghoul.Unit, baseHealing, spell.OutcomeHealingCrit)
 
 			if hasGlyphOfDeathsEmbrace {
 				dk.AddRunicPower(sim, 20, rpMetrics)
