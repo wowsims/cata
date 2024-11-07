@@ -317,6 +317,7 @@ const (
 	DeathKnightSpellFlagNone int64 = 0
 	DeathKnightSpellIcyTouch int64 = 1 << iota
 	DeathKnightSpellDeathCoil
+	DeathKnightSpellDeathCoilHeal
 	DeathKnightSpellDeathAndDecay
 	DeathKnightSpellOutbreak
 	DeathKnightSpellEmpowerRuneWeapon
