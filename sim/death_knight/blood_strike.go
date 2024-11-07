@@ -5,11 +5,11 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-var bloodStrikeActionID = core.ActionID{SpellID: 45902}
+var BloodStrikeActionID = core.ActionID{SpellID: 45902}
 
 func (dk *DeathKnight) registerBloodStrikeSpell() {
 	ohSpell := dk.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:       bloodStrikeActionID.WithTag(2),
+		ActionID:       BloodStrikeActionID.WithTag(2),
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeOHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics,
@@ -33,7 +33,7 @@ func (dk *DeathKnight) registerBloodStrikeSpell() {
 	hasReaping := dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight
 
 	dk.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:       bloodStrikeActionID.WithTag(1),
+		ActionID:       BloodStrikeActionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
@@ -71,6 +71,22 @@ func (dk *DeathKnight) registerBloodStrikeSpell() {
 			dk.ThreatOfThassarianProc(sim, result, ohSpell)
 
 			spell.DealDamage(sim, result)
+		},
+	})
+}
+
+func (dk *DeathKnight) registerDrwBloodStrikeSpell() *core.Spell {
+	return dk.RuneWeapon.RegisterSpell(core.SpellConfig{
+		ActionID:    BloodStrikeActionID.WithTag(1),
+		SpellSchool: core.SpellSchoolPhysical,
+		ProcMask:    core.ProcMaskMeleeMHSpecial,
+		Flags:       core.SpellFlagMeleeMetrics,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := dk.ClassSpellScaling*0.75599998236 +
+				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 		},
 	})
 }
