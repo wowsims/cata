@@ -209,6 +209,7 @@ func (dk *DeathKnight) applyUnholyBlight() {
 		Callback:       core.CallbackOnSpellHitDealt,
 		ClassSpellMask: DeathKnightSpellDeathCoil,
 		Outcome:        core.OutcomeLanded,
+		Harmful:        true,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			dot := unholyBlight.Dot(result.Target)
