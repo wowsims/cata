@@ -18,7 +18,7 @@ func (dk *DeathKnight) registerRaiseDeadSpell() {
 		ActionID: core.ActionID{SpellID: 46584},
 		Duration: time.Minute * 1,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			dk.Ghoul.Pet.Enable(sim, dk.Ghoul)
+			dk.Ghoul.Enable(sim, dk.Ghoul)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			dk.Ghoul.Pet.Disable(sim)
