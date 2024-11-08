@@ -1,121 +1,112 @@
 package protection
 
 import (
+	"testing"
+
 	_ "github.com/wowsims/cata/sim/common" // imported to get item effects included.
+	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func init() {
 	RegisterProtectionPaladin()
 }
 
-// func TestProtection(t *testing.T) {
-// 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-// 		Class:      proto.Class_ClassPaladin,
-// 		Race:       proto.Race_RaceBloodElf,
-// 		OtherRaces: []proto.Race{proto.Race_RaceHuman},
+func TestProtection(t *testing.T) {
+	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
+		Class:      proto.Class_ClassPaladin,
+		Race:       proto.Race_RaceBloodElf,
+		OtherRaces: []proto.Race{proto.Race_RaceHuman},
 
-// 		GearSet:     core.GetGearSet("../../../ui/protection_paladin/gear_sets", "p1"),
-// 		Talents:     StandardTalents,
-// 		Glyphs:      StandardGlyphs,
-// 		Consumes:    FullConsumes,
-// 		SpecOptions: core.SpecOptionsCombo{Label: "Protection Paladin SOV", SpecOptions: DefaultOptions},
-// 		OtherSpecOptions: []core.SpecOptionsCombo{
-// 			{
-// 				Label: "Protection Paladin SOC",
-// 				SpecOptions: &proto.Player_ProtectionPaladin{
-// 					ProtectionPaladin: &proto.ProtectionPaladin{
-// 						Options: &proto.ProtectionPaladin_Options{
-// 							Judgement: proto.PaladinJudgement_JudgementOfWisdom,
-// 							Seal:      proto.PaladinSeal_Command,
-// 							Aura:      proto.PaladinAura_RetributionAura,
-// 						},
-// 					},
-// 				},
-// 			},
-// 			{
-// 				Label: "Protection Paladin SOR",
-// 				SpecOptions: &proto.Player_ProtectionPaladin{
-// 					ProtectionPaladin: &proto.ProtectionPaladin{
-// 						Options: &proto.ProtectionPaladin_Options{
-// 							Judgement: proto.PaladinJudgement_JudgementOfWisdom,
-// 							Seal:      proto.PaladinSeal_Righteousness,
-// 							Aura:      proto.PaladinAura_RetributionAura,
-// 						},
-// 					},
-// 				},
-// 			},
-// 		},
-// 		Rotation: core.GetAplRotation("../../../ui/protection_paladin/apls", "default"),
+		GearSet:     core.GetGearSet("../../../ui/paladin/protection/gear_sets", "T12"),
+		Talents:     StandardTalents,
+		Glyphs:      StandardGlyphs,
+		Consumes:    FullConsumes,
+		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: DefaultOptions},
+		Rotation:    core.GetAplRotation("../../../ui/paladin/protection/apls", "default"),
 
-// 		IsTank:          true,
-// 		InFrontOfTarget: true,
+		IsTank:          true,
+		InFrontOfTarget: true,
 
-// 		ItemFilter: core.ItemFilter{
-// 			WeaponTypes: []proto.WeaponType{
-// 				proto.WeaponType_WeaponTypeSword,
-// 				proto.WeaponType_WeaponTypePolearm,
-// 				proto.WeaponType_WeaponTypeMace,
-// 				proto.WeaponType_WeaponTypeShield,
-// 			},
-// 			ArmorType: proto.ArmorType_ArmorTypePlate,
-// 			RangedWeaponTypes: []proto.RangedWeaponType{
-// 				proto.RangedWeaponType_RangedWeaponTypeRelic,
-// 			},
-// 		},
-// 	}))
-// }
+		ItemFilter: core.ItemFilter{
+			WeaponTypes: []proto.WeaponType{
+				proto.WeaponType_WeaponTypeAxe,
+				proto.WeaponType_WeaponTypeSword,
+				proto.WeaponType_WeaponTypeMace,
+				proto.WeaponType_WeaponTypeShield,
+			},
+			HandTypes: []proto.HandType{
+				proto.HandType_HandTypeMainHand,
+				proto.HandType_HandTypeOneHand,
+				proto.HandType_HandTypeOffHand,
+			},
+			ArmorType: proto.ArmorType_ArmorTypePlate,
+			RangedWeaponTypes: []proto.RangedWeaponType{
+				proto.RangedWeaponType_RangedWeaponTypeRelic,
+			},
+		},
+	}))
+}
 
-// func BenchmarkSimulate(b *testing.B) {
-// 	rsr := &proto.RaidSimRequest{
-// 		Raid: core.SinglePlayerRaidProto(
-// 			&proto.Player{
-// 				Race:      proto.Race_RaceBloodElf,
-// 				Class:     proto.Class_ClassPaladin,
-// 				Equipment: core.GetGearSet("../../../ui/protection_paladin/gear_sets", "p1").GearSet,
-// 				Consumes:  FullConsumes,
-// 				Spec:      DefaultOptions,
-// 				Buffs:     core.FullIndividualBuffs,
-// 			},
-// 			core.FullPartyBuffs,
-// 			core.FullRaidBuffs,
-// 			core.FullDebuffs),
-// 		Encounter: &proto.Encounter{
-// 			Duration: 300,
-// 			Targets: []*proto.Target{
-// 				core.NewDefaultTarget(),
-// 			},
-// 		},
-// 		SimOptions: core.AverageDefaultSimTestOptions,
-// 	}
+func BenchmarkSimulate(b *testing.B) {
+	rsr := &proto.RaidSimRequest{
+		Raid: core.SinglePlayerRaidProto(
+			&proto.Player{
+				Race:           proto.Race_RaceBloodElf,
+				Class:          proto.Class_ClassPaladin,
+				Equipment:      core.GetGearSet("../../../ui/paladin/protection/gear_sets", "T12").GearSet,
+				Consumes:       FullConsumes,
+				Spec:           DefaultOptions,
+				Glyphs:         StandardGlyphs,
+				TalentsString:  StandardTalents,
+				Buffs:          core.FullIndividualBuffs,
+				ReactionTimeMs: 100,
+				Rotation:       core.GetAplRotation("../../../ui/paladin/protection/apls", "default").Rotation,
+			},
+			core.FullPartyBuffs,
+			core.FullRaidBuffs,
+			core.FullDebuffs),
+		Encounter: &proto.Encounter{
+			Duration:          300,
+			DurationVariation: 30,
+			Targets: []*proto.Target{
+				core.NewDefaultTarget(),
+			},
+		},
+		SimOptions: core.AverageDefaultSimTestOptions,
+	}
 
-// 	core.RaidBenchmark(b, rsr)
-// }
+	core.RaidBenchmark(b, rsr)
+}
 
-// var StandardTalents = "-05005135200132311333312321-511302012003"
-// var StandardGlyphs = &proto.Glyphs{
-// 	Major1: int32(proto.PaladinMajorGlyph_GlyphOfSealOfVengeance),
-// 	Major2: int32(proto.PaladinMajorGlyph_GlyphOfRighteousDefense),
-// 	Major3: int32(proto.PaladinMajorGlyph_GlyphOfDivinePlea),
-// 	Minor1: int32(proto.PaladinMinorGlyph_GlyphOfLayOnHands),
-// 	Minor2: int32(proto.PaladinMinorGlyph_GlyphOfSenseUndead),
-// }
+var StandardTalents = "-32023013122121101231-032032"
+var StandardGlyphs = &proto.Glyphs{
+	Prime1: int32(proto.PaladinPrimeGlyph_GlyphOfHammerOfTheRighteous),
+	Prime2: int32(proto.PaladinPrimeGlyph_GlyphOfCrusaderStrike),
+	Prime3: int32(proto.PaladinPrimeGlyph_GlyphOfSealOfTruth),
+	Major1: int32(proto.PaladinMajorGlyph_GlyphOfTheAsceticCrusader),
+	Major2: int32(proto.PaladinMajorGlyph_GlyphOfLayOnHands),
+	Major3: int32(proto.PaladinMajorGlyph_GlyphOfFocusedShield),
+	Minor1: int32(proto.PaladinMinorGlyph_GlyphOfTruth),
+	Minor2: int32(proto.PaladinMinorGlyph_GlyphOfBlessingOfMight),
+	Minor3: int32(proto.PaladinMinorGlyph_GlyphOfInsight),
+}
 
-// var defaultProtOptions = &proto.ProtectionPaladin_Options{
-// 	Judgement: proto.PaladinJudgement_JudgementOfWisdom,
-// 	Seal:      proto.PaladinSeal_Vengeance,
-// 	Aura:      proto.PaladinAura_RetributionAura,
-// }
+var DefaultOptions = &proto.Player_ProtectionPaladin{
+	ProtectionPaladin: &proto.ProtectionPaladin{
+		Options: &proto.ProtectionPaladin_Options{
+			ClassOptions: &proto.PaladinOptions{
+				Seal: proto.PaladinSeal_Truth,
+				Aura: proto.PaladinAura_Retribution,
+			},
+		},
+	},
+}
 
-// var DefaultOptions = &proto.Player_ProtectionPaladin{
-// 	ProtectionPaladin: &proto.ProtectionPaladin{
-// 		Options: defaultProtOptions,
-// 	},
-// }
-
-// var FullConsumes = &proto.Consumes{
-// 	Flask:           proto.Flask_FlaskOfStoneblood,
-// 	Food:            proto.Food_FoodDragonfinFilet,
-// 	DefaultPotion:   proto.Potions_IndestructiblePotion,
-// 	PrepopPotion:    proto.Potions_IndestructiblePotion,
-// 	DefaultConjured: proto.Conjured_ConjuredDarkRune,
-// }
+var FullConsumes = &proto.Consumes{
+	Flask:         proto.Flask_FlaskOfSteelskin,
+	Food:          proto.Food_FoodLavascaleMinestrone,
+	DefaultPotion: proto.Potions_GolembloodPotion,
+	PrepopPotion:  proto.Potions_GolembloodPotion,
+	TinkerHands:   proto.TinkerHands_TinkerHandsSynapseSprings,
+}
