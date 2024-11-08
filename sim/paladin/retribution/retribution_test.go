@@ -22,7 +22,10 @@ func TestRetribution(t *testing.T) {
 		Glyphs:      StandardGlyphs,
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: DefaultOptions},
-		Rotation:    core.GetAplRotation("../../../ui/paladin/retribution/apls", "apparatus"),
+		Rotation:    core.GetAplRotation("../../../ui/paladin/retribution/apls", "default"),
+		OtherRotations: []core.RotationCombo{
+			core.GetAplRotation("../../../ui/paladin/retribution/apls", "apparatus"),
+		},
 
 		ItemFilter: core.ItemFilter{
 			WeaponTypes: []proto.WeaponType{
