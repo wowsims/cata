@@ -497,7 +497,6 @@ export class ActionId {
 			case 'Obliterate':
 			case 'Blood-Caked Strike':
 			case 'Festering Strike':
-			case 'Blood Strike':
 			case 'Razor Frost':
 			case 'Lightning Speed':
 			case 'Windfury Weapon':
