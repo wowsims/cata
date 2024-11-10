@@ -21,7 +21,7 @@ func TestCombat(t *testing.T) {
 		OtherGearSets: []core.GearSetCombo{
 			core.GetGearSet("../../../ui/rogue/combat/gear_sets", "p3_combat"),
 			core.GetGearSet("../../../ui/rogue/combat/gear_sets", "preraid_combat"),
-			//core.GetGearSet("../../../ui/rogue/combat/gear_sets", "p4_combat"),
+			core.GetGearSet("../../../ui/rogue/combat/gear_sets", "p4_combat"),
 		},
 		Talents:     CombatTalents,
 		Glyphs:      CombatGlyphs,
