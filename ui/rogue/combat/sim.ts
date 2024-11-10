@@ -219,7 +219,16 @@ export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 					}
 
 					return softCaps
-				}
+				},
+				getEPDefaults(player: Player<Spec.SpecCombatRogue>) {
+					if (player.getGear().getItemSetCount("Fangs of the Father") == 2) {
+						return Presets.CBAT_LEGO_EP_PRESET.epWeights;
+					} else if (player.getGear().getItemSetCount("Vestments of the Dark Phoenix") == 4) {
+						return Presets.CBAT_4PT12_EP_PRESET.epWeights;
+					} else {
+						return Presets.CBAT_STANDARD_EP_PRESET.epWeights;
+					}
+				},
 			});
 		});
 

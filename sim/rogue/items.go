@@ -217,9 +217,9 @@ var Tier13 = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Pulled from old Shadowcraft/SimC logic
+// Pulled from old Shadowcraft/SimC logic.
 // There exists Blizzard sourced numbers, but those were from MoP beta. TBD which is valid.
-// The final difference between the Blizzard numbers and old TC numbers is exceedlingly small either way.
+// The final difference between the Blizzard numbers and old TC numbers is exceedingly small either way.
 func getFangsProcRate(character *core.Character) float64 {
 	switch character.Spec {
 	case proto.Spec_SpecSubtletyRogue:
