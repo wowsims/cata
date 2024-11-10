@@ -44,14 +44,11 @@ const getStatCaps = () => {
 };
 
 const pickRotation = (player: Player<Spec.SpecRetributionPaladin>): APLRotation => {
-	const has2pcT13 = player.getEquippedItems().filter(x => x?.item.setName === 'Battleplate of Radiant Glory').length >= 2;
 	const hasApparatus =
 		player.getEquippedItem(ItemSlot.ItemSlotTrinket1)?.item.name === "Apparatus of Khaz'goroth" ||
 		player.getEquippedItem(ItemSlot.ItemSlotTrinket2)?.item.name === "Apparatus of Khaz'goroth";
 
-	if (has2pcT13) {
-		return Presets.ROTATION_PRESET_T13.rotation.rotation!;
-	} else if (hasApparatus) {
+	if (hasApparatus) {
 		return Presets.ROTATION_PRESET_APPARATUS.rotation.rotation!;
 	} else {
 		return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
@@ -137,7 +134,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.P3_Talents.data,
+		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		other: Presets.OtherDefaults,
@@ -184,6 +181,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		BuffDebuffInputs.ManaBuff,
 		BuffDebuffInputs.SpellHasteBuff,
 		BuffDebuffInputs.PowerInfusion,
+		BuffDebuffInputs.SpellCritDebuff,
 	],
 	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff, BuffDebuffInputs.DamagePercentBuff],
 	// Inputs to include in the 'Other' section on the settings tab.
@@ -197,9 +195,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 
 	presets: {
 		epWeights: [Presets.P2_EP_PRESET, Presets.P3_EP_PRESET, Presets.P4_EP_PRESET],
-		rotations: [Presets.ROTATION_PRESET_DEFAULT, Presets.ROTATION_PRESET_APPARATUS, Presets.ROTATION_PRESET_T13],
+		rotations: [Presets.ROTATION_PRESET_DEFAULT, Presets.ROTATION_PRESET_APPARATUS],
 		// Preset talents that the user can quickly select.
-		talents: [Presets.P2_P4_Talents, Presets.P3_Talents],
+		talents: [Presets.DefaultTalents],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PRERAID_RET_PRESET, Presets.P2_BIS_RET_PRESET, Presets.P3_BIS_RET_PRESET, Presets.P4_BIS_RET_PRESET],
 		builds: [Presets.P2_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
@@ -210,7 +208,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecRetributionPaladin,
-			talents: Presets.P3_Talents.data,
+			talents: Presets.DefaultTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {

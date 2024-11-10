@@ -321,7 +321,7 @@ func init() {
 		ICD:        time.Second * 50,
 	})
 
-	shared.NewProcStatBonusEffectWithCustomCondition(shared.ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Sorrowsong",
 		ID:         55879,
 		AuraID:     90990,
@@ -332,11 +332,13 @@ func init() {
 		Outcome:    core.OutcomeLanded,
 		ProcChance: 1.0,
 		ICD:        time.Second * 20,
-	}, func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) bool {
-		return sim.IsExecutePhase35()
+
+		CustomProcCondition: func(sim *core.Simulation, _ *core.Aura) bool {
+			return sim.IsExecutePhase35()
+		},
 	})
 
-	shared.NewProcStatBonusEffectWithCustomCondition(shared.ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Sorrowsong (Heroic)",
 		ID:         56400,
 		AuraID:     91002,
@@ -347,8 +349,10 @@ func init() {
 		Outcome:    core.OutcomeLanded,
 		ProcChance: 1.0,
 		ICD:        time.Second * 20,
-	}, func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) bool {
-		return sim.IsExecutePhase35()
+
+		CustomProcCondition: func(sim *core.Simulation, _ *core.Aura) bool {
+			return sim.IsExecutePhase35()
+		},
 	})
 
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
@@ -605,7 +609,7 @@ func init() {
 		ICD:        time.Second * 100,
 	})
 
-	shared.NewProcStatBonusEffectWithCustomCondition(shared.ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Symbiotic Worm",
 		ID:         59332,
 		AuraID:     92235,
@@ -616,11 +620,13 @@ func init() {
 		Outcome:    core.OutcomeLanded,
 		ProcChance: 1,
 		ICD:        time.Second * 30,
-	}, func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
-		return result.Target.CurrentHealthPercent() < 0.35
+
+		CustomProcCondition: func(_ *core.Simulation, aura *core.Aura) bool {
+			return aura.Unit.CurrentHealthPercent() < 0.35
+		},
 	})
 
-	shared.NewProcStatBonusEffectWithCustomCondition(shared.ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Symbiotic Worm (Heroic)",
 		ID:         65048,
 		AuraID:     92355,
@@ -631,8 +637,10 @@ func init() {
 		Outcome:    core.OutcomeLanded,
 		ProcChance: 1,
 		ICD:        time.Second * 30,
-	}, func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
-		return result.Target.CurrentHealthPercent() < 0.35
+
+		CustomProcCondition: func(_ *core.Simulation, aura *core.Aura) bool {
+			return aura.Unit.CurrentHealthPercent() < 0.35
+		},
 	})
 
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
@@ -739,7 +747,7 @@ func init() {
 		ICD:        time.Second * 75,
 	})
 
-	shared.NewProcStatBonusEffectWithCustomCondition(shared.ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Bedrock Talisman",
 		ID:         58182,
 		AuraID:     92233,
@@ -750,8 +758,10 @@ func init() {
 		Outcome:    core.OutcomeLanded,
 		ProcChance: 1,
 		ICD:        time.Second * 30,
-	}, func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
-		return result.Target.CurrentHealthPercent() < 0.35
+
+		CustomProcCondition: func(_ *core.Simulation, aura *core.Aura) bool {
+			return aura.Unit.CurrentHealthPercent() < 0.35
+		},
 	})
 
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
@@ -833,39 +843,195 @@ func init() {
 	})
 
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:       "Vicious Gladiator's Insignia of Dominance",
+		Name:       "Vicious Gladiator's Insignia of Dominance - 365",
 		ID:         61045,
 		AuraID:     85027,
 		Bonus:      stats.Stats{stats.SpellPower: 963},
 		Duration:   time.Second * 20,
 		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt,
-		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
+		ProcMask:   core.ProcMaskDirect | core.ProcMaskSpellHealing | core.ProcMaskProc,
 		Outcome:    core.OutcomeLanded,
 		ProcChance: 0.25,
 		ICD:        time.Second * 55,
 	})
 
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:       "Vicious Gladiator's Insignia of Victory",
+		Name:       "Vicious Gladiator's Insignia of Dominance - 371",
+		ID:         70578,
+		AuraID:     99719,
+		Bonus:      stats.Stats{stats.SpellPower: 1077},
+		Duration:   time.Second * 20,
+		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt,
+		ProcMask:   core.ProcMaskDirect | core.ProcMaskSpellHealing | core.ProcMaskProc,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 0.25,
+		ICD:        time.Second * 55,
+	})
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Ruthless Gladiator's Insignia of Dominance - 384",
+		ID:         70402,
+		AuraID:     99742,
+		Bonus:      stats.Stats{stats.SpellPower: 1218},
+		Duration:   time.Second * 20,
+		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt,
+		ProcMask:   core.ProcMaskDirect | core.ProcMaskSpellHealing | core.ProcMaskProc,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 0.25,
+		ICD:        time.Second * 55,
+	})
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Ruthless Gladiator's Insignia of Dominance - 390",
+		ID:         72449,
+		AuraID:     102435,
+		Bonus:      stats.Stats{stats.SpellPower: 1287},
+		Duration:   time.Second * 20,
+		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt,
+		ProcMask:   core.ProcMaskDirect | core.ProcMaskSpellHealing | core.ProcMaskProc,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 0.25,
+		ICD:        time.Second * 55,
+	})
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Cataclysmic Gladiator's Insignia of Dominance",
+		ID:         73497,
+		AuraID:     105137,
+		Bonus:      stats.Stats{stats.SpellPower: 1452},
+		Duration:   time.Second * 20,
+		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt,
+		ProcMask:   core.ProcMaskDirect | core.ProcMaskSpellHealing | core.ProcMaskProc,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 0.25,
+		ICD:        time.Second * 55,
+	})
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Vicious Gladiator's Insignia of Victory - 365",
 		ID:         61046,
 		AuraID:     85032,
 		Bonus:      stats.Stats{stats.Strength: 963},
 		Duration:   time.Second * 20,
 		Callback:   core.CallbackOnSpellHitDealt,
-		ProcMask:   core.ProcMaskDirect,
+		ProcMask:   core.ProcMaskDirect | core.ProcMaskProc,
 		Outcome:    core.OutcomeLanded,
 		ProcChance: 0.15,
 		ICD:        time.Second * 55,
 	})
 
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:       "Vicious Gladiator's Insignia of Conquest",
+		Name:       "Vicious Gladiator's Insignia of Victory - 371",
+		ID:         70579,
+		AuraID:     99721,
+		Bonus:      stats.Stats{stats.Strength: 1077},
+		Duration:   time.Second * 20,
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskDirect | core.ProcMaskProc,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 0.15,
+		ICD:        time.Second * 55,
+	})
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Ruthless Gladiator's Insignia of Victory - 384",
+		ID:         70403,
+		AuraID:     99746,
+		Bonus:      stats.Stats{stats.Strength: 1218},
+		Duration:   time.Second * 20,
+		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt,
+		ProcMask:   core.ProcMaskDirect | core.ProcMaskProc,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 0.15,
+		ICD:        time.Second * 55,
+	})
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Ruthless Gladiator's Insignia of Victory - 390",
+		ID:         72455,
+		AuraID:     102432,
+		Bonus:      stats.Stats{stats.Strength: 1287},
+		Duration:   time.Second * 20,
+		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt,
+		ProcMask:   core.ProcMaskDirect | core.ProcMaskProc,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 0.15,
+		ICD:        time.Second * 55,
+	})
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Cataclysmic Gladiator's Insignia of Victory",
+		ID:         73491,
+		AuraID:     105139,
+		Bonus:      stats.Stats{stats.Strength: 1452},
+		Duration:   time.Second * 20,
+		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt,
+		ProcMask:   core.ProcMaskDirect | core.ProcMaskProc,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 0.15,
+		ICD:        time.Second * 55,
+	})
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Vicious Gladiator's Insignia of Conquest - 365",
 		ID:         61047,
 		AuraID:     85022,
 		Bonus:      stats.Stats{stats.Agility: 963},
 		Duration:   time.Second * 20,
 		Callback:   core.CallbackOnSpellHitDealt,
-		ProcMask:   core.ProcMaskDirect,
+		ProcMask:   core.ProcMaskDirect | core.ProcMaskProc,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 0.15,
+		ICD:        time.Second * 55,
+	})
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Vicious Gladiator's Insignia of Conquest - 371",
+		ID:         70577,
+		AuraID:     99717,
+		Bonus:      stats.Stats{stats.Agility: 1077},
+		Duration:   time.Second * 20,
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskDirect | core.ProcMaskProc,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 0.15,
+		ICD:        time.Second * 55,
+	})
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Ruthless Gladiator's Insignia of Conquest - 384",
+		ID:         70404,
+		AuraID:     99748,
+		Bonus:      stats.Stats{stats.Agility: 1218},
+		Duration:   time.Second * 20,
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskDirect | core.ProcMaskProc,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 0.15,
+		ICD:        time.Second * 55,
+	})
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Ruthless Gladiator's Insignia of Conquest - 390",
+		ID:         72309,
+		AuraID:     102439,
+		Bonus:      stats.Stats{stats.Agility: 1287},
+		Duration:   time.Second * 20,
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskDirect | core.ProcMaskProc,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 0.15,
+		ICD:        time.Second * 55,
+	})
+
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Cataclysmic Gladiator's Insignia of Conquest",
+		ID:         73643,
+		AuraID:     105135,
+		Bonus:      stats.Stats{stats.Agility: 1452},
+		Duration:   time.Second * 20,
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskDirect | core.ProcMaskProc,
 		Outcome:    core.OutcomeLanded,
 		ProcChance: 0.15,
 		ICD:        time.Second * 55,

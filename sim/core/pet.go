@@ -50,6 +50,9 @@ type Pet struct {
 	// Some pets expire after a certain duration. This is the pending action that disables
 	// the pet on expiration.
 	timeoutAction *PendingAction
+
+	// DK Raise Dead is doing its whole RP thing by climbing out of the ground before attacking.
+	startAttackDelay time.Duration
 }
 
 func NewPet(name string, owner *Character, baseStats stats.Stats, statInheritance PetStatInheritance, enabledOnStart bool, isGuardian bool) Pet {
@@ -171,12 +174,12 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 		pet.OnPetEnable(sim)
 	}
 
-	pet.SetGCDTimer(sim, max(0, sim.CurrentTime))
-	if sim.CurrentTime >= 0 {
+	pet.SetGCDTimer(sim, max(0, sim.CurrentTime+pet.startAttackDelay, sim.CurrentTime))
+	if sim.CurrentTime >= 0 && pet.startAttackDelay <= 0 {
 		pet.AutoAttacks.EnableAutoSwing(sim)
 	} else {
 		sim.AddPendingAction(&PendingAction{
-			NextActionAt: 0,
+			NextActionAt: max(0, sim.CurrentTime+pet.startAttackDelay),
 			OnAction: func(sim *Simulation) {
 				if pet.enabled {
 					pet.AutoAttacks.EnableAutoSwing(sim)
@@ -196,6 +199,11 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 	if pet.HasFocusBar() {
 		pet.focusBar.enable(sim, sim.CurrentTime)
 	}
+}
+
+func (pet *Pet) EnableWithStartAttackDelay(sim *Simulation, petAgent PetAgent, startAttackDelay time.Duration) {
+	pet.startAttackDelay = startAttackDelay
+	pet.Enable(sim, petAgent)
 }
 
 // Helper for enabling a pet that will expire after a certain duration.
@@ -284,6 +292,10 @@ func (pet *Pet) Disable(sim *Simulation) {
 		pet.Log(sim, "Pet dismissed")
 		pet.Log(sim, pet.GetStats().FlatString())
 	}
+}
+
+func (pet *Pet) ChangeStatInheritance(statInheritance PetStatInheritance) {
+	pet.statInheritance = statInheritance
 }
 
 func (pet *Pet) GetInheritedStats() stats.Stats {

@@ -36,10 +36,14 @@ import CleaveApl from './apls/cleave.apl.json';
 import DefaultApl from './apls/default.apl.json';
 import NefApl from './apls/nef.apl.json';
 import BethApl from './apls/bethtilac.apl.json';
+import BalerocMTApl from './apls/balerocMT.apl.json';
+import BalerocOTApl from './apls/balerocOT.apl.json';
 export const ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('APL Default', DefaultApl);
 export const ROTATION_CLEAVE = PresetUtils.makePresetAPLRotation('2-Target Cleave', CleaveApl);
 export const ROTATION_NEF = PresetUtils.makePresetAPLRotation('AoE (Nef Adds)', NefApl);
 export const ROTATION_BETH = PresetUtils.makePresetAPLRotation("Beth'tilac Phase 2", BethApl);
+export const ROTATION_BALEROC_MT = PresetUtils.makePresetAPLRotation("Baleroc MT", BalerocMTApl);
+export const ROTATION_BALEROC_OT = PresetUtils.makePresetAPLRotation("Baleroc OT", BalerocOTApl);
 
 export const ROTATION_PRESET_SIMPLE = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecGuardianDruid, DefaultSimpleRotation);
 
@@ -181,5 +185,21 @@ export const PRESET_BUILD_BETHTILAC = PresetUtils.makePresetBuild("Beth'tilac Ph
 	encounter: PresetUtils.makePresetEncounter(
 		"Beth'tilac Phase 2",
 		'http://localhost:5173/cata/druid/guardian/?i=rcmxe#eJzVVF1oHFUY3Xtndjtzk2x3b43dvbV6M5Y2LknYzZ9pUGcSSojVSi2VxkjRye7d7iS7M+vObENXCtEiVn1QAlIbilh8KaUPNQ/+5EGLglZRqIg1lmpBREQrCL7EH9Q7d3bTjdUHH/1gGL7znXvu+Q7MoHYFGKAA5gB4HoA5CM5CcAGCUTUGhsA4WAZgGMYADpF5dUGK7C6ah1hFaYkBrUWR0snd8JEwPzYaOQfAeQBPSy1EjYdEbTHOQ/kSVON9oj7Vv4YvKAmoPQvR5GNaybRsjz9jJqtYbMyqMG3Yq1RZ1+pkBys5FbNo1Sz7wB7HrDTmOY7vtUqc39+llavFg1ygxurIYXwGoASSlROLAMcCIzuM4D1poBifvHhFwooAjKkAWeLcAAk9IJDYZ783OPVTsZPvNZC5XQbahNYrrx2B9M9GNQQM00AaiionBptndSP7AyPnHjZWM0FxFCEygom4tg6FkdSdcVE7UqYj3NYvK7KmIg53p3syLpYJHA7hzWRTLYna+tM9abeLZtL9/I0VEqmvfCO5oYZRJNM/eA33F24nG2pxFB5qoi810ZtkxO51+sD2a7AfQAe5pbaZ0/uGfHwDiV8fQyfZWtuCopnMYGCw93afiknsulAmyQTaicdRay/CMAa5o0+egoikEgrAbe+AJpDwYBDoQzeliCLj1unmkYK4Od89QRx582fZn2GD3IXSpAfFtChqXQSqOCApT0SEPtdYasL89RAcDBS+OAKEwq2kA7VfgliwoJJtukjxe0FCJIjypaclrJJ1vk/lx85V+I/Hw/heshPdgYcDJ2s2bdNakLoI6ufRxlS7Esbq6QYQuOoLXHG+uDBKWkV/8eja/q0r8pq+scU0KaBJPPEfMu4iqWZnr6/IKJnayCNTlxrAv2SeIp1CWfpn5TV7tBH+n+BhHRvw2+/gr2AFgpNS8Jk8aDwjbVXFp/b9ZSO+542bn/zh/mX9tkfvRJ+/Uv5STx7N7r88Jn2j04j2oTwuCWro5axR//H8pCcXjvv1gb49QC7oHXlRF/WRjz/y66re+5xcnl+QautHmVfY5llFM0t7B+g4nUiA1DII/Q9rLve+0dSejR8+NvJ3jkjk1LvyyHGg73vo1bevfqU3OMY8+A3g6N12tljNMTpWYXbtUOpbsMvJsSL1CoxOVSs2LRdMl1EnLxBmZ52q7bEKnbW8goBcz8zO8H82nXJcl+bMknmAUbNU7qH3OR7jFNOjezlvn5VzZre59B6L02atYpHajkenGC3597EcZQeZTS3/HsulTtmzHN661OXDrMdyXdS17CyjluejputWS/yQkDdt7i/f7Zn2TKDMVcsVxgHu1bfmOdR1zBnhN8emqvl8TwL8BQ0Xc7A=',
+	),
+});
+
+export const PRESET_BUILD_BALEROC_MT = PresetUtils.makePresetBuild("Baleroc MT", {
+	rotation: ROTATION_BALEROC_MT,
+	encounter: PresetUtils.makePresetEncounter(
+		"Baleroc MT",
+		'http://localhost:5173/cata/druid/guardian/?i=cmxe#eJzVUr9PFEEUZvbQ3IkmB5oIJJIHlV4QkYhRY7LLxeCRQLzIxWDn3O7s3eRmZ8/Z2bscFbEyxsLQQaNURit7Y60mklAZbKwoKLQ12vl2lkPA+Af4is3szPd+fN/3TpzNEiAOqZMVQp4RsmKRNxbZskgxlyfXSIlsE3LDypOBnuGH65njZUE7TGX78mTsVDYzOVS2lqwHxzCv2PM60zec6+8xMeF8sHp3Le+nRTYy6dV950nmUs4c5787/etrSfyyL6SHL/bl9PDKHkrxuzYcH3ueK2XSnMmWs1f7jDOUQj/a19ObLXvUN/HZntn8lMQ3e2on2/yxkVk+WaSCqdCFqWkowdJgb2Gb9PyHseK9dw78nn9UfjlzFGPk2Hl7emaNXOm/evPd3a92F+OUyCRZJU/JwEiFygZEbdoEP1Rwi7k8oJqHEoqCeqxQn/PBrTO3wbxx0HUG1TCKoM2FgCoDjcnMg2oHTJkpUBQxCoFUGvQC5TJ982LFZe2vBlhKemE7mhjEeR5nsmQA5iTXnAq4U0kgywxCH26LUHUg0tRtRIVtC4eSoby4jFaOd1ubmbjJ1cw0b8Z4E0vNhfmNmtjb5zivqQNuiG/AI6CuGwexwDRvAuapqiGDFhUxwychwrbJxml0CDVGFQShYkBrNcWiiLeY6EC7zgU20MkIAWM6YZokTU1PNqBUxjNi66HwjMjJi89VpP+lxjhUYw0BbTAQ3GdpQ4/7PndjofdrLFS6qs5JnykZHpEUKnVkx2UzNjR5TWIdD7hvfDOmI0NTOqJVgexHu/uxSjYJenGu68U9rvG72KSqgR4HzcRoVnhBZg/RCbiMtfGrK3+6MxHfkxfqjIpkYFpjqL2x7I/6iMUxAyo7h/qlrgNqRFtMYSZunm4zJvdQs4IGDBTzE42ZASZNE45dQiNIyEU+hUXNqGcWCdsdbLI/ReKFIVdYROtxE5KffckVC3CjPbw+QLLbJe/8Bt31bfM='
+	),
+});
+
+export const PRESET_BUILD_BALEROC_OT = PresetUtils.makePresetBuild("Baleroc OT", {
+	rotation: ROTATION_BALEROC_OT,
+	encounter: PresetUtils.makePresetEncounter(
+		"Baleroc OT",
+		'http://localhost:5173/cata/druid/guardian/?i=cmxe#eJzVUr9PFEEUvtlDc4gmB5oIJJIHlV4QTyJGickuF4NHAvEixGDn3O7s3eRmZ8/ZWS5HRayMsTB00CiV0creWKuJJFQGGysKCk2sjHa+neUQMP4BvmIzO/O9H9/3vRNncwSIQ+pkhZCnhKxY5LVFtixS6s6Ta6RMtgmZzExaedKXGXywnj1eEbTNVK4nT0ZO5bLFgYq1aN0/hpmlzKtsz2B3b8bEmPPe6tq1vJ8W2cimV/ecx9lL3eY4+83pXV9L4pd9IT18ti+nh5f2QIrfteH4yLPucjbNKS45e7XPOAMp9IN9Pb3Zsod9E5/sqc2PSXy1x3dyzR8b2eWTJSqYCl0Yn4AyLPZ3FbZJ5j+MFe+dc+D3/MPKi6mjGCPHzpvTU2vkSu/VG2/vfLE7GKdMimSVPCF9QwtUNiBq0Sb4oYKbzOUB1TyUUBLUY4X6jA9unbkN5o2CrjOohlEELS4EVBloTGYeVNtgyoyDoohRCKTSoOcol+mbFysua381wFLSC1vRWD/O8yibI30wI7nmVMDthQSyzCD04ZYIVRsiTd1GVNi2cCgZyovLaOVop7WZiZtczUzzZow3sdRcmN+oib19jvOaOuCG+AY8Auq6cRALTPPGYJaqGjJYoiJm+CRE2DLZOI0OocaogiBUDGitplgU8SUm2tCqc4ENdDJCwJhOmCZJ4xPFBpQreEZsPRSeETl58bmK9L/UGIVqrCGgDQaC+yxt6HHf524s9H6NuYWOqjPSZ0qGRySFhTqy47IZG5q8JrGOB9w3vhnTkaEpHdGqQPbD6Xp8t1fJJkEvznW8uMs1fuebVDXQ46CZGM0Kz8n0IToBl7E2fnXkT3cm4nvyQp1RkQxMawy1N5b9UR+xOGZAZftQv9R1QI3oElOYiZunW4zJPdS0oAEDxfxEY2aASdOEY4fQkLNKXORTmNeMemaRsN3BJvtTJF4YcoV5tB43IfnZl1yxADfaw+sDJDtd8s5vNoJvHA=='
 	),
 });

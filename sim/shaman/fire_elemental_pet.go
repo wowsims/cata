@@ -17,12 +17,18 @@ type FireElemental struct {
 
 	FireShieldAura *core.Aura
 
+	BonusSpellpower float64
+	BonusIntellect  float64
+
 	shamanOwner *Shaman
 }
 
-func (shaman *Shaman) NewFireElemental(bonusSpellPower float64) *FireElemental {
+var FireElementalSpellPowerScaling = 0.5883
+var FireElementalIntellectScaling = 0.3198
+
+func (shaman *Shaman) NewFireElemental(bonusSpellPower float64, bonusIntellect float64) *FireElemental {
 	fireElemental := &FireElemental{
-		Pet:         core.NewPet("Greater Fire Elemental", &shaman.Character, fireElementalPetBaseStats, shaman.fireElementalStatInheritance(), false, true),
+		Pet:         core.NewPet("Greater Fire Elemental", &shaman.Character, fireElementalPetBaseStats, shaman.fireElementalStatInheritance(bonusIntellect, bonusSpellPower), false, true),
 		shamanOwner: shaman,
 	}
 	fireElemental.EnableManaBar()
@@ -42,11 +48,6 @@ func (shaman *Shaman) NewFireElemental(bonusSpellPower float64) *FireElemental {
 	})
 	fireElemental.AutoAttacks.MHConfig().BonusCoefficient = 0
 
-	if bonusSpellPower > 0 {
-		fireElemental.AddStat(stats.SpellPower, float64(bonusSpellPower)*0.5883)
-		fireElemental.AddStat(stats.AttackPower, float64(bonusSpellPower)*4.9) // 0.7*7
-	}
-
 	if shaman.Race == proto.Race_RaceDraenei {
 		fireElemental.AddStats(stats.Stats{
 			stats.PhysicalHitPercent: -1,
@@ -54,6 +55,9 @@ func (shaman *Shaman) NewFireElemental(bonusSpellPower float64) *FireElemental {
 			stats.ExpertiseRating:    math.Floor(-core.SpellHitRatingPerHitPercent * 0.79),
 		})
 	}
+
+	fireElemental.BonusIntellect = bonusIntellect
+	fireElemental.BonusSpellpower = bonusSpellPower
 
 	fireElemental.OnPetEnable = fireElemental.enable
 	fireElemental.OnPetDisable = fireElemental.disable
@@ -64,6 +68,7 @@ func (shaman *Shaman) NewFireElemental(bonusSpellPower float64) *FireElemental {
 }
 
 func (fireElemental *FireElemental) enable(sim *core.Simulation) {
+	fireElemental.ChangeStatInheritance(fireElemental.shamanOwner.fireElementalStatInheritance(0, 0))
 	fireElemental.FireShieldAura.Activate(sim)
 }
 
@@ -142,17 +147,15 @@ var fireElementalPetBaseStats = stats.Stats{
 	stats.SpellCritPercent:    6.8,
 }
 
-var FireElementalSpellPowerScaling = 0.5883
-
-func (shaman *Shaman) fireElementalStatInheritance() core.PetStatInheritance {
+func (shaman *Shaman) fireElementalStatInheritance(bonusIntellect float64, bonusSpellPower float64) core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
 		ownerSpellHitPercent := ownerStats[stats.SpellHitPercent]
 
 		return stats.Stats{
-			stats.Stamina:     ownerStats[stats.Stamina] * 0.80,                              //Estimated from beta testing
-			stats.Intellect:   ownerStats[stats.Intellect] * 0.3198,                          //Estimated from beta testing
-			stats.SpellPower:  ownerStats[stats.SpellPower] * FireElementalSpellPowerScaling, //Estimated from beta testing
-			stats.AttackPower: ownerStats[stats.SpellPower] * 4.9,                            // 0.7*7 Estimated from beta testing
+			stats.Stamina:     ownerStats[stats.Stamina] * 0.80,                                                  //Estimated from beta testing
+			stats.Intellect:   (ownerStats[stats.Intellect] + bonusIntellect) * FireElementalIntellectScaling,    //Estimated from beta testing
+			stats.SpellPower:  (ownerStats[stats.SpellPower] + bonusSpellPower) * FireElementalSpellPowerScaling, //Estimated from beta testing
+			stats.AttackPower: (ownerStats[stats.SpellPower] + bonusSpellPower) * 4.9,                            // 0.7*7 Estimated from beta testing
 
 			stats.PhysicalHitPercent: ownerSpellHitPercent / 17 * 8,
 			stats.SpellHitPercent:    ownerSpellHitPercent,

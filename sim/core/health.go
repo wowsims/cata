@@ -103,7 +103,7 @@ var ChanceOfDeathAuraLabel = "Chance of Death"
 func (character *Character) trackChanceOfDeath(healingModel *proto.HealingModel) {
 	character.Unit.Metrics.isTanking = false
 	for _, target := range character.Env.Encounter.TargetUnits {
-		if target.CurrentTarget == &character.Unit {
+		if (target.CurrentTarget == &character.Unit) || (target.SecondaryTarget == &character.Unit) {
 			character.Unit.Metrics.isTanking = true
 		}
 	}
@@ -182,7 +182,21 @@ func (character *Character) applyHealingModel(healingModel *proto.HealingModel) 
 	minCadence := max(0.0, medianCadence-healingModel.CadenceVariation)
 	cadenceVariationLow := medianCadence - minCadence
 
-	healthMetrics := character.NewHealthMetrics(ActionID{OtherID: proto.OtherAction_OtherActionHealingModel})
+	healingModelActionID := ActionID{OtherID: proto.OtherAction_OtherActionHealingModel}
+	healthMetrics := character.NewHealthMetrics(healingModelActionID)
+
+	// Register a shield aura on the tank to model the aggregate impact of
+	// shield spells that contribute towards the total modeled HPS.
+	var healPerTick float64
+	var absorbShield *DamageAbsorptionAura
+
+	absorbFrac := Clamp(healingModel.AbsorbFrac, 0, 1)
+
+	if absorbFrac > 0 {
+		absorbShield = character.NewDamageAbsorptionAura("Healing Model Absorb Shield", healingModelActionID, NeverExpires, func(_ *Unit) float64 {
+			return max(absorbShield.ShieldStrength, healPerTick * absorbFrac)
+		})
+	}
 
 	character.RegisterResetEffect(func(sim *Simulation) {
 		// Hack since we don't have OnHealingReceived aura handlers yet.
@@ -191,17 +205,22 @@ func (character *Character) applyHealingModel(healingModel *proto.HealingModel) 
 
 		// Initialize randomized cadence model
 		timeToNextHeal := DurationFromSeconds(0.0)
-		healPerTick := 0.0
+		healPerTick = 0.0
 		pa := &PendingAction{
 			NextActionAt: timeToNextHeal,
 		}
 
 		pa.OnAction = func(sim *Simulation) {
 			// Use modeled HPS to scale heal per tick based on random cadence
-			healPerTick = healingModel.Hps * (float64(timeToNextHeal) / float64(time.Second))
+			healPerTick = healingModel.Hps * (float64(timeToNextHeal) / float64(time.Second)) * character.PseudoStats.HealingTakenMultiplier * character.PseudoStats.ExternalHealingTakenMultiplier
 
-			// Execute the heal
-			character.GainHealth(sim, healPerTick*character.PseudoStats.HealingTakenMultiplier, healthMetrics)
+			// Execute the direct portion of the heal
+			character.GainHealth(sim, healPerTick * (1.0 - absorbFrac), healthMetrics)
+
+			// Turn the remainder into an absorb shield
+			if absorbShield != nil {
+				absorbShield.Activate(sim)
+			}
 
 			// Might use this again in the future to track "absorb" metrics but currently disabled
 			//if ardentDefenderAura != nil && character.CurrentHealthPercent() >= 0.35 {

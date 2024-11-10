@@ -199,6 +199,8 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		return rot.newValueAnyTrinketStatProcsActive(config.GetAnyTrinketStatProcsActive())
 	case *proto.APLValue_TrinketProcsMinRemainingTime:
 		return rot.newValueTrinketProcsMinRemainingTime(config.GetTrinketProcsMinRemainingTime())
+	case *proto.APLValue_TrinketProcsMaxRemainingIcd:
+		return rot.newValueTrinketProcsMaxRemainingICD(config.GetTrinketProcsMaxRemainingIcd())
 	case *proto.APLValue_NumEquippedStatProcTrinkets:
 		return rot.newValueNumEquippedStatProcTrinkets(config.GetNumEquippedStatProcTrinkets())
 

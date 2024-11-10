@@ -94,24 +94,14 @@ func (env *Environment) construct(raidProto *proto.Raid, encounterProto *proto.E
 	}
 
 	tankTargetSet := map[*Unit]bool{}
-	// Assign target or target using Tanks field.
+	// Assign target-of-target using Tanks field.
 	for _, target := range env.Encounter.Targets {
 		if target.Index < int32(len(encounterProto.Targets)) {
 			targetProto := encounterProto.Targets[target.Index]
-			if targetProto.TankIndex >= 0 && targetProto.TankIndex < int32(len(raidProto.Tanks)) {
-				raidTargetProto := raidProto.Tanks[targetProto.TankIndex]
-				if raidTargetProto != nil {
-					raidTarget := env.GetUnit(raidTargetProto, nil)
-					if raidTarget != nil {
-						target.CurrentTarget = raidTarget
+			env.setupTankTarget(target, targetProto.TankIndex, raidProto.Tanks, true, tankTargetSet)
 
-						// Set the tanks target to the first unit tanked
-						if !tankTargetSet[raidTarget] {
-							tankTargetSet[raidTarget] = true
-							raidTarget.CurrentTarget = &target.Unit
-						}
-					}
-				}
+			if targetProto.SecondTankIndex != targetProto.TankIndex {
+				env.setupTankTarget(target, targetProto.SecondTankIndex, raidProto.Tanks, false, tankTargetSet)
 			}
 		}
 	}
@@ -216,6 +206,36 @@ func (env *Environment) finalize(raidProto *proto.Raid, _ *proto.Encounter, raid
 		sim.reset()
 		sim.PrePull()
 		sim.Cleanup()
+	}
+}
+
+func (env *Environment) setupTankTarget(npc *Target, tankIndex int32, tankList []*proto.UnitReference, isFirstTank bool, tankHasTarget map[*Unit]bool) {
+	if (tankIndex < 0) || (tankIndex >= int32(len(tankList))) {
+		return
+	}
+
+	tankRef := tankList[tankIndex]
+
+	if tankRef == nil {
+		return
+	}
+
+	tankUnit := env.GetUnit(tankRef, nil)
+
+	if tankUnit == nil {
+		return
+	}
+
+	if isFirstTank {
+		npc.CurrentTarget = tankUnit
+	} else {
+		npc.SecondaryTarget = tankUnit
+	}
+
+	// Set the tank's target to the first unit tanked.
+	if !tankHasTarget[tankUnit] {
+		tankUnit.CurrentTarget = &npc.Unit
+		tankHasTarget[tankUnit] = true
 	}
 }
 

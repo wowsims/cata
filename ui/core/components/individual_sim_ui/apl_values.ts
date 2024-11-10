@@ -68,6 +68,7 @@ import {
 	APLValueSequenceIsReady,
 	APLValueSequenceTimeToReady,
 	APLValueShamanCanSnapshotStrongerFireElemental,
+	APLValueShamanFireElementalDuration,
 	APLValueSpellCanCast,
 	APLValueSpellCastTime,
 	APLValueSpellChanneledTicks,
@@ -79,6 +80,7 @@ import {
 	APLValueSpellTimeToReady,
 	APLValueSpellTravelTime,
 	APLValueTotemRemainingTime,
+	APLValueTrinketProcsMaxRemainingICD,
 	APLValueTrinketProcsMinRemainingTime,
 	APLValueUnitIsMoving,
 	APLValueWarlockShouldRecastDrainSoul,
@@ -975,7 +977,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3')],
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.excludeStackingProcsInput],
 	}),
 	anyTrinketStatProcsActive: inputBuilder({
 		label: 'Any Trinket Proc Buffs Active',
@@ -990,7 +992,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3')],
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.excludeStackingProcsInput],
 	}),
 	trinketProcsMinRemainingTime: inputBuilder({
 		label: 'Trinket Procs Min Remaining Time',
@@ -1003,7 +1005,20 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3')],
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.excludeStackingProcsInput],
+	}),
+	trinketProcsMaxRemainingIcd: inputBuilder({
+		label: 'Trinket Procs Max Remaining ICD',
+		submenu: ['Aura Sets'],
+		shortDescription:
+			'Longest remaining ICD on any inactive trinket procs that buff the specified stat type(s), or 0 if all are currently active.',
+		newValue: () =>
+			APLValueTrinketProcsMaxRemainingICD.create({
+				statType1: -1,
+				statType2: -1,
+				statType3: -1,
+			}),
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.excludeStackingProcsInput],
 	}),
 	numEquippedStatProcTrinkets: inputBuilder({
 		label: 'Num Equipped Stat Proc Trinkets',
@@ -1015,7 +1030,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3')],
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.excludeStackingProcsInput],
 	}),
 
 	// DoT
@@ -1076,6 +1091,14 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		submenu: ['Shaman'],
 		shortDescription: 'Returns true if a new Fire Elemental would be stronger than the current.',
 		newValue: APLValueShamanCanSnapshotStrongerFireElemental.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassShaman,
+		fields: [],
+	}),
+	shamanFireElementalDuration: inputBuilder({
+		label: 'Fire Elemental Total Duration',
+		submenu: ['Shaman'],
+		shortDescription: 'Returns the duration of Fire Elemental depending on if Totemic Focus is talented or not.',
+		newValue: APLValueShamanFireElementalDuration.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassShaman,
 		fields: [],
 	}),

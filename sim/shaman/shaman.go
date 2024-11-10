@@ -63,7 +63,7 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 		shaman.AddStat(stats.MP5, 354)
 	}
 
-	shaman.FireElemental = shaman.NewFireElemental(float64(totems.BonusSpellpower))
+	shaman.FireElemental = shaman.NewFireElemental(float64(totems.BonusSpellpower), float64(totems.BonusIntellect))
 	shaman.EarthElemental = shaman.NewEarthElemental(float64(totems.BonusSpellpower))
 
 	return shaman

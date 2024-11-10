@@ -229,6 +229,16 @@ export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 						return Presets.CBAT_STANDARD_EP_PRESET.epWeights;
 					}
 				},
+				updateGearStatsModifier(baseStats: Stats) {
+					// Human/Orc racials for MH. Maxing Expertise for OH is a DPS loss when the MH matches the racial.
+					const mhWepType = player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponType;
+					if ((player.getRace() == Race.RaceHuman && (mhWepType == WeaponType.WeaponTypeSword || mhWepType ==  WeaponType.WeaponTypeMace) ||
+						(player.getRace() == Race.RaceOrc && mhWepType == WeaponType.WeaponTypeAxe)))
+					{
+						return baseStats.addStat(Stat.StatExpertiseRating, 90);
+					}
+					return baseStats
+				},
 			});
 		});
 

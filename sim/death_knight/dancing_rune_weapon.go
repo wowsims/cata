@@ -136,6 +136,7 @@ func (runeWeapon *RuneWeaponPet) Initialize() {
 	runeWeapon.AddCopySpell(DeathStrikeActionID.WithTag(1), runeWeapon.dkOwner.registerDrwDeathStrikeSpell())
 	runeWeapon.AddCopySpell(RuneStrikeActionID.WithTag(1), runeWeapon.dkOwner.registerDrwRuneStrikeSpell())
 	runeWeapon.AddCopySpell(FesteringStrikeActionID.WithTag(1), runeWeapon.dkOwner.registerDrwFesteringStrikeSpell())
+	runeWeapon.AddCopySpell(BloodStrikeActionID.WithTag(1), runeWeapon.dkOwner.registerDrwBloodStrikeSpell())
 }
 
 func (runeWeapon *RuneWeaponPet) AddCopySpell(actionId core.ActionID, spell *core.Spell) {

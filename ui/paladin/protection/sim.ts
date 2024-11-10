@@ -35,20 +35,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatCritRating,
 		Stat.StatExpertiseRating,
 		Stat.StatHasteRating,
-		Stat.StatSpellPower,
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
 		Stat.StatDodgeRating,
 		Stat.StatParryRating,
-		Stat.StatResilienceRating,
 		Stat.StatNatureResistance,
 		Stat.StatShadowResistance,
 		Stat.StatFrostResistance,
 		Stat.StatMasteryRating,
 	],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps],
+	epPseudoStats: [
+		PseudoStat.PseudoStatMainHandDps,
+		PseudoStat.PseudoStatPhysicalHitPercent,
+		PseudoStat.PseudoStatSpellHitPercent,
+	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
-	epReferenceStat: Stat.StatSpellPower,
+	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
 		[
@@ -60,8 +62,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			Stat.StatAgility,
 			Stat.StatAttackPower,
 			Stat.StatExpertiseRating,
-			Stat.StatSpellPower,
-			Stat.StatResilienceRating,
 			Stat.StatNatureResistance,
 			Stat.StatShadowResistance,
 			Stat.StatFrostResistance,
@@ -92,16 +92,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 	},
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.PRERAID_PRESET.gear,
+		gear: Presets.T12_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		// Values for now are pre-Cata initial WAG
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.GenericAoeTalents.data,
+		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
+		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
 			arcaneBrilliance: true,
@@ -118,6 +119,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			blessingOfKings: true,
 			blessingOfMight: true,
 			communion: true,
+			devotionAura: true,
 		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
@@ -132,9 +134,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			sunderArmor: true,
 			vindication: true,
 			thunderClap: true,
+			criticalMass: true,
 		}),
-		rotationType: APLRotation_Type.TypeSimple,
-		simpleRotation: Presets.ROTATION_DEFAULT,
+		rotationType: APLRotation_Type.TypeAuto,
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
@@ -150,6 +152,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			OtherInputs.IncomingHps,
 			OtherInputs.HealingCadence,
 			OtherInputs.HealingCadenceVariation,
+			OtherInputs.AbsorbFrac,
 			OtherInputs.BurstWindow,
 			OtherInputs.HpPercentForDefensives,
 			OtherInputs.InspirationUptime,
@@ -164,7 +167,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 	presets: {
 		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
-		talents: [Presets.GenericAoeTalents],
+		talents: [Presets.DefaultTalents],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
@@ -172,6 +175,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			Presets.PRERAID_PRESET,
 			Presets.T11_PRESET,
 			Presets.T11CTC_PRESET,
+			Presets.T12_PRESET,
 		],
 	},
 
@@ -179,14 +183,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		return Presets.ROTATION_DEFAULT.rotation.rotation!;
 	},
 
-	simpleRotation: (_player: Player<Spec.SpecProtectionPaladin>): APLRotation => {
-		return Presets.ROTATION_DEFAULT.rotation.rotation!;
-	},
-
 	raidSimPresets: [
 		{
 			spec: Spec.SpecProtectionPaladin,
-			talents: Presets.GenericAoeTalents.data,
+			talents: Presets.DefaultTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -197,10 +197,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.PRERAID_PRESET.gear,
+					1: Presets.T11_PRESET.gear,
+					2: Presets.T11_PRESET.gear,
+					3: Presets.T12_PRESET.gear,
+					4: Presets.T12_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.PRERAID_PRESET.gear,
+					1: Presets.T11_PRESET.gear,
+					2: Presets.T11_PRESET.gear,
+					3: Presets.T12_PRESET.gear,
+					4: Presets.T12_PRESET.gear,
 				},
 			},
 		},
