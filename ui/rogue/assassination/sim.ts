@@ -149,7 +149,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_MUTILATE],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET_ASSASSINATION, Presets.P1_PRESET_ASSASSINATION, Presets.P1_PRESET_ASN_EXPERTISE, Presets.P3_PRESET_ASSASSINATION],
+		gear: [Presets.PRERAID_PRESET_ASSASSINATION, Presets.P1_PRESET_ASSASSINATION, Presets.P1_PRESET_ASN_EXPERTISE, Presets.P3_PRESET_ASSASSINATION, Presets.P4_PRESET_ASSASSINATION],
 	},
 
 	autoRotation: (player: Player<Spec.SpecAssassinationRogue>): APLRotation => {

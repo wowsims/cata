@@ -155,7 +155,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_COMBAT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET_COMBAT, Presets.P1_PRESET_COMBAT, Presets.P3_PRESET_COMBAT],
+		gear: [Presets.PRERAID_PRESET_COMBAT, Presets.P1_PRESET_COMBAT, Presets.P3_PRESET_COMBAT, Presets.P4_PRESET_COMBAT],
 	},
 
 	autoRotation: (player: Player<Spec.SpecCombatRogue>): APLRotation => {

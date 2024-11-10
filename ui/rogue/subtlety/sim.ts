@@ -149,7 +149,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_SUBTLETY],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET_SUB, Presets.P1_PRESET_SUB, Presets.P3_PRESET_SUB],
+		gear: [Presets.PRERAID_PRESET_SUB, Presets.P1_PRESET_SUB, Presets.P3_PRESET_SUB, Presets.P4_PRESET_SUB],
 	},
 
 	autoRotation: (player: Player<Spec.SpecSubtletyRogue>): APLRotation => {

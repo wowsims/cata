@@ -7,6 +7,7 @@ import { Stats } from '../../core/proto_utils/stats';
 import SubtletyApl from './apls/subtlety.apl.json';
 import P1SubtletyGear from './gear_sets/p1_subtlety.gear.json';
 import P3SubtletyGear from './gear_sets/p3_subtlety.gear.json';
+import P4SubtletyGear from './gear_sets/p4_subtlety.gear.json';
 import PreraidSubtletyGear from './gear_sets/preraid_subtlety.gear.json';
 
 // Preset options for this spec.
@@ -16,6 +17,7 @@ import PreraidSubtletyGear from './gear_sets/preraid_subtlety.gear.json';
 export const P1_PRESET_SUB = PresetUtils.makePresetGear('P1 Sub', P1SubtletyGear);
 export const P3_PRESET_SUB = PresetUtils.makePresetGear('P3 Sub', P3SubtletyGear);
 export const PRERAID_PRESET_SUB = PresetUtils.makePresetGear('Pre-Raid Sub', PreraidSubtletyGear);
+export const P4_PRESET_SUB = PresetUtils.makePresetGear('P4 Sub', P4SubtletyGear);
 
 export const ROTATION_PRESET_SUBTLETY = PresetUtils.makePresetAPLRotation('Subtlety', SubtletyApl);
 
