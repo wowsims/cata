@@ -561,6 +561,12 @@ func init() {
 				5,
 				buffDuration)
 
+			buffAura := character.RegisterAura(core.Aura{
+				Label:    "Apparatus of Khaz'goroth" + labelSuffix,
+				ActionID: core.ActionID{ItemID: apparatusItemID},
+				Duration: buffDuration,
+			})
+
 			titanicPower := character.RegisterAura(core.Aura{
 				Label:     "Titanic Power" + labelSuffix,
 				ActionID:  core.ActionID{SpellID: 96923},
@@ -582,7 +588,7 @@ func init() {
 			}
 
 			core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-				Name:       "Titanic Power Aura" + labelSuffix,
+				Name:       "Titanic Power Trigger" + labelSuffix,
 				ActionID:   core.ActionID{SpellID: 96924},
 				Callback:   core.CallbackOnSpellHitDealt,
 				ProcMask:   core.ProcMaskMelee,
@@ -640,6 +646,7 @@ func init() {
 						panic("unexpected statType")
 					}
 
+					buffAura.Activate(sim)
 					titanicPower.Deactivate(sim)
 				},
 				ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {

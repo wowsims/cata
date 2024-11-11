@@ -23,6 +23,13 @@ var ItemSetReinforcedSapphiriumBattleplate = core.NewItemSet(core.ItemSet{
 		},
 		4: func(agent core.Agent) {
 			// Handled in inquisition.go
+
+			paladin := agent.(PaladinAgent).GetPaladin()
+			// Used for APL aura check
+			core.MakePermanent(paladin.RegisterAura(core.Aura{
+				Label:    "Reinforced Sapphirium Battleplate - T11 4pc",
+				ActionID: core.ActionID{SpellID: 90299},
+			}))
 		},
 	},
 })
@@ -53,6 +60,13 @@ var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 		},
 		4: func(agent core.Agent) {
 			// Handled in talents_retribution.go
+
+			paladin := agent.(PaladinAgent).GetPaladin()
+			// Used for APL aura check
+			core.MakePermanent(paladin.RegisterAura(core.Aura{
+				Label:    "Battleplate of Immolation - T12 4pc",
+				ActionID: core.ActionID{SpellID: 99116},
+			}))
 		},
 	},
 })

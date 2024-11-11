@@ -88,7 +88,7 @@ func registerGlyphOfExorcism(paladin *Paladin) {
 		core.CalcScalingSpellAverageEffect(proto.Class_ClassPaladin, 2.663)
 
 	// Used for checking "Is Aura Known" in the APL
-	glyphOfExorcismAura := paladin.GetOrRegisterAura(core.Aura{
+	paladin.GetOrRegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 54934},
 		Label:    "Glyph of Exorcism (DoT)" + paladin.Label,
 	})
@@ -105,7 +105,6 @@ func registerGlyphOfExorcism(paladin *Paladin) {
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
-			Aura:                *glyphOfExorcismAura,
 			NumberOfTicks:       3,
 			AffectedByCastSpeed: false,
 			TickLength:          2 * time.Second,
