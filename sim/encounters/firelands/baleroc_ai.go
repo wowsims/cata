@@ -136,6 +136,7 @@ func (ai *BalerocAI) Initialize(target *core.Target, config *proto.Target) {
 
 	if ai.stackCountForFirstSwap <= 0 {
 		target.CurrentTarget = ai.MainTank
+		target.SecondaryTarget = ai.OffTank
 	}
 
 	ai.initialHealerStackGain = config.TargetInputs[2].NumberValue
