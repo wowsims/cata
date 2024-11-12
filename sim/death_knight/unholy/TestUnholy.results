@@ -542,8 +542,8 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-Dwyer'sCaber-70141"
  value: {
-  dps: 41537.93612
-  tps: 30758.08062
+  dps: 41560.00675
+  tps: 30784.09025
   hps: 663.74943
  }
 }
@@ -598,17 +598,17 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-EssenceoftheCyclone-59473"
  value: {
-  dps: 40322.24917
-  tps: 29815.92902
+  dps: 40342.32298
+  tps: 29825.94724
   hps: 659.8312
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-EssenceoftheCyclone-65140"
  value: {
-  dps: 40440.3513
-  tps: 29897.52433
-  hps: 655.91296
+  dps: 40502.4154
+  tps: 29933.8926
+  hps: 655.12931
  }
 }
 dps_results: {
@@ -1502,17 +1502,17 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-RightEyeofRajh-56100"
  value: {
-  dps: 40390.79856
-  tps: 29898.33856
+  dps: 40407.06129
+  tps: 29920.18661
   hps: 644.15825
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-RightEyeofRajh-56431"
  value: {
-  dps: 40516.81261
-  tps: 29975.73152
-  hps: 644.15825
+  dps: 40520.41451
+  tps: 29958.55506
+  hps: 643.3746
  }
 }
 dps_results: {
