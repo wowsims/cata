@@ -1,6 +1,7 @@
 package shaman
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -44,7 +45,22 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			shaman.MagmaTotem.AOEDot().Deactivate(sim)
 			shaman.FireElemental.Disable(sim)
-			spell.Dot(sim.GetTargetUnit(0)).Apply(sim)
+			if sim.CurrentTime < 0 {
+				dropTime := sim.CurrentTime
+				pa := &core.PendingAction{
+					NextActionAt: 0,
+					Priority:     core.ActionPriorityGCD,
+
+					OnAction: func(sim *core.Simulation) {
+						spell.Dot(sim.GetTargetUnit(0)).BaseTickCount = int32(math.Ceil(40*(1.0+0.20*float64(shaman.Talents.TotemicFocus)+dropTime.Minutes()))) - 1
+						spell.Dot(sim.GetTargetUnit(0)).Apply(sim)
+					},
+				}
+				sim.AddPendingAction(pa)
+			} else {
+				spell.Dot(sim.GetTargetUnit(0)).BaseTickCount = int32(40*(1.0+0.20*float64(shaman.Talents.TotemicFocus))) - 1
+				spell.Dot(sim.GetTargetUnit(0)).Apply(sim)
+			}
 			duration := 60 * (1.0 + 0.20*float64(shaman.Talents.TotemicFocus))
 			shaman.TotemExpirations[FireTotem] = sim.CurrentTime + time.Duration(duration)*time.Second
 		},
