@@ -255,36 +255,10 @@ func (ai *BalerocAI) registerBlazeOfGlory() {
 }
 
 func (ai *BalerocAI) registerBlades() {
-	// 0 - 10N, 1 - 25N, 2 - 10H, 3 - 25H
-	scalingIndex := core.TernaryInt(ai.raidSize == 10, core.TernaryInt(ai.isHeroic, 2, 0), core.TernaryInt(ai.isHeroic, 3, 1))
-
-	// https://wago.tools/db2/SpellEffect?build=4.4.1.57294&filter[SpellID]=99351&page=1&sort[SpellID]=asc
-	infernoStrikeBase := []float64{97499, 165749, 136499, 232049}[scalingIndex]
-	infernoStrikeVariance := []float64{5000, 8500, 7000, 11900}[scalingIndex]
-
-	infernoStrike := ai.Target.RegisterSpell(core.SpellConfig{
-		ActionID:         core.ActionID{SpellID: 99351},
-		SpellSchool:      core.SpellSchoolFire,
-		ProcMask:         core.ProcMaskSpellDamage,
-		Flags:            core.SpellFlagMeleeMetrics,
-		DamageMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damageRoll := infernoStrikeBase + infernoStrikeVariance*sim.RandomFloat("Inferno Strike Damage")
-			spell.CalcAndDealDamage(sim, target, damageRoll, spell.OutcomeEnemyMeleeWhite)
-		},
-	})
-
+	// First register the blade auras and activation spells.
 	const bladeDuration = time.Second * 15
 	const bladeCooldown = time.Second * 45 // very first one is special cased as 30s
 	const bladeCastTime = time.Millisecond * 1500
-
-	infernoBladeActionID := core.ActionID{SpellID: 99350}
-	infernoBladeAura := ai.Target.RegisterAura(core.Aura{
-		Label:    "Inferno Blade",
-		ActionID: infernoBladeActionID,
-		Duration: bladeDuration,
-	})
 
 	sharedBladeCastHandler := func(sim *core.Simulation) {
 		// First, schedule a swing timer reset to fire on cast completion.
@@ -299,6 +273,13 @@ func (ai *BalerocAI) registerBlades() {
 		// Finally, reset the CD on Blaze of Glory at start of cast.
 		ai.blazeOfGlory.CD.Set(sim.CurrentTime + ai.blazeOfGlory.CD.Duration)
 	}
+
+	infernoBladeActionID := core.ActionID{SpellID: 99350}
+	infernoBladeAura := ai.Target.RegisterAura(core.Aura{
+		Label:    "Inferno Blade",
+		ActionID: infernoBladeActionID,
+		Duration: bladeDuration,
+	})
 
 	ai.infernoBlade = ai.Target.RegisterSpell(core.SpellConfig{
 		ActionID: infernoBladeActionID,
@@ -325,6 +306,72 @@ func (ai *BalerocAI) registerBlades() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			infernoBladeAura.Activate(sim)
+		},
+	})
+
+	decimationBladeActionID := core.ActionID{SpellID: 99352}
+	decimationBladeAura := ai.Target.RegisterAura(core.Aura{
+		Label:    "Decimation Blade",
+		ActionID: decimationBladeActionID,
+		Duration: bladeDuration,
+
+		OnExpire: func(_ *core.Aura, sim *core.Simulation) {
+			if ai.tankSwap && (ai.Target.CurrentTarget == ai.OffTank) {
+				ai.swapTargets(sim, ai.MainTank)
+			}
+		},
+	})
+
+	ai.decimationBlade = ai.Target.RegisterSpell(core.SpellConfig{
+		ActionID: decimationBladeActionID,
+		ProcMask: core.ProcMaskEmpty,
+		Flags:    core.SpellFlagAPL,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD:      core.BossGCD,
+				CastTime: bladeCastTime,
+			},
+
+			IgnoreHaste: true,
+
+			SharedCD: core.Cooldown{
+				Timer:    ai.Target.GetOrInitTimer(&ai.sharedBladeTimer),
+				Duration: bladeCooldown,
+			},
+
+			ModifyCast: func(sim *core.Simulation, _ *core.Spell, _ *core.Cast) {
+				if ai.tankSwap {
+					ai.swapTargets(sim, ai.OffTank)
+				}
+
+				sharedBladeCastHandler(sim)
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			decimationBladeAura.Activate(sim)
+		},
+	})
+
+	// Then register the strikes that replace boss melees during each blade.
+	// 0 - 10N, 1 - 25N, 2 - 10H, 3 - 25H
+	scalingIndex := core.TernaryInt(ai.raidSize == 10, core.TernaryInt(ai.isHeroic, 2, 0), core.TernaryInt(ai.isHeroic, 3, 1))
+
+	// https://wago.tools/db2/SpellEffect?build=4.4.1.57294&filter[SpellID]=99351&page=1&sort[SpellID]=asc
+	infernoStrikeBase := []float64{97499, 165749, 136499, 232049}[scalingIndex]
+	infernoStrikeVariance := []float64{5000, 8500, 7000, 11900}[scalingIndex]
+
+	infernoStrike := ai.Target.RegisterSpell(core.SpellConfig{
+		ActionID:         core.ActionID{SpellID: 99351},
+		SpellSchool:      core.SpellSchoolFire,
+		ProcMask:         core.ProcMaskSpellDamage,
+		Flags:            core.SpellFlagMeleeMetrics,
+		DamageMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			damageRoll := infernoStrikeBase + infernoStrikeVariance*sim.RandomFloat("Inferno Strike Damage")
+			spell.CalcAndDealDamage(sim, target, damageRoll, spell.OutcomeEnemyMeleeWhite)
 		},
 	})
 
@@ -366,51 +413,11 @@ func (ai *BalerocAI) registerBlades() {
 					debuffAura.Activate(sim)
 				}
 			}
-		},
-	})
 
-	decimationBladeActionID := core.ActionID{SpellID: 99352}
-	decimationBladeAura := ai.Target.RegisterAura(core.Aura{
-		Label:    "Decimation Blade",
-		ActionID: decimationBladeActionID,
-		Duration: bladeDuration,
-
-		OnExpire: func(_ *core.Aura, sim *core.Simulation) {
-			if ai.tankSwap {
+			// MT should taunt as soon as the final Decimating Strike goes out in order to maximize their Blaze of Glory stack count.
+			if ai.tankSwap && (ai.stackCountForFirstSwap > 0) && (decimationBladeAura.ExpiresAt() < ai.Target.AutoAttacks.NextAttackAt()) {
 				ai.swapTargets(sim, ai.MainTank)
 			}
-		},
-	})
-
-	ai.decimationBlade = ai.Target.RegisterSpell(core.SpellConfig{
-		ActionID: decimationBladeActionID,
-		ProcMask: core.ProcMaskEmpty,
-		Flags:    core.SpellFlagAPL,
-
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD:      core.BossGCD,
-				CastTime: bladeCastTime,
-			},
-
-			IgnoreHaste: true,
-
-			SharedCD: core.Cooldown{
-				Timer:    ai.Target.GetOrInitTimer(&ai.sharedBladeTimer),
-				Duration: bladeCooldown,
-			},
-
-			ModifyCast: func(sim *core.Simulation, _ *core.Spell, _ *core.Cast) {
-				if ai.tankSwap {
-					ai.swapTargets(sim, ai.OffTank)
-				}
-
-				sharedBladeCastHandler(sim)
-			},
-		},
-
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			decimationBladeAura.Activate(sim)
 		},
 	})
 
