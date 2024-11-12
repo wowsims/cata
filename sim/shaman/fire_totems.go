@@ -7,6 +7,10 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
+func searingTickCount(shaman *Shaman, offset float64) int32 {
+	return int32(math.Ceil(40*(1.0+0.20*float64(shaman.Talents.TotemicFocus)+offset))) - 1
+}
+
 func (shaman *Shaman) registerSearingTotemSpell() {
 	shaman.SearingTotem = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 3599},
@@ -34,7 +38,7 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 			// Actual searing totem cast in game is currently 1500 milliseconds with a slight random
 			// delay inbetween each cast so using an extra 20 milliseconds to account for the delay
 			// subtracting 1 tick so that it doesn't shoot after its actual expiration
-			NumberOfTicks: int32(40*(1.0+0.20*float64(shaman.Talents.TotemicFocus))) - 1,
+			NumberOfTicks: searingTickCount(shaman, 0),
 			TickLength:    time.Millisecond * (1500 + 20),
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				baseDamage := shaman.CalcAndRollDamageRange(sim, 0.09600000083, 0.30000001192)
@@ -52,13 +56,13 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 					Priority:     core.ActionPriorityGCD,
 
 					OnAction: func(sim *core.Simulation) {
-						spell.Dot(sim.GetTargetUnit(0)).BaseTickCount = int32(math.Ceil(40*(1.0+0.20*float64(shaman.Talents.TotemicFocus)+dropTime.Minutes()))) - 1
+						spell.Dot(sim.GetTargetUnit(0)).BaseTickCount = searingTickCount(shaman, dropTime.Minutes())
 						spell.Dot(sim.GetTargetUnit(0)).Apply(sim)
 					},
 				}
 				sim.AddPendingAction(pa)
 			} else {
-				spell.Dot(sim.GetTargetUnit(0)).BaseTickCount = int32(40*(1.0+0.20*float64(shaman.Talents.TotemicFocus))) - 1
+				spell.Dot(sim.GetTargetUnit(0)).BaseTickCount = searingTickCount(shaman, 0)
 				spell.Dot(sim.GetTargetUnit(0)).Apply(sim)
 			}
 			duration := 60 * (1.0 + 0.20*float64(shaman.Talents.TotemicFocus))
