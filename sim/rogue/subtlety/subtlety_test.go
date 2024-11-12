@@ -20,7 +20,6 @@ func TestSubtlety(t *testing.T) {
 		GearSet:    core.GetGearSet("../../../ui/rogue/subtlety/gear_sets", "p1_subtlety"),
 		OtherGearSets: []core.GearSetCombo{
 			core.GetGearSet("../../../ui/rogue/subtlety/gear_sets", "p3_subtlety"),
-			core.GetGearSet("../../../ui/rogue/subtlety/gear_sets", "preraid_subtlety"),
 			core.GetGearSet("../../../ui/rogue/subtlety/gear_sets", "p4_subtlety"),
 		},
 		Talents:     SubtletyTalents,
