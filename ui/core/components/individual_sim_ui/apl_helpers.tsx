@@ -788,6 +788,11 @@ export const excludeStackingProcsInput = booleanFieldConfig('excludeStackingProc
 		'Filter out any stacking stat buffs from the list of auras checked by this value. This can be useful for certain snapshotting checks, since stacking proc trinkets are often permanently active.',
 })
 
+export const minIcdInput = numberFieldConfig('minIcdSeconds', false, {
+	label: 'Min ICD',
+	labelTooltip: 'If non-zero, filter out any procs that either lack an ICD or for which the ICD is smaller than the specified value (in seconds). This can be useful for certain snapshotting checks, since procs with low ICDs are often too weak to snapshot.',
+})
+
 export function aplInputBuilder<T>(
 	newValue: () => T,
 	fields: Array<APLPickerBuilderFieldConfig<T, keyof T>>,
