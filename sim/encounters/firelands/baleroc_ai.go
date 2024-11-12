@@ -357,11 +357,14 @@ func (ai *BalerocAI) registerBlades() {
 		DamageMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, tankTarget *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealDamage(sim, tankTarget, max(0.9 * tankTarget.MaxHealth(), 250000), spell.OutcomeEnemyMeleeWhite)
-			debuffAura := tankTarget.GetAuraByID(decimatingStrikeActionID)
+			result := spell.CalcAndDealDamage(sim, tankTarget, max(0.9 * tankTarget.MaxHealth(), 250000), spell.OutcomeEnemyMeleeWhite)
 
-			if debuffAura != nil {
-				debuffAura.Activate(sim)
+			if result.Landed() {
+				debuffAura := tankTarget.GetAuraByID(decimatingStrikeActionID)
+
+				if debuffAura != nil {
+					debuffAura.Activate(sim)
+				}
 			}
 		},
 	})
