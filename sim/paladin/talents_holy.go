@@ -81,7 +81,7 @@ func (paladin *Paladin) applyBlazingLight() {
 	}
 
 	paladin.AddStaticMod(core.SpellModConfig{
-		ClassMask:  SpellMaskExorcism | SpellMaskHolyShock,
+		ClassMask:  SpellMaskExorcism | SpellMaskGlyphOfExorcism | SpellMaskHolyShock,
 		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: 0.1 * float64(paladin.Talents.BlazingLight),
 	})
