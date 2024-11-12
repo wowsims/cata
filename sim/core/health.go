@@ -214,12 +214,14 @@ func (character *Character) applyHealingModel(healingModel *proto.HealingModel) 
 			// Use modeled HPS to scale heal per tick based on random cadence
 			healPerTick = healingModel.Hps * (float64(timeToNextHeal) / float64(time.Second)) * character.PseudoStats.HealingTakenMultiplier * character.PseudoStats.ExternalHealingTakenMultiplier
 
-			// Execute the direct portion of the heal
-			character.GainHealth(sim, healPerTick * (1.0 - absorbFrac), healthMetrics)
+			if healPerTick > 0 {
+				// Execute the direct portion of the heal
+				character.GainHealth(sim, healPerTick * (1.0 - absorbFrac), healthMetrics)
 
-			// Turn the remainder into an absorb shield
-			if absorbShield != nil {
-				absorbShield.Activate(sim)
+				// Turn the remainder into an absorb shield
+				if absorbShield != nil {
+					absorbShield.Activate(sim)
+				}
 			}
 
 			// Might use this again in the future to track "absorb" metrics but currently disabled

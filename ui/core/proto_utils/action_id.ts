@@ -644,6 +644,15 @@ export class ActionId {
 					name += ' (Heal)';
 				}
 				break;
+			case 'Item - Paladin T11 Retribution 4P Bonus':
+				name = 'Reinforced Sapphirium Battleplate - T11 4pc';
+				break;
+			case 'Item - Paladin T12 Retribution 4P Bonus':
+				name = 'Battleplate of Immolation - T12 4pc';
+				break;
+			case 'Virtuous Empowerment':
+				name = 'Battleplate of Radiant Glory - T13 2pc';
+				break;
 			default:
 				if (tag) {
 					name += ' (??)';
@@ -840,6 +849,9 @@ const spellIdIconOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 37223 }), { itemId: 29040 }], // Improved Strength of Earth Totem
 	[JSON.stringify({ spellId: 37447 }), { itemId: 30720 }], // Serpent-Coil Braid
 	[JSON.stringify({ spellId: 37443 }), { itemId: 30196 }], // Robes of Tirisfal (4pc bonus)
+	[JSON.stringify({ spellId: 90299 }), { itemId: 65214 }], // Reinforced Sapphirium Battleplate (4pc bonus)
+	[JSON.stringify({ spellId: 99116 }), { itemId: 71512 }], // Battleplate of Immolation (4pc bonus)
+	[JSON.stringify({ spellId: 105767 }), { itemId: 78727 }], // Battleplate of Radiant Glory (2pc bonus)
 ]);
 
 const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
