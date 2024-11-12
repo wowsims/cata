@@ -95,7 +95,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 	})
 
 	paladin.SealOfRighteousnessAura = paladin.RegisterAura(core.Aura{
-		Label:    "Seal of Righteousness",
+		Label:    "Seal of Righteousness" + paladin.Label,
 		Tag:      "Seal",
 		ActionID: core.ActionID{SpellID: 20154},
 		Duration: time.Minute * 30,

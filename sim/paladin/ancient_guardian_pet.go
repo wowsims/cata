@@ -66,7 +66,7 @@ func (ancientGuardian *AncientGuardianPet) ExecuteCustomRotation(sim *core.Simul
 func (ancientGuardian *AncientGuardianPet) registerRetributionVariant() {
 	ancientPowerID := core.ActionID{SpellID: 86700}
 	ancientPowerAura := ancientGuardian.RegisterAura(core.Aura{
-		Label:    "Ancient Power",
+		Label:    "Ancient Power" + ancientGuardian.Label,
 		ActionID: ancientPowerID,
 		Duration: core.NeverExpires,
 

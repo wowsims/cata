@@ -45,7 +45,7 @@ func (paladin *Paladin) registerConsecrationSpell() {
 			IsAOE: true,
 			Aura: core.Aura{
 				ActionID: core.ActionID{SpellID: 26573},
-				Label:    "Consecration",
+				Label:    "Consecration" + paladin.Label,
 			},
 			NumberOfTicks: numTicks,
 			TickLength:    time.Second * 1,

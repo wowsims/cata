@@ -10,7 +10,7 @@ func (paladin *Paladin) registerAvengingWrath() {
 	actionID := core.ActionID{SpellID: 31884}
 
 	paladin.AvengingWrathAura = paladin.RegisterAura(core.Aura{
-		Label:    "Avenging Wrath",
+		Label:    "Avenging Wrath" + paladin.Label,
 		ActionID: actionID,
 		Duration: 20 * time.Second,
 

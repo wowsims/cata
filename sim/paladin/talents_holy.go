@@ -45,7 +45,7 @@ func (paladin *Paladin) applyJudgementsOfThePure() {
 	spiritRegenAmount := 0.1 * float64(paladin.Talents.JudgementsOfThePure)
 
 	paladin.JudgementsOfThePureAura = paladin.GetOrRegisterAura(core.Aura{
-		Label:    "Judgements of the Pure",
+		Label:    "Judgements of the Pure" + paladin.Label,
 		ActionID: actionId,
 		Duration: 60 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -61,7 +61,7 @@ func (paladin *Paladin) applyJudgementsOfThePure() {
 	})
 
 	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-		Name:           "Judgements of the Pure (Proc)",
+		Name:           "Judgements of the Pure (Proc)" + paladin.Label,
 		ActionID:       actionId,
 		Callback:       core.CallbackOnSpellHitDealt,
 		Outcome:        core.OutcomeLanded,

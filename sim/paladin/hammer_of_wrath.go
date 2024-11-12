@@ -44,7 +44,7 @@ func (paladin *Paladin) registerHammerOfWrathSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.RollWithLabel(howMinDamage, howMaxDamage, "Hammer of Wrath") +
+			baseDamage := sim.RollWithLabel(howMinDamage, howMaxDamage, "Hammer of Wrath"+paladin.Label) +
 				0.117*spell.SpellPower() +
 				0.39*spell.MeleeAttackPower()
 

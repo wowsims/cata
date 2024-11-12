@@ -41,7 +41,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label:     "Censure (DoT)",
+				Label:     "Censure (DoT)" + paladin.Label,
 				MaxStacks: 5,
 			},
 
@@ -129,7 +129,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 	})
 
 	paladin.SealOfTruthAura = paladin.RegisterAura(core.Aura{
-		Label:    "Seal of Truth",
+		Label:    "Seal of Truth" + paladin.Label,
 		Tag:      "Seal",
 		ActionID: core.ActionID{SpellID: 31801},
 		Duration: time.Minute * 30,

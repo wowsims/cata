@@ -136,7 +136,7 @@ func registerGlyphOfExorcism(paladin *Paladin) {
 	})
 
 	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-		Name:           "Glyph of Exorcism",
+		Name:           "Glyph of Exorcism" + paladin.Label,
 		ActionID:       core.ActionID{SpellID: 54934},
 		Callback:       core.CallbackOnSpellHitDealt,
 		ClassSpellMask: SpellMaskExorcism,

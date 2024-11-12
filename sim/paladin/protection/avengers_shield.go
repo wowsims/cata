@@ -48,7 +48,7 @@ func (prot *ProtectionPaladin) registerAvengersShieldSpell() {
 			constBaseDamage := 0.21*spell.SpellPower() + 0.419*spell.MeleeAttackPower()
 
 			for idx := int32(0); idx < numTargets; idx++ {
-				baseDamage := constBaseDamage + sim.RollWithLabel(asMinDamage, asMaxDamage, "Avengers Shield")
+				baseDamage := constBaseDamage + sim.RollWithLabel(asMinDamage, asMaxDamage, "Avengers Shield"+prot.Label)
 
 				currentTarget := sim.Environment.GetTargetUnit(idx)
 				results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
