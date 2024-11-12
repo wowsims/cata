@@ -1,5 +1,6 @@
 import { ref } from 'tsx-vanilla';
 
+import { MISSING_RANDOM_SUFFIX_WARNING } from '../../constants/item_notices';
 import { setItemQualityCssClass } from '../../css_utils';
 import { Player } from '../../player';
 import { ItemSlot, ItemType } from '../../proto/common';
@@ -139,10 +140,12 @@ export class ItemRenderer extends Component {
 
 	update(newItem: EquippedItem) {
 		const nameSpan = <span className="item-picker-name">{newItem.item.name}</span>;
+		const isEligibleForRandomSuffix = !!newItem.hasRandomSuffixOptions();
+		const hasRandomSuffix = !!newItem.randomSuffix;
 		this.nameElem.replaceChildren(nameSpan);
 		this.ilvlElem.textContent = newItem.item.ilvl.toString();
 
-		if (newItem.randomSuffix) {
+		if (hasRandomSuffix) {
 			nameSpan.textContent += ' ' + newItem.randomSuffix.name;
 		}
 
@@ -150,7 +153,11 @@ export class ItemRenderer extends Component {
 			this.nameElem.appendChild(createHeroicLabel());
 		}
 
-		this.notice = new ItemNotice(this.player, { itemId: newItem.item.id });
+		this.notice = new ItemNotice(this.player, {
+			itemId: newItem.item.id,
+			additionalNoticeData: isEligibleForRandomSuffix && !hasRandomSuffix ? MISSING_RANDOM_SUFFIX_WARNING : undefined,
+		});
+
 		if (this.notice.hasNotice) {
 			this.nameContainerElem.appendChild(this.notice.rootElem);
 		}
