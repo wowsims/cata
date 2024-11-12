@@ -13,7 +13,7 @@ func (paladin *Paladin) registerConsecrationSpell() {
 		numTicks += 2
 	}
 
-	consAvgDamage := core.CalcScalingSpellAverageEffect(proto.Class_ClassPaladin, 0.079)
+	consAvgDamage := core.CalcScalingSpellAverageEffect(proto.Class_ClassPaladin, 0.07900000364)
 
 	paladin.Consecration = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 26573},
@@ -45,7 +45,7 @@ func (paladin *Paladin) registerConsecrationSpell() {
 			IsAOE: true,
 			Aura: core.Aura{
 				ActionID: core.ActionID{SpellID: 26573},
-				Label:    "Consecration",
+				Label:    "Consecration" + paladin.Label,
 			},
 			NumberOfTicks: numTicks,
 			TickLength:    time.Second * 1,
@@ -53,8 +53,8 @@ func (paladin *Paladin) registerConsecrationSpell() {
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				// Consecration recalculates everything on each tick
 				baseDamage := consAvgDamage +
-					.027*dot.Spell.MeleeAttackPower() +
-					.027*dot.Spell.SpellPower()
+					0.0270000007*dot.Spell.MeleeAttackPower() +
+					0.0270000007*dot.Spell.SpellPower()
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
 				}

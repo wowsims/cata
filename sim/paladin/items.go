@@ -27,7 +27,7 @@ var ItemSetReinforcedSapphiriumBattleplate = core.NewItemSet(core.ItemSet{
 			paladin := agent.(PaladinAgent).GetPaladin()
 			// Used for APL aura check
 			core.MakePermanent(paladin.RegisterAura(core.Aura{
-				Label:    "Reinforced Sapphirium Battleplate - T11 4pc",
+				Label:    "Reinforced Sapphirium Battleplate - T11 4pc" + paladin.Label,
 				ActionID: core.ActionID{SpellID: 90299},
 			}))
 		},
@@ -47,7 +47,7 @@ var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 				IncludeAuraDelay:   true,
 
 				ProcTrigger: core.ProcTrigger{
-					Name:           "Flames of the Faithful",
+					Name:           "Flames of the Faithful" + paladin.Label,
 					Callback:       core.CallbackOnSpellHitDealt,
 					ClassSpellMask: SpellMaskCrusaderStrike,
 					Outcome:        core.OutcomeLanded,
@@ -64,7 +64,7 @@ var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 			paladin := agent.(PaladinAgent).GetPaladin()
 			// Used for APL aura check
 			core.MakePermanent(paladin.RegisterAura(core.Aura{
-				Label:    "Battleplate of Immolation - T12 4pc",
+				Label:    "Battleplate of Immolation - T12 4pc" + paladin.Label,
 				ActionID: core.ActionID{SpellID: 99116},
 			}))
 		},
@@ -87,7 +87,7 @@ var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 			})
 
 			core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-				Name:           "T13 2pc trigger",
+				Name:           "T13 2pc trigger" + paladin.Label,
 				ActionID:       core.ActionID{SpellID: 105765},
 				Callback:       core.CallbackOnSpellHitDealt,
 				ClassSpellMask: SpellMaskJudgement,
@@ -97,9 +97,9 @@ var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 					// TODO: Measure the aura update delay distribution on PTR.
 					var delaySeconds float64
 					if sim.Proc(0.75, "T13 2pc") {
-						delaySeconds = 0.010 * sim.RandomFloat("T13 2pc")
+						delaySeconds = 0.010 * sim.RandomFloat("T13 2pc"+paladin.Label)
 					} else {
-						delaySeconds = 0.090 + 0.020*sim.RandomFloat("T13 2pc")
+						delaySeconds = 0.090 + 0.020*sim.RandomFloat("T13 2pc"+paladin.Label)
 					}
 
 					core.StartDelayedAction(sim, core.DelayedActionOptions{
@@ -135,7 +135,7 @@ var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 			})
 
 			core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-				Name:           "T13 4pc trigger",
+				Name:           "T13 4pc trigger" + paladin.Label,
 				ActionID:       core.ActionID{SpellID: 105820},
 				Callback:       core.CallbackOnCastComplete,
 				ClassSpellMask: SpellMaskZealotry,
@@ -231,7 +231,7 @@ var ItemSetBattlearmorOfImmolation = core.NewItemSet(core.ItemSet{
 			})
 
 			core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-				Name:           "Righteous Flames",
+				Name:           "Righteous Flames" + paladin.Label,
 				Callback:       core.CallbackOnSpellHitDealt,
 				ClassSpellMask: SpellMaskShieldOfTheRighteous,
 				Outcome:        core.OutcomeLanded,
@@ -260,7 +260,7 @@ var ItemSetBattlearmorOfImmolation = core.NewItemSet(core.ItemSet{
 			})
 
 			core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-				Name:           "T12 4pc trigger",
+				Name:           "T12 4pc trigger" + paladin.Label,
 				Callback:       core.CallbackOnCastComplete,
 				ClassSpellMask: SpellMaskDivineProtection,
 				ProcChance:     1,
@@ -296,7 +296,7 @@ var ItemSetArmorOfRadiantGlory = core.NewItemSet(core.ItemSet{
 			})
 
 			core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-				Name:           "Delayed Judgement Proc",
+				Name:           "Delayed Judgement Proc" + paladin.Label,
 				Callback:       core.CallbackOnSpellHitDealt,
 				ClassSpellMask: SpellMaskJudgement,
 				Outcome:        core.OutcomeLanded,

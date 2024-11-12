@@ -13,7 +13,7 @@ func (paladin *Paladin) registerDivineProtectionSpell() {
 
 	actionID := core.ActionID{SpellID: 498}
 	paladin.DivineProtectionAura = paladin.RegisterAura(core.Aura{
-		Label:    "Divine Protection",
+		Label:    "Divine Protection" + paladin.Label,
 		ActionID: actionID,
 		Duration: time.Second * 10,
 
