@@ -51,8 +51,8 @@ func (paladin *Paladin) registerSealOfTruth() {
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				tickValue := float64(dot.GetStacks()) * (0 +
-					.014*dot.Spell.SpellPower() +
-					.027*dot.Spell.MeleeAttackPower())
+					0.01400000043*dot.Spell.SpellPower() +
+					0.0270000007*dot.Spell.MeleeAttackPower())
 
 				dot.SnapshotBaseDamage = tickValue
 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
@@ -99,8 +99,8 @@ func (paladin *Paladin) registerSealOfTruth() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 1 +
-				.223*spell.SpellPower() +
-				.142*spell.MeleeAttackPower()
+				0.22300000489*spell.SpellPower() +
+				0.14200000465*spell.MeleeAttackPower()
 
 			baseDamage *= 1 + .2*float64(censureSpell.Dot(target).GetStacks())
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)

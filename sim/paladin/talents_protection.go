@@ -92,7 +92,7 @@ func (paladin *Paladin) applyHammerOfTheRighteous() {
 	}
 
 	aoeMinDamage, aoeMaxDamage :=
-		core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassPaladin, 0.708, 0.4)
+		core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassPaladin, 0.70800000429, 0.40000000596)
 
 	numTargets := paladin.Env.GetNumTargets()
 	actionId := core.ActionID{SpellID: 53595}
@@ -119,7 +119,7 @@ func (paladin *Paladin) applyHammerOfTheRighteous() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.RollWithLabel(aoeMinDamage, aoeMaxDamage, "Hammer of the Righteous"+paladin.Label) +
-				0.18*spell.MeleeAttackPower()
+				0.18000000715*spell.MeleeAttackPower()
 			results := make([]*core.SpellResult, numTargets)
 
 			for idx := int32(0); idx < numTargets; idx++ {
@@ -255,7 +255,7 @@ func (paladin *Paladin) applyShieldOfTheRighteous() {
 	actionId := core.ActionID{SpellID: 53600}
 	hpMetrics := paladin.NewHolyPowerMetrics(actionId)
 
-	shieldDmg := core.CalcScalingSpellAverageEffect(proto.Class_ClassPaladin, 0.593)
+	shieldDmg := core.CalcScalingSpellAverageEffect(proto.Class_ClassPaladin, 0.59299999475)
 
 	paladin.ShieldOfTheRighteous = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionId,
@@ -280,7 +280,7 @@ func (paladin *Paladin) applyShieldOfTheRighteous() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := []float64{0, 1, 3, 6}[paladin.GetHolyPowerValue()] *
-				(shieldDmg + 0.1*spell.MeleeAttackPower())
+				(shieldDmg + 0.10000000149*spell.MeleeAttackPower())
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 

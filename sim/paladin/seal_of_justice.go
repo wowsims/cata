@@ -22,7 +22,7 @@ func (paladin *Paladin) registerSealOfJustice() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 1 +
 				0.25*spell.SpellPower() +
-				0.16*spell.MeleeAttackPower()
+				0.15999999642*spell.MeleeAttackPower()
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 		},
@@ -42,7 +42,7 @@ func (paladin *Paladin) registerSealOfJustice() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := paladin.GetMHWeapon().SwingSpeed *
-				(0.001*spell.SpellPower() + 0.005*spell.MeleeAttackPower())
+				(0.01*spell.SpellPower() + 0.005*spell.MeleeAttackPower())
 
 			// can't miss if melee swing landed, but can crit
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)

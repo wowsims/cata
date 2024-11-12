@@ -1,15 +1,16 @@
 package paladin
 
 import (
-	"github.com/wowsims/cata/sim/core/proto"
 	"time"
+
+	"github.com/wowsims/cata/sim/core/proto"
 
 	"github.com/wowsims/cata/sim/core"
 )
 
 func (paladin *Paladin) registerHammerOfWrathSpell() {
 	howMinDamage, howMaxDamage :=
-		core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassPaladin, 3.9, 0.1)
+		core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassPaladin, 3.90000009537, 0.10000000149)
 
 	paladin.HammerOfWrath = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 24275},
@@ -45,8 +46,8 @@ func (paladin *Paladin) registerHammerOfWrathSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.RollWithLabel(howMinDamage, howMaxDamage, "Hammer of Wrath"+paladin.Label) +
-				0.117*spell.SpellPower() +
-				0.39*spell.MeleeAttackPower()
+				0.11699999869*spell.SpellPower() +
+				0.38999998569*spell.MeleeAttackPower()
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 			spell.WaitTravelTime(sim, func(simulation *core.Simulation) {

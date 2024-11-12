@@ -23,7 +23,7 @@ func (paladin *Paladin) registerSealOfInsight() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 1 +
 				0.25*spell.SpellPower() +
-				0.16*spell.MeleeAttackPower()
+				0.15999999642*spell.MeleeAttackPower()
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 		},
