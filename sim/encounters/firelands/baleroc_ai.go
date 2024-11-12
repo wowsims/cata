@@ -206,6 +206,10 @@ func (ai *BalerocAI) registerBlazeOfGlory() {
 			hpDepByStackCount[i] = tankUnit.NewDynamicMultiplyStat(stats.Health, 1.0 + 0.2*float64(i))
 		}
 
+		// Blaze of Glory applications also heal the player, just like
+		// most other temporary max health increases.
+		healthMetrics := tankUnit.NewHealthMetrics(blazeOfGloryActionID)
+
 		tankUnit.GetOrRegisterAura(core.Aura{
 			Label:     "Blaze of Glory",
 			ActionID:  blazeOfGloryActionID,
@@ -215,12 +219,21 @@ func (ai *BalerocAI) registerBlazeOfGlory() {
 			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 				aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] *= (1.0 + 0.2*float64(newStacks)) / (1.0 + 0.2*float64(oldStacks))
 
+				// Cache max HP prior to processing multipliers.
+				oldMaxHp := aura.Unit.MaxHealth()
+
 				if oldStacks > 0 {
 					aura.Unit.DisableDynamicStatDep(sim, hpDepByStackCount[oldStacks])
 				}
 
 				if newStacks > 0 {
 					aura.Unit.EnableDynamicStatDep(sim, hpDepByStackCount[newStacks])
+				}
+
+				hpGain := aura.Unit.MaxHealth() - oldMaxHp
+
+				if hpGain > 0 {
+					aura.Unit.GainHealth(sim, hpGain, healthMetrics)
 				}
 			},
 		})
