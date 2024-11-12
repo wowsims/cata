@@ -117,7 +117,7 @@ export const DefaultOptions = ElementalShamanOptions.create({
 			elements: TotemSet.create({
 				earth: EarthTotem.StrengthOfEarthTotem,
 				air: AirTotem.WrathOfAirTotem,
-				fire: FireTotem.SearingTotem,
+				fire: FireTotem.FlametongueTotem,
 				water: WaterTotem.ManaSpringTotem,
 			}),
 			ancestors: TotemSet.create({

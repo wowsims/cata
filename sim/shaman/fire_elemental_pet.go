@@ -151,11 +151,13 @@ func (shaman *Shaman) fireElementalStatInheritance(bonusIntellect float64, bonus
 	return func(ownerStats stats.Stats) stats.Stats {
 		ownerSpellHitPercent := ownerStats[stats.SpellHitPercent]
 
+		bonusStats := shaman.ApplyStatDependencies(stats.Stats{stats.Intellect: bonusIntellect, stats.SpellPower: bonusSpellPower})
+
 		return stats.Stats{
-			stats.Stamina:     ownerStats[stats.Stamina] * 0.80,                                                  //Estimated from beta testing
-			stats.Intellect:   (ownerStats[stats.Intellect] + bonusIntellect) * FireElementalIntellectScaling,    //Estimated from beta testing
-			stats.SpellPower:  (ownerStats[stats.SpellPower] + bonusSpellPower) * FireElementalSpellPowerScaling, //Estimated from beta testing
-			stats.AttackPower: (ownerStats[stats.SpellPower] + bonusSpellPower) * 4.9,                            // 0.7*7 Estimated from beta testing
+			stats.Stamina:     ownerStats[stats.Stamina] * 0.80,                                                               //Estimated from beta testing
+			stats.Intellect:   (ownerStats[stats.Intellect] + bonusStats[stats.Intellect]) * FireElementalIntellectScaling,    //Estimated from beta testing
+			stats.SpellPower:  (ownerStats[stats.SpellPower] + bonusStats[stats.SpellPower]) * FireElementalSpellPowerScaling, //Estimated from beta testing
+			stats.AttackPower: (ownerStats[stats.SpellPower] + bonusStats[stats.SpellPower]) * 4.9,                            // 0.7*7 Estimated from beta testing
 
 			stats.PhysicalHitPercent: ownerSpellHitPercent / 17 * 8,
 			stats.SpellHitPercent:    ownerSpellHitPercent,
