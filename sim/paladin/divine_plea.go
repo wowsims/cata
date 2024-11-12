@@ -19,7 +19,7 @@ func (paladin *Paladin) registerDivinePleaSpell() {
 	manaReturn /= 3
 
 	paladin.DivinePleaAura = paladin.RegisterAura(core.Aura{
-		Label:    "Divine Plea",
+		Label:    "Divine Plea" + paladin.Label,
 		ActionID: actionID,
 		Duration: 9 * time.Second,
 
