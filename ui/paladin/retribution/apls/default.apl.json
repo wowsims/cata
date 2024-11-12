@@ -13,6 +13,25 @@
 		},
 		{ "action": { "castSpell": { "spellId": { "spellId": 2825, "tag": -1 } } } },
 		{ "action": { "castSpell": { "spellId": { "spellId": 57933, "tag": -1 } } } },
+		{
+			"action": {
+				"condition": {
+					"or": {
+						"vals": [
+							{ "auraIsActive": { "auraId": { "spellId": 31884 } } },
+							{
+								"cmp": {
+									"op": "OpGe",
+									"lhs": { "spellTimeToReady": { "spellId": { "spellId": 31884 } } },
+									"rhs": { "const": { "val": "60s" } }
+								}
+							}
+						]
+					}
+				},
+				"castSpell": { "spellId": { "itemId": 69002 } }
+			}
+		},
 		{ "action": { "condition": { "auraIsActive": { "auraId": { "spellId": 31884 } } }, "autocastOtherCooldowns": {} } },
 		{
 			"action": {

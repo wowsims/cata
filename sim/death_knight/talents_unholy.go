@@ -30,7 +30,7 @@ func (dk *DeathKnight) ApplyUnholyTalents() {
 	if dk.Talents.Morbidity > 0 {
 		dk.AddStaticMod(core.SpellModConfig{
 			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  DeathKnightSpellDeathCoil,
+			ClassMask:  DeathKnightSpellDeathCoil | DeathKnightSpellDeathCoilHeal,
 			FloatValue: 0.05 * float64(dk.Talents.Morbidity),
 		})
 
@@ -111,7 +111,7 @@ func (dk *DeathKnight) applyRunicEmpowerementCorruption() {
 	if dk.Talents.RunicCorruption > 0 {
 		dk.AddStaticMod(core.SpellModConfig{
 			Kind:       core.SpellMod_RunicPowerCost_Flat,
-			ClassMask:  DeathKnightSpellDeathCoil,
+			ClassMask:  DeathKnightSpellDeathCoil | DeathKnightSpellDeathCoilHeal,
 			FloatValue: -3.0 * float64(dk.Talents.RunicCorruption),
 		})
 
@@ -209,6 +209,7 @@ func (dk *DeathKnight) applyUnholyBlight() {
 		Callback:       core.CallbackOnSpellHitDealt,
 		ClassSpellMask: DeathKnightSpellDeathCoil,
 		Outcome:        core.OutcomeLanded,
+		Harmful:        true,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			dot := unholyBlight.Dot(result.Target)
@@ -278,7 +279,7 @@ func (dk *DeathKnight) applySuddenDoom() {
 
 	mod := dk.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_PowerCost_Pct,
-		ClassMask:  DeathKnightSpellDeathCoil,
+		ClassMask:  DeathKnightSpellDeathCoil | DeathKnightSpellDeathCoilHeal,
 		FloatValue: -1,
 	})
 
@@ -373,8 +374,8 @@ func (dk *DeathKnight) applyShadowInfusion() *core.Aura {
 
 	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
 		Name:           "Shadow Infusion",
-		Callback:       core.CallbackOnSpellHitDealt,
-		ClassSpellMask: DeathKnightSpellDeathCoil,
+		Callback:       core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt,
+		ClassSpellMask: DeathKnightSpellDeathCoil | DeathKnightSpellDeathCoilHeal,
 		Outcome:        core.OutcomeLanded,
 		ProcChance:     []float64{0.0, 0.33, 0.66, 1.0}[dk.Talents.ShadowInfusion],
 

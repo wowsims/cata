@@ -15,6 +15,7 @@ export type GlyphConfig = {
 	name: string;
 	description: string;
 	iconUrl: string;
+	spellIdOverride?: number;
 };
 
 export type GlyphsConfig = {
@@ -29,6 +30,7 @@ interface GlyphData {
 	description: string;
 	iconUrl: string;
 	quality: ItemQuality | null;
+	spellIdOverride?: number;
 }
 
 const emptyGlyphData: GlyphData = {
@@ -122,6 +124,7 @@ export class GlyphsPicker extends Component {
 			description: glyphConfig.description,
 			iconUrl: glyphConfig.iconUrl,
 			quality: ItemQuality.ItemQualityCommon,
+			spellIdOverride: glyphConfig.spellIdOverride,
 		};
 	}
 }
@@ -204,11 +207,19 @@ class GlyphPicker extends Input<Player<any>, number> {
 		this.selectedGlyph = this.glyphOptions.find(glyphData => glyphData.id == newValue);
 
 		if (this.selectedGlyph) {
-			this.anchorElem.href = ActionId.makeItemUrl(this.selectedGlyph.id);
-			ActionId.makeItemTooltipData(this.selectedGlyph.id).then(url => {
-				this.anchorElem.dataset.wowhead = url;
-				this.anchorElem.dataset.whtticon = 'false';
-			});
+			if (this.selectedGlyph.spellIdOverride) {
+				this.anchorElem.href = ActionId.makeSpellUrl(this.selectedGlyph.spellIdOverride);
+				ActionId.makeSpellTooltipData(this.selectedGlyph.spellIdOverride).then(url => {
+					this.anchorElem.dataset.wowhead = url;
+					this.anchorElem.dataset.whtticon = 'false';
+				});
+			} else {
+				this.anchorElem.href = ActionId.makeItemUrl(this.selectedGlyph.id);
+				ActionId.makeItemTooltipData(this.selectedGlyph.id).then(url => {
+					this.anchorElem.dataset.wowhead = url;
+					this.anchorElem.dataset.whtticon = 'false';
+				});
+			}
 
 			this.iconElem.src = this.selectedGlyph.iconUrl;
 			this.nameElem.textContent = this.selectedGlyph.name;

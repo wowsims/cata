@@ -466,7 +466,7 @@ func (paladin *Paladin) applyArdentDefender() {
 		},
 	})
 
-	paladin.RegisterSpell(core.SpellConfig{
+	ardentDefender := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		Flags:          core.SpellFlagAPL,
 		SpellSchool:    core.SpellSchoolHoly,
@@ -535,4 +535,11 @@ func (paladin *Paladin) applyArdentDefender() {
 			adAura.Deactivate(sim)
 		}
 	})
+
+	if paladin.Spec == proto.Spec_SpecProtectionPaladin {
+		paladin.AddMajorCooldown(core.MajorCooldown{
+			Spell: ardentDefender,
+			Type:  core.CooldownTypeSurvival,
+		})
+	}
 }
