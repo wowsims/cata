@@ -189,7 +189,9 @@ export class APLActionPicker extends Input<Player<any>, APLAction> {
 			return;
 		}
 
-		this.conditionPicker.setInputValue(newValue.condition || APLValue.create());
+		this.conditionPicker.setInputValue(newValue.condition || APLValue.create({
+			id: randomUUID()
+		}));
 
 		const newActionKind = newValue.action.oneofKind;
 		this.updateActionPicker(newActionKind);
@@ -273,7 +275,9 @@ function itemSwapSetFieldConfig(field: string): AplHelpers.APLPickerBuilderField
 function actionFieldConfig(field: string): AplHelpers.APLPickerBuilderFieldConfig<any, any> {
 	return {
 		field: field,
-		newValue: APLValue.create,
+		newValue: () => APLValue.create({
+			id: randomUUID()
+		}) ,
 		factory: (parent, player, config) => new APLActionPicker(parent, player, config),
 	};
 }

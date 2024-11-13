@@ -82,8 +82,10 @@ message APLAction {
     }
 }
 
-// NextIndex: 85
+// NextIndex: 86
 message APLValue {
+	string id = 85;
+
     oneof value {
         // Operators
         APLValueConst const = 1;

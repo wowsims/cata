@@ -239,6 +239,7 @@ export class APLValuePicker extends Input<Player<any>, APLValue | undefined> {
 						return val;
 					})(),
 				},
+				id: randomUUID(),
 			});
 		}
 	}
@@ -250,15 +251,27 @@ export class APLValuePicker extends Input<Player<any>, APLValue | undefined> {
 		if (newKind && newValue) {
 			this.valuePicker!.setInputValue((newValue.value as any)[newKind]);
 		}
+
+		if (newValue) {
+			if (newValue.id == "") {
+				newValue.id = randomUUID();
+			}
+			this.rootElem.id = newValue.id;
+		}
 	}
 
 	private makeAPLValue<K extends NonNullable<APLValueKind>>(kind: K, implVal: APLValueImplTypesUnion[K]): APLValue {
 		if (!kind) {
-			return APLValue.create();
+			return APLValue.create({
+				id: randomUUID(),
+			});
 		}
 		const obj: any = { oneofKind: kind };
 		obj[kind] = implVal;
-		return APLValue.create({ value: obj });
+		return APLValue.create({
+			value: obj,
+			id: randomUUID(),
+		});
 	}
 
 	private updateValuePicker(newKind: APLValueKind) {
@@ -396,7 +409,10 @@ export function valueFieldConfig(
 ): AplHelpers.APLPickerBuilderFieldConfig<any, any> {
 	return {
 		field: field,
-		newValue: APLValue.create,
+		newValue: () =>
+			APLValue.create({
+			id: randomUUID(),
+		}),
 		factory: (parent, player, config) => new APLValuePicker(parent, player, config),
 		...(options || {}),
 	};
@@ -414,11 +430,20 @@ export function valueListFieldConfig(field: string): AplHelpers.APLPickerBuilder
 					config.setValue(
 						eventID,
 						player,
-						newValue.map(val => val || APLValue.create()),
+						newValue.map(val => {
+							return val ||
+							APLValue.create({
+								id: randomUUID(),
+							})
+						}),
 					);
 				},
 				itemLabel: 'Value',
-				newItem: APLValue.create,
+				newItem: () => {
+					return APLValue.create({
+						id: randomUUID(),
+					})
+				},
 				copyItem: (oldValue: APLValue | undefined) => (oldValue ? APLValue.clone(oldValue) : oldValue),
 				newItemPicker: (
 					parent: HTMLElement,
