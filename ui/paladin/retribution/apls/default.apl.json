@@ -23,7 +23,7 @@
 								"cmp": {
 									"op": "OpGe",
 									"lhs": { "spellTimeToReady": { "spellId": { "spellId": 31884 } } },
-									"rhs": { "const": { "val": "60s" } }
+									"rhs": { "const": { "val": "55s" } }
 								}
 							}
 						]
