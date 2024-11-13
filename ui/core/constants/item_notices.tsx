@@ -154,7 +154,7 @@ export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 	[
 		71086,
 		{
-			[Spec.SpecUnknown]: <p>This item is unsupported for this spec.</p>,
+			[Spec.SpecUnknown]: <p className="mb-0">This item is unsupported for this spec.</p>,
 			[Spec.SpecBalanceDruid]: DTR_FIRST_IMPLEMENTATION_WARNING,
 			[Spec.SpecArcaneMage]: DTR_FIRST_IMPLEMENTATION_WARNING,
 			[Spec.SpecFireMage]: DTR_FIRST_IMPLEMENTATION_WARNING,
