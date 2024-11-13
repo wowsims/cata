@@ -169,9 +169,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		rotationType: APLRotation_Type.TypeAuto,
 	},
 
-	playerInputs: {
-		inputs: [RetributionInputs.SnapshotGuardian()],
-	},
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [PaladinInputs.AuraSelection(), PaladinInputs.StartingSealSelection()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
@@ -186,7 +183,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff, BuffDebuffInputs.DamagePercentBuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [OtherInputs.InputDelay, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
+		inputs: [
+			RetributionInputs.SnapshotGuardian(),
+			RetributionInputs.StartingHolyPower(),
+			OtherInputs.InputDelay,
+			OtherInputs.TankAssignment,
+			OtherInputs.InFrontOfTarget,
+		],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
