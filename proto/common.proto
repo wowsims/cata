@@ -1052,3 +1052,7 @@ enum RotationType {
 	Aoe = 3;
 	Custom = 2;
 }
+
+message UUID {
+	string value = 1;
+}

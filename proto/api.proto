@@ -435,9 +435,14 @@ message SpellStats {
 message APLActionStats {
 	repeated string warnings = 1;
 }
+message UUIDWarnings {
+	UUID uuid = 1;
+	repeated string warnings = 2;
+}
 message APLStats {
 	repeated APLActionStats prepull_actions = 1;
 	repeated APLActionStats priority_list = 2;
+	repeated UUIDWarnings uuid_warnings = 3;
 }
 message UnitMetadata {
 	string name = 3;

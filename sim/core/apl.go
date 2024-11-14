@@ -37,6 +37,7 @@ type APLRotation struct {
 	curWarnings          []string
 	prepullWarnings      [][]string
 	priorityListWarnings [][]string
+	uuidWarnings         map[*proto.UUID][]string
 
 	// Maps indices in filtered sim lists to indices in configs.
 	prepullIdxMap      []int
@@ -46,6 +47,11 @@ type APLRotation struct {
 func (rot *APLRotation) ValidationWarning(message string, vals ...interface{}) {
 	warning := fmt.Sprintf(message, vals...)
 	rot.curWarnings = append(rot.curWarnings, warning)
+}
+
+func (rot *APLRotation) ValidationWarningByUUID(uuid *proto.UUID, message string, vals ...interface{}) {
+	warning := fmt.Sprintf(message, vals...)
+	rot.uuidWarnings[uuid] = append(rot.uuidWarnings[uuid], warning)
 }
 
 // Invokes the fn function, and attributes all warnings generated during its invocation
@@ -187,9 +193,18 @@ func (rot *APLRotation) getStats() *proto.APLStats {
 		})
 	}
 
+	uuidWarningsArr := make([]*proto.UUIDWarnings, len(rot.uuidWarnings))
+	for uuid, warnings := range rot.uuidWarnings {
+		uuidWarningsArr = append(uuidWarningsArr, &proto.UUIDWarnings{
+			Uuid:     uuid,
+			Warnings: warnings,
+		})
+	}
+
 	return &proto.APLStats{
 		PrepullActions: MapSlice(rot.prepullWarnings, func(warnings []string) *proto.APLActionStats { return &proto.APLActionStats{Warnings: warnings} }),
 		PriorityList:   MapSlice(rot.priorityListWarnings, func(warnings []string) *proto.APLActionStats { return &proto.APLActionStats{Warnings: warnings} }),
+		UuidWarnings:   uuidWarningsArr,
 	}
 }
 

@@ -118,7 +118,7 @@ class APLPrepullActionPicker extends Input<Player<any>, APLPrepullAction> {
 				if (newValue) {
 					this.getItem().doAtValue = APLValue.create({
 						value: { oneofKind: 'const', const: { val: newValue } },
-						id: randomUUID(),
+						uuid: { value: randomUUID() },
 					});
 				} else {
 					this.getItem().doAtValue = undefined;

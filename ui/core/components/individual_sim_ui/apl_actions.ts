@@ -190,7 +190,7 @@ export class APLActionPicker extends Input<Player<any>, APLAction> {
 		}
 
 		this.conditionPicker.setInputValue(newValue.condition || APLValue.create({
-			id: randomUUID()
+			uuid: { value: randomUUID() }
 		}));
 
 		const newActionKind = newValue.action.oneofKind;
@@ -276,7 +276,7 @@ function actionFieldConfig(field: string): AplHelpers.APLPickerBuilderFieldConfi
 	return {
 		field: field,
 		newValue: () => APLValue.create({
-			id: randomUUID()
+			uuid: { value: randomUUID() }
 		}) ,
 		factory: (parent, player, config) => new APLActionPicker(parent, player, config),
 	};

@@ -239,7 +239,7 @@ export class APLValuePicker extends Input<Player<any>, APLValue | undefined> {
 						return val;
 					})(),
 				},
-				id: randomUUID(),
+				uuid: { value: randomUUID() },
 			});
 		}
 	}
@@ -253,24 +253,26 @@ export class APLValuePicker extends Input<Player<any>, APLValue | undefined> {
 		}
 
 		if (newValue) {
-			if (newValue.id == "") {
-				newValue.id = randomUUID();
+			if (!newValue.uuid || newValue.uuid.value == "") {
+				newValue.uuid = {
+					value: randomUUID()
+				}
 			}
-			this.rootElem.id = newValue.id;
+			this.rootElem.id = newValue.uuid!.value;
 		}
 	}
 
 	private makeAPLValue<K extends NonNullable<APLValueKind>>(kind: K, implVal: APLValueImplTypesUnion[K]): APLValue {
 		if (!kind) {
 			return APLValue.create({
-				id: randomUUID(),
+				uuid: { value: randomUUID() },
 			});
 		}
 		const obj: any = { oneofKind: kind };
 		obj[kind] = implVal;
 		return APLValue.create({
 			value: obj,
-			id: randomUUID(),
+			uuid: { value: randomUUID() },
 		});
 	}
 
@@ -411,7 +413,7 @@ export function valueFieldConfig(
 		field: field,
 		newValue: () =>
 			APLValue.create({
-			id: randomUUID(),
+			uuid: { value: randomUUID() },
 		}),
 		factory: (parent, player, config) => new APLValuePicker(parent, player, config),
 		...(options || {}),
@@ -433,7 +435,7 @@ export function valueListFieldConfig(field: string): AplHelpers.APLPickerBuilder
 						newValue.map(val => {
 							return val ||
 							APLValue.create({
-								id: randomUUID(),
+								uuid: { value: randomUUID() },
 							})
 						}),
 					);
@@ -441,7 +443,7 @@ export function valueListFieldConfig(field: string): AplHelpers.APLPickerBuilder
 				itemLabel: 'Value',
 				newItem: () => {
 					return APLValue.create({
-						id: randomUUID(),
+						uuid: { value: randomUUID() },
 					})
 				},
 				copyItem: (oldValue: APLValue | undefined) => (oldValue ? APLValue.clone(oldValue) : oldValue),
