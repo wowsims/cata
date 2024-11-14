@@ -20,7 +20,7 @@ func (paladin *Paladin) registerInquisition() {
 	})
 
 	paladin.InquisitionAura = paladin.RegisterAura(core.Aura{
-		Label:    "Inquisition",
+		Label:    "Inquisition" + paladin.Label,
 		ActionID: actionId,
 		Duration: inquisitionDuration,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {

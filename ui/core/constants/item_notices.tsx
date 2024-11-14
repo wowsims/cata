@@ -3,6 +3,8 @@ import { Spec } from '../proto/common';
 
 const WantToHelpMessage = () => <p className="mb-0">Want to help out by providing additional information? Contact us on our Discord!</p>;
 
+export const MISSING_RANDOM_SUFFIX_WARNING = <p className="mb-0">Please select a random suffix</p>;
+
 const MISSING_IMPLEMENTATION_WARNING = (
 	<>
 		<p className="fw-bold">This item is not implemented!</p>
@@ -152,7 +154,7 @@ export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 	[
 		71086,
 		{
-			[Spec.SpecUnknown]: <p>This item is unsupported for this spec.</p>,
+			[Spec.SpecUnknown]: <p className="mb-0">This item is unsupported for this spec.</p>,
 			[Spec.SpecBalanceDruid]: DTR_FIRST_IMPLEMENTATION_WARNING,
 			[Spec.SpecArcaneMage]: DTR_FIRST_IMPLEMENTATION_WARNING,
 			[Spec.SpecFireMage]: DTR_FIRST_IMPLEMENTATION_WARNING,

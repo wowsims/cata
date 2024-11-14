@@ -6,7 +6,7 @@ import (
 
 func (paladin *Paladin) ActivateRighteousFury() {
 	paladin.RighteousFuryAura = paladin.RegisterAura(core.Aura{
-		Label:    "Righteous Fury",
+		Label:    "Righteous Fury" + paladin.Label,
 		ActionID: core.ActionID{SpellID: 25780},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {

@@ -1,14 +1,15 @@
 package paladin
 
 import (
+	"time"
+
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
-	"time"
 )
 
 func (paladin *Paladin) registerExorcism() {
 	exorcismMinDamage, exorcismMaxDamage :=
-		core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassPaladin, 2.663, 0.11)
+		core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassPaladin, 2.66300010681, 0.1099999994)
 
 	paladin.Exorcism = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 879},
@@ -42,7 +43,7 @@ func (paladin *Paladin) registerExorcism() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.RollWithLabel(exorcismMinDamage, exorcismMaxDamage, "Exorcism") +
+			baseDamage := sim.RollWithLabel(exorcismMinDamage, exorcismMaxDamage, "Exorcism"+paladin.Label) +
 				0.344*max(spell.SpellPower(), spell.MeleeAttackPower())
 
 			bonusCritPercent := core.TernaryFloat64(

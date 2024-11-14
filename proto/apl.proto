@@ -570,31 +570,36 @@ message APLValueAllTrinketStatProcsActive {
     int32 stat_type1 = 1;
     int32 stat_type2 = 2;
     int32 stat_type3 = 3;
-    bool exclude_stacking_procs = 4;
+    bool exclude_stacking_procs = 4 [deprecated=true];
+    double min_icd_seconds = 5;
 }
 message APLValueAnyTrinketStatProcsActive {
     int32 stat_type1 = 1;
     int32 stat_type2 = 2;
     int32 stat_type3 = 3;
-    bool exclude_stacking_procs = 4;
+    bool exclude_stacking_procs = 4 [deprecated=true];
+    double min_icd_seconds = 5;
 }
 message APLValueTrinketProcsMinRemainingTime {
     int32 stat_type1 = 1;
     int32 stat_type2 = 2;
     int32 stat_type3 = 3;
-    bool exclude_stacking_procs = 4;
+    bool exclude_stacking_procs = 4 [deprecated=true];
+    double min_icd_seconds = 5;
 }
 message APLValueTrinketProcsMaxRemainingICD {
     int32 stat_type1 = 1;
     int32 stat_type2 = 2;
     int32 stat_type3 = 3;
-    bool exclude_stacking_procs = 4;
+    bool exclude_stacking_procs = 4 [deprecated=true];
+    double min_icd_seconds = 5;
 }
 message APLValueNumEquippedStatProcTrinkets {
     int32 stat_type1 = 1;
     int32 stat_type2 = 2;
     int32 stat_type3 = 3;
-    bool exclude_stacking_procs = 4;
+    bool exclude_stacking_procs = 4 [deprecated=true];
+    double min_icd_seconds = 5;
 }
 
 message APLValueDotIsActive {

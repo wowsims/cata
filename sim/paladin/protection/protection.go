@@ -84,7 +84,7 @@ func (prot *ProtectionPaladin) RegisterSpecializationEffects() {
 	prot.AddStat(stats.SpellHitPercent, 8)
 	prot.MultiplyStat(stats.Stamina, 1.15)
 	core.MakePermanent(prot.GetOrRegisterAura(core.Aura{
-		Label:    "Touched by the Light",
+		Label:    "Touched by the Light" + prot.Label,
 		ActionID: core.ActionID{SpellID: 53592},
 	}))
 
@@ -120,7 +120,7 @@ func (prot *ProtectionPaladin) ApplyJudgementsOfTheWise() {
 		Hot: core.DotConfig{
 			SelfOnly: true,
 			Aura: core.Aura{
-				Label: "Judgements of the Wise",
+				Label: "Judgements of the Wise" + prot.Label,
 			},
 			NumberOfTicks:        10,
 			TickLength:           time.Second * 1,
@@ -138,7 +138,7 @@ func (prot *ProtectionPaladin) ApplyJudgementsOfTheWise() {
 	})
 
 	core.MakeProcTriggerAura(&prot.Unit, core.ProcTrigger{
-		Name:           "Judgements of the Wise Trigger",
+		Name:           "Judgements of the Wise Trigger" + prot.Label,
 		ActionID:       actionID,
 		Callback:       core.CallbackOnSpellHitDealt,
 		Outcome:        core.OutcomeLanded,

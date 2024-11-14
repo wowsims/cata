@@ -23,7 +23,7 @@ func (paladin *Paladin) registerSealOfInsight() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 1 +
 				0.25*spell.SpellPower() +
-				0.16*spell.MeleeAttackPower()
+				0.15999999642*spell.MeleeAttackPower()
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 		},
@@ -56,7 +56,7 @@ func (paladin *Paladin) registerSealOfInsight() {
 
 	ppmm := paladin.AutoAttacks.NewPPMManager(15, core.ProcMaskMeleeMH)
 	paladin.SealOfInsightAura = paladin.RegisterAura(core.Aura{
-		Label:    "Seal of Insight",
+		Label:    "Seal of Insight" + paladin.Label,
 		Tag:      "Seal",
 		ActionID: core.ActionID{SpellID: 20165},
 		Duration: time.Minute * 30,
@@ -71,7 +71,7 @@ func (paladin *Paladin) registerSealOfInsight() {
 			// SoJ only procs on white hits, CS, TV and HoW
 			if (spell.ProcMask&core.ProcMaskMeleeWhiteHit == 0 &&
 				spell.ClassSpellMask&SpellMaskCanTriggerSealOfInsight == 0) ||
-				!ppmm.Proc(sim, spell.ProcMask, "Seal of Insight") {
+				!ppmm.Proc(sim, spell.ProcMask, "Seal of Insight"+paladin.Label) {
 				return
 			}
 
