@@ -1,3 +1,5 @@
+import tippy from 'tippy.js';
+
 import { Player } from '../../player.js';
 import {
 	APLValue,
@@ -86,10 +88,11 @@ import {
 	APLValueWarlockShouldRecastDrainSoul,
 	APLValueWarlockShouldRefreshCorruption,
 } from '../../proto/apl.js';
-import { Class, Spec } from '../../proto/common.js';
+import { Class, Spec, UUID } from '../../proto/common.js';
 import { ShamanTotems_TotemType as TotemType } from '../../proto/shaman.js';
+import { ActionId } from '../../proto_utils/action_id';
 import { EventID } from '../../typed_event.js';
-import { randomUUID } from '../../utils';
+import { existsInDOM, randomUUID } from '../../utils';
 import { Input, InputConfig } from '../input.js';
 import { TextDropdownPicker, TextDropdownValueConfig } from '../pickers/dropdown_picker.jsx';
 import { ListItemPickerConfig, ListPicker } from '../pickers/list_picker.jsx';
@@ -118,6 +121,16 @@ export class APLValuePicker extends Input<Player<any>, APLValue | undefined> {
 		const allValueKinds = (Object.keys(valueKindFactories) as Array<NonNullable<APLValueKind>>).filter(
 			valueKind => valueKindFactories[valueKind].includeIf?.(player, isPrepull) ?? true,
 		);
+
+
+		if (this.rootElem.parentElement!.classList.contains('list-picker-item')) {
+			const itemHeaderElem = ListPicker.getItemHeaderElem(this) || this.rootElem;
+			makeAPLValueWarnings(
+				itemHeaderElem,
+				player,
+				player => player.getCurrentStats().rotationStats?.uuidWarnings?.find(w => w.uuid?.value === this.rootElem.id)?.warnings || [],
+			);
+		}
 
 		this.kindPicker = new TextDropdownPicker(this.rootElem, player, {
 			defaultLabel: 'No Condition',
@@ -311,6 +324,45 @@ export class APLValuePicker extends Input<Player<any>, APLValue | undefined> {
 			},
 		});
 	}
+}
+
+function makeAPLValueWarnings(itemHeaderElem: HTMLElement, player: Player<any>, getWarnings: (player: Player<any>) => Array<string>) {
+	const warningsElem = ListPicker.makeActionElem('apl-warnings', 'fa-exclamation-triangle');
+	warningsElem.classList.add('warning', 'link-warning');
+	warningsElem.setAttribute('data-bs-html', 'true');
+	const warningsTooltip = tippy(warningsElem, {
+		theme: 'dropdown-tooltip',
+		content: 'Warnings',
+	});
+
+	itemHeaderElem.appendChild(warningsElem);
+
+	const updateWarnings = async () => {
+		if (!existsInDOM(warningsElem)) {
+			warningsTooltip?.destroy();
+			warningsElem?.remove();
+			player.currentStatsEmitter.off(updateWarnings);
+			return;
+		}
+		warningsTooltip.setContent('');
+		const warnings = getWarnings(player);
+		if (!warnings.length) {
+			warningsElem.style.visibility = 'hidden';
+		} else {
+			warningsElem.style.visibility = 'visible';
+			const formattedWarnings = await Promise.all(warnings.map(w => ActionId.replaceAllInString(w)));
+			warningsTooltip.setContent(
+				`
+				<p>This action has warnings, and might not behave as expected.</p>
+				<ul>
+					${formattedWarnings.map(w => `<li>${w}</li>`).join('')}
+				</ul>
+			`,
+			);
+		}
+	};
+	updateWarnings();
+	player.currentStatsEmitter.on(updateWarnings);
 }
 
 type ValueKindConfig<T> = {
