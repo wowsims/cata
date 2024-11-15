@@ -47,7 +47,7 @@ func (value *APLValueTrinketStatProcCheck) Finalize(rot *APLRotation) {
 		return aura.ActionID
 	})
 
-	rot.ValidationWarning("%s will check the following auras: %s", value, StringFromActionIDs(actionIDs))
+	rot.ValidationWarningByUUID(value.Uuid, "%s will check the following auras: %s", value, StringFromActionIDs(actionIDs))
 }
 
 type APLValueAllTrinketStatProcsActive struct {

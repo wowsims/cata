@@ -50,8 +50,16 @@ func (rot *APLRotation) ValidationWarning(message string, vals ...interface{}) {
 }
 
 func (rot *APLRotation) ValidationWarningByUUID(uuid *proto.UUID, message string, vals ...interface{}) {
-	warning := fmt.Sprintf(message, vals...)
-	rot.uuidWarnings[uuid] = append(rot.uuidWarnings[uuid], warning)
+	if uuid != nil {
+		warning := fmt.Sprintf(message, vals...)
+		if rot.uuidWarnings == nil {
+			rot.uuidWarnings = make(map[*proto.UUID][]string)
+		}
+		if rot.uuidWarnings[uuid] == nil {
+			rot.uuidWarnings[uuid] = []string{}
+		}
+		rot.uuidWarnings[uuid] = append(rot.uuidWarnings[uuid], warning)
+	}
 }
 
 // Invokes the fn function, and attributes all warnings generated during its invocation
@@ -194,11 +202,13 @@ func (rot *APLRotation) getStats() *proto.APLStats {
 	}
 
 	uuidWarningsArr := make([]*proto.UUIDWarnings, len(rot.uuidWarnings))
+	i := 0
 	for uuid, warnings := range rot.uuidWarnings {
-		uuidWarningsArr = append(uuidWarningsArr, &proto.UUIDWarnings{
+		uuidWarningsArr[i] = &proto.UUIDWarnings{
 			Uuid:     uuid,
 			Warnings: warnings,
-		})
+		}
+		i++
 	}
 
 	return &proto.APLStats{
