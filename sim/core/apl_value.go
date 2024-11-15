@@ -1,6 +1,7 @@
 package core
 
 import (
+	"reflect"
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
@@ -30,6 +31,7 @@ type APLValue interface {
 
 // Provides empty implementations for the GetX() value interface functions.
 type DefaultAPLValueImpl struct {
+	Uuid *proto.UUID
 }
 
 func (impl DefaultAPLValueImpl) GetInnerValues() []APLValue { return nil }
@@ -61,174 +63,181 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		return customValue
 	}
 
+	var value APLValue
 	switch config.Value.(type) {
 	// Operators
 	case *proto.APLValue_Const:
-		return rot.newValueConst(config.GetConst())
+		value = rot.newValueConst(config.GetConst())
 	case *proto.APLValue_And:
-		return rot.newValueAnd(config.GetAnd())
+		value = rot.newValueAnd(config.GetAnd())
 	case *proto.APLValue_Or:
-		return rot.newValueOr(config.GetOr())
+		value = rot.newValueOr(config.GetOr())
 	case *proto.APLValue_Not:
-		return rot.newValueNot(config.GetNot())
+		value = rot.newValueNot(config.GetNot())
 	case *proto.APLValue_Cmp:
-		return rot.newValueCompare(config.GetCmp())
+		value = rot.newValueCompare(config.GetCmp())
 	case *proto.APLValue_Math:
-		return rot.newValueMath(config.GetMath())
+		value = rot.newValueMath(config.GetMath())
 	case *proto.APLValue_Max:
-		return rot.newValueMax(config.GetMax())
+		value = rot.newValueMax(config.GetMax())
 	case *proto.APLValue_Min:
-		return rot.newValueMin(config.GetMin())
+		value = rot.newValueMin(config.GetMin())
 
 	// Encounter
 	case *proto.APLValue_CurrentTime:
-		return rot.newValueCurrentTime(config.GetCurrentTime())
+		value = rot.newValueCurrentTime(config.GetCurrentTime())
 	case *proto.APLValue_CurrentTimePercent:
-		return rot.newValueCurrentTimePercent(config.GetCurrentTimePercent())
+		value = rot.newValueCurrentTimePercent(config.GetCurrentTimePercent())
 	case *proto.APLValue_RemainingTime:
-		return rot.newValueRemainingTime(config.GetRemainingTime())
+		value = rot.newValueRemainingTime(config.GetRemainingTime())
 	case *proto.APLValue_RemainingTimePercent:
-		return rot.newValueRemainingTimePercent(config.GetRemainingTimePercent())
+		value = rot.newValueRemainingTimePercent(config.GetRemainingTimePercent())
 	case *proto.APLValue_IsExecutePhase:
-		return rot.newValueIsExecutePhase(config.GetIsExecutePhase())
+		value = rot.newValueIsExecutePhase(config.GetIsExecutePhase())
 	case *proto.APLValue_NumberTargets:
-		return rot.newValueNumberTargets(config.GetNumberTargets())
+		value = rot.newValueNumberTargets(config.GetNumberTargets())
 
 	// Boss
 	case *proto.APLValue_BossSpellIsCasting:
-		return rot.newValueBossSpellIsCasting(config.GetBossSpellIsCasting())
+		value = rot.newValueBossSpellIsCasting(config.GetBossSpellIsCasting())
 	case *proto.APLValue_BossSpellTimeToReady:
-		return rot.newValueBossSpellTimeToReady(config.GetBossSpellTimeToReady())
+		value = rot.newValueBossSpellTimeToReady(config.GetBossSpellTimeToReady())
 
 	// Resources
 	case *proto.APLValue_CurrentHealth:
-		return rot.newValueCurrentHealth(config.GetCurrentHealth())
+		value = rot.newValueCurrentHealth(config.GetCurrentHealth())
 	case *proto.APLValue_CurrentHealthPercent:
-		return rot.newValueCurrentHealthPercent(config.GetCurrentHealthPercent())
+		value = rot.newValueCurrentHealthPercent(config.GetCurrentHealthPercent())
 	case *proto.APLValue_CurrentMana:
-		return rot.newValueCurrentMana(config.GetCurrentMana())
+		value = rot.newValueCurrentMana(config.GetCurrentMana())
 	case *proto.APLValue_CurrentManaPercent:
-		return rot.newValueCurrentManaPercent(config.GetCurrentManaPercent())
+		value = rot.newValueCurrentManaPercent(config.GetCurrentManaPercent())
 	case *proto.APLValue_CurrentRage:
-		return rot.newValueCurrentRage(config.GetCurrentRage())
+		value = rot.newValueCurrentRage(config.GetCurrentRage())
 	case *proto.APLValue_CurrentEnergy:
-		return rot.newValueCurrentEnergy(config.GetCurrentEnergy())
+		value = rot.newValueCurrentEnergy(config.GetCurrentEnergy())
 	case *proto.APLValue_CurrentFocus:
-		return rot.newValueCurrentFocus(config.GetCurrentFocus())
+		value = rot.newValueCurrentFocus(config.GetCurrentFocus())
 	case *proto.APLValue_CurrentComboPoints:
-		return rot.newValueCurrentComboPoints(config.GetCurrentComboPoints())
+		value = rot.newValueCurrentComboPoints(config.GetCurrentComboPoints())
 	case *proto.APLValue_CurrentRunicPower:
-		return rot.newValueCurrentRunicPower(config.GetCurrentRunicPower())
+		value = rot.newValueCurrentRunicPower(config.GetCurrentRunicPower())
 
 	// Resources Runes
 	case *proto.APLValue_CurrentRuneCount:
-		return rot.newValueCurrentRuneCount(config.GetCurrentRuneCount())
+		value = rot.newValueCurrentRuneCount(config.GetCurrentRuneCount())
 	case *proto.APLValue_CurrentNonDeathRuneCount:
-		return rot.newValueCurrentNonDeathRuneCount(config.GetCurrentNonDeathRuneCount())
+		value = rot.newValueCurrentNonDeathRuneCount(config.GetCurrentNonDeathRuneCount())
 	case *proto.APLValue_CurrentRuneActive:
-		return rot.newValueCurrentRuneActive(config.GetCurrentRuneActive())
+		value = rot.newValueCurrentRuneActive(config.GetCurrentRuneActive())
 	case *proto.APLValue_CurrentRuneDeath:
-		return rot.newValueCurrentRuneDeath(config.GetCurrentRuneDeath())
+		value = rot.newValueCurrentRuneDeath(config.GetCurrentRuneDeath())
 	case *proto.APLValue_RuneCooldown:
-		return rot.newValueRuneCooldown(config.GetRuneCooldown())
+		value = rot.newValueRuneCooldown(config.GetRuneCooldown())
 	case *proto.APLValue_NextRuneCooldown:
-		return rot.newValueNextRuneCooldown(config.GetNextRuneCooldown())
+		value = rot.newValueNextRuneCooldown(config.GetNextRuneCooldown())
 	case *proto.APLValue_RuneSlotCooldown:
-		return rot.newValueRuneSlotCooldown(config.GetRuneSlotCooldown())
+		value = rot.newValueRuneSlotCooldown(config.GetRuneSlotCooldown())
 
 	//Unit
 	case *proto.APLValue_UnitIsMoving:
-		return rot.newValueCharacterIsMoving(config.GetUnitIsMoving())
+		value = rot.newValueCharacterIsMoving(config.GetUnitIsMoving())
 
 	// GCD
 	case *proto.APLValue_GcdIsReady:
-		return rot.newValueGCDIsReady(config.GetGcdIsReady())
+		value = rot.newValueGCDIsReady(config.GetGcdIsReady())
 	case *proto.APLValue_GcdTimeToReady:
-		return rot.newValueGCDTimeToReady(config.GetGcdTimeToReady())
+		value = rot.newValueGCDTimeToReady(config.GetGcdTimeToReady())
 
 	// Auto attacks
 	case *proto.APLValue_AutoTimeToNext:
-		return rot.newValueAutoTimeToNext(config.GetAutoTimeToNext())
+		value = rot.newValueAutoTimeToNext(config.GetAutoTimeToNext())
 
 	// Spells
 	case *proto.APLValue_SpellIsKnown:
-		return rot.newValueSpellIsKnown(config.GetSpellIsKnown())
+		value = rot.newValueSpellIsKnown(config.GetSpellIsKnown())
 	case *proto.APLValue_SpellCanCast:
-		return rot.newValueSpellCanCast(config.GetSpellCanCast())
+		value = rot.newValueSpellCanCast(config.GetSpellCanCast())
 	case *proto.APLValue_SpellIsReady:
-		return rot.newValueSpellIsReady(config.GetSpellIsReady())
+		value = rot.newValueSpellIsReady(config.GetSpellIsReady())
 	case *proto.APLValue_SpellTimeToReady:
-		return rot.newValueSpellTimeToReady(config.GetSpellTimeToReady())
+		value = rot.newValueSpellTimeToReady(config.GetSpellTimeToReady())
 	case *proto.APLValue_SpellCastTime:
-		return rot.newValueSpellCastTime(config.GetSpellCastTime())
+		value = rot.newValueSpellCastTime(config.GetSpellCastTime())
 	case *proto.APLValue_SpellTravelTime:
-		return rot.newValueSpellTravelTime(config.GetSpellTravelTime())
+		value = rot.newValueSpellTravelTime(config.GetSpellTravelTime())
 	case *proto.APLValue_SpellCpm:
-		return rot.newValueSpellCPM(config.GetSpellCpm())
+		value = rot.newValueSpellCPM(config.GetSpellCpm())
 	case *proto.APLValue_SpellIsChanneling:
-		return rot.newValueSpellIsChanneling(config.GetSpellIsChanneling())
+		value = rot.newValueSpellIsChanneling(config.GetSpellIsChanneling())
 	case *proto.APLValue_SpellChanneledTicks:
-		return rot.newValueSpellChanneledTicks(config.GetSpellChanneledTicks())
+		value = rot.newValueSpellChanneledTicks(config.GetSpellChanneledTicks())
 	case *proto.APLValue_SpellCurrentCost:
-		return rot.newValueSpellCurrentCost(config.GetSpellCurrentCost())
+		value = rot.newValueSpellCurrentCost(config.GetSpellCurrentCost())
 
 	// Auras
 	case *proto.APLValue_AuraIsKnown:
-		return rot.newValueAuraIsKnown(config.GetAuraIsKnown())
+		value = rot.newValueAuraIsKnown(config.GetAuraIsKnown())
 	case *proto.APLValue_AuraIsActive:
-		return rot.newValueAuraIsActive(config.GetAuraIsActive())
+		value = rot.newValueAuraIsActive(config.GetAuraIsActive())
 	case *proto.APLValue_AuraIsActiveWithReactionTime:
-		return rot.newValueAuraIsActiveWithReactionTime(config.GetAuraIsActiveWithReactionTime())
+		value = rot.newValueAuraIsActiveWithReactionTime(config.GetAuraIsActiveWithReactionTime())
 	case *proto.APLValue_AuraIsInactiveWithReactionTime:
-		return rot.newValueAuraIsInactiveWithReactionTime(config.GetAuraIsInactiveWithReactionTime())
+		value = rot.newValueAuraIsInactiveWithReactionTime(config.GetAuraIsInactiveWithReactionTime())
 	case *proto.APLValue_AuraRemainingTime:
-		return rot.newValueAuraRemainingTime(config.GetAuraRemainingTime())
+		value = rot.newValueAuraRemainingTime(config.GetAuraRemainingTime())
 	case *proto.APLValue_AuraNumStacks:
-		return rot.newValueAuraNumStacks(config.GetAuraNumStacks())
+		value = rot.newValueAuraNumStacks(config.GetAuraNumStacks())
 	case *proto.APLValue_AuraInternalCooldown:
-		return rot.newValueAuraInternalCooldown(config.GetAuraInternalCooldown())
+		value = rot.newValueAuraInternalCooldown(config.GetAuraInternalCooldown())
 	case *proto.APLValue_AuraIcdIsReadyWithReactionTime:
-		return rot.newValueAuraICDIsReadyWithReactionTime(config.GetAuraIcdIsReadyWithReactionTime())
+		value = rot.newValueAuraICDIsReadyWithReactionTime(config.GetAuraIcdIsReadyWithReactionTime())
 	case *proto.APLValue_AuraShouldRefresh:
-		return rot.newValueAuraShouldRefresh(config.GetAuraShouldRefresh())
+		value = rot.newValueAuraShouldRefresh(config.GetAuraShouldRefresh())
 
 	// Aura sets
 	case *proto.APLValue_AllTrinketStatProcsActive:
-		return rot.newValueAllTrinketStatProcsActive(config.GetAllTrinketStatProcsActive())
+		value = rot.newValueAllTrinketStatProcsActive(config.GetAllTrinketStatProcsActive())
 	case *proto.APLValue_AnyTrinketStatProcsActive:
-		return rot.newValueAnyTrinketStatProcsActive(config.GetAnyTrinketStatProcsActive())
+		value = rot.newValueAnyTrinketStatProcsActive(config.GetAnyTrinketStatProcsActive())
 	case *proto.APLValue_TrinketProcsMinRemainingTime:
-		return rot.newValueTrinketProcsMinRemainingTime(config.GetTrinketProcsMinRemainingTime())
+		value = rot.newValueTrinketProcsMinRemainingTime(config.GetTrinketProcsMinRemainingTime())
 	case *proto.APLValue_TrinketProcsMaxRemainingIcd:
-		return rot.newValueTrinketProcsMaxRemainingICD(config.GetTrinketProcsMaxRemainingIcd())
+		value = rot.newValueTrinketProcsMaxRemainingICD(config.GetTrinketProcsMaxRemainingIcd())
 	case *proto.APLValue_NumEquippedStatProcTrinkets:
-		return rot.newValueNumEquippedStatProcTrinkets(config.GetNumEquippedStatProcTrinkets())
+		value = rot.newValueNumEquippedStatProcTrinkets(config.GetNumEquippedStatProcTrinkets())
 
 	// Dots
 	case *proto.APLValue_DotIsActive:
-		return rot.newValueDotIsActive(config.GetDotIsActive())
+		value = rot.newValueDotIsActive(config.GetDotIsActive())
 	case *proto.APLValue_DotRemainingTime:
-		return rot.newValueDotRemainingTime(config.GetDotRemainingTime())
+		value = rot.newValueDotRemainingTime(config.GetDotRemainingTime())
 	case *proto.APLValue_DotTickFrequency:
-		return rot.newValueDotTickFrequency(config.GetDotTickFrequency())
+		value = rot.newValueDotTickFrequency(config.GetDotTickFrequency())
 
 	// Sequences
 	case *proto.APLValue_SequenceIsComplete:
-		return rot.newValueSequenceIsComplete(config.GetSequenceIsComplete())
+		value = rot.newValueSequenceIsComplete(config.GetSequenceIsComplete())
 	case *proto.APLValue_SequenceIsReady:
-		return rot.newValueSequenceIsReady(config.GetSequenceIsReady())
+		value = rot.newValueSequenceIsReady(config.GetSequenceIsReady())
 	case *proto.APLValue_SequenceTimeToReady:
-		return rot.newValueSequenceTimeToReady(config.GetSequenceTimeToReady())
+		value = rot.newValueSequenceTimeToReady(config.GetSequenceTimeToReady())
 
 	// Properties
 	case *proto.APLValue_ChannelClipDelay:
-		return rot.newValueChannelClipDelay(config.GetChannelClipDelay())
+		value = rot.newValueChannelClipDelay(config.GetChannelClipDelay())
 	case *proto.APLValue_InputDelay:
-		return rot.newValueInputDelay(config.GetInputDelay())
+		value = rot.newValueInputDelay(config.GetInputDelay())
 
 	default:
-		return nil
+		value = nil
 	}
+
+	if value != nil {
+		reflect.ValueOf(value).Elem().FieldByName("Uuid").Set(reflect.ValueOf(config.Uuid))
+	}
+
+	return value
 }
 
 // Default implementation of Agent.NewAPLValue so each spec doesn't need this boilerplate.
