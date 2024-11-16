@@ -186,3 +186,31 @@ func (value *APLValueNumEquippedStatProcTrinkets) GetInt(sim *Simulation) int32 
 		return aura.CanProc(sim)
 	})))
 }
+
+type APLValueNumStatBuffCooldowns struct {
+	DefaultAPLValueImpl
+
+	statTypesToMatch    []stats.Stat
+	cachedCooldownCount int32
+}
+
+func (rot *APLRotation) newValueNumStatBuffCooldowns(config *proto.APLValueNumStatBuffCooldowns) APLValue {
+	unit := rot.unit
+	character := unit.Env.Raid.GetPlayerFromUnit(unit).GetCharacter()
+	statTypesToMatch := stats.IntTupleToStatsList(config.StatType1, config.StatType2, config.StatType3)
+	matchingSpells := character.GetMatchingStatBuffSpells(statTypesToMatch)
+
+	return &APLValueNumStatBuffCooldowns{
+		statTypesToMatch:    statTypesToMatch,
+		cachedCooldownCount: int32(len(matchingSpells)),
+	}
+}
+func (value *APLValueNumStatBuffCooldowns) String() string {
+	return fmt.Sprintf("NumStatBuffCooldowns(%s)", StringFromStatTypes(value.statTypesToMatch))
+}
+func (value *APLValueNumStatBuffCooldowns) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeInt
+}
+func (value *APLValueNumStatBuffCooldowns) GetInt(_ *Simulation) int32 {
+	return value.cachedCooldownCount
+}

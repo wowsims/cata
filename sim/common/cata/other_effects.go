@@ -210,6 +210,8 @@ func init() {
 			Spell:    trinketSpell,
 			Priority: core.CooldownPriorityDefault,
 			Type:     core.CooldownTypeDPS,
+			BuffAura: buffAura,
+
 			ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
 				return dummyAura.GetStacks() == 5
 			},
