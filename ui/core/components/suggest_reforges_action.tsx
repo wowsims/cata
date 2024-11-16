@@ -911,8 +911,8 @@ export class ReforgeOptimizer {
 			binaries: true,
 		};
 		const options: Options = {
-			timeout: 10000,
-			maxIterations: Infinity,
+			timeout: Infinity,
+			maxIterations: 100000,
 			tolerance: 0.01,
 		};
 		const solution = solve(model, options);
