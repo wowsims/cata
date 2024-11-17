@@ -912,7 +912,7 @@ export class ReforgeOptimizer {
 		};
 		const options: Options = {
 			timeout: Infinity,
-			maxIterations: 100000,
+			maxIterations: 150000,
 			tolerance: 0.01,
 		};
 		const solution = solve(model, options);
