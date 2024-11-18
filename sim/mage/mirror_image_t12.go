@@ -52,8 +52,16 @@ func (mi *T12MirrorImage) Reset(_ *core.Simulation) {
 }
 
 func (mi *T12MirrorImage) ExecuteCustomRotation(sim *core.Simulation) {
-	if success := mi.Fireball.Cast(sim, mi.CurrentTarget); !success {
-		mi.Disable(sim)
+	if mi.Fireball.CanCast(sim, mi.CurrentTarget) {
+		mi.Fireball.Cast(sim, mi.CurrentTarget)
+		minDelay := 680.0
+		maxDelay := 790.0
+		delayRange := maxDelay - minDelay
+		// ~680-790ms delay between casts resulting in ~735 ms average
+		// Research:https://docs.google.com/spreadsheets/d/e/2PACX-1vTvD34UWX5Eb9dIGmH7EPRQyuLdJDOpNR7_8cmZlWRZb1W7RlRE-y7ffSnvM55o_GZ5dPusxAW1STH3/pubchart?oid=96701738&format=image
+		randomDelay := time.Duration(minDelay+delayRange*sim.RandomFloat("T12 Mirror Image Cast Delay")) * time.Millisecond
+		mi.WaitUntil(sim, mi.NextGCDAt()+randomDelay)
+		return
 	}
 }
 
