@@ -23,9 +23,6 @@ func TestRetribution(t *testing.T) {
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: DefaultOptions},
 		Rotation:    core.GetAplRotation("../../../ui/paladin/retribution/apls", "default"),
-		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../../ui/paladin/retribution/apls", "apparatus"),
-		},
 
 		ItemFilter: core.ItemFilter{
 			WeaponTypes: []proto.WeaponType{
@@ -58,7 +55,7 @@ func BenchmarkSimulate(b *testing.B) {
 				TalentsString:  StandardTalents,
 				Buffs:          core.FullIndividualBuffs,
 				ReactionTimeMs: 100,
-				Rotation:       core.GetAplRotation("../../../ui/paladin/retribution/apls", "apparatus").Rotation,
+				Rotation:       core.GetAplRotation("../../../ui/paladin/retribution/apls", "default").Rotation,
 			},
 			core.FullPartyBuffs,
 			core.FullRaidBuffs,
