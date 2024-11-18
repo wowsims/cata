@@ -154,6 +154,20 @@
 																}
 															]
 														}
+													},
+													{
+														"and": {
+															"vals": [
+																{ "auraIsActive": { "auraId": { "spellId": 85696 } } },
+																{
+																	"cmp": {
+																		"op": "OpLt",
+																		"lhs": { "spellTimeToReady": { "spellId": { "spellId": 85696 } } },
+																		"rhs": { "const": { "val": "116s" } }
+																	}
+																}
+															]
+														}
 													}
 												]
 											}
