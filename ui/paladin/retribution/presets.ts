@@ -37,10 +37,10 @@ export const P2_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatStrength]: 2.28,
 
 			[Stat.StatCritRating]: 1.10,
-			[Stat.StatHasteRating]: 1.05,
+			[Stat.StatHasteRating]: 1.00,
 			[Stat.StatMasteryRating]: 1.23,
 
-			[Stat.StatHitRating]: 2.31,
+			[Stat.StatHitRating]: 2.33,
 			[Stat.StatExpertiseRating]: 1.88,
 		},
 		{
@@ -57,11 +57,11 @@ export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatStrength]: 2.29,
 
 			[Stat.StatCritRating]: 1.30,
-			[Stat.StatHasteRating]: 1.09,
+			[Stat.StatHasteRating]: 1.13,
 			[Stat.StatMasteryRating]: 1.36,
 
-			[Stat.StatHitRating]: 2.66,
-			[Stat.StatExpertiseRating]: 2.20,
+			[Stat.StatHitRating]: 2.68,
+			[Stat.StatExpertiseRating]: 2.24,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 8.50,
@@ -77,14 +77,14 @@ export const P4_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatStrength]: 2.28,
 
 			[Stat.StatCritRating]: 1.50,
-			[Stat.StatHasteRating]: 1.23,
+			[Stat.StatHasteRating]: 1.21,
 			[Stat.StatMasteryRating]: 1.69,
 
-			[Stat.StatHitRating]: 3.10,
-			[Stat.StatExpertiseRating]: 2.48,
+			[Stat.StatHitRating]: 3.12,
+			[Stat.StatExpertiseRating]: 2.51,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 8.07,
+			[PseudoStat.PseudoStatMainHandDps]: 8.08,
 		},
 	),
 );
