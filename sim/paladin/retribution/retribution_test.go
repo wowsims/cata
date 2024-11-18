@@ -17,7 +17,17 @@ func TestRetribution(t *testing.T) {
 		Class: proto.Class_ClassPaladin,
 		Race:  proto.Race_RaceBloodElf,
 
-		GearSet:     core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p3_bis"),
+		GearSet: core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p3_bis"),
+		OtherGearSets: []core.GearSetCombo{
+			core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p2_bis"),
+			core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p2_with_apparatus"),
+			core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p2_with_double_passive"),
+			core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p3_with_double_passive"),
+			core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p3_with_on_use"),
+			core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p4_bis"),
+			core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p4_with_apparatus"),
+			core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p4_with_on_use"),
+		},
 		Talents:     StandardTalents,
 		Glyphs:      StandardGlyphs,
 		Consumes:    FullConsumes,
