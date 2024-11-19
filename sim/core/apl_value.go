@@ -234,6 +234,9 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 	}
 
 	if value != nil {
+		// The APLValue type doesn't embed APLValueDefaultImpl,
+		// but all of the concrete subtypes do (e.g. APLValueConst)
+		// Using reflection, we can set the field on the concrete type without casting.
 		reflect.ValueOf(value).Elem().FieldByName("Uuid").Set(reflect.ValueOf(config.Uuid))
 	}
 
