@@ -1005,15 +1005,15 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-Kiril,FuryofBeasts-78473"
  value: {
-  dps: 29879.37986
-  tps: 27036.91103
+  dps: 29945.9847
+  tps: 27102.76747
  }
 }
 dps_results: {
  key: "TestSV-AllItems-Kiril,FuryofBeasts-78482"
  value: {
-  dps: 29169.45079
-  tps: 26394.03627
+  dps: 29196.42144
+  tps: 26419.93766
  }
 }
 dps_results: {

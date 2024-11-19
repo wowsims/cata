@@ -1094,17 +1094,17 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-Kiril,FuryofBeasts-78473"
  value: {
-  dps: 10563.03992
-  tps: 52883.46211
+  dps: 10598.63046
+  tps: 53061.10898
   hps: 317.68208
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Kiril,FuryofBeasts-78482"
  value: {
-  dps: 10335.58603
-  tps: 51745.33763
-  hps: 317.68208
+  dps: 10371.45118
+  tps: 51925.26882
+  hps: 319.10667
  }
 }
 dps_results: {
