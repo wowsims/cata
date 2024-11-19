@@ -10,6 +10,7 @@ import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Ra
 import { RogueOptions_PoisonImbue } from '../../core/proto/rogue';
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
+import { Sim } from '../../core/sim';
 import * as RogueInputs from '../inputs';
 import * as Presets from './presets';
 
@@ -54,7 +55,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 		// Default equipped gear.
 		gear: Presets.P3_PRESET_COMBAT.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.CBAT_HASTE_EP_PRESET.epWeights,
+		epWeights: Presets.CBAT_STANDARD_EP_PRESET.epWeights,
 		// Stat caps for reforge optimizer
 		statCaps: (() => {
 			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
@@ -63,23 +64,25 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 		softCapBreakpoints: (() => {
 			// Running just under spell cap is typically preferrable to being over.
 			const spellHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent, {
-				breakpoints: [16.95, 16.96, 16.97, 16.98, 16.99, 17],
+				breakpoints: [16.90, 16.95, 16.96, 16.97, 16.98, 16.99, 17],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0, 0, 0, 0, 0, 0],
+				// These are set by the active EP weight in the updateSoftCaps callback
+				postCapEPs: [0, 0, 0, 0, 0, 0, 0],
 			});
 
 			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
 				breakpoints: [8, 27],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [110, 0],
+				// These are set by the active EP weight in the updateSoftCaps callback
+				postCapEPs: [0, 0],
 			});
 
 			const hasteRatingSoftCapConfig = StatCap.fromStat(Stat.StatHasteRating, {
-				breakpoints: [2070, 2150, 2250],
+				breakpoints: [2070, 2150, 2250, 2350, 2450],
 				capType: StatCapType.TypeSoftCap,
 				// These are set by the active EP weight in the updateSoftCaps callback
-				postCapEPs: [0, 0, 0],
-			});
+				postCapEPs: [0, 0, 0, 0, 0],
+			})
 
 			return [meleeHitSoftCapConfig, spellHitSoftCapConfig, hasteRatingSoftCapConfig];
 		})(),
@@ -148,13 +151,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	},
 
 	presets: {
-		epWeights: [Presets.CBAT_HASTE_EP_PRESET, Presets.CBAT_4PT12_EP_PRESET],
+		epWeights: [Presets.CBAT_STANDARD_EP_PRESET, Presets.CBAT_4PT12_EP_PRESET, Presets.CBAT_T13_EP_PRESET, Presets.CBAT_NOKALED_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.CombatTalents],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_COMBAT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET_COMBAT, Presets.P1_PRESET_COMBAT, Presets.P3_PRESET_COMBAT],
+		gear: [Presets.PRERAID_PRESET_COMBAT, Presets.P1_PRESET_COMBAT, Presets.P3_PRESET_COMBAT, Presets.P4_PRESET_COMBAT],
 	},
 
 	autoRotation: (player: Player<Spec.SpecCombatRogue>): APLRotation => {
@@ -191,6 +194,27 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	],
 });
 
+const getActiveEPWeight = (player: Player<Spec.SpecCombatRogue>, sim: Sim): Stats => {
+	if (sim.getUseCustomEPValues()) {
+		return player.getEpWeights();
+	} else {
+		const mhWepId = player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.id;
+		const playerGear = player.getGear();
+		let avgIlvl = 0;
+		playerGear.asArray().forEach(v => avgIlvl += v?.item.ilvl || 0);
+		avgIlvl /= playerGear.asArray().length;
+		if (mhWepId == 78472 || mhWepId == 77188 || mhWepId == 78481) { // No'Kaled MH
+			return Presets.CBAT_NOKALED_EP_PRESET.epWeights;
+		} else if (playerGear.getItemSetCount("Vestments of the Dark Phoenix") == 4) {
+			return Presets.CBAT_4PT12_EP_PRESET.epWeights;
+		} else if (playerGear.getItemSetCount("Blackfang Battleweave") || avgIlvl >= 380) { // T13, or high enough that Haste+Mastery overtake Spell Hit Cap
+			return Presets.CBAT_T13_EP_PRESET.epWeights;
+		}  else {
+			return Presets.CBAT_STANDARD_EP_PRESET.epWeights;
+		}
+	}
+}
+
 export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecCombatRogue>) {
 		super(parentElem, player, SPEC_CONFIG);
@@ -198,15 +222,43 @@ export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
 				updateSoftCaps: (softCaps: StatCap[]) => {
-					const hasteEP = player.getEpWeights().getStat(Stat.StatHasteRating);
+					const activeEPWeight = getActiveEPWeight(player, this.sim);
+					const mhWepId = player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.id
+					const hasteEP = activeEPWeight.getStat(Stat.StatHasteRating);
 					const hasteSoftCap = softCaps.find(v => v.unitStat.equalsStat(Stat.StatHasteRating));
 					if (hasteSoftCap) {
-						hasteSoftCap.postCapEPs = [hasteEP - 0.1, hasteEP - 0.2, hasteEP - 0.3];
+						// If wearing either Fear or Sleeper in MH, Haste EP is never overtaken by Mastery
+						if (mhWepId == 77945 || mhWepId == 77947)
+							hasteSoftCap.postCapEPs = [hasteEP, hasteEP, hasteEP, hasteEP, hasteEP]
+						else
+							hasteSoftCap.postCapEPs = [hasteEP - 0.1, hasteEP - 0.2, hasteEP - 0.3, hasteEP - 0.4, hasteEP - 0.5];
 					}
 
-					return softCaps;
+					// Dynamic adjustments to the static Hit soft cap EP
+					const meleeSoftCap = softCaps.find(v => v.unitStat.equalsPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent));
+					const spellSoftCap = softCaps.find(v => v.unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHitPercent));
+					if (meleeSoftCap) {
+						const initialEP = activeEPWeight.getPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent);
+						// Any dagger MH inflates white hit EP - sufficient to force Spell Hit Cap
+						if (mhWepId == 77945 || mhWepId == 77947 || mhWepId == 77949) {
+							meleeSoftCap.postCapEPs = [initialEP/1.75, 0];
+						} else {
+							meleeSoftCap.postCapEPs = [initialEP/2, 0];
+						}
+
+					}
+					if (spellSoftCap) {
+						const initialEP = activeEPWeight.getPseudoStat(PseudoStat.PseudoStatSpellHitPercent);
+						player.getEpRatios
+						spellSoftCap.postCapEPs = [initialEP-5, initialEP/2, initialEP/4, initialEP/8, initialEP/16, initialEP/32, 0];
+					}
+
+					return softCaps
 				},
-				updateGearStatsModifier(baseStats: Stats) {
+				getEPDefaults: (player: Player<Spec.SpecCombatRogue>) => {
+					return getActiveEPWeight(player, this.sim);
+				},
+				updateGearStatsModifier: (baseStats: Stats) => {
 					// Human/Orc racials for MH. Maxing Expertise for OH is a DPS loss when the MH matches the racial.
 					const mhWepType = player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponType;
 					if ((player.getRace() == Race.RaceHuman && (mhWepType == WeaponType.WeaponTypeSword || mhWepType ==  WeaponType.WeaponTypeMace) ||

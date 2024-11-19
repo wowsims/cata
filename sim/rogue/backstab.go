@@ -21,7 +21,7 @@ func (rogue *Rogue) registerBackstabSpell() {
 		ClassSpellMask: RogueSpellBackstab,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   60 - []float64{0, 7, 14, 20}[rogue.Talents.SlaughterFromTheShadows],
+			Cost:   60,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

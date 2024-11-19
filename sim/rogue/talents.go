@@ -24,15 +24,6 @@ func (rogue *Rogue) ApplyTalents() {
 		rogue.relentlessStrikesMetrics = rogue.NewEnergyMetrics(core.ActionID{SpellID: 14179})
 	}
 
-	rogue.applyGlyphOfTricks()
-}
-
-// DWSMultiplier returns the offhand damage multiplier
-func (rogue *Rogue) DWSMultiplier() float64 {
-	// DWS (Now named Ambidexterity) is now a Combat rogue passive
-	return core.TernaryFloat64(rogue.Spec == proto.Spec_SpecCombatRogue, 1.75, 1)
-}
-func (rogue *Rogue) applyGlyphOfTricks() {
 	if rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfTricksOfTheTrade) {
 		rogue.AddStaticMod(core.SpellModConfig{
 			Kind:       core.SpellMod_PowerCost_Flat,
@@ -40,4 +31,24 @@ func (rogue *Rogue) applyGlyphOfTricks() {
 			ClassMask:  RogueSpellTricksOfTheTrade,
 		})
 	}
+
+	if rogue.Talents.SlaughterFromTheShadows > 0 {
+		rogue.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_PowerCost_Flat,
+			FloatValue: []float64{-0, -7, -14, -20}[rogue.Talents.SlaughterFromTheShadows],
+			ClassMask:  RogueSpellBackstab | RogueSpellAmbush,
+		})
+
+		rogue.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_PowerCost_Flat,
+			FloatValue: float64(-2 * rogue.Talents.SlaughterFromTheShadows),
+			ClassMask:  RogueSpellHemorrhage | RogueSpellFanOfKnives,
+		})
+	}
+}
+
+// DWSMultiplier returns the offhand damage multiplier
+func (rogue *Rogue) DWSMultiplier() float64 {
+	// DWS (Now named Ambidexterity) is now a Combat rogue passive
+	return core.TernaryFloat64(rogue.Spec == proto.Spec_SpecCombatRogue, 1.75, 1)
 }

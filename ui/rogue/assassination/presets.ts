@@ -6,8 +6,9 @@ import { Stats } from '../../core/proto_utils/stats';
 import MutilateApl from './apls/mutilate.apl.json';
 import P1AssassinationGear from './gear_sets/p1_assassination.gear.json';
 import P1ExpertiseGear from './gear_sets/p1_expertise.gear.json';
-import P3AssassinationGear from './gear_sets/p3_assassination.gear.json'
-import PreraidAssassination from './gear_sets/preraid_assassination.gear.json'
+import P3AssassinationGear from './gear_sets/p3_assassination.gear.json';
+import P4AssassinationGear from './gear_sets/p4_assassination.gear.json';
+import PreraidAssassination from './gear_sets/preraid_assassination.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -16,7 +17,8 @@ import PreraidAssassination from './gear_sets/preraid_assassination.gear.json'
 export const P1_PRESET_ASSASSINATION = PresetUtils.makePresetGear('P1 Assassination', P1AssassinationGear);
 export const P1_PRESET_ASN_EXPERTISE = PresetUtils.makePresetGear('P1 Expertise', P1ExpertiseGear);
 export const P3_PRESET_ASSASSINATION = PresetUtils.makePresetGear('P3 Assassination', P3AssassinationGear);
-export const PRERAID_PRESET_ASSASSINATION = PresetUtils.makePresetGear('Pre-Raid Assassination', PreraidAssassination)
+export const PRERAID_PRESET_ASSASSINATION = PresetUtils.makePresetGear('Pre-Raid Assassination', PreraidAssassination);
+export const P4_PRESET_ASSASSINATION = PresetUtils.makePresetGear('P4 Assassination', P4AssassinationGear);
 
 export const ROTATION_PRESET_MUTILATE = PresetUtils.makePresetAPLRotation('Assassination', MutilateApl);
 

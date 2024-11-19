@@ -62,7 +62,7 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 		ClassSpellMask: rogue.RogueSpellHemorrhage,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   35 - 2*float64(subRogue.Talents.SlaughterFromTheShadows),
+			Cost:   35,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
