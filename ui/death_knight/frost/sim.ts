@@ -147,11 +147,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_MASTERFROST_EP_PRESET, Presets.P1_TWOHAND_EP_PRESET, Presets.P1_DUAL_WIELD_EP_PRESET],
+		epWeights: [Presets.P1_MASTERFROST_EP_PRESET, Presets.P1_TWOHAND_EP_PRESET, Presets.P1_DUAL_WIELD_EP_PRESET, Presets.P3_DUAL_WIELD_EP_PRESET],
 		talents: [Presets.DualWieldTalents, Presets.TwoHandTalents, Presets.MasterfrostTalents],
 		rotations: [Presets.DUAL_WIELD_ROTATION_PRESET_DEFAULT, Presets.TWO_HAND_ROTATION_PRESET_DEFAULT, Presets.MASTERFROST_ROTATION_PRESET_DEFAULT],
 		gear: [
 			Presets.P1_DW_GEAR_PRESET,
+			Presets.P3_DW_GEAR_PRESET,
 			Presets.P1_2H_GEAR_PRESET,
 			Presets.PREBIS_MASTERFROST_GEAR_PRESET,
 			Presets.P1_MASTERFROST_GEAR_PRESET,
@@ -198,7 +199,7 @@ export class FrostDeathKnightSimUI extends IndividualSimUI<Spec.SpecFrostDeathKn
 			new ReforgeOptimizer(this, {
 				updateSoftCaps: (softCaps: StatCap[]) => {
 					const talents = player.getTalents();
-					if (talents.mightOfTheFrozenWastes > 0) {
+					if (talents.mightOfTheFrozenWastes > 0 || talents.epidemic > 0) {
 						const physicalHitCap = softCaps.find(v => v.unitStat.equalsPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent));
 						if (physicalHitCap) {
 							physicalHitCap.breakpoints = [8];
@@ -217,7 +218,7 @@ export class FrostDeathKnightSimUI extends IndividualSimUI<Spec.SpecFrostDeathKn
 					return talents.mightOfTheFrozenWastes > 0
 						? Presets.P1_TWOHAND_EP_PRESET.epWeights
 						: talents.epidemic > 0
-						? Presets.P1_DUAL_WIELD_EP_PRESET.epWeights
+						? Presets.P3_DUAL_WIELD_EP_PRESET.epWeights
 						: Presets.P1_MASTERFROST_EP_PRESET.epWeights;
 				},
 			});

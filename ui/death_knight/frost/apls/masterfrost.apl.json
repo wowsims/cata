@@ -33,7 +33,37 @@
 					"and": {
 						"vals": [
 							{ "cmp": { "op": "OpLe", "lhs": { "currentRuneCount": { "runeType": "RuneDeath" } }, "rhs": { "const": { "val": "1" } } } },
-							{ "cmp": { "op": "OpGt", "lhs": { "runeCooldown": { "runeType": "RuneBlood" } }, "rhs": { "const": { "val": "5.5s" } } } }
+							{
+								"or": {
+									"vals": [
+										{
+											"cmp": {
+												"op": "OpGt",
+												"lhs": { "runeSlotCooldown": { "runeSlot": "SlotLeftBlood" } },
+												"rhs": { "const": { "val": "5.5s" } }
+											}
+										},
+										{
+											"cmp": {
+												"op": "OpGt",
+												"lhs": { "runeSlotCooldown": { "runeSlot": "SlotRightBlood" } },
+												"rhs": { "const": { "val": "5.5s" } }
+											}
+										}
+									]
+								}
+							},
+							{
+								"not": {
+									"val": {
+										"cmp": {
+											"op": "OpLt",
+											"lhs": { "runeSlotCooldown": { "runeSlot": "SlotLeftBlood" } },
+											"rhs": { "const": { "val": "5.5s" } }
+										}
+									}
+								}
+							}
 						]
 					}
 				},
