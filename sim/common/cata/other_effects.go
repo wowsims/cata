@@ -672,7 +672,7 @@ func init() {
 
 			procAura := core.MakeStackingAura(character, core.StackingStatAura{
 				Aura: core.Aura{
-					Label:     "Accelerated",
+					Label:     "Accelerated" + labelSuffix,
 					ActionID:  core.ActionID{SpellID: core.TernaryInt32(heroic, 97142, 96980)},
 					Duration:  time.Second * 20,
 					MaxStacks: 5,
@@ -1073,7 +1073,7 @@ func init() {
 
 			beastFuryAura := core.MakeStackingAura(character, core.StackingStatAura{
 				Aura: core.Aura{
-					Label:     "Beast Fury",
+					Label:     "Beast Fury" + labelSuffix,
 					ActionID:  core.ActionID{SpellID: []int32{109860, 108016, 109863}[version]},
 					Duration:  time.Second * 20,
 					MaxStacks: 10,
@@ -1082,7 +1082,7 @@ func init() {
 			})
 
 			furyOfTheBeastAura := character.RegisterAura(core.Aura{
-				Label:    "Fury of the Beast",
+				Label:    "Fury of the Beast" + labelSuffix,
 				ActionID: core.ActionID{SpellID: []int32{109861, 108011, 109864}[version]},
 				Duration: time.Second * 20,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -1098,7 +1098,7 @@ func init() {
 			})
 
 			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-				Name:       "Fury of the Beast Trigger",
+				Name:       "Fury of the Beast Trigger" + labelSuffix,
 				Callback:   core.CallbackOnSpellHitDealt,
 				ProcMask:   core.ProcMaskMeleeOrRanged | core.ProcMaskMeleeProc,
 				Outcome:    core.OutcomeLanded,
@@ -1265,7 +1265,7 @@ func init() {
 				Dot: core.DotConfig{
 					IsAOE: true,
 					Aura: core.Aura{
-						Label: "Blast of Corruption",
+						Label: "Blast of Corruption" + labelSuffix,
 					},
 					NumberOfTicks:       5,
 					TickLength:          time.Second * 2,

@@ -984,15 +984,15 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-AllItems-Kiril,FuryofBeasts-78473"
  value: {
-  dps: 40312.95039
-  tps: 40183.25883
+  dps: 40312.04806
+  tps: 40181.95514
  }
 }
 dps_results: {
  key: "TestRetribution-AllItems-Kiril,FuryofBeasts-78482"
  value: {
-  dps: 40040.14477
-  tps: 39909.98472
+  dps: 40097.88915
+  tps: 39968.70264
  }
 }
 dps_results: {
