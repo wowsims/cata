@@ -22,7 +22,7 @@ export const ROTATION_PRESET_COMBAT = PresetUtils.makePresetAPLRotation('Combat'
 
 // Preset options for EP weights
 export const CBAT_STANDARD_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'Combat Standard',
+	'Combat Low Gear',
 	Stats.fromMap(
 		{
 			[Stat.StatAgility]: 2.85,
@@ -38,12 +38,12 @@ export const CBAT_STANDARD_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[PseudoStat.PseudoStatMainHandDps]: 4.31,
 			[PseudoStat.PseudoStatOffHandDps]: 1.32,
 			[PseudoStat.PseudoStatSpellHitPercent]: 46,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 210,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 220,
 		},
 	),
 );
 
-// 4PT12 pushes Haste, Mastery, and Crit up moderately (Crit also gains from 2P but has no affect on reforging); Haste and Mastery overtake Hit for reforging
+// 4PT12 pushes Haste, Mastery, and Crit up moderately (Crit also gains from 2P but has no affect on reforging); Haste and Mastery overtake Hit for reforging entirely (Trends towards 10%-ish)
 export const CBAT_4PT12_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Combat 4PT12',
 	Stats.fromMap(
@@ -61,29 +61,54 @@ export const CBAT_4PT12_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[PseudoStat.PseudoStatMainHandDps]: 4.31,
 			[PseudoStat.PseudoStatOffHandDps]: 1.32,
 			[PseudoStat.PseudoStatSpellHitPercent]: 46,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 210,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 230,
 		},
 	),
 );
 
-export const CBAT_LEGO_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'Combat Legendary',
+// By mostly-T12 gear or better, Haste+Mastery overtake capping Spell Hit, but Spell Hit retains enough value to not ignore (Trends towards 15%-ish)
+export const CBAT_T13_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Combat High Gear',
 	Stats.fromMap(
 		{
 			[Stat.StatAgility]: 2.85,
 			[Stat.StatStrength]: 1.05,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatCritRating]: 1.18,
-			[Stat.StatHitRating]: 2.21,
-			[Stat.StatHasteRating]: 1.94,
-			[Stat.StatMasteryRating]: 1.57,
+			[Stat.StatCritRating]: 1.19,
+			[Stat.StatHitRating]: 2.5,
+			[Stat.StatHasteRating]: 1.86,
+			[Stat.StatMasteryRating]: 1.55,
 			[Stat.StatExpertiseRating]: 2.1,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 4.31,
 			[PseudoStat.PseudoStatOffHandDps]: 1.32,
-			[PseudoStat.PseudoStatSpellHitPercent]: 49,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 210,
+			[PseudoStat.PseudoStatSpellHitPercent]: 52,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 230,
+		},
+	),
+);
+
+
+// No'Kaled MH MASSIVELY inflates Mastery's EP value as Main Gauche procs can proc weapon effects
+export const CBAT_NOKALED_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Combat No\'Kaled',
+	Stats.fromMap(
+		{
+			[Stat.StatAgility]: 2.85,
+			[Stat.StatStrength]: 1.05,
+			[Stat.StatAttackPower]: 1,
+			[Stat.StatCritRating]: 1.19,
+			[Stat.StatHitRating]: 2.5,
+			[Stat.StatHasteRating]: 1.76,
+			[Stat.StatMasteryRating]: 1.78,
+			[Stat.StatExpertiseRating]: 2.1,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 4.31,
+			[PseudoStat.PseudoStatOffHandDps]: 1.32,
+			[PseudoStat.PseudoStatSpellHitPercent]: 52,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 250,
 		},
 	),
 );

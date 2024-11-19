@@ -193,7 +193,15 @@ export class SubtletyRogueSimUI extends IndividualSimUI<Spec.SpecSubtletyRogue> 
 
 		// Auto Reforging
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			new ReforgeOptimizer(this, {
+				getEPDefaults: (player: Player<Spec.SpecSubtletyRogue>) => {
+					if (player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.id == 77949) {
+						return Presets.P4_EP_PRESET.epWeights;
+					} else {
+						return Presets.P1_EP_PRESET.epWeights;
+					}
+				}
+			});
 		});
 
 		this.player.changeEmitter.on(c => {
