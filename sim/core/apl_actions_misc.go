@@ -128,14 +128,14 @@ type APLActionItemSwap struct {
 
 func (rot *APLRotation) newActionItemSwap(config *proto.APLActionItemSwap) APLActionImpl {
 	if config.SwapSet == proto.APLActionItemSwap_Unknown {
-		rot.ValidationWarning("Unknown item swap set")
+		rot.ValidationMessage(proto.LogLevel_Warning, "Unknown item swap set")
 		return nil
 	}
 
 	character := rot.unit.Env.Raid.GetPlayerFromUnit(rot.unit).GetCharacter()
 	if !character.ItemSwap.IsEnabled() {
 		if config.SwapSet != proto.APLActionItemSwap_Main {
-			rot.ValidationWarning("No swap set configured in Settings.")
+			rot.ValidationMessage(proto.LogLevel_Warning, "No swap set configured in Settings.")
 		}
 		return nil
 	}

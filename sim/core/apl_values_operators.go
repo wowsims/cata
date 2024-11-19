@@ -277,7 +277,7 @@ func (rot *APLRotation) newValueCompare(config *proto.APLValueCompare) APLValue 
 	}
 
 	if lhs.Type() == proto.APLValueType_ValueTypeBool && !(config.Op == proto.APLValueCompare_OpEq || config.Op == proto.APLValueCompare_OpNe) {
-		rot.ValidationWarning("Bool types only allow Equals and NotEquals comparisons!")
+		rot.ValidationMessage(proto.LogLevel_Warning, "Bool types only allow Equals and NotEquals comparisons!")
 		return nil
 	}
 	return &APLValueCompare{
@@ -385,12 +385,12 @@ func (rot *APLRotation) newValueMath(config *proto.APLValueMath) APLValue {
 	}
 
 	if lhs.Type() == proto.APLValueType_ValueTypeBool || rhs.Type() == proto.APLValueType_ValueTypeBool {
-		rot.ValidationWarning("Bool types not allowed in Math Operations!")
+		rot.ValidationMessage(proto.LogLevel_Warning, "Bool types not allowed in Math Operations!")
 		return nil
 	}
 
 	if lhs.Type() == proto.APLValueType_ValueTypeString || rhs.Type() == proto.APLValueType_ValueTypeString {
-		rot.ValidationWarning("String types not allowed in Math Operations!")
+		rot.ValidationMessage(proto.LogLevel_Warning, "String types not allowed in Math Operations!")
 		return nil
 	}
 

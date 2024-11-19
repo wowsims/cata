@@ -1056,3 +1056,9 @@ enum RotationType {
 message UUID {
 	string value = 1;
 }
+
+enum LogLevel {
+	Information = 0;
+	Warning = 1;
+	Error = 2;
+}

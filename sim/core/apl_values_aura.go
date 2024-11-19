@@ -157,7 +157,7 @@ func (rot *APLRotation) newValueAuraNumStacks(config *proto.APLValueAuraNumStack
 		return nil
 	}
 	if aura.Get().MaxStacks == 0 {
-		rot.ValidationWarning("%s is not a stackable aura", ProtoToActionID(config.AuraId))
+		rot.ValidationMessage(proto.LogLevel_Warning, "%s is not a stackable aura", ProtoToActionID(config.AuraId))
 		return nil
 	}
 	return &APLValueAuraNumStacks{

@@ -34,43 +34,43 @@ type APLRotation struct {
 
 	// Validation warnings that occur during proto parsing.
 	// We return these back to the user for display in the UI.
-	curWarnings          []string
-	prepullWarnings      [][]string
-	priorityListWarnings [][]string
-	uuidWarnings         map[*proto.UUID][]string
+	curValidations          []*proto.APLValidation
+	prepullValidations      [][]*proto.APLValidation
+	priorityListValidations [][]*proto.APLValidation
+	uuidValidations         map[*proto.UUID][]*proto.APLValidation
 
 	// Maps indices in filtered sim lists to indices in configs.
 	prepullIdxMap      []int
 	priorityListIdxMap []int
 }
 
-func (rot *APLRotation) ValidationWarning(message string, vals ...interface{}) {
-	warning := fmt.Sprintf(message, vals...)
-	rot.curWarnings = append(rot.curWarnings, warning)
+func (rot *APLRotation) ValidationMessage(log_level proto.LogLevel, message string, vals ...interface{}) {
+	formatted_message := fmt.Sprintf(message, vals...)
+	rot.curValidations = append(rot.curValidations, &proto.APLValidation{
+		LogLevel:   log_level,
+		Validation: formatted_message,
+	})
 }
 
-func (rot *APLRotation) ValidationWarningByUUID(uuid *proto.UUID, message string, vals ...interface{}) {
+func (rot *APLRotation) ValidationMessageByUUID(uuid *proto.UUID, log_level proto.LogLevel, message string, vals ...interface{}) {
 	if uuid != nil {
-		warning := fmt.Sprintf(message, vals...)
-		if rot.uuidWarnings == nil {
-			rot.uuidWarnings = make(map[*proto.UUID][]string)
-		}
-		if rot.uuidWarnings[uuid] == nil {
-			rot.uuidWarnings[uuid] = []string{}
-		}
-		rot.uuidWarnings[uuid] = append(rot.uuidWarnings[uuid], warning)
+		formatted_message := fmt.Sprintf(message, vals...)
+		rot.uuidValidations[uuid] = append(rot.uuidValidations[uuid], &proto.APLValidation{
+			LogLevel:   log_level,
+			Validation: formatted_message,
+		})
 	}
 }
 
 // Invokes the fn function, and attributes all warnings generated during its invocation
 // to the provided warningsList.
-func (rot *APLRotation) doAndRecordWarnings(warningsList *[]string, isPrepull bool, fn func()) {
+func (rot *APLRotation) doAndRecordWarnings(warningsList *[]*proto.APLValidation, isPrepull bool, fn func()) {
 	rot.parsingPrepull = isPrepull
 	fn()
 	if warningsList != nil {
-		*warningsList = append(*warningsList, rot.curWarnings...)
+		*warningsList = append(*warningsList, rot.curValidations...)
 	}
-	rot.curWarnings = nil
+	rot.curValidations = nil
 	rot.parsingPrepull = false
 }
 
@@ -93,21 +93,22 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 	}
 
 	rotation := &APLRotation{
-		unit:                 unit,
-		prepullWarnings:      make([][]string, len(config.PrepullActions)),
-		priorityListWarnings: make([][]string, len(config.PriorityList)),
+		unit:                    unit,
+		prepullValidations:      make([][]*proto.APLValidation, len(config.PrepullActions)),
+		priorityListValidations: make([][]*proto.APLValidation, len(config.PriorityList)),
+		uuidValidations:         make(map[*proto.UUID][]*proto.APLValidation),
 	}
 
 	// Parse prepull actions
 	for i, prepullItem := range config.PrepullActions {
 		prepullIdx := i // Save to local variable for correct lambda capture behavior
-		rotation.doAndRecordWarnings(&rotation.prepullWarnings[prepullIdx], true, func() {
+		rotation.doAndRecordWarnings(&rotation.prepullValidations[prepullIdx], true, func() {
 			if !prepullItem.Hide {
 				doAtVal := rotation.newAPLValue(prepullItem.DoAtValue)
 				if doAtVal != nil {
 					doAt := doAtVal.GetDuration(nil)
 					if doAt > 0 {
-						rotation.ValidationWarning("Invalid time for 'Do At', ignoring this Prepull Action")
+						rotation.ValidationMessage(proto.LogLevel_Warning, "Invalid time for 'Do At', ignoring this Prepull Action")
 					} else {
 						action := rotation.newAPLAction(prepullItem.Action)
 						if action != nil {
@@ -116,7 +117,7 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 							unit.RegisterPrepullAction(doAt, func(sim *Simulation) {
 								// Warnings for prepull cast failure are detected by running a fake prepull,
 								// so this action.Execute needs to record warnings.
-								rotation.doAndRecordWarnings(&rotation.prepullWarnings[prepullIdx], true, func() {
+								rotation.doAndRecordWarnings(&rotation.prepullValidations[prepullIdx], true, func() {
 									action.Execute(sim)
 								})
 							})
@@ -129,7 +130,7 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 
 	// Parse priority list
 	for i, aplItem := range config.PriorityList {
-		rotation.doAndRecordWarnings(&rotation.priorityListWarnings[i], false, func() {
+		rotation.doAndRecordWarnings(&rotation.priorityListValidations[i], false, func() {
 			if !aplItem.Hide {
 				action := rotation.newAPLAction(aplItem.Action)
 				if action != nil {
@@ -142,12 +143,12 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 
 	// Finalize
 	for i, action := range rotation.prepullActions {
-		rotation.doAndRecordWarnings(&rotation.prepullWarnings[rotation.prepullIdxMap[i]], true, func() {
+		rotation.doAndRecordWarnings(&rotation.prepullValidations[rotation.prepullIdxMap[i]], true, func() {
 			action.Finalize(rotation)
 		})
 	}
 	for i, action := range rotation.priorityList {
-		rotation.doAndRecordWarnings(&rotation.priorityListWarnings[rotation.priorityListIdxMap[i]], false, func() {
+		rotation.doAndRecordWarnings(&rotation.priorityListValidations[rotation.priorityListIdxMap[i]], false, func() {
 			action.Finalize(rotation)
 		})
 	}
@@ -191,30 +192,34 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 func (rot *APLRotation) getStats() *proto.APLStats {
 	// Perform one final round of validation after post-finalize effects.
 	for i, action := range rot.prepullActions {
-		rot.doAndRecordWarnings(&rot.prepullWarnings[rot.prepullIdxMap[i]], true, func() {
+		rot.doAndRecordWarnings(&rot.prepullValidations[rot.prepullIdxMap[i]], true, func() {
 			action.impl.PostFinalize(rot)
 		})
 	}
 	for i, action := range rot.priorityList {
-		rot.doAndRecordWarnings(&rot.priorityListWarnings[rot.priorityListIdxMap[i]], false, func() {
+		rot.doAndRecordWarnings(&rot.priorityListValidations[rot.priorityListIdxMap[i]], false, func() {
 			action.impl.PostFinalize(rot)
 		})
 	}
 
-	uuidWarningsArr := make([]*proto.UUIDWarnings, len(rot.uuidWarnings))
+	uuidValidationsArr := make([]*proto.UUIDValidations, len(rot.uuidValidations))
 	i := 0
-	for uuid, warnings := range rot.uuidWarnings {
-		uuidWarningsArr[i] = &proto.UUIDWarnings{
-			Uuid:     uuid,
-			Warnings: warnings,
+	for uuid, validations := range rot.uuidValidations {
+		uuidValidationsArr[i] = &proto.UUIDValidations{
+			Uuid:        uuid,
+			Validations: validations,
 		}
 		i++
 	}
 
 	return &proto.APLStats{
-		PrepullActions: MapSlice(rot.prepullWarnings, func(warnings []string) *proto.APLActionStats { return &proto.APLActionStats{Warnings: warnings} }),
-		PriorityList:   MapSlice(rot.priorityListWarnings, func(warnings []string) *proto.APLActionStats { return &proto.APLActionStats{Warnings: warnings} }),
-		UuidWarnings:   uuidWarningsArr,
+		PrepullActions: MapSlice(rot.prepullValidations, func(validations []*proto.APLValidation) *proto.APLActionStats {
+			return &proto.APLActionStats{Validations: validations}
+		}),
+		PriorityList: MapSlice(rot.priorityListValidations, func(validations []*proto.APLValidation) *proto.APLActionStats {
+			return &proto.APLActionStats{Validations: validations}
+		}),
+		UuidValidations: uuidValidationsArr,
 	}
 }
 

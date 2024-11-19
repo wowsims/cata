@@ -1,7 +1,11 @@
 import clsx from 'clsx';
 import tippy, { Instance as TippyInstance } from 'tippy.js';
 
+import { Player } from '../../player';
+import { APLValidation } from '../../proto/api';
+import { ActionId } from '../../proto_utils/action_id';
 import { EventID, TypedEvent } from '../../typed_event.js';
+import { existsInDOM } from '../../utils';
 import { Input, InputConfig } from '../input.js';
 
 export type ListItemAction = 'create' | 'delete' | 'move' | 'copy';
@@ -366,5 +370,44 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 			throw new Error('Could not find list item header');
 		}
 		return headerElem as HTMLElement;
+	}
+
+	static makeListItemValidations(itemHeaderElem: HTMLElement, player: Player<any>, getValidations: (player: Player<any>) => Array<APLValidation>) {
+		const validationElem = ListPicker.makeActionElem('apl-warnings', 'fa-exclamation-triangle');
+		validationElem.classList.add('warning', 'link-warning');
+		validationElem.setAttribute('data-bs-html', 'true');
+		const validationTooltip = tippy(validationElem, {
+			theme: 'dropdown-tooltip',
+			content: 'Warnings',
+		});
+
+		itemHeaderElem.appendChild(validationElem);
+
+		const updateValidations = async () => {
+			if (!existsInDOM(validationElem)) {
+				validationTooltip?.destroy();
+				validationElem?.remove();
+				player.currentStatsEmitter.off(updateValidations);
+				return;
+			}
+			validationTooltip.setContent('');
+			const validations = getValidations(player);
+			if (!validations.length) {
+				validationElem.style.visibility = 'hidden';
+			} else {
+				validationElem.style.visibility = 'visible';
+				const formattedValidations = await Promise.all(validations.map(w => ActionId.replaceAllInString(w.validation)));
+				validationTooltip.setContent(
+					`
+				<p>This action has warnings, and might not behave as expected.</p>
+				<ul>
+					${formattedValidations.map(w => `<li>${w}</li>`).join('')}
+				</ul>
+			`,
+				);
+			}
+		};
+		updateValidations();
+		player.currentStatsEmitter.on(updateValidations);
 	}
 }

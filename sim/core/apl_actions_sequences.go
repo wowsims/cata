@@ -86,7 +86,7 @@ type APLActionResetSequence struct {
 
 func (rot *APLRotation) newActionResetSequence(config *proto.APLActionResetSequence) APLActionImpl {
 	if config.SequenceName == "" {
-		rot.ValidationWarning("Reset Sequence must provide a sequence name")
+		rot.ValidationMessage(proto.LogLevel_Warning, "Reset Sequence must provide a sequence name")
 		return nil
 	}
 	return &APLActionResetSequence{
@@ -100,7 +100,7 @@ func (action *APLActionResetSequence) Finalize(rot *APLRotation) {
 			return
 		}
 	}
-	rot.ValidationWarning("No sequence with name: '%s'", action.name)
+	rot.ValidationMessage(proto.LogLevel_Warning, "No sequence with name: '%s'", action.name)
 }
 func (action *APLActionResetSequence) IsReady(sim *Simulation) bool {
 	return action.sequence != nil && action.sequence.curIdx != 0

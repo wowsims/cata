@@ -17,7 +17,7 @@ func (rot *APLRotation) newValueCurrentHealth(config *proto.APLValueCurrentHealt
 		return nil
 	}
 	if !unit.Get().HasHealthBar() {
-		rot.ValidationWarning("%s does not use Health", unit.Get().Label)
+		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Health", unit.Get().Label)
 		return nil
 	}
 	return &APLValueCurrentHealth{
@@ -45,7 +45,7 @@ func (rot *APLRotation) newValueCurrentHealthPercent(config *proto.APLValueCurre
 		return nil
 	}
 	if !unit.Get().HasHealthBar() {
-		rot.ValidationWarning("%s does not use Health", unit.Get().Label)
+		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Health", unit.Get().Label)
 		return nil
 	}
 	return &APLValueCurrentHealthPercent{
@@ -73,7 +73,7 @@ func (rot *APLRotation) newValueCurrentMana(config *proto.APLValueCurrentMana) A
 		return nil
 	}
 	if !unit.Get().HasManaBar() {
-		rot.ValidationWarning("%s does not use Mana", unit.Get().Label)
+		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Mana", unit.Get().Label)
 		return nil
 	}
 	return &APLValueCurrentMana{
@@ -101,7 +101,7 @@ func (rot *APLRotation) newValueCurrentManaPercent(config *proto.APLValueCurrent
 		return nil
 	}
 	if !unit.Get().HasManaBar() {
-		rot.ValidationWarning("%s does not use Mana", unit.Get().Label)
+		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Mana", unit.Get().Label)
 		return nil
 	}
 	return &APLValueCurrentManaPercent{
@@ -126,7 +126,7 @@ type APLValueCurrentRage struct {
 func (rot *APLRotation) newValueCurrentRage(config *proto.APLValueCurrentRage) APLValue {
 	unit := rot.unit
 	if !unit.HasRageBar() {
-		rot.ValidationWarning("%s does not use Rage", unit.Label)
+		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Rage", unit.Label)
 		return nil
 	}
 	return &APLValueCurrentRage{
@@ -151,7 +151,7 @@ type APLValueCurrentFocus struct {
 func (rot *APLRotation) newValueCurrentFocus(config *proto.APLValueCurrentFocus) APLValue {
 	unit := rot.unit
 	if !unit.HasFocusBar() {
-		rot.ValidationWarning("%s does not use Focus", unit.Label)
+		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Focus", unit.Label)
 		return nil
 	}
 	return &APLValueCurrentFocus{
@@ -179,7 +179,7 @@ type APLValueCurrentEnergy struct {
 func (rot *APLRotation) newValueCurrentEnergy(config *proto.APLValueCurrentEnergy) APLValue {
 	unit := rot.unit
 	if !unit.HasEnergyBar() {
-		rot.ValidationWarning("%s does not use Energy", unit.Label)
+		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Energy", unit.Label)
 		return nil
 	}
 	return &APLValueCurrentEnergy{
@@ -204,7 +204,7 @@ type APLValueCurrentComboPoints struct {
 func (rot *APLRotation) newValueCurrentComboPoints(config *proto.APLValueCurrentComboPoints) APLValue {
 	unit := rot.unit
 	if !unit.HasEnergyBar() {
-		rot.ValidationWarning("%s does not use Combo Points", unit.Label)
+		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Combo Points", unit.Label)
 		return nil
 	}
 	return &APLValueCurrentComboPoints{
@@ -229,7 +229,7 @@ type APLValueCurrentRunicPower struct {
 func (rot *APLRotation) newValueCurrentRunicPower(config *proto.APLValueCurrentRunicPower) APLValue {
 	unit := rot.unit
 	if !unit.HasRunicPowerBar() {
-		rot.ValidationWarning("%s does not use Runic Power", unit.Label)
+		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Runic Power", unit.Label)
 		return nil
 	}
 	return &APLValueCurrentRunicPower{

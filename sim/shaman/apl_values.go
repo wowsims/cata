@@ -30,7 +30,7 @@ type APLValueTotemRemainingTime struct {
 
 func (shaman *Shaman) newValueTotemRemainingTime(rot *core.APLRotation, config *proto.APLValueTotemRemainingTime) core.APLValue {
 	if config.TotemType == proto.ShamanTotems_TypeUnknown {
-		rot.ValidationWarning("Totem Type required.")
+		rot.ValidationMessage(proto.LogLevel_Warning, "Totem Type required.")
 		return nil
 	}
 	return &APLValueTotemRemainingTime{

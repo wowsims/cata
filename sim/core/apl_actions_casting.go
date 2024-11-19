@@ -147,7 +147,7 @@ func (rot *APLRotation) newActionMultidot(config *proto.APLActionMultidot) APLAc
 		numTargets = int32(len(unit.Env.Raid.AllPlayerUnits))
 	}
 	if numTargets < maxDots {
-		rot.ValidationWarning("Encounter only has %d targets. Using that for Max Dots instead of %d", numTargets, maxDots)
+		rot.ValidationMessage(proto.LogLevel_Warning, "Encounter only has %d targets. Using that for Max Dots instead of %d", numTargets, maxDots)
 		maxDots = numTargets
 	}
 
@@ -219,7 +219,7 @@ func (rot *APLRotation) newActionMultishield(config *proto.APLActionMultishield)
 	maxShields := config.MaxShields
 	numTargets := int32(len(unit.Env.Raid.AllPlayerUnits))
 	if numTargets < maxShields {
-		rot.ValidationWarning("Encounter only has %d targets. Using that for Max Shields instead of %d", numTargets, maxShields)
+		rot.ValidationMessage(proto.LogLevel_Warning, "Encounter only has %d targets. Using that for Max Shields instead of %d", numTargets, maxShields)
 		maxShields = numTargets
 	}
 
@@ -319,13 +319,13 @@ func (action *APLActionCastAllStatBuffCooldowns) String() string {
 }
 func (action *APLActionCastAllStatBuffCooldowns) PostFinalize(rot *APLRotation) {
 	if len(action.allSubactions) == 0 {
-		rot.ValidationWarning("%s will not cast any spells! There are either no major cooldowns buffing the specified stat type(s), or all of them are manually cast in the APL.", action)
+		rot.ValidationMessage(proto.LogLevel_Warning, "%s will not cast any spells! There are either no major cooldowns buffing the specified stat type(s), or all of them are manually cast in the APL.", action)
 	} else {
 		actionIDs := MapSlice(action.allSubactions, func(subaction *APLActionCastSpell) ActionID {
 			return subaction.spell.ActionID
 		})
 
-		rot.ValidationWarning("%s will cast the following spells: %s", action, StringFromActionIDs(actionIDs))
+		rot.ValidationMessage(proto.LogLevel_Warning, "%s will cast the following spells: %s", action, StringFromActionIDs(actionIDs))
 	}
 }
 
@@ -364,12 +364,12 @@ func (action *APLActionAutocastOtherCooldowns) String() string {
 }
 func (action *APLActionAutocastOtherCooldowns) PostFinalize(rot *APLRotation) {
 	if len(action.character.initialMajorCooldowns) == 0 {
-		rot.ValidationWarning("%s will not cast any spells! There are either no major cooldowns configured for this character, or all of them are manually cast in the APL.", action)
+		rot.ValidationMessage(proto.LogLevel_Warning, "%s will not cast any spells! There are either no major cooldowns configured for this character, or all of them are manually cast in the APL.", action)
 	} else {
 		actionIDs := MapSlice(action.character.initialMajorCooldowns, func(mcd MajorCooldown) ActionID {
 			return mcd.Spell.ActionID
 		})
 
-		rot.ValidationWarning("%s will cast the following spells: %s", action, StringFromActionIDs(actionIDs))
+		rot.ValidationMessage(proto.LogLevel_Warning, "%s will cast the following spells: %s", action, StringFromActionIDs(actionIDs))
 	}
 }

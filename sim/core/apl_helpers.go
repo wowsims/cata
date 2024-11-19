@@ -46,7 +46,7 @@ func (rot *APLRotation) getUnit(ref *proto.UnitReference, defaultRef *proto.Unit
 	} else {
 		unitRef := NewUnitReference(ref, rot.unit)
 		if unitRef.Get() == nil {
-			rot.ValidationWarning("No unit found matching reference: %s", ref)
+			rot.ValidationMessage(proto.LogLevel_Warning, "No unit found matching reference: %s", ref)
 		}
 		return unitRef
 	}
@@ -111,7 +111,7 @@ func (rot *APLRotation) GetAPLAura(sourceUnit UnitReference, auraId *proto.Actio
 
 	aura := NewAuraReference(sourceUnit, auraId)
 	if aura.Get() == nil {
-		rot.ValidationWarning("No aura found on %s for: %s", sourceUnit.Get().Label, ProtoToActionID(auraId))
+		rot.ValidationMessage(proto.LogLevel_Warning, "No aura found on %s for: %s", sourceUnit.Get().Label, ProtoToActionID(auraId))
 	}
 	return aura
 }
@@ -123,7 +123,7 @@ func (rot *APLRotation) GetAPLICDAura(sourceUnit UnitReference, auraId *proto.Ac
 
 	aura := NewIcdAuraReference(sourceUnit, auraId)
 	if aura.Get() == nil {
-		rot.ValidationWarning("No aura found on %s for: %s", sourceUnit.Get().Label, ProtoToActionID(auraId))
+		rot.ValidationMessage(proto.LogLevel_Warning, "No aura found on %s for: %s", sourceUnit.Get().Label, ProtoToActionID(auraId))
 	}
 	return aura
 }
@@ -134,7 +134,7 @@ func (rot *APLRotation) GetAPLTrinketProcAuras(statTypesToMatch []stats.Stat, ex
 	matchingAuras := character.GetMatchingTrinketProcAuras(statTypesToMatch, excludeStackingProcs)
 
 	if (len(matchingAuras) == 0) && warnIfNoneFound {
-		rot.ValidationWarning("No trinket proc buffs found for: %s", StringFromStatTypes(statTypesToMatch))
+		rot.ValidationMessage(proto.LogLevel_Warning, "No trinket proc buffs found for: %s", StringFromStatTypes(statTypesToMatch))
 	}
 
 	return matchingAuras
@@ -177,7 +177,7 @@ func (rot *APLRotation) GetAPLSpell(spellId *proto.ActionID) *Spell {
 	}
 
 	if spell == nil {
-		rot.ValidationWarning("%s does not know spell %s", rot.unit.Label, actionID)
+		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not know spell %s", rot.unit.Label, actionID)
 	}
 	return spell
 }
@@ -188,7 +188,7 @@ func (rot *APLRotation) GetTargetAPLSpell(spellId *proto.ActionID, targetUnit Un
 	spell := target.GetSpell(actionID)
 
 	if spell == nil {
-		rot.ValidationWarning("%s does not know spell %s", target.Label, actionID)
+		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not know spell %s", target.Label, actionID)
 	}
 	return spell
 }
@@ -215,7 +215,7 @@ func (rot *APLRotation) GetAPLMultidotSpell(spellId *proto.ActionID) *Spell {
 	if spell == nil {
 		return nil
 	} else if spell.CurDot() == nil {
-		rot.ValidationWarning("Spell %s does not have an associated DoT", ProtoToActionID(spellId))
+		rot.ValidationMessage(proto.LogLevel_Warning, "Spell %s does not have an associated DoT", ProtoToActionID(spellId))
 		return nil
 	}
 	return spell
@@ -226,7 +226,7 @@ func (rot *APLRotation) GetAPLMultishieldSpell(spellId *proto.ActionID) *Spell {
 	if spell == nil {
 		return nil
 	} else if spell.Shield(spell.Unit) == nil {
-		rot.ValidationWarning("Spell %s does not have an associated Shield", ProtoToActionID(spellId))
+		rot.ValidationMessage(proto.LogLevel_Warning, "Spell %s does not have an associated Shield", ProtoToActionID(spellId))
 		return nil
 	}
 	return spell

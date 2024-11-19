@@ -432,17 +432,21 @@ message SpellStats {
 	bool has_cast_time = 9; // Whether this spell has a cast time or not.
 	bool is_friendly = 10; // Whether this spell should be cast on player units
 }
-message APLActionStats {
-	repeated string warnings = 1;
+message APLValidation {
+	LogLevel log_level = 1;
+	string validation = 2;
 }
-message UUIDWarnings {
+message APLActionStats {
+	repeated APLValidation validations = 1;
+}
+message UUIDValidations {
 	UUID uuid = 1;
-	repeated string warnings = 2;
+	repeated APLValidation validations = 2;
 }
 message APLStats {
 	repeated APLActionStats prepull_actions = 1;
 	repeated APLActionStats priority_list = 2;
-	repeated UUIDWarnings uuid_warnings = 3;
+	repeated UUIDValidations uuid_validations = 3;
 }
 message UnitMetadata {
 	string name = 3;
