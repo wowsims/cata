@@ -11,7 +11,6 @@ import {
 } from '../../core/proto/paladin.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
-import ApparatusApl from './apls/apparatus.apl.json';
 import DefaultApl from './apls/default.apl.json';
 import P2_BisRetGear from './gear_sets/p2_bis.gear.json';
 import P3_BisRetGear from './gear_sets/p3_bis.gear.json';
@@ -28,7 +27,6 @@ export const P3_BIS_RET_PRESET = PresetUtils.makePresetGear('P3', P3_BisRetGear)
 export const P4_BIS_RET_PRESET = PresetUtils.makePresetGear('P4', P4_BisRetGear);
 
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
-export const ROTATION_PRESET_APPARATUS = PresetUtils.makePresetAPLRotation('Apparatus', ApparatusApl);
 
 // Preset options for EP weights
 export const P2_EP_PRESET = PresetUtils.makePresetEpWeights(
@@ -39,17 +37,18 @@ export const P2_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatStrength]: 2.28,
 
 			[Stat.StatCritRating]: 1.10,
-			[Stat.StatHasteRating]: 1.05,
+			[Stat.StatHasteRating]: 1.00,
 			[Stat.StatMasteryRating]: 1.23,
 
-			[Stat.StatHitRating]: 2.32,
-			[Stat.StatExpertiseRating]: 1.89,
+			[Stat.StatHitRating]: 2.33,
+			[Stat.StatExpertiseRating]: 1.88,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 8.15,
+			[PseudoStat.PseudoStatMainHandDps]: 8.14,
 		},
 	),
 );
+
 export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'P3',
 	Stats.fromMap(
@@ -57,15 +56,15 @@ export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAttackPower]: 1,
 			[Stat.StatStrength]: 2.29,
 
-			[Stat.StatCritRating]: 1.29,
-			[Stat.StatHasteRating]: 1.14,
-			[Stat.StatMasteryRating]: 1.35,
+			[Stat.StatCritRating]: 1.30,
+			[Stat.StatHasteRating]: 1.13,
+			[Stat.StatMasteryRating]: 1.36,
 
 			[Stat.StatHitRating]: 2.68,
 			[Stat.StatExpertiseRating]: 2.24,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 8.45,
+			[PseudoStat.PseudoStatMainHandDps]: 8.50,
 		},
 	),
 );
@@ -78,7 +77,7 @@ export const P4_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatStrength]: 2.28,
 
 			[Stat.StatCritRating]: 1.50,
-			[Stat.StatHasteRating]: 1.23,
+			[Stat.StatHasteRating]: 1.21,
 			[Stat.StatMasteryRating]: 1.69,
 
 			[Stat.StatHitRating]: 3.12,

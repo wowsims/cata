@@ -17,15 +17,22 @@ func TestRetribution(t *testing.T) {
 		Class: proto.Class_ClassPaladin,
 		Race:  proto.Race_RaceBloodElf,
 
-		GearSet:     core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p3_bis"),
+		GearSet: core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p3_bis"),
+		OtherGearSets: []core.GearSetCombo{
+			core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p2_bis"),
+			core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p2_with_apparatus"),
+			core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p2_with_double_passive"),
+			core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p3_with_double_passive"),
+			core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p3_with_on_use"),
+			core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p4_bis"),
+			core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p4_with_apparatus"),
+			core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p4_with_on_use"),
+		},
 		Talents:     StandardTalents,
 		Glyphs:      StandardGlyphs,
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: DefaultOptions},
 		Rotation:    core.GetAplRotation("../../../ui/paladin/retribution/apls", "default"),
-		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../../ui/paladin/retribution/apls", "apparatus"),
-		},
 
 		ItemFilter: core.ItemFilter{
 			WeaponTypes: []proto.WeaponType{
@@ -58,7 +65,7 @@ func BenchmarkSimulate(b *testing.B) {
 				TalentsString:  StandardTalents,
 				Buffs:          core.FullIndividualBuffs,
 				ReactionTimeMs: 100,
-				Rotation:       core.GetAplRotation("../../../ui/paladin/retribution/apls", "apparatus").Rotation,
+				Rotation:       core.GetAplRotation("../../../ui/paladin/retribution/apls", "default").Rotation,
 			},
 			core.FullPartyBuffs,
 			core.FullRaidBuffs,

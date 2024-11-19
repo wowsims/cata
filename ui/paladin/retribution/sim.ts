@@ -43,18 +43,6 @@ const getStatCaps = () => {
 	return hitCap.add(expCap);
 };
 
-const pickRotation = (player: Player<Spec.SpecRetributionPaladin>): APLRotation => {
-	const hasApparatus =
-		player.getEquippedItem(ItemSlot.ItemSlotTrinket1)?.item.name === "Apparatus of Khaz'goroth" ||
-		player.getEquippedItem(ItemSlot.ItemSlotTrinket2)?.item.name === "Apparatus of Khaz'goroth";
-
-	if (hasApparatus) {
-		return Presets.ROTATION_PRESET_APPARATUS.rotation.rotation!;
-	} else {
-		return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
-	}
-};
-
 const updateGearStatsModifier = (player: Player<Spec.SpecRetributionPaladin>) => (baseStats: Stats) => {
 	if (isGlyphOfSealOfTruthActive(player)) {
 		return baseStats.addStat(Stat.StatExpertiseRating, 2.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
@@ -198,7 +186,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 
 	presets: {
 		epWeights: [Presets.P2_EP_PRESET, Presets.P3_EP_PRESET, Presets.P4_EP_PRESET],
-		rotations: [Presets.ROTATION_PRESET_DEFAULT, Presets.ROTATION_PRESET_APPARATUS],
+		rotations: [Presets.ROTATION_PRESET_DEFAULT],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.DefaultTalents],
 		// Preset gear configurations that the user can quickly select.
@@ -206,7 +194,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		builds: [Presets.P2_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
 	},
 
-	autoRotation: pickRotation,
+	autoRotation: (_: Player<Spec.SpecRetributionPaladin>): APLRotation => {
+		return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
+	},
 
 	raidSimPresets: [
 		{
