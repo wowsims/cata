@@ -15,6 +15,7 @@ import { TypedEvent } from '../typed_event';
 import { buf2hex, getEnumValues } from '../utils';
 import { BaseModal } from './base_modal';
 import Toast from './toast';
+import { parseWowheadGearLink } from './wowhead_helper';
 
 export abstract class Importer extends BaseModal {
 	protected readonly textElem: HTMLTextAreaElement;
@@ -355,145 +356,60 @@ export class IndividualWowheadGearPlannerImporter<SpecType extends Spec> extends
 		if (!match) {
 			throw new Error(`Invalid WCL URL ${url}, must look like "https://www.wowhead.com/cata/gear-planner/CLASS/RACE/XXXX"`);
 		}
+		console.log(url)
+		
+		const parsed = parseWowheadGearLink(url);
+		console.log(parsed);
+		const glyphIds = parsed.glyphs;
 
-		// Parse all the settings.
-		const charClass = nameToClass(match[1].replaceAll('-', ''));
+		const charClass = nameToClass(parsed.class.replaceAll('-', ''));
 		if (charClass == Class.ClassUnknown) {
-			throw new Error('Could not parse Class: ' + match[1]);
+			throw new Error('Could not parse Class: ' + parsed.class);
 		}
 
-		const race = nameToRace(match[2].replaceAll('-', ''));
+		const race = nameToRace(parsed.race.replaceAll('-', ''));
 		if (race == Race.RaceUnknown) {
-			throw new Error('Could not parse Race: ' + match[2]);
+			throw new Error('Could not parse Race: ' + parsed.race);
 		}
 
-		const base64Data = match[3].replaceAll('_', '/').replaceAll('-', '+');
-		//console.log('Base64: ' + base64Data);
-		const data = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
-		//console.log('Hex: ' + buf2hex(data));
-
-		// Binary schema
-		// Byte 00: ??
-		// Byte 01: ?? Seems related to aesthetics (e.g. body type)
-		// Byte 02: 8-bit Player Level
-		// Byte 03: 8-bit length of talents bytes
-		// Next N Bytes: Talents in hex string format
-
-		// Talent hex string looks like '230005232100330150323102505321f03f023203001f'
-		// Just like regular wowhead talents string except 'f' instead of '-'.
-		const numTalentBytes = data[3];
-		const talentBytes = data.subarray(4, 4 + numTalentBytes);
-		const talentsHexStr = buf2hex(talentBytes);
-		//console.log('Talents hex: ' + talentsHexStr);
-		const talentsStr = talentsHexStr.split('f').slice(0, 3).join('-');
-		//console.log('Talents: ' + talentsStr);
-
-		let cur = 4 + numTalentBytes;
-		const numGlyphBytes = data[cur];
-		cur++;
-		const glyphBytes = data.subarray(cur, cur + numGlyphBytes);
-		const gearBytes = data.subarray(cur + numGlyphBytes);
-		//console.log(`Glyphs have ${numGlyphBytes} bytes: ${buf2hex(glyphBytes)}`);
-		//console.log(`Remaining ${gearBytes.length} bytes: ${buf2hex(gearBytes)}`);
-
-		// First byte in glyphs section seems to always be 0x30
-		cur = 1;
-		let hasGlyphs = false;
-		const d = '0123456789abcdefghjkmnpqrstvwxyz';
-		const glyphStr = String.fromCharCode(...glyphBytes);
-		const glyphIds = [0, 0, 0, 0, 0, 0];
-		while (cur < glyphBytes.length) {
-			// First byte for each glyph is 0x3z, where z is the glyph position.
-			// 0, 1, 2 are major glyphs, 3, 4, 5 are minor glyphs.
-			const glyphPosition = d.indexOf(glyphStr[cur]);
-			cur++;
-
-			// For some reason, wowhead uses the spell IDs for the glyphs and
-			// applies a ridiculous hashing scheme.
-			const spellId =
-				0 +
-				(d.indexOf(glyphStr[cur + 0]) << 15) +
-				(d.indexOf(glyphStr[cur + 1]) << 10) +
-				(d.indexOf(glyphStr[cur + 2]) << 5) +
-				(d.indexOf(glyphStr[cur + 3]) << 0);
-			const itemId = this.simUI.sim.db.glyphSpellToItemId(spellId);
-			//console.log(`Glyph position: ${glyphPosition}, spellID: ${spellId}`);
-
-			hasGlyphs = true;
-			glyphIds[glyphPosition] = itemId;
-			cur += 4;
-		}
-		const glyphs = Glyphs.create({
-			major1: glyphIds[0],
-			major2: glyphIds[1],
-			major3: glyphIds[2],
-			minor1: glyphIds[3],
-			minor2: glyphIds[4],
-			minor3: glyphIds[5],
-		});
-
-		// Binary schema for each item:
-		// 8-bit slotNumber, high bit = is enchanted
-		// 8-bit upper 3 bits for gem count
-		// 16-bit item id
-		// if enchant bit is set:
-		//   8-bit ??, possibly enchant position for multiple enchants?
-		//   16-bit enchant id
-		// for each gem:
-		//   8-bit upper 3 bits for gem position
-		//   16-bit gem item id
 		const equipmentSpec = EquipmentSpec.create();
-		cur = 0;
-		while (cur < gearBytes.length) {
+
+		parsed.items.forEach((item: any) => {
 			const itemSpec = ItemSpec.create();
-			const slotId = gearBytes[cur] & 0b00111111;
-			const isEnchanted = Boolean(gearBytes[cur] & 0b10000000);
-			const randomEnchant = Boolean(gearBytes[cur] & 0b01000000);
-			cur++;
-
-			const numGems = (gearBytes[cur] & 0b11100000) >> 5;
-			const highid = gearBytes[cur] & 0b00011111;
-			cur++;
-
-			itemSpec.id = (highid << 16) + (gearBytes[cur] << 8) + gearBytes[cur + 1];
-			cur += 2;
-			//console.log(`Slot ID: ${slotId}, isEnchanted: ${isEnchanted}, numGems: ${numGems}, itemID: ${itemSpec.id}`);
-
+			const slotId = item.slotId;
+			const isEnchanted = item.enchantIds?.length > 0;
+			itemSpec.id = item.itemId;
 			if (isEnchanted) {
-				// Note: this is the enchant SPELL id, not the effect ID.
-				const enchantSpellId = (gearBytes[cur] << 16) + (gearBytes[cur + 1] << 8) + gearBytes[cur + 2];
-				itemSpec.enchant = this.simUI.sim.db.enchantSpellIdToEffectId(enchantSpellId);
-				cur += 3;
-				//console.log(`Enchant ID: ${itemSpec.enchant}. Spellid: ${enchantSpellId}`);
+				itemSpec.enchant = this.simUI.sim.db.enchantSpellIdToEffectId(item.enchantIds[0])
 			}
-
-			for (let gemIdx = 0; gemIdx < numGems; gemIdx++) {
-				const gemPosition = (gearBytes[cur] & 0b11100000) >> 5;
-				const highgemid = gearBytes[cur] & 0b00011111;
-				cur++;
-
-				const gemId = (highgemid << 16) + (gearBytes[cur] << 8) + gearBytes[cur + 1];
-				cur += 2;
-				//console.log(`Gem position: ${gemPosition}, gemID: ${gemId}`);
-
-				if (!itemSpec.gems) {
-					itemSpec.gems = [];
-				}
-				while (itemSpec.gems.length < gemPosition) {
-					itemSpec.gems.push(0);
-				}
-				itemSpec.gems[gemPosition] = gemId;
+			if(item.gemItemIds) {
+				itemSpec.gems = item.gemItemIds;
 			}
-
-			// Ignore tabard / shirt slots
+			if(item.randomEnchantId) {
+				itemSpec.randomSuffix = item.randomEnchantId;
+			}
+			if(item.reforge) {
+				itemSpec.reforging = item.reforge;
+			}
 			const itemSlotEntry = Object.entries(IndividualWowheadGearPlannerImporter.slotIDs).find(e => e[1] == slotId);
 			if (itemSlotEntry != null) {
 				equipmentSpec.items.push(itemSpec);
 			}
-		}
-		const gear = this.simUI.sim.db.lookupEquipmentSpec(equipmentSpec);
+		});
+		
+		const glyphs = Glyphs.create({
+			prime1: this.simUI.sim.db.glyphSpellToItemId(glyphIds[0]),
+			prime2: this.simUI.sim.db.glyphSpellToItemId(glyphIds[1]),
+			prime3: this.simUI.sim.db.glyphSpellToItemId(glyphIds[2]),
+			major1: this.simUI.sim.db.glyphSpellToItemId(glyphIds[3]),
+			major2: this.simUI.sim.db.glyphSpellToItemId(glyphIds[4]),
+			major3: this.simUI.sim.db.glyphSpellToItemId(glyphIds[5]),
+			minor1: this.simUI.sim.db.glyphSpellToItemId(glyphIds[6]),
+			minor2: this.simUI.sim.db.glyphSpellToItemId(glyphIds[7]),
+			minor3: this.simUI.sim.db.glyphSpellToItemId(glyphIds[8]),
+		});
 
-		this.finishIndividualImport(this.simUI, charClass, race, equipmentSpec, talentsStr, hasGlyphs ? glyphs : null, []);
+		this.finishIndividualImport(this.simUI, charClass, race, equipmentSpec, parsed.talents ?? "", glyphs, []);
 	}
 
 	static slotIDs: Record<ItemSlot, number> = {
