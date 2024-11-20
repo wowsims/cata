@@ -4,6 +4,7 @@ import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action'
 import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
+import { StatCap } from '../../core/proto_utils/stats';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLAction, APLListItem, APLRotation } from '../../core/proto/apl';
 import {
@@ -28,6 +29,7 @@ import * as HunterInputs from '../inputs';
 import { sharedHunterDisplayStatsModifiers } from '../shared';
 import * as SVInputs from './inputs';
 import * as Presets from './presets';
+import { StatCapType } from '../../core/proto/ui';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	cssClass: 'survival-hunter-sim-ui',
@@ -65,8 +67,18 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 		epWeights: Presets.P3_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
-			const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 8);
-			return hitCap;
+			return new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 8);
+		})(),
+		softCapBreakpoints: (() => {
+			const hasteSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatRangedHastePercent, {
+				breakpoints: [
+					20
+				],
+				capType: StatCapType.TypeSoftCap,
+				postCapEPs: [0.89],
+			});
+
+			return [hasteSoftCapConfig];
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
@@ -153,58 +165,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	simpleRotation: (player: Player<Spec.SpecSurvivalHunter>, simple: SurvivalHunter_Rotation, cooldowns: Cooldowns): APLRotation => {
 		const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
 
-		const serpentSting = APLAction.fromJsonString(
-			`{"condition":{"cmp":{"op":"OpGt","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"6s"}}}},"multidot":{"spellId":{"spellId":49001},"maxDots":${
-				simple.multiDotSerpentSting ? 3 : 1
-			},"maxOverlap":{"const":{"val":"0ms"}}}}`,
-		);
-		const scorpidSting = APLAction.fromJsonString(
-			`{"condition":{"auraShouldRefresh":{"auraId":{"spellId":3043},"maxOverlap":{"const":{"val":"0ms"}}}},"castSpell":{"spellId":{"spellId":3043}}}`,
-		);
-		const trapWeave = APLAction.fromJsonString(
-			`{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":49067}}}}},"castSpell":{"spellId":{"tag":1,"spellId":49067}}}`,
-		);
-		const volley = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":58434}}}`);
-		const killShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":61006}}}`);
-		const aimedShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":49050}}}`);
-		const multiShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":49048}}}`);
-		const steadyShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":49052}}}`);
-		const blackArrow = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":63672}}}`);
-		const explosiveShot4 = APLAction.fromJsonString(
-			`{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":60053}}}}},"castSpell":{"spellId":{"spellId":60053}}}`,
-		);
-		const explosiveShot3 = APLAction.fromJsonString(
-			`{"condition":{"dotIsActive":{"spellId":{"spellId":60053}}},"castSpell":{"spellId":{"spellId":60052}}}`,
-		);
-		//const arcaneShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":49045}}}`);
-
-		if (simple.type == RotationType.Aoe) {
-			actions.push(
-				...([
-					simple.sting == HunterStingType.ScorpidSting ? scorpidSting : null,
-					simple.sting == HunterStingType.SerpentSting ? serpentSting : null,
-					simple.trapWeave ? trapWeave : null,
-					volley,
-				].filter(a => a) as Array<APLAction>),
-			);
-		} else {
-			// SV
-			actions.push(
-				...([
-					killShot,
-					explosiveShot4,
-					simple.allowExplosiveShotDownrank ? explosiveShot3 : null,
-					simple.trapWeave ? trapWeave : null,
-					simple.sting == HunterStingType.ScorpidSting ? scorpidSting : null,
-					simple.sting == HunterStingType.SerpentSting ? serpentSting : null,
-					blackArrow,
-					aimedShot,
-					multiShot,
-					steadyShot,
-				].filter(a => a) as Array<APLAction>),
-			);
-		}
-
 		return APLRotation.create({
 			prepullActions: prepullActions,
 			priorityList: actions.map(action =>
@@ -247,14 +207,14 @@ export class SurvivalHunterSimUI extends IndividualSimUI<Spec.SpecSurvivalHunter
 
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
-				getEPDefaults: (player: Player<Spec.SpecFuryWarrior>) => {
+				getEPDefaults: (player: Player<Spec.SpecSurvivalHunter>) => {
 					if (player.getGear().getItemSetCount('Lightning-Charged Battlegear') >= 4) {
 						return Presets.P1_EP_PRESET.epWeights;
 					}
 					if (player.getGear().getItemSetCount("Flamewaker's Battlegear") >= 4) {
 						return Presets.P3_EP_PRESET.epWeights;
 					}
-					return Presets.P1_EP_PRESET.epWeights;
+					return Presets.P3_EP_PRESET.epWeights;
 				},
 			});
 		});
