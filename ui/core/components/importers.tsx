@@ -335,7 +335,7 @@ export class IndividualWowheadGearPlannerImporter<SpecType extends Spec> extends
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
 		super(parent, simUI, 'Wowhead Import', true);
 		this.simUI = simUI;
-
+		const warningRef = ref<HTMLDivElement>();
 		this.descriptionElem.appendChild(
 			<>
 				<p>
@@ -349,6 +349,24 @@ export class IndividualWowheadGearPlannerImporter<SpecType extends Spec> extends
 				<p>To import, paste the gear planner link below and click, 'Import'.</p>
 			</>,
 		);
+		
+		if (warningRef.value)
+			new Toast({
+				title: 'Tinker issues',
+				body: (
+					<>
+						There are known issues importing tinkers from Wowhead.
+						<br />
+						Always make sure to double check your tinkers after importing.
+					</>
+				),
+				additionalClasses: ['toast-import-warning'],
+				container: warningRef.value,
+				variant: 'warning',
+				canClose: false,
+				autoShow: true,
+				autohide: false,
+			});
 	}
 
 	async onImport(url: string) {
@@ -396,7 +414,7 @@ export class IndividualWowheadGearPlannerImporter<SpecType extends Spec> extends
 				equipmentSpec.items.push(itemSpec);
 			}
 		});
-		
+
 		const glyphs = Glyphs.create({
 			prime1: this.simUI.sim.db.glyphSpellToItemId(glyphIds[0]),
 			prime2: this.simUI.sim.db.glyphSpellToItemId(glyphIds[1]),
