@@ -1057,8 +1057,11 @@ message UUID {
 	string value = 1;
 }
 
+// Values are expected to be in increasing order of severity
 enum LogLevel {
 	Information = 0;
 	Warning = 1;
 	Error = 2;
+
+	Undefined = -1;
 }

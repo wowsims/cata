@@ -3,6 +3,7 @@ import tippy, { Instance as TippyInstance } from 'tippy.js';
 
 import { Player } from '../../player';
 import { APLValidation } from '../../proto/api';
+import { LogLevel } from '../../proto/common';
 import { ActionId } from '../../proto_utils/action_id';
 import { EventID, TypedEvent } from '../../typed_event.js';
 import { existsInDOM } from '../../utils';
@@ -372,9 +373,23 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 		return headerElem as HTMLElement;
 	}
 
+	static logLevelDisplayData = new Map([
+		[LogLevel.Information, {
+			icon: 'fa-info-circle',
+			header: 'Additional Information&#58;',
+		}],
+		[LogLevel.Warning, {
+			icon: 'fa-exclamation-triangle',
+			header: 'This action has warnings, and might not behave as expected.',
+		}],
+		[LogLevel.Error, {
+			icon: 'fa-exclamation-triangle',
+			header: 'This action has errors, and will not behave as expected.',
+		}],
+	]);
+
 	static makeListItemValidations(itemHeaderElem: HTMLElement, player: Player<any>, getValidations: (player: Player<any>) => Array<APLValidation>) {
-		const validationElem = ListPicker.makeActionElem('apl-warnings', 'fa-exclamation-triangle');
-		validationElem.classList.add('warning', 'link-warning');
+		const validationElem = ListPicker.makeActionElem('apl-validations', 'fa-exclamation-triangle');
 		validationElem.setAttribute('data-bs-html', 'true');
 		const validationTooltip = tippy(validationElem, {
 			theme: 'dropdown-tooltip',
@@ -382,6 +397,8 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 		});
 
 		itemHeaderElem.appendChild(validationElem);
+
+		const iconElem = validationElem.getElementsByTagName('i')[0];
 
 		const updateValidations = async () => {
 			if (!existsInDOM(validationElem)) {
@@ -396,15 +413,53 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 				validationElem.style.visibility = 'hidden';
 			} else {
 				validationElem.style.visibility = 'visible';
-				const formattedValidations = await Promise.all(validations.map(w => ActionId.replaceAllInString(w.validation)));
-				validationTooltip.setContent(
-					`
-				<p>This action has warnings, and might not behave as expected.</p>
-				<ul>
-					${formattedValidations.map(w => `<li>${w}</li>`).join('')}
-				</ul>
-			`,
+				const formattedValidations = await Promise.all(
+					validations.map(async w => {
+						return { ...w, validation: await ActionId.replaceAllInString(w.validation) };
+					}),
 				);
+				let maxLogLevel = LogLevel.Undefined;
+				const groupedValidations = formattedValidations.reduce(
+					(groups, curr) => {
+						const logLevel = curr.logLevel;
+						maxLogLevel = Math.max(logLevel, maxLogLevel);
+
+						const group = groups.get(logLevel)
+						if (group) {
+							group.push(curr.validation);
+						} else {
+							groups.set(logLevel, [curr.validation])
+						}
+
+						return groups;
+					},
+					new Map<LogLevel, string[]>(),
+				);
+
+				for (const [_logLevel, displayData] of this.logLevelDisplayData) {
+					iconElem.classList.remove(displayData.icon);
+				}
+
+				// New icon is set outside loop so log levels can share the same icon without risk of removing each other
+				const newIcon = this.logLevelDisplayData.get(maxLogLevel)?.icon
+				if (newIcon) {
+					iconElem.classList.add(newIcon);
+				}
+
+				for (const [key, value] of Object.entries(LogLevel)) {
+					validationElem.classList[value === maxLogLevel ? "add" : "remove"](`apl-validation-${key.toLowerCase()}`)
+				}
+
+				let content = "";
+				for (const [logLevel, validations] of groupedValidations) {
+					content = content + `
+						<p>${this.logLevelDisplayData.get(logLevel)?.header}</p>
+						<ul>
+							${validations.map(v => `<li>${v}</li>`).join('')}
+						</ul>
+					`;
+				};
+				validationTooltip.setContent(content)
 			}
 		};
 		updateValidations();
