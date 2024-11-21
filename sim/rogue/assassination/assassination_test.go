@@ -21,8 +21,7 @@ func TestAssassination(t *testing.T) {
 
 		OtherGearSets: []core.GearSetCombo{
 			core.GetGearSet("../../../ui/rogue/assassination/gear_sets", "p3_assassination"),
-			core.GetGearSet("../../../ui/rogue/assassination/gear_sets", "preraid_assassination"),
-			//core.GetGearSet("../../../ui/rogue/assassination/gear_sets", "p4_assassination"),
+			core.GetGearSet("../../../ui/rogue/assassination/gear_sets", "p4_assassination"),
 		},
 
 		Talents:     AssassinationTalents,

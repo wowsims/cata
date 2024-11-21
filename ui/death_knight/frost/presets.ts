@@ -13,6 +13,7 @@ import MasterFrostAPL from '../../death_knight/frost/apls/masterfrost.apl.json';
 import P12HGear from '../../death_knight/frost/gear_sets/p1.2h.gear.json';
 import P1DWGear from '../../death_knight/frost/gear_sets/p1.dw.gear.json';
 import P1MasterfrostGear from '../../death_knight/frost/gear_sets/p1.masterfrost.gear.json';
+import P3DWGear from '../../death_knight/frost/gear_sets/p3.dw.gear.json';
 import P3MasterfrostGear from '../../death_knight/frost/gear_sets/p3.masterfrost.gear.json';
 import PreBISGear from '../../death_knight/frost/gear_sets/prebis.gear.json';
 
@@ -60,6 +61,7 @@ const TWOHAND_PRESET_OPTIONS = {
 };
 
 export const P1_DW_GEAR_PRESET = PresetUtils.makePresetGear('P1 DW Obliterate', P1DWGear, DW_PRESET_OPTIONS);
+export const P3_DW_GEAR_PRESET = PresetUtils.makePresetGear('P3 DW Obliterate', P3DWGear, DW_PRESET_OPTIONS);
 export const P1_2H_GEAR_PRESET = PresetUtils.makePresetGear('P1 Two Hand', P12HGear, TWOHAND_PRESET_OPTIONS);
 export const P1_MASTERFROST_GEAR_PRESET = PresetUtils.makePresetGear('P1 Masterfrost', P1MasterfrostGear, DW_PRESET_OPTIONS);
 export const P3_MASTERFROST_GEAR_PRESET = PresetUtils.makePresetGear('P3 Masterfrost', P3MasterfrostGear, DW_PRESET_OPTIONS);
@@ -87,6 +89,29 @@ export const P1_DUAL_WIELD_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[PseudoStat.PseudoStatMainHandDps]: 6.05,
 			[PseudoStat.PseudoStatOffHandDps]: 3.85,
 			[PseudoStat.PseudoStatPhysicalHitPercent]: 146.53,
+			[PseudoStat.PseudoStatSpellHitPercent]: 41.91,
+		},
+	),
+	DW_PRESET_OPTIONS,
+);
+
+export const P3_DUAL_WIELD_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P3 DW Obliterate',
+	Stats.fromMap(
+		{
+			[Stat.StatStrength]: 2.98,
+			[Stat.StatArmor]: 0.03,
+			[Stat.StatAttackPower]: 1,
+			[Stat.StatExpertiseRating]: 0.65,
+			[Stat.StatHasteRating]: 1.8,
+			[Stat.StatHitRating]: 1.29,
+			[Stat.StatCritRating]: 1.24,
+			[Stat.StatMasteryRating]: 1.23,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 6.23,
+			[PseudoStat.PseudoStatOffHandDps]: 3.93,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 154.42,
 			[PseudoStat.PseudoStatSpellHitPercent]: 41.91,
 		},
 	),
@@ -149,9 +174,9 @@ export const DualWieldTalents = {
 		glyphs: Glyphs.create({
 			prime1: DeathKnightPrimeGlyph.GlyphOfFrostStrike,
 			prime2: DeathKnightPrimeGlyph.GlyphOfObliterate,
-			prime3: DeathKnightPrimeGlyph.GlyphOfHowlingBlast,
-			major1: DeathKnightMajorGlyph.GlyphOfPestilence,
-			major2: DeathKnightMajorGlyph.GlyphOfBloodBoil,
+			prime3: DeathKnightPrimeGlyph.GlyphOfRaiseDead,
+			major1: DeathKnightMajorGlyph.GlyphOfAntiMagicShell,
+			major2: DeathKnightMajorGlyph.GlyphOfDeathGrip,
 			major3: DeathKnightMajorGlyph.GlyphOfDarkSuccor,
 			minor1: DeathKnightMinorGlyph.GlyphOfDeathGate,
 			minor2: DeathKnightMinorGlyph.GlyphOfPathOfFrost,
@@ -221,10 +246,10 @@ export const DefaultConsumes = Consumes.create({
 });
 
 export const PRESET_BUILD_DW = PresetUtils.makePresetBuild('DW Obliterate', {
-	gear: P1_DW_GEAR_PRESET,
+	gear: P3_DW_GEAR_PRESET,
 	talents: DualWieldTalents,
 	rotationType: APLRotationType.TypeAuto,
-	epWeights: P1_DUAL_WIELD_EP_PRESET,
+	epWeights: P3_DUAL_WIELD_EP_PRESET,
 });
 
 export const PRESET_BUILD_2H = PresetUtils.makePresetBuild('Two Hand', {

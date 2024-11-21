@@ -143,13 +143,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
+		epWeights: [Presets.P1_EP_PRESET, Presets.P4_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.SubtletyTalents],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_SUBTLETY],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET_SUB, Presets.P1_PRESET_SUB, Presets.P3_PRESET_SUB],
+		gear: [Presets.PRERAID_PRESET_SUB, Presets.P1_PRESET_SUB, Presets.P3_PRESET_SUB, Presets.P4_PRESET_SUB],
 	},
 
 	autoRotation: (player: Player<Spec.SpecSubtletyRogue>): APLRotation => {
@@ -193,7 +193,15 @@ export class SubtletyRogueSimUI extends IndividualSimUI<Spec.SpecSubtletyRogue> 
 
 		// Auto Reforging
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			new ReforgeOptimizer(this, {
+				getEPDefaults: (player: Player<Spec.SpecSubtletyRogue>) => {
+					if (player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.id == 77949) {
+						return Presets.P4_EP_PRESET.epWeights;
+					} else {
+						return Presets.P1_EP_PRESET.epWeights;
+					}
+				}
+			});
 		});
 
 		this.player.changeEmitter.on(c => {

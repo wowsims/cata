@@ -154,7 +154,7 @@ export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 	[
 		71086,
 		{
-			[Spec.SpecUnknown]: <p>This item is unsupported for this spec.</p>,
+			[Spec.SpecUnknown]: <p className="mb-0">This item is unsupported for this spec.</p>,
 			[Spec.SpecBalanceDruid]: DTR_FIRST_IMPLEMENTATION_WARNING,
 			[Spec.SpecArcaneMage]: DTR_FIRST_IMPLEMENTATION_WARNING,
 			[Spec.SpecFireMage]: DTR_FIRST_IMPLEMENTATION_WARNING,
@@ -164,49 +164,6 @@ export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 			[Spec.SpecAfflictionWarlock]: DTR_FIRST_IMPLEMENTATION_WARNING,
 			[Spec.SpecDemonologyWarlock]: DTR_FIRST_IMPLEMENTATION_WARNING,
 			[Spec.SpecDestructionWarlock]: DTR_FIRST_IMPLEMENTATION_WARNING,
-		},
-	],
-	// Rogue Legendary Daggers (All Stages)
-	[
-		// Fear
-		77945,
-		{
-			[Spec.SpecUnknown]: MISSING_IMPLEMENTATION_WARNING,
-		},
-	],
-	[
-		// Vengeance
-		77946,
-		{
-			[Spec.SpecUnknown]: MISSING_IMPLEMENTATION_WARNING,
-		},
-	],
-	[
-		// Sleeper
-		77947,
-		{
-			[Spec.SpecUnknown]: MISSING_IMPLEMENTATION_WARNING,
-		},
-	],
-	[
-		// Dreamer
-		77948,
-		{
-			[Spec.SpecUnknown]: MISSING_IMPLEMENTATION_WARNING,
-		},
-	],
-	[
-		// Golad
-		77949,
-		{
-			[Spec.SpecUnknown]: MISSING_IMPLEMENTATION_WARNING,
-		},
-	],
-	[
-		// Tiriosh
-		77950,
-		{
-			[Spec.SpecUnknown]: MISSING_IMPLEMENTATION_WARNING,
 		},
 	],
 	[

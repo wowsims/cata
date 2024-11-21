@@ -61,6 +61,7 @@ import {
 	APLValueNot,
 	APLValueNumberTargets,
 	APLValueNumEquippedStatProcTrinkets,
+	APLValueNumStatBuffCooldowns,
 	APLValueOr,
 	APLValueRemainingTime,
 	APLValueRemainingTimePercent,
@@ -1017,7 +1018,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.excludeStackingProcsInput],
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.minIcdInput],
 	}),
 	anyTrinketStatProcsActive: inputBuilder({
 		label: 'Any Trinket Proc Buffs Active',
@@ -1032,7 +1033,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.excludeStackingProcsInput],
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.minIcdInput],
 	}),
 	trinketProcsMinRemainingTime: inputBuilder({
 		label: 'Trinket Procs Min Remaining Time',
@@ -1045,7 +1046,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.excludeStackingProcsInput],
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.minIcdInput],
 	}),
 	trinketProcsMaxRemainingIcd: inputBuilder({
 		label: 'Trinket Procs Max Remaining ICD',
@@ -1058,7 +1059,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.excludeStackingProcsInput],
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.minIcdInput],
 	}),
 	numEquippedStatProcTrinkets: inputBuilder({
 		label: 'Num Equipped Stat Proc Trinkets',
@@ -1070,7 +1071,22 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.excludeStackingProcsInput],
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.minIcdInput],
+	}),
+	numStatBuffCooldowns: inputBuilder({
+		label: 'Num Stat Buff Cooldowns',
+		submenu: ['Aura Sets'],
+		shortDescription: 'Number of registered Major Cooldowns that buff the specified stat type(s) when they are cast.',
+		fullDescription: `
+		<p>Both manually casted cooldowns as well as cooldowns controlled by "Cast All Stat Buff Cooldowns" and "Autocast Other Cooldowns" actions are included in the total count returned by this value.</p>
+		`,
+		newValue: () =>
+			APLValueNumStatBuffCooldowns.create({
+				statType1: -1,
+				statType2: -1,
+				statType3: -1,
+			}),
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3')],
 	}),
 
 	// DoT

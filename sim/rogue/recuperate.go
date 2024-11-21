@@ -70,8 +70,8 @@ func (rogue *Rogue) registerRecuperate() {
 			aura := spell.Hot(spell.Unit)
 			aura.Duration = time.Duration(rogue.ComboPoints()) * time.Second * 6
 			aura.BaseTickCount = rogue.ComboPoints() * 2
-			aura.Activate(sim)
 			rogue.ApplyFinisher(sim, spell)
+			aura.Activate(sim)
 		},
 	})
 }

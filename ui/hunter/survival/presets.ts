@@ -59,7 +59,7 @@ export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatRangedAttackPower]: 1.0,
 			[Stat.StatHitRating]: 2.56,
 			[Stat.StatCritRating]: 1.27,
-			[Stat.StatHasteRating]: 0.94,
+			[Stat.StatHasteRating]: 1.09,
 			[Stat.StatMasteryRating]: 1.04,
 		},
 		{
