@@ -86,9 +86,23 @@ func (mage *Mage) NewFlameOrb() *FlameOrb {
 		TickCount: 0,
 	}
 
+	flameOrb.Pet.OnPetEnable = flameOrb.enable
+
 	mage.AddPet(flameOrb)
 
 	return flameOrb
+}
+
+func (fo *FlameOrb) enable(sim *core.Simulation) {
+
+	fo.PseudoStats.DamageDealtMultiplier = fo.Owner.PseudoStats.DamageDealtMultiplier
+	fo.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] = fo.Owner.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire]
+
+	fo.EnableDynamicStats(func(ownerStats stats.Stats) stats.Stats {
+		return stats.Stats{
+			stats.SpellPower: ownerStats[stats.SpellPower],
+		}
+	})
 }
 
 func (fo *FlameOrb) GetPet() *core.Pet {
@@ -140,9 +154,11 @@ func (fo *FlameOrb) registerFlameOrbTickSpell() {
 		BonusCoefficient: 0.134,
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := 0.278 * fo.mageOwner.ClassSpellScaling
+
+			damage := fo.mageOwner.CalcAndRollDamageRange(sim, 0.278, 0.25)
 			randomTarget := sim.Encounter.TargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.TargetUnits))))]
 			spell.CalcAndDealDamage(sim, randomTarget, damage, spell.OutcomeMagicHitAndCrit)
+
 			fo.TickCount += 1
 			if fo.TickCount == 15 {
 				procChance := []float64{0.0, 0.33, 0.66, 1.0}[fo.mageOwner.Talents.FirePower]
