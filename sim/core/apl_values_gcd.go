@@ -11,7 +11,7 @@ type APLValueGCDIsReady struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueGCDIsReady(config *proto.APLValueGCDIsReady, uuid *proto.UUID) APLValue {
+func (rot *APLRotation) newValueGCDIsReady(config *proto.APLValueGCDIsReady, _ *proto.UUID) APLValue {
 	return &APLValueGCDIsReady{
 		unit: rot.unit,
 	}
@@ -31,7 +31,7 @@ type APLValueGCDTimeToReady struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueGCDTimeToReady(config *proto.APLValueGCDTimeToReady, uuid *proto.UUID) APLValue {
+func (rot *APLRotation) newValueGCDTimeToReady(config *proto.APLValueGCDTimeToReady, _ *proto.UUID) APLValue {
 	return &APLValueGCDTimeToReady{
 		unit: rot.unit,
 	}

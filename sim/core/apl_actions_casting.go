@@ -325,7 +325,7 @@ func (action *APLActionCastAllStatBuffCooldowns) PostFinalize(rot *APLRotation) 
 			return subaction.spell.ActionID
 		})
 
-		rot.ValidationMessage(proto.LogLevel_Warning, "%s will cast the following spells: %s", action, StringFromActionIDs(actionIDs))
+		rot.ValidationMessage(proto.LogLevel_Information, "%s will cast the following spells: %s", action, StringFromActionIDs(actionIDs))
 	}
 }
 
@@ -370,6 +370,6 @@ func (action *APLActionAutocastOtherCooldowns) PostFinalize(rot *APLRotation) {
 			return mcd.Spell.ActionID
 		})
 
-		rot.ValidationMessage(proto.LogLevel_Warning, "%s will cast the following spells: %s", action, StringFromActionIDs(actionIDs))
+		rot.ValidationMessage(proto.LogLevel_Information, "%s will cast the following spells: %s", action, StringFromActionIDs(actionIDs))
 	}
 }

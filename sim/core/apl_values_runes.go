@@ -16,7 +16,7 @@ type APLValueCurrentRuneCount struct {
 func (rot *APLRotation) newValueCurrentRuneCount(config *proto.APLValueCurrentRuneCount, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasRunicPowerBar() {
-		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Runes", unit.Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Runes", unit.Label)
 		return nil
 	}
 	return &APLValueCurrentRuneCount{
@@ -53,7 +53,7 @@ type APLValueCurrentNonDeathRuneCount struct {
 func (rot *APLRotation) newValueCurrentNonDeathRuneCount(config *proto.APLValueCurrentNonDeathRuneCount, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasRunicPowerBar() {
-		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Runes", unit.Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Runes", unit.Label)
 		return nil
 	}
 	return &APLValueCurrentNonDeathRuneCount{
@@ -88,7 +88,7 @@ type APLValueCurrentRuneActive struct {
 func (rot *APLRotation) newValueCurrentRuneActive(config *proto.APLValueCurrentRuneActive, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasRunicPowerBar() {
-		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Runes", unit.Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Runes", unit.Label)
 		return nil
 	}
 	return &APLValueCurrentRuneActive{
@@ -115,7 +115,7 @@ type APLValueCurrentRuneDeath struct {
 func (rot *APLRotation) newValueCurrentRuneDeath(config *proto.APLValueCurrentRuneDeath, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasRunicPowerBar() {
-		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Runes", unit.Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Runes", unit.Label)
 		return nil
 	}
 	return &APLValueCurrentRuneDeath{
@@ -142,7 +142,7 @@ type APLValueRuneCooldown struct {
 func (rot *APLRotation) newValueRuneCooldown(config *proto.APLValueRuneCooldown, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasRunicPowerBar() {
-		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Runes", unit.Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Runes", unit.Label)
 		return nil
 	}
 	return &APLValueRuneCooldown{
@@ -178,7 +178,7 @@ type APLValueNextRuneCooldown struct {
 func (rot *APLRotation) newValueNextRuneCooldown(config *proto.APLValueNextRuneCooldown, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasRunicPowerBar() {
-		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Runes", unit.Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Runes", unit.Label)
 		return nil
 	}
 	return &APLValueNextRuneCooldown{
@@ -214,7 +214,7 @@ type APLValueRuneSlotCooldown struct {
 func (rot *APLRotation) newValueRuneSlotCooldown(config *proto.APLValueRuneSlotCooldown, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasRunicPowerBar() {
-		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Runes", unit.Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Runes", unit.Label)
 		return nil
 	}
 	return &APLValueRuneSlotCooldown{

@@ -30,7 +30,7 @@ type APLValueTotemRemainingTime struct {
 
 func (shaman *Shaman) newValueTotemRemainingTime(rot *core.APLRotation, config *proto.APLValueTotemRemainingTime, uuid *proto.UUID) core.APLValue {
 	if config.TotemType == proto.ShamanTotems_TypeUnknown {
-		rot.ValidationMessage(proto.LogLevel_Warning, "Totem Type required.")
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "Totem Type required.")
 		return nil
 	}
 	return &APLValueTotemRemainingTime{
@@ -63,7 +63,7 @@ type APLValueShamanCanSnapshotStrongerFireElemental struct {
 	shaman *Shaman
 }
 
-func (shaman *Shaman) newValueCanSnapshotStrongerFireElemental(_ *proto.APLValueShamanCanSnapshotStrongerFireElemental, uuid *proto.UUID) core.APLValue {
+func (shaman *Shaman) newValueCanSnapshotStrongerFireElemental(_ *proto.APLValueShamanCanSnapshotStrongerFireElemental, _ *proto.UUID) core.APLValue {
 	return &APLValueShamanCanSnapshotStrongerFireElemental{
 		shaman: shaman,
 	}
@@ -94,7 +94,7 @@ type APLValueShamanFireElementalDuration struct {
 	duration time.Duration
 }
 
-func (shaman *Shaman) newValueFireElementalDuration(_ *proto.APLValueShamanFireElementalDuration, uuid *proto.UUID) core.APLValue {
+func (shaman *Shaman) newValueFireElementalDuration(_ *proto.APLValueShamanFireElementalDuration, _ *proto.UUID) core.APLValue {
 	return &APLValueShamanFireElementalDuration{
 		shaman:   shaman,
 		duration: time.Second * time.Duration(120*(1.0+0.20*float64(shaman.Talents.TotemicFocus))),

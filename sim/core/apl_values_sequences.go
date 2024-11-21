@@ -15,7 +15,7 @@ type APLValueSequenceIsComplete struct {
 
 func (rot *APLRotation) newValueSequenceIsComplete(config *proto.APLValueSequenceIsComplete, uuid *proto.UUID) APLValue {
 	if config.SequenceName == "" {
-		rot.ValidationMessage(proto.LogLevel_Warning, "Sequence Is Complete() must provide a sequence name")
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "Sequence Is Complete() must provide a sequence name")
 		return nil
 	}
 	return &APLValueSequenceIsComplete{
@@ -29,7 +29,7 @@ func (value *APLValueSequenceIsComplete) Finalize(rot *APLRotation) {
 			return
 		}
 	}
-	rot.ValidationMessage(proto.LogLevel_Warning, "No sequence with name: '%s'", value.name)
+	rot.ValidationMessageByUUID(value.Uuid, proto.LogLevel_Warning, "No sequence with name: '%s'", value.name)
 }
 func (value *APLValueSequenceIsComplete) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeBool
@@ -49,7 +49,7 @@ type APLValueSequenceIsReady struct {
 
 func (rot *APLRotation) newValueSequenceIsReady(config *proto.APLValueSequenceIsReady, uuid *proto.UUID) APLValue {
 	if config.SequenceName == "" {
-		rot.ValidationMessage(proto.LogLevel_Warning, "Sequence Is Ready() must provide a sequence name")
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "Sequence Is Ready() must provide a sequence name")
 		return nil
 	}
 	return &APLValueSequenceIsReady{
@@ -63,7 +63,7 @@ func (value *APLValueSequenceIsReady) Finalize(rot *APLRotation) {
 			return
 		}
 	}
-	rot.ValidationMessage(proto.LogLevel_Warning, "No sequence with name: '%s'", value.name)
+	rot.ValidationMessageByUUID(value.Uuid, proto.LogLevel_Warning, "No sequence with name: '%s'", value.name)
 }
 func (value *APLValueSequenceIsReady) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeBool
@@ -83,7 +83,7 @@ type APLValueSequenceTimeToReady struct {
 
 func (rot *APLRotation) newValueSequenceTimeToReady(config *proto.APLValueSequenceTimeToReady, uuid *proto.UUID) APLValue {
 	if config.SequenceName == "" {
-		rot.ValidationMessage(proto.LogLevel_Warning, "Sequence Time To Ready() must provide a sequence name")
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "Sequence Time To Ready() must provide a sequence name")
 		return nil
 	}
 	return &APLValueSequenceTimeToReady{
@@ -97,7 +97,7 @@ func (value *APLValueSequenceTimeToReady) Finalize(rot *APLRotation) {
 			return
 		}
 	}
-	rot.ValidationMessage(proto.LogLevel_Warning, "No sequence with name: '%s'", value.name)
+	rot.ValidationMessageByUUID(value.Uuid, proto.LogLevel_Warning, "No sequence with name: '%s'", value.name)
 }
 func (value *APLValueSequenceTimeToReady) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeDuration

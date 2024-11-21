@@ -20,7 +20,7 @@ type APLValueConst struct {
 	boolVal     bool
 }
 
-func (rot *APLRotation) newValueConst(config *proto.APLValueConst, uuid *proto.UUID) APLValue {
+func (rot *APLRotation) newValueConst(config *proto.APLValueConst, _ *proto.UUID) APLValue {
 	result := &APLValueConst{
 		valType:   proto.APLValueType_ValueTypeString,
 		stringVal: config.Val,
@@ -277,7 +277,7 @@ func (rot *APLRotation) newValueCompare(config *proto.APLValueCompare, uuid *pro
 	}
 
 	if lhs.Type() == proto.APLValueType_ValueTypeBool && !(config.Op == proto.APLValueCompare_OpEq || config.Op == proto.APLValueCompare_OpNe) {
-		rot.ValidationMessage(proto.LogLevel_Warning, "Bool types only allow Equals and NotEquals comparisons!")
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "Bool types only allow Equals and NotEquals comparisons!")
 		return nil
 	}
 	return &APLValueCompare{
@@ -385,12 +385,12 @@ func (rot *APLRotation) newValueMath(config *proto.APLValueMath, uuid *proto.UUI
 	}
 
 	if lhs.Type() == proto.APLValueType_ValueTypeBool || rhs.Type() == proto.APLValueType_ValueTypeBool {
-		rot.ValidationMessage(proto.LogLevel_Warning, "Bool types not allowed in Math Operations!")
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "Bool types not allowed in Math Operations!")
 		return nil
 	}
 
 	if lhs.Type() == proto.APLValueType_ValueTypeString || rhs.Type() == proto.APLValueType_ValueTypeString {
-		rot.ValidationMessage(proto.LogLevel_Warning, "String types not allowed in Math Operations!")
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "String types not allowed in Math Operations!")
 		return nil
 	}
 
@@ -476,7 +476,7 @@ type APLValueMax struct {
 	vals []APLValue
 }
 
-func (rot *APLRotation) newValueMax(config *proto.APLValueMax, uuid *proto.UUID) APLValue {
+func (rot *APLRotation) newValueMax(config *proto.APLValueMax, _ *proto.UUID) APLValue {
 	vals := MapSlice(config.Vals, func(val *proto.APLValue) APLValue {
 		return rot.newAPLValue(val)
 	})
@@ -527,7 +527,7 @@ type APLValueMin struct {
 	vals []APLValue
 }
 
-func (rot *APLRotation) newValueMin(config *proto.APLValueMin, uuid *proto.UUID) APLValue {
+func (rot *APLRotation) newValueMin(config *proto.APLValueMin, _ *proto.UUID) APLValue {
 	vals := MapSlice(config.Vals, func(val *proto.APLValue) APLValue {
 		return rot.newAPLValue(val)
 	})
@@ -578,7 +578,7 @@ type APLValueAnd struct {
 	vals []APLValue
 }
 
-func (rot *APLRotation) newValueAnd(config *proto.APLValueAnd, uuid *proto.UUID) APLValue {
+func (rot *APLRotation) newValueAnd(config *proto.APLValueAnd, _ *proto.UUID) APLValue {
 	vals := MapSlice(config.Vals, func(val *proto.APLValue) APLValue {
 		return rot.coerceTo(rot.newAPLValue(val), proto.APLValueType_ValueTypeBool)
 	})
@@ -615,7 +615,7 @@ type APLValueOr struct {
 	vals []APLValue
 }
 
-func (rot *APLRotation) newValueOr(config *proto.APLValueOr, uuid *proto.UUID) APLValue {
+func (rot *APLRotation) newValueOr(config *proto.APLValueOr, _ *proto.UUID) APLValue {
 	vals := MapSlice(config.Vals, func(val *proto.APLValue) APLValue {
 		return rot.coerceTo(rot.newAPLValue(val), proto.APLValueType_ValueTypeBool)
 	})
@@ -652,7 +652,7 @@ type APLValueNot struct {
 	val APLValue
 }
 
-func (rot *APLRotation) newValueNot(config *proto.APLValueNot, uuid *proto.UUID) APLValue {
+func (rot *APLRotation) newValueNot(config *proto.APLValueNot, _ *proto.UUID) APLValue {
 	val := rot.coerceTo(rot.newAPLValue(config.Val), proto.APLValueType_ValueTypeBool)
 	if val == nil {
 		return nil

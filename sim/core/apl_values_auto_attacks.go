@@ -11,7 +11,7 @@ type APLValueAutoTimeToNext struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueAutoTimeToNext(_ *proto.APLValueAutoTimeToNext, uuid *proto.UUID) APLValue {
+func (rot *APLRotation) newValueAutoTimeToNext(_ *proto.APLValueAutoTimeToNext, _ *proto.UUID) APLValue {
 	return &APLValueAutoTimeToNext{
 		unit: rot.unit,
 	}
