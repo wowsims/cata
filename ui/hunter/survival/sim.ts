@@ -75,7 +75,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 					20
 				],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0.89],
+				postCapEPs: [0.89 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
 			});
 
 			return [hasteSoftCapConfig];
