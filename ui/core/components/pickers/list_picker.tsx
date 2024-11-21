@@ -398,7 +398,7 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 
 		itemHeaderElem.appendChild(validationElem);
 
-		const iconElem = validationElem.getElementsByTagName('i')[0];
+		const iconElem = validationElem.querySelector('i');
 
 		const updateValidations = async () => {
 			if (!existsInDOM(validationElem)) {
@@ -437,13 +437,13 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 				);
 
 				for (const [_logLevel, displayData] of this.logLevelDisplayData) {
-					iconElem.classList.remove(displayData.icon);
+					iconElem!.classList.remove(displayData.icon);
 				}
 
 				// New icon is set outside loop so log levels can share the same icon without risk of removing each other
 				const newIcon = this.logLevelDisplayData.get(maxLogLevel)?.icon
 				if (newIcon) {
-					iconElem.classList.add(newIcon);
+					iconElem!.classList.add(newIcon);
 				}
 
 				for (const [key, value] of Object.entries(LogLevel)) {
