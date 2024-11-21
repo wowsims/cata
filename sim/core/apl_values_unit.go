@@ -9,7 +9,7 @@ type APLValueUnitIsMoving struct {
 	unit UnitReference
 }
 
-func (rot *APLRotation) newValueCharacterIsMoving(config *proto.APLValueUnitIsMoving) APLValue {
+func (rot *APLRotation) newValueCharacterIsMoving(config *proto.APLValueUnitIsMoving, uuid *proto.UUID) APLValue {
 	unit := rot.GetSourceUnit(config.SourceUnit)
 	if unit.Get() == nil {
 		return nil

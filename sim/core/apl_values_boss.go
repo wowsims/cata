@@ -12,7 +12,7 @@ type APLValueBossSpellIsCasting struct {
 	spell *Spell
 }
 
-func (rot *APLRotation) newValueBossSpellIsCasting(config *proto.APLValueBossSpellIsCasting) APLValue {
+func (rot *APLRotation) newValueBossSpellIsCasting(config *proto.APLValueBossSpellIsCasting, uuid *proto.UUID) APLValue {
 	spell := rot.GetTargetAPLSpell(config.SpellId, rot.GetTargetUnit(config.TargetUnit))
 	if spell == nil {
 		return nil
@@ -36,7 +36,7 @@ type APLValueBossSpellTimeToReady struct {
 	spell *Spell
 }
 
-func (rot *APLRotation) newValueBossSpellTimeToReady(config *proto.APLValueBossSpellTimeToReady) APLValue {
+func (rot *APLRotation) newValueBossSpellTimeToReady(config *proto.APLValueBossSpellTimeToReady, uuid *proto.UUID) APLValue {
 	spell := rot.GetTargetAPLSpell(config.SpellId, rot.GetTargetUnit(config.TargetUnit))
 	if spell == nil {
 		return nil

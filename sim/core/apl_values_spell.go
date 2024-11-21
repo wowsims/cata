@@ -12,7 +12,7 @@ type APLValueSpellIsKnown struct {
 	spell *Spell
 }
 
-func (rot *APLRotation) newValueSpellIsKnown(config *proto.APLValueSpellIsKnown) APLValue {
+func (rot *APLRotation) newValueSpellIsKnown(config *proto.APLValueSpellIsKnown, uuid *proto.UUID) APLValue {
 	spell := rot.GetAPLSpell(config.SpellId)
 	return &APLValueSpellIsKnown{
 		spell: spell,
@@ -33,7 +33,7 @@ type APLValueSpellCanCast struct {
 	spell *Spell
 }
 
-func (rot *APLRotation) newValueSpellCanCast(config *proto.APLValueSpellCanCast) APLValue {
+func (rot *APLRotation) newValueSpellCanCast(config *proto.APLValueSpellCanCast, uuid *proto.UUID) APLValue {
 	spell := rot.GetAPLSpell(config.SpellId)
 	if spell == nil {
 		return nil
@@ -57,7 +57,7 @@ type APLValueSpellIsReady struct {
 	spell *Spell
 }
 
-func (rot *APLRotation) newValueSpellIsReady(config *proto.APLValueSpellIsReady) APLValue {
+func (rot *APLRotation) newValueSpellIsReady(config *proto.APLValueSpellIsReady, uuid *proto.UUID) APLValue {
 	spell := rot.GetAPLSpell(config.SpellId)
 	if spell == nil {
 		return nil
@@ -81,7 +81,7 @@ type APLValueSpellTimeToReady struct {
 	spell *Spell
 }
 
-func (rot *APLRotation) newValueSpellTimeToReady(config *proto.APLValueSpellTimeToReady) APLValue {
+func (rot *APLRotation) newValueSpellTimeToReady(config *proto.APLValueSpellTimeToReady, uuid *proto.UUID) APLValue {
 	spell := rot.GetAPLSpell(config.SpellId)
 	if spell == nil {
 		return nil
@@ -105,7 +105,7 @@ type APLValueSpellCastTime struct {
 	spell *Spell
 }
 
-func (rot *APLRotation) newValueSpellCastTime(config *proto.APLValueSpellCastTime) APLValue {
+func (rot *APLRotation) newValueSpellCastTime(config *proto.APLValueSpellCastTime, uuid *proto.UUID) APLValue {
 	spell := rot.GetAPLSpell(config.SpellId)
 	if spell == nil {
 		return nil
@@ -129,7 +129,7 @@ type APLValueSpellTravelTime struct {
 	spell *Spell
 }
 
-func (rot *APLRotation) newValueSpellTravelTime(config *proto.APLValueSpellTravelTime) APLValue {
+func (rot *APLRotation) newValueSpellTravelTime(config *proto.APLValueSpellTravelTime, uuid *proto.UUID) APLValue {
 	spell := rot.GetAPLSpell(config.SpellId)
 	if spell == nil {
 		return nil
@@ -153,7 +153,7 @@ type APLValueSpellCPM struct {
 	spell *Spell
 }
 
-func (rot *APLRotation) newValueSpellCPM(config *proto.APLValueSpellCPM) APLValue {
+func (rot *APLRotation) newValueSpellCPM(config *proto.APLValueSpellCPM, uuid *proto.UUID) APLValue {
 	spell := rot.GetAPLSpell(config.SpellId)
 	if spell == nil {
 		return nil
@@ -177,7 +177,7 @@ type APLValueSpellIsChanneling struct {
 	spell *Spell
 }
 
-func (rot *APLRotation) newValueSpellIsChanneling(config *proto.APLValueSpellIsChanneling) APLValue {
+func (rot *APLRotation) newValueSpellIsChanneling(config *proto.APLValueSpellIsChanneling, uuid *proto.UUID) APLValue {
 	spell := rot.GetAPLSpell(config.SpellId)
 	if spell == nil {
 		return nil
@@ -201,7 +201,7 @@ type APLValueSpellChanneledTicks struct {
 	spell *Spell
 }
 
-func (rot *APLRotation) newValueSpellChanneledTicks(config *proto.APLValueSpellChanneledTicks) APLValue {
+func (rot *APLRotation) newValueSpellChanneledTicks(config *proto.APLValueSpellChanneledTicks, uuid *proto.UUID) APLValue {
 	spell := rot.GetAPLSpell(config.SpellId)
 	if spell == nil {
 		return nil
@@ -230,7 +230,7 @@ type APLValueSpellCurrentCost struct {
 	spell *Spell
 }
 
-func (rot *APLRotation) newValueSpellCurrentCost(config *proto.APLValueSpellCurrentCost) APLValue {
+func (rot *APLRotation) newValueSpellCurrentCost(config *proto.APLValueSpellCurrentCost, uuid *proto.UUID) APLValue {
 	spell := rot.GetAPLSpell(config.SpellId)
 	if spell == nil {
 		return nil

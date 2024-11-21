@@ -13,7 +13,7 @@ type APLValueCurrentRuneCount struct {
 	runeType proto.APLValueRuneType
 }
 
-func (rot *APLRotation) newValueCurrentRuneCount(config *proto.APLValueCurrentRuneCount) APLValue {
+func (rot *APLRotation) newValueCurrentRuneCount(config *proto.APLValueCurrentRuneCount, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasRunicPowerBar() {
 		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Runes", unit.Label)
@@ -50,7 +50,7 @@ type APLValueCurrentNonDeathRuneCount struct {
 	runeType proto.APLValueRuneType
 }
 
-func (rot *APLRotation) newValueCurrentNonDeathRuneCount(config *proto.APLValueCurrentNonDeathRuneCount) APLValue {
+func (rot *APLRotation) newValueCurrentNonDeathRuneCount(config *proto.APLValueCurrentNonDeathRuneCount, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasRunicPowerBar() {
 		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Runes", unit.Label)
@@ -85,7 +85,7 @@ type APLValueCurrentRuneActive struct {
 	runeSlot int8
 }
 
-func (rot *APLRotation) newValueCurrentRuneActive(config *proto.APLValueCurrentRuneActive) APLValue {
+func (rot *APLRotation) newValueCurrentRuneActive(config *proto.APLValueCurrentRuneActive, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasRunicPowerBar() {
 		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Runes", unit.Label)
@@ -112,7 +112,7 @@ type APLValueCurrentRuneDeath struct {
 	runeSlot int8
 }
 
-func (rot *APLRotation) newValueCurrentRuneDeath(config *proto.APLValueCurrentRuneDeath) APLValue {
+func (rot *APLRotation) newValueCurrentRuneDeath(config *proto.APLValueCurrentRuneDeath, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasRunicPowerBar() {
 		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Runes", unit.Label)
@@ -139,7 +139,7 @@ type APLValueRuneCooldown struct {
 	runeType proto.APLValueRuneType
 }
 
-func (rot *APLRotation) newValueRuneCooldown(config *proto.APLValueRuneCooldown) APLValue {
+func (rot *APLRotation) newValueRuneCooldown(config *proto.APLValueRuneCooldown, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasRunicPowerBar() {
 		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Runes", unit.Label)
@@ -175,7 +175,7 @@ type APLValueNextRuneCooldown struct {
 	runeType proto.APLValueRuneType
 }
 
-func (rot *APLRotation) newValueNextRuneCooldown(config *proto.APLValueNextRuneCooldown) APLValue {
+func (rot *APLRotation) newValueNextRuneCooldown(config *proto.APLValueNextRuneCooldown, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasRunicPowerBar() {
 		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Runes", unit.Label)
@@ -211,7 +211,7 @@ type APLValueRuneSlotCooldown struct {
 	runeSlot int8
 }
 
-func (rot *APLRotation) newValueRuneSlotCooldown(config *proto.APLValueRuneSlotCooldown) APLValue {
+func (rot *APLRotation) newValueRuneSlotCooldown(config *proto.APLValueRuneSlotCooldown, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasRunicPowerBar() {
 		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Runes", unit.Label)

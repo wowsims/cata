@@ -11,7 +11,7 @@ type APLValueChannelClipDelay struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueChannelClipDelay(config *proto.APLValueChannelClipDelay) APLValue {
+func (rot *APLRotation) newValueChannelClipDelay(config *proto.APLValueChannelClipDelay, uuid *proto.UUID) APLValue {
 	return &APLValueChannelClipDelay{
 		unit: rot.unit,
 	}
@@ -31,7 +31,7 @@ type APLValueInputDelay struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueInputDelay(config *proto.APLValueInputDelay) APLValue {
+func (rot *APLRotation) newValueInputDelay(config *proto.APLValueInputDelay, uuid *proto.UUID) APLValue {
 	return &APLValueInputDelay{
 		unit: rot.unit,
 	}
@@ -51,7 +51,7 @@ type APLValueFrontOfTarget struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueFrontOfTarget(config *proto.APLValueFrontOfTarget) APLValue {
+func (rot *APLRotation) newValueFrontOfTarget(config *proto.APLValueFrontOfTarget, uuid *proto.UUID) APLValue {
 	return &APLValueFrontOfTarget{
 		unit: rot.unit,
 	}

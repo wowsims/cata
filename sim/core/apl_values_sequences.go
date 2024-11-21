@@ -13,7 +13,7 @@ type APLValueSequenceIsComplete struct {
 	sequence *APLActionSequence
 }
 
-func (rot *APLRotation) newValueSequenceIsComplete(config *proto.APLValueSequenceIsComplete) APLValue {
+func (rot *APLRotation) newValueSequenceIsComplete(config *proto.APLValueSequenceIsComplete, uuid *proto.UUID) APLValue {
 	if config.SequenceName == "" {
 		rot.ValidationMessage(proto.LogLevel_Warning, "Sequence Is Complete() must provide a sequence name")
 		return nil
@@ -47,7 +47,7 @@ type APLValueSequenceIsReady struct {
 	sequence *APLActionSequence
 }
 
-func (rot *APLRotation) newValueSequenceIsReady(config *proto.APLValueSequenceIsReady) APLValue {
+func (rot *APLRotation) newValueSequenceIsReady(config *proto.APLValueSequenceIsReady, uuid *proto.UUID) APLValue {
 	if config.SequenceName == "" {
 		rot.ValidationMessage(proto.LogLevel_Warning, "Sequence Is Ready() must provide a sequence name")
 		return nil
@@ -81,7 +81,7 @@ type APLValueSequenceTimeToReady struct {
 	sequence *APLActionSequence
 }
 
-func (rot *APLRotation) newValueSequenceTimeToReady(config *proto.APLValueSequenceTimeToReady) APLValue {
+func (rot *APLRotation) newValueSequenceTimeToReady(config *proto.APLValueSequenceTimeToReady, uuid *proto.UUID) APLValue {
 	if config.SequenceName == "" {
 		rot.ValidationMessage(proto.LogLevel_Warning, "Sequence Time To Ready() must provide a sequence name")
 		return nil

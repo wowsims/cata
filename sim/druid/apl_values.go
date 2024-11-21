@@ -8,11 +8,11 @@ import (
 func (druid *Druid) NewAPLValue(rot *core.APLRotation, config *proto.APLValue) core.APLValue {
 	switch config.Value.(type) {
 	case *proto.APLValue_CurrentSolarEnergy:
-		return druid.newValueCurrentSolarEnergy(config.GetCurrentSolarEnergy())
+		return druid.newValueCurrentSolarEnergy(config.GetCurrentSolarEnergy(), config.Uuid)
 	case *proto.APLValue_CurrentLunarEnergy:
-		return druid.newValueCurrentLunarEnergy(config.GetCurrentLunarEnergy())
+		return druid.newValueCurrentLunarEnergy(config.GetCurrentLunarEnergy(), config.Uuid)
 	case *proto.APLValue_DruidCurrentEclipsePhase:
-		return druid.newValueCurrentEclipsePhase(config.GetDruidCurrentEclipsePhase())
+		return druid.newValueCurrentEclipsePhase(config.GetDruidCurrentEclipsePhase(), config.Uuid)
 	default:
 		return nil
 	}
@@ -23,7 +23,7 @@ type APLValueCurrentSolarEnergy struct {
 	druid *Druid
 }
 
-func (druid *Druid) newValueCurrentSolarEnergy(_ *proto.APLValueCurrentSolarEnergy) core.APLValue {
+func (druid *Druid) newValueCurrentSolarEnergy(_ *proto.APLValueCurrentSolarEnergy, uuid *proto.UUID) core.APLValue {
 	return &APLValueCurrentSolarEnergy{
 		druid: druid,
 	}
@@ -46,7 +46,7 @@ type APLValueCurrentLunarEnergy struct {
 	druid *Druid
 }
 
-func (druid *Druid) newValueCurrentLunarEnergy(_ *proto.APLValueCurrentLunarEnergy) core.APLValue {
+func (druid *Druid) newValueCurrentLunarEnergy(_ *proto.APLValueCurrentLunarEnergy, uuid *proto.UUID) core.APLValue {
 	return &APLValueCurrentLunarEnergy{
 		druid: druid,
 	}
@@ -90,7 +90,7 @@ func (value *APLValueCurrentEclipsePhase) String() string {
 	return "Current Eclipse Phase"
 }
 
-func (druid *Druid) newValueCurrentEclipsePhase(config *proto.APLValueCurrentEclipsePhase) core.APLValue {
+func (druid *Druid) newValueCurrentEclipsePhase(config *proto.APLValueCurrentEclipsePhase, uuid *proto.UUID) core.APLValue {
 	return &APLValueCurrentEclipsePhase{
 		druid: druid,
 		phase: config.EclipsePhase,

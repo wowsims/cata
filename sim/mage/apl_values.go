@@ -8,7 +8,7 @@ import (
 func (mage *Mage) NewAPLValue(rot *core.APLRotation, config *proto.APLValue) core.APLValue {
 	switch config.Value.(type) {
 	case *proto.APLValue_MageCurrentCombustionDotEstimate:
-		return mage.newValueCurrentCombustionDotEstimate(config.GetMageCurrentCombustionDotEstimate())
+		return mage.newValueCurrentCombustionDotEstimate(config.GetMageCurrentCombustionDotEstimate(), config.Uuid)
 	default:
 		return nil
 	}
@@ -19,7 +19,7 @@ type APLValueMageCurrentCombustionDotEstimate struct {
 	mage *Mage
 }
 
-func (mage *Mage) newValueCurrentCombustionDotEstimate(_ *proto.APLValueMageCurrentCombustionDotEstimate) core.APLValue {
+func (mage *Mage) newValueCurrentCombustionDotEstimate(_ *proto.APLValueMageCurrentCombustionDotEstimate, uuid *proto.UUID) core.APLValue {
 	if !mage.Talents.Combustion {
 		return nil
 	}

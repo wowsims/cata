@@ -11,7 +11,7 @@ type APLValueCurrentHealth struct {
 	unit UnitReference
 }
 
-func (rot *APLRotation) newValueCurrentHealth(config *proto.APLValueCurrentHealth) APLValue {
+func (rot *APLRotation) newValueCurrentHealth(config *proto.APLValueCurrentHealth, uuid *proto.UUID) APLValue {
 	unit := rot.GetSourceUnit(config.SourceUnit)
 	if unit.Get() == nil {
 		return nil
@@ -39,7 +39,7 @@ type APLValueCurrentHealthPercent struct {
 	unit UnitReference
 }
 
-func (rot *APLRotation) newValueCurrentHealthPercent(config *proto.APLValueCurrentHealthPercent) APLValue {
+func (rot *APLRotation) newValueCurrentHealthPercent(config *proto.APLValueCurrentHealthPercent, uuid *proto.UUID) APLValue {
 	unit := rot.GetSourceUnit(config.SourceUnit)
 	if unit.Get() == nil {
 		return nil
@@ -67,7 +67,7 @@ type APLValueCurrentMana struct {
 	unit UnitReference
 }
 
-func (rot *APLRotation) newValueCurrentMana(config *proto.APLValueCurrentMana) APLValue {
+func (rot *APLRotation) newValueCurrentMana(config *proto.APLValueCurrentMana, uuid *proto.UUID) APLValue {
 	unit := rot.GetSourceUnit(config.SourceUnit)
 	if unit.Get() == nil {
 		return nil
@@ -95,7 +95,7 @@ type APLValueCurrentManaPercent struct {
 	unit UnitReference
 }
 
-func (rot *APLRotation) newValueCurrentManaPercent(config *proto.APLValueCurrentManaPercent) APLValue {
+func (rot *APLRotation) newValueCurrentManaPercent(config *proto.APLValueCurrentManaPercent, uuid *proto.UUID) APLValue {
 	unit := rot.GetSourceUnit(config.SourceUnit)
 	if unit.Get() == nil {
 		return nil
@@ -123,7 +123,7 @@ type APLValueCurrentRage struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueCurrentRage(config *proto.APLValueCurrentRage) APLValue {
+func (rot *APLRotation) newValueCurrentRage(config *proto.APLValueCurrentRage, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasRageBar() {
 		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Rage", unit.Label)
@@ -148,7 +148,7 @@ type APLValueCurrentFocus struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueCurrentFocus(config *proto.APLValueCurrentFocus) APLValue {
+func (rot *APLRotation) newValueCurrentFocus(config *proto.APLValueCurrentFocus, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasFocusBar() {
 		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Focus", unit.Label)
@@ -176,7 +176,7 @@ type APLValueCurrentEnergy struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueCurrentEnergy(config *proto.APLValueCurrentEnergy) APLValue {
+func (rot *APLRotation) newValueCurrentEnergy(config *proto.APLValueCurrentEnergy, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasEnergyBar() {
 		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Energy", unit.Label)
@@ -201,7 +201,7 @@ type APLValueCurrentComboPoints struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueCurrentComboPoints(config *proto.APLValueCurrentComboPoints) APLValue {
+func (rot *APLRotation) newValueCurrentComboPoints(config *proto.APLValueCurrentComboPoints, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasEnergyBar() {
 		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Combo Points", unit.Label)
@@ -226,7 +226,7 @@ type APLValueCurrentRunicPower struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueCurrentRunicPower(config *proto.APLValueCurrentRunicPower) APLValue {
+func (rot *APLRotation) newValueCurrentRunicPower(config *proto.APLValueCurrentRunicPower, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasRunicPowerBar() {
 		rot.ValidationMessage(proto.LogLevel_Warning, "%s does not use Runic Power", unit.Label)

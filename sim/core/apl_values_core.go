@@ -12,7 +12,7 @@ type APLValueDotIsActive struct {
 	dot *Dot
 }
 
-func (rot *APLRotation) newValueDotIsActive(config *proto.APLValueDotIsActive) APLValue {
+func (rot *APLRotation) newValueDotIsActive(config *proto.APLValueDotIsActive, uuid *proto.UUID) APLValue {
 	dot := rot.GetAPLDot(rot.GetTargetUnit(config.TargetUnit), config.SpellId)
 	if dot == nil {
 		return nil
@@ -36,7 +36,7 @@ type APLValueDotRemainingTime struct {
 	dot *Dot
 }
 
-func (rot *APLRotation) newValueDotRemainingTime(config *proto.APLValueDotRemainingTime) APLValue {
+func (rot *APLRotation) newValueDotRemainingTime(config *proto.APLValueDotRemainingTime, uuid *proto.UUID) APLValue {
 	dot := rot.GetAPLDot(rot.GetTargetUnit(config.TargetUnit), config.SpellId)
 	if dot == nil {
 		return nil
@@ -60,7 +60,7 @@ type APLValueDotTickFrequency struct {
 	dot *Dot
 }
 
-func (rot *APLRotation) newValueDotTickFrequency(config *proto.APLValueDotTickFrequency) APLValue {
+func (rot *APLRotation) newValueDotTickFrequency(config *proto.APLValueDotTickFrequency, uuid *proto.UUID) APLValue {
 	dot := rot.GetAPLDot(rot.GetTargetUnit(config.TargetUnit), config.SpellId)
 	if dot == nil {
 		return nil

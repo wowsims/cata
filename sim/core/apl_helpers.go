@@ -128,13 +128,13 @@ func (rot *APLRotation) GetAPLICDAura(sourceUnit UnitReference, auraId *proto.Ac
 	return aura
 }
 
-func (rot *APLRotation) GetAPLTrinketProcAuras(statTypesToMatch []stats.Stat, excludeStackingProcs bool, warnIfNoneFound bool) []*StatBuffAura {
+func (rot *APLRotation) GetAPLTrinketProcAuras(statTypesToMatch []stats.Stat, excludeStackingProcs bool, warnIfNoneFound bool, uuid *proto.UUID) []*StatBuffAura {
 	unit := rot.unit
 	character := unit.Env.Raid.GetPlayerFromUnit(unit).GetCharacter()
 	matchingAuras := character.GetMatchingTrinketProcAuras(statTypesToMatch, excludeStackingProcs)
 
 	if (len(matchingAuras) == 0) && warnIfNoneFound {
-		rot.ValidationMessage(proto.LogLevel_Warning, "No trinket proc buffs found for: %s", StringFromStatTypes(statTypesToMatch))
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "No trinket proc buffs found for: %s", StringFromStatTypes(statTypesToMatch))
 	}
 
 	return matchingAuras

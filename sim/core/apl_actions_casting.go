@@ -138,7 +138,7 @@ func (rot *APLRotation) newActionMultidot(config *proto.APLActionMultidot) APLAc
 
 	maxOverlap := rot.coerceTo(rot.newAPLValue(config.MaxOverlap), proto.APLValueType_ValueTypeDuration)
 	if maxOverlap == nil {
-		maxOverlap = rot.newValueConst(&proto.APLValueConst{Val: "0ms"})
+		maxOverlap = rot.newValueConst(&proto.APLValueConst{Val: "0ms"}, &proto.UUID{Value: ""})
 	}
 
 	maxDots := config.MaxDots
@@ -213,7 +213,7 @@ func (rot *APLRotation) newActionMultishield(config *proto.APLActionMultishield)
 
 	maxOverlap := rot.coerceTo(rot.newAPLValue(config.MaxOverlap), proto.APLValueType_ValueTypeDuration)
 	if maxOverlap == nil {
-		maxOverlap = rot.newValueConst(&proto.APLValueConst{Val: "0ms"})
+		maxOverlap = rot.newValueConst(&proto.APLValueConst{Val: "0ms"}, &proto.UUID{Value: ""})
 	}
 
 	maxShields := config.MaxShields

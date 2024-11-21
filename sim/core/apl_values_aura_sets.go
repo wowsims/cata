@@ -20,9 +20,9 @@ type APLValueTrinketStatProcCheck struct {
 	matchingAuras    []*StatBuffAura
 }
 
-func (rot *APLRotation) newTrinketStatProcValue(valueName string, statType1 int32, statType2 int32, statType3 int32, excludeStackingProcs bool, requireMatch bool) *APLValueTrinketStatProcCheck {
+func (rot *APLRotation) newTrinketStatProcValue(valueName string, statType1 int32, statType2 int32, statType3 int32, excludeStackingProcs bool, requireMatch bool, uuid *proto.UUID) *APLValueTrinketStatProcCheck {
 	statTypesToMatch := stats.IntTupleToStatsList(statType1, statType2, statType3)
-	matchingAuras := rot.GetAPLTrinketProcAuras(statTypesToMatch, excludeStackingProcs, requireMatch)
+	matchingAuras := rot.GetAPLTrinketProcAuras(statTypesToMatch, excludeStackingProcs, requireMatch, uuid)
 
 	if (len(matchingAuras) == 0) && requireMatch {
 		return nil
@@ -54,8 +54,8 @@ type APLValueAllTrinketStatProcsActive struct {
 	*APLValueTrinketStatProcCheck
 }
 
-func (rot *APLRotation) newValueAllTrinketStatProcsActive(config *proto.APLValueAllTrinketStatProcsActive) APLValue {
-	parentImpl := rot.newTrinketStatProcValue("AllTrinketStatProcsActive", config.StatType1, config.StatType2, config.StatType3, config.ExcludeStackingProcs, true)
+func (rot *APLRotation) newValueAllTrinketStatProcsActive(config *proto.APLValueAllTrinketStatProcsActive, uuid *proto.UUID) APLValue {
+	parentImpl := rot.newTrinketStatProcValue("AllTrinketStatProcsActive", config.StatType1, config.StatType2, config.StatType3, config.ExcludeStackingProcs, true, uuid)
 
 	if parentImpl == nil {
 		return nil
@@ -82,8 +82,8 @@ type APLValueAnyTrinketStatProcsActive struct {
 	*APLValueTrinketStatProcCheck
 }
 
-func (rot *APLRotation) newValueAnyTrinketStatProcsActive(config *proto.APLValueAnyTrinketStatProcsActive) APLValue {
-	parentImpl := rot.newTrinketStatProcValue("AnyTrinketStatProcsActive", config.StatType1, config.StatType2, config.StatType3, config.ExcludeStackingProcs, true)
+func (rot *APLRotation) newValueAnyTrinketStatProcsActive(config *proto.APLValueAnyTrinketStatProcsActive, uuid *proto.UUID) APLValue {
+	parentImpl := rot.newTrinketStatProcValue("AnyTrinketStatProcsActive", config.StatType1, config.StatType2, config.StatType3, config.ExcludeStackingProcs, true, uuid)
 
 	if parentImpl == nil {
 		return nil
@@ -110,8 +110,8 @@ type APLValueTrinketProcsMinRemainingTime struct {
 	*APLValueTrinketStatProcCheck
 }
 
-func (rot *APLRotation) newValueTrinketProcsMinRemainingTime(config *proto.APLValueTrinketProcsMinRemainingTime) APLValue {
-	parentImpl := rot.newTrinketStatProcValue("TrinketProcsMinRemainingTime", config.StatType1, config.StatType2, config.StatType3, config.ExcludeStackingProcs, true)
+func (rot *APLRotation) newValueTrinketProcsMinRemainingTime(config *proto.APLValueTrinketProcsMinRemainingTime, uuid *proto.UUID) APLValue {
+	parentImpl := rot.newTrinketStatProcValue("TrinketProcsMinRemainingTime", config.StatType1, config.StatType2, config.StatType3, config.ExcludeStackingProcs, true, uuid)
 
 	if parentImpl == nil {
 		return nil
@@ -140,8 +140,8 @@ type APLValueTrinketProcsMaxRemainingICD struct {
 	*APLValueTrinketStatProcCheck
 }
 
-func (rot *APLRotation) newValueTrinketProcsMaxRemainingICD(config *proto.APLValueTrinketProcsMaxRemainingICD) APLValue {
-	parentImpl := rot.newTrinketStatProcValue("TrinketProcsMaxRemainingICD", config.StatType1, config.StatType2, config.StatType3, config.ExcludeStackingProcs, true)
+func (rot *APLRotation) newValueTrinketProcsMaxRemainingICD(config *proto.APLValueTrinketProcsMaxRemainingICD, uuid *proto.UUID) APLValue {
+	parentImpl := rot.newTrinketStatProcValue("TrinketProcsMaxRemainingICD", config.StatType1, config.StatType2, config.StatType3, config.ExcludeStackingProcs, true, uuid)
 
 	if parentImpl == nil {
 		return nil
@@ -170,8 +170,8 @@ type APLValueNumEquippedStatProcTrinkets struct {
 	*APLValueTrinketStatProcCheck
 }
 
-func (rot *APLRotation) newValueNumEquippedStatProcTrinkets(config *proto.APLValueNumEquippedStatProcTrinkets) APLValue {
-	parentImpl := rot.newTrinketStatProcValue("NumEquippedStatProcTrinkets", config.StatType1, config.StatType2, config.StatType3, config.ExcludeStackingProcs, false)
+func (rot *APLRotation) newValueNumEquippedStatProcTrinkets(config *proto.APLValueNumEquippedStatProcTrinkets, uuid *proto.UUID) APLValue {
+	parentImpl := rot.newTrinketStatProcValue("NumEquippedStatProcTrinkets", config.StatType1, config.StatType2, config.StatType3, config.ExcludeStackingProcs, false, uuid)
 
 	return &APLValueNumEquippedStatProcTrinkets{
 		APLValueTrinketStatProcCheck: parentImpl,
