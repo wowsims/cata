@@ -3,6 +3,7 @@ package fire
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/mage"
 )
 
@@ -60,11 +61,7 @@ func (fireMage *FireMage) ApplyTalents() {
 	fireMage.Mage.ApplyTalents()
 
 	// Fire Specialization Bonus
-	fireMage.AddStaticMod(core.SpellModConfig{
-		School:     core.SpellSchoolFire,
-		FloatValue: 0.25,
-		Kind:       core.SpellMod_DamageDone_Pct,
-	})
+	fireMage.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1.25
 
 	fireMastery := fireMage.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  mage.MageSpellFireMastery, // Ignite is done inside
