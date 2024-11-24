@@ -163,6 +163,10 @@ func (rp *runicPowerBar) CurrentRunicPower() float64 {
 	return rp.currentRunicPower
 }
 
+func (rp *runicPowerBar) MaxRunicPower() float64 {
+	return rp.maxRunicPower
+}
+
 func (rp *runicPowerBar) maybeFireChange(sim *Simulation, changeType RuneChangeType) {
 	if changeType != None && rp.onRuneChange != nil {
 		rp.onRuneChange(sim, changeType, rp.lastRegen)
