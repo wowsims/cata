@@ -1789,6 +1789,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-AllItems-VestmentsoftheFacelessShroud"
+ value: {
+  dps: 37219.96842
+  tps: 18169.21186
+ }
+}
+dps_results: {
  key: "TestDemonology-AllItems-VialofShadows-77207"
  value: {
   dps: 36681.46572
