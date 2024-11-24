@@ -150,7 +150,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_SV, Presets.ROTATION_PRESET_AOE],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.SV_P3_PRESET, Presets.SV_P1_PRESET, Presets.SV_PRERAID_PRESET],
+		gear: [Presets.SV_P3_PRESET, Presets.SV_P1_PRESET, Presets.SV_PRERAID_PRESET, Presets.SV_P4_PRESET],
 	},
 
 	autoRotation: (player: Player<Spec.SpecSurvivalHunter>): APLRotation => {
