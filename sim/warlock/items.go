@@ -249,7 +249,7 @@ var ItemSetVestmentsOfTheFacelessShroud = core.NewItemSet(core.ItemSet{
 					warlock.EnableDynamicStatDep(sim, spDep)
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					warlock.EnableDynamicStatDep(sim, spDep)
+					warlock.DisableDynamicStatDep(sim, spDep)
 				},
 			})
 
