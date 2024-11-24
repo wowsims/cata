@@ -39,6 +39,8 @@ type Warlock struct {
 
 	SoulShards   int32
 	SoulBurnAura *core.Aura
+
+	Tier132PSummonDuration int32
 }
 
 func (warlock *Warlock) GetCharacter() *core.Character {
@@ -207,6 +209,7 @@ const (
 	WarlockSpellFelHunterShadowBite
 	WarlockSpellSummonSuccubus
 	WarlockSpellSuccubusLashOfPain
+	WarlockSpellSummonInfernal
 	WarlockSpellDemonSoul
 	WarlockSpellShadowflame
 	WarlockSpellShadowflameDot

@@ -9,7 +9,7 @@ import (
 )
 
 func (warlock *Warlock) registerSummonDoomguard(timer *core.Timer) {
-	duration := time.Duration(45+10*warlock.Talents.AncientGrimoire) * time.Second
+	duration := time.Duration(45+10*warlock.Talents.AncientGrimoire+warlock.Tier132PSummonDuration) * time.Second
 
 	summonDoomguardAura := warlock.RegisterAura(core.Aura{
 		Label:    "Summon Doomguard",
