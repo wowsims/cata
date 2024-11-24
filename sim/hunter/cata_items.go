@@ -121,13 +121,6 @@ var ItemSetWyrmstalkerBattleGear = core.NewItemSet(core.ItemSet{
 				Label:    "Chronohunter",
 				Duration: time.Second * 15,
 				ActionID: core.ActionID{SpellID: 105919},
-				Icd: &core.Cooldown{ // Assume 113sec icd for now
-					Duration: time.Second * 113,
-					Timer:    hunter.NewTimer(),
-				},
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Activate(sim)
-				},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					aura.Unit.MultiplyRangedSpeed(sim, 1.3)
 				},
@@ -135,20 +128,15 @@ var ItemSetWyrmstalkerBattleGear = core.NewItemSet(core.ItemSet{
 					aura.Unit.MultiplyRangedSpeed(sim, 1/1.3)
 				},
 			})
-			hunter.RegisterAura(core.Aura{
-				Label:    "T13 4-set",
-				Duration: core.NeverExpires,
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Activate(sim)
-				},
-				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell != hunter.ArcaneShot {
-						return
-					}
-					procChance := 0.4
-					if sim.RandomFloat("Chronohunter") < procChance {
-						chronoHunter.Activate(sim)
-					}
+
+			core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
+				Name:           "T13 4-set",
+				Callback:       core.CallbackOnCastComplete,
+				ClassSpellMask: HunterSpellArcaneShot,
+				ProcChance:     0.4,
+				ICD:            time.Second * 110,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					chronoHunter.Activate(sim)
 				},
 			})
 		},
