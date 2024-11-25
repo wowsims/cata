@@ -119,6 +119,8 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		return rot.newValueCurrentComboPoints(config.GetCurrentComboPoints())
 	case *proto.APLValue_CurrentRunicPower:
 		return rot.newValueCurrentRunicPower(config.GetCurrentRunicPower())
+	case *proto.APLValue_MaxRunicPower:
+		return rot.newValueMaxRunicPower(config.GetMaxRunicPower())
 
 	// Resources Runes
 	case *proto.APLValue_CurrentRuneCount:

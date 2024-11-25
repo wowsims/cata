@@ -245,3 +245,28 @@ func (value *APLValueCurrentRunicPower) GetInt(sim *Simulation) int32 {
 func (value *APLValueCurrentRunicPower) String() string {
 	return "Current Runic Power"
 }
+
+type APLValueMaxRunicPower struct {
+	DefaultAPLValueImpl
+	maxRunicPower int32
+}
+
+func (rot *APLRotation) newValueMaxRunicPower(_ *proto.APLValueMaxRunicPower) APLValue {
+	unit := rot.unit
+	if !unit.HasRunicPowerBar() {
+		rot.ValidationWarning("%s does not use Runic Power", unit.Label)
+		return nil
+	}
+	return &APLValueMaxRunicPower{
+		maxRunicPower: int32(unit.MaxRunicPower()),
+	}
+}
+func (value *APLValueMaxRunicPower) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeInt
+}
+func (value *APLValueMaxRunicPower) GetInt(sim *Simulation) int32 {
+	return value.maxRunicPower
+}
+func (value *APLValueMaxRunicPower) String() string {
+	return fmt.Sprintf("Max Runic Power(%d)", value.maxRunicPower)
+}
