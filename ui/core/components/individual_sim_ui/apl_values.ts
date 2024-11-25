@@ -1,3 +1,5 @@
+import tippy from 'tippy.js';
+
 import { Player } from '../../player.js';
 import {
 	APLValue,
@@ -88,10 +90,11 @@ import {
 	APLValueWarlockShouldRecastDrainSoul,
 	APLValueWarlockShouldRefreshCorruption,
 } from '../../proto/apl.js';
-import { Class, Spec } from '../../proto/common.js';
+import { Class, Spec, UUID } from '../../proto/common.js';
 import { ShamanTotems_TotemType as TotemType } from '../../proto/shaman.js';
+import { ActionId } from '../../proto_utils/action_id';
 import { EventID } from '../../typed_event.js';
-import { randomUUID } from '../../utils';
+import { existsInDOM, randomUUID } from '../../utils';
 import { Input, InputConfig } from '../input.js';
 import { TextDropdownPicker, TextDropdownValueConfig } from '../pickers/dropdown_picker.jsx';
 import { ListItemPickerConfig, ListPicker } from '../pickers/list_picker.jsx';
@@ -120,6 +123,16 @@ export class APLValuePicker extends Input<Player<any>, APLValue | undefined> {
 		const allValueKinds = (Object.keys(valueKindFactories) as Array<NonNullable<APLValueKind>>).filter(
 			valueKind => valueKindFactories[valueKind].includeIf?.(player, isPrepull) ?? true,
 		);
+
+
+		if (this.rootElem.parentElement!.classList.contains('list-picker-item')) {
+			const itemHeaderElem = ListPicker.getItemHeaderElem(this) || this.rootElem;
+			ListPicker.makeListItemValidations(
+				itemHeaderElem,
+				player,
+				player => player.getCurrentStats().rotationStats?.uuidValidations?.find(v => v.uuid?.value === this.rootElem.id)?.validations || [],
+			);
+		}
 
 		this.kindPicker = new TextDropdownPicker(this.rootElem, player, {
 			defaultLabel: 'No Condition',
@@ -241,6 +254,7 @@ export class APLValuePicker extends Input<Player<any>, APLValue | undefined> {
 						return val;
 					})(),
 				},
+				uuid: { value: randomUUID() },
 			});
 		}
 	}
@@ -252,15 +266,29 @@ export class APLValuePicker extends Input<Player<any>, APLValue | undefined> {
 		if (newKind && newValue) {
 			this.valuePicker!.setInputValue((newValue.value as any)[newKind]);
 		}
+
+		if (newValue) {
+			if (!newValue.uuid || newValue.uuid.value == "") {
+				newValue.uuid = {
+					value: randomUUID()
+				}
+			}
+			this.rootElem.id = newValue.uuid!.value;
+		}
 	}
 
 	private makeAPLValue<K extends NonNullable<APLValueKind>>(kind: K, implVal: APLValueImplTypesUnion[K]): APLValue {
 		if (!kind) {
-			return APLValue.create();
+			return APLValue.create({
+				uuid: { value: randomUUID() },
+			});
 		}
 		const obj: any = { oneofKind: kind };
 		obj[kind] = implVal;
-		return APLValue.create({ value: obj });
+		return APLValue.create({
+			value: obj,
+			uuid: { value: randomUUID() },
+		});
 	}
 
 	private updateValuePicker(newKind: APLValueKind) {
@@ -398,7 +426,10 @@ export function valueFieldConfig(
 ): AplHelpers.APLPickerBuilderFieldConfig<any, any> {
 	return {
 		field: field,
-		newValue: APLValue.create,
+		newValue: () =>
+			APLValue.create({
+			uuid: { value: randomUUID() },
+		}),
 		factory: (parent, player, config) => new APLValuePicker(parent, player, config),
 		...(options || {}),
 	};
@@ -416,11 +447,20 @@ export function valueListFieldConfig(field: string): AplHelpers.APLPickerBuilder
 					config.setValue(
 						eventID,
 						player,
-						newValue.map(val => val || APLValue.create()),
+						newValue.map(val => {
+							return val ||
+							APLValue.create({
+								uuid: { value: randomUUID() },
+							})
+						}),
 					);
 				},
 				itemLabel: 'Value',
-				newItem: APLValue.create,
+				newItem: () => {
+					return APLValue.create({
+						uuid: { value: randomUUID() },
+					})
+				},
 				copyItem: (oldValue: APLValue | undefined) => (oldValue ? APLValue.clone(oldValue) : oldValue),
 				newItemPicker: (
 					parent: HTMLElement,

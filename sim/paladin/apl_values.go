@@ -8,7 +8,7 @@ import (
 func (paladin *Paladin) NewAPLValue(rot *core.APLRotation, config *proto.APLValue) core.APLValue {
 	switch config.Value.(type) {
 	case *proto.APLValue_CurrentHolyPower:
-		return paladin.newValueCurrentHolyPower(config.GetCurrentHolyPower())
+		return paladin.newValueCurrentHolyPower(config.GetCurrentHolyPower(), config.Uuid)
 	default:
 		return nil
 	}
@@ -19,7 +19,7 @@ type APLValueCurrentHolyPower struct {
 	paladin *Paladin
 }
 
-func (paladin *Paladin) newValueCurrentHolyPower(_ *proto.APLValueCurrentHolyPower) core.APLValue {
+func (paladin *Paladin) newValueCurrentHolyPower(_ *proto.APLValueCurrentHolyPower, uuid *proto.UUID) core.APLValue {
 	if !paladin.HasHolyPowerBar() {
 		return nil
 	}

@@ -82,8 +82,10 @@ message APLAction {
     }
 }
 
-// NextIndex: 87
+// NextIndex: 88
 message APLValue {
+	UUID uuid = 87;
+
     oneof value {
         // Operators
         APLValueConst const = 1;
