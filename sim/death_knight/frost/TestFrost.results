@@ -2534,49 +2534,49 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Settings-Orc-p3.masterfrost-TwoHand-Basic-masterfrost-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 133014.74783
-  tps: 130582.50174
-  hps: 246.12292
+  dps: 122767.5033
+  tps: 120345.57298
+  hps: 245.34405
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p3.masterfrost-TwoHand-Basic-masterfrost-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 30450.44615
-  tps: 28009.23476
-  hps: 250.01727
+  dps: 30553.16477
+  tps: 28106.04307
+  hps: 251.57501
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p3.masterfrost-TwoHand-Basic-masterfrost-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 38636.23621
-  tps: 32537.12381
+  dps: 38835.93118
+  tps: 32747.02713
   hps: 264.8158
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p3.masterfrost-TwoHand-Basic-masterfrost-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 85988.0659
-  tps: 84273.92559
-  hps: 190.99403
+  dps: 80683.31556
+  tps: 78981.71336
+  hps: 193.10835
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p3.masterfrost-TwoHand-Basic-masterfrost-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 20153.31191
-  tps: 18450.95918
-  hps: 193.81312
+  dps: 20151.55211
+  tps: 18448.08132
+  hps: 192.40358
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p3.masterfrost-TwoHand-Basic-masterfrost-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 24030.81876
-  tps: 19524.34534
-  hps: 158.57437
+  dps: 23929.81508
+  tps: 19436.86871
+  hps: 148.00275
  }
 }
 dps_results: {
@@ -2678,49 +2678,49 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Settings-Worgen-p3.masterfrost-TwoHand-Basic-masterfrost-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 132925.30001
-  tps: 130596.0985
-  hps: 242.20571
+  dps: 122551.09528
+  tps: 120229.85276
+  hps: 242.98451
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Worgen-p3.masterfrost-TwoHand-Basic-masterfrost-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 30070.40796
-  tps: 27743.23024
-  hps: 247.65729
+  dps: 30300.37543
+  tps: 27935.4463
+  hps: 249.21488
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Worgen-p3.masterfrost-TwoHand-Basic-masterfrost-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 38150.22848
-  tps: 32145.84803
-  hps: 260.89683
+  dps: 38366.37359
+  tps: 32412.13267
+  hps: 264.79081
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Worgen-p3.masterfrost-TwoHand-Basic-masterfrost-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 85837.37187
-  tps: 84156.53737
-  hps: 190.97505
+  dps: 80034.1915
+  tps: 78378.67504
+  hps: 194.49858
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Worgen-p3.masterfrost-TwoHand-Basic-masterfrost-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 20043.64147
-  tps: 18369.82803
-  hps: 193.79387
+  dps: 20055.40831
+  tps: 18402.23803
+  hps: 193.08917
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Worgen-p3.masterfrost-TwoHand-Basic-masterfrost-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 23878.4648
-  tps: 19441.53449
-  hps: 158.55862
+  dps: 23817.1829
+  tps: 19389.9972
+  hps: 151.51157
  }
 }
 dps_results: {

@@ -613,7 +613,13 @@
 				"condition": {
 					"or": {
 						"vals": [
-							{ "cmp": { "op": "OpGe", "lhs": { "currentRunicPower": {} }, "rhs": { "const": { "val": "105" } } } },
+							{
+								"cmp": {
+									"op": "OpGe",
+									"lhs": { "currentRunicPower": {} },
+									"rhs": { "math": { "op": "OpSub", "lhs": { "maxRunicPower": {} }, "rhs": { "const": { "val": "15" } } } }
+								}
+							},
 							{
 								"and": {
 									"vals": [
@@ -668,7 +674,13 @@
 				"condition": {
 					"and": {
 						"vals": [
-							{ "cmp": { "op": "OpGe", "lhs": { "currentRunicPower": {} }, "rhs": { "const": { "val": "100" } } } },
+							{
+								"cmp": {
+									"op": "OpGe",
+									"lhs": { "currentRunicPower": {} },
+									"rhs": { "math": { "op": "OpSub", "lhs": { "maxRunicPower": {} }, "rhs": { "const": { "val": "20" } } } }
+								}
+							},
 							{
 								"or": {
 									"vals": [
@@ -747,7 +759,13 @@
 				"condition": {
 					"and": {
 						"vals": [
-							{ "cmp": { "op": "OpLe", "lhs": { "currentRunicPower": {} }, "rhs": { "const": { "val": "90" } } } },
+							{
+								"cmp": {
+									"op": "OpLe",
+									"lhs": { "currentRunicPower": {} },
+									"rhs": { "math": { "op": "OpSub", "lhs": { "maxRunicPower": {} }, "rhs": { "const": { "val": "30" } } } }
+								}
+							},
 							{
 								"or": {
 									"vals": [
@@ -869,7 +887,15 @@
 										{
 											"and": {
 												"vals": [
-													{ "cmp": { "op": "OpLe", "lhs": { "currentRunicPower": {} }, "rhs": { "const": { "val": "90" } } } },
+													{
+														"cmp": {
+															"op": "OpLe",
+															"lhs": { "currentRunicPower": {} },
+															"rhs": {
+																"math": { "op": "OpSub", "lhs": { "maxRunicPower": {} }, "rhs": { "const": { "val": "30" } } }
+															}
+														}
+													},
 													{
 														"cmp": {
 															"op": "OpLt",
@@ -943,7 +969,15 @@
 										{
 											"and": {
 												"vals": [
-													{ "cmp": { "op": "OpLe", "lhs": { "currentRunicPower": {} }, "rhs": { "const": { "val": "70" } } } },
+													{
+														"cmp": {
+															"op": "OpLe",
+															"lhs": { "currentRunicPower": {} },
+															"rhs": {
+																"math": { "op": "OpSub", "lhs": { "maxRunicPower": {} }, "rhs": { "const": { "val": "50" } } }
+															}
+														}
+													},
 													{
 														"cmp": {
 															"op": "OpLt",
