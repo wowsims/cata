@@ -75,7 +75,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 					20
 				],
 				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0.89],
+				postCapEPs: [0.89 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
 			});
 
 			return [hasteSoftCapConfig];
@@ -150,7 +150,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_SV, Presets.ROTATION_PRESET_AOE],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.SV_P3_PRESET, Presets.SV_P1_PRESET, Presets.SV_PRERAID_PRESET],
+		gear: [Presets.SV_P3_PRESET, Presets.SV_P1_PRESET, Presets.SV_PRERAID_PRESET, Presets.SV_P4_PRESET],
 	},
 
 	autoRotation: (player: Player<Spec.SpecSurvivalHunter>): APLRotation => {

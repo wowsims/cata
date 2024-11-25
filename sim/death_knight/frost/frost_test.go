@@ -43,7 +43,7 @@ func TestFrost(t *testing.T) {
 
 var DualWieldTalents = "2032-20330022233112012301-003"
 var TwoHandTalents = "103-32030022233112012031-033"
-var MasterfrostTalents = "2032-20330022233112012301-03"
+var MasterfrostTalents = "2032-30330012233112012301-03"
 
 var FrostDefaultGlyphs = &proto.Glyphs{
 	Prime1: int32(proto.DeathKnightPrimeGlyph_GlyphOfFrostStrike),
