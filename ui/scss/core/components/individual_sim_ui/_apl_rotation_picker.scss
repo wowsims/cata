@@ -60,26 +60,20 @@
 
 	.apl-validation-information {
 		color: var(--bs-off-white) !important;
-		text-shadow:
-		0 0 var(--spacer-2) var(--bs-link-color),
-		0 0 var(--spacer-2) var(--bs-link-color),
-		0 0 var(--spacer-2) var(--bs-link-color);
+		text-shadow: 0 0 var(--spacer-2) var(--bs-link-color);
 	}
 
 	.apl-validation-warning {
 		color: var(--bs-link-warning) !important;
 		text-shadow:
-		0 0 var(--spacer-2) var(--bs-danger),
-		0 0 var(--spacer-2) var(--bs-danger),
-		0 0 var(--spacer-2) var(--bs-danger);
+			0 0 var(--spacer-2) var(--bs-danger),
+			0 0 var(--spacer-2) var(--bs-danger),
+			0 0 var(--spacer-2) var(--bs-danger);
 	}
 
 	.apl-validation-error {
 		color: var(--bs-danger) !important;
-		text-shadow:
-		0 0 var(--spacer-2) var(--bs-off-white),
-		0 0 var(--spacer-2) var(--bs-off-white),
-		0 0 var(--spacer-2) var(--bs-off-white);
+		text-shadow: 0 0 var(--spacer-2) var(--bs-off-white);
 	}
 }
 
