@@ -39,8 +39,6 @@ type Warlock struct {
 
 	SoulShards   int32
 	SoulBurnAura *core.Aura
-
-	Tier132PSummonDuration int32
 }
 
 func (warlock *Warlock) GetCharacter() *core.Character {
@@ -127,6 +125,14 @@ func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 
 func (warlock *Warlock) Reset(sim *core.Simulation) {
 	warlock.SoulShards = 3
+}
+
+func (warlock *Warlock) AddSoulShard() {
+	warlock.SoulShards = min(warlock.SoulShards+1, 3)
+}
+
+func (warlock *Warlock) RemoveSoulShard() {
+	warlock.SoulShards = max(warlock.SoulShards-1, 0)
 }
 
 func NewWarlock(character *core.Character, options *proto.Player, warlockOptions *proto.WarlockOptions) *Warlock {

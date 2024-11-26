@@ -59,7 +59,7 @@ func (warlock *Warlock) registerSoulFire() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if hasT134P && warlock.SoulBurnAura.IsActive() {
-				warlock.SoulShards += 1
+				warlock.AddSoulShard()
 			}
 
 			warlock.SoulBurnAura.Deactivate(sim)

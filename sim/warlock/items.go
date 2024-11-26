@@ -234,8 +234,6 @@ var ItemSetVestmentsOfTheFacelessShroud = core.NewItemSet(core.ItemSet{
 				TimeValue: -time.Minute * 4,
 				ClassMask: WarlockSpellSummonDoomguard | WarlockSpellSummonInfernal,
 			})
-
-			warlock.Tier132PSummonDuration = core.TernaryInt32(warlock.Spec == proto.Spec_SpecDemonologyWarlock, 20, 30)
 		},
 		4: func(agent core.Agent) {
 			warlock := agent.(WarlockAgent).GetWarlock()
@@ -266,3 +264,12 @@ var ItemSetVestmentsOfTheFacelessShroud = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+func (warlock *Warlock) Calc2PT13SummonDuration() int32 {
+	has2PT13 := warlock.HasSetBonus(ItemSetVestmentsOfTheFacelessShroud, 2)
+	if has2PT13 {
+		return core.TernaryInt32(warlock.Spec == proto.Spec_SpecDemonologyWarlock, 20, 30)
+	} else {
+		return 0
+	}
+}

@@ -10,7 +10,7 @@ import (
 )
 
 func (warlock *Warlock) registerSummonInfernal(timer *core.Timer) {
-	duration := time.Duration(45+10*warlock.Talents.AncientGrimoire+warlock.Tier132PSummonDuration) * time.Second
+	duration := time.Duration(45+10*warlock.Talents.AncientGrimoire+warlock.Calc2PT13SummonDuration()) * time.Second
 
 	summonInfernalAura := warlock.RegisterAura(core.Aura{
 		Label:    "Summon Infernal",
