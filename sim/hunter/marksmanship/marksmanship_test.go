@@ -25,11 +25,11 @@ func TestMM(t *testing.T) {
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
 		Rotation:    core.GetAplRotation("../../../ui/hunter/marksmanship/apls", "mm"),
 		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../../ui/hunter/marksmanship/apls", "mm_advanced"),
+			core.GetAplRotation("../../../ui/hunter/marksmanship/apls", "mm"),
 		},
 
-		ItemFilter:         ItemFilter,
-		StartingDistance:   5.1,
+		ItemFilter:       ItemFilter,
+		StartingDistance: 5.1,
 	}))
 }
 

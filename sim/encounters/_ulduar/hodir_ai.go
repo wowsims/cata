@@ -238,7 +238,7 @@ func (ai *HodirAI) registerBuffsDebuffs(target *core.Target) {
 		Duration:  time.Second * 25,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			oldValue := 1.0 + float64(oldStacks)*0.02
-			newValue := 1.0 + float64(newStacks)*0.02
+			newValue := 1.0 + float64(newStacks, uuid*proto.UUID)*0.02
 
 			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] /= oldValue
 			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] /= oldValue

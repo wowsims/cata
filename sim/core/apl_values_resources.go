@@ -11,13 +11,13 @@ type APLValueCurrentHealth struct {
 	unit UnitReference
 }
 
-func (rot *APLRotation) newValueCurrentHealth(config *proto.APLValueCurrentHealth) APLValue {
+func (rot *APLRotation) newValueCurrentHealth(config *proto.APLValueCurrentHealth, uuid *proto.UUID) APLValue {
 	unit := rot.GetSourceUnit(config.SourceUnit)
 	if unit.Get() == nil {
 		return nil
 	}
 	if !unit.Get().HasHealthBar() {
-		rot.ValidationWarning("%s does not use Health", unit.Get().Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Health", unit.Get().Label)
 		return nil
 	}
 	return &APLValueCurrentHealth{
@@ -39,13 +39,13 @@ type APLValueCurrentHealthPercent struct {
 	unit UnitReference
 }
 
-func (rot *APLRotation) newValueCurrentHealthPercent(config *proto.APLValueCurrentHealthPercent) APLValue {
+func (rot *APLRotation) newValueCurrentHealthPercent(config *proto.APLValueCurrentHealthPercent, uuid *proto.UUID) APLValue {
 	unit := rot.GetSourceUnit(config.SourceUnit)
 	if unit.Get() == nil {
 		return nil
 	}
 	if !unit.Get().HasHealthBar() {
-		rot.ValidationWarning("%s does not use Health", unit.Get().Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Health", unit.Get().Label)
 		return nil
 	}
 	return &APLValueCurrentHealthPercent{
@@ -67,13 +67,13 @@ type APLValueCurrentMana struct {
 	unit UnitReference
 }
 
-func (rot *APLRotation) newValueCurrentMana(config *proto.APLValueCurrentMana) APLValue {
+func (rot *APLRotation) newValueCurrentMana(config *proto.APLValueCurrentMana, uuid *proto.UUID) APLValue {
 	unit := rot.GetSourceUnit(config.SourceUnit)
 	if unit.Get() == nil {
 		return nil
 	}
 	if !unit.Get().HasManaBar() {
-		rot.ValidationWarning("%s does not use Mana", unit.Get().Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Mana", unit.Get().Label)
 		return nil
 	}
 	return &APLValueCurrentMana{
@@ -95,13 +95,13 @@ type APLValueCurrentManaPercent struct {
 	unit UnitReference
 }
 
-func (rot *APLRotation) newValueCurrentManaPercent(config *proto.APLValueCurrentManaPercent) APLValue {
+func (rot *APLRotation) newValueCurrentManaPercent(config *proto.APLValueCurrentManaPercent, uuid *proto.UUID) APLValue {
 	unit := rot.GetSourceUnit(config.SourceUnit)
 	if unit.Get() == nil {
 		return nil
 	}
 	if !unit.Get().HasManaBar() {
-		rot.ValidationWarning("%s does not use Mana", unit.Get().Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Mana", unit.Get().Label)
 		return nil
 	}
 	return &APLValueCurrentManaPercent{
@@ -123,10 +123,10 @@ type APLValueCurrentRage struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueCurrentRage(config *proto.APLValueCurrentRage) APLValue {
+func (rot *APLRotation) newValueCurrentRage(config *proto.APLValueCurrentRage, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasRageBar() {
-		rot.ValidationWarning("%s does not use Rage", unit.Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Rage", unit.Label)
 		return nil
 	}
 	return &APLValueCurrentRage{
@@ -148,10 +148,10 @@ type APLValueCurrentFocus struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueCurrentFocus(config *proto.APLValueCurrentFocus) APLValue {
+func (rot *APLRotation) newValueCurrentFocus(config *proto.APLValueCurrentFocus, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasFocusBar() {
-		rot.ValidationWarning("%s does not use Focus", unit.Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Focus", unit.Label)
 		return nil
 	}
 	return &APLValueCurrentFocus{
@@ -176,10 +176,10 @@ type APLValueCurrentEnergy struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueCurrentEnergy(config *proto.APLValueCurrentEnergy) APLValue {
+func (rot *APLRotation) newValueCurrentEnergy(config *proto.APLValueCurrentEnergy, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasEnergyBar() {
-		rot.ValidationWarning("%s does not use Energy", unit.Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Energy", unit.Label)
 		return nil
 	}
 	return &APLValueCurrentEnergy{
@@ -201,10 +201,10 @@ type APLValueCurrentComboPoints struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueCurrentComboPoints(config *proto.APLValueCurrentComboPoints) APLValue {
+func (rot *APLRotation) newValueCurrentComboPoints(config *proto.APLValueCurrentComboPoints, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasEnergyBar() {
-		rot.ValidationWarning("%s does not use Combo Points", unit.Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Combo Points", unit.Label)
 		return nil
 	}
 	return &APLValueCurrentComboPoints{
@@ -226,10 +226,10 @@ type APLValueCurrentRunicPower struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueCurrentRunicPower(config *proto.APLValueCurrentRunicPower) APLValue {
+func (rot *APLRotation) newValueCurrentRunicPower(config *proto.APLValueCurrentRunicPower, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasRunicPowerBar() {
-		rot.ValidationWarning("%s does not use Runic Power", unit.Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Runic Power", unit.Label)
 		return nil
 	}
 	return &APLValueCurrentRunicPower{
@@ -244,4 +244,29 @@ func (value *APLValueCurrentRunicPower) GetInt(sim *Simulation) int32 {
 }
 func (value *APLValueCurrentRunicPower) String() string {
 	return "Current Runic Power"
+}
+
+type APLValueMaxRunicPower struct {
+	DefaultAPLValueImpl
+	maxRunicPower int32
+}
+
+func (rot *APLRotation) newValueMaxRunicPower(_ *proto.APLValueMaxRunicPower, uuid *proto.UUID) APLValue {
+	unit := rot.unit
+	if !unit.HasRunicPowerBar() {
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Error, "%s does not use Runic Power", unit.Label)
+		return nil
+	}
+	return &APLValueMaxRunicPower{
+		maxRunicPower: int32(unit.MaxRunicPower()),
+	}
+}
+func (value *APLValueMaxRunicPower) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeInt
+}
+func (value *APLValueMaxRunicPower) GetInt(sim *Simulation) int32 {
+	return value.maxRunicPower
+}
+func (value *APLValueMaxRunicPower) String() string {
+	return fmt.Sprintf("Max Runic Power(%d)", value.maxRunicPower)
 }

@@ -11,7 +11,7 @@ type APLValueCurrentTime struct {
 	DefaultAPLValueImpl
 }
 
-func (rot *APLRotation) newValueCurrentTime(config *proto.APLValueCurrentTime) APLValue {
+func (rot *APLRotation) newValueCurrentTime(config *proto.APLValueCurrentTime, _ *proto.UUID) APLValue {
 	return &APLValueCurrentTime{}
 }
 func (value *APLValueCurrentTime) Type() proto.APLValueType {
@@ -28,7 +28,7 @@ type APLValueCurrentTimePercent struct {
 	DefaultAPLValueImpl
 }
 
-func (rot *APLRotation) newValueCurrentTimePercent(config *proto.APLValueCurrentTimePercent) APLValue {
+func (rot *APLRotation) newValueCurrentTimePercent(config *proto.APLValueCurrentTimePercent, _ *proto.UUID) APLValue {
 	return &APLValueCurrentTimePercent{}
 }
 func (value *APLValueCurrentTimePercent) Type() proto.APLValueType {
@@ -45,7 +45,7 @@ type APLValueRemainingTime struct {
 	DefaultAPLValueImpl
 }
 
-func (rot *APLRotation) newValueRemainingTime(config *proto.APLValueRemainingTime) APLValue {
+func (rot *APLRotation) newValueRemainingTime(config *proto.APLValueRemainingTime, _ *proto.UUID) APLValue {
 	return &APLValueRemainingTime{}
 }
 func (value *APLValueRemainingTime) Type() proto.APLValueType {
@@ -62,7 +62,7 @@ type APLValueRemainingTimePercent struct {
 	DefaultAPLValueImpl
 }
 
-func (rot *APLRotation) newValueRemainingTimePercent(config *proto.APLValueRemainingTimePercent) APLValue {
+func (rot *APLRotation) newValueRemainingTimePercent(config *proto.APLValueRemainingTimePercent, _ *proto.UUID) APLValue {
 	return &APLValueRemainingTimePercent{}
 }
 func (value *APLValueRemainingTimePercent) Type() proto.APLValueType {
@@ -79,7 +79,7 @@ type APLValueNumberTargets struct {
 	DefaultAPLValueImpl
 }
 
-func (rot *APLRotation) newValueNumberTargets(config *proto.APLValueNumberTargets) APLValue {
+func (rot *APLRotation) newValueNumberTargets(config *proto.APLValueNumberTargets, _ *proto.UUID) APLValue {
 	return &APLValueNumberTargets{}
 }
 func (value *APLValueNumberTargets) Type() proto.APLValueType {
@@ -97,7 +97,7 @@ type APLValueIsExecutePhase struct {
 	threshold proto.APLValueIsExecutePhase_ExecutePhaseThreshold
 }
 
-func (rot *APLRotation) newValueIsExecutePhase(config *proto.APLValueIsExecutePhase) APLValue {
+func (rot *APLRotation) newValueIsExecutePhase(config *proto.APLValueIsExecutePhase, _ *proto.UUID) APLValue {
 	if config.Threshold == proto.APLValueIsExecutePhase_Unknown {
 		return nil
 	}

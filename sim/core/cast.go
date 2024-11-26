@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"math"
 	"time"
+
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 // A cast corresponds to any action which causes the in-game castbar to be
@@ -74,7 +76,7 @@ type CastSuccessFunc func(*Simulation, *Unit) bool
 
 func (spell *Spell) castFailureHelper(sim *Simulation, message string, vals ...any) bool {
 	if sim.CurrentTime < 0 && spell.Unit.Rotation != nil {
-		spell.Unit.Rotation.ValidationWarning(fmt.Sprintf(spell.ActionID.String()+" failed to cast: "+message, vals...))
+		spell.Unit.Rotation.ValidationMessage(proto.LogLevel_Warning, fmt.Sprintf(spell.ActionID.String()+" failed to cast: "+message, vals...))
 	} else {
 		if sim.Log != nil && !spell.Flags.Matches(SpellFlagNoLogs) {
 			spell.Unit.Log(sim, fmt.Sprintf(spell.ActionID.String()+" failed to cast: "+message, vals...))
