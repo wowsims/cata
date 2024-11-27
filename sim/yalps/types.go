@@ -22,8 +22,10 @@ type Model struct {
 	Objective   string                  `json:"objective"`
 	Constraints map[string]Constraint   `json:"constraints"`
 	Variables   map[string]Coefficients `json:"variables"`
-	Integers    interface{}             `json:"integers,omitempty"`
-	Binaries    interface{}             `json:"binaries"`
+	AllIntegers bool                    `json:"allIntegers"`
+	Integers    []string                `json:"integers,omitempty"`
+	AllBinaries bool                    `json:"allBinaries"`
+	Binaries    []string                `json:"binaries,omitempty"`
 }
 
 type SolutionStatus string

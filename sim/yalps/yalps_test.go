@@ -21,6 +21,32 @@ type TestCase struct {
 	Name     string
 	Model    Model            `json:"model"`
 	Expected ExpectedSolution `json:"expected"`
+	Options  Options          `json:"options"`
+}
+
+func mergeOptions(defaults, overrides Options) Options {
+	if overrides.Precision != 0 {
+		defaults.Precision = overrides.Precision
+	}
+	if overrides.CheckCycles {
+		defaults.CheckCycles = overrides.CheckCycles
+	}
+	if overrides.MaxPivots != 0 {
+		defaults.MaxPivots = overrides.MaxPivots
+	}
+	if overrides.Tolerance != 0 {
+		defaults.Tolerance = overrides.Tolerance
+	}
+	if overrides.Timeout != 0 {
+		defaults.Timeout = overrides.Timeout
+	}
+	if overrides.MaxIterations != 0 {
+		defaults.MaxIterations = overrides.MaxIterations
+	}
+	if overrides.IncludeZeroVars {
+		defaults.IncludeZeroVars = overrides.IncludeZeroVars
+	}
+	return defaults
 }
 
 func TestSolver(t *testing.T) {
@@ -62,17 +88,17 @@ func TestSolver(t *testing.T) {
 				Objective:   tc.Model.Objective,
 				Constraints: constraints,
 				Variables:   variables,
+				AllBinaries: tc.Model.AllBinaries,
+				AllIntegers: tc.Model.AllIntegers,
 				Integers:    tc.Model.Integers,
 				Binaries:    tc.Model.Binaries,
 			}
 
 			// Set up solver options.
 
-			options := defaultOptions()
-
+			options := mergeOptions(defaultOptions(), tc.Options)
 			t.Logf("Running %s: Model Direction=%s, Objective=%s", tc.Name, model.Direction, model.Objective)
-			t.Logf("Constraints: %+v", model.Constraints)
-			t.Logf("Variables: %+v", model.Variables)
+
 			// Execute the solver.
 			solution := Solve(model, &options)
 			t.Logf("%s Solution: %+v", tc.Name, solution)
@@ -104,6 +130,10 @@ func TestSolver(t *testing.T) {
 			// Optionally, assert that no unexpected variables are present.
 			if len(tc.Expected.Variables) != len(solution.Variables) {
 				t.Errorf("Expected %d variables, but got %d", len(tc.Expected.Variables), len(solution.Variables))
+			}
+
+			if !t.Failed() {
+				t.Logf("Test case '%s' passed successfully!", tc.Name)
 			}
 		})
 	}

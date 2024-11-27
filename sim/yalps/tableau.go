@@ -1,6 +1,8 @@
 package yalps
 
-import "math"
+import (
+	"math"
+)
 
 type Tableau struct {
 	Matrix             []float64
@@ -46,19 +48,16 @@ func tableauModel(model Model) TableauModel {
 	binaryConstraintCols := make([]int, 0) // Initialize binaryConstraintCols
 	// Process Binaries
 	if model.Binaries != nil {
-		if allBinaries, ok := model.Binaries.(bool); ok && allBinaries {
-			// All variables are binary
-			for i := 1; i <= len(variables); i++ {
-				integers = append(integers, i)
-				binaryConstraintCols = append(binaryConstraintCols, i)
+		for _, varName := range model.Binaries {
+			if varIndex, exists := variableIndices[varName]; exists {
+				integers = append(integers, varIndex)
+				binaryConstraintCols = append(binaryConstraintCols, varIndex)
 			}
-		} else if binaryVars, ok := model.Binaries.([]string); ok {
-			for _, varName := range binaryVars {
-				if varIndex, exists := variableIndices[varName]; exists {
-					integers = append(integers, varIndex)
-					binaryConstraintCols = append(binaryConstraintCols, varIndex)
-				}
-			}
+		}
+	} else if model.AllBinaries {
+		for i := 1; i <= len(variables); i++ {
+			integers = append(integers, i)
+			binaryConstraintCols = append(binaryConstraintCols, i)
 		}
 	}
 	// Handle Integers field similarly if necessary

@@ -4,45 +4,45 @@
     "objective": "objective",
     "variables": {
       "x1": {
-        "c0": 100,
-        "c1": 4,
-        "c2": 2,
+        "c1": 1,
+        "c2": 0,
         "c3": 1,
-        "c4": 25,
-        "objective": 2
+        "c4": 3,
+        "c5": 5,
+        "objective": 3
       },
       "x2": {
-        "c0": 1,
-        "c1": 1,
+        "c1": 0,
         "c2": 1,
         "c3": 1,
-        "c4": 40,
-        "objective": 1
+        "c4": 2,
+        "c5": 4,
+        "objective": 5
       }
     },
     "constraints": {
-      "c0": {
-        "min": 50
-      },
       "c1": {
-        "min": 8
+        "max": 4
       },
       "c2": {
-        "min": 7
+        "min": 6
       },
       "c3": {
-        "min": 6.5
+        "min": 8
       },
       "c4": {
-        "min": 200
+        "min": 18
+      },
+      "c5": {
+        "min": 32
       }
     }
   },
   "expected": {
     "status": "optimal",
-    "result": 7,
+    "result": 36,
     "variables": {
-      "x1": 0.5,
+      "x1": 2,
       "x2": 6
     }
   }

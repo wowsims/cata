@@ -11,7 +11,8 @@
       "chair": {
         "wood": 20,
         "labor": 10,
-        "profit": 8
+        "profit": 8,
+        "chairs": 1
       }
     },
     "constraints": {
@@ -20,15 +21,22 @@
       },
       "labor": {
         "max": 110
+      },
+      "chairs": {
+        "max": 8
       }
-    }
+    },
+    "integers": [
+      "table",
+      "chair"
+    ]
   },
   "expected": {
     "status": "optimal",
-    "result": 96,
+    "result": 88,
     "variables": {
       "table": 4,
-      "chair": 9
+      "chair": 8
     }
   }
 }
