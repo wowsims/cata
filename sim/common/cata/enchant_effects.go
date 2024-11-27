@@ -576,4 +576,22 @@ func init() {
 
 		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(4267, aura)
 	})
+
+	movementSpeedEnchants := []int32{
+		3232, // Enchant Boots - Tuskarr's Vitality
+		4104, // Enchant Boots - Lavawalker
+		4105, // Enchant Boots - Assassin's Step
+		4062, // Enchant Boots - Earthen Vitality
+	}
+
+	for _, enchantID := range movementSpeedEnchants {
+		core.NewEnchantEffect(enchantID, func(agent core.Agent) {
+			character := agent.GetCharacter()
+
+			// Exclusive with other movement speed passives
+			if character.PseudoStats.MovementSpeedMultiplier < 1.08 {
+				character.PseudoStats.MovementSpeedMultiplier = 1.08
+			}
+		})
+	}
 }

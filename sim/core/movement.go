@@ -76,7 +76,7 @@ func (unit *Unit) UpdatePosition(sim *Simulation) {
 		return
 	}
 
-	unit.OnMovement(unit.DistanceFromTarget, MovementUpdate)
+	unit.OnMovement(sim, unit.DistanceFromTarget, MovementUpdate)
 
 	// update auto attack state
 	if unit.AutoAttacks.mh.enabled != unit.AutoAttacks.mh.IsInRange() {
@@ -109,7 +109,7 @@ func (unit *Unit) FinalizeMovement(sim *Simulation) {
 	unit.UpdatePosition(sim)
 	unit.moveAura.Deactivate(sim)
 
-	unit.OnMovement(unit.DistanceFromTarget, MovementEnd)
+	unit.OnMovement(sim, unit.DistanceFromTarget, MovementEnd)
 }
 
 func registerMovementAction(unit *Unit, sim *Simulation, speed float64, endTime time.Duration) {
@@ -130,7 +130,7 @@ func registerMovementAction(unit *Unit, sim *Simulation, speed float64, endTime 
 		unit.FinalizeMovement(sim)
 	}
 
-	unit.OnMovement(unit.DistanceFromTarget, MovementStart)
+	unit.OnMovement(sim, unit.DistanceFromTarget, MovementStart)
 	unit.movementAction = &movementAction
 	sim.AddPendingAction(&movementAction.PendingAction)
 }
@@ -143,15 +143,15 @@ const (
 	MovementEnd
 )
 
-type MovementCallback func(position float64, kind MovementUpdateType)
+type MovementCallback func(sim *Simulation, position float64, kind MovementUpdateType)
 
 func (unit *Unit) RegisterMovementCallback(callback MovementCallback) {
 	unit.movementCallbacks = append(unit.movementCallbacks, callback)
 }
 
-func (unit *Unit) OnMovement(position float64, kind MovementUpdateType) {
+func (unit *Unit) OnMovement(sim *Simulation, position float64, kind MovementUpdateType) {
 	for _, movementCallback := range unit.movementCallbacks {
-		movementCallback(position, kind)
+		movementCallback(sim, position, kind)
 	}
 }
 

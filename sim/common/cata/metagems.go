@@ -10,10 +10,14 @@ func init() {
 	// Keep these in order by item ID
 
 	// Fleet Shadowspirit Diamond
-	// PLACEHODLER - Until we implement movement speed
-	// core.NewItemEffect(52289, func(agent core.Agent) {
-	// 	agent.GetCharacter().MultiplyStat(Stats.Speed, 1.09)
-	// })
+	core.NewItemEffect(52289, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		// Exclusive with other movement speed passives
+		if character.PseudoStats.MovementSpeedMultiplier < 1.08 {
+			character.PseudoStats.MovementSpeedMultiplier = 1.08
+		}
+	})
 
 	// Bracing Shadowspirit Diamond
 	core.NewItemEffect(52292, func(agent core.Agent) {
