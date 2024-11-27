@@ -44,23 +44,39 @@ func tableauModel(model Model) TableauModel {
 	}
 
 	// Handle integer and binary variables
-	integers := make([]int, 0)
-	binaryConstraintCols := make([]int, 0) // Initialize binaryConstraintCols
-	// Process Binaries
+	integerSet := map[int]bool{}
+	binarySet := map[int]bool{}
+
+	// Process Binaries and Integers fields from Model struct
+	if model.AllBinaries || model.AllIntegers {
+		for i := 1; i <= len(variables); i++ {
+			integerSet[i] = true
+
+			if model.AllBinaries {
+				binarySet[i] = true
+			}
+		}
+	}
+
 	if model.Binaries != nil {
 		for _, varName := range model.Binaries {
 			if varIndex, exists := variableIndices[varName]; exists {
-				integers = append(integers, varIndex)
-				binaryConstraintCols = append(binaryConstraintCols, varIndex)
+				integerSet[varIndex] = true
+				binarySet[varIndex] = true
 			}
 		}
-	} else if model.AllBinaries {
-		for i := 1; i <= len(variables); i++ {
-			integers = append(integers, i)
-			binaryConstraintCols = append(binaryConstraintCols, i)
+	}
+
+	if model.Integers != nil {
+		for _, varName := range model.Integers {
+			if varIndex, exists := variableIndices[varName]; exists {
+				integerSet[varIndex] = true
+			}
 		}
 	}
-	// Handle Integers field similarly if necessary
+
+	integers := SetToSortedSlice(integerSet)
+	binaryConstraintCols := SetToSortedSlice(binarySet)
 
 	// Constraints processing
 	constraints := make(map[string]struct {

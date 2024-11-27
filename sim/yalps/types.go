@@ -40,7 +40,7 @@ const (
 
 type Options struct {
 	Precision       float64
-	CheckCycles     bool
+	CheckCycles     bool          `json:"checkCycles"`
 	MaxPivots       int
 	Tolerance       float64
 	Timeout         time.Duration
