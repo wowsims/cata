@@ -191,11 +191,11 @@ func (druid *Druid) canEuphoriaProc(spell *core.Spell) bool {
 	}
 
 	if druid.Talents.Euphoria == 2 {
-		if druid.CanGainEnergy(SolarEnergy) && druid.CurrentSolarEnergy() <= 35 {
+		if druid.CanGainEnergy(SolarEnergy) && druid.CurrentSolarEnergy() <= 35 && druid.CurrentLunarEnergy() == 0 {
 			return true
 		}
 
-		if druid.CanGainEnergy(LunarEnergy) && druid.CurrentLunarEnergy() <= 35 {
+		if druid.CanGainEnergy(LunarEnergy) && druid.CurrentLunarEnergy() <= 35 && druid.CurrentSolarEnergy() == 0 {
 			return true
 		}
 	}
