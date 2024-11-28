@@ -118,7 +118,7 @@ func branchAndCut(tabmod TableauModel, initResult float64, options *Options) (Ta
 	solutionBuffer := newBuffer(matrixLength, posVarLength)
 
 	optimalThreshold := initResult * (1.0 - sign*options.Tolerance)
-	stopTime := time.Now().Add(options.Timeout)
+	stopTime := time.Now().Add(time.Millisecond * time.Duration(options.TimeoutMs))
 	timedOut := time.Now().After(stopTime)
 	solutionFound := false
 	bestEval := math.Inf(1)

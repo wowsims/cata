@@ -3,7 +3,6 @@ package yalps
 import (
 	"math"
 	"sort"
-	"time"
 )
 
 // Main solver function
@@ -79,8 +78,8 @@ func defaultOptions() Options {
 		CheckCycles:     false,
 		MaxPivots:       8192,
 		Tolerance:       0,
-		Timeout:         time.Hour,
-		MaxIterations:   200000,
+		TimeoutMs:       math.MaxInt32,
+		MaxIterations:   32768,
 		IncludeZeroVars: false,
 	}
 }

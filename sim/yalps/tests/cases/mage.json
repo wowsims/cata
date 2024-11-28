@@ -23,5 +23,9 @@
         "6_165": 1,
         "7_144": 1
     }
+  },
+  "options": {
+    "maxIterations": 150000,
+    "tolerance": 0.01
   }
 }

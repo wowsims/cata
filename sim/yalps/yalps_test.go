@@ -6,13 +6,17 @@ import (
 	"io/ioutil"
 	"math"
 	"path/filepath"
+	"slices"
+	"strings"
 	"testing"
 )
+
+const maxDiff = 1e-5
 
 // ExpectedSolution represents the expected outcome of the optimization.
 type ExpectedSolution struct {
 	Status    SolutionStatus     `json:"status"`
-	Result    float64            `json:"result"`
+	Result    *float64           `json:"result"`
 	Variables map[string]float64 `json:"variables"`
 }
 
@@ -37,8 +41,8 @@ func mergeOptions(defaults, overrides Options) Options {
 	if overrides.Tolerance != 0 {
 		defaults.Tolerance = overrides.Tolerance
 	}
-	if overrides.Timeout != 0 {
-		defaults.Timeout = overrides.Timeout
+	if overrides.TimeoutMs != 0 {
+		defaults.TimeoutMs = overrides.TimeoutMs
 	}
 	if overrides.MaxIterations != 0 {
 		defaults.MaxIterations = overrides.MaxIterations
@@ -66,7 +70,7 @@ func TestSolver(t *testing.T) {
 	// Iterate over each test case.
 	for _, tc := range testCases {
 		t.Run(fmt.Sprintf("TestCase_%s", tc.Name), func(t *testing.T) {
-			// Set up constraints with Float64Ptr.
+			// Set up constraints.
 			constraints := make(map[string]Constraint)
 			for name, c := range tc.Model.Constraints {
 				constraints[name] = Constraint{
@@ -95,45 +99,44 @@ func TestSolver(t *testing.T) {
 			}
 
 			// Set up solver options.
-
 			options := mergeOptions(defaultOptions(), tc.Options)
 			t.Logf("Running %s: Model Direction=%s, Objective=%s", tc.Name, model.Direction, model.Objective)
 
 			// Execute the solver.
 			solution := Solve(model, &options)
 			t.Logf("%s Solution: %+v", tc.Name, solution)
+
 			// Assert the status.
 			if solution.Status != tc.Expected.Status {
 				t.Errorf("Expected status '%s', got '%s'", tc.Expected.Status, solution.Status)
 			}
 
 			// Assert the result with a tolerance.
-			resultDiff := math.Abs(solution.Result - tc.Expected.Result)
-			if resultDiff > 1e-6 {
-				t.Errorf("Expected result '%f', got '%f' (diff: %f)", tc.Expected.Result, solution.Result, resultDiff)
+			expectedResult := parseExpectedResult(&tc)
+
+			if !resultIsOptimal(solution.Result, expectedResult, options) {
+				t.Errorf("Expected result '%f', got '%f'", expectedResult, solution.Result)
 			}
 
-			// Assert the variables.
-			for varName, expectedValue := range tc.Expected.Variables {
-				actualValue, exists := solution.Variables[varName]
-				if !exists {
-					t.Errorf("Expected variable '%s' not found in solution", varName)
-					continue
-				}
+			// Assert validity of the variables.
+			invalidVariables := checkVariables(solution, model, options.Precision)
 
-				valueDiff := math.Abs(actualValue - expectedValue)
-				if valueDiff > 1e-6 {
-					t.Errorf("Variable '%s': expected '%f', got '%f' (diff: %f)", varName, expectedValue, actualValue, valueDiff)
-				}
+			if invalidVariables != nil {
+				t.Errorf("The following variables have invalid values: %s", strings.Join(invalidVariables, ", "))
 			}
 
-			// Optionally, assert that no unexpected variables are present.
-			if len(tc.Expected.Variables) != len(solution.Variables) {
-				t.Errorf("Expected %d variables, but got %d", len(tc.Expected.Variables), len(solution.Variables))
+			// Assert that constraints were satisfied.
+			violatedConstraints := checkConstraints(solution, model, options.Precision)
+
+			if (len(violatedConstraints) > 0) && IsFinite(expectedResult) {
+				t.Errorf("The following constraints were violated: %v", violatedConstraints)
 			}
 
 			if !t.Failed() {
 				t.Logf("Test case '%s' passed successfully!", tc.Name)
+			} else {
+				t.Logf("Model struct for debugging:\n%+v", model)
+				t.Logf("Options struct for debugging:\n%+v", options)
 			}
 		})
 	}
@@ -169,4 +172,70 @@ func readTestCases(dir string) ([]TestCase, error) {
 	}
 
 	return testCases, nil
+}
+
+func parseExpectedResult(tc *TestCase) float64 {
+	if tc.Expected.Status == StatusOptimal {
+		return *tc.Expected.Result
+	} else if tc.Expected.Status == StatusUnbounded {
+		if tc.Model.Direction == Minimize {
+			return math.Inf(-1)
+		} else {
+			return math.Inf(1)
+		}
+	} else {
+		return math.NaN()
+	}
+}
+
+func resultIsOptimal(result float64, expected float64, options Options) bool {
+	if math.IsNaN(expected) {
+		return math.IsNaN(result)
+	} else if math.IsInf(expected, 0) {
+		return result == expected
+	} else {
+		return relativeDifference(result, expected, options.Precision) <= max(options.Tolerance, maxDiff)
+	}
+}
+
+func checkVariables(solution Solution, model Model, precision float64) []string {
+	var invalidVariables []string
+
+	for variableName, value := range solution.Variables {
+		isBinary := model.AllBinaries || slices.Contains(model.Binaries, variableName)
+		isInteger := isBinary || model.AllIntegers || slices.Contains(model.Integers, variableName)
+
+		if (value < -precision) || (isInteger && (math.Abs(value - math.Round(value)) > precision)) || (isBinary && (value > 1.0 + precision)) {
+			invalidVariables = append(invalidVariables, variableName)
+		}
+	}
+
+	return invalidVariables
+}
+
+func getSummedCoefficients(solution Solution, model Model) Coefficients {
+	sums := make(Coefficients)
+
+	for variableKey, value := range solution.Variables {
+		for coefficientKey, weight := range model.Variables[variableKey] {
+			sums[coefficientKey] += value * weight
+		}
+	}
+
+	return sums
+}
+
+func checkConstraints(solution Solution, model Model, precision float64) map[string]Constraint {
+	violatedConstraints := map[string]Constraint{}
+	summedCoefficients := getSummedCoefficients(solution, model)
+
+	for key, constraint := range model.Constraints {
+		sum := summedCoefficients[key]
+
+		if ((constraint.Equal != nil) && (relativeDifference(sum, *constraint.Equal, precision) > maxDiff)) || ((constraint.Min != nil) && (relativeDifferenceFrom(*constraint.Min - sum, *constraint.Min, precision) > maxDiff)) || ((constraint.Max != nil) && (relativeDifferenceFrom(sum - *constraint.Max, *constraint.Max, precision) > maxDiff)) {
+			violatedConstraints[key] = constraint
+		}
+	}
+
+	return violatedConstraints
 }

@@ -1,11 +1,32 @@
 package yalps
 
-import "time"
+import (
+	"fmt"
+	"strings"
+)
 
 type Constraint struct {
 	Equal *float64 `json:"equal,omitempty"`
 	Min   *float64 `json:"min,omitempty"`
 	Max   *float64 `json:"max,omitempty"`
+}
+
+func (constraint Constraint) String() string {
+	components := make([]string, 0, 3)
+
+	if constraint.Equal != nil {
+		components = append(components, fmt.Sprintf("Equal: %f", *constraint.Equal))
+	}
+
+	if constraint.Min != nil {
+		components = append(components, fmt.Sprintf("Min: %f", *constraint.Min))
+	}
+
+	if constraint.Max != nil {
+		components = append(components, fmt.Sprintf("Max: %f", *constraint.Max))
+	}
+
+	return fmt.Sprintf("{%s}", strings.Join(components, ", "))
 }
 
 type Coefficients map[string]float64
@@ -42,9 +63,9 @@ type Options struct {
 	Precision       float64
 	CheckCycles     bool          `json:"checkCycles"`
 	MaxPivots       int
-	Tolerance       float64
-	Timeout         time.Duration
-	MaxIterations   int
+	Tolerance       float64       `json:"tolerance"`
+	TimeoutMs       int32         `json:"timeout"`
+	MaxIterations   int           `json:"maxIterations"`
 	IncludeZeroVars bool
 }
 
