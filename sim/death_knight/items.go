@@ -8,7 +8,7 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-// TODO: T13
+// TODO: T13 tank
 
 // T11 - DPS
 var ItemSetMagmaPlatedBattlegear = core.NewItemSet(core.ItemSet{
