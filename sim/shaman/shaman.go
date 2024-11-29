@@ -356,6 +356,7 @@ const (
 	SpellMaskUnleashFlame
 	SpellMaskEarthquake
 	SpellMaskFlametongueWeapon
+	SpellMaskFeralSpirit
 
 	SpellMaskStormstrike = SpellMaskStormstrikeCast | SpellMaskStormstrikeDamage
 	SpellMaskFlameShock  = SpellMaskFlameShockDirect | SpellMaskFlameShockDot
