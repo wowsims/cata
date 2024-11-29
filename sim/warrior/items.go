@@ -299,29 +299,28 @@ var ItemSetColossalDragonplateArmor = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: 105909}
+			duration := time.Second * 6
 
-			//var shieldAmt float64 = 0.0
-			shieldAura := character.RegisterAura(core.Aura{
-				Label:    "Shield of Fury",
-				ActionID: actionID,
-				Duration: 6 * time.Second,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					// TODO: Shield mechanics NYI
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					// TODO: Shield mechanics NYI
-				},
+			shieldAmt := 0.0
+			shieldAura := character.NewDamageAbsorptionAura("Shield of Fury"+character.Label, actionID, duration, func(unit *core.Unit) float64 {
+				return shieldAmt
 			})
 
 			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-				Name:           "Shield of Fury Trigger",
-				ActionID:       actionID,
+				Name:           "Shield of Fury Trigger" + character.Label,
 				Callback:       core.CallbackOnSpellHitDealt,
 				ClassSpellMask: SpellMaskRevenge,
 				Outcome:        core.OutcomeLanded,
+				ProcChance:     1,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					// shieldAmt = result.Damage * 0.2
-					shieldAura.Activate(sim)
+					if result.Target != character.CurrentTarget {
+						return
+					}
+
+					shieldAmt = result.Damage * 0.2
+					if shieldAmt > 1 {
+						shieldAura.Activate(sim)
+					}
 				},
 			})
 		},
