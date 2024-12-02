@@ -42,6 +42,28 @@ func (dot *Dot) OutcomeTickPhysicalCrit(sim *Simulation, result *SpellResult, at
 	}
 }
 
+func (dot *Dot) OutcomeTickMagicCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
+	if dot.Spell.MagicCritCheck(sim, result.Target) {
+		result.Outcome = OutcomeCrit
+		result.Damage *= dot.Spell.CritDamageMultiplier()
+		dot.Spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
+	} else {
+		result.Outcome = OutcomeHit
+		dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
+	}
+}
+
+func (dot *Dot) OutcomeTickHealingCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
+	if dot.Spell.HealingCritCheck(sim) {
+		result.Outcome = OutcomeCrit
+		result.Damage *= dot.Spell.CritDamageMultiplier()
+		dot.Spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
+	} else {
+		result.Outcome = OutcomeHit
+		dot.Spell.SpellMetrics[result.Target.UnitIndex].Ticks++
+	}
+}
+
 func (dot *Dot) OutcomeSnapshotCrit(sim *Simulation, result *SpellResult, _ *AttackTable) {
 	if dot.Spell.CritMultiplier == 0 {
 		panic("Spell " + dot.Spell.ActionID.String() + " missing CritMultiplier")
@@ -221,6 +243,28 @@ func (spell *Spell) outcomeMeleeWhite(sim *Simulation, result *SpellResult, atta
 			!result.applyAttackTableGlance(spell, attackTable, roll, &chance) &&
 			!result.applyAttackTableCrit(spell, attackTable, roll, &chance, countHits) {
 			result.applyAttackTableHit(spell, countHits)
+		}
+	}
+}
+
+func (spell *Spell) OutcomeMeleeWhiteNoGlance(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
+	unit := spell.Unit
+	roll := sim.RandomFloat("White Hit Table")
+	chance := 0.0
+
+	if unit.PseudoStats.InFrontOfTarget {
+		if !result.applyAttackTableMiss(spell, attackTable, roll, &chance) &&
+			!result.applyAttackTableDodge(spell, attackTable, roll, &chance) &&
+			!result.applyAttackTableParry(spell, attackTable, roll, &chance) &&
+			!result.applyAttackTableBlock(spell, attackTable, roll, &chance) &&
+			!result.applyAttackTableCrit(spell, attackTable, roll, &chance, true) {
+			result.applyAttackTableHit(spell, true)
+		}
+	} else {
+		if !result.applyAttackTableMiss(spell, attackTable, roll, &chance) &&
+			!result.applyAttackTableDodge(spell, attackTable, roll, &chance) &&
+			!result.applyAttackTableCrit(spell, attackTable, roll, &chance, true) {
+			result.applyAttackTableHit(spell, true)
 		}
 	}
 }

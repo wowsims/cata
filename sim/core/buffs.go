@@ -110,6 +110,10 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 		MarkOfTheWildAura(&character.Unit)
 	}
 
+	if raidBuffs.LegacyOfTheEmperor {
+		LegacyOfTheEmperorAura(&character.Unit)
+	}
+
 	// Resistances
 	if raidBuffs.ResistanceAura {
 		ResistanceAura(&character.Unit)
@@ -178,6 +182,10 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 
 	if raidBuffs.FuriousHowl {
 		FuriousHowl(&character.Unit)
+	}
+
+	if raidBuffs.LegacyOfTheWhiteTiger {
+		LegacyOfTheWhiteTiger(&character.Unit)
 	}
 
 	// +% Attackpower
@@ -406,6 +414,10 @@ func DrumsOfTheBurningWildAura(unit *Unit) *Aura {
 		{stats.NatureResistance, 78, false},
 	})
 	return aura
+}
+
+func LegacyOfTheEmperorAura(unit *Unit) *Aura {
+	return makeExclusiveAllStatPercentBuff(unit, "Legacy of the Emperor", ActionID{SpellID: 115921}, 1.05)
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -812,6 +824,18 @@ func FuriousHowl(unit *Unit) *Aura {
 	return baseAura
 }
 
+func LegacyOfTheWhiteTiger(unit *Unit) *Aura {
+	baseAura := makeExclusiveBuff(unit, BuffConfig{
+		"Legacy of the White Tiger",
+		ActionID{SpellID: 116781},
+		[]StatConfig{
+			{stats.PhysicalCritPercent, 5, false},
+			{stats.SpellCritPercent, 5, false},
+		}})
+
+	return baseAura
+}
+
 // /////////////////////////////////////////////////////////////////////////
 //
 //	Spell Haste
@@ -963,6 +987,7 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	raidBuffs.Rampage = false
 	raidBuffs.TerrifyingRoar = false
 	raidBuffs.FuriousHowl = false
+	raidBuffs.LegacyOfTheWhiteTiger = false
 	// AP%
 	raidBuffs.TrueshotAura = false
 	raidBuffs.UnleashedRage = false
@@ -999,6 +1024,7 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	raidBuffs.MarkOfTheWild = false
 	raidBuffs.BlessingOfKings = false
 	raidBuffs.DrumsOfTheBurningWild = false
+	raidBuffs.LegacyOfTheEmperor = false
 
 	individualBuffs.HymnOfHopeCount = 0
 	individualBuffs.InnervateCount = 0

@@ -226,175 +226,206 @@ func applyConsumeEffects(agent Agent) {
 		}
 	}
 
+	var foodStats stats.Stats
 	switch consumes.Food {
 	case proto.Food_FoodFishFeast:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.AttackPower:       80,
 			stats.RangedAttackPower: 80,
 			stats.SpellPower:        46,
 			stats.Stamina:           40,
-		})
+		}
 	case proto.Food_FoodGreatFeast:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.AttackPower:       60,
 			stats.RangedAttackPower: 60,
 			stats.SpellPower:        35,
 			stats.Stamina:           30,
-		})
+		}
 	case proto.Food_FoodBlackenedDragonfin:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.Agility: 40,
 			stats.Stamina: 40,
-		})
+		}
 	case proto.Food_FoodHeartyRhino:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.CritRating: 40,
 			stats.Stamina:    40,
-		})
+		}
 	case proto.Food_FoodMegaMammothMeal:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.AttackPower:       80,
 			stats.RangedAttackPower: 80,
 			stats.Stamina:           40,
-		})
+		}
 	case proto.Food_FoodSpicedWormBurger:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.CritRating: 40,
 			stats.Stamina:    40,
-		})
+		}
 	case proto.Food_FoodRhinoliciousWormsteak:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.ExpertiseRating: 40,
 			stats.Stamina:         40,
-		})
+		}
 	case proto.Food_FoodImperialMantaSteak:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.HasteRating: 40,
 			stats.Stamina:     40,
-		})
+		}
 	case proto.Food_FoodSnapperExtreme:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.HitRating: 40,
 			stats.Stamina:   40,
-		})
+		}
 	case proto.Food_FoodMightyRhinoDogs:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.MP5:     16,
 			stats.Stamina: 40,
-		})
+		}
 	case proto.Food_FoodFirecrackerSalmon:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.SpellPower: 46,
 			stats.Stamina:    40,
-		})
+		}
 	case proto.Food_FoodCuttlesteak:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.Spirit:  40,
 			stats.Stamina: 40,
-		})
+		}
 	case proto.Food_FoodDragonfinFilet:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.Strength: 40,
 			stats.Stamina:  40,
-		})
+		}
 	case proto.Food_FoodBlackenedBasilisk:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.SpellPower: 23,
 			stats.Spirit:     20,
-		})
+		}
 	case proto.Food_FoodGrilledMudfish:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.Agility: 20,
 			stats.Spirit:  20,
-		})
+		}
 	case proto.Food_FoodRavagerDog:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.AttackPower:       40,
 			stats.RangedAttackPower: 40,
 			stats.Spirit:            20,
-		})
+		}
 	case proto.Food_FoodRoastedClefthoof:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.Strength: 20,
 			stats.Spirit:   20,
-		})
+		}
 	case proto.Food_FoodSkullfishSoup:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.CritRating: 20,
 			stats.Spirit:     20,
-		})
+		}
 	case proto.Food_FoodSpicyHotTalbuk:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.HitRating: 20,
 			stats.Spirit:    20,
-		})
+		}
 	case proto.Food_FoodFishermansFeast:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.Stamina: 30,
 			stats.Spirit:  20,
-		})
+		}
 	case proto.Food_FoodSeafoodFeast:
-		character.AddStat(stats.Stamina, 90)
-		character.AddStat(character.GetHighestStatType([]stats.Stat{stats.Strength, stats.Agility, stats.Intellect}), 90)
+		foodStats = stats.Stats{
+			stats.Stamina: 90,
+		}
+
+		statType := character.GetHighestStatType([]stats.Stat{stats.Strength, stats.Agility, stats.Intellect})
+		switch statType {
+		case stats.Strength:
+			foodStats[stats.Strength] = 90
+		case stats.Agility:
+			foodStats[stats.Agility] = 90
+		case stats.Intellect:
+			foodStats[stats.Intellect] = 90
+		}
 	case proto.Food_FoodFortuneCookie:
-		character.AddStat(stats.Stamina, 90)
-		character.AddStat(character.GetHighestStatType([]stats.Stat{stats.Strength, stats.Agility, stats.Intellect}), 90)
+		foodStats = stats.Stats{
+			stats.Stamina: 90,
+		}
+
+		statType := character.GetHighestStatType([]stats.Stat{stats.Strength, stats.Agility, stats.Intellect})
+		switch statType {
+		case stats.Strength:
+			foodStats[stats.Strength] = 90
+		case stats.Agility:
+			foodStats[stats.Agility] = 90
+		case stats.Intellect:
+			foodStats[stats.Intellect] = 90
+		}
 	case proto.Food_FoodSeveredSagefish:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.Stamina:   90,
 			stats.Intellect: 90,
-		})
+		}
 	case proto.Food_FoodBeerBasedCrocolisk:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.Stamina:  90,
 			stats.Strength: 90,
-		})
+		}
 	case proto.Food_FoodSkeweredEel:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.Stamina: 90,
 			stats.Agility: 90,
-		})
+		}
 	case proto.Food_FoodDeliciousSagefishTail:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.Stamina: 90,
 			stats.Spirit:  90,
-		})
+		}
 	case proto.Food_FoodBasiliskLiverdog:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.Stamina:     90,
 			stats.HasteRating: 90,
-		})
+		}
 	case proto.Food_FoodBakedRockfish:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.Stamina:    90,
 			stats.CritRating: 90,
-		})
+		}
 	case proto.Food_FoodCrocoliskAuGratin:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.Stamina:         90,
 			stats.ExpertiseRating: 90,
-		})
+		}
 	case proto.Food_FoodGrilledDragon:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.Stamina:   90,
 			stats.HitRating: 90,
-		})
+		}
 	case proto.Food_FoodLavascaleMinestrone:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.Stamina:       90,
 			stats.MasteryRating: 90,
-		})
+		}
 	case proto.Food_FoodBlackbellySushi:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.Stamina:     90,
 			stats.ParryRating: 90,
-		})
+		}
 	case proto.Food_FoodMushroomSauceMudfish:
-		character.AddStats(stats.Stats{
+		foodStats = stats.Stats{
 			stats.Stamina:     90,
 			stats.DodgeRating: 90,
-		})
+		}
 	}
+
+	if character.Race == proto.Race_RaceAlliancePandaren || character.Race == proto.Race_RaceHordePandaren {
+		for k := range foodStats {
+			foodStats[k] *= 2
+		}
+	}
+
+	character.AddStats(foodStats)
 
 	registerPotionCD(agent, consumes)
 	registerConjuredCD(agent, consumes)

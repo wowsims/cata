@@ -37,6 +37,7 @@ import { PresetBuild, PresetEpWeights, PresetGear, PresetItemSwap, PresetRotatio
 import { StatWeightsResult } from './proto/api';
 import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
 import {
+    Class,
 	Consumes,
 	Cooldowns,
 	Debuffs,
@@ -237,6 +238,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		this.raidSimResultsManager = null;
 		this.prevEpIterations = 0;
 		this.prevEpSimResult = null;
+		const maxPoints = player.isClass(Class.ClassMonk) ? 6 : MAX_POINTS_PLAYER;
 
 		if (!isDevMode() && getSpecLaunchStatus(this.player) === LaunchStatus.Unlaunched) {
 			this.handleSimUnlaunched();
@@ -288,9 +290,9 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 				if (talentPoints == 0) {
 					// Just return here, so we don't show a warning during page load.
 					return '';
-				} else if (talentPoints < MAX_POINTS_PLAYER) {
+				} else if (talentPoints < maxPoints) {
 					return 'Unspent talent points.';
-				} else if (talentPoints > MAX_POINTS_PLAYER) {
+				} else if (talentPoints > maxPoints) {
 					return 'More than maximum talent points spent.';
 				} else {
 					return '';

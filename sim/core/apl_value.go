@@ -122,6 +122,8 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		value = rot.newValueCurrentComboPoints(config.GetCurrentComboPoints(), config.Uuid)
 	case *proto.APLValue_CurrentRunicPower:
 		value = rot.newValueCurrentRunicPower(config.GetCurrentRunicPower(), config.Uuid)
+	case *proto.APLValue_MaxComboPoints:
+		value = rot.newValueMaxComboPoints(config.GetMaxComboPoints(), config.Uuid)
 	case *proto.APLValue_MaxEnergy:
 		value = rot.newValueMaxEnergy(config.GetMaxEnergy(), config.Uuid)
 	case *proto.APLValue_MaxFocus:

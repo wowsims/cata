@@ -73,6 +73,7 @@ import {
 	MageOptions,
 	MageTalents,
 } from '../proto/mage.js';
+import { BrewmasterMonk, BrewmasterMonk_Options, BrewmasterMonk_Rotation, MistweaverMonk, MistweaverMonk_Options, MistweaverMonk_Rotation, MonkTalents, WindwalkerMonk, WindwalkerMonk_Options, WindwalkerMonk_Rotation } from '../proto/monk.js';
 import {
 	Blessings,
 	HolyPaladin,
@@ -226,6 +227,7 @@ export type RogueSpecs = Spec.SpecAssassinationRogue | Spec.SpecCombatRogue | Sp
 export type ShamanSpecs = Spec.SpecElementalShaman | Spec.SpecEnhancementShaman | Spec.SpecRestorationShaman;
 export type WarlockSpecs = Spec.SpecAfflictionWarlock | Spec.SpecDemonologyWarlock | Spec.SpecDestructionWarlock;
 export type WarriorSpecs = Spec.SpecArmsWarrior | Spec.SpecFuryWarrior | Spec.SpecProtectionWarrior;
+export type MonkSpecs = Spec.SpecBrewmasterMonk | Spec.SpecMistweaverMonk | Spec.SpecWindwalkerMonk;
 
 export type ClassSpecs<T extends Class> = T extends Class.ClassDeathKnight
 	? DeathKnightSpecs
@@ -279,6 +281,9 @@ export type SpecClasses<T extends Spec> = T extends DeathKnightSpecs
 	: // Warrior
 	T extends WarriorSpecs
 	? Class.ClassWarrior
+	: // Monk
+	T extends MonkSpecs
+	? Class.ClassMonk
 	: // Should never reach this case
 	  Class.ClassUnknown;
 
@@ -313,6 +318,13 @@ export type SpecRotation<T extends Spec> =
 		? FireMage_Rotation
 		: T extends Spec.SpecFrostMage
 		? FrostMage_Rotation
+		: // Monk
+		T extends Spec.SpecBrewmasterMonk
+		? BrewmasterMonk_Rotation
+		: T extends Spec.SpecMistweaverMonk
+		? MistweaverMonk_Rotation
+		: T extends Spec.SpecWindwalkerMonk
+		? WindwalkerMonk_Rotation
 		: // Paladin
 		T extends Spec.SpecHolyPaladin
 		? HolyPaladin_Rotation
@@ -457,6 +469,13 @@ export type SpecOptions<T extends Spec> =
 		? FireMage_Options
 		: T extends Spec.SpecFrostMage
 		? FrostMage_Options
+		: // Monk
+		T extends Spec.SpecBrewmasterMonk
+		? BrewmasterMonk_Options
+		: T extends Spec.SpecMistweaverMonk
+		? MistweaverMonk_Options
+		: T extends Spec.SpecWindwalkerMonk
+		? WindwalkerMonk_Options
 		: // Paladin
 		T extends Spec.SpecHolyPaladin
 		? HolyPaladin_Options
@@ -533,6 +552,13 @@ export type SpecType<T extends Spec> =
 		? FireMage
 		: T extends Spec.SpecFrostMage
 		? FrostMage
+		: // Monk
+		T extends Spec.SpecBrewmasterMonk
+		? BrewmasterMonk
+		: T extends Spec.SpecMistweaverMonk
+		? MistweaverMonk
+		: T extends Spec.SpecWindwalkerMonk
+		? WindwalkerMonk
 		: // Paladin
 		T extends Spec.SpecHolyPaladin
 		? HolyPaladin
@@ -919,6 +945,76 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		optionsFromJson: obj => FrostMage_Options.fromJson(obj),
 		optionsFromPlayer: player =>
 			player.spec.oneofKind == 'frostMage' ? player.spec.frostMage.options || FrostMage_Options.create() : FrostMage_Options.create({ classOptions: {} }),
+	},
+	// Monk
+	[Spec.SpecBrewmasterMonk]: {
+		rotationCreate: () => BrewmasterMonk_Rotation.create(),
+		rotationEquals: (a, b) => BrewmasterMonk_Rotation.equals(a as BrewmasterMonk_Rotation, b as BrewmasterMonk_Rotation),
+		rotationCopy: a => BrewmasterMonk_Rotation.clone(a as BrewmasterMonk_Rotation),
+		rotationToJson: a => BrewmasterMonk_Rotation.toJson(a as BrewmasterMonk_Rotation),
+		rotationFromJson: obj => BrewmasterMonk_Rotation.fromJson(obj),
+
+		talentsCreate: () => MonkTalents.create(),
+		talentsEquals: (a, b) => MonkTalents.equals(a as MonkTalents, b as MonkTalents),
+		talentsCopy: a => MonkTalents.clone(a as MonkTalents),
+		talentsToJson: a => MonkTalents.toJson(a as MonkTalents),
+		talentsFromJson: obj => MonkTalents.fromJson(obj),
+
+		optionsCreate: () => BrewmasterMonk_Options.create({ classOptions: {} }),
+		optionsEquals: (a, b) => BrewmasterMonk_Options.equals(a as BrewmasterMonk_Options, b as BrewmasterMonk_Options),
+		optionsCopy: a => BrewmasterMonk_Options.clone(a as BrewmasterMonk_Options),
+		optionsToJson: a => BrewmasterMonk_Options.toJson(a as BrewmasterMonk_Options),
+		optionsFromJson: obj => BrewmasterMonk_Options.fromJson(obj),
+		optionsFromPlayer: player =>
+			player.spec.oneofKind == 'brewmasterMonk'
+				? player.spec.brewmasterMonk.options || BrewmasterMonk_Options.create()
+				: BrewmasterMonk_Options.create({ classOptions: {} }),
+	},
+	[Spec.SpecMistweaverMonk]: {
+		rotationCreate: () => MistweaverMonk_Rotation.create(),
+		rotationEquals: (a, b) => MistweaverMonk_Rotation.equals(a as MistweaverMonk_Rotation, b as MistweaverMonk_Rotation),
+		rotationCopy: a => MistweaverMonk_Rotation.clone(a as MistweaverMonk_Rotation),
+		rotationToJson: a => MistweaverMonk_Rotation.toJson(a as MistweaverMonk_Rotation),
+		rotationFromJson: obj => MistweaverMonk_Rotation.fromJson(obj),
+
+		talentsCreate: () => MonkTalents.create(),
+		talentsEquals: (a, b) => MonkTalents.equals(a as MonkTalents, b as MonkTalents),
+		talentsCopy: a => MonkTalents.clone(a as MonkTalents),
+		talentsToJson: a => MonkTalents.toJson(a as MonkTalents),
+		talentsFromJson: obj => MonkTalents.fromJson(obj),
+
+		optionsCreate: () => MistweaverMonk_Options.create({ classOptions: {} }),
+		optionsEquals: (a, b) => MistweaverMonk_Options.equals(a as MistweaverMonk_Options, b as MistweaverMonk_Options),
+		optionsCopy: a => MistweaverMonk_Options.clone(a as MistweaverMonk_Options),
+		optionsToJson: a => MistweaverMonk_Options.toJson(a as MistweaverMonk_Options),
+		optionsFromJson: obj => MistweaverMonk_Options.fromJson(obj),
+		optionsFromPlayer: player =>
+			player.spec.oneofKind == 'mistweaverMonk'
+				? player.spec.mistweaverMonk.options || MistweaverMonk_Options.create()
+				: MistweaverMonk_Options.create({ classOptions: {} }),
+	},
+	[Spec.SpecWindwalkerMonk]: {
+		rotationCreate: () => WindwalkerMonk_Rotation.create(),
+		rotationEquals: (a, b) => WindwalkerMonk_Rotation.equals(a as WindwalkerMonk_Rotation, b as WindwalkerMonk_Rotation),
+		rotationCopy: a => WindwalkerMonk_Rotation.clone(a as WindwalkerMonk_Rotation),
+		rotationToJson: a => WindwalkerMonk_Rotation.toJson(a as WindwalkerMonk_Rotation),
+		rotationFromJson: obj => WindwalkerMonk_Rotation.fromJson(obj),
+
+		talentsCreate: () => MonkTalents.create(),
+		talentsEquals: (a, b) => MonkTalents.equals(a as MonkTalents, b as MonkTalents),
+		talentsCopy: a => MonkTalents.clone(a as MonkTalents),
+		talentsToJson: a => MonkTalents.toJson(a as MonkTalents),
+		talentsFromJson: obj => MonkTalents.fromJson(obj),
+
+		optionsCreate: () => WindwalkerMonk_Options.create({ classOptions: {} }),
+		optionsEquals: (a, b) => WindwalkerMonk_Options.equals(a as WindwalkerMonk_Options, b as WindwalkerMonk_Options),
+		optionsCopy: a => WindwalkerMonk_Options.clone(a as WindwalkerMonk_Options),
+		optionsToJson: a => WindwalkerMonk_Options.toJson(a as WindwalkerMonk_Options),
+		optionsFromJson: obj => WindwalkerMonk_Options.fromJson(obj),
+		optionsFromPlayer: player =>
+			player.spec.oneofKind == 'windwalkerMonk'
+				? player.spec.windwalkerMonk.options || WindwalkerMonk_Options.create()
+				: WindwalkerMonk_Options.create({ classOptions: {} }),
 	},
 	// Paladin
 	[Spec.SpecHolyPaladin]: {
@@ -1351,6 +1447,7 @@ export const raceToFaction: Record<Race, Faction> = {
 	[Race.RaceHuman]: Faction.Alliance,
 	[Race.RaceNightElf]: Faction.Alliance,
 	[Race.RaceWorgen]: Faction.Alliance,
+	[Race.RaceAlliancePandaren]: Faction.Alliance,
 
 	[Race.RaceBloodElf]: Faction.Horde,
 	[Race.RaceGoblin]: Faction.Horde,
@@ -1358,6 +1455,7 @@ export const raceToFaction: Record<Race, Faction> = {
 	[Race.RaceTauren]: Faction.Horde,
 	[Race.RaceTroll]: Faction.Horde,
 	[Race.RaceUndead]: Faction.Horde,
+	[Race.RaceHordePandaren]: Faction.Horde,
 };
 
 // Returns a copy of playerOptions, with the class field set.
@@ -1470,6 +1568,31 @@ export function withSpec<SpecType extends Spec>(spec: Spec, player: Player, spec
 				oneofKind: 'frostMage',
 				frostMage: FrostMage.create({
 					options: specOptions as FrostMage_Options,
+				}),
+			};
+			return copy;
+		// Monk
+		case Spec.SpecBrewmasterMonk:
+			copy.spec = {
+				oneofKind: 'brewmasterMonk',
+				brewmasterMonk: BrewmasterMonk.create({
+					options: specOptions as BrewmasterMonk_Options,
+				}),
+			};
+			return copy;
+		case Spec.SpecMistweaverMonk:
+			copy.spec = {
+				oneofKind: 'mistweaverMonk',
+				mistweaverMonk: MistweaverMonk.create({
+					options: specOptions as MistweaverMonk_Options,
+				}),
+			};
+			return copy;
+		case Spec.SpecWindwalkerMonk:
+			copy.spec = {
+				oneofKind: 'windwalkerMonk',
+				windwalkerMonk: WindwalkerMonk.create({
+					options: specOptions as WindwalkerMonk_Options,
 				}),
 			};
 			return copy;
@@ -1897,6 +2020,7 @@ export const orderedResourceTypes: Array<ResourceType> = [
 	ResourceType.ResourceTypeMana,
 	ResourceType.ResourceTypeEnergy,
 	ResourceType.ResourceTypeRage,
+	ResourceType.ResourceTypeChi,
 	ResourceType.ResourceTypeComboPoints,
 	ResourceType.ResourceTypeFocus,
 	ResourceType.ResourceTypeRunicPower,

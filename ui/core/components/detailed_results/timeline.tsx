@@ -1443,6 +1443,36 @@ const idToCategoryMap: Record<number, number> = {
 	[48263]: DEFAULT_ACTION_CATEGORY + 0.1, // Frost Presence
 	[48265]: DEFAULT_ACTION_CATEGORY + 0.1, // Unholy Presence
 
+	// Monk
+	[120274]: 0.02, // Tiger Strikes (Main Hand)
+	[120278]: 0.03, // Tiger Strikes (Off Hand)
+	[100780]: MELEE_ACTION_CATEGORY + 0.01, // Jab
+	[100787]: MELEE_ACTION_CATEGORY + 0.02, // Tiger Palm
+	[100784]: MELEE_ACTION_CATEGORY + 0.03, // Blackout Kick
+	[130320]: MELEE_ACTION_CATEGORY + 0.04, // Rising Sun Kick
+	[113656]: MELEE_ACTION_CATEGORY + 0.05, // Fists of Fury (Cast)
+	[117418]: MELEE_ACTION_CATEGORY + 0.06, // Fists of Fury (Hit)
+	[101546]: MELEE_ACTION_CATEGORY + 0.07, // Spinning Crane Kick (Cast)
+	[107270]: MELEE_ACTION_CATEGORY + 0.08, // Spinning Crane Kick (Hit)
+	[116847]: MELEE_ACTION_CATEGORY + 0.07, // Rushing Jade Wind (Cast)
+	[148187]: MELEE_ACTION_CATEGORY + 0.08, // Rushing Jade Wind (Hit)
+	[115098]: SPELL_ACTION_CATEGORY + 0.01, // Chi Wave
+	[132467]: SPELL_ACTION_CATEGORY + 0.011, // Chi Wave (Damage)
+	[132463]: SPELL_ACTION_CATEGORY + 0.012, // Chi Wave (Heal)
+	[124098]: SPELL_ACTION_CATEGORY + 0.01, // Zen Sphere (Damage)
+	[124081]: SPELL_ACTION_CATEGORY + 0.011, // Zen Sphere (Heal)
+	[125033]: SPELL_ACTION_CATEGORY + 0.011, // Zen Sphere: Detonate (Damage)
+	[124101]: SPELL_ACTION_CATEGORY + 0.011, // Zen Sphere: Detonate (Heal)
+	[123986]: SPELL_ACTION_CATEGORY + 0.01, // Chi Burst
+	[148135]: SPELL_ACTION_CATEGORY + 0.011, // Chi Burst (Damage)
+	[130654]: SPELL_ACTION_CATEGORY + 0.012, // Chi Burst (Heal)
+	[116740]: SPELL_ACTION_CATEGORY + 0.02, // Tigereye Brew
+	[115399]: SPELL_ACTION_CATEGORY + 0.03, // Chi Brew
+	[115288]: SPELL_ACTION_CATEGORY + 0.04, // Energizing Brew
+	[126456]: SPELL_ACTION_CATEGORY + 0.05, // Fortifying Brew
+	[123904]: SPELL_ACTION_CATEGORY + 0.06, // Invoke Xuen, the White Tiger
+	[115008]: SPELL_ACTION_CATEGORY + 0.06, // Chi Torpedo
+
 	// Generic
 	[53307]: SPELL_ACTION_CATEGORY + 0.931, // Thorns
 	[54043]: SPELL_ACTION_CATEGORY + 0.932, // Retribution Aura

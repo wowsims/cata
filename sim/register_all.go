@@ -16,6 +16,9 @@ import (
 	"github.com/wowsims/mop/sim/mage/arcane"
 	"github.com/wowsims/mop/sim/mage/fire"
 	frostMage "github.com/wowsims/mop/sim/mage/frost"
+	"github.com/wowsims/mop/sim/monk/brewmaster"
+	"github.com/wowsims/mop/sim/monk/mistweaver"
+	"github.com/wowsims/mop/sim/monk/windwalker"
 	holyPaladin "github.com/wowsims/mop/sim/paladin/holy"
 	protPaladin "github.com/wowsims/mop/sim/paladin/protection"
 	"github.com/wowsims/mop/sim/paladin/retribution"
@@ -84,4 +87,8 @@ func RegisterAll() {
 	arms.RegisterArmsWarrior()
 	fury.RegisterFuryWarrior()
 	protWarrior.RegisterProtectionWarrior()
+
+	brewmaster.RegisterBrewmasterMonk()
+	mistweaver.RegisterMistweaverMonk()
+	windwalker.RegisterWindwalkerMonk()
 }
