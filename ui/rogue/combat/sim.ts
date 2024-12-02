@@ -205,9 +205,9 @@ const getActiveEPWeight = (player: Player<Spec.SpecCombatRogue>, sim: Sim): Stat
 		avgIlvl /= playerGear.asArray().length;
 		if (mhWepId == 78472 || mhWepId == 77188 || mhWepId == 78481) { // No'Kaled MH
 			return Presets.CBAT_NOKALED_EP_PRESET.epWeights;
-		} else if (playerGear.getItemSetCount("Vestments of the Dark Phoenix") == 4) {
+		} else if (playerGear.getItemSetCount("Vestments of the Dark Phoenix") >= 4) {
 			return Presets.CBAT_4PT12_EP_PRESET.epWeights;
-		} else if (playerGear.getItemSetCount("Blackfang Battleweave") || avgIlvl >= 380) { // T13, or high enough that Haste+Mastery overtake Spell Hit Cap
+		} else if (playerGear.getItemSetCount("Blackfang Battleweave") || avgIlvl >= 400) { // T13, or high enough that Haste+Mastery overtake Spell Hit Cap
 			return Presets.CBAT_T13_EP_PRESET.epWeights;
 		}  else {
 			return Presets.CBAT_STANDARD_EP_PRESET.epWeights;
