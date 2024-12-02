@@ -13,9 +13,9 @@ import { SimUI } from '../sim_ui';
 import { EventID, TypedEvent } from '../typed_event';
 import { arrayEquals, downloadString, getEnumValues, jsonStringifyWithFlattenedPaths } from '../utils';
 import { BaseModal } from './base_modal';
-import { BooleanPicker } from './pickers/boolean_picker';
 import { CopyButton } from './copy_button';
 import { IndividualLinkImporter, IndividualWowheadGearPlannerImporter } from './importers';
+import { BooleanPicker } from './pickers/boolean_picker';
 import { createWowheadGearPlannerLink, WowheadGearPlannerData, WowheadItemData } from './wowhead_helper';
 
 interface ExporterOptions {
@@ -250,7 +250,7 @@ export class IndividualWowheadGearPlannerExporter<SpecType extends Spec> extends
 
 		const glyphs = player.getGlyphs();
 
-		let data = {
+		const data = {
 			level: Mechanics.CHARACTER_LEVEL,
 			talents: player.getTalentsString().split("-"),
 			glyphs: [
@@ -268,7 +268,7 @@ export class IndividualWowheadGearPlannerExporter<SpecType extends Spec> extends
 		} as WowheadGearPlannerData
 
 		const gear = player.getGear();
-		
+
 		gear.getItemSlots()
 			.sort((slot1, slot2) => IndividualWowheadGearPlannerImporter.slotIDs[slot1] - IndividualWowheadGearPlannerImporter.slotIDs[slot2])
 			.forEach(itemSlot => {
@@ -277,11 +277,11 @@ export class IndividualWowheadGearPlannerExporter<SpecType extends Spec> extends
 					return;
 				}
 
-				let slotId = IndividualWowheadGearPlannerImporter.slotIDs[itemSlot];
-				let itemData = {
+				const slotId = IndividualWowheadGearPlannerImporter.slotIDs[itemSlot];
+				const itemData = {
 					slotId: slotId,
 					itemId: item.id,
-					
+
 				} as WowheadItemData
 				if(item._randomSuffix?.id) {
 					itemData.randomEnchantId = item._randomSuffix.id
@@ -289,13 +289,13 @@ export class IndividualWowheadGearPlannerExporter<SpecType extends Spec> extends
 				if(item._enchant) {
 					itemData.enchantIds = [item._enchant.spellId]
 				}
-				
+
 				if (ItemSlot.ItemSlotHands == itemSlot) {
 					//Todo: IF Hands we want to append any tinkers if existing
 				}
 
 				if(item._gems) {
-					itemData.gemItemIds = item._gems.map((gem) => {return gem?.id ?? 0})
+					itemData.gemItemIds = item._gems.map(gem => {return gem?.id ?? 0})
 				}
 				if(item._reforge) {
 					itemData.reforge = item._reforge.id

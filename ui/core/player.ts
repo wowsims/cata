@@ -77,7 +77,7 @@ import { Raid } from './raid';
 import { Sim, SimSettingCategories } from './sim';
 import { playerTalentStringToProto } from './talents/factory';
 import { EventID, TypedEvent } from './typed_event';
-import { stringComparator, sum } from './utils';
+import { omitDeep, stringComparator, sum } from './utils';
 import { WorkerProgressCallback } from './worker_pool';
 
 export interface AuraStats {
@@ -1434,7 +1434,10 @@ export class Player<SpecType extends Spec> {
 		const exportCategory = (cat: SimSettingCategories) => !exportCategories || exportCategories.length == 0 || exportCategories.includes(cat);
 
 		const gear = this.getGear();
-		const aplRotation = forSimming ? this.getResolvedAplRotation() : this.aplRotation;
+		const aplRotation = forSimming
+			? this.getResolvedAplRotation()
+			: // When exporting we want to omit the uuid field to prevent bloat
+			  omitDeep(this.aplRotation, ['uuid']);
 
 		let player = PlayerProto.create({
 			class: this.getClass(),

@@ -106,6 +106,8 @@ const TENTATIVE_IMPLEMENTATION_ITEMS = [
 	// Wrath of Unchaining - LFR, Normal, Heroic
 	77974, 77197, 77994,
 
+	// No'Kaled, the Elements of Death - LFR, Normal, Heroic
+	78481, 77188, 78472,
 	// Kiril, Fury of Beasts - LFR, Normal, Heroic
 	78482, 77194, 78473,
 	// Ti'tahk, the Steps of Time - LFR, Normal, Heroic
@@ -212,5 +214,20 @@ export const SET_BONUS_NOTICES = new Map<number, SetBonusNoticeData>([
 	],
 
 	// Generic "not yet implemented" notices
-	[1058, null], // Feral T13
+	[928, null], // Resto Druid T11
+	[933, null], // Holy Paladin T11
+	[935, null], // Healing Priest T11
+	[938, null], // Resto Shaman T11
+
+	[1004, null], // Resto Druid T12
+	[1009, null], // Healing Priest T12
+	[1011, null], // Holy Paladin T12
+	[1014, null], // Resto Shaman T12
+
+	[1056, null], // Blood DK T13
+	[1058, null], // Feral Druid T13
+	[1060, null], // Resto Druid T13
+	[1066, null], // Healing Priest T13
+	[1067, null], // Shadow Priest T13
+	[1069, null], // Resto Shaman T13
 ]);
