@@ -8,6 +8,7 @@ import * as DeathKnightSpecs from './death_knight';
 import * as DruidSpecs from './druid';
 import * as HunterSpecs from './hunter';
 import * as MageSpecs from './mage';
+import * as MonkSpecs from './monk';
 import * as PaladinSpecs from './paladin';
 import * as PriestSpecs from './priest';
 import * as RogueSpecs from './rogue';
@@ -34,6 +35,10 @@ const specToPlayerSpec: Record<Spec, PlayerSpec<any> | undefined> = {
 	[Spec.SpecArcaneMage]: MageSpecs.ArcaneMage,
 	[Spec.SpecFireMage]: MageSpecs.FireMage,
 	[Spec.SpecFrostMage]: MageSpecs.FrostMage,
+	// Monk
+	[Spec.SpecBrewmasterMonk]: MonkSpecs.BrewmasterMonk,
+	[Spec.SpecMistweaverMonk]: MonkSpecs.MistweaverMonk,
+	[Spec.SpecWindwalkerMonk]: MonkSpecs.WindwalkerMonk,
 	// Paladin
 	[Spec.SpecHolyPaladin]: PaladinSpecs.HolyPaladin,
 	[Spec.SpecProtectionPaladin]: PaladinSpecs.ProtectionPaladin,
@@ -73,6 +78,7 @@ export const PlayerSpecs = {
 	...DruidSpecs,
 	...HunterSpecs,
 	...MageSpecs,
+	...MonkSpecs,
 	...PaladinSpecs,
 	...PriestSpecs,
 	...RogueSpecs,

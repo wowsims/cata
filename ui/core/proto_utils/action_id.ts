@@ -689,6 +689,55 @@ export class ActionId {
 					name += ' (Off Hand)';
 				}
 				break;
+			case 'Tiger Strikes':
+				if (this.spellId === 12274) {
+					name += ' (Main Hand)';
+				} else {
+					name += ' (Off Hand)';
+				}
+				break;
+			case 'Blackout Kick':
+				if (tag === 2) {
+					name += ' (DoT)';
+				}
+				break;
+			case 'Expel Harm':
+				if (this.spellId === 115072) {
+					name += ' (Heal)';
+				} else {
+					name += ' (Damage)';
+				}
+				break;
+			case 'Chi Wave':
+				if (this.spellId === 132463) {
+					name += ' (Heal)';
+				} else if (this.spellId === 132467) {
+					name += ' (Damage)';
+				}
+				break;
+			case 'Zen Sphere':
+				if (this.spellId === 124081) {
+					name += ' (Heal)';
+				} else if (this.spellId === 124098) {
+					name += ' (Damage)';
+				} else if (this.spellId === 124101) {
+					name += ': Detonate (Heal)';
+				} else if (this.spellId === 125033) {
+					name += ': Detonate (Damage)';
+				}
+				break;
+			case 'Chi Burst':
+				if (this.spellId === 130654) {
+					name += ' (Heal)';
+				} else if (this.spellId === 148135) {
+					name += ' (Damage)';
+				}
+				break;
+			case 'Rushing Jade Wind':
+				if (this.spellId === 148187) {
+					name += ' (Hit)';
+				}
+				break;
 			default:
 				if (tag) {
 					name += ' (??)';
@@ -696,8 +745,9 @@ export class ActionId {
 				break;
 		}
 
-		const iconOverrideId = this.spellTooltipOverride || this.spellIconOverride;
 		let iconUrl = ActionId.makeIconUrl(tooltipData['icon']);
+
+		const iconOverrideId = this.spellTooltipOverride || this.spellIconOverride;
 		if (iconOverrideId) {
 			const overrideTooltipData = await ActionId.getTooltipData(iconOverrideId);
 			iconUrl = ActionId.makeIconUrl(overrideTooltipData['icon']);
@@ -1002,6 +1052,7 @@ export const resourceTypeToIcon: Record<ResourceType, string> = {
 	[ResourceType.ResourceTypeMana]: 'https://wow.zamimg.com/images/wow/icons/medium/inv_elemental_mote_mana.jpg',
 	[ResourceType.ResourceTypeEnergy]: 'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_shadowworddominate.jpg',
 	[ResourceType.ResourceTypeRage]: 'https://wow.zamimg.com/images/wow/icons/medium/spell_misc_emotionangry.jpg',
+	[ResourceType.ResourceTypeChi]: 'https://wow.zamimg.com/images/wow/icons/medium/ability_monk_healthsphere.jpg',
 	[ResourceType.ResourceTypeComboPoints]: 'https://wow.zamimg.com/images/wow/icons/medium/inv_mace_2h_pvp410_c_01.jpg',
 	[ResourceType.ResourceTypeFocus]: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_focusfire.jpg',
 	[ResourceType.ResourceTypeRunicPower]: 'https://wow.zamimg.com/images/wow/icons/medium/inv_sword_62.jpg',

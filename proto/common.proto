@@ -81,6 +81,10 @@ enum Spec {
 	SpecArmsWarrior = 28;
 	SpecFuryWarrior = 29;
 	SpecProtectionWarrior = 30;
+	
+	SpecBrewmasterMonk = 32;
+	SpecMistweaverMonk = 33;
+	SpecWindwalkerMonk = 34;
 }
 
 enum Race {
@@ -97,6 +101,8 @@ enum Race {
 	RaceUndead = 10;
 	RaceWorgen = 11;
 	RaceGoblin = 12;
+	RaceAlliancePandaren = 13;
+	RaceHordePandaren = 14;
 }
 
 enum Faction {
@@ -117,6 +123,7 @@ enum Class {
 	ClassWarlock = 8;
 	ClassWarrior = 9;
 	ClassDeathKnight = 10;
+	ClassMonk = 11;
 }
 
 enum Profession {
@@ -563,12 +570,13 @@ enum Food {
 
 // Buffs that affect the entire raid.
 // TODO: Reindex
-// next index: 46
+// next index: 48
 message RaidBuffs {
 	// +5% Base Stats and Spell Resistances
 	bool mark_of_the_wild = 1;
 	bool blessing_of_kings = 2;
 	bool drums_of_the_burning_wild = 3;
+	bool legacy_of_the_emperor = 47;
 
 	// +Spell Resistances
 	bool elemental_resistance_totem = 4;
@@ -626,6 +634,7 @@ message RaidBuffs {
 	bool rampage = 36;
 	bool terrifying_roar = 37;
 	bool furious_howl = 45;
+	bool legacy_of_the_white_tiger = 46;
 
 	// Major Haste
 	bool bloodlust = 38;
@@ -715,6 +724,7 @@ message Debuffs {
 	bool vindication = 23;
 	bool scarlet_fever = 24;
 	bool demoralizing_screech = 25;
+	bool keg_smask = 32;
 
 	// -attack speed
 	bool thunder_clap = 26;

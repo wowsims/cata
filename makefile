@@ -19,6 +19,9 @@ PAGE_INDECES := ui/death_knight/blood/index.html \
 				ui/mage/arcane/index.html \
 				ui/mage/fire/index.html \
 				ui/mage/frost/index.html \
+				ui/monk/brewmaster/index.html \
+				ui/monk/mistweaver/index.html \
+				ui/monk/windwalker/index.html \
 				ui/paladin/holy/index.html \
 				ui/paladin/protection/index.html \
 				ui/paladin/retribution/index.html \

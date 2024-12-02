@@ -326,6 +326,9 @@ func (unit *Unit) NewDeathRuneMetrics(actionID ActionID) *ResourceMetrics {
 func (unit *Unit) NewComboPointMetrics(actionID ActionID) *ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeComboPoints)
 }
+func (unit *Unit) NewChiMetrics(actionID ActionID) *ResourceMetrics {
+	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeChi)
+}
 func (unit *Unit) NewFocusMetrics(actionID ActionID) *ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeFocus)
 }

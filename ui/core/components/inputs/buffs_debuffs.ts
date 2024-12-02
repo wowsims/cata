@@ -28,6 +28,7 @@ export const AllStatsBuff = InputHelpers.makeMultiIconInput(
 	[
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(20217), fieldName: 'blessingOfKings' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(1126), fieldName: 'markOfTheWild' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(116781), fieldName: 'legacyOfTheWhiteTiger' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromItemId(63140), fieldName: 'drumsOfTheBurningWild' }),
 	],
 	'Stats',
@@ -104,6 +105,7 @@ export const CritBuff = InputHelpers.makeMultiIconInput(
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(51701), fieldName: 'honorAmongThieves' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(29801), fieldName: 'rampage' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(24604), fieldName: 'furiousHowl' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(115921), fieldName: 'legacyOfTheEmperor' }),
 	],
 	'Crit %',
 );

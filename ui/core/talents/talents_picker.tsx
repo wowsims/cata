@@ -14,6 +14,7 @@ import { classGlyphsConfig } from './factory';
 import { GlyphsPicker } from './glyphs_picker';
 import { HunterPet } from './hunter_pet';
 
+export const MAX_POINTS_PLAYER_MOP = 6;
 export const MAX_POINTS_PLAYER = 41;
 const MAX_POINTS_HUNTER_PET = 17;
 const MAX_POINTS_HUNTER_PET_BM = 21;
@@ -32,6 +33,7 @@ export class TalentsPicker<ModObject extends Player<any> | HunterPet<any>, Talen
 	readonly numRows: number;
 	readonly numCols: number;
 	readonly pointsPerRow: number;
+	readonly mopTalents: boolean;
 
 	maxPoints: number;
 
@@ -43,7 +45,8 @@ export class TalentsPicker<ModObject extends Player<any> | HunterPet<any>, Talen
 		super(parent, 'talents-picker-root', modObject, { ...config });
 		this.modObject = modObject;
 		this.config = config;
-		this.pointsPerRow = config.pointsPerRow;
+		this.mopTalents = config.playerClass === Class.ClassMonk;
+		this.pointsPerRow = this.mopTalents ? 1 : config.pointsPerRow;
 		this.numRows = Math.max(...config.trees.map(treeConfig => treeConfig.talents.map(talentConfig => talentConfig.location.rowIdx).flat()).flat()) + 1;
 		this.numCols = Math.max(...config.trees.map(treeConfig => treeConfig.talents.map(talentConfig => talentConfig.location.colIdx).flat()).flat()) + 1;
 
@@ -54,7 +57,7 @@ export class TalentsPicker<ModObject extends Player<any> | HunterPet<any>, Talen
 				this.maxPoints = MAX_POINTS_HUNTER_PET;
 			}
 		} else {
-			this.maxPoints = MAX_POINTS_PLAYER;
+			this.maxPoints = this.mopTalents ? MAX_POINTS_PLAYER_MOP : MAX_POINTS_PLAYER;
 		}
 
 		const getPointsRemaining = (): number => this.maxPoints - modObject.getTalentTreePoints().reduce((sum, points) => sum + points, 0);
@@ -201,6 +204,11 @@ export class TalentsPicker<ModObject extends Player<any> | HunterPet<any>, Talen
 
 	private updatePlayerTrees() {
 		if (this.isPlayer()) {
+			if (this.mopTalents) {
+				this.trees[0].rootElem.classList.remove('disabled');
+				return;
+			}
+
 			const specNumber = this.modObject.getPlayerSpec().specIndex;
 			const pointsSpent = this.trees[specNumber].numPoints;
 
@@ -401,7 +409,7 @@ class TalentReqArrow extends Component {
 class TalentPicker<TalentsProto> extends Component {
 	readonly config: TalentConfig<TalentsProto>;
 	private readonly tree: TalentTreePicker<TalentsProto>;
-	private readonly pointsDisplay: HTMLElement;
+	private readonly pointsDisplay?: HTMLElement;
 
 	private longTouchTimer?: number;
 	private childReqs: TalentReqArrow[];
@@ -422,9 +430,11 @@ class TalentPicker<TalentsProto> extends Component {
 		this.rootElem.dataset.maxPoints = String(this.config.maxPoints);
 		this.rootElem.dataset.whtticon = 'false';
 
-		this.pointsDisplay = document.createElement('span');
-		this.pointsDisplay.classList.add('talent-picker-points');
-		this.rootElem.appendChild(this.pointsDisplay);
+		if (!this.tree.picker.mopTalents) {
+			this.pointsDisplay = document.createElement('span');
+			this.pointsDisplay.classList.add('talent-picker-points');
+			this.rootElem.appendChild(this.pointsDisplay);
+		}
 
 		this.rootElem.addEventListener('click', event => {
 			event.preventDefault();
@@ -521,6 +531,10 @@ class TalentPicker<TalentsProto> extends Component {
 
 	// Returns whether setting the points to newPoints would be a valid talent tree.
 	canSetPoints(newPoints: number): boolean {
+		if (this.tree.picker.mopTalents) {
+			return true;
+		}
+
 		const oldPoints = this.getPoints();
 
 		if (newPoints > oldPoints) {
@@ -574,10 +588,24 @@ class TalentPicker<TalentsProto> extends Component {
 
 		if (checkValidity && !this.canSetPoints(newPoints)) return;
 
+		if (this.tree.picker.mopTalents && newPoints > 0) {
+			const currentlySet = this.tree.talents.find(
+				talent => talent.getRow() === this.getRow() && talent.getCol() !== this.getCol() && talent.getPoints() > 0,
+			);
+			if (currentlySet) {
+				const points = currentlySet.getPoints();
+				if (points > 0) {
+					currentlySet.setPoints(points - 1, false);
+				}
+			}
+		}
+
 		this.tree.numPoints += newPoints - oldPoints;
 		this.rootElem.dataset.points = String(newPoints);
 
-		this.pointsDisplay.textContent = newPoints + '/' + this.config.maxPoints;
+		if (this.pointsDisplay) {
+			this.pointsDisplay.textContent = newPoints + '/' + this.config.maxPoints;
+		}
 
 		if (this.isFull()) {
 			this.rootElem.classList.add('talent-full');
@@ -606,7 +634,13 @@ class TalentPicker<TalentsProto> extends Component {
 	}
 
 	update() {
-		const canSetPoints = this.canSetPoints(this.getPoints() + 1);
+		let canSetPoints: boolean;
+		if (this.tree.picker.mopTalents) {
+			canSetPoints = !this.tree.talents.find(talent => talent.getRow() === this.getRow() && talent.getPoints() > 0);
+		} else {
+			canSetPoints = this.canSetPoints(this.getPoints() + 1);
+		}
+
 		if (canSetPoints) {
 			this.rootElem.classList.add('talent-picker-can-add');
 		} else {

@@ -11,6 +11,7 @@ import "death_knight.proto";
 import "druid.proto";
 import "hunter.proto";
 import "mage.proto";
+import "monk.proto";
 import "paladin.proto";
 import "priest.proto";
 import "rogue.proto";
@@ -18,7 +19,7 @@ import "shaman.proto";
 import "warlock.proto";
 import "warrior.proto";
 
-// NextIndex: 56
+// NextIndex: 57
 message Player {
 	// Proto version at the time Player were saved.
 	// A "breaking change" here is defined as anything that will break saved
@@ -62,6 +63,10 @@ message Player {
 		ArcaneMage arcane_mage = 18;
 		FireMage fire_mage = 19;
 		FrostMage frost_mage = 20;
+
+		BrewmasterMonk brewmaster_monk = 54;
+		MistweaverMonk mistweaver_monk = 55;
+		WindwalkerMonk windwalker_monk = 56;
 
 		HolyPaladin holy_paladin = 21;
 		ProtectionPaladin protection_paladin = 22;

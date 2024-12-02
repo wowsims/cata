@@ -43,6 +43,8 @@ export const raceNames: Map<Race, string> = new Map([
 	[Race.RaceHuman, 'Human'],
 	[Race.RaceNightElf, 'Night Elf'],
 	[Race.RaceOrc, 'Orc'],
+	[Race.RaceAlliancePandaren, 'Pandaren (A)'],
+	[Race.RaceHordePandaren, 'Pandaren (A)'],
 	[Race.RaceTauren, 'Tauren'],
 	[Race.RaceTroll, 'Troll'],
 	[Race.RaceUndead, 'Undead'],
@@ -64,6 +66,7 @@ export const classNames: Map<Class, string> = new Map([
 	[Class.ClassDruid, 'Druid'],
 	[Class.ClassHunter, 'Hunter'],
 	[Class.ClassMage, 'Mage'],
+	[Class.ClassMonk, 'Monk'],
 	[Class.ClassPaladin, 'Paladin'],
 	[Class.ClassPriest, 'Priest'],
 	[Class.ClassRogue, 'Rogue'],
@@ -199,6 +202,7 @@ export const resourceNames: Map<ResourceType, string> = new Map([
 	[ResourceType.ResourceTypeMana, 'Mana'],
 	[ResourceType.ResourceTypeEnergy, 'Energy'],
 	[ResourceType.ResourceTypeRage, 'Rage'],
+	[ResourceType.ResourceTypeChi, 'Chi'],
 	[ResourceType.ResourceTypeComboPoints, 'Combo Points'],
 	[ResourceType.ResourceTypeFocus, 'Focus'],
 	[ResourceType.ResourceTypeRunicPower, 'Runic Power'],
@@ -217,6 +221,7 @@ export const resourceColors: Map<ResourceType, string> = new Map([
 	[ResourceType.ResourceTypeMana, '#2e93fa'],
 	[ResourceType.ResourceTypeEnergy, '#ffd700'],
 	[ResourceType.ResourceTypeRage, '#ff0000'],
+	[ResourceType.ResourceTypeChi, '#00ff98'],
 	[ResourceType.ResourceTypeComboPoints, '#ffa07a'],
 	[ResourceType.ResourceTypeFocus, '#cd853f'],
 	[ResourceType.ResourceTypeRunicPower, '#5b99ee'],
@@ -345,6 +350,9 @@ export const masterySpellNames: Map<Spec, string> = new Map([
 	[Spec.SpecAfflictionWarlock, 'Potent Afflictions'],
 	[Spec.SpecDemonologyWarlock, 'Master Demonologist'],
 	[Spec.SpecDestructionWarlock, 'Fiery Apocalypse'],
+	[Spec.SpecBrewmasterMonk, 'Elusive Brawler'],
+	[Spec.SpecMistweaverMonk, 'Gift of the Serpent'],
+	[Spec.SpecWindwalkerMonk, 'Bottled Fury'],
 ]);
 
 export const masterySpellIDs: Map<Spec, number> = new Map([
@@ -379,6 +387,9 @@ export const masterySpellIDs: Map<Spec, number> = new Map([
 	[Spec.SpecAfflictionWarlock, 77215],
 	[Spec.SpecDemonologyWarlock, 77219],
 	[Spec.SpecDestructionWarlock, 77220],
+	[Spec.SpecBrewmasterMonk, 117906],
+	[Spec.SpecMistweaverMonk, 117907],
+	[Spec.SpecWindwalkerMonk, 115636],
 ]);
 export const statCapTypeNames = new Map<StatCapType, string>([
 	[StatCapType.TypeHardCap, 'Hard cap'],

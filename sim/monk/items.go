@@ -1,0 +1,4 @@
+package monk
+
+func init() {
+}
