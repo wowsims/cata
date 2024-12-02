@@ -9,6 +9,7 @@ import (
 	"slices"
 	"strings"
 	"testing"
+	"time"
 )
 
 const maxDiff = 1e-5
@@ -103,8 +104,11 @@ func TestSolver(t *testing.T) {
 			t.Logf("Running %s: Model Direction=%s, Objective=%s", tc.Name, model.Direction, model.Objective)
 
 			// Execute the solver.
+			startTime := time.Now()
 			solution := Solve(model, &options)
+			elapsedTime := time.Since(startTime)
 			t.Logf("%s Solution: %+v", tc.Name, solution)
+			t.Logf("Execution time: %v", elapsedTime)
 
 			// Assert the status.
 			if solution.Status != tc.Expected.Status {
