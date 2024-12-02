@@ -24,9 +24,9 @@ export class CacheHandler<T> {
 	}
 
 	private keepMostRecent() {
-		if (this.data.size > 2) {
+		if (this.keysToKeep && this.data.size > this.keysToKeep) {
 			const keys = [...this.data.keys()];
-			const keysToRemove = keys.slice(0, keys.length - 2);
+			const keysToRemove = keys.slice(0, keys.length - this.keysToKeep);
 			keysToRemove.forEach(key => this.data.delete(key));
 		}
 	}
