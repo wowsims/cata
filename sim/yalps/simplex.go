@@ -1,10 +1,12 @@
 package yalps
 
-import "math"
+import (
+	"math"
+)
 
 // Pivot operation
-func pivot(tableau *Tableau, row, col int) {
-	quotient := index(tableau, row, col)
+func pivot(tableau *Tableau, row, col int, nonZeroColumns []int) {
+	quotient := tableau.Matrix[row*tableau.Width+col]
 	leaving := tableau.VariableAtPosition[tableau.Width+row]
 	entering := tableau.VariableAtPosition[col]
 	tableau.VariableAtPosition[tableau.Width+row] = entering
@@ -12,36 +14,43 @@ func pivot(tableau *Tableau, row, col int) {
 	tableau.PositionOfVariable[leaving] = col
 	tableau.PositionOfVariable[entering] = tableau.Width + row
 
-	nonZeroColumns := make([]int, 0)
+	// Reset nonZeroColumns without reallocating
+	nzCount := 0
+
 	// (1 / quotient) * R_pivot -> R_pivot
+	rowStart := row * tableau.Width
 	for c := 0; c < tableau.Width; c++ {
-		value := index(tableau, row, c)
-		if math.Abs(value) > 1e-16 {
-			update(tableau, row, c, value/quotient)
-			nonZeroColumns = append(nonZeroColumns, c)
+		value := tableau.Matrix[rowStart+c]
+		if value > 1e-16 || value < -1e-16 {
+			tableau.Matrix[rowStart+c] = value / quotient
+			nonZeroColumns[nzCount] = c
+			nzCount++
 		} else {
-			update(tableau, row, c, 0.0)
+			tableau.Matrix[rowStart+c] = 0.0
 		}
 	}
-	update(tableau, row, col, 1.0/quotient)
+	tableau.Matrix[rowStart+col] = 1.0 / quotient
 
 	// -M[r, col] * R_pivot + R_r -> R_r
 	for r := 0; r < tableau.Height; r++ {
 		if r == row {
 			continue
 		}
-		coef := index(tableau, r, col)
-		if math.Abs(coef) > 1e-16 {
-			for _, c := range nonZeroColumns {
-				update(tableau, r, c, index(tableau, r, c)-coef*index(tableau, row, c))
+		rowRStart := r * tableau.Width
+		coef := tableau.Matrix[rowRStart+col]
+		if coef > 1e-16 || coef < -1e-16 {
+			for i := 0; i < nzCount; i++ {
+				c := nonZeroColumns[i]
+				tableau.Matrix[rowRStart+c] -= coef * tableau.Matrix[rowStart+c]
 			}
-			update(tableau, r, col, -coef/quotient)
+			tableau.Matrix[rowRStart+col] = -coef / quotient
 		}
 	}
 }
 
 func phase2(tableau *Tableau, options *Options) (SolutionStatus, float64) {
 	pivotHistory := make([][2]int, 0)
+	nonZeroColumns := make([]int, tableau.Width)
 	for iter := 0; iter < options.MaxPivots; iter++ {
 		// Find entering column
 		col := -1
@@ -83,19 +92,21 @@ func phase2(tableau *Tableau, options *Options) (SolutionStatus, float64) {
 			return StatusCycled, math.NaN()
 		}
 
-		pivot(tableau, row, col)
+		pivot(tableau, row, col, nonZeroColumns)
 	}
 	return StatusCycled, math.NaN()
 }
 
 func phase1(tableau *Tableau, options *Options) (SolutionStatus, float64) {
 	pivotHistory := make([][2]int, 0)
+	nonZeroColumns := make([]int, tableau.Width)
 	for iter := 0; iter < options.MaxPivots; iter++ {
+
 		// Find leaving row
 		row := -1
 		rhs := -options.Precision
 		for r := 1; r < tableau.Height; r++ {
-			value := index(tableau, r, 0)
+			value := tableau.Matrix[r*tableau.Width]
 			if value < rhs {
 				rhs = value
 				row = r
@@ -108,10 +119,11 @@ func phase1(tableau *Tableau, options *Options) (SolutionStatus, float64) {
 		// Find entering column
 		col := -1
 		maxRatio := -math.Inf(1)
+		rowStart := row * tableau.Width
 		for c := 1; c < tableau.Width; c++ {
-			coef := index(tableau, row, c)
+			coef := tableau.Matrix[rowStart+c]
 			if coef < -options.Precision {
-				ratio := -index(tableau, 0, c) / coef
+				ratio := -tableau.Matrix[c] / coef
 				if ratio > maxRatio {
 					maxRatio = ratio
 					col = c
@@ -126,7 +138,7 @@ func phase1(tableau *Tableau, options *Options) (SolutionStatus, float64) {
 			return StatusCycled, math.NaN()
 		}
 
-		pivot(tableau, row, col)
+		pivot(tableau, row, col, nonZeroColumns)
 	}
 	return StatusCycled, math.NaN()
 }
