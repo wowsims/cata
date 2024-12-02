@@ -24,7 +24,7 @@ func (warlock *Warlock) registerSoulHarvest() {
 			TickLength:          3 * time.Second,
 			AffectedByCastSpeed: true,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				warlock.SoulShards = min(warlock.SoulShards+1, 3)
+				warlock.AddSoulShard()
 				if sim.Log != nil {
 					warlock.Log(sim, "Gained 1 soul shard (%v -> %v)", warlock.SoulShards-1, warlock.SoulShards)
 				}

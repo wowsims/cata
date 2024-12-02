@@ -2,10 +2,9 @@ import tippy, { Instance as TippyInstance } from 'tippy.js';
 
 import { Player } from '../../player';
 import { APLAction, APLListItem, APLPrepullAction, APLValue } from '../../proto/apl';
-import { ActionId } from '../../proto_utils/action_id';
 import { SimUI } from '../../sim_ui';
 import { EventID, TypedEvent } from '../../typed_event';
-import { existsInDOM, randomUUID } from '../../utils';
+import { randomUUID } from '../../utils';
 import { Component } from '../component';
 import { Input, InputConfig } from '../input';
 import { ListItemPickerConfig, ListPicker } from '../pickers/list_picker';
@@ -96,7 +95,7 @@ class APLPrepullActionPicker extends Input<Player<any>, APLPrepullAction> {
 		this.player = player;
 
 		const itemHeaderElem = ListPicker.getItemHeaderElem(this);
-		makeListItemWarnings(itemHeaderElem, player, player => player.getCurrentStats().rotationStats?.prepullActions[index]?.warnings || []);
+		ListPicker.makeListItemValidations(itemHeaderElem, player, player => player.getCurrentStats().rotationStats?.prepullActions[index]?.validations || []);
 
 		this.hidePicker = new HidePicker(itemHeaderElem, player, {
 			changedEvent: () => this.player.rotationChangeEmitter,
@@ -118,6 +117,7 @@ class APLPrepullActionPicker extends Input<Player<any>, APLPrepullAction> {
 				if (newValue) {
 					this.getItem().doAtValue = APLValue.create({
 						value: { oneofKind: 'const', const: { val: newValue } },
+						uuid: { value: randomUUID() },
 					});
 				} else {
 					this.getItem().doAtValue = undefined;
@@ -196,7 +196,7 @@ class APLListItemPicker extends Input<Player<any>, APLListItem> {
 		this.player = player;
 
 		const itemHeaderElem = ListPicker.getItemHeaderElem(this);
-		makeListItemWarnings(itemHeaderElem, player, player => player.getCurrentStats().rotationStats?.priorityList[index]?.warnings || []);
+		ListPicker.makeListItemValidations(itemHeaderElem, player, player => player.getCurrentStats().rotationStats?.priorityList[index]?.validations || []);
 
 		this.hidePicker = new HidePicker(itemHeaderElem, player, {
 			changedEvent: () => this.player.rotationChangeEmitter,
@@ -237,45 +237,6 @@ class APLListItemPicker extends Input<Player<any>, APLListItem> {
 		this.hidePicker.setInputValue(newValue.hide);
 		this.actionPicker.setInputValue(newValue.action || APLAction.create());
 	}
-}
-
-function makeListItemWarnings(itemHeaderElem: HTMLElement, player: Player<any>, getWarnings: (player: Player<any>) => Array<string>) {
-	const warningsElem = ListPicker.makeActionElem('apl-warnings', 'fa-exclamation-triangle');
-	warningsElem.classList.add('warning', 'link-warning');
-	warningsElem.setAttribute('data-bs-html', 'true');
-	const warningsTooltip = tippy(warningsElem, {
-		theme: 'dropdown-tooltip',
-		content: 'Warnings',
-	});
-
-	itemHeaderElem.appendChild(warningsElem);
-
-	const updateWarnings = async () => {
-		if (!existsInDOM(warningsElem)) {
-			warningsTooltip?.destroy();
-			warningsElem?.remove();
-			player.currentStatsEmitter.off(updateWarnings);
-			return;
-		}
-		warningsTooltip.setContent('');
-		const warnings = getWarnings(player);
-		if (!warnings.length) {
-			warningsElem.style.visibility = 'hidden';
-		} else {
-			warningsElem.style.visibility = 'visible';
-			const formattedWarnings = await Promise.all(warnings.map(w => ActionId.replaceAllInString(w)));
-			warningsTooltip.setContent(
-				`
-				<p>This action has warnings, and might not behave as expected.</p>
-				<ul>
-					${formattedWarnings.map(w => `<li>${w}</li>`).join('')}
-				</ul>
-			`,
-			);
-		}
-	};
-	updateWarnings();
-	player.currentStatsEmitter.on(updateWarnings);
 }
 
 class HidePicker extends Input<Player<any>, boolean> {

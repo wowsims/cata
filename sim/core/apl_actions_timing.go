@@ -121,7 +121,7 @@ func (rot *APLRotation) newActionSchedule(config *proto.APLActionSchedule) APLAc
 		if durVal, err := time.ParseDuration(strings.TrimSpace(timingStr)); err == nil {
 			timings[i] = durVal
 		} else {
-			rot.ValidationWarning("Invalid duration value '%s'", strings.TrimSpace(timingStr))
+			rot.ValidationMessage(proto.LogLevel_Warning, "Invalid duration value '%s'", strings.TrimSpace(timingStr))
 			valid = false
 		}
 	}

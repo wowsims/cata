@@ -1789,6 +1789,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAffliction-AllItems-VestmentsoftheFacelessShroud"
+ value: {
+  dps: 33731.50632
+  tps: 23572.2115
+ }
+}
+dps_results: {
  key: "TestAffliction-AllItems-VialofShadows-77207"
  value: {
   dps: 35979.98765

@@ -65,7 +65,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 			});
 
 			const spellHitPercentSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent, {
-				breakpoints: [16.95],
+				breakpoints: [17],
 				capType: StatCapType.TypeSoftCap,
 				postCapEPs: [0],
 			});

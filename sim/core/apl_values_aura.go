@@ -12,7 +12,7 @@ type APLValueAuraIsKnown struct {
 	aura AuraReference
 }
 
-func (rot *APLRotation) newValueAuraIsKnown(config *proto.APLValueAuraIsKnown) APLValue {
+func (rot *APLRotation) newValueAuraIsKnown(config *proto.APLValueAuraIsKnown, _ *proto.UUID) APLValue {
 	aura := rot.GetAPLAura(rot.GetSourceUnit(config.SourceUnit), config.AuraId)
 	return &APLValueAuraIsKnown{
 		aura: aura,
@@ -33,7 +33,7 @@ type APLValueAuraIsActive struct {
 	aura AuraReference
 }
 
-func (rot *APLRotation) newValueAuraIsActive(config *proto.APLValueAuraIsActive) APLValue {
+func (rot *APLRotation) newValueAuraIsActive(config *proto.APLValueAuraIsActive, _ *proto.UUID) APLValue {
 	if config.AuraId == nil {
 		return nil
 	}
@@ -61,7 +61,7 @@ type APLValueAuraIsActiveWithReactionTime struct {
 	reactionTime time.Duration
 }
 
-func (rot *APLRotation) newValueAuraIsActiveWithReactionTime(config *proto.APLValueAuraIsActiveWithReactionTime) APLValue {
+func (rot *APLRotation) newValueAuraIsActiveWithReactionTime(config *proto.APLValueAuraIsActiveWithReactionTime, _ *proto.UUID) APLValue {
 	if config.AuraId == nil {
 		return nil
 	}
@@ -91,7 +91,7 @@ type APLValueAuraIsInactiveWithReactionTime struct {
 	reactionTime time.Duration
 }
 
-func (rot *APLRotation) newValueAuraIsInactiveWithReactionTime(config *proto.APLValueAuraIsInactiveWithReactionTime) APLValue {
+func (rot *APLRotation) newValueAuraIsInactiveWithReactionTime(config *proto.APLValueAuraIsInactiveWithReactionTime, _ *proto.UUID) APLValue {
 	if config.AuraId == nil {
 		return nil
 	}
@@ -120,7 +120,7 @@ type APLValueAuraRemainingTime struct {
 	aura AuraReference
 }
 
-func (rot *APLRotation) newValueAuraRemainingTime(config *proto.APLValueAuraRemainingTime) APLValue {
+func (rot *APLRotation) newValueAuraRemainingTime(config *proto.APLValueAuraRemainingTime, _ *proto.UUID) APLValue {
 	if config.AuraId == nil {
 		return nil
 	}
@@ -148,7 +148,7 @@ type APLValueAuraNumStacks struct {
 	aura AuraReference
 }
 
-func (rot *APLRotation) newValueAuraNumStacks(config *proto.APLValueAuraNumStacks) APLValue {
+func (rot *APLRotation) newValueAuraNumStacks(config *proto.APLValueAuraNumStacks, uuid *proto.UUID) APLValue {
 	if config.AuraId == nil {
 		return nil
 	}
@@ -157,7 +157,7 @@ func (rot *APLRotation) newValueAuraNumStacks(config *proto.APLValueAuraNumStack
 		return nil
 	}
 	if aura.Get().MaxStacks == 0 {
-		rot.ValidationWarning("%s is not a stackable aura", ProtoToActionID(config.AuraId))
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s is not a stackable aura", ProtoToActionID(config.AuraId))
 		return nil
 	}
 	return &APLValueAuraNumStacks{
@@ -179,7 +179,7 @@ type APLValueAuraInternalCooldown struct {
 	aura AuraReference
 }
 
-func (rot *APLRotation) newValueAuraInternalCooldown(config *proto.APLValueAuraInternalCooldown) APLValue {
+func (rot *APLRotation) newValueAuraInternalCooldown(config *proto.APLValueAuraInternalCooldown, _ *proto.UUID) APLValue {
 	if config.AuraId == nil {
 		return nil
 	}
@@ -207,7 +207,7 @@ type APLValueAuraICDIsReadyWithReactionTime struct {
 	reactionTime time.Duration
 }
 
-func (rot *APLRotation) newValueAuraICDIsReadyWithReactionTime(config *proto.APLValueAuraICDIsReadyWithReactionTime) APLValue {
+func (rot *APLRotation) newValueAuraICDIsReadyWithReactionTime(config *proto.APLValueAuraICDIsReadyWithReactionTime, _ *proto.UUID) APLValue {
 	if config.AuraId == nil {
 		return nil
 	}
@@ -237,7 +237,7 @@ type APLValueAuraShouldRefresh struct {
 	maxOverlap APLValue
 }
 
-func (rot *APLRotation) newValueAuraShouldRefresh(config *proto.APLValueAuraShouldRefresh) APLValue {
+func (rot *APLRotation) newValueAuraShouldRefresh(config *proto.APLValueAuraShouldRefresh, uuid *proto.UUID) APLValue {
 	if config.AuraId == nil {
 		return nil
 	}
@@ -248,7 +248,7 @@ func (rot *APLRotation) newValueAuraShouldRefresh(config *proto.APLValueAuraShou
 
 	maxOverlap := rot.coerceTo(rot.newAPLValue(config.MaxOverlap), proto.APLValueType_ValueTypeDuration)
 	if maxOverlap == nil {
-		maxOverlap = rot.newValueConst(&proto.APLValueConst{Val: "0ms"})
+		maxOverlap = rot.newValueConst(&proto.APLValueConst{Val: "0ms"}, uuid)
 	}
 
 	return &APLValueAuraShouldRefresh{

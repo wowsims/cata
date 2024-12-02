@@ -208,7 +208,7 @@ export const TwoHandTalents = {
 export const MasterfrostTalents = {
 	name: 'Masterfrost',
 	data: SavedTalents.create({
-		talentsString: '2032-20330022233112012301-03',
+		talentsString: '2032-30330012233112012301-03',
 		glyphs: Glyphs.create({
 			prime1: DeathKnightPrimeGlyph.GlyphOfFrostStrike,
 			prime2: DeathKnightPrimeGlyph.GlyphOfObliterate,

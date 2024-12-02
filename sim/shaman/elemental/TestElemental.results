@@ -1621,6 +1621,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-AllItems-Spiritwalker'sBattlegear"
+ value: {
+  dps: 28364.09538
+  tps: 1617.20815
+ }
+}
+dps_results: {
  key: "TestElemental-AllItems-Spiritwalker'sRegalia"
  value: {
   dps: 36240.86039

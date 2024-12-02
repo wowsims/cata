@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -220,3 +221,55 @@ var ItemSetGladiatorsFelshroud = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+// T13
+var ItemSetVestmentsOfTheFacelessShroud = core.NewItemSet(core.ItemSet{
+	Name: "Vestments of the Faceless Shroud",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+
+			warlock.AddStaticMod(core.SpellModConfig{
+				Kind:      core.SpellMod_Cooldown_Flat,
+				TimeValue: -time.Minute * 4,
+				ClassMask: WarlockSpellSummonDoomguard | WarlockSpellSummonInfernal,
+			})
+		},
+		4: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+
+			spDep := warlock.NewDynamicMultiplyStat(stats.SpellPower, 1.1)
+			aura := warlock.RegisterAura(core.Aura{
+				Label:    "Temporal Ruin",
+				ActionID: core.ActionID{SpellID: 105786},
+				Duration: 10 * time.Second,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					warlock.EnableDynamicStatDep(sim, spDep)
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					warlock.DisableDynamicStatDep(sim, spDep)
+				},
+			})
+
+			core.MakePermanent(warlock.RegisterAura(core.Aura{
+				Label:           "Item - Warlock T13 4P Bonus",
+				ActionID:        core.ActionID{SpellID: 105787},
+				ActionIDForProc: aura.ActionID,
+				OnCastComplete: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if spell.Matches(WarlockSpellSoulBurn) {
+						aura.Activate(sim)
+					}
+				},
+			}))
+		},
+	},
+})
+
+func (warlock *Warlock) Calc2PT13SummonDuration() int32 {
+	has2PT13 := warlock.HasSetBonus(ItemSetVestmentsOfTheFacelessShroud, 2)
+	if has2PT13 {
+		return core.TernaryInt32(warlock.Spec == proto.Spec_SpecDemonologyWarlock, 20, 30)
+	} else {
+		return 0
+	}
+}

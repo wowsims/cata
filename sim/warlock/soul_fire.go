@@ -8,6 +8,8 @@ import (
 )
 
 func (warlock *Warlock) registerSoulFire() {
+	hasT134P := warlock.HasSetBonus(ItemSetVestmentsOfTheFacelessShroud, 4)
+
 	var improvedSoulFire *core.Aura = nil
 	if warlock.Talents.ImprovedSoulFire > 0 {
 		damageBonus := 1 + .04*float64(warlock.Talents.ImprovedSoulFire)
@@ -55,6 +57,10 @@ func (warlock *Warlock) registerSoulFire() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := warlock.CalcAndRollDamageRange(sim, 2.54299998283, 0.22499999404)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+
+			if hasT134P && warlock.SoulBurnAura.IsActive() {
+				warlock.AddSoulShard()
+			}
 
 			warlock.SoulBurnAura.Deactivate(sim)
 			if result.Landed() && improvedSoulFire != nil {
