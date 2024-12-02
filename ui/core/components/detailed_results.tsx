@@ -408,8 +408,7 @@ export class EmbeddedDetailedResults extends DetailedResults {
 				this.tabWindow = window.open(url.href, 'Detailed Results');
 				this.tabWindow!.addEventListener('load', async () => {
 					if (this.latestRun) {
-						await this.updateSettings();
-						await this.setSimRunData(this.latestRun);
+						await Promise.all([this.updateSettings(), this.setSimRunData(this.latestRun)]);
 					}
 				});
 			} else {
@@ -425,8 +424,7 @@ export class EmbeddedDetailedResults extends DetailedResults {
 		simResultsManager.currentChangeEmitter.on(async () => {
 			const runData = simResultsManager.getRunData();
 			if (runData) {
-				await this.updateSettings();
-				await this.setSimRunData(runData);
+				await Promise.all([this.updateSettings(), this.setSimRunData(runData)]);
 			}
 		});
 	}
