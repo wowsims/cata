@@ -5,13 +5,13 @@ const WantToHelpMessage = () => <p className="mb-0">Want to help out by providin
 
 export const MISSING_RANDOM_SUFFIX_WARNING = <p className="mb-0">Please select a random suffix</p>;
 
-const MISSING_IMPLEMENTATION_WARNING = (
+/*const MISSING_IMPLEMENTATION_WARNING = (
 	<>
 		<p className="fw-bold">This item is not implemented!</p>
 		<p>We are working hard on gathering all the old resources to allow for an initial implementation.</p>
 		<WantToHelpMessage />
 	</>
-);
+);*/
 
 const VPLC_IMPLEMENTATION_WARNING = (
 	<>
@@ -39,30 +39,6 @@ const TENTATIVE_IMPLEMENTATION_WARNING = (
 		<WantToHelpMessage />
 	</>
 );
-
-const ITEM_DOESNT_EXIST_WARNING = (
-	<>
-		<p>This item never existed in the original game, therefore any effects or procs it might have are not implemented.</p>
-		<p>
-			Once we get a clear indication from Blizzard whether they decide to include it or not, we will either implement it and remove this notice or remove
-			the item entirely.
-		</p>
-		<WantToHelpMessage />
-	</>
-);
-
-const NON_EXISTING_ITEMS = [
-	// Rotting Skull - 384, 410
-	77987, 78007,
-	// Kiroptyric Sigil - 384, 410
-	77984, 78004,
-	// Fire of the Deep - 384, 410
-	77988, 78008,
-	// Reflection of the Light - 384, 410
-	77986, 78006,
-	// Bottled Wishes - 384, 410
-	77985, 78005,
-];
 
 const WILL_NOT_BE_IMPLEMENTED_WARNING = <>The equip/use effect on this item will not be implemented!</>;
 
@@ -134,12 +110,6 @@ const TENTATIVE_IMPLEMENTATION_ITEMS = [
 ];
 
 export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
-	...NON_EXISTING_ITEMS.map((itemID): [number, ItemNoticeData] => [
-		itemID,
-		{
-			[Spec.SpecUnknown]: ITEM_DOESNT_EXIST_WARNING,
-		},
-	]),
 	...WILL_NOT_BE_IMPLEMENTED_ITEMS.map((itemID): [number, ItemNoticeData] => [
 		itemID,
 		{

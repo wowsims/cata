@@ -254,20 +254,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestFeral-AllItems-BottledWishes-77985"
- value: {
-  dps: 30852.97674
-  tps: 42532.2824
- }
-}
-dps_results: {
- key: "TestFeral-AllItems-BottledWishes-78005"
- value: {
-  dps: 31246.2004
-  tps: 43306.5698
- }
-}
-dps_results: {
  key: "TestFeral-AllItems-BracingShadowspiritDiamond"
  value: {
   dps: 31738.23526
@@ -625,20 +611,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestFeral-AllItems-FireoftheDeep-77988"
- value: {
-  dps: 31007.59452
-  tps: 42730.65933
- }
-}
-dps_results: {
- key: "TestFeral-AllItems-FireoftheDeep-78008"
- value: {
-  dps: 31150.25459
-  tps: 42954.68646
- }
-}
-dps_results: {
  key: "TestFeral-AllItems-FleetShadowspiritDiamond"
  value: {
   dps: 31809.54569
@@ -975,20 +947,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestFeral-AllItems-KiroptyricSigil-77984"
- value: {
-  dps: 33122.13756
-  tps: 44817.54142
- }
-}
-dps_results: {
- key: "TestFeral-AllItems-KiroptyricSigil-78004"
- value: {
-  dps: 34152.39661
-  tps: 45803.0692
- }
-}
-dps_results: {
  key: "TestFeral-AllItems-KvaldirBattleStandard-59685"
  value: {
   dps: 30933.86222
@@ -1283,20 +1241,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestFeral-AllItems-ReflectionoftheLight-77986"
- value: {
-  dps: 30459.43575
-  tps: 42110.96042
- }
-}
-dps_results: {
- key: "TestFeral-AllItems-ReflectionoftheLight-78006"
- value: {
-  dps: 30459.43575
-  tps: 42110.96042
- }
-}
-dps_results: {
  key: "TestFeral-AllItems-ResolveofUndying-77201"
  value: {
   dps: 30459.43575
@@ -1364,20 +1308,6 @@ dps_results: {
  value: {
   dps: 31941.65723
   tps: 44382.75761
- }
-}
-dps_results: {
- key: "TestFeral-AllItems-RottingSkull-77987"
- value: {
-  dps: 31814.84836
-  tps: 43745.05984
- }
-}
-dps_results: {
- key: "TestFeral-AllItems-RottingSkull-78007"
- value: {
-  dps: 32150.91208
-  tps: 44627.79141
  }
 }
 dps_results: {
