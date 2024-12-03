@@ -275,20 +275,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestElemental-AllItems-BottledWishes-77985"
- value: {
-  dps: 42202.77569
-  tps: 643.36464
- }
-}
-dps_results: {
- key: "TestElemental-AllItems-BottledWishes-78005"
- value: {
-  dps: 42674.2905
-  tps: 644.95004
- }
-}
-dps_results: {
  key: "TestElemental-AllItems-BracingShadowspiritDiamond"
  value: {
   dps: 41828.85408
@@ -639,20 +625,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestElemental-AllItems-FireoftheDeep-77988"
- value: {
-  dps: 40329.68829
-  tps: 641.81575
- }
-}
-dps_results: {
- key: "TestElemental-AllItems-FireoftheDeep-78008"
- value: {
-  dps: 40748.43949
-  tps: 644.84076
- }
-}
-dps_results: {
  key: "TestElemental-AllItems-FleetShadowspiritDiamond"
  value: {
   dps: 41656.77205
@@ -958,20 +930,6 @@ dps_results: {
  value: {
   dps: 40618.933
   tps: 635.46368
- }
-}
-dps_results: {
- key: "TestElemental-AllItems-KiroptyricSigil-77984"
- value: {
-  dps: 40551.5956
-  tps: 639.00433
- }
-}
-dps_results: {
- key: "TestElemental-AllItems-KiroptyricSigil-78004"
- value: {
-  dps: 40530.1651
-  tps: 639.48663
  }
 }
 dps_results: {
@@ -1283,20 +1241,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestElemental-AllItems-ReflectionoftheLight-77986"
- value: {
-  dps: 41281.13138
-  tps: 624.13708
- }
-}
-dps_results: {
- key: "TestElemental-AllItems-ReflectionoftheLight-78006"
- value: {
-  dps: 41720.22723
-  tps: 625.28962
- }
-}
-dps_results: {
  key: "TestElemental-AllItems-RegaliaoftheRagingElements"
  value: {
   dps: 34964.29363
@@ -1371,20 +1315,6 @@ dps_results: {
  value: {
   dps: 40216.88382
   tps: 619.62752
- }
-}
-dps_results: {
- key: "TestElemental-AllItems-RottingSkull-77987"
- value: {
-  dps: 40136.62457
-  tps: 619.80524
- }
-}
-dps_results: {
- key: "TestElemental-AllItems-RottingSkull-78007"
- value: {
-  dps: 40289.28308
-  tps: 619.65166
  }
 }
 dps_results: {

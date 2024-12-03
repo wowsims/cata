@@ -254,20 +254,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBalance-AllItems-BottledWishes-77985"
- value: {
-  dps: 28841.75585
-  tps: 28849.16445
- }
-}
-dps_results: {
- key: "TestBalance-AllItems-BottledWishes-78005"
- value: {
-  dps: 29377.30596
-  tps: 29383.06661
- }
-}
-dps_results: {
  key: "TestBalance-AllItems-BracingShadowspiritDiamond"
  value: {
   dps: 28480.45789
@@ -625,20 +611,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBalance-AllItems-FireoftheDeep-77988"
- value: {
-  dps: 27369.54145
-  tps: 27392.94741
- }
-}
-dps_results: {
- key: "TestBalance-AllItems-FireoftheDeep-78008"
- value: {
-  dps: 27536.34278
-  tps: 27559.74874
- }
-}
-dps_results: {
  key: "TestBalance-AllItems-FleetShadowspiritDiamond"
  value: {
   dps: 28383.35795
@@ -975,20 +947,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBalance-AllItems-KiroptyricSigil-77984"
- value: {
-  dps: 27643.147
-  tps: 27669.61399
- }
-}
-dps_results: {
- key: "TestBalance-AllItems-KiroptyricSigil-78004"
- value: {
-  dps: 27851.08312
-  tps: 27882.52705
- }
-}
-dps_results: {
  key: "TestBalance-AllItems-KvaldirBattleStandard-59685"
  value: {
   dps: 27093.89747
@@ -1290,20 +1248,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBalance-AllItems-ReflectionoftheLight-77986"
- value: {
-  dps: 27953.39206
-  tps: 27958.52291
- }
-}
-dps_results: {
- key: "TestBalance-AllItems-ReflectionoftheLight-78006"
- value: {
-  dps: 28280.5669
-  tps: 28280.69965
- }
-}
-dps_results: {
  key: "TestBalance-AllItems-ResolveofUndying-77201"
  value: {
   dps: 26759.43928
@@ -1371,20 +1315,6 @@ dps_results: {
  value: {
   dps: 27334.18792
   tps: 27357.59388
- }
-}
-dps_results: {
- key: "TestBalance-AllItems-RottingSkull-77987"
- value: {
-  dps: 27272.87148
-  tps: 27296.27744
- }
-}
-dps_results: {
- key: "TestBalance-AllItems-RottingSkull-78007"
- value: {
-  dps: 27400.80692
-  tps: 27424.21288
  }
 }
 dps_results: {
