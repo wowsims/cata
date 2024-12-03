@@ -194,6 +194,31 @@ var ItemOverrides = []*proto.UIItem{
 
 	// Heirloom Dwarven Handcannon, Wowhead partially glitchs out and shows us some other lvl calc for this
 	{Id: 44093, Stats: stats.Stats{stats.CritRating: 30, stats.ResilienceRating: 13, stats.AttackPower: 34}.ToProtoArray()},
+
+	// Dungeon items and quest rewards from patch 4.3
+	{Id: 72880, Phase: 4}, // Alurmi's Ring
+	{Id: 72852, Phase: 4}, // Archivist's Gloves
+	{Id: 72874, Phase: 4}, // Boots of the Forked Road
+	{Id: 72879, Phase: 4}, // Boots of the Treacherous Path
+	{Id: 72873, Phase: 4}, // Bronze Blaster
+	{Id: 72877, Phase: 4}, // Chain of the Demon Hunter
+	{Id: 72882, Phase: 4}, // Chronicler's Chestguard
+	{Id: 72887, Phase: 4}, // Cinch of the World Shaman
+	{Id: 76152, Phase: 4}, // Cowl of Destiny
+	{Id: 72871, Phase: 4}, // Crescent Wand
+	{Id: 72878, Phase: 4}, // Demonic Skull
+	{Id: 72883, Phase: 4}, // Historian's Sash
+	{Id: 72876, Phase: 4}, // Ironfeather Longbow
+	{Id: 66540, Phase: 4}, // Miniature Winter Veil Tree
+	{Id: 72888, Phase: 4}, // Ring of the Loyal Companion
+	{Id: 72858, Phase: 4}, // Safeguard Gloves
+	{Id: 76153, Phase: 4}, // Signet of the Twilight Prophet
+	{Id: 76155, Phase: 4}, // Thorns of the Dying Day
+	{Id: 72886, Phase: 4}, // Thrall's Gratitude
+	{Id: 72872, Phase: 4}, // Time Strand Gauntlets
+	{Id: 72875, Phase: 4}, // Time Twister's Gauntlets
+	{Id: 72881, Phase: 4}, // Treads of the Past
+	{Id: 72884, Phase: 4}, // Writhing Wand
 }
 
 // Keep these sorted by item ID.
