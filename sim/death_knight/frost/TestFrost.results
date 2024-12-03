@@ -276,22 +276,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestFrost-AllItems-BottledWishes-77985"
- value: {
-  dps: 38773.53232
-  tps: 36561.19916
-  hps: 513.27533
- }
-}
-dps_results: {
- key: "TestFrost-AllItems-BottledWishes-78005"
- value: {
-  dps: 39009.23379
-  tps: 36808.96411
-  hps: 524.17951
- }
-}
-dps_results: {
  key: "TestFrost-AllItems-BracingShadowspiritDiamond"
  value: {
   dps: 40009.14005
@@ -716,22 +700,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestFrost-AllItems-FireoftheDeep-77988"
- value: {
-  dps: 39093.96334
-  tps: 36948.08677
-  hps: 510.93872
- }
-}
-dps_results: {
- key: "TestFrost-AllItems-FireoftheDeep-78008"
- value: {
-  dps: 39305.7149
-  tps: 37159.83833
-  hps: 510.93872
- }
-}
-dps_results: {
  key: "TestFrost-AllItems-FleetShadowspiritDiamond"
  value: {
   dps: 40114.76126
@@ -1092,22 +1060,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestFrost-AllItems-KiroptyricSigil-77984"
- value: {
-  dps: 38773.53232
-  tps: 36561.19916
-  hps: 513.27533
- }
-}
-dps_results: {
- key: "TestFrost-AllItems-KiroptyricSigil-78004"
- value: {
-  dps: 39009.23379
-  tps: 36808.96411
-  hps: 524.17951
- }
-}
-dps_results: {
  key: "TestFrost-AllItems-KvaldirBattleStandard-59685"
  value: {
   dps: 38293.13325
@@ -1460,22 +1412,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestFrost-AllItems-ReflectionoftheLight-77986"
- value: {
-  dps: 38319.44864
-  tps: 36173.57207
-  hps: 510.93872
- }
-}
-dps_results: {
- key: "TestFrost-AllItems-ReflectionoftheLight-78006"
- value: {
-  dps: 38319.44864
-  tps: 36173.57207
-  hps: 510.93872
- }
-}
-dps_results: {
  key: "TestFrost-AllItems-ResolveofUndying-77201"
  value: {
   dps: 38319.44864
@@ -1553,22 +1489,6 @@ dps_results: {
   dps: 38862.83301
   tps: 36659.56848
   hps: 521.06403
- }
-}
-dps_results: {
- key: "TestFrost-AllItems-RottingSkull-77987"
- value: {
-  dps: 38824.30034
-  tps: 36631.40793
-  hps: 519.50629
- }
-}
-dps_results: {
- key: "TestFrost-AllItems-RottingSkull-78007"
- value: {
-  dps: 38957.68766
-  tps: 36748.8068
-  hps: 522.62177
  }
 }
 dps_results: {
