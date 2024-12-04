@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"math"
+	"os"
 	"path/filepath"
+	"runtime/pprof"
 	"slices"
 	"strings"
 	"testing"
@@ -13,6 +15,8 @@ import (
 )
 
 const maxDiff = 1e-5
+const includeProfileRun = true
+const profileTestCase = "Large_Farm_MIP"
 
 // ExpectedSolution represents the expected outcome of the optimization.
 type ExpectedSolution struct {
@@ -71,6 +75,18 @@ func TestSolver(t *testing.T) {
 	// Iterate over each test case.
 	for _, tc := range testCases {
 		t.Run(fmt.Sprintf("TestCase_%s", tc.Name), func(t *testing.T) {
+			// CPU Profile if requestd.
+			if includeProfileRun && (tc.Name == profileTestCase) {
+				f, err := os.Create(fmt.Sprintf("%s_cpu.pprof", tc.Name))
+				if err != nil {
+					t.Fatal(err)
+				}
+				defer f.Close()
+
+				pprof.StartCPUProfile(f)
+				defer pprof.StopCPUProfile()
+			}
+
 			// Set up constraints.
 			constraints := make(map[string]Constraint)
 			for name, c := range tc.Model.Constraints {
@@ -109,6 +125,20 @@ func TestSolver(t *testing.T) {
 			elapsedTime := time.Since(startTime)
 			t.Logf("%s Solution: %+v", tc.Name, solution)
 			t.Logf("Execution time: %v", elapsedTime)
+
+			// Heap Profile if requestd.
+			if includeProfileRun && (tc.Name == profileTestCase) {
+				f2, err := os.Create(fmt.Sprintf("%s_heap.pprof", tc.Name))
+				if err != nil {
+					t.Fatal(err)
+				}
+				defer f2.Close()
+
+				err = pprof.WriteHeapProfile(f2)
+				if err != nil {
+					t.Fatal(err)
+				}
+			}
 
 			// Assert the status.
 			if solution.Status != tc.Expected.Status {
@@ -170,7 +200,7 @@ func readTestCases(dir string) ([]TestCase, error) {
 		if err := json.Unmarshal(data, &testCase); err != nil {
 			return nil, fmt.Errorf("failed to parse JSON in file %s: %v", filePath, err)
 		}
-		testCase.Name = file.Name()
+		testCase.Name = strings.Join(strings.Split(strings.Split(file.Name(), ".")[0], " "), "_")
 
 		testCases = append(testCases, testCase)
 	}
