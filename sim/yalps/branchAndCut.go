@@ -144,8 +144,9 @@ func branchAndCut(tabmod TableauModel, initResult float64, options *Options) (Ta
 				bestTableau = currentTableau
 				candidateBuffer, solutionBuffer = solutionBuffer, candidateBuffer
 			} else {
-				cutsUpper := make([]Cut, len(cuts))
-				cutsLower := make([]Cut, len(cuts))
+				numCuts := len(cuts)
+				cutsUpper := make([]Cut, numCuts, numCuts + 1)
+				cutsLower := make([]Cut, numCuts, numCuts + 1)
 				copy(cutsUpper, cuts)
 				copy(cutsLower, cuts)
 
