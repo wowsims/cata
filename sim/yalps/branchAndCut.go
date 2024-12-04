@@ -145,13 +145,13 @@ func branchAndCut(tabmod TableauModel, initResult float64, options *Options) (Ta
 				candidateBuffer, solutionBuffer = solutionBuffer, candidateBuffer
 			} else {
 				numCuts := len(cuts)
-				cutsUpper := make([]Cut, numCuts, numCuts + 1)
-				cutsLower := make([]Cut, numCuts, numCuts + 1)
+				cutsUpper := make([]Cut, numCuts + 1)
+				cutsLower := make([]Cut, numCuts + 1)
 				copy(cutsUpper, cuts)
 				copy(cutsLower, cuts)
 
-				cutsLower = append(cutsLower, Cut{1, variable, math.Floor(value)})
-				cutsUpper = append(cutsUpper, Cut{-1, variable, math.Ceil(value)})
+				cutsLower[numCuts] = Cut{1, variable, math.Floor(value)}
+				cutsUpper[numCuts] = Cut{-1, variable, math.Ceil(value)}
 
 				heap.Push(branches, Branch{Eval: result, Cuts: cutsUpper})
 				heap.Push(branches, Branch{Eval: result, Cuts: cutsLower})
