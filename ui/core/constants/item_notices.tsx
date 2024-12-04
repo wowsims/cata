@@ -13,16 +13,6 @@ export const MISSING_RANDOM_SUFFIX_WARNING = <p className="mb-0">Please select a
 	</>
 );*/
 
-const VPLC_IMPLEMENTATION_WARNING = (
-	<>
-		<p>
-			Current proc rate is <span className="fw-bold">50%</span> confirmed on PTR.
-		</p>
-		<p>Scales with: 3% Damage buff & 8% Spell Damage debuff.</p>
-		<WantToHelpMessage />
-	</>
-);
-
 const DTR_FIRST_IMPLEMENTATION_WARNING = (
 	<>
 		<p className="fw-bold">This item was implemented based on the first round of testing on PTR.</p>
@@ -136,32 +126,6 @@ export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 			[Spec.SpecAfflictionWarlock]: DTR_FIRST_IMPLEMENTATION_WARNING,
 			[Spec.SpecDemonologyWarlock]: DTR_FIRST_IMPLEMENTATION_WARNING,
 			[Spec.SpecDestructionWarlock]: DTR_FIRST_IMPLEMENTATION_WARNING,
-		},
-	],
-	[
-		// VPLC - Normal
-		68925,
-		{
-			[Spec.SpecUnknown]: VPLC_IMPLEMENTATION_WARNING,
-			[Spec.SpecArcaneMage]: false,
-			[Spec.SpecFireMage]: false,
-			[Spec.SpecDemonologyWarlock]: false,
-			[Spec.SpecAfflictionWarlock]: false,
-			[Spec.SpecDestructionWarlock]: false,
-			[Spec.SpecShadowPriest]: false,
-		},
-	],
-	[
-		// VPLC - Heroic
-		69110,
-		{
-			[Spec.SpecUnknown]: VPLC_IMPLEMENTATION_WARNING,
-			[Spec.SpecArcaneMage]: false,
-			[Spec.SpecFireMage]: false,
-			[Spec.SpecDemonologyWarlock]: false,
-			[Spec.SpecAfflictionWarlock]: false,
-			[Spec.SpecDestructionWarlock]: false,
-			[Spec.SpecShadowPriest]: false,
 		},
 	],
 ]);
