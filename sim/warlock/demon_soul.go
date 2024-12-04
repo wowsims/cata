@@ -45,12 +45,7 @@ func (warlock *Warlock) registerDemonSoul() {
 		},
 	})
 
-	felguardHasteMod := warlock.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_CastTime_Pct,
-		ClassMask:  WarlockFireDamage | WarlockShadowDamage,
-		FloatValue: -0.15,
-	})
-
+	felguardHasteMulti := 1.15
 	felguardDamageMod := warlock.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		School:     core.SpellSchoolShadow | core.SpellSchoolFire,
@@ -62,11 +57,11 @@ func (warlock *Warlock) registerDemonSoul() {
 		ActionID: core.ActionID{SpellID: 79462},
 		Duration: 20 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			felguardHasteMod.Activate()
+			warlock.MultiplyCastSpeed(felguardHasteMulti)
 			felguardDamageMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			felguardHasteMod.Deactivate()
+			warlock.MultiplyCastSpeed(1 / felguardHasteMulti)
 			felguardDamageMod.Deactivate()
 		},
 	})
