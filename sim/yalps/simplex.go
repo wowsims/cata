@@ -19,14 +19,15 @@ func pivot(tableau *Tableau, row, col int, nonZeroColumns []int) {
 
 	// (1 / quotient) * R_pivot -> R_pivot
 	rowStart := row * tableau.Width
+	rowSlice := tableau.Matrix[rowStart : rowStart + tableau.Width]
 	for c := 0; c < tableau.Width; c++ {
-		value := tableau.Matrix[rowStart+c]
+		value := rowSlice[c]
 		if value > 1e-16 || value < -1e-16 {
-			tableau.Matrix[rowStart+c] = value / quotient
+			rowSlice[c] = value / quotient
 			nonZeroColumns[nzCount] = c
 			nzCount++
 		} else {
-			tableau.Matrix[rowStart+c] = 0.0
+			rowSlice[c] = 0.0
 		}
 	}
 	tableau.Matrix[rowStart+col] = 1.0 / quotient
@@ -39,11 +40,12 @@ func pivot(tableau *Tableau, row, col int, nonZeroColumns []int) {
 		rowRStart := r * tableau.Width
 		coef := tableau.Matrix[rowRStart+col]
 		if coef > 1e-16 || coef < -1e-16 {
+			rowRSlice := tableau.Matrix[rowRStart : rowRStart + tableau.Width]
 			for i := 0; i < nzCount; i++ {
 				c := nonZeroColumns[i]
-				tableau.Matrix[rowRStart+c] -= coef * tableau.Matrix[rowStart+c]
+				rowRSlice[c] -= coef * rowSlice[c]
 			}
-			tableau.Matrix[rowRStart+col] = -coef / quotient
+			rowRSlice[col] = -coef / quotient
 		}
 	}
 }

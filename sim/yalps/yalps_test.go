@@ -15,7 +15,7 @@ import (
 )
 
 const maxDiff = 1e-5
-const includeProfileRun = true
+const includeProfileRun = false
 const profileTestCase = "Large_Farm_MIP"
 
 // ExpectedSolution represents the expected outcome of the optimization.
