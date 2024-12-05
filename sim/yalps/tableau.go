@@ -2,10 +2,13 @@ package yalps
 
 import (
 	"math"
+
+	"gonum.org/v1/gonum/mat"
 )
 
 type Tableau struct {
-	Matrix             []float64
+	Matrix             *mat.Dense
+	ColIdxBuffer       []int
 	Width              int
 	Height             int
 	PositionOfVariable []int
@@ -17,14 +20,6 @@ type TableauModel struct {
 	Sign      float64
 	Variables [][2]interface{}
 	Integers  []int
-}
-
-func index(tableau *Tableau, row, col int) float64 {
-	return tableau.Matrix[row*tableau.Width+col]
-}
-
-func update(tableau *Tableau, row, col int, value float64) {
-	tableau.Matrix[row*tableau.Width+col] = value
 }
 
 func tableauModel(model Model) TableauModel {
@@ -119,7 +114,7 @@ func tableauModel(model Model) TableauModel {
 	width := len(variables) + 1
 	height := numConstraints + len(binaryConstraintCols)
 	numVars := width + height
-	matrix := make([]float64, width*height)
+	matrix := mat.NewDense(height, width, nil)
 	positionOfVariable := make([]int, numVars)
 	variableAtPosition := make([]int, numVars)
 	tableau := &Tableau{
@@ -128,6 +123,7 @@ func tableauModel(model Model) TableauModel {
 		Height:             height,
 		PositionOfVariable: positionOfVariable,
 		VariableAtPosition: variableAtPosition,
+		ColIdxBuffer:       make([]int, width),
 	}
 
 	for i := 0; i < numVars; i++ {
@@ -141,17 +137,17 @@ func tableauModel(model Model) TableauModel {
 		varCoeffs := varPair[1].(Coefficients)
 		for constraintKey, coef := range varCoeffs {
 			if constraintKey == model.Objective {
-				update(tableau, 0, c, direction*coef)
+				matrix.Set(0, c, direction*coef)
 			}
 			bounds, exists := constraints[constraintKey]
 			if exists {
 				if bounds.Upper < math.Inf(1) {
-					update(tableau, bounds.Row, c, coef)
+					matrix.Set(bounds.Row, c, coef)
 					if bounds.Lower > -math.Inf(1) {
-						update(tableau, bounds.Row+1, c, -coef)
+						matrix.Set(bounds.Row + 1, c, -coef)
 					}
 				} else if bounds.Lower > -math.Inf(1) {
-					update(tableau, bounds.Row, c, -coef)
+					matrix.Set(bounds.Row, c, -coef)
 				}
 			}
 		}
@@ -160,21 +156,21 @@ func tableauModel(model Model) TableauModel {
 	// Set RHS values
 	for _, bounds := range constraints {
 		if bounds.Upper < math.Inf(1) {
-			update(tableau, bounds.Row, 0, bounds.Upper)
+			matrix.Set(bounds.Row, 0, bounds.Upper)
 			if bounds.Lower > -math.Inf(1) {
-				update(tableau, bounds.Row+1, 0, -bounds.Lower)
+				matrix.Set(bounds.Row + 1, 0, -bounds.Lower)
 			}
 		} else if bounds.Lower > -math.Inf(1) {
-			update(tableau, bounds.Row, 0, -bounds.Lower)
+			matrix.Set(bounds.Row, 0, -bounds.Lower)
 		}
 	}
 
 	// Binary constraints
 	for b, col := range binaryConstraintCols {
 		row := numConstraints + b
-		update(tableau, row, 0, 1.0)
+		matrix.Set(row, 0, 1.0)
 		// Since variable indices start from 1, adjust the column index
-		update(tableau, row, col, 1.0)
+		matrix.Set(row, col, 1.0)
 	}
 
 	return TableauModel{

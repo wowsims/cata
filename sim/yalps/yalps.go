@@ -32,12 +32,13 @@ func buildSolution(tabmod TableauModel, status SolutionStatus, result float64, o
 
 	if status == StatusOptimal || (status == StatusTimedOut && !math.IsNaN(result)) {
 		var variables = make(map[string]float64)
+		matrix := tableau.Matrix
 		for i, varPair := range vars {
 			varName := varPair[0].(string)
 			row := tableau.PositionOfVariable[i+1] - tableau.Width
 			value := 0.0
 			if row >= 0 {
-				value = index(tableau, row, 0)
+				value = matrix.At(row, 0)
 			}
 			if value > opt.Precision {
 				variables[varName] = roundToPrecision(value, opt.Precision)

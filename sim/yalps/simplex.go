@@ -5,8 +5,10 @@ import (
 )
 
 // Pivot operation
-func pivot(tableau *Tableau, row, col int, nonZeroColumns []int) {
-	quotient := tableau.Matrix[row*tableau.Width+col]
+func (tableau *Tableau) Pivot(row, col int) {
+	matrix := tableau.Matrix
+	rowSlice := matrix.RawRowView(row)
+	quotient := rowSlice[col]
 	leaving := tableau.VariableAtPosition[tableau.Width+row]
 	entering := tableau.VariableAtPosition[col]
 	tableau.VariableAtPosition[tableau.Width+row] = entering
@@ -15,11 +17,10 @@ func pivot(tableau *Tableau, row, col int, nonZeroColumns []int) {
 	tableau.PositionOfVariable[entering] = tableau.Width + row
 
 	// Reset nonZeroColumns without reallocating
+	nonZeroColumns := tableau.ColIdxBuffer
 	nzCount := 0
 
 	// (1 / quotient) * R_pivot -> R_pivot
-	rowStart := row * tableau.Width
-	rowSlice := tableau.Matrix[rowStart : rowStart + tableau.Width]
 	for c := 0; c < tableau.Width; c++ {
 		value := rowSlice[c]
 		if value > 1e-16 || value < -1e-16 {
@@ -30,17 +31,16 @@ func pivot(tableau *Tableau, row, col int, nonZeroColumns []int) {
 			rowSlice[c] = 0.0
 		}
 	}
-	tableau.Matrix[rowStart+col] = 1.0 / quotient
+	rowSlice[col] = 1.0 / quotient
 
 	// -M[r, col] * R_pivot + R_r -> R_r
 	for r := 0; r < tableau.Height; r++ {
 		if r == row {
 			continue
 		}
-		rowRStart := r * tableau.Width
-		coef := tableau.Matrix[rowRStart+col]
+		coef := matrix.At(r, col)
 		if coef > 1e-16 || coef < -1e-16 {
-			rowRSlice := tableau.Matrix[rowRStart : rowRStart + tableau.Width]
+			rowRSlice := matrix.RawRowView(r)
 			for i := 0; i < nzCount; i++ {
 				c := nonZeroColumns[i]
 				rowRSlice[c] -= coef * rowSlice[c]
@@ -52,31 +52,32 @@ func pivot(tableau *Tableau, row, col int, nonZeroColumns []int) {
 
 func phase2(tableau *Tableau, options *Options) (SolutionStatus, float64) {
 	pivotHistory := make([][2]int, 0)
-	nonZeroColumns := make([]int, tableau.Width)
+	matrix := tableau.Matrix
+	topRow := matrix.RawRowView(0)
 	for iter := 0; iter < options.MaxPivots; iter++ {
 		// Find entering column
 		col := -1
 		value := options.Precision
 		for c := 1; c < tableau.Width; c++ {
-			reducedCost := index(tableau, 0, c)
+			reducedCost := topRow[c]
 			if reducedCost > value {
 				value = reducedCost
 				col = c
 			}
 		}
 		if col == -1 {
-			return StatusOptimal, roundToPrecision(index(tableau, 0, 0), options.Precision)
+			return StatusOptimal, roundToPrecision(topRow[0], options.Precision)
 		}
 
 		// Find leaving row
 		row := -1
 		minRatio := math.Inf(1)
 		for r := 1; r < tableau.Height; r++ {
-			value := index(tableau, r, col)
+			value := matrix.At(r, col)
 			if value <= options.Precision {
 				continue
 			}
-			rhs := index(tableau, r, 0)
+			rhs := matrix.At(r, 0)
 			ratio := rhs / value
 			if ratio < minRatio {
 				row = r
@@ -94,21 +95,22 @@ func phase2(tableau *Tableau, options *Options) (SolutionStatus, float64) {
 			return StatusCycled, math.NaN()
 		}
 
-		pivot(tableau, row, col, nonZeroColumns)
+		tableau.Pivot(row, col)
 	}
 	return StatusCycled, math.NaN()
 }
 
 func phase1(tableau *Tableau, options *Options) (SolutionStatus, float64) {
 	pivotHistory := make([][2]int, 0)
-	nonZeroColumns := make([]int, tableau.Width)
+	matrix := tableau.Matrix
+	topRow := matrix.RawRowView(0)
 	for iter := 0; iter < options.MaxPivots; iter++ {
 
 		// Find leaving row
 		row := -1
 		rhs := -options.Precision
 		for r := 1; r < tableau.Height; r++ {
-			value := tableau.Matrix[r*tableau.Width]
+			value := matrix.At(r, 0)
 			if value < rhs {
 				rhs = value
 				row = r
@@ -121,11 +123,11 @@ func phase1(tableau *Tableau, options *Options) (SolutionStatus, float64) {
 		// Find entering column
 		col := -1
 		maxRatio := -math.Inf(1)
-		rowStart := row * tableau.Width
+		pivotRow := matrix.RawRowView(row)
 		for c := 1; c < tableau.Width; c++ {
-			coef := tableau.Matrix[rowStart+c]
+			coef := pivotRow[c]
 			if coef < -options.Precision {
-				ratio := -tableau.Matrix[c] / coef
+				ratio := -topRow[c] / coef
 				if ratio > maxRatio {
 					maxRatio = ratio
 					col = c
@@ -140,7 +142,7 @@ func phase1(tableau *Tableau, options *Options) (SolutionStatus, float64) {
 			return StatusCycled, math.NaN()
 		}
 
-		pivot(tableau, row, col, nonZeroColumns)
+		tableau.Pivot(row, col)
 	}
 	return StatusCycled, math.NaN()
 }

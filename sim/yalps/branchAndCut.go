@@ -4,6 +4,8 @@ import (
 	"container/heap"
 	"math"
 	"time"
+
+	"gonum.org/v1/gonum/mat"
 )
 
 type Cut struct {
@@ -36,12 +38,13 @@ func mostFractionalVar(tableau *Tableau, intVars []int) (int, float64, float64) 
 	highestFrac := 0.0
 	variable := 0
 	value := 0.0
+	matrix := tableau.Matrix
 	for _, intVar := range intVars {
 		row := tableau.PositionOfVariable[intVar] - tableau.Width
 		if row < 0 {
 			continue
 		}
-		val := index(tableau, row, 0)
+		val := matrix.At(row, 0)
 		frac := math.Abs(val - math.Round(val))
 		if frac > highestFrac {
 			highestFrac = frac
@@ -57,22 +60,24 @@ func applyCuts(tableau *Tableau, buf *Buffer, cuts []Cut) *Tableau {
 	width := tableau.Width
 	height := tableau.Height
 	matrix := buf.Matrix
-	copy(matrix, tableau.Matrix)
+	matrix.Copy(tableau.Matrix)
 	for i, cut := range cuts {
 		sign, variable, value := cut.Sign, cut.Variable, cut.Value
-		r := (height + i) * width
+		r := height + i
+		dstRow := matrix.RawRowView(r)
 		pos := tableau.PositionOfVariable[variable]
 		if pos < width {
-			matrix[r] = sign * value
+			dstRow[0] = sign * value
 			for c := 1; c < width; c++ {
-				matrix[r+c] = 0.0
+				dstRow[c] = 0.0
 			}
-			matrix[r+pos] = sign
+			dstRow[pos] = sign
 		} else {
-			row := (pos - width) * width
-			matrix[r] = sign * (value - tableau.Matrix[row])
+			row := pos - width
+			srcRow := matrix.RawRowView(row)
+			dstRow[0] = sign * (value - srcRow[0])
 			for c := 1; c < width; c++ {
-				matrix[r+c] = -sign * tableau.Matrix[row+c]
+				dstRow[c] = -sign * srcRow[c]
 			}
 		}
 	}
@@ -86,7 +91,8 @@ func applyCuts(tableau *Tableau, buf *Buffer, cuts []Cut) *Tableau {
 		variableAtPosition[i] = i
 	}
 	return &Tableau{
-		Matrix:             matrix[:len(tableau.Matrix)+len(cuts)*width],
+		Matrix:             matrix,
+		ColIdxBuffer:       tableau.ColIdxBuffer,
 		Width:              width,
 		Height:             height + len(cuts),
 		PositionOfVariable: positionOfVariable[:length],
@@ -112,10 +118,10 @@ func branchAndCut(tabmod TableauModel, initResult float64, options *Options) (Ta
 	heap.Push(branches, Branch{Eval: initResult, Cuts: []Cut{{1, variable, math.Floor(value)}}})
 
 	maxExtraRows := len(integers) * 2
-	matrixLength := len(tableau.Matrix) + maxExtraRows*tableau.Width
+	matrixHeight := tableau.Height + maxExtraRows
 	posVarLength := len(tableau.PositionOfVariable) + maxExtraRows
-	candidateBuffer := newBuffer(matrixLength, posVarLength)
-	solutionBuffer := newBuffer(matrixLength, posVarLength)
+	candidateBuffer := newBuffer(matrixHeight, tableau.Width, posVarLength)
+	solutionBuffer := newBuffer(matrixHeight, tableau.Width, posVarLength)
 
 	optimalThreshold := initResult * (1.0 - sign*options.Tolerance)
 	stopTime := time.Now().Add(time.Millisecond * time.Duration(options.TimeoutMs))
@@ -176,14 +182,14 @@ func branchAndCut(tabmod TableauModel, initResult float64, options *Options) (Ta
 
 // Buffer for storing tableau data
 type Buffer struct {
-	Matrix             []float64
+	Matrix             *mat.Dense
 	PositionOfVariable []int
 	VariableAtPosition []int
 }
 
-func newBuffer(matrixLength, posVarLength int) *Buffer {
+func newBuffer(matrixHeight, matrixWidth, posVarLength int) *Buffer {
 	return &Buffer{
-		Matrix:             make([]float64, matrixLength),
+		Matrix:             mat.NewDense(matrixHeight, matrixWidth, nil),
 		PositionOfVariable: make([]int, posVarLength),
 		VariableAtPosition: make([]int, posVarLength),
 	}
