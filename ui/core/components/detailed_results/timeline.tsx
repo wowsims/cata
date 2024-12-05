@@ -1193,7 +1193,8 @@ const idToCategoryMap: Record<number, number> = {
 	[53217]: 0.6, // Wild Quiver
 	[53209]: MELEE_ACTION_CATEGORY + 0.1, // Chimera Shot
 	[53353]: MELEE_ACTION_CATEGORY + 0.11, // Chimera Shot Serpent
-	[60053]: MELEE_ACTION_CATEGORY + 0.1, // Explosive Shot
+	[53301]: MELEE_ACTION_CATEGORY + 0.1, // Explosive Shot
+	[1215485]: MELEE_ACTION_CATEGORY + 0.12, // Explosive Shot
 	[49050]: MELEE_ACTION_CATEGORY + 0.2, // Aimed Shot
 	[49048]: MELEE_ACTION_CATEGORY + 0.21, // Multi Shot
 	[3044]: MELEE_ACTION_CATEGORY + 0.22, // Arcane Shot

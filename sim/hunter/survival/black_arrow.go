@@ -47,10 +47,13 @@ func (svHunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 			NumberOfTicks:       10,
 			TickLength:          time.Second * 2,
 			AffectedByCastSpeed: false,
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				rap := dot.Spell.RangedAttackPower(target)
 				baseDmg := 285.245 + (0.0665 * rap)
-				dot.Spell.CalcAndDealPeriodicDamage(sim, target, baseDmg, dot.OutcomeTickPhysicalCrit)
+				dot.Snapshot(target, baseDmg)
+			},
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickPhysicalCrit)
 			},
 		},
 
