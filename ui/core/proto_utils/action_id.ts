@@ -264,10 +264,10 @@ export class ActionId {
 
 		switch (baseName) {
 			case 'Explosive Shot':
-				if (this.spellId == 60053) {
-					name += ' (R4)';
-				} else if (this.spellId == 60052) {
-					name += ' (R3)';
+				if (this.spellId == 53301) {
+					name += ' (First)';
+				} else if (this.spellId == 1215485) {
+					name += ' (Second)';
 				}
 				break;
 			case 'Explosive Trap':
