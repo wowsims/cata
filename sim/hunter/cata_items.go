@@ -79,7 +79,7 @@ var ItemSetFlameWakersBattleGear = core.NewItemSet(core.ItemSet{
 					}
 
 					// Arcane Shot is free if Lock and Load is up
-					if hunter.HasActiveAura("Lock and Load Proc") && (spell.ClassSpellMask == HunterSpellArcaneShot || spell.ClassSpellMask == HunterSpellExplosiveShot) {
+					if hunter.LockAndLoadAura.IsActive() && (spell.ClassSpellMask == HunterSpellArcaneShot || spell.ClassSpellMask == HunterSpellExplosiveShot || spell.SpellID == 53301 || spell.SpellID == 1215485) {
 						return
 					}
 
