@@ -14,6 +14,7 @@ func (war *ProtectionWarrior) RegisterShieldSlam() {
 		ProcMask:       core.ProcMaskMeleeMHSpecial, // TODO: Is this right?
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		ClassSpellMask: warrior.SpellMaskShieldSlam | warrior.SpellMaskSpecialAttack,
+		MaxRange:       core.MaxMeleeRange,
 
 		RageCost: core.RageCostOptions{
 			Cost:   20,

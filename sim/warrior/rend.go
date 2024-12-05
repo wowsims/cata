@@ -16,6 +16,7 @@ func (warrior *Warrior) RegisterRendSpell() {
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics | SpellFlagBleed | core.SpellFlagPassiveSpell,
 		ClassSpellMask: SpellMaskRend,
+		MaxRange:       core.MaxMeleeRange,
 
 		RageCost: core.RageCostOptions{
 			Cost:   10,

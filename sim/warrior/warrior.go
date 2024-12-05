@@ -110,6 +110,7 @@ type Warrior struct {
 	Whirlwind         *core.Spell
 	DeepWounds        *core.Spell
 	Charge            *core.Spell
+	ChargeAura        *core.Aura
 
 	shoutsCD                 *core.Timer
 	recklessnessDeadlyCalmCD *core.Timer

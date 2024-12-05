@@ -15,6 +15,7 @@ func (warrior *Warrior) RegisterHeroicThrow() {
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskHeroicThrow | SpellMaskSpecialAttack,
+		MaxRange:       30,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
