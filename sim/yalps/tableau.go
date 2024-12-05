@@ -10,6 +10,7 @@ type Tableau struct {
 	Height             int
 	PositionOfVariable []int
 	VariableAtPosition []int
+	ColIdxBuffer       []int
 }
 
 type TableauModel struct {
@@ -128,6 +129,7 @@ func tableauModel(model Model) TableauModel {
 		Height:             height,
 		PositionOfVariable: positionOfVariable,
 		VariableAtPosition: variableAtPosition,
+		ColIdxBuffer:       make([]int, width),
 	}
 
 	for i := 0; i < numVars; i++ {

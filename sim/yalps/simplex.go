@@ -5,8 +5,10 @@ import (
 )
 
 // Pivot operation
-func pivot(tableau *Tableau, row, col int, nonZeroColumns []int) {
-	quotient := tableau.Matrix[row*tableau.Width+col]
+func (tableau *Tableau) Pivot(row, col int) {
+	rowStart := row * tableau.Width
+	rowSlice := tableau.Matrix[rowStart : rowStart + tableau.Width]
+	quotient := rowSlice[col]
 	leaving := tableau.VariableAtPosition[tableau.Width+row]
 	entering := tableau.VariableAtPosition[col]
 	tableau.VariableAtPosition[tableau.Width+row] = entering
@@ -15,11 +17,10 @@ func pivot(tableau *Tableau, row, col int, nonZeroColumns []int) {
 	tableau.PositionOfVariable[entering] = tableau.Width + row
 
 	// Reset nonZeroColumns without reallocating
+	nonZeroColumns := tableau.ColIdxBuffer
 	nzCount := 0
 
 	// (1 / quotient) * R_pivot -> R_pivot
-	rowStart := row * tableau.Width
-	rowSlice := tableau.Matrix[rowStart : rowStart + tableau.Width]
 	for c := 0; c < tableau.Width; c++ {
 		value := rowSlice[c]
 		if value > 1e-16 || value < -1e-16 {
@@ -30,7 +31,7 @@ func pivot(tableau *Tableau, row, col int, nonZeroColumns []int) {
 			rowSlice[c] = 0.0
 		}
 	}
-	tableau.Matrix[rowStart+col] = 1.0 / quotient
+	rowSlice[col] = 1.0 / quotient
 
 	// -M[r, col] * R_pivot + R_r -> R_r
 	for r := 0; r < tableau.Height; r++ {
@@ -52,7 +53,6 @@ func pivot(tableau *Tableau, row, col int, nonZeroColumns []int) {
 
 func phase2(tableau *Tableau, options *Options) (SolutionStatus, float64) {
 	pivotHistory := make([][2]int, 0)
-	nonZeroColumns := make([]int, tableau.Width)
 	for iter := 0; iter < options.MaxPivots; iter++ {
 		// Find entering column
 		col := -1
@@ -94,14 +94,13 @@ func phase2(tableau *Tableau, options *Options) (SolutionStatus, float64) {
 			return StatusCycled, math.NaN()
 		}
 
-		pivot(tableau, row, col, nonZeroColumns)
+		tableau.Pivot(row, col)
 	}
 	return StatusCycled, math.NaN()
 }
 
 func phase1(tableau *Tableau, options *Options) (SolutionStatus, float64) {
 	pivotHistory := make([][2]int, 0)
-	nonZeroColumns := make([]int, tableau.Width)
 	for iter := 0; iter < options.MaxPivots; iter++ {
 
 		// Find leaving row
@@ -140,7 +139,7 @@ func phase1(tableau *Tableau, options *Options) (SolutionStatus, float64) {
 			return StatusCycled, math.NaN()
 		}
 
-		pivot(tableau, row, col, nonZeroColumns)
+		tableau.Pivot(row, col)
 	}
 	return StatusCycled, math.NaN()
 }

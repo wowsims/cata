@@ -91,6 +91,7 @@ func applyCuts(tableau *Tableau, buf *Buffer, cuts []Cut) *Tableau {
 		Height:             height + len(cuts),
 		PositionOfVariable: positionOfVariable[:length],
 		VariableAtPosition: variableAtPosition[:length],
+		ColIdxBuffer:       tableau.ColIdxBuffer,
 	}
 }
 
