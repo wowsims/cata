@@ -1,3 +1,4 @@
+import { CacheHandler } from '../cache_handler';
 import { PlayerSpec } from '../player_spec.js';
 import { PlayerSpecs } from '../player_specs';
 import {
@@ -34,6 +35,10 @@ import {
 	ThreatLogGroup,
 } from './logs_parser.js';
 
+const simResultsCache = new CacheHandler<SimResult>({
+	keysToKeep: 2,
+});
+
 export interface SimResultFilter {
 	// Raid index of the player to display, or null for all players.
 	player?: number | null;
@@ -67,6 +72,7 @@ class SimResultData {
 // Holds all the data from a simulation call, and provides helper functions
 // for parsing it.
 export class SimResult {
+	readonly id: string;
 	readonly request: RaidSimRequest;
 	readonly result: RaidSimResult;
 
@@ -78,6 +84,7 @@ export class SimResult {
 	private units: Array<UnitMetrics>;
 
 	private constructor(request: RaidSimRequest, result: RaidSimResult, raidMetrics: RaidMetrics, encounterMetrics: EncounterMetrics, logs: Array<SimLog>) {
+		this.id = request.requestId;
 		this.request = request;
 		this.result = result;
 		this.raidMetrics = raidMetrics;
@@ -217,6 +224,11 @@ export class SimResult {
 	}
 
 	static async makeNew(request: RaidSimRequest, result: RaidSimResult): Promise<SimResult> {
+		const id = request.requestId;
+
+		const cachedResult = simResultsCache.get(id);
+		if (cachedResult) return cachedResult;
+
 		const resultData = new SimResultData(request, result);
 		const logs = await SimLog.parseAll(result);
 		const raidPromise = RaidMetrics.makeNew(resultData, request.raid!, result.raidMetrics!, logs);
@@ -225,7 +237,10 @@ export class SimResult {
 		const raidMetrics = await raidPromise;
 		const encounterMetrics = await encounterPromise;
 
-		return new SimResult(request, result, raidMetrics, encounterMetrics, logs);
+		const simResult = new SimResult(request, result, raidMetrics, encounterMetrics, logs);
+		simResultsCache.set(id, simResult);
+
+		return simResult;
 	}
 }
 

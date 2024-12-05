@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 import tippy from 'tippy.js';
-import { ref } from 'tsx-vanilla';
 
 import { TOOLTIP_METRIC_LABELS } from '../constants/tooltips';
 import { DistributionMetrics as DistributionMetricsProto, ProgressMetrics, Raid as RaidProto } from '../proto/api';
@@ -125,6 +124,8 @@ export class RaidSimResultsManager {
 	private currentData: ReferenceData | null = null;
 	private referenceData: ReferenceData | null = null;
 
+	private resetCallbacks: (() => void)[] = [];
+
 	constructor(simUI: SimUI) {
 		this.simUI = simUI;
 
@@ -165,6 +166,7 @@ export class RaidSimResultsManager {
 			raidProto: RaidProto.clone(simResult.request.raid || RaidProto.create()),
 			encounterProto: EncounterProto.clone(simResult.request.encounter || EncounterProto.create()),
 		};
+
 		this.currentChangeEmitter.emit(eventID);
 
 		this.simUI.resultsViewer.setContent(
@@ -192,7 +194,8 @@ export class RaidSimResultsManager {
 		const setResultTooltip = (selector: string, content: Element | HTMLElement | string) => {
 			const resultDivElem = this.simUI.resultsViewer.contentElem.querySelector<HTMLElement>(selector);
 			if (resultDivElem) {
-				tippy(resultDivElem, { content, placement: 'right' });
+				const tooltip = tippy(resultDivElem, { content, placement: 'right' });
+				this.addOnResetCallback(() => tooltip.destroy());
 			}
 		};
 		setResultTooltip(`.${RaidSimResultsManager.resultMetricClasses['dps']}`, 'Damage Per Second');
@@ -237,17 +240,22 @@ export class RaidSimResultsManager {
 
 		const simReferenceSetButton = this.simUI.resultsViewer.contentElem.querySelector<HTMLSpanElement>('.results-sim-set-reference');
 		if (simReferenceSetButton) {
-			simReferenceSetButton.addEventListener('click', () => {
+			const onSetReferenceClickHandler = () => {
 				this.referenceData = this.currentData;
 				this.referenceChangeEmitter.emit(TypedEvent.nextEventID());
 				this.updateReference();
+			};
+			simReferenceSetButton.addEventListener('click', onSetReferenceClickHandler);
+			const tooltip = tippy(simReferenceSetButton, { content: 'Use as reference' });
+			this.addOnResetCallback(() => {
+				tooltip.destroy();
+				simReferenceSetButton?.removeEventListener('click', onSetReferenceClickHandler);
 			});
-			tippy(simReferenceSetButton, { content: 'Use as reference' });
 		}
 
 		const simReferenceSwapButton = this.simUI.resultsViewer.contentElem.querySelector<HTMLSpanElement>('.results-sim-reference-swap');
 		if (simReferenceSwapButton) {
-			simReferenceSwapButton.addEventListener('click', () => {
+			const onSwapClickHandler = () => {
 				TypedEvent.freezeAllAndDo(() => {
 					if (this.currentData && this.referenceData) {
 						const swapEventID = TypedEvent.nextEventID();
@@ -263,22 +271,33 @@ export class RaidSimResultsManager {
 						this.updateReference();
 					}
 				});
-			});
-			tippy(simReferenceSwapButton, {
+			};
+			simReferenceSwapButton.addEventListener('click', onSwapClickHandler);
+			const tooltip = tippy(simReferenceSwapButton, {
 				content: 'Swap reference with current',
 				ignoreAttributes: true,
+			});
+			this.addOnResetCallback(() => {
+				tooltip.destroy();
+				simReferenceSwapButton?.removeEventListener('click', onSwapClickHandler);
 			});
 		}
 		const simReferenceDeleteButton = this.simUI.resultsViewer.contentElem.querySelector<HTMLSpanElement>('.results-sim-reference-delete');
 		if (simReferenceDeleteButton) {
-			simReferenceDeleteButton.addEventListener('click', () => {
+			const onDeleteReferenceClickHandler = () => {
 				this.referenceData = null;
 				this.referenceChangeEmitter.emit(TypedEvent.nextEventID());
 				this.updateReference();
-			});
-			tippy(simReferenceDeleteButton, {
+			};
+			simReferenceDeleteButton.addEventListener('click', onDeleteReferenceClickHandler);
+			const tooltip = tippy(simReferenceDeleteButton, {
 				content: 'Remove reference',
 				ignoreAttributes: true,
+			});
+
+			this.addOnResetCallback(() => {
+				tooltip.destroy();
+				simReferenceDeleteButton?.removeEventListener('click', onDeleteReferenceClickHandler);
 			});
 		}
 
@@ -349,12 +368,30 @@ export class RaidSimResultsManager {
 		} else {
 			const curMetrics = curMetricsTemp as DistributionMetricsProto;
 			const refMetrics = refMetricsTemp as DistributionMetricsProto;
-			const isDiff = this.applyZTestTooltip(elem, ref.iterations, refMetrics.avg, refMetrics.stdev, cur.iterations, curMetrics.avg, curMetrics.stdev, !!preNormalizedErrors);
+			const isDiff = this.applyZTestTooltip(
+				elem,
+				ref.iterations,
+				refMetrics.avg,
+				refMetrics.stdev,
+				cur.iterations,
+				curMetrics.avg,
+				curMetrics.stdev,
+				!!preNormalizedErrors,
+			);
 			formatDeltaTextElem(elem, refMetrics.avg, curMetrics.avg, precision, lowerIsBetter, !isDiff);
 		}
 	}
 
-	private applyZTestTooltip(elem: HTMLElement, n1: number, avg1: number, stdev1: number, n2: number, avg2: number, stdev2: number, preNormalized: boolean): boolean {
+	private applyZTestTooltip(
+		elem: HTMLElement,
+		n1: number,
+		avg1: number,
+		stdev1: number,
+		n2: number,
+		avg2: number,
+		stdev2: number,
+		preNormalized: boolean,
+	): boolean {
 		const delta = avg1 - avg2;
 		const err1 = preNormalized ? stdev1 : stdev1 / Math.sqrt(n1);
 		const err2 = preNormalized ? stdev2 : stdev2 / Math.sqrt(n2);
@@ -395,7 +432,7 @@ export class RaidSimResultsManager {
 		// Defensive copy.
 		return {
 			simResult: this.currentData.simResult,
-			settings: JSON.parse(JSON.stringify(this.currentData.settings)),
+			settings: structuredClone(this.currentData.settings),
 			raidProto: this.currentData.raidProto,
 			encounterProto: this.currentData.encounterProto,
 		};
@@ -409,7 +446,7 @@ export class RaidSimResultsManager {
 		// Defensive copy.
 		return {
 			simResult: this.referenceData.simResult,
-			settings: JSON.parse(JSON.stringify(this.referenceData.settings)),
+			settings: structuredClone(this.referenceData.settings),
 			raidProto: this.referenceData.raidProto,
 			encounterProto: this.referenceData.encounterProto,
 		};
@@ -656,7 +693,7 @@ export class RaidSimResultsManager {
 		return (
 			<>
 				{data.map(column => {
-					const errorDecimals = (column.unit === 'percentage') ? 2 : 0;
+					const errorDecimals = column.unit === 'percentage' ? 2 : 0;
 					return (
 						<div className={`results-metric ${column.classes}`}>
 							<span className="topline-result-avg">{column.average.toFixed(2)}</span>
@@ -674,6 +711,15 @@ export class RaidSimResultsManager {
 				})}
 			</>
 		);
+	}
+
+	addOnResetCallback(callback: () => void) {
+		this.resetCallbacks.push(callback);
+	}
+
+	reset() {
+		this.resetCallbacks.forEach(callback => callback());
+		this.resetCallbacks = [];
 	}
 }
 
