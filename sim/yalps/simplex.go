@@ -5,7 +5,7 @@ import (
 )
 
 // Pivot operation
-func (tableau *Tableau) Pivot(row, col int) {
+func (tableau *Tableau) Pivot(row, col int, precision float64) {
 	rowStart := row * tableau.Width
 	rowSlice := tableau.Matrix[rowStart : rowStart + tableau.Width]
 	quotient := rowSlice[col]
@@ -23,7 +23,7 @@ func (tableau *Tableau) Pivot(row, col int) {
 	// (1 / quotient) * R_pivot -> R_pivot
 	for c := 0; c < tableau.Width; c++ {
 		value := rowSlice[c]
-		if value > 1e-16 || value < -1e-16 {
+		if value > precision || value < -precision {
 			rowSlice[c] = value / quotient
 			nonZeroColumns[nzCount] = c
 			nzCount++
@@ -40,7 +40,7 @@ func (tableau *Tableau) Pivot(row, col int) {
 		}
 		rowRStart := r * tableau.Width
 		coef := tableau.Matrix[rowRStart+col]
-		if coef > 1e-16 || coef < -1e-16 {
+		if coef > precision || coef < -precision {
 			rowRSlice := tableau.Matrix[rowRStart : rowRStart + tableau.Width]
 			for i := 0; i < nzCount; i++ {
 				c := nonZeroColumns[i]
@@ -53,6 +53,7 @@ func (tableau *Tableau) Pivot(row, col int) {
 
 func phase2(tableau *Tableau, options *Options) (SolutionStatus, float64) {
 	pivotHistory := make([][2]int, 0)
+	pivotPrecision := options.Precision * 0.1
 	for iter := 0; iter < options.MaxPivots; iter++ {
 		// Find entering column
 		col := -1
@@ -94,13 +95,14 @@ func phase2(tableau *Tableau, options *Options) (SolutionStatus, float64) {
 			return StatusCycled, math.NaN()
 		}
 
-		tableau.Pivot(row, col)
+		tableau.Pivot(row, col, pivotPrecision)
 	}
 	return StatusCycled, math.NaN()
 }
 
 func phase1(tableau *Tableau, options *Options) (SolutionStatus, float64) {
 	pivotHistory := make([][2]int, 0)
+	pivotPrecision := options.Precision * 0.1
 	for iter := 0; iter < options.MaxPivots; iter++ {
 
 		// Find leaving row
@@ -139,7 +141,7 @@ func phase1(tableau *Tableau, options *Options) (SolutionStatus, float64) {
 			return StatusCycled, math.NaN()
 		}
 
-		tableau.Pivot(row, col)
+		tableau.Pivot(row, col, pivotPrecision)
 	}
 	return StatusCycled, math.NaN()
 }

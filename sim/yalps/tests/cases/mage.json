@@ -25,7 +25,7 @@
     }
   },
   "options": {
-    "maxIterations": 150000,
+    "maxIterations": 200000,
     "tolerance": 0.01
   }
 }
