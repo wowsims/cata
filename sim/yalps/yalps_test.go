@@ -16,7 +16,7 @@ import (
 
 const maxDiff = 1e-5
 const includeProfileRun = false
-const profileTestCase = "Large_Farm_MIP"
+const profileTestCase = "mage"
 
 // ExpectedSolution represents the expected outcome of the optimization.
 type ExpectedSolution struct {
@@ -202,7 +202,9 @@ func readTestCases(dir string) ([]TestCase, error) {
 		}
 		testCase.Name = strings.Join(strings.Split(strings.Split(file.Name(), ".")[0], " "), "_")
 
-		testCases = append(testCases, testCase)
+		if !includeProfileRun || (testCase.Name == profileTestCase) {
+			testCases = append(testCases, testCase)
+		}
 	}
 
 	return testCases, nil
