@@ -3,6 +3,7 @@ package yalps
 import (
 	"container/heap"
 	"math"
+	"sync"
 	"time"
 )
 
@@ -29,6 +30,32 @@ func (h *BranchHeap) Pop() interface{} {
 	item := old[n-1]
 	*h = old[0 : n-1]
 	return item
+}
+
+type CutsPool struct {
+	sync.Pool
+}
+
+func newCutsPool(estimatedCapacity int) *CutsPool {
+	return &CutsPool{
+		Pool: sync.Pool{
+			New: func() any {
+				return make([]Cut, 0, estimatedCapacity)
+			},
+		},
+	}
+}
+
+func (cutsPool *CutsPool) getCutsBuffer(size int) []Cut {
+	buf := cutsPool.Get().([]Cut)
+	if cap(buf) < size {
+		return make([]Cut, size, size * 2)
+	}
+	return buf[:size]
+}
+
+func (cutsPool *CutsPool) releaseCutsBuffer(buf []Cut) {
+	cutsPool.Put(buf[:0]) // Reset the slice and return to the pool
 }
 
 // Find the most fractional variable
@@ -61,18 +88,20 @@ func applyCuts(tableau *Tableau, buf *Buffer, cuts []Cut) *Tableau {
 	for i, cut := range cuts {
 		sign, variable, value := cut.Sign, cut.Variable, cut.Value
 		r := (height + i) * width
+		rowRSlice := matrix[r : r + width]
 		pos := tableau.PositionOfVariable[variable]
 		if pos < width {
-			matrix[r] = sign * value
+			rowRSlice[0] = sign * value
 			for c := 1; c < width; c++ {
-				matrix[r+c] = 0.0
+				rowRSlice[c] = 0.0
 			}
-			matrix[r+pos] = sign
+			rowRSlice[pos] = sign
 		} else {
 			row := (pos - width) * width
-			matrix[r] = sign * (value - tableau.Matrix[row])
+			rowSlice := tableau.Matrix[row : row + width]
+			rowRSlice[0] = sign * (value - rowSlice[0])
 			for c := 1; c < width; c++ {
-				matrix[r+c] = -sign * tableau.Matrix[row+c]
+				rowRSlice[c] = -sign * rowSlice[c]
 			}
 		}
 	}
@@ -117,6 +146,7 @@ func branchAndCut(tabmod TableauModel, initResult float64, options *Options) (Ta
 	posVarLength := len(tableau.PositionOfVariable) + maxExtraRows
 	candidateBuffer := newBuffer(matrixLength, posVarLength)
 	solutionBuffer := newBuffer(matrixLength, posVarLength)
+	cutsPool := newCutsPool(maxExtraRows)
 
 	optimalThreshold := initResult * (1.0 - sign*options.Tolerance)
 	stopTime := time.Now().Add(time.Millisecond * time.Duration(options.TimeoutMs))
@@ -130,6 +160,7 @@ func branchAndCut(tabmod TableauModel, initResult float64, options *Options) (Ta
 		branch := heap.Pop(branches).(Branch)
 		relaxedEval, cuts := branch.Eval, branch.Cuts
 		if relaxedEval > bestEval {
+			cutsPool.releaseCutsBuffer(cuts)
 			break
 		}
 
@@ -146,8 +177,8 @@ func branchAndCut(tabmod TableauModel, initResult float64, options *Options) (Ta
 				candidateBuffer, solutionBuffer = solutionBuffer, candidateBuffer
 			} else {
 				numCuts := len(cuts)
-				cutsUpper := make([]Cut, numCuts + 1)
-				cutsLower := make([]Cut, numCuts + 1)
+				cutsUpper := cutsPool.getCutsBuffer(numCuts + 1)
+				cutsLower := cutsPool.getCutsBuffer(numCuts + 1)
 				copy(cutsUpper, cuts)
 				copy(cutsLower, cuts)
 
@@ -160,6 +191,7 @@ func branchAndCut(tabmod TableauModel, initResult float64, options *Options) (Ta
 		}
 		timedOut = time.Now().After(stopTime)
 		iter++
+		cutsPool.releaseCutsBuffer(cuts)
 	}
 
 	unfinished := (timedOut || iter >= options.MaxIterations) && branches.Len() > 0 && bestEval >= optimalThreshold
