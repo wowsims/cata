@@ -49,9 +49,9 @@ func newCutsPool(estimatedCapacity int) *CutsPool {
 func (cutsPool *CutsPool) getCutsBuffer(size int) []Cut {
 	buf := cutsPool.Get().([]Cut)
 	if cap(buf) < size {
-		return make([]Cut, size, size * 2)
+		return make([]Cut, 0, size * 2)
 	}
-	return buf[:size]
+	return buf
 }
 
 func (cutsPool *CutsPool) releaseCutsBuffer(buf []Cut) {
@@ -179,11 +179,22 @@ func branchAndCut(tabmod TableauModel, initResult float64, options *Options) (Ta
 				numCuts := len(cuts)
 				cutsUpper := cutsPool.getCutsBuffer(numCuts + 1)
 				cutsLower := cutsPool.getCutsBuffer(numCuts + 1)
-				copy(cutsUpper, cuts)
-				copy(cutsLower, cuts)
 
-				cutsLower[numCuts] = Cut{1, variable, math.Floor(value)}
-				cutsUpper[numCuts] = Cut{-1, variable, math.Ceil(value)}
+				for _, cut := range cuts {
+					if cut.Variable == variable {
+						if cut.Sign < 0 {
+							cutsLower = append(cutsLower, cut)
+						} else {
+							cutsUpper = append(cutsUpper, cut)
+						}
+					} else {
+						cutsUpper = append(cutsUpper, cut)
+						cutsLower = append(cutsLower, cut)
+					}
+				}
+
+				cutsLower = append(cutsLower, Cut{1, variable, math.Floor(value)})
+				cutsUpper = append(cutsUpper, Cut{-1, variable, math.Ceil(value)})
 
 				heap.Push(branches, Branch{Eval: result, Cuts: cutsUpper})
 				heap.Push(branches, Branch{Eval: result, Cuts: cutsLower})
