@@ -967,6 +967,7 @@ func registerTinkerHandsCD(agent Agent, consumes *proto.Consumes) {
 			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
 				aura.Activate(sim)
 			},
+			IsFromGear: true,
 		})
 
 		character.AddMajorCooldown(MajorCooldown{

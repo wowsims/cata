@@ -27,7 +27,8 @@ export type ACTION_ID_SET =
 	| 'castable_dot_spells'
 	| 'shield_spells'
 	| 'non_instant_spells'
-	| 'friendly_spells';
+	| 'friendly_spells'
+	| 'gscd_spells';
 
 const actionIdSets: Record<
 	ACTION_ID_SET,
@@ -236,6 +237,19 @@ const actionIdSets: Record<
 			return metadata
 				.getSpells()
 				.filter(spell => spell.data.hasShield)
+				.map(actionId => {
+					return {
+						value: actionId.id,
+					};
+				});
+		},
+	},
+	gscd_spells : {
+		defaultLabel: 'Spell',
+		getActionIDs: async metadata => {
+			return metadata
+				.getSpells()
+				.filter(spell => spell.data.hasGscd)
 				.map(actionId => {
 					return {
 						value: actionId.id,

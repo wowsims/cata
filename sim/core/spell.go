@@ -65,6 +65,8 @@ type SpellConfig struct {
 
 	RelatedAuras    []AuraArray
 	RelatedDotSpell *Spell
+
+	IsFromGear bool
 }
 
 type Spell struct {
@@ -155,6 +157,9 @@ type Spell struct {
 	// Per-target auras that are related to this spell, usually buffs or debuffs applied by the spell.
 	RelatedAuras    []AuraArray
 	RelatedDotSpell *Spell
+
+	// Wether this spell comes with gear or not
+	isFromGear bool
 }
 
 func (unit *Unit) OnSpellRegistered(handler SpellRegisteredHandler) {
@@ -241,6 +246,8 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 
 		RelatedAuras:    config.RelatedAuras,
 		RelatedDotSpell: config.RelatedDotSpell,
+
+		isFromGear: config.IsFromGear,
 	}
 
 	switch {
@@ -669,4 +676,8 @@ func (spell *Spell) IssueRefund(sim *Simulation) {
 
 func (spell *Spell) EffectiveCritDamageMultiplier() float64 {
 	return (spell.CritMultiplier-1)*(spell.CritMultiplierAddative+1) + 1
+}
+
+func (spell *Spell) IsFromGear() bool {
+	return spell.isFromGear
 }

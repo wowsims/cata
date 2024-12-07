@@ -102,7 +102,8 @@ func NewSimpleStatItemActiveEffect(itemID int32, bonus stats.Stats, duration tim
 		bonus,
 		duration,
 		SpellConfig{
-			ActionID: ActionID{ItemID: itemID},
+			ActionID:   ActionID{ItemID: itemID},
+			IsFromGear: true,
 		},
 		func(character *Character) Cooldown {
 			return Cooldown{
