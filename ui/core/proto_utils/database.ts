@@ -167,7 +167,7 @@ export class Database {
 	}
 
 	getAvailableReforges(item: Item): ReforgeStat[] {
-		return Array.from(this.reforgeStats.values()).filter(reforgeStat => (item.stats[reforgeStat.fromStat] > 0) && (item.stats[reforgeStat.toStat] == 0));
+		return Array.from(this.reforgeStats.values()).filter(reforgeStat => item.stats[reforgeStat.fromStat] > 0 && item.stats[reforgeStat.toStat] == 0);
 	}
 
 	getEnchants(slot: ItemSlot): Array<Enchant> {
@@ -259,6 +259,8 @@ export class Database {
 			[ItemSlot.ItemSlotMainHand]: itemSwap.mhItem ? this.lookupItemSpec(itemSwap.mhItem) : null,
 			[ItemSlot.ItemSlotOffHand]: itemSwap.ohItem ? this.lookupItemSpec(itemSwap.ohItem) : null,
 			[ItemSlot.ItemSlotRanged]: itemSwap.rangedItem ? this.lookupItemSpec(itemSwap.rangedItem) : null,
+			[ItemSlot.ItemSlotTrinket1]: itemSwap.trinket1Item ? this.lookupItemSpec(itemSwap.trinket1Item) : null,
+			[ItemSlot.ItemSlotTrinket2]: itemSwap.trinket2Item ? this.lookupItemSpec(itemSwap.trinket2Item) : null,
 		});
 	}
 

@@ -345,14 +345,17 @@ func (character *Character) applyItemEffects(agent Agent) {
 	}
 
 	if character.ItemSwap.IsEnabled() {
-		offset := int(proto.ItemSlot_ItemSlotMainHand)
 		for i, item := range character.ItemSwap.unEquippedItems {
+			if applyItemEffect, ok := itemEffects[item.ID]; ok {
+				applyItemEffect(agent)
+			}
+
 			if applyEnchantEffect, ok := enchantEffects[item.Enchant.EffectID]; ok {
 				applyEnchantEffect(agent)
 			}
 
 			if applyWeaponEffect, ok := weaponEffects[item.Enchant.EffectID]; ok {
-				applyWeaponEffect(agent, proto.ItemSlot(offset+i))
+				applyWeaponEffect(agent, proto.ItemSlot(i))
 			}
 		}
 	}

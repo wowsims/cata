@@ -395,7 +395,7 @@ export class ItemSwapGear extends BaseGear {
 	}
 
 	getItemSlots(): ItemSlot[] {
-		return [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged];
+		return [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged, ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2];
 	}
 
 	withEquippedItem(newSlot: ItemSlot, newItem: EquippedItem | null, canDualWield2H: boolean): ItemSwapGear {
@@ -407,6 +407,8 @@ export class ItemSwapGear extends BaseGear {
 			mhItem: this.gear[ItemSlot.ItemSlotMainHand]?.asSpec(),
 			ohItem: this.gear[ItemSlot.ItemSlotOffHand]?.asSpec(),
 			rangedItem: this.gear[ItemSlot.ItemSlotRanged]?.asSpec(),
+			trinket1Item: this.gear[ItemSlot.ItemSlotTrinket1]?.asSpec(),
+			trinket2Item: this.gear[ItemSlot.ItemSlotTrinket2]?.asSpec(),
 		});
 	}
 }

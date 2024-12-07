@@ -9,8 +9,6 @@ import (
 
 type OnSwapItem func(*Simulation)
 
-const offset = proto.ItemSlot_ItemSlotMainHand
-
 type ItemSwap struct {
 	character       *Character
 	onSwapCallbacks []OnSwapItem
@@ -23,28 +21,31 @@ type ItemSwap struct {
 	slots []proto.ItemSlot
 
 	// Holds items that are currently not equipped
-	unEquippedItems [3]Item
+	unEquippedItems []Item
 	swapped         bool
 }
 
-/*
-TODO All the extra parameters here and the code in multiple places for handling the Weapon struct is really messy,
-
-	we'll need to figure out something cleaner as this will be quite error-prone
-*/
+/**
+ * TODO All the extra parameters here and the code in multiple places for handling the Weapon struct is really messy,
+ * we'll need to figure out something cleaner as this will be quite error-prone
+**/
 func (character *Character) enableItemSwap(itemSwap *proto.ItemSwap, mhCritMultiplier float64, ohCritMultiplier float64, rangedCritMultiplier float64) {
 	var slots []proto.ItemSlot
 	hasMhSwap := itemSwap.MhItem != nil && itemSwap.MhItem.Id != 0
 	hasOhSwap := itemSwap.OhItem != nil && itemSwap.OhItem.Id != 0
 	hasRangedSwap := itemSwap.RangedItem != nil && itemSwap.RangedItem.Id != 0
+	hasTrinket1Swap := itemSwap.Trinket_1Item != nil && itemSwap.Trinket_1Item.Id != 0
+	hasTrinket2Swap := itemSwap.Trinket_2Item != nil && itemSwap.Trinket_2Item.Id != 0
 
-	swapItems := [3]Item{
-		toItem(itemSwap.MhItem),
-		toItem(itemSwap.OhItem),
-		toItem(itemSwap.RangedItem),
+	swapItems := []Item{
+		proto.ItemSlot_ItemSlotMainHand: toItem(itemSwap.MhItem),
+		proto.ItemSlot_ItemSlotOffHand:  toItem(itemSwap.OhItem),
+		proto.ItemSlot_ItemSlotRanged:   toItem(itemSwap.RangedItem),
+		proto.ItemSlot_ItemSlotTrinket1: toItem(itemSwap.Trinket_1Item),
+		proto.ItemSlot_ItemSlotTrinket2: toItem(itemSwap.Trinket_2Item),
 	}
 
-	has2H := swapItems[0].HandType == proto.HandType_HandTypeTwoHand
+	has2H := swapItems[proto.ItemSlot_ItemSlotMainHand].HandType == proto.HandType_HandTypeTwoHand
 	hasMh := character.HasMHWeapon()
 	hasOh := character.HasOHWeapon()
 
@@ -57,6 +58,12 @@ func (character *Character) enableItemSwap(itemSwap *proto.ItemSwap, mhCritMulti
 	}
 	if hasRangedSwap {
 		slots = append(slots, proto.ItemSlot_ItemSlotRanged)
+	}
+	if hasTrinket1Swap {
+		slots = append(slots, proto.ItemSlot_ItemSlotTrinket1)
+	}
+	if hasTrinket2Swap {
+		slots = append(slots, proto.ItemSlot_ItemSlotTrinket2)
 	}
 
 	if len(slots) == 0 {
@@ -112,13 +119,13 @@ func (swap *ItemSwap) RegisterOnSwapItemUpdateProcMaskWithPPMManager(procMask Pr
 func (swap *ItemSwap) RegisterOnSwapItemForItemEffect(itemID int32, aura *Aura) {
 	character := swap.character
 	character.RegisterOnItemSwap(func(sim *Simulation) {
-		procMask := character.GetProcMaskForItem(itemID)
-
-		if procMask == ProcMaskUnknown {
-			aura.Deactivate(sim)
-		} else {
-			aura.Activate(sim)
+		if swap.IsSwapped() {
+			spell := character.GetSpell(ActionID{ItemID: itemID})
+			if spell != nil && spell.CD.Duration != 0 {
+				spell.CD.Set(spell.CD.Duration)
+			}
 		}
+		aura.Deactivate(sim)
 	})
 }
 
@@ -144,18 +151,18 @@ func (swap *ItemSwap) IsSwapped() bool {
 	return swap.swapped
 }
 
-func (swap *ItemSwap) GetItem(slot proto.ItemSlot) *Item {
-	if slot-offset < 0 {
+func (swap *ItemSwap) GetUnequippedItem(slot proto.ItemSlot) *Item {
+	if slot < 0 {
 		panic("Not able to swap Item " + slot.String() + " not supported")
 	}
-	return &swap.unEquippedItems[slot-offset]
+	return &swap.unEquippedItems[slot]
 }
 
 func (swap *ItemSwap) CalcStatChanges(slots []proto.ItemSlot) stats.Stats {
 	newStats := stats.Stats{}
 	for _, slot := range slots {
 		oldItemStats := swap.getItemStats(swap.character.Equipment[slot])
-		newItemStats := swap.getItemStats(*swap.GetItem(slot))
+		newItemStats := swap.getItemStats(*swap.GetUnequippedItem(slot))
 		newStats = newStats.Add(newItemStats.Subtract(oldItemStats))
 	}
 
@@ -171,7 +178,7 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, slots []proto.ItemSlot) {
 
 	meleeWeaponSwapped := false
 	newStats := stats.Stats{}
-	has2H := swap.GetItem(proto.ItemSlot_ItemSlotMainHand).HandType == proto.HandType_HandTypeTwoHand
+	has2H := swap.GetUnequippedItem(proto.ItemSlot_ItemSlotMainHand).HandType == proto.HandType_HandTypeTwoHand
 	for _, slot := range slots {
 		//will swap both on the MainHand Slot for 2H.
 		if slot == proto.ItemSlot_ItemSlotOffHand && has2H {
@@ -209,7 +216,7 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, slots []proto.ItemSlot) {
 
 func (swap *ItemSwap) swapItem(slot proto.ItemSlot, has2H bool) (bool, stats.Stats) {
 	oldItem := swap.character.Equipment[slot]
-	newItem := swap.GetItem(slot)
+	newItem := swap.GetUnequippedItem(slot)
 
 	swap.character.Equipment[slot] = *newItem
 	oldItemStats := swap.getItemStats(oldItem)
@@ -222,7 +229,7 @@ func (swap *ItemSwap) swapItem(slot proto.ItemSlot, has2H bool) (bool, stats.Sta
 		newStats = newStats.Add(ohStats)
 	}
 
-	swap.unEquippedItems[slot-offset] = oldItem
+	swap.unEquippedItems[slot] = oldItem
 	swap.swapWeapon(slot)
 
 	return true, newStats
