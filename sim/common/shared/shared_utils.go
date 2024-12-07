@@ -172,60 +172,80 @@ func testFirstOnly(factory StatCDFactory) StatCDFactory {
 	}
 }
 
-func CreateOffensiveStatActive(itemID int32, duration time.Duration, cooldown time.Duration, stats stats.Stats) {
+func CreateOffensiveStatActive(itemID int32, duration time.Duration, cooldown time.Duration, stats stats.Stats, otherEffects core.ApplyEffect) {
 	testFirstOnly(func(itemID int32, duration time.Duration, cooldown time.Duration) {
-		core.NewSimpleStatOffensiveTrinketEffect(itemID, stats, duration, cooldown)
+		core.NewSimpleStatOffensiveTrinketEffectWithOtherEffects(itemID, stats, duration, cooldown, otherEffects)
 	})(itemID, duration, cooldown)
 }
 
-func CreateDevensiveStatActive(itemID int32, duration time.Duration, cooldown time.Duration, stats stats.Stats) {
+func CreateDefensiveStatActive(itemID int32, duration time.Duration, cooldown time.Duration, stats stats.Stats) {
 	testFirstOnly(func(itemID int32, duration time.Duration, cooldown time.Duration) {
 		core.NewSimpleStatDefensiveTrinketEffect(itemID, stats, duration, cooldown)
 	})(itemID, duration, cooldown)
 }
 
+func applyItemSwapEffect(itemID int32, registerForItemSwap bool) core.ApplyEffect {
+	if !registerForItemSwap {
+		return nil
+	}
+	return func(agent core.Agent) {
+		character := agent.GetCharacter()
+		aura := character.GetAuraByID(core.ActionID{ItemID: itemID})
+		if aura != nil {
+			character.ItemSwap.RegisterOnSwapItemForItemEffect(itemID, aura)
+		}
+	}
+}
+
 func NewStrengthActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
-	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.Strength: bonus})
+	otherEffects := applyItemSwapEffect(itemID, true)
+	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.Strength: bonus}, otherEffects)
 }
 
 func NewAgilityActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
-	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.Agility: bonus})
+	otherEffects := applyItemSwapEffect(itemID, true)
+	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.Agility: bonus}, otherEffects)
 }
 
 func NewIntActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
-	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.Intellect: bonus})
+	otherEffects := applyItemSwapEffect(itemID, true)
+	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.Intellect: bonus}, otherEffects)
 }
 
 func NewSpiritActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
-	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.Spirit: bonus})
+	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.Spirit: bonus}, nil)
 }
 
 func NewCritActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
-	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.CritRating: bonus})
+	otherEffects := applyItemSwapEffect(itemID, true)
+	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.CritRating: bonus}, otherEffects)
 }
 
 func NewHasteActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
-	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.HasteRating: bonus})
+	otherEffects := applyItemSwapEffect(itemID, true)
+	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.HasteRating: bonus}, otherEffects)
 }
 
 func NewDodgeActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
-	CreateDevensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.DodgeRating: bonus})
+	CreateDefensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.DodgeRating: bonus})
 }
 
 func NewSpellPowerActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
-	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.SpellPower: bonus})
+	otherEffects := applyItemSwapEffect(itemID, true)
+	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.SpellPower: bonus}, otherEffects)
 }
 
 func NewHealthActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
-	CreateDevensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.Health: bonus})
+	CreateDefensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.Health: bonus})
 }
 
 func NewParryActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
-	CreateDevensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.ParryRating: bonus})
+	CreateDefensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.ParryRating: bonus})
 }
 
 func NewMasteryActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
-	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.MasteryRating: bonus})
+	otherEffects := applyItemSwapEffect(itemID, true)
+	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.MasteryRating: bonus}, otherEffects)
 }
 
 type StackingStatBonusCD struct {

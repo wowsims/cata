@@ -1040,6 +1040,8 @@ message ItemSwap {
 	ItemSpec mh_item = 1;
 	ItemSpec oh_item = 2;
 	ItemSpec ranged_item = 3;
+	ItemSpec trinket_1_item = 4;
+	ItemSpec trinket_2_item = 5;
 }
 
 message Duration {
