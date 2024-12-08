@@ -407,7 +407,7 @@ func buildCombos(signals simsignals.Signals, baseSettings *proto.RaidSimRequest,
 		if !ok {
 			return nil, 0, fmt.Errorf("unknown item with id %d in bulk settings", is.Id)
 		}
-		for _, slot := range eligibleSlotsForItem(item, isFuryWarrior) {
+		for _, slot := range EligibleSlotsForItem(&item, isFuryWarrior) {
 			distinctItemSlotCombos = append(distinctItemSlotCombos, &itemWithSlot{
 				Item:  is,
 				Slot:  slot,

@@ -404,6 +404,7 @@ export class ItemSwapGear extends BaseGear {
 
 	toProto(): ItemSwap {
 		return ItemSwap.create({
+			handsItem: this.gear[ItemSlot.ItemSlotHands]?.asSpec(),
 			mhItem: this.gear[ItemSlot.ItemSlotMainHand]?.asSpec(),
 			ohItem: this.gear[ItemSlot.ItemSlotOffHand]?.asSpec(),
 			rangedItem: this.gear[ItemSlot.ItemSlotRanged]?.asSpec(),

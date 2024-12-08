@@ -517,6 +517,8 @@ func (character *Character) reset(sim *Simulation, agent Agent) {
 
 	agent.Reset(sim)
 
+	character.ItemSwap.reset(sim)
+
 	for _, petAgent := range character.PetAgents {
 		petAgent.GetPet().reset(sim, petAgent)
 	}
@@ -596,14 +598,14 @@ func (character *Character) HasRangedWeapon() bool {
 }
 
 func (character *Character) GetProcMaskForEnchant(effectID int32) ProcMask {
-	return character.getProcMaskFor(func(weapon *Item) bool {
-		return weapon.Enchant.EffectID == effectID
+	return character.getProcMaskFor(func(item *Item) bool {
+		return item.Enchant.EffectID == effectID
 	})
 }
 
 func (character *Character) GetProcMaskForItem(itemID int32) ProcMask {
-	return character.getProcMaskFor(func(weapon *Item) bool {
-		return weapon.ID == itemID
+	return character.getProcMaskFor(func(item *Item) bool {
+		return item.ID == itemID
 	})
 }
 
@@ -619,13 +621,16 @@ func (character *Character) GetProcMaskForTypesAndHand(twohand bool, weaponTypes
 	})
 }
 
-func (character *Character) getProcMaskFor(pred func(weapon *Item) bool) ProcMask {
+func (character *Character) getProcMaskFor(pred func(item *Item) bool) ProcMask {
 	mask := ProcMaskUnknown
 	if pred(character.MainHand()) {
 		mask |= ProcMaskMeleeMH
 	}
 	if pred(character.OffHand()) {
 		mask |= ProcMaskMeleeOH
+	}
+	if pred(character.Trinket1()) || pred(character.Trinket2()) {
+		mask |= ProcMaskProc
 	}
 	return mask
 }

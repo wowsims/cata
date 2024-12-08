@@ -9,7 +9,7 @@ import (
 )
 
 func (shaman *Shaman) RegisterOnItemSwapWithImbue(effectID int32, procMask *core.ProcMask, aura *core.Aura) {
-	shaman.RegisterOnItemSwap(func(sim *core.Simulation) {
+	shaman.RegisterOnItemSwap([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand}, func(sim *core.Simulation, slot proto.ItemSlot) {
 		mask := core.ProcMaskUnknown
 		if shaman.MainHand().TempEnchant == effectID {
 			mask |= core.ProcMaskMeleeMH

@@ -113,7 +113,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 			OtherInputs.ChannelClipDelay,
 		],
 	},
-	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged, ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2],
+	itemSwapSlots: [
+		ItemSlot.ItemSlotHands,
+		ItemSlot.ItemSlotMainHand,
+		ItemSlot.ItemSlotOffHand,
+		ItemSlot.ItemSlotRanged,
+		ItemSlot.ItemSlotTrinket1,
+		ItemSlot.ItemSlotTrinket2,
+	],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,

@@ -256,6 +256,7 @@ export class Database {
 
 	lookupItemSwap(itemSwap: ItemSwap): ItemSwapGear {
 		return new ItemSwapGear({
+			[ItemSlot.ItemSlotHands]: itemSwap.handsItem ? this.lookupItemSpec(itemSwap.handsItem) : null,
 			[ItemSlot.ItemSlotMainHand]: itemSwap.mhItem ? this.lookupItemSpec(itemSwap.mhItem) : null,
 			[ItemSlot.ItemSlotOffHand]: itemSwap.ohItem ? this.lookupItemSpec(itemSwap.ohItem) : null,
 			[ItemSlot.ItemSlotRanged]: itemSwap.rangedItem ? this.lookupItemSpec(itemSwap.rangedItem) : null,

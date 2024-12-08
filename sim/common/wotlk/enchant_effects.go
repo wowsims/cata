@@ -144,7 +144,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(3748, aura)
+		character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(3748, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotOffHand})
 	})
 
 	core.NewEnchantEffect(3247, func(agent core.Agent) {
@@ -259,7 +259,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(3790, aura)
+		character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(3790, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
 	})
 
 	core.AddWeaponEffect(3843, func(agent core.Agent, _ proto.ItemSlot) {

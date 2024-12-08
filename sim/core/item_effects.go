@@ -113,14 +113,13 @@ func NewSimpleStatItemActiveEffect(itemID int32, bonus stats.Stats, duration tim
 		sharedCDFunc,
 	)
 
-	if otherEffects == nil {
-		NewItemEffect(itemID, registerCD)
-	} else {
-		NewItemEffect(itemID, func(agent Agent) {
-			registerCD(agent)
+	NewItemEffect(itemID, func(agent Agent) {
+		registerCD(agent)
+		if otherEffects != nil {
 			otherEffects(agent)
-		})
-	}
+		}
+		agent.GetCharacter().ItemSwap.RegisterOnSwapItemForItemOnUseEffect(itemID, EligibleSlotsForItem(GetItemByID(itemID), false))
+	})
 }
 
 // No shared CD

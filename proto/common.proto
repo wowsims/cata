@@ -1042,6 +1042,7 @@ message ItemSwap {
 	ItemSpec ranged_item = 3;
 	ItemSpec trinket_1_item = 4;
 	ItemSpec trinket_2_item = 5;
+	ItemSpec hands_item = 6;
 }
 
 message Duration {

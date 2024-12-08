@@ -487,6 +487,13 @@ func ItemEquipmentStats(item Item) stats.Stats {
 	return equipStats
 }
 
+func GetItemByID(id int32) *Item {
+	if item, ok := ItemsByID[id]; ok {
+		return &item
+	}
+	return nil
+}
+
 func ItemTypeToSlot(it proto.ItemType) proto.ItemSlot {
 	switch it {
 	case proto.ItemType_ItemTypeHead:
@@ -540,7 +547,7 @@ var itemTypeToSlotsMap = map[proto.ItemType][]proto.ItemSlot{
 	// ItemType_ItemTypeWeapon is excluded intentionally - the slot cannot be decided based on type alone for weapons.
 }
 
-func eligibleSlotsForItem(item Item, isFuryWarrior bool) []proto.ItemSlot {
+func EligibleSlotsForItem(item *Item, isFuryWarrior bool) []proto.ItemSlot {
 	if slots, ok := itemTypeToSlotsMap[item.Type]; ok {
 		return slots
 	}
