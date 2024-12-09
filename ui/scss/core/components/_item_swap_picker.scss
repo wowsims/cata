@@ -1,7 +1,18 @@
 .item-swap-picker-root {
+	--column-count: 4;
 	.picker-group {
-		grid-template-columns: none;
-		grid-auto-flow: column;
+		&:has(> div:last-child:nth-child(1)) {
+			--column-count: 1;
+		}
+		&:has(> div:last-child:nth-child(2)) {
+			--column-count: 2;
+		}
+		&:has(> div:last-child:nth-child(3)) {
+			--column-count: 3;
+		}
+
+		grid-template-columns: repeat(var(--column-count), 35px);
+		grid-auto-flow: row;
 		align-items: center;
 		justify-content: flex-end;
 	}

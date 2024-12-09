@@ -777,7 +777,33 @@ func (character *Character) MeetsArmorSpecializationRequirement(armorType proto.
 
 func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Stat, armorType proto.ArmorType) {
 	hasBonus := character.MeetsArmorSpecializationRequirement(armorType)
+	dep := character.NewDynamicMultiplyStat(primaryStat, 1.05)
 	if hasBonus {
-		character.MultiplyStat(primaryStat, 1.05)
+		character.StatDependencyManager.EnableDynamicStatDep(dep)
 	}
+	character.RegisterOnItemSwap([]proto.ItemSlot{
+		proto.ItemSlot_ItemSlotHead,
+		proto.ItemSlot_ItemSlotShoulder,
+		proto.ItemSlot_ItemSlotChest,
+		proto.ItemSlot_ItemSlotWrist,
+		proto.ItemSlot_ItemSlotHands,
+		proto.ItemSlot_ItemSlotWaist,
+		proto.ItemSlot_ItemSlotLegs,
+		proto.ItemSlot_ItemSlotFeet,
+	},
+		func(sim *Simulation, slot proto.ItemSlot) {
+			hasBonus := character.MeetsArmorSpecializationRequirement(armorType)
+			if hasBonus {
+				character.EnableDynamicStatDep(sim, dep)
+			} else {
+				character.DisableDynamicStatDep(sim, dep)
+			}
+		})
 }
+
+// func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Stat, armorType proto.ArmorType) {
+// 	hasBonus := character.MeetsArmorSpecializationRequirement(armorType)
+// 	if hasBonus {
+// 		character.MultiplyStat(primaryStat, 1.05)
+// 	}
+// }

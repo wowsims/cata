@@ -255,14 +255,16 @@ export class Database {
 	}
 
 	lookupItemSwap(itemSwap: ItemSwap): ItemSwapGear {
-		return new ItemSwapGear({
-			[ItemSlot.ItemSlotHands]: itemSwap.handsItem ? this.lookupItemSpec(itemSwap.handsItem) : null,
-			[ItemSlot.ItemSlotMainHand]: itemSwap.mhItem ? this.lookupItemSpec(itemSwap.mhItem) : null,
-			[ItemSlot.ItemSlotOffHand]: itemSwap.ohItem ? this.lookupItemSpec(itemSwap.ohItem) : null,
-			[ItemSlot.ItemSlotRanged]: itemSwap.rangedItem ? this.lookupItemSpec(itemSwap.rangedItem) : null,
-			[ItemSlot.ItemSlotTrinket1]: itemSwap.trinket1Item ? this.lookupItemSpec(itemSwap.trinket1Item) : null,
-			[ItemSlot.ItemSlotTrinket2]: itemSwap.trinket2Item ? this.lookupItemSpec(itemSwap.trinket2Item) : null,
-		});
+		const gearMap = itemSwap.items.reduce<Partial<Record<ItemSlot, EquippedItem | null>>>((gearMap, itemSpec) => {
+			const item = this.lookupItemSpec(itemSpec);
+			if (item) {
+				const itemSlots = getEligibleItemSlots(item.item);
+				const assignedSlot = itemSlots.find(slot => !gearMap[slot]);
+				if (assignedSlot) gearMap[assignedSlot] = item;
+			}
+			return gearMap;
+		}, {});
+		return new ItemSwapGear(gearMap);
 	}
 
 	enchantSpellIdToEffectId(enchantSpellId: number): number {

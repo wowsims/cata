@@ -23,7 +23,7 @@ type ItemSwap struct {
 	slots []proto.ItemSlot
 
 	// Holds items that are currently not equipped
-	unEquippedItems []Item
+	unEquippedItems Equipment
 	swapped         bool
 }
 
@@ -33,44 +33,69 @@ type ItemSwap struct {
 **/
 func (character *Character) enableItemSwap(itemSwap *proto.ItemSwap, mhCritMultiplier float64, ohCritMultiplier float64, rangedCritMultiplier float64) {
 	var slots []proto.ItemSlot
-	hasHandsSwap := itemSwap.HandsItem != nil && itemSwap.HandsItem.Id != 0
-	hasMhSwap := itemSwap.MhItem != nil && itemSwap.MhItem.Id != 0
-	hasOhSwap := itemSwap.OhItem != nil && itemSwap.OhItem.Id != 0
-	hasRangedSwap := itemSwap.RangedItem != nil && itemSwap.RangedItem.Id != 0
-	hasTrinket1Swap := itemSwap.Trinket_1Item != nil && itemSwap.Trinket_1Item.Id != 0
-	hasTrinket2Swap := itemSwap.Trinket_2Item != nil && itemSwap.Trinket_2Item.Id != 0
+	var hasItemSwap [numberOfGearPieces]bool
+	var swapItems Equipment
 
-	swapItems := []Item{
-		proto.ItemSlot_ItemSlotHands:    toItem(itemSwap.HandsItem),
-		proto.ItemSlot_ItemSlotMainHand: toItem(itemSwap.MhItem),
-		proto.ItemSlot_ItemSlotOffHand:  toItem(itemSwap.OhItem),
-		proto.ItemSlot_ItemSlotRanged:   toItem(itemSwap.RangedItem),
-		proto.ItemSlot_ItemSlotTrinket1: toItem(itemSwap.Trinket_1Item),
-		proto.ItemSlot_ItemSlotTrinket2: toItem(itemSwap.Trinket_2Item),
+	for slot, item := range itemSwap.Items {
+		hasItemSwap[slot] = item != nil && item.Id != 0
+		swapItems[slot] = toItem(item)
 	}
 
 	has2H := swapItems[proto.ItemSlot_ItemSlotMainHand].HandType == proto.HandType_HandTypeTwoHand
 	hasMh := character.HasMHWeapon()
 	hasOh := character.HasOHWeapon()
 
-	if hasHandsSwap {
+	if hasItemSwap[proto.ItemSlot_ItemSlotHead] {
+		slots = append(slots, proto.ItemSlot_ItemSlotHead)
+	}
+	if hasItemSwap[proto.ItemSlot_ItemSlotNeck] {
+		slots = append(slots, proto.ItemSlot_ItemSlotNeck)
+	}
+	if hasItemSwap[proto.ItemSlot_ItemSlotShoulder] {
+		slots = append(slots, proto.ItemSlot_ItemSlotShoulder)
+	}
+	if hasItemSwap[proto.ItemSlot_ItemSlotBack] {
+		slots = append(slots, proto.ItemSlot_ItemSlotBack)
+	}
+	if hasItemSwap[proto.ItemSlot_ItemSlotChest] {
+		slots = append(slots, proto.ItemSlot_ItemSlotChest)
+	}
+	if hasItemSwap[proto.ItemSlot_ItemSlotWrist] {
+		slots = append(slots, proto.ItemSlot_ItemSlotWrist)
+	}
+	if hasItemSwap[proto.ItemSlot_ItemSlotHands] {
 		slots = append(slots, proto.ItemSlot_ItemSlotHands)
 	}
-	// Handle MH and OH together, because present MH + empty OH --> swap MH and unequip OH
-	if hasMhSwap || (hasOhSwap && hasMh) {
-		slots = append(slots, proto.ItemSlot_ItemSlotMainHand)
+	if hasItemSwap[proto.ItemSlot_ItemSlotWaist] {
+		slots = append(slots, proto.ItemSlot_ItemSlotWaist)
 	}
-	if hasOhSwap || (has2H && hasOh) {
-		slots = append(slots, proto.ItemSlot_ItemSlotOffHand)
+	if hasItemSwap[proto.ItemSlot_ItemSlotLegs] {
+		slots = append(slots, proto.ItemSlot_ItemSlotLegs)
 	}
-	if hasRangedSwap {
-		slots = append(slots, proto.ItemSlot_ItemSlotRanged)
+	if hasItemSwap[proto.ItemSlot_ItemSlotFeet] {
+		slots = append(slots, proto.ItemSlot_ItemSlotFeet)
 	}
-	if hasTrinket1Swap {
+	if hasItemSwap[proto.ItemSlot_ItemSlotFinger1] {
+		slots = append(slots, proto.ItemSlot_ItemSlotFinger1)
+	}
+	if hasItemSwap[proto.ItemSlot_ItemSlotFinger2] {
+		slots = append(slots, proto.ItemSlot_ItemSlotFinger2)
+	}
+	if hasItemSwap[proto.ItemSlot_ItemSlotTrinket1] {
 		slots = append(slots, proto.ItemSlot_ItemSlotTrinket1)
 	}
-	if hasTrinket2Swap {
+	if hasItemSwap[proto.ItemSlot_ItemSlotTrinket2] {
 		slots = append(slots, proto.ItemSlot_ItemSlotTrinket2)
+	}
+	// Handle MH and OH together, because present MH + empty OH --> swap MH and unequip OH
+	if hasItemSwap[proto.ItemSlot_ItemSlotMainHand] || (hasItemSwap[proto.ItemSlot_ItemSlotOffHand] && hasMh) {
+		slots = append(slots, proto.ItemSlot_ItemSlotMainHand)
+	}
+	if hasItemSwap[proto.ItemSlot_ItemSlotOffHand] || (has2H && hasOh) {
+		slots = append(slots, proto.ItemSlot_ItemSlotOffHand)
+	}
+	if hasItemSwap[proto.ItemSlot_ItemSlotRanged] {
+		slots = append(slots, proto.ItemSlot_ItemSlotRanged)
 	}
 
 	if len(slots) == 0 {
@@ -335,7 +360,7 @@ func (swap *ItemSwap) reset(sim *Simulation) {
 	}
 }
 
-func (swap *ItemSwap) doneIteration(sim *Simulation) {
+func (swap *ItemSwap) doneIteration(_ *Simulation) {
 	if !swap.IsEnabled() || !swap.IsSwapped() {
 		return
 	}
