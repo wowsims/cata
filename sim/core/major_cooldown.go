@@ -400,22 +400,6 @@ func MakeTemporaryStatsOnUseCDRegistration(auraLabel string, tempStats stats.Sta
 		if sharedCDFunc != nil {
 			localConfig.Cast.SharedCD = sharedCDFunc(character)
 		}
-		if character.ItemSwap.IsEnabled() && localConfig.ActionID.ItemID != 0 {
-			originalExtraCastCondition := localConfig.ExtraCastCondition
-			localConfig.ExtraCastCondition = func(sim *Simulation, unit *Unit) bool {
-				isEquipped := false
-				for _, slot := range character.ItemSwap.slots {
-					isEquipped = localConfig.ActionID.IsItemAction(character.Equipment[slot].ID)
-					if isEquipped {
-						break
-					}
-				}
-				if originalExtraCastCondition != nil {
-					return isEquipped && originalExtraCastCondition(sim, unit)
-				}
-				return isEquipped
-			}
-		}
 		RegisterTemporaryStatsOnUseCD(character, auraLabel, tempStats, duration, localConfig)
 	}
 }
