@@ -502,6 +502,13 @@ func (spell *Spell) CanCast(sim *Simulation, target *Unit) bool {
 		return false
 	}
 
+	if spell.Flags.Matches(SpellFlagSwapped) {
+		//if sim.Log != nil {
+		//	sim.Log("Cant cast because of item swap")
+		//}
+		return false
+	}
+
 	if spell.ExtraCastCondition != nil && !spell.ExtraCastCondition(sim, target) {
 		//if sim.Log != nil {
 		//	sim.Log("Cant cast because of extra condition")

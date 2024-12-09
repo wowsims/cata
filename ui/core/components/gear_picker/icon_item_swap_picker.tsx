@@ -1,3 +1,5 @@
+import { ref } from 'tsx-vanilla';
+
 import { Player } from '../../player';
 import { ItemSlot } from '../../proto/common';
 import { EquippedItem } from '../../proto_utils/equipped_item';
@@ -20,14 +22,17 @@ export default class IconItemSwapPicker extends Component {
 		this.player = player;
 		this.slot = slot;
 
-		this.iconAnchor = document.createElement('a');
-		this.iconAnchor.classList.add('icon-picker-button');
-		this.iconAnchor.target = '_blank';
-		this.rootElem.prepend(this.iconAnchor);
+		const iconAnchorRef = ref<HTMLAnchorElement>();
+		const socketsContainerRef = ref<HTMLDivElement>();
 
-		this.socketsContainerElem = document.createElement('div');
-		this.socketsContainerElem.classList.add('item-picker-sockets-container');
-		this.iconAnchor.appendChild(this.socketsContainerElem);
+		this.rootElem.prepend(
+			<a ref={iconAnchorRef} className="icon-picker-button" href="#" attributes={{ role: 'button' }}>
+				<div ref={socketsContainerRef} className="item-picker-sockets-container" />
+			</a>,
+		);
+
+		this.iconAnchor = iconAnchorRef.value!;
+		this.socketsContainerElem = socketsContainerRef.value!;
 
 		const selectorModal = new SelectorModal(simUI.rootElem, simUI, this.player);
 
@@ -47,17 +52,17 @@ export default class IconItemSwapPicker extends Component {
 		this.iconAnchor.style.backgroundImage = `url('${getEmptySlotIconUrl(this.slot)}')`;
 		this.iconAnchor.removeAttribute('data-wowhead');
 		this.iconAnchor.href = '#';
-		this.socketsContainerElem.innerText = '';
+		this.socketsContainerElem.replaceChildren();
 
 		if (newItem) {
-			this.iconAnchor.classList.add('active');
-
 			newItem.asActionId().fillAndSet(this.iconAnchor, true, true);
 			this.player.setWowheadData(newItem, this.iconAnchor);
 
-			newItem.allSocketColors().forEach((socketColor, gemIdx) => {
-				this.socketsContainerElem.appendChild(createGemContainer(socketColor, newItem.gems[gemIdx], gemIdx));
-			});
+			this.socketsContainerElem.replaceChildren(
+				<>{newItem.allSocketColors().map((socketColor, gemIdx) => createGemContainer(socketColor, newItem.gems[gemIdx], gemIdx))}</>,
+			);
+
+			this.iconAnchor.classList.add('active');
 		} else {
 			this.iconAnchor.classList.remove('active');
 		}
