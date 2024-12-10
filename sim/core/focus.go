@@ -86,7 +86,6 @@ func (fb *focusBar) AddFocus(sim *Simulation, amount float64, metrics *ResourceM
 		panic("Trying to add negative focus!")
 	}
 	newFocus := min(fb.currentFocus+amount, fb.maxFocus)
-
 	if fb.isPlayer {
 		if sim.Log != nil {
 			fb.unit.Log(sim, "Gained %0.3f focus from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, fb.currentFocus, newFocus, fb.maxFocus)

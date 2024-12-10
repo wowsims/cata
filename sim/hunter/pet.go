@@ -19,6 +19,7 @@ type HunterPet struct {
 	FrenzyAura           *core.Aura
 
 	specialAbility *core.Spell
+	KillCommand    *core.Spell
 	focusDump      *core.Spell
 	exoticAbility  *core.Spell
 
@@ -48,7 +49,7 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	//Todo: Verify this
 	// base_focus_regen_per_second  = ( 24.5 / 4.0 );
 	// base_focus_regen_per_second *= 1.0 + o -> talents.bestial_discipline -> effect1().percent();
-	baseFocusPerSecond := 5.0 // As observed on logs
+	baseFocusPerSecond := 4.0 // As observed on logs
 	baseFocusPerSecond *= 1.0 + (0.10 * float64(hunter.Talents.BestialDiscipline))
 
 	WHFocusIncreaseMod := hp.AddDynamicMod(core.SpellModConfig{
@@ -75,7 +76,7 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		}
 	})
 
-	atkSpd := 2 / (1 + 0.05*float64(hp.Talents().SerpentSwiftness))
+	atkSpd := 2.0
 	// Todo: Change for Cataclysm
 	hp.EnableAutoAttacks(hp, core.AutoAttackOptions{
 		MainHand: core.Weapon{
@@ -119,6 +120,7 @@ func (hp *HunterPet) Initialize() {
 	hp.specialAbility = hp.NewPetAbility(hp.config.SpecialAbility, true)
 	hp.focusDump = hp.NewPetAbility(hp.config.FocusDump, false)
 	hp.exoticAbility = hp.NewPetAbility(hp.config.ExoticAbility, false)
+	hp.KillCommand = hp.RegisterKillCommandSpell()
 }
 
 func (hp *HunterPet) Reset(_ *core.Simulation) {
@@ -186,7 +188,7 @@ func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
 			stats.Stamina:           ownerStats[stats.Stamina] * 0.3,
 			stats.Armor:             ownerStats[stats.Armor] * 0.35,
 			stats.AttackPower:       ownerStats[stats.RangedAttackPower] * 0.425,
-			stats.RangedAttackPower: ownerStats[stats.RangedAttackPower] * 0.40,
+			stats.RangedAttackPower: ownerStats[stats.RangedAttackPower],
 
 			stats.PhysicalHitPercent: ownerStats[stats.PhysicalHitPercent],
 			stats.ExpertiseRating:    ownerStats[stats.PhysicalHitPercent] * PetExpertiseRatingScale,

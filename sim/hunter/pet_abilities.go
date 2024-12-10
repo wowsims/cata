@@ -89,6 +89,33 @@ type PetDebuffSpellConfig struct {
 	OnSpellHitDealt func(*core.Simulation, *core.Spell, *core.SpellResult)
 }
 
+func (hp *HunterPet) RegisterKillCommandSpell() *core.Spell {
+	actionID := core.ActionID{SpellID: 34026}
+
+	return hp.RegisterSpell(core.SpellConfig{
+		ActionID:    actionID,
+		SpellSchool: core.SpellSchoolPhysical,
+		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagAPL,
+
+		FocusCost: core.FocusCostOptions{
+			Cost: 0,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: time.Second * 0,
+			},
+		},
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           hp.MeleeCritMultiplier(1.0, 0.0),
+		ThreatMultiplier:         1,
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := 0.516*spell.RangedAttackPower(target) + 923
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+		},
+	})
+}
+
 func (hp *HunterPet) newPetDebuff(config PetDebuffSpellConfig) *core.Spell {
 	auraArray := hp.NewEnemyAuraArray(config.DebuffAura)
 	return hp.RegisterSpell(core.SpellConfig{
@@ -148,7 +175,7 @@ func (hp *HunterPet) newFocusDump(pat PetAbilityType, spellID int32) *core.Spell
 		},
 		DamageMultiplierAdditive: 1,
 		DamageMultiplier:         1,
-		CritMultiplier:           2,
+		CritMultiplier:           hp.MeleeCritMultiplier(1.0, 0.0),
 		ThreatMultiplier:         1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(132, 188) + (spell.MeleeAttackPower() * 0.2)
