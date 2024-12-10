@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
@@ -22,6 +23,10 @@ type ItemSwap struct {
 	// Which slots to actually swap.
 	slots []proto.ItemSlot
 
+	// Holds the original equip
+	originalEquip Equipment
+	// Holds the items that are selected for swapping
+	swapEquip Equipment
 	// Holds items that are currently not equipped
 	unEquippedItems               Equipment
 	swapped                       bool
@@ -104,11 +109,15 @@ func (character *Character) enableItemSwap(itemSwap *proto.ItemSwap, mhCritMulti
 		return
 	}
 
+	fmt.Println("ItemSwap Init", character.Equipment.ToEquipmentSpecProto())
+
 	character.ItemSwap = ItemSwap{
 		mhCritMultiplier:     mhCritMultiplier,
 		ohCritMultiplier:     ohCritMultiplier,
 		rangedCritMultiplier: rangedCritMultiplier,
 		slots:                slots,
+		originalEquip:        character.Equipment,
+		swapEquip:            swapItems,
 		unEquippedItems:      swapItems,
 		swapped:              false,
 		initialized:          false,
@@ -277,7 +286,7 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, slots []proto.ItemSlot, isReset
 			continue
 		}
 
-		if ok, swapStats := swap.swapItem(slot, has2H); ok {
+		if ok, swapStats := swap.swapItem(slot, has2H, isReset); ok {
 			newStats = newStats.Add(swapStats)
 			meleeWeaponSwapped = slot == proto.ItemSlot_ItemSlotMainHand || slot == proto.ItemSlot_ItemSlotOffHand || slot == proto.ItemSlot_ItemSlotRanged || meleeWeaponSwapped
 
@@ -290,7 +299,6 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, slots []proto.ItemSlot, isReset
 	if sim.Log != nil {
 		sim.Log("Item Swap Stats: %v", newStats.FlatString())
 	}
-
 	character.AddStatsDynamic(sim, newStats)
 
 	if sim.CurrentTime >= 0 {
@@ -308,9 +316,14 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, slots []proto.ItemSlot, isReset
 	swap.swapped = !swap.swapped
 }
 
-func (swap *ItemSwap) swapItem(slot proto.ItemSlot, has2H bool) (bool, stats.Stats) {
+func (swap *ItemSwap) swapItem(slot proto.ItemSlot, has2H bool, isReset bool) (bool, stats.Stats) {
 	oldItem := swap.character.Equipment[slot]
-	newItem := swap.GetUnequippedItem(slot)
+	var newItem *Item
+	if isReset {
+		newItem = &swap.originalEquip[slot]
+	} else {
+		newItem = swap.GetUnequippedItem(slot)
+	}
 
 	swap.character.Equipment[slot] = *newItem
 	oldItemStats := swap.getItemStats(oldItem)
@@ -319,7 +332,7 @@ func (swap *ItemSwap) swapItem(slot proto.ItemSlot, has2H bool) (bool, stats.Sta
 
 	//2H will swap out the offhand also.
 	if has2H && slot == proto.ItemSlot_ItemSlotMainHand {
-		_, ohStats := swap.swapItem(proto.ItemSlot_ItemSlotOffHand, has2H)
+		_, ohStats := swap.swapItem(proto.ItemSlot_ItemSlotOffHand, has2H, isReset)
 		newStats = newStats.Add(ohStats)
 	}
 
@@ -360,9 +373,8 @@ func (swap *ItemSwap) reset(sim *Simulation) {
 	if !swap.IsEnabled() {
 		return
 	}
-	if swap.IsSwapped() {
-		swap.SwapItems(sim, swap.slots, true)
-	}
+
+	swap.SwapItems(sim, swap.slots, true)
 
 	if !swap.initialized || swap.IsSwapped() {
 		for _, slot := range swap.slots {
@@ -371,6 +383,10 @@ func (swap *ItemSwap) reset(sim *Simulation) {
 			}
 		}
 	}
+
+	fmt.Println("ItemSwap Reset", swap.character.Equipment.ToEquipmentSpecProto())
+
+	swap.unEquippedItems = swap.swapEquip
 
 	// This is used to set the initial spell flags for unequipped items.
 	// Reset is called before the first iteration.
