@@ -776,34 +776,51 @@ func (character *Character) MeetsArmorSpecializationRequirement(armorType proto.
 }
 
 func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Stat, armorType proto.ArmorType) {
+	armorSpecMultiplier := 1.05
 	hasBonus := character.MeetsArmorSpecializationRequirement(armorType)
-	dep := character.NewDynamicMultiplyStat(primaryStat, 1.05)
 	if hasBonus {
-		character.StatDependencyManager.EnableDynamicStatDep(dep)
+		character.MultiplyStat(primaryStat, armorSpecMultiplier)
 	}
-	character.RegisterOnItemSwap([]proto.ItemSlot{
-		proto.ItemSlot_ItemSlotHead,
-		proto.ItemSlot_ItemSlotShoulder,
-		proto.ItemSlot_ItemSlotChest,
-		proto.ItemSlot_ItemSlotWrist,
-		proto.ItemSlot_ItemSlotHands,
-		proto.ItemSlot_ItemSlotWaist,
-		proto.ItemSlot_ItemSlotLegs,
-		proto.ItemSlot_ItemSlotFeet,
-	},
-		func(sim *Simulation, slot proto.ItemSlot) {
-			hasBonus := character.MeetsArmorSpecializationRequirement(armorType)
-			if hasBonus {
-				character.EnableDynamicStatDep(sim, dep)
-			} else {
-				character.DisableDynamicStatDep(sim, dep)
-			}
-		})
-}
 
-// func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Stat, armorType proto.ArmorType) {
-// 	hasBonus := character.MeetsArmorSpecializationRequirement(armorType)
-// 	if hasBonus {
-// 		character.MultiplyStat(primaryStat, 1.05)
-// 	}
-// }
+	// If we use ItemSwap we need to be able to toggle the item specialization
+	// However due to dynamic stats only being able to be added after finalize()
+	// we need to maintain 2 stat dependencies to toggle the effect when swapping items
+	if character.ItemSwap.IsEnabled() {
+		character.ItemSwap.hasInitialArmorSpecialization = hasBonus
+		removeArmorSpecializationDep := character.NewDynamicMultiplyStat(primaryStat, 1/armorSpecMultiplier)
+		addArmorSpecializationDep := character.NewDynamicMultiplyStat(primaryStat, armorSpecMultiplier)
+
+		handleArmorSpecializationToggle := func(sim *Simulation) {
+			hasBonus := character.MeetsArmorSpecializationRequirement(armorType)
+			if character.ItemSwap.hasInitialArmorSpecialization {
+				// Handle "reverting" the existing bonus when the item swap is triggered with different armor types
+				if hasBonus {
+					character.DisableDynamicStatDep(sim, removeArmorSpecializationDep)
+				} else {
+					character.EnableDynamicStatDep(sim, removeArmorSpecializationDep)
+				}
+			} else {
+				// Handle "adding" the non-existing bonus if the initial equip did not have the bonus
+				if hasBonus {
+					character.EnableDynamicStatDep(sim, addArmorSpecializationDep)
+				} else {
+					character.DisableDynamicStatDep(sim, addArmorSpecializationDep)
+				}
+			}
+		}
+
+		character.RegisterOnItemSwap([]proto.ItemSlot{
+			proto.ItemSlot_ItemSlotHead,
+			proto.ItemSlot_ItemSlotShoulder,
+			proto.ItemSlot_ItemSlotChest,
+			proto.ItemSlot_ItemSlotWrist,
+			proto.ItemSlot_ItemSlotHands,
+			proto.ItemSlot_ItemSlotWaist,
+			proto.ItemSlot_ItemSlotLegs,
+			proto.ItemSlot_ItemSlotFeet,
+		},
+			func(sim *Simulation, _ proto.ItemSlot) {
+				handleArmorSpecializationToggle(sim)
+			})
+	}
+}

@@ -260,7 +260,7 @@ export class Database {
 			if (item) {
 				const itemSlots = getEligibleItemSlots(item.item);
 				const assignedSlot = itemSlots.find(slot => !gearMap[slot]);
-				if (assignedSlot) gearMap[assignedSlot] = item;
+				if (typeof assignedSlot === 'number') gearMap[assignedSlot] = item;
 			}
 			return gearMap;
 		}, {});

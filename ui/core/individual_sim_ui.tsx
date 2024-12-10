@@ -284,27 +284,14 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		this.addWarning({
 			updateOn: this.player.gearChangeEmitter,
 			getContent: () => {
-				const playerClass = this.player.getPlayerClass();
-				// We always pick the first entry since this is always the preffered armor type
-				const armorSpecializationArmorType = playerClass.armorTypes[0];
-
-				if (!armorSpecializationArmorType || playerClass.classID === Class.ClassDruid) {
+				if (!this.player.armorSpecializationArmorType) {
 					return '';
 				}
 
-				if (
-					[
-						ItemSlot.ItemSlotHead,
-						ItemSlot.ItemSlotShoulder,
-						ItemSlot.ItemSlotChest,
-						ItemSlot.ItemSlotWrist,
-						ItemSlot.ItemSlotHands,
-						ItemSlot.ItemSlotWaist,
-						ItemSlot.ItemSlotLegs,
-						ItemSlot.ItemSlotFeet,
-					].some(itemSlot => this.player.getEquippedItem(itemSlot)?.item.armorType !== armorSpecializationArmorType)
-				) {
-					return `Equip ${armorTypeNames.get(armorSpecializationArmorType)} gear in each slot for the Armor Specialization (5% primary stat) effect.`;
+				if (this.player.hasArmorSpecializationBonus()) {
+					return `Equip ${armorTypeNames.get(
+						this.player.armorSpecializationArmorType,
+					)} gear in each slot for the Armor Specialization (5% primary stat) effect.`;
 				} else {
 					return '';
 				}

@@ -23,8 +23,9 @@ type ItemSwap struct {
 	slots []proto.ItemSlot
 
 	// Holds items that are currently not equipped
-	unEquippedItems Equipment
-	swapped         bool
+	unEquippedItems               Equipment
+	swapped                       bool
+	hasInitialArmorSpecialization bool
 }
 
 /**
@@ -258,7 +259,7 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, slots []proto.ItemSlot) {
 	has2H := swap.GetUnequippedItem(proto.ItemSlot_ItemSlotMainHand).HandType == proto.HandType_HandTypeTwoHand
 	isPrepull := sim.CurrentTime < 0
 	for _, slot := range slots {
-		if !isPrepull && slot < proto.ItemSlot_ItemSlotMainHand || slot > proto.ItemSlot_ItemSlotOffHand {
+		if !isPrepull && (slot < proto.ItemSlot_ItemSlotMainHand || slot > proto.ItemSlot_ItemSlotOffHand) {
 			continue
 		}
 
@@ -283,14 +284,16 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, slots []proto.ItemSlot) {
 
 	character.AddStatsDynamic(sim, newStats)
 
-	if character.AutoAttacks.AutoSwingMelee && meleeWeaponSwapped && sim.CurrentTime > 0 {
-		character.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime, false)
-	}
+	if sim.CurrentTime > 0 {
+		if character.AutoAttacks.AutoSwingMelee && meleeWeaponSwapped {
+			character.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime, false)
+		}
 
-	// If GCD is ready then use the GCD, otherwise we assume it's being used along side a spell.
-	if character.GCD.IsReady(sim) {
-		newGCD := sim.CurrentTime + 1500*time.Millisecond
-		character.SetGCDTimer(sim, newGCD)
+		// If GCD is ready then use the GCD, otherwise we assume it's being used along side a spell.
+		if character.GCD.IsReady(sim) {
+			newGCD := sim.CurrentTime + 1500*time.Millisecond
+			character.SetGCDTimer(sim, newGCD)
+		}
 	}
 
 	swap.swapped = !swap.swapped
@@ -351,11 +354,11 @@ func (swap *ItemSwap) reset(sim *Simulation) {
 
 	if swap.IsSwapped() {
 		swap.SwapItems(sim, swap.slots)
-	}
 
-	for _, slot := range swap.slots {
-		for _, onSwap := range swap.onSwapCallbacks[slot] {
-			onSwap(sim, slot)
+		for _, slot := range swap.slots {
+			for _, onSwap := range swap.onSwapCallbacks[slot] {
+				onSwap(sim, slot)
+			}
 		}
 	}
 }
