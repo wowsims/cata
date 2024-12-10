@@ -44,7 +44,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(4066, aura)
+		character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(4066, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
 	})
 
 	// Enchant: 4067, Spell: 74197 - Enchant Weapon - Avalanche
@@ -261,7 +261,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(4084, aura)
+		character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(4084, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
 	})
 
 	// Enchant: 4097, Spell: 74242 - Enchant Weapon - Power Torrent
@@ -288,7 +288,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(4097, aura)
+		character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(4097, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
 	})
 
 	// Enchant: 4098, Spell: 74244 - Enchant Weapon - Windwalk
@@ -365,7 +365,7 @@ func init() {
 			time.Second*15,
 		)
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Lightweave Embroidery Cata",
 			ActionID:   core.ActionID{SpellID: 75171},
 			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
@@ -377,6 +377,8 @@ func init() {
 				statAura.Activate(sim)
 			},
 		})
+
+		character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(4115, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotBack})
 	})
 
 	// Enchant: 4116, Spell: 75175 - Darkglow Embroidery
@@ -390,7 +392,7 @@ func init() {
 			time.Second*15,
 		)
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Darkglow Embroidery Cata",
 			ActionID:   core.ActionID{SpellID: 75174},
 			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
@@ -402,6 +404,8 @@ func init() {
 				statAura.Activate(sim)
 			},
 		})
+
+		character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(4116, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotBack})
 	})
 
 	// Enchant: 4118, Spell: 75178 - Swordguard Embroidery
@@ -415,7 +419,7 @@ func init() {
 			time.Second*15,
 		)
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Swordguard Embroidery Cataa",
 			ActionID:   core.ActionID{SpellID: 75176},
 			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
@@ -427,6 +431,8 @@ func init() {
 				statAura.Activate(sim)
 			},
 		})
+
+		character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(4118, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotBack})
 	})
 
 	// Enchant: 4175, Spell: 81932, Item: 59594 - Gnomish X-Ray Scope
@@ -452,6 +458,7 @@ func init() {
 				statAura.Activate(sim)
 			},
 		})
+
 	})
 
 	// Enchant: 4176, Item: 59595 - R19 Threatfinder
@@ -498,7 +505,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(4215, aura)
+		character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(4215, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotOffHand})
 	})
 
 	// Enchant: 4216, Spell: 92437, Item: 55056  - Pyrium Shield Spike
@@ -531,7 +538,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(4216, aura)
+		character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(4216, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotOffHand})
 	})
 
 	// Enchant: 4267, Spell: 99623, Item: 70139 - Flintlocke's Woodchucker
@@ -574,6 +581,6 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(4267, aura)
+		character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(4267, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotRanged})
 	})
 }

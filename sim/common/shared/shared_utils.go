@@ -148,6 +148,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 
 		procAura.Icd = triggerAura.Icd
 		character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
+		character.ItemSwap.RegisterOnSwapItemForItemProcEffect(config.ID, triggerAura, core.EligibleSlotsForItem(core.GetItemByID(config.ID), false))
 	})
 }
 
@@ -178,7 +179,7 @@ func CreateOffensiveStatActive(itemID int32, duration time.Duration, cooldown ti
 	})(itemID, duration, cooldown)
 }
 
-func CreateDevensiveStatActive(itemID int32, duration time.Duration, cooldown time.Duration, stats stats.Stats) {
+func CreateDefensiveStatActive(itemID int32, duration time.Duration, cooldown time.Duration, stats stats.Stats) {
 	testFirstOnly(func(itemID int32, duration time.Duration, cooldown time.Duration) {
 		core.NewSimpleStatDefensiveTrinketEffect(itemID, stats, duration, cooldown)
 	})(itemID, duration, cooldown)
@@ -209,7 +210,7 @@ func NewHasteActive(itemID int32, bonus float64, duration time.Duration, cooldow
 }
 
 func NewDodgeActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
-	CreateDevensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.DodgeRating: bonus})
+	CreateDefensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.DodgeRating: bonus})
 }
 
 func NewSpellPowerActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
@@ -217,11 +218,11 @@ func NewSpellPowerActive(itemID int32, bonus float64, duration time.Duration, co
 }
 
 func NewHealthActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
-	CreateDevensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.Health: bonus})
+	CreateDefensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.Health: bonus})
 }
 
 func NewParryActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
-	CreateDevensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.ParryRating: bonus})
+	CreateDefensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.ParryRating: bonus})
 }
 
 func NewMasteryActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {

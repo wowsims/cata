@@ -1260,6 +1260,29 @@ export class Player<SpecType extends Spec> {
 		[RaidFilterOption.RaidDragonSoul]: 5892,
 	};
 
+	get armorSpecializationArmorType() {
+		// We always pick the first entry since this is always the preffered armor type
+		return this.playerClass.armorTypes[0];
+	}
+
+	hasArmorSpecializationBonus() {
+		return [
+			ItemSlot.ItemSlotHead,
+			ItemSlot.ItemSlotShoulder,
+			ItemSlot.ItemSlotChest,
+			ItemSlot.ItemSlotWrist,
+			ItemSlot.ItemSlotHands,
+			ItemSlot.ItemSlotWaist,
+			ItemSlot.ItemSlotLegs,
+			ItemSlot.ItemSlotFeet,
+		].some(itemSlot => {
+			const item = this.getEquippedItem(itemSlot)?.item;
+			if (!item) return false;
+			const armorType = item.armorType;
+			return armorType !== this.armorSpecializationArmorType;
+		});
+	}
+
 	filterItemData<T>(itemData: Array<T>, getItemFunc: (val: T) => Item, slot: ItemSlot): Array<T> {
 		const filters = this.sim.getFilters();
 
