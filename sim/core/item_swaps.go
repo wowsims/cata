@@ -1,7 +1,6 @@
 package core
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
@@ -108,8 +107,6 @@ func (character *Character) enableItemSwap(itemSwap *proto.ItemSwap, mhCritMulti
 	if len(slots) == 0 {
 		return
 	}
-
-	fmt.Println("ItemSwap Init", character.Equipment.ToEquipmentSpecProto())
 
 	character.ItemSwap = ItemSwap{
 		mhCritMultiplier:     mhCritMultiplier,
@@ -383,8 +380,6 @@ func (swap *ItemSwap) reset(sim *Simulation) {
 			}
 		}
 	}
-
-	fmt.Println("ItemSwap Reset", swap.character.Equipment.ToEquipmentSpecProto())
 
 	swap.unEquippedItems = swap.swapEquip
 
