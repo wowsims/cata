@@ -256,7 +256,7 @@ func (swap *ItemSwap) CalcStatChanges(slots []proto.ItemSlot) stats.Stats {
 	return newStats
 }
 
-func (swap *ItemSwap) SwapItems(sim *Simulation, slots []proto.ItemSlot) {
+func (swap *ItemSwap) SwapItems(sim *Simulation, slots []proto.ItemSlot, isReset bool) {
 	if !swap.IsEnabled() {
 		return
 	}
@@ -268,7 +268,7 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, slots []proto.ItemSlot) {
 	has2H := swap.GetUnequippedItem(proto.ItemSlot_ItemSlotMainHand).HandType == proto.HandType_HandTypeTwoHand
 	isPrepull := sim.CurrentTime < 0
 	for _, slot := range slots {
-		if !isPrepull && (slot < proto.ItemSlot_ItemSlotMainHand || slot > proto.ItemSlot_ItemSlotOffHand) {
+		if !isReset && !isPrepull && (slot < proto.ItemSlot_ItemSlotMainHand || slot > proto.ItemSlot_ItemSlotRanged) {
 			continue
 		}
 
@@ -279,7 +279,7 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, slots []proto.ItemSlot) {
 
 		if ok, swapStats := swap.swapItem(slot, has2H); ok {
 			newStats = newStats.Add(swapStats)
-			meleeWeaponSwapped = slot == proto.ItemSlot_ItemSlotMainHand || slot == proto.ItemSlot_ItemSlotOffHand || meleeWeaponSwapped
+			meleeWeaponSwapped = slot == proto.ItemSlot_ItemSlotMainHand || slot == proto.ItemSlot_ItemSlotOffHand || slot == proto.ItemSlot_ItemSlotRanged || meleeWeaponSwapped
 
 			for _, onSwap := range swap.onSwapCallbacks[slot] {
 				onSwap(sim, slot)
@@ -293,7 +293,7 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, slots []proto.ItemSlot) {
 
 	character.AddStatsDynamic(sim, newStats)
 
-	if sim.CurrentTime > 0 {
+	if sim.CurrentTime >= 0 {
 		if character.AutoAttacks.AutoSwingMelee && meleeWeaponSwapped {
 			character.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime, false)
 		}
@@ -361,7 +361,7 @@ func (swap *ItemSwap) reset(sim *Simulation) {
 		return
 	}
 	if swap.IsSwapped() {
-		swap.SwapItems(sim, swap.slots)
+		swap.SwapItems(sim, swap.slots, true)
 	}
 
 	if !swap.initialized || swap.IsSwapped() {
