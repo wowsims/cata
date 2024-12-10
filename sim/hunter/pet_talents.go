@@ -34,10 +34,16 @@ func (hp *HunterPet) ApplyTalents() {
 	if talents.GreatStamina != 0 {
 		hp.MultiplyStat(stats.Stamina, 1.0+0.04*float64(talents.GreatStamina))
 	}
+
+	if talents.SerpentSwiftness != 0 {
+		hp.PseudoStats.MeleeSpeedMultiplier *= (1 + 0.05*float64(talents.SerpentSwiftness))
+	}
+
 	//Cata verified
 	if talents.NaturalArmor != 0 {
 		hp.MultiplyStat(stats.Armor, 1.0+0.05*float64(talents.NaturalArmor))
 	}
+
 	//Cata verified
 	if talents.BloodOfTheRhino != 0 {
 		hp.PseudoStats.HealingTakenMultiplier *= 1 + 0.2*float64(talents.BloodOfTheRhino)
