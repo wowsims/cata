@@ -25,6 +25,7 @@ type ItemSwap struct {
 	// Holds items that are currently not equipped
 	unEquippedItems               Equipment
 	swapped                       bool
+	initialized                   bool
 	hasInitialArmorSpecialization bool
 }
 
@@ -110,6 +111,7 @@ func (character *Character) enableItemSwap(itemSwap *proto.ItemSwap, mhCritMulti
 		slots:                slots,
 		unEquippedItems:      swapItems,
 		swapped:              false,
+		initialized:          false,
 	}
 }
 
@@ -156,6 +158,7 @@ func (swap *ItemSwap) RegisterOnSwapItemForItemProcEffect(itemID int32, aura *Au
 	character := swap.character
 	character.RegisterOnItemSwap(slots, func(sim *Simulation, slot proto.ItemSlot) {
 		procMask := character.GetProcMaskForItem(itemID)
+
 		if procMask == ProcMaskUnknown {
 			aura.Deactivate(sim)
 		} else {
@@ -199,6 +202,9 @@ func (swap *ItemSwap) RegisterOnSwapItemForItemOnUseEffect(itemID int32, slots [
 				return
 			}
 			spell.Flags &= ^SpellFlagSwapped
+			if !swap.initialized {
+				return
+			}
 			idSwapped := swap.unEquippedItems[slot].ID
 			if idSwapped == idEquipped && spell.CD.IsReady(sim) || idSwapped != idEquipped {
 				spell.CD.Set(sim.CurrentTime + time.Second*30)
@@ -214,6 +220,9 @@ func (swap *ItemSwap) RegisterOnSwapItemForEnchantOnUseEffect(spell *Spell, slot
 		if spell != nil {
 			idEquipped := character.Equipment[slot].ID
 			idSwapped := swap.unEquippedItems[slot].ID
+			if !swap.initialized {
+				return
+			}
 			if idSwapped == idEquipped && spell.CD.IsReady(sim) || idSwapped != idEquipped {
 				spell.CD.Set(sim.CurrentTime + time.Second*30)
 			}
@@ -351,16 +360,21 @@ func (swap *ItemSwap) reset(sim *Simulation) {
 	if !swap.IsEnabled() {
 		return
 	}
-
 	if swap.IsSwapped() {
 		swap.SwapItems(sim, swap.slots)
+	}
 
+	if !swap.initialized || swap.IsSwapped() {
 		for _, slot := range swap.slots {
 			for _, onSwap := range swap.onSwapCallbacks[slot] {
 				onSwap(sim, slot)
 			}
 		}
 	}
+
+	// This is used to set the initial spell flags for unequipped items.
+	// Reset is called before the first iteration.
+	swap.initialized = true
 }
 
 func (swap *ItemSwap) doneIteration(_ *Simulation) {

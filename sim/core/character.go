@@ -629,7 +629,7 @@ func (character *Character) getProcMaskFor(pred func(item *Item) bool) ProcMask 
 	if pred(character.OffHand()) {
 		mask |= ProcMaskMeleeOH
 	}
-	if pred(character.Trinket1()) || pred(character.Trinket2()) {
+	if pred(character.Trinket1()) || pred(character.Trinket2()) || pred(character.Back()) {
 		mask |= ProcMaskProc
 	}
 	return mask

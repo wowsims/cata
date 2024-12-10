@@ -231,6 +231,10 @@ func (equipment *Equipment) Shoulder() *Item {
 	return &equipment[proto.ItemSlot_ItemSlotShoulder]
 }
 
+func (equipment *Equipment) Back() *Item {
+	return &equipment[proto.ItemSlot_ItemSlotBack]
+}
+
 func (equipment *Equipment) Chest() *Item {
 	return &equipment[proto.ItemSlot_ItemSlotChest]
 }
