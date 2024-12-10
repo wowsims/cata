@@ -409,7 +409,7 @@ func registerPotionCD(agent Agent, consumes *proto.Consumes) {
 	defaultPotion := consumes.DefaultPotion
 	startingPotion := consumes.PrepopPotion
 
-	potionCD := character.NewTimer()
+	potionCD := character.GetPotionCD()
 	// if character.Spec == proto.Spec_SpecBalanceDruid {
 	// 	// Create both pots spells so they will be selectable in APL UI regardless of settings.
 	// 	speedMCD := makePotionActivation(proto.Potions_PotionOfSpeed, character, potionCD)
@@ -476,6 +476,10 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 		CD: Cooldown{
 			Timer:    potionCD,
 			Duration: time.Minute * 60, // Infinite CD
+		},
+		SharedCD: Cooldown{
+			Timer:    character.GetPotionCD(),
+			Duration: time.Minute * 60,
 		},
 	}
 
@@ -976,15 +980,16 @@ func registerTinkerHandsCD(agent Agent, consumes *proto.Consumes) {
 		})
 	case proto.TinkerHands_TinkerHandsQuickflipDeflectionPlates:
 		// Enchant: 4180, Spell: 82176 - Quickflip Deflection Plates
+		actionID := ActionID{SpellID: 82176}
 		statAura := character.NewTemporaryStatsAura(
 			"Quickflip Deflection Plates Buff",
-			ActionID{SpellID: 82176},
+			actionID,
 			stats.Stats{stats.Armor: 1500},
 			time.Second*12,
 		)
 
 		spell := character.GetOrRegisterSpell(SpellConfig{
-			ActionID:    ActionID{SpellID: 82176},
+			ActionID:    actionID,
 			SpellSchool: SpellSchoolPhysical,
 			Flags:       SpellFlagNoOnCastComplete,
 
@@ -1007,8 +1012,9 @@ func registerTinkerHandsCD(agent Agent, consumes *proto.Consumes) {
 		})
 	case proto.TinkerHands_TinkerHandsTazikShocker:
 		// Enchant: 4181, Spell: 82180 - Tazik Shocker
+		actionID := ActionID{SpellID: 82179}
 		spell := character.GetOrRegisterSpell(SpellConfig{
-			ActionID:    ActionID{SpellID: 82179},
+			ActionID:    actionID,
 			SpellSchool: SpellSchoolNature,
 			Flags:       SpellFlagNoOnCastComplete,
 
@@ -1038,9 +1044,10 @@ func registerTinkerHandsCD(agent Agent, consumes *proto.Consumes) {
 		})
 	case proto.TinkerHands_TinkerHandsSpinalHealingInjector:
 		// Enchant: 4182, Spell: 82184 - Spinal Healing Injector
-		healthMetric := character.NewHealthMetrics(ActionID{SpellID: 82184})
+		actionID := ActionID{SpellID: 82184}
+		healthMetric := character.NewHealthMetrics(actionID)
 		spell := character.GetOrRegisterSpell(SpellConfig{
-			ActionID:    ActionID{SpellID: 82184},
+			ActionID:    actionID,
 			SpellSchool: SpellSchoolPhysical,
 			Flags:       SpellFlagNoOnCastComplete | SpellFlagCombatPotion,
 
@@ -1048,6 +1055,10 @@ func registerTinkerHandsCD(agent Agent, consumes *proto.Consumes) {
 				CD: Cooldown{
 					Timer:    character.NewTimer(),
 					Duration: time.Second * 60,
+				},
+				SharedCD: Cooldown{
+					Timer:    character.GetPotionCD(),
+					Duration: time.Minute * 60,
 				},
 			},
 
@@ -1068,9 +1079,10 @@ func registerTinkerHandsCD(agent Agent, consumes *proto.Consumes) {
 		})
 	case proto.TinkerHands_TinkerHandsZ50ManaGulper:
 		// Enchant: 4183, Spell: 82186 - Z50 Mana Gulper
-		manaMetric := character.NewManaMetrics(ActionID{SpellID: 82186})
+		actionId := ActionID{SpellID: 82186}
+		manaMetric := character.NewManaMetrics(actionId)
 		spell := character.GetOrRegisterSpell(SpellConfig{
-			ActionID:    ActionID{SpellID: 82186},
+			ActionID:    actionId,
 			SpellSchool: SpellSchoolPhysical,
 			Flags:       SpellFlagNoOnCastComplete | SpellFlagPotion,
 
@@ -1080,6 +1092,10 @@ func registerTinkerHandsCD(agent Agent, consumes *proto.Consumes) {
 				CD: Cooldown{
 					Timer:    character.NewTimer(),
 					Duration: time.Second * 60,
+				},
+				SharedCD: Cooldown{
+					Timer:    character.GetPotionCD(),
+					Duration: time.Minute * 60,
 				},
 			},
 
