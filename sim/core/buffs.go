@@ -29,18 +29,10 @@ func makeExclusiveMultiplierBuff(aura *Aura, stat stats.Stat, value float64) {
 	aura.NewExclusiveEffect(stat.StatName()+"%Buff", false, ExclusiveEffect{
 		Priority: value,
 		OnGain: func(ee *ExclusiveEffect, s *Simulation) {
-			if ee.Aura.Unit.Env.MeasuringStats && ee.Aura.Unit.Env.State != Finalized {
-				aura.Unit.StatDependencyManager.EnableDynamicStatDep(dep)
-			} else {
-				ee.Aura.Unit.EnableDynamicStatDep(s, dep)
-			}
+			ee.Aura.Unit.EnableBuildPhaseStatDep(s, dep)
 		},
 		OnExpire: func(ee *ExclusiveEffect, s *Simulation) {
-			if ee.Aura.Unit.Env.MeasuringStats {
-				aura.Unit.StatDependencyManager.DisableDynamicStatDep(dep)
-			} else {
-				ee.Aura.Unit.DisableDynamicStatDep(s, dep)
-			}
+			ee.Aura.Unit.DisableBuildPhaseStatDep(s, dep)
 		},
 	})
 }

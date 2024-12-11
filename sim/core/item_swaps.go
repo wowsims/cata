@@ -27,10 +27,9 @@ type ItemSwap struct {
 	// Holds the items that are selected for swapping
 	swapEquip Equipment
 	// Holds items that are currently not equipped
-	unEquippedItems               Equipment
-	swapped                       bool
-	initialized                   bool
-	hasInitialArmorSpecialization bool
+	unEquippedItems Equipment
+	swapped         bool
+	initialized     bool
 }
 
 /**
