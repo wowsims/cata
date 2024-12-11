@@ -87,6 +87,9 @@ func (action *APLActionActivateAura) Execute(sim *Simulation) {
 		action.aura.Unit.Log(sim, "Activating aura %s", action.aura.ActionID)
 	}
 	action.aura.Activate(sim)
+	if action.aura.Icd != nil {
+		action.aura.Icd.Use(sim)
+	}
 }
 
 func (action *APLActionActivateAura) String() string {

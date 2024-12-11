@@ -261,6 +261,8 @@ func init() {
 			},
 		})
 
+		statAura.Icd = aura.Icd
+
 		character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(4084, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
 	})
 
@@ -288,6 +290,8 @@ func init() {
 			},
 		})
 
+		statAura.Icd = aura.Icd
+
 		character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(4097, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
 	})
 
@@ -313,6 +317,8 @@ func init() {
 				statAura.Activate(sim)
 			},
 		})
+
+		statAura.Icd = aura.Icd
 
 		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(4098, 2.5, aura.Ppmm, aura)
 	})
@@ -378,6 +384,8 @@ func init() {
 			},
 		})
 
+		statAura.Icd = aura.Icd
+
 		character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(4115, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotBack})
 	})
 
@@ -404,6 +412,8 @@ func init() {
 				statAura.Activate(sim)
 			},
 		})
+
+		statAura.Icd = aura.Icd
 
 		character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(4116, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotBack})
 	})
@@ -432,6 +442,8 @@ func init() {
 			},
 		})
 
+		statAura.Icd = aura.Icd
+
 		character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(4118, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotBack})
 	})
 
@@ -446,7 +458,7 @@ func init() {
 			time.Second*10,
 		)
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Gnomish X-Ray Scope",
 			ActionID:   core.ActionID{SpellID: 95712},
 			Callback:   core.CallbackOnSpellHitDealt,
@@ -459,6 +471,7 @@ func init() {
 			},
 		})
 
+		statAura.Icd = aura.Icd
 	})
 
 	// Enchant: 4176, Item: 59595 - R19 Threatfinder
@@ -580,6 +593,8 @@ func init() {
 				dmgProc.Cast(sim, result.Target)
 			},
 		})
+
+		statAura.Icd = aura.Icd
 
 		character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(4267, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotRanged})
 	})
