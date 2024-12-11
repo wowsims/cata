@@ -298,7 +298,7 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, slots []proto.ItemSlot, isReset
 	}
 	character.AddStatsDynamic(sim, newStats)
 
-	if sim.CurrentTime >= 0 {
+	if !isPrepull && !isReset {
 		if character.AutoAttacks.AutoSwingMelee && meleeWeaponSwapped {
 			character.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime, false)
 		}
