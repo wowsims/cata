@@ -174,6 +174,9 @@ func (unit *Unit) OHWeaponDamage(sim *Simulation, attackPower float64) float64 {
 func (unit *Unit) OHNormalizedWeaponDamage(sim *Simulation, attackPower float64) float64 {
 	return 0.5 * unit.AutoAttacks.oh.CalculateNormalizedWeaponDamage(sim, attackPower)
 }
+func (unit *Unit) RangedNormalizedWeaponDamage(sim *Simulation, attackPower float64) float64 {
+	return unit.AutoAttacks.ranged.CalculateNormalizedWeaponDamage(sim, attackPower)
+}
 
 func (unit *Unit) RangedWeaponDamage(sim *Simulation, attackPower float64) float64 {
 	return unit.AutoAttacks.ranged.CalculateWeaponDamage(sim, attackPower)

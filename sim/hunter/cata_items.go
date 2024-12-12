@@ -77,11 +77,12 @@ var ItemSetFlameWakersBattleGear = core.NewItemSet(core.ItemSet{
 					if spell.ClassSpellMask&HunterSpellsTierTwelve == 0 || spell.ActionID.SpellID == 0 {
 						return
 					}
-
+					// https://www.bluetracker.gg/wow/topic/eu-en/510644-cataclysm-classic-hotfixes-11-december/
+					// Breaks both Arcane Shot and Explosive Shot consuming of Burning Adrenaline
 					// Arcane Shot is free if Lock and Load is up
-					if hunter.LockAndLoadAura.IsActive() && (spell.ClassSpellMask == HunterSpellArcaneShot || spell.ClassSpellMask == HunterSpellExplosiveShot || spell.SpellID == 53301 || spell.SpellID == 1215485) {
-						return
-					}
+					// if hunter.LockAndLoadAura.IsActive() && (spell.ClassSpellMask == HunterSpellExplosiveShot || spell.SpellID == 53301 || spell.SpellID == 1215485) {
+					// 	return
+					// }
 
 					if hunter.HasActiveAura("Ready, Set, Aim...") && spell.ClassSpellMask == HunterSpellAimedShot {
 						return
