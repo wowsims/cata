@@ -255,11 +255,12 @@ export class Database {
 	}
 
 	lookupItemSwap(itemSwap: ItemSwap): ItemSwapGear {
-		const gearMap = itemSwap.items.reduce<Partial<Record<ItemSlot, EquippedItem | null>>>((gearMap, itemSpec) => {
+		const gearMap = itemSwap.items.reduce<Partial<Record<ItemSlot, EquippedItem | null>>>((gearMap, itemSpec, slot) => {
 			const item = this.lookupItemSpec(itemSpec);
 			if (item) {
-				const itemSlots = getEligibleItemSlots(item.item);
-				const assignedSlot = itemSlots.find(slot => !gearMap[slot]);
+				const eligibleItemSlots = getEligibleItemSlots(item.item);
+				const isSwapSlotMatch = eligibleItemSlots.some(eligibleItemSlot => eligibleItemSlot === slot);
+				const assignedSlot = isSwapSlotMatch ? (slot as ItemSlot) : eligibleItemSlots[0];
 				if (typeof assignedSlot === 'number') gearMap[assignedSlot] = item;
 			}
 			return gearMap;

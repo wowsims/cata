@@ -86,9 +86,28 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		}
 		procAura := character.NewTemporaryStatsAura(config.Name+" Proc", procID, config.Bonus, config.Duration)
 
+		var itemSwapProcCondition core.CustomStatBuffProcCondition
+		if character.ItemSwap.IsEnabled() && character.ItemSwap.ItemExistsInSwapSet(config.ID) {
+			itemSwapProcCondition = func(sim *core.Simulation, aura *core.Aura) bool {
+				return character.ItemSwap.HasItemEquipped(config.ID)
+			}
+		}
+
 		var customHandler CustomProcHandler
 		if config.CustomProcCondition != nil {
-			procAura.CustomProcCondition = config.CustomProcCondition
+			if itemSwapProcCondition != nil {
+				procAura.CustomProcCondition = func(sim *core.Simulation, aura *core.Aura) bool {
+					return itemSwapProcCondition(sim, aura) && config.CustomProcCondition(sim, aura)
+				}
+			} else {
+				procAura.CustomProcCondition = config.CustomProcCondition
+			}
+
+		} else if itemSwapProcCondition != nil {
+			procAura.CustomProcCondition = itemSwapProcCondition
+		}
+
+		if config.CustomProcCondition != nil {
 			customHandler = func(sim *core.Simulation, procAura *core.StatBuffAura) {
 				if procAura.CanProc(sim) {
 					procAura.Activate(sim)

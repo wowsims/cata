@@ -190,19 +190,23 @@ func (value *APLValueNumEquippedStatProcTrinkets) GetInt(sim *Simulation) int32 
 type APLValueNumStatBuffCooldowns struct {
 	DefaultAPLValueImpl
 
-	statTypesToMatch    []stats.Stat
-	cachedCooldownCount int32
+	statTypesToMatch []stats.Stat
+	matchingSpells   []*Spell
 }
 
-func (rot *APLRotation) newValueNumStatBuffCooldowns(config *proto.APLValueNumStatBuffCooldowns) APLValue {
+func (rot *APLRotation) newValueNumStatBuffCooldowns(config *proto.APLValueNumStatBuffCooldowns, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	character := unit.Env.Raid.GetPlayerFromUnit(unit).GetCharacter()
 	statTypesToMatch := stats.IntTupleToStatsList(config.StatType1, config.StatType2, config.StatType3)
 	matchingSpells := character.GetMatchingStatBuffSpells(statTypesToMatch)
 
+	if len(matchingSpells) == 0 {
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "No stat buff cooldowns found for: %s", StringFromStatTypes(statTypesToMatch))
+	}
+
 	return &APLValueNumStatBuffCooldowns{
-		statTypesToMatch:    statTypesToMatch,
-		cachedCooldownCount: int32(len(matchingSpells)),
+		statTypesToMatch: statTypesToMatch,
+		matchingSpells:   matchingSpells,
 	}
 }
 func (value *APLValueNumStatBuffCooldowns) String() string {
@@ -212,5 +216,18 @@ func (value *APLValueNumStatBuffCooldowns) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeInt
 }
 func (value *APLValueNumStatBuffCooldowns) GetInt(_ *Simulation) int32 {
-	return value.cachedCooldownCount
+	validSpellCount := int32(0)
+	for _, spell := range value.matchingSpells {
+		if !spell.Flags.Matches(SpellFlagSwapped) {
+			validSpellCount++
+		}
+	}
+	return validSpellCount
+}
+func (value *APLValueNumStatBuffCooldowns) Finalize(rot *APLRotation) {
+	actionIDs := MapSlice(value.matchingSpells, func(spell *Spell) ActionID {
+		return spell.ActionID
+	})
+
+	rot.ValidationMessageByUUID(value.Uuid, proto.LogLevel_Information, "%s will check the following spell(s)/item(s): %s", value, StringFromActionIDs(actionIDs))
 }

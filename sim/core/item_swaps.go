@@ -243,18 +243,36 @@ func (swap *ItemSwap) IsSwapped() bool {
 	return swap.swapped
 }
 
-func (swap *ItemSwap) GetUnequippedItem(slot proto.ItemSlot) *Item {
+func (swap *ItemSwap) HasItemEquipped(itemID int32) bool {
+	for _, item := range swap.character.Equipment {
+		if item.ID == itemID {
+			return true
+		}
+	}
+	return false
+}
+
+func (swap *ItemSwap) GetUnequippedItemBySlot(slot proto.ItemSlot) *Item {
 	if slot < 0 {
 		panic("Not able to swap Item " + slot.String() + " not supported")
 	}
 	return &swap.unEquippedItems[slot]
 }
 
+func (swap *ItemSwap) ItemExistsInSwapSet(itemID int32) bool {
+	for _, item := range swap.unEquippedItems {
+		if item.ID == itemID {
+			return true
+		}
+	}
+	return false
+}
+
 func (swap *ItemSwap) CalcStatChanges(slots []proto.ItemSlot) stats.Stats {
 	newStats := stats.Stats{}
 	for _, slot := range slots {
 		oldItemStats := swap.getItemStats(swap.character.Equipment[slot])
-		newItemStats := swap.getItemStats(*swap.GetUnequippedItem(slot))
+		newItemStats := swap.getItemStats(*swap.GetUnequippedItemBySlot(slot))
 		newStats = newStats.Add(newItemStats.Subtract(oldItemStats))
 	}
 
@@ -270,7 +288,7 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, slots []proto.ItemSlot, isReset
 
 	meleeWeaponSwapped := false
 	newStats := stats.Stats{}
-	has2H := swap.GetUnequippedItem(proto.ItemSlot_ItemSlotMainHand).HandType == proto.HandType_HandTypeTwoHand
+	has2H := swap.GetUnequippedItemBySlot(proto.ItemSlot_ItemSlotMainHand).HandType == proto.HandType_HandTypeTwoHand
 	isPrepull := sim.CurrentTime < 0
 	for _, slot := range slots {
 		if !isReset && !isPrepull && (slot < proto.ItemSlot_ItemSlotMainHand || slot > proto.ItemSlot_ItemSlotRanged) {
@@ -293,7 +311,7 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, slots []proto.ItemSlot, isReset
 	}
 
 	if sim.Log != nil {
-		sim.Log("Item Swap Stats: %v", newStats.FlatString())
+		sim.Log("Item Swap - New Stats: %v", newStats.FlatString())
 	}
 	character.AddStatsDynamic(sim, newStats)
 
@@ -318,7 +336,7 @@ func (swap *ItemSwap) swapItem(slot proto.ItemSlot, has2H bool, isReset bool) (b
 	if isReset {
 		newItem = &swap.originalEquip[slot]
 	} else {
-		newItem = swap.GetUnequippedItem(slot)
+		newItem = swap.GetUnequippedItemBySlot(slot)
 	}
 
 	swap.character.Equipment[slot] = *newItem
