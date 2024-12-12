@@ -472,6 +472,8 @@ func init() {
 		})
 
 		statAura.Icd = aura.Icd
+
+		character.ItemSwap.RegisterOnSwapItemForItemProcEffect(95712, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotRanged})
 	})
 
 	// Enchant: 4176, Item: 59595 - R19 Threatfinder

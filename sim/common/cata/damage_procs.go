@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/common/shared"
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func init() {
@@ -74,7 +75,7 @@ func init() {
 			},
 		})
 
-		core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		aura := core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Electrical Charge Aura",
 			ActionID:   core.ActionID{ItemID: 68925},
 			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
@@ -92,6 +93,8 @@ func init() {
 				}
 			},
 		}))
+
+		character.ItemSwap.RegisterOnSwapItemForItemProcEffect(68925, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotTrinket1, proto.ItemSlot_ItemSlotTrinket1})
 	})
 
 	core.NewItemEffect(69110, func(agent core.Agent) {
@@ -124,7 +127,7 @@ func init() {
 			},
 		})
 
-		core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		aura := core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Electrical Charge Aura",
 			ActionID:   core.ActionID{ItemID: 69110},
 			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
@@ -142,6 +145,8 @@ func init() {
 				}
 			},
 		}))
+
+		character.ItemSwap.RegisterOnSwapItemForItemProcEffect(69110, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotTrinket1, proto.ItemSlot_ItemSlotTrinket1})
 	})
 
 }

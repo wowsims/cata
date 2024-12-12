@@ -28,7 +28,7 @@ type ItemSwap struct {
 	swapEquip Equipment
 	// Holds items that are currently not equipped
 	unEquippedItems Equipment
-	swapped         bool
+	swapSet         proto.APLActionItemSwap_SwapSet
 	initialized     bool
 }
 
@@ -115,7 +115,7 @@ func (character *Character) enableItemSwap(itemSwap *proto.ItemSwap, mhCritMulti
 		originalEquip:        character.Equipment,
 		swapEquip:            swapItems,
 		unEquippedItems:      swapItems,
-		swapped:              false,
+		swapSet:              proto.APLActionItemSwap_Unknown,
 		initialized:          false,
 	}
 }
@@ -240,7 +240,7 @@ func (swap *ItemSwap) IsEnabled() bool {
 }
 
 func (swap *ItemSwap) IsSwapped() bool {
-	return swap.swapped
+	return swap.swapSet == proto.APLActionItemSwap_Swap1
 }
 
 func (swap *ItemSwap) HasItemEquipped(itemID int32) bool {
@@ -279,8 +279,8 @@ func (swap *ItemSwap) CalcStatChanges(slots []proto.ItemSlot) stats.Stats {
 	return newStats
 }
 
-func (swap *ItemSwap) SwapItems(sim *Simulation, slots []proto.ItemSlot, isReset bool) {
-	if !swap.IsEnabled() {
+func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap_SwapSet, slots []proto.ItemSlot, isReset bool) {
+	if !swap.IsEnabled() || swap.swapSet == swapSet {
 		return
 	}
 
@@ -327,7 +327,7 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, slots []proto.ItemSlot, isReset
 		}
 	}
 
-	swap.swapped = !swap.swapped
+	swap.swapSet = swapSet
 }
 
 func (swap *ItemSwap) swapItem(slot proto.ItemSlot, has2H bool, isReset bool) (bool, stats.Stats) {
@@ -388,7 +388,7 @@ func (swap *ItemSwap) reset(sim *Simulation) {
 		return
 	}
 
-	swap.SwapItems(sim, swap.slots, true)
+	swap.SwapItems(sim, proto.APLActionItemSwap_Main, swap.slots, true)
 
 	if !swap.initialized || swap.IsSwapped() {
 		for _, slot := range swap.slots {
