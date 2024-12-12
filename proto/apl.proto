@@ -310,6 +310,7 @@ message APLActionCatOptimalRotationAction {
     bool use_rake = 6;
     bool use_bite = 7;
     float bite_time = 8;
+    float berserk_bite_time = 15;
     bool bite_during_execute = 9;
     bool allow_aoe_berserk = 10;
     bool melee_weave = 11;
