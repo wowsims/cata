@@ -134,8 +134,6 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) *cor
 		strDepByStackCount[int32(i)] = paladin.NewDynamicMultiplyStat(stats.Strength, 1.0+0.01*float64(i))
 	}
 
-	hasT11Prot4pc := paladin.hasT11Prot4pc()
-
 	ancientPowerDuration := duration + time.Second*1
 	ancientPower := paladin.RegisterAura(core.Aura{
 		Label:     "Ancient Power" + paladin.Label,
