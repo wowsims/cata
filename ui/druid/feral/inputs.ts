@@ -105,6 +105,13 @@ export const FeralDruidRotationConfig = {
 			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
 				ShouldShowAdvParamST(player) && player.getSimpleRotation().useBite == true && player.getSimpleRotation().biteModeType == BiteModeType.Emperical,
 		}),
+		InputHelpers.makeRotationNumberInput<Spec.SpecFeralDruid>({
+			fieldName: 'berserkBiteTime',
+			label: 'Bite Time during Berserk',
+			labelTooltip: 'More aggressive threshold when Berserk is active',
+			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
+				ShouldShowAdvParamST(player) && player.getSimpleRotation().useBite == true && player.getSimpleRotation().biteModeType == BiteModeType.Emperical,
+		}),
 		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
 			fieldName: 'biteDuringExecute',
 			label: 'Bite during Execute phase',

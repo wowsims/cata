@@ -91,7 +91,9 @@ func (cat *FeralDruid) canBite(sim *core.Simulation, isExecutePhase bool) bool {
 		return true
 	}
 
-	if cat.SavageRoarAura.RemainingDuration(sim) < cat.Rotation.BiteTime {
+	biteTime := core.TernaryDuration(cat.BerserkAura.IsActive(), cat.Rotation.BerserkBiteTime, cat.Rotation.BiteTime)
+
+	if cat.SavageRoarAura.RemainingDuration(sim) < biteTime {
 		return false
 	}
 
@@ -99,7 +101,7 @@ func (cat *FeralDruid) canBite(sim *core.Simulation, isExecutePhase bool) bool {
 		return cat.Rip.NewSnapshotPower > cat.Rip.CurrentSnapshotPower-0.001
 	}
 
-	return cat.Rip.CurDot().RemainingDuration(sim) >= cat.Rotation.BiteTime
+	return cat.Rip.CurDot().RemainingDuration(sim) >= biteTime
 }
 
 func (cat *FeralDruid) berserkExpectedAt(sim *core.Simulation, futureTime time.Duration) bool {
@@ -757,6 +759,7 @@ type FeralDruidRotation struct {
 	UseRake             bool
 	UseBite             bool
 	BiteTime            time.Duration
+	BerserkBiteTime     time.Duration
 	BiteDuringExecute   bool
 	MinCombosForBite    int32
 	MangleSpam          bool
@@ -778,6 +781,7 @@ func (cat *FeralDruid) setupRotation(rotation *proto.FeralDruid_Rotation) {
 		UseRake:             rotation.UseRake,
 		UseBite:             rotation.UseBite,
 		BiteTime:            time.Duration(float64(rotation.BiteTime) * float64(time.Second)),
+		BerserkBiteTime:     time.Duration(float64(rotation.BerserkBiteTime) * float64(time.Second)),
 		BiteDuringExecute:   core.Ternary(cat.Talents.BloodInTheWater > 0, rotation.BiteDuringExecute, false),
 		MinCombosForBite:    5,
 		MangleSpam:          rotation.MangleSpam,
@@ -801,6 +805,7 @@ func (cat *FeralDruid) setupRotation(rotation *proto.FeralDruid_Rotation) {
 	cat.Rotation.CancelPrimalMadness = rotation.CancelPrimalMadness && (rotation.RotationType == proto.FeralDruid_Rotation_Aoe)
 
 	cat.Rotation.RipLeeway = 1 * time.Second
-	cat.Rotation.MinRoarOffset = 29 * time.Second
+	cat.Rotation.MinRoarOffset = 31 * time.Second
 	cat.Rotation.BiteTime = 11 * time.Second
+	cat.Rotation.BerserkBiteTime = 6 * time.Second
 }
