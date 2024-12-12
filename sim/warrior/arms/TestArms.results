@@ -2107,168 +2107,168 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestArms-Settings-Orc-p1_arms_bis-Basic-arms-FullBuffs-0.0yards-LongMultiTarget"
+ key: "TestArms-Settings-Orc-p1_arms_bis-Basic-arms--FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 69696.24356
   tps: 37217.28958
  }
 }
 dps_results: {
- key: "TestArms-Settings-Orc-p1_arms_bis-Basic-arms-FullBuffs-0.0yards-LongSingleTarget"
+ key: "TestArms-Settings-Orc-p1_arms_bis-Basic-arms--FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 33707.2908
   tps: 22668.26965
  }
 }
 dps_results: {
- key: "TestArms-Settings-Orc-p1_arms_bis-Basic-arms-FullBuffs-0.0yards-ShortSingleTarget"
+ key: "TestArms-Settings-Orc-p1_arms_bis-Basic-arms--FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 41156.91406
   tps: 26609.59198
  }
 }
 dps_results: {
- key: "TestArms-Settings-Orc-p1_arms_bis-Basic-arms-NoBuffs-0.0yards-LongMultiTarget"
+ key: "TestArms-Settings-Orc-p1_arms_bis-Basic-arms--NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 48130.40433
   tps: 24150.99433
  }
 }
 dps_results: {
- key: "TestArms-Settings-Orc-p1_arms_bis-Basic-arms-NoBuffs-0.0yards-LongSingleTarget"
+ key: "TestArms-Settings-Orc-p1_arms_bis-Basic-arms--NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 23076.96818
   tps: 15339.27769
  }
 }
 dps_results: {
- key: "TestArms-Settings-Orc-p1_arms_bis-Basic-arms-NoBuffs-0.0yards-ShortSingleTarget"
+ key: "TestArms-Settings-Orc-p1_arms_bis-Basic-arms--NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 25229.36625
   tps: 15829.6947
  }
 }
 dps_results: {
- key: "TestArms-Settings-Orc-p3_arms_bis-Basic-arms-FullBuffs-0.0yards-LongMultiTarget"
+ key: "TestArms-Settings-Orc-p3_arms_bis-Basic-arms--FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 87325.81113
   tps: 46129.24303
  }
 }
 dps_results: {
- key: "TestArms-Settings-Orc-p3_arms_bis-Basic-arms-FullBuffs-0.0yards-LongSingleTarget"
+ key: "TestArms-Settings-Orc-p3_arms_bis-Basic-arms--FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 42031.88957
   tps: 28828.75515
  }
 }
 dps_results: {
- key: "TestArms-Settings-Orc-p3_arms_bis-Basic-arms-FullBuffs-0.0yards-ShortSingleTarget"
+ key: "TestArms-Settings-Orc-p3_arms_bis-Basic-arms--FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 47572.39466
   tps: 31453.30596
  }
 }
 dps_results: {
- key: "TestArms-Settings-Orc-p3_arms_bis-Basic-arms-NoBuffs-0.0yards-LongMultiTarget"
+ key: "TestArms-Settings-Orc-p3_arms_bis-Basic-arms--NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 61543.14933
   tps: 31135.89379
  }
 }
 dps_results: {
- key: "TestArms-Settings-Orc-p3_arms_bis-Basic-arms-NoBuffs-0.0yards-LongSingleTarget"
+ key: "TestArms-Settings-Orc-p3_arms_bis-Basic-arms--NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 29575.45064
   tps: 20059.409
  }
 }
 dps_results: {
- key: "TestArms-Settings-Orc-p3_arms_bis-Basic-arms-NoBuffs-0.0yards-ShortSingleTarget"
+ key: "TestArms-Settings-Orc-p3_arms_bis-Basic-arms--NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 30980.55198
   tps: 19850.02257
  }
 }
 dps_results: {
- key: "TestArms-Settings-Worgen-p1_arms_bis-Basic-arms-FullBuffs-0.0yards-LongMultiTarget"
+ key: "TestArms-Settings-Worgen-p1_arms_bis-Basic-arms--FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 69824.97978
   tps: 37129.61183
  }
 }
 dps_results: {
- key: "TestArms-Settings-Worgen-p1_arms_bis-Basic-arms-FullBuffs-0.0yards-LongSingleTarget"
+ key: "TestArms-Settings-Worgen-p1_arms_bis-Basic-arms--FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 33749.77584
   tps: 22703.07225
  }
 }
 dps_results: {
- key: "TestArms-Settings-Worgen-p1_arms_bis-Basic-arms-FullBuffs-0.0yards-ShortSingleTarget"
+ key: "TestArms-Settings-Worgen-p1_arms_bis-Basic-arms--FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 40797.21175
   tps: 26334.74009
  }
 }
 dps_results: {
- key: "TestArms-Settings-Worgen-p1_arms_bis-Basic-arms-NoBuffs-0.0yards-LongMultiTarget"
+ key: "TestArms-Settings-Worgen-p1_arms_bis-Basic-arms--NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 48282.83378
   tps: 24101.2781
  }
 }
 dps_results: {
- key: "TestArms-Settings-Worgen-p1_arms_bis-Basic-arms-NoBuffs-0.0yards-LongSingleTarget"
+ key: "TestArms-Settings-Worgen-p1_arms_bis-Basic-arms--NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 23236.01323
   tps: 15493.14632
  }
 }
 dps_results: {
- key: "TestArms-Settings-Worgen-p1_arms_bis-Basic-arms-NoBuffs-0.0yards-ShortSingleTarget"
+ key: "TestArms-Settings-Worgen-p1_arms_bis-Basic-arms--NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 25235.32485
   tps: 15891.18794
  }
 }
 dps_results: {
- key: "TestArms-Settings-Worgen-p3_arms_bis-Basic-arms-FullBuffs-0.0yards-LongMultiTarget"
+ key: "TestArms-Settings-Worgen-p3_arms_bis-Basic-arms--FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 87569.23697
   tps: 46144.32157
  }
 }
 dps_results: {
- key: "TestArms-Settings-Worgen-p3_arms_bis-Basic-arms-FullBuffs-0.0yards-LongSingleTarget"
+ key: "TestArms-Settings-Worgen-p3_arms_bis-Basic-arms--FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 42114.75186
   tps: 28871.26248
  }
 }
 dps_results: {
- key: "TestArms-Settings-Worgen-p3_arms_bis-Basic-arms-FullBuffs-0.0yards-ShortSingleTarget"
+ key: "TestArms-Settings-Worgen-p3_arms_bis-Basic-arms--FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 47492.25625
   tps: 31312.7431
  }
 }
 dps_results: {
- key: "TestArms-Settings-Worgen-p3_arms_bis-Basic-arms-NoBuffs-0.0yards-LongMultiTarget"
+ key: "TestArms-Settings-Worgen-p3_arms_bis-Basic-arms--NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 61760.1927
   tps: 31247.31356
  }
 }
 dps_results: {
- key: "TestArms-Settings-Worgen-p3_arms_bis-Basic-arms-NoBuffs-0.0yards-LongSingleTarget"
+ key: "TestArms-Settings-Worgen-p3_arms_bis-Basic-arms--NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 29630.18387
   tps: 20147.8625
  }
 }
 dps_results: {
- key: "TestArms-Settings-Worgen-p3_arms_bis-Basic-arms-NoBuffs-0.0yards-ShortSingleTarget"
+ key: "TestArms-Settings-Worgen-p3_arms_bis-Basic-arms--NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 30698.70092
   tps: 19660.25638

@@ -2076,168 +2076,168 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBalance-Settings-NightElf-t11-Default-t11-FullBuffs-0.0yards-LongMultiTarget"
+ key: "TestBalance-Settings-NightElf-t11-Default-t11--FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 34242.97212
   tps: 42646.49644
  }
 }
 dps_results: {
- key: "TestBalance-Settings-NightElf-t11-Default-t11-FullBuffs-0.0yards-LongSingleTarget"
+ key: "TestBalance-Settings-NightElf-t11-Default-t11--FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 29087.53113
   tps: 29109.91469
  }
 }
 dps_results: {
- key: "TestBalance-Settings-NightElf-t11-Default-t11-FullBuffs-0.0yards-ShortSingleTarget"
+ key: "TestBalance-Settings-NightElf-t11-Default-t11--FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 37864.75401
   tps: 37117.04129
  }
 }
 dps_results: {
- key: "TestBalance-Settings-NightElf-t11-Default-t11-NoBuffs-0.0yards-LongMultiTarget"
+ key: "TestBalance-Settings-NightElf-t11-Default-t11--NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 23052.41762
   tps: 31102.27381
  }
 }
 dps_results: {
- key: "TestBalance-Settings-NightElf-t11-Default-t11-NoBuffs-0.0yards-LongSingleTarget"
+ key: "TestBalance-Settings-NightElf-t11-Default-t11--NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 19371.9344
   tps: 19524.06328
  }
 }
 dps_results: {
- key: "TestBalance-Settings-NightElf-t11-Default-t11-NoBuffs-0.0yards-ShortSingleTarget"
+ key: "TestBalance-Settings-NightElf-t11-Default-t11--NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 20169.69037
   tps: 20026.31941
  }
 }
 dps_results: {
- key: "TestBalance-Settings-NightElf-t11-Default-t12-FullBuffs-0.0yards-LongMultiTarget"
+ key: "TestBalance-Settings-NightElf-t11-Default-t12--FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 34254.61251
   tps: 42702.03228
  }
 }
 dps_results: {
- key: "TestBalance-Settings-NightElf-t11-Default-t12-FullBuffs-0.0yards-LongSingleTarget"
+ key: "TestBalance-Settings-NightElf-t11-Default-t12--FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 29069.49744
   tps: 29095.08398
  }
 }
 dps_results: {
- key: "TestBalance-Settings-NightElf-t11-Default-t12-FullBuffs-0.0yards-ShortSingleTarget"
+ key: "TestBalance-Settings-NightElf-t11-Default-t12--FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 37935.3411
   tps: 37190.20525
  }
 }
 dps_results: {
- key: "TestBalance-Settings-NightElf-t11-Default-t12-NoBuffs-0.0yards-LongMultiTarget"
+ key: "TestBalance-Settings-NightElf-t11-Default-t12--NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 23120.36448
   tps: 31194.68044
  }
 }
 dps_results: {
- key: "TestBalance-Settings-NightElf-t11-Default-t12-NoBuffs-0.0yards-LongSingleTarget"
+ key: "TestBalance-Settings-NightElf-t11-Default-t12--NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 19405.9333
   tps: 19559.16505
  }
 }
 dps_results: {
- key: "TestBalance-Settings-NightElf-t11-Default-t12-NoBuffs-0.0yards-ShortSingleTarget"
+ key: "TestBalance-Settings-NightElf-t11-Default-t12--NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 20168.8907
   tps: 20027.48307
  }
 }
 dps_results: {
- key: "TestBalance-Settings-NightElf-t12-Default-t11-FullBuffs-0.0yards-LongMultiTarget"
+ key: "TestBalance-Settings-NightElf-t12-Default-t11--FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 52158.10466
   tps: 51010.03837
  }
 }
 dps_results: {
- key: "TestBalance-Settings-NightElf-t12-Default-t11-FullBuffs-0.0yards-LongSingleTarget"
+ key: "TestBalance-Settings-NightElf-t12-Default-t11--FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 38693.42443
   tps: 35530.49664
  }
 }
 dps_results: {
- key: "TestBalance-Settings-NightElf-t12-Default-t11-FullBuffs-0.0yards-ShortSingleTarget"
+ key: "TestBalance-Settings-NightElf-t12-Default-t11--FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 47482.88079
   tps: 42986.92394
  }
 }
 dps_results: {
- key: "TestBalance-Settings-NightElf-t12-Default-t11-NoBuffs-0.0yards-LongMultiTarget"
+ key: "TestBalance-Settings-NightElf-t12-Default-t11--NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 35336.17272
   tps: 37806.66736
  }
 }
 dps_results: {
- key: "TestBalance-Settings-NightElf-t12-Default-t11-NoBuffs-0.0yards-LongSingleTarget"
+ key: "TestBalance-Settings-NightElf-t12-Default-t11--NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 26347.90242
   tps: 24203.42655
  }
 }
 dps_results: {
- key: "TestBalance-Settings-NightElf-t12-Default-t11-NoBuffs-0.0yards-ShortSingleTarget"
+ key: "TestBalance-Settings-NightElf-t12-Default-t11--NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 26896.28273
   tps: 24391.07684
  }
 }
 dps_results: {
- key: "TestBalance-Settings-NightElf-t12-Default-t12-FullBuffs-0.0yards-LongMultiTarget"
+ key: "TestBalance-Settings-NightElf-t12-Default-t12--FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 52195.59824
   tps: 51760.63211
  }
 }
 dps_results: {
- key: "TestBalance-Settings-NightElf-t12-Default-t12-FullBuffs-0.0yards-LongSingleTarget"
+ key: "TestBalance-Settings-NightElf-t12-Default-t12--FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 38920.06884
   tps: 35897.99273
  }
 }
 dps_results: {
- key: "TestBalance-Settings-NightElf-t12-Default-t12-FullBuffs-0.0yards-ShortSingleTarget"
+ key: "TestBalance-Settings-NightElf-t12-Default-t12--FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 47541.13119
   tps: 43399.18718
  }
 }
 dps_results: {
- key: "TestBalance-Settings-NightElf-t12-Default-t12-NoBuffs-0.0yards-LongMultiTarget"
+ key: "TestBalance-Settings-NightElf-t12-Default-t12--NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 35743.70826
   tps: 38241.79304
  }
 }
 dps_results: {
- key: "TestBalance-Settings-NightElf-t12-Default-t12-NoBuffs-0.0yards-LongSingleTarget"
+ key: "TestBalance-Settings-NightElf-t12-Default-t12--NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 26352.92629
   tps: 24304.8779
  }
 }
 dps_results: {
- key: "TestBalance-Settings-NightElf-t12-Default-t12-NoBuffs-0.0yards-ShortSingleTarget"
+ key: "TestBalance-Settings-NightElf-t12-Default-t12--NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 26958.63748
   tps: 24633.07138

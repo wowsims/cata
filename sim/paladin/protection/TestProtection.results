@@ -2047,84 +2047,84 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestProtection-Settings-BloodElf-T12-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
+ key: "TestProtection-Settings-BloodElf-T12-Basic-default--FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 50806.89786
   tps: 260888.77446
  }
 }
 dps_results: {
- key: "TestProtection-Settings-BloodElf-T12-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
+ key: "TestProtection-Settings-BloodElf-T12-Basic-default--FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 11278.21562
   tps: 56693.81531
  }
 }
 dps_results: {
- key: "TestProtection-Settings-BloodElf-T12-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
+ key: "TestProtection-Settings-BloodElf-T12-Basic-default--FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 12987.66802
   tps: 65259.3785
  }
 }
 dps_results: {
- key: "TestProtection-Settings-BloodElf-T12-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
+ key: "TestProtection-Settings-BloodElf-T12-Basic-default--NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 29057.0603
   tps: 151459.28518
  }
 }
 dps_results: {
- key: "TestProtection-Settings-BloodElf-T12-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
+ key: "TestProtection-Settings-BloodElf-T12-Basic-default--NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 7076.26055
   tps: 35675.0222
  }
 }
 dps_results: {
- key: "TestProtection-Settings-BloodElf-T12-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
+ key: "TestProtection-Settings-BloodElf-T12-Basic-default--NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 7729.57184
   tps: 38919.35605
  }
 }
 dps_results: {
- key: "TestProtection-Settings-Human-T12-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
+ key: "TestProtection-Settings-Human-T12-Basic-default--FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 50499.47065
   tps: 259173.95323
  }
 }
 dps_results: {
- key: "TestProtection-Settings-Human-T12-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
+ key: "TestProtection-Settings-Human-T12-Basic-default--FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 11289.17862
   tps: 56744.36519
  }
 }
 dps_results: {
- key: "TestProtection-Settings-Human-T12-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
+ key: "TestProtection-Settings-Human-T12-Basic-default--FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 12992.2414
   tps: 65276.178
  }
 }
 dps_results: {
- key: "TestProtection-Settings-Human-T12-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
+ key: "TestProtection-Settings-Human-T12-Basic-default--NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 28687.61387
   tps: 149466.34101
  }
 }
 dps_results: {
- key: "TestProtection-Settings-Human-T12-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
+ key: "TestProtection-Settings-Human-T12-Basic-default--NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 7019.45558
   tps: 35382.92059
  }
 }
 dps_results: {
- key: "TestProtection-Settings-Human-T12-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
+ key: "TestProtection-Settings-Human-T12-Basic-default--NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 7707.0907
   tps: 38795.39057
