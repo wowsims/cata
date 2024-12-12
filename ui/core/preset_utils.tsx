@@ -13,6 +13,7 @@ import {
 	Faction,
 	HealingModel,
 	IndividualBuffs,
+	ItemSwap,
 	Race,
 	RaidBuffs,
 	Spec,
@@ -64,6 +65,10 @@ export interface PresetEpWeights extends PresetBase {
 }
 export interface PresetEpWeightsOptions extends PresetOptionsBase {}
 
+export interface PresetItemSwap extends PresetBase {
+	itemSwap: ItemSwap;
+}
+
 export interface PresetEncounter extends PresetBase {
 	encounter?: EncounterProto;
 	healingModel?: HealingModel;
@@ -83,6 +88,7 @@ export interface PresetBuild {
 	rotationType?: APLRotationType;
 	epWeights?: PresetEpWeights;
 	encounter?: PresetEncounter;
+	itemSwap?: PresetItemSwap;
 	race?: Race;
 }
 
@@ -225,8 +231,23 @@ export const makePresetEncounter = (name: string, encounter?: PresetEncounter['e
 	};
 };
 
-export const makePresetBuild = (name: string, { gear, talents, rotation, rotationType, epWeights, encounter, race }: PresetBuildOptions): PresetBuild => {
-	return { name, gear, talents, rotation, rotationType, epWeights, encounter, race };
+export const makePresetItemSwapGear = (name: string, itemSwapJson: any): PresetItemSwap => {
+	const itemSwap = ItemSwap.fromJson(itemSwapJson);
+	return makePresetItemSwapGearHelper(name, itemSwap);
+};
+
+export const makePresetItemSwapGearHelper = (name: string, itemSwap: ItemSwap): PresetItemSwap => {
+	return {
+		name,
+		itemSwap,
+	};
+};
+
+export const makePresetBuild = (
+	name: string,
+	{ gear, itemSwap, talents, rotation, rotationType, epWeights, encounter, race }: PresetBuildOptions,
+): PresetBuild => {
+	return { name, itemSwap, gear, talents, rotation, rotationType, epWeights, encounter, race };
 };
 
 export type SpecCheckWarning = {

@@ -315,10 +315,8 @@ export class Player<SpecType extends Spec> {
 		this.specTypeFunctions = specTypeFunctions[this.getSpec()] as SpecTypeFunctions<SpecType>;
 		this.specOptions = this.specTypeFunctions.optionsCreate();
 
-		const specConfig = SPEC_CONFIGS[this.getSpec()] as PlayerConfig<SpecType>;
-		if (!specConfig) {
-			throw new Error(`Could not find spec config for spec: ${spec.friendlyName}`);
-		}
+		const specConfig = getSpecConfig<SpecType>(this.getSpec());
+
 		this.autoRotationGenerator = specConfig.autoRotation;
 		if (specConfig.simpleRotation) {
 			this.simpleRotationGenerator = specConfig.simpleRotation;
@@ -1570,8 +1568,6 @@ export class Player<SpecType extends Spec> {
 
 	applySharedDefaults(eventID: EventID) {
 		TypedEvent.freezeAllAndDo(() => {
-			this.setEnableItemSwap(eventID, false);
-			this.setItemSwapGear(eventID, new ItemSwapGear({}));
 			this.setReactionTime(eventID, 100);
 			this.setInFrontOfTarget(eventID, this.playerSpec.isTankSpec);
 			this.setHealingModel(

@@ -100,9 +100,8 @@ var DefaultOptions = &proto.Player_RetributionPaladin{
 	RetributionPaladin: &proto.RetributionPaladin{
 		Options: &proto.RetributionPaladin_Options{
 			ClassOptions: &proto.PaladinOptions{
-				Seal:             proto.PaladinSeal_Truth,
-				Aura:             proto.PaladinAura_Retribution,
-				SnapshotGuardian: true,
+				Seal: proto.PaladinSeal_Truth,
+				Aura: proto.PaladinAura_Retribution,
 			},
 		},
 	},

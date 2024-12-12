@@ -115,6 +115,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	defaults: {
 		// Default equipped gear.
 		gear: Presets.P3_BIS_RET_PRESET.gear,
+		// Default item swap set.
+		itemSwap: Presets.ITEM_SWAP_4P_T11.itemSwap,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P3_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
@@ -171,21 +173,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff, BuffDebuffInputs.DamagePercentBuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			RetributionInputs.SnapshotGuardian(),
-			RetributionInputs.StartingHolyPower(),
-			OtherInputs.InputDelay,
-			OtherInputs.TankAssignment,
-			OtherInputs.InFrontOfTarget,
-		],
+		inputs: [RetributionInputs.StartingHolyPower(), OtherInputs.InputDelay, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
 	},
-	itemSwapSlots: [
-		ItemSlot.ItemSlotHead,
-		ItemSlot.ItemSlotShoulder,
-		ItemSlot.ItemSlotChest,
-		ItemSlot.ItemSlotHands,
-		ItemSlot.ItemSlotLegs,
-	],
+	itemSwapSlots: [ItemSlot.ItemSlotHead, ItemSlot.ItemSlotShoulder, ItemSlot.ItemSlotChest, ItemSlot.ItemSlotHands, ItemSlot.ItemSlotLegs],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,

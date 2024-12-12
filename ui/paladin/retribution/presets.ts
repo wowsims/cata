@@ -12,6 +12,7 @@ import {
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
+import ItemSwap4PT11Gear from './gear_sets/item_swap_4p_t11.gear.json';
 import P2_BisRetGear from './gear_sets/p2_bis.gear.json';
 import P3_BisRetGear from './gear_sets/p3_bis.gear.json';
 import P4_BisRetGear from './gear_sets/p4_bis.gear.json';
@@ -26,6 +27,8 @@ export const P2_BIS_RET_PRESET = PresetUtils.makePresetGear('P2', P2_BisRetGear)
 export const P3_BIS_RET_PRESET = PresetUtils.makePresetGear('P3', P3_BisRetGear);
 export const P4_BIS_RET_PRESET = PresetUtils.makePresetGear('P4', P4_BisRetGear);
 
+export const ITEM_SWAP_4P_T11 = PresetUtils.makePresetItemSwapGear('Item Swap - T11 4P ', ItemSwap4PT11Gear);
+
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
 // Preset options for EP weights
@@ -36,8 +39,8 @@ export const P2_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAttackPower]: 1,
 			[Stat.StatStrength]: 2.28,
 
-			[Stat.StatCritRating]: 1.10,
-			[Stat.StatHasteRating]: 1.00,
+			[Stat.StatCritRating]: 1.1,
+			[Stat.StatHasteRating]: 1.0,
 			[Stat.StatMasteryRating]: 1.23,
 
 			[Stat.StatHitRating]: 2.33,
@@ -64,7 +67,7 @@ export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatExpertiseRating]: 2.21,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 8.40,
+			[PseudoStat.PseudoStatMainHandDps]: 8.4,
 		},
 	),
 );
@@ -76,7 +79,7 @@ export const P4_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAttackPower]: 1,
 			[Stat.StatStrength]: 2.28,
 
-			[Stat.StatCritRating]: 1.50,
+			[Stat.StatCritRating]: 1.5,
 			[Stat.StatHasteRating]: 1.15,
 			[Stat.StatMasteryRating]: 1.68,
 
@@ -121,6 +124,7 @@ export const P3_PRESET = PresetUtils.makePresetBuild('P3', {
 	epWeights: P3_EP_PRESET,
 	talents: DefaultTalents,
 	rotationType: APLRotationType.TypeAuto,
+	itemSwap: ITEM_SWAP_4P_T11,
 });
 
 export const P4_PRESET = PresetUtils.makePresetBuild('P4', {
@@ -134,7 +138,6 @@ export const DefaultOptions = RetributionPaladinOptions.create({
 	classOptions: {
 		aura: PaladinAura.Retribution,
 		seal: PaladinSeal.Truth,
-		snapshotGuardian: true,
 	},
 });
 
@@ -152,3 +155,4 @@ export const OtherDefaults = {
 	distanceFromTarget: 5,
 	iterationCount: 25000,
 };
+

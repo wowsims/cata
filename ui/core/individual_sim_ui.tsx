@@ -34,6 +34,7 @@ import {
 	HandType,
 	IndividualBuffs,
 	ItemSlot,
+	ItemSwap,
 	PartyBuffs,
 	Profession,
 	PseudoStat,
@@ -43,6 +44,7 @@ import {
 	Stat,
 } from './proto/common';
 import { IndividualSimSettings, SavedTalents } from './proto/ui';
+import { ItemSwapGear } from './proto_utils/gear';
 import { getMetaGemConditionDescription } from './proto_utils/gems';
 import { armorTypeNames, professionNames } from './proto_utils/names';
 import { pseudoStatIsCapped, StatCap, Stats, UnitStat } from './proto_utils/stats';
@@ -145,6 +147,8 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 		simpleRotation?: SpecRotation<SpecType>;
 
 		other?: OtherDefaults;
+
+		itemSwap?: ItemSwap;
 	};
 
 	playerInputs?: InputSection;
@@ -510,6 +514,11 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			this.player.getParty()!.setBuffs(eventID, this.individualConfig.defaults.partyBuffs);
 			this.player.getRaid()!.setBuffs(eventID, this.individualConfig.defaults.raidBuffs);
 			this.player.setEpWeights(eventID, this.individualConfig.defaults.epWeights);
+			if (this.individualConfig.defaults.itemSwap) {
+				this.player.setEnableItemSwap(eventID, true);
+				this.player.setItemSwapGear(eventID, this.sim.db.lookupItemSwap(this.individualConfig.defaults.itemSwap || ItemSwap.create()));
+			}
+
 			const defaultRatios = this.player.getDefaultEpRatios(tankSpec, healingSpec);
 			this.player.setEpRatios(eventID, defaultRatios);
 			if (this.individualConfig.defaults.statCaps) this.player.setStatCaps(eventID, this.individualConfig.defaults.statCaps);

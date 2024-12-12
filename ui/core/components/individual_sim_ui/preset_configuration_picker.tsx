@@ -6,6 +6,7 @@ import { PresetBuild } from '../../preset_utils';
 import { APLRotation, APLRotation_Type } from '../../proto/apl';
 import { Encounter, EquipmentSpec, HealingModel, Spec } from '../../proto/common';
 import { SavedTalents } from '../../proto/ui';
+import { ItemSwapGear } from '../../proto_utils/gear';
 import { TypedEvent } from '../../typed_event';
 import { Component } from '../component';
 import { ContentBlock } from '../content_block';
@@ -83,11 +84,17 @@ export class PresetConfigurationPicker extends Component {
 		});
 	}
 
-	private applyBuild({ gear, rotation, rotationType, talents, epWeights, encounter, race }: PresetBuild) {
+	private applyBuild({ gear, itemSwap, rotation, rotationType, talents, epWeights, encounter, race }: PresetBuild) {
 		const eventID = TypedEvent.nextEventID();
 		TypedEvent.freezeAllAndDo(() => {
 			if (gear) this.simUI.player.setGear(eventID, this.simUI.sim.db.lookupEquipmentSpec(gear.gear));
 			if (race) this.simUI.player.setRace(eventID, race);
+			if (itemSwap) {
+				this.simUI.player.setItemSwapGear(eventID, this.simUI.sim.db.lookupItemSwap(itemSwap.itemSwap));
+				this.simUI.player.setEnableItemSwap(eventID, true);
+			} else {
+				this.simUI.player.setEnableItemSwap(eventID, false);
+			}
 			if (talents) {
 				this.simUI.player.setTalentsString(eventID, talents.data.talentsString);
 				if (talents.data.glyphs) this.simUI.player.setGlyphs(eventID, talents.data.glyphs);
@@ -95,7 +102,7 @@ export class PresetConfigurationPicker extends Component {
 			if (rotationType) {
 				this.simUI.player.aplRotation.type = rotationType;
 				this.simUI.player.rotationChangeEmitter.emit(eventID);
-			} else  if (rotation?.rotation.rotation) {
+			} else if (rotation?.rotation.rotation) {
 				this.simUI.player.setAplRotation(eventID, rotation.rotation.rotation);
 			}
 			if (epWeights) this.simUI.player.setEpWeights(eventID, epWeights.epWeights);

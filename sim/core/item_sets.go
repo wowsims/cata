@@ -151,6 +151,18 @@ func (character *Character) GetActiveSetBonuses() []ActiveSetBonus {
 	return activeBonuses
 }
 
+func (character *Character) HasActiveSetBonus(name string, count int32) bool {
+	activeSetBonuses := character.GetActiveSetBonuses()
+
+	for _, activeSetBonus := range activeSetBonuses {
+		if activeSetBonus.Name == name && activeSetBonus.NumPieces >= count {
+			return true
+		}
+	}
+
+	return false
+}
+
 // Apply effects from item set bonuses.
 func (character *Character) applyItemSetBonusEffects(agent Agent) {
 	activeSetBonuses := character.GetActiveSetBonuses()
