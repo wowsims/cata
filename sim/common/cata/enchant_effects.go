@@ -394,7 +394,7 @@ func init() {
 		character := agent.GetCharacter()
 
 		statAura := character.NewTemporaryStatsAura(
-			"Darkglow Embroidery Cata",
+			"Darkglow Embroidery Proc",
 			core.ActionID{SpellID: 75173},
 			stats.Stats{stats.Spirit: 580},
 			time.Second*15,
@@ -423,14 +423,14 @@ func init() {
 		character := agent.GetCharacter()
 
 		statAura := character.NewTemporaryStatsAura(
-			"Swordguard Embroidery Cata",
+			"Swordguard Embroidery Proc",
 			core.ActionID{SpellID: 75178},
 			stats.Stats{stats.AttackPower: 1000, stats.RangedAttackPower: 1000},
 			time.Second*15,
 		)
 
 		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:       "Swordguard Embroidery Cataa",
+			Name:       "Swordguard Embroidery Cata",
 			ActionID:   core.ActionID{SpellID: 75176},
 			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
 			ProcMask:   core.ProcMaskMeleeOrRanged,
