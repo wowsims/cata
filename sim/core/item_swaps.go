@@ -186,12 +186,7 @@ func (swap *ItemSwap) RegisterOnSwapItemForEnchantProcEffect(effectID int32, aur
 		if procMask == ProcMaskUnknown {
 			aura.Deactivate(sim)
 		} else {
-			if !aura.IsActive() {
-				aura.Activate(sim)
-				if aura.Icd != nil {
-					aura.Icd.Use(sim)
-				}
-			}
+			aura.Activate(sim)
 		}
 	})
 }
