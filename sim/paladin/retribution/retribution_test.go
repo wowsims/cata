@@ -33,6 +33,7 @@ func TestRetribution(t *testing.T) {
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: DefaultOptions},
 		Rotation:    core.GetAplRotation("../../../ui/paladin/retribution/apls", "default"),
+		ItemSwapSet: core.GetItemSwapGearSet("../../../ui/paladin/retribution/gear_sets", "item_swap_4p_t11"),
 
 		ItemFilter: core.ItemFilter{
 			WeaponTypes: []proto.WeaponType{
@@ -58,7 +59,7 @@ func BenchmarkSimulate(b *testing.B) {
 			&proto.Player{
 				Race:           proto.Race_RaceBloodElf,
 				Class:          proto.Class_ClassPaladin,
-				Equipment:      core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p3_bis").GearSet,
+				Equipment:      core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p3_bis").GearSet,
 				Consumes:       FullConsumes,
 				Spec:           DefaultOptions,
 				Glyphs:         StandardGlyphs,
@@ -66,6 +67,7 @@ func BenchmarkSimulate(b *testing.B) {
 				Buffs:          core.FullIndividualBuffs,
 				ReactionTimeMs: 100,
 				Rotation:       core.GetAplRotation("../../../ui/paladin/retribution/apls", "default").Rotation,
+				ItemSwap:       core.GetItemSwapGearSet("../../../ui/paladin/retribution/gear_sets", "item_swap_4p_t11").ItemSwap,
 			},
 			core.FullPartyBuffs,
 			core.FullRaidBuffs,

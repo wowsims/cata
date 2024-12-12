@@ -810,7 +810,7 @@ func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Sta
 			processArmorSpecialization(sim)
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			disableArmorSpecialization(sim)
+			processArmorSpecialization(sim)
 		},
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)
