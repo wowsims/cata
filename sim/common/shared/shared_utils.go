@@ -86,9 +86,28 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		}
 		procAura := character.NewTemporaryStatsAura(config.Name+" Proc", procID, config.Bonus, config.Duration)
 
+		var itemSwapProcCondition core.CustomStatBuffProcCondition
+		if character.ItemSwap.IsEnabled() && character.ItemSwap.ItemExistsInSwapSet(config.ID) {
+			itemSwapProcCondition = func(sim *core.Simulation, aura *core.Aura) bool {
+				return character.ItemSwap.HasItemEquipped(config.ID)
+			}
+		}
+
 		var customHandler CustomProcHandler
 		if config.CustomProcCondition != nil {
-			procAura.CustomProcCondition = config.CustomProcCondition
+			if itemSwapProcCondition != nil {
+				procAura.CustomProcCondition = func(sim *core.Simulation, aura *core.Aura) bool {
+					return itemSwapProcCondition(sim, aura) && config.CustomProcCondition(sim, aura)
+				}
+			} else {
+				procAura.CustomProcCondition = config.CustomProcCondition
+			}
+
+		} else if itemSwapProcCondition != nil {
+			procAura.CustomProcCondition = itemSwapProcCondition
+		}
+
+		if config.CustomProcCondition != nil {
 			customHandler = func(sim *core.Simulation, procAura *core.StatBuffAura) {
 				if procAura.CanProc(sim) {
 					procAura.Activate(sim)
@@ -148,6 +167,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 
 		procAura.Icd = triggerAura.Icd
 		character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
+		character.ItemSwap.RegisterOnSwapItemForItemProcEffect(config.ID, triggerAura, core.EligibleSlotsForItem(core.GetItemByID(config.ID), false))
 	})
 }
 
@@ -178,7 +198,7 @@ func CreateOffensiveStatActive(itemID int32, duration time.Duration, cooldown ti
 	})(itemID, duration, cooldown)
 }
 
-func CreateDevensiveStatActive(itemID int32, duration time.Duration, cooldown time.Duration, stats stats.Stats) {
+func CreateDefensiveStatActive(itemID int32, duration time.Duration, cooldown time.Duration, stats stats.Stats) {
 	testFirstOnly(func(itemID int32, duration time.Duration, cooldown time.Duration) {
 		core.NewSimpleStatDefensiveTrinketEffect(itemID, stats, duration, cooldown)
 	})(itemID, duration, cooldown)
@@ -209,7 +229,7 @@ func NewHasteActive(itemID int32, bonus float64, duration time.Duration, cooldow
 }
 
 func NewDodgeActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
-	CreateDevensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.DodgeRating: bonus})
+	CreateDefensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.DodgeRating: bonus})
 }
 
 func NewSpellPowerActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
@@ -217,11 +237,11 @@ func NewSpellPowerActive(itemID int32, bonus float64, duration time.Duration, co
 }
 
 func NewHealthActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
-	CreateDevensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.Health: bonus})
+	CreateDefensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.Health: bonus})
 }
 
 func NewParryActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
-	CreateDevensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.ParryRating: bonus})
+	CreateDefensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.ParryRating: bonus})
 }
 
 func NewMasteryActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {

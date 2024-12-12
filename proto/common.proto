@@ -1037,9 +1037,10 @@ message CustomSpell {
 }
 
 message ItemSwap {
-	ItemSpec mh_item = 1;
-	ItemSpec oh_item = 2;
-	ItemSpec ranged_item = 3;
+	ItemSpec mh_item = 1 [deprecated=true];
+	ItemSpec oh_item = 2 [deprecated=true];
+	ItemSpec ranged_item = 3 [deprecated=true];
+	repeated ItemSpec items = 4;
 }
 
 message Duration {

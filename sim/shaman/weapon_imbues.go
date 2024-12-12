@@ -9,7 +9,7 @@ import (
 )
 
 func (shaman *Shaman) RegisterOnItemSwapWithImbue(effectID int32, procMask *core.ProcMask, aura *core.Aura) {
-	shaman.RegisterOnItemSwap(func(sim *core.Simulation) {
+	shaman.RegisterOnItemSwap([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand}, func(sim *core.Simulation, slot proto.ItemSlot) {
 		mask := core.ProcMaskUnknown
 		if shaman.MainHand().TempEnchant == effectID {
 			mask |= core.ProcMaskMeleeMH
@@ -160,7 +160,7 @@ func (shaman *Shaman) ApplyFlametongueImbueToItem(item *core.Item) {
 		return
 
 	}
-	if shaman.ItemSwap.IsEnabled() && (shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotMainHand).TempEnchant == int32(enchantID) || shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotOffHand).TempEnchant == int32(enchantID)) {
+	if shaman.ItemSwap.IsEnabled() && (shaman.ItemSwap.GetUnequippedItemBySlot(proto.ItemSlot_ItemSlotMainHand).TempEnchant == int32(enchantID) || shaman.ItemSwap.GetUnequippedItemBySlot(proto.ItemSlot_ItemSlotOffHand).TempEnchant == int32(enchantID)) {
 		item.TempEnchant = int32(enchantID)
 		return
 	}
@@ -189,11 +189,11 @@ func (shaman *Shaman) ApplyFlametongueImbue(procMask core.ProcMask) {
 
 func (shaman *Shaman) ApplyFlametongueImbueSwap(procMask core.ProcMask) {
 	if procMask.Matches(core.ProcMaskMeleeMH) && shaman.ItemSwap.IsEnabled() {
-		shaman.ApplyFlametongueImbueToItem(shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotMainHand))
+		shaman.ApplyFlametongueImbueToItem(shaman.ItemSwap.GetUnequippedItemBySlot(proto.ItemSlot_ItemSlotMainHand))
 	}
 
 	if procMask.Matches(core.ProcMaskMeleeOH) && shaman.ItemSwap.IsEnabled() {
-		shaman.ApplyFlametongueImbueToItem(shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotOffHand))
+		shaman.ApplyFlametongueImbueToItem(shaman.ItemSwap.GetUnequippedItemBySlot(proto.ItemSlot_ItemSlotOffHand))
 	}
 }
 

@@ -87,6 +87,9 @@ func (action *APLActionActivateAura) Execute(sim *Simulation) {
 		action.aura.Unit.Log(sim, "Activating aura %s", action.aura.ActionID)
 	}
 	action.aura.Activate(sim)
+	if action.aura.Icd != nil {
+		action.aura.Icd.Use(sim)
+	}
 }
 
 func (action *APLActionActivateAura) String() string {
@@ -153,7 +156,7 @@ func (action *APLActionItemSwap) Execute(sim *Simulation) {
 		action.character.Log(sim, "Item Swap to set %s", action.swapSet)
 	}
 
-	action.character.ItemSwap.SwapItems(sim, action.character.ItemSwap.slots)
+	action.character.ItemSwap.SwapItems(sim, action.character.ItemSwap.slots, false)
 }
 func (action *APLActionItemSwap) String() string {
 	return fmt.Sprintf("Item Swap(%s)", action.swapSet)
