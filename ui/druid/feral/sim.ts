@@ -142,7 +142,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 				simple.snekWeave
 			},"minRoarOffset":${simple.minRoarOffset.toFixed(2)},"ripLeeway":${simple.ripLeeway.toFixed(0)},"useRake":${simple.useRake},"useBite":${
 				simple.useBite
-			},"biteDuringExecute":${simple.biteDuringExecute},"biteTime":${simple.biteTime.toFixed(2)},"cancelPrimalMadness":${simple.cancelPrimalMadness}}}`,
+			},"biteDuringExecute":${simple.biteDuringExecute},"biteTime":${simple.biteTime.toFixed(2)},"berserkBiteTime":${simple.berserkBiteTime.toFixed(2)},"cancelPrimalMadness":${simple.cancelPrimalMadness}}}`,
 		);
 		const autocasts = APLAction.fromJsonString(`{"autocastOtherCooldowns":{}}`);
 
