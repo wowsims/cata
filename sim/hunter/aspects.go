@@ -33,6 +33,7 @@ func (hunter *Hunter) registerAspectOfTheHawkSpell() {
 		},
 	})
 }
+
 func (hunter *Hunter) registerAspectOfTheFoxSpell() {
 	actionID := core.ActionID{SpellID: 82661}
 
