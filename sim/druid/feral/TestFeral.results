@@ -851,8 +851,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-InsigniaoftheCorruptedMind-77971"
  value: {
-  dps: 31437.77558
-  tps: 42851.41472
+  dps: 31454.29191
+  tps: 42912.27485
  }
 }
 dps_results: {
@@ -1131,8 +1131,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-ObsidianArborweaveBattlegarb"
  value: {
-  dps: 30940.10479
-  tps: 38723.7898
+  dps: 30926.6513
+  tps: 38608.02132
  }
 }
 dps_results: {
@@ -2071,8 +2071,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Average-Default"
  value: {
-  dps: 33083.4175
-  tps: 44526.03517
+  dps: 33083.96381
+  tps: 44525.79976
  }
 }
 dps_results: {
@@ -2120,15 +2120,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Troll-p3-DefaultTalents-ExternalBleed-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 41849.06211
-  tps: 56849.99366
+  dps: 41846.9646
+  tps: 56825.60524
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Troll-p3-DefaultTalents-ExternalBleed-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 38936.15288
-  tps: 50479.25806
+  dps: 38907.93351
+  tps: 50450.59593
  }
 }
 dps_results: {
@@ -2141,36 +2141,36 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Troll-p3-DefaultTalents-ExternalBleed-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 26359.63568
-  tps: 35528.78101
+  dps: 26352.40374
+  tps: 35478.30261
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Troll-p3-DefaultTalents-ExternalBleed-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 25057.38185
-  tps: 33071.01959
+  dps: 25063.00568
+  tps: 32847.57802
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Troll-p3-DefaultTalents-ExternalBleed-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 28342.64563
-  tps: 25591.92973
+  dps: 28384.68622
+  tps: 26179.49388
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Troll-p3-DefaultTalents-ExternalBleed-monocat-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 38450.20917
-  tps: 27301.90915
+  dps: 38467.4937
+  tps: 27314.18117
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Troll-p3-DefaultTalents-ExternalBleed-monocat-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 38142.62761
-  tps: 27081.2656
+  dps: 38181.89167
+  tps: 27109.14309
  }
 }
 dps_results: {
@@ -2183,22 +2183,22 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Troll-p3-DefaultTalents-ExternalBleed-monocat-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 24105.57553
-  tps: 17117.3215
+  dps: 24118.15352
+  tps: 17126.25188
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Troll-p3-DefaultTalents-ExternalBleed-monocat-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 24166.06667
-  tps: 17158.11749
+  dps: 24236.31627
+  tps: 17207.99471
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Troll-p3-DefaultTalents-ExternalBleed-monocat-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 27859.9495
-  tps: 19781.13214
+  dps: 27913.14575
+  tps: 19818.90148
  }
 }
 dps_results: {
@@ -2246,15 +2246,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Troll-p3-HybridTalents-ExternalBleed-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 40820.29345
-  tps: 55604.75785
+  dps: 40830.85068
+  tps: 55591.23007
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Troll-p3-HybridTalents-ExternalBleed-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 37847.04224
-  tps: 47806.45424
+  dps: 37836.33581
+  tps: 47914.6553
  }
 }
 dps_results: {
@@ -2267,36 +2267,36 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Troll-p3-HybridTalents-ExternalBleed-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 26021.24947
-  tps: 36030.19355
+  dps: 26057.47866
+  tps: 36206.62255
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Troll-p3-HybridTalents-ExternalBleed-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 24462.3301
-  tps: 31674.24532
+  dps: 24517.85431
+  tps: 31496.82003
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Troll-p3-HybridTalents-ExternalBleed-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 27058.74606
-  tps: 23448.87105
+  dps: 27077.72441
+  tps: 23882.87629
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Troll-p3-HybridTalents-ExternalBleed-monocat-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 37534.79209
-  tps: 26651.96303
+  dps: 37556.84977
+  tps: 26667.62398
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Troll-p3-HybridTalents-ExternalBleed-monocat-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 37114.68211
-  tps: 26351.4243
+  dps: 37154.60148
+  tps: 26379.76705
  }
 }
 dps_results: {
@@ -2309,22 +2309,22 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Troll-p3-HybridTalents-ExternalBleed-monocat-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 23539.88771
-  tps: 16715.68315
+  dps: 23530.41862
+  tps: 16708.9601
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Troll-p3-HybridTalents-ExternalBleed-monocat-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 23607.31327
-  tps: 16761.40258
+  dps: 23704.75019
+  tps: 16830.58279
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Troll-p3-HybridTalents-ExternalBleed-monocat-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 26880.8295
-  tps: 19085.95695
+  dps: 26905.68076
+  tps: 19103.60134
  }
 }
 dps_results: {
@@ -2624,15 +2624,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Worgen-p3-DefaultTalents-ExternalBleed-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 41381.18785
-  tps: 56417.76683
+  dps: 41381.95907
+  tps: 56453.46584
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Worgen-p3-DefaultTalents-ExternalBleed-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 38725.58659
-  tps: 50147.5389
+  dps: 38779.88761
+  tps: 50012.40347
  }
 }
 dps_results: {
@@ -2645,36 +2645,36 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Worgen-p3-DefaultTalents-ExternalBleed-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 26820.18223
-  tps: 37664.02261
+  dps: 26825.2031
+  tps: 37858.83202
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Worgen-p3-DefaultTalents-ExternalBleed-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 25032.68028
-  tps: 33037.21645
+  dps: 25043.59899
+  tps: 33174.06052
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Worgen-p3-DefaultTalents-ExternalBleed-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 27552.11081
-  tps: 25394.1767
+  dps: 27741.48844
+  tps: 26045.39775
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Worgen-p3-DefaultTalents-ExternalBleed-monocat-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 38322.11173
-  tps: 27210.95997
+  dps: 38324.69502
+  tps: 27212.79411
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Worgen-p3-DefaultTalents-ExternalBleed-monocat-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 37899.65567
-  tps: 26908.75553
+  dps: 37858.05237
+  tps: 26879.21718
  }
 }
 dps_results: {
@@ -2687,22 +2687,22 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Worgen-p3-DefaultTalents-ExternalBleed-monocat-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 24021.13017
-  tps: 17057.3653
+  dps: 24004.69969
+  tps: 17045.69966
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Worgen-p3-DefaultTalents-ExternalBleed-monocat-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 24313.21649
-  tps: 17262.59387
+  dps: 24337.61931
+  tps: 17279.91987
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Worgen-p3-DefaultTalents-ExternalBleed-monocat-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 27341.67944
-  tps: 19413.1604
+  dps: 27496.61523
+  tps: 19523.16482
  }
 }
 dps_results: {
@@ -2750,15 +2750,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Worgen-p3-HybridTalents-ExternalBleed-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 40619.66786
-  tps: 54645.60482
+  dps: 40570.91805
+  tps: 54668.79465
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Worgen-p3-HybridTalents-ExternalBleed-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 37795.37241
-  tps: 48423.29996
+  dps: 37784.81169
+  tps: 48404.09569
  }
 }
 dps_results: {
@@ -2771,36 +2771,36 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Worgen-p3-HybridTalents-ExternalBleed-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 25920.52543
-  tps: 35657.08918
+  dps: 25668.77161
+  tps: 34701.35677
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Worgen-p3-HybridTalents-ExternalBleed-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 24369.7514
-  tps: 32413.71208
+  dps: 24403.26185
+  tps: 31713.02836
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Worgen-p3-HybridTalents-ExternalBleed-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 26692.92345
-  tps: 24102.81043
+  dps: 26747.86609
+  tps: 24214.8177
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Worgen-p3-HybridTalents-ExternalBleed-monocat-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 37480.14869
-  tps: 26613.16621
+  dps: 37475.70218
+  tps: 26610.00919
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Worgen-p3-HybridTalents-ExternalBleed-monocat-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 37033.66513
-  tps: 26293.90224
+  dps: 37030.04926
+  tps: 26291.33497
  }
 }
 dps_results: {
@@ -2813,22 +2813,22 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Worgen-p3-HybridTalents-ExternalBleed-monocat-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 23326.46704
-  tps: 16564.15448
+  dps: 23355.89458
+  tps: 16585.04803
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Worgen-p3-HybridTalents-ExternalBleed-monocat-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 23549.85984
-  tps: 16720.61065
+  dps: 23628.14071
+  tps: 16776.19006
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Worgen-p3-HybridTalents-ExternalBleed-monocat-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 26434.37127
-  tps: 18768.9716
+  dps: 26527.42972
+  tps: 18835.0431
  }
 }
 dps_results: {
@@ -2918,8 +2918,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Worgen-preraid-DefaultTalents-ExternalBleed-monocat-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 32303.27384
-  tps: 22937.58507
+  dps: 32298.95707
+  tps: 22934.52016
  }
 }
 dps_results: {
