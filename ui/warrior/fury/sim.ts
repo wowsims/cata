@@ -121,7 +121,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 			OtherInputs.InputDelay,
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
-			FuryInputs.PrepullMastery,
 		],
 	},
 	itemSwapSlots: [
@@ -163,6 +162,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 			Presets.P3_BIS_FURY_SMF_PRESET,
 			Presets.P3_BIS_FURY_TG_PRESET,
 		],
+		itemSwaps: [Presets.P3_ITEM_SWAP_SMF, Presets.P3_ITEM_SWAP_TG],
 		builds: [Presets.P1_PRESET_BUILD_SMF, Presets.P1_PRESET_BUILD_TG, Presets.P3_PRESET_BUILD_SMF, Presets.P3_PRESET_BUILD_TG],
 	},
 
