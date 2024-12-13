@@ -90,7 +90,9 @@ func (cat *FeralDruid) Initialize() {
 		cat.UpdateBleedPower(cat.Rake, sim, cat.CurrentTarget, false, true)
 
 		if cat.Rip.NewSnapshotPower > previousRipSnapshotPower+0.001 {
-			cat.tempSnapshotAura = aura
+			if !cat.tempSnapshotAura.IsActive() || (aura.ExpiresAt() < cat.tempSnapshotAura.ExpiresAt()) {
+				cat.tempSnapshotAura = aura
+			}
 		} else if cat.tempSnapshotAura.IsActive() {
 			cat.Rip.NewSnapshotPower = previousRipSnapshotPower
 			cat.Rake.NewSnapshotPower = previousRakeSnapshotPower
