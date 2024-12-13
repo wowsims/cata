@@ -98,7 +98,7 @@ func (cat *FeralDruid) canBite(sim *core.Simulation, isExecutePhase bool) bool {
 	}
 
 	if isExecutePhase {
-		return cat.Rip.NewSnapshotPower > cat.Rip.CurrentSnapshotPower-0.001
+		return (cat.Rip.NewSnapshotPower > cat.Rip.CurrentSnapshotPower-0.001) || cat.BerserkAura.IsActive()
 	}
 
 	return cat.Rip.CurDot().RemainingDuration(sim) >= biteTime
@@ -514,7 +514,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	biteAtEnd := (curCp >= rotation.MinCombosForBite) && ((simTimeRemain < endThreshForClip) || (ripDot.IsActive() && (simTimeRemain-ripDot.RemainingDuration(sim) < baseEndThresh)))
 
 	// Delay Rip refreshes if Tiger's Fury will be usable soon enough for the snapshot to outweigh the lost Rip ticks from waiting
-	if ripNow && !tfActive && !cat.tempSnapshotAura.IsActive() {
+	if ripNow && !tfActive && !cat.BerserkAura.IsActive() {
 		buffedTickCount := min(cat.maxRipTicks, int32((simTimeRemain-finalTickLeeway)/ripDot.BaseTickLength))
 		delayBreakpoint := finalTickLeeway + core.DurationFromSeconds(0.15*float64(buffedTickCount)*ripDot.BaseTickLength.Seconds())
 
@@ -523,7 +523,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 			energyToDump := curEnergy + delaySeconds*regenRate - cat.calcTfEnergyThresh(cat.ReactionTime)
 			secondsToDump := math.Ceil(energyToDump / cat.Shred.DefaultCast.Cost)
 
-			if secondsToDump < delaySeconds {
+			if (secondsToDump < delaySeconds) && (!cat.tempSnapshotAura.IsActive() || (cat.tempSnapshotAura.RemainingDuration(sim) > delayBreakpoint)) {
 				ripNow = false
 			}
 		}
