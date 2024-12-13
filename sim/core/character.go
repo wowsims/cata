@@ -777,10 +777,15 @@ func (character *Character) MeetsArmorSpecializationRequirement(armorType proto.
 
 func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Stat, armorType proto.ArmorType) {
 	armorSpecializationDepdency := character.NewDynamicMultiplyStat(primaryStat, 1.05)
+	var isEnabled bool
 
 	enableArmorSpecialization := func(sim *Simulation) {
 		character.EnableBuildPhaseStatDep(sim, armorSpecializationDepdency)
 
+		if isEnabled {
+			return
+		}
+		isEnabled = true
 		if sim.Log != nil {
 			sim.Log("Armor Specialization: Active")
 		}
@@ -788,6 +793,10 @@ func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Sta
 	disableArmorSpecialization := func(sim *Simulation) {
 		character.DisableBuildPhaseStatDep(sim, armorSpecializationDepdency)
 
+		if !isEnabled {
+			return
+		}
+		isEnabled = false
 		if sim.Log != nil {
 			sim.Log("Armor Specialization: Inactive")
 		}

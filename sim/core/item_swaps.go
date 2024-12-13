@@ -195,14 +195,23 @@ func (swap *ItemSwap) RegisterOnSwapItemForEnchantProcEffect(effectID int32, aur
 func (swap *ItemSwap) RegisterOnSwapItemForItemOnUseEffect(itemID int32, slots []proto.ItemSlot) {
 	character := swap.character
 	character.RegisterOnItemSwap(slots, func(sim *Simulation, slot proto.ItemSlot) {
-		idEquipped := character.Equipment[slot].ID
+		isSwapItem := swap.ItemExistsInSwapSet(itemID)
+		if !isSwapItem {
+			return
+		}
+		hasItemEquipped := swap.HasItemEquipped(itemID)
+		itemSlot := swap.GetItemSwapItemSlot(itemID)
+		if itemSlot == -1 {
+			return
+		}
+		equippedItemID := swap.GetEquippedItemBySlot(itemSlot).ID
 		spell := swap.character.GetSpell(ActionID{ItemID: itemID})
 		if spell != nil {
 			aura := character.GetAuraByID(spell.ActionID)
 			if aura.IsActive() {
 				aura.Deactivate(sim)
 			}
-			if idEquipped != itemID {
+			if !hasItemEquipped {
 				spell.Flags |= SpellFlagSwapped
 				return
 			}
@@ -210,8 +219,9 @@ func (swap *ItemSwap) RegisterOnSwapItemForItemOnUseEffect(itemID int32, slots [
 			if !swap.initialized {
 				return
 			}
-			idSwapped := swap.unEquippedItems[slot].ID
-			if idSwapped == idEquipped && spell.CD.IsReady(sim) || idSwapped != idEquipped {
+			swappedItemID := swap.GetUnequippedItemBySlot(slot).ID
+
+			if swappedItemID == equippedItemID && spell.CD.IsReady(sim) || swappedItemID != equippedItemID {
 				spell.CD.Set(sim.CurrentTime + time.Second*30)
 			}
 		}
@@ -221,14 +231,15 @@ func (swap *ItemSwap) RegisterOnSwapItemForItemOnUseEffect(itemID int32, slots [
 // Helper for handling Enchant On Use effects to set a 30s cd on the related spell.
 func (swap *ItemSwap) RegisterOnSwapItemForEnchantOnUseEffect(spell *Spell, slots []proto.ItemSlot) {
 	character := swap.character
+
 	character.RegisterOnItemSwap(slots, func(sim *Simulation, slot proto.ItemSlot) {
 		if spell != nil {
-			idEquipped := character.Equipment[slot].ID
-			idSwapped := swap.unEquippedItems[slot].ID
+			equippedItemID := swap.GetEquippedItemBySlot(slot).ID
+			swappedItemID := swap.GetUnequippedItemBySlot(slot).ID
 			if !swap.initialized {
 				return
 			}
-			if idSwapped == idEquipped && spell.CD.IsReady(sim) || idSwapped != idEquipped {
+			if swappedItemID == equippedItemID && spell.CD.IsReady(sim) || swappedItemID != equippedItemID {
 				spell.CD.Set(sim.CurrentTime + time.Second*30)
 			}
 		}
@@ -252,11 +263,27 @@ func (swap *ItemSwap) HasItemEquipped(itemID int32) bool {
 	return false
 }
 
+func (swap *ItemSwap) GetEquippedItemBySlot(slot proto.ItemSlot) *Item {
+	return &swap.character.Equipment[slot]
+}
+
 func (swap *ItemSwap) GetUnequippedItemBySlot(slot proto.ItemSlot) *Item {
-	if slot < 0 {
-		panic("Not able to swap Item " + slot.String() + " not supported")
-	}
 	return &swap.unEquippedItems[slot]
+}
+
+func (swap *ItemSwap) GetItemSwapItemSlot(itemID int32) proto.ItemSlot {
+	var slotsToCheck Equipment
+	if swap.IsSwapped() {
+		slotsToCheck = swap.originalEquip
+	} else {
+		slotsToCheck = swap.swapEquip
+	}
+	for slot, item := range slotsToCheck {
+		if item.ID == itemID {
+			return proto.ItemSlot(slot)
+		}
+	}
+	return -1
 }
 
 func (swap *ItemSwap) ItemExistsInSwapSet(itemID int32) bool {
@@ -271,7 +298,7 @@ func (swap *ItemSwap) ItemExistsInSwapSet(itemID int32) bool {
 func (swap *ItemSwap) CalcStatChanges(slots []proto.ItemSlot) stats.Stats {
 	newStats := stats.Stats{}
 	for _, slot := range slots {
-		oldItemStats := swap.getItemStats(swap.character.Equipment[slot])
+		oldItemStats := swap.getItemStats(*swap.GetEquippedItemBySlot(slot))
 		newItemStats := swap.getItemStats(*swap.GetUnequippedItemBySlot(slot))
 		newStats = newStats.Add(newItemStats.Subtract(oldItemStats))
 	}
@@ -331,7 +358,7 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 }
 
 func (swap *ItemSwap) swapItem(slot proto.ItemSlot, has2H bool, isReset bool) (bool, stats.Stats) {
-	oldItem := swap.character.Equipment[slot]
+	oldItem := *swap.GetEquippedItemBySlot(slot)
 	var newItem *Item
 	if isReset {
 		newItem = &swap.originalEquip[slot]
