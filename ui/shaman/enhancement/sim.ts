@@ -124,7 +124,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	otherInputs: {
 		inputs: [EnhancementInputs.SyncTypeInput, OtherInputs.InputDelay, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
 	},
-	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
+	itemSwapSlots: [
+		ItemSlot.ItemSlotBack,
+		ItemSlot.ItemSlotHands,
+		ItemSlot.ItemSlotMainHand,
+		ItemSlot.ItemSlotOffHand,
+		ItemSlot.ItemSlotTrinket1,
+		ItemSlot.ItemSlotTrinket2,
+	],
 	customSections: [ShamanInputs.TotemsSection, FireElementalSection],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.

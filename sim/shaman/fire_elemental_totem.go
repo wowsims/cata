@@ -18,9 +18,7 @@ func (shaman *Shaman) registerFireElementalTotem() {
 		ActionID: actionID,
 		Duration: totalDuration,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			bonusIntellect := shaman.FireElemental.BonusIntellect
-			bonusSpellPower := shaman.FireElemental.BonusSpellpower
-			shaman.FireElemental.ChangeStatInheritance(shaman.FireElemental.shamanOwner.fireElementalStatInheritance(bonusIntellect, bonusSpellPower))
+			shaman.FireElemental.ChangeStatInheritance(shaman.FireElemental.shamanOwner.fireElementalStatInheritance())
 		},
 	})
 
