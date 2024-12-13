@@ -98,7 +98,7 @@ func (cat *FeralDruid) canBite(sim *core.Simulation, isExecutePhase bool) bool {
 	}
 
 	if isExecutePhase {
-		return cat.Rip.NewSnapshotPower > cat.Rip.CurrentSnapshotPower-0.001
+		return (cat.Rip.NewSnapshotPower > cat.Rip.CurrentSnapshotPower-0.001) || cat.BerserkAura.IsActive()
 	}
 
 	return cat.Rip.CurDot().RemainingDuration(sim) >= biteTime
