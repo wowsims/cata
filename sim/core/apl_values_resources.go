@@ -244,7 +244,7 @@ func (value *APLValueFocusTimeToMax) GetDuration(sim *Simulation) time.Duration 
 	return value.unit.TimeToMaxFocus()
 }
 func (value *APLValueFocusTimeToMax) String() string {
-	return "Time To Max Focus"
+	return "Estimated Time To Max Focus"
 }
 
 type APLValueCurrentEnergy struct {
@@ -344,7 +344,7 @@ func (value *APLValueEnergyTimeToMax) GetDuration(sim *Simulation) time.Duration
 	return value.unit.TimeToMaxEnergy()
 }
 func (value *APLValueEnergyTimeToMax) String() string {
-	return "Time To Max Energy"
+	return "Estimated Time To Max Energy"
 }
 
 type APLValueCurrentComboPoints struct {

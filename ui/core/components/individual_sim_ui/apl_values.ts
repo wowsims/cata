@@ -726,9 +726,9 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		fields: [],
 	}),
 	focusTimeToMax: inputBuilder({
-		label: 'Time To Max Focus',
+		label: 'Estimated Time To Max Focus',
 		submenu: ['Resources', 'Focus'],
-		shortDescription: 'Time until max Focus is reached.',
+		shortDescription: 'Estimated time until max Focus is reached.',
 		newValue: APLValueFocusTimeToMax.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassHunter,
 		fields: [],
@@ -770,9 +770,9 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		fields: [],
 	}),
 	energyTimeToMax: inputBuilder({
-		label: 'Time To Max Energy',
+		label: 'Estimated Time To Max Energy',
 		submenu: ['Resources', 'Energy'],
-		shortDescription: 'Time until max Energy is reached.',
+		shortDescription: 'Estimated time until max Energy is reached.',
 		newValue: APLValueEnergyTimeToMax.create,
 		includeIf(player: Player<any>, _isPrepull: boolean) {
 			const clss = player.getClass();
