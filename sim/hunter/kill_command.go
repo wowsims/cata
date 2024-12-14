@@ -36,8 +36,9 @@ func (hunter *Hunter) registerKillCommandSpell() {
 		CritMultiplier:           hunter.CritMultiplier(false, false, false),
 		ThreatMultiplier:         1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.516*spell.RangedAttackPower(target) + 923
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+			if hunter.Pet != nil && hunter.Pet.KillCommand != nil {
+				hunter.Pet.KillCommand.Cast(sim, target)
+			}
 		},
 	})
 }

@@ -642,11 +642,12 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 				rotationType: FeralDruid_Rotation_AplType.SingleTarget,
 				maintainFaerieFire: true,
 				manualParams: true,
-				minRoarOffset: 29.0,
+				minRoarOffset: 31.0,
 				ripLeeway: 1,
 				useRake: true,
 				useBite: true,
 				biteTime: 11.0,
+				berserkBiteTime: 6.0,
 				biteDuringExecute: true,
 				allowAoeBerserk: false,
 				meleeWeave: true,
@@ -692,6 +693,10 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 			AplHelpers.numberFieldConfig('biteTime', true, {
 				label: 'Bite Time',
 				labelTooltip: 'Min seconds remaining on Rip/Roar to allow a Bite. Ignored if not Biting during rotation.',
+			}),
+			AplHelpers.numberFieldConfig('berserkBiteTime', true, {
+				label: 'Bite Time during Berserk',
+				labelTooltip: 'More aggressive threshold when Berserk is active.',
 			}),
 			AplHelpers.booleanFieldConfig('biteDuringExecute', 'Bite during Execute phase', {
 				labelTooltip:

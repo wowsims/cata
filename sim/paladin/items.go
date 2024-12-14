@@ -176,7 +176,7 @@ func (paladin *Paladin) addBloodthirstyGloves() {
 	switch paladin.Hands().ID {
 	case 64844, 70649, 60414, 65591, 72379, 70250, 70488, 73707, 73570:
 		paladin.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Pct,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			ClassMask:  SpellMaskCrusaderStrike,
 			FloatValue: 0.05,
 		})

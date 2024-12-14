@@ -226,7 +226,7 @@ func (warlock *Warlock) registerNightfall() {
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: "Nightfall Hidden Aura",
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-			if spell == warlock.Corruption {
+			if spell == warlock.Corruption && !spell.ProcMask.Matches(core.ProcMaskSpellProc|core.ProcMaskSpellDamageProc) {
 				if sim.Proc(nightfallProcChance, "Nightfall") {
 					nightfallProcAura.Activate(sim)
 				}

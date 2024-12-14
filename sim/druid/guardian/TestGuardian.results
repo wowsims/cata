@@ -284,22 +284,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestGuardian-AllItems-BottledWishes-77985"
- value: {
-  dps: 9664.79525
-  tps: 48391.99355
-  hps: 317.68208
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-BottledWishes-78005"
- value: {
-  dps: 9814.276
-  tps: 49139.24373
-  hps: 320.53125
- }
-}
-dps_results: {
  key: "TestGuardian-AllItems-BracingShadowspiritDiamond"
  value: {
   dps: 9607.564
@@ -716,22 +700,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestGuardian-AllItems-FireoftheDeep-77988"
- value: {
-  dps: 9597.44853
-  tps: 48054.14472
-  hps: 316.2575
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-FireoftheDeep-78008"
- value: {
-  dps: 9597.44853
-  tps: 48054.14472
-  hps: 316.2575
- }
-}
-dps_results: {
  key: "TestGuardian-AllItems-FleetShadowspiritDiamond"
  value: {
   dps: 9597.44853
@@ -1116,22 +1084,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestGuardian-AllItems-KiroptyricSigil-77984"
- value: {
-  dps: 10224.73638
-  tps: 51192.30733
-  hps: 316.2575
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-KiroptyricSigil-78004"
- value: {
-  dps: 10532.34439
-  tps: 52730.56425
-  hps: 316.2575
- }
-}
-dps_results: {
  key: "TestGuardian-AllItems-KvaldirBattleStandard-59685"
  value: {
   dps: 9700.6477
@@ -1476,22 +1428,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestGuardian-AllItems-ReflectionoftheLight-77986"
- value: {
-  dps: 9593.51588
-  tps: 48034.50232
-  hps: 314.83292
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-ReflectionoftheLight-78006"
- value: {
-  dps: 9593.51588
-  tps: 48034.50232
-  hps: 314.83292
- }
-}
-dps_results: {
  key: "TestGuardian-AllItems-ResolveofUndying-77201"
  value: {
   dps: 9597.44853
@@ -1568,22 +1504,6 @@ dps_results: {
  value: {
   dps: 10020.85265
   tps: 50172.56282
-  hps: 319.10667
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-RottingSkull-77987"
- value: {
-  dps: 9997.78045
-  tps: 50056.89185
-  hps: 317.68208
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-RottingSkull-78007"
- value: {
-  dps: 10134.99409
-  tps: 50743.5067
   hps: 319.10667
  }
 }

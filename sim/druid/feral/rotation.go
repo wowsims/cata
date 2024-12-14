@@ -91,15 +91,17 @@ func (cat *FeralDruid) canBite(sim *core.Simulation, isExecutePhase bool) bool {
 		return true
 	}
 
-	if cat.SavageRoarAura.RemainingDuration(sim) < cat.Rotation.BiteTime {
+	biteTime := core.TernaryDuration(cat.BerserkAura.IsActive(), cat.Rotation.BerserkBiteTime, cat.Rotation.BiteTime)
+
+	if cat.SavageRoarAura.RemainingDuration(sim) < biteTime {
 		return false
 	}
 
 	if isExecutePhase {
-		return cat.Rip.NewSnapshotPower > cat.Rip.CurrentSnapshotPower-0.001
+		return (cat.Rip.NewSnapshotPower > cat.Rip.CurrentSnapshotPower-0.001) || cat.BerserkAura.IsActive()
 	}
 
-	return cat.Rip.CurDot().RemainingDuration(sim) >= cat.Rotation.BiteTime
+	return cat.Rip.CurDot().RemainingDuration(sim) >= biteTime
 }
 
 func (cat *FeralDruid) berserkExpectedAt(sim *core.Simulation, futureTime time.Duration) bool {
@@ -512,7 +514,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	biteAtEnd := (curCp >= rotation.MinCombosForBite) && ((simTimeRemain < endThreshForClip) || (ripDot.IsActive() && (simTimeRemain-ripDot.RemainingDuration(sim) < baseEndThresh)))
 
 	// Delay Rip refreshes if Tiger's Fury will be usable soon enough for the snapshot to outweigh the lost Rip ticks from waiting
-	if ripNow && !tfActive && !cat.tempSnapshotAura.IsActive() {
+	if ripNow && !tfActive && !cat.BerserkAura.IsActive() {
 		buffedTickCount := min(cat.maxRipTicks, int32((simTimeRemain-finalTickLeeway)/ripDot.BaseTickLength))
 		delayBreakpoint := finalTickLeeway + core.DurationFromSeconds(0.15*float64(buffedTickCount)*ripDot.BaseTickLength.Seconds())
 
@@ -521,7 +523,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 			energyToDump := curEnergy + delaySeconds*regenRate - cat.calcTfEnergyThresh(cat.ReactionTime)
 			secondsToDump := math.Ceil(energyToDump / cat.Shred.DefaultCast.Cost)
 
-			if secondsToDump < delaySeconds {
+			if (secondsToDump < delaySeconds) && (!cat.tempSnapshotAura.IsActive() || (cat.tempSnapshotAura.RemainingDuration(sim) > delayBreakpoint)) {
 				ripNow = false
 			}
 		}
@@ -757,6 +759,7 @@ type FeralDruidRotation struct {
 	UseRake             bool
 	UseBite             bool
 	BiteTime            time.Duration
+	BerserkBiteTime     time.Duration
 	BiteDuringExecute   bool
 	MinCombosForBite    int32
 	MangleSpam          bool
@@ -778,6 +781,7 @@ func (cat *FeralDruid) setupRotation(rotation *proto.FeralDruid_Rotation) {
 		UseRake:             rotation.UseRake,
 		UseBite:             rotation.UseBite,
 		BiteTime:            time.Duration(float64(rotation.BiteTime) * float64(time.Second)),
+		BerserkBiteTime:     time.Duration(float64(rotation.BerserkBiteTime) * float64(time.Second)),
 		BiteDuringExecute:   core.Ternary(cat.Talents.BloodInTheWater > 0, rotation.BiteDuringExecute, false),
 		MinCombosForBite:    5,
 		MangleSpam:          rotation.MangleSpam,
@@ -801,6 +805,7 @@ func (cat *FeralDruid) setupRotation(rotation *proto.FeralDruid_Rotation) {
 	cat.Rotation.CancelPrimalMadness = rotation.CancelPrimalMadness && (rotation.RotationType == proto.FeralDruid_Rotation_Aoe)
 
 	cat.Rotation.RipLeeway = 1 * time.Second
-	cat.Rotation.MinRoarOffset = 29 * time.Second
+	cat.Rotation.MinRoarOffset = 31 * time.Second
 	cat.Rotation.BiteTime = 11 * time.Second
+	cat.Rotation.BerserkBiteTime = 6 * time.Second
 }

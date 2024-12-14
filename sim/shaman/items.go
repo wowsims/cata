@@ -270,5 +270,80 @@ var ItemSetVolcanicBattlegear = core.NewItemSet(core.ItemSet{
 	},
 })
 
+// T13 enh
+// 2 pieces: While you have any stacks of Maelstrom Weapon, your Lightning Bolt, Chain Lightning, and healing spells deal 20% more healing or damage.
+// 4 pieces: Your Feral Spirits have a 45% chance to grant you a charge of Maelstrom Weapon each time they deal damage.
+var ItemSetSpiritwalkersBattlegear = core.NewItemSet(core.ItemSet{
+	Name: "Spiritwalker's Battlegear",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+
+			if shaman.Talents.MaelstromWeapon == 0 {
+				return
+			}
+
+			// Item sets are registered before talents, so MaelstromWeaponAura doesn't exist yet
+			// Therefore we need to react on Feral Spirit registration to apply the logic
+			shaman.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.ClassSpellMask&SpellMaskFeralSpirit == 0 {
+					return
+				}
+
+				dmgMod := shaman.AddDynamicMod(core.SpellModConfig{
+					Kind:       core.SpellMod_DamageDone_Pct,
+					FloatValue: 0.2,
+					ClassMask:  SpellMaskLightningBolt | SpellMaskChainLightning,
+				})
+
+				temporalMaelstrom := shaman.RegisterAura(core.Aura{
+					Label:    "Temporal Maelstrom" + shaman.Label,
+					ActionID: core.ActionID{SpellID: 105869},
+					Duration: time.Second * 30,
+					OnGain: func(aura *core.Aura, sim *core.Simulation) {
+						dmgMod.Activate()
+						shaman.PseudoStats.HealingDealtMultiplier *= 1.2
+					},
+					OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+						dmgMod.Deactivate()
+						shaman.PseudoStats.HealingDealtMultiplier /= 1.2
+					},
+				})
+
+				shaman.MaelstromWeaponAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+					temporalMaelstrom.Activate(sim)
+				})
+
+				shaman.MaelstromWeaponAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+					temporalMaelstrom.Deactivate(sim)
+				})
+			})
+		},
+		4: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+
+			if !shaman.Talents.FeralSpirit || shaman.Talents.MaelstromWeapon == 0 {
+				return
+			}
+
+			for _, wolf := range []*core.Unit{&shaman.SpiritWolves.SpiritWolf1.Unit, &shaman.SpiritWolves.SpiritWolf2.Unit} {
+				core.MakeProcTriggerAura(wolf, core.ProcTrigger{
+					Name:       "Spiritwalker's Battlegear 4pc" + shaman.Label,
+					ActionID:   core.ActionID{SpellID: 105872},
+					Callback:   core.CallbackOnSpellHitDealt,
+					Outcome:    core.OutcomeLanded,
+					ProcMask:   core.ProcMaskMelee,
+					Harmful:    true,
+					ProcChance: 0.45,
+					Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+						shaman.MaelstromWeaponAura.Activate(sim)
+						shaman.MaelstromWeaponAura.AddStack(sim)
+					},
+				})
+			}
+		},
+	},
+})
+
 func init() {
 }

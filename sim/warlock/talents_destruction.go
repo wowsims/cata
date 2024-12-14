@@ -166,7 +166,7 @@ func (warlock *Warlock) registerBurningEmbers() {
 		Label:    "Burning Embers Hidden Aura",
 		ActionID: core.ActionID{SpellID: 85112},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Matches(WarlockSpellSoulFire) && result.Landed() {
+			if spell.Matches(WarlockSpellSoulFire) && result.Landed() && !spell.ProcMask.Matches(core.ProcMaskSpellProc|core.ProcMaskSpellDamageProc) {
 				dot := warlock.BurningEmbers.Dot(result.Target)
 				if !dot.IsActive() {
 					dot.SnapshotBaseDamage = 0.0 // ensure we don't use old dot data

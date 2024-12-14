@@ -159,7 +159,7 @@ func (hunter *Hunter) applyTNT() {
 				hunter.ExplosiveShot.CostMultiplier += 1
 			}
 		},
-		OnApplyEffects: func(aura *core.Aura, sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell == hunter.ExplosiveShot {
 				hunter.ExplosiveShot.CD.Reset()
 				aura.RemoveStack(sim)

@@ -5,23 +5,13 @@ const WantToHelpMessage = () => <p className="mb-0">Want to help out by providin
 
 export const MISSING_RANDOM_SUFFIX_WARNING = <p className="mb-0">Please select a random suffix</p>;
 
-const MISSING_IMPLEMENTATION_WARNING = (
+/*const MISSING_IMPLEMENTATION_WARNING = (
 	<>
 		<p className="fw-bold">This item is not implemented!</p>
 		<p>We are working hard on gathering all the old resources to allow for an initial implementation.</p>
 		<WantToHelpMessage />
 	</>
-);
-
-const VPLC_IMPLEMENTATION_WARNING = (
-	<>
-		<p>
-			Current proc rate is <span className="fw-bold">50%</span> confirmed on PTR.
-		</p>
-		<p>Scales with: 3% Damage buff & 8% Spell Damage debuff.</p>
-		<WantToHelpMessage />
-	</>
-);
+);*/
 
 const DTR_FIRST_IMPLEMENTATION_WARNING = (
 	<>
@@ -39,30 +29,6 @@ const TENTATIVE_IMPLEMENTATION_WARNING = (
 		<WantToHelpMessage />
 	</>
 );
-
-const ITEM_DOESNT_EXIST_WARNING = (
-	<>
-		<p>This item never existed in the original game, therefore any effects or procs it might have are not implemented.</p>
-		<p>
-			Once we get a clear indication from Blizzard whether they decide to include it or not, we will either implement it and remove this notice or remove
-			the item entirely.
-		</p>
-		<WantToHelpMessage />
-	</>
-);
-
-const NON_EXISTING_ITEMS = [
-	// Rotting Skull - 384, 410
-	77987, 78007,
-	// Kiroptyric Sigil - 384, 410
-	77984, 78004,
-	// Fire of the Deep - 384, 410
-	77988, 78008,
-	// Reflection of the Light - 384, 410
-	77986, 78006,
-	// Bottled Wishes - 384, 410
-	77985, 78005,
-];
 
 const WILL_NOT_BE_IMPLEMENTED_WARNING = <>The equip/use effect on this item will not be implemented!</>;
 
@@ -106,6 +72,8 @@ const TENTATIVE_IMPLEMENTATION_ITEMS = [
 	// Wrath of Unchaining - LFR, Normal, Heroic
 	77974, 77197, 77994,
 
+	// No'Kaled, the Elements of Death - LFR, Normal, Heroic
+	78481, 77188, 78472,
 	// Kiril, Fury of Beasts - LFR, Normal, Heroic
 	78482, 77194, 78473,
 	// Ti'tahk, the Steps of Time - LFR, Normal, Heroic
@@ -132,12 +100,6 @@ const TENTATIVE_IMPLEMENTATION_ITEMS = [
 ];
 
 export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
-	...NON_EXISTING_ITEMS.map((itemID): [number, ItemNoticeData] => [
-		itemID,
-		{
-			[Spec.SpecUnknown]: ITEM_DOESNT_EXIST_WARNING,
-		},
-	]),
 	...WILL_NOT_BE_IMPLEMENTED_ITEMS.map((itemID): [number, ItemNoticeData] => [
 		itemID,
 		{
@@ -166,32 +128,6 @@ export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 			[Spec.SpecDestructionWarlock]: DTR_FIRST_IMPLEMENTATION_WARNING,
 		},
 	],
-	[
-		// VPLC - Normal
-		68925,
-		{
-			[Spec.SpecUnknown]: VPLC_IMPLEMENTATION_WARNING,
-			[Spec.SpecArcaneMage]: false,
-			[Spec.SpecFireMage]: false,
-			[Spec.SpecDemonologyWarlock]: false,
-			[Spec.SpecAfflictionWarlock]: false,
-			[Spec.SpecDestructionWarlock]: false,
-			[Spec.SpecShadowPriest]: false,
-		},
-	],
-	[
-		// VPLC - Heroic
-		69110,
-		{
-			[Spec.SpecUnknown]: VPLC_IMPLEMENTATION_WARNING,
-			[Spec.SpecArcaneMage]: false,
-			[Spec.SpecFireMage]: false,
-			[Spec.SpecDemonologyWarlock]: false,
-			[Spec.SpecAfflictionWarlock]: false,
-			[Spec.SpecDestructionWarlock]: false,
-			[Spec.SpecShadowPriest]: false,
-		},
-	],
 ]);
 
 export const GENERIC_MISSING_SET_BONUS_NOTICE_DATA = new Map<number, string>([
@@ -212,5 +148,20 @@ export const SET_BONUS_NOTICES = new Map<number, SetBonusNoticeData>([
 	],
 
 	// Generic "not yet implemented" notices
-	[1058, null], // Feral T13
+	[928, null], // Resto Druid T11
+	[933, null], // Holy Paladin T11
+	[935, null], // Healing Priest T11
+	[938, null], // Resto Shaman T11
+
+	[1004, null], // Resto Druid T12
+	[1009, null], // Healing Priest T12
+	[1011, null], // Holy Paladin T12
+	[1014, null], // Resto Shaman T12
+
+	[1056, null], // Blood DK T13
+	[1058, null], // Feral Druid T13
+	[1060, null], // Resto Druid T13
+	[1066, null], // Healing Priest T13
+	[1067, null], // Shadow Priest T13
+	[1069, null], // Resto Shaman T13
 ]);

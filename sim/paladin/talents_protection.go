@@ -30,8 +30,8 @@ func (paladin *Paladin) applySealsOfThePure() {
 	}
 
 	paladin.AddStaticMod(core.SpellModConfig{
-		ClassMask:  SpellMaskSealOfRighteousness | SpellMaskSealOfTruth | SpellMaskSealOfJustice,
-		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  SpellMaskSealOfRighteousness | SpellMaskSealOfTruth | SpellMaskSealOfJustice | SpellMaskCensure,
+		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: 0.06 * float64(paladin.Talents.SealsOfThePure),
 	})
 }
