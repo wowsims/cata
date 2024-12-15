@@ -163,6 +163,11 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 		}
 	}
 
+	// Off-GCD Maul check.
+	if cat.BearFormAura.IsActive() && !cat.ClearcastingAura.IsActive() && cat.Maul.CanCast(sim, cat.CurrentTarget) && ((cat.CurrentRage() >= cat.Maul.DefaultCast.Cost + cat.MangleBear.DefaultCast.Cost) || (cat.AutoAttacks.NextAttackAt() < cat.NextGCDAt())) {
+		cat.Maul.Cast(sim, cat.CurrentTarget)
+	}
+
 	// Handle movement before any rotation logic
 	if cat.Moving || (cat.Hardcast.Expires > sim.CurrentTime) {
 		return
