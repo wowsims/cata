@@ -612,15 +612,19 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	roarRefreshPending := cat.SavageRoarAura.IsActive() && (cat.SavageRoarAura.RemainingDuration(sim) < simTimeRemain-cat.ReactionTime) && (curCp >= 1)
 	pendingPool := &PoolingActions{}
 	pendingPool.create(4)
+	pendingPoolWeaves := &PoolingActions{}
+	pendingPoolWeaves.create(2)
 
 	if ripRefreshPending && (sim.CurrentTime < ripRefreshTime) {
 		baseCost := core.Ternary(isExecutePhase, cat.FerociousBite.DefaultCast.Cost, cat.Rip.DefaultCast.Cost)
 		refreshCost := core.Ternary(cat.berserkExpectedAt(sim, ripRefreshTime), baseCost*0.5, baseCost)
 		pendingPool.addAction(ripRefreshTime, refreshCost)
+		pendingPoolWeaves.addAction(ripRefreshTime, refreshCost)
 	}
 	if rakeRefreshPending && (sim.CurrentTime < rakeRefreshTime) {
 		rakeCost := core.Ternary(cat.berserkExpectedAt(sim, rakeRefreshTime), cat.Rake.DefaultCast.Cost*0.5, cat.Rake.DefaultCast.Cost)
 		pendingPool.addAction(rakeRefreshTime, rakeCost)
+		pendingPoolWeaves.addAction(rakeRefreshTime, rakeCost)
 	}
 	if mangleRefreshPending {
 		mangleRefreshTime := cat.bleedAura.ExpiresAt()
@@ -636,6 +640,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	}
 
 	pendingPool.sort()
+	pendingPoolWeaves.sort()
 	floatingEnergy := pendingPool.calcFloatingEnergy(cat, sim)
 	excessE := curEnergy - floatingEnergy
 	latencySecs := cat.ReactionTime.Seconds()
@@ -645,13 +650,13 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 
 	// Check bear-weaving conditions
 	furorCap := min(float64(100*cat.Talents.Furor)/3.0, 100.0-1.5*regenRate)
-	bearWeaveNow := cat.canBearWeave(sim, furorCap, regenRate, curEnergy, excessE, pendingPool, shiftCost)
+	bearWeaveNow := cat.canBearWeave(sim, furorCap, regenRate, curEnergy, excessE, pendingPoolWeaves, shiftCost)
 	// Main  decision tree starts here
 	timeToNextAction := time.Duration(0)
 
 	if !cat.CatFormAura.IsActive() {
 		// First determine what we want to do with the next GCD.
-		if cat.terminateBearWeave(sim, isClearcast, curEnergy, furorCap, regenRate, pendingPool) {
+		if cat.terminateBearWeave(sim, isClearcast, curEnergy, furorCap, regenRate, pendingPoolWeaves) {
 			cat.readyToShift = true
 		} else if cat.MangleBear.CanCast(sim, cat.CurrentTarget) {
 			cat.MangleBear.Cast(sim, cat.CurrentTarget)
