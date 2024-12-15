@@ -141,6 +141,7 @@ func (dk *DeathKnight) registerUnholyPresenceAura(timer *core.Timer) {
 		},
 	})
 	presenceAura.NewExclusiveEffect(presenceEffectCategory, true, core.ExclusiveEffect{})
+	presenceAura.NewMovementSpeedEffect(0.15)
 
 	dk.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,

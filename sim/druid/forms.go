@@ -113,7 +113,6 @@ func (druid *Druid) registerCatFormSpell() {
 			druid.PseudoStats.ThreatMultiplier *= 0.71
 			druid.PseudoStats.SpiritRegenMultiplier *= AnimalSpiritRegenSuppression
 			druid.PseudoStats.BaseDodgeChance += 0.02 * float64(druid.Talents.FeralSwiftness)
-			druid.PseudoStats.MovementSpeedMultiplier *= 1.0 + 0.15*float64(druid.Talents.FeralSwiftness)
 
 			druid.AddStatsDynamic(sim, statBonus)
 			druid.EnableDynamicStatDep(sim, agiApDep)
@@ -147,7 +146,6 @@ func (druid *Druid) registerCatFormSpell() {
 			druid.PseudoStats.ThreatMultiplier /= 0.71
 			druid.PseudoStats.SpiritRegenMultiplier /= AnimalSpiritRegenSuppression
 			druid.PseudoStats.BaseDodgeChance -= 0.02 * float64(druid.Talents.FeralSwiftness)
-			druid.PseudoStats.MovementSpeedMultiplier /= 1.0 + 0.15*float64(druid.Talents.FeralSwiftness)
 
 			druid.AddStatsDynamic(sim, statBonus.Invert())
 			druid.DisableDynamicStatDep(sim, agiApDep)
@@ -180,6 +178,10 @@ func (druid *Druid) registerCatFormSpell() {
 			}
 		},
 	})
+
+	if druid.Talents.FeralSwiftness > 0 {
+		druid.CatFormAura.NewMovementSpeedEffect(0.15 * float64(druid.Talents.FeralSwiftness))
+	}
 
 	energyMetrics := druid.NewEnergyMetrics(actionID)
 

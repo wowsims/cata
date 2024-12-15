@@ -12,11 +12,7 @@ func init() {
 	// Fleet Shadowspirit Diamond
 	core.NewItemEffect(52289, func(agent core.Agent) {
 		character := agent.GetCharacter()
-
-		// Exclusive with other movement speed passives
-		if character.PseudoStats.MovementSpeedMultiplier < 1.08 {
-			character.PseudoStats.MovementSpeedMultiplier = 1.08
-		}
+		character.NewMovementSpeedAura("Minor Run Speed", core.ActionID{SpellID: 13889}, 0.08)
 	})
 
 	// Bracing Shadowspirit Diamond

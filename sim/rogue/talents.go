@@ -45,6 +45,12 @@ func (rogue *Rogue) ApplyTalents() {
 			ClassMask:  RogueSpellHemorrhage | RogueSpellFanOfKnives,
 		})
 	}
+
+	if rogue.Talents.Quickening > 0 {
+		spellID := []int32{0, 24090, 31209}[rogue.Talents.Quickening]
+		multiplier := []float64{0, 0.08, 0.15}[rogue.Talents.Quickening]
+		rogue.NewMovementSpeedAura("Quickening", core.ActionID{SpellID: spellID}, multiplier)
+	}
 }
 
 // DWSMultiplier returns the offhand damage multiplier

@@ -52,9 +52,9 @@ func (paladin *Paladin) applyPursuitOfJustice() {
 		return
 	}
 
-	if paladin.PseudoStats.MovementSpeedMultiplier < 1.15 {
-		paladin.PseudoStats.MovementSpeedMultiplier = 1.15
-	}
+	spellID := []int32{0, 26022, 26023}[paladin.Talents.PursuitOfJustice]
+	multiplier := []float64{0, 0.08, 0.15}[paladin.Talents.PursuitOfJustice]
+	paladin.NewMovementSpeedAura("Pursuit of Justice", core.ActionID{SpellID: spellID}, multiplier)
 }
 
 func (paladin *Paladin) applySanctityOfBattle() {

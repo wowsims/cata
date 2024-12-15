@@ -156,7 +156,12 @@ func (unit *Unit) OnMovement(sim *Simulation, position float64, kind MovementUpd
 }
 
 func (unit *Unit) MultiplyMovementSpeed(sim *Simulation, amount float64) {
+	oldMultiplier := unit.PseudoStats.MovementSpeedMultiplier
+	oldSpeed := unit.GetMovementSpeed()
 	unit.PseudoStats.MovementSpeedMultiplier *= amount
+	if sim.Log != nil {
+		unit.Log(sim, "[DEBUG] Movement speed changed from %.2f (%.2f%%) to %.2f (%.2f%%)", oldSpeed, (oldMultiplier-1)*100.0, unit.GetMovementSpeed(), (unit.PseudoStats.MovementSpeedMultiplier-1)*100.0)
+	}
 
 	// we have a pending movement action that depends on our movement speed
 	if unit.movementAction != nil && unit.movementAction.speed != 0 {
@@ -172,4 +177,27 @@ func (unit *Unit) GetMovementSpeed() float64 {
 	}
 
 	return 8. * unit.PseudoStats.MovementSpeedMultiplier
+}
+
+func (unit *Unit) NewMovementSpeedAura(label string, actionID ActionID, multiplier float64) *Aura {
+	aura := MakePermanent(unit.GetOrRegisterAura(Aura{
+		Label:    label,
+		ActionID: actionID,
+	}))
+
+	aura.NewMovementSpeedEffect(multiplier)
+
+	return aura
+}
+
+func (aura *Aura) NewMovementSpeedEffect(multiplier float64) *ExclusiveEffect {
+	return aura.NewExclusiveEffect("MovementSpeed", true, ExclusiveEffect{
+		Priority: multiplier,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.MultiplyMovementSpeed(sim, 1+multiplier)
+		},
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.MultiplyMovementSpeed(sim, 1.0/(1+multiplier))
+		},
+	})
 }
