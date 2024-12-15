@@ -668,23 +668,13 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 			cat.readyToShift = true
 		}
 
-		// Then Maul if we still have Rage leftover.
-		if cat.Maul.CanCast(sim, cat.CurrentTarget) && !isClearcast {
-			if cat.readyToShift {
-				cat.Maul.Cast(sim, cat.CurrentTarget)
-			} else {
-				core.StartDelayedAction(sim, core.DelayedActionOptions{
-					DoAt: sim.CurrentTime + cat.ReactionTime*2,
-
-					OnAction: func(sim *core.Simulation) {
-						cat.Maul.Cast(sim, cat.CurrentTarget)
-					},
-				})
-			}
+		// Last second Maul check if we are about to shift back..
+		if cat.readyToShift && cat.Maul.CanCast(sim, cat.CurrentTarget) && !isClearcast {
+			cat.Maul.Cast(sim, cat.CurrentTarget)
 		}
 
 		if !cat.readyToShift {
-			return false, 0
+			timeToNextAction = cat.ReactionTime
 		}
 	} else if t11RefreshNow {
 		if cat.MangleCat.CanCast(sim, cat.CurrentTarget) {
