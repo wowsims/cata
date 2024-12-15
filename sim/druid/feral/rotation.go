@@ -371,11 +371,14 @@ func (cat *FeralDruid) calcBleedRefreshTime(sim *core.Simulation, bleedSpell *dr
 
 	energyEquivalent := expectedDamageGain / cat.Shred.ExpectedInitialDamage(sim, cat.CurrentTarget) * cat.Shred.DefaultCast.Cost
 
+	// Finally, discount the effective Energy cost of the clip based on the number of clipped ticks.
+	discountedRefreshCost := float64(numClippedTicks) / float64(maxTickCount) * bleedSpell.DefaultCast.Cost
+
 	if sim.Log != nil {
-		cat.Log(sim, "%s buff snapshot is worth %.1f Energy", bleedSpell.ShortName, energyEquivalent)
+		cat.Log(sim, "%s buff snapshot is worth %.1f Energy, discounted refresh cost is %.1f Energy.", bleedSpell.ShortName, energyEquivalent, discountedRefreshCost)
 	}
 
-	return core.TernaryDuration(energyEquivalent > bleedSpell.DefaultCast.Cost, targetClipTime, standardRefreshTime)
+	return core.TernaryDuration(energyEquivalent > discountedRefreshCost, targetClipTime, standardRefreshTime)
 }
 
 func (cat *FeralDruid) canMeleeWeave(sim *core.Simulation, regenRate float64, currentEnergy float64, isClearcast bool, upcomingTimers *PoolingActions) bool {
