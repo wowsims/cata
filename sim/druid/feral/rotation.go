@@ -462,7 +462,7 @@ func (cat *FeralDruid) terminateBearWeave(sim *core.Simulation, isClearcast bool
 	}
 
 	// Check Energy pooling leeway
-	nextGCDLength := core.TernaryDuration(cat.Thrash.CanCast(sim, cat.CurrentTarget) || cat.MangleBear.CanCast(sim, cat.CurrentTarget), core.GCDDefault, core.GCDMin)
+	nextGCDLength := core.TernaryDuration(cat.Lacerate.CanCast(sim, cat.CurrentTarget) || cat.MangleBear.CanCast(sim, cat.CurrentTarget), core.GCDDefault, core.GCDMin)
 	smallestWeaveExtension := nextGCDLength + cat.ReactionTime
 	finalEnergy := currentEnergy + smallestWeaveExtension.Seconds()*regenRate
 
@@ -649,8 +649,8 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 			cat.readyToShift = true
 		} else if cat.MangleBear.CanCast(sim, cat.CurrentTarget) {
 			cat.MangleBear.Cast(sim, cat.CurrentTarget)
-		} else if cat.Thrash.CanCast(sim, cat.CurrentTarget) {
-			cat.Thrash.Cast(sim, cat.CurrentTarget)
+		} else if cat.Lacerate.CanCast(sim, cat.CurrentTarget) {
+			cat.Lacerate.Cast(sim, cat.CurrentTarget)
 		} else if cat.FaerieFire.CanCast(sim, cat.CurrentTarget) {
 			cat.FaerieFire.Cast(sim, cat.CurrentTarget)
 		} else {
