@@ -164,7 +164,7 @@ func (cat *FeralDruid) doAoeRotation(sim *core.Simulation) (bool, time.Duration)
 	}
 
 	// If we couldn't cast a Cat Form ability, check if we can bear-weave while pooling
-	if cat.canBearWeave(sim, furorCap, regenRate, curEnergy, &PoolingActions{}, cat.CatForm.DefaultCast.Cost) {
+	if cat.canBearWeave(sim, furorCap, regenRate, curEnergy, curEnergy, &PoolingActions{}, cat.CatForm.DefaultCast.Cost) {
 		cat.readyToShift = true
 		timeToNextAction = 0
 	}
