@@ -505,6 +505,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	regenRate := cat.EnergyRegenPerSecond()
 	isExecutePhase := rotation.BiteDuringExecute && sim.IsExecutePhase25()
 	tfActive := cat.TigersFuryAura.IsActive()
+	berserkActive := cat.BerserkAura.IsActive()
 	t11Active := cat.StrengthOfThePantherAura.IsActive()
 
 	// Prioritize using Rip with omen procs if bleed isnt active
@@ -522,7 +523,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	biteAtEnd := (curCp >= rotation.MinCombosForBite) && ((simTimeRemain < endThreshForClip) || (ripDot.IsActive() && (simTimeRemain-ripDot.RemainingDuration(sim) < baseEndThresh)))
 
 	// Delay Rip refreshes if Tiger's Fury will be usable soon enough for the snapshot to outweigh the lost Rip ticks from waiting
-	if ripNow && !tfActive && !cat.BerserkAura.IsActive() {
+	if ripNow && !tfActive && !berserkActive {
 		buffedTickCount := min(cat.maxRipTicks, int32((simTimeRemain-finalTickLeeway)/ripDot.BaseTickLength))
 		delayBreakpoint := finalTickLeeway + core.DurationFromSeconds(0.15*float64(buffedTickCount)*ripDot.BaseTickLength.Seconds())
 
@@ -583,7 +584,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	}
 
 	// Apply same TF Rip delay logic to Rake as well
-	if rakeNow && !tfActive {
+	if rakeNow && !tfActive && !berserkActive {
 		finalRakeTickLeeway := core.TernaryDuration(rakeDot.IsActive(), rakeDot.TimeUntilNextTick(sim), 0)
 		buffedTickCount := min(rakeDot.BaseTickCount, int32((simTimeRemain-finalRakeTickLeeway)/rakeDot.BaseTickLength))
 		delayBreakpoint := finalRakeTickLeeway + core.DurationFromSeconds(0.15*float64(buffedTickCount)*rakeDot.BaseTickLength.Seconds())
@@ -749,7 +750,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 
 		timeToNextAction = core.DurationFromSeconds((cat.CurrentShredCost() - excessE) / regenRate)
 
-		if cat.BerserkAura.IsActive() {
+		if berserkActive {
 			if curEnergy >= cat.CurrentShredCost() {
 				cat.Shred.Cast(sim, cat.CurrentTarget)
 				return false, 0
