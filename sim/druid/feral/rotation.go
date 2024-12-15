@@ -411,8 +411,13 @@ func (cat *FeralDruid) canMeleeWeave(sim *core.Simulation, regenRate float64, cu
 	return weaveEnd+timeToDump < sim.Duration
 }
 
-func (cat *FeralDruid) canBearWeave(sim *core.Simulation, furorCap float64, regenRate float64, currentEnergy float64, upcomingTimers *PoolingActions, shiftCost float64) bool {
+func (cat *FeralDruid) canBearWeave(sim *core.Simulation, furorCap float64, regenRate float64, currentEnergy float64, excessEnergy float64, upcomingTimers *PoolingActions, shiftCost float64) bool {
 	if !cat.Rotation.BearWeave || cat.ClearcastingAura.IsActive() || cat.BerserkAura.IsActive() || (cat.StampedeCatAura.IsActive() && (cat.Rotation.RotationType == proto.FeralDruid_Rotation_SingleTarget)) {
+		return false
+	}
+
+	// If we can Shred now and then weave on the next GCD, prefer that.
+	if excessEnergy > cat.Shred.DefaultCast.Cost {
 		return false
 	}
 
@@ -639,7 +644,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 
 	// Check bear-weaving conditions
 	furorCap := min(float64(100*cat.Talents.Furor)/3.0, 100.0-1.5*regenRate)
-	bearWeaveNow := cat.canBearWeave(sim, furorCap, regenRate, curEnergy, pendingPool, shiftCost)
+	bearWeaveNow := cat.canBearWeave(sim, furorCap, regenRate, curEnergy, excessE, pendingPool, shiftCost)
 	// Main  decision tree starts here
 	timeToNextAction := time.Duration(0)
 
