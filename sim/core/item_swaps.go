@@ -163,7 +163,6 @@ func (swap *ItemSwap) RegisterOnSwapItemForItemProcEffect(itemID int32, aura *Au
 	character := swap.character
 	character.RegisterOnItemSwap(slots, func(sim *Simulation, slot proto.ItemSlot) {
 		procMask := character.GetProcMaskForItem(itemID)
-
 		if procMask == ProcMaskUnknown {
 			aura.Deactivate(sim)
 		} else {

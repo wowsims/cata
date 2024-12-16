@@ -47,20 +47,20 @@ type ProcTrigger struct {
 	ExtraCondition  ProcExtraCondition
 }
 
-func ApplyProcTriggerCallback(unit *Unit, aura *Aura, config ProcTrigger) {
+func ApplyProcTriggerCallback(unit *Unit, procAura *Aura, config ProcTrigger) {
 	var icd Cooldown
 	if config.ICD != 0 {
 		icd = Cooldown{
 			Timer:    unit.NewTimer(),
 			Duration: config.ICD,
 		}
-		aura.Icd = &icd
+		procAura.Icd = &icd
 	}
 
 	var ppmm PPMManager
 	if config.PPM > 0 {
 		ppmm = unit.AutoAttacks.NewPPMManager(config.PPM, config.ProcMask)
-		aura.Ppmm = &ppmm
+		procAura.Ppmm = &ppmm
 	}
 
 	handler := config.Handler
@@ -106,22 +106,22 @@ func ApplyProcTriggerCallback(unit *Unit, aura *Aura, config ProcTrigger) {
 	}
 
 	if config.Callback.Matches(CallbackOnSpellHitDealt) {
-		aura.OnSpellHitDealt = callback
+		procAura.OnSpellHitDealt = callback
 	}
 	if config.Callback.Matches(CallbackOnSpellHitTaken) {
-		aura.OnSpellHitTaken = callback
+		procAura.OnSpellHitTaken = callback
 	}
 	if config.Callback.Matches(CallbackOnPeriodicDamageDealt) {
-		aura.OnPeriodicDamageDealt = callback
+		procAura.OnPeriodicDamageDealt = callback
 	}
 	if config.Callback.Matches(CallbackOnHealDealt) {
-		aura.OnHealDealt = callback
+		procAura.OnHealDealt = callback
 	}
 	if config.Callback.Matches(CallbackOnPeriodicHealDealt) {
-		aura.OnPeriodicHealDealt = callback
+		procAura.OnPeriodicHealDealt = callback
 	}
 	if config.Callback.Matches(CallbackOnCastComplete) {
-		aura.OnCastComplete = func(aura *Aura, sim *Simulation, spell *Spell) {
+		procAura.OnCastComplete = func(aura *Aura, sim *Simulation, spell *Spell) {
 			if config.SpellFlags != SpellFlagNone && !spell.Flags.Matches(config.SpellFlags) {
 				return
 			}
@@ -148,7 +148,7 @@ func ApplyProcTriggerCallback(unit *Unit, aura *Aura, config ProcTrigger) {
 		}
 	}
 	if config.Callback.Matches(CallbackOnApplyEffects) {
-		aura.OnApplyEffects = func(aura *Aura, sim *Simulation, target *Unit, spell *Spell) {
+		procAura.OnApplyEffects = func(aura *Aura, sim *Simulation, target *Unit, spell *Spell) {
 			if config.SpellFlags != SpellFlagNone && !spell.Flags.Matches(config.SpellFlags) {
 				return
 			}

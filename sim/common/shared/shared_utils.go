@@ -1,9 +1,11 @@
 package shared
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -34,7 +36,9 @@ type DamageEffect struct {
 	MinDmg           float64
 	MaxDmg           float64
 	BonusCoefficient float64
+	IsMelee          bool
 	ProcMask         core.ProcMask
+	Outcome          OutcomeType
 }
 
 type ExtraSpellInfo struct {
@@ -165,9 +169,16 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 			Handler:    handler,
 		})
 
+		// if config.ICD != 0 {
 		procAura.Icd = triggerAura.Icd
-		character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
-		character.ItemSwap.RegisterOnSwapItemForItemProcEffect(config.ID, triggerAura, core.EligibleSlotsForItem(core.GetItemByID(config.ID), false))
+		// }
+
+		eligibleSlotsForItem := core.EligibleSlotsForItem(core.GetItemByID(config.ID), false)
+		if slices.Contains(eligibleSlotsForItem, proto.ItemSlot_ItemSlotTrinket1) || slices.Contains(eligibleSlotsForItem, proto.ItemSlot_ItemSlotTrinket2) {
+			character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
+		}
+
+		character.ItemSwap.RegisterOnSwapItemForItemProcEffect(config.ID, triggerAura, eligibleSlotsForItem)
 	})
 }
 
@@ -402,6 +413,100 @@ func NewStackingStatBonusEffect(config StackingStatBonusEffect) {
 	})
 }
 
+type EnchantProcStatBonusEffect struct {
+	EnchantID int32
+	Slots     []proto.ItemSlot
+	ProcStatBonusEffect
+}
+
+func factory_EnchantStatBonusEffect(config EnchantProcStatBonusEffect, extraSpell func(agent core.Agent) ExtraSpellInfo) {
+	core.NewEnchantEffect(config.EnchantID, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		procID := core.ActionID{SpellID: config.AuraID}
+		if procID.IsEmptyAction() {
+			procID = core.ActionID{ItemID: config.ID}
+		}
+		procAura := character.NewTemporaryStatsAura(config.Name+" Proc", procID, config.Bonus, config.Duration)
+
+		if config.PPM != 0 && config.ProcMask == core.ProcMaskUnknown {
+			config.ProcMask = character.GetProcMaskForEnchant(config.EnchantID)
+		}
+
+		var procSpell ExtraSpellInfo
+		if extraSpell != nil {
+			procSpell = extraSpell(agent)
+		}
+
+		handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			procAura.Activate(sim)
+			if procSpell.Spell != nil {
+				procSpell.Trigger(sim, spell, result)
+			}
+		}
+
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			ActionID:   core.ActionID{SpellID: config.ID},
+			Name:       config.Name,
+			Callback:   config.Callback,
+			ProcMask:   config.ProcMask,
+			Outcome:    config.Outcome,
+			Harmful:    config.Harmful,
+			ProcChance: config.ProcChance,
+			PPM:        config.PPM,
+			ICD:        config.ICD,
+			Handler:    handler,
+		})
+
+		if config.ICD != 0 {
+			procAura.Icd = triggerAura.Icd
+		}
+
+		if config.PPM != 0 {
+			character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(config.EnchantID, config.PPM, triggerAura.Ppmm, triggerAura)
+		} else {
+			character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(config.EnchantID, triggerAura, config.Slots)
+		}
+	})
+}
+
+func NewEnchantProcStatBonusEffect(config EnchantProcStatBonusEffect) {
+	factory_EnchantStatBonusEffect(config, nil)
+}
+
+func NewEnchantProcStatBonusEffectWithDamageProc(config EnchantProcStatBonusEffect, damage DamageEffect) {
+	procMask := core.ProcMaskEmpty
+	if damage.ProcMask != core.ProcMaskUnknown {
+		procMask = damage.ProcMask
+	}
+
+	factory_EnchantStatBonusEffect(config, func(agent core.Agent) ExtraSpellInfo {
+		character := agent.GetCharacter()
+		critMultiplier := core.TernaryFloat64(damage.IsMelee, character.DefaultMeleeCritMultiplier(), character.DefaultSpellCritMultiplier())
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:                 core.ActionID{SpellID: damage.SpellID},
+			SpellSchool:              damage.School,
+			ProcMask:                 procMask,
+			DamageMultiplier:         1,
+			CritMultiplier:           critMultiplier,
+			DamageMultiplierAdditive: 1,
+			ThreatMultiplier:         1,
+			BonusCoefficient:         damage.BonusCoefficient,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, sim.Roll(damage.MinDmg, damage.MaxDmg), GetOutcome(spell, damage.Outcome))
+			},
+		})
+
+		return ExtraSpellInfo{
+			Spell: procSpell,
+			Trigger: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				procSpell.Cast(sim, result.Target)
+			},
+		}
+	})
+}
+
 type OutcomeType uint64
 
 const (
@@ -412,6 +517,7 @@ const (
 	OutcomeSpellCanCrit
 	OutcomeSpellNoCrit
 	OutcomeSpellNoMissCanCrit
+	OutcomeRangedCanCrit
 )
 
 type ProcDamageEffect struct {
@@ -422,6 +528,7 @@ type ProcDamageEffect struct {
 	School  core.SpellSchool
 	MinDmg  float64
 	MaxDmg  float64
+	IsMelee bool
 	Flags   core.SpellFlag
 	Outcome OutcomeType
 }
@@ -440,6 +547,8 @@ func GetOutcome(spell *core.Spell, outcome OutcomeType) core.OutcomeApplier {
 		return spell.OutcomeMagicCrit
 	case OutcomeSpellNoCrit:
 		return spell.OutcomeMagicHit
+	case OutcomeRangedCanCrit:
+		return spell.OutcomeRangedHitAndCrit
 	default:
 		return spell.OutcomeMagicHitAndCrit
 	}
@@ -476,5 +585,49 @@ func NewProcDamageEffect(config ProcDamageEffect) {
 			damageSpell.Cast(sim, character.CurrentTarget)
 		}
 		core.MakeProcTriggerAura(&character.Unit, triggerConfig)
+	})
+}
+
+type EnchantProcDamageEffect struct {
+	ProcDamageEffect
+	EnchantID int32
+	Slots     []proto.ItemSlot
+}
+
+func NewEnchantProcDamageEffect(config EnchantProcDamageEffect) {
+	core.NewEnchantEffect(config.EnchantID, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		critMultiplier := core.TernaryFloat64(config.IsMelee, character.DefaultMeleeCritMultiplier(), character.DefaultSpellCritMultiplier())
+
+		minDmg := config.MinDmg
+		maxDmg := config.MaxDmg
+
+		if core.ActionID.IsEmptyAction(config.Trigger.ActionID) {
+			config.Trigger.ActionID = core.ActionID{SpellID: config.SpellID}
+		}
+
+		damageSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: config.SpellID},
+			SpellSchool: config.School,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       config.Flags,
+
+			DamageMultiplier: 1,
+			CritMultiplier:   critMultiplier,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, sim.Roll(minDmg, maxDmg), GetOutcome(spell, config.Outcome))
+			},
+		})
+
+		triggerConfig := config.Trigger
+		triggerConfig.Handler = func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+			damageSpell.Cast(sim, character.CurrentTarget)
+		}
+		aura := core.MakeProcTriggerAura(&character.Unit, triggerConfig)
+
+		character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(config.EnchantID, aura, config.Slots)
 	})
 }
