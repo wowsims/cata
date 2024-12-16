@@ -81,12 +81,12 @@ func (fb *focusBar) FocusRegenPerSecond() float64 {
 	}
 }
 
-func (fb *focusBar) TimeToMaxFocus() time.Duration {
-	if fb.currentFocus == fb.maxFocus {
+func (fb *focusBar) TimeToTargetFocus(targetFocus float64) time.Duration {
+	if fb.currentFocus >= targetFocus {
 		return time.Duration(0)
 	}
 
-	return DurationFromSeconds((fb.maxFocus - fb.currentFocus) / fb.FocusRegenPerSecond())
+	return DurationFromSeconds((targetFocus - fb.currentFocus) / fb.FocusRegenPerSecond())
 }
 
 func (fb *focusBar) getTotalRegenMultiplier() float64 {

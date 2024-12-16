@@ -132,10 +132,10 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		value = rot.newValueEnergyRegenPerSecond(config.GetEnergyRegenPerSecond(), config.Uuid)
 	case *proto.APLValue_FocusRegenPerSecond:
 		value = rot.newValueFocusRegenPerSecond(config.GetFocusRegenPerSecond(), config.Uuid)
-	case *proto.APLValue_EnergyTimeToMax:
-		value = rot.newValueEnergyTimeToMax(config.GetEnergyTimeToMax(), config.Uuid)
-	case *proto.APLValue_FocusTimeToMax:
-		value = rot.newValueFocusTimeToMax(config.GetFocusTimeToMax(), config.Uuid)
+	case *proto.APLValue_EnergyTimeToTarget:
+		value = rot.newValueEnergyTimeToTarget(config.GetEnergyTimeToTarget(), config.Uuid)
+	case *proto.APLValue_FocusTimeToTarget:
+		value = rot.newValueFocusTimeToTarget(config.GetFocusTimeToTarget(), config.Uuid)
 
 	// Resources Runes
 	case *proto.APLValue_CurrentRuneCount:

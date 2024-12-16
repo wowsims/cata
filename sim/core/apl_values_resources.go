@@ -222,29 +222,37 @@ func (value *APLValueFocusRegenPerSecond) String() string {
 	return "Focus Regen Per Second"
 }
 
-type APLValueFocusTimeToMax struct {
+type APLValueFocusTimeToTarget struct {
 	DefaultAPLValueImpl
-	unit *Unit
+	unit        *Unit
+	targetFocus APLValue
 }
 
-func (rot *APLRotation) newValueFocusTimeToMax(_ *proto.APLValueFocusTimeToMax, uuid *proto.UUID) APLValue {
+func (rot *APLRotation) newValueFocusTimeToTarget(config *proto.APLValueFocusTimeToTarget, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasFocusBar() {
 		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Focus", unit.Label)
 		return nil
 	}
-	return &APLValueFocusTimeToMax{
-		unit: unit,
+
+	targetFocus := rot.coerceTo(rot.newAPLValue(config.TargetFocus), proto.APLValueType_ValueTypeFloat)
+	if targetFocus == nil {
+		return nil
+	}
+
+	return &APLValueFocusTimeToTarget{
+		unit:        unit,
+		targetFocus: targetFocus,
 	}
 }
-func (value *APLValueFocusTimeToMax) Type() proto.APLValueType {
+func (value *APLValueFocusTimeToTarget) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeDuration
 }
-func (value *APLValueFocusTimeToMax) GetDuration(sim *Simulation) time.Duration {
-	return value.unit.TimeToMaxFocus()
+func (value *APLValueFocusTimeToTarget) GetDuration(sim *Simulation) time.Duration {
+	return value.unit.TimeToTargetFocus(value.targetFocus.GetFloat(sim))
 }
-func (value *APLValueFocusTimeToMax) String() string {
-	return "Estimated Time To Max Focus"
+func (value *APLValueFocusTimeToTarget) String() string {
+	return "Estimated Time To Target Focus"
 }
 
 type APLValueCurrentEnergy struct {
@@ -322,29 +330,37 @@ func (value *APLValueEnergyRegenPerSecond) String() string {
 	return "Energy Regen Per Second"
 }
 
-type APLValueEnergyTimeToMax struct {
+type APLValueEnergyTimeToTarget struct {
 	DefaultAPLValueImpl
-	unit *Unit
+	unit         *Unit
+	targetEnergy APLValue
 }
 
-func (rot *APLRotation) newValueEnergyTimeToMax(_ *proto.APLValueEnergyTimeToMax, uuid *proto.UUID) APLValue {
+func (rot *APLRotation) newValueEnergyTimeToTarget(config *proto.APLValueEnergyTimeToTarget, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasEnergyBar() {
 		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Energy", unit.Label)
 		return nil
 	}
-	return &APLValueEnergyTimeToMax{
-		unit: unit,
+
+	targetEnergy := rot.coerceTo(rot.newAPLValue(config.TargetEnergy), proto.APLValueType_ValueTypeFloat)
+	if targetEnergy == nil {
+		return nil
+	}
+
+	return &APLValueEnergyTimeToTarget{
+		unit:         unit,
+		targetEnergy: targetEnergy,
 	}
 }
-func (value *APLValueEnergyTimeToMax) Type() proto.APLValueType {
+func (value *APLValueEnergyTimeToTarget) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeDuration
 }
-func (value *APLValueEnergyTimeToMax) GetDuration(sim *Simulation) time.Duration {
-	return value.unit.TimeToMaxEnergy()
+func (value *APLValueEnergyTimeToTarget) GetDuration(sim *Simulation) time.Duration {
+	return value.unit.TimeToTargetEnergy(value.targetEnergy.GetFloat(sim))
 }
-func (value *APLValueEnergyTimeToMax) String() string {
-	return "Estimated Time To Max Energy"
+func (value *APLValueEnergyTimeToTarget) String() string {
+	return "Estimated Time To Target Energy"
 }
 
 type APLValueCurrentComboPoints struct {

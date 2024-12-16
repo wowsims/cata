@@ -47,9 +47,9 @@ import {
 	APLValueDotRemainingTime,
 	APLValueDotTickFrequency,
 	APLValueEnergyRegenPerSecond,
-	APLValueEnergyTimeToMax,
+	APLValueEnergyTimeToTarget,
 	APLValueFocusRegenPerSecond,
-	APLValueFocusTimeToMax,
+	APLValueFocusTimeToTarget,
 	APLValueFrontOfTarget,
 	APLValueGCDIsReady,
 	APLValueGCDTimeToReady,
@@ -725,13 +725,13 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassHunter,
 		fields: [],
 	}),
-	focusTimeToMax: inputBuilder({
-		label: 'Estimated Time To Max Focus',
+	focusTimeToTarget: inputBuilder({
+		label: 'Estimated Time To Target Focus',
 		submenu: ['Resources', 'Focus'],
-		shortDescription: 'Estimated time until max Focus is reached.',
-		newValue: APLValueFocusTimeToMax.create,
+		shortDescription: 'Estimated time until target Focus is reached, will return 0 if at or above target.',
+		newValue: APLValueFocusTimeToTarget.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassHunter,
-		fields: [],
+		fields: [valueFieldConfig('targetFocus')],
 	}),
 	currentEnergy: inputBuilder({
 		label: 'Current Energy',
@@ -769,17 +769,17 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		},
 		fields: [],
 	}),
-	energyTimeToMax: inputBuilder({
-		label: 'Estimated Time To Max Energy',
+	energyTimeToTarget: inputBuilder({
+		label: 'Estimated Time To Target Energy',
 		submenu: ['Resources', 'Energy'],
-		shortDescription: 'Estimated time until max Energy is reached.',
-		newValue: APLValueEnergyTimeToMax.create,
+		shortDescription: 'Estimated time until target Energy is reached, will return 0 if at or above target.',
+		newValue: APLValueEnergyTimeToTarget.create,
 		includeIf(player: Player<any>, _isPrepull: boolean) {
 			const clss = player.getClass();
 			const spec = player.getSpec();
 			return spec === Spec.SpecFeralDruid || spec === Spec.SpecGuardianDruid || clss === Class.ClassRogue;
 		},
-		fields: [],
+		fields: [valueFieldConfig('targetEnergy')],
 	}),
 	currentComboPoints: inputBuilder({
 		label: 'Combo Points',

@@ -127,8 +127,8 @@ message APLValue {
 		APLValueMaxRunicPower max_runic_power = 86;
 		APLValueEnergyRegenPerSecond energy_regen_per_second = 90;
 		APLValueFocusRegenPerSecond focus_regen_per_second = 91;
-		APLValueEnergyTimeToMax energy_time_to_max = 92;
-		APLValueFocusTimeToMax focus_time_to_max = 93;
+		APLValueEnergyTimeToTarget energy_time_to_target = 92;
+		APLValueFocusTimeToTarget focus_time_to_target = 93;
 
 		// Unit values
 		APLValueUnitIsMoving unit_is_moving = 72;
@@ -450,8 +450,12 @@ message APLValueMaxFocus {}
 message APLValueMaxRunicPower {}
 message APLValueEnergyRegenPerSecond {}
 message APLValueFocusRegenPerSecond {}
-message APLValueEnergyTimeToMax {}
-message APLValueFocusTimeToMax {}
+message APLValueEnergyTimeToTarget {
+	APLValue target_energy = 1;
+}
+message APLValueFocusTimeToTarget {
+	APLValue target_focus = 1;
+}
 
 enum APLValueRuneType {
     RuneUnknown = 0;

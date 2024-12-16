@@ -68,12 +68,12 @@ func (eb *energyBar) EnergyRegenPerSecond() float64 {
 	return 10.0 * eb.hasteRatingMultiplier * eb.energyRegenMultiplier
 }
 
-func (eb *energyBar) TimeToMaxEnergy() time.Duration {
-	if eb.currentEnergy == eb.maxEnergy {
+func (eb *energyBar) TimeToTargetEnergy(targetEnergy float64) time.Duration {
+	if eb.currentEnergy >= targetEnergy {
 		return time.Duration(0)
 	}
 
-	return DurationFromSeconds((eb.maxEnergy - eb.currentEnergy) / eb.EnergyRegenPerSecond())
+	return DurationFromSeconds((targetEnergy - eb.currentEnergy) / eb.EnergyRegenPerSecond())
 }
 
 func (eb *energyBar) AddEnergy(sim *Simulation, amount float64, metrics *ResourceMetrics) {
