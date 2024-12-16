@@ -163,7 +163,7 @@ func (rp *runicPowerBar) CurrentRunicPower() float64 {
 	return rp.currentRunicPower
 }
 
-func (rp *runicPowerBar) MaxRunicPower() float64 {
+func (rp *runicPowerBar) MaximumRunicPower() float64 {
 	return rp.maxRunicPower
 }
 
