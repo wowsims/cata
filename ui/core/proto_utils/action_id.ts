@@ -263,6 +263,9 @@ export class ActionId {
 		}
 
 		switch (baseName) {
+			case 'Minor Speed':
+				name = 'Minor Run Speed (8%)';
+				break;
 			case 'Explosive Shot':
 				if (this.spellId == 53301) {
 					name += ' (First)';
@@ -831,7 +834,7 @@ export class ActionId {
 	get spellIconOverride(): ActionId | null {
 		const override = spellIdIconOverrides.get(JSON.stringify({ spellId: this.spellId }));
 		if (!override) return null;
-		return override.itemId ? ActionId.fromItemId(override.itemId) : ActionId.fromItemId(override.spellId!);
+		return override.itemId ? ActionId.fromItemId(override.itemId) : ActionId.fromSpellId(override.spellId!);
 	}
 
 	get spellTooltipOverride(): ActionId | null {
@@ -852,6 +855,7 @@ const spellIdIconOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 90299 }), { itemId: 65214 }], // Reinforced Sapphirium Battleplate (4pc bonus)
 	[JSON.stringify({ spellId: 99116 }), { itemId: 71512 }], // Battleplate of Immolation (4pc bonus)
 	[JSON.stringify({ spellId: 105767 }), { itemId: 78727 }], // Battleplate of Radiant Glory (2pc bonus)
+	[JSON.stringify({ spellId: 13889 }), { spellId: 109709 }], // Minor Run Speed
 ]);
 
 const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([

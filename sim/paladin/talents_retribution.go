@@ -9,6 +9,7 @@ import (
 func (paladin *Paladin) applyRetributionTalents() {
 	paladin.applyCrusade()
 	paladin.applyRuleOfLaw()
+	paladin.applyPursuitOfJustice()
 	paladin.applySanctityOfBattle()
 	paladin.applySealsOfCommand()
 	paladin.applySanctifiedWrath()
@@ -44,6 +45,16 @@ func (paladin *Paladin) applyRuleOfLaw() {
 		Kind:       core.SpellMod_BonusCrit_Percent,
 		FloatValue: 5 * float64(paladin.Talents.RuleOfLaw),
 	})
+}
+
+func (paladin *Paladin) applyPursuitOfJustice() {
+	if paladin.Talents.PursuitOfJustice == 0 {
+		return
+	}
+
+	spellID := []int32{0, 26022, 26023}[paladin.Talents.PursuitOfJustice]
+	multiplier := []float64{0, 0.08, 0.15}[paladin.Talents.PursuitOfJustice]
+	paladin.NewMovementSpeedAura("Pursuit of Justice", core.ActionID{SpellID: spellID}, multiplier)
 }
 
 func (paladin *Paladin) applySanctityOfBattle() {
