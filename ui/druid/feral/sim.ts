@@ -135,6 +135,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		const potion = APLAction.fromJsonString(`{"condition":{"or":{"vals":[{"and":{"vals":[{"auraIsActive":{"auraId":{"spellId":5217}}},{"cmp":{"op":"OpLt","lhs":{"remainingTime":{}},"rhs":{"math":{"op":"OpAdd","lhs":{"spellTimeToReady":{"spellId":{"spellId":50334}}},"rhs":{"const":{"val":"26s"}}}}}}]}},{"cmp":{"op":"OpLt","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"26s"}}}},{"auraIsActive":{"auraId":{"spellId":50334}}}]}},"castSpell":{"spellId":{"itemId":58145}}}`);
 		const trollRacial = APLAction.fromJsonString(`{"condition":{"auraIsActive":{"auraId":{"spellId":50334}}},"castSpell":{"spellId":{"spellId":26297}}}`);
 		const blockZerk = APLAction.fromJsonString(`{"condition":{"const":{"val":"false"}},"castSpell":{"spellId":{"spellId":50334}}}`);
+		const blockEnrage = APLAction.fromJsonString(`{"condition":{"const":{"val":"false"}},"castSpell":{"spellId":{"spellId":5229}}}`);
 		const doRotation = APLAction.fromJsonString(
 			`{"catOptimalRotationAction":{"rotationType":${simple.rotationType},"manualParams":${simple.manualParams},"maintainFaerieFire":${
 				simple.maintainFaerieFire
@@ -153,6 +154,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 				singleTarget ? potion : null,
 				singleTarget ? trollRacial : null,
 				blockZerk,
+				blockEnrage,
 				doRotation,
 				autocasts,
 			].filter(a => a) as Array<APLAction>),
@@ -168,7 +170,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		});
 	},
 
-	hiddenMCDs: [50334],
+	hiddenMCDs: [50334, 5229],
 
 	raidSimPresets: [
 		{
