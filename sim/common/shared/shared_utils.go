@@ -88,7 +88,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 
 		var itemSwapProcCondition core.CustomStatBuffProcCondition
 		if character.ItemSwap.IsEnabled() && character.ItemSwap.ItemExistsInSwapSet(config.ID) {
-			itemSwapProcCondition = func(sim *core.Simulation, aura *core.Aura) bool {
+			itemSwapProcCondition = func(_ *core.Simulation, aura *core.Aura) bool {
 				return character.ItemSwap.HasItemEquipped(config.ID)
 			}
 		}
@@ -107,7 +107,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 			procAura.CustomProcCondition = itemSwapProcCondition
 		}
 
-		if config.CustomProcCondition != nil {
+		if procAura.CustomProcCondition != nil {
 			customHandler = func(sim *core.Simulation, procAura *core.StatBuffAura) {
 				if procAura.CanProc(sim) {
 					procAura.Activate(sim)

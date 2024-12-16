@@ -643,7 +643,6 @@ func (character *Character) doneIteration(sim *Simulation) {
 		character.Metrics.AddFinalPetMetrics(&pet.Metrics)
 	}
 
-	character.ItemSwap.doneIteration(sim)
 	character.Unit.doneIteration(sim)
 }
 

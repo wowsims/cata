@@ -167,7 +167,9 @@ func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsR
 		testIdx /= len(combos.ItemSwapSets)
 		itemSwapSetCombo = combos.ItemSwapSets[itemSwapSetIdx]
 		enableItemSwap = true
-		testNameParts = append(testNameParts, itemSwapSetCombo.Label)
+		if len(combos.ItemSwapSets) > 1 {
+			testNameParts = append(testNameParts, itemSwapSetCombo.Label)
+		}
 	}
 
 	buffsIdx := testIdx % len(combos.Buffs)

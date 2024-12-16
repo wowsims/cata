@@ -2058,84 +2058,84 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestFire-Settings-Troll-p3_fire-Fire-fire--FullBuffs-0.0yards-LongMultiTarget"
+ key: "TestFire-Settings-Troll-p3_fire-Fire-fire-FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 97578.28393
   tps: 62069.46862
  }
 }
 dps_results: {
- key: "TestFire-Settings-Troll-p3_fire-Fire-fire--FullBuffs-0.0yards-LongSingleTarget"
+ key: "TestFire-Settings-Troll-p3_fire-Fire-fire-FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 39234.46869
   tps: 34964.17853
  }
 }
 dps_results: {
- key: "TestFire-Settings-Troll-p3_fire-Fire-fire--FullBuffs-0.0yards-ShortSingleTarget"
+ key: "TestFire-Settings-Troll-p3_fire-Fire-fire-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 50200.88547
   tps: 45055.37509
  }
 }
 dps_results: {
- key: "TestFire-Settings-Troll-p3_fire-Fire-fire--NoBuffs-0.0yards-LongMultiTarget"
+ key: "TestFire-Settings-Troll-p3_fire-Fire-fire-NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 68170.16139
   tps: 45334.71048
  }
 }
 dps_results: {
- key: "TestFire-Settings-Troll-p3_fire-Fire-fire--NoBuffs-0.0yards-LongSingleTarget"
+ key: "TestFire-Settings-Troll-p3_fire-Fire-fire-NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 27446.2762
   tps: 24335.30703
  }
 }
 dps_results: {
- key: "TestFire-Settings-Troll-p3_fire-Fire-fire--NoBuffs-0.0yards-ShortSingleTarget"
+ key: "TestFire-Settings-Troll-p3_fire-Fire-fire-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 30223.26691
   tps: 26647.08263
  }
 }
 dps_results: {
- key: "TestFire-Settings-Worgen-p3_fire-Fire-fire--FullBuffs-0.0yards-LongMultiTarget"
+ key: "TestFire-Settings-Worgen-p3_fire-Fire-fire-FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 92850.97693
   tps: 60029.84011
  }
 }
 dps_results: {
- key: "TestFire-Settings-Worgen-p3_fire-Fire-fire--FullBuffs-0.0yards-LongSingleTarget"
+ key: "TestFire-Settings-Worgen-p3_fire-Fire-fire-FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 37884.23584
   tps: 33670.35537
  }
 }
 dps_results: {
- key: "TestFire-Settings-Worgen-p3_fire-Fire-fire--FullBuffs-0.0yards-ShortSingleTarget"
+ key: "TestFire-Settings-Worgen-p3_fire-Fire-fire-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 45202.68398
   tps: 40046.9221
  }
 }
 dps_results: {
- key: "TestFire-Settings-Worgen-p3_fire-Fire-fire--NoBuffs-0.0yards-LongMultiTarget"
+ key: "TestFire-Settings-Worgen-p3_fire-Fire-fire-NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 68585.37495
   tps: 45378.81765
  }
 }
 dps_results: {
- key: "TestFire-Settings-Worgen-p3_fire-Fire-fire--NoBuffs-0.0yards-LongSingleTarget"
+ key: "TestFire-Settings-Worgen-p3_fire-Fire-fire-NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 26414.36298
   tps: 23393.68201
  }
 }
 dps_results: {
- key: "TestFire-Settings-Worgen-p3_fire-Fire-fire--NoBuffs-0.0yards-ShortSingleTarget"
+ key: "TestFire-Settings-Worgen-p3_fire-Fire-fire-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 27767.59615
   tps: 24433.67382

@@ -302,13 +302,13 @@ func (action *APLActionCastAllStatBuffCooldowns) processMajorCooldowns() {
 		}
 	})
 }
-func (action *APLActionCastAllStatBuffCooldowns) getEquippedSubActions(actions []*APLActionCastSpell) []*APLActionCastSpell {
-	return FilterSlice(actions, func(subAction *APLActionCastSpell) bool {
+func (action *APLActionCastAllStatBuffCooldowns) getEquippedSubActions() []*APLActionCastSpell {
+	return FilterSlice(action.allSubactions, func(subAction *APLActionCastSpell) bool {
 		return !subAction.spell.Flags.Matches(SpellFlagSwapped)
 	})
 }
 func (action *APLActionCastAllStatBuffCooldowns) IsReady(sim *Simulation) bool {
-	action.allEquippedSubactions = action.getEquippedSubActions(action.allSubactions)
+	action.allEquippedSubactions = action.getEquippedSubActions()
 	action.readySubactions = FilterSlice(action.allEquippedSubactions, func(subAction *APLActionCastSpell) bool {
 		return subAction.IsReady(sim)
 	})
@@ -316,8 +316,11 @@ func (action *APLActionCastAllStatBuffCooldowns) IsReady(sim *Simulation) bool {
 	return Ternary(action.character.Rotation.inSequence, len(action.readySubactions) == len(action.allEquippedSubactions), len(action.readySubactions) > 0)
 }
 func (action *APLActionCastAllStatBuffCooldowns) Execute(sim *Simulation) {
-	action.allEquippedSubactions = action.getEquippedSubActions(action.allSubactions)
-	actionSetToUse := Ternary(sim.CurrentTime < 0, action.allEquippedSubactions, action.readySubactions)
+	actionSetToUse := action.readySubactions
+
+	if sim.CurrentTime < 0 {
+		actionSetToUse = action.getEquippedSubActions()
+	}
 
 	for _, subaction := range actionSetToUse {
 		subaction.Execute(sim)

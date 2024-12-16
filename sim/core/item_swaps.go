@@ -272,12 +272,7 @@ func (swap *ItemSwap) GetUnequippedItemBySlot(slot proto.ItemSlot) *Item {
 }
 
 func (swap *ItemSwap) GetItemSwapItemSlot(itemID int32) proto.ItemSlot {
-	var slotsToCheck Equipment
-	if swap.IsSwapped() {
-		slotsToCheck = swap.originalEquip
-	} else {
-		slotsToCheck = swap.swapEquip
-	}
+	slotsToCheck := Ternary(swap.IsSwapped(), swap.originalEquip, swap.swapEquip)
 	for slot, item := range slotsToCheck {
 		if item.ID == itemID {
 			return proto.ItemSlot(slot)
@@ -349,8 +344,7 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 
 		// If GCD is ready then use the GCD, otherwise we assume it's being used along side a spell.
 		if character.GCD.IsReady(sim) {
-			newGCD := sim.CurrentTime + 1500*time.Millisecond
-			character.SetGCDTimer(sim, newGCD)
+			character.ExtendGCDUntil(sim, max(character.NextGCDAt(), sim.CurrentTime+GCDDefault))
 		}
 	}
 
@@ -430,12 +424,6 @@ func (swap *ItemSwap) reset(sim *Simulation) {
 	// This is used to set the initial spell flags for unequipped items.
 	// Reset is called before the first iteration.
 	swap.initialized = true
-}
-
-func (swap *ItemSwap) doneIteration(_ *Simulation) {
-	if !swap.IsEnabled() || !swap.IsSwapped() {
-		return
-	}
 }
 
 func toItem(itemSpec *proto.ItemSpec) Item {

@@ -2058,42 +2058,42 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestArcane-Settings-Troll-p3-Arcane-arcane--FullBuffs-0.0yards-LongMultiTarget"
+ key: "TestArcane-Settings-Troll-p3-Arcane-arcane-FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 39369.26986
   tps: 52234.00664
  }
 }
 dps_results: {
- key: "TestArcane-Settings-Troll-p3-Arcane-arcane--FullBuffs-0.0yards-LongSingleTarget"
+ key: "TestArcane-Settings-Troll-p3-Arcane-arcane-FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 39387.35327
   tps: 36087.42152
  }
 }
 dps_results: {
- key: "TestArcane-Settings-Troll-p3-Arcane-arcane--FullBuffs-0.0yards-ShortSingleTarget"
+ key: "TestArcane-Settings-Troll-p3-Arcane-arcane-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 58246.22784
   tps: 54148.68182
  }
 }
 dps_results: {
- key: "TestArcane-Settings-Troll-p3-Arcane-arcane--NoBuffs-0.0yards-LongMultiTarget"
+ key: "TestArcane-Settings-Troll-p3-Arcane-arcane-NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 25161.59514
   tps: 38550.61187
  }
 }
 dps_results: {
- key: "TestArcane-Settings-Troll-p3-Arcane-arcane--NoBuffs-0.0yards-LongSingleTarget"
+ key: "TestArcane-Settings-Troll-p3-Arcane-arcane-NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 25161.59514
   tps: 22996.26214
  }
 }
 dps_results: {
- key: "TestArcane-Settings-Troll-p3-Arcane-arcane--NoBuffs-0.0yards-ShortSingleTarget"
+ key: "TestArcane-Settings-Troll-p3-Arcane-arcane-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 31962.09909
   tps: 29595.29282

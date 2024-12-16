@@ -1971,168 +1971,168 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Goblin-p3-Destruction Warlock-default--FullBuffs-25.0yards-LongMultiTarget"
+ key: "TestDestruction-Settings-Goblin-p3-Destruction Warlock-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
   dps: 41864.92935
   tps: 42105.90851
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Goblin-p3-Destruction Warlock-default--FullBuffs-25.0yards-LongSingleTarget"
+ key: "TestDestruction-Settings-Goblin-p3-Destruction Warlock-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
   dps: 40031.20265
   tps: 23943.78893
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Goblin-p3-Destruction Warlock-default--FullBuffs-25.0yards-ShortSingleTarget"
+ key: "TestDestruction-Settings-Goblin-p3-Destruction Warlock-default-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
   dps: 50419.71466
   tps: 28741.59809
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Goblin-p3-Destruction Warlock-default--NoBuffs-25.0yards-LongMultiTarget"
+ key: "TestDestruction-Settings-Goblin-p3-Destruction Warlock-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
   dps: 26214.48301
   tps: 30138.44154
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Goblin-p3-Destruction Warlock-default--NoBuffs-25.0yards-LongSingleTarget"
+ key: "TestDestruction-Settings-Goblin-p3-Destruction Warlock-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
   dps: 26214.48301
   tps: 15626.42597
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Goblin-p3-Destruction Warlock-default--NoBuffs-25.0yards-ShortSingleTarget"
+ key: "TestDestruction-Settings-Goblin-p3-Destruction Warlock-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
   dps: 29047.15886
   tps: 16008.59796
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Human-p3-Destruction Warlock-default--FullBuffs-25.0yards-LongMultiTarget"
+ key: "TestDestruction-Settings-Human-p3-Destruction Warlock-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
   dps: 41787.23971
   tps: 41991.24163
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Human-p3-Destruction Warlock-default--FullBuffs-25.0yards-LongSingleTarget"
+ key: "TestDestruction-Settings-Human-p3-Destruction Warlock-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
   dps: 39785.19165
   tps: 23771.24223
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Human-p3-Destruction Warlock-default--FullBuffs-25.0yards-ShortSingleTarget"
+ key: "TestDestruction-Settings-Human-p3-Destruction Warlock-default-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
   dps: 50507.4534
   tps: 28586.63525
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Human-p3-Destruction Warlock-default--NoBuffs-25.0yards-LongMultiTarget"
+ key: "TestDestruction-Settings-Human-p3-Destruction Warlock-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
   dps: 26034.19234
   tps: 29782.97466
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Human-p3-Destruction Warlock-default--NoBuffs-25.0yards-LongSingleTarget"
+ key: "TestDestruction-Settings-Human-p3-Destruction Warlock-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
   dps: 26034.19234
   tps: 15405.86088
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Human-p3-Destruction Warlock-default--NoBuffs-25.0yards-ShortSingleTarget"
+ key: "TestDestruction-Settings-Human-p3-Destruction Warlock-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
   dps: 28756.09889
   tps: 15763.87397
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Orc-p3-Destruction Warlock-default--FullBuffs-25.0yards-LongMultiTarget"
+ key: "TestDestruction-Settings-Orc-p3-Destruction Warlock-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
   dps: 42439.69792
   tps: 42147.27435
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Orc-p3-Destruction Warlock-default--FullBuffs-25.0yards-LongSingleTarget"
+ key: "TestDestruction-Settings-Orc-p3-Destruction Warlock-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
   dps: 40439.94755
   tps: 23933.1579
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Orc-p3-Destruction Warlock-default--FullBuffs-25.0yards-ShortSingleTarget"
+ key: "TestDestruction-Settings-Orc-p3-Destruction Warlock-default-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
   dps: 51796.63467
   tps: 28910.28009
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Orc-p3-Destruction Warlock-default--NoBuffs-25.0yards-LongMultiTarget"
+ key: "TestDestruction-Settings-Orc-p3-Destruction Warlock-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
   dps: 26498.86624
   tps: 30001.32797
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Orc-p3-Destruction Warlock-default--NoBuffs-25.0yards-LongSingleTarget"
+ key: "TestDestruction-Settings-Orc-p3-Destruction Warlock-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
   dps: 26498.86624
   tps: 15517.57679
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Orc-p3-Destruction Warlock-default--NoBuffs-25.0yards-ShortSingleTarget"
+ key: "TestDestruction-Settings-Orc-p3-Destruction Warlock-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
   dps: 29568.80944
   tps: 15934.33507
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Troll-p3-Destruction Warlock-default--FullBuffs-25.0yards-LongMultiTarget"
+ key: "TestDestruction-Settings-Troll-p3-Destruction Warlock-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
   dps: 42134.2922
   tps: 42384.79575
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Troll-p3-Destruction Warlock-default--FullBuffs-25.0yards-LongSingleTarget"
+ key: "TestDestruction-Settings-Troll-p3-Destruction Warlock-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
   dps: 40367.40146
   tps: 24190.57611
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Troll-p3-Destruction Warlock-default--FullBuffs-25.0yards-ShortSingleTarget"
+ key: "TestDestruction-Settings-Troll-p3-Destruction Warlock-default-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
   dps: 52013.38851
   tps: 29526.12647
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Troll-p3-Destruction Warlock-default--NoBuffs-25.0yards-LongMultiTarget"
+ key: "TestDestruction-Settings-Troll-p3-Destruction Warlock-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
   dps: 26287.98385
   tps: 30183.70785
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Troll-p3-Destruction Warlock-default--NoBuffs-25.0yards-LongSingleTarget"
+ key: "TestDestruction-Settings-Troll-p3-Destruction Warlock-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
   dps: 26287.98385
   tps: 15616.17596
  }
 }
 dps_results: {
- key: "TestDestruction-Settings-Troll-p3-Destruction Warlock-default--NoBuffs-25.0yards-ShortSingleTarget"
+ key: "TestDestruction-Settings-Troll-p3-Destruction Warlock-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
   dps: 29630.53286
   tps: 16430.73634

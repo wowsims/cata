@@ -2292,7 +2292,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestUnholy-Settings-Orc-p3.bis-Basic-default--FullBuffs-0.0yards-LongMultiTarget"
+ key: "TestUnholy-Settings-Orc-p3.bis-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 74276.71771
   tps: 88202.02112
@@ -2300,7 +2300,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestUnholy-Settings-Orc-p3.bis-Basic-default--FullBuffs-0.0yards-LongSingleTarget"
+ key: "TestUnholy-Settings-Orc-p3.bis-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 42032.12841
   tps: 31192.40381
@@ -2308,7 +2308,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestUnholy-Settings-Orc-p3.bis-Basic-default--FullBuffs-0.0yards-ShortSingleTarget"
+ key: "TestUnholy-Settings-Orc-p3.bis-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 55251.6112
   tps: 35507.81174
@@ -2316,7 +2316,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestUnholy-Settings-Orc-p3.bis-Basic-default--NoBuffs-0.0yards-LongMultiTarget"
+ key: "TestUnholy-Settings-Orc-p3.bis-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 47136.68691
   tps: 55693.50917
@@ -2324,7 +2324,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestUnholy-Settings-Orc-p3.bis-Basic-default--NoBuffs-0.0yards-LongSingleTarget"
+ key: "TestUnholy-Settings-Orc-p3.bis-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 26785.48412
   tps: 20231.50952
@@ -2332,7 +2332,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestUnholy-Settings-Orc-p3.bis-Basic-default--NoBuffs-0.0yards-ShortSingleTarget"
+ key: "TestUnholy-Settings-Orc-p3.bis-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 31978.40811
   tps: 21924.5209
@@ -2340,7 +2340,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestUnholy-Settings-Worgen-p3.bis-Basic-default--FullBuffs-0.0yards-LongMultiTarget"
+ key: "TestUnholy-Settings-Worgen-p3.bis-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 73897.48002
   tps: 88441.98205
@@ -2348,7 +2348,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestUnholy-Settings-Worgen-p3.bis-Basic-default--FullBuffs-0.0yards-LongSingleTarget"
+ key: "TestUnholy-Settings-Worgen-p3.bis-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 41582.23045
   tps: 31241.51489
@@ -2356,7 +2356,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestUnholy-Settings-Worgen-p3.bis-Basic-default--FullBuffs-0.0yards-ShortSingleTarget"
+ key: "TestUnholy-Settings-Worgen-p3.bis-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 54271.66732
   tps: 35416.34748
@@ -2364,7 +2364,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestUnholy-Settings-Worgen-p3.bis-Basic-default--NoBuffs-0.0yards-LongMultiTarget"
+ key: "TestUnholy-Settings-Worgen-p3.bis-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 47002.09355
   tps: 56003.19612
@@ -2372,7 +2372,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestUnholy-Settings-Worgen-p3.bis-Basic-default--NoBuffs-0.0yards-LongSingleTarget"
+ key: "TestUnholy-Settings-Worgen-p3.bis-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 26615.1603
   tps: 20322.05493
@@ -2380,7 +2380,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestUnholy-Settings-Worgen-p3.bis-Basic-default--NoBuffs-0.0yards-ShortSingleTarget"
+ key: "TestUnholy-Settings-Worgen-p3.bis-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 31593.31655
   tps: 21851.88132
