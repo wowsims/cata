@@ -82,7 +82,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 88
+// NextIndex: 94
 message APLValue {
 	UUID uuid = 87;
 
@@ -122,7 +122,13 @@ message APLValue {
         APLValueCurrentSolarEnergy current_solar_energy = 68;
         APLValueCurrentLunarEnergy current_lunar_energy = 69;
 		APLValueCurrentHolyPower current_holy_power = 75;
+		APLValueMaxEnergy max_energy = 88;
+		APLValueMaxFocus max_focus = 89;
 		APLValueMaxRunicPower max_runic_power = 86;
+		APLValueEnergyRegenPerSecond energy_regen_per_second = 90;
+		APLValueFocusRegenPerSecond focus_regen_per_second = 91;
+		APLValueEnergyTimeToTarget energy_time_to_target = 92;
+		APLValueFocusTimeToTarget focus_time_to_target = 93;
 
 		// Unit values
 		APLValueUnitIsMoving unit_is_moving = 72;
@@ -439,7 +445,17 @@ message APLValueCurrentRunicPower {}
 message APLValueCurrentSolarEnergy {}
 message APLValueCurrentLunarEnergy {}
 message APLValueCurrentHolyPower {}
+message APLValueMaxEnergy {}
+message APLValueMaxFocus {}
 message APLValueMaxRunicPower {}
+message APLValueEnergyRegenPerSecond {}
+message APLValueFocusRegenPerSecond {}
+message APLValueEnergyTimeToTarget {
+	APLValue target_energy = 1;
+}
+message APLValueFocusTimeToTarget {
+	APLValue target_focus = 1;
+}
 
 enum APLValueRuneType {
     RuneUnknown = 0;

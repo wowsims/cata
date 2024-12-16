@@ -68,6 +68,14 @@ func (eb *energyBar) EnergyRegenPerSecond() float64 {
 	return 10.0 * eb.hasteRatingMultiplier * eb.energyRegenMultiplier
 }
 
+func (eb *energyBar) TimeToTargetEnergy(targetEnergy float64) time.Duration {
+	if eb.currentEnergy >= targetEnergy {
+		return time.Duration(0)
+	}
+
+	return DurationFromSeconds((targetEnergy - eb.currentEnergy) / eb.EnergyRegenPerSecond())
+}
+
 func (eb *energyBar) AddEnergy(sim *Simulation, amount float64, metrics *ResourceMetrics) {
 	if amount < 0 {
 		panic("Trying to add negative energy!")

@@ -600,4 +600,18 @@ func init() {
 
 		character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(4267, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotRanged})
 	})
+
+	movementSpeedEnchants := []int32{
+		3232, // Enchant Boots - Tuskarr's Vitality
+		4104, // Enchant Boots - Lavawalker
+		4105, // Enchant Boots - Assassin's Step
+		4062, // Enchant Boots - Earthen Vitality
+	}
+
+	for _, enchantID := range movementSpeedEnchants {
+		core.NewEnchantEffect(enchantID, func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.NewMovementSpeedAura("Minor Run Speed", core.ActionID{SpellID: 13889}, 0.08)
+		})
+	}
 }

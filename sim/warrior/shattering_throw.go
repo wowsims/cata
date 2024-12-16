@@ -17,6 +17,7 @@ func (warrior *Warrior) RegisterShatteringThrowCD() {
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics,
 		ClassSpellMask: SpellMaskShatteringThrow | SpellMaskSpecialAttack,
+		MaxRange:       30,
 
 		RageCost: core.RageCostOptions{
 			Cost: 25,

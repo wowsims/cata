@@ -7,16 +7,37 @@ import (
 )
 
 func (warrior *Warrior) RegisterCharge() {
-	metrics := warrior.NewRageMetrics(core.ActionID{SpellID: 100})
+	actionID := core.ActionID{SpellID: 100}
+	metrics := warrior.NewRageMetrics(actionID)
+	rage := float64(15 + 5*warrior.Talents.Blitz)
+
+	warrior.ChargeAura = warrior.RegisterAura(core.Aura{
+		Label:    "Charge",
+		ActionID: actionID,
+		Duration: 5 * time.Second,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			warrior.MultiplyMovementSpeed(sim, 3.0)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			warrior.MultiplyMovementSpeed(sim, 1.0/3.0)
+		},
+	})
+
+	warrior.RegisterMovementCallback(func(sim *core.Simulation, position float64, kind core.MovementUpdateType) {
+		if kind == core.MovementEnd && warrior.ChargeAura.IsActive() {
+			warrior.ChargeAura.Deactivate(sim)
+		}
+	})
 
 	warrior.Charge = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 100},
+		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskCharge,
+		MinRange:       8,
+		MaxRange:       25,
 
 		Cast: core.CastConfig{
-			DefaultCast: core.Cast{},
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
 				Duration: time.Second * 15,
@@ -24,10 +45,14 @@ func (warrior *Warrior) RegisterCharge() {
 			IgnoreHaste: true,
 		},
 
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			rage := float64(15 + 5*warrior.Talents.Blitz)
-			warrior.AddRage(sim, rage, metrics)
+		ExtraCastCondition: core.Ternary(warrior.Talents.Juggernaut || warrior.Talents.Warbringer, nil, func(sim *core.Simulation, target *core.Unit) bool {
+			return sim.CurrentTime < 0 && warrior.StanceMatches(BattleStance)
+		}),
 
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			warrior.ChargeAura.Activate(sim)
+			warrior.AddRage(sim, rage, metrics)
+			warrior.MoveTo(core.MaxMeleeRange-1, sim) // movement aura is discretized in 1 yard intervals, so need to overshoot to guarantee melee range
 		},
 	})
 }

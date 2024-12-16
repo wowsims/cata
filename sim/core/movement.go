@@ -76,7 +76,7 @@ func (unit *Unit) UpdatePosition(sim *Simulation) {
 		return
 	}
 
-	unit.OnMovement(unit.DistanceFromTarget, MovementUpdate)
+	unit.OnMovement(sim, unit.DistanceFromTarget, MovementUpdate)
 
 	// update auto attack state
 	if unit.AutoAttacks.mh.enabled != unit.AutoAttacks.mh.IsInRange() {
@@ -109,7 +109,7 @@ func (unit *Unit) FinalizeMovement(sim *Simulation) {
 	unit.UpdatePosition(sim)
 	unit.moveAura.Deactivate(sim)
 
-	unit.OnMovement(unit.DistanceFromTarget, MovementEnd)
+	unit.OnMovement(sim, unit.DistanceFromTarget, MovementEnd)
 }
 
 func registerMovementAction(unit *Unit, sim *Simulation, speed float64, endTime time.Duration) {
@@ -130,7 +130,7 @@ func registerMovementAction(unit *Unit, sim *Simulation, speed float64, endTime 
 		unit.FinalizeMovement(sim)
 	}
 
-	unit.OnMovement(unit.DistanceFromTarget, MovementStart)
+	unit.OnMovement(sim, unit.DistanceFromTarget, MovementStart)
 	unit.movementAction = &movementAction
 	sim.AddPendingAction(&movementAction.PendingAction)
 }
@@ -143,20 +143,25 @@ const (
 	MovementEnd
 )
 
-type MovementCallback func(position float64, kind MovementUpdateType)
+type MovementCallback func(sim *Simulation, position float64, kind MovementUpdateType)
 
 func (unit *Unit) RegisterMovementCallback(callback MovementCallback) {
 	unit.movementCallbacks = append(unit.movementCallbacks, callback)
 }
 
-func (unit *Unit) OnMovement(position float64, kind MovementUpdateType) {
+func (unit *Unit) OnMovement(sim *Simulation, position float64, kind MovementUpdateType) {
 	for _, movementCallback := range unit.movementCallbacks {
-		movementCallback(position, kind)
+		movementCallback(sim, position, kind)
 	}
 }
 
 func (unit *Unit) MultiplyMovementSpeed(sim *Simulation, amount float64) {
+	oldMultiplier := unit.PseudoStats.MovementSpeedMultiplier
+	oldSpeed := unit.GetMovementSpeed()
 	unit.PseudoStats.MovementSpeedMultiplier *= amount
+	if sim.Log != nil {
+		unit.Log(sim, "[DEBUG] Movement speed changed from %.2f (%.2f%%) to %.2f (%.2f%%)", oldSpeed, (oldMultiplier-1)*100.0, unit.GetMovementSpeed(), (unit.PseudoStats.MovementSpeedMultiplier-1)*100.0)
+	}
 
 	// we have a pending movement action that depends on our movement speed
 	if unit.movementAction != nil && unit.movementAction.speed != 0 {
@@ -172,4 +177,27 @@ func (unit *Unit) GetMovementSpeed() float64 {
 	}
 
 	return 8. * unit.PseudoStats.MovementSpeedMultiplier
+}
+
+func (unit *Unit) NewMovementSpeedAura(label string, actionID ActionID, multiplier float64) *Aura {
+	aura := MakePermanent(unit.GetOrRegisterAura(Aura{
+		Label:    label,
+		ActionID: actionID,
+	}))
+
+	aura.NewMovementSpeedEffect(multiplier)
+
+	return aura
+}
+
+func (aura *Aura) NewMovementSpeedEffect(multiplier float64) *ExclusiveEffect {
+	return aura.NewExclusiveEffect("MovementSpeed", true, ExclusiveEffect{
+		Priority: multiplier,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.MultiplyMovementSpeed(sim, 1+multiplier)
+		},
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.MultiplyMovementSpeed(sim, 1.0/(1+multiplier))
+		},
+	})
 }

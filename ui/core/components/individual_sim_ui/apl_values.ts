@@ -46,6 +46,10 @@ import {
 	APLValueDotIsActive,
 	APLValueDotRemainingTime,
 	APLValueDotTickFrequency,
+	APLValueEnergyRegenPerSecond,
+	APLValueEnergyTimeToTarget,
+	APLValueFocusRegenPerSecond,
+	APLValueFocusTimeToTarget,
 	APLValueFrontOfTarget,
 	APLValueGCDIsReady,
 	APLValueGCDTimeToReady,
@@ -56,6 +60,8 @@ import {
 	APLValueMath,
 	APLValueMath_MathOperator as MathOperator,
 	APLValueMax,
+	APLValueMaxEnergy,
+	APLValueMaxFocus,
 	APLValueMaxRunicPower,
 	APLValueMin,
 	APLValueNextRuneCooldown,
@@ -648,31 +654,39 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 
 	// Resources
 	currentHealth: inputBuilder({
-		label: 'Health',
-		submenu: ['Resources'],
+		label: 'Current Health',
+		submenu: ['Resources', 'Health'],
 		shortDescription: 'Amount of currently available Health.',
 		newValue: APLValueCurrentHealth.create,
 		fields: [AplHelpers.unitFieldConfig('sourceUnit', 'aura_sources')],
 	}),
 	currentHealthPercent: inputBuilder({
-		label: 'Health (%)',
-		submenu: ['Resources'],
+		label: 'Current Health (%)',
+		submenu: ['Resources', 'Health'],
 		shortDescription: 'Amount of currently available Health, as a percentage.',
 		newValue: APLValueCurrentHealthPercent.create,
 		fields: [AplHelpers.unitFieldConfig('sourceUnit', 'aura_sources')],
 	}),
 	currentMana: inputBuilder({
-		label: 'Mana',
-		submenu: ['Resources'],
+		label: 'Current Mana',
+		submenu: ['Resources', 'Mana'],
 		shortDescription: 'Amount of currently available Mana.',
 		newValue: APLValueCurrentMana.create,
+		includeIf(player: Player<any>, _isPrepull: boolean) {
+			const clss = player.getClass();
+			return clss !== Class.ClassDeathKnight && clss !== Class.ClassHunter && clss !== Class.ClassRogue && clss !== Class.ClassWarrior;
+		},
 		fields: [],
 	}),
 	currentManaPercent: inputBuilder({
-		label: 'Mana (%)',
-		submenu: ['Resources'],
+		label: 'Current Mana (%)',
+		submenu: ['Resources', 'Mana'],
 		shortDescription: 'Amount of currently available Mana, as a percentage.',
 		newValue: APLValueCurrentManaPercent.create,
+		includeIf(player: Player<any>, _isPrepull: boolean) {
+			const clss = player.getClass();
+			return clss !== Class.ClassDeathKnight && clss !== Class.ClassHunter && clss !== Class.ClassRogue && clss !== Class.ClassWarrior;
+		},
 		fields: [],
 	}),
 	currentRage: inputBuilder({
@@ -680,32 +694,108 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		submenu: ['Resources'],
 		shortDescription: 'Amount of currently available Rage.',
 		newValue: APLValueCurrentRage.create,
+		includeIf(player: Player<any>, _isPrepull: boolean) {
+			const clss = player.getClass();
+			const spec = player.getSpec();
+			return spec === Spec.SpecFeralDruid || spec === Spec.SpecGuardianDruid || clss === Class.ClassWarrior;
+		},
 		fields: [],
 	}),
 	currentFocus: inputBuilder({
-		label: 'Focus',
-		submenu: ['Resources'],
+		label: 'Current Focus',
+		submenu: ['Resources', 'Focus'],
 		shortDescription: 'Amount of currently available Focus.',
 		newValue: APLValueCurrentFocus.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassHunter,
 		fields: [],
 	}),
+	maxFocus: inputBuilder({
+		label: 'Max Focus',
+		submenu: ['Resources', 'Focus'],
+		shortDescription: 'Amount of maximum available Focus.',
+		newValue: APLValueMaxFocus.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassHunter,
+		fields: [],
+	}),
+	focusRegenPerSecond: inputBuilder({
+		label: 'Focus Regen Per Second',
+		submenu: ['Resources', 'Focus'],
+		shortDescription: 'Focus regen per second.',
+		newValue: APLValueFocusRegenPerSecond.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassHunter,
+		fields: [],
+	}),
+	focusTimeToTarget: inputBuilder({
+		label: 'Estimated Time To Target Focus',
+		submenu: ['Resources', 'Focus'],
+		shortDescription: 'Estimated time until target Focus is reached, will return 0 if at or above target.',
+		newValue: APLValueFocusTimeToTarget.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassHunter,
+		fields: [valueFieldConfig('targetFocus')],
+	}),
 	currentEnergy: inputBuilder({
-		label: 'Energy',
-		submenu: ['Resources'],
+		label: 'Current Energy',
+		submenu: ['Resources', 'Energy'],
 		shortDescription: 'Amount of currently available Energy.',
 		newValue: APLValueCurrentEnergy.create,
+		includeIf(player: Player<any>, _isPrepull: boolean) {
+			const clss = player.getClass();
+			const spec = player.getSpec();
+			return spec === Spec.SpecFeralDruid || spec === Spec.SpecGuardianDruid || clss === Class.ClassRogue;
+		},
 		fields: [],
+	}),
+	maxEnergy: inputBuilder({
+		label: 'Max Energy',
+		submenu: ['Resources', 'Energy'],
+		shortDescription: 'Amount of maximum available Energy.',
+		newValue: APLValueMaxEnergy.create,
+		includeIf(player: Player<any>, _isPrepull: boolean) {
+			const clss = player.getClass();
+			const spec = player.getSpec();
+			return spec === Spec.SpecFeralDruid || spec === Spec.SpecGuardianDruid || clss === Class.ClassRogue;
+		},
+		fields: [],
+	}),
+	energyRegenPerSecond: inputBuilder({
+		label: 'Energy Regen Per Second',
+		submenu: ['Resources', 'Energy'],
+		shortDescription: 'Energy regen per second.',
+		newValue: APLValueEnergyRegenPerSecond.create,
+		includeIf(player: Player<any>, _isPrepull: boolean) {
+			const clss = player.getClass();
+			const spec = player.getSpec();
+			return spec === Spec.SpecFeralDruid || spec === Spec.SpecGuardianDruid || clss === Class.ClassRogue;
+		},
+		fields: [],
+	}),
+	energyTimeToTarget: inputBuilder({
+		label: 'Estimated Time To Target Energy',
+		submenu: ['Resources', 'Energy'],
+		shortDescription: 'Estimated time until target Energy is reached, will return 0 if at or above target.',
+		newValue: APLValueEnergyTimeToTarget.create,
+		includeIf(player: Player<any>, _isPrepull: boolean) {
+			const clss = player.getClass();
+			const spec = player.getSpec();
+			return spec === Spec.SpecFeralDruid || spec === Spec.SpecGuardianDruid || clss === Class.ClassRogue;
+		},
+		fields: [valueFieldConfig('targetEnergy')],
 	}),
 	currentComboPoints: inputBuilder({
 		label: 'Combo Points',
 		submenu: ['Resources'],
 		shortDescription: 'Amount of currently available Combo Points.',
 		newValue: APLValueCurrentComboPoints.create,
+		includeIf(player: Player<any>, _isPrepull: boolean) {
+			const clss = player.getClass();
+			const spec = player.getSpec();
+			return spec === Spec.SpecFeralDruid || spec === Spec.SpecGuardianDruid || clss === Class.ClassRogue;
+		},
 		fields: [],
 	}),
 	currentRunicPower: inputBuilder({
-		label: 'Runic Power',
-		submenu: ['Resources'],
+		label: 'Current Runic Power',
+		submenu: ['Resources', 'Runic Power'],
 		shortDescription: 'Amount of currently available Runic Power.',
 		newValue: APLValueCurrentRunicPower.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassDeathKnight,
@@ -713,7 +803,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 	}),
 	maxRunicPower: inputBuilder({
 		label: 'Max Runic Power',
-		submenu: ['Resources'],
+		submenu: ['Resources', 'Runic Power'],
 		shortDescription: 'Amount of maximum available Runic Power.',
 		newValue: APLValueMaxRunicPower.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassDeathKnight,
@@ -721,7 +811,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 	}),
 	currentLunarEnergy: inputBuilder({
 		label: 'Solar Energy',
-		submenu: ['Eclipse'],
+		submenu: ['Resources', 'Eclipse'],
 		shortDescription: 'Amount of currently available Solar Energy.',
 		newValue: APLValueCurrentSolarEnergy.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() == Spec.SpecBalanceDruid,
@@ -729,7 +819,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 	}),
 	currentSolarEnergy: inputBuilder({
 		label: 'Lunar Energy',
-		submenu: ['Eclipse'],
+		submenu: ['Resources', 'Eclipse'],
 		shortDescription: 'Amount of currently available Lunar Energy',
 		newValue: APLValueCurrentLunarEnergy.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() == Spec.SpecBalanceDruid,
@@ -737,7 +827,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 	}),
 	druidCurrentEclipsePhase: inputBuilder({
 		label: 'Current Eclipse Phase',
-		submenu: ['Eclipse'],
+		submenu: ['Resources', 'Eclipse'],
 		shortDescription: 'The eclipse phase the druid currently is in.',
 		newValue: APLValueCurrentEclipsePhase.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() == Spec.SpecBalanceDruid,
@@ -832,6 +922,18 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		submenu: ['Auto'],
 		shortDescription: 'Amount of time remaining before the next Main-hand or Off-hand melee attack, or <b>0</b> if autoattacks are not engaged.',
 		newValue: APLValueAutoTimeToNext.create,
+		includeIf(player: Player<any>, _isPrepull: boolean) {
+			const clss = player.getClass();
+			const spec = player.getSpec();
+			return (
+				clss !== Class.ClassHunter &&
+				clss !== Class.ClassMage &&
+				clss !== Class.ClassPriest &&
+				clss !== Class.ClassWarlock &&
+				spec !== Spec.SpecBalanceDruid &&
+				spec !== Spec.SpecElementalShaman
+			);
+		},
 		fields: [],
 	}),
 
