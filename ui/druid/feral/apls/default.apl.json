@@ -6,6 +6,7 @@
         {"action":{"condition":{"auraIsActive":{"auraId":{"spellId":50334}}},"castSpell":{"spellId":{"spellId":26297}}}},
         {"action":{"autocastOtherCooldowns":{}}},
         {"action":{"condition":{"const":{"val":"false"}},"castSpell":{"spellId":{"spellId":50334}}}},
+        {"action":{"condition":{"const":{"val":"false"}},"castSpell":{"spellId":{"spellId":5229}}}},
         {"action":{"catOptimalRotationAction":{"manualParams":false,"maintainFaerieFire":true,"meleeWeave":true,"bearWeave":true,"snekWeave":true}}},
         {"action":{"autocastOtherCooldowns":{}}}
       ]
