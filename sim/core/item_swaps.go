@@ -138,6 +138,9 @@ func (character *Character) RegisterOnItemSwap(slots []proto.ItemSlot, callback 
 // Helper for handling Effects that use PPMManager to toggle the aura on/off
 func (swap *ItemSwap) RegisterOnSwapItemForEffectWithPPMManager(effectID int32, ppm float64, ppmm *PPMManager, aura *Aura) {
 	character := swap.character
+	if character == nil || !character.ItemSwap.IsEnabled() {
+		return
+	}
 	character.RegisterOnItemSwap([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand}, func(sim *Simulation, slot proto.ItemSlot) {
 		procMask := character.GetProcMaskForEnchant(effectID)
 		*ppmm = character.AutoAttacks.NewPPMManager(ppm, procMask)
@@ -153,6 +156,9 @@ func (swap *ItemSwap) RegisterOnSwapItemForEffectWithPPMManager(effectID int32, 
 // Helper for handling procs that use PPMManager to toggle the aura on/off
 func (swap *ItemSwap) RegisterOnSwapItemUpdateProcMaskWithPPMManager(procMask ProcMask, ppm float64, ppmm *PPMManager) {
 	character := swap.character
+	if character == nil || !character.ItemSwap.IsEnabled() {
+		return
+	}
 	character.RegisterOnItemSwap([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand}, func(sim *Simulation, slot proto.ItemSlot) {
 		*ppmm = character.AutoAttacks.NewPPMManager(ppm, procMask)
 	})
@@ -161,6 +167,9 @@ func (swap *ItemSwap) RegisterOnSwapItemUpdateProcMaskWithPPMManager(procMask Pr
 // Helper for handling Item Effects that use the itemID to toggle the aura on and off
 func (swap *ItemSwap) RegisterOnSwapItemForItemProcEffect(itemID int32, aura *Aura, slots []proto.ItemSlot) {
 	character := swap.character
+	if character == nil || !character.ItemSwap.IsEnabled() {
+		return
+	}
 	character.RegisterOnItemSwap(slots, func(sim *Simulation, slot proto.ItemSlot) {
 		procMask := character.GetProcMaskForItem(itemID)
 		if procMask == ProcMaskUnknown {
@@ -179,6 +188,9 @@ func (swap *ItemSwap) RegisterOnSwapItemForItemProcEffect(itemID int32, aura *Au
 // Helper for handling Enchant Effects that use the effectID to toggle the aura on and off
 func (swap *ItemSwap) RegisterOnSwapItemForEnchantProcEffect(effectID int32, aura *Aura, slots []proto.ItemSlot) {
 	character := swap.character
+	if character == nil || !character.ItemSwap.IsEnabled() {
+		return
+	}
 	character.RegisterOnItemSwap(slots, func(sim *Simulation, slot proto.ItemSlot) {
 		procMask := character.GetProcMaskForEnchant(effectID)
 
@@ -193,6 +205,9 @@ func (swap *ItemSwap) RegisterOnSwapItemForEnchantProcEffect(effectID int32, aur
 // Helper for handling Item On Use effects to set a 30s cd on the related spell.
 func (swap *ItemSwap) RegisterOnSwapItemForItemOnUseEffect(itemID int32, slots []proto.ItemSlot) {
 	character := swap.character
+	if character == nil || !character.ItemSwap.IsEnabled() {
+		return
+	}
 	character.RegisterOnItemSwap(slots, func(sim *Simulation, slot proto.ItemSlot) {
 		isSwapItem := swap.ItemExistsInSwapSet(itemID)
 		if !isSwapItem {
@@ -230,7 +245,9 @@ func (swap *ItemSwap) RegisterOnSwapItemForItemOnUseEffect(itemID int32, slots [
 // Helper for handling Enchant On Use effects to set a 30s cd on the related spell.
 func (swap *ItemSwap) RegisterOnSwapItemForEnchantOnUseEffect(spell *Spell, slots []proto.ItemSlot) {
 	character := swap.character
-
+	if character == nil || !character.ItemSwap.IsEnabled() {
+		return
+	}
 	character.RegisterOnItemSwap(slots, func(sim *Simulation, slot proto.ItemSlot) {
 		if spell != nil {
 			equippedItemID := swap.GetEquippedItemBySlot(slot).ID
