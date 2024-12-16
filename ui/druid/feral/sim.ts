@@ -7,7 +7,7 @@ import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLAction, APLListItem, APLRotation, APLRotation_Type as APLRotationType } from '../../core/proto/apl';
 import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
-import { FeralDruid_Rotation as DruidRotation } from '../../core/proto/druid';
+import { FeralDruid_Rotation as DruidRotation, FeralDruid_Rotation_AplType as FeralRotationType } from '../../core/proto/druid';
 import * as AplUtils from '../../core/proto_utils/apl_utils';
 import { Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as FeralInputs from './inputs';
@@ -146,7 +146,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		);
 		const autocasts = APLAction.fromJsonString(`{"autocastOtherCooldowns":{}}`);
 
-		actions.push(...([synapseSprings, potion, trollRacial, blockZerk, doRotation, autocasts].filter(a => a) as Array<APLAction>));
+		const singleTarget = (simple.rotationType == FeralRotationType.SingleTarget);
+		actions.push(
+			...([
+				singleTarget ? synapseSprings : null,
+				singleTarget ? potion : null,
+				singleTarget ? trollRacial : null,
+				blockZerk,
+				doRotation,
+				autocasts,
+			].filter(a => a) as Array<APLAction>),
+		);
 
 		return APLRotation.create({
 			prepullActions: prepullActions,
