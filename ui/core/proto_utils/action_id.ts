@@ -452,6 +452,11 @@ export class ActionId {
 					name = 'Glyph of Exorcism (DoT)';
 				}
 				break;
+			case 'Seal of Righteousness':
+				if (tag === 2) {
+					name += ' (DS)'
+				}
+				break;
 			// For targetted buffs, tag is the source player's raid index or -1 if none.
 			case 'Bloodlust':
 			case 'Ferocious Inspiration':

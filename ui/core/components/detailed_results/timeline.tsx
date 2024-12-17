@@ -1220,7 +1220,8 @@ const idToCategoryMap: Record<number, number> = {
 	[89906]: MELEE_ACTION_CATEGORY + 0.54, // Judgements of the Bold
 	[42463]: MELEE_ACTION_CATEGORY + 0.6, // Seal of Truth (on-hit)
 	[31803]: MELEE_ACTION_CATEGORY + 0.61, // Censure (Seal of Truth)
-	[20424]: MELEE_ACTION_CATEGORY + 0.62, // Seals of Command
+	[25742]: MELEE_ACTION_CATEGORY + 0.63, // Seal of Righteousness
+	[20424]: MELEE_ACTION_CATEGORY + 0.64, // Seals of Command
 	[53600]: MELEE_ACTION_CATEGORY + 0.7, // Shield of the Righteous
 	[99075]: MELEE_ACTION_CATEGORY + 0.71, // Righteous Flames (prot T12 2pc)
 	[53595]: MELEE_ACTION_CATEGORY + 0.8, // Hammer of the Righteous
