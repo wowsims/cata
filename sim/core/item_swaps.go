@@ -1,6 +1,7 @@
 package core
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
@@ -49,62 +50,27 @@ func (character *Character) enableItemSwap(itemSwap *proto.ItemSwap, mhCritMulti
 	hasMh := character.HasMHWeapon()
 	hasOh := character.HasOHWeapon()
 
-	if hasItemSwap[proto.ItemSlot_ItemSlotHead] {
-		slots = append(slots, proto.ItemSlot_ItemSlotHead)
+	for slot, hasSlotItemSwap := range hasItemSwap {
+		if hasSlotItemSwap {
+			slots = append(slots, slot)
+		}
 	}
-	if hasItemSwap[proto.ItemSlot_ItemSlotNeck] {
-		slots = append(slots, proto.ItemSlot_ItemSlotNeck)
-	}
-	if hasItemSwap[proto.ItemSlot_ItemSlotShoulder] {
-		slots = append(slots, proto.ItemSlot_ItemSlotShoulder)
-	}
-	if hasItemSwap[proto.ItemSlot_ItemSlotBack] {
-		slots = append(slots, proto.ItemSlot_ItemSlotBack)
-	}
-	if hasItemSwap[proto.ItemSlot_ItemSlotChest] {
-		slots = append(slots, proto.ItemSlot_ItemSlotChest)
-	}
-	if hasItemSwap[proto.ItemSlot_ItemSlotWrist] {
-		slots = append(slots, proto.ItemSlot_ItemSlotWrist)
-	}
-	if hasItemSwap[proto.ItemSlot_ItemSlotHands] {
-		slots = append(slots, proto.ItemSlot_ItemSlotHands)
-	}
-	if hasItemSwap[proto.ItemSlot_ItemSlotWaist] {
-		slots = append(slots, proto.ItemSlot_ItemSlotWaist)
-	}
-	if hasItemSwap[proto.ItemSlot_ItemSlotLegs] {
-		slots = append(slots, proto.ItemSlot_ItemSlotLegs)
-	}
-	if hasItemSwap[proto.ItemSlot_ItemSlotFeet] {
-		slots = append(slots, proto.ItemSlot_ItemSlotFeet)
-	}
-	if hasItemSwap[proto.ItemSlot_ItemSlotFinger1] {
-		slots = append(slots, proto.ItemSlot_ItemSlotFinger1)
-	}
-	if hasItemSwap[proto.ItemSlot_ItemSlotFinger2] {
-		slots = append(slots, proto.ItemSlot_ItemSlotFinger2)
-	}
-	if hasItemSwap[proto.ItemSlot_ItemSlotTrinket1] {
-		slots = append(slots, proto.ItemSlot_ItemSlotTrinket1)
-	}
-	if hasItemSwap[proto.ItemSlot_ItemSlotTrinket2] {
-		slots = append(slots, proto.ItemSlot_ItemSlotTrinket2)
-	}
+
 	// Handle MH and OH together, because present MH + empty OH --> swap MH and unequip OH
-	if hasItemSwap[proto.ItemSlot_ItemSlotMainHand] || (hasItemSwap[proto.ItemSlot_ItemSlotOffHand] && hasMh) {
+	if !hasItemSwap[proto.ItemSlot_ItemSlotMainHand] && hasItemSwap[proto.ItemSlot_ItemSlotOffHand] && hasMh {
 		slots = append(slots, proto.ItemSlot_ItemSlotMainHand)
 	}
-	if hasItemSwap[proto.ItemSlot_ItemSlotOffHand] || (has2H && hasOh) {
+	if !hasItemSwap[proto.ItemSlot_ItemSlotOffHand] && has2H && hasOh {
 		slots = append(slots, proto.ItemSlot_ItemSlotOffHand)
-	}
-	if hasItemSwap[proto.ItemSlot_ItemSlotRanged] {
-		slots = append(slots, proto.ItemSlot_ItemSlotRanged)
 	}
 
 	if len(slots) == 0 {
 		return
 	}
+
+	slices.SortFunc(slots, func(a, b proto.ItemSlot) int {
+		return int(a - b)
+	})
 
 	character.ItemSwap = ItemSwap{
 		mhCritMultiplier:     mhCritMultiplier,
