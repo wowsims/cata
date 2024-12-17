@@ -138,7 +138,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET, Presets.P1_ORC_PRESET, Presets.P1_DRAENEI_PRESET, Presets.P3_ORC_PRESET, Presets.P3_DRAENEI_PRESET],
+		gear: [
+			Presets.PRERAID_PRESET,
+			Presets.P1_ORC_PRESET,
+			Presets.P1_NON_ORC_PRESET,
+			Presets.P3_ORC_PRESET,
+			Presets.P3_NON_ORC_PRESET,
+		],
 	},
 
 	autoRotation: (player: Player<Spec.SpecEnhancementShaman>): APLRotation => {
@@ -158,7 +164,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 			},
 			defaultGear: {
 				[Faction.Alliance]: {
-					1: Presets.P3_DRAENEI_PRESET.gear,
+					1: Presets.P3_NON_ORC_PRESET.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.P3_ORC_PRESET.gear,
