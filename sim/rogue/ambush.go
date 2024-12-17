@@ -57,7 +57,7 @@ func (rogue *Rogue) registerAmbushSpell() {
 		},
 	})
 
-	rogue.RegisterOnItemSwap([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand}, func(s *core.Simulation, slot proto.ItemSlot) {
+	rogue.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand}, func(s *core.Simulation, slot proto.ItemSlot) {
 		// Recalculate Ambush's multiplier in case the MH weapon changed.
 		rogue.Ambush.DamageMultiplier = core.TernaryFloat64(rogue.HasDagger(core.MainHand), 2.86, 1.97)
 	})

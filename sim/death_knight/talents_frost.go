@@ -232,7 +232,7 @@ func (dk *DeathKnight) applyKillingMachine() {
 		},
 	})
 
-	dk.ItemSwap.RegisterOnSwapItemUpdateProcMaskWithPPMManager(core.ProcMaskMeleeMH, ppm, triggerAura.Ppmm)
+	dk.ItemSwap.RegisterPPMEffectWithCustomProcMask(core.ProcMaskMeleeMH, ppm, triggerAura.Ppmm)
 }
 
 func (dk *DeathKnight) applyMightOfTheFrozenWastes() {

@@ -178,7 +178,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 			character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
 		}
 
-		character.ItemSwap.RegisterOnSwapItemForItemProcEffect(config.ID, triggerAura, eligibleSlotsForItem)
+		character.ItemSwap.RegisterProc(config.ID, triggerAura, eligibleSlotsForItem)
 	})
 }
 
@@ -463,9 +463,9 @@ func factory_EnchantStatBonusEffect(config EnchantProcStatBonusEffect, extraSpel
 		}
 
 		if config.PPM != 0 {
-			character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(config.EnchantID, config.PPM, triggerAura.Ppmm, triggerAura)
+			character.ItemSwap.RegisterPPMEffect(config.EnchantID, config.PPM, triggerAura.Ppmm, triggerAura)
 		} else {
-			character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(config.EnchantID, triggerAura, config.Slots)
+			character.ItemSwap.RegisterEnchantProc(config.EnchantID, triggerAura, config.Slots)
 		}
 	})
 }
@@ -628,6 +628,6 @@ func NewEnchantProcDamageEffect(config EnchantProcDamageEffect) {
 		}
 		aura := core.MakeProcTriggerAura(&character.Unit, triggerConfig)
 
-		character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(config.EnchantID, aura, config.Slots)
+		character.ItemSwap.RegisterEnchantProc(config.EnchantID, aura, config.Slots)
 	})
 }

@@ -261,9 +261,8 @@ type APLActionCastAllStatBuffCooldowns struct {
 
 	statTypesToMatch []stats.Stat
 
-	allSubactions         []*APLActionCastSpell
-	allEquippedSubactions []*APLActionCastSpell
-	readySubactions       []*APLActionCastSpell
+	allSubactions   []*APLActionCastSpell
+	readySubactions []*APLActionCastSpell
 }
 
 func (rot *APLRotation) newActionCastAllStatBuffCooldowns(config *proto.APLActionCastAllStatBuffCooldowns) APLActionImpl {
@@ -308,12 +307,12 @@ func (action *APLActionCastAllStatBuffCooldowns) getEquippedSubActions() []*APLA
 	})
 }
 func (action *APLActionCastAllStatBuffCooldowns) IsReady(sim *Simulation) bool {
-	action.allEquippedSubactions = action.getEquippedSubActions()
-	action.readySubactions = FilterSlice(action.allEquippedSubactions, func(subAction *APLActionCastSpell) bool {
+	allEquippedSubactions := action.getEquippedSubActions()
+	action.readySubactions = FilterSlice(allEquippedSubactions, func(subAction *APLActionCastSpell) bool {
 		return subAction.IsReady(sim)
 	})
 
-	return Ternary(action.character.Rotation.inSequence, len(action.readySubactions) == len(action.allEquippedSubactions), len(action.readySubactions) > 0)
+	return Ternary(action.character.Rotation.inSequence, len(action.readySubactions) == len(allEquippedSubactions), len(action.readySubactions) > 0)
 }
 func (action *APLActionCastAllStatBuffCooldowns) Execute(sim *Simulation) {
 	actionSetToUse := action.readySubactions

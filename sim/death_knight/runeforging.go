@@ -101,7 +101,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(3368, 2.0, aura.Ppmm, aura)
+		character.ItemSwap.RegisterPPMEffect(3368, 2.0, aura.Ppmm, aura)
 	})
 
 	// Rune of Cinderglacier
@@ -162,7 +162,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(3369, 1.0, aura.Ppmm, aura)
+		character.ItemSwap.RegisterPPMEffect(3369, 1.0, aura.Ppmm, aura)
 	})
 
 	// Rune of Razorice
@@ -256,6 +256,6 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(3370, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
+		character.ItemSwap.RegisterEnchantProc(3370, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
 	})
 }

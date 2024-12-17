@@ -194,15 +194,11 @@ type APLValueNumStatBuffCooldowns struct {
 	matchingSpells   []*Spell
 }
 
-func (rot *APLRotation) newValueNumStatBuffCooldowns(config *proto.APLValueNumStatBuffCooldowns, uuid *proto.UUID) APLValue {
+func (rot *APLRotation) newValueNumStatBuffCooldowns(config *proto.APLValueNumStatBuffCooldowns, _ *proto.UUID) APLValue {
 	unit := rot.unit
 	character := unit.Env.Raid.GetPlayerFromUnit(unit).GetCharacter()
 	statTypesToMatch := stats.IntTupleToStatsList(config.StatType1, config.StatType2, config.StatType3)
 	matchingSpells := character.GetMatchingStatBuffSpells(statTypesToMatch)
-
-	if len(matchingSpells) == 0 {
-		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "No stat buff cooldowns found for: %s", StringFromStatTypes(statTypesToMatch))
-	}
 
 	return &APLValueNumStatBuffCooldowns{
 		statTypesToMatch: statTypesToMatch,
@@ -229,5 +225,5 @@ func (value *APLValueNumStatBuffCooldowns) Finalize(rot *APLRotation) {
 		return spell.ActionID
 	})
 
-	rot.ValidationMessageByUUID(value.Uuid, proto.LogLevel_Information, "%s will check the following spell(s)/item(s): %s", value, StringFromActionIDs(actionIDs))
+	rot.ValidationMessageByUUID(value.Uuid, proto.LogLevel_Information, "%s will count the currently equipped subset of: %s", value, StringFromActionIDs(actionIDs))
 }

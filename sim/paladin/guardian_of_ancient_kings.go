@@ -221,7 +221,7 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) *cor
 	})
 
 	if paladin.ItemSwap.IsEnabled() {
-		paladin.RegisterOnItemSwap([]proto.ItemSlot{
+		paladin.RegisterItemSwapCallback([]proto.ItemSlot{
 			proto.ItemSlot_ItemSlotHead,
 			proto.ItemSlot_ItemSlotShoulder,
 			proto.ItemSlot_ItemSlotChest,

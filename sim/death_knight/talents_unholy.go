@@ -331,7 +331,7 @@ func (dk *DeathKnight) applySuddenDoom() {
 		},
 	})
 
-	dk.ItemSwap.RegisterOnSwapItemUpdateProcMaskWithPPMManager(core.ProcMaskMeleeMH, ppm, triggerAura.Ppmm)
+	dk.ItemSwap.RegisterPPMEffectWithCustomProcMask(core.ProcMaskMeleeMH, ppm, triggerAura.Ppmm)
 }
 
 func (dk *DeathKnight) applyShadowInfusion() *core.Aura {

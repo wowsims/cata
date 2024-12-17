@@ -45,7 +45,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(4066, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
+		character.ItemSwap.RegisterEnchantProc(4066, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
 	})
 
 	// Enchant: 4067, Spell: 74197 - Enchant Weapon - Avalanche
@@ -116,7 +116,7 @@ func init() {
 			},
 		}))
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(4067, ppm, &ppmm, aura)
+		character.ItemSwap.RegisterPPMEffect(4067, ppm, &ppmm, aura)
 	})
 
 	// Enchant: 4074, Spell: 74211 - Enchant Weapon - Elemental Slayer
@@ -153,7 +153,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(4074, ppm, aura.Ppmm, aura)
+		character.ItemSwap.RegisterPPMEffect(4074, ppm, aura.Ppmm, aura)
 	})
 
 	// Enchant: 4083, Spell: 74223 - Enchant Weapon - Hurricane
@@ -238,7 +238,7 @@ func init() {
 			},
 		}))
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(4083, ppm, &ppmm, aura)
+		character.ItemSwap.RegisterPPMEffect(4083, ppm, &ppmm, aura)
 	})
 
 	// Enchant: 4084, Spell: 74225 - Enchant Weapon - Heartsong
@@ -328,7 +328,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(4099, ppm, aura.Ppmm, aura)
+		character.ItemSwap.RegisterPPMEffect(4099, ppm, aura.Ppmm, aura)
 	})
 
 	// Enchant: 4115, Spell: 75172 - Lightweave Embroidery

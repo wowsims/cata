@@ -56,7 +56,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(3251, 4.0, &ppmm, aura)
+		character.ItemSwap.RegisterPPMEffect(3251, 4.0, &ppmm, aura)
 	})
 
 	core.NewEnchantEffect(3239, func(agent core.Agent) {
@@ -96,7 +96,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(3239, 4.0, &ppmm, aura)
+		character.ItemSwap.RegisterPPMEffect(3239, 4.0, &ppmm, aura)
 	})
 
 	core.NewEnchantEffect(3607, func(agent core.Agent) {
@@ -144,7 +144,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(3748, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotOffHand})
+		character.ItemSwap.RegisterEnchantProc(3748, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotOffHand})
 	})
 
 	core.NewEnchantEffect(3247, func(agent core.Agent) {
@@ -196,7 +196,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(3789, 1.0, &ppmm, aura)
+		character.ItemSwap.RegisterPPMEffect(3789, 1.0, &ppmm, aura)
 	})
 
 	// TODO: These are stand-in values without any real reference.
@@ -225,7 +225,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(3241, 3.0, &ppmm, aura)
+		character.ItemSwap.RegisterPPMEffect(3241, 3.0, &ppmm, aura)
 	})
 
 	core.NewEnchantEffect(3790, func(agent core.Agent) {
@@ -259,7 +259,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEnchantProcEffect(3790, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
+		character.ItemSwap.RegisterEnchantProc(3790, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
 	})
 
 	core.AddWeaponEffect(3843, func(agent core.Agent, _ proto.ItemSlot) {

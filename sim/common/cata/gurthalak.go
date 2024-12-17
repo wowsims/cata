@@ -88,7 +88,7 @@ func init() {
 				},
 			})
 
-			character.ItemSwap.RegisterOnSwapItemForItemProcEffect(gurthalakItemID, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
+			character.ItemSwap.RegisterProc(gurthalakItemID, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
 		})
 	}
 }

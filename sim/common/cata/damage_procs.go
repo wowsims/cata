@@ -94,7 +94,7 @@ func init() {
 			},
 		}))
 
-		character.ItemSwap.RegisterOnSwapItemForItemProcEffect(68925, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotTrinket1, proto.ItemSlot_ItemSlotTrinket1})
+		character.ItemSwap.RegisterProc(68925, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotTrinket1, proto.ItemSlot_ItemSlotTrinket1})
 	})
 
 	core.NewItemEffect(69110, func(agent core.Agent) {
@@ -146,7 +146,7 @@ func init() {
 			},
 		}))
 
-		character.ItemSwap.RegisterOnSwapItemForItemProcEffect(69110, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotTrinket1, proto.ItemSlot_ItemSlotTrinket1})
+		character.ItemSwap.RegisterProc(69110, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotTrinket1, proto.ItemSlot_ItemSlotTrinket1})
 	})
 
 }

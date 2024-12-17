@@ -630,9 +630,6 @@ func (character *Character) getProcMaskFor(pred func(item *Item) bool) ProcMask 
 	if pred(character.OffHand()) {
 		mask |= ProcMaskMeleeOH
 	}
-	if pred(character.Trinket1()) || pred(character.Trinket2()) || pred(character.Back()) {
-		mask |= ProcMaskProc
-	}
 	return mask
 }
 
@@ -833,7 +830,7 @@ func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Sta
 	// However due to dynamic stats only being able to be added after finalize()
 	// we need to maintain 2 stat dependencies to toggle the effect when swapping items
 	if character.ItemSwap.IsEnabled() {
-		character.RegisterOnItemSwap([]proto.ItemSlot{
+		character.RegisterItemSwapCallback([]proto.ItemSlot{
 			proto.ItemSlot_ItemSlotHead,
 			proto.ItemSlot_ItemSlotShoulder,
 			proto.ItemSlot_ItemSlotChest,

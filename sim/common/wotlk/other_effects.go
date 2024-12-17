@@ -999,7 +999,7 @@ func init() {
 				},
 			})
 
-			character.ItemSwap.RegisterOnSwapItemForItemProcEffect(itemID, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
+			character.ItemSwap.RegisterProc(itemID, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
 		})
 	})
 

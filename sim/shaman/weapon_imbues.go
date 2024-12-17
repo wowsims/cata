@@ -9,7 +9,7 @@ import (
 )
 
 func (shaman *Shaman) RegisterOnItemSwapWithImbue(effectID int32, procMask *core.ProcMask, aura *core.Aura) {
-	shaman.RegisterOnItemSwap([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand}, func(sim *core.Simulation, slot proto.ItemSlot) {
+	shaman.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand}, func(sim *core.Simulation, slot proto.ItemSlot) {
 		mask := core.ProcMaskUnknown
 		if shaman.MainHand().TempEnchant == effectID {
 			mask |= core.ProcMaskMeleeMH
@@ -312,7 +312,7 @@ func (shaman *Shaman) RegisterFrostbrandImbue(procMask core.ProcMask) {
 		},
 	})
 
-	shaman.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(2, 9.0, &ppmm, aura)
+	shaman.ItemSwap.RegisterPPMEffect(2, 9.0, &ppmm, aura)
 }
 
 func (shaman *Shaman) newEarthlivingImbueSpell() *core.Spell {

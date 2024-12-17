@@ -2,6 +2,8 @@ package core
 
 import (
 	"time"
+
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 const CharacterLevel = 85
@@ -36,3 +38,5 @@ const MainHand Hand = true
 const OffHand Hand = false
 
 const CombatTableCoverageCap = 1.024 // 102.4% chance to avoid an attack
+
+const NumItemSlots = proto.ItemSlot_ItemSlotRanged + 1
