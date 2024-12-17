@@ -49,25 +49,57 @@ func (character *Character) enableItemSwap(itemSwap *proto.ItemSwap, mhCritMulti
 	hasMh := character.HasMHWeapon()
 	hasOh := character.HasOHWeapon()
 
+	if hasItemSwap[proto.ItemSlot_ItemSlotHead] {
+		slots = append(slots, proto.ItemSlot_ItemSlotHead)
+	}
+	if hasItemSwap[proto.ItemSlot_ItemSlotNeck] {
+		slots = append(slots, proto.ItemSlot_ItemSlotNeck)
+	}
+	if hasItemSwap[proto.ItemSlot_ItemSlotShoulder] {
+		slots = append(slots, proto.ItemSlot_ItemSlotShoulder)
+	}
+	if hasItemSwap[proto.ItemSlot_ItemSlotBack] {
+		slots = append(slots, proto.ItemSlot_ItemSlotBack)
+	}
+	if hasItemSwap[proto.ItemSlot_ItemSlotChest] {
+		slots = append(slots, proto.ItemSlot_ItemSlotChest)
+	}
+	if hasItemSwap[proto.ItemSlot_ItemSlotWrist] {
+		slots = append(slots, proto.ItemSlot_ItemSlotWrist)
+	}
+	if hasItemSwap[proto.ItemSlot_ItemSlotHands] {
+		slots = append(slots, proto.ItemSlot_ItemSlotHands)
+	}
+	if hasItemSwap[proto.ItemSlot_ItemSlotWaist] {
+		slots = append(slots, proto.ItemSlot_ItemSlotWaist)
+	}
+	if hasItemSwap[proto.ItemSlot_ItemSlotLegs] {
+		slots = append(slots, proto.ItemSlot_ItemSlotLegs)
+	}
+	if hasItemSwap[proto.ItemSlot_ItemSlotFeet] {
+		slots = append(slots, proto.ItemSlot_ItemSlotFeet)
+	}
+	if hasItemSwap[proto.ItemSlot_ItemSlotFinger1] {
+		slots = append(slots, proto.ItemSlot_ItemSlotFinger1)
+	}
+	if hasItemSwap[proto.ItemSlot_ItemSlotFinger2] {
+		slots = append(slots, proto.ItemSlot_ItemSlotFinger2)
+	}
+	if hasItemSwap[proto.ItemSlot_ItemSlotTrinket1] {
+		slots = append(slots, proto.ItemSlot_ItemSlotTrinket1)
+	}
+	if hasItemSwap[proto.ItemSlot_ItemSlotTrinket2] {
+		slots = append(slots, proto.ItemSlot_ItemSlotTrinket2)
+	}
 	// Handle MH and OH together, because present MH + empty OH --> swap MH and unequip OH
-	hasItemSwap = FilterMap(hasItemSwap, func(itemSlot proto.ItemSlot, v bool) bool {
-		if itemSlot == proto.ItemSlot_ItemSlotMainHand || itemSlot == proto.ItemSlot_ItemSlotOffHand {
-			if itemSlot == proto.ItemSlot_ItemSlotMainHand || (itemSlot == proto.ItemSlot_ItemSlotOffHand && hasMh) {
-				return true
-			} else if itemSlot == proto.ItemSlot_ItemSlotOffHand || (has2H && hasOh) {
-				return true
-			} else {
-				return false
-			}
-		} else {
-			return true
-		}
-	})
-
-	for slot, hasSlotItemSwap := range hasItemSwap {
-		if hasSlotItemSwap {
-			slots = append(slots, slot)
-		}
+	if hasItemSwap[proto.ItemSlot_ItemSlotMainHand] || (hasItemSwap[proto.ItemSlot_ItemSlotOffHand] && hasMh) {
+		slots = append(slots, proto.ItemSlot_ItemSlotMainHand)
+	}
+	if hasItemSwap[proto.ItemSlot_ItemSlotOffHand] || (has2H && hasOh) {
+		slots = append(slots, proto.ItemSlot_ItemSlotOffHand)
+	}
+	if hasItemSwap[proto.ItemSlot_ItemSlotRanged] {
+		slots = append(slots, proto.ItemSlot_ItemSlotRanged)
 	}
 
 	if len(slots) == 0 {
@@ -253,17 +285,18 @@ func (swap *ItemSwap) GetUnequippedItemBySlot(slot proto.ItemSlot) *Item {
 }
 
 func (swap *ItemSwap) GetItemSwapItemSlot(itemID int32) proto.ItemSlot {
-	slotsToCheck := Ternary(swap.IsSwapped(), swap.swapEquip, swap.originalEquip)
-	for slot, item := range slotsToCheck {
-		if item.ID == itemID {
-			return proto.ItemSlot(slot)
+	for _, slot := range swap.slots {
+		if swap.swapEquip[slot].ID == itemID {
+			return slot
+		} else if swap.originalEquip[slot].ID == itemID {
+			return slot
 		}
 	}
 	return -1
 }
 
 func (swap *ItemSwap) ItemExistsInSwapSet(itemID int32) bool {
-	for _, item := range swap.unEquippedItems {
+	for _, item := range swap.swapEquip {
 		if item.ID == itemID {
 			return true
 		}
@@ -283,7 +316,7 @@ func (swap *ItemSwap) CalcStatChanges(slots []proto.ItemSlot) stats.Stats {
 }
 
 func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap_SwapSet, slots []proto.ItemSlot, isReset bool) {
-	if !swap.IsEnabled() || swap.swapSet == swapSet {
+	if !swap.IsEnabled() || swap.swapSet == swapSet && !isReset {
 		return
 	}
 
@@ -386,19 +419,20 @@ func (swap *ItemSwap) swapWeapon(slot proto.ItemSlot) {
 }
 
 func (swap *ItemSwap) reset(sim *Simulation) {
+	swap.initialized = false
 	if !swap.IsEnabled() {
 		return
 	}
 
 	swap.SwapItems(sim, proto.APLActionItemSwap_Main, swap.slots, true)
 
-	if !swap.initialized || swap.IsSwapped() {
-		for _, slot := range swap.slots {
-			for _, onSwap := range swap.onSwapCallbacks[slot] {
-				onSwap(sim, slot)
-			}
-		}
-	}
+	// if !swap.initialized || swap.IsSwapped() {
+	// 	for _, slot := range swap.slots {
+	// 		for _, onSwap := range swap.onSwapCallbacks[slot] {
+	// 			onSwap(sim, slot)
+	// 		}
+	// 	}
+	// }
 
 	swap.unEquippedItems = swap.swapEquip
 
