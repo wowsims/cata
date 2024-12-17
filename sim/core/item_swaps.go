@@ -128,8 +128,7 @@ func (character *Character) RegisterItemSwapCallback(slots []proto.ItemSlot, cal
 		return
 	}
 
-	var slot proto.ItemSlot
-	for _, slot = range slots {
+	for _, slot := range slots {
 		character.ItemSwap.onSwapCallbacks[slot] = append(character.ItemSwap.onSwapCallbacks[slot], callback)
 	}
 }
@@ -213,7 +212,7 @@ func (swap *ItemSwap) RegisterActive(itemID int32, slots []proto.ItemSlot) {
 			return
 		}
 		hasItemEquipped := swap.HasItemEquipped(itemID)
-		itemSlot := swap.GetItemSwapItemSlot(itemID)
+		itemSlot := swap.GetItemFromPossibleSlots(itemID, slots)
 		if itemSlot == -1 {
 			return
 		}
@@ -284,8 +283,8 @@ func (swap *ItemSwap) GetUnequippedItemBySlot(slot proto.ItemSlot) *Item {
 	return &swap.unEquippedItems[slot]
 }
 
-func (swap *ItemSwap) GetItemSwapItemSlot(itemID int32) proto.ItemSlot {
-	for _, slot := range swap.slots {
+func (swap *ItemSwap) GetItemFromPossibleSlots(itemID int32, possibleSlots []proto.ItemSlot) proto.ItemSlot {
+	for _, slot := range possibleSlots {
 		if swap.swapEquip[slot].ID == itemID {
 			return slot
 		} else if swap.originalEquip[slot].ID == itemID {
@@ -315,7 +314,7 @@ func (swap *ItemSwap) CalcStatChanges(slots []proto.ItemSlot) stats.Stats {
 	return newStats
 }
 
-func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap_SwapSet, slots []proto.ItemSlot, isReset bool) {
+func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap_SwapSet, isReset bool) {
 	if !swap.IsEnabled() || swap.swapSet == swapSet && !isReset {
 		return
 	}
@@ -326,7 +325,8 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 	newStats := stats.Stats{}
 	has2H := swap.GetUnequippedItemBySlot(proto.ItemSlot_ItemSlotMainHand).HandType == proto.HandType_HandTypeTwoHand
 	isPrepull := sim.CurrentTime < 0
-	for _, slot := range slots {
+
+	for _, slot := range swap.slots {
 		if !isReset && !isPrepull && (slot < proto.ItemSlot_ItemSlotMainHand || slot > proto.ItemSlot_ItemSlotRanged) {
 			continue
 		}
@@ -424,15 +424,7 @@ func (swap *ItemSwap) reset(sim *Simulation) {
 		return
 	}
 
-	swap.SwapItems(sim, proto.APLActionItemSwap_Main, swap.slots, true)
-
-	// if !swap.initialized || swap.IsSwapped() {
-	// 	for _, slot := range swap.slots {
-	// 		for _, onSwap := range swap.onSwapCallbacks[slot] {
-	// 			onSwap(sim, slot)
-	// 		}
-	// 	}
-	// }
+	swap.SwapItems(sim, proto.APLActionItemSwap_Main, true)
 
 	swap.unEquippedItems = swap.swapEquip
 

@@ -162,7 +162,7 @@ func (action *APLActionItemSwap) Execute(sim *Simulation) {
 		}
 	}
 
-	action.character.ItemSwap.SwapItems(sim, action.swapSet, action.character.ItemSwap.slots, false)
+	action.character.ItemSwap.SwapItems(sim, action.swapSet, false)
 }
 func (action *APLActionItemSwap) String() string {
 	return fmt.Sprintf("Item Swap(%s)", action.swapSet)
