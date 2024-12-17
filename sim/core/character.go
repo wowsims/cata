@@ -818,9 +818,6 @@ func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Sta
 		OnGain: func(aura *Aura, sim *Simulation) {
 			processArmorSpecialization(sim)
 		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			processArmorSpecialization(sim)
-		},
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)
 		},
