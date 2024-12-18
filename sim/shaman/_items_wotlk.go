@@ -11,11 +11,11 @@ import (
 var ItemSetThrallsRegalia = core.NewItemSet(core.ItemSet{
 	Name:            "Thrall's Regalia",
 	AlternativeName: "Nobundo's Regalia",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			// shocks.go
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			// lavaburst.go
 		},
 	},
@@ -23,22 +23,22 @@ var ItemSetThrallsRegalia = core.NewItemSet(core.ItemSet{
 
 var ItemSetEarthShatterGarb = core.NewItemSet(core.ItemSet{
 	Name: "Earthshatter Garb",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			// Reduces LB cost by 5%
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			// lavaburst crit strike dmg +10%
 		},
 	},
 })
 var ItemSetWorldbreakerGarb = core.NewItemSet(core.ItemSet{
 	Name: "Worldbreaker Garb",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			// shocks.go
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			// lightning_bolt.go
 		},
 	},
@@ -46,11 +46,11 @@ var ItemSetWorldbreakerGarb = core.NewItemSet(core.ItemSet{
 
 var ItemSetFrostWitchRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Frost Witch's Regalia",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			// This is implemented in talents.go so that the aura has easy access to the elemental mastery MCD.
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			shaman := agent.(ShamanAgent).GetShaman()
 			shaman.RegisterAura(core.Aura{
 				Label:    "Shaman T10 Elemental 4P Bonus",
@@ -199,11 +199,11 @@ func init() {
 
 var ItemSetEarthshatterBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Earthshatter Battlegear",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			// 10% damage to lightning shield. implemented in lightning_shield.go
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			// +5% to flurry. implemented in talents.go
 		},
 	},
@@ -211,11 +211,11 @@ var ItemSetEarthshatterBattlegear = core.NewItemSet(core.ItemSet{
 
 var ItemSetWorldbreakerBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Worldbreaker Battlegear",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			//20% damage to stormstrike and lava lash
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			//20% increase to maelstrom proc rate
 		},
 	},
@@ -224,11 +224,11 @@ var ItemSetWorldbreakerBattlegear = core.NewItemSet(core.ItemSet{
 var ItemSetThrallsBattlegear = core.NewItemSet(core.ItemSet{
 	Name:            "Thrall's Battlegear",
 	AlternativeName: "Nobundo's Battlegear",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			// +3% increase to static shock proc rate
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			// +25% shock damage
 		},
 	},
@@ -236,11 +236,11 @@ var ItemSetThrallsBattlegear = core.NewItemSet(core.ItemSet{
 
 var ItemSetFrostWitchBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Frost Witch's Battlegear",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			// TODO: add 12% damage buff to shamanistic rage
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			// TODO: at 5 maelstrom stacks, 15% chance to gain +20% attack power for 10s
 		},
 	},
@@ -248,13 +248,13 @@ var ItemSetFrostWitchBattlegear = core.NewItemSet(core.ItemSet{
 
 var ItemSetGladiatorsEarthshaker = core.NewItemSet(core.ItemSet{
 	Name: "Gladiator's Earthshaker",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			shaman := agent.(ShamanAgent).GetShaman()
 			shaman.AddStat(stats.AttackPower, 50)
 			shaman.AddStat(stats.Resilience, 100)
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			shaman := agent.(ShamanAgent).GetShaman()
 			shaman.AddStat(stats.AttackPower, 150)
 			// also -2s on stormstrike CD
@@ -264,13 +264,13 @@ var ItemSetGladiatorsEarthshaker = core.NewItemSet(core.ItemSet{
 
 var ItemSetGladiatorsWartide = core.NewItemSet(core.ItemSet{
 	Name: "Gladiator's Wartide",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			shaman := agent.(ShamanAgent).GetShaman()
 			shaman.AddStat(stats.SpellPower, 29)
 			shaman.AddStat(stats.Resilience, 100)
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			shaman := agent.(ShamanAgent).GetShaman()
 			shaman.AddStat(stats.SpellPower, 88)
 		},

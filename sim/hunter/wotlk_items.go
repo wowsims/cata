@@ -11,8 +11,8 @@ import (
 
 var ItemSetAhnKaharBloodHuntersBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Ahn'Kahar Blood Hunter's Battlegear",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			hunter := agent.(HunterAgent).GetHunter()
 			const procChance = 0.05
 			actionID := core.ActionID{SpellID: 70727}
@@ -42,7 +42,7 @@ var ItemSetAhnKaharBloodHuntersBattlegear = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			hunter := agent.(HunterAgent).GetHunter()
 			const procChance = 0.05
 			actionID := core.ActionID{SpellID: 70730}

@@ -11,11 +11,11 @@ import (
 // T11 Feral
 var ItemSetStormridersBattlegarb = core.NewItemSet(core.ItemSet{
 	Name: "Stormrider's Battlegarb",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			// Implemented in rake.go and lacerate.go
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			druid := agent.(DruidAgent).GetDruid()
 			var apDepByStackCount = map[int32]*stats.StatDependency{}
 
@@ -46,9 +46,9 @@ var ItemSetStormridersBattlegarb = core.NewItemSet(core.ItemSet{
 // T11 Balance
 var ItemSetStormridersRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Stormrider's Regalia",
-	Bonuses: map[int32]core.ApplyEffect{
+	Bonuses: map[int32]core.ApplySetItemEffect{
 		// Increases the critical strike chance of your Insect Swarm and Moonfire spells by 5%
-		2: func(agent core.Agent) {
+		2: func(agent core.Agent, _ string) {
 			character := agent.GetCharacter()
 			character.AddStaticMod(core.SpellModConfig{
 				Kind:       core.SpellMod_BonusCrit_Percent,
@@ -57,7 +57,7 @@ var ItemSetStormridersRegalia = core.NewItemSet(core.ItemSet{
 			})
 		},
 		// Whenever Eclipse triggers, your critical strike chance with spells is increased by 15% for 8 sec.  Each critical strike you achieve reduces that bonus by 5%
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			druid := agent.(DruidAgent).GetDruid()
 
 			tierSet4pMod := druid.AddDynamicMod(core.SpellModConfig{
@@ -101,8 +101,8 @@ var ItemSetStormridersRegalia = core.NewItemSet(core.ItemSet{
 // T12 Feral
 var ItemSetObsidianArborweaveBattlegarb = core.NewItemSet(core.ItemSet{
 	Name: "Obsidian Arborweave Battlegarb",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			// TODO: Verify behavior after PTR testing
 			druid := agent.(DruidAgent).GetDruid()
 			cata.RegisterIgniteEffect(&druid.Unit, cata.IgniteConfig{
@@ -122,7 +122,7 @@ var ItemSetObsidianArborweaveBattlegarb = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			// Full implementation in berserk.go and barkskin.go
 			druid := agent.(DruidAgent).GetDruid()
 			druid.Feral4pT12Active = true
@@ -151,9 +151,9 @@ var ItemSetObsidianArborweaveBattlegarb = core.NewItemSet(core.ItemSet{
 // T12 Balance
 var ItemSetObsidianArborweaveRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Obsidian Arborweave Regalia",
-	Bonuses: map[int32]core.ApplyEffect{
+	Bonuses: map[int32]core.ApplySetItemEffect{
 		// You have a chance to summon a Burning Treant to assist you in battle for 15 sec when you cast Wrath or Starfire. (Proc chance: 20%, 45s cooldown)
-		2: func(agent core.Agent) {
+		2: func(agent core.Agent, _ string) {
 			druid := agent.(DruidAgent).GetDruid()
 
 			core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
@@ -169,7 +169,7 @@ var ItemSetObsidianArborweaveRegalia = core.NewItemSet(core.ItemSet{
 			})
 		},
 		// While not in an Eclipse state, your Wrath generates 3 additional Lunar Energy and your Starfire generates 5 additional Solar Energy.
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			druid := agent.(DruidAgent).GetDruid()
 
 			druid.OnSpellRegistered(func(spell *core.Spell) {
@@ -194,12 +194,12 @@ var ItemSetObsidianArborweaveRegalia = core.NewItemSet(core.ItemSet{
 // T13 Balance
 var ItemSetDeepEarthRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Deep Earth Regalia",
-	Bonuses: map[int32]core.ApplyEffect{
+	Bonuses: map[int32]core.ApplySetItemEffect{
 		// Insect Swarm increases all damage done by your Starfire, Starsurge, and Wrath spells against that target by 3%
-		2: func(agent core.Agent) {
+		2: func(agent core.Agent, _ string) {
 		},
 		// Reduces the cooldown of Starsurge by 5 sec and increases its damage by 10%
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			druid := agent.(DruidAgent).GetDruid()
 
 			druid.AddStaticMod(core.SpellModConfig{
@@ -222,14 +222,14 @@ var ItemSetGladiatorsSanctuary = core.NewItemSet(core.ItemSet{
 	ID:   922,
 	Name: "Gladiator's Sanctuary",
 
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			druid := agent.(DruidAgent).GetDruid()
 			druid.AddStats(stats.Stats{
 				stats.Agility: 70,
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			druid := agent.(DruidAgent).GetDruid()
 			druid.AddStats(stats.Stats{
 				stats.Agility: 90,

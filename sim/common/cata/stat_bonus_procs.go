@@ -1261,8 +1261,8 @@ func init() {
 
 var ItemSetAgonyAndTorment = core.NewItemSet(core.ItemSet{
 	Name: "Agony and Torment",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			character := agent.GetCharacter()
 
 			procAura := character.NewTemporaryStatsAura(

@@ -31,8 +31,8 @@ func (hunter *Hunter) newFlamingArrowSpell(spellID int32) core.SpellConfig {
 
 var ItemSetFlameWakersBattleGear = core.NewItemSet(core.ItemSet{
 	Name: "Flamewaker's Battlegear",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			hunter := agent.(HunterAgent).GetHunter()
 
 			var flamingArrowSpellForSteadyShot = hunter.RegisterSpell(hunter.newFlamingArrowSpell(56641))
@@ -59,7 +59,7 @@ var ItemSetFlameWakersBattleGear = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			hunter := agent.(HunterAgent).GetHunter()
 			var baMod = hunter.AddDynamicMod(core.SpellModConfig{
 				Kind:       core.SpellMod_PowerCost_Pct,
@@ -116,11 +116,11 @@ var ItemSetFlameWakersBattleGear = core.NewItemSet(core.ItemSet{
 })
 var ItemSetWyrmstalkerBattleGear = core.NewItemSet(core.ItemSet{
 	Name: "Wyrmstalker Battlegear",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			// Handled in Cobra and Steady code respectively
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			hunter := agent.(HunterAgent).GetHunter()
 			var chronoHunter = hunter.RegisterAura(core.Aura{ // 105919
 				Label:    "Chronohunter",
@@ -149,8 +149,8 @@ var ItemSetWyrmstalkerBattleGear = core.NewItemSet(core.ItemSet{
 })
 var ItemSetLightningChargedBattleGear = core.NewItemSet(core.ItemSet{
 	Name: "Lightning-Charged Battlegear",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			// 5% Crit on SS
 			agent.GetCharacter().AddStaticMod(core.SpellModConfig{
 				Kind:       core.SpellMod_BonusCrit_Percent,
@@ -158,7 +158,7 @@ var ItemSetLightningChargedBattleGear = core.NewItemSet(core.ItemSet{
 				FloatValue: 5,
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			// Cobra & Steady Shot < 0.2s cast time
 			// Cannot be spell modded for now
 		},
@@ -168,14 +168,14 @@ var ItemSetLightningChargedBattleGear = core.NewItemSet(core.ItemSet{
 var ItemSetGladiatorsPursuit = core.NewItemSet(core.ItemSet{
 	ID:   920,
 	Name: "Gladiator's Pursuit",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			hunter := agent.(HunterAgent).GetHunter()
 			hunter.AddStats(stats.Stats{
 				stats.Agility: 70,
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			hunter := agent.(HunterAgent).GetHunter()
 			// Multiply focus regen 1.05
 			hunter.AddStats(stats.Stats{

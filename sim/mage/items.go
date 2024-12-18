@@ -10,8 +10,8 @@ import (
 // T11
 var ItemSetFirelordsVestments = core.NewItemSet(core.ItemSet{
 	Name: "Firelord's Vestments",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			// Increases the critical strike chance of your Death Coil and Frost Strike abilities by 5%.
 			agent.GetCharacter().AddStaticMod(core.SpellModConfig{
 				Kind:       core.SpellMod_BonusCrit_Percent,
@@ -19,7 +19,7 @@ var ItemSetFirelordsVestments = core.NewItemSet(core.ItemSet{
 				FloatValue: 5,
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			//Reduces cast time of Arcane Blast, Fireball, FFB, and Frostbolt by 10%
 			agent.GetCharacter().AddStaticMod(core.SpellModConfig{
 				Kind:       core.SpellMod_CastTime_Pct,
@@ -33,10 +33,10 @@ var ItemSetFirelordsVestments = core.NewItemSet(core.ItemSet{
 // T12
 var ItemSetFirehawkRobesOfConflagration = core.NewItemSet(core.ItemSet{
 	Name: "Firehawk Robes of Conflagration",
-	Bonuses: map[int32]core.ApplyEffect{
+	Bonuses: map[int32]core.ApplySetItemEffect{
 		// You have a chance to summon a Mirror Image to assist you in battle for 15 sec when you cast Frostbolt, Fireball, Frostfire Bolt, or Arcane Blast.
 		// (Proc chance: 20%, 45s cooldown)
-		2: func(agent core.Agent) {
+		2: func(agent core.Agent, _ string) {
 			mage := agent.(MageAgent).GetMage()
 
 			core.MakeProcTriggerAura(&mage.Unit, core.ProcTrigger{
@@ -52,7 +52,7 @@ var ItemSetFirehawkRobesOfConflagration = core.NewItemSet(core.ItemSet{
 		},
 		// Your spells have an increased chance to trigger Brain Freeze or Hot Streak.
 		// In addition, Arcane Power decreases the cost of your damaging spells by 10% instead of increasing their cost.
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			// Arcane Power Cost reduction implemented in:
 			// talents_arcane.go#278
 
@@ -78,10 +78,10 @@ var ItemSetFirehawkRobesOfConflagration = core.NewItemSet(core.ItemSet{
 // T13
 var ItemSetTimeLordsRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Time Lord's Regalia",
-	Bonuses: map[int32]core.ApplyEffect{
+	Bonuses: map[int32]core.ApplySetItemEffect{
 		// Your Arcane Blast has a 100% chance and your Fireball, Pyroblast, Frostfire Bolt, and Frostbolt spells have a 50% chance to grant Stolen Time, increasing your haste rating by 50 for 30 sec and stacking up to 10 times.
 		// When Arcane Power, Combustion, or Icy Veins expires, all stacks of Stolen Time are lost.
-		2: func(agent core.Agent) {
+		2: func(agent core.Agent, _ string) {
 			character := agent.GetCharacter()
 			mage := agent.(MageAgent).GetMage()
 
@@ -118,7 +118,7 @@ var ItemSetTimeLordsRegalia = core.NewItemSet(core.ItemSet{
 			newStolenTimeTrigger(0.5, MageSpellFireball|MageSpellPyroblast|MageSpellFrostfireBolt|MageSpellFrostbolt)
 		},
 		// Each stack of Stolen Time also reduces the cooldown of Arcane Power by 7 sec, Combustion by 5 sec, and Icy Veins by 15 sec.
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			// Cooldown reduction handlers can be found in:
 			// combustion.go
 			// talents_arcane.go

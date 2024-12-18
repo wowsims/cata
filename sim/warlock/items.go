@@ -11,15 +11,15 @@ import (
 // T11
 var ItemSetMaleficRaiment = core.NewItemSet(core.ItemSet{
 	Name: "Shadowflame Regalia",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			agent.(WarlockAgent).GetWarlock().AddStaticMod(core.SpellModConfig{
 				Kind:       core.SpellMod_CastTime_Pct,
 				ClassMask:  WarlockSpellChaosBolt | WarlockSpellHandOfGuldan | WarlockSpellHaunt,
 				FloatValue: -0.1,
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
 			dmgMod := warlock.AddDynamicMod(core.SpellModConfig{
@@ -141,8 +141,8 @@ func (pet *FieryImpPet) registerFlameBlast(warlock *Warlock) {
 
 var ItemSetBalespidersBurningVestments = core.NewItemSet(core.ItemSet{
 	Name: "Balespider's Burning Vestments",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
 			core.MakePermanent(warlock.RegisterAura(core.Aura{
@@ -160,7 +160,7 @@ var ItemSetBalespidersBurningVestments = core.NewItemSet(core.ItemSet{
 				},
 			}))
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
 			dmgMod := warlock.AddDynamicMod(core.SpellModConfig{
@@ -200,13 +200,13 @@ var ItemSetGladiatorsFelshroud = core.NewItemSet(core.ItemSet{
 	ID:   910,
 	Name: "Gladiator's Felshroud",
 
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			agent.(WarlockAgent).GetWarlock().AddStats(stats.Stats{
 				stats.Intellect: 70,
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			lock := agent.(WarlockAgent).GetWarlock()
 			lock.AddStats(stats.Stats{
 				stats.Intellect: 90,
@@ -225,8 +225,8 @@ var ItemSetGladiatorsFelshroud = core.NewItemSet(core.ItemSet{
 // T13
 var ItemSetVestmentsOfTheFacelessShroud = core.NewItemSet(core.ItemSet{
 	Name: "Vestments of the Faceless Shroud",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
 			warlock.AddStaticMod(core.SpellModConfig{
@@ -235,7 +235,7 @@ var ItemSetVestmentsOfTheFacelessShroud = core.NewItemSet(core.ItemSet{
 				ClassMask: WarlockSpellSummonDoomguard | WarlockSpellSummonInfernal,
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
 			spDep := warlock.NewDynamicMultiplyStat(stats.SpellPower, 1.1)

@@ -11,8 +11,8 @@ import (
 // Tier 11 ret
 var ItemSetReinforcedSapphiriumBattleplate = core.NewItemSet(core.ItemSet{
 	Name: "Reinforced Sapphirium Battleplate",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			paladin := agent.(PaladinAgent).GetPaladin()
 
 			paladin.AddStaticMod(core.SpellModConfig{
@@ -21,7 +21,7 @@ var ItemSetReinforcedSapphiriumBattleplate = core.NewItemSet(core.ItemSet{
 				FloatValue: 0.1,
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			// Handled in inquisition.go
 
 			paladin := agent.(PaladinAgent).GetPaladin()
@@ -37,8 +37,8 @@ var ItemSetReinforcedSapphiriumBattleplate = core.NewItemSet(core.ItemSet{
 // Tier 12 ret
 var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 	Name: "Battleplate of Immolation",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			paladin := agent.(PaladinAgent).GetPaladin()
 			cata.RegisterIgniteEffect(&paladin.Unit, cata.IgniteConfig{
 				ActionID:           core.ActionID{SpellID: 35395}.WithTag(3), // actual 99092
@@ -58,7 +58,7 @@ var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			// Handled in talents_retribution.go
 
 			paladin := agent.(PaladinAgent).GetPaladin()
@@ -74,8 +74,8 @@ var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 // Tier 13 ret
 var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 	Name: "Battleplate of Radiant Glory",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			paladin := agent.(PaladinAgent).GetPaladin()
 			// Actual buff credited with the Holy Power gain is Virtuous Empowerment
 			hpMetrics := paladin.NewHolyPowerMetrics(core.ActionID{SpellID: 105767})
@@ -113,7 +113,7 @@ var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			paladin := agent.(PaladinAgent).GetPaladin()
 
 			damageMod := paladin.AddDynamicMod(core.SpellModConfig{
@@ -153,13 +153,13 @@ var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 var ItemSetGladiatorsVindication = core.NewItemSet(core.ItemSet{
 	ID:   917,
 	Name: "Gladiator's Vindication",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			paladin := agent.(PaladinAgent).GetPaladin()
 
 			paladin.AddStat(stats.Strength, 70)
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			paladin := agent.(PaladinAgent).GetPaladin()
 
 			paladin.AddStat(stats.Strength, 90)
@@ -188,8 +188,8 @@ func (paladin *Paladin) addBloodthirstyGloves() {
 // Tier 11 prot
 var ItemSetReinforcedSapphiriumBattlearmor = core.NewItemSet(core.ItemSet{
 	Name: "Reinforced Sapphirium Battlearmor",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			paladin := agent.(PaladinAgent).GetPaladin()
 
 			paladin.AddStaticMod(core.SpellModConfig{
@@ -198,7 +198,7 @@ var ItemSetReinforcedSapphiriumBattlearmor = core.NewItemSet(core.ItemSet{
 				FloatValue: 0.1,
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			// Handled in guardian_of_ancient_kings.go
 		},
 	},
@@ -207,8 +207,8 @@ var ItemSetReinforcedSapphiriumBattlearmor = core.NewItemSet(core.ItemSet{
 // Tier 12 prot
 var ItemSetBattlearmorOfImmolation = core.NewItemSet(core.ItemSet{
 	Name: "Battlearmor of Immolation",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			paladin := agent.(PaladinAgent).GetPaladin()
 
 			procDamage := 0.0
@@ -243,7 +243,7 @@ var ItemSetBattlearmorOfImmolation = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			paladin := agent.(PaladinAgent).GetPaladin()
 
 			flamingAegis := paladin.GetOrRegisterAura(core.Aura{
@@ -283,8 +283,8 @@ var ItemSetBattlearmorOfImmolation = core.NewItemSet(core.ItemSet{
 // Tier 13 prot
 var ItemSetArmorOfRadiantGlory = core.NewItemSet(core.ItemSet{
 	Name: "Armor of Radiant Glory",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			paladin := agent.(PaladinAgent).GetPaladin()
 
 			actionID := core.ActionID{SpellID: 105801}
@@ -311,7 +311,7 @@ var ItemSetArmorOfRadiantGlory = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			// Divine Guardian not implemented since it's a raid cooldown and doesn't affect the Paladin
 		},
 	},

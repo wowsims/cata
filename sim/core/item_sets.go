@@ -7,6 +7,7 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
+type ApplySetItemEffect func(agent Agent, setName string)
 type ItemSet struct {
 	ID              int32
 	Name            string
@@ -16,7 +17,7 @@ type ItemSet struct {
 	// before the Sim starts.
 	//
 	// The function should apply any benefits provided by the set bonus.
-	Bonuses map[int32]ApplyEffect
+	Bonuses map[int32]ApplySetItemEffect
 }
 
 var ItemSetSlots = []proto.ItemSlot{
@@ -112,7 +113,7 @@ type SetBonus struct {
 	NumPieces int32
 
 	// Function for applying the effects of this set bonus.
-	BonusEffect ApplyEffect
+	BonusEffect ApplySetItemEffect
 }
 
 // Returns a list describing all active set bonuses.
@@ -182,7 +183,7 @@ func (character *Character) applyItemSetBonusEffects(agent Agent) {
 	activeSetBonuses := character.GetActiveSetBonuses()
 
 	for _, activeSetBonus := range activeSetBonuses {
-		activeSetBonus.BonusEffect(agent)
+		activeSetBonus.BonusEffect(agent, activeSetBonus.Name)
 	}
 
 	if character.ItemSwap.IsEnabled() {
@@ -191,7 +192,7 @@ func (character *Character) applyItemSetBonusEffects(agent Agent) {
 		})
 
 		for _, unequippedSetBonus := range unequippedSetBonuses {
-			unequippedSetBonus.BonusEffect(agent)
+			unequippedSetBonus.BonusEffect(agent, unequippedSetBonus.Name)
 		}
 	}
 }
@@ -252,7 +253,7 @@ type CustomSetBonusCallbackConfig struct {
 }
 
 // Adds a static effect that activates when the character has a set bonus.
-func (character *Character) MakeStaticEffectForSetBonus(setName string, numPieces int32, callbackConfig CustomSetBonusCallbackConfig) {
+func (character *Character) MakeCallbackEffectForSetBonus(setName string, numPieces int32, callbackConfig CustomSetBonusCallbackConfig) {
 	if character.ItemSwap.IsEnabled() {
 		character.RegisterItemSwapCallback(ItemSetSlots, func(sim *Simulation, _ proto.ItemSlot) {
 			if character.HasActiveSetBonus(setName, numPieces) {

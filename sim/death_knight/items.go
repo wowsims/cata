@@ -13,8 +13,8 @@ import (
 // T11 - DPS
 var ItemSetMagmaPlatedBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Magma Plated Battlegear",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			// Increases the critical strike chance of your Death Coil and Frost Strike abilities by 5%.
 			agent.GetCharacter().AddStaticMod(core.SpellModConfig{
 				Kind:       core.SpellMod_BonusCrit_Percent,
@@ -22,7 +22,7 @@ var ItemSetMagmaPlatedBattlegear = core.NewItemSet(core.ItemSet{
 				FloatValue: 5,
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			// Each time you gain a Death Rune, you also gain 1% increased attack power for 30 sec. Stacks up to 3 times.
 			// Also activated whenever KM procs
 			character := agent.GetCharacter()
@@ -64,8 +64,8 @@ var ItemSetMagmaPlatedBattlegear = core.NewItemSet(core.ItemSet{
 // T11 - Tank
 var ItemSetMagmaPlatedBattlearmor = core.NewItemSet(core.ItemSet{
 	Name: "Magma Plated Battlearmor",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			// Increases the damage done by your Death Strike ability by 5%.
 			agent.GetCharacter().AddStaticMod(core.SpellModConfig{
 				Kind:       core.SpellMod_DamageDone_Flat,
@@ -73,7 +73,7 @@ var ItemSetMagmaPlatedBattlearmor = core.NewItemSet(core.ItemSet{
 				FloatValue: 0.05,
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			// Increases the duration of your Icebound Fortitude ability by 50%.
 			// Implemented in icebound_fortitude.go
 		},
@@ -83,8 +83,8 @@ var ItemSetMagmaPlatedBattlearmor = core.NewItemSet(core.ItemSet{
 // T12 - DPS
 var ItemSetElementiumDeathplateBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Elementium Deathplate Battlegear",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			dk := agent.(DeathKnightAgent).GetDeathKnight()
 
 			actionID := core.ActionID{SpellID: 98971}
@@ -119,7 +119,7 @@ var ItemSetElementiumDeathplateBattlegear = core.NewItemSet(core.ItemSet{
 			})
 
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 
 			dk := agent.(DeathKnightAgent).GetDeathKnight()
 			damage := 0.0
@@ -167,8 +167,8 @@ var ItemSetElementiumDeathplateBattlegear = core.NewItemSet(core.ItemSet{
 // T12 - Tank
 var ItemSetElementiumDeathplateBattlearmor = core.NewItemSet(core.ItemSet{
 	Name: "Elementium Deathplate Battlearmor",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 
 			dk := agent.(DeathKnightAgent).GetDeathKnight()
 
@@ -216,7 +216,7 @@ var ItemSetElementiumDeathplateBattlearmor = core.NewItemSet(core.ItemSet{
 			})
 
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			// When your Dancing Rune Weapon expires, you gain 15% additional parry chance for 12 sec.
 			// Implemented in dancing_rune_weapon.go
 		},
@@ -226,12 +226,12 @@ var ItemSetElementiumDeathplateBattlearmor = core.NewItemSet(core.ItemSet{
 // T13 - DPS
 var ItemSetNecroticBoneplateBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Necrotic Boneplate Battlegear",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			// Sudden Doom has a 30% chance and Rime has a 60% chance to grant 2 charges when triggered instead of 1.
 			// Handled in talents_frost.go:applyRime() and talents_unholy.go:applySuddenDoom()
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			// Runic Empowerment has a 25% chance and Runic Corruption has a 40% chance to also grant 710 mastery rating for 12 sec when activated.
 			// Spell: Runic Mastery (id: 105647)
 			// Handled in talents_unholy.go:applyRunicEmpowerementCorruption()

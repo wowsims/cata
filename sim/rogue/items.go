@@ -12,8 +12,8 @@ import (
 
 var Tier11 = core.NewItemSet(core.ItemSet{
 	Name: "Wind Dancer's Regalia",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			// +5% Crit to Backstab, Mutilate, and Sinister Strike
 			agent.GetCharacter().AddStaticMod(core.SpellModConfig{
 				Kind:       core.SpellMod_BonusCrit_Percent,
@@ -21,7 +21,7 @@ var Tier11 = core.NewItemSet(core.ItemSet{
 				ClassMask:  RogueSpellBackstab | RogueSpellMutilate | RogueSpellSinisterStrike,
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			// 1% Chance on Auto Attack to increase crit of next Evis or Envenom by +100% for 15 seconds
 			rogue := agent.(RogueAgent).GetRogue()
 
@@ -77,8 +77,8 @@ func MakeT12StatAura(action core.ActionID, stat stats.Stat, name string) core.Au
 
 var Tier12 = core.NewItemSet(core.ItemSet{
 	Name: "Vestments of the Dark Phoenix",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			// Your melee critical strikes deal 6% additional damage as Fire over 4 sec.
 			// Rolls like ignite
 			// Tentatively, this is just Ignite. Testing required to validate behavior.
@@ -100,7 +100,7 @@ var Tier12 = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			// Your Tricks of the Trade ability also causes you to gain a 25% increase to Haste, Mastery, or Critical Strike chosen at random for 30 sec.
 			// Cannot pick the same stat twice in a row. No other logic appears to exist
 			// Not a dynamic 1.25% mod; snapshots stats and applies that much as bonus rating for duration
@@ -136,10 +136,10 @@ var Tier12 = core.NewItemSet(core.ItemSet{
 
 var Tier13 = core.NewItemSet(core.ItemSet{
 	Name: "Blackfang Battleweave",
-	Bonuses: map[int32]core.ApplyEffect{
+	Bonuses: map[int32]core.ApplySetItemEffect{
 		// After triggering Tricks of the Trade, your abilities cost 20% less energy for 6 sec.
 		// This is implemented as it is because the 20% reduction is applied -before- talents/glyphs/passives, which is not how SpellMod_PowerCost_Pct operates
-		2: func(agent core.Agent) {
+		2: func(agent core.Agent, _ string) {
 			rogue := agent.(RogueAgent).GetRogue()
 
 			bonus60e := rogue.AddDynamicMod(core.SpellModConfig{
@@ -211,7 +211,7 @@ var Tier13 = core.NewItemSet(core.ItemSet{
 		},
 		// Increases the duration of Shadow Dance by 2 sec, Adrenaline Rush by 3 sec, and Vendetta by 9 sec.
 		// Implemented in respective spells
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 
 		},
 	},
@@ -234,9 +234,9 @@ func getFangsProcRate(character *core.Character) float64 {
 // Fear + Vengeance
 var JawsOfRetribution = core.NewItemSet(core.ItemSet{
 	Name: "Jaws of Retribution",
-	Bonuses: map[int32]core.ApplyEffect{
+	Bonuses: map[int32]core.ApplySetItemEffect{
 		// Your melee attacks have a chance to grant Suffering, increasing your Agility by 2, stacking up to 50 times.
-		2: func(agent core.Agent) {
+		2: func(agent core.Agent, _ string) {
 			agiAura := agent.GetCharacter().GetOrRegisterAura(core.Aura{
 				Label:     "Suffering",
 				ActionID:  core.ActionID{SpellID: 109959},
@@ -269,9 +269,9 @@ var JawsOfRetribution = core.NewItemSet(core.ItemSet{
 // Sleeper + Dreamer
 var MawOfOblivion = core.NewItemSet(core.ItemSet{
 	Name: "Maw of Oblivion",
-	Bonuses: map[int32]core.ApplyEffect{
+	Bonuses: map[int32]core.ApplySetItemEffect{
 		// Your melee attacks have a chance to grant Nightmare, increasing your Agility by 5, stacking up to 50 times.
-		2: func(agent core.Agent) {
+		2: func(agent core.Agent, _ string) {
 			agiAura := agent.GetCharacter().GetOrRegisterAura(core.Aura{
 				Label:     "Nightmare",
 				ActionID:  core.ActionID{SpellID: 109955},
@@ -304,14 +304,14 @@ var MawOfOblivion = core.NewItemSet(core.ItemSet{
 // Golad + Tiriosh
 var FangsOfTheFather = core.NewItemSet(core.ItemSet{
 	Name: "Fangs of the Father",
-	Bonuses: map[int32]core.ApplyEffect{
+	Bonuses: map[int32]core.ApplySetItemEffect{
 		// Your melee attacks have a chance to grant Shadows of the Destroyer, increasing your Agility by 17, stacking up to 50 times.
 		// Each application past 30 grants an increasing chance to trigger Fury of the Destroyer.
 		// When triggered, this consumes all applications of Shadows of the Destroyer, immediately granting 5 combo points and cause your finishing moves to generate 5 combo points.
 		// Lasts 6 sec.
 
 		// Tooltip is deceptive. The stacks of Shadows of the Destroyer only clear when the 5 Combo Point effect ends
-		2: func(agent core.Agent) {
+		2: func(agent core.Agent, _ string) {
 			cpMetrics := agent.GetCharacter().NewComboPointMetrics(core.ActionID{SpellID: 109950})
 
 			agiAura := agent.GetCharacter().GetOrRegisterAura(core.Aura{
@@ -376,11 +376,11 @@ var FangsOfTheFather = core.NewItemSet(core.ItemSet{
 var CataPVPSet = core.NewItemSet(core.ItemSet{
 	Name: "Gladiator's Vestments",
 	ID:   914,
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			agent.GetCharacter().AddStat(stats.Agility, 70)
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, _ string) {
 			agent.GetCharacter().AddStat(stats.Agility, 90)
 			// 10 maximum energy added in rogue.go
 		},
