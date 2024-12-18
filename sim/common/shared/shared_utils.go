@@ -174,7 +174,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		}
 
 		eligibleSlotsForItem := core.EligibleSlotsForItem(core.GetItemByID(config.ID), false)
-		if slices.Contains(eligibleSlotsForItem, proto.ItemSlot_ItemSlotTrinket1) || slices.Contains(eligibleSlotsForItem, proto.ItemSlot_ItemSlotTrinket2) {
+		if slices.Contains(eligibleSlotsForItem, proto.ItemSlot_ItemSlotTrinket1) {
 			character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
 		}
 
