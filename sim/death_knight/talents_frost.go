@@ -124,19 +124,17 @@ func (dk *DeathKnight) applyRime() {
 		return
 	}
 
-	has2pcT13 := dk.HasSetBonus(ItemSetNecroticBoneplateBattlegear, 2)
-
 	rimeMod := dk.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_PowerCost_Pct,
 		FloatValue: -1,
 		ClassMask:  DeathKnightSpellIcyTouch | DeathKnightSpellHowlingBlast,
 	})
 
-	freezingFogAura := dk.GetOrRegisterAura(core.Aura{
+	dk.FreezingFogAura = dk.GetOrRegisterAura(core.Aura{
 		Label:     "Freezing Fog",
 		ActionID:  core.ActionID{SpellID: 59052},
 		Duration:  time.Second * 15,
-		MaxStacks: core.TernaryInt32(has2pcT13, 2, 0),
+		MaxStacks: 0,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			rimeMod.Activate()
@@ -149,7 +147,7 @@ func (dk *DeathKnight) applyRime() {
 				return
 			}
 
-			if has2pcT13 {
+			if dk.hasT13DPS2pc() {
 				aura.RemoveStack(sim)
 			} else {
 				aura.Deactivate(sim)
@@ -165,12 +163,12 @@ func (dk *DeathKnight) applyRime() {
 		Outcome:        core.OutcomeLanded,
 		ProcChance:     0.15 * float64(dk.Talents.Rime),
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			freezingFogAura.Activate(sim)
+			dk.FreezingFogAura.Activate(sim)
 
 			// T13 2pc: Rime has a 60% chance to grant 2 charges when triggered instead of 1.
-			if has2pcT13 {
+			if dk.hasT13DPS2pc() {
 				stacks := core.TernaryInt32(sim.Proc(0.6, "T13 2pc"), 2, 1)
-				freezingFogAura.SetStacks(sim, stacks)
+				dk.FreezingFogAura.SetStacks(sim, stacks)
 			}
 		},
 	})

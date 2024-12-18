@@ -57,20 +57,10 @@ var ItemSetEarthenWarplate = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplySetItemEffect{
 		2: func(agent core.Agent, setName string) {
 			character := agent.(WarriorAgent).GetWarrior()
-
-			setBonusDep := character.AddDynamicMod(core.SpellModConfig{
+			character.MakeDynamicModForSetBonus(setName, 2, core.SpellModConfig{
 				ClassMask:  SpellMaskBloodthirst | SpellMaskMortalStrike,
 				Kind:       core.SpellMod_DamageDone_Flat,
 				FloatValue: 0.05,
-			})
-
-			character.MakeCallbackEffectForSetBonus(setName, 2, core.CustomSetBonusCallbackConfig{
-				OnGain: func(sim *core.Simulation, _ *core.Aura) {
-					setBonusDep.Activate()
-				},
-				OnExpire: func(sim *core.Simulation, _ *core.Aura) {
-					setBonusDep.Deactivate()
-				},
 			})
 		},
 		4: func(agent core.Agent, setName string) {
@@ -117,38 +107,18 @@ var ItemSetEarthenBattleplate = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplySetItemEffect{
 		2: func(agent core.Agent, setName string) {
 			character := agent.(WarriorAgent).GetWarrior()
-
-			setBonusDep := character.AddDynamicMod(core.SpellModConfig{
+			character.MakeDynamicModForSetBonus(setName, 2, core.SpellModConfig{
 				ClassMask:  SpellMaskShieldSlam,
 				Kind:       core.SpellMod_DamageDone_Flat,
 				FloatValue: 0.05,
 			})
-
-			character.MakeCallbackEffectForSetBonus(setName, 2, core.CustomSetBonusCallbackConfig{
-				OnGain: func(sim *core.Simulation, _ *core.Aura) {
-					setBonusDep.Activate()
-				},
-				OnExpire: func(sim *core.Simulation, _ *core.Aura) {
-					setBonusDep.Deactivate()
-				},
-			})
 		},
 		4: func(agent core.Agent, setName string) {
 			character := agent.(WarriorAgent).GetWarrior()
-
-			setBonusDep := character.AddDynamicMod(core.SpellModConfig{
+			character.MakeDynamicModForSetBonus(setName, 2, core.SpellModConfig{
 				ClassMask:  SpellMaskShieldWall,
 				Kind:       core.SpellMod_Cooldown_Multiplier,
 				FloatValue: -0.5,
-			})
-
-			character.MakeCallbackEffectForSetBonus(setName, 2, core.CustomSetBonusCallbackConfig{
-				OnGain: func(sim *core.Simulation, _ *core.Aura) {
-					setBonusDep.Activate()
-				},
-				OnExpire: func(sim *core.Simulation, _ *core.Aura) {
-					setBonusDep.Deactivate()
-				},
 			})
 		},
 	},

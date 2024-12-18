@@ -208,6 +208,13 @@ func (character *Character) GetActiveSetBonusNames() []string {
 	return names
 }
 
+type CustomSetBonusCallbackConfig struct {
+	// Override default behavior when the set bonus is gained.
+	OnGain func(sim *Simulation, aura *Aura)
+	// Override default behavior when the set bonus is lost.
+	OnExpire func(sim *Simulation, aura *Aura)
+}
+
 // Adds a proc trigger aura that activates when the character has a set bonus.
 func (character *Character) MakeProcTriggerAuraForSetBonus(setName string, numPieces int32, config ProcTrigger, customSetBonusCallbackConfig *CustomSetBonusCallbackConfig) *Aura {
 	return character.factory_ProcTriggerAuraForSetBonus(setName, numPieces, &character.Unit, config, customSetBonusCallbackConfig)
@@ -224,52 +231,89 @@ func (character *Character) factory_ProcTriggerAuraForSetBonus(setName string, n
 		customSetBonusCallbackConfig = &CustomSetBonusCallbackConfig{}
 	}
 
-	if character.ItemSwap.IsEnabled() {
-		character.RegisterItemSwapCallback(ItemSetSlots, func(sim *Simulation, slot proto.ItemSlot) {
-			if character.HasActiveSetBonus(setName, numPieces) {
-				if customSetBonusCallbackConfig.OnGain != nil {
-					customSetBonusCallbackConfig.OnGain(sim, aura)
-				} else {
-					aura.Activate(sim)
-				}
+	character.registerSetBonusForItemSwap(setName, numPieces, ItemSwapRegistrationConfig{
+		OnGain: func(sim *Simulation, _ proto.ItemSlot) {
+			if customSetBonusCallbackConfig.OnGain != nil {
+				customSetBonusCallbackConfig.OnGain(sim, aura)
 			} else {
-				if customSetBonusCallbackConfig.OnExpire != nil {
-					customSetBonusCallbackConfig.OnExpire(sim, aura)
-				} else {
-					aura.Deactivate(sim)
-				}
+				aura.Activate(sim)
 			}
-		})
-	}
+		},
+		OnExpire: func(sim *Simulation, _ proto.ItemSlot) {
+			if customSetBonusCallbackConfig.OnExpire != nil {
+				customSetBonusCallbackConfig.OnExpire(sim, aura)
+			} else {
+				aura.Deactivate(sim)
+			}
+		},
+	})
 
 	return aura
 }
 
-type CustomSetBonusCallbackConfig struct {
-	// Override default behavior when the set bonus is gained.
-	OnGain func(sim *Simulation, aura *Aura)
-	// Override default behavior when the set bonus is lost.
-	OnExpire func(sim *Simulation, aura *Aura)
+// Adds a static effect that activates when the character has a set bonus.
+func (character *Character) MakeCallbackEffectForSetBonus(setName string, numPieces int32, callbackConfig CustomSetBonusCallbackConfig) {
+	character.registerSetBonusForItemSwap(setName, numPieces, ItemSwapRegistrationConfig{
+		OnGain: func(sim *Simulation, _ proto.ItemSlot) {
+			if callbackConfig.OnGain != nil {
+				callbackConfig.OnGain(sim, nil)
+			}
+		},
+		OnExpire: func(sim *Simulation, _ proto.ItemSlot) {
+			if callbackConfig.OnExpire != nil {
+				callbackConfig.OnExpire(sim, nil)
+			}
+		},
+		OnDisabled: func() {
+			if callbackConfig.OnGain != nil {
+				callbackConfig.OnGain(nil, nil)
+			}
+		},
+	})
 }
 
 // Adds a static effect that activates when the character has a set bonus.
-func (character *Character) MakeCallbackEffectForSetBonus(setName string, numPieces int32, callbackConfig CustomSetBonusCallbackConfig) {
+func (character *Character) MakeDynamicModForSetBonus(setName string, numPieces int32, spellModConfig SpellModConfig) {
+
+	setBonusDep := character.AddDynamicMod(spellModConfig)
+	character.registerSetBonusForItemSwap(setName, numPieces, ItemSwapRegistrationConfig{
+		OnGain: func(_ *Simulation, _ proto.ItemSlot) {
+			setBonusDep.Activate()
+		},
+		OnExpire: func(_ *Simulation, _ proto.ItemSlot) {
+			setBonusDep.Deactivate()
+		},
+		OnDisabled: func() {
+			setBonusDep.Activate()
+		},
+	})
+}
+
+type ItemSwapRegistrationConfig struct {
+	// Will be called when your set bonus is gained.
+	OnGain func(sim *Simulation, slot proto.ItemSlot)
+	// Will be called when your set bonus is lost.
+	OnExpire func(sim *Simulation, slot proto.ItemSlot)
+	// Will be called when ItemSwap is disabled.
+	OnDisabled func()
+}
+
+func (character *Character) registerSetBonusForItemSwap(setName string, numPieces int32, config ItemSwapRegistrationConfig) {
 	if character.ItemSwap.IsEnabled() {
-		character.RegisterItemSwapCallback(ItemSetSlots, func(sim *Simulation, _ proto.ItemSlot) {
+		character.RegisterItemSwapCallback(ItemSetSlots, func(sim *Simulation, slot proto.ItemSlot) {
 			if character.HasActiveSetBonus(setName, numPieces) {
-				if callbackConfig.OnGain != nil {
-					callbackConfig.OnGain(sim, nil)
+				if config.OnGain != nil {
+					config.OnGain(sim, slot)
 				}
 			} else {
-				if callbackConfig.OnExpire != nil {
-					callbackConfig.OnExpire(sim, nil)
+				if config.OnExpire != nil {
+					config.OnExpire(sim, slot)
 				}
 			}
 		})
 	} else {
-		// By default, the effect is always active.
-		if callbackConfig.OnGain != nil {
-			callbackConfig.OnGain(nil, nil)
+		if config.OnDisabled != nil {
+			config.OnDisabled()
 		}
 	}
 }

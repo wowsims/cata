@@ -87,39 +87,19 @@ var ItemSetRagingElementsRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Regalia of the Raging Elements",
 	Bonuses: map[int32]core.ApplySetItemEffect{
 		2: func(agent core.Agent, setName string) {
-			shaman := agent.GetCharacter()
-
-			setBonusDep := shaman.AddDynamicMod(core.SpellModConfig{
+			character := agent.GetCharacter()
+			character.MakeDynamicModForSetBonus(setName, 2, core.SpellModConfig{
 				Kind:       core.SpellMod_BonusCrit_Percent,
 				FloatValue: 10,
 				ClassMask:  SpellMaskFlameShock,
 			})
-
-			shaman.MakeCallbackEffectForSetBonus(setName, 2, core.CustomSetBonusCallbackConfig{
-				OnGain: func(sim *core.Simulation, _ *core.Aura) {
-					setBonusDep.Activate()
-				},
-				OnExpire: func(sim *core.Simulation, _ *core.Aura) {
-					setBonusDep.Deactivate()
-				},
-			})
 		},
 		4: func(agent core.Agent, setName string) {
-			shaman := agent.GetCharacter()
-
-			setBonusDep := shaman.AddDynamicMod(core.SpellModConfig{
+			character := agent.GetCharacter()
+			character.MakeDynamicModForSetBonus(setName, 4, core.SpellModConfig{
 				Kind:       core.SpellMod_CastTime_Pct,
 				FloatValue: -0.1,
 				ClassMask:  SpellMaskLightningBolt,
-			})
-
-			shaman.MakeCallbackEffectForSetBonus(setName, 4, core.CustomSetBonusCallbackConfig{
-				OnGain: func(sim *core.Simulation, _ *core.Aura) {
-					setBonusDep.Activate()
-				},
-				OnExpire: func(sim *core.Simulation, _ *core.Aura) {
-					setBonusDep.Deactivate()
-				},
 			})
 		},
 	},
@@ -322,37 +302,19 @@ var ItemSetRagingElementsBattlegear = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent, setName string) {
 			shaman := agent.(ShamanAgent).GetShaman()
 
-			setBonusDep := shaman.AddDynamicMod(core.SpellModConfig{
+			shaman.MakeDynamicModForSetBonus(setName, 4, core.SpellModConfig{
 				Kind:       core.SpellMod_DamageDone_Flat,
 				FloatValue: .10,
 				ClassMask:  SpellMaskLavaLash | SpellMaskStormstrike,
-			})
-
-			shaman.MakeCallbackEffectForSetBonus(setName, 4, core.CustomSetBonusCallbackConfig{
-				OnGain: func(_ *core.Simulation, _ *core.Aura) {
-					setBonusDep.Activate()
-				},
-				OnExpire: func(_ *core.Simulation, _ *core.Aura) {
-					setBonusDep.Deactivate()
-				},
 			})
 		},
 		4: func(agent core.Agent, setName string) {
 			shaman := agent.(ShamanAgent).GetShaman()
 
-			setBonusDep := shaman.AddDynamicMod(core.SpellModConfig{
+			shaman.MakeDynamicModForSetBonus(setName, 4, core.SpellModConfig{
 				Kind:       core.SpellMod_BonusCrit_Percent,
 				FloatValue: 10,
 				ClassMask:  SpellMaskLightningBolt,
-			})
-
-			shaman.MakeCallbackEffectForSetBonus(setName, 4, core.CustomSetBonusCallbackConfig{
-				OnGain: func(_ *core.Simulation, _ *core.Aura) {
-					setBonusDep.Activate()
-				},
-				OnExpire: func(_ *core.Simulation, _ *core.Aura) {
-					setBonusDep.Deactivate()
-				},
 			})
 		},
 	},

@@ -14,15 +14,17 @@ import (
 var ItemSetMagmaPlatedBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Magma Plated Battlegear",
 	Bonuses: map[int32]core.ApplySetItemEffect{
-		2: func(agent core.Agent, _ string) {
+		2: func(agent core.Agent, setName string) {
 			// Increases the critical strike chance of your Death Coil and Frost Strike abilities by 5%.
-			agent.GetCharacter().AddStaticMod(core.SpellModConfig{
+			dk := agent.(DeathKnightAgent).GetDeathKnight()
+
+			dk.MakeDynamicModForSetBonus(setName, 4, core.SpellModConfig{
 				Kind:       core.SpellMod_BonusCrit_Percent,
 				ClassMask:  DeathKnightSpellDeathCoil | DeathKnightSpellDeathCoilHeal | DeathKnightSpellFrostStrike,
 				FloatValue: 5,
 			})
 		},
-		4: func(agent core.Agent, _ string) {
+		4: func(agent core.Agent, setName string) {
 			// Each time you gain a Death Rune, you also gain 1% increased attack power for 30 sec. Stacks up to 3 times.
 			// Also activated whenever KM procs
 			character := agent.GetCharacter()
@@ -47,7 +49,7 @@ var ItemSetMagmaPlatedBattlegear = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
+			character.MakeProcTriggerAuraForSetBonus(setName, 4, core.ProcTrigger{
 				Name:           "Magma Plated Battlegear",
 				Callback:       core.CallbackOnCastComplete,
 				ClassSpellMask: DeathKnightSpellConvertToDeathRune | DeathKnightSpellKillingMachine,
@@ -56,7 +58,7 @@ var ItemSetMagmaPlatedBattlegear = core.NewItemSet(core.ItemSet{
 					aura.Activate(sim)
 					aura.AddStack(sim)
 				},
-			})
+			}, nil)
 		},
 	},
 })
@@ -65,17 +67,34 @@ var ItemSetMagmaPlatedBattlegear = core.NewItemSet(core.ItemSet{
 var ItemSetMagmaPlatedBattlearmor = core.NewItemSet(core.ItemSet{
 	Name: "Magma Plated Battlearmor",
 	Bonuses: map[int32]core.ApplySetItemEffect{
-		2: func(agent core.Agent, _ string) {
+		2: func(agent core.Agent, setName string) {
 			// Increases the damage done by your Death Strike ability by 5%.
-			agent.GetCharacter().AddStaticMod(core.SpellModConfig{
+			dk := agent.(DeathKnightAgent).GetDeathKnight()
+
+			dk.MakeDynamicModForSetBonus(setName, 4, core.SpellModConfig{
 				Kind:       core.SpellMod_DamageDone_Flat,
 				ClassMask:  DeathKnightSpellDeathStrike,
 				FloatValue: 0.05,
 			})
 		},
-		4: func(agent core.Agent, _ string) {
+		4: func(agent core.Agent, setName string) {
 			// Increases the duration of your Icebound Fortitude ability by 50%.
 			// Implemented in icebound_fortitude.go
+			dk := agent.(DeathKnightAgent).GetDeathKnight()
+			dk.OnSpellRegistered(func(spell *core.Spell) {
+				if !spell.Matches(DeathKnightSpellIceboundFortitude) {
+					return
+				}
+
+				dk.MakeCallbackEffectForSetBonus(setName, 4, core.CustomSetBonusCallbackConfig{
+					OnGain: func(_ *core.Simulation, _ *core.Aura) {
+						dk.IceBoundFortituteAura.Duration = dk.iceBoundFortituteBaseDuration() + 6*time.Second
+					},
+					OnExpire: func(_ *core.Simulation, _ *core.Aura) {
+						dk.IceBoundFortituteAura.Duration = dk.iceBoundFortituteBaseDuration()
+					},
+				})
+			})
 		},
 	},
 })
@@ -84,7 +103,7 @@ var ItemSetMagmaPlatedBattlearmor = core.NewItemSet(core.ItemSet{
 var ItemSetElementiumDeathplateBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Elementium Deathplate Battlegear",
 	Bonuses: map[int32]core.ApplySetItemEffect{
-		2: func(agent core.Agent, _ string) {
+		2: func(agent core.Agent, setName string) {
 			dk := agent.(DeathKnightAgent).GetDeathKnight()
 
 			actionID := core.ActionID{SpellID: 98971}
@@ -108,7 +127,7 @@ var ItemSetElementiumDeathplateBattlegear = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
+			dk.MakeProcTriggerAuraForSetBonus(setName, 2, core.ProcTrigger{
 				Name:           "Smolering Rune Trigger",
 				ActionID:       actionID,
 				ClassSpellMask: DeathKnightSpellHornOfWinter,
@@ -116,10 +135,10 @@ var ItemSetElementiumDeathplateBattlegear = core.NewItemSet(core.ItemSet{
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					buff.Activate(sim)
 				},
-			})
+			}, nil)
 
 		},
-		4: func(agent core.Agent, _ string) {
+		4: func(agent core.Agent, setName string) {
 
 			dk := agent.(DeathKnightAgent).GetDeathKnight()
 			damage := 0.0
@@ -145,7 +164,7 @@ var ItemSetElementiumDeathplateBattlegear = core.NewItemSet(core.ItemSet{
 			var flamingTormentSpellForObliterate = dk.RegisterSpell(newFlamingTormentSpell(49020))
 			var flamingTormentSpellForScourgeStrike = dk.RegisterSpell(newFlamingTormentSpell(55090))
 
-			core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
+			dk.MakeProcTriggerAuraForSetBonus(setName, 4, core.ProcTrigger{
 				Name:           "Flaming Torment Trigger",
 				Callback:       core.CallbackOnSpellHitDealt,
 				ClassSpellMask: DeathKnightSpellObliterate | DeathKnightSpellScourgeStrike | DeathKnightSpellScourgeStrikeShadow,
@@ -158,7 +177,7 @@ var ItemSetElementiumDeathplateBattlegear = core.NewItemSet(core.ItemSet{
 						flamingTormentSpellForScourgeStrike.Cast(sim, result.Target)
 					}
 				},
-			})
+			}, nil)
 
 		},
 	},
@@ -168,7 +187,7 @@ var ItemSetElementiumDeathplateBattlegear = core.NewItemSet(core.ItemSet{
 var ItemSetElementiumDeathplateBattlearmor = core.NewItemSet(core.ItemSet{
 	Name: "Elementium Deathplate Battlearmor",
 	Bonuses: map[int32]core.ApplySetItemEffect{
-		2: func(agent core.Agent, _ string) {
+		2: func(agent core.Agent, setName string) {
 
 			dk := agent.(DeathKnightAgent).GetDeathKnight()
 
@@ -202,7 +221,7 @@ var ItemSetElementiumDeathplateBattlearmor = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
+			dk.MakeProcTriggerAuraForSetBonus(setName, 2, core.ProcTrigger{
 				Name:       "Burning Blood Trigger",
 				ActionID:   core.ActionID{SpellID: 98956},
 				ProcMask:   core.ProcMaskMelee,
@@ -213,23 +232,52 @@ var ItemSetElementiumDeathplateBattlearmor = core.NewItemSet(core.ItemSet{
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					dk.BurningBloodSpell.Cast(sim, result.Target)
 				},
-			})
+			}, nil)
 
 		},
-		4: func(agent core.Agent, _ string) {
+		4: func(agent core.Agent, setName string) {
 			// When your Dancing Rune Weapon expires, you gain 15% additional parry chance for 12 sec.
 			// Implemented in dancing_rune_weapon.go
 		},
 	},
 })
 
+func (dk *DeathKnight) hasT12Tank4pc() bool {
+	return dk.HasActiveSetBonus(ItemSetElementiumDeathplateBattlearmor.Name, 4)
+}
+
 // T13 - DPS
 var ItemSetNecroticBoneplateBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Necrotic Boneplate Battlegear",
 	Bonuses: map[int32]core.ApplySetItemEffect{
-		2: func(agent core.Agent, _ string) {
+		2: func(agent core.Agent, setName string) {
 			// Sudden Doom has a 30% chance and Rime has a 60% chance to grant 2 charges when triggered instead of 1.
 			// Handled in talents_frost.go:applyRime() and talents_unholy.go:applySuddenDoom()
+
+			dk := agent.(DeathKnightAgent).GetDeathKnight()
+			dk.OnSpellRegistered(func(spell *core.Spell) {
+				if !spell.Matches(DeathKnightSpellDeathCoil) {
+					return
+				}
+				dk.MakeCallbackEffectForSetBonus(setName, 4, core.CustomSetBonusCallbackConfig{
+					OnGain: func(_ *core.Simulation, _ *core.Aura) {
+						if dk.FreezingFogAura != nil {
+							dk.FreezingFogAura.MaxStacks = 2
+						}
+						if dk.SuddenDoomProcAura != nil {
+							dk.SuddenDoomProcAura.MaxStacks = 2
+						}
+					},
+					OnExpire: func(_ *core.Simulation, _ *core.Aura) {
+						if dk.FreezingFogAura != nil {
+							dk.FreezingFogAura.MaxStacks = 0
+						}
+						if dk.SuddenDoomProcAura != nil {
+							dk.SuddenDoomProcAura.MaxStacks = 0
+						}
+					},
+				})
+			})
 		},
 		4: func(agent core.Agent, _ string) {
 			// Runic Empowerment has a 25% chance and Runic Corruption has a 40% chance to also grant 710 mastery rating for 12 sec when activated.
@@ -238,6 +286,14 @@ var ItemSetNecroticBoneplateBattlegear = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+func (dk *DeathKnight) hasT13DPS2pc() bool {
+	return dk.HasActiveSetBonus(ItemSetNecroticBoneplateBattlegear.Name, 2)
+}
+
+func (dk *DeathKnight) hasT13DPS4pc() bool {
+	return dk.HasActiveSetBonus(ItemSetNecroticBoneplateBattlegear.Name, 4)
+}
 
 func init() {
 }
