@@ -24,9 +24,6 @@ func (shaman *Shaman) registerSpiritwalkersGraceSpell() {
 		Duration: 15 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			castWhileMovingMod.Activate()
-			if shaman.hasT13Resto4pc() {
-				shaman.SpiritwalkersVestments4PT13Aura.Activate(sim)
-			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			castWhileMovingMod.Deactivate()
@@ -34,9 +31,10 @@ func (shaman *Shaman) registerSpiritwalkersGraceSpell() {
 	})
 
 	shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolNature,
-		Flags:       core.SpellFlagAPL,
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolNature,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskSpiritwalkersGrace,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.12,

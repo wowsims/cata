@@ -397,16 +397,10 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyCastSpeed(1.20)
 			damageMod.Activate()
-			if shaman.hasT13Ele2pc() {
-				shaman.AddStatDynamic(sim, stats.MasteryRating, 2000)
-			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyCastSpeed(1 / 1.20)
 			damageMod.Deactivate()
-			if shaman.hasT13Ele2pc() {
-				shaman.AddStatDynamic(sim, stats.MasteryRating, -2000)
-			}
 		},
 	})
 
@@ -441,8 +435,8 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 	})
 
 	eleMastSpell := shaman.RegisterSpell(core.SpellConfig{
-		ActionID: eleMasterActionID,
-		Flags:    core.SpellFlagNoOnCastComplete,
+		ActionID:       eleMasterActionID,
+		ClassSpellMask: SpellMaskElementalMastery,
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    cdTimer,

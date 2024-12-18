@@ -173,8 +173,7 @@ type Shaman struct {
 
 	waterShieldManaMetrics *core.ResourceMetrics
 
-	VolcanicRegalia4PT12Aura        *core.Aura
-	SpiritwalkersVestments4PT13Aura *core.Aura
+	VolcanicRegalia4PT12Aura *core.Aura
 
 	useDragonSoul_2PT12 bool
 }
@@ -357,6 +356,8 @@ const (
 	SpellMaskEarthquake
 	SpellMaskFlametongueWeapon
 	SpellMaskFeralSpirit
+	SpellMaskElementalMastery
+	SpellMaskSpiritwalkersGrace
 
 	SpellMaskStormstrike = SpellMaskStormstrikeCast | SpellMaskStormstrikeDamage
 	SpellMaskFlameShock  = SpellMaskFlameShockDirect | SpellMaskFlameShockDot
