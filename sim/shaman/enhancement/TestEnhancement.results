@@ -1565,6 +1565,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-Spiritwalker'sVestments"
+ value: {
+  dps: 23918.77193
+  tps: 15430.60431
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-StarcatcherCompass-77202"
  value: {
   dps: 36982.18631

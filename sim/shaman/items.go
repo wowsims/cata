@@ -94,14 +94,16 @@ var ItemSetRagingElementsRegalia = core.NewItemSet(core.ItemSet{
 // T12 elem
 // (2) Set: Your Lightning Bolt has a 30% chance to reduce the remaining cooldown on your Fire Elemental Totem by 4 sec.
 // (4) Set: Your Lava Surge talent also makes Lava Burst instant when it triggers.
+var itemSetVolcanicRegaliaName = "Volcanic Regalia"
 var ItemSetVolcanicRegalia = core.NewItemSet(core.ItemSet{
-	Name: "Volcanic Regalia",
+	Name: itemSetVolcanicRegaliaName,
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
 
+			var aura *core.Aura
 			if shaman.useDragonSoul_2PT12 {
-				shaman.RegisterAura(core.Aura{
+				aura = shaman.RegisterAura(core.Aura{
 					Label:    "Volcanic Regalia 2P",
 					Duration: core.NeverExpires,
 					OnReset: func(aura *core.Aura, sim *core.Simulation) {
@@ -115,7 +117,7 @@ var ItemSetVolcanicRegalia = core.NewItemSet(core.ItemSet{
 					},
 				})
 			} else {
-				core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+				aura = core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
 					Name:       "Volcanic Regalia 2P",
 					Callback:   core.CallbackOnSpellHitDealt,
 					ProcMask:   core.ProcMaskSpellDamage,
@@ -131,9 +133,23 @@ var ItemSetVolcanicRegalia = core.NewItemSet(core.ItemSet{
 				})
 			}
 
+			if shaman.ItemSwap.IsEnabled() {
+				shaman.RegisterItemSwapCallback(core.ItemSetSlots,
+					func(sim *core.Simulation, _ proto.ItemSlot) {
+						hasT12Ele2pc := shaman.hasT12Ele2pc()
+
+						if hasT12Ele2pc {
+							aura.Activate(sim)
+						} else {
+							aura.Deactivate(sim)
+						}
+					})
+			}
+
 		},
 		4: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
+
 			instantLavaSurgeMod := shaman.AddDynamicMod(core.SpellModConfig{
 				Kind:       core.SpellMod_CastTime_Pct,
 				FloatValue: -1,
@@ -151,21 +167,44 @@ var ItemSetVolcanicRegalia = core.NewItemSet(core.ItemSet{
 				},
 			})
 			//in talents.go under lava surge proc
+
+			if shaman.ItemSwap.IsEnabled() {
+				shaman.RegisterItemSwapCallback(core.ItemSetSlots,
+					func(sim *core.Simulation, _ proto.ItemSlot) {
+						hasT12Ele4pc := shaman.hasT12Ele4pc()
+
+						if hasT12Ele4pc {
+							shaman.VolcanicRegalia4PT12Aura.Activate(sim)
+						} else {
+							shaman.VolcanicRegalia4PT12Aura.Deactivate(sim)
+						}
+					})
+			}
 		},
 	},
 })
 
+func (shaman *Shaman) hasT12Ele2pc() bool {
+	return shaman.HasActiveSetBonus(itemSetVolcanicRegaliaName, 2)
+}
+
+func (shaman *Shaman) hasT12Ele4pc() bool {
+	return shaman.HasActiveSetBonus(itemSetVolcanicRegaliaName, 4)
+}
+
 // T13 elem
 // (2) Set: Elemental Mastery also grants you 2000 mastery rating 15 sec.
 // (4) Set: Each time Elemental Overload triggers, you gain 250 haste rating for 4 sec, stacking up to 3 times.
+var itemSetSpiritwalkersRegaliaName = "Spiritwalker's Regalia"
 var ItemSetSpiritwalkersRegalia = core.NewItemSet(core.ItemSet{
-	Name: "Spiritwalker's Regalia",
+	Name: itemSetSpiritwalkersRegaliaName,
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			//In talents.go under elemental mastery
 		},
 		4: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
+
 			procAura := shaman.RegisterAura(core.Aura{
 				Label:     "Time Rupture",
 				ActionID:  core.ActionID{SpellID: 105821},
@@ -176,7 +215,7 @@ var ItemSetSpiritwalkersRegalia = core.NewItemSet(core.ItemSet{
 					shaman.AddStatDynamic(sim, stats.HasteRating, float64(changedHasteRating))
 				},
 			})
-			shaman.RegisterAura(core.Aura{
+			aura := shaman.RegisterAura(core.Aura{
 				Label:    "Spiritwalker's Regalia 4P",
 				Duration: core.NeverExpires,
 				OnReset: func(aura *core.Aura, sim *core.Simulation) {
@@ -190,9 +229,75 @@ var ItemSetSpiritwalkersRegalia = core.NewItemSet(core.ItemSet{
 					}
 				},
 			})
+
+			if shaman.ItemSwap.IsEnabled() {
+				shaman.RegisterItemSwapCallback(core.ItemSetSlots,
+					func(sim *core.Simulation, _ proto.ItemSlot) {
+						hasT13Ele4pc := shaman.hasT13Ele4pc()
+
+						if hasT13Ele4pc {
+							aura.Activate(sim)
+						} else {
+							aura.Deactivate(sim)
+						}
+					})
+			}
 		},
 	},
 })
+
+func (shaman *Shaman) hasT13Ele2pc() bool {
+	return shaman.HasActiveSetBonus(itemSetSpiritwalkersRegaliaName, 2)
+}
+
+func (shaman *Shaman) hasT13Ele4pc() bool {
+	return shaman.HasActiveSetBonus(itemSetSpiritwalkersRegaliaName, 4)
+}
+
+// T13 Resto
+// (2) Set: After using Mana Tide Totem, the cost of your healing spells are reduced by 25% for 15 sec.
+// (4) Set: Increases the duration of Spiritwalker's Grace by 5 sec, and you gain 30% haste while Spiritwalker's grace is active.
+var itemSetSpiritwalkersVestmentsName = "Spiritwalker's Vestments"
+var ItemSetSpiritwalkersVestments = core.NewItemSet(core.ItemSet{
+	Name: itemSetSpiritwalkersVestmentsName,
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			// Not implemented
+		},
+		4: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+
+			hasteMulti := 1.30
+			shaman.SpiritwalkersVestments4PT13Aura = shaman.RegisterAura(core.Aura{
+				Label:    "Item - Shaman T13 Restoration 4P Bonus (Spiritwalker's Grace)",
+				ActionID: core.ActionID{SpellID: 105876},
+				Duration: shaman.spiritwalkersGraceBaseDuration() + 5*time.Second,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					shaman.MultiplyCastSpeed(hasteMulti)
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					shaman.MultiplyCastSpeed(1 / hasteMulti)
+				},
+			})
+
+			if shaman.ItemSwap.IsEnabled() {
+				shaman.RegisterItemSwapCallback(core.ItemSetSlots,
+					func(sim *core.Simulation, _ proto.ItemSlot) {
+						hasT13Resto4pc := shaman.hasT13Resto4pc()
+						if hasT13Resto4pc {
+							shaman.SpiritwalkersGraceAura.Duration = shaman.spiritwalkersGraceBaseDuration() + 5*time.Second
+						} else {
+							shaman.SpiritwalkersGraceAura.Duration = shaman.spiritwalkersGraceBaseDuration()
+						}
+					})
+			}
+		},
+	},
+})
+
+func (shaman *Shaman) hasT13Resto4pc() bool {
+	return shaman.HasActiveSetBonus(itemSetSpiritwalkersVestmentsName, 4)
+}
 
 // T11 enh
 // (2) Set: Increases damage done by your Lava Lash and Stormstrike abilities by 10%.

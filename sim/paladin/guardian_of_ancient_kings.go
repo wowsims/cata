@@ -221,13 +221,7 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) *cor
 	})
 
 	if paladin.ItemSwap.IsEnabled() {
-		paladin.RegisterItemSwapCallback([]proto.ItemSlot{
-			proto.ItemSlot_ItemSlotHead,
-			proto.ItemSlot_ItemSlotShoulder,
-			proto.ItemSlot_ItemSlotChest,
-			proto.ItemSlot_ItemSlotHands,
-			proto.ItemSlot_ItemSlotLegs,
-		},
+		paladin.RegisterItemSwapCallback(core.ItemSetSlots,
 			func(sim *core.Simulation, _ proto.ItemSlot) {
 				hasT11Prot4pc := paladin.hasT11Prot4pc()
 

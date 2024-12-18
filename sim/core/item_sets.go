@@ -3,6 +3,8 @@ package core
 import (
 	"fmt"
 	"slices"
+
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 type ItemSet struct {
@@ -15,6 +17,14 @@ type ItemSet struct {
 	//
 	// The function should apply any benefits provided by the set bonus.
 	Bonuses map[int32]ApplyEffect
+}
+
+var ItemSetSlots = []proto.ItemSlot{
+	proto.ItemSlot_ItemSlotHead,
+	proto.ItemSlot_ItemSlotShoulder,
+	proto.ItemSlot_ItemSlotChest,
+	proto.ItemSlot_ItemSlotHands,
+	proto.ItemSlot_ItemSlotLegs,
 }
 
 func (set ItemSet) Items() []Item {
@@ -94,7 +104,7 @@ func (character *Character) HasSetBonus(set *ItemSet, numItems int32) bool {
 	return false
 }
 
-type ActiveSetBonus struct {
+type SetBonus struct {
 	// Name of the set.
 	Name string
 
@@ -106,11 +116,15 @@ type ActiveSetBonus struct {
 }
 
 // Returns a list describing all active set bonuses.
-func (character *Character) GetActiveSetBonuses() []ActiveSetBonus {
-	var activeBonuses []ActiveSetBonus
+func (character *Character) GetActiveSetBonuses() []SetBonus {
+	return character.GetSetBonuses(character.Equipment)
+}
+
+func (character *Character) GetSetBonuses(equipment Equipment) []SetBonus {
+	var activeBonuses []SetBonus
 
 	setItemCount := make(map[*ItemSet]int32)
-	for _, item := range character.Equipment {
+	for _, item := range equipment {
 		if item.SetName == "" {
 			continue
 		}
@@ -139,7 +153,7 @@ func (character *Character) GetActiveSetBonuses() []ActiveSetBonus {
 		if foundSet != nil {
 			setItemCount[foundSet]++
 			if bonusEffect, ok := foundSet.Bonuses[setItemCount[foundSet]]; ok {
-				activeBonuses = append(activeBonuses, ActiveSetBonus{
+				activeBonuses = append(activeBonuses, SetBonus{
 					Name:        foundSet.Name,
 					NumPieces:   setItemCount[foundSet],
 					BonusEffect: bonusEffect,
@@ -169,6 +183,16 @@ func (character *Character) applyItemSetBonusEffects(agent Agent) {
 
 	for _, activeSetBonus := range activeSetBonuses {
 		activeSetBonus.BonusEffect(agent)
+	}
+
+	if character.ItemSwap.IsEnabled() {
+		unequippedSetBonuses := FilterSlice(character.GetSetBonuses(character.ItemSwap.unEquippedItems), func(unequippeBonus SetBonus) bool {
+			return !character.HasActiveSetBonus(unequippeBonus.Name, unequippeBonus.NumPieces)
+		})
+
+		for _, unequippedSetBonus := range unequippedSetBonuses {
+			unequippedSetBonus.BonusEffect(agent)
+		}
 	}
 }
 

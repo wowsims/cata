@@ -117,9 +117,10 @@ type Shaman struct {
 	Stormstrike       *core.Spell
 	PrimalStrike      *core.Spell
 
-	LightningShield     *core.Spell
-	LightningShieldAura *core.Aura
-	Fulmination         *core.Spell
+	LightningShield        *core.Spell
+	LightningShieldAura    *core.Aura
+	Fulmination            *core.Spell
+	SpiritwalkersGraceAura *core.Aura
 
 	Earthquake   *core.Spell
 	Thunderstorm *core.Spell
@@ -172,7 +173,8 @@ type Shaman struct {
 
 	waterShieldManaMetrics *core.ResourceMetrics
 
-	VolcanicRegalia4PT12Aura *core.Aura
+	VolcanicRegalia4PT12Aura        *core.Aura
+	SpiritwalkersVestments4PT13Aura *core.Aura
 
 	useDragonSoul_2PT12 bool
 }
@@ -248,6 +250,7 @@ func (shaman *Shaman) Initialize() {
 	shaman.registerLavaBurstSpell()
 	shaman.registerLightningBoltSpell()
 	shaman.registerLightningShieldSpell()
+	shaman.registerSpiritwalkersGraceSpell()
 	shaman.registerMagmaTotemSpell()
 	shaman.registerSearingTotemSpell()
 	shaman.registerShocks()

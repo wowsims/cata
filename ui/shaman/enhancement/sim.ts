@@ -125,12 +125,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		inputs: [EnhancementInputs.SyncTypeInput, OtherInputs.InputDelay, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
 	},
 	itemSwapSlots: [
+		ItemSlot.ItemSlotHead,
+		ItemSlot.ItemSlotShoulder,
 		ItemSlot.ItemSlotBack,
+		ItemSlot.ItemSlotChest,
 		ItemSlot.ItemSlotHands,
-		ItemSlot.ItemSlotMainHand,
-		ItemSlot.ItemSlotOffHand,
+		ItemSlot.ItemSlotLegs,
 		ItemSlot.ItemSlotTrinket1,
 		ItemSlot.ItemSlotTrinket2,
+		ItemSlot.ItemSlotMainHand,
+		ItemSlot.ItemSlotOffHand,
 	],
 	customSections: [ShamanInputs.TotemsSection, FireElementalSection],
 	encounterPicker: {
