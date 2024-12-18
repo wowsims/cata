@@ -24,7 +24,7 @@ type ProcStatBonusEffect struct {
 	ICD        time.Duration
 
 	// For ignoring a hardcoded spell.
-	IgnoreSpellID int32
+	IgnoreSpellIDs []int32
 
 	// Any other custom proc conditions not covered by the above fields.
 	CustomProcCondition core.CustomStatBuffProcCondition
@@ -140,17 +140,17 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 			}
 		}
 
-		if config.IgnoreSpellID != 0 {
-			ignoreSpellID := config.IgnoreSpellID
+		if len(config.IgnoreSpellIDs) > 0 {
+			ignoreSpellIDs := config.IgnoreSpellIDs
 			handler = func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !spell.IsSpellAction(ignoreSpellID) {
+				isAllowedSpell := !slices.ContainsFunc(ignoreSpellIDs, func(spellID int32) bool {
+					return spell.IsSpellAction(spellID)
+				})
+				if isAllowedSpell {
 					if customHandler != nil {
 						customHandler(sim, procAura)
 					} else {
-						procAura.Activate(sim)
-						if procSpell.Spell != nil {
-							procSpell.Trigger(sim, spell, result)
-						}
+						handler(sim, spell, result)
 					}
 				}
 			}
@@ -442,6 +442,18 @@ func factory_EnchantStatBonusEffect(config EnchantProcStatBonusEffect, extraSpel
 			procAura.Activate(sim)
 			if procSpell.Spell != nil {
 				procSpell.Trigger(sim, spell, result)
+			}
+		}
+
+		if len(config.IgnoreSpellIDs) > 0 {
+			ignoreSpellIDs := config.IgnoreSpellIDs
+			handler = func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				isAllowedSpell := !slices.ContainsFunc(ignoreSpellIDs, func(spellID int32) bool {
+					return spell.IsSpellAction(spellID)
+				})
+				if isAllowedSpell {
+					handler(sim, spell, result)
+				}
 			}
 		}
 
