@@ -182,7 +182,6 @@ func (swap *ItemSwap) RegisterActive(itemID int32, slots []proto.ItemSlot) {
 		if itemSlot == -1 {
 			return
 		}
-		equippedItemID := swap.GetEquippedItemBySlot(itemSlot).ID
 		spell := swap.character.GetSpell(ActionID{ItemID: itemID})
 		if spell != nil {
 			aura := character.GetAuraByID(spell.ActionID)
@@ -197,11 +196,8 @@ func (swap *ItemSwap) RegisterActive(itemID int32, slots []proto.ItemSlot) {
 			if !swap.initialized {
 				return
 			}
-			swappedItemID := swap.GetUnequippedItemBySlot(slot).ID
 
-			if swappedItemID == equippedItemID && spell.CD.IsReady(sim) || swappedItemID != equippedItemID {
-				spell.CD.Set(sim.CurrentTime + time.Second*30)
-			}
+			spell.CD.Set(sim.CurrentTime + time.Second*30)
 		}
 	})
 }
@@ -216,11 +212,7 @@ func (swap *ItemSwap) ProcessTinker(spell *Spell, slots []proto.ItemSlot) {
 		if spell == nil || !swap.initialized {
 			return
 		}
-		equippedItemID := swap.GetEquippedItemBySlot(slot).ID
-		swappedItemID := swap.GetUnequippedItemBySlot(slot).ID
-		if swappedItemID == equippedItemID && spell.CD.IsReady(sim) || swappedItemID != equippedItemID {
-			spell.CD.Set(sim.CurrentTime + time.Second*30)
-		}
+		spell.CD.Set(sim.CurrentTime + max(spell.CD.TimeToReady(sim), time.Second*30))
 	})
 }
 
@@ -322,10 +314,7 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 			character.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime, false)
 		}
 
-		// If GCD is ready then use the GCD, otherwise we assume it's being used along side a spell.
-		if character.GCD.IsReady(sim) {
-			character.ExtendGCDUntil(sim, max(character.NextGCDAt(), sim.CurrentTime+GCDDefault))
-		}
+		character.ExtendGCDUntil(sim, max(character.NextGCDAt(), sim.CurrentTime+GCDDefault))
 	}
 
 	swap.swapSet = swapSet
