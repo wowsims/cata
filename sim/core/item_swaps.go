@@ -1,7 +1,6 @@
 package core
 
 import (
-	"slices"
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
@@ -36,7 +35,6 @@ type ItemSwap struct {
  * we'll need to figure out something cleaner as this will be quite error-prone
 **/
 func (character *Character) enableItemSwap(itemSwap *proto.ItemSwap, mhCritMultiplier float64, ohCritMultiplier float64, rangedCritMultiplier float64) {
-	var slots []proto.ItemSlot
 	var swapItems Equipment
 	hasItemSwap := make(map[proto.ItemSlot]bool)
 
@@ -50,27 +48,20 @@ func (character *Character) enableItemSwap(itemSwap *proto.ItemSwap, mhCritMulti
 	hasMh := character.HasMHWeapon()
 	hasOh := character.HasOHWeapon()
 
-	for slot, hasSlotItemSwap := range hasItemSwap {
-		if hasSlotItemSwap {
-			slots = append(slots, slot)
-		}
+	// Handle MH and OH together, because present MH + empty OH --> swap MH and unequip OH
+	if hasItemSwap[proto.ItemSlot_ItemSlotOffHand] && hasMh {
+		hasItemSwap[proto.ItemSlot_ItemSlotMainHand] = true
 	}
 
-	// Handle MH and OH together, because present MH + empty OH --> swap MH and unequip OH
-	if !hasItemSwap[proto.ItemSlot_ItemSlotMainHand] && hasItemSwap[proto.ItemSlot_ItemSlotOffHand] && hasMh {
-		slots = append(slots, proto.ItemSlot_ItemSlotMainHand)
+	if has2H && hasOh {
+		hasItemSwap[proto.ItemSlot_ItemSlotOffHand] = true
 	}
-	if !hasItemSwap[proto.ItemSlot_ItemSlotOffHand] && has2H && hasOh {
-		slots = append(slots, proto.ItemSlot_ItemSlotOffHand)
-	}
+
+	slots := SetToSortedSlice(hasItemSwap)
 
 	if len(slots) == 0 {
 		return
 	}
-
-	slices.SortFunc(slots, func(a, b proto.ItemSlot) int {
-		return int(a - b)
-	})
 
 	character.ItemSwap = ItemSwap{
 		mhCritMultiplier:     mhCritMultiplier,
