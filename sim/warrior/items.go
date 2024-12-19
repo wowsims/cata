@@ -202,10 +202,10 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 var ItemSetMoltenGiantBattleplate = core.NewItemSet(core.ItemSet{
 	Name: "Molten Giant Battleplate",
 	Bonuses: map[int32]core.ApplySetItemEffect{
-		2: func(agent core.Agent, _ string) {
+		2: func(agent core.Agent, setName string) {
 			character := agent.(WarriorAgent).GetWarrior()
 
-			cata.RegisterIgniteEffect(&character.Unit, cata.IgniteConfig{
+			spell, procTrigger := cata.RegisterIgniteEffect(&character.Unit, cata.IgniteConfig{
 				ActionID:           core.ActionID{SpellID: 23922}.WithTag(3), // actual 99240
 				DisableCastMetrics: true,
 				DotAuraLabel:       "Combust",
@@ -222,6 +222,8 @@ var ItemSetMoltenGiantBattleplate = core.NewItemSet(core.ItemSet{
 					return result.Damage * 0.2
 				},
 			})
+
+			character.MakeIgniteHandlerEffectForSetBonus(setName, 2, spell, procTrigger)
 		},
 		4: func(agent core.Agent, setName string) {
 			character := agent.(WarriorAgent).GetWarrior()

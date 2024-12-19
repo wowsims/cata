@@ -78,12 +78,12 @@ func MakeT12StatAura(action core.ActionID, stat stats.Stat, name string) core.Au
 var Tier12 = core.NewItemSet(core.ItemSet{
 	Name: "Vestments of the Dark Phoenix",
 	Bonuses: map[int32]core.ApplySetItemEffect{
-		2: func(agent core.Agent, _ string) {
+		2: func(agent core.Agent, setName string) {
 			// Your melee critical strikes deal 6% additional damage as Fire over 4 sec.
 			// Rolls like ignite
 			// Tentatively, this is just Ignite. Testing required to validate behavior.
 			rogue := agent.GetCharacter()
-			cata.RegisterIgniteEffect(&rogue.Unit, cata.IgniteConfig{
+			spell, procTrigger := cata.RegisterIgniteEffect(&rogue.Unit, cata.IgniteConfig{
 				ActionID:         core.ActionID{SpellID: 99173},
 				DotAuraLabel:     "Burning Wounds",
 				IncludeAuraDelay: true,
@@ -99,6 +99,9 @@ var Tier12 = core.NewItemSet(core.ItemSet{
 					return result.Damage * .06
 				},
 			})
+
+			rogue.MakeIgniteHandlerEffectForSetBonus(setName, 2, spell, procTrigger)
+
 		},
 		4: func(agent core.Agent, _ string) {
 			// Your Tricks of the Trade ability also causes you to gain a 25% increase to Haste, Mastery, or Critical Strike chosen at random for 30 sec.

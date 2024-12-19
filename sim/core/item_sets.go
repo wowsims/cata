@@ -272,6 +272,20 @@ func (character *Character) MakeCallbackEffectForSetBonus(setName string, numPie
 	})
 }
 
+// Handles "ignite-like" set bonus effects
+func (character *Character) MakeIgniteHandlerEffectForSetBonus(setName string, numPieces int32, spell *Spell, procTrigger *Aura) {
+	character.registerSetBonusForItemSwap(setName, numPieces, ItemSwapRegistrationConfig{
+		OnGain: func(sim *Simulation, _ proto.ItemSlot) {
+			spell.Flags &= ^SpellFlagSwapped
+			procTrigger.Activate(sim)
+		},
+		OnExpire: func(sim *Simulation, _ proto.ItemSlot) {
+			spell.Flags |= SpellFlagSwapped
+			procTrigger.Deactivate(sim)
+		},
+	})
+}
+
 // Adds a static effect that activates when the character has a set bonus.
 func (character *Character) MakeDynamicModForSetBonus(setName string, numPieces int32, spellModConfig SpellModConfig) {
 

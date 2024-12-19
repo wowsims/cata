@@ -346,7 +346,7 @@ func (mage *Mage) applyIgnite() {
 
 	igniteDamageMultiplier := []float64{0.0, 0.13, 0.26, 0.40}[mage.Talents.Ignite]
 
-	mage.Ignite = cata.RegisterIgniteEffect(&mage.Unit, cata.IgniteConfig{
+	mage.Ignite, _ = cata.RegisterIgniteEffect(&mage.Unit, cata.IgniteConfig{
 		ActionID:     core.ActionID{SpellID: 12846},
 		DotAuraLabel: "Ignite",
 		DotAuraTag:   "IgniteDot",

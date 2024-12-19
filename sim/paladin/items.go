@@ -38,9 +38,9 @@ var ItemSetReinforcedSapphiriumBattleplate = core.NewItemSet(core.ItemSet{
 var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 	Name: "Battleplate of Immolation",
 	Bonuses: map[int32]core.ApplySetItemEffect{
-		2: func(agent core.Agent, _ string) {
+		2: func(agent core.Agent, setName string) {
 			paladin := agent.(PaladinAgent).GetPaladin()
-			cata.RegisterIgniteEffect(&paladin.Unit, cata.IgniteConfig{
+			spell, procTrigger := cata.RegisterIgniteEffect(&paladin.Unit, cata.IgniteConfig{
 				ActionID:           core.ActionID{SpellID: 35395}.WithTag(3), // actual 99092
 				DisableCastMetrics: true,
 				DotAuraLabel:       "Flames of the Faithful" + paladin.Label,
@@ -57,6 +57,9 @@ var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 					return result.Damage * 0.15
 				},
 			})
+
+			paladin.MakeIgniteHandlerEffectForSetBonus(setName, 2, spell, procTrigger)
+
 		},
 		4: func(agent core.Agent, _ string) {
 			// Handled in talents_retribution.go
