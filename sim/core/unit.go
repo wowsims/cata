@@ -366,6 +366,22 @@ func (unit *Unit) DisableDynamicStatDep(sim *Simulation, dep *stats.StatDependen
 	}
 }
 
+func (unit *Unit) EnableBuildPhaseStatDep(sim *Simulation, dep *stats.StatDependency) {
+	if unit.Env.MeasuringStats && unit.Env.State != Finalized {
+		unit.StatDependencyManager.EnableDynamicStatDep(dep)
+	} else {
+		unit.EnableDynamicStatDep(sim, dep)
+	}
+}
+
+func (unit *Unit) DisableBuildPhaseStatDep(sim *Simulation, dep *stats.StatDependency) {
+	if unit.Env.MeasuringStats && unit.Env.State != Finalized {
+		unit.StatDependencyManager.DisableDynamicStatDep(dep)
+	} else {
+		unit.DisableDynamicStatDep(sim, dep)
+	}
+}
+
 // Returns whether the indicates stat is currently modified by a temporary bonus.
 func (unit *Unit) HasTemporaryBonusForStat(stat stats.Stat) bool {
 	return unit.initialStats[stat] != unit.stats[stat]

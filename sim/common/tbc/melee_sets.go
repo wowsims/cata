@@ -12,8 +12,8 @@ import (
 
 var ItemSetFistsOfFury = core.NewItemSet(core.ItemSet{
 	Name: "The Fists of Fury",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			character := agent.GetCharacter()
 
 			procSpell := character.RegisterSpell(core.SpellConfig{
@@ -54,8 +54,8 @@ var ItemSetFistsOfFury = core.NewItemSet(core.ItemSet{
 
 var ItemSetStormshroud = core.NewItemSet(core.ItemSet{
 	Name: "Stormshroud Armor",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(a core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(a core.Agent, _ string) {
 			char := a.GetCharacter()
 			proc := char.RegisterSpell(core.SpellConfig{
 				ActionID:    core.ActionID{SpellID: 18980},
@@ -87,7 +87,7 @@ var ItemSetStormshroud = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		3: func(a core.Agent) {
+		3: func(a core.Agent, _ string) {
 			char := a.GetCharacter()
 			if !char.HasEnergyBar() {
 				return
@@ -118,7 +118,7 @@ var ItemSetStormshroud = core.NewItemSet(core.ItemSet{
 			})
 
 		},
-		4: func(a core.Agent) {
+		4: func(a core.Agent, _ string) {
 			a.GetCharacter().AddStat(stats.AttackPower, 14)
 		},
 	},
@@ -126,8 +126,8 @@ var ItemSetStormshroud = core.NewItemSet(core.ItemSet{
 
 var ItemSetTwinBladesOfAzzinoth = core.NewItemSet(core.ItemSet{
 	Name: "The Twin Blades of Azzinoth",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, _ string) {
 			character := agent.GetCharacter()
 
 			if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {

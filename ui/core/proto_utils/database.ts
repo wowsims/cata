@@ -167,7 +167,7 @@ export class Database {
 	}
 
 	getAvailableReforges(item: Item): ReforgeStat[] {
-		return Array.from(this.reforgeStats.values()).filter(reforgeStat => (item.stats[reforgeStat.fromStat] > 0) && (item.stats[reforgeStat.toStat] == 0));
+		return Array.from(this.reforgeStats.values()).filter(reforgeStat => item.stats[reforgeStat.fromStat] > 0 && item.stats[reforgeStat.toStat] == 0);
 	}
 
 	getEnchants(slot: ItemSlot): Array<Enchant> {
@@ -255,11 +255,17 @@ export class Database {
 	}
 
 	lookupItemSwap(itemSwap: ItemSwap): ItemSwapGear {
-		return new ItemSwapGear({
-			[ItemSlot.ItemSlotMainHand]: itemSwap.mhItem ? this.lookupItemSpec(itemSwap.mhItem) : null,
-			[ItemSlot.ItemSlotOffHand]: itemSwap.ohItem ? this.lookupItemSpec(itemSwap.ohItem) : null,
-			[ItemSlot.ItemSlotRanged]: itemSwap.rangedItem ? this.lookupItemSpec(itemSwap.rangedItem) : null,
-		});
+		const gearMap = itemSwap.items.reduce<Partial<Record<ItemSlot, EquippedItem | null>>>((gearMap, itemSpec, slot) => {
+			const item = this.lookupItemSpec(itemSpec);
+			if (item) {
+				const eligibleItemSlots = getEligibleItemSlots(item.item);
+				const isSwapSlotMatch = eligibleItemSlots.some(eligibleItemSlot => eligibleItemSlot === slot);
+				const assignedSlot = isSwapSlotMatch ? (slot as ItemSlot) : eligibleItemSlots[0];
+				if (typeof assignedSlot === 'number') gearMap[assignedSlot] = item;
+			}
+			return gearMap;
+		}, {});
+		return new ItemSwapGear(gearMap);
 	}
 
 	enchantSpellIdToEffectId(enchantSpellId: number): number {

@@ -87,6 +87,9 @@ func (action *APLActionActivateAura) Execute(sim *Simulation) {
 		action.aura.Unit.Log(sim, "Activating aura %s", action.aura.ActionID)
 	}
 	action.aura.Activate(sim)
+	if action.aura.Icd != nil {
+		action.aura.Icd.Use(sim)
+	}
 }
 
 func (action *APLActionActivateAura) String() string {
@@ -149,11 +152,17 @@ func (action *APLActionItemSwap) IsReady(sim *Simulation) bool {
 	return (action.swapSet == proto.APLActionItemSwap_Main) == action.character.ItemSwap.IsSwapped()
 }
 func (action *APLActionItemSwap) Execute(sim *Simulation) {
-	if sim.Log != nil {
-		action.character.Log(sim, "Item Swap to set %s", action.swapSet)
+	if action.character.ItemSwap.swapSet == action.swapSet {
+		if sim.Log != nil {
+			action.character.Log(sim, "Item Swap already set to %s", action.swapSet)
+		}
+	} else {
+		if sim.Log != nil {
+			action.character.Log(sim, "Item Swap to set %s", action.swapSet)
+		}
 	}
 
-	action.character.ItemSwap.SwapItems(sim, action.character.ItemSwap.slots)
+	action.character.ItemSwap.SwapItems(sim, action.swapSet, false)
 }
 func (action *APLActionItemSwap) String() string {
 	return fmt.Sprintf("Item Swap(%s)", action.swapSet)

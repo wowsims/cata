@@ -13,23 +13,37 @@ import (
 // (4) Set: Your Water Shield ability grants an additional 56 mana each time it triggers and an additional 3 mana per 5 sec.
 var ItemSetTidefury = core.NewItemSet(core.ItemSet{
 	Name: "Tidefury Raiment",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, setName string) {
 			// Handled in chain_lightning.go
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, setName string) {
 			shaman := agent.(ShamanAgent).GetShaman()
+
 			if shaman.SelfBuffs.Shield == proto.ShamanShield_WaterShield {
-				shaman.AddStat(stats.MP5, 3)
+				shaman.MakeCallbackEffectForSetBonus(setName, 2, core.CustomSetBonusCallbackConfig{
+					OnGain: func(sim *core.Simulation, _ *core.Aura) {
+						// If Sim is undefined ItemSwap is disabled so we can add this statically
+						if sim == nil {
+							shaman.AddStat(stats.MP5, 3)
+						} else {
+							shaman.AddStatDynamic(sim, stats.MP5, 3)
+						}
+					},
+					OnExpire: func(sim *core.Simulation, _ *core.Aura) {
+						shaman.AddStatDynamic(sim, stats.MP5, -3)
+					},
+				})
 			}
+
 		},
 	},
 })
 
 // var ItemSetSkyshatterRegalia = core.NewItemSet(core.ItemSet{
 // 	Name: "Skyshatter Regalia",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
+// 	Bonuses: map[int32]core.ApplySetItemEffect{
+// 		2: func(agent core.Agent, setName string) {
 // 			shaman := agent.(ShamanAgent).GetShaman()
 
 // 			if shaman.Totems.Air == proto.AirTotem_NoAirTotem ||
@@ -43,7 +57,7 @@ var ItemSetTidefury = core.NewItemSet(core.ItemSet{
 // 			shaman.AddStat(stats.SpellCrit, 35)
 // 			shaman.AddStat(stats.SpellPower, 45)
 // 		},
-// 		4: func(agent core.Agent) {
+// 		4: func(agent core.Agent, setName string) {
 // 			// Increases damage done by Lightning Bolt by 5%.
 // 			// Implemented in lightning_bolt.go.
 // 		},
@@ -56,11 +70,11 @@ var ItemSetTidefury = core.NewItemSet(core.ItemSet{
 
 // var ItemSetSkyshatterHarness = core.NewItemSet(core.ItemSet{
 // 	Name: "Skyshatter Harness",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
+// 	Bonuses: map[int32]core.ApplySetItemEffect{
+// 		2: func(agent core.Agent, setName string) {
 // 			// implemented in shocks.go
 // 		},
-// 		4: func(agent core.Agent) {
+// 		4: func(agent core.Agent, setName string) {
 // 			// implemented in stormstrike.go
 // 		},
 // 	},
@@ -71,18 +85,18 @@ var ItemSetTidefury = core.NewItemSet(core.ItemSet{
 // (4) Set: Reduces the cast time of your Lightning Bolt spell by 10%.
 var ItemSetRagingElementsRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Regalia of the Raging Elements",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, setName string) {
 			character := agent.GetCharacter()
-			character.AddStaticMod(core.SpellModConfig{
+			character.MakeDynamicModForSetBonus(setName, 2, core.SpellModConfig{
 				Kind:       core.SpellMod_BonusCrit_Percent,
 				FloatValue: 10,
 				ClassMask:  SpellMaskFlameShock,
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, setName string) {
 			character := agent.GetCharacter()
-			character.AddStaticMod(core.SpellModConfig{
+			character.MakeDynamicModForSetBonus(setName, 4, core.SpellModConfig{
 				Kind:       core.SpellMod_CastTime_Pct,
 				FloatValue: -0.1,
 				ClassMask:  SpellMaskLightningBolt,
@@ -96,49 +110,53 @@ var ItemSetRagingElementsRegalia = core.NewItemSet(core.ItemSet{
 // (4) Set: Your Lava Surge talent also makes Lava Burst instant when it triggers.
 var ItemSetVolcanicRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Volcanic Regalia",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, setName string) {
 			shaman := agent.(ShamanAgent).GetShaman()
 
+			var procConfig core.ProcTrigger
 			if shaman.useDragonSoul_2PT12 {
-				shaman.RegisterAura(core.Aura{
-					Label:    "Volcanic Regalia 2P",
-					Duration: core.NeverExpires,
-					OnReset: func(aura *core.Aura, sim *core.Simulation) {
-						aura.Activate(sim)
+				procConfig = core.ProcTrigger{
+					Name:           "Volcanic Regalia 2P",
+					ClassSpellMask: SpellMaskLightningBolt,
+					ProcChance:     0.3,
+					Callback:       core.CallbackOnSpellHitDealt,
+					ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
+						return shaman.FireElementalTotem != nil
 					},
-					OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-						if spell.ClassSpellMask != SpellMaskLightningBolt || !sim.Proc(0.3, "Volcanic Regalia 2P") || shaman.FireElementalTotem == nil {
-							return
-						}
+					Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 						shaman.FireElementalTotem.CD.Reduce(4 * time.Second)
 					},
-				})
+				}
 			} else {
-				core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+				procConfig = core.ProcTrigger{
 					Name:       "Volcanic Regalia 2P",
-					Callback:   core.CallbackOnSpellHitDealt,
 					ProcMask:   core.ProcMaskSpellDamage,
 					Outcome:    core.OutcomeLanded,
 					ProcChance: 0.08,
+					Callback:   core.CallbackOnSpellHitDealt,
 					ICD:        time.Second * 105,
 					ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
 						return !spell.Matches(SpellMaskOverload)
 					},
-					Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+					Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 						shaman.FireElementalTotem.CD.Reset()
 					},
-				})
+				}
 			}
 
+			shaman.MakeProcTriggerAuraForSetBonus(setName, 2, procConfig, nil)
+
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, setName string) {
 			shaman := agent.(ShamanAgent).GetShaman()
+
 			instantLavaSurgeMod := shaman.AddDynamicMod(core.SpellModConfig{
 				Kind:       core.SpellMod_CastTime_Pct,
 				FloatValue: -1,
 				ClassMask:  SpellMaskLavaBurst,
 			})
+
 			shaman.VolcanicRegalia4PT12Aura = shaman.RegisterAura(core.Aura{
 				Label:    "Volcano",
 				ActionID: core.ActionID{SpellID: 99207},
@@ -151,21 +169,50 @@ var ItemSetVolcanicRegalia = core.NewItemSet(core.ItemSet{
 				},
 			})
 			//in talents.go under lava surge proc
+
 		},
 	},
 })
+
+func (shaman *Shaman) hasT12Ele4pc() bool {
+	return shaman.HasActiveSetBonus(ItemSetVolcanicRegalia.Name, 4)
+}
 
 // T13 elem
 // (2) Set: Elemental Mastery also grants you 2000 mastery rating 15 sec.
 // (4) Set: Each time Elemental Overload triggers, you gain 250 haste rating for 4 sec, stacking up to 3 times.
 var ItemSetSpiritwalkersRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Spiritwalker's Regalia",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			//In talents.go under elemental mastery
-		},
-		4: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, setName string) {
 			shaman := agent.(ShamanAgent).GetShaman()
+
+			aura := shaman.RegisterAura(core.Aura{
+				Label:    "Fury of the Ancestors",
+				ActionID: core.ActionID{SpellID: 105779},
+				Duration: 15 * time.Second,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					shaman.AddStatDynamic(sim, stats.MasteryRating, 2000)
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					shaman.AddStatDynamic(sim, stats.MasteryRating, -2000)
+				},
+			})
+
+			shaman.MakeProcTriggerAuraForSetBonus(setName, 4, core.ProcTrigger{
+				Name:           "Item - Shaman T13 Elemental 2P Bonus (Elemental Mastery)",
+				ActionID:       core.ActionID{SpellID: 105780},
+				ClassSpellMask: SpellMaskElementalMastery,
+				Callback:       core.CallbackOnCastComplete,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					aura.Activate(sim)
+				},
+			}, nil)
+
+		},
+		4: func(agent core.Agent, setName string) {
+			shaman := agent.(ShamanAgent).GetShaman()
+
 			procAura := shaman.RegisterAura(core.Aura{
 				Label:     "Time Rupture",
 				ActionID:  core.ActionID{SpellID: 105821},
@@ -176,20 +223,72 @@ var ItemSetSpiritwalkersRegalia = core.NewItemSet(core.ItemSet{
 					shaman.AddStatDynamic(sim, stats.HasteRating, float64(changedHasteRating))
 				},
 			})
-			shaman.RegisterAura(core.Aura{
-				Label:    "Spiritwalker's Regalia 4P",
-				Duration: core.NeverExpires,
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Activate(sim)
+
+			shaman.MakeProcTriggerAuraForSetBonus(setName, 4, core.ProcTrigger{
+				Name:           "Spiritwalker's Regalia 4P",
+				ClassSpellMask: SpellMaskOverload,
+				Callback:       core.CallbackOnCastComplete,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					procAura.Activate(sim)
+					procAura.AddStack(sim)
 				},
-				//TODO does dtr overloads proc this ?
-				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if spell.ClassSpellMask&SpellMaskOverload > 0 {
-						procAura.Activate(sim)
-						procAura.AddStack(sim)
-					}
+			}, nil)
+		},
+	},
+})
+
+// T13 Resto
+// (2) Set: After using Mana Tide Totem, the cost of your healing spells are reduced by 25% for 15 sec.
+// (4) Set: Increases the duration of Spiritwalker's Grace by 5 sec, and you gain 30% haste while Spiritwalker's grace is active.
+var ItemSetSpiritwalkersVestments = core.NewItemSet(core.ItemSet{
+	Name: "Spiritwalker's Vestments",
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, setName string) {
+			// Not implemented
+		},
+		4: func(agent core.Agent, setName string) {
+			shaman := agent.(ShamanAgent).GetShaman()
+
+			hasteMulti := 1.30
+			aura := shaman.RegisterAura(core.Aura{
+				Label:    "Item - Shaman T13 Restoration 4P Bonus (Spiritwalker's Grace)",
+				ActionID: core.ActionID{SpellID: 105876},
+				Duration: shaman.spiritwalkersGraceBaseDuration() + 5*time.Second,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					shaman.MultiplyCastSpeed(hasteMulti)
+					shaman.MultiplyAttackSpeed(sim, hasteMulti)
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					shaman.MultiplyCastSpeed(1 / hasteMulti)
+					shaman.MultiplyAttackSpeed(sim, 1/hasteMulti)
 				},
 			})
+
+			shaman.OnSpellRegistered(func(spell *core.Spell) {
+				if !spell.Matches(SpellMaskSpiritwalkersGrace) {
+					return
+				}
+
+				shaman.MakeCallbackEffectForSetBonus(setName, 2, core.CustomSetBonusCallbackConfig{
+					OnGain: func(_ *core.Simulation, _ *core.Aura) {
+						shaman.SpiritwalkersGraceAura.Duration = shaman.spiritwalkersGraceBaseDuration() + 5*time.Second
+					},
+					OnExpire: func(_ *core.Simulation, _ *core.Aura) {
+						shaman.SpiritwalkersGraceAura.Duration = shaman.spiritwalkersGraceBaseDuration()
+					},
+				})
+
+				shaman.MakeProcTriggerAuraForSetBonus(setName, 4, core.ProcTrigger{
+					Name:           "Item - Shaman T13 Restoration 4P Bonus (Spiritwalker's Grace) - Proc",
+					ActionID:       core.ActionID{SpellID: 105876},
+					ClassSpellMask: SpellMaskSpiritwalkersGrace,
+					Callback:       core.CallbackOnApplyEffects,
+					Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+						aura.Activate(sim)
+					},
+				}, nil)
+			})
+
 		},
 	},
 })
@@ -199,18 +298,20 @@ var ItemSetSpiritwalkersRegalia = core.NewItemSet(core.ItemSet{
 // (4) Set: Increases the critical strike chance of your Lightning Bolt spell by 10%.
 var ItemSetRagingElementsBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Battlegear of the Raging Elements",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			character := agent.GetCharacter()
-			character.AddStaticMod(core.SpellModConfig{
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, setName string) {
+			shaman := agent.(ShamanAgent).GetShaman()
+
+			shaman.MakeDynamicModForSetBonus(setName, 4, core.SpellModConfig{
 				Kind:       core.SpellMod_DamageDone_Flat,
 				FloatValue: .10,
 				ClassMask:  SpellMaskLavaLash | SpellMaskStormstrike,
 			})
 		},
-		4: func(agent core.Agent) {
-			character := agent.GetCharacter()
-			character.AddStaticMod(core.SpellModConfig{
+		4: func(agent core.Agent, setName string) {
+			shaman := agent.(ShamanAgent).GetShaman()
+
+			shaman.MakeDynamicModForSetBonus(setName, 4, core.SpellModConfig{
 				Kind:       core.SpellMod_BonusCrit_Percent,
 				FloatValue: 10,
 				ClassMask:  SpellMaskLightningBolt,
@@ -231,13 +332,11 @@ func tier12StormstrikeBonus(_ *core.Simulation, spell *core.Spell, _ *core.Attac
 // (4) Set: Your Stormstrike ability also causes the target to take 6% increased damage from your Fire Nova, Flame Shock, Flametongue Weapon, Lava Burst, Lava Lash, and Unleash Flame abilities.
 var ItemSetVolcanicBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Volcanic Battlegear",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			shaman := agent.(ShamanAgent).GetShaman()
-
-			shaman.SearingFlamesMultiplier += 0.05
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, setName string) {
+			// Implemented in lavalash.go
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, setName string) {
 			shaman := agent.(ShamanAgent).GetShaman()
 
 			stormFireAuras := shaman.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
@@ -254,8 +353,8 @@ var ItemSetVolcanicBattlegear = core.NewItemSet(core.ItemSet{
 				})
 			})
 
-			core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
-				Name:           "Stormfire Trigger",
+			shaman.MakeProcTriggerAuraForSetBonus(setName, 4, core.ProcTrigger{
+				Name:           "Item - Shaman T12 Enhancement 4P Bonus",
 				ActionID:       core.ActionID{SpellID: 99213},
 				Callback:       core.CallbackOnSpellHitDealt,
 				ClassSpellMask: SpellMaskStormstrikeCast,
@@ -265,7 +364,7 @@ var ItemSetVolcanicBattlegear = core.NewItemSet(core.ItemSet{
 					stormFire := stormFireAuras.Get(result.Target)
 					stormFire.Activate(sim)
 				},
-			})
+			}, nil)
 		},
 	},
 })
@@ -275,8 +374,8 @@ var ItemSetVolcanicBattlegear = core.NewItemSet(core.ItemSet{
 // 4 pieces: Your Feral Spirits have a 45% chance to grant you a charge of Maelstrom Weapon each time they deal damage.
 var ItemSetSpiritwalkersBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Spiritwalker's Battlegear",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetItemEffect{
+		2: func(agent core.Agent, setName string) {
 			shaman := agent.(ShamanAgent).GetShaman()
 
 			if shaman.Talents.MaelstromWeapon == 0 {
@@ -286,7 +385,7 @@ var ItemSetSpiritwalkersBattlegear = core.NewItemSet(core.ItemSet{
 			// Item sets are registered before talents, so MaelstromWeaponAura doesn't exist yet
 			// Therefore we need to react on Feral Spirit registration to apply the logic
 			shaman.OnSpellRegistered(func(spell *core.Spell) {
-				if spell.ClassSpellMask&SpellMaskFeralSpirit == 0 {
+				if !spell.Matches(SpellMaskFeralSpirit) {
 					return
 				}
 
@@ -311,7 +410,9 @@ var ItemSetSpiritwalkersBattlegear = core.NewItemSet(core.ItemSet{
 				})
 
 				shaman.MaelstromWeaponAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-					temporalMaelstrom.Activate(sim)
+					if shaman.HasActiveSetBonus(setName, 2) {
+						temporalMaelstrom.Activate(sim)
+					}
 				})
 
 				shaman.MaelstromWeaponAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
@@ -319,15 +420,16 @@ var ItemSetSpiritwalkersBattlegear = core.NewItemSet(core.ItemSet{
 				})
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, setName string) {
 			shaman := agent.(ShamanAgent).GetShaman()
 
 			if !shaman.Talents.FeralSpirit || shaman.Talents.MaelstromWeapon == 0 {
 				return
 			}
-
-			for _, wolf := range []*core.Unit{&shaman.SpiritWolves.SpiritWolf1.Unit, &shaman.SpiritWolves.SpiritWolf2.Unit} {
-				core.MakeProcTriggerAura(wolf, core.ProcTrigger{
+			// var wolfProctriggerAura *core.Aura
+			spiritWolves := []*SpiritWolf{shaman.SpiritWolves.SpiritWolf1, shaman.SpiritWolves.SpiritWolf2}
+			for _, wolf := range spiritWolves {
+				shaman.MakeProcTriggerAuraForSetBonusWithUnit(setName, 4, &wolf.Unit, core.ProcTrigger{
 					Name:       "Spiritwalker's Battlegear 4pc" + shaman.Label,
 					ActionID:   core.ActionID{SpellID: 105872},
 					Callback:   core.CallbackOnSpellHitDealt,
@@ -338,6 +440,20 @@ var ItemSetSpiritwalkersBattlegear = core.NewItemSet(core.ItemSet{
 					Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 						shaman.MaelstromWeaponAura.Activate(sim)
 						shaman.MaelstromWeaponAura.AddStack(sim)
+					},
+				}, &core.CustomSetBonusCallbackConfig{
+					OnGain: func(_ *core.Simulation, aura *core.Aura) {
+						wolf.Pet.OnPetEnable = func(sim *core.Simulation) {
+							aura.Activate(sim)
+						}
+						wolf.Pet.OnPetDisable = func(sim *core.Simulation) {
+							aura.Deactivate(sim)
+						}
+					},
+					OnExpire: func(sim *core.Simulation, aura *core.Aura) {
+						aura.Deactivate(sim)
+						wolf.Pet.OnPetEnable = nil
+						wolf.Pet.OnPetDisable = nil
 					},
 				})
 			}

@@ -34,7 +34,6 @@ func (dk *DeathKnight) registerDancingRuneWeaponSpell() {
 
 	hasGlyph := dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfDancingRuneWeapon)
 
-	hasT12Set := dk.HasSetBonus(ItemSetElementiumDeathplateBattlearmor, 4)
 	t124PAura := dk.RegisterAura(core.Aura{
 		Label:    "Flaming Rune Weapon",
 		ActionID: core.ActionID{SpellID: 101162},
@@ -73,7 +72,7 @@ func (dk *DeathKnight) registerDancingRuneWeaponSpell() {
 			if hasGlyph {
 				dk.PseudoStats.ThreatMultiplier /= 1.5
 			}
-			if hasT12Set {
+			if dk.hasT12Tank4pc() {
 				t124PAura.Activate(sim)
 			}
 		},

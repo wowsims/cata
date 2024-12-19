@@ -32,7 +32,6 @@ type Druid struct {
 	BleedsActive      int
 	AssumeBleedActive bool
 	LeatherSpecActive bool
-	Feral4pT12Active  bool
 
 	MHAutoSpell       *core.Spell
 	ReplaceBearMHFunc core.ReplaceMHSwing

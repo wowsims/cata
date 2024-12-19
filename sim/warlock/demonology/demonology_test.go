@@ -460,12 +460,13 @@ func TestDemonology(t *testing.T) {
 	}
 
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-		Class:      proto.Class_ClassWarlock,
-		Race:       proto.Race_RaceOrc,
-		OtherRaces: []proto.Race{proto.Race_RaceTroll, proto.Race_RaceGoblin, proto.Race_RaceHuman},
-		GearSet:    core.GetGearSet("../../../ui/warlock/demonology/gear_sets", "p3"),
-		Talents:    demonologyTalentsShadowBolt,
-		Glyphs:     demonologyGlyphsShadowBolt,
+		Class:       proto.Class_ClassWarlock,
+		Race:        proto.Race_RaceOrc,
+		OtherRaces:  []proto.Race{proto.Race_RaceTroll, proto.Race_RaceGoblin, proto.Race_RaceHuman},
+		GearSet:     core.GetGearSet("../../../ui/warlock/demonology/gear_sets", "p3"),
+		ItemSwapSet: core.GetItemSwapGearSet("../../../ui/warlock/demonology/gear_sets", "p3_item_swap"),
+		Talents:     demonologyTalentsShadowBolt,
+		Glyphs:      demonologyGlyphsShadowBolt,
 		OtherTalentSets: []core.TalentsCombo{
 			{
 				Label:   "Incinerate",

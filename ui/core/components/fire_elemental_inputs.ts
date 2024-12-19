@@ -42,25 +42,6 @@ export function FireElementalSection(parentElem: HTMLElement, simUI: IndividualS
 
 	new IconPicker(fireElementalIconContainer, simUI.player, fireElementalBooleanIconInput);
 
-	new NumberPicker(contentBlock.bodyElement, simUI.player, {
-		id: 'fire-elemental-bonus-spellpower',
-		positive: true,
-		label: 'Bonus spell power',
-		labelTooltip: 'Bonus spell power to snapshot Fire Elemental with. Will prioritize dropping Fire Elemental if greater then 0',
-		inline: true,
-		getValue: (player: Player<ShamanSpecs>) => player.getClassOptions().totems?.bonusSpellpower || 0,
-		setValue: (eventID: EventID, player: Player<ShamanSpecs>, newVal: number) => {
-			const newOptions = player.getClassOptions();
-
-			if (newOptions.totems) {
-				newOptions.totems.bonusSpellpower = newVal;
-			}
-
-			player.setClassOptions(eventID, newOptions);
-		},
-		changedEvent: (player: Player<ShamanSpecs>) => player.specOptionsChangeEmitter,
-	});
-
 	new BooleanPicker(contentBlock.bodyElement, simUI.player, {
 		id: 'fire-elemental-use-tier-ten',
 		label: 'Use Tier 10 (4pc)',

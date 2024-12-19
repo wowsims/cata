@@ -3,8 +3,11 @@ package core
 import (
 	"fmt"
 	"slices"
+
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
+type ApplySetItemEffect func(agent Agent, setName string)
 type ItemSet struct {
 	ID              int32
 	Name            string
@@ -14,7 +17,15 @@ type ItemSet struct {
 	// before the Sim starts.
 	//
 	// The function should apply any benefits provided by the set bonus.
-	Bonuses map[int32]ApplyEffect
+	Bonuses map[int32]ApplySetItemEffect
+}
+
+var ItemSetSlots = []proto.ItemSlot{
+	proto.ItemSlot_ItemSlotHead,
+	proto.ItemSlot_ItemSlotShoulder,
+	proto.ItemSlot_ItemSlotChest,
+	proto.ItemSlot_ItemSlotHands,
+	proto.ItemSlot_ItemSlotLegs,
 }
 
 func (set ItemSet) Items() []Item {
@@ -94,7 +105,7 @@ func (character *Character) HasSetBonus(set *ItemSet, numItems int32) bool {
 	return false
 }
 
-type ActiveSetBonus struct {
+type SetBonus struct {
 	// Name of the set.
 	Name string
 
@@ -102,15 +113,19 @@ type ActiveSetBonus struct {
 	NumPieces int32
 
 	// Function for applying the effects of this set bonus.
-	BonusEffect ApplyEffect
+	BonusEffect ApplySetItemEffect
 }
 
 // Returns a list describing all active set bonuses.
-func (character *Character) GetActiveSetBonuses() []ActiveSetBonus {
-	var activeBonuses []ActiveSetBonus
+func (character *Character) GetActiveSetBonuses() []SetBonus {
+	return character.GetSetBonuses(character.Equipment)
+}
+
+func (character *Character) GetSetBonuses(equipment Equipment) []SetBonus {
+	var activeBonuses []SetBonus
 
 	setItemCount := make(map[*ItemSet]int32)
-	for _, item := range character.Equipment {
+	for _, item := range equipment {
 		if item.SetName == "" {
 			continue
 		}
@@ -139,7 +154,7 @@ func (character *Character) GetActiveSetBonuses() []ActiveSetBonus {
 		if foundSet != nil {
 			setItemCount[foundSet]++
 			if bonusEffect, ok := foundSet.Bonuses[setItemCount[foundSet]]; ok {
-				activeBonuses = append(activeBonuses, ActiveSetBonus{
+				activeBonuses = append(activeBonuses, SetBonus{
 					Name:        foundSet.Name,
 					NumPieces:   setItemCount[foundSet],
 					BonusEffect: bonusEffect,
@@ -151,12 +166,34 @@ func (character *Character) GetActiveSetBonuses() []ActiveSetBonus {
 	return activeBonuses
 }
 
+func (character *Character) HasActiveSetBonus(setName string, count int32) bool {
+	activeSetBonuses := character.GetActiveSetBonuses()
+
+	for _, activeSetBonus := range activeSetBonuses {
+		if activeSetBonus.Name == setName && activeSetBonus.NumPieces >= count {
+			return true
+		}
+	}
+
+	return false
+}
+
 // Apply effects from item set bonuses.
 func (character *Character) applyItemSetBonusEffects(agent Agent) {
 	activeSetBonuses := character.GetActiveSetBonuses()
 
 	for _, activeSetBonus := range activeSetBonuses {
-		activeSetBonus.BonusEffect(agent)
+		activeSetBonus.BonusEffect(agent, activeSetBonus.Name)
+	}
+
+	if character.ItemSwap.IsEnabled() {
+		unequippedSetBonuses := FilterSlice(character.GetSetBonuses(character.ItemSwap.unEquippedItems), func(unequippeBonus SetBonus) bool {
+			return !character.HasActiveSetBonus(unequippeBonus.Name, unequippeBonus.NumPieces)
+		})
+
+		for _, unequippedSetBonus := range unequippedSetBonuses {
+			unequippedSetBonus.BonusEffect(agent, unequippedSetBonus.Name)
+		}
 	}
 }
 
@@ -169,4 +206,128 @@ func (character *Character) GetActiveSetBonusNames() []string {
 		names[i] = fmt.Sprintf("%s (%dpc)", activeSetBonus.Name, activeSetBonus.NumPieces)
 	}
 	return names
+}
+
+type CustomSetBonusCallbackConfig struct {
+	// Override default behavior when the set bonus is gained.
+	OnGain func(sim *Simulation, aura *Aura)
+	// Override default behavior when the set bonus is lost.
+	OnExpire func(sim *Simulation, aura *Aura)
+}
+
+// Adds a proc trigger aura that activates when the character has a set bonus.
+func (character *Character) MakeProcTriggerAuraForSetBonus(setName string, numPieces int32, config ProcTrigger, customSetBonusCallbackConfig *CustomSetBonusCallbackConfig) *Aura {
+	return character.factory_ProcTriggerAuraForSetBonus(setName, numPieces, &character.Unit, config, customSetBonusCallbackConfig)
+}
+
+func (character *Character) MakeProcTriggerAuraForSetBonusWithUnit(setName string, numPieces int32, unit *Unit, config ProcTrigger, customSetBonusCallbackConfig *CustomSetBonusCallbackConfig) *Aura {
+	return character.factory_ProcTriggerAuraForSetBonus(setName, numPieces, unit, config, customSetBonusCallbackConfig)
+}
+
+func (character *Character) factory_ProcTriggerAuraForSetBonus(setName string, numPieces int32, unit *Unit, config ProcTrigger, customSetBonusCallbackConfig *CustomSetBonusCallbackConfig) *Aura {
+	aura := MakeProcTriggerAura(unit, config)
+
+	if customSetBonusCallbackConfig == nil {
+		customSetBonusCallbackConfig = &CustomSetBonusCallbackConfig{}
+	}
+
+	character.registerSetBonusForItemSwap(setName, numPieces, ItemSwapRegistrationConfig{
+		OnGain: func(sim *Simulation, _ proto.ItemSlot) {
+			if customSetBonusCallbackConfig.OnGain != nil {
+				customSetBonusCallbackConfig.OnGain(sim, aura)
+			} else {
+				aura.Activate(sim)
+			}
+		},
+		OnExpire: func(sim *Simulation, _ proto.ItemSlot) {
+			if customSetBonusCallbackConfig.OnExpire != nil {
+				customSetBonusCallbackConfig.OnExpire(sim, aura)
+			} else {
+				aura.Deactivate(sim)
+			}
+		},
+	})
+
+	return aura
+}
+
+// Adds a static effect that activates when the character has a set bonus.
+func (character *Character) MakeCallbackEffectForSetBonus(setName string, numPieces int32, callbackConfig CustomSetBonusCallbackConfig) {
+	character.registerSetBonusForItemSwap(setName, numPieces, ItemSwapRegistrationConfig{
+		OnGain: func(sim *Simulation, _ proto.ItemSlot) {
+			if callbackConfig.OnGain != nil {
+				callbackConfig.OnGain(sim, nil)
+			}
+		},
+		OnExpire: func(sim *Simulation, _ proto.ItemSlot) {
+			if callbackConfig.OnExpire != nil {
+				callbackConfig.OnExpire(sim, nil)
+			}
+		},
+		OnDisabled: func() {
+			if callbackConfig.OnGain != nil {
+				callbackConfig.OnGain(nil, nil)
+			}
+		},
+	})
+}
+
+// Handles "ignite-like" set bonus effects
+func (character *Character) MakeIgniteHandlerEffectForSetBonus(setName string, numPieces int32, spell *Spell, procTrigger *Aura) {
+	character.registerSetBonusForItemSwap(setName, numPieces, ItemSwapRegistrationConfig{
+		OnGain: func(sim *Simulation, _ proto.ItemSlot) {
+			spell.Flags &= ^SpellFlagSwapped
+			procTrigger.Activate(sim)
+		},
+		OnExpire: func(sim *Simulation, _ proto.ItemSlot) {
+			spell.Flags |= SpellFlagSwapped
+			procTrigger.Deactivate(sim)
+		},
+	})
+}
+
+// Adds a static effect that activates when the character has a set bonus.
+func (character *Character) MakeDynamicModForSetBonus(setName string, numPieces int32, spellModConfig SpellModConfig) {
+
+	setBonusDep := character.AddDynamicMod(spellModConfig)
+	character.registerSetBonusForItemSwap(setName, numPieces, ItemSwapRegistrationConfig{
+		OnGain: func(_ *Simulation, _ proto.ItemSlot) {
+			setBonusDep.Activate()
+		},
+		OnExpire: func(_ *Simulation, _ proto.ItemSlot) {
+			setBonusDep.Deactivate()
+		},
+		OnDisabled: func() {
+			setBonusDep.Activate()
+		},
+	})
+}
+
+type ItemSwapRegistrationConfig struct {
+	// Will be called when your set bonus is gained.
+	OnGain func(sim *Simulation, slot proto.ItemSlot)
+	// Will be called when your set bonus is lost.
+	OnExpire func(sim *Simulation, slot proto.ItemSlot)
+	// Will be called when ItemSwap is disabled.
+	OnDisabled func()
+}
+
+func (character *Character) registerSetBonusForItemSwap(setName string, numPieces int32, config ItemSwapRegistrationConfig) {
+	if character.ItemSwap.IsEnabled() {
+		character.RegisterItemSwapCallback(ItemSetSlots, func(sim *Simulation, slot proto.ItemSlot) {
+			if character.HasActiveSetBonus(setName, numPieces) {
+				if config.OnGain != nil {
+					config.OnGain(sim, slot)
+				}
+			} else {
+				if config.OnExpire != nil {
+					config.OnExpire(sim, slot)
+				}
+			}
+		})
+	} else {
+		if config.OnDisabled != nil {
+			config.OnDisabled()
+		}
+	}
 }

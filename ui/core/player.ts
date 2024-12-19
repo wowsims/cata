@@ -315,10 +315,8 @@ export class Player<SpecType extends Spec> {
 		this.specTypeFunctions = specTypeFunctions[this.getSpec()] as SpecTypeFunctions<SpecType>;
 		this.specOptions = this.specTypeFunctions.optionsCreate();
 
-		const specConfig = SPEC_CONFIGS[this.getSpec()] as PlayerConfig<SpecType>;
-		if (!specConfig) {
-			throw new Error(`Could not find spec config for spec: ${spec.friendlyName}`);
-		}
+		const specConfig = getSpecConfig<SpecType>(this.getSpec());
+
 		this.autoRotationGenerator = specConfig.autoRotation;
 		if (specConfig.simpleRotation) {
 			this.simpleRotationGenerator = specConfig.simpleRotation;
@@ -1260,6 +1258,29 @@ export class Player<SpecType extends Spec> {
 		[RaidFilterOption.RaidDragonSoul]: 5892,
 	};
 
+	get armorSpecializationArmorType() {
+		// We always pick the first entry since this is always the preffered armor type
+		return this.playerClass.armorTypes[0];
+	}
+
+	hasArmorSpecializationBonus() {
+		return [
+			ItemSlot.ItemSlotHead,
+			ItemSlot.ItemSlotShoulder,
+			ItemSlot.ItemSlotChest,
+			ItemSlot.ItemSlotWrist,
+			ItemSlot.ItemSlotHands,
+			ItemSlot.ItemSlotWaist,
+			ItemSlot.ItemSlotLegs,
+			ItemSlot.ItemSlotFeet,
+		].some(itemSlot => {
+			const item = this.getEquippedItem(itemSlot)?.item;
+			if (!item) return false;
+			const armorType = item.armorType;
+			return armorType !== this.armorSpecializationArmorType;
+		});
+	}
+
 	filterItemData<T>(itemData: Array<T>, getItemFunc: (val: T) => Item, slot: ItemSlot): Array<T> {
 		const filters = this.sim.getFilters();
 
@@ -1547,8 +1568,6 @@ export class Player<SpecType extends Spec> {
 
 	applySharedDefaults(eventID: EventID) {
 		TypedEvent.freezeAllAndDo(() => {
-			this.setEnableItemSwap(eventID, false);
-			this.setItemSwapGear(eventID, new ItemSwapGear({}));
 			this.setReactionTime(eventID, 100);
 			this.setInFrontOfTarget(eventID, this.playerSpec.isTankSpec);
 			this.setHealingModel(

@@ -116,7 +116,7 @@ func init() {
 	shared.NewParryActive(56406, 1425, time.Second*10, time.Minute) // Impetuous Query (Heroic)
 
 	// RESI
-	shared.CreateDevensiveStatActive(62466, time.Second*10, time.Minute, stats.Stats{ // Mirror of Broken Images (Alliance)
+	shared.CreateDefensiveStatActive(62466, time.Second*10, time.Minute, stats.Stats{ // Mirror of Broken Images (Alliance)
 		stats.ArcaneResistance: 400,
 		stats.FrostResistance:  400,
 		stats.FireResistance:   400,
@@ -124,7 +124,7 @@ func init() {
 		stats.NatureResistance: 400,
 	})
 
-	shared.CreateDevensiveStatActive(62471, time.Second*10, time.Minute, stats.Stats{ // Mirror of Broken Images (Horde)
+	shared.CreateDefensiveStatActive(62471, time.Second*10, time.Minute, stats.Stats{ // Mirror of Broken Images (Horde)
 		stats.ArcaneResistance: 400,
 		stats.FrostResistance:  400,
 		stats.FireResistance:   400,

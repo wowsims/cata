@@ -63,8 +63,8 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 		shaman.AddStat(stats.MP5, 354)
 	}
 
-	shaman.FireElemental = shaman.NewFireElemental(float64(totems.BonusSpellpower), float64(totems.BonusIntellect))
-	shaman.EarthElemental = shaman.NewEarthElemental(float64(totems.BonusSpellpower))
+	shaman.FireElemental = shaman.NewFireElemental()
+	shaman.EarthElemental = shaman.NewEarthElemental()
 
 	return shaman
 }
@@ -117,9 +117,10 @@ type Shaman struct {
 	Stormstrike       *core.Spell
 	PrimalStrike      *core.Spell
 
-	LightningShield     *core.Spell
-	LightningShieldAura *core.Aura
-	Fulmination         *core.Spell
+	LightningShield        *core.Spell
+	LightningShieldAura    *core.Aura
+	Fulmination            *core.Spell
+	SpiritwalkersGraceAura *core.Aura
 
 	Earthquake   *core.Spell
 	Thunderstorm *core.Spell
@@ -248,6 +249,7 @@ func (shaman *Shaman) Initialize() {
 	shaman.registerLavaBurstSpell()
 	shaman.registerLightningBoltSpell()
 	shaman.registerLightningShieldSpell()
+	shaman.registerSpiritwalkersGraceSpell()
 	shaman.registerMagmaTotemSpell()
 	shaman.registerSearingTotemSpell()
 	shaman.registerShocks()
@@ -268,9 +270,6 @@ func (shaman *Shaman) Initialize() {
 	shaman.registerCallOfTheSpirits()
 
 	shaman.registerBloodlustCD()
-	// shaman.NewTemporaryStatsAura("DC Pre-Pull SP Proc", core.ActionID{SpellID: 60494}, stats.Stats{stats.SpellPower: 765}, time.Second*10)
-
-	shaman.NewTemporaryStatsAura("Sorrowsong Pre-Pull", core.ActionID{SpellID: 91002, Tag: 1}, stats.Stats{stats.SpellPower: 1710}, 10*time.Second)
 }
 
 func (shaman *Shaman) RegisterHealingSpells() {
@@ -357,6 +356,8 @@ const (
 	SpellMaskEarthquake
 	SpellMaskFlametongueWeapon
 	SpellMaskFeralSpirit
+	SpellMaskElementalMastery
+	SpellMaskSpiritwalkersGrace
 
 	SpellMaskStormstrike = SpellMaskStormstrikeCast | SpellMaskStormstrikeDamage
 	SpellMaskFlameShock  = SpellMaskFlameShockDirect | SpellMaskFlameShockDot

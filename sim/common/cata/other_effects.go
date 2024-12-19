@@ -1382,7 +1382,7 @@ type IgniteConfig struct {
 	IncludeAuraDelay   bool // "munching" and "free roll-over" interactions
 }
 
-func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
+func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) (*core.Spell, *core.Aura) {
 	spellFlags := core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete
 
 	if config.DisableCastMetrics {
@@ -1489,6 +1489,6 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 		}
 	}
 
-	core.MakeProcTriggerAura(unit, procTrigger)
-	return igniteSpell
+	procTriggerAura := core.MakeProcTriggerAura(unit, procTrigger)
+	return igniteSpell, procTriggerAura
 }

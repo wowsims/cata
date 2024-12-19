@@ -99,6 +99,10 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			}
 		}
 
+		if spell.Flags.Matches(SpellFlagSwapped) {
+			return spell.castFailureHelper(sim, "spell attached to an un-equipped item")
+		}
+
 		if spell.ExtraCastCondition != nil {
 			if !spell.ExtraCastCondition(sim, target) {
 				return spell.castFailureHelper(sim, "extra spell condition")
@@ -225,6 +229,12 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 
 func (spell *Spell) makeCastFuncSimple() CastSuccessFunc {
 	return func(sim *Simulation, target *Unit) bool {
+		if spell.Flags != 0 {
+			if spell.Flags.Matches(SpellFlagSwapped) {
+				return spell.castFailureHelper(sim, "spell belong to a swapped item")
+			}
+		}
+
 		if spell.ExtraCastCondition != nil {
 			if !spell.ExtraCastCondition(sim, target) {
 				return spell.castFailureHelper(sim, "extra spell condition")
