@@ -4,6 +4,7 @@ import { ref } from 'tsx-vanilla';
 
 import { SimLog } from '../../proto_utils/logs_parser';
 import { TypedEvent } from '../../typed_event.js';
+import { fragmentToString } from '../../utils';
 import { BooleanPicker } from '../pickers/boolean_picker.js';
 import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component.js';
 export class LogRunner extends ResultComponent {
@@ -18,7 +19,7 @@ export class LogRunner extends ResultComponent {
 		contentContainer: HTMLTableSectionElement;
 	};
 	cacheOutput: {
-		cacheKey: number | null;
+		cacheKey: string | null;
 		logs: SimLog[] | null;
 		logsAsHTML: Element[] | null;
 		logsAsText: string[] | null;
@@ -132,40 +133,33 @@ export class LogRunner extends ResultComponent {
 	}
 
 	onSimResult(resultData: SimResultData): void {
-		this.getLogs(resultData)
-		this.searchLogs(this.ui.search.value)
+		this.getLogs(resultData);
+		this.searchLogs(this.ui.search.value);
 	}
 
 	getLogs(resultData: SimResultData) {
 		if (!resultData) return [];
-		if (this.cacheOutput.cacheKey === resultData?.eventID) {
+		const cacheKey = resultData.result.request.requestId;
+		if (this.cacheOutput.cacheKey === cacheKey) {
 			return this.cacheOutput.logsAsHTML;
 		}
 
 		const validLogs = resultData.result.logs.filter(log => !log.isCastCompleted());
-		this.cacheOutput.cacheKey = resultData?.eventID;
+		this.cacheOutput.cacheKey = cacheKey;
 		this.cacheOutput.logs = validLogs;
 		this.cacheOutput.logsAsHTML = validLogs.map(log => this.renderItem(log));
 		this.cacheOutput.logsAsText = this.cacheOutput.logsAsHTML.map(element => fragmentToString(element).trim().toLowerCase());
-
-		return this.cacheOutput.logsAsHTML;
 	}
 
 	renderItem(log: SimLog) {
 		return (
 			<tr>
 				<td className="log-timestamp">{log.formattedTimestamp()}</td>
-				<td className="log-evdsfent">{log.toHTML(false)}</td>
+				<td className="log-evdsfent">{log.toHTML(false).cloneNode(true)}</td>
 			</tr>
 		) as HTMLTableRowElement;
 	}
 }
-
-const fragmentToString = (element: Node | Element) => {
-	const div = document.createElement('div');
-	div.appendChild(element.cloneNode(true));
-	return div.innerHTML;
-};
 
 class CustomVirtualScroll {
 	private scrollContainer: HTMLElement;

@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 
+import { CacheHandler } from '../cache_handler';
 import { RaidSimResult, ResourceType } from '../proto/api.js';
 import { SpellSchool } from '../proto/common';
 import { bucket, getEnumValues, stringComparator, sum } from '../utils.js';
@@ -87,6 +88,8 @@ interface SimLogParams {
 	threat: number;
 }
 
+const cachedActionIdLink = new CacheHandler<HTMLAnchorElement>();
+
 export class SimLog {
 	readonly raw: string;
 
@@ -101,6 +104,7 @@ export class SimLog {
 	readonly source: Entity | null;
 	readonly target: Entity | null;
 	readonly actionId: ActionId | null;
+	readonly actionIdAsString: string | null;
 
 	// Spell schoool from this event. Note that not all events have spell schools, so this will be 0null.
 	readonly spellSchool: SpellSchool | null;
@@ -120,6 +124,7 @@ export class SimLog {
 		this.source = params.source;
 		this.target = params.target;
 		this.actionId = params.actionId;
+		this.actionIdAsString = this.actionId?.toString() || null;
 		this.spellSchool = params.spellSchool;
 		this.threat = params.threat;
 		this.activeAuras = [];
@@ -180,17 +185,22 @@ export class SimLog {
 	}
 
 	protected newActionIdLink(isAura?: boolean) {
-		const iconElem = <span className="icon icon-sm"></span>;
+		const cacheKey = this.actionIdAsString ? `${this.actionIdAsString}${isAura || ''}` : undefined;
+		const cachedLink = cacheKey ? cachedActionIdLink.get(cacheKey) : null;
+		if (cachedLink) return cachedLink.cloneNode(true);
+
+		const iconElem = (<span className="icon icon-sm"></span>) as HTMLSpanElement;
 		const actionAnchor = (
 			<a className="log-action" target="_blank">
 				<span>
 					{iconElem} {this.actionId!.name}
 				</span>
 			</a>
-		);
-		this.actionId?.setBackground(iconElem as HTMLAnchorElement);
-		this.actionId?.setWowheadHref(actionAnchor as HTMLAnchorElement);
-		this.actionId?.setWowheadDataset(actionAnchor as HTMLAnchorElement, { useBuffAura: isAura });
+		) as HTMLAnchorElement;
+		this.actionId?.setBackground(iconElem);
+		this.actionId?.setWowheadHref(actionAnchor);
+		this.actionId?.setWowheadDataset(actionAnchor, { useBuffAura: isAura });
+		if (cacheKey) cachedActionIdLink.set(cacheKey, actionAnchor.cloneNode(true) as HTMLAnchorElement);
 		return actionAnchor;
 	}
 

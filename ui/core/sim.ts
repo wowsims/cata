@@ -1,4 +1,5 @@
 import { hasTouch } from '../shared/bootstrap_overrides';
+import { SimRequest } from '../worker/types';
 import { getBrowserLanguageCode, setLanguageCode } from './constants/lang';
 import * as OtherConstants from './constants/other';
 import { Encounter } from './encounter';
@@ -41,7 +42,7 @@ import { runConcurrentSim, runConcurrentStatWeights } from './sim_concurrent';
 import { RequestTypes, SimSignalManager } from './sim_signal_manager';
 import { EventID, TypedEvent } from './typed_event.js';
 import { getEnumValues, noop } from './utils.js';
-import { WorkerPool, WorkerProgressCallback } from './worker_pool.js';
+import { generateRequestId, WorkerPool, WorkerProgressCallback } from './worker_pool.js';
 
 export type RaidSimData = {
 	request: RaidSimRequest;
@@ -266,6 +267,7 @@ export class Sim {
 		// TODO: remove any replenishment from sim request here? probably makes more sense to do it inside the sim to protect against accidents
 
 		return RaidSimRequest.create({
+			requestId: generateRequestId(SimRequest.raidSimAsync),
 			type: this.type,
 			raid: raid,
 			encounter: encounter,
