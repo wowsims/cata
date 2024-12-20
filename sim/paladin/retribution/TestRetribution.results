@@ -1236,15 +1236,15 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-AllItems-ReinforcedSapphiriumBattlearmor"
  value: {
-  dps: 30558.76595
-  tps: 30581.30202
+  dps: 30783.49855
+  tps: 30684.8149
  }
 }
 dps_results: {
  key: "TestRetribution-AllItems-ReinforcedSapphiriumBattleplate"
  value: {
-  dps: 33098.10813
-  tps: 33134.4054
+  dps: 32450.21943
+  tps: 32485.99946
  }
 }
 dps_results: {
@@ -2050,379 +2050,379 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p2_bis-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 37220.90434
-  tps: 41473.66458
+  dps: 35964.0789
+  tps: 40318.26642
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p2_bis-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 32545.57781
-  tps: 32431.66212
+  dps: 31644.43092
+  tps: 31535.27793
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p2_bis-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 45318.58813
-  tps: 43762.82519
+  dps: 44339.03237
+  tps: 42772.15587
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p2_bis-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 21388.25433
-  tps: 25530.18145
+  dps: 20874.90176
+  tps: 24982.13328
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p2_bis-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 19582.07222
-  tps: 19487.39636
+  dps: 18989.55411
+  tps: 18897.29742
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p2_bis-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 25192.36628
-  tps: 23793.24029
+  dps: 24519.46478
+  tps: 23125.5194
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p2_with_apparatus-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 37862.45122
-  tps: 42128.53137
+  dps: 36663.9701
+  tps: 40979.6835
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p2_with_apparatus-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 32979.57632
-  tps: 32870.41224
+  dps: 32096.04754
+  tps: 31989.66427
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p2_with_apparatus-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 44487.75583
-  tps: 42952.11795
+  dps: 43423.29585
+  tps: 41867.22173
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p2_with_apparatus-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 21399.39561
-  tps: 25514.93862
+  dps: 21038.96761
+  tps: 25137.8077
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p2_with_apparatus-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 19672.70292
-  tps: 19578.06106
+  dps: 19119.49279
+  tps: 19026.56736
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p2_with_apparatus-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 24530.82854
-  tps: 23134.48434
+  dps: 23862.18143
+  tps: 22471.26201
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p2_with_double_passive-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 36504.17418
-  tps: 40782.41582
+  dps: 35518.15221
+  tps: 39813.36873
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p2_with_double_passive-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 32069.09772
-  tps: 31960.73832
+  dps: 31157.97227
+  tps: 31046.64833
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p2_with_double_passive-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 44827.61873
-  tps: 43282.92441
+  dps: 43963.15159
+  tps: 42401.14983
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p2_with_double_passive-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 21618.38308
-  tps: 26037.24678
+  dps: 21092.91953
+  tps: 25618.0493
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p2_with_double_passive-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 19075.64301
-  tps: 18993.56097
+  dps: 18469.5281
+  tps: 18389.36412
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p2_with_double_passive-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 24565.57781
-  tps: 23169.67696
+  dps: 23952.03293
+  tps: 22565.13836
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p3_bis-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 44234.53136
-  tps: 47990.10114
+  dps: 43548.30463
+  tps: 47303.87441
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p3_bis-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 39972.8988
-  tps: 39842.68108
+  dps: 39265.47218
+  tps: 39135.25445
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p3_bis-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 55115.11175
-  tps: 53492.12716
+  dps: 54180.27596
+  tps: 52557.29137
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p3_bis-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 26332.79431
-  tps: 30124.02536
+  dps: 25903.24017
+  tps: 29694.47122
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p3_bis-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 24379.40754
-  tps: 24265.95878
+  dps: 23946.0448
+  tps: 23832.59605
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p3_bis-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 30911.05961
-  tps: 29476.67457
+  dps: 30444.69938
+  tps: 29010.31434
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p3_with_double_passive-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 43748.43512
-  tps: 47622.02803
+  dps: 43082.9519
+  tps: 46956.54481
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p3_with_double_passive-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 39253.15722
-  tps: 39118.79853
+  dps: 38574.99385
+  tps: 38440.63516
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p3_with_double_passive-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 55043.80834
-  tps: 53415.33097
+  dps: 54162.49471
+  tps: 52534.01735
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p3_with_double_passive-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 25973.71971
-  tps: 29704.09298
+  dps: 25555.67099
+  tps: 29286.04426
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p3_with_double_passive-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 23980.19598
-  tps: 23874.09207
+  dps: 23557.10949
+  tps: 23451.00558
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p3_with_double_passive-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 31179.47166
-  tps: 29753.0919
+  dps: 30710.21266
+  tps: 29283.8329
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p3_with_on_use-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 43748.43512
-  tps: 47622.02803
+  dps: 43082.9519
+  tps: 46956.54481
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p3_with_on_use-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 39253.15722
-  tps: 39118.79853
+  dps: 38574.99385
+  tps: 38440.63516
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p3_with_on_use-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 55043.80834
-  tps: 53415.33097
+  dps: 54162.49471
+  tps: 52534.01735
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p3_with_on_use-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 25973.71971
-  tps: 29704.09298
+  dps: 25555.67099
+  tps: 29286.04426
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p3_with_on_use-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 23980.19598
-  tps: 23874.09207
+  dps: 23557.10949
+  tps: 23451.00558
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p3_with_on_use-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 31179.47166
-  tps: 29753.0919
+  dps: 30710.21266
+  tps: 29283.8329
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p4_bis-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 58286.0195
-  tps: 60283.38973
+  dps: 57499.24171
+  tps: 59496.61194
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p4_bis-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 52010.13165
-  tps: 49342.68349
+  dps: 51226.04298
+  tps: 48558.59482
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p4_bis-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 68525.0538
-  tps: 64828.18587
+  dps: 67472.92644
+  tps: 63776.0585
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p4_bis-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 36199.12617
-  tps: 38527.00468
+  dps: 35705.53217
+  tps: 38046.19784
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p4_bis-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 32951.29971
-  tps: 30694.08886
+  dps: 32454.71494
+  tps: 30191.55145
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p4_bis-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 39728.50458
-  tps: 36904.70592
+  dps: 39129.29844
+  tps: 36312.11384
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p4_with_apparatus-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 57615.73899
-  tps: 59617.20708
+  dps: 56838.47866
+  tps: 58839.94676
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p4_with_apparatus-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 51677.03532
-  tps: 48999.28858
+  dps: 50897.3513
+  tps: 48219.60456
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p4_with_apparatus-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 68666.95274
-  tps: 64962.94163
+  dps: 67614.35071
+  tps: 63910.3396
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p4_with_apparatus-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 35793.08449
-  tps: 38104.42786
+  dps: 35308.0867
+  tps: 37631.1149
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p4_with_apparatus-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 32604.11591
-  tps: 30321.58104
+  dps: 32109.87283
+  tps: 29822.70813
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p4_with_apparatus-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 38992.67021
-  tps: 36155.64345
+  dps: 38403.18045
+  tps: 35579.38179
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p4_with_on_use-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 57798.70579
-  tps: 59845.60116
+  dps: 57028.33526
+  tps: 59075.23063
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p4_with_on_use-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 51821.1691
-  tps: 49166.70562
+  dps: 51033.37415
+  tps: 48378.91067
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p4_with_on_use-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 70097.07451
-  tps: 66400.20658
+  dps: 69010.03043
+  tps: 65313.16249
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p4_with_on_use-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 35968.99128
-  tps: 38279.45277
+  dps: 35477.4778
+  tps: 37799.62412
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p4_with_on_use-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 32922.31109
-  tps: 30645.47855
+  dps: 32423.49169
+  tps: 30139.38369
  }
 }
 dps_results: {
  key: "TestRetribution-Settings-BloodElf-p4_with_on_use-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 40559.55426
-  tps: 37729.14155
+  dps: 39959.47113
+  tps: 37135.67247
  }
 }
 dps_results: {

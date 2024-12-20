@@ -52,6 +52,9 @@ type Mage struct {
 	previousCombustionDotEstimate int32
 
 	ClassSpellScaling float64
+
+	// Item sets
+	Has4pcT12 bool
 }
 
 func (mage *Mage) GetCharacter() *core.Character {
@@ -176,6 +179,7 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 	mage.mirrorImage = mage.NewMirrorImage()
 	mage.flameOrb = mage.NewFlameOrb()
 	mage.frostfireOrb = mage.NewFrostfireOrb()
+	mage.t12MirrorImage = mage.NewT12MirrorImage()
 
 	return mage
 }

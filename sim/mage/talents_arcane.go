@@ -303,7 +303,7 @@ func (mage *Mage) registerArcanePowerCD() {
 				mage.arcanePowerGCDmod.Activate()
 			}
 
-			arcanePowerCostMod.UpdateFloatValue(core.TernaryFloat64(mage.has4pcT12(), -0.1, 0.2))
+			arcanePowerCostMod.UpdateFloatValue(core.TernaryFloat64(mage.Has4pcT12, -0.1, 0.2))
 			arcanePowerCostMod.Activate()
 
 			arcanePowerDmgMod.Activate()

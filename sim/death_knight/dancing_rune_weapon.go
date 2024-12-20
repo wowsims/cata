@@ -72,7 +72,7 @@ func (dk *DeathKnight) registerDancingRuneWeaponSpell() {
 			if hasGlyph {
 				dk.PseudoStats.ThreatMultiplier /= 1.5
 			}
-			if dk.hasT12Tank4pc() {
+			if dk.HasT12Tank4pc {
 				t124PAura.Activate(sim)
 			}
 		},

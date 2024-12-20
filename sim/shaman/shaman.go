@@ -165,17 +165,23 @@ type Shaman struct {
 	ancestralHealingAmount float64
 	AncestralAwakening     *core.Spell
 	HealingSurge           *core.Spell
-	GreaterHealingWave     *core.Spell
-	HealingWave            *core.Spell
-	ChainHeal              *core.Spell
-	Riptide                *core.Spell
-	EarthShield            *core.Spell
+
+	GreaterHealingWave *core.Spell
+	HealingWave        *core.Spell
+	ChainHeal          *core.Spell
+	Riptide            *core.Spell
+	EarthShield        *core.Spell
 
 	waterShieldManaMetrics *core.ResourceMetrics
 
 	VolcanicRegalia4PT12Aura *core.Aura
 
 	useDragonSoul_2PT12 bool
+
+	// Item sets
+	HasDungeonSet3 bool
+	HasT12Enh2pc   bool
+	HasT12Ele4pc   bool
 }
 
 // Implemented by each Shaman spec.

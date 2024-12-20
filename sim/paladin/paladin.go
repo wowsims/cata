@@ -188,6 +188,9 @@ type Paladin struct {
 
 	// Cached Gurthalak tentacles
 	gurthalakTentacles []*cata.TentacleOfTheOldOnesPet
+
+	// Item sets
+	HasT11Ret4pc bool
 }
 
 func (paladin *Paladin) GetTentacles() []*cata.TentacleOfTheOldOnesPet {

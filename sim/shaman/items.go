@@ -23,13 +23,11 @@ var ItemSetTidefury = core.NewItemSet(core.ItemSet{
 			if shaman.SelfBuffs.Shield == proto.ShamanShield_WaterShield {
 				setBonusAura.AttachStatBuff(stats.MP5, 3)
 			}
+
+			setBonusAura.AttachBooleanToggle(shaman.HasDungeonSet3)
 		},
 	},
 })
-
-func (shaman *Shaman) hasDungeonSet3() bool {
-	return shaman.HasActiveSetBonus(ItemSetTidefury.Name, 2)
-}
 
 // var ItemSetSkyshatterRegalia = core.NewItemSet(core.ItemSet{
 // 	Name: "Skyshatter Regalia",
@@ -157,14 +155,11 @@ var ItemSetVolcanicRegalia = core.NewItemSet(core.ItemSet{
 					instantLavaSurgeMod.Deactivate()
 				},
 			})
-			//in talents.go under lava surge proc
+
+			setBonusAura.AttachBooleanToggle(shaman.HasT12Ele4pc)
 		},
 	},
 })
-
-func (shaman *Shaman) hasT12Ele4pc() bool {
-	return shaman.HasActiveSetBonus(ItemSetVolcanicRegalia.Name, 4)
-}
 
 // T13 elem
 // (2) Set: Elemental Mastery also grants you 2000 mastery rating 15 sec.
@@ -267,12 +262,21 @@ var ItemSetSpiritwalkersVestments = core.NewItemSet(core.ItemSet{
 					},
 				})
 
-				setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				onEquip := func() {
 					shaman.SpiritwalkersGraceAura.Duration = shaman.spiritwalkersGraceBaseDuration() + 5*time.Second
+				}
+
+				setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+					onEquip()
 				})
+
 				setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 					shaman.SpiritwalkersGraceAura.Duration = shaman.spiritwalkersGraceBaseDuration()
 				})
+
+				if setBonusAura.IsActive() {
+					onEquip()
+				}
 			})
 
 		},
@@ -315,8 +319,10 @@ func tier12StormstrikeBonus(_ *core.Simulation, spell *core.Spell, _ *core.Attac
 var ItemSetVolcanicBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Volcanic Battlegear",
 	Bonuses: map[int32]core.ApplySetBonus{
-		2: func(_ core.Agent, _ *core.Aura) {
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Implemented in lavalash.go
+			shaman := agent.(ShamanAgent).GetShaman()
+			setBonusAura.AttachBooleanToggle(shaman.HasT12Enh2pc)
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			shaman := agent.(ShamanAgent).GetShaman()
@@ -434,11 +440,13 @@ var ItemSetSpiritwalkersBattlegear = core.NewItemSet(core.ItemSet{
 			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
 				for index, wolf := range spiritWolves {
 					aura := procTriggerAuras[index]
-					wolf.Pet.OnPetEnable = func(sim *core.Simulation) {
-						aura.Activate(sim)
-					}
-					wolf.Pet.OnPetDisable = func(sim *core.Simulation) {
-						aura.Deactivate(sim)
+					if aura != nil {
+						wolf.Pet.OnPetEnable = func(sim *core.Simulation) {
+							aura.Activate(sim)
+						}
+						wolf.Pet.OnPetDisable = func(sim *core.Simulation) {
+							aura.Deactivate(sim)
+						}
 					}
 				}
 			})
@@ -446,7 +454,9 @@ var ItemSetSpiritwalkersBattlegear = core.NewItemSet(core.ItemSet{
 			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 				for index, wolf := range spiritWolves {
 					aura := procTriggerAuras[index]
-					aura.Deactivate(sim)
+					if aura != nil {
+						aura.Deactivate(sim)
+					}
 					wolf.Pet.OnPetEnable = nil
 					wolf.Pet.OnPetDisable = nil
 				}

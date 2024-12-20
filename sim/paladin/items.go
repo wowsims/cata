@@ -20,16 +20,15 @@ var ItemSetReinforcedSapphiriumBattleplate = core.NewItemSet(core.ItemSet{
 				FloatValue: 0.1,
 			})
 		},
-		4: func(_ core.Agent, setBonusAura *core.Aura) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			character := agent.(PaladinAgent).GetPaladin()
+			setBonusAura.AttachBooleanToggle(character.HasT11Ret4pc)
+
 			// Handled in inquisition.go
 			setBonusAura.ExposeToAPL(90299)
 		},
 	},
 })
-
-func (paladin *Paladin) hasT11Ret4pc() bool {
-	return paladin.HasActiveSetBonus(ItemSetReinforcedSapphiriumBattleplate.Name, 4)
-}
 
 // Tier 12 ret
 var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
@@ -69,12 +68,20 @@ var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 					return
 				}
 
-				setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				onEquip := func() {
 					paladin.ZealotryAura.Duration += time.Second * 15
+				}
+
+				setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+					onEquip()
 				})
 				setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 					paladin.ZealotryAura.Duration -= time.Second * 15
 				})
+
+				if setBonusAura.IsActive() {
+					onEquip()
+				}
 			})
 
 			setBonusAura.ExposeToAPL(99116)
@@ -231,11 +238,15 @@ var ItemSetReinforcedSapphiriumBattlearmor = core.NewItemSet(core.ItemSet{
 					return time.Millisecond * time.Duration(float64(duration.Milliseconds())*1.5)
 				}
 
-				setBonusAura.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
+				onEquip := func() {
 					if paladin.AncientPowerAura != nil {
 						paladin.AncientPowerAura.Duration = applyT11Prot4pcBonus(acientPowerBaseDuration)
 					}
 					paladin.GoakAura.Duration = applyT11Prot4pcBonus(goakBaseDuration)
+				}
+
+				setBonusAura.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
+					onEquip()
 				})
 
 				setBonusAura.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
@@ -244,6 +255,10 @@ var ItemSetReinforcedSapphiriumBattlearmor = core.NewItemSet(core.ItemSet{
 					}
 					paladin.GoakAura.Duration = goakBaseDuration
 				})
+
+				if setBonusAura.IsActive() {
+					onEquip()
+				}
 			})
 		},
 	},

@@ -123,6 +123,11 @@ type Druid struct {
 
 	form         DruidForm
 	disabledMCDs []*core.MajorCooldown
+
+	// Item sets
+	HasT11Feral2pBonus bool
+	HasT11Feral4pBonus bool
+	HasT12Feral4pBonus bool
 }
 
 const (

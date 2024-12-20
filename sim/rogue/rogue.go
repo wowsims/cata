@@ -104,6 +104,9 @@ type Rogue struct {
 
 	ruthlessnessMetrics      *core.ResourceMetrics
 	relentlessStrikesMetrics *core.ResourceMetrics
+
+	// Item sets
+	Has4pcT13 bool
 }
 
 func (rogue *Rogue) GetCharacter() *core.Character {

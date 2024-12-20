@@ -56,7 +56,7 @@ func (warlock *Warlock) registerSoulFire() {
 			baseDamage := warlock.CalcAndRollDamageRange(sim, 2.54299998283, 0.22499999404)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
-			if warlock.has4pcT13() && warlock.SoulBurnAura.IsActive() {
+			if warlock.Has4pcT13 && warlock.SoulBurnAura.IsActive() {
 				warlock.AddSoulShard()
 			}
 

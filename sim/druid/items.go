@@ -12,10 +12,12 @@ import (
 var ItemSetStormridersBattlegarb = core.NewItemSet(core.ItemSet{
 	Name: "Stormrider's Battlegarb",
 	Bonuses: map[int32]core.ApplySetBonus{
-		2: func(_ core.Agent, _ *core.Aura) {
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Implemented in rake.go and lacerate.go
+			druid := agent.(DruidAgent).GetDruid()
+			setBonusAura.AttachBooleanToggle(druid.HasT11Feral2pBonus)
 		},
-		4: func(agent core.Agent, _ *core.Aura) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			druid := agent.(DruidAgent).GetDruid()
 			var apDepByStackCount = map[int32]*stats.StatDependency{}
 
@@ -39,17 +41,11 @@ var ItemSetStormridersBattlegarb = core.NewItemSet(core.ItemSet{
 					}
 				},
 			})
+
+			setBonusAura.AttachBooleanToggle(druid.HasT11Feral4pBonus)
 		},
 	},
 })
-
-func (druid *Druid) hasT11Feral2pBonus() bool {
-	return druid.HasActiveSetBonus(ItemSetStormridersBattlegarb.Name, 2)
-}
-
-func (druid *Druid) hasT11Feral4pBonus() bool {
-	return druid.HasActiveSetBonus(ItemSetStormridersBattlegarb.Name, 4)
-}
 
 // T11 Balance
 var ItemSetStormridersRegalia = core.NewItemSet(core.ItemSet{
@@ -156,13 +152,10 @@ var ItemSetObsidianArborweaveBattlegarb = core.NewItemSet(core.ItemSet{
 					druid.PseudoStats.BaseDodgeChance -= 0.1
 				},
 			})
+			setBonusAura.AttachBooleanToggle(druid.HasT12Feral4pBonus)
 		},
 	},
 })
-
-func (druid *Druid) hasT12Feral4pBonus() bool {
-	return druid.HasActiveSetBonus(ItemSetObsidianArborweaveBattlegarb.Name, 4)
-}
 
 // T12 Balance
 var ItemSetObsidianArborweaveRegalia = core.NewItemSet(core.ItemSet{
@@ -190,23 +183,40 @@ var ItemSetObsidianArborweaveRegalia = core.NewItemSet(core.ItemSet{
 
 			druid.OnSpellRegistered(func(spell *core.Spell) {
 				if spell.Matches(DruidSpellWrath) {
-					setBonusAura.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
+					onEquip := func() {
 						druid.SetSpellEclipseEnergy(DruidSpellWrath, WrathBaseEnergyGain, Wrath4PT12EnergyGain)
+					}
+
+					setBonusAura.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
+						onEquip()
 					})
 
 					setBonusAura.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
 						druid.SetSpellEclipseEnergy(DruidSpellWrath, WrathBaseEnergyGain, WrathBaseEnergyGain)
 					})
+
+					if setBonusAura.IsActive() {
+						onEquip()
+					}
+
 				}
 
 				if spell.Matches(DruidSpellStarfire) {
-					setBonusAura.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
+					onEquip := func() {
 						druid.SetSpellEclipseEnergy(DruidSpellStarfire, StarfireBaseEnergyGain, Starfire4PT12EnergyGain)
+					}
+
+					setBonusAura.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
+						onEquip()
 					})
 
 					setBonusAura.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
 						druid.SetSpellEclipseEnergy(DruidSpellStarfire, StarfireBaseEnergyGain, StarfireBaseEnergyGain)
 					})
+
+					if setBonusAura.IsActive() {
+						onEquip()
+					}
 				}
 			})
 

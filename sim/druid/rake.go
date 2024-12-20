@@ -15,7 +15,7 @@ func (druid *Druid) registerRakeSpell() {
 	flatBaseDamage := coefficient * druid.ClassSpellScaling // ~56
 
 	// Set bonuses can scale up the ticks relative to the initial hit
-	getTickDamageMultiplier := func() float64 { return core.TernaryFloat64(druid.hasT11Feral2pBonus(), 1.1, 1) }
+	getTickDamageMultiplier := func() float64 { return core.TernaryFloat64(druid.HasT11Feral2pBonus, 1.1, 1) }
 
 	druid.Rake = druid.RegisterSpell(Cat, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 1822},

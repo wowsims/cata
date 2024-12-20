@@ -78,6 +78,11 @@ type DeathKnight struct {
 
 	// Cached Gurthalak tentacles
 	gurthalakTentacles []*cata.TentacleOfTheOldOnesPet
+
+	// Item sets
+	HasT12Tank4pc bool
+	HasT13Dps2pc  bool
+	HasT13Dps4pc  bool
 }
 
 func (deathKnight *DeathKnight) GetTentacles() []*cata.TentacleOfTheOldOnesPet {

@@ -39,8 +39,6 @@ var ItemSetFirehawkRobesOfConflagration = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			mage := agent.(MageAgent).GetMage()
 
-			mage.t12MirrorImage = mage.NewT12MirrorImage()
-
 			setBonusAura.AttachProcTrigger(core.ProcTrigger{
 				Name:           "Item - Mage T12 2P Bonus",
 				Callback:       core.CallbackOnCastComplete,
@@ -70,14 +68,11 @@ var ItemSetFirehawkRobesOfConflagration = core.NewItemSet(core.ItemSet{
 				mage.baseHotStreakProcChance -= .30
 			})
 
+			setBonusAura.AttachBooleanToggle(mage.Has4pcT12)
 			setBonusAura.ExposeToAPL(99064)
 		},
 	},
 })
-
-func (mage *Mage) has4pcT12() bool {
-	return mage.HasActiveSetBonus(ItemSetFirehawkRobesOfConflagration.Name, 4)
-}
 
 // T13
 var ItemSetTimeLordsRegalia = core.NewItemSet(core.ItemSet{

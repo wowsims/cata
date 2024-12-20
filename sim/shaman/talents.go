@@ -274,7 +274,7 @@ func (shaman *Shaman) applyLavaSurge() {
 
 				OnAction: func(sim *core.Simulation) {
 					shaman.LavaBurst.CD.Reset()
-					if shaman.hasT12Ele4pc() {
+					if shaman.HasT12Ele4pc {
 						shaman.VolcanicRegalia4PT12Aura.Activate(sim)
 					}
 				},
@@ -291,7 +291,7 @@ func (shaman *Shaman) applyLavaSurge() {
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask != SpellMaskLavaBurst || !shaman.hasT12Ele4pc() {
+			if spell.ClassSpellMask != SpellMaskLavaBurst || !shaman.HasT12Ele4pc {
 				return
 			}
 			//If volcano procs during LvB cast time, it is not consumed

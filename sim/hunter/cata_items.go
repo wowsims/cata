@@ -105,13 +105,16 @@ var ItemSetFlameWakersBattleGear = core.NewItemSet(core.ItemSet{
 var ItemSetWyrmstalkerBattleGear = core.NewItemSet(core.ItemSet{
 	Name: "Wyrmstalker Battlegear",
 	Bonuses: map[int32]core.ApplySetBonus{
-		2: func(_ core.Agent, setBonusAura *core.Aura) {
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			hunter := agent.(HunterAgent).GetHunter()
+
 			// Handled in Cobra Shot
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_DamageDone_Flat,
 				FloatValue: 0.1,
 				ClassMask:  HunterSpellSteadyShot,
 			})
+			setBonusAura.AttachBooleanToggle(hunter.Has2pcT13)
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			hunter := agent.(HunterAgent).GetHunter()
@@ -140,10 +143,6 @@ var ItemSetWyrmstalkerBattleGear = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
-
-func (hunter *Hunter) has2pcT13() bool {
-	return hunter.HasActiveSetBonus(ItemSetWyrmstalkerBattleGear.Name, 2)
-}
 
 var ItemSetLightningChargedBattleGear = core.NewItemSet(core.ItemSet{
 	Name: "Lightning-Charged Battlegear",

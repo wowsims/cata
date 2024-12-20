@@ -20,7 +20,7 @@ func (comRogue *CombatRogue) registerAdrenalineRushCD() {
 
 	getDuration := func() time.Duration {
 		return core.TernaryDuration(comRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfAdrenalineRush), time.Second*20, time.Second*15) +
-			core.TernaryDuration(comRogue.Has4pcT13(), time.Second*3, 0)
+			core.TernaryDuration(comRogue.Has4pcT13, time.Second*3, 0)
 	}
 
 	comRogue.AdrenalineRushAura = comRogue.RegisterAura(core.Aura{

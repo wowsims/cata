@@ -82,14 +82,21 @@ var ItemSetMagmaPlatedBattlearmor = core.NewItemSet(core.ItemSet{
 					return
 				}
 
-				setBonusAura.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
+				onEquip := func() {
 					dk.IceBoundFortituteAura.Duration = dk.iceBoundFortituteBaseDuration() + 6*time.Second
+				}
+
+				setBonusAura.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
+					onEquip()
 				})
 
 				setBonusAura.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
 					dk.IceBoundFortituteAura.Duration = dk.iceBoundFortituteBaseDuration()
 				})
 
+				if setBonusAura.IsActive() {
+					onEquip()
+				}
 			})
 		},
 	},
@@ -229,13 +236,11 @@ var ItemSetElementiumDeathplateBattlearmor = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			// When your Dancing Rune Weapon expires, you gain 15% additional parry chance for 12 sec.
 			// Implemented in dancing_rune_weapon.go
+			dk := agent.(DeathKnightAgent).GetDeathKnight()
+			setBonusAura.AttachBooleanToggle(dk.HasT12Tank4pc)
 		},
 	},
 })
-
-func (dk *DeathKnight) hasT12Tank4pc() bool {
-	return dk.HasActiveSetBonus(ItemSetElementiumDeathplateBattlearmor.Name, 4)
-}
 
 // T13 - DPS
 var ItemSetNecroticBoneplateBattlegear = core.NewItemSet(core.ItemSet{
@@ -244,47 +249,18 @@ var ItemSetNecroticBoneplateBattlegear = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Sudden Doom has a 30% chance and Rime has a 60% chance to grant 2 charges when triggered instead of 1.
 			// Handled in talents_frost.go:applyRime() and talents_unholy.go:applySuddenDoom()
-
 			dk := agent.(DeathKnightAgent).GetDeathKnight()
-			dk.OnSpellRegistered(func(spell *core.Spell) {
-				if !spell.Matches(DeathKnightSpellDeathCoil) {
-					return
-				}
-
-				setBonusAura.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
-					if dk.FreezingFogAura != nil {
-						dk.FreezingFogAura.MaxStacks = 2
-					}
-					if dk.SuddenDoomProcAura != nil {
-						dk.SuddenDoomProcAura.MaxStacks = 2
-					}
-				})
-
-				setBonusAura.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
-					if dk.FreezingFogAura != nil {
-						dk.FreezingFogAura.MaxStacks = 0
-					}
-					if dk.SuddenDoomProcAura != nil {
-						dk.SuddenDoomProcAura.MaxStacks = 0
-					}
-				})
-			})
+			setBonusAura.AttachBooleanToggle(dk.HasT13Dps2pc)
 		},
-		4: func(_ core.Agent, _ *core.Aura) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Runic Empowerment has a 25% chance and Runic Corruption has a 40% chance to also grant 710 mastery rating for 12 sec when activated.
 			// Spell: Runic Mastery (id: 105647)
 			// Handled in talents_unholy.go:applyRunicEmpowerementCorruption()
+			dk := agent.(DeathKnightAgent).GetDeathKnight()
+			setBonusAura.AttachBooleanToggle(dk.HasT13Dps4pc)
 		},
 	},
 })
-
-func (dk *DeathKnight) hasT13DPS2pc() bool {
-	return dk.HasActiveSetBonus(ItemSetNecroticBoneplateBattlegear.Name, 2)
-}
-
-func (dk *DeathKnight) hasT13DPS4pc() bool {
-	return dk.HasActiveSetBonus(ItemSetNecroticBoneplateBattlegear.Name, 4)
-}
 
 func init() {
 }

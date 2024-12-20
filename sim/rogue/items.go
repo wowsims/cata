@@ -215,13 +215,12 @@ var Tier13 = core.NewItemSet(core.ItemSet{
 		// Increases the duration of Shadow Dance by 2 sec, Adrenaline Rush by 3 sec, and Vendetta by 9 sec.
 		// Implemented in respective spells
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			rogue := agent.(RogueAgent).GetRogue()
+
+			setBonusAura.AttachBooleanToggle(rogue.Has4pcT13)
 		},
 	},
 })
-
-func (rogue *Rogue) Has4pcT13() bool {
-	return rogue.HasActiveSetBonus(Tier13.Name, 4)
-}
 
 // Pulled from old Shadowcraft/SimC logic.
 // There exists Blizzard sourced numbers, but those were from MoP beta. TBD which is valid.
