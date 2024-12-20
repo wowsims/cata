@@ -268,9 +268,7 @@ func NewRogue(character *core.Character, options *proto.RogueOptions, talents st
 	rogue.PseudoStats.CanParry = true
 
 	maxEnergy := 100.0
-	if rogue.HasSetBonus(CataPVPSet, 4) {
-		maxEnergy += 10
-	}
+
 	if rogue.Spec == proto.Spec_SpecAssassinationRogue &&
 		rogue.GetMHWeapon() != nil &&
 		rogue.GetMHWeapon().WeaponType == proto.WeaponType_WeaponTypeDagger {

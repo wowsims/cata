@@ -11,8 +11,6 @@ func (paladin *Paladin) registerInquisition() {
 	hpMetrics := paladin.NewHolyPowerMetrics(actionId)
 	inquisitionDuration := time.Millisecond * time.Duration(4000*[]float64{1, 1.66, 2.33, 3.0}[paladin.Talents.InquiryOfFaith])
 
-	hasT114pc := paladin.HasSetBonus(ItemSetReinforcedSapphiriumBattleplate, 4)
-
 	inquisitionMod := paladin.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		FloatValue: 0.3,
@@ -54,7 +52,7 @@ func (paladin *Paladin) registerInquisition() {
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			holyPower := paladin.GetHolyPowerValue()
 
-			if hasT114pc {
+			if paladin.hasT11Ret4pc() {
 				holyPower += 1
 			}
 

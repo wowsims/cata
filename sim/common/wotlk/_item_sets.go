@@ -12,8 +12,8 @@ import (
 
 var ItemSetPurifiedShardOfTheGods = core.NewItemSet(core.ItemSet{
 	Name: "Purified Shard of the Gods",
-	Bonuses: map[int32]core.ApplySetItemEffect{
-		2: func(agent core.Agent, _ string) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			agent.GetCharacter().AddStats(stats.Stats{stats.SpellPower: 222})
 			applyShardOfTheGodsDamageProc(agent.GetCharacter(), false)
 			applyShardOfTheGodsHealingProc(agent.GetCharacter(), false)
@@ -23,8 +23,8 @@ var ItemSetPurifiedShardOfTheGods = core.NewItemSet(core.ItemSet{
 
 var ItemSetShinyShardOfTheGods = core.NewItemSet(core.ItemSet{
 	Name: "Shiny Shard of the Gods",
-	Bonuses: map[int32]core.ApplySetItemEffect{
-		2: func(agent core.Agent, _ string) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			agent.GetCharacter().AddStats(stats.Stats{stats.SpellPower: 250})
 			applyShardOfTheGodsDamageProc(agent.GetCharacter(), true)
 			applyShardOfTheGodsHealingProc(agent.GetCharacter(), true)
@@ -121,8 +121,8 @@ func applyShardOfTheGodsHealingProc(character *core.Character, isHeroic bool) {
 func makeUndeadSet(setName string) *core.ItemSet {
 	return core.NewItemSet(core.ItemSet{
 		Name: setName,
-		Bonuses: map[int32]core.ApplySetItemEffect{
-			2: func(agent core.Agent, _ string) {
+		Bonuses: map[int32]core.ApplySetBonus{
+			2: func(agent core.Agent, setBonusAura *core.Aura) {
 				character := agent.GetCharacter()
 				if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
 					character.PseudoStats.DamageDealtMultiplier *= 1.01
@@ -134,7 +134,7 @@ func makeUndeadSet(setName string) *core.ItemSet {
 					character.PseudoStats.DamageDealtMultiplier *= 1.02 / 1.01
 				}
 			},
-			4: func(agent core.Agent, _ string) {
+			4: func(agent core.Agent, setBonusAura *core.Aura) {
 				character := agent.GetCharacter()
 				if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
 					character.PseudoStats.DamageDealtMultiplier *= 1.03 / 1.02

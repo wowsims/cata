@@ -183,6 +183,8 @@ type Paladin struct {
 	JudgementsOfThePureAura *core.Aura
 	GrandCrusaderAura       *core.Aura
 	SacredDutyAura          *core.Aura
+	GoakAura                *core.Aura
+	AncientPowerAura        *core.Aura
 
 	// Cached Gurthalak tentacles
 	gurthalakTentacles []*cata.TentacleOfTheOldOnesPet

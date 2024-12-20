@@ -11,15 +11,15 @@ import (
 // T11
 var ItemSetMaleficRaiment = core.NewItemSet(core.ItemSet{
 	Name: "Shadowflame Regalia",
-	Bonuses: map[int32]core.ApplySetItemEffect{
-		2: func(agent core.Agent, _ string) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			agent.(WarlockAgent).GetWarlock().AddStaticMod(core.SpellModConfig{
 				Kind:       core.SpellMod_CastTime_Pct,
 				ClassMask:  WarlockSpellChaosBolt | WarlockSpellHandOfGuldan | WarlockSpellHaunt,
 				FloatValue: -0.1,
 			})
 		},
-		4: func(agent core.Agent, _ string) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
 			dmgMod := warlock.AddDynamicMod(core.SpellModConfig{
@@ -46,18 +46,17 @@ var ItemSetMaleficRaiment = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			core.MakePermanent(warlock.RegisterAura(core.Aura{
-				Label:           "Item - Warlock T11 4P Bonus",
-				ActionID:        core.ActionID{SpellID: 89935},
-				ActionIDForProc: aura.ActionID,
-				OnPeriodicDamageDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-					if spell.Matches(WarlockSpellImmolateDot|WarlockSpellUnstableAffliction) &&
-						sim.Proc(0.02, "Warlock 4pT11") {
-						aura.Activate(sim)
-						aura.SetStacks(sim, 2)
-					}
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
+				Name:           "Item - Warlock T11 4P Bonus",
+				ActionID:       core.ActionID{SpellID: 89935},
+				ClassSpellMask: WarlockSpellImmolateDot | WarlockSpellUnstableAffliction,
+				Callback:       core.CallbackOnPeriodicDamageDealt,
+				ProcChance:     0.02,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					aura.Activate(sim)
+					aura.SetStacks(sim, 2)
 				},
-			}))
+			})
 		},
 	},
 })
@@ -141,8 +140,8 @@ func (pet *FieryImpPet) registerFlameBlast(warlock *Warlock) {
 
 var ItemSetBalespidersBurningVestments = core.NewItemSet(core.ItemSet{
 	Name: "Balespider's Burning Vestments",
-	Bonuses: map[int32]core.ApplySetItemEffect{
-		2: func(agent core.Agent, _ string) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
 			core.MakePermanent(warlock.RegisterAura(core.Aura{
@@ -160,7 +159,7 @@ var ItemSetBalespidersBurningVestments = core.NewItemSet(core.ItemSet{
 				},
 			}))
 		},
-		4: func(agent core.Agent, _ string) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
 			dmgMod := warlock.AddDynamicMod(core.SpellModConfig{
@@ -181,17 +180,16 @@ var ItemSetBalespidersBurningVestments = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			core.MakePermanent(warlock.RegisterAura(core.Aura{
-				Label:           "Item - Warlock T12 4P Bonus",
-				ActionID:        core.ActionID{SpellID: 99229},
-				ActionIDForProc: aura.ActionID,
-				OnCastComplete: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if spell.Matches(WarlockSpellShadowBolt|WarlockSpellIncinerate|WarlockSpellSoulFire|WarlockSpellDrainSoul) &&
-						sim.Proc(0.05, "Warlock 4pT12") {
-						aura.Activate(sim)
-					}
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
+				Name:           "Item - Warlock T12 4P Bonus",
+				ActionID:       core.ActionID{SpellID: 99229},
+				ClassSpellMask: WarlockSpellShadowBolt | WarlockSpellIncinerate | WarlockSpellSoulFire | WarlockSpellDrainSoul,
+				ProcChance:     0.05,
+				Callback:       core.CallbackOnCastComplete,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					aura.Activate(sim)
 				},
-			}))
+			})
 		},
 	},
 })
@@ -200,13 +198,13 @@ var ItemSetGladiatorsFelshroud = core.NewItemSet(core.ItemSet{
 	ID:   910,
 	Name: "Gladiator's Felshroud",
 
-	Bonuses: map[int32]core.ApplySetItemEffect{
-		2: func(agent core.Agent, _ string) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			agent.(WarlockAgent).GetWarlock().AddStats(stats.Stats{
 				stats.Intellect: 70,
 			})
 		},
-		4: func(agent core.Agent, _ string) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			lock := agent.(WarlockAgent).GetWarlock()
 			lock.AddStats(stats.Stats{
 				stats.Intellect: 90,
@@ -225,8 +223,8 @@ var ItemSetGladiatorsFelshroud = core.NewItemSet(core.ItemSet{
 // T13
 var ItemSetVestmentsOfTheFacelessShroud = core.NewItemSet(core.ItemSet{
 	Name: "Vestments of the Faceless Shroud",
-	Bonuses: map[int32]core.ApplySetItemEffect{
-		2: func(agent core.Agent, _ string) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
 			warlock.AddStaticMod(core.SpellModConfig{
@@ -235,7 +233,7 @@ var ItemSetVestmentsOfTheFacelessShroud = core.NewItemSet(core.ItemSet{
 				ClassMask: WarlockSpellSummonDoomguard | WarlockSpellSummonInfernal,
 			})
 		},
-		4: func(agent core.Agent, _ string) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
 			spDep := warlock.NewDynamicMultiplyStat(stats.SpellPower, 1.1)
@@ -265,8 +263,12 @@ var ItemSetVestmentsOfTheFacelessShroud = core.NewItemSet(core.ItemSet{
 	},
 })
 
+func (warlock *Warlock) has4pcT13() bool {
+	return warlock.HasActiveSetBonus(ItemSetVestmentsOfTheFacelessShroud.Name, 4)
+}
+
 func (warlock *Warlock) Calc2PT13SummonDuration() int32 {
-	has2PT13 := warlock.HasSetBonus(ItemSetVestmentsOfTheFacelessShroud, 2)
+	has2PT13 := warlock.HasActiveSetBonus(ItemSetVestmentsOfTheFacelessShroud.Name, 2)
 	if has2PT13 {
 		return core.TernaryInt32(warlock.Spec == proto.Spec_SpecDemonologyWarlock, 20, 30)
 	} else {

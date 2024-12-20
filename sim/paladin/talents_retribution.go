@@ -339,10 +339,6 @@ func (paladin *Paladin) applyZealotry() {
 	actionId := core.ActionID{SpellID: 85696}
 	duration := time.Second * 20
 
-	if paladin.HasSetBonus(ItemSetBattleplateOfImmolation, 4) {
-		duration += time.Second * 15
-	}
-
 	paladin.ZealotryAura = paladin.RegisterAura(core.Aura{
 		Label:    "Zealotry" + paladin.Label,
 		ActionID: actionId,

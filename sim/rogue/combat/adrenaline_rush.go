@@ -18,11 +18,15 @@ func (comRogue *CombatRogue) registerAdrenalineRushCD() {
 	speedBonus := 1.2
 	inverseBonus := 1 / speedBonus
 
+	getDuration := func() time.Duration {
+		return core.TernaryDuration(comRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfAdrenalineRush), time.Second*20, time.Second*15) +
+			core.TernaryDuration(comRogue.Has4pcT13(), time.Second*3, 0)
+	}
+
 	comRogue.AdrenalineRushAura = comRogue.RegisterAura(core.Aura{
 		Label:    "Adrenaline Rush",
 		ActionID: AdrenalineRushActionID,
-		Duration: core.TernaryDuration(comRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfAdrenalineRush), time.Second*20, time.Second*15) +
-			core.TernaryDuration(comRogue.HasSetBonus(rogue.Tier13, 4), time.Second*3, 0),
+		Duration: getDuration(),
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			comRogue.ApplyAdditiveEnergyRegenBonus(sim, 1.0)
 			comRogue.MultiplyMeleeSpeed(sim, speedBonus)
@@ -50,6 +54,7 @@ func (comRogue *CombatRogue) registerAdrenalineRushCD() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			comRogue.BreakStealth(sim)
+			comRogue.AdrenalineRushAura.Duration = getDuration()
 			comRogue.AdrenalineRushAura.Activate(sim)
 		},
 	})

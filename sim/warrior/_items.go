@@ -13,11 +13,11 @@ import (
 
 var ItemSetOnslaughtArmor = core.NewItemSet(core.ItemSet{
 	Name: "Onslaught Armor",
-	Bonuses: map[int32]core.ApplySetItemEffect{
-		2: func(agent core.Agent, _ string) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Increases the health bonus from your Commanding Shout ability by 170.
 		},
-		4: func(agent core.Agent, _ string) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Increases the damage of your Shield Slam ability by 10%.
 			// Handled in shield_slam.go.
 		},
@@ -26,11 +26,11 @@ var ItemSetOnslaughtArmor = core.NewItemSet(core.ItemSet{
 
 var ItemSetOnslaughtBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Onslaught Battlegear",
-	Bonuses: map[int32]core.ApplySetItemEffect{
-		2: func(agent core.Agent, _ string) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Reduces the rage cost of your Execute ability by 3.
 		},
-		4: func(agent core.Agent, _ string) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Increases the damage of your Mortal Strike and Bloodthirst abilities by 5%.
 			// Handled in bloodthirst.go and mortal_strike.go.
 		},
@@ -43,14 +43,14 @@ var ItemSetOnslaughtBattlegear = core.NewItemSet(core.ItemSet{
 
 var ItemSetGladiatorsBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Gladiator's Battlegear",
-	Bonuses: map[int32]core.ApplySetItemEffect{
-		2: func(agent core.Agent, _ string) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Increases attack power by 50.
 			// +100 resilience rating.
 			agent.GetCharacter().AddStat(stats.Resilience, 100)
 			agent.GetCharacter().AddStat(stats.AttackPower, 50)
 		},
-		4: func(agent core.Agent, _ string) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Reduces the cooldown of your Intercept ability by 5 sec.
 			// Increases attack power by 150.
 			agent.GetCharacter().AddStat(stats.AttackPower, 150)
@@ -60,12 +60,12 @@ var ItemSetGladiatorsBattlegear = core.NewItemSet(core.ItemSet{
 
 var ItemSetDreadnaughtPlate = core.NewItemSet(core.ItemSet{
 	Name: "Dreadnaught Plate",
-	Bonuses: map[int32]core.ApplySetItemEffect{
-		2: func(agent core.Agent, _ string) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Increases the damage of your Shield Slam ability by 10%.
 			// Handled in shield_slam.go.
 		},
-		4: func(agent core.Agent, _ string) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Increases the duration of Shield Wall by 3 seconds.
 			// NYI
 		},
@@ -74,12 +74,12 @@ var ItemSetDreadnaughtPlate = core.NewItemSet(core.ItemSet{
 
 var ItemSetSiegebreakerPlate = core.NewItemSet(core.ItemSet{
 	Name: "Siegebreaker Plate",
-	Bonuses: map[int32]core.ApplySetItemEffect{
-		2: func(agent core.Agent, _ string) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Increases the critical strike chance of Devastate by 10%.
 			// Handled in devastate.go
 		},
-		4: func(agent core.Agent, _ string) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Shield Block grants 10% magic DR
 			// NYI
 		},
@@ -89,15 +89,15 @@ var ItemSetSiegebreakerPlate = core.NewItemSet(core.ItemSet{
 var ItemSetWrynnsPlate = core.NewItemSet(core.ItemSet{
 	Name:            "Wrynn's Plate",
 	AlternativeName: "Hellscream's Plate",
-	Bonuses: map[int32]core.ApplySetItemEffect{
-		2: func(agent core.Agent, _ string) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Decreases the cooldown on Taunt by 2sec
 			// NYI
 
 			// Increases damage done by Devastate by 5%
 			// Handled in devastate.go
 		},
-		4: func(agent core.Agent, _ string) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Decreases the cooldown of Shield Block by 10 sec
 			// NYI
 		},
@@ -106,12 +106,12 @@ var ItemSetWrynnsPlate = core.NewItemSet(core.ItemSet{
 
 var ItemSetYmirjarLordsPlate = core.NewItemSet(core.ItemSet{
 	Name: "Ymirjar Lord's Plate",
-	Bonuses: map[int32]core.ApplySetItemEffect{
-		2: func(agent core.Agent, _ string) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Shield Slam and Shockwave deal 20% increased damage
 			// Handled in shield_slam.go and shockwave.go
 		},
-		4: func(agent core.Agent, _ string) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Bloodrage no longer costs health to use, and now causes you to absorb damage equal to 20% max HP
 			// NYI
 		},
@@ -120,11 +120,11 @@ var ItemSetYmirjarLordsPlate = core.NewItemSet(core.ItemSet{
 
 var ItemSetDreadnaughtBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Dreadnaught Battlegear",
-	Bonuses: map[int32]core.ApplySetItemEffect{
-		2: func(agent core.Agent, _ string) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Increases the damage of your Slam by 10%.
 		},
-		4: func(agent core.Agent, _ string) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Your Bleed periodic effects have a chance to make your next ability cost 5 less rage.
 			warrior := agent.(WarriorAgent).GetWarrior()
 			rageMetrics := warrior.NewRageMetrics(core.ActionID{SpellID: 61571})
@@ -174,8 +174,8 @@ var ItemSetDreadnaughtBattlegear = core.NewItemSet(core.ItemSet{
 
 var ItemSetSiegebreakerBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Siegebreaker Battlegear",
-	Bonuses: map[int32]core.ApplySetItemEffect{
-		2: func(agent core.Agent, _ string) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Heroic Strike and Slam critical strikes have a chance to grant you 150 haste rating for 5 sec.
 			warrior := agent.(WarriorAgent).GetWarrior()
 			procAura := warrior.RegisterAura(core.Aura{
@@ -209,7 +209,7 @@ var ItemSetSiegebreakerBattlegear = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		4: func(agent core.Agent, _ string) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Increases the critical strike chance of Mortal Strike and Bloodthirst by 10%.
 			// Handled in bloodthirst.go and mortal_strike.go.
 		},
@@ -219,12 +219,12 @@ var ItemSetSiegebreakerBattlegear = core.NewItemSet(core.ItemSet{
 var ItemSetWrynnsBattlegear = core.NewItemSet(core.ItemSet{
 	Name:            "Wrynn's Battlegear",
 	AlternativeName: "Hellscream's Battlegear",
-	Bonuses: map[int32]core.ApplySetItemEffect{
-		2: func(agent core.Agent, _ string) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Berserker Stance grants an additional 2% critical strike chance, and Battle Stance grants an additional 6% armor penetration.
 			// Handled in stances.go.
 		},
-		4: func(agent core.Agent, _ string) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Increases the critical strike chance of your Slam and Heroic Strike abilities by 5%.
 			// Handled in slam.go and heroic_strike_cleave.go.
 		},
@@ -233,8 +233,8 @@ var ItemSetWrynnsBattlegear = core.NewItemSet(core.ItemSet{
 
 var ItemSetYmirjarLordsBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Ymirjar Lord's Battlegear",
-	Bonuses: map[int32]core.ApplySetItemEffect{
-		2: func(agent core.Agent, _ string) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// When your Deep Wounds ability deals damage you have a 3% chance to gain 16% attack power for 10 sec.
 			warrior := agent.(WarriorAgent).GetWarrior()
 			var bonusAP float64
@@ -267,7 +267,7 @@ var ItemSetYmirjarLordsBattlegear = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		4: func(agent core.Agent, _ string) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			// You have a 20% chance for your Bloodsurge and Sudden Death talents to grant 2 charges of their effect instead of 1,
 			// reduce the global cooldown on Execute or Slam by 0.5 sec, and for the duration of the effect to be increased by 100%.
 

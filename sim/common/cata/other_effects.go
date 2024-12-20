@@ -1380,9 +1380,10 @@ type IgniteConfig struct {
 	ProcTrigger        core.ProcTrigger // Ignores the Handler field and creates a custom one, but uses all others.
 	DamageCalculator   IgniteDamageCalculator
 	IncludeAuraDelay   bool // "munching" and "free roll-over" interactions
+	SetBonusAura       *core.Aura
 }
 
-func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) (*core.Spell, *core.Aura) {
+func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 	spellFlags := core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete
 
 	if config.DisableCastMetrics {
@@ -1489,6 +1490,11 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) (*core.Spell, *c
 		}
 	}
 
-	procTriggerAura := core.MakeProcTriggerAura(unit, procTrigger)
-	return igniteSpell, procTriggerAura
+	if config.SetBonusAura != nil {
+		config.SetBonusAura.AttachProcTrigger(procTrigger)
+	} else {
+		core.MakeProcTriggerAura(unit, procTrigger)
+	}
+
+	return igniteSpell
 }
