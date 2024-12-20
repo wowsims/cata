@@ -24,7 +24,12 @@ var ItemSetTidefury = core.NewItemSet(core.ItemSet{
 				setBonusAura.AttachStatBuff(stats.MP5, 3)
 			}
 
-			setBonusAura.AttachBooleanToggle(shaman.HasDungeonSet3)
+			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				shaman.HasDungeonSet3 = true
+			})
+			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				shaman.HasDungeonSet3 = false
+			})
 		},
 	},
 })
@@ -156,7 +161,12 @@ var ItemSetVolcanicRegalia = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			setBonusAura.AttachBooleanToggle(shaman.HasT12Ele4pc)
+			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				shaman.HasT12Ele4pc = true
+			})
+			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				shaman.HasT12Ele4pc = false
+			})
 		},
 	},
 })
@@ -322,7 +332,12 @@ var ItemSetVolcanicBattlegear = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Implemented in lavalash.go
 			shaman := agent.(ShamanAgent).GetShaman()
-			setBonusAura.AttachBooleanToggle(shaman.HasT12Enh2pc)
+			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				shaman.HasT12Enh2pc = true
+			})
+			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				shaman.HasT12Enh2pc = false
+			})
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			shaman := agent.(ShamanAgent).GetShaman()

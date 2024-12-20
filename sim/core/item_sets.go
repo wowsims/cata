@@ -294,18 +294,3 @@ func (setBonusTracker *Aura) AttachStatBuff(stat stats.Stat, value float64) {
 	statsToAdd[stat] = value
 	setBonusTracker.AttachStatsBuff(statsToAdd)
 }
-
-// Attaches a Boolean to the set bonus
-func (setBonusTracker *Aura) AttachBooleanToggle(toggleArg bool) {
-	setBonusTracker.ApplyOnGain(func(aura *Aura, sim *Simulation) {
-		toggleArg = true
-	})
-
-	setBonusTracker.ApplyOnExpire(func(aura *Aura, sim *Simulation) {
-		toggleArg = false
-	})
-
-	if setBonusTracker.IsActive() {
-		toggleArg = true
-	}
-}

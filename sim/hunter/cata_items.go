@@ -114,7 +114,13 @@ var ItemSetWyrmstalkerBattleGear = core.NewItemSet(core.ItemSet{
 				FloatValue: 0.1,
 				ClassMask:  HunterSpellSteadyShot,
 			})
-			setBonusAura.AttachBooleanToggle(hunter.Has2pcT13)
+
+			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				hunter.Has2pcT13 = true
+			})
+			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				hunter.Has2pcT13 = false
+			})
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			hunter := agent.(HunterAgent).GetHunter()

@@ -68,7 +68,12 @@ var ItemSetFirehawkRobesOfConflagration = core.NewItemSet(core.ItemSet{
 				mage.baseHotStreakProcChance -= .30
 			})
 
-			setBonusAura.AttachBooleanToggle(mage.Has4pcT12)
+			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				mage.Has4pcT12 = true
+			})
+			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				mage.Has4pcT12 = false
+			})
 			setBonusAura.ExposeToAPL(99064)
 		},
 	},

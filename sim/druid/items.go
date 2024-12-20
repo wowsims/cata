@@ -15,7 +15,12 @@ var ItemSetStormridersBattlegarb = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Implemented in rake.go and lacerate.go
 			druid := agent.(DruidAgent).GetDruid()
-			setBonusAura.AttachBooleanToggle(druid.HasT11Feral2pBonus)
+			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				druid.HasT11Feral2pBonus = true
+			})
+			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				druid.HasT11Feral2pBonus = false
+			})
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			druid := agent.(DruidAgent).GetDruid()
@@ -42,7 +47,12 @@ var ItemSetStormridersBattlegarb = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			setBonusAura.AttachBooleanToggle(druid.HasT11Feral4pBonus)
+			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				druid.HasT11Feral4pBonus = true
+			})
+			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				druid.HasT11Feral4pBonus = false
+			})
 		},
 	},
 })
@@ -135,6 +145,13 @@ var ItemSetObsidianArborweaveBattlegarb = core.NewItemSet(core.ItemSet{
 			// Full implementation in berserk.go and barkskin.go
 			druid := agent.(DruidAgent).GetDruid()
 
+			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				druid.HasT12Feral4pBonus = true
+			})
+			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				druid.HasT12Feral4pBonus = false
+			})
+
 			if !druid.InForm(Bear) {
 				return
 			}
@@ -152,7 +169,6 @@ var ItemSetObsidianArborweaveBattlegarb = core.NewItemSet(core.ItemSet{
 					druid.PseudoStats.BaseDodgeChance -= 0.1
 				},
 			})
-			setBonusAura.AttachBooleanToggle(druid.HasT12Feral4pBonus)
 		},
 	},
 })

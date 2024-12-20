@@ -144,20 +144,16 @@ var ItemSetBalespidersBurningVestments = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
-			core.MakePermanent(warlock.RegisterAura(core.Aura{
-				Label:    "Item - Warlock T12 2P Bonus",
-				ActionID: core.ActionID{SpellID: 99220},
-				Icd: &core.Cooldown{
-					Timer:    warlock.NewTimer(),
-					Duration: 45 * time.Second,
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
+				Name:       "Item - Warlock T12 2P Bonus",
+				ActionID:   core.ActionID{SpellID: 99220},
+				ProcChance: 0.05,
+				ICD:        45 * time.Second,
+				Callback:   core.CallbackOnPeriodicDamageDealt,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					warlock.FieryImp.EnableWithTimeout(sim, warlock.FieryImp, 15*time.Second)
 				},
-				OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-					if aura.Icd.IsReady(sim) && sim.Proc(0.05, "Warlock 2pT12") {
-						warlock.FieryImp.EnableWithTimeout(sim, warlock.FieryImp, 15*time.Second)
-						aura.Icd.Use(sim)
-					}
-				},
-			}))
+			})
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			warlock := agent.(WarlockAgent).GetWarlock()
@@ -232,7 +228,13 @@ var ItemSetVestmentsOfTheFacelessShroud = core.NewItemSet(core.ItemSet{
 				TimeValue: -time.Minute * 4,
 				ClassMask: WarlockSpellSummonDoomguard | WarlockSpellSummonInfernal,
 			})
-			setBonusAura.AttachBooleanToggle(warlock.Has2pcT13)
+
+			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				warlock.Has2pcT13 = true
+			})
+			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				warlock.Has2pcT13 = false
+			})
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			warlock := agent.(WarlockAgent).GetWarlock()
@@ -250,18 +252,22 @@ var ItemSetVestmentsOfTheFacelessShroud = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			core.MakePermanent(warlock.RegisterAura(core.Aura{
-				Label:           "Item - Warlock T13 4P Bonus",
-				ActionID:        core.ActionID{SpellID: 105787},
-				ActionIDForProc: aura.ActionID,
-				OnCastComplete: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if spell.Matches(WarlockSpellSoulBurn) {
-						aura.Activate(sim)
-					}
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
+				Name:           "Item - Warlock T13 4P Bonus",
+				ActionID:       core.ActionID{SpellID: 105787},
+				Callback:       core.CallbackOnCastComplete,
+				ClassSpellMask: WarlockSpellShadowBurn,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					aura.Activate(sim)
 				},
-			}))
+			})
 
-			setBonusAura.AttachBooleanToggle(warlock.Has4pcT13)
+			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				warlock.Has4pcT13 = true
+			})
+			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				warlock.Has4pcT13 = false
+			})
 		},
 	},
 })

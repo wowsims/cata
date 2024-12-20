@@ -217,7 +217,12 @@ var Tier13 = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			rogue := agent.(RogueAgent).GetRogue()
 
-			setBonusAura.AttachBooleanToggle(rogue.Has4pcT13)
+			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				rogue.Has4pcT13 = true
+			})
+			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				rogue.Has4pcT13 = false
+			})
 		},
 	},
 })

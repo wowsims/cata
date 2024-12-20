@@ -237,7 +237,12 @@ var ItemSetElementiumDeathplateBattlearmor = core.NewItemSet(core.ItemSet{
 			// When your Dancing Rune Weapon expires, you gain 15% additional parry chance for 12 sec.
 			// Implemented in dancing_rune_weapon.go
 			dk := agent.(DeathKnightAgent).GetDeathKnight()
-			setBonusAura.AttachBooleanToggle(dk.HasT12Tank4pc)
+			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				dk.HasT12Tank4pc = true
+			})
+			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				dk.HasT12Tank4pc = false
+			})
 		},
 	},
 })
@@ -250,14 +255,24 @@ var ItemSetNecroticBoneplateBattlegear = core.NewItemSet(core.ItemSet{
 			// Sudden Doom has a 30% chance and Rime has a 60% chance to grant 2 charges when triggered instead of 1.
 			// Handled in talents_frost.go:applyRime() and talents_unholy.go:applySuddenDoom()
 			dk := agent.(DeathKnightAgent).GetDeathKnight()
-			setBonusAura.AttachBooleanToggle(dk.HasT13Dps2pc)
+			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				dk.HasT13Dps2pc = true
+			})
+			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				dk.HasT13Dps2pc = false
+			})
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Runic Empowerment has a 25% chance and Runic Corruption has a 40% chance to also grant 710 mastery rating for 12 sec when activated.
 			// Spell: Runic Mastery (id: 105647)
 			// Handled in talents_unholy.go:applyRunicEmpowerementCorruption()
 			dk := agent.(DeathKnightAgent).GetDeathKnight()
-			setBonusAura.AttachBooleanToggle(dk.HasT13Dps4pc)
+			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				dk.HasT13Dps4pc = true
+			})
+			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				dk.HasT13Dps4pc = false
+			})
 		},
 	},
 })
