@@ -474,7 +474,7 @@ export function valueListFieldConfig(field: string): AplHelpers.APLPickerBuilder
 					index: number,
 					config: ListItemPickerConfig<Player<any>, APLValue | undefined>,
 				) => new APLValuePicker(parent, player, config),
-				allowedActions: ['create', 'delete'],
+				allowedActions: ['copy', 'create', 'delete', 'move'],
 				actions: {
 					create: {
 						useIcon: true,

@@ -206,6 +206,11 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 		const item: ItemPickerPair<ItemType> = { elem: itemContainer, picker: itemPicker, idx: index };
 
 		if (this.actionEnabled('move')) {
+			itemContainer.classList.add('draggable');
+			if (this.config.itemLabel) {
+				itemContainer.classList.add(this.config.itemLabel.toLowerCase().replace(' ', '-'));
+			}
+
 			const moveButton = ListPicker.makeActionElem('list-picker-item-move', 'fa-arrows-up-down');
 			itemHeader.appendChild(moveButton);
 
@@ -225,11 +230,42 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 				moveButtonTooltip?.destroy();
 			});
 
-			moveButton.draggable = true;
 			moveButton.addEventListener(
+				'mouseenter',
+				() => {
+					moveButton.classList.add('hover');
+				},
+				{ signal: this.signal },
+			);
+
+			moveButton.addEventListener(
+				'mouseleave',
+				() => {
+					moveButton.classList.remove('hover');
+				},
+				{ signal: this.signal },
+			);
+
+			moveButton.addEventListener(
+				'mousedown',
+				() => {
+					itemContainer.setAttribute('draggable', 'true');
+				},
+				{ signal: this.signal },
+			);
+
+			moveButton.addEventListener(
+				'mouseup',
+				() => {
+					itemContainer.removeAttribute('draggable');
+				},
+				{ signal: this.signal },
+			);
+
+			itemContainer.addEventListener(
 				'dragstart',
 				event => {
-					if (event.target == moveButton) {
+					if (event.target == itemContainer) {
 						event.dataTransfer!.dropEffect = 'move';
 						event.dataTransfer!.effectAllowed = 'move';
 						itemContainer.classList.add('dragfrom');
@@ -246,10 +282,14 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 			itemContainer.addEventListener(
 				'dragenter',
 				event => {
-					if (!curDragData || curDragData.listPicker != this) {
+					if (
+						!curDragData ||
+						curDragData.listPicker.config.itemLabel !== this.config.itemLabel ||
+						(this.config.itemLabel === 'Action' && curDragData.listPicker !== this)
+					) {
 						return;
 					}
-					event.preventDefault();
+					event.stopPropagation();
 					dragEnterCounter++;
 					itemContainer.classList.add('dragto');
 				},
@@ -259,7 +299,11 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 			itemContainer.addEventListener(
 				'dragleave',
 				event => {
-					if (!curDragData || curDragData.listPicker != this) {
+					if (
+						!curDragData ||
+						curDragData.listPicker.config.itemLabel !== this.config.itemLabel ||
+						(this.config.itemLabel === 'Action' && curDragData.listPicker !== this)
+					) {
 						return;
 					}
 					event.preventDefault();
@@ -274,10 +318,39 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 			itemContainer.addEventListener(
 				'dragover',
 				event => {
-					if (!curDragData || curDragData.listPicker != this) {
+					if (!curDragData || curDragData.listPicker.config.itemLabel !== this.config.itemLabel) {
 						return;
 					}
+					if (this.config.itemLabel === 'Action' && curDragData.listPicker !== this) {
+						event.dataTransfer!.dropEffect = 'none';
+						return;
+					}
+					event.dataTransfer!.dropEffect = 'move';
+					event.stopPropagation();
 					event.preventDefault();
+				},
+				{ signal: this.signal },
+			);
+
+			itemContainer.addEventListener(
+				'dragend',
+				event => {
+					if (
+						!curDragData ||
+						curDragData.listPicker.config.itemLabel !== this.config.itemLabel ||
+						(this.config.itemLabel === 'Action' && curDragData.listPicker !== this)
+					) {
+						return;
+					}
+					event.stopPropagation();
+					itemContainer.removeAttribute('draggable');
+					curDragData.item.elem.removeAttribute('draggable');
+					curDragData.item.elem.classList.remove('dragfrom');
+					[...document.querySelectorAll('.dragto,.hover')].forEach(elem => {
+						elem.classList.remove('dragto');
+						elem.classList.remove('hover');
+					});
+					curDragData = null;
 				},
 				{ signal: this.signal },
 			);
@@ -285,19 +358,33 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 			itemContainer.addEventListener(
 				'drop',
 				event => {
-					if (!curDragData || curDragData.listPicker != this) {
+					if (!curDragData || curDragData.listPicker.config.itemLabel !== this.config.itemLabel) {
 						return;
 					}
-					event.preventDefault();
-					dragEnterCounter = 0;
-					itemContainer.classList.remove('dragto');
+					event.stopPropagation();
+					itemContainer.removeAttribute('draggable');
+					curDragData.item.elem.removeAttribute('draggable');
 					curDragData.item.elem.classList.remove('dragfrom');
+					[...document.querySelectorAll('.dragto,.hover')].forEach(elem => {
+						elem.classList.remove('dragto');
+						elem.classList.remove('hover');
+					});
 
 					const srcIdx = curDragData.item.idx;
 					const dstIdx = index;
 					const newList = this.config.getValue(this.modObject);
-					const arrElem = newList[srcIdx];
-					newList.splice(srcIdx, 1);
+					let arrElem;
+
+					if (curDragData.listPicker !== this) {
+						const oldList = curDragData.listPicker.config.getValue(curDragData.listPicker.modObject);
+						arrElem = oldList[srcIdx];
+						oldList.splice(srcIdx, 1);
+						curDragData.listPicker.config.setValue(TypedEvent.nextEventID(), curDragData.listPicker.modObject, oldList);
+					} else {
+						arrElem = newList[srcIdx];
+						newList.splice(srcIdx, 1);
+					}
+
 					newList.splice(dstIdx, 0, arrElem);
 					this.config.setValue(TypedEvent.nextEventID(), this.modObject, newList);
 
@@ -326,6 +413,22 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 				{ signal: this.signal },
 			);
 			this.addOnDisposeCallback(() => copyButtonTooltip?.destroy());
+
+			copyButton.addEventListener(
+				'mouseenter',
+				() => {
+					copyButton.classList.add('hover');
+				},
+				{ signal: this.signal },
+			);
+
+			copyButton.addEventListener(
+				'mouseleave',
+				() => {
+					copyButton.classList.remove('hover');
+				},
+				{ signal: this.signal },
+			);
 		}
 
 		if (this.actionEnabled('delete')) {
@@ -350,6 +453,22 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 					{ signal: this.signal },
 				);
 				this.addOnDisposeCallback(() => deleteButtonTooltip?.destroy());
+
+				deleteButton.addEventListener(
+					'mouseenter',
+					() => {
+						deleteButton.classList.add('hover');
+					},
+					{ signal: this.signal },
+				);
+
+				deleteButton.addEventListener(
+					'mouseleave',
+					() => {
+						deleteButton.classList.remove('hover');
+					},
+					{ signal: this.signal },
+				);
 			}
 		}
 
