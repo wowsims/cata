@@ -231,7 +231,7 @@ func (dk *DeathKnight) applyKillingMachine() {
 		},
 	})
 
-	dk.ItemSwap.RegisterPPMEffectWithCustomProcMask(core.ProcMaskMeleeMH, ppm, triggerAura.Ppmm)
+	dk.ItemSwap.RegisterPPMEffectWithCustomProcMask(core.ProcMaskMeleeMH, ppm, triggerAura.Ppmm, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
 }
 
 func (dk *DeathKnight) applyMightOfTheFrozenWastes() {

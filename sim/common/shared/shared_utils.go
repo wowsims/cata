@@ -475,7 +475,7 @@ func factory_EnchantStatBonusEffect(config EnchantProcStatBonusEffect, extraSpel
 		}
 
 		if config.PPM != 0 {
-			character.ItemSwap.RegisterPPMEffect(config.EnchantID, config.PPM, triggerAura.Ppmm, triggerAura)
+			character.ItemSwap.RegisterPPMEffect(config.EnchantID, config.PPM, triggerAura.Ppmm, triggerAura, config.Slots)
 		} else {
 			character.ItemSwap.RegisterEnchantProc(config.EnchantID, triggerAura, config.Slots)
 		}
@@ -535,6 +535,7 @@ const (
 type ProcDamageEffect struct {
 	ItemID  int32
 	SpellID int32
+	Slots   []proto.ItemSlot
 	Trigger core.ProcTrigger
 
 	School  core.SpellSchool
@@ -596,7 +597,13 @@ func NewProcDamageEffect(config ProcDamageEffect) {
 		triggerConfig.Handler = func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
 			damageSpell.Cast(sim, character.CurrentTarget)
 		}
-		core.MakeProcTriggerAura(&character.Unit, triggerConfig)
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, triggerConfig)
+
+		if config.Trigger.PPM != 0 {
+			character.ItemSwap.RegisterPPMItem(config.ItemID, config.Trigger.PPM, triggerAura.Ppmm, triggerAura, config.Slots)
+		} else {
+			character.ItemSwap.RegisterEnchantProc(config.ItemID, triggerAura, config.Slots)
+		}
 	})
 }
 

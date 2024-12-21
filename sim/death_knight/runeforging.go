@@ -101,7 +101,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEffect(3368, 2.0, aura.Ppmm, aura)
+		character.ItemSwap.RegisterPPMEffect(3368, 2.0, aura.Ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
 	})
 
 	// Rune of Cinderglacier
@@ -119,6 +119,8 @@ func init() {
 			ClassMask:  DeathKnightSpellsAll,
 			School:     core.SpellSchoolShadow | core.SpellSchoolFrost,
 		})
+
+		procMask := character.GetProcMaskForEnchant(3369)
 
 		cinderAura := character.GetOrRegisterAura(core.Aura{
 			ActionID:  core.ActionID{SpellID: 53386},
@@ -154,7 +156,7 @@ func init() {
 			Name:     "Rune of Cinderglacier",
 			Callback: core.CallbackOnSpellHitDealt,
 			Outcome:  core.OutcomeLanded,
-			ProcMask: character.GetProcMaskForEnchant(3369),
+			ProcMask: procMask,
 			PPM:      1.0,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				cinderAura.Activate(sim)
@@ -162,7 +164,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEffect(3369, 1.0, aura.Ppmm, aura)
+		character.ItemSwap.RegisterPPMEffect(3369, 1.0, aura.Ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
 	})
 
 	// Rune of Razorice

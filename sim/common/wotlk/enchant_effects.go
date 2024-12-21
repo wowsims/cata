@@ -54,7 +54,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEffect(3251, 4.0, &ppmm, aura)
+		character.ItemSwap.RegisterPPMEffect(3251, 4.0, &ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
 	})
 
 	// Enchant: 3239, Spell: 44525 - Icebreaker
@@ -95,7 +95,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEffect(3239, 4.0, &ppmm, aura)
+		character.ItemSwap.RegisterPPMEffect(3239, 4.0, &ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
 	})
 
 	// Enchant: 3607, Spell: 55076, Item: 41146 - Sun Scope
@@ -184,7 +184,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEffect(3789, 1.0, &ppmm, aura)
+		character.ItemSwap.RegisterPPMEffect(3789, 1.0, &ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
 	})
 
 	// TODO: These are stand-in values without any real reference.
@@ -213,7 +213,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEffect(3241, 3.0, &ppmm, aura)
+		character.ItemSwap.RegisterPPMEffect(3241, 3.0, &ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
 	})
 
 	// Enchant: 3790, Spell: 59630 - Black Magic
