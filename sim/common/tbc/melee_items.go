@@ -22,7 +22,7 @@ func init() {
 	core.NewItemEffect(19019, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetProcMaskForItem(19019)
+		procMask := character.GetDefaultProcMaskForWeaponEffect(19019)
 		ppmm := character.AutoAttacks.NewPPMManager(6.0, procMask)
 
 		procActionID := core.ActionID{SpellID: 21992}
@@ -174,7 +174,7 @@ func init() {
 	core.NewItemEffect(29996, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetProcMaskForItem(29996)
+		procMask := character.GetDefaultProcMaskForWeaponEffect(29996)
 		pppm := character.AutoAttacks.NewPPMManager(1.0, procMask)
 
 		actionID := core.ActionID{ItemID: 29996}
@@ -214,7 +214,7 @@ func init() {
 	core.NewItemEffect(31193, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetProcMaskForItem(31193)
+		procMask := character.GetDefaultProcMaskForWeaponEffect(31193)
 
 		procSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 24585},
@@ -249,7 +249,7 @@ func init() {
 	core.NewItemEffect(32262, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetProcMaskForItem(32262)
+		procMask := character.GetDefaultProcMaskForWeaponEffect(32262)
 		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
 
 		procSpell := character.GetOrRegisterSpell(core.SpellConfig{
@@ -355,7 +355,7 @@ func init() {
 	core.NewItemEffect(12590, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetProcMaskForItem(12590)
+		procMask := character.GetDefaultProcMaskForWeaponEffect(12590)
 		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
 
 		effectAura := character.NewTemporaryStatsAura("Felstriker Proc", core.ActionID{SpellID: 16551}, stats.Stats{stats.PhysicalCritPercent: 100}, time.Second*3)

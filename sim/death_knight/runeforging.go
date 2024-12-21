@@ -75,7 +75,7 @@ func init() {
 			},
 		})
 
-		procMask := character.GetProcMaskForEnchant(3368)
+		procMask := character.GetDefaultProcMaskForWeaponEnchant(3368)
 
 		rfcAura := character.NewTemporaryStatsAuraWrapped("Rune Of The Fallen Crusader Proc", core.ActionID{SpellID: 53365}, stats.Stats{}, time.Second*15, func(aura *core.Aura) {
 			statDep := character.NewDynamicMultiplyStat(stats.Strength, 1.15)
@@ -120,7 +120,7 @@ func init() {
 			School:     core.SpellSchoolShadow | core.SpellSchoolFrost,
 		})
 
-		procMask := character.GetProcMaskForEnchant(3369)
+		procMask := character.GetDefaultProcMaskForWeaponEnchant(3369)
 
 		cinderAura := character.GetOrRegisterAura(core.Aura{
 			ActionID:  core.ActionID{SpellID: 53386},
@@ -235,7 +235,7 @@ func init() {
 			})
 		})
 
-		procMask := character.GetProcMaskForEnchant(3370)
+		procMask := character.GetDefaultProcMaskForWeaponEnchant(3370)
 		mhRazoriceSpell := newRazoriceHitSpell(character, true)
 		ohRazoriceSpell := newRazoriceHitSpell(character, false)
 

@@ -68,7 +68,7 @@ func init() {
 		})
 
 		// TODO: Verify PPM (currently based on elitist + simcraft)
-		procMask := character.GetProcMaskForEnchant(4067)
+		procMask := character.GetDefaultProcMaskForWeaponEnchant(4067)
 		ppm := 5.0
 		ppmm := character.AutoAttacks.NewPPMManager(ppm, procMask)
 		meleeIcd := &core.Cooldown{
@@ -140,7 +140,7 @@ func init() {
 		// no verified PPM but silence effect + increased damage
 		// will result in significant lower PPM
 		// TODO: Verify PPM
-		procMask := character.GetProcMaskForEnchant(4074)
+		procMask := character.GetDefaultProcMaskForWeaponEnchant(4074)
 		ppm := 2.0
 		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:     "Elemental Slayer",
@@ -173,7 +173,7 @@ func init() {
 		ohAura := procBuilder("Hurricane Enchant OH", 2)
 		spAura := procBuilder("Hurricane Enchant Spell", 3)
 
-		procMask := character.GetProcMaskForEnchant(4083)
+		procMask := character.GetDefaultProcMaskForWeaponEnchant(4083)
 		ppm := 1.0
 		ppmm := character.AutoAttacks.NewPPMManager(ppm, procMask)
 
@@ -311,7 +311,7 @@ func init() {
 			time.Second*12,
 		)
 
-		procMask := character.GetProcMaskForEnchant(4099)
+		procMask := character.GetDefaultProcMaskForWeaponEnchant(4099)
 		ppm := 1.0
 		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:     "Landslide",

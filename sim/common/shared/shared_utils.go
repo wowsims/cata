@@ -430,7 +430,7 @@ func factory_EnchantStatBonusEffect(config EnchantProcStatBonusEffect, extraSpel
 		procAura := character.NewTemporaryStatsAura(config.Name+" Proc", procID, config.Bonus, config.Duration)
 
 		if config.PPM != 0 && config.ProcMask == core.ProcMaskUnknown {
-			config.ProcMask = character.GetProcMaskForEnchant(config.EnchantID)
+			config.ProcMask = character.GetDefaultProcMaskForWeaponEnchant(config.EnchantID)
 		}
 
 		var procSpell ExtraSpellInfo
@@ -600,7 +600,7 @@ func NewProcDamageEffect(config ProcDamageEffect) {
 		triggerAura := core.MakeProcTriggerAura(&character.Unit, triggerConfig)
 
 		if config.Trigger.PPM != 0 {
-			character.ItemSwap.RegisterPPMItem(config.ItemID, config.Trigger.PPM, triggerAura.Ppmm, triggerAura, config.Slots)
+			character.ItemSwap.RegisterPPMWeaponEffect(config.ItemID, config.Trigger.PPM, triggerAura.Ppmm, triggerAura, config.Slots)
 		} else {
 			character.ItemSwap.RegisterEnchantProc(config.ItemID, triggerAura, config.Slots)
 		}

@@ -598,31 +598,31 @@ func (character *Character) HasRangedWeapon() bool {
 	return character.GetRangedWeapon() != nil
 }
 
-func (character *Character) GetProcMaskForEnchant(effectID int32) ProcMask {
-	return character.getProcMaskFor(func(item *Item) bool {
-		return item.Enchant.EffectID == effectID
+func (character *Character) GetDefaultProcMaskForWeaponEnchant(effectID int32) ProcMask {
+	return character.getDefaultProcMaskFor(func(weapon *Item) bool {
+		return weapon.Enchant.EffectID == effectID
 	})
 }
 
-func (character *Character) GetProcMaskForItem(itemID int32) ProcMask {
-	return character.getProcMaskFor(func(item *Item) bool {
-		return item.ID == itemID
+func (character *Character) GetDefaultProcMaskForWeaponEffect(itemID int32) ProcMask {
+	return character.getDefaultProcMaskFor(func(weapon *Item) bool {
+		return weapon.ID == itemID
 	})
 }
 
 func (character *Character) GetProcMaskForTypes(weaponTypes ...proto.WeaponType) ProcMask {
-	return character.getProcMaskFor(func(weapon *Item) bool {
+	return character.getDefaultProcMaskFor(func(weapon *Item) bool {
 		return weapon != nil && slices.Contains(weaponTypes, weapon.WeaponType)
 	})
 }
 
 func (character *Character) GetProcMaskForTypesAndHand(twohand bool, weaponTypes ...proto.WeaponType) ProcMask {
-	return character.getProcMaskFor(func(weapon *Item) bool {
+	return character.getDefaultProcMaskFor(func(weapon *Item) bool {
 		return weapon != nil && (weapon.HandType == proto.HandType_HandTypeTwoHand) == twohand && slices.Contains(weaponTypes, weapon.WeaponType)
 	})
 }
 
-func (character *Character) getProcMaskFor(pred func(item *Item) bool) ProcMask {
+func (character *Character) getDefaultProcMaskFor(pred func(item *Item) bool) ProcMask {
 	mask := ProcMaskUnknown
 	if pred(character.MainHand()) {
 		mask |= ProcMaskMeleeMH
@@ -823,9 +823,6 @@ func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Sta
 		},
 	})
 
-	// If we use ItemSwap we need to be able to toggle the item specialization
-	// However due to dynamic stats only being able to be added after finalize()
-	// we need to maintain 2 stat dependencies to toggle the effect when swapping items
 	if character.ItemSwap.IsEnabled() {
 		character.RegisterItemSwapCallback([]proto.ItemSlot{
 			proto.ItemSlot_ItemSlotHead,

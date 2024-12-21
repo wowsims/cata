@@ -63,7 +63,7 @@ func init() {
 				},
 			})
 
-			procMask := character.GetProcMaskForItem(gurthalakItemID)
+			procMask := character.GetDefaultProcMaskForWeaponEffect(gurthalakItemID)
 			aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:     "Gurthalak Trigger" + labelSuffix,
 				ActionID: core.ActionID{ItemID: gurthalakItemID},
