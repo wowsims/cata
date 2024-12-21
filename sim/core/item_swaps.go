@@ -200,10 +200,7 @@ func (swap *ItemSwap) RegisterActive(itemID int32, slots []proto.ItemSlot) {
 			return
 		}
 		hasItemEquipped := swap.HasItemEquipped(itemID)
-		itemSlot := swap.GetItemFromPossibleSlotsByItemID(itemID, slots)
-		if itemSlot == -1 {
-			return
-		}
+
 		spell := swap.character.GetSpell(ActionID{ItemID: itemID})
 		if spell != nil {
 			aura := character.GetAuraByID(spell.ActionID)
