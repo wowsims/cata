@@ -457,7 +457,13 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 					cleanupAfterDrag();
 
 					const srcIdx = curDragData.item.idx;
-					const dstIdx = index;
+					let dstIdx = index;
+					
+					const targetRect = itemContainer.getBoundingClientRect();
+					if (event.clientY > targetRect.top + targetRect.height / 2) {
+						dstIdx++;
+					}
+					
 					const newList = this.config.getValue(this.modObject);
 					let arrElem;
 
