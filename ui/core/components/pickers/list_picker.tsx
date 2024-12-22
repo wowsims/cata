@@ -330,7 +330,7 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 				event => {
 					if (event.target == moveButton) {
 						const popoverRect = popover.getBoundingClientRect();
-						event.dataTransfer!.setDragImage(itemContainer, popoverRect.width, popoverRect.height / 2);
+						event.dataTransfer!.setDragImage(itemContainer, 0, popoverRect.height / 2);
 						event.dataTransfer!.dropEffect = 'move';
 						event.dataTransfer!.effectAllowed = 'move';
 						itemContainer.classList.add('dragfrom');
