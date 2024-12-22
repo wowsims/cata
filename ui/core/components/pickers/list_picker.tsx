@@ -163,6 +163,24 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 	private actionEnabled(action: ListItemAction): boolean {
 		return !this.config.allowedActions || this.config.allowedActions.includes(action);
 	}
+	
+	private addHoverListeners(button: HTMLButtonElement) {
+		button.addEventListener(
+			'mouseenter',
+			() => {
+				button.classList.add('hover');
+			},
+			{ signal: this.signal },
+		);
+		
+		button.addEventListener(
+			'mouseleave',
+			() => {
+				button.classList.remove('hover');
+			},
+			{ signal: this.signal },
+		);
+	}
 
 	private addNewPicker() {
 		const index = this.itemPickerPairs.length;
@@ -229,22 +247,8 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 			this.addOnDisposeCallback(() => {
 				moveButtonTooltip?.destroy();
 			});
-
-			moveButton.addEventListener(
-				'mouseenter',
-				() => {
-					moveButton.classList.add('hover');
-				},
-				{ signal: this.signal },
-			);
-
-			moveButton.addEventListener(
-				'mouseleave',
-				() => {
-					moveButton.classList.remove('hover');
-				},
-				{ signal: this.signal },
-			);
+			
+			this.addHoverListeners(moveButton);
 
 			moveButton.addEventListener(
 				'mousedown',
@@ -277,16 +281,18 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 				},
 				{ signal: this.signal },
 			);
+			
+			const invalidDropTarget = () => {
+				return !curDragData ||
+					curDragData.listPicker.config.itemLabel !== this.config.itemLabel ||
+					(this.config.itemLabel === 'Action' && curDragData.listPicker !== this);
+			};
 
 			let dragEnterCounter = 0;
 			itemContainer.addEventListener(
 				'dragenter',
 				event => {
-					if (
-						!curDragData ||
-						curDragData.listPicker.config.itemLabel !== this.config.itemLabel ||
-						(this.config.itemLabel === 'Action' && curDragData.listPicker !== this)
-					) {
+					if (invalidDropTarget()) {
 						return;
 					}
 					event.stopPropagation();
@@ -299,11 +305,7 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 			itemContainer.addEventListener(
 				'dragleave',
 				event => {
-					if (
-						!curDragData ||
-						curDragData.listPicker.config.itemLabel !== this.config.itemLabel ||
-						(this.config.itemLabel === 'Action' && curDragData.listPicker !== this)
-					) {
+					if (invalidDropTarget()) {
 						return;
 					}
 					event.preventDefault();
@@ -318,11 +320,10 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 			itemContainer.addEventListener(
 				'dragover',
 				event => {
-					if (!curDragData || curDragData.listPicker.config.itemLabel !== this.config.itemLabel) {
-						return;
-					}
-					if (this.config.itemLabel === 'Action' && curDragData.listPicker !== this) {
-						event.dataTransfer!.dropEffect = 'none';
+					if (invalidDropTarget()) {
+						if (curDragData && this.config.itemLabel === 'Action' && curDragData.listPicker !== this) {
+							event.dataTransfer!.dropEffect = 'none';
+						}
 						return;
 					}
 					event.dataTransfer!.dropEffect = 'move';
@@ -331,25 +332,28 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 				},
 				{ signal: this.signal },
 			);
+	
+			const cleanupAfterDrag = () => {
+				if (!curDragData) {
+					return;
+				}
+				itemContainer.removeAttribute('draggable');
+				curDragData.item.elem.removeAttribute('draggable');
+				curDragData.item.elem.classList.remove('dragfrom');
+				[...document.querySelectorAll('.dragto,.hover')].forEach(elem => {
+					elem.classList.remove('dragto');
+					elem.classList.remove('hover');
+				});
+			}
 
 			itemContainer.addEventListener(
 				'dragend',
 				event => {
-					if (
-						!curDragData ||
-						curDragData.listPicker.config.itemLabel !== this.config.itemLabel ||
-						(this.config.itemLabel === 'Action' && curDragData.listPicker !== this)
-					) {
+					if (invalidDropTarget()) {
 						return;
 					}
 					event.stopPropagation();
-					itemContainer.removeAttribute('draggable');
-					curDragData.item.elem.removeAttribute('draggable');
-					curDragData.item.elem.classList.remove('dragfrom');
-					[...document.querySelectorAll('.dragto,.hover')].forEach(elem => {
-						elem.classList.remove('dragto');
-						elem.classList.remove('hover');
-					});
+					cleanupAfterDrag();
 					curDragData = null;
 				},
 				{ signal: this.signal },
@@ -362,13 +366,7 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 						return;
 					}
 					event.stopPropagation();
-					itemContainer.removeAttribute('draggable');
-					curDragData.item.elem.removeAttribute('draggable');
-					curDragData.item.elem.classList.remove('dragfrom');
-					[...document.querySelectorAll('.dragto,.hover')].forEach(elem => {
-						elem.classList.remove('dragto');
-						elem.classList.remove('hover');
-					});
+					cleanupAfterDrag();
 
 					const srcIdx = curDragData.item.idx;
 					const dstIdx = index;
@@ -413,22 +411,7 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 				{ signal: this.signal },
 			);
 			this.addOnDisposeCallback(() => copyButtonTooltip?.destroy());
-
-			copyButton.addEventListener(
-				'mouseenter',
-				() => {
-					copyButton.classList.add('hover');
-				},
-				{ signal: this.signal },
-			);
-
-			copyButton.addEventListener(
-				'mouseleave',
-				() => {
-					copyButton.classList.remove('hover');
-				},
-				{ signal: this.signal },
-			);
+			this.addHoverListeners(copyButton);
 		}
 
 		if (this.actionEnabled('delete')) {
@@ -453,22 +436,7 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 					{ signal: this.signal },
 				);
 				this.addOnDisposeCallback(() => deleteButtonTooltip?.destroy());
-
-				deleteButton.addEventListener(
-					'mouseenter',
-					() => {
-						deleteButton.classList.add('hover');
-					},
-					{ signal: this.signal },
-				);
-
-				deleteButton.addEventListener(
-					'mouseleave',
-					() => {
-						deleteButton.classList.remove('hover');
-					},
-					{ signal: this.signal },
-				);
+				this.addHoverListeners(deleteButton);
 			}
 		}
 
