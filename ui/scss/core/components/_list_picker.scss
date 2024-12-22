@@ -20,11 +20,15 @@
 
 		.list-picker-item-container {
 			border: var(--border-default);
+			
+			&.dragfrom {
+				background-color: color-mix(in srgb, var(--bs-body-bg) 80%, transparent);
+				filter: opacity(0.5);
+				cursor: move;
+			}
 
-			&.draggable:has(> .list-picker-item-header .list-picker-item-move.hover),
-			&.draggable.value:has(> .list-picker-item-header .list-picker-item-copy.hover),
-			&.draggable.value:has(> .list-picker-item-header .list-picker-item-delete.hover) {
-				filter: drop-shadow(-1px 1px 1px rgba(255, 255, 255, 0.45)) drop-shadow(1px -1px 1px rgba(255, 255, 255, 0.45));
+			&.draggable:has(> .list-picker-item-header .list-picker-item-popover.hover) {
+				background-color: color-mix(in srgb, var(--bs-primary) 5%, transparent);
 			}
 
 			&:not(:last-child) {
@@ -65,6 +69,19 @@
 
 				.list-picker-item-action {
 					margin-left: var(--spacer-2);
+					
+					&.list-picker-item-move {
+						cursor: move;
+					}
+				}
+
+				.list-picker-item-popover:popover-open {
+					inset: unset;
+					position: relative;
+					background-color: color-mix(in srgb, var(--bs-body-bg) 80%, transparent);
+					border: 1px solid black;
+					border-radius: 5px;
+					padding: 5px 10px;
 				}
 			}
 		}
