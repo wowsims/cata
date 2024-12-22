@@ -163,7 +163,7 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 	private actionEnabled(action: ListItemAction): boolean {
 		return !this.config.allowedActions || this.config.allowedActions.includes(action);
 	}
-	
+
 	private addHoverListeners(button: HTMLButtonElement) {
 		button.addEventListener(
 			'mouseenter',
@@ -172,7 +172,7 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 			},
 			{ signal: this.signal },
 		);
-		
+
 		button.addEventListener(
 			'mouseleave',
 			() => {
@@ -196,13 +196,13 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 
 		const itemHeader = document.createElement('div');
 		itemHeader.classList.add('list-picker-item-header');
-		
+
 		const popover = document.createElement('div');
 		popover.classList.add('list-picker-item-popover');
 		popover.setAttribute('popover', 'auto');
 		itemHeader.appendChild(popover);
 		let hasActions = false;
-		
+
 		if (this.config.inlineMenuBar) {
 			itemContainer.appendChild(itemElem);
 			itemContainer.appendChild(itemHeader);
@@ -304,7 +304,7 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 			this.addOnDisposeCallback(() => {
 				moveButtonTooltip?.destroy();
 			});
-			
+
 			this.addHoverListeners(moveButton);
 
 			moveButton.addEventListener(
@@ -330,7 +330,7 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 				event => {
 					if (event.target == moveButton) {
 						const popoverRect = popover.getBoundingClientRect();
-						event.dataTransfer!.setDragImage(itemContainer, popoverRect.width, popoverRect.height / 2);
+						event.dataTransfer!.setDragImage(itemContainer, 0, popoverRect.height / 2);
 						event.dataTransfer!.dropEffect = 'move';
 						event.dataTransfer!.effectAllowed = 'move';
 						itemContainer.classList.add('dragfrom');
@@ -342,11 +342,33 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 				},
 				{ signal: this.signal },
 			);
-			
-			const invalidDropTarget = () => {
-				return !curDragData ||
-					curDragData.listPicker.config.itemLabel !== this.config.itemLabel ||
-					(this.config.itemLabel === 'Action' && curDragData.listPicker !== this);
+
+			const droppingActionOnOtherList = () => curDragData && this.config.itemLabel === 'Action' && curDragData.listPicker !== this;
+			const targetIsSelf = () => curDragData && curDragData.listPicker === this && curDragData.item.idx === index;
+			const targetIsChild = () => curDragData && curDragData.item.elem.contains(itemContainer);
+
+			const invalidDropTarget = (checkSelf = true, checkForActions = true) => {
+				// Only allow dropping on the same type of list, Value -> Value, Action -> Action
+				if (!curDragData || curDragData.listPicker.config.itemLabel !== this.config.itemLabel) {
+					return true;
+				}
+
+				// Only allow dropping Actions within the same list
+				if (checkForActions && droppingActionOnOtherList()) {
+					return true;
+				}
+
+				// Just skip trying to drop on itself?
+				if (checkSelf && targetIsSelf()) {
+					return true;
+				}
+
+				// Can't drop within itself
+				if (checkSelf && targetIsChild()) {
+					return true;
+				}
+
+				return false;
 			};
 
 			let dragEnterCounter = 0;
@@ -382,9 +404,10 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 				'dragover',
 				event => {
 					if (invalidDropTarget()) {
-						if (curDragData && this.config.itemLabel === 'Action' && curDragData.listPicker !== this) {
+						if (droppingActionOnOtherList() || targetIsSelf()) {
 							event.dataTransfer!.dropEffect = 'none';
 						}
+
 						return;
 					}
 					event.dataTransfer!.dropEffect = 'move';
@@ -393,7 +416,7 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 				},
 				{ signal: this.signal },
 			);
-	
+
 			const cleanupAfterDrag = () => {
 				if (!curDragData) {
 					return;
@@ -405,12 +428,12 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 					elem.classList.remove('dragfrom');
 					elem.classList.remove('dragto');
 				});
-			}
+			};
 
 			itemContainer.addEventListener(
 				'dragend',
 				event => {
-					if (invalidDropTarget()) {
+					if (invalidDropTarget(false)) {
 						return;
 					}
 					event.stopPropagation();
@@ -423,14 +446,24 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 			itemContainer.addEventListener(
 				'drop',
 				event => {
-					if (!curDragData || curDragData.listPicker.config.itemLabel !== this.config.itemLabel) {
+					if (!curDragData || invalidDropTarget(true, false)) {
+						if (targetIsSelf()) {
+							event.stopPropagation();
+							cleanupAfterDrag();
+						}
 						return;
 					}
 					event.stopPropagation();
 					cleanupAfterDrag();
 
 					const srcIdx = curDragData.item.idx;
-					const dstIdx = index;
+					let dstIdx = index;
+					
+					const targetRect = itemContainer.getBoundingClientRect();
+					if (event.clientY > targetRect.top + targetRect.height / 2) {
+						dstIdx++;
+					}
+					
 					const newList = this.config.getValue(this.modObject);
 					let arrElem;
 
@@ -452,9 +485,9 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 				{ signal: this.signal },
 			);
 		}
-		
+
 		if (hasActions) {
-			const actionsButton = ListPicker.makeActionElem('list-picker-item-actions', 'fa-ellipsis')
+			const actionsButton = ListPicker.makeActionElem('list-picker-item-actions', 'fa-ellipsis');
 			itemHeader.appendChild(actionsButton);
 			actionsButton.addEventListener(
 				'mouseover',
@@ -463,20 +496,20 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 					const actionsButtonRect = actionsButton.getBoundingClientRect();
 					const popoverRect = popover.getBoundingClientRect();
 					const diff = (popoverRect.height - actionsButtonRect.height) / 2;
-					popover.style.top = (actionsButtonRect.top - diff) + 'px';
-					popover.style.left = (actionsButtonRect.right - popoverRect.width + 10) + 'px';
-					popover.classList.add('hover')
+					popover.style.top = actionsButtonRect.top - diff + 'px';
+					popover.style.left = actionsButtonRect.right - popoverRect.width + 10 + 'px';
+					popover.classList.add('hover');
 				},
-				{ signal: this.signal }
-			)
+				{ signal: this.signal },
+			);
 			popover.addEventListener(
 				'mouseleave',
 				() => {
 					popover.classList.remove('hover');
 					popover.hidePopover();
 				},
-				{ signal: this.signal }
-			)
+				{ signal: this.signal },
+			);
 		}
 
 		this.itemPickerPairs.push(item);
@@ -500,18 +533,27 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 	}
 
 	static logLevelDisplayData = new Map([
-		[LogLevel.Information, {
-			icon: 'fa-info-circle',
-			header: 'Additional Information&#58;',
-		}],
-		[LogLevel.Warning, {
-			icon: 'fa-exclamation-triangle',
-			header: 'This action has warnings, and might not behave as expected.',
-		}],
-		[LogLevel.Error, {
-			icon: 'fa-exclamation-triangle',
-			header: 'This action has errors, and will not behave as expected.',
-		}],
+		[
+			LogLevel.Information,
+			{
+				icon: 'fa-info-circle',
+				header: 'Additional Information&#58;',
+			},
+		],
+		[
+			LogLevel.Warning,
+			{
+				icon: 'fa-exclamation-triangle',
+				header: 'This action has warnings, and might not behave as expected.',
+			},
+		],
+		[
+			LogLevel.Error,
+			{
+				icon: 'fa-exclamation-triangle',
+				header: 'This action has errors, and will not behave as expected.',
+			},
+		],
 	]);
 
 	static makeListItemValidations(itemHeaderElem: HTMLElement, player: Player<any>, getValidations: (player: Player<any>) => Array<APLValidation>) {
@@ -545,47 +587,46 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 					}),
 				);
 				let maxLogLevel = LogLevel.Undefined;
-				const groupedValidations = formattedValidations.reduce(
-					(groups, curr) => {
-						const logLevel = curr.logLevel;
-						maxLogLevel = Math.max(logLevel, maxLogLevel);
+				const groupedValidations = formattedValidations.reduce((groups, curr) => {
+					const logLevel = curr.logLevel;
+					maxLogLevel = Math.max(logLevel, maxLogLevel);
 
-						const group = groups.get(logLevel)
-						if (group) {
-							group.push(curr.validation);
-						} else {
-							groups.set(logLevel, [curr.validation])
-						}
+					const group = groups.get(logLevel);
+					if (group) {
+						group.push(curr.validation);
+					} else {
+						groups.set(logLevel, [curr.validation]);
+					}
 
-						return groups;
-					},
-					new Map<LogLevel, string[]>(),
-				);
+					return groups;
+				}, new Map<LogLevel, string[]>());
 
 				for (const [_logLevel, displayData] of this.logLevelDisplayData) {
 					iconElem!.classList.remove(displayData.icon);
 				}
 
 				// New icon is set outside loop so log levels can share the same icon without risk of removing each other
-				const newIcon = this.logLevelDisplayData.get(maxLogLevel)?.icon
+				const newIcon = this.logLevelDisplayData.get(maxLogLevel)?.icon;
 				if (newIcon) {
 					iconElem!.classList.add(newIcon);
 				}
 
 				for (const [key, value] of Object.entries(LogLevel)) {
-					validationElem.classList[value === maxLogLevel ? "add" : "remove"](`apl-validation-${key.toLowerCase()}`)
+					validationElem.classList[value === maxLogLevel ? 'add' : 'remove'](`apl-validation-${key.toLowerCase()}`);
 				}
 
-				let content = "";
+				let content = '';
 				for (const [logLevel, validations] of groupedValidations) {
-					content = content + `
+					content =
+						content +
+						`
 						<p>${this.logLevelDisplayData.get(logLevel)?.header}</p>
 						<ul>
 							${validations.map(v => `<li>${v}</li>`).join('')}
 						</ul>
 					`;
-				};
-				validationTooltip.setContent(content)
+				}
+				validationTooltip.setContent(content);
 			}
 		};
 		updateValidations();
