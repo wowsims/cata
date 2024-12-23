@@ -198,7 +198,7 @@ func (dk *DeathKnight) applyKillingMachine() {
 			kmMod.Deactivate()
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ClassSpellMask&(DeathKnightSpellObliterate|DeathKnightSpellFrostStrike) == 0 {
+			if !spell.Matches(DeathKnightSpellObliterate | DeathKnightSpellFrostStrike) {
 				return
 			}
 			if !result.Landed() {
@@ -231,7 +231,7 @@ func (dk *DeathKnight) applyKillingMachine() {
 		},
 	})
 
-	dk.ItemSwap.RegisterPPMEffectWithCustomProcMask(core.ProcMaskMeleeMH, ppm, triggerAura.Ppmm, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
+	dk.ItemSwap.RegisterPPMEffectWithCustomProcMask(core.ProcMaskMeleeMH, ppm, triggerAura.Ppmm, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
 }
 
 func (dk *DeathKnight) applyMightOfTheFrozenWastes() {

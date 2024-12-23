@@ -221,7 +221,7 @@ func (dk *DeathKnight) applyUnholyBlight() {
 }
 
 func (dk *DeathKnight) ebonPlaguebringerDiseaseMultiplier(_ *core.Simulation, spell *core.Spell, _ *core.AttackTable) float64 {
-	return core.TernaryFloat64(spell.ClassSpellMask&DeathKnightSpellDisease > 0, 1.0+0.15*float64(dk.Talents.EbonPlaguebringer), 1.0)
+	return core.TernaryFloat64(spell.Matches(DeathKnightSpellDisease), 1.0+0.15*float64(dk.Talents.EbonPlaguebringer), 1.0)
 }
 
 func (dk *DeathKnight) applyEbonPlaguebringer() {
@@ -249,7 +249,7 @@ func (dk *DeathKnight) applyEbonPlaguebringer() {
 	core.MakePermanent(dk.GetOrRegisterAura(core.Aura{
 		Label: "Ebon Plague Triggers",
 		OnApplyEffects: func(aura *core.Aura, sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if spell.ClassSpellMask&DeathKnightSpellDisease == 0 {
+			if !spell.Matches(DeathKnightSpellDisease) {
 				return
 			}
 
@@ -257,7 +257,7 @@ func (dk *DeathKnight) applyEbonPlaguebringer() {
 			dk.EbonPlagueAura.Get(target).Activate(sim)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask&DeathKnightSpellDisease == 0 {
+			if !spell.Matches(DeathKnightSpellDisease) {
 				return
 			}
 
@@ -290,7 +290,7 @@ func (dk *DeathKnight) applySuddenDoom() {
 			mod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask != DeathKnightSpellDeathCoil {
+			if !spell.Matches(DeathKnightSpellDeathCoil) {
 				return
 			}
 
@@ -326,7 +326,7 @@ func (dk *DeathKnight) applySuddenDoom() {
 		},
 	})
 
-	dk.ItemSwap.RegisterPPMEffectWithCustomProcMask(core.ProcMaskMeleeMH, ppm, triggerAura.Ppmm, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
+	dk.ItemSwap.RegisterPPMEffectWithCustomProcMask(core.ProcMaskMeleeMH, ppm, triggerAura.Ppmm, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
 }
 
 func (dk *DeathKnight) applyShadowInfusion() *core.Aura {
