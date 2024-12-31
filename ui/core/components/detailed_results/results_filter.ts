@@ -1,8 +1,8 @@
-import { UnitPicker, UnitValue, UnitValueConfig } from '../pickers/unit_picker.jsx';
-import { UnitReference, UnitReference_Type as UnitType } from '../../proto/common.js';
-import { SimResult, SimResultFilter } from '../../proto_utils/sim_result.js';
-import { EventID, TypedEvent } from '../../typed_event.js';
-import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component.js';
+import { UnitReference, UnitReference_Type as UnitType } from '../../proto/common';
+import { SimResult, SimResultFilter } from '../../proto_utils/sim_result';
+import { EventID, TypedEvent } from '../../typed_event';
+import { UnitPicker, UnitValue, UnitValueConfig } from '../pickers/unit_picker';
+import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component';
 
 const ALL_UNITS = -1;
 

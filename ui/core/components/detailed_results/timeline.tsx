@@ -1,17 +1,18 @@
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
-import { ResourceType } from '../../proto/api.js';
-import { OtherAction } from '../../proto/common.js';
-import { ActionId, buffAuraToSpellIdMap, resourceTypeToIcon } from '../../proto_utils/action_id.js';
-import { AuraUptimeLog, CastLog, DpsLog, ResourceChangedLogGroup, SimLog, ThreatLogGroup } from '../../proto_utils/logs_parser.js';
-import { resourceNames } from '../../proto_utils/names.js';
-import { UnitMetrics } from '../../proto_utils/sim_result.js';
-import { orderedResourceTypes } from '../../proto_utils/utils.js';
-import { TypedEvent } from '../../typed_event.js';
-import { bucket, distinct, maxIndex, stringComparator } from '../../utils.js';
-import { actionColors } from './color_settings.js';
-import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component.js';
+import { CacheHandler } from '../../cache_handler';
+import { ResourceType } from '../../proto/api';
+import { OtherAction } from '../../proto/common';
+import { ActionId, buffAuraToSpellIdMap, resourceTypeToIcon } from '../../proto_utils/action_id';
+import { AuraUptimeLog, CastLog, DpsLog, ResourceChangedLogGroup, SimLog, ThreatLogGroup } from '../../proto_utils/logs_parser';
+import { resourceNames } from '../../proto_utils/names';
+import { UnitMetrics } from '../../proto_utils/sim_result';
+import { orderedResourceTypes } from '../../proto_utils/utils';
+import { TypedEvent } from '../../typed_event';
+import { bucket, distinct, fragmentToString, maxIndex, stringComparator } from '../../utils';
+import { actionColors } from './color_settings';
+import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component';
 
 declare let ApexCharts: any;
 
@@ -21,6 +22,8 @@ const dpsColor = '#ed5653';
 const manaColor = '#2E93fA';
 const threatColor = '#b56d07';
 
+const cachedSpellCastIcon = new CacheHandler<HTMLAnchorElement>();
+
 export class Timeline extends ResultComponent {
 	private readonly dpsResourcesPlotElem: HTMLElement;
 	private dpsResourcesPlot: any;
@@ -28,21 +31,32 @@ export class Timeline extends ResultComponent {
 	private readonly rotationPlotElem: HTMLElement;
 	private readonly rotationLabels: HTMLElement;
 	private readonly rotationTimeline: HTMLElement;
+	private rotationTimelineTimeRulerElem: HTMLCanvasElement | null = null;
 	private readonly rotationHiddenIdsContainer: HTMLElement;
 	private readonly chartPicker: HTMLSelectElement;
 
+	private prevResultData: SimResultData | null;
 	private resultData: SimResultData | null;
-	private rendered: boolean;
+	rendered: boolean;
 
 	private hiddenIds: Array<ActionId>;
 	private hiddenIdsChangeEmitter;
-
-	private resetCallbacks: (() => void)[] = [];
+	private cacheHandler = new CacheHandler<{
+		dpsResourcesPlotOptions: any;
+		rotationLabels: Timeline['rotationLabels'];
+		rotationTimeline: Timeline['rotationTimeline'];
+		rotationHiddenIdsContainer: Timeline['rotationHiddenIdsContainer'];
+		rotationTimelineTimeRulerElem: Timeline['rotationTimelineTimeRulerElem'];
+		rotationTimelineTimeRulerImage: ImageData | undefined;
+	}>({
+		keysToKeep: 2,
+	});
 
 	constructor(config: ResultComponentConfig) {
 		config.rootCssClass = 'timeline-root';
 		super(config);
 		this.resultData = null;
+		this.prevResultData = null;
 		this.rendered = false;
 		this.hiddenIds = [];
 		this.hiddenIdsChangeEmitter = new TypedEvent<void>();
@@ -86,16 +100,7 @@ export class Timeline extends ResultComponent {
 		);
 
 		this.chartPicker = this.rootElem.querySelector('.timeline-chart-picker')!;
-		this.chartPicker.addEventListener('change', () => {
-			if (this.chartPicker.value == 'rotation') {
-				this.dpsResourcesPlotElem.classList.add('hide');
-				this.rotationPlotElem.classList.remove('hide');
-			} else {
-				this.dpsResourcesPlotElem.classList.remove('hide');
-				this.rotationPlotElem.classList.add('hide');
-			}
-			this.updatePlot();
-		});
+		this.chartPicker.addEventListener('change', () => this.onChartPickerSelectHandler());
 
 		this.dpsResourcesPlotElem = this.rootElem.querySelector('.dps-resources-plot')!;
 		this.dpsResourcesPlot = new ApexCharts(this.dpsResourcesPlotElem, {
@@ -155,12 +160,20 @@ export class Timeline extends ResultComponent {
 		});
 	}
 
-	onSimResult(resultData: SimResultData) {
-		this.resultData = resultData;
-
-		if (this.rendered) {
-			this.updatePlot();
+	onChartPickerSelectHandler() {
+		if (this.chartPicker.value === 'rotation') {
+			this.dpsResourcesPlotElem.classList.add('hide');
+			this.rotationPlotElem.classList.remove('hide');
+		} else {
+			this.dpsResourcesPlotElem.classList.remove('hide');
+			this.rotationPlotElem.classList.add('hide');
 		}
+	}
+
+	onSimResult(resultData: SimResultData) {
+		this.prevResultData = this.resultData;
+		this.resultData = resultData;
+		this.update();
 	}
 
 	private updatePlot() {
@@ -168,8 +181,29 @@ export class Timeline extends ResultComponent {
 			return;
 		}
 
+		const cachedData = this.cacheHandler.get(this.resultData.result.request.requestId);
+		if (cachedData) {
+			const { dpsResourcesPlotOptions, rotationLabels, rotationTimeline, rotationHiddenIdsContainer, rotationTimelineTimeRulerImage } = cachedData;
+			this.rotationLabels.replaceChildren(...rotationLabels.cloneNode(true).childNodes);
+			this.rotationTimeline.replaceChildren(...rotationTimeline.cloneNode(true).childNodes);
+			this.rotationHiddenIdsContainer.replaceChildren(...rotationHiddenIdsContainer.cloneNode(true).childNodes);
+			this.dpsResourcesPlot.updateOptions(dpsResourcesPlotOptions);
+
+			if (rotationTimelineTimeRulerImage)
+				this.rotationTimeline
+					.querySelector<HTMLCanvasElement>('.rotation-timeline-canvas')
+					?.getContext('2d')
+					?.putImageData(rotationTimelineTimeRulerImage, 0, 0);
+
+			this.onChartPickerSelectHandler();
+			return;
+		}
+
 		const duration = this.resultData!.result.result.firstIterationDuration || 1;
 		const options: any = {
+			theme: {
+				mode: 'dark',
+			},
 			series: [],
 			colors: [],
 			xaxis: {
@@ -207,7 +241,7 @@ export class Timeline extends ResultComponent {
 			enabled: true,
 			custom: (data: { series: any; seriesIndex: number; dataPointIndex: number; w: any }) => {
 				if (tooltipHandlers[data.seriesIndex]) {
-					return tooltipHandlers[data.seriesIndex]!(data.dataPointIndex);
+					return fragmentToString(tooltipHandlers[data.seriesIndex]!(data.dataPointIndex));
 				} else {
 					throw new Error('No tooltip handler for series ' + data.seriesIndex);
 				}
@@ -234,7 +268,7 @@ export class Timeline extends ResultComponent {
 			tooltipHandlers.push(dpsData.tooltipHandler);
 			tooltipHandlers.push(this.addManaSeries(player, options));
 			tooltipHandlers.push(this.addThreatSeries(player, options, ''));
-			tooltipHandlers = tooltipHandlers.filter(handler => handler != null);
+			tooltipHandlers = tooltipHandlers.filter(handler => !!handler);
 
 			this.addMajorCooldownAnnotations(player, options);
 		} else {
@@ -269,6 +303,19 @@ export class Timeline extends ResultComponent {
 		}
 
 		this.dpsResourcesPlot.updateOptions(options);
+
+		this.rotationTimelineTimeRulerElem?.toBlob(blob => {
+			this.cacheHandler.set(this.resultData!.result.request.requestId, {
+				dpsResourcesPlotOptions: options,
+				rotationLabels: this.rotationLabels.cloneNode(true) as HTMLElement,
+				rotationTimeline: this.rotationTimeline.cloneNode(true) as HTMLElement,
+				rotationHiddenIdsContainer: this.rotationHiddenIdsContainer.cloneNode(true) as HTMLElement,
+				rotationTimelineTimeRulerElem: this.rotationTimelineTimeRulerElem?.cloneNode(true) as HTMLCanvasElement,
+				rotationTimelineTimeRulerImage: this.rotationTimelineTimeRulerElem
+					?.getContext('2d')
+					?.getImageData(0, 0, this.rotationTimelineTimeRulerElem.width, this.rotationTimelineTimeRulerElem.height),
+			});
+		});
 	}
 
 	private addDpsYAxis(maxDps: number, options: any) {
@@ -479,16 +526,15 @@ export class Timeline extends ResultComponent {
 	}
 
 	private clearRotationChart() {
-		this.rotationLabels.innerText = '';
-		this.rotationLabels.appendChild(<div className="rotation-label-header"></div>);
-
-		this.rotationTimeline.innerText = '';
-		this.rotationTimeline.appendChild(
+		this.rotationLabels.replaceChildren(<div className="rotation-label-header"></div>);
+		const canvasRef = ref<HTMLCanvasElement>();
+		this.rotationTimeline.replaceChildren(
 			<div className="rotation-timeline-header">
-				<canvas className="rotation-timeline-canvas"></canvas>
+				<canvas ref={canvasRef} className="rotation-timeline-canvas" />
 			</div>,
 		);
-		this.rotationHiddenIdsContainer.innerText = '';
+		this.rotationTimelineTimeRulerElem = canvasRef.value || null;
+		this.rotationHiddenIdsContainer.replaceChildren();
 		this.hiddenIdsChangeEmitter = new TypedEvent<void>();
 	}
 
@@ -825,8 +871,14 @@ export class Timeline extends ResultComponent {
 				}
 			}
 
-			const iconElem = (<a className="rotation-timeline-cast-icon" />) as HTMLAnchorElement;
-			actionId.setBackground(iconElem);
+			const actionIdAsString = actionId.toString();
+			const cachedIconElem = cachedSpellCastIcon.get(actionIdAsString)?.cloneNode() as HTMLAnchorElement | undefined;
+			let iconElem = cachedIconElem;
+			if (!iconElem) {
+				iconElem = (<a className="rotation-timeline-cast-icon" />) as HTMLAnchorElement;
+				actionId.setBackground(iconElem);
+				cachedSpellCastIcon.set(actionIdAsString, iconElem);
+			}
 			castElem.appendChild(iconElem);
 
 			const travelTimeStr = castLog.travelTime == 0 ? '' : ` + ${castLog.travelTime.toFixed(2)}s travel time`;
@@ -859,10 +911,11 @@ export class Timeline extends ResultComponent {
 				</div>
 			);
 
-			tippy(castElem, {
+			const tooltip = tippy(castElem, {
 				placement: 'bottom',
 				content: tt,
 			});
+			this.addOnResetCallback(() => tooltip.destroy());
 
 			castLog.damageDealtLogs
 				.filter(ddl => ddl.tick)
@@ -886,10 +939,11 @@ export class Timeline extends ResultComponent {
 						</div>
 					);
 
-					tippy(tickElem, {
+					const tooltip = tippy(tickElem, {
 						placement: 'bottom',
 						content: tt,
 					});
+					this.addOnResetCallback(() => tooltip.destroy());
 				});
 		});
 
@@ -1030,7 +1084,7 @@ export class Timeline extends ResultComponent {
 					<span className="bold">{log.timestamp.toFixed(2)}s</span>
 				</div>
 				<div className="timeline-tooltip-body">
-					<ul className="timeline-dps-events">{log.damageLogs.map(damageLog => this.tooltipLogItem(damageLog, damageLog.result())).join('')}</ul>
+					<ul className="timeline-dps-events">{log.damageLogs.map(damageLog => this.tooltipLogItem(damageLog, damageLog.result()))}</ul>
 					<div className="timeline-tooltip-body-row">
 						<span className="series-color">DPS: {log.dps.toFixed(2)}</span>
 					</div>
@@ -1060,7 +1114,7 @@ export class Timeline extends ResultComponent {
 					<div className="timeline-tooltip-body-row">
 						<span className="series-color">Before: {log.threatBefore.toFixed(1)}</span>
 					</div>
-					<ul className="timeline-threat-events">{log.logs.map(log => this.tooltipLogItem(log, <>{log.threat.toFixed(1)} Threat</>)).join('')}</ul>
+					<ul className="timeline-threat-events">{log.logs.map(log => this.tooltipLogItem(log, <>{log.threat.toFixed(1)} Threat</>))}</ul>
 					<div className="timeline-tooltip-body-row">
 						<span className="series-color">After: {log.threatAfter.toFixed(1)}</span>
 					</div>
@@ -1143,20 +1197,22 @@ export class Timeline extends ResultComponent {
 		);
 	}
 
-	render() {
+	update() {
 		this.reset();
-		this.dpsResourcesPlot.render();
-		this.rendered = true;
+		if (!this.rendered) this.dpsResourcesPlot.render();
 		this.updatePlot();
+		this.rendered = true;
 	}
 
-	addOnResetCallback(callback: () => void) {
-		this.resetCallbacks.push(callback);
+	render() {
+		if (this.rendered) return;
+		this.update();
 	}
 
 	reset() {
-		this.resetCallbacks.forEach(callback => callback());
-		this.resetCallbacks = [];
+		const previousResultRequestId = this.prevResultData?.result.request.requestId;
+		if (previousResultRequestId && !this.cacheHandler.get(previousResultRequestId)) return;
+		super.reset();
 	}
 }
 
@@ -1390,16 +1446,16 @@ const idToCategoryMap: Record<number, number> = {
 	[40536]: SPELL_ACTION_CATEGORY + 0.942, // Explosive Decoy
 	[41119]: SPELL_ACTION_CATEGORY + 0.943, // Saronite Bomb
 	[40771]: SPELL_ACTION_CATEGORY + 0.944, // Cobalt Frag Bomb
-	
+
 	// Souldrinker - to pair up the damage part with the healing
 	[109828]: SPELL_ACTION_CATEGORY + 0.945, // Drain Life - LFR
 	[108022]: SPELL_ACTION_CATEGORY + 0.946, // Drain Life - Normal
 	[109831]: SPELL_ACTION_CATEGORY + 0.947, // Drain Life - Heroic
-	
+
 	// No'Kaled - to pair up the different spells it can proc
 	[109871]: SPELL_ACTION_CATEGORY + 0.948, // Flameblast - LFR
 	[109869]: SPELL_ACTION_CATEGORY + 0.949, // Iceblast - LFR
-	[109867]: SPELL_ACTION_CATEGORY + 0.950, // Shadowblast - LFR
+	[109867]: SPELL_ACTION_CATEGORY + 0.95, // Shadowblast - LFR
 	[107785]: SPELL_ACTION_CATEGORY + 0.951, // Flameblast - Normal
 	[107789]: SPELL_ACTION_CATEGORY + 0.952, // Iceblast - Normal
 	[107787]: SPELL_ACTION_CATEGORY + 0.953, // Shadowblast - Normal

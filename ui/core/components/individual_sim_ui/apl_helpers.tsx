@@ -1,5 +1,6 @@
 import { ref } from 'tsx-vanilla';
 
+import { CacheHandler } from '../../cache_handler';
 import { Player, UnitMetadata } from '../../player.js';
 import { APLValueEclipsePhase, APLValueRuneSlot, APLValueRuneType } from '../../proto/apl.js';
 import { ActionID, OtherAction, Stat, UnitReference, UnitReference_Type as UnitType } from '../../proto/common.js';
@@ -205,16 +206,18 @@ const actionIdSets: Record<
 	dot_spells: {
 		defaultLabel: 'DoT Spell',
 		getActionIDs: async metadata => {
-			return metadata
-				.getSpells()
-				.filter(spell => spell.data.hasDot)
-				// filter duplicate dot entries from RelatedDotSpell
-				.filter((value, index, self) => self.findIndex(v => v.id.anyId() === value.id.anyId()) === index)
-				.map(actionId => {
-					return {
-						value: actionId.id,
-					};
-				});
+			return (
+				metadata
+					.getSpells()
+					.filter(spell => spell.data.hasDot)
+					// filter duplicate dot entries from RelatedDotSpell
+					.filter((value, index, self) => self.findIndex(v => v.id.anyId() === value.id.anyId()) === index)
+					.map(actionId => {
+						return {
+							value: actionId.id,
+						};
+					})
+			);
 		},
 	},
 	castable_dot_spells: {
@@ -256,6 +259,8 @@ export interface APLActionIDPickerConfig<ModObject>
 	setValue: (eventID: EventID, obj: ModObject, newValue: ActionID) => void;
 }
 
+const cachedAPLActionIDPickerContent = new CacheHandler<Element>();
+
 export class APLActionIDPicker extends DropdownPicker<Player<any>, ActionID, ActionId> {
 	constructor(parent: HTMLElement, player: Player<any>, config: APLActionIDPickerConfig<Player<any>>) {
 		const actionIdSet = actionIdSets[config.actionIdSet];
@@ -267,9 +272,16 @@ export class APLActionIDPicker extends DropdownPicker<Player<any>, ActionID, Act
 			equals: (a, b) => (a == null) == (b == null) && (!a || a.equals(b!)),
 			setOptionContent: (button, valueConfig) => {
 				const actionId = valueConfig.value;
-				const iconRef = ref<HTMLAnchorElement>();
 				const isAuraType = ['auras', 'stackable_auras', 'icd_auras', 'exclusive_effect_auras'].includes(config.actionIdSet);
-				button.appendChild(
+
+				const cacheKey = `${actionId.toString()}${isAuraType}`;
+				const cachedContent = cachedAPLActionIDPickerContent.get(cacheKey)?.cloneNode(true) as Element | undefined;
+				if (cachedContent) {
+					button.appendChild(cachedContent);
+				}
+
+				const iconRef = ref<HTMLAnchorElement>();
+				const content = (
 					<>
 						<a
 							ref={iconRef}
@@ -279,11 +291,14 @@ export class APLActionIDPicker extends DropdownPicker<Player<any>, ActionID, Act
 							}}
 						/>
 						{actionId.name}
-					</>,
+					</>
 				);
+				button.appendChild(content);
 
 				actionId.setBackgroundAndHref(iconRef.value!);
 				actionId.setWowheadDataset(iconRef.value!, { useBuffAura: isAuraType });
+
+				cachedAPLActionIDPickerContent.set(cacheKey, content);
 			},
 			createMissingValue: value => {
 				if (value.anyId() == 0) {
@@ -764,9 +779,11 @@ export function rotationTypeFieldConfig(field: string): APLPickerBuilderFieldCon
 
 export function statTypeFieldConfig(field: string): APLPickerBuilderFieldConfig<any, any> {
 	const allStats = getEnumValues(Stat) as Array<Stat>;
-	const values = [{ value: -1, label: 'None' }].concat(allStats.map(stat => {
-		return { value: stat, label: getStatName(stat) };
-	}));
+	const values = [{ value: -1, label: 'None' }].concat(
+		allStats.map(stat => {
+			return { value: stat, label: getStatName(stat) };
+		}),
+	);
 
 	return {
 		field: field,
@@ -785,8 +802,9 @@ export function statTypeFieldConfig(field: string): APLPickerBuilderFieldConfig<
 
 export const minIcdInput = numberFieldConfig('minIcdSeconds', false, {
 	label: 'Min ICD',
-	labelTooltip: 'If non-zero, filter out any procs that either lack an ICD or for which the ICD is smaller than the specified value (in seconds). This can be useful for certain snapshotting checks, since procs with low ICDs are often too weak to snapshot.',
-})
+	labelTooltip:
+		'If non-zero, filter out any procs that either lack an ICD or for which the ICD is smaller than the specified value (in seconds). This can be useful for certain snapshotting checks, since procs with low ICDs are often too weak to snapshot.',
+});
 
 export function aplInputBuilder<T>(
 	newValue: () => T,
