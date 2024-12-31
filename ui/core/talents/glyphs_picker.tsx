@@ -10,12 +10,12 @@ import { Glyphs, ItemQuality } from '../proto/common.js';
 import { ActionId } from '../proto_utils/action_id.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { stringComparator } from '../utils.js';
+import { Database } from '../proto_utils/database.js';
 
 export type GlyphConfig = {
 	name: string;
 	description: string;
 	iconUrl: string;
-	spellIdOverride?: number;
 };
 
 export type GlyphsConfig = {
@@ -30,7 +30,7 @@ interface GlyphData {
 	description: string;
 	iconUrl: string;
 	quality: ItemQuality | null;
-	spellIdOverride?: number;
+	spellId: number;
 }
 
 const emptyGlyphData: GlyphData = {
@@ -39,6 +39,7 @@ const emptyGlyphData: GlyphData = {
 	description: '',
 	iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/inventoryslot_empty.jpg',
 	quality: null,
+	spellId: 0,
 };
 
 export class GlyphsPicker extends Component {
@@ -58,14 +59,6 @@ export class GlyphsPicker extends Component {
 		const majorGlyphs = Object.keys(glyphsConfig.majorGlyphs).map(idStr => Number(idStr));
 		const minorGlyphs = Object.keys(glyphsConfig.minorGlyphs).map(idStr => Number(idStr));
 
-		const primeGlyphsData = primeGlyphs.map(glyph => this.getGlyphData(glyph));
-		const majorGlyphsData = majorGlyphs.map(glyph => this.getGlyphData(glyph));
-		const minorGlyphsData = minorGlyphs.map(glyph => this.getGlyphData(glyph));
-
-		primeGlyphsData.sort((a, b) => stringComparator(a.name, b.name));
-		majorGlyphsData.sort((a, b) => stringComparator(a.name, b.name));
-		minorGlyphsData.sort((a, b) => stringComparator(a.name, b.name));
-
 		const primeGlyphsBlock = new ContentBlock(this.rootElem, 'prime-glyphs', {
 			header: { title: 'Prime Glyphs', extraCssClasses: ['border-0', 'mb-1'] },
 		});
@@ -79,43 +72,53 @@ export class GlyphsPicker extends Component {
 		});
 		this.selectorModal = new GlyphSelectorModal(this.rootElem.closest('.individual-sim-ui')!);
 
-		this.primeGlyphPickers = (['prime1', 'prime2', 'prime3'] as Array<keyof Glyphs>).map(
-			glyphField =>
-				new GlyphPicker(primeGlyphsBlock.bodyElement, {
-					label: 'Prime',
-					player,
-					selectorModal: this.selectorModal,
-					glyphOptions: primeGlyphsData,
-					glyphField,
-				}),
-		);
+		Database.get().then(db => {
+			const primeGlyphsData = primeGlyphs.map(glyph => this.getGlyphData(glyph, db));
+			const majorGlyphsData = majorGlyphs.map(glyph => this.getGlyphData(glyph, db));
+			const minorGlyphsData = minorGlyphs.map(glyph => this.getGlyphData(glyph, db));
 
-		this.majorGlyphPickers = (['major1', 'major2', 'major3'] as Array<keyof Glyphs>).map(
-			glyphField =>
-				new GlyphPicker(majorGlyphsBlock.bodyElement, {
-					label: 'Major',
-					player,
-					selectorModal: this.selectorModal,
-					glyphOptions: majorGlyphsData,
-					glyphField,
-				}),
-		);
+			primeGlyphsData.sort((a, b) => stringComparator(a.name, b.name));
+			majorGlyphsData.sort((a, b) => stringComparator(a.name, b.name));
+			minorGlyphsData.sort((a, b) => stringComparator(a.name, b.name));
 
-		this.minorGlyphPickers = (['minor1', 'minor2', 'minor3'] as Array<keyof Glyphs>).map(
-			glyphField =>
-				new GlyphPicker(minorGlyphsBlock.bodyElement, {
-					label: 'Minor',
-					player,
-					selectorModal: this.selectorModal,
-					glyphOptions: minorGlyphsData,
-					glyphField,
-				}),
-		);
+			this.primeGlyphPickers = (['prime1', 'prime2', 'prime3'] as Array<keyof Glyphs>).map(
+				glyphField =>
+					new GlyphPicker(primeGlyphsBlock.bodyElement, {
+						label: 'Prime',
+						player,
+						selectorModal: this.selectorModal,
+						glyphOptions: primeGlyphsData,
+						glyphField,
+					}),
+			);
+
+			this.majorGlyphPickers = (['major1', 'major2', 'major3'] as Array<keyof Glyphs>).map(
+				glyphField =>
+					new GlyphPicker(majorGlyphsBlock.bodyElement, {
+						label: 'Major',
+						player,
+						selectorModal: this.selectorModal,
+						glyphOptions: majorGlyphsData,
+						glyphField,
+					}),
+			);
+
+			this.minorGlyphPickers = (['minor1', 'minor2', 'minor3'] as Array<keyof Glyphs>).map(
+				glyphField =>
+					new GlyphPicker(minorGlyphsBlock.bodyElement, {
+						label: 'Minor',
+						player,
+						selectorModal: this.selectorModal,
+						glyphOptions: minorGlyphsData,
+						glyphField,
+					}),
+			);
+		});
 	}
 
 	// In case we ever want to parse description from tooltip HTML.
 	//static descriptionRegex = /<a href=\\"\/wotlk.*>(.*)<\/a>/g;
-	getGlyphData(glyph: number): GlyphData {
+	getGlyphData(glyph: number, db: Database): GlyphData {
 		const glyphConfig = this.glyphsConfig.primeGlyphs[glyph] || this.glyphsConfig.majorGlyphs[glyph] || this.glyphsConfig.minorGlyphs[glyph];
 
 		return {
@@ -124,7 +127,7 @@ export class GlyphsPicker extends Component {
 			description: glyphConfig.description,
 			iconUrl: glyphConfig.iconUrl,
 			quality: ItemQuality.ItemQualityCommon,
-			spellIdOverride: glyphConfig.spellIdOverride,
+			spellId: db.glyphItemToSpellId(glyph),
 		};
 	}
 }
@@ -207,9 +210,9 @@ class GlyphPicker extends Input<Player<any>, number> {
 		this.selectedGlyph = this.glyphOptions.find(glyphData => glyphData.id == newValue);
 
 		if (this.selectedGlyph) {
-			if (this.selectedGlyph.spellIdOverride) {
-				this.anchorElem.href = ActionId.makeSpellUrl(this.selectedGlyph.spellIdOverride);
-				ActionId.makeSpellTooltipData(this.selectedGlyph.spellIdOverride).then(url => {
+			if (this.selectedGlyph.spellId) {
+				this.anchorElem.href = ActionId.makeSpellUrl(this.selectedGlyph.spellId);
+				ActionId.makeSpellTooltipData(this.selectedGlyph.spellId).then(url => {
 					this.anchorElem.dataset.wowhead = url;
 					this.anchorElem.dataset.whtticon = 'false';
 				});
@@ -298,7 +301,11 @@ class GlyphSelectorModal extends BaseModal {
 			);
 
 			if (anchorElem.value) {
-				anchorElem.value.href = !glyphData.id ? '' : ActionId.makeItemUrl(glyphData.id);
+				if (glyphData.spellId) {
+					anchorElem.value.href = ActionId.makeSpellUrl(glyphData.spellId);
+				} else {
+					anchorElem.value.href = ActionId.makeItemUrl(glyphData.id);
+				}
 				anchorElem.value.addEventListener('click', event => {
 					event.preventDefault();
 					this.glyphPicker?.setValue(TypedEvent.nextEventID(), glyphData.id);

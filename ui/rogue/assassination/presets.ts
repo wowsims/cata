@@ -32,8 +32,8 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAttackPower]: 1,
 			[Stat.StatCritRating]: 1.18,
 			[Stat.StatHitRating]: 2.62,
-			[Stat.StatHasteRating]: 1.27,
-			[Stat.StatMasteryRating]: 1.35,
+			[Stat.StatHasteRating]: 1.35,
+			[Stat.StatMasteryRating]: 1.45,
 			[Stat.StatExpertiseRating]: 1.2,
 		},
 		{
@@ -54,8 +54,8 @@ export const P1_EP_EXPERTISE_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAttackPower]: 1,
 			[Stat.StatCritRating]: 1.18,
 			[Stat.StatHitRating]: 2.62,
-			[Stat.StatHasteRating]: 1.2,
-			[Stat.StatMasteryRating]: 1.32,
+			[Stat.StatHasteRating]: 1.35,
+			[Stat.StatMasteryRating]: 1.45,
 			[Stat.StatExpertiseRating]: 2.0,
 		},
 		{

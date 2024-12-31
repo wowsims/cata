@@ -36,7 +36,6 @@ export const mageGlyphsConfig: GlyphsConfig = {
 			name: 'Glyph of Fireball',
 			description: 'Increases the critical strike chance of your Fireball spell by 5%.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_fire_flamebolt.jpg',
-			spellIdOverride: 56368,
 		},
 		[MagePrimeGlyph.GlyphOfFrostbolt]: {
 			name: 'Glyph of Frostbolt',
