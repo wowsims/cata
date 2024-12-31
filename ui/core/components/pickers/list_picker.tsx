@@ -347,14 +347,14 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 			const targetIsSelf = () => curDragData && curDragData.listPicker === this && curDragData.item.idx === index;
 			const targetIsChild = () => curDragData && curDragData.item.elem.contains(itemContainer);
 
-			const invalidDropTarget = (checkSelf = true, checkForActions = true) => {
+			const invalidDropTarget = (checkSelf = true) => {
 				// Only allow dropping on the same type of list, Value -> Value, Action -> Action
 				if (!curDragData || curDragData.listPicker.config.itemLabel !== this.config.itemLabel) {
 					return true;
 				}
 
 				// Only allow dropping Actions within the same list
-				if (checkForActions && droppingActionOnOtherList()) {
+				if (droppingActionOnOtherList()) {
 					return true;
 				}
 
@@ -446,7 +446,7 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 			itemContainer.addEventListener(
 				'drop',
 				event => {
-					if (!curDragData || invalidDropTarget(true, false)) {
+					if (!curDragData || invalidDropTarget()) {
 						if (targetIsSelf()) {
 							event.stopPropagation();
 							cleanupAfterDrag();
