@@ -96,6 +96,40 @@ func (action *APLActionActivateAura) String() string {
 	return fmt.Sprintf("Activate Aura(%s)", action.aura.ActionID)
 }
 
+type APLActionActivateAuraWithStacks struct {
+	defaultAPLActionImpl
+	aura      *Aura
+	numStacks int32
+}
+
+func (rot *APLRotation) newActionActivateAuraWithStacks(config *proto.APLActionActivateAuraWithStacks) APLActionImpl {
+	aura := rot.GetAPLAura(rot.GetSourceUnit(&proto.UnitReference{Type: proto.UnitReference_Self}), config.AuraId)
+	if aura.Get() == nil {
+		return nil
+	}
+	if aura.Get().MaxStacks == 0 {
+		rot.ValidationMessage(proto.LogLevel_Warning, "%s is not a stackable aura", ProtoToActionID(config.AuraId))
+		return nil
+	}
+	return &APLActionActivateAuraWithStacks{
+		aura:      aura.Get(),
+		numStacks: int32(min(config.NumStacks, aura.Get().MaxStacks)),
+	}
+}
+func (action *APLActionActivateAuraWithStacks) IsReady(sim *Simulation) bool {
+	return true
+}
+func (action *APLActionActivateAuraWithStacks) Execute(sim *Simulation) {
+	if sim.Log != nil {
+		action.aura.Unit.Log(sim, "Activating aura %s (%d stacks)", action.aura.ActionID, action.numStacks)
+	}
+	action.aura.Activate(sim)
+	action.aura.SetStacks(sim, action.numStacks)
+}
+func (action *APLActionActivateAuraWithStacks) String() string {
+	return fmt.Sprintf("Activate Aura(%s) Stacks(%d)", action.aura.ActionID, action.numStacks)
+}
+
 type APLActionTriggerICD struct {
 	defaultAPLActionImpl
 	aura *Aura

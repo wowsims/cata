@@ -41,7 +41,7 @@ message APLListItem {
     APLAction action = 3; // The action to be performed.
 }
 
-// NextIndex: 24
+// NextIndex: 25
 message APLAction {
     APLValue condition = 1; // If set, action will only execute if value is true or != 0.
 
@@ -68,6 +68,7 @@ message APLAction {
         // Misc
         APLActionChangeTarget change_target = 9;
         APLActionActivateAura activate_aura = 13;
+        APLActionActivateAuraWithStacks activate_aura_with_stacks = 24;
         APLActionCancelAura cancel_aura = 10;
         APLActionTriggerICD trigger_icd = 11;
         APLActionItemSwap item_swap = 17;
@@ -290,6 +291,11 @@ message APLActionCancelAura {
 
 message APLActionActivateAura {
     ActionID aura_id = 1;
+}
+
+message APLActionActivateAuraWithStacks {
+    ActionID aura_id = 1;
+    int32 num_stacks = 2;
 }
 
 message APLActionTriggerICD {
