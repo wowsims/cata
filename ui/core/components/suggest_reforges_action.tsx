@@ -92,6 +92,7 @@ export class ReforgeOptimizer {
 	readonly freezeItemSlotsChangeEmitter = new TypedEvent<void>();
 	protected freezeItemSlots = false;
 	protected frozenItemSlots = new Map<ItemSlot, boolean>();
+	protected previousGear: Gear | null = null;
 	protected previousReforges = new Map<ItemSlot, ReforgeData>();
 	protected currentReforges = new Map<ItemSlot, ReforgeData>();
 
@@ -742,9 +743,9 @@ export class ReforgeOptimizer {
 			console.log('The following slots will not be cleared:');
 			console.log(Array.from(this.frozenItemSlots.keys()).filter(key => this.frozenItemSlots.get(key)));
 		}
-		const previousGear = this.player.getGear();
-		this.previousReforges = previousGear.getAllReforges();
-		const baseGear = previousGear.withoutReforges(this.player.canDualWield2H(), this.frozenItemSlots);
+		this.previousGear = this.player.getGear();
+		this.previousReforges = this.previousGear.getAllReforges();
+		const baseGear = this.previousGear.withoutReforges(this.player.canDualWield2H(), this.frozenItemSlots);
 		const baseStats = await this.updateGear(baseGear);
 
 		// Compute effective stat caps for just the Reforge contribution
@@ -916,9 +917,14 @@ export class ReforgeOptimizer {
 			tolerance: 0.01,
 		};
 		const solution = solve(model, options);
+
 		if (isDevMode()) {
 			console.log('LP solution for this iteration:');
 			console.log(solution);
+		}
+
+		if (solution.status === 'timedout') {
+			throw solution
 		}
 		// Apply the current solution
 		const updatedGear = await this.applyLPSolution(gear, solution);
@@ -1172,6 +1178,7 @@ export class ReforgeOptimizer {
 	onReforgeError(error: any) {
 		if (isDevMode()) console.log(error);
 
+		if (this.previousGear) this.updateGear(this.previousGear);
 		new Toast({
 			variant: 'error',
 			body: 'Reforge optimization failed. Please try again, or report the issue if it persists.',
