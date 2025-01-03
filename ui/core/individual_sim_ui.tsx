@@ -19,7 +19,7 @@ import * as Tooltips from './constants/tooltips';
 import { getSpecLaunchStatus, LaunchStatus, simLaunchStatuses } from './launched_sims';
 import { Player, PlayerConfig, registerSpecConfig as registerPlayerConfig } from './player';
 import { PlayerSpecs } from './player_specs';
-import { PresetBuild, PresetEpWeights, PresetGear, PresetRotation } from './preset_utils';
+import { PresetBuild, PresetEpWeights, PresetGear, PresetItemSwap, PresetRotation } from './preset_utils';
 import { StatWeightsResult } from './proto/api';
 import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
 import {
@@ -34,6 +34,7 @@ import {
 	HandType,
 	IndividualBuffs,
 	ItemSlot,
+	ItemSwap,
 	PartyBuffs,
 	Profession,
 	PseudoStat,
@@ -43,6 +44,7 @@ import {
 	Stat,
 } from './proto/common';
 import { IndividualSimSettings, SavedTalents } from './proto/ui';
+import { ItemSwapGear } from './proto_utils/gear';
 import { getMetaGemConditionDescription } from './proto_utils/gems';
 import { armorTypeNames, professionNames } from './proto_utils/names';
 import { pseudoStatIsCapped, StatCap, Stats, UnitStat } from './proto_utils/stats';
@@ -145,6 +147,8 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 		simpleRotation?: SpecRotation<SpecType>;
 
 		other?: OtherDefaults;
+
+		itemSwap?: ItemSwap;
 	};
 
 	playerInputs?: InputSection;
@@ -170,6 +174,7 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 		talents: Array<SavedDataConfig<Player<SpecType>, SavedTalents>>;
 		rotations: Array<PresetRotation>;
 		builds?: Array<PresetBuild>;
+		itemSwaps?: Array<PresetItemSwap>;
 	};
 
 	raidSimPresets: Array<RaidSimPreset<SpecType>>;
@@ -284,27 +289,14 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		this.addWarning({
 			updateOn: this.player.gearChangeEmitter,
 			getContent: () => {
-				const playerClass = this.player.getPlayerClass();
-				// We always pick the first entry since this is always the preffered armor type
-				const armorSpecializationArmorType = playerClass.armorTypes[0];
-
-				if (!armorSpecializationArmorType || playerClass.classID === Class.ClassDruid) {
+				if (!this.player.armorSpecializationArmorType) {
 					return '';
 				}
 
-				if (
-					[
-						ItemSlot.ItemSlotHead,
-						ItemSlot.ItemSlotShoulder,
-						ItemSlot.ItemSlotChest,
-						ItemSlot.ItemSlotWrist,
-						ItemSlot.ItemSlotHands,
-						ItemSlot.ItemSlotWaist,
-						ItemSlot.ItemSlotLegs,
-						ItemSlot.ItemSlotFeet,
-					].some(itemSlot => this.player.getEquippedItem(itemSlot)?.item.armorType !== armorSpecializationArmorType)
-				) {
-					return `Equip ${armorTypeNames.get(armorSpecializationArmorType)} gear in each slot for the Armor Specialization (5% primary stat) effect.`;
+				if (this.player.hasArmorSpecializationBonus()) {
+					return `Equip ${armorTypeNames.get(
+						this.player.armorSpecializationArmorType,
+					)} gear in each slot for the Armor Specialization (5% primary stat) effect.`;
 				} else {
 					return '';
 				}
@@ -523,6 +515,11 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			this.player.getParty()!.setBuffs(eventID, this.individualConfig.defaults.partyBuffs);
 			this.player.getRaid()!.setBuffs(eventID, this.individualConfig.defaults.raidBuffs);
 			this.player.setEpWeights(eventID, this.individualConfig.defaults.epWeights);
+			if (this.individualConfig.defaults.itemSwap) {
+				this.player.setEnableItemSwap(eventID, true);
+				this.player.setItemSwapGear(eventID, this.sim.db.lookupItemSwap(this.individualConfig.defaults.itemSwap || ItemSwap.create()));
+			}
+
 			const defaultRatios = this.player.getDefaultEpRatios(tankSpec, healingSpec);
 			this.player.setEpRatios(eventID, defaultRatios);
 			if (this.individualConfig.defaults.statCaps) this.player.setStatCaps(eventID, this.individualConfig.defaults.statCaps);

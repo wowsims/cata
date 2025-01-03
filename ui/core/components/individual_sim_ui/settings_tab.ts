@@ -267,25 +267,8 @@ export class SettingsTab extends SimTab {
 			label: 'Settings',
 			header: { title: 'Saved Settings' },
 			storageKey: this.simUI.getSavedSettingsStorageKey(),
-			getData: (simUI: IndividualSimUI<any>) => {
-				const player = simUI.player;
-				return SavedSettings.create({
-					raidBuffs: simUI.sim.raid.getBuffs(),
-					partyBuffs: player.getParty()?.getBuffs() || PartyBuffs.create(),
-					playerBuffs: player.getBuffs(),
-					debuffs: simUI.sim.raid.getDebuffs(),
-					consumes: player.getConsumes(),
-					race: player.getRace(),
-					professions: player.getProfessions(),
-					enableItemSwap: player.getEnableItemSwap(),
-					itemSwap: player.getItemSwapGear().toProto(),
-					reactionTimeMs: player.getReactionTime(),
-					channelClipDelayMs: player.getChannelClipDelay(),
-					inFrontOfTarget: player.getInFrontOfTarget(),
-					distanceFromTarget: player.getDistanceFromTarget(),
-					healingModel: player.getHealingModel(),
-					darkIntentUptime: player.getDarkIntentUptime(),
-				});
+			getData: () => {
+				return this.getCurrentSavedSettings();
 			},
 			setData: (eventID: EventID, simUI: IndividualSimUI<any>, newSettings: SavedSettings) => {
 				TypedEvent.freezeAllAndDo(() => {
@@ -331,6 +314,39 @@ export class SettingsTab extends SimTab {
 		this.simUI.sim.waitForInit().then(() => {
 			savedEncounterManager.loadUserData();
 			savedSettingsManager.loadUserData();
+			this.simUI.individualConfig.presets.itemSwaps?.forEach(presetItemSwap => {
+				this.simUI.player;
+				savedSettingsManager.addSavedData({
+					name: presetItemSwap.name,
+					tooltip: presetItemSwap.tooltip,
+					isPreset: true,
+					data: SavedSettings.create({
+						...this.getCurrentSavedSettings(),
+						enableItemSwap: true,
+						itemSwap: presetItemSwap.itemSwap,
+					}),
+				});
+			});
+		});
+	}
+
+	getCurrentSavedSettings() {
+		return SavedSettings.create({
+			raidBuffs: this.simUI.sim.raid.getBuffs(),
+			partyBuffs: this.simUI.player.getParty()?.getBuffs() || PartyBuffs.create(),
+			playerBuffs: this.simUI.player.getBuffs(),
+			debuffs: this.simUI.sim.raid.getDebuffs(),
+			consumes: this.simUI.player.getConsumes(),
+			race: this.simUI.player.getRace(),
+			professions: this.simUI.player.getProfessions(),
+			enableItemSwap: this.simUI.player.getEnableItemSwap(),
+			itemSwap: this.simUI.player.getItemSwapGear().toProto(),
+			reactionTimeMs: this.simUI.player.getReactionTime(),
+			channelClipDelayMs: this.simUI.player.getChannelClipDelay(),
+			inFrontOfTarget: this.simUI.player.getInFrontOfTarget(),
+			distanceFromTarget: this.simUI.player.getDistanceFromTarget(),
+			healingModel: this.simUI.player.getHealingModel(),
+			darkIntentUptime: this.simUI.player.getDarkIntentUptime(),
 		});
 	}
 

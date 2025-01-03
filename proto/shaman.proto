@@ -182,9 +182,9 @@ message ShamanTotems {
 	bool use_fire_elemental = 12;
 
 	// Bonus spell power for fire elemental snapshotting.
-	int32 bonus_spellpower = 13;
+	int32 bonus_spellpower = 13 [deprecated=true]; // No longer used in favor of Item Swapping
 	// Bonus intellect for fire elemental snapshotting.
-	int32 bonus_intellect = 15;
+	int32 bonus_intellect = 15 [deprecated=true]; // No longer used in favor of Item Swapping
 
 	// Snapshot fire elemental using Tier 10 4 set bonus.
 	bool enh_tier_ten_bonus = 14;

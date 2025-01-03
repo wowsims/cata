@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -74,7 +75,7 @@ func init() {
 			},
 		})
 
-		procMask := character.GetProcMaskForEnchant(3368)
+		procMask := character.GetDefaultProcMaskForWeaponEnchant(3368)
 
 		rfcAura := character.NewTemporaryStatsAuraWrapped("Rune Of The Fallen Crusader Proc", core.ActionID{SpellID: 53365}, stats.Stats{}, time.Second*15, func(aura *core.Aura) {
 			statDep := character.NewDynamicMultiplyStat(stats.Strength, 1.15)
@@ -100,7 +101,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(3368, 2.0, aura.Ppmm, aura)
+		character.ItemSwap.RegisterPPMEffect(3368, 2.0, aura.Ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
 	})
 
 	// Rune of Cinderglacier
@@ -118,6 +119,8 @@ func init() {
 			ClassMask:  DeathKnightSpellsAll,
 			School:     core.SpellSchoolShadow | core.SpellSchoolFrost,
 		})
+
+		procMask := character.GetDefaultProcMaskForWeaponEnchant(3369)
 
 		cinderAura := character.GetOrRegisterAura(core.Aura{
 			ActionID:  core.ActionID{SpellID: 53386},
@@ -153,7 +156,7 @@ func init() {
 			Name:     "Rune of Cinderglacier",
 			Callback: core.CallbackOnSpellHitDealt,
 			Outcome:  core.OutcomeLanded,
-			ProcMask: character.GetProcMaskForEnchant(3369),
+			ProcMask: procMask,
 			PPM:      1.0,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				cinderAura.Activate(sim)
@@ -161,7 +164,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(3369, 1.0, aura.Ppmm, aura)
+		character.ItemSwap.RegisterPPMEffect(3369, 1.0, aura.Ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
 	})
 
 	// Rune of Razorice
@@ -232,7 +235,7 @@ func init() {
 			})
 		})
 
-		procMask := character.GetProcMaskForEnchant(3370)
+		procMask := character.GetDefaultProcMaskForWeaponEnchant(3370)
 		mhRazoriceSpell := newRazoriceHitSpell(character, true)
 		ohRazoriceSpell := newRazoriceHitSpell(character, false)
 
@@ -255,6 +258,6 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(3370, aura)
+		character.ItemSwap.RegisterEnchantProc(3370, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
 	})
 }

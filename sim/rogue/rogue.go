@@ -104,6 +104,9 @@ type Rogue struct {
 
 	ruthlessnessMetrics      *core.ResourceMetrics
 	relentlessStrikesMetrics *core.ResourceMetrics
+
+	// Item sets
+	Has4pcT13 bool
 }
 
 func (rogue *Rogue) GetCharacter() *core.Character {
@@ -204,7 +207,7 @@ func (rogue *Rogue) Initialize() {
 	rogue.T12ToTLastBuff = 3
 
 	// re-configure poisons when performing an item swap
-	rogue.RegisterOnItemSwap(func(sim *core.Simulation) {
+	rogue.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand}, func(sim *core.Simulation, slot proto.ItemSlot) {
 		if !rogue.Options.ApplyPoisonsManually {
 			if rogue.MainHand() == nil || rogue.OffHand() == nil {
 				return
@@ -268,9 +271,7 @@ func NewRogue(character *core.Character, options *proto.RogueOptions, talents st
 	rogue.PseudoStats.CanParry = true
 
 	maxEnergy := 100.0
-	if rogue.HasSetBonus(CataPVPSet, 4) {
-		maxEnergy += 10
-	}
+
 	if rogue.Spec == proto.Spec_SpecAssassinationRogue &&
 		rogue.GetMHWeapon() != nil &&
 		rogue.GetMHWeapon().WeaponType == proto.WeaponType_WeaponTypeDagger {

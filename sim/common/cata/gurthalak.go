@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -62,8 +63,8 @@ func init() {
 				},
 			})
 
-			procMask := character.GetProcMaskForItem(gurthalakItemID)
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			procMask := character.GetDefaultProcMaskForWeaponEffect(gurthalakItemID)
+			aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:     "Gurthalak Trigger" + labelSuffix,
 				ActionID: core.ActionID{ItemID: gurthalakItemID},
 				Callback: core.CallbackOnSpellHitDealt,
@@ -86,6 +87,8 @@ func init() {
 					summonSpell.Cast(sim, result.Target)
 				},
 			})
+
+			character.ItemSwap.RegisterProc(gurthalakItemID, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
 		})
 	}
 }

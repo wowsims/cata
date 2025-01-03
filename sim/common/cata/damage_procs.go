@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/common/shared"
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func init() {
@@ -16,6 +17,7 @@ func init() {
 		MaxDmg:  8750,
 		Flags:   core.SpellFlagNoSpellMods | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt,
 		Outcome: shared.OutcomeMeleeNoBlockDodgeParryCrit,
+		Slots:   []proto.ItemSlot{proto.ItemSlot_ItemSlotTrinket1, proto.ItemSlot_ItemSlotTrinket2},
 		Trigger: core.ProcTrigger{
 			Name:     "Darkmoon Card: Hurricane",
 			ProcMask: core.ProcMaskMeleeOrRanged,
@@ -31,8 +33,9 @@ func init() {
 		School:  core.SpellSchoolNature,
 		MinDmg:  5250,
 		MaxDmg:  8750,
-		Outcome: shared.OutcomeMeleeNoBlockDodgeParryCrit,
 		Flags:   core.SpellFlagNoSpellMods | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt,
+		Outcome: shared.OutcomeMeleeNoBlockDodgeParryCrit,
+		Slots:   []proto.ItemSlot{proto.ItemSlot_ItemSlotTrinket1, proto.ItemSlot_ItemSlotTrinket2},
 		Trigger: core.ProcTrigger{
 			Name:     "Darkmoon Card: Hurricane",
 			ProcMask: core.ProcMaskMeleeOrRanged,
@@ -74,7 +77,7 @@ func init() {
 			},
 		})
 
-		core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		aura := core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Electrical Charge Aura",
 			ActionID:   core.ActionID{ItemID: 68925},
 			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
@@ -92,6 +95,8 @@ func init() {
 				}
 			},
 		}))
+
+		character.ItemSwap.RegisterProc(68925, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotTrinket1, proto.ItemSlot_ItemSlotTrinket2})
 	})
 
 	core.NewItemEffect(69110, func(agent core.Agent) {
@@ -124,7 +129,7 @@ func init() {
 			},
 		})
 
-		core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		aura := core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Electrical Charge Aura",
 			ActionID:   core.ActionID{ItemID: 69110},
 			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
@@ -142,6 +147,8 @@ func init() {
 				}
 			},
 		}))
+
+		character.ItemSwap.RegisterProc(69110, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotTrinket1, proto.ItemSlot_ItemSlotTrinket2})
 	})
 
 }

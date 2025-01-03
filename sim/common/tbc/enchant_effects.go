@@ -61,7 +61,7 @@ func init() {
 	core.NewEnchantEffect(1900, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetProcMaskForEnchant(1900)
+		procMask := character.GetDefaultProcMaskForWeaponEnchant(1900)
 		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
 
 		// -4 str per level over 60
@@ -90,7 +90,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(1900, 1.0, &ppmm, aura)
+		character.ItemSwap.RegisterPPMEffect(1900, 1.0, &ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
 	})
 
 	core.NewEnchantEffect(2929, func(agent core.Agent) {
@@ -103,7 +103,7 @@ func init() {
 	core.NewEnchantEffect(2673, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetProcMaskForEnchant(2673)
+		procMask := character.GetDefaultProcMaskForWeaponEnchant(2673)
 		ppmm := character.AutoAttacks.NewPPMManager(0.73, procMask)
 
 		mhAura := character.NewTemporaryStatsAura("Lightning Speed MH", core.ActionID{SpellID: 28093, Tag: 1}, stats.Stats{stats.HasteRating: 30.0, stats.Agility: 120}, time.Second*15)
@@ -130,7 +130,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(2673, 0.73, &ppmm, aura)
+		character.ItemSwap.RegisterPPMEffect(2673, 0.73, &ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
 	})
 
 	core.AddWeaponEffect(2723, func(agent core.Agent, _ proto.ItemSlot) {
@@ -151,7 +151,7 @@ func init() {
 	core.NewEnchantEffect(3225, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetProcMaskForEnchant(3225)
+		procMask := character.GetDefaultProcMaskForWeaponEnchant(3225)
 		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
 
 		procAura := character.NewTemporaryStatsAura("Executioner Proc", core.ActionID{SpellID: 42976}, stats.Stats{stats.CritRating: 120}, time.Second*15)
@@ -173,7 +173,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(3225, 1.0, &ppmm, aura)
+		character.ItemSwap.RegisterPPMEffect(3225, 1.0, &ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
 	})
 
 	// https://web.archive.org/web/20100702102132/http://elitistjerks.com/f15/t27347-deathfrost_its_mechanics/p2/#post789470
@@ -189,7 +189,8 @@ func init() {
 		} else {
 			label += "OH"
 		}
-		ppmm := character.AutoAttacks.NewPPMManager(2.15, core.ProcMaskMelee)
+		procMask := core.ProcMaskMelee
+		ppmm := character.AutoAttacks.NewPPMManager(2.15, procMask)
 
 		aura := character.GetOrRegisterAura(core.Aura{
 			Label:    label,
@@ -215,12 +216,12 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(3273, 2.15, &ppmm, aura)
+		character.ItemSwap.RegisterPPMEffect(3273, 2.15, &ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
 	}
 	core.NewEnchantEffect(3273, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetProcMaskForEnchant(3273)
+		procMask := character.GetDefaultProcMaskForWeaponEnchant(3273)
 		if procMask == core.ProcMaskUnknown {
 			return
 		}

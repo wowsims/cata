@@ -346,14 +346,17 @@ func (character *Character) applyItemEffects(agent Agent) {
 	}
 
 	if character.ItemSwap.IsEnabled() {
-		offset := int(proto.ItemSlot_ItemSlotMainHand)
 		for i, item := range character.ItemSwap.unEquippedItems {
+			if applyItemEffect, ok := itemEffects[item.ID]; ok {
+				applyItemEffect(agent)
+			}
+
 			if applyEnchantEffect, ok := enchantEffects[item.Enchant.EffectID]; ok {
 				applyEnchantEffect(agent)
 			}
 
 			if applyWeaponEffect, ok := weaponEffects[item.Enchant.EffectID]; ok {
-				applyWeaponEffect(agent, proto.ItemSlot(offset+i))
+				applyWeaponEffect(agent, proto.ItemSlot(i))
 			}
 		}
 	}
@@ -515,6 +518,8 @@ func (character *Character) reset(sim *Simulation, agent Agent) {
 
 	agent.Reset(sim)
 
+	character.ItemSwap.reset(sim)
+
 	for _, petAgent := range character.PetAgents {
 		petAgent.GetPet().reset(sim, petAgent)
 	}
@@ -593,31 +598,31 @@ func (character *Character) HasRangedWeapon() bool {
 	return character.GetRangedWeapon() != nil
 }
 
-func (character *Character) GetProcMaskForEnchant(effectID int32) ProcMask {
-	return character.getProcMaskFor(func(weapon *Item) bool {
+func (character *Character) GetDefaultProcMaskForWeaponEnchant(effectID int32) ProcMask {
+	return character.getDefaultProcMaskFor(func(weapon *Item) bool {
 		return weapon.Enchant.EffectID == effectID
 	})
 }
 
-func (character *Character) GetProcMaskForItem(itemID int32) ProcMask {
-	return character.getProcMaskFor(func(weapon *Item) bool {
+func (character *Character) GetDefaultProcMaskForWeaponEffect(itemID int32) ProcMask {
+	return character.getDefaultProcMaskFor(func(weapon *Item) bool {
 		return weapon.ID == itemID
 	})
 }
 
 func (character *Character) GetProcMaskForTypes(weaponTypes ...proto.WeaponType) ProcMask {
-	return character.getProcMaskFor(func(weapon *Item) bool {
+	return character.getDefaultProcMaskFor(func(weapon *Item) bool {
 		return weapon != nil && slices.Contains(weaponTypes, weapon.WeaponType)
 	})
 }
 
 func (character *Character) GetProcMaskForTypesAndHand(twohand bool, weaponTypes ...proto.WeaponType) ProcMask {
-	return character.getProcMaskFor(func(weapon *Item) bool {
+	return character.getDefaultProcMaskFor(func(weapon *Item) bool {
 		return weapon != nil && (weapon.HandType == proto.HandType_HandTypeTwoHand) == twohand && slices.Contains(weaponTypes, weapon.WeaponType)
 	})
 }
 
-func (character *Character) getProcMaskFor(pred func(weapon *Item) bool) ProcMask {
+func (character *Character) getDefaultProcMaskFor(pred func(item *Item) bool) ProcMask {
 	mask := ProcMaskUnknown
 	if pred(character.MainHand()) {
 		mask |= ProcMaskMeleeMH
@@ -635,7 +640,6 @@ func (character *Character) doneIteration(sim *Simulation) {
 		character.Metrics.AddFinalPetMetrics(&pet.Metrics)
 	}
 
-	character.ItemSwap.doneIteration(sim)
 	character.Unit.doneIteration(sim)
 }
 
@@ -772,8 +776,66 @@ func (character *Character) MeetsArmorSpecializationRequirement(armorType proto.
 }
 
 func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Stat, armorType proto.ArmorType) {
-	hasBonus := character.MeetsArmorSpecializationRequirement(armorType)
-	if hasBonus {
-		character.MultiplyStat(primaryStat, 1.05)
+	armorSpecializationDepdency := character.NewDynamicMultiplyStat(primaryStat, 1.05)
+	var isEnabled bool
+
+	enableArmorSpecialization := func(sim *Simulation) {
+		character.EnableBuildPhaseStatDep(sim, armorSpecializationDepdency)
+
+		if isEnabled {
+			return
+		}
+		isEnabled = true
+		if sim.Log != nil {
+			sim.Log("Armor Specialization: Active")
+		}
+	}
+	disableArmorSpecialization := func(sim *Simulation) {
+		character.DisableBuildPhaseStatDep(sim, armorSpecializationDepdency)
+
+		if !isEnabled {
+			return
+		}
+		isEnabled = false
+		if sim.Log != nil {
+			sim.Log("Armor Specialization: Inactive")
+		}
+	}
+
+	processArmorSpecialization := func(sim *Simulation) {
+		hasBonus := character.MeetsArmorSpecializationRequirement(armorType)
+		if hasBonus {
+			enableArmorSpecialization(sim)
+		} else {
+			disableArmorSpecialization(sim)
+		}
+	}
+
+	character.RegisterAura(Aura{
+		Label:      "Armor Specialization",
+		Duration:   NeverExpires,
+		BuildPhase: CharacterBuildPhaseTalents,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			processArmorSpecialization(sim)
+		},
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
+
+	if character.ItemSwap.IsEnabled() {
+		character.RegisterItemSwapCallback([]proto.ItemSlot{
+			proto.ItemSlot_ItemSlotHead,
+			proto.ItemSlot_ItemSlotShoulder,
+			proto.ItemSlot_ItemSlotChest,
+			proto.ItemSlot_ItemSlotWrist,
+			proto.ItemSlot_ItemSlotHands,
+			proto.ItemSlot_ItemSlotWaist,
+			proto.ItemSlot_ItemSlotLegs,
+			proto.ItemSlot_ItemSlotFeet,
+		},
+			func(sim *Simulation, _ proto.ItemSlot) {
+				processArmorSpecialization(sim)
+			})
 	}
 }

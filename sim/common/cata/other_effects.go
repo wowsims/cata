@@ -1126,7 +1126,7 @@ func init() {
 			character := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: []int32{109828, 108022, 109831}[version]}
 			hpModifier := []float64{0.013, 0.015, 0.017}[version]
-			procMask := character.GetProcMaskForItem(souldrinkerItemID) | core.ProcMaskMeleeProc
+			procMask := character.GetDefaultProcMaskForWeaponEffect(souldrinkerItemID) | core.ProcMaskMeleeProc
 
 			var damageDealt float64
 			drainLifeHeal := character.RegisterSpell(core.SpellConfig{
@@ -1189,7 +1189,7 @@ func init() {
 		core.NewItemEffect(nokaledItemID, func(agent core.Agent) {
 			character := agent.GetCharacter()
 
-			procMask := character.GetProcMaskForItem(nokaledItemID) | core.ProcMaskMeleeProc
+			procMask := character.GetDefaultProcMaskForWeaponEffect(nokaledItemID) | core.ProcMaskMeleeProc
 			minDamage := []float64{6781, 7654, 8640}[version]
 			maxDamage := []float64{10171, 11481, 12960}[version]
 
@@ -1380,6 +1380,7 @@ type IgniteConfig struct {
 	ProcTrigger        core.ProcTrigger // Ignores the Handler field and creates a custom one, but uses all others.
 	DamageCalculator   IgniteDamageCalculator
 	IncludeAuraDelay   bool // "munching" and "free roll-over" interactions
+	SetBonusAura       *core.Aura
 }
 
 func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
@@ -1489,6 +1490,11 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 		}
 	}
 
-	core.MakeProcTriggerAura(unit, procTrigger)
+	if config.SetBonusAura != nil {
+		config.SetBonusAura.AttachProcTrigger(procTrigger)
+	} else {
+		core.MakeProcTriggerAura(unit, procTrigger)
+	}
+
 	return igniteSpell
 }

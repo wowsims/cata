@@ -6,16 +6,19 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
+func (dk *DeathKnight) iceBoundFortituteBaseDuration() time.Duration {
+	return 12 * time.Second
+}
+
 func (dk *DeathKnight) registerIceboundFortitudeSpell() {
 	actionID := core.ActionID{SpellID: 48792}
 
 	dmgTakenMult := 0.8 - 0.15*float64(dk.Talents.SanguineFortitude)
-	hasT11Set := dk.HasSetBonus(ItemSetMagmaPlatedBattlearmor, 4)
 
-	aura := dk.RegisterAura(core.Aura{
+	dk.IceBoundFortituteAura = dk.RegisterAura(core.Aura{
 		Label:    "Icebound Fortitude",
 		ActionID: actionID,
-		Duration: core.TernaryDuration(hasT11Set, time.Second*18, time.Second*12),
+		Duration: dk.iceBoundFortituteBaseDuration(),
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageTakenMultiplier *= dmgTakenMult
@@ -41,7 +44,7 @@ func (dk *DeathKnight) registerIceboundFortitudeSpell() {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			aura.Activate(sim)
+			dk.IceBoundFortituteAura.Activate(sim)
 		},
 	})
 

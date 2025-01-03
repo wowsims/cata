@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -101,12 +102,7 @@ func (dk *DeathKnight) applyContagion() {
 func (dk *DeathKnight) applyRunicEmpowerementCorruption() {
 	var handler func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult)
 
-	has4pcT13 := dk.HasSetBonus(ItemSetNecroticBoneplateBattlegear, 4)
-
-	var runicMasteryAura *core.StatBuffAura
-	if has4pcT13 {
-		runicMasteryAura = dk.NewTemporaryStatsAura("Runic Mastery", core.ActionID{SpellID: 105647}, stats.Stats{stats.MasteryRating: 710}, time.Second*12)
-	}
+	runicMasteryAura := dk.NewTemporaryStatsAura("Runic Mastery", core.ActionID{SpellID: 105647}, stats.Stats{stats.MasteryRating: 710}, time.Second*12)
 
 	if dk.Talents.RunicCorruption > 0 {
 		dk.AddStaticMod(core.SpellModConfig{
@@ -138,7 +134,7 @@ func (dk *DeathKnight) applyRunicEmpowerementCorruption() {
 			}
 
 			// T13 4pc: Runic Corruption has a 40% chance to also grant 710 mastery rating for 12 sec when activated.
-			if has4pcT13 && sim.Proc(0.4, "T13 4pc") {
+			if dk.HasT13Dps4pc && sim.Proc(0.4, "T13 4pc") {
 				runicMasteryAura.Activate(sim)
 			}
 		}
@@ -155,7 +151,7 @@ func (dk *DeathKnight) applyRunicEmpowerementCorruption() {
 			dk.RegenRandomDepletedRune(sim, runeMetrics)
 
 			// T13 4pc: Runic Empowerment has a 25% chance to also grant 710 mastery rating for 12 sec when activated.
-			if has4pcT13 && sim.Proc(0.25, "T13 4pc") {
+			if dk.HasT13Dps4pc && sim.Proc(0.25, "T13 4pc") {
 				runicMasteryAura.Activate(sim)
 			}
 		}
@@ -225,7 +221,7 @@ func (dk *DeathKnight) applyUnholyBlight() {
 }
 
 func (dk *DeathKnight) ebonPlaguebringerDiseaseMultiplier(_ *core.Simulation, spell *core.Spell, _ *core.AttackTable) float64 {
-	return core.TernaryFloat64(spell.ClassSpellMask&DeathKnightSpellDisease > 0, 1.0+0.15*float64(dk.Talents.EbonPlaguebringer), 1.0)
+	return core.TernaryFloat64(spell.Matches(DeathKnightSpellDisease), 1.0+0.15*float64(dk.Talents.EbonPlaguebringer), 1.0)
 }
 
 func (dk *DeathKnight) applyEbonPlaguebringer() {
@@ -253,7 +249,7 @@ func (dk *DeathKnight) applyEbonPlaguebringer() {
 	core.MakePermanent(dk.GetOrRegisterAura(core.Aura{
 		Label: "Ebon Plague Triggers",
 		OnApplyEffects: func(aura *core.Aura, sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if spell.ClassSpellMask&DeathKnightSpellDisease == 0 {
+			if !spell.Matches(DeathKnightSpellDisease) {
 				return
 			}
 
@@ -261,7 +257,7 @@ func (dk *DeathKnight) applyEbonPlaguebringer() {
 			dk.EbonPlagueAura.Get(target).Activate(sim)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask&DeathKnightSpellDisease == 0 {
+			if !spell.Matches(DeathKnightSpellDisease) {
 				return
 			}
 
@@ -275,19 +271,17 @@ func (dk *DeathKnight) applySuddenDoom() {
 		return
 	}
 
-	has2pcT13 := dk.HasSetBonus(ItemSetNecroticBoneplateBattlegear, 2)
-
 	mod := dk.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_PowerCost_Pct,
 		ClassMask:  DeathKnightSpellDeathCoil | DeathKnightSpellDeathCoilHeal,
 		FloatValue: -1,
 	})
 
-	aura := dk.GetOrRegisterAura(core.Aura{
+	dk.SuddenDoomProcAura = dk.GetOrRegisterAura(core.Aura{
 		Label:     "Sudden Doom Proc",
 		ActionID:  core.ActionID{SpellID: 81340},
 		Duration:  time.Second * 10,
-		MaxStacks: core.TernaryInt32(has2pcT13, 2, 0),
+		MaxStacks: 0,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			mod.Activate()
@@ -296,7 +290,7 @@ func (dk *DeathKnight) applySuddenDoom() {
 			mod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask != DeathKnightSpellDeathCoil {
+			if !spell.Matches(DeathKnightSpellDeathCoil) {
 				return
 			}
 
@@ -304,7 +298,7 @@ func (dk *DeathKnight) applySuddenDoom() {
 				return
 			}
 
-			if has2pcT13 {
+			if dk.HasT13Dps2pc {
 				aura.RemoveStack(sim)
 			} else {
 				aura.Deactivate(sim)
@@ -321,17 +315,18 @@ func (dk *DeathKnight) applySuddenDoom() {
 		PPM:      ppm,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			aura.Activate(sim)
+			dk.SuddenDoomProcAura.Activate(sim)
 
 			// T13 2pc: Sudden Doom has a 30% chance to grant 2 charges when triggered instead of 1.
-			if has2pcT13 {
+			dk.SuddenDoomProcAura.MaxStacks = core.TernaryInt32(dk.HasT13Dps2pc, 2, 0)
+			if dk.HasT13Dps2pc {
 				stacks := core.TernaryInt32(sim.Proc(0.3, "T13 2pc"), 2, 1)
-				aura.SetStacks(sim, stacks)
+				dk.SuddenDoomProcAura.SetStacks(sim, stacks)
 			}
 		},
 	})
 
-	dk.ItemSwap.RegisterOnSwapItemUpdateProcMaskWithPPMManager(core.ProcMaskMeleeMH, ppm, triggerAura.Ppmm)
+	dk.ItemSwap.RegisterPPMEffectWithCustomProcMask(core.ProcMaskMeleeMH, ppm, triggerAura.Ppmm, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
 }
 
 func (dk *DeathKnight) applyShadowInfusion() *core.Aura {

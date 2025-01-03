@@ -1,4 +1,5 @@
 import tippy from 'tippy.js';
+import { ref } from 'tsx-vanilla';
 
 import { Player } from '../../player.js';
 import { ItemSlot, Spec } from '../../proto/common.js';
@@ -35,51 +36,52 @@ export class ItemSwapPicker<SpecType extends Spec> extends Component {
 			changedEvent: (player: Player<SpecType>) => player.itemSwapChangeEmitter,
 		});
 
-		const swapPickerContainer = document.createElement('div');
-		swapPickerContainer.classList.add('input-root', 'input-inline');
-		this.rootElem.appendChild(swapPickerContainer);
-
-		let noteElem: Element;
-		if (config.note) {
-			noteElem = this.rootElem.appendChild(<p className="form-text">{config.note}</p>);
-		}
+		const swapPickerContainerRef = ref<HTMLDivElement>();
+		const swapButtonRef = ref<HTMLButtonElement>();
+		const noteRef = ref<HTMLParagraphElement>();
+		const itemSwapContainer = Input.newGroupContainer('icon-group');
+		this.rootElem.appendChild(
+			<>
+				<div ref={swapPickerContainerRef} className="input-root input-inline">
+					<label className="form-label">Item Swap</label>
+					<button ref={swapButtonRef} className="gear-swap-icon">
+						<i className="fas fa-arrows-rotate me-1"></i>
+					</button>
+					{itemSwapContainer}
+				</div>
+				{config.note && (
+					<p ref={noteRef} className="form-text">
+						{config.note}
+					</p>
+				)}
+			</>,
+		);
 
 		const toggleEnabled = () => {
 			if (!player.getEnableItemSwap()) {
-				swapPickerContainer.classList.add('hide');
-				noteElem?.classList.add('hide');
+				swapPickerContainerRef.value?.classList.add('hide');
+				noteRef.value?.classList.add('hide');
 			} else {
-				swapPickerContainer.classList.remove('hide');
-				noteElem?.classList.remove('hide');
+				swapPickerContainerRef.value?.classList.remove('hide');
+				noteRef.value?.classList.remove('hide');
 			}
 		};
 		player.itemSwapChangeEmitter.on(toggleEnabled);
 		toggleEnabled();
 
-		const label = document.createElement('label');
-		label.classList.add('form-label');
-		label.textContent = 'Item Swap';
-		swapPickerContainer.appendChild(label);
+		if (swapButtonRef.value) {
+			swapButtonRef.value.addEventListener('click', _event => this.swapWithGear(TypedEvent.nextEventID(), player));
+			tippy(swapButtonRef.value, {
+				content: 'Swap with equipped items',
+			});
+		}
 
-		const itemSwapContainer = Input.newGroupContainer();
-		itemSwapContainer.classList.add('icon-group');
-		swapPickerContainer.appendChild(itemSwapContainer);
-
-		const swapButton = (
-			<button className="gear-swap-icon">
-				<i className="fas fa-arrows-rotate me-1"></i>
-			</button>
-		);
-		swapButton.addEventListener('click', _event => this.swapWithGear(TypedEvent.nextEventID(), player));
-		itemSwapContainer.appendChild(swapButton);
-
-		tippy(swapButton, {
-			content: 'Swap with equipped items',
-		});
-
+		const tmpContainer = (<></>) as HTMLElement;
 		this.itemSlots.forEach(itemSlot => {
-			new IconItemSwapPicker(itemSwapContainer, simUI, player, itemSlot);
+			new IconItemSwapPicker(tmpContainer, simUI, player, itemSlot);
 		});
+
+		itemSwapContainer.appendChild(tmpContainer);
 	}
 
 	swapWithGear(eventID: EventID, player: Player<SpecType>) {

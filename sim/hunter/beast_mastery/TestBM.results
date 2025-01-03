@@ -52,8 +52,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-Ahn'KaharBloodHunter'sBattlegear"
  value: {
-  dps: 21867.14021
-  tps: 14079.13569
+  dps: 21498.78092
+  tps: 13858.47028
  }
 }
 dps_results: {
@@ -641,8 +641,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-Flamewaker'sBattlegear"
  value: {
-  dps: 26321.21677
-  tps: 16578.24976
+  dps: 26276.80777
+  tps: 16480.95918
  }
 }
 dps_results: {
@@ -1061,8 +1061,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-Lightning-ChargedBattlegear"
  value: {
-  dps: 24565.79227
-  tps: 15458.02105
+  dps: 25159.77352
+  tps: 16110.14663
  }
 }
 dps_results: {

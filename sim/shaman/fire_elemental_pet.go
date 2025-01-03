@@ -17,18 +17,15 @@ type FireElemental struct {
 
 	FireShieldAura *core.Aura
 
-	BonusSpellpower float64
-	BonusIntellect  float64
-
 	shamanOwner *Shaman
 }
 
 var FireElementalSpellPowerScaling = 0.5883
 var FireElementalIntellectScaling = 0.3198
 
-func (shaman *Shaman) NewFireElemental(bonusSpellPower float64, bonusIntellect float64) *FireElemental {
+func (shaman *Shaman) NewFireElemental() *FireElemental {
 	fireElemental := &FireElemental{
-		Pet:         core.NewPet("Greater Fire Elemental", &shaman.Character, fireElementalPetBaseStats, shaman.fireElementalStatInheritance(bonusIntellect, bonusSpellPower), false, true),
+		Pet:         core.NewPet("Greater Fire Elemental", &shaman.Character, fireElementalPetBaseStats, shaman.fireElementalStatInheritance(), false, true),
 		shamanOwner: shaman,
 	}
 	fireElemental.EnableManaBar()
@@ -56,9 +53,6 @@ func (shaman *Shaman) NewFireElemental(bonusSpellPower float64, bonusIntellect f
 		})
 	}
 
-	fireElemental.BonusIntellect = bonusIntellect
-	fireElemental.BonusSpellpower = bonusSpellPower
-
 	fireElemental.OnPetEnable = fireElemental.enable
 	fireElemental.OnPetDisable = fireElemental.disable
 
@@ -68,7 +62,7 @@ func (shaman *Shaman) NewFireElemental(bonusSpellPower float64, bonusIntellect f
 }
 
 func (fireElemental *FireElemental) enable(sim *core.Simulation) {
-	fireElemental.ChangeStatInheritance(fireElemental.shamanOwner.fireElementalStatInheritance(0, 0))
+	fireElemental.ChangeStatInheritance(fireElemental.shamanOwner.fireElementalStatInheritance())
 	fireElemental.FireShieldAura.Activate(sim)
 }
 
@@ -147,17 +141,15 @@ var fireElementalPetBaseStats = stats.Stats{
 	stats.SpellCritPercent:    6.8,
 }
 
-func (shaman *Shaman) fireElementalStatInheritance(bonusIntellect float64, bonusSpellPower float64) core.PetStatInheritance {
+func (shaman *Shaman) fireElementalStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
 		ownerSpellHitPercent := ownerStats[stats.SpellHitPercent]
 
-		bonusStats := shaman.ApplyStatDependencies(stats.Stats{stats.Intellect: bonusIntellect, stats.SpellPower: bonusSpellPower})
-
 		return stats.Stats{
-			stats.Stamina:     ownerStats[stats.Stamina] * 0.80,                                                               //Estimated from beta testing
-			stats.Intellect:   (ownerStats[stats.Intellect] + bonusStats[stats.Intellect]) * FireElementalIntellectScaling,    //Estimated from beta testing
-			stats.SpellPower:  (ownerStats[stats.SpellPower] + bonusStats[stats.SpellPower]) * FireElementalSpellPowerScaling, //Estimated from beta testing
-			stats.AttackPower: (ownerStats[stats.SpellPower] + bonusStats[stats.SpellPower]) * 4.9,                            // 0.7*7 Estimated from beta testing
+			stats.Stamina:     ownerStats[stats.Stamina] * 0.80,                              // Estimated from beta testing
+			stats.Intellect:   ownerStats[stats.Intellect] * FireElementalIntellectScaling,   // Estimated from beta testing
+			stats.SpellPower:  ownerStats[stats.SpellPower] * FireElementalSpellPowerScaling, // Estimated from beta testing
+			stats.AttackPower: ownerStats[stats.SpellPower] * 4.9,                            // 0.7*7 Estimated from beta testing
 
 			stats.PhysicalHitPercent: ownerSpellHitPercent / 17 * 8,
 			stats.SpellHitPercent:    ownerSpellHitPercent,
