@@ -95,9 +95,9 @@ func (swap *ItemSwap) RegisterPPMEffect(effectID int32, ppm float64, ppmm *PPMMa
 	swap.registerPPMInternal(ItemSwapPPMConfig{
 		EnchantId: effectID,
 		PPM:       ppm,
-		ppmm:      ppmm,
-		aura:      aura,
-		slots:     slots,
+		Ppmm:      ppmm,
+		Aura:      aura,
+		Slots:     slots,
 	})
 }
 
@@ -106,9 +106,9 @@ func (swap *ItemSwap) RegisterPPMWeaponEffect(itemID int32, ppm float64, ppmm *P
 	swap.registerPPMInternal(ItemSwapPPMConfig{
 		EffectID: itemID,
 		PPM:      ppm,
-		ppmm:     ppmm,
-		aura:     aura,
-		slots:    slots,
+		Ppmm:     ppmm,
+		Aura:     aura,
+		Slots:    slots,
 	})
 }
 
@@ -117,8 +117,8 @@ func (swap *ItemSwap) RegisterPPMEffectWithCustomProcMask(procMask ProcMask, ppm
 	swap.registerPPMInternal(ItemSwapPPMConfig{
 		CustomProcMask: procMask,
 		PPM:            ppm,
-		ppmm:           ppmm,
-		slots:          slots,
+		Ppmm:           ppmm,
+		Slots:          slots,
 	})
 }
 
@@ -127,24 +127,28 @@ type ItemSwapPPMConfig struct {
 	EnchantId      int32
 	PPM            float64
 	CustomProcMask ProcMask
-	ppmm           *PPMManager
-	aura           *Aura
-	slots          []proto.ItemSlot
+	Ppmm           *PPMManager
+	Aura           *Aura
+	Slots          []proto.ItemSlot
 }
 
 func (swap *ItemSwap) registerPPMInternal(config ItemSwapPPMConfig) {
-	itemID := config.EffectID
-	enchantEffectID := config.EnchantId
-	ppm := config.PPM
-	ppmm := config.ppmm
-	aura := config.aura
-	slots := config.slots
-	customProcMask := config.CustomProcMask
-
 	character := swap.character
 	if character == nil || !character.ItemSwap.IsEnabled() {
 		return
 	}
+
+	itemID := config.EffectID
+	enchantEffectID := config.EnchantId
+	ppm := config.PPM
+	ppmm := config.Ppmm
+	aura := config.Aura
+	slots := config.Slots
+	customProcMask := config.CustomProcMask
+
+	isItemPPM := itemID != 0
+	isEnchantEffectPPM := enchantEffectID != 0
+
 	character.RegisterItemSwapCallback(slots, func(sim *Simulation, slot proto.ItemSlot) {
 		item := swap.GetEquippedItemBySlot(slot)
 
@@ -156,9 +160,6 @@ func (swap *ItemSwap) registerPPMInternal(config ItemSwapPPMConfig) {
 		var hasItemEquipped bool
 		var procMask ProcMask
 		var isItemSlotMatch = false
-
-		isItemPPM := itemID != 0
-		isEnchantEffectPPM := enchantEffectID != 0
 
 		if isItemPPM {
 			hasItemEquipped = item.ID == itemID
@@ -184,41 +185,65 @@ func (swap *ItemSwap) registerPPMInternal(config ItemSwapPPMConfig) {
 
 		*ppmm = character.AutoAttacks.NewPPMManager(ppm, procMask)
 	})
-
 }
 
 // Helper for handling Item Effects that use the itemID to toggle the aura on and off
 func (swap *ItemSwap) RegisterProc(itemID int32, aura *Aura, slots []proto.ItemSlot) {
-	character := swap.character
-	if character == nil || !character.ItemSwap.IsEnabled() {
-		return
-	}
-	character.RegisterItemSwapCallback(slots, func(sim *Simulation, slot proto.ItemSlot) {
-		hasItemEquipped := swap.HasItemEquipped(itemID)
-		if hasItemEquipped {
-			if !aura.IsActive() {
-				aura.Activate(sim)
-				if aura.Icd != nil {
-					aura.Icd.Use(sim)
-				}
-			}
-		} else {
-			aura.Deactivate(sim)
-		}
+	swap.registerProcInternal(ItemSwapProcConfig{
+		ItemID: itemID,
+		Aura:   aura,
+		Slots:  slots,
 	})
 }
 
 // Helper for handling Enchant Effects that use the effectID to toggle the aura on and off
 func (swap *ItemSwap) RegisterEnchantProc(effectID int32, aura *Aura, slots []proto.ItemSlot) {
+	swap.registerProcInternal(ItemSwapProcConfig{
+		EnchantId: effectID,
+		Aura:      aura,
+		Slots:     slots,
+	})
+}
+
+type ItemSwapProcConfig struct {
+	ItemID    int32
+	EnchantId int32
+	Aura      *Aura
+	Slots     []proto.ItemSlot
+}
+
+func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
 	character := swap.character
 	if character == nil || !character.ItemSwap.IsEnabled() {
 		return
 	}
+
+	itemID := config.ItemID
+	enchantEffectID := config.EnchantId
+	aura := config.Aura
+	slots := config.Slots
+
+	isItemProc := itemID != 0
+	isEnchantEffectProc := enchantEffectID != 0
+
 	character.RegisterItemSwapCallback(slots, func(sim *Simulation, slot proto.ItemSlot) {
 		item := swap.GetEquippedItemBySlot(slot)
-		hasEffectID := item.Enchant.EffectID == effectID
-		if hasEffectID {
-			aura.Activate(sim)
+		var hasItemEquipped bool
+
+		if isItemProc {
+			hasItemEquipped = swap.HasItemEquipped(itemID)
+		} else if isEnchantEffectProc {
+			hasItemEquipped = item.Enchant.EffectID == enchantEffectID
+		}
+
+		if hasItemEquipped {
+			if !aura.IsActive() {
+				aura.Activate(sim)
+				// Enchant effects such as Weapon/Back do not trigger an ICD
+				if isItemProc && aura.Icd != nil {
+					aura.Icd.Use(sim)
+				}
+			}
 		} else {
 			aura.Deactivate(sim)
 		}

@@ -217,22 +217,20 @@ func init() {
 	})
 
 	// Enchant: 3790, Spell: 59630 - Black Magic
-	shared.NewEnchantProcStatBonusEffect(shared.EnchantProcStatBonusEffect{
-		EnchantID: 3790,
-		Slots:     []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand},
-		ProcStatBonusEffect: shared.ProcStatBonusEffect{
-			Name:           "Black Magic",
-			ID:             59630,
-			AuraID:         59626,
-			Callback:       core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
-			ProcMask:       core.ProcMaskSpellOrSpellProc,
-			Outcome:        core.OutcomeLanded,
-			ICD:            time.Second * 35,
-			ProcChance:     0.35,
-			Bonus:          stats.Stats{stats.HasteRating: 250},
-			Duration:       time.Second * 10,
-			IgnoreSpellIDs: []int32{47465, 12867},
-		},
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:           "Black Magic",
+		EnchantID:      3790,
+		ItemID:         59630,
+		AuraID:         59626,
+		Callback:       core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
+		ProcMask:       core.ProcMaskSpellOrSpellProc,
+		Outcome:        core.OutcomeLanded,
+		ICD:            time.Second * 35,
+		ProcChance:     0.35,
+		Bonus:          stats.Stats{stats.HasteRating: 250},
+		Duration:       time.Second * 10,
+		IgnoreSpellIDs: []int32{47465, 12867},
+		Slots:          []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand},
 	})
 
 	// Enchant: 3843, Spell: 61471 - Diamond-cut Refractor Scope
@@ -318,21 +316,19 @@ func init() {
 	//})
 
 	// Enchant: 3722, Spell: 55642 - Lightweave Embroidery
-	shared.NewEnchantProcStatBonusEffect(shared.EnchantProcStatBonusEffect{
-		EnchantID: 3722,
-		Slots:     []proto.ItemSlot{proto.ItemSlot_ItemSlotBack},
-		ProcStatBonusEffect: shared.ProcStatBonusEffect{
-			Name:       "Lightweave Embroidery",
-			ID:         55642,
-			AuraID:     55637,
-			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
-			ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
-			Outcome:    core.OutcomeLanded,
-			ICD:        time.Second * 60,
-			ProcChance: 0.35,
-			Bonus:      stats.Stats{stats.SpellPower: 295},
-			Duration:   time.Second * 15,
-		},
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Lightweave Embroidery",
+		EnchantID:  3722,
+		ItemID:     55642,
+		AuraID:     55637,
+		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
+		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
+		Outcome:    core.OutcomeLanded,
+		ICD:        time.Second * 60,
+		ProcChance: 0.35,
+		Bonus:      stats.Stats{stats.SpellPower: 295},
+		Duration:   time.Second * 15,
+		Slots:      []proto.ItemSlot{proto.ItemSlot_ItemSlotBack},
 	})
 
 	// Enchant: 3728, Spell: 55769 - Darkglow Embroidery
@@ -368,21 +364,19 @@ func init() {
 	})
 
 	// Enchant: 3730, Spell: 55777 - Swordguard Embroidery
-	shared.NewEnchantProcStatBonusEffect(shared.EnchantProcStatBonusEffect{
-		EnchantID: 3730,
-		Slots:     []proto.ItemSlot{proto.ItemSlot_ItemSlotBack},
-		ProcStatBonusEffect: shared.ProcStatBonusEffect{
-			Name:       "Swordguard Embroidery",
-			ID:         55777,
-			AuraID:     55775,
-			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
-			ProcMask:   core.ProcMaskMeleeOrRanged,
-			Outcome:    core.OutcomeLanded,
-			ICD:        time.Second * 55,
-			ProcChance: 0.2,
-			Bonus:      stats.Stats{stats.AttackPower: 400, stats.RangedAttackPower: 400},
-			Duration:   time.Second * 15,
-		},
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Swordguard Embroidery",
+		EnchantID:  3730,
+		ItemID:     55777,
+		AuraID:     55775,
+		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
+		ProcMask:   core.ProcMaskMeleeOrRanged,
+		Outcome:    core.OutcomeLanded,
+		ICD:        time.Second * 55,
+		ProcChance: 0.2,
+		Bonus:      stats.Stats{stats.AttackPower: 400, stats.RangedAttackPower: 400},
+		Duration:   time.Second * 15,
+		Slots:      []proto.ItemSlot{proto.ItemSlot_ItemSlotBack},
 	})
 
 	// Enchant: 3870, Spell: 64568 - Blood Draining

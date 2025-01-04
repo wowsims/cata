@@ -242,55 +242,49 @@ func init() {
 	})
 
 	// Enchant: 4084, Spell: 74225 - Enchant Weapon - Heartsong
-	shared.NewEnchantProcStatBonusEffect(shared.EnchantProcStatBonusEffect{
-		EnchantID: 4084,
-		Slots:     []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand},
-		ProcStatBonusEffect: shared.ProcStatBonusEffect{
-			Name:       "Heartsong",
-			ID:         74224,
-			AuraID:     74224,
-			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
-			ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
-			Outcome:    core.OutcomeLanded,
-			ICD:        time.Second * 20,
-			ProcChance: 0.25,
-			Bonus:      stats.Stats{stats.Spirit: 200},
-			Duration:   time.Second * 15,
-		},
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Heartsong",
+		EnchantID:  4084,
+		ItemID:     74224,
+		AuraID:     74224,
+		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
+		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
+		Outcome:    core.OutcomeLanded,
+		ICD:        time.Second * 20,
+		ProcChance: 0.25,
+		Bonus:      stats.Stats{stats.Spirit: 200},
+		Duration:   time.Second * 15,
+		Slots:      []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand},
 	})
 
 	// Enchant: 4097, Spell: 74242 - Enchant Weapon - Power Torrent
-	shared.NewEnchantProcStatBonusEffect(shared.EnchantProcStatBonusEffect{
-		EnchantID: 4097,
-		Slots:     []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand},
-		ProcStatBonusEffect: shared.ProcStatBonusEffect{
-			Name:       "Power Torrent",
-			ID:         74241,
-			AuraID:     74241,
-			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
-			ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
-			Outcome:    core.OutcomeLanded,
-			ICD:        time.Second * 45,
-			ProcChance: 1.0 / 3.0,
-			Bonus:      stats.Stats{stats.Intellect: 500},
-			Duration:   time.Second * 12,
-		},
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Power Torrent",
+		EnchantID:  4097,
+		ItemID:     74241,
+		AuraID:     74241,
+		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
+		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
+		Outcome:    core.OutcomeLanded,
+		ICD:        time.Second * 45,
+		ProcChance: 1.0 / 3.0,
+		Bonus:      stats.Stats{stats.Intellect: 500},
+		Duration:   time.Second * 12,
+		Slots:      []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand},
 	})
 
 	// Enchant: 4098, Spell: 74244 - Enchant Weapon - Windwalk
-	shared.NewEnchantProcStatBonusEffect(shared.EnchantProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:      "Windwalk",
 		EnchantID: 4098,
+		ItemID:    74243,
+		AuraID:    74243,
+		Callback:  core.CallbackOnSpellHitDealt,
+		Outcome:   core.OutcomeLanded,
+		PPM:       1, // based on old Wowhead comments, TODO: measure in Classic
+		Bonus:     stats.Stats{stats.DodgeRating: 600},
+		Duration:  time.Second * 10,
 		Slots:     []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand},
-		ProcStatBonusEffect: shared.ProcStatBonusEffect{
-			Name:     "Windwalk",
-			ID:       74243,
-			AuraID:   74243,
-			Callback: core.CallbackOnSpellHitDealt,
-			Outcome:  core.OutcomeLanded,
-			PPM:      1, // based on old Wowhead comments, TODO: measure in Classic
-			Bonus:    stats.Stats{stats.DodgeRating: 600},
-			Duration: time.Second * 10,
-		},
 	})
 
 	// Enchant: 4099, Spell: 74246 - Enchant Weapon - Landslide
@@ -332,75 +326,67 @@ func init() {
 	})
 
 	// Enchant: 4115, Spell: 75172 - Lightweave Embroidery
-	shared.NewEnchantProcStatBonusEffect(shared.EnchantProcStatBonusEffect{
-		EnchantID: 4115,
-		Slots:     []proto.ItemSlot{proto.ItemSlot_ItemSlotBack},
-		ProcStatBonusEffect: shared.ProcStatBonusEffect{
-			Name:       "Lightweave Embroidery Cata",
-			ID:         75171,
-			AuraID:     75170,
-			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
-			ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
-			Outcome:    core.OutcomeLanded,
-			ICD:        time.Second * 64,
-			ProcChance: 0.25,
-			Bonus:      stats.Stats{stats.Intellect: 580},
-			Duration:   time.Second * 15,
-		},
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Lightweave Embroidery Cata",
+		EnchantID:  4115,
+		ItemID:     75171,
+		AuraID:     75170,
+		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
+		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
+		Outcome:    core.OutcomeLanded,
+		ICD:        time.Second * 64,
+		ProcChance: 0.25,
+		Bonus:      stats.Stats{stats.Intellect: 580},
+		Duration:   time.Second * 15,
+		Slots:      []proto.ItemSlot{proto.ItemSlot_ItemSlotBack},
 	})
 
 	// Enchant: 4116, Spell: 75175 - Darkglow Embroidery
-	shared.NewEnchantProcStatBonusEffect(shared.EnchantProcStatBonusEffect{
-		EnchantID: 4116,
-		Slots:     []proto.ItemSlot{proto.ItemSlot_ItemSlotBack},
-		ProcStatBonusEffect: shared.ProcStatBonusEffect{
-			Name:       "Darkglow Embroidery Cata",
-			ID:         75174,
-			AuraID:     75173,
-			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
-			ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
-			Outcome:    core.OutcomeLanded,
-			ICD:        time.Second * 57,
-			ProcChance: 0.30,
-			Bonus:      stats.Stats{stats.Spirit: 580},
-			Duration:   time.Second * 15,
-		},
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Darkglow Embroidery Cata",
+		EnchantID:  4116,
+		ItemID:     75174,
+		AuraID:     75173,
+		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
+		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
+		Outcome:    core.OutcomeLanded,
+		ICD:        time.Second * 57,
+		ProcChance: 0.30,
+		Bonus:      stats.Stats{stats.Spirit: 580},
+		Duration:   time.Second * 15,
+		Slots:      []proto.ItemSlot{proto.ItemSlot_ItemSlotBack},
 	})
 
 	// Enchant: 4118, Spell: 75178 - Swordguard Embroidery
-	shared.NewEnchantProcStatBonusEffect(shared.EnchantProcStatBonusEffect{
-		EnchantID: 4118,
-		Slots:     []proto.ItemSlot{proto.ItemSlot_ItemSlotBack},
-		ProcStatBonusEffect: shared.ProcStatBonusEffect{
-			Name:       "Swordguard Embroidery Cata",
-			ID:         75176,
-			AuraID:     75178,
-			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
-			ProcMask:   core.ProcMaskMeleeOrRanged,
-			Outcome:    core.OutcomeLanded,
-			ICD:        time.Second * 55,
-			ProcChance: 0.15,
-			Bonus:      stats.Stats{stats.AttackPower: 1000, stats.RangedAttackPower: 1000},
-			Duration:   time.Second * 15,
-		},
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Swordguard Embroidery Cata",
+		EnchantID:  4118,
+		ItemID:     75176,
+		AuraID:     75178,
+		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
+		ProcMask:   core.ProcMaskMeleeOrRanged,
+		Outcome:    core.OutcomeLanded,
+		ICD:        time.Second * 55,
+		ProcChance: 0.15,
+		Bonus:      stats.Stats{stats.AttackPower: 1000, stats.RangedAttackPower: 1000},
+		Duration:   time.Second * 15,
+		Slots:      []proto.ItemSlot{proto.ItemSlot_ItemSlotBack},
 	})
 
 	// Enchant: 4175, Spell: 81932, Item: 59594 - Gnomish X-Ray Scope
-	shared.NewEnchantProcStatBonusEffect(shared.EnchantProcStatBonusEffect{
-		EnchantID: 4175,
-		Slots:     []proto.ItemSlot{proto.ItemSlot_ItemSlotRanged},
-		ProcStatBonusEffect: shared.ProcStatBonusEffect{
-			Name:       "Gnomish X-Ray Scope",
-			ID:         95712,
-			AuraID:     95712,
-			Callback:   core.CallbackOnSpellHitDealt,
-			ProcMask:   core.ProcMaskRanged,
-			Outcome:    core.OutcomeLanded,
-			ICD:        time.Second * 40,
-			ProcChance: 0.1,
-			Bonus:      stats.Stats{stats.RangedAttackPower: 800},
-			Duration:   time.Second * 10,
-		},
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Gnomish X-Ray Scope",
+		EnchantID:  4175,
+		ItemID:     95712,
+		AuraID:     95712,
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskRanged,
+		Outcome:    core.OutcomeLanded,
+		ICD:        time.Second * 40,
+		ProcChance: 0.1,
+		Bonus:      stats.Stats{stats.RangedAttackPower: 800},
+		Duration:   time.Second * 10,
+		Slots:      []proto.ItemSlot{proto.ItemSlot_ItemSlotRanged},
 	})
 
 	// Enchant: 4176, Item: 59595 - R19 Threatfinder
@@ -457,21 +443,19 @@ func init() {
 	})
 
 	// Enchant: 4267, Spell: 99623, Item: 70139 - Flintlocke's Woodchucker
-	shared.NewEnchantProcStatBonusEffectWithDamageProc(shared.EnchantProcStatBonusEffect{
-		EnchantID: 4267,
-		Slots:     []proto.ItemSlot{proto.ItemSlot_ItemSlotRanged},
-		ProcStatBonusEffect: shared.ProcStatBonusEffect{
-			Name:       "Flintlocke's Woodchucker",
-			ID:         99621,
-			AuraID:     99621,
-			Callback:   core.CallbackOnSpellHitDealt,
-			ProcMask:   core.ProcMaskRanged,
-			Outcome:    core.OutcomeLanded,
-			ICD:        time.Second * 40,
-			ProcChance: 0.1,
-			Bonus:      stats.Stats{stats.Agility: 300},
-			Duration:   time.Second * 10,
-		},
+	shared.NewProcStatBonusEffectWithDamageProc(shared.ProcStatBonusEffect{
+		Name:       "Flintlocke's Woodchucker",
+		EnchantID:  4267,
+		ItemID:     99621,
+		AuraID:     99621,
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskRanged,
+		Outcome:    core.OutcomeLanded,
+		ICD:        time.Second * 40,
+		ProcChance: 0.1,
+		Bonus:      stats.Stats{stats.Agility: 300},
+		Duration:   time.Second * 10,
+		Slots:      []proto.ItemSlot{proto.ItemSlot_ItemSlotRanged},
 	},
 		shared.DamageEffect{
 			SpellID:  99621,

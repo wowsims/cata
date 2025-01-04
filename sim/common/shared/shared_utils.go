@@ -11,7 +11,8 @@ import (
 
 type ProcStatBonusEffect struct {
 	Name       string
-	ID         int32
+	ItemID     int32
+	EnchantID  int32
 	AuraID     int32
 	Bonus      stats.Stats
 	Duration   time.Duration
@@ -28,6 +29,10 @@ type ProcStatBonusEffect struct {
 
 	// Any other custom proc conditions not covered by the above fields.
 	CustomProcCondition core.CustomStatBuffProcCondition
+
+	// Used to register for Item Swapping when the effect is not an equippable Item by itself.
+	// For example a Weapon or Back enchant.
+	Slots []proto.ItemSlot
 }
 
 type DamageEffect struct {
@@ -56,18 +61,20 @@ func NewProcStatBonusEffectWithDamageProc(config ProcStatBonusEffect, damage Dam
 
 	factory_StatBonusEffect(config, func(agent core.Agent) ExtraSpellInfo {
 		character := agent.GetCharacter()
+		critMultiplier := core.TernaryFloat64(damage.IsMelee, character.DefaultMeleeCritMultiplier(), character.DefaultSpellCritMultiplier())
+
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:                 core.ActionID{SpellID: damage.SpellID},
 			SpellSchool:              damage.School,
 			ProcMask:                 procMask,
 			Flags:                    core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 			DamageMultiplier:         1,
-			CritMultiplier:           character.DefaultSpellCritMultiplier(),
+			CritMultiplier:           critMultiplier,
 			DamageMultiplierAdditive: 1,
 			ThreatMultiplier:         1,
 			BonusCoefficient:         damage.BonusCoefficient,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealDamage(sim, target, sim.Roll(damage.MinDmg, damage.MaxDmg), spell.OutcomeMagicCrit)
+				spell.CalcAndDealDamage(sim, target, sim.Roll(damage.MinDmg, damage.MaxDmg), GetOutcome(spell, damage.Outcome))
 			},
 		})
 
@@ -81,19 +88,38 @@ func NewProcStatBonusEffectWithDamageProc(config ProcStatBonusEffect, damage Dam
 }
 
 func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent core.Agent) ExtraSpellInfo) {
-	core.NewItemEffect(config.ID, func(agent core.Agent) {
+	isEnchant := config.EnchantID != 0
+	var effectFn func(id int32, effect core.ApplyEffect)
+	var effectID int32
+	var triggerActionID core.ActionID
+
+	if isEnchant {
+		effectID = config.EnchantID
+		effectFn = core.NewEnchantEffect
+		triggerActionID = core.ActionID{SpellID: effectID}
+	} else {
+		effectID = config.ItemID
+		effectFn = core.NewItemEffect
+		triggerActionID = core.ActionID{ItemID: effectID}
+	}
+
+	effectFn(effectID, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
 		procID := core.ActionID{SpellID: config.AuraID}
 		if procID.IsEmptyAction() {
-			procID = core.ActionID{ItemID: config.ID}
+			procID = core.ActionID{ItemID: config.ItemID}
 		}
 		procAura := character.NewTemporaryStatsAura(config.Name+" Proc", procID, config.Bonus, config.Duration)
 
+		if isEnchant && config.PPM != 0 && config.ProcMask == core.ProcMaskUnknown {
+			config.ProcMask = character.GetDefaultProcMaskForWeaponEnchant(config.EnchantID)
+		}
+
 		var itemSwapProcCondition core.CustomStatBuffProcCondition
-		if character.ItemSwap.IsEnabled() && character.ItemSwap.ItemExistsInSwapSet(config.ID) {
+		if isEnchant && character.ItemSwap.IsEnabled() && character.ItemSwap.ItemExistsInSwapSet(effectID) {
 			itemSwapProcCondition = func(_ *core.Simulation, aura *core.Aura) bool {
-				return character.ItemSwap.HasItemEquipped(config.ID)
+				return character.ItemSwap.HasItemEquipped(effectID)
 			}
 		}
 
@@ -157,7 +183,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		}
 
 		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID:   core.ActionID{ItemID: config.ID},
+			ActionID:   triggerActionID,
 			Name:       config.Name,
 			Callback:   config.Callback,
 			ProcMask:   config.ProcMask,
@@ -173,12 +199,19 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 			procAura.Icd = triggerAura.Icd
 		}
 
-		eligibleSlotsForItem := core.EligibleSlotsForItem(core.GetItemByID(config.ID), false)
-		if slices.Contains(eligibleSlotsForItem, proto.ItemSlot_ItemSlotTrinket1) {
-			character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
+		if isEnchant {
+			if config.PPM != 0 {
+				character.ItemSwap.RegisterPPMEffect(effectID, config.PPM, triggerAura.Ppmm, triggerAura, config.Slots)
+			} else {
+				character.ItemSwap.RegisterEnchantProc(effectID, triggerAura, config.Slots)
+			}
+		} else {
+			eligibleSlotsForItem := core.EligibleSlotsForItem(core.GetItemByID(effectID), false)
+			if slices.Contains(eligibleSlotsForItem, proto.ItemSlot_ItemSlotTrinket1) {
+				character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
+			}
+			character.ItemSwap.RegisterProc(effectID, triggerAura, eligibleSlotsForItem)
 		}
-
-		character.ItemSwap.RegisterProc(config.ID, triggerAura, eligibleSlotsForItem)
 	})
 }
 
@@ -410,112 +443,6 @@ func NewStackingStatBonusEffect(config StackingStatBonusEffect) {
 		})
 
 		character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
-	})
-}
-
-type EnchantProcStatBonusEffect struct {
-	EnchantID int32
-	Slots     []proto.ItemSlot
-	ProcStatBonusEffect
-}
-
-func factory_EnchantStatBonusEffect(config EnchantProcStatBonusEffect, extraSpell func(agent core.Agent) ExtraSpellInfo) {
-	core.NewEnchantEffect(config.EnchantID, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		procID := core.ActionID{SpellID: config.AuraID}
-		if procID.IsEmptyAction() {
-			procID = core.ActionID{ItemID: config.ID}
-		}
-		procAura := character.NewTemporaryStatsAura(config.Name+" Proc", procID, config.Bonus, config.Duration)
-
-		if config.PPM != 0 && config.ProcMask == core.ProcMaskUnknown {
-			config.ProcMask = character.GetDefaultProcMaskForWeaponEnchant(config.EnchantID)
-		}
-
-		var procSpell ExtraSpellInfo
-		if extraSpell != nil {
-			procSpell = extraSpell(agent)
-		}
-
-		handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			procAura.Activate(sim)
-			if procSpell.Spell != nil {
-				procSpell.Trigger(sim, spell, result)
-			}
-		}
-
-		if len(config.IgnoreSpellIDs) > 0 {
-			ignoreSpellIDs := config.IgnoreSpellIDs
-			handler = func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				isAllowedSpell := !slices.ContainsFunc(ignoreSpellIDs, func(spellID int32) bool {
-					return spell.IsSpellAction(spellID)
-				})
-				if isAllowedSpell {
-					handler(sim, spell, result)
-				}
-			}
-		}
-
-		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID:   core.ActionID{SpellID: config.ID},
-			Name:       config.Name,
-			Callback:   config.Callback,
-			ProcMask:   config.ProcMask,
-			Outcome:    config.Outcome,
-			Harmful:    config.Harmful,
-			ProcChance: config.ProcChance,
-			PPM:        config.PPM,
-			ICD:        config.ICD,
-			Handler:    handler,
-		})
-
-		if config.ICD != 0 {
-			procAura.Icd = triggerAura.Icd
-		}
-
-		if config.PPM != 0 {
-			character.ItemSwap.RegisterPPMEffect(config.EnchantID, config.PPM, triggerAura.Ppmm, triggerAura, config.Slots)
-		} else {
-			character.ItemSwap.RegisterEnchantProc(config.EnchantID, triggerAura, config.Slots)
-		}
-	})
-}
-
-func NewEnchantProcStatBonusEffect(config EnchantProcStatBonusEffect) {
-	factory_EnchantStatBonusEffect(config, nil)
-}
-
-func NewEnchantProcStatBonusEffectWithDamageProc(config EnchantProcStatBonusEffect, damage DamageEffect) {
-	procMask := core.ProcMaskEmpty
-	if damage.ProcMask != core.ProcMaskUnknown {
-		procMask = damage.ProcMask
-	}
-
-	factory_EnchantStatBonusEffect(config, func(agent core.Agent) ExtraSpellInfo {
-		character := agent.GetCharacter()
-		critMultiplier := core.TernaryFloat64(damage.IsMelee, character.DefaultMeleeCritMultiplier(), character.DefaultSpellCritMultiplier())
-
-		procSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:                 core.ActionID{SpellID: damage.SpellID},
-			SpellSchool:              damage.School,
-			ProcMask:                 procMask,
-			DamageMultiplier:         1,
-			CritMultiplier:           critMultiplier,
-			DamageMultiplierAdditive: 1,
-			ThreatMultiplier:         1,
-			BonusCoefficient:         damage.BonusCoefficient,
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealDamage(sim, target, sim.Roll(damage.MinDmg, damage.MaxDmg), GetOutcome(spell, damage.Outcome))
-			},
-		})
-
-		return ExtraSpellInfo{
-			Spell: procSpell,
-			Trigger: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				procSpell.Cast(sim, result.Target)
-			},
-		}
 	})
 }
 
