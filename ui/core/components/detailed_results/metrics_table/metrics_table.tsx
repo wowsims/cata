@@ -1,6 +1,7 @@
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
+import { CacheHandler } from '../../../cache_handler';
 import { TOOLTIP_METRIC_LABELS } from '../../../constants/tooltips';
 import { ActionId } from '../../../proto_utils/action_id';
 import { ActionMetrics, AuraMetrics, ResourceMetrics, UnitMetrics } from '../../../proto_utils/sim_result';
@@ -29,6 +30,8 @@ export interface MetricsColumnConfig<T> {
 	fillCell?: (metric: T, cellElem: HTMLElement, rowElem: HTMLElement, isChildRow?: boolean) => void;
 }
 
+const cachedMetricsTableIcon = new CacheHandler<HTMLAnchorElement>();
+
 export abstract class MetricsTable<T extends ActionMetrics | AuraMetrics | UnitMetrics | ResourceMetrics> extends ResultComponent {
 	private readonly columnConfigs: Array<MetricsColumnConfig<T>>;
 
@@ -50,13 +53,13 @@ export abstract class MetricsTable<T extends ActionMetrics | AuraMetrics | UnitM
 			</table>,
 		);
 
-		this.tableElem = this.rootElem.getElementsByClassName('metrics-table')[0] as HTMLTableSectionElement;
-		this.bodyElem = this.rootElem.getElementsByClassName('metrics-table-body')[0] as HTMLElement;
+		this.tableElem = this.rootElem.querySelector<HTMLTableSectionElement>('.metrics-table')!;
+		this.bodyElem = this.rootElem.querySelector<HTMLTableSectionElement>('.metrics-table-body')!;
 
-		const headerRowElem = this.rootElem.getElementsByClassName('metrics-table-header-row')[0] as HTMLElement;
+		const headerRowElem = this.rootElem.querySelector<HTMLTableRowElement>('.metrics-table-header-row')!;
 		this.columnConfigs.forEach(columnConfig => {
 			const headerCell = document.createElement('th');
-			const tooltip = columnConfig.tooltip || TOOLTIP_METRIC_LABELS[columnConfig.name as keyof typeof TOOLTIP_METRIC_LABELS];
+			const tooltipContent = columnConfig.tooltip || TOOLTIP_METRIC_LABELS[columnConfig.name as keyof typeof TOOLTIP_METRIC_LABELS];
 			headerCell.classList.add('metrics-table-header-cell');
 			if (columnConfig.columnClass) {
 				headerCell.classList.add(...columnConfig.columnClass.split(' '));
@@ -65,11 +68,12 @@ export abstract class MetricsTable<T extends ActionMetrics | AuraMetrics | UnitM
 				headerCell.classList.add(...columnConfig.headerCellClass.split(' '));
 			}
 			headerCell.appendChild(<span>{columnConfig.name}</span>);
-			if (tooltip) {
-				tippy(headerCell, {
-					content: tooltip,
+			if (tooltipContent) {
+				const tooltip = tippy(headerCell, {
+					content: tooltipContent,
 					ignoreAttributes: true,
 				});
+				this.addOnResetCallback(() => tooltip.destroy());
 			}
 			headerRowElem.appendChild(headerCell);
 		});
@@ -158,19 +162,24 @@ export abstract class MetricsTable<T extends ActionMetrics | AuraMetrics | UnitM
 	}
 
 	onSimResult(resultData: SimResultData) {
-		this.bodyElem.textContent = '';
+		this.reset();
 		const groupedMetrics = this.getGroupedMetrics(resultData).filter(group => group.length > 0);
-		if (groupedMetrics.length == 0) {
+		if (groupedMetrics.length) {
+			this.rootElem.classList.remove('hide');
+		} else {
 			this.rootElem.classList.add('hide');
 			this.onUpdate.emit(resultData.eventID);
 			return;
-		} else {
-			this.rootElem.classList.remove('hide');
 		}
 
 		groupedMetrics.forEach(group => this.addGroup(group));
 		$(this.tableElem).trigger('update');
 		this.onUpdate.emit(resultData.eventID);
+	}
+
+	reset() {
+		super.reset();
+		this.bodyElem.replaceChildren();
 	}
 
 	// Whether a single-element group should have its parent row removed.
@@ -203,20 +212,23 @@ export abstract class MetricsTable<T extends ActionMetrics | AuraMetrics | UnitM
 			name: 'Name',
 			fillCell: (metric: T, cellElem: HTMLElement, rowElem: HTMLElement) => {
 				const data = getData(metric);
-				const iconElem = ref<HTMLAnchorElement>();
+				const actionIdAsString = data.actionId.toString();
+				const iconElemRef = ref<HTMLAnchorElement>();
+				const iconElem = cachedMetricsTableIcon.get(actionIdAsString);
 				cellElem.appendChild(
 					<div className="metrics-action">
-						<a ref={iconElem} className="metrics-action-icon"></a>
+						{iconElem?.cloneNode() || <a ref={iconElemRef} className="metrics-action-icon"></a>}
 						<span className="metrics-action-name text-truncate">{data.name}</span>
 						<span className="expand-toggle fa fa-caret-right"></span>
 						<span className="expand-toggle fa fa-caret-down"></span>
 					</div>,
 				);
-				if (iconElem.value) {
-					data.actionId.setBackgroundAndHref(iconElem.value);
-					data.actionId.setWowheadDataset(iconElem.value, {
+				if (!iconElem && iconElemRef.value) {
+					data.actionId.setBackgroundAndHref(iconElemRef.value);
+					data.actionId.setWowheadDataset(iconElemRef.value, {
 						useBuffAura: data.metricType === 'AuraMetrics',
 					});
+					cachedMetricsTableIcon.set(actionIdAsString, iconElemRef.value);
 				}
 			},
 		};

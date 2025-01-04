@@ -13,6 +13,12 @@ export const existsInDOM = (element: HTMLElement | null) => document.body.contai
 
 export const cloneChildren = (element: HTMLElement) => [...(element.childNodes || [])].map(child => child.cloneNode(true));
 
+export const fragmentToString = (element: Node | Element) => {
+	const div = document.createElement('div');
+	div.appendChild(element.cloneNode(true));
+	return div.innerHTML;
+};
+
 export const sanitizeId = (id: string) => id.split(' ').join('');
 
 export const omitDeep = <T>(collection: T, excludeKeys: string[]): T => {

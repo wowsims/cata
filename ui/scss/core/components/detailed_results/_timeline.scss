@@ -48,7 +48,6 @@
 	color: var(--bs-holy-power);
 }
 
-
 .timeline-root {
 	display: flex;
 	height: 100%;
@@ -92,9 +91,47 @@
 	}
 }
 
+.timeline-plot {
+	.apexcharts-tooltip.apexcharts-theme-dark {
+		box-shadow: none;
+		border-radius: 0;
+		background-color: var(--bs-tooltip-bg);
+		border: var(--bs-tooltip-border) 1px solid;
+		color: var(--bs-tooltip-body-color);
+		padding: var(--bs-tooltip-body-padding-y) var(--bs-tooltip-body-padding-x);
+	}
+}
+
+.timeline-tooltip {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacer-3);
+
+	ul {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacer-1);
+		padding-left: 0;
+		list-style: none;
+		margin-bottom: 0;
+	}
+
+	li {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--spacer-2);
+	}
+}
+
 .timeline-tooltip-header {
 	border-bottom: 1px solid var(--bs-white);
-	margin-bottom: 5px;
+}
+
+.timeline-tooltip-body {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacer-3);
 }
 
 .timeline-tooltip-body-row {
@@ -113,7 +150,6 @@
 
 .timeline-tooltip-auras {
 	border-top: 1px solid var(--bs-white);
-	margin-top: 5px;
 }
 
 .rotation-container {
@@ -210,7 +246,6 @@
 		background-color: var(--bs-holy-power);
 		width: 24px;
 	}
-
 }
 .rotation-timeline-cast {
 	position: absolute;

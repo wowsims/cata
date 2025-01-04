@@ -360,6 +360,7 @@ message ErrorOutcome {
 
 // RPC RaidSim
 message RaidSimRequest {
+	string request_id = 5;
 	Raid raid = 1;
 	Encounter encounter = 2;
 	SimOptions sim_options = 3;

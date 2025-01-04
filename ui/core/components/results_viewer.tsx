@@ -126,8 +126,7 @@ export class ResultsViewer extends Component {
 		if (typeof html === 'string') {
 			this.contentElem.innerHTML = html;
 		} else {
-			this.contentElem.innerHTML = '';
-			this.contentElem.appendChild(html);
+			this.contentElem.replaceChildren(html);
 		}
 		this.contentElem.style.display = 'block';
 		this.pendingElem.style.display = 'none';
