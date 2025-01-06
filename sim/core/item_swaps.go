@@ -158,11 +158,11 @@ func (swap *ItemSwap) registerPPMInternal(config ItemSwapPPMConfig) {
 
 		if isItemPPM {
 			hasItemEquipped = item.ID == itemID
-			isItemSlotMatch = swap.GetItemFromPossibleSlotsByItemID(itemID, config.Slots) == slot
+			isItemSlotMatch = swap.FindSlotForItem(itemID, config.Slots) == slot
 			procMask = character.GetDefaultProcMaskForWeaponEffect(itemID)
 		} else if isEnchantEffectPPM {
 			hasItemEquipped = item.Enchant.EffectID == enchantEffectID || item.TempEnchant == enchantEffectID
-			isItemSlotMatch = swap.GetItemFromPossibleSlotsByEffectID(enchantEffectID, config.Slots) == slot
+			isItemSlotMatch = swap.FindSlotForEnchant(enchantEffectID, config.Slots) == slot
 			procMask = character.GetDefaultProcMaskForWeaponEnchant(enchantEffectID)
 		}
 
@@ -317,7 +317,7 @@ func (swap *ItemSwap) GetUnequippedItemBySlot(slot proto.ItemSlot) *Item {
 	return &swap.unEquippedItems[slot]
 }
 
-func (swap *ItemSwap) GetItemFromPossibleSlotsByItemID(itemID int32, possibleSlots []proto.ItemSlot) proto.ItemSlot {
+func (swap *ItemSwap) FindSlotForItem(itemID int32, possibleSlots []proto.ItemSlot) proto.ItemSlot {
 	for _, slot := range possibleSlots {
 		if swap.swapEquip[slot].ID == itemID {
 			return slot
@@ -328,7 +328,7 @@ func (swap *ItemSwap) GetItemFromPossibleSlotsByItemID(itemID int32, possibleSlo
 	return -1
 }
 
-func (swap *ItemSwap) GetItemFromPossibleSlotsByEffectID(effectID int32, possibleSlots []proto.ItemSlot) proto.ItemSlot {
+func (swap *ItemSwap) FindSlotForEnchant(effectID int32, possibleSlots []proto.ItemSlot) proto.ItemSlot {
 	for _, slot := range possibleSlots {
 		if swap.swapEquip[slot].Enchant.EffectID == effectID {
 			return slot
