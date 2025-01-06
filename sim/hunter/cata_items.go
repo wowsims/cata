@@ -169,7 +169,7 @@ var ItemSetLightningChargedBattleGear = core.NewItemSet(core.ItemSet{
 			})
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:      core.SpellMod_CastTime_Flat,
-				ClassMask: HunterSpellCobraShot,
+				ClassMask: HunterSpellSteadyShot,
 				TimeValue: -200 * time.Millisecond,
 			})
 		},
