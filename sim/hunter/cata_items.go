@@ -211,7 +211,6 @@ func (hunter *Hunter) addBloodthirstyGloves() {
 		switch hunter.Hands().ID {
 		case 64991, 64709, 60424, 65544, 70534, 70260, 70441, 72369, 73717, 73583:
 			spellMod.Activate()
-			return
 		default:
 			spellMod.Deactivate()
 		}

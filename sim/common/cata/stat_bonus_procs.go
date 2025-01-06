@@ -1273,23 +1273,15 @@ var ItemSetAgonyAndTorment = core.NewItemSet(core.ItemSet{
 				time.Second*10,
 			)
 
-			icd := core.Cooldown{
-				Timer:    character.NewTimer(),
-				Duration: time.Second * 45,
-			}
-			procAura.Icd = &icd
-
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-				Name:     "Agony and Torment Trigger",
-				Callback: core.CallbackOnSpellHitDealt,
-				ProcMask: core.ProcMaskMeleeOrRanged,
-				ActionID: core.ActionID{SpellID: 95763},
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
+				Name:       "Agony and Torment Trigger",
+				ActionID:   core.ActionID{SpellID: 95763},
+				ProcMask:   core.ProcMaskMeleeOrRanged,
+				Callback:   core.CallbackOnSpellHitDealt,
+				ICD:        time.Second * 45,
+				ProcChance: 0.1,
 				Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-					// This set uses raw chance, NOT PPM
-					if icd.IsReady(sim) && sim.Proc(.10, "Agony and Torment Proc") {
-						icd.Use(sim)
-						procAura.Activate(sim)
-					}
+					procAura.Activate(sim)
 				},
 			})
 		},

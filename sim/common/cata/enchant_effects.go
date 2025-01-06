@@ -45,7 +45,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(4066, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
+		character.ItemSwap.RegisterEnchantProc(4066, aura, shared.WeaponSlots)
 	})
 
 	// Enchant: 4067, Spell: 74197 - Enchant Weapon - Avalanche
@@ -116,7 +116,7 @@ func init() {
 			},
 		}))
 
-		character.ItemSwap.RegisterPPMEffect(4067, ppm, &ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
+		character.ItemSwap.RegisterPPMEffect(4067, ppm, &ppmm, aura, shared.WeaponSlots)
 	})
 
 	// Enchant: 4074, Spell: 74211 - Enchant Weapon - Elemental Slayer
@@ -153,7 +153,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEffect(4074, ppm, aura.Ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
+		character.ItemSwap.RegisterPPMEffect(4074, ppm, aura.Ppmm, aura, shared.WeaponSlots)
 	})
 
 	// Enchant: 4083, Spell: 74223 - Enchant Weapon - Hurricane
@@ -238,14 +238,13 @@ func init() {
 			},
 		}))
 
-		character.ItemSwap.RegisterPPMEffect(4083, ppm, &ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
+		character.ItemSwap.RegisterPPMEffect(4083, ppm, &ppmm, aura, shared.WeaponSlots)
 	})
 
 	// Enchant: 4084, Spell: 74225 - Enchant Weapon - Heartsong
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Heartsong",
 		EnchantID:  4084,
-		ItemID:     74224,
 		AuraID:     74224,
 		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
@@ -254,14 +253,13 @@ func init() {
 		ProcChance: 0.25,
 		Bonus:      stats.Stats{stats.Spirit: 200},
 		Duration:   time.Second * 15,
-		Slots:      []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand},
+		Slots:      shared.WeaponSlots,
 	})
 
 	// Enchant: 4097, Spell: 74242 - Enchant Weapon - Power Torrent
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Power Torrent",
 		EnchantID:  4097,
-		ItemID:     74241,
 		AuraID:     74241,
 		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
@@ -270,21 +268,20 @@ func init() {
 		ProcChance: 1.0 / 3.0,
 		Bonus:      stats.Stats{stats.Intellect: 500},
 		Duration:   time.Second * 12,
-		Slots:      []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand},
+		Slots:      shared.WeaponSlots,
 	})
 
 	// Enchant: 4098, Spell: 74244 - Enchant Weapon - Windwalk
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:      "Windwalk",
 		EnchantID: 4098,
-		ItemID:    74243,
 		AuraID:    74243,
 		Callback:  core.CallbackOnSpellHitDealt,
 		Outcome:   core.OutcomeLanded,
 		PPM:       1, // based on old Wowhead comments, TODO: measure in Classic
 		Bonus:     stats.Stats{stats.DodgeRating: 600},
 		Duration:  time.Second * 10,
-		Slots:     []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand},
+		Slots:     shared.WeaponSlots,
 	})
 
 	// Enchant: 4099, Spell: 74246 - Enchant Weapon - Landslide
@@ -322,14 +319,13 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEffect(4099, ppm, aura.Ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
+		character.ItemSwap.RegisterPPMEffect(4099, ppm, aura.Ppmm, aura, shared.WeaponSlots)
 	})
 
 	// Enchant: 4115, Spell: 75172 - Lightweave Embroidery
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Lightweave Embroidery Cata",
 		EnchantID:  4115,
-		ItemID:     75171,
 		AuraID:     75170,
 		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
 		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
@@ -345,7 +341,6 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Darkglow Embroidery Cata",
 		EnchantID:  4116,
-		ItemID:     75174,
 		AuraID:     75173,
 		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
 		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
@@ -361,7 +356,6 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Swordguard Embroidery Cata",
 		EnchantID:  4118,
-		ItemID:     75176,
 		AuraID:     75178,
 		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
 		ProcMask:   core.ProcMaskMeleeOrRanged,
@@ -377,7 +371,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Gnomish X-Ray Scope",
 		EnchantID:  4175,
-		ItemID:     95712,
+		ItemID:     59594,
 		AuraID:     95712,
 		Callback:   core.CallbackOnSpellHitDealt,
 		ProcMask:   core.ProcMaskRanged,
@@ -404,49 +398,46 @@ func init() {
 	})
 
 	// Enchant: 4215, Spell: 92433, Item: 55055 - Elementium Shield Spike
-	shared.NewEnchantProcDamageEffect(shared.EnchantProcDamageEffect{
+	shared.NewProcDamageEffect(shared.ProcDamageEffect{
 		EnchantID: 4215,
-		Slots:     []proto.ItemSlot{proto.ItemSlot_ItemSlotOffHand},
-		ProcDamageEffect: shared.ProcDamageEffect{
-			SpellID: 92432,
-			Trigger: core.ProcTrigger{
-				Name:     "Elementium Shield Spike",
-				Callback: core.CallbackOnSpellHitTaken,
-				ProcMask: core.ProcMaskMelee,
-				Outcome:  core.OutcomeBlock,
-			},
-			School:  core.SpellSchoolPhysical,
-			MinDmg:  90,
-			MaxDmg:  133,
-			Outcome: shared.OutcomeMeleeCanCrit,
-			IsMelee: true,
-		}})
+		SpellID:   92432,
+		Trigger: core.ProcTrigger{
+			Name:     "Elementium Shield Spike",
+			Callback: core.CallbackOnSpellHitTaken,
+			ProcMask: core.ProcMaskMelee,
+			Outcome:  core.OutcomeBlock,
+		},
+		School:  core.SpellSchoolPhysical,
+		MinDmg:  90,
+		MaxDmg:  133,
+		Outcome: shared.OutcomeMeleeCanCrit,
+		IsMelee: true,
+		Slots:   []proto.ItemSlot{proto.ItemSlot_ItemSlotOffHand},
+	})
 
 	// Enchant: 4216, Spell: 92437, Item: 55056  - Pyrium Shield Spike
-	shared.NewEnchantProcDamageEffect(shared.EnchantProcDamageEffect{
+	shared.NewProcDamageEffect(shared.ProcDamageEffect{
 		EnchantID: 4216,
-		Slots:     []proto.ItemSlot{proto.ItemSlot_ItemSlotOffHand},
-		ProcDamageEffect: shared.ProcDamageEffect{
-			SpellID: 92436,
-			Trigger: core.ProcTrigger{
-				Name:     "Pyrium Shield Spike",
-				Callback: core.CallbackOnSpellHitTaken,
-				ProcMask: core.ProcMaskMelee,
-				Outcome:  core.OutcomeBlock,
-			},
-			School:  core.SpellSchoolPhysical,
-			Outcome: shared.OutcomeMeleeCanCrit,
-			MinDmg:  210,
-			MaxDmg:  350,
-			IsMelee: true,
+		SpellID:   92436,
+		Trigger: core.ProcTrigger{
+			Name:     "Pyrium Shield Spike",
+			Callback: core.CallbackOnSpellHitTaken,
+			ProcMask: core.ProcMaskMelee,
+			Outcome:  core.OutcomeBlock,
 		},
+		School:  core.SpellSchoolPhysical,
+		Outcome: shared.OutcomeMeleeCanCrit,
+		MinDmg:  210,
+		MaxDmg:  350,
+		IsMelee: true,
+		Slots:   []proto.ItemSlot{proto.ItemSlot_ItemSlotOffHand},
 	})
 
 	// Enchant: 4267, Spell: 99623, Item: 70139 - Flintlocke's Woodchucker
 	shared.NewProcStatBonusEffectWithDamageProc(shared.ProcStatBonusEffect{
 		Name:       "Flintlocke's Woodchucker",
 		EnchantID:  4267,
-		ItemID:     99621,
+		ItemID:     70139,
 		AuraID:     99621,
 		Callback:   core.CallbackOnSpellHitDealt,
 		ProcMask:   core.ProcMaskRanged,

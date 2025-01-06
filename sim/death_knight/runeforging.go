@@ -3,8 +3,8 @@ package death_knight
 import (
 	"time"
 
+	"github.com/wowsims/cata/sim/common/shared"
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -101,7 +101,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEffect(3368, 2.0, aura.Ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
+		character.ItemSwap.RegisterPPMEffect(3368, 2.0, aura.Ppmm, aura, shared.WeaponSlots)
 	})
 
 	// Rune of Cinderglacier
@@ -164,7 +164,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEffect(3369, 1.0, aura.Ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
+		character.ItemSwap.RegisterPPMEffect(3369, 1.0, aura.Ppmm, aura, shared.WeaponSlots)
 	})
 
 	// Rune of Razorice
@@ -258,6 +258,6 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(3370, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
+		character.ItemSwap.RegisterEnchantProc(3370, aura, shared.WeaponSlots)
 	})
 }

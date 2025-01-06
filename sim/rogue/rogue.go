@@ -3,6 +3,7 @@ package rogue
 import (
 	"time"
 
+	"github.com/wowsims/cata/sim/common/shared"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -207,7 +208,7 @@ func (rogue *Rogue) Initialize() {
 	rogue.T12ToTLastBuff = 3
 
 	// re-configure poisons when performing an item swap
-	rogue.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand}, func(sim *core.Simulation, slot proto.ItemSlot) {
+	rogue.RegisterItemSwapCallback(shared.WeaponSlots, func(sim *core.Simulation, slot proto.ItemSlot) {
 		if !rogue.Options.ApplyPoisonsManually {
 			if rogue.MainHand() == nil || rogue.OffHand() == nil {
 				return

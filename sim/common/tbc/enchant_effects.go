@@ -3,6 +3,7 @@ package tbc
 import (
 	"time"
 
+	"github.com/wowsims/cata/sim/common/shared"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -90,7 +91,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEffect(1900, 1.0, &ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
+		character.ItemSwap.RegisterPPMEffect(1900, 1.0, &ppmm, aura, shared.WeaponSlots)
 	})
 
 	core.NewEnchantEffect(2929, func(agent core.Agent) {
@@ -130,7 +131,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEffect(2673, 0.73, &ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
+		character.ItemSwap.RegisterPPMEffect(2673, 0.73, &ppmm, aura, shared.WeaponSlots)
 	})
 
 	core.AddWeaponEffect(2723, func(agent core.Agent, _ proto.ItemSlot) {
@@ -173,7 +174,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEffect(3225, 1.0, &ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
+		character.ItemSwap.RegisterPPMEffect(3225, 1.0, &ppmm, aura, shared.WeaponSlots)
 	})
 
 	// https://web.archive.org/web/20100702102132/http://elitistjerks.com/f15/t27347-deathfrost_its_mechanics/p2/#post789470
@@ -216,7 +217,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEffect(3273, 2.15, &ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
+		character.ItemSwap.RegisterPPMEffect(3273, 2.15, &ppmm, aura, shared.WeaponSlots)
 	}
 	core.NewEnchantEffect(3273, func(agent core.Agent) {
 		character := agent.GetCharacter()

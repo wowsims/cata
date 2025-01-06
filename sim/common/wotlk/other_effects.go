@@ -4,6 +4,7 @@ import (
 	"math"
 	"time"
 
+	"github.com/wowsims/cata/sim/common/shared"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -999,7 +1000,7 @@ func init() {
 				},
 			})
 
-			character.ItemSwap.RegisterProc(itemID, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
+			character.ItemSwap.RegisterProc(itemID, aura, shared.WeaponSlots)
 		})
 	})
 

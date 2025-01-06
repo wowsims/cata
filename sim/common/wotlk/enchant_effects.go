@@ -54,7 +54,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEffect(3251, 4.0, &ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
+		character.ItemSwap.RegisterPPMEffect(3251, 4.0, &ppmm, aura, shared.WeaponSlots)
 	})
 
 	// Enchant: 3239, Spell: 44525 - Icebreaker
@@ -95,7 +95,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEffect(3239, 4.0, &ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
+		character.ItemSwap.RegisterPPMEffect(3239, 4.0, &ppmm, aura, shared.WeaponSlots)
 	})
 
 	// Enchant: 3607, Spell: 55076, Item: 41146 - Sun Scope
@@ -113,23 +113,22 @@ func init() {
 	})
 
 	// Enchant: 3748, Spell: 56353, Item: 42500 - Titanium Shield Spike
-	shared.NewEnchantProcDamageEffect(shared.EnchantProcDamageEffect{
+	shared.NewProcDamageEffect(shared.ProcDamageEffect{
 		EnchantID: 3748,
-		Slots:     []proto.ItemSlot{proto.ItemSlot_ItemSlotOffHand},
-		ProcDamageEffect: shared.ProcDamageEffect{
-			SpellID: 56353,
-			Trigger: core.ProcTrigger{
-				Name:     "Titanium Shield Spike",
-				Callback: core.CallbackOnSpellHitTaken,
-				ProcMask: core.ProcMaskMelee,
-				Outcome:  core.OutcomeBlock,
-			},
-			School:  core.SpellSchoolPhysical,
-			MinDmg:  45,
-			MaxDmg:  67,
-			Outcome: shared.OutcomeMeleeCanCrit,
-			IsMelee: true,
-		}})
+		SpellID:   56353,
+		Trigger: core.ProcTrigger{
+			Name:     "Titanium Shield Spike",
+			Callback: core.CallbackOnSpellHitTaken,
+			ProcMask: core.ProcMaskMelee,
+			Outcome:  core.OutcomeBlock,
+		},
+		School:  core.SpellSchoolPhysical,
+		MinDmg:  45,
+		MaxDmg:  67,
+		Outcome: shared.OutcomeMeleeCanCrit,
+		IsMelee: true,
+		Slots:   []proto.ItemSlot{proto.ItemSlot_ItemSlotOffHand},
+	})
 
 	// Enchant: 3247, Spell: 44595 - Scourgebane
 	core.NewEnchantEffect(3247, func(agent core.Agent) {
@@ -184,7 +183,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEffect(3789, 1.0, &ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
+		character.ItemSwap.RegisterPPMEffect(3789, 1.0, &ppmm, aura, shared.WeaponSlots)
 	})
 
 	// TODO: These are stand-in values without any real reference.
@@ -213,7 +212,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEffect(3241, 3.0, &ppmm, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
+		character.ItemSwap.RegisterPPMEffect(3241, 3.0, &ppmm, aura, shared.WeaponSlots)
 	})
 
 	// Enchant: 3790, Spell: 59630 - Black Magic
@@ -230,7 +229,7 @@ func init() {
 		Bonus:          stats.Stats{stats.HasteRating: 250},
 		Duration:       time.Second * 10,
 		IgnoreSpellIDs: []int32{47465, 12867},
-		Slots:          []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand},
+		Slots:          shared.WeaponSlots,
 	})
 
 	// Enchant: 3843, Spell: 61471 - Diamond-cut Refractor Scope
@@ -416,6 +415,6 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(3870, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
+		character.ItemSwap.RegisterEnchantProc(3870, aura, shared.WeaponSlots)
 	})
 }

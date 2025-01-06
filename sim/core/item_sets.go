@@ -195,7 +195,7 @@ func (character *Character) applyItemSetBonusEffects(agent Agent) {
 		})
 
 		for _, unequippedSetBonus := range unequippedSetBonuses {
-			setBonusAura := character.makeSetBonusStatusAura(unequippedSetBonus.Name, unequippedSetBonus.NumPieces, true)
+			setBonusAura := character.makeSetBonusStatusAura(unequippedSetBonus.Name, unequippedSetBonus.NumPieces, false)
 			unequippedSetBonus.BonusEffect(agent, setBonusAura)
 		}
 	}
@@ -242,16 +242,13 @@ func (setBonusTracker *Aura) ExposeToAPL(spellID int32) {
 }
 
 // Creates a new ProcTriggerAura that is dependent on the set bonus being active
+// This should only be used if the dependent Aura is:
+// 1. On the a different Unit than the setBonus is registered to (usually the Character)
+// 2. You need to register multiple dependent Aura's for the same Unit
 func (setBonusTracker *Aura) MakeDependentProcTriggerAura(unit *Unit, config ProcTrigger) *Aura {
-	customCastCondition := config.ExtraCondition
-	if customCastCondition != nil {
-		config.ExtraCondition = func(sim *Simulation, spell *Spell, result *SpellResult) bool {
-			return setBonusTracker.IsActive() && customCastCondition(sim, spell, result)
-		}
-	} else {
-		config.ExtraCondition = func(sim *Simulation, spell *Spell, result *SpellResult) bool {
-			return setBonusTracker.IsActive()
-		}
+	oldExtraCondition := config.ExtraCondition
+	config.ExtraCondition = func(sim *Simulation, spell *Spell, result *SpellResult) bool {
+		return setBonusTracker.IsActive() && ((oldExtraCondition == nil) || oldExtraCondition(sim, spell, result))
 	}
 
 	aura := MakeProcTriggerAura(unit, config)
@@ -260,6 +257,8 @@ func (setBonusTracker *Aura) MakeDependentProcTriggerAura(unit *Unit, config Pro
 }
 
 // Attaches a ProcTrigger to the set bonus
+// Preffered use-case.
+// For non standard use-cases see: MakeDependentProcTriggerAura
 func (setBonusTracker *Aura) AttachProcTrigger(config ProcTrigger) {
 	ApplyProcTriggerCallback(setBonusTracker.Unit, setBonusTracker, config)
 }

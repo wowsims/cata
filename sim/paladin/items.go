@@ -203,7 +203,6 @@ func (paladin *Paladin) addBloodthirstyGloves() {
 		switch paladin.Hands().ID {
 		case 64844, 70649, 60414, 65591, 72379, 70250, 70488, 73707, 73570:
 			spellMod.Activate()
-			return
 		default:
 			spellMod.Deactivate()
 		}

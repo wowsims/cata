@@ -3,6 +3,7 @@ package enhancement
 import (
 	"time"
 
+	"github.com/wowsims/cata/sim/common/shared"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -103,7 +104,7 @@ func (enh *EnhancementShaman) Initialize() {
 
 	if enh.ItemSwap.IsEnabled() {
 		enh.ApplyFlametongueImbueSwap(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeapon))
-		enh.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand}, func(_ *core.Simulation, slot proto.ItemSlot) {
+		enh.RegisterItemSwapCallback(shared.WeaponSlots, func(_ *core.Simulation, slot proto.ItemSlot) {
 			enh.ApplySyncType(proto.ShamanSyncType_Auto)
 		})
 	}

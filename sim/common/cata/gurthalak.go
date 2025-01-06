@@ -3,8 +3,8 @@ package cata
 import (
 	"time"
 
+	"github.com/wowsims/cata/sim/common/shared"
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -88,7 +88,7 @@ func init() {
 				},
 			})
 
-			character.ItemSwap.RegisterProc(gurthalakItemID, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand})
+			character.ItemSwap.RegisterProc(gurthalakItemID, aura, shared.WeaponSlots)
 		})
 	}
 }

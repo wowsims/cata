@@ -5,7 +5,6 @@ import (
 
 	"github.com/wowsims/cata/sim/common/shared"
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func init() {
@@ -17,7 +16,7 @@ func init() {
 		MaxDmg:  8750,
 		Flags:   core.SpellFlagNoSpellMods | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt,
 		Outcome: shared.OutcomeMeleeNoBlockDodgeParryCrit,
-		Slots:   []proto.ItemSlot{proto.ItemSlot_ItemSlotTrinket1, proto.ItemSlot_ItemSlotTrinket2},
+		Slots:   shared.TrinketSlots,
 		Trigger: core.ProcTrigger{
 			Name:     "Darkmoon Card: Hurricane",
 			ProcMask: core.ProcMaskMeleeOrRanged,
@@ -35,7 +34,7 @@ func init() {
 		MaxDmg:  8750,
 		Flags:   core.SpellFlagNoSpellMods | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt,
 		Outcome: shared.OutcomeMeleeNoBlockDodgeParryCrit,
-		Slots:   []proto.ItemSlot{proto.ItemSlot_ItemSlotTrinket1, proto.ItemSlot_ItemSlotTrinket2},
+		Slots:   shared.TrinketSlots,
 		Trigger: core.ProcTrigger{
 			Name:     "Darkmoon Card: Hurricane",
 			ProcMask: core.ProcMaskMeleeOrRanged,
@@ -96,7 +95,7 @@ func init() {
 			},
 		}))
 
-		character.ItemSwap.RegisterProc(68925, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotTrinket1, proto.ItemSlot_ItemSlotTrinket2})
+		character.ItemSwap.RegisterProc(68925, aura, shared.TrinketSlots)
 	})
 
 	core.NewItemEffect(69110, func(agent core.Agent) {
@@ -148,7 +147,7 @@ func init() {
 			},
 		}))
 
-		character.ItemSwap.RegisterProc(69110, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotTrinket1, proto.ItemSlot_ItemSlotTrinket2})
+		character.ItemSwap.RegisterProc(69110, aura, shared.TrinketSlots)
 	})
 
 }
