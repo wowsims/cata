@@ -257,36 +257,25 @@ var ItemSetSpiritwalkersVestments = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			shaman.OnSpellRegistered(func(spell *core.Spell) {
-				if !spell.Matches(SpellMaskSpiritwalkersGrace) {
-					return
-				}
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
+				Name:           "Item - Shaman T13 Restoration 4P Bonus (Spiritwalker's Grace) - Proc",
+				ActionID:       core.ActionID{SpellID: 105876},
+				ClassSpellMask: SpellMaskSpiritwalkersGrace,
+				Callback:       core.CallbackOnApplyEffects,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					aura.Activate(sim)
+				},
+			})
 
-				setBonusAura.AttachProcTrigger(core.ProcTrigger{
-					Name:           "Item - Shaman T13 Restoration 4P Bonus (Spiritwalker's Grace) - Proc",
-					ActionID:       core.ActionID{SpellID: 105876},
-					ClassSpellMask: SpellMaskSpiritwalkersGrace,
-					Callback:       core.CallbackOnApplyEffects,
-					Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-						aura.Activate(sim)
-					},
-				})
-
-				onEquip := func() {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:      core.SpellMod_Custom,
+				ClassMask: SpellMaskSpiritwalkersGrace,
+				ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
 					shaman.SpiritwalkersGraceAura.Duration = shaman.spiritwalkersGraceBaseDuration() + 5*time.Second
-				}
-
-				setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-					onEquip()
-				})
-
-				setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				},
+				RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
 					shaman.SpiritwalkersGraceAura.Duration = shaman.spiritwalkersGraceBaseDuration()
-				})
-
-				if setBonusAura.IsActive() {
-					onEquip()
-				}
+				},
 			})
 
 		},

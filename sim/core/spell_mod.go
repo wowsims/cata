@@ -10,13 +10,15 @@ SpellMod implementation.
 */
 
 type SpellModConfig struct {
-	ClassMask  int64
-	Kind       SpellModType
-	School     SpellSchool
-	ProcMask   ProcMask
-	IntValue   int64
-	TimeValue  time.Duration
-	FloatValue float64
+	ClassMask    int64
+	Kind         SpellModType
+	School       SpellSchool
+	ProcMask     ProcMask
+	IntValue     int64
+	TimeValue    time.Duration
+	FloatValue   float64
+	ApplyCustom  SpellModApply
+	RemoveCustom SpellModRemove
 }
 
 type SpellMod struct {
@@ -46,6 +48,20 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 		panic("SpellMod " + strconv.Itoa(int(config.Kind)) + " not implmented")
 	}
 
+	var applyFn SpellModApply
+	if config.ApplyCustom != nil {
+		applyFn = config.ApplyCustom
+	} else {
+		applyFn = functions.Apply
+	}
+
+	var removeFn SpellModRemove
+	if config.RemoveCustom != nil {
+		removeFn = config.RemoveCustom
+	} else {
+		removeFn = functions.Remove
+	}
+
 	mod := &SpellMod{
 		ClassMask:  config.ClassMask,
 		Kind:       config.Kind,
@@ -54,8 +70,8 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 		floatValue: config.FloatValue,
 		intValue:   config.IntValue,
 		timeValue:  config.TimeValue,
-		Apply:      functions.Apply,
-		Remove:     functions.Remove,
+		Apply:      applyFn,
+		Remove:     removeFn,
 		IsActive:   false,
 	}
 
@@ -245,6 +261,10 @@ const (
 	// Add/subtract bonus expertise rating
 	// Uses: FloatValue
 	SpellMod_BonusExpertise_Rating
+
+	// Add/subtract bonus expertise rating
+	// Uses: ApplyCustom | RemoveCustom
+	SpellMod_Custom
 )
 
 var spellModMap = map[SpellModType]*SpellModFunctions{
@@ -340,6 +360,10 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 	SpellMod_BonusExpertise_Rating: {
 		Apply:  applyBonusExpertiseRating,
 		Remove: removeBonusExpertiseRating,
+	},
+
+	SpellMod_Custom: {
+		// Doesn't have dedicated Apply/Remove functions as ApplyCustom/RemoveCustom is handled in buildMod()
 	},
 }
 

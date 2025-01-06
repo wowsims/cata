@@ -77,26 +77,16 @@ var ItemSetMagmaPlatedBattlearmor = core.NewItemSet(core.ItemSet{
 			// Increases the duration of your Icebound Fortitude ability by 50%.
 			// Implemented in icebound_fortitude.go
 			dk := agent.(DeathKnightAgent).GetDeathKnight()
-			dk.OnSpellRegistered(func(spell *core.Spell) {
-				if !spell.Matches(DeathKnightSpellIceboundFortitude) {
-					return
-				}
 
-				onEquip := func() {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:      core.SpellMod_Custom,
+				ClassMask: DeathKnightSpellIceboundFortitude,
+				ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
 					dk.IceBoundFortituteAura.Duration = dk.iceBoundFortituteBaseDuration() + 6*time.Second
-				}
-
-				setBonusAura.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
-					onEquip()
-				})
-
-				setBonusAura.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
+				},
+				RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
 					dk.IceBoundFortituteAura.Duration = dk.iceBoundFortituteBaseDuration()
-				})
-
-				if setBonusAura.IsActive() {
-					onEquip()
-				}
+				},
 			})
 		},
 	},

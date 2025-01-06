@@ -8,14 +8,16 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-func (paladin *Paladin) registerGuardianOfAncientKings() {
-
-	var duration time.Duration
+func (paladin *Paladin) goakBaseDuration() time.Duration {
 	if paladin.Spec == proto.Spec_SpecProtectionPaladin {
-		duration = time.Second * 12
+		return time.Second * 12
 	} else {
-		duration = time.Second * 30
+		return time.Second * 30
 	}
+}
+
+func (paladin *Paladin) registerGuardianOfAncientKings() {
+	duration := paladin.goakBaseDuration()
 
 	var spell *core.Spell
 	switch paladin.Spec {

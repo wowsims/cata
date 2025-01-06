@@ -197,43 +197,26 @@ var ItemSetObsidianArborweaveRegalia = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			druid := agent.(DruidAgent).GetDruid()
 
-			druid.OnSpellRegistered(func(spell *core.Spell) {
-				if spell.Matches(DruidSpellWrath) {
-					onEquip := func() {
-						druid.SetSpellEclipseEnergy(DruidSpellWrath, WrathBaseEnergyGain, Wrath4PT12EnergyGain)
-					}
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:      core.SpellMod_Custom,
+				ClassMask: DruidSpellWrath,
+				ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
+					druid.SetSpellEclipseEnergy(DruidSpellWrath, WrathBaseEnergyGain, Wrath4PT12EnergyGain)
+				},
+				RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
+					druid.SetSpellEclipseEnergy(DruidSpellWrath, WrathBaseEnergyGain, WrathBaseEnergyGain)
+				},
+			})
 
-					setBonusAura.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
-						onEquip()
-					})
-
-					setBonusAura.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
-						druid.SetSpellEclipseEnergy(DruidSpellWrath, WrathBaseEnergyGain, WrathBaseEnergyGain)
-					})
-
-					if setBonusAura.IsActive() {
-						onEquip()
-					}
-
-				}
-
-				if spell.Matches(DruidSpellStarfire) {
-					onEquip := func() {
-						druid.SetSpellEclipseEnergy(DruidSpellStarfire, StarfireBaseEnergyGain, Starfire4PT12EnergyGain)
-					}
-
-					setBonusAura.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
-						onEquip()
-					})
-
-					setBonusAura.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
-						druid.SetSpellEclipseEnergy(DruidSpellStarfire, StarfireBaseEnergyGain, StarfireBaseEnergyGain)
-					})
-
-					if setBonusAura.IsActive() {
-						onEquip()
-					}
-				}
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:      core.SpellMod_Custom,
+				ClassMask: DruidSpellStarfire,
+				ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
+					druid.SetSpellEclipseEnergy(DruidSpellStarfire, StarfireBaseEnergyGain, Starfire4PT12EnergyGain)
+				},
+				RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
+					druid.SetSpellEclipseEnergy(DruidSpellStarfire, StarfireBaseEnergyGain, StarfireBaseEnergyGain)
+				},
 			})
 
 			setBonusAura.ExposeToAPL(99049)

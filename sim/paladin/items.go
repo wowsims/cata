@@ -68,25 +68,15 @@ var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 			// Handled in talents_retribution.go
 			paladin := agent.(PaladinAgent).GetPaladin()
 
-			paladin.OnSpellRegistered(func(spell *core.Spell) {
-				if !spell.Matches(SpellMaskZealotry) {
-					return
-				}
-
-				onEquip := func() {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:      core.SpellMod_Custom,
+				ClassMask: SpellMaskZealotry,
+				ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
 					paladin.ZealotryAura.Duration += time.Second * 15
-				}
-
-				setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-					onEquip()
-				})
-				setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				},
+				RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
 					paladin.ZealotryAura.Duration -= time.Second * 15
-				})
-
-				if setBonusAura.IsActive() {
-					onEquip()
-				}
+				},
 			})
 
 			setBonusAura.ExposeToAPL(99116)
@@ -215,40 +205,30 @@ var ItemSetReinforcedSapphiriumBattlearmor = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			paladin := agent.(PaladinAgent).GetPaladin()
 
-			paladin.OnSpellRegistered(func(spell *core.Spell) {
-				if !spell.Matches(SpellMaskGuardianOfAncientKings) {
-					return
-				}
+			goakBaseDuration := paladin.goakBaseDuration()
+			acientPowerBaseDuration := paladin.goakBaseDuration()
 
-				goakBaseDuration := paladin.GoakAura.Duration
-				acientPowerBaseDuration := paladin.GoakAura.Duration
+			applyT11Prot4pcBonus := func(duration time.Duration) time.Duration {
+				return time.Millisecond * time.Duration(float64(duration.Milliseconds())*1.5)
+			}
 
-				applyT11Prot4pcBonus := func(duration time.Duration) time.Duration {
-					return time.Millisecond * time.Duration(float64(duration.Milliseconds())*1.5)
-				}
-
-				onEquip := func() {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:      core.SpellMod_Custom,
+				ClassMask: SpellMaskGuardianOfAncientKings,
+				ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
 					if paladin.AncientPowerAura != nil {
 						paladin.AncientPowerAura.Duration = applyT11Prot4pcBonus(acientPowerBaseDuration)
 					}
 					paladin.GoakAura.Duration = applyT11Prot4pcBonus(goakBaseDuration)
-				}
-
-				setBonusAura.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
-					onEquip()
-				})
-
-				setBonusAura.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
+				},
+				RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
 					if paladin.AncientPowerAura != nil {
 						paladin.AncientPowerAura.Duration = acientPowerBaseDuration
 					}
 					paladin.GoakAura.Duration = goakBaseDuration
-				})
-
-				if setBonusAura.IsActive() {
-					onEquip()
-				}
+				},
 			})
+
 		},
 	},
 })
