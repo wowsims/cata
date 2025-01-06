@@ -223,7 +223,7 @@ var ItemSetVestmentsOfTheFacelessShroud = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
-			warlock.AddStaticMod(core.SpellModConfig{
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:      core.SpellMod_Cooldown_Flat,
 				TimeValue: -time.Minute * 4,
 				ClassMask: WarlockSpellSummonDoomguard | WarlockSpellSummonInfernal,

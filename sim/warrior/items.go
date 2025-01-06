@@ -284,9 +284,6 @@ var ItemSetColossalDragonplateBattlegear = core.NewItemSet(core.ItemSet{
 					ProcChance:     config.ProcChance,
 					ActionID:       actionID,
 					Callback:       core.CallbackOnSpellHitDealt,
-					ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
-						return setBonusAura.IsActive()
-					},
 					Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 						procCS.Cast(sim, result.Target)
 					},

@@ -122,7 +122,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		var itemSwapProcCondition core.CustomStatBuffProcCondition
 		if !isEnchant && character.ItemSwap.IsEnabled() && character.ItemSwap.ItemExistsInSwapSet(effectID) {
 			itemSwapProcCondition = func(_ *core.Simulation, aura *core.Aura) bool {
-				return character.ItemSwap.HasItemEquipped(effectID)
+				return character.HasItemEquipped(effectID)
 			}
 		}
 
