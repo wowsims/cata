@@ -34,5 +34,5 @@ export function setLanguageCode(newLang: string) {
 	cachedWowheadLanguagePrefix_ = cachedLanguageCode_ ? cachedLanguageCode_ + '/' : '';
 }
 
-let cachedLanguageCode_: string = '';
-let cachedWowheadLanguagePrefix_: string = '';
+let cachedLanguageCode_ = '';
+let cachedWowheadLanguagePrefix_ = '';

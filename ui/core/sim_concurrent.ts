@@ -1,3 +1,4 @@
+import { SimRequest } from '../worker/types';
 import {
 	ErrorOutcome,
 	ErrorOutcomeType,
@@ -12,7 +13,7 @@ import {
 	StatWeightsStatResultData,
 } from './proto/api';
 import { SimSignals } from './sim_signal_manager';
-import { WorkerPool, WorkerProgressCallback } from './worker_pool';
+import { generateRequestId, WorkerPool, WorkerProgressCallback } from './worker_pool';
 
 class ConcurrentSimProgress {
 	readonly concurrency: number;
@@ -142,7 +143,7 @@ const makeAndSendRaidSimError = (err: string | ErrorOutcome, onProgress: WorkerP
 		console.error(err);
 		errRes.error = ErrorOutcome.create({ message: err });
 	} else {
-		if(err.message) console.error(err.message);
+		if (err.message) console.error(err.message);
 		errRes.error = err;
 	}
 	onProgress(ProgressMetrics.create({ finalRaidResult: errRes }));
@@ -223,7 +224,11 @@ export const runConcurrentStatWeights = async (
 ): Promise<StatWeightsResult> => {
 	console.log('Getting stat weight sim requests.');
 
+	const id = generateRequestId(SimRequest.statWeightsAsync);
+
 	const manualResponse = await workerPool.statWeightRequests(request);
+	manualResponse.baseRequest!.requestId = id;
+
 	if (signals.abort.isTriggered()) {
 		return makeAndSendWeightsError(ErrorOutcome.create({ type: ErrorOutcomeType.ErrorOutcomeAborted }), onProgress);
 	}
@@ -234,6 +239,8 @@ export const runConcurrentStatWeights = async (
 	let simsDone = 0;
 
 	for (const statReqData of manualResponse.statSimRequests) {
+		statReqData.requestLow!.requestId = id;
+		statReqData.requestHigh!.requestId = id;
 		iterationsTotal += statReqData.requestLow!.simOptions!.iterations + statReqData.requestHigh!.simOptions!.iterations;
 		simsTotal += 2;
 	}

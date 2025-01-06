@@ -31,7 +31,7 @@ export type WorkerProgressCallback = (progressMetrics: ProgressMetrics) => void;
  * @param type The request type to prepend.
  * @returns Random id in the format type-randomhex
  */
-const generateRequestId = (type: SimRequest) => {
+export const generateRequestId = (type: SimRequest) => {
 	const chars = Array.from(Array(4)).map(() => Math.floor(Math.random() * 0x10000).toString(16));
 	return type + '-' + chars.join('');
 };
@@ -149,7 +149,7 @@ export class WorkerPool {
 	async raidSimAsync(request: RaidSimRequest, onProgress: WorkerProgressCallback, signals: SimSignals): Promise<RaidSimResult> {
 		const worker = this.getLeastBusyWorker();
 		worker.log('Raid sim request: ' + RaidSimRequest.toJsonString(request));
-		const id = generateRequestId(SimRequest.raidSimAsync);
+		const id = request.requestId;
 
 		signals.abort.onTrigger(async () => {
 			await worker.sendAbortById(id);
