@@ -184,9 +184,6 @@ var ItemSetMoltenGiantBattleplate = core.NewItemSet(core.ItemSet{
 					Callback:       core.CallbackOnSpellHitDealt,
 					ClassSpellMask: SpellMaskShieldSlam,
 					Outcome:        core.OutcomeLanded,
-					ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
-						return setBonusAura.IsActive()
-					},
 				},
 
 				DamageCalculator: func(result *core.SpellResult) float64 {
