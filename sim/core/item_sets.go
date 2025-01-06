@@ -58,7 +58,7 @@ func NewItemSet(set ItemSet) *ItemSet {
 	foundName := false
 	foundAlternativeName := set.AlternativeName == ""
 
-	if set.Slots == nil {
+	if len(set.Slots) == 0 {
 		set.Slots = DefaultItemSetSlots
 	}
 
@@ -172,6 +172,7 @@ func (character *Character) GetSetBonuses(equipment Equipment) []SetBonus {
 					Name:        foundSet.Name,
 					NumPieces:   setItemCount[foundSet],
 					BonusEffect: bonusEffect,
+					Slots:       foundSet.Slots,
 				})
 			}
 		}
