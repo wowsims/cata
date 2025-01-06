@@ -205,7 +205,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 
 		if isEnchant {
 			if config.PPM != 0 {
-				character.ItemSwap.RegisterPPMEffect(effectID, config.PPM, triggerAura.Ppmm, triggerAura, config.Slots)
+				character.ItemSwap.RegisterPPMEnchantEffect(effectID, config.PPM, triggerAura.Ppmm, triggerAura, config.Slots)
 			} else {
 				character.ItemSwap.RegisterEnchantProc(effectID, triggerAura, config.Slots)
 			}
@@ -550,7 +550,7 @@ func NewProcDamageEffect(config ProcDamageEffect) {
 		triggerAura := core.MakeProcTriggerAura(&character.Unit, triggerConfig)
 
 		if config.Trigger.PPM != 0 {
-			character.ItemSwap.RegisterPPMWeaponEffect(config.ItemID, config.Trigger.PPM, triggerAura.Ppmm, triggerAura, config.Slots)
+			character.ItemSwap.RegisterPPMItemEffect(config.ItemID, config.Trigger.PPM, triggerAura.Ppmm, triggerAura, config.Slots)
 		} else {
 			character.ItemSwap.RegisterEnchantProc(effectID, triggerAura, config.Slots)
 		}

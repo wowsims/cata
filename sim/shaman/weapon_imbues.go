@@ -313,7 +313,7 @@ func (shaman *Shaman) RegisterFrostbrandImbue(procMask core.ProcMask) {
 		},
 	})
 
-	shaman.ItemSwap.RegisterPPMEffect(2, 9.0, &ppmm, aura, shared.WeaponSlots)
+	shaman.ItemSwap.RegisterPPMEnchantEffect(2, 9.0, &ppmm, aura, shared.WeaponSlots)
 }
 
 func (shaman *Shaman) newEarthlivingImbueSpell() *core.Spell {

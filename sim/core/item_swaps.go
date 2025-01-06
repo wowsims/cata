@@ -91,7 +91,7 @@ func (character *Character) RegisterItemSwapCallback(slots []proto.ItemSlot, cal
 }
 
 // Helper for handling Effects that use PPMManager to toggle the aura on/off
-func (swap *ItemSwap) RegisterPPMEffect(effectID int32, ppm float64, ppmm *PPMManager, aura *Aura, slots []proto.ItemSlot) {
+func (swap *ItemSwap) RegisterPPMEnchantEffect(effectID int32, ppm float64, ppmm *PPMManager, aura *Aura, slots []proto.ItemSlot) {
 	swap.registerPPMInternal(ItemSwapPPMConfig{
 		EnchantId: effectID,
 		PPM:       ppm,
@@ -102,7 +102,7 @@ func (swap *ItemSwap) RegisterPPMEffect(effectID int32, ppm float64, ppmm *PPMMa
 }
 
 // Helper for handling Effects that use PPMManager to toggle the aura on/off
-func (swap *ItemSwap) RegisterPPMWeaponEffect(itemID int32, ppm float64, ppmm *PPMManager, aura *Aura, slots []proto.ItemSlot) {
+func (swap *ItemSwap) RegisterPPMItemEffect(itemID int32, ppm float64, ppmm *PPMManager, aura *Aura, slots []proto.ItemSlot) {
 	swap.registerPPMInternal(ItemSwapPPMConfig{
 		EffectID: itemID,
 		PPM:      ppm,
