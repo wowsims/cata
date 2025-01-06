@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/common/shared"
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -1261,7 +1262,8 @@ func init() {
 }
 
 var ItemSetAgonyAndTorment = core.NewItemSet(core.ItemSet{
-	Name: "Agony and Torment",
+	Name:  "Agony and Torment",
+	Slots: []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand},
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			character := agent.GetCharacter()

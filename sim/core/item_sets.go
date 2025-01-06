@@ -19,9 +19,13 @@ type ItemSet struct {
 	//
 	// The function should apply any benefits provided by the set bonus.
 	Bonuses map[int32]ApplySetBonus
+
+	// Optional field to override the DefaultItemSetSlots
+	// For Example: The set contains of 2 weapons
+	Slots []proto.ItemSlot
 }
 
-var ItemSetSlots = []proto.ItemSlot{
+var DefaultItemSetSlots = []proto.ItemSlot{
 	proto.ItemSlot_ItemSlotHead,
 	proto.ItemSlot_ItemSlotShoulder,
 	proto.ItemSlot_ItemSlotChest,
@@ -53,6 +57,11 @@ func NewItemSet(set ItemSet) *ItemSet {
 	foundID := set.ID == 0
 	foundName := false
 	foundAlternativeName := set.AlternativeName == ""
+
+	if set.Slots == nil {
+		set.Slots = DefaultItemSetSlots
+	}
+
 	for _, item := range ItemsByID {
 		if item.SetName == "" {
 			continue
@@ -115,6 +124,10 @@ type SetBonus struct {
 
 	// Function for applying the effects of this set bonus.
 	BonusEffect ApplySetBonus
+
+	// Optional field to override the DefaultItemSetSlots
+	// For Example: The set contains of 2 weapons
+	Slots []proto.ItemSlot
 }
 
 // Returns a list describing all active set bonuses.
@@ -184,7 +197,7 @@ func (character *Character) applyItemSetBonusEffects(agent Agent) {
 	activeSetBonuses := character.GetActiveSetBonuses()
 
 	for _, activeSetBonus := range activeSetBonuses {
-		setBonusAura := character.makeSetBonusStatusAura(activeSetBonus.Name, activeSetBonus.NumPieces, true)
+		setBonusAura := character.makeSetBonusStatusAura(activeSetBonus.Name, activeSetBonus.NumPieces, activeSetBonus.Slots, true)
 		activeSetBonus.BonusEffect(agent, setBonusAura)
 	}
 
@@ -194,13 +207,13 @@ func (character *Character) applyItemSetBonusEffects(agent Agent) {
 		})
 
 		for _, unequippedSetBonus := range unequippedSetBonuses {
-			setBonusAura := character.makeSetBonusStatusAura(unequippedSetBonus.Name, unequippedSetBonus.NumPieces, false)
+			setBonusAura := character.makeSetBonusStatusAura(unequippedSetBonus.Name, unequippedSetBonus.NumPieces, unequippedSetBonus.Slots, false)
 			unequippedSetBonus.BonusEffect(agent, setBonusAura)
 		}
 	}
 }
 
-func (character *Character) makeSetBonusStatusAura(setName string, numPieces int32, activeAtStart bool) *Aura {
+func (character *Character) makeSetBonusStatusAura(setName string, numPieces int32, slots []proto.ItemSlot, activeAtStart bool) *Aura {
 	statusAura := character.GetOrRegisterAura(Aura{
 		Label:      fmt.Sprintf("%s %dP", setName, numPieces),
 		BuildPhase: Ternary(activeAtStart, CharacterBuildPhaseGear, CharacterBuildPhaseNone),
@@ -212,7 +225,7 @@ func (character *Character) makeSetBonusStatusAura(setName string, numPieces int
 	}
 
 	if character.ItemSwap.IsEnabled() {
-		character.RegisterItemSwapCallback(ItemSetSlots, func(sim *Simulation, _ proto.ItemSlot) {
+		character.RegisterItemSwapCallback(slots, func(sim *Simulation, _ proto.ItemSlot) {
 			if character.HasActiveSetBonus(setName, numPieces) {
 				statusAura.Activate(sim)
 			} else {
