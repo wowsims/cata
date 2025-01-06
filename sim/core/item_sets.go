@@ -239,3 +239,24 @@ func (character *Character) GetActiveSetBonusNames() []string {
 func (setBonusTracker *Aura) ExposeToAPL(spellID int32) {
 	setBonusTracker.ActionID = ActionID{SpellID: spellID}
 }
+
+// Adds a Spellmod to PVP GLoves
+func (character *Character) RegisterPvPGloveMod(itemIDs []int32, config SpellModConfig) {
+	spellMod := character.AddDynamicMod(config)
+
+	checkGloves := func() {
+		if slices.Contains(itemIDs, character.Hands().ID) {
+			spellMod.Activate()
+		} else {
+			spellMod.Deactivate()
+		}
+	}
+
+	if character.ItemSwap.IsEnabled() {
+		character.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotHands}, func(_ *Simulation, _ proto.ItemSlot) {
+			checkGloves()
+		})
+	} else {
+		checkGloves()
+	}
+}

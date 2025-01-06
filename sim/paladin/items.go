@@ -5,7 +5,6 @@ import (
 
 	"github.com/wowsims/cata/sim/common/cata"
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -193,28 +192,13 @@ var ItemSetGladiatorsVindication = core.NewItemSet(core.ItemSet{
 })
 
 func (paladin *Paladin) addBloodthirstyGloves() {
-	spellMod := paladin.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  SpellMaskCrusaderStrike,
-		FloatValue: 0.05,
-	})
-
-	checkGloves := func() {
-		switch paladin.Hands().ID {
-		case 64844, 70649, 60414, 65591, 72379, 70250, 70488, 73707, 73570:
-			spellMod.Activate()
-		default:
-			spellMod.Deactivate()
-		}
-	}
-
-	if paladin.ItemSwap.IsEnabled() {
-		paladin.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotHands}, func(_ *core.Simulation, _ proto.ItemSlot) {
-			checkGloves()
+	paladin.RegisterPvPGloveMod(
+		[]int32{64844, 70649, 60414, 65591, 72379, 70250, 70488, 73707, 73570},
+		core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Flat,
+			ClassMask:  SpellMaskCrusaderStrike,
+			FloatValue: 0.05,
 		})
-	} else {
-		checkGloves()
-	}
 }
 
 // Tier 11 prot

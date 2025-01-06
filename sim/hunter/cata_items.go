@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -201,26 +200,11 @@ var ItemSetGladiatorsPursuit = core.NewItemSet(core.ItemSet{
 })
 
 func (hunter *Hunter) addBloodthirstyGloves() {
-	spellMod := hunter.AddDynamicMod(core.SpellModConfig{
-		ClassMask: HunterSpellExplosiveTrap | HunterSpellBlackArrow,
-		Kind:      core.SpellMod_Cooldown_Flat,
-		TimeValue: -time.Second * 2,
-	})
-
-	checkGloves := func() {
-		switch hunter.Hands().ID {
-		case 64991, 64709, 60424, 65544, 70534, 70260, 70441, 72369, 73717, 73583:
-			spellMod.Activate()
-		default:
-			spellMod.Deactivate()
-		}
-	}
-
-	if hunter.ItemSwap.IsEnabled() {
-		hunter.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotHands}, func(_ *core.Simulation, _ proto.ItemSlot) {
-			checkGloves()
+	hunter.RegisterPvPGloveMod(
+		[]int32{64991, 64709, 60424, 65544, 70534, 70260, 70441, 72369, 73717, 73583},
+		core.SpellModConfig{
+			ClassMask: HunterSpellExplosiveTrap | HunterSpellBlackArrow,
+			Kind:      core.SpellMod_Cooldown_Flat,
+			TimeValue: -time.Second * 2,
 		})
-	} else {
-		checkGloves()
-	}
 }
