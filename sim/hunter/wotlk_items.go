@@ -62,7 +62,7 @@ var ItemSetAhnKaharBloodHuntersBattlegear = core.NewItemSet(core.ItemSet{
 				Name:           "AhnKahar 4pc",
 				ProcChance:     0.05,
 				ClassSpellMask: HunterSpellSerpentSting,
-				Callback:       core.CallbackOnSpellHitDealt,
+				Callback:       core.CallbackOnPeriodicDamageDealt,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					procAura.Activate(sim)
 				},
