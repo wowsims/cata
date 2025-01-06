@@ -140,20 +140,15 @@ func (swap *ItemSwap) registerPPMInternal(config ItemSwapPPMConfig) {
 
 	itemID := config.EffectID
 	enchantEffectID := config.EnchantId
-	ppm := config.PPM
-	ppmm := config.Ppmm
-	aura := config.Aura
-	slots := config.Slots
-	customProcMask := config.CustomProcMask
 
 	isItemPPM := itemID != 0
 	isEnchantEffectPPM := enchantEffectID != 0
 
-	character.RegisterItemSwapCallback(slots, func(sim *Simulation, slot proto.ItemSlot) {
+	character.RegisterItemSwapCallback(config.Slots, func(sim *Simulation, slot proto.ItemSlot) {
 		item := swap.GetEquippedItemBySlot(slot)
 
-		if customProcMask != 0 {
-			*ppmm = character.AutoAttacks.NewPPMManager(ppm, customProcMask)
+		if config.CustomProcMask != 0 {
+			*config.Ppmm = character.AutoAttacks.NewPPMManager(config.PPM, config.CustomProcMask)
 			return
 		}
 
@@ -163,11 +158,11 @@ func (swap *ItemSwap) registerPPMInternal(config ItemSwapPPMConfig) {
 
 		if isItemPPM {
 			hasItemEquipped = item.ID == itemID
-			isItemSlotMatch = swap.GetItemFromPossibleSlotsByItemID(itemID, slots) == slot
+			isItemSlotMatch = swap.GetItemFromPossibleSlotsByItemID(itemID, config.Slots) == slot
 			procMask = character.GetDefaultProcMaskForWeaponEffect(itemID)
 		} else if isEnchantEffectPPM {
 			hasItemEquipped = item.Enchant.EffectID == enchantEffectID || item.TempEnchant == enchantEffectID
-			isItemSlotMatch = swap.GetItemFromPossibleSlotsByEffectID(enchantEffectID, slots) == slot
+			isItemSlotMatch = swap.GetItemFromPossibleSlotsByEffectID(enchantEffectID, config.Slots) == slot
 			procMask = character.GetDefaultProcMaskForWeaponEnchant(enchantEffectID)
 		}
 
@@ -175,15 +170,15 @@ func (swap *ItemSwap) registerPPMInternal(config ItemSwapPPMConfig) {
 			return
 		}
 
-		if aura != nil {
+		if config.Aura != nil {
 			if hasItemEquipped {
-				aura.Activate(sim)
+				config.Aura.Activate(sim)
 			} else {
-				aura.Deactivate(sim)
+				config.Aura.Deactivate(sim)
 			}
 		}
 
-		*ppmm = character.AutoAttacks.NewPPMManager(ppm, procMask)
+		*config.Ppmm = character.AutoAttacks.NewPPMManager(config.PPM, procMask)
 	})
 }
 
@@ -231,7 +226,7 @@ func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
 		var hasItemEquipped bool
 
 		if isItemProc {
-			hasItemEquipped = swap.HasItemEquipped(itemID)
+			hasItemEquipped = character.HasItemEquipped(itemID)
 		} else if isEnchantEffectProc {
 			hasItemEquipped = item.Enchant.EffectID == enchantEffectID
 		}
@@ -261,7 +256,7 @@ func (swap *ItemSwap) RegisterActive(itemID int32, slots []proto.ItemSlot) {
 		if !isSwapItem {
 			return
 		}
-		hasItemEquipped := swap.HasItemEquipped(itemID)
+		hasItemEquipped := character.HasItemEquipped(itemID)
 
 		spell := swap.character.GetSpell(ActionID{ItemID: itemID})
 		if spell != nil {
@@ -305,8 +300,8 @@ func (swap *ItemSwap) IsSwapped() bool {
 	return swap.swapSet == proto.APLActionItemSwap_Swap1
 }
 
-func (swap *ItemSwap) HasItemEquipped(itemID int32) bool {
-	for _, item := range swap.character.Equipment {
+func (character *Character) HasItemEquipped(itemID int32) bool {
+	for _, item := range character.Equipment {
 		if item.ID == itemID {
 			return true
 		}

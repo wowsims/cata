@@ -5,7 +5,6 @@ import (
 	"slices"
 
 	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
 )
 
 type ApplySetBonus func(agent Agent, setBonusAura *Aura)
@@ -239,57 +238,4 @@ func (character *Character) GetActiveSetBonusNames() []string {
 // Adds a spellID to the set bonus so it can be exposed to the APL
 func (setBonusTracker *Aura) ExposeToAPL(spellID int32) {
 	setBonusTracker.ActionID = ActionID{SpellID: spellID}
-}
-
-// Creates a new ProcTriggerAura that is dependent on the set bonus being active
-// This should only be used if the dependent Aura is:
-// 1. On the a different Unit than the setBonus is registered to (usually the Character)
-// 2. You need to register multiple dependent Aura's for the same Unit
-func (setBonusTracker *Aura) MakeDependentProcTriggerAura(unit *Unit, config ProcTrigger) *Aura {
-	oldExtraCondition := config.ExtraCondition
-	config.ExtraCondition = func(sim *Simulation, spell *Spell, result *SpellResult) bool {
-		return setBonusTracker.IsActive() && ((oldExtraCondition == nil) || oldExtraCondition(sim, spell, result))
-	}
-
-	aura := MakeProcTriggerAura(unit, config)
-
-	return aura
-}
-
-// Attaches a ProcTrigger to the set bonus
-// Preffered use-case.
-// For non standard use-cases see: MakeDependentProcTriggerAura
-func (setBonusTracker *Aura) AttachProcTrigger(config ProcTrigger) {
-	ApplyProcTriggerCallback(setBonusTracker.Unit, setBonusTracker, config)
-}
-
-// Attaches a SpellMod to the set bonus
-func (setBonusTracker *Aura) AttachSpellMod(spellModConfig SpellModConfig) {
-	setBonusDep := setBonusTracker.Unit.AddDynamicMod(spellModConfig)
-
-	setBonusTracker.ApplyOnGain(func(_ *Aura, _ *Simulation) {
-		setBonusDep.Activate()
-	})
-
-	setBonusTracker.ApplyOnExpire(func(_ *Aura, _ *Simulation) {
-		setBonusDep.Deactivate()
-	})
-}
-
-// Adds Stats to the set bonus
-func (setBonusTracker *Aura) AttachStatsBuff(stats stats.Stats) {
-	setBonusTracker.ApplyOnGain(func(aura *Aura, sim *Simulation) {
-		aura.Unit.AddStatsDynamic(sim, stats)
-	})
-
-	setBonusTracker.ApplyOnExpire(func(aura *Aura, sim *Simulation) {
-		aura.Unit.AddStatsDynamic(sim, stats.Invert())
-	})
-}
-
-// Adds a Stat to the set bonus
-func (setBonusTracker *Aura) AttachStatBuff(stat stats.Stat, value float64) {
-	statsToAdd := stats.Stats{}
-	statsToAdd[stat] = value
-	setBonusTracker.AttachStatsBuff(statsToAdd)
 }

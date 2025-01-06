@@ -329,6 +329,59 @@ func (character *Character) NewTemporaryStatsAuraWrapped(auraLabel string, actio
 	}
 }
 
+// Creates a new ProcTriggerAura that is dependent on a parent Aura being active
+// This should only be used if the dependent Aura is:
+// 1. On the a different Unit than parent Aura is registered to (usually the Character)
+// 2. You need to register multiple dependent Aura's for the same Unit
+func (parentAura *Aura) MakeDependentProcTriggerAura(unit *Unit, config ProcTrigger) *Aura {
+	oldExtraCondition := config.ExtraCondition
+	config.ExtraCondition = func(sim *Simulation, spell *Spell, result *SpellResult) bool {
+		return parentAura.IsActive() && ((oldExtraCondition == nil) || oldExtraCondition(sim, spell, result))
+	}
+
+	aura := MakeProcTriggerAura(unit, config)
+
+	return aura
+}
+
+// Attaches a ProcTrigger to a parent Aura
+// Preffered use-case.
+// For non standard use-cases see: MakeDependentProcTriggerAura
+func (parentAura *Aura) AttachProcTrigger(config ProcTrigger) {
+	ApplyProcTriggerCallback(parentAura.Unit, parentAura, config)
+}
+
+// Attaches a SpellMod to a parent Aura
+func (parentAura *Aura) AttachSpellMod(spellModConfig SpellModConfig) {
+	parentAuraDep := parentAura.Unit.AddDynamicMod(spellModConfig)
+
+	parentAura.ApplyOnGain(func(_ *Aura, _ *Simulation) {
+		parentAuraDep.Activate()
+	})
+
+	parentAura.ApplyOnExpire(func(_ *Aura, _ *Simulation) {
+		parentAuraDep.Deactivate()
+	})
+}
+
+// Adds Stats to a parent Aura
+func (parentAura *Aura) AttachStatsBuff(stats stats.Stats) {
+	parentAura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
+		aura.Unit.AddStatsDynamic(sim, stats)
+	})
+
+	parentAura.ApplyOnExpire(func(aura *Aura, sim *Simulation) {
+		aura.Unit.AddStatsDynamic(sim, stats.Invert())
+	})
+}
+
+// Adds a Stat to a parent Aura
+func (parentAura *Aura) AttachStatBuff(stat stats.Stat, value float64) {
+	statsToAdd := stats.Stats{}
+	statsToAdd[stat] = value
+	parentAura.AttachStatsBuff(statsToAdd)
+}
+
 type ShieldStrengthCalculator func(unit *Unit) float64
 
 type DamageAbsorptionAura struct {
