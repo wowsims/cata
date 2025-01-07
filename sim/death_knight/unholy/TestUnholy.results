@@ -304,7 +304,7 @@ dps_results: {
  value: {
   dps: 43120.17978
   tps: 32013.58168
-  hps: 601.25406
+  hps: 601.25407
  }
 }
 dps_results: {
@@ -1302,9 +1302,9 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-PetrifiedPickledEgg-232014"
  value: {
-  dps: 39594.5399
-  tps: 29368.10418
-  hps: 651.99472
+  dps: 39593.05402
+  tps: 29369.14359
+  hps: 652.77837
  }
 }
 dps_results: {
