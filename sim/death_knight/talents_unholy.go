@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -307,7 +306,7 @@ func (dk *DeathKnight) applySuddenDoom() {
 	})
 
 	ppm := 1.0 * float64(dk.Talents.SuddenDoom)
-	triggerAura := core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
+	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
 		Name:     "Sudden Doom",
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMHAuto,
@@ -325,8 +324,6 @@ func (dk *DeathKnight) applySuddenDoom() {
 			}
 		},
 	})
-
-	dk.ItemSwap.RegisterPPMEffectWithCustomProcMask(core.ProcMaskMeleeMH, ppm, triggerAura.Ppmm, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
 }
 
 func (dk *DeathKnight) applyShadowInfusion() *core.Aura {

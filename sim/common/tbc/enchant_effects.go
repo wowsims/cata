@@ -91,7 +91,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEnchantEffect(1900, 1.0, &ppmm, aura, shared.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(1900, aura, shared.WeaponSlots)
 	})
 
 	core.NewEnchantEffect(2929, func(agent core.Agent) {
@@ -131,7 +131,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEnchantEffect(2673, 0.73, &ppmm, aura, shared.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(2673, aura, shared.WeaponSlots)
 	})
 
 	core.AddWeaponEffect(2723, func(agent core.Agent, _ proto.ItemSlot) {
@@ -174,7 +174,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEnchantEffect(3225, 1.0, &ppmm, aura, shared.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(3225, aura, shared.WeaponSlots)
 	})
 
 	// https://web.archive.org/web/20100702102132/http://elitistjerks.com/f15/t27347-deathfrost_its_mechanics/p2/#post789470
@@ -217,7 +217,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEnchantEffect(3273, 2.15, &ppmm, aura, shared.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(3273, aura, shared.WeaponSlots)
 	}
 	core.NewEnchantEffect(3273, func(agent core.Agent) {
 		character := agent.GetCharacter()

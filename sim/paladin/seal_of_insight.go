@@ -60,7 +60,7 @@ func (paladin *Paladin) registerSealOfInsight() {
 		Tag:      "Seal",
 		ActionID: core.ActionID{SpellID: 20165},
 		Duration: time.Minute * 30,
-		Ppmm:     &ppmm,
+		Ppmm:     ppmm,
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// Don't proc on misses

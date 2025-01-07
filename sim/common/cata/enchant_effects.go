@@ -116,7 +116,7 @@ func init() {
 			},
 		}))
 
-		character.ItemSwap.RegisterPPMEnchantEffect(4067, ppm, &ppmm, aura, shared.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(4067, aura, shared.WeaponSlots)
 	})
 
 	// Enchant: 4074, Spell: 74211 - Enchant Weapon - Elemental Slayer
@@ -153,7 +153,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEnchantEffect(4074, ppm, aura.Ppmm, aura, shared.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(4074, aura, shared.WeaponSlots)
 	})
 
 	// Enchant: 4083, Spell: 74223 - Enchant Weapon - Hurricane
@@ -238,7 +238,7 @@ func init() {
 			},
 		}))
 
-		character.ItemSwap.RegisterPPMEnchantEffect(4083, ppm, &ppmm, aura, shared.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(4083, aura, shared.WeaponSlots)
 	})
 
 	// Enchant: 4084, Spell: 74225 - Enchant Weapon - Heartsong
@@ -319,7 +319,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEnchantEffect(4099, ppm, aura.Ppmm, aura, shared.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(4099, aura, shared.WeaponSlots)
 	})
 
 	// Enchant: 4115, Spell: 75172 - Lightweave Embroidery

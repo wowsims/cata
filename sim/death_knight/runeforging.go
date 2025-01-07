@@ -101,7 +101,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEnchantEffect(3368, 2.0, aura.Ppmm, aura, shared.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(3368, aura, shared.WeaponSlots)
 	})
 
 	// Rune of Cinderglacier
@@ -164,7 +164,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEnchantEffect(3369, 1.0, aura.Ppmm, aura, shared.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(3369, aura, shared.WeaponSlots)
 	})
 
 	// Rune of Razorice

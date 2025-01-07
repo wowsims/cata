@@ -54,7 +54,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEnchantEffect(3251, 4.0, &ppmm, aura, shared.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(3251, aura, shared.WeaponSlots)
 	})
 
 	// Enchant: 3239, Spell: 44525 - Icebreaker
@@ -95,7 +95,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEnchantEffect(3239, 4.0, &ppmm, aura, shared.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(3239, aura, shared.WeaponSlots)
 	})
 
 	// Enchant: 3607, Spell: 55076, Item: 41146 - Sun Scope
@@ -183,7 +183,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEnchantEffect(3789, 1.0, &ppmm, aura, shared.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(3789, aura, shared.WeaponSlots)
 	})
 
 	// TODO: These are stand-in values without any real reference.
@@ -212,7 +212,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterPPMEnchantEffect(3241, 3.0, &ppmm, aura, shared.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(3241, aura, shared.WeaponSlots)
 	})
 
 	// Enchant: 3790, Spell: 59630 - Black Magic

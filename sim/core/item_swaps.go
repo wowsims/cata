@@ -90,95 +90,15 @@ func (character *Character) RegisterItemSwapCallback(slots []proto.ItemSlot, cal
 	}
 }
 
-// Helper for handling Effects that use PPMManager to toggle the aura on/off
-func (swap *ItemSwap) RegisterPPMEnchantEffect(effectID int32, ppm float64, ppmm *PPMManager, aura *Aura, slots []proto.ItemSlot) {
-	swap.registerPPMInternal(ItemSwapPPMConfig{
-		EnchantId: effectID,
-		PPM:       ppm,
-		Ppmm:      ppmm,
-		Aura:      aura,
-		Slots:     slots,
-	})
-}
-
-// Helper for handling Effects that use PPMManager to toggle the aura on/off
-func (swap *ItemSwap) RegisterPPMItemEffect(itemID int32, ppm float64, ppmm *PPMManager, aura *Aura, slots []proto.ItemSlot) {
-	swap.registerPPMInternal(ItemSwapPPMConfig{
-		EffectID: itemID,
-		PPM:      ppm,
-		Ppmm:     ppmm,
-		Aura:     aura,
-		Slots:    slots,
-	})
-}
-
 // Helper for handling procs that use PPMManager to toggle the aura on/off
-func (swap *ItemSwap) RegisterPPMEffectWithCustomProcMask(procMask ProcMask, ppm float64, ppmm *PPMManager, slots []proto.ItemSlot) {
-	swap.registerPPMInternal(ItemSwapPPMConfig{
-		CustomProcMask: procMask,
-		PPM:            ppm,
-		Ppmm:           ppmm,
-		Slots:          slots,
-	})
-}
-
-type ItemSwapPPMConfig struct {
-	EffectID       int32
-	EnchantId      int32
-	PPM            float64
-	CustomProcMask ProcMask
-	Ppmm           *PPMManager
-	Aura           *Aura
-	Slots          []proto.ItemSlot
-}
-
-func (swap *ItemSwap) registerPPMInternal(config ItemSwapPPMConfig) {
+func (swap *ItemSwap) RegisterPPMEffect(procMask ProcMask, ppm float64, ppmm *PPMManager) {
 	character := swap.character
 	if character == nil || !character.ItemSwap.IsEnabled() {
 		return
 	}
 
-	itemID := config.EffectID
-	enchantEffectID := config.EnchantId
-
-	isItemPPM := itemID != 0
-	isEnchantEffectPPM := enchantEffectID != 0
-
-	character.RegisterItemSwapCallback(config.Slots, func(sim *Simulation, slot proto.ItemSlot) {
-		item := swap.GetEquippedItemBySlot(slot)
-
-		if config.CustomProcMask != 0 {
-			*config.Ppmm = character.AutoAttacks.NewPPMManager(config.PPM, config.CustomProcMask)
-			return
-		}
-
-		var hasItemEquipped bool
-		var procMask ProcMask
-		var isItemSlotMatch = false
-
-		if isItemPPM {
-			hasItemEquipped = item.ID == itemID
-			isItemSlotMatch = swap.FindSlotForItem(itemID, config.Slots) == slot
-			procMask = character.GetDefaultProcMaskForWeaponEffect(itemID)
-		} else if isEnchantEffectPPM {
-			hasItemEquipped = item.Enchant.EffectID == enchantEffectID || item.TempEnchant == enchantEffectID
-			isItemSlotMatch = swap.FindSlotForEnchant(enchantEffectID, config.Slots) == slot
-			procMask = character.GetDefaultProcMaskForWeaponEnchant(enchantEffectID)
-		}
-
-		if !isItemSlotMatch {
-			return
-		}
-
-		if config.Aura != nil {
-			if hasItemEquipped {
-				config.Aura.Activate(sim)
-			} else {
-				config.Aura.Deactivate(sim)
-			}
-		}
-
-		*config.Ppmm = character.AutoAttacks.NewPPMManager(config.PPM, procMask)
+	character.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand, proto.ItemSlot_ItemSlotRanged}, func(sim *Simulation, slot proto.ItemSlot) {
+		*ppmm = character.AutoAttacks.newPPMManager(ppm, procMask)
 	})
 }
 

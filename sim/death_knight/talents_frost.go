@@ -219,7 +219,7 @@ func (dk *DeathKnight) applyKillingMachine() {
 	})
 
 	ppm := 2.0 * float64(dk.Talents.KillingMachine)
-	triggerAura := core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
+	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
 		Name:     "Killing Machine",
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeWhiteHit,
@@ -231,7 +231,6 @@ func (dk *DeathKnight) applyKillingMachine() {
 		},
 	})
 
-	dk.ItemSwap.RegisterPPMEffectWithCustomProcMask(core.ProcMaskMeleeMH, ppm, triggerAura.Ppmm, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
 }
 
 func (dk *DeathKnight) applyMightOfTheFrozenWastes() {

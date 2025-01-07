@@ -204,11 +204,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		}
 
 		if isEnchant {
-			if config.PPM != 0 {
-				character.ItemSwap.RegisterPPMEnchantEffect(effectID, config.PPM, triggerAura.Ppmm, triggerAura, config.Slots)
-			} else {
-				character.ItemSwap.RegisterEnchantProc(effectID, triggerAura, config.Slots)
-			}
+			character.ItemSwap.RegisterEnchantProc(effectID, triggerAura, config.Slots)
 		} else {
 			eligibleSlotsForItem := core.EligibleSlotsForItem(core.GetItemByID(effectID), false)
 			if slices.Contains(eligibleSlotsForItem, proto.ItemSlot_ItemSlotTrinket1) {
@@ -549,10 +545,6 @@ func NewProcDamageEffect(config ProcDamageEffect) {
 		}
 		triggerAura := core.MakeProcTriggerAura(&character.Unit, triggerConfig)
 
-		if config.Trigger.PPM != 0 {
-			character.ItemSwap.RegisterPPMItemEffect(config.ItemID, config.Trigger.PPM, triggerAura.Ppmm, triggerAura, config.Slots)
-		} else {
-			character.ItemSwap.RegisterEnchantProc(effectID, triggerAura, config.Slots)
-		}
+		character.ItemSwap.RegisterEnchantProc(effectID, triggerAura, config.Slots)
 	})
 }

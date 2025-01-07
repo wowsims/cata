@@ -342,6 +342,8 @@ type AutoAttacks struct {
 
 	IsDualWielding bool
 
+	character *Character
+
 	mh     WeaponAttack
 	oh     WeaponAttack
 	ranged WeaponAttack
@@ -370,6 +372,8 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		AutoSwingRanged: options.AutoSwingRanged,
 
 		IsDualWielding: options.OffHand.SwingSpeed != 0,
+
+		character: agent.GetCharacter(),
 
 		mh: WeaponAttack{
 			agent:        agent,
@@ -823,7 +827,17 @@ func (ppmm *PPMManager) Chance(procMask ProcMask) float64 {
 	return 0
 }
 
-func (aa *AutoAttacks) NewPPMManager(ppm float64, procMask ProcMask) PPMManager {
+func (aa *AutoAttacks) NewPPMManager(ppm float64, procMask ProcMask) *PPMManager {
+	ppmm := aa.newPPMManager(ppm, procMask)
+
+	if aa.character != nil {
+		aa.character.ItemSwap.RegisterPPMEffect(procMask, ppm, &ppmm)
+	}
+
+	return &ppmm
+}
+
+func (aa *AutoAttacks) newPPMManager(ppm float64, procMask ProcMask) PPMManager {
 	if !aa.AutoSwingMelee && !aa.AutoSwingRanged {
 		return PPMManager{}
 	}
