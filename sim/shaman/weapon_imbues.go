@@ -3,14 +3,13 @@ package shaman
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/common/shared"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func (shaman *Shaman) RegisterOnItemSwapWithImbue(effectID int32, procMask *core.ProcMask, aura *core.Aura) {
-	shaman.RegisterItemSwapCallback(shared.WeaponSlots, func(sim *core.Simulation, slot proto.ItemSlot) {
+	shaman.RegisterItemSwapCallback(core.WeaponSlots, func(sim *core.Simulation, slot proto.ItemSlot) {
 		mask := core.ProcMaskUnknown
 		if shaman.MainHand().TempEnchant == effectID {
 			mask |= core.ProcMaskMeleeMH
@@ -284,7 +283,7 @@ func (shaman *Shaman) RegisterFrostbrandImbue(procMask core.ProcMask) {
 		shaman.OffHand().TempEnchant = 2
 	}
 
-	ppmm := shaman.AutoAttacks.NewPPMManager(9.0, procMask)
+	dpm := shaman.AutoAttacks.NewPPMManager(9.0, procMask)
 
 	mhSpell := shaman.newFrostbrandImbueSpell()
 	ohSpell := shaman.newFrostbrandImbueSpell()
@@ -302,7 +301,7 @@ func (shaman *Shaman) RegisterFrostbrandImbue(procMask core.ProcMask) {
 				return
 			}
 
-			if ppmm.Proc(sim, spell.ProcMask, "Frostbrand Weapon") {
+			if dpm.Proc(sim, spell.ProcMask, "Frostbrand Weapon") {
 				if spell.IsMH() {
 					mhSpell.Cast(sim, result.Target)
 				} else {
@@ -313,7 +312,7 @@ func (shaman *Shaman) RegisterFrostbrandImbue(procMask core.ProcMask) {
 		},
 	})
 
-	shaman.ItemSwap.RegisterEnchantProc(2, aura, shared.WeaponSlots)
+	shaman.ItemSwap.RegisterEnchantProc(2, aura, core.WeaponSlots)
 }
 
 func (shaman *Shaman) newEarthlivingImbueSpell() *core.Spell {

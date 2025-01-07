@@ -45,7 +45,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(4066, aura, shared.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(4066, aura, core.WeaponSlots)
 	})
 
 	// Enchant: 4067, Spell: 74197 - Enchant Weapon - Avalanche
@@ -67,10 +67,8 @@ func init() {
 			},
 		})
 
-		// TODO: Verify PPM (currently based on elitist + simcraft)
-		procMask := character.GetDefaultProcMaskForWeaponEnchant(4067)
 		ppm := 5.0
-		ppmm := character.AutoAttacks.NewPPMManager(ppm, procMask)
+		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(4067, ppm, 0)
 		meleeIcd := &core.Cooldown{
 			Duration: time.Millisecond * 1,
 			Timer:    character.NewTimer(),
@@ -92,7 +90,7 @@ func init() {
 				// melee ICD - Melee and Spell Procs are independent
 				// while melee attacks do not have a direct internal CD
 				// only one proc per server batch can occur, so i.E. Storm Strike can not proc avalance twice
-				if meleeIcd.IsReady(sim) && ppmm.Proc(sim, spell.ProcMask, "Avalanche") {
+				if meleeIcd.IsReady(sim) && dpm.Proc(sim, spell.ProcMask, "Avalanche") {
 					meleeIcd.Use(sim)
 					procSpell.Cast(sim, result.Target)
 					return
@@ -116,7 +114,7 @@ func init() {
 			},
 		}))
 
-		character.ItemSwap.RegisterEnchantProc(4067, aura, shared.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(4067, aura, core.WeaponSlots)
 	})
 
 	// Enchant: 4074, Spell: 74211 - Enchant Weapon - Elemental Slayer
@@ -140,20 +138,18 @@ func init() {
 		// no verified PPM but silence effect + increased damage
 		// will result in significant lower PPM
 		// TODO: Verify PPM
-		procMask := character.GetDefaultProcMaskForWeaponEnchant(4074)
 		ppm := 2.0
 		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:     "Elemental Slayer",
 			Callback: core.CallbackOnSpellHitDealt,
-			ProcMask: procMask,
 			Outcome:  core.OutcomeLanded,
-			PPM:      ppm,
+			DPM:      character.AutoAttacks.NewDynamicProcManagerForEnchant(4074, ppm, 0),
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				procSpell.Cast(sim, result.Target)
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(4074, aura, shared.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(4074, aura, core.WeaponSlots)
 	})
 
 	// Enchant: 4083, Spell: 74223 - Enchant Weapon - Hurricane
@@ -173,9 +169,8 @@ func init() {
 		ohAura := procBuilder("Hurricane Enchant OH", 2)
 		spAura := procBuilder("Hurricane Enchant Spell", 3)
 
-		procMask := character.GetDefaultProcMaskForWeaponEnchant(4083)
 		ppm := 1.0
-		ppmm := character.AutoAttacks.NewPPMManager(ppm, procMask)
+		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(4083, ppm, 0)
 
 		hurricaneSpellProc := func(sim *core.Simulation) {
 			if mhAura.IsActive() {
@@ -210,7 +205,7 @@ func init() {
 					return
 				}
 
-				if ppmm.Proc(sim, spell.ProcMask, "Hurricane") {
+				if dpm.Proc(sim, spell.ProcMask, "Hurricane") {
 					if spell.IsMH() {
 						mhAura.Activate(sim)
 					} else {
@@ -238,7 +233,7 @@ func init() {
 			},
 		}))
 
-		character.ItemSwap.RegisterEnchantProc(4083, aura, shared.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(4083, aura, core.WeaponSlots)
 	})
 
 	// Enchant: 4084, Spell: 74225 - Enchant Weapon - Heartsong
@@ -253,7 +248,7 @@ func init() {
 		ProcChance: 0.25,
 		Bonus:      stats.Stats{stats.Spirit: 200},
 		Duration:   time.Second * 15,
-		Slots:      shared.WeaponSlots,
+		Slots:      core.WeaponSlots,
 	})
 
 	// Enchant: 4097, Spell: 74242 - Enchant Weapon - Power Torrent
@@ -268,7 +263,7 @@ func init() {
 		ProcChance: 1.0 / 3.0,
 		Bonus:      stats.Stats{stats.Intellect: 500},
 		Duration:   time.Second * 12,
-		Slots:      shared.WeaponSlots,
+		Slots:      core.WeaponSlots,
 	})
 
 	// Enchant: 4098, Spell: 74244 - Enchant Weapon - Windwalk
@@ -281,7 +276,7 @@ func init() {
 		PPM:       1, // based on old Wowhead comments, TODO: measure in Classic
 		Bonus:     stats.Stats{stats.DodgeRating: 600},
 		Duration:  time.Second * 10,
-		Slots:     shared.WeaponSlots,
+		Slots:     core.WeaponSlots,
 	})
 
 	// Enchant: 4099, Spell: 74246 - Enchant Weapon - Landslide
@@ -302,14 +297,11 @@ func init() {
 			time.Second*12,
 		)
 
-		procMask := character.GetDefaultProcMaskForWeaponEnchant(4099)
-		ppm := 1.0
 		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:     "Landslide",
 			Callback: core.CallbackOnSpellHitDealt,
-			ProcMask: procMask,
 			Outcome:  core.OutcomeLanded,
-			PPM:      ppm,
+			DPM:      character.AutoAttacks.NewDynamicProcManagerForEnchant(4099, 1.0, 0),
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell.IsMH() {
 					mainHand.Activate(sim)
@@ -319,7 +311,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(4099, aura, shared.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(4099, aura, core.WeaponSlots)
 	})
 
 	// Enchant: 4115, Spell: 75172 - Lightweave Embroidery

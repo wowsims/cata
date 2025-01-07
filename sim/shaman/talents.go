@@ -616,7 +616,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 	})
 
 	// TODO: This was 2% per talent point and max of 10% proc in wotlk. Can't find data on proc chance in cata but the talent was reduced to 3 pts. Guessing it is 3/7/10 like other talents
-	ppmm := shaman.AutoAttacks.NewPPMManager([]float64{0.0, 3.0, 6.0, 10.0}[shaman.Talents.MaelstromWeapon], core.ProcMaskMelee)
+	dpm := shaman.AutoAttacks.NewPPMManager([]float64{0.0, 3.0, 6.0, 10.0}[shaman.Talents.MaelstromWeapon], core.ProcMaskMelee)
 	// This aura is hidden, just applies stacks of the proc aura.
 	shaman.RegisterAura(core.Aura{
 		Label:    "MaelstromWeapon",
@@ -629,7 +629,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 				return
 			}
 
-			if ppmm.Proc(sim, spell.ProcMask, "Maelstrom Weapon") {
+			if dpm.Proc(sim, spell.ProcMask, "Maelstrom Weapon") {
 				shaman.MaelstromWeaponAura.Activate(sim)
 				shaman.MaelstromWeaponAura.AddStack(sim)
 			}

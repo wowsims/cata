@@ -72,7 +72,7 @@ func init() {
 			Timer:    character.NewTimer(),
 			Duration: time.Second * 40,
 		}
-		ppmm := character.AutoAttacks.NewPPMManager(1.5, core.ProcMaskWhiteHit) // Mask 68, melee or ranged auto attacks.
+		dpm := character.AutoAttacks.NewPPMManager(1.5, core.ProcMaskWhiteHit) // Mask 68, melee or ranged auto attacks.
 
 		character.RegisterAura(core.Aura{
 			Label:    "Thundering Skyfire Diamond",
@@ -89,7 +89,7 @@ func init() {
 					return
 				}
 
-				if ppmm.Proc(sim, spell.ProcMask, "Thundering Skyfire Diamond") {
+				if dpm.Proc(sim, spell.ProcMask, "Thundering Skyfire Diamond") {
 					icd.Use(sim)
 					procAura.Activate(sim)
 				}

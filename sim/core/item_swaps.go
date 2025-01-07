@@ -7,6 +7,10 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
+var WeaponSlots = []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand}
+var TrinketSlots = []proto.ItemSlot{proto.ItemSlot_ItemSlotTrinket1, proto.ItemSlot_ItemSlotTrinket2}
+var PpmmSlots = []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand, proto.ItemSlot_ItemSlotRanged}
+
 type OnItemSwap func(*Simulation, proto.ItemSlot)
 
 type ItemSwap struct {
@@ -94,13 +98,6 @@ func (character *Character) RegisterItemSwapCallback(slots []proto.ItemSlot, cal
 	}
 }
 
-// Helper for handling procs that use PPMManager to toggle the aura on/off
-func (swap *ItemSwap) RegisterPPMEffect(procMask ProcMask, ppm float64, ppmm *PPMManager) {
-	swap.character.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand, proto.ItemSlot_ItemSlotRanged}, func(sim *Simulation, slot proto.ItemSlot) {
-		*ppmm = swap.character.AutoAttacks.newPPMManager(ppm, procMask)
-	})
-}
-
 // Helper for handling Item Effects that use the itemID to toggle the aura on and off
 func (swap *ItemSwap) RegisterProc(itemID int32, aura *Aura, slots []proto.ItemSlot) {
 	swap.registerProcInternal(ItemSwapProcConfig{
@@ -131,16 +128,15 @@ func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
 	isEnchantEffectProc := config.EnchantId != 0
 
 	swap.character.RegisterItemSwapCallback(config.Slots, func(sim *Simulation, slot proto.ItemSlot) {
-		item := swap.GetEquippedItemBySlot(slot)
-		var hasItemEquipped bool
+		var isItemSlotMatch = false
 
 		if isItemProc {
-			hasItemEquipped = swap.character.HasItemEquipped(config.ItemID)
+			isItemSlotMatch = swap.HasEquippedItem(config.ItemID, config.Slots)
 		} else if isEnchantEffectProc {
-			hasItemEquipped = item.Enchant.EffectID == config.EnchantId
+			isItemSlotMatch = swap.HasEquippedEnchant(config.EnchantId, config.Slots)
 		}
 
-		if hasItemEquipped {
+		if isItemSlotMatch {
 			if !config.Aura.IsActive() {
 				config.Aura.Activate(sim)
 				// Enchant effects such as Weapon/Back do not trigger an ICD
@@ -218,26 +214,22 @@ func (swap *ItemSwap) GetUnequippedItemBySlot(slot proto.ItemSlot) *Item {
 	return &swap.unEquippedItems[slot]
 }
 
-func (swap *ItemSwap) FindSlotForItem(itemID int32, possibleSlots []proto.ItemSlot) proto.ItemSlot {
+func (swap *ItemSwap) HasEquippedItem(itemID int32, possibleSlots []proto.ItemSlot) bool {
 	for _, slot := range possibleSlots {
-		if swap.swapEquip[slot].ID == itemID {
-			return slot
-		} else if swap.originalEquip[slot].ID == itemID {
-			return slot
+		if swap.character.Equipment[slot].ID == itemID {
+			return true
 		}
 	}
-	return -1
+	return false
 }
 
-func (swap *ItemSwap) FindSlotForEnchant(effectID int32, possibleSlots []proto.ItemSlot) proto.ItemSlot {
+func (swap *ItemSwap) HasEquippedEnchant(effectID int32, possibleSlots []proto.ItemSlot) bool {
 	for _, slot := range possibleSlots {
-		if swap.swapEquip[slot].Enchant.EffectID == effectID {
-			return slot
-		} else if swap.originalEquip[slot].Enchant.EffectID == effectID {
-			return slot
+		if swap.character.Equipment[slot].Enchant.EffectID == effectID {
+			return true
 		}
 	}
-	return -1
+	return false
 }
 
 func (swap *ItemSwap) ItemExistsInSwapSet(itemID int32) bool {

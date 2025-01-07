@@ -9,9 +9,6 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-var WeaponSlots = []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand}
-var TrinketSlots = []proto.ItemSlot{proto.ItemSlot_ItemSlotTrinket1, proto.ItemSlot_ItemSlotTrinket2}
-
 type ProcStatBonusEffect struct {
 	Name       string
 	ItemID     int32

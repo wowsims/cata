@@ -23,7 +23,7 @@ func init() {
 		character := agent.GetCharacter()
 
 		procMask := character.GetDefaultProcMaskForWeaponEffect(19019)
-		ppmm := character.AutoAttacks.NewPPMManager(6.0, procMask)
+		dpm := character.AutoAttacks.NewPPMManager(6.0, procMask)
 
 		procActionID := core.ActionID{SpellID: 21992}
 
@@ -93,7 +93,7 @@ func init() {
 					return
 				}
 
-				if ppmm.Proc(sim, spell.ProcMask, "Thunderfury") {
+				if dpm.Proc(sim, spell.ProcMask, "Thunderfury") {
 					singleTargetSpell.Cast(sim, result.Target)
 					bounceSpell.Cast(sim, result.Target)
 				}
@@ -141,7 +141,7 @@ func init() {
 		character := agent.GetCharacter()
 
 		procAura := character.NewTemporaryStatsAura("Band of the Eternal Champion Proc", core.ActionID{ItemID: 29301}, stats.Stats{stats.AttackPower: 160, stats.RangedAttackPower: 160}, time.Second*10)
-		ppmm := character.AutoAttacks.NewPPMManager(1.0, core.ProcMaskMeleeOrRanged)
+		dpm := character.AutoAttacks.NewPPMManager(1.0, core.ProcMaskMeleeOrRanged)
 
 		icd := core.Cooldown{
 			Timer:    character.NewTimer(),
@@ -163,7 +163,7 @@ func init() {
 					return
 				}
 
-				if ppmm.Proc(sim, spell.ProcMask, "Band of the Eternal Champion") {
+				if dpm.Proc(sim, spell.ProcMask, "Band of the Eternal Champion") {
 					icd.Use(sim)
 					procAura.Activate(sim)
 				}
@@ -250,7 +250,7 @@ func init() {
 		character := agent.GetCharacter()
 
 		procMask := character.GetDefaultProcMaskForWeaponEffect(32262)
-		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
+		dpm := character.AutoAttacks.NewPPMManager(1.0, procMask)
 
 		procSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 40291},
@@ -290,7 +290,7 @@ func init() {
 					return
 				}
 
-				if ppmm.Proc(sim, spell.ProcMask, "Syphon Of The Nathrezim") {
+				if dpm.Proc(sim, spell.ProcMask, "Syphon Of The Nathrezim") {
 					procAura.Activate(sim)
 				}
 			},
@@ -356,7 +356,7 @@ func init() {
 		character := agent.GetCharacter()
 
 		procMask := character.GetDefaultProcMaskForWeaponEffect(12590)
-		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
+		dpm := character.AutoAttacks.NewPPMManager(1.0, procMask)
 
 		effectAura := character.NewTemporaryStatsAura("Felstriker Proc", core.ActionID{SpellID: 16551}, stats.Stats{stats.PhysicalCritPercent: 100}, time.Second*3)
 
@@ -371,7 +371,7 @@ func init() {
 					return
 				}
 
-				if ppmm.Proc(sim, spell.ProcMask, "Felstriker") {
+				if dpm.Proc(sim, spell.ProcMask, "Felstriker") {
 					effectAura.Activate(sim)
 				}
 			},

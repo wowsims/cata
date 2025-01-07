@@ -16,8 +16,7 @@ func init() {
 	core.NewEnchantEffect(3251, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetDefaultProcMaskForWeaponEnchant(3251)
-		ppmm := character.AutoAttacks.NewPPMManager(4.0, procMask)
+		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(3251, 4.0, 0)
 
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 44622},
@@ -48,21 +47,20 @@ func init() {
 					return
 				}
 
-				if ppmm.Proc(sim, spell.ProcMask, "Giant Slayer") {
+				if dpm.Proc(sim, spell.ProcMask, "Giant Slayer") {
 					procSpell.Cast(sim, result.Target)
 				}
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(3251, aura, shared.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(3251, aura, core.WeaponSlots)
 	})
 
 	// Enchant: 3239, Spell: 44525 - Icebreaker
 	core.NewEnchantEffect(3239, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetDefaultProcMaskForWeaponEnchant(3239)
-		ppmm := character.AutoAttacks.NewPPMManager(4.0, procMask)
+		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(3239, 4.0, 0)
 
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 44525},
@@ -89,13 +87,13 @@ func init() {
 					return
 				}
 
-				if ppmm.Proc(sim, spell.ProcMask, "Icebreaker") {
+				if dpm.Proc(sim, spell.ProcMask, "Icebreaker") {
 					procSpell.Cast(sim, result.Target)
 				}
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(3239, aura, shared.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(3239, aura, core.WeaponSlots)
 	})
 
 	// Enchant: 3607, Spell: 55076, Item: 41146 - Sun Scope
@@ -154,8 +152,7 @@ func init() {
 	core.NewEnchantEffect(3789, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetDefaultProcMaskForWeaponEnchant(3789)
-		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
+		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(3789, 1.0, 0)
 
 		// Modify only gear armor, including from agility
 		fivePercentOfArmor := (character.EquipStats()[stats.Armor] + 2.0*character.EquipStats()[stats.Agility]) * 0.05
@@ -173,7 +170,7 @@ func init() {
 					return
 				}
 
-				if ppmm.Proc(sim, spell.ProcMask, "Berserking") {
+				if dpm.Proc(sim, spell.ProcMask, "Berserking") {
 					if spell.IsMH() {
 						procAuraMH.Activate(sim)
 					} else {
@@ -183,15 +180,14 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(3789, aura, shared.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(3789, aura, core.WeaponSlots)
 	})
 
 	// TODO: These are stand-in values without any real reference.
 	core.NewEnchantEffect(3241, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetDefaultProcMaskForWeaponEnchant(3241)
-		ppmm := character.AutoAttacks.NewPPMManager(3.0, procMask)
+		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(3241, 3.0, 0)
 
 		healthMetrics := character.NewHealthMetrics(core.ActionID{ItemID: 44494})
 
@@ -206,13 +202,13 @@ func init() {
 					return
 				}
 
-				if ppmm.Proc(sim, spell.ProcMask, "Lifeward") {
+				if dpm.Proc(sim, spell.ProcMask, "Lifeward") {
 					character.GainHealth(sim, 300*character.PseudoStats.HealingTakenMultiplier, healthMetrics)
 				}
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(3241, aura, shared.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(3241, aura, core.WeaponSlots)
 	})
 
 	// Enchant: 3790, Spell: 59630 - Black Magic
@@ -229,7 +225,7 @@ func init() {
 		Bonus:          stats.Stats{stats.HasteRating: 250},
 		Duration:       time.Second * 10,
 		IgnoreSpellIDs: []int32{47465, 12867},
-		Slots:          shared.WeaponSlots,
+		Slots:          core.WeaponSlots,
 	})
 
 	// Enchant: 3843, Spell: 61471 - Diamond-cut Refractor Scope
@@ -415,6 +411,6 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(3870, aura, shared.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(3870, aura, core.WeaponSlots)
 	})
 }

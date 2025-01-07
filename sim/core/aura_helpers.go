@@ -41,6 +41,7 @@ type ProcTrigger struct {
 	Harmful         bool
 	ProcChance      float64
 	PPM             float64
+	DPM             *DynamicProcManager
 	ICD             time.Duration
 	Handler         ProcHandler
 	ClassSpellMask  int64
@@ -57,10 +58,15 @@ func ApplyProcTriggerCallback(unit *Unit, procAura *Aura, config ProcTrigger) {
 		procAura.Icd = &icd
 	}
 
-	var ppmm PPMManager
-	if config.PPM > 0 {
-		ppmm = *unit.AutoAttacks.NewPPMManager(config.PPM, config.ProcMask)
-		procAura.Ppmm = &ppmm
+	var dpm *DynamicProcManager
+	if config.DPM != nil {
+		dpm = config.DPM
+	} else if config.PPM > 0 {
+		dpm = unit.AutoAttacks.NewPPMManager(config.PPM, config.ProcMask)
+	}
+
+	if dpm != nil {
+		procAura.Dpm = dpm
 	}
 
 	handler := config.Handler
@@ -91,7 +97,7 @@ func ApplyProcTriggerCallback(unit *Unit, procAura *Aura, config ProcTrigger) {
 		}
 		if config.ProcChance != 1 && sim.RandomFloat(config.Name) > config.ProcChance {
 			return
-		} else if config.PPM != 0 && !ppmm.Proc(sim, spell.ProcMask, config.Name) {
+		} else if dpm != nil && !dpm.Proc(sim, spell.ProcMask, config.Name) {
 			return
 		}
 

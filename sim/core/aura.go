@@ -47,8 +47,8 @@ type Aura struct {
 	ActionID        ActionID // If set, metrics will be tracked for this aura.
 	ActionIDForProc ActionID // If set, indicates that this aura is a trigger aura for the specified proc.
 
-	Icd  *Cooldown   // The internal cooldown if any
-	Ppmm *PPMManager // PPM manager for proc trigger auras if any
+	Icd *Cooldown           // The internal cooldown if any
+	Dpm *DynamicProcManager // Dynamic Proc manager for proc trigger auras if any
 
 	Duration time.Duration // Duration of aura, upon being applied.
 

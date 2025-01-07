@@ -598,6 +598,16 @@ func (character *Character) HasRangedWeapon() bool {
 	return character.GetRangedWeapon() != nil
 }
 
+func (character *Character) GetDynamicProcMaskForWeaponEnchant(effectID int32) *ProcMask {
+	procMask := character.GetDefaultProcMaskForWeaponEnchant(effectID)
+
+	character.RegisterItemSwapCallback(PpmmSlots, func(sim *Simulation, slot proto.ItemSlot) {
+		procMask = character.GetDefaultProcMaskForWeaponEnchant(effectID)
+	})
+
+	return &procMask
+}
+
 func (character *Character) GetDefaultProcMaskForWeaponEnchant(effectID int32) ProcMask {
 	return character.getDefaultProcMaskFor(func(weapon *Item) bool {
 		return weapon.Enchant.EffectID == effectID
@@ -624,6 +634,11 @@ func (character *Character) GetProcMaskForTypesAndHand(twohand bool, weaponTypes
 
 func (character *Character) getDefaultProcMaskFor(pred func(item *Item) bool) ProcMask {
 	mask := ProcMaskUnknown
+
+	if character == nil {
+		return mask
+	}
+
 	if pred(character.MainHand()) {
 		mask |= ProcMaskMeleeMH
 	}

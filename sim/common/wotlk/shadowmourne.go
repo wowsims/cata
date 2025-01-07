@@ -22,7 +22,7 @@ func init() {
 	core.NewItemEffect(49623, func(agent core.Agent) {
 		player := agent.GetCharacter()
 
-		ppmm := player.AutoAttacks.NewPPMManager(12, core.ProcMaskMeleeOrMeleeProc)
+		dpm := player.AutoAttacks.NewPPMManager(12, core.ProcMaskMeleeOrMeleeProc)
 
 		chaosBaneAura := player.NewTemporaryStatsAura("Chaos Bane", core.ActionID{SpellID: 73422}, stats.Stats{stats.Strength: 270}, time.Second*10)
 
@@ -66,7 +66,7 @@ func init() {
 					return
 				}
 
-				if ppmm.Proc(sim, spell.ProcMask, "Shadowmourne") {
+				if dpm.Proc(sim, spell.ProcMask, "Shadowmourne") {
 					stackingAura.Activate(sim)
 					stackingAura.AddStack(sim)
 				}

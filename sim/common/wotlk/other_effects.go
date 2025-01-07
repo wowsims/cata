@@ -4,7 +4,6 @@ import (
 	"math"
 	"time"
 
-	"github.com/wowsims/cata/sim/common/shared"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -912,8 +911,7 @@ func init() {
 		core.NewItemEffect(itemID, func(agent core.Agent) {
 			character := agent.GetCharacter()
 
-			procMask := character.GetDefaultProcMaskForWeaponEffect(itemID)
-			ppmm := character.AutoAttacks.NewPPMManager(2.0, procMask)
+			dpm := character.AutoAttacks.NewPPMManagerForWeaponEffect(itemID, 2.0)
 
 			procActionID := core.ActionID{ItemID: itemID}
 
@@ -941,7 +939,7 @@ func init() {
 						return
 					}
 
-					if ppmm.Proc(sim, spell.ProcMask, name) {
+					if dpm.Proc(sim, spell.ProcMask, name) {
 						proc.Cast(sim, result.Target)
 					}
 				},
@@ -1000,7 +998,7 @@ func init() {
 				},
 			})
 
-			character.ItemSwap.RegisterProc(itemID, aura, shared.WeaponSlots)
+			character.ItemSwap.RegisterProc(itemID, aura, core.WeaponSlots)
 		})
 	})
 

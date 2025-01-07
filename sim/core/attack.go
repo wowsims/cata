@@ -803,70 +803,114 @@ func (aa *AutoAttacks) NextAttackAt() time.Duration {
 	return min(aa.mh.swingAt, aa.oh.swingAt)
 }
 
-type PPMManager struct {
+type DynamicProcManager struct {
 	procMasks   []ProcMask
 	procChances []float64
 }
 
 // Returns whether the effect procced.
-func (ppmm *PPMManager) Proc(sim *Simulation, procMask ProcMask, label string) bool {
-	for i, m := range ppmm.procMasks {
+func (dpm *DynamicProcManager) Proc(sim *Simulation, procMask ProcMask, label string) bool {
+	for i, m := range dpm.procMasks {
 		if m.Matches(procMask) {
-			return sim.RandomFloat(label) < ppmm.procChances[i]
+			return sim.RandomFloat(label) < dpm.procChances[i]
 		}
 	}
 	return false
 }
 
-func (ppmm *PPMManager) Chance(procMask ProcMask) float64 {
-	for i, m := range ppmm.procMasks {
+func (dpm *DynamicProcManager) Chance(procMask ProcMask) float64 {
+	for i, m := range dpm.procMasks {
 		if m.Matches(procMask) {
-			return ppmm.procChances[i]
+			return dpm.procChances[i]
 		}
 	}
 	return 0
 }
 
-func (aa *AutoAttacks) NewPPMManager(ppm float64, procMask ProcMask) *PPMManager {
-	ppmm := aa.newPPMManager(ppm, procMask)
+// PPMManager for static ProcMasks
+func (aa *AutoAttacks) NewPPMManager(ppm float64, procMask ProcMask) *DynamicProcManager {
+	dpm := aa.newDynamicProcManager(ppm, 0, procMask)
 
 	if aa.character != nil {
-		aa.character.ItemSwap.RegisterPPMEffect(procMask, ppm, &ppmm)
+		aa.character.RegisterItemSwapCallback(PpmmSlots, func(sim *Simulation, slot proto.ItemSlot) {
+			dpm = aa.character.AutoAttacks.newDynamicProcManager(ppm, 0, procMask)
+		})
 	}
 
-	return &ppmm
+	return &dpm
 }
 
-func (aa *AutoAttacks) newPPMManager(ppm float64, procMask ProcMask) PPMManager {
-	if !aa.AutoSwingMelee && !aa.AutoSwingRanged {
-		return PPMManager{}
+// PPMManager for dynamic ProcMasks on weapon enchants
+func (aa *AutoAttacks) NewDynamicProcManagerForEnchant(effectID int32, ppm float64, fixedProcChance float64) *DynamicProcManager {
+	getProcMask := func() ProcMask {
+		return aa.character.GetDefaultProcMaskForWeaponEnchant(effectID)
 	}
 
-	ppmm := PPMManager{procMasks: make([]ProcMask, 0, 2), procChances: make([]float64, 0, 2)}
+	dpm := aa.newDynamicProcManager(ppm, fixedProcChance, getProcMask())
+
+	if aa.character != nil {
+		aa.character.RegisterItemSwapCallback(PpmmSlots, func(sim *Simulation, slot proto.ItemSlot) {
+			procMask := aa.character.GetDefaultProcMaskForWeaponEnchant(effectID)
+			dpm = aa.character.AutoAttacks.newDynamicProcManager(ppm, fixedProcChance, procMask)
+		})
+	}
+
+	return &dpm
+}
+
+// PPMManager for dynamic ProcMasks on weapon effects
+func (aa *AutoAttacks) NewPPMManagerForWeaponEffect(itemID int32, ppm float64) *DynamicProcManager {
+	getProcMask := func() ProcMask {
+		return aa.character.GetDefaultProcMaskForWeaponEffect(itemID)
+	}
+
+	dpm := aa.newDynamicProcManager(ppm, 0, getProcMask())
+
+	if aa.character != nil {
+		if aa.character != nil {
+			aa.character.RegisterItemSwapCallback(PpmmSlots, func(sim *Simulation, slot proto.ItemSlot) {
+				dpm = aa.character.AutoAttacks.newDynamicProcManager(ppm, 0, getProcMask())
+			})
+		}
+	}
+
+	return &dpm
+}
+
+func (aa *AutoAttacks) newDynamicProcManager(ppm float64, fixedProcChance float64, procMask ProcMask) DynamicProcManager {
+	if !aa.AutoSwingMelee && !aa.AutoSwingRanged {
+		return DynamicProcManager{}
+	}
+
+	dpm := DynamicProcManager{procMasks: make([]ProcMask, 0, 2), procChances: make([]float64, 0, 2)}
 
 	mergeOrAppend := func(speed float64, mask ProcMask) {
 		if speed == 0 || mask == 0 {
 			return
 		}
 
-		if i := slices.Index(ppmm.procChances, speed); i != -1 {
-			ppmm.procMasks[i] |= mask
+		if i := slices.Index(dpm.procChances, speed); i != -1 {
+			dpm.procMasks[i] |= mask
 			return
 		}
 
-		ppmm.procMasks = append(ppmm.procMasks, mask)
-		ppmm.procChances = append(ppmm.procChances, speed)
+		dpm.procMasks = append(dpm.procMasks, mask)
+		dpm.procChances = append(dpm.procChances, speed)
 	}
 
 	mergeOrAppend(aa.mh.SwingSpeed, procMask&^ProcMaskRanged&^ProcMaskMeleeOH) // "everything else", even if not explicitly flagged MH
 	mergeOrAppend(aa.oh.SwingSpeed, procMask&ProcMaskMeleeOH)
 	mergeOrAppend(aa.ranged.SwingSpeed, procMask&ProcMaskRanged)
 
-	for i := range ppmm.procChances {
-		ppmm.procChances[i] *= ppm / 60
+	for i := range dpm.procChances {
+		if fixedProcChance != 0 {
+			dpm.procChances[i] = fixedProcChance
+		} else {
+			dpm.procChances[i] *= ppm / 60
+		}
 	}
 
-	return ppmm
+	return dpm
 }
 
 // Returns whether a PPM-based effect procced.

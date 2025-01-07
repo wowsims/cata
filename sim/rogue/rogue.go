@@ -3,7 +3,6 @@ package rogue
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/common/shared"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -77,8 +76,8 @@ type Rogue struct {
 	lastDeadlyPoisonProcMask core.ProcMask
 
 	deadlyPoisonProcChanceBonus float64
-	instantPoisonPPMM           core.PPMManager
-	woundPoisonPPMM             core.PPMManager
+	instantPoisonPPMM           core.DynamicProcManager
+	woundPoisonPPMM             core.DynamicProcManager
 
 	AdrenalineRushAura   *core.Aura
 	BladeFlurryAura      *core.Aura
@@ -208,7 +207,7 @@ func (rogue *Rogue) Initialize() {
 	rogue.T12ToTLastBuff = 3
 
 	// re-configure poisons when performing an item swap
-	rogue.RegisterItemSwapCallback(shared.WeaponSlots, func(sim *core.Simulation, slot proto.ItemSlot) {
+	rogue.RegisterItemSwapCallback(core.WeaponSlots, func(sim *core.Simulation, slot proto.ItemSlot) {
 		if !rogue.Options.ApplyPoisonsManually {
 			if rogue.MainHand() == nil || rogue.OffHand() == nil {
 				return

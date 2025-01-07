@@ -22,7 +22,7 @@ package tbc
 // 				},
 // 			})
 
-// 			ppmm := character.AutoAttacks.NewPPMManager(2.0, core.ProcMaskMelee)
+// 			dpm := character.AutoAttacks.NewPPMManager(2.0, core.ProcMaskMelee)
 
 // 			character.RegisterAura(core.Aura{
 // 				Label:    "Fists of Fury",
@@ -35,7 +35,7 @@ package tbc
 // 						return
 // 					}
 
-// 					if ppmm.Proc(sim, spell.ProcMask, "The Fists of Fury") {
+// 					if dpm.Proc(sim, spell.ProcMask, "The Fists of Fury") {
 // 						procSpell.Cast(sim, result.Target)
 // 					}
 // 				},
@@ -127,7 +127,7 @@ package tbc
 // 			}
 // 			procAura := character.NewTemporaryStatsAura("Twin Blade of Azzinoth Proc", core.ActionID{SpellID: 41435}, stats.Stats{stats.HasteRating: 450}, time.Second*10)
 
-// 			ppmm := character.AutoAttacks.NewPPMManager(1.0, core.ProcMaskMelee)
+// 			dpm := character.AutoAttacks.NewPPMManager(1.0, core.ProcMaskMelee)
 // 			icd := core.Cooldown{
 // 				Timer:    character.NewTimer(),
 // 				Duration: time.Second * 45,
@@ -148,7 +148,7 @@ package tbc
 // 						return
 // 					}
 
-// 					if ppmm.Proc(sim, spell.ProcMask, "Twin Blades of Azzinoth") {
+// 					if dpm.Proc(sim, spell.ProcMask, "Twin Blades of Azzinoth") {
 // 						icd.Use(sim)
 // 						procAura.Activate(sim)
 // 					}

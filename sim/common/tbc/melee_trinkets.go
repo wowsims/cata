@@ -75,7 +75,7 @@ func init() {
 			Timer:    character.NewTimer(),
 			Duration: time.Second * 20,
 		}
-		ppmm := character.AutoAttacks.NewPPMManager(1.0, core.ProcMaskMeleeOrRanged)
+		dpm := character.AutoAttacks.NewPPMManager(1.0, core.ProcMaskMeleeOrRanged)
 
 		character.RegisterAura(core.Aura{
 			Label:    "Dragonspine Trophy",
@@ -92,7 +92,7 @@ func init() {
 					return
 				}
 
-				if ppmm.Proc(sim, spell.ProcMask, "dragonspine") {
+				if dpm.Proc(sim, spell.ProcMask, "dragonspine") {
 					icd.Use(sim)
 					procAura.Activate(sim)
 				}
@@ -140,7 +140,7 @@ func init() {
 		character := agent.GetCharacter()
 		procAura := character.NewTemporaryStatsAura("Madness of the Betrayer Proc", core.ActionID{ItemID: 32505}, stats.Stats{stats.CritRating: 42}, time.Second*10)
 
-		ppmm := character.AutoAttacks.NewPPMManager(1.0, core.ProcMaskMeleeOrRanged)
+		dpm := character.AutoAttacks.NewPPMManager(1.0, core.ProcMaskMeleeOrRanged)
 
 		character.RegisterAura(core.Aura{
 			Label:    "Madness of the Betrayer",
@@ -153,7 +153,7 @@ func init() {
 					return
 				}
 
-				if ppmm.Proc(sim, spell.ProcMask, "Madness of the Betrayer") {
+				if dpm.Proc(sim, spell.ProcMask, "Madness of the Betrayer") {
 					procAura.Activate(sim)
 				}
 			},
