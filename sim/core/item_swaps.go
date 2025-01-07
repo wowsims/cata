@@ -85,6 +85,10 @@ func (character *Character) RegisterItemSwapCallback(slots []proto.ItemSlot, cal
 		return
 	}
 
+	if (character.Env != nil) && character.Env.IsFinalized() {
+		panic("Tried to add a new item swap callback in a finalized environment!")
+	}
+
 	for _, slot := range slots {
 		character.ItemSwap.onSwapCallbacks[slot] = append(character.ItemSwap.onSwapCallbacks[slot], callback)
 	}
@@ -92,13 +96,8 @@ func (character *Character) RegisterItemSwapCallback(slots []proto.ItemSlot, cal
 
 // Helper for handling procs that use PPMManager to toggle the aura on/off
 func (swap *ItemSwap) RegisterPPMEffect(procMask ProcMask, ppm float64, ppmm *PPMManager) {
-	character := swap.character
-	if character == nil || !character.ItemSwap.IsEnabled() {
-		return
-	}
-
-	character.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand, proto.ItemSlot_ItemSlotRanged}, func(sim *Simulation, slot proto.ItemSlot) {
-		*ppmm = character.AutoAttacks.newPPMManager(ppm, procMask)
+	swap.character.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand, proto.ItemSlot_ItemSlotRanged}, func(sim *Simulation, slot proto.ItemSlot) {
+		*ppmm = swap.character.AutoAttacks.newPPMManager(ppm, procMask)
 	})
 }
 
@@ -128,59 +127,45 @@ type ItemSwapProcConfig struct {
 }
 
 func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
-	character := swap.character
-	if character == nil || !character.ItemSwap.IsEnabled() {
-		return
-	}
+	isItemProc := config.ItemID != 0
+	isEnchantEffectProc := config.EnchantId != 0
 
-	itemID := config.ItemID
-	enchantEffectID := config.EnchantId
-	aura := config.Aura
-	slots := config.Slots
-
-	isItemProc := itemID != 0
-	isEnchantEffectProc := enchantEffectID != 0
-
-	character.RegisterItemSwapCallback(slots, func(sim *Simulation, slot proto.ItemSlot) {
+	swap.character.RegisterItemSwapCallback(config.Slots, func(sim *Simulation, slot proto.ItemSlot) {
 		item := swap.GetEquippedItemBySlot(slot)
 		var hasItemEquipped bool
 
 		if isItemProc {
-			hasItemEquipped = character.HasItemEquipped(itemID)
+			hasItemEquipped = swap.character.HasItemEquipped(config.ItemID)
 		} else if isEnchantEffectProc {
-			hasItemEquipped = item.Enchant.EffectID == enchantEffectID
+			hasItemEquipped = item.Enchant.EffectID == config.EnchantId
 		}
 
 		if hasItemEquipped {
-			if !aura.IsActive() {
-				aura.Activate(sim)
+			if !config.Aura.IsActive() {
+				config.Aura.Activate(sim)
 				// Enchant effects such as Weapon/Back do not trigger an ICD
-				if isItemProc && aura.Icd != nil {
-					aura.Icd.Use(sim)
+				if isItemProc && config.Aura.Icd != nil {
+					config.Aura.Icd.Use(sim)
 				}
 			}
 		} else {
-			aura.Deactivate(sim)
+			config.Aura.Deactivate(sim)
 		}
 	})
 }
 
 // Helper for handling Item On Use effects to set a 30s cd on the related spell.
 func (swap *ItemSwap) RegisterActive(itemID int32, slots []proto.ItemSlot) {
-	character := swap.character
-	if character == nil || !character.ItemSwap.IsEnabled() {
-		return
-	}
-	character.RegisterItemSwapCallback(slots, func(sim *Simulation, slot proto.ItemSlot) {
+	swap.character.RegisterItemSwapCallback(slots, func(sim *Simulation, slot proto.ItemSlot) {
 		isSwapItem := swap.ItemExistsInSwapSet(itemID)
 		if !isSwapItem {
 			return
 		}
-		hasItemEquipped := character.HasItemEquipped(itemID)
+		hasItemEquipped := swap.character.HasItemEquipped(itemID)
 
 		spell := swap.character.GetSpell(ActionID{ItemID: itemID})
 		if spell != nil {
-			aura := character.GetAuraByID(spell.ActionID)
+			aura := swap.character.GetAuraByID(spell.ActionID)
 			if aura.IsActive() {
 				aura.Deactivate(sim)
 			}
@@ -200,11 +185,7 @@ func (swap *ItemSwap) RegisterActive(itemID int32, slots []proto.ItemSlot) {
 
 // Helper for handling Enchant On Use effects to set a 30s cd on the related spell.
 func (swap *ItemSwap) ProcessTinker(spell *Spell, slots []proto.ItemSlot) {
-	character := swap.character
-	if character == nil || !character.ItemSwap.IsEnabled() {
-		return
-	}
-	character.RegisterItemSwapCallback(slots, func(sim *Simulation, slot proto.ItemSlot) {
+	swap.character.RegisterItemSwapCallback(slots, func(sim *Simulation, slot proto.ItemSlot) {
 		if spell == nil || !swap.initialized {
 			return
 		}
