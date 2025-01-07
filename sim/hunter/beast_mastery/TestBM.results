@@ -683,8 +683,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-GaleofShadows-56138"
  value: {
-  dps: 24296.61326
-  tps: 15281.99504
+  dps: 24278.5094
+  tps: 15265.58579
  }
 }
 dps_results: {
@@ -704,8 +704,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-Gladiator'sPursuit"
  value: {
-  dps: 22537.04644
-  tps: 14217.96817
+  dps: 22547.92184
+  tps: 14213.6985
  }
 }
 dps_results: {
@@ -795,8 +795,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-HeartofSolace-55868"
  value: {
-  dps: 24296.61326
-  tps: 15281.99504
+  dps: 24278.5094
+  tps: 15265.58579
  }
 }
 dps_results: {
@@ -1061,8 +1061,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-Lightning-ChargedBattlegear"
  value: {
-  dps: 24565.79227
-  tps: 15458.02105
+  dps: 24566.93284
+  tps: 15458.194
  }
 }
 dps_results: {
@@ -1864,8 +1864,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-Val'anyr,HammerofAncientKings-46017"
  value: {
-  dps: 23762.51314
-  tps: 15020.37497
+  dps: 23776.34089
+  tps: 15027.1501
  }
 }
 dps_results: {
@@ -2186,8 +2186,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-Average-Default"
  value: {
-  dps: 25502.56838
-  tps: 16070.8061
+  dps: 25502.44332
+  tps: 16070.84897
  }
 }
 dps_results: {
