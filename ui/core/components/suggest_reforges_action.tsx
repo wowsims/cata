@@ -767,7 +767,7 @@ export class ReforgeOptimizer {
 		const constraints = this.buildYalpsConstraints(baseGear);
 
 		// Solve in multiple passes to enforce caps
-		await this.solveModel(baseGear, validatedWeights, reforgeCaps, reforgeSoftCaps, variables, constraints);
+		await this.solveModel(baseGear, validatedWeights, reforgeCaps, reforgeSoftCaps, variables, constraints, 75000);
 		this.currentReforges = this.player.getGear().getAllReforges();
 	}
 
@@ -890,7 +890,7 @@ export class ReforgeOptimizer {
 		return constraints;
 	}
 
-	async solveModel(gear: Gear, weights: Stats, reforgeCaps: Stats, reforgeSoftCaps: StatCap[], variables: YalpsVariables, constraints: YalpsConstraints) {
+	async solveModel(gear: Gear, weights: Stats, reforgeCaps: Stats, reforgeSoftCaps: StatCap[], variables: YalpsVariables, constraints: YalpsConstraints, maxIterations: number): Promise<number> {
 		// Calculate EP scores for each Reforge option
 		if (isDevMode()) {
 			console.log('Stat weights for this iteration:');
@@ -913,7 +913,7 @@ export class ReforgeOptimizer {
 		};
 		const options: Options = {
 			timeout: Infinity,
-			maxIterations: 150000,
+			maxIterations: maxIterations,
 			tolerance: 0.01,
 		};
 		const solution = solve(model, options);
@@ -923,9 +923,15 @@ export class ReforgeOptimizer {
 			console.log(solution);
 		}
 
-		if (solution.status === 'timedout') {
-			throw solution
+		if (isNaN(solution.result)) {
+			if (maxIterations > 500000) {
+				throw solution
+			} else {
+				if (isDevMode()) console.log('No feasible solution was found, doubling max iterations...');
+				return await this.solveModel(gear, weights, reforgeCaps, reforgeSoftCaps, variables, constraints, maxIterations * 2);
+			}
 		}
+
 		// Apply the current solution
 		const updatedGear = await this.applyLPSolution(gear, solution);
 
@@ -943,10 +949,11 @@ export class ReforgeOptimizer {
 
 		if (!anyCapsExceeded) {
 			if (isDevMode()) console.log('Reforge optimization has finished!');
+			return solution.result;
 		} else {
 			if (isDevMode()) console.log('One or more stat caps were exceeded, starting constrained iteration...');
 			await sleep(100);
-			await this.solveModel(updatedGear, updatedWeights, reforgeCaps, reforgeSoftCaps, updatedVariables, updatedConstraints);
+			return await this.solveModel(updatedGear, updatedWeights, reforgeCaps, reforgeSoftCaps, updatedVariables, updatedConstraints, maxIterations);
 		}
 	}
 
