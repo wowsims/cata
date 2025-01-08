@@ -127,8 +127,16 @@ func (fb *focusBar) SpendFocus(sim *Simulation, amount float64, metrics *Resourc
 	fb.currentFocus = newFocus
 }
 
+func (fb *focusBar) IsTicking(sim *Simulation) bool {
+	return (fb.nextFocusTick != 0) && (sim.CurrentTime <= fb.nextFocusTick) && (fb.nextFocusTick - sim.CurrentTime <= fb.focusTickDuration)
+}
+
 // Gives an immediate partial Focus tick and restarts the tick timer.
 func (fb *focusBar) ResetFocusTick(sim *Simulation) {
+	if !fb.IsTicking(sim) {
+		return
+	}
+
 	timeSinceLastTick := max(sim.CurrentTime-(fb.NextFocusTickAt()-fb.focusTickDuration), 0)
 	partialTickAmount := fb.FocusRegenPerSecond() * timeSinceLastTick.Seconds()
 	fb.AddFocus(sim, partialTickAmount, fb.regenMetrics)
