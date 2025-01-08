@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
 )
@@ -11,13 +12,13 @@ type APLValueCurrentHealth struct {
 	unit UnitReference
 }
 
-func (rot *APLRotation) newValueCurrentHealth(config *proto.APLValueCurrentHealth) APLValue {
+func (rot *APLRotation) newValueCurrentHealth(config *proto.APLValueCurrentHealth, uuid *proto.UUID) APLValue {
 	unit := rot.GetSourceUnit(config.SourceUnit)
 	if unit.Get() == nil {
 		return nil
 	}
 	if !unit.Get().HasHealthBar() {
-		rot.ValidationWarning("%s does not use Health", unit.Get().Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Health", unit.Get().Label)
 		return nil
 	}
 	return &APLValueCurrentHealth{
@@ -39,13 +40,13 @@ type APLValueCurrentHealthPercent struct {
 	unit UnitReference
 }
 
-func (rot *APLRotation) newValueCurrentHealthPercent(config *proto.APLValueCurrentHealthPercent) APLValue {
+func (rot *APLRotation) newValueCurrentHealthPercent(config *proto.APLValueCurrentHealthPercent, uuid *proto.UUID) APLValue {
 	unit := rot.GetSourceUnit(config.SourceUnit)
 	if unit.Get() == nil {
 		return nil
 	}
 	if !unit.Get().HasHealthBar() {
-		rot.ValidationWarning("%s does not use Health", unit.Get().Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Health", unit.Get().Label)
 		return nil
 	}
 	return &APLValueCurrentHealthPercent{
@@ -67,13 +68,13 @@ type APLValueCurrentMana struct {
 	unit UnitReference
 }
 
-func (rot *APLRotation) newValueCurrentMana(config *proto.APLValueCurrentMana) APLValue {
+func (rot *APLRotation) newValueCurrentMana(config *proto.APLValueCurrentMana, uuid *proto.UUID) APLValue {
 	unit := rot.GetSourceUnit(config.SourceUnit)
 	if unit.Get() == nil {
 		return nil
 	}
 	if !unit.Get().HasManaBar() {
-		rot.ValidationWarning("%s does not use Mana", unit.Get().Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Mana", unit.Get().Label)
 		return nil
 	}
 	return &APLValueCurrentMana{
@@ -95,13 +96,13 @@ type APLValueCurrentManaPercent struct {
 	unit UnitReference
 }
 
-func (rot *APLRotation) newValueCurrentManaPercent(config *proto.APLValueCurrentManaPercent) APLValue {
+func (rot *APLRotation) newValueCurrentManaPercent(config *proto.APLValueCurrentManaPercent, uuid *proto.UUID) APLValue {
 	unit := rot.GetSourceUnit(config.SourceUnit)
 	if unit.Get() == nil {
 		return nil
 	}
 	if !unit.Get().HasManaBar() {
-		rot.ValidationWarning("%s does not use Mana", unit.Get().Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Mana", unit.Get().Label)
 		return nil
 	}
 	return &APLValueCurrentManaPercent{
@@ -123,10 +124,10 @@ type APLValueCurrentRage struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueCurrentRage(config *proto.APLValueCurrentRage) APLValue {
+func (rot *APLRotation) newValueCurrentRage(config *proto.APLValueCurrentRage, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasRageBar() {
-		rot.ValidationWarning("%s does not use Rage", unit.Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Rage", unit.Label)
 		return nil
 	}
 	return &APLValueCurrentRage{
@@ -148,10 +149,10 @@ type APLValueCurrentFocus struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueCurrentFocus(config *proto.APLValueCurrentFocus) APLValue {
+func (rot *APLRotation) newValueCurrentFocus(config *proto.APLValueCurrentFocus, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasFocusBar() {
-		rot.ValidationWarning("%s does not use Focus", unit.Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Focus", unit.Label)
 		return nil
 	}
 	return &APLValueCurrentFocus{
@@ -171,15 +172,98 @@ func (value *APLValueCurrentFocus) String() string {
 	return "Current Focus"
 }
 
+type APLValueMaxFocus struct {
+	DefaultAPLValueImpl
+	maxFocus float64
+}
+
+func (rot *APLRotation) newValueMaxFocus(_ *proto.APLValueMaxFocus, uuid *proto.UUID) APLValue {
+	unit := rot.unit
+	if !unit.HasFocusBar() {
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Error, "%s does not use Focus", unit.Label)
+		return nil
+	}
+	return &APLValueMaxFocus{
+		maxFocus: unit.MaximumFocus(),
+	}
+}
+func (value *APLValueMaxFocus) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeFloat
+}
+func (value *APLValueMaxFocus) GetFloat(sim *Simulation) float64 {
+	return value.maxFocus
+}
+func (value *APLValueMaxFocus) String() string {
+	return fmt.Sprintf("Max Focus(%f)", value.maxFocus)
+}
+
+type APLValueFocusRegenPerSecond struct {
+	DefaultAPLValueImpl
+	unit *Unit
+}
+
+func (rot *APLRotation) newValueFocusRegenPerSecond(_ *proto.APLValueFocusRegenPerSecond, uuid *proto.UUID) APLValue {
+	unit := rot.unit
+	if !unit.HasFocusBar() {
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Focus", unit.Label)
+		return nil
+	}
+	return &APLValueFocusRegenPerSecond{
+		unit: unit,
+	}
+}
+func (value *APLValueFocusRegenPerSecond) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeFloat
+}
+func (value *APLValueFocusRegenPerSecond) GetFloat(sim *Simulation) float64 {
+	return value.unit.FocusRegenPerSecond()
+}
+func (value *APLValueFocusRegenPerSecond) String() string {
+	return "Focus Regen Per Second"
+}
+
+type APLValueFocusTimeToTarget struct {
+	DefaultAPLValueImpl
+	unit        *Unit
+	targetFocus APLValue
+}
+
+func (rot *APLRotation) newValueFocusTimeToTarget(config *proto.APLValueFocusTimeToTarget, uuid *proto.UUID) APLValue {
+	unit := rot.unit
+	if !unit.HasFocusBar() {
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Focus", unit.Label)
+		return nil
+	}
+
+	targetFocus := rot.coerceTo(rot.newAPLValue(config.TargetFocus), proto.APLValueType_ValueTypeFloat)
+	if targetFocus == nil {
+		return nil
+	}
+
+	return &APLValueFocusTimeToTarget{
+		unit:        unit,
+		targetFocus: targetFocus,
+	}
+}
+func (value *APLValueFocusTimeToTarget) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeDuration
+}
+func (value *APLValueFocusTimeToTarget) GetDuration(sim *Simulation) time.Duration {
+	return value.unit.TimeToTargetFocus(value.targetFocus.GetFloat(sim))
+}
+func (value *APLValueFocusTimeToTarget) String() string {
+	return "Estimated Time To Target Focus"
+}
+
 type APLValueCurrentEnergy struct {
 	DefaultAPLValueImpl
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueCurrentEnergy(config *proto.APLValueCurrentEnergy) APLValue {
+func (rot *APLRotation) newValueCurrentEnergy(config *proto.APLValueCurrentEnergy, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasEnergyBar() {
-		rot.ValidationWarning("%s does not use Energy", unit.Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Energy", unit.Label)
 		return nil
 	}
 	return &APLValueCurrentEnergy{
@@ -196,15 +280,98 @@ func (value *APLValueCurrentEnergy) String() string {
 	return "Current Energy"
 }
 
+type APLValueMaxEnergy struct {
+	DefaultAPLValueImpl
+	unit *Unit
+}
+
+func (rot *APLRotation) newValueMaxEnergy(_ *proto.APLValueMaxEnergy, uuid *proto.UUID) APLValue {
+	unit := rot.unit
+	if !unit.HasEnergyBar() {
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Error, "%s does not use Energy", unit.Label)
+		return nil
+	}
+	return &APLValueMaxEnergy{
+		unit: unit,
+	}
+}
+func (value *APLValueMaxEnergy) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeFloat
+}
+func (value *APLValueMaxEnergy) GetFloat(sim *Simulation) float64 {
+	return value.unit.MaximumEnergy()
+}
+func (value *APLValueMaxEnergy) String() string {
+	return "Max Energy"
+}
+
+type APLValueEnergyRegenPerSecond struct {
+	DefaultAPLValueImpl
+	unit *Unit
+}
+
+func (rot *APLRotation) newValueEnergyRegenPerSecond(_ *proto.APLValueEnergyRegenPerSecond, uuid *proto.UUID) APLValue {
+	unit := rot.unit
+	if !unit.HasEnergyBar() {
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Energy", unit.Label)
+		return nil
+	}
+	return &APLValueEnergyRegenPerSecond{
+		unit: unit,
+	}
+}
+func (value *APLValueEnergyRegenPerSecond) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeFloat
+}
+func (value *APLValueEnergyRegenPerSecond) GetFloat(sim *Simulation) float64 {
+	return value.unit.EnergyRegenPerSecond()
+}
+func (value *APLValueEnergyRegenPerSecond) String() string {
+	return "Energy Regen Per Second"
+}
+
+type APLValueEnergyTimeToTarget struct {
+	DefaultAPLValueImpl
+	unit         *Unit
+	targetEnergy APLValue
+}
+
+func (rot *APLRotation) newValueEnergyTimeToTarget(config *proto.APLValueEnergyTimeToTarget, uuid *proto.UUID) APLValue {
+	unit := rot.unit
+	if !unit.HasEnergyBar() {
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Energy", unit.Label)
+		return nil
+	}
+
+	targetEnergy := rot.coerceTo(rot.newAPLValue(config.TargetEnergy), proto.APLValueType_ValueTypeFloat)
+	if targetEnergy == nil {
+		return nil
+	}
+
+	return &APLValueEnergyTimeToTarget{
+		unit:         unit,
+		targetEnergy: targetEnergy,
+	}
+}
+func (value *APLValueEnergyTimeToTarget) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeDuration
+}
+func (value *APLValueEnergyTimeToTarget) GetDuration(sim *Simulation) time.Duration {
+	return value.unit.TimeToTargetEnergy(value.targetEnergy.GetFloat(sim))
+}
+func (value *APLValueEnergyTimeToTarget) String() string {
+	return "Estimated Time To Target Energy"
+}
+
 type APLValueCurrentComboPoints struct {
 	DefaultAPLValueImpl
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueCurrentComboPoints(config *proto.APLValueCurrentComboPoints) APLValue {
+func (rot *APLRotation) newValueCurrentComboPoints(config *proto.APLValueCurrentComboPoints, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasEnergyBar() {
-		rot.ValidationWarning("%s does not use Combo Points", unit.Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Combo Points", unit.Label)
 		return nil
 	}
 	return &APLValueCurrentComboPoints{
@@ -226,10 +393,10 @@ type APLValueCurrentRunicPower struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueCurrentRunicPower(config *proto.APLValueCurrentRunicPower) APLValue {
+func (rot *APLRotation) newValueCurrentRunicPower(config *proto.APLValueCurrentRunicPower, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if !unit.HasRunicPowerBar() {
-		rot.ValidationWarning("%s does not use Runic Power", unit.Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not use Runic Power", unit.Label)
 		return nil
 	}
 	return &APLValueCurrentRunicPower{
@@ -244,4 +411,29 @@ func (value *APLValueCurrentRunicPower) GetInt(sim *Simulation) int32 {
 }
 func (value *APLValueCurrentRunicPower) String() string {
 	return "Current Runic Power"
+}
+
+type APLValueMaxRunicPower struct {
+	DefaultAPLValueImpl
+	maxRunicPower int32
+}
+
+func (rot *APLRotation) newValueMaxRunicPower(_ *proto.APLValueMaxRunicPower, uuid *proto.UUID) APLValue {
+	unit := rot.unit
+	if !unit.HasRunicPowerBar() {
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Error, "%s does not use Runic Power", unit.Label)
+		return nil
+	}
+	return &APLValueMaxRunicPower{
+		maxRunicPower: int32(unit.MaximumRunicPower()),
+	}
+}
+func (value *APLValueMaxRunicPower) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeInt
+}
+func (value *APLValueMaxRunicPower) GetInt(sim *Simulation) int32 {
+	return value.maxRunicPower
+}
+func (value *APLValueMaxRunicPower) String() string {
+	return fmt.Sprintf("Max Runic Power(%d)", value.maxRunicPower)
 }

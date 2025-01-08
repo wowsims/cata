@@ -92,6 +92,7 @@ export class ReforgeOptimizer {
 	readonly freezeItemSlotsChangeEmitter = new TypedEvent<void>();
 	protected freezeItemSlots = false;
 	protected frozenItemSlots = new Map<ItemSlot, boolean>();
+	protected previousGear: Gear | null = null;
 	protected previousReforges = new Map<ItemSlot, ReforgeData>();
 	protected currentReforges = new Map<ItemSlot, ReforgeData>();
 
@@ -742,9 +743,9 @@ export class ReforgeOptimizer {
 			console.log('The following slots will not be cleared:');
 			console.log(Array.from(this.frozenItemSlots.keys()).filter(key => this.frozenItemSlots.get(key)));
 		}
-		const previousGear = this.player.getGear();
-		this.previousReforges = previousGear.getAllReforges();
-		const baseGear = previousGear.withoutReforges(this.player.canDualWield2H(), this.frozenItemSlots);
+		this.previousGear = this.player.getGear();
+		this.previousReforges = this.previousGear.getAllReforges();
+		const baseGear = this.previousGear.withoutReforges(this.player.canDualWield2H(), this.frozenItemSlots);
 		const baseStats = await this.updateGear(baseGear);
 
 		// Compute effective stat caps for just the Reforge contribution
@@ -766,7 +767,7 @@ export class ReforgeOptimizer {
 		const constraints = this.buildYalpsConstraints(baseGear);
 
 		// Solve in multiple passes to enforce caps
-		await this.solveModel(baseGear, validatedWeights, reforgeCaps, reforgeSoftCaps, variables, constraints);
+		await this.solveModel(baseGear, validatedWeights, reforgeCaps, reforgeSoftCaps, variables, constraints, 75000);
 		this.currentReforges = this.player.getGear().getAllReforges();
 	}
 
@@ -889,7 +890,7 @@ export class ReforgeOptimizer {
 		return constraints;
 	}
 
-	async solveModel(gear: Gear, weights: Stats, reforgeCaps: Stats, reforgeSoftCaps: StatCap[], variables: YalpsVariables, constraints: YalpsConstraints) {
+	async solveModel(gear: Gear, weights: Stats, reforgeCaps: Stats, reforgeSoftCaps: StatCap[], variables: YalpsVariables, constraints: YalpsConstraints, maxIterations: number): Promise<number> {
 		// Calculate EP scores for each Reforge option
 		if (isDevMode()) {
 			console.log('Stat weights for this iteration:');
@@ -911,15 +912,26 @@ export class ReforgeOptimizer {
 			binaries: true,
 		};
 		const options: Options = {
-			timeout: 60000,
-			maxIterations: Infinity,
+			timeout: Infinity,
+			maxIterations: maxIterations,
 			tolerance: 0.01,
 		};
 		const solution = solve(model, options);
+
 		if (isDevMode()) {
 			console.log('LP solution for this iteration:');
 			console.log(solution);
 		}
+
+		if (isNaN(solution.result)) {
+			if (maxIterations > 500000) {
+				throw solution
+			} else {
+				if (isDevMode()) console.log('No feasible solution was found, doubling max iterations...');
+				return await this.solveModel(gear, weights, reforgeCaps, reforgeSoftCaps, variables, constraints, maxIterations * 2);
+			}
+		}
+
 		// Apply the current solution
 		const updatedGear = await this.applyLPSolution(gear, solution);
 
@@ -937,10 +949,11 @@ export class ReforgeOptimizer {
 
 		if (!anyCapsExceeded) {
 			if (isDevMode()) console.log('Reforge optimization has finished!');
+			return solution.result;
 		} else {
 			if (isDevMode()) console.log('One or more stat caps were exceeded, starting constrained iteration...');
 			await sleep(100);
-			await this.solveModel(updatedGear, updatedWeights, reforgeCaps, reforgeSoftCaps, updatedVariables, updatedConstraints);
+			return await this.solveModel(updatedGear, updatedWeights, reforgeCaps, reforgeSoftCaps, updatedVariables, updatedConstraints, maxIterations);
 		}
 	}
 
@@ -1172,6 +1185,7 @@ export class ReforgeOptimizer {
 	onReforgeError(error: any) {
 		if (isDevMode()) console.log(error);
 
+		if (this.previousGear) this.updateGear(this.previousGear);
 		new Toast({
 			variant: 'error',
 			body: 'Reforge optimization failed. Please try again, or report the issue if it persists.',

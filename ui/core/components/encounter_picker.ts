@@ -611,6 +611,7 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 			this.clearPickers();
 			this.numberPicker = new NumberPicker(this.rootElem, null, {
 				id: randomUUID(),
+				float: true,
 				label: newValue.label,
 				labelTooltip: newValue.tooltip,
 				changedEvent: () => this.encounter.targetsChangeEmitter,

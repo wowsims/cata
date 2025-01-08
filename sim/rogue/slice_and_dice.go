@@ -61,8 +61,8 @@ func (rogue *Rogue) registerSliceAndDice() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			rogue.SliceAndDiceAura.Duration = rogue.sliceAndDiceDurations[rogue.ComboPoints()]
-			rogue.SliceAndDiceAura.Activate(sim)
 			rogue.ApplyFinisher(sim, spell)
+			rogue.SliceAndDiceAura.Activate(sim)
 		},
 	})
 }

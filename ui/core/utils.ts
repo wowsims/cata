@@ -1,3 +1,5 @@
+// @ts-expect-error
+import cloneDeep from 'lodash/cloneDeep';
 import { v4 as uuidv4 } from 'uuid';
 
 export const randomUUID = () => uuidv4();
@@ -11,7 +13,37 @@ export const existsInDOM = (element: HTMLElement | null) => document.body.contai
 
 export const cloneChildren = (element: HTMLElement) => [...(element.childNodes || [])].map(child => child.cloneNode(true));
 
+export const fragmentToString = (element: Node | Element) => {
+	const div = document.createElement('div');
+	div.appendChild(element.cloneNode(true));
+	return div.innerHTML;
+};
+
 export const sanitizeId = (id: string) => id.split(' ').join('');
+
+export const omitDeep = <T>(collection: T, excludeKeys: string[]): T => {
+	const clonedCollection = cloneDeep(collection);
+
+	const omitFn = (value: any) => {
+		if (value && typeof value === 'object' && !Array.isArray(value)) {
+			excludeKeys.forEach(key => {
+				delete value[key];
+			});
+		}
+	};
+
+	const traverse = (value: any) => {
+		if (Array.isArray(value)) {
+			value.forEach(traverse);
+		} else if (value && typeof value === 'object') {
+			omitFn(value);
+			Object.keys(value).forEach(key => traverse(value[key]));
+		}
+	};
+
+	traverse(clonedCollection);
+	return clonedCollection;
+};
 
 // Returns if the two items are equal, or if both are null / undefined.
 export function equalsOrBothNull<T>(a: T, b: T, comparator?: (_a: NonNullable<T>, _b: NonNullable<T>) => boolean): boolean {

@@ -1,7 +1,12 @@
 import clsx from 'clsx';
 import tippy, { Instance as TippyInstance } from 'tippy.js';
 
+import { Player } from '../../player';
+import { APLValidation } from '../../proto/api';
+import { LogLevel } from '../../proto/common';
+import { ActionId } from '../../proto_utils/action_id';
 import { EventID, TypedEvent } from '../../typed_event.js';
+import { existsInDOM } from '../../utils';
 import { Input, InputConfig } from '../input.js';
 
 export type ListItemAction = 'create' | 'delete' | 'move' | 'copy';
@@ -159,6 +164,24 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 		return !this.config.allowedActions || this.config.allowedActions.includes(action);
 	}
 
+	private addHoverListeners(button: HTMLButtonElement) {
+		button.addEventListener(
+			'mouseenter',
+			() => {
+				button.classList.add('hover');
+			},
+			{ signal: this.signal },
+		);
+
+		button.addEventListener(
+			'mouseleave',
+			() => {
+				button.classList.remove('hover');
+			},
+			{ signal: this.signal },
+		);
+	}
+
 	private addNewPicker() {
 		const index = this.itemPickerPairs.length;
 		const itemContainer = document.createElement('div');
@@ -173,6 +196,12 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 
 		const itemHeader = document.createElement('div');
 		itemHeader.classList.add('list-picker-item-header');
+
+		const popover = document.createElement('div');
+		popover.classList.add('list-picker-item-popover');
+		popover.setAttribute('popover', 'auto');
+		itemHeader.appendChild(popover);
+		let hasActions = false;
 
 		if (this.config.inlineMenuBar) {
 			itemContainer.appendChild(itemElem);
@@ -200,134 +229,12 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 
 		const item: ItemPickerPair<ItemType> = { elem: itemContainer, picker: itemPicker, idx: index };
 
-		if (this.actionEnabled('move')) {
-			const moveButton = ListPicker.makeActionElem('list-picker-item-move', 'fa-arrows-up-down');
-			itemHeader.appendChild(moveButton);
-
-			const moveButtonTooltip = tippy(moveButton, {
-				allowHTML: false,
-				content: 'Move (Drag+Drop)',
-			});
-
-			moveButton.addEventListener(
-				'click',
-				() => {
-					moveButtonTooltip.hide();
-				},
-				{ signal: this.signal },
-			);
-			this.addOnDisposeCallback(() => {
-				moveButtonTooltip?.destroy();
-			});
-
-			moveButton.draggable = true;
-			moveButton.addEventListener(
-				'dragstart',
-				event => {
-					if (event.target == moveButton) {
-						event.dataTransfer!.dropEffect = 'move';
-						event.dataTransfer!.effectAllowed = 'move';
-						itemContainer.classList.add('dragfrom');
-						curDragData = {
-							listPicker: this,
-							item: item,
-						};
-					}
-				},
-				{ signal: this.signal },
-			);
-
-			let dragEnterCounter = 0;
-			itemContainer.addEventListener(
-				'dragenter',
-				event => {
-					if (!curDragData || curDragData.listPicker != this) {
-						return;
-					}
-					event.preventDefault();
-					dragEnterCounter++;
-					itemContainer.classList.add('dragto');
-				},
-				{ signal: this.signal },
-			);
-
-			itemContainer.addEventListener(
-				'dragleave',
-				event => {
-					if (!curDragData || curDragData.listPicker != this) {
-						return;
-					}
-					event.preventDefault();
-					dragEnterCounter--;
-					if (dragEnterCounter <= 0) {
-						itemContainer.classList.remove('dragto');
-					}
-				},
-				{ signal: this.signal },
-			);
-
-			itemContainer.addEventListener(
-				'dragover',
-				event => {
-					if (!curDragData || curDragData.listPicker != this) {
-						return;
-					}
-					event.preventDefault();
-				},
-				{ signal: this.signal },
-			);
-
-			itemContainer.addEventListener(
-				'drop',
-				event => {
-					if (!curDragData || curDragData.listPicker != this) {
-						return;
-					}
-					event.preventDefault();
-					dragEnterCounter = 0;
-					itemContainer.classList.remove('dragto');
-					curDragData.item.elem.classList.remove('dragfrom');
-
-					const srcIdx = curDragData.item.idx;
-					const dstIdx = index;
-					const newList = this.config.getValue(this.modObject);
-					const arrElem = newList[srcIdx];
-					newList.splice(srcIdx, 1);
-					newList.splice(dstIdx, 0, arrElem);
-					this.config.setValue(TypedEvent.nextEventID(), this.modObject, newList);
-
-					curDragData = null;
-				},
-				{ signal: this.signal },
-			);
-		}
-
-		if (this.actionEnabled('copy')) {
-			const copyButton = ListPicker.makeActionElem('list-picker-item-copy', 'fa-copy');
-			itemHeader.appendChild(copyButton);
-			const copyButtonTooltip = tippy(copyButton, {
-				allowHTML: false,
-				content: `Copy to New ${this.config.itemLabel}`,
-			});
-
-			copyButton.addEventListener(
-				'click',
-				() => {
-					const newList = this.config.getValue(this.modObject).slice();
-					newList.splice(index, 0, this.config.copyItem(newList[index]));
-					this.config.setValue(TypedEvent.nextEventID(), this.modObject, newList);
-					copyButtonTooltip.hide();
-				},
-				{ signal: this.signal },
-			);
-			this.addOnDisposeCallback(() => copyButtonTooltip?.destroy());
-		}
-
 		if (this.actionEnabled('delete')) {
 			if (!this.config.minimumItems || index + 1 > this.config.minimumItems) {
+				hasActions = true;
 				const deleteButton = ListPicker.makeActionElem('list-picker-item-delete', 'fa-times');
 				deleteButton.classList.add('link-danger');
-				itemHeader.appendChild(deleteButton);
+				popover.appendChild(deleteButton);
 
 				const deleteButtonTooltip = tippy(deleteButton, {
 					allowHTML: false,
@@ -345,7 +252,264 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 					{ signal: this.signal },
 				);
 				this.addOnDisposeCallback(() => deleteButtonTooltip?.destroy());
+				this.addHoverListeners(deleteButton);
 			}
+		}
+
+		if (this.actionEnabled('copy')) {
+			hasActions = true;
+			const copyButton = ListPicker.makeActionElem('list-picker-item-copy', 'fa-copy');
+			popover.appendChild(copyButton);
+			const copyButtonTooltip = tippy(copyButton, {
+				allowHTML: false,
+				content: `Copy to New ${this.config.itemLabel}`,
+			});
+
+			copyButton.addEventListener(
+				'click',
+				() => {
+					const newList = this.config.getValue(this.modObject).slice();
+					newList.splice(index, 0, this.config.copyItem(newList[index]));
+					this.config.setValue(TypedEvent.nextEventID(), this.modObject, newList);
+					copyButtonTooltip.hide();
+				},
+				{ signal: this.signal },
+			);
+			this.addOnDisposeCallback(() => copyButtonTooltip?.destroy());
+			this.addHoverListeners(copyButton);
+		}
+
+		if (this.actionEnabled('move')) {
+			hasActions = true;
+			itemContainer.classList.add('draggable');
+			if (this.config.itemLabel) {
+				itemContainer.classList.add(this.config.itemLabel.toLowerCase().replace(' ', '-'));
+			}
+
+			const moveButton = ListPicker.makeActionElem('list-picker-item-move', 'fa-arrows-up-down');
+			popover.appendChild(moveButton);
+
+			const moveButtonTooltip = tippy(moveButton, {
+				allowHTML: false,
+				content: 'Move (Drag+Drop)',
+			});
+
+			moveButton.addEventListener(
+				'click',
+				() => {
+					moveButtonTooltip.hide();
+				},
+				{ signal: this.signal },
+			);
+			this.addOnDisposeCallback(() => {
+				moveButtonTooltip?.destroy();
+			});
+
+			this.addHoverListeners(moveButton);
+
+			moveButton.addEventListener(
+				'mousedown',
+				() => {
+					moveButton.setAttribute('draggable', 'true');
+					itemContainer.setAttribute('draggable', 'true');
+				},
+				{ signal: this.signal },
+			);
+
+			moveButton.addEventListener(
+				'mouseup',
+				() => {
+					moveButton.removeAttribute('draggable');
+					itemContainer.removeAttribute('draggable');
+				},
+				{ signal: this.signal },
+			);
+
+			moveButton.addEventListener(
+				'dragstart',
+				event => {
+					if (event.target == moveButton) {
+						const popoverRect = popover.getBoundingClientRect();
+						event.dataTransfer!.setDragImage(itemContainer, 0, popoverRect.height / 2);
+						event.dataTransfer!.dropEffect = 'move';
+						event.dataTransfer!.effectAllowed = 'move';
+						itemContainer.classList.add('dragfrom');
+						curDragData = {
+							listPicker: this,
+							item: item,
+						};
+					}
+				},
+				{ signal: this.signal },
+			);
+
+			const droppingActionOnOtherList = () => curDragData && this.config.itemLabel === 'Action' && curDragData.listPicker !== this;
+			const targetIsSelf = () => curDragData && curDragData.listPicker === this && curDragData.item.idx === index;
+			const targetIsChild = () => curDragData && curDragData.item.elem.contains(itemContainer);
+
+			const invalidDropTarget = (checkSelf = true) => {
+				// Only allow dropping on the same type of list, Value -> Value, Action -> Action
+				if (!curDragData || curDragData.listPicker.config.itemLabel !== this.config.itemLabel) {
+					return true;
+				}
+
+				// Only allow dropping Actions within the same list
+				if (droppingActionOnOtherList()) {
+					return true;
+				}
+
+				// Just skip trying to drop on itself?
+				if (checkSelf && targetIsSelf()) {
+					return true;
+				}
+
+				// Can't drop within itself
+				if (checkSelf && targetIsChild()) {
+					return true;
+				}
+
+				return false;
+			};
+
+			let dragEnterCounter = 0;
+			itemContainer.addEventListener(
+				'dragenter',
+				event => {
+					if (invalidDropTarget()) {
+						return;
+					}
+					event.stopPropagation();
+					dragEnterCounter++;
+					itemContainer.classList.add('dragto');
+				},
+				{ signal: this.signal },
+			);
+
+			itemContainer.addEventListener(
+				'dragleave',
+				event => {
+					if (invalidDropTarget()) {
+						return;
+					}
+					event.preventDefault();
+					dragEnterCounter--;
+					if (dragEnterCounter <= 0) {
+						itemContainer.classList.remove('dragto');
+					}
+				},
+				{ signal: this.signal },
+			);
+
+			itemContainer.addEventListener(
+				'dragover',
+				event => {
+					if (invalidDropTarget()) {
+						if (droppingActionOnOtherList() || targetIsSelf()) {
+							event.dataTransfer!.dropEffect = 'none';
+						}
+
+						return;
+					}
+					event.dataTransfer!.dropEffect = 'move';
+					event.stopPropagation();
+					event.preventDefault();
+				},
+				{ signal: this.signal },
+			);
+
+			const cleanupAfterDrag = () => {
+				if (!curDragData) {
+					return;
+				}
+				moveButton.removeAttribute('draggable');
+				itemContainer.removeAttribute('draggable');
+				curDragData.item.elem.removeAttribute('draggable');
+				[...document.querySelectorAll('.dragfrom,.dragto')].forEach(elem => {
+					elem.classList.remove('dragfrom');
+					elem.classList.remove('dragto');
+				});
+			};
+
+			itemContainer.addEventListener(
+				'dragend',
+				event => {
+					if (invalidDropTarget(false)) {
+						return;
+					}
+					event.stopPropagation();
+					cleanupAfterDrag();
+					curDragData = null;
+				},
+				{ signal: this.signal },
+			);
+
+			itemContainer.addEventListener(
+				'drop',
+				event => {
+					if (!curDragData || invalidDropTarget()) {
+						if (targetIsSelf()) {
+							event.stopPropagation();
+							cleanupAfterDrag();
+						}
+						return;
+					}
+					event.stopPropagation();
+					cleanupAfterDrag();
+
+					const srcIdx = curDragData.item.idx;
+					let dstIdx = index;
+					
+					const targetRect = itemContainer.getBoundingClientRect();
+					if (event.clientY > targetRect.top + targetRect.height / 2) {
+						dstIdx++;
+					}
+					
+					const newList = this.config.getValue(this.modObject);
+					let arrElem;
+
+					if (curDragData.listPicker !== this) {
+						const oldList = curDragData.listPicker.config.getValue(curDragData.listPicker.modObject);
+						arrElem = oldList[srcIdx];
+						oldList.splice(srcIdx, 1);
+						curDragData.listPicker.config.setValue(TypedEvent.nextEventID(), curDragData.listPicker.modObject, oldList);
+					} else {
+						arrElem = newList[srcIdx];
+						newList.splice(srcIdx, 1);
+					}
+
+					newList.splice(dstIdx, 0, arrElem);
+					this.config.setValue(TypedEvent.nextEventID(), this.modObject, newList);
+
+					curDragData = null;
+				},
+				{ signal: this.signal },
+			);
+		}
+
+		if (hasActions) {
+			const actionsButton = ListPicker.makeActionElem('list-picker-item-actions', 'fa-ellipsis');
+			itemHeader.appendChild(actionsButton);
+			actionsButton.addEventListener(
+				'mouseover',
+				() => {
+					popover.showPopover();
+					const actionsButtonRect = actionsButton.getBoundingClientRect();
+					const popoverRect = popover.getBoundingClientRect();
+					const diff = (popoverRect.height - actionsButtonRect.height) / 2;
+					popover.style.top = actionsButtonRect.top - diff + 'px';
+					popover.style.left = actionsButtonRect.right - popoverRect.width + 10 + 'px';
+					popover.classList.add('hover');
+				},
+				{ signal: this.signal },
+			);
+			popover.addEventListener(
+				'mouseleave',
+				() => {
+					popover.classList.remove('hover');
+					popover.hidePopover();
+				},
+				{ signal: this.signal },
+			);
 		}
 
 		this.itemPickerPairs.push(item);
@@ -366,5 +530,106 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 			throw new Error('Could not find list item header');
 		}
 		return headerElem as HTMLElement;
+	}
+
+	static logLevelDisplayData = new Map([
+		[
+			LogLevel.Information,
+			{
+				icon: 'fa-info-circle',
+				header: 'Additional Information&#58;',
+			},
+		],
+		[
+			LogLevel.Warning,
+			{
+				icon: 'fa-exclamation-triangle',
+				header: 'This action has warnings, and might not behave as expected.',
+			},
+		],
+		[
+			LogLevel.Error,
+			{
+				icon: 'fa-exclamation-triangle',
+				header: 'This action has errors, and will not behave as expected.',
+			},
+		],
+	]);
+
+	static makeListItemValidations(itemHeaderElem: HTMLElement, player: Player<any>, getValidations: (player: Player<any>) => Array<APLValidation>) {
+		const validationElem = ListPicker.makeActionElem('apl-validations', 'fa-exclamation-triangle');
+		validationElem.setAttribute('data-bs-html', 'true');
+		const validationTooltip = tippy(validationElem, {
+			theme: 'dropdown-tooltip',
+			content: 'Warnings',
+		});
+
+		itemHeaderElem.appendChild(validationElem);
+
+		const iconElem = validationElem.querySelector('i');
+
+		const updateValidations = async () => {
+			if (!existsInDOM(validationElem)) {
+				validationTooltip?.destroy();
+				validationElem?.remove();
+				player.currentStatsEmitter.off(updateValidations);
+				return;
+			}
+			validationTooltip.setContent('');
+			const validations = getValidations(player);
+			if (!validations.length) {
+				validationElem.style.display = 'none';
+			} else {
+				validationElem.style.removeProperty('display');
+				const formattedValidations = await Promise.all(
+					validations.map(async w => {
+						return { ...w, validation: await ActionId.replaceAllInString(w.validation) };
+					}),
+				);
+				let maxLogLevel = LogLevel.Undefined;
+				const groupedValidations = formattedValidations.reduce((groups, curr) => {
+					const logLevel = curr.logLevel;
+					maxLogLevel = Math.max(logLevel, maxLogLevel);
+
+					const group = groups.get(logLevel);
+					if (group) {
+						group.push(curr.validation);
+					} else {
+						groups.set(logLevel, [curr.validation]);
+					}
+
+					return groups;
+				}, new Map<LogLevel, string[]>());
+
+				for (const [_logLevel, displayData] of this.logLevelDisplayData) {
+					iconElem!.classList.remove(displayData.icon);
+				}
+
+				// New icon is set outside loop so log levels can share the same icon without risk of removing each other
+				const newIcon = this.logLevelDisplayData.get(maxLogLevel)?.icon;
+				if (newIcon) {
+					iconElem!.classList.add(newIcon);
+				}
+
+				for (const [key, value] of Object.entries(LogLevel)) {
+					validationElem.classList[value === maxLogLevel ? 'add' : 'remove'](`apl-validation-${key.toLowerCase()}`);
+				}
+
+				let content = '';
+				for (const [logLevel, validations] of groupedValidations) {
+					content =
+						content +
+						`
+						<p>${this.logLevelDisplayData.get(logLevel)?.header}</p>
+						<ul>
+							${validations.map(v => `<li>${v}</li>`).join('')}
+						</ul>
+					`;
+				}
+				validationTooltip.setContent(content);
+			}
+		};
+		updateValidations();
+		player.currentStatsEmitter.on(updateValidations);
 	}
 }

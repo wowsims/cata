@@ -49,6 +49,14 @@ func (warrior *Warrior) applyMajorGlyphs() {
 			FloatValue: -5,
 		})
 	}
+
+	if warrior.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfRapidCharge) {
+		warrior.AddStaticMod(core.SpellModConfig{
+			ClassMask: SpellMaskCharge,
+			Kind:      core.SpellMod_Cooldown_Flat,
+			TimeValue: -time.Second * 1,
+		})
+	}
 }
 
 func (warrior *Warrior) applyMinorGlyphs() {

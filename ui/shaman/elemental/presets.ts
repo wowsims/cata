@@ -117,7 +117,7 @@ export const DefaultOptions = ElementalShamanOptions.create({
 			elements: TotemSet.create({
 				earth: EarthTotem.StrengthOfEarthTotem,
 				air: AirTotem.WrathOfAirTotem,
-				fire: FireTotem.SearingTotem,
+				fire: FireTotem.FlametongueTotem,
 				water: WaterTotem.ManaSpringTotem,
 			}),
 			ancestors: TotemSet.create({
@@ -134,6 +134,8 @@ export const DefaultOptions = ElementalShamanOptions.create({
 			air: AirTotem.WrathOfAirTotem,
 			fire: FireTotem.SearingTotem,
 			water: WaterTotem.ManaSpringTotem,
+			bonusSpellpower: 0,
+			bonusIntellect: 0,
 		}),
 	},
 });
@@ -142,7 +144,6 @@ export const OtherDefaults = {
 	distanceFromTarget: 20,
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
-	duration: 180,
 };
 
 export const DefaultConsumes = Consumes.create({
@@ -155,12 +156,12 @@ export const DefaultConsumes = Consumes.create({
 
 const ENCOUNTER_SINGLE_TARGET = PresetUtils.makePresetEncounter(
 	'Single Target Dummy',
-	'http://localhost:5173/cata/shaman/elemental/?i=e#eJyTYhJgVzrO5MHMyQACDWkOgmAGg4iD5KyZIHDS3hIicsFeMQ0Mrtk7nj0DAm/sjXqYClZ9ZqziDkrMTFEISSxKTy1RiJBg17rByEAPENDiQE3jGlKOI5vnYzF3jiO6GnBoNCzidJzJCAmgm/ZQNSwOAHLgKDE=',
+	'http://localhost:5173/cata/shaman/elemental/?i=e#eJyTYhJgVzrO5MHMyQACB4ocBMEMBj8HyVkzQeCkvSVE5IK9YhoYXLN3PHsGBN7YG/UwFaz6zFjFHZSYmaIQkliUnlqiECHBrnWDkYEeIKDFgZrGNaQcRzbPx2LuHEd0NeDQaFjE6TiTERJAN+2halgcABeZKLc=',
 );
 
 const ENCOUNTER_CLEAVE = PresetUtils.makePresetEncounter(
 	'Cleave',
-	'http://localhost:5173/cata/shaman/elemental/?i=e#eJyTYhJgV7rG4sHMyQACDWkOgmAGg4iD5KyZIHDS3hIicsFeMQ0Mrtk7nj0DAm/sjXqYClZ9ZqziDkrMTFEISSxKTy1RiJBg17rByEAPENDiQE3jGlKOI5vnYzF3jiO6GnBoNCzidJzJCAmgm/ZQNSwOo8GBEhwAGew9pg==',
+	'http://localhost:5173/cata/shaman/elemental/?i=e#eJyTYhJgV7rG4sHMyQACB4ocBMEMBj8HyVkzQeCkvSVE5IK9YhoYXLN3PHsGBN7YG/UwFaz6zFjFHZSYmaIQkliUnlqiECHBrnWDkYEeIKDFgZrGNaQcRzbPx2LuHEd0NeDQaFjE6TiTERJAN+2halgcRoMDJTgATH8+LA==',
 );
 
 const ENCOUNTER_AOE = PresetUtils.makePresetEncounter(

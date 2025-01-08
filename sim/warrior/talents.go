@@ -252,6 +252,7 @@ func (warrior *Warrior) applyBloodAndThunder() {
 			for _, target := range sim.Encounter.TargetUnits {
 				rend := warrior.Rend.Dot(target)
 				lastAppliedTime = int64(sim.CurrentTime)
+
 				rend.Apply(sim)
 				rend.TickOnce(sim)
 			}

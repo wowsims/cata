@@ -21,7 +21,7 @@ export const P3_ARMS_BIS_PRESET = PresetUtils.makePresetGear('P3 - BIS', P3ArmsB
 export const ROTATION_ARMS = PresetUtils.makePresetAPLRotation('Default', ArmsApl);
 
 // Preset options for EP weights
-export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Default',
 	Stats.fromMap(
 		{
@@ -79,5 +79,5 @@ export const DefaultConsumes = Consumes.create({
 export const OtherDefaults = {
 	profession1: Profession.Engineering,
 	profession2: Profession.Blacksmithing,
-	distanceFromTarget: 5,
+	distanceFromTarget: 9,
 };

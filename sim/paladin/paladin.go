@@ -137,9 +137,10 @@ type Paladin struct {
 	sharedBuilderTimer  *core.Timer
 	sharedBuilderBaseCD time.Duration
 
-	CurrentSeal      *core.Aura
-	CurrentJudgement *core.Spell
-	SnapshotGuardian bool
+	CurrentSeal       *core.Aura
+	CurrentJudgement  *core.Spell
+	SnapshotGuardian  bool
+	StartingHolyPower int32
 
 	// Pets
 	AncientGuardian *AncientGuardianPet

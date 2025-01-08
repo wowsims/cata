@@ -15,20 +15,21 @@ type FireElemental struct {
 	FireBlast *core.Spell
 	FireNova  *core.Spell
 
-	maxFireBlastCasts int32
-	maxFireNovaCasts  int32
-
 	FireShieldAura *core.Aura
+
+	BonusSpellpower float64
+	BonusIntellect  float64
 
 	shamanOwner *Shaman
 }
 
-func (shaman *Shaman) NewFireElemental(bonusSpellPower float64) *FireElemental {
+var FireElementalSpellPowerScaling = 0.5883
+var FireElementalIntellectScaling = 0.3198
+
+func (shaman *Shaman) NewFireElemental(bonusSpellPower float64, bonusIntellect float64) *FireElemental {
 	fireElemental := &FireElemental{
-		Pet:               core.NewPet("Greater Fire Elemental", &shaman.Character, fireElementalPetBaseStats, shaman.fireElementalStatInheritance(), false, true),
-		shamanOwner:       shaman,
-		maxFireBlastCasts: 15,
-		maxFireNovaCasts:  15,
+		Pet:         core.NewPet("Greater Fire Elemental", &shaman.Character, fireElementalPetBaseStats, shaman.fireElementalStatInheritance(bonusIntellect, bonusSpellPower), false, true),
+		shamanOwner: shaman,
 	}
 	fireElemental.EnableManaBar()
 	fireElemental.AddStatDependency(stats.Intellect, stats.SpellPower, 1.0)
@@ -47,11 +48,6 @@ func (shaman *Shaman) NewFireElemental(bonusSpellPower float64) *FireElemental {
 	})
 	fireElemental.AutoAttacks.MHConfig().BonusCoefficient = 0
 
-	if bonusSpellPower > 0 {
-		fireElemental.AddStat(stats.SpellPower, float64(bonusSpellPower)*0.5883)
-		fireElemental.AddStat(stats.AttackPower, float64(bonusSpellPower)*4.9) // 0.7*7
-	}
-
 	if shaman.Race == proto.Race_RaceDraenei {
 		fireElemental.AddStats(stats.Stats{
 			stats.PhysicalHitPercent: -1,
@@ -59,6 +55,9 @@ func (shaman *Shaman) NewFireElemental(bonusSpellPower float64) *FireElemental {
 			stats.ExpertiseRating:    math.Floor(-core.SpellHitRatingPerHitPercent * 0.79),
 		})
 	}
+
+	fireElemental.BonusIntellect = bonusIntellect
+	fireElemental.BonusSpellpower = bonusSpellPower
 
 	fireElemental.OnPetEnable = fireElemental.enable
 	fireElemental.OnPetDisable = fireElemental.disable
@@ -69,6 +68,7 @@ func (shaman *Shaman) NewFireElemental(bonusSpellPower float64) *FireElemental {
 }
 
 func (fireElemental *FireElemental) enable(sim *core.Simulation) {
+	fireElemental.ChangeStatInheritance(fireElemental.shamanOwner.fireElementalStatInheritance(0, 0))
 	fireElemental.FireShieldAura.Activate(sim)
 }
 
@@ -97,12 +97,6 @@ func (fireElemental *FireElemental) ExecuteCustomRotation(sim *core.Simulation) 
 		the random AI is hard to emulate.
 	*/
 	target := fireElemental.CurrentTarget
-	fireBlastCasts := fireElemental.FireBlast.SpellMetrics[0].Casts
-	fireNovaCasts := fireElemental.FireNova.SpellMetrics[0].Casts
-
-	if fireBlastCasts == fireElemental.maxFireBlastCasts && fireNovaCasts == fireElemental.maxFireNovaCasts {
-		return
-	}
 
 	if fireElemental.FireNova.DefaultCast.Cost > fireElemental.CurrentMana() {
 		return
@@ -111,15 +105,18 @@ func (fireElemental *FireElemental) ExecuteCustomRotation(sim *core.Simulation) 
 	random := sim.RandomFloat("Fire Elemental Pet Spell")
 
 	//Melee the other 30%
-	if random >= .65 {
-		if !fireElemental.TryCast(sim, target, fireElemental.FireNova, fireElemental.maxFireNovaCasts) {
-			fireElemental.TryCast(sim, target, fireElemental.FireBlast, fireElemental.maxFireBlastCasts)
-		}
-	} else if random >= .35 {
-		if !fireElemental.TryCast(sim, target, fireElemental.FireBlast, fireElemental.maxFireBlastCasts) {
-			fireElemental.TryCast(sim, target, fireElemental.FireNova, fireElemental.maxFireNovaCasts)
-		}
+	if random >= .75 {
+		fireElemental.TryCast(sim, target, fireElemental.FireBlast)
+	} else if random >= .40 && random < 0.75 {
+		fireElemental.TryCast(sim, target, fireElemental.FireNova)
 	}
+
+	if !fireElemental.GCD.IsReady(sim) {
+		return
+	}
+
+	minCd := min(fireElemental.FireBlast.CD.ReadyAt(), fireElemental.FireNova.CD.ReadyAt())
+	fireElemental.ExtendGCDUntil(sim, max(minCd, sim.CurrentTime+time.Second))
 
 	if !fireElemental.GCD.IsReady(sim) {
 		return
@@ -128,11 +125,7 @@ func (fireElemental *FireElemental) ExecuteCustomRotation(sim *core.Simulation) 
 	fireElemental.ExtendGCDUntil(sim, sim.CurrentTime+time.Second)
 }
 
-func (fireElemental *FireElemental) TryCast(sim *core.Simulation, target *core.Unit, spell *core.Spell, maxCastCount int32) bool {
-	if maxCastCount == spell.SpellMetrics[0].Casts {
-		return false
-	}
-
+func (fireElemental *FireElemental) TryCast(sim *core.Simulation, target *core.Unit, spell *core.Spell) bool {
 	if !spell.Cast(sim, target) {
 		return false
 	}
@@ -154,15 +147,17 @@ var fireElementalPetBaseStats = stats.Stats{
 	stats.SpellCritPercent:    6.8,
 }
 
-func (shaman *Shaman) fireElementalStatInheritance() core.PetStatInheritance {
+func (shaman *Shaman) fireElementalStatInheritance(bonusIntellect float64, bonusSpellPower float64) core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
 		ownerSpellHitPercent := ownerStats[stats.SpellHitPercent]
 
+		bonusStats := shaman.ApplyStatDependencies(stats.Stats{stats.Intellect: bonusIntellect, stats.SpellPower: bonusSpellPower})
+
 		return stats.Stats{
-			stats.Stamina:     ownerStats[stats.Stamina] * 0.80,      //Estimated from beta testing
-			stats.Intellect:   ownerStats[stats.Intellect] * 0.3198,  //Estimated from beta testing
-			stats.SpellPower:  ownerStats[stats.SpellPower] * 0.5883, //Estimated from beta testing
-			stats.AttackPower: ownerStats[stats.SpellPower] * 4.9,    // 0.7*7 Estimated from beta testing
+			stats.Stamina:     ownerStats[stats.Stamina] * 0.80,                                                               //Estimated from beta testing
+			stats.Intellect:   (ownerStats[stats.Intellect] + bonusStats[stats.Intellect]) * FireElementalIntellectScaling,    //Estimated from beta testing
+			stats.SpellPower:  (ownerStats[stats.SpellPower] + bonusStats[stats.SpellPower]) * FireElementalSpellPowerScaling, //Estimated from beta testing
+			stats.AttackPower: (ownerStats[stats.SpellPower] + bonusStats[stats.SpellPower]) * 4.9,                            // 0.7*7 Estimated from beta testing
 
 			stats.PhysicalHitPercent: ownerSpellHitPercent / 17 * 8,
 			stats.SpellHitPercent:    ownerSpellHitPercent,

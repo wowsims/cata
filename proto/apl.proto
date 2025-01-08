@@ -41,7 +41,7 @@ message APLListItem {
     APLAction action = 3; // The action to be performed.
 }
 
-// NextIndex: 24
+// NextIndex: 25
 message APLAction {
     APLValue condition = 1; // If set, action will only execute if value is true or != 0.
 
@@ -68,6 +68,7 @@ message APLAction {
         // Misc
         APLActionChangeTarget change_target = 9;
         APLActionActivateAura activate_aura = 13;
+        APLActionActivateAuraWithStacks activate_aura_with_stacks = 24;
         APLActionCancelAura cancel_aura = 10;
         APLActionTriggerICD trigger_icd = 11;
         APLActionItemSwap item_swap = 17;
@@ -82,8 +83,10 @@ message APLAction {
     }
 }
 
-// NextIndex: 82
+// NextIndex: 94
 message APLValue {
+	UUID uuid = 87;
+
     oneof value {
         // Operators
         APLValueConst const = 1;
@@ -120,6 +123,13 @@ message APLValue {
         APLValueCurrentSolarEnergy current_solar_energy = 68;
         APLValueCurrentLunarEnergy current_lunar_energy = 69;
 		APLValueCurrentHolyPower current_holy_power = 75;
+		APLValueMaxEnergy max_energy = 88;
+		APLValueMaxFocus max_focus = 89;
+		APLValueMaxRunicPower max_runic_power = 86;
+		APLValueEnergyRegenPerSecond energy_regen_per_second = 90;
+		APLValueFocusRegenPerSecond focus_regen_per_second = 91;
+		APLValueEnergyTimeToTarget energy_time_to_target = 92;
+		APLValueFocusTimeToTarget focus_time_to_target = 93;
 
 		// Unit values
 		APLValueUnitIsMoving unit_is_moving = 72;
@@ -167,7 +177,9 @@ message APLValue {
         APLValueAllTrinketStatProcsActive all_trinket_stat_procs_active = 78;
         APLValueAnyTrinketStatProcsActive any_trinket_stat_procs_active = 79;
         APLValueTrinketProcsMinRemainingTime trinket_procs_min_remaining_time = 80;
+        APLValueTrinketProcsMaxRemainingICD trinket_procs_max_remaining_icd = 84;
         APLValueNumEquippedStatProcTrinkets num_equipped_stat_proc_trinkets = 81;
+        APLValueNumStatBuffCooldowns num_stat_buff_cooldowns = 85;
 
         // Dot values
         APLValueDotIsActive dot_is_active = 6;
@@ -192,6 +204,8 @@ message APLValue {
         APLValueWarlockShouldRefreshCorruption warlock_should_refresh_corruption = 60;
         APLValueCurrentEclipsePhase druid_current_eclipse_phase = 70;
 		APLValueMageCurrentCombustionDotEstimate mage_current_combustion_dot_estimate = 77;
+		APLValueShamanCanSnapshotStrongerFireElemental shaman_can_snapshot_stronger_fire_elemental = 82;
+        APLValueShamanFireElementalDuration shaman_fire_elemental_duration = 83;
     }
 }
 
@@ -279,6 +293,11 @@ message APLActionActivateAura {
     ActionID aura_id = 1;
 }
 
+message APLActionActivateAuraWithStacks {
+    ActionID aura_id = 1;
+    int32 num_stacks = 2;
+}
+
 message APLActionTriggerICD {
     ActionID aura_id = 1;
 }
@@ -303,6 +322,7 @@ message APLActionCatOptimalRotationAction {
     bool use_rake = 6;
     bool use_bite = 7;
     float bite_time = 8;
+    float berserk_bite_time = 15;
     bool bite_during_execute = 9;
     bool allow_aoe_berserk = 10;
     bool melee_weave = 11;
@@ -431,6 +451,17 @@ message APLValueCurrentRunicPower {}
 message APLValueCurrentSolarEnergy {}
 message APLValueCurrentLunarEnergy {}
 message APLValueCurrentHolyPower {}
+message APLValueMaxEnergy {}
+message APLValueMaxFocus {}
+message APLValueMaxRunicPower {}
+message APLValueEnergyRegenPerSecond {}
+message APLValueFocusRegenPerSecond {}
+message APLValueEnergyTimeToTarget {
+	APLValue target_energy = 1;
+}
+message APLValueFocusTimeToTarget {
+	APLValue target_focus = 1;
+}
 
 enum APLValueRuneType {
     RuneUnknown = 0;
@@ -567,18 +598,38 @@ message APLValueAllTrinketStatProcsActive {
     int32 stat_type1 = 1;
     int32 stat_type2 = 2;
     int32 stat_type3 = 3;
+    bool exclude_stacking_procs = 4 [deprecated=true];
+    double min_icd_seconds = 5;
 }
 message APLValueAnyTrinketStatProcsActive {
     int32 stat_type1 = 1;
     int32 stat_type2 = 2;
     int32 stat_type3 = 3;
+    bool exclude_stacking_procs = 4 [deprecated=true];
+    double min_icd_seconds = 5;
 }
 message APLValueTrinketProcsMinRemainingTime {
     int32 stat_type1 = 1;
     int32 stat_type2 = 2;
     int32 stat_type3 = 3;
+    bool exclude_stacking_procs = 4 [deprecated=true];
+    double min_icd_seconds = 5;
+}
+message APLValueTrinketProcsMaxRemainingICD {
+    int32 stat_type1 = 1;
+    int32 stat_type2 = 2;
+    int32 stat_type3 = 3;
+    bool exclude_stacking_procs = 4 [deprecated=true];
+    double min_icd_seconds = 5;
 }
 message APLValueNumEquippedStatProcTrinkets {
+    int32 stat_type1 = 1;
+    int32 stat_type2 = 2;
+    int32 stat_type3 = 3;
+    bool exclude_stacking_procs = 4 [deprecated=true];
+    double min_icd_seconds = 5;
+}
+message APLValueNumStatBuffCooldowns {
     int32 stat_type1 = 1;
     int32 stat_type2 = 2;
     int32 stat_type3 = 3;
@@ -620,4 +671,8 @@ message APLValueWarlockShouldRefreshCorruption {
     UnitReference target_unit = 1;
 }
 message APLValueMageCurrentCombustionDotEstimate {
+}
+message APLValueShamanCanSnapshotStrongerFireElemental {
+}
+message APLValueShamanFireElementalDuration {
 }

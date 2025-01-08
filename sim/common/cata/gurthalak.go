@@ -35,29 +35,15 @@ func init() {
 			}
 
 			character := agent.GetCharacter()
-			procMask := character.GetProcMaskForItem(gurthalakItemID)
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-				Name:     "Gurthalak Trigger" + labelSuffix,
-				ActionID: core.ActionID{ItemID: gurthalakItemID},
-				Callback: core.CallbackOnSpellHitDealt,
-				ProcMask: core.ProcMaskMelee, // TODO: Verify correct proc masks on the PTR
-				Outcome:  core.OutcomeLanded,
-				Harmful:  true,
-				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			summonSpell := character.RegisterSpell(core.SpellConfig{
+				ActionID:    core.ActionID{SpellID: 109840},
+				SpellSchool: core.SpellSchoolPhysical,
+				ProcMask:    core.ProcMaskEmpty,
+				Flags:       core.SpellFlagNoOnCastComplete,
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 					tentacles := gurthalak.GetTentacles()
-
-					if _, ignore := ignoresSlot[spell.ActionID.SpellID]; !spell.ProcMask.Matches(procMask) && !ignore {
-						return
-					}
-
-					if !sim.Proc(0.02, "Gurthalak, Voice of the Deeps"+labelSuffix) {
-						return
-					}
-
-					if sim.Log != nil {
-						character.Log(sim, "Gurthalak procced by %s", spell.ActionID)
-					}
 
 					for _, tentacle := range tentacles {
 						if tentacle.IsActive() {
@@ -73,6 +59,31 @@ func init() {
 					if sim.Log != nil {
 						character.Log(sim, "No tentacles available for Gurthalak to proc, this is unreasonable.")
 					}
+				},
+			})
+
+			procMask := character.GetProcMaskForItem(gurthalakItemID)
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:     "Gurthalak Trigger" + labelSuffix,
+				ActionID: core.ActionID{ItemID: gurthalakItemID},
+				Callback: core.CallbackOnSpellHitDealt,
+				ProcMask: core.ProcMaskMelee, // TODO: Verify correct proc masks on the PTR
+				Outcome:  core.OutcomeLanded,
+				Harmful:  true,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if _, ignore := ignoresSlot[spell.ActionID.SpellID]; !spell.ProcMask.Matches(procMask) && !ignore {
+						return
+					}
+
+					if !sim.Proc(0.02, "Gurthalak, Voice of the Deeps"+labelSuffix) {
+						return
+					}
+
+					if sim.Log != nil {
+						character.Log(sim, "Gurthalak procced by %s", spell.ActionID)
+					}
+
+					summonSpell.Cast(sim, result.Target)
 				},
 			})
 		})

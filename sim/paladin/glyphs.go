@@ -84,8 +84,14 @@ func (paladin *Paladin) applyGlyphs() {
 }
 
 func registerGlyphOfExorcism(paladin *Paladin) {
-	exorcismAverageDamage :=
-		core.CalcScalingSpellAverageEffect(proto.Class_ClassPaladin, 2.663)
+	glyphOfExoBaseDamage :=
+		core.CalcScalingSpellAverageEffect(proto.Class_ClassPaladin, 0.17900000513)
+
+	// Used for checking "Is Aura Known" in the APL
+	paladin.GetOrRegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 54934},
+		Label:    "Glyph of Exorcism (DoT)" + paladin.Label,
+	})
 
 	glyphOfExorcismDot := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 879}.WithTag(3), // actual 54934
@@ -99,19 +105,12 @@ func registerGlyphOfExorcism(paladin *Paladin) {
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
-			Aura: core.Aura{
-				ActionID: core.ActionID{SpellID: 54934},
-				Label:    "Glyph of Exorcism (DoT)",
-			},
 			NumberOfTicks:       3,
 			AffectedByCastSpeed: false,
 			TickLength:          2 * time.Second,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				// Total damage is 20% of an average hit spread over 3 ticks
-				baseDamage := (exorcismAverageDamage +
-					0.344*max(dot.Spell.SpellPower(), dot.Spell.MeleeAttackPower())) *
-					0.2 / 3
+				baseDamage := glyphOfExoBaseDamage + 0.344*max(dot.Spell.SpellPower(), dot.Spell.MeleeAttackPower())*0.2/3
 
 				bonusCritPercent := dot.Spell.BonusCritPercent
 				if target.MobType == proto.MobType_MobTypeDemon || target.MobType == proto.MobType_MobTypeUndead {
@@ -134,17 +133,15 @@ func registerGlyphOfExorcism(paladin *Paladin) {
 	})
 
 	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-		Name:           "Glyph of Exorcism",
+		Name:           "Glyph of Exorcism" + paladin.Label,
 		ActionID:       core.ActionID{SpellID: 54934},
 		Callback:       core.CallbackOnSpellHitDealt,
 		ClassSpellMask: SpellMaskExorcism,
-
-		ProcChance: 1,
+		Outcome:        core.OutcomeLanded,
+		ProcChance:     1,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() {
-				glyphOfExorcismDot.Cast(sim, result.Target)
-			}
+			glyphOfExorcismDot.Cast(sim, result.Target)
 		},
 	})
 }

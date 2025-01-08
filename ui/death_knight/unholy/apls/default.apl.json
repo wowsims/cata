@@ -3,26 +3,88 @@
 	"prepullActions": [
 		{ "action": { "castSpell": { "spellId": { "spellId": 48265 } } }, "doAtValue": { "const": { "val": "-20s" } } },
 		{ "action": { "castSpell": { "spellId": { "spellId": 57330 } } }, "doAtValue": { "const": { "val": "-12s" } } },
-		{ "action": { "castSpell": { "spellId": { "spellId": 47541 } } }, "doAtValue": { "const": { "val": "-11s" } } },
-		{ "action": { "castSpell": { "spellId": { "spellId": 47541 } } }, "doAtValue": { "const": { "val": "-10s" } } },
-		{ "action": { "castSpell": { "spellId": { "spellId": 47541 } } }, "doAtValue": { "const": { "val": "-9s" } } },
-		{ "action": { "castSpell": { "spellId": { "spellId": 47541 } } }, "doAtValue": { "const": { "val": "-8s" } } },
+		{ "action": { "castSpell": { "spellId": { "spellId": 47541, "tag": 2 } } }, "doAtValue": { "const": { "val": "-11s" } } },
+		{ "action": { "castSpell": { "spellId": { "spellId": 47541, "tag": 2 } } }, "doAtValue": { "const": { "val": "-10s" } } },
+		{ "action": { "castSpell": { "spellId": { "spellId": 47541, "tag": 2 } } }, "doAtValue": { "const": { "val": "-9s" } } },
+		{ "action": { "castSpell": { "spellId": { "spellId": 47541, "tag": 2 } } }, "doAtValue": { "const": { "val": "-8s" } } },
 		{ "action": { "castSpell": { "spellId": { "spellId": 42650 } } }, "doAtValue": { "const": { "val": "-7s" } } },
-		{ "action": { "castSpell": { "spellId": { "spellId": 47541 } } }, "doAtValue": { "const": { "val": "-1s" } } },
+		{ "action": { "castSpell": { "spellId": { "spellId": 47541, "tag": 2 } } }, "doAtValue": { "const": { "val": "-1s" } } },
 		{ "action": { "castSpell": { "spellId": { "otherId": "OtherActionPotion" } } }, "doAtValue": { "const": { "val": "-1s" } } }
 	],
 	"priorityList": [
 		{
 			"action": {
 				"condition": {
-					"and": {
+					"or": {
 						"vals": [
-							{ "cmp": { "op": "OpGe", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "15s" } } } },
-							{ "cmp": { "op": "OpGt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "5s" } } } }
+							{ "cmp": { "op": "OpLe", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "35s" } } } },
+							{
+								"and": {
+									"vals": [
+										{ "auraIsActiveWithReactionTime": { "auraId": { "spellId": 53365 } } },
+										{ "allTrinketStatProcsActive": { "statType2": 6, "statType3": -1 } }
+									]
+								}
+							},
+							{
+								"and": {
+									"vals": [
+										{ "cmp": { "op": "OpLt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "60s" } } } },
+										{ "cmp": { "op": "OpGt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "5s" } } } },
+										{
+											"cmp": {
+												"op": "OpEq",
+												"lhs": {
+													"auraNumStacks": {
+														"sourceUnit": { "type": "Pet", "index": 1, "owner": { "type": "Self" } },
+														"auraId": { "spellId": 91342 }
+													}
+												},
+												"rhs": { "const": { "val": "5" } }
+											}
+										},
+										{
+											"or": {
+												"vals": [
+													{
+														"cmp": {
+															"op": "OpGe",
+															"lhs": { "currentRuneCount": { "runeType": "RuneUnholy" } },
+															"rhs": { "const": { "val": "1" } }
+														}
+													},
+													{
+														"cmp": {
+															"op": "OpGe",
+															"lhs": { "currentRuneCount": { "runeType": "RuneDeath" } },
+															"rhs": { "const": { "val": "1" } }
+														}
+													}
+												]
+											}
+										}
+									]
+								}
+							},
+							{
+								"and": {
+									"vals": [
+										{ "cmp": { "op": "OpGt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "60s" } } } },
+										{ "anyTrinketStatProcsActive": { "statType2": 6, "statType3": -1, "minIcdSeconds": 60 } },
+										{
+											"cmp": {
+												"op": "OpGt",
+												"lhs": { "trinketProcsMinRemainingTime": { "statType2": 6, "statType3": -1, "minIcdSeconds": 60 } },
+												"rhs": { "const": { "val": "10s" } }
+											}
+										}
+									]
+								}
+							}
 						]
 					}
 				},
-				"castSpell": { "spellId": { "spellId": 63560 } }
+				"castSpell": { "spellId": { "spellId": 49016 } }
 			}
 		},
 		{
@@ -30,18 +92,32 @@
 				"condition": {
 					"and": {
 						"vals": [
-							{ "cmp": { "op": "OpLt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "7s" } } } },
+							{ "cmp": { "op": "OpGe", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "15s" } } } },
+							{ "cmp": { "op": "OpGt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "5s" } } } },
 							{
-								"cmp": { "op": "OpLe", "lhs": { "dotRemainingTime": { "spellId": { "spellId": 55078 } } }, "rhs": { "const": { "val": "3s" } } }
-							},
-							{
-								"cmp": { "op": "OpLe", "lhs": { "dotRemainingTime": { "spellId": { "spellId": 55095 } } }, "rhs": { "const": { "val": "3s" } } }
-							},
-							{ "cmp": { "op": "OpGt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "3s" } } } }
+								"not": {
+									"val": {
+										"and": {
+											"vals": [
+												{ "cmp": { "op": "OpGt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "60s" } } } },
+												{ "cmp": { "op": "OpGt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "35s" } } } },
+												{ "spellIsReady": { "spellId": { "spellId": 49016 } } },
+												{
+													"cmp": {
+														"op": "OpLt",
+														"lhs": { "trinketProcsMaxRemainingIcd": { "statType2": -1, "statType3": -1, "minIcdSeconds": 60 } },
+														"rhs": { "const": { "val": "10s" } }
+													}
+												}
+											]
+										}
+									}
+								}
+							}
 						]
 					}
 				},
-				"castSpell": { "spellId": { "spellId": 85948, "tag": 1 } }
+				"castSpell": { "spellId": { "spellId": 63560 } }
 			}
 		},
 		{
@@ -53,43 +129,89 @@
 		{
 			"action": {
 				"condition": {
-					"and": {
+					"or": {
 						"vals": [
-							{ "auraIsActive": { "auraId": { "spellId": 53365 } } },
+							{ "cmp": { "op": "OpLe", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "35s" } } } },
 							{
-								"or": {
-									"vals": [{ "auraIsActive": { "auraId": { "spellId": 92345 } } }, { "auraIsActive": { "auraId": { "spellId": 91816 } } }]
+								"cmp": {
+									"op": "OpGe",
+									"lhs": { "spellTimeToReady": { "spellId": { "spellId": 49206 } } },
+									"rhs": { "const": { "val": "30s" } }
 								}
-							}
-						]
-					}
-				},
-				"castSpell": { "spellId": { "spellId": 49016 } }
-			}
-		},
-		{
-			"action": {
-				"condition": {
-					"and": {
-						"vals": [
-							{ "auraIsActive": { "sourceUnit": { "type": "Pet", "index": 1, "owner": { "type": "Self" } }, "auraId": { "spellId": 63560 } } },
-							{ "cmp": { "op": "OpGe", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "5s" } } } },
-							{ "cmp": { "op": "OpLt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "30s" } } } }
-						]
-					}
-				},
-				"castSpell": { "spellId": { "spellId": 49016 } }
-			}
-		},
-		{
-			"action": {
-				"condition": {
-					"and": {
-						"vals": [
-							{ "auraIsActive": { "auraId": { "spellId": 53365 } } },
+							},
 							{
-								"or": {
-									"vals": [{ "auraIsActive": { "auraId": { "spellId": 92345 } } }, { "auraIsActive": { "auraId": { "spellId": 91816 } } }]
+								"and": {
+									"vals": [
+										{ "auraIsActive": { "auraId": { "itemId": 58146 } } },
+										{
+											"cmp": {
+												"op": "OpLt",
+												"lhs": { "auraRemainingTime": { "auraId": { "itemId": 58146 } } },
+												"rhs": { "const": { "val": "10.5s" } }
+											}
+										}
+									]
+								}
+							},
+							{
+								"and": {
+									"vals": [
+										{ "cmp": { "op": "OpGe", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "5s" } } } },
+										{ "auraIsActiveWithReactionTime": { "auraId": { "spellId": 53365 } } },
+										{ "allTrinketStatProcsActive": { "statType2": 6, "statType3": -1 } }
+									]
+								}
+							},
+							{
+								"and": {
+									"vals": [
+										{ "spellIsReady": { "spellId": { "spellId": 49206 } } },
+										{
+											"cmp": {
+												"op": "OpLt",
+												"lhs": {
+													"trinketProcsMinRemainingTime": {
+														"statType2": 6,
+														"statType3": -1,
+														"minIcdSeconds": 60
+													}
+												},
+												"rhs": { "const": { "val": "10.5s" } }
+											}
+										}
+									]
+								}
+							},
+							{
+								"and": {
+									"vals": [
+										{ "cmp": { "op": "OpGt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "60s" } } } },
+										{ "spellIsReady": { "spellId": { "spellId": 49206 } } },
+										{ "auraIsActiveWithReactionTime": { "auraId": { "spellId": 53365 } } },
+										{
+											"cmp": {
+												"op": "OpEq",
+												"lhs": { "numEquippedStatProcTrinkets": { "statType2": 6, "statType3": -1, "minIcdSeconds": 60 } },
+												"rhs": { "const": { "val": "2" } }
+											}
+										},
+										{ "anyTrinketStatProcsActive": { "statType2": 6, "statType3": -1, "minIcdSeconds": 60 } },
+										{
+											"cmp": {
+												"op": "OpGt",
+												"lhs": { "trinketProcsMaxRemainingIcd": { "statType2": 6, "statType3": -1, "minIcdSeconds": 60 } },
+												"rhs": {
+													"math": {
+														"op": "OpSub",
+														"lhs": {
+															"trinketProcsMinRemainingTime": { "statType2": 6, "statType3": -1, "minIcdSeconds": 60 }
+														},
+														"rhs": { "const": { "val": "5s" } }
+													}
+												}
+											}
+										}
+									]
 								}
 							}
 						]
@@ -103,77 +225,45 @@
 				"condition": {
 					"or": {
 						"vals": [
+							{ "cmp": { "op": "OpLt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "10.5s" } } } },
 							{
 								"and": {
 									"vals": [
+										{ "auraIsActive": { "auraId": { "itemId": 58146 } } },
 										{
 											"or": {
 												"vals": [
-													{ "auraIsActive": { "auraId": { "spellId": 53365 } } },
 													{
-														"and": {
-															"vals": [
-																{
-																	"cmp": {
-																		"op": "OpLe",
-																		"lhs": { "auraRemainingTime": { "auraId": { "spellId": 92345 } } },
-																		"rhs": { "const": { "val": "15s" } }
-																	}
-																},
-																{ "auraIsActive": { "auraId": { "spellId": 92345 } } }
-															]
+														"cmp": {
+															"op": "OpGe",
+															"lhs": {
+																"auraRemainingTime": {
+																	"sourceUnit": { "type": "Pet", "index": 1, "owner": { "type": "Self" } },
+																	"auraId": { "spellId": 63560 }
+																}
+															},
+															"rhs": { "const": { "val": "7.5s" } }
+														}
+													},
+													{
+														"cmp": {
+															"op": "OpLt",
+															"lhs": { "auraRemainingTime": { "auraId": { "itemId": 58146 } } },
+															"rhs": { "const": { "val": "10.5s" } }
 														}
 													}
 												]
 											}
-										},
-										{ "auraIsActive": { "auraId": { "spellId": 92345 } } }
+										}
 									]
 								}
 							},
 							{
 								"and": {
 									"vals": [
-										{
-											"or": {
-												"vals": [
-													{ "auraIsActive": { "auraId": { "spellId": 53365 } } },
-													{
-														"and": {
-															"vals": [
-																{
-																	"cmp": {
-																		"op": "OpLe",
-																		"lhs": { "auraRemainingTime": { "auraId": { "spellId": 91816 } } },
-																		"rhs": { "const": { "val": "15s" } }
-																	}
-																},
-																{ "auraIsActive": { "auraId": { "spellId": 91816 } } }
-															]
-														}
-													}
-												]
-											}
-										},
-										{ "auraIsActive": { "auraId": { "spellId": 91816 } } }
+										{ "auraIsActiveWithReactionTime": { "auraId": { "spellId": 53365 } } },
+										{ "allTrinketStatProcsActive": { "statType2": 6, "statType3": -1, "minIcdSeconds": 60 } }
 									]
-								}
-							}
-						]
-					}
-				},
-				"castSpell": { "spellId": { "spellId": 33697 } }
-			}
-		},
-		{
-			"action": {
-				"condition": {
-					"and": {
-						"vals": [
-							{ "auraIsActive": { "auraId": { "spellId": 53365 } } },
-							{
-								"or": {
-									"vals": [{ "auraIsActive": { "auraId": { "spellId": 92345 } } }, { "auraIsActive": { "auraId": { "spellId": 91816 } } }]
 								}
 							}
 						]
@@ -185,247 +275,95 @@
 		{
 			"action": {
 				"condition": {
-					"and": {
-						"vals": [
-							{ "cmp": { "op": "OpGt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "200s" } } } },
-							{
-								"or": {
-									"vals": [{ "auraIsActive": { "auraId": { "spellId": 92345 } } }, { "auraIsActive": { "auraId": { "spellId": 91816 } } }]
-								}
-							}
-						]
-					}
-				},
-				"castSpell": { "spellId": { "spellId": 49016 } }
-			}
-		},
-		{
-			"action": {
-				"condition": {
-					"and": {
-						"vals": [
-							{
-								"or": {
-									"vals": [{ "auraIsActive": { "auraId": { "spellId": 92345 } } }, { "auraIsActive": { "auraId": { "spellId": 91816 } } }]
-								}
-							},
-							{ "auraIsActive": { "auraId": { "spellId": 53365 } } },
-							{ "cmp": { "op": "OpLe", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "20s" } } } },
-							{ "auraIsActive": { "sourceUnit": { "type": "Pet", "index": 1, "owner": { "type": "Self" } }, "auraId": { "spellId": 63560 } } }
-						]
-					}
-				},
-				"castSpell": { "spellId": { "spellId": 49206 } }
-			}
-		},
-		{
-			"action": {
-				"condition": {
-					"and": {
-						"vals": [
-							{ "cmp": { "op": "OpGt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "21s" } } } },
-							{
-								"or": {
-									"vals": [
-										{ "auraIsActive": { "auraId": { "spellId": 53365 } } },
-										{
-											"or": {
-												"vals": [
-													{ "auraIsActive": { "auraId": { "spellId": 92345 } } },
-													{ "auraIsActive": { "auraId": { "spellId": 91816 } } }
-												]
-											}
-										}
-									]
-								}
-							},
-							{ "cmp": { "op": "OpLt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "60s" } } } }
-						]
-					}
-				},
-				"castSpell": { "spellId": { "spellId": 49206 } }
-			}
-		},
-		{
-			"action": {
-				"condition": {
-					"and": {
-						"vals": [
-							{ "cmp": { "op": "OpGe", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "13s" } } } },
-							{
-								"not": {
-									"val": {
-										"and": {
-											"vals": [
-												{ "cmp": { "op": "OpGt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "179s" } } } },
-												{ "cmp": { "op": "OpLt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "240s" } } } }
-											]
-										}
-									}
-								}
-							}
-						]
-					}
-				},
-				"castSpell": { "spellId": { "spellId": 82174 } }
-			}
-		},
-		{
-			"action": {
-				"condition": {
-					"and": {
-						"vals": [
-							{
-								"and": {
-									"vals": [
-										{ "cmp": { "op": "OpGt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "179s" } } } },
-										{ "cmp": { "op": "OpLt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "240s" } } } }
-									]
-								}
-							},
-							{
-								"or": {
-									"vals": [
-										{
-											"and": {
-												"vals": [
-													{ "auraIsActive": { "auraId": { "spellId": 92345 } } },
-													{
-														"cmp": {
-															"op": "OpLt",
-															"lhs": { "auraRemainingTime": { "auraId": { "spellId": 92345 } } },
-															"rhs": { "const": { "val": "10.5s" } }
-														}
-													}
-												]
-											}
-										},
-										{
-											"and": {
-												"vals": [
-													{ "auraIsActive": { "auraId": { "spellId": 91816 } } },
-													{
-														"cmp": {
-															"op": "OpLt",
-															"lhs": { "auraRemainingTime": { "auraId": { "spellId": 91816 } } },
-															"rhs": { "const": { "val": "10.5s" } }
-														}
-													}
-												]
-											}
-										}
-									]
-								}
-							}
-						]
-					}
-				},
-				"castSpell": { "spellId": { "spellId": 82174 } }
-			}
-		},
-		{
-			"action": {
-				"condition": {
-					"and": {
-						"vals": [
-							{ "cmp": { "op": "OpGe", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "9s" } } } },
-							{ "cmp": { "op": "OpLt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "12s" } } } }
-						]
-					}
-				},
-				"castSpell": { "spellId": { "spellId": 33697 } }
-			}
-		},
-		{
-			"action": {
-				"condition": {
-					"and": {
-						"vals": [
-							{ "cmp": { "op": "OpGe", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "14s" } } } },
-							{ "auraIsActive": { "auraId": { "spellId": 49016 } } }
-						]
-					}
-				},
-				"castSpell": { "spellId": { "spellId": 26297 } }
-			}
-		},
-		{
-			"action": {
-				"condition": {
 					"or": {
 						"vals": [
+							{ "cmp": { "op": "OpLe", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "35s" } } } },
 							{
 								"and": {
 									"vals": [
-										{
-											"or": {
-												"vals": [
-													{ "auraIsActive": { "auraId": { "spellId": 92345 } } },
-													{ "auraIsActive": { "auraId": { "spellId": 91816 } } }
-												]
-											}
-										},
-										{ "auraIsActive": { "auraId": { "spellId": 53365 } } },
 										{ "auraIsActive": { "auraId": { "itemId": 58146 } } },
-										{ "cmp": { "op": "OpGt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "200s" } } } }
+										{
+											"cmp": {
+												"op": "OpLe",
+												"lhs": { "auraRemainingTime": { "auraId": { "itemId": 58146 } } },
+												"rhs": { "const": { "val": "15s" } }
+											}
+										}
 									]
 								}
 							},
 							{
 								"and": {
 									"vals": [
+										{ "spellIsReady": { "spellId": { "spellId": 49206 } } },
+										{
+											"cmp": {
+												"op": "OpLe",
+												"lhs": { "trinketProcsMinRemainingTime": { "statType2": 6, "statType3": -1, "minIcdSeconds": 60 } },
+												"rhs": { "const": { "val": "15s" } }
+											}
+										}
+									]
+								}
+							},
+							{
+								"and": {
+									"vals": [
+										{ "spellIsReady": { "spellId": { "spellId": 49206 } } },
+										{ "cmp": { "op": "OpGt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "60s" } } } },
+										{ "auraIsActiveWithReactionTime": { "auraId": { "spellId": 53365 } } },
+										{
+											"cmp": {
+												"op": "OpEq",
+												"lhs": { "numEquippedStatProcTrinkets": { "statType2": 6, "statType3": -1, "minIcdSeconds": 60 } },
+												"rhs": { "const": { "val": "2" } }
+											}
+										},
+										{ "anyTrinketStatProcsActive": { "statType2": 6, "statType3": -1, "minIcdSeconds": 60 } },
+										{
+											"cmp": {
+												"op": "OpGt",
+												"lhs": { "trinketProcsMaxRemainingIcd": { "statType2": 6, "statType3": -1, "minIcdSeconds": 60 } },
+												"rhs": {
+													"math": {
+														"op": "OpSub",
+														"lhs": {
+															"trinketProcsMinRemainingTime": { "statType2": 6, "statType3": -1, "minIcdSeconds": 60 }
+														},
+														"rhs": { "const": { "val": "5s" } }
+													}
+												}
+											}
+										}
+									]
+								}
+							},
+							{
+								"and": {
+									"vals": [
+										{ "cmp": { "op": "OpGe", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "5s" } } } },
+										{ "spellIsReady": { "spellId": { "spellId": 77575 } } },
+										{ "allTrinketStatProcsActive": { "statType2": 6, "statType3": -1 } },
 										{
 											"or": {
 												"vals": [
+													{ "auraIsActiveWithReactionTime": { "auraId": { "spellId": 53365 } } },
 													{
-														"and": {
-															"vals": [
-																{
-																	"cmp": {
-																		"op": "OpLt",
-																		"lhs": { "auraRemainingTime": { "auraId": { "spellId": 92345 } } },
-																		"rhs": { "const": { "val": "5s" } }
-																	}
-																},
-																{ "auraIsActive": { "auraId": { "spellId": 92345 } } }
-															]
-														}
-													},
-													{
-														"and": {
-															"vals": [
-																{
-																	"cmp": {
-																		"op": "OpLt",
-																		"lhs": { "auraRemainingTime": { "auraId": { "spellId": 91816 } } },
-																		"rhs": { "const": { "val": "5s" } }
-																	}
-																},
-																{ "auraIsActive": { "auraId": { "spellId": 91816 } } }
-															]
+														"cmp": {
+															"op": "OpLe",
+															"lhs": {
+																"trinketProcsMinRemainingTime": {
+																	"statType2": 6,
+																	"statType3": -1,
+																	"minIcdSeconds": 60
+																}
+															},
+															"rhs": { "const": { "val": "15s" } }
 														}
 													}
 												]
 											}
-										},
-										{ "cmp": { "op": "OpGt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "200s" } } } }
-									]
-								}
-							},
-							{ "cmp": { "op": "OpLt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "35s" } } } },
-							{
-								"and": {
-									"vals": [
-										{
-											"cmp": {
-												"op": "OpLt",
-												"lhs": { "auraRemainingTime": { "auraId": { "itemId": 58146 } } },
-												"rhs": { "const": { "val": "5s" } }
-											}
-										},
-										{ "cmp": { "op": "OpGt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "200s" } } } },
-										{ "auraIsActive": { "auraId": { "itemId": 58146 } } },
-										{ "auraIsActive": { "auraId": { "spellId": 53365 } } }
+										}
 									]
 								}
 							}
@@ -433,102 +371,6 @@
 					}
 				},
 				"castSpell": { "spellId": { "spellId": 33697 } }
-			}
-		},
-		{
-			"action": {
-				"condition": {
-					"or": {
-						"vals": [
-							{
-								"and": {
-									"vals": [
-										{
-											"or": {
-												"vals": [
-													{ "auraIsActive": { "auraId": { "spellId": 92345 } } },
-													{ "auraIsActive": { "auraId": { "spellId": 91816 } } }
-												]
-											}
-										},
-										{ "auraIsActive": { "auraId": { "spellId": 53365 } } },
-										{ "auraIsActive": { "auraId": { "itemId": 58146 } } },
-										{ "cmp": { "op": "OpGt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "200s" } } } },
-										{ "cmp": { "op": "OpGt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "7s" } } } }
-									]
-								}
-							},
-							{
-								"and": {
-									"vals": [
-										{
-											"or": {
-												"vals": [
-													{
-														"and": {
-															"vals": [
-																{
-																	"cmp": {
-																		"op": "OpLt",
-																		"lhs": { "auraRemainingTime": { "auraId": { "spellId": 92345 } } },
-																		"rhs": { "const": { "val": "5s" } }
-																	}
-																},
-																{ "auraIsActive": { "auraId": { "spellId": 92345 } } }
-															]
-														}
-													},
-													{
-														"and": {
-															"vals": [
-																{
-																	"cmp": {
-																		"op": "OpLt",
-																		"lhs": { "auraRemainingTime": { "auraId": { "spellId": 91816 } } },
-																		"rhs": { "const": { "val": "5s" } }
-																	}
-																},
-																{ "auraIsActive": { "auraId": { "spellId": 91816 } } }
-															]
-														}
-													}
-												]
-											}
-										},
-										{ "cmp": { "op": "OpGt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "200s" } } } },
-										{ "cmp": { "op": "OpGt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "7s" } } } }
-									]
-								}
-							},
-							{
-								"and": {
-									"vals": [
-										{ "cmp": { "op": "OpLt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "35s" } } } },
-										{ "cmp": { "op": "OpGt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "7s" } } } }
-									]
-								}
-							},
-							{
-								"and": {
-									"vals": [
-										{
-											"cmp": {
-												"op": "OpLt",
-												"lhs": { "auraRemainingTime": { "auraId": { "itemId": 58146 } } },
-												"rhs": { "const": { "val": "5s" } }
-											}
-										},
-										{ "cmp": { "op": "OpGt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "200s" } } } },
-										{ "auraIsActive": { "auraId": { "itemId": 58146 } } },
-										{ "auraIsActive": { "auraId": { "spellId": 53365 } } },
-										{ "cmp": { "op": "OpGt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "7s" } } } }
-									]
-								}
-							}
-						]
-					}
-				},
-				"castSpell": { "spellId": { "spellId": 49206 } }
 			}
 		},
 		{
@@ -543,16 +385,9 @@
 										{
 											"or": {
 												"vals": [
-													{
-														"cmp": {
-															"op": "OpGt",
-															"lhs": { "spellTimeToReady": { "spellId": { "spellId": 49016 } } },
-															"rhs": {
-																"math": { "op": "OpSub", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "23s" } } }
-															}
-														}
-													},
-													{ "spellIsReady": { "spellId": { "spellId": 49206 } } }
+													{ "cmp": { "op": "OpLt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "26s" } } } },
+													{ "spellIsReady": { "spellId": { "spellId": 49206 } } },
+													{ "auraIsActive": { "auraId": { "spellId": 49016 } } }
 												]
 											}
 										}
@@ -561,7 +396,49 @@
 							},
 							{
 								"and": {
-									"vals": [{ "auraIsActive": { "auraId": { "spellId": 49016 } } }, { "spellIsReady": { "spellId": { "spellId": 49206 } } }]
+									"vals": [
+										{ "auraIsActive": { "auraId": { "spellId": 49016 } } },
+										{
+											"or": {
+												"vals": [
+													{ "spellIsReady": { "spellId": { "spellId": 49206 } } },
+													{
+														"cmp": {
+															"op": "OpLt",
+															"lhs": { "auraRemainingTime": { "auraId": { "spellId": 49016 } } },
+															"rhs": { "const": { "val": "26s" } }
+														}
+													},
+													{
+														"cmp": {
+															"op": "OpGe",
+															"lhs": {
+																"auraRemainingTime": {
+																	"sourceUnit": { "type": "Pet", "index": 1, "owner": { "type": "Self" } },
+																	"auraId": { "spellId": 63560 }
+																}
+															},
+															"rhs": { "const": { "val": "24s" } }
+														}
+													}
+												]
+											}
+										}
+									]
+								}
+							},
+							{
+								"and": {
+									"vals": [
+										{
+											"cmp": {
+												"op": "OpGt",
+												"lhs": { "spellTimeToReady": { "spellId": { "spellId": 49206 } } },
+												"rhs": { "math": { "op": "OpSub", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "30s" } } } }
+											}
+										},
+										{ "anyTrinketStatProcsActive": { "statType2": 6, "statType3": -1, "minIcdSeconds": 60 } }
+									]
 								}
 							}
 						]
@@ -572,27 +449,318 @@
 		},
 		{
 			"action": {
-				"condition": { "cmp": { "op": "OpLe", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "35s" } } } },
-				"castSpell": { "spellId": { "spellId": 49016 } }
-			}
-		},
-		{
-			"action": {
-				"condition": { "cmp": { "op": "OpLe", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "35s" } } } },
-				"castSpell": { "spellId": { "spellId": 82174 } }
+				"condition": {
+					"or": {
+						"vals": [
+							{
+								"and": {
+									"vals": [
+										{ "cmp": { "op": "OpLt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "35s" } } } },
+										{ "cmp": { "op": "OpGt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "7s" } } } }
+									]
+								}
+							},
+							{
+								"and": {
+									"vals": [
+										{ "cmp": { "op": "OpGt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "7s" } } } },
+										{ "auraIsActive": { "auraId": { "itemId": 58146 } } },
+										{
+											"cmp": {
+												"op": "OpLe",
+												"lhs": { "auraRemainingTime": { "auraId": { "itemId": 58146 } } },
+												"rhs": { "const": { "val": "4s" } }
+											}
+										}
+									]
+								}
+							},
+							{
+								"and": {
+									"vals": [
+										{ "cmp": { "op": "OpGt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "60s" } } } },
+										{ "auraIsActiveWithReactionTime": { "auraId": { "spellId": 53365 } } },
+										{
+											"cmp": {
+												"op": "OpEq",
+												"lhs": { "numEquippedStatProcTrinkets": { "statType2": 6, "statType3": -1, "minIcdSeconds": 60 } },
+												"rhs": { "const": { "val": "2" } }
+											}
+										},
+										{ "anyTrinketStatProcsActive": { "statType2": 6, "statType3": -1, "minIcdSeconds": 60 } },
+										{
+											"cmp": {
+												"op": "OpGt",
+												"lhs": { "trinketProcsMaxRemainingIcd": { "statType2": 6, "statType3": -1, "minIcdSeconds": 60 } },
+												"rhs": {
+													"math": {
+														"op": "OpSub",
+														"lhs": {
+															"trinketProcsMinRemainingTime": { "statType2": 6, "statType3": -1, "minIcdSeconds": 60 }
+														},
+														"rhs": { "const": { "val": "5s" } }
+													}
+												}
+											}
+										}
+									]
+								}
+							},
+							{
+								"and": {
+									"vals": [
+										{ "cmp": { "op": "OpGt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "6s" } } } },
+										{ "auraIsActiveWithReactionTime": { "auraId": { "spellId": 53365 } } },
+										{
+											"or": {
+												"vals": [
+													{ "cmp": { "op": "OpGt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "60s" } } } },
+													{
+														"auraIsActive": {
+															"sourceUnit": { "type": "Pet", "index": 1, "owner": { "type": "Self" } },
+															"auraId": { "spellId": 63560 }
+														}
+													}
+												]
+											}
+										},
+										{ "allTrinketStatProcsActive": { "statType2": 6, "statType3": -1 } }
+									]
+								}
+							},
+							{
+								"and": {
+									"vals": [
+										{ "cmp": { "op": "OpGt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "7s" } } } },
+										{ "auraIsActiveWithReactionTime": { "auraId": { "spellId": 53365 } } },
+										{
+											"cmp": {
+												"op": "OpLt",
+												"lhs": { "trinketProcsMinRemainingTime": { "statType2": 6, "statType3": -1, "minIcdSeconds": 60 } },
+												"rhs": { "const": { "val": "4s" } }
+											}
+										}
+									]
+								}
+							},
+							{
+								"and": {
+									"vals": [
+										{ "cmp": { "op": "OpGt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "7s" } } } },
+										{ "allTrinketStatProcsActive": { "statType2": 6, "statType3": -1, "minIcdSeconds": 60 } },
+										{
+											"cmp": {
+												"op": "OpLt",
+												"lhs": { "trinketProcsMinRemainingTime": { "statType2": 6, "statType3": -1, "minIcdSeconds": 60 } },
+												"rhs": { "const": { "val": "4s" } }
+											}
+										}
+									]
+								}
+							}
+						]
+					}
+				},
+				"castSpell": { "spellId": { "spellId": 49206 } }
 			}
 		},
 		{
 			"action": {
 				"condition": {
-					"and": {
+					"or": {
 						"vals": [
-							{ "cmp": { "op": "OpLt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "30s" } } } },
 							{
-								"or": {
+								"and": {
 									"vals": [
-										{ "not": { "val": { "dotIsActive": { "spellId": { "spellId": 55095 } } } } },
-										{ "not": { "val": { "dotIsActive": { "spellId": { "spellId": 55078 } } } } }
+										{ "cmp": { "op": "OpLt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "45s" } } } },
+										{
+											"or": {
+												"vals": [
+													{ "not": { "val": { "dotIsActive": { "spellId": { "spellId": 55095 } } } } },
+													{ "not": { "val": { "dotIsActive": { "spellId": { "spellId": 55078 } } } } }
+												]
+											}
+										}
+									]
+								}
+							},
+							{
+								"and": {
+									"vals": [
+										{ "cmp": { "op": "OpGt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "8s" } } } },
+										{ "auraIsActiveWithReactionTime": { "auraId": { "spellId": 53365 } } },
+										{ "allTrinketStatProcsActive": { "statType2": -1, "statType3": -1 } },
+										{
+											"or": {
+												"vals": [
+													{ "auraIsActive": { "auraId": { "spellId": 96229 } } },
+													{
+														"cmp": {
+															"op": "OpLt",
+															"lhs": { "trinketProcsMinRemainingTime": { "statType2": 6, "statType3": -1, "minIcdSeconds": 20 } },
+															"rhs": {
+																"math": {
+																	"op": "OpSub",
+																	"lhs": { "spellTimeToReady": { "spellId": { "spellId": 82174 } } },
+																	"rhs": { "const": { "val": "2s" } }
+																}
+															}
+														}
+													}
+												]
+											}
+										},
+										{
+											"or": {
+												"vals": [
+													{ "allTrinketStatProcsActive": { "statType2": 6, "statType3": -1, "minIcdSeconds": 110 } },
+													{
+														"cmp": {
+															"op": "OpLt",
+															"lhs": { "trinketProcsMinRemainingTime": { "statType2": 6, "statType3": -1, "minIcdSeconds": 20 } },
+															"rhs": {
+																"math": {
+																	"op": "OpSub",
+																	"lhs": {
+																		"trinketProcsMaxRemainingIcd": { "statType2": 6, "statType3": -1, "minIcdSeconds": 110 }
+																	},
+																	"rhs": { "const": { "val": "2s" } }
+																}
+															}
+														}
+													}
+												]
+											}
+										}
+									]
+								}
+							},
+							{
+								"and": {
+									"vals": [
+										{
+											"cmp": {
+												"op": "OpGt",
+												"lhs": { "spellTimeToReady": { "spellId": { "spellId": 49206 } } },
+												"rhs": { "const": { "val": "177s" } }
+											}
+										},
+										{
+											"cmp": {
+												"op": "OpGe",
+												"lhs": { "numEquippedStatProcTrinkets": { "statType2": 6, "statType3": -1, "minIcdSeconds": 110 } },
+												"rhs": { "const": { "val": "1" } }
+											}
+										}
+									]
+								}
+							},
+							{
+								"and": {
+									"vals": [
+										{
+											"cmp": {
+												"op": "OpGe",
+												"lhs": { "numEquippedStatProcTrinkets": { "statType2": 6, "statType3": -1, "minIcdSeconds": 110 } },
+												"rhs": { "const": { "val": "1" } }
+											}
+										},
+										{
+											"cmp": {
+												"op": "OpEq",
+												"lhs": { "numEquippedStatProcTrinkets": { "statType2": 6, "statType3": -1, "minIcdSeconds": 60 } },
+												"rhs": { "numEquippedStatProcTrinkets": { "statType2": 6, "statType3": -1, "minIcdSeconds": 110 } }
+											}
+										},
+										{ "auraIsActiveWithReactionTime": { "auraId": { "spellId": 53365 } } },
+										{
+											"or": {
+												"vals": [
+													{
+														"cmp": {
+															"op": "OpLt",
+															"lhs": {
+																"trinketProcsMinRemainingTime": { "statType2": 6, "statType3": -1, "minIcdSeconds": 110 }
+															},
+															"rhs": {
+																"math": {
+																	"op": "OpSub",
+																	"lhs": { "spellTimeToReady": { "spellId": { "spellId": 82174 } } },
+																	"rhs": { "const": { "val": "2s" } }
+																}
+															}
+														}
+													},
+													{ "auraIsActive": { "auraId": { "spellId": 96229 } } }
+												]
+											}
+										},
+										{
+											"or": {
+												"vals": [
+													{
+														"cmp": {
+															"op": "OpLt",
+															"lhs": {
+																"trinketProcsMinRemainingTime": { "statType2": 6, "statType3": -1, "minIcdSeconds": 110 }
+															},
+															"rhs": {
+																"math": {
+																	"op": "OpSub",
+																	"lhs": { "spellTimeToReady": { "spellId": { "spellId": 33697 } } },
+																	"rhs": { "const": { "val": "2s" } }
+																}
+															}
+														}
+													},
+													{ "auraIsActive": { "auraId": { "spellId": 33697 } } }
+												]
+											}
+										},
+										{ "allTrinketStatProcsActive": { "statType2": 6, "statType3": -1 } }
+									]
+								}
+							},
+							{
+								"and": {
+									"vals": [
+										{ "auraIsActive": { "auraId": { "itemId": 58146 } } },
+										{
+											"cmp": {
+												"op": "OpLe",
+												"lhs": { "auraRemainingTime": { "auraId": { "itemId": 58146 } } },
+												"rhs": { "const": { "val": "3s" } }
+											}
+										}
+									]
+								}
+							},
+							{
+								"and": {
+									"vals": [
+										{ "anyTrinketStatProcsActive": { "statType2": -1, "statType3": -1 } },
+										{
+											"cmp": {
+												"op": "OpGe",
+												"lhs": { "numEquippedStatProcTrinkets": { "statType2": 6, "statType3": -1, "minIcdSeconds": 60 } },
+												"rhs": { "const": { "val": "1" } }
+											}
+										},
+										{
+											"cmp": {
+												"op": "OpLt",
+												"lhs": { "trinketProcsMinRemainingTime": { "statType2": 6, "statType3": -1, "minIcdSeconds": 60 } },
+												"rhs": { "const": { "val": "2s" } }
+											}
+										},
+										{
+											"or": {
+												"vals": [
+													{ "auraIsActiveWithReactionTime": { "auraId": { "spellId": 53365 } } },
+													{ "allTrinketStatProcsActive": { "statType2": 6, "statType3": -1, "minIcdSeconds": 60 } }
+												]
+											}
+										}
 									]
 								}
 							}
@@ -617,56 +785,65 @@
 		{
 			"action": {
 				"condition": {
-					"and": {
+					"or": {
 						"vals": [
-							{ "auraIsActive": { "auraId": { "spellId": 53365 } } },
 							{
-								"or": {
-									"vals": [{ "auraIsActive": { "auraId": { "spellId": 92345 } } }, { "auraIsActive": { "auraId": { "spellId": 91816 } } }]
+								"and": {
+									"vals": [
+										{ "cmp": { "op": "OpLt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "10s" } } } },
+										{
+											"cmp": {
+												"op": "OpGt",
+												"lhs": { "runeSlotCooldown": { "runeSlot": "SlotLeftBlood" } },
+												"rhs": { "const": { "val": "3s" } }
+											}
+										}
+									]
 								}
 							},
-							{ "cmp": { "op": "OpGt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "7s" } } } },
 							{
-								"or": {
+								"and": {
 									"vals": [
 										{
 											"or": {
 												"vals": [
+													{ "not": { "val": { "currentRuneDeath": { "runeSlot": "SlotLeftBlood" } } } },
+													{ "not": { "val": { "currentRuneDeath": { "runeSlot": "SlotRightBlood" } } } }
+												]
+											}
+										},
+										{
+											"or": {
+												"vals": [
 													{
-														"and": {
-															"vals": [
-																{ "auraIsActive": { "auraId": { "spellId": 92345 } } },
-																{
-																	"cmp": {
-																		"op": "OpLe",
-																		"lhs": { "auraRemainingTime": { "auraId": { "spellId": 92345 } } },
-																		"rhs": {
-																			"math": {
-																				"op": "OpSub",
-																				"lhs": { "spellTimeToReady": { "spellId": { "spellId": 82174 } } },
-																				"rhs": { "const": { "val": "1" } }
-																			}
-																		}
-																	}
-																}
-															]
+														"cmp": {
+															"op": "OpGt",
+															"lhs": { "runeSlotCooldown": { "runeSlot": "SlotLeftBlood" } },
+															"rhs": { "const": { "val": "5.5s" } }
 														}
 													},
 													{
 														"and": {
 															"vals": [
-																{ "auraIsActive": { "auraId": { "spellId": 91816 } } },
 																{
 																	"cmp": {
-																		"op": "OpLe",
-																		"lhs": { "auraRemainingTime": { "auraId": { "spellId": 91816 } } },
-																		"rhs": {
-																			"math": {
-																				"op": "OpSub",
-																				"lhs": { "spellTimeToReady": { "spellId": { "spellId": 82174 } } },
-																				"rhs": { "const": { "val": "1" } }
-																			}
-																		}
+																		"op": "OpGe",
+																		"lhs": { "currentNonDeathRuneCount": { "runeType": "RuneBlood" } },
+																		"rhs": { "const": { "val": "1" } }
+																	}
+																},
+																{
+																	"cmp": {
+																		"op": "OpEq",
+																		"lhs": { "currentNonDeathRuneCount": { "runeType": "RuneFrost" } },
+																		"rhs": { "const": { "val": "0" } }
+																	}
+																},
+																{
+																	"cmp": {
+																		"op": "OpGe",
+																		"lhs": { "runeCooldown": { "runeType": "RuneFrost" } },
+																		"rhs": { "const": { "val": "3.5s" } }
 																	}
 																}
 															]
@@ -674,46 +851,6 @@
 													}
 												]
 											}
-										},
-										{ "auraIsActive": { "auraId": { "spellId": 96229 } } }
-									]
-								}
-							}
-						]
-					}
-				},
-				"castSpell": { "spellId": { "spellId": 77575 } }
-			}
-		},
-		{
-			"action": {
-				"condition": {
-					"or": {
-						"vals": [
-							{
-								"and": {
-									"vals": [
-										{ "auraIsActive": { "auraId": { "spellId": 91816 } } },
-										{
-											"cmp": {
-												"op": "OpLt",
-												"lhs": { "auraRemainingTime": { "auraId": { "spellId": 91816 } } },
-												"rhs": { "const": { "val": "2s" } }
-											}
-										}
-									]
-								}
-							},
-							{
-								"and": {
-									"vals": [
-										{ "auraIsActive": { "auraId": { "spellId": 92345 } } },
-										{
-											"cmp": {
-												"op": "OpLt",
-												"lhs": { "auraRemainingTime": { "auraId": { "spellId": 92345 } } },
-												"rhs": { "const": { "val": "2s" } }
-											}
 										}
 									]
 								}
@@ -721,7 +858,7 @@
 						]
 					}
 				},
-				"castSpell": { "spellId": { "spellId": 77575 } }
+				"castSpell": { "spellId": { "spellId": 45529 } }
 			}
 		},
 		{
@@ -729,7 +866,61 @@
 				"condition": {
 					"and": {
 						"vals": [
-							{ "cmp": { "op": "OpGt", "lhs": { "currentRunicPower": {} }, "rhs": { "const": { "val": "99" } } } },
+							{
+								"cmp": {
+									"op": "OpLt",
+									"lhs": { "currentNonDeathRuneCount": { "runeType": "RuneBlood" } },
+									"rhs": { "currentNonDeathRuneCount": { "runeType": "RuneFrost" } }
+								}
+							},
+							{
+								"or": {
+									"vals": [
+										{
+											"and": {
+												"vals": [
+													{ "not": { "val": { "currentRuneDeath": { "runeSlot": "SlotLeftFrost" } } } },
+													{ "not": { "val": { "currentRuneDeath": { "runeSlot": "SlotRightFrost" } } } }
+												]
+											}
+										},
+										{
+											"and": {
+												"vals": [
+													{ "currentRuneDeath": { "runeSlot": "SlotLeftBlood" } },
+													{ "currentRuneDeath": { "runeSlot": "SlotRightBlood" } },
+													{
+														"cmp": {
+															"op": "OpLt",
+															"lhs": { "nextRuneCooldown": { "runeType": "RuneFrost" } },
+															"rhs": { "nextRuneCooldown": { "runeType": "RuneBlood" } }
+														}
+													}
+												]
+											}
+										}
+									]
+								}
+							}
+						]
+					}
+				},
+				"cancelAura": { "auraId": { "spellId": 45529 } }
+			}
+		},
+		{
+			"action": {
+				"condition": {
+					"and": {
+						"vals": [
+							{ "cmp": { "op": "OpGe", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "10s" } } } },
+							{
+								"cmp": {
+									"op": "OpGe",
+									"lhs": { "currentRunicPower": {} },
+									"rhs": { "math": { "op": "OpSub", "lhs": { "maxRunicPower": {} }, "rhs": { "const": { "val": "10" } } } }
+								}
+							},
 							{
 								"not": {
 									"val": {
@@ -744,23 +935,23 @@
 												},
 												{
 													"cmp": {
-														"op": "OpEq",
-														"lhs": { "currentRuneCount": { "runeType": "RuneUnholy" } },
-														"rhs": { "const": { "val": "2" } }
+														"op": "OpLe",
+														"lhs": { "nextRuneCooldown": { "runeType": "RuneUnholy" } },
+														"rhs": { "const": { "val": "1s" } }
 													}
 												},
 												{
 													"cmp": {
-														"op": "OpEq",
-														"lhs": { "currentRuneCount": { "runeType": "RuneBlood" } },
-														"rhs": { "const": { "val": "2" } }
+														"op": "OpLe",
+														"lhs": { "nextRuneCooldown": { "runeType": "RuneBlood" } },
+														"rhs": { "const": { "val": "1s" } }
 													}
 												},
 												{
 													"cmp": {
-														"op": "OpEq",
-														"lhs": { "currentRuneCount": { "runeType": "RuneFrost" } },
-														"rhs": { "const": { "val": "2" } }
+														"op": "OpLe",
+														"lhs": { "nextRuneCooldown": { "runeType": "RuneFrost" } },
+														"rhs": { "const": { "val": "1s" } }
 													}
 												},
 												{
@@ -803,27 +994,12 @@
 				"condition": {
 					"and": {
 						"vals": [
-							{ "cmp": { "op": "OpEq", "lhs": { "currentNonDeathRuneCount": { "runeType": "RuneBlood" } }, "rhs": { "const": { "val": "2" } } } },
-							{ "cmp": { "op": "OpLt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "6s" } } } }
+							{ "cmp": { "op": "OpLt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "6s" } } } },
+							{ "cmp": { "op": "OpEq", "lhs": { "currentNonDeathRuneCount": { "runeType": "RuneBlood" } }, "rhs": { "const": { "val": "2" } } } }
 						]
 					}
 				},
 				"castSpell": { "spellId": { "spellId": 85948, "tag": 1 } }
-			}
-		},
-		{
-			"action": {
-				"condition": {
-					"and": {
-						"vals": [
-							{ "cmp": { "op": "OpEq", "lhs": { "currentNonDeathRuneCount": { "runeType": "RuneBlood" } }, "rhs": { "const": { "val": "1" } } } },
-							{ "cmp": { "op": "OpLt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "10s" } } } },
-							{ "not": { "val": { "spellIsReady": { "spellId": { "spellId": 43265 } } } } },
-							{ "cmp": { "op": "OpLe", "lhs": { "currentRunicPower": {} }, "rhs": { "const": { "val": "90" } } } }
-						]
-					}
-				},
-				"castSpell": { "spellId": { "spellId": 45529 } }
 			}
 		},
 		{
@@ -837,29 +1013,104 @@
 				"condition": {
 					"and": {
 						"vals": [
+							{ "cmp": { "op": "OpLt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "10s" } } } },
+							{ "cmp": { "op": "OpGt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "3s" } } } },
+							{ "cmp": { "op": "OpGe", "lhs": { "currentNonDeathRuneCount": { "runeType": "RuneBlood" } }, "rhs": { "const": { "val": "1" } } } },
+							{ "cmp": { "op": "OpGe", "lhs": { "currentNonDeathRuneCount": { "runeType": "RuneFrost" } }, "rhs": { "const": { "val": "1" } } } },
+							{ "cmp": { "op": "OpLe", "lhs": { "currentRuneCount": { "runeType": "RuneUnholy" } }, "rhs": { "const": { "val": "1" } } } },
 							{
-								"not": {
-									"val": {
-										"auraIsActive": {
-											"sourceUnit": { "type": "Pet", "index": 1, "owner": { "type": "Self" } },
-											"auraId": { "spellId": 63560 }
+								"or": {
+									"vals": [
+										{
+											"cmp": {
+												"op": "OpLe",
+												"lhs": { "nextRuneCooldown": { "runeType": "RuneBlood" } },
+												"rhs": { "const": { "val": "1s" } }
+											}
+										},
+										{
+											"cmp": {
+												"op": "OpLe",
+												"lhs": { "nextRuneCooldown": { "runeType": "RuneFrost" } },
+												"rhs": { "const": { "val": "1s" } }
+											}
 										}
-									}
+									]
+								}
+							}
+						]
+					}
+				},
+				"castSpell": { "spellId": { "spellId": 85948, "tag": 1 } }
+			}
+		},
+		{
+			"action": {
+				"condition": { "cmp": { "op": "OpLt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "6s" } } } },
+				"castSpell": { "spellId": { "spellId": 55090, "tag": 1 } }
+			}
+		},
+		{
+			"action": {
+				"condition": { "cmp": { "op": "OpLt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "6s" } } } },
+				"castSpell": { "spellId": { "spellId": 85948, "tag": 1 } }
+			}
+		},
+		{
+			"action": {
+				"condition": {
+					"or": {
+						"vals": [
+							{ "cmp": { "op": "OpLt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "6s" } } } },
+							{
+								"and": {
+									"vals": [
+										{ "cmp": { "op": "OpLt", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "10s" } } } },
+										{
+											"cmp": {
+												"op": "OpGe",
+												"lhs": { "currentRunicPower": {} },
+												"rhs": { "math": { "op": "OpSub", "lhs": { "maxRunicPower": {} }, "rhs": { "const": { "val": "10" } } } }
+											}
+										}
+									]
 								}
 							},
 							{
-								"cmp": {
-									"op": "OpLt",
-									"lhs": {
-										"auraNumStacks": {
-											"sourceUnit": { "type": "Pet", "index": 1, "owner": { "type": "Self" } },
-											"auraId": { "spellId": 91342 }
+								"and": {
+									"vals": [
+										{
+											"not": {
+												"val": {
+													"auraIsActive": {
+														"sourceUnit": { "type": "Pet", "index": 1, "owner": { "type": "Self" } },
+														"auraId": { "spellId": 63560 }
+													}
+												}
+											}
+										},
+										{
+											"cmp": {
+												"op": "OpLt",
+												"lhs": {
+													"auraNumStacks": {
+														"sourceUnit": { "type": "Pet", "index": 1, "owner": { "type": "Self" } },
+														"auraId": { "spellId": 91342 }
+													}
+												},
+												"rhs": { "const": { "val": "5" } }
+											}
+										},
+										{
+											"cmp": {
+												"op": "OpGe",
+												"lhs": { "currentRunicPower": {} },
+												"rhs": { "math": { "op": "OpSub", "lhs": { "maxRunicPower": {} }, "rhs": { "const": { "val": "4" } } } }
+											}
 										}
-									},
-									"rhs": { "const": { "val": "5" } }
+									]
 								}
-							},
-							{ "cmp": { "op": "OpGe", "lhs": { "currentRunicPower": {} }, "rhs": { "const": { "val": "102" } } } }
+							}
 						]
 					}
 				},
@@ -904,66 +1155,54 @@
 					"or": {
 						"vals": [
 							{
-								"or": {
+								"cmp": {
+									"op": "OpEq",
+									"lhs": { "currentNonDeathRuneCount": { "runeType": "RuneBlood" } },
+									"rhs": { "const": { "val": "2" } }
+								}
+							},
+							{
+								"cmp": {
+									"op": "OpEq",
+									"lhs": { "currentNonDeathRuneCount": { "runeType": "RuneFrost" } },
+									"rhs": { "const": { "val": "2" } }
+								}
+							},
+							{
+								"and": {
 									"vals": [
 										{
 											"cmp": {
 												"op": "OpEq",
-												"lhs": { "currentNonDeathRuneCount": { "runeType": "RuneBlood" } },
-												"rhs": { "const": { "val": "2" } }
+												"lhs": { "currentRuneCount": { "runeType": "RuneBlood" } },
+												"rhs": { "const": { "val": "1" } }
 											}
 										},
 										{
-											"and": {
-												"vals": [
-													{
-														"cmp": {
-															"op": "OpEq",
-															"lhs": { "currentRuneCount": { "runeType": "RuneBlood" } },
-															"rhs": { "const": { "val": "1" } }
-														}
-													},
-													{
-														"cmp": {
-															"op": "OpLt",
-															"lhs": { "nextRuneCooldown": { "runeType": "RuneBlood" } },
-															"rhs": { "const": { "val": "1s" } }
-														}
-													}
-												]
+											"cmp": {
+												"op": "OpLt",
+												"lhs": { "nextRuneCooldown": { "runeType": "RuneBlood" } },
+												"rhs": { "const": { "val": "1s" } }
 											}
 										}
 									]
 								}
 							},
 							{
-								"or": {
+								"and": {
 									"vals": [
 										{
 											"cmp": {
 												"op": "OpEq",
-												"lhs": { "currentNonDeathRuneCount": { "runeType": "RuneFrost" } },
-												"rhs": { "const": { "val": "2" } }
+												"lhs": { "currentRuneCount": { "runeType": "RuneFrost" } },
+												"rhs": { "const": { "val": "1" } }
 											}
 										},
 										{
-											"and": {
-												"vals": [
-													{
-														"cmp": {
-															"op": "OpEq",
-															"lhs": { "currentRuneCount": { "runeType": "RuneFrost" } },
-															"rhs": { "const": { "val": "1" } }
-														}
-													},
-													{
-														"cmp": {
-															"op": "OpLt",
-															"lhs": { "nextRuneCooldown": { "runeType": "RuneFrost" } },
-															"rhs": { "const": { "val": "1s" } }
-														}
-													}
-												]
+											"cmp": {
+												"op": "OpLt",
+												"lhs": { "nextRuneCooldown": { "runeType": "RuneFrost" } },
+												"rhs": { "const": { "val": "1s" } }
 											}
 										}
 									]
@@ -1028,6 +1267,90 @@
 					}
 				},
 				"castSpell": { "spellId": { "spellId": 55090, "tag": 1 } }
+			}
+		},
+		{
+			"action": {
+				"condition": {
+					"and": {
+						"vals": [
+							{
+								"not": {
+									"val": {
+										"auraIsActive": {
+											"sourceUnit": { "type": "Pet", "index": 1, "owner": { "type": "Self" } },
+											"auraId": { "spellId": 63560 }
+										}
+									}
+								}
+							},
+							{
+								"cmp": {
+									"op": "OpEq",
+									"lhs": {
+										"auraNumStacks": {
+											"sourceUnit": { "type": "Pet", "index": 1, "owner": { "type": "Self" } },
+											"auraId": { "spellId": 91342 }
+										}
+									},
+									"rhs": { "const": { "val": "4" } }
+								}
+							},
+							{
+								"or": {
+									"vals": [
+										{ "cmp": { "op": "OpGe", "lhs": { "currentRunicPower": {} }, "rhs": { "const": { "val": "34" } } } },
+										{ "auraIsActiveWithReactionTime": { "auraId": { "spellId": 81340 } } }
+									]
+								}
+							}
+						]
+					}
+				},
+				"castSpell": { "spellId": { "spellId": 47541 } }
+			}
+		},
+		{
+			"action": {
+				"condition": {
+					"and": {
+						"vals": [
+							{ "auraIsActiveWithReactionTime": { "auraId": { "spellId": 81340 } } },
+							{ "cmp": { "op": "OpGt", "lhs": { "nextRuneCooldown": { "runeType": "RuneBlood" } }, "rhs": { "const": { "val": "3s" } } } },
+							{ "cmp": { "op": "OpGt", "lhs": { "nextRuneCooldown": { "runeType": "RuneFrost" } }, "rhs": { "const": { "val": "3s" } } } },
+							{ "cmp": { "op": "OpGt", "lhs": { "nextRuneCooldown": { "runeType": "RuneUnholy" } }, "rhs": { "const": { "val": "3s" } } } },
+							{
+								"not": {
+									"val": {
+										"and": {
+											"vals": [
+												{
+													"auraIsActive": {
+														"sourceUnit": { "type": "Pet", "index": 1, "owner": { "type": "Self" } },
+														"auraId": { "spellId": 63560 }
+													}
+												},
+												{
+													"cmp": {
+														"op": "OpLt",
+														"lhs": {
+															"auraRemainingTime": {
+																"sourceUnit": { "type": "Pet", "index": 1, "owner": { "type": "Self" } },
+																"auraId": { "spellId": 63560 }
+															}
+														},
+														"rhs": { "const": { "val": "2s" } }
+													}
+												}
+											]
+										}
+									}
+								}
+							}
+						]
+					}
+				},
+				"castSpell": { "spellId": { "spellId": 47541 } }
 			}
 		},
 		{ "action": { "castSpell": { "spellId": { "spellId": 55090, "tag": 1 } } } },
@@ -1109,7 +1432,7 @@
 							{
 								"and": {
 									"vals": [
-										{ "auraIsActive": { "auraId": { "spellId": 81340 } } },
+										{ "auraIsActiveWithReactionTime": { "auraId": { "spellId": 81340 } } },
 										{
 											"not": {
 												"val": {
@@ -1240,59 +1563,7 @@
 				"castSpell": { "spellId": { "spellId": 47541 } }
 			}
 		},
-		{
-			"action": {
-				"condition": {
-					"and": {
-						"vals": [
-							{ "cmp": { "op": "OpGt", "lhs": { "currentTime": {} }, "rhs": { "const": { "val": "10s" } } } },
-							{ "cmp": { "op": "OpGt", "lhs": { "runeSlotCooldown": { "runeSlot": "SlotLeftBlood" } }, "rhs": { "const": { "val": "5.5s" } } } }
-						]
-					}
-				},
-				"castSpell": { "spellId": { "spellId": 45529 } }
-			}
-		},
 		{ "action": { "castSpell": { "spellId": { "spellId": 57330 } } } },
-		{
-			"action": {
-				"condition": {
-					"or": {
-						"vals": [
-							{
-								"and": {
-									"vals": [
-										{
-											"cmp": {
-												"op": "OpLe",
-												"lhs": { "auraRemainingTime": { "auraId": { "spellId": 45529 } } },
-												"rhs": { "const": { "val": "11s" } }
-											}
-										},
-										{
-											"cmp": {
-												"op": "OpEq",
-												"lhs": { "currentNonDeathRuneCount": { "runeType": "RuneFrost" } },
-												"rhs": { "const": { "val": "1" } }
-											}
-										},
-										{
-											"cmp": {
-												"op": "OpEq",
-												"lhs": { "currentNonDeathRuneCount": { "runeType": "RuneBlood" } },
-												"rhs": { "const": { "val": "0" } }
-											}
-										}
-									]
-								}
-							},
-							{ "cmp": { "op": "OpEq", "lhs": { "currentNonDeathRuneCount": { "runeType": "RuneFrost" } }, "rhs": { "const": { "val": "2" } } } }
-						]
-					}
-				},
-				"cancelAura": { "auraId": { "spellId": 45529 } }
-			}
-		},
 		{
 			"action": {
 				"condition": {
@@ -1302,50 +1573,44 @@
 							{ "not": { "val": { "auraIsActive": { "auraId": { "spellId": 51460 } } } } },
 							{ "cmp": { "op": "OpLe", "lhs": { "currentRunicPower": {} }, "rhs": { "const": { "val": "38" } } } },
 							{
-								"and": {
-									"vals": [
-										{
-											"cmp": {
-												"op": "OpEq",
-												"lhs": { "currentRuneCount": { "runeType": "RuneBlood" } },
-												"rhs": { "const": { "val": "0" } }
-											}
-										},
-										{
-											"cmp": {
-												"op": "OpEq",
-												"lhs": { "currentRuneCount": { "runeType": "RuneFrost" } },
-												"rhs": { "const": { "val": "0" } }
-											}
-										},
-										{
-											"cmp": {
-												"op": "OpEq",
-												"lhs": { "currentRuneCount": { "runeType": "RuneUnholy" } },
-												"rhs": { "const": { "val": "0" } }
-											}
-										},
-										{
-											"cmp": {
-												"op": "OpEq",
-												"lhs": { "currentRuneCount": { "runeType": "RuneDeath" } },
-												"rhs": { "const": { "val": "0" } }
-											}
-										},
-										{
-											"cmp": { "op": "OpGt", "lhs": { "runeCooldown": { "runeType": "RuneBlood" } }, "rhs": { "const": { "val": "1s" } } }
-										},
-										{
-											"cmp": { "op": "OpGt", "lhs": { "runeCooldown": { "runeType": "RuneFrost" } }, "rhs": { "const": { "val": "1s" } } }
-										},
-										{
-											"cmp": {
-												"op": "OpGt",
-												"lhs": { "runeCooldown": { "runeType": "RuneUnholy" } },
-												"rhs": { "const": { "val": "1s" } }
-											}
-										}
-									]
+								"cmp": {
+									"op": "OpEq",
+									"lhs": { "currentRuneCount": { "runeType": "RuneBlood" } },
+									"rhs": { "const": { "val": "0" } }
+								}
+							},
+							{
+								"cmp": {
+									"op": "OpEq",
+									"lhs": { "currentRuneCount": { "runeType": "RuneFrost" } },
+									"rhs": { "const": { "val": "0" } }
+								}
+							},
+							{
+								"cmp": {
+									"op": "OpEq",
+									"lhs": { "currentRuneCount": { "runeType": "RuneUnholy" } },
+									"rhs": { "const": { "val": "0" } }
+								}
+							},
+							{
+								"cmp": {
+									"op": "OpEq",
+									"lhs": { "currentRuneCount": { "runeType": "RuneDeath" } },
+									"rhs": { "const": { "val": "0" } }
+								}
+							},
+							{
+								"cmp": { "op": "OpGt", "lhs": { "runeCooldown": { "runeType": "RuneBlood" } }, "rhs": { "const": { "val": "1s" } } }
+							},
+							{
+								"cmp": { "op": "OpGt", "lhs": { "runeCooldown": { "runeType": "RuneFrost" } }, "rhs": { "const": { "val": "1s" } } }
+							},
+							{
+								"cmp": {
+									"op": "OpGt",
+									"lhs": { "runeCooldown": { "runeType": "RuneUnholy" } },
+									"rhs": { "const": { "val": "1s" } }
 								}
 							}
 						]

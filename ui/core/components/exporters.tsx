@@ -4,7 +4,7 @@ import { ref } from 'tsx-vanilla';
 import * as Mechanics from '../constants/mechanics';
 import { IndividualSimUI } from '../individual_sim_ui';
 import { RaidSimRequest } from '../proto/api';
-import { PseudoStat, Spec, Stat } from '../proto/common';
+import { Consumes, ItemSlot, PseudoStat, Spec, Stat } from '../proto/common';
 import { IndividualSimSettings } from '../proto/ui';
 import { raceNames } from '../proto_utils/names';
 import { UnitStat } from '../proto_utils/stats';
@@ -13,9 +13,10 @@ import { SimUI } from '../sim_ui';
 import { EventID, TypedEvent } from '../typed_event';
 import { arrayEquals, downloadString, getEnumValues, jsonStringifyWithFlattenedPaths } from '../utils';
 import { BaseModal } from './base_modal';
-import { BooleanPicker } from './pickers/boolean_picker';
 import { CopyButton } from './copy_button';
 import { IndividualLinkImporter, IndividualWowheadGearPlannerImporter } from './importers';
+import { BooleanPicker } from './pickers/boolean_picker';
+import { createWowheadGearPlannerLink, WowheadGearPlannerData, WowheadItemData } from './wowhead_helper';
 
 interface ExporterOptions {
 	title: string;
@@ -219,7 +220,6 @@ export class IndividualJsonExporter<SpecType extends Spec> extends Exporter {
 		});
 	}
 }
-
 export class IndividualWowheadGearPlannerExporter<SpecType extends Spec> extends Exporter {
 	private readonly simUI: IndividualSimUI<SpecType>;
 
@@ -240,61 +240,35 @@ export class IndividualWowheadGearPlannerExporter<SpecType extends Spec> extends
 		const raceStr = raceNames.get(player.getRace())!.replaceAll(/\s/g, '-').toLowerCase();
 		const url = `https://www.wowhead.com/cata/gear-planner/${classStr}/${raceStr}/`;
 
-		// See comments on the importer for how the binary formatting is structured.
-		let bytes: Array<number> = [];
-		bytes.push(6);
-		bytes.push(0);
-		bytes.push(Mechanics.CHARACTER_LEVEL);
-
-		let talentsStr = player.getTalentsString().replaceAll('-', 'f') + 'f';
-		if (talentsStr.length % 2 == 1) {
-			talentsStr += '0';
-		}
-		//console.log('Talents str: ' + talentsStr);
-		bytes.push(talentsStr.length / 2);
-		for (let i = 0; i < talentsStr.length; i += 2) {
-			bytes.push(parseInt(talentsStr.substring(i, i + 2), 16));
-		}
-
-		const glyphBytes: Array<number> = [];
-		let glyphStr = '';
-		const glyphs = player.getGlyphs();
-		const d = '0123456789abcdefghjkmnpqrstvwxyz';
-		const addGlyph = (glyphItemId: number, glyphPosition: number) => {
+		const addGlyph = (glyphItemId: number): number => {
 			const spellId = this.simUI.sim.db.glyphItemToSpellId(glyphItemId);
 			if (!spellId) {
-				return;
+				return 0;
 			}
-			glyphStr += d[glyphPosition];
-			glyphStr += d[(spellId >> 15) & 0b00011111];
-			glyphStr += d[(spellId >> 10) & 0b00011111];
-			glyphStr += d[(spellId >> 5) & 0b00011111];
-			glyphStr += d[(spellId >> 0) & 0b00011111];
+			return spellId;
 		};
-		addGlyph(glyphs.prime1, 0);
-		addGlyph(glyphs.prime2, 1);
-		addGlyph(glyphs.prime3, 2);
-		addGlyph(glyphs.major1, 3);
-		addGlyph(glyphs.major2, 4);
-		addGlyph(glyphs.major3, 5);
-		addGlyph(glyphs.minor1, 6);
-		addGlyph(glyphs.minor2, 7);
-		addGlyph(glyphs.minor3, 8);
-		if (glyphStr) {
-			glyphBytes.push(0x30);
-			for (let i = 0; i < glyphStr.length; i++) {
-				glyphBytes.push(glyphStr.charCodeAt(i));
-			}
-		}
-		bytes.push(glyphBytes.length);
-		bytes = bytes.concat(glyphBytes);
 
-		const to2Bytes = (val: number): Array<number> => {
-			return [(val & 0xff00) >> 8, val & 0x00ff];
-		};
+		const glyphs = player.getGlyphs();
+
+		const data = {
+			level: Mechanics.CHARACTER_LEVEL,
+			talents: player.getTalentsString().split("-"),
+			glyphs: [
+				addGlyph(glyphs.prime1),
+				addGlyph(glyphs.prime2),
+				addGlyph(glyphs.prime3),
+				addGlyph(glyphs.major1),
+				addGlyph(glyphs.major2),
+				addGlyph(glyphs.major3),
+				addGlyph(glyphs.minor1),
+				addGlyph(glyphs.minor2),
+				addGlyph(glyphs.minor3),
+			],
+			items: []
+		} as WowheadGearPlannerData
 
 		const gear = player.getGear();
-		const isBlacksmithing = player.isBlacksmithing();
+
 		gear.getItemSlots()
 			.sort((slot1, slot2) => IndividualWowheadGearPlannerImporter.slotIDs[slot1] - IndividualWowheadGearPlannerImporter.slotIDs[slot2])
 			.forEach(itemSlot => {
@@ -303,33 +277,35 @@ export class IndividualWowheadGearPlannerExporter<SpecType extends Spec> extends
 					return;
 				}
 
-				let slotId = IndividualWowheadGearPlannerImporter.slotIDs[itemSlot];
-				if (item.enchant) {
-					slotId = slotId | 0b10000000;
-				}
-				bytes.push(slotId);
-				bytes.push(item.curEquippedGems(isBlacksmithing).length << 5);
-				bytes = bytes.concat(to2Bytes(item.item.id));
+				const slotId = IndividualWowheadGearPlannerImporter.slotIDs[itemSlot];
+				const itemData = {
+					slotId: slotId,
+					itemId: item.id,
 
-				if (item.enchant) {
-					bytes.push(0);
-					bytes = bytes.concat(to2Bytes(item.enchant.spellId));
+				} as WowheadItemData
+				if(item._randomSuffix?.id) {
+					itemData.randomEnchantId = item._randomSuffix.id
+				}
+				if(item._enchant) {
+					itemData.enchantIds = [item._enchant.spellId]
 				}
 
-				item.gems.slice(0, item.numSockets(isBlacksmithing)).forEach((gem, i) => {
-					if (gem) {
-						bytes.push(i << 5);
-						bytes = bytes.concat(to2Bytes(gem.id));
-					}
-				});
+				if (ItemSlot.ItemSlotHands == itemSlot) {
+					//Todo: IF Hands we want to append any tinkers if existing
+				}
+
+				if(item._gems) {
+					itemData.gemItemIds = item._gems.map(gem => {return gem?.id ?? 0})
+				}
+				if(item._reforge) {
+					itemData.reforge = item._reforge.id
+				}
+				data.items.push(itemData)
 			});
 
-		//console.log('Hex: ' + buf2hex(new Uint8Array(bytes)));
-		const binaryString = String.fromCharCode(...bytes);
-		const b64encoded = btoa(binaryString);
-		const b64converted = b64encoded.replaceAll('/', '_').replaceAll('+', '-').replace(/=+$/, '');
+		const hash = createWowheadGearPlannerLink(data)
 
-		return url + b64converted;
+		return url + hash;
 	}
 }
 

@@ -65,9 +65,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 	),
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P1_BLOOD_PRESET.gear,
+		gear: Presets.P3_BLOOD_BALANCED_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P1_BLOOD_EP_PRESET.epWeights,
+		epWeights: Presets.P3_BLOOD_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
 			const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 8);
@@ -110,16 +110,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 
 	modifyDisplayStats: (player: Player<Spec.SpecBloodDeathKnight>) => {
 		// Blood Presence is a combat buff but we want to include its bonus in the stats
-		const currentStats = player.getCurrentStats()
+		const currentStats = player.getCurrentStats();
 		if (currentStats.finalStats) {
-			const bonusStamina = currentStats.finalStats.stats[Stat.StatStamina]*0.08
-			const bonusHealth = bonusStamina*14
-			const stats = new Stats().addStat(Stat.StatHealth, bonusHealth).addStat(Stat.StatStamina, bonusStamina)
+			const bonusStamina = currentStats.finalStats.stats[Stat.StatStamina] * 0.08;
+			const bonusHealth = bonusStamina * 14;
+			const stats = new Stats().addStat(Stat.StatHealth, bonusHealth).addStat(Stat.StatStamina, bonusStamina);
 			return {
 				buffs: stats,
 			};
 		}
-		return {}
+		return {};
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
@@ -138,6 +138,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 			OtherInputs.IncomingHps,
 			OtherInputs.HealingCadence,
 			OtherInputs.HealingCadenceVariation,
+			OtherInputs.AbsorbFrac,
 			OtherInputs.BurstWindow,
 			OtherInputs.InspirationUptime,
 			OtherInputs.InFrontOfTarget,
@@ -157,7 +158,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.BloodTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_BLOOD_PRESET, Presets.P1_BLOOD_PRESET, Presets.P3_BLOOD_BALANCED_PRESET, Presets.P3_BLOOD_DEFENSIVE_PRESET, Presets.P3_BLOOD_OFFENSIVE_PRESET],
+		gear: [
+			Presets.PRERAID_BLOOD_PRESET,
+			Presets.P1_BLOOD_PRESET,
+			Presets.P3_BLOOD_BALANCED_PRESET,
+			Presets.P3_BLOOD_DEFENSIVE_PRESET,
+			Presets.P3_BLOOD_OFFENSIVE_PRESET,
+		],
 		builds: [Presets.P1_PRESET, Presets.P3_PRESET],
 	},
 

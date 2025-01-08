@@ -31,20 +31,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 		Stat.StatMasteryRating,
 		Stat.StatExpertiseRating,
 	],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatPhysicalHitPercent, PseudoStat.PseudoStatSpellHitPercent],
+	epPseudoStats: [
+		PseudoStat.PseudoStatMainHandDps,
+		PseudoStat.PseudoStatOffHandDps,
+		PseudoStat.PseudoStatPhysicalHitPercent,
+		PseudoStat.PseudoStatSpellHitPercent,
+	],
 	// Reference stat against which to calculate EP.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[
-			Stat.StatHealth,
-			Stat.StatStamina,
-			Stat.StatAgility,
-			Stat.StatStrength,
-			Stat.StatAttackPower,
-			Stat.StatMasteryRating,
-			Stat.StatExpertiseRating,
-		],
+		[Stat.StatHealth, Stat.StatStamina, Stat.StatAgility, Stat.StatStrength, Stat.StatAttackPower, Stat.StatMasteryRating, Stat.StatExpertiseRating],
 		[
 			PseudoStat.PseudoStatPhysicalHitPercent,
 			PseudoStat.PseudoStatSpellHitPercent,
@@ -78,21 +75,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 				postCapEPs: [94.15, 0],
 			});
 
-			const masteryRatingBreakpoints = [];
-			const masteryPercentPerPoint = Mechanics.masteryPercentPerPoint.get(Spec.SpecAssassinationRogue)!;
-			for (let masteryPercent = 28; masteryPercent <= 200; masteryPercent++) {
-				masteryRatingBreakpoints.push((masteryPercent / masteryPercentPerPoint) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
-			}
-
-			const masterySoftCapConfig = StatCap.fromStat(Stat.StatMasteryRating, {
-				breakpoints: masteryRatingBreakpoints,
-				capType: StatCapType.TypeThreshold,
-				postCapEPs: [0],
-			});
-
-			return [meleeHitSoftCapConfig, spellHitSoftCapConfig, masterySoftCapConfig];
+			return [meleeHitSoftCapConfig, spellHitSoftCapConfig];
 		})(),
-    	other: Presets.OtherDefaults,
+		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -164,7 +149,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_MUTILATE],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.P1_PRESET_ASSASSINATION, Presets.P1_PRESET_ASN_EXPERTISE, Presets.P3_PRESET_ASSASSINATION],
+		gear: [Presets.PRERAID_PRESET_ASSASSINATION, Presets.P1_PRESET_ASSASSINATION, Presets.P1_PRESET_ASN_EXPERTISE, Presets.P3_PRESET_ASSASSINATION, Presets.P4_PRESET_ASSASSINATION],
 	},
 
 	autoRotation: (player: Player<Spec.SpecAssassinationRogue>): APLRotation => {

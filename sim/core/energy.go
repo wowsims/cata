@@ -68,6 +68,14 @@ func (eb *energyBar) EnergyRegenPerSecond() float64 {
 	return 10.0 * eb.hasteRatingMultiplier * eb.energyRegenMultiplier
 }
 
+func (eb *energyBar) TimeToTargetEnergy(targetEnergy float64) time.Duration {
+	if eb.currentEnergy >= targetEnergy {
+		return time.Duration(0)
+	}
+
+	return DurationFromSeconds((targetEnergy - eb.currentEnergy) / eb.EnergyRegenPerSecond())
+}
+
 func (eb *energyBar) AddEnergy(sim *Simulation, amount float64, metrics *ResourceMetrics) {
 	if amount < 0 {
 		panic("Trying to add negative energy!")
@@ -102,8 +110,20 @@ func (eb *energyBar) ComboPoints() int32 {
 	return eb.comboPoints
 }
 
+func (eb *energyBar) IsReset(sim *Simulation) bool {
+	return (eb.nextEnergyTick != 0) && (eb.nextEnergyTick - sim.CurrentTime <= eb.EnergyTickDuration)
+}
+
+func (eb *energyBar) IsTicking(sim *Simulation) bool {
+	return eb.IsReset(sim) && (sim.CurrentTime <= eb.nextEnergyTick)
+}
+
 // Gives an immediate partial energy tick and restarts the tick timer.
 func (eb *energyBar) ResetEnergyTick(sim *Simulation) {
+	if !eb.IsTicking(sim) {
+		return
+	}
+
 	timeSinceLastTick := max(sim.CurrentTime-(eb.NextEnergyTickAt()-eb.EnergyTickDuration), 0)
 	partialTickAmount := (eb.EnergyPerTick * eb.hasteRatingMultiplier * eb.energyRegenMultiplier) * (float64(timeSinceLastTick) / float64(eb.EnergyTickDuration))
 	eb.AddEnergy(sim, partialTickAmount, eb.regenMetrics)
@@ -122,7 +142,16 @@ func (eb *energyBar) processDynamicHasteRatingChange(sim *Simulation) {
 
 // Used for dynamic updates to maximum Energy, such as from the Druid Primal Madness talent
 func (eb *energyBar) UpdateMaxEnergy(sim *Simulation, bonusEnergy float64, metrics *ResourceMetrics) {
-	// Reset tick timer first so that Energy is properly zeroed out when bonusEnergy < -currentEnergy
+	if !eb.IsReset(sim) {
+		eb.maxEnergy += bonusEnergy
+	} else {
+		eb.updateMaxEnergyInternal(sim, bonusEnergy, metrics)
+	}
+}
+
+func (eb *energyBar) updateMaxEnergyInternal(sim *Simulation, bonusEnergy float64, metrics *ResourceMetrics) {
+	// Reset tick timer first so that Energy is properly zeroed out when
+	// bonusEnergy < -currentEnergy.
 	eb.ResetEnergyTick(sim)
 
 	eb.maxEnergy += bonusEnergy

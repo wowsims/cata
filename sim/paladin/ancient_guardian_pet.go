@@ -66,7 +66,7 @@ func (ancientGuardian *AncientGuardianPet) ExecuteCustomRotation(sim *core.Simul
 func (ancientGuardian *AncientGuardianPet) registerRetributionVariant() {
 	ancientPowerID := core.ActionID{SpellID: 86700}
 	ancientPowerAura := ancientGuardian.RegisterAura(core.Aura{
-		Label:    "Ancient Power",
+		Label:    "Ancient Power" + ancientGuardian.Label,
 		ActionID: ancientPowerID,
 		Duration: core.NeverExpires,
 
@@ -90,10 +90,28 @@ func (ancientGuardian *AncientGuardianPet) registerRetributionVariant() {
 		AutoSwingMelee: true,
 	})
 
+	percentHitToExpertiseRating := 1 * core.PhysicalHitRatingPerHitPercent * PetExpertiseScale
+	draeneiPrepull := false
 	ancientGuardian.OnPetEnable = func(sim *core.Simulation) {
+		// Since Draenei racial doesn't apply to guardian, any Draenei who uses the T11 prot prepull set
+		// should make sure it's reforged/enchanted to 9% hit to avoid misses and dodges.
+		// Having a separate input for prepull set hit rating is too much of a hassle, so we just assume it's always 9%.
+		if sim.CurrentTime < 0 && ancientGuardian.paladinOwner.Race == proto.Race_RaceDraenei && ancientGuardian.paladinOwner.SnapshotGuardian {
+			ancientGuardian.AddStatDynamic(sim, stats.PhysicalHitPercent, 1.0)
+			ancientGuardian.AddStatDynamic(sim, stats.ExpertiseRating, percentHitToExpertiseRating)
+			draeneiPrepull = true
+		} else {
+			draeneiPrepull = false
+		}
+
 		ancientPowerAura.Activate(sim)
 	}
 	ancientGuardian.OnPetDisable = func(sim *core.Simulation) {
+		if draeneiPrepull {
+			ancientGuardian.AddStatDynamic(sim, stats.PhysicalHitPercent, -1.0)
+			ancientGuardian.AddStatDynamic(sim, stats.ExpertiseRating, -percentHitToExpertiseRating)
+		}
+
 		ancientPowerAura.Deactivate(sim)
 	}
 }

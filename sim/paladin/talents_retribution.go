@@ -9,6 +9,7 @@ import (
 func (paladin *Paladin) applyRetributionTalents() {
 	paladin.applyCrusade()
 	paladin.applyRuleOfLaw()
+	paladin.applyPursuitOfJustice()
 	paladin.applySanctityOfBattle()
 	paladin.applySealsOfCommand()
 	paladin.applySanctifiedWrath()
@@ -44,6 +45,16 @@ func (paladin *Paladin) applyRuleOfLaw() {
 		Kind:       core.SpellMod_BonusCrit_Percent,
 		FloatValue: 5 * float64(paladin.Talents.RuleOfLaw),
 	})
+}
+
+func (paladin *Paladin) applyPursuitOfJustice() {
+	if paladin.Talents.PursuitOfJustice == 0 {
+		return
+	}
+
+	spellID := []int32{0, 26022, 26023}[paladin.Talents.PursuitOfJustice]
+	multiplier := []float64{0, 0.08, 0.15}[paladin.Talents.PursuitOfJustice]
+	paladin.NewMovementSpeedAura("Pursuit of Justice", core.ActionID{SpellID: spellID}, multiplier)
 }
 
 func (paladin *Paladin) applySanctityOfBattle() {
@@ -168,7 +179,7 @@ func (paladin *Paladin) applyArtOfWar() {
 	})
 
 	artOfWarInstantCast := paladin.RegisterAura(core.Aura{
-		Label:    "The Art Of War",
+		Label:    "The Art Of War" + paladin.Label,
 		ActionID: core.ActionID{SpellID: 59578},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -189,7 +200,7 @@ func (paladin *Paladin) applyArtOfWar() {
 	})
 
 	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-		Name:       "Art of War",
+		Name:       "Art of War" + paladin.Label,
 		ActionID:   core.ActionID{SpellID: 87138},
 		Callback:   core.CallbackOnSpellHitDealt,
 		ProcMask:   core.ProcMaskMeleeWhiteHit,
@@ -274,7 +285,7 @@ func (paladin *Paladin) applyDivinePurpose() {
 
 	duration := time.Second * 8
 	paladin.DivinePurposeAura = paladin.RegisterAura(core.Aura{
-		Label:    "Divine Purpose",
+		Label:    "Divine Purpose" + paladin.Label,
 		ActionID: core.ActionID{SpellID: 90174},
 		Duration: duration,
 
@@ -287,7 +298,7 @@ func (paladin *Paladin) applyDivinePurpose() {
 
 	procChance := []float64{0, 0.07, 0.15}[paladin.Talents.DivinePurpose]
 	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-		Name:           "Divine Purpose (proc)",
+		Name:           "Divine Purpose (proc)" + paladin.Label,
 		ActionID:       core.ActionID{SpellID: 90174},
 		Callback:       core.CallbackOnSpellHitDealt | core.CallbackOnCastComplete,
 		Outcome:        core.OutcomeLanded,
@@ -299,7 +310,7 @@ func (paladin *Paladin) applyDivinePurpose() {
 				return
 			}
 
-			if sim.Proc(procChance, "Divine Purpose") {
+			if sim.Proc(procChance, "Divine Purpose"+paladin.Label) {
 				paladin.DivinePurposeAura.Activate(sim)
 			}
 		},
@@ -333,7 +344,7 @@ func (paladin *Paladin) applyZealotry() {
 	}
 
 	paladin.ZealotryAura = paladin.RegisterAura(core.Aura{
-		Label:    "Zealotry",
+		Label:    "Zealotry" + paladin.Label,
 		ActionID: actionId,
 		Duration: duration,
 		// Holy Power logic is handled for each ability

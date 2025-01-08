@@ -30,8 +30,8 @@ func (paladin *Paladin) applySealsOfThePure() {
 	}
 
 	paladin.AddStaticMod(core.SpellModConfig{
-		ClassMask:  SpellMaskSealOfRighteousness | SpellMaskSealOfTruth | SpellMaskSealOfJustice,
-		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  SpellMaskSealOfRighteousness | SpellMaskSealOfTruth | SpellMaskSealOfJustice | SpellMaskCensure,
+		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: 0.06 * float64(paladin.Talents.SealsOfThePure),
 	})
 }
@@ -75,7 +75,7 @@ func (paladin *Paladin) applySanctuary() {
 	manaReturnPct := 0.01 * float64(paladin.Talents.Sanctuary)
 
 	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-		Name:     "Sanctuary",
+		Name:     "Sanctuary" + paladin.Label,
 		Callback: core.CallbackOnSpellHitTaken,
 		ProcMask: core.ProcMaskMelee,
 		Outcome:  core.OutcomeBlock | core.OutcomeDodge,
@@ -92,7 +92,7 @@ func (paladin *Paladin) applyHammerOfTheRighteous() {
 	}
 
 	aoeMinDamage, aoeMaxDamage :=
-		core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassPaladin, 0.708, 0.4)
+		core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassPaladin, 0.70800000429, 0.40000000596)
 
 	numTargets := paladin.Env.GetNumTargets()
 	actionId := core.ActionID{SpellID: 53595}
@@ -118,8 +118,8 @@ func (paladin *Paladin) applyHammerOfTheRighteous() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.RollWithLabel(aoeMinDamage, aoeMaxDamage, "Hammer of the Righteous") +
-				0.18*spell.MeleeAttackPower()
+			baseDamage := sim.RollWithLabel(aoeMinDamage, aoeMaxDamage, "Hammer of the Righteous"+paladin.Label) +
+				0.18000000715*spell.MeleeAttackPower()
 			results := make([]*core.SpellResult, numTargets)
 
 			for idx := int32(0); idx < numTargets; idx++ {
@@ -215,7 +215,7 @@ func (paladin *Paladin) applyReckoning() {
 	var reckoningSpell *core.Spell
 
 	procAura := paladin.RegisterAura(core.Aura{
-		Label:     "Reckoning Proc",
+		Label:     "Reckoning Proc" + paladin.Label,
 		ActionID:  actionID,
 		Duration:  time.Second * 8,
 		MaxStacks: 4,
@@ -234,7 +234,7 @@ func (paladin *Paladin) applyReckoning() {
 	})
 
 	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-		Name:       "Reckoning",
+		Name:       "Reckoning" + paladin.Label,
 		ProcMask:   core.ProcMaskMelee,
 		ProcChance: procChance,
 		Callback:   core.CallbackOnSpellHitTaken,
@@ -255,7 +255,7 @@ func (paladin *Paladin) applyShieldOfTheRighteous() {
 	actionId := core.ActionID{SpellID: 53600}
 	hpMetrics := paladin.NewHolyPowerMetrics(actionId)
 
-	shieldDmg := core.CalcScalingSpellAverageEffect(proto.Class_ClassPaladin, 0.593)
+	shieldDmg := core.CalcScalingSpellAverageEffect(proto.Class_ClassPaladin, 0.59299999475)
 
 	paladin.ShieldOfTheRighteous = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionId,
@@ -280,7 +280,7 @@ func (paladin *Paladin) applyShieldOfTheRighteous() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := []float64{0, 1, 3, 6}[paladin.GetHolyPowerValue()] *
-				(shieldDmg + 0.1*spell.MeleeAttackPower())
+				(shieldDmg + 0.10000000149*spell.MeleeAttackPower())
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
@@ -314,7 +314,7 @@ func (paladin *Paladin) applyShieldOfTheTemplar() {
 	})
 
 	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-		Name:           "Divine Plea Templar Effect",
+		Name:           "Divine Plea Templar Effect" + paladin.Label,
 		ActionID:       actionId,
 		Callback:       core.CallbackOnCastComplete,
 		ClassSpellMask: SpellMaskDivinePlea,
@@ -332,7 +332,7 @@ func (paladin *Paladin) applyGrandCrusader() {
 	}
 
 	paladin.GrandCrusaderAura = paladin.RegisterAura(core.Aura{
-		Label:    "Grand Crusader (Proc)",
+		Label:    "Grand Crusader (Proc)" + paladin.Label,
 		ActionID: core.ActionID{SpellID: 85043},
 		Duration: time.Second * 6,
 
@@ -346,7 +346,7 @@ func (paladin *Paladin) applyGrandCrusader() {
 	})
 
 	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-		Name:           "Grand Crusader",
+		Name:           "Grand Crusader" + paladin.Label,
 		ActionID:       core.ActionID{SpellID: 85416},
 		Callback:       core.CallbackOnSpellHitDealt,
 		Outcome:        core.OutcomeLanded,
@@ -365,7 +365,7 @@ func (paladin *Paladin) applyHolyShield() {
 	}
 
 	holyShieldAura := paladin.RegisterAura(core.Aura{
-		Label:    "Holy Shield",
+		Label:    "Holy Shield" + paladin.Label,
 		ActionID: core.ActionID{SpellID: 20925},
 		Duration: time.Second * 10,
 
@@ -414,7 +414,7 @@ func (paladin *Paladin) applySacredDuty() {
 	})
 
 	paladin.SacredDutyAura = paladin.RegisterAura(core.Aura{
-		Label:    "Sacred Duty (Proc)",
+		Label:    "Sacred Duty (Proc)" + paladin.Label,
 		ActionID: core.ActionID{SpellID: 85433},
 		Duration: time.Second * 10,
 
@@ -434,7 +434,7 @@ func (paladin *Paladin) applySacredDuty() {
 	})
 
 	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-		Name:           "Sacred Duty",
+		Name:           "Sacred Duty" + paladin.Label,
 		ActionID:       core.ActionID{SpellID: 53710},
 		Callback:       core.CallbackOnSpellHitDealt,
 		Outcome:        core.OutcomeLanded,
@@ -454,7 +454,7 @@ func (paladin *Paladin) applyArdentDefender() {
 	actionID := core.ActionID{SpellID: 31850}
 
 	adAura := paladin.RegisterAura(core.Aura{
-		Label:    "Ardent Defender",
+		Label:    "Ardent Defender" + paladin.Label,
 		ActionID: actionID,
 		Duration: time.Second * 10,
 
@@ -466,7 +466,7 @@ func (paladin *Paladin) applyArdentDefender() {
 		},
 	})
 
-	paladin.RegisterSpell(core.SpellConfig{
+	ardentDefender := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		Flags:          core.SpellFlagAPL,
 		SpellSchool:    core.SpellSchoolHoly,
@@ -535,4 +535,11 @@ func (paladin *Paladin) applyArdentDefender() {
 			adAura.Deactivate(sim)
 		}
 	})
+
+	if paladin.Spec == proto.Spec_SpecProtectionPaladin {
+		paladin.AddMajorCooldown(core.MajorCooldown{
+			Spell: ardentDefender,
+			Type:  core.CooldownTypeSurvival,
+		})
+	}
 }

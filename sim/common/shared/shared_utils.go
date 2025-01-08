@@ -23,6 +23,9 @@ type ProcStatBonusEffect struct {
 
 	// For ignoring a hardcoded spell.
 	IgnoreSpellID int32
+
+	// Any other custom proc conditions not covered by the above fields.
+	CustomProcCondition core.CustomStatBuffProcCondition
 }
 
 type DamageEffect struct {
@@ -39,8 +42,7 @@ type ExtraSpellInfo struct {
 	Trigger func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult)
 }
 
-type CustomProcHandler func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult, procAura *core.Aura)
-type ProcCondition func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool
+type CustomProcHandler func(sim *core.Simulation, procAura *core.StatBuffAura)
 
 func NewProcStatBonusEffectWithDamageProc(config ProcStatBonusEffect, damage DamageEffect) {
 	procMask := core.ProcMaskEmpty
@@ -48,7 +50,7 @@ func NewProcStatBonusEffectWithDamageProc(config ProcStatBonusEffect, damage Dam
 		procMask = damage.ProcMask
 	}
 
-	factory_StatBonusEffect(config, nil, func(agent core.Agent) ExtraSpellInfo {
+	factory_StatBonusEffect(config, func(agent core.Agent) ExtraSpellInfo {
 		character := agent.GetCharacter()
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:                 core.ActionID{SpellID: damage.SpellID},
@@ -74,20 +76,7 @@ func NewProcStatBonusEffectWithDamageProc(config ProcStatBonusEffect, damage Dam
 	})
 }
 
-func NewProcStatBonusEffectWithCustomCondition(config ProcStatBonusEffect, condition ProcCondition) {
-	factory_StatBonusEffect(config, func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult, procAura *core.Aura) {
-		if condition(sim, spell, result) {
-			procAura.Activate(sim)
-		} else {
-			// reset ICD condition was not fulfilled
-			if procAura.Icd != nil && procAura.Icd.Duration != 0 {
-				procAura.Icd.Reset()
-			}
-		}
-	}, nil)
-}
-
-func factory_StatBonusEffect(config ProcStatBonusEffect, customHandler CustomProcHandler, extraSpell func(agent core.Agent) ExtraSpellInfo) {
+func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent core.Agent) ExtraSpellInfo) {
 	core.NewItemEffect(config.ID, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
@@ -96,6 +85,22 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, customHandler CustomPro
 			procID = core.ActionID{ItemID: config.ID}
 		}
 		procAura := character.NewTemporaryStatsAura(config.Name+" Proc", procID, config.Bonus, config.Duration)
+
+		var customHandler CustomProcHandler
+		if config.CustomProcCondition != nil {
+			procAura.CustomProcCondition = config.CustomProcCondition
+			customHandler = func(sim *core.Simulation, procAura *core.StatBuffAura) {
+				if procAura.CanProc(sim) {
+					procAura.Activate(sim)
+				} else {
+					// reset ICD condition was not fulfilled
+					if procAura.Icd != nil && procAura.Icd.Duration != 0 {
+						procAura.Icd.Reset()
+					}
+				}
+			}
+		}
+
 		var procSpell ExtraSpellInfo
 		if extraSpell != nil {
 			procSpell = extraSpell(agent)
@@ -103,8 +108,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, customHandler CustomPro
 
 		handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if customHandler != nil {
-				customHandler(sim, spell, result, procAura.Aura)
-
+				customHandler(sim, procAura)
 			} else {
 				procAura.Activate(sim)
 				if procSpell.Spell != nil {
@@ -118,7 +122,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, customHandler CustomPro
 			handler = func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if !spell.IsSpellAction(ignoreSpellID) {
 					if customHandler != nil {
-						customHandler(sim, spell, result, procAura.Aura)
+						customHandler(sim, procAura)
 					} else {
 						procAura.Activate(sim)
 						if procSpell.Spell != nil {
@@ -148,7 +152,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, customHandler CustomPro
 }
 
 func NewProcStatBonusEffect(config ProcStatBonusEffect) {
-	factory_StatBonusEffect(config, nil, nil)
+	factory_StatBonusEffect(config, nil)
 }
 
 type StatCDFactory func(itemID int32, duration time.Duration, cooldown time.Duration)

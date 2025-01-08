@@ -1,6 +1,6 @@
 import * as Mechanics from '../../core/constants/mechanics.js';
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Conjured, Consumes, Flask, Food, Glyphs, Potions, PseudoStat, Spec, Stat, TinkerHands } from '../../core/proto/common';
+import { Conjured, Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Spec, Stat, TinkerHands } from '../../core/proto/common';
 import {
 	DruidMajorGlyph,
 	DruidMinorGlyph,
@@ -36,10 +36,14 @@ import CleaveApl from './apls/cleave.apl.json';
 import DefaultApl from './apls/default.apl.json';
 import NefApl from './apls/nef.apl.json';
 import BethApl from './apls/bethtilac.apl.json';
+import BalerocMTApl from './apls/balerocMT.apl.json';
+import BalerocOTApl from './apls/balerocOT.apl.json';
 export const ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('APL Default', DefaultApl);
 export const ROTATION_CLEAVE = PresetUtils.makePresetAPLRotation('2-Target Cleave', CleaveApl);
 export const ROTATION_NEF = PresetUtils.makePresetAPLRotation('AoE (Nef Adds)', NefApl);
 export const ROTATION_BETH = PresetUtils.makePresetAPLRotation("Beth'tilac Phase 2", BethApl);
+export const ROTATION_BALEROC_MT = PresetUtils.makePresetAPLRotation("Baleroc MT", BalerocMTApl);
+export const ROTATION_BALEROC_OT = PresetUtils.makePresetAPLRotation("Baleroc OT", BalerocOTApl);
 
 export const ROTATION_PRESET_SIMPLE = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecGuardianDruid, DefaultSimpleRotation);
 
@@ -148,6 +152,8 @@ export const DefaultConsumes = Consumes.create({
 
 export const OtherDefaults = {
 	iterationCount: 50000,
+	profession1: Profession.Engineering,
+	profession2: Profession.ProfessionUnknown,
 };
 
 export const PRESET_BUILD_BOSS_DUMMY = PresetUtils.makePresetBuild('Single Target Dummy', {
@@ -179,5 +185,21 @@ export const PRESET_BUILD_BETHTILAC = PresetUtils.makePresetBuild("Beth'tilac Ph
 	encounter: PresetUtils.makePresetEncounter(
 		"Beth'tilac Phase 2",
 		'http://localhost:5173/cata/druid/guardian/?i=rcmxe#eJzVVF1oHFUY3Xtndjtzk2x3b43dvbV6M5Y2LknYzZ9pUGcSSojVSi2VxkjRye7d7iS7M+vObENXCtEiVn1QAlIbilh8KaUPNQ/+5EGLglZRqIg1lmpBREQrCL7EH9Q7d3bTjdUHH/1gGL7znXvu+Q7MoHYFGKAA5gB4HoA5CM5CcAGCUTUGhsA4WAZgGMYADpF5dUGK7C6ah1hFaYkBrUWR0snd8JEwPzYaOQfAeQBPSy1EjYdEbTHOQ/kSVON9oj7Vv4YvKAmoPQvR5GNaybRsjz9jJqtYbMyqMG3Yq1RZ1+pkBys5FbNo1Sz7wB7HrDTmOY7vtUqc39+llavFg1ygxurIYXwGoASSlROLAMcCIzuM4D1poBifvHhFwooAjKkAWeLcAAk9IJDYZ783OPVTsZPvNZC5XQbahNYrrx2B9M9GNQQM00AaiionBptndSP7AyPnHjZWM0FxFCEygom4tg6FkdSdcVE7UqYj3NYvK7KmIg53p3syLpYJHA7hzWRTLYna+tM9abeLZtL9/I0VEqmvfCO5oYZRJNM/eA33F24nG2pxFB5qoi810ZtkxO51+sD2a7AfQAe5pbaZ0/uGfHwDiV8fQyfZWtuCopnMYGCw93afiknsulAmyQTaicdRay/CMAa5o0+egoikEgrAbe+AJpDwYBDoQzeliCLj1unmkYK4Od89QRx582fZn2GD3IXSpAfFtChqXQSqOCApT0SEPtdYasL89RAcDBS+OAKEwq2kA7VfgliwoJJtukjxe0FCJIjypaclrJJ1vk/lx85V+I/Hw/heshPdgYcDJ2s2bdNakLoI6ufRxlS7Esbq6QYQuOoLXHG+uDBKWkV/8eja/q0r8pq+scU0KaBJPPEfMu4iqWZnr6/IKJnayCNTlxrAv2SeIp1CWfpn5TV7tBH+n+BhHRvw2+/gr2AFgpNS8Jk8aDwjbVXFp/b9ZSO+542bn/zh/mX9tkfvRJ+/Uv5STx7N7r88Jn2j04j2oTwuCWro5axR//H8pCcXjvv1gb49QC7oHXlRF/WRjz/y66re+5xcnl+QautHmVfY5llFM0t7B+g4nUiA1DII/Q9rLve+0dSejR8+NvJ3jkjk1LvyyHGg73vo1bevfqU3OMY8+A3g6N12tljNMTpWYXbtUOpbsMvJsSL1CoxOVSs2LRdMl1EnLxBmZ52q7bEKnbW8goBcz8zO8H82nXJcl+bMknmAUbNU7qH3OR7jFNOjezlvn5VzZre59B6L02atYpHajkenGC3597EcZQeZTS3/HsulTtmzHN661OXDrMdyXdS17CyjluejputWS/yQkDdt7i/f7Zn2TKDMVcsVxgHu1bfmOdR1zBnhN8emqvl8TwL8BQ0Xc7A=',
+	),
+});
+
+export const PRESET_BUILD_BALEROC_MT = PresetUtils.makePresetBuild("Baleroc MT", {
+	rotation: ROTATION_BALEROC_MT,
+	encounter: PresetUtils.makePresetEncounter(
+		"Baleroc MT",
+		'http://localhost:5173/cata/druid/guardian/?i=cmxe#eJzVUr9PFEEUZvbQ3IkmB5oIJJIHlV4QkYhRY7LLxeCRQLzIxWDn3O7s3eRmZ8/Z2bscFbEyxsLQQaNURit7Y60mklAZbKwoKLQ12vl2lkPA+Af4is3szPd+fN/3TpzNEiAOqZMVQp4RsmKRNxbZskgxlyfXSIlsE3LDypOBnuGH65njZUE7TGX78mTsVDYzOVS2lqwHxzCv2PM60zec6+8xMeF8sHp3Le+nRTYy6dV950nmUs4c5787/etrSfyyL6SHL/bl9PDKHkrxuzYcH3ueK2XSnMmWs1f7jDOUQj/a19ObLXvUN/HZntn8lMQ3e2on2/yxkVk+WaSCqdCFqWkowdJgb2Gb9PyHseK9dw78nn9UfjlzFGPk2Hl7emaNXOm/evPd3a92F+OUyCRZJU/JwEiFygZEbdoEP1Rwi7k8oJqHEoqCeqxQn/PBrTO3wbxx0HUG1TCKoM2FgCoDjcnMg2oHTJkpUBQxCoFUGvQC5TJ982LFZe2vBlhKemE7mhjEeR5nsmQA5iTXnAq4U0kgywxCH26LUHUg0tRtRIVtC4eSoby4jFaOd1ubmbjJ1cw0b8Z4E0vNhfmNmtjb5zivqQNuiG/AI6CuGwexwDRvAuapqiGDFhUxwychwrbJxml0CDVGFQShYkBrNcWiiLeY6EC7zgU20MkIAWM6YZokTU1PNqBUxjNi66HwjMjJi89VpP+lxjhUYw0BbTAQ3GdpQ4/7PndjofdrLFS6qs5JnykZHpEUKnVkx2UzNjR5TWIdD7hvfDOmI0NTOqJVgexHu/uxSjYJenGu68U9rvG72KSqgR4HzcRoVnhBZg/RCbiMtfGrK3+6MxHfkxfqjIpkYFpjqL2x7I/6iMUxAyo7h/qlrgNqRFtMYSZunm4zJvdQs4IGDBTzE42ZASZNE45dQiNIyEU+hUXNqGcWCdsdbLI/ReKFIVdYROtxE5KffckVC3CjPbw+QLLbJe/8Bt31bfM='
+	),
+});
+
+export const PRESET_BUILD_BALEROC_OT = PresetUtils.makePresetBuild("Baleroc OT", {
+	rotation: ROTATION_BALEROC_OT,
+	encounter: PresetUtils.makePresetEncounter(
+		"Baleroc OT",
+		'http://localhost:5173/cata/druid/guardian/?i=rcmxe#eJzVUk9oHFUY3zcz2c6+JGUztSQZsL7sQeKShG3aFA3F3QSJG0kxmBDizZeZN7uvOzuzzMxmSU6xHhqLhxIQbRG1J6EnCYIY0YMXFVpILyXtwYr00IMFQZD0In7vTSbdre3Bo++wO9/3/b4/v9/34X4dEVRCVbSB0GWENhT0pYJ2FTSdyaKXURntITSZmlSyyEiZl9NX1fS8S9dYoHdnUa5XVwqD88qy8k4XpE6nrqvdZqYvJd9Y6SdF21XUu0ri+bX4m/Jh14Ca6zYeu3AfTpsaVgb6ckdwF1ZHT4b4ONbPp7GmP9rXchkM7tHC2MnQ0ExlMmUMmv24N9eNM9tIYL66mDbF/8f31GeFPtlGceiShrGSVQxAb8ahHQgtm0u4bMzgnnFsQBS8ty4q2MwP6Mjo/QG1OU2YD6NTMqYZPefbQ1ANK6dDE4P9zZ+aiBgl81VcMMdwNncU92yjjISr+oV0UmGnzRdXOBNXuPMekhWGzBfwsbtKVqIU3TpsowtLQrCpSyqfvq8aGfOImFF/OHzo/vvdLmPOfAOfNSbjOTpYtqkF+bg/f1zvMjLXE0fc7lQ8E+Blw6Nmj7Rvb3ba39/TOuyEQ9V08LKx9B/0zZvD7ZN9va/JyTQjs5M4nqq3yBN11afX7WDRa8KpglQfTQjzgWLvK+iaGl/l26VL6osZ+Tn3sNR39Yp4j4ovxR93ioMx7EGRpHOfZcpqDC2slg6u+rnSYAz9ufhK7NktDjny3S5O3bwh3u/F8ft6469r6nrPNHVZ4FtkfIKUyfKAlt9Dqf/h27B/LLWZwxfmv5h6EiPluP/tsakr6HTfmbPfvfVLMcGUyqiAttAHyDixSL0aCVu0QRw/IK8xi9dpxH2PTLvUZvnqrEOsKrNqzB4hUZWRFT8MSYu7LllhJIJkZpOVNSLLjJOAAiYAIPUk+hzlXhyzmwH3Kv9qAKU822+FYwMwz6YKZ0pmPR5x6pI3FwVknRHfIa+7frBGwohatTC/p8BQnu+NrsMqR5LWciYucyMmmzea4Gl6EXelGTagt8NhXlmHWD7ECA8JtaxmvelCmj1G5mhQAQar1G0yCLmu35LZME3kkwqjAan7ASO0UglYGPJV5q6RVpW70CASI9QZiwRTkTQ+UaiR8jx8A7bqu7YUWUQcHoTRs9QYISvNiNRpjRGXOyxuaHPH4VbTjQ5rnFtMVJ31HBZ4/hOSksUqsONeoylp8ooHdWzCHbk3uXRgKEuHdMUF9kPxefxR3EI3Eezi+WQXSzyC34UGDWqw43pDLJrlP0czHXTq3GtGcl+J/PHNhPxAXlJl1BUD0woD7eXKHqsPWBizTr21jn7x1gloRFdZAJlweVGLMe8ANePSOiMBc4TGTAJFU8ExIXSitIUs4JNfiBi15SFBu/Ymh1OIXUhy+QVYPVyCMA4lD1gdLtoGdxvJpEu29A+pJMjo'
 	),
 });

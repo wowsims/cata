@@ -123,7 +123,7 @@ func (warlock *Warlock) registerImpendingDoom() {
 			ActionID: core.ActionID{SpellID: 85107},
 			//TODO: Do they need to hit?
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if spell.Matches(WarlockSpellShadowBolt | WarlockSpellHandOfGuldan | WarlockSpellSoulFire | WarlockSpellIncinerate) {
+				if spell.Matches(WarlockSpellShadowBolt|WarlockSpellHandOfGuldan|WarlockSpellSoulFire|WarlockSpellIncinerate) && !spell.ProcMask.Matches(core.ProcMaskSpellProc|core.ProcMaskSpellDamageProc) {
 					if !warlock.Metamorphosis.CD.IsReady(sim) && sim.Proc(impendingDoomProcChance, "Impending Doom") {
 						warlock.Metamorphosis.CD.Reduce(15 * time.Second)
 						warlock.UpdateMajorCooldowns()
@@ -174,7 +174,7 @@ func (warlock *Warlock) registerMoltenCore() {
 
 	procChance := 0.02 * float64(warlock.Talents.MoltenCore)
 	onHit := func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-		if spell.Matches(WarlockSpellImmolate|WarlockSpellImmolateDot) && sim.Proc(procChance, "Molten Core") {
+		if spell.Matches(WarlockSpellImmolate|WarlockSpellImmolateDot) && !spell.ProcMask.Matches(core.ProcMaskSpellProc|core.ProcMaskSpellDamageProc) && sim.Proc(procChance, "Molten Core") {
 			moltenCoreAura.Activate(sim)
 			moltenCoreAura.SetStacks(sim, 3)
 		}

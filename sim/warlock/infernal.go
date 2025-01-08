@@ -10,7 +10,7 @@ import (
 )
 
 func (warlock *Warlock) registerSummonInfernal(timer *core.Timer) {
-	duration := time.Duration(45+10*warlock.Talents.AncientGrimoire) * time.Second
+	duration := time.Duration(45+10*warlock.Talents.AncientGrimoire+warlock.Calc2PT13SummonDuration()) * time.Second
 
 	summonInfernalAura := warlock.RegisterAura(core.Aura{
 		Label:    "Summon Infernal",
@@ -19,10 +19,11 @@ func (warlock *Warlock) registerSummonInfernal(timer *core.Timer) {
 	})
 
 	warlock.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 1122},
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 1122},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: WarlockSpellSummonInfernal,
 
 		ManaCost: core.ManaCostOptions{BaseCost: 0.8},
 		Cast: core.CastConfig{

@@ -82,7 +82,7 @@ func (hunter *Hunter) applyThrillOfTheHunt() {
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// mask 256
-			if spell == hunter.ArcaneShot || spell == hunter.ExplosiveShot || spell == hunter.BlackArrow {
+			if spell == hunter.ArcaneShot || spell.ClassSpellMask == HunterSpellExplosiveShot || spell == hunter.BlackArrow {
 				if sim.Proc(procChance, "ThrillOfTheHunt") {
 					hunter.AddFocus(sim, spell.DefaultCast.Cost*0.4, focusMetrics)
 				}
@@ -159,14 +159,20 @@ func (hunter *Hunter) applyTNT() {
 				hunter.ExplosiveShot.CostMultiplier += 1
 			}
 		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell == hunter.ExplosiveShot {
-
 				hunter.ExplosiveShot.CD.Reset()
-
 				aura.RemoveStack(sim)
 			}
 		},
+		// OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+		// 	if spell == hunter.ExplosiveShot {
+
+		// 		hunter.ExplosiveShot.CD.Reset()
+
+		// 		aura.RemoveStack(sim)
+		// 	}
+		// },
 	})
 
 	hunter.RegisterAura(core.Aura{

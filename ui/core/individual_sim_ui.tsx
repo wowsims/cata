@@ -75,8 +75,6 @@ export interface OtherDefaults {
 	distanceFromTarget?: number;
 	channelClipDelay?: number;
 	darkIntentUptime?: number;
-	duration?: number;
-	durationVariation?: number;
 	highHpThreshold?: number;
 	iterationCount?: number;
 }
@@ -461,12 +459,12 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	private addTopbarComponents() {
 		this.simHeader.addImportLink('JSON', new Importers.IndividualJsonImporter(this.rootElem, this), true);
 		this.simHeader.addImportLink('60U Cata', new Importers.Individual60UImporter(this.rootElem, this), true);
-		this.simHeader.addImportLink('WoWHead', new Importers.IndividualWowheadGearPlannerImporter(this.rootElem, this), false, true);
+		this.simHeader.addImportLink('WoWHead', new Importers.IndividualWowheadGearPlannerImporter(this.rootElem, this), false, false);
 		this.simHeader.addImportLink('Addon', new Importers.IndividualAddonImporter(this.rootElem, this), true);
 
 		this.simHeader.addExportLink('Link', new Exporters.IndividualLinkExporter(this.rootElem, this), false);
 		this.simHeader.addExportLink('JSON', new Exporters.IndividualJsonExporter(this.rootElem, this), true);
-		this.simHeader.addExportLink('WoWHead', new Exporters.IndividualWowheadGearPlannerExporter(this.rootElem, this), false, true);
+		this.simHeader.addExportLink('WoWHead', new Exporters.IndividualWowheadGearPlannerExporter(this.rootElem, this), false, false);
 		this.simHeader.addExportLink('60U Cata EP', new Exporters.Individual60UEPExporter(this.rootElem, this), false);
 		this.simHeader.addExportLink('Pawn EP', new Exporters.IndividualPawnEPExporter(this.rootElem, this), false);
 		this.simHeader.addExportLink('CLI', new Exporters.IndividualCLIExporter(this.rootElem, this), true);
@@ -532,7 +530,13 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 				this.player.setSoftCapBreakpoints(eventID, this.individualConfig.defaults.softCapBreakpoints);
 			this.player.setBreakpointLimits(eventID, new Stats());
 			this.player.setProfession1(eventID, this.individualConfig.defaults.other?.profession1 || Profession.Engineering);
-			this.player.setProfession2(eventID, this.individualConfig.defaults.other?.profession2 || Profession.Jewelcrafting);
+
+			if (this.individualConfig.defaults.other?.profession2 === undefined) {
+				this.player.setProfession2(eventID, Profession.Jewelcrafting);
+			} else {
+				this.player.setProfession2(eventID, this.individualConfig.defaults.other.profession2);
+			}
+
 			this.player.setDistanceFromTarget(eventID, this.individualConfig.defaults.other?.distanceFromTarget || 0);
 			this.player.setChannelClipDelay(eventID, this.individualConfig.defaults.other?.channelClipDelay || 0);
 			this.player.setDarkIntentUptime(eventID, this.individualConfig.defaults.other?.darkIntentUptime || 100);
@@ -542,8 +546,6 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			} else {
 				this.sim.raid.setTargetDummies(eventID, healingSpec ? 9 : 0);
 				this.sim.encounter.applyDefaults(eventID);
-				this.sim.encounter.setDuration(eventID, this.individualConfig.defaults.other?.duration || 180);
-				this.sim.encounter.setDurationVariation(eventID, this.individualConfig.defaults.other?.durationVariation || 5);
 				this.sim.encounter.setExecuteProportion90(eventID, this.individualConfig.defaults.other?.highHpThreshold || 0.9);
 				this.sim.raid.setDebuffs(eventID, this.individualConfig.defaults.debuffs);
 				this.sim.applyDefaults(eventID, tankSpec, healingSpec);

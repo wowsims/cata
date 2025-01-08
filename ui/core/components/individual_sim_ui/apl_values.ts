@@ -1,3 +1,5 @@
+import tippy from 'tippy.js';
+
 import { Player } from '../../player.js';
 import {
 	APLValue,
@@ -44,6 +46,10 @@ import {
 	APLValueDotIsActive,
 	APLValueDotRemainingTime,
 	APLValueDotTickFrequency,
+	APLValueEnergyRegenPerSecond,
+	APLValueEnergyTimeToTarget,
+	APLValueFocusRegenPerSecond,
+	APLValueFocusTimeToTarget,
 	APLValueFrontOfTarget,
 	APLValueGCDIsReady,
 	APLValueGCDTimeToReady,
@@ -54,11 +60,15 @@ import {
 	APLValueMath,
 	APLValueMath_MathOperator as MathOperator,
 	APLValueMax,
+	APLValueMaxEnergy,
+	APLValueMaxFocus,
+	APLValueMaxRunicPower,
 	APLValueMin,
 	APLValueNextRuneCooldown,
 	APLValueNot,
 	APLValueNumberTargets,
 	APLValueNumEquippedStatProcTrinkets,
+	APLValueNumStatBuffCooldowns,
 	APLValueOr,
 	APLValueRemainingTime,
 	APLValueRemainingTimePercent,
@@ -67,6 +77,8 @@ import {
 	APLValueSequenceIsComplete,
 	APLValueSequenceIsReady,
 	APLValueSequenceTimeToReady,
+	APLValueShamanCanSnapshotStrongerFireElemental,
+	APLValueShamanFireElementalDuration,
 	APLValueSpellCanCast,
 	APLValueSpellCastTime,
 	APLValueSpellChanneledTicks,
@@ -78,15 +90,17 @@ import {
 	APLValueSpellTimeToReady,
 	APLValueSpellTravelTime,
 	APLValueTotemRemainingTime,
+	APLValueTrinketProcsMaxRemainingICD,
 	APLValueTrinketProcsMinRemainingTime,
 	APLValueUnitIsMoving,
 	APLValueWarlockShouldRecastDrainSoul,
 	APLValueWarlockShouldRefreshCorruption,
 } from '../../proto/apl.js';
-import { Class, Spec } from '../../proto/common.js';
+import { Class, Spec, UUID } from '../../proto/common.js';
 import { ShamanTotems_TotemType as TotemType } from '../../proto/shaman.js';
+import { ActionId } from '../../proto_utils/action_id';
 import { EventID } from '../../typed_event.js';
-import { randomUUID } from '../../utils';
+import { existsInDOM, randomUUID } from '../../utils';
 import { Input, InputConfig } from '../input.js';
 import { TextDropdownPicker, TextDropdownValueConfig } from '../pickers/dropdown_picker.jsx';
 import { ListItemPickerConfig, ListPicker } from '../pickers/list_picker.jsx';
@@ -115,6 +129,16 @@ export class APLValuePicker extends Input<Player<any>, APLValue | undefined> {
 		const allValueKinds = (Object.keys(valueKindFactories) as Array<NonNullable<APLValueKind>>).filter(
 			valueKind => valueKindFactories[valueKind].includeIf?.(player, isPrepull) ?? true,
 		);
+
+
+		if (this.rootElem.parentElement!.classList.contains('list-picker-item')) {
+			const itemHeaderElem = ListPicker.getItemHeaderElem(this) || this.rootElem;
+			ListPicker.makeListItemValidations(
+				itemHeaderElem,
+				player,
+				player => player.getCurrentStats().rotationStats?.uuidValidations?.find(v => v.uuid?.value === this.rootElem.id)?.validations || [],
+			);
+		}
 
 		this.kindPicker = new TextDropdownPicker(this.rootElem, player, {
 			defaultLabel: 'No Condition',
@@ -236,6 +260,7 @@ export class APLValuePicker extends Input<Player<any>, APLValue | undefined> {
 						return val;
 					})(),
 				},
+				uuid: { value: randomUUID() },
 			});
 		}
 	}
@@ -247,15 +272,29 @@ export class APLValuePicker extends Input<Player<any>, APLValue | undefined> {
 		if (newKind && newValue) {
 			this.valuePicker!.setInputValue((newValue.value as any)[newKind]);
 		}
+
+		if (newValue) {
+			if (!newValue.uuid || newValue.uuid.value == "") {
+				newValue.uuid = {
+					value: randomUUID()
+				}
+			}
+			this.rootElem.id = newValue.uuid!.value;
+		}
 	}
 
 	private makeAPLValue<K extends NonNullable<APLValueKind>>(kind: K, implVal: APLValueImplTypesUnion[K]): APLValue {
 		if (!kind) {
-			return APLValue.create();
+			return APLValue.create({
+				uuid: { value: randomUUID() },
+			});
 		}
 		const obj: any = { oneofKind: kind };
 		obj[kind] = implVal;
-		return APLValue.create({ value: obj });
+		return APLValue.create({
+			value: obj,
+			uuid: { value: randomUUID() },
+		});
 	}
 
 	private updateValuePicker(newKind: APLValueKind) {
@@ -393,7 +432,10 @@ export function valueFieldConfig(
 ): AplHelpers.APLPickerBuilderFieldConfig<any, any> {
 	return {
 		field: field,
-		newValue: APLValue.create,
+		newValue: () =>
+			APLValue.create({
+			uuid: { value: randomUUID() },
+		}),
 		factory: (parent, player, config) => new APLValuePicker(parent, player, config),
 		...(options || {}),
 	};
@@ -411,11 +453,20 @@ export function valueListFieldConfig(field: string): AplHelpers.APLPickerBuilder
 					config.setValue(
 						eventID,
 						player,
-						newValue.map(val => val || APLValue.create()),
+						newValue.map(val => {
+							return val ||
+							APLValue.create({
+								uuid: { value: randomUUID() },
+							})
+						}),
 					);
 				},
 				itemLabel: 'Value',
-				newItem: APLValue.create,
+				newItem: () => {
+					return APLValue.create({
+						uuid: { value: randomUUID() },
+					})
+				},
 				copyItem: (oldValue: APLValue | undefined) => (oldValue ? APLValue.clone(oldValue) : oldValue),
 				newItemPicker: (
 					parent: HTMLElement,
@@ -423,7 +474,7 @@ export function valueListFieldConfig(field: string): AplHelpers.APLPickerBuilder
 					index: number,
 					config: ListItemPickerConfig<Player<any>, APLValue | undefined>,
 				) => new APLValuePicker(parent, player, config),
-				allowedActions: ['create', 'delete'],
+				allowedActions: ['copy', 'create', 'delete', 'move'],
 				actions: {
 					create: {
 						useIcon: true,
@@ -603,31 +654,39 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 
 	// Resources
 	currentHealth: inputBuilder({
-		label: 'Health',
-		submenu: ['Resources'],
+		label: 'Current Health',
+		submenu: ['Resources', 'Health'],
 		shortDescription: 'Amount of currently available Health.',
 		newValue: APLValueCurrentHealth.create,
 		fields: [AplHelpers.unitFieldConfig('sourceUnit', 'aura_sources')],
 	}),
 	currentHealthPercent: inputBuilder({
-		label: 'Health (%)',
-		submenu: ['Resources'],
+		label: 'Current Health (%)',
+		submenu: ['Resources', 'Health'],
 		shortDescription: 'Amount of currently available Health, as a percentage.',
 		newValue: APLValueCurrentHealthPercent.create,
 		fields: [AplHelpers.unitFieldConfig('sourceUnit', 'aura_sources')],
 	}),
 	currentMana: inputBuilder({
-		label: 'Mana',
-		submenu: ['Resources'],
+		label: 'Current Mana',
+		submenu: ['Resources', 'Mana'],
 		shortDescription: 'Amount of currently available Mana.',
 		newValue: APLValueCurrentMana.create,
+		includeIf(player: Player<any>, _isPrepull: boolean) {
+			const clss = player.getClass();
+			return clss !== Class.ClassDeathKnight && clss !== Class.ClassHunter && clss !== Class.ClassRogue && clss !== Class.ClassWarrior;
+		},
 		fields: [],
 	}),
 	currentManaPercent: inputBuilder({
-		label: 'Mana (%)',
-		submenu: ['Resources'],
+		label: 'Current Mana (%)',
+		submenu: ['Resources', 'Mana'],
 		shortDescription: 'Amount of currently available Mana, as a percentage.',
 		newValue: APLValueCurrentManaPercent.create,
+		includeIf(player: Player<any>, _isPrepull: boolean) {
+			const clss = player.getClass();
+			return clss !== Class.ClassDeathKnight && clss !== Class.ClassHunter && clss !== Class.ClassRogue && clss !== Class.ClassWarrior;
+		},
 		fields: [],
 	}),
 	currentRage: inputBuilder({
@@ -635,40 +694,124 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		submenu: ['Resources'],
 		shortDescription: 'Amount of currently available Rage.',
 		newValue: APLValueCurrentRage.create,
+		includeIf(player: Player<any>, _isPrepull: boolean) {
+			const clss = player.getClass();
+			const spec = player.getSpec();
+			return spec === Spec.SpecFeralDruid || spec === Spec.SpecGuardianDruid || clss === Class.ClassWarrior;
+		},
 		fields: [],
 	}),
 	currentFocus: inputBuilder({
-		label: 'Focus',
-		submenu: ['Resources'],
+		label: 'Current Focus',
+		submenu: ['Resources', 'Focus'],
 		shortDescription: 'Amount of currently available Focus.',
 		newValue: APLValueCurrentFocus.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassHunter,
 		fields: [],
 	}),
+	maxFocus: inputBuilder({
+		label: 'Max Focus',
+		submenu: ['Resources', 'Focus'],
+		shortDescription: 'Amount of maximum available Focus.',
+		newValue: APLValueMaxFocus.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassHunter,
+		fields: [],
+	}),
+	focusRegenPerSecond: inputBuilder({
+		label: 'Focus Regen Per Second',
+		submenu: ['Resources', 'Focus'],
+		shortDescription: 'Focus regen per second.',
+		newValue: APLValueFocusRegenPerSecond.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassHunter,
+		fields: [],
+	}),
+	focusTimeToTarget: inputBuilder({
+		label: 'Estimated Time To Target Focus',
+		submenu: ['Resources', 'Focus'],
+		shortDescription: 'Estimated time until target Focus is reached, will return 0 if at or above target.',
+		newValue: APLValueFocusTimeToTarget.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassHunter,
+		fields: [valueFieldConfig('targetFocus')],
+	}),
 	currentEnergy: inputBuilder({
-		label: 'Energy',
-		submenu: ['Resources'],
+		label: 'Current Energy',
+		submenu: ['Resources', 'Energy'],
 		shortDescription: 'Amount of currently available Energy.',
 		newValue: APLValueCurrentEnergy.create,
+		includeIf(player: Player<any>, _isPrepull: boolean) {
+			const clss = player.getClass();
+			const spec = player.getSpec();
+			return spec === Spec.SpecFeralDruid || spec === Spec.SpecGuardianDruid || clss === Class.ClassRogue;
+		},
 		fields: [],
+	}),
+	maxEnergy: inputBuilder({
+		label: 'Max Energy',
+		submenu: ['Resources', 'Energy'],
+		shortDescription: 'Amount of maximum available Energy.',
+		newValue: APLValueMaxEnergy.create,
+		includeIf(player: Player<any>, _isPrepull: boolean) {
+			const clss = player.getClass();
+			const spec = player.getSpec();
+			return spec === Spec.SpecFeralDruid || spec === Spec.SpecGuardianDruid || clss === Class.ClassRogue;
+		},
+		fields: [],
+	}),
+	energyRegenPerSecond: inputBuilder({
+		label: 'Energy Regen Per Second',
+		submenu: ['Resources', 'Energy'],
+		shortDescription: 'Energy regen per second.',
+		newValue: APLValueEnergyRegenPerSecond.create,
+		includeIf(player: Player<any>, _isPrepull: boolean) {
+			const clss = player.getClass();
+			const spec = player.getSpec();
+			return spec === Spec.SpecFeralDruid || spec === Spec.SpecGuardianDruid || clss === Class.ClassRogue;
+		},
+		fields: [],
+	}),
+	energyTimeToTarget: inputBuilder({
+		label: 'Estimated Time To Target Energy',
+		submenu: ['Resources', 'Energy'],
+		shortDescription: 'Estimated time until target Energy is reached, will return 0 if at or above target.',
+		newValue: APLValueEnergyTimeToTarget.create,
+		includeIf(player: Player<any>, _isPrepull: boolean) {
+			const clss = player.getClass();
+			const spec = player.getSpec();
+			return spec === Spec.SpecFeralDruid || spec === Spec.SpecGuardianDruid || clss === Class.ClassRogue;
+		},
+		fields: [valueFieldConfig('targetEnergy')],
 	}),
 	currentComboPoints: inputBuilder({
 		label: 'Combo Points',
 		submenu: ['Resources'],
 		shortDescription: 'Amount of currently available Combo Points.',
 		newValue: APLValueCurrentComboPoints.create,
+		includeIf(player: Player<any>, _isPrepull: boolean) {
+			const clss = player.getClass();
+			const spec = player.getSpec();
+			return spec === Spec.SpecFeralDruid || spec === Spec.SpecGuardianDruid || clss === Class.ClassRogue;
+		},
 		fields: [],
 	}),
 	currentRunicPower: inputBuilder({
-		label: 'Runic Power',
-		submenu: ['Resources'],
+		label: 'Current Runic Power',
+		submenu: ['Resources', 'Runic Power'],
 		shortDescription: 'Amount of currently available Runic Power.',
 		newValue: APLValueCurrentRunicPower.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassDeathKnight,
 		fields: [],
 	}),
+	maxRunicPower: inputBuilder({
+		label: 'Max Runic Power',
+		submenu: ['Resources', 'Runic Power'],
+		shortDescription: 'Amount of maximum available Runic Power.',
+		newValue: APLValueMaxRunicPower.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassDeathKnight,
+		fields: [],
+	}),
 	currentLunarEnergy: inputBuilder({
 		label: 'Solar Energy',
-		submenu: ['Eclipse'],
+		submenu: ['Resources', 'Eclipse'],
 		shortDescription: 'Amount of currently available Solar Energy.',
 		newValue: APLValueCurrentSolarEnergy.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() == Spec.SpecBalanceDruid,
@@ -676,7 +819,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 	}),
 	currentSolarEnergy: inputBuilder({
 		label: 'Lunar Energy',
-		submenu: ['Eclipse'],
+		submenu: ['Resources', 'Eclipse'],
 		shortDescription: 'Amount of currently available Lunar Energy',
 		newValue: APLValueCurrentLunarEnergy.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() == Spec.SpecBalanceDruid,
@@ -684,7 +827,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 	}),
 	druidCurrentEclipsePhase: inputBuilder({
 		label: 'Current Eclipse Phase',
-		submenu: ['Eclipse'],
+		submenu: ['Resources', 'Eclipse'],
 		shortDescription: 'The eclipse phase the druid currently is in.',
 		newValue: APLValueCurrentEclipsePhase.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() == Spec.SpecBalanceDruid,
@@ -779,6 +922,18 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		submenu: ['Auto'],
 		shortDescription: 'Amount of time remaining before the next Main-hand or Off-hand melee attack, or <b>0</b> if autoattacks are not engaged.',
 		newValue: APLValueAutoTimeToNext.create,
+		includeIf(player: Player<any>, _isPrepull: boolean) {
+			const clss = player.getClass();
+			const spec = player.getSpec();
+			return (
+				clss !== Class.ClassHunter &&
+				clss !== Class.ClassMage &&
+				clss !== Class.ClassPriest &&
+				clss !== Class.ClassWarlock &&
+				spec !== Spec.SpecBalanceDruid &&
+				spec !== Spec.SpecElementalShaman
+			);
+		},
 		fields: [],
 	}),
 
@@ -964,7 +1119,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 	allTrinketStatProcsActive: inputBuilder({
 		label: 'All Trinket Proc Buffs Active',
 		submenu: ['Aura Sets'],
-		shortDescription: "<b>True</b> if all trinket procs that buff the specified stat type(s) are currently active, otherwise <b>False</b>.",
+		shortDescription: '<b>True</b> if all trinket procs that buff the specified stat type(s) are currently active, otherwise <b>False</b>.',
 		fullDescription: `
 		<p>For stacking proc buffs, this condition also checks that the buff has been stacked to its maximum possible strength.</p>
 		`,
@@ -974,16 +1129,12 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [
-			AplHelpers.statTypeFieldConfig('statType1'),
-			AplHelpers.statTypeFieldConfig('statType2'),
-			AplHelpers.statTypeFieldConfig('statType3'),
-		],
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.minIcdInput],
 	}),
 	anyTrinketStatProcsActive: inputBuilder({
 		label: 'Any Trinket Proc Buffs Active',
 		submenu: ['Aura Sets'],
-		shortDescription: "<b>True</b> if any trinket procs that buff the specified stat type(s) are currently active, otherwise <b>False</b>.",
+		shortDescription: '<b>True</b> if any trinket procs that buff the specified stat type(s) are currently active, otherwise <b>False</b>.',
 		fullDescription: `
 		<p>For stacking proc buffs, this condition also checks that the buff has been stacked to its maximum possible strength.</p>
 		`,
@@ -993,43 +1144,60 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [
-			AplHelpers.statTypeFieldConfig('statType1'),
-			AplHelpers.statTypeFieldConfig('statType2'),
-			AplHelpers.statTypeFieldConfig('statType3'),
-		],
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.minIcdInput],
 	}),
 	trinketProcsMinRemainingTime: inputBuilder({
 		label: 'Trinket Procs Min Remaining Time',
 		submenu: ['Aura Sets'],
-		shortDescription: "Shortest remaining duration on any active trinket procs that buff the specified stat type(s), or infinity if none are currently active.",
+		shortDescription:
+			'Shortest remaining duration on any active trinket procs that buff the specified stat type(s), or infinity if none are currently active.',
 		newValue: () =>
 			APLValueTrinketProcsMinRemainingTime.create({
 				statType1: -1,
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [
-			AplHelpers.statTypeFieldConfig('statType1'),
-			AplHelpers.statTypeFieldConfig('statType2'),
-			AplHelpers.statTypeFieldConfig('statType3'),
-		],
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.minIcdInput],
+	}),
+	trinketProcsMaxRemainingIcd: inputBuilder({
+		label: 'Trinket Procs Max Remaining ICD',
+		submenu: ['Aura Sets'],
+		shortDescription:
+			'Longest remaining ICD on any inactive trinket procs that buff the specified stat type(s), or 0 if all are currently active.',
+		newValue: () =>
+			APLValueTrinketProcsMaxRemainingICD.create({
+				statType1: -1,
+				statType2: -1,
+				statType3: -1,
+			}),
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.minIcdInput],
 	}),
 	numEquippedStatProcTrinkets: inputBuilder({
 		label: 'Num Equipped Stat Proc Trinkets',
 		submenu: ['Aura Sets'],
-		shortDescription: "Number of equipped passive trinkets that buff the specified stat type(s) when they proc.",
+		shortDescription: 'Number of equipped passive trinkets that buff the specified stat type(s) when they proc.',
 		newValue: () =>
 			APLValueNumEquippedStatProcTrinkets.create({
 				statType1: -1,
 				statType2: -1,
 				statType3: -1,
 			}),
-		fields: [
-			AplHelpers.statTypeFieldConfig('statType1'),
-			AplHelpers.statTypeFieldConfig('statType2'),
-			AplHelpers.statTypeFieldConfig('statType3'),
-		],
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.minIcdInput],
+	}),
+	numStatBuffCooldowns: inputBuilder({
+		label: 'Num Stat Buff Cooldowns',
+		submenu: ['Aura Sets'],
+		shortDescription: 'Number of registered Major Cooldowns that buff the specified stat type(s) when they are cast.',
+		fullDescription: `
+		<p>Both manually casted cooldowns as well as cooldowns controlled by "Cast All Stat Buff Cooldowns" and "Autocast Other Cooldowns" actions are included in the total count returned by this value.</p>
+		`,
+		newValue: () =>
+			APLValueNumStatBuffCooldowns.create({
+				statType1: -1,
+				statType2: -1,
+				statType3: -1,
+			}),
+		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3')],
 	}),
 
 	// DoT
@@ -1084,6 +1252,22 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		newValue: APLValueTotemRemainingTime.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassShaman,
 		fields: [totemTypeFieldConfig('totemType')],
+	}),
+	shamanCanSnapshotStrongerFireElemental: inputBuilder({
+		label: 'Can snapshot stronger Fire Elemental',
+		submenu: ['Shaman'],
+		shortDescription: 'Returns true if a new Fire Elemental would be stronger than the current.',
+		newValue: APLValueShamanCanSnapshotStrongerFireElemental.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassShaman,
+		fields: [],
+	}),
+	shamanFireElementalDuration: inputBuilder({
+		label: 'Fire Elemental Total Duration',
+		submenu: ['Shaman'],
+		shortDescription: 'Returns the duration of Fire Elemental depending on if Totemic Focus is talented or not.',
+		newValue: APLValueShamanFireElementalDuration.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassShaman,
+		fields: [],
 	}),
 	catExcessEnergy: inputBuilder({
 		label: 'Excess Energy',

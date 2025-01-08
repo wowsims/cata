@@ -1,7 +1,6 @@
 package mage
 
 import (
-	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/common/cata"
@@ -31,12 +30,17 @@ func (mage *Mage) ApplyFireTalents() {
 
 	// Fire Power
 	if mage.Talents.FirePower > 0 {
-		mage.AddStaticMod(core.SpellModConfig{
-			School:     core.SpellSchoolFire,
-			ClassMask:  MageSpellsAll,
-			FloatValue: 0.01 * float64(mage.Talents.FirePower),
-			Kind:       core.SpellMod_DamageDone_Pct,
-		})
+		firePowerModConfig := func(classMask int64) core.SpellModConfig {
+			return core.SpellModConfig{
+				School:     core.SpellSchoolFire,
+				ClassMask:  classMask,
+				FloatValue: 0.01 * float64(mage.Talents.FirePower),
+				Kind:       core.SpellMod_DamageDone_Pct,
+			}
+		}
+
+		mage.AddStaticMod(firePowerModConfig(MageSpellsAll))
+		mage.flameOrb.AddStaticMod(firePowerModConfig(MageSpellFlagNone))
 	}
 
 	// Improved Scorch
@@ -86,11 +90,16 @@ func (mage *Mage) ApplyFireTalents() {
 
 	// Critical Mass
 	if mage.Talents.CriticalMass > 0 {
-		mage.AddStaticMod(core.SpellModConfig{
-			ClassMask:  MageSpellLivingBomb | MageSpellFlameOrb,
-			FloatValue: 0.05 * float64(mage.Talents.CriticalMass),
-			Kind:       core.SpellMod_DamageDone_Flat,
-		})
+		criticalMassModConfig := func(classMask int64) core.SpellModConfig {
+			return core.SpellModConfig{
+				ClassMask:  classMask,
+				FloatValue: 0.05 * float64(mage.Talents.CriticalMass),
+				Kind:       core.SpellMod_DamageDone_Flat,
+			}
+		}
+
+		mage.AddStaticMod(criticalMassModConfig(MageSpellLivingBomb | MageSpellFlameOrb))
+		mage.flameOrb.AddStaticMod(criticalMassModConfig(MageSpellFlameOrb))
 
 		criticalMassDebuff := mage.NewEnemyAuraArray(core.CriticalMassAura)
 
@@ -360,7 +369,7 @@ func (mage *Mage) applyIgnite() {
 		},
 
 		DamageCalculator: func(result *core.SpellResult) float64 {
-			var masteryMultiplier float64 = 1 + math.Floor(22.4+2.8*mage.GetMasteryPoints())/100
+			var masteryMultiplier float64 = 1 + (22.4+2.8*mage.GetMasteryPoints())/100
 			return result.Damage * igniteDamageMultiplier * masteryMultiplier
 		},
 	})

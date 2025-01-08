@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Flask, Food, Glyphs, Potions, PseudoStat, Spec, Stat, TinkerHands } from '../../core/proto/common';
+import { Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Spec, Stat, TinkerHands } from '../../core/proto/common';
 import {
 	DruidMajorGlyph,
 	DruidMinorGlyph,
@@ -36,17 +36,17 @@ export const BEARWEAVE_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Bear-Weave',
 	Stats.fromMap(
 		{
-			[Stat.StatStrength]: 0.39,
+			[Stat.StatStrength]: 0.38,
 			[Stat.StatAgility]: 1.0,
 			[Stat.StatAttackPower]: 0.37,
-			[Stat.StatHitRating]: 0.34,
-			[Stat.StatExpertiseRating]: 0.32,
-			[Stat.StatCritRating]: 0.31,
+			[Stat.StatHitRating]: 0.36,
+			[Stat.StatExpertiseRating]: 0.34,
+			[Stat.StatCritRating]: 0.32,
 			[Stat.StatHasteRating]: 0.30,
-			[Stat.StatMasteryRating]: 0.325,
+			[Stat.StatMasteryRating]: 0.33,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 1.61,
+			[PseudoStat.PseudoStatMainHandDps]: 1.54,
 		},
 	),
 );
@@ -80,7 +80,8 @@ export const DefaultRotation = FeralDruidRotation.create({
 	mangleSpam: false,
 	biteModeType: FeralDruid_Rotation_BiteModeType.Emperical,
 	biteTime: 11.0,
-	minRoarOffset: 29.0,
+	berserkBiteTime: 6.0,
+	minRoarOffset: 31.0,
 	ripLeeway: 1.0,
 	maintainFaerieFire: true,
 	snekWeave: true,
@@ -157,8 +158,8 @@ export const DefaultConsumes = Consumes.create({
 
 export const OtherDefaults = {
 	distanceFromTarget: 25,
-	duration: 240,
-	durationVariation: 15,
 	highHpThreshold: 0.8,
 	iterationCount: 25000,
+	profession1: Profession.Engineering,
+	profession2: Profession.ProfessionUnknown,
 };

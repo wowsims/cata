@@ -2,7 +2,6 @@ package druid
 
 import (
 	"fmt"
-	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -62,7 +61,7 @@ func (druid *Druid) EnableEclipseBar() {
 }
 
 func getEclipseMasteryBonus(masteryPoints float64) float64 {
-	return math.Floor(16+masteryPoints*2) / 100
+	return (16 + masteryPoints*2) / 100
 }
 
 func (druid *Druid) RegisterEclipseAuras() {
@@ -192,11 +191,11 @@ func (druid *Druid) canEuphoriaProc(spell *core.Spell) bool {
 	}
 
 	if druid.Talents.Euphoria == 2 {
-		if druid.CanGainEnergy(SolarEnergy) && druid.CurrentSolarEnergy() <= 35 {
+		if druid.CanGainEnergy(SolarEnergy) && druid.CurrentSolarEnergy() <= 35 && druid.CurrentLunarEnergy() == 0 {
 			return true
 		}
 
-		if druid.CanGainEnergy(LunarEnergy) && druid.CurrentLunarEnergy() <= 35 {
+		if druid.CanGainEnergy(LunarEnergy) && druid.CurrentLunarEnergy() <= 35 && druid.CurrentSolarEnergy() == 0 {
 			return true
 		}
 	}

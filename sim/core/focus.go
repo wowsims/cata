@@ -55,6 +55,10 @@ func (fb *focusBar) CurrentFocus() float64 {
 	return fb.currentFocus
 }
 
+func (fb *focusBar) MaximumFocus() float64 {
+	return fb.maxFocus
+}
+
 func (fb *focusBar) NextFocusTickAt() time.Duration {
 	return fb.nextFocusTick
 }
@@ -77,6 +81,14 @@ func (fb *focusBar) FocusRegenPerSecond() float64 {
 	}
 }
 
+func (fb *focusBar) TimeToTargetFocus(targetFocus float64) time.Duration {
+	if fb.currentFocus >= targetFocus {
+		return time.Duration(0)
+	}
+
+	return DurationFromSeconds((targetFocus - fb.currentFocus) / fb.FocusRegenPerSecond())
+}
+
 func (fb *focusBar) getTotalRegenMultiplier() float64 {
 	return fb.hasteRatingMultiplier * fb.focusRegenMultiplier
 }
@@ -86,7 +98,6 @@ func (fb *focusBar) AddFocus(sim *Simulation, amount float64, metrics *ResourceM
 		panic("Trying to add negative focus!")
 	}
 	newFocus := min(fb.currentFocus+amount, fb.maxFocus)
-
 	if fb.isPlayer {
 		if sim.Log != nil {
 			fb.unit.Log(sim, "Gained %0.3f focus from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, fb.currentFocus, newFocus, fb.maxFocus)
@@ -116,8 +127,16 @@ func (fb *focusBar) SpendFocus(sim *Simulation, amount float64, metrics *Resourc
 	fb.currentFocus = newFocus
 }
 
+func (fb *focusBar) IsTicking(sim *Simulation) bool {
+	return (fb.nextFocusTick != 0) && (sim.CurrentTime <= fb.nextFocusTick) && (fb.nextFocusTick - sim.CurrentTime <= fb.focusTickDuration)
+}
+
 // Gives an immediate partial Focus tick and restarts the tick timer.
 func (fb *focusBar) ResetFocusTick(sim *Simulation) {
+	if !fb.IsTicking(sim) {
+		return
+	}
+
 	timeSinceLastTick := max(sim.CurrentTime-(fb.NextFocusTickAt()-fb.focusTickDuration), 0)
 	partialTickAmount := fb.FocusRegenPerSecond() * timeSinceLastTick.Seconds()
 	fb.AddFocus(sim, partialTickAmount, fb.regenMetrics)

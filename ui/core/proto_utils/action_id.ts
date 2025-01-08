@@ -255,19 +255,22 @@ export class ActionId {
 		const baseName = tooltipData['name'];
 		let name = baseName;
 
-		// handle DRT 
-		let tag = this.tag
+		// handle DRT
+		let tag = this.tag;
 		if (tag >= 71086) {
-			name = "Dragonwrath - " + name;
-			tag -= 71086
+			name = 'Dragonwrath - ' + name;
+			tag -= 71086;
 		}
 
 		switch (baseName) {
+			case 'Minor Speed':
+				name = 'Minor Run Speed (8%)';
+				break;
 			case 'Explosive Shot':
-				if (this.spellId == 60053) {
-					name += ' (R4)';
-				} else if (this.spellId == 60052) {
-					name += ' (R3)';
+				if (this.spellId == 53301) {
+					name += ' (First)';
+				} else if (this.spellId == 1215485) {
+					name += ' (Second)';
 				}
 				break;
 			case 'Explosive Trap':
@@ -449,6 +452,11 @@ export class ActionId {
 					name = 'Glyph of Exorcism (DoT)';
 				}
 				break;
+			case 'Seal of Righteousness':
+				if (tag === 2) {
+					name += ' (DS)'
+				}
+				break;
 			// For targetted buffs, tag is the source player's raid index or -1 if none.
 			case 'Bloodlust':
 			case 'Ferocious Inspiration':
@@ -461,12 +469,12 @@ export class ActionId {
 					if (tag === playerIndex || playerIndex == undefined) {
 						name += ` (self)`;
 					} else {
-							name += ` (from #${tag + 1})`;
-						}
-					} else {
-						name += ' (raid)';
+						name += ` (from #${tag + 1})`;
 					}
-					break;
+				} else {
+					name += ' (raid)';
+				}
+				break;
 			case 'Elemental Mastery':
 				if (this.spellId === 64701) {
 					name = `${name} (Buff)`;
@@ -623,7 +631,7 @@ export class ActionId {
 					name += ' 1.7%';
 				}
 
-				if (this.tag === 2) {
+				if (tag === 2) {
 					name += ' (Heal)';
 				}
 				break;
@@ -638,6 +646,20 @@ export class ActionId {
 				} else if (this.spellId === 109872 || this.spellId === 109870 || this.spellId === 109868) {
 					name += ' (Heroic)';
 				}
+				break;
+			case 'Death Coil':
+				if (tag === 2) {
+					name += ' (Heal)';
+				}
+				break;
+			case 'Item - Paladin T11 Retribution 4P Bonus':
+				name = 'Reinforced Sapphirium Battleplate - T11 4pc';
+				break;
+			case 'Item - Paladin T12 Retribution 4P Bonus':
+				name = 'Battleplate of Immolation - T12 4pc';
+				break;
+			case 'Virtuous Empowerment':
+				name = 'Battleplate of Radiant Glory - T13 2pc';
 				break;
 			default:
 				if (tag) {
@@ -817,7 +839,7 @@ export class ActionId {
 	get spellIconOverride(): ActionId | null {
 		const override = spellIdIconOverrides.get(JSON.stringify({ spellId: this.spellId }));
 		if (!override) return null;
-		return override.itemId ? ActionId.fromItemId(override.itemId) : ActionId.fromItemId(override.spellId!);
+		return override.itemId ? ActionId.fromItemId(override.itemId) : ActionId.fromSpellId(override.spellId!);
 	}
 
 	get spellTooltipOverride(): ActionId | null {
@@ -835,6 +857,10 @@ const spellIdIconOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 37223 }), { itemId: 29040 }], // Improved Strength of Earth Totem
 	[JSON.stringify({ spellId: 37447 }), { itemId: 30720 }], // Serpent-Coil Braid
 	[JSON.stringify({ spellId: 37443 }), { itemId: 30196 }], // Robes of Tirisfal (4pc bonus)
+	[JSON.stringify({ spellId: 90299 }), { itemId: 65214 }], // Reinforced Sapphirium Battleplate (4pc bonus)
+	[JSON.stringify({ spellId: 99116 }), { itemId: 71512 }], // Battleplate of Immolation (4pc bonus)
+	[JSON.stringify({ spellId: 105767 }), { itemId: 78727 }], // Battleplate of Radiant Glory (2pc bonus)
+	[JSON.stringify({ spellId: 13889 }), { spellId: 109709 }], // Minor Run Speed
 ]);
 
 const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
@@ -850,6 +876,20 @@ const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 879, tag: 3 }), { spellId: 54934 }], // Paladin - Glyph of Exorcism
 	[JSON.stringify({ spellId: 49020, tag: 3 }), { spellId: 99000 }], // Death Knight - T12 4P Flaming Torment
 	[JSON.stringify({ spellId: 55090, tag: 3 }), { spellId: 99000 }], // Death Knight - T12 4P Flaming Torment
+
+	// Off-Hand attacks
+	[JSON.stringify({ spellId: 45902, tag: 2 }), { spellId: 66215 }], // Death Knight - Blood Strike Off-Hand
+	[JSON.stringify({ spellId: 45462, tag: 2 }), { spellId: 49998 }], // Death Knight - Death Strike Off-Hand
+	[JSON.stringify({ spellId: 85948, tag: 2 }), { spellId: 86061 }], // Death Knight - Festering Strike Off-Hand
+	[JSON.stringify({ spellId: 49143, tag: 2 }), { spellId: 66196 }], // Death Knight - Frost Strike Off-Hand
+	[JSON.stringify({ spellId: 49020, tag: 2 }), { spellId: 66198 }], // Death Knight - Obliterate Off-Hand
+	[JSON.stringify({ spellId: 45462, tag: 2 }), { spellId: 66216 }], // Death Knight - Plague Strike Off-Hand
+	[JSON.stringify({ spellId: 56815, tag: 2 }), { spellId: 66217 }], // Death Knight - Rune Strike Off-Hand
+	[JSON.stringify({ spellId: 1329, tag: 2 }), { spellId: 27576 }], // Rogue - Mutilate Off-Hand
+	[JSON.stringify({ spellId: 17364, tag: 2 }), { spellId: 32176 }], // Shaman - Stormstrike Off-Hand
+	[JSON.stringify({ spellId: 85288, tag: 2 }), { spellId: 85384 }], // Warrior - Raging Blow Off-Hand
+	[JSON.stringify({ spellId: 1464, tag: 2 }), { spellId: 97992 }], // Warrior - Slam Off-Hand
+	[JSON.stringify({ spellId: 1680, tag: 2 }), { spellId: 44949 }], // Warrior - Whirlwind Off-Hand
 ]);
 
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';
@@ -882,6 +922,7 @@ const petNameToIcon: Record<string, string> = {
 	Bear: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_bear.jpg',
 	'Bird of Prey': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_owl.jpg',
 	Boar: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_boar.jpg',
+	'Burning Treant': 'https://wow.zamimg.com/images/wow/icons/large/ability_druid_forceofnature.jpg',
 	'Carrion Bird': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_vulture.jpg',
 	Cat: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_cat.jpg',
 	Chimaera: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_chimera.jpg',

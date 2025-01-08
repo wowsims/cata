@@ -33,7 +33,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.FIRE_P1_PRESET.gear,
+		gear: Presets.FIRE_P3_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.DEFAULT_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
@@ -42,15 +42,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		})(),
 		// Default soft caps for the Reforge optimizer
 		softCapBreakpoints: (() => {
-			// Set up Mastery breakpoints for integer % damage increments.
-			// These should be removed once the bugfix to make Mastery
-			// continuous goes live!
-			const masterySoftCapConfig = StatCap.fromStat(Stat.StatMasteryRating, {
-				breakpoints: [(23 / Mechanics.masteryPercentPerPoint.get(Spec.SpecFireMage)!) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT],
-				capType: StatCapType.TypeThreshold,
-				postCapEPs: [0],
-			});
-
 			const hasteSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent, {
 				breakpoints: [
 					hasteBreakpoints.get('5-tick - LvB/Pyro')!,
@@ -72,13 +63,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 				postCapEPs: [0.61 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
 			});
 
-			return [masterySoftCapConfig, hasteSoftCapConfig];
+			return [hasteSoftCapConfig];
 		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultFireConsumes,
 		// Default rotation settings.
 		rotationType: APLRotation_Type.TypeSimple,
-		simpleRotation: Presets.P1DefaultSimpleRotation,
+		simpleRotation: Presets.P3TrollDefaultSimpleRotation,
 		// Default talents.
 		talents: Presets.FireTalents.data,
 		// Default spec-specific settings.
@@ -127,7 +118,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.FireTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.FIRE_P1_PRESET, Presets.FIRE_P1_PREBIS, Presets.FIRE_P3_PRESET],
+		gear: [Presets.FIRE_P1_PRESET, Presets.FIRE_P3_PREBIS, Presets.FIRE_P3_PRESET],
 		builds: [Presets.P1_PRESET_BUILD, Presets.P3_PRESET_BUILD, Presets.P3_PRESET_NO_TROLL],
 	},
 
@@ -146,13 +137,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		const { combustThreshold, combustLastMomentLustPercentage, combustNoLustPercentage } = simple;
 
 		const maxCombustDuringLust = APLAction.fromJsonString(
-			`{"condition":{"and":{"vals":[{"or":{"vals":[{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":26297}}},{"auraIsActive":{"auraId":{"spellId":26297}}},{"cmp":{"op":"OpLe","lhs":{"currentTime":{}},"rhs":{"const":{"val":"17s"}}}}]}},{"and":{"vals":[{"not":{"val":{"auraIsKnown":{"auraId":{"spellId":26297}}}}},{"cmp":{"op":"OpGt","lhs":{"auraRemainingTime":{"auraId":{"spellId":2825,"tag":-1}}},"rhs":{"const":{"val":"2s"}}}}]}}]}},{"cmp":{"op":"OpGt","lhs":{"mageCurrentCombustionDotEstimate":{}},"rhs":{"const":{"val":"${combustThreshold}"}}}}]}},"castSpell":{"spellId":{"spellId":11129}}}`,
+			`{"condition":{"and":{"vals":[{"or":{"vals":[{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":26297}}},{"auraIsActive":{"auraId":{"spellId":26297}}},{"cmp":{"op":"OpLe","lhs":{"currentTime":{}},"rhs":{"const":{"val":"17s"}}}}]}},{"and":{"vals":[{"not":{"val":{"auraIsKnown":{"auraId":{"spellId":26297}}}}},{"cmp":{"op":"OpGt","lhs":{"auraRemainingTime":{"auraId":{"spellId":2825,"tag":-1}}},"rhs":{"const":{"val":"2s"}}}}]}}]}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":44457}}},{"cmp":{"op":"OpGt","lhs":{"mageCurrentCombustionDotEstimate":{}},"rhs":{"const":{"val":"${combustThreshold}"}}}}]}},"castSpell":{"spellId":{"spellId":11129}}}`,
 		);
 		const lastMomentCombustDuringLust = APLAction.fromJsonString(
-			`{"condition":{"and":{"vals":[{"or":{"vals":[{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":26297}}},{"auraIsActive":{"auraId":{"spellId":26297}}},{"cmp":{"op":"OpLt","lhs":{"auraRemainingTime":{"auraId":{"spellId":26297}}},"rhs":{"const":{"val":"2.5s"}}}},{"cmp":{"op":"OpLe","lhs":{"currentTime":{}},"rhs":{"const":{"val":"17s"}}}}]}},{"and":{"vals":[{"not":{"val":{"auraIsKnown":{"auraId":{"spellId":26297}}}}},{"auraIsActive":{"auraId":{"spellId":2825,"tag":-1}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":2825,"tag":-1}}},"rhs":{"const":{"val":"2s"}}}}]}}]}},{"cmp":{"op":"OpGt","lhs":{"mageCurrentCombustionDotEstimate":{}},"rhs":{"const":{"val":"${combustLastMomentLustPercentage}"}}}}]}},"castSpell":{"spellId":{"spellId":11129}}}`,
+			`{"condition":{"and":{"vals":[{"or":{"vals":[{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":26297}}},{"auraIsActive":{"auraId":{"spellId":26297}}},{"cmp":{"op":"OpLt","lhs":{"auraRemainingTime":{"auraId":{"spellId":26297}}},"rhs":{"const":{"val":"2.5s"}}}},{"cmp":{"op":"OpLe","lhs":{"currentTime":{}},"rhs":{"const":{"val":"17s"}}}}]}},{"and":{"vals":[{"not":{"val":{"auraIsKnown":{"auraId":{"spellId":26297}}}}},{"auraIsActive":{"auraId":{"spellId":2825,"tag":-1}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":2825,"tag":-1}}},"rhs":{"const":{"val":"2s"}}}}]}}]}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":44457}}},{"cmp":{"op":"OpGt","lhs":{"mageCurrentCombustionDotEstimate":{}},"rhs":{"const":{"val":"${combustLastMomentLustPercentage}"}}}}]}},"castSpell":{"spellId":{"spellId":11129}}}`,
 		);
 		const combustOutsideOfLustAndBerserking = APLAction.fromJsonString(
-			`{"condition":{"and":{"vals":[{"or":{"vals":[{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":26297}}},{"cmp":{"op":"OpGt","lhs":{"currentTime":{}},"rhs":{"const":{"val":"17s"}}}}]}},{"and":{"vals":[{"not":{"val":{"auraIsKnown":{"auraId":{"spellId":26297}}}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":2825,"tag":-1}}}}}]}}]}},{"cmp":{"op":"OpGt","lhs":{"mageCurrentCombustionDotEstimate":{}},"rhs":{"const":{"val":"${combustNoLustPercentage}"}}}}]}},"castSpell":{"spellId":{"spellId":11129}}}`,
+			`{"condition":{"and":{"vals":[{"or":{"vals":[{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":26297}}},{"cmp":{"op":"OpGt","lhs":{"currentTime":{}},"rhs":{"const":{"val":"17s"}}}}]}},{"and":{"vals":[{"not":{"val":{"auraIsKnown":{"auraId":{"spellId":26297}}}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":2825,"tag":-1}}}}}]}}]}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":44457}}},{"cmp":{"op":"OpGt","lhs":{"mageCurrentCombustionDotEstimate":{}},"rhs":{"const":{"val":"${combustNoLustPercentage}"}}}}]}},"castSpell":{"spellId":{"spellId":11129}}}`,
 		);
 		const lastMomentCombustBeforeEncounter = APLAction.fromJsonString(
 			`{"condition":{"and":{"vals":[{"cmp":{"op":"OpLt","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"15s"}}}},{"cmp":{"op":"OpGt","lhs":{"mageCurrentCombustionDotEstimate":{}},"rhs":{"const":{"val":"${combustLastMomentLustPercentage}"}}}}]}},"castSpell":{"spellId":{"spellId":11129}}}`,
@@ -216,12 +207,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.FIRE_P1_PRESET.gear,
-					2: Presets.FIRE_P1_PREBIS.gear,
+					1: Presets.FIRE_P3_PRESET.gear,
+					2: Presets.FIRE_P3_PREBIS.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.FIRE_P1_PRESET.gear,
-					2: Presets.FIRE_P1_PREBIS.gear,
+					1: Presets.FIRE_P3_PRESET.gear,
+					2: Presets.FIRE_P3_PREBIS.gear,
 				},
 			},
 		},

@@ -16,6 +16,7 @@ func (warrior *Warrior) RegisterExecuteSpell() {
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskExecute | SpellMaskSpecialAttack,
+		MaxRange:       core.MaxMeleeRange,
 
 		RageCost: core.RageCostOptions{
 			Cost:   10,

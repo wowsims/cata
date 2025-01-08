@@ -56,10 +56,10 @@ const FURY_TG_PRESET_OPTIONS = {
 	},
 };
 
-export const P1_PRERAID_FURY_SMF_PRESET = PresetUtils.makePresetGear('Preraid - SMF', PreraidFurySMFGear, FURY_SMF_PRESET_OPTIONS);
-export const P1_PRERAID_FURY_TG_PRESET = PresetUtils.makePresetGear('Preraid - TG', PreraidFuryTGGear, FURY_TG_PRESET_OPTIONS);
+export const P3_PRERAID_FURY_SMF_PRESET = PresetUtils.makePresetGear('Preraid - SMF', PreraidFurySMFGear, FURY_SMF_PRESET_OPTIONS);
+export const P3_PRERAID_FURY_TG_PRESET = PresetUtils.makePresetGear('Preraid - TG', PreraidFuryTGGear, FURY_TG_PRESET_OPTIONS);
 export const P1_BIS_FURY_SMF_PRESET = PresetUtils.makePresetGear('P1 - SMF', P1FurySMFGear, FURY_SMF_PRESET_OPTIONS);
-export const P1_BIS_FURY_TG_PRESET = PresetUtils.makePresetGear('P3 - TG', P1FuryTGGear, FURY_TG_PRESET_OPTIONS);
+export const P1_BIS_FURY_TG_PRESET = PresetUtils.makePresetGear('P1 - TG', P1FuryTGGear, FURY_TG_PRESET_OPTIONS);
 export const P3_BIS_FURY_SMF_PRESET = PresetUtils.makePresetGear('P3 - SMF', P3FurySMFGear, FURY_SMF_PRESET_OPTIONS);
 export const P3_BIS_FURY_TG_PRESET = PresetUtils.makePresetGear('P3 - TG', P3FuryTGGear, FURY_TG_PRESET_OPTIONS);
 

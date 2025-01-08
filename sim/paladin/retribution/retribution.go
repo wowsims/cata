@@ -33,6 +33,7 @@ func NewRetributionPaladin(character *core.Character, options *proto.Player) *Re
 	ret := &RetributionPaladin{
 		Paladin: paladin.NewPaladin(character, options.TalentsString, retOptions.Options.ClassOptions),
 	}
+	ret.StartingHolyPower = retOptions.Options.StartingHolyPower
 
 	return ret
 }
@@ -109,7 +110,7 @@ func (ret *RetributionPaladin) RegisterMastery() {
 	})
 
 	core.MakeProcTriggerAura(&ret.Unit, core.ProcTrigger{
-		Name:           "Hand of Light",
+		Name:           "Hand of Light" + ret.Label,
 		ActionID:       actionId,
 		Callback:       core.CallbackOnSpellHitDealt,
 		Outcome:        core.OutcomeLanded,
@@ -138,7 +139,7 @@ func (ret *RetributionPaladin) ApplyJudgmentsOfTheBold() {
 		Hot: core.DotConfig{
 			SelfOnly: true,
 			Aura: core.Aura{
-				Label: "Judgements of the Bold",
+				Label: "Judgements of the Bold" + ret.Label,
 			},
 			NumberOfTicks:        10,
 			TickLength:           time.Second * 1,
@@ -156,7 +157,7 @@ func (ret *RetributionPaladin) ApplyJudgmentsOfTheBold() {
 	})
 
 	core.MakeProcTriggerAura(&ret.Unit, core.ProcTrigger{
-		Name:           "Judgements of the Bold Trigger",
+		Name:           "Judgements of the Bold Trigger" + ret.Label,
 		ActionID:       actionID,
 		Callback:       core.CallbackOnSpellHitDealt,
 		Outcome:        core.OutcomeLanded,

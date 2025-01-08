@@ -14,7 +14,6 @@ import { Stats } from '../../core/proto_utils/stats';
 import { ferocityDefault } from '../../core/talents/hunter_pet';
 import AoeApl from './apls/aoe.apl.json';
 import MmApl from './apls/mm.apl.json';
-import MmAdvApl from './apls/mm_advanced.apl.json';
 import P1MMGear from './gear_sets/p1_mm.gear.json';
 import T12MMGear from './gear_sets/p3_mm.gear.json';
 import PreraidMMGear from './gear_sets/preraid_mm.gear.json';
@@ -37,7 +36,6 @@ export const DefaultSimpleRotation = HunterRotation.create({
 
 export const ROTATION_PRESET_SIMPLE_DEFAULT = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecMarksmanshipHunter, DefaultSimpleRotation);
 export const ROTATION_PRESET_MM = PresetUtils.makePresetAPLRotation('MM', MmApl);
-export const ROTATION_PRESET_MM_ADVANCED = PresetUtils.makePresetAPLRotation('MM (Advanced)', MmAdvApl);
 export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AOE', AoeApl);
 
 // Preset options for EP weights
@@ -64,9 +62,9 @@ export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAgility]: 3.05,
 			[Stat.StatRangedAttackPower]: 1.0,
 			[Stat.StatHitRating]: 2.79,
-			[Stat.StatCritRating]: 1.39,
+			[Stat.StatCritRating]: 1.47,
 			[Stat.StatHasteRating]: 0.9,
-			[Stat.StatMasteryRating]: 1.47,
+			[Stat.StatMasteryRating]: 1.39,
 		},
 		{
 			[PseudoStat.PseudoStatRangedDps]: 7.33,
@@ -92,11 +90,15 @@ export const MarksmanTalents = {
 	}),
 };
 
+const mmAdj = ferocityDefault;
+mmAdj.wildHunt = 1;
+mmAdj.sharkAttack = 1;
+
 export const MMDefaultOptions = HunterOptions.create({
 	classOptions: {
 		useHuntersMark: true,
 		petType: PetType.Wolf,
-		petTalents: ferocityDefault,
+		petTalents: mmAdj,
 		petUptime: 1,
 	},
 });
@@ -112,8 +114,6 @@ export const DefaultConsumes = Consumes.create({
 
 export const OtherDefaults = {
 	distanceFromTarget: 24,
-	duration: 240,
-	durationVariation: 20,
 	profession1: Profession.Engineering,
 	profession2: Profession.Jewelcrafting,
 };

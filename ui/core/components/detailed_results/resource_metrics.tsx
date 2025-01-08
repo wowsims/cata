@@ -1,4 +1,3 @@
-import { TOOLTIP_METRIC_LABELS } from '../../constants/tooltips';
 import { ResourceType } from '../../proto/api';
 import { resourceNames } from '../../proto_utils/names';
 import { ResourceMetrics } from '../../proto_utils/sim_result';
@@ -12,14 +11,14 @@ export class ResourceMetricsTable extends ResultComponent {
 		super(config);
 
 		orderedResourceTypes.forEach(resourceType => {
-			const containerElem = document.createElement('div');
-			containerElem.classList.add('resource-metrics-table-container', 'hide');
-			containerElem.innerHTML = `<span class="resource-metrics-table-title">${resourceNames.get(resourceType)}</span>`;
+			const containerElem = (
+				<div className="resource-metrics-table-container hide">
+					<span className="resource-metrics-table-title">{resourceNames.get(resourceType)}</span>
+				</div>
+			) as HTMLElement;
 			this.rootElem.appendChild(containerElem);
 
-			const childConfig = config;
-			childConfig.parent = containerElem;
-			const table = new TypedResourceMetricsTable(childConfig, resourceType);
+			const table = new TypedResourceMetricsTable({ ...config, parent: containerElem }, resourceType);
 			table.onUpdate.on(() => {
 				if (table.rootElem.classList.contains('hide')) {
 					containerElem.classList.add('hide');

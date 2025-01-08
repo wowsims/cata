@@ -38,8 +38,9 @@ func NewCombatRogue(character *core.Character, options *proto.Player) *CombatRog
 func (combatRogue *CombatRogue) Initialize() {
 	combatRogue.Rogue.Initialize()
 
-	// Vitality Passive
+	// Ambidexterity Passive
 	combatRogue.AutoAttacks.OHConfig().DamageMultiplier *= 1.75
+	// Vitality Passive
 	combatRogue.AdditiveEnergyRegenBonus += 0.25
 	combatRogue.MultiplyStat(stats.AttackPower, 1.3)
 
@@ -51,7 +52,6 @@ func (combatRogue *CombatRogue) Initialize() {
 
 	combatRogue.registerKillingSpreeCD()
 	combatRogue.registerAdrenalineRushCD()
-	combatRogue.applyRestlessBlades()
 
 	combatRogue.applyMastery()
 }
@@ -72,10 +72,6 @@ func (combatRogue *CombatRogue) Reset(sim *core.Simulation) {
 	combatRogue.Rogue.Reset(sim)
 
 	combatRogue.mainGaucheAura.Activate(sim)
-
-	if combatRogue.Talents.RestlessBlades > 0 {
-		combatRogue.RestlessBladesAura.Activate(sim)
-	}
 
 	if combatRogue.Talents.BanditsGuile > 0 {
 		combatRogue.BanditsGuileAura.Activate(sim)

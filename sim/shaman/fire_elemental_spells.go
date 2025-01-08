@@ -22,7 +22,7 @@ func (fireElemental *FireElemental) registerFireBlast() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    fireElemental.NewTimer(),
-				Duration: time.Second,
+				Duration: time.Second * 5,
 			},
 		},
 
@@ -54,7 +54,7 @@ func (fireElemental *FireElemental) registerFireNova() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    fireElemental.NewTimer(),
-				Duration: time.Second, // TODO estimated from log digging,
+				Duration: time.Second * 5,
 			},
 		},
 

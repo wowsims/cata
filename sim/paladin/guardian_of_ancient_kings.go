@@ -47,7 +47,7 @@ func (paladin *Paladin) registerHolyGuardian(duration time.Duration) *core.Spell
 	actionID := core.ActionID{SpellID: 86150}
 
 	goakAura := paladin.RegisterAura(core.Aura{
-		Label:    "Guardian of Ancient Kings",
+		Label:    "Guardian of Ancient Kings" + paladin.Label,
 		ActionID: actionID,
 		Duration: duration,
 
@@ -86,7 +86,7 @@ func (paladin *Paladin) registerProtectionGuardian(duration time.Duration) *core
 	actionID := core.ActionID{SpellID: 86150}
 
 	goakAura := paladin.RegisterAura(core.Aura{
-		Label:    "Guardian of Ancient Kings",
+		Label:    "Guardian of Ancient Kings" + paladin.Label,
 		ActionID: actionID,
 		Duration: duration,
 
@@ -129,7 +129,7 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration, snap
 
 	ancientPowerDuration := duration + time.Second*1
 	ancientPower := paladin.RegisterAura(core.Aura{
-		Label:     "Ancient Power",
+		Label:     "Ancient Power" + paladin.Label,
 		ActionID:  core.ActionID{SpellID: 86700},
 		Duration:  ancientPowerDuration,
 		MaxStacks: 20,
@@ -146,7 +146,7 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration, snap
 	})
 
 	ancientFuryMinDamage, ancientFuryMaxDamage :=
-		core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassPaladin, 0.2366, 0.3)
+		core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassPaladin, 0.23659999669, 0.30000001192)
 	numTargets := paladin.Env.GetNumTargets()
 	results := make([]*core.SpellResult, numTargets)
 
@@ -170,8 +170,8 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration, snap
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.RollWithLabel(ancientFuryMinDamage, ancientFuryMaxDamage, "Ancient Fury") +
-				0.061*spell.SpellPower()
+			baseDamage := sim.RollWithLabel(ancientFuryMinDamage, ancientFuryMaxDamage, "Ancient Fury"+paladin.Label) +
+				0.06100000069*spell.SpellPower()
 
 			// Deals X Holy damage per application of Ancient Power,
 			// divided evenly among all targets within 10 yards.
@@ -192,7 +192,7 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration, snap
 	actionID := core.ActionID{SpellID: 86150}
 
 	goakAura := paladin.RegisterAura(core.Aura{
-		Label:    "Guardian of Ancient Kings",
+		Label:    "Guardian of Ancient Kings" + paladin.Label,
 		ActionID: actionID,
 		Duration: duration,
 

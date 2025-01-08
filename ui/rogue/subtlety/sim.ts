@@ -14,7 +14,6 @@ import * as RogueInputs from '../inputs';
 import * as SubInputs from './inputs';
 import * as Presets from './presets';
 
-
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 	cssClass: 'subtlety-rogue-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Rogue),
@@ -32,20 +31,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		Stat.StatMasteryRating,
 		Stat.StatExpertiseRating,
 	],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatPhysicalHitPercent, PseudoStat.PseudoStatSpellHitPercent],
+	epPseudoStats: [
+		PseudoStat.PseudoStatMainHandDps,
+		PseudoStat.PseudoStatOffHandDps,
+		PseudoStat.PseudoStatPhysicalHitPercent,
+		PseudoStat.PseudoStatSpellHitPercent,
+	],
 	// Reference stat against which to calculate EP.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[
-			Stat.StatHealth,
-			Stat.StatStamina,
-			Stat.StatAgility,
-			Stat.StatStrength,
-			Stat.StatAttackPower,
-			Stat.StatMasteryRating,
-			Stat.StatExpertiseRating,
-		],
+		[Stat.StatHealth, Stat.StatStamina, Stat.StatAgility, Stat.StatStrength, Stat.StatAttackPower, Stat.StatMasteryRating, Stat.StatExpertiseRating],
 		[
 			PseudoStat.PseudoStatPhysicalHitPercent,
 			PseudoStat.PseudoStatSpellHitPercent,
@@ -78,21 +74,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 				postCapEPs: [98.02, 0],
 			});
 
-			const masteryRatingBreakpoints = [];
-			const masteryPercentPerPoint = Mechanics.masteryPercentPerPoint.get(Spec.SpecSubtletyRogue)!;
-			for (let masteryPercent = 20; masteryPercent <= 200; masteryPercent++) {
-				masteryRatingBreakpoints.push((masteryPercent / masteryPercentPerPoint) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
-			}
-
-			const masterySoftCapConfig = StatCap.fromStat(Stat.StatMasteryRating, {
-				breakpoints: masteryRatingBreakpoints,
-				capType: StatCapType.TypeThreshold,
-				postCapEPs: [0],
-			});
-
-			return [meleeHitSoftCapConfig, spellHitSoftCapConfig, masterySoftCapConfig];
+			return [meleeHitSoftCapConfig, spellHitSoftCapConfig];
 		})(),
-    	other: Presets.OtherDefaults,
+		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -159,13 +143,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
+		epWeights: [Presets.P1_EP_PRESET, Presets.P4_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.SubtletyTalents],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_SUBTLETY],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.P1_PRESET_SUB, Presets.P3_PRESET_SUB],
+		gear: [Presets.PRERAID_PRESET_SUB, Presets.P1_PRESET_SUB, Presets.P3_PRESET_SUB, Presets.P4_PRESET_SUB],
 	},
 
 	autoRotation: (player: Player<Spec.SpecSubtletyRogue>): APLRotation => {
@@ -209,7 +193,15 @@ export class SubtletyRogueSimUI extends IndividualSimUI<Spec.SpecSubtletyRogue> 
 
 		// Auto Reforging
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			new ReforgeOptimizer(this, {
+				getEPDefaults: (player: Player<Spec.SpecSubtletyRogue>) => {
+					if (player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.id == 77949) {
+						return Presets.P4_EP_PRESET.epWeights;
+					} else {
+						return Presets.P1_EP_PRESET.epWeights;
+					}
+				}
+			});
 		});
 
 		this.player.changeEmitter.on(c => {

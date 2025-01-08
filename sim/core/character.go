@@ -89,6 +89,7 @@ type Character struct {
 	defensiveTrinketCD *Timer
 	offensiveTrinketCD *Timer
 	conjuredCD         *Timer
+	potionCD           *Timer
 
 	Pets []*Pet // cached in AddPet, for advance()
 }
@@ -691,9 +692,14 @@ func (character *Character) GetOffensiveTrinketCD() *Timer {
 func (character *Character) GetConjuredCD() *Timer {
 	return character.GetOrInitTimer(&character.conjuredCD)
 }
-func (character *Character) GetMatchingTrinketProcAuras(statTypesToMatch []stats.Stat) []*StatBuffAura {
+func (character *Character) GetPotionCD() *Timer {
+	return character.GetOrInitTimer(&character.potionCD)
+}
+func (character *Character) GetMatchingTrinketProcAuras(statTypesToMatch []stats.Stat, minIcd time.Duration) []*StatBuffAura {
+	includeIcdFilter := (minIcd > 0)
+
 	return FilterSlice(character.TrinketProcBuffs, func(aura *StatBuffAura) bool {
-		return aura.BuffsMatchingStat(statTypesToMatch)
+		return aura.BuffsMatchingStat(statTypesToMatch) && (!includeIcdFilter || ((aura.Icd != nil) && (aura.Icd.Duration > minIcd)))
 	})
 }
 

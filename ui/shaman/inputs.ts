@@ -2,14 +2,14 @@ import { ContentBlock } from '../core/components/content_block';
 import { Input } from '../core/components/input';
 import * as InputHelpers from '../core/components/input_helpers';
 import { IconEnumPicker } from '../core/components/pickers/icon_enum_picker';
-import { IconPicker } from '../core/components/pickers/icon_picker';
+import { NumberPicker } from '../core/components/pickers/number_picker';
 import { IndividualSimUI } from '../core/individual_sim_ui';
 import { Player } from '../core/player';
-import { Spec } from '../core/proto/common';
 import { AirTotem, CallTotem, EarthTotem, FireTotem, ShamanImbue, ShamanShield, ShamanTotems, TotemSet, WaterTotem } from '../core/proto/shaman';
 import { ActionId } from '../core/proto_utils/action_id';
 import { ShamanSpecs } from '../core/proto_utils/utils';
 import { EventID } from '../core/typed_event';
+import { Spec } from '../core/proto/common';
 
 // Configuration for class-specific UI elements on the settings tab.
 // These don't need to be in a separate file but it keeps things cleaner.
@@ -33,6 +33,20 @@ export const ShamanImbueMH = <SpecType extends ShamanSpecs>() =>
 			{ actionId: ActionId.fromSpellId(8024), value: ShamanImbue.FlametongueWeapon },
 			{ actionId: ActionId.fromSpellId(8033), value: ShamanImbue.FrostbrandWeapon },
 		],
+	});
+
+export const UseDragonSoul2PT12 = <SpecType extends ShamanSpecs>() =>
+	InputHelpers.makeClassOptionsBooleanInput<SpecType>({
+		fieldName: 'useDragonSoul2PT12',
+		label: 'Use Dragon Soul Tier 12 2PC effect',
+		labelTooltip: 'When set to true: Your Lightning Bolt has a 30% chance to reduce the remaining cooldown of your Fire Elemental Totem by 4 seconds..',
+		getValue: player => player.getClassOptions().useDragonSoul2PT12,
+		setValue: (eventID, player, newValue: boolean) => {
+			const newOptions = player.getClassOptions();
+			newOptions.useDragonSoul2PT12 = newValue;
+
+			player.setClassOptions(eventID, newOptions);
+		},
 	});
 
 export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<any>): ContentBlock {
@@ -310,6 +324,47 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 			player.setSpecOptions(eventID, newOptions);
 		},
 	});
+
+
+	if (simUI.player.getSpec() == Spec.SpecElementalShaman) {
+		new NumberPicker(contentBlock.bodyElement, simUI.player, {
+			id: 'fire-elemental-bonus-spellpower',
+			positive: true,
+			label: 'Bonus spell power',
+			labelTooltip: 'Bonus spell power to snapshot Fire Elemental with. Only add it to the first one',
+			inline: true,
+			getValue: (player: Player<ShamanSpecs>) => player.getClassOptions().totems?.bonusSpellpower || 0,
+			setValue: (eventID: EventID, player: Player<ShamanSpecs>, newVal: number) => {
+				const newOptions = player.getClassOptions();
+	
+				if (newOptions.totems) {
+					newOptions.totems.bonusSpellpower = newVal;
+				}
+	
+				player.setClassOptions(eventID, newOptions);
+			},
+			changedEvent: (player: Player<ShamanSpecs>) => player.specOptionsChangeEmitter,
+		});
+
+		new NumberPicker(contentBlock.bodyElement, simUI.player, {
+			id: 'fire-elemental-bonus-intellect',
+			positive: true,
+			label: 'Bonus intellect',
+			labelTooltip: 'Bonus intellect to snapshot Fire Elemental with. Only add it to the first one',
+			inline: true,
+			getValue: (player: Player<ShamanSpecs>) => player.getClassOptions().totems?.bonusIntellect || 0,
+			setValue: (eventID: EventID, player: Player<ShamanSpecs>, newVal: number) => {
+				const newOptions = player.getClassOptions();
+	
+				if (newOptions.totems) {
+					newOptions.totems.bonusIntellect = newVal;
+				}
+	
+				player.setClassOptions(eventID, newOptions);
+			},
+			changedEvent: (player: Player<ShamanSpecs>) => player.specOptionsChangeEmitter,
+		});
+	}
 
 	return contentBlock;
 }

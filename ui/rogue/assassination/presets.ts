@@ -6,7 +6,9 @@ import { Stats } from '../../core/proto_utils/stats';
 import MutilateApl from './apls/mutilate.apl.json';
 import P1AssassinationGear from './gear_sets/p1_assassination.gear.json';
 import P1ExpertiseGear from './gear_sets/p1_expertise.gear.json';
-import P3AssassinationGear from './gear_sets/p3_assassination.gear.json'
+import P3AssassinationGear from './gear_sets/p3_assassination.gear.json';
+import P4AssassinationGear from './gear_sets/p4_assassination.gear.json';
+import PreraidAssassination from './gear_sets/preraid_assassination.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -15,6 +17,8 @@ import P3AssassinationGear from './gear_sets/p3_assassination.gear.json'
 export const P1_PRESET_ASSASSINATION = PresetUtils.makePresetGear('P1 Assassination', P1AssassinationGear);
 export const P1_PRESET_ASN_EXPERTISE = PresetUtils.makePresetGear('P1 Expertise', P1ExpertiseGear);
 export const P3_PRESET_ASSASSINATION = PresetUtils.makePresetGear('P3 Assassination', P3AssassinationGear);
+export const PRERAID_PRESET_ASSASSINATION = PresetUtils.makePresetGear('Pre-Raid Assassination', PreraidAssassination);
+export const P4_PRESET_ASSASSINATION = PresetUtils.makePresetGear('P4 Assassination', P4AssassinationGear);
 
 export const ROTATION_PRESET_MUTILATE = PresetUtils.makePresetAPLRotation('Assassination', MutilateApl);
 
@@ -28,8 +32,8 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAttackPower]: 1,
 			[Stat.StatCritRating]: 1.18,
 			[Stat.StatHitRating]: 2.62,
-			[Stat.StatHasteRating]: 1.27,
-			[Stat.StatMasteryRating]: 1.35,
+			[Stat.StatHasteRating]: 1.35,
+			[Stat.StatMasteryRating]: 1.45,
 			[Stat.StatExpertiseRating]: 1.2,
 		},
 		{
@@ -50,8 +54,8 @@ export const P1_EP_EXPERTISE_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAttackPower]: 1,
 			[Stat.StatCritRating]: 1.18,
 			[Stat.StatHitRating]: 2.62,
-			[Stat.StatHasteRating]: 1.2,
-			[Stat.StatMasteryRating]: 1.32,
+			[Stat.StatHasteRating]: 1.35,
+			[Stat.StatMasteryRating]: 1.45,
 			[Stat.StatExpertiseRating]: 2.0,
 		},
 		{
@@ -102,6 +106,4 @@ export const DefaultConsumes = Consumes.create({
 
 export const OtherDefaults = {
 	distanceFromTarget: 5,
-	duration: 240,
-	durationVariation: 20,
 };

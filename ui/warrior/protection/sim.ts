@@ -68,9 +68,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P1_BALANCED_PRESET.gear,
+		gear: Presets.P3_BALANCED_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P1_EP_PRESET.epWeights,
+		epWeights: Presets.P3_EP_PRESET.epWeights,
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -120,6 +120,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 			OtherInputs.IncomingHps,
 			OtherInputs.HealingCadence,
 			OtherInputs.HealingCadenceVariation,
+			OtherInputs.AbsorbFrac,
 			OtherInputs.BurstWindow,
 			OtherInputs.HpPercentForDefensives,
 			OtherInputs.InspirationUptime,
@@ -133,7 +134,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
+		epWeights: [Presets.P3_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents, Presets.StandardTalents],
 		// Preset rotations that the user can quickly select.
@@ -160,14 +161,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_BALANCED_PRESET.gear,
+					1: Presets.P3_BALANCED_PRESET.gear,
 					2: Presets.PRERAID_BALANCED_PRESET.gear,
-					3: Presets.P3_BALANCED_PRESET.gear,
+					3: Presets.P1_BALANCED_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_BALANCED_PRESET.gear,
+					1: Presets.P3_BALANCED_PRESET.gear,
 					2: Presets.PRERAID_BALANCED_PRESET.gear,
-					3: Presets.P3_BALANCED_PRESET.gear,
+					3: Presets.P1_BALANCED_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,

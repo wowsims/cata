@@ -113,6 +113,7 @@ func (cat *FeralDruid) newActionCatOptimalRotationAction(_ *core.APLRotation, co
 		UseRake:             config.UseRake,
 		UseBite:             config.UseBite,
 		BiteTime:            config.BiteTime,
+		BerserkBiteTime:     config.BerserkBiteTime,
 		BiteDuringExecute:   config.BiteDuringExecute,
 		MangleSpam:          false,
 		MinRoarOffset:       config.MinRoarOffset,
@@ -159,6 +160,17 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 			if cat.ShouldFaerieFire(sim, aoeTarget) {
 				cat.FaerieFire.CastOrQueue(sim, aoeTarget)
 			}
+		}
+	}
+
+	// Off-GCD bear-weave checks.
+	if cat.BearFormAura.IsActive() && !cat.ClearcastingAura.IsActive() {
+		if cat.Enrage.IsReady(sim) && !cat.readyToShift {
+			cat.Enrage.Cast(sim, nil)
+		}
+
+		if cat.Maul.CanCast(sim, cat.CurrentTarget) && ((cat.CurrentRage() >= cat.Maul.DefaultCast.Cost + cat.MangleBear.DefaultCast.Cost) || (cat.AutoAttacks.NextAttackAt() < cat.NextGCDAt())) {
+			cat.Maul.Cast(sim, cat.CurrentTarget)
 		}
 	}
 

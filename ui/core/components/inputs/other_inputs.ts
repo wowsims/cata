@@ -239,6 +239,23 @@ export const HealingCadenceVariation = {
 	enableWhen: (player: Player<any>) => (player.getRaid()?.getTanks() || []).find(tank => UnitReference.equals(tank, player.makeUnitReference())) != null,
 };
 
+export const AbsorbFrac = {
+	id: 'healing-model-absorb-frac',
+	type: 'number' as const,
+	float: true,
+	label: 'Absorb %',
+	labelTooltip: `
+		<p>% of each incoming heal 'tick' to model as an absorb shield rather than as a direct heal.</p>
+	`,
+	changedEvent: (player: Player<any>) => player.healingModelChangeEmitter,
+	getValue: (player: Player<any>) => player.getHealingModel().absorbFrac * 100,
+	setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
+		const healingModel = player.getHealingModel();
+		healingModel.absorbFrac = newValue / 100;
+		player.setHealingModel(eventID, healingModel);
+	},
+};
+
 export const BurstWindow = {
 	id: 'burst-window',
 	type: 'number' as const,

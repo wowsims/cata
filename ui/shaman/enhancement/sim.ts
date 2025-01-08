@@ -56,7 +56,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		Stat.StatSpellPower,
 		Stat.StatMasteryRating,
 	],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatPhysicalHitPercent, PseudoStat.PseudoStatSpellHitPercent],
+	epPseudoStats: [
+		PseudoStat.PseudoStatMainHandDps,
+		PseudoStat.PseudoStatOffHandDps,
+		PseudoStat.PseudoStatPhysicalHitPercent,
+		PseudoStat.PseudoStatSpellHitPercent,
+	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -84,9 +89,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P1_ORC_PRESET.gear,
+		gear: Presets.P3_ORC_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P1_EP_PRESET.epWeights,
+		epWeights: Presets.P3_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge optimizer
 		statCaps: (() => {
 			const spellHitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 17);
@@ -127,13 +132,19 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
+		epWeights: [Presets.P3_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET, Presets.P1_ORC_PRESET, Presets.P1_DRAENEI_PRESET,Presets.P3_ORC_PRESET, Presets.P3_DRAENEI_PRESET],
+		gear: [
+			Presets.PRERAID_PRESET,
+			Presets.P1_ORC_PRESET,
+			Presets.P1_NON_ORC_PRESET,
+			Presets.P3_ORC_PRESET,
+			Presets.P3_NON_ORC_PRESET,
+		],
 	},
 
 	autoRotation: (player: Player<Spec.SpecEnhancementShaman>): APLRotation => {
@@ -153,10 +164,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 			},
 			defaultGear: {
 				[Faction.Alliance]: {
-					1: Presets.P1_DRAENEI_PRESET.gear,
+					1: Presets.P3_NON_ORC_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_ORC_PRESET.gear,
+					1: Presets.P3_ORC_PRESET.gear,
 				},
 				[Faction.Unknown]: {},
 			},

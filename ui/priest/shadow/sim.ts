@@ -7,8 +7,7 @@ import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Faction, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
-import { StatCapType } from '../../core/proto/ui';
-import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
+import { Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as PriestInputs from '../inputs';
 // import * as ShadowPriestInputs from './inputs';
 import * as Presets from './presets';
@@ -44,30 +43,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P1_PRESET.gear,
+		gear: Presets.P3_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P1_EP_PRESET.epWeights,
+		epWeights: Presets.P3_EP_PRESET.epWeights,
 		statCaps: (() => {
 			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 17);
-		})(),
-		// Default soft caps for the Reforge optimizer
-		softCapBreakpoints: (() => {
-			// Set up Mastery breakpoints for integer % damage increments.
-			// These should be removed once the bugfix to make Mastery
-			// continuous goes live!
-			const masteryRatingBreakpoints = [];
-			const masteryPercentPerPoint = Mechanics.masteryPercentPerPoint.get(Spec.SpecShadowPriest)!;
-			for (let masteryPercent = 12; masteryPercent <= 200; masteryPercent++) {
-				masteryRatingBreakpoints.push((masteryPercent / masteryPercentPerPoint) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
-			}
-
-			const masterySoftCapConfig = StatCap.fromStat(Stat.StatMasteryRating, {
-				breakpoints: masteryRatingBreakpoints,
-				capType: StatCapType.TypeThreshold,
-				postCapEPs: [0],
-			});
-
-			return [masterySoftCapConfig];
 		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -115,7 +95,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET],
+		epWeights: [Presets.P3_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents],
 		rotations: [Presets.ROTATION_PRESET_DEFAULT],
@@ -143,11 +123,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					0: Presets.PRE_RAID.gear,
-					1: Presets.P1_PRESET.gear,
+					1: Presets.P3_PRESET.gear,
 				},
 				[Faction.Horde]: {
 					0: Presets.PRE_RAID.gear,
-					1: Presets.P1_PRESET.gear,
+					1: Presets.P3_PRESET.gear,
 				},
 			},
 		},

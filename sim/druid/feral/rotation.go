@@ -91,15 +91,17 @@ func (cat *FeralDruid) canBite(sim *core.Simulation, isExecutePhase bool) bool {
 		return true
 	}
 
-	if cat.SavageRoarAura.RemainingDuration(sim) < cat.Rotation.BiteTime {
+	biteTime := core.TernaryDuration(cat.BerserkAura.IsActive(), cat.Rotation.BerserkBiteTime, cat.Rotation.BiteTime)
+
+	if cat.SavageRoarAura.RemainingDuration(sim) < biteTime {
 		return false
 	}
 
 	if isExecutePhase {
-		return cat.Rip.NewSnapshotPower > cat.Rip.CurrentSnapshotPower-0.001
+		return (cat.Rip.NewSnapshotPower > cat.Rip.CurrentSnapshotPower-0.001) || cat.BerserkAura.IsActive()
 	}
 
-	return cat.Rip.CurDot().RemainingDuration(sim) >= cat.Rotation.BiteTime
+	return cat.Rip.CurDot().RemainingDuration(sim) >= biteTime
 }
 
 func (cat *FeralDruid) berserkExpectedAt(sim *core.Simulation, futureTime time.Duration) bool {
@@ -369,11 +371,14 @@ func (cat *FeralDruid) calcBleedRefreshTime(sim *core.Simulation, bleedSpell *dr
 
 	energyEquivalent := expectedDamageGain / cat.Shred.ExpectedInitialDamage(sim, cat.CurrentTarget) * cat.Shred.DefaultCast.Cost
 
+	// Finally, discount the effective Energy cost of the clip based on the number of clipped ticks.
+	discountedRefreshCost := float64(numClippedTicks) / float64(maxTickCount) * bleedSpell.DefaultCast.Cost
+
 	if sim.Log != nil {
-		cat.Log(sim, "%s buff snapshot is worth %.1f Energy", bleedSpell.ShortName, energyEquivalent)
+		cat.Log(sim, "%s buff snapshot is worth %.1f Energy, discounted refresh cost is %.1f Energy.", bleedSpell.ShortName, energyEquivalent, discountedRefreshCost)
 	}
 
-	return core.TernaryDuration(energyEquivalent > bleedSpell.DefaultCast.Cost, targetClipTime, standardRefreshTime)
+	return core.TernaryDuration(energyEquivalent > discountedRefreshCost, targetClipTime, standardRefreshTime)
 }
 
 func (cat *FeralDruid) canMeleeWeave(sim *core.Simulation, regenRate float64, currentEnergy float64, isClearcast bool, upcomingTimers *PoolingActions) bool {
@@ -406,8 +411,13 @@ func (cat *FeralDruid) canMeleeWeave(sim *core.Simulation, regenRate float64, cu
 	return weaveEnd+timeToDump < sim.Duration
 }
 
-func (cat *FeralDruid) canBearWeave(sim *core.Simulation, furorCap float64, regenRate float64, currentEnergy float64, upcomingTimers *PoolingActions, shiftCost float64) bool {
+func (cat *FeralDruid) canBearWeave(sim *core.Simulation, furorCap float64, regenRate float64, currentEnergy float64, excessEnergy float64, upcomingTimers *PoolingActions, shiftCost float64) bool {
 	if !cat.Rotation.BearWeave || cat.ClearcastingAura.IsActive() || cat.BerserkAura.IsActive() || (cat.StampedeCatAura.IsActive() && (cat.Rotation.RotationType == proto.FeralDruid_Rotation_SingleTarget)) {
+		return false
+	}
+
+	// If we can Shred now and then weave on the next GCD, prefer that.
+	if excessEnergy > cat.Shred.DefaultCast.Cost {
 		return false
 	}
 
@@ -457,7 +467,7 @@ func (cat *FeralDruid) terminateBearWeave(sim *core.Simulation, isClearcast bool
 	}
 
 	// Check Energy pooling leeway
-	nextGCDLength := core.TernaryDuration(cat.Thrash.CanCast(sim, cat.CurrentTarget) || cat.MangleBear.CanCast(sim, cat.CurrentTarget), core.GCDDefault, core.GCDMin)
+	nextGCDLength := core.TernaryDuration(cat.Lacerate.CanCast(sim, cat.CurrentTarget) || cat.MangleBear.CanCast(sim, cat.CurrentTarget), core.GCDDefault, core.GCDMin)
 	smallestWeaveExtension := nextGCDLength + cat.ReactionTime
 	finalEnergy := currentEnergy + smallestWeaveExtension.Seconds()*regenRate
 
@@ -495,6 +505,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	regenRate := cat.EnergyRegenPerSecond()
 	isExecutePhase := rotation.BiteDuringExecute && sim.IsExecutePhase25()
 	tfActive := cat.TigersFuryAura.IsActive()
+	berserkActive := cat.BerserkAura.IsActive()
 	t11Active := cat.StrengthOfThePantherAura.IsActive()
 
 	// Prioritize using Rip with omen procs if bleed isnt active
@@ -512,7 +523,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	biteAtEnd := (curCp >= rotation.MinCombosForBite) && ((simTimeRemain < endThreshForClip) || (ripDot.IsActive() && (simTimeRemain-ripDot.RemainingDuration(sim) < baseEndThresh)))
 
 	// Delay Rip refreshes if Tiger's Fury will be usable soon enough for the snapshot to outweigh the lost Rip ticks from waiting
-	if ripNow && !tfActive && !cat.tempSnapshotAura.IsActive() {
+	if ripNow && !tfActive && !berserkActive {
 		buffedTickCount := min(cat.maxRipTicks, int32((simTimeRemain-finalTickLeeway)/ripDot.BaseTickLength))
 		delayBreakpoint := finalTickLeeway + core.DurationFromSeconds(0.15*float64(buffedTickCount)*ripDot.BaseTickLength.Seconds())
 
@@ -521,7 +532,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 			energyToDump := curEnergy + delaySeconds*regenRate - cat.calcTfEnergyThresh(cat.ReactionTime)
 			secondsToDump := math.Ceil(energyToDump / cat.Shred.DefaultCast.Cost)
 
-			if secondsToDump < delaySeconds {
+			if (secondsToDump < delaySeconds) && (!cat.tempSnapshotAura.IsActive() || (cat.tempSnapshotAura.RemainingDuration(sim) > delayBreakpoint)) {
 				ripNow = false
 			}
 		}
@@ -573,7 +584,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	}
 
 	// Apply same TF Rip delay logic to Rake as well
-	if rakeNow && !tfActive {
+	if rakeNow && !tfActive && !berserkActive {
 		finalRakeTickLeeway := core.TernaryDuration(rakeDot.IsActive(), rakeDot.TimeUntilNextTick(sim), 0)
 		buffedTickCount := min(rakeDot.BaseTickCount, int32((simTimeRemain-finalRakeTickLeeway)/rakeDot.BaseTickLength))
 		delayBreakpoint := finalRakeTickLeeway + core.DurationFromSeconds(0.15*float64(buffedTickCount)*rakeDot.BaseTickLength.Seconds())
@@ -601,15 +612,19 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	roarRefreshPending := cat.SavageRoarAura.IsActive() && (cat.SavageRoarAura.RemainingDuration(sim) < simTimeRemain-cat.ReactionTime) && (curCp >= 1)
 	pendingPool := &PoolingActions{}
 	pendingPool.create(4)
+	pendingPoolWeaves := &PoolingActions{}
+	pendingPoolWeaves.create(2)
 
 	if ripRefreshPending && (sim.CurrentTime < ripRefreshTime) {
 		baseCost := core.Ternary(isExecutePhase, cat.FerociousBite.DefaultCast.Cost, cat.Rip.DefaultCast.Cost)
 		refreshCost := core.Ternary(cat.berserkExpectedAt(sim, ripRefreshTime), baseCost*0.5, baseCost)
 		pendingPool.addAction(ripRefreshTime, refreshCost)
+		pendingPoolWeaves.addAction(ripRefreshTime, refreshCost)
 	}
 	if rakeRefreshPending && (sim.CurrentTime < rakeRefreshTime) {
 		rakeCost := core.Ternary(cat.berserkExpectedAt(sim, rakeRefreshTime), cat.Rake.DefaultCast.Cost*0.5, cat.Rake.DefaultCast.Cost)
 		pendingPool.addAction(rakeRefreshTime, rakeCost)
+		pendingPoolWeaves.addAction(rakeRefreshTime, rakeCost)
 	}
 	if mangleRefreshPending {
 		mangleRefreshTime := cat.bleedAura.ExpiresAt()
@@ -625,6 +640,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	}
 
 	pendingPool.sort()
+	pendingPoolWeaves.sort()
 	floatingEnergy := pendingPool.calcFloatingEnergy(cat, sim)
 	excessE := curEnergy - floatingEnergy
 	latencySecs := cat.ReactionTime.Seconds()
@@ -634,31 +650,31 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 
 	// Check bear-weaving conditions
 	furorCap := min(float64(100*cat.Talents.Furor)/3.0, 100.0-1.5*regenRate)
-	bearWeaveNow := cat.canBearWeave(sim, furorCap, regenRate, curEnergy, pendingPool, shiftCost)
+	bearWeaveNow := cat.canBearWeave(sim, furorCap, regenRate, curEnergy, excessE, pendingPoolWeaves, shiftCost)
 	// Main  decision tree starts here
 	timeToNextAction := time.Duration(0)
 
 	if !cat.CatFormAura.IsActive() {
 		// First determine what we want to do with the next GCD.
-		if cat.terminateBearWeave(sim, isClearcast, curEnergy, furorCap, regenRate, pendingPool) {
+		if cat.terminateBearWeave(sim, isClearcast, curEnergy, furorCap, regenRate, pendingPoolWeaves) {
 			cat.readyToShift = true
 		} else if cat.MangleBear.CanCast(sim, cat.CurrentTarget) {
 			cat.MangleBear.Cast(sim, cat.CurrentTarget)
-		} else if cat.Thrash.CanCast(sim, cat.CurrentTarget) {
-			cat.Thrash.Cast(sim, cat.CurrentTarget)
+		} else if cat.Lacerate.CanCast(sim, cat.CurrentTarget) {
+			cat.Lacerate.Cast(sim, cat.CurrentTarget)
 		} else if cat.FaerieFire.CanCast(sim, cat.CurrentTarget) {
 			cat.FaerieFire.Cast(sim, cat.CurrentTarget)
 		} else {
 			cat.readyToShift = true
 		}
 
-		// Then Maul if we still have Rage leftover.
-		if cat.Maul.CanCast(sim, cat.CurrentTarget) && !isClearcast {
+		// Last second Maul check if we are about to shift back..
+		if cat.readyToShift && cat.Maul.CanCast(sim, cat.CurrentTarget) && !isClearcast {
 			cat.Maul.Cast(sim, cat.CurrentTarget)
 		}
 
 		if !cat.readyToShift {
-			return false, 0
+			timeToNextAction = cat.ReactionTime
 		}
 	} else if t11RefreshNow {
 		if cat.MangleCat.CanCast(sim, cat.CurrentTarget) {
@@ -715,7 +731,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 			return false, 0
 		}
 		timeToNextAction = core.DurationFromSeconds((cat.CurrentMangleCatCost() - excessE) / regenRate)
-	} else if !t11RefreshNext {
+	} else if !t11RefreshNext && (isClearcast || !ripRefreshPending || !cat.tempSnapshotAura.IsActive() || (ripRefreshTime + cat.ReactionTime - sim.CurrentTime > core.GCDMin)) {
 		if excessE >= cat.CurrentShredCost() || isClearcast {
 			cat.Shred.Cast(sim, cat.CurrentTarget)
 			return false, 0
@@ -729,7 +745,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 
 		timeToNextAction = core.DurationFromSeconds((cat.CurrentShredCost() - excessE) / regenRate)
 
-		if cat.BerserkAura.IsActive() {
+		if berserkActive {
 			if curEnergy >= cat.CurrentShredCost() {
 				cat.Shred.Cast(sim, cat.CurrentTarget)
 				return false, 0
@@ -757,6 +773,7 @@ type FeralDruidRotation struct {
 	UseRake             bool
 	UseBite             bool
 	BiteTime            time.Duration
+	BerserkBiteTime     time.Duration
 	BiteDuringExecute   bool
 	MinCombosForBite    int32
 	MangleSpam          bool
@@ -778,6 +795,7 @@ func (cat *FeralDruid) setupRotation(rotation *proto.FeralDruid_Rotation) {
 		UseRake:             rotation.UseRake,
 		UseBite:             rotation.UseBite,
 		BiteTime:            time.Duration(float64(rotation.BiteTime) * float64(time.Second)),
+		BerserkBiteTime:     time.Duration(float64(rotation.BerserkBiteTime) * float64(time.Second)),
 		BiteDuringExecute:   core.Ternary(cat.Talents.BloodInTheWater > 0, rotation.BiteDuringExecute, false),
 		MinCombosForBite:    5,
 		MangleSpam:          rotation.MangleSpam,
@@ -801,6 +819,7 @@ func (cat *FeralDruid) setupRotation(rotation *proto.FeralDruid_Rotation) {
 	cat.Rotation.CancelPrimalMadness = rotation.CancelPrimalMadness && (rotation.RotationType == proto.FeralDruid_Rotation_Aoe)
 
 	cat.Rotation.RipLeeway = 1 * time.Second
-	cat.Rotation.MinRoarOffset = 29 * time.Second
+	cat.Rotation.MinRoarOffset = 31 * time.Second
 	cat.Rotation.BiteTime = 11 * time.Second
+	cat.Rotation.BerserkBiteTime = 6 * time.Second
 }

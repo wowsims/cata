@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, Flask, Food, Potions, PseudoStat, Stat } from '../../core/proto/common.js';
+import { Consumes, Flask, Food, Potions, Profession, PseudoStat, Stat, TinkerHands } from '../../core/proto/common.js';
 import {
 	PaladinAura as PaladinAura,
 	PaladinMajorGlyph,
@@ -11,18 +11,19 @@ import {
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
-//import P1Gear from './gear_sets/p1.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 import T11Gear from './gear_sets/T11.gear.json';
 import T11CTCGear from './gear_sets/T11CTC.gear.json';
+import T12Gear from './gear_sets/T12.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const PRERAID_PRESET = PresetUtils.makePresetGear('P1 PreRaid Preset', PreraidGear);
-export const T11_PRESET = PresetUtils.makePresetGear('T11 Balanced Preset', T11Gear);
-export const T11CTC_PRESET = PresetUtils.makePresetGear('T11 CTC Preset', T11CTCGear);
+export const PRERAID_PRESET = PresetUtils.makePresetGear('PreRaid', PreraidGear);
+export const T11_PRESET = PresetUtils.makePresetGear('P1 Balanced', T11Gear);
+export const T11CTC_PRESET = PresetUtils.makePresetGear('P1 CTC', T11CTCGear);
+export const T12_PRESET = PresetUtils.makePresetGear('P3', T12Gear);
 
 export const ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
@@ -42,7 +43,6 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatHitRating]: 0.75,
 			[Stat.StatCritRating]: 0.2,
 			[Stat.StatHasteRating]: 0.3,
-			[Stat.StatSpellPower]: 0,
 			[Stat.StatDodgeRating]: 0.6,
 			[Stat.StatParryRating]: 0.6,
 		},
@@ -55,8 +55,8 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.
 
-export const GenericAoeTalents = {
-	name: 'Baseline Example',
+export const DefaultTalents = {
+	name: 'Default',
 	data: SavedTalents.create({
 		"talentsString": "-32023013122121101231-032032",
 		"glyphs": {
@@ -65,7 +65,7 @@ export const GenericAoeTalents = {
 		  "prime3": PaladinPrimeGlyph.GlyphOfSealOfTruth,
 		  "major1": PaladinMajorGlyph.GlyphOfTheAsceticCrusader,
 		  "major2": PaladinMajorGlyph.GlyphOfLayOnHands,
-		  "major3": PaladinMajorGlyph.GlyphOfHolyWrath,
+		  "major3": PaladinMajorGlyph.GlyphOfFocusedShield,
 		  "minor1": PaladinMinorGlyph.GlyphOfTruth,
 		  "minor2": PaladinMinorGlyph.GlyphOfBlessingOfMight,
 		  "minor3": PaladinMinorGlyph.GlyphOfInsight,
@@ -85,4 +85,11 @@ export const DefaultConsumes = Consumes.create({
 	food: Food.FoodLavascaleMinestrone,
 	defaultPotion: Potions.GolembloodPotion,
 	prepopPotion: Potions.GolembloodPotion,
+	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
 });
+
+export const OtherDefaults = {
+	profession1: Profession.Engineering,
+	profession2: Profession.Leatherworking,
+	iterationCount: 25000,
+};

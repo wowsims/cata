@@ -3,6 +3,7 @@ import { Player } from '../../player.js';
 import {
 	APLAction,
 	APLActionActivateAura,
+	APLActionActivateAuraWithStacks,
 	APLActionAutocastOtherCooldowns,
 	APLActionCancelAura,
 	APLActionCastAllStatBuffCooldowns,
@@ -189,7 +190,9 @@ export class APLActionPicker extends Input<Player<any>, APLAction> {
 			return;
 		}
 
-		this.conditionPicker.setInputValue(newValue.condition || APLValue.create());
+		this.conditionPicker.setInputValue(newValue.condition || APLValue.create({
+			uuid: { value: randomUUID() }
+		}));
 
 		const newActionKind = newValue.action.oneofKind;
 		this.updateActionPicker(newActionKind);
@@ -273,7 +276,9 @@ function itemSwapSetFieldConfig(field: string): AplHelpers.APLPickerBuilderField
 function actionFieldConfig(field: string): AplHelpers.APLPickerBuilderFieldConfig<any, any> {
 	return {
 		field: field,
-		newValue: APLValue.create,
+		newValue: () => APLValue.create({
+			uuid: { value: randomUUID() }
+		}) ,
 		factory: (parent, player, config) => new APLActionPicker(parent, player, config),
 	};
 }
@@ -571,6 +576,19 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 		newValue: () => APLActionActivateAura.create(),
 		fields: [AplHelpers.actionIdFieldConfig('auraId', 'auras')],
 	}),
+	['activateAuraWithStacks']: inputBuilder({
+		label: 'Activate Aura With Stacks',
+		submenu: ['Misc'],
+		shortDescription: 'Activates and an aura with the specified number of stacks',
+		includeIf: (player: Player<any>, isPrepull: boolean) => isPrepull,
+		newValue: () => APLActionActivateAuraWithStacks.create({
+			numStacks: 1,
+		}),
+		fields: [AplHelpers.actionIdFieldConfig('auraId', 'stackable_auras'), AplHelpers.numberFieldConfig('numStacks', false, {
+			label: 'stacks',
+			labelTooltip: 'Desired number of initial aura stacks.',
+		})],
+	}),
 	['cancelAura']: inputBuilder({
 		label: 'Cancel Aura',
 		submenu: ['Misc'],
@@ -638,11 +656,12 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 				rotationType: FeralDruid_Rotation_AplType.SingleTarget,
 				maintainFaerieFire: true,
 				manualParams: true,
-				minRoarOffset: 29.0,
+				minRoarOffset: 31.0,
 				ripLeeway: 1,
 				useRake: true,
 				useBite: true,
 				biteTime: 11.0,
+				berserkBiteTime: 6.0,
 				biteDuringExecute: true,
 				allowAoeBerserk: false,
 				meleeWeave: true,
@@ -688,6 +707,10 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 			AplHelpers.numberFieldConfig('biteTime', true, {
 				label: 'Bite Time',
 				labelTooltip: 'Min seconds remaining on Rip/Roar to allow a Bite. Ignored if not Biting during rotation.',
+			}),
+			AplHelpers.numberFieldConfig('berserkBiteTime', true, {
+				label: 'Bite Time during Berserk',
+				labelTooltip: 'More aggressive threshold when Berserk is active.',
 			}),
 			AplHelpers.booleanFieldConfig('biteDuringExecute', 'Bite during Execute phase', {
 				labelTooltip:

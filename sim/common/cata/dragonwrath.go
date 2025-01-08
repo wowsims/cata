@@ -208,10 +208,14 @@ func init() {
 		})
 
 		lastTimestamp := time.Duration(0)
-		spellList := map[int32]bool{}
+		spellList := map[*core.Spell]bool{}
 		core.MakePermanent(unit.RegisterAura(core.Aura{
 			ActionID: core.ActionID{ItemID: 71086},
 			Label:    "Dragonwrath, Tarecgosa's Rest - Handler",
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				lastTimestamp = time.Duration(0)
+				spellList = map[*core.Spell]bool{}
+			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 
 				// Handle direct damage only and make sure we're not proccing of our own spell
@@ -261,15 +265,15 @@ func init() {
 					if val.procPerCast {
 						if lastTimestamp != sim.CurrentTime {
 							lastTimestamp = sim.CurrentTime
-							spellList = map[int32]bool{}
+							spellList = map[*core.Spell]bool{}
 						}
 
-						if _, ok := spellList[spell.SpellID]; ok {
+						if _, ok := spellList[spell]; ok {
 							return
 						}
 
 						// spell has not been checked yet, add it
-						spellList[spell.SpellID] = true
+						spellList[spell] = true
 					}
 
 					// reduce proc chance for AoE Spells

@@ -20,9 +20,9 @@ import {
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
-import P1DraeneiGear from './gear_sets/p1.draenei.gear.json';
+import P1NonOrcGear from './gear_sets/p1.non-orc.gear.json';
 import P1OrcGear from './gear_sets/p1.orc.gear.json';
-import P3DraeneiGear from './gear_sets/p3.draenei.gear.json';
+import P3NonOrcGear from './gear_sets/p3.non-orc.gear.json';
 import P3OrcGear from './gear_sets/p3.orc.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 
@@ -33,15 +33,15 @@ import PreraidGear from './gear_sets/preraid.gear.json';
 export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidGear);
 
 export const P1_ORC_PRESET = PresetUtils.makePresetGear('P1 - Orc', P1OrcGear);
-export const P1_DRAENEI_PRESET = PresetUtils.makePresetGear('P1 - Draenei', P1DraeneiGear);
+export const P1_NON_ORC_PRESET = PresetUtils.makePresetGear('P1 - Non-Orc', P1NonOrcGear);
 
 export const P3_ORC_PRESET = PresetUtils.makePresetGear('P3 - Orc', P3OrcGear);
-export const P3_DRAENEI_PRESET = PresetUtils.makePresetGear('P3 - Draenei', P3DraeneiGear);
+export const P3_NON_ORC_PRESET = PresetUtils.makePresetGear('P3 - Non-Orc', P3NonOrcGear);
 
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
 // Preset options for EP weights
-export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'Default',
 	Stats.fromMap(
 		{
@@ -119,7 +119,6 @@ export const DefaultOptions = EnhancementShamanOptions.create({
 });
 
 export const OtherDefaults = {
-	duration: 180,
 	distanceFromTarget: 5,
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,

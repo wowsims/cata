@@ -20,9 +20,10 @@ type APLValueTrinketStatProcCheck struct {
 	matchingAuras    []*StatBuffAura
 }
 
-func (rot *APLRotation) newTrinketStatProcValue(valueName string, statType1 int32, statType2 int32, statType3 int32, requireMatch bool) *APLValueTrinketStatProcCheck {
+func (rot *APLRotation) newTrinketStatProcValue(valueName string, statType1 int32, statType2 int32, statType3 int32, minIcdSeconds float64, requireMatch bool, uuid *proto.UUID) *APLValueTrinketStatProcCheck {
 	statTypesToMatch := stats.IntTupleToStatsList(statType1, statType2, statType3)
-	matchingAuras := rot.GetAPLTrinketProcAuras(statTypesToMatch, requireMatch)
+	minIcd := DurationFromSeconds(minIcdSeconds)
+	matchingAuras := rot.GetAPLTrinketProcAuras(statTypesToMatch, minIcd, requireMatch, uuid)
 
 	if (len(matchingAuras) == 0) && requireMatch {
 		return nil
@@ -47,15 +48,15 @@ func (value *APLValueTrinketStatProcCheck) Finalize(rot *APLRotation) {
 		return aura.ActionID
 	})
 
-	rot.ValidationWarning("%s will check the following auras: %s", value, StringFromActionIDs(actionIDs))
+	rot.ValidationMessageByUUID(value.Uuid, proto.LogLevel_Information, "%s will check the following auras: %s", value, StringFromActionIDs(actionIDs))
 }
 
 type APLValueAllTrinketStatProcsActive struct {
 	*APLValueTrinketStatProcCheck
 }
 
-func (rot *APLRotation) newValueAllTrinketStatProcsActive(config *proto.APLValueAllTrinketStatProcsActive) APLValue {
-	parentImpl := rot.newTrinketStatProcValue("AllTrinketStatProcsActive", config.StatType1, config.StatType2, config.StatType3, true)
+func (rot *APLRotation) newValueAllTrinketStatProcsActive(config *proto.APLValueAllTrinketStatProcsActive, uuid *proto.UUID) APLValue {
+	parentImpl := rot.newTrinketStatProcValue("AllTrinketStatProcsActive", config.StatType1, config.StatType2, config.StatType3, config.MinIcdSeconds, true, uuid)
 
 	if parentImpl == nil {
 		return nil
@@ -70,7 +71,7 @@ func (value *APLValueAllTrinketStatProcsActive) Type() proto.APLValueType {
 }
 func (value *APLValueAllTrinketStatProcsActive) GetBool(sim *Simulation) bool {
 	for _, aura := range value.matchingAuras {
-		if !aura.IsActive() || (aura.GetStacks() < aura.MaxStacks) {
+		if (!aura.IsActive() || (aura.GetStacks() < aura.MaxStacks)) && aura.CanProc(sim) {
 			return false
 		}
 	}
@@ -82,8 +83,8 @@ type APLValueAnyTrinketStatProcsActive struct {
 	*APLValueTrinketStatProcCheck
 }
 
-func (rot *APLRotation) newValueAnyTrinketStatProcsActive(config *proto.APLValueAnyTrinketStatProcsActive) APLValue {
-	parentImpl := rot.newTrinketStatProcValue("AnyTrinketStatProcsActive", config.StatType1, config.StatType2, config.StatType3, true)
+func (rot *APLRotation) newValueAnyTrinketStatProcsActive(config *proto.APLValueAnyTrinketStatProcsActive, uuid *proto.UUID) APLValue {
+	parentImpl := rot.newTrinketStatProcValue("AnyTrinketStatProcsActive", config.StatType1, config.StatType2, config.StatType3, config.MinIcdSeconds, true, uuid)
 
 	if parentImpl == nil {
 		return nil
@@ -110,8 +111,8 @@ type APLValueTrinketProcsMinRemainingTime struct {
 	*APLValueTrinketStatProcCheck
 }
 
-func (rot *APLRotation) newValueTrinketProcsMinRemainingTime(config *proto.APLValueTrinketProcsMinRemainingTime) APLValue {
-	parentImpl := rot.newTrinketStatProcValue("TrinketProcsMinRemainingTime", config.StatType1, config.StatType2, config.StatType3, true)
+func (rot *APLRotation) newValueTrinketProcsMinRemainingTime(config *proto.APLValueTrinketProcsMinRemainingTime, uuid *proto.UUID) APLValue {
+	parentImpl := rot.newTrinketStatProcValue("TrinketProcsMinRemainingTime", config.StatType1, config.StatType2, config.StatType3, config.MinIcdSeconds, true, uuid)
 
 	if parentImpl == nil {
 		return nil
@@ -136,12 +137,42 @@ func (value *APLValueTrinketProcsMinRemainingTime) GetDuration(sim *Simulation) 
 	return minRemainingTime
 }
 
+type APLValueTrinketProcsMaxRemainingICD struct {
+	*APLValueTrinketStatProcCheck
+}
+
+func (rot *APLRotation) newValueTrinketProcsMaxRemainingICD(config *proto.APLValueTrinketProcsMaxRemainingICD, uuid *proto.UUID) APLValue {
+	parentImpl := rot.newTrinketStatProcValue("TrinketProcsMaxRemainingICD", config.StatType1, config.StatType2, config.StatType3, config.MinIcdSeconds, true, uuid)
+
+	if parentImpl == nil {
+		return nil
+	}
+
+	return &APLValueTrinketProcsMaxRemainingICD{
+		APLValueTrinketStatProcCheck: parentImpl,
+	}
+}
+func (value *APLValueTrinketProcsMaxRemainingICD) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeDuration
+}
+func (value *APLValueTrinketProcsMaxRemainingICD) GetDuration(sim *Simulation) time.Duration {
+	var maxRemainingICD time.Duration
+
+	for _, aura := range value.matchingAuras {
+		if !aura.IsActive() && (aura.Icd != nil) {
+			maxRemainingICD = max(maxRemainingICD, aura.Icd.TimeToReady(sim))
+		}
+	}
+
+	return maxRemainingICD
+}
+
 type APLValueNumEquippedStatProcTrinkets struct {
 	*APLValueTrinketStatProcCheck
 }
 
-func (rot *APLRotation) newValueNumEquippedStatProcTrinkets(config *proto.APLValueNumEquippedStatProcTrinkets) APLValue {
-	parentImpl := rot.newTrinketStatProcValue("NumEquippedStatProcTrinkets", config.StatType1, config.StatType2, config.StatType3, false)
+func (rot *APLRotation) newValueNumEquippedStatProcTrinkets(config *proto.APLValueNumEquippedStatProcTrinkets, uuid *proto.UUID) APLValue {
+	parentImpl := rot.newTrinketStatProcValue("NumEquippedStatProcTrinkets", config.StatType1, config.StatType2, config.StatType3, config.MinIcdSeconds, false, uuid)
 
 	return &APLValueNumEquippedStatProcTrinkets{
 		APLValueTrinketStatProcCheck: parentImpl,
@@ -151,5 +182,35 @@ func (value *APLValueNumEquippedStatProcTrinkets) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeInt
 }
 func (value *APLValueNumEquippedStatProcTrinkets) GetInt(sim *Simulation) int32 {
-	return int32(len(value.matchingAuras))
+	return int32(len(FilterSlice(value.matchingAuras, func(aura *StatBuffAura) bool {
+		return aura.CanProc(sim)
+	})))
+}
+
+type APLValueNumStatBuffCooldowns struct {
+	DefaultAPLValueImpl
+
+	statTypesToMatch    []stats.Stat
+	cachedCooldownCount int32
+}
+
+func (rot *APLRotation) newValueNumStatBuffCooldowns(config *proto.APLValueNumStatBuffCooldowns) APLValue {
+	unit := rot.unit
+	character := unit.Env.Raid.GetPlayerFromUnit(unit).GetCharacter()
+	statTypesToMatch := stats.IntTupleToStatsList(config.StatType1, config.StatType2, config.StatType3)
+	matchingSpells := character.GetMatchingStatBuffSpells(statTypesToMatch)
+
+	return &APLValueNumStatBuffCooldowns{
+		statTypesToMatch:    statTypesToMatch,
+		cachedCooldownCount: int32(len(matchingSpells)),
+	}
+}
+func (value *APLValueNumStatBuffCooldowns) String() string {
+	return fmt.Sprintf("NumStatBuffCooldowns(%s)", StringFromStatTypes(value.statTypesToMatch))
+}
+func (value *APLValueNumStatBuffCooldowns) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeInt
+}
+func (value *APLValueNumStatBuffCooldowns) GetInt(_ *Simulation) int32 {
+	return value.cachedCooldownCount
 }

@@ -29,11 +29,13 @@ func init() {
 	shared.NewStrengthActive(64689, 1520, time.Second*20, time.Minute*2)  // Bloodthirsty Gladiator's Badge of Victory
 	shared.NewStrengthActive(62464, 1605, time.Second*20, time.Minute*2)  // Impatience of Youth (Alliance)
 	shared.NewStrengthActive(62469, 1605, time.Second*20, time.Minute*2)  // Impatience of Youth (Horde)
-	shared.NewStrengthActive(61034, 1605, time.Second*20, time.Minute*2)  // Vicious Gladiator's Badge of Victory
+	shared.NewStrengthActive(61034, 1605, time.Second*20, time.Minute*2)  // Vicious Gladiator's Badge of Victory - 365
+	shared.NewStrengthActive(70519, 1794, time.Second*20, time.Minute*2)  // Vicious Gladiator's Badge of Victory - 371
+	shared.NewStrengthActive(70400, 2029, time.Second*20, time.Minute*2)  // Ruthless Gladiator's Badge of Victory - 384
+	shared.NewStrengthActive(72450, 2144, time.Second*20, time.Minute*2)  // Ruthless Gladiator's Badge of Victory - 390
+	shared.NewStrengthActive(73496, 2419, time.Second*20, time.Minute*2)  // Cataclysmic Gladiator's Badge of Victory
 	shared.NewStrengthActive(69002, 1277, time.Second*15, time.Minute)    // Essence of the Eternal Flame
-	shared.NewStrengthActive(77987, 2029, time.Second*15, time.Second*90) // Rotting Skull 384 - Not available to players
 	shared.NewStrengthActive(77116, 2290, time.Second*15, time.Second*90) // Rotting Skull 397 - Valor Points
-	shared.NewStrengthActive(78007, 2585, time.Second*15, time.Second*90) // Rotting Skull 410 - Not available to players
 
 	// AGILITY
 	shared.NewAgilityActive(63840, 1095, time.Second*15, time.Second*90) // Juju of Nimbleness
@@ -43,11 +45,13 @@ func init() {
 	shared.NewAgilityActive(62468, 1605, time.Second*20, time.Minute*2)  // Unsolvable Riddle (Alliance)
 	shared.NewAgilityActive(62463, 1605, time.Second*20, time.Minute*2)  // Unsolvable Riddle (Horde)
 	shared.NewAgilityActive(68709, 1605, time.Second*20, time.Minute*2)  // Unsolvable Riddle (No Faction)
-	shared.NewAgilityActive(61033, 1605, time.Second*20, time.Minute*2)  // Vicious Gladiator's Badge of Conquest
+	shared.NewAgilityActive(61033, 1605, time.Second*20, time.Minute*2)  // Vicious Gladiator's Badge of Conquest - 365
+	shared.NewAgilityActive(70517, 1794, time.Second*20, time.Minute*2)  // Vicious Gladiator's Badge of Conquest - 371
+	shared.NewAgilityActive(70399, 2029, time.Second*20, time.Minute*2)  // Ruthless Gladiator's Badge of Conquest - 384
+	shared.NewAgilityActive(72304, 2144, time.Second*20, time.Minute*2)  // Ruthless Gladiator's Badge of Conquest - 390
+	shared.NewAgilityActive(73648, 2419, time.Second*20, time.Minute*2)  // Cataclysmic Gladiator's Badge of Conquest
 	shared.NewAgilityActive(69001, 1277, time.Second*15, time.Minute)    // Ancient Petrified Seed
-	shared.NewAgilityActive(77984, 2029, time.Second*15, time.Second*90) // Kiroptyric Sigil 384 - Not available to players
 	shared.NewAgilityActive(77113, 2290, time.Second*15, time.Second*90) // Kiroptyric Sigil 397 - Valor Points
-	shared.NewAgilityActive(78004, 2585, time.Second*15, time.Second*90) // Kiroptyric Sigil 410 - Not available to players
 
 	// SPIRIT
 	shared.NewSpiritActive(67101, 555, time.Second*20, time.Minute*2)  // Unquenchable Flame
@@ -61,9 +65,7 @@ func init() {
 	shared.NewDodgeActive(65109, 1812, time.Second*20, time.Minute*2)  // Vial of Stolen Memories (Heroic)
 	shared.NewDodgeActive(70143, 1700, time.Second*20, time.Minute*2)  // Moonwell Phial
 	shared.NewDodgeActive(232015, 1520, time.Second*20, time.Minute*2) // Brawler's Trophy
-	shared.NewDodgeActive(77988, 2029, time.Second*15, time.Second*90) // Fire of the Deep 384 - Not available to players
 	shared.NewDodgeActive(77117, 2290, time.Second*15, time.Second*90) // Fire of the Deep 397 - Valor Points
-	shared.NewDodgeActive(78008, 2585, time.Second*15, time.Second*90) // Fire of the Deep 410 - Not available to players
 
 	// SpellPower
 	shared.NewSpellPowerActive(61429, 970, time.Second*15, time.Second*90)  // Insignia of the Earthen Lord
@@ -72,13 +74,13 @@ func init() {
 	shared.NewSpellPowerActive(52353, 1425, time.Second*20, time.Minute*2)  // Figurine - Jeweled Serpent
 	shared.NewSpellPowerActive(64688, 1520, time.Second*20, time.Minute*2)  // Bloodthirsty Gladiator's Badge of Dominance
 	shared.NewSpellPowerActive(58183, 1926, time.Second*20, time.Minute*2)  // Soul Casket
-	shared.NewSpellPowerActive(61035, 1605, time.Second*20, time.Minute*2)  // Vicious Gladiator's Badge of Dominance
-	shared.NewSpellPowerActive(77985, 2029, time.Second*15, time.Second*90) // Bottled Wishes 384 - Not available to players
+	shared.NewSpellPowerActive(61035, 1605, time.Second*20, time.Minute*2)  // Vicious Gladiator's Badge of Dominance - 365
+	shared.NewSpellPowerActive(70518, 1794, time.Second*20, time.Minute*2)  // Vicious Gladiator's Badge of Dominance - 371
+	shared.NewSpellPowerActive(70401, 2029, time.Second*20, time.Minute*2)  // Ruthless Gladiator's Badge of Dominance - 384
+	shared.NewSpellPowerActive(72448, 2144, time.Second*20, time.Minute*2)  // Ruthless Gladiator's Badge of Dominance - 390
+	shared.NewSpellPowerActive(73498, 2419, time.Second*20, time.Minute*2)  // Cataclysmic Gladiator's Badge of Dominance
 	shared.NewSpellPowerActive(77114, 2290, time.Second*15, time.Second*90) // Bottled Wishes 397 - Valor Points
-	shared.NewSpellPowerActive(78005, 2585, time.Second*15, time.Second*90) // Bottled Wishes 410 - Not available to players
-	shared.NewSpellPowerActive(77986, 2029, time.Second*15, time.Second*90) // Reflection of the Light 384 - Not available to players
 	shared.NewSpellPowerActive(77115, 2290, time.Second*15, time.Second*90) // Reflection of the Light 397 - Valor Points
-	shared.NewSpellPowerActive(78006, 2585, time.Second*15, time.Second*90) // Reflection of the Light 410 - Not available to players
 
 	// HEALTH
 	shared.NewHealthActive(61433, 6985, time.Second*15, time.Minute*3)  // Insignia of Diplomacy

@@ -1,8 +1,12 @@
 {
    "type": "TypeAPL",
       "priorityList": [
+        {"action":{"condition":{"or":{"vals":[{"auraIsActive":{"auraId":{"spellId":5217}}},{"cmp":{"op":"OpLt","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"11s"}}}}]}},"castSpell":{"spellId":{"spellId":82174}}}},
+        {"action":{"condition":{"or":{"vals":[{"and":{"vals":[{"auraIsActive":{"auraId":{"spellId":5217}}},{"cmp":{"op":"OpLt","lhs":{"remainingTime":{}},"rhs":{"math":{"op":"OpAdd","lhs":{"spellTimeToReady":{"spellId":{"spellId":50334}}},"rhs":{"const":{"val":"26s"}}}}}}]}},{"cmp":{"op":"OpLt","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"26s"}}}},{"auraIsActive":{"auraId":{"spellId":50334}}}]}},"castSpell":{"spellId":{"itemId":58145}}}},
+        {"action":{"condition":{"auraIsActive":{"auraId":{"spellId":50334}}},"castSpell":{"spellId":{"spellId":26297}}}},
         {"action":{"autocastOtherCooldowns":{}}},
         {"action":{"condition":{"const":{"val":"false"}},"castSpell":{"spellId":{"spellId":50334}}}},
+        {"action":{"condition":{"const":{"val":"false"}},"castSpell":{"spellId":{"spellId":5229}}}},
         {"action":{"catOptimalRotationAction":{"manualParams":false,"maintainFaerieFire":true,"meleeWeave":true,"bearWeave":true,"snekWeave":true}}},
         {"action":{"autocastOtherCooldowns":{}}}
       ]

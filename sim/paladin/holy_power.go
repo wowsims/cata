@@ -28,7 +28,7 @@ func (paladin *Paladin) GetHolyPowerValue() int32 {
 func (paladin *Paladin) initializeHolyPowerBar() {
 	paladin.HolyPowerBar = HolyPowerBar{
 		paladin:   paladin,
-		holyPower: 0,
+		holyPower: paladin.StartingHolyPower,
 	}
 }
 
@@ -37,7 +37,7 @@ func (pb *HolyPowerBar) Reset() {
 		return
 	}
 
-	pb.holyPower = 0
+	pb.holyPower = pb.paladin.StartingHolyPower
 }
 
 func (paladin *Paladin) HasHolyPowerBar() bool {

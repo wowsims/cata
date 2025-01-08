@@ -83,7 +83,9 @@ var defStats = stats.Stats{
 	stats.SpellHitPercent:  17,
 	stats.SpellCritPercent: -100,
 	stats.SpellPower:       5766,
-	stats.MasteryRating:    1059,
+	// this was tested before Blizzard fixed mastery flooring, true mastery in these tests was 1059
+	// which was rounded down to 22%. So the "effective" mastery was ((22 / 1.625) - 8) * 179.280040
+	stats.MasteryRating: 992.9356061538462,
 }
 
 func (lock *AfflictionWarlock) checkSpell(t *testing.T, sim *core.Simulation, spell *core.Spell, expected float64,

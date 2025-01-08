@@ -23,6 +23,13 @@ var ItemSetReinforcedSapphiriumBattleplate = core.NewItemSet(core.ItemSet{
 		},
 		4: func(agent core.Agent) {
 			// Handled in inquisition.go
+
+			paladin := agent.(PaladinAgent).GetPaladin()
+			// Used for APL aura check
+			core.MakePermanent(paladin.RegisterAura(core.Aura{
+				Label:    "Reinforced Sapphirium Battleplate - T11 4pc" + paladin.Label,
+				ActionID: core.ActionID{SpellID: 90299},
+			}))
 		},
 	},
 })
@@ -36,11 +43,11 @@ var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 			cata.RegisterIgniteEffect(&paladin.Unit, cata.IgniteConfig{
 				ActionID:           core.ActionID{SpellID: 35395}.WithTag(3), // actual 99092
 				DisableCastMetrics: true,
-				DotAuraLabel:       "Flames of the Faithful",
+				DotAuraLabel:       "Flames of the Faithful" + paladin.Label,
 				IncludeAuraDelay:   true,
 
 				ProcTrigger: core.ProcTrigger{
-					Name:           "Flames of the Faithful",
+					Name:           "Flames of the Faithful" + paladin.Label,
 					Callback:       core.CallbackOnSpellHitDealt,
 					ClassSpellMask: SpellMaskCrusaderStrike,
 					Outcome:        core.OutcomeLanded,
@@ -53,6 +60,13 @@ var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 		},
 		4: func(agent core.Agent) {
 			// Handled in talents_retribution.go
+
+			paladin := agent.(PaladinAgent).GetPaladin()
+			// Used for APL aura check
+			core.MakePermanent(paladin.RegisterAura(core.Aura{
+				Label:    "Battleplate of Immolation - T12 4pc" + paladin.Label,
+				ActionID: core.ActionID{SpellID: 99116},
+			}))
 		},
 	},
 })
@@ -66,8 +80,14 @@ var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 			// Actual buff credited with the Holy Power gain is Virtuous Empowerment
 			hpMetrics := paladin.NewHolyPowerMetrics(core.ActionID{SpellID: 105767})
 
+			// Used for checking "Is Aura Known" in the APL
+			paladin.GetOrRegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 105767},
+				Label:    "Virtuous Empowerment" + paladin.Label,
+			})
+
 			core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-				Name:           "T13 2pc trigger",
+				Name:           "T13 2pc trigger" + paladin.Label,
 				ActionID:       core.ActionID{SpellID: 105765},
 				Callback:       core.CallbackOnSpellHitDealt,
 				ClassSpellMask: SpellMaskJudgement,
@@ -77,9 +97,9 @@ var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 					// TODO: Measure the aura update delay distribution on PTR.
 					var delaySeconds float64
 					if sim.Proc(0.75, "T13 2pc") {
-						delaySeconds = 0.010 * sim.RandomFloat("T13 2pc")
+						delaySeconds = 0.010 * sim.RandomFloat("T13 2pc"+paladin.Label)
 					} else {
-						delaySeconds = 0.090 + 0.020*sim.RandomFloat("T13 2pc")
+						delaySeconds = 0.090 + 0.020*sim.RandomFloat("T13 2pc"+paladin.Label)
 					}
 
 					core.StartDelayedAction(sim, core.DelayedActionOptions{
@@ -103,7 +123,7 @@ var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 			})
 
 			zealOfTheCrusader := paladin.RegisterAura(core.Aura{
-				Label:    "Zeal of the Crusader",
+				Label:    "Zeal of the Crusader" + paladin.Label,
 				ActionID: core.ActionID{SpellID: 105819},
 				Duration: time.Second * 20,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -115,7 +135,7 @@ var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 			})
 
 			core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-				Name:           "T13 4pc trigger",
+				Name:           "T13 4pc trigger" + paladin.Label,
 				ActionID:       core.ActionID{SpellID: 105820},
 				Callback:       core.CallbackOnCastComplete,
 				ClassSpellMask: SpellMaskZealotry,
@@ -156,7 +176,7 @@ func (paladin *Paladin) addBloodthirstyGloves() {
 	switch paladin.Hands().ID {
 	case 64844, 70649, 60414, 65591, 72379, 70250, 70488, 73707, 73570:
 		paladin.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Pct,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			ClassMask:  SpellMaskCrusaderStrike,
 			FloatValue: 0.05,
 		})
@@ -211,7 +231,7 @@ var ItemSetBattlearmorOfImmolation = core.NewItemSet(core.ItemSet{
 			})
 
 			core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-				Name:           "Righteous Flames",
+				Name:           "Righteous Flames" + paladin.Label,
 				Callback:       core.CallbackOnSpellHitDealt,
 				ClassSpellMask: SpellMaskShieldOfTheRighteous,
 				Outcome:        core.OutcomeLanded,
@@ -227,7 +247,7 @@ var ItemSetBattlearmorOfImmolation = core.NewItemSet(core.ItemSet{
 			paladin := agent.(PaladinAgent).GetPaladin()
 
 			flamingAegis := paladin.GetOrRegisterAura(core.Aura{
-				Label:    "Flaming Aegis",
+				Label:    "Flaming Aegis" + paladin.Label,
 				ActionID: core.ActionID{SpellID: 99090},
 				Duration: time.Second * 10,
 
@@ -240,7 +260,7 @@ var ItemSetBattlearmorOfImmolation = core.NewItemSet(core.ItemSet{
 			})
 
 			core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-				Name:           "T12 4pc trigger",
+				Name:           "T12 4pc trigger" + paladin.Label,
 				Callback:       core.CallbackOnCastComplete,
 				ClassSpellMask: SpellMaskDivineProtection,
 				ProcChance:     1,
@@ -271,12 +291,12 @@ var ItemSetArmorOfRadiantGlory = core.NewItemSet(core.ItemSet{
 			duration := time.Second * 6
 
 			shieldStrength := 0.0
-			shield := paladin.NewDamageAbsorptionAura("Delayed Judgement", actionID, duration, func(unit *core.Unit) float64 {
+			shield := paladin.NewDamageAbsorptionAura("Delayed Judgement"+paladin.Label, actionID, duration, func(unit *core.Unit) float64 {
 				return shieldStrength
 			})
 
 			core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-				Name:           "Delayed Judgement Proc",
+				Name:           "Delayed Judgement Proc" + paladin.Label,
 				Callback:       core.CallbackOnSpellHitDealt,
 				ClassSpellMask: SpellMaskJudgement,
 				Outcome:        core.OutcomeLanded,
