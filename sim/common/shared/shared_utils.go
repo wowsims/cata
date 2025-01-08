@@ -112,8 +112,13 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		}
 		procAura := character.NewTemporaryStatsAura(config.Name+" Proc", procID, config.Bonus, config.Duration)
 
-		if isEnchant && config.PPM != 0 && config.ProcMask == core.ProcMaskUnknown {
-			config.ProcMask = character.GetDefaultProcMaskForWeaponEnchant(config.EnchantID)
+		var dpm *core.DynamicProcManager
+		if (config.PPM != 0) && (config.ProcMask == core.ProcMaskUnknown) {
+			if isEnchant {
+				dpm = character.AutoAttacks.NewDynamicProcManagerForEnchant(effectID, config.PPM, 0)
+			} else {
+				dpm = character.AutoAttacks.NewPPMManagerForWeaponEffect(effectID, config.PPM)
+			}
 		}
 
 		var itemSwapProcCondition core.CustomStatBuffProcCondition
@@ -123,21 +128,12 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 			}
 		}
 
+		procAura.CustomProcCondition = core.Ternary(config.CustomProcCondition == nil, itemSwapProcCondition, func(sim *core.Simulation, aura *core.Aura) bool {
+			return config.CustomProcCondition(sim, aura) && ((itemSwapProcCondition == nil) || itemSwapProcCondition(sim, aura))
+		})
+
 		var customHandler CustomProcHandler
 		if config.CustomProcCondition != nil {
-			if itemSwapProcCondition != nil {
-				procAura.CustomProcCondition = func(sim *core.Simulation, aura *core.Aura) bool {
-					return itemSwapProcCondition(sim, aura) && config.CustomProcCondition(sim, aura)
-				}
-			} else {
-				procAura.CustomProcCondition = config.CustomProcCondition
-			}
-
-		} else if itemSwapProcCondition != nil {
-			procAura.CustomProcCondition = itemSwapProcCondition
-		}
-
-		if procAura.CustomProcCondition != nil {
 			customHandler = func(sim *core.Simulation, procAura *core.StatBuffAura) {
 				if procAura.CanProc(sim) {
 					procAura.Activate(sim)
@@ -192,6 +188,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 			Harmful:    config.Harmful,
 			ProcChance: config.ProcChance,
 			PPM:        config.PPM,
+			DPM:        dpm,
 			ICD:        config.ICD,
 			Handler:    handler,
 		})
@@ -542,6 +539,11 @@ func NewProcDamageEffect(config ProcDamageEffect) {
 		}
 		triggerAura := core.MakeProcTriggerAura(&character.Unit, triggerConfig)
 
-		character.ItemSwap.RegisterEnchantProc(effectID, triggerAura, config.Slots)
+		if isEnchant {
+			character.ItemSwap.RegisterEnchantProc(effectID, triggerAura, config.Slots)
+		} else {
+			eligibleSlotsForItem := core.EligibleSlotsForItem(core.GetItemByID(effectID), false)
+			character.ItemSwap.RegisterProc(effectID, triggerAura, eligibleSlotsForItem)
+		}
 	})
 }

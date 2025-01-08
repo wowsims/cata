@@ -304,7 +304,7 @@ dps_results: {
  value: {
   dps: 43120.17978
   tps: 32013.58168
-  hps: 601.25407
+  hps: 601.25406
  }
 }
 dps_results: {
@@ -1609,6 +1609,30 @@ dps_results: {
   dps: 39422.53
   tps: 29264.96989
   hps: 646.50919
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SealoftheSevenSigns-77204"
+ value: {
+  dps: 39915.83599
+  tps: 29462.91364
+  hps: 659.8312
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SealoftheSevenSigns-77969"
+ value: {
+  dps: 39920.37289
+  tps: 29491.48114
+  hps: 653.56202
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SealoftheSevenSigns-77989"
+ value: {
+  dps: 40160.97481
+  tps: 29701.00924
+  hps: 662.96579
  }
 }
 dps_results: {

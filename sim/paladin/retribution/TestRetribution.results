@@ -1446,6 +1446,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestRetribution-AllItems-SealoftheSevenSigns-77204"
+ value: {
+  dps: 36799.47161
+  tps: 36800.35779
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-SealoftheSevenSigns-77969"
+ value: {
+  dps: 36681.19199
+  tps: 36683.0244
+ }
+}
+dps_results: {
+ key: "TestRetribution-AllItems-SealoftheSevenSigns-77989"
+ value: {
+  dps: 36853.68994
+  tps: 36853.07352
+ }
+}
+dps_results: {
  key: "TestRetribution-AllItems-Shadowmourne-49623"
  value: {
   dps: 40709.22001

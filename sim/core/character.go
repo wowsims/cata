@@ -599,22 +599,40 @@ func (character *Character) HasRangedWeapon() bool {
 }
 
 func (character *Character) GetDynamicProcMaskForWeaponEnchant(effectID int32) *ProcMask {
-	procMask := character.GetDefaultProcMaskForWeaponEnchant(effectID)
+	getProcMask := func() ProcMask {
+		return character.getDefaultProcMaskForWeaponEnchant(effectID)
+	}
+
+	procMask := getProcMask()
 
 	character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot) {
-		procMask = character.GetDefaultProcMaskForWeaponEnchant(effectID)
+		procMask = getProcMask()
 	})
 
 	return &procMask
 }
 
-func (character *Character) GetDefaultProcMaskForWeaponEnchant(effectID int32) ProcMask {
+func (character *Character) getDefaultProcMaskForWeaponEnchant(effectID int32) ProcMask {
 	return character.getDefaultProcMaskFor(func(weapon *Item) bool {
 		return weapon.Enchant.EffectID == effectID
 	})
 }
 
-func (character *Character) GetDefaultProcMaskForWeaponEffect(itemID int32) ProcMask {
+func (character *Character) GetDynamicProcMaskForWeaponEffect(itemID int32) *ProcMask {
+	getProcMask := func() ProcMask {
+		return character.getDefaultProcMaskForWeaponEffect(itemID)
+	}
+
+	procMask := getProcMask()
+
+	character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot) {
+		procMask = getProcMask()
+	})
+
+	return &procMask
+}
+
+func (character *Character) getDefaultProcMaskForWeaponEffect(itemID int32) ProcMask {
 	return character.getDefaultProcMaskFor(func(weapon *Item) bool {
 		return weapon.ID == itemID
 	})

@@ -1439,6 +1439,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-SealoftheSevenSigns-77204"
+ value: {
+  dps: 30947.06126
+  tps: 46123.89422
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-SealoftheSevenSigns-77969"
+ value: {
+  dps: 30947.06126
+  tps: 46123.93807
+ }
+}
+dps_results: {
+ key: "TestFeral-AllItems-SealoftheSevenSigns-77989"
+ value: {
+  dps: 30947.06126
+  tps: 46123.84446
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-ShardofWoe-60233"
  value: {
   dps: 31411.30813

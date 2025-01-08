@@ -22,8 +22,7 @@ func init() {
 	core.NewItemEffect(19019, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetDefaultProcMaskForWeaponEffect(19019)
-		dpm := character.AutoAttacks.NewPPMManager(6.0, procMask)
+		dpm := character.AutoAttacks.NewPPMManagerForWeaponEffect(19019, 6.0)
 
 		procActionID := core.ActionID{SpellID: 21992}
 
@@ -174,8 +173,7 @@ func init() {
 	core.NewItemEffect(29996, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetDefaultProcMaskForWeaponEffect(29996)
-		pppm := character.AutoAttacks.NewPPMManager(1.0, procMask)
+		dpm := character.AutoAttacks.NewPPMManagerForWeaponEffect(29996, 1.0)
 
 		actionID := core.ActionID{ItemID: 29996}
 
@@ -199,7 +197,7 @@ func init() {
 					return
 				}
 
-				if pppm.Proc(sim, spell.ProcMask, "Rod of the Sun King") {
+				if dpm.Proc(sim, spell.ProcMask, "Rod of the Sun King") {
 					switch spell.Unit.GetCurrentPowerBar() {
 					case core.RageBar:
 						spell.Unit.AddRage(sim, 5, resourceMetricsRage)
@@ -214,7 +212,7 @@ func init() {
 	core.NewItemEffect(31193, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetDefaultProcMaskForWeaponEffect(31193)
+		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(31193, 0, 0.02)
 
 		procSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 24585},
@@ -234,12 +232,11 @@ func init() {
 		})
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:       "Blade of Unquenched Thirst Trigger",
-			ActionID:   core.ActionID{ItemID: 31193},
-			Callback:   core.CallbackOnSpellHitDealt,
-			ProcMask:   procMask,
-			Outcome:    core.OutcomeLanded,
-			ProcChance: 0.02,
+			Name:     "Blade of Unquenched Thirst Trigger",
+			ActionID: core.ActionID{ItemID: 31193},
+			Callback: core.CallbackOnSpellHitDealt,
+			Outcome:  core.OutcomeLanded,
+			DPM:      dpm,
 			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
 				procSpell.Cast(sim, result.Target)
 			},
@@ -249,8 +246,7 @@ func init() {
 	core.NewItemEffect(32262, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetDefaultProcMaskForWeaponEffect(32262)
-		dpm := character.AutoAttacks.NewPPMManager(1.0, procMask)
+		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(12590, 1.0, 0)
 
 		procSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 40291},
@@ -355,8 +351,7 @@ func init() {
 	core.NewItemEffect(12590, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetDefaultProcMaskForWeaponEffect(12590)
-		dpm := character.AutoAttacks.NewPPMManager(1.0, procMask)
+		dpm := character.AutoAttacks.NewPPMManagerForWeaponEffect(12590, 1.0)
 
 		effectAura := character.NewTemporaryStatsAura("Felstriker Proc", core.ActionID{SpellID: 16551}, stats.Stats{stats.PhysicalCritPercent: 100}, time.Second*3)
 

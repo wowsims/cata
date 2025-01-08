@@ -25,12 +25,14 @@ type ItemSet struct {
 	Slots []proto.ItemSlot
 }
 
-var DefaultItemSetSlots = []proto.ItemSlot{
-	proto.ItemSlot_ItemSlotHead,
-	proto.ItemSlot_ItemSlotShoulder,
-	proto.ItemSlot_ItemSlotChest,
-	proto.ItemSlot_ItemSlotHands,
-	proto.ItemSlot_ItemSlotLegs,
+func DefaultItemSetSlots() []proto.ItemSlot {
+	return []proto.ItemSlot{
+		proto.ItemSlot_ItemSlotHead,
+		proto.ItemSlot_ItemSlotShoulder,
+		proto.ItemSlot_ItemSlotChest,
+		proto.ItemSlot_ItemSlotHands,
+		proto.ItemSlot_ItemSlotLegs,
+	}
 }
 
 func (set ItemSet) Items() []Item {
@@ -59,7 +61,7 @@ func NewItemSet(set ItemSet) *ItemSet {
 	foundAlternativeName := set.AlternativeName == ""
 
 	if len(set.Slots) == 0 {
-		set.Slots = DefaultItemSetSlots
+		set.Slots = DefaultItemSetSlots()
 	}
 
 	for _, item := range ItemsByID {
@@ -266,11 +268,11 @@ func (character *Character) RegisterPvPGloveMod(itemIDs []int32, config SpellMod
 		}
 	}
 
+	checkGloves()
+
 	if character.ItemSwap.IsEnabled() {
 		character.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotHands}, func(_ *Simulation, _ proto.ItemSlot) {
 			checkGloves()
 		})
-	} else {
-		checkGloves()
 	}
 }

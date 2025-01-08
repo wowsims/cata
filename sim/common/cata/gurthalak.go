@@ -62,7 +62,7 @@ func init() {
 				},
 			})
 
-			procMask := character.GetDefaultProcMaskForWeaponEffect(gurthalakItemID)
+			procMask := character.GetDynamicProcMaskForWeaponEffect(gurthalakItemID)
 			aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:     "Gurthalak Trigger" + labelSuffix,
 				ActionID: core.ActionID{ItemID: gurthalakItemID},
@@ -71,7 +71,7 @@ func init() {
 				Outcome:  core.OutcomeLanded,
 				Harmful:  true,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if _, ignore := ignoresSlot[spell.ActionID.SpellID]; !spell.ProcMask.Matches(procMask) && !ignore {
+					if _, ignore := ignoresSlot[spell.ActionID.SpellID]; !spell.ProcMask.Matches(*procMask) && !ignore {
 						return
 					}
 
@@ -80,7 +80,8 @@ func init() {
 					}
 
 					if sim.Log != nil {
-						character.Log(sim, "Gurthalak procced by %s", spell.ActionID)
+						slotLabel := core.Ternary(spell.IsMH(), "Main Hand", "Off Hand")
+						character.Log(sim, "Gurthalak (%s) procced by %s", slotLabel, spell.ActionID)
 					}
 
 					summonSpell.Cast(sim, result.Target)

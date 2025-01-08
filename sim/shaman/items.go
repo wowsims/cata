@@ -271,10 +271,10 @@ var ItemSetSpiritwalkersVestments = core.NewItemSet(core.ItemSet{
 				Kind:      core.SpellMod_Custom,
 				ClassMask: SpellMaskSpiritwalkersGrace,
 				ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
-					shaman.SpiritwalkersGraceAura.Duration = shaman.spiritwalkersGraceBaseDuration() + 5*time.Second
+					shaman.SpiritwalkersGraceAura.Duration += 5 * time.Second
 				},
 				RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
-					shaman.SpiritwalkersGraceAura.Duration = shaman.spiritwalkersGraceBaseDuration()
+					shaman.SpiritwalkersGraceAura.Duration -= 5 * time.Second
 				},
 			})
 

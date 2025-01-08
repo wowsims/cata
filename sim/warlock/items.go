@@ -196,16 +196,10 @@ var ItemSetGladiatorsFelshroud = core.NewItemSet(core.ItemSet{
 
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
-			agent.(WarlockAgent).GetWarlock().AddStats(stats.Stats{
-				stats.Intellect: 70,
-			})
+			setBonusAura.AttachStatBuff(stats.Intellect, 70)
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
-			lock := agent.(WarlockAgent).GetWarlock()
-			lock.AddStats(stats.Stats{
-				stats.Intellect: 90,
-			})
-
+			setBonusAura.AttachStatBuff(stats.Intellect, 90)
 			// TODO: enable if we ever implement death coil
 			// lock.AddStaticMod(core.SpellModConfig{
 			// 	Kind:       core.SpellMod_Cooldown_Flat,

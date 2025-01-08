@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
@@ -13,6 +14,7 @@ type ItemSwap struct {
 	character       *Character
 	onSwapCallbacks [NumItemSlots][]OnItemSwap
 
+	isFuryWarrior        bool
 	mhCritMultiplier     float64
 	ohCritMultiplier     float64
 	rangedCritMultiplier float64
@@ -64,6 +66,7 @@ func (character *Character) enableItemSwap(itemSwap *proto.ItemSwap, mhCritMulti
 	}
 
 	character.ItemSwap = ItemSwap{
+		isFuryWarrior:        character.Spec == proto.Spec_SpecFuryWarrior,
 		mhCritMultiplier:     mhCritMultiplier,
 		ohCritMultiplier:     ohCritMultiplier,
 		rangedCritMultiplier: rangedCritMultiplier,
@@ -128,6 +131,7 @@ func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
 
 		if isItemProc {
 			isItemSlotMatch = swap.HasEquippedItem(config.ItemID, config.Slots)
+			fmt.Println("RegisterProc", sim.CurrentTime, config.ItemID, slot)
 		} else if isEnchantEffectProc {
 			isItemSlotMatch = swap.HasEquippedEnchant(config.EnchantId, config.Slots)
 		}
@@ -266,7 +270,7 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 		}
 
 		//will swap both on the MainHand Slot for 2H.
-		if slot == proto.ItemSlot_ItemSlotOffHand && has2H {
+		if has2H && slot == proto.ItemSlot_ItemSlotOffHand && !swap.isFuryWarrior {
 			continue
 		}
 
@@ -316,7 +320,7 @@ func (swap *ItemSwap) swapItem(slot proto.ItemSlot, has2H bool, isReset bool) (b
 	newStats := newItemStats.Subtract(oldItemStats)
 
 	//2H will swap out the offhand also.
-	if has2H && slot == proto.ItemSlot_ItemSlotMainHand {
+	if has2H && slot == proto.ItemSlot_ItemSlotMainHand && !swap.isFuryWarrior {
 		_, ohStats := swap.swapItem(proto.ItemSlot_ItemSlotOffHand, has2H, isReset)
 		newStats = newStats.Add(ohStats)
 	}

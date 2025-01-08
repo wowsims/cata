@@ -166,98 +166,89 @@ func init() {
 	})
 
 	// https://web.archive.org/web/20100702102132/http://elitistjerks.com/f15/t27347-deathfrost_its_mechanics/p2/#post789470
-	// applyDeathfrostForWeapon := func(character *core.Character, procSpell *core.Spell, isMH bool) {
-	// 	icd := core.Cooldown{
-	// 		Timer:    character.NewTimer(),
-	// 		Duration: time.Second * 25,
-	// 	}
+	applyDeathfrostForWeapon := func(character *core.Character, procSpell *core.Spell, isMH bool) {
+		icd := core.Cooldown{
+			Timer:    character.NewTimer(),
+			Duration: time.Second * 25,
+		}
 
-	// 	label := "Deathfrost-"
-	// 	if isMH {
-	// 		label += "MH"
-	// 	} else {
-	// 		label += "OH"
-	// 	}
-	// 	procMask := core.ProcMaskMelee
-	// 	dpm := character.AutoAttacks.NewPPMManager(2.15, procMask)
+		label := "Deathfrost-"
+		if isMH {
+			label += "MH"
+		} else {
+			label += "OH"
+		}
+		dpm := character.AutoAttacks.NewPPMManagerForWeaponEffect(3273, 2.15)
 
-	// 	aura := character.GetOrRegisterAura(core.Aura{
-	// 		Label:    label,
-	// 		Duration: core.NeverExpires,
-	// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-	// 			aura.Activate(sim)
-	// 		},
-	// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-	// 			if result.Damage == 0 {
-	// 				return
-	// 			}
+		aura := character.GetOrRegisterAura(core.Aura{
+			Label:    label,
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Damage == 0 {
+					return
+				}
 
-	// 			if spell.ProcMask.Matches(core.ProcMaskMelee) {
-	// 				if dpm.Proc(sim, spell.ProcMask, "Deathfrost") {
-	// 					procSpell.Cast(sim, result.Target)
-	// 				}
-	// 			} else if spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
-	// 				if icd.IsReady(sim) && sim.RandomFloat("Deathfrost") < 0.5 {
-	// 					icd.Use(sim)
-	// 					procSpell.Cast(sim, result.Target)
-	// 				}
-	// 			}
-	// 		},
-	// 	})
+				if spell.ProcMask.Matches(core.ProcMaskMelee) {
+					if dpm.Proc(sim, spell.ProcMask, "Deathfrost") {
+						procSpell.Cast(sim, result.Target)
+					}
+				} else if spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
+					if icd.IsReady(sim) && sim.RandomFloat("Deathfrost") < 0.5 {
+						icd.Use(sim)
+						procSpell.Cast(sim, result.Target)
+					}
+				}
+			},
+		})
 
-	// 	character.ItemSwap.RegisterEnchantProc(3273, aura, core.MeleeWeaponSlots())
-	// }
-	// core.NewEnchantEffect(3273, func(agent core.Agent) {
-	// 	character := agent.GetCharacter()
+		character.ItemSwap.RegisterEnchantProc(3273, aura, core.MeleeWeaponSlots())
+	}
 
-	// 	procMask := character.GetDefaultProcMaskForWeaponEnchant(3273)
-	// 	if procMask == core.ProcMaskUnknown {
-	// 		return
-	// 	}
+	core.NewEnchantEffect(3273, func(agent core.Agent) {
+		character := agent.GetCharacter()
 
-	// 	actionID := core.ActionID{SpellID: 46579}
-	// 	if spell := character.GetSpell(actionID); spell != nil {
-	// 		// This function gets called twice when dual wielding this enchant, but we
-	// 		// handle both in one call.
-	// 		return
-	// 	}
+		actionID := core.ActionID{SpellID: 46579}
+		if spell := character.GetSpell(actionID); spell != nil {
+			// This function gets called twice when dual wielding this enchant, but we
+			// handle both in one call.
+			return
+		}
 
-	// 	debuffs := make([]*core.Aura, len(character.Env.Encounter.TargetUnits))
-	// 	for i, target := range character.Env.Encounter.TargetUnits {
-	// 		aura := target.GetOrRegisterAura(core.Aura{
-	// 			Label:    "Deathfrost",
-	// 			ActionID: actionID,
-	// 			Duration: time.Second * 8,
-	// 		})
-	// 		core.AtkSpeedReductionEffect(aura, 1.15)
-	// 		debuffs[i] = aura
-	// 	}
+		debuffs := make([]*core.Aura, len(character.Env.Encounter.TargetUnits))
+		for i, target := range character.Env.Encounter.TargetUnits {
+			aura := target.GetOrRegisterAura(core.Aura{
+				Label:    "Deathfrost",
+				ActionID: actionID,
+				Duration: time.Second * 8,
+			})
+			core.AtkSpeedReductionEffect(aura, 1.15)
+			debuffs[i] = aura
+		}
 
-	// 	procSpell := character.RegisterSpell(core.SpellConfig{
-	// 		ActionID:    actionID,
-	// 		SpellSchool: core.SpellSchoolFrost,
-	// 		ProcMask:    core.ProcMaskEmpty,
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    actionID,
+			SpellSchool: core.SpellSchoolFrost,
+			ProcMask:    core.ProcMaskEmpty,
 
-	// 		DamageMultiplier: 1,
-	// 		CritMultiplier:   character.DefaultSpellCritMultiplier(),
-	// 		ThreatMultiplier: 1,
+			DamageMultiplier: 1,
+			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			ThreatMultiplier: 1,
 
-	// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-	// 			result := spell.CalcDamage(sim, target, 150, spell.OutcomeMagicCrit)
-	// 			if result.Landed() {
-	// 				debuffs[target.Index].Activate(sim)
-	// 			}
-	// 			spell.DealDamage(sim, result)
-	// 		},
-	// 	})
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				result := spell.CalcDamage(sim, target, 150, spell.OutcomeMagicCrit)
+				if result.Landed() {
+					debuffs[target.Index].Activate(sim)
+				}
+				spell.DealDamage(sim, result)
+			},
+		})
 
-	// 	if procMask.Matches(core.ProcMaskMeleeMH) {
-	// 		applyDeathfrostForWeapon(character, procSpell, true)
-	// 	}
-	// 	if procMask.Matches(core.ProcMaskMeleeOH) {
-	// 		applyDeathfrostForWeapon(character, procSpell, false)
-	// 	}
-	// })
+		applyDeathfrostForWeapon(character, procSpell, true)
+		applyDeathfrostForWeapon(character, procSpell, false)
+	})
 
 	core.AddEffectsToTest = true
 }

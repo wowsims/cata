@@ -1126,7 +1126,9 @@ func init() {
 			character := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: []int32{109828, 108022, 109831}[version]}
 			hpModifier := []float64{0.013, 0.015, 0.017}[version]
-			procMask := character.GetDefaultProcMaskForWeaponEffect(souldrinkerItemID) | core.ProcMaskMeleeProc
+
+			defaultProcMask := core.ProcMaskMeleeProc
+			procMask := character.GetDynamicProcMaskForWeaponEffect(souldrinkerItemID)
 
 			var damageDealt float64
 			drainLifeHeal := character.RegisterSpell(core.SpellConfig{
@@ -1171,7 +1173,7 @@ func init() {
 						return
 					}
 
-					if _, ignore := ignoresSlot[spell.ActionID.SpellID]; !spell.ProcMask.Matches(procMask) && !ignore {
+					if _, ignore := ignoresSlot[spell.ActionID.SpellID]; !spell.ProcMask.Matches(*procMask|defaultProcMask) && !ignore {
 						return
 					}
 
@@ -1189,7 +1191,9 @@ func init() {
 		core.NewItemEffect(nokaledItemID, func(agent core.Agent) {
 			character := agent.GetCharacter()
 
-			procMask := character.GetDefaultProcMaskForWeaponEffect(nokaledItemID) | core.ProcMaskMeleeProc
+			defaultProcMask := core.ProcMaskMeleeProc
+			procMask := character.GetDynamicProcMaskForWeaponEffect(nokaledItemID)
+
 			minDamage := []float64{6781, 7654, 8640}[version]
 			maxDamage := []float64{10171, 11481, 12960}[version]
 
@@ -1235,7 +1239,7 @@ func init() {
 						return
 					}
 
-					if _, ignore := ignoresSlot[spell.ActionID.SpellID]; !spell.ProcMask.Matches(procMask) && !ignore {
+					if _, ignore := ignoresSlot[spell.ActionID.SpellID]; !spell.ProcMask.Matches(*procMask|defaultProcMask) && !ignore {
 						return
 					}
 

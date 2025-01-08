@@ -1432,6 +1432,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestShadow-AllItems-SealoftheSevenSigns-77204"
+ value: {
+  dps: 39351.82253
+  tps: 33465.94967
+ }
+}
+dps_results: {
+ key: "TestShadow-AllItems-SealoftheSevenSigns-77969"
+ value: {
+  dps: 39220.15255
+  tps: 33344.04899
+ }
+}
+dps_results: {
+ key: "TestShadow-AllItems-SealoftheSevenSigns-77989"
+ value: {
+  dps: 39573.01424
+  tps: 33645.34386
+ }
+}
+dps_results: {
  key: "TestShadow-AllItems-ShardofWoe-60233"
  value: {
   dps: 38277.13176

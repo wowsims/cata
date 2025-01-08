@@ -182,7 +182,7 @@ func (rogue *Rogue) applyWoundPoison() {
 	}
 
 	const basePPM = 0.5 / (1.4 / 60) // ~21.43, the former 50% normalized to a 1.4 speed weapon
-	rogue.woundPoisonPPMM = *rogue.AutoAttacks.NewPPMManager(basePPM, procMask)
+	rogue.woundPoisonPPMM = rogue.AutoAttacks.NewPPMManager(basePPM, procMask)
 
 	rogue.RegisterAura(core.Aura{
 		Label:    "Wound Poison",
@@ -331,7 +331,7 @@ func (rogue *Rogue) UpdateInstantPoisonPPM(bonusChance float64) {
 	const basePPM = 0.2 / (1.4 / 60) // ~8.57, the former 20% normalized to a 1.4 speed weapon
 
 	ppm := basePPM * (1 + core.TernaryFloat64(rogue.Spec == proto.Spec_SpecAssassinationRogue, 0.5, 0) + bonusChance)
-	rogue.instantPoisonPPMM = *rogue.AutoAttacks.NewPPMManager(ppm, procMask)
+	rogue.instantPoisonPPMM = rogue.AutoAttacks.NewPPMManager(ppm, procMask)
 }
 
 func (rogue *Rogue) applyInstantPoison() {

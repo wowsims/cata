@@ -1369,6 +1369,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDestruction-AllItems-SealoftheSevenSigns-77204"
+ value: {
+  dps: 39639.84039
+  tps: 23468.41879
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-SealoftheSevenSigns-77969"
+ value: {
+  dps: 39461.98139
+  tps: 23366.06473
+ }
+}
+dps_results: {
+ key: "TestDestruction-AllItems-SealoftheSevenSigns-77989"
+ value: {
+  dps: 39836.55782
+  tps: 23589.99978
+ }
+}
+dps_results: {
  key: "TestDestruction-AllItems-ShadowflameRegalia"
  value: {
   dps: 33842.47526
