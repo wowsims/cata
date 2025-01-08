@@ -73,8 +73,6 @@ type DeathKnight struct {
 
 	// Auras
 	IceBoundFortituteAura *core.Aura
-	FreezingFogAura       *core.Aura
-	SuddenDoomProcAura    *core.Aura
 
 	// Cached Gurthalak tentacles
 	gurthalakTentacles []*cata.TentacleOfTheOldOnesPet

@@ -14,15 +14,12 @@ func (subRogue *SubtletyRogue) registerShadowDanceCD() {
 	}
 
 	hasGlyph := subRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfShadowDance)
-	getDuration := func() time.Duration {
-		return core.TernaryDuration(hasGlyph, time.Second*8, time.Second*6) + core.TernaryDuration(subRogue.Has4pcT13, time.Second*2, 0)
-	}
 	actionID := core.ActionID{SpellID: 51713}
 
 	subRogue.ShadowDanceAura = subRogue.RegisterAura(core.Aura{
 		Label:    "Shadow Dance",
 		ActionID: actionID,
-		Duration: getDuration(),
+		Duration: core.TernaryDuration(hasGlyph, time.Second*8, time.Second*6),
 		// Can now cast opening abilities outside of stealth
 		// Covered in rogue.go by IsStealthed()
 	})
@@ -41,7 +38,6 @@ func (subRogue *SubtletyRogue) registerShadowDanceCD() {
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			subRogue.BreakStealth(sim)
-			subRogue.ShadowDanceAura.Duration = getDuration()
 			subRogue.ShadowDanceAura.Activate(sim)
 		},
 	})

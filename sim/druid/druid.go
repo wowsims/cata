@@ -379,7 +379,9 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 		}
 	}
 
-	druid.BurningTreant = druid.NewBurningTreant()
+	if druid.HasSetBonus(ItemSetObsidianArborweaveRegalia, 2) {
+		druid.BurningTreant = druid.NewBurningTreant()
+	}
 
 	return druid
 }

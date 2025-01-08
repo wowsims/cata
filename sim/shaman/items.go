@@ -246,7 +246,7 @@ var ItemSetSpiritwalkersVestments = core.NewItemSet(core.ItemSet{
 			aura := shaman.RegisterAura(core.Aura{
 				Label:    "Item - Shaman T13 Restoration 4P Bonus (Spiritwalker's Grace)",
 				ActionID: core.ActionID{SpellID: 105876},
-				Duration: shaman.spiritwalkersGraceBaseDuration() + 5*time.Second,
+				Duration: shaman.spiritwalkersGraceBaseDuration(),
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					shaman.MultiplyCastSpeed(hasteMulti)
 					shaman.MultiplyAttackSpeed(sim, hasteMulti)

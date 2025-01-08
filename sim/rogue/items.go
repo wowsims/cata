@@ -217,11 +217,45 @@ var Tier13 = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			rogue := agent.(RogueAgent).GetRogue()
 
-			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-				rogue.Has4pcT13 = true
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:      core.SpellMod_Custom,
+				ClassMask: RogueSpellVendetta,
+				ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
+					for _, aura := range spell.RelatedAuras[0] {
+						if aura != nil {
+							aura.Duration = rogue.getVendettaDuration(9)
+						}
+					}
+				},
+				RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
+					for _, aura := range spell.RelatedAuras[0] {
+						if aura != nil {
+							aura.Duration = rogue.getVendettaDuration(0)
+						}
+					}
+				},
 			})
-			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-				rogue.Has4pcT13 = false
+
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:      core.SpellMod_Custom,
+				ClassMask: RogueSpellAdrenalineRush,
+				ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
+					rogue.AdrenalineRushAura.Duration += time.Second * 3
+				},
+				RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
+					rogue.AdrenalineRushAura.Duration -= time.Second * 3
+				},
+			})
+
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:      core.SpellMod_Custom,
+				ClassMask: RogueSpellShadowDance,
+				ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
+					rogue.ShadowDanceAura.Duration += time.Second * 2
+				},
+				RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
+					rogue.ShadowDanceAura.Duration -= time.Second * 2
+				},
 			})
 		},
 	},

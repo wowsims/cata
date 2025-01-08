@@ -101,7 +101,10 @@ func (dk *DeathKnight) applyContagion() {
 func (dk *DeathKnight) applyRunicEmpowerementCorruption() {
 	var handler func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult)
 
-	runicMasteryAura := dk.NewTemporaryStatsAura("Runic Mastery", core.ActionID{SpellID: 105647}, stats.Stats{stats.MasteryRating: 710}, time.Second*12)
+	var runicMasteryAura *core.StatBuffAura
+	if dk.HasSetBonus(ItemSetNecroticBoneplateBattlegear, 4) {
+		runicMasteryAura = dk.NewTemporaryStatsAura("Runic Mastery", core.ActionID{SpellID: 105647}, stats.Stats{stats.MasteryRating: 710}, time.Second*12)
+	}
 
 	if dk.Talents.RunicCorruption > 0 {
 		dk.AddStaticMod(core.SpellModConfig{
@@ -276,7 +279,7 @@ func (dk *DeathKnight) applySuddenDoom() {
 		FloatValue: -1,
 	})
 
-	dk.SuddenDoomProcAura = dk.GetOrRegisterAura(core.Aura{
+	suddenDoomProcAura := dk.GetOrRegisterAura(core.Aura{
 		Label:     "Sudden Doom Proc",
 		ActionID:  core.ActionID{SpellID: 81340},
 		Duration:  time.Second * 10,
@@ -314,13 +317,13 @@ func (dk *DeathKnight) applySuddenDoom() {
 		PPM:      ppm,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			dk.SuddenDoomProcAura.Activate(sim)
+			suddenDoomProcAura.Activate(sim)
 
 			// T13 2pc: Sudden Doom has a 30% chance to grant 2 charges when triggered instead of 1.
-			dk.SuddenDoomProcAura.MaxStacks = core.TernaryInt32(dk.HasT13Dps2pc, 2, 0)
+			suddenDoomProcAura.MaxStacks = core.TernaryInt32(dk.HasT13Dps2pc, 2, 0)
 			if dk.HasT13Dps2pc {
 				stacks := core.TernaryInt32(sim.Proc(0.3, "T13 2pc"), 2, 1)
-				dk.SuddenDoomProcAura.SetStacks(sim, stacks)
+				suddenDoomProcAura.SetStacks(sim, stacks)
 			}
 		},
 	})

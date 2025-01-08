@@ -82,10 +82,10 @@ var ItemSetMagmaPlatedBattlearmor = core.NewItemSet(core.ItemSet{
 				Kind:      core.SpellMod_Custom,
 				ClassMask: DeathKnightSpellIceboundFortitude,
 				ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
-					dk.IceBoundFortituteAura.Duration = dk.iceBoundFortituteBaseDuration() + 6*time.Second
+					dk.IceBoundFortituteAura.Duration += 6 * time.Second
 				},
 				RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
-					dk.IceBoundFortituteAura.Duration = dk.iceBoundFortituteBaseDuration()
+					dk.IceBoundFortituteAura.Duration -= 6 * time.Second
 				},
 			})
 		},

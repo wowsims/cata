@@ -202,27 +202,20 @@ var ItemSetReinforcedSapphiriumBattlearmor = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			paladin := agent.(PaladinAgent).GetPaladin()
 
-			goakBaseDuration := paladin.goakBaseDuration()
-			acientPowerBaseDuration := paladin.goakBaseDuration()
-
-			applyT11Prot4pcBonus := func(duration time.Duration) time.Duration {
-				return time.Millisecond * time.Duration(float64(duration.Milliseconds())*1.5)
-			}
-
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:      core.SpellMod_Custom,
 				ClassMask: SpellMaskGuardianOfAncientKings,
 				ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
 					if paladin.AncientPowerAura != nil {
-						paladin.AncientPowerAura.Duration = applyT11Prot4pcBonus(acientPowerBaseDuration)
+						paladin.AncientPowerAura.Duration = core.DurationFromSeconds(paladin.GoakAura.Duration.Seconds() * 1.5)
 					}
-					paladin.GoakAura.Duration = applyT11Prot4pcBonus(goakBaseDuration)
+					paladin.GoakAura.Duration = core.DurationFromSeconds(paladin.GoakAura.Duration.Seconds() * 1.5)
 				},
 				RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
 					if paladin.AncientPowerAura != nil {
-						paladin.AncientPowerAura.Duration = acientPowerBaseDuration
+						paladin.AncientPowerAura.Duration = paladin.goakBaseDuration()
 					}
-					paladin.GoakAura.Duration = goakBaseDuration
+					paladin.GoakAura.Duration = paladin.goakBaseDuration()
 				},
 			})
 

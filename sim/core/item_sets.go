@@ -101,14 +101,15 @@ func (character *Character) HasSetBonus(set *ItemSet, numItems int32) bool {
 		panic(fmt.Sprintf("Item set %s does not have a bonus with %d pieces.", set.Name, numItems))
 	}
 
-	var count int32
-	for _, item := range character.Equipment {
-		if item.SetName == "" {
-			continue
-		}
-		if item.SetName == set.Name || item.SetName == set.AlternativeName || (item.SetID > 0 && item.SetID == set.ID) {
-			count++
-			if count >= numItems {
+	activeSetBonus := character.HasActiveSetBonus(set.Name, numItems)
+	if activeSetBonus {
+		return activeSetBonus
+	}
+
+	if character.ItemSwap.IsEnabled() {
+		unequippedSetBonuses := character.GetSetBonuses(character.ItemSwap.unEquippedItems)
+		for _, unequippedSetBonus := range unequippedSetBonuses {
+			if unequippedSetBonus.Name == set.Name && unequippedSetBonus.NumPieces >= numItems {
 				return true
 			}
 		}
@@ -183,6 +184,7 @@ func (character *Character) GetSetBonuses(equipment Equipment) []SetBonus {
 	return activeBonuses
 }
 
+// Checks whether the character has an equipped set bonus
 func (character *Character) HasActiveSetBonus(setName string, count int32) bool {
 	activeSetBonuses := character.GetActiveSetBonuses()
 

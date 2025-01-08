@@ -35,7 +35,6 @@ func (sinRogue *AssassinationRogue) Initialize() {
 	sinRogue.registerColdBloodCD()
 	sinRogue.applySealFate()
 	sinRogue.registerVenomousWounds()
-	sinRogue.registerVendetta()
 
 	// Apply Mastery
 	// As far as I am able to find, Asn's Mastery is an additive bonus. To be tested.

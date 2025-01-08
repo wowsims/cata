@@ -130,7 +130,7 @@ func (dk *DeathKnight) applyRime() {
 		ClassMask:  DeathKnightSpellIcyTouch | DeathKnightSpellHowlingBlast,
 	})
 
-	dk.FreezingFogAura = dk.GetOrRegisterAura(core.Aura{
+	freezingFogAura := dk.GetOrRegisterAura(core.Aura{
 		Label:     "Freezing Fog",
 		ActionID:  core.ActionID{SpellID: 59052},
 		Duration:  time.Second * 15,
@@ -163,13 +163,13 @@ func (dk *DeathKnight) applyRime() {
 		Outcome:        core.OutcomeLanded,
 		ProcChance:     0.15 * float64(dk.Talents.Rime),
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			dk.FreezingFogAura.Activate(sim)
+			freezingFogAura.Activate(sim)
 
 			// T13 2pc: Rime has a 60% chance to grant 2 charges when triggered instead of 1.
-			dk.FreezingFogAura.MaxStacks = core.TernaryInt32(dk.HasT13Dps2pc, 2, 0)
+			freezingFogAura.MaxStacks = core.TernaryInt32(dk.HasT13Dps2pc, 2, 0)
 			if dk.HasT13Dps2pc {
 				stacks := core.TernaryInt32(sim.Proc(0.6, "T13 2pc"), 2, 1)
-				dk.FreezingFogAura.SetStacks(sim, stacks)
+				freezingFogAura.SetStacks(sim, stacks)
 			}
 		},
 	})
