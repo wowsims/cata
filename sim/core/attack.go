@@ -832,7 +832,7 @@ func (aa *AutoAttacks) NewPPMManager(ppm float64, procMask ProcMask) *DynamicPro
 	dpm := aa.newDynamicProcManager(ppm, 0, procMask)
 
 	if aa.character != nil {
-		aa.character.RegisterItemSwapCallback(PpmmSlots, func(sim *Simulation, slot proto.ItemSlot) {
+		aa.character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot) {
 			dpm = aa.character.AutoAttacks.newDynamicProcManager(ppm, 0, procMask)
 		})
 	}
@@ -849,7 +849,7 @@ func (aa *AutoAttacks) NewDynamicProcManagerForEnchant(effectID int32, ppm float
 	dpm := aa.newDynamicProcManager(ppm, fixedProcChance, getProcMask())
 
 	if aa.character != nil {
-		aa.character.RegisterItemSwapCallback(PpmmSlots, func(sim *Simulation, slot proto.ItemSlot) {
+		aa.character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot) {
 			procMask := aa.character.GetDefaultProcMaskForWeaponEnchant(effectID)
 			dpm = aa.character.AutoAttacks.newDynamicProcManager(ppm, fixedProcChance, procMask)
 		})
@@ -868,7 +868,7 @@ func (aa *AutoAttacks) NewPPMManagerForWeaponEffect(itemID int32, ppm float64) *
 
 	if aa.character != nil {
 		if aa.character != nil {
-			aa.character.RegisterItemSwapCallback(PpmmSlots, func(sim *Simulation, slot proto.ItemSlot) {
+			aa.character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot) {
 				dpm = aa.character.AutoAttacks.newDynamicProcManager(ppm, 0, getProcMask())
 			})
 		}

@@ -45,7 +45,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(4066, aura, core.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(4066, aura, core.MeleeWeaponSlots())
 	})
 
 	// Enchant: 4067, Spell: 74197 - Enchant Weapon - Avalanche
@@ -114,7 +114,7 @@ func init() {
 			},
 		}))
 
-		character.ItemSwap.RegisterEnchantProc(4067, aura, core.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(4067, aura, core.MeleeWeaponSlots())
 	})
 
 	// Enchant: 4074, Spell: 74211 - Enchant Weapon - Elemental Slayer
@@ -149,7 +149,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(4074, aura, core.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(4074, aura, core.MeleeWeaponSlots())
 	})
 
 	// Enchant: 4083, Spell: 74223 - Enchant Weapon - Hurricane
@@ -233,7 +233,7 @@ func init() {
 			},
 		}))
 
-		character.ItemSwap.RegisterEnchantProc(4083, aura, core.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(4083, aura, core.MeleeWeaponSlots())
 	})
 
 	// Enchant: 4084, Spell: 74225 - Enchant Weapon - Heartsong
@@ -248,7 +248,7 @@ func init() {
 		ProcChance: 0.25,
 		Bonus:      stats.Stats{stats.Spirit: 200},
 		Duration:   time.Second * 15,
-		Slots:      core.WeaponSlots,
+		Slots:      core.MeleeWeaponSlots(),
 	})
 
 	// Enchant: 4097, Spell: 74242 - Enchant Weapon - Power Torrent
@@ -263,7 +263,7 @@ func init() {
 		ProcChance: 1.0 / 3.0,
 		Bonus:      stats.Stats{stats.Intellect: 500},
 		Duration:   time.Second * 12,
-		Slots:      core.WeaponSlots,
+		Slots:      core.MeleeWeaponSlots(),
 	})
 
 	// Enchant: 4098, Spell: 74244 - Enchant Weapon - Windwalk
@@ -276,7 +276,7 @@ func init() {
 		PPM:       1, // based on old Wowhead comments, TODO: measure in Classic
 		Bonus:     stats.Stats{stats.DodgeRating: 600},
 		Duration:  time.Second * 10,
-		Slots:     core.WeaponSlots,
+		Slots:     core.MeleeWeaponSlots(),
 	})
 
 	// Enchant: 4099, Spell: 74246 - Enchant Weapon - Landslide
@@ -311,7 +311,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(4099, aura, core.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(4099, aura, core.MeleeWeaponSlots())
 	})
 
 	// Enchant: 4115, Spell: 75172 - Lightweave Embroidery

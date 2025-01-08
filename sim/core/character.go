@@ -601,7 +601,7 @@ func (character *Character) HasRangedWeapon() bool {
 func (character *Character) GetDynamicProcMaskForWeaponEnchant(effectID int32) *ProcMask {
 	procMask := character.GetDefaultProcMaskForWeaponEnchant(effectID)
 
-	character.RegisterItemSwapCallback(PpmmSlots, func(sim *Simulation, slot proto.ItemSlot) {
+	character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot) {
 		procMask = character.GetDefaultProcMaskForWeaponEnchant(effectID)
 	})
 

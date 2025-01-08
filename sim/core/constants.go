@@ -40,3 +40,15 @@ const OffHand Hand = false
 const CombatTableCoverageCap = 1.024 // 102.4% chance to avoid an attack
 
 const NumItemSlots = proto.ItemSlot_ItemSlotRanged + 1
+
+func TrinketSlots() []proto.ItemSlot {
+	return []proto.ItemSlot{proto.ItemSlot_ItemSlotTrinket1, proto.ItemSlot_ItemSlotTrinket2}
+}
+
+func MeleeWeaponSlots() []proto.ItemSlot {
+	return []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand}
+}
+
+func AllWeaponSlots() []proto.ItemSlot {
+	return []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand, proto.ItemSlot_ItemSlotRanged}
+}
