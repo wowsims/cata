@@ -223,11 +223,28 @@ var ItemSetVestmentsOfTheFacelessShroud = core.NewItemSet(core.ItemSet{
 				ClassMask: WarlockSpellSummonDoomguard | WarlockSpellSummonInfernal,
 			})
 
-			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-				warlock.Has2pcT13 = true
+			summonDuration := core.TernaryDuration(warlock.Spec == proto.Spec_SpecDemonologyWarlock, 20*time.Second, 30*time.Second)
+
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:      core.SpellMod_Custom,
+				ClassMask: WarlockSpellSummonDoomguard,
+				ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
+					warlock.SummonDoomguardAura.Duration += summonDuration
+				},
+				RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
+					warlock.SummonDoomguardAura.Duration -= summonDuration
+				},
 			})
-			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-				warlock.Has2pcT13 = false
+
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:      core.SpellMod_Custom,
+				ClassMask: WarlockSpellSummonInfernal,
+				ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
+					warlock.SummonInfernalAura.Duration += summonDuration
+				},
+				RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
+					warlock.SummonInfernalAura.Duration -= summonDuration
+				},
 			})
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
@@ -265,11 +282,3 @@ var ItemSetVestmentsOfTheFacelessShroud = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
-
-func (warlock *Warlock) Calc2PT13SummonDuration() int32 {
-	if warlock.Has2pcT13 {
-		return core.TernaryInt32(warlock.Spec == proto.Spec_SpecDemonologyWarlock, 20, 30)
-	} else {
-		return 0
-	}
-}

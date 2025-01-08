@@ -32,17 +32,18 @@ type Warlock struct {
 	Imp       *WarlockPet
 	Succubus  *WarlockPet
 
-	Doomguard *DoomguardPet
-	Infernal  *InfernalPet
-	EbonImp   *EbonImpPet
-	FieryImp  *FieryImpPet
+	SummonDoomguardAura *core.Aura
+	Doomguard           *DoomguardPet
+	Infernal            *InfernalPet
+	EbonImp             *EbonImpPet
+	SummonInfernalAura  *core.Aura
+	FieryImp            *FieryImpPet
 
 	SoulShards   int32
 	SoulBurnAura *core.Aura
 
 	// Item sets
 	Has4pcT13 bool
-	Has2pcT13 bool
 }
 
 func (warlock *Warlock) GetCharacter() *core.Character {

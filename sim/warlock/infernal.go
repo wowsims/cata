@@ -10,14 +10,10 @@ import (
 )
 
 func (warlock *Warlock) registerSummonInfernal(timer *core.Timer) {
-	getDuration := func() time.Duration {
-		return time.Duration(45+10*warlock.Talents.AncientGrimoire+warlock.Calc2PT13SummonDuration()) * time.Second
-	}
-
-	summonInfernalAura := warlock.RegisterAura(core.Aura{
+	warlock.SummonInfernalAura = warlock.RegisterAura(core.Aura{
 		Label:    "Summon Infernal",
 		ActionID: core.ActionID{SpellID: 1122},
-		Duration: getDuration(),
+		Duration: time.Duration(45+10*warlock.Talents.AncientGrimoire) * time.Second,
 	})
 
 	warlock.RegisterSpell(core.SpellConfig{
@@ -50,12 +46,9 @@ func (warlock *Warlock) registerSummonInfernal(timer *core.Timer) {
 					warlock.CalcAndRollDamageRange(sim, 0.48500001431, 0.11999999732)
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
-			duration := getDuration()
-			warlock.Infernal.EnableWithTimeout(sim, warlock.Infernal, duration)
-
+			warlock.Infernal.EnableWithTimeout(sim, warlock.Infernal, warlock.SummonInfernalAura.Duration)
 			// fake aura to show duration
-			summonInfernalAura.Duration = duration
-			summonInfernalAura.Activate(sim)
+			warlock.SummonInfernalAura.Activate(sim)
 		},
 	})
 }
