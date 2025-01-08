@@ -13,7 +13,7 @@ var ItemSetMaleficRaiment = core.NewItemSet(core.ItemSet{
 	Name: "Shadowflame Regalia",
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
-			agent.(WarlockAgent).GetWarlock().AddStaticMod(core.SpellModConfig{
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_CastTime_Pct,
 				ClassMask:  WarlockSpellChaosBolt | WarlockSpellHandOfGuldan | WarlockSpellHaunt,
 				FloatValue: -0.1,
