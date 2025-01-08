@@ -1147,6 +1147,18 @@ func init() {
 		})
 
 		shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+			Name:       "Seal of the Seven Signs" + labelSuffix,
+			ItemID:     []int32{77969, 77204, 77989}[version],
+			AuraID:     []int32{109803, 109804, 109805}[version],
+			Bonus:      stats.Stats{stats.HasteRating: []float64{2573, 2904, 3278}[version]},
+			Duration:   time.Second * 20,
+			Callback:   core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+			ProcMask:   core.ProcMaskSpellHealing,
+			ProcChance: 0.15,
+			ICD:        time.Second * 115,
+		})
+
+		shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 			Name:       "Soulshifter Vortex" + labelSuffix,
 			ItemID:     []int32{77970, 77206, 77990}[version],
 			AuraID:     []int32{109774, 107986, 109776}[version],
