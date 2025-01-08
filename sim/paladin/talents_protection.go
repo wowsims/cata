@@ -407,30 +407,21 @@ func (paladin *Paladin) applySacredDuty() {
 		return
 	}
 
-	critMod := paladin.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  SpellMaskShieldOfTheRighteous,
-		Kind:       core.SpellMod_BonusCrit_Percent,
-		FloatValue: 100,
-	})
-
 	paladin.SacredDutyAura = paladin.RegisterAura(core.Aura{
 		Label:    "Sacred Duty (Proc)" + paladin.Label,
 		ActionID: core.ActionID{SpellID: 85433},
 		Duration: time.Second * 10,
-
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			critMod.Activate()
-		},
-
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			critMod.Deactivate()
-		},
-
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ClassSpellMask&SpellMaskShieldOfTheRighteous != 0 && result.DidCrit() {
 				paladin.SacredDutyAura.Deactivate(sim)
 			}
 		},
+	})
+
+	paladin.SacredDutyAura.AttachSpellMod(core.SpellModConfig{
+		ClassMask:  SpellMaskShieldOfTheRighteous,
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		FloatValue: 100,
 	})
 
 	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{

@@ -196,21 +196,15 @@ func (war *ProtectionWarrior) applyHeavyRepercussions() {
 		return
 	}
 
-	damageMod := war.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  warrior.SpellMaskShieldSlam,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.5 * float64(war.Talents.HeavyRepercussions),
-	})
-
 	buff := war.RegisterAura(core.Aura{
 		Label:    "Heavy Repercussions",
 		Duration: 10 * time.Second,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			damageMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			damageMod.Deactivate()
-		},
+	})
+
+	buff.AttachSpellMod(core.SpellModConfig{
+		ClassMask:  warrior.SpellMaskShieldSlam,
+		Kind:       core.SpellMod_DamageDone_Flat,
+		FloatValue: 0.5 * float64(war.Talents.HeavyRepercussions),
 	})
 
 	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
@@ -234,28 +228,22 @@ func (war *ProtectionWarrior) applySwordAndBoard() {
 		FloatValue: 5 * float64(war.Talents.SwordAndBoard),
 	})
 
-	costMod := war.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  warrior.SpellMaskShieldSlam,
-		Kind:       core.SpellMod_PowerCost_Pct,
-		FloatValue: -1.0,
-	})
-
 	actionID := core.ActionID{SpellID: 50227}
 	buffAura := war.RegisterAura(core.Aura{
 		Label:    "Sword and Board",
 		ActionID: actionID,
 		Duration: 5 * time.Second,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			costMod.Activate()
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if (spell.ClassSpellMask & warrior.SpellMaskShieldSlam) != 0 {
 				aura.Deactivate(sim)
 			}
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			costMod.Deactivate()
-		},
+	})
+
+	buffAura.AttachSpellMod(core.SpellModConfig{
+		ClassMask:  warrior.SpellMaskShieldSlam,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -1.0,
 	})
 
 	procChance := 0.1 * float64(war.Talents.SwordAndBoard)

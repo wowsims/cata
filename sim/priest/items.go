@@ -358,22 +358,17 @@ var ItemSetRegaliaOfTheCleansingFlame = core.NewItemSet(core.ItemSet{
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			character := agent.GetCharacter()
-			mbMod := character.AddDynamicMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Flat,
-				FloatValue: 0.15,
-				ClassMask:  PriestSpellMindBlast,
-			})
 
 			mbAura := character.RegisterAura(core.Aura{
 				ActionID: core.ActionID{SpellID: 99158},
 				Label:    "Dark Flames",
 				Duration: core.NeverExpires,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					mbMod.Activate()
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					mbMod.Deactivate()
-				},
+			})
+
+			mbAura.AttachSpellMod(core.SpellModConfig{
+				Kind:       core.SpellMod_DamageDone_Flat,
+				FloatValue: 0.15,
+				ClassMask:  PriestSpellMindBlast,
 			})
 
 			priest := agent.(PriestAgent).GetPriest()

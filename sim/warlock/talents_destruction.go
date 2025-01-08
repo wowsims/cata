@@ -85,28 +85,22 @@ func (warlock *Warlock) registerBackdraft() {
 		return
 	}
 
-	castTimeMod := warlock.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_CastTime_Pct,
-		ClassMask:  WarlockSpellShadowBolt | WarlockSpellIncinerate | WarlockSpellChaosBolt,
-		FloatValue: -0.10 * float64(warlock.Talents.Backdraft),
-	})
-
 	backdraft := warlock.RegisterAura(core.Aura{
 		Label:     "Backdraft",
 		ActionID:  core.ActionID{SpellID: 54277},
 		Duration:  15 * time.Second,
 		MaxStacks: 3,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			castTimeMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			castTimeMod.Deactivate()
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Matches(WarlockSpellShadowBolt | WarlockSpellIncinerate | WarlockSpellChaosBolt) {
 				aura.RemoveStack(sim)
 			}
 		},
+	})
+
+	backdraft.AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		ClassMask:  WarlockSpellShadowBolt | WarlockSpellIncinerate | WarlockSpellChaosBolt,
+		FloatValue: -0.10 * float64(warlock.Talents.Backdraft),
 	})
 
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
@@ -206,28 +200,22 @@ func (warlock *Warlock) registerEmpoweredImp() {
 
 	procChance := 0.02 * float64(warlock.Talents.EmpoweredImp)
 
-	castTimeMod := warlock.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_CastTime_Pct,
-		ClassMask:  WarlockSpellSoulFire,
-		FloatValue: -1,
-	})
-
 	empoweredImpAura := warlock.RegisterAura(core.Aura{
 		Label:    "Empowered Imp",
 		ActionID: core.ActionID{SpellID: 47221},
 		Duration: 8 * time.Second,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			castTimeMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			castTimeMod.Deactivate()
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// if the soul fire cast started BEFORE we got the empowered imp buff, it does not get consumed
 			if spell.Matches(WarlockSpellSoulFire) && sim.CurrentTime-spell.CurCast.CastTime > aura.StartedAt() {
 				aura.Deactivate(sim)
 			}
 		},
+	})
+
+	empoweredImpAura.AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		ClassMask:  WarlockSpellSoulFire,
+		FloatValue: -1,
 	})
 
 	core.MakePermanent(warlock.Imp.RegisterAura(core.Aura{

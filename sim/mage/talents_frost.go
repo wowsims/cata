@@ -73,26 +73,22 @@ func (mage *Mage) registerIcyVeinsCD() {
 		return
 	}
 
-	icyVeinsMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellsAll,
-		FloatValue: -0.2,
-		Kind:       core.SpellMod_CastTime_Pct,
-	})
-
 	actionID := core.ActionID{SpellID: 12472}
 	icyVeinsAura := mage.RegisterAura(core.Aura{
 		Label:    "Icy Veins",
 		ActionID: actionID,
 		Duration: time.Second * 20,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			icyVeinsMod.Activate()
-		},
 		OnExpire: func(_ *core.Aura, sim *core.Simulation) {
-			icyVeinsMod.Deactivate()
 			if mage.t13ProcAura != nil {
 				mage.t13ProcAura.Deactivate(sim)
 			}
 		},
+	})
+
+	icyVeinsAura.AttachSpellMod(core.SpellModConfig{
+		ClassMask:  MageSpellsAll,
+		FloatValue: -0.2,
+		Kind:       core.SpellMod_CastTime_Pct,
 	})
 
 	mage.IcyVeins = mage.RegisterSpell(core.SpellConfig{
@@ -141,36 +137,28 @@ func (mage *Mage) applyFingersOfFrost() {
 	//Talent gives 7/14/20 percent chance to proc FoF on spell hit
 	procChance := []float64{0, 0.07, 0.14, 0.20}[mage.Talents.FingersOfFrost]
 
-	fingersOfFrostIceLanceDamageMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellIceLance,
-		FloatValue: 0.25,
-		Kind:       core.SpellMod_DamageDone_Pct,
-	})
-
-	fingersOfFrostFrozenCritMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellIceLance | MageSpellDeepFreeze,
-		FloatValue: mage.GetStat(stats.SpellCritPercent) * 2, // TODO: Shouldn't this be evaluated dynamically when the proc happens?
-		Kind:       core.SpellMod_BonusCrit_Percent,
-	})
-
 	mage.FingersOfFrostAura = mage.RegisterAura(core.Aura{
 		Label:     "Fingers of Frost Proc",
 		ActionID:  core.ActionID{SpellID: 44545},
 		Duration:  time.Second * 15,
 		MaxStacks: 2,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			fingersOfFrostFrozenCritMod.Activate()
-			fingersOfFrostIceLanceDamageMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			fingersOfFrostFrozenCritMod.Deactivate()
-			fingersOfFrostIceLanceDamageMod.Deactivate()
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.ClassSpellMask&(MageSpellIceLance|MageSpellDeepFreeze) > 0 {
 				aura.RemoveStack(sim)
 			}
 		},
+	})
+
+	mage.FingersOfFrostAura.AttachSpellMod(core.SpellModConfig{
+		ClassMask:  MageSpellIceLance,
+		FloatValue: 0.25,
+		Kind:       core.SpellMod_DamageDone_Pct,
+	})
+
+	mage.FingersOfFrostAura.AttachSpellMod(core.SpellModConfig{
+		ClassMask:  MageSpellIceLance | MageSpellDeepFreeze,
+		FloatValue: mage.GetStat(stats.SpellCritPercent) * 2, // TODO: Shouldn't this be evaluated dynamically when the proc happens?
+		Kind:       core.SpellMod_BonusCrit_Percent,
 	})
 
 	mage.RegisterAura(core.Aura{
@@ -195,35 +183,27 @@ func (mage *Mage) applyBrainFreeze() {
 
 	mage.brainFreezeProcChance = .05 * float64(mage.Talents.BrainFreeze)
 
-	brainFreezeCostMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellBrainFreeze,
-		FloatValue: -1,
-		Kind:       core.SpellMod_PowerCost_Pct,
-	})
-
-	brainFreezeCastMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellBrainFreeze,
-		FloatValue: -1,
-		Kind:       core.SpellMod_CastTime_Pct,
-	})
-
 	brainFreezeAura := mage.GetOrRegisterAura(core.Aura{
 		Label:    "Brain Freeze Proc",
 		ActionID: core.ActionID{SpellID: 57761},
 		Duration: time.Second * 15,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			brainFreezeCostMod.Activate()
-			brainFreezeCastMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			brainFreezeCostMod.Deactivate()
-			brainFreezeCastMod.Deactivate()
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.ClassSpellMask&(MageSpellFrostfireBolt|MageSpellFireball) > 0 {
 				aura.Deactivate(sim)
 			}
 		},
+	})
+
+	brainFreezeAura.AttachSpellMod(core.SpellModConfig{
+		ClassMask:  MageSpellBrainFreeze,
+		FloatValue: -1,
+		Kind:       core.SpellMod_PowerCost_Pct,
+	})
+
+	brainFreezeAura.AttachSpellMod(core.SpellModConfig{
+		ClassMask:  MageSpellBrainFreeze,
+		FloatValue: -1,
+		Kind:       core.SpellMod_CastTime_Pct,
 	})
 
 	mage.RegisterAura(core.Aura{

@@ -157,31 +157,11 @@ func (mage *Mage) applyHotStreak() {
 		return -2.67*min(x, 0.3402) + 0.9230
 	}
 
-	hotStreakCostMod := mage.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PowerCost_Pct,
-		FloatValue: -1,
-		ClassMask:  MageSpellPyroblast,
-	})
-
-	hotStreakCastTimeMod := mage.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_CastTime_Pct,
-		FloatValue: -1,
-		ClassMask:  MageSpellPyroblast,
-	})
-
 	// Unimproved Hot Streak Proc Aura
 	hotStreakAura := mage.RegisterAura(core.Aura{
 		Label:    "Hot Streak",
 		ActionID: core.ActionID{SpellID: 48108},
 		Duration: time.Second * 10,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			hotStreakCostMod.Activate()
-			hotStreakCastTimeMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			hotStreakCostMod.Deactivate()
-			hotStreakCastTimeMod.Deactivate()
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.ClassSpellMask != MageSpellPyroblast {
 				return
@@ -191,6 +171,18 @@ func (mage *Mage) applyHotStreak() {
 			}
 			aura.Deactivate(sim)
 		},
+	})
+
+	hotStreakAura.AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -1,
+		ClassMask:  MageSpellPyroblast,
+	})
+
+	hotStreakAura.AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		FloatValue: -1,
+		ClassMask:  MageSpellPyroblast,
 	})
 
 	// Improved Hotstreak Crit Stacking Aura

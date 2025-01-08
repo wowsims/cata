@@ -273,24 +273,11 @@ func (dk *DeathKnight) applySuddenDoom() {
 		return
 	}
 
-	mod := dk.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PowerCost_Pct,
-		ClassMask:  DeathKnightSpellDeathCoil | DeathKnightSpellDeathCoilHeal,
-		FloatValue: -1,
-	})
-
 	suddenDoomProcAura := dk.GetOrRegisterAura(core.Aura{
 		Label:     "Sudden Doom Proc",
 		ActionID:  core.ActionID{SpellID: 81340},
 		Duration:  time.Second * 10,
 		MaxStacks: 0,
-
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			mod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			mod.Deactivate()
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if !spell.Matches(DeathKnightSpellDeathCoil) {
 				return
@@ -306,6 +293,12 @@ func (dk *DeathKnight) applySuddenDoom() {
 				aura.Deactivate(sim)
 			}
 		},
+	})
+
+	suddenDoomProcAura.AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  DeathKnightSpellDeathCoil | DeathKnightSpellDeathCoilHeal,
+		FloatValue: -1,
 	})
 
 	ppm := 1.0 * float64(dk.Talents.SuddenDoom)
@@ -399,17 +392,6 @@ func (dk *DeathKnight) applyDarkTransformation(shadowInfusionAura *core.Aura) {
 		Duration: time.Second * 30,
 	})
 
-	damageMod := dk.Ghoul.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: 0.6,
-	})
-
-	clawMod := dk.Ghoul.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		ClassMask:  GhoulSpellClaw,
-		FloatValue: 0.2,
-	})
-
 	dk.Ghoul.DarkTransformationAura = dk.Ghoul.GetOrRegisterAura(core.Aura{
 		Label:    "Dark Transformation",
 		ActionID: actionID,
@@ -417,14 +399,21 @@ func (dk *DeathKnight) applyDarkTransformation(shadowInfusionAura *core.Aura) {
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			trackingAura.Activate(sim)
-			damageMod.Activate()
-			clawMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			trackingAura.Deactivate(sim)
-			damageMod.Deactivate()
-			clawMod.Deactivate()
 		},
+	})
+
+	dk.Ghoul.DarkTransformationAura.AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: 0.6,
+	})
+
+	dk.Ghoul.DarkTransformationAura.AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  GhoulSpellClaw,
+		FloatValue: 0.2,
 	})
 
 	dk.GetOrRegisterSpell(core.SpellConfig{

@@ -159,47 +159,38 @@ func (war *FuryWarrior) applyBloodsurge() {
 		return
 	}
 
-	castTimeMod := war.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  warrior.SpellMaskSlam,
-		Kind:       core.SpellMod_CastTime_Pct,
-		FloatValue: -1.0,
-	})
-
-	costMod := war.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  warrior.SpellMaskSlam,
-		Kind:       core.SpellMod_PowerCost_Pct,
-		FloatValue: -1.0,
-	})
-
-	damageMod := war.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  warrior.SpellMaskSlam,
-		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: 0.2,
-	})
-
 	actionID := core.ActionID{SpellID: 46916}
 	buff := war.RegisterAura(core.Aura{
 		Label:    "Bloodsurge",
 		ActionID: actionID,
 		Duration: 10 * time.Second,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			castTimeMod.Activate()
-			costMod.Activate()
-			damageMod.Activate()
-		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if (spell.ClassSpellMask & warrior.SpellMaskSlam) != 0 {
 				aura.Deactivate(sim)
 			}
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			castTimeMod.Deactivate()
-			costMod.Deactivate()
-			damageMod.Deactivate()
-		},
+	})
+
+	buff.AttachSpellMod(core.SpellModConfig{
+		ClassMask:  warrior.SpellMaskSlam,
+		Kind:       core.SpellMod_CastTime_Pct,
+		FloatValue: -1.0,
+	})
+
+	buff.AttachSpellMod(core.SpellModConfig{
+		ClassMask:  warrior.SpellMaskSlam,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -1.0,
+	})
+
+	buff.AttachSpellMod(core.SpellModConfig{
+		ClassMask:  warrior.SpellMaskSlam,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: 0.2,
 	})
 
 	procChance := 0.1 * float64(war.Talents.Bloodsurge)
+
 	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
 		Name:           "Bloodsurge Trigger",
 		ActionID:       actionID,

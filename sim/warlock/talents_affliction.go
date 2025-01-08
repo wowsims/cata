@@ -195,12 +195,6 @@ func (warlock *Warlock) registerNightfall() {
 	nightfallProcChance := 0.02*float64(warlock.Talents.Nightfall) +
 		0.04*core.TernaryFloat64(warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfCorruption), 1, 0)
 
-	procMod := warlock.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_CastTime_Pct,
-		ClassMask:  WarlockSpellShadowBolt,
-		FloatValue: -1,
-	})
-
 	nightfallProcAura := warlock.RegisterAura(core.Aura{
 		Icd: &core.Cooldown{
 			Timer:    warlock.NewTimer(),
@@ -209,18 +203,18 @@ func (warlock *Warlock) registerNightfall() {
 		Label:    "Nightfall Shadow Trance",
 		ActionID: core.ActionID{SpellID: 17941},
 		Duration: 10 * time.Second,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			procMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			procMod.Deactivate()
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// Check if the shadowbolt was instant cast and not a normal one
 			if spell.Matches(WarlockSpellShadowBolt) && spell.CurCast.CastTime == 0 {
 				aura.Deactivate(sim)
 			}
 		},
+	})
+
+	nightfallProcAura.AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		ClassMask:  WarlockSpellShadowBolt,
+		FloatValue: -1,
 	})
 
 	core.MakePermanent(warlock.RegisterAura(core.Aura{

@@ -22,28 +22,22 @@ var ItemSetMaleficRaiment = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
-			dmgMod := warlock.AddDynamicMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Flat,
-				ClassMask:  WarlockSpellFelFlame,
-				FloatValue: 3.0,
-			})
-
 			aura := warlock.RegisterAura(core.Aura{
 				Label:     "Fel Spark",
 				ActionID:  core.ActionID{SpellID: 89937},
 				Duration:  15 * time.Second,
 				MaxStacks: 2,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					dmgMod.Activate()
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					dmgMod.Deactivate()
-				},
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if spell.Matches(WarlockSpellFelFlame) && result.Landed() {
 						aura.RemoveStack(sim)
 					}
 				},
+			})
+
+			aura.AttachSpellMod(core.SpellModConfig{
+				Kind:       core.SpellMod_DamageDone_Flat,
+				ClassMask:  WarlockSpellFelFlame,
+				FloatValue: 3.0,
 			})
 
 			setBonusAura.AttachProcTrigger(core.ProcTrigger{
@@ -158,22 +152,16 @@ var ItemSetBalespidersBurningVestments = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
-			dmgMod := warlock.AddDynamicMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Pct,
-				School:     core.SpellSchoolShadow | core.SpellSchoolFire,
-				FloatValue: 0.20,
-			})
-
 			aura := warlock.RegisterAura(core.Aura{
 				Label:    "Apocalypse",
 				ActionID: core.ActionID{SpellID: 99232},
 				Duration: 8 * time.Second,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					dmgMod.Activate()
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					dmgMod.Deactivate()
-				},
+			})
+
+			aura.AttachSpellMod(core.SpellModConfig{
+				Kind:       core.SpellMod_DamageDone_Pct,
+				School:     core.SpellSchoolShadow | core.SpellSchoolFire,
+				FloatValue: 0.20,
 			})
 
 			setBonusAura.AttachProcTrigger(core.ProcTrigger{

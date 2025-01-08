@@ -117,12 +117,6 @@ func (dk *DeathKnight) registerUnholyPresenceAura(timer *core.Timer) {
 	}
 	runicMulti := 1.0 + 0.02*float64(dk.Talents.ImprovedFrostPresence)
 
-	unholyPresenceMod := dk.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_GlobalCooldown_Flat,
-		ClassMask: DeathKnightSpellsAll,
-		TimeValue: time.Millisecond * -500,
-	})
-
 	presenceAura := dk.GetOrRegisterAura(core.Aura{
 		Label:    "Unholy Presence",
 		ActionID: actionID,
@@ -131,15 +125,20 @@ func (dk *DeathKnight) registerUnholyPresenceAura(timer *core.Timer) {
 			dk.MultiplyMeleeSpeed(sim, hasteMulti)
 			dk.MultiplyRuneRegenSpeed(sim, hasteMulti)
 			dk.MultiplyRunicRegen(runicMulti)
-			unholyPresenceMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			dk.MultiplyMeleeSpeed(sim, 1/hasteMulti)
 			dk.MultiplyRuneRegenSpeed(sim, 1/hasteMulti)
 			dk.MultiplyRunicRegen(1 / runicMulti)
-			unholyPresenceMod.Deactivate()
 		},
 	})
+
+	presenceAura.AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_GlobalCooldown_Flat,
+		ClassMask: DeathKnightSpellsAll,
+		TimeValue: time.Millisecond * -500,
+	})
+
 	presenceAura.NewExclusiveEffect(presenceEffectCategory, true, core.ExclusiveEffect{})
 	presenceAura.NewMovementSpeedEffect(0.15)
 

@@ -37,20 +37,15 @@ func (hunter *Hunter) registerAspectOfTheHawkSpell() {
 func (hunter *Hunter) registerAspectOfTheFoxSpell() {
 	actionID := core.ActionID{SpellID: 82661}
 
-	foxMod := hunter.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_AllowCastWhileMoving,
-		ClassMask: HunterSpellCobraShot | HunterSpellSteadyShot,
-	})
 	hunter.AspectOfTheFoxAura = core.MakePermanent(hunter.GetOrRegisterAura(core.Aura{
 		ActionID: actionID,
 		Label:    "Aspect of the Fox",
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			foxMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			foxMod.Deactivate()
-		},
 	}))
+
+	hunter.AspectOfTheFoxAura.AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_AllowCastWhileMoving,
+		ClassMask: HunterSpellCobraShot | HunterSpellSteadyShot,
+	})
 
 	hunter.applySharedAspectConfig(true, hunter.AspectOfTheFoxAura)
 

@@ -143,22 +143,16 @@ var ItemSetVolcanicRegalia = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			shaman := agent.(ShamanAgent).GetShaman()
 
-			instantLavaSurgeMod := shaman.AddDynamicMod(core.SpellModConfig{
-				Kind:       core.SpellMod_CastTime_Pct,
-				FloatValue: -1,
-				ClassMask:  SpellMaskLavaBurst,
-			})
-
 			shaman.VolcanicRegalia4PT12Aura = shaman.RegisterAura(core.Aura{
 				Label:    "Volcano",
 				ActionID: core.ActionID{SpellID: 99207},
 				Duration: 10 * time.Second,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					instantLavaSurgeMod.Activate()
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					instantLavaSurgeMod.Deactivate()
-				},
+			})
+
+			shaman.VolcanicRegalia4PT12Aura.AttachSpellMod(core.SpellModConfig{
+				Kind:       core.SpellMod_CastTime_Pct,
+				FloatValue: -1,
+				ClassMask:  SpellMaskLavaBurst,
 			})
 
 			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
@@ -374,24 +368,22 @@ var ItemSetSpiritwalkersBattlegear = core.NewItemSet(core.ItemSet{
 					return
 				}
 
-				dmgMod := shaman.AddDynamicMod(core.SpellModConfig{
-					Kind:       core.SpellMod_DamageDone_Pct,
-					FloatValue: 0.2,
-					ClassMask:  SpellMaskLightningBolt | SpellMaskChainLightning,
-				})
-
 				temporalMaelstrom := shaman.RegisterAura(core.Aura{
 					Label:    "Temporal Maelstrom" + shaman.Label,
 					ActionID: core.ActionID{SpellID: 105869},
 					Duration: time.Second * 30,
 					OnGain: func(aura *core.Aura, sim *core.Simulation) {
-						dmgMod.Activate()
 						shaman.PseudoStats.HealingDealtMultiplier *= 1.2
 					},
 					OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-						dmgMod.Deactivate()
 						shaman.PseudoStats.HealingDealtMultiplier /= 1.2
 					},
+				})
+
+				temporalMaelstrom.AttachSpellMod(core.SpellModConfig{
+					Kind:       core.SpellMod_DamageDone_Pct,
+					FloatValue: 0.2,
+					ClassMask:  SpellMaskLightningBolt | SpellMaskChainLightning,
 				})
 
 				shaman.MaelstromWeaponAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {

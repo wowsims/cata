@@ -77,12 +77,6 @@ func (warrior *Warrior) applyBattleTrance() {
 		return
 	}
 
-	btMod := warrior.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  battleTranceAffectedSpellsMask,
-		Kind:       core.SpellMod_PowerCost_Pct,
-		FloatValue: -1.0,
-	})
-
 	triggerSpellMask := SpellMaskBloodthirst | SpellMaskMortalStrike | SpellMaskShieldSlam
 
 	actionID := core.ActionID{SpellID: 12964}
@@ -90,9 +84,6 @@ func (warrior *Warrior) applyBattleTrance() {
 		Label:    "Battle Trance",
 		ActionID: actionID,
 		Duration: time.Second * 15,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			btMod.Activate()
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// Battle Trance affects the spells that proc it, so make sure we don't eat the proc with the same attack
 			// that just proced it
@@ -104,9 +95,12 @@ func (warrior *Warrior) applyBattleTrance() {
 				aura.Deactivate(sim)
 			}
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			btMod.Deactivate()
-		},
+	})
+
+	btAura.AttachSpellMod(core.SpellModConfig{
+		ClassMask:  battleTranceAffectedSpellsMask,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -1.0,
 	})
 
 	procChance := 0.05 * float64(warrior.Talents.BattleTrance)
@@ -179,29 +173,23 @@ func (warrior *Warrior) applyIncite() {
 		FloatValue: 5 * float64(warrior.Talents.Incite),
 	})
 
-	inciteMod := warrior.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  SpellMaskHeroicStrike,
-		Kind:       core.SpellMod_BonusCrit_Percent,
-		FloatValue: 200.0, // This is actually how Incite is implemented
-	})
-
 	actionID := core.ActionID{SpellID: 86627}
 	var lastTriggerTime int64 = 0
 	inciteAura := warrior.RegisterAura(core.Aura{
 		Label:    "Incite",
 		ActionID: actionID,
 		Duration: 10 * time.Second,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			inciteMod.Activate()
-		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if (spell.ClassSpellMask&SpellMaskHeroicStrike) != 0 && result.DidCrit() && lastTriggerTime != int64(sim.CurrentTime) {
 				aura.Deactivate(sim)
 			}
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			inciteMod.Deactivate()
-		},
+	})
+
+	inciteAura.AttachSpellMod(core.SpellModConfig{
+		ClassMask:  SpellMaskHeroicStrike,
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		FloatValue: 200.0, // This is actually how Incite is implemented
 	})
 
 	procChance := []float64{0.0, 0.33, 0.66, 1.0}[warrior.Talents.Incite]

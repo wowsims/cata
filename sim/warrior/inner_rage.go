@@ -11,23 +11,17 @@ const InnerRageExclusionTag = "InnerRageDeadlyCalm"
 func (warrior *Warrior) RegisterInnerRage() {
 	actionID := core.ActionID{SpellID: 1134}
 
-	costMod := warrior.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  SpellMaskHeroicStrike | SpellMaskCleave,
-		Kind:       core.SpellMod_Cooldown_Multiplier,
-		FloatValue: -0.5,
-	})
-
 	warrior.InnerRageAura = warrior.RegisterAura(core.Aura{
 		Label:    "Inner Rage",
 		ActionID: actionID,
 		Duration: time.Second * 15,
 		Tag:      InnerRageExclusionTag,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			costMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			costMod.Deactivate()
-		},
+	})
+
+	warrior.InnerRageAura.AttachSpellMod(core.SpellModConfig{
+		ClassMask:  SpellMaskHeroicStrike | SpellMaskCleave,
+		Kind:       core.SpellMod_Cooldown_Multiplier,
+		FloatValue: -0.5,
 	})
 
 	ir := warrior.RegisterSpell(core.SpellConfig{

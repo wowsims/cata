@@ -227,23 +227,17 @@ var ItemSetColossalDragonplateBattlegear = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			character := agent.(WarriorAgent).GetWarrior()
 
-			mod := character.AddDynamicMod(core.SpellModConfig{
-				ClassMask:  SpellMaskHeroicStrike,
-				Kind:       core.SpellMod_PowerCost_Flat,
-				FloatValue: -10,
-			})
-
 			actionID := core.ActionID{SpellID: 105860}
 			buffAura := character.RegisterAura(core.Aura{
 				Label:    "Volatile Outrage",
 				ActionID: actionID,
 				Duration: 15 * time.Second,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					mod.Activate()
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					mod.Deactivate()
-				},
+			})
+
+			buffAura.AttachSpellMod(core.SpellModConfig{
+				ClassMask:  SpellMaskHeroicStrike,
+				Kind:       core.SpellMod_PowerCost_Flat,
+				FloatValue: -10,
 			})
 
 			setBonusAura.AttachProcTrigger(core.ProcTrigger{

@@ -206,29 +206,22 @@ func (war *ArmsWarrior) applyJuggernaut() {
 		TimeValue: -2 * time.Second,
 	})
 
-	modJuggernaut := war.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_BonusCrit_Percent,
-		FloatValue: 25,
-		ClassMask:  warrior.SpellMaskMortalStrike | warrior.SpellMaskSlam,
-	})
 	actionId := core.ActionID{SpellID: 65156}
 	auraJugg := war.RegisterAura(core.Aura{
 		Label:    "Juggernaut",
 		ActionID: actionId,
 		Duration: 10 * time.Second,
-
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			modJuggernaut.Activate()
-		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if (spell.ClassSpellMask&warrior.SpellMaskSlam) != 0 || (spell.ClassSpellMask&warrior.SpellMaskMortalStrike) != 0 {
 				aura.Deactivate(sim)
 			}
 		},
+	})
 
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			modJuggernaut.Deactivate()
-		},
+	auraJugg.AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		FloatValue: 25,
+		ClassMask:  warrior.SpellMaskMortalStrike | warrior.SpellMaskSlam,
 	})
 
 	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{

@@ -145,62 +145,52 @@ var Tier13 = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			rogue := agent.(RogueAgent).GetRogue()
 
-			bonus60e := rogue.AddDynamicMod(core.SpellModConfig{
+			aura := rogue.GetOrRegisterAura(core.Aura{
+				Label:    "Tricks of Time",
+				ActionID: core.ActionID{SpellID: 105864},
+				Duration: time.Second * 6,
+			})
+
+			// Bonus 60 Enmergy
+			aura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_PowerCost_Flat,
 				FloatValue: -12,
 				ClassMask:  RogueSpellAmbush | RogueSpellBackstab | RogueSpellMutilate,
 			})
 
-			bonus45e := rogue.AddDynamicMod(core.SpellModConfig{
+			// Bonus 45 Enmergy
+			aura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_PowerCost_Flat,
 				FloatValue: -9,
 				ClassMask:  RogueSpellSinisterStrike | RogueSpellGouge | RogueSpellGarrote,
 			})
 
-			bonus40e := rogue.AddDynamicMod(core.SpellModConfig{
+			// Bonus 40 Enmergy
+			aura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_PowerCost_Flat,
 				FloatValue: -8,
 				ClassMask:  RogueSpellRevealingStrike,
 			})
 
-			bonus35e := rogue.AddDynamicMod(core.SpellModConfig{
+			// Bonus 35 Enmergy
+			aura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_PowerCost_Flat,
 				FloatValue: -7,
 				ClassMask:  RogueSpellEviscerate | RogueSpellEnvenom | RogueSpellHemorrhage,
 			})
 
-			bonus30e := rogue.AddDynamicMod(core.SpellModConfig{
+			// Bonus 30 Enmergy
+			aura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_PowerCost_Flat,
 				FloatValue: -6,
 				ClassMask:  RogueSpellRecuperate,
 			})
 
-			bonus25e := rogue.AddDynamicMod(core.SpellModConfig{
+			// Bonus 25 Enmergy
+			aura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_PowerCost_Flat,
 				FloatValue: -5,
 				ClassMask:  RogueSpellSliceAndDice | RogueSpellRupture,
-			})
-
-			aura := rogue.GetOrRegisterAura(core.Aura{
-				Label:    "Tricks of Time",
-				ActionID: core.ActionID{SpellID: 105864},
-				Duration: time.Second * 6,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					bonus60e.Activate()
-					bonus45e.Activate()
-					bonus40e.Activate()
-					bonus35e.Activate()
-					bonus30e.Activate()
-					bonus25e.Activate()
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					bonus60e.Deactivate()
-					bonus45e.Deactivate()
-					bonus40e.Deactivate()
-					bonus35e.Deactivate()
-					bonus30e.Deactivate()
-					bonus25e.Deactivate()
-				},
 			})
 
 			setBonusAura.AttachProcTrigger(core.ProcTrigger{

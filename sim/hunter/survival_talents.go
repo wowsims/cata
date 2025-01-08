@@ -102,22 +102,16 @@ func (hunter *Hunter) applySniperTraining() {
 	}
 	uptime = min(1, uptime)
 
-	dmgMod := hunter.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  HunterSpellCobraShot | HunterSpellSteadyShot,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: .02 * float64(hunter.Talents.SniperTraining),
-	})
-
 	stAura := hunter.RegisterAura(core.Aura{
 		Label:    "Sniper Training",
 		ActionID: core.ActionID{SpellID: 53304},
 		Duration: time.Second * 15,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			dmgMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			dmgMod.Deactivate()
-		},
+	})
+
+	stAura.AttachSpellMod(core.SpellModConfig{
+		ClassMask:  HunterSpellCobraShot | HunterSpellSteadyShot,
+		Kind:       core.SpellMod_DamageDone_Flat,
+		FloatValue: .02 * float64(hunter.Talents.SniperTraining),
 	})
 
 	core.ApplyFixedUptimeAura(stAura, uptime, time.Second*15, 1)

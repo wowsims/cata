@@ -14,23 +14,17 @@ func (war *ArmsWarrior) RegisterDeadlyCalm() {
 
 	dcActionID := core.ActionID{SpellID: 85730}
 
-	dcMod := war.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  warrior.SpellMaskSpecialAttack,
-		Kind:       core.SpellMod_PowerCost_Pct,
-		FloatValue: -1,
-	})
-
 	dcAura := war.RegisterAura(core.Aura{
 		Label:    "Deadly Calm",
 		ActionID: dcActionID,
 		Duration: time.Second * 10,
 		Tag:      warrior.InnerRageExclusionTag,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			dcMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			dcMod.Deactivate()
-		},
+	})
+
+	dcAura.AttachSpellMod(core.SpellModConfig{
+		ClassMask:  warrior.SpellMaskSpecialAttack,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -1,
 	})
 
 	dc := war.RegisterSpell(core.SpellConfig{

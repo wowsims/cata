@@ -11,22 +11,16 @@ func (paladin *Paladin) registerInquisition() {
 	hpMetrics := paladin.NewHolyPowerMetrics(actionId)
 	inquisitionDuration := time.Millisecond * time.Duration(4000*[]float64{1, 1.66, 2.33, 3.0}[paladin.Talents.InquiryOfFaith])
 
-	inquisitionMod := paladin.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: 0.3,
-		School:     core.SpellSchoolHoly,
-	})
-
 	paladin.InquisitionAura = paladin.RegisterAura(core.Aura{
 		Label:    "Inquisition" + paladin.Label,
 		ActionID: actionId,
 		Duration: inquisitionDuration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			inquisitionMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			inquisitionMod.Deactivate()
-		},
+	})
+
+	paladin.InquisitionAura.AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: 0.3,
+		School:     core.SpellSchoolHoly,
 	})
 
 	// Inquisition self-buff.

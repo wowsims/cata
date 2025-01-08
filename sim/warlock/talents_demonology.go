@@ -138,31 +138,11 @@ func (warlock *Warlock) registerMoltenCore() {
 		return
 	}
 
-	damageMod := warlock.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  WarlockSpellIncinerate,
-		FloatValue: 0.06 * float64(warlock.Talents.MoltenCore),
-	})
-
-	castTimeMod := warlock.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_CastTime_Pct,
-		ClassMask:  WarlockSpellIncinerate,
-		FloatValue: -0.1 * float64(warlock.Talents.MoltenCore),
-	})
-
 	moltenCoreAura := warlock.RegisterAura(core.Aura{
 		Label:     "Molten Core Proc Aura",
 		ActionID:  core.ActionID{SpellID: 71165},
 		Duration:  15 * time.Second,
 		MaxStacks: 3,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			damageMod.Activate()
-			castTimeMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			damageMod.Deactivate()
-			castTimeMod.Deactivate()
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// if the incinerate cast started BEFORE we got the molten core buff, the incinerate benefits from it but
 			// does not consume a stack. Detect this and only remove a stack if that's not the case
@@ -170,6 +150,18 @@ func (warlock *Warlock) registerMoltenCore() {
 				aura.RemoveStack(sim)
 			}
 		},
+	})
+
+	moltenCoreAura.AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  WarlockSpellIncinerate,
+		FloatValue: 0.06 * float64(warlock.Talents.MoltenCore),
+	})
+
+	moltenCoreAura.AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		ClassMask:  WarlockSpellIncinerate,
+		FloatValue: -0.1 * float64(warlock.Talents.MoltenCore),
 	})
 
 	procChance := 0.02 * float64(warlock.Talents.MoltenCore)

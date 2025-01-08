@@ -111,24 +111,11 @@ func init() {
 			return
 		}
 
-		cinderMod := character.AddDynamicMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Pct,
-			FloatValue: 0.2,
-			ClassMask:  DeathKnightSpellsAll,
-			School:     core.SpellSchoolShadow | core.SpellSchoolFrost,
-		})
-
 		cinderAura := character.GetOrRegisterAura(core.Aura{
 			ActionID:  core.ActionID{SpellID: 53386},
 			Label:     "Cinderglacier",
 			Duration:  time.Second * 30,
 			MaxStacks: 2,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				cinderMod.Activate()
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				cinderMod.Deactivate()
-			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if !result.Landed() {
 					return
@@ -146,6 +133,13 @@ func init() {
 					aura.RemoveStack(sim)
 				}
 			},
+		})
+
+		cinderAura.AttachSpellMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: 0.2,
+			ClassMask:  DeathKnightSpellsAll,
+			School:     core.SpellSchoolShadow | core.SpellSchoolFrost,
 		})
 
 		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{

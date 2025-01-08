@@ -126,22 +126,16 @@ var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			paladin := agent.(PaladinAgent).GetPaladin()
 
-			damageMod := paladin.AddDynamicMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Pct,
-				ClassMask:  SpellMaskModifiedByZealOfTheCrusader,
-				FloatValue: 0.18,
-			})
-
 			zealOfTheCrusader := paladin.RegisterAura(core.Aura{
 				Label:    "Zeal of the Crusader" + paladin.Label,
 				ActionID: core.ActionID{SpellID: 105819},
 				Duration: time.Second * 20,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					damageMod.Activate()
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					damageMod.Deactivate()
-				},
+			})
+
+			zealOfTheCrusader.AttachSpellMod(core.SpellModConfig{
+				Kind:       core.SpellMod_DamageDone_Pct,
+				ClassMask:  SpellMaskModifiedByZealOfTheCrusader,
+				FloatValue: 0.18,
 			})
 
 			setBonusAura.AttachProcTrigger(core.ProcTrigger{

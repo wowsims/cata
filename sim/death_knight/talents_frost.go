@@ -124,24 +124,11 @@ func (dk *DeathKnight) applyRime() {
 		return
 	}
 
-	rimeMod := dk.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PowerCost_Pct,
-		FloatValue: -1,
-		ClassMask:  DeathKnightSpellIcyTouch | DeathKnightSpellHowlingBlast,
-	})
-
 	freezingFogAura := dk.GetOrRegisterAura(core.Aura{
 		Label:     "Freezing Fog",
 		ActionID:  core.ActionID{SpellID: 59052},
 		Duration:  time.Second * 15,
 		MaxStacks: 0,
-
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			rimeMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rimeMod.Deactivate()
-		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ClassSpellMask&(DeathKnightSpellIcyTouch|DeathKnightSpellHowlingBlast) == 0 {
 				return
@@ -153,6 +140,12 @@ func (dk *DeathKnight) applyRime() {
 				aura.Deactivate(sim)
 			}
 		},
+	})
+
+	freezingFogAura.AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -1,
+		ClassMask:  DeathKnightSpellIcyTouch | DeathKnightSpellHowlingBlast,
 	})
 
 	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
@@ -180,23 +173,10 @@ func (dk *DeathKnight) applyKillingMachine() {
 		return
 	}
 
-	kmMod := dk.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_BonusCrit_Percent,
-		FloatValue: 100,
-		ClassMask:  DeathKnightSpellObliterate | DeathKnightSpellFrostStrike,
-	})
-
 	kmAura := dk.GetOrRegisterAura(core.Aura{
 		Label:    "Killing Machine Proc",
 		ActionID: core.ActionID{SpellID: 51124},
 		Duration: time.Second * 10,
-
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			kmMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			kmMod.Deactivate()
-		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !spell.Matches(DeathKnightSpellObliterate | DeathKnightSpellFrostStrike) {
 				return
@@ -209,6 +189,12 @@ func (dk *DeathKnight) applyKillingMachine() {
 			}
 			aura.Deactivate(sim)
 		},
+	})
+
+	kmAura.AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		FloatValue: 100,
+		ClassMask:  DeathKnightSpellObliterate | DeathKnightSpellFrostStrike,
 	})
 
 	// Dummy spell to react with triggers

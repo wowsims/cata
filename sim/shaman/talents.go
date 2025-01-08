@@ -129,25 +129,6 @@ func (shaman *Shaman) applyElementalFocus() {
 	var triggeringSpell *core.Spell
 	var triggerTime time.Duration
 
-	affectedSpells := SpellMaskLightningBolt | SpellMaskChainLightning | SpellMaskLavaBurst | SpellMaskFireNova | SpellMaskEarthShock | SpellMaskFlameShock | SpellMaskFrostShock
-	costReductionMod := shaman.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PowerCost_Pct,
-		ClassMask:  affectedSpells,
-		FloatValue: -0.4,
-	})
-
-	oathBonus := 0.05 * float64(shaman.Talents.ElementalOath)
-	oathMod := shaman.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		School:     core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolNature,
-		FloatValue: oathBonus,
-	})
-	oathModEarthquake := shaman.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  SpellMaskEarthquake,
-		FloatValue: oathBonus,
-	})
-
 	maxStacks := int32(2)
 
 	// TODO: need to check for additional spells that benefit from the cost reduction
@@ -156,16 +137,6 @@ func (shaman *Shaman) applyElementalFocus() {
 		ActionID:  core.ActionID{SpellID: 16246},
 		Duration:  time.Second * 15,
 		MaxStacks: maxStacks,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			costReductionMod.Activate()
-			oathMod.Activate()
-			oathModEarthquake.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			costReductionMod.Deactivate()
-			oathMod.Deactivate()
-			oathModEarthquake.Deactivate()
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if !spell.Flags.Matches(SpellFlagShock|SpellFlagFocusable) || (spell.ClassSpellMask&(SpellMaskOverload|SpellMaskThunderstorm) != 0) {
 				return
@@ -175,6 +146,25 @@ func (shaman *Shaman) applyElementalFocus() {
 			}
 			aura.RemoveStack(sim)
 		},
+	})
+
+	affectedSpells := SpellMaskLightningBolt | SpellMaskChainLightning | SpellMaskLavaBurst | SpellMaskFireNova | SpellMaskEarthShock | SpellMaskFlameShock | SpellMaskFrostShock
+	clearcastingAura.AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  affectedSpells,
+		FloatValue: -0.4,
+	})
+
+	oathBonus := 0.05 * float64(shaman.Talents.ElementalOath)
+	clearcastingAura.AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		School:     core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolNature,
+		FloatValue: oathBonus,
+	})
+	clearcastingAura.AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  SpellMaskEarthquake,
+		FloatValue: oathBonus,
 	})
 
 	shaman.RegisterAura(core.Aura{

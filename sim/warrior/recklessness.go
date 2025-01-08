@@ -9,24 +9,22 @@ import (
 func (warrior *Warrior) RegisterRecklessnessCD() {
 	actionID := core.ActionID{SpellID: 1719}
 
-	critMod := warrior.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  SpellMaskSpecialAttack,
-		Kind:       core.SpellMod_BonusCrit_Percent,
-		FloatValue: 50,
-	})
-
 	reckAura := warrior.RegisterAura(core.Aura{
 		Label:    "Recklessness",
 		ActionID: actionID,
 		Duration: time.Second * 12,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.PseudoStats.DamageTakenMultiplier *= 1.2
-			critMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.PseudoStats.DamageTakenMultiplier /= 1.2
-			critMod.Deactivate()
 		},
+	})
+
+	reckAura.AttachSpellMod(core.SpellModConfig{
+		ClassMask:  SpellMaskSpecialAttack,
+		Kind:       core.SpellMod_BonusCrit_Percent,
+		FloatValue: 50,
 	})
 
 	reckSpell := warrior.RegisterSpell(core.SpellConfig{

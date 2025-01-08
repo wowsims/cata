@@ -160,43 +160,33 @@ func (paladin *Paladin) applyArtOfWar() {
 		return
 	}
 
-	exorcismCastTimeMod := paladin.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_CastTime_Pct,
-		ClassMask:  SpellMaskExorcism,
-		FloatValue: -1.0,
-	})
-
-	exorcismCostMod := paladin.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PowerCost_Pct,
-		ClassMask:  SpellMaskExorcism,
-		FloatValue: -1.0,
-	})
-
-	exorcismDamageMod := paladin.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  SpellMaskExorcism | SpellMaskGlyphOfExorcism,
-		FloatValue: 1.0,
-	})
-
 	artOfWarInstantCast := paladin.RegisterAura(core.Aura{
 		Label:    "The Art Of War" + paladin.Label,
 		ActionID: core.ActionID{SpellID: 59578},
 		Duration: time.Second * 15,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			exorcismCastTimeMod.Activate()
-			exorcismCostMod.Activate()
-			exorcismDamageMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			exorcismCastTimeMod.Deactivate()
-			exorcismCostMod.Deactivate()
-			exorcismDamageMod.Deactivate()
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.ClassSpellMask&SpellMaskExorcism != 0 {
 				aura.Deactivate(sim)
 			}
 		},
+	})
+
+	artOfWarInstantCast.AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		ClassMask:  SpellMaskExorcism,
+		FloatValue: -1.0,
+	})
+
+	artOfWarInstantCast.AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  SpellMaskExorcism,
+		FloatValue: -1.0,
+	})
+
+	artOfWarInstantCast.AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  SpellMaskExorcism | SpellMaskGlyphOfExorcism,
+		FloatValue: 1.0,
 	})
 
 	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
