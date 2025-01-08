@@ -16,7 +16,7 @@ func init() {
 		MaxDmg:  8750,
 		Flags:   core.SpellFlagNoSpellMods | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt,
 		Outcome: shared.OutcomeMeleeNoBlockDodgeParryCrit,
-		Slots:   core.TrinketSlots,
+		Slots:   core.TrinketSlots(),
 		Trigger: core.ProcTrigger{
 			Name:     "Darkmoon Card: Hurricane",
 			ProcMask: core.ProcMaskMeleeOrRanged,
@@ -34,7 +34,7 @@ func init() {
 		MaxDmg:  8750,
 		Flags:   core.SpellFlagNoSpellMods | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt,
 		Outcome: shared.OutcomeMeleeNoBlockDodgeParryCrit,
-		Slots:   core.TrinketSlots,
+		Slots:   core.TrinketSlots(),
 		Trigger: core.ProcTrigger{
 			Name:     "Darkmoon Card: Hurricane",
 			ProcMask: core.ProcMaskMeleeOrRanged,
@@ -95,7 +95,7 @@ func init() {
 			},
 		}))
 
-		character.ItemSwap.RegisterProc(68925, aura, core.TrinketSlots)
+		character.ItemSwap.RegisterProc(68925, aura, core.TrinketSlots())
 	})
 
 	core.NewItemEffect(69110, func(agent core.Agent) {
@@ -147,7 +147,7 @@ func init() {
 			},
 		}))
 
-		character.ItemSwap.RegisterProc(69110, aura, core.TrinketSlots)
+		character.ItemSwap.RegisterProc(69110, aura, core.TrinketSlots())
 	})
 
 }

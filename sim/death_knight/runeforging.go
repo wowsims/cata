@@ -99,7 +99,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(3368, aura, core.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(3368, aura, core.MeleeWeaponSlots())
 	})
 
 	// Rune of Cinderglacier
@@ -159,7 +159,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(3369, aura, core.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(3369, aura, core.MeleeWeaponSlots())
 	})
 
 	// Rune of Razorice
@@ -252,6 +252,6 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(3370, aura, core.WeaponSlots)
+		character.ItemSwap.RegisterEnchantProc(3370, aura, core.MeleeWeaponSlots())
 	})
 }
