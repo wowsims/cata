@@ -197,12 +197,6 @@ var ItemSetDeepEarthRegalia = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		// Insect Swarm increases all damage done by your Starfire, Starsurge, and Wrath spells against that target by 3%
 		2: func(agent core.Agent) {
-			const (
-				DDBC_2pcT13 int = iota
-
-				DDBC_Total
-			)
-
 			t13InsectSwarmBonus := func(_ *core.Simulation, spell *core.Spell, _ *core.AttackTable) float64 {
 				if spell.ClassSpellMask&(DruidSpellStarsurge|DruidSpellStarfire|DruidSpellWrath) > 0 {
 					return 1.03
@@ -219,10 +213,10 @@ var ItemSetDeepEarthRegalia = core.NewItemSet(core.ItemSet{
 					Label:    "Item - Druid T13 Balance 2P Bonus (Insect Swarm) - " + druid.Label,
 					Duration: core.NeverExpires,
 					OnGain: func(aura *core.Aura, sim *core.Simulation) {
-						core.EnableDamageDoneByCaster(DDBC_2pcT13, DDBC_Total, druid.AttackTables[aura.Unit.UnitIndex], t13InsectSwarmBonus)
+						druid.AttackTables[aura.Unit.UnitIndex].DamageDoneByCasterMultiplier = t13InsectSwarmBonus
 					},
 					OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-						core.DisableDamageDoneByCaster(DDBC_2pcT13, druid.AttackTables[aura.Unit.UnitIndex])
+						druid.AttackTables[aura.Unit.UnitIndex].DamageDoneByCasterMultiplier = nil
 					},
 				})
 			})
@@ -232,16 +226,14 @@ var ItemSetDeepEarthRegalia = core.NewItemSet(core.ItemSet{
 					return
 				}
 
-				for _, target := range druid.Env.AllUnits {
-					if target.Type == core.EnemyUnit {
-						spell.Dot(target).ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-							t13InsectSwarmBonusDummyAuras.Get(aura.Unit).Activate(sim)
-						})
+				for _, target := range druid.Env.Encounter.TargetUnits {
+					spell.Dot(target).ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+						t13InsectSwarmBonusDummyAuras.Get(aura.Unit).Activate(sim)
+					})
 
-						spell.Dot(target).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-							t13InsectSwarmBonusDummyAuras.Get(aura.Unit).Deactivate(sim)
-						})
-					}
+					spell.Dot(target).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+						t13InsectSwarmBonusDummyAuras.Get(aura.Unit).Deactivate(sim)
+					})
 				}
 			})
 		},
