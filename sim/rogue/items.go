@@ -282,18 +282,16 @@ var JawsOfRetribution = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplySetBonus{
 		// Your melee attacks have a chance to grant Suffering, increasing your Agility by 2, stacking up to 50 times.
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
-			agiAura := agent.GetCharacter().GetOrRegisterAura(core.Aura{
-				Label:     "Suffering",
-				ActionID:  core.ActionID{SpellID: 109959},
-				MaxStacks: 50,
-				Duration:  30 * time.Second,
-				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-					aura.Unit.AddStatDynamic(sim, stats.Agility, -2*float64(oldStacks))
-					aura.Unit.AddStatDynamic(sim, stats.Agility, 2*float64(newStacks))
+			character := agent.GetCharacter()
+
+			agiAura := core.MakeStackingAura(character, core.StackingStatAura{
+				Aura: core.Aura{
+					Label:     "Suffering",
+					ActionID:  core.ActionID{SpellID: 109959},
+					Duration:  time.Second * 30,
+					MaxStacks: 50,
 				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					aura.SetStacks(sim, 0)
-				},
+				BonusPerStack: stats.Stats{stats.Agility: 2},
 			})
 
 			setBonusAura.AttachProcTrigger(core.ProcTrigger{
@@ -301,7 +299,7 @@ var JawsOfRetribution = core.NewItemSet(core.ItemSet{
 				Callback:   core.CallbackOnSpellHitDealt,
 				ProcMask:   core.ProcMaskMelee,
 				Outcome:    core.OutcomeLanded,
-				ProcChance: getFangsProcRate(agent.GetCharacter()),
+				ProcChance: getFangsProcRate(character),
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					agiAura.Activate(sim)
 					agiAura.AddStack(sim)
@@ -318,18 +316,16 @@ var MawOfOblivion = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplySetBonus{
 		// Your melee attacks have a chance to grant Nightmare, increasing your Agility by 5, stacking up to 50 times.
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
-			agiAura := agent.GetCharacter().GetOrRegisterAura(core.Aura{
-				Label:     "Nightmare",
-				ActionID:  core.ActionID{SpellID: 109955},
-				MaxStacks: 50,
-				Duration:  30 * time.Second,
-				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-					aura.Unit.AddStatDynamic(sim, stats.Agility, -5*float64(oldStacks))
-					aura.Unit.AddStatDynamic(sim, stats.Agility, 5*float64(newStacks))
+			character := agent.GetCharacter()
+
+			agiAura := core.MakeStackingAura(character, core.StackingStatAura{
+				Aura: core.Aura{
+					Label:     "Nightmare",
+					ActionID:  core.ActionID{SpellID: 109955},
+					Duration:  time.Second * 30,
+					MaxStacks: 50,
 				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					aura.SetStacks(sim, 0)
-				},
+				BonusPerStack: stats.Stats{stats.Agility: 5},
 			})
 
 			setBonusAura.AttachProcTrigger(core.ProcTrigger{
@@ -362,18 +358,14 @@ var FangsOfTheFather = core.NewItemSet(core.ItemSet{
 			character := agent.GetCharacter()
 			cpMetrics := character.NewComboPointMetrics(core.ActionID{SpellID: 109950})
 
-			agiAura := character.GetOrRegisterAura(core.Aura{
-				Label:     "Shadows of the Destroyer",
-				ActionID:  core.ActionID{SpellID: 109941},
-				MaxStacks: 50,
-				Duration:  30 * time.Second,
-				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-					aura.Unit.AddStatDynamic(sim, stats.Agility, -17*float64(oldStacks))
-					aura.Unit.AddStatDynamic(sim, stats.Agility, 17*float64(newStacks))
+			agiAura := core.MakeStackingAura(character, core.StackingStatAura{
+				Aura: core.Aura{
+					Label:     "Shadows of the Destroyer",
+					ActionID:  core.ActionID{SpellID: 109941},
+					Duration:  time.Second * 30,
+					MaxStacks: 50,
 				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					aura.SetStacks(sim, 0)
-				},
+				BonusPerStack: stats.Stats{stats.Agility: 17},
 			})
 
 			wingsProc := character.GetOrRegisterAura(core.Aura{

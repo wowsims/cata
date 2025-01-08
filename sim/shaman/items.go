@@ -180,17 +180,11 @@ var ItemSetSpiritwalkersRegalia = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			shaman := agent.(ShamanAgent).GetShaman()
 
-			aura := shaman.RegisterAura(core.Aura{
-				Label:    "Fury of the Ancestors",
-				ActionID: core.ActionID{SpellID: 105779},
-				Duration: 15 * time.Second,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					shaman.AddStatDynamic(sim, stats.MasteryRating, 2000)
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					shaman.AddStatDynamic(sim, stats.MasteryRating, -2000)
-				},
-			})
+			aura := shaman.NewTemporaryStatsAura("Fury of the Ancestors",
+				core.ActionID{SpellID: 105779},
+				stats.Stats{stats.MasteryRating: 2000},
+				15*time.Second,
+			)
 
 			setBonusAura.AttachProcTrigger(core.ProcTrigger{
 				Name:           "Item - Shaman T13 Elemental 2P Bonus (Elemental Mastery)",
@@ -204,17 +198,16 @@ var ItemSetSpiritwalkersRegalia = core.NewItemSet(core.ItemSet{
 
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
-			shaman := agent.(ShamanAgent).GetShaman()
+			character := agent.(ShamanAgent).GetCharacter()
 
-			procAura := shaman.RegisterAura(core.Aura{
-				Label:     "Time Rupture",
-				ActionID:  core.ActionID{SpellID: 105821},
-				Duration:  4 * time.Second,
-				MaxStacks: 3,
-				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-					changedHasteRating := (newStacks - oldStacks) * 250
-					shaman.AddStatDynamic(sim, stats.HasteRating, float64(changedHasteRating))
+			procAura := core.MakeStackingAura(character, core.StackingStatAura{
+				Aura: core.Aura{
+					Label:     "Time Rupture",
+					ActionID:  core.ActionID{SpellID: 105821},
+					Duration:  4 * time.Second,
+					MaxStacks: 3,
 				},
+				BonusPerStack: stats.Stats{stats.HasteRating: 250},
 			})
 
 			setBonusAura.AttachProcTrigger(core.ProcTrigger{
