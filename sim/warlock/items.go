@@ -226,25 +226,17 @@ var ItemSetVestmentsOfTheFacelessShroud = core.NewItemSet(core.ItemSet{
 			summonDuration := core.TernaryDuration(warlock.Spec == proto.Spec_SpecDemonologyWarlock, 20*time.Second, 30*time.Second)
 
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				Kind:      core.SpellMod_Custom,
+				Kind:      core.SpellMod_BuffDuration_Flat,
 				ClassMask: WarlockSpellSummonDoomguard,
-				ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
-					warlock.SummonDoomguardAura.Duration += summonDuration
-				},
-				RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
-					warlock.SummonDoomguardAura.Duration -= summonDuration
-				},
+				KeyValue:  "Summon Doomguard",
+				TimeValue: summonDuration,
 			})
 
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				Kind:      core.SpellMod_Custom,
+				Kind:      core.SpellMod_BuffDuration_Flat,
 				ClassMask: WarlockSpellSummonInfernal,
-				ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
-					warlock.SummonInfernalAura.Duration += summonDuration
-				},
-				RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
-					warlock.SummonInfernalAura.Duration -= summonDuration
-				},
+				KeyValue:  "Summon Infernal",
+				TimeValue: summonDuration,
 			})
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {

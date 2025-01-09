@@ -71,9 +71,6 @@ type DeathKnight struct {
 	// Runic power decay, used during pre pull
 	RunicPowerDecayAura *core.Aura
 
-	// Auras
-	IceBoundFortituteAura *core.Aura
-
 	// Cached Gurthalak tentacles
 	gurthalakTentacles []*cata.TentacleOfTheOldOnesPet
 

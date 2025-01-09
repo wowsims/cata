@@ -32,12 +32,10 @@ type Warlock struct {
 	Imp       *WarlockPet
 	Succubus  *WarlockPet
 
-	SummonDoomguardAura *core.Aura
-	Doomguard           *DoomguardPet
-	Infernal            *InfernalPet
-	EbonImp             *EbonImpPet
-	SummonInfernalAura  *core.Aura
-	FieryImp            *FieryImpPet
+	Doomguard *DoomguardPet
+	Infernal  *InfernalPet
+	EbonImp   *EbonImpPet
+	FieryImp  *FieryImpPet
 
 	SoulShards   int32
 	SoulBurnAura *core.Aura

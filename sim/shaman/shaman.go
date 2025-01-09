@@ -117,10 +117,9 @@ type Shaman struct {
 	Stormstrike       *core.Spell
 	PrimalStrike      *core.Spell
 
-	LightningShield        *core.Spell
-	LightningShieldAura    *core.Aura
-	Fulmination            *core.Spell
-	SpiritwalkersGraceAura *core.Aura
+	LightningShield     *core.Spell
+	LightningShieldAura *core.Aura
+	Fulmination         *core.Spell
 
 	Earthquake   *core.Spell
 	Thunderstorm *core.Spell

@@ -66,14 +66,10 @@ var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 			paladin := agent.(PaladinAgent).GetPaladin()
 
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				Kind:      core.SpellMod_Custom,
+				Kind:      core.SpellMod_BuffDuration_Flat,
 				ClassMask: SpellMaskZealotry,
-				ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
-					paladin.ZealotryAura.Duration += time.Second * 15
-				},
-				RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
-					paladin.ZealotryAura.Duration -= time.Second * 15
-				},
+				KeyValue:  "Zealotry" + paladin.Label,
+				TimeValue: time.Second * 15,
 			})
 
 			setBonusAura.ExposeToAPL(99116)

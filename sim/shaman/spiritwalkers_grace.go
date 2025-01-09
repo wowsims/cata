@@ -18,7 +18,7 @@ func (shaman *Shaman) registerSpiritwalkersGraceSpell() {
 		ClassMask: SpellMaskNone,
 	})
 
-	shaman.SpiritwalkersGraceAura = shaman.RegisterAura(core.Aura{
+	spiritwalkersGraceAura := shaman.RegisterAura(core.Aura{
 		Label:    "Spiritwalker's Grace" + shaman.Label,
 		ActionID: actionID,
 		Duration: 15 * time.Second,
@@ -49,8 +49,9 @@ func (shaman *Shaman) registerSpiritwalkersGraceSpell() {
 				Duration: time.Second * 120,
 			},
 		},
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			shaman.SpiritwalkersGraceAura.Activate(sim)
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+			spell.RelatedSelfBuff.Activate(sim)
 		},
+		RelatedSelfBuff: spiritwalkersGraceAura,
 	})
 }

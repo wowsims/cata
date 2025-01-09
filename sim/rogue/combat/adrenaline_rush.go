@@ -49,8 +49,9 @@ func (comRogue *CombatRogue) registerAdrenalineRushCD() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			comRogue.BreakStealth(sim)
-			comRogue.AdrenalineRushAura.Activate(sim)
+			spell.RelatedSelfBuff.Activate(sim)
 		},
+		RelatedSelfBuff: comRogue.AdrenalineRushAura,
 	})
 
 	comRogue.AddMajorCooldown(core.MajorCooldown{

@@ -53,7 +53,7 @@ func (rogue *Rogue) registerVendetta() {
 			aura := vendettaAuras.Get(target)
 			aura.Activate(sim)
 		},
-		RelatedAuras: []core.AuraArray{vendettaAuras},
+		RelatedAuraArrays: vendettaAuras.ToMap(),
 	})
 
 	rogue.AddMajorCooldown(core.MajorCooldown{

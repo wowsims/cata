@@ -40,6 +40,7 @@ func (subRogue *SubtletyRogue) registerShadowDanceCD() {
 			subRogue.BreakStealth(sim)
 			subRogue.ShadowDanceAura.Activate(sim)
 		},
+		RelatedSelfBuff: subRogue.ShadowDanceAura,
 	})
 
 	subRogue.AddMajorCooldown(core.MajorCooldown{

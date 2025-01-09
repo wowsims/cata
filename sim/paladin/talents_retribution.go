@@ -369,7 +369,9 @@ func (paladin *Paladin) applyZealotry() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			paladin.ZealotryAura.Activate(sim)
+			spell.RelatedSelfBuff.Activate(sim)
 		},
+
+		RelatedSelfBuff: paladin.ZealotryAura,
 	})
 }

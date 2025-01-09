@@ -15,7 +15,7 @@ func (dk *DeathKnight) registerIceboundFortitudeSpell() {
 
 	dmgTakenMult := 0.8 - 0.15*float64(dk.Talents.SanguineFortitude)
 
-	dk.IceBoundFortituteAura = dk.RegisterAura(core.Aura{
+	iceBoundFortituteAura := dk.RegisterAura(core.Aura{
 		Label:    "Icebound Fortitude",
 		ActionID: actionID,
 		Duration: dk.iceBoundFortituteBaseDuration(),
@@ -44,8 +44,9 @@ func (dk *DeathKnight) registerIceboundFortitudeSpell() {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			dk.IceBoundFortituteAura.Activate(sim)
+			spell.RelatedSelfBuff.Activate(sim)
 		},
+		RelatedSelfBuff: iceBoundFortituteAura,
 	})
 
 	if !dk.Inputs.IsDps {
