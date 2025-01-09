@@ -228,14 +228,12 @@ var ItemSetVestmentsOfTheFacelessShroud = core.NewItemSet(core.ItemSet{
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:      core.SpellMod_BuffDuration_Flat,
 				ClassMask: WarlockSpellSummonDoomguard,
-				KeyValue:  "Summon Doomguard",
 				TimeValue: summonDuration,
 			})
 
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:      core.SpellMod_BuffDuration_Flat,
 				ClassMask: WarlockSpellSummonInfernal,
-				KeyValue:  "Summon Infernal",
 				TimeValue: summonDuration,
 			})
 		},

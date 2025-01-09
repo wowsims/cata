@@ -264,7 +264,6 @@ var ItemSetSpiritwalkersVestments = core.NewItemSet(core.ItemSet{
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:      core.SpellMod_BuffDuration_Flat,
 				ClassMask: SpellMaskSpiritwalkersGrace,
-				KeyValue:  "Spiritwalker's Grace" + shaman.Label,
 				TimeValue: 5 * time.Second,
 			})
 		},

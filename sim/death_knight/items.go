@@ -78,7 +78,6 @@ var ItemSetMagmaPlatedBattlearmor = core.NewItemSet(core.ItemSet{
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:      core.SpellMod_BuffDuration_Flat,
 				ClassMask: DeathKnightSpellIceboundFortitude,
-				KeyValue:  "Icebound Fortitude",
 				TimeValue: 6 * time.Second,
 			})
 		},

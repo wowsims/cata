@@ -239,14 +239,12 @@ var Tier13 = core.NewItemSet(core.ItemSet{
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:      core.SpellMod_BuffDuration_Flat,
 				ClassMask: RogueSpellAdrenalineRush,
-				KeyValue:  "Adrenaline Rush",
 				TimeValue: time.Second * 3,
 			})
 
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:      core.SpellMod_BuffDuration_Flat,
 				ClassMask: RogueSpellShadowDance,
-				KeyValue:  "Shadow Dance",
 				TimeValue: time.Second * 2,
 			})
 		},

@@ -62,13 +62,9 @@ var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 			})
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
-			// Handled in talents_retribution.go
-			paladin := agent.(PaladinAgent).GetPaladin()
-
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:      core.SpellMod_BuffDuration_Flat,
 				ClassMask: SpellMaskZealotry,
-				KeyValue:  "Zealotry" + paladin.Label,
 				TimeValue: time.Second * 15,
 			})
 
