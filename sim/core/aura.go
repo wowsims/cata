@@ -898,6 +898,26 @@ func (auras AuraArray) Get(target *Unit) *Aura {
 	return auras[target.UnitIndex]
 }
 
+func (auras AuraArray) IsEmpty() bool {
+	for _, aura := range auras {
+		if aura != nil {
+			return false
+		}
+	}
+
+	return true
+}
+
+func (auras AuraArray) FindLabel() string {
+	for _, aura := range auras {
+		if aura != nil {
+			return aura.Label
+		}
+	}
+
+	panic("No valid auras in array!")
+}
+
 func (caster *Unit) NewAllyAuraArray(makeAura func(*Unit) *Aura) AuraArray {
 	auras := make([]*Aura, len(caster.Env.AllUnits))
 	for _, target := range caster.Env.AllUnits {
@@ -916,4 +936,37 @@ func (caster *Unit) NewEnemyAuraArray(makeAura func(*Unit) *Aura) AuraArray {
 		}
 	}
 	return auras
+}
+
+type LabeledAuraArrays map[string]AuraArray
+
+func (auras AuraArray) ToMap() LabeledAuraArrays {
+	if auras.IsEmpty() {
+		return nil
+	} else {
+		return LabeledAuraArrays{auras.FindLabel(): auras}
+	}
+}
+
+func (auraArrays LabeledAuraArrays) AnyActive(target *Unit) bool {
+	for _, auras := range auraArrays {
+		if auras.Get(target).IsActive() {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (auraArrays LabeledAuraArrays) Append(auras AuraArray) LabeledAuraArrays {
+	if auras.IsEmpty() {
+		return auraArrays
+	}
+
+	if auraArrays == nil {
+		auraArrays = make(LabeledAuraArrays)
+	}
+
+	auraArrays[auras.FindLabel()] = auras
+	return auraArrays
 }

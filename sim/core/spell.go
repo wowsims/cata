@@ -63,8 +63,8 @@ type SpellConfig struct {
 	Hot    DotConfig
 	Shield ShieldConfig
 
-	RelatedAuras    []AuraArray
-	RelatedDotSpell *Spell
+	RelatedAuraArrays LabeledAuraArrays
+	RelatedDotSpell   *Spell
 }
 
 type Spell struct {
@@ -153,8 +153,8 @@ type Spell struct {
 	selfShield *Shield
 
 	// Per-target auras that are related to this spell, usually buffs or debuffs applied by the spell.
-	RelatedAuras    []AuraArray
-	RelatedDotSpell *Spell
+	RelatedAuraArrays LabeledAuraArrays
+	RelatedDotSpell   *Spell
 }
 
 func (unit *Unit) OnSpellRegistered(handler SpellRegisteredHandler) {
@@ -239,8 +239,8 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 
 		splitSpellMetrics: make([][]SpellMetrics, max(1, config.MetricSplits)),
 
-		RelatedAuras:    config.RelatedAuras,
-		RelatedDotSpell: config.RelatedDotSpell,
+		RelatedAuraArrays: config.RelatedAuraArrays,
+		RelatedDotSpell:   config.RelatedDotSpell,
 	}
 
 	switch {

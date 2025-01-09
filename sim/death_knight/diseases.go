@@ -97,7 +97,7 @@ func (dk *DeathKnight) registerFrostFever() {
 			spell.Dot(target).Apply(sim)
 		},
 
-		RelatedAuras: []core.AuraArray{extraEffectAura},
+		RelatedAuraArrays: extraEffectAura.ToMap(),
 	})
 }
 

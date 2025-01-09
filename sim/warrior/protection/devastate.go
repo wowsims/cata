@@ -56,6 +56,6 @@ func (war *ProtectionWarrior) RegisterDevastate() {
 			}
 		},
 
-		RelatedAuras: []core.AuraArray{war.SunderArmorAuras},
+		RelatedAuraArrays: war.SunderArmorAuras.ToMap(),
 	})
 }

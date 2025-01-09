@@ -19,7 +19,7 @@ func (warlock *Warlock) calcSoulSiphonMult(target *core.Unit) float64 {
 	numActive := 0
 	for _, spell := range warlock.Spellbook {
 		if (spell.Matches(afflictionDots) && spell.Dot(target).IsActive()) ||
-			(spell.Matches(afflictionAuras) && len(spell.RelatedAuras) > 0 && spell.RelatedAuras[0].Get(target).IsActive()) {
+			(spell.Matches(afflictionAuras) && spell.RelatedAuraArrays.AnyActive(target)) {
 			numActive++
 		}
 	}

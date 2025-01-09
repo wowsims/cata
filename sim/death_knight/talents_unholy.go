@@ -244,8 +244,8 @@ func (dk *DeathKnight) applyEbonPlaguebringer() {
 		return aura
 	})
 	dk.Env.RegisterPreFinalizeEffect(func() {
-		dk.FrostFeverSpell.RelatedAuras = append(dk.FrostFeverSpell.RelatedAuras, dk.EbonPlagueAura)
-		dk.BloodPlagueSpell.RelatedAuras = append(dk.BloodPlagueSpell.RelatedAuras, dk.EbonPlagueAura)
+		dk.FrostFeverSpell.RelatedAuraArrays = dk.FrostFeverSpell.RelatedAuraArrays.Append(dk.EbonPlagueAura)
+		dk.BloodPlagueSpell.RelatedAuraArrays = dk.BloodPlagueSpell.RelatedAuraArrays.Append(dk.EbonPlagueAura)
 	})
 
 	var lastDiseaseTarget *core.Unit = nil

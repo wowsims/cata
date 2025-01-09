@@ -35,7 +35,7 @@ func (warrior *Warrior) RegisterSunderArmor() *core.Spell {
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  360,
 
-		RelatedAuras: []core.AuraArray{warrior.SunderArmorAuras},
+		RelatedAuraArrays: warrior.SunderArmorAuras.ToMap(),
 	}
 
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

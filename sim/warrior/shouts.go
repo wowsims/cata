@@ -40,7 +40,7 @@ func (warrior *Warrior) MakeShoutSpellHelper(actionID core.ActionID, spellMask i
 			}
 		},
 
-		RelatedAuras: []core.AuraArray{allyAuras},
+		RelatedAuraArrays: allyAuras.ToMap(),
 	})
 }
 
