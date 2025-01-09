@@ -239,7 +239,7 @@ func MakeStackingAura(character *Character, config StackingStatAura) *StatBuffAu
 		character.AddStatsDynamic(sim, bonusPerStack.Multiply(float64(newStacks-oldStacks)))
 	}
 	return &StatBuffAura{
-		Aura:            character.RegisterAura(config.Aura),
+		Aura:            character.GetOrRegisterAura(config.Aura),
 		BuffedStatTypes: bonusPerStack.GetBuffedStatTypes(),
 	}
 }

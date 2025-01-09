@@ -89,10 +89,10 @@ func NewProcStatBonusEffectWithDamageProc(config ProcStatBonusEffect, damage Dam
 
 func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent core.Agent) ExtraSpellInfo) {
 	isEnchant := config.EnchantID != 0
+
 	var effectFn func(id int32, effect core.ApplyEffect)
 	var effectID int32
 	var triggerActionID core.ActionID
-
 	if isEnchant {
 		effectID = config.EnchantID
 		effectFn = core.NewEnchantEffect
@@ -105,6 +105,14 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 
 	effectFn(effectID, func(agent core.Agent) {
 		character := agent.GetCharacter()
+		itemSwapIsEnabled := character.ItemSwap.IsEnabled()
+		itemExistsInMainEquip := true
+
+		var eligibleSlotsForItem []proto.ItemSlot
+		if !isEnchant {
+			eligibleSlotsForItem = character.ItemSwap.EligibleSlotsForItem(effectID)
+			itemExistsInMainEquip = !itemSwapIsEnabled || itemSwapIsEnabled && character.ItemSwap.ItemExistsInMainEquip(effectID, eligibleSlotsForItem)
+		}
 
 		procID := core.ActionID{SpellID: config.AuraID}
 		if procID.IsEmptyAction() {
@@ -121,16 +129,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 			}
 		}
 
-		var itemSwapProcCondition core.CustomStatBuffProcCondition
-		if !isEnchant && character.ItemSwap.IsEnabled() && character.ItemSwap.ItemExistsInSwapSet(effectID) {
-			itemSwapProcCondition = func(_ *core.Simulation, aura *core.Aura) bool {
-				return character.HasItemEquipped(effectID)
-			}
-		}
-
-		procAura.CustomProcCondition = core.Ternary(config.CustomProcCondition == nil, itemSwapProcCondition, func(sim *core.Simulation, aura *core.Aura) bool {
-			return config.CustomProcCondition(sim, aura) && ((itemSwapProcCondition == nil) || itemSwapProcCondition(sim, aura))
-		})
+		procAura.CustomProcCondition = config.CustomProcCondition
 
 		var customHandler CustomProcHandler
 		if config.CustomProcCondition != nil {
@@ -200,11 +199,10 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		if isEnchant {
 			character.ItemSwap.RegisterEnchantProc(effectID, triggerAura, config.Slots)
 		} else {
-			eligibleSlotsForItem := core.EligibleSlotsForItem(core.GetItemByID(effectID), false)
-			if slices.Contains(eligibleSlotsForItem, proto.ItemSlot_ItemSlotTrinket1) {
+			if itemExistsInMainEquip && (slices.Contains(eligibleSlotsForItem, proto.ItemSlot_ItemSlotTrinket1) || slices.Contains(eligibleSlotsForItem, proto.ItemSlot_ItemSlotTrinket2)) {
 				character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
 			}
-			character.ItemSwap.RegisterProc(effectID, triggerAura, eligibleSlotsForItem)
+			character.ItemSwap.RegisterProc(effectID, triggerAura)
 		}
 	})
 }
@@ -388,7 +386,7 @@ func NewStackingStatBonusCD(config StackingStatBonusCD) {
 
 type StackingStatBonusEffect struct {
 	Name       string
-	ID         int32
+	ItemID     int32
 	AuraID     int32
 	Bonus      stats.Stats
 	Duration   time.Duration
@@ -403,12 +401,16 @@ type StackingStatBonusEffect struct {
 }
 
 func NewStackingStatBonusEffect(config StackingStatBonusEffect) {
-	core.NewItemEffect(config.ID, func(agent core.Agent) {
+	core.NewItemEffect(config.ItemID, func(agent core.Agent) {
 		character := agent.GetCharacter()
+
+		itemSwapIsEnabled := character.ItemSwap.IsEnabled()
+		eligibleSlotsForItem := character.ItemSwap.EligibleSlotsForItem(config.ItemID)
+		itemExistsInMainEquip := !itemSwapIsEnabled || itemSwapIsEnabled && character.ItemSwap.ItemExistsInMainEquip(config.ItemID, eligibleSlotsForItem)
 
 		auraID := core.ActionID{SpellID: config.AuraID}
 		if auraID.IsEmptyAction() {
-			auraID = core.ActionID{ItemID: config.ID}
+			auraID = core.ActionID{ItemID: config.ItemID}
 		}
 		procAura := core.MakeStackingAura(character, core.StackingStatAura{
 			Aura: core.Aura{
@@ -420,8 +422,8 @@ func NewStackingStatBonusEffect(config StackingStatBonusEffect) {
 			BonusPerStack: config.Bonus,
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID:   core.ActionID{ItemID: config.ID},
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			ActionID:   core.ActionID{ItemID: config.ItemID},
 			Name:       config.Name,
 			Callback:   config.Callback,
 			ProcMask:   config.ProcMask,
@@ -436,7 +438,11 @@ func NewStackingStatBonusEffect(config StackingStatBonusEffect) {
 			},
 		})
 
-		character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
+		if itemExistsInMainEquip && slices.Contains(eligibleSlotsForItem, proto.ItemSlot_ItemSlotTrinket1) {
+			character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
+		}
+
+		character.ItemSwap.RegisterProc(config.ItemID, triggerAura)
 	})
 }
 
@@ -542,8 +548,7 @@ func NewProcDamageEffect(config ProcDamageEffect) {
 		if isEnchant {
 			character.ItemSwap.RegisterEnchantProc(effectID, triggerAura, config.Slots)
 		} else {
-			eligibleSlotsForItem := core.EligibleSlotsForItem(core.GetItemByID(effectID), false)
-			character.ItemSwap.RegisterProc(effectID, triggerAura, eligibleSlotsForItem)
+			character.ItemSwap.RegisterProc(effectID, triggerAura)
 		}
 	})
 }

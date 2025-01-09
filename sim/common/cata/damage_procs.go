@@ -95,7 +95,7 @@ func init() {
 			},
 		}))
 
-		character.ItemSwap.RegisterProc(68925, aura, core.TrinketSlots())
+		character.ItemSwap.RegisterProc(68925, aura)
 	})
 
 	core.NewItemEffect(69110, func(agent core.Agent) {
@@ -147,7 +147,7 @@ func init() {
 			},
 		}))
 
-		character.ItemSwap.RegisterProc(69110, aura, core.TrinketSlots())
+		character.ItemSwap.RegisterProc(69110, aura)
 	})
 
 }

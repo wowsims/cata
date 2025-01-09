@@ -998,7 +998,7 @@ func init() {
 				},
 			})
 
-			character.ItemSwap.RegisterProc(itemID, aura, core.MeleeWeaponSlots())
+			character.ItemSwap.RegisterProc(itemID, aura)
 		})
 	})
 

@@ -88,7 +88,7 @@ func init() {
 				},
 			})
 
-			character.ItemSwap.RegisterProc(gurthalakItemID, aura, core.MeleeWeaponSlots())
+			character.ItemSwap.RegisterProc(gurthalakItemID, aura)
 		})
 	}
 }

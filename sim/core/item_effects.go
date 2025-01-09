@@ -118,7 +118,8 @@ func NewSimpleStatItemActiveEffect(itemID int32, bonus stats.Stats, duration tim
 		if otherEffects != nil {
 			otherEffects(agent)
 		}
-		agent.GetCharacter().ItemSwap.RegisterActive(itemID, EligibleSlotsForItem(GetItemByID(itemID), false))
+		character := agent.GetCharacter()
+		character.ItemSwap.RegisterActive(itemID, character.ItemSwap.EligibleSlotsForItem(itemID))
 	})
 }
 

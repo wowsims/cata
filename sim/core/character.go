@@ -325,40 +325,13 @@ func (character *Character) CalculateMasteryPoints() float64 {
 
 // Apply effects from all equipped core.
 func (character *Character) applyItemEffects(agent Agent) {
-	for slot, eq := range character.Equipment {
-		if applyItemEffect, ok := itemEffects[eq.ID]; ok {
-			applyItemEffect(agent)
-		}
+	registeredItemEffects := make(map[int32]bool)
+	registeredItemEnchantEffects := make(map[int32]bool)
 
-		for _, g := range eq.Gems {
-			if applyGemEffect, ok := itemEffects[g.ID]; ok {
-				applyGemEffect(agent)
-			}
-		}
-
-		if applyEnchantEffect, ok := enchantEffects[eq.Enchant.EffectID]; ok {
-			applyEnchantEffect(agent)
-		}
-
-		if applyWeaponEffect, ok := weaponEffects[eq.Enchant.EffectID]; ok {
-			applyWeaponEffect(agent, proto.ItemSlot(slot))
-		}
-	}
+	character.Equipment.applyItemEffects(agent, registeredItemEffects, registeredItemEnchantEffects, true)
 
 	if character.ItemSwap.IsEnabled() {
-		for i, item := range character.ItemSwap.unEquippedItems {
-			if applyItemEffect, ok := itemEffects[item.ID]; ok {
-				applyItemEffect(agent)
-			}
-
-			if applyEnchantEffect, ok := enchantEffects[item.Enchant.EffectID]; ok {
-				applyEnchantEffect(agent)
-			}
-
-			if applyWeaponEffect, ok := weaponEffects[item.Enchant.EffectID]; ok {
-				applyWeaponEffect(agent, proto.ItemSlot(i))
-			}
-		}
+		character.ItemSwap.unEquippedItems.applyItemEffects(agent, registeredItemEffects, registeredItemEnchantEffects, false)
 	}
 }
 

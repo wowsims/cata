@@ -97,7 +97,9 @@ func (character *Character) RegisterItemSwapCallback(slots []proto.ItemSlot, cal
 }
 
 // Helper for handling Item Effects that use the itemID to toggle the aura on and off
-func (swap *ItemSwap) RegisterProc(itemID int32, aura *Aura, slots []proto.ItemSlot) {
+func (swap *ItemSwap) RegisterProc(itemID int32, aura *Aura) {
+	slots := swap.EligibleSlotsForItem(itemID)
+	// fmt.Println("RegisterProc")
 	swap.registerProcInternal(ItemSwapProcConfig{
 		ItemID: itemID,
 		Aura:   aura,
@@ -107,6 +109,7 @@ func (swap *ItemSwap) RegisterProc(itemID int32, aura *Aura, slots []proto.ItemS
 
 // Helper for handling Enchant Effects that use the effectID to toggle the aura on and off
 func (swap *ItemSwap) RegisterEnchantProc(effectID int32, aura *Aura, slots []proto.ItemSlot) {
+	// fmt.Println("RegisterEnchantroc")
 	swap.registerProcInternal(ItemSwapProcConfig{
 		EnchantId: effectID,
 		Aura:      aura,
@@ -125,16 +128,19 @@ func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
 	isItemProc := config.ItemID != 0
 	isEnchantEffectProc := config.EnchantId != 0
 
+	// fmt.Println("Registered", config.ItemID, config.Slots)
+
 	swap.character.RegisterItemSwapCallback(config.Slots, func(sim *Simulation, slot proto.ItemSlot) {
 		var isItemSlotMatch = false
 
 		if isItemProc {
-			isItemSlotMatch = swap.HasEquippedItem(config.ItemID, config.Slots)
+			isItemSlotMatch = swap.HasItemEquipped(config.ItemID, config.Slots)
 		} else if isEnchantEffectProc {
-			isItemSlotMatch = swap.HasEquippedEnchant(config.EnchantId, config.Slots)
+			isItemSlotMatch = swap.HasEnchantEquipped(config.EnchantId, config.Slots)
 		}
 
 		if isItemSlotMatch {
+			// fmt.Println("Activating aura", sim.CurrentTime, config.ItemID, slot)
 			if !config.Aura.IsActive() {
 				config.Aura.Activate(sim)
 				// Enchant effects such as Weapon/Back do not trigger an ICD
@@ -143,6 +149,7 @@ func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
 				}
 			}
 		} else {
+			// fmt.Println("Deactivating aura", sim.CurrentTime, config.ItemID, slot)
 			config.Aura.Deactivate(sim)
 		}
 	})
@@ -212,7 +219,7 @@ func (swap *ItemSwap) GetUnequippedItemBySlot(slot proto.ItemSlot) *Item {
 	return &swap.unEquippedItems[slot]
 }
 
-func (swap *ItemSwap) HasEquippedItem(itemID int32, possibleSlots []proto.ItemSlot) bool {
+func (swap *ItemSwap) HasItemEquipped(itemID int32, possibleSlots []proto.ItemSlot) bool {
 	for _, slot := range possibleSlots {
 		if swap.character.Equipment[slot].ID == itemID {
 			return true
@@ -221,9 +228,18 @@ func (swap *ItemSwap) HasEquippedItem(itemID int32, possibleSlots []proto.ItemSl
 	return false
 }
 
-func (swap *ItemSwap) HasEquippedEnchant(effectID int32, possibleSlots []proto.ItemSlot) bool {
+func (swap *ItemSwap) HasEnchantEquipped(effectID int32, possibleSlots []proto.ItemSlot) bool {
 	for _, slot := range possibleSlots {
 		if swap.character.Equipment[slot].Enchant.EffectID == effectID {
+			return true
+		}
+	}
+	return false
+}
+
+func (swap *ItemSwap) ItemExistsInMainEquip(itemID int32, possibleSlots []proto.ItemSlot) bool {
+	for _, slot := range possibleSlots {
+		if swap.originalEquip[slot].ID == itemID {
 			return true
 		}
 	}
@@ -237,6 +253,14 @@ func (swap *ItemSwap) ItemExistsInSwapSet(itemID int32) bool {
 		}
 	}
 	return false
+}
+
+func (swap *ItemSwap) EligibleSlotsForItem(itemID int32) []proto.ItemSlot {
+	item := GetItemByID(itemID)
+	eligibleSlots := EligibleSlotsForItem(item, swap.isFuryWarrior)
+	return FilterSlice(eligibleSlots, func(slot proto.ItemSlot) bool {
+		return !swap.IsEnabled() || swap.IsEnabled() && (swap.originalEquip[slot].ID == itemID || swap.swapEquip[slot].ID == itemID)
+	})
 }
 
 func (swap *ItemSwap) CalcStatChanges(slots []proto.ItemSlot) stats.Stats {
@@ -273,6 +297,7 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 		}
 
 		if ok, swapStats := swap.swapItem(slot, has2H, isReset); ok {
+			// fmt.Println("Swapping item", sim.CurrentTime, slot)
 			newStats = newStats.Add(swapStats)
 			weaponSlotSwapped = slot == proto.ItemSlot_ItemSlotMainHand || slot == proto.ItemSlot_ItemSlotOffHand || slot == proto.ItemSlot_ItemSlotRanged || weaponSlotSwapped
 
