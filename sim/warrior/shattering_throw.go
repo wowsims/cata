@@ -59,7 +59,7 @@ func (warrior *Warrior) RegisterShatteringThrowCD() {
 			}
 		},
 
-		RelatedAuras: []core.AuraArray{shattDebuffs},
+		RelatedAuraArrays: shattDebuffs.ToMap(),
 	})
 
 	warrior.AddMajorCooldown(core.MajorCooldown{

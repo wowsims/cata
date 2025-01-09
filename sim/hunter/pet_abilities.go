@@ -148,7 +148,7 @@ func (hp *HunterPet) newPetDebuff(config PetDebuffSpellConfig) *core.Spell {
 			spell.DealOutcome(sim, result)
 		},
 
-		RelatedAuras: []core.AuraArray{auraArray},
+		RelatedAuraArrays: auraArray.ToMap(),
 	})
 }
 

@@ -39,6 +39,6 @@ func (warrior *Warrior) RegisterDemoralizingShoutSpell() {
 			}
 		},
 
-		RelatedAuras: []core.AuraArray{warrior.DemoralizingShoutAuras},
+		RelatedAuraArrays: warrior.DemoralizingShoutAuras.ToMap(),
 	})
 }

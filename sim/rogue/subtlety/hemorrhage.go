@@ -97,7 +97,7 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 			}
 		},
 
-		RelatedAuras: []core.AuraArray{hemoAuras},
+		RelatedAuraArrays: hemoAuras.ToMap(),
 	})
 
 	subRogue.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand}, func(s *core.Simulation, slot proto.ItemSlot) {

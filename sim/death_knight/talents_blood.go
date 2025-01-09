@@ -156,7 +156,7 @@ func (dk *DeathKnight) applyScarletFever() {
 		return core.ScarletFeverAura(target, dk.Talents.ScarletFever, dk.Talents.Epidemic)
 	})
 	dk.Env.RegisterPreFinalizeEffect(func() {
-		dk.BloodPlagueSpell.RelatedAuras = append(dk.BloodPlagueSpell.RelatedAuras, dk.ScarletFeverAura)
+		dk.BloodPlagueSpell.RelatedAuraArrays = dk.BloodPlagueSpell.RelatedAuraArrays.Append(dk.ScarletFeverAura)
 	})
 
 	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
