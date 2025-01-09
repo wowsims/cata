@@ -104,7 +104,7 @@ export class SimLog {
 	readonly source: Entity | null;
 	readonly target: Entity | null;
 	readonly actionId: ActionId | null;
-	readonly actionIdAsString: string | null;
+	readonly actionIdAsString: string | null = null;
 
 	// Spell schoool from this event. Note that not all events have spell schools, so this will be 0null.
 	readonly spellSchool: SpellSchool | null;
@@ -124,7 +124,9 @@ export class SimLog {
 		this.source = params.source;
 		this.target = params.target;
 		this.actionId = params.actionId;
-		this.actionIdAsString = this.actionId?.toString() || null;
+		try {
+			this.actionIdAsString = this.actionId?.toString() || null;
+		} catch {}
 		this.spellSchool = params.spellSchool;
 		this.threat = params.threat;
 		this.activeAuras = [];
