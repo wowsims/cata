@@ -226,13 +226,54 @@ var ItemSetDeepEarthRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Deep Earth Regalia",
 	Bonuses: map[int32]core.ApplySetBonus{
 		// Insect Swarm increases all damage done by your Starfire, Starsurge, and Wrath spells against that target by 3%
-		2: func(_ core.Agent, _ *core.Aura) {
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			druid := agent.(DruidAgent).GetDruid()
+
+			t13InsectSwarmBonus := func(_ *core.Simulation, spell *core.Spell, _ *core.AttackTable) float64 {
+				if spell.Matches(DruidSpellStarsurge | DruidSpellStarfire | DruidSpellWrath) {
+					return 1.03
+				}
+
+				return 1.0
+			}
+
+			t13InsectSwarmBonusDummyAuras := druid.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+				return target.GetOrRegisterAura(core.Aura{
+					ActionID: core.ActionID{SpellID: 105722},
+					Label:    "Item - Druid T13 Balance 2P Bonus (Insect Swarm) - " + druid.Label,
+					Duration: core.NeverExpires,
+					OnGain: func(aura *core.Aura, sim *core.Simulation) {
+						druid.AttackTables[aura.Unit.UnitIndex].DamageDoneByCasterMultiplier = t13InsectSwarmBonus
+					},
+					OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+						druid.AttackTables[aura.Unit.UnitIndex].DamageDoneByCasterMultiplier = nil
+					},
+				})
+			})
+
+			druid.OnSpellRegistered(func(spell *core.Spell) {
+				if !spell.Matches(DruidSpellInsectSwarm) {
+					return
+				}
+
+				for _, target := range druid.Env.Encounter.TargetUnits {
+					spell.Dot(target).ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+						if setBonusAura.IsActive() {
+							t13InsectSwarmBonusDummyAuras.Get(aura.Unit).Activate(sim)
+						}
+					})
+
+					spell.Dot(target).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+						t13InsectSwarmBonusDummyAuras.Get(aura.Unit).Deactivate(sim)
+					})
+				}
+			})
 		},
 		// Reduces the cooldown of Starsurge by 5 sec and increases its damage by 10%
 		4: func(_ core.Agent, setBonusAura *core.Aura) {
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_DamageDone_Pct,
-				FloatValue: 0.05,
+				FloatValue: 0.1,
 				ClassMask:  DruidSpellStarsurge,
 			})
 
