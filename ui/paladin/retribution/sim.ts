@@ -175,7 +175,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	otherInputs: {
 		inputs: [RetributionInputs.StartingHolyPower(), OtherInputs.InputDelay, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
 	},
-	itemSwapSlots: [ItemSlot.ItemSlotHead, ItemSlot.ItemSlotShoulder, ItemSlot.ItemSlotChest, ItemSlot.ItemSlotHands, ItemSlot.ItemSlotLegs],
+	itemSwapSlots: [ItemSlot.ItemSlotHead, ItemSlot.ItemSlotShoulder, ItemSlot.ItemSlotChest, ItemSlot.ItemSlotHands, ItemSlot.ItemSlotLegs, ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,
@@ -188,6 +188,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		talents: [Presets.DefaultTalents],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PRERAID_RET_PRESET, Presets.P2_BIS_RET_PRESET, Presets.P3_BIS_RET_PRESET, Presets.P4_BIS_RET_PRESET],
+		itemSwaps: [Presets.ITEM_SWAP_4P_T11],
 		builds: [Presets.P2_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
 	},
 

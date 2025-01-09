@@ -1148,7 +1148,7 @@ func init() {
 		shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 			Name:       "Seal of the Seven Signs" + labelSuffix,
 			ItemID:     []int32{77969, 77204, 77989}[version],
-			AuraID:     []int32{109803, 109804, 109805}[version],
+			AuraID:     []int32{109803, 107984, 109805}[version],
 			Bonus:      stats.Stats{stats.HasteRating: []float64{2573, 2904, 3278}[version]},
 			Duration:   time.Second * 20,
 			Callback:   core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
