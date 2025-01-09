@@ -14,8 +14,16 @@ import (
 var ItemSetTidefury = core.NewItemSet(core.ItemSet{
 	Name: "Tidefury Raiment",
 	Bonuses: map[int32]core.ApplySetBonus{
-		2: func(_ core.Agent, _ *core.Aura) {
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			shaman := agent.(ShamanAgent).GetShaman()
+
 			// Handled in chain_lightning.go
+			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				shaman.HasDungeonSet3 = true
+			})
+			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				shaman.HasDungeonSet3 = false
+			})
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			shaman := agent.(ShamanAgent).GetShaman()
@@ -23,13 +31,6 @@ var ItemSetTidefury = core.NewItemSet(core.ItemSet{
 			if shaman.SelfBuffs.Shield == proto.ShamanShield_WaterShield {
 				setBonusAura.AttachStatBuff(stats.MP5, 3)
 			}
-
-			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-				shaman.HasDungeonSet3 = true
-			})
-			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-				shaman.HasDungeonSet3 = false
-			})
 		},
 	},
 })
