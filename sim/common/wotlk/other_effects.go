@@ -911,7 +911,7 @@ func init() {
 		core.NewItemEffect(itemID, func(agent core.Agent) {
 			character := agent.GetCharacter()
 
-			dpm := character.AutoAttacks.NewPPMManagerForWeaponEffect(itemID, 2.0)
+			dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(itemID, 2.0, 0)
 
 			procActionID := core.ActionID{ItemID: itemID}
 

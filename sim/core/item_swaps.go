@@ -1,7 +1,6 @@
 package core
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
@@ -131,7 +130,6 @@ func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
 
 		if isItemProc {
 			isItemSlotMatch = swap.HasEquippedItem(config.ItemID, config.Slots)
-			fmt.Println("RegisterProc", sim.CurrentTime, config.ItemID, slot)
 		} else if isEnchantEffectProc {
 			isItemSlotMatch = swap.HasEquippedEnchant(config.EnchantId, config.Slots)
 		}

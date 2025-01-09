@@ -178,7 +178,7 @@ func init() {
 		} else {
 			label += "OH"
 		}
-		dpm := character.AutoAttacks.NewPPMManagerForWeaponEffect(3273, 2.15)
+		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(3273, 2.15, 0)
 
 		aura := character.GetOrRegisterAura(core.Aura{
 			Label:    label,
@@ -191,7 +191,7 @@ func init() {
 					return
 				}
 
-				if spell.ProcMask.Matches(core.ProcMaskMelee) {
+				if spell.ProcMask.Matches(core.Ternary(isMH, core.ProcMaskMeleeMH, core.ProcMaskMeleeOH)) {
 					if dpm.Proc(sim, spell.ProcMask, "Deathfrost") {
 						procSpell.Cast(sim, result.Target)
 					}
@@ -204,7 +204,8 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(3273, aura, core.MeleeWeaponSlots())
+		meleeWeaponSlots := core.MeleeWeaponSlots()
+		character.ItemSwap.RegisterEnchantProc(3273, aura, core.Ternary(isMH, meleeWeaponSlots[:1], meleeWeaponSlots[1:]))
 	}
 
 	core.NewEnchantEffect(3273, func(agent core.Agent) {

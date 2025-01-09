@@ -22,7 +22,7 @@ func init() {
 	core.NewItemEffect(19019, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		dpm := character.AutoAttacks.NewPPMManagerForWeaponEffect(19019, 6.0)
+		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(19019, 6.0, 0)
 
 		procActionID := core.ActionID{SpellID: 21992}
 
@@ -173,7 +173,7 @@ func init() {
 	core.NewItemEffect(29996, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		dpm := character.AutoAttacks.NewPPMManagerForWeaponEffect(29996, 1.0)
+		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(29996, 1.0, 0)
 
 		actionID := core.ActionID{ItemID: 29996}
 
@@ -351,7 +351,7 @@ func init() {
 	core.NewItemEffect(12590, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		dpm := character.AutoAttacks.NewPPMManagerForWeaponEffect(12590, 1.0)
+		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(12590, 1.0, 0)
 
 		effectAura := character.NewTemporaryStatsAura("Felstriker Proc", core.ActionID{SpellID: 16551}, stats.Stats{stats.PhysicalCritPercent: 100}, time.Second*3)
 

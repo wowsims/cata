@@ -101,45 +101,21 @@ func (character *Character) HasSetBonus(set *ItemSet, numItems int32) bool {
 		panic(fmt.Sprintf("Item set %s does not have a bonus with %d pieces.", set.Name, numItems))
 	}
 
-	activeSetBonus := character.HasActiveSetBonus(set.Name, numItems)
-	if activeSetBonus {
-		return activeSetBonus
+	if character.hasActiveSetBonus(set.Name, numItems) {
+		return true
 	}
 
 	if character.ItemSwap.IsEnabled() {
-		unequippedSetBonuses := character.GetSetBonuses(character.ItemSwap.unEquippedItems)
-		for _, unequippedSetBonus := range unequippedSetBonuses {
-			if unequippedSetBonus.Name == set.Name && unequippedSetBonus.NumPieces >= numItems {
-				return true
-			}
-		}
+		return character.hasUnequippedSetBonus(set.Name, numItems)
 	}
 
 	return false
 }
 
-type SetBonus struct {
-	// Name of the set.
-	Name string
+type SetBonusCollection []SetBonus
 
-	// Number of pieces required for this bonus.
-	NumPieces int32
-
-	// Function for applying the effects of this set bonus.
-	BonusEffect ApplySetBonus
-
-	// Optional field to override the DefaultItemSetSlots
-	// For Example: The set contains of 2 weapons
-	Slots []proto.ItemSlot
-}
-
-// Returns a list describing all active set bonuses.
-func (character *Character) GetActiveSetBonuses() []SetBonus {
-	return character.GetSetBonuses(character.Equipment)
-}
-
-func (character *Character) GetSetBonuses(equipment Equipment) []SetBonus {
-	var activeBonuses []SetBonus
+func (equipment Equipment) getSetBonuses() SetBonusCollection {
+	var activeBonuses SetBonusCollection
 
 	setItemCount := make(map[*ItemSet]int32)
 	for _, item := range equipment {
@@ -184,17 +160,49 @@ func (character *Character) GetSetBonuses(equipment Equipment) []SetBonus {
 	return activeBonuses
 }
 
-// Checks whether the character has an equipped set bonus
-func (character *Character) HasActiveSetBonus(setName string, count int32) bool {
-	activeSetBonuses := character.GetActiveSetBonuses()
-
-	for _, activeSetBonus := range activeSetBonuses {
-		if activeSetBonus.Name == setName && activeSetBonus.NumPieces >= count {
+func (collection SetBonusCollection) ContainsBonus(setName string, count int32) bool {
+	for _, bonus := range collection {
+		if (bonus.Name == setName) && (bonus.NumPieces >= count) {
 			return true
 		}
 	}
 
 	return false
+}
+
+// Returns a list describing all active set bonuses.
+func (character *Character) GetActiveSetBonuses() SetBonusCollection {
+	return character.Equipment.getSetBonuses()
+}
+
+func (character *Character) getUnequippedSetBonuses() SetBonusCollection {
+	return character.ItemSwap.unEquippedItems.getSetBonuses()
+}
+
+func (character *Character) hasUnequippedSetBonus(setName string, count int32) bool {
+	unequippedSetBonuses := character.getUnequippedSetBonuses()
+	return unequippedSetBonuses.ContainsBonus(setName, count)
+}
+
+type SetBonus struct {
+	// Name of the set.
+	Name string
+
+	// Number of pieces required for this bonus.
+	NumPieces int32
+
+	// Function for applying the effects of this set bonus.
+	BonusEffect ApplySetBonus
+
+	// Optional field to override the DefaultItemSetSlots
+	// For Example: The set contains of 2 weapons
+	Slots []proto.ItemSlot
+}
+
+// Checks whether the character has an equipped set bonus
+func (character *Character) hasActiveSetBonus(setName string, count int32) bool {
+	activeSetBonuses := character.GetActiveSetBonuses()
+	return activeSetBonuses.ContainsBonus(setName, count)
 }
 
 // Apply effects from item set bonuses.
@@ -207,11 +215,14 @@ func (character *Character) applyItemSetBonusEffects(agent Agent) {
 	}
 
 	if character.ItemSwap.IsEnabled() {
-		unequippedSetBonuses := FilterSlice(character.GetSetBonuses(character.ItemSwap.unEquippedItems), func(unequippedBonus SetBonus) bool {
-			return !character.HasActiveSetBonus(unequippedBonus.Name, unequippedBonus.NumPieces)
+		unequippedSetBonuses := FilterSlice(character.ItemSwap.unEquippedItems.getSetBonuses(), func(unequippedBonus SetBonus) bool {
+			return !character.hasActiveSetBonus(unequippedBonus.Name, unequippedBonus.NumPieces)
 		})
 
 		for _, unequippedSetBonus := range unequippedSetBonuses {
+			if activeSetBonuses.ContainsBonus(unequippedSetBonus.Name, unequippedSetBonus.NumPieces) {
+				continue
+			}
 			setBonusAura := character.makeSetBonusStatusAura(unequippedSetBonus.Name, unequippedSetBonus.NumPieces, unequippedSetBonus.Slots, false)
 			unequippedSetBonus.BonusEffect(agent, setBonusAura)
 		}
@@ -231,7 +242,7 @@ func (character *Character) makeSetBonusStatusAura(setName string, numPieces int
 
 	if character.ItemSwap.IsEnabled() {
 		character.RegisterItemSwapCallback(slots, func(sim *Simulation, _ proto.ItemSlot) {
-			if character.HasActiveSetBonus(setName, numPieces) {
+			if character.hasActiveSetBonus(setName, numPieces) {
 				statusAura.Activate(sim)
 			} else {
 				statusAura.Deactivate(sim)

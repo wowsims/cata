@@ -117,7 +117,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 			if isEnchant {
 				dpm = character.AutoAttacks.NewDynamicProcManagerForEnchant(effectID, config.PPM, 0)
 			} else {
-				dpm = character.AutoAttacks.NewPPMManagerForWeaponEffect(effectID, config.PPM)
+				dpm = character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(effectID, config.PPM, 0)
 			}
 		}
 

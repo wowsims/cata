@@ -599,58 +599,52 @@ func (character *Character) HasRangedWeapon() bool {
 }
 
 func (character *Character) GetDynamicProcMaskForWeaponEnchant(effectID int32) *ProcMask {
-	getProcMask := func() ProcMask {
-		return character.getDefaultProcMaskForWeaponEnchant(effectID)
-	}
+	return character.getDynamicProcMaskPointer(func() ProcMask {
+		return character.getCurrentProcMaskForWeaponEnchant(effectID)
+	})
+}
 
-	procMask := getProcMask()
+func (character *Character) getDynamicProcMaskPointer(procMaskFn func() ProcMask) *ProcMask {
+	procMask := procMaskFn()
 
 	character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot) {
-		procMask = getProcMask()
+		procMask = procMaskFn()
 	})
 
 	return &procMask
 }
 
-func (character *Character) getDefaultProcMaskForWeaponEnchant(effectID int32) ProcMask {
-	return character.getDefaultProcMaskFor(func(weapon *Item) bool {
+func (character *Character) getCurrentProcMaskForWeaponEnchant(effectID int32) ProcMask {
+	return character.getCurrentProcMaskFor(func(weapon *Item) bool {
 		return weapon.Enchant.EffectID == effectID
 	})
 }
 
 func (character *Character) GetDynamicProcMaskForWeaponEffect(itemID int32) *ProcMask {
-	getProcMask := func() ProcMask {
-		return character.getDefaultProcMaskForWeaponEffect(itemID)
-	}
-
-	procMask := getProcMask()
-
-	character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot) {
-		procMask = getProcMask()
+	return character.getDynamicProcMaskPointer(func() ProcMask {
+		return character.getCurrentProcMaskForWeaponEffect(itemID)
 	})
-
-	return &procMask
 }
 
-func (character *Character) getDefaultProcMaskForWeaponEffect(itemID int32) ProcMask {
-	return character.getDefaultProcMaskFor(func(weapon *Item) bool {
+func (character *Character) getCurrentProcMaskForWeaponEffect(itemID int32) ProcMask {
+	return character.getCurrentProcMaskFor(func(weapon *Item) bool {
 		return weapon.ID == itemID
 	})
 }
 
 func (character *Character) GetProcMaskForTypes(weaponTypes ...proto.WeaponType) ProcMask {
-	return character.getDefaultProcMaskFor(func(weapon *Item) bool {
+	return character.getCurrentProcMaskFor(func(weapon *Item) bool {
 		return weapon != nil && slices.Contains(weaponTypes, weapon.WeaponType)
 	})
 }
 
 func (character *Character) GetProcMaskForTypesAndHand(twohand bool, weaponTypes ...proto.WeaponType) ProcMask {
-	return character.getDefaultProcMaskFor(func(weapon *Item) bool {
+	return character.getCurrentProcMaskFor(func(weapon *Item) bool {
 		return weapon != nil && (weapon.HandType == proto.HandType_HandTypeTwoHand) == twohand && slices.Contains(weaponTypes, weapon.WeaponType)
 	})
 }
 
-func (character *Character) getDefaultProcMaskFor(pred func(item *Item) bool) ProcMask {
+func (character *Character) getCurrentProcMaskFor(pred func(item *Item) bool) ProcMask {
 	mask := ProcMaskUnknown
 
 	if character == nil {

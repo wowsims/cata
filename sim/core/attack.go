@@ -840,55 +840,27 @@ func (aa *AutoAttacks) NewPPMManager(ppm float64, procMask ProcMask) *DynamicPro
 	return &dpm
 }
 
-// PPMManager for dynamic ProcMasks on weapon enchants
+// Dynamic Proc Manager for dynamic ProcMasks on weapon enchants
 func (aa *AutoAttacks) NewDynamicProcManagerForEnchant(effectID int32, ppm float64, fixedProcChance float64) *DynamicProcManager {
-	getProcMask := func() ProcMask {
-		return aa.character.getDefaultProcMaskForWeaponEnchant(effectID)
-	}
-
-	dpm := aa.newDynamicProcManager(ppm, fixedProcChance, getProcMask())
-
-	if aa.character != nil {
-		aa.character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot) {
-			procMask := aa.character.getDefaultProcMaskForWeaponEnchant(effectID)
-			dpm = aa.character.AutoAttacks.newDynamicProcManager(ppm, fixedProcChance, procMask)
-		})
-	}
-
-	return &dpm
+	return aa.newDynamicProcManagerWithDynamicProcMask(ppm, fixedProcChance, func() ProcMask {
+		return aa.character.getCurrentProcMaskForWeaponEnchant(effectID)
+	})
 }
 
-// PPMManager for dynamic ProcMasks on weapon effects
-func (aa *AutoAttacks) NewPPMManagerForWeaponEffect(itemID int32, ppm float64) *DynamicProcManager {
-	getProcMask := func() ProcMask {
-		return aa.character.getDefaultProcMaskForWeaponEffect(itemID)
-	}
-
-	dpm := aa.newDynamicProcManager(ppm, 0, getProcMask())
-
-	if aa.character != nil {
-		if aa.character != nil {
-			aa.character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot) {
-				dpm = aa.character.AutoAttacks.newDynamicProcManager(ppm, 0, getProcMask())
-			})
-		}
-	}
-
-	return &dpm
-}
-
-// PPMManager for dynamic ProcMasks on weapon effects
+// Dynamic Proc Manager for dynamic ProcMasks on weapon effects
 func (aa *AutoAttacks) NewDynamicProcManagerForWeaponEffect(itemID int32, ppm float64, fixedProcChance float64) *DynamicProcManager {
-	getProcMask := func() ProcMask {
-		return aa.character.getDefaultProcMaskForWeaponEffect(itemID)
-	}
+	return aa.newDynamicProcManagerWithDynamicProcMask(ppm, fixedProcChance, func() ProcMask {
+		return aa.character.getCurrentProcMaskForWeaponEffect(itemID)
+	})
+}
 
-	dpm := aa.newDynamicProcManager(ppm, fixedProcChance, getProcMask())
+func (aa *AutoAttacks) newDynamicProcManagerWithDynamicProcMask(ppm float64, fixedProcChance float64, procMaskFn func() ProcMask) *DynamicProcManager {
+	dpm := aa.newDynamicProcManager(ppm, fixedProcChance, procMaskFn())
 
 	if aa.character != nil {
 		if aa.character != nil {
 			aa.character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot) {
-				dpm = aa.character.AutoAttacks.newDynamicProcManager(ppm, fixedProcChance, getProcMask())
+				dpm = aa.character.AutoAttacks.newDynamicProcManager(ppm, fixedProcChance, procMaskFn())
 			})
 		}
 	}
