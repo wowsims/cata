@@ -17,6 +17,7 @@ type SpellModConfig struct {
 	IntValue     int64
 	TimeValue    time.Duration
 	FloatValue   float64
+	KeyValue     string
 	ApplyCustom  SpellModApply
 	RemoveCustom SpellModRemove
 }
@@ -29,6 +30,7 @@ type SpellMod struct {
 	floatValue     float64
 	intValue       int64
 	timeValue      time.Duration
+	keyValue       string
 	Apply          SpellModApply
 	Remove         SpellModRemove
 	IsActive       bool
@@ -71,6 +73,7 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 		floatValue: config.FloatValue,
 		intValue:   config.IntValue,
 		timeValue:  config.TimeValue,
+		keyValue:   config.KeyValue,
 		Apply:      applyFn,
 		Remove:     removeFn,
 		IsActive:   false,
@@ -263,6 +266,10 @@ const (
 	// Uses: FloatValue
 	SpellMod_BonusExpertise_Rating
 
+	// Add/subtract duration for associated debuff
+	// Uses: KeyValue, TimeValue
+	SpellMod_DebuffDuration_Flat
+
 	// User-defined implementation
 	// Uses: ApplyCustom | RemoveCustom
 	SpellMod_Custom
@@ -361,6 +368,11 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 	SpellMod_BonusExpertise_Rating: {
 		Apply:  applyBonusExpertiseRating,
 		Remove: removeBonusExpertiseRating,
+	},
+
+	SpellMod_DebuffDuration_Flat: {
+		Apply:  applyDebuffDurationFlat,
+		Remove: removeDebuffDurationFlat,
 	},
 
 	SpellMod_Custom: {
@@ -558,4 +570,20 @@ func applyBonusExpertiseRating(mod *SpellMod, spell *Spell) {
 
 func removeBonusExpertiseRating(mod *SpellMod, spell *Spell) {
 	spell.BonusExpertiseRating -= mod.floatValue
+}
+
+func applyDebuffDurationFlat(mod *SpellMod, spell *Spell) {
+	for _, debuffAura := range spell.RelatedAuraArrays[mod.keyValue] {
+		if debuffAura != nil {
+			debuffAura.Duration += mod.timeValue
+		}
+	}
+}
+
+func removeDebuffDurationFlat(mod *SpellMod, spell *Spell) {
+	for _, debuffAura := range spell.RelatedAuraArrays[mod.keyValue] {
+		if debuffAura != nil {
+			debuffAura.Duration -= mod.timeValue
+		}
+	}
 }
