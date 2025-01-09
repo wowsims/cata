@@ -65,6 +65,7 @@ type SpellConfig struct {
 
 	RelatedAuraArrays LabeledAuraArrays
 	RelatedDotSpell   *Spell
+	RelatedSelfBuff   *Aura
 }
 
 type Spell struct {
@@ -155,6 +156,7 @@ type Spell struct {
 	// Per-target auras that are related to this spell, usually buffs or debuffs applied by the spell.
 	RelatedAuraArrays LabeledAuraArrays
 	RelatedDotSpell   *Spell
+	RelatedSelfBuff   *Aura
 }
 
 func (unit *Unit) OnSpellRegistered(handler SpellRegisteredHandler) {
@@ -241,6 +243,7 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 
 		RelatedAuraArrays: config.RelatedAuraArrays,
 		RelatedDotSpell:   config.RelatedDotSpell,
+		RelatedSelfBuff:   config.RelatedSelfBuff,
 	}
 
 	switch {

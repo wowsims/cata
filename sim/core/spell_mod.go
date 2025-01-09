@@ -270,6 +270,10 @@ const (
 	// Uses: KeyValue, TimeValue
 	SpellMod_DebuffDuration_Flat
 
+	// Add/subtract duration for associated self-buff
+	// Uses: TimeValue
+	SpellMod_BuffDuration_Flat
+
 	// User-defined implementation
 	// Uses: ApplyCustom | RemoveCustom
 	SpellMod_Custom
@@ -373,6 +377,11 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 	SpellMod_DebuffDuration_Flat: {
 		Apply:  applyDebuffDurationFlat,
 		Remove: removeDebuffDurationFlat,
+	},
+
+	SpellMod_BuffDuration_Flat: {
+		Apply:  applyBuffDurationFlat,
+		Remove: removeBuffDurationFlat,
 	},
 
 	SpellMod_Custom: {
@@ -573,7 +582,13 @@ func removeBonusExpertiseRating(mod *SpellMod, spell *Spell) {
 }
 
 func applyDebuffDurationFlat(mod *SpellMod, spell *Spell) {
-	for _, debuffAura := range spell.RelatedAuraArrays[mod.keyValue] {
+	debuffAuraArray := spell.RelatedAuraArrays[mod.keyValue]
+
+	if debuffAuraArray == nil {
+		panic("No debuff found for key: " + mod.keyValue)
+	}
+
+	for _, debuffAura := range debuffAuraArray {
 		if debuffAura != nil {
 			debuffAura.Duration += mod.timeValue
 		}
@@ -581,9 +596,23 @@ func applyDebuffDurationFlat(mod *SpellMod, spell *Spell) {
 }
 
 func removeDebuffDurationFlat(mod *SpellMod, spell *Spell) {
-	for _, debuffAura := range spell.RelatedAuraArrays[mod.keyValue] {
+	debuffAuraArray := spell.RelatedAuraArrays[mod.keyValue]
+
+	if debuffAuraArray == nil {
+		panic("No debuff found for key: " + mod.keyValue)
+	}
+
+	for _, debuffAura := range debuffAuraArray {
 		if debuffAura != nil {
 			debuffAura.Duration -= mod.timeValue
 		}
 	}
+}
+
+func applyBuffDurationFlat(mod *SpellMod, spell *Spell) {
+	spell.RelatedSelfBuff.Duration += mod.timeValue
+}
+
+func removeBuffDurationFlat(mod *SpellMod, spell *Spell) {
+	spell.RelatedSelfBuff.Duration -= mod.timeValue
 }
