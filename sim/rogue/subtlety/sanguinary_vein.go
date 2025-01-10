@@ -45,10 +45,10 @@ func (subRogue *SubtletyRogue) registerSanguinaryVein() {
 
 	subRogue.Env.RegisterPreFinalizeEffect(func() {
 		if subRogue.Rupture != nil {
-			subRogue.Rupture.RelatedAuras = append(subRogue.Rupture.RelatedAuras, svDebuffArray)
+			subRogue.Rupture.RelatedAuraArrays = subRogue.Rupture.RelatedAuraArrays.Append(svDebuffArray)
 		}
 		if subRogue.Hemorrhage != nil && hasGlyph {
-			subRogue.Hemorrhage.RelatedAuras = append(subRogue.Hemorrhage.RelatedAuras, svDebuffArray)
+			subRogue.Hemorrhage.RelatedAuraArrays = subRogue.Hemorrhage.RelatedAuraArrays.Append(svDebuffArray)
 		}
 	})
 

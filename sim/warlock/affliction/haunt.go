@@ -65,6 +65,7 @@ func (affliction *AfflictionWarlock) registerHaunt() {
 				}
 			})
 		},
-		RelatedAuras: []core.AuraArray{affliction.HauntDebuffAuras},
+
+		RelatedAuraArrays: affliction.HauntDebuffAuras.ToMap(),
 	})
 }

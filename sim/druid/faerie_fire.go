@@ -70,7 +70,7 @@ func (druid *Druid) registerFaerieFireSpell() {
 			}
 		},
 
-		RelatedAuras: []core.AuraArray{druid.FaerieFireAuras},
+		RelatedAuraArrays: druid.FaerieFireAuras.ToMap(),
 	})
 }
 

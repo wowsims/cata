@@ -10,13 +10,16 @@ SpellMod implementation.
 */
 
 type SpellModConfig struct {
-	ClassMask  int64
-	Kind       SpellModType
-	School     SpellSchool
-	ProcMask   ProcMask
-	IntValue   int64
-	TimeValue  time.Duration
-	FloatValue float64
+	ClassMask    int64
+	Kind         SpellModType
+	School       SpellSchool
+	ProcMask     ProcMask
+	IntValue     int64
+	TimeValue    time.Duration
+	FloatValue   float64
+	KeyValue     string
+	ApplyCustom  SpellModApply
+	RemoveCustom SpellModRemove
 }
 
 type SpellMod struct {
@@ -27,6 +30,7 @@ type SpellMod struct {
 	floatValue     float64
 	intValue       int64
 	timeValue      time.Duration
+	keyValue       string
 	Apply          SpellModApply
 	Remove         SpellModRemove
 	IsActive       bool
@@ -46,6 +50,21 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 		panic("SpellMod " + strconv.Itoa(int(config.Kind)) + " not implmented")
 	}
 
+	var applyFn SpellModApply
+	var removeFn SpellModRemove
+
+	if config.Kind == SpellMod_Custom {
+		if (config.ApplyCustom == nil) || (config.RemoveCustom == nil) {
+			panic("ApplyCustom and RemoveCustom are mandatory fields for SpellMod_Custom")
+		}
+
+		applyFn = config.ApplyCustom
+		removeFn = config.RemoveCustom
+	} else {
+		applyFn = functions.Apply
+		removeFn = functions.Remove
+	}
+
 	mod := &SpellMod{
 		ClassMask:  config.ClassMask,
 		Kind:       config.Kind,
@@ -54,8 +73,9 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 		floatValue: config.FloatValue,
 		intValue:   config.IntValue,
 		timeValue:  config.TimeValue,
-		Apply:      functions.Apply,
-		Remove:     functions.Remove,
+		keyValue:   config.KeyValue,
+		Apply:      applyFn,
+		Remove:     removeFn,
 		IsActive:   false,
 	}
 
@@ -245,6 +265,18 @@ const (
 	// Add/subtract bonus expertise rating
 	// Uses: FloatValue
 	SpellMod_BonusExpertise_Rating
+
+	// Add/subtract duration for associated debuff
+	// Uses: KeyValue, TimeValue
+	SpellMod_DebuffDuration_Flat
+
+	// Add/subtract duration for associated self-buff
+	// Uses: TimeValue
+	SpellMod_BuffDuration_Flat
+
+	// User-defined implementation
+	// Uses: ApplyCustom | RemoveCustom
+	SpellMod_Custom
 )
 
 var spellModMap = map[SpellModType]*SpellModFunctions{
@@ -340,6 +372,20 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 	SpellMod_BonusExpertise_Rating: {
 		Apply:  applyBonusExpertiseRating,
 		Remove: removeBonusExpertiseRating,
+	},
+
+	SpellMod_DebuffDuration_Flat: {
+		Apply:  applyDebuffDurationFlat,
+		Remove: removeDebuffDurationFlat,
+	},
+
+	SpellMod_BuffDuration_Flat: {
+		Apply:  applyBuffDurationFlat,
+		Remove: removeBuffDurationFlat,
+	},
+
+	SpellMod_Custom: {
+		// Doesn't have dedicated Apply/Remove functions as ApplyCustom/RemoveCustom is handled in buildMod()
 	},
 }
 
@@ -533,4 +579,40 @@ func applyBonusExpertiseRating(mod *SpellMod, spell *Spell) {
 
 func removeBonusExpertiseRating(mod *SpellMod, spell *Spell) {
 	spell.BonusExpertiseRating -= mod.floatValue
+}
+
+func applyDebuffDurationFlat(mod *SpellMod, spell *Spell) {
+	debuffAuraArray := spell.RelatedAuraArrays[mod.keyValue]
+
+	if debuffAuraArray == nil {
+		panic("No debuff found for key: " + mod.keyValue)
+	}
+
+	for _, debuffAura := range debuffAuraArray {
+		if debuffAura != nil {
+			debuffAura.Duration += mod.timeValue
+		}
+	}
+}
+
+func removeDebuffDurationFlat(mod *SpellMod, spell *Spell) {
+	debuffAuraArray := spell.RelatedAuraArrays[mod.keyValue]
+
+	if debuffAuraArray == nil {
+		panic("No debuff found for key: " + mod.keyValue)
+	}
+
+	for _, debuffAura := range debuffAuraArray {
+		if debuffAura != nil {
+			debuffAura.Duration -= mod.timeValue
+		}
+	}
+}
+
+func applyBuffDurationFlat(mod *SpellMod, spell *Spell) {
+	spell.RelatedSelfBuff.Duration += mod.timeValue
+}
+
+func removeBuffDurationFlat(mod *SpellMod, spell *Spell) {
+	spell.RelatedSelfBuff.Duration -= mod.timeValue
 }

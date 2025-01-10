@@ -222,7 +222,7 @@ func (aura *Aura) ShouldRefreshExclusiveEffects(sim *Simulation, refreshWindow t
 	return false
 }
 func (spell *Spell) ShouldRefreshExclusiveEffects(sim *Simulation, target *Unit, refreshWindow time.Duration) bool {
-	for _, auraArray := range spell.RelatedAuras {
+	for _, auraArray := range spell.RelatedAuraArrays {
 		aura := auraArray.Get(target)
 		if aura != nil && aura.ShouldRefreshExclusiveEffects(sim, refreshWindow) {
 			return true

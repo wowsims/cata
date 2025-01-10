@@ -31,7 +31,7 @@ func (warlock *Warlock) registerCurseOfElements() {
 			spell.DealOutcome(sim, result)
 		},
 
-		RelatedAuras: []core.AuraArray{warlock.CurseOfElementsAuras},
+		RelatedAuraArrays: warlock.CurseOfElementsAuras.ToMap(),
 	})
 }
 
@@ -62,7 +62,7 @@ func (warlock *Warlock) registerCurseOfWeakness() {
 			spell.DealOutcome(sim, result)
 		},
 
-		RelatedAuras: []core.AuraArray{warlock.CurseOfWeaknessAuras},
+		RelatedAuraArrays: warlock.CurseOfWeaknessAuras.ToMap(),
 	})
 }
 
@@ -100,7 +100,7 @@ func (warlock *Warlock) registerCurseOfTongues() {
 			spell.DealOutcome(sim, result)
 		},
 
-		RelatedAuras: []core.AuraArray{warlock.CurseOfTonguesAuras},
+		RelatedAuraArrays: warlock.CurseOfTonguesAuras.ToMap(),
 	})
 }
 

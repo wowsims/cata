@@ -69,7 +69,7 @@ func (druid *Druid) registerMangleBearSpell() {
 			}
 		},
 
-		RelatedAuras: []core.AuraArray{mangleAuras},
+		RelatedAuraArrays: mangleAuras.ToMap(),
 	})
 }
 
@@ -139,7 +139,7 @@ func (druid *Druid) registerMangleCatSpell() {
 			return spell.CalcDamage(sim, target, baseDamage, spell.OutcomeExpectedMeleeWeaponSpecialHitAndCrit)
 		},
 
-		RelatedAuras: []core.AuraArray{mangleAuras},
+		RelatedAuraArrays: mangleAuras.ToMap(),
 	})
 }
 

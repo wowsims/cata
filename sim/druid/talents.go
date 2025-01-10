@@ -868,7 +868,7 @@ func (druid *Druid) applyInfectedWounds() {
 
 		for _, spell := range triggeringSpells {
 			if spell != nil {
-				spell.RelatedAuras = append(spell.RelatedAuras, iwAuras)
+				spell.RelatedAuraArrays = spell.RelatedAuraArrays.Append(iwAuras)
 			}
 		}
 	})
