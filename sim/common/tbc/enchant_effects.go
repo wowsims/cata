@@ -81,7 +81,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(1900, aura, core.MeleeWeaponSlots())
+		character.ItemSwap.RegisterEnchantProc(1900, aura)
 	})
 
 	core.NewEnchantEffect(2929, func(agent core.Agent) {
