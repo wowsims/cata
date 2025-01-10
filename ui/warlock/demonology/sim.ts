@@ -138,7 +138,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 	},
 
 	presets: {
-		epWeights: [Presets.DEFAULT_EP_PRESET],
+		epWeights: [Presets.DEFAULT_EP_PRESET, Presets.Mastery_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.DemonologyTalentsShadowBolt, Presets.DemonologyTalentsIncinerate],
 		// Preset rotations that the user can quickly select.
@@ -190,6 +190,14 @@ export class DemonologyWarlockSimUI extends IndividualSimUI<Spec.SpecDemonologyW
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
 				statSelectionPresets: Presets.DEMONOLOGY_BREAKPOINTS,
+				getEPDefaults: (player: Player<Spec.SpecFuryWarrior>) => {
+					const playerWeights = player.getEpWeights();
+					const defaultWeights = Presets.DEFAULT_EP_PRESET.epWeights;
+
+					if (this.individualConfig.presets.epWeights.some(preset => playerWeights.equals(preset.epWeights))) return playerWeights;
+
+					return defaultWeights;
+				},
 			});
 		});
 	}

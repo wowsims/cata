@@ -52,6 +52,18 @@ export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(
 		[Stat.StatHitRating]: 0.92,
 		[Stat.StatCritRating]: 0.51,
 		[Stat.StatHasteRating]: 2.75,
+		[Stat.StatMasteryRating]: 0.62,
+	}),
+);
+
+export const Mastery_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Mastery',
+	Stats.fromMap({
+		[Stat.StatIntellect]: 1.27,
+		[Stat.StatSpellPower]: 1.0,
+		[Stat.StatHitRating]: 0.92,
+		[Stat.StatCritRating]: 0.51,
+		[Stat.StatHasteRating]: 2.75,
 		[Stat.StatMasteryRating]: 0.76,
 	}),
 );
