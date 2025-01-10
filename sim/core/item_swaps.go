@@ -267,17 +267,6 @@ func (swap *ItemSwap) EligibleSlotsForEffect(effectID int32) []proto.ItemSlot {
 	return eligibleSlots
 }
 
-func (swap *ItemSwap) CalcStatChanges(slots []proto.ItemSlot) stats.Stats {
-	newStats := stats.Stats{}
-	for _, slot := range slots {
-		oldItemStats := swap.getItemStats(*swap.GetEquippedItemBySlot(slot))
-		newItemStats := swap.getItemStats(*swap.GetUnequippedItemBySlot(slot))
-		newStats = newStats.Add(newItemStats.Subtract(oldItemStats))
-	}
-
-	return newStats
-}
-
 func (swap *ItemSwap) CalcEquipmentStatsOffset(originalEquipment Equipment, swapEquipment Equipment) ItemSwapStats {
 	allSlots := stats.Stats{}
 	weaponSlots := stats.Stats{}
