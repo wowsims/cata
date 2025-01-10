@@ -20,6 +20,9 @@ import AoEApl from './apls/aoe.apl.json';
 import DefaultApl from './apls/default.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
 import P3GearDefault from './gear_sets/p3.default.gear.json';
+import ItemSwapP3 from './gear_sets/p3_item_swap.gear.json';
+import P4GearDefault from './gear_sets/p4.default.gear.json';
+import ItemSwapP4 from './gear_sets/p4_item_swap.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
@@ -29,6 +32,10 @@ import PreraidGear from './gear_sets/preraid.gear.json';
 export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidGear);
 export const P1_PRESET = PresetUtils.makePresetGear('P1 - Default', P1Gear);
 export const P3_PRESET = PresetUtils.makePresetGear('P3 - Default', P3GearDefault);
+export const P4_PRESET = PresetUtils.makePresetGear('P4 - WIP', P4GearDefault);
+
+export const P3_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P3 - Item Swap', ItemSwapP3);
+export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4 - Item Swap', ItemSwapP4);
 
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AoE', AoEApl);
