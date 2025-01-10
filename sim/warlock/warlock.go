@@ -90,7 +90,7 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerSummonInfernal(doomguardInfernalTimer)
 
 	// TODO: vile hack to make the APLs work for now ...
-	if !warlock.HasSetBonus(ItemSetMaleficRaiment, 4) {
+	if !warlock.CouldHaveSetBonus(ItemSetMaleficRaiment, 4) {
 		warlock.RegisterAura(core.Aura{
 			Label:    "Fel Spark",
 			ActionID: core.ActionID{SpellID: 89937},
@@ -108,17 +108,15 @@ func (warlock *Warlock) Initialize() {
 	// warlock.registerBlackBook()
 
 	// Do this post-finalize so cast speed is updated with new stats
-	warlock.Env.RegisterPostFinalizeEffect(func() {
-		// if itemswap is enabled, correct for any possible haste changes
-		var correction stats.Stats
-		if warlock.ItemSwap.IsEnabled() {
-			correction = warlock.ItemSwap.CalcStatChanges([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand,
-				proto.ItemSlot_ItemSlotOffHand, proto.ItemSlot_ItemSlotRanged})
-
-			warlock.AddStats(correction)
-			warlock.MultiplyCastSpeed(1.0)
-		}
-	})
+	// warlock.Env.RegisterPostFinalizeEffect(func() {
+	// 	// if itemswap is enabled, correct for any possible haste changes
+	// 	var correction stats.Stats
+	// 	if warlock.ItemSwap.IsEnabled() {
+	// 		correction = warlock.ItemSwap.CalcStatChanges(core.AllWeaponSlots())
+	// 		warlock.AddStats(correction)
+	// 		warlock.MultiplyCastSpeed(1.0)
+	// 	}
+	// })
 }
 
 func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {

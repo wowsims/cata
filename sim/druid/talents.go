@@ -665,7 +665,7 @@ func (druid *Druid) applyRendAndTear(aura core.Aura) core.Aura {
 
 // 	// Solar
 // 	solarProcChance := (1.0 / 3.0) * float64(druid.Talents.Eclipse)
-// 	solarProcMultiplier := 1.4 + core.TernaryFloat64(druid.HasSetBonus(ItemSetNightsongGarb, 2), 0.07, 0)
+// 	solarProcMultiplier := 1.4 + core.TernaryFloat64(druid.CouldHaveSetBonus(ItemSetNightsongGarb, 2), 0.07, 0)
 // 	druid.SolarICD.Duration = time.Millisecond * 30000
 // 	druid.SolarEclipseProcAura = druid.RegisterAura(core.Aura{
 // 		Icd:      &druid.SolarICD,
@@ -708,7 +708,7 @@ func (druid *Druid) applyRendAndTear(aura core.Aura) core.Aura {
 
 // 	// Lunar
 // 	lunarProcChance := 0.2 * float64(druid.Talents.Eclipse)
-// 	lunarBonusCrit := (40 + core.TernaryFloat64(druid.HasSetBonus(ItemSetNightsongGarb, 2), 7, 0)) * core.CritRatingPerCritChance
+// 	lunarBonusCrit := (40 + core.TernaryFloat64(druid.CouldHaveSetBonus(ItemSetNightsongGarb, 2), 7, 0)) * core.CritRatingPerCritChance
 // 	druid.LunarICD.Duration = time.Millisecond * 30000
 // 	druid.LunarEclipseProcAura = druid.RegisterAura(core.Aura{
 // 		Icd:      &druid.LunarICD,

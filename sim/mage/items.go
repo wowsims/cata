@@ -59,21 +59,17 @@ var ItemSetFirehawkRobesOfConflagration = core.NewItemSet(core.ItemSet{
 			mage := agent.(MageAgent).GetMage()
 
 			setBonusAura.ApplyOnGain(func(_ *core.Aura, _ *core.Simulation) {
+				mage.Has4pcT12 = true
 				mage.brainFreezeProcChance += .15
 				mage.baseHotStreakProcChance += 0.30
 			})
 
 			setBonusAura.ApplyOnExpire(func(_ *core.Aura, _ *core.Simulation) {
+				mage.Has4pcT12 = false
 				mage.brainFreezeProcChance -= .15
 				mage.baseHotStreakProcChance -= .30
 			})
 
-			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-				mage.Has4pcT12 = true
-			})
-			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-				mage.Has4pcT12 = false
-			})
 			setBonusAura.ExposeToAPL(99064)
 		},
 	},

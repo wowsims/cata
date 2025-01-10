@@ -217,23 +217,12 @@ var Tier13 = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			rogue := agent.(RogueAgent).GetRogue()
 
+			vendettaDurationIncrease := core.DurationFromSeconds(9.0 * core.TernaryFloat64(rogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfVendetta), 1.2, 1.0))
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				Kind:      core.SpellMod_Custom,
+				Kind:      core.SpellMod_DebuffDuration_Flat,
 				ClassMask: RogueSpellVendetta,
-				ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
-					for _, aura := range spell.RelatedAuraArrays["Vendetta"] {
-						if aura != nil {
-							aura.Duration = rogue.getVendettaDuration(9)
-						}
-					}
-				},
-				RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
-					for _, aura := range spell.RelatedAuraArrays["Vendetta"] {
-						if aura != nil {
-							aura.Duration = rogue.getVendettaDuration(0)
-						}
-					}
-				},
+				KeyValue:  "Vendetta",
+				TimeValue: vendettaDurationIncrease,
 			})
 
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
@@ -268,7 +257,7 @@ func getFangsProcRate(character *core.Character) float64 {
 // Fear + Vengeance
 var JawsOfRetribution = core.NewItemSet(core.ItemSet{
 	Name:  "Jaws of Retribution",
-	Slots: []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand},
+	Slots: core.MeleeWeaponSlots(),
 	Bonuses: map[int32]core.ApplySetBonus{
 		// Your melee attacks have a chance to grant Suffering, increasing your Agility by 2, stacking up to 50 times.
 		2: func(agent core.Agent, setBonusAura *core.Aura) {

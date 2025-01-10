@@ -858,11 +858,9 @@ func (aa *AutoAttacks) newDynamicProcManagerWithDynamicProcMask(ppm float64, fix
 	dpm := aa.newDynamicProcManager(ppm, fixedProcChance, procMaskFn())
 
 	if aa.character != nil {
-		if aa.character != nil {
-			aa.character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot) {
-				dpm = aa.character.AutoAttacks.newDynamicProcManager(ppm, fixedProcChance, procMaskFn())
-			})
-		}
+		aa.character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot) {
+			dpm = aa.character.AutoAttacks.newDynamicProcManager(ppm, fixedProcChance, procMaskFn())
+		})
 	}
 
 	return &dpm

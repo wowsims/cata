@@ -19,7 +19,7 @@ func (priest *Priest) registerGreaterHealSpell() {
 			BaseCost: 0.32,
 			Multiplier: 1 *
 				(1 - .05*float64(priest.Talents.ImprovedHealing)) *
-				core.TernaryFloat64(priest.HasSetBonus(ItemSetRegaliaOfFaith, 4), .95, 1),
+				core.TernaryFloat64(priest.CouldHaveSetBonus(ItemSetRegaliaOfFaith, 4), .95, 1),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -33,7 +33,7 @@ func (priest *Priest) registerGreaterHealSpell() {
 			(1 + .02*float64(priest.Talents.SpiritualHealing)) *
 			(1 + .01*float64(priest.Talents.BlessedResilience)) *
 			(1 + .02*float64(priest.Talents.FocusedPower)) *
-			core.TernaryFloat64(priest.HasSetBonus(ItemSetVestmentsOfAbsolution, 4), 1.05, 1),
+			core.TernaryFloat64(priest.CouldHaveSetBonus(ItemSetVestmentsOfAbsolution, 4), 1.05, 1),
 		CritMultiplier:   priest.DefaultHealingCritMultiplier(),
 		ThreatMultiplier: 1 - []float64{0, .07, .14, .20}[priest.Talents.SilentResolve],
 

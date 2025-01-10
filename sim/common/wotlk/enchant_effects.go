@@ -53,7 +53,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(3251, aura, core.MeleeWeaponSlots())
+		character.ItemSwap.RegisterEnchantProc(3251, aura)
 	})
 
 	// Enchant: 3239, Spell: 44525 - Icebreaker
@@ -93,7 +93,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(3239, aura, core.MeleeWeaponSlots())
+		character.ItemSwap.RegisterEnchantProc(3239, aura)
 	})
 
 	// Enchant: 3607, Spell: 55076, Item: 41146 - Sun Scope
@@ -180,7 +180,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(3789, aura, core.MeleeWeaponSlots())
+		character.ItemSwap.RegisterEnchantProc(3789, aura)
 	})
 
 	// TODO: These are stand-in values without any real reference.
@@ -208,7 +208,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(3241, aura, core.MeleeWeaponSlots())
+		character.ItemSwap.RegisterEnchantProc(3241, aura)
 	})
 
 	// Enchant: 3790, Spell: 59630 - Black Magic
@@ -355,7 +355,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(3728, aura, []proto.ItemSlot{proto.ItemSlot_ItemSlotBack})
+		character.ItemSwap.RegisterEnchantProc(3728, aura)
 	})
 
 	// Enchant: 3730, Spell: 55777 - Swordguard Embroidery
@@ -411,6 +411,6 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(3870, aura, core.MeleeWeaponSlots())
+		character.ItemSwap.RegisterEnchantProc(3870, aura)
 	})
 }

@@ -102,7 +102,7 @@ func (dk *DeathKnight) applyRunicEmpowerementCorruption() {
 	var handler func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult)
 
 	var runicMasteryAura *core.StatBuffAura
-	if dk.HasSetBonus(ItemSetNecroticBoneplateBattlegear, 4) {
+	if dk.CouldHaveSetBonus(ItemSetNecroticBoneplateBattlegear, 4) {
 		runicMasteryAura = dk.NewTemporaryStatsAura("Runic Mastery", core.ActionID{SpellID: 105647}, stats.Stats{stats.MasteryRating: 710}, time.Second*12)
 	}
 

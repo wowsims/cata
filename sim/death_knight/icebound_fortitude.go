@@ -6,10 +6,6 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (dk *DeathKnight) iceBoundFortituteBaseDuration() time.Duration {
-	return 12 * time.Second
-}
-
 func (dk *DeathKnight) registerIceboundFortitudeSpell() {
 	actionID := core.ActionID{SpellID: 48792}
 
@@ -18,7 +14,7 @@ func (dk *DeathKnight) registerIceboundFortitudeSpell() {
 	iceBoundFortituteAura := dk.RegisterAura(core.Aura{
 		Label:    "Icebound Fortitude",
 		ActionID: actionID,
-		Duration: dk.iceBoundFortituteBaseDuration(),
+		Duration: 12 * time.Second,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageTakenMultiplier *= dmgTakenMult

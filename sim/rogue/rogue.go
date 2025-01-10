@@ -198,7 +198,6 @@ func (rogue *Rogue) Initialize() {
 	rogue.registerShivSpell()
 	rogue.registerThistleTeaCD()
 	rogue.registerGougeSpell()
-	rogue.registerVendetta()
 
 	rogue.SliceAndDiceBonus = 0.4
 

@@ -1,50 +1,47 @@
-package rogue
+package assassination
 
 import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/rogue"
 )
 
-func (rogue *Rogue) getVendettaDuration(baseDuration float64) time.Duration {
-	hasGlyph := rogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfVendetta)
-	return time.Duration((30.0+baseDuration)*core.TernaryFloat64(hasGlyph, 1.2, 1.0)) * time.Second
-}
-
-func (rogue *Rogue) registerVendetta() {
-	if !rogue.Talents.Vendetta {
+func (sinRogue *AssassinationRogue) registerVendetta() {
+	if !sinRogue.Talents.Vendetta {
 		return
 	}
 
 	actionID := core.ActionID{SpellID: 79140}
-	duration := rogue.getVendettaDuration(0)
+	hasGlyph := sinRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfVendetta)
+	duration := time.Duration((30.0)*core.TernaryFloat64(hasGlyph, 1.2, 1.0)) * time.Second
 
-	vendettaAuras := rogue.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+	vendettaAuras := sinRogue.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return target.GetOrRegisterAura(core.Aura{
 			Label:    "Vendetta",
 			ActionID: actionID,
 			Duration: duration,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				rogue.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier *= 1.2
+				sinRogue.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier *= 1.2
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				rogue.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier /= 1.2
+				sinRogue.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier /= 1.2
 			},
 		})
 	})
 
-	rogue.Vendetta = rogue.RegisterSpell(core.SpellConfig{
+	sinRogue.Vendetta = sinRogue.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		Flags:          core.SpellFlagAPL | core.SpellFlagMCD,
-		ClassSpellMask: RogueSpellVendetta,
+		ClassSpellMask: rogue.RogueSpellVendetta,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: time.Second,
 			},
 			CD: core.Cooldown{
-				Timer:    rogue.NewTimer(),
+				Timer:    sinRogue.NewTimer(),
 				Duration: time.Minute * 2,
 			},
 		},
@@ -56,12 +53,12 @@ func (rogue *Rogue) registerVendetta() {
 		RelatedAuraArrays: vendettaAuras.ToMap(),
 	})
 
-	rogue.AddMajorCooldown(core.MajorCooldown{
-		Spell:    rogue.Vendetta,
+	sinRogue.AddMajorCooldown(core.MajorCooldown{
+		Spell:    sinRogue.Vendetta,
 		Type:     core.CooldownTypeDPS,
 		Priority: core.CooldownPriorityDefault,
 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
-			return rogue.ComboPoints() >= 4
+			return sinRogue.ComboPoints() >= 4
 		},
 	})
 }

@@ -111,7 +111,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		var eligibleSlotsForItem []proto.ItemSlot
 		if !isEnchant {
 			eligibleSlotsForItem = character.ItemSwap.EligibleSlotsForItem(effectID)
-			itemExistsInMainEquip = !itemSwapIsEnabled || itemSwapIsEnabled && character.ItemSwap.ItemExistsInMainEquip(effectID, eligibleSlotsForItem)
+			itemExistsInMainEquip = !itemSwapIsEnabled || character.ItemSwap.ItemExistsInMainEquip(effectID, eligibleSlotsForItem)
 		}
 
 		procID := core.ActionID{SpellID: config.AuraID}
@@ -197,12 +197,12 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		}
 
 		if isEnchant {
-			character.ItemSwap.RegisterEnchantProc(effectID, triggerAura, config.Slots)
+			character.ItemSwap.RegisterEnchantProc(effectID, triggerAura)
 		} else {
-			if itemExistsInMainEquip && (slices.Contains(eligibleSlotsForItem, proto.ItemSlot_ItemSlotTrinket1) || slices.Contains(eligibleSlotsForItem, proto.ItemSlot_ItemSlotTrinket2)) {
+			if itemExistsInMainEquip && core.CheckSliceOverlap(eligibleSlotsForItem, core.TrinketSlots()) {
 				character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
 			}
-			character.ItemSwap.RegisterProc(effectID, triggerAura)
+			character.ItemSwap.RegisterProcWithSlots(effectID, triggerAura, eligibleSlotsForItem)
 		}
 	})
 }
@@ -438,11 +438,11 @@ func NewStackingStatBonusEffect(config StackingStatBonusEffect) {
 			},
 		})
 
-		if itemExistsInMainEquip && slices.Contains(eligibleSlotsForItem, proto.ItemSlot_ItemSlotTrinket1) {
+		if itemExistsInMainEquip && core.CheckSliceOverlap(eligibleSlotsForItem, core.TrinketSlots()) {
 			character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
 		}
 
-		character.ItemSwap.RegisterProc(config.ItemID, triggerAura)
+		character.ItemSwap.RegisterProcWithSlots(config.ItemID, triggerAura, eligibleSlotsForItem)
 	})
 }
 
@@ -546,7 +546,7 @@ func NewProcDamageEffect(config ProcDamageEffect) {
 		triggerAura := core.MakeProcTriggerAura(&character.Unit, triggerConfig)
 
 		if isEnchant {
-			character.ItemSwap.RegisterEnchantProc(effectID, triggerAura, config.Slots)
+			character.ItemSwap.RegisterEnchantProc(effectID, triggerAura)
 		} else {
 			character.ItemSwap.RegisterProc(effectID, triggerAura)
 		}

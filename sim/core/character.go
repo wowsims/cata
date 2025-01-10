@@ -811,17 +811,13 @@ func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Sta
 		}
 	}
 
-	character.RegisterAura(Aura{
+	MakePermanent(character.RegisterAura(Aura{
 		Label:      "Armor Specialization",
-		Duration:   NeverExpires,
 		BuildPhase: CharacterBuildPhaseTalents,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			processArmorSpecialization(sim)
 		},
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
-		},
-	})
+	}))
 
 	if character.ItemSwap.IsEnabled() {
 		character.RegisterItemSwapCallback([]proto.ItemSlot{

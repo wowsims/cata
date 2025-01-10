@@ -307,6 +307,40 @@ func (equipment *Equipment) EquipItem(item Item) {
 	}
 }
 
+func (equipment *Equipment) containsItem(itemID int32) bool {
+	for _, item := range equipment {
+		if item.ID == itemID {
+			return true
+		}
+	}
+	return false
+}
+
+func (equipment *Equipment) containsEnchant(effectID int32) bool {
+	for _, item := range equipment {
+		if item.Enchant.EffectID == effectID || item.TempEnchant == effectID {
+			return true
+		}
+	}
+	return false
+}
+
+func (equipment *Equipment) containsEnchantInSlot(effectID int32, slot proto.ItemSlot) bool {
+	if equipment[slot].Enchant.EffectID == effectID || equipment[slot].TempEnchant == effectID {
+		return true
+	}
+	return false
+}
+
+func (equipment *Equipment) containsItemInSlots(itemID int32, possibleSlots []proto.ItemSlot) bool {
+	for _, slot := range possibleSlots {
+		if equipment[slot].ID == itemID {
+			return true
+		}
+	}
+	return false
+}
+
 func (equipment *Equipment) ToEquipmentSpecProto() *proto.EquipmentSpec {
 	return &proto.EquipmentSpec{
 		Items: MapSlice(equipment[:], func(item Item) *proto.ItemSpec {
@@ -579,7 +613,7 @@ var itemTypeToSlotsMap = map[proto.ItemType][]proto.ItemSlot{
 	// ItemType_ItemTypeWeapon is excluded intentionally - the slot cannot be decided based on type alone for weapons.
 }
 
-func EligibleSlotsForItem(item *Item, isFuryWarrior bool) []proto.ItemSlot {
+func eligibleSlotsForItem(item *Item, isFuryWarrior bool) []proto.ItemSlot {
 	if slots, ok := itemTypeToSlotsMap[item.Type]; ok {
 		return slots
 	}

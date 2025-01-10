@@ -120,7 +120,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(2673, aura, core.MeleeWeaponSlots())
+		character.ItemSwap.RegisterEnchantProc(2673, aura)
 	})
 
 	core.AddWeaponEffect(2723, func(agent core.Agent, _ proto.ItemSlot) {
@@ -162,7 +162,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(3225, aura, core.MeleeWeaponSlots())
+		character.ItemSwap.RegisterEnchantProc(3225, aura)
 	})
 
 	// https://web.archive.org/web/20100702102132/http://elitistjerks.com/f15/t27347-deathfrost_its_mechanics/p2/#post789470
@@ -205,7 +205,7 @@ func init() {
 		})
 
 		meleeWeaponSlots := core.MeleeWeaponSlots()
-		character.ItemSwap.RegisterEnchantProc(3273, aura, core.Ternary(isMH, meleeWeaponSlots[:1], meleeWeaponSlots[1:]))
+		character.ItemSwap.RegisterEnchantProcWithSlots(3273, aura, core.Ternary(isMH, meleeWeaponSlots[:1], meleeWeaponSlots[1:]))
 	}
 
 	core.NewEnchantEffect(3273, func(agent core.Agent) {

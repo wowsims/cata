@@ -45,7 +45,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(4066, aura, core.MeleeWeaponSlots())
+		character.ItemSwap.RegisterEnchantProc(4066, aura)
 	})
 
 	// Enchant: 4067, Spell: 74197 - Enchant Weapon - Avalanche
@@ -114,7 +114,7 @@ func init() {
 			},
 		}))
 
-		character.ItemSwap.RegisterEnchantProc(4067, aura, core.MeleeWeaponSlots())
+		character.ItemSwap.RegisterEnchantProc(4067, aura)
 	})
 
 	// Enchant: 4074, Spell: 74211 - Enchant Weapon - Elemental Slayer
@@ -149,7 +149,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(4074, aura, core.MeleeWeaponSlots())
+		character.ItemSwap.RegisterEnchantProc(4074, aura)
 	})
 
 	// Enchant: 4083, Spell: 74223 - Enchant Weapon - Hurricane
@@ -233,7 +233,7 @@ func init() {
 			},
 		}))
 
-		character.ItemSwap.RegisterEnchantProc(4083, aura, core.MeleeWeaponSlots())
+		character.ItemSwap.RegisterEnchantProc(4083, aura)
 	})
 
 	// Enchant: 4084, Spell: 74225 - Enchant Weapon - Heartsong
@@ -311,7 +311,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterEnchantProc(4099, aura, core.MeleeWeaponSlots())
+		character.ItemSwap.RegisterEnchantProc(4099, aura)
 	})
 
 	// Enchant: 4115, Spell: 75172 - Lightweave Embroidery
