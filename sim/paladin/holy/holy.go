@@ -47,7 +47,7 @@ func (holy *HolyPaladin) GetPaladin() *paladin.Paladin {
 
 func (holy *HolyPaladin) ApplyTalents() {
 	holy.Paladin.ApplyTalents()
-	holy.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypePlate)
+	holy.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypePlate, 86525)
 }
 
 func (holy *HolyPaladin) Initialize() {

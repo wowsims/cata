@@ -53,7 +53,7 @@ func (warlock *Warlock) GetWarlock() *Warlock {
 }
 
 func (warlock *Warlock) ApplyTalents() {
-	warlock.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeCloth)
+	warlock.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeCloth, 86091)
 
 	warlock.ApplyAfflictionTalents()
 	warlock.ApplyDemonologyTalents()

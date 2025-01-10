@@ -87,5 +87,5 @@ func (resto *RestorationShaman) Initialize() {
 
 func (resto *RestorationShaman) ApplyTalents() {
 	resto.Shaman.ApplyTalents()
-	resto.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeMail)
+	resto.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeMail, 86529)
 }

@@ -775,63 +775,40 @@ func (character *Character) MeetsArmorSpecializationRequirement(armorType proto.
 	return true
 }
 
-func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Stat, armorType proto.ArmorType) {
-	armorSpecializationDepdency := character.NewDynamicMultiplyStat(primaryStat, 1.05)
-	var isEnabled bool
+func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Stat, armorType proto.ArmorType, spellID int32) {
+	armorSpecializationDependency := character.NewDynamicMultiplyStat(primaryStat, 1.05)
+	isEnabled := character.MeetsArmorSpecializationRequirement(armorType)
 
-	enableArmorSpecialization := func(sim *Simulation) {
-		character.EnableBuildPhaseStatDep(sim, armorSpecializationDepdency)
-
-		if isEnabled {
-			return
-		}
-		isEnabled = true
-		if sim.Log != nil {
-			sim.Log("Armor Specialization: Active")
-		}
-	}
-	disableArmorSpecialization := func(sim *Simulation) {
-		character.DisableBuildPhaseStatDep(sim, armorSpecializationDepdency)
-
-		if !isEnabled {
-			return
-		}
-		isEnabled = false
-		if sim.Log != nil {
-			sim.Log("Armor Specialization: Inactive")
-		}
-	}
-
-	processArmorSpecialization := func(sim *Simulation) {
-		hasBonus := character.MeetsArmorSpecializationRequirement(armorType)
-		if hasBonus {
-			enableArmorSpecialization(sim)
-		} else {
-			disableArmorSpecialization(sim)
-		}
-	}
-
-	MakePermanent(character.RegisterAura(Aura{
+	aura := character.RegisterAura(Aura{
 		Label:      "Armor Specialization",
-		BuildPhase: CharacterBuildPhaseTalents,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			processArmorSpecialization(sim)
-		},
-	}))
+		ActionID:   ActionID{SpellID: spellID},
+		BuildPhase: Ternary(isEnabled, CharacterBuildPhaseTalents, CharacterBuildPhaseNone),
+		Duration:   NeverExpires,
+	})
 
-	if character.ItemSwap.IsEnabled() {
-		character.RegisterItemSwapCallback([]proto.ItemSlot{
-			proto.ItemSlot_ItemSlotHead,
-			proto.ItemSlot_ItemSlotShoulder,
-			proto.ItemSlot_ItemSlotChest,
-			proto.ItemSlot_ItemSlotWrist,
-			proto.ItemSlot_ItemSlotHands,
-			proto.ItemSlot_ItemSlotWaist,
-			proto.ItemSlot_ItemSlotLegs,
-			proto.ItemSlot_ItemSlotFeet,
-		},
-			func(sim *Simulation, _ proto.ItemSlot) {
-				processArmorSpecialization(sim)
-			})
+	aura.AttachStatDependency(armorSpecializationDependency)
+
+	if isEnabled {
+		aura = MakePermanent(aura)
 	}
+
+	character.RegisterItemSwapCallback([]proto.ItemSlot{
+		proto.ItemSlot_ItemSlotHead,
+		proto.ItemSlot_ItemSlotShoulder,
+		proto.ItemSlot_ItemSlotChest,
+		proto.ItemSlot_ItemSlotWrist,
+		proto.ItemSlot_ItemSlotHands,
+		proto.ItemSlot_ItemSlotWaist,
+		proto.ItemSlot_ItemSlotLegs,
+		proto.ItemSlot_ItemSlotFeet,
+	},
+		func(sim *Simulation, _ proto.ItemSlot) {
+			if character.MeetsArmorSpecializationRequirement(armorType) {
+				if !aura.IsActive() {
+					aura.Activate(sim)
+				}
+			} else {
+				aura.Deactivate(sim)
+			}
+		})
 }

@@ -10,7 +10,7 @@ import (
 )
 
 func (priest *Priest) ApplyTalents() {
-	priest.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeCloth)
+	priest.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeCloth, 89745)
 	// TODO:
 	// Reflective Shield
 	// Improved Flash Heal

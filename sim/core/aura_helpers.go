@@ -370,6 +370,18 @@ func (parentAura *Aura) AttachSpellMod(spellModConfig SpellModConfig) {
 	})
 }
 
+// Attaches a StatDependency to a parent Aura
+func (parentAura *Aura) AttachStatDependency(statDep *stats.StatDependency) {
+
+	parentAura.ApplyOnGain(func(_ *Aura, sim *Simulation) {
+		parentAura.Unit.EnableBuildPhaseStatDep(sim, statDep)
+	})
+
+	parentAura.ApplyOnExpire(func(_ *Aura, sim *Simulation) {
+		parentAura.Unit.DisableBuildPhaseStatDep(sim, statDep)
+	})
+}
+
 // Adds Stats to a parent Aura
 func (parentAura *Aura) AttachStatsBuff(stats stats.Stats) {
 	parentAura.ApplyOnGain(func(aura *Aura, sim *Simulation) {

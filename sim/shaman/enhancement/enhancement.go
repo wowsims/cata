@@ -91,7 +91,7 @@ func (enh *EnhancementShaman) GetShaman() *shaman.Shaman {
 
 func (enh *EnhancementShaman) ApplyTalents() {
 	enh.Shaman.ApplyTalents()
-	enh.ApplyArmorSpecializationEffect(stats.Agility, proto.ArmorType_ArmorTypeMail)
+	enh.ApplyArmorSpecializationEffect(stats.Agility, proto.ArmorType_ArmorTypeMail, 86529)
 }
 
 func (enh *EnhancementShaman) Initialize() {
