@@ -67,7 +67,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 		consumes: Presets.DefaultConsumes,
 
 		// Default talents.
-		talents: Presets.DemonologyTalentsShadowBolt.data,
+		talents: Presets.DemonologyTalentsIncinerate.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 
@@ -152,13 +152,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 	},
 
 	autoRotation: (_player: Player<Spec.SpecDemonologyWarlock>): APLRotation => {
-		return Presets.APL_ShadowBolt.rotation.rotation!;
+		return Presets.APL_Incinerate.rotation.rotation!;
 	},
 
 	raidSimPresets: [
 		{
 			spec: Spec.SpecDemonologyWarlock,
-			talents: Presets.DemonologyTalentsShadowBolt.data,
+			talents: Presets.DemonologyTalentsIncinerate.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {

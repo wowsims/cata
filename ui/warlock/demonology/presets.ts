@@ -52,7 +52,7 @@ export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(
 		[Stat.StatHitRating]: 0.92,
 		[Stat.StatCritRating]: 0.51,
 		[Stat.StatHasteRating]: 2.75,
-		[Stat.StatMasteryRating]: 0.62,
+		[Stat.StatMasteryRating]: 0.57,
 	}),
 );
 
@@ -110,7 +110,7 @@ export const DefaultOptions = WarlockOptions.create({
 	classOptions: {
 		summon: Summon.Felguard,
 		detonateSeed: false,
-		prepullMastery: 0,
+		prepullMastery: 225,
 		prepullPostSnapshotMana: 0,
 	},
 });
