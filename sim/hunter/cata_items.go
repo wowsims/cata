@@ -107,13 +107,7 @@ var ItemSetWyrmstalkerBattleGear = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			hunter := agent.(HunterAgent).GetHunter()
 
-			// Handled in Cobra Shot
-			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Flat,
-				FloatValue: 0.1,
-				ClassMask:  HunterSpellSteadyShot,
-			})
-
+			// Handled in Cobra and Steady code respectively
 			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
 				hunter.Has2pcT13 = true
 			})
