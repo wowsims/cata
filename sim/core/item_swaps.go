@@ -330,7 +330,7 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 		newStats := Ternary(swap.swapSet == proto.APLActionItemSwap_Swap1, statsToSwap.Invert(), statsToSwap)
 
 		if sim.Log != nil {
-			sim.Log("Item Swap - New Stats: %v", newStats.FlatString())
+			sim.Log("Item Swap - Stats Change: %v", newStats.FlatString())
 		}
 		character.AddStatsDynamic(sim, newStats)
 	}
@@ -353,14 +353,11 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 
 func (swap *ItemSwap) swapItem(slot proto.ItemSlot, has2H bool, isReset bool) bool {
 	oldItem := *swap.GetEquippedItemBySlot(slot)
-	var newItem *Item
 	if isReset {
-		newItem = &swap.originalEquip[slot]
+		swap.character.Equipment[slot] = swap.originalEquip[slot]
 	} else {
-		newItem = swap.GetUnequippedItemBySlot(slot)
+		swap.character.Equipment[slot] = swap.unEquippedItems[slot]
 	}
-
-	swap.character.Equipment[slot] = *newItem
 
 	//2H will swap out the offhand also.
 	if has2H && slot == proto.ItemSlot_ItemSlotMainHand && !swap.isFuryWarrior {
