@@ -1636,6 +1636,30 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrost-AllItems-SealoftheSevenSigns-77204"
+ value: {
+  dps: 38688.87584
+  tps: 36488.59781
+  hps: 539.77064
+ }
+}
+dps_results: {
+ key: "TestFrost-AllItems-SealoftheSevenSigns-77969"
+ value: {
+  dps: 38762.29847
+  tps: 36523.18172
+  hps: 535.10404
+ }
+}
+dps_results: {
+ key: "TestFrost-AllItems-SealoftheSevenSigns-77989"
+ value: {
+  dps: 38942.55976
+  tps: 36736.21674
+  hps: 531.99297
+ }
+}
+dps_results: {
  key: "TestFrost-AllItems-Shadowmourne-49623"
  value: {
   dps: 40764.14516

@@ -1612,6 +1612,30 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-SealoftheSevenSigns-77204"
+ value: {
+  dps: 39915.83599
+  tps: 29462.91364
+  hps: 659.8312
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SealoftheSevenSigns-77969"
+ value: {
+  dps: 39920.37289
+  tps: 29491.48114
+  hps: 653.56202
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SealoftheSevenSigns-77989"
+ value: {
+  dps: 40160.97481
+  tps: 29701.00924
+  hps: 662.96579
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-Shadowmourne-49623"
  value: {
   dps: 44692.65267
