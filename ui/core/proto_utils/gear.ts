@@ -1,4 +1,4 @@
-import { EquipmentSpec, GemColor, ItemSlot, ItemSpec, ItemSwap, Profession, SimDatabase, SimEnchant, SimGem, SimItem } from '../proto/common.js';
+import { EquipmentSpec, GemColor, HandType, ItemSlot, ItemSpec, ItemSwap, Profession, SimDatabase, SimEnchant, SimGem, SimItem } from '../proto/common.js';
 import { UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../proto/ui.js';
 import { isBluntWeaponType, isSharpWeaponType } from '../proto_utils/utils.js';
 import { distinct, equalsOrBothNull, getEnumValues } from '../utils.js';
@@ -100,6 +100,10 @@ abstract class BaseGear {
 		// Check for valid weapon combos.
 		if (!validWeaponCombo(gear[ItemSlot.ItemSlotMainHand]?.item, gear[ItemSlot.ItemSlotOffHand]?.item, canDualWield2H)) {
 			if (newSlot == ItemSlot.ItemSlotOffHand) {
+				if (!canDualWield2H && gear[ItemSlot.ItemSlotOffHand]?.item.handType == HandType.HandTypeTwoHand) {
+					gear[ItemSlot.ItemSlotOffHand] = null;
+				}
+
 				gear[ItemSlot.ItemSlotMainHand] = null;
 			} else {
 				gear[ItemSlot.ItemSlotOffHand] = null;

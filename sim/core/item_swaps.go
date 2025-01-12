@@ -299,7 +299,6 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 	character := swap.character
 
 	weaponSlotSwapped := false
-	has2H := swap.GetUnequippedItemBySlot(proto.ItemSlot_ItemSlotMainHand).HandType == proto.HandType_HandTypeTwoHand
 	isPrepull := sim.CurrentTime < 0
 
 	for _, slot := range swap.slots {
@@ -307,17 +306,11 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 			continue
 		}
 
-		// Will swap both on the MainHand Slot for 2H.
-		if has2H && slot == proto.ItemSlot_ItemSlotOffHand && !swap.isFuryWarrior {
-			continue
-		}
+		swap.swapItem(sim, slot, isReset)
+		weaponSlotSwapped = slot == proto.ItemSlot_ItemSlotMainHand || slot == proto.ItemSlot_ItemSlotOffHand || slot == proto.ItemSlot_ItemSlotRanged || weaponSlotSwapped
 
-		if ok := swap.swapItem(sim, slot, has2H, isReset); ok {
-			weaponSlotSwapped = slot == proto.ItemSlot_ItemSlotMainHand || slot == proto.ItemSlot_ItemSlotOffHand || slot == proto.ItemSlot_ItemSlotRanged || weaponSlotSwapped
-
-			for _, onSwap := range swap.onSwapCallbacks[slot] {
-				onSwap(sim, slot)
-			}
+		for _, onSwap := range swap.onSwapCallbacks[slot] {
+			onSwap(sim, slot)
 		}
 	}
 
@@ -347,7 +340,7 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 	swap.swapSet = swapSet
 }
 
-func (swap *ItemSwap) swapItem(sim *Simulation, slot proto.ItemSlot, has2H bool, isReset bool) bool {
+func (swap *ItemSwap) swapItem(sim *Simulation, slot proto.ItemSlot, isReset bool) {
 	oldItem := *swap.GetEquippedItemBySlot(slot)
 
 	if isReset {
@@ -356,15 +349,8 @@ func (swap *ItemSwap) swapItem(sim *Simulation, slot proto.ItemSlot, has2H bool,
 		swap.character.Equipment[slot] = swap.unEquippedItems[slot]
 	}
 
-	// 2H will swap out the offhand also.
-	if has2H && slot == proto.ItemSlot_ItemSlotMainHand && !swap.isFuryWarrior {
-		swap.swapItem(sim, proto.ItemSlot_ItemSlotOffHand, has2H, isReset)
-	}
-
 	swap.unEquippedItems[slot] = oldItem
 	swap.swapWeapon(sim, slot)
-
-	return true
 }
 
 func (swap *ItemSwap) getItemStats(item Item) stats.Stats {
