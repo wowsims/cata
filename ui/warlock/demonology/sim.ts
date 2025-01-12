@@ -31,6 +31,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 	defaults: {
 		// Default equipped gear.
 		gear: Presets.P3_PRESET.gear,
+		itemSwap: Presets.P3_ITEM_SWAP.itemSwap,
 
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.DEFAULT_EP_PRESET.epWeights,

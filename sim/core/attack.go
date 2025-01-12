@@ -631,6 +631,22 @@ func (aa *AutoAttacks) EnableMeleeSwing(sim *Simulation) {
 	}
 }
 
+func (aa *AutoAttacks) UpdateMeleeOHSwing(sim *Simulation) {
+	if !aa.AutoSwingMelee {
+		return
+	}
+
+	if aa.mh.unit.CurrentTarget == nil {
+		return
+	}
+
+	aa.EnableMeleeSwing(sim)
+	if !aa.IsDualWielding && aa.oh.enabled {
+		sim.removeWeaponAttack(&aa.oh)
+		aa.oh.enabled = false
+	}
+}
+
 func (aa *AutoAttacks) EnableRangedSwing(sim *Simulation) {
 	if !aa.AutoSwingRanged || aa.ranged.enabled {
 		return

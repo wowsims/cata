@@ -71,6 +71,8 @@ func (character *Character) enableItemSwap(itemSwap *proto.ItemSwap, mhCritMulti
 		return
 	}
 
+	swapStats := character.ItemSwap.calcEquipmentStatsOffset(character.Equipment, swapItems, slots)
+
 	character.ItemSwap = ItemSwap{
 		isFuryWarrior:        character.Spec == proto.Spec_SpecFuryWarrior,
 		mhCritMultiplier:     mhCritMultiplier,
@@ -80,7 +82,7 @@ func (character *Character) enableItemSwap(itemSwap *proto.ItemSwap, mhCritMulti
 		originalEquip:        character.Equipment,
 		swapEquip:            swapItems,
 		unEquippedItems:      swapItems,
-		stats:                character.ItemSwap.CalcEquipmentStatsOffset(character.Equipment, swapItems),
+		stats:                swapStats,
 		swapSet:              proto.APLActionItemSwap_Unknown,
 		initialized:          false,
 	}
@@ -264,19 +266,16 @@ func (swap *ItemSwap) EligibleSlotsForEffect(effectID int32) []proto.ItemSlot {
 	return eligibleSlots
 }
 
-func (swap *ItemSwap) CalcEquipmentStatsOffset(originalEquipment Equipment, swapEquipment Equipment) ItemSwapStats {
+func (swap *ItemSwap) calcEquipmentStatsOffset(originalEquipment Equipment, swapEquipment Equipment, slots []proto.ItemSlot) ItemSwapStats {
 	allSlots := stats.Stats{}
 	weaponSlots := stats.Stats{}
 
-	for slot, item := range swapEquipment {
-		if item.ID == 0 {
-			continue
-		}
-
+	for slot := range slots {
 		itemSlot := proto.ItemSlot(slot)
 		originalItem := originalEquipment[itemSlot]
+		unequippedItem := swapEquipment[itemSlot]
 		originalItemStats := swap.getItemStats(originalItem)
-		unequippedItemStats := swap.getItemStats(item)
+		unequippedItemStats := swap.getItemStats(unequippedItem)
 		slotStats := unequippedItemStats.Subtract(originalItemStats)
 
 		allSlots = allSlots.Add(slotStats)
@@ -308,12 +307,12 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 			continue
 		}
 
-		//will swap both on the MainHand Slot for 2H.
+		// Will swap both on the MainHand Slot for 2H.
 		if has2H && slot == proto.ItemSlot_ItemSlotOffHand && !swap.isFuryWarrior {
 			continue
 		}
 
-		if ok := swap.swapItem(slot, has2H, isReset); ok {
+		if ok := swap.swapItem(sim, slot, has2H, isReset); ok {
 			weaponSlotSwapped = slot == proto.ItemSlot_ItemSlotMainHand || slot == proto.ItemSlot_ItemSlotOffHand || slot == proto.ItemSlot_ItemSlotRanged || weaponSlotSwapped
 
 			for _, onSwap := range swap.onSwapCallbacks[slot] {
@@ -348,21 +347,22 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 	swap.swapSet = swapSet
 }
 
-func (swap *ItemSwap) swapItem(slot proto.ItemSlot, has2H bool, isReset bool) bool {
+func (swap *ItemSwap) swapItem(sim *Simulation, slot proto.ItemSlot, has2H bool, isReset bool) bool {
 	oldItem := *swap.GetEquippedItemBySlot(slot)
+
 	if isReset {
 		swap.character.Equipment[slot] = swap.originalEquip[slot]
 	} else {
 		swap.character.Equipment[slot] = swap.unEquippedItems[slot]
 	}
 
-	//2H will swap out the offhand also.
+	// 2H will swap out the offhand also.
 	if has2H && slot == proto.ItemSlot_ItemSlotMainHand && !swap.isFuryWarrior {
-		swap.swapItem(proto.ItemSlot_ItemSlotOffHand, has2H, isReset)
+		swap.swapItem(sim, proto.ItemSlot_ItemSlotOffHand, has2H, isReset)
 	}
 
 	swap.unEquippedItems[slot] = oldItem
-	swap.swapWeapon(slot)
+	swap.swapWeapon(sim, slot)
 
 	return true
 }
@@ -371,9 +371,8 @@ func (swap *ItemSwap) getItemStats(item Item) stats.Stats {
 	return ItemEquipmentStats(item)
 }
 
-func (swap *ItemSwap) swapWeapon(slot proto.ItemSlot) {
+func (swap *ItemSwap) swapWeapon(sim *Simulation, slot proto.ItemSlot) {
 	character := swap.character
-
 	switch slot {
 	case proto.ItemSlot_ItemSlotMainHand:
 		if character.AutoAttacks.AutoSwingMelee {
@@ -382,9 +381,10 @@ func (swap *ItemSwap) swapWeapon(slot proto.ItemSlot) {
 	case proto.ItemSlot_ItemSlotOffHand:
 		if character.AutoAttacks.AutoSwingMelee {
 			weapon := character.WeaponFromOffHand(swap.ohCritMultiplier)
+			isDualWielding := weapon.SwingSpeed != 0
 			character.AutoAttacks.SetOH(weapon)
-
-			character.AutoAttacks.IsDualWielding = weapon.SwingSpeed != 0
+			character.AutoAttacks.IsDualWielding = isDualWielding
+			character.AutoAttacks.UpdateMeleeOHSwing(sim)
 			character.PseudoStats.CanBlock = character.OffHand().WeaponType == proto.WeaponType_WeaponTypeShield
 		}
 	case proto.ItemSlot_ItemSlotRanged:
