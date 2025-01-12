@@ -1369,6 +1369,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAffliction-AllItems-SealoftheSevenSigns-77204"
+ value: {
+  dps: 37320.32552
+  tps: 26302.20461
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-SealoftheSevenSigns-77969"
+ value: {
+  dps: 37176.66356
+  tps: 26096.98817
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-SealoftheSevenSigns-77989"
+ value: {
+  dps: 37703.43715
+  tps: 26402.26012
+ }
+}
+dps_results: {
  key: "TestAffliction-AllItems-ShadowflameRegalia"
  value: {
   dps: 32340.39214

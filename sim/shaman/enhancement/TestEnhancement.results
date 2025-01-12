@@ -1446,6 +1446,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-SealoftheSevenSigns-77204"
+ value: {
+  dps: 34775.06215
+  tps: 22366.19336
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-SealoftheSevenSigns-77969"
+ value: {
+  dps: 34771.66237
+  tps: 22365.10435
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-SealoftheSevenSigns-77989"
+ value: {
+  dps: 34784.53231
+  tps: 22368.05866
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-Shadowmourne-49623"
  value: {
   dps: 36887.3206

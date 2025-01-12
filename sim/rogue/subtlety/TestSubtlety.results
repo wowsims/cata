@@ -1425,6 +1425,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-SealoftheSevenSigns-77204"
+ value: {
+  dps: 24029.55991
+  tps: 17060.98753
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-SealoftheSevenSigns-77969"
+ value: {
+  dps: 24029.55991
+  tps: 17060.98753
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-SealoftheSevenSigns-77989"
+ value: {
+  dps: 24029.55991
+  tps: 17060.98753
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-ShardofWoe-60233"
  value: {
   dps: 24442.50752
