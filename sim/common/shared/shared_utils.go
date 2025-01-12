@@ -29,10 +29,6 @@ type ProcStatBonusEffect struct {
 
 	// Any other custom proc conditions not covered by the above fields.
 	CustomProcCondition core.CustomStatBuffProcCondition
-
-	// Used to register for Item Swapping when the effect is not an equippable Item by itself.
-	// For example a Weapon or Back enchant.
-	Slots []proto.ItemSlot
 }
 
 type DamageEffect struct {
@@ -406,7 +402,7 @@ func NewStackingStatBonusEffect(config StackingStatBonusEffect) {
 
 		itemSwapIsEnabled := character.ItemSwap.IsEnabled()
 		eligibleSlotsForItem := character.ItemSwap.EligibleSlotsForItem(config.ItemID)
-		itemExistsInMainEquip := !itemSwapIsEnabled || itemSwapIsEnabled && character.ItemSwap.ItemExistsInMainEquip(config.ItemID, eligibleSlotsForItem)
+		itemExistsInMainEquip := !itemSwapIsEnabled || character.ItemSwap.ItemExistsInMainEquip(config.ItemID, eligibleSlotsForItem)
 
 		auraID := core.ActionID{SpellID: config.AuraID}
 		if auraID.IsEmptyAction() {
@@ -463,7 +459,6 @@ type ProcDamageEffect struct {
 	ItemID    int32
 	SpellID   int32
 	EnchantID int32
-	Slots     []proto.ItemSlot
 	Trigger   core.ProcTrigger
 
 	School  core.SpellSchool

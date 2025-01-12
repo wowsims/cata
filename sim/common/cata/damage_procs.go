@@ -16,7 +16,6 @@ func init() {
 		MaxDmg:  8750,
 		Flags:   core.SpellFlagNoSpellMods | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt,
 		Outcome: shared.OutcomeMeleeNoBlockDodgeParryCrit,
-		Slots:   core.TrinketSlots(),
 		Trigger: core.ProcTrigger{
 			Name:     "Darkmoon Card: Hurricane",
 			ProcMask: core.ProcMaskMeleeOrRanged,
@@ -34,7 +33,6 @@ func init() {
 		MaxDmg:  8750,
 		Flags:   core.SpellFlagNoSpellMods | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt,
 		Outcome: shared.OutcomeMeleeNoBlockDodgeParryCrit,
-		Slots:   core.TrinketSlots(),
 		Trigger: core.ProcTrigger{
 			Name:     "Darkmoon Card: Hurricane",
 			ProcMask: core.ProcMaskMeleeOrRanged,

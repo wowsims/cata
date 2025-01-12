@@ -248,7 +248,6 @@ func init() {
 		ProcChance: 0.25,
 		Bonus:      stats.Stats{stats.Spirit: 200},
 		Duration:   time.Second * 15,
-		Slots:      core.MeleeWeaponSlots(),
 	})
 
 	// Enchant: 4097, Spell: 74242 - Enchant Weapon - Power Torrent
@@ -263,7 +262,6 @@ func init() {
 		ProcChance: 1.0 / 3.0,
 		Bonus:      stats.Stats{stats.Intellect: 500},
 		Duration:   time.Second * 12,
-		Slots:      core.MeleeWeaponSlots(),
 	})
 
 	// Enchant: 4098, Spell: 74244 - Enchant Weapon - Windwalk
@@ -276,7 +274,6 @@ func init() {
 		PPM:       1, // based on old Wowhead comments, TODO: measure in Classic
 		Bonus:     stats.Stats{stats.DodgeRating: 600},
 		Duration:  time.Second * 10,
-		Slots:     core.MeleeWeaponSlots(),
 	})
 
 	// Enchant: 4099, Spell: 74246 - Enchant Weapon - Landslide
@@ -326,7 +323,6 @@ func init() {
 		ProcChance: 0.25,
 		Bonus:      stats.Stats{stats.Intellect: 580},
 		Duration:   time.Second * 15,
-		Slots:      []proto.ItemSlot{proto.ItemSlot_ItemSlotBack},
 	})
 
 	// Enchant: 4116, Spell: 75175 - Darkglow Embroidery
@@ -341,7 +337,6 @@ func init() {
 		ProcChance: 0.30,
 		Bonus:      stats.Stats{stats.Spirit: 580},
 		Duration:   time.Second * 15,
-		Slots:      []proto.ItemSlot{proto.ItemSlot_ItemSlotBack},
 	})
 
 	// Enchant: 4118, Spell: 75178 - Swordguard Embroidery
@@ -356,7 +351,6 @@ func init() {
 		ProcChance: 0.15,
 		Bonus:      stats.Stats{stats.AttackPower: 1000, stats.RangedAttackPower: 1000},
 		Duration:   time.Second * 15,
-		Slots:      []proto.ItemSlot{proto.ItemSlot_ItemSlotBack},
 	})
 
 	// Enchant: 4175, Spell: 81932, Item: 59594 - Gnomish X-Ray Scope
@@ -372,7 +366,6 @@ func init() {
 		ProcChance: 0.1,
 		Bonus:      stats.Stats{stats.RangedAttackPower: 800},
 		Duration:   time.Second * 10,
-		Slots:      []proto.ItemSlot{proto.ItemSlot_ItemSlotRanged},
 	})
 
 	// Enchant: 4176, Item: 59595 - R19 Threatfinder
@@ -404,7 +397,6 @@ func init() {
 		MaxDmg:  133,
 		Outcome: shared.OutcomeMeleeCanCrit,
 		IsMelee: true,
-		Slots:   []proto.ItemSlot{proto.ItemSlot_ItemSlotOffHand},
 	})
 
 	// Enchant: 4216, Spell: 92437, Item: 55056  - Pyrium Shield Spike
@@ -422,7 +414,6 @@ func init() {
 		MinDmg:  210,
 		MaxDmg:  350,
 		IsMelee: true,
-		Slots:   []proto.ItemSlot{proto.ItemSlot_ItemSlotOffHand},
 	})
 
 	// Enchant: 4267, Spell: 99623, Item: 70139 - Flintlocke's Woodchucker
@@ -438,7 +429,6 @@ func init() {
 		ProcChance: 0.1,
 		Bonus:      stats.Stats{stats.Agility: 300},
 		Duration:   time.Second * 10,
-		Slots:      []proto.ItemSlot{proto.ItemSlot_ItemSlotRanged},
 	},
 		shared.DamageEffect{
 			SpellID:  99621,

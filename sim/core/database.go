@@ -3,6 +3,7 @@ package core
 import (
 	"fmt"
 	"math"
+	"slices"
 	"sync"
 
 	"github.com/wowsims/cata/sim/core/proto"
@@ -307,38 +308,20 @@ func (equipment *Equipment) EquipItem(item Item) {
 	}
 }
 
-func (equipment *Equipment) containsItem(itemID int32) bool {
-	for _, item := range equipment {
-		if item.ID == itemID {
-			return true
-		}
-	}
-	return false
-}
-
-func (equipment *Equipment) containsEnchant(effectID int32) bool {
-	for _, item := range equipment {
-		if item.Enchant.EffectID == effectID || item.TempEnchant == effectID {
-			return true
-		}
-	}
-	return false
-}
-
 func (equipment *Equipment) containsEnchantInSlot(effectID int32, slot proto.ItemSlot) bool {
-	if equipment[slot].Enchant.EffectID == effectID || equipment[slot].TempEnchant == effectID {
-		return true
-	}
-	return false
+	return (equipment[slot].Enchant.EffectID == effectID) || (equipment[slot].TempEnchant == effectID)
+}
+
+func (equipment *Equipment) containsEnchantInSlots(effectID int32, possibleSlots []proto.ItemSlot) bool {
+	return slices.ContainsFunc(possibleSlots, func(slot proto.ItemSlot) bool {
+		return equipment.containsEnchantInSlot(effectID, slot)
+	})
 }
 
 func (equipment *Equipment) containsItemInSlots(itemID int32, possibleSlots []proto.ItemSlot) bool {
-	for _, slot := range possibleSlots {
-		if equipment[slot].ID == itemID {
-			return true
-		}
-	}
-	return false
+	return slices.ContainsFunc(possibleSlots, func(slot proto.ItemSlot) bool {
+		return equipment[slot].ID == itemID
+	})
 }
 
 func (equipment *Equipment) ToEquipmentSpecProto() *proto.EquipmentSpec {
