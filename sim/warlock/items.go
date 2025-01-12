@@ -257,7 +257,7 @@ var ItemSetVestmentsOfTheFacelessShroud = core.NewItemSet(core.ItemSet{
 				Name:           "Item - Warlock T13 4P Bonus",
 				ActionID:       core.ActionID{SpellID: 105787},
 				Callback:       core.CallbackOnCastComplete,
-				ClassSpellMask: WarlockSpellShadowBurn,
+				ClassSpellMask: WarlockSpellSoulBurn,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					aura.Activate(sim)
 				},
