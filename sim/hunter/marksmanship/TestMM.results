@@ -45,8 +45,8 @@ dps_results: {
 dps_results: {
  key: "TestMM-AllItems-AgonyandTorment"
  value: {
-  dps: 23626.3959
-  tps: 21256.05288
+  dps: 23590.04647
+  tps: 21226.66864
  }
 }
 dps_results: {
@@ -641,8 +641,8 @@ dps_results: {
 dps_results: {
  key: "TestMM-AllItems-Flamewaker'sBattlegear"
  value: {
-  dps: 24941.63332
-  tps: 22473.27177
+  dps: 25140.4034
+  tps: 22640.61989
  }
 }
 dps_results: {

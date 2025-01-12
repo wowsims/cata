@@ -38,625 +38,625 @@ character_stats_results: {
 dps_results: {
  key: "TestDemonology-AllItems-AgileShadowspiritDiamond"
  value: {
-  dps: 39451.94317
-  tps: 19979.30645
+  dps: 39459.91338
+  tps: 20068.14531
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Althor'sAbacus-50366"
  value: {
-  dps: 37349.42456
-  tps: 19022.63477
+  dps: 37356.51893
+  tps: 19011.15066
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-AncientPetrifiedSeed-69001"
  value: {
-  dps: 37655.42921
-  tps: 19081.50478
+  dps: 37608.42358
+  tps: 19111.93397
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Anhuur'sHymnal-55889"
  value: {
-  dps: 38008.62917
-  tps: 19258.04791
+  dps: 38041.71999
+  tps: 19244.29242
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Anhuur'sHymnal-56407"
  value: {
-  dps: 38085.92843
-  tps: 19295.62944
+  dps: 38105.53953
+  tps: 19277.65478
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ApparatusofKhaz'goroth-68972"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ApparatusofKhaz'goroth-69113"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ArrowofTime-72897"
  value: {
-  dps: 37433.02631
-  tps: 19136.87015
+  dps: 37291.57092
+  tps: 18996.02402
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-AustereShadowspiritDiamond"
  value: {
-  dps: 39132.97057
-  tps: 19760.52099
+  dps: 39137.08925
+  tps: 19845.05164
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Balespider'sBurningVestments"
  value: {
-  dps: 36663.59277
-  tps: 18491.86778
+  dps: 36606.81657
+  tps: 18633.23526
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-BaubleofTrueBlood-50726"
  value: {
-  dps: 36780.4328
-  tps: 18742.29622
-  hps: 101.6345
+  dps: 36728.22584
+  tps: 18760.56611
+  hps: 101.27642
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-BedrockTalisman-58182"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-BellofEnragingResonance-59326"
  value: {
-  dps: 38809.46772
-  tps: 19710.66106
+  dps: 38782.08103
+  tps: 19696.14489
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-BellofEnragingResonance-65053"
  value: {
-  dps: 38918.98771
-  tps: 19688.31597
+  dps: 39033.33333
+  tps: 19789.82301
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-BindingPromise-67037"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Blood-SoakedAleMug-63843"
  value: {
-  dps: 37287.75247
-  tps: 18931.23347
+  dps: 37241.08768
+  tps: 18961.64884
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-BloodofIsiset-55995"
  value: {
-  dps: 37331.05749
-  tps: 18961.47099
+  dps: 37284.27104
+  tps: 18991.88914
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-BloodofIsiset-56414"
  value: {
-  dps: 37450.59446
-  tps: 18991.70851
+  dps: 37403.81824
+  tps: 19022.12944
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-BloodthirstyGladiator'sBadgeofConquest-64687"
  value: {
-  dps: 36842.1336
-  tps: 18762.95389
+  dps: 36865.30838
+  tps: 18795.69374
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-BloodthirstyGladiator'sBadgeofDominance-64688"
  value: {
-  dps: 37617.71959
-  tps: 19180.86328
+  dps: 37572.07872
+  tps: 19211.46919
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-BloodthirstyGladiator'sBadgeofVictory-64689"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-BloodthirstyGladiator'sEmblemofCruelty-64740"
  value: {
-  dps: 37359.97334
-  tps: 19062.25467
+  dps: 37378.09083
+  tps: 19064.63907
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-BloodthirstyGladiator'sEmblemofMeditation-64741"
  value: {
-  dps: 36771.66874
-  tps: 18730.25596
+  dps: 36725.41567
+  tps: 18760.53477
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-BloodthirstyGladiator'sEmblemofTenacity-64742"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-BloodthirstyGladiator'sInsigniaofConquest-64761"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-BloodthirstyGladiator'sInsigniaofDominance-64762"
  value: {
-  dps: 37762.02419
-  tps: 19213.43935
+  dps: 37716.47046
+  tps: 19242.64075
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-BloodthirstyGladiator'sInsigniaofVictory-64763"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Bone-LinkFetish-77210"
  value: {
-  dps: 36941.68521
-  tps: 18900.94435
+  dps: 36883.32806
+  tps: 18918.35675
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Bone-LinkFetish-77982"
  value: {
-  dps: 36904.8896
-  tps: 18862.99034
+  dps: 36855.90843
+  tps: 18889.70772
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Bone-LinkFetish-78002"
  value: {
-  dps: 36950.8098
-  tps: 18913.14207
+  dps: 36886.38492
+  tps: 18921.70675
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-BottledLightning-66879"
  value: {
-  dps: 37593.82812
-  tps: 19170.45151
+  dps: 37573.81344
+  tps: 19117.1992
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-BottledWishes-77114"
  value: {
-  dps: 39123.06953
-  tps: 20120.82736
+  dps: 39162.94124
+  tps: 20166.3547
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-BracingShadowspiritDiamond"
  value: {
-  dps: 39339.66205
-  tps: 19464.72797
+  dps: 39323.88779
+  tps: 19569.17458
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Brawler'sTrophy-232015"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-BurningShadowspiritDiamond"
  value: {
-  dps: 39660.76602
-  tps: 20069.36608
+  dps: 39648.43337
+  tps: 20180.59086
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-CataclysmicGladiator'sBadgeofConquest-73648"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-CataclysmicGladiator'sBadgeofDominance-73498"
  value: {
-  dps: 38118.11414
-  tps: 19447.19024
+  dps: 38072.83536
+  tps: 19477.91976
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-CataclysmicGladiator'sBadgeofVictory-73496"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-CataclysmicGladiator'sInsigniaofConquest-73643"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-CataclysmicGladiator'sInsigniaofDominance-73497"
  value: {
-  dps: 38434.2924
-  tps: 19508.70163
+  dps: 38408.34896
+  tps: 19550.33805
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-CataclysmicGladiator'sInsigniaofVictory-73491"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ChaoticShadowspiritDiamond"
  value: {
-  dps: 39661.25027
-  tps: 20067.05019
+  dps: 39545.15118
+  tps: 20121.49531
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Coren'sChilledChromiumCoaster-232012"
  value: {
-  dps: 37361.76658
-  tps: 19062.25467
+  dps: 37380.26276
+  tps: 19064.63907
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-CoreofRipeness-58184"
  value: {
-  dps: 37836.66198
-  tps: 19254.1448
+  dps: 37895.4403
+  tps: 19353.15315
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-CorpseTongueCoin-50349"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-CrecheoftheFinalDragon-77205"
  value: {
-  dps: 37298.12275
-  tps: 19073.25977
+  dps: 37360.27581
+  tps: 19100.53092
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-CrecheoftheFinalDragon-77972"
  value: {
-  dps: 37451.20574
-  tps: 19042.27353
+  dps: 37438.14892
+  tps: 19141.04758
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-CrecheoftheFinalDragon-77992"
  value: {
-  dps: 37527.56393
-  tps: 19081.49332
+  dps: 37553.40637
+  tps: 19128.59728
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-CrushingWeight-59506"
  value: {
-  dps: 37059.98617
-  tps: 18940.2288
+  dps: 37094.51732
+  tps: 19055.50024
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-CrushingWeight-65118"
  value: {
-  dps: 37143.38776
-  tps: 19075.47081
+  dps: 37287.18716
+  tps: 19053.85471
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-CunningoftheCruel-77208"
  value: {
-  dps: 40030.96981
-  tps: 21098.88747
+  dps: 40055.58101
+  tps: 21309.92892
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-CunningoftheCruel-77980"
  value: {
-  dps: 39731.0859
-  tps: 20995.35737
+  dps: 39524.96863
+  tps: 20799.52216
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-CunningoftheCruel-78000"
  value: {
-  dps: 40619.73896
-  tps: 21623.48238
+  dps: 40412.81262
+  tps: 21517.89685
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-DarkmoonCard:Earthquake-62048"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-DarkmoonCard:Hurricane-62049"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-DarkmoonCard:Hurricane-62051"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-DarkmoonCard:Tsunami-62050"
  value: {
-  dps: 37836.66198
-  tps: 19254.1448
+  dps: 37895.4403
+  tps: 19353.15315
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Deathbringer'sWill-50363"
  value: {
-  dps: 36981.25725
-  tps: 18837.30677
+  dps: 37075.77822
+  tps: 18893.24948
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-DestructiveShadowspiritDiamond"
  value: {
-  dps: 39336.30716
-  tps: 19844.50843
+  dps: 39219.73671
+  tps: 19896.67802
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-DislodgedForeignObject-50348"
  value: {
-  dps: 38079.35254
-  tps: 19650.89151
+  dps: 37747.44273
+  tps: 19462.90199
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Dwyer'sCaber-70141"
  value: {
-  dps: 37531.0213
-  tps: 19159.82393
+  dps: 37416.49296
+  tps: 19155.9928
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-EffulgentShadowspiritDiamond"
  value: {
-  dps: 39132.97057
-  tps: 19760.52099
+  dps: 39137.08925
+  tps: 19845.05164
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ElectrosparkHeartstarter-67118"
  value: {
-  dps: 37198.49813
-  tps: 18964.51558
+  dps: 37148.4957
+  tps: 18957.39705
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-EmberShadowspiritDiamond"
  value: {
-  dps: 39343.32688
-  tps: 19859.02475
+  dps: 39323.88779
+  tps: 19962.59608
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-EnigmaticShadowspiritDiamond"
  value: {
-  dps: 39336.30716
-  tps: 19844.50843
+  dps: 39219.73671
+  tps: 19896.67802
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-EssenceoftheCyclone-59473"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-EssenceoftheCyclone-65140"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-EssenceoftheEternalFlame-69002"
  value: {
-  dps: 37655.42921
-  tps: 19081.50478
+  dps: 37608.42358
+  tps: 19111.93397
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-EternalShadowspiritDiamond"
  value: {
-  dps: 39132.97057
-  tps: 19760.52099
+  dps: 39137.08925
+  tps: 19845.05164
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-EyeofUnmaking-77200"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-EyeofUnmaking-77977"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-EyeofUnmaking-77997"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-FallofMortality-59500"
  value: {
-  dps: 37836.66198
-  tps: 19254.1448
+  dps: 37895.4403
+  tps: 19353.15315
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-FallofMortality-65124"
  value: {
-  dps: 38002.31064
-  tps: 19321.51583
+  dps: 38017.08226
+  tps: 19410.42307
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-FieryQuintessence-69000"
  value: {
-  dps: 37995.49072
-  tps: 19467.19708
+  dps: 37942.97092
+  tps: 19453.36089
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Figurine-DemonPanther-52199"
  value: {
-  dps: 37236.64586
-  tps: 18919.1032
+  dps: 37259.52729
+  tps: 18901.98417
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Figurine-DreamOwl-52354"
  value: {
-  dps: 37715.28688
-  tps: 19159.79761
+  dps: 37760.7113
+  tps: 19286.41369
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Figurine-EarthenGuardian-52352"
  value: {
-  dps: 36771.66874
-  tps: 18730.66986
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Figurine-JeweledSerpent-52353"
  value: {
-  dps: 38507.38777
-  tps: 19579.39014
+  dps: 38557.39885
+  tps: 19706.81976
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Figurine-KingofBoars-52351"
  value: {
-  dps: 37450.59446
-  tps: 18991.70851
+  dps: 37403.81824
+  tps: 19022.12944
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-FireoftheDeep-77117"
  value: {
-  dps: 37830.08167
-  tps: 19150.22642
+  dps: 37782.93142
+  tps: 19180.66193
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-FleetShadowspiritDiamond"
  value: {
-  dps: 39206.71955
-  tps: 19812.10031
+  dps: 39210.79265
+  tps: 19896.78382
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-FluidDeath-58181"
  value: {
-  dps: 37236.64586
-  tps: 18919.1032
+  dps: 37259.29654
+  tps: 18901.86879
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ForlornShadowspiritDiamond"
  value: {
-  dps: 39339.66205
-  tps: 19849.45506
+  dps: 39323.88779
+  tps: 19955.66684
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-FoulGiftoftheDemonLord-72898"
  value: {
-  dps: 39032.83587
-  tps: 19627.77276
+  dps: 39025.62064
+  tps: 19701.60115
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-FuryofAngerforge-59461"
  value: {
-  dps: 37383.17646
-  tps: 19073.64827
+  dps: 37345.21215
+  tps: 19053.57732
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-GaleofShadows-56138"
  value: {
-  dps: 38204.21255
-  tps: 19669.59665
+  dps: 38191.83099
+  tps: 19711.24762
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-GaleofShadows-56462"
  value: {
-  dps: 38168.67487
-  tps: 19746.00619
+  dps: 38184.76445
+  tps: 19629.57064
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-GearDetector-61462"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
@@ -669,1053 +669,1053 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-AllItems-GlowingTwilightScale-54589"
  value: {
-  dps: 37391.50076
-  tps: 19046.47965
+  dps: 37396.21317
+  tps: 19032.44638
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-GraceoftheHerald-55266"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-GraceoftheHerald-56295"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-HarmlightToken-63839"
  value: {
-  dps: 38326.02468
-  tps: 19428.09091
+  dps: 38127.50236
+  tps: 19389.79481
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Harrison'sInsigniaofPanache-65803"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-HeartofIgnacious-59514"
  value: {
-  dps: 38414.71515
-  tps: 19674.65404
+  dps: 38227.65755
+  tps: 19609.97043
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-HeartofIgnacious-65110"
  value: {
-  dps: 38849.91995
-  tps: 19959.19213
+  dps: 38672.18233
+  tps: 19797.18854
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-HeartofRage-59224"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-HeartofRage-65072"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-HeartofSolace-55868"
  value: {
-  dps: 37460.29402
-  tps: 19296.47175
+  dps: 37449.80126
+  tps: 19338.56715
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-HeartofSolace-56393"
  value: {
-  dps: 37329.69089
-  tps: 19322.29526
+  dps: 37345.71826
+  tps: 19209.98734
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-HeartofThunder-55845"
  value: {
-  dps: 36771.66874
-  tps: 18730.68239
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-HeartofThunder-56370"
  value: {
-  dps: 36771.66874
-  tps: 18730.72019
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-HeartoftheVile-66969"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ImpassiveShadowspiritDiamond"
  value: {
-  dps: 39336.30716
-  tps: 19844.50843
+  dps: 39219.73671
+  tps: 19896.67802
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ImpatienceofYouth-62464"
  value: {
-  dps: 37497.83631
-  tps: 19024.6949
+  dps: 37450.92736
+  tps: 19055.11886
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ImpatienceofYouth-62469"
  value: {
-  dps: 37497.83631
-  tps: 19024.6949
+  dps: 37450.92736
+  tps: 19055.11886
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ImpetuousQuery-55881"
  value: {
-  dps: 37331.05749
-  tps: 18961.47099
+  dps: 37284.27104
+  tps: 18991.88914
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ImpetuousQuery-56406"
  value: {
-  dps: 37450.59446
-  tps: 18991.70851
+  dps: 37403.81824
+  tps: 19022.12944
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-IndomitablePride-77211"
  value: {
-  dps: 36771.66874
-  tps: 18730.73293
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-IndomitablePride-77983"
  value: {
-  dps: 36771.66874
-  tps: 18730.71401
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-IndomitablePride-78003"
  value: {
-  dps: 36771.66874
-  tps: 18730.75427
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-InsigniaofDiplomacy-61433"
  value: {
-  dps: 36771.66874
-  tps: 18730.67107
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-InsigniaoftheCorruptedMind-77203"
  value: {
-  dps: 39790.41327
-  tps: 20370.31384
+  dps: 39771.26124
+  tps: 20465.82607
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-InsigniaoftheCorruptedMind-77971"
  value: {
-  dps: 39478.93682
-  tps: 20134.46653
+  dps: 39447.61621
+  tps: 20077.37329
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-InsigniaoftheCorruptedMind-77991"
  value: {
-  dps: 40378.73544
-  tps: 20565.24956
+  dps: 40457.00151
+  tps: 20587.65512
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-InsigniaoftheEarthenLord-61429"
  value: {
-  dps: 37799.46427
-  tps: 19181.5787
+  dps: 37748.22013
+  tps: 19212.51729
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-JarofAncientRemedies-59354"
  value: {
-  dps: 36770.47169
-  tps: 18750.56781
+  dps: 36725.41567
+  tps: 18771.39333
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-JarofAncientRemedies-65029"
  value: {
-  dps: 36770.47169
-  tps: 18752.1746
+  dps: 36725.41567
+  tps: 18772.75648
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-JawsofDefeat-68926"
  value: {
-  dps: 38075.70134
-  tps: 19363.59404
+  dps: 38079.44054
+  tps: 19439.92108
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-JawsofDefeat-69111"
  value: {
-  dps: 38196.77774
-  tps: 19412.71703
+  dps: 38292.70204
+  tps: 19500.32729
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-JujuofNimbleness-63840"
  value: {
-  dps: 37287.75247
-  tps: 18931.23347
+  dps: 37241.08768
+  tps: 18961.64884
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-KeytotheEndlessChamber-55795"
  value: {
-  dps: 37236.64586
-  tps: 18919.1032
+  dps: 37259.29654
+  tps: 18901.86879
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-KeytotheEndlessChamber-56328"
  value: {
-  dps: 37236.64586
-  tps: 18919.1032
+  dps: 37259.29654
+  tps: 18901.86879
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-KiroptyricSigil-77113"
  value: {
-  dps: 37855.76674
-  tps: 19452.20439
+  dps: 37878.57662
+  tps: 19488.362
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-KvaldirBattleStandard-59685"
  value: {
-  dps: 37337.14681
-  tps: 19293.26629
+  dps: 37039.78056
+  tps: 19112.04157
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-KvaldirBattleStandard-59689"
  value: {
-  dps: 37337.14681
-  tps: 19293.26629
+  dps: 37039.78056
+  tps: 19112.04157
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-LadyLa-La'sSingingShell-67152"
  value: {
-  dps: 37215.61072
-  tps: 19027.24388
+  dps: 37128.12006
+  tps: 18989.68204
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-LeadenDespair-55816"
  value: {
-  dps: 36771.66874
-  tps: 18730.64464
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-LeadenDespair-56347"
  value: {
-  dps: 36771.66874
-  tps: 18730.66986
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-LeftEyeofRajh-56102"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-LeftEyeofRajh-56427"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-LicensetoSlay-58180"
  value: {
-  dps: 37236.64586
-  tps: 18919.1032
+  dps: 37259.29654
+  tps: 18901.86879
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-MagnetiteMirror-55814"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-MagnetiteMirror-56345"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-MandalaofStirringPatterns-62467"
  value: {
-  dps: 36771.66874
-  tps: 18730.23645
+  dps: 36725.41567
+  tps: 18760.50745
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-MandalaofStirringPatterns-62472"
  value: {
-  dps: 36771.66874
-  tps: 18730.23645
+  dps: 36725.41567
+  tps: 18760.50745
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-MarkofKhardros-56132"
  value: {
-  dps: 37084.38872
-  tps: 18806.19656
+  dps: 37038.80587
+  tps: 18837.94119
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-MarkofKhardros-56458"
  value: {
-  dps: 37124.07536
-  tps: 18816.10052
+  dps: 37078.58913
+  tps: 18848.02164
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-MatrixRestabilizer-68994"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-MatrixRestabilizer-69150"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-MightoftheOcean-55251"
  value: {
-  dps: 37236.64586
-  tps: 18919.1032
+  dps: 37259.29654
+  tps: 18901.86879
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-MightoftheOcean-56285"
  value: {
-  dps: 37236.64586
-  tps: 18919.1032
+  dps: 37259.29654
+  tps: 18901.86879
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-MirrorofBrokenImages-62466"
  value: {
-  dps: 37497.83631
-  tps: 19024.6949
+  dps: 37450.92736
+  tps: 19055.11886
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-MirrorofBrokenImages-62471"
  value: {
-  dps: 37497.83631
-  tps: 19024.6949
+  dps: 37450.92736
+  tps: 19055.11886
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-MithrilStopwatch-232013"
  value: {
-  dps: 38558.49273
-  tps: 19593.70794
+  dps: 38582.13873
+  tps: 19601.23338
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-MoonwellChalice-70142"
  value: {
-  dps: 38091.83368
-  tps: 19336.13089
+  dps: 38078.54391
+  tps: 19372.61171
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-MoonwellPhial-70143"
  value: {
-  dps: 36771.66874
-  tps: 18730.68999
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-NecromanticFocus-68982"
  value: {
-  dps: 38806.73859
-  tps: 19620.99377
+  dps: 38808.78927
+  tps: 19695.91386
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-NecromanticFocus-69139"
  value: {
-  dps: 39038.36982
-  tps: 19702.45653
+  dps: 39138.23106
+  tps: 19789.71834
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Oremantle'sFavor-61448"
  value: {
-  dps: 37167.66494
-  tps: 18983.68171
+  dps: 37136.92913
+  tps: 18960.73022
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-PetrifiedPickledEgg-232014"
  value: {
-  dps: 37769.42227
-  tps: 19219.36186
+  dps: 37832.65082
+  tps: 19325.95649
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-PetrifiedTwilightScale-54591"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-PhylacteryoftheNamelessLich-50365"
  value: {
-  dps: 37889.45718
-  tps: 19241.67355
+  dps: 37985.22381
+  tps: 19303.05049
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-PorcelainCrab-55237"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-PorcelainCrab-56280"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-PowerfulShadowspiritDiamond"
  value: {
-  dps: 39132.97057
-  tps: 19760.52099
+  dps: 39137.08925
+  tps: 19845.05164
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Prestor'sTalismanofMachination-59441"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Prestor'sTalismanofMachination-65026"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Rainsong-55854"
  value: {
-  dps: 36771.66874
-  tps: 18730.33986
+  dps: 36725.41567
+  tps: 18760.65223
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Rainsong-56377"
  value: {
-  dps: 36771.66874
-  tps: 18730.27157
+  dps: 36725.41567
+  tps: 18760.55662
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ReflectionoftheLight-77115"
  value: {
-  dps: 38037.87744
-  tps: 19367.1462
+  dps: 37980.86125
+  tps: 19398.63962
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ResolveofUndying-77201"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ResolveofUndying-77978"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ResolveofUndying-77998"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ReverberatingShadowspiritDiamond"
  value: {
-  dps: 39451.94317
-  tps: 19979.30645
+  dps: 39459.91338
+  tps: 20068.14531
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-RevitalizingShadowspiritDiamond"
  value: {
-  dps: 39451.94317
-  tps: 19979.23823
+  dps: 39459.91338
+  tps: 20068.06659
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Ricket'sMagneticFireball-70144"
  value: {
-  dps: 37403.00052
-  tps: 19127.11893
+  dps: 37458.89601
+  tps: 19115.8659
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-RightEyeofRajh-56100"
  value: {
-  dps: 37236.64586
-  tps: 18919.1032
+  dps: 37259.29654
+  tps: 18901.86879
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-RightEyeofRajh-56431"
  value: {
-  dps: 37236.64586
-  tps: 18919.1032
+  dps: 37259.29654
+  tps: 18901.86879
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-RosaryofLight-72901"
  value: {
-  dps: 37033.79336
-  tps: 18841.98119
+  dps: 36982.49521
+  tps: 18938.33003
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-RottingSkull-77116"
  value: {
-  dps: 37649.04872
-  tps: 19231.81215
+  dps: 37556.63689
+  tps: 19253.89402
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-RuneofZeth-68998"
  value: {
-  dps: 38649.47905
-  tps: 19808.59061
+  dps: 38638.72286
+  tps: 19816.80567
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-RuthlessGladiator'sBadgeofConquest-70399"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-RuthlessGladiator'sBadgeofConquest-72304"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-RuthlessGladiator'sBadgeofDominance-70401"
  value: {
-  dps: 37901.03531
-  tps: 19331.65352
+  dps: 37855.59944
+  tps: 19362.32941
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-RuthlessGladiator'sBadgeofDominance-72448"
  value: {
-  dps: 37965.04573
-  tps: 19365.72204
+  dps: 37919.65619
+  tps: 19396.41374
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-RuthlessGladiator'sBadgeofVictory-70400"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-RuthlessGladiator'sBadgeofVictory-72450"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-RuthlessGladiator'sInsigniaofConquest-70404"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-RuthlessGladiator'sInsigniaofConquest-72309"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-RuthlessGladiator'sInsigniaofDominance-70402"
  value: {
-  dps: 38108.82485
-  tps: 19361.44377
+  dps: 38055.53293
+  tps: 19384.03334
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-RuthlessGladiator'sInsigniaofDominance-72449"
  value: {
-  dps: 38184.61891
-  tps: 19405.68634
+  dps: 38129.26888
+  tps: 19433.81974
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-RuthlessGladiator'sInsigniaofVictory-70403"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-RuthlessGladiator'sInsigniaofVictory-72455"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ScalesofLife-68915"
  value: {
-  dps: 36775.92435
-  tps: 18734.80654
+  dps: 36735.13789
+  tps: 18765.49996
   hps: 354.04187
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ScalesofLife-69109"
  value: {
-  dps: 36775.92435
-  tps: 18734.82473
+  dps: 36735.13789
+  tps: 18765.49996
   hps: 399.35591
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-SeaStar-55256"
  value: {
-  dps: 37197.47723
-  tps: 18956.98423
+  dps: 37151.53227
+  tps: 18987.40763
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-SeaStar-56290"
  value: {
-  dps: 37564.84141
-  tps: 19152.42499
+  dps: 37519.16228
+  tps: 19182.90596
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ShadowflameRegalia"
  value: {
-  dps: 33912.5186
-  tps: 17409.05312
+  dps: 33661.338
+  tps: 17359.48496
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ShardofWoe-60233"
  value: {
-  dps: 37519.03873
-  tps: 19181.14158
+  dps: 37574.39503
+  tps: 19203.72678
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Shrine-CleansingPurifier-63838"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Sindragosa'sFlawlessFang-50364"
  value: {
-  dps: 36771.66874
-  tps: 18730.62887
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Skardyn'sGrace-56115"
  value: {
-  dps: 37197.45423
-  tps: 18883.80372
+  dps: 37171.56148
+  tps: 18927.50352
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Skardyn'sGrace-56440"
  value: {
-  dps: 37251.94537
-  tps: 18903.87052
+  dps: 37228.70044
+  tps: 18949.31237
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Sorrowsong-55879"
  value: {
-  dps: 38029.29788
-  tps: 19305.68504
+  dps: 37969.63031
+  tps: 19330.26949
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Sorrowsong-56400"
  value: {
-  dps: 38242.72942
-  tps: 19381.6014
+  dps: 38181.37285
+  tps: 19405.42822
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Soul'sAnguish-66994"
  value: {
-  dps: 37236.64586
-  tps: 18919.1032
+  dps: 37259.29654
+  tps: 18901.86879
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-SoulCasket-58183"
  value: {
-  dps: 38592.98971
-  tps: 19606.07893
+  dps: 38547.07299
+  tps: 19636.85023
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-SoulshifterVortex-77206"
  value: {
-  dps: 37918.93868
-  tps: 18967.32238
+  dps: 37913.05767
+  tps: 19031.97122
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-SoulshifterVortex-77970"
  value: {
-  dps: 37985.79618
-  tps: 19071.34513
+  dps: 37930.56843
+  tps: 19104.91552
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-SoulshifterVortex-77990"
  value: {
-  dps: 37963.78597
-  tps: 19003.56214
+  dps: 37935.35481
+  tps: 19053.59413
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-SpidersilkSpindle-68981"
  value: {
-  dps: 37655.42921
-  tps: 19081.50478
+  dps: 37608.42358
+  tps: 19111.93397
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-SpidersilkSpindle-69138"
  value: {
-  dps: 37797.27483
-  tps: 19127.3192
+  dps: 37750.21676
+  tps: 19157.75261
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-StarcatcherCompass-77202"
  value: {
-  dps: 38235.49887
-  tps: 19432.79343
+  dps: 38047.70491
+  tps: 19463.58994
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-StarcatcherCompass-77973"
  value: {
-  dps: 38140.42802
-  tps: 19437.36374
+  dps: 38045.42128
+  tps: 19433.04904
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-StarcatcherCompass-77993"
  value: {
-  dps: 38483.34965
-  tps: 19673.99666
+  dps: 38394.27926
+  tps: 19574.18466
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-StayofExecution-68996"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Stonemother'sKiss-61411"
  value: {
-  dps: 37885.66188
-  tps: 19302.22917
+  dps: 37920.14234
+  tps: 19289.24934
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-StumpofTime-62465"
  value: {
-  dps: 38496.74956
-  tps: 19524.05635
+  dps: 38520.95641
+  tps: 19501.28363
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-StumpofTime-62470"
  value: {
-  dps: 38611.70495
-  tps: 19534.51402
+  dps: 38631.07779
+  tps: 19512.483
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-SymbioticWorm-59332"
  value: {
-  dps: 36771.66874
-  tps: 18730.6832
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-SymbioticWorm-65048"
  value: {
-  dps: 36771.66874
-  tps: 18730.69824
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-TalismanofSinisterOrder-65804"
  value: {
-  dps: 37904.64422
-  tps: 19138.50702
+  dps: 37908.2876
+  tps: 19199.591
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Tank-CommanderInsignia-63841"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-TearofBlood-55819"
  value: {
-  dps: 37482.45527
-  tps: 19068.68614
+  dps: 37507.31143
+  tps: 19104.39284
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-TearofBlood-56351"
  value: {
-  dps: 37715.28688
-  tps: 19159.79761
+  dps: 37760.7113
+  tps: 19286.41369
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-TendrilsofBurrowingDark-55810"
  value: {
-  dps: 38005.90411
-  tps: 19263.28539
+  dps: 37978.13846
+  tps: 19301.69117
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-TendrilsofBurrowingDark-56339"
  value: {
-  dps: 38495.5939
-  tps: 19462.11328
+  dps: 38446.01296
+  tps: 19497.81882
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-TheHungerer-68927"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-TheHungerer-69112"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Theralion'sMirror-59519"
  value: {
-  dps: 38478.59424
-  tps: 19411.4087
+  dps: 38582.57541
+  tps: 19536.53396
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Theralion'sMirror-65105"
  value: {
-  dps: 38863.36525
-  tps: 19583.6929
+  dps: 38905.25314
+  tps: 19696.34805
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Throngus'sFinger-56121"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Throngus'sFinger-56449"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Tia'sGrace-55874"
  value: {
-  dps: 37331.05749
-  tps: 18961.47099
+  dps: 37284.27104
+  tps: 18991.88914
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Tia'sGrace-56394"
  value: {
-  dps: 37450.59446
-  tps: 18991.70851
+  dps: 37403.81824
+  tps: 19022.12944
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-TinyAbominationinaJar-50706"
  value: {
-  dps: 37166.63378
-  tps: 18869.91033
+  dps: 37025.95768
+  tps: 18862.50686
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Tyrande'sFavoriteDoll-64645"
  value: {
-  dps: 38011.69794
-  tps: 19481.06206
+  dps: 37809.78834
+  tps: 19431.74245
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-UnheededWarning-59520"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-UnquenchableFlame-67101"
  value: {
-  dps: 36771.66874
-  tps: 18730.38181
+  dps: 36725.41567
+  tps: 18760.71096
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-UnsolvableRiddle-62463"
  value: {
-  dps: 37497.83631
-  tps: 19024.6949
+  dps: 37450.92736
+  tps: 19055.11886
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-UnsolvableRiddle-62468"
  value: {
-  dps: 37497.83631
-  tps: 19024.6949
+  dps: 37450.92736
+  tps: 19055.11886
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-UnsolvableRiddle-68709"
  value: {
-  dps: 37497.83631
-  tps: 19024.6949
+  dps: 37450.92736
+  tps: 19055.11886
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 38146.25293
-  tps: 19288.79347
+  dps: 38060.56663
+  tps: 19262.02376
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Varo'then'sBrooch-72899"
  value: {
-  dps: 37068.74265
-  tps: 18791.35809
+  dps: 37088.03952
+  tps: 18860.9333
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-VeilofLies-72900"
  value: {
-  dps: 36771.66874
-  tps: 18730.70576
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-VesselofAcceleration-68995"
  value: {
-  dps: 36845.286
-  tps: 18799.73212
+  dps: 36881.08868
+  tps: 18820.29305
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-VesselofAcceleration-69167"
  value: {
-  dps: 36875.82687
-  tps: 18809.21691
+  dps: 36888.11112
+  tps: 18826.51269
  }
 }
 dps_results: {
@@ -1728,924 +1728,924 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-AllItems-VialofShadows-77207"
  value: {
-  dps: 36974.00737
-  tps: 18931.59147
+  dps: 36917.66775
+  tps: 18952.44568
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-VialofShadows-77979"
  value: {
-  dps: 36948.79987
-  tps: 18908.54726
+  dps: 36889.74838
+  tps: 18924.66608
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-VialofShadows-77999"
  value: {
-  dps: 36982.474
-  tps: 18944.14121
+  dps: 36921.75687
+  tps: 18955.75029
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-VialofStolenMemories-59515"
  value: {
-  dps: 36771.66874
-  tps: 18730.6832
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-VialofStolenMemories-65109"
  value: {
-  dps: 36771.66874
-  tps: 18730.69824
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ViciousGladiator'sBadgeofConquest-61033"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ViciousGladiator'sBadgeofConquest-70517"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ViciousGladiator'sBadgeofDominance-61035"
  value: {
-  dps: 37665.03165
-  tps: 19206.04436
+  dps: 37619.42501
+  tps: 19236.66195
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ViciousGladiator'sBadgeofDominance-70518"
  value: {
-  dps: 37770.23139
-  tps: 19262.03523
+  dps: 37724.70088
+  tps: 19292.67881
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ViciousGladiator'sBadgeofVictory-61034"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ViciousGladiator'sBadgeofVictory-70519"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ViciousGladiator'sEmblemofAccuracy-61027"
  value: {
-  dps: 37236.64586
-  tps: 18919.1032
+  dps: 37259.29654
+  tps: 18901.86879
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ViciousGladiator'sEmblemofAlacrity-61028"
  value: {
-  dps: 37575.93618
-  tps: 19362.03537
+  dps: 37486.68684
+  tps: 19231.36338
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ViciousGladiator'sEmblemofCruelty-61026"
  value: {
-  dps: 37448.06435
-  tps: 19104.0903
+  dps: 37318.63251
+  tps: 19062.95151
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ViciousGladiator'sEmblemofProficiency-61030"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ViciousGladiator'sEmblemofProwess-61029"
  value: {
-  dps: 37599.00145
-  tps: 19042.10438
+  dps: 37552.15436
+  tps: 19072.52994
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ViciousGladiator'sEmblemofTenacity-61032"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ViciousGladiator'sInsigniaofConquest-61047"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ViciousGladiator'sInsigniaofConquest-70577"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ViciousGladiator'sInsigniaofDominance-61045"
  value: {
-  dps: 37812.98752
-  tps: 19223.96835
+  dps: 37782.75948
+  tps: 19266.73724
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ViciousGladiator'sInsigniaofDominance-70578"
  value: {
-  dps: 37962.10151
-  tps: 19294.33076
+  dps: 37922.97596
+  tps: 19326.87889
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ViciousGladiator'sInsigniaofVictory-61046"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ViciousGladiator'sInsigniaofVictory-70579"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-WillofUnbinding-77198"
  value: {
-  dps: 39670.82473
-  tps: 20175.00195
+  dps: 39741.67875
+  tps: 20299.13444
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-WillofUnbinding-77975"
  value: {
-  dps: 39380.33272
-  tps: 20068.92708
+  dps: 39396.36863
+  tps: 20131.57496
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-WillofUnbinding-77995"
  value: {
-  dps: 40063.86144
-  tps: 20431.58505
+  dps: 40124.74566
+  tps: 20465.96725
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-WitchingHourglass-55787"
  value: {
-  dps: 37766.36129
-  tps: 19299.58176
+  dps: 37796.55766
+  tps: 19303.87373
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-WitchingHourglass-56320"
  value: {
-  dps: 38623.62352
-  tps: 19818.08271
+  dps: 38629.74941
+  tps: 19823.24759
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-World-QuellerFocus-63842"
  value: {
-  dps: 37287.75247
-  tps: 18931.23347
+  dps: 37241.08768
+  tps: 18961.64884
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-WrathofUnchaining-77197"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-WrathofUnchaining-77974"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-WrathofUnchaining-77994"
  value: {
-  dps: 36771.66874
-  tps: 18730.56629
+  dps: 36725.41567
+  tps: 18760.96322
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Za'brox'sLuckyTooth-63742"
  value: {
-  dps: 37044.70208
-  tps: 18796.37239
+  dps: 36999.02262
+  tps: 18827.86074
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Za'brox'sLuckyTooth-63745"
  value: {
-  dps: 37044.70208
-  tps: 18796.37239
+  dps: 36999.02262
+  tps: 18827.86074
  }
 }
 dps_results: {
  key: "TestDemonology-Average-Default"
  value: {
-  dps: 40180.88723
-  tps: 20371.0101
+  dps: 40219.87173
+  tps: 20393.63287
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-DefaultTalents-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 55748.7927
-  tps: 47457.78426
+  dps: 55474.61166
+  tps: 46945.7794
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-DefaultTalents-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 39084.75267
-  tps: 19388.29946
+  dps: 39017.38544
+  tps: 19434.37557
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-DefaultTalents-Demonology Warlock-incinerate-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 51004.71943
-  tps: 22105.34758
+  dps: 50982.39568
+  tps: 22186.72612
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-DefaultTalents-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 47074.24252
-  tps: 42901.87293
+  dps: 46346.45051
+  tps: 41989.26962
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-DefaultTalents-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 28245.30254
-  tps: 13653.61115
+  dps: 28145.30493
+  tps: 13768.7337
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-DefaultTalents-Demonology Warlock-incinerate-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 34587.37168
-  tps: 14653.74364
+  dps: 34540.06267
+  tps: 14808.58533
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 55600.09056
-  tps: 46261.31968
+  dps: 55362.03939
+  tps: 45878.12553
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 39372.784
-  tps: 20456.50798
+  dps: 39218.22319
+  tps: 20436.38569
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 51426.9584
-  tps: 23706.81113
+  dps: 51259.91081
+  tps: 23632.40412
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 47048.45968
-  tps: 40611.64752
+  dps: 47002.69593
+  tps: 40367.30212
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 28754.64597
-  tps: 14470.83077
+  dps: 28492.22803
+  tps: 14455.32359
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 35141.47841
-  tps: 15716.20616
+  dps: 34990.80929
+  tps: 15709.28551
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-Incinerate-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 56161.92744
-  tps: 47435.6272
+  dps: 56078.64291
+  tps: 47761.78797
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-Incinerate-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 39728.52117
-  tps: 19937.75085
+  dps: 39670.81761
+  tps: 19955.94985
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-Incinerate-Demonology Warlock-incinerate-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 51707.55705
-  tps: 22735.35341
+  dps: 51691.90373
+  tps: 22823.209
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-Incinerate-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 46983.51424
-  tps: 42502.72809
+  dps: 47294.34195
+  tps: 42859.99077
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-Incinerate-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 28730.84014
-  tps: 13977.77441
+  dps: 28626.64716
+  tps: 14081.8007
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-Incinerate-Demonology Warlock-incinerate-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 35022.08314
-  tps: 14992.55039
+  dps: 34918.11196
+  tps: 15126.34897
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-Incinerate-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 49893.78101
-  tps: 40216.19731
+  dps: 49861.16212
+  tps: 40400.15761
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-Incinerate-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 35171.86258
-  tps: 17113.05781
+  dps: 35281.3488
+  tps: 17118.95367
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-Incinerate-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 48186.43703
-  tps: 20901.56805
+  dps: 47898.49843
+  tps: 20682.16536
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-Incinerate-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 42180.89808
-  tps: 35199.14981
+  dps: 42037.04531
+  tps: 34840.16775
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-Incinerate-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 26030.08087
-  tps: 12411.79015
+  dps: 25911.85856
+  tps: 12317.24498
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-Incinerate-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 33021.20703
-  tps: 13881.67668
+  dps: 33114.8164
+  tps: 14025.35289
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-DefaultTalents-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 54940.99063
-  tps: 46815.84857
+  dps: 54882.03498
+  tps: 46371.15181
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-DefaultTalents-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 38518.83911
-  tps: 19070.9852
+  dps: 38453.85498
+  tps: 18976.54992
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-DefaultTalents-Demonology Warlock-incinerate-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 50695.337
-  tps: 21875.87785
+  dps: 50598.12506
+  tps: 21888.4896
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-DefaultTalents-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 46759.62204
-  tps: 42355.18007
+  dps: 46437.62732
+  tps: 42271.3675
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-DefaultTalents-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 28425.28671
-  tps: 13718.35597
+  dps: 28291.04874
+  tps: 13828.58977
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-DefaultTalents-Demonology Warlock-incinerate-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 34853.90901
-  tps: 14598.40337
+  dps: 34599.61982
+  tps: 14705.83233
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 55102.73502
-  tps: 45258.66333
+  dps: 54797.35059
+  tps: 44590.67967
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 38818.88209
-  tps: 19949.68119
+  dps: 38767.05462
+  tps: 20049.2243
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 51217.30551
-  tps: 23244.69884
+  dps: 51628.47638
+  tps: 23716.19848
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 47187.31301
-  tps: 40623.29889
+  dps: 46953.28399
+  tps: 40345.69825
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 28527.28609
-  tps: 14446.19258
+  dps: 28489.72309
+  tps: 14448.74322
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 34634.4314
-  tps: 15354.90669
+  dps: 34524.61978
+  tps: 15457.02086
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-Incinerate-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 55633.56262
-  tps: 47882.14442
+  dps: 55395.07607
+  tps: 47153.09097
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-Incinerate-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 39228.39531
-  tps: 19549.90316
+  dps: 39064.93153
+  tps: 19470.00327
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-Incinerate-Demonology Warlock-incinerate-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 51484.60255
-  tps: 22538.81089
+  dps: 51422.32154
+  tps: 22555.86641
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-Incinerate-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 46973.95164
-  tps: 42246.09859
+  dps: 47035.50283
+  tps: 42577.0434
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-Incinerate-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 28785.63631
-  tps: 14029.05565
+  dps: 28510.56383
+  tps: 14036.36564
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-Incinerate-Demonology Warlock-incinerate-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 35259.23067
-  tps: 14998.30758
+  dps: 34933.29242
+  tps: 15041.17152
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-Incinerate-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 49203.92616
-  tps: 39552.67295
+  dps: 49297.22752
+  tps: 39838.84511
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-Incinerate-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 34984.06584
-  tps: 17057.9117
+  dps: 34880.75448
+  tps: 16957.33055
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-Incinerate-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 48272.3456
-  tps: 21162.76538
+  dps: 48025.07576
+  tps: 20909.52264
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-Incinerate-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 42876.71724
-  tps: 36527.15244
+  dps: 42737.42609
+  tps: 36002.81956
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-Incinerate-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 26078.72991
-  tps: 12461.36538
+  dps: 25936.16965
+  tps: 12450.85972
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-Incinerate-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 33155.96343
-  tps: 13946.61549
+  dps: 33123.61811
+  tps: 14081.0992
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-DefaultTalents-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 56080.50609
-  tps: 47245.55726
+  dps: 55930.78938
+  tps: 46517.58984
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-DefaultTalents-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 39358.10047
-  tps: 19162.7078
+  dps: 39348.58229
+  tps: 19128.94312
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-DefaultTalents-Demonology Warlock-incinerate-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 52418.70649
-  tps: 22160.22765
+  dps: 52305.18181
+  tps: 22172.35164
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-DefaultTalents-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 47787.73848
-  tps: 42791.36686
+  dps: 47524.50049
+  tps: 42485.30574
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-DefaultTalents-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 29215.90401
-  tps: 13870.26088
+  dps: 29004.35586
+  tps: 13945.69689
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-DefaultTalents-Demonology Warlock-incinerate-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 36183.9915
-  tps: 14804.63701
+  dps: 35905.86155
+  tps: 14917.39552
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 56164.84253
-  tps: 45411.37329
+  dps: 55961.06439
+  tps: 45132.54632
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 39660.76602
-  tps: 20069.36608
+  dps: 39648.43337
+  tps: 20180.59086
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 52953.47752
-  tps: 23555.50598
+  dps: 53365.83049
+  tps: 24035.97982
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 48190.08588
-  tps: 40727.75716
+  dps: 48096.14958
+  tps: 40957.8709
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 29287.29802
-  tps: 14564.64821
+  dps: 29253.28993
+  tps: 14545.05227
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 35969.26603
-  tps: 15572.77142
+  dps: 35849.8277
+  tps: 15681.37094
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-Incinerate-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 56737.21368
-  tps: 48067.13438
+  dps: 56494.77983
+  tps: 47408.38116
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-Incinerate-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 40114.50589
-  tps: 19712.7136
+  dps: 40014.28787
+  tps: 19630.96676
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-Incinerate-Demonology Warlock-incinerate-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 53218.77813
-  tps: 22831.20481
+  dps: 53141.67345
+  tps: 22847.80438
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-Incinerate-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 48177.86938
-  tps: 42720.02576
+  dps: 48077.89001
+  tps: 42821.24155
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-Incinerate-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 29608.14442
-  tps: 14217.26934
+  dps: 29261.71983
+  tps: 14196.85002
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-Incinerate-Demonology Warlock-incinerate-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 36589.70169
-  tps: 15208.23183
+  dps: 36237.12338
+  tps: 15255.78436
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-Incinerate-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 50307.8578
-  tps: 39674.27249
+  dps: 50376.79376
+  tps: 40063.69921
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-Incinerate-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 35962.60165
-  tps: 17224.79629
+  dps: 35825.16544
+  tps: 17140.95719
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-Incinerate-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 49986.0079
-  tps: 21455.71666
+  dps: 49739.13042
+  tps: 21205.67248
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-Incinerate-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 44001.86393
-  tps: 36840.69697
+  dps: 43865.69629
+  tps: 36363.1245
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-Incinerate-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 26813.44051
-  tps: 12592.00735
+  dps: 26656.29708
+  tps: 12591.20811
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-Incinerate-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 34494.36907
-  tps: 14154.44553
+  dps: 34452.92999
+  tps: 14293.74114
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-DefaultTalents-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 55853.44828
-  tps: 47390.17943
+  dps: 55361.87792
+  tps: 46294.42932
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-DefaultTalents-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 39007.07555
-  tps: 19274.11384
+  dps: 39043.98081
+  tps: 19385.35031
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-DefaultTalents-Demonology Warlock-incinerate-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 51916.19183
-  tps: 22353.044
+  dps: 52390.17319
+  tps: 22553.77805
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-DefaultTalents-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 47764.32217
-  tps: 43642.58243
+  dps: 47725.5598
+  tps: 43760.62496
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-DefaultTalents-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 28653.2259
-  tps: 13903.5541
+  dps: 28747.75389
+  tps: 14024.03467
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-DefaultTalents-Demonology Warlock-incinerate-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 36664.26457
-  tps: 15405.59358
+  dps: 36591.07931
+  tps: 15526.11974
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 55737.22285
-  tps: 46317.35219
+  dps: 55477.40651
+  tps: 45989.51049
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 39388.46385
-  tps: 20292.40481
+  dps: 39344.91323
+  tps: 20328.13889
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 52075.46284
-  tps: 23584.6296
+  dps: 52578.17831
+  tps: 24002.91312
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 48456.58266
-  tps: 41798.12848
+  dps: 48178.38432
+  tps: 41698.92282
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 28882.18367
-  tps: 14731.22839
+  dps: 28743.93275
+  tps: 14726.89006
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 36164.4213
-  tps: 16177.87309
+  dps: 35934.31145
+  tps: 16197.97574
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-Incinerate-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 56543.60599
-  tps: 47691.61348
+  dps: 56193.24905
+  tps: 47499.60025
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-Incinerate-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 39694.72093
-  tps: 19815.6555
+  dps: 39767.49132
+  tps: 19909.40397
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-Incinerate-Demonology Warlock-incinerate-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 52808.12817
-  tps: 23170.01345
+  dps: 53304.84227
+  tps: 23373.75795
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-Incinerate-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 48635.18112
-  tps: 43857.48528
+  dps: 48438.0864
+  tps: 43935.3227
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-Incinerate-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 29108.3498
-  tps: 14372.82314
+  dps: 28923.68874
+  tps: 14310.30228
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-Incinerate-Demonology Warlock-incinerate-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 36359.87803
-  tps: 15780.29529
+  dps: 36235.08674
+  tps: 15893.94225
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-Incinerate-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 50098.39305
-  tps: 40610.06953
+  dps: 50065.31563
+  tps: 40846.54033
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-Incinerate-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 35635.74293
-  tps: 17254.53941
+  dps: 35507.94429
+  tps: 17263.83751
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-Incinerate-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 49273.03358
-  tps: 21108.34497
+  dps: 49340.03941
+  tps: 21279.26219
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-Incinerate-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 43455.00409
-  tps: 36469.16848
+  dps: 43330.02963
+  tps: 36154.44562
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-Incinerate-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 26217.11053
-  tps: 12587.52131
+  dps: 26099.20333
+  tps: 12563.35341
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-Incinerate-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 33892.16048
-  tps: 14471.31324
+  dps: 33881.09328
+  tps: 14744.71468
  }
 }
 dps_results: {
  key: "TestDemonology-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 39477.40934
-  tps: 20069.36608
+  dps: 39465.12928
+  tps: 20180.59086
  }
 }

@@ -52,7 +52,7 @@ var ItemSetMaleficRaiment = core.NewItemSet(core.ItemSet{
 				ActionIDForProc: aura.ActionID,
 				OnPeriodicDamageDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
 					if spell.Matches(WarlockSpellImmolateDot|WarlockSpellUnstableAffliction) &&
-						sim.Proc(0.02, "Warlock 4pT11") {
+						sim.Proc(0.02, "Item - Warlock T11 4P Bonus") {
 						aura.Activate(sim)
 						aura.SetStacks(sim, 2)
 					}
@@ -153,7 +153,7 @@ var ItemSetBalespidersBurningVestments = core.NewItemSet(core.ItemSet{
 					Duration: 45 * time.Second,
 				},
 				OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-					if aura.Icd.IsReady(sim) && sim.Proc(0.05, "Warlock 2pT12") {
+					if aura.Icd.IsReady(sim) && sim.Proc(0.05, "Item - Warlock T12 2P Bonus") {
 						warlock.FieryImp.EnableWithTimeout(sim, warlock.FieryImp, 15*time.Second)
 						aura.Icd.Use(sim)
 					}
@@ -187,7 +187,7 @@ var ItemSetBalespidersBurningVestments = core.NewItemSet(core.ItemSet{
 				ActionIDForProc: aura.ActionID,
 				OnCastComplete: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell) {
 					if spell.Matches(WarlockSpellShadowBolt|WarlockSpellIncinerate|WarlockSpellSoulFire|WarlockSpellDrainSoul) &&
-						sim.Proc(0.05, "Warlock 4pT12") {
+						sim.Proc(0.05, "Item - Warlock T12 4P Bonus") {
 						aura.Activate(sim)
 					}
 				},

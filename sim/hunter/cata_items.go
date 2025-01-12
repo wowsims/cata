@@ -49,7 +49,7 @@ var ItemSetFlameWakersBattleGear = core.NewItemSet(core.ItemSet{
 						return
 					}
 					procChance := 0.1
-					if sim.RandomFloat("Flaming Arrow") < procChance {
+					if sim.RandomFloat("T12 2-set") < procChance {
 						if spell == hunter.SteadyShot {
 							flamingArrowSpellForSteadyShot.Cast(sim, result.Target)
 						} else {
