@@ -212,11 +212,7 @@ export class ItemRenderer extends Component {
 			const gemContainer = createGemContainer(socketColor, newItem.gems[gemIdx], gemIdx);
 			if (gemIdx === newItem.numPossibleSockets - 1 && [ItemType.ItemTypeWrist, ItemType.ItemTypeHands].includes(newItem.item.type)) {
 				const updateProfession = () => {
-					if (this.player.isBlacksmithing()) {
-						gemContainer.classList.remove('hide');
-					} else {
-						gemContainer.classList.add('hide');
-					}
+					gemContainer.classList[this.player.isBlacksmithing() ? 'remove' : 'add']('hide');
 				};
 				this.player.professionChangeEmitter.on(updateProfession);
 				updateProfession();

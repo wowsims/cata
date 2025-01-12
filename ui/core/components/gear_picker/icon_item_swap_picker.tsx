@@ -1,7 +1,7 @@
 import { ref } from 'tsx-vanilla';
 
 import { Player } from '../../player';
-import { ItemSlot } from '../../proto/common';
+import { ItemSlot, ItemType } from '../../proto/common';
 import { EquippedItem } from '../../proto_utils/equipped_item';
 import { SimUI } from '../../sim_ui';
 import { EventID } from '../../typed_event';
@@ -52,18 +52,31 @@ export default class IconItemSwapPicker extends Component {
 		this.iconAnchor.style.backgroundImage = `url('${getEmptySlotIconUrl(this.slot)}')`;
 		this.iconAnchor.removeAttribute('data-wowhead');
 		this.iconAnchor.href = '#';
-		this.socketsContainerElem.replaceChildren();
 
 		if (newItem) {
 			newItem.asActionId().fillAndSet(this.iconAnchor, true, true);
 			this.player.setWowheadData(newItem, this.iconAnchor);
 
 			this.socketsContainerElem.replaceChildren(
-				<>{newItem.allSocketColors().map((socketColor, gemIdx) => createGemContainer(socketColor, newItem.gems[gemIdx], gemIdx))}</>,
+				<>
+					{newItem.allSocketColors().map((socketColor, gemIdx) => {
+						const gemContainer = createGemContainer(socketColor, newItem.gems[gemIdx], gemIdx);
+						if (gemIdx === newItem.numPossibleSockets - 1 && [ItemType.ItemTypeWrist, ItemType.ItemTypeHands].includes(newItem.item.type)) {
+							console.log(gemContainer);
+							const updateProfession = () => {
+								gemContainer.classList[this.player.isBlacksmithing() ? 'remove' : 'add']('hide');
+							};
+							this.player.professionChangeEmitter.on(updateProfession);
+							updateProfession();
+						}
+						return gemContainer;
+					})}
+				</>,
 			);
 
 			this.iconAnchor.classList.add('active');
 		} else {
+			this.socketsContainerElem.replaceChildren();
 			this.iconAnchor.classList.remove('active');
 		}
 	}

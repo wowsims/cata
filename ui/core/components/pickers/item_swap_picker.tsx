@@ -17,13 +17,12 @@ export interface ItemSwapConfig {
 
 export class ItemSwapPicker<SpecType extends Spec> extends Component {
 	private readonly itemSlots: Array<ItemSlot>;
-	private readonly enableItemSwapPicker: BooleanPicker<Player<SpecType>>;
 
 	constructor(parentElem: HTMLElement, simUI: SimUI, player: Player<SpecType>, config: ItemSwapConfig) {
 		super(parentElem, 'item-swap-picker-root');
 		this.itemSlots = config.itemSlots;
 
-		this.enableItemSwapPicker = new BooleanPicker(this.rootElem, player, {
+		new BooleanPicker(this.rootElem, player, {
 			id: 'enable-item-swap',
 			reverse: true,
 			label: 'Enable Item Swapping',
@@ -42,7 +41,7 @@ export class ItemSwapPicker<SpecType extends Spec> extends Component {
 		const itemSwapContainer = Input.newGroupContainer('icon-group');
 		this.rootElem.appendChild(
 			<>
-				<div ref={swapPickerContainerRef} className="input-root input-inline">
+				<div ref={swapPickerContainerRef} className="input-root input-inline input-item-swap-container">
 					<label className="form-label">Item Swap</label>
 					<button ref={swapButtonRef} className="gear-swap-icon">
 						<i className="fas fa-arrows-rotate me-1"></i>

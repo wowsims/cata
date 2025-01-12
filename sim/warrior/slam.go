@@ -31,7 +31,6 @@ func (warrior *Warrior) RegisterSlamSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			ohBaseDamage := weaponDamageConfig.CalcAddedSpellDamage() + spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-
 			spell.CalcAndDealDamage(sim, target, ohBaseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 		},
 	})
@@ -83,7 +82,7 @@ func (warrior *Warrior) RegisterSlamSpell() {
 			}
 
 			// SMF adds an OH hit to slam
-			if warrior.Talents.SingleMindedFury {
+			if warrior.Talents.SingleMindedFury && warrior.AutoAttacks.IsDualWielding {
 				ohSlam.Cast(sim, target)
 			}
 		},
