@@ -402,7 +402,7 @@ func NewStackingStatBonusEffect(config StackingStatBonusEffect) {
 
 		itemSwapIsEnabled := character.ItemSwap.IsEnabled()
 		eligibleSlotsForItem := character.ItemSwap.EligibleSlotsForItem(config.ItemID)
-		itemExistsInMainEquip := !itemSwapIsEnabled || itemSwapIsEnabled && character.ItemSwap.ItemExistsInMainEquip(config.ItemID, eligibleSlotsForItem)
+		itemExistsInMainEquip := !itemSwapIsEnabled || character.ItemSwap.ItemExistsInMainEquip(config.ItemID, eligibleSlotsForItem)
 
 		auraID := core.ActionID{SpellID: config.AuraID}
 		if auraID.IsEmptyAction() {

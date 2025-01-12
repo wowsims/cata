@@ -143,14 +143,15 @@ type ItemSwapProcConfig struct {
 func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
 	isItemProc := config.ItemID != 0
 	isEnchantEffectProc := config.EnchantId != 0
+	character := swap.character
 
-	swap.character.RegisterItemSwapCallback(config.Slots, func(sim *Simulation, slot proto.ItemSlot) {
-		var isItemSlotMatch = false
+	character.RegisterItemSwapCallback(config.Slots, func(sim *Simulation, _ proto.ItemSlot) {
+		isItemSlotMatch := false
 
 		if isItemProc {
-			isItemSlotMatch = swap.character.HasItemEquipped(config.ItemID)
+			isItemSlotMatch = character.hasItemEquipped(config.ItemID, config.Slots)
 		} else if isEnchantEffectProc {
-			isItemSlotMatch = swap.HasEnchantEquipped(config.EnchantId, config.Slots)
+			isItemSlotMatch = character.hasEnchantEquipped(config.EnchantId, config.Slots)
 		}
 
 		if isItemSlotMatch {
@@ -174,7 +175,7 @@ func (swap *ItemSwap) RegisterActive(itemID int32, slots []proto.ItemSlot) {
 	}
 
 	swap.character.RegisterItemSwapCallback(slots, func(sim *Simulation, slot proto.ItemSlot) {
-		hasItemEquipped := swap.character.HasItemEquipped(itemID)
+		hasItemEquipped := swap.character.hasItemEquipped(itemID, slots)
 
 		spell := swap.character.GetSpell(ActionID{ItemID: itemID})
 		if spell != nil {
@@ -214,12 +215,12 @@ func (swap *ItemSwap) IsSwapped() bool {
 	return swap.swapSet == proto.APLActionItemSwap_Swap1
 }
 
-func (character *Character) HasItemEquipped(itemID int32) bool {
-	return character.Equipment.containsItem(itemID)
+func (character *Character) hasItemEquipped(itemID int32, possibleSlots []proto.ItemSlot) bool {
+	return character.Equipment.containsItemInSlots(itemID, possibleSlots)
 }
 
-func (swap *ItemSwap) HasEnchantEquipped(effectID int32, possibleSlots []proto.ItemSlot) bool {
-	return swap.character.Equipment.containsEnchant(effectID)
+func (character *Character) hasEnchantEquipped(effectID int32, possibleSlots []proto.ItemSlot) bool {
+	return character.Equipment.containsEnchantInSlots(effectID, possibleSlots)
 }
 
 func (swap *ItemSwap) GetEquippedItemBySlot(slot proto.ItemSlot) *Item {
@@ -239,31 +240,27 @@ func (swap *ItemSwap) ItemExistsInSwapSet(itemID int32, possibleSlots []proto.It
 }
 
 func (swap *ItemSwap) EligibleSlotsForItem(itemID int32) []proto.ItemSlot {
-	item := GetItemByID(itemID)
-	eligibleSlots := eligibleSlotsForItem(item, swap.isFuryWarrior)
+	eligibleSlots := eligibleSlotsForItem(GetItemByID(itemID), swap.isFuryWarrior)
 	if !swap.IsEnabled() {
 		return eligibleSlots
 	} else {
-		slots := FilterSlice(eligibleSlots, func(slot proto.ItemSlot) bool {
+		return FilterSlice(eligibleSlots, func(slot proto.ItemSlot) bool {
 			return (swap.originalEquip[slot].ID == itemID) || (swap.swapEquip[slot].ID == itemID)
 		})
-		return slots
 	}
 }
 
 func (swap *ItemSwap) EligibleSlotsForEffect(effectID int32) []proto.ItemSlot {
-	var eligibleSlots = []proto.ItemSlot{}
+	var eligibleSlots []proto.ItemSlot
 
-	if !swap.IsEnabled() {
-		return []proto.ItemSlot{}
-	} else {
-		for slot := range swap.originalEquip {
-			itemSlot := proto.ItemSlot(slot)
+	if swap.IsEnabled() {
+		for itemSlot := proto.ItemSlot(0); itemSlot < NumItemSlots; itemSlot++ {
 			if swap.originalEquip.containsEnchantInSlot(effectID, itemSlot) || swap.swapEquip.containsEnchantInSlot(effectID, itemSlot) {
 				eligibleSlots = append(eligibleSlots, itemSlot)
 			}
 		}
 	}
+
 	return eligibleSlots
 }
 
