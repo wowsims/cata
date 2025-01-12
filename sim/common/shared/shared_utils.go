@@ -29,10 +29,6 @@ type ProcStatBonusEffect struct {
 
 	// Any other custom proc conditions not covered by the above fields.
 	CustomProcCondition core.CustomStatBuffProcCondition
-
-	// Used to register for Item Swapping when the effect is not an equippable Item by itself.
-	// For example a Weapon or Back enchant.
-	Slots []proto.ItemSlot
 }
 
 type DamageEffect struct {
@@ -463,7 +459,6 @@ type ProcDamageEffect struct {
 	ItemID    int32
 	SpellID   int32
 	EnchantID int32
-	Slots     []proto.ItemSlot
 	Trigger   core.ProcTrigger
 
 	School  core.SpellSchool

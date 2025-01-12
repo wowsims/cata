@@ -125,7 +125,6 @@ func init() {
 		MaxDmg:  67,
 		Outcome: shared.OutcomeMeleeCanCrit,
 		IsMelee: true,
-		Slots:   []proto.ItemSlot{proto.ItemSlot_ItemSlotOffHand},
 	})
 
 	// Enchant: 3247, Spell: 44595 - Scourgebane
@@ -225,7 +224,6 @@ func init() {
 		Bonus:          stats.Stats{stats.HasteRating: 250},
 		Duration:       time.Second * 10,
 		IgnoreSpellIDs: []int32{47465, 12867},
-		Slots:          core.MeleeWeaponSlots(),
 	})
 
 	// Enchant: 3843, Spell: 61471 - Diamond-cut Refractor Scope
@@ -323,7 +321,6 @@ func init() {
 		ProcChance: 0.35,
 		Bonus:      stats.Stats{stats.SpellPower: 295},
 		Duration:   time.Second * 15,
-		Slots:      []proto.ItemSlot{proto.ItemSlot_ItemSlotBack},
 	})
 
 	// Enchant: 3728, Spell: 55769 - Darkglow Embroidery
@@ -371,7 +368,6 @@ func init() {
 		ProcChance: 0.2,
 		Bonus:      stats.Stats{stats.AttackPower: 400, stats.RangedAttackPower: 400},
 		Duration:   time.Second * 15,
-		Slots:      []proto.ItemSlot{proto.ItemSlot_ItemSlotBack},
 	})
 
 	// Enchant: 3870, Spell: 64568 - Blood Draining
