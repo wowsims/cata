@@ -1285,7 +1285,7 @@ var ItemSetAgonyAndTorment = core.NewItemSet(core.ItemSet{
 				ActionID: core.ActionID{SpellID: 95763},
 				Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
 					// This set uses raw chance, NOT PPM
-					if icd.IsReady(sim) && sim.Proc(.10, "Agony and Torment Proc") {
+					if icd.IsReady(sim) && sim.Proc(.10, "Agony and Torment Trigger") {
 						icd.Use(sim)
 						procAura.Activate(sim)
 					}
