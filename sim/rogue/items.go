@@ -291,7 +291,7 @@ var JawsOfRetribution = core.NewItemSet(core.ItemSet{
 // Sleeper + Dreamer
 var MawOfOblivion = core.NewItemSet(core.ItemSet{
 	Name:  "Maw of Oblivion",
-	Slots: []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand},
+	Slots: core.MeleeWeaponSlots(),
 	Bonuses: map[int32]core.ApplySetBonus{
 		// Your melee attacks have a chance to grant Nightmare, increasing your Agility by 5, stacking up to 50 times.
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
@@ -325,7 +325,7 @@ var MawOfOblivion = core.NewItemSet(core.ItemSet{
 // Golad + Tiriosh
 var FangsOfTheFather = core.NewItemSet(core.ItemSet{
 	Name:  "Fangs of the Father",
-	Slots: []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand},
+	Slots: core.MeleeWeaponSlots(),
 	Bonuses: map[int32]core.ApplySetBonus{
 		// Your melee attacks have a chance to grant Shadows of the Destroyer, increasing your Agility by 17, stacking up to 50 times.
 		// Each application past 30 grants an increasing chance to trigger Fury of the Destroyer.
