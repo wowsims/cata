@@ -106,7 +106,7 @@ var ItemSetFlameWakersBattleGear = core.NewItemSet(core.ItemSet{
 						return
 					}
 					procChance := 0.1
-					if sim.RandomFloat("Burning Adrenaline") < procChance {
+					if sim.RandomFloat("T12 4-set") < procChance {
 						burningAdrenaline.Activate(sim)
 					}
 				},
