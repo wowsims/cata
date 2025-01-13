@@ -43,8 +43,8 @@ export default class IconItemSwapPicker extends Component {
 			});
 		});
 
-		player.itemSwapChangeEmitter.on(() => {
-			this.update(player.getItemSwapGear().getEquippedItem(slot));
+		player.itemSwapSettings.changeEmitter.on(() => {
+			this.update(player.itemSwapSettings.getGear().getEquippedItem(slot));
 		});
 	}
 
@@ -83,10 +83,10 @@ export default class IconItemSwapPicker extends Component {
 	private createGearData(): GearData {
 		return {
 			equipItem: (eventID: EventID, newItem: EquippedItem | null) => {
-				this.player.equipItemSwapitem(eventID, this.slot, newItem);
+				this.player.itemSwapSettings.equipItem(eventID, this.slot, newItem);
 			},
-			getEquippedItem: () => this.player.getItemSwapItem(this.slot),
-			changeEvent: this.player.itemSwapChangeEmitter,
+			getEquippedItem: () => this.player.itemSwapSettings.getItem(this.slot),
+			changeEvent: this.player.itemSwapSettings.changeEmitter,
 		};
 	}
 }

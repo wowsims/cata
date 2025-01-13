@@ -23,7 +23,6 @@ import { PresetBuild, PresetEpWeights, PresetGear, PresetItemSwap, PresetRotatio
 import { StatWeightsResult } from './proto/api';
 import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
 import {
-	Class,
 	Consumes,
 	Cooldowns,
 	Debuffs,
@@ -44,7 +43,6 @@ import {
 	Stat,
 } from './proto/common';
 import { IndividualSimSettings, SavedTalents } from './proto/ui';
-import { ItemSwapGear } from './proto_utils/gear';
 import { getMetaGemConditionDescription } from './proto_utils/gems';
 import { armorTypeNames, professionNames } from './proto_utils/names';
 import { pseudoStatIsCapped, StatCap, Stats, UnitStat } from './proto_utils/stats';
@@ -516,8 +514,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			this.player.getRaid()!.setBuffs(eventID, this.individualConfig.defaults.raidBuffs);
 			this.player.setEpWeights(eventID, this.individualConfig.defaults.epWeights);
 			if (this.individualConfig.defaults.itemSwap) {
-				this.player.setEnableItemSwap(eventID, true);
-				this.player.setItemSwapGear(eventID, this.sim.db.lookupItemSwap(this.individualConfig.defaults.itemSwap || ItemSwap.create()));
+				this.player.itemSwapSettings.setItemSwapSettings(eventID, true, this.sim.db.lookupItemSwap(this.individualConfig.defaults.itemSwap || ItemSwap.create()));
 			}
 
 			const defaultRatios = this.player.getDefaultEpRatios(tankSpec, healingSpec);

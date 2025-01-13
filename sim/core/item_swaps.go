@@ -27,10 +27,12 @@ type ItemSwap struct {
 	// Holds the items that are selected for swapping
 	swapEquip Equipment
 	// Holds items that are currently not equipped
-	unEquippedItems Equipment
-	swapSet         proto.APLActionItemSwap_SwapSet
-	stats           ItemSwapStats
-	initialized     bool
+	unEquippedItems   Equipment
+	swapSet           proto.APLActionItemSwap_SwapSet
+	prepullBonusStats stats.Stats
+	equipmentStats    ItemSwapStats
+
+	initialized bool
 }
 
 type ItemSwapStats struct {
@@ -71,7 +73,12 @@ func (character *Character) enableItemSwap(itemSwap *proto.ItemSwap, mhCritMulti
 		return
 	}
 
-	swapStats := calcEquipmentStatsOffset(character.Equipment, swapItems, slots)
+	var prepullBonusStats stats.Stats
+	if itemSwap.PrepullBonusStats != nil {
+		prepullBonusStats = stats.FromUnitStatsProto(itemSwap.PrepullBonusStats)
+	}
+
+	equipmentStats := calcItemSwapStatsOffset(character.Equipment, swapItems, prepullBonusStats, slots)
 
 	character.ItemSwap = ItemSwap{
 		isFuryWarrior:        character.Spec == proto.Spec_SpecFuryWarrior,
@@ -82,7 +89,8 @@ func (character *Character) enableItemSwap(itemSwap *proto.ItemSwap, mhCritMulti
 		originalEquip:        character.Equipment,
 		swapEquip:            swapItems,
 		unEquippedItems:      swapItems,
-		stats:                swapStats,
+		equipmentStats:       equipmentStats,
+		prepullBonusStats:    prepullBonusStats,
 		swapSet:              proto.APLActionItemSwap_Unknown,
 		initialized:          false,
 	}
@@ -290,7 +298,7 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 	}
 
 	if !isReset {
-		statsToSwap := Ternary(isPrepull, swap.stats.allSlots, swap.stats.weaponSlots)
+		statsToSwap := Ternary(isPrepull, swap.equipmentStats.allSlots, swap.equipmentStats.weaponSlots)
 		if swap.swapSet == proto.APLActionItemSwap_Swap1 {
 			statsToSwap = statsToSwap.Invert()
 		}
@@ -363,11 +371,12 @@ func (swap *ItemSwap) reset(sim *Simulation) {
 	swap.initialized = true
 }
 
-func calcEquipmentStatsOffset(originalEquipment Equipment, swapEquipment Equipment, slots []proto.ItemSlot) ItemSwapStats {
+func calcItemSwapStatsOffset(originalEquipment Equipment, swapEquipment Equipment, prepullBonusStats stats.Stats, slots []proto.ItemSlot) ItemSwapStats {
 	allSlots := stats.Stats{}
 	weaponSlots := stats.Stats{}
 
 	allWeaponSlots := AllWeaponSlots()
+	allSlots = allSlots.Add(prepullBonusStats)
 
 	for _, slot := range slots {
 		slotStats := ItemEquipmentStats(swapEquipment[slot]).Subtract(ItemEquipmentStats(originalEquipment[slot]))

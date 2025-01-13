@@ -7,6 +7,7 @@ import { APLRotation, APLRotation_Type } from '../../proto/apl';
 import { Encounter, EquipmentSpec, HealingModel, Spec } from '../../proto/common';
 import { SavedTalents } from '../../proto/ui';
 import { ItemSwapGear } from '../../proto_utils/gear';
+import { Stats } from '../../proto_utils/stats';
 import { TypedEvent } from '../../typed_event';
 import { Component } from '../component';
 import { ContentBlock } from '../content_block';
@@ -90,10 +91,14 @@ export class PresetConfigurationPicker extends Component {
 			if (gear) this.simUI.player.setGear(eventID, this.simUI.sim.db.lookupEquipmentSpec(gear.gear));
 			if (race) this.simUI.player.setRace(eventID, race);
 			if (itemSwap) {
-				this.simUI.player.setItemSwapGear(eventID, this.simUI.sim.db.lookupItemSwap(itemSwap.itemSwap));
-				this.simUI.player.setEnableItemSwap(eventID, true);
+				this.simUI.player.itemSwapSettings.setItemSwapSettings(
+					eventID,
+					true,
+					this.simUI.sim.db.lookupItemSwap(itemSwap.itemSwap),
+					Stats.fromProto(itemSwap.itemSwap.prepullBonusStats),
+				);
 			} else {
-				this.simUI.player.setEnableItemSwap(eventID, false);
+				this.simUI.player.itemSwapSettings.setEnableItemSwap(eventID, false);
 			}
 			if (talents) {
 				this.simUI.player.setTalentsString(eventID, talents.data.talentsString);

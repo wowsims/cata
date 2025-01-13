@@ -4,6 +4,7 @@ import { IndividualSimUI, InputSection } from '../../individual_sim_ui';
 import { Consumes, Debuffs, HealingModel, IndividualBuffs, ItemSwap, PartyBuffs, Profession, RaidBuffs } from '../../proto/common';
 import { SavedEncounter, SavedSettings } from '../../proto/ui';
 import { professionNames, raceNames } from '../../proto_utils/names';
+import { Stats } from '../../proto_utils/stats';
 import { EventID, TypedEvent } from '../../typed_event';
 import { getEnumValues } from '../../utils';
 import { ContentBlock } from '../content_block';
@@ -12,9 +13,9 @@ import * as IconInputs from '../icon_inputs.js';
 import { Input } from '../input';
 import * as BuffDebuffInputs from '../inputs/buffs_debuffs';
 import { relevantStatOptions } from '../inputs/stat_options';
+import { ItemSwapPicker } from '../item_swap_picker.jsx';
 import { BooleanPicker } from '../pickers/boolean_picker.js';
 import { EnumPicker } from '../pickers/enum_picker.js';
-import { ItemSwapPicker } from '../pickers/item_swap_picker.jsx';
 import { MultiIconPicker } from '../pickers/multi_icon_picker.js';
 import { NumberPicker } from '../pickers/number_picker.js';
 import { SavedDataManager } from '../saved_data_manager';
@@ -282,8 +283,12 @@ export class SettingsTab extends SimTab {
 					simUI.player.setConsumes(eventID, newSettings.consumes || Consumes.create());
 					simUI.player.setRace(eventID, newSettings.race);
 					simUI.player.setProfessions(eventID, newSettings.professions);
-					simUI.player.setEnableItemSwap(eventID, newSettings.enableItemSwap);
-					simUI.player.setItemSwapGear(eventID, simUI.sim.db.lookupItemSwap(newSettings.itemSwap || ItemSwap.create()));
+					simUI.player.itemSwapSettings.setItemSwapSettings(
+						eventID,
+						newSettings.enableItemSwap,
+						simUI.sim.db.lookupItemSwap(newSettings.itemSwap || ItemSwap.create()),
+						Stats.fromProto(newSettings.itemSwap?.prepullBonusStats),
+					);
 					simUI.player.setReactionTime(eventID, newSettings.reactionTimeMs);
 					simUI.player.setChannelClipDelay(eventID, newSettings.channelClipDelayMs);
 					simUI.player.setInFrontOfTarget(eventID, newSettings.inFrontOfTarget);
@@ -300,7 +305,7 @@ export class SettingsTab extends SimTab {
 				this.simUI.player.consumesChangeEmitter,
 				this.simUI.player.raceChangeEmitter,
 				this.simUI.player.professionChangeEmitter,
-				this.simUI.player.itemSwapChangeEmitter,
+				this.simUI.player.itemSwapSettings.changeEmitter,
 				this.simUI.player.miscOptionsChangeEmitter,
 				this.simUI.player.inFrontOfTargetChangeEmitter,
 				this.simUI.player.distanceFromTargetChangeEmitter,
@@ -339,8 +344,8 @@ export class SettingsTab extends SimTab {
 			consumes: this.simUI.player.getConsumes(),
 			race: this.simUI.player.getRace(),
 			professions: this.simUI.player.getProfessions(),
-			enableItemSwap: this.simUI.player.getEnableItemSwap(),
-			itemSwap: this.simUI.player.getItemSwapGear().toProto(),
+			enableItemSwap: this.simUI.player.itemSwapSettings.getEnableItemSwap(),
+			itemSwap: this.simUI.player.itemSwapSettings.toProto(),
 			reactionTimeMs: this.simUI.player.getReactionTime(),
 			channelClipDelayMs: this.simUI.player.getChannelClipDelay(),
 			inFrontOfTarget: this.simUI.player.getInFrontOfTarget(),

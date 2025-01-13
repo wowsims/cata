@@ -1,8 +1,9 @@
 import * as InputHelpers from '../core/components/input_helpers.js';
 import { Player } from '../core/player.js';
-import { Spec } from '../core/proto/common.js';
-import { WarlockOptions_Summon as Summon, } from '../core/proto/warlock.js';
+import { Profession, Spec, Stat } from '../core/proto/common.js';
+import { WarlockOptions_Summon as Summon } from '../core/proto/warlock.js';
 import { ActionId } from '../core/proto_utils/action_id.js';
+import { Stats } from '../core/proto_utils/stats';
 import { WarlockSpecs } from '../core/proto_utils/utils';
 
 // Configuration for spec-specific UI elements on the settings tab.
@@ -33,16 +34,17 @@ export const DetonateSeed = <SpecType extends WarlockSpecs>() =>
 	});
 
 // Demo only
-export const PrepullMastery =
-	InputHelpers.makeClassOptionsNumberInput<Spec.SpecDemonologyWarlock>({
-	fieldName: 'prepullMastery',
-	label: 'Prepull Mastery',
-	labelTooltip: 'Mastery in the prepull set equipped at the start. Only applies if it\'s value is > 0 and only before combat.',
-});
+export const AssumePrepullMasteryElixir = InputHelpers.makeClassOptionsBooleanInput<Spec.SpecDemonologyWarlock>({
+	fieldName: 'useItemSwapBonusStats',
+	label: 'Assume Prepull Mastery Elixir',
+	labelTooltip: 'Enabling this assumes you are using a Mastery Elixir during prepull.',
+	getValue: player => player.getClassOptions().useItemSwapBonusStats,
+	setValue: (eventID, player, newVal) => {
+		const newMessage = player.getClassOptions();
+		newMessage.useItemSwapBonusStats = newVal;
 
-export const PrepullPostSnapshotMana =
-	InputHelpers.makeClassOptionsNumberInput<Spec.SpecDemonologyWarlock>({
-	fieldName: 'prepullPostSnapshotMana',
-	label: 'Mana after prepull Mastery snapshot',
-	labelTooltip: 'Total starting mana after swapping from the prepull set to your normal set. Only applies if the \'Prepull Mastery\' value is > 0.',
+		const bonusStats = newVal ? new Stats().withStat(Stat.StatMasteryRating, 225 + (player.hasProfession(Profession.Alchemy) ? 40 : 0)) : new Stats();
+		player.itemSwapSettings.setBonusStats(eventID, bonusStats);
+		player.setClassOptions(eventID, newMessage);
+	},
 });

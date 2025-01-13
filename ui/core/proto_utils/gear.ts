@@ -389,7 +389,7 @@ export class Gear extends BaseGear {
 }
 
 /**
- * Represents a item swap gear set, including items/enchants/gems.
+ * Represents a item swap gear set, including items/enchants/gems/bonusStats.
  *
  * This is an immutable type.
  */
@@ -406,9 +406,4 @@ export class ItemSwapGear extends BaseGear {
 		return new ItemSwapGear(this.withEquippedItemInternal(newSlot, newItem, canDualWield2H));
 	}
 
-	toProto(): ItemSwap {
-		return ItemSwap.create({
-			items: this.asArray().map(ei => (ei ? ei.asSpec() : ItemSpec.create())),
-		});
-	}
 }

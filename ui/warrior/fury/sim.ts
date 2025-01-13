@@ -121,6 +121,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 			OtherInputs.InputDelay,
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
+			FuryInputs.AssumePrepullMasteryElixir,
 		],
 	},
 	itemSwapSlots: [

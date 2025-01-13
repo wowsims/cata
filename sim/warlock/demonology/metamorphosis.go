@@ -14,42 +14,15 @@ func (demonology *DemonologyWarlock) registerMetamorphosis() {
 	}
 
 	var immolationAura *core.Spell
-	baseMetaDmgMod := 1.2 + 0.184
 	metaDmgMod := 0.0
 	glyphBonus := core.TernaryDuration(demonology.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfMetamorphosis), 6, 0)
-	metaModGainPerMasteryPoint := func(masteryPoints float64) float64 {
-		return 0.023 * masteryPoints
-	}
 
 	metamorphosisAura := demonology.RegisterAura(core.Aura{
 		Label:    "Metamorphosis Aura",
 		ActionID: core.ActionID{SpellID: 59672},
 		Duration: (30 + glyphBonus) * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			metaDmgMod = baseMetaDmgMod + metaModGainPerMasteryPoint(demonology.GetMasteryPoints())
-			if sim.CurrentTime <= 0 && demonology.prepullMastery > 0 {
-				masteryPoints := core.MasteryRatingToMasteryPoints(float64(demonology.prepullMastery))
-				// If ItemSwap is enabled, we need to add the damage mod to the current one
-				// sine we cannot item swap things such as elixirs.
-				if demonology.ItemSwap.IsEnabled() {
-					metaDmgMod += metaModGainPerMasteryPoint(masteryPoints)
-				} else {
-					metaDmgMod = baseMetaDmgMod + metaModGainPerMasteryPoint(masteryPoints)
-					if demonology.prepullPostSnapshotMana > 0 {
-						prepullPostSnapshotManaMetric := demonology.NewManaMetrics(core.ActionID{OtherID: proto.OtherAction_OtherActionPrepull})
-						maxMana := demonology.MaxMana()
-						currentMana := demonology.CurrentMana()
-						postSnapshotMana := currentMana - float64(demonology.prepullPostSnapshotMana)
-						if postSnapshotMana < 0 {
-							postSnapshotMana = currentMana
-						} else if postSnapshotMana > maxMana {
-							postSnapshotMana = maxMana
-						}
-						demonology.SpendMana(sim, postSnapshotMana, prepullPostSnapshotManaMetric)
-					}
-				}
-
-			}
+			metaDmgMod = 1.2 + 0.184 + 0.023*demonology.GetMasteryPoints()
 			aura.Unit.PseudoStats.DamageDealtMultiplier *= metaDmgMod
 
 			if sim.Log != nil {

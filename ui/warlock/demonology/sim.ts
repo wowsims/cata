@@ -105,13 +105,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 	otherInputs: {
 		inputs: [
 			WarlockInputs.DetonateSeed(),
-			WarlockInputs.PrepullMastery,
-			WarlockInputs.PrepullPostSnapshotMana,
 			OtherInputs.InputDelay,
 			OtherInputs.DistanceFromTarget,
 			OtherInputs.DarkIntentUptime,
 			OtherInputs.TankAssignment,
 			OtherInputs.ChannelClipDelay,
+			WarlockInputs.AssumePrepullMasteryElixir,
 		],
 	},
 	itemSwapSlots: [

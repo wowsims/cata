@@ -1041,6 +1041,7 @@ message ItemSwap {
 	ItemSpec oh_item = 2 [deprecated=true];
 	ItemSpec ranged_item = 3 [deprecated=true];
 	repeated ItemSpec items = 4;
+	UnitStats prepull_bonus_stats = 5;
 }
 
 message Duration {

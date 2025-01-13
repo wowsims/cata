@@ -138,6 +138,7 @@ message FuryWarrior {
 		bool stance_snapshot = 2;
 		WarriorSyncType sync_type = 3;
 		int32 prepull_mastery = 4 [deprecated=true]; // Use Item Swap sets instead
+		bool use_item_swap_bonus_stats = 5;
 	}
 	Options options = 1;
 }
