@@ -71,7 +71,7 @@ func (character *Character) enableItemSwap(itemSwap *proto.ItemSwap, mhCritMulti
 		return
 	}
 
-	swapStats := character.ItemSwap.calcEquipmentStatsOffset(character.Equipment, swapItems, slots)
+	swapStats := calcEquipmentStatsOffset(character.Equipment, swapItems, slots)
 
 	character.ItemSwap = ItemSwap{
 		isFuryWarrior:        character.Spec == proto.Spec_SpecFuryWarrior,
@@ -266,25 +266,6 @@ func (swap *ItemSwap) EligibleSlotsForEffect(effectID int32) []proto.ItemSlot {
 	return eligibleSlots
 }
 
-func (swap *ItemSwap) calcEquipmentStatsOffset(originalEquipment Equipment, swapEquipment Equipment, slots []proto.ItemSlot) ItemSwapStats {
-	allSlots := stats.Stats{}
-	weaponSlots := stats.Stats{}
-
-	for _, slot := range slots {
-		slotStats := ItemEquipmentStats(swapEquipment[slot]).Subtract(ItemEquipmentStats(originalEquipment[slot]))
-		allSlots = allSlots.Add(slotStats)
-
-		if slices.Contains(AllWeaponSlots(), slot) {
-			weaponSlots = weaponSlots.Add(slotStats)
-		}
-	}
-
-	return ItemSwapStats{
-		allSlots:    allSlots,
-		weaponSlots: weaponSlots,
-	}
-}
-
 func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap_SwapSet, isReset bool) {
 	if !swap.IsEnabled() || swap.swapSet == swapSet && !isReset {
 		return
@@ -310,22 +291,20 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 
 	if !isReset {
 		statsToSwap := Ternary(isPrepull, swap.stats.allSlots, swap.stats.weaponSlots)
-		newStats := Ternary(swap.swapSet == proto.APLActionItemSwap_Swap1, statsToSwap.Invert(), statsToSwap)
+		if swap.swapSet == proto.APLActionItemSwap_Swap1 {
+			statsToSwap = statsToSwap.Invert()
+		}
 
 		if sim.Log != nil {
-			sim.Log("Item Swap - Stats Change: %v", newStats.FlatString())
+			sim.Log("Item Swap - Stats Change: %v", statsToSwap.FlatString())
 		}
-		character.AddStatsDynamic(sim, newStats)
+		character.AddStatsDynamic(sim, statsToSwap)
 	}
 
 	if !isPrepull && !isReset {
 		if weaponSlotSwapped {
-			if character.AutoAttacks.AutoSwingMelee {
-				character.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime, false)
-			}
-			if character.AutoAttacks.AutoSwingRanged {
-				character.AutoAttacks.StopRangedUntil(sim, sim.CurrentTime)
-			}
+			character.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime, false)
+			character.AutoAttacks.StopRangedUntil(sim, sim.CurrentTime)
 		}
 
 		character.ExtendGCDUntil(sim, max(character.NextGCDAt(), sim.CurrentTime+GCDDefault))
@@ -357,9 +336,8 @@ func (swap *ItemSwap) finalizeItemSwap(sim *Simulation, slot proto.ItemSlot) {
 	case proto.ItemSlot_ItemSlotOffHand:
 		if character.AutoAttacks.AutoSwingMelee {
 			weapon := character.WeaponFromOffHand(swap.ohCritMultiplier)
-			isDualWielding := weapon.SwingSpeed != 0
 			character.AutoAttacks.SetOH(weapon)
-			character.AutoAttacks.IsDualWielding = isDualWielding
+			character.AutoAttacks.IsDualWielding = weapon.SwingSpeed != 0
 			character.AutoAttacks.EnableMeleeSwing(sim)
 			character.PseudoStats.CanBlock = character.OffHand().WeaponType == proto.WeaponType_WeaponTypeShield
 		}
@@ -383,6 +361,27 @@ func (swap *ItemSwap) reset(sim *Simulation) {
 	// This is used to set the initial spell flags for unequipped items.
 	// Reset is called before the first iteration.
 	swap.initialized = true
+}
+
+func calcEquipmentStatsOffset(originalEquipment Equipment, swapEquipment Equipment, slots []proto.ItemSlot) ItemSwapStats {
+	allSlots := stats.Stats{}
+	weaponSlots := stats.Stats{}
+
+	allWeaponSlots := AllWeaponSlots()
+
+	for _, slot := range slots {
+		slotStats := ItemEquipmentStats(swapEquipment[slot]).Subtract(ItemEquipmentStats(originalEquipment[slot]))
+		allSlots = allSlots.Add(slotStats)
+
+		if slices.Contains(allWeaponSlots, slot) {
+			weaponSlots = weaponSlots.Add(slotStats)
+		}
+	}
+
+	return ItemSwapStats{
+		allSlots:    allSlots,
+		weaponSlots: weaponSlots,
+	}
 }
 
 func toItem(itemSpec *proto.ItemSpec) Item {
