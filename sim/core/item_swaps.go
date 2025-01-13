@@ -270,17 +270,16 @@ func (swap *ItemSwap) calcEquipmentStatsOffset(originalEquipment Equipment, swap
 	allSlots := stats.Stats{}
 	weaponSlots := stats.Stats{}
 
-	for slot := range slots {
-		itemSlot := proto.ItemSlot(slot)
-		originalItem := originalEquipment[itemSlot]
-		unequippedItem := swapEquipment[itemSlot]
+	for _, slot := range slots {
+		originalItem := originalEquipment[slot]
+		unequippedItem := swapEquipment[slot]
 		originalItemStats := swap.getItemStats(originalItem)
 		unequippedItemStats := swap.getItemStats(unequippedItem)
 		slotStats := unequippedItemStats.Subtract(originalItemStats)
 
 		allSlots = allSlots.Add(slotStats)
 
-		if slices.Contains(AllWeaponSlots(), itemSlot) {
+		if slices.Contains(AllWeaponSlots(), slot) {
 			weaponSlots = weaponSlots.Add(slotStats)
 		}
 	}
