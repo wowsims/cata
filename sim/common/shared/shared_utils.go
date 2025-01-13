@@ -1,7 +1,6 @@
 package shared
 
 import (
-	"slices"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -23,9 +22,6 @@ type ProcStatBonusEffect struct {
 	ProcChance float64
 	PPM        float64
 	ICD        time.Duration
-
-	// For ignoring a hardcoded spell.
-	IgnoreSpellIDs []int32
 
 	// Any other custom proc conditions not covered by the above fields.
 	CustomProcCondition core.CustomStatBuffProcCondition
@@ -153,23 +149,6 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 				procAura.Activate(sim)
 				if procSpell.Spell != nil {
 					procSpell.Trigger(sim, spell, result)
-				}
-			}
-		}
-
-		if len(config.IgnoreSpellIDs) > 0 {
-			ignoreSpellIDs := config.IgnoreSpellIDs
-			oldHandler := handler
-			handler = func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				isAllowedSpell := !slices.ContainsFunc(ignoreSpellIDs, func(spellID int32) bool {
-					return spell.IsSpellAction(spellID)
-				})
-				if isAllowedSpell {
-					if customHandler != nil {
-						customHandler(sim, procAura)
-					} else {
-						oldHandler(sim, spell, result)
-					}
 				}
 			}
 		}

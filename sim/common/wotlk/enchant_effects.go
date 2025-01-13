@@ -211,19 +211,38 @@ func init() {
 	})
 
 	// Enchant: 3790, Spell: 59630 - Black Magic
-	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-		Name:           "Black Magic",
-		EnchantID:      3790,
-		ItemID:         59630,
-		AuraID:         59626,
-		Callback:       core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
-		ProcMask:       core.ProcMaskSpellOrSpellProc,
-		Outcome:        core.OutcomeLanded,
-		ICD:            time.Second * 35,
-		ProcChance:     0.35,
-		Bonus:          stats.Stats{stats.HasteRating: 250},
-		Duration:       time.Second * 10,
-		IgnoreSpellIDs: []int32{47465, 12867},
+	core.NewEnchantEffect(3790, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		procAura := character.NewTemporaryStatsAura("Black Magic Proc", core.ActionID{SpellID: 59626}, stats.Stats{stats.HasteRating: 250}, time.Second*10)
+		icd := core.Cooldown{
+			Timer:    character.NewTimer(),
+			Duration: time.Second * 35,
+		}
+		procAura.Icd = &icd
+
+		aura := character.GetOrRegisterAura(core.Aura{
+			Label:    "Black Magic",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				// Special case for spells that aren't spells that can proc black magic.
+				specialCaseSpell := spell.ActionID.SpellID == 47465 || spell.ActionID.SpellID == 12867
+
+				if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskSpellOrSpellProc) && !specialCaseSpell {
+					return
+				}
+
+				if icd.IsReady(sim) && sim.RandomFloat("Black Magic") < 0.35 {
+					icd.Use(sim)
+					procAura.Activate(sim)
+				}
+			},
+		})
+
+		character.ItemSwap.RegisterEnchantProc(3790, aura)
 	})
 
 	// Enchant: 3843, Spell: 61471 - Diamond-cut Refractor Scope
