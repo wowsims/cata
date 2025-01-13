@@ -629,18 +629,7 @@ func (aa *AutoAttacks) EnableMeleeSwing(sim *Simulation) {
 			aa.oh.addWeaponAttack(sim, aa.mh.unit.SwingSpeed())
 		}
 	}
-}
 
-func (aa *AutoAttacks) UpdateMeleeOHSwing(sim *Simulation) {
-	if !aa.AutoSwingMelee {
-		return
-	}
-
-	if aa.mh.unit.CurrentTarget == nil {
-		return
-	}
-
-	aa.EnableMeleeSwing(sim)
 	if !aa.IsDualWielding && aa.oh.enabled {
 		sim.removeWeaponAttack(&aa.oh)
 		aa.oh.enabled = false

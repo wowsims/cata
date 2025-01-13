@@ -271,12 +271,7 @@ func (swap *ItemSwap) calcEquipmentStatsOffset(originalEquipment Equipment, swap
 	weaponSlots := stats.Stats{}
 
 	for _, slot := range slots {
-		originalItem := originalEquipment[slot]
-		unequippedItem := swapEquipment[slot]
-		originalItemStats := swap.getItemStats(originalItem)
-		unequippedItemStats := swap.getItemStats(unequippedItem)
-		slotStats := unequippedItemStats.Subtract(originalItemStats)
-
+		slotStats := ItemEquipmentStats(swapEquipment[slot]).Subtract(ItemEquipmentStats(originalEquipment[slot]))
 		allSlots = allSlots.Add(slotStats)
 
 		if slices.Contains(AllWeaponSlots(), slot) {
@@ -349,14 +344,10 @@ func (swap *ItemSwap) swapItem(sim *Simulation, slot proto.ItemSlot, isReset boo
 	}
 
 	swap.unEquippedItems[slot] = oldItem
-	swap.swapWeapon(sim, slot)
+	swap.finalizeItemSwap(sim, slot)
 }
 
-func (swap *ItemSwap) getItemStats(item Item) stats.Stats {
-	return ItemEquipmentStats(item)
-}
-
-func (swap *ItemSwap) swapWeapon(sim *Simulation, slot proto.ItemSlot) {
+func (swap *ItemSwap) finalizeItemSwap(sim *Simulation, slot proto.ItemSlot) {
 	character := swap.character
 	switch slot {
 	case proto.ItemSlot_ItemSlotMainHand:
@@ -369,7 +360,7 @@ func (swap *ItemSwap) swapWeapon(sim *Simulation, slot proto.ItemSlot) {
 			isDualWielding := weapon.SwingSpeed != 0
 			character.AutoAttacks.SetOH(weapon)
 			character.AutoAttacks.IsDualWielding = isDualWielding
-			character.AutoAttacks.UpdateMeleeOHSwing(sim)
+			character.AutoAttacks.EnableMeleeSwing(sim)
 			character.PseudoStats.CanBlock = character.OffHand().WeaponType == proto.WeaponType_WeaponTypeShield
 		}
 	case proto.ItemSlot_ItemSlotRanged:
