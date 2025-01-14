@@ -353,7 +353,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			const savedSettings = window.localStorage.getItem(this.getSettingsStorageKey());
 			if (savedSettings != null) {
 				try {
-					const settings = IndividualSimSettings.fromJsonString(savedSettings);
+					const settings = IndividualSimSettings.fromJsonString(savedSettings, { ignoreUnknownFields: true });
 					this.fromProto(initEventID, settings);
 				} catch (e) {
 					console.warn('Failed to parse saved settings: ' + e);
@@ -514,7 +514,11 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			this.player.getRaid()!.setBuffs(eventID, this.individualConfig.defaults.raidBuffs);
 			this.player.setEpWeights(eventID, this.individualConfig.defaults.epWeights);
 			if (this.individualConfig.defaults.itemSwap) {
-				this.player.itemSwapSettings.setItemSwapSettings(eventID, true, this.sim.db.lookupItemSwap(this.individualConfig.defaults.itemSwap || ItemSwap.create()));
+				this.player.itemSwapSettings.setItemSwapSettings(
+					eventID,
+					true,
+					this.sim.db.lookupItemSwap(this.individualConfig.defaults.itemSwap || ItemSwap.create()),
+				);
 			}
 
 			const defaultRatios = this.player.getDefaultEpRatios(tankSpec, healingSpec);
