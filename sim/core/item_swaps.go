@@ -221,6 +221,10 @@ func (swap *ItemSwap) IsEnabled() bool {
 	return swap.character != nil && len(swap.slots) > 0
 }
 
+func (swap *ItemSwap) IsValidSwap(swapSet proto.APLActionItemSwap_SwapSet) bool {
+	return !(swap.swapSet == swapSet || swap.swapSet == proto.APLActionItemSwap_Unknown && swapSet == proto.APLActionItemSwap_Main)
+}
+
 func (swap *ItemSwap) IsSwapped() bool {
 	return swap.swapSet == proto.APLActionItemSwap_Swap1
 }
@@ -275,7 +279,7 @@ func (swap *ItemSwap) EligibleSlotsForEffect(effectID int32) []proto.ItemSlot {
 }
 
 func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap_SwapSet, isReset bool) {
-	if !swap.IsEnabled() || swap.swapSet == swapSet && !isReset {
+	if !swap.IsEnabled() || !swap.IsValidSwap(swapSet) {
 		return
 	}
 
@@ -297,17 +301,15 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 		}
 	}
 
-	if !isReset {
-		statsToSwap := Ternary(isPrepull, swap.equipmentStats.allSlots, swap.equipmentStats.weaponSlots)
-		if swap.swapSet == proto.APLActionItemSwap_Swap1 {
-			statsToSwap = statsToSwap.Invert()
-		}
-
-		if sim.Log != nil {
-			sim.Log("Item Swap - Stats Change: %v", statsToSwap.FlatString())
-		}
-		character.AddStatsDynamic(sim, statsToSwap)
+	statsToSwap := Ternary(isPrepull, swap.equipmentStats.allSlots, swap.equipmentStats.weaponSlots)
+	if swap.IsSwapped() {
+		statsToSwap = statsToSwap.Invert()
 	}
+
+	if sim.Log != nil {
+		sim.Log("Item Swap - Stats Change: %v", statsToSwap.FlatString())
+	}
+	character.AddStatsDynamic(sim, statsToSwap)
 
 	if !isPrepull && !isReset {
 		if weaponSlotSwapped {
@@ -369,6 +371,10 @@ func (swap *ItemSwap) reset(sim *Simulation) {
 	// This is used to set the initial spell flags for unequipped items.
 	// Reset is called before the first iteration.
 	swap.initialized = true
+}
+
+func (swap *ItemSwap) doneIteration(sim *Simulation) {
+	swap.reset(sim)
 }
 
 func calcItemSwapStatsOffset(originalEquipment Equipment, swapEquipment Equipment, prepullBonusStats stats.Stats, slots []proto.ItemSlot) ItemSwapStats {

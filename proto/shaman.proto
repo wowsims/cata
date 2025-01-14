@@ -177,9 +177,7 @@ message ShamanTotems {
 	FireTotem fire = 10;
 	WaterTotem water = 11;
 
-	// If set, will use fire elemental totem at the start and revert to regular
-	// fire totems when it expires.
-	bool use_fire_elemental = 12;
+	bool use_fire_elemental = 12 [deprecated=true];
 
 	// Bonus spell power for fire elemental snapshotting.
 	int32 bonus_spellpower = 13 [deprecated=true]; // No longer used in favor of Item Swapping
@@ -187,7 +185,7 @@ message ShamanTotems {
 	int32 bonus_intellect = 15 [deprecated=true]; // No longer used in favor of Item Swapping
 
 	// Snapshot fire elemental using Tier 10 4 set bonus.
-	bool enh_tier_ten_bonus = 14;
+	bool enh_tier_ten_bonus = 14 [deprecated=true]; // No longer used in favor of Item Swapping
 }
 
 enum ShamanShield {

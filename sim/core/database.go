@@ -476,6 +476,16 @@ func EquipmentSpecFromJsonString(jsonString string) *proto.EquipmentSpec {
 	return es
 }
 
+func ItemSwapFromJsonString(jsonString string) *proto.ItemSwap {
+	is := &proto.ItemSwap{}
+
+	data := []byte(jsonString)
+	if err := protojson.Unmarshal(data, is); err != nil {
+		panic(err)
+	}
+	return is
+}
+
 func (equipment *Equipment) Stats() stats.Stats {
 	equipStats := stats.Stats{}
 

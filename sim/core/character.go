@@ -634,6 +634,8 @@ func (character *Character) getCurrentProcMaskFor(pred func(item *Item) bool) Pr
 }
 
 func (character *Character) doneIteration(sim *Simulation) {
+	character.ItemSwap.doneIteration(sim)
+
 	// Need to do pets first, so we can add their results to the owners.
 	for _, pet := range character.Pets {
 		pet.doneIteration(sim)

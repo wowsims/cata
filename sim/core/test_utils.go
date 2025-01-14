@@ -212,5 +212,5 @@ func GetItemSwapGearSet(dir string, file string) ItemSwapSetCombo {
 		log.Fatalf("failed to load gear json file: %s, %s", filePath, err)
 	}
 
-	return ItemSwapSetCombo{Label: file, ItemSwap: &proto.ItemSwap{Items: EquipmentSpecFromJsonString(string(data)).Items}}
+	return ItemSwapSetCombo{Label: file, ItemSwap: ItemSwapFromJsonString(string(data))}
 }

@@ -450,7 +450,9 @@ func init() {
 	for _, enchantID := range movementSpeedEnchants {
 		core.NewEnchantEffect(enchantID, func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.NewMovementSpeedAura("Minor Run Speed", core.ActionID{SpellID: 13889}, 0.08)
+			aura := character.NewMovementSpeedAura("Minor Run Speed", core.ActionID{SpellID: 13889}, 0.08)
+
+			character.ItemSwap.RegisterEnchantProc(enchantID, aura)
 		})
 	}
 }
