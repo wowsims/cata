@@ -3,8 +3,9 @@
 	"prepullActions":  [
 		{"action":{"itemSwap":{"swapSet":"Swap1"}},"doAtValue":{"const":{"val":"-54s"}}},
         {"action":{"castSpell":{"spellId":{"spellId":66842}}},"doAtValue":{"const":{"val":"-3s"}}},
-		{"action":{"castSpell":{"spellId":{"spellId":79206}}},"doAtValue":{"const":{"val":"-1s"}},"hide":true},
+        {"action":{"castSpell":{"spellId":{"spellId":79206}}},"doAtValue":{"const":{"val":"-1s"}},"hide":true},
         {"action":{"activateAura":{"auraId":{"spellId":74221,"tag":1}}},"doAtValue":{"const":{"val":"-1s"}}},
+        {"action":{"activateAura":{"auraId":{"spellId":99742}}},"doAtValue":{"const":{"val":"-1s"}}},
         {"action":{"activateAura":{"auraId":{"spellId":109844}}},"doAtValue":{"const":{"val":"-1s"}}},
         {"action":{"activateAura":{"auraId":{"spellId":107804}}},"doAtValue":{"const":{"val":"-1s"}}},
         {"action":{"activateAura":{"auraId":{"spellId":109842}}},"doAtValue":{"const":{"val":"-1s"}}},
@@ -13,7 +14,7 @@
         {"action":{"activateAura":{"auraId":{"spellId":109803}}},"doAtValue":{"const":{"val":"-1s"}}},
         {"action":{"activateAura":{"auraId":{"spellId":91192}}},"doAtValue":{"const":{"val":"-1s"}}},
         {"action":{"activateAura":{"auraId":{"spellId":90898}}},"doAtValue":{"const":{"val":"-1s"}}},
-        {"action":{"itemSwap":{"swapSet":"Main"}},"doAtValue":{"const":{"val":"-1s"}}},
+        {"action":{"itemSwap":{"swapSet":"Swap1"}},"doAtValue":{"const":{"val":"-1s"}}},
         {"action":{"castSpell":{"spellId":{"otherId":"OtherActionPotion"}}},"doAtValue":{"const":{"val":"-1s"}}},
 		{"action":{"castSpell":{"spellId":{"spellId":403}}},"doAtValue":{"const":{"val":"-1s"}}}
 	],
