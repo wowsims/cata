@@ -302,8 +302,8 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-Bryntroll,theBoneArbiter-50709"
  value: {
-  dps: 42955.3991
-  tps: 31848.80099
+  dps: 43120.17978
+  tps: 32013.58168
   hps: 601.25406
  }
 }
