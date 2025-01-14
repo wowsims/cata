@@ -32,12 +32,8 @@ func init() {
 			},
 		})
 
-		aura := character.GetOrRegisterAura(core.Aura{
-			Label:    "Giant Slayer",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
+		aura := core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+			Label: "Giant Slayer",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if !result.Landed() {
 					return
@@ -51,7 +47,7 @@ func init() {
 					procSpell.Cast(sim, result.Target)
 				}
 			},
-		})
+		}))
 
 		character.ItemSwap.RegisterEnchantProc(3251, aura)
 	})

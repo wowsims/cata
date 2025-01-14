@@ -97,29 +97,27 @@ func AddWeaponEffect(id int32, weaponEffect ApplyWeaponEffect) {
 // Helpers for making common types of active item effects.
 
 func NewSimpleStatItemActiveEffect(itemID int32, bonus stats.Stats, duration time.Duration, cooldown time.Duration, sharedCDFunc func(*Character) Cooldown, otherEffects ApplyEffect) {
-	registerCD := MakeTemporaryStatsOnUseCDRegistration(
-		"ItemActive-"+strconv.Itoa(int(itemID)),
-		bonus,
-		duration,
-		SpellConfig{
-			ActionID: ActionID{ItemID: itemID},
-		},
-		func(character *Character) Cooldown {
-			return Cooldown{
-				Timer:    character.NewTimer(),
-				Duration: cooldown,
-			}
-		},
-		sharedCDFunc,
-	)
-
 	NewItemEffect(itemID, func(agent Agent) {
+		registerCD := MakeTemporaryStatsOnUseCDRegistration(
+			"ItemActive-"+strconv.Itoa(int(itemID)),
+			bonus,
+			duration,
+			SpellConfig{
+				ActionID: ActionID{ItemID: itemID},
+			},
+			func(character *Character) Cooldown {
+				return Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: cooldown,
+				}
+			},
+			sharedCDFunc,
+		)
+
 		registerCD(agent)
 		if otherEffects != nil {
 			otherEffects(agent)
 		}
-		character := agent.GetCharacter()
-		character.ItemSwap.RegisterActive(itemID, character.ItemSwap.EligibleSlotsForItem(itemID))
 	})
 }
 

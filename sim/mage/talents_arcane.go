@@ -331,7 +331,7 @@ func (mage *Mage) registerArcanePowerCD() {
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			arcanePowerAura.Activate(sim)
-			if mage.t13ProcAura != nil && mage.t13ProcAura.IsActive() {
+			if mage.Has4pcT13 {
 				spell.CD.Reduce(time.Second * time.Duration(7*mage.t13ProcAura.GetStacks()))
 			}
 		},

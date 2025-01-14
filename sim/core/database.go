@@ -607,6 +607,10 @@ var itemTypeToSlotsMap = map[proto.ItemType][]proto.ItemSlot{
 }
 
 func eligibleSlotsForItem(item *Item, isFuryWarrior bool) []proto.ItemSlot {
+	if item == nil {
+		return nil
+	}
+
 	if slots, ok := itemTypeToSlotsMap[item.Type]; ok {
 		return slots
 	}

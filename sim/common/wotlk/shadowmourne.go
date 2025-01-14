@@ -20,13 +20,13 @@ func init() {
 	// https://web.archive.org/web/20100508065259/http://elitistjerks.com/f81/t37462-warrior_dps_calculation_spreadsheet/p109/
 	// arrives at ~80% with "2000 white swings" on a dummy.
 	core.NewItemEffect(49623, func(agent core.Agent) {
-		player := agent.GetCharacter()
+		character := agent.GetCharacter()
 
-		dpm := player.AutoAttacks.NewPPMManager(12, core.ProcMaskMeleeOrMeleeProc)
+		dpm := character.AutoAttacks.NewPPMManager(12, core.ProcMaskMeleeOrMeleeProc)
 
-		chaosBaneAura := player.NewTemporaryStatsAura("Chaos Bane", core.ActionID{SpellID: 73422}, stats.Stats{stats.Strength: 270}, time.Second*10)
+		chaosBaneAura := character.NewTemporaryStatsAura("Chaos Bane", core.ActionID{SpellID: 73422}, stats.Stats{stats.Strength: 270}, time.Second*10)
 
-		choasBaneSpell := player.RegisterSpell(core.SpellConfig{
+		choasBaneSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 71904},
 			SpellSchool: core.SpellSchoolShadow,
 			ProcMask:    core.ProcMaskEmpty, // not sure if this can proc things.
@@ -42,13 +42,13 @@ func init() {
 			},
 		})
 
-		stackingAura := player.GetOrRegisterAura(core.Aura{
+		stackingAura := character.GetOrRegisterAura(core.Aura{
 			Label:     "Soul Fragment",
 			Duration:  time.Minute,
 			ActionID:  core.ActionID{SpellID: 71905},
 			MaxStacks: 10,
 			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-				player.AddStatDynamic(sim, stats.Strength, float64(newStacks-oldStacks)*30)
+				character.AddStatDynamic(sim, stats.Strength, float64(newStacks-oldStacks)*30)
 
 				if newStacks == aura.MaxStacks {
 					choasBaneSpell.Cast(sim, nil)
@@ -59,7 +59,7 @@ func init() {
 			},
 		})
 
-		core.MakePermanent(player.GetOrRegisterAura(core.Aura{
+		aura := core.MakePermanent(character.GetOrRegisterAura(core.Aura{
 			Label: "Shadowmourne",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if chaosBaneAura.IsActive() {
@@ -72,5 +72,7 @@ func init() {
 				}
 			},
 		}))
+
+		character.ItemSwap.RegisterProc(49623, aura)
 	})
 }

@@ -123,6 +123,14 @@ var ItemSetTimeLordsRegalia = core.NewItemSet(core.ItemSet{
 			// combustion.go
 			// talents_arcane.go
 			// talents_frost.go
+
+			mage := agent.(MageAgent).GetMage()
+			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				mage.Has4pcT13 = true
+			})
+			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				mage.Has4pcT13 = false
+			})
 		},
 	},
 })

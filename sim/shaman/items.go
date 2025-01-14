@@ -423,36 +423,19 @@ var ItemSetSpiritwalkersBattlegear = core.NewItemSet(core.ItemSet{
 			}
 
 			spiritWolves := []*SpiritWolf{shaman.SpiritWolves.SpiritWolf1, shaman.SpiritWolves.SpiritWolf2}
-			procTriggerAuras := make([]*core.Aura, len(spiritWolves))
 			for _, wolf := range spiritWolves {
 				aura := setBonusAura.MakeDependentProcTriggerAura(&wolf.Unit, wolfProcTriggerConfig)
-				procTriggerAuras = append(procTriggerAuras, aura)
+
+				wolf.Pet.OnPetEnable = func(sim *core.Simulation) {
+					if setBonusAura.IsActive() {
+						aura.Activate(sim)
+					}
+				}
+
+				wolf.Pet.OnPetDisable = func(sim *core.Simulation) {
+					aura.Deactivate(sim)
+				}
 			}
-
-			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-				for index, wolf := range spiritWolves {
-					aura := procTriggerAuras[index]
-					if aura != nil {
-						wolf.Pet.OnPetEnable = func(sim *core.Simulation) {
-							aura.Activate(sim)
-						}
-						wolf.Pet.OnPetDisable = func(sim *core.Simulation) {
-							aura.Deactivate(sim)
-						}
-					}
-				}
-			})
-
-			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-				for index, wolf := range spiritWolves {
-					aura := procTriggerAuras[index]
-					if aura != nil {
-						aura.Deactivate(sim)
-					}
-					wolf.Pet.OnPetEnable = nil
-					wolf.Pet.OnPetDisable = nil
-				}
-			})
 		},
 	},
 })

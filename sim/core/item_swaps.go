@@ -27,10 +27,9 @@ type ItemSwap struct {
 	// Holds the items that are selected for swapping
 	swapEquip Equipment
 	// Holds items that are currently not equipped
-	unEquippedItems   Equipment
-	swapSet           proto.APLActionItemSwap_SwapSet
-	prepullBonusStats stats.Stats
-	equipmentStats    ItemSwapStats
+	unEquippedItems Equipment
+	swapSet         proto.APLActionItemSwap_SwapSet
+	equipmentStats  ItemSwapStats
 
 	initialized bool
 }
@@ -90,7 +89,6 @@ func (character *Character) enableItemSwap(itemSwap *proto.ItemSwap, mhCritMulti
 		swapEquip:            swapItems,
 		unEquippedItems:      swapItems,
 		equipmentStats:       equipmentStats,
-		prepullBonusStats:    prepullBonusStats,
 		swapSet:              proto.APLActionItemSwap_Unknown,
 		initialized:          false,
 	}
@@ -101,7 +99,7 @@ func (swap *ItemSwap) initialize(character *Character) {
 }
 
 func (character *Character) RegisterItemSwapCallback(slots []proto.ItemSlot, callback OnItemSwap) {
-	if character == nil || !character.ItemSwap.IsEnabled() {
+	if character == nil || !character.ItemSwap.IsEnabled() || len(slots) == 0 {
 		return
 	}
 
@@ -179,7 +177,8 @@ func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
 }
 
 // Helper for handling Item On Use effects to set a 30s cd on the related spell.
-func (swap *ItemSwap) RegisterActive(itemID int32, slots []proto.ItemSlot) {
+func (swap *ItemSwap) RegisterActive(itemID int32) {
+	slots := swap.EligibleSlotsForItem(itemID)
 	if !swap.ItemExistsInSwapSet(itemID, slots) {
 		return
 	}
@@ -255,6 +254,11 @@ func (swap *ItemSwap) ItemExistsInSwapSet(itemID int32, possibleSlots []proto.It
 
 func (swap *ItemSwap) EligibleSlotsForItem(itemID int32) []proto.ItemSlot {
 	eligibleSlots := eligibleSlotsForItem(GetItemByID(itemID), swap.isFuryWarrior)
+
+	if len(eligibleSlots) == 0 {
+		return []proto.ItemSlot{}
+	}
+
 	if !swap.IsEnabled() {
 		return eligibleSlots
 	} else {
@@ -311,12 +315,9 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 	}
 	character.AddStatsDynamic(sim, statsToSwap)
 
-	if !isPrepull && !isReset {
-		if weaponSlotSwapped {
-			character.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime, false)
-			character.AutoAttacks.StopRangedUntil(sim, sim.CurrentTime)
-		}
-
+	if !isPrepull && !isReset && weaponSlotSwapped {
+		character.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime, false)
+		character.AutoAttacks.StopRangedUntil(sim, sim.CurrentTime)
 		character.ExtendGCDUntil(sim, max(character.NextGCDAt(), sim.CurrentTime+GCDDefault))
 	}
 
@@ -378,24 +379,24 @@ func (swap *ItemSwap) doneIteration(sim *Simulation) {
 }
 
 func calcItemSwapStatsOffset(originalEquipment Equipment, swapEquipment Equipment, prepullBonusStats stats.Stats, slots []proto.ItemSlot) ItemSwapStats {
-	allSlots := stats.Stats{}
-	weaponSlots := stats.Stats{}
+	allSlotStats := stats.Stats{}
+	weaponSlotStats := stats.Stats{}
 
 	allWeaponSlots := AllWeaponSlots()
-	allSlots = allSlots.Add(prepullBonusStats)
+	allSlotStats = allSlotStats.Add(prepullBonusStats)
 
 	for _, slot := range slots {
 		slotStats := ItemEquipmentStats(swapEquipment[slot]).Subtract(ItemEquipmentStats(originalEquipment[slot]))
-		allSlots = allSlots.Add(slotStats)
+		allSlotStats = allSlotStats.Add(slotStats)
 
 		if slices.Contains(allWeaponSlots, slot) {
-			weaponSlots = weaponSlots.Add(slotStats)
+			weaponSlotStats = weaponSlotStats.Add(slotStats)
 		}
 	}
 
 	return ItemSwapStats{
-		allSlots:    allSlots,
-		weaponSlots: weaponSlots,
+		allSlots:    allSlotStats,
+		weaponSlots: weaponSlotStats,
 	}
 }
 

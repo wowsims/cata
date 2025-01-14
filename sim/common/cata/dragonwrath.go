@@ -194,7 +194,8 @@ func GetDRTSpellConfig(spell *core.Spell) core.SpellConfig {
 
 func init() {
 	core.NewItemEffect(71086, func(a core.Agent) {
-		unit := &a.GetCharacter().Unit
+		character := a.GetCharacter()
+		unit := &character.Unit
 		registerSpells(unit)
 
 		unit.OnSpellRegistered(func(spell *core.Spell) {
@@ -209,7 +210,8 @@ func init() {
 
 		lastTimestamp := time.Duration(0)
 		spellList := map[*core.Spell]bool{}
-		core.MakePermanent(unit.RegisterAura(core.Aura{
+
+		aura := core.MakePermanent(unit.RegisterAura(core.Aura{
 			ActionID: core.ActionID{ItemID: 71086},
 			Label:    "Dragonwrath, Tarecgosa's Rest - Handler",
 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
@@ -322,6 +324,8 @@ func init() {
 				config.getDoTHandler(spell.SpellID)(sim, spell, result)
 			},
 		}))
+
+		character.ItemSwap.RegisterProc(71086, aura)
 	})
 
 	// register custom global spell handlers

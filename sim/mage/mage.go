@@ -55,6 +55,7 @@ type Mage struct {
 
 	// Item sets
 	Has4pcT12 bool
+	Has4pcT13 bool
 }
 
 func (mage *Mage) GetCharacter() *core.Character {
