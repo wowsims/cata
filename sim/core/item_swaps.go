@@ -297,7 +297,7 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 			continue
 		}
 
-		swap.swapItem(sim, slot, isReset)
+		swap.swapItem(sim, slot, isPrepull, isReset)
 		weaponSlotSwapped = slot == proto.ItemSlot_ItemSlotMainHand || slot == proto.ItemSlot_ItemSlotOffHand || slot == proto.ItemSlot_ItemSlotRanged || weaponSlotSwapped
 
 		for _, onSwap := range swap.onSwapCallbacks[slot] {
@@ -324,7 +324,7 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 	swap.swapSet = swapSet
 }
 
-func (swap *ItemSwap) swapItem(sim *Simulation, slot proto.ItemSlot, isReset bool) {
+func (swap *ItemSwap) swapItem(sim *Simulation, slot proto.ItemSlot, isPrepull bool, isReset bool) {
 	oldItem := *swap.GetEquippedItemBySlot(slot)
 
 	if isReset {
@@ -334,27 +334,25 @@ func (swap *ItemSwap) swapItem(sim *Simulation, slot proto.ItemSlot, isReset boo
 	}
 
 	swap.unEquippedItems[slot] = oldItem
-	swap.finalizeItemSwap(sim, slot)
-}
 
-func (swap *ItemSwap) finalizeItemSwap(sim *Simulation, slot proto.ItemSlot) {
-	character := swap.character
-	switch slot {
-	case proto.ItemSlot_ItemSlotMainHand:
-		if character.AutoAttacks.AutoSwingMelee {
-			character.AutoAttacks.SetMH(character.WeaponFromMainHand(swap.mhCritMultiplier))
-		}
-	case proto.ItemSlot_ItemSlotOffHand:
-		if character.AutoAttacks.AutoSwingMelee {
-			weapon := character.WeaponFromOffHand(swap.ohCritMultiplier)
-			character.AutoAttacks.SetOH(weapon)
-			character.AutoAttacks.IsDualWielding = weapon.SwingSpeed != 0
-			character.AutoAttacks.EnableMeleeSwing(sim)
-			character.PseudoStats.CanBlock = character.OffHand().WeaponType == proto.WeaponType_WeaponTypeShield
-		}
-	case proto.ItemSlot_ItemSlotRanged:
-		if character.AutoAttacks.AutoSwingRanged {
-			character.AutoAttacks.SetRanged(character.WeaponFromRanged(swap.rangedCritMultiplier))
+	if !isPrepull {
+		switch slot {
+		case proto.ItemSlot_ItemSlotMainHand:
+			if swap.character.AutoAttacks.AutoSwingMelee {
+				swap.character.AutoAttacks.SetMH(swap.character.WeaponFromMainHand(swap.mhCritMultiplier))
+			}
+		case proto.ItemSlot_ItemSlotOffHand:
+			if swap.character.AutoAttacks.AutoSwingMelee {
+				weapon := swap.character.WeaponFromOffHand(swap.ohCritMultiplier)
+				swap.character.AutoAttacks.SetOH(weapon)
+				swap.character.AutoAttacks.IsDualWielding = weapon.SwingSpeed != 0
+				swap.character.AutoAttacks.EnableMeleeSwing(sim)
+				swap.character.PseudoStats.CanBlock = swap.character.OffHand().WeaponType == proto.WeaponType_WeaponTypeShield
+			}
+		case proto.ItemSlot_ItemSlotRanged:
+			if swap.character.AutoAttacks.AutoSwingRanged {
+				swap.character.AutoAttacks.SetRanged(swap.character.WeaponFromRanged(swap.rangedCritMultiplier))
+			}
 		}
 	}
 }
