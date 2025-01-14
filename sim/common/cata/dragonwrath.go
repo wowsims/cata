@@ -218,6 +218,10 @@ func init() {
 				lastTimestamp = time.Duration(0)
 				spellList = map[*core.Spell]bool{}
 			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				lastTimestamp = sim.CurrentTime
+				spellList = map[*core.Spell]bool{}
+			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 
 				// Handle direct damage only and make sure we're not proccing of our own spell
