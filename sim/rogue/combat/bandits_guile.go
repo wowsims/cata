@@ -43,9 +43,6 @@ func (comRogue *CombatRogue) registerBanditsGuile() {
 				if currentInsightIndex == 2 {
 					currentInsightIndex = -1
 					attackCounter = 0
-				} else if currentInsightIndex == index {
-					// This Insight faded without advancing, reset to no Insight
-					currentInsightIndex = -1
 				}
 			},
 		})
