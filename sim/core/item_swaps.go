@@ -89,7 +89,7 @@ func (character *Character) enableItemSwap(itemSwap *proto.ItemSwap, mhCritMulti
 		swapEquip:            swapItems,
 		unEquippedItems:      swapItems,
 		equipmentStats:       equipmentStats,
-		swapSet:              proto.APLActionItemSwap_Unknown,
+		swapSet:              proto.APLActionItemSwap_Main,
 		initialized:          false,
 	}
 }
@@ -152,12 +152,15 @@ func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
 	isItemProc := config.ItemID != 0
 	isEnchantEffectProc := config.EnchantId != 0
 	character := swap.character
+	hasIcd := config.Aura.Icd != nil
 
 	character.RegisterItemSwapCallback(config.Slots, func(sim *Simulation, _ proto.ItemSlot) {
 		isItemSlotMatch := false
-
+		// Enchant effects such as Weapon/Back do not trigger an ICD
+		var shouldUpdateIcd bool
 		if isItemProc {
 			isItemSlotMatch = character.hasItemEquipped(config.ItemID, config.Slots)
+			shouldUpdateIcd = hasIcd
 		} else if isEnchantEffectProc {
 			isItemSlotMatch = character.hasEnchantEquipped(config.EnchantId, config.Slots)
 		}
@@ -165,13 +168,15 @@ func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
 		if isItemSlotMatch {
 			if !config.Aura.IsActive() {
 				config.Aura.Activate(sim)
-				// Enchant effects such as Weapon/Back do not trigger an ICD
-				if isItemProc && config.Aura.Icd != nil {
-					config.Aura.Icd.Use(sim)
-				}
+			}
+			if shouldUpdateIcd {
+				config.Aura.Icd.Use(sim)
 			}
 		} else {
 			config.Aura.Deactivate(sim)
+			if shouldUpdateIcd {
+				config.Aura.Icd.Set(NeverExpires)
+			}
 		}
 	})
 }
@@ -179,9 +184,6 @@ func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
 // Helper for handling Item On Use effects to set a 30s cd on the related spell.
 func (swap *ItemSwap) RegisterActive(itemID int32) {
 	slots := swap.EligibleSlotsForItem(itemID)
-	if !swap.ItemExistsInSwapSet(itemID, slots) {
-		return
-	}
 
 	swap.character.RegisterItemSwapCallback(slots, func(sim *Simulation, slot proto.ItemSlot) {
 		hasItemEquipped := swap.character.hasItemEquipped(itemID, slots)
@@ -221,7 +223,7 @@ func (swap *ItemSwap) IsEnabled() bool {
 }
 
 func (swap *ItemSwap) IsValidSwap(swapSet proto.APLActionItemSwap_SwapSet) bool {
-	return !(swap.swapSet == swapSet || swap.swapSet == proto.APLActionItemSwap_Unknown && swapSet == proto.APLActionItemSwap_Main)
+	return swap.swapSet != swapSet
 }
 
 func (swap *ItemSwap) IsSwapped() bool {
@@ -248,7 +250,7 @@ func (swap *ItemSwap) ItemExistsInMainEquip(itemID int32, possibleSlots []proto.
 	return swap.originalEquip.containsItemInSlots(itemID, possibleSlots)
 }
 
-func (swap *ItemSwap) ItemExistsInSwapSet(itemID int32, possibleSlots []proto.ItemSlot) bool {
+func (swap *ItemSwap) ItemExistsInSwapEquip(itemID int32, possibleSlots []proto.ItemSlot) bool {
 	return swap.swapEquip.containsItemInSlots(itemID, possibleSlots)
 }
 
@@ -283,7 +285,7 @@ func (swap *ItemSwap) EligibleSlotsForEffect(effectID int32) []proto.ItemSlot {
 }
 
 func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap_SwapSet, isReset bool) {
-	if !swap.IsEnabled() || !swap.IsValidSwap(swapSet) {
+	if !swap.IsEnabled() || !swap.IsValidSwap(swapSet) && !isReset {
 		return
 	}
 
@@ -303,6 +305,10 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 		for _, onSwap := range swap.onSwapCallbacks[slot] {
 			onSwap(sim, slot)
 		}
+	}
+
+	if !swap.IsValidSwap(swapSet) && isReset {
+		return
 	}
 
 	statsToSwap := Ternary(isPrepull, swap.equipmentStats.allSlots, swap.equipmentStats.weaponSlots)
