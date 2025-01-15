@@ -129,6 +129,8 @@ func (aura *Aura) reset(sim *Simulation) {
 	if aura.stacks != 0 {
 		panic("Aura nonzero stacks during reset: " + aura.Label)
 	}
+
+	aura.enabled = true
 	aura.metrics.reset()
 	aura.fadeTime = -NeverExpires
 
@@ -154,10 +156,14 @@ func (aura *Aura) doneIteration(sim *Simulation) {
 }
 
 func (aura *Aura) IsActive() bool {
-	if aura == nil || !aura.enabled {
+	if aura == nil || !aura.IsEnabled() {
 		return false
 	}
 	return aura.active
+}
+
+func (aura *Aura) IsEnabled() bool {
+	return aura.enabled
 }
 
 func (aura *Aura) Refresh(sim *Simulation) {
@@ -180,7 +186,7 @@ func (aura *Aura) GetStacks() int32 {
 }
 
 func (aura *Aura) SetStacks(sim *Simulation, newStacks int32) {
-	if !aura.IsActive() && newStacks != 0 {
+	if !aura.active && newStacks != 0 {
 		panic("Trying to set non-zero stacks on inactive aura!")
 	}
 	if newStacks < 0 {
@@ -192,7 +198,7 @@ func (aura *Aura) SetStacks(sim *Simulation, newStacks int32) {
 	oldStacks := aura.stacks
 	newStacks = min(newStacks, aura.MaxStacks)
 
-	if oldStacks == newStacks {
+	if oldStacks == newStacks || !aura.IsEnabled() && newStacks != 0 {
 		return
 	}
 
@@ -381,6 +387,7 @@ func (at *auraTracker) registerAura(unit *Unit, aura Aura) *Aura {
 
 	newAura := &Aura{}
 	*newAura = aura
+	newAura.enabled = true
 	newAura.Unit = unit
 	newAura.Icd = aura.Icd
 	newAura.metrics.ID = aura.ActionID
@@ -551,7 +558,7 @@ restart:
 // Adds a new aura to the simulation. If an aura with the same ID already
 // exists it will be replaced with the new one.
 func (aura *Aura) Activate(sim *Simulation) {
-	if !aura.enabled {
+	if !aura.IsEnabled() {
 		if sim.Log != nil {
 			aura.Unit.Log(sim, "Aura activation failed because it is disabled: %s", aura.ActionID)
 		}
@@ -661,7 +668,6 @@ func (aura *Aura) Deactivate(sim *Simulation) {
 		return
 	}
 	aura.active = false
-	aura.enabled = false
 
 	if !aura.ActionID.IsEmptyAction() {
 		if sim.CurrentTime > aura.expires {
@@ -798,12 +804,12 @@ func (aura *Aura) Deactivate(sim *Simulation) {
 }
 
 // Enables an Aura to be Activated
-func (aura *Aura) Enable() {
+func (aura *Aura) Enable(sim *Simulation) {
 	aura.enabled = true
 }
 
 // Disables an Aura preventing it to be Activated
-func (aura *Aura) Disable() {
+func (aura *Aura) Disable(sim *Simulation) {
 	aura.enabled = false
 }
 

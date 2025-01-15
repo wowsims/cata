@@ -83,15 +83,21 @@ func (action *APLActionActivateAura) IsReady(sim *Simulation) bool {
 }
 
 func (action *APLActionActivateAura) Execute(sim *Simulation) {
-	if sim.Log != nil {
-		action.aura.Unit.Log(sim, "Activating aura %s", action.aura.ActionID)
-	}
-
-	if action.aura.Icd != nil {
-		fmt.Println("Aura ready", action.aura.ActionID, action.aura.Icd.IsReady(sim), action.aura)
+	if !action.aura.IsEnabled() {
+		if sim.Log != nil {
+			action.aura.Unit.Log(sim, "Could not activate disabled aura %s", action.aura.ActionID)
+		}
+		return
 	}
 	if action.aura.Icd != nil && !action.aura.Icd.IsReady(sim) {
+		if sim.Log != nil {
+			action.aura.Unit.Log(sim, "Could not activate aura %s because it's on ICD for %s", action.aura.ActionID, action.aura.Icd.TimeToReady(sim))
+		}
 		return
+	}
+
+	if sim.Log != nil {
+		action.aura.Unit.Log(sim, "Activating aura %s", action.aura.ActionID)
 	}
 
 	action.aura.Activate(sim)
@@ -128,12 +134,21 @@ func (action *APLActionActivateAuraWithStacks) IsReady(sim *Simulation) bool {
 	return true
 }
 func (action *APLActionActivateAuraWithStacks) Execute(sim *Simulation) {
-	if sim.Log != nil {
-		action.aura.Unit.Log(sim, "Activating aura %s (%d stacks)", action.aura.ActionID, action.numStacks)
+	if !action.aura.IsEnabled() {
+		if sim.Log != nil {
+			action.aura.Unit.Log(sim, "Could not activate disabled aura %s (%d stacks)", action.aura.ActionID, action.numStacks)
+		}
+		return
+	}
+	if action.aura.Icd != nil && !action.aura.Icd.IsReady(sim) {
+		if sim.Log != nil {
+			action.aura.Unit.Log(sim, "Could not activate aura %s (%d stacks) because it's on ICD for %s", action.aura.ActionID, action.numStacks, action.aura.Icd.TimeToReady(sim))
+		}
+		return
 	}
 
-	if action.aura.Icd != nil && !action.aura.Icd.IsReady(sim) {
-		return
+	if sim.Log != nil {
+		action.aura.Unit.Log(sim, "Activating aura %s (%d stacks)", action.aura.ActionID, action.numStacks)
 	}
 
 	action.aura.Activate(sim)

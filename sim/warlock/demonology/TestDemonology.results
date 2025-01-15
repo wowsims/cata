@@ -1994,673 +1994,673 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-DefaultTalents-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 56255.92196
-  tps: 47924.1349
+  dps: 57812.84551
+  tps: 49971.08112
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-DefaultTalents-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 39453.36455
-  tps: 19740.98775
+  dps: 40895.50581
+  tps: 20701.76493
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-DefaultTalents-Demonology Warlock-incinerate-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 58596.21242
-  tps: 27017.15095
+  dps: 60401.4096
+  tps: 28113.69125
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-DefaultTalents-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 48479.95459
-  tps: 44508.82953
+  dps: 49882.05215
+  tps: 45919.55801
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-DefaultTalents-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 28742.13451
-  tps: 14167.71598
+  dps: 29439.33182
+  tps: 14612.51565
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-DefaultTalents-Demonology Warlock-incinerate-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 40023.59617
-  tps: 18061.89648
+  dps: 40352.22892
+  tps: 18348.04247
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 56041.21316
-  tps: 47002.65867
+  dps: 57655.92977
+  tps: 48560.85268
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 39931.34828
-  tps: 20926.03998
+  dps: 41175.13462
+  tps: 21853.60326
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 60135.5683
-  tps: 29769.26682
+  dps: 61126.09466
+  tps: 30100.83901
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 48911.69345
-  tps: 42772.84701
+  dps: 49450.71064
+  tps: 43280.46471
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 29173.44782
-  tps: 14959.02566
+  dps: 29790.47976
+  tps: 15409.3956
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 39942.14495
-  tps: 19271.48121
+  dps: 40539.91694
+  tps: 19714.81905
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-Incinerate-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 56717.21013
-  tps: 48374.71517
+  dps: 58254.48877
+  tps: 49819.76466
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-Incinerate-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 40234.57586
-  tps: 20294.14472
+  dps: 41534.37046
+  tps: 21217.27477
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-Incinerate-Demonology Warlock-incinerate-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 59636.10327
-  tps: 27833.37046
+  dps: 61076.34906
+  tps: 28874.74658
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-Incinerate-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 49201.61324
-  tps: 44625.99305
+  dps: 50182.55337
+  tps: 46263.72769
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-Incinerate-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 29122.6198
-  tps: 14532.4756
+  dps: 30060.67252
+  tps: 15046.58402
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-Incinerate-Demonology Warlock-incinerate-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 39698.8897
-  tps: 18428.08553
+  dps: 40897.37186
+  tps: 18903.94496
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-Incinerate-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 50613.10989
-  tps: 40800.65709
+  dps: 51658.05368
+  tps: 42415.78948
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-Incinerate-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 36249.37416
-  tps: 17851.79818
+  dps: 37029.43921
+  tps: 18329.7128
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-Incinerate-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 56624.22006
-  tps: 26253.08575
+  dps: 56690.30343
+  tps: 26195.77935
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-Incinerate-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 43855.13974
-  tps: 37176.71595
+  dps: 44490.33844
+  tps: 37684.2896
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-Incinerate-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 26516.68718
-  tps: 12949.14265
+  dps: 27033.3258
+  tps: 13239.11222
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p3-Incinerate-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 37596.15052
-  tps: 17237.78039
+  dps: 38549.41606
+  tps: 17827.91762
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-DefaultTalents-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 55604.06884
-  tps: 47545.77407
+  dps: 57045.88832
+  tps: 48960.73794
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-DefaultTalents-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 39004.76575
-  tps: 19432.34692
+  dps: 40511.95277
+  tps: 20297.94048
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-DefaultTalents-Demonology Warlock-incinerate-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 58033.60332
-  tps: 26559.21562
+  dps: 59870.13768
+  tps: 27597.37913
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-DefaultTalents-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 47029.99871
-  tps: 43318.5175
+  dps: 49671.72849
+  tps: 45736.82433
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-DefaultTalents-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 28068.08806
-  tps: 13936.60774
+  dps: 29418.51313
+  tps: 14553.37638
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-DefaultTalents-Demonology Warlock-incinerate-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 39334.51806
-  tps: 18137.04983
+  dps: 40727.50225
+  tps: 18600.21429
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 55953.45648
-  tps: 46572.81616
+  dps: 56722.49477
+  tps: 47377.45087
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 39521.26382
-  tps: 20693.41643
+  dps: 40816.34034
+  tps: 21339.05607
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 59558.7354
-  tps: 28615.9067
+  dps: 61018.01583
+  tps: 29763.10255
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 47605.52379
-  tps: 41685.67889
+  dps: 49745.42103
+  tps: 43429.07507
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 28069.66394
-  tps: 14596.45723
+  dps: 29597.66048
+  tps: 15303.42917
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 38884.3189
-  tps: 18887.09456
+  dps: 40624.78481
+  tps: 19533.08094
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-Incinerate-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 56157.14173
-  tps: 47368.71093
+  dps: 57699.3758
+  tps: 49410.06904
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-Incinerate-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 39663.98807
-  tps: 19969.85737
+  dps: 41125.08084
+  tps: 20805.10784
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-Incinerate-Demonology Warlock-incinerate-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 59266.81126
-  tps: 27527.48379
+  dps: 60545.3961
+  tps: 28336.53968
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-Incinerate-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 47708.59171
-  tps: 43668.88869
+  dps: 49842.68753
+  tps: 45607.8322
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-Incinerate-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 28345.75913
-  tps: 14216.69085
+  dps: 29862.24074
+  tps: 14909.41783
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-Incinerate-Demonology Warlock-incinerate-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 39127.84205
-  tps: 18378.57428
+  dps: 41361.45932
+  tps: 19054.43631
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-Incinerate-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 50197.72105
-  tps: 40809.69727
+  dps: 51028.48525
+  tps: 41737.88151
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-Incinerate-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 35806.67379
-  tps: 17616.85145
+  dps: 36980.14131
+  tps: 18201.88956
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-Incinerate-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 55699.24754
-  tps: 25806.07549
+  dps: 56590.16432
+  tps: 26291.17038
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-Incinerate-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 43602.31234
-  tps: 37887.53754
+  dps: 45263.94421
+  tps: 38529.85302
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-Incinerate-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 26168.11321
-  tps: 12734.75802
+  dps: 27022.59222
+  tps: 13272.36287
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p3-Incinerate-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 37419.37323
-  tps: 17110.76839
+  dps: 38496.122
+  tps: 17518.02535
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-DefaultTalents-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 56784.57577
-  tps: 47463.07761
+  dps: 58264.48952
+  tps: 49207.72527
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-DefaultTalents-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 39870.81005
-  tps: 19545.48918
+  dps: 41438.16231
+  tps: 20466.03366
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-DefaultTalents-Demonology Warlock-incinerate-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 59892.39502
-  tps: 26944.9983
+  dps: 61765.52383
+  tps: 27995.25506
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-DefaultTalents-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 48215.86234
-  tps: 43727.40401
+  dps: 51010.83183
+  tps: 46253.49543
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-DefaultTalents-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 28783.06468
-  tps: 14071.24539
+  dps: 30101.60042
+  tps: 14651.15738
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-DefaultTalents-Demonology Warlock-incinerate-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 40786.0213
-  tps: 18452.47938
+  dps: 42176.07614
+  tps: 18889.3594
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 57082.8632
-  tps: 46585.44943
+  dps: 57734.55903
+  tps: 47503.48206
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 40466.79328
-  tps: 20842.38501
+  dps: 41848.4793
+  tps: 21582.78429
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 61516.43964
-  tps: 29059.64921
+  dps: 62952.31519
+  tps: 30202.11984
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 48815.83904
-  tps: 42185.51659
+  dps: 51110.94872
+  tps: 44035.19639
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 28841.20953
-  tps: 14761.25597
+  dps: 30316.42186
+  tps: 15439.87349
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 40344.14808
-  tps: 19206.40868
+  dps: 42091.83655
+  tps: 19837.40953
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-Incinerate-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 57241.51673
-  tps: 47677.42508
+  dps: 58882.75298
+  tps: 49620.72559
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-Incinerate-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 40648.22302
-  tps: 20167.04023
+  dps: 42047.22757
+  tps: 20973.66677
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-Incinerate-Demonology Warlock-incinerate-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 61142.38149
-  tps: 27927.23729
+  dps: 62446.58674
+  tps: 28746.46454
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-Incinerate-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 48856.69446
-  tps: 43978.7077
+  dps: 50936.56231
+  tps: 45918.78301
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-Incinerate-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 29184.07206
-  tps: 14434.95985
+  dps: 30618.59908
+  tps: 15097.01133
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-Incinerate-Demonology Warlock-incinerate-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 40563.44624
-  tps: 18696.90898
+  dps: 42821.18788
+  tps: 19347.9078
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-Incinerate-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 51236.31296
-  tps: 40914.88008
+  dps: 52157.92744
+  tps: 41886.83509
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-Incinerate-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 36666.07909
-  tps: 17731.6063
+  dps: 37903.41505
+  tps: 18426.41755
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-Incinerate-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 57559.74177
-  tps: 26210.55349
+  dps: 58464.72927
+  tps: 26698.22646
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-Incinerate-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 44798.63054
-  tps: 38426.79677
+  dps: 46434.2234
+  tps: 38961.55594
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-Incinerate-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 26935.14746
-  tps: 12873.21232
+  dps: 27762.34223
+  tps: 13408.5345
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p3-Incinerate-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 38897.04814
-  tps: 17415.15241
+  dps: 39968.49931
+  tps: 17809.42566
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-DefaultTalents-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 56708.98264
-  tps: 47834.81401
+  dps: 57658.71708
+  tps: 49433.74784
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-DefaultTalents-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 39404.89986
-  tps: 19846.98519
+  dps: 40865.91046
+  tps: 20444.69152
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-DefaultTalents-Demonology Warlock-incinerate-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 60321.44083
-  tps: 28143.60658
+  dps: 62052.56368
+  tps: 28117.17296
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-DefaultTalents-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 48495.71112
-  tps: 45184.26465
+  dps: 51159.73308
+  tps: 47528.31617
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-DefaultTalents-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 28549.30761
-  tps: 14245.4831
+  dps: 29869.77013
+  tps: 14880.78257
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-DefaultTalents-Demonology Warlock-incinerate-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 41517.13548
-  tps: 19039.75874
+  dps: 43007.54612
+  tps: 19906.17839
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 56848.35818
-  tps: 47336.23874
+  dps: 57486.61356
+  tps: 48053.1366
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 39781.12797
-  tps: 20860.43308
+  dps: 41109.13836
+  tps: 21607.25965
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 60681.6755
-  tps: 29567.46537
+  dps: 62564.10196
+  tps: 30673.95549
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 49413.69622
-  tps: 43743.02781
+  dps: 51384.01832
+  tps: 45103.84509
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 28881.62753
-  tps: 14967.31282
+  dps: 30269.19173
+  tps: 15670.25833
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 41209.04808
-  tps: 20107.05997
+  dps: 42345.07901
+  tps: 20538.41175
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-Incinerate-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 57378.18714
-  tps: 49003.98434
+  dps: 58283.00849
+  tps: 49582.25753
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-Incinerate-Demonology Warlock-incinerate-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 40261.27684
-  tps: 20456.47076
+  dps: 41661.7154
+  tps: 21032.51916
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-Incinerate-Demonology Warlock-incinerate-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 61241.86061
-  tps: 28918.16013
+  dps: 63051.516
+  tps: 29015.27723
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-Incinerate-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 49116.8107
-  tps: 45141.52137
+  dps: 51747.13294
+  tps: 47188.0655
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-Incinerate-Demonology Warlock-incinerate-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 29025.83531
-  tps: 14585.56636
+  dps: 30131.51419
+  tps: 15201.15742
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-Incinerate-Demonology Warlock-incinerate-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 41633.19795
-  tps: 19488.89265
+  dps: 42320.84018
+  tps: 20131.33894
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-Incinerate-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 51513.97232
-  tps: 41348.115
+  dps: 52601.32501
+  tps: 43275.70668
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-Incinerate-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 36115.62314
-  tps: 17862.00607
+  dps: 37659.42405
+  tps: 18580.75364
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-Incinerate-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 57641.88682
-  tps: 26727.68957
+  dps: 59205.83046
+  tps: 27719.30492
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-Incinerate-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 44672.80767
-  tps: 37655.74146
+  dps: 46537.12384
+  tps: 39588.13578
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-Incinerate-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 26412.0499
-  tps: 12927.46779
+  dps: 27423.91703
+  tps: 13480.36248
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p3-Incinerate-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 38781.54277
-  tps: 18054.06941
+  dps: 39351.68911
+  tps: 18606.18382
  }
 }
 dps_results: {

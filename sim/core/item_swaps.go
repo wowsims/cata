@@ -1,7 +1,6 @@
 package core
 
 import (
-	"fmt"
 	"slices"
 	"time"
 
@@ -169,14 +168,9 @@ func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
 		} else {
 			config.Aura.Deactivate(sim)
 		}
-
 		// Enchant effects such as Weapon/Back do not trigger an ICD
 		if isItemProc && config.Aura.Icd != nil {
 			config.Aura.Icd.Use(sim)
-		}
-
-		if config.Aura.Icd != nil {
-			fmt.Println("registerProcInternal", sim.CurrentTime, config.ItemID, isItemSlotMatch, config.Aura.ActionID, config.Aura.Icd.ReadyAt())
 		}
 	})
 }
@@ -198,7 +192,6 @@ func (swap *ItemSwap) RegisterActive(itemID int32) {
 				aura.Deactivate(sim)
 			}
 			if !hasItemEquipped {
-				fmt.Println("Item not equipped", itemID)
 				spell.Flags |= SpellFlagSwapped
 				return
 			}
@@ -293,11 +286,9 @@ func (swap *ItemSwap) EligibleSlotsForEffect(effectID int32) []proto.ItemSlot {
 }
 
 func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap_SwapSet, isReset bool) {
-	fmt.Println("SwapItems", sim.CurrentTime, swap.swapSet, swapSet, isReset)
-	if !swap.IsEnabled() || !isReset && !swap.IsValidSwap(swapSet) {
+	if !swap.IsEnabled() || !swap.IsValidSwap(swapSet) && !isReset {
 		return
 	}
-	fmt.Println("Swapping", sim.CurrentTime, swap.swapSet, swapSet, isReset)
 
 	character := swap.character
 
@@ -315,6 +306,10 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 		for _, onSwap := range swap.onSwapCallbacks[slot] {
 			onSwap(sim, slot)
 		}
+	}
+
+	if !swap.IsValidSwap(swapSet) && isReset {
+		return
 	}
 
 	statsToSwap := Ternary(isPrepull, swap.equipmentStats.allSlots, swap.equipmentStats.weaponSlots)

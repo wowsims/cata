@@ -171,11 +171,12 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 			procAura.Icd = triggerAura.Icd
 		}
 
-		triggerAura.ApplyOnGain(func(_ *core.Aura, _ *core.Simulation) {
-			procAura.Enable()
+		triggerAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+			procAura.Enable(sim)
 		})
-		triggerAura.ApplyOnExpire(func(_ *core.Aura, _ *core.Simulation) {
-			procAura.Disable()
+
+		triggerAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+			procAura.Disable(sim)
 		})
 
 		if isEnchant {
