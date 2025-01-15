@@ -1,7 +1,7 @@
 {
 	"type": "TypeAPL",
 	"prepullActions": [
-		{"action":{"itemSwap":{"swapSet":"Swap1"}},"doAtValue":{"const":{"val":"-60s"}}},
+		{"action":{"itemSwap":{"swapSet":"Swap1"}},"doAtValue":{"const":{"val":"-145s"}}},
 		{"action":{"castSpell":{"spellId":{"itemId":70142}}},"doAtValue":{"const":{"val":"-22.5"}}},
 		{"action":{"castSpell":{"spellId":{"spellId":30146}}},"doAtValue":{"const":{"val":"-10s"}}},
 		{"action":{"castSpell":{"spellId":{"spellId":77801}}},"doAtValue":{"const":{"val":"-4.01s"}},"hide":true},

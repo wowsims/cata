@@ -59,6 +59,7 @@ type Aura struct {
 	// The unit this aura is attached to.
 	Unit *Unit
 
+	enabled                    bool
 	active                     bool
 	activeIndex                int32 // Position of this aura's index in the activeAuras array.
 	onApplyEffectsIndex        int32 // Position of this aura's index in the onApplyEffectsAuras array.
@@ -153,7 +154,7 @@ func (aura *Aura) doneIteration(sim *Simulation) {
 }
 
 func (aura *Aura) IsActive() bool {
-	if aura == nil {
+	if aura == nil || !aura.enabled {
 		return false
 	}
 	return aura.active
@@ -411,6 +412,7 @@ func (unit *Unit) GetOrRegisterAura(aura Aura) *Aura {
 	if curAura == nil {
 		return unit.RegisterAura(aura)
 	} else {
+		curAura.enabled = true
 		curAura.Icd = aura.Icd
 		curAura.OnCastComplete = aura.OnCastComplete
 		curAura.OnSpellHitDealt = aura.OnSpellHitDealt
@@ -435,7 +437,7 @@ func (at *auraTracker) HasAuraWithTag(tag string) bool {
 
 func (at *auraTracker) GetActiveAuraWithTag(tag string) *Aura {
 	for _, aura := range at.aurasByTag[tag] {
-		if aura.active {
+		if aura.IsActive() {
 			return aura
 		}
 	}
@@ -444,7 +446,7 @@ func (at *auraTracker) GetActiveAuraWithTag(tag string) *Aura {
 func (at *auraTracker) NumActiveAurasWithTag(tag string) int32 {
 	count := int32(0)
 	for _, aura := range at.aurasByTag[tag] {
-		if aura.active {
+		if aura.IsActive() {
 			count++
 		}
 	}
@@ -452,7 +454,7 @@ func (at *auraTracker) NumActiveAurasWithTag(tag string) int32 {
 }
 func (at *auraTracker) HasActiveAuraWithTag(tag string) bool {
 	for _, aura := range at.aurasByTag[tag] {
-		if aura.active {
+		if aura.IsActive() {
 			return true
 		}
 	}
@@ -460,7 +462,7 @@ func (at *auraTracker) HasActiveAuraWithTag(tag string) bool {
 }
 func (at *auraTracker) HasActiveAuraWithTagExcludingAura(tag string, excludeAura *Aura) bool {
 	for _, aura := range at.aurasByTag[tag] {
-		if aura.active && aura != excludeAura {
+		if aura.IsActive() && aura != excludeAura {
 			return true
 		}
 	}
@@ -549,6 +551,12 @@ restart:
 // Adds a new aura to the simulation. If an aura with the same ID already
 // exists it will be replaced with the new one.
 func (aura *Aura) Activate(sim *Simulation) {
+	if !aura.enabled {
+		if sim.Log != nil {
+			aura.Unit.Log(sim, "Aura activation failed because it is disabled: %s", aura.ActionID)
+		}
+		return
+	}
 	aura.metrics.Procs++
 	if aura.IsActive() {
 		if sim.Log != nil && !aura.ActionID.IsEmptyAction() {
@@ -577,6 +585,7 @@ func (aura *Aura) Activate(sim *Simulation) {
 		}
 	}
 
+	aura.enabled = true
 	aura.active = true
 	aura.startTime = sim.CurrentTime
 	aura.Refresh(sim)
@@ -652,6 +661,7 @@ func (aura *Aura) Deactivate(sim *Simulation) {
 		return
 	}
 	aura.active = false
+	aura.enabled = false
 
 	if !aura.ActionID.IsEmptyAction() {
 		if sim.CurrentTime > aura.expires {
@@ -787,6 +797,16 @@ func (aura *Aura) Deactivate(sim *Simulation) {
 	}
 }
 
+// Enables an Aura to be Activated
+func (aura *Aura) Enable() {
+	aura.enabled = true
+}
+
+// Disables an Aura preventing it to be Activated
+func (aura *Aura) Disable() {
+	aura.enabled = false
+}
+
 // Constant-time removal from slice by swapping with the last element before removing.
 func removeBySwappingToBack[T any, U constraints.Integer](arr []T, removeIdx U) []T {
 	arr[removeIdx] = arr[len(arr)-1]
@@ -811,7 +831,7 @@ func (at *auraTracker) OnCastComplete(sim *Simulation, spell *Spell) {
 func (at *auraTracker) OnSpellHitDealt(sim *Simulation, spell *Spell, result *SpellResult) {
 	for _, aura := range at.onSpellHitDealtAuras {
 		// this check is to handle a case where auras are deactivated during iteration.
-		if !aura.active {
+		if !aura.IsActive() {
 			continue
 		}
 		aura.OnSpellHitDealt(aura, sim, spell, result)
@@ -820,7 +840,7 @@ func (at *auraTracker) OnSpellHitDealt(sim *Simulation, spell *Spell, result *Sp
 func (at *auraTracker) OnSpellHitTaken(sim *Simulation, spell *Spell, result *SpellResult) {
 	for _, aura := range at.onSpellHitTakenAuras {
 		// this check is to handle a case where auras are deactivated during iteration.
-		if !aura.active {
+		if !aura.IsActive() {
 			continue
 		}
 		aura.OnSpellHitTaken(aura, sim, spell, result)
@@ -846,7 +866,7 @@ func (at *auraTracker) OnPeriodicDamageTaken(sim *Simulation, spell *Spell, resu
 func (at *auraTracker) OnHealDealt(sim *Simulation, spell *Spell, result *SpellResult) {
 	for _, aura := range at.onHealDealtAuras {
 		// this check is to handle a case where auras are deactivated during iteration.
-		if !aura.active {
+		if !aura.IsActive() {
 			continue
 		}
 		aura.OnHealDealt(aura, sim, spell, result)
@@ -855,7 +875,7 @@ func (at *auraTracker) OnHealDealt(sim *Simulation, spell *Spell, result *SpellR
 func (at *auraTracker) OnHealTaken(sim *Simulation, spell *Spell, result *SpellResult) {
 	for _, aura := range at.onHealTakenAuras {
 		// this check is to handle a case where auras are deactivated during iteration.
-		if !aura.active {
+		if !aura.IsActive() {
 			continue
 		}
 		aura.OnHealTaken(aura, sim, spell, result)

@@ -176,7 +176,7 @@ func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
 		}
 
 		if config.Aura.Icd != nil {
-			fmt.Println("registerProcInternal", sim.CurrentTime, config.ItemID, config.Aura.Icd.ReadyAt())
+			fmt.Println("registerProcInternal", sim.CurrentTime, config.ItemID, isItemSlotMatch, config.Aura.ActionID, config.Aura.Icd.ReadyAt())
 		}
 	})
 }
@@ -184,7 +184,7 @@ func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
 // Helper for handling Item On Use effects to set a 30s cd on the related spell.
 func (swap *ItemSwap) RegisterActive(itemID int32) {
 	slots := swap.EligibleSlotsForItem(itemID)
-	if !swap.ItemExistsInSwapSet(itemID, slots) {
+	if !swap.CanRegisterItemCallback(itemID, slots) {
 		return
 	}
 
@@ -250,11 +250,15 @@ func (swap *ItemSwap) GetUnequippedItemBySlot(slot proto.ItemSlot) *Item {
 	return &swap.unEquippedItems[slot]
 }
 
+func (swap *ItemSwap) CanRegisterItemCallback(itemID int32, possibleSlots []proto.ItemSlot) bool {
+	return swap.ItemExistsInMainEquip(itemID, possibleSlots) || swap.ItemExistsInSwapEquip(itemID, possibleSlots)
+}
+
 func (swap *ItemSwap) ItemExistsInMainEquip(itemID int32, possibleSlots []proto.ItemSlot) bool {
 	return swap.originalEquip.containsItemInSlots(itemID, possibleSlots)
 }
 
-func (swap *ItemSwap) ItemExistsInSwapSet(itemID int32, possibleSlots []proto.ItemSlot) bool {
+func (swap *ItemSwap) ItemExistsInSwapEquip(itemID int32, possibleSlots []proto.ItemSlot) bool {
 	return swap.swapEquip.containsItemInSlots(itemID, possibleSlots)
 }
 
