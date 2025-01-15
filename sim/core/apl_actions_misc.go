@@ -86,6 +86,13 @@ func (action *APLActionActivateAura) Execute(sim *Simulation) {
 	if sim.Log != nil {
 		action.aura.Unit.Log(sim, "Activating aura %s", action.aura.ActionID)
 	}
+	if action.aura.ActionID.SpellID == 109789 {
+		fmt.Println("APLActionActivateAura.Execute", action.aura.ActionID, sim.CurrentTime, action.aura.Icd.Duration, action.aura.Icd.ReadyAt(), action.aura.Icd.IsReady(sim))
+	}
+	if action.aura.Icd != nil && !action.aura.Icd.IsReady(sim) {
+		return
+	}
+
 	action.aura.Activate(sim)
 	if action.aura.Icd != nil {
 		action.aura.Icd.Use(sim)

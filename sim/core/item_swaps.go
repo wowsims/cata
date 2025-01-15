@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"slices"
 	"time"
 
@@ -89,7 +90,7 @@ func (character *Character) enableItemSwap(itemSwap *proto.ItemSwap, mhCritMulti
 		swapEquip:            swapItems,
 		unEquippedItems:      swapItems,
 		equipmentStats:       equipmentStats,
-		swapSet:              proto.APLActionItemSwap_Unknown,
+		swapSet:              proto.APLActionItemSwap_Main,
 		initialized:          false,
 	}
 }
@@ -155,7 +156,6 @@ func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
 
 	character.RegisterItemSwapCallback(config.Slots, func(sim *Simulation, _ proto.ItemSlot) {
 		isItemSlotMatch := false
-
 		if isItemProc {
 			isItemSlotMatch = character.hasItemEquipped(config.ItemID, config.Slots)
 		} else if isEnchantEffectProc {
@@ -165,13 +165,18 @@ func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
 		if isItemSlotMatch {
 			if !config.Aura.IsActive() {
 				config.Aura.Activate(sim)
-				// Enchant effects such as Weapon/Back do not trigger an ICD
-				if isItemProc && config.Aura.Icd != nil {
-					config.Aura.Icd.Use(sim)
-				}
 			}
 		} else {
 			config.Aura.Deactivate(sim)
+		}
+
+		// Enchant effects such as Weapon/Back do not trigger an ICD
+		if isItemProc && config.Aura.Icd != nil {
+			config.Aura.Icd.Use(sim)
+		}
+
+		if config.Aura.Icd != nil {
+			fmt.Println("registerProcInternal", sim.CurrentTime, config.ItemID, config.Aura.Icd.ReadyAt())
 		}
 	})
 }
@@ -193,6 +198,7 @@ func (swap *ItemSwap) RegisterActive(itemID int32) {
 				aura.Deactivate(sim)
 			}
 			if !hasItemEquipped {
+				fmt.Println("Item not equipped", itemID)
 				spell.Flags |= SpellFlagSwapped
 				return
 			}
@@ -221,7 +227,7 @@ func (swap *ItemSwap) IsEnabled() bool {
 }
 
 func (swap *ItemSwap) IsValidSwap(swapSet proto.APLActionItemSwap_SwapSet) bool {
-	return !(swap.swapSet == swapSet || swap.swapSet == proto.APLActionItemSwap_Unknown && swapSet == proto.APLActionItemSwap_Main)
+	return swap.swapSet != swapSet
 }
 
 func (swap *ItemSwap) IsSwapped() bool {
@@ -283,9 +289,11 @@ func (swap *ItemSwap) EligibleSlotsForEffect(effectID int32) []proto.ItemSlot {
 }
 
 func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap_SwapSet, isReset bool) {
-	if !swap.IsEnabled() || !swap.IsValidSwap(swapSet) {
+	fmt.Println("SwapItems", sim.CurrentTime, swap.swapSet, swapSet, isReset)
+	if !swap.IsEnabled() || !isReset && !swap.IsValidSwap(swapSet) {
 		return
 	}
+	fmt.Println("Swapping", sim.CurrentTime, swap.swapSet, swapSet, isReset)
 
 	character := swap.character
 
