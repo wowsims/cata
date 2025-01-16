@@ -9,6 +9,7 @@ import (
 )
 
 func init() {
+	core.AddEffectsToTest = false
 
 	// Band of the Eternal Restorer
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
@@ -36,5 +37,4 @@ func init() {
 		ICD:        time.Second * 45,
 	})
 
-	core.AddEffectsToTest = true
 }
