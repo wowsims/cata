@@ -40,6 +40,7 @@ func TestElemental(t *testing.T) {
 			core.GetAplRotation("../../../ui/shaman/elemental/apls", "aoe"),
 			core.GetAplRotation("../../../ui/shaman/elemental/apls", "unleash"),
 		},
+		ItemSwapSet: core.GetItemSwapGearSet("../../../ui/shaman/elemental/gear_sets", "p3_item_swap"),
 
 		ItemFilter: core.ItemFilter{
 			WeaponTypes: []proto.WeaponType{
