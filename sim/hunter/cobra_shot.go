@@ -9,7 +9,6 @@ import (
 func (hunter *Hunter) registerCobraShotSpell() {
 
 	csMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 77767})
-	focus := core.TernaryFloat64(hunter.HasSetBonus(ItemSetWyrmstalkerBattleGear, 2), 9*2, 9)
 	hunter.CobraShot = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 77767},
 		SpellSchool:    core.SpellSchoolNature,
@@ -25,7 +24,7 @@ func (hunter *Hunter) registerCobraShotSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      time.Second,
-				CastTime: time.Millisecond*2000 - core.TernaryDuration(hunter.HasSetBonus(ItemSetLightningChargedBattleGear, 4), time.Millisecond*200, 0),
+				CastTime: time.Millisecond * 2000,
 			},
 			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
 			ModifyCast: func(_ *core.Simulation, spell *core.Spell, cast *core.Cast) {
@@ -42,7 +41,7 @@ func (hunter *Hunter) registerCobraShotSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) + (276.806 + spell.RangedAttackPower(target)*0.017)
-			intFocus := focus
+			intFocus := core.TernaryFloat64(hunter.T13_2pc.IsActive(), 9*2, 9)
 			if hunter.Talents.Termination != 0 && sim.IsExecutePhase25() {
 				intFocus += float64(hunter.Talents.Termination) * 3
 			}

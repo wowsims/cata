@@ -204,3 +204,13 @@ func GetGearSet(dir string, file string) GearSetCombo {
 
 	return GearSetCombo{Label: file, GearSet: EquipmentSpecFromJsonString(string(data))}
 }
+
+func GetItemSwapGearSet(dir string, file string) ItemSwapSetCombo {
+	filePath := dir + "/" + file + ".gear.json"
+	data, err := os.ReadFile(filePath)
+	if err != nil {
+		log.Fatalf("failed to load gear json file: %s, %s", filePath, err)
+	}
+
+	return ItemSwapSetCombo{Label: file, ItemSwap: ItemSwapFromJsonString(string(data))}
+}

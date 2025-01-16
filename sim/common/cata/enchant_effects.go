@@ -3,6 +3,7 @@ package cata
 import (
 	"time"
 
+	"github.com/wowsims/cata/sim/common/shared"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -44,7 +45,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(4066, aura)
+		character.ItemSwap.RegisterEnchantProc(4066, aura)
 	})
 
 	// Enchant: 4067, Spell: 74197 - Enchant Weapon - Avalanche
@@ -66,9 +67,8 @@ func init() {
 			},
 		})
 
-		// TODO: Verify PPM (currently based on elitist + simcraft)
-		procMask := character.GetProcMaskForEnchant(4067)
-		ppmm := character.AutoAttacks.NewPPMManager(5.0, procMask)
+		ppm := 5.0
+		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(4067, ppm, 0)
 		meleeIcd := &core.Cooldown{
 			Duration: time.Millisecond * 1,
 			Timer:    character.NewTimer(),
@@ -90,7 +90,7 @@ func init() {
 				// melee ICD - Melee and Spell Procs are independent
 				// while melee attacks do not have a direct internal CD
 				// only one proc per server batch can occur, so i.E. Storm Strike can not proc avalance twice
-				if meleeIcd.IsReady(sim) && ppmm.Proc(sim, spell.ProcMask, "Avalanche") {
+				if meleeIcd.IsReady(sim) && dpm.Proc(sim, spell.ProcMask, "Avalanche") {
 					meleeIcd.Use(sim)
 					procSpell.Cast(sim, result.Target)
 					return
@@ -114,7 +114,7 @@ func init() {
 			},
 		}))
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(4067, 5.0, &ppmm, aura)
+		character.ItemSwap.RegisterEnchantProc(4067, aura)
 	})
 
 	// Enchant: 4074, Spell: 74211 - Enchant Weapon - Elemental Slayer
@@ -138,19 +138,18 @@ func init() {
 		// no verified PPM but silence effect + increased damage
 		// will result in significant lower PPM
 		// TODO: Verify PPM
-		procMask := character.GetProcMaskForEnchant(4074)
+		ppm := 2.0
 		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:     "Elemental Slayer",
 			Callback: core.CallbackOnSpellHitDealt,
-			ProcMask: procMask,
 			Outcome:  core.OutcomeLanded,
-			PPM:      2.0,
+			DPM:      character.AutoAttacks.NewDynamicProcManagerForEnchant(4074, ppm, 0),
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				procSpell.Cast(sim, result.Target)
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(4074, 2.0, aura.Ppmm, aura)
+		character.ItemSwap.RegisterEnchantProc(4074, aura)
 	})
 
 	// Enchant: 4083, Spell: 74223 - Enchant Weapon - Hurricane
@@ -170,8 +169,8 @@ func init() {
 		ohAura := procBuilder("Hurricane Enchant OH", 2)
 		spAura := procBuilder("Hurricane Enchant Spell", 3)
 
-		procMask := character.GetProcMaskForEnchant(4083)
-		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
+		ppm := 1.0
+		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(4083, ppm, 0)
 
 		hurricaneSpellProc := func(sim *core.Simulation) {
 			if mhAura.IsActive() {
@@ -206,7 +205,7 @@ func init() {
 					return
 				}
 
-				if ppmm.Proc(sim, spell.ProcMask, "Hurricane") {
+				if dpm.Proc(sim, spell.ProcMask, "Hurricane") {
 					if spell.IsMH() {
 						mhAura.Activate(sim)
 					} else {
@@ -234,87 +233,47 @@ func init() {
 			},
 		}))
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(4083, 1.0, &ppmm, aura)
+		character.ItemSwap.RegisterEnchantProc(4083, aura)
 	})
 
 	// Enchant: 4084, Spell: 74225 - Enchant Weapon - Heartsong
-	core.NewEnchantEffect(4084, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		statAura := character.NewTemporaryStatsAura(
-			"Heartsong Proc",
-			core.ActionID{SpellID: 74224},
-			stats.Stats{stats.Spirit: 200},
-			time.Second*15,
-		)
-
-		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:       "Heartsong",
-			ActionID:   core.ActionID{SpellID: 74224},
-			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
-			ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
-			Outcome:    core.OutcomeLanded,
-			ICD:        time.Second * 20,
-			ProcChance: 0.25,
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				statAura.Activate(sim)
-			},
-		})
-
-		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(4084, aura)
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Heartsong",
+		EnchantID:  4084,
+		AuraID:     74224,
+		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
+		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
+		Outcome:    core.OutcomeLanded,
+		ICD:        time.Second * 20,
+		ProcChance: 0.25,
+		Bonus:      stats.Stats{stats.Spirit: 200},
+		Duration:   time.Second * 15,
 	})
 
 	// Enchant: 4097, Spell: 74242 - Enchant Weapon - Power Torrent
-	core.NewEnchantEffect(4097, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		statAura := character.NewTemporaryStatsAura(
-			"Power Torrent Proc",
-			core.ActionID{SpellID: 74241},
-			stats.Stats{stats.Intellect: 500},
-			time.Second*12,
-		)
-
-		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:       "Power Torrent",
-			ActionID:   core.ActionID{SpellID: 74224},
-			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
-			ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
-			Outcome:    core.OutcomeLanded,
-			ICD:        time.Second * 45,
-			ProcChance: 1.0 / 3.0,
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				statAura.Activate(sim)
-			},
-		})
-
-		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(4097, aura)
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Power Torrent",
+		EnchantID:  4097,
+		AuraID:     74241,
+		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
+		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
+		Outcome:    core.OutcomeLanded,
+		ICD:        time.Second * 45,
+		ProcChance: 1.0 / 3.0,
+		Bonus:      stats.Stats{stats.Intellect: 500},
+		Duration:   time.Second * 12,
 	})
 
 	// Enchant: 4098, Spell: 74244 - Enchant Weapon - Windwalk
-	core.NewEnchantEffect(4098, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		statAura := character.NewTemporaryStatsAura(
-			"Windwalk Proc",
-			core.ActionID{SpellID: 74243},
-			stats.Stats{stats.DodgeRating: 600},
-			time.Second*10,
-		)
-
-		procMask := character.GetProcMaskForEnchant(4098)
-		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:     "Windwalk",
-			Callback: core.CallbackOnSpellHitDealt,
-			ProcMask: procMask,
-			Outcome:  core.OutcomeLanded,
-			PPM:      1, // based on old Wowhead comments, TODO: measure in Classic
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				statAura.Activate(sim)
-			},
-		})
-
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(4098, 2.5, aura.Ppmm, aura)
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:      "Windwalk",
+		EnchantID: 4098,
+		AuraID:    74243,
+		Callback:  core.CallbackOnSpellHitDealt,
+		Outcome:   core.OutcomeLanded,
+		PPM:       1, // based on old Wowhead comments, TODO: measure in Classic
+		Bonus:     stats.Stats{stats.DodgeRating: 600},
+		Duration:  time.Second * 10,
 	})
 
 	// Enchant: 4099, Spell: 74246 - Enchant Weapon - Landslide
@@ -335,13 +294,11 @@ func init() {
 			time.Second*12,
 		)
 
-		procMask := character.GetProcMaskForEnchant(4099)
 		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:     "Landslide",
 			Callback: core.CallbackOnSpellHitDealt,
-			ProcMask: procMask,
 			Outcome:  core.OutcomeLanded,
-			PPM:      1.0,
+			DPM:      character.AutoAttacks.NewDynamicProcManagerForEnchant(4099, 1.0, 0),
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell.IsMH() {
 					mainHand.Activate(sim)
@@ -351,107 +308,64 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(4099, 1, aura.Ppmm, aura)
+		character.ItemSwap.RegisterEnchantProc(4099, aura)
 	})
 
 	// Enchant: 4115, Spell: 75172 - Lightweave Embroidery
-	core.NewEnchantEffect(4115, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		statAura := character.NewTemporaryStatsAura(
-			"Lightweave Embroidery Proc",
-			core.ActionID{SpellID: 75170},
-			stats.Stats{stats.Intellect: 580},
-			time.Second*15,
-		)
-
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:       "Lightweave Embroidery Cata",
-			ActionID:   core.ActionID{SpellID: 75171},
-			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
-			ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
-			Outcome:    core.OutcomeLanded,
-			ICD:        time.Second * 64,
-			ProcChance: 0.25,
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				statAura.Activate(sim)
-			},
-		})
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Lightweave Embroidery Cata",
+		EnchantID:  4115,
+		AuraID:     75170,
+		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
+		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
+		Outcome:    core.OutcomeLanded,
+		ICD:        time.Second * 64,
+		ProcChance: 0.25,
+		Bonus:      stats.Stats{stats.Intellect: 580},
+		Duration:   time.Second * 15,
 	})
 
 	// Enchant: 4116, Spell: 75175 - Darkglow Embroidery
-	core.NewEnchantEffect(4116, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		statAura := character.NewTemporaryStatsAura(
-			"Darkglow Embroidery Cata",
-			core.ActionID{SpellID: 75173},
-			stats.Stats{stats.Spirit: 580},
-			time.Second*15,
-		)
-
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:       "Darkglow Embroidery Cata",
-			ActionID:   core.ActionID{SpellID: 75174},
-			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
-			ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
-			Outcome:    core.OutcomeLanded,
-			ICD:        time.Second * 57,
-			ProcChance: 0.30,
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				statAura.Activate(sim)
-			},
-		})
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Darkglow Embroidery Cata",
+		EnchantID:  4116,
+		AuraID:     75173,
+		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
+		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
+		Outcome:    core.OutcomeLanded,
+		ICD:        time.Second * 57,
+		ProcChance: 0.30,
+		Bonus:      stats.Stats{stats.Spirit: 580},
+		Duration:   time.Second * 15,
 	})
 
 	// Enchant: 4118, Spell: 75178 - Swordguard Embroidery
-	core.NewEnchantEffect(4118, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		statAura := character.NewTemporaryStatsAura(
-			"Swordguard Embroidery Cata",
-			core.ActionID{SpellID: 75178},
-			stats.Stats{stats.AttackPower: 1000, stats.RangedAttackPower: 1000},
-			time.Second*15,
-		)
-
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:       "Swordguard Embroidery Cataa",
-			ActionID:   core.ActionID{SpellID: 75176},
-			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
-			ProcMask:   core.ProcMaskMeleeOrRanged,
-			Outcome:    core.OutcomeLanded,
-			ICD:        time.Second * 55,
-			ProcChance: 0.15,
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				statAura.Activate(sim)
-			},
-		})
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Swordguard Embroidery Cata",
+		EnchantID:  4118,
+		AuraID:     75178,
+		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
+		ProcMask:   core.ProcMaskMeleeOrRanged,
+		Outcome:    core.OutcomeLanded,
+		ICD:        time.Second * 55,
+		ProcChance: 0.15,
+		Bonus:      stats.Stats{stats.AttackPower: 1000, stats.RangedAttackPower: 1000},
+		Duration:   time.Second * 15,
 	})
 
 	// Enchant: 4175, Spell: 81932, Item: 59594 - Gnomish X-Ray Scope
-	core.NewEnchantEffect(4175, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		statAura := character.NewTemporaryStatsAura(
-			"X-Ray Targeting",
-			core.ActionID{SpellID: 95712},
-			stats.Stats{stats.RangedAttackPower: 800},
-			time.Second*10,
-		)
-
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:       "Gnomish X-Ray Scope",
-			ActionID:   core.ActionID{SpellID: 95712},
-			Callback:   core.CallbackOnSpellHitDealt,
-			ProcMask:   core.ProcMaskRanged,
-			Outcome:    core.OutcomeLanded,
-			ICD:        time.Second * 40,
-			ProcChance: 0.1,
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				statAura.Activate(sim)
-			},
-		})
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		Name:       "Gnomish X-Ray Scope",
+		EnchantID:  4175,
+		ItemID:     59594,
+		AuraID:     95712,
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskRanged,
+		Outcome:    core.OutcomeLanded,
+		ICD:        time.Second * 40,
+		ProcChance: 0.1,
+		Bonus:      stats.Stats{stats.RangedAttackPower: 800},
+		Duration:   time.Second * 10,
 	})
 
 	// Enchant: 4176, Item: 59595 - R19 Threatfinder
@@ -469,113 +383,62 @@ func init() {
 	})
 
 	// Enchant: 4215, Spell: 92433, Item: 55055 - Elementium Shield Spike
-	core.NewEnchantEffect(4215, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		actionID := core.ActionID{SpellID: 92432}
-
-		procSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    actionID,
-			SpellSchool: core.SpellSchoolPhysical,
-			ProcMask:    core.ProcMaskEmpty,
-
-			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultMeleeCritMultiplier(),
-			ThreatMultiplier: 1,
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				baseDamage := sim.Roll(90, 133)
-				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-			},
-		})
-
-		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+	shared.NewProcDamageEffect(shared.ProcDamageEffect{
+		EnchantID: 4215,
+		SpellID:   92432,
+		Trigger: core.ProcTrigger{
 			Name:     "Elementium Shield Spike",
 			Callback: core.CallbackOnSpellHitTaken,
 			ProcMask: core.ProcMaskMelee,
 			Outcome:  core.OutcomeBlock,
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				procSpell.Cast(sim, spell.Unit)
-			},
-		})
-
-		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(4215, aura)
+		},
+		School:  core.SpellSchoolPhysical,
+		MinDmg:  90,
+		MaxDmg:  133,
+		Outcome: shared.OutcomeMeleeCanCrit,
+		IsMelee: true,
 	})
 
 	// Enchant: 4216, Spell: 92437, Item: 55056  - Pyrium Shield Spike
-	core.NewEnchantEffect(4216, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		actionID := core.ActionID{SpellID: 92436}
-
-		procSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    actionID,
-			SpellSchool: core.SpellSchoolPhysical,
-			ProcMask:    core.ProcMaskEmpty,
-
-			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultMeleeCritMultiplier(),
-			ThreatMultiplier: 1,
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				baseDamage := sim.Roll(210, 350)
-				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-			},
-		})
-
-		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+	shared.NewProcDamageEffect(shared.ProcDamageEffect{
+		EnchantID: 4216,
+		SpellID:   92436,
+		Trigger: core.ProcTrigger{
 			Name:     "Pyrium Shield Spike",
 			Callback: core.CallbackOnSpellHitTaken,
 			ProcMask: core.ProcMaskMelee,
 			Outcome:  core.OutcomeBlock,
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				procSpell.Cast(sim, spell.Unit)
-			},
-		})
-
-		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(4216, aura)
+		},
+		School:  core.SpellSchoolPhysical,
+		Outcome: shared.OutcomeMeleeCanCrit,
+		MinDmg:  210,
+		MaxDmg:  350,
+		IsMelee: true,
 	})
 
 	// Enchant: 4267, Spell: 99623, Item: 70139 - Flintlocke's Woodchucker
-	core.NewEnchantEffect(4267, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		statAura := character.NewTemporaryStatsAura(
-			"Flintlocke's Woodchucker Proc",
-			core.ActionID{SpellID: 99621},
-			stats.Stats{stats.Agility: 300},
-			time.Second*10,
-		)
-
-		dmgProc := character.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 99621},
-			SpellSchool: core.SpellSchoolPhysical,
-			ProcMask:    core.ProcMaskEmpty,
-
-			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultMeleeCritMultiplier(),
-			ThreatMultiplier: 1,
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				baseDamage := sim.Roll(550, 1650)
-				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
-			},
+	shared.NewProcStatBonusEffectWithDamageProc(shared.ProcStatBonusEffect{
+		Name:       "Flintlocke's Woodchucker",
+		EnchantID:  4267,
+		ItemID:     70139,
+		AuraID:     99621,
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskRanged,
+		Outcome:    core.OutcomeLanded,
+		ICD:        time.Second * 40,
+		ProcChance: 0.1,
+		Bonus:      stats.Stats{stats.Agility: 300},
+		Duration:   time.Second * 10,
+	},
+		shared.DamageEffect{
+			SpellID:  99621,
+			School:   core.SpellSchoolPhysical,
+			ProcMask: core.ProcMaskEmpty,
+			Outcome:  shared.OutcomeRangedCanCrit,
+			MinDmg:   550,
+			MaxDmg:   1650,
+			IsMelee:  true,
 		})
-
-		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:       "Flintlocke's Woodchucker",
-			ActionID:   core.ActionID{SpellID: 99621},
-			Callback:   core.CallbackOnSpellHitDealt,
-			ProcMask:   core.ProcMaskRanged,
-			Outcome:    core.OutcomeLanded,
-			ICD:        time.Second * 40,
-			ProcChance: 0.1,
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				statAura.Activate(sim)
-				dmgProc.Cast(sim, result.Target)
-			},
-		})
-
-		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(4267, aura)
-	})
 
 	movementSpeedEnchants := []int32{
 		3232, // Enchant Boots - Tuskarr's Vitality
@@ -587,7 +450,9 @@ func init() {
 	for _, enchantID := range movementSpeedEnchants {
 		core.NewEnchantEffect(enchantID, func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.NewMovementSpeedAura("Minor Run Speed", core.ActionID{SpellID: 13889}, 0.08)
+			aura := character.NewMovementSpeedAura("Minor Run Speed", core.ActionID{SpellID: 13889}, 0.08)
+
+			character.ItemSwap.RegisterEnchantProc(enchantID, aura)
 		})
 	}
 }

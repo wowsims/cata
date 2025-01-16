@@ -100,7 +100,7 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 		RelatedAuraArrays: hemoAuras.ToMap(),
 	})
 
-	subRogue.RegisterOnItemSwap(func(s *core.Simulation) {
+	subRogue.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand}, func(s *core.Simulation, slot proto.ItemSlot) {
 		// Recalculate Hemorrhage's multiplier in case the MH weapon changed.
 		subRogue.Hemorrhage.DamageMultiplier = core.TernaryFloat64(subRogue.HasDagger(core.MainHand), 3.25, 2.24)
 	})

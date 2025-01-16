@@ -11,25 +11,20 @@ import (
 // Tier 11 ret
 var ItemSetReinforcedSapphiriumBattleplate = core.NewItemSet(core.ItemSet{
 	Name: "Reinforced Sapphirium Battleplate",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			paladin := agent.(PaladinAgent).GetPaladin()
-
-			paladin.AddStaticMod(core.SpellModConfig{
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(_ core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_DamageDone_Flat,
 				ClassMask:  SpellMaskTemplarsVerdict,
 				FloatValue: 0.1,
 			})
 		},
-		4: func(agent core.Agent) {
-			// Handled in inquisition.go
-
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			paladin := agent.(PaladinAgent).GetPaladin()
-			// Used for APL aura check
-			core.MakePermanent(paladin.RegisterAura(core.Aura{
-				Label:    "Reinforced Sapphirium Battleplate - T11 4pc" + paladin.Label,
-				ActionID: core.ActionID{SpellID: 90299},
-			}))
+
+			// Handled in inquisition.go
+			setBonusAura.ExposeToAPL(90299)
+			paladin.T11Ret4pc = setBonusAura
 		},
 	},
 })
@@ -37,14 +32,16 @@ var ItemSetReinforcedSapphiriumBattleplate = core.NewItemSet(core.ItemSet{
 // Tier 12 ret
 var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 	Name: "Battleplate of Immolation",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			paladin := agent.(PaladinAgent).GetPaladin()
+
 			cata.RegisterIgniteEffect(&paladin.Unit, cata.IgniteConfig{
 				ActionID:           core.ActionID{SpellID: 35395}.WithTag(3), // actual 99092
 				DisableCastMetrics: true,
 				DotAuraLabel:       "Flames of the Faithful" + paladin.Label,
 				IncludeAuraDelay:   true,
+				SetBonusAura:       setBonusAura,
 
 				ProcTrigger: core.ProcTrigger{
 					Name:           "Flames of the Faithful" + paladin.Label,
@@ -58,15 +55,14 @@ var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		4: func(agent core.Agent) {
-			// Handled in talents_retribution.go
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:      core.SpellMod_BuffDuration_Flat,
+				ClassMask: SpellMaskZealotry,
+				TimeValue: time.Second * 15,
+			})
 
-			paladin := agent.(PaladinAgent).GetPaladin()
-			// Used for APL aura check
-			core.MakePermanent(paladin.RegisterAura(core.Aura{
-				Label:    "Battleplate of Immolation - T12 4pc" + paladin.Label,
-				ActionID: core.ActionID{SpellID: 99116},
-			}))
+			setBonusAura.ExposeToAPL(99116)
 		},
 	},
 })
@@ -74,8 +70,8 @@ var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 // Tier 13 ret
 var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 	Name: "Battleplate of Radiant Glory",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			paladin := agent.(PaladinAgent).GetPaladin()
 			// Actual buff credited with the Holy Power gain is Virtuous Empowerment
 			hpMetrics := paladin.NewHolyPowerMetrics(core.ActionID{SpellID: 105767})
@@ -86,7 +82,7 @@ var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 				Label:    "Virtuous Empowerment" + paladin.Label,
 			})
 
-			core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
 				Name:           "T13 2pc trigger" + paladin.Label,
 				ActionID:       core.ActionID{SpellID: 105765},
 				Callback:       core.CallbackOnSpellHitDealt,
@@ -113,7 +109,7 @@ var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			paladin := agent.(PaladinAgent).GetPaladin()
 
 			damageMod := paladin.AddDynamicMod(core.SpellModConfig{
@@ -134,7 +130,7 @@ var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
 				Name:           "T13 4pc trigger" + paladin.Label,
 				ActionID:       core.ActionID{SpellID: 105820},
 				Callback:       core.CallbackOnCastComplete,
@@ -153,17 +149,13 @@ var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 var ItemSetGladiatorsVindication = core.NewItemSet(core.ItemSet{
 	ID:   917,
 	Name: "Gladiator's Vindication",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			paladin := agent.(PaladinAgent).GetPaladin()
-
-			paladin.AddStat(stats.Strength, 70)
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(_ core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachStatBuff(stats.Strength, 70)
 		},
-		4: func(agent core.Agent) {
-			paladin := agent.(PaladinAgent).GetPaladin()
-
-			paladin.AddStat(stats.Strength, 90)
-			paladin.AddStaticMod(core.SpellModConfig{
+		4: func(_ core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachStatBuff(stats.Strength, 90)
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:      core.SpellMod_Cooldown_Flat,
 				ClassMask: SpellMaskJudgementBase,
 				TimeValue: -1 * time.Second,
@@ -173,33 +165,46 @@ var ItemSetGladiatorsVindication = core.NewItemSet(core.ItemSet{
 })
 
 func (paladin *Paladin) addBloodthirstyGloves() {
-	switch paladin.Hands().ID {
-	case 64844, 70649, 60414, 65591, 72379, 70250, 70488, 73707, 73570:
-		paladin.AddStaticMod(core.SpellModConfig{
+	paladin.RegisterPvPGloveMod(
+		[]int32{64844, 70649, 60414, 65591, 72379, 70250, 70488, 73707, 73570},
+		core.SpellModConfig{
 			Kind:       core.SpellMod_DamageDone_Flat,
 			ClassMask:  SpellMaskCrusaderStrike,
 			FloatValue: 0.05,
 		})
-	default:
-		break
-	}
 }
 
 // Tier 11 prot
 var ItemSetReinforcedSapphiriumBattlearmor = core.NewItemSet(core.ItemSet{
 	Name: "Reinforced Sapphirium Battlearmor",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			paladin := agent.(PaladinAgent).GetPaladin()
-
-			paladin.AddStaticMod(core.SpellModConfig{
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(_ core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_DamageDone_Flat,
 				ClassMask:  SpellMaskCrusaderStrike,
 				FloatValue: 0.1,
 			})
 		},
-		4: func(agent core.Agent) {
-			// Handled in guardian_of_ancient_kings.go
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			paladin := agent.(PaladinAgent).GetPaladin()
+
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:      core.SpellMod_Custom,
+				ClassMask: SpellMaskGuardianOfAncientKings,
+				ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
+					if paladin.AncientPowerAura != nil {
+						paladin.AncientPowerAura.Duration = core.DurationFromSeconds(paladin.GoakAura.Duration.Seconds() * 1.5)
+					}
+					paladin.GoakAura.Duration = core.DurationFromSeconds(paladin.GoakAura.Duration.Seconds() * 1.5)
+				},
+				RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
+					if paladin.AncientPowerAura != nil {
+						paladin.AncientPowerAura.Duration = paladin.goakBaseDuration()
+					}
+					paladin.GoakAura.Duration = paladin.goakBaseDuration()
+				},
+			})
+
 		},
 	},
 })
@@ -207,8 +212,8 @@ var ItemSetReinforcedSapphiriumBattlearmor = core.NewItemSet(core.ItemSet{
 // Tier 12 prot
 var ItemSetBattlearmorOfImmolation = core.NewItemSet(core.ItemSet{
 	Name: "Battlearmor of Immolation",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			paladin := agent.(PaladinAgent).GetPaladin()
 
 			procDamage := 0.0
@@ -230,7 +235,7 @@ var ItemSetBattlearmorOfImmolation = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
 				Name:           "Righteous Flames" + paladin.Label,
 				Callback:       core.CallbackOnSpellHitDealt,
 				ClassSpellMask: SpellMaskShieldOfTheRighteous,
@@ -243,7 +248,7 @@ var ItemSetBattlearmorOfImmolation = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			paladin := agent.(PaladinAgent).GetPaladin()
 
 			flamingAegis := paladin.GetOrRegisterAura(core.Aura{
@@ -259,7 +264,7 @@ var ItemSetBattlearmorOfImmolation = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
 				Name:           "T12 4pc trigger" + paladin.Label,
 				Callback:       core.CallbackOnCastComplete,
 				ClassSpellMask: SpellMaskDivineProtection,
@@ -283,8 +288,8 @@ var ItemSetBattlearmorOfImmolation = core.NewItemSet(core.ItemSet{
 // Tier 13 prot
 var ItemSetArmorOfRadiantGlory = core.NewItemSet(core.ItemSet{
 	Name: "Armor of Radiant Glory",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			paladin := agent.(PaladinAgent).GetPaladin()
 
 			actionID := core.ActionID{SpellID: 105801}
@@ -295,7 +300,7 @@ var ItemSetArmorOfRadiantGlory = core.NewItemSet(core.ItemSet{
 				return shieldStrength
 			})
 
-			core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
 				Name:           "Delayed Judgement Proc" + paladin.Label,
 				Callback:       core.CallbackOnSpellHitDealt,
 				ClassSpellMask: SpellMaskJudgement,
@@ -310,8 +315,12 @@ var ItemSetArmorOfRadiantGlory = core.NewItemSet(core.ItemSet{
 					}
 				},
 			})
+
+			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				shieldStrength = 0
+			})
 		},
-		4: func(agent core.Agent) {
+		4: func(_ core.Agent, _ *core.Aura) {
 			// Divine Guardian not implemented since it's a raid cooldown and doesn't affect the Paladin
 		},
 	},

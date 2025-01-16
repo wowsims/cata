@@ -77,6 +77,10 @@ type GearSetCombo struct {
 	Label   string
 	GearSet *proto.EquipmentSpec
 }
+type ItemSwapSetCombo struct {
+	Label    string
+	ItemSwap *proto.ItemSwap
+}
 type TalentsCombo struct {
 	Label   string
 	Talents string
@@ -111,6 +115,7 @@ type SettingsCombos struct {
 	Rotations         []RotationCombo
 	Buffs             []BuffsCombo
 	Encounters        []EncounterCombo
+	ItemSwapSets      []ItemSwapSetCombo
 	SimOptions        *proto.SimOptions
 	IsHealer          bool
 	StartingDistances []float64
@@ -118,7 +123,7 @@ type SettingsCombos struct {
 }
 
 func (combos *SettingsCombos) NumTests() int {
-	return len(combos.Races) * len(combos.GearSets) * len(combos.TalentSets) * len(combos.SpecOptions) * len(combos.Buffs) * len(combos.Encounters) * max(1, len(combos.Rotations)) * len(combos.StartingDistances)
+	return len(combos.Races) * len(combos.GearSets) * len(combos.TalentSets) * len(combos.SpecOptions) * len(combos.Buffs) * len(combos.Encounters) * max(1, len(combos.Rotations)) * max(1, len(combos.ItemSwapSets)) * len(combos.StartingDistances)
 }
 
 func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsRequest, *proto.StatWeightsRequest, *proto.RaidSimRequest) {
@@ -155,6 +160,18 @@ func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsR
 		testNameParts = append(testNameParts, rotationsCombo.Label)
 	}
 
+	itemSwapSetCombo := ItemSwapSetCombo{Label: "None", ItemSwap: &proto.ItemSwap{}}
+	enableItemSwap := false
+	if len(combos.ItemSwapSets) > 0 {
+		itemSwapSetIdx := testIdx % len(combos.ItemSwapSets)
+		testIdx /= len(combos.ItemSwapSets)
+		itemSwapSetCombo = combos.ItemSwapSets[itemSwapSetIdx]
+		enableItemSwap = true
+		if len(combos.ItemSwapSets) > 1 {
+			testNameParts = append(testNameParts, itemSwapSetCombo.Label)
+		}
+	}
+
 	buffsIdx := testIdx % len(combos.Buffs)
 	testIdx /= len(combos.Buffs)
 	buffsCombo := combos.Buffs[buffsIdx]
@@ -182,6 +199,8 @@ func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsR
 				Profession1:        proto.Profession_Engineering,
 				Cooldowns:          combos.Cooldowns,
 				Rotation:           rotationsCombo.Rotation,
+				ItemSwap:           itemSwapSetCombo.ItemSwap,
+				EnableItemSwap:     enableItemSwap,
 				DistanceFromTarget: startingDistance,
 				ReactionTimeMs:     100,
 				ChannelClipDelayMs: 50,
@@ -437,6 +456,7 @@ type CharacterSuiteConfig struct {
 	Glyphs           *proto.Glyphs
 	Talents          string
 	Rotation         RotationCombo
+	ItemSwapSet      ItemSwapSetCombo
 	StartingDistance float64
 
 	Consumes *proto.Consumes
@@ -450,6 +470,7 @@ type CharacterSuiteConfig struct {
 	OtherTalentSets        []TalentsCombo
 	OtherSpecOptions       []SpecOptionsCombo
 	OtherRotations         []RotationCombo
+	OtherItemSwapSets      []ItemSwapSetCombo
 	OtherStartingDistances []float64
 
 	ItemFilter ItemFilter
@@ -471,6 +492,7 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 	})
 	allSpecOptions := append(config.OtherSpecOptions, config.SpecOptions)
 	allRotations := append(config.OtherRotations, config.Rotation)
+	allItemSwapSets := append(config.OtherItemSwapSets, config.ItemSwapSet)
 	allStartingDistances := append(config.OtherStartingDistances, config.StartingDistance)
 
 	defaultPlayer := WithSpec(
@@ -484,6 +506,7 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 			Glyphs:        config.Glyphs,
 			Profession1:   proto.Profession_Engineering,
 			Rotation:      config.Rotation.Rotation,
+			ItemSwap:      config.ItemSwapSet.ItemSwap,
 			Cooldowns:     config.Cooldowns,
 
 			InFrontOfTarget:    config.InFrontOfTarget,
@@ -515,12 +538,13 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 			{
 				name: "Settings",
 				generator: &SettingsCombos{
-					Class:       config.Class,
-					Races:       allRaces,
-					GearSets:    allGearSets,
-					TalentSets:  allTalentSets,
-					SpecOptions: allSpecOptions,
-					Rotations:   allRotations,
+					Class:        config.Class,
+					Races:        allRaces,
+					GearSets:     allGearSets,
+					TalentSets:   allTalentSets,
+					SpecOptions:  allSpecOptions,
+					Rotations:    allRotations,
+					ItemSwapSets: allItemSwapSets,
 					Buffs: []BuffsCombo{
 						{
 							Label: "NoBuffs",

@@ -23,23 +23,6 @@ func (demonology *DemonologyWarlock) registerMetamorphosis() {
 		Duration: (30 + glyphBonus) * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			metaDmgMod = 1.2 + 0.184 + 0.023*demonology.GetMasteryPoints()
-			if sim.CurrentTime <= 0 && demonology.prepullMastery > 0 {
-				masteryPoints := core.MasteryRatingToMasteryPoints(float64(demonology.prepullMastery))
-				metaDmgMod = 1.2 + 0.184 + 0.023*masteryPoints
-
-				if demonology.prepullPostSnapshotMana > 0 {
-					prepullPostSnapshotManaMetric := demonology.NewManaMetrics(core.ActionID{OtherID: proto.OtherAction_OtherActionPrepull})
-					maxMana := demonology.MaxMana()
-					currentMana := demonology.CurrentMana()
-					postSnapshotMana := currentMana - float64(demonology.prepullPostSnapshotMana)
-					if postSnapshotMana < 0 {
-						postSnapshotMana = currentMana
-					} else if postSnapshotMana > maxMana {
-						postSnapshotMana = maxMana
-					}
-					demonology.SpendMana(sim, postSnapshotMana, prepullPostSnapshotManaMetric)
-				}
-			}
 			aura.Unit.PseudoStats.DamageDealtMultiplier *= metaDmgMod
 
 			if sim.Log != nil {

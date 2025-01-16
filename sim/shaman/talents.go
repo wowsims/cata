@@ -252,8 +252,6 @@ func (shaman *Shaman) applyLavaSurge() {
 		return
 	}
 
-	has4PT12 := shaman.HasSetBonus(ItemSetVolcanicRegalia, 4)
-
 	shaman.RegisterAura(core.Aura{
 		Label:    "Lava Surge",
 		Duration: core.NeverExpires,
@@ -276,7 +274,7 @@ func (shaman *Shaman) applyLavaSurge() {
 
 				OnAction: func(sim *core.Simulation) {
 					shaman.LavaBurst.CD.Reset()
-					if has4PT12 {
+					if shaman.T12Ele4pc.IsActive() {
 						shaman.VolcanicRegalia4PT12Aura.Activate(sim)
 					}
 				},
@@ -293,7 +291,7 @@ func (shaman *Shaman) applyLavaSurge() {
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask != SpellMaskLavaBurst || !has4PT12 {
+			if spell.ClassSpellMask != SpellMaskLavaBurst || !shaman.T12Ele4pc.IsActive() {
 				return
 			}
 			//If volcano procs during LvB cast time, it is not consumed
@@ -392,8 +390,6 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		FloatValue: 0.15,
 	})
 
-	has2PT13 := shaman.HasSetBonus(ItemSetSpiritwalkersRegalia, 2)
-
 	buffAura := shaman.RegisterAura(core.Aura{
 		Label:    "Elemental Mastery Buff",
 		ActionID: core.ActionID{SpellID: 64701},
@@ -401,16 +397,10 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyCastSpeed(1.20)
 			damageMod.Activate()
-			if has2PT13 {
-				shaman.AddStatDynamic(sim, stats.MasteryRating, 2000)
-			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyCastSpeed(1 / 1.20)
 			damageMod.Deactivate()
-			if has2PT13 {
-				shaman.AddStatDynamic(sim, stats.MasteryRating, -2000)
-			}
 		},
 	})
 
@@ -445,8 +435,8 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 	})
 
 	eleMastSpell := shaman.RegisterSpell(core.SpellConfig{
-		ActionID: eleMasterActionID,
-		Flags:    core.SpellFlagNoOnCastComplete,
+		ActionID:       eleMasterActionID,
+		ClassSpellMask: SpellMaskElementalMastery,
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    cdTimer,
@@ -626,7 +616,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 	})
 
 	// TODO: This was 2% per talent point and max of 10% proc in wotlk. Can't find data on proc chance in cata but the talent was reduced to 3 pts. Guessing it is 3/7/10 like other talents
-	ppmm := shaman.AutoAttacks.NewPPMManager([]float64{0.0, 3.0, 6.0, 10.0}[shaman.Talents.MaelstromWeapon], core.ProcMaskMelee)
+	dpm := shaman.AutoAttacks.NewPPMManager([]float64{0.0, 3.0, 6.0, 10.0}[shaman.Talents.MaelstromWeapon], core.ProcMaskMelee)
 	// This aura is hidden, just applies stacks of the proc aura.
 	shaman.RegisterAura(core.Aura{
 		Label:    "MaelstromWeapon",
@@ -639,7 +629,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 				return
 			}
 
-			if ppmm.Proc(sim, spell.ProcMask, "Maelstrom Weapon") {
+			if dpm.Proc(sim, spell.ProcMask, "Maelstrom Weapon") {
 				shaman.MaelstromWeaponAura.Activate(sim)
 				shaman.MaelstromWeaponAura.AddStack(sim)
 			}

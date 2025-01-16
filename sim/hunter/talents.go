@@ -6,7 +6,7 @@ import (
 )
 
 func (hunter *Hunter) ApplyTalents() {
-	hunter.ApplyArmorSpecializationEffect(stats.Agility, proto.ArmorType_ArmorTypeMail)
+	hunter.ApplyArmorSpecializationEffect(stats.Agility, proto.ArmorType_ArmorTypeMail, 86529)
 
 	if hunter.Pet != nil {
 		hunter.applyFrenzy()

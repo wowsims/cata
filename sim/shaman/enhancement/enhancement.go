@@ -91,7 +91,7 @@ func (enh *EnhancementShaman) GetShaman() *shaman.Shaman {
 
 func (enh *EnhancementShaman) ApplyTalents() {
 	enh.Shaman.ApplyTalents()
-	enh.ApplyArmorSpecializationEffect(stats.Agility, proto.ArmorType_ArmorTypeMail)
+	enh.ApplyArmorSpecializationEffect(stats.Agility, proto.ArmorType_ArmorTypeMail, 86529)
 }
 
 func (enh *EnhancementShaman) Initialize() {
@@ -103,7 +103,7 @@ func (enh *EnhancementShaman) Initialize() {
 
 	if enh.ItemSwap.IsEnabled() {
 		enh.ApplyFlametongueImbueSwap(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeapon))
-		enh.RegisterOnItemSwap(func(_ *core.Simulation) {
+		enh.RegisterItemSwapCallback(core.MeleeWeaponSlots(), func(_ *core.Simulation, slot proto.ItemSlot) {
 			enh.ApplySyncType(proto.ShamanSyncType_Auto)
 		})
 	}

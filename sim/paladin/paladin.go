@@ -139,7 +139,6 @@ type Paladin struct {
 
 	CurrentSeal       *core.Aura
 	CurrentJudgement  *core.Spell
-	SnapshotGuardian  bool
 	StartingHolyPower int32
 
 	// Pets
@@ -184,9 +183,14 @@ type Paladin struct {
 	JudgementsOfThePureAura *core.Aura
 	GrandCrusaderAura       *core.Aura
 	SacredDutyAura          *core.Aura
+	GoakAura                *core.Aura
+	AncientPowerAura        *core.Aura
 
 	// Cached Gurthalak tentacles
 	gurthalakTentacles []*cata.TentacleOfTheOldOnesPet
+
+	// Item sets
+	T11Ret4pc *core.Aura
 }
 
 func (paladin *Paladin) GetTentacles() []*cata.TentacleOfTheOldOnesPet {
@@ -294,7 +298,6 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 		Talents:             &proto.PaladinTalents{},
 		Seal:                options.Seal,
 		PaladinAura:         options.Aura,
-		SnapshotGuardian:    options.SnapshotGuardian,
 		sharedBuilderBaseCD: time.Millisecond * core.TernaryDuration(character.Spec == proto.Spec_SpecProtectionPaladin, 3000, 4500),
 	}
 

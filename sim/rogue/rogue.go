@@ -76,8 +76,8 @@ type Rogue struct {
 	lastDeadlyPoisonProcMask core.ProcMask
 
 	deadlyPoisonProcChanceBonus float64
-	instantPoisonPPMM           core.PPMManager
-	woundPoisonPPMM             core.PPMManager
+	instantPoisonPPMM           *core.DynamicProcManager
+	woundPoisonPPMM             *core.DynamicProcManager
 
 	AdrenalineRushAura   *core.Aura
 	BladeFlurryAura      *core.Aura
@@ -204,7 +204,7 @@ func (rogue *Rogue) Initialize() {
 	rogue.T12ToTLastBuff = 3
 
 	// re-configure poisons when performing an item swap
-	rogue.RegisterOnItemSwap(func(sim *core.Simulation) {
+	rogue.RegisterItemSwapCallback(core.MeleeWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot) {
 		if !rogue.Options.ApplyPoisonsManually {
 			if rogue.MainHand() == nil || rogue.OffHand() == nil {
 				return
@@ -268,9 +268,7 @@ func NewRogue(character *core.Character, options *proto.RogueOptions, talents st
 	rogue.PseudoStats.CanParry = true
 
 	maxEnergy := 100.0
-	if rogue.HasSetBonus(CataPVPSet, 4) {
-		maxEnergy += 10
-	}
+
 	if rogue.Spec == proto.Spec_SpecAssassinationRogue &&
 		rogue.GetMHWeapon() != nil &&
 		rogue.GetMHWeapon().WeaponType == proto.WeaponType_WeaponTypeDagger {

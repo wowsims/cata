@@ -1,3 +1,4 @@
+import { ItemSwapSettings } from './components/item_swap_picker';
 import Toast from './components/toast';
 import * as Mechanics from './constants/mechanics';
 import { MAX_PARTY_SIZE, Party } from './party';
@@ -236,8 +237,7 @@ export class Player<SpecType extends Spec> {
 	private bonusStats: Stats = new Stats();
 	private gear: Gear = new Gear({});
 	//private bulkEquipmentSpec: BulkEquipmentSpec = BulkEquipmentSpec.create();
-	private enableItemSwap = false;
-	private itemSwapGear: ItemSwapGear = new ItemSwapGear({});
+	itemSwapSettings: ItemSwapSettings;
 	private race: Race;
 	private profession1: Profession = 0;
 	private profession2: Profession = 0;
@@ -280,7 +280,6 @@ export class Player<SpecType extends Spec> {
 	readonly consumesChangeEmitter = new TypedEvent<void>('PlayerConsumes');
 	readonly bonusStatsChangeEmitter = new TypedEvent<void>('PlayerBonusStats');
 	readonly gearChangeEmitter = new TypedEvent<void>('PlayerGear');
-	readonly itemSwapChangeEmitter = new TypedEvent<void>('PlayerItemSwap');
 	readonly professionChangeEmitter = new TypedEvent<void>('PlayerProfession');
 	readonly raceChangeEmitter = new TypedEvent<void>('PlayerRace');
 	readonly rotationChangeEmitter = new TypedEvent<void>('PlayerRotation');
@@ -315,10 +314,8 @@ export class Player<SpecType extends Spec> {
 		this.specTypeFunctions = specTypeFunctions[this.getSpec()] as SpecTypeFunctions<SpecType>;
 		this.specOptions = this.specTypeFunctions.optionsCreate();
 
-		const specConfig = SPEC_CONFIGS[this.getSpec()] as PlayerConfig<SpecType>;
-		if (!specConfig) {
-			throw new Error(`Could not find spec config for spec: ${spec.friendlyName}`);
-		}
+		const specConfig = getSpecConfig<SpecType>(this.getSpec());
+
 		this.autoRotationGenerator = specConfig.autoRotation;
 		if (specConfig.simpleRotation) {
 			this.simpleRotationGenerator = specConfig.simpleRotation;
@@ -331,6 +328,8 @@ export class Player<SpecType extends Spec> {
 			this.itemEPCache[i] = new Map();
 		}
 
+		this.itemSwapSettings = new ItemSwapSettings(this);
+
 		this.changeEmitter = TypedEvent.onAny(
 			[
 				this.nameChangeEmitter,
@@ -338,7 +337,6 @@ export class Player<SpecType extends Spec> {
 				this.consumesChangeEmitter,
 				this.bonusStatsChangeEmitter,
 				this.gearChangeEmitter,
-				this.itemSwapChangeEmitter,
 				this.professionChangeEmitter,
 				this.raceChangeEmitter,
 				this.rotationChangeEmitter,
@@ -712,36 +710,6 @@ export class Player<SpecType extends Spec> {
 
 		this.gear = newGear;
 		this.gearChangeEmitter.emit(eventID);
-	}
-
-	getEnableItemSwap(): boolean {
-		return this.enableItemSwap;
-	}
-
-	setEnableItemSwap(eventID: EventID, newEnableItemSwap: boolean) {
-		if (newEnableItemSwap == this.enableItemSwap) return;
-
-		this.enableItemSwap = newEnableItemSwap;
-		this.itemSwapChangeEmitter.emit(eventID);
-	}
-
-	equipItemSwapitem(eventID: EventID, slot: ItemSlot, newItem: EquippedItem | null) {
-		this.setItemSwapGear(eventID, this.itemSwapGear.withEquippedItem(slot, newItem, this.canDualWield2H()));
-	}
-
-	getItemSwapItem(slot: ItemSlot): EquippedItem | null {
-		return this.itemSwapGear.getEquippedItem(slot);
-	}
-
-	getItemSwapGear(): ItemSwapGear {
-		return this.itemSwapGear;
-	}
-
-	setItemSwapGear(eventID: EventID, newItemSwapGear: ItemSwapGear) {
-		if (newItemSwapGear.equals(this.itemSwapGear)) return;
-
-		this.itemSwapGear = newItemSwapGear;
-		this.itemSwapChangeEmitter.emit(eventID);
 	}
 
 	/*
@@ -1260,6 +1228,29 @@ export class Player<SpecType extends Spec> {
 		[RaidFilterOption.RaidDragonSoul]: 5892,
 	};
 
+	get armorSpecializationArmorType() {
+		// We always pick the first entry since this is always the preffered armor type
+		return this.playerClass.armorTypes[0];
+	}
+
+	hasArmorSpecializationBonus() {
+		return [
+			ItemSlot.ItemSlotHead,
+			ItemSlot.ItemSlotShoulder,
+			ItemSlot.ItemSlotChest,
+			ItemSlot.ItemSlotWrist,
+			ItemSlot.ItemSlotHands,
+			ItemSlot.ItemSlotWaist,
+			ItemSlot.ItemSlotLegs,
+			ItemSlot.ItemSlotFeet,
+		].some(itemSlot => {
+			const item = this.getEquippedItem(itemSlot)?.item;
+			if (!item) return false;
+			const armorType = item.armorType;
+			return armorType !== this.armorSpecializationArmorType;
+		});
+	}
+
 	filterItemData<T>(itemData: Array<T>, getItemFunc: (val: T) => Item, slot: ItemSlot): Array<T> {
 		const filters = this.sim.getFilters();
 
@@ -1426,7 +1417,7 @@ export class Player<SpecType extends Spec> {
 
 	private toDatabase(): SimDatabase {
 		const dbGear = this.getGear().toDatabase(this.sim.db);
-		const dbItemSwapGear = this.getItemSwapGear().toDatabase(this.sim.db);
+		const dbItemSwapGear = this.itemSwapSettings.getGear().toDatabase(this.sim.db);
 		return Database.mergeSimDatabases(dbGear, dbItemSwapGear);
 	}
 
@@ -1447,8 +1438,8 @@ export class Player<SpecType extends Spec> {
 			PlayerProto.mergePartial(player, {
 				equipment: gear.asSpec(),
 				bonusStats: this.getBonusStats().toProto(),
-				enableItemSwap: this.getEnableItemSwap(),
-				itemSwap: this.getItemSwapGear().toProto(),
+				enableItemSwap: this.itemSwapSettings.getEnableItemSwap(),
+				itemSwap: this.itemSwapSettings.toProto(),
 			});
 		}
 		if (exportCategory(SimSettingCategories.Talents)) {
@@ -1499,8 +1490,12 @@ export class Player<SpecType extends Spec> {
 		TypedEvent.freezeAllAndDo(() => {
 			if (loadCategory(SimSettingCategories.Gear)) {
 				this.setGear(eventID, proto.equipment ? this.sim.db.lookupEquipmentSpec(proto.equipment) : new Gear({}));
-				this.setEnableItemSwap(eventID, proto.enableItemSwap);
-				this.setItemSwapGear(eventID, proto.itemSwap ? this.sim.db.lookupItemSwap(proto.itemSwap) : new ItemSwapGear({}));
+				this.itemSwapSettings.setItemSwapSettings(
+					eventID,
+					proto.enableItemSwap,
+					proto.itemSwap ? this.sim.db.lookupItemSwap(proto.itemSwap) : new ItemSwapGear({}),
+					Stats.fromProto(proto.itemSwap?.prepullBonusStats),
+				);
 				this.setBonusStats(eventID, Stats.fromProto(proto.bonusStats || UnitStats.create()));
 				//this.setBulkEquipmentSpec(eventID, BulkEquipmentSpec.create()); // Do not persist the bulk equipment settings.
 			}
@@ -1547,8 +1542,6 @@ export class Player<SpecType extends Spec> {
 
 	applySharedDefaults(eventID: EventID) {
 		TypedEvent.freezeAllAndDo(() => {
-			this.setEnableItemSwap(eventID, false);
-			this.setItemSwapGear(eventID, new ItemSwapGear({}));
 			this.setReactionTime(eventID, 100);
 			this.setInFrontOfTarget(eventID, this.playerSpec.isTankSpec);
 			this.setHealingModel(

@@ -56,7 +56,7 @@ func (ret *RetributionPaladin) Initialize() {
 
 func (ret *RetributionPaladin) ApplyTalents() {
 	ret.Paladin.ApplyTalents()
-	ret.ApplyArmorSpecializationEffect(stats.Strength, proto.ArmorType_ArmorTypePlate)
+	ret.ApplyArmorSpecializationEffect(stats.Strength, proto.ArmorType_ArmorTypePlate, 86525)
 }
 
 func (ret *RetributionPaladin) Reset(sim *core.Simulation) {

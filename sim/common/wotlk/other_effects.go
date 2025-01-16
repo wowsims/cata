@@ -200,6 +200,8 @@ func init() {
 			for _, aura := range auras {
 				aura.Icd = triggerAura.Icd
 			}
+
+			character.ItemSwap.RegisterProc(itemID, triggerAura)
 		})
 	})
 
@@ -331,7 +333,7 @@ func init() {
 			},
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Val'anyr, Hammer of Ancient Kings Trigger",
 			Callback:   core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 			Harmful:    true, // Better name for this would be, 'nonzero'
@@ -342,6 +344,8 @@ func init() {
 				activeAura.Activate(sim)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(46017, triggerAura)
 	})
 
 	// core.NewItemEffect(50259, func(agent core.Agent) {
@@ -450,7 +454,7 @@ func init() {
 			}
 			procAura.Icd = &icd
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:     name + " Trigger",
 				Callback: core.CallbackOnSpellHitTaken,
 				ProcMask: core.ProcMaskMelee,
@@ -463,7 +467,10 @@ func init() {
 					}
 				},
 			})
+
+			character.ItemSwap.RegisterProc(itemID, triggerAura)
 		})
+
 	})
 
 	NewItemEffectWithHeroic(func(isHeroic bool) {
@@ -513,6 +520,8 @@ func init() {
 				},
 			})
 			procAura.Icd = triggerAura.Icd
+
+			character.ItemSwap.RegisterProc(itemID, triggerAura)
 		})
 	})
 
@@ -617,7 +626,7 @@ func init() {
 				},
 			})
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:     name + " Trigger",
 				Callback: core.CallbackOnSpellHitDealt,
 				ProcMask: core.ProcMaskMelee,
@@ -633,6 +642,8 @@ func init() {
 					procAura.Activate(sim)
 				},
 			})
+
+			character.ItemSwap.RegisterProc(itemID, triggerAura)
 		})
 	})
 
@@ -765,7 +776,7 @@ func init() {
 
 			eligibleUnits := character.Env.Raid.AllUnits
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       "Althor's Abacus Trigger",
 				Callback:   core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
 				ProcChance: 0.3,
@@ -777,6 +788,8 @@ func init() {
 					spell.Cast(sim, healTarget)
 				},
 			})
+
+			character.ItemSwap.RegisterProc(itemID, triggerAura)
 		})
 	})
 
@@ -877,7 +890,7 @@ func init() {
 			}
 			procAura.Icd = &icd
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:     name + " Trigger",
 				Callback: core.CallbackOnSpellHitTaken,
 				ProcMask: core.ProcMaskMelee,
@@ -890,6 +903,8 @@ func init() {
 					}
 				},
 			})
+
+			character.ItemSwap.RegisterProc(itemID, triggerAura)
 		})
 	})
 
@@ -911,8 +926,7 @@ func init() {
 		core.NewItemEffect(itemID, func(agent core.Agent) {
 			character := agent.GetCharacter()
 
-			procMask := character.GetProcMaskForItem(itemID)
-			ppmm := character.AutoAttacks.NewPPMManager(2.0, procMask)
+			dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(itemID, 2.0, 0)
 
 			procActionID := core.ActionID{ItemID: itemID}
 
@@ -929,22 +943,17 @@ func init() {
 				},
 			})
 
-			character.GetOrRegisterAura(core.Aura{
-				Label:    name,
-				Duration: core.NeverExpires,
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Activate(sim)
-				},
-				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if !result.Landed() {
-						return
-					}
-
-					if ppmm.Proc(sim, spell.ProcMask, name) {
-						proc.Cast(sim, result.Target)
-					}
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:     name,
+				DPM:      dpm,
+				Callback: core.CallbackOnSpellHitDealt,
+				Outcome:  core.OutcomeLanded,
+				Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+					proc.Cast(sim, result.Target)
 				},
 			})
+
+			character.ItemSwap.RegisterProc(itemID, triggerAura)
 		})
 	})
 
@@ -988,7 +997,7 @@ func init() {
 				},
 			})
 
-			aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       name + " Trigger",
 				Callback:   core.CallbackOnSpellHitDealt,
 				ProcMask:   core.ProcMaskMelee,
@@ -999,7 +1008,7 @@ func init() {
 				},
 			})
 
-			character.ItemSwap.RegisterOnSwapItemForItemEffect(itemID, aura)
+			character.ItemSwap.RegisterProc(itemID, triggerAura)
 		})
 	})
 
@@ -1083,30 +1092,30 @@ func init() {
 	// })
 
 	NewItemEffectWithHeroic(func(isHeroic bool) {
-		itemId := int32(50179)
-		spellId := int32(71870)
-		triggerSpellId := int32(71871)
+		itemID := int32(50179)
+		spellID := int32(71870)
+		triggerSpellID := int32(71871)
 		strengthGain := float64(100)
 		healingReceived := float64(300)
 		procName := "Last Word"
 		triggerName := "Last Word Proc Trigger"
 
 		if isHeroic {
-			itemId = 50708
-			spellId = 71872
-			triggerSpellId = 71873
+			itemID = 50708
+			spellID = 71872
+			triggerSpellID = 71873
 			strengthGain = 115
 			healingReceived = 340
 			triggerName += " H"
 			procName += " H"
 		}
 
-		core.NewItemEffect(itemId, func(agent core.Agent) {
+		core.NewItemEffect(itemID, func(agent core.Agent) {
 			character := agent.GetCharacter()
 
 			procAura := character.GetOrRegisterAura(core.Aura{
 				Label:    procName,
-				ActionID: core.ActionID{SpellID: spellId},
+				ActionID: core.ActionID{SpellID: spellID},
 				Duration: time.Second * 10,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.Strength: strengthGain})
@@ -1118,9 +1127,9 @@ func init() {
 				},
 			})
 
-			core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
+			triggerAura := core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
 				Name:       triggerName,
-				ActionID:   core.ActionID{SpellID: triggerSpellId},
+				ActionID:   core.ActionID{SpellID: triggerSpellID},
 				Callback:   core.CallbackOnSpellHitDealt,
 				ProcMask:   core.ProcMaskMeleeOrMeleeProc,
 				ProcChance: 0.37,
@@ -1129,6 +1138,8 @@ func init() {
 					procAura.Activate(sim)
 				},
 			})
+
+			character.ItemSwap.RegisterProc(itemID, triggerAura)
 		})
 	})
 }

@@ -1,5 +1,7 @@
+import { ref } from 'tsx-vanilla';
+
 import { Player } from '../../player';
-import { ItemSlot } from '../../proto/common';
+import { ItemSlot, ItemType } from '../../proto/common';
 import { EquippedItem } from '../../proto_utils/equipped_item';
 import { SimUI } from '../../sim_ui';
 import { EventID } from '../../typed_event';
@@ -20,14 +22,17 @@ export default class IconItemSwapPicker extends Component {
 		this.player = player;
 		this.slot = slot;
 
-		this.iconAnchor = document.createElement('a');
-		this.iconAnchor.classList.add('icon-picker-button');
-		this.iconAnchor.target = '_blank';
-		this.rootElem.prepend(this.iconAnchor);
+		const iconAnchorRef = ref<HTMLAnchorElement>();
+		const socketsContainerRef = ref<HTMLDivElement>();
 
-		this.socketsContainerElem = document.createElement('div');
-		this.socketsContainerElem.classList.add('item-picker-sockets-container');
-		this.iconAnchor.appendChild(this.socketsContainerElem);
+		this.rootElem.prepend(
+			<a ref={iconAnchorRef} className="icon-picker-button" href="#" attributes={{ role: 'button' }}>
+				<div ref={socketsContainerRef} className="item-picker-sockets-container" />
+			</a>,
+		);
+
+		this.iconAnchor = iconAnchorRef.value!;
+		this.socketsContainerElem = socketsContainerRef.value!;
 
 		const selectorModal = new SelectorModal(simUI.rootElem, simUI, this.player);
 
@@ -38,8 +43,8 @@ export default class IconItemSwapPicker extends Component {
 			});
 		});
 
-		player.itemSwapChangeEmitter.on(() => {
-			this.update(player.getItemSwapGear().getEquippedItem(slot));
+		player.itemSwapSettings.changeEmitter.on(() => {
+			this.update(player.itemSwapSettings.getGear().getEquippedItem(slot));
 		});
 	}
 
@@ -47,18 +52,30 @@ export default class IconItemSwapPicker extends Component {
 		this.iconAnchor.style.backgroundImage = `url('${getEmptySlotIconUrl(this.slot)}')`;
 		this.iconAnchor.removeAttribute('data-wowhead');
 		this.iconAnchor.href = '#';
-		this.socketsContainerElem.innerText = '';
 
 		if (newItem) {
-			this.iconAnchor.classList.add('active');
-
 			newItem.asActionId().fillAndSet(this.iconAnchor, true, true);
 			this.player.setWowheadData(newItem, this.iconAnchor);
 
-			newItem.allSocketColors().forEach((socketColor, gemIdx) => {
-				this.socketsContainerElem.appendChild(createGemContainer(socketColor, newItem.gems[gemIdx], gemIdx));
-			});
+			this.socketsContainerElem.replaceChildren(
+				<>
+					{newItem.allSocketColors().map((socketColor, gemIdx) => {
+						const gemContainer = createGemContainer(socketColor, newItem.gems[gemIdx], gemIdx);
+						if (gemIdx === newItem.numPossibleSockets - 1 && [ItemType.ItemTypeWrist, ItemType.ItemTypeHands].includes(newItem.item.type)) {
+							const updateProfession = () => {
+								gemContainer.classList[this.player.isBlacksmithing() ? 'remove' : 'add']('hide');
+							};
+							this.player.professionChangeEmitter.on(updateProfession);
+							updateProfession();
+						}
+						return gemContainer;
+					})}
+				</>,
+			);
+
+			this.iconAnchor.classList.add('active');
 		} else {
+			this.socketsContainerElem.replaceChildren();
 			this.iconAnchor.classList.remove('active');
 		}
 	}
@@ -66,10 +83,10 @@ export default class IconItemSwapPicker extends Component {
 	private createGearData(): GearData {
 		return {
 			equipItem: (eventID: EventID, newItem: EquippedItem | null) => {
-				this.player.equipItemSwapitem(eventID, this.slot, newItem);
+				this.player.itemSwapSettings.equipItem(eventID, this.slot, newItem);
 			},
-			getEquippedItem: () => this.player.getItemSwapItem(this.slot),
-			changeEvent: this.player.itemSwapChangeEmitter,
+			getEquippedItem: () => this.player.itemSwapSettings.getItem(this.slot),
+			changeEvent: this.player.itemSwapSettings.changeEmitter,
 		};
 	}
 }

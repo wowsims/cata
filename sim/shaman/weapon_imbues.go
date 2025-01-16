@@ -9,7 +9,7 @@ import (
 )
 
 func (shaman *Shaman) RegisterOnItemSwapWithImbue(effectID int32, procMask *core.ProcMask, aura *core.Aura) {
-	shaman.RegisterOnItemSwap(func(sim *core.Simulation) {
+	shaman.RegisterItemSwapCallback(core.MeleeWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot) {
 		mask := core.ProcMaskUnknown
 		if shaman.MainHand().TempEnchant == effectID {
 			mask |= core.ProcMaskMeleeMH
@@ -160,7 +160,7 @@ func (shaman *Shaman) ApplyFlametongueImbueToItem(item *core.Item) {
 		return
 
 	}
-	if shaman.ItemSwap.IsEnabled() && (shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotMainHand).TempEnchant == int32(enchantID) || shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotOffHand).TempEnchant == int32(enchantID)) {
+	if shaman.ItemSwap.IsEnabled() && (shaman.ItemSwap.GetUnequippedItemBySlot(proto.ItemSlot_ItemSlotMainHand).TempEnchant == int32(enchantID) || shaman.ItemSwap.GetUnequippedItemBySlot(proto.ItemSlot_ItemSlotOffHand).TempEnchant == int32(enchantID)) {
 		item.TempEnchant = int32(enchantID)
 		return
 	}
@@ -189,11 +189,11 @@ func (shaman *Shaman) ApplyFlametongueImbue(procMask core.ProcMask) {
 
 func (shaman *Shaman) ApplyFlametongueImbueSwap(procMask core.ProcMask) {
 	if procMask.Matches(core.ProcMaskMeleeMH) && shaman.ItemSwap.IsEnabled() {
-		shaman.ApplyFlametongueImbueToItem(shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotMainHand))
+		shaman.ApplyFlametongueImbueToItem(shaman.ItemSwap.GetUnequippedItemBySlot(proto.ItemSlot_ItemSlotMainHand))
 	}
 
 	if procMask.Matches(core.ProcMaskMeleeOH) && shaman.ItemSwap.IsEnabled() {
-		shaman.ApplyFlametongueImbueToItem(shaman.ItemSwap.GetItem(proto.ItemSlot_ItemSlotOffHand))
+		shaman.ApplyFlametongueImbueToItem(shaman.ItemSwap.GetUnequippedItemBySlot(proto.ItemSlot_ItemSlotOffHand))
 	}
 }
 
@@ -283,7 +283,7 @@ func (shaman *Shaman) RegisterFrostbrandImbue(procMask core.ProcMask) {
 		shaman.OffHand().TempEnchant = 2
 	}
 
-	ppmm := shaman.AutoAttacks.NewPPMManager(9.0, procMask)
+	dpm := shaman.AutoAttacks.NewPPMManager(9.0, procMask)
 
 	mhSpell := shaman.newFrostbrandImbueSpell()
 	ohSpell := shaman.newFrostbrandImbueSpell()
@@ -301,7 +301,7 @@ func (shaman *Shaman) RegisterFrostbrandImbue(procMask core.ProcMask) {
 				return
 			}
 
-			if ppmm.Proc(sim, spell.ProcMask, "Frostbrand Weapon") {
+			if dpm.Proc(sim, spell.ProcMask, "Frostbrand Weapon") {
 				if spell.IsMH() {
 					mhSpell.Cast(sim, result.Target)
 				} else {
@@ -312,7 +312,7 @@ func (shaman *Shaman) RegisterFrostbrandImbue(procMask core.ProcMask) {
 		},
 	})
 
-	shaman.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(2, 9.0, &ppmm, aura)
+	shaman.ItemSwap.RegisterEnchantProc(2, aura)
 }
 
 func (shaman *Shaman) newEarthlivingImbueSpell() *core.Spell {

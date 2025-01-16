@@ -6,7 +6,7 @@ import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_u
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl.js';
-import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
+import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
 import { Stats, UnitStat } from '../../core/proto_utils/stats.js';
 import { TypedEvent } from '../../core/typed_event.js';
 import * as ShamanInputs from '../inputs.js';
@@ -117,6 +117,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 			OtherInputs.DistanceFromTarget,
 		],
 	},
+	itemSwapSlots: [
+		ItemSlot.ItemSlotHead,
+		ItemSlot.ItemSlotShoulder,
+		ItemSlot.ItemSlotBack,
+		ItemSlot.ItemSlotChest,
+		ItemSlot.ItemSlotHands,
+		ItemSlot.ItemSlotLegs,
+		ItemSlot.ItemSlotTrinket1,
+		ItemSlot.ItemSlotTrinket2,
+		ItemSlot.ItemSlotMainHand,
+	],
 	customSections: [ShamanInputs.TotemsSection],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -130,7 +141,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_DEFAULT, Presets.ROTATION_PRESET_AOE],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET],
+		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
+		itemSwaps: [Presets.P3_ITEM_SWAP, Presets.P4_ITEM_SWAP],
+
 		builds: [Presets.P3_PRESET_BUILD_DEFAULT, Presets.P3_PRESET_BUILD_CLEAVE],
 	},
 

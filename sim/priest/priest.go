@@ -94,7 +94,6 @@ func (priest *Priest) Initialize() {
 		}))
 	}
 
-	// priest.registerSetBonuses()
 	priest.registerDevouringPlagueSpell()
 	priest.registerShadowWordPainSpell()
 

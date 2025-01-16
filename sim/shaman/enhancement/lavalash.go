@@ -8,6 +8,10 @@ import (
 	"github.com/wowsims/cata/sim/shaman"
 )
 
+func (enh *EnhancementShaman) getSearingFlamesMultiplier() float64 {
+	return enh.SearingFlamesMultiplier + core.TernaryFloat64(enh.T12Enh2pc.IsActive(), 0.05, 0)
+}
+
 func (enh *EnhancementShaman) registerLavaLashSpell() {
 	damageMultiplier := 2.6
 	if enh.SelfBuffs.ImbueOH == proto.ShamanImbue_FlametongueWeapon {
@@ -44,7 +48,7 @@ func (enh *EnhancementShaman) registerLavaLashSpell() {
 
 			if enh.Talents.SearingFlames > 0 {
 				searingFlames = enh.SearingFlames.Dot(target)
-				searingFlamesBonus += enh.SearingFlamesMultiplier * float64(searingFlames.GetStacks())
+				searingFlamesBonus += enh.getSearingFlamesMultiplier() * float64(searingFlames.GetStacks())
 			}
 
 			baseDamage *= searingFlamesBonus

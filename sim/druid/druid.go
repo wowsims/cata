@@ -32,7 +32,6 @@ type Druid struct {
 	BleedsActive      int
 	AssumeBleedActive bool
 	LeatherSpecActive bool
-	Feral4pT12Active  bool
 
 	MHAutoSpell       *core.Spell
 	ReplaceBearMHFunc core.ReplaceMHSwing
@@ -124,6 +123,11 @@ type Druid struct {
 
 	form         DruidForm
 	disabledMCDs []*core.MajorCooldown
+
+	// Item sets
+	T11Feral2pBonus *core.Aura
+	T11Feral4pBonus *core.Aura
+	T12Feral4pBonus *core.Aura
 }
 
 const (
@@ -375,7 +379,7 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 		}
 	}
 
-	if druid.HasSetBonus(ItemSetObsidianArborweaveRegalia, 2) {
+	if druid.CouldHaveSetBonus(ItemSetObsidianArborweaveRegalia, 2) {
 		druid.BurningTreant = druid.NewBurningTreant()
 	}
 

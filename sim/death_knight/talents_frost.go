@@ -124,8 +124,6 @@ func (dk *DeathKnight) applyRime() {
 		return
 	}
 
-	has2pcT13 := dk.HasSetBonus(ItemSetNecroticBoneplateBattlegear, 2)
-
 	rimeMod := dk.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_PowerCost_Pct,
 		FloatValue: -1,
@@ -136,7 +134,7 @@ func (dk *DeathKnight) applyRime() {
 		Label:     "Freezing Fog",
 		ActionID:  core.ActionID{SpellID: 59052},
 		Duration:  time.Second * 15,
-		MaxStacks: core.TernaryInt32(has2pcT13, 2, 0),
+		MaxStacks: 0,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			rimeMod.Activate()
@@ -149,7 +147,7 @@ func (dk *DeathKnight) applyRime() {
 				return
 			}
 
-			if has2pcT13 {
+			if dk.T13Dps2pc.IsActive() {
 				aura.RemoveStack(sim)
 			} else {
 				aura.Deactivate(sim)
@@ -168,7 +166,8 @@ func (dk *DeathKnight) applyRime() {
 			freezingFogAura.Activate(sim)
 
 			// T13 2pc: Rime has a 60% chance to grant 2 charges when triggered instead of 1.
-			if has2pcT13 {
+			freezingFogAura.MaxStacks = core.TernaryInt32(dk.T13Dps2pc.IsActive(), 2, 0)
+			if dk.T13Dps2pc.IsActive() {
 				stacks := core.TernaryInt32(sim.Proc(0.6, "T13 2pc"), 2, 1)
 				freezingFogAura.SetStacks(sim, stacks)
 			}
@@ -199,7 +198,7 @@ func (dk *DeathKnight) applyKillingMachine() {
 			kmMod.Deactivate()
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ClassSpellMask&(DeathKnightSpellObliterate|DeathKnightSpellFrostStrike) == 0 {
+			if !spell.Matches(DeathKnightSpellObliterate | DeathKnightSpellFrostStrike) {
 				return
 			}
 			if !result.Landed() {
@@ -220,7 +219,7 @@ func (dk *DeathKnight) applyKillingMachine() {
 	})
 
 	ppm := 2.0 * float64(dk.Talents.KillingMachine)
-	triggerAura := core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
+	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
 		Name:     "Killing Machine",
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeWhiteHit,
@@ -232,7 +231,6 @@ func (dk *DeathKnight) applyKillingMachine() {
 		},
 	})
 
-	dk.ItemSwap.RegisterOnSwapItemUpdateProcMaskWithPPMManager(core.ProcMaskMeleeMH, ppm, triggerAura.Ppmm)
 }
 
 func (dk *DeathKnight) applyMightOfTheFrozenWastes() {

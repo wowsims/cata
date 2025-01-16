@@ -90,7 +90,7 @@ func init() {
 			},
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Vengful Wisp",
 			ActionID:   core.ActionID{ItemID: 63839},
 			Callback:   core.CallbackOnSpellHitDealt,
@@ -101,6 +101,8 @@ func init() {
 				trinketDot.Dot(result.Target).Apply(sim)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(63839, triggerAura)
 	})
 
 	core.NewItemEffect(64645, func(agent core.Agent) {
@@ -166,7 +168,7 @@ func init() {
 			MaxStacks: 5,
 		})
 
-		core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		triggerAura := core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Raw Fury Aura",
 			ActionID:   core.ActionID{ItemID: 59461},
 			Callback:   core.CallbackOnSpellHitDealt,
@@ -179,6 +181,8 @@ func init() {
 				dummyAura.AddStack(sim)
 			},
 		}))
+
+		character.ItemSwap.RegisterProc(59461, triggerAura)
 
 		buffAura := character.NewTemporaryStatsAura("Forged Fury", core.ActionID{SpellID: 91836}, stats.Stats{stats.Strength: 1926}, time.Second*20)
 		sharedCD := character.GetOffensiveTrinketCD()
@@ -354,7 +358,7 @@ func init() {
 				BonusPerStack: stats.Stats{stats.SpellPower: core.TernaryFloat64(heroic, 87, 77)},
 			})
 
-			core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       "Heart of Ignacious Aura" + labelSuffix,
 				ActionID:   core.ActionID{ItemID: heartItemID},
 				Callback:   core.CallbackOnSpellHitDealt,
@@ -367,6 +371,8 @@ func init() {
 					procAura.AddStack(sim)
 				},
 			}))
+
+			character.ItemSwap.RegisterProc(heartItemID, triggerAura)
 
 			hastePerStack := core.TernaryFloat64(heroic, 363, 321)
 			buffAura := character.RegisterAura(core.Aura{
@@ -435,7 +441,7 @@ func init() {
 				BonusPerStack: stats.Stats{stats.Spirit: core.TernaryFloat64(heroic, 116, 103)},
 			})
 
-			core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       "Jar of Ancient Remedies Aura" + labelSuffix,
 				ActionID:   core.ActionID{ItemID: jarItemID},
 				Callback:   core.CallbackOnHealDealt,
@@ -450,6 +456,8 @@ func init() {
 					}
 				},
 			}))
+
+			character.ItemSwap.RegisterProc(jarItemID, triggerAura)
 
 			manaMetric := character.NewManaMetrics(core.ActionID{SpellID: core.TernaryInt32(heroic, 92331, 91322)})
 			trinketSpell := character.RegisterSpell(core.SpellConfig{
@@ -509,7 +517,7 @@ func init() {
 			procAuraHaste.Icd = &icd
 			procAuraMastery.Icd = &icd
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       "Matrix Restabilizer Trigger" + labelSuffix,
 				Callback:   core.CallbackOnSpellHitDealt,
 				ProcMask:   core.ProcMaskMeleeOrRanged,
@@ -533,6 +541,8 @@ func init() {
 					}
 				},
 			})
+
+			character.ItemSwap.RegisterProc(matrixItemID, triggerAura)
 		})
 
 		apparatusItemID := core.TernaryInt32(heroic, 69113, 68972)
@@ -589,7 +599,7 @@ func init() {
 				1680: true, // Whirlwind
 			}
 
-			core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       "Titanic Power Trigger" + labelSuffix,
 				ActionID:   core.ActionID{SpellID: 96924},
 				Callback:   core.CallbackOnSpellHitDealt,
@@ -615,6 +625,8 @@ func init() {
 					titanicPower.AddStack(sim)
 				},
 			}))
+
+			character.ItemSwap.RegisterProc(apparatusItemID, triggerAura)
 
 			trinketSpell := character.RegisterSpell(core.SpellConfig{
 				ActionID:    core.ActionID{ItemID: apparatusItemID},
@@ -686,7 +698,7 @@ func init() {
 				1680: true, // Whirlwind
 			}
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				ActionID:   core.ActionID{ItemID: vesselItemID},
 				Name:       "Vessel of Acceleration" + labelSuffix,
 				Callback:   core.CallbackOnSpellHitDealt,
@@ -704,6 +716,8 @@ func init() {
 					procAura.AddStack(sim)
 				},
 			})
+
+			character.ItemSwap.RegisterProc(vesselItemID, triggerAura)
 		})
 
 		jawsItemID := core.TernaryInt32(heroic, 69111, 68926)
@@ -804,7 +818,7 @@ func init() {
 				Duration: time.Minute,
 			}
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       "Spidersilk Spindle Trigger" + labelSuffix,
 				Callback:   core.CallbackOnSpellHitTaken,
 				Outcome:    core.OutcomeLanded,
@@ -819,6 +833,8 @@ func init() {
 					}
 				},
 			})
+
+			character.ItemSwap.RegisterProc(spindleItemID, triggerAura)
 		})
 
 		scalesOfLifeItemID := core.TernaryInt32(heroic, 69109, 68915)
@@ -904,7 +920,7 @@ func init() {
 				},
 			})
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       "Vial of Shadows Trigger" + labelSuffix,
 				ActionID:   core.ActionID{ItemID: vialItemID},
 				Callback:   core.CallbackOnSpellHitDealt,
@@ -917,6 +933,9 @@ func init() {
 					lightningStrike.Cast(sim, result.Target)
 				},
 			})
+
+			character.ItemSwap.RegisterProc(vialItemID, triggerAura)
+
 		})
 
 		fetishItemID := []int32{77982, 77210, 78002}[version]
@@ -954,7 +973,7 @@ func init() {
 				},
 			})
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       "Bone-Link Fetish Trigger" + labelSuffix,
 				ActionID:   core.ActionID{ItemID: fetishItemID},
 				Callback:   core.CallbackOnSpellHitDealt,
@@ -967,6 +986,8 @@ func init() {
 					whirlingMaw.Cast(sim, result.Target)
 				},
 			})
+
+			character.ItemSwap.RegisterProc(fetishItemID, triggerAura)
 		})
 
 		cunningItemID := []int32{77980, 77208, 78000}[version]
@@ -1008,7 +1029,7 @@ func init() {
 				},
 			})
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       "Cunning of the Cruel Trigger" + labelSuffix,
 				ActionID:   core.ActionID{ItemID: cunningItemID},
 				Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
@@ -1021,6 +1042,9 @@ func init() {
 					shadowboltVolley.Cast(sim, result.Target)
 				},
 			})
+
+			character.ItemSwap.RegisterProc(cunningItemID, triggerAura)
+
 		})
 
 		prideItemID := []int32{77983, 77211, 78003}[version]
@@ -1041,7 +1065,7 @@ func init() {
 				Duration: time.Minute,
 			}
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       "Indomitable Pride Trigger" + labelSuffix,
 				Callback:   core.CallbackOnSpellHitTaken,
 				Outcome:    core.OutcomeLanded,
@@ -1058,6 +1082,8 @@ func init() {
 					}
 				},
 			})
+
+			character.ItemSwap.RegisterProc(prideItemID, triggerAura)
 		})
 
 		// Kiril, Fury of Beasts
@@ -1097,7 +1123,7 @@ func init() {
 				},
 			})
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       "Fury of the Beast Trigger" + labelSuffix,
 				Callback:   core.CallbackOnSpellHitDealt,
 				ProcMask:   core.ProcMaskMeleeOrRanged | core.ProcMaskMeleeProc,
@@ -1108,6 +1134,8 @@ func init() {
 					furyOfTheBeastAura.Activate(sim)
 				},
 			})
+
+			character.ItemSwap.RegisterProc(kirilItemID, triggerAura)
 		})
 
 		// These spells ignore the slot the weapon is in.
@@ -1126,7 +1154,9 @@ func init() {
 			character := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: []int32{109828, 108022, 109831}[version]}
 			hpModifier := []float64{0.013, 0.015, 0.017}[version]
-			procMask := character.GetProcMaskForItem(souldrinkerItemID) | core.ProcMaskMeleeProc
+
+			defaultProcMask := core.ProcMaskMeleeProc
+			procMask := character.GetDynamicProcMaskForWeaponEffect(souldrinkerItemID)
 
 			var damageDealt float64
 			drainLifeHeal := character.RegisterSpell(core.SpellConfig{
@@ -1162,7 +1192,7 @@ func init() {
 				},
 			})
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:     "Drain Life Trigger" + labelSuffix,
 				ActionID: core.ActionID{ItemID: souldrinkerItemID},
 				Callback: core.CallbackOnSpellHitDealt,
@@ -1171,7 +1201,7 @@ func init() {
 						return
 					}
 
-					if _, ignore := ignoresSlot[spell.ActionID.SpellID]; !spell.ProcMask.Matches(procMask) && !ignore {
+					if _, ignore := ignoresSlot[spell.ActionID.SpellID]; !spell.ProcMask.Matches(*procMask|defaultProcMask) && !ignore {
 						return
 					}
 
@@ -1180,6 +1210,8 @@ func init() {
 					}
 				},
 			})
+
+			character.ItemSwap.RegisterProc(souldrinkerItemID, triggerAura)
 		})
 
 		// No'Kaled, the Elements of Death
@@ -1189,7 +1221,9 @@ func init() {
 		core.NewItemEffect(nokaledItemID, func(agent core.Agent) {
 			character := agent.GetCharacter()
 
-			procMask := character.GetProcMaskForItem(nokaledItemID) | core.ProcMaskMeleeProc
+			defaultProcMask := core.ProcMaskMeleeProc
+			procMask := character.GetDynamicProcMaskForWeaponEffect(nokaledItemID)
+
 			minDamage := []float64{6781, 7654, 8640}[version]
 			maxDamage := []float64{10171, 11481, 12960}[version]
 
@@ -1226,7 +1260,7 @@ func init() {
 
 			spells := []*core.Spell{flameblast, iceblast, shadowblast}
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:     "No'Kaled Trigger" + labelSuffix,
 				ActionID: core.ActionID{ItemID: nokaledItemID},
 				Callback: core.CallbackOnSpellHitDealt,
@@ -1235,7 +1269,7 @@ func init() {
 						return
 					}
 
-					if _, ignore := ignoresSlot[spell.ActionID.SpellID]; !spell.ProcMask.Matches(procMask) && !ignore {
+					if _, ignore := ignoresSlot[spell.ActionID.SpellID]; !spell.ProcMask.Matches(*procMask|defaultProcMask) && !ignore {
 						return
 					}
 
@@ -1245,6 +1279,8 @@ func init() {
 					}
 				},
 			})
+
+			character.ItemSwap.RegisterProc(nokaledItemID, triggerAura)
 		})
 
 		// Rathrak, the Poisonous Mind
@@ -1293,7 +1329,7 @@ func init() {
 				},
 			})
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       "Rathrak Trigger" + labelSuffix,
 				ActionID:   core.ActionID{ItemID: rathrakItemID},
 				Callback:   core.CallbackOnSpellHitDealt,
@@ -1305,6 +1341,9 @@ func init() {
 					blastOfCorruption.Cast(sim, result.Target)
 				},
 			})
+
+			character.ItemSwap.RegisterProc(rathrakItemID, triggerAura)
+
 		})
 
 		// Vishanka, Jaws of the Earth
@@ -1351,7 +1390,7 @@ func init() {
 				},
 			})
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       "Vishanka Trigger" + labelSuffix,
 				ActionID:   core.ActionID{ItemID: vishankaItemID},
 				Callback:   core.CallbackOnSpellHitDealt,
@@ -1363,6 +1402,8 @@ func init() {
 					speakingOfRage.Cast(sim, result.Target)
 				},
 			})
+
+			character.ItemSwap.RegisterProc(vishankaItemID, triggerAura)
 		})
 	}
 }
@@ -1380,6 +1421,7 @@ type IgniteConfig struct {
 	ProcTrigger        core.ProcTrigger // Ignores the Handler field and creates a custom one, but uses all others.
 	DamageCalculator   IgniteDamageCalculator
 	IncludeAuraDelay   bool // "munching" and "free roll-over" interactions
+	SetBonusAura       *core.Aura
 }
 
 func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
@@ -1489,6 +1531,11 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 		}
 	}
 
-	core.MakeProcTriggerAura(unit, procTrigger)
+	if config.SetBonusAura != nil {
+		config.SetBonusAura.AttachProcTrigger(procTrigger)
+	} else {
+		core.MakeProcTriggerAura(unit, procTrigger)
+	}
+
 	return igniteSpell
 }

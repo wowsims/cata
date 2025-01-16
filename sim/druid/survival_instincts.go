@@ -15,11 +15,14 @@ func (druid *Druid) registerSurvivalInstinctsCD() {
 
 	cdTimer := druid.NewTimer()
 	cd := time.Minute * 3
+	getDuration := func() time.Duration {
+		return core.TernaryDuration(druid.T11Feral4pBonus.IsActive(), time.Second*18, time.Second*12)
+	}
 
 	druid.SurvivalInstinctsAura = druid.RegisterAura(core.Aura{
 		Label:    "Survival Instincts",
 		ActionID: actionID,
-		Duration: core.TernaryDuration(druid.HasSetBonus(ItemSetStormridersBattlegarb, 4), time.Second * 18, time.Second * 12),
+		Duration: getDuration(),
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			druid.PseudoStats.DamageTakenMultiplier *= 0.5
 		},
@@ -38,6 +41,7 @@ func (druid *Druid) registerSurvivalInstinctsCD() {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			druid.SurvivalInstinctsAura.Duration = getDuration()
 			druid.SurvivalInstinctsAura.Activate(sim)
 		},
 	})

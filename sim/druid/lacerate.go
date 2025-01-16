@@ -12,7 +12,8 @@ func (druid *Druid) registerLacerateSpell() {
 	initialDamage := 3.65700006485 * druid.ClassSpellScaling // ~3608
 
 	initialDamageMul := 1.0
-	tickDamageMul := core.TernaryFloat64(druid.HasSetBonus(ItemSetStormridersBattlegarb, 2), 1.1, 1)
+	// Set bonuses can scale up the ticks relative to the initial hit
+	getTickDamageMultiplier := func() float64 { return core.TernaryFloat64(druid.T11Feral2pBonus.IsActive(), 1.1, 1) }
 
 	druid.Lacerate = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 33745},
@@ -52,7 +53,7 @@ func (druid *Druid) registerLacerateSpell() {
 				dot.SnapshotBaseDamage *= float64(dot.Aura.GetStacks())
 
 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
-				dot.Spell.DamageMultiplier = tickDamageMul
+				dot.Spell.DamageMultiplier = getTickDamageMultiplier()
 				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
 			},

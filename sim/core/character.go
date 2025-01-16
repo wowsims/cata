@@ -325,37 +325,13 @@ func (character *Character) CalculateMasteryPoints() float64 {
 
 // Apply effects from all equipped core.
 func (character *Character) applyItemEffects(agent Agent) {
-	for slot, eq := range character.Equipment {
-		if applyItemEffect, ok := itemEffects[eq.ID]; ok {
-			applyItemEffect(agent)
-		}
+	registeredItemEffects := make(map[int32]bool)
+	registeredItemEnchantEffects := make(map[int32]bool)
 
-		for _, g := range eq.Gems {
-			if applyGemEffect, ok := itemEffects[g.ID]; ok {
-				applyGemEffect(agent)
-			}
-		}
-
-		if applyEnchantEffect, ok := enchantEffects[eq.Enchant.EffectID]; ok {
-			applyEnchantEffect(agent)
-		}
-
-		if applyWeaponEffect, ok := weaponEffects[eq.Enchant.EffectID]; ok {
-			applyWeaponEffect(agent, proto.ItemSlot(slot))
-		}
-	}
+	character.Equipment.applyItemEffects(agent, registeredItemEffects, registeredItemEnchantEffects, true)
 
 	if character.ItemSwap.IsEnabled() {
-		offset := int(proto.ItemSlot_ItemSlotMainHand)
-		for i, item := range character.ItemSwap.unEquippedItems {
-			if applyEnchantEffect, ok := enchantEffects[item.Enchant.EffectID]; ok {
-				applyEnchantEffect(agent)
-			}
-
-			if applyWeaponEffect, ok := weaponEffects[item.Enchant.EffectID]; ok {
-				applyWeaponEffect(agent, proto.ItemSlot(offset+i))
-			}
-		}
+		character.ItemSwap.unEquippedItems.applyItemEffects(agent, registeredItemEffects, registeredItemEnchantEffects, false)
 	}
 }
 
@@ -515,6 +491,8 @@ func (character *Character) reset(sim *Simulation, agent Agent) {
 
 	agent.Reset(sim)
 
+	character.ItemSwap.reset(sim)
+
 	for _, petAgent := range character.PetAgents {
 		petAgent.GetPet().reset(sim, petAgent)
 	}
@@ -593,32 +571,59 @@ func (character *Character) HasRangedWeapon() bool {
 	return character.GetRangedWeapon() != nil
 }
 
-func (character *Character) GetProcMaskForEnchant(effectID int32) ProcMask {
-	return character.getProcMaskFor(func(weapon *Item) bool {
+func (character *Character) GetDynamicProcMaskForWeaponEnchant(effectID int32) *ProcMask {
+	return character.getDynamicProcMaskPointer(func() ProcMask {
+		return character.getCurrentProcMaskForWeaponEnchant(effectID)
+	})
+}
+
+func (character *Character) getDynamicProcMaskPointer(procMaskFn func() ProcMask) *ProcMask {
+	procMask := procMaskFn()
+
+	character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot) {
+		procMask = procMaskFn()
+	})
+
+	return &procMask
+}
+
+func (character *Character) getCurrentProcMaskForWeaponEnchant(effectID int32) ProcMask {
+	return character.getCurrentProcMaskFor(func(weapon *Item) bool {
 		return weapon.Enchant.EffectID == effectID
 	})
 }
 
-func (character *Character) GetProcMaskForItem(itemID int32) ProcMask {
-	return character.getProcMaskFor(func(weapon *Item) bool {
+func (character *Character) GetDynamicProcMaskForWeaponEffect(itemID int32) *ProcMask {
+	return character.getDynamicProcMaskPointer(func() ProcMask {
+		return character.getCurrentProcMaskForWeaponEffect(itemID)
+	})
+}
+
+func (character *Character) getCurrentProcMaskForWeaponEffect(itemID int32) ProcMask {
+	return character.getCurrentProcMaskFor(func(weapon *Item) bool {
 		return weapon.ID == itemID
 	})
 }
 
 func (character *Character) GetProcMaskForTypes(weaponTypes ...proto.WeaponType) ProcMask {
-	return character.getProcMaskFor(func(weapon *Item) bool {
+	return character.getCurrentProcMaskFor(func(weapon *Item) bool {
 		return weapon != nil && slices.Contains(weaponTypes, weapon.WeaponType)
 	})
 }
 
 func (character *Character) GetProcMaskForTypesAndHand(twohand bool, weaponTypes ...proto.WeaponType) ProcMask {
-	return character.getProcMaskFor(func(weapon *Item) bool {
+	return character.getCurrentProcMaskFor(func(weapon *Item) bool {
 		return weapon != nil && (weapon.HandType == proto.HandType_HandTypeTwoHand) == twohand && slices.Contains(weaponTypes, weapon.WeaponType)
 	})
 }
 
-func (character *Character) getProcMaskFor(pred func(weapon *Item) bool) ProcMask {
+func (character *Character) getCurrentProcMaskFor(pred func(item *Item) bool) ProcMask {
 	mask := ProcMaskUnknown
+
+	if character == nil {
+		return mask
+	}
+
 	if pred(character.MainHand()) {
 		mask |= ProcMaskMeleeMH
 	}
@@ -629,13 +634,14 @@ func (character *Character) getProcMaskFor(pred func(weapon *Item) bool) ProcMas
 }
 
 func (character *Character) doneIteration(sim *Simulation) {
+	character.ItemSwap.doneIteration(sim)
+
 	// Need to do pets first, so we can add their results to the owners.
 	for _, pet := range character.Pets {
 		pet.doneIteration(sim)
 		character.Metrics.AddFinalPetMetrics(&pet.Metrics)
 	}
 
-	character.ItemSwap.doneIteration(sim)
 	character.Unit.doneIteration(sim)
 }
 
@@ -771,9 +777,40 @@ func (character *Character) MeetsArmorSpecializationRequirement(armorType proto.
 	return true
 }
 
-func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Stat, armorType proto.ArmorType) {
-	hasBonus := character.MeetsArmorSpecializationRequirement(armorType)
-	if hasBonus {
-		character.MultiplyStat(primaryStat, 1.05)
+func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Stat, armorType proto.ArmorType, spellID int32) {
+	armorSpecializationDependency := character.NewDynamicMultiplyStat(primaryStat, 1.05)
+	isEnabled := character.MeetsArmorSpecializationRequirement(armorType)
+
+	aura := character.RegisterAura(Aura{
+		Label:      "Armor Specialization",
+		ActionID:   ActionID{SpellID: spellID},
+		BuildPhase: Ternary(isEnabled, CharacterBuildPhaseTalents, CharacterBuildPhaseNone),
+		Duration:   NeverExpires,
+	})
+
+	aura.AttachStatDependency(armorSpecializationDependency)
+
+	if isEnabled {
+		aura = MakePermanent(aura)
 	}
+
+	character.RegisterItemSwapCallback([]proto.ItemSlot{
+		proto.ItemSlot_ItemSlotHead,
+		proto.ItemSlot_ItemSlotShoulder,
+		proto.ItemSlot_ItemSlotChest,
+		proto.ItemSlot_ItemSlotWrist,
+		proto.ItemSlot_ItemSlotHands,
+		proto.ItemSlot_ItemSlotWaist,
+		proto.ItemSlot_ItemSlotLegs,
+		proto.ItemSlot_ItemSlotFeet,
+	},
+		func(sim *Simulation, _ proto.ItemSlot) {
+			if character.MeetsArmorSpecializationRequirement(armorType) {
+				if !aura.IsActive() {
+					aura.Activate(sim)
+				}
+			} else {
+				aura.Deactivate(sim)
+			}
+		})
 }

@@ -3,6 +3,7 @@ package core
 import (
 	"fmt"
 	"math"
+	"slices"
 	"sync"
 
 	"github.com/wowsims/cata/sim/core/proto"
@@ -231,6 +232,10 @@ func (equipment *Equipment) Shoulder() *Item {
 	return &equipment[proto.ItemSlot_ItemSlotShoulder]
 }
 
+func (equipment *Equipment) Back() *Item {
+	return &equipment[proto.ItemSlot_ItemSlotBack]
+}
+
 func (equipment *Equipment) Chest() *Item {
 	return &equipment[proto.ItemSlot_ItemSlotChest]
 }
@@ -301,6 +306,22 @@ func (equipment *Equipment) EquipItem(item Item) {
 	} else {
 		equipment[ItemTypeToSlot(item.Type)] = item
 	}
+}
+
+func (equipment *Equipment) containsEnchantInSlot(effectID int32, slot proto.ItemSlot) bool {
+	return (equipment[slot].Enchant.EffectID == effectID) || (equipment[slot].TempEnchant == effectID)
+}
+
+func (equipment *Equipment) containsEnchantInSlots(effectID int32, possibleSlots []proto.ItemSlot) bool {
+	return slices.ContainsFunc(possibleSlots, func(slot proto.ItemSlot) bool {
+		return equipment.containsEnchantInSlot(effectID, slot)
+	})
+}
+
+func (equipment *Equipment) containsItemInSlots(itemID int32, possibleSlots []proto.ItemSlot) bool {
+	return slices.ContainsFunc(possibleSlots, func(slot proto.ItemSlot) bool {
+		return equipment[slot].ID == itemID
+	})
 }
 
 func (equipment *Equipment) ToEquipmentSpecProto() *proto.EquipmentSpec {
@@ -427,6 +448,16 @@ func EquipmentSpecFromJsonString(jsonString string) *proto.EquipmentSpec {
 	return es
 }
 
+func ItemSwapFromJsonString(jsonString string) *proto.ItemSwap {
+	is := &proto.ItemSwap{}
+
+	data := []byte(jsonString)
+	if err := protojson.Unmarshal(data, is); err != nil {
+		panic(err)
+	}
+	return is
+}
+
 func (equipment *Equipment) Stats() stats.Stats {
 	equipStats := stats.Stats{}
 
@@ -487,6 +518,13 @@ func ItemEquipmentStats(item Item) stats.Stats {
 	return equipStats
 }
 
+func GetItemByID(id int32) *Item {
+	if item, ok := ItemsByID[id]; ok {
+		return &item
+	}
+	return nil
+}
+
 func ItemTypeToSlot(it proto.ItemType) proto.ItemSlot {
 	switch it {
 	case proto.ItemType_ItemTypeHead:
@@ -540,7 +578,11 @@ var itemTypeToSlotsMap = map[proto.ItemType][]proto.ItemSlot{
 	// ItemType_ItemTypeWeapon is excluded intentionally - the slot cannot be decided based on type alone for weapons.
 }
 
-func eligibleSlotsForItem(item Item, isFuryWarrior bool) []proto.ItemSlot {
+func eligibleSlotsForItem(item *Item, isFuryWarrior bool) []proto.ItemSlot {
+	if item == nil {
+		return nil
+	}
+
 	if slots, ok := itemTypeToSlotsMap[item.Type]; ok {
 		return slots
 	}

@@ -19,11 +19,14 @@ func TestFury(t *testing.T) {
 		Race:       proto.Race_RaceTroll,
 		OtherRaces: []proto.Race{proto.Race_RaceWorgen},
 
-		GearSet: core.GetGearSet("../../../ui/warrior/fury/gear_sets", "p1_fury_smf"),
+		GearSet:     core.GetGearSet("../../../ui/warrior/fury/gear_sets", "p3_fury_tg"),
+		ItemSwapSet: core.GetItemSwapGearSet("../../../ui/warrior/fury/gear_sets", "p3_fury_tg_item_swap"),
+
 		OtherGearSets: []core.GearSetCombo{
-			core.GetGearSet("../../../ui/warrior/fury/gear_sets", "p1_fury_tg"),
 			core.GetGearSet("../../../ui/warrior/fury/gear_sets", "p3_fury_smf"),
-			core.GetGearSet("../../../ui/warrior/fury/gear_sets", "p3_fury_tg"),
+		},
+		OtherItemSwapSets: []core.ItemSwapSetCombo{
+			core.GetItemSwapGearSet("../../../ui/warrior/fury/gear_sets", "p3_fury_smf_item_swap"),
 		},
 		Talents: SMFTalents,
 		OtherTalentSets: []core.TalentsCombo{
@@ -36,9 +39,9 @@ func TestFury(t *testing.T) {
 		Glyphs:      FuryGlyphs,
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsFury},
-		Rotation:    core.GetAplRotation("../../../ui/warrior/fury/apls", "smf"),
+		Rotation:    core.GetAplRotation("../../../ui/warrior/fury/apls", "tg"),
 		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../../ui/warrior/fury/apls", "tg"),
+			core.GetAplRotation("../../../ui/warrior/fury/apls", "smf"),
 		},
 
 		ItemFilter: ItemFilter,

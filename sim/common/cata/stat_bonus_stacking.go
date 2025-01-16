@@ -27,7 +27,7 @@ func init() {
 
 	shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
 		Name:       "Gale of Shadows",
-		ID:         56138,
+		ItemID:     56138,
 		AuraID:     90953,
 		Bonus:      stats.Stats{stats.SpellPower: 15},
 		MaxStacks:  20,
@@ -41,7 +41,7 @@ func init() {
 
 	shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
 		Name:       "Gale of Shadows (Heroic)",
-		ID:         56462,
+		ItemID:     56462,
 		AuraID:     90985,
 		Bonus:      stats.Stats{stats.SpellPower: 17},
 		MaxStacks:  20,
@@ -55,7 +55,7 @@ func init() {
 
 	shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
 		Name:       "Tia's Grace",
-		ID:         55874,
+		ItemID:     55874,
 		AuraID:     92085,
 		Bonus:      stats.Stats{stats.Agility: 30},
 		MaxStacks:  10,
@@ -68,7 +68,7 @@ func init() {
 
 	shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
 		Name:       "Tia's Grace (Heroic)",
-		ID:         56394,
+		ItemID:     56394,
 		AuraID:     92089,
 		Bonus:      stats.Stats{stats.Agility: 34},
 		MaxStacks:  10,
@@ -81,7 +81,7 @@ func init() {
 
 	shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
 		Name:       "Darkmoon Card: Tsunami",
-		ID:         62050,
+		ItemID:     62050,
 		AuraID:     92090,
 		Bonus:      stats.Stats{stats.Spirit: 80},
 		MaxStacks:  5,
@@ -95,7 +95,7 @@ func init() {
 
 	shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
 		Name:       "Fluid Death",
-		ID:         58181,
+		ItemID:     58181,
 		AuraID:     92104,
 		Bonus:      stats.Stats{stats.Agility: 38},
 		MaxStacks:  10,
@@ -108,7 +108,7 @@ func init() {
 
 	shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
 		Name:       "License to Slay",
-		ID:         58180,
+		ItemID:     58180,
 		AuraID:     91810,
 		Bonus:      stats.Stats{stats.Strength: 38},
 		MaxStacks:  10,
@@ -121,7 +121,7 @@ func init() {
 
 	shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
 		Name:       "Necromantic Focus",
-		ID:         68982,
+		ItemID:     68982,
 		AuraID:     96962,
 		Bonus:      stats.Stats{stats.MasteryRating: 39},
 		MaxStacks:  10,
@@ -135,7 +135,7 @@ func init() {
 
 	shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
 		Name:       "Necromantic Focus Heroic",
-		ID:         69139,
+		ItemID:     69139,
 		AuraID:     97131,
 		Bonus:      stats.Stats{stats.MasteryRating: 44},
 		MaxStacks:  10,
@@ -152,7 +152,7 @@ func init() {
 
 		shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
 			Name:       "Eye of Unmaking" + labelSuffix,
-			ID:         []int32{77977, 77200, 77997}[version],
+			ItemID:     []int32{77977, 77200, 77997}[version],
 			AuraID:     []int32{109748, 107966, 109750}[version],
 			Bonus:      stats.Stats{stats.Strength: []float64{78, 88, 99}[version]},
 			MaxStacks:  10,
@@ -165,7 +165,7 @@ func init() {
 
 		shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
 			Name:       "Resolve of Undying" + labelSuffix,
-			ID:         []int32{77978, 77201, 77998}[version],
+			ItemID:     []int32{77978, 77201, 77998}[version],
 			AuraID:     []int32{109780, 107968, 109782}[version],
 			Bonus:      stats.Stats{stats.DodgeRating: []float64{78, 88, 99}[version]},
 			MaxStacks:  10,
@@ -178,7 +178,7 @@ func init() {
 
 		shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
 			Name:       "Will of Unbinding" + labelSuffix,
-			ID:         []int32{77975, 77198, 77995}[version],
+			ItemID:     []int32{77975, 77198, 77995}[version],
 			AuraID:     []int32{109793, 107970, 109795}[version],
 			Bonus:      stats.Stats{stats.Intellect: []float64{78, 88, 99}[version]},
 			MaxStacks:  10,
@@ -191,7 +191,7 @@ func init() {
 
 		shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
 			Name:       "Wrath of Unchaining" + labelSuffix,
-			ID:         []int32{77974, 77197, 77994}[version],
+			ItemID:     []int32{77974, 77197, 77994}[version],
 			AuraID:     []int32{109717, 107960, 109719}[version],
 			Bonus:      stats.Stats{stats.Agility: []float64{78, 88, 99}[version]},
 			MaxStacks:  10,

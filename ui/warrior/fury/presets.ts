@@ -9,7 +9,9 @@ import TGFuryApl from './apls/tg.apl.json';
 import P1FurySMFGear from './gear_sets/p1_fury_smf.gear.json';
 import P1FuryTGGear from './gear_sets/p1_fury_tg.gear.json';
 import P3FurySMFGear from './gear_sets/p3_fury_smf.gear.json';
+import ItemSwapP3SMFGear from './gear_sets/p3_fury_smf_item_swap.gear.json';
 import P3FuryTGGear from './gear_sets/p3_fury_tg.gear.json';
+import ItemSwapP3TGGear from './gear_sets/p3_fury_tg_item_swap.gear.json';
 import PreraidFurySMFGear from './gear_sets/preraid_fury_smf.gear.json';
 import PreraidFuryTGGear from './gear_sets/preraid_fury_tg.gear.json';
 
@@ -62,6 +64,9 @@ export const P1_BIS_FURY_SMF_PRESET = PresetUtils.makePresetGear('P1 - SMF', P1F
 export const P1_BIS_FURY_TG_PRESET = PresetUtils.makePresetGear('P1 - TG', P1FuryTGGear, FURY_TG_PRESET_OPTIONS);
 export const P3_BIS_FURY_SMF_PRESET = PresetUtils.makePresetGear('P3 - SMF', P3FurySMFGear, FURY_SMF_PRESET_OPTIONS);
 export const P3_BIS_FURY_TG_PRESET = PresetUtils.makePresetGear('P3 - TG', P3FuryTGGear, FURY_TG_PRESET_OPTIONS);
+
+export const P3_ITEM_SWAP_TG = PresetUtils.makePresetItemSwapGear('P3 - Item Swap - TG', ItemSwapP3TGGear);
+export const P3_ITEM_SWAP_SMF = PresetUtils.makePresetItemSwapGear('P3 - Item Swap - SMF', ItemSwapP3SMFGear);
 
 export const FURY_SMF_ROTATION = PresetUtils.makePresetAPLRotation('SMF', SMFFuryApl, FURY_SMF_PRESET_OPTIONS);
 export const FURY_TG_ROTATION = PresetUtils.makePresetAPLRotation('TG', TGFuryApl, FURY_TG_PRESET_OPTIONS);
@@ -197,7 +202,6 @@ export const DefaultOptions = WarriorOptions.create({
 		startingRage: 0,
 	},
 	syncType: 0,
-	prepullMastery: 0,
 });
 
 export const DefaultConsumes = Consumes.create({

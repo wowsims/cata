@@ -74,8 +74,6 @@ func init() {
 			},
 		})
 
-		procMask := character.GetProcMaskForEnchant(3368)
-
 		rfcAura := character.NewTemporaryStatsAuraWrapped("Rune Of The Fallen Crusader Proc", core.ActionID{SpellID: 53365}, stats.Stats{}, time.Second*15, func(aura *core.Aura) {
 			statDep := character.NewDynamicMultiplyStat(stats.Strength, 1.15)
 
@@ -92,15 +90,16 @@ func init() {
 			Name:     "Rune Of The Fallen Crusader",
 			Callback: core.CallbackOnSpellHitDealt,
 			Outcome:  core.OutcomeLanded,
-			PPM:      2.0,
-			ProcMask: procMask,
+			DPM:      character.AutoAttacks.NewDynamicProcManagerForEnchant(3368, 2.0, 0),
+			// PPM:      2.0,
+			// ProcMask: procMask,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				rfcAura.Activate(sim)
 				healingSpell.Cast(sim, &character.Unit)
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(3368, 2.0, aura.Ppmm, aura)
+		character.ItemSwap.RegisterEnchantProc(3368, aura)
 	})
 
 	// Rune of Cinderglacier
@@ -153,15 +152,14 @@ func init() {
 			Name:     "Rune of Cinderglacier",
 			Callback: core.CallbackOnSpellHitDealt,
 			Outcome:  core.OutcomeLanded,
-			ProcMask: character.GetProcMaskForEnchant(3369),
-			PPM:      1.0,
+			DPM:      character.AutoAttacks.NewDynamicProcManagerForEnchant(3369, 1.0, 0),
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				cinderAura.Activate(sim)
 				cinderAura.SetStacks(sim, cinderAura.MaxStacks)
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(3369, 1.0, aura.Ppmm, aura)
+		character.ItemSwap.RegisterEnchantProc(3369, aura)
 	})
 
 	// Rune of Razorice
@@ -220,7 +218,7 @@ func init() {
 			return target.GetOrRegisterAura(core.Aura{
 				Label:     "RuneOfRazoriceVulnerability" + character.Label,
 				ActionID:  core.ActionID{SpellID: 51714},
-				Duration:  core.NeverExpires,
+				Duration:  time.Second * 20,
 				MaxStacks: 5,
 
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -232,7 +230,6 @@ func init() {
 			})
 		})
 
-		procMask := character.GetProcMaskForEnchant(3370)
 		mhRazoriceSpell := newRazoriceHitSpell(character, true)
 		ohRazoriceSpell := newRazoriceHitSpell(character, false)
 
@@ -240,8 +237,8 @@ func init() {
 			Name:     "Razor Frost",
 			Callback: core.CallbackOnSpellHitDealt,
 			Outcome:  core.OutcomeLanded,
-			ProcMask: procMask,
 			ICD:      time.Millisecond * 8,
+			DPM:      character.AutoAttacks.NewDynamicProcManagerForEnchant(3370, 0, 1.0),
 
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				vulnAura := vulnAuras.Get(result.Target)
@@ -255,6 +252,6 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(3370, aura)
+		character.ItemSwap.RegisterEnchantProc(3370, aura)
 	})
 }

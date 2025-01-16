@@ -1012,15 +1012,15 @@ dps_results: {
 dps_results: {
  key: "TestElemental-AllItems-MandalaofStirringPatterns-62467"
  value: {
-  dps: 38845.46309
-  tps: 630.34664
+  dps: 40008.90842
+  tps: 628.7127
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-MandalaofStirringPatterns-62472"
  value: {
-  dps: 38845.46309
-  tps: 630.34664
+  dps: 40008.90842
+  tps: 628.7127
  }
 }
 dps_results: {
@@ -1383,8 +1383,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-AllItems-RuthlessGladiator'sInsigniaofDominance-70402"
  value: {
-  dps: 40634.05106
-  tps: 627.54343
+  dps: 40694.88724
+  tps: 624.76467
  }
 }
 dps_results: {
@@ -1448,22 +1448,22 @@ dps_results: {
 dps_results: {
  key: "TestElemental-AllItems-SealoftheSevenSigns-77204"
  value: {
-  dps: 41588.79028
-  tps: 641.95969
+  dps: 41939.3486
+  tps: 645.52877
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-SealoftheSevenSigns-77969"
  value: {
-  dps: 41379.88948
-  tps: 639.82667
+  dps: 41609.8855
+  tps: 643.01605
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-SealoftheSevenSigns-77989"
  value: {
-  dps: 41833.3128
-  tps: 644.23854
+  dps: 42147.53579
+  tps: 654.69935
  }
 }
 dps_results: {
@@ -1586,6 +1586,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-AllItems-Spiritwalker'sVestments"
+ value: {
+  dps: 34715.09325
+  tps: 1731.74858
+ }
+}
+dps_results: {
  key: "TestElemental-AllItems-StarcatcherCompass-77202"
  value: {
   dps: 40631.41919
@@ -1686,8 +1693,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-AllItems-TendrilsofBurrowingDark-56339"
  value: {
-  dps: 41075.62025
-  tps: 637.37871
+  dps: 41495.00258
+  tps: 639.41098
  }
 }
 dps_results: {
@@ -1735,22 +1742,22 @@ dps_results: {
 dps_results: {
  key: "TestElemental-AllItems-Ti'tahk,theStepsofTime-77190"
  value: {
-  dps: 55082.58002
-  tps: 1927.84941
+  dps: 55309.61029
+  tps: 1904.07951
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-Ti'tahk,theStepsofTime-78477"
  value: {
-  dps: 56663.86829
-  tps: 1904.02947
+  dps: 56725.0825
+  tps: 1913.27319
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-Ti'tahk,theStepsofTime-78486"
  value: {
-  dps: 53713.43828
-  tps: 1903.98582
+  dps: 53925.09022
+  tps: 1898.37795
  }
 }
 dps_results: {

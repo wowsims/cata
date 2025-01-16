@@ -29,9 +29,7 @@ func NewDemonologyWarlock(character *core.Character, options *proto.Player) *Dem
 	demoOptions := options.GetDemonologyWarlock().Options
 
 	demonology := &DemonologyWarlock{
-		Warlock:                 warlock.NewWarlock(character, options, demoOptions.ClassOptions),
-		prepullMastery:          demoOptions.ClassOptions.PrepullMastery,
-		prepullPostSnapshotMana: demoOptions.ClassOptions.PrepullPostSnapshotMana,
+		Warlock: warlock.NewWarlock(character, options, demoOptions.ClassOptions),
 	}
 
 	return demonology
@@ -39,9 +37,6 @@ func NewDemonologyWarlock(character *core.Character, options *proto.Player) *Dem
 
 type DemonologyWarlock struct {
 	*warlock.Warlock
-
-	prepullMastery          int32
-	prepullPostSnapshotMana int32
 }
 
 func (demonology *DemonologyWarlock) GetWarlock() *warlock.Warlock {

@@ -71,7 +71,9 @@ func newCapacitorDamageEffect(config CapacitorDamageEffect) {
 			capacitorAura.Activate(sim)
 			capacitorAura.AddStack(sim)
 		}
-		core.MakeProcTriggerAura(&character.Unit, config.Trigger)
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, config.Trigger)
+
+		character.ItemSwap.RegisterProc(config.ID, triggerAura)
 	})
 }
 
@@ -174,39 +176,24 @@ func init() {
 				return
 			}
 
-			var mhSpell *core.Spell
-			var ohSpell *core.Spell
-			initSpells := func() {
-				mhSpell = character.GetOrRegisterSpell(core.SpellConfig{
-					ActionID:         core.ActionID{SpellID: 71433}, // "Manifest Anger"
+			registerSpell := func(spellID int32, procMask core.ProcMask, autoAttackConfig *core.SpellConfig, weaponDamagefn func(sim *core.Simulation, ap float64) float64) *core.Spell {
+				return character.GetOrRegisterSpell(core.SpellConfig{
+					ActionID:         core.ActionID{SpellID: spellID}, // "Manifest Anger"
 					SpellSchool:      core.SpellSchoolPhysical,
-					ProcMask:         core.ProcMaskMeleeMHSpecial,
+					ProcMask:         procMask,
 					Flags:            core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
-					DamageMultiplier: character.AutoAttacks.MHConfig().DamageMultiplier * 0.5,
-					CritMultiplier:   character.AutoAttacks.MHConfig().CritMultiplier,
-					ThreatMultiplier: character.AutoAttacks.MHConfig().ThreatMultiplier,
+					DamageMultiplier: autoAttackConfig.DamageMultiplier * 0.5,
+					CritMultiplier:   autoAttackConfig.CritMultiplier,
+					ThreatMultiplier: autoAttackConfig.ThreatMultiplier,
 					ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-						baseDamage := character.MHWeaponDamage(sim, spell.MeleeAttackPower())
+						baseDamage := weaponDamagefn(sim, spell.MeleeAttackPower())
 						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 					},
 				})
-
-				if character.AutoAttacks.IsDualWielding {
-					ohSpell = character.GetOrRegisterSpell(core.SpellConfig{
-						ActionID:         core.ActionID{SpellID: 71434}, // "Manifest Anger"
-						SpellSchool:      core.SpellSchoolPhysical,
-						ProcMask:         core.ProcMaskMeleeOHSpecial,
-						Flags:            core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
-						DamageMultiplier: character.AutoAttacks.OHConfig().DamageMultiplier * 0.5,
-						CritMultiplier:   character.AutoAttacks.OHConfig().CritMultiplier,
-						ThreatMultiplier: character.AutoAttacks.OHConfig().ThreatMultiplier,
-						ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-							baseDamage := character.OHWeaponDamage(sim, spell.MeleeAttackPower())
-							spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-						},
-					})
-				}
 			}
+
+			var mhSpell *core.Spell
+			var ohSpell *core.Spell
 
 			firstProc := core.MainHand
 
@@ -217,7 +204,8 @@ func init() {
 					Duration:  core.NeverExpires,
 					MaxStacks: maxStacks,
 					OnInit: func(aura *core.Aura, sim *core.Simulation) {
-						initSpells()
+						mhSpell = registerSpell(71433, core.ProcMaskMeleeMHSpecial, character.AutoAttacks.MHConfig(), character.MHWeaponDamage)
+						ohSpell = registerSpell(71434, core.ProcMaskMeleeOHSpecial, character.AutoAttacks.OHConfig(), character.OHWeaponDamage)
 					},
 				},
 				Handler: func(sim *core.Simulation) {
@@ -229,7 +217,7 @@ func init() {
 				},
 			})
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       name + " Trigger",
 				Callback:   core.CallbackOnSpellHitDealt,
 				ProcMask:   core.ProcMaskMeleeOrMeleeProc,
@@ -240,17 +228,24 @@ func init() {
 					if spell == mhSpell || spell == ohSpell { // can't proc itself
 						return
 					}
+					hasOffHand := character.OffHand().ID != 0
 					if !capacitorAura.IsActive() {
 						if spell.ProcMask.Matches(core.ProcMaskMeleeMH | core.ProcMaskMeleeProc) {
 							firstProc = core.MainHand
-						} else {
+						} else if hasOffHand {
 							firstProc = core.OffHand
 						}
 					}
+					if firstProc == core.OffHand && !hasOffHand {
+						return
+					}
+
 					capacitorAura.Activate(sim)
 					capacitorAura.AddStack(sim)
 				},
 			})
+
+			character.ItemSwap.RegisterProc(itemID, triggerAura)
 		})
 	})
 }

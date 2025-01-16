@@ -12,32 +12,28 @@ import (
 var ItemSetGladiatorsBattlegear = core.NewItemSet(core.ItemSet{
 	ID:   909,
 	Name: "Gladiator's Battlegear",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			agent.GetCharacter().AddStats(stats.Stats{
-				stats.Strength: 70,
-			})
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(_ core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachStatBuff(stats.Strength, 70)
 		},
-		4: func(agent core.Agent) {
-			agent.GetCharacter().AddStats(stats.Stats{
-				stats.Strength: 90,
-			})
+		4: func(_ core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachStatBuff(stats.Strength, 90)
 		},
 	},
 })
 
 var ItemSetEarthenWarplate = core.NewItemSet(core.ItemSet{
 	Name: "Earthen Warplate",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			agent.GetCharacter().AddStaticMod(core.SpellModConfig{
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(_ core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				ClassMask:  SpellMaskBloodthirst | SpellMaskMortalStrike,
 				Kind:       core.SpellMod_DamageDone_Flat,
 				FloatValue: 0.05,
 			})
 		},
-		4: func(agent core.Agent) {
-			character := agent.GetCharacter()
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			character := agent.(WarriorAgent).GetWarrior()
 			actionID := core.ActionID{SpellID: 90294}
 
 			apDep := make([]*stats.StatDependency, 3)
@@ -61,7 +57,7 @@ var ItemSetEarthenWarplate = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
 				Name:           "Rage of the Ages Trigger",
 				ActionID:       actionID,
 				Callback:       core.CallbackOnCastComplete,
@@ -77,16 +73,16 @@ var ItemSetEarthenWarplate = core.NewItemSet(core.ItemSet{
 
 var ItemSetEarthenBattleplate = core.NewItemSet(core.ItemSet{
 	Name: "Earthen Battleplate",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			agent.GetCharacter().AddStaticMod(core.SpellModConfig{
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(_ core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				ClassMask:  SpellMaskShieldSlam,
 				Kind:       core.SpellMod_DamageDone_Flat,
 				FloatValue: 0.05,
 			})
 		},
-		4: func(agent core.Agent) {
-			agent.GetCharacter().AddStaticMod(core.SpellModConfig{
+		4: func(_ core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				ClassMask:  SpellMaskShieldWall,
 				Kind:       core.SpellMod_Cooldown_Multiplier,
 				FloatValue: -0.5,
@@ -97,13 +93,12 @@ var ItemSetEarthenBattleplate = core.NewItemSet(core.ItemSet{
 
 var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 	Name: "Molten Giant Warplate",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			character := agent.GetCharacter()
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			character := agent.(WarriorAgent).GetWarrior()
 			actionID := core.ActionID{SpellID: 99233}
 
-			warrior := agent.(WarriorAgent).GetWarrior()
-			talentReduction := time.Duration(warrior.Talents.BoomingVoice*3) * time.Second
+			talentReduction := time.Duration(character.Talents.BoomingVoice*3) * time.Second
 
 			buff := character.RegisterAura(core.Aura{
 				Label:    "Burning Rage",
@@ -117,7 +112,7 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
 				Name:           "Burning Rage Trigger",
 				ActionID:       actionID,
 				ClassSpellMask: SpellMaskShouts,
@@ -127,16 +122,16 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		4: func(agent core.Agent) {
-			character := agent.GetCharacter()
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			character := agent.(WarriorAgent).GetWarrior()
 
 			actionID := core.ActionID{SpellID: 99237}
 
 			fieryAttackActionID := core.ActionID{} // actual ID = 99237
-			if character.Spec == proto.Spec_SpecArmsWarrior {
+			switch character.Spec {
+			case proto.Spec_SpecArmsWarrior:
 				fieryAttackActionID.SpellID = 12294
-			}
-			if character.Spec == proto.Spec_SpecFuryWarrior {
+			case proto.Spec_SpecFuryWarrior:
 				fieryAttackActionID.SpellID = 85288
 			}
 
@@ -156,7 +151,7 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
 				Name:           "Fiery Attack Trigger",
 				ActionID:       actionID,
 				Callback:       core.CallbackOnSpellHitDealt,
@@ -173,15 +168,16 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 
 var ItemSetMoltenGiantBattleplate = core.NewItemSet(core.ItemSet{
 	Name: "Molten Giant Battleplate",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			character := agent.GetCharacter()
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			character := agent.(WarriorAgent).GetWarrior()
 
 			cata.RegisterIgniteEffect(&character.Unit, cata.IgniteConfig{
 				ActionID:           core.ActionID{SpellID: 23922}.WithTag(3), // actual 99240
 				DisableCastMetrics: true,
 				DotAuraLabel:       "Combust",
 				IncludeAuraDelay:   true,
+				SetBonusAura:       setBonusAura,
 
 				ProcTrigger: core.ProcTrigger{
 					Name:           "Combust",
@@ -195,11 +191,11 @@ var ItemSetMoltenGiantBattleplate = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		4: func(agent core.Agent) {
-			character := agent.GetCharacter()
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			character := agent.(WarriorAgent).GetWarrior()
 
-			character.RegisterAura(core.Aura{
-				Label:    "T12 4P Bonus",
+			aura := character.RegisterAura(core.Aura{
+				Label:    "Item - Warrior T12 Protection 4P Bonus",
 				ActionID: core.ActionID{SpellID: 99242},
 				Duration: 10 * time.Second,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -210,15 +206,26 @@ var ItemSetMoltenGiantBattleplate = core.NewItemSet(core.ItemSet{
 				},
 			})
 
+			character.OnSpellRegistered(func(spell *core.Spell) {
+				if !spell.Matches(SpellMaskShieldBlock) {
+					return
+				}
+
+				character.ShieldBlockAura.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
+					if setBonusAura.IsActive() {
+						aura.Activate(sim)
+					}
+				})
+			})
 		},
 	},
 })
 
 var ItemSetColossalDragonplateBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Colossal Dragonplate Battlegear",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			character := agent.GetCharacter()
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			character := agent.(WarriorAgent).GetWarrior()
 
 			mod := character.AddDynamicMod(core.SpellModConfig{
 				ClassMask:  SpellMaskHeroicStrike,
@@ -239,7 +246,7 @@ var ItemSetColossalDragonplateBattlegear = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
 				Name:           "Volatile Outrage Trigger",
 				ActionID:       actionID,
 				Callback:       core.CallbackOnCastComplete,
@@ -249,7 +256,7 @@ var ItemSetColossalDragonplateBattlegear = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			warrior := agent.(WarriorAgent).GetWarrior()
 
 			actionID := core.ActionID{SpellID: 108126}
@@ -267,37 +274,40 @@ var ItemSetColossalDragonplateBattlegear = core.NewItemSet(core.ItemSet{
 				},
 			})
 
+			baseProcTriggerConfig := func(config core.ProcTrigger) core.ProcTrigger {
+				return core.ProcTrigger{
+					Name:           config.Name,
+					ClassSpellMask: config.ClassSpellMask,
+					ProcChance:     config.ProcChance,
+					ActionID:       actionID,
+					Callback:       core.CallbackOnSpellHitDealt,
+					Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+						procCS.Cast(sim, result.Target)
+					},
+				}
+			}
+
 			// TODO (4.3): Check if this cares that the hit landed
-			core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
+			setBonusAura.MakeDependentProcTriggerAura(&warrior.Unit, baseProcTriggerConfig(core.ProcTrigger{
 				Name:           "Warrior T13 4P Bloodthirst Trigger",
-				ActionID:       actionID,
-				Callback:       core.CallbackOnSpellHitDealt,
 				ClassSpellMask: SpellMaskBloodthirst,
 				ProcChance:     0.06,
-				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					procCS.Cast(sim, result.Target)
-				},
-			})
+			}))
 
-			core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
+			setBonusAura.MakeDependentProcTriggerAura(&warrior.Unit, baseProcTriggerConfig(core.ProcTrigger{
 				Name:           "Warrior T13 4P Mortal Strike Trigger",
-				ActionID:       actionID,
-				Callback:       core.CallbackOnSpellHitDealt,
 				ClassSpellMask: SpellMaskMortalStrike,
 				ProcChance:     0.13,
-				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					procCS.Cast(sim, result.Target)
-				},
-			})
+			}))
 		},
 	},
 })
 
 var ItemSetColossalDragonplateArmor = core.NewItemSet(core.ItemSet{
 	Name: "Colossal Dragonplate Armor",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			character := agent.GetCharacter()
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			character := agent.(WarriorAgent).GetWarrior()
 			actionID := core.ActionID{SpellID: 105909}
 			duration := time.Second * 6
 
@@ -306,7 +316,7 @@ var ItemSetColossalDragonplateArmor = core.NewItemSet(core.ItemSet{
 				return shieldAmt
 			})
 
-			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
 				Name:           "Shield of Fury Trigger" + character.Label,
 				Callback:       core.CallbackOnSpellHitDealt,
 				ClassSpellMask: SpellMaskRevenge,
@@ -323,8 +333,12 @@ var ItemSetColossalDragonplateArmor = core.NewItemSet(core.ItemSet{
 					}
 				},
 			})
+
+			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				shieldAmt = 0
+			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			// TODO: Implement this, turns Shield Wall into a raid buff
 		},
 	},

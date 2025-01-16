@@ -41,26 +41,32 @@ type ProcTrigger struct {
 	Harmful         bool
 	ProcChance      float64
 	PPM             float64
+	DPM             *DynamicProcManager
 	ICD             time.Duration
 	Handler         ProcHandler
 	ClassSpellMask  int64
 	ExtraCondition  ProcExtraCondition
 }
 
-func ApplyProcTriggerCallback(unit *Unit, aura *Aura, config ProcTrigger) {
+func ApplyProcTriggerCallback(unit *Unit, procAura *Aura, config ProcTrigger) {
 	var icd Cooldown
 	if config.ICD != 0 {
 		icd = Cooldown{
 			Timer:    unit.NewTimer(),
 			Duration: config.ICD,
 		}
-		aura.Icd = &icd
+		procAura.Icd = &icd
 	}
 
-	var ppmm PPMManager
-	if config.PPM > 0 {
-		ppmm = unit.AutoAttacks.NewPPMManager(config.PPM, config.ProcMask)
-		aura.Ppmm = &ppmm
+	var dpm *DynamicProcManager
+	if config.DPM != nil {
+		dpm = config.DPM
+	} else if config.PPM > 0 {
+		dpm = unit.AutoAttacks.NewPPMManager(config.PPM, config.ProcMask)
+	}
+
+	if dpm != nil {
+		procAura.Dpm = dpm
 	}
 
 	handler := config.Handler
@@ -91,7 +97,7 @@ func ApplyProcTriggerCallback(unit *Unit, aura *Aura, config ProcTrigger) {
 		}
 		if config.ProcChance != 1 && sim.RandomFloat(config.Name) > config.ProcChance {
 			return
-		} else if config.PPM != 0 && !ppmm.Proc(sim, spell.ProcMask, config.Name) {
+		} else if dpm != nil && !dpm.Proc(sim, spell.ProcMask, config.Name) {
 			return
 		}
 
@@ -106,22 +112,22 @@ func ApplyProcTriggerCallback(unit *Unit, aura *Aura, config ProcTrigger) {
 	}
 
 	if config.Callback.Matches(CallbackOnSpellHitDealt) {
-		aura.OnSpellHitDealt = callback
+		procAura.OnSpellHitDealt = callback
 	}
 	if config.Callback.Matches(CallbackOnSpellHitTaken) {
-		aura.OnSpellHitTaken = callback
+		procAura.OnSpellHitTaken = callback
 	}
 	if config.Callback.Matches(CallbackOnPeriodicDamageDealt) {
-		aura.OnPeriodicDamageDealt = callback
+		procAura.OnPeriodicDamageDealt = callback
 	}
 	if config.Callback.Matches(CallbackOnHealDealt) {
-		aura.OnHealDealt = callback
+		procAura.OnHealDealt = callback
 	}
 	if config.Callback.Matches(CallbackOnPeriodicHealDealt) {
-		aura.OnPeriodicHealDealt = callback
+		procAura.OnPeriodicHealDealt = callback
 	}
 	if config.Callback.Matches(CallbackOnCastComplete) {
-		aura.OnCastComplete = func(aura *Aura, sim *Simulation, spell *Spell) {
+		procAura.OnCastComplete = func(aura *Aura, sim *Simulation, spell *Spell) {
 			if config.SpellFlags != SpellFlagNone && !spell.Flags.Matches(config.SpellFlags) {
 				return
 			}
@@ -148,7 +154,7 @@ func ApplyProcTriggerCallback(unit *Unit, aura *Aura, config ProcTrigger) {
 		}
 	}
 	if config.Callback.Matches(CallbackOnApplyEffects) {
-		aura.OnApplyEffects = func(aura *Aura, sim *Simulation, target *Unit, spell *Spell) {
+		procAura.OnApplyEffects = func(aura *Aura, sim *Simulation, target *Unit, spell *Spell) {
 			if config.SpellFlags != SpellFlagNone && !spell.Flags.Matches(config.SpellFlags) {
 				return
 			}
@@ -233,7 +239,7 @@ func MakeStackingAura(character *Character, config StackingStatAura) *StatBuffAu
 		character.AddStatsDynamic(sim, bonusPerStack.Multiply(float64(newStacks-oldStacks)))
 	}
 	return &StatBuffAura{
-		Aura:            character.RegisterAura(config.Aura),
+		Aura:            character.GetOrRegisterAura(config.Aura),
 		BuffedStatTypes: bonusPerStack.GetBuffedStatTypes(),
 	}
 }
@@ -327,6 +333,71 @@ func (character *Character) NewTemporaryStatsAuraWrapped(auraLabel string, actio
 		Aura:            character.GetOrRegisterAura(config),
 		BuffedStatTypes: buffs.GetBuffedStatTypes(),
 	}
+}
+
+// Creates a new ProcTriggerAura that is dependent on a parent Aura being active
+// This should only be used if the dependent Aura is:
+// 1. On the a different Unit than parent Aura is registered to (usually the Character)
+// 2. You need to register multiple dependent Aura's for the same Unit
+func (parentAura *Aura) MakeDependentProcTriggerAura(unit *Unit, config ProcTrigger) *Aura {
+	oldExtraCondition := config.ExtraCondition
+	config.ExtraCondition = func(sim *Simulation, spell *Spell, result *SpellResult) bool {
+		return parentAura.IsActive() && ((oldExtraCondition == nil) || oldExtraCondition(sim, spell, result))
+	}
+
+	aura := MakeProcTriggerAura(unit, config)
+
+	return aura
+}
+
+// Attaches a ProcTrigger to a parent Aura
+// Preffered use-case.
+// For non standard use-cases see: MakeDependentProcTriggerAura
+func (parentAura *Aura) AttachProcTrigger(config ProcTrigger) {
+	ApplyProcTriggerCallback(parentAura.Unit, parentAura, config)
+}
+
+// Attaches a SpellMod to a parent Aura
+func (parentAura *Aura) AttachSpellMod(spellModConfig SpellModConfig) {
+	parentAuraDep := parentAura.Unit.AddDynamicMod(spellModConfig)
+
+	parentAura.ApplyOnGain(func(_ *Aura, _ *Simulation) {
+		parentAuraDep.Activate()
+	})
+
+	parentAura.ApplyOnExpire(func(_ *Aura, _ *Simulation) {
+		parentAuraDep.Deactivate()
+	})
+}
+
+// Attaches a StatDependency to a parent Aura
+func (parentAura *Aura) AttachStatDependency(statDep *stats.StatDependency) {
+
+	parentAura.ApplyOnGain(func(_ *Aura, sim *Simulation) {
+		parentAura.Unit.EnableBuildPhaseStatDep(sim, statDep)
+	})
+
+	parentAura.ApplyOnExpire(func(_ *Aura, sim *Simulation) {
+		parentAura.Unit.DisableBuildPhaseStatDep(sim, statDep)
+	})
+}
+
+// Adds Stats to a parent Aura
+func (parentAura *Aura) AttachStatsBuff(stats stats.Stats) {
+	parentAura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
+		aura.Unit.AddStatsDynamic(sim, stats)
+	})
+
+	parentAura.ApplyOnExpire(func(aura *Aura, sim *Simulation) {
+		aura.Unit.AddStatsDynamic(sim, stats.Invert())
+	})
+}
+
+// Adds a Stat to a parent Aura
+func (parentAura *Aura) AttachStatBuff(stat stats.Stat, value float64) {
+	statsToAdd := stats.Stats{}
+	statsToAdd[stat] = value
+	parentAura.AttachStatsBuff(statsToAdd)
 }
 
 type ShieldStrengthCalculator func(unit *Unit) float64
