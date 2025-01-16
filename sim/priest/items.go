@@ -306,7 +306,6 @@ var ItemSetRegaliaOfTheCleansingFlame = core.NewItemSet(core.ItemSet{
 	Name: "Regalia of the Cleansing Flame",
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
-
 			// Fiend deals 20% extra damage as fire damage and cooldown reduced by 75 seconds
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:      core.SpellMod_Cooldown_Flat,
@@ -408,6 +407,50 @@ var ItemSetRegaliaOfTheCleansingFlame = core.NewItemSet(core.ItemSet{
 					}
 				}
 			})
+		},
+	},
+})
+
+// T13 - Shadow
+var ItemSetRegaliaOfDyingLight = core.NewItemSet(core.ItemSet{
+	Name:            "Regalia of Dying Light",
+	AlternativeName: "Regalia of Dying light",
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:       core.SpellMod_DamageDone_Flat,
+				ClassMask:  PriestSpellShadowWordDeath,
+				FloatValue: 0.55,
+			})
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			priest := agent.(PriestAgent).GetPriest()
+
+			makeProcTriggerConfig := func(config core.ProcTrigger) core.ProcTrigger {
+				return core.ProcTrigger{
+					ActionID:       core.ActionID{SpellID: 105844},
+					Name:           "Item - Priest T13 Shadow 4P Bonus (Shadowfiend and Shadowy Apparition)",
+					Callback:       core.CallbackOnSpellHitDealt,
+					Outcome:        core.OutcomeLanded,
+					ProcChance:     1.0,
+					ClassSpellMask: config.ClassSpellMask,
+					ProcMask:       config.ProcMask,
+					Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+						if priest.ShadowOrbsAura != nil {
+							priest.ShadowOrbsAura.Activate(sim)
+							priest.ShadowOrbsAura.SetStacks(sim, 3)
+						}
+					},
+				}
+			}
+
+			setBonusAura.MakeDependentProcTriggerAura(&priest.ShadowfiendPet.Unit, makeProcTriggerConfig(core.ProcTrigger{
+				ProcMask: core.ProcMaskMelee,
+			}))
+
+			setBonusAura.AttachProcTrigger(makeProcTriggerConfig(core.ProcTrigger{
+				ClassSpellMask: PriestSpellShadowyApparation,
+			}))
 		},
 	},
 })
