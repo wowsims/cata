@@ -169,7 +169,7 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 		}
 
 		// If user has Item Swapping enabled and hasn't swapped back to the main set do it here.
-		if character.ItemSwap.IsEnabled() {
+		if character != nil && character.ItemSwap.IsEnabled() {
 			var hasMainSwap bool
 			for _, prepullAction := range rotation.allPrepullActions() {
 				if action, ok := prepullAction.impl.(*APLActionItemSwap); ok {
