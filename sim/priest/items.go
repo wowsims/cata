@@ -424,6 +424,7 @@ var ItemSetRegaliaOfDyingLight = core.NewItemSet(core.ItemSet{
 			})
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Implemented in: shadowfiend_pet.go:56 and talents.go:670
 			priest := agent.(PriestAgent).GetPriest()
 			priest.T13_4pc = setBonusAura
 		},
