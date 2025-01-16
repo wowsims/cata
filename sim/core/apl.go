@@ -153,11 +153,12 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 		})
 	}
 
-	// Remove MCDs that are referenced by APL actions, so that the Autocast Other Cooldowns
-	// action does not include them.
 	agent := unit.Env.GetAgentFromUnit(unit)
-	character := agent.GetCharacter()
 	if agent != nil {
+		character := agent.GetCharacter()
+
+		// Remove MCDs that are referenced by APL actions, so that the Autocast Other Cooldowns
+		// action does not include them.
 		for _, action := range rotation.allAPLActions() {
 			if castSpellAction, ok := action.impl.(*APLActionCastSpell); ok {
 				character.removeInitialMajorCooldown(castSpellAction.spell.ActionID)
@@ -168,8 +169,7 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 		}
 
 		// If user has Item Swapping enabled and hasn't swapped back to the main set do it here.
-		// Pre-cache character in earlier code that uses it
-		if (character != nil) && character.ItemSwap.IsEnabled() {
+		if character.ItemSwap.IsEnabled() {
 			var hasMainSwap bool
 			for _, prepullAction := range rotation.allPrepullActions() {
 				if action, ok := prepullAction.impl.(*APLActionItemSwap); ok {
