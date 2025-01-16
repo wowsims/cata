@@ -522,6 +522,18 @@ func init() {
 	// 	ICD:        time.Second * 60,
 	// })
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		// Ashen Band of Endless Wisdom
+		Name:       "Chilling Knowledge",
+		ItemID:     50400,
+		AuraID:     72418,
+		Bonus:      stats.Stats{stats.SpellPower: 285},
+		Duration:   time.Second * 10,
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskSpellHealing,
+		ProcChance: 0.10,
+		ICD:        time.Second * 60,
+	})
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		// Ashen Band of Endless Destruction
 		Name:       "Frostforged Sage",
 		ItemID:     50398,

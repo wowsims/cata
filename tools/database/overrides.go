@@ -230,6 +230,10 @@ var ItemAllowList = map[int32]struct{}{
 	28231: {}, // Tidefury Chestpiece
 	28349: {}, // Tidefury Helm
 
+	29309: {}, // Band of the Eternal Restorer
+
+	34677: {}, // Shattered Sun Pendant of Restoration
+
 	45703: {}, // Spark of Hope
 }
 
