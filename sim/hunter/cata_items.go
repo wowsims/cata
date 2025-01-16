@@ -108,12 +108,7 @@ var ItemSetWyrmstalkerBattleGear = core.NewItemSet(core.ItemSet{
 			hunter := agent.(HunterAgent).GetHunter()
 
 			// Handled in Cobra and Steady code respectively
-			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-				hunter.Has2pcT13 = true
-			})
-			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-				hunter.Has2pcT13 = false
-			})
+			hunter.T13_2pc = setBonusAura
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			hunter := agent.(HunterAgent).GetHunter()

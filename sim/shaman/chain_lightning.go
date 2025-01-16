@@ -35,7 +35,7 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 	numHits = min(numHits, shaman.Env.GetNumTargets())
 
 	spellConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		bounceReduction := core.TernaryFloat64(shaman.HasDungeonSet3 && !isElementalOverload, 0.83, 0.7)
+		bounceReduction := core.TernaryFloat64(shaman.DungeonSet3.IsActive() && !isElementalOverload, 0.83, 0.7)
 		baseDamage := shaman.CalcAndRollDamageRange(sim, 1.08800005913, 0.13300000131)
 		curTarget := target
 

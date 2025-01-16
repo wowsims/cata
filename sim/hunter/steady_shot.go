@@ -46,7 +46,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) + (280.182 + (spell.RangedAttackPower(target) * 0.021))
-			intFocus := core.TernaryFloat64(hunter.Has2pcT13, 9*2, 9)
+			intFocus := core.TernaryFloat64(hunter.T13_2pc.IsActive(), 9*2, 9)
 
 			if hunter.Talents.Termination != 0 && sim.IsExecutePhase25() {
 				intFocus += float64(hunter.Talents.Termination) * 3

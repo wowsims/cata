@@ -121,7 +121,7 @@ func (mage *Mage) registerIcyVeinsCD() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			icyVeinsAura.Activate(sim)
-			if mage.Has4pcT13 {
+			if mage.T13_4pc.IsActive() {
 				spell.CD.Reduce(time.Second * time.Duration(15*mage.t13ProcAura.GetStacks()))
 			}
 		},

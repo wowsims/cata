@@ -13,7 +13,7 @@ func (druid *Druid) registerLacerateSpell() {
 
 	initialDamageMul := 1.0
 	// Set bonuses can scale up the ticks relative to the initial hit
-	getTickDamageMultiplier := func() float64 { return core.TernaryFloat64(druid.HasT11Feral2pBonus, 1.1, 1) }
+	getTickDamageMultiplier := func() float64 { return core.TernaryFloat64(druid.T11Feral2pBonus.IsActive(), 1.1, 1) }
 
 	druid.Lacerate = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 33745},

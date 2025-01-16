@@ -20,17 +20,11 @@ var ItemSetReinforcedSapphiriumBattleplate = core.NewItemSet(core.ItemSet{
 			})
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
-			character := agent.(PaladinAgent).GetPaladin()
-
-			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-				character.HasT11Ret4pc = true
-			})
-			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-				character.HasT11Ret4pc = false
-			})
+			paladin := agent.(PaladinAgent).GetPaladin()
 
 			// Handled in inquisition.go
 			setBonusAura.ExposeToAPL(90299)
+			paladin.T11Ret4pc = setBonusAura
 		},
 	},
 })

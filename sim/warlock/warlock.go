@@ -41,7 +41,7 @@ type Warlock struct {
 	SoulBurnAura *core.Aura
 
 	// Item sets
-	Has4pcT13 bool
+	T13_4pc *core.Aura
 }
 
 func (warlock *Warlock) GetCharacter() *core.Character {
