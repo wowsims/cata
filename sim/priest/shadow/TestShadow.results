@@ -1227,6 +1227,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestShadow-AllItems-RegaliaofDyingLight"
+ value: {
+  dps: 35688.96997
+  tps: 31611.20778
+ }
+}
+dps_results: {
  key: "TestShadow-AllItems-RegaliaoftheCleansingFlame"
  value: {
   dps: 36884.25892

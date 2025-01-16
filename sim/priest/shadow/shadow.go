@@ -51,9 +51,6 @@ func NewShadowPriest(character *core.Character, options *proto.Player) *ShadowPr
 type ShadowPriest struct {
 	*priest.Priest
 	options *proto.ShadowPriest_Options
-
-	shadowOrbsAura      *core.Aura
-	empoweredShadowAura *core.Aura
 }
 
 func (spriest *ShadowPriest) GetPriest() *priest.Priest {
@@ -110,7 +107,7 @@ func (spriest *ShadowPriest) ApplyTalents() {
 	})
 
 	// mastery aura
-	spriest.shadowOrbsAura = spriest.RegisterAura(core.Aura{
+	spriest.ShadowOrbsAura = spriest.RegisterAura(core.Aura{
 		Label:     "Shadow Orb",
 		ActionID:  core.ActionID{SpellID: 77487},
 		Duration:  time.Minute,
@@ -125,8 +122,8 @@ func (spriest *ShadowPriest) ApplyTalents() {
 				return
 			}
 
-			spriest.empoweredShadowAura.Deactivate(sim)
-			spriest.empoweredShadowAura.Activate(sim)
+			spriest.EmpoweredShadowAura.Deactivate(sim)
+			spriest.EmpoweredShadowAura.Activate(sim)
 			aura.Deactivate(sim)
 		},
 
@@ -136,7 +133,7 @@ func (spriest *ShadowPriest) ApplyTalents() {
 	})
 
 	spriest.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-		shadowOrbMod.UpdateFloatValue(getMasteryBonus(core.MasteryRatingToMasteryPoints(newMastery)) * float64(spriest.shadowOrbsAura.GetStacks()))
+		shadowOrbMod.UpdateFloatValue(getMasteryBonus(core.MasteryRatingToMasteryPoints(newMastery)) * float64(spriest.ShadowOrbsAura.GetStacks()))
 	})
 
 	empoweredShadowMod := spriest.AddDynamicMod(core.SpellModConfig{
@@ -145,7 +142,7 @@ func (spriest *ShadowPriest) ApplyTalents() {
 		FloatValue: getMasteryBonus(spriest.GetMasteryPoints()),
 	})
 
-	spriest.empoweredShadowAura = spriest.RegisterAura(core.Aura{
+	spriest.EmpoweredShadowAura = spriest.RegisterAura(core.Aura{
 		Label:    "Empowered Shadow",
 		ActionID: core.ActionID{SpellID: 95799},
 		Duration: time.Second * 15,
@@ -179,8 +176,8 @@ func handleShadowOrbPower(spriest *ShadowPriest, sim *core.Simulation, spell *co
 	if spell.ClassSpellMask&(priest.PriestSpellShadowWordPain|priest.PriestSpellMindFlay) > 0 {
 		procChance := 0.1 + float64(spriest.Talents.HarnessedShadows)*0.04
 		if sim.Proc(procChance, "Shadow Orb Power") {
-			spriest.shadowOrbsAura.Activate(sim)
-			spriest.shadowOrbsAura.AddStack(sim)
+			spriest.ShadowOrbsAura.Activate(sim)
+			spriest.ShadowOrbsAura.AddStack(sim)
 		}
 	}
 }
