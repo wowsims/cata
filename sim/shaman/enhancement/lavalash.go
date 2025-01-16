@@ -9,7 +9,7 @@ import (
 )
 
 func (enh *EnhancementShaman) getSearingFlamesMultiplier() float64 {
-	return enh.SearingFlamesMultiplier + core.TernaryFloat64(enh.HasT12Enh2pc, 0.05, 0)
+	return enh.SearingFlamesMultiplier + core.TernaryFloat64(enh.T12Enh2pc.IsActive(), 0.05, 0)
 }
 
 func (enh *EnhancementShaman) registerLavaLashSpell() {

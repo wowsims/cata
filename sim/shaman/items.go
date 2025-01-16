@@ -18,12 +18,7 @@ var ItemSetTidefury = core.NewItemSet(core.ItemSet{
 			shaman := agent.(ShamanAgent).GetShaman()
 
 			// Handled in chain_lightning.go
-			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-				shaman.HasDungeonSet3 = true
-			})
-			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-				shaman.HasDungeonSet3 = false
-			})
+			shaman.DungeonSet3 = setBonusAura
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			shaman := agent.(ShamanAgent).GetShaman()
@@ -162,12 +157,7 @@ var ItemSetVolcanicRegalia = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-				shaman.HasT12Ele4pc = true
-			})
-			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-				shaman.HasT12Ele4pc = false
-			})
+			shaman.T12Ele4pc = setBonusAura
 		},
 	},
 })
@@ -309,12 +299,7 @@ var ItemSetVolcanicBattlegear = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Implemented in lavalash.go
 			shaman := agent.(ShamanAgent).GetShaman()
-			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-				shaman.HasT12Enh2pc = true
-			})
-			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-				shaman.HasT12Enh2pc = false
-			})
+			shaman.T12Enh2pc = setBonusAura
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			shaman := agent.(ShamanAgent).GetShaman()

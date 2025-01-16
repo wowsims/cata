@@ -125,9 +125,9 @@ type Druid struct {
 	disabledMCDs []*core.MajorCooldown
 
 	// Item sets
-	HasT11Feral2pBonus bool
-	HasT11Feral4pBonus bool
-	HasT12Feral4pBonus bool
+	T11Feral2pBonus *core.Aura
+	T11Feral4pBonus *core.Aura
+	T12Feral4pBonus *core.Aura
 }
 
 const (

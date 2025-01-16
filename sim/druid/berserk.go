@@ -98,7 +98,7 @@ func (druid *Druid) registerBerserkCD() {
 }
 
 func (druid *Druid) ApplyFeral4pT12(sim *core.Simulation) {
-	if !druid.HasT12Feral4pBonus || !druid.BerserkAura.IsActive() {
+	if !druid.T12Feral4pBonus.IsActive() || !druid.BerserkAura.IsActive() {
 		return
 	}
 

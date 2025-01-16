@@ -75,7 +75,7 @@ type Hunter struct {
 	TrapLauncherAura              *core.Aura
 
 	// Item sets
-	Has2pcT13 bool
+	T13_2pc *core.Aura
 }
 
 func (hunter *Hunter) GetCharacter() *core.Character {

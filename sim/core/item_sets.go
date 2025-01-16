@@ -92,28 +92,24 @@ func NewItemSet(set ItemSet) *ItemSet {
 	return &set
 }
 
-func (character *Character) CouldHaveSetBonus(set *ItemSet, numItems int32) bool {
-	if character.Env != nil && character.Env.IsFinalized() {
-		panic("CouldHaveSetBonus is very slow and should never be called after finalization. Try caching the value during construction instead!")
-	}
+type SetBonus struct {
+	// Name of the set.
+	Name string
 
-	if _, ok := set.Bonuses[numItems]; !ok {
-		panic(fmt.Sprintf("Item set %s does not have a bonus with %d pieces.", set.Name, numItems))
-	}
+	// Number of pieces required for this bonus.
+	NumPieces int32
 
-	if character.hasActiveSetBonus(set.Name, numItems) {
-		return true
-	}
+	// Function for applying the effects of this set bonus.
+	BonusEffect ApplySetBonus
 
-	if character.ItemSwap.IsEnabled() {
-		return character.hasUnequippedSetBonus(set.Name, numItems)
-	}
-
-	return false
+	// Optional field to override the DefaultItemSetSlots
+	// For Example: The set contains of 2 weapons
+	Slots []proto.ItemSlot
 }
 
 type SetBonusCollection []SetBonus
 
+// Returns a list describing all active set bonuses.
 func (equipment *Equipment) getSetBonuses() SetBonusCollection {
 	var activeBonuses SetBonusCollection
 
@@ -160,6 +156,14 @@ func (equipment *Equipment) getSetBonuses() SetBonusCollection {
 	return activeBonuses
 }
 
+func (character *Character) getActiveSetBonuses() SetBonusCollection {
+	return character.Equipment.getSetBonuses()
+}
+
+func (character *Character) getUnequippedSetBonuses() SetBonusCollection {
+	return character.ItemSwap.unEquippedItems.getSetBonuses()
+}
+
 func (collection SetBonusCollection) ContainsBonus(setName string, count int32) bool {
 	for _, bonus := range collection {
 		if (bonus.Name == setName) && (bonus.NumPieces >= count) {
@@ -170,39 +174,33 @@ func (collection SetBonusCollection) ContainsBonus(setName string, count int32) 
 	return false
 }
 
-// Returns a list describing all active set bonuses.
-func (character *Character) getActiveSetBonuses() SetBonusCollection {
-	return character.Equipment.getSetBonuses()
-}
-
-func (character *Character) getUnequippedSetBonuses() SetBonusCollection {
-	return character.ItemSwap.unEquippedItems.getSetBonuses()
+// Checks whether the character has an equipped set bonus
+func (character *Character) hasActiveSetBonus(setName string, count int32) bool {
+	return character.getActiveSetBonuses().ContainsBonus(setName, count)
 }
 
 func (character *Character) hasUnequippedSetBonus(setName string, count int32) bool {
-	unequippedSetBonuses := character.getUnequippedSetBonuses()
-	return unequippedSetBonuses.ContainsBonus(setName, count)
+	return character.getUnequippedSetBonuses().ContainsBonus(setName, count)
 }
 
-type SetBonus struct {
-	// Name of the set.
-	Name string
+func (character *Character) CouldHaveSetBonus(set *ItemSet, numItems int32) bool {
+	if character.Env != nil && character.Env.IsFinalized() {
+		panic("CouldHaveSetBonus is very slow and should never be called after finalization. Try caching the value during construction instead!")
+	}
 
-	// Number of pieces required for this bonus.
-	NumPieces int32
+	if _, ok := set.Bonuses[numItems]; !ok {
+		panic(fmt.Sprintf("Item set %s does not have a bonus with %d pieces.", set.Name, numItems))
+	}
 
-	// Function for applying the effects of this set bonus.
-	BonusEffect ApplySetBonus
+	if character.hasActiveSetBonus(set.Name, numItems) {
+		return true
+	}
 
-	// Optional field to override the DefaultItemSetSlots
-	// For Example: The set contains of 2 weapons
-	Slots []proto.ItemSlot
-}
+	if character.ItemSwap.IsEnabled() {
+		return character.hasUnequippedSetBonus(set.Name, numItems)
+	}
 
-// Checks whether the character has an equipped set bonus
-func (character *Character) hasActiveSetBonus(setName string, count int32) bool {
-	activeSetBonuses := character.getActiveSetBonuses()
-	return activeSetBonuses.ContainsBonus(setName, count)
+	return false
 }
 
 // Apply effects from item set bonuses.

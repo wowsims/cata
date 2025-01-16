@@ -53,24 +53,23 @@ var ItemSetFirehawkRobesOfConflagration = core.NewItemSet(core.ItemSet{
 		// Your spells have an increased chance to trigger Brain Freeze or Hot Streak.
 		// In addition, Arcane Power decreases the cost of your damaging spells by 10% instead of increasing their cost.
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
-			// Arcane Power Cost reduction implemented in:
-			// talents_arcane.go#278
-
 			mage := agent.(MageAgent).GetMage()
 
 			setBonusAura.ApplyOnGain(func(_ *core.Aura, _ *core.Simulation) {
-				mage.Has4pcT12 = true
 				mage.brainFreezeProcChance += .15
 				mage.baseHotStreakProcChance += 0.30
 			})
 
 			setBonusAura.ApplyOnExpire(func(_ *core.Aura, _ *core.Simulation) {
-				mage.Has4pcT12 = false
 				mage.brainFreezeProcChance -= .15
 				mage.baseHotStreakProcChance -= .30
 			})
 
 			setBonusAura.ExposeToAPL(99064)
+
+			// Arcane Power Cost reduction implemented in:
+			// talents_arcane.go#278
+			mage.T12_4pc = setBonusAura
 		},
 	},
 })
@@ -125,12 +124,7 @@ var ItemSetTimeLordsRegalia = core.NewItemSet(core.ItemSet{
 			// talents_frost.go
 
 			mage := agent.(MageAgent).GetMage()
-			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-				mage.Has4pcT13 = true
-			})
-			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-				mage.Has4pcT13 = false
-			})
+			mage.T13_4pc = setBonusAura
 		},
 	},
 })

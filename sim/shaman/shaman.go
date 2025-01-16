@@ -178,9 +178,9 @@ type Shaman struct {
 	useDragonSoul_2PT12 bool
 
 	// Item sets
-	HasDungeonSet3 bool
-	HasT12Enh2pc   bool
-	HasT12Ele4pc   bool
+	DungeonSet3 *core.Aura
+	T12Enh2pc   *core.Aura
+	T12Ele4pc   *core.Aura
 }
 
 // Implemented by each Shaman spec.

@@ -54,8 +54,8 @@ type Mage struct {
 	ClassSpellScaling float64
 
 	// Item sets
-	Has4pcT12 bool
-	Has4pcT13 bool
+	T12_4pc *core.Aura
+	T13_4pc *core.Aura
 }
 
 func (mage *Mage) GetCharacter() *core.Character {

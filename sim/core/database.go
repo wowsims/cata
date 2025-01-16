@@ -332,34 +332,6 @@ func (equipment *Equipment) ToEquipmentSpecProto() *proto.EquipmentSpec {
 	}
 }
 
-func (equipment *Equipment) applyItemEffects(agent Agent, registeredItemEffects map[int32]bool, registeredItemEnchantEffects map[int32]bool, includeGemEffects bool) {
-	for slot, eq := range equipment {
-		if applyItemEffect, ok := itemEffects[eq.ID]; ok && !registeredItemEffects[eq.ID] {
-			applyItemEffect(agent)
-			registeredItemEffects[eq.ID] = true
-		}
-
-		if includeGemEffects {
-			for _, g := range eq.Gems {
-				if applyGemEffect, ok := itemEffects[g.ID]; ok {
-					applyGemEffect(agent)
-				}
-			}
-		}
-
-		if applyEnchantEffect, ok := enchantEffects[eq.Enchant.EffectID]; ok && !registeredItemEnchantEffects[eq.Enchant.EffectID] {
-			applyEnchantEffect(agent)
-			registeredItemEnchantEffects[eq.Enchant.EffectID] = true
-		}
-
-		if applyWeaponEffect, ok := weaponEffects[eq.Enchant.EffectID]; ok && !registeredItemEnchantEffects[eq.Enchant.EffectID] {
-			applyWeaponEffect(agent, proto.ItemSlot(slot))
-			registeredItemEnchantEffects[eq.Enchant.EffectID] = true
-		}
-
-	}
-}
-
 // Structs used for looking up items/gems/enchants
 type EquipmentSpec [proto.ItemSlot_ItemSlotRanged + 1]ItemSpec
 

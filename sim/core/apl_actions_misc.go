@@ -79,7 +79,7 @@ func (action *APLActionCancelAura) String() string {
 }
 
 func (action *APLActionActivateAura) IsReady(sim *Simulation) bool {
-	return action.aura.Icd == nil || action.aura.Icd != nil && action.aura.Icd.IsReady(sim)
+	return (action.aura.Icd == nil) || action.aura.Icd.IsReady(sim)
 }
 
 func (action *APLActionActivateAura) Execute(sim *Simulation) {
@@ -125,7 +125,7 @@ func (rot *APLRotation) newActionActivateAuraWithStacks(config *proto.APLActionA
 	}
 }
 func (action *APLActionActivateAuraWithStacks) IsReady(sim *Simulation) bool {
-	return action.aura.Icd == nil || action.aura.Icd != nil && action.aura.Icd.IsReady(sim)
+	return (action.aura.Icd == nil) || action.aura.Icd.IsReady(sim)
 }
 func (action *APLActionActivateAuraWithStacks) Execute(sim *Simulation) {
 	if !action.IsReady(sim) {

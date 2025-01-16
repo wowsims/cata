@@ -136,7 +136,7 @@ func (dk *DeathKnight) applyRunicEmpowerementCorruption() {
 			}
 
 			// T13 4pc: Runic Corruption has a 40% chance to also grant 710 mastery rating for 12 sec when activated.
-			if dk.HasT13Dps4pc && sim.Proc(0.4, "T13 4pc") {
+			if dk.T13Dps4pc.IsActive() && sim.Proc(0.4, "T13 4pc") {
 				runicMasteryAura.Activate(sim)
 			}
 		}
@@ -153,7 +153,7 @@ func (dk *DeathKnight) applyRunicEmpowerementCorruption() {
 			dk.RegenRandomDepletedRune(sim, runeMetrics)
 
 			// T13 4pc: Runic Empowerment has a 25% chance to also grant 710 mastery rating for 12 sec when activated.
-			if dk.HasT13Dps4pc && sim.Proc(0.25, "T13 4pc") {
+			if dk.T13Dps4pc.IsActive() && sim.Proc(0.25, "T13 4pc") {
 				runicMasteryAura.Activate(sim)
 			}
 		}
@@ -300,7 +300,7 @@ func (dk *DeathKnight) applySuddenDoom() {
 				return
 			}
 
-			if dk.HasT13Dps2pc {
+			if dk.T13Dps2pc.IsActive() {
 				aura.RemoveStack(sim)
 			} else {
 				aura.Deactivate(sim)
@@ -320,8 +320,8 @@ func (dk *DeathKnight) applySuddenDoom() {
 			suddenDoomProcAura.Activate(sim)
 
 			// T13 2pc: Sudden Doom has a 30% chance to grant 2 charges when triggered instead of 1.
-			suddenDoomProcAura.MaxStacks = core.TernaryInt32(dk.HasT13Dps2pc, 2, 0)
-			if dk.HasT13Dps2pc {
+			suddenDoomProcAura.MaxStacks = core.TernaryInt32(dk.T13Dps2pc.IsActive(), 2, 0)
+			if dk.T13Dps2pc.IsActive() {
 				stacks := core.TernaryInt32(sim.Proc(0.3, "T13 2pc"), 2, 1)
 				suddenDoomProcAura.SetStacks(sim, stacks)
 			}

@@ -147,7 +147,7 @@ func (dk *DeathKnight) applyRime() {
 				return
 			}
 
-			if dk.HasT13Dps2pc {
+			if dk.T13Dps2pc.IsActive() {
 				aura.RemoveStack(sim)
 			} else {
 				aura.Deactivate(sim)
@@ -166,8 +166,8 @@ func (dk *DeathKnight) applyRime() {
 			freezingFogAura.Activate(sim)
 
 			// T13 2pc: Rime has a 60% chance to grant 2 charges when triggered instead of 1.
-			freezingFogAura.MaxStacks = core.TernaryInt32(dk.HasT13Dps2pc, 2, 0)
-			if dk.HasT13Dps2pc {
+			freezingFogAura.MaxStacks = core.TernaryInt32(dk.T13Dps2pc.IsActive(), 2, 0)
+			if dk.T13Dps2pc.IsActive() {
 				stacks := core.TernaryInt32(sim.Proc(0.6, "T13 2pc"), 2, 1)
 				freezingFogAura.SetStacks(sim, stacks)
 			}

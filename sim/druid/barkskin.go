@@ -31,7 +31,7 @@ func (druid *Druid) registerBarkskinCD() {
 				druid.PseudoStats.ReducedCritTakenChance -= 0.25
 			}
 
-			if druid.HasT12Feral4pBonus {
+			if druid.T12Feral4pBonus.IsActive() {
 				druid.SmokescreenAura.Activate(sim)
 			}
 		},

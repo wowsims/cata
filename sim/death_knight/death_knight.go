@@ -75,9 +75,9 @@ type DeathKnight struct {
 	gurthalakTentacles []*cata.TentacleOfTheOldOnesPet
 
 	// Item sets
-	HasT12Tank4pc bool
-	HasT13Dps2pc  bool
-	HasT13Dps4pc  bool
+	T12Tank4pc *core.Aura
+	T13Dps2pc  *core.Aura
+	T13Dps4pc  *core.Aura
 }
 
 func (deathKnight *DeathKnight) GetTentacles() []*cata.TentacleOfTheOldOnesPet {

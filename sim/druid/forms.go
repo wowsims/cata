@@ -172,7 +172,7 @@ func (druid *Druid) registerCatFormSpell() {
 					druid.PredatoryInstinctsAura.Deactivate(sim)
 				}
 
-				if druid.HasT11Feral4pBonus && druid.StrengthOfThePantherAura.IsActive() {
+				if druid.StrengthOfThePantherAura.IsActive() {
 					druid.StrengthOfThePantherAura.Deactivate(sim)
 				}
 			}

@@ -52,7 +52,7 @@ func (paladin *Paladin) registerInquisition() {
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			holyPower := paladin.GetHolyPowerValue()
 
-			if paladin.HasT11Ret4pc {
+			if paladin.T11Ret4pc.IsActive() {
 				holyPower += 1
 			}
 

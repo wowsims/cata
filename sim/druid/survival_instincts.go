@@ -16,7 +16,7 @@ func (druid *Druid) registerSurvivalInstinctsCD() {
 	cdTimer := druid.NewTimer()
 	cd := time.Minute * 3
 	getDuration := func() time.Duration {
-		return core.TernaryDuration(druid.HasT11Feral4pBonus, time.Second*18, time.Second*12)
+		return core.TernaryDuration(druid.T11Feral4pBonus.IsActive(), time.Second*18, time.Second*12)
 	}
 
 	druid.SurvivalInstinctsAura = druid.RegisterAura(core.Aura{

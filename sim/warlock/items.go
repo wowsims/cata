@@ -257,12 +257,7 @@ var ItemSetVestmentsOfTheFacelessShroud = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-				warlock.Has4pcT13 = true
-			})
-			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-				warlock.Has4pcT13 = false
-			})
+			warlock.T13_4pc = setBonusAura
 		},
 	},
 })
