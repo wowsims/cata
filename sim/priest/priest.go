@@ -55,9 +55,6 @@ type Priest struct {
 	ProcPrayerOfMending core.ApplySpellResults
 
 	ClassSpellScaling float64
-
-	// Item sets
-	T13_4pc *core.Aura
 }
 
 type SelfBuffs struct {
