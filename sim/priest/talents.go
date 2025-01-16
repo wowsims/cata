@@ -666,6 +666,11 @@ func (priest *Priest) applyShadowyApparition() {
 				// restore mods
 				spell.DamageMultiplier = oldMulti
 				spell.DamageMultiplierAdditive = oldAdd
+
+				if priest.ShadowOrbsAura != nil && result.Landed() && priest.T13_4pc.IsActive() {
+					priest.ShadowOrbsAura.Activate(sim)
+					priest.ShadowOrbsAura.SetStacks(sim, 3)
+				}
 			})
 		},
 	})

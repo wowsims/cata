@@ -20,6 +20,9 @@ type Priest struct {
 	ShadowfiendAura *core.Aura
 	ShadowfiendPet  *Shadowfiend
 
+	ShadowOrbsAura      *core.Aura
+	EmpoweredShadowAura *core.Aura
+
 	// cached cast stuff
 	// TODO: aoe multi-target situations will need multiple spells ticking for each target.
 	HolyEvangelismProcAura *core.Aura
@@ -52,6 +55,9 @@ type Priest struct {
 	ProcPrayerOfMending core.ApplySpellResults
 
 	ClassSpellScaling float64
+
+	// Item sets
+	T13_4pc *core.Aura
 }
 
 type SelfBuffs struct {

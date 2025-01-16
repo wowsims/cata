@@ -44,11 +44,22 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 
 	shadowfiend.DelayInitialInheritance(time.Millisecond * 500)
 	manaMetric := priest.NewManaMetrics(core.ActionID{SpellID: 34433})
-	_ = core.MakePermanent(shadowfiend.GetOrRegisterAura(core.Aura{
+
+	core.MakePermanent(shadowfiend.GetOrRegisterAura(core.Aura{
 		Label: "Autoattack mana regen",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			restoreMana := priest.MaxMana() * 0.03
 			priest.AddMana(sim, restoreMana, manaMetric)
+		},
+	}))
+
+	core.MakePermanent(shadowfiend.GetOrRegisterAura(core.Aura{
+		Label: "Autoattack T13 4pc",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if priest.ShadowOrbsAura != nil && result.Landed() && priest.T13_4pc.IsActive() {
+				priest.ShadowOrbsAura.Activate(sim)
+				priest.ShadowOrbsAura.SetStacks(sim, 3)
+			}
 		},
 	}))
 
