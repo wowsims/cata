@@ -10,6 +10,7 @@ import { Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as WarlockInputs from '../inputs';
+import * as DemonologyInputs from './inputs';
 import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
@@ -110,7 +111,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 			OtherInputs.DarkIntentUptime,
 			OtherInputs.TankAssignment,
 			OtherInputs.ChannelClipDelay,
-			WarlockInputs.AssumePrepullMasteryElixir,
+			DemonologyInputs.AssumePrepullMasteryElixir,
+			DemonologyInputs.PrepullItemSwapMastery,
 		],
 	},
 	itemSwapSlots: [
