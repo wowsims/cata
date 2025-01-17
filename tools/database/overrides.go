@@ -232,6 +232,15 @@ var ItemAllowList = map[int32]struct{}{
 
 	29309: {}, // Band of the Eternal Restorer
 
+	31026: {}, // Slayer's Handguards
+	31027: {}, // Slayer's Helm
+	31028: {}, // Slayer's Chestguard
+	31029: {}, // Slayer's Legguards
+	31030: {}, // Slayer's Shoulderpads
+	34448: {}, // Slayer's Bracers
+	34558: {}, // Slayer's Belt
+	34575: {}, // Slayer's Boots
+
 	34677: {}, // Shattered Sun Pendant of Restoration
 
 	45703: {}, // Spark of Hope

@@ -29,7 +29,10 @@ type Rogue struct {
 	CombatOptions        *proto.CombatRogue_Options
 	SubtletyOptions      *proto.SubtletyRogue_Options
 
-	SliceAndDiceBonus        float64
+	MasteryBaseValue  float64
+	MasteryMultiplier float64
+
+	SliceAndDiceBonusFlat    float64 // The flat bonus Attack Speed bonus before Mastery is applied
 	AdditiveEnergyRegenBonus float64
 
 	sliceAndDiceDurations [6]time.Duration
@@ -199,8 +202,6 @@ func (rogue *Rogue) Initialize() {
 	rogue.registerThistleTeaCD()
 	rogue.registerGougeSpell()
 
-	rogue.SliceAndDiceBonus = 0.4
-
 	rogue.T12ToTLastBuff = 3
 
 	// re-configure poisons when performing an item swap
@@ -274,7 +275,11 @@ func NewRogue(character *core.Character, options *proto.RogueOptions, talents st
 		rogue.GetMHWeapon().WeaponType == proto.WeaponType_WeaponTypeDagger {
 		maxEnergy += 20
 	}
-	rogue.EnableEnergyBar(maxEnergy)
+
+	rogue.EnableEnergyBar(core.EnergyBarOptions{
+		MaxEnergy:           maxEnergy,
+		StartingComboPoints: options.StartingComboPoints,
+	})
 
 	rogue.EnableAutoAttacks(rogue, core.AutoAttackOptions{
 		MainHand:       rogue.WeaponFromMainHand(0), // Set crit multiplier later when we have targets.
@@ -334,6 +339,13 @@ func (rogue *Rogue) IsStealthed() bool {
 		return true
 	}
 	return false
+}
+
+func (rogue *Rogue) GetMasteryBonus() float64 {
+	return rogue.GetMasteryBonusFromRating(rogue.GetStat(stats.MasteryRating))
+}
+func (rogue *Rogue) GetMasteryBonusFromRating(masteryRating float64) float64 {
+	return rogue.MasteryBaseValue + core.MasteryRatingToMasteryPoints(masteryRating)*rogue.MasteryMultiplier
 }
 
 // Agent is a generic way to access underlying rogue on any of the agents.

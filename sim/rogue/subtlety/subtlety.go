@@ -7,10 +7,6 @@ import (
 	"github.com/wowsims/cata/sim/rogue"
 )
 
-const masteryDamagePerPoint = .025
-const masteryBaseEffect = 0.2
-const masteryFloored = false // Firelands patch appears to have fixed this issue
-
 func RegisterSubtletyRogue() {
 	core.RegisterAgentFactory(
 		proto.Player_SubtletyRogue{},
@@ -31,6 +27,9 @@ func RegisterSubtletyRogue() {
 func (subRogue *SubtletyRogue) Initialize() {
 	subRogue.Rogue.Initialize()
 
+	subRogue.MasteryBaseValue = 0.2
+	subRogue.MasteryMultiplier = .025
+
 	subRogue.registerHemorrhageSpell()
 	subRogue.registerSanguinaryVein()
 	subRogue.registerPremeditation()
@@ -46,27 +45,20 @@ func (subRogue *SubtletyRogue) Initialize() {
 
 	// Apply Mastery
 	// From all I can find, Sub's Mastery is Additive. Will need to test.
-	masteryEffect := getMasteryBonus(subRogue.GetStat(stats.MasteryRating))
+	masteryEffect := subRogue.GetMasteryBonusFromRating(subRogue.GetStat(stats.MasteryRating))
 
-	subRogue.SliceAndDiceBonus *= (1 + masteryEffect)
 	subRogue.Eviscerate.DamageMultiplierAdditive += masteryEffect
 	subRogue.Rupture.DamageMultiplierAdditive += masteryEffect
 
 	subRogue.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-		masteryEffectOld := getMasteryBonus(oldMastery)
-		masteryEffectNew := getMasteryBonus(newMastery)
+		masteryEffectOld := subRogue.GetMasteryBonusFromRating(oldMastery)
+		masteryEffectNew := subRogue.GetMasteryBonusFromRating(newMastery)
 
-		subRogue.SliceAndDiceBonus /= (1 + masteryEffectOld)
-		subRogue.SliceAndDiceBonus *= (1 + masteryEffectNew)
 		subRogue.Eviscerate.DamageMultiplierAdditive -= masteryEffectOld
 		subRogue.Eviscerate.DamageMultiplierAdditive += masteryEffectNew
 		subRogue.Rupture.DamageMultiplierAdditive -= masteryEffectOld
 		subRogue.Rupture.DamageMultiplierAdditive += masteryEffectNew
 	})
-}
-
-func getMasteryBonus(masteryRating float64) float64 {
-	return masteryBaseEffect + core.MasteryRatingToMasteryPoints(masteryRating)*masteryDamagePerPoint
 }
 
 func NewSubtletyRogue(character *core.Character, options *proto.Player) *SubtletyRogue {

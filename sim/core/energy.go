@@ -11,10 +11,11 @@ import (
 type energyBar struct {
 	unit *Unit
 
-	maxEnergy      float64
-	currentEnergy  float64
-	comboPoints    int32
-	nextEnergyTick time.Duration
+	maxEnergy           float64
+	currentEnergy       float64
+	startingComboPoints int32
+	comboPoints         int32
+	nextEnergyTick      time.Duration
 
 	// Time between Energy ticks.
 	EnergyTickDuration time.Duration
@@ -27,19 +28,24 @@ type energyBar struct {
 	regenMetrics        *ResourceMetrics
 	EnergyRefundMetrics *ResourceMetrics
 }
+type EnergyBarOptions struct {
+	StartingComboPoints int32
+	MaxEnergy           float64
+}
 
-func (unit *Unit) EnableEnergyBar(maxEnergy float64) {
+func (unit *Unit) EnableEnergyBar(options EnergyBarOptions) {
 	unit.SetCurrentPowerBar(EnergyBar)
 
 	unit.energyBar = energyBar{
 		unit:                  unit,
-		maxEnergy:             max(100, maxEnergy),
+		maxEnergy:             max(100, options.MaxEnergy),
 		EnergyTickDuration:    unit.ReactionTime,
 		EnergyPerTick:         10.0 * unit.ReactionTime.Seconds(),
 		energyRegenMultiplier: 1,
 		hasteRatingMultiplier: 1,
 		regenMetrics:          unit.NewEnergyMetrics(ActionID{OtherID: proto.OtherAction_OtherActionEnergyRegen}),
 		EnergyRefundMetrics:   unit.NewEnergyMetrics(ActionID{OtherID: proto.OtherAction_OtherActionRefund}),
+		startingComboPoints:   max(0, min(int32(options.StartingComboPoints), 5)),
 	}
 }
 
@@ -111,7 +117,7 @@ func (eb *energyBar) ComboPoints() int32 {
 }
 
 func (eb *energyBar) IsReset(sim *Simulation) bool {
-	return (eb.nextEnergyTick != 0) && (eb.nextEnergyTick - sim.CurrentTime <= eb.EnergyTickDuration)
+	return (eb.nextEnergyTick != 0) && (eb.nextEnergyTick-sim.CurrentTime <= eb.EnergyTickDuration)
 }
 
 func (eb *energyBar) IsTicking(sim *Simulation) bool {
@@ -198,7 +204,8 @@ func (eb *energyBar) reset(sim *Simulation) {
 	}
 
 	eb.currentEnergy = eb.maxEnergy
-	eb.comboPoints = 0
+	eb.comboPoints = eb.startingComboPoints
+
 	eb.hasteRatingMultiplier = 1.0 + eb.unit.GetStat(stats.HasteRating)/(100*HasteRatingPerHastePercent)
 	eb.energyRegenMultiplier = 1.0
 
