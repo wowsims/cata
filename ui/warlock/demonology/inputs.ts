@@ -13,10 +13,6 @@ const calculatePrepullMasteryBonus = (options: WarlockOptions, player: Player<Sp
 		bonusStats = bonusStats.addStat(Stat.StatMasteryRating, 225 + (player.hasProfession(Profession.Alchemy) ? 40 : 0));
 	}
 
-	if (options.prepullMastery > 0) {
-		bonusStats = bonusStats.addStat(Stat.StatMasteryRating, options.prepullMastery);
-	}
-
 	return bonusStats;
 };
 
@@ -28,23 +24,6 @@ export const AssumePrepullMasteryElixir = InputHelpers.makeClassOptionsBooleanIn
 	setValue: (eventID, player, newVal) => {
 		const newOptions = player.getClassOptions();
 		newOptions.useItemSwapBonusStats = newVal;
-
-		const bonusStats = calculatePrepullMasteryBonus(newOptions, player);
-
-		player.itemSwapSettings.setBonusStats(eventID, bonusStats);
-		player.setClassOptions(eventID, newOptions);
-	},
-});
-
-export const PrepullItemSwapMastery = InputHelpers.makeClassOptionsNumberInput<Spec.SpecDemonologyWarlock>({
-	fieldName: 'prepullMastery',
-	label: 'Mastery during Item Swap pre-pull',
-	labelTooltip:
-		'Additional Mastery for static items that currently cannot be swapped.<br>For example: Swapping Bell (Proc) > Spindle (Static)).<br>Only applies if it\'s value is > 0 and when the "Swapped" set is equipped during pre-pull.',
-	getValue: player => player.getClassOptions().prepullMastery,
-	setValue: (eventID, player, newVal) => {
-		const newOptions = player.getClassOptions();
-		newOptions.prepullMastery = newVal;
 
 		const bonusStats = calculatePrepullMasteryBonus(newOptions, player);
 
