@@ -112,7 +112,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 			OtherInputs.TankAssignment,
 			OtherInputs.ChannelClipDelay,
 			DemonologyInputs.AssumePrepullMasteryElixir,
-			DemonologyInputs.PrepullItemSwapMastery,
 		],
 	},
 	itemSwapSlots: [
