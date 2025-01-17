@@ -134,6 +134,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 			// OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
 			OtherInputs.InputDelay,
+			RogueInputs.StartingComboPoints(),
 		],
 	},
 	itemSwapSlots: [
@@ -218,7 +219,7 @@ export class SubtletyRogueSimUI extends IndividualSimUI<Spec.SpecSubtletyRogue> 
 					} else {
 						return Presets.P1_EP_PRESET.epWeights;
 					}
-				}
+				},
 			});
 		});
 

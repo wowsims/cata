@@ -10,6 +10,35 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
+var Tier6 = core.NewItemSet(core.ItemSet{
+	Name: "Slayer's Armor",
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Increases the haste from your Slice and Dice ability by 5%
+			// Handeled in slide_and_dice.go:35
+			rogue := agent.(RogueAgent).GetRogue()
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:      core.SpellMod_Custom,
+				ClassMask: RogueSpellSliceAndDice,
+				ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
+					rogue.SliceAndDiceBonusFlat += 0.05
+				},
+				RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
+					rogue.SliceAndDiceBonusFlat -= 0.05
+				},
+			})
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Increases the damage dealt by your Backstab, Sinister Strike, Mutilate, and Hemorrhage abilities by 6%.
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:       core.SpellMod_DamageDone_Flat,
+				ClassMask:  RogueSpellBackstab | RogueSpellSinisterStrike | RogueSpellMutilate | RogueSpellHemorrhage,
+				FloatValue: 6.0,
+			})
+		},
+	},
+})
+
 var Tier11 = core.NewItemSet(core.ItemSet{
 	Name: "Wind Dancer's Regalia",
 	Bonuses: map[int32]core.ApplySetBonus{

@@ -38,6 +38,9 @@ func NewCombatRogue(character *core.Character, options *proto.Player) *CombatRog
 func (combatRogue *CombatRogue) Initialize() {
 	combatRogue.Rogue.Initialize()
 
+	combatRogue.MasteryBaseValue = 0.16
+	combatRogue.MasteryMultiplier = 0.02
+
 	// Ambidexterity Passive
 	combatRogue.AutoAttacks.OHConfig().DamageMultiplier *= 1.75
 	// Vitality Passive

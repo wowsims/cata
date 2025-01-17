@@ -1518,6 +1518,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAssassination-AllItems-Slayer'sArmor"
+ value: {
+  dps: 31867.52102
+  tps: 22625.93993
+ }
+}
+dps_results: {
  key: "TestAssassination-AllItems-Sorrowsong-55879"
  value: {
   dps: 27849.70673

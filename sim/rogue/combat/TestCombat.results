@@ -1523,6 +1523,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestCombat-AllItems-Slayer'sArmor"
+ value: {
+  dps: 26773.36141
+  tps: 19009.0866
+ }
+}
+dps_results: {
  key: "TestCombat-AllItems-Sorrowsong-55879"
  value: {
   dps: 28409.87709

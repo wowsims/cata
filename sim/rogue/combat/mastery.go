@@ -5,9 +5,6 @@ import (
 	"github.com/wowsims/cata/sim/rogue"
 )
 
-const masteryChancePerPoint = .02
-const masteryBaseEffect = 0.16
-
 func (comRogue *CombatRogue) applyMastery() {
 
 	comRogue.mainGauche = comRogue.RegisterSpell(core.SpellConfig{
@@ -38,8 +35,7 @@ func (comRogue *CombatRogue) applyMastery() {
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ProcMask.Matches(core.ProcMaskMeleeMH) && spell != comRogue.mainGauche && spell != comRogue.Rupture {
-				masteryPoints := comRogue.GetMasteryPoints()
-				mgProcChance := masteryChancePerPoint*masteryPoints + masteryBaseEffect
+				mgProcChance := comRogue.GetMasteryBonus()
 
 				if sim.Proc(mgProcChance, "Main Gauche") {
 					comRogue.mainGauche.Cast(sim, result.Target)
