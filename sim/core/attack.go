@@ -845,6 +845,13 @@ func (aa *AutoAttacks) NewPPMManager(ppm float64, procMask ProcMask) *DynamicPro
 	return &dpm
 }
 
+// PPMManager for static ProcMasks and no item swap callback
+func (aa *AutoAttacks) NewStaticPPMManager(ppm float64, procMask ProcMask) *DynamicProcManager {
+	dpm := aa.newDynamicProcManager(ppm, 0, procMask)
+
+	return &dpm
+}
+
 // Dynamic Proc Manager for dynamic ProcMasks on weapon enchants
 func (aa *AutoAttacks) NewDynamicProcManagerForEnchant(effectID int32, ppm float64, fixedProcChance float64) *DynamicProcManager {
 	return aa.newDynamicProcManagerWithDynamicProcMask(ppm, fixedProcChance, func() ProcMask {

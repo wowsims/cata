@@ -331,7 +331,7 @@ func (rogue *Rogue) UpdateInstantPoisonPPM(bonusChance float64) {
 	const basePPM = 0.2 / (1.4 / 60) // ~8.57, the former 20% normalized to a 1.4 speed weapon
 
 	ppm := basePPM * (1 + core.TernaryFloat64(rogue.Spec == proto.Spec_SpecAssassinationRogue, 0.5, 0) + bonusChance)
-	rogue.instantPoisonPPMM = rogue.AutoAttacks.NewPPMManager(ppm, procMask)
+	rogue.instantPoisonPPMM = rogue.AutoAttacks.NewStaticPPMManager(ppm, procMask)
 }
 
 func (rogue *Rogue) applyInstantPoison() {
