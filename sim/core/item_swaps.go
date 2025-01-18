@@ -218,11 +218,24 @@ func (swap *ItemSwap) RegisterActive(itemID int32) {
 
 // Helper for handling Enchant On Use effects to set a 30s cd on the related spell.
 func (swap *ItemSwap) ProcessTinker(spell *Spell, slots []proto.ItemSlot) {
-	swap.character.RegisterItemSwapCallback(slots, func(sim *Simulation, _ proto.ItemSlot) {
+	swap.character.RegisterItemSwapCallback(slots, func(sim *Simulation, slot proto.ItemSlot) {
 		if spell == nil || !swap.initialized {
 			return
 		}
-		spell.CD.Set(sim.CurrentTime + max(spell.CD.TimeToReady(sim), time.Second*30))
+
+		isUniqueItem := swap.GetEquippedItemBySlot(slot).ID != swap.GetUnequippedItemBySlot(slot).ID
+
+		var newSpellCD time.Duration
+		timeToReady := spell.CD.TimeToReady(sim)
+		if isUniqueItem {
+			// Unique items have a 30s CD regardless of the spell CD being > 30s or not
+			newSpellCD = max(timeToReady, time.Second*30)
+		} else {
+			// Items with the same ItemID share the CD and does not get reset to 30s
+			newSpellCD = TernaryDuration(timeToReady > 30, timeToReady, time.Second*30)
+		}
+
+		spell.CD.Set(sim.CurrentTime + newSpellCD)
 	})
 }
 
