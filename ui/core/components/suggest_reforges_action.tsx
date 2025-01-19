@@ -72,6 +72,92 @@ export type ReforgeOptimizerOptions = {
 	additionalSoftCapTooltipInformation?: StatTooltipContent;
 };
 
+// Used to force a particular proc from trinkets like Matrix Restabilizer and Apparatus of Khaz'goroth.
+class RelativeStatCap {
+	static relevantStats: Stat[] = [Stat.StatCritRating, Stat.StatHasteRating, Stat.StatMasteryRating];
+	readonly forcedHighestStat: UnitStat;
+	readonly constrainedStats: UnitStat[];
+	readonly constraintKeys: string[];
+
+	// Not comprehensive, add any other relevant offsets here as needed.
+	static procTrinketOffsets: Map<Stat, Map<number, number>> = new Map([
+		[
+			Stat.StatCritRating,
+			new Map([
+				[69167, 460], // Vessel of Acceleration (H)
+				[68995, 410], // Vessel of Acceleration (N)
+			]),
+		],
+		[
+			Stat.StatHasteRating,
+			new Map([
+				[69112, 1730], // The Hungerer (H)
+				[68927, 1532], // The Hungerer (N)
+			]),
+		],
+		[
+			Stat.StatMasteryRating,
+			new Map([
+			]),
+		],
+	]);
+
+	static canEnable(player: Player<any>): boolean {
+		const variableStatTrinkets: number[] = [69150, 68994, 69113, 68972];
+		return player.getGear().hasTrinketFromOptions(variableStatTrinkets);
+	}
+
+	constructor(forcedHighestStat: Stat, playerClass: Class) {
+		if (!RelativeStatCap.relevantStats.includes(forcedHighestStat)) {
+			throw new Error('Forced highest stat must be either Crit, Haste, or Mastery!');
+		}
+
+		this.forcedHighestStat = UnitStat.fromStat(forcedHighestStat);
+		this.constrainedStats = RelativeStatCap.relevantStats.filter(stat => stat !== forcedHighestStat).map(stat => UnitStat.fromStat(stat));
+		this.constraintKeys = this.constrainedStats.map(unitStat => this.forcedHighestStat.getShortName(playerClass) + "Minus" + unitStat.getShortName(playerClass));
+	}
+
+	updateCoefficients(coefficients: YalpsCoefficients, stat: Stat, amount: number) {
+		if (!RelativeStatCap.relevantStats.includes(stat)) {
+			return;
+		}
+
+		for (const [idx, constrainedStat] of this.constrainedStats.entries()) {
+			const coefficientKey = this.constraintKeys[idx];
+			const currentValue = coefficients.get(coefficientKey) || 0;
+
+			if (this.forcedHighestStat.equalsStat(stat)) {
+				coefficients.set(coefficientKey, currentValue + amount);
+			} else if (constrainedStat.equalsStat(stat)) {
+				coefficients.set(coefficientKey, currentValue - amount);
+			}
+		}
+	}
+
+	updateConstraints(constraints: YalpsConstraints, gear: Gear, baseStats: Stats) {
+		for (const [idx, constrainedStat] of this.constrainedStats.entries()) {
+			const weightedStatsArray = new Stats().withUnitStat(this.forcedHighestStat, 1).withUnitStat(constrainedStat, -1);
+			let minReforgeContribution = 1 - baseStats.computeEP(weightedStatsArray);
+			const procOffsetMap = RelativeStatCap.procTrinketOffsets.get(constrainedStat.getStat())!;
+
+			for (const trinket of gear.getTrinkets()) {
+				if (!trinket) {
+					continue;
+				}
+
+				const trinketId = trinket!.item.id;
+
+				if (procOffsetMap.has(trinketId)) {
+					minReforgeContribution += procOffsetMap.get(trinketId)!;
+					break;
+				}
+			}
+
+			constraints.set(this.constraintKeys[idx], greaterEq(minReforgeContribution));
+		}
+	}
+}
+
 export class ReforgeOptimizer {
 	protected readonly simUI: IndividualSimUI<any>;
 	protected readonly player: Player<any>;
@@ -95,6 +181,7 @@ export class ReforgeOptimizer {
 	protected previousGear: Gear | null = null;
 	protected previousReforges = new Map<ItemSlot, ReforgeData>();
 	protected currentReforges = new Map<ItemSlot, ReforgeData>();
+	protected relativeStatCap: RelativeStatCap | null = null;
 
 	constructor(simUI: IndividualSimUI<any>, options?: ReforgeOptimizerOptions) {
 		this.simUI = simUI;
@@ -364,6 +451,44 @@ export class ReforgeOptimizer {
 					});
 				}
 
+				const forcedProcInput = new EnumPicker(null, this.player, {
+					id: 'reforge-optimizer-force-stat-proc',
+					label: 'Force Matrix/Apparatus proc',
+					values: [
+						{ name: 'Any', value: -1 },
+						...[...RelativeStatCap.relevantStats].map(stat => {
+							return {
+								name: UnitStat.fromStat(stat).getShortName(this.playerClass),
+								value: stat,
+							};
+						}),
+					],
+					changedEvent: () => this.player.gearChangeEmitter,
+					getValue: () => {
+						if (!this.relativeStatCap) {
+							return -1;
+						} else {
+							return this.relativeStatCap!.forcedHighestStat.getStat();
+						}
+					},
+					setValue: (_eventID, _player, newValue) => {
+						if (newValue == -1) {
+							this.relativeStatCap = null;
+						} else {
+							this.relativeStatCap = new RelativeStatCap(newValue, this.playerClass);
+						}
+					},
+					showWhen: () => {
+						const canEnable = RelativeStatCap.canEnable(this.player);
+
+						if (!canEnable) {
+							this.relativeStatCap = null;
+						}
+
+						return canEnable;
+					},
+				});
+
 				const freezeItemSlotsInput = new BooleanPicker(null, this.player, {
 					id: 'reforge-optimizer-freeze-item-slots',
 					label: 'Freeze item slots',
@@ -391,6 +516,7 @@ export class ReforgeOptimizer {
 							description: descriptionRef.value!,
 						})}
 						{useSoftCapBreakpointsInput?.rootElem}
+						{forcedProcInput.rootElem}
 						{this.buildSoftCapBreakpointsLimiter({ useSoftCapBreakpointsInput })}
 						{freezeItemSlotsInput.rootElem}
 						{this.buildFrozenSlotsInputs()}
@@ -764,7 +890,7 @@ export class ReforgeOptimizer {
 
 		// Set up YALPS model
 		const variables = this.buildYalpsVariables(baseGear, validatedWeights);
-		const constraints = this.buildYalpsConstraints(baseGear);
+		const constraints = this.buildYalpsConstraints(baseGear, baseStats);
 
 		// Solve in multiple passes to enforce caps
 		await this.solveModel(baseGear, validatedWeights, reforgeCaps, reforgeSoftCaps, variables, constraints, 75000);
@@ -859,6 +985,12 @@ export class ReforgeOptimizer {
 			this.setPseudoStatCoefficient(coefficients, PseudoStat.PseudoStatSpellHitPercent, appliedAmount);
 		}
 
+		// If a highest Stat constraint is to be enforced, then update the associated
+		// coefficient if applicable.
+		if (this.relativeStatCap) {
+			this.relativeStatCap!.updateCoefficients(coefficients, stat, amount);
+		}
+
 		// If the pre-cap EP for the root stat is non-zero, then apply
 		// the root stat directly and don't look for any children.
 		if (preCapEPs.getStat(stat) != 0) {
@@ -880,11 +1012,16 @@ export class ReforgeOptimizer {
 		coefficients.set(PseudoStat[pseudoStat], currentValue + amount);
 	}
 
-	buildYalpsConstraints(gear: Gear): YalpsConstraints {
+	buildYalpsConstraints(gear: Gear, baseStats: Stats): YalpsConstraints {
 		const constraints = new Map<string, Constraint>();
 
 		for (const slot of gear.getItemSlots()) {
 			constraints.set(ItemSlot[slot], lessEq(1));
+		}
+
+		if (this.relativeStatCap) {
+			const statsWithoutBaseMastery = baseStats.addStat(Stat.StatMasteryRating, -this.player.getBaseMastery() * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
+			this.relativeStatCap!.updateConstraints(constraints, gear, statsWithoutBaseMastery);
 		}
 
 		return constraints;
