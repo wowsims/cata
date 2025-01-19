@@ -226,12 +226,12 @@ func (swap *ItemSwap) ProcessTinker(spell *Spell, slots []proto.ItemSlot) {
 		isUniqueItem := swap.GetEquippedItemBySlot(slot).ID != swap.GetUnequippedItemBySlot(slot).ID
 
 		var newSpellCD time.Duration
-		timeToReady := spell.CD.TimeToReady(sim)
 		if isUniqueItem {
 			// Unique items have a 30s CD regardless of the spell CD being > 30s or not
-			newSpellCD = max(timeToReady, time.Second*30)
+			newSpellCD = time.Second * 30
 		} else {
 			// Items with the same ItemID share the CD and does not get reset to 30s
+			timeToReady := spell.CD.TimeToReady(sim)
 			newSpellCD = TernaryDuration(timeToReady > 30, timeToReady, time.Second*30)
 		}
 
