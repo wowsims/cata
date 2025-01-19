@@ -165,8 +165,8 @@ export class Gear extends BaseGear {
 
 	hasTrinketFromOptions(itemIds: number[]): boolean {
 		return this.getTrinkets()
-			.filter(t => !!t)
-			.map(t => t!.item.id)
+			.filter((t): t is EquippedItem => !!t)
+			.map(t => t.item.id)
 			.some(id => itemIds.includes(id));
 	}
 

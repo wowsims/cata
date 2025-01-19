@@ -145,7 +145,7 @@ class RelativeStatCap {
 					continue;
 				}
 
-				const trinketId = trinket!.item.id;
+				const trinketId = trinket.item.id;
 
 				if (procOffsetMap.has(trinketId)) {
 					minReforgeContribution += procOffsetMap.get(trinketId)!;
@@ -985,11 +985,9 @@ export class ReforgeOptimizer {
 			this.setPseudoStatCoefficient(coefficients, PseudoStat.PseudoStatSpellHitPercent, appliedAmount);
 		}
 
-		// If a highest Stat constraint is to be enforced, then update the associated
-		// coefficient if applicable.
-		if (this.relativeStatCap) {
-			this.relativeStatCap!.updateCoefficients(coefficients, stat, amount);
-		}
+		// If a highest Stat constraint is to be enforced, then update the
+		// associated coefficient if applicable.
+		this.relativeStatCap?.updateCoefficients(coefficients, stat, amount);
 
 		// If the pre-cap EP for the root stat is non-zero, then apply
 		// the root stat directly and don't look for any children.
@@ -1021,7 +1019,7 @@ export class ReforgeOptimizer {
 
 		if (this.relativeStatCap) {
 			const statsWithoutBaseMastery = baseStats.addStat(Stat.StatMasteryRating, -this.player.getBaseMastery() * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
-			this.relativeStatCap!.updateConstraints(constraints, gear, statsWithoutBaseMastery);
+			this.relativeStatCap.updateConstraints(constraints, gear, statsWithoutBaseMastery);
 		}
 
 		return constraints;
