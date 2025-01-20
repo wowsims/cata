@@ -12,7 +12,7 @@
 		{"action":{"castSpell":{"spellId":{"spellId":59672}}},"doAtValue":{"const":{"val":"-2.51s"}}},
 		{"action":{"castSpell":{"spellId":{"spellId":82174}}},"doAtValue":{"const":{"val":"-2.49s"}}},
 		{"action":{"itemSwap":{"swapSet":"Main"}},"doAtValue":{"const":{"val":"-2.49s"}}},
-		{"action":{"castSpell":{"spellId":{"spellId":29722}}},"doAtValue":{"const":{"val":"-2.49s"}}},
+		{"action":{"castSpell":{"spellId":{"spellId":686}}},"doAtValue":{"const":{"val":"-2.49s"}}},
 		{"action":{"castSpell":{"spellId":{"spellId":33697}}},"doAtValue":{"const":{"val":"-0.5s"}}},
 		{"action":{"castSpell":{"spellId":{"spellId":348}}},"doAtValue":{"const":{"val":"-0.5s"}}}
 	],
