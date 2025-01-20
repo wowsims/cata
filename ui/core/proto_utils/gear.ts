@@ -163,6 +163,13 @@ export class Gear extends BaseGear {
 			.includes(itemId);
 	}
 
+	hasTrinketFromOptions(itemIds: number[]): boolean {
+		return this.getTrinkets()
+			.filter((t): t is EquippedItem => !!t)
+			.map(t => t.item.id)
+			.some(id => itemIds.includes(id));
+	}
+
 	hasRelic(itemId: number): boolean {
 		const relicItem = this.getEquippedItem(ItemSlot.ItemSlotRanged);
 
