@@ -80,7 +80,6 @@ $(echo $CATA_CMD) make host
 ```
 
 ## Windows
-
 - Install [Go](https://go.dev/dl/s), [NVM Windows](https://github.com/coreybutler/nvm-windows), and [make](https://gnuwin32.sourceforge.net/packages/make.htm) (you can also install it through Chocolate).
 - Install and use Node 20+ from NVM, for example `nvm install 20 && nvm use 20`
 - Setup GO workspace following [this guide](https://www.freecodecamp.org/news/setting-up-go-programming-language-on-windows-f02c8c14e2f/)
