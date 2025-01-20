@@ -122,7 +122,6 @@ export default defineConfig(({ command, mode }) => {
 							.replace(/\\/g, '/')
 							.replace(/\/+/g, '/');
 						acc[name] = cur;
-						console.log('Processed input path:', name, '->', cur);
 						return acc;
 					}, {}),
 					// Add shared.scss as a separate entry if needed or handle it separately
