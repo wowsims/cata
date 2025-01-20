@@ -86,8 +86,6 @@ $(echo $CATA_CMD) make host
 - Setup GO workspace following [this guide](https://www.freecodecamp.org/news/setting-up-go-programming-language-on-windows-f02c8c14e2f/)
 - Download GO dependencies [protobuf](https://github.com/protocolbuffers/protobuf/releases), [gopls](https://github.com/golang/tools/releases), [air-verse](https://github.com/air-verse/air/releases), [protobuf-go](https://github.com/protocolbuffers/protobuf-go/releases), and [staticcheck](https://github.com/dominikh/go-tools/releases). Unzip them into your GO workspace directory.
 
-After all the steps, you should be able to compile the project by `make host`.
-
 ## Mac OS
 * Docker is available in OS X as well, so in theory similar instructions should work for the Docker method
 * You can also use the Ubuntu setup instructions as above to run natively, with a few modifications:
