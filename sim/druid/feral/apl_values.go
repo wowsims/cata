@@ -183,6 +183,10 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 		if cat.CatCharge.CanCast(sim, cat.CurrentTarget) {
 			cat.CatCharge.Cast(sim, cat.CurrentTarget)
 		} else {
+			if sim.Log != nil {
+				cat.Log(sim, "Out of melee range (%.6fy) and cannot Charge (remaining CD: %s), initiating manual run-in...", cat.DistanceFromTarget, cat.CatCharge.TimeToReady(sim))
+			}
+
 			cat.MoveTo(core.MaxMeleeRange-1, sim) // movement aura is discretized in 1 yard intervals, so need to overshoot to guarantee melee range
 			return
 		}

@@ -41,6 +41,7 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 
 	cat.AssumeBleedActive = feralOptions.Options.AssumeBleedActive
 	cat.maxRipTicks = cat.MaxRipTicks()
+	cat.primalMadnessBonus = 10.0 * float64(cat.Talents.PrimalMadness)
 
 	cat.EnableEnergyBar(core.EnergyBarOptions{
 		MaxEnergy: 100.0,
@@ -68,6 +69,7 @@ type FeralDruid struct {
 	readyToGift        bool
 	waitingForTick     bool
 	maxRipTicks        int32
+	primalMadnessBonus float64
 	berserkUsed        bool
 	bleedAura          *core.Aura
 	tempSnapshotAura   *core.Aura
