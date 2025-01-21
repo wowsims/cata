@@ -121,14 +121,13 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	if debuffs.FaerieFire && targetIdx == 0 {
 		aura := FaerieFireAura(target)
 		ScheduledMajorArmorAura(aura, PeriodicActionOptions{
-			Period:          time.Millisecond * 1500,
-			NumTicks:        3,
-			TickImmediately: true,
-			Priority:        ActionPriorityDOT,
+			Period:   time.Millisecond * 1500,
+			NumTicks: 1,
+			Priority: ActionPriorityDOT,
 			OnAction: func(sim *Simulation) {
 				aura.Activate(sim)
 				if aura.IsActive() {
-					aura.AddStack(sim)
+					aura.SetStacks(sim, 3)
 				}
 			},
 		}, raid)
@@ -476,13 +475,13 @@ func ExposeArmorAura(target *Unit, hasGlyph bool) *Aura {
 var ShatteringThrowAuraTag = "ShatteringThrow"
 var ShatteringThrowDuration = time.Second * 10
 
-func ShatteringThrowAura(target *Unit) *Aura {
+func ShatteringThrowAura(target *Unit, actionTag int32) *Aura {
 	armorReduction := 0.2
 
 	return target.GetOrRegisterAura(Aura{
 		Label:    "Shattering Throw",
 		Tag:      ShatteringThrowAuraTag,
-		ActionID: ActionID{SpellID: 64382},
+		ActionID: ActionID{SpellID: 64382, Tag: actionTag},
 		Duration: ShatteringThrowDuration,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.PseudoStats.ArmorMultiplier *= (1.0 - armorReduction)
