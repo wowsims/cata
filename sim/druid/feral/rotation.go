@@ -37,7 +37,7 @@ func (cat *FeralDruid) OnGCDReady(sim *core.Simulation) {
 	if !cat.GCD.IsReady(sim) && cat.PrimalMadnessAura.IsActive() && cat.Rotation.CancelPrimalMadness {
 		// Determine cancellation threshold based on the expected Energy
 		// loss when Primal Madness will naturally expire.
-		energyThresh := 10.0 * float64(cat.Talents.PrimalMadness)
+		energyThresh := cat.primalMadnessBonus
 
 		// Apply a conservative correction to account for the cost of losing one final buffed Shred at the very
 		// end of the TF or Zerk window due to an early cancellation.
@@ -541,7 +541,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	// Clip Mangle if it won't change the total number of Mangles we have to
 	// cast before the fight ends.
 	t11BuildNow := (cat.StrengthOfThePantherAura != nil) && (cat.StrengthOfThePantherAura.GetStacks() < 3) && !rotation.BearWeave
-	t11RefreshNow := t11Active && (cat.StrengthOfThePantherAura.RemainingDuration(sim) < cat.ReactionTime+max(time.Second, core.DurationFromSeconds((cat.MangleCat.DefaultCast.Cost-(curEnergy-cat.Shred.DefaultCast.Cost-core.TernaryFloat64(cat.PrimalMadnessAura.IsActive() && (cat.PrimalMadnessAura.ExpiresAt() < cat.StrengthOfThePantherAura.ExpiresAt()), 10.0*float64(cat.Talents.PrimalMadness), 0)))/regenRate))) && (simTimeRemain > time.Second)
+	t11RefreshNow := t11Active && (cat.StrengthOfThePantherAura.RemainingDuration(sim) < cat.ReactionTime+max(time.Second, core.DurationFromSeconds((cat.MangleCat.DefaultCast.Cost-(curEnergy-cat.Shred.DefaultCast.Cost-core.TernaryFloat64(cat.PrimalMadnessAura.IsActive() && (cat.PrimalMadnessAura.ExpiresAt() < cat.StrengthOfThePantherAura.ExpiresAt()), cat.primalMadnessBonus, 0)))/regenRate))) && (simTimeRemain > time.Second)
 	t11RefreshNext := t11Active && (cat.StrengthOfThePantherAura.RemainingDuration(sim) < time.Second*2+cat.ReactionTime) && (simTimeRemain > time.Second*2)
 	mangleRefreshNow := !cat.bleedAura.IsActive() && (simTimeRemain > time.Second)
 	mangleRefreshPending := (!t11RefreshNow && !mangleRefreshNow) && ((cat.bleedAura.IsActive() && cat.bleedAura.RemainingDuration(sim) < (simTimeRemain-time.Second)) || (t11Active && (cat.StrengthOfThePantherAura.GetStacks() == 3) && (cat.StrengthOfThePantherAura.RemainingDuration(sim) < simTimeRemain-time.Second)))
@@ -721,7 +721,23 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	} else if bearWeaveNow {
 		cat.readyToShift = true
 	} else if meleeWeaveNow {
-		cat.MoveTo(cat.CatCharge.MinRange+1, sim)
+		// Perform a final check to make sure we will have enough Energy to actually cast Feral Charge once we are in range, and delay the run-out slightly if not.
+		minRunOutSeconds := (cat.CatCharge.MinRange - cat.DistanceFromTarget) / cat.GetMovementSpeed() // intentionally under-estimate for a safe buffer
+		projectedEnergy := curEnergy + minRunOutSeconds*regenRate
+
+		if tfActive && cat.PrimalMadnessAura.IsActive() {
+			latestCharge := sim.CurrentTime + core.DurationFromSeconds((cat.CatCharge.MinRange + 1 - cat.DistanceFromTarget) / cat.GetMovementSpeed()) + cat.ReactionTime*2
+
+			if cat.TigersFuryAura.ExpiresAt() < latestCharge {
+				projectedEnergy -= cat.primalMadnessBonus
+			}
+		}
+
+		if projectedEnergy >= cat.CatCharge.DefaultCast.Cost {
+			cat.MoveTo(cat.CatCharge.MinRange+1, sim)
+		} else {
+			timeToNextAction = core.DurationFromSeconds((cat.CatCharge.DefaultCast.Cost - projectedEnergy) / regenRate)
+		}
 	} else if ravageNow {
 		cat.Ravage.Cast(sim, cat.CurrentTarget)
 		return false, 0
