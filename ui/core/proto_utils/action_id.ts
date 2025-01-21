@@ -345,7 +345,9 @@ export class ActionId {
 				}
 				break;
 			case 'Shattering Throw':
-				if (tag === playerIndex) {
+				if (tag === -1) {
+					name += ' (raid)';
+				} else {
 					name += ` (self)`;
 				}
 				break;
