@@ -22,7 +22,7 @@ const args = minimist(process.argv.slice(2), { boolean: ['watch'] });
 const buildWorkers = async () => {
 	const { stdout } = await execAsync('go env GOROOT');
 	const GO_ROOT = stdout.replace('\n', '');
-	const wasmExecutablePath = path.join(GO_ROOT, '/misc/wasm/wasm_exec.js');
+	const wasmExecutablePath = path.join(GO_ROOT, '/lib/wasm/wasm_exec.js');
 	const wasmFile = await fs.readFile(wasmExecutablePath, 'utf8');
 
 	Object.entries(workers).forEach(async ([name, sourcePath]) => {
