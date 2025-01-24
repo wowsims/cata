@@ -33,8 +33,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		const gearStats = Stats.fromProto(playerStats.gearStats);
 		const talentsStats = Stats.fromProto(playerStats.talentsStats);
 		const talentsDelta = talentsStats.subtract(gearStats);
-		let talentsMod = new Stats().withPseudoStat(PseudoStat.PseudoStatSpellCritPercent, player.getTalents().naturesMajesty * 2);
-		talentsMod = talentsMod.addStat(
+		const talentsMod = new Stats().withStat(
 			Stat.StatHitRating,
 			talentsDelta.getPseudoStat(PseudoStat.PseudoStatSpellHitPercent) * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT,
 		);
