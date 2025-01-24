@@ -154,11 +154,7 @@ func (druid *Druid) applyStarlightWrath() {
 
 func (druid *Druid) applyNaturesMajesty() {
 	if druid.Talents.NaturesMajesty > 0 {
-		druid.AddStaticMod(core.SpellModConfig{
-			ClassMask:  DruidSpellsAll,
-			FloatValue: 2 * float64(druid.Talents.NaturesMajesty),
-			Kind:       core.SpellMod_BonusCrit_Percent,
-		})
+		druid.AddStat(stats.SpellCritPercent, 2 * float64(druid.Talents.NaturesMajesty))
 	}
 }
 
