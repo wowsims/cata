@@ -73,6 +73,7 @@ func (druid *Druid) ApplyTalents() {
 	}
 
 	// druid.registerNaturesSwiftnessCD()
+	druid.applyFeralSwiftness()
 	druid.applyPrimalFury()
 	druid.applyLotp()
 	// druid.applyPredatoryInstincts()
@@ -183,7 +184,7 @@ func (druid *Druid) applyNaturesMajesty() {
 func (druid *Druid) applyMoonglow() {
 	if druid.Talents.Moonglow > 0 {
 		druid.AddStaticMod(core.SpellModConfig{
-			ClassMask:  DruidDamagingSpells | DruidHealingSpells,
+	ClassMask:  DruidDamagingSpells | DruidHealingSpells,
 			FloatValue: -0.03 * float64(druid.Talents.Moonglow),
 			Kind:       core.SpellMod_PowerCost_Pct,
 		})
@@ -278,6 +279,22 @@ func (druid *Druid) applyMasterShapeshifter() {
 
 	if druid.BearFormAura != nil {
 		druid.BearFormAura.AttachMultiplicativePseudoStatBuff(&druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical], 1.04)
+	}
+}
+
+func (druid *Druid) applyFeralSwiftness() {
+	if druid.Talents.FeralSwiftness == 0 {
+		return
+	}
+
+	dodgeBonus := 0.02 * float64(druid.Talents.FeralSwiftness)
+
+	if druid.CatFormAura != nil {
+		druid.CatFormAura.AttachAdditivePseudoStatBuff(&druid.PseudoStats.BaseDodgeChance, dodgeBonus)
+	}
+
+	if druid.BearFormAura != nil {
+		druid.BearFormAura.AttachAdditivePseudoStatBuff(&druid.PseudoStats.BaseDodgeChance, dodgeBonus)
 	}
 }
 

@@ -115,7 +115,6 @@ func (druid *Druid) RegisterCatFormAura() {
 
 			druid.PseudoStats.ThreatMultiplier *= 0.71
 			druid.PseudoStats.SpiritRegenMultiplier *= AnimalSpiritRegenSuppression
-			druid.PseudoStats.BaseDodgeChance += 0.02 * float64(druid.Talents.FeralSwiftness)
 
 			druid.AddStatsDynamic(sim, statBonus)
 			druid.EnableBuildPhaseStatDep(sim, agiApDep)
@@ -146,7 +145,6 @@ func (druid *Druid) RegisterCatFormAura() {
 
 			druid.PseudoStats.ThreatMultiplier /= 0.71
 			druid.PseudoStats.SpiritRegenMultiplier /= AnimalSpiritRegenSuppression
-			druid.PseudoStats.BaseDodgeChance -= 0.02 * float64(druid.Talents.FeralSwiftness)
 
 			druid.AddStatsDynamic(sim, statBonus.Invert())
 			druid.DisableBuildPhaseStatDep(sim, agiApDep)
@@ -263,7 +261,7 @@ func (druid *Druid) RegisterBearFormAura() {
 			druid.PseudoStats.ThreatMultiplier *= 5
 			druid.PseudoStats.DamageTakenMultiplier *= nrdtm
 			druid.PseudoStats.SpiritRegenMultiplier *= AnimalSpiritRegenSuppression
-			druid.PseudoStats.BaseDodgeChance += 0.02*float64(druid.Talents.FeralSwiftness) + 0.03*float64(druid.Talents.NaturalReaction)
+			druid.PseudoStats.BaseDodgeChance += 0.03*float64(druid.Talents.NaturalReaction)
 
 			druid.AddStatsDynamic(sim, statBonus)
 			druid.ApplyBuildPhaseEquipScaling(sim, stats.Armor, druid.BearArmorMultiplier())
@@ -292,7 +290,7 @@ func (druid *Druid) RegisterBearFormAura() {
 			druid.PseudoStats.ThreatMultiplier /= 5
 			druid.PseudoStats.DamageTakenMultiplier /= nrdtm
 			druid.PseudoStats.SpiritRegenMultiplier /= AnimalSpiritRegenSuppression
-			druid.PseudoStats.BaseDodgeChance -= 0.02*float64(druid.Talents.FeralSwiftness) + 0.03*float64(druid.Talents.NaturalReaction)
+			druid.PseudoStats.BaseDodgeChance -= 0.03*float64(druid.Talents.NaturalReaction)
 
 			druid.AddStatsDynamic(sim, statBonus.Invert())
 			druid.RemoveBuildPhaseEquipScaling(sim, stats.Armor, druid.BearArmorMultiplier())

@@ -419,6 +419,21 @@ func (parentAura *Aura) AttachMultiplicativePseudoStatBuff(fieldPointer *float64
 	}
 }
 
+// Attaches an additive PseudoStat buff to a parent Aura
+func (parentAura *Aura) AttachAdditivePseudoStatBuff(fieldPointer *float64, bonus float64) {
+	parentAura.ApplyOnGain(func(_ *Aura, _ *Simulation) {
+		*fieldPointer += bonus
+	})
+
+	parentAura.ApplyOnExpire(func(_ *Aura, _ *Simulation) {
+		*fieldPointer -= bonus
+	})
+
+	if parentAura.IsActive() {
+		*fieldPointer += bonus
+	}
+}
+
 type ShieldStrengthCalculator func(unit *Unit) float64
 
 type DamageAbsorptionAura struct {
