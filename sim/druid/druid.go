@@ -266,6 +266,7 @@ func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *
 }
 
 func (druid *Druid) Initialize() {
+	druid.form = druid.StartingForm
 	druid.LeatherSpecActive = druid.MeetsArmorSpecializationRequirement(proto.ArmorType_ArmorTypeLeather)
 	druid.BleedCategories = druid.GetEnemyExclusiveCategories(core.BleedEffectCategory)
 
