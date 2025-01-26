@@ -18,30 +18,41 @@ func (druid *Druid) RazorClawsMultiplier(masteryRating float64) float64 {
 	return razorClawsMulti
 }
 
-func (druid *Druid) ThickHideMultiplier() float64 {
-	thickHideMulti := 1.0
+func (druid *Druid) applyThickHide() {
+	numPoints := druid.Talents.ThickHide
 
-	if druid.Talents.ThickHide > 0 {
-		thickHideMulti += 0.04 + 0.03*float64(druid.Talents.ThickHide-1)
+	if numPoints == 0 {
+		return
 	}
 
-	return thickHideMulti
-}
+	druid.ApplyEquipScaling(stats.Armor, []float64{1.0, 1.04, 1.07, 1.1}[numPoints])
+	druid.PseudoStats.ReducedCritTakenChance += 0.02*float64(numPoints)
 
-func (druid *Druid) BearArmorMultiplier() float64 {
-	thickHideBearMulti := 1.0 + 0.26*float64(druid.Talents.ThickHide) // This is a bear-specific multiplier that stacks with the generic multiplier calculated above.
-	return 2.2 * thickHideBearMulti
+	if !druid.InForm(Bear) {
+		return
+	}
+
+	// This is a bear-specific multiplier that stacks multiplicatively with
+	// both the generic multiplier above and the baseline Bear Form
+	// multiplier of 2.2 .
+	thickHideBearMulti := 1.0 + 0.26*float64(numPoints)
+
+	druid.BearFormAura.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
+		druid.ApplyBuildPhaseEquipScaling(sim, stats.Armor, thickHideBearMulti)
+	})
+
+	druid.BearFormAura.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
+		druid.RemoveBuildPhaseEquipScaling(sim, stats.Armor, thickHideBearMulti)
+	})
+
+	druid.ApplyEquipScaling(stats.Armor, thickHideBearMulti)
 }
 
 func (druid *Druid) ApplyTalents() {
 	druid.MultiplyStat(stats.Mana, 1.0+0.05*float64(druid.Talents.Furor))
-	druid.ApplyEquipScaling(stats.Armor, druid.ThickHideMultiplier())
-	druid.PseudoStats.ReducedCritTakenChance += 0.02 * float64(druid.Talents.ThickHide)
-
-	if druid.Talents.HeartOfTheWild > 0 {
-		bonus := 0.02 * float64(druid.Talents.HeartOfTheWild)
-		druid.MultiplyStat(stats.Intellect, 1.0+bonus)
-	}
+	druid.applyThickHide()
+	druid.applyMasterShapeshifter()
+	druid.applyHeartOfTheWild()
 
 	// Balance
 	druid.applyNaturesGrace()
@@ -76,6 +87,7 @@ func (druid *Druid) ApplyTalents() {
 	}
 
 	// druid.registerNaturesSwiftnessCD()
+	druid.applyFeralSwiftness()
 	druid.applyPrimalFury()
 	druid.applyLotp()
 	// druid.applyPredatoryInstincts()
@@ -86,6 +98,31 @@ func (druid *Druid) ApplyTalents() {
 	druid.applyPrimalMadness()
 	druid.applyStampede()
 	druid.ApplyGlyphs()
+}
+
+func (druid *Druid) applyHeartOfTheWild() {
+	if druid.Talents.HeartOfTheWild == 0 {
+		return
+	}
+
+	multiplier := 1.0 + 0.02*float64(druid.Talents.HeartOfTheWild)
+	druid.MultiplyStat(stats.Intellect, multiplier)
+
+	if druid.CatFormAura != nil {
+		druid.HotWCatDep = druid.NewDynamicMultiplyStat(stats.AttackPower, []float64{1.0, 1.03, 1.07, 1.1}[druid.Talents.HeartOfTheWild])
+
+		if druid.InForm(Cat) {
+			druid.StatDependencyManager.EnableDynamicStatDep(druid.HotWCatDep)
+		}
+	}
+
+	if druid.BearFormAura != nil {
+		druid.HotWBearDep = druid.NewDynamicMultiplyStat(stats.Stamina, multiplier)
+
+		if druid.InForm(Bear) {
+			druid.StatDependencyManager.EnableDynamicStatDep(druid.HotWBearDep)
+		}
+	}
 }
 
 func (druid *Druid) applyNaturesGrace() {
@@ -161,7 +198,7 @@ func (druid *Druid) applyNaturesMajesty() {
 func (druid *Druid) applyMoonglow() {
 	if druid.Talents.Moonglow > 0 {
 		druid.AddStaticMod(core.SpellModConfig{
-			ClassMask:  DruidDamagingSpells | DruidHealingSpells,
+	ClassMask:  DruidDamagingSpells | DruidHealingSpells,
 			FloatValue: -0.03 * float64(druid.Talents.Moonglow),
 			Kind:       core.SpellMod_PowerCost_Pct,
 		})
@@ -235,13 +272,43 @@ func (druid *Druid) applyMoonkinForm() {
 		FloatValue: 0.1,
 		Kind:       core.SpellMod_DamageDone_Pct,
 	})
+}
 
-	if druid.Talents.MasterShapeshifter {
+func (druid *Druid) applyMasterShapeshifter() {
+	if !druid.Talents.MasterShapeshifter {
+		return
+	}
+
+	if druid.InForm(Moonkin) {
 		druid.AddStaticMod(core.SpellModConfig{
 			School:     core.SpellSchoolArcane | core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolHoly | core.SpellSchoolNature | core.SpellSchoolShadow,
 			FloatValue: 0.04,
 			Kind:       core.SpellMod_DamageDone_Pct,
 		})
+	}
+
+	if druid.CatFormAura != nil {
+		druid.CatFormAura.AttachStatBuff(stats.PhysicalCritPercent, 4)
+	}
+
+	if druid.BearFormAura != nil {
+		druid.BearFormAura.AttachMultiplicativePseudoStatBuff(&druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical], 1.04)
+	}
+}
+
+func (druid *Druid) applyFeralSwiftness() {
+	if druid.Talents.FeralSwiftness == 0 {
+		return
+	}
+
+	dodgeBonus := 0.02 * float64(druid.Talents.FeralSwiftness)
+
+	if druid.CatFormAura != nil {
+		druid.CatFormAura.AttachAdditivePseudoStatBuff(&druid.PseudoStats.BaseDodgeChance, dodgeBonus)
+	}
+
+	if druid.BearFormAura != nil {
+		druid.BearFormAura.AttachAdditivePseudoStatBuff(&druid.PseudoStats.BaseDodgeChance, dodgeBonus)
 	}
 }
 
@@ -831,13 +898,14 @@ func (druid *Druid) applyLotp() {
 // }
 
 func (druid *Druid) applyNaturalReaction() {
-	if druid.Talents.NaturalReaction == 0 {
+	if (druid.Talents.NaturalReaction == 0) || (druid.BearFormAura == nil) {
 		return
 	}
 
 	actionID := core.ActionID{SpellID: 59071}
 	rageMetrics := druid.NewRageMetrics(actionID)
-	rageAdded := 1.0 + 2.0*float64(druid.Talents.NaturalReaction-1)
+	numPoints := float64(druid.Talents.NaturalReaction)
+	rageAdded := 1.0 + 2.0*(numPoints - 1.0)
 
 	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
 		Name:     "Natural Reaction Trigger",
@@ -849,6 +917,9 @@ func (druid *Druid) applyNaturalReaction() {
 			}
 		},
 	})
+
+	druid.BearFormAura.AttachMultiplicativePseudoStatBuff(&druid.PseudoStats.DamageTakenMultiplier, 1.0 - 0.09*numPoints)
+	druid.BearFormAura.AttachAdditivePseudoStatBuff(&druid.PseudoStats.BaseDodgeChance, 0.03*numPoints)
 }
 
 func (druid *Druid) applyInfectedWounds() {
