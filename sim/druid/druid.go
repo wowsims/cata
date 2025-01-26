@@ -32,8 +32,10 @@ type Druid struct {
 	BleedsActive      int
 	AssumeBleedActive bool
 
-	MHAutoSpell       *core.Spell
-	ReplaceBearMHFunc core.ReplaceMHSwing
+	MHAutoSpell *core.Spell
+
+	HotWCatDep  *stats.StatDependency
+	HotWBearDep *stats.StatDependency
 
 	Barkskin              *DruidSpell
 	Berserk               *DruidSpell

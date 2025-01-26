@@ -38,11 +38,7 @@ func (druid *Druid) ApplyTalents() {
 	druid.ApplyEquipScaling(stats.Armor, druid.ThickHideMultiplier())
 	druid.PseudoStats.ReducedCritTakenChance += 0.02 * float64(druid.Talents.ThickHide)
 	druid.applyMasterShapeshifter()
-
-	if druid.Talents.HeartOfTheWild > 0 {
-		bonus := 0.02 * float64(druid.Talents.HeartOfTheWild)
-		druid.MultiplyStat(stats.Intellect, 1.0+bonus)
-	}
+	druid.applyHeartOfTheWild()
 
 	// Balance
 	druid.applyNaturesGrace()
@@ -87,6 +83,31 @@ func (druid *Druid) ApplyTalents() {
 	druid.applyPrimalMadness()
 	druid.applyStampede()
 	druid.ApplyGlyphs()
+}
+
+func (druid *Druid) applyHeartOfTheWild() {
+	if druid.Talents.HeartOfTheWild == 0 {
+		return
+	}
+
+	multiplier := 1.0 + 0.02*float64(druid.Talents.HeartOfTheWild)
+	druid.MultiplyStat(stats.Intellect, multiplier)
+
+	if druid.CatFormAura != nil {
+		druid.HotWCatDep = druid.NewDynamicMultiplyStat(stats.AttackPower, []float64{1.0, 1.03, 1.07, 1.1}[druid.Talents.HeartOfTheWild])
+
+		if druid.InForm(Cat) {
+			druid.StatDependencyManager.EnableDynamicStatDep(druid.HotWCatDep)
+		}
+	}
+
+	if druid.BearFormAura != nil {
+		druid.HotWBearDep = druid.NewDynamicMultiplyStat(stats.Stamina, multiplier)
+
+		if druid.InForm(Bear) {
+			druid.StatDependencyManager.EnableDynamicStatDep(druid.HotWBearDep)
+		}
+	}
 }
 
 func (druid *Druid) applyNaturesGrace() {

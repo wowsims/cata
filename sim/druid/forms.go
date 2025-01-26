@@ -82,12 +82,6 @@ func (druid *Druid) RegisterCatFormAura() {
 	}
 
 	agiApDep := druid.NewDynamicStatDependency(stats.Agility, stats.AttackPower, 2)
-
-	var hotwDep *stats.StatDependency
-	if druid.Talents.HeartOfTheWild > 0 {
-		hotwDep = druid.NewDynamicMultiplyStat(stats.AttackPower, []float64{1.0, 1.03, 1.07, 1.1}[druid.Talents.HeartOfTheWild])
-	}
-
 	leatherSpecDep := druid.NewDynamicMultiplyStat(stats.Agility, 1.05)
 
 	// Need redundant enabling/disabling of the dep both here and below
@@ -125,8 +119,8 @@ func (druid *Druid) RegisterCatFormAura() {
 
 			druid.AddStatsDynamic(sim, statBonus)
 			druid.EnableBuildPhaseStatDep(sim, agiApDep)
-			if hotwDep != nil {
-				druid.EnableBuildPhaseStatDep(sim, hotwDep)
+			if druid.HotWCatDep != nil {
+				druid.EnableBuildPhaseStatDep(sim, druid.HotWCatDep)
 			}
 			if druid.LeatherSpec.IsActive() {
 				druid.EnableBuildPhaseStatDep(sim, leatherSpecDep)
@@ -156,8 +150,8 @@ func (druid *Druid) RegisterCatFormAura() {
 
 			druid.AddStatsDynamic(sim, statBonus.Invert())
 			druid.DisableBuildPhaseStatDep(sim, agiApDep)
-			if hotwDep != nil {
-				druid.DisableBuildPhaseStatDep(sim, hotwDep)
+			if druid.HotWCatDep != nil {
+				druid.DisableBuildPhaseStatDep(sim, druid.HotWCatDep)
 			}
 			if druid.LeatherSpec.IsActive() {
 				druid.DisableBuildPhaseStatDep(sim, leatherSpecDep)
@@ -233,12 +227,6 @@ func (druid *Druid) RegisterBearFormAura() {
 
 	agiApDep := druid.NewDynamicStatDependency(stats.Agility, stats.AttackPower, 2)
 	stamDep := druid.NewDynamicMultiplyStat(stats.Stamina, 1.2)
-
-	var hotwDep *stats.StatDependency
-	if druid.Talents.HeartOfTheWild > 0 {
-		hotwDep = druid.NewDynamicMultiplyStat(stats.Stamina, 1.0+0.02*float64(druid.Talents.HeartOfTheWild))
-	}
-
 	leatherSpecDep := druid.NewDynamicMultiplyStat(stats.Stamina, 1.05)
 
 	// Need redundant enabling/disabling of the dep both here and below
@@ -284,8 +272,8 @@ func (druid *Druid) RegisterBearFormAura() {
 			// Preserve fraction of max health when shifting
 			healthFrac := druid.CurrentHealth() / druid.MaxHealth()
 			druid.EnableBuildPhaseStatDep(sim, stamDep)
-			if hotwDep != nil {
-				druid.EnableBuildPhaseStatDep(sim, hotwDep)
+			if druid.HotWBearDep != nil {
+				druid.EnableBuildPhaseStatDep(sim, druid.HotWBearDep)
 			}
 			if druid.LeatherSpec.IsActive() {
 				druid.EnableBuildPhaseStatDep(sim, leatherSpecDep)
@@ -312,8 +300,8 @@ func (druid *Druid) RegisterBearFormAura() {
 
 			healthFrac := druid.CurrentHealth() / druid.MaxHealth()
 			druid.DisableBuildPhaseStatDep(sim, stamDep)
-			if hotwDep != nil {
-				druid.DisableBuildPhaseStatDep(sim, hotwDep)
+			if druid.HotWBearDep != nil {
+				druid.DisableBuildPhaseStatDep(sim, druid.HotWBearDep)
 			}
 			if druid.LeatherSpec.IsActive() {
 				druid.DisableBuildPhaseStatDep(sim, leatherSpecDep)
