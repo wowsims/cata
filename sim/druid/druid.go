@@ -31,7 +31,6 @@ type Druid struct {
 	RebirthTiming     float64
 	BleedsActive      int
 	AssumeBleedActive bool
-	LeatherSpecActive bool
 
 	MHAutoSpell       *core.Spell
 	ReplaceBearMHFunc core.ReplaceMHSwing
@@ -123,6 +122,9 @@ type Druid struct {
 
 	form         DruidForm
 	disabledMCDs []*core.MajorCooldown
+
+	// Leather specialization tracker
+	LeatherSpec *core.Aura
 
 	// Item sets
 	T11Feral2pBonus *core.Aura
@@ -267,18 +269,12 @@ func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *
 
 func (druid *Druid) Initialize() {
 	druid.form = druid.StartingForm
-	druid.LeatherSpecActive = druid.MeetsArmorSpecializationRequirement(proto.ArmorType_ArmorTypeLeather)
 	druid.BleedCategories = druid.GetEnemyExclusiveCategories(core.BleedEffectCategory)
 
 	druid.Env.RegisterPostFinalizeEffect(func() {
 		druid.MHAutoSpell = druid.AutoAttacks.MHAuto()
 		druid.BlazeOfGloryAura = druid.GetAura("Blaze of Glory")
 	})
-
-	// Leather spec would always provide 5% intellect regardless of the Druid spec or form
-	if druid.LeatherSpecActive {
-		druid.MultiplyStat(stats.Intellect, 1.05)
-	}
 
 	druid.registerFaerieFireSpell()
 	// druid.registerRebirthSpell()
@@ -341,6 +337,18 @@ func (druid *Druid) RegisterFeralTankSpells() {
 	druid.registerThrashBearSpell()
 }
 
+func (druid *Druid) RegisterLeatherSpecialization() {
+	// Druid armor spec behaves differently from other classes because the boosted stats are linked to form rather
+	// than talents. For this reason, we modify the default tracker Aura to activate at BuildPhaseGear rather than
+	// BuildPhaseTalents, and also add custom handlers for the cat Agi bonus and the bear Stam bonus in forms.go (the
+	// Int bonus applies in all forms).
+	druid.LeatherSpec = druid.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeLeather, 87505)
+
+	if druid.LeatherSpec.BuildPhase == core.CharacterBuildPhaseTalents {
+		druid.LeatherSpec.BuildPhase = core.CharacterBuildPhaseGear
+	}
+}
+
 func (druid *Druid) Reset(_ *core.Simulation) {
 	druid.eclipseEnergyBar.reset()
 	druid.BleedsActive = 0
@@ -371,6 +379,8 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 
 	// Base dodge is unaffected by Diminishing Returns
 	druid.PseudoStats.BaseDodgeChance += 0.04951
+
+	druid.RegisterLeatherSpecialization()
 
 	if druid.Talents.ForceOfNature {
 		druid.Treants = &Treants{

@@ -91,6 +91,21 @@ func (druid *Druid) RegisterCatFormAura() {
 
 	leatherSpecDep := druid.NewDynamicMultiplyStat(stats.Agility, 1.05)
 
+	// Need redundant enabling/disabling of the dep both here and below
+	// because we don't know whether the leather spec tracker or Cat Form will
+	// activate first.
+	druid.LeatherSpec.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
+		if druid.InForm(Cat) {
+			druid.EnableBuildPhaseStatDep(sim, leatherSpecDep)
+		}
+	})
+
+	druid.LeatherSpec.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
+		if druid.InForm(Cat) {
+			druid.DisableBuildPhaseStatDep(sim, leatherSpecDep)
+		}
+	})
+
 	clawWeapon := druid.GetCatWeapon()
 
 	druid.CatFormAura = druid.RegisterAura(core.Aura{
@@ -114,7 +129,7 @@ func (druid *Druid) RegisterCatFormAura() {
 			if hotwDep != nil {
 				druid.EnableBuildPhaseStatDep(sim, hotwDep)
 			}
-			if druid.LeatherSpecActive {
+			if druid.LeatherSpec.IsActive() {
 				druid.EnableBuildPhaseStatDep(sim, leatherSpecDep)
 			}
 
@@ -145,7 +160,7 @@ func (druid *Druid) RegisterCatFormAura() {
 			if hotwDep != nil {
 				druid.DisableBuildPhaseStatDep(sim, hotwDep)
 			}
-			if druid.LeatherSpecActive {
+			if druid.LeatherSpec.IsActive() {
 				druid.DisableBuildPhaseStatDep(sim, leatherSpecDep)
 			}
 
@@ -227,6 +242,21 @@ func (druid *Druid) RegisterBearFormAura() {
 
 	leatherSpecDep := druid.NewDynamicMultiplyStat(stats.Stamina, 1.05)
 
+	// Need redundant enabling/disabling of the dep both here and below
+	// because we don't know whether the leather spec tracker or Bear Form
+	// will activate first.
+	druid.LeatherSpec.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
+		if druid.InForm(Bear) {
+			druid.EnableBuildPhaseStatDep(sim, leatherSpecDep)
+		}
+	})
+
+	druid.LeatherSpec.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
+		if druid.InForm(Bear) {
+			druid.DisableBuildPhaseStatDep(sim, leatherSpecDep)
+		}
+	})
+
 	nrdtm := 1 - 0.09*float64(druid.Talents.NaturalReaction)
 
 	clawWeapon := druid.GetBearWeapon()
@@ -259,7 +289,7 @@ func (druid *Druid) RegisterBearFormAura() {
 			if hotwDep != nil {
 				druid.EnableBuildPhaseStatDep(sim, hotwDep)
 			}
-			if druid.LeatherSpecActive {
+			if druid.LeatherSpec.IsActive() {
 				druid.EnableBuildPhaseStatDep(sim, leatherSpecDep)
 			}
 
@@ -288,7 +318,7 @@ func (druid *Druid) RegisterBearFormAura() {
 			if hotwDep != nil {
 				druid.DisableBuildPhaseStatDep(sim, hotwDep)
 			}
-			if druid.LeatherSpecActive {
+			if druid.LeatherSpec.IsActive() {
 				druid.DisableBuildPhaseStatDep(sim, leatherSpecDep)
 			}
 

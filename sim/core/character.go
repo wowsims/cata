@@ -793,7 +793,7 @@ func (character *Character) MeetsArmorSpecializationRequirement(armorType proto.
 	return true
 }
 
-func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Stat, armorType proto.ArmorType, spellID int32) {
+func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Stat, armorType proto.ArmorType, spellID int32) *Aura {
 	armorSpecializationDependency := character.NewDynamicMultiplyStat(primaryStat, 1.05)
 	isEnabled := character.MeetsArmorSpecializationRequirement(armorType)
 
@@ -829,4 +829,6 @@ func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Sta
 				aura.Deactivate(sim)
 			}
 		})
+
+	return aura
 }
