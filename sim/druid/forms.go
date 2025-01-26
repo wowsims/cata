@@ -243,6 +243,7 @@ func (druid *Druid) RegisterBearFormAura() {
 	})
 
 	clawWeapon := druid.GetBearWeapon()
+	baseBearArmorMulti := 2.2 // Thick Hide contribution handled separately in talents code for cleanliness and UI stats display.
 
 	druid.BearFormAura = druid.RegisterAura(core.Aura{
 		Label:      "Bear Form",
@@ -260,7 +261,7 @@ func (druid *Druid) RegisterBearFormAura() {
 			druid.PseudoStats.SpiritRegenMultiplier *= AnimalSpiritRegenSuppression
 
 			druid.AddStatsDynamic(sim, statBonus)
-			druid.ApplyBuildPhaseEquipScaling(sim, stats.Armor, druid.BearArmorMultiplier())
+			druid.ApplyBuildPhaseEquipScaling(sim, stats.Armor, baseBearArmorMulti)
 			druid.EnableBuildPhaseStatDep(sim, agiApDep)
 
 			// Preserve fraction of max health when shifting
@@ -287,7 +288,7 @@ func (druid *Druid) RegisterBearFormAura() {
 			druid.PseudoStats.SpiritRegenMultiplier /= AnimalSpiritRegenSuppression
 
 			druid.AddStatsDynamic(sim, statBonus.Invert())
-			druid.RemoveBuildPhaseEquipScaling(sim, stats.Armor, druid.BearArmorMultiplier())
+			druid.RemoveBuildPhaseEquipScaling(sim, stats.Armor, baseBearArmorMulti)
 			druid.DisableBuildPhaseStatDep(sim, agiApDep)
 
 			healthFrac := druid.CurrentHealth() / druid.MaxHealth()
