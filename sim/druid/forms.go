@@ -242,8 +242,6 @@ func (druid *Druid) RegisterBearFormAura() {
 		}
 	})
 
-	nrdtm := 1 - 0.09*float64(druid.Talents.NaturalReaction)
-
 	clawWeapon := druid.GetBearWeapon()
 
 	druid.BearFormAura = druid.RegisterAura(core.Aura{
@@ -259,9 +257,7 @@ func (druid *Druid) RegisterBearFormAura() {
 			druid.SetCurrentPowerBar(core.RageBar)
 
 			druid.PseudoStats.ThreatMultiplier *= 5
-			druid.PseudoStats.DamageTakenMultiplier *= nrdtm
 			druid.PseudoStats.SpiritRegenMultiplier *= AnimalSpiritRegenSuppression
-			druid.PseudoStats.BaseDodgeChance += 0.03*float64(druid.Talents.NaturalReaction)
 
 			druid.AddStatsDynamic(sim, statBonus)
 			druid.ApplyBuildPhaseEquipScaling(sim, stats.Armor, druid.BearArmorMultiplier())
@@ -288,9 +284,7 @@ func (druid *Druid) RegisterBearFormAura() {
 			druid.form = Humanoid
 
 			druid.PseudoStats.ThreatMultiplier /= 5
-			druid.PseudoStats.DamageTakenMultiplier /= nrdtm
 			druid.PseudoStats.SpiritRegenMultiplier /= AnimalSpiritRegenSuppression
-			druid.PseudoStats.BaseDodgeChance -= 0.03*float64(druid.Talents.NaturalReaction)
 
 			druid.AddStatsDynamic(sim, statBonus.Invert())
 			druid.RemoveBuildPhaseEquipScaling(sim, stats.Armor, druid.BearArmorMultiplier())

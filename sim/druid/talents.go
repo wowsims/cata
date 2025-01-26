@@ -884,13 +884,14 @@ func (druid *Druid) applyLotp() {
 // }
 
 func (druid *Druid) applyNaturalReaction() {
-	if druid.Talents.NaturalReaction == 0 {
+	if (druid.Talents.NaturalReaction == 0) || (druid.BearFormAura == nil) {
 		return
 	}
 
 	actionID := core.ActionID{SpellID: 59071}
 	rageMetrics := druid.NewRageMetrics(actionID)
-	rageAdded := 1.0 + 2.0*float64(druid.Talents.NaturalReaction-1)
+	numPoints := float64(druid.Talents.NaturalReaction)
+	rageAdded := 1.0 + 2.0*(numPoints - 1.0)
 
 	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
 		Name:     "Natural Reaction Trigger",
@@ -902,6 +903,9 @@ func (druid *Druid) applyNaturalReaction() {
 			}
 		},
 	})
+
+	druid.BearFormAura.AttachMultiplicativePseudoStatBuff(&druid.PseudoStats.DamageTakenMultiplier, 1.0 - 0.09*numPoints)
+	druid.BearFormAura.AttachAdditivePseudoStatBuff(&druid.PseudoStats.BaseDodgeChance, 0.03*numPoints)
 }
 
 func (druid *Druid) applyInfectedWounds() {
