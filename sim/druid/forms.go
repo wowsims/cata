@@ -79,7 +79,6 @@ func (druid *Druid) RegisterCatFormAura() {
 
 	statBonus := stats.Stats{
 		stats.AttackPower:         -20, // This offset is needed because the first 10 points of Agility do not contribute any Attack Power.
-		stats.PhysicalCritPercent: core.TernaryFloat64(druid.Talents.MasterShapeshifter, 4, 0),
 	}
 
 	agiApDep := druid.NewDynamicStatDependency(stats.Agility, stats.AttackPower, 2)
@@ -274,7 +273,6 @@ func (druid *Druid) RegisterBearFormAura() {
 			druid.SetCurrentPowerBar(core.RageBar)
 
 			druid.PseudoStats.ThreatMultiplier *= 5
-			druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= core.TernaryFloat64(druid.Talents.MasterShapeshifter, 1.04, 1.0)
 			druid.PseudoStats.DamageTakenMultiplier *= nrdtm
 			druid.PseudoStats.SpiritRegenMultiplier *= AnimalSpiritRegenSuppression
 			druid.PseudoStats.BaseDodgeChance += 0.02*float64(druid.Talents.FeralSwiftness) + 0.03*float64(druid.Talents.NaturalReaction)
@@ -304,7 +302,6 @@ func (druid *Druid) RegisterBearFormAura() {
 			druid.form = Humanoid
 
 			druid.PseudoStats.ThreatMultiplier /= 5
-			druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= core.TernaryFloat64(druid.Talents.MasterShapeshifter, 1.04, 1.0)
 			druid.PseudoStats.DamageTakenMultiplier /= nrdtm
 			druid.PseudoStats.SpiritRegenMultiplier /= AnimalSpiritRegenSuppression
 			druid.PseudoStats.BaseDodgeChance -= 0.02*float64(druid.Talents.FeralSwiftness) + 0.03*float64(druid.Talents.NaturalReaction)

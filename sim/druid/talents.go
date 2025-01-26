@@ -37,6 +37,7 @@ func (druid *Druid) ApplyTalents() {
 	druid.MultiplyStat(stats.Mana, 1.0+0.05*float64(druid.Talents.Furor))
 	druid.ApplyEquipScaling(stats.Armor, druid.ThickHideMultiplier())
 	druid.PseudoStats.ReducedCritTakenChance += 0.02 * float64(druid.Talents.ThickHide)
+	druid.applyMasterShapeshifter()
 
 	if druid.Talents.HeartOfTheWild > 0 {
 		bonus := 0.02 * float64(druid.Talents.HeartOfTheWild)
@@ -235,13 +236,27 @@ func (druid *Druid) applyMoonkinForm() {
 		FloatValue: 0.1,
 		Kind:       core.SpellMod_DamageDone_Pct,
 	})
+}
 
-	if druid.Talents.MasterShapeshifter {
+func (druid *Druid) applyMasterShapeshifter() {
+	if !druid.Talents.MasterShapeshifter {
+		return
+	}
+
+	if druid.InForm(Moonkin) {
 		druid.AddStaticMod(core.SpellModConfig{
 			School:     core.SpellSchoolArcane | core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolHoly | core.SpellSchoolNature | core.SpellSchoolShadow,
 			FloatValue: 0.04,
 			Kind:       core.SpellMod_DamageDone_Pct,
 		})
+	}
+
+	if druid.CatFormAura != nil {
+		druid.CatFormAura.AttachStatBuff(stats.PhysicalCritPercent, 4)
+	}
+
+	if druid.BearFormAura != nil {
+		druid.BearFormAura.AttachMultiplicativePseudoStatBuff(&druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical], 1.04)
 	}
 }
 

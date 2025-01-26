@@ -391,6 +391,10 @@ func (parentAura *Aura) AttachStatsBuff(stats stats.Stats) {
 	parentAura.ApplyOnExpire(func(aura *Aura, sim *Simulation) {
 		aura.Unit.AddStatsDynamic(sim, stats.Invert())
 	})
+
+	if parentAura.IsActive() {
+		parentAura.Unit.AddStats(stats)
+	}
 }
 
 // Adds a Stat to a parent Aura
@@ -398,6 +402,21 @@ func (parentAura *Aura) AttachStatBuff(stat stats.Stat, value float64) {
 	statsToAdd := stats.Stats{}
 	statsToAdd[stat] = value
 	parentAura.AttachStatsBuff(statsToAdd)
+}
+
+// Attaches a multiplicative PseudoStat buff to a parent Aura
+func (parentAura *Aura) AttachMultiplicativePseudoStatBuff(fieldPointer *float64, multiplier float64) {
+	parentAura.ApplyOnGain(func(_ *Aura, _ *Simulation) {
+		*fieldPointer *= multiplier
+	})
+
+	parentAura.ApplyOnExpire(func(_ *Aura, _ *Simulation) {
+		*fieldPointer /= multiplier
+	})
+
+	if parentAura.IsActive() {
+		*fieldPointer *= multiplier
+	}
 }
 
 type ShieldStrengthCalculator func(unit *Unit) float64
