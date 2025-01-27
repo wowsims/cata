@@ -49,8 +49,11 @@ func (druid *Druid) registerTigersFurySpell() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			druid.AddEnergy(sim, instantEnergy, energyMetrics)
-
 			druid.TigersFuryAura.Activate(sim)
+
+			if (druid.StampedeCatAura != nil) && druid.T13Feral4pBonus.IsActive() {
+				druid.StampedeCatAura.Activate(sim)
+			}
 		},
 	})
 

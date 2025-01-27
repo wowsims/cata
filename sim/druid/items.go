@@ -205,6 +205,56 @@ var ItemSetObsidianArborweaveRegalia = core.NewItemSet(core.ItemSet{
 	},
 })
 
+// T13 Feral
+var ItemSetDeepEarthBattlegarb = core.NewItemSet(core.ItemSet{
+	Name: "Deep Earth Battlegarb",
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			druid := agent.(DruidAgent).GetDruid()
+
+			if druid.InForm(Bear) {
+				setBonusAura.AttachProcTrigger(core.ProcTrigger{
+					Name:           "T13 Savage Defense Trigger",
+					Callback:       core.CallbackOnSpellHitDealt,
+					ClassSpellMask: DruidSpellMangleBear,
+					Outcome:        core.OutcomeCrit,
+
+					Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+						if druid.PulverizeAura.IsActive() {
+							druid.SavageDefenseAura.Activate(sim)
+						}
+					},
+				})
+			}
+
+			if !druid.InForm(Cat) {
+				return
+			}
+
+			// Rather than creating a whole extra Execute phase category just for this bonus, we will instead scale up ExecuteProportion_25 using linear interpolation. Note that we use ExecuteProportion_90 for Predatory Strikes (< 80%), which is why the math below looks funny.
+			oldExecuteProportion_25 := druid.Env.Encounter.ExecuteProportion_25
+			oldExecuteProportion_35 := druid.Env.Encounter.ExecuteProportion_35
+			newExecuteProportion_25 := oldExecuteProportion_35 * (1.0 - (60.0 - 35.0) / (80.0 - 35.0)) + druid.Env.Encounter.ExecuteProportion_90 * ((60.0 - 35.0) / (80.0 - 35.0))
+			newExecuteProportion_35 := 0.5 * (newExecuteProportion_25 + druid.Env.Encounter.ExecuteProportion_90) // We don't use this field anywhere, just need it to be any value above ExecuteProportion_25 but below ExecuteProportion_90 so that the transitions work properly.
+
+			setBonusAura.ApplyOnGain(func(_ *core.Aura, _ *core.Simulation) {
+				druid.Env.Encounter.ExecuteProportion_35 = newExecuteProportion_35
+				druid.Env.Encounter.ExecuteProportion_25 = newExecuteProportion_25
+			})
+
+			setBonusAura.ApplyOnExpire(func(_ *core.Aura, _ *core.Simulation) {
+				druid.Env.Encounter.ExecuteProportion_25 = oldExecuteProportion_25
+				druid.Env.Encounter.ExecuteProportion_35 = oldExecuteProportion_35
+			})
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Implemented in tigers_fury.go
+			druid := agent.(DruidAgent).GetDruid()
+			druid.T13Feral4pBonus = setBonusAura
+		},
+	},
+})
+
 // T13 Balance
 var ItemSetDeepEarthRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Deep Earth Regalia",
