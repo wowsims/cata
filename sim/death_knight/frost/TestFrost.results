@@ -2102,24 +2102,24 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-VialofShadows-77207"
  value: {
-  dps: 39123.82984
-  tps: 36950.59212
+  dps: 39762.4396
+  tps: 37589.20188
   hps: 523.43753
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-VialofShadows-77979"
  value: {
-  dps: 39061.69576
-  tps: 36893.4726
+  dps: 39627.19631
+  tps: 37458.97315
   hps: 523.43753
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-VialofShadows-77999"
  value: {
-  dps: 39249.03958
-  tps: 37066.42465
+  dps: 39950.23787
+  tps: 37767.62294
   hps: 523.43753
  }
 }

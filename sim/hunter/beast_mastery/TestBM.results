@@ -1934,22 +1934,22 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-VialofShadows-77207"
  value: {
-  dps: 25882.49711
-  tps: 16440.60206
+  dps: 26803.791
+  tps: 17361.89595
  }
 }
 dps_results: {
  key: "TestBM-AllItems-VialofShadows-77979"
  value: {
-  dps: 25698.62854
-  tps: 16310.52449
+  dps: 26506.16221
+  tps: 17118.05817
  }
 }
 dps_results: {
  key: "TestBM-AllItems-VialofShadows-77999"
  value: {
-  dps: 26223.21869
-  tps: 16622.31078
+  dps: 27249.52538
+  tps: 17648.61747
  }
 }
 dps_results: {
