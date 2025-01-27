@@ -100,6 +100,7 @@ type Druid struct {
 	PredatoryInstinctsAura   *core.Aura
 	PrimalMadnessAura        *core.Aura
 	PulverizeAura            *core.Aura
+	SavageDefenseAura        *core.DamageAbsorptionAura
 	SavageRoarAura           *core.Aura
 	SmokescreenAura          *core.Aura
 	SolarEclipseProcAura     *core.Aura

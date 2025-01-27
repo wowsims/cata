@@ -443,6 +443,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-DeepEarthBattlegarb"
+ value: {
+  dps: 28993.29826
+  tps: 42036.1711
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-DeepEarthRegalia"
  value: {
   dps: 22096.86332

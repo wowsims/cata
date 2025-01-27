@@ -205,6 +205,31 @@ var ItemSetObsidianArborweaveRegalia = core.NewItemSet(core.ItemSet{
 	},
 })
 
+// T13 Feral
+var ItemSetDeepEarthBattlegarb = core.NewItemSet(core.ItemSet{
+	Name: "Deep Earth Battlegarb",
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			druid := agent.(DruidAgent).GetDruid()
+
+			if druid.InForm(Bear) {
+				setBonusAura.AttachProcTrigger(core.ProcTrigger{
+					Name:           "T13 Savage Defense Trigger",
+					Callback:       core.CallbackOnSpellHitDealt,
+					ClassSpellMask: DruidSpellMangleBear,
+					Outcome:        core.OutcomeCrit,
+
+					Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+						if druid.PulverizeAura.IsActive() {
+							druid.SavageDefenseAura.Activate(sim)
+						}
+					},
+				})
+			}
+		},
+	},
+})
+
 // T13 Balance
 var ItemSetDeepEarthRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Deep Earth Regalia",

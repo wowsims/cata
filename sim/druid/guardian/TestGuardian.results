@@ -500,6 +500,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-DeepEarthBattlegarb"
+ value: {
+  dps: 10702.30575
+  tps: 53582.93833
+  hps: 320.53125
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-DeepEarthRegalia"
  value: {
   dps: 7382.37741
