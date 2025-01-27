@@ -166,7 +166,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.SubtletyTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_PRESET_SUBTLETY],
+		rotations: [Presets.ROTATION_PRESET_SUBTLETY, Presets.ROTATION_PRESET_SUBTLETY_MASTERY],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PRERAID_PRESET_SUB, Presets.P1_PRESET_SUB, Presets.P3_PRESET_SUB, Presets.P4_PRESET_SUB],
 	},
