@@ -877,8 +877,7 @@ func init() {
 		})
 	}
 
-	for _, v := range []ItemVersion{ItemVersionLFR, ItemVersionNormal, ItemVersionHeroic} {
-		version := v // Gotta scope this for the closure
+	for _, version := range []ItemVersion{ItemVersionLFR, ItemVersionNormal, ItemVersionHeroic} {
 		labelSuffix := []string{" (LFR)", "", " (Heroic)"}[version]
 
 		vialItemID := []int32{77979, 77207, 77999}[version]
@@ -888,20 +887,16 @@ func init() {
 			actionID := core.ActionID{SpellID: []int32{109721, 107994, 109724}[version]}
 			minDmg := []float64{3568, 4028, 4546}[version]
 			maxDmg := []float64{5353, 6042, 6819}[version]
-			/* TODO:
 
-			There's conflicting information regarding if the trinket should have an AP modifier or not.
-			In the dbc files it's listed as not having one, but other resources like simc and wowpedia say it does.
-			We're assuming it doesn't have one for now and will need to confirm later on during PTR testing.
-			We should also track the issue filed on the cata-classic-bugs repo if anyone from Blizzard replies.
+			// 01/26/25: Testing during the first Dragon Soul PTR is consistent with these scaling
+			// coefficients from simC, refer to Discord discussion from here onwards:
+			// https://discord.com/channels/891730968493305867/1034670402150092841/1332728469427322982
+			apMod := []float64{0.266, 0.3, 0.339}[version]
 
-			dbc: https://wago.tools/db2/SpellEffect?build=4.4.1.56574&filter%5BSpellID%5D=109724&page=1
-			wowpedia: https://wowpedia.fandom.com/wiki/Vial_of_Shadows
-			issue: https://github.com/ClassicWoWCommunity/cata-classic-bugs/issues/1516
-			bluetracker, January 9: https://www.bluetracker.gg/wow/topic/us-en/4023884-patch-43-hotfixes/
-
-			*/
-			//apMod := []float64{0.266, 0.3, 0.339}[version]
+			// The AP scaling calculation can use either Melee or
+			// Ranged AP depending on how the proc was triggered, so
+			// keep track of it separately.
+			var apSnapshot float64
 
 			lightningStrike := character.RegisterSpell(core.SpellConfig{
 				ActionID:    actionID,
@@ -910,12 +905,11 @@ func init() {
 				Flags:       core.SpellFlagPassiveSpell,
 
 				DamageMultiplier: 1,
-				CritMultiplier:   character.DefaultMeleeCritMultiplier(),
+				CritMultiplier:   character.DefaultMeleeCritMultiplier(), // even ranged procs use the melee Crit multiplier as of first PTR (1.5x for Hunters)
 				ThreatMultiplier: 1,
 
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					baseDamage := sim.Roll(minDmg, maxDmg)
-					//+apMod*spell.MeleeAttackPower()
+					baseDamage := sim.Roll(minDmg, maxDmg) + apMod*apSnapshot
 					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 				},
 			})
@@ -930,6 +924,12 @@ func init() {
 				ProcChance: 0.45,
 				ICD:        time.Second * 9,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.ProcMask.Matches(core.ProcMaskMelee | core.ProcMaskMeleeProc) {
+						apSnapshot = spell.MeleeAttackPower()
+					} else {
+						apSnapshot = spell.RangedAttackPower(result.Target)
+					}
+
 					lightningStrike.Cast(sim, result.Target)
 				},
 			})
