@@ -14,15 +14,15 @@ import { SavedTalents } from '../../core/proto/ui';
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 import PreraidGear from './gear_sets/preraid.gear.json';
-export const PRERAID_PRESET = PresetUtils.makePresetGear('Preraid Preset', PreraidGear);
+export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-Raid', PreraidGear);
 import P1Gear from './gear_sets/p1.gear.json';
-export const P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1Gear);
+export const P1_PRESET = PresetUtils.makePresetGear('P1', P1Gear);
 import P2Gear from './gear_sets/p2.gear.json';
-export const P2_PRESET = PresetUtils.makePresetGear('P2 Preset', P2Gear);
+export const P2_PRESET = PresetUtils.makePresetGear('P2', P2Gear);
 import P3Gear from './gear_sets/p3.gear.json';
-export const P3_PRESET = PresetUtils.makePresetGear('P3 Preset', P3Gear);
+export const P3_PRESET = PresetUtils.makePresetGear('P3', P3Gear);
 import P4Gear from './gear_sets/p4.gear.json';
-export const P4_PRESET = PresetUtils.makePresetGear('P4 Preset', P4Gear);
+export const P4_PRESET = PresetUtils.makePresetGear('P4', P4Gear);
 
 import DefaultApl from './apls/default.apl.json';
 export const APL_ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('APL Default', DefaultApl);
