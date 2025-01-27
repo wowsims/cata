@@ -247,9 +247,8 @@ func (cat *FeralDruid) TryBerserk(sim *core.Simulation) {
 	simTimeRemain := sim.GetRemainingDuration()
 	tfCdRemain := cat.TigersFury.TimeToReady(sim)
 	waitForTf := cat.Talents.Berserk && (tfCdRemain <= cat.BerserkAura.Duration) && (tfCdRemain+cat.ReactionTime < simTimeRemain-cat.BerserkAura.Duration)
-	waitForRavage := cat.StampedeCatAura.IsActive() && (cat.Rotation.RotationType == proto.FeralDruid_Rotation_SingleTarget)
 	isClearcast := cat.ClearcastingAura.IsActive()
-	berserkNow := cat.Rotation.UseBerserk && cat.Berserk.IsReady(sim) && !waitForTf && !waitForRavage && !isClearcast
+	berserkNow := cat.Rotation.UseBerserk && cat.Berserk.IsReady(sim) && !waitForTf && !isClearcast
 
 	if berserkNow {
 		cat.Berserk.Cast(sim, nil)
