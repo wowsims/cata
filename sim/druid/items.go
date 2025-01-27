@@ -226,6 +226,26 @@ var ItemSetDeepEarthBattlegarb = core.NewItemSet(core.ItemSet{
 					},
 				})
 			}
+
+			if !druid.InForm(Cat) {
+				return
+			}
+
+			// Rather than creating a whole extra Execute phase category just for this bonus, we will instead scale up ExecuteProportion_25 using linear interpolation. Note that we use ExecuteProportion_90 for Predatory Strikes (< 80%), which is why the math below looks funny.
+			oldExecuteProportion_25 := druid.Env.Encounter.ExecuteProportion_25
+			oldExecuteProportion_35 := druid.Env.Encounter.ExecuteProportion_35
+			newExecuteProportion_25 := oldExecuteProportion_35 * (1.0 - (60.0 - 35.0) / (80.0 - 35.0)) + druid.Env.Encounter.ExecuteProportion_90 * ((60.0 - 35.0) / (80.0 - 35.0))
+			newExecuteProportion_35 := 0.5 * (newExecuteProportion_25 + druid.Env.Encounter.ExecuteProportion_90) // We don't use this field anywhere, just need it to be any value above ExecuteProportion_25 but below ExecuteProportion_90 so that the transitions work properly.
+
+			setBonusAura.ApplyOnGain(func(_ *core.Aura, _ *core.Simulation) {
+				druid.Env.Encounter.ExecuteProportion_35 = newExecuteProportion_35
+				druid.Env.Encounter.ExecuteProportion_25 = newExecuteProportion_25
+			})
+
+			setBonusAura.ApplyOnExpire(func(_ *core.Aura, _ *core.Simulation) {
+				druid.Env.Encounter.ExecuteProportion_25 = oldExecuteProportion_25
+				druid.Env.Encounter.ExecuteProportion_35 = oldExecuteProportion_35
+			})
 		},
 	},
 })
