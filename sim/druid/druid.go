@@ -133,6 +133,7 @@ type Druid struct {
 	T11Feral2pBonus *core.Aura
 	T11Feral4pBonus *core.Aura
 	T12Feral4pBonus *core.Aura
+	T13Feral4pBonus *core.Aura
 }
 
 const (

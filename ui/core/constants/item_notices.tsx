@@ -159,7 +159,6 @@ export const SET_BONUS_NOTICES = new Map<number, SetBonusNoticeData>([
 	[1014, null], // Resto Shaman T12
 
 	[1056, null], // Blood DK T13
-	[1058, null], // Feral Druid T13
 	[1060, null], // Resto Druid T13
 	[1066, null], // Healing Priest T13
 	[1067, null], // Shadow Priest T13

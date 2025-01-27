@@ -247,6 +247,11 @@ var ItemSetDeepEarthBattlegarb = core.NewItemSet(core.ItemSet{
 				druid.Env.Encounter.ExecuteProportion_35 = oldExecuteProportion_35
 			})
 		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Implemented in tigers_fury.go
+			druid := agent.(DruidAgent).GetDruid()
+			druid.T13Feral4pBonus = setBonusAura
+		},
 	},
 })
 
