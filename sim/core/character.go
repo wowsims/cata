@@ -218,6 +218,14 @@ func (character *Character) ApplyDynamicEquipScaling(sim *Simulation, stat stats
 	character.AddStatDynamic(sim, stat, statDiff)
 }
 
+func (character *Character) ApplyBuildPhaseEquipScaling(sim *Simulation, stat stats.Stat, multiplier float64) {
+	if character.Env.MeasuringStats && (character.Env.State != Finalized) {
+		character.ApplyEquipScaling(stat, multiplier)
+	} else {
+		character.ApplyDynamicEquipScaling(sim, stat, multiplier)
+	}
+}
+
 func (character *Character) RemoveEquipScaling(stat stats.Stat, multiplier float64) {
 	var statDiff stats.Stats
 	statDiff[stat] = character.applyEquipScaling(stat, 1/multiplier)
@@ -231,6 +239,14 @@ func (character *Character) RemoveEquipScaling(stat stats.Stat, multiplier float
 func (character *Character) RemoveDynamicEquipScaling(sim *Simulation, stat stats.Stat, multiplier float64) {
 	statDiff := character.applyEquipScaling(stat, 1/multiplier)
 	character.AddStatDynamic(sim, stat, statDiff)
+}
+
+func (character *Character) RemoveBuildPhaseEquipScaling(sim *Simulation, stat stats.Stat, multiplier float64) {
+	if character.Env.MeasuringStats && (character.Env.State != Finalized) {
+		character.RemoveEquipScaling(stat, multiplier)
+	} else {
+		character.RemoveDynamicEquipScaling(sim, stat, multiplier)
+	}
 }
 
 func (character *Character) EquipStats() stats.Stats {
@@ -777,7 +793,7 @@ func (character *Character) MeetsArmorSpecializationRequirement(armorType proto.
 	return true
 }
 
-func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Stat, armorType proto.ArmorType, spellID int32) {
+func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Stat, armorType proto.ArmorType, spellID int32) *Aura {
 	armorSpecializationDependency := character.NewDynamicMultiplyStat(primaryStat, 1.05)
 	isEnabled := character.MeetsArmorSpecializationRequirement(armorType)
 
@@ -813,4 +829,6 @@ func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Sta
 				aura.Deactivate(sim)
 			}
 		})
+
+	return aura
 }

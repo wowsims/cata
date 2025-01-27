@@ -52,6 +52,8 @@ func NewGuardianDruid(character *core.Character, options *proto.Player) *Guardia
 		}
 	}
 
+	bear.RegisterBearFormAura()
+
 	return bear
 }
 
