@@ -2038,24 +2038,24 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-VialofShadows-77207"
  value: {
-  dps: 40404.61572
-  tps: 30081.7196
+  dps: 41128.77754
+  tps: 30805.88142
   hps: 646.50919
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-VialofShadows-77979"
  value: {
-  dps: 40204.66684
-  tps: 29919.87992
+  dps: 40857.08762
+  tps: 30572.3007
   hps: 646.50919
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-VialofShadows-77999"
  value: {
-  dps: 40470.38532
-  tps: 30125.39149
+  dps: 41256.41299
+  tps: 30911.41916
   hps: 646.50919
  }
 }

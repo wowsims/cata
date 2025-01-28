@@ -100,6 +100,7 @@ type Druid struct {
 	PredatoryInstinctsAura   *core.Aura
 	PrimalMadnessAura        *core.Aura
 	PulverizeAura            *core.Aura
+	SavageDefenseAura        *core.DamageAbsorptionAura
 	SavageRoarAura           *core.Aura
 	SmokescreenAura          *core.Aura
 	SolarEclipseProcAura     *core.Aura
@@ -132,6 +133,7 @@ type Druid struct {
 	T11Feral2pBonus *core.Aura
 	T11Feral4pBonus *core.Aura
 	T12Feral4pBonus *core.Aura
+	T13Feral4pBonus *core.Aura
 }
 
 const (

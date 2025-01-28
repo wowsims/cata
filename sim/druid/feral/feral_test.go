@@ -35,6 +35,7 @@ func TestFeral(t *testing.T) {
 
 		OtherGearSets: []core.GearSetCombo{
 			core.GetGearSet("../../../ui/druid/feral/gear_sets", "p3"),
+			core.GetGearSet("../../../ui/druid/feral/gear_sets", "p4"),
 		},
 
 		Talents:         StandardTalents,

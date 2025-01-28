@@ -436,6 +436,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBalance-AllItems-DeepEarthBattlegarb"
+ value: {
+  dps: 19002.78454
+  tps: 18986.08885
+ }
+}
+dps_results: {
  key: "TestBalance-AllItems-DeepEarthRegalia"
  value: {
   dps: 26458.83122
