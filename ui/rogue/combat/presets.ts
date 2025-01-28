@@ -22,7 +22,7 @@ export const ROTATION_PRESET_COMBAT = PresetUtils.makePresetAPLRotation('Combat'
 
 // Preset options for EP weights
 export const CBAT_STANDARD_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'Combat Low Gear',
+	'Combat Standard',
 	Stats.fromMap(
 		{
 			[Stat.StatAgility]: 2.85,
@@ -66,9 +66,9 @@ export const CBAT_4PT12_EP_PRESET = PresetUtils.makePresetEpWeights(
 	),
 );
 
-// By mostly-T12 gear or better, Haste+Mastery overtake capping Spell Hit, but Spell Hit retains enough value to not ignore (Trends towards 15%-ish)
+// Legendary daggers push up Haste significantly. It effectively removes the need to balance Haste vs Mastery.
 export const CBAT_T13_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'Combat High Gear',
+	'Combat Legendary',
 	Stats.fromMap(
 		{
 			[Stat.StatAgility]: 2.85,
@@ -76,15 +76,15 @@ export const CBAT_T13_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAttackPower]: 1,
 			[Stat.StatCritRating]: 1.19,
 			[Stat.StatHitRating]: 2.5,
-			[Stat.StatHasteRating]: 1.86,
-			[Stat.StatMasteryRating]: 1.55,
+			[Stat.StatHasteRating]: 1.79,
+			[Stat.StatMasteryRating]: 1.48,
 			[Stat.StatExpertiseRating]: 2.1,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 4.31,
 			[PseudoStat.PseudoStatOffHandDps]: 1.32,
 			[PseudoStat.PseudoStatSpellHitPercent]: 52,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 230,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 249,
 		},
 	),
 );
