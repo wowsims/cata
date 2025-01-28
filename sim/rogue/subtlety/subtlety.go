@@ -44,7 +44,6 @@ func (subRogue *SubtletyRogue) Initialize() {
 	subRogue.registerShadowstepCD()
 
 	// Apply Mastery
-	// From all I can find, Sub's Mastery is Additive. Will need to test.
 	masteryMod := subRogue.AddDynamicMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: rogue.RogueSpellRupture | rogue.RogueSpellEviscerate,
