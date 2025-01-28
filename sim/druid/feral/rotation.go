@@ -229,7 +229,7 @@ func (cat *FeralDruid) TryTigersFury(sim *core.Simulation) {
 	gcdTimeToRdy := cat.GCD.TimeToReady(sim)
 	leewayTime := max(gcdTimeToRdy, cat.ReactionTime)
 	tfEnergyThresh := cat.calcTfEnergyThresh(leewayTime)
-	tfNow := (cat.CurrentEnergy() < tfEnergyThresh) && !cat.BerserkAura.IsActive()
+	tfNow := (cat.CurrentEnergy() < tfEnergyThresh) && !cat.BerserkAura.IsActive() && (!cat.T13Feral4pBonus.IsActive() || !cat.StampedeCatAura.IsActive() || (cat.Rotation.RotationType == proto.FeralDruid_Rotation_Aoe))
 
 	if tfNow {
 		cat.TigersFury.Cast(sim, nil)
