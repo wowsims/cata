@@ -229,7 +229,7 @@ func (cat *FeralDruid) TryTigersFury(sim *core.Simulation) {
 	gcdTimeToRdy := cat.GCD.TimeToReady(sim)
 	leewayTime := max(gcdTimeToRdy, cat.ReactionTime)
 	tfEnergyThresh := cat.calcTfEnergyThresh(leewayTime)
-	tfNow := (cat.CurrentEnergy() < tfEnergyThresh) && !cat.BerserkAura.IsActive()
+	tfNow := (cat.CurrentEnergy() < tfEnergyThresh) && !cat.BerserkAura.IsActive() && (!cat.T13Feral4pBonus.IsActive() || !cat.StampedeCatAura.IsActive() || (cat.Rotation.RotationType == proto.FeralDruid_Rotation_Aoe))
 
 	if tfNow {
 		cat.TigersFury.Cast(sim, nil)
@@ -247,9 +247,8 @@ func (cat *FeralDruid) TryBerserk(sim *core.Simulation) {
 	simTimeRemain := sim.GetRemainingDuration()
 	tfCdRemain := cat.TigersFury.TimeToReady(sim)
 	waitForTf := cat.Talents.Berserk && (tfCdRemain <= cat.BerserkAura.Duration) && (tfCdRemain+cat.ReactionTime < simTimeRemain-cat.BerserkAura.Duration)
-	waitForRavage := cat.StampedeCatAura.IsActive() && (cat.Rotation.RotationType == proto.FeralDruid_Rotation_SingleTarget)
 	isClearcast := cat.ClearcastingAura.IsActive()
-	berserkNow := cat.Rotation.UseBerserk && cat.Berserk.IsReady(sim) && !waitForTf && !waitForRavage && !isClearcast
+	berserkNow := cat.Rotation.UseBerserk && cat.Berserk.IsReady(sim) && !waitForTf && !isClearcast
 
 	if berserkNow {
 		cat.Berserk.Cast(sim, nil)
