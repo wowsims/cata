@@ -56,9 +56,6 @@ type Character struct {
 	// Base stats for this Character.
 	baseStats stats.Stats
 
-	// Handles scaling that only affects stats from items
-	itemStatMultipliers stats.Stats
-
 	// Bonus stats for this Character, specified in the UI and/or EP
 	// calculator
 	bonusStats     stats.Stats
@@ -73,9 +70,8 @@ type Character struct {
 	glyphs            [9]int32
 	PrimaryTalentTree uint8
 
-	// Used to track if we need to separately apply multipliers, because
-	// equipment was already applied
-	equipStatsApplied bool
+	// Used for effects like "Increased Armor Value from Items"
+	*EquipScalingManager
 
 	// Provides major cooldown management behavior.
 	majorCooldownManager
@@ -163,9 +159,6 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 
 	character.AddStats(character.baseStats)
 	character.addUniversalStatDependencies()
-	for i := range character.itemStatMultipliers {
-		character.itemStatMultipliers[i] = 1
-	}
 
 	if player.BonusStats != nil {
 		if player.BonusStats.Stats != nil {
@@ -193,66 +186,81 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 		character.enableItemSwap(player.ItemSwap, character.DefaultMeleeCritMultiplier(), character.DefaultMeleeCritMultiplier(), 0)
 	}
 
+	character.EquipScalingManager = character.NewEquipScalingManager()
+
 	return character
 }
 
-func (character *Character) applyEquipScaling(stat stats.Stat, multiplier float64) float64 {
-	var oldValue = character.EquipStats()[stat]
-	character.itemStatMultipliers[stat] *= multiplier
-	var newValue = character.EquipStats()[stat]
-	return newValue - oldValue
+type EquipScalingManager struct {
+	itemStatMultipliers map[stats.Stat]float64
+	cachedEquipStats    stats.Stats
+	equipStatsApplied   bool
+	equipCacheValid     bool
+}
+
+func (character *Character) NewEquipScalingManager() *EquipScalingManager {
+	return &EquipScalingManager{
+		itemStatMultipliers: make(map[stats.Stat]float64),
+		cachedEquipStats:    character.Equipment.Stats().Add(character.bonusStats),
+		equipCacheValid:     true,
+	}
+}
+
+func (character *Character) AddDynamicEquipStats(sim *Simulation, equipStats stats.Stats) {
+	character.AddStatsDynamic(sim, equipStats.ApplyMultipliers(character.itemStatMultipliers))
+	character.equipCacheValid = false
+}
+
+func (character *Character) applyEquipScalingInternal(stat stats.Stat, multiplier float64) float64 {
+	character.updateCachedEquipStats()
+	oldMultiplier, exists := character.itemStatMultipliers[stat]
+
+	if !exists {
+		oldMultiplier = 1.0
+	}
+
+	newMultiplier := oldMultiplier * multiplier
+	character.itemStatMultipliers[stat] = newMultiplier
+
+	return character.cachedEquipStats[stat] * (newMultiplier - oldMultiplier)
 }
 
 func (character *Character) ApplyEquipScaling(stat stats.Stat, multiplier float64) {
-	var statDiff stats.Stats
-	statDiff[stat] = character.applyEquipScaling(stat, multiplier)
+	statDiff := character.applyEquipScalingInternal(stat, multiplier)
 	// Equipment stats already applied, so need to manually at the bonus to
 	// the character now to ensure correct values
 	if character.equipStatsApplied {
-		character.AddStats(statDiff)
+		character.AddStat(stat, statDiff)
 	}
 }
 
 func (character *Character) ApplyDynamicEquipScaling(sim *Simulation, stat stats.Stat, multiplier float64) {
-	statDiff := character.applyEquipScaling(stat, multiplier)
-	character.AddStatDynamic(sim, stat, statDiff)
-}
-
-func (character *Character) ApplyBuildPhaseEquipScaling(sim *Simulation, stat stats.Stat, multiplier float64) {
 	if character.Env.MeasuringStats && (character.Env.State != Finalized) {
 		character.ApplyEquipScaling(stat, multiplier)
 	} else {
-		character.ApplyDynamicEquipScaling(sim, stat, multiplier)
+		statDiff := character.applyEquipScalingInternal(stat, multiplier)
+		character.AddStatDynamic(sim, stat, statDiff)
 	}
 }
 
 func (character *Character) RemoveEquipScaling(stat stats.Stat, multiplier float64) {
-	var statDiff stats.Stats
-	statDiff[stat] = character.applyEquipScaling(stat, 1/multiplier)
-	// Equipment stats already applied, so need to manually at the bonus to
-	// the character now to ensure correct values
-	if character.equipStatsApplied {
-		character.AddStats(statDiff)
-	}
+	character.ApplyEquipScaling(stat, 1/multiplier)
 }
 
 func (character *Character) RemoveDynamicEquipScaling(sim *Simulation, stat stats.Stat, multiplier float64) {
-	statDiff := character.applyEquipScaling(stat, 1/multiplier)
-	character.AddStatDynamic(sim, stat, statDiff)
+	character.ApplyDynamicEquipScaling(sim, stat, 1/multiplier)
 }
 
-func (character *Character) RemoveBuildPhaseEquipScaling(sim *Simulation, stat stats.Stat, multiplier float64) {
-	if character.Env.MeasuringStats && (character.Env.State != Finalized) {
-		character.RemoveEquipScaling(stat, multiplier)
-	} else {
-		character.RemoveDynamicEquipScaling(sim, stat, multiplier)
+func (character *Character) updateCachedEquipStats() {
+	if !character.equipCacheValid {
+		character.cachedEquipStats = character.Equipment.Stats().Add(character.bonusStats)
+		character.equipCacheValid = true
 	}
 }
 
 func (character *Character) EquipStats() stats.Stats {
-	var baseEquipStats = character.Equipment.Stats()
-	var bonusEquipStats = baseEquipStats.Add(character.bonusStats)
-	return bonusEquipStats.DotProduct(character.itemStatMultipliers)
+	character.updateCachedEquipStats()
+	return character.cachedEquipStats.ApplyMultipliers(character.itemStatMultipliers)
 }
 
 func (character *Character) applyEquipment() {

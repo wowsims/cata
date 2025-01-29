@@ -340,7 +340,7 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 	if sim.Log != nil {
 		sim.Log("Item Swap - Stats Change: %v", statsToSwap.FlatString())
 	}
-	character.AddStatsDynamic(sim, statsToSwap)
+	character.AddDynamicEquipStats(sim, statsToSwap)
 
 	if !isPrepull && !isReset && weaponSlotSwapped {
 		character.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime, false)
