@@ -251,6 +251,7 @@ func init() {
 				}
 
 				procChance := config.procChance
+				procPerCast := false
 				if val, ok := config.spellConfig[spell.SpellID]; ok {
 					if val.supress&supressImpact > 0 {
 						return
@@ -263,17 +264,7 @@ func init() {
 
 					// make sure the same spell impact can only trigger once per timestamp (AoE Impact spells like Arcane Explosion or Mind Sear)
 					if val.procPerCast {
-						if lastTimestamp != sim.CurrentTime {
-							lastTimestamp = sim.CurrentTime
-							spellList = map[*core.Spell]bool{}
-						}
-
-						if _, ok := spellList[spell]; ok {
-							return
-						}
-
-						// spell has not been checked yet, add it
-						spellList[spell] = true
+						procPerCast = true
 					}
 
 					// reduce proc chance for AoE Spells
@@ -282,8 +273,22 @@ func init() {
 					}
 				}
 
+				if lastTimestamp != sim.CurrentTime {
+					lastTimestamp = sim.CurrentTime
+					spellList = map[*core.Spell]bool{}
+				}
+
+				if _, ok := spellList[spell]; ok {
+					return
+				}
+
 				if !sim.Proc(procChance, "Dragonwrath, Tarecgosa's Rest - DoT Proc") {
 					return
+				}
+
+				if procPerCast {
+					// spell has not been checked yet, add it
+					spellList[spell] = true
 				}
 
 				config.getImpactHandler(spell.SpellID)(sim, spell, result)
