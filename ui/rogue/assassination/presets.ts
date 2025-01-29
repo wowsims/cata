@@ -67,6 +67,28 @@ export const P1_EP_EXPERTISE_PRESET = PresetUtils.makePresetEpWeights(
 	),
 );
 
+export const P4_EP_LEGENDARY_PRESET = PresetUtils.makePresetEpWeights(
+	'Asn Legendary',
+	Stats.fromMap(
+		{
+			[Stat.StatAgility]: 2.71,
+			[Stat.StatStrength]: 1.05,
+			[Stat.StatAttackPower]: 1,
+			[Stat.StatCritRating]: 1.18,
+			[Stat.StatHitRating]: 2.62,
+			[Stat.StatHasteRating]: 1.39,
+			[Stat.StatMasteryRating]: 1.61,
+			[Stat.StatExpertiseRating]: 1.22,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 3.0,
+			[PseudoStat.PseudoStatOffHandDps]: 0.97,
+			[PseudoStat.PseudoStatSpellHitPercent]: 130.5,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 162.0,
+		},
+	),
+);
+
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.
 
