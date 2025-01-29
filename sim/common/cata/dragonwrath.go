@@ -197,9 +197,10 @@ func init() {
 		character := a.GetCharacter()
 		unit := &character.Unit
 		registerSpells(unit)
+		var config *DragonwrathClassConfig
 
 		unit.OnSpellRegistered(func(spell *core.Spell) {
-			if val, ok := classConfig[a.GetCharacter().Spec]; ok {
+			if val, ok := classConfig[character.Spec]; ok {
 				for id, c := range val.spellConfig {
 					if c.spellCopyHandler != nil && id == spell.SpellID && spell.ActionID.Tag < 71086 {
 						c.spellCopyHandler(unit, spell)
@@ -214,6 +215,17 @@ func init() {
 		aura := core.MakePermanent(unit.RegisterAura(core.Aura{
 			ActionID: core.ActionID{ItemID: 71086},
 			Label:    "Dragonwrath, Tarecgosa's Rest - Handler",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				config = classConfig[character.Spec]
+				if config == nil {
+
+					// Create an empty config for this spell
+					config = CreateDTRClassConfig(character.Spec, 0.0)
+					classConfig[character.Spec] = config
+
+					log.Printf("Using DTR for spec %s which is not implemented. Using default config", character.Spec)
+				}
+			},
 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
 				lastTimestamp = time.Duration(0)
 				spellList = map[*core.Spell]bool{}
@@ -240,23 +252,19 @@ func init() {
 					return
 				}
 
-				config := classConfig[a.GetCharacter().Spec]
-				if config == nil {
-
-					// Create an empty config for this spell
-					config = CreateDTRClassConfig(a.GetCharacter().Spec, 0.0)
-					classConfig[a.GetCharacter().Spec] = config
-
-					log.Printf("Using DTR for spec %s which is not implemented. Using default config", a.GetCharacter().Spec)
-				}
-
 				// for now make it generic, might change this later
 				// this rule should disable impact replication of related dot spells
 				if spell.ActionID.Tag > 0 && spell.CurDot() != nil {
 					return
 				}
 
+				if lastTimestamp != sim.CurrentTime {
+					lastTimestamp = sim.CurrentTime
+					spellList = map[*core.Spell]bool{}
+				}
+
 				procChance := config.procChance
+				isAoESpell := false
 				if val, ok := config.spellConfig[spell.SpellID]; ok {
 					if val.supress&supressImpact > 0 {
 						return
@@ -264,6 +272,10 @@ func init() {
 
 					if val.castIsTick {
 						aura.OnPeriodicDamageDealt(aura, sim, spell, result)
+						return
+					}
+
+					if _, ok := spellList[spell]; ok {
 						return
 					}
 
@@ -284,6 +296,7 @@ func init() {
 
 					// reduce proc chance for AoE Spells
 					if val.isAoESpell {
+						isAoESpell = true
 						procChance *= 2.0 / 9.0
 					}
 				}
@@ -292,22 +305,28 @@ func init() {
 					return
 				}
 
+				// AoE spells can only proc once per round
+				if isAoESpell {
+					// spell has not been checked yet, add it
+					spellList[spell] = true
+				}
+
 				config.getImpactHandler(spell.SpellID)(sim, spell, result)
 			},
-
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				if val, ok := config.spellConfig[spell.SpellID]; ok {
+					if val.isAoESpell {
+						spellList = map[*core.Spell]bool{}
+						return
+					}
+				}
+				if _, ok := spellList[spell]; ok {
+					spellList[spell] = false
+				}
+			},
 			OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if !result.Landed() {
 					return
-				}
-
-				config := classConfig[a.GetCharacter().Spec]
-				if config == nil {
-
-					// Create an empty config for this spell
-					config = CreateDTRClassConfig(a.GetCharacter().Spec, 0.0)
-					classConfig[a.GetCharacter().Spec] = config
-
-					log.Printf("Using DTR for spec %s which is not implemented. Using default config", a.GetCharacter().Spec)
 				}
 
 				if val, ok := config.spellConfig[spell.SpellID]; ok {
