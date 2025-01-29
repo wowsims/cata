@@ -14,13 +14,14 @@ func init() {
 	//so DPS on a specific target might not be accurate.
 	cata.CreateDTRClassConfig(proto.Spec_SpecElementalShaman, 0.108).
 		AddSpell(88767, cata.NewDragonwrathSpellConfig().WithSpellHandler(customFulminationHandler)).       // Fullmination
-		AddSpell(403, cata.NewDragonwrathSpellConfig().WithCustomSpell(overloadCopyHandler)).               // Lightning Bold
+		AddSpell(403, cata.NewDragonwrathSpellConfig().WithCustomSpell(overloadCopyHandler)).               // Lightning Bolt
 		AddSpell(421, cata.NewDragonwrathSpellConfig().WithCustomSpell(overloadCopyHandler).ProcPerCast()). // Chain Lightning
 		AddSpell(51505, cata.NewDragonwrathSpellConfig().WithCustomSpell(overloadCopyHandler)).             // Lava Burst
 		AddSpell(3599, cata.NewDragonwrathSpellConfig().SupressSpell()).                                    // Searing Totem
 		AddSpell(8190, cata.NewDragonwrathSpellConfig().SupressSpell()).                                    // Magma Totem
 		AddSpell(51490, cata.NewDragonwrathSpellConfig().ProcPerCast()).                                    // Thunderstorm
-		AddSpell(77478, cata.NewDragonwrathSpellConfig().IsAoESpell())                                      // Earthquake
+		AddSpell(77478, cata.NewDragonwrathSpellConfig().IsAoESpell()).                                     // Earthquake
+		AddSpell(1535, cata.NewDragonwrathSpellConfig().IsAoESpell())                                       // Fire Nova
 }
 
 func overloadCopyHandler(unit *core.Unit, spell *core.Spell) {
