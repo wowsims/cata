@@ -38,11 +38,11 @@ func (druid *Druid) applyThickHide() {
 	thickHideBearMulti := 1.0 + 0.26*float64(numPoints)
 
 	druid.BearFormAura.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
-		druid.ApplyBuildPhaseEquipScaling(sim, stats.Armor, thickHideBearMulti)
+		druid.ApplyDynamicEquipScaling(sim, stats.Armor, thickHideBearMulti)
 	})
 
 	druid.BearFormAura.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
-		druid.RemoveBuildPhaseEquipScaling(sim, stats.Armor, thickHideBearMulti)
+		druid.RemoveDynamicEquipScaling(sim, stats.Armor, thickHideBearMulti)
 	})
 
 	druid.ApplyEquipScaling(stats.Armor, thickHideBearMulti)
