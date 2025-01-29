@@ -250,8 +250,13 @@ func init() {
 					return
 				}
 
+				if lastTimestamp != sim.CurrentTime {
+					lastTimestamp = sim.CurrentTime
+					spellList = map[*core.Spell]bool{}
+				}
+
 				procChance := config.procChance
-				procPerCast := false
+				isAoESpell := false
 				if val, ok := config.spellConfig[spell.SpellID]; ok {
 					if val.supress&supressImpact > 0 {
 						return
@@ -262,38 +267,37 @@ func init() {
 						return
 					}
 
+					if _, ok := spellList[spell]; ok {
+						return
+					}
+
 					// make sure the same spell impact can only trigger once per timestamp (AoE Impact spells like Arcane Explosion or Mind Sear)
 					if val.procPerCast {
-						procPerCast = true
+						spellList[spell] = true
 					}
 
 					// reduce proc chance for AoE Spells
 					if val.isAoESpell {
+						isAoESpell = true
 						procChance *= 2.0 / 9.0
 					}
-				}
-
-				if lastTimestamp != sim.CurrentTime {
-					lastTimestamp = sim.CurrentTime
-					spellList = map[*core.Spell]bool{}
-				}
-
-				if _, ok := spellList[spell]; ok {
-					return
 				}
 
 				if !sim.Proc(procChance, "Dragonwrath, Tarecgosa's Rest - DoT Proc") {
 					return
 				}
 
-				if procPerCast {
+				// AoE spells can only proc once per round
+				if isAoESpell {
 					// spell has not been checked yet, add it
 					spellList[spell] = true
 				}
 
 				config.getImpactHandler(spell.SpellID)(sim, spell, result)
 			},
-
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				spellList = map[*core.Spell]bool{}
+			},
 			OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if !result.Landed() {
 					return
