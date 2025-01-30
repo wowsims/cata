@@ -374,6 +374,10 @@ func (mage *Mage) applyIgnite() {
 			return result.Damage * igniteDamageMultiplier * masteryMultiplier
 		},
 	})
+
+	// This is needed because we want to listen for the spell "cast" event that refreshes the Dot
+	mage.Ignite.Flags ^= core.SpellFlagNoOnCastComplete
+
 }
 
 func (mage *Mage) applyImpact() {

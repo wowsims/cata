@@ -152,9 +152,9 @@ func (mage *Mage) registerCombustionSpell() {
 	})
 
 	core.MakeProcTriggerAura(&mage.Unit, core.ProcTrigger{
-		Name:           "Combustion Ignite listener",
-		ClassSpellMask: MageSpellIgnite,
-		Callback:       core.CallbackOnPeriodicDamageDealt,
+		Name:           "Combustion Dot Calculation Listener",
+		ClassSpellMask: MageSpellIgnite | MageSpellPyroblastDot | MageSpellLivingBombDot,
+		Callback:       core.CallbackOnCastComplete | core.CallbackOnPeriodicDamageDealt,
 		Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
 			updateCombustionTickDamageEstimate(sim)
 			updateCombustionTotalDamageEstimate(sim)
