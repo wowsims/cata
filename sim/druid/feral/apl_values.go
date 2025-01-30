@@ -128,6 +128,12 @@ func (cat *FeralDruid) newActionCatOptimalRotationAction(_ *core.APLRotation, co
 
 	cat.setupRotation(rotationOptions)
 
+	// Pre-allocate PoolingActions
+	cat.pendingPool = &PoolingActions{}
+	cat.pendingPool.create(4)
+	cat.pendingPoolWeaves = &PoolingActions{}
+	cat.pendingPoolWeaves.create(2)
+
 	return &APLActionCatOptimalRotationAction{
 		cat: cat,
 	}
