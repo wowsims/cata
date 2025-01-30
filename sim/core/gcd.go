@@ -57,18 +57,12 @@ func (unit *Unit) SetRotationTimer(sim *Simulation, rotationReadyAt time.Duratio
 
 	unit.RotationTimer.Set(rotationReadyAt)
 
-	if unit.rotationAction.consumed {
-		unit.rotationAction.cancelled = false
-		unit.rotationAction.NextActionAt = rotationReadyAt
-	} else {
+	if !unit.rotationAction.consumed {
 		unit.rotationAction.Cancel(sim)
-		oldAction := unit.rotationAction.OnAction
-		unit.rotationAction = &PendingAction{
-			NextActionAt: rotationReadyAt,
-			Priority:     ActionPriorityGCD,
-			OnAction:     oldAction,
-		}
 	}
+
+	unit.rotationAction.cancelled = false
+	unit.rotationAction.NextActionAt = rotationReadyAt
 	sim.AddPendingAction(unit.rotationAction)
 }
 
