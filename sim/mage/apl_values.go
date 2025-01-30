@@ -19,7 +19,7 @@ type APLValueMageCurrentCombustionDotEstimate struct {
 	mage *Mage
 }
 
-func (mage *Mage) newValueCurrentCombustionDotEstimate(_ *proto.APLValueMageCurrentCombustionDotEstimate, uuid *proto.UUID) core.APLValue {
+func (mage *Mage) newValueCurrentCombustionDotEstimate(_ *proto.APLValueMageCurrentCombustionDotEstimate, _ *proto.UUID) core.APLValue {
 	if !mage.Talents.Combustion {
 		return nil
 	}
@@ -28,31 +28,13 @@ func (mage *Mage) newValueCurrentCombustionDotEstimate(_ *proto.APLValueMageCurr
 		mage: mage,
 	}
 }
+
 func (value *APLValueMageCurrentCombustionDotEstimate) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeInt
 }
 
 func (value *APLValueMageCurrentCombustionDotEstimate) GetInt(sim *core.Simulation) int32 {
-	mage := value.mage
-
-	combustionDotDamage := 0.0
-	tickCount := int(mage.Combustion.RelatedDotSpell.Dot(mage.CurrentTarget).ExpectedTickCount())
-
-	for i := 0; i < tickCount; i++ {
-		damage := mage.Combustion.RelatedDotSpell.ExpectedTickDamage(sim, mage.CurrentTarget)
-		combustionDotDamage += damage
-	}
-
-	combustionDotDamageAsInt := int32(combustionDotDamage)
-
-	if combustionDotDamageAsInt != mage.previousCombustionDotEstimate {
-		mage.previousCombustionDotEstimate = int32(combustionDotDamage)
-		if sim.Log != nil {
-			mage.Log(sim, "Combustion Dot Estimate: %d", combustionDotDamageAsInt)
-		}
-	}
-
-	return combustionDotDamageAsInt
+	return value.mage.combustionDotEstimate
 }
 
 func (value *APLValueMageCurrentCombustionDotEstimate) String() string {

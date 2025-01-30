@@ -43,10 +43,10 @@ func (warlock *Warlock) registerEradication() {
 		ActionID: core.ActionID{SpellID: 47197},
 		Duration: 10 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.MultiplyCastSpeed(castSpeedMultiplier)
+			aura.Unit.MultiplyCastSpeed(sim, castSpeedMultiplier)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.MultiplyCastSpeed(1 / castSpeedMultiplier)
+			aura.Unit.MultiplyCastSpeed(sim, 1/castSpeedMultiplier)
 		},
 	})
 

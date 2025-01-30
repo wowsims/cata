@@ -1,8 +1,9 @@
 package paladin
 
 import (
-	"github.com/wowsims/cata/sim/core"
 	"time"
+
+	"github.com/wowsims/cata/sim/core"
 )
 
 func (paladin *Paladin) applyHolyTalents() {
@@ -49,12 +50,12 @@ func (paladin *Paladin) applyJudgementsOfThePure() {
 		ActionID: actionId,
 		Duration: 60 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.MultiplyCastSpeed(hasteMultiplier)
+			paladin.MultiplyCastSpeed(sim, hasteMultiplier)
 			paladin.MultiplyMeleeSpeed(sim, hasteMultiplier)
 			paladin.PseudoStats.SpiritRegenRateCombat += spiritRegenAmount
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.MultiplyCastSpeed(1 / hasteMultiplier)
+			paladin.MultiplyCastSpeed(sim, 1/hasteMultiplier)
 			paladin.MultiplyMeleeSpeed(sim, 1/hasteMultiplier)
 			paladin.PseudoStats.SpiritRegenRateCombat -= spiritRegenAmount
 		},

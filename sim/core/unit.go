@@ -11,7 +11,7 @@ import (
 type UnitType int
 type SpellRegisteredHandler func(spell *Spell)
 type OnMasteryStatChanged func(sim *Simulation, oldMasteryRating float64, newMasteryRating float64)
-type OnCastSpeedChanged func(oldSpeed float64, newSpeed float64)
+type OnCastSpeedChanged func(sim *Simulation, oldSpeed float64, newSpeed float64)
 type OnTemporaryStatsChange func(sim *Simulation, buffAura *Aura, statsChangeWithoutDeps stats.Stats)
 
 const (
@@ -327,7 +327,7 @@ func (unit *Unit) processDynamicBonus(sim *Simulation, bonus stats.Stats) {
 		unit.runicPowerBar.updateRegenTimes(sim)
 		unit.energyBar.processDynamicHasteRatingChange(sim)
 		unit.focusBar.processDynamicHasteRatingChange(sim)
-		unit.updateCastSpeed()
+		unit.updateCastSpeed(sim)
 	}
 	if bonus[stats.MasteryRating] != 0 {
 		newMasteryRating := unit.stats[stats.MasteryRating]
@@ -414,18 +414,18 @@ func (unit *Unit) TotalSpellHasteMultiplier() float64 {
 	return unit.PseudoStats.CastSpeedMultiplier * (1 + unit.stats[stats.HasteRating]/(HasteRatingPerHastePercent*100))
 }
 
-func (unit *Unit) updateCastSpeed() {
+func (unit *Unit) updateCastSpeed(sim *Simulation) {
 	oldCastSpeed := unit.CastSpeed
 	unit.CastSpeed = 1 / unit.TotalSpellHasteMultiplier()
 	newCastSpeed := unit.CastSpeed
 
 	for i := range unit.OnCastSpeedChanged {
-		unit.OnCastSpeedChanged[i](oldCastSpeed, newCastSpeed)
+		unit.OnCastSpeedChanged[i](sim, oldCastSpeed, newCastSpeed)
 	}
 }
-func (unit *Unit) MultiplyCastSpeed(amount float64) {
+func (unit *Unit) MultiplyCastSpeed(sim *Simulation, amount float64) {
 	unit.PseudoStats.CastSpeedMultiplier *= amount
-	unit.updateCastSpeed()
+	unit.updateCastSpeed(sim)
 }
 
 func (unit *Unit) ApplyCastSpeed(dur time.Duration) time.Duration {
@@ -536,7 +536,7 @@ func (unit *Unit) finalize() {
 
 	unit.defaultTarget = unit.CurrentTarget
 	unit.applyParryHaste()
-	unit.updateCastSpeed()
+	unit.updateCastSpeed(nil)
 	unit.initMovement()
 
 	// All stats added up to this point are part of the 'initial' stats.

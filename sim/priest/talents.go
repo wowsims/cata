@@ -803,10 +803,10 @@ func (priest *Priest) applyShadowyApparition() {
 // 		ActionID: core.ActionID{SpellID: 52800},
 // 		Duration: time.Second * 6,
 // 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			priest.MultiplyCastSpeed(multiplier)
+// 			priest.MultiplyCastSpeed(sim, multiplier)
 // 		},
 // 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			priest.MultiplyCastSpeed(1 / multiplier)
+// 			priest.MultiplyCastSpeed(sim, 1 / multiplier)
 // 		},
 // 	})
 

@@ -273,10 +273,10 @@ func (mage *Mage) applyPyromaniac() {
 		ActionID: core.ActionID{SpellID: 83582},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			mage.MultiplyCastSpeed(hasteBonus)
+			mage.MultiplyCastSpeed(sim, hasteBonus)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			mage.MultiplyCastSpeed(1 / hasteBonus)
+			mage.MultiplyCastSpeed(sim, 1/hasteBonus)
 		},
 	})
 
@@ -347,9 +347,10 @@ func (mage *Mage) applyIgnite() {
 	igniteDamageMultiplier := []float64{0.0, 0.13, 0.26, 0.40}[mage.Talents.Ignite]
 
 	mage.Ignite = cata.RegisterIgniteEffect(&mage.Unit, cata.IgniteConfig{
-		ActionID:     core.ActionID{SpellID: 12846},
-		DotAuraLabel: "Ignite",
-		DotAuraTag:   "IgniteDot",
+		ActionID:       core.ActionID{SpellID: 12846},
+		ClassSpellMask: MageSpellIgnite,
+		DotAuraLabel:   "Ignite",
+		DotAuraTag:     "IgniteDot",
 
 		ProcTrigger: core.ProcTrigger{
 			Name:     "Ignite Talent",

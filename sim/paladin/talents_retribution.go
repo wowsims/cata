@@ -73,13 +73,16 @@ func (paladin *Paladin) applySanctityOfBattle() {
 		spenderCooldownMod.UpdateTimeValue(-(time.Millisecond * time.Duration(baseSpenderCooldown-baseSpenderCooldown*castSpeed)))
 	}
 
-	paladin.AddOnCastSpeedChanged(func(_ float64, castSpeed float64) {
+	paladin.AddOnCastSpeedChanged(func(_ *core.Simulation, _ float64, castSpeed float64) {
 		updateTimeValue(castSpeed)
 	})
 
 	core.MakePermanent(paladin.GetOrRegisterAura(core.Aura{
 		Label:    "Sanctity of Battle",
 		ActionID: core.ActionID{SpellID: 25956},
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+
+		},
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			updateTimeValue(paladin.CastSpeed)

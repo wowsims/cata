@@ -338,8 +338,8 @@ func checkTicks(t *testing.T, dot *core.Dot, msg string, expected int32) {
 func TestCorruptionHasteCap(t *testing.T) {
 	sim := setupFakeSim(defStats, afflictionTalents, &proto.Glyphs{})
 	lock := sim.Raid.Parties[0].Players[0].(*AfflictionWarlock)
-	lock.Unit.MultiplyCastSpeed(1 + 0.05) // 5% haste buff
-	lock.Unit.MultiplyCastSpeed(1 + 0.03) // dark intent
+	lock.Unit.MultiplyCastSpeed(sim, 1+0.05) // 5% haste buff
+	lock.Unit.MultiplyCastSpeed(sim, 1+0.03) // dark intent
 	lock.AddStatsDynamic(sim, stats.Stats{
 		stats.HasteRating: 2588,
 	})

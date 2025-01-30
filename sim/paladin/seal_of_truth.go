@@ -73,14 +73,14 @@ func (paladin *Paladin) registerSealOfTruth() {
 				paladin.JudgementsOfThePureAura.IsActive()
 
 			if undoJotpForInitialTick {
-				paladin.MultiplyCastSpeed(1 / hasteMultiplier)
+				paladin.MultiplyCastSpeed(sim, 1/hasteMultiplier)
 			}
 
 			dot.Apply(sim)
 			dot.AddStack(sim)
 
 			if undoJotpForInitialTick {
-				paladin.MultiplyCastSpeed(hasteMultiplier)
+				paladin.MultiplyCastSpeed(sim, hasteMultiplier)
 			}
 		},
 	})

@@ -266,11 +266,11 @@ func (ai *HodirAI) registerBuffsDebuffs(target *core.Target) {
 				Duration: time.Second * 30,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					character.MultiplyAttackSpeed(sim, 1.5)
-					character.MultiplyCastSpeed(1.5)
+					character.MultiplyCastSpeed(sim, 1.5)
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					character.MultiplyAttackSpeed(sim, 1/1.5)
-					character.MultiplyCastSpeed(1 / 1.5)
+					character.MultiplyCastSpeed(sim, 1/1.5)
 				},
 			})
 

@@ -337,8 +337,8 @@ func TestFelFlameExtension(t *testing.T) {
 func TestShadowflameHasteCap(t *testing.T) {
 	sim := setupFakeSim(defStats, &proto.Glyphs{}, 10)
 	lock := sim.Raid.Parties[0].Players[0].(*DemonologyWarlock)
-	lock.Unit.MultiplyCastSpeed(1 + 0.05) // 5% haste buff
-	lock.Unit.MultiplyCastSpeed(1 + 0.03) // dark intent
+	lock.Unit.MultiplyCastSpeed(sim, 1+0.05) // 5% haste buff
+	lock.Unit.MultiplyCastSpeed(sim, 1+0.03) // dark intent
 	lock.AddStatsDynamic(sim, stats.Stats{
 		stats.HasteRating: 1006,
 	})
@@ -359,8 +359,8 @@ func TestShadowflameHasteCap(t *testing.T) {
 func TestImmolateHasteCap(t *testing.T) {
 	sim := setupFakeSim(defStats, &proto.Glyphs{}, 10)
 	lock := sim.Raid.Parties[0].Players[0].(*DemonologyWarlock)
-	lock.Unit.MultiplyCastSpeed(1 + 0.05) // 5% haste buff
-	lock.Unit.MultiplyCastSpeed(1 + 0.03) // dark intent
+	lock.Unit.MultiplyCastSpeed(sim, 1+0.05) // 5% haste buff
+	lock.Unit.MultiplyCastSpeed(sim, 1+0.03) // dark intent
 	lock.AddStatsDynamic(sim, stats.Stats{
 		stats.HasteRating: 1572,
 	})
@@ -381,8 +381,8 @@ func TestImmolateHasteCap(t *testing.T) {
 func TestCorruptionHasteCap(t *testing.T) {
 	sim := setupFakeSim(defStats, &proto.Glyphs{}, 10)
 	lock := sim.Raid.Parties[0].Players[0].(*DemonologyWarlock)
-	lock.Unit.MultiplyCastSpeed(1 + 0.05) // 5% haste buff
-	lock.Unit.MultiplyCastSpeed(1 + 0.03) // dark intent
+	lock.Unit.MultiplyCastSpeed(sim, 1+0.05) // 5% haste buff
+	lock.Unit.MultiplyCastSpeed(sim, 1+0.03) // dark intent
 	lock.AddStatsDynamic(sim, stats.Stats{
 		stats.HasteRating: 1992,
 	})

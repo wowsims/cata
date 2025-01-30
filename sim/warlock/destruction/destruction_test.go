@@ -288,8 +288,8 @@ func checkTicks(t *testing.T, dot *core.Dot, msg string, expected int32) {
 func TestImmolateHasteCap(t *testing.T) {
 	sim := setupFakeSim(defStats, destroTalents, &immoGlyph)
 	lock := sim.Raid.Parties[0].Players[0].(*DestructionWarlock)
-	lock.Unit.MultiplyCastSpeed(1 + 0.05) // 5% haste buff
-	lock.Unit.MultiplyCastSpeed(1 + 0.03) // dark intent
+	lock.Unit.MultiplyCastSpeed(sim, 1+0.05) // 5% haste buff
+	lock.Unit.MultiplyCastSpeed(sim, 1+0.03) // dark intent
 	lock.AddStatsDynamic(sim, stats.Stats{
 		stats.HasteRating: 2588,
 	})

@@ -79,11 +79,11 @@ func (dk *DeathKnight) NewGargoyle() *GargoylePet {
 
 	gargoyle.OnPetEnable = func(sim *core.Simulation) {
 		gargoyle.PseudoStats.CastSpeedMultiplier = 1 // guardians are not affected by raid buffs
-		gargoyle.MultiplyCastSpeed(dk.PseudoStats.MeleeSpeedMultiplier)
+		gargoyle.MultiplyCastSpeed(sim, dk.PseudoStats.MeleeSpeedMultiplier)
 
 		// No longer updates dynamically
 		// gargoyle.EnableDynamicMeleeSpeed(func(amount float64) {
-		// 	gargoyle.MultiplyCastSpeed(amount)
+		// 	gargoyle.MultiplyCastSpeed(sim,amount)
 		// })
 
 		// gargoyle.EnableDynamicStats(func(ownerStats stats.Stats) stats.Stats {
