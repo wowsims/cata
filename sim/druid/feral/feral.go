@@ -77,6 +77,8 @@ type FeralDruid struct {
 	cachedRipEndThresh time.Duration
 	nextActionAt       time.Duration
 	usingHardcodedAPL  bool
+	pendingPool        *PoolingActions
+	pendingPoolWeaves  *PoolingActions
 }
 
 func (cat *FeralDruid) GetDruid() *druid.Druid {

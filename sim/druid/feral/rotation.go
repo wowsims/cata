@@ -609,21 +609,19 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	ripRefreshPending := ripDot.IsActive() && (ripDot.RemainingDuration(sim) < simTimeRemain-baseEndThresh) && (curCp >= core.TernaryInt32(isExecutePhase, 1, rotation.MinCombosForRip))
 	rakeRefreshPending := rakeDot.IsActive() && (rakeDot.RemainingDuration(sim) < simTimeRemain-rakeDot.BaseTickLength)
 	roarRefreshPending := cat.SavageRoarAura.IsActive() && (cat.SavageRoarAura.RemainingDuration(sim) < simTimeRemain-cat.ReactionTime) && (curCp >= 1)
-	pendingPool := &PoolingActions{}
-	pendingPool.create(4)
-	pendingPoolWeaves := &PoolingActions{}
-	pendingPoolWeaves.create(2)
+	cat.pendingPool.reset()
+	cat.pendingPoolWeaves.reset()
 
 	if ripRefreshPending && (sim.CurrentTime < ripRefreshTime) {
 		baseCost := core.Ternary(isExecutePhase, cat.FerociousBite.DefaultCast.Cost, cat.Rip.DefaultCast.Cost)
 		refreshCost := core.Ternary(cat.berserkExpectedAt(sim, ripRefreshTime), baseCost*0.5, baseCost)
-		pendingPool.addAction(ripRefreshTime, refreshCost)
-		pendingPoolWeaves.addAction(ripRefreshTime, refreshCost)
+		cat.pendingPool.addAction(ripRefreshTime, refreshCost)
+		cat.pendingPoolWeaves.addAction(ripRefreshTime, refreshCost)
 	}
 	if rakeRefreshPending && (sim.CurrentTime < rakeRefreshTime) {
 		rakeCost := core.Ternary(cat.berserkExpectedAt(sim, rakeRefreshTime), cat.Rake.DefaultCast.Cost*0.5, cat.Rake.DefaultCast.Cost)
-		pendingPool.addAction(rakeRefreshTime, rakeCost)
-		pendingPoolWeaves.addAction(rakeRefreshTime, rakeCost)
+		cat.pendingPool.addAction(rakeRefreshTime, rakeCost)
+		cat.pendingPoolWeaves.addAction(rakeRefreshTime, rakeCost)
 	}
 	if mangleRefreshPending {
 		mangleRefreshTime := cat.bleedAura.ExpiresAt()
@@ -631,31 +629,31 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 			mangleRefreshTime = cat.StrengthOfThePantherAura.ExpiresAt() - cat.ReactionTime*2
 		}
 		mangleCost := core.Ternary(cat.berserkExpectedAt(sim, mangleRefreshTime), cat.MangleCat.DefaultCast.Cost*0.5, cat.MangleCat.DefaultCast.Cost)
-		pendingPool.addAction(mangleRefreshTime, mangleCost)
+		cat.pendingPool.addAction(mangleRefreshTime, mangleCost)
 	}
 	if roarRefreshPending {
 		roarCost := core.Ternary(cat.berserkExpectedAt(sim, cat.SavageRoarAura.ExpiresAt()), cat.SavageRoar.DefaultCast.Cost*0.5, cat.SavageRoar.DefaultCast.Cost)
-		pendingPool.addAction(cat.SavageRoarAura.ExpiresAt(), roarCost)
+		cat.pendingPool.addAction(cat.SavageRoarAura.ExpiresAt(), roarCost)
 	}
 
-	pendingPool.sort()
-	pendingPoolWeaves.sort()
-	floatingEnergy := pendingPool.calcFloatingEnergy(cat, sim)
+	cat.pendingPool.sort()
+	cat.pendingPoolWeaves.sort()
+	floatingEnergy := cat.pendingPool.calcFloatingEnergy(cat, sim)
 	excessE := curEnergy - floatingEnergy
 	latencySecs := cat.ReactionTime.Seconds()
 
 	// Check melee-weaving conditions
-	meleeWeaveNow := cat.canMeleeWeave(sim, regenRate, curEnergy, isClearcast, pendingPool)
+	meleeWeaveNow := cat.canMeleeWeave(sim, regenRate, curEnergy, isClearcast, cat.pendingPool)
 
 	// Check bear-weaving conditions
 	furorCap := min(float64(100*cat.Talents.Furor)/3.0, 100.0-1.5*regenRate)
-	bearWeaveNow := cat.canBearWeave(sim, furorCap, regenRate, curEnergy, excessE, pendingPoolWeaves, shiftCost)
+	bearWeaveNow := cat.canBearWeave(sim, furorCap, regenRate, curEnergy, excessE, cat.pendingPoolWeaves, shiftCost)
 	// Main  decision tree starts here
 	timeToNextAction := time.Duration(0)
 
 	if !cat.CatFormAura.IsActive() {
 		// First determine what we want to do with the next GCD.
-		if cat.terminateBearWeave(sim, isClearcast, curEnergy, furorCap, regenRate, pendingPoolWeaves) {
+		if cat.terminateBearWeave(sim, isClearcast, curEnergy, furorCap, regenRate, cat.pendingPoolWeaves) {
 			cat.readyToShift = true
 		} else if cat.MangleBear.CanCast(sim, cat.CurrentTarget) {
 			cat.MangleBear.Cast(sim, cat.CurrentTarget)
@@ -771,7 +769,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 
 	// Model in latency when waiting on Energy for our next action
 	nextAction := sim.CurrentTime + timeToNextAction
-	paValid, rt := pendingPool.nextRefreshTime()
+	paValid, rt := cat.pendingPool.nextRefreshTime()
 	if paValid {
 		nextAction = min(nextAction, rt)
 	}
