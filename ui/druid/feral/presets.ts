@@ -30,6 +30,8 @@ export const APL_ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('APL List 
 import { Stats } from '../../core/proto_utils/stats';
 import AoeApl from './apls/aoe.apl.json';
 export const APL_ROTATION_AOE = PresetUtils.makePresetAPLRotation('APL AoE', AoeApl);
+import TendonApl from './apls/tendon.apl.json';
+export const APL_ROTATION_TENDON = PresetUtils.makePresetAPLRotation('Tendon APL', TendonApl);
 
 // Preset options for EP weights
 export const BEARWEAVE_EP_PRESET = PresetUtils.makePresetEpWeights(
@@ -163,3 +165,19 @@ export const OtherDefaults = {
 	profession1: Profession.Engineering,
 	profession2: Profession.ProfessionUnknown,
 };
+
+export const PRESET_BUILD_DEFAULT = PresetUtils.makePresetBuild("Single Target Default", {
+	rotation: SIMPLE_ROTATION_DEFAULT,
+	encounter: PresetUtils.makePresetEncounter(
+		"Single Target Default",
+		'http://localhost:5173/cata/druid/feral/?i=rcmxe#eJzjEuNgzGBsYGScwMi4gpFxByNjAxPjBiZGJyYPRiEGqUNMs5jZAnISK1OLOLgFGJV4OZgMJAOYIpgqQBqcGLJYpJgUGE8wsdxiYnjE9ItRgknpKyPXJ8ZqpaTUxKLw1MSyVCWrkqLSVB2l3MTMvBIgdktMLcpMdcssQshk5jnn5yblF7vlFwVlFihZmeoolRanBiVmw5UAuU6ZJXBuEpAdkpkL5BsaAnmpRcWpRdlOcEEzVDMhOk0h2lxKizLz0l0rUpNLEeYVZRb4pKaWJ1YCDQTrDcpPLPJPSytOLVGyMgYKFeelZqP6JjUnNRVJpPYFU0ojMwMYWDoshLIiHbqYGZSOM3kwc4L5B4ocBCEyfg6Ss2aCwEl7S4jIBXvFNDC4Zu8IkXppb9TDVLDqM2MVd1BiZopCSGJRemqJQoQEu9YNRgZ6gIAWB2oa15ByHNk8H4u5cxzR1YBDo2ERp+NMRkgo3LSHqmFxAABYiZHH'
+	),
+})
+
+export const PRESET_BUILD_TENDON = PresetUtils.makePresetBuild("Single Target Burst", {
+	rotation: APL_ROTATION_TENDON,
+	encounter: PresetUtils.makePresetEncounter(
+		"Single Target Burst",
+		'http://localhost:5173/cata/druid/feral/?i=rcmxe#eJzjEuZgzGBsYGScwMi4gpFxByNjAxOjE5MHoxCDVA/zLGa2gJzEytQiDm4BRiVuDiYDyQCmCpBaJ4YsFikmBcYTTCy3mBgeMR1jkmDmEubiyGLjYuFoms2sxM7FysWsa1oMF/z3gwUqaFjMJcLFLgVkcjzUUOLkAorqGugBlYpycUiBlM7rZEYSFtKW0uSSl5Ll4tjECNHDJajFz8EsxOTFIAU20dCwGKzvXyOrULxULFewVCCXoZA+kgZlLUWoBslNTGIcjEKcqxihNkGMMDIrRjcVJMS5Ca4MSAssPMYsJColjCbMsfMsoxAwNKwYIJIgl6cl5hSnwjwjJCIlhCwMctRbDSFeKe5JjBwSjBGMCcA4gJjwgimlkZkBDEQcFkJZkQ5dzAxKx5k8mDkhAsYOghDGB3vJWTNB4KS9JUTkgr1iGhhcs3eESL20N+phKlj1mbGKOygxM0UhJLEoPbVEIUKCXesGIwM9QECLAzWNa0g5jmyej8XcOY7oasCh0bCI03EmIyQUbtpD1bA4AADkI2mj'
+	),
+})
