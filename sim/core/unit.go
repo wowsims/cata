@@ -536,6 +536,7 @@ func (unit *Unit) finalize() {
 
 	unit.defaultTarget = unit.CurrentTarget
 	unit.applyParryHaste()
+	unit.updateCastSpeed()
 	unit.initMovement()
 
 	// All stats added up to this point are part of the 'initial' stats.
