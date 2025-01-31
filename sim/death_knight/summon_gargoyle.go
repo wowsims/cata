@@ -83,7 +83,7 @@ func (dk *DeathKnight) NewGargoyle() *GargoylePet {
 
 		// No longer updates dynamically
 		// gargoyle.EnableDynamicMeleeSpeed(func(amount float64) {
-		// 	gargoyle.MultiplyCastSpeed(sim,amount)
+		// 	gargoyle.MultiplyCastSpeed(amount)
 		// })
 
 		// gargoyle.EnableDynamicStats(func(ownerStats stats.Stats) stats.Stats {
