@@ -28,7 +28,7 @@ func (druid *Druid) registerSavageRoarSpell() {
 	druid.SavageRoarAura = druid.RegisterAura(core.Aura{
 		Label:    "Savage Roar Aura",
 		ActionID: actionID,
-		Duration: 9,
+		Duration: druid.SavageRoarDurationTable[5], // use maximum possible value here for pre-pull activations
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			druid.MHAutoSpell.DamageMultiplier *= srm
 		},
