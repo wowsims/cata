@@ -2144,22 +2144,22 @@ dps_results: {
 dps_results: {
  key: "TestFire-Settings-Worgen-p3_fire-Fire-fire-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 67471.46562
-  tps: 43965.60775
+  dps: 68585.37495
+  tps: 45378.81765
  }
 }
 dps_results: {
  key: "TestFire-Settings-Worgen-p3_fire-Fire-fire-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 25542.94164
-  tps: 22641.4237
+  dps: 26414.36298
+  tps: 23393.68201
  }
 }
 dps_results: {
  key: "TestFire-Settings-Worgen-p3_fire-Fire-fire-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 26546.91436
-  tps: 23196.37905
+  dps: 27767.59615
+  tps: 24433.67382
  }
 }
 dps_results: {
