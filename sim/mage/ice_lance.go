@@ -22,10 +22,9 @@ func (mage *Mage) registerIceLanceSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
-		BonusCoefficient:         0.378,
-		ThreatMultiplier:         1,
+		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		BonusCoefficient: 0.378,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 0.432 * mage.ClassSpellScaling

@@ -59,9 +59,9 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	})
 
 	WHDamageMod := hp.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ProcMask:   core.ProcMaskMeleeMHSpecial,
-		FloatValue: float64(hp.Talents().WildHunt) * 0.6,
+		Kind:     core.SpellMod_DamageDone_Flat,
+		ProcMask: core.ProcMaskMeleeMHSpecial,
+		IntValue: int64(hp.Talents().WildHunt * 60),
 	})
 
 	hp.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), baseFocusPerSecond, false, func(sim *core.Simulation, focus float64) {

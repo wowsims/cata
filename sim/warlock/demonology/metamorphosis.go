@@ -89,9 +89,8 @@ func (demonology *DemonologyWarlock) registerMetamorphosis() {
 			return metamorphosisAura.IsActive()
 		},
 
-		DamageMultiplierAdditive: 1,
-		ThreatMultiplier:         1,
-		BonusCoefficient:         0.10000000149,
+		ThreatMultiplier: 1,
+		BonusCoefficient: 0.10000000149,
 
 		Dot: core.DotConfig{
 			IsAOE: true,

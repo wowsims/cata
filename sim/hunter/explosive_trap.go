@@ -7,7 +7,7 @@ import (
 )
 
 func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
-	bonusPeriodicDamageMultiplier := .10 * float64(hunter.Talents.TrapMastery)
+	bonusPeriodicDamageMultiplier := int64(10 * hunter.Talents.TrapMastery)
 
 	hunter.ExplosiveTrap = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 13812},
@@ -29,9 +29,8 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 			},
 		},
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           hunter.SpellCritMultiplier(1, 0),
-		ThreatMultiplier:         1,
+		CritMultiplier:   hunter.SpellCritMultiplier(1, 0),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			IsAOE: true,
@@ -43,11 +42,11 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				baseDamage := 292 + 0.546*dot.Spell.RangedAttackPower(target)
-				dot.Spell.DamageMultiplierAdditive += bonusPeriodicDamageMultiplier
+				dot.Spell.ApplyDamageMultiplierAdditive(bonusPeriodicDamageMultiplier)
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, baseDamage/10, dot.Spell.OutcomeRangedHitAndCritNoBlock)
 				}
-				dot.Spell.DamageMultiplierAdditive -= bonusPeriodicDamageMultiplier
+				dot.Spell.ApplyDamageMultiplierAdditive(-bonusPeriodicDamageMultiplier)
 			},
 		},
 

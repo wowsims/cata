@@ -39,39 +39,34 @@ func (sinRogue *AssassinationRogue) Initialize() {
 
 	// Apply Mastery
 	// As far as I am able to find, Asn's Mastery is an additive bonus. To be tested.
-	masteryEffect := sinRogue.GetMasteryBonusFromRating(sinRogue.GetStat(stats.MasteryRating))
+	masteryEffect := int64(sinRogue.GetMasteryBonusFromRating(sinRogue.GetStat(stats.MasteryRating)) * 100)
 
 	for _, spell := range sinRogue.InstantPoison {
-		spell.DamageMultiplierAdditive += masteryEffect
+		spell.ApplyDamageMultiplierAdditive(masteryEffect)
 	}
 	for _, spell := range sinRogue.WoundPoison {
-		spell.DamageMultiplierAdditive += masteryEffect
+		spell.ApplyDamageMultiplierAdditive(masteryEffect)
 	}
-	sinRogue.DeadlyPoison.DamageMultiplierAdditive += masteryEffect
-	sinRogue.Envenom.DamageMultiplierAdditive += masteryEffect
+	sinRogue.DeadlyPoison.ApplyDamageMultiplierAdditive(masteryEffect)
+	sinRogue.Envenom.ApplyDamageMultiplierAdditive(masteryEffect)
 	if sinRogue.Talents.VenomousWounds > 0 {
-		sinRogue.VenomousWounds.DamageMultiplierAdditive += masteryEffect
+		sinRogue.VenomousWounds.ApplyDamageMultiplierAdditive(masteryEffect)
 	}
 
 	sinRogue.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-		masteryEffectOld := sinRogue.GetMasteryBonusFromRating(oldMastery)
-		masteryEffectNew := sinRogue.GetMasteryBonusFromRating(newMastery)
+		masteryEffectOld := int64(sinRogue.GetMasteryBonusFromRating(oldMastery) * 100)
+		masteryEffectNew := int64(sinRogue.GetMasteryBonusFromRating(newMastery) * 100)
 
 		for _, spell := range sinRogue.InstantPoison {
-			spell.DamageMultiplierAdditive -= masteryEffectOld
-			spell.DamageMultiplierAdditive += masteryEffectNew
+			spell.ApplyDamageMultiplierAdditive(masteryEffectNew - masteryEffectOld)
 		}
 		for _, spell := range sinRogue.WoundPoison {
-			spell.DamageMultiplierAdditive -= masteryEffectOld
-			spell.DamageMultiplierAdditive += masteryEffectNew
+			spell.ApplyDamageMultiplierAdditive(masteryEffectNew - masteryEffectOld)
 		}
-		sinRogue.DeadlyPoison.DamageMultiplierAdditive -= masteryEffectOld
-		sinRogue.DeadlyPoison.DamageMultiplierAdditive += masteryEffectNew
-		sinRogue.Envenom.DamageMultiplierAdditive -= masteryEffectOld
-		sinRogue.Envenom.DamageMultiplierAdditive += masteryEffectNew
+		sinRogue.DeadlyPoison.ApplyDamageMultiplierAdditive(masteryEffectNew - masteryEffectOld)
+		sinRogue.Envenom.ApplyDamageMultiplierAdditive(masteryEffectNew - masteryEffectOld)
 		if sinRogue.Talents.VenomousWounds > 0 {
-			sinRogue.VenomousWounds.DamageMultiplierAdditive -= masteryEffectOld
-			sinRogue.VenomousWounds.DamageMultiplierAdditive += masteryEffectNew
+			sinRogue.VenomousWounds.ApplyDamageMultiplierAdditive(masteryEffectNew - masteryEffectOld)
 		}
 	})
 

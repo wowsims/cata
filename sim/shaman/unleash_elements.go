@@ -12,9 +12,9 @@ func (shaman *Shaman) registerUnleashFlame() {
 	spellMask := SpellMaskLavaBurst | SpellMaskFlameShock | SpellMaskFireNova
 
 	unleashFlameMod := shaman.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  spellMask,
-		FloatValue: 0.2 * (1 + 0.25*float64(shaman.Talents.ElementalWeapons)),
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: spellMask,
+		IntValue:  20 * int64((1 + 0.25*float64(shaman.Talents.ElementalWeapons))),
 	})
 
 	unleashFlameAura := shaman.RegisterAura(core.Aura{
@@ -137,7 +137,7 @@ func (shaman *Shaman) registerUnleashLife() {
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
-				spell.DamageMultiplierAdditive += 0.2
+				spell.ApplyDamageMultiplierAdditive(20)
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {

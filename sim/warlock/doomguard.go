@@ -108,10 +108,9 @@ func (pet *DoomguardPet) registerDoomBolt() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           2,
-		ThreatMultiplier:         1,
-		BonusCoefficient:         1.28550004959,
+		CritMultiplier:   2,
+		ThreatMultiplier: 1,
+		BonusCoefficient: 1.28550004959,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// seems weird to have class = warrior here, but seems to fit better then paladin

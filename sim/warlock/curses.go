@@ -117,9 +117,8 @@ func (warlock *Warlock) registerBaneOfAgony() {
 		ManaCost: core.ManaCostOptions{BaseCost: 0.1},
 		Cast:     core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}},
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
-		ThreatMultiplier:         1,
+		CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -165,10 +164,9 @@ func (warlock *Warlock) registerBaneOfDoom() {
 		ManaCost: core.ManaCostOptions{BaseCost: 0.15},
 		Cast:     core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}},
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
-		ThreatMultiplier:         1,
-		FlatThreatBonus:          40,
+		CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
+		FlatThreatBonus:  40,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

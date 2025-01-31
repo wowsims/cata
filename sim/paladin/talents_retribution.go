@@ -27,9 +27,9 @@ func (paladin *Paladin) applyCrusade() {
 	}
 
 	paladin.AddStaticMod(core.SpellModConfig{
-		ClassMask:  SpellMaskCrusaderStrike | SpellMaskHammerOfTheRighteous | SpellMaskTemplarsVerdict | SpellMaskHolyShock,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.1 * float64(paladin.Talents.Crusade),
+		ClassMask: SpellMaskCrusaderStrike | SpellMaskHammerOfTheRighteous | SpellMaskTemplarsVerdict | SpellMaskHolyShock,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  int64(10 * paladin.Talents.Crusade),
 	})
 
 	// TODO: Add Healing Mod for Holy Shock if healing sim gets implemented
@@ -173,9 +173,9 @@ func (paladin *Paladin) applyArtOfWar() {
 	})
 
 	exorcismDamageMod := paladin.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  SpellMaskExorcism | SpellMaskGlyphOfExorcism,
-		FloatValue: 1.0,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: SpellMaskExorcism | SpellMaskGlyphOfExorcism,
+		IntValue:  100,
 	})
 
 	artOfWarInstantCast := paladin.RegisterAura(core.Aura{
@@ -323,9 +323,9 @@ func (paladin *Paladin) applyInquiryOfFaith() {
 	}
 
 	paladin.AddStaticMod(core.SpellModConfig{
-		ClassMask:  SpellMaskCensure,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.1 * float64(paladin.Talents.InquiryOfFaith),
+		ClassMask: SpellMaskCensure,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  int64(10 * paladin.Talents.InquiryOfFaith),
 	})
 
 	// Inquisition duration is handled in inquisition.go

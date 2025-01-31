@@ -38,7 +38,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 		Flags:          core.SpellFlagPassiveSpell,
 
 		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1 + 0.12*float64(rogue.Talents.VilePoisons),
+		DamageMultiplierAdditive: int64(12 * rogue.Talents.VilePoisons),
 		CritMultiplier:           1,
 		ThreatMultiplier:         1,
 
@@ -227,7 +227,7 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 		Flags:          core.SpellFlagPassiveSpell,
 
 		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1 + 0.12*float64(rogue.Talents.VilePoisons),
+		DamageMultiplierAdditive: int64(12 * rogue.Talents.VilePoisons),
 		CritMultiplier:           rogue.SpellCritMultiplier(),
 		ThreatMultiplier:         1,
 
@@ -252,7 +252,7 @@ func (rogue *Rogue) makeWoundPoison(procSource PoisonProcSource) *core.Spell {
 		ClassSpellMask: RogueSpellWoundPoison,
 
 		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1 + 0.12*float64(rogue.Talents.VilePoisons),
+		DamageMultiplierAdditive: int64(12 * rogue.Talents.VilePoisons),
 		CritMultiplier:           rogue.SpellCritMultiplier(),
 		ThreatMultiplier:         1,
 

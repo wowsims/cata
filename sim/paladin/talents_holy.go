@@ -1,8 +1,9 @@
 package paladin
 
 import (
-	"github.com/wowsims/cata/sim/core"
 	"time"
+
+	"github.com/wowsims/cata/sim/core"
 )
 
 func (paladin *Paladin) applyHolyTalents() {
@@ -81,9 +82,9 @@ func (paladin *Paladin) applyBlazingLight() {
 	}
 
 	paladin.AddStaticMod(core.SpellModConfig{
-		ClassMask:  SpellMaskExorcism | SpellMaskGlyphOfExorcism | SpellMaskHolyShock,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.1 * float64(paladin.Talents.BlazingLight),
+		ClassMask: SpellMaskExorcism | SpellMaskGlyphOfExorcism | SpellMaskHolyShock,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  int64(10 * paladin.Talents.BlazingLight),
 	})
 }
 

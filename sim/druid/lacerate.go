@@ -53,7 +53,7 @@ func (druid *Druid) registerLacerateSpell() {
 				dot.SnapshotBaseDamage *= float64(dot.Aura.GetStacks())
 
 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
-				dot.Spell.DamageMultiplier = getTickDamageMultiplier()
+				dot.Spell.SetDamageMultiplierMultiplicative(getTickDamageMultiplier())
 				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
 			},
@@ -73,7 +73,7 @@ func (druid *Druid) registerLacerateSpell() {
 				baseDamage *= 1.3
 			}
 
-			spell.DamageMultiplier = initialDamageMul
+			spell.SetDamageMultiplierMultiplicative(initialDamageMul)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {

@@ -32,9 +32,9 @@ func (hunter *Hunter) registerKillCommandSpell() {
 				Duration: time.Second * 6,
 			},
 		},
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           hunter.CritMultiplier(false, false, false),
-		ThreatMultiplier:         1,
+
+		CritMultiplier:   hunter.CritMultiplier(false, false, false),
+		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if hunter.Pet != nil && hunter.Pet.KillCommand != nil {
 				hunter.Pet.KillCommand.Cast(sim, target)

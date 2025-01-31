@@ -15,10 +15,10 @@ func (dk *DeathKnight) registerObliterateSpell() {
 		Flags:          core.SpellFlagMeleeMetrics,
 		ClassSpellMask: DeathKnightSpellObliterate,
 
-		DamageMultiplier:         1.5,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           dk.DefaultMeleeCritMultiplier(),
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1.5,
+
+		CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := dk.ClassSpellScaling*0.28900000453 +

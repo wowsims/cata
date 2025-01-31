@@ -25,9 +25,9 @@ func (mage *Mage) ApplyArcaneTalents() {
 	// Torment the Weak
 	if mage.Talents.TormentTheWeak > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
-			ClassMask:  MageSpellArcaneBarrage | MageSpellArcaneBlast | MageSpellArcaneExplosion | MageSpellArcaneMissilesTick,
-			FloatValue: 0.02 * float64(mage.Talents.TormentTheWeak),
-			Kind:       core.SpellMod_DamageDone_Flat,
+			ClassMask: MageSpellArcaneBarrage | MageSpellArcaneBlast | MageSpellArcaneExplosion | MageSpellArcaneMissilesTick,
+			IntValue:  int64(2 * mage.Talents.TormentTheWeak),
+			Kind:      core.SpellMod_DamageDone_Flat,
 		})
 	}
 

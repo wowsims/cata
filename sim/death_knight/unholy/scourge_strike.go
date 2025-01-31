@@ -15,9 +15,8 @@ func (dk *UnholyDeathKnight) registerScourgeStrikeShadowDamageSpell() *core.Spel
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreModifiers,
 		ClassSpellMask: death_knight.DeathKnightSpellScourgeStrikeShadow,
 
-		DamageMultiplierAdditive: 1,
-		DamageMultiplier:         1,
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := dk.lastScourgeStrikeDamage * dk.GetDiseaseMulti(target, 0.0, 0.18)
@@ -51,8 +50,7 @@ func (dk *UnholyDeathKnight) registerScourgeStrikeSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplierAdditive: 1,
-		DamageMultiplier:         1,
+		DamageMultiplier: 1,
 
 		CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,

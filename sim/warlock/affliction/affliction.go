@@ -58,13 +58,14 @@ func (affliction *AfflictionWarlock) ApplyTalents() {
 	masteryMod := affliction.AddDynamicMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: warlock.WarlockPeriodicShadowDamage,
+		IntValue:  0,
 	})
 
 	affliction.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
-		masteryMod.UpdateFloatValue(affliction.getMasteryBonus())
+		masteryMod.UpdateIntValue(int64(affliction.getMasteryBonus() * 100))
 	})
 
-	masteryMod.UpdateFloatValue(affliction.getMasteryBonus())
+	masteryMod.UpdateIntValue(int64(affliction.getMasteryBonus() * 100))
 	masteryMod.Activate()
 
 	// Shadow Mastery

@@ -20,14 +20,14 @@ func init() {
 	core.NewItemEffect(63839, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		spreadDot := character.RegisterSpell(core.SpellConfig{
-			ActionID:                 core.ActionID{SpellID: 91076},
-			SpellSchool:              core.SpellSchoolNature,
-			DamageMultiplier:         1,
-			DamageMultiplierAdditive: 1,
-			ThreatMultiplier:         1,
-			CritMultiplier:           character.DefaultSpellCritMultiplier(),
-			ProcMask:                 core.ProcMaskEmpty,
-			Flags:                    core.SpellFlagNoOnCastComplete,
+			ActionID:         core.ActionID{SpellID: 91076},
+			SpellSchool:      core.SpellSchoolNature,
+			DamageMultiplier: 1,
+
+			ThreatMultiplier: 1,
+			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			ProcMask:         core.ProcMaskEmpty,
+			Flags:            core.SpellFlagNoOnCastComplete,
 			Dot: core.DotConfig{
 				Aura: core.Aura{
 					Label: "Vengful Wisp - 2",
@@ -60,14 +60,14 @@ func init() {
 		})
 
 		trinketDot := character.RegisterSpell(core.SpellConfig{
-			ActionID:                 core.ActionID{SpellID: 91075},
-			SpellSchool:              core.SpellSchoolNature,
-			DamageMultiplier:         1,
-			DamageMultiplierAdditive: 1,
-			ThreatMultiplier:         1,
-			ProcMask:                 core.ProcMaskEmpty,
-			Flags:                    core.SpellFlagNoOnCastComplete,
-			CritMultiplier:           character.DefaultSpellCritMultiplier(),
+			ActionID:         core.ActionID{SpellID: 91075},
+			SpellSchool:      core.SpellSchoolNature,
+			DamageMultiplier: 1,
+
+			ThreatMultiplier: 1,
+			ProcMask:         core.ProcMaskEmpty,
+			Flags:            core.SpellFlagNoOnCastComplete,
+			CritMultiplier:   character.DefaultSpellCritMultiplier(),
 			Dot: core.DotConfig{
 				Aura: core.Aura{
 					Label: "Vengful Wisp - 1",
@@ -128,14 +128,14 @@ func init() {
 		sharedTimer := character.GetOffensiveTrinketCD()
 		manaMetric := character.NewManaMetrics(core.ActionID{SpellID: 92601})
 		spell := character.RegisterSpell(core.SpellConfig{
-			ActionID:                 core.ActionID{ItemID: 64645},
-			SpellSchool:              core.SpellSchoolArcane,
-			Flags:                    core.SpellFlagNoOnCastComplete,
-			ProcMask:                 core.ProcMaskEmpty,
-			DamageMultiplier:         1,
-			DamageMultiplierAdditive: 1,
-			ThreatMultiplier:         1,
-			CritMultiplier:           character.DefaultSpellCritMultiplier(),
+			ActionID:         core.ActionID{ItemID: 64645},
+			SpellSchool:      core.SpellSchoolArcane,
+			Flags:            core.SpellFlagNoOnCastComplete,
+			ProcMask:         core.ProcMaskEmpty,
+			DamageMultiplier: 1,
+
+			ThreatMultiplier: 1,
+			CritMultiplier:   character.DefaultSpellCritMultiplier(),
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Duration: time.Minute * 1,

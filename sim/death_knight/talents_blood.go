@@ -71,15 +71,15 @@ func (dk *DeathKnight) ApplyBloodTalents() {
 	// Improved Death Strike
 	if dk.Talents.ImprovedDeathStrike > 0 {
 		dk.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  DeathKnightSpellDeathStrike,
-			FloatValue: 0.4 * float64(dk.Talents.ImprovedDeathStrike),
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: DeathKnightSpellDeathStrike,
+			IntValue:  int64(40 * dk.Talents.ImprovedDeathStrike),
 		})
 
 		dk.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  DeathKnightSpellDeathStrikeHeal,
-			FloatValue: 0.15 * float64(dk.Talents.ImprovedDeathStrike),
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: DeathKnightSpellDeathStrikeHeal,
+			IntValue:  int64(15 * dk.Talents.ImprovedDeathStrike),
 		})
 
 		dk.AddStaticMod(core.SpellModConfig{
@@ -99,9 +99,9 @@ func (dk *DeathKnight) applyCrimsonScourge() {
 	}
 
 	dk.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  DeathKnightSpellBloodBoil,
-		FloatValue: 0.2 * float64(dk.Talents.CrimsonScourge),
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: DeathKnightSpellBloodBoil,
+		IntValue:  int64(20 * dk.Talents.CrimsonScourge),
 	})
 
 	costMod := dk.AddDynamicMod(core.SpellModConfig{

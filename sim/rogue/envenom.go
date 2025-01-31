@@ -53,12 +53,10 @@ func (rogue *Rogue) registerEnvenom() {
 			return rogue.ComboPoints() > 0 && rogue.DeadlyPoison.Dot(target).IsActive()
 		},
 
-		DamageMultiplier: 1,
-		DamageMultiplierAdditive: 1 +
-			0.12*float64(rogue.Talents.VilePoisons) +
-			[]float64{0, 0.07, .14, .20}[rogue.Talents.CoupDeGrace],
-		CritMultiplier:   rogue.MeleeCritMultiplier(false),
-		ThreatMultiplier: 1,
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: int64(12*rogue.Talents.VilePoisons) + []int64{0, 7, 14, 20}[rogue.Talents.CoupDeGrace],
+		CritMultiplier:           rogue.MeleeCritMultiplier(false),
+		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)

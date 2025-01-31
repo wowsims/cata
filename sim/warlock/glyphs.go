@@ -26,17 +26,17 @@ func (warlock *Warlock) ApplyGlyphs() {
 
 	if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfIncinerate) {
 		warlock.AddStaticMod(core.SpellModConfig{
-			ClassMask:  WarlockSpellIncinerate,
-			Kind:       core.SpellMod_DamageDone_Flat,
-			FloatValue: 0.05,
+			ClassMask: WarlockSpellIncinerate,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  5,
 		})
 	}
 
 	if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfImmolate) {
 		warlock.AddStaticMod(core.SpellModConfig{
-			ClassMask:  WarlockSpellImmolateDot | WarlockSpellConflagrate,
-			Kind:       core.SpellMod_DamageDone_Flat,
-			FloatValue: 0.10,
+			ClassMask: WarlockSpellImmolateDot | WarlockSpellConflagrate,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  10,
 		})
 	}
 
@@ -74,25 +74,25 @@ func (warlock *Warlock) ApplyGlyphs() {
 
 	if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfLashOfPain) {
 		warlock.Succubus.AddStaticMod(core.SpellModConfig{
-			ClassMask:  WarlockSpellSuccubusLashOfPain,
-			Kind:       core.SpellMod_DamageDone_Flat,
-			FloatValue: 0.25,
+			ClassMask: WarlockSpellSuccubusLashOfPain,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  25,
 		})
 	}
 
 	if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfFelguard) {
 		warlock.Felguard.AddStaticMod(core.SpellModConfig{
-			ClassMask:  WarlockSpellFelGuardLegionStrike,
-			Kind:       core.SpellMod_DamageDone_Flat,
-			FloatValue: 0.05,
+			ClassMask: WarlockSpellFelGuardLegionStrike,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  5,
 		})
 	}
 
 	if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfImp) {
 		warlock.Imp.AddStaticMod(core.SpellModConfig{
-			ClassMask:  WarlockSpellImpFireBolt,
-			Kind:       core.SpellMod_DamageDone_Flat,
-			FloatValue: 0.20,
+			ClassMask: WarlockSpellImpFireBolt,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  20,
 		})
 	}
 

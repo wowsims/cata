@@ -196,7 +196,7 @@ const (
 	SpellMod_DamageDone_Pct SpellModType = 1 << iota
 
 	// Will add the value spell.DamageDoneAddMultiplier
-	// Uses FloatValue
+	// Uses IntValue
 	SpellMod_DamageDone_Flat
 
 	// Will reduce spell.DefaultCast.Cost by % amount. -5% = -0.05
@@ -219,8 +219,8 @@ const (
 	// Uses FloatValue
 	SpellMod_Cooldown_Multiplier
 
-	// Will increase the AddativeCritMultiplier. +100% = 1.0
-	// Uses FloatValue
+	// Will increase the AddativeCritMultiplier. +100% = 100
+	// Uses IntValue
 	SpellMod_CritMultiplier_Flat
 
 	// Will add / substract % amount from the cast time multiplier.
@@ -287,7 +287,7 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 
 	SpellMod_DamageDone_Flat: {
 		Apply:  applyDamageDoneAdd,
-		Remove: removeDamageDonAdd,
+		Remove: removeDamageDoneAdd,
 	},
 
 	SpellMod_PowerCost_Pct: {
@@ -390,19 +390,19 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 }
 
 func applyDamageDonePercent(mod *SpellMod, spell *Spell) {
-	spell.DamageMultiplier *= 1 + mod.floatValue
+	spell.ApplyDamageMultiplierMultiplicative(1 + mod.floatValue)
 }
 
 func removeDamageDonePercent(mod *SpellMod, spell *Spell) {
-	spell.DamageMultiplier /= 1 + mod.floatValue
+	spell.ApplyDamageMultiplierMultiplicative(1 / (1 + mod.floatValue))
 }
 
 func applyDamageDoneAdd(mod *SpellMod, spell *Spell) {
-	spell.DamageMultiplierAdditive += mod.floatValue
+	spell.ApplyDamageMultiplierAdditive(mod.intValue)
 }
 
-func removeDamageDonAdd(mod *SpellMod, spell *Spell) {
-	spell.DamageMultiplierAdditive -= mod.floatValue
+func removeDamageDoneAdd(mod *SpellMod, spell *Spell) {
+	spell.ApplyDamageMultiplierAdditive(-mod.intValue)
 }
 
 func applyPowerCostPercent(mod *SpellMod, spell *Spell) {
@@ -450,11 +450,11 @@ func removeCooldownMultiplier(mod *SpellMod, spell *Spell) {
 }
 
 func applyCritMultiplierFlat(mod *SpellMod, spell *Spell) {
-	spell.CritMultiplierAddative += mod.floatValue
+	spell.ApplyCritMultiplierAdditive(mod.intValue)
 }
 
 func removeCritMultiplierFlat(mod *SpellMod, spell *Spell) {
-	spell.CritMultiplierAddative -= mod.floatValue
+	spell.ApplyCritMultiplierAdditive(-mod.intValue)
 }
 
 func applyCastTimePercent(mod *SpellMod, spell *Spell) {

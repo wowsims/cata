@@ -34,9 +34,9 @@ func (war *ProtectionWarrior) applyGlyphOfShieldSlam() {
 	}
 
 	war.AddStaticMod(core.SpellModConfig{
-		ClassMask:  warrior.SpellMaskShieldSlam,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.1,
+		ClassMask: warrior.SpellMaskShieldSlam,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  10,
 	})
 }
 

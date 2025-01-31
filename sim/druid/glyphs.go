@@ -11,25 +11,25 @@ func (druid *Druid) ApplyGlyphs() {
 
 	if druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfMoonfire) {
 		druid.AddStaticMod(core.SpellModConfig{
-			ClassMask:  DruidSpellMoonfireDoT | DruidSpellSunfireDoT,
-			FloatValue: 0.2,
-			Kind:       core.SpellMod_DamageDone_Flat,
+			ClassMask: DruidSpellMoonfireDoT | DruidSpellSunfireDoT,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  20,
 		})
 	}
 
 	if druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfInsectSwarm) {
 		druid.AddStaticMod(core.SpellModConfig{
-			ClassMask:  DruidSpellInsectSwarm,
-			FloatValue: 0.3,
-			Kind:       core.SpellMod_DamageDone_Flat,
+			ClassMask: DruidSpellInsectSwarm,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  30,
 		})
 	}
 
 	if druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfWrath) {
 		druid.AddStaticMod(core.SpellModConfig{
-			ClassMask:  DruidSpellWrath,
-			FloatValue: 0.1,
-			Kind:       core.SpellMod_DamageDone_Flat,
+			ClassMask: DruidSpellWrath,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  10,
 		})
 	}
 
@@ -43,9 +43,9 @@ func (druid *Druid) ApplyGlyphs() {
 
 	if druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfFocus) {
 		druid.AddStaticMod(core.SpellModConfig{
-			ClassMask:  DruidSpellStarfall,
-			Kind:       core.SpellMod_DamageDone_Flat,
-			FloatValue: 0.1,
+			ClassMask: DruidSpellStarfall,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  10,
 		})
 
 		// range mod?

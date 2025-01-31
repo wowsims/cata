@@ -8,14 +8,14 @@ import (
 
 func (priest *Priest) getMindSearBaseConfig() core.SpellConfig {
 	return core.SpellConfig{
-		SpellSchool:              core.SpellSchoolShadow,
-		ProcMask:                 core.ProcMaskSpellProc,
-		ClassSpellMask:           PriestSpellMindSear,
-		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
-		ThreatMultiplier:         1,
-		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
-		BonusCoefficient:         0.2622,
+		SpellSchool:      core.SpellSchoolShadow,
+		ProcMask:         core.ProcMaskSpellProc,
+		ClassSpellMask:   PriestSpellMindSear,
+		DamageMultiplier: 1,
+
+		ThreatMultiplier: 1,
+		CritMultiplier:   priest.DefaultSpellCritMultiplier(),
+		BonusCoefficient: 0.2622,
 	}
 }
 

@@ -32,10 +32,9 @@ func (warlock *Warlock) registerShadowBurnSpell() {
 			return sim.IsExecutePhase20()
 		},
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
-		ThreatMultiplier:         1,
-		BonusCoefficient:         1.05599999428,
+		CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
+		BonusCoefficient: 1.05599999428,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := warlock.CalcAndRollDamageRange(sim, 0.71399998665, 0.1099999994)

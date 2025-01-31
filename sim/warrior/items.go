@@ -27,9 +27,9 @@ var ItemSetEarthenWarplate = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(_ core.Agent, setBonusAura *core.Aura) {
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				ClassMask:  SpellMaskBloodthirst | SpellMaskMortalStrike,
-				Kind:       core.SpellMod_DamageDone_Flat,
-				FloatValue: 0.05,
+				ClassMask: SpellMaskBloodthirst | SpellMaskMortalStrike,
+				Kind:      core.SpellMod_DamageDone_Flat,
+				IntValue:  5,
 			})
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
@@ -76,9 +76,9 @@ var ItemSetEarthenBattleplate = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(_ core.Agent, setBonusAura *core.Aura) {
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				ClassMask:  SpellMaskShieldSlam,
-				Kind:       core.SpellMod_DamageDone_Flat,
-				FloatValue: 0.05,
+				ClassMask: SpellMaskShieldSlam,
+				Kind:      core.SpellMod_DamageDone_Flat,
+				IntValue:  5,
 			})
 		},
 		4: func(_ core.Agent, setBonusAura *core.Aura) {

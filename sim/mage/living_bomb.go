@@ -31,10 +31,9 @@ func (mage *Mage) registerLivingBombSpell() {
 		ClassSpellMask: MageSpellLivingBombExplosion,
 		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
-		BonusCoefficient:         0.516,
-		ThreatMultiplier:         1,
+		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		BonusCoefficient: 0.516,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 0.5 * mage.ClassSpellScaling
@@ -63,9 +62,8 @@ func (mage *Mage) registerLivingBombSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
-		ThreatMultiplier:         1,
+		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

@@ -11,9 +11,9 @@ func (mage *Mage) applyGlyphs() {
 	//Primes
 	if mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfArcaneBarrage) {
 		mage.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  MageSpellArcaneBarrage,
-			FloatValue: 0.04,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: MageSpellArcaneBarrage,
+			IntValue:  4,
 		})
 	}
 
@@ -29,17 +29,17 @@ func (mage *Mage) applyGlyphs() {
 
 	if mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfConeOfCold) {
 		mage.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  MageSpellConeOfCold,
-			FloatValue: 0.25,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: MageSpellConeOfCold,
+			IntValue:  25,
 		})
 	}
 
 	if mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfDeepFreeze) {
 		mage.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  MageSpellDeepFreeze,
-			FloatValue: 0.2,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: MageSpellDeepFreeze,
+			IntValue:  20,
 		})
 	}
 
@@ -62,25 +62,25 @@ func (mage *Mage) applyGlyphs() {
 	//Frostfire bolt Dot handled inside spell due to changing behavior
 	if mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfFrostfire) {
 		mage.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  MageSpellFrostfireBolt,
-			FloatValue: 0.15,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: MageSpellFrostfireBolt,
+			IntValue:  15,
 		})
 	}
 
 	if mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfIceLance) {
 		mage.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  MageSpellIceLance,
-			FloatValue: .05,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: MageSpellIceLance,
+			IntValue:  5,
 		})
 	}
 
 	if mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfLivingBomb) {
 		mage.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  MageSpellLivingBomb,
-			FloatValue: .03,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: MageSpellLivingBomb,
+			IntValue:  3,
 		})
 	}
 

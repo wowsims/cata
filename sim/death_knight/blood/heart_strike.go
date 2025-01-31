@@ -47,13 +47,13 @@ func (dk *BloodDeathKnight) registerHeartStrikeSpell() {
 					spell.SpendRefundableCost(sim, results[idx])
 				}
 
-				spell.DamageMultiplier *= 0.75
+				spell.ApplyDamageMultiplierMultiplicative(0.75)
 				currentTarget = dk.Env.NextTargetUnit(currentTarget)
 			}
 
 			for _, result := range results {
 				spell.DealDamage(sim, result)
-				spell.DamageMultiplier /= 0.75
+				spell.ApplyDamageMultiplierMultiplicative(1 / 0.75)
 			}
 		},
 	})
@@ -78,13 +78,13 @@ func (dk *BloodDeathKnight) registerDrwHeartStrikeSpell() *core.Spell {
 
 				results[idx] = spell.CalcDamage(sim, currentTarget, targetDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
-				spell.DamageMultiplier *= 0.75
+				spell.ApplyDamageMultiplierMultiplicative(0.75)
 				currentTarget = dk.Env.NextTargetUnit(currentTarget)
 			}
 
 			for _, result := range results {
 				spell.DealDamage(sim, result)
-				spell.DamageMultiplier /= 0.75
+				spell.ApplyDamageMultiplierMultiplicative(1 / 0.75)
 			}
 		},
 	})

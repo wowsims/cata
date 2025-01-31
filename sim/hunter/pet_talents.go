@@ -17,9 +17,9 @@ func (hp *HunterPet) ApplyTalents() {
 
 	if talents.SpikedCollar > 0 {
 		hp.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  HunterPetFocusDump,
-			FloatValue: 0.03 * float64(talents.SpikedCollar),
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: HunterPetFocusDump,
+			IntValue:  int64(3 * talents.SpikedCollar),
 		})
 	}
 	hp.PseudoStats.DamageDealtMultiplier *= 1 + 0.03*float64(talents.SharkAttack)

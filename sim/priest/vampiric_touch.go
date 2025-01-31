@@ -25,10 +25,10 @@ func (priest *Priest) registerVampiricTouchSpell() {
 			Multiplier: 1,
 		},
 
-		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1,
+
+		CritMultiplier:   priest.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,

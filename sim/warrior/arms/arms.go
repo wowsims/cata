@@ -98,10 +98,9 @@ func (war *ArmsWarrior) RegisterMastery() {
 		ProcMask:    core.ProcMaskMeleeSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
-		DamageMultiplier:         1.0,
-		DamageMultiplierAdditive: 1.0,
-		CritMultiplier:           war.DefaultMeleeCritMultiplier(),
-		ThreatMultiplier:         1.0,
+		DamageMultiplier: 1.0,
+		CritMultiplier:   war.DefaultMeleeCritMultiplier(),
+		ThreatMultiplier: 1.0,
 
 		BonusCoefficient: 1.0,
 

@@ -20,24 +20,24 @@ func (dk *DeathKnight) ApplyUnholyTalents() {
 	// Virulence
 	if dk.Talents.Virulence > 0 {
 		dk.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  DeathKnightSpellDisease,
-			FloatValue: 0.1 * float64(dk.Talents.Virulence),
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: DeathKnightSpellDisease,
+			IntValue:  int64(10 * dk.Talents.Virulence),
 		})
 	}
 
 	// Morbidity
 	if dk.Talents.Morbidity > 0 {
 		dk.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  DeathKnightSpellDeathCoil | DeathKnightSpellDeathCoilHeal,
-			FloatValue: 0.05 * float64(dk.Talents.Morbidity),
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: DeathKnightSpellDeathCoil | DeathKnightSpellDeathCoilHeal,
+			IntValue:  int64(5 * dk.Talents.Morbidity),
 		})
 
 		dk.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  DeathKnightSpellDeathAndDecay,
-			FloatValue: 0.1 * float64(dk.Talents.Morbidity),
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: DeathKnightSpellDeathAndDecay,
+			IntValue:  int64(10 * dk.Talents.Morbidity),
 		})
 	}
 
@@ -47,9 +47,9 @@ func (dk *DeathKnight) ApplyUnholyTalents() {
 	// Rage of Rivendare
 	if dk.Talents.RageOfRivendare > 0 {
 		dk.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  DeathKnightSpellPlagueStrike | DeathKnightSpellScourgeStrike | DeathKnightSpellFesteringStrike,
-			FloatValue: 0.15 * float64(dk.Talents.RageOfRivendare),
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: DeathKnightSpellPlagueStrike | DeathKnightSpellScourgeStrike | DeathKnightSpellFesteringStrike,
+			IntValue:  int64(15 * dk.Talents.RageOfRivendare),
 		})
 	}
 
@@ -214,7 +214,7 @@ func (dk *DeathKnight) applyUnholyBlight() {
 
 			newDamage := result.Damage * 0.10
 			ticks := float64(dot.BaseTickCount + core.TernaryInt32(dot.IsActive(), 1, 0))
-			dot.SnapshotAttackerMultiplier = unholyBlight.DamageMultiplier
+			dot.SnapshotAttackerMultiplier = unholyBlight.GetDamageMultiplier()
 			dot.SnapshotBaseDamage = (dot.OutstandingDmg() + newDamage) / ticks
 
 			unholyBlight.Cast(sim, result.Target)

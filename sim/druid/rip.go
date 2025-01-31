@@ -94,14 +94,14 @@ func (druid *Druid) registerRipSpell() {
 			result := spell.CalcPeriodicDamage(sim, target, baseTickDamage, spell.OutcomeExpectedMagicAlwaysHit)
 			attackTable := spell.Unit.AttackTables[target.UnitIndex]
 			critChance := spell.PhysicalCritChance(attackTable)
-			critMod := critChance * (spell.CritMultiplier - 1)
+			critMod := critChance * (spell.GetCritMultiplier() - 1)
 			result.Damage *= 1 + critMod
 			return result
 		},
 	})
 
 	druid.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
-		druid.Rip.DamageMultiplier *= druid.RazorClawsMultiplier(newMastery) / druid.RazorClawsMultiplier(oldMastery)
+		druid.Rip.ApplyDamageMultiplierMultiplicative(druid.RazorClawsMultiplier(newMastery) / druid.RazorClawsMultiplier(oldMastery))
 	})
 
 	druid.Rip.ShortName = "Rip"

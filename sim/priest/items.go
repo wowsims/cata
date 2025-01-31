@@ -21,9 +21,9 @@ import (
 // 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 // 			character := agent.GetCharacter()
 // 			character.AddStaticMod(core.SpellModConfig{
-// 				Kind:       core.SpellMod_DamageDone_Flat,
-// 				FloatValue: 0.05,
-// 				ClassMask:  PriestSpellGreaterHeal,
+// 				Kind:      core.SpellMod_DamageDone_Flat,
+// 				IntValue:  5,
+// 				ClassMask: PriestSpellGreaterHeal,
 // 			})
 // 		},
 // 	},
@@ -74,9 +74,9 @@ import (
 // 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 // 			character := agent.GetCharacter()
 // 			character.AddStaticMod(core.SpellModConfig{
-// 				Kind:       core.SpellMod_DamageDone_Flat,
-// 				FloatValue: 0.15,
-// 				ClassMask:  PriestSpellDevouringPlague,
+// 				Kind:      core.SpellMod_DamageDone_Flat,
+// 				IntValue:  15,
+// 				ClassMask: PriestSpellDevouringPlague,
 // 			})
 // 		},
 // 		4: func(agent core.Agent, setBonusAura *core.Aura) {
@@ -158,9 +158,9 @@ import (
 // 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 // 			character := agent.GetCharacter()
 // 			character.AddStaticMod(core.SpellModConfig{
-// 				Kind:       core.SpellMod_DamageDone_Flat,
-// 				FloatValue: 0.15,
-// 				ClassMask:  PriestSpellPrayerOfMending,
+// 				Kind:      core.SpellMod_DamageDone_Flat,
+// 				IntValue:  15,
+// 				ClassMask: PriestSpellPrayerOfMending,
 // 			})
 // 		},
 // 		4: func(agent core.Agent, setBonusAura *core.Aura) {
@@ -293,9 +293,9 @@ var ItemSetMercurialRegalia = core.NewItemSet(core.ItemSet{
 		},
 		4: func(_ core.Agent, setBonusAura *core.Aura) {
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Flat,
-				FloatValue: 0.3,
-				ClassMask:  PriestSpellShadowyApparation,
+				Kind:      core.SpellMod_DamageDone_Flat,
+				IntValue:  30,
+				ClassMask: PriestSpellShadowyApparation,
 			})
 		},
 	},
@@ -358,9 +358,9 @@ var ItemSetRegaliaOfTheCleansingFlame = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			character := agent.GetCharacter()
 			mbMod := character.AddDynamicMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Flat,
-				FloatValue: 0.15,
-				ClassMask:  PriestSpellMindBlast,
+				Kind:      core.SpellMod_DamageDone_Flat,
+				IntValue:  15,
+				ClassMask: PriestSpellMindBlast,
 			})
 
 			mbAura := character.RegisterAura(core.Aura{
@@ -418,9 +418,9 @@ var ItemSetRegaliaOfDyingLight = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Flat,
-				ClassMask:  PriestSpellShadowWordDeath,
-				FloatValue: 0.55,
+				Kind:      core.SpellMod_DamageDone_Flat,
+				ClassMask: PriestSpellShadowWordDeath,
+				IntValue:  55,
 			})
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {

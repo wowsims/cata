@@ -82,7 +82,7 @@ func (druid *Druid) registerRakeSpell() {
 
 			attackTable := spell.Unit.AttackTables[target.UnitIndex]
 			critChance := spell.PhysicalCritChance(attackTable)
-			critMod := (critChance * (spell.CritMultiplier - 1))
+			critMod := (critChance * (spell.GetCritMultiplier() - 1))
 			initial.Damage *= 1 + critMod
 			return initial
 		},
@@ -92,7 +92,7 @@ func (druid *Druid) registerRakeSpell() {
 
 			attackTable := spell.Unit.AttackTables[target.UnitIndex]
 			critChance := spell.PhysicalCritChance(attackTable)
-			critMod := (critChance * (spell.CritMultiplier - 1))
+			critMod := (critChance * (spell.GetCritMultiplier() - 1))
 			ticks.Damage *= 1 + critMod
 
 			return ticks
@@ -100,7 +100,7 @@ func (druid *Druid) registerRakeSpell() {
 	})
 
 	druid.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
-		druid.Rake.DamageMultiplier *= druid.RazorClawsMultiplier(newMastery) / druid.RazorClawsMultiplier(oldMastery)
+		druid.Rake.ApplyDamageMultiplierMultiplicative(druid.RazorClawsMultiplier(newMastery) / druid.RazorClawsMultiplier(oldMastery))
 	})
 
 	druid.Rake.ShortName = "Rake"

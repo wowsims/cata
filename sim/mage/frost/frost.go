@@ -71,9 +71,9 @@ func (frostMage *FrostMage) ApplyTalents() {
 	})
 
 	frostMage.Mage.AddStaticMod(core.SpellModConfig{
-		ClassMask:  mage.MageSpellFrostbolt,
-		FloatValue: 0.15,
-		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask: mage.MageSpellFrostbolt,
+		IntValue:  15,
+		Kind:      core.SpellMod_DamageDone_Flat,
 	})
 
 	// Frost Mastery Bonus

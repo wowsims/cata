@@ -25,10 +25,9 @@ func (mage *Mage) GetFlameStrikeConfig(spellId int32, isProc bool) core.SpellCon
 			},
 		},
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
-		BonusCoefficient:         0.146,
-		ThreatMultiplier:         1,
+		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		BonusCoefficient: 0.146,
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			IsAOE: true,

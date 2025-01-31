@@ -25,9 +25,9 @@ func (dk *DeathKnight) ApplyFrostTalents() {
 	// Annihilation
 	if dk.Talents.Annihilation > 0 {
 		dk.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  DeathKnightSpellObliterate,
-			FloatValue: 0.15 * float64(dk.Talents.Annihilation),
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: DeathKnightSpellObliterate,
+			IntValue:  int64(15 * dk.Talents.Annihilation),
 		})
 	}
 

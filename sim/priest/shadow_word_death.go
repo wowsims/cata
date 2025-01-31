@@ -19,11 +19,11 @@ func (priest *Priest) registerShadowWordDeathSpell() {
 			Multiplier: 1,
 		},
 
-		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
-		ThreatMultiplier:         1,
-		BonusCoefficient:         0.316,
+		DamageMultiplier: 1,
+
+		CritMultiplier:   priest.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
+		BonusCoefficient: 0.316,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -36,20 +36,20 @@ func (priest *Priest) registerShadowWordDeathSpell() {
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if sim.IsExecutePhase25() {
-				spell.DamageMultiplier *= 3
+				spell.ApplyDamageMultiplierMultiplicative(3)
 			}
 			spell.CalcAndDealDamage(sim, target, priest.ClassSpellScaling*0.357, spell.OutcomeMagicHitAndCrit)
 			if sim.IsExecutePhase25() {
-				spell.DamageMultiplier /= 3
+				spell.ApplyDamageMultiplierMultiplicative(1 / 3.0)
 			}
 		},
 		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
 			if sim.IsExecutePhase25() {
-				spell.DamageMultiplier *= 3
+				spell.ApplyDamageMultiplierMultiplicative(3)
 			}
 			result := spell.CalcDamage(sim, target, priest.ClassSpellScaling*0.357, spell.OutcomeExpectedMagicHitAndCrit)
 			if sim.IsExecutePhase25() {
-				spell.DamageMultiplier /= 3
+				spell.ApplyDamageMultiplierMultiplicative(1 / 3.0)
 			}
 			return result
 		},

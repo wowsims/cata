@@ -39,7 +39,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 			},
 		},
 		BonusCritPercent:         0,
-		DamageMultiplierAdditive: 1 + core.TernaryFloat64(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfSteadyShot), 0.1, 0),
+		DamageMultiplierAdditive: core.TernaryInt64(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfSteadyShot), 10, 0),
 		DamageMultiplier:         1,
 		CritMultiplier:           hunter.CritMultiplier(true, false, false),
 		ThreatMultiplier:         1,

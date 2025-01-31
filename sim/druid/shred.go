@@ -80,7 +80,7 @@ func (druid *Druid) registerShredSpell() {
 
 			attackTable := spell.Unit.AttackTables[target.UnitIndex]
 			critChance := spell.PhysicalCritChance(attackTable)
-			critMod := (critChance * (spell.CritMultiplier - 1))
+			critMod := (critChance * (spell.GetCritMultiplier() - 1))
 
 			baseres.Damage *= (1 + critMod)
 

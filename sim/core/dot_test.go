@@ -166,7 +166,7 @@ func TestDotSnapshotSpellMultiplier(t *testing.T) {
 	sim := SetupFakeSim()
 	fa := sim.Raid.Parties[0].Players[0].(*FakeAgent)
 	spell := fa.GetCharacter().Spellbook[0]
-	spell.DamageMultiplier *= 2
+	spell.ApplyDamageMultiplierMultiplicative(2)
 
 	fa.Dot.Apply(sim)
 	expectDotTickDamage(t, sim, fa.Dot, 300) // (100) * 1.5 * 2

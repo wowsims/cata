@@ -30,7 +30,7 @@ func (rogue *Rogue) registerGarrote() {
 			return !rogue.PseudoStats.InFrontOfTarget && (rogue.IsStealthed() || rogue.HasActiveAura("Shadowmeld"))
 		},
 
-		DamageMultiplierAdditive: 1 + 0.10*float64(rogue.Talents.Opportunity),
+		DamageMultiplierAdditive: int64(10 * rogue.Talents.Opportunity),
 		DamageMultiplier:         1,
 		CritMultiplier:           rogue.MeleeCritMultiplier(false),
 		ThreatMultiplier:         1,

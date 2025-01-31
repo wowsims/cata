@@ -11,9 +11,9 @@ func (dk *DeathKnight) registerPestilenceSpell() {
 	hasReaping := dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight
 
 	pestiHandler := func(sim *core.Simulation, spell *core.Spell, target *core.Unit) {
-		spell.DamageMultiplier *= 0.5
+		spell.ApplyDamageMultiplierMultiplicative(0.5)
 		spell.Cast(sim, target)
-		spell.DamageMultiplier /= 0.5
+		spell.ApplyDamageMultiplierMultiplicative(1 / 0.5)
 	}
 
 	dk.RegisterSpell(core.SpellConfig{

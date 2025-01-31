@@ -22,10 +22,9 @@ func (warlock *Warlock) registerSearingPain() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
-		ThreatMultiplier:         1,
-		BonusCoefficient:         0.37799999118,
+		CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
+		BonusCoefficient: 0.37799999118,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDmg := warlock.CalcAndRollDamageRange(sim, 0.3219999969, 0.17000000179)

@@ -17,8 +17,8 @@ func (shaman *Shaman) ApplyTalents() {
 		shaman.AddStaticMod(core.SpellModConfig{
 			ClassMask: SpellMaskLightningBolt | SpellMaskLightningBoltOverload | SpellMaskChainLightning | SpellMaskChainLightningOverload |
 				SpellMaskThunderstorm | SpellMaskLavaBurst | SpellMaskLavaBurstOverload | SpellMaskEarthShock | SpellMaskFlameShock | SpellMaskFrost,
-			Kind:       core.SpellMod_DamageDone_Flat,
-			FloatValue: 0.02 * float64(shaman.Talents.Concussion),
+			Kind:     core.SpellMod_DamageDone_Flat,
+			IntValue: int64(2 * shaman.Talents.Concussion),
 		})
 	}
 
@@ -36,15 +36,15 @@ func (shaman *Shaman) ApplyTalents() {
 
 	if shaman.Talents.CallOfFlame > 0 {
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskLavaBurst | SpellMaskLavaBurstOverload,
-			Kind:       core.SpellMod_DamageDone_Flat,
-			FloatValue: 0.05 * float64(shaman.Talents.CallOfFlame),
+			ClassMask: SpellMaskLavaBurst | SpellMaskLavaBurstOverload,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  int64(5 * shaman.Talents.CallOfFlame),
 		})
 
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskSearingTotem | SpellMaskMagmaTotem | SpellMaskFireNova,
-			Kind:       core.SpellMod_DamageDone_Flat,
-			FloatValue: 0.10 * float64(shaman.Talents.CallOfFlame),
+			ClassMask: SpellMaskSearingTotem | SpellMaskMagmaTotem | SpellMaskFireNova,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  int64(10 * shaman.Talents.CallOfFlame),
 		})
 	}
 
@@ -53,14 +53,14 @@ func (shaman *Shaman) ApplyTalents() {
 
 	if shaman.Talents.LavaFlows > 0 {
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskFlameShockDot,
-			Kind:       core.SpellMod_DamageDone_Flat,
-			FloatValue: 0.20 * float64(shaman.Talents.LavaFlows),
+			ClassMask: SpellMaskFlameShockDot,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  int64(20 * shaman.Talents.LavaFlows),
 		})
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskLavaBurst | SpellMaskLavaBurstOverload,
-			Kind:       core.SpellMod_CritMultiplier_Flat,
-			FloatValue: 0.08 * float64(shaman.Talents.LavaFlows),
+			ClassMask: SpellMaskLavaBurst | SpellMaskLavaBurstOverload,
+			Kind:      core.SpellMod_CritMultiplier_Flat,
+			IntValue:  int64(8 * shaman.Talents.LavaFlows),
 		})
 	}
 
@@ -88,9 +88,9 @@ func (shaman *Shaman) ApplyTalents() {
 
 	if shaman.Talents.ImprovedShields > 0 {
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskLightningShield | SpellMaskFulmination | SpellMaskEarthShield,
-			Kind:       core.SpellMod_DamageDone_Flat,
-			FloatValue: 0.05 * float64(shaman.Talents.ImprovedShields),
+			ClassMask: SpellMaskLightningShield | SpellMaskFulmination | SpellMaskEarthShield,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  int64(5 * shaman.Talents.ImprovedShields),
 		})
 	}
 
@@ -143,9 +143,9 @@ func (shaman *Shaman) applyElementalFocus() {
 		FloatValue: oathBonus,
 	})
 	oathModEarthquake := shaman.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  SpellMaskEarthquake,
-		FloatValue: oathBonus,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: SpellMaskEarthquake,
+		IntValue:  int64(oathBonus * 100),
 	})
 
 	maxStacks := int32(2)
@@ -648,10 +648,9 @@ func (shaman *Shaman) applySearingFlames() {
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt | core.SpellFlagPassiveSpell,
 
-		DamageMultiplierAdditive: 1,
-		DamageMultiplier:         1,
-		ThreatMultiplier:         1,
-		CritMultiplier:           shaman.DefaultSpellCritMultiplier(),
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

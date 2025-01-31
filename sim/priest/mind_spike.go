@@ -40,9 +40,9 @@ func (priest *Priest) registerMindSpike() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: PriestSpellMindSpike,
 
-		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
+		DamageMultiplier: 1,
+
+		CritMultiplier: priest.DefaultSpellCritMultiplier(),
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.12,
 			Multiplier: 1,
@@ -61,6 +61,7 @@ func (priest *Priest) registerMindSpike() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := priest.calcBaseDamage(sim, 1.178, 0.055)
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+
 			if result.Outcome.Matches(core.OutcomeLanded) {
 				priest.ShadowWordPain.Dot(target).Deactivate(sim)
 

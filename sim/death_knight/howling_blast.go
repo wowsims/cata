@@ -41,9 +41,9 @@ func (dk *DeathKnight) registerHowlingBlastSpell() {
 				baseDamage := dk.ClassSpellScaling*1.17499995232 + 0.44*spell.MeleeAttackPower()
 
 				if aoeTarget != target {
-					spell.DamageMultiplier *= 0.5
+					spell.ApplyDamageMultiplierMultiplicative(0.5)
 					results[idx] = spell.CalcDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-					spell.DamageMultiplier /= 0.5
+					spell.ApplyDamageMultiplierMultiplicative(1 / 0.5)
 				} else {
 					results[idx] = spell.CalcDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 				}

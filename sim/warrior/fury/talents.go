@@ -118,13 +118,13 @@ func (war *FuryWarrior) applyMeatCleaver() {
 	}
 
 	buffMod := war.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  warrior.SpellMaskCleave | warrior.SpellMaskWhirlwind | warrior.SpellMaskWhirlwindOh,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.0,
+		ClassMask: warrior.SpellMaskCleave | warrior.SpellMaskWhirlwind | warrior.SpellMaskWhirlwindOh,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  0,
 	})
 
 	actionID := core.ActionID{SpellID: 85739}
-	bonusPerStack := 0.05 * float64(war.Talents.MeatCleaver)
+	bonusPerStack := int64(5 * war.Talents.MeatCleaver)
 	buff := war.RegisterAura(core.Aura{
 		Label:     "Meat Cleaver",
 		ActionID:  actionID,
@@ -132,8 +132,8 @@ func (war *FuryWarrior) applyMeatCleaver() {
 		MaxStacks: 3,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			if newStacks != 0 {
-				bonus := bonusPerStack * float64(newStacks)
-				buffMod.UpdateFloatValue(bonus)
+				bonus := bonusPerStack * int64(newStacks)
+				buffMod.UpdateIntValue(bonus)
 				buffMod.Activate()
 			} else {
 				buffMod.Deactivate()

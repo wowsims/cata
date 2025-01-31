@@ -84,7 +84,7 @@ func (druid *Druid) registerFerociousBiteSpell() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 			attackTable := spell.Unit.AttackTables[target.UnitIndex]
 			critChance := spell.PhysicalCritChance(attackTable)
-			critMod := critChance * (spell.CritMultiplier - 1)
+			critMod := critChance * (spell.GetCritMultiplier() - 1)
 			result.Damage *= 1 + critMod
 			return result
 		},

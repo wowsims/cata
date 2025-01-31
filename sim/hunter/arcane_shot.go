@@ -26,11 +26,11 @@ func (hunter *Hunter) registerArcaneShotSpell() {
 			IgnoreHaste: true,
 		},
 
-		BonusCritPercent:         0,
-		DamageMultiplierAdditive: 1,
-		DamageMultiplier:         1,
-		CritMultiplier:           hunter.CritMultiplier(true, true, false),
-		ThreatMultiplier:         1,
+		BonusCritPercent: 0,
+
+		DamageMultiplier: 1,
+		CritMultiplier:   hunter.CritMultiplier(true, true, false),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			wepDmg := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target))

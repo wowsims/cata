@@ -28,9 +28,9 @@ func (warlock *Warlock) registerDemonSoul() {
 	})
 
 	felhunterMod := warlock.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  WarlockPeriodicShadowDamage,
-		FloatValue: 0.2,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: WarlockPeriodicShadowDamage,
+		IntValue:  20,
 	})
 
 	demonSoulFelhunter := warlock.RegisterAura(core.Aura{

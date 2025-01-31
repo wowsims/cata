@@ -10,9 +10,9 @@ import (
 func (warrior *Warrior) applyPrimeGlyphs() {
 	if warrior.HasPrimeGlyph(proto.WarriorPrimeGlyph_GlyphOfRevenge) {
 		warrior.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskRevenge,
-			Kind:       core.SpellMod_DamageDone_Flat,
-			FloatValue: 0.1,
+			ClassMask: SpellMaskRevenge,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  10,
 		})
 	}
 
@@ -26,9 +26,9 @@ func (warrior *Warrior) applyPrimeGlyphs() {
 
 	if warrior.HasPrimeGlyph(proto.WarriorPrimeGlyph_GlyphOfOverpower) {
 		warrior.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskOverpower,
-			Kind:       core.SpellMod_DamageDone_Flat,
-			FloatValue: 0.1,
+			ClassMask: SpellMaskOverpower,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  10,
 		})
 	}
 }

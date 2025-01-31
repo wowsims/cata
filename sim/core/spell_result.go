@@ -470,13 +470,13 @@ func (spell *Spell) WaitTravelTime(sim *Simulation, callback func(*Simulation)) 
 
 // Returns the combined attacker modifiers.
 func (spell *Spell) AttackerDamageMultiplier(attackTable *AttackTable, isDot bool) float64 {
-	damageMultiplierAdditive := TernaryFloat64(isDot && !spell.Flags.Matches(SpellFlagIgnoreAttackerModifiers),
-		spell.DamageMultiplierAdditive+spell.Unit.PseudoStats.DotDamageMultiplierAdditive-1,
-		spell.DamageMultiplierAdditive)
+	cumulativeMultipliers := TernaryFloat64(
+		isDot && !spell.Flags.Matches(SpellFlagIgnoreAttackerModifiers),
+		spell.damageMultiplier*(1+(float64(spell.damageMultiplierAdditive+spell.Unit.PseudoStats.DotDamageMultiplierAdditive)/100)),
+		spell.impactDamageMultiplier,
+	)
 
-	return spell.attackerDamageMultiplierInternal(attackTable) *
-		spell.DamageMultiplier *
-		damageMultiplierAdditive
+	return spell.attackerDamageMultiplierInternal(attackTable) * cumulativeMultipliers
 }
 func (spell *Spell) attackerDamageMultiplierInternal(attackTable *AttackTable) float64 {
 	if spell.Flags.Matches(SpellFlagIgnoreAttackerModifiers) {
@@ -540,7 +540,7 @@ func (spell *Spell) CasterHealingMultiplier() float64 {
 		return 1
 	}
 
-	return spell.DamageMultiplier * spell.DamageMultiplierAdditive * spell.Unit.PseudoStats.HealingDealtMultiplier
+	return spell.impactDamageMultiplier * spell.Unit.PseudoStats.HealingDealtMultiplier
 }
 func (spell *Spell) applyTargetHealingModifiers(damage float64, attackTable *AttackTable) float64 {
 	if spell.Flags.Matches(SpellFlagIgnoreTargetModifiers) {

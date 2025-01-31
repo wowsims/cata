@@ -325,10 +325,10 @@ func DarkIntentAura(unit *Unit, isWarlock bool) *Aura {
 	dotDmgEffect = procAura.NewExclusiveEffect("DarkIntent", false, ExclusiveEffect{
 		Priority: 0,
 		OnGain: func(ee *ExclusiveEffect, s *Simulation) {
-			ee.Aura.Unit.PseudoStats.DotDamageMultiplierAdditive += ee.Priority
+			ee.Aura.Unit.PseudoStats.DotDamageMultiplierAdditive += int64(ee.Priority * 100)
 		},
 		OnExpire: func(ee *ExclusiveEffect, s *Simulation) {
-			ee.Aura.Unit.PseudoStats.DotDamageMultiplierAdditive -= ee.Priority
+			ee.Aura.Unit.PseudoStats.DotDamageMultiplierAdditive -= int64(ee.Priority * 100)
 		},
 	})
 

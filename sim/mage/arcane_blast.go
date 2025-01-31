@@ -8,11 +8,11 @@ import (
 )
 
 func (mage *Mage) registerArcaneBlastSpell() {
-	abDamageScalar := core.TernaryFloat64(mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfArcaneBlast), 0.13, 0.1)
+	abDamageScalar := core.TernaryInt64(mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfArcaneBlast), 13, 10)
 	abDamageMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellArcaneBlast | MageSpellArcaneExplosion,
-		FloatValue: abDamageScalar,
-		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask: MageSpellArcaneBlast | MageSpellArcaneExplosion,
+		IntValue:  abDamageScalar,
+		Kind:      core.SpellMod_DamageDone_Flat,
 	})
 	abCostMod := mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  MageSpellArcaneBlast,
@@ -41,7 +41,7 @@ func (mage *Mage) registerArcaneBlastSpell() {
 			abCastMod.Deactivate()
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			abDamageMod.UpdateFloatValue(abDamageScalar * float64(newStacks))
+			abDamageMod.UpdateIntValue(abDamageScalar * int64(newStacks))
 			abCostMod.UpdateFloatValue(1.5 * float64(newStacks))
 			abCastMod.UpdateTimeValue(time.Millisecond * time.Duration(-100*newStacks))
 		},

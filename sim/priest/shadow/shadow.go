@@ -94,14 +94,14 @@ func (spriest *ShadowPriest) ApplyTalents() {
 
 	// Shadow Power
 	spriest.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_CritMultiplier_Flat,
-		FloatValue: 1.0,
-		School:     core.SpellSchoolShadow,
-		ClassMask:  int64(priest.PriestShadowSpells),
+		Kind:      core.SpellMod_CritMultiplier_Flat,
+		IntValue:  100,
+		School:    core.SpellSchoolShadow,
+		ClassMask: priest.PriestShadowSpells,
 	})
 
 	shadowOrbMod := spriest.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  int64(priest.PriestSpellMindBlast) | int64(priest.PriestSpellMindSpike),
+		ClassMask:  priest.PriestSpellMindBlast | priest.PriestSpellMindSpike,
 		FloatValue: getMasteryBonus(spriest.GetMasteryPoints()),
 		Kind:       core.SpellMod_DamageDone_Pct,
 	})
@@ -137,9 +137,9 @@ func (spriest *ShadowPriest) ApplyTalents() {
 	})
 
 	empoweredShadowMod := spriest.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  priest.PriestSpellDoT | priest.PriestSpellMindSear,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: getMasteryBonus(spriest.GetMasteryPoints()),
+		ClassMask: priest.PriestSpellDoT | priest.PriestSpellMindSear,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  int64(getMasteryBonus(spriest.GetMasteryPoints()) * 100),
 	})
 
 	spriest.EmpoweredShadowAura = spriest.RegisterAura(core.Aura{
@@ -147,7 +147,7 @@ func (spriest *ShadowPriest) ApplyTalents() {
 		ActionID: core.ActionID{SpellID: 95799},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			empoweredShadowMod.UpdateFloatValue(getMasteryBonus(aura.Unit.GetMasteryPoints()))
+			empoweredShadowMod.UpdateIntValue(int64(getMasteryBonus(aura.Unit.GetMasteryPoints()) * 100))
 			empoweredShadowMod.Activate()
 		},
 

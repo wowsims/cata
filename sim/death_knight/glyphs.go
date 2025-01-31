@@ -16,25 +16,25 @@ func (dk *DeathKnight) ApplyGlyphs() {
 
 	if dk.HasPrimeGlyph(proto.DeathKnightPrimeGlyph_GlyphOfDeathCoil) {
 		dk.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  DeathKnightSpellDeathCoil | DeathKnightSpellDeathCoilHeal,
-			FloatValue: 0.15,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: DeathKnightSpellDeathCoil | DeathKnightSpellDeathCoilHeal,
+			IntValue:  15,
 		})
 	}
 
 	if dk.HasPrimeGlyph(proto.DeathKnightPrimeGlyph_GlyphOfScourgeStrike) {
 		dk.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  DeathKnightSpellScourgeStrikeShadow,
-			FloatValue: 0.3,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: DeathKnightSpellScourgeStrikeShadow,
+			IntValue:  30,
 		})
 	}
 
 	if dk.HasPrimeGlyph(proto.DeathKnightPrimeGlyph_GlyphOfHeartStrike) {
 		dk.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  DeathKnightSpellHeartStrike,
-			FloatValue: 0.3,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: DeathKnightSpellHeartStrike,
+			IntValue:  30,
 		})
 	}
 
@@ -68,17 +68,17 @@ func (dk *DeathKnight) ApplyGlyphs() {
 
 	if dk.HasPrimeGlyph(proto.DeathKnightPrimeGlyph_GlyphOfIcyTouch) {
 		dk.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  DeathKnightSpellFrostFever,
-			FloatValue: 0.2,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: DeathKnightSpellFrostFever,
+			IntValue:  20,
 		})
 	}
 
 	if dk.HasPrimeGlyph(proto.DeathKnightPrimeGlyph_GlyphOfObliterate) {
 		dk.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  DeathKnightSpellObliterate,
-			FloatValue: 0.2,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: DeathKnightSpellObliterate,
+			IntValue:  20,
 		})
 	}
 

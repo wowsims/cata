@@ -16,10 +16,9 @@ func (warlock *Warlock) registerSeed() {
 		Flags:          core.SpellFlagHauntSE | core.SpellFlagNoLogs | core.SpellFlagPassiveSpell,
 		ClassSpellMask: WarlockSpellSeedOfCorruptionExposion,
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
-		ThreatMultiplier:         1,
-		BonusCoefficient:         0.22920000553,
+		CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
+		BonusCoefficient: 0.22920000553,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDmg := warlock.CalcAndRollDamageRange(sim, 0.76560002565, 0.15000000596) * sim.Encounter.AOECapMultiplier()
@@ -55,9 +54,9 @@ func (warlock *Warlock) registerSeed() {
 			},
 		},
 
-		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
-		DamageMultiplierAdditive: 1,
-		ThreatMultiplier:         1,
+		CritMultiplier: warlock.DefaultSpellCritMultiplier(),
+
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

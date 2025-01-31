@@ -9,32 +9,28 @@ import (
 
 func (subRogue *SubtletyRogue) registerShadowstepCD() {
 	actionID := core.ActionID{SpellID: 36554}
-	var affectedSpells []*core.Spell
+
+	affectedClassSpellMasks := rogue.RogueSpellAmbush | rogue.RogueSpellGarrote
+	damageMultiMod := subRogue.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  rogue.RogueSpellAmbush | rogue.RogueSpellGarrote,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: 1.2,
+	})
 
 	subRogue.ShadowstepAura = subRogue.RegisterAura(core.Aura{
 		Label:    "Shadowstep",
 		ActionID: actionID,
 		Duration: time.Second * 10,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = append(affectedSpells, subRogue.Ambush)
-			affectedSpells = append(affectedSpells, subRogue.Garrote)
-		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			// Damage of your next ability is increased by 20% and the threat caused is reduced by 50%.
-			for _, spell := range affectedSpells {
-				spell.DamageMultiplier *= 1.2
-			}
+			damageMultiMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.DamageMultiplier *= 1 / 1.2
-			}
+			damageMultiMod.Deactivate()
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			for _, affectedSpell := range affectedSpells {
-				if spell == affectedSpell {
-					aura.Deactivate(sim)
-				}
+			if spell.Matches(affectedClassSpellMasks) {
+				aura.Deactivate(sim)
 			}
 		},
 	})

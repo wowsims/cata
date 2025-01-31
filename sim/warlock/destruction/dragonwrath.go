@@ -31,8 +31,8 @@ func customImmolateHandler(sim *core.Simulation, spell *core.Spell, result *core
 
 func immolationFactory(damage float64, multiplier float64) func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 	return func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		spell.DamageMultiplier *= multiplier
+		spell.ApplyDamageMultiplierMultiplicative(multiplier)
 		spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
-		spell.DamageMultiplier /= multiplier
+		spell.ApplyDamageMultiplierMultiplicative(1 / multiplier)
 	}
 }

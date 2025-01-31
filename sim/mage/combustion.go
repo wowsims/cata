@@ -26,10 +26,10 @@ func (mage *Mage) registerCombustionSpell() {
 				Duration: time.Minute * 2,
 			},
 		},
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
-		BonusCoefficient:         1.113,
-		ThreatMultiplier:         1,
+
+		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		BonusCoefficient: 1.113,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 0.429 * mage.ClassSpellScaling
@@ -57,7 +57,7 @@ func (mage *Mage) registerCombustionSpell() {
 			if dot.IsActive() {
 				if spell.ClassSpellMask&(MageSpellLivingBombDot|MageSpellPyroblastDot) != 0 {
 					dps := dotBase[spell.ClassSpellMask] + dot.BonusCoefficient*dot.Spell.SpellPower()
-					dps *= spell.DamageMultiplier * spell.DamageMultiplierAdditive
+					dps *= spell.GetImpactDamageMultiplier()
 					tickDamage += dps / dot.BaseTickLength.Seconds()
 				} else {
 					tickDamage += dot.SnapshotBaseDamage / 2
@@ -104,7 +104,7 @@ func (mage *Mage) registerCombustionSpell() {
 			result := spell.CalcPeriodicDamage(sim, target, tickBase, spell.OutcomeExpectedMagicAlwaysHit)
 
 			critChance := spell.SpellCritChance(target)
-			critMod := (critChance * (spell.CritMultiplier - 1))
+			critMod := (critChance * (spell.GetCritMultiplier() - 1))
 			result.Damage *= 1 + critMod
 
 			return result

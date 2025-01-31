@@ -72,9 +72,9 @@ func (war *ProtectionWarrior) applyImprovedRevenge() {
 	}
 
 	war.AddStaticMod(core.SpellModConfig{
-		ClassMask:  warrior.SpellMaskRevenge,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.3 * float64(war.Talents.ImprovedRevenge),
+		ClassMask: warrior.SpellMaskRevenge,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  int64(30 * war.Talents.ImprovedRevenge),
 	})
 
 	// extra hit is implemented inside of revenge
@@ -150,19 +150,19 @@ func (war *ProtectionWarrior) applyThunderstruck() {
 	}
 
 	war.AddStaticMod(core.SpellModConfig{
-		ClassMask:  warrior.SpellMaskRend | warrior.SpellMaskCleave | warrior.SpellMaskThunderClap,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.03 * float64(war.Talents.Thunderstruck),
+		ClassMask: warrior.SpellMaskRend | warrior.SpellMaskCleave | warrior.SpellMaskThunderClap,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  int64(3 * war.Talents.Thunderstruck),
 	})
 
 	shockwaveBuff := war.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  warrior.SpellMaskShockwave,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.0,
+		ClassMask: warrior.SpellMaskShockwave,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  0,
 	})
 
 	actionID := core.ActionID{SpellID: 87096}
-	shockwaveBonus := 0.05 * float64(war.Talents.Thunderstruck)
+	shockwaveBonus := int64(5 * war.Talents.Thunderstruck)
 	shockwaveAura := war.RegisterAura(core.Aura{
 		Label:     "Thunderstruck",
 		ActionID:  actionID,
@@ -170,8 +170,8 @@ func (war *ProtectionWarrior) applyThunderstruck() {
 		MaxStacks: 3,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			if newStacks != 0 {
-				bonus := shockwaveBonus * float64(newStacks)
-				shockwaveBuff.UpdateFloatValue(bonus)
+				bonus := shockwaveBonus * int64(newStacks)
+				shockwaveBuff.UpdateIntValue(bonus)
 				shockwaveBuff.Activate()
 			} else {
 				shockwaveBuff.Deactivate()
@@ -197,9 +197,9 @@ func (war *ProtectionWarrior) applyHeavyRepercussions() {
 	}
 
 	damageMod := war.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  warrior.SpellMaskShieldSlam,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.5 * float64(war.Talents.HeavyRepercussions),
+		ClassMask: warrior.SpellMaskShieldSlam,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  int64(50 * war.Talents.HeavyRepercussions),
 	})
 
 	buff := war.RegisterAura(core.Aura{

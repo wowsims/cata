@@ -47,14 +47,14 @@ func (elemental *ElementalShaman) registerThunderstormSpell() {
 				results := make([]*core.SpellResult, elemental.Env.GetNumTargets())
 				baseDamage := elemental.GetShaman().CalcAndRollDamageRange(sim, 1.62999999523, 0.13300000131)
 				aoeMult := sim.Encounter.AOECapMultiplier()
-				spell.DamageMultiplier *= aoeMult
+				spell.ApplyDamageMultiplierMultiplicative(aoeMult)
 				for i, aoeTarget := range sim.Encounter.TargetUnits {
 					results[i] = spell.CalcDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 				}
 				for i, _ := range sim.Encounter.TargetUnits {
 					spell.DealDamage(sim, results[i])
 				}
-				spell.DamageMultiplier /= aoeMult
+				spell.ApplyDamageMultiplierMultiplicative(1 / aoeMult)
 			}
 		},
 	})

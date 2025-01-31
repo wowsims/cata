@@ -11,7 +11,7 @@ func (mage *Mage) OutcomeArcaneMissiles(sim *core.Simulation, result *core.Spell
 	if spell.MagicHitCheck(sim, attackTable) {
 		if sim.RandomFloat("Magical Crit Roll") < mage.arcaneMissileCritSnapshot {
 			result.Outcome = core.OutcomeCrit
-			result.Damage *= spell.CritMultiplier
+			result.Damage *= spell.GetCritMultiplier()
 			spell.SpellMetrics[result.Target.UnitIndex].Crits++
 		} else {
 			result.Outcome = core.OutcomeHit

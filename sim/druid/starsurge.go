@@ -18,9 +18,9 @@ func (druid *Druid) registerStarsurgeSpell() {
 		Flags:          core.SpellFlagAPL | SpellFlagOmenTrigger,
 		MissileSpeed:   20,
 
-		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           druid.DefaultSpellCritMultiplier(),
+		DamageMultiplier: 1,
+
+		CritMultiplier: druid.DefaultSpellCritMultiplier(),
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.11,
 			Multiplier: 1,

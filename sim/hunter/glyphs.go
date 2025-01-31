@@ -11,9 +11,9 @@ func (hunter *Hunter) ApplyGlyphs() {
 	// Prime Glyphs
 	if hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfArcaneShot) {
 		hunter.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  HunterSpellArcaneShot,
-			FloatValue: 0.12,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: HunterSpellArcaneShot,
+			IntValue:  12,
 		})
 	}
 	if hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfExplosiveShot) {

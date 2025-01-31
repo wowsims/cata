@@ -10,14 +10,14 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 	noxiousStingsMultiplier := 1 + 0.05*float64(hunter.Talents.NoxiousStings)
 
 	hunter.ImprovedSerpentSting = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:                 core.ActionID{SpellID: 82834},
-		SpellSchool:              core.SpellSchoolNature,
-		ProcMask:                 core.ProcMaskDirect,
-		ClassSpellMask:           HunterSpellSerpentSting,
-		Flags:                    core.SpellFlagPassiveSpell,
-		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           hunter.MeleeCritMultiplier(1, 0),
+		ActionID:         core.ActionID{SpellID: 82834},
+		SpellSchool:      core.SpellSchoolNature,
+		ProcMask:         core.ProcMaskDirect,
+		ClassSpellMask:   HunterSpellSerpentSting,
+		Flags:            core.SpellFlagPassiveSpell,
+		DamageMultiplier: 1,
+
+		CritMultiplier: hunter.MeleeCritMultiplier(1, 0),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := (460 * 5) + 0.40*spell.RangedAttackPower(target)
 			dmg := baseDamage * (float64(hunter.Talents.ImprovedSerpentSting) * 0.15)
@@ -43,8 +43,6 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 			},
 			IgnoreHaste: true,
 		},
-
-		DamageMultiplierAdditive: 1,
 
 		// SS uses Spell Crit which is multiplied by toxicology
 		CritMultiplier:   hunter.SpellCritMultiplier(1, 0),

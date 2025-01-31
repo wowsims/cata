@@ -44,12 +44,10 @@ func (rogue *Rogue) registerEviscerate() {
 
 		BonusCritPercent: core.TernaryFloat64(
 			rogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfEviscerate), 10, 0),
-		DamageMultiplier: 1,
-		DamageMultiplierAdditive: 1 +
-			[]float64{0.0, 0.07, 0.14, 0.2}[rogue.Talents.CoupDeGrace] +
-			[]float64{0.0, 0.07, 0.14, 0.2}[rogue.Talents.Aggression],
-		CritMultiplier:   rogue.MeleeCritMultiplier(false),
-		ThreatMultiplier: 1,
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: []int64{0, 7, 14, 20}[rogue.Talents.CoupDeGrace] + []int64{0, 7, 14, 20}[rogue.Talents.Aggression],
+		CritMultiplier:           rogue.MeleeCritMultiplier(false),
+		ThreatMultiplier:         1,
 
 		BonusCoefficient: 1,
 

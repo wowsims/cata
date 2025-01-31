@@ -56,15 +56,15 @@ func NewProcStatBonusEffectWithDamageProc(config ProcStatBonusEffect, damage Dam
 		critMultiplier := core.TernaryFloat64(damage.IsMelee, character.DefaultMeleeCritMultiplier(), character.DefaultSpellCritMultiplier())
 
 		procSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:                 core.ActionID{SpellID: damage.SpellID},
-			SpellSchool:              damage.School,
-			ProcMask:                 procMask,
-			Flags:                    core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
-			DamageMultiplier:         1,
-			CritMultiplier:           critMultiplier,
-			DamageMultiplierAdditive: 1,
-			ThreatMultiplier:         1,
-			BonusCoefficient:         damage.BonusCoefficient,
+			ActionID:         core.ActionID{SpellID: damage.SpellID},
+			SpellSchool:      damage.School,
+			ProcMask:         procMask,
+			Flags:            core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+			DamageMultiplier: 1,
+			CritMultiplier:   critMultiplier,
+
+			ThreatMultiplier: 1,
+			BonusCoefficient: damage.BonusCoefficient,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				spell.CalcAndDealDamage(sim, target, sim.Roll(damage.MinDmg, damage.MaxDmg), GetOutcome(spell, damage.Outcome))
 			},

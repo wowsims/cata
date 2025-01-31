@@ -398,7 +398,7 @@ type PseudoStats struct {
 
 	DamageDealtMultiplier       float64            // All damage
 	SchoolDamageDealtMultiplier [SchoolLen]float64 // For specific spell schools (arcane, fire, shadow, etc).
-	DotDamageMultiplierAdditive float64            // All periodic damage
+	DotDamageMultiplierAdditive int64              // All periodic damage
 	HealingDealtMultiplier      float64            // All non-shield healing
 
 	// Important when unit is attacker or target
@@ -464,7 +464,7 @@ func NewPseudoStats() PseudoStats {
 
 		DamageDealtMultiplier:       1,
 		SchoolDamageDealtMultiplier: NewSchoolFloatArray(),
-		DotDamageMultiplierAdditive: 1,
+		DotDamageMultiplierAdditive: 0,
 		HealingDealtMultiplier:      1,
 
 		BlockDamageReduction: 0.3,

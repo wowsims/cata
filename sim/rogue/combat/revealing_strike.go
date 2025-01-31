@@ -14,9 +14,15 @@ func (comRogue *CombatRogue) registerRevealingStrike() {
 	}
 
 	hasGlyph := comRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfRevealingStrike)
-	multiplier := 1 + core.TernaryFloat64(hasGlyph, .45, .35)
+	multiplier := core.TernaryFloat64(hasGlyph, .45, .35)
 	actionID := core.ActionID{SpellID: 84617}
 	isApplied := false
+
+	damageMultiMod := comRogue.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  rogue.RogueSpellEviscerate | rogue.RogueSpellEnvenom | rogue.RogueSpellRupture,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: multiplier,
+	})
 
 	// Enemy Debuff Aura for Finisher Damage
 	rvsAura := comRogue.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
@@ -27,16 +33,12 @@ func (comRogue *CombatRogue) registerRevealingStrike() {
 
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				if !isApplied {
-					comRogue.Eviscerate.DamageMultiplier *= multiplier
-					comRogue.Envenom.DamageMultiplier *= multiplier
-					comRogue.Rupture.DamageMultiplier *= multiplier
+					damageMultiMod.Activate()
 					isApplied = true
 				}
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				comRogue.Eviscerate.DamageMultiplier /= multiplier
-				comRogue.Envenom.DamageMultiplier /= multiplier
-				comRogue.Rupture.DamageMultiplier /= multiplier
+				damageMultiMod.Deactivate()
 				isApplied = false
 				aura.Deactivate(sim)
 			},

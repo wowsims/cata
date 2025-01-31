@@ -11,17 +11,17 @@ func (priest *Priest) ApplyGlyphs() {
 
 	if priest.HasPrimeGlyph(proto.PriestPrimeGlyph_GlyphOfShadowWordPain) {
 		priest.AddStaticMod(core.SpellModConfig{
-			FloatValue: 0.1,
-			ClassMask:  int64(PriestSpellShadowWordPain),
-			Kind:       core.SpellMod_DamageDone_Flat,
+			ClassMask: int64(PriestSpellShadowWordPain),
+			IntValue:  10,
+			Kind:      core.SpellMod_DamageDone_Flat,
 		})
 	}
 
 	if priest.HasPrimeGlyph(proto.PriestPrimeGlyph_GlyphOfMindFlay) {
 		priest.AddStaticMod(core.SpellModConfig{
-			ClassMask:  int64(PriestSpellMindFlay),
-			FloatValue: 0.1,
-			Kind:       core.SpellMod_DamageDone_Flat,
+			ClassMask: int64(PriestSpellMindFlay),
+			IntValue:  10,
+			Kind:      core.SpellMod_DamageDone_Flat,
 		})
 	}
 

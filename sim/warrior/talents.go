@@ -48,8 +48,8 @@ func (warrior *Warrior) applyWarAcademy() {
 			SpellMaskDevastate |
 			SpellMaskVictoryRush |
 			SpellMaskSlam,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: (0.05 * float64(warrior.Talents.WarAcademy)),
+		Kind:     core.SpellMod_DamageDone_Flat,
+		IntValue: int64(5 * warrior.Talents.WarAcademy),
 	})
 }
 

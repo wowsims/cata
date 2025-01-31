@@ -31,10 +31,10 @@ func (mage *Mage) registerBlastWaveSpell() {
 				Duration: time.Second * 15,
 			},
 		},
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
-		BonusCoefficient:         0.193,
-		ThreatMultiplier:         1,
+
+		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		BonusCoefficient: 0.193,
+		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			var targetCount int32
 			for _, aoeTarget := range sim.Encounter.TargetUnits {

@@ -31,10 +31,9 @@ func (destro *DestructionWarlock) registerChaosBolt() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           destro.DefaultSpellCritMultiplier(),
-		ThreatMultiplier:         1,
-		BonusCoefficient:         0.62800002098,
+		CritMultiplier:   destro.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
+		BonusCoefficient: 0.62800002098,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := destro.CalcAndRollDamageRange(sim, 1.54700005054, 0.23800000548)

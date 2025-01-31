@@ -74,8 +74,8 @@ func (eleShaman *ElementalShaman) Initialize() {
 	eleShaman.AddStaticMod(core.SpellModConfig{
 		ClassMask: shaman.SpellMaskFire | shaman.SpellMaskNature |
 			shaman.SpellMaskFrost | shaman.SpellMaskMagmaTotem | shaman.SpellMaskSearingTotem | shaman.SpellMaskEarthquake,
-		Kind:       core.SpellMod_CritMultiplier_Flat,
-		FloatValue: 1.0,
+		Kind:     core.SpellMod_CritMultiplier_Flat,
+		IntValue: 100,
 	})
 
 	eleShaman.AddStaticMod(core.SpellModConfig{

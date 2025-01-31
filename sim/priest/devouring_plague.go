@@ -19,10 +19,10 @@ func (priest *Priest) registerDevouringPlagueSpell() {
 			BaseCost:   0.25,
 			Multiplier: 1,
 		},
-		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
-		ThreatMultiplier:         1,
-		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
+		DamageMultiplier: 1,
+
+		ThreatMultiplier: 1,
+		CritMultiplier:   priest.DefaultSpellCritMultiplier(),
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,

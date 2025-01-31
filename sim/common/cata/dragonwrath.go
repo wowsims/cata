@@ -168,19 +168,18 @@ func GetDRTSpellConfig(spell *core.Spell) core.SpellConfig {
 		spell.ActionID.Tag = 0
 	}
 	baseConfig := core.SpellConfig{
-		ActionID:                 spell.WithTag(spell.Tag + 71086),
-		SpellSchool:              spell.SpellSchool,
-		ProcMask:                 core.ProcMaskSpellProc,
-		ApplyEffects:             spell.ApplyEffects,
-		ManaCost:                 core.ManaCostOptions{},
-		CritMultiplier:           spell.Unit.Env.Raid.GetPlayerFromUnit(spell.Unit).GetCharacter().DefaultSpellCritMultiplier(),
-		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
-		MissileSpeed:             spell.MissileSpeed,
-		ClassSpellMask:           spell.ClassSpellMask,
-		BonusCoefficient:         spell.BonusCoefficient,
-		Flags:                    spell.Flags &^ core.SpellFlagAPL,
-		RelatedDotSpell:          spell.RelatedDotSpell,
+		ActionID:         spell.WithTag(spell.Tag + 71086),
+		SpellSchool:      spell.SpellSchool,
+		ProcMask:         core.ProcMaskSpellProc,
+		ApplyEffects:     spell.ApplyEffects,
+		ManaCost:         core.ManaCostOptions{},
+		CritMultiplier:   spell.Unit.Env.Raid.GetPlayerFromUnit(spell.Unit).GetCharacter().DefaultSpellCritMultiplier(),
+		DamageMultiplier: 1,
+		MissileSpeed:     spell.MissileSpeed,
+		ClassSpellMask:   spell.ClassSpellMask,
+		BonusCoefficient: spell.BonusCoefficient,
+		Flags:            spell.Flags &^ core.SpellFlagAPL,
+		RelatedDotSpell:  spell.RelatedDotSpell,
 	}
 
 	// instant spells will not refresh dots if they're duplicated
@@ -360,14 +359,13 @@ func registerSpells(unit *core.Unit) {
 
 func registerDotSpell(unit *core.Unit) {
 	unit.RegisterSpell(core.SpellConfig{
-		ActionID:                 core.ActionID{SpellID: 101085},
-		SpellSchool:              core.SpellSchoolArcane,
-		CritMultiplier:           0,
-		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
-		Flags:                    core.SpellFlagNoSpellMods | core.SpellFlagIgnoreModifiers,
-		ProcMask:                 core.ProcMaskEmpty,
-		ManaCost:                 core.ManaCostOptions{},
+		ActionID:         core.ActionID{SpellID: 101085},
+		SpellSchool:      core.SpellSchoolArcane,
+		CritMultiplier:   0,
+		DamageMultiplier: 1,
+		Flags:            core.SpellFlagNoSpellMods | core.SpellFlagIgnoreModifiers,
+		ProcMask:         core.ProcMaskEmpty,
+		ManaCost:         core.ManaCostOptions{},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.CalcAndDealDamage(sim, target, spell.BonusSpellPower, spell.OutcomeAlwaysHit)
 		},

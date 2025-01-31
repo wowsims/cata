@@ -80,7 +80,7 @@ func (druid *Druid) registerThrashBearSpell() {
 
 			attackTable := spell.Unit.AttackTables[target.UnitIndex]
 			critChance := spell.PhysicalCritChance(attackTable)
-			critMod := (critChance * (spell.CritMultiplier - 1))
+			critMod := (critChance * (spell.GetCritMultiplier() - 1))
 			initial.Damage *= 1 + critMod
 			return initial
 		},
@@ -90,7 +90,7 @@ func (druid *Druid) registerThrashBearSpell() {
 
 			attackTable := spell.Unit.AttackTables[target.UnitIndex]
 			critChance := spell.PhysicalCritChance(attackTable)
-			critMod := (critChance * (spell.CritMultiplier - 1))
+			critMod := (critChance * (spell.GetCritMultiplier() - 1))
 			ticks.Damage *= 1 + critMod
 
 			return ticks

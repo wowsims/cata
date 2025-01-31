@@ -268,9 +268,9 @@ var ItemSetRagingElementsBattlegear = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(_ core.Agent, setBonusAura *core.Aura) {
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Flat,
-				FloatValue: .10,
-				ClassMask:  SpellMaskLavaLash | SpellMaskStormstrike,
+				Kind:      core.SpellMod_DamageDone_Flat,
+				IntValue:  10,
+				ClassMask: SpellMaskLavaLash | SpellMaskStormstrike,
 			})
 		},
 		4: func(_ core.Agent, setBonusAura *core.Aura) {

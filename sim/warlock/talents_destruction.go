@@ -17,16 +17,16 @@ func (warlock *Warlock) ApplyDestructionTalents() {
 
 	// Shadow And Flame
 	warlock.AddStaticMod(core.SpellModConfig{
-		ClassMask:  WarlockSpellShadowBolt | WarlockSpellIncinerate,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: []float64{0.0, 0.04, 0.08, 0.12}[warlock.Talents.ShadowAndFlame],
+		ClassMask: WarlockSpellShadowBolt | WarlockSpellIncinerate,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  []int64{0, 4, 8, 12}[warlock.Talents.ShadowAndFlame],
 	})
 
 	// Improved Immolate
 	warlock.AddStaticMod(core.SpellModConfig{
-		ClassMask:  WarlockSpellImmolate | WarlockSpellImmolateDot | WarlockSpellConflagrate,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: []float64{0.0, 0.1, 0.2}[warlock.Talents.ImprovedImmolate],
+		ClassMask: WarlockSpellImmolate | WarlockSpellImmolateDot | WarlockSpellConflagrate,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  []int64{0, 10, 20}[warlock.Talents.ImprovedImmolate],
 	})
 
 	// Emberstorm

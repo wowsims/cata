@@ -99,9 +99,9 @@ func (priest *Priest) ApplyTalents() {
 	// Improved Shadow Word: Pain
 	if priest.Talents.ImprovedShadowWordPain > 0 {
 		priest.AddStaticMod(core.SpellModConfig{
-			ClassMask:  PriestSpellShadowWordPain,
-			FloatValue: 0.03 * float64(priest.Talents.ImprovedShadowWordPain),
-			Kind:       core.SpellMod_DamageDone_Flat,
+			ClassMask: PriestSpellShadowWordPain,
+			IntValue:  int64(3 * priest.Talents.ImprovedShadowWordPain),
+			Kind:      core.SpellMod_DamageDone_Flat,
 		})
 	}
 
@@ -192,9 +192,9 @@ func (priest *Priest) applyEvangelism() {
 	}
 
 	darkEvangelismMod := priest.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.0,
-		ClassMask:  PriestSpellDoT,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  0,
+		ClassMask: PriestSpellDoT,
 	})
 
 	priest.DarkEvangelismProcAura = priest.GetOrRegisterAura(core.Aura{
@@ -203,7 +203,7 @@ func (priest *Priest) applyEvangelism() {
 		Duration:  time.Second * 20,
 		MaxStacks: 5,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			darkEvangelismMod.UpdateFloatValue(0.02 * float64(newStacks))
+			darkEvangelismMod.UpdateIntValue(int64(2 * newStacks))
 			darkEvangelismMod.Activate()
 		},
 
@@ -213,9 +213,9 @@ func (priest *Priest) applyEvangelism() {
 	})
 
 	evangelismDmgMod := priest.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.0,
-		ClassMask:  PriestSpellSmite | PriestSpellHolyFire | PriestSpellPenance,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  0,
+		ClassMask: PriestSpellSmite | PriestSpellHolyFire | PriestSpellPenance,
 	})
 
 	evangelismManaMod := priest.AddDynamicMod(core.SpellModConfig{
@@ -230,7 +230,7 @@ func (priest *Priest) applyEvangelism() {
 		Duration:  time.Second * 20,
 		MaxStacks: 5,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			evangelismDmgMod.UpdateFloatValue(0.04 * float64(newStacks))
+			evangelismDmgMod.UpdateIntValue(int64(4 * newStacks))
 			evangelismDmgMod.Activate()
 
 			evangelismManaMod.UpdateFloatValue(-0.06 * float64(newStacks))
@@ -287,9 +287,9 @@ func (priest *Priest) applyArchangel() {
 	})
 
 	darkArchAngelMod := priest.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  PriestSpellMindFlay | PriestSpellMindSpike | PriestSpellMindBlast | PriestSpellShadowWordDeath,
-		FloatValue: 0.04,
-		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask: PriestSpellMindFlay | PriestSpellMindSpike | PriestSpellMindBlast | PriestSpellShadowWordDeath,
+		IntValue:  4,
+		Kind:      core.SpellMod_DamageDone_Flat,
 	})
 
 	darkArchAngelAura := priest.Unit.RegisterAura(core.Aura{
@@ -302,7 +302,7 @@ func (priest *Priest) applyArchangel() {
 				priest.AddMana(sim, 0.05*priest.MaxMana()*float64((newStacks-oldStacks)), darkArchAngelMana)
 			}
 
-			darkArchAngelMod.UpdateFloatValue(0.04 * float64(newStacks))
+			darkArchAngelMod.UpdateIntValue(int64(4 * newStacks))
 			darkArchAngelMod.Activate()
 		},
 
@@ -312,14 +312,14 @@ func (priest *Priest) applyArchangel() {
 	})
 
 	priest.RegisterSpell(core.SpellConfig{
-		ActionID:                 core.ActionID{SpellID: 87151},
-		SpellSchool:              core.SpellSchoolHoly,
-		ProcMask:                 core.ProcMaskEmpty,
-		Flags:                    core.SpellFlagAPL,
-		ClassSpellMask:           PriestSpellArchangel,
-		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
+		ActionID:         core.ActionID{SpellID: 87151},
+		SpellSchool:      core.SpellSchoolHoly,
+		ProcMask:         core.ProcMaskEmpty,
+		Flags:            core.SpellFlagAPL,
+		ClassSpellMask:   PriestSpellArchangel,
+		DamageMultiplier: 1,
+
+		CritMultiplier: priest.DefaultSpellCritMultiplier(),
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0,
 		},
@@ -341,14 +341,14 @@ func (priest *Priest) applyArchangel() {
 		},
 	})
 	priest.RegisterSpell(core.SpellConfig{
-		ActionID:                 core.ActionID{SpellID: 87153},
-		SpellSchool:              core.SpellSchoolHoly,
-		ProcMask:                 core.ProcMaskEmpty,
-		Flags:                    core.SpellFlagAPL,
-		ClassSpellMask:           PriestSpellDarkArchangel,
-		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
+		ActionID:         core.ActionID{SpellID: 87153},
+		SpellSchool:      core.SpellSchoolHoly,
+		ProcMask:         core.ProcMaskEmpty,
+		Flags:            core.SpellFlagAPL,
+		ClassSpellMask:   PriestSpellDarkArchangel,
+		DamageMultiplier: 1,
+
+		CritMultiplier: priest.DefaultSpellCritMultiplier(),
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0,
 		},
@@ -387,14 +387,14 @@ func (priest *Priest) applyImprovedMindBlast() {
 	})
 
 	mindTraumaSpell := priest.RegisterSpell(core.SpellConfig{
-		ActionID:                 core.ActionID{SpellID: 48301},
-		ProcMask:                 core.ProcMaskSpellProc,
-		SpellSchool:              core.SpellSchoolShadow,
-		ClassSpellMask:           PriestSpellMindTrauma,
-		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
-		Flags:                    core.SpellFlagNoMetrics,
+		ActionID:         core.ActionID{SpellID: 48301},
+		ProcMask:         core.ProcMaskSpellProc,
+		SpellSchool:      core.SpellSchoolShadow,
+		ClassSpellMask:   PriestSpellMindTrauma,
+		DamageMultiplier: 1,
+
+		CritMultiplier: priest.DefaultSpellCritMultiplier(),
+		Flags:          core.SpellFlagNoMetrics,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			mindTraumaAura.Get(target).Activate(sim)
 		},
@@ -436,15 +436,15 @@ func (priest *Priest) applyImprovedDevouringPlague() {
 	impDPDamage := priest.RegisterSpell(core.SpellConfig{
 
 		// TODO: improve metric aggregation to show correct DPC
-		ActionID:                 core.ActionID{SpellID: 2944, Tag: 1},
-		SpellSchool:              core.SpellSchoolShadow,
-		ProcMask:                 core.ProcMaskProc,
-		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
-		ThreatMultiplier:         1,
-		ClassSpellMask:           PriestSpellImprovedDevouringPlague,
-		Flags:                    core.SpellFlagPassiveSpell,
-		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
+		ActionID:         core.ActionID{SpellID: 2944, Tag: 1},
+		SpellSchool:      core.SpellSchoolShadow,
+		ProcMask:         core.ProcMaskProc,
+		DamageMultiplier: 1,
+
+		ThreatMultiplier: 1,
+		ClassSpellMask:   PriestSpellImprovedDevouringPlague,
+		Flags:            core.SpellFlagPassiveSpell,
+		CritMultiplier:   priest.DefaultSpellCritMultiplier(),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			dot := priest.DevouringPlague.Dot(target)
 			dpTickDamage := dot.SnapshotBaseDamage
@@ -630,15 +630,15 @@ func (priest *Priest) applyShadowyApparition() {
 	const levelScaling = 0.514
 
 	spell := priest.RegisterSpell(core.SpellConfig{
-		ActionID:                 core.ActionID{SpellID: 87532},
-		MissileSpeed:             3.5,
-		ProcMask:                 core.ProcMaskEmpty, // summoned guardian, should not be able to proc stuff - verify
-		ClassSpellMask:           PriestSpellShadowyApparation,
-		Flags:                    core.SpellFlagPassiveSpell,
-		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
-		SpellSchool:              core.SpellSchoolShadow,
+		ActionID:         core.ActionID{SpellID: 87532},
+		MissileSpeed:     3.5,
+		ProcMask:         core.ProcMaskEmpty, // summoned guardian, should not be able to proc stuff - verify
+		ClassSpellMask:   PriestSpellShadowyApparation,
+		Flags:            core.SpellFlagPassiveSpell,
+		DamageMultiplier: 1,
+
+		CritMultiplier: priest.DefaultSpellCritMultiplier(),
+		SpellSchool:    core.SpellSchoolShadow,
 
 		BonusCoefficient: spellScaling,
 
@@ -646,26 +646,26 @@ func (priest *Priest) applyShadowyApparition() {
 			baseDamage := priest.ClassSpellScaling * levelScaling
 
 			// snapshot values on spawn
-			dmgMulti := spell.DamageMultiplier
-			dmgMultiAdd := spell.DamageMultiplierAdditive
+			dmgMulti := spell.GetDamageMultiplier()
+			dmgMultiAdd := spell.GetDamageMultiplierAdditive()
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 
-				oldMulti := spell.DamageMultiplier
-				oldAdd := spell.DamageMultiplierAdditive
+				oldMulti := spell.GetDamageMultiplier()
+				oldAdd := spell.GetDamageMultiplierAdditive()
 
 				// calculate dmg on hit, as the apparations profit from the debuffs on the target
 				// when they reach them
 				// spell and other modifiers are snapshotted when the apparations spawn
-				spell.DamageMultiplier = dmgMulti
-				spell.DamageMultiplierAdditive = dmgMultiAdd
+				spell.SetDamageMultiplierMultiplicative(dmgMulti)
+				spell.SetDamageMultiplierAdditive(dmgMultiAdd)
 
 				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 				spell.DealDamage(sim, result)
 
 				// restore mods
-				spell.DamageMultiplier = oldMulti
-				spell.DamageMultiplierAdditive = oldAdd
+				spell.SetDamageMultiplierMultiplicative(oldMulti)
+				spell.SetDamageMultiplierAdditive(oldAdd)
 			})
 		},
 	})

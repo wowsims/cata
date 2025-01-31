@@ -30,11 +30,11 @@ func (druid *Druid) registerSavageRoarSpell() {
 		ActionID: actionID,
 		Duration: druid.SavageRoarDurationTable[5], // use maximum possible value here for pre-pull activations
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			druid.MHAutoSpell.DamageMultiplier *= srm
+			druid.MHAutoSpell.ApplyDamageMultiplierMultiplicative(srm)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			if druid.InForm(Cat) {
-				druid.MHAutoSpell.DamageMultiplier /= srm
+				druid.MHAutoSpell.ApplyDamageMultiplierMultiplicative(1 / srm)
 			}
 		},
 	})

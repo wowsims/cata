@@ -22,15 +22,15 @@ func (warlock *Warlock) ApplyDemonologyTalents() {
 		})
 
 		warlock.Felguard.AddStaticMod(core.SpellModConfig{
-			ClassMask:  WarlockSpellFelGuardLegionStrike,
-			Kind:       core.SpellMod_DamageDone_Flat,
-			FloatValue: .05 * float64(warlock.Talents.DarkArts),
+			ClassMask: WarlockSpellFelGuardLegionStrike,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  int64(5 * warlock.Talents.DarkArts),
 		})
 
 		warlock.Felhunter.AddStaticMod(core.SpellModConfig{
-			ClassMask:  WarlockSpellFelHunterShadowBite,
-			Kind:       core.SpellMod_DamageDone_Flat,
-			FloatValue: .05 * float64(warlock.Talents.DarkArts),
+			ClassMask: WarlockSpellFelHunterShadowBite,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  int64(5 * warlock.Talents.DarkArts),
 		})
 	}
 
@@ -139,9 +139,9 @@ func (warlock *Warlock) registerMoltenCore() {
 	}
 
 	damageMod := warlock.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  WarlockSpellIncinerate,
-		FloatValue: 0.06 * float64(warlock.Talents.MoltenCore),
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: WarlockSpellIncinerate,
+		IntValue:  int64(6 * warlock.Talents.MoltenCore),
 	})
 
 	castTimeMod := warlock.AddDynamicMod(core.SpellModConfig{

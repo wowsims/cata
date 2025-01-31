@@ -9,11 +9,11 @@ import (
 )
 
 func CopySpellMultipliers(sourceSpell *core.Spell, targetSpell *core.Spell, target *core.Unit) {
-	targetSpell.DamageMultiplier = sourceSpell.DamageMultiplier
-	targetSpell.DamageMultiplierAdditive = sourceSpell.DamageMultiplierAdditive
+	targetSpell.SetDamageMultiplierMultiplicative(sourceSpell.GetDamageMultiplier())
+	targetSpell.SetDamageMultiplierAdditive(sourceSpell.GetDamageMultiplierAdditive())
 	targetSpell.BonusCritPercent = sourceSpell.BonusCritPercent
 	targetSpell.BonusHitPercent = sourceSpell.BonusHitPercent
-	targetSpell.CritMultiplier = sourceSpell.CritMultiplier
+	targetSpell.SetCritMultiplierMultiplicative(sourceSpell.GetCritMultiplier())
 	targetSpell.ThreatMultiplier = sourceSpell.ThreatMultiplier
 
 	if sourceSpell.Dot(target) != nil {

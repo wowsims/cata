@@ -37,9 +37,7 @@ func (rogue *Rogue) registerBackstabSpell() {
 		BonusCritPercent: 10 * float64(rogue.Talents.PuncturingWounds),
 
 		// Opportunity and Aggression are additive
-		DamageMultiplierAdditive: 1 +
-			0.1*float64(rogue.Talents.Opportunity) +
-			[]float64{0.0, .07, .14, .20}[rogue.Talents.Aggression],
+		DamageMultiplierAdditive: int64(10*rogue.Talents.Opportunity) + []int64{0, 7, 14, 20}[rogue.Talents.Aggression],
 		// Sinister Calling (Subtlety Spec Passive) is Multiplicative
 		DamageMultiplier: 2.07 *
 			core.TernaryFloat64(rogue.Spec == proto.Spec_SpecSubtletyRogue, 1.4, 1),

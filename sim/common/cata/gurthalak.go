@@ -190,10 +190,10 @@ func (pet *TentacleOfTheOldOnesPet) registerMindFlay() {
 				},
 			},
 
-			DamageMultiplier:         1,
-			DamageMultiplierAdditive: 1,
-			ThreatMultiplier:         1,
-			CritMultiplier:           pet.DefaultSpellCritMultiplier(),
+			DamageMultiplier: 1,
+
+			ThreatMultiplier: 1,
+			CritMultiplier:   pet.DefaultSpellCritMultiplier(),
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				pet.castsLeft--

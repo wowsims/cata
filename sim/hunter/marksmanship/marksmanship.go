@@ -73,9 +73,9 @@ func (mmHunter *MarksmanshipHunter) Initialize() {
 	mmHunter.Hunter.Initialize()
 	// MM Hunter Spec Bonus
 	mmHunter.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ProcMask:   core.ProcMaskRangedAuto,
-		FloatValue: 0.15,
+		Kind:     core.SpellMod_DamageDone_Flat,
+		ProcMask: core.ProcMaskRangedAuto,
+		IntValue: 15,
 	})
 
 	mmHunter.registerAimedShotSpell()

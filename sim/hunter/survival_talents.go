@@ -41,16 +41,16 @@ func (hunter *Hunter) ApplySurvivalTalents() {
 	}
 	if hunter.Talents.TrapMastery > 0 {
 		hunter.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  HunterSpellBlackArrow | HunterSpellExplosiveTrap,
-			FloatValue: .10 * float64(hunter.Talents.TrapMastery),
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: HunterSpellBlackArrow | HunterSpellExplosiveTrap,
+			IntValue:  int64(10 * hunter.Talents.TrapMastery),
 		})
 	}
 	if hunter.Talents.Toxicology > 0 {
 		hunter.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_CritMultiplier_Flat,
-			ClassMask:  HunterSpellBlackArrow | HunterSpellSerpentSting,
-			FloatValue: float64(hunter.Talents.Toxicology) * 0.5,
+			Kind:      core.SpellMod_CritMultiplier_Flat,
+			ClassMask: HunterSpellBlackArrow | HunterSpellSerpentSting,
+			IntValue:  int64(hunter.Talents.Toxicology * 50),
 		})
 	}
 	if hunter.Talents.ImprovedSerpentSting > 0 {
@@ -103,9 +103,9 @@ func (hunter *Hunter) applySniperTraining() {
 	uptime = min(1, uptime)
 
 	dmgMod := hunter.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  HunterSpellCobraShot | HunterSpellSteadyShot,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: .02 * float64(hunter.Talents.SniperTraining),
+		ClassMask: HunterSpellCobraShot | HunterSpellSteadyShot,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  int64(2 * hunter.Talents.SniperTraining),
 	})
 
 	stAura := hunter.RegisterAura(core.Aura{

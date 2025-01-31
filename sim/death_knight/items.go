@@ -68,9 +68,9 @@ var ItemSetMagmaPlatedBattlearmor = core.NewItemSet(core.ItemSet{
 		2: func(_ core.Agent, setBonusAura *core.Aura) {
 			// Increases the damage done by your Death Strike ability by 5%.
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Flat,
-				ClassMask:  DeathKnightSpellDeathStrike,
-				FloatValue: 0.05,
+				Kind:      core.SpellMod_DamageDone_Flat,
+				ClassMask: DeathKnightSpellDeathStrike,
+				IntValue:  5,
 			})
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {

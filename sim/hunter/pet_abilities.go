@@ -106,9 +106,9 @@ func (hp *HunterPet) RegisterKillCommandSpell() *core.Spell {
 				GCD: time.Second * 0,
 			},
 		},
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           hp.MeleeCritMultiplier(1.0, 0.0),
-		ThreatMultiplier:         1,
+
+		CritMultiplier:   hp.MeleeCritMultiplier(1.0, 0.0),
+		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 0.516*spell.RangedAttackPower(target) + 923
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
@@ -173,10 +173,10 @@ func (hp *HunterPet) newFocusDump(pat PetAbilityType, spellID int32) *core.Spell
 			},
 			IgnoreHaste: true,
 		},
-		DamageMultiplierAdditive: 1,
-		DamageMultiplier:         1,
-		CritMultiplier:           hp.MeleeCritMultiplier(1.0, 0.0),
-		ThreatMultiplier:         1,
+
+		DamageMultiplier: 1,
+		CritMultiplier:   hp.MeleeCritMultiplier(1.0, 0.0),
+		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(132, 188) + (spell.MeleeAttackPower() * 0.2)
 
@@ -266,11 +266,11 @@ func (hp *HunterPet) getFrostStormTickSpell() *core.Spell {
 		FocusCost: core.FocusCostOptions{
 			Cost: 20,
 		},
-		BonusCoefficient:         0.288,
-		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
-		ThreatMultiplier:         1,
-		CritMultiplier:           hp.DefaultSpellCritMultiplier(),
+		BonusCoefficient: 0.288,
+		DamageMultiplier: 1,
+
+		ThreatMultiplier: 1,
+		CritMultiplier:   hp.DefaultSpellCritMultiplier(),
 	}
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		damage := 206 + (spell.MeleeAttackPower() * 0.40)
@@ -295,10 +295,10 @@ func (hp *HunterPet) newFrostStormBreath() *core.Spell {
 			},
 		},
 
-		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
-		ThreatMultiplier:         1,
-		CritMultiplier:           hp.DefaultSpellCritMultiplier(),
+		DamageMultiplier: 1,
+
+		ThreatMultiplier: 1,
+		CritMultiplier:   hp.DefaultSpellCritMultiplier(),
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "FrostStormBreath-" + hp.Label,

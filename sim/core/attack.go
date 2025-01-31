@@ -283,7 +283,7 @@ func (wa *WeaponAttack) getWeapon() *Weapon {
 
 func (wa *WeaponAttack) setWeapon(weapon Weapon) {
 	wa.Weapon = weapon
-	wa.spell.CritMultiplier = weapon.CritMultiplier
+	wa.spell.SetCritMultiplierMultiplicative(weapon.CritMultiplier)
 	wa.updateSwingDuration(wa.curSwingSpeed)
 }
 
@@ -399,10 +399,10 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		ProcMask:    ProcMaskMeleeMHAuto,
 		Flags:       SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage | SpellFlagNoOnCastComplete,
 
-		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           options.MainHand.CritMultiplier,
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1,
+
+		CritMultiplier:   options.MainHand.CritMultiplier,
+		ThreatMultiplier: 1,
 
 		BonusCoefficient: 1,
 
@@ -424,10 +424,10 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		ProcMask:    ProcMaskMeleeOHAuto,
 		Flags:       SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage | SpellFlagNoOnCastComplete,
 
-		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           options.OffHand.CritMultiplier,
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1,
+
+		CritMultiplier:   options.OffHand.CritMultiplier,
+		ThreatMultiplier: 1,
 
 		BonusCoefficient: 1,
 
@@ -445,10 +445,10 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		Flags:        SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage,
 		MissileSpeed: 40,
 
-		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           options.Ranged.CritMultiplier,
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1,
+
+		CritMultiplier:   options.Ranged.CritMultiplier,
+		ThreatMultiplier: 1,
 
 		BonusCoefficient: 1,
 

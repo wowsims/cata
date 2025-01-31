@@ -362,9 +362,9 @@ func (druid *Druid) applyShootingStars() {
 func (druid *Druid) applyGaleWinds() {
 	if druid.Talents.GaleWinds > 0 {
 		druid.AddStaticMod(core.SpellModConfig{
-			ClassMask:  DruidSpellTyphoon | DruidSpellHurricane,
-			FloatValue: float64(0.15 * float64(druid.Talents.GaleWinds)),
-			Kind:       core.SpellMod_DamageDone_Flat,
+			ClassMask: DruidSpellTyphoon | DruidSpellHurricane,
+			IntValue:  int64(15 * druid.Talents.GaleWinds),
+			Kind:      core.SpellMod_DamageDone_Flat,
 		})
 	}
 }
@@ -885,14 +885,14 @@ func (druid *Druid) applyLotp() {
 // 		Label:    "Predatory Instincts",
 // 		Duration: core.NeverExpires,
 // 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			druid.Lacerate.CritMultiplier = onGainMod
-// 			druid.Rip.CritMultiplier = onGainMod
-// 			druid.Rake.CritMultiplier = onGainMod
+// 			druid.Lacerate.SetCritMultiplierMultiplicative(onGainMod)
+// 			druid.Rip.SetCritMultiplierMultiplicative(onGainMod)
+// 			druid.Rake.SetCritMultiplierMultiplicative(onGainMod)
 // 		},
 // 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			druid.Lacerate.CritMultiplier = onExpireMod
-// 			druid.Rip.CritMultiplier = onExpireMod
-// 			druid.Rake.CritMultiplier = onExpireMod
+// 			druid.Lacerate.SetCritMultiplierMultiplicative(onExpireMod)
+// 			druid.Rip.SetCritMultiplierMultiplicative(onExpireMod)
+// 			druid.Rake.SetCritMultiplierMultiplicative(onExpireMod)
 // 		},
 // 	})
 // }

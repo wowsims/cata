@@ -15,10 +15,10 @@ func (dk *DeathKnight) registerBloodStrikeSpell() {
 		Flags:          core.SpellFlagMeleeMetrics,
 		ClassSpellMask: DeathKnightSpellBloodStrike,
 
-		DamageMultiplier:         0.8,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           dk.DefaultMeleeCritMultiplier(),
-		ThreatMultiplier:         1,
+		DamageMultiplier: 0.8,
+
+		CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := dk.ClassSpellScaling*0.37799999118 +

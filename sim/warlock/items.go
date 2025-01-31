@@ -23,9 +23,9 @@ var ItemSetMaleficRaiment = core.NewItemSet(core.ItemSet{
 			warlock := agent.(WarlockAgent).GetWarlock()
 
 			dmgMod := warlock.AddDynamicMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Flat,
-				ClassMask:  WarlockSpellFelFlame,
-				FloatValue: 3.0,
+				Kind:      core.SpellMod_DamageDone_Flat,
+				ClassMask: WarlockSpellFelFlame,
+				IntValue:  300,
 			})
 
 			aura := warlock.RegisterAura(core.Aura{
@@ -115,9 +115,8 @@ func (pet *FieryImpPet) registerFlameBlast(warlock *Warlock) {
 			},
 		},
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           pet.DefaultSpellCritMultiplier(),
-		ThreatMultiplier:         1,
+		CritMultiplier:   pet.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDmg := sim.Roll(2750+1, 2750+1514)

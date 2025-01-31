@@ -34,9 +34,9 @@ func (war *ArmsWarrior) applyGlyphOfMortalStrike() {
 	}
 
 	war.AddStaticMod(core.SpellModConfig{
-		ClassMask:  warrior.SpellMaskMortalStrike,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.1,
+		ClassMask: warrior.SpellMaskMortalStrike,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  10,
 	})
 }
 

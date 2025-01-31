@@ -30,9 +30,9 @@ func (paladin *Paladin) applySealsOfThePure() {
 	}
 
 	paladin.AddStaticMod(core.SpellModConfig{
-		ClassMask:  SpellMaskSealOfRighteousness | SpellMaskSealOfTruth | SpellMaskSealOfJustice | SpellMaskCensure,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.06 * float64(paladin.Talents.SealsOfThePure),
+		ClassMask: SpellMaskSealOfRighteousness | SpellMaskSealOfTruth | SpellMaskSealOfJustice | SpellMaskCensure,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  int64(6 * paladin.Talents.SealsOfThePure),
 	})
 }
 
@@ -181,20 +181,20 @@ func (paladin *Paladin) applyWrathOfTheLightbringer() {
 		return
 	}
 
-	dmgIncrease := 0.5 * float64(paladin.Talents.WrathOfTheLightbringer)
+	dmgIncrease := 50 * paladin.Talents.WrathOfTheLightbringer
 
 	// For some reason, only Crusader Strike and JoT are additive, while the rest are multiplicative.
 	// Dunno if this is actually correct but that's how simc does it.
 	paladin.AddStaticMod(core.SpellModConfig{
-		ClassMask:  SpellMaskCrusaderStrike | SpellMaskJudgementOfTruth,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: dmgIncrease,
+		ClassMask: SpellMaskCrusaderStrike | SpellMaskJudgementOfTruth,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  int64(dmgIncrease),
 	})
 
 	paladin.AddStaticMod(core.SpellModConfig{
 		ClassMask:  SpellMaskJudgementOfJustice | SpellMaskJudgementOfInsight | SpellMaskJudgementOfRighteousness,
 		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: dmgIncrease,
+		FloatValue: float64(dmgIncrease) / 100,
 	})
 
 	paladin.AddStaticMod(core.SpellModConfig{

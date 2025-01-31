@@ -15,10 +15,10 @@ func (dk *FrostDeathKnight) registerFrostStrikeSpell() {
 		Flags:          core.SpellFlagMeleeMetrics,
 		ClassSpellMask: death_knight.DeathKnightSpellFrostStrike,
 
-		DamageMultiplier:         1.3,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           dk.DefaultMeleeCritMultiplier(),
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1.3,
+
+		CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := dk.ClassSpellScaling*0.12399999797 +
@@ -47,10 +47,10 @@ func (dk *FrostDeathKnight) registerFrostStrikeSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier:         1.3,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           dk.DefaultMeleeCritMultiplier(),
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1.3,
+
+		CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := dk.ClassSpellScaling*0.24699999392 +

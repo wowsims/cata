@@ -73,9 +73,9 @@ func (war *ArmsWarrior) applyImpale() {
 	}
 
 	war.AddStaticMod(core.SpellModConfig{
-		ClassMask:  warrior.SpellMaskMortalStrike | warrior.SpellMaskSlam | warrior.SpellMaskOverpower,
-		Kind:       core.SpellMod_CritMultiplier_Flat,
-		FloatValue: 0.1 * float64(war.Talents.Impale),
+		ClassMask: warrior.SpellMaskMortalStrike | warrior.SpellMaskSlam | warrior.SpellMaskOverpower,
+		Kind:      core.SpellMod_CritMultiplier_Flat,
+		IntValue:  int64(10 * war.Talents.Impale),
 	})
 }
 
@@ -91,9 +91,9 @@ func (war *ArmsWarrior) applyImprovedSlam() {
 	})
 
 	war.AddStaticMod(core.SpellModConfig{
-		ClassMask:  warrior.SpellMaskSlam,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.1 * float64(war.Talents.ImprovedSlam),
+		ClassMask: warrior.SpellMaskSlam,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  int64(10 * war.Talents.ImprovedSlam),
 	})
 }
 
@@ -141,9 +141,9 @@ func (war *ArmsWarrior) applySlaughter() {
 	}
 
 	damageMod := war.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  warrior.SpellMaskMortalStrike | warrior.SpellMaskExecute | warrior.SpellMaskOverpower | warrior.SpellMaskSlam,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.0,
+		ClassMask: warrior.SpellMaskMortalStrike | warrior.SpellMaskExecute | warrior.SpellMaskOverpower | warrior.SpellMaskSlam,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  0,
 	})
 
 	war.slaughter = war.RegisterAura(core.Aura{
@@ -153,8 +153,8 @@ func (war *ArmsWarrior) applySlaughter() {
 		MaxStacks: war.Talents.LambsToTheSlaughter,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			if newStacks != 0 {
-				bonus := 0.1 * float64(newStacks)
-				damageMod.UpdateFloatValue(bonus)
+				bonus := 10 * int64(newStacks)
+				damageMod.UpdateIntValue(bonus)
 				damageMod.Activate()
 			} else {
 				damageMod.Deactivate()

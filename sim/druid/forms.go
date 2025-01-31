@@ -132,7 +132,7 @@ func (druid *Druid) RegisterCatFormAura() {
 
 				// These buffs stay up, but corresponding changes don't
 				if druid.SavageRoarAura.IsActive() {
-					druid.MHAutoSpell.DamageMultiplier *= srm
+					druid.MHAutoSpell.ApplyDamageMultiplierMultiplicative(srm)
 				}
 
 				if druid.PredatoryInstinctsAura != nil {
@@ -164,7 +164,7 @@ func (druid *Druid) RegisterCatFormAura() {
 
 				// These buffs stay up, but corresponding changes don't
 				if druid.SavageRoarAura.IsActive() {
-					druid.MHAutoSpell.DamageMultiplier /= srm
+					druid.MHAutoSpell.ApplyDamageMultiplierMultiplicative(1 / srm)
 				}
 
 				if druid.PredatoryInstinctsAura != nil {

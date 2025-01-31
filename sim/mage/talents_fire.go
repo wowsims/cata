@@ -92,9 +92,9 @@ func (mage *Mage) ApplyFireTalents() {
 	if mage.Talents.CriticalMass > 0 {
 		criticalMassModConfig := func(classMask int64) core.SpellModConfig {
 			return core.SpellModConfig{
-				ClassMask:  classMask,
-				FloatValue: 0.05 * float64(mage.Talents.CriticalMass),
-				Kind:       core.SpellMod_DamageDone_Flat,
+				ClassMask: classMask,
+				IntValue:  int64(5 * mage.Talents.CriticalMass),
+				Kind:      core.SpellMod_DamageDone_Flat,
 			}
 		}
 

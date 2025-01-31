@@ -18,16 +18,16 @@ func (paladin *Paladin) applyGlyphs() {
 	}
 	if paladin.HasPrimeGlyph(proto.PaladinPrimeGlyph_GlyphOfJudgement) {
 		paladin.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  SpellMaskJudgement,
-			FloatValue: 0.1,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: SpellMaskJudgement,
+			IntValue:  10,
 		})
 	}
 	if paladin.HasPrimeGlyph(proto.PaladinPrimeGlyph_GlyphOfTemplarSVerdict) {
 		paladin.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  SpellMaskTemplarsVerdict,
-			FloatValue: 0.15,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: SpellMaskTemplarsVerdict,
+			IntValue:  15,
 		})
 	}
 	if paladin.HasPrimeGlyph(proto.PaladinPrimeGlyph_GlyphOfSealOfTruth) {
@@ -48,9 +48,9 @@ func (paladin *Paladin) applyGlyphs() {
 	}
 	if paladin.HasPrimeGlyph(proto.PaladinPrimeGlyph_GlyphOfShieldOfTheRighteous) {
 		paladin.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  SpellMaskShieldOfTheRighteous,
-			FloatValue: 0.1,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: SpellMaskShieldOfTheRighteous,
+			IntValue:  10,
 		})
 	}
 

@@ -46,7 +46,7 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 			results[hitIndex] = shaman.calcDamageStormstrikeCritChance(sim, curTarget, baseDamage, spell)
 
 			curTarget = sim.Environment.NextTargetUnit(curTarget)
-			spell.DamageMultiplier *= bounceReduction
+			spell.ApplyDamageMultiplierMultiplicative(bounceReduction)
 		}
 
 		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
@@ -57,7 +57,7 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 			}
 
 			spell.DealDamage(sim, results[hitIndex])
-			spell.DamageMultiplier /= bounceReduction
+			spell.ApplyDamageMultiplierMultiplicative(1 / bounceReduction)
 		}
 	}
 

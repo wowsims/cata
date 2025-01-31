@@ -42,9 +42,10 @@ type SpellConfig struct {
 	BonusExpertiseRating float64
 
 	DamageMultiplier         float64
-	DamageMultiplierAdditive float64
-	CritMultiplier           float64
-	CritMultiplierAddative   float64 // Addative extra crit damage %
+	DamageMultiplierAdditive int64
+
+	CritMultiplier         float64
+	CritMultiplierAddative int64 // Addative extra crit damage %
 
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
 
@@ -125,17 +126,21 @@ type Spell struct {
 	// The current or most recent cast data.
 	CurCast Cast
 
-	BonusHitPercent          float64
-	BonusCritPercent         float64
-	BonusSpellPower          float64
-	BonusExpertiseRating     float64
-	CastTimeMultiplier       float64
-	CostMultiplier           float64
-	CdMultiplier             float64
-	DamageMultiplier         float64
-	DamageMultiplierAdditive float64
-	CritMultiplier           float64
-	CritMultiplierAddative   float64 // Addative critical damage bonus
+	BonusHitPercent      float64
+	BonusCritPercent     float64
+	BonusSpellPower      float64
+	BonusExpertiseRating float64
+	CastTimeMultiplier   float64
+	CostMultiplier       float64
+	CdMultiplier         float64
+
+	damageMultiplierAdditive int64 // Stores an integer representation of the Spell's Additive Damage Multiplier before Imapct or Periodic-only bonuses
+	critMultiplierAddative   int64 // Stores an integer representation of the Spell's Additive Critical Damage Multiplier
+
+	damageMultiplier        float64 // Stores the Spell's calculated Damage Multiplier before Impact or Periodic-only bonuses
+	impactDamageMultiplier  float64 // Stores the Spell's calculated Impact Damage Multiplier - DamageMultiplier * DamageMultiplierAdditive
+	critMultiplier          float64 // Stores the Spell's calculated Critical Damage Multiplier
+	effectiveCritMultiplier float64 // Stores the Spell's calculated Effective Critical Damage Multiplier - CritMultiplier * CritMultiplierAdditive
 
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
 
@@ -172,13 +177,6 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		panic(fmt.Sprintf("Over 100 registered spells when registering %s! There is probably a spell being registered every iteration.", config.ActionID))
 	}
 
-	// Default the other damage multiplier to 1 if only one or the other is set.
-	if config.DamageMultiplier != 0 && config.DamageMultiplierAdditive == 0 {
-		config.DamageMultiplierAdditive = 1
-	} else if config.DamageMultiplierAdditive != 0 && config.DamageMultiplier == 0 {
-		config.DamageMultiplier = 1
-	}
-
 	if (config.DamageMultiplier != 0 || config.ThreatMultiplier != 0) && config.ProcMask == ProcMaskUnknown {
 		panic("ProcMask for spell " + config.ActionID.String() + " not set")
 	}
@@ -199,6 +197,11 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		config.Cast.CastTime = func(spell *Spell) time.Duration {
 			return spell.Unit.ApplyCastSpeedForSpell(spell.DefaultCast.CastTime, spell)
 		}
+	}
+
+	// Default the DamageMultiplier to 1 if not set
+	if config.DamageMultiplier == 0 {
+		config.DamageMultiplier = 1
 	}
 
 	spell := &Spell{
@@ -222,17 +225,18 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		expectedInitialDamageInternal: config.ExpectedInitialDamage,
 		expectedTickDamageInternal:    config.ExpectedTickDamage,
 
-		BonusHitPercent:          config.BonusHitPercent,
-		BonusCritPercent:         config.BonusCritPercent,
-		BonusSpellPower:          config.BonusSpellPower,
-		BonusExpertiseRating:     config.BonusExpertiseRating,
-		CastTimeMultiplier:       1,
-		CostMultiplier:           1,
-		CdMultiplier:             1,
-		DamageMultiplier:         config.DamageMultiplier,
-		DamageMultiplierAdditive: config.DamageMultiplierAdditive,
-		CritMultiplier:           config.CritMultiplier,
-		CritMultiplierAddative:   config.CritMultiplierAddative,
+		BonusHitPercent:      config.BonusHitPercent,
+		BonusCritPercent:     config.BonusCritPercent,
+		BonusSpellPower:      config.BonusSpellPower,
+		BonusExpertiseRating: config.BonusExpertiseRating,
+		CastTimeMultiplier:   1,
+		CostMultiplier:       1,
+		CdMultiplier:         1,
+
+		damageMultiplier:         config.DamageMultiplier,
+		damageMultiplierAdditive: config.DamageMultiplierAdditive,
+		critMultiplier:           config.CritMultiplier,
+		critMultiplierAddative:   config.CritMultiplierAddative,
 
 		BonusCoefficient: config.BonusCoefficient,
 
@@ -275,6 +279,9 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 	} else if config.FocusCost.Cost != 0 {
 		spell.Cost = newFocusCost(spell, config.FocusCost)
 	}
+
+	spell.updateImpactDamageMultiplier()
+	spell.updateEffectiveCritDamageMultiplier()
 
 	spell.createDots(config.Dot, false)
 	spell.createDots(config.Hot, true)
@@ -656,6 +663,84 @@ func (spell *Spell) Matches(mask int64) bool {
 	return spell.ClassSpellMask&mask > 0
 }
 
+func (spell *Spell) SetDamageMultiplierMultiplicative(multiplier float64) {
+	spell.damageMultiplier = multiplier
+	spell.updateImpactDamageMultiplier()
+}
+
+// Applies a multiplicative multiplier to full Direct and Periodic spell damage.
+// Equivalent to Mod Damage Done % or similar effects.
+func (spell *Spell) ApplyDamageMultiplierMultiplicative(multiplier float64) {
+	spell.damageMultiplier *= multiplier
+	spell.updateImpactDamageMultiplier()
+}
+
+func (spell *Spell) SetDamageMultiplierAdditive(percent int64) {
+	spell.damageMultiplierAdditive = percent
+	spell.updateImpactDamageMultiplier()
+}
+
+// Applies an additive multiplier to full Direct and Periodic spell damage.
+// Equivalent to Modifies Damage/Healing Done + Modifies Periodic Damage/Healing Done (22).
+func (spell *Spell) ApplyDamageMultiplierAdditive(percent int64) {
+	spell.damageMultiplierAdditive += percent
+	spell.updateImpactDamageMultiplier()
+}
+
+func (spell *Spell) updateImpactDamageMultiplier() {
+	spell.impactDamageMultiplier = spell.damageMultiplier * (float64(100+spell.damageMultiplierAdditive) / 100)
+}
+
+func (spell *Spell) GetDamageMultiplier() float64 {
+	return spell.damageMultiplier
+}
+
+func (spell *Spell) GetDamageMultiplierAdditive() int64 {
+	return spell.damageMultiplierAdditive
+}
+
+func (spell *Spell) GetImpactDamageMultiplier() float64 {
+	return spell.impactDamageMultiplier
+}
+
+func (spell *Spell) SetCritMultiplierMultiplicative(multiplier float64) {
+	spell.critMultiplier = multiplier
+	spell.updateEffectiveCritDamageMultiplier()
+}
+
+func (spell *Spell) ApplyCritMultiplierMultiplicative(multiplier float64) {
+	spell.critMultiplier *= multiplier
+	spell.updateEffectiveCritDamageMultiplier()
+}
+
+func (spell *Spell) SetCritMultiplierAdditive(percent int64) {
+	spell.critMultiplierAddative = percent
+	spell.updateEffectiveCritDamageMultiplier()
+}
+
+// Applies an additive multiplier to full Direct and Periodic spell damage.
+// Equivalent to Modifies Damage/Healing Done + Modifies Periodic Damage/Healing Done (22).
+func (spell *Spell) ApplyCritMultiplierAdditive(percent int64) {
+	spell.critMultiplierAddative += percent
+	spell.updateEffectiveCritDamageMultiplier()
+}
+
+func (spell *Spell) updateEffectiveCritDamageMultiplier() {
+	spell.effectiveCritMultiplier = (spell.GetCritMultiplier()-1)*(float64(100+spell.critMultiplierAddative)/100) + 1
+}
+
+func (spell *Spell) GetCritMultiplier() float64 {
+	return spell.critMultiplier
+}
+
+func (spell *Spell) GetCritMultiplierAdditive() int64 {
+	return spell.critMultiplierAddative
+}
+
+func (spell *Spell) GetEffectiveCritDamageMultiplier() float64 {
+	return spell.effectiveCritMultiplier
+}
+
 // Handles computing the cost of spells and checking whether the Unit
 // meets them.
 type SpellCost interface {
@@ -675,8 +760,4 @@ type SpellCost interface {
 
 func (spell *Spell) IssueRefund(sim *Simulation) {
 	spell.Cost.IssueRefund(sim, spell)
-}
-
-func (spell *Spell) EffectiveCritDamageMultiplier() float64 {
-	return (spell.CritMultiplier-1)*(spell.CritMultiplierAddative+1) + 1
 }

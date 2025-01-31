@@ -29,17 +29,12 @@ func (sinRogue *AssassinationRogue) newMutilateHitSpell(isMH bool) *core.Spell {
 		BonusCritPercent: 5 * float64(sinRogue.Talents.PuncturingWounds),
 
 		DamageMultiplier:         1.86, // 84 * 1.3220000267 + 75
-		DamageMultiplierAdditive: 1 + 0.1*float64(sinRogue.Talents.Opportunity),
+		DamageMultiplierAdditive: int64(10 * sinRogue.Talents.Opportunity),
 		CritMultiplier:           sinRogue.MeleeCritMultiplier(true),
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			var baseDamage float64
-			if isMH {
-				baseDamage = mutBaseDamage + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-			} else {
-				baseDamage = mutBaseDamage + spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-			}
+			baseDamage := mutBaseDamage + core.Ternary(isMH, spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()), spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()))
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialBlockAndCrit)
 		},

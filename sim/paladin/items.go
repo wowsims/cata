@@ -14,9 +14,9 @@ var ItemSetReinforcedSapphiriumBattleplate = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(_ core.Agent, setBonusAura *core.Aura) {
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Flat,
-				ClassMask:  SpellMaskTemplarsVerdict,
-				FloatValue: 0.1,
+				Kind:      core.SpellMod_DamageDone_Flat,
+				ClassMask: SpellMaskTemplarsVerdict,
+				IntValue:  10,
 			})
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
@@ -168,9 +168,9 @@ func (paladin *Paladin) addBloodthirstyGloves() {
 	paladin.RegisterPvPGloveMod(
 		[]int32{64844, 70649, 60414, 65591, 72379, 70250, 70488, 73707, 73570},
 		core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  SpellMaskCrusaderStrike,
-			FloatValue: 0.05,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: SpellMaskCrusaderStrike,
+			IntValue:  5,
 		})
 }
 
@@ -180,9 +180,9 @@ var ItemSetReinforcedSapphiriumBattlearmor = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(_ core.Agent, setBonusAura *core.Aura) {
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Flat,
-				ClassMask:  SpellMaskCrusaderStrike,
-				FloatValue: 0.1,
+				Kind:      core.SpellMod_DamageDone_Flat,
+				ClassMask: SpellMaskCrusaderStrike,
+				IntValue:  10,
 			})
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {

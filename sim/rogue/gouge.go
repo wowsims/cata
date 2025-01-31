@@ -36,10 +36,10 @@ func (rogue *Rogue) registerGougeSpell() {
 			return rogue.PseudoStats.InFrontOfTarget || hasGlyph
 		},
 
-		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           rogue.MeleeCritMultiplier(false),
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1,
+
+		CritMultiplier:   rogue.MeleeCritMultiplier(false),
+		ThreatMultiplier: 1,
 
 		BonusCoefficient: 1,
 

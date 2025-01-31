@@ -10,9 +10,9 @@ import (
 func (warlock *Warlock) ApplyAfflictionTalents() {
 	if warlock.Talents.ImprovedCorruption > 0 {
 		warlock.AddStaticMod(core.SpellModConfig{
-			ClassMask:  WarlockSpellCorruption,
-			Kind:       core.SpellMod_DamageDone_Flat,
-			FloatValue: 0.04 * float64(warlock.Talents.ImprovedCorruption),
+			ClassMask: WarlockSpellCorruption,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  int64(4 * warlock.Talents.ImprovedCorruption),
 		})
 	}
 

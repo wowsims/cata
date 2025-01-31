@@ -23,9 +23,8 @@ func (affliction *AfflictionWarlock) registerUnstableAffliction() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           affliction.DefaultSpellCritMultiplier(),
-		ThreatMultiplier:         1,
+		CritMultiplier:   affliction.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura:                core.Aura{Label: "UnstableAffliction"},
