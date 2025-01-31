@@ -175,7 +175,7 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 			cat.Enrage.Cast(sim, nil)
 		}
 
-		if cat.Maul.CanCast(sim, cat.CurrentTarget) && ((cat.CurrentRage() >= cat.Maul.DefaultCast.Cost + cat.MangleBear.DefaultCast.Cost) || (cat.AutoAttacks.NextAttackAt() < cat.NextGCDAt())) {
+		if cat.Maul.CanCast(sim, cat.CurrentTarget) && ((cat.CurrentRage() >= cat.Maul.DefaultCast.Cost+cat.MangleBear.DefaultCast.Cost) || (cat.AutoAttacks.NextAttackAt() < cat.NextGCDAt())) {
 			cat.Maul.Cast(sim, cat.CurrentTarget)
 		}
 	}

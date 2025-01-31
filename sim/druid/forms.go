@@ -78,7 +78,7 @@ func (druid *Druid) RegisterCatFormAura() {
 	srm := druid.GetSavageRoarMultiplier()
 
 	statBonus := stats.Stats{
-		stats.AttackPower:         -20, // This offset is needed because the first 10 points of Agility do not contribute any Attack Power.
+		stats.AttackPower: -20, // This offset is needed because the first 10 points of Agility do not contribute any Attack Power.
 	}
 
 	agiApDep := druid.NewDynamicStatDependency(stats.Agility, stats.AttackPower, 2)

@@ -723,7 +723,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 		projectedEnergy := curEnergy + minRunOutSeconds*regenRate
 
 		if tfActive && cat.PrimalMadnessAura.IsActive() {
-			latestCharge := sim.CurrentTime + core.DurationFromSeconds((cat.CatCharge.MinRange + 1 - cat.DistanceFromTarget) / cat.GetMovementSpeed()) + cat.ReactionTime*2
+			latestCharge := sim.CurrentTime + core.DurationFromSeconds((cat.CatCharge.MinRange+1-cat.DistanceFromTarget)/cat.GetMovementSpeed()) + cat.ReactionTime*2
 
 			if cat.TigersFuryAura.ExpiresAt() < latestCharge {
 				projectedEnergy -= cat.primalMadnessBonus
@@ -744,7 +744,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 			return false, 0
 		}
 		timeToNextAction = core.DurationFromSeconds((cat.CurrentMangleCatCost() - excessE) / regenRate)
-	} else if !t11RefreshNext && (isClearcast || !ripRefreshPending || !cat.tempSnapshotAura.IsActive() || (ripRefreshTime + cat.ReactionTime - sim.CurrentTime > core.GCDMin)) {
+	} else if !t11RefreshNext && (isClearcast || !ripRefreshPending || !cat.tempSnapshotAura.IsActive() || (ripRefreshTime+cat.ReactionTime-sim.CurrentTime > core.GCDMin)) {
 		if excessE >= cat.CurrentShredCost() || isClearcast {
 			cat.Shred.Cast(sim, cat.CurrentTarget)
 			return false, 0
