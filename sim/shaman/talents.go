@@ -395,11 +395,11 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		ActionID: core.ActionID{SpellID: 64701},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.MultiplyCastSpeed(sim, 1.20)
+			shaman.MultiplyCastSpeed(1.20)
 			damageMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.MultiplyCastSpeed(sim, 1/1.20)
+			shaman.MultiplyCastSpeed(1 / 1.20)
 			damageMod.Deactivate()
 		},
 	})

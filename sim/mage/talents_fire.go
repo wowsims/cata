@@ -273,10 +273,10 @@ func (mage *Mage) applyPyromaniac() {
 		ActionID: core.ActionID{SpellID: 83582},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			mage.MultiplyCastSpeed(sim, hasteBonus)
+			mage.MultiplyCastSpeed(hasteBonus)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			mage.MultiplyCastSpeed(sim, 1/hasteBonus)
+			mage.MultiplyCastSpeed(1 / hasteBonus)
 		},
 	})
 

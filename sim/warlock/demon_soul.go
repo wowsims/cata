@@ -57,12 +57,12 @@ func (warlock *Warlock) registerDemonSoul() {
 		ActionID: core.ActionID{SpellID: 79462},
 		Duration: 20 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.MultiplyCastSpeed(sim, felguardHasteMulti)
+			warlock.MultiplyCastSpeed(felguardHasteMulti)
 			warlock.MultiplyAttackSpeed(sim, felguardHasteMulti)
 			felguardDamageMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.MultiplyCastSpeed(sim, 1/felguardHasteMulti)
+			warlock.MultiplyCastSpeed(1 / felguardHasteMulti)
 			warlock.MultiplyAttackSpeed(sim, 1/felguardHasteMulti)
 			felguardDamageMod.Deactivate()
 		},

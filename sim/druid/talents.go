@@ -138,10 +138,10 @@ func (druid *Druid) applyNaturesGrace() {
 		ActionID: core.ActionID{SpellID: ngAuraSpellId},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			druid.MultiplyCastSpeed(sim, 1+ngAuraSpellHastePct)
+			druid.MultiplyCastSpeed(1 + ngAuraSpellHastePct)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			druid.MultiplyCastSpeed(sim, 1/(1+ngAuraSpellHastePct))
+			druid.MultiplyCastSpeed(1 / (1 + ngAuraSpellHastePct))
 		},
 	})
 

@@ -50,12 +50,12 @@ func (paladin *Paladin) applyJudgementsOfThePure() {
 		ActionID: actionId,
 		Duration: 60 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.MultiplyCastSpeed(sim, hasteMultiplier)
+			paladin.MultiplyCastSpeed(hasteMultiplier)
 			paladin.MultiplyMeleeSpeed(sim, hasteMultiplier)
 			paladin.PseudoStats.SpiritRegenRateCombat += spiritRegenAmount
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.MultiplyCastSpeed(sim, 1/hasteMultiplier)
+			paladin.MultiplyCastSpeed(1 / hasteMultiplier)
 			paladin.MultiplyMeleeSpeed(sim, 1/hasteMultiplier)
 			paladin.PseudoStats.SpiritRegenRateCombat -= spiritRegenAmount
 		},

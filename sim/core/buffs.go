@@ -350,11 +350,11 @@ func DarkIntentAura(unit *Unit, isWarlock bool) *Aura {
 		Label:    "Dark Intent",
 		ActionID: ActionID{SpellID: 85767},
 		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.MultiplyCastSpeed(sim, 1.03)
+			aura.Unit.MultiplyCastSpeed(1.03)
 			aura.Unit.MultiplyAttackSpeed(sim, 1.03)
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.MultiplyCastSpeed(sim, 1/1.03)
+			aura.Unit.MultiplyCastSpeed(1 / 1.03)
 			aura.Unit.MultiplyAttackSpeed(sim, 1/1.03)
 		},
 		// OnPeriodicDamageDealt: periodicHandler,
@@ -823,10 +823,10 @@ func registerExclusiveSpellHaste(aura *Aura, spellHastePercent float64) {
 	aura.NewExclusiveEffect("SpellHaste%Buff", false, ExclusiveEffect{
 		Priority: spellHastePercent,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.MultiplyCastSpeed(sim, 1+ee.Priority)
+			ee.Aura.Unit.MultiplyCastSpeed(1 + ee.Priority)
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.MultiplyCastSpeed(sim, 1/(1+ee.Priority))
+			ee.Aura.Unit.MultiplyCastSpeed(1 / (1 + ee.Priority))
 		},
 	})
 }
@@ -1298,10 +1298,10 @@ func multiplyCastSpeedEffect(aura *Aura, multiplier float64) *ExclusiveEffect {
 	return aura.NewExclusiveEffect("MultiplyCastSpeed", false, ExclusiveEffect{
 		Priority: multiplier,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.MultiplyCastSpeed(sim, multiplier)
+			ee.Aura.Unit.MultiplyCastSpeed(multiplier)
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.MultiplyCastSpeed(sim, 1/multiplier)
+			ee.Aura.Unit.MultiplyCastSpeed(1 / multiplier)
 		},
 	})
 }

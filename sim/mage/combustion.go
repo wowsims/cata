@@ -124,31 +124,19 @@ func (mage *Mage) registerCombustionSpell() {
 		combustionTickDamage = mage.Combustion.RelatedDotSpell.ExpectedTickDamage(sim, mage.CurrentTarget)
 	}
 
-	updateCombustionTotalDamageEstimate := func(sim *core.Simulation) int32 {
+	updateCombustionTotalDamageEstimate := func() {
 		combustionDotDamage := int32(float64(combustionTickCount) * combustionTickDamage)
-
-		if combustionDotDamage != mage.combustionDotEstimate {
-			mage.combustionDotEstimate = combustionDotDamage
-			if sim.Log != nil {
-				mage.Log(sim, "Combustion Dot Estimate: %d - %d Ticks ", combustionDotDamage, combustionTickCount)
-			}
-		}
-
-		return combustionDotDamage
+		mage.combustionDotEstimate = combustionDotDamage
 	}
 
-	mage.AddOnCastSpeedChanged(func(sim *core.Simulation, old float64, new float64) {
-		if sim != nil {
-			updateCombustionTickCountEstimate()
-			updateCombustionTotalDamageEstimate(sim)
-		}
+	mage.AddOnCastSpeedChanged(func(old float64, new float64) {
+		updateCombustionTickCountEstimate()
+		updateCombustionTotalDamageEstimate()
 	})
 
 	mage.AddOnTemporaryStatsChange(func(sim *core.Simulation, _ *core.Aura, stats stats.Stats) {
-		if sim != nil {
-			updateCombustionTickDamageEstimate(sim)
-			updateCombustionTotalDamageEstimate(sim)
-		}
+		updateCombustionTickDamageEstimate(sim)
+		updateCombustionTotalDamageEstimate()
 	})
 
 	core.MakeProcTriggerAura(&mage.Unit, core.ProcTrigger{
@@ -157,7 +145,7 @@ func (mage *Mage) registerCombustionSpell() {
 		Callback:       core.CallbackOnCastComplete | core.CallbackOnPeriodicDamageDealt,
 		Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
 			updateCombustionTickDamageEstimate(sim)
-			updateCombustionTotalDamageEstimate(sim)
+			updateCombustionTotalDamageEstimate()
 		},
 	})
 }
