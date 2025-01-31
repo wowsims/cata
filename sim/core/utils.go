@@ -1,8 +1,10 @@
 package core
 
 import (
+	"cmp"
 	"hash/fnv"
 	"math"
+	"slices"
 	"strings"
 	"time"
 
@@ -195,6 +197,18 @@ func CheckSliceOverlap[T comparable](s1 []T, s2 []T) bool {
 		}
 	}
 	return false
+}
+
+// Allows Go maps to be used like the "Set" type commonly found in other languages
+func SetToSortedSlice[K cmp.Ordered](src map[K]bool) []K {
+	dst := make([]K, 0, len(src))
+	for k, exists := range src {
+		if exists {
+			dst = append(dst, k)
+		}
+	}
+	slices.Sort(dst)
+	return dst
 }
 
 func MasteryRatingToMasteryPoints(masteryRating float64) float64 {

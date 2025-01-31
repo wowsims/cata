@@ -11,7 +11,6 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 
 	ssMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 56641})
 
-	focus := core.TernaryFloat64(hunter.HasSetBonus(ItemSetWyrmstalkerBattleGear, 2), 9*2, 9)
 	hunter.SteadyShot = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 56641},
 		SpellSchool:    core.SpellSchoolPhysical,
@@ -28,7 +27,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      time.Second,
-				CastTime: time.Millisecond*2000 - core.TernaryDuration(hunter.HasSetBonus(ItemSetLightningChargedBattleGear, 4), time.Millisecond*200, 0),
+				CastTime: time.Millisecond * 2000,
 			},
 			IgnoreHaste: true,
 			ModifyCast: func(_ *core.Simulation, spell *core.Spell, cast *core.Cast) {
@@ -47,7 +46,8 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) + (280.182 + (spell.RangedAttackPower(target) * 0.021))
-			intFocus := focus
+			intFocus := core.TernaryFloat64(hunter.T13_2pc.IsActive(), 9*2, 9)
+
 			if hunter.Talents.Termination != 0 && sim.IsExecutePhase25() {
 				intFocus += float64(hunter.Talents.Termination) * 3
 			}

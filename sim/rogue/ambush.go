@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (rogue *Rogue) registerAmbushSpell() {
@@ -56,7 +57,7 @@ func (rogue *Rogue) registerAmbushSpell() {
 		},
 	})
 
-	rogue.RegisterOnItemSwap(func(s *core.Simulation) {
+	rogue.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand}, func(s *core.Simulation, slot proto.ItemSlot) {
 		// Recalculate Ambush's multiplier in case the MH weapon changed.
 		rogue.Ambush.DamageMultiplier = core.TernaryFloat64(rogue.HasDagger(core.MainHand), 2.86, 1.97)
 	})

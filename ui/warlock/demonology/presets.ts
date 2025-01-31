@@ -27,6 +27,7 @@ import IncinerateAPL from './apls/incinerate.apl.json';
 import ShadowBoltAPL from './apls/shadow-bolt.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
 import P3Gear from './gear_sets/p3.gear.json';
+import ItemSwapP3 from './gear_sets/p3_item_swap.gear.json';
 import P4Gear from './gear_sets/p4.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 
@@ -38,6 +39,9 @@ export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidGear
 export const P1_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1Gear);
 export const P3_PRESET = PresetUtils.makePresetGear('P3 - BIS', P3Gear);
 export const P4_PRESET = PresetUtils.makePresetGear('P4 - WIP', P4Gear);
+
+export const P3_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P3 - Item Swap - Mastery', ItemSwapP3);
+export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4 - Item Swap - Mastery', ItemSwapP3);
 
 export const APL_ShadowBolt = PresetUtils.makePresetAPLRotation('Shadow Bolt', ShadowBoltAPL);
 export const APL_Incinerate = PresetUtils.makePresetAPLRotation('Incinerate', IncinerateAPL);
@@ -109,8 +113,6 @@ export const DefaultOptions = WarlockOptions.create({
 	classOptions: {
 		summon: Summon.Felguard,
 		detonateSeed: false,
-		prepullMastery: 6051,
-		prepullPostSnapshotMana: 100000,
 	},
 });
 

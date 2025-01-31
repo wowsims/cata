@@ -4,7 +4,8 @@
   position: relative;
   width: var(--gem-width);
   height: var(--gem-width);
-  
+  flex-shrink: 0;
+
   &:not(:last-child) {
     margin-right: 1px;
   }

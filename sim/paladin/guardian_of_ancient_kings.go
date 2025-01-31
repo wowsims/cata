@@ -8,23 +8,16 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-func applyT11Prot4pcBonus(duration time.Duration) time.Duration {
-	return time.Millisecond * time.Duration(float64(duration.Milliseconds())*1.5)
+func (paladin *Paladin) goakBaseDuration() time.Duration {
+	if paladin.Spec == proto.Spec_SpecProtectionPaladin {
+		return time.Second * 12
+	} else {
+		return time.Second * 30
+	}
 }
 
 func (paladin *Paladin) registerGuardianOfAncientKings() {
-	hasT11Prot4pc := paladin.HasSetBonus(ItemSetReinforcedSapphiriumBattlearmor, 4)
-
-	var duration time.Duration
-	if paladin.Spec == proto.Spec_SpecProtectionPaladin {
-		duration = time.Second * 12
-	} else {
-		duration = time.Second * 30
-	}
-
-	if hasT11Prot4pc {
-		duration = applyT11Prot4pcBonus(duration)
-	}
+	duration := paladin.goakBaseDuration()
 
 	var spell *core.Spell
 	switch paladin.Spec {
@@ -34,7 +27,7 @@ func (paladin *Paladin) registerGuardianOfAncientKings() {
 		spell = paladin.registerProtectionGuardian(duration)
 	default:
 	case proto.Spec_SpecRetributionPaladin:
-		spell = paladin.registerRetributionGuardian(duration, paladin.SnapshotGuardian && !hasT11Prot4pc)
+		spell = paladin.registerRetributionGuardian(duration)
 	}
 
 	paladin.AddMajorCooldown(core.MajorCooldown{
@@ -46,7 +39,7 @@ func (paladin *Paladin) registerGuardianOfAncientKings() {
 func (paladin *Paladin) registerHolyGuardian(duration time.Duration) *core.Spell {
 	actionID := core.ActionID{SpellID: 86150}
 
-	goakAura := paladin.RegisterAura(core.Aura{
+	paladin.GoakAura = paladin.RegisterAura(core.Aura{
 		Label:    "Guardian of Ancient Kings" + paladin.Label,
 		ActionID: actionID,
 		Duration: duration,
@@ -75,7 +68,7 @@ func (paladin *Paladin) registerHolyGuardian(duration time.Duration) *core.Spell
 		},
 
 		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
-			goakAura.Activate(sim)
+			paladin.GoakAura.Activate(sim)
 			paladin.AncientGuardian.Enable(sim, paladin.AncientGuardian)
 			paladin.AncientGuardian.CancelGCDTimer(sim)
 		},
@@ -85,7 +78,7 @@ func (paladin *Paladin) registerHolyGuardian(duration time.Duration) *core.Spell
 func (paladin *Paladin) registerProtectionGuardian(duration time.Duration) *core.Spell {
 	actionID := core.ActionID{SpellID: 86150}
 
-	goakAura := paladin.RegisterAura(core.Aura{
+	paladin.GoakAura = paladin.RegisterAura(core.Aura{
 		Label:    "Guardian of Ancient Kings" + paladin.Label,
 		ActionID: actionID,
 		Duration: duration,
@@ -115,23 +108,22 @@ func (paladin *Paladin) registerProtectionGuardian(duration time.Duration) *core
 		},
 
 		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
-			goakAura.Activate(sim)
+			paladin.GoakAura.Activate(sim)
 		},
 	})
 }
 
-func (paladin *Paladin) registerRetributionGuardian(duration time.Duration, snapshotGuardian bool) *core.Spell {
+func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) *core.Spell {
 	var strDepByStackCount = map[int32]*stats.StatDependency{}
 
 	for i := 1; i <= 20; i++ {
 		strDepByStackCount[int32(i)] = paladin.NewDynamicMultiplyStat(stats.Strength, 1.0+0.01*float64(i))
 	}
 
-	ancientPowerDuration := duration + time.Second*1
-	ancientPower := paladin.RegisterAura(core.Aura{
+	paladin.AncientPowerAura = paladin.RegisterAura(core.Aura{
 		Label:     "Ancient Power" + paladin.Label,
 		ActionID:  core.ActionID{SpellID: 86700},
-		Duration:  ancientPowerDuration,
+		Duration:  duration + time.Second*1,
 		MaxStacks: 20,
 
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
@@ -175,7 +167,7 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration, snap
 
 			// Deals X Holy damage per application of Ancient Power,
 			// divided evenly among all targets within 10 yards.
-			baseDamage *= float64(ancientPower.GetStacks())
+			baseDamage *= float64(paladin.AncientPowerAura.GetStacks())
 			baseDamage /= float64(numTargets)
 
 			for idx := int32(0); idx < numTargets; idx++ {
@@ -191,7 +183,7 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration, snap
 
 	actionID := core.ActionID{SpellID: 86150}
 
-	goakAura := paladin.RegisterAura(core.Aura{
+	paladin.GoakAura = paladin.RegisterAura(core.Aura{
 		Label:    "Guardian of Ancient Kings" + paladin.Label,
 		ActionID: actionID,
 		Duration: duration,
@@ -201,21 +193,15 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration, snap
 				return
 			}
 
-			ancientPower.AddStack(sim)
+			paladin.AncientPowerAura.AddStack(sim)
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			ancientPower.Activate(sim)
+			paladin.AncientPowerAura.Activate(sim)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			paladin.AncientGuardian.Pet.Disable(sim)
 			ancientFury.Cast(sim, paladin.CurrentTarget)
-			ancientPower.Deactivate(sim)
-
-			// Deactivate T11 Prot 4pc bonus if configured and activated during prepull
-			if snapshotGuardian && (aura.Duration != duration || ancientPower.Duration != ancientPowerDuration) {
-				aura.Duration = duration
-				ancientPower.Duration = ancientPowerDuration
-			}
+			paladin.AncientPowerAura.Deactivate(sim)
 		},
 	})
 
@@ -236,13 +222,7 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration, snap
 		},
 
 		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
-			// Activate T11 Prot 4pc bonus if configured and activated during prepull
-			if sim.CurrentTime < 0 && snapshotGuardian {
-				goakAura.Duration = applyT11Prot4pcBonus(duration)
-				ancientPower.Duration = applyT11Prot4pcBonus(ancientPowerDuration)
-			}
-
-			goakAura.Activate(sim)
+			paladin.GoakAura.Activate(sim)
 			paladin.AncientGuardian.Enable(sim, paladin.AncientGuardian)
 			paladin.AncientGuardian.CancelGCDTimer(sim)
 		},

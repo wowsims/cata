@@ -143,7 +143,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET, Presets.P1_EP_EXPERTISE_PRESET],
+		epWeights: [Presets.P1_EP_PRESET, Presets.P1_EP_EXPERTISE_PRESET, Presets.P4_EP_LEGENDARY_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.AssassinationTalentsDefault],
 		// Preset rotations that the user can quickly select.
@@ -191,7 +191,18 @@ export class AssassinationRogueSimUI extends IndividualSimUI<Spec.SpecAssassinat
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this);
+			new ReforgeOptimizer(this, {
+				getEPDefaults: (player: Player<Spec.SpecAssassinationRogue>) => {
+					const mhWepId = player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.id;
+					const ohWepId = player.getEquippedItem(ItemSlot.ItemSlotOffHand)?.id;
+
+					if (mhWepId == 77949 && ohWepId == 77950) {
+						return Presets.P4_EP_LEGENDARY_PRESET.epWeights;
+					} else {
+						return Presets.P1_EP_PRESET.epWeights;
+					}
+				}
+			});
 		});
 
 		// Poison selection

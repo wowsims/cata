@@ -1,4 +1,4 @@
-import { EquipmentSpec, GemColor, ItemSlot, ItemSpec, ItemSwap, Profession, SimDatabase, SimEnchant, SimGem, SimItem } from '../proto/common.js';
+import { EquipmentSpec, GemColor, HandType, ItemSlot, ItemSpec, ItemSwap, Profession, SimDatabase, SimEnchant, SimGem, SimItem } from '../proto/common.js';
 import { UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../proto/ui.js';
 import { isBluntWeaponType, isSharpWeaponType } from '../proto_utils/utils.js';
 import { distinct, equalsOrBothNull, getEnumValues } from '../utils.js';
@@ -100,6 +100,10 @@ abstract class BaseGear {
 		// Check for valid weapon combos.
 		if (!validWeaponCombo(gear[ItemSlot.ItemSlotMainHand]?.item, gear[ItemSlot.ItemSlotOffHand]?.item, canDualWield2H)) {
 			if (newSlot == ItemSlot.ItemSlotOffHand) {
+				if (!canDualWield2H && gear[ItemSlot.ItemSlotOffHand]?.item.handType == HandType.HandTypeTwoHand) {
+					gear[ItemSlot.ItemSlotOffHand] = null;
+				}
+
 				gear[ItemSlot.ItemSlotMainHand] = null;
 			} else {
 				gear[ItemSlot.ItemSlotOffHand] = null;
@@ -157,6 +161,13 @@ export class Gear extends BaseGear {
 		return this.getTrinkets()
 			.map(t => t?.item.id)
 			.includes(itemId);
+	}
+
+	hasTrinketFromOptions(itemIds: number[]): boolean {
+		return this.getTrinkets()
+			.filter((t): t is EquippedItem => !!t)
+			.map(t => t.item.id)
+			.some(id => itemIds.includes(id));
 	}
 
 	hasRelic(itemId: number): boolean {
@@ -385,7 +396,7 @@ export class Gear extends BaseGear {
 }
 
 /**
- * Represents a item swap gear set, including items/enchants/gems.
+ * Represents a item swap gear set, including items/enchants/gems/bonusStats.
  *
  * This is an immutable type.
  */
@@ -395,18 +406,11 @@ export class ItemSwapGear extends BaseGear {
 	}
 
 	getItemSlots(): ItemSlot[] {
-		return [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged];
+		return getEnumValues(ItemSlot);
 	}
 
 	withEquippedItem(newSlot: ItemSlot, newItem: EquippedItem | null, canDualWield2H: boolean): ItemSwapGear {
 		return new ItemSwapGear(this.withEquippedItemInternal(newSlot, newItem, canDualWield2H));
 	}
 
-	toProto(): ItemSwap {
-		return ItemSwap.create({
-			mhItem: this.gear[ItemSlot.ItemSlotMainHand]?.asSpec(),
-			ohItem: this.gear[ItemSlot.ItemSlotOffHand]?.asSpec(),
-			rangedItem: this.gear[ItemSlot.ItemSlotRanged]?.asSpec(),
-		});
-	}
 }

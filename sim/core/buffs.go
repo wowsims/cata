@@ -29,18 +29,10 @@ func makeExclusiveMultiplierBuff(aura *Aura, stat stats.Stat, value float64) {
 	aura.NewExclusiveEffect(stat.StatName()+"%Buff", false, ExclusiveEffect{
 		Priority: value,
 		OnGain: func(ee *ExclusiveEffect, s *Simulation) {
-			if ee.Aura.Unit.Env.MeasuringStats && ee.Aura.Unit.Env.State != Finalized {
-				aura.Unit.StatDependencyManager.EnableDynamicStatDep(dep)
-			} else {
-				ee.Aura.Unit.EnableDynamicStatDep(s, dep)
-			}
+			ee.Aura.Unit.EnableBuildPhaseStatDep(s, dep)
 		},
 		OnExpire: func(ee *ExclusiveEffect, s *Simulation) {
-			if ee.Aura.Unit.Env.MeasuringStats {
-				aura.Unit.StatDependencyManager.DisableDynamicStatDep(dep)
-			} else {
-				ee.Aura.Unit.DisableDynamicStatDep(s, dep)
-			}
+			ee.Aura.Unit.DisableBuildPhaseStatDep(s, dep)
 		},
 	})
 }
@@ -307,6 +299,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 		registerPainSuppressionCD(agent, individualBuffs.PainSuppressionCount)
 		registerGuardianSpiritCD(agent, individualBuffs.GuardianSpiritCount)
 		registerRallyingCryCD(agent, individualBuffs.RallyingCryCount)
+		registerShatteringThrowCD(agent, individualBuffs.ShatteringThrowCount)
 
 		if individualBuffs.FocusMagic {
 			FocusMagicAura(nil, &character.Unit)
@@ -1685,30 +1678,32 @@ func RallyingCryAura(character *Character, actionTag int32) *Aura {
 
 const ShatteringThrowCD = time.Minute * 5
 
-// func registerShatteringThrowCD(agent Agent, numShatteringThrows int32) {
-// 	if numShatteringThrows == 0 {
-// 		return
-// 	}
+func registerShatteringThrowCD(agent Agent, numShatteringThrows int32) {
+	if numShatteringThrows == 0 {
+		return
+	}
 
-// 	stAura := ShatteringThrowAura(agent.GetCharacter().Env.Encounter.TargetUnits[0])
+	stAura := ShatteringThrowAura(agent.GetCharacter().Env.Encounter.TargetUnits[0], -1)
 
-// 	registerExternalConsecutiveCDApproximation(
-// 		agent,
-// 		externalConsecutiveCDApproximation{
-// 			ActionID:         ActionID{SpellID: 64382, Tag: -1},
-// 			AuraTag:          ShatteringThrowAuraTag,
-// 			CooldownPriority: CooldownPriorityDefault,
-// 			AuraDuration:     ShatteringThrowDuration,
-// 			AuraCD:           ShatteringThrowCD,
-// 			Type:             CooldownTypeDPS,
+	registerExternalConsecutiveCDApproximation(
+		agent,
+		externalConsecutiveCDApproximation{
+			ActionID:         ActionID{SpellID: 64382, Tag: -1},
+			AuraTag:          ShatteringThrowAuraTag,
+			CooldownPriority: CooldownPriorityDefault,
+			AuraDuration:     ShatteringThrowDuration,
+			AuraCD:           ShatteringThrowCD,
+			Type:             CooldownTypeDPS,
 
-// 			ShouldActivate: func(sim *Simulation, unit *Unit) bool {
-// 				return true
-// 			},
-// 			AddAura: func(sim *Simulation, unit *Unit) { stAura.Activate(sim) },
-// 		},
-// 		numShatteringThrows)
-// }
+			ShouldActivate: func(sim *Simulation, character *Character) bool {
+				return true
+			},
+			AddAura: func(sim *Simulation, character *Character) {
+				stAura.Activate(sim)
+			},
+		},
+		numShatteringThrows)
+}
 
 var InnervateAuraTag = "Innervate"
 

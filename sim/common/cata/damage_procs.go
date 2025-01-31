@@ -31,8 +31,8 @@ func init() {
 		School:  core.SpellSchoolNature,
 		MinDmg:  5250,
 		MaxDmg:  8750,
-		Outcome: shared.OutcomeMeleeNoBlockDodgeParryCrit,
 		Flags:   core.SpellFlagNoSpellMods | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt,
+		Outcome: shared.OutcomeMeleeNoBlockDodgeParryCrit,
 		Trigger: core.ProcTrigger{
 			Name:     "Darkmoon Card: Hurricane",
 			ProcMask: core.ProcMaskMeleeOrRanged,
@@ -74,7 +74,7 @@ func init() {
 			},
 		})
 
-		core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		aura := core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Electrical Charge Aura",
 			ActionID:   core.ActionID{ItemID: 68925},
 			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
@@ -92,6 +92,8 @@ func init() {
 				}
 			},
 		}))
+
+		character.ItemSwap.RegisterProc(68925, aura)
 	})
 
 	core.NewItemEffect(69110, func(agent core.Agent) {
@@ -124,7 +126,7 @@ func init() {
 			},
 		})
 
-		core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		aura := core.MakePermanent(core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Electrical Charge Aura",
 			ActionID:   core.ActionID{ItemID: 69110},
 			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
@@ -142,6 +144,8 @@ func init() {
 				}
 			},
 		}))
+
+		character.ItemSwap.RegisterProc(69110, aura)
 	})
 
 }

@@ -20,6 +20,9 @@ type Priest struct {
 	ShadowfiendAura *core.Aura
 	ShadowfiendPet  *Shadowfiend
 
+	ShadowOrbsAura      *core.Aura
+	EmpoweredShadowAura *core.Aura
+
 	// cached cast stuff
 	// TODO: aoe multi-target situations will need multiple spells ticking for each target.
 	HolyEvangelismProcAura *core.Aura
@@ -94,7 +97,6 @@ func (priest *Priest) Initialize() {
 		}))
 	}
 
-	// priest.registerSetBonuses()
 	priest.registerDevouringPlagueSpell()
 	priest.registerShadowWordPainSpell()
 

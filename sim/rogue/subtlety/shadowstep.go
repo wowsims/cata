@@ -52,7 +52,8 @@ func (subRogue *SubtletyRogue) registerShadowstepCD() {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			subRogue.ShadowstepAura.Activate(sim)
+			spell.RelatedSelfBuff.Activate(sim)
 		},
+		RelatedSelfBuff: subRogue.ShadowstepAura,
 	})
 }

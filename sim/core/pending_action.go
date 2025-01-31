@@ -1,6 +1,7 @@
 package core
 
 import (
+	"slices"
 	"time"
 )
 
@@ -48,4 +49,8 @@ func (pa *PendingAction) Cancel(sim *Simulation) {
 	}
 
 	pa.cancelled = true
+
+	if i := slices.Index(sim.pendingActions, pa); i != -1 {
+		sim.pendingActions = append(sim.pendingActions[:i], sim.pendingActions[i+1:]...)
+	}
 }

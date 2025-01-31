@@ -52,6 +52,10 @@ type Mage struct {
 	previousCombustionDotEstimate int32
 
 	ClassSpellScaling float64
+
+	// Item sets
+	T12_4pc *core.Aura
+	T13_4pc *core.Aura
 }
 
 func (mage *Mage) GetCharacter() *core.Character {
@@ -81,7 +85,7 @@ func (mage *Mage) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 }
 
 func (mage *Mage) ApplyTalents() {
-	mage.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeCloth)
+	mage.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeCloth, 89744)
 
 	mage.ApplyArcaneTalents()
 	mage.ApplyFireTalents()
@@ -177,7 +181,7 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 	mage.flameOrb = mage.NewFlameOrb()
 	mage.frostfireOrb = mage.NewFrostfireOrb()
 
-	if mage.HasSetBonus(ItemSetFirehawkRobesOfConflagration, 2) {
+	if mage.CouldHaveSetBonus(ItemSetFirehawkRobesOfConflagration, 2) {
 		mage.t12MirrorImage = mage.NewT12MirrorImage()
 	}
 

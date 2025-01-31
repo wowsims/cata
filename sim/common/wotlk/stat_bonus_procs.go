@@ -496,7 +496,7 @@ func init() {
 	// })
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Phylactery of the Nameless Lich H",
-		ID:         50365,
+		ItemID:     50365,
 		AuraID:     71636,
 		Bonus:      stats.Stats{stats.SpellPower: 1207},
 		Duration:   time.Second * 20,
@@ -522,9 +522,21 @@ func init() {
 	// 	ICD:        time.Second * 60,
 	// })
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
+		// Ashen Band of Endless Wisdom
+		Name:       "Chilling Knowledge",
+		ItemID:     50400,
+		AuraID:     72418,
+		Bonus:      stats.Stats{stats.SpellPower: 285},
+		Duration:   time.Second * 10,
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskSpellHealing,
+		ProcChance: 0.10,
+		ICD:        time.Second * 60,
+	})
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		// Ashen Band of Endless Destruction
 		Name:       "Frostforged Sage",
-		ID:         50398,
+		ItemID:     50398,
 		AuraID:     72416,
 		Bonus:      stats.Stats{stats.SpellPower: 285},
 		Duration:   time.Second * 10,
@@ -550,7 +562,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		// Ashen Band of Endless Vengeance
 		Name:     "Frostforged Champion",
-		ID:       50402,
+		ItemID:   50402,
 		AuraID:   72412,
 		Bonus:    stats.Stats{stats.AttackPower: 480, stats.RangedAttackPower: 480},
 		Duration: time.Second * 10,
@@ -576,7 +588,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		// Ashen Band of Endless Courage
 		Name:       "Frostforged Defender",
-		ID:         50404,
+		ItemID:     50404,
 		AuraID:     72414,
 		Bonus:      stats.Stats{stats.Armor: 2400},
 		Duration:   time.Second * 10,
@@ -602,7 +614,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		// Ashen Band of Endless Might
 		Name:     "Frostforged Champion",
-		ID:       52572,
+		ItemID:   52572,
 		AuraID:   72412,
 		Bonus:    stats.Stats{stats.AttackPower: 480, stats.RangedAttackPower: 480},
 		Duration: time.Second * 10,
@@ -626,7 +638,7 @@ func init() {
 	// })
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Sharpened Twilight Scale H",
-		ID:         54590,
+		ItemID:     54590,
 		AuraID:     75456,
 		Bonus:      stats.Stats{stats.AttackPower: 1472, stats.RangedAttackPower: 1472},
 		Duration:   time.Second * 15,
@@ -649,7 +661,7 @@ func init() {
 	// })
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Charred Twilight Scale H",
-		ID:         54588,
+		ItemID:     54588,
 		AuraID:     75473,
 		Bonus:      stats.Stats{stats.SpellPower: 861},
 		Duration:   time.Second * 15,

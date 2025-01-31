@@ -7,10 +7,6 @@ import (
 	"github.com/wowsims/cata/sim/rogue"
 )
 
-const masteryDamagePerPoint = .025
-const masteryBaseEffect = 0.2
-const masteryFloored = false // Firelands patch appears to have fixed this issue
-
 func RegisterSubtletyRogue() {
 	core.RegisterAgentFactory(
 		proto.Player_SubtletyRogue{},
@@ -31,6 +27,9 @@ func RegisterSubtletyRogue() {
 func (subRogue *SubtletyRogue) Initialize() {
 	subRogue.Rogue.Initialize()
 
+	subRogue.MasteryBaseValue = 0.2
+	subRogue.MasteryMultiplier = .025
+
 	subRogue.registerHemorrhageSpell()
 	subRogue.registerSanguinaryVein()
 	subRogue.registerPremeditation()
@@ -45,28 +44,27 @@ func (subRogue *SubtletyRogue) Initialize() {
 	subRogue.registerShadowstepCD()
 
 	// Apply Mastery
-	// From all I can find, Sub's Mastery is Additive. Will need to test.
-	masteryEffect := getMasteryBonus(subRogue.GetStat(stats.MasteryRating))
-
-	subRogue.SliceAndDiceBonus *= (1 + masteryEffect)
-	subRogue.Eviscerate.DamageMultiplierAdditive += masteryEffect
-	subRogue.Rupture.DamageMultiplierAdditive += masteryEffect
+	masteryMod := subRogue.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: rogue.RogueSpellRupture | rogue.RogueSpellEviscerate,
+	})
 
 	subRogue.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-		masteryEffectOld := getMasteryBonus(oldMastery)
-		masteryEffectNew := getMasteryBonus(newMastery)
-
-		subRogue.SliceAndDiceBonus /= (1 + masteryEffectOld)
-		subRogue.SliceAndDiceBonus *= (1 + masteryEffectNew)
-		subRogue.Eviscerate.DamageMultiplierAdditive -= masteryEffectOld
-		subRogue.Eviscerate.DamageMultiplierAdditive += masteryEffectNew
-		subRogue.Rupture.DamageMultiplierAdditive -= masteryEffectOld
-		subRogue.Rupture.DamageMultiplierAdditive += masteryEffectNew
+		masteryMod.UpdateFloatValue(subRogue.GetMasteryBonus())
 	})
-}
 
-func getMasteryBonus(masteryRating float64) float64 {
-	return masteryBaseEffect + core.MasteryRatingToMasteryPoints(masteryRating)*masteryDamagePerPoint
+	core.MakePermanent(subRogue.GetOrRegisterAura(core.Aura{
+		Label:    "Executioner",
+		ActionID: core.ActionID{SpellID: 76808},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			masteryMod.UpdateFloatValue(subRogue.GetMasteryBonus())
+			masteryMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			masteryMod.Deactivate()
+		},
+	}))
+
 }
 
 func NewSubtletyRogue(character *core.Character, options *proto.Player) *SubtletyRogue {

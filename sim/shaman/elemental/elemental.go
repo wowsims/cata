@@ -87,7 +87,7 @@ func (eleShaman *ElementalShaman) Initialize() {
 
 func (ele *ElementalShaman) ApplyTalents() {
 	ele.Shaman.ApplyTalents()
-	ele.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeMail)
+	ele.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeMail, 86529)
 }
 
 type ElementalShaman struct {

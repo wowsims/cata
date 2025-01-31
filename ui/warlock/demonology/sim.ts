@@ -10,6 +10,7 @@ import { Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as WarlockInputs from '../inputs';
+import * as DemonologyInputs from './inputs';
 import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
@@ -31,6 +32,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 	defaults: {
 		// Default equipped gear.
 		gear: Presets.P3_PRESET.gear,
+		itemSwap: Presets.P3_ITEM_SWAP.itemSwap,
 
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.DEFAULT_EP_PRESET.epWeights,
@@ -104,16 +106,33 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 	otherInputs: {
 		inputs: [
 			WarlockInputs.DetonateSeed(),
-			WarlockInputs.PrepullMastery,
-			WarlockInputs.PrepullPostSnapshotMana,
 			OtherInputs.InputDelay,
 			OtherInputs.DistanceFromTarget,
 			OtherInputs.DarkIntentUptime,
 			OtherInputs.TankAssignment,
 			OtherInputs.ChannelClipDelay,
+			DemonologyInputs.AssumePrepullMasteryElixir,
 		],
 	},
-	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged],
+	itemSwapSlots: [
+		ItemSlot.ItemSlotHead,
+		ItemSlot.ItemSlotNeck,
+		ItemSlot.ItemSlotShoulder,
+		ItemSlot.ItemSlotBack,
+		ItemSlot.ItemSlotChest,
+		ItemSlot.ItemSlotWrist,
+		ItemSlot.ItemSlotHands,
+		ItemSlot.ItemSlotWaist,
+		ItemSlot.ItemSlotLegs,
+		ItemSlot.ItemSlotFeet,
+		ItemSlot.ItemSlotFinger1,
+		ItemSlot.ItemSlotFinger2,
+		ItemSlot.ItemSlotTrinket1,
+		ItemSlot.ItemSlotTrinket2,
+		ItemSlot.ItemSlotMainHand,
+		ItemSlot.ItemSlotOffHand,
+		ItemSlot.ItemSlotRanged,
+	],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,
@@ -128,6 +147,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
+		itemSwaps: [Presets.P3_ITEM_SWAP],
 
 		builds: [Presets.PRESET_BUILD_SHADOWBOLT, Presets.PRESET_BUILD_INCINERATE],
 	},

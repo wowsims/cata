@@ -79,14 +79,25 @@ func (action *APLActionCancelAura) String() string {
 }
 
 func (action *APLActionActivateAura) IsReady(sim *Simulation) bool {
-	return true
+	return (action.aura.Icd == nil) || action.aura.Icd.IsReady(sim)
 }
 
 func (action *APLActionActivateAura) Execute(sim *Simulation) {
+	if !action.IsReady(sim) {
+		if sim.Log != nil {
+			action.aura.Unit.Log(sim, "Could not activate aura %s because it's not ready", action.aura.ActionID)
+		}
+		return
+	}
+
 	if sim.Log != nil {
 		action.aura.Unit.Log(sim, "Activating aura %s", action.aura.ActionID)
 	}
+
 	action.aura.Activate(sim)
+	if action.aura.Icd != nil {
+		action.aura.Icd.Use(sim)
+	}
 }
 
 func (action *APLActionActivateAura) String() string {
@@ -114,9 +125,15 @@ func (rot *APLRotation) newActionActivateAuraWithStacks(config *proto.APLActionA
 	}
 }
 func (action *APLActionActivateAuraWithStacks) IsReady(sim *Simulation) bool {
-	return true
+	return (action.aura.Icd == nil) || action.aura.Icd.IsReady(sim)
 }
 func (action *APLActionActivateAuraWithStacks) Execute(sim *Simulation) {
+	if !action.IsReady(sim) {
+		if sim.Log != nil {
+			action.aura.Unit.Log(sim, "Could not activate aura %s (%d stacks) because it's not ready", action.aura.ActionID, action.numStacks)
+		}
+		return
+	}
 	if sim.Log != nil {
 		action.aura.Unit.Log(sim, "Activating aura %s (%d stacks)", action.aura.ActionID, action.numStacks)
 	}
@@ -183,11 +200,17 @@ func (action *APLActionItemSwap) IsReady(sim *Simulation) bool {
 	return (action.swapSet == proto.APLActionItemSwap_Main) == action.character.ItemSwap.IsSwapped()
 }
 func (action *APLActionItemSwap) Execute(sim *Simulation) {
-	if sim.Log != nil {
-		action.character.Log(sim, "Item Swap to set %s", action.swapSet)
+	if action.character.ItemSwap.swapSet == action.swapSet {
+		if sim.Log != nil {
+			action.character.Log(sim, "Item Swap already set to %s", action.swapSet)
+		}
+	} else {
+		if sim.Log != nil {
+			action.character.Log(sim, "Item Swap to set %s", action.swapSet)
+		}
 	}
 
-	action.character.ItemSwap.SwapItems(sim, action.character.ItemSwap.slots)
+	action.character.ItemSwap.SwapItems(sim, action.swapSet, false)
 }
 func (action *APLActionItemSwap) String() string {
 	return fmt.Sprintf("Item Swap(%s)", action.swapSet)

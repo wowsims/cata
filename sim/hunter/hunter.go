@@ -73,6 +73,9 @@ type Hunter struct {
 	MasterMarksmanAura            *core.Aura
 	MasterMarksmanCounterAura     *core.Aura
 	TrapLauncherAura              *core.Aura
+
+	// Item sets
+	T13_2pc *core.Aura
 }
 
 func (hunter *Hunter) GetCharacter() *core.Character {
@@ -93,10 +96,6 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 
 	core.FillTalentsProto(hunter.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 	focusPerSecond := 4.0
-
-	if hunter.HasSetBonus(ItemSetGladiatorsPursuit, 4) {
-		focusPerSecond *= 1.05
-	}
 
 	hunter.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), focusPerSecond, true, nil)
 

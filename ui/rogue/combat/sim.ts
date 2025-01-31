@@ -194,6 +194,23 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	],
 });
 
+// Check if the player is wearing any combination of the legendary dagger stages in both MH and OH
+const hasAnyLegendaryStage = (player: Player<Spec.SpecCombatRogue>): boolean => {
+	const mhWepId = player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.id;
+	const ohWepId = player.getEquippedItem(ItemSlot.ItemSlotOffHand)?.id;
+
+	return (mhWepId == 77945 || mhWepId == 77947 || mhWepId == 77949) &&
+		   (ohWepId == 77946 || ohWepId == 77948 || ohWepId == 77950);
+}
+
+// Check if the player is wearing the final legendary stage
+const hasFinalLegendaryStage = (player: Player<Spec.SpecCombatRogue>): boolean => {
+	const mhWepId = player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.id;
+	const ohWepId = player.getEquippedItem(ItemSlot.ItemSlotOffHand)?.id;
+
+	return mhWepId == 77949 && ohWepId == 77950;
+}
+
 const getActiveEPWeight = (player: Player<Spec.SpecCombatRogue>, sim: Sim): Stats => {
 	if (sim.getUseCustomEPValues()) {
 		return player.getEpWeights();
@@ -207,7 +224,7 @@ const getActiveEPWeight = (player: Player<Spec.SpecCombatRogue>, sim: Sim): Stat
 			return Presets.CBAT_NOKALED_EP_PRESET.epWeights;
 		} else if (playerGear.getItemSetCount("Vestments of the Dark Phoenix") >= 4) {
 			return Presets.CBAT_4PT12_EP_PRESET.epWeights;
-		} else if (playerGear.getItemSetCount("Blackfang Battleweave") || avgIlvl >= 400) { // T13, or high enough that Haste+Mastery overtake Spell Hit Cap
+		} else if (hasAnyLegendaryStage(player)) {
 			return Presets.CBAT_T13_EP_PRESET.epWeights;
 		}  else {
 			return Presets.CBAT_STANDARD_EP_PRESET.epWeights;
@@ -223,12 +240,13 @@ export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 			new ReforgeOptimizer(this, {
 				updateSoftCaps: (softCaps: StatCap[]) => {
 					const activeEPWeight = getActiveEPWeight(player, this.sim);
-					const mhWepId = player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.id
 					const hasteEP = activeEPWeight.getStat(Stat.StatHasteRating);
 					const hasteSoftCap = softCaps.find(v => v.unitStat.equalsStat(Stat.StatHasteRating));
+					const hasAnyLego = hasAnyLegendaryStage(player)
+					const hasFinalLego = hasFinalLegendaryStage(player)
 					if (hasteSoftCap) {
 						// If wearing either Fear or Sleeper in MH, Haste EP is never overtaken by Mastery
-						if (mhWepId == 77945 || mhWepId == 77947)
+						if (hasAnyLego && !hasFinalLego)
 							hasteSoftCap.postCapEPs = [hasteEP, hasteEP, hasteEP, hasteEP, hasteEP]
 						else
 							hasteSoftCap.postCapEPs = [hasteEP - 0.1, hasteEP - 0.2, hasteEP - 0.3, hasteEP - 0.4, hasteEP - 0.5];
@@ -239,18 +257,11 @@ export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 					const spellSoftCap = softCaps.find(v => v.unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHitPercent));
 					if (meleeSoftCap) {
 						const initialEP = activeEPWeight.getPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent);
-						// Any dagger MH inflates white hit EP - sufficient to force Spell Hit Cap
-						if (mhWepId == 77945 || mhWepId == 77947 || mhWepId == 77949) {
-							meleeSoftCap.postCapEPs = [initialEP/1.75, 0];
-						} else {
-							meleeSoftCap.postCapEPs = [initialEP/2, 0];
-						}
-
+						meleeSoftCap.postCapEPs = [initialEP/2, 0];
 					}
 					if (spellSoftCap) {
 						const initialEP = activeEPWeight.getPseudoStat(PseudoStat.PseudoStatSpellHitPercent);
-						player.getEpRatios
-						spellSoftCap.postCapEPs = [initialEP-5, initialEP/2, initialEP/4, initialEP/8, initialEP/16, initialEP/32, 0];
+						spellSoftCap.postCapEPs = [initialEP/1.25, initialEP/2, initialEP/4, initialEP/8, initialEP/16, initialEP/32, 0];
 					}
 
 					return softCaps

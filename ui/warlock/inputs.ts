@@ -1,7 +1,7 @@
 import * as InputHelpers from '../core/components/input_helpers.js';
 import { Player } from '../core/player.js';
 import { Spec } from '../core/proto/common.js';
-import { WarlockOptions_Summon as Summon, } from '../core/proto/warlock.js';
+import { WarlockOptions_Summon as Summon } from '../core/proto/warlock.js';
 import { ActionId } from '../core/proto_utils/action_id.js';
 import { WarlockSpecs } from '../core/proto_utils/utils';
 
@@ -32,17 +32,3 @@ export const DetonateSeed = <SpecType extends WarlockSpecs>() =>
 		labelTooltip: 'Simulates raid doing damage to targets such that seed detonates immediately on cast.',
 	});
 
-// Demo only
-export const PrepullMastery =
-	InputHelpers.makeClassOptionsNumberInput<Spec.SpecDemonologyWarlock>({
-	fieldName: 'prepullMastery',
-	label: 'Prepull Mastery',
-	labelTooltip: 'Mastery in the prepull set equipped at the start. Only applies if it\'s value is > 0 and only before combat.',
-});
-
-export const PrepullPostSnapshotMana =
-	InputHelpers.makeClassOptionsNumberInput<Spec.SpecDemonologyWarlock>({
-	fieldName: 'prepullPostSnapshotMana',
-	label: 'Mana after prepull Mastery snapshot',
-	labelTooltip: 'Total starting mana after swapping from the prepull set to your normal set. Only applies if the \'Prepull Mastery\' value is > 0.',
-});

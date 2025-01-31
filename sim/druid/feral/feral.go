@@ -41,8 +41,11 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 
 	cat.AssumeBleedActive = feralOptions.Options.AssumeBleedActive
 	cat.maxRipTicks = cat.MaxRipTicks()
+	cat.primalMadnessBonus = 10.0 * float64(cat.Talents.PrimalMadness)
 
-	cat.EnableEnergyBar(100.0)
+	cat.EnableEnergyBar(core.EnergyBarOptions{
+		MaxEnergy: 100.0,
+	})
 	cat.EnableRageBar(core.RageBarOptions{RageMultiplier: 1, MHSwingSpeed: 2.5})
 
 	cat.EnableAutoAttacks(cat, core.AutoAttackOptions{
@@ -50,9 +53,9 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 		MainHand:       cat.GetCatWeapon(),
 		AutoSwingMelee: true,
 	})
-	// cat.ReplaceBearMHFunc = func(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
-	// 	return cat.checkReplaceMaul(sim, mhSwingSpell)
-	// }
+
+	cat.RegisterCatFormAura()
+	cat.RegisterBearFormAura()
 
 	return cat
 }
@@ -66,6 +69,7 @@ type FeralDruid struct {
 	readyToGift        bool
 	waitingForTick     bool
 	maxRipTicks        int32
+	primalMadnessBonus float64
 	berserkUsed        bool
 	bleedAura          *core.Aura
 	tempSnapshotAura   *core.Aura
@@ -73,6 +77,8 @@ type FeralDruid struct {
 	cachedRipEndThresh time.Duration
 	nextActionAt       time.Duration
 	usingHardcodedAPL  bool
+	pendingPool        *PoolingActions
+	pendingPoolWeaves  *PoolingActions
 }
 
 func (cat *FeralDruid) GetDruid() *druid.Druid {

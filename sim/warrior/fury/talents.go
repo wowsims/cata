@@ -10,7 +10,7 @@ import (
 )
 
 func (war *FuryWarrior) ApplyTalents() {
-	war.ApplyArmorSpecializationEffect(stats.Strength, proto.ArmorType_ArmorTypePlate)
+	war.ApplyArmorSpecializationEffect(stats.Strength, proto.ArmorType_ArmorTypePlate, 86526)
 	war.Warrior.ApplyCommonTalents()
 
 	war.RegisterDeathWish()

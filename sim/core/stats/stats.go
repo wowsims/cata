@@ -263,6 +263,14 @@ func (stats Stats) DotProduct(other Stats) Stats {
 	return stats
 }
 
+// Higher performance variant of the above.
+func (stats Stats) ApplyMultipliers(multipliers map[Stat]float64) Stats {
+	for k, v := range multipliers {
+		stats[k] *= v
+	}
+	return stats
+}
+
 func (stats Stats) Equals(other Stats) bool {
 	return stats == other
 }

@@ -1227,6 +1227,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestShadow-AllItems-RegaliaofDyingLight"
+ value: {
+  dps: 35688.96997
+  tps: 31611.20778
+ }
+}
+dps_results: {
  key: "TestShadow-AllItems-RegaliaoftheCleansingFlame"
  value: {
   dps: 36884.25892
@@ -1429,6 +1436,27 @@ dps_results: {
  value: {
   dps: 38885.07202
   tps: 33025.38649
+ }
+}
+dps_results: {
+ key: "TestShadow-AllItems-SealoftheSevenSigns-77204"
+ value: {
+  dps: 39351.82253
+  tps: 33465.94967
+ }
+}
+dps_results: {
+ key: "TestShadow-AllItems-SealoftheSevenSigns-77969"
+ value: {
+  dps: 39220.15255
+  tps: 33344.04899
+ }
+}
+dps_results: {
+ key: "TestShadow-AllItems-SealoftheSevenSigns-77989"
+ value: {
+  dps: 39573.01424
+  tps: 33645.34386
  }
 }
 dps_results: {

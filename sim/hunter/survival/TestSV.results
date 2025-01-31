@@ -45,15 +45,15 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-AgonyandTorment"
  value: {
-  dps: 28835.22024
-  tps: 26056.09185
+  dps: 28920.01029
+  tps: 26141.33582
  }
 }
 dps_results: {
  key: "TestSV-AllItems-Ahn'KaharBloodHunter'sBattlegear"
  value: {
-  dps: 24218.5404
-  tps: 21857.56471
+  dps: 24234.83973
+  tps: 21873.86403
  }
 }
 dps_results: {
@@ -627,8 +627,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-Flamewaker'sBattlegear"
  value: {
-  dps: 29262.74951
-  tps: 26380.52812
+  dps: 29238.1739
+  tps: 26356.46183
  }
 }
 dps_results: {
@@ -1502,6 +1502,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSV-AllItems-SealoftheSevenSigns-77204"
+ value: {
+  dps: 28305.30571
+  tps: 25581.18738
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-SealoftheSevenSigns-77969"
+ value: {
+  dps: 28305.30571
+  tps: 25581.18738
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-SealoftheSevenSigns-77989"
+ value: {
+  dps: 28305.30571
+  tps: 25581.18738
+ }
+}
+dps_results: {
  key: "TestSV-AllItems-Shadowmourne-49623"
  value: {
   dps: 30424.72738
@@ -1913,22 +1934,22 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-VialofShadows-77207"
  value: {
-  dps: 30564.4296
-  tps: 27663.71075
+  dps: 31357.13181
+  tps: 28456.41296
  }
 }
 dps_results: {
  key: "TestSV-AllItems-VialofShadows-77979"
  value: {
-  dps: 30331.61925
-  tps: 27458.66763
+  dps: 31035.51914
+  tps: 28162.56752
  }
 }
 dps_results: {
  key: "TestSV-AllItems-VialofShadows-77999"
  value: {
-  dps: 30860.46032
-  tps: 27938.22588
+  dps: 31759.66907
+  tps: 28837.43463
  }
 }
 dps_results: {

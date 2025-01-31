@@ -60,7 +60,7 @@ func (comRogue *CombatRogue) registerKillingSpreeCD() {
 		ActionID: core.ActionID{SpellID: 51690},
 		Duration: time.Second*2 + 1,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			comRogue.SetGCDTimer(sim, core.NeverExpires)
+			comRogue.SetGCDTimer(sim, sim.CurrentTime+aura.Duration)
 			comRogue.PseudoStats.DamageDealtMultiplier *= auraDamageMult
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 				Period:          time.Millisecond * 500,
@@ -79,7 +79,6 @@ func (comRogue *CombatRogue) registerKillingSpreeCD() {
 			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			comRogue.SetGCDTimer(sim, sim.CurrentTime)
 			comRogue.PseudoStats.DamageDealtMultiplier /= auraDamageMult
 		},
 	})

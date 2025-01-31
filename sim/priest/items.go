@@ -9,8 +9,8 @@ import (
 
 // var ItemSetVestmentsOfAbsolution = core.NewItemSet(core.ItemSet{
 // 	Name: "Vestments of Absolution",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
+// 	Bonuses: map[int32]core.ApplySetBonus{
+// 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 // 			character := agent.GetCharacter()
 // 			character.AddStaticMod(core.SpellModConfig{
 // 				Kind:       core.SpellMod_PowerCost_Pct,
@@ -18,7 +18,7 @@ import (
 // 				ClassMask:  PriestSpellPrayerOfHealing,
 // 			})
 // 		},
-// 		4: func(agent core.Agent) {
+// 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 // 			character := agent.GetCharacter()
 // 			character.AddStaticMod(core.SpellModConfig{
 // 				Kind:       core.SpellMod_DamageDone_Flat,
@@ -31,8 +31,8 @@ import (
 
 // var ItemSetValorous = core.NewItemSet(core.ItemSet{
 // 	Name: "Garb of Faith",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
+// 	Bonuses: map[int32]core.ApplySetBonus{
+// 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 // 			character := agent.GetCharacter()
 // 			character.AddStaticMod(core.SpellModConfig{
 // 				Kind:       core.SpellMod_PowerCost_Pct,
@@ -40,7 +40,7 @@ import (
 // 				ClassMask:  PriestSpellMindBlast,
 // 			})
 // 		},
-// 		4: func(agent core.Agent) {
+// 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 // 			character := agent.GetCharacter()
 // 			character.AddStaticMod(core.SpellModConfig{
 // 				Kind:       core.SpellMod_BonusCrit_Rating,
@@ -53,11 +53,11 @@ import (
 
 // var ItemSetRegaliaOfFaith = core.NewItemSet(core.ItemSet{
 // 	Name: "Regalia of Faith",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
+// 	Bonuses: map[int32]core.ApplySetBonus{
+// 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 // 			// Not implemented
 // 		},
-// 		4: func(agent core.Agent) {
+// 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 // 			character := agent.GetCharacter()
 // 			character.AddStaticMod(core.SpellModConfig{
 // 				Kind:       core.SpellMod_PowerCost_Pct,
@@ -70,8 +70,8 @@ import (
 
 // var ItemSetConquerorSanct = core.NewItemSet(core.ItemSet{
 // 	Name: "Sanctification Garb",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
+// 	Bonuses: map[int32]core.ApplySetBonus{
+// 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 // 			character := agent.GetCharacter()
 // 			character.AddStaticMod(core.SpellModConfig{
 // 				Kind:       core.SpellMod_DamageDone_Flat,
@@ -79,7 +79,7 @@ import (
 // 				ClassMask:  PriestSpellDevouringPlague,
 // 			})
 // 		},
-// 		4: func(agent core.Agent) {
+// 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 // 			priest := agent.(PriestAgent).GetPriest()
 // 			procAura := priest.NewTemporaryStatsAura("Devious Mind", core.ActionID{SpellID: 64907}, stats.Stats{stats.SpellHaste: 240}, time.Second*4)
 
@@ -102,8 +102,8 @@ import (
 
 // var ItemSetSanctificationRegalia = core.NewItemSet(core.ItemSet{
 // 	Name: "Sanctification Regalia",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
+// 	Bonuses: map[int32]core.ApplySetBonus{
+// 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 // 			character := agent.GetCharacter()
 // 			character.AddStaticMod(core.SpellModConfig{
 // 				Kind:       core.SpellMod_BonusCrit_Rating,
@@ -111,7 +111,7 @@ import (
 // 				ClassMask:  PriestSpellPrayerOfHealing,
 // 			})
 // 		},
-// 		4: func(agent core.Agent) {
+// 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 // 			priest := agent.(PriestAgent).GetPriest()
 // 			procAura := priest.NewTemporaryStatsAura("Sanctification Reglia 4pc", core.ActionID{SpellID: 64912}, stats.Stats{stats.SpellPower: 250}, time.Second*5)
 
@@ -135,12 +135,12 @@ import (
 // var ItemSetZabras = core.NewItemSet(core.ItemSet{
 // 	Name:            "Zabra's Regalia",
 // 	AlternativeName: "Velen's Regalia",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
+// 	Bonuses: map[int32]core.ApplySetBonus{
+// 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 // 			// Modifies dot length, need to implement later again
 // 			// Requieres tests and proper modification of SpellMods
 // 		},
-// 		4: func(agent core.Agent) {
+// 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 // 			character := agent.GetCharacter()
 // 			character.AddStaticMod(core.SpellModConfig{
 // 				Kind:       core.SpellMod_BonusCrit_Rating,
@@ -154,8 +154,8 @@ import (
 // var ItemSetZabrasRaiment = core.NewItemSet(core.ItemSet{
 // 	Name:            "Zabra's Raiment",
 // 	AlternativeName: "Velen's Raiment",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
+// 	Bonuses: map[int32]core.ApplySetBonus{
+// 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 // 			character := agent.GetCharacter()
 // 			character.AddStaticMod(core.SpellModConfig{
 // 				Kind:       core.SpellMod_DamageDone_Flat,
@@ -163,7 +163,7 @@ import (
 // 				ClassMask:  PriestSpellPrayerOfMending,
 // 			})
 // 		},
-// 		4: func(agent core.Agent) {
+// 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 // 			// changed in cata to flat 5% heal
 // 			character := agent.GetCharacter()
 // 			character.PseudoStats.DamageDealtMultiplier *= 1.05
@@ -173,18 +173,16 @@ import (
 
 var ItemSetCrimsonAcolyte = core.NewItemSet(core.ItemSet{
 	Name: "Crimson Acolyte's Regalia",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			character := agent.GetCharacter()
-			character.AddStaticMod(core.SpellModConfig{
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(_ core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_BonusCrit_Percent,
 				FloatValue: 5,
 				ClassMask:  PriestSpellShadowWordPain | PriestSpellDevouringPlague | PriestSpellVampiricTouch | PriestSpellImprovedDevouringPlague,
 			})
 		},
-		4: func(agent core.Agent) {
-			character := agent.GetCharacter()
-			character.AddStaticMod(core.SpellModConfig{
+		4: func(_ core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:      core.SpellMod_DotTickLength_Flat,
 				TimeValue: -time.Millisecond * 170,
 				ClassMask: PriestSpellMindFlay,
@@ -195,8 +193,8 @@ var ItemSetCrimsonAcolyte = core.NewItemSet(core.ItemSet{
 
 var ItemSetCrimsonAcolytesRaiment = core.NewItemSet(core.ItemSet{
 	Name: "Crimson Acolyte's Raiment",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			priest := agent.(PriestAgent).GetPriest()
 
 			var curAmount float64
@@ -211,7 +209,7 @@ var ItemSetCrimsonAcolytesRaiment = core.NewItemSet(core.ItemSet{
 
 				Hot: core.DotConfig{
 					Aura: core.Aura{
-						Label: "CrimsonAcolyteRaiment2pc",
+						Label: "Crimson Acolytes Raiment 2pc - Hot",
 					},
 					NumberOfTicks: 3,
 					TickLength:    time.Second * 3,
@@ -225,32 +223,31 @@ var ItemSetCrimsonAcolytesRaiment = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			priest.RegisterAura(core.Aura{
-				Label:    "Crimson Acolytes Raiment 2pc",
-				Duration: core.NeverExpires,
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Activate(sim)
-				},
-				OnHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell.ClassSpellMask != PriestSpellFlashHeal || !sim.Proc(0.33, "Crimson Acolytes Raiment 2pc") {
-						return
-					}
-
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
+				Name:           "Crimson Acolytes Raiment 2pc",
+				ClassSpellMask: PriestSpellFlashHeal,
+				ProcChance:     1.0 / 3,
+				Callback:       core.CallbackOnHealDealt,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					curAmount = result.Damage
 					hot := procSpell.Hot(result.Target)
 					hot.Apply(sim)
 				},
 			})
+
+			setBonusAura.ApplyOnExpire(func(_ *core.Aura, _ *core.Simulation) {
+				curAmount = 0
+			})
+
 		},
-		4: func(agent core.Agent) {
-			character := agent.GetCharacter()
-			character.AddStaticMod(core.SpellModConfig{
+		4: func(_ core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_DamageDone_Pct,
 				FloatValue: 0.05,
 				ClassMask:  PriestSpellPowerWordShield,
 			})
 
-			character.AddStaticMod(core.SpellModConfig{
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_DamageDone_Pct,
 				FloatValue: 0.10,
 				ClassMask:  PriestSpellCircleOfHealing,
@@ -261,26 +258,24 @@ var ItemSetCrimsonAcolytesRaiment = core.NewItemSet(core.ItemSet{
 
 var ItemSetGladiatorsInvestiture = core.NewItemSet(core.ItemSet{
 	Name: "Gladiator's Investiture",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			agent.GetCharacter().AddStat(stats.ResilienceRating, 400)
-			agent.GetCharacter().AddStat(stats.Intellect, 70)
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(_ core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachStatsBuff(stats.Stats{stats.ResilienceRating: 400, stats.Intellect: 70})
 		},
-		4: func(agent core.Agent) {
-			agent.GetCharacter().AddStat(stats.Intellect, 90)
+		4: func(_ core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachStatBuff(stats.Intellect, 90)
 		},
 	},
 })
 
 var ItemSetGladiatorsRaiment = core.NewItemSet(core.ItemSet{
 	Name: "Gladiator's Raiment",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			agent.GetCharacter().AddStat(stats.ResilienceRating, 400)
-			agent.GetCharacter().AddStat(stats.Intellect, 70)
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(_ core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachStatsBuff(stats.Stats{stats.ResilienceRating: 400, stats.Intellect: 70})
 		},
-		4: func(agent core.Agent) {
-			agent.GetCharacter().AddStat(stats.Intellect, 90)
+		4: func(_ core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachStatBuff(stats.Intellect, 90)
 		},
 	},
 })
@@ -288,18 +283,16 @@ var ItemSetGladiatorsRaiment = core.NewItemSet(core.ItemSet{
 // T11 - Shadow
 var ItemSetMercurialRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Mercurial Regalia",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			character := agent.GetCharacter()
-			character.AddStaticMod(core.SpellModConfig{
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(_ core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_BonusCrit_Percent,
 				FloatValue: 5,
 				ClassMask:  PriestSpellMindFlay | PriestSpellMindSear,
 			})
 		},
-		4: func(agent core.Agent) {
-			character := agent.GetCharacter()
-			character.AddStaticMod(core.SpellModConfig{
+		4: func(_ core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_DamageDone_Flat,
 				FloatValue: 0.3,
 				ClassMask:  PriestSpellShadowyApparation,
@@ -311,13 +304,10 @@ var ItemSetMercurialRegalia = core.NewItemSet(core.ItemSet{
 // T12 - Shadow
 var ItemSetRegaliaOfTheCleansingFlame = core.NewItemSet(core.ItemSet{
 	Name: "Regalia of the Cleansing Flame",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Fiend deals 20% extra damage as fire damage and cooldown reduced by 75 seconds
-			character := agent.GetCharacter()
-
-			character.AddStaticMod(core.SpellModConfig{
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:      core.SpellMod_Cooldown_Flat,
 				TimeValue: -time.Second * 75,
 				ClassMask: PriestSpellShadowFiend,
@@ -350,23 +340,22 @@ var ItemSetRegaliaOfTheCleansingFlame = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			core.MakePermanent(
-				core.MakeProcTriggerAura(&priest.ShadowfiendPet.Unit, core.ProcTrigger{
-					ActionID:   core.ActionID{SpellID: 99155},
-					Name:       "Shadowflame (T12-2P)",
-					Callback:   core.CallbackOnSpellHitDealt,
-					ProcMask:   core.ProcMaskMelee,
-					Outcome:    core.OutcomeLanded,
-					ProcChance: 1.0,
-					Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			setBonusAura.MakeDependentProcTriggerAura(&priest.ShadowfiendPet.Unit, core.ProcTrigger{
+				ActionID:   core.ActionID{SpellID: 99155},
+				Name:       "Shadowflame (T12-2P)",
+				Callback:   core.CallbackOnSpellHitDealt,
+				ProcMask:   core.ProcMaskMelee,
+				Outcome:    core.OutcomeLanded,
+				ProcChance: 1.0,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					// deal 20% of melee damage on hit
+					shadowFlameProc.BonusSpellPower = result.Damage * 0.2
+					shadowFlameProc.Cast(sim, result.Target)
+				},
+			})
 
-						// deal 20% of melee damage on hit
-						shadowFlameProc.BonusSpellPower = result.Damage * 0.2
-						shadowFlameProc.Cast(sim, result.Target)
-					},
-				}))
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			character := agent.GetCharacter()
 			mbMod := character.AddDynamicMod(core.SpellModConfig{
 				Kind:       core.SpellMod_DamageDone_Flat,
@@ -389,7 +378,7 @@ var ItemSetRegaliaOfTheCleansingFlame = core.NewItemSet(core.ItemSet{
 			priest := agent.(PriestAgent).GetPriest()
 			dotTracker := make([]int, len(priest.Env.AllUnits))
 			setHandler := func(aura *core.Aura, sim *core.Simulation) {
-				if aura.IsActive() {
+				if setBonusAura.IsActive() && aura.IsActive() {
 					dotTracker[aura.Unit.UnitIndex]++
 				} else {
 					dotTracker[aura.Unit.UnitIndex]--
@@ -407,7 +396,7 @@ var ItemSetRegaliaOfTheCleansingFlame = core.NewItemSet(core.ItemSet{
 			}
 
 			priest.OnSpellRegistered(func(spell *core.Spell) {
-				if spell.ClassSpellMask&(PriestSpellShadowWordPain|PriestSpellVampiricTouch|PriestSpellDevouringPlague) == 0 {
+				if !spell.Matches(PriestSpellShadowWordPain | PriestSpellVampiricTouch | PriestSpellDevouringPlague) {
 					return
 				}
 
@@ -418,6 +407,50 @@ var ItemSetRegaliaOfTheCleansingFlame = core.NewItemSet(core.ItemSet{
 					}
 				}
 			})
+		},
+	},
+})
+
+// T13 - Shadow
+var ItemSetRegaliaOfDyingLight = core.NewItemSet(core.ItemSet{
+	Name:            "Regalia of Dying Light",
+	AlternativeName: "Regalia of Dying light",
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:       core.SpellMod_DamageDone_Flat,
+				ClassMask:  PriestSpellShadowWordDeath,
+				FloatValue: 0.55,
+			})
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			priest := agent.(PriestAgent).GetPriest()
+
+			makeProcTriggerConfig := func(config core.ProcTrigger) core.ProcTrigger {
+				return core.ProcTrigger{
+					ActionID:       core.ActionID{SpellID: 105844},
+					Name:           "Item - Priest T13 Shadow 4P Bonus (Shadowfiend and Shadowy Apparition)",
+					Callback:       core.CallbackOnSpellHitDealt,
+					Outcome:        core.OutcomeLanded,
+					ProcChance:     1.0,
+					ClassSpellMask: config.ClassSpellMask,
+					ProcMask:       config.ProcMask,
+					Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+						if priest.ShadowOrbsAura != nil {
+							priest.ShadowOrbsAura.Activate(sim)
+							priest.ShadowOrbsAura.SetStacks(sim, 3)
+						}
+					},
+				}
+			}
+
+			setBonusAura.MakeDependentProcTriggerAura(&priest.ShadowfiendPet.Unit, makeProcTriggerConfig(core.ProcTrigger{
+				ProcMask: core.ProcMaskMelee,
+			}))
+
+			setBonusAura.AttachProcTrigger(makeProcTriggerConfig(core.ProcTrigger{
+				ClassSpellMask: PriestSpellShadowyApparation,
+			}))
 		},
 	},
 })

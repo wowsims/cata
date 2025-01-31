@@ -345,7 +345,9 @@ export class ActionId {
 				}
 				break;
 			case 'Shattering Throw':
-				if (tag === playerIndex) {
+				if (tag === -1) {
+					name += ' (raid)';
+				} else {
 					name += ` (self)`;
 				}
 				break;
@@ -660,6 +662,13 @@ export class ActionId {
 				break;
 			case 'Virtuous Empowerment':
 				name = 'Battleplate of Radiant Glory - T13 2pc';
+				break;
+			case 'Landslide':
+				if (tag == 1) {
+					name += ' (Main Hand)';
+				} else if (tag == 2) {
+					name += ' (Off Hand)';
+				}
 				break;
 			default:
 				if (tag) {

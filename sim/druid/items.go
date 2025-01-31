@@ -11,11 +11,13 @@ import (
 // T11 Feral
 var ItemSetStormridersBattlegarb = core.NewItemSet(core.ItemSet{
 	Name: "Stormrider's Battlegarb",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Implemented in rake.go and lacerate.go
+			druid := agent.(DruidAgent).GetDruid()
+			druid.T11Feral2pBonus = setBonusAura
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			druid := agent.(DruidAgent).GetDruid()
 			var apDepByStackCount = map[int32]*stats.StatDependency{}
 
@@ -39,6 +41,8 @@ var ItemSetStormridersBattlegarb = core.NewItemSet(core.ItemSet{
 					}
 				},
 			})
+
+			druid.T11Feral4pBonus = setBonusAura
 		},
 	},
 })
@@ -46,18 +50,17 @@ var ItemSetStormridersBattlegarb = core.NewItemSet(core.ItemSet{
 // T11 Balance
 var ItemSetStormridersRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Stormrider's Regalia",
-	Bonuses: map[int32]core.ApplyEffect{
+	Bonuses: map[int32]core.ApplySetBonus{
 		// Increases the critical strike chance of your Insect Swarm and Moonfire spells by 5%
-		2: func(agent core.Agent) {
-			character := agent.GetCharacter()
-			character.AddStaticMod(core.SpellModConfig{
+		2: func(_ core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_BonusCrit_Percent,
 				FloatValue: 5,
 				ClassMask:  DruidSpellDoT | DruidSpellMoonfire | DruidSpellSunfire,
 			})
 		},
 		// Whenever Eclipse triggers, your critical strike chance with spells is increased by 15% for 8 sec.  Each critical strike you achieve reduces that bonus by 5%
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			druid := agent.(DruidAgent).GetDruid()
 
 			tierSet4pMod := druid.AddDynamicMod(core.SpellModConfig{
@@ -88,10 +91,12 @@ var ItemSetStormridersRegalia = core.NewItemSet(core.ItemSet{
 			})
 
 			druid.AddEclipseCallback(func(_ Eclipse, gained bool, sim *core.Simulation) {
-				if gained {
-					tierSet4pAura.Activate(sim)
-				} else {
-					tierSet4pAura.Deactivate(sim)
+				if setBonusAura.IsActive() {
+					if gained {
+						tierSet4pAura.Activate(sim)
+					} else {
+						tierSet4pAura.Deactivate(sim)
+					}
 				}
 			})
 		},
@@ -101,14 +106,15 @@ var ItemSetStormridersRegalia = core.NewItemSet(core.ItemSet{
 // T12 Feral
 var ItemSetObsidianArborweaveBattlegarb = core.NewItemSet(core.ItemSet{
 	Name: "Obsidian Arborweave Battlegarb",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// TODO: Verify behavior after PTR testing
 			druid := agent.(DruidAgent).GetDruid()
 			cata.RegisterIgniteEffect(&druid.Unit, cata.IgniteConfig{
 				ActionID:         core.ActionID{SpellID: 99002},
 				DotAuraLabel:     "Fiery Claws",
 				IncludeAuraDelay: true,
+				SetBonusAura:     setBonusAura,
 
 				ProcTrigger: core.ProcTrigger{
 					Name:           "Fiery Claws Trigger",
@@ -122,10 +128,10 @@ var ItemSetObsidianArborweaveBattlegarb = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			// Full implementation in berserk.go and barkskin.go
 			druid := agent.(DruidAgent).GetDruid()
-			druid.Feral4pT12Active = true
+			druid.T12Feral4pBonus = setBonusAura
 
 			if !druid.InForm(Bear) {
 				return
@@ -151,12 +157,12 @@ var ItemSetObsidianArborweaveBattlegarb = core.NewItemSet(core.ItemSet{
 // T12 Balance
 var ItemSetObsidianArborweaveRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Obsidian Arborweave Regalia",
-	Bonuses: map[int32]core.ApplyEffect{
+	Bonuses: map[int32]core.ApplySetBonus{
 		// You have a chance to summon a Burning Treant to assist you in battle for 15 sec when you cast Wrath or Starfire. (Proc chance: 20%, 45s cooldown)
-		2: func(agent core.Agent) {
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			druid := agent.(DruidAgent).GetDruid()
 
-			core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
 				ActionID:       core.ActionID{SpellID: 99019},
 				Name:           "Item - Druid T12 Balance 2P Bonus",
 				Callback:       core.CallbackOnCastComplete,
@@ -169,24 +175,82 @@ var ItemSetObsidianArborweaveRegalia = core.NewItemSet(core.ItemSet{
 			})
 		},
 		// While not in an Eclipse state, your Wrath generates 3 additional Lunar Energy and your Starfire generates 5 additional Solar Energy.
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			druid := agent.(DruidAgent).GetDruid()
 
-			druid.OnSpellRegistered(func(spell *core.Spell) {
-				if spell.ClassSpellMask == DruidSpellWrath {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:      core.SpellMod_Custom,
+				ClassMask: DruidSpellWrath,
+				ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
 					druid.SetSpellEclipseEnergy(DruidSpellWrath, WrathBaseEnergyGain, Wrath4PT12EnergyGain)
-				}
-
-				if spell.ClassSpellMask == DruidSpellStarfire {
-					druid.SetSpellEclipseEnergy(DruidSpellStarfire, StarfireBaseEnergyGain, Starfire4PT12EnergyGain)
-				}
+				},
+				RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
+					druid.SetSpellEclipseEnergy(DruidSpellWrath, WrathBaseEnergyGain, WrathBaseEnergyGain)
+				},
 			})
 
-			core.MakePermanent(druid.RegisterAura(core.Aura{
-				ActionID: core.ActionID{SpellID: 99049},
-				Label:    "Item - Druid T12 Balance 4P Bonus",
-				Duration: core.NeverExpires,
-			}))
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:      core.SpellMod_Custom,
+				ClassMask: DruidSpellStarfire,
+				ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
+					druid.SetSpellEclipseEnergy(DruidSpellStarfire, StarfireBaseEnergyGain, Starfire4PT12EnergyGain)
+				},
+				RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
+					druid.SetSpellEclipseEnergy(DruidSpellStarfire, StarfireBaseEnergyGain, StarfireBaseEnergyGain)
+				},
+			})
+
+			setBonusAura.ExposeToAPL(99049)
+		},
+	},
+})
+
+// T13 Feral
+var ItemSetDeepEarthBattlegarb = core.NewItemSet(core.ItemSet{
+	Name: "Deep Earth Battlegarb",
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			druid := agent.(DruidAgent).GetDruid()
+
+			if druid.InForm(Bear) {
+				setBonusAura.AttachProcTrigger(core.ProcTrigger{
+					Name:           "T13 Savage Defense Trigger",
+					Callback:       core.CallbackOnSpellHitDealt,
+					ClassSpellMask: DruidSpellMangleBear,
+					Outcome:        core.OutcomeCrit,
+
+					Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+						if druid.PulverizeAura.IsActive() {
+							druid.SavageDefenseAura.Activate(sim)
+						}
+					},
+				})
+			}
+
+			if !druid.InForm(Cat) {
+				return
+			}
+
+			// Rather than creating a whole extra Execute phase category just for this bonus, we will instead scale up ExecuteProportion_25 using linear interpolation. Note that we use ExecuteProportion_90 for Predatory Strikes (< 80%), which is why the math below looks funny.
+			oldExecuteProportion_25 := druid.Env.Encounter.ExecuteProportion_25
+			oldExecuteProportion_35 := druid.Env.Encounter.ExecuteProportion_35
+			newExecuteProportion_25 := oldExecuteProportion_35*(1.0-(60.0-35.0)/(80.0-35.0)) + druid.Env.Encounter.ExecuteProportion_90*((60.0-35.0)/(80.0-35.0))
+			newExecuteProportion_35 := 0.5 * (newExecuteProportion_25 + druid.Env.Encounter.ExecuteProportion_90) // We don't use this field anywhere, just need it to be any value above ExecuteProportion_25 but below ExecuteProportion_90 so that the transitions work properly.
+
+			setBonusAura.ApplyOnGain(func(_ *core.Aura, _ *core.Simulation) {
+				druid.Env.Encounter.ExecuteProportion_35 = newExecuteProportion_35
+				druid.Env.Encounter.ExecuteProportion_25 = newExecuteProportion_25
+			})
+
+			setBonusAura.ApplyOnExpire(func(_ *core.Aura, _ *core.Simulation) {
+				druid.Env.Encounter.ExecuteProportion_25 = oldExecuteProportion_25
+				druid.Env.Encounter.ExecuteProportion_35 = oldExecuteProportion_35
+			})
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Implemented in tigers_fury.go
+			druid := agent.(DruidAgent).GetDruid()
+			druid.T13Feral4pBonus = setBonusAura
 		},
 	},
 })
@@ -194,18 +258,18 @@ var ItemSetObsidianArborweaveRegalia = core.NewItemSet(core.ItemSet{
 // T13 Balance
 var ItemSetDeepEarthRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Deep Earth Regalia",
-	Bonuses: map[int32]core.ApplyEffect{
+	Bonuses: map[int32]core.ApplySetBonus{
 		// Insect Swarm increases all damage done by your Starfire, Starsurge, and Wrath spells against that target by 3%
-		2: func(agent core.Agent) {
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			druid := agent.(DruidAgent).GetDruid()
+
 			t13InsectSwarmBonus := func(_ *core.Simulation, spell *core.Spell, _ *core.AttackTable) float64 {
-				if spell.ClassSpellMask&(DruidSpellStarsurge|DruidSpellStarfire|DruidSpellWrath) > 0 {
+				if spell.Matches(DruidSpellStarsurge | DruidSpellStarfire | DruidSpellWrath) {
 					return 1.03
 				}
 
 				return 1.0
 			}
-
-			druid := agent.(DruidAgent).GetDruid()
 
 			t13InsectSwarmBonusDummyAuras := druid.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 				return target.GetOrRegisterAura(core.Aura{
@@ -222,13 +286,15 @@ var ItemSetDeepEarthRegalia = core.NewItemSet(core.ItemSet{
 			})
 
 			druid.OnSpellRegistered(func(spell *core.Spell) {
-				if spell.ClassSpellMask&(DruidSpellInsectSwarm) == 0 {
+				if !spell.Matches(DruidSpellInsectSwarm) {
 					return
 				}
 
 				for _, target := range druid.Env.Encounter.TargetUnits {
 					spell.Dot(target).ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-						t13InsectSwarmBonusDummyAuras.Get(aura.Unit).Activate(sim)
+						if setBonusAura.IsActive() {
+							t13InsectSwarmBonusDummyAuras.Get(aura.Unit).Activate(sim)
+						}
 					})
 
 					spell.Dot(target).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
@@ -238,16 +304,14 @@ var ItemSetDeepEarthRegalia = core.NewItemSet(core.ItemSet{
 			})
 		},
 		// Reduces the cooldown of Starsurge by 5 sec and increases its damage by 10%
-		4: func(agent core.Agent) {
-			druid := agent.(DruidAgent).GetDruid()
-
-			druid.AddStaticMod(core.SpellModConfig{
+		4: func(_ core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_DamageDone_Pct,
 				FloatValue: 0.1,
 				ClassMask:  DruidSpellStarsurge,
 			})
 
-			druid.AddStaticMod(core.SpellModConfig{
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:      core.SpellMod_Cooldown_Flat,
 				TimeValue: time.Second * -5,
 				ClassMask: DruidSpellStarsurge,
@@ -260,19 +324,13 @@ var ItemSetDeepEarthRegalia = core.NewItemSet(core.ItemSet{
 var ItemSetGladiatorsSanctuary = core.NewItemSet(core.ItemSet{
 	ID:   922,
 	Name: "Gladiator's Sanctuary",
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachStatBuff(stats.Agility, 70)
 
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			druid := agent.(DruidAgent).GetDruid()
-			druid.AddStats(stats.Stats{
-				stats.Agility: 70,
-			})
 		},
-		4: func(agent core.Agent) {
-			druid := agent.(DruidAgent).GetDruid()
-			druid.AddStats(stats.Stats{
-				stats.Agility: 90,
-			})
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachStatBuff(stats.Agility, 90)
 		},
 	},
 })

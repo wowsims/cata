@@ -1604,6 +1604,30 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-SealoftheSevenSigns-77204"
+ value: {
+  dps: 22115.12597
+  tps: 111531.13752
+  hps: 5457.04271
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-SealoftheSevenSigns-77969"
+ value: {
+  dps: 22009.66333
+  tps: 110377.7788
+  hps: 5456.37743
+ }
+}
+dps_results: {
+ key: "TestBlood-AllItems-SealoftheSevenSigns-77989"
+ value: {
+  dps: 22378.91459
+  tps: 112308.53866
+  hps: 5467.11498
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-Shadowmourne-49623"
  value: {
   dps: 23267.3197
@@ -2014,24 +2038,24 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-VialofShadows-77207"
  value: {
-  dps: 22511.25277
-  tps: 113457.28617
+  dps: 22977.23712
+  tps: 115995.4492
   hps: 5300.29889
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-VialofShadows-77979"
  value: {
-  dps: 22457.44814
-  tps: 113101.43254
+  dps: 22859.7073
+  tps: 115272.72303
   hps: 5300.29889
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-VialofShadows-77999"
  value: {
-  dps: 22572.89795
-  tps: 113802.40503
+  dps: 23088.00119
+  tps: 116597.59656
   hps: 5300.29889
  }
 }

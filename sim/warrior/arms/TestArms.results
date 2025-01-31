@@ -1453,6 +1453,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArms-AllItems-SealoftheSevenSigns-77204"
+ value: {
+  dps: 31349.59001
+  tps: 20942.45779
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-SealoftheSevenSigns-77969"
+ value: {
+  dps: 31349.59001
+  tps: 20942.45779
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-SealoftheSevenSigns-77989"
+ value: {
+  dps: 31349.59001
+  tps: 20942.45779
+ }
+}
+dps_results: {
  key: "TestArms-AllItems-Shadowmourne-49623"
  value: {
   dps: 35232.75742
@@ -1843,22 +1864,22 @@ dps_results: {
 dps_results: {
  key: "TestArms-AllItems-VialofShadows-77207"
  value: {
-  dps: 32427.71714
-  tps: 21857.88699
+  dps: 33211.30463
+  tps: 22641.47448
  }
 }
 dps_results: {
  key: "TestArms-AllItems-VialofShadows-77979"
  value: {
-  dps: 32329.84131
-  tps: 21856.63418
+  dps: 33019.3612
+  tps: 22546.15406
  }
 }
 dps_results: {
  key: "TestArms-AllItems-VialofShadows-77999"
  value: {
-  dps: 32689.9783
-  tps: 22185.78454
+  dps: 33577.04254
+  tps: 23072.84878
  }
 }
 dps_results: {

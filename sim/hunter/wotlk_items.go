@@ -11,15 +11,13 @@ import (
 
 var ItemSetAhnKaharBloodHuntersBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Ahn'Kahar Blood Hunter's Battlegear",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			hunter := agent.(HunterAgent).GetHunter()
-			const procChance = 0.05
-			actionID := core.ActionID{SpellID: 70727}
 
 			procAura := hunter.RegisterAura(core.Aura{
 				Label:    "AhnKahar 2pc Proc",
-				ActionID: actionID,
+				ActionID: core.ActionID{SpellID: 70727},
 				Duration: time.Second * 10,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.15
@@ -29,28 +27,23 @@ var ItemSetAhnKaharBloodHuntersBattlegear = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			hunter.RegisterAura(core.Aura{
-				Label:    "AhnKahar 2pc",
-				Duration: core.NeverExpires,
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Activate(sim)
-				},
-				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell == hunter.AutoAttacks.RangedAuto() && sim.RandomFloat("AhnKahar 2pc") < procChance {
-						procAura.Activate(sim)
-					}
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
+				Name:       "AhnKahar 2pc",
+				ProcChance: 0.05,
+				ProcMask:   core.ProcMaskRangedAuto,
+				Callback:   core.CallbackOnSpellHitDealt,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					procAura.Activate(sim)
 				},
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			hunter := agent.(HunterAgent).GetHunter()
-			const procChance = 0.05
-			actionID := core.ActionID{SpellID: 70730}
 
 			var curBonus stats.Stats
 			procAura := hunter.RegisterAura(core.Aura{
 				Label:    "AhnKahar 4pc Proc",
-				ActionID: actionID,
+				ActionID: core.ActionID{SpellID: 70730},
 				Duration: time.Second * 10,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					curBonus = stats.Stats{
@@ -65,16 +58,13 @@ var ItemSetAhnKaharBloodHuntersBattlegear = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			hunter.RegisterAura(core.Aura{
-				Label:    "AhnKahar 4pc",
-				Duration: core.NeverExpires,
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Activate(sim)
-				},
-				OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell == hunter.SerpentSting && sim.RandomFloat("AhnKahar 4pc") < procChance {
-						procAura.Activate(sim)
-					}
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
+				Name:           "AhnKahar 4pc",
+				ProcChance:     0.05,
+				ClassSpellMask: HunterSpellSerpentSting,
+				Callback:       core.CallbackOnPeriodicDamageDealt,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					procAura.Activate(sim)
 				},
 			})
 		},
@@ -136,6 +126,7 @@ func init() {
 			triggerAura.OnInit = func(aura *core.Aura, sim *core.Simulation) {
 				initSpell()
 			}
+
 		})
 	})
 

@@ -500,6 +500,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-DeepEarthBattlegarb"
+ value: {
+  dps: 10702.30575
+  tps: 53582.93833
+  hps: 320.53125
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-DeepEarthRegalia"
  value: {
   dps: 7382.37741
@@ -1644,6 +1652,30 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-SealoftheSevenSigns-77204"
+ value: {
+  dps: 9705.01597
+  tps: 48591.91358
+  hps: 316.2575
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-SealoftheSevenSigns-77969"
+ value: {
+  dps: 9645.52154
+  tps: 48295.05416
+  hps: 316.2575
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-SealoftheSevenSigns-77989"
+ value: {
+  dps: 9675.68712
+  tps: 48446.00079
+  hps: 319.10667
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-ShardofWoe-60233"
  value: {
   dps: 9677.59981
@@ -2094,24 +2126,24 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-VialofShadows-77207"
  value: {
-  dps: 10664.29328
-  tps: 53390.5564
+  dps: 11275.66134
+  tps: 56447.39669
   hps: 319.10667
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-VialofShadows-77979"
  value: {
-  dps: 10578.24573
-  tps: 52960.56385
+  dps: 11098.63629
+  tps: 55562.51664
   hps: 319.10667
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-VialofShadows-77999"
  value: {
-  dps: 10808.42224
-  tps: 54111.19764
+  dps: 11478.94928
+  tps: 57463.83285
   hps: 319.10667
  }
 }

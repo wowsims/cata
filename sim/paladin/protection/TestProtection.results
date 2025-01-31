@@ -1429,6 +1429,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtection-AllItems-SealoftheSevenSigns-77204"
+ value: {
+  dps: 10844.79153
+  tps: 54531.1142
+ }
+}
+dps_results: {
+ key: "TestProtection-AllItems-SealoftheSevenSigns-77969"
+ value: {
+  dps: 10794.78325
+  tps: 54279.49883
+ }
+}
+dps_results: {
+ key: "TestProtection-AllItems-SealoftheSevenSigns-77989"
+ value: {
+  dps: 10819.61801
+  tps: 54403.64029
+ }
+}
+dps_results: {
  key: "TestProtection-AllItems-ShardofWoe-60233"
  value: {
   dps: 10795.41723
@@ -1802,22 +1823,22 @@ dps_results: {
 dps_results: {
  key: "TestProtection-AllItems-VialofShadows-77207"
  value: {
-  dps: 11332.70027
-  tps: 56966.32293
+  dps: 11636.58289
+  tps: 58485.73605
  }
 }
 dps_results: {
  key: "TestProtection-AllItems-VialofShadows-77979"
  value: {
-  dps: 11312.59001
-  tps: 56865.77166
+  dps: 11573.5821
+  tps: 58170.73212
  }
 }
 dps_results: {
  key: "TestProtection-AllItems-VialofShadows-77999"
  value: {
-  dps: 11392.76785
-  tps: 57266.66088
+  dps: 11721.69378
+  tps: 58911.29052
  }
 }
 dps_results: {

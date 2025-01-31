@@ -3,10 +3,9 @@ package subtlety
 import (
 	"time"
 
+	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/rogue"
-
-	"github.com/wowsims/cata/sim/core"
 )
 
 func (subRogue *SubtletyRogue) registerShadowDanceCD() {
@@ -15,15 +14,12 @@ func (subRogue *SubtletyRogue) registerShadowDanceCD() {
 	}
 
 	hasGlyph := subRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfShadowDance)
-	t13Bonus := subRogue.HasSetBonus(rogue.Tier13, 4)
-	duration := core.TernaryDuration(hasGlyph, time.Second*8, time.Second*6) + core.TernaryDuration(t13Bonus, time.Second*2, 0)
-
 	actionID := core.ActionID{SpellID: 51713}
 
 	subRogue.ShadowDanceAura = subRogue.RegisterAura(core.Aura{
 		Label:    "Shadow Dance",
 		ActionID: actionID,
-		Duration: duration,
+		Duration: core.TernaryDuration(hasGlyph, time.Second*8, time.Second*6),
 		// Can now cast opening abilities outside of stealth
 		// Covered in rogue.go by IsStealthed()
 	})
@@ -44,6 +40,7 @@ func (subRogue *SubtletyRogue) registerShadowDanceCD() {
 			subRogue.BreakStealth(sim)
 			subRogue.ShadowDanceAura.Activate(sim)
 		},
+		RelatedSelfBuff: subRogue.ShadowDanceAura,
 	})
 
 	subRogue.AddMajorCooldown(core.MajorCooldown{

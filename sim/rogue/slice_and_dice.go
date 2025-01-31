@@ -10,6 +10,7 @@ import (
 func (rogue *Rogue) registerSliceAndDice() {
 	actionID := core.ActionID{SpellID: 5171}
 
+	rogue.SliceAndDiceBonusFlat = 0.4
 	durationMultiplier := 1.0 + 0.25*float64(rogue.Talents.ImprovedSliceAndDice)
 	durationBonus := time.Duration(0)
 	if rogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfSliceAndDice) {
@@ -24,16 +25,22 @@ func (rogue *Rogue) registerSliceAndDice() {
 		time.Duration(float64(time.Second*21+durationBonus) * durationMultiplier),
 	}
 
+	var slideAndDiceMod float64
 	rogue.SliceAndDiceAura = rogue.RegisterAura(core.Aura{
 		Label:    "Slice and Dice",
 		ActionID: actionID,
 		// This will be overridden on cast, but set a non-zero default so it doesn't crash when used in APL prepull
 		Duration: rogue.sliceAndDiceDurations[5],
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.MultiplyMeleeSpeed(sim, 1+rogue.SliceAndDiceBonus)
+			masteryBonus := core.TernaryFloat64(rogue.Spec == proto.Spec_SpecSubtletyRogue, rogue.GetMasteryBonus(), 0)
+			slideAndDiceMod = 1 + rogue.SliceAndDiceBonusFlat*(1+masteryBonus)
+			rogue.MultiplyMeleeSpeed(sim, slideAndDiceMod)
+			if sim.Log != nil {
+				rogue.Log(sim, "[DEBUG]: Slice and Dice attack speed mod: %v", slideAndDiceMod)
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.MultiplyMeleeSpeed(sim, 1/(1+rogue.SliceAndDiceBonus))
+			rogue.MultiplyMeleeSpeed(sim, 1/slideAndDiceMod)
 		},
 	})
 

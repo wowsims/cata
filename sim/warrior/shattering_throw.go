@@ -4,20 +4,21 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (warrior *Warrior) RegisterShatteringThrowCD() {
-	hasGlyph := warrior.HasMinorGlyph(proto.WarriorMinorGlyph_GlyphOfShatteringThrow)
-	shattDebuffs := warrior.NewEnemyAuraArray(core.ShatteringThrowAura)
+	shattDebuffs := warrior.NewEnemyAuraArray(func(unit *core.Unit) *core.Aura {
+		return core.ShatteringThrowAura(unit, warrior.UnitIndex)
+	})
 
 	ShatteringThrowSpell := warrior.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 64382},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskShatteringThrow | SpellMaskSpecialAttack,
 		MaxRange:       30,
+		MissileSpeed:   50,
 
 		RageCost: core.RageCostOptions{
 			Cost: 25,
@@ -25,7 +26,7 @@ func (warrior *Warrior) RegisterShatteringThrowCD() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: core.TernaryDuration(hasGlyph, time.Duration(0), time.Millisecond*1500),
+				CastTime: time.Millisecond * 1500,
 			},
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
@@ -37,14 +38,14 @@ func (warrior *Warrior) RegisterShatteringThrowCD() {
 				} else {
 					warrior.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+cast.CastTime, false)
 				}
-				if !hasGlyph && !warrior.StanceMatches(BattleStance) && warrior.BattleStance.IsReady(sim) {
+				if !warrior.StanceMatches(BattleStance) && warrior.BattleStance.IsReady(sim) {
 					warrior.BattleStance.Cast(sim, nil)
 				}
 			},
 			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.StanceMatches(BattleStance) || hasGlyph
+			return warrior.StanceMatches(BattleStance)
 		},
 
 		DamageMultiplier: 1,

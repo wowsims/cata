@@ -204,6 +204,7 @@ const (
 	SpellFlagCanCastWhileMoving                             // Allows the cast to be casted while moving
 	SpellFlagPassiveSpell                                   // Indicates this spell is applied/cast as a result of another spell
 	SpellFlagSupressDoTApply                                // If present this spell will not apply dots (Used for DTR dot supression)
+	SpellFlagSwapped                                        // Indicates that this spell is not useable because it is from a currently swapped item
 
 	// Used to let agents categorize their spells.
 	SpellFlagAgentReserved1

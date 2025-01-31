@@ -75,3 +75,11 @@ export const ApplyPoisonsManually = <SpecType extends RogueSpecs>() =>
 		label: 'Configure poisons manually',
 		labelTooltip: 'Prevent automatic poison configuration that is based on equipped weapons.',
 	});
+
+export const StartingComboPoints = <SpecType extends RogueSpecs>() =>
+	InputHelpers.makeClassOptionsNumberInput<SpecType>({
+		fieldName: 'startingComboPoints',
+		label: 'Starting Combo Points',
+		labelTooltip: 'Initial Combo Points at the start of each iteration.',
+		max: 5,
+	});

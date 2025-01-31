@@ -10,7 +10,7 @@ import (
 )
 
 func (priest *Priest) ApplyTalents() {
-	priest.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeCloth)
+	priest.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeCloth, 89745)
 	// TODO:
 	// Reflective Shield
 	// Improved Flash Heal
@@ -701,7 +701,7 @@ func (priest *Priest) applyShadowyApparition() {
 
 // 		DamageMultiplier: 1 *
 // 			(0.1 * float64(priest.Talents.DivineAegis)) *
-// 			core.TernaryFloat64(priest.HasSetBonus(ItemSetZabrasRaiment, 4), 1.1, 1),
+// 			core.TernaryFloat64(priest.CouldHaveSetBonus(ItemSetZabrasRaiment, 4), 1.1, 1),
 // 		ThreatMultiplier: 1,
 
 // 		Shield: core.ShieldConfig{

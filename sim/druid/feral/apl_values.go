@@ -128,6 +128,12 @@ func (cat *FeralDruid) newActionCatOptimalRotationAction(_ *core.APLRotation, co
 
 	cat.setupRotation(rotationOptions)
 
+	// Pre-allocate PoolingActions
+	cat.pendingPool = &PoolingActions{}
+	cat.pendingPool.create(4)
+	cat.pendingPoolWeaves = &PoolingActions{}
+	cat.pendingPoolWeaves.create(2)
+
 	return &APLActionCatOptimalRotationAction{
 		cat: cat,
 	}
@@ -169,7 +175,7 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 			cat.Enrage.Cast(sim, nil)
 		}
 
-		if cat.Maul.CanCast(sim, cat.CurrentTarget) && ((cat.CurrentRage() >= cat.Maul.DefaultCast.Cost + cat.MangleBear.DefaultCast.Cost) || (cat.AutoAttacks.NextAttackAt() < cat.NextGCDAt())) {
+		if cat.Maul.CanCast(sim, cat.CurrentTarget) && ((cat.CurrentRage() >= cat.Maul.DefaultCast.Cost+cat.MangleBear.DefaultCast.Cost) || (cat.AutoAttacks.NextAttackAt() < cat.NextGCDAt())) {
 			cat.Maul.Cast(sim, cat.CurrentTarget)
 		}
 	}
@@ -183,6 +189,10 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 		if cat.CatCharge.CanCast(sim, cat.CurrentTarget) {
 			cat.CatCharge.Cast(sim, cat.CurrentTarget)
 		} else {
+			if sim.Log != nil {
+				cat.Log(sim, "Out of melee range (%.6fy) and cannot Charge (remaining CD: %s), initiating manual run-in...", cat.DistanceFromTarget, cat.CatCharge.TimeToReady(sim))
+			}
+
 			cat.MoveTo(core.MaxMeleeRange-1, sim) // movement aura is discretized in 1 yard intervals, so need to overshoot to guarantee melee range
 			return
 		}

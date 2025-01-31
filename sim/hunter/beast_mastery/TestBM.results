@@ -45,8 +45,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-AgonyandTorment"
  value: {
-  dps: 24729.17074
-  tps: 15561.62994
+  dps: 24774.58485
+  tps: 15652.29344
  }
 }
 dps_results: {
@@ -641,8 +641,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-Flamewaker'sBattlegear"
  value: {
-  dps: 26321.21677
-  tps: 16578.24976
+  dps: 26276.80777
+  tps: 16480.95918
  }
 }
 dps_results: {
@@ -1509,6 +1509,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBM-AllItems-SealoftheSevenSigns-77204"
+ value: {
+  dps: 23897.65495
+  tps: 15118.55967
+ }
+}
+dps_results: {
+ key: "TestBM-AllItems-SealoftheSevenSigns-77969"
+ value: {
+  dps: 23897.65495
+  tps: 15118.55967
+ }
+}
+dps_results: {
+ key: "TestBM-AllItems-SealoftheSevenSigns-77989"
+ value: {
+  dps: 23897.65495
+  tps: 15118.55967
+ }
+}
+dps_results: {
  key: "TestBM-AllItems-Shadowmourne-49623"
  value: {
   dps: 25794.40017
@@ -1913,22 +1934,22 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-VialofShadows-77207"
  value: {
-  dps: 25882.49711
-  tps: 16440.60206
+  dps: 26803.791
+  tps: 17361.89595
  }
 }
 dps_results: {
  key: "TestBM-AllItems-VialofShadows-77979"
  value: {
-  dps: 25698.62854
-  tps: 16310.52449
+  dps: 26506.16221
+  tps: 17118.05817
  }
 }
 dps_results: {
  key: "TestBM-AllItems-VialofShadows-77999"
  value: {
-  dps: 26223.21869
-  tps: 16622.31078
+  dps: 27249.52538
+  tps: 17648.61747
  }
 }
 dps_results: {

@@ -1425,6 +1425,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-SealoftheSevenSigns-77204"
+ value: {
+  dps: 38224.56479
+  tps: 34925.75513
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-SealoftheSevenSigns-77969"
+ value: {
+  dps: 37960.13615
+  tps: 34629.68476
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-SealoftheSevenSigns-77989"
+ value: {
+  dps: 38476.27966
+  tps: 35265.47943
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-ShardofWoe-60233"
  value: {
   dps: 38680.6637

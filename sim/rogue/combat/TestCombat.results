@@ -38,3111 +38,3139 @@ character_stats_results: {
 dps_results: {
  key: "TestCombat-AllItems-AgileShadowspiritDiamond"
  value: {
-  dps: 30192.18859
-  tps: 21436.4539
+  dps: 30246.12071
+  tps: 21474.74571
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-AgonyandTorment"
  value: {
-  dps: 25876.28121
-  tps: 18372.15966
+  dps: 25996.35605
+  tps: 18457.4128
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Althor'sAbacus-50366"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-AncientPetrifiedSeed-69001"
  value: {
-  dps: 29977.67991
-  tps: 21284.15274
+  dps: 29980.47799
+  tps: 21286.13937
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Anhuur'sHymnal-55889"
  value: {
-  dps: 28459.57976
-  tps: 20206.30163
+  dps: 28589.85237
+  tps: 20298.79518
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Anhuur'sHymnal-56407"
  value: {
-  dps: 28464.34599
-  tps: 20209.68565
+  dps: 28591.97069
+  tps: 20300.29919
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ApparatusofKhaz'goroth-68972"
  value: {
-  dps: 29325.651
-  tps: 20821.21221
+  dps: 29240.39991
+  tps: 20760.68394
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ApparatusofKhaz'goroth-69113"
  value: {
-  dps: 29356.33259
-  tps: 20842.99614
+  dps: 29405.4149
+  tps: 20877.84458
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ArrowofTime-72897"
  value: {
-  dps: 30454.37979
-  tps: 21622.60965
+  dps: 30492.34191
+  tps: 21649.56276
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-AustereShadowspiritDiamond"
  value: {
-  dps: 29628.86841
-  tps: 21036.49657
+  dps: 29682.86233
+  tps: 21074.83225
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BaubleofTrueBlood-50726"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
   hps: 83.99244
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BedrockTalisman-58182"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BellofEnragingResonance-59326"
  value: {
-  dps: 28340.89975
-  tps: 20122.03882
+  dps: 28405.12722
+  tps: 20167.64033
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BellofEnragingResonance-65053"
  value: {
-  dps: 28389.25485
-  tps: 20156.37095
+  dps: 28450.9926
+  tps: 20200.20475
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BindingPromise-67037"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BlackBruise-50692"
  value: {
-  dps: 27791.64042
-  tps: 19732.0647
+  dps: 27898.59757
+  tps: 19808.00427
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BlackfangBattleweave"
  value: {
-  dps: 28315.73137
-  tps: 20104.16927
+  dps: 28317.54312
+  tps: 20105.45561
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Blood-SoakedAleMug-63843"
  value: {
-  dps: 29413.74829
-  tps: 20883.76129
+  dps: 29436.00634
+  tps: 20899.5645
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BloodofIsiset-55995"
  value: {
-  dps: 28409.87709
-  tps: 20171.01274
+  dps: 28432.72412
+  tps: 20187.23413
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BloodofIsiset-56414"
  value: {
-  dps: 28563.93677
-  tps: 20280.39511
+  dps: 28594.15498
+  tps: 20301.85004
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BloodthirstyGladiator'sBadgeofConquest-64687"
  value: {
-  dps: 29938.89974
-  tps: 21256.61882
+  dps: 30000.42259
+  tps: 21300.30004
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BloodthirstyGladiator'sBadgeofDominance-64688"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BloodthirstyGladiator'sBadgeofVictory-64689"
  value: {
-  dps: 28485.50608
-  tps: 20224.70931
+  dps: 28558.03956
+  tps: 20276.20808
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BloodthirstyGladiator'sEmblemofCruelty-64740"
  value: {
-  dps: 28320.82096
-  tps: 20107.78288
+  dps: 28382.92589
+  tps: 20151.87738
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BloodthirstyGladiator'sEmblemofMeditation-64741"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BloodthirstyGladiator'sEmblemofTenacity-64742"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BloodthirstyGladiator'sInsigniaofConquest-64761"
  value: {
-  dps: 29349.75194
-  tps: 20838.32387
+  dps: 29417.88588
+  tps: 20886.69898
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BloodthirstyGladiator'sInsigniaofDominance-64762"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BloodthirstyGladiator'sInsigniaofVictory-64763"
  value: {
-  dps: 28514.2507
-  tps: 20245.118
+  dps: 28591.28635
+  tps: 20299.81331
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Bone-LinkFetish-77210"
  value: {
-  dps: 29787.60109
-  tps: 21149.19677
+  dps: 29854.92032
+  tps: 21196.99343
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Bone-LinkFetish-77982"
  value: {
-  dps: 29555.42176
-  tps: 20984.34945
+  dps: 29610.7171
+  tps: 21023.60914
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Bone-LinkFetish-78002"
  value: {
-  dps: 30001.52722
-  tps: 21301.08433
+  dps: 30070.46638
+  tps: 21350.03113
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BottledLightning-66879"
  value: {
-  dps: 28127.30576
-  tps: 19970.38709
+  dps: 28202.61097
+  tps: 20023.85379
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BottledWishes-77114"
  value: {
-  dps: 28868.27815
-  tps: 20496.47748
+  dps: 28809.56082
+  tps: 20454.78818
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BracingShadowspiritDiamond"
  value: {
-  dps: 29628.86841
-  tps: 20615.76664
+  dps: 29682.86233
+  tps: 20653.33561
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Brawler'sTrophy-232015"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BurningShadowspiritDiamond"
  value: {
-  dps: 29982.85491
-  tps: 21287.82698
+  dps: 30037.77636
+  tps: 21326.82122
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-CataclysmicGladiator'sBadgeofConquest-73648"
  value: {
-  dps: 30108.62087
-  tps: 21377.12082
+  dps: 30161.08389
+  tps: 21414.36956
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-CataclysmicGladiator'sBadgeofDominance-73498"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-CataclysmicGladiator'sBadgeofVictory-73496"
  value: {
-  dps: 28781.86822
-  tps: 20435.12644
+  dps: 28853.86659
+  tps: 20486.24528
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-CataclysmicGladiator'sInsigniaofConquest-73643"
  value: {
-  dps: 30289.54879
-  tps: 21505.57964
+  dps: 30362.78799
+  tps: 21557.57947
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-CataclysmicGladiator'sInsigniaofDominance-73497"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-CataclysmicGladiator'sInsigniaofVictory-73491"
  value: {
-  dps: 28894.21014
-  tps: 20514.8892
+  dps: 28970.75942
+  tps: 20569.23919
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ChaoticShadowspiritDiamond"
  value: {
-  dps: 30051.45102
-  tps: 21336.53022
+  dps: 30101.4434
+  tps: 21372.02482
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Coren'sChilledChromiumCoaster-232012"
  value: {
-  dps: 29313.01902
-  tps: 20812.24351
+  dps: 29368.87292
+  tps: 20851.89978
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-CoreofRipeness-58184"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-CorpseTongueCoin-50349"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-CrecheoftheFinalDragon-77205"
  value: {
-  dps: 29497.32188
-  tps: 20943.09853
+  dps: 29572.98728
+  tps: 20996.82097
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-CrecheoftheFinalDragon-77972"
  value: {
-  dps: 29331.37044
-  tps: 20825.27302
+  dps: 29398.38077
+  tps: 20872.85035
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-CrecheoftheFinalDragon-77992"
  value: {
-  dps: 29700.64581
-  tps: 21087.45852
+  dps: 29783.1629
+  tps: 21146.04566
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-CrushingWeight-59506"
  value: {
-  dps: 29184.72598
-  tps: 20721.15545
+  dps: 29191.90795
+  tps: 20726.25464
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-CrushingWeight-65118"
  value: {
-  dps: 29322.32577
-  tps: 20818.8513
+  dps: 29370.4949
+  tps: 20853.05138
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-CunningoftheCruel-77208"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-CunningoftheCruel-77980"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-CunningoftheCruel-78000"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-DarkmoonCard:Earthquake-62048"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-DarkmoonCard:Hurricane-62049"
  value: {
-  dps: 29383.24638
-  tps: 20862.10493
+  dps: 29300.40296
+  tps: 20803.2861
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-DarkmoonCard:Hurricane-62051"
  value: {
-  dps: 30142.30098
-  tps: 21401.0337
+  dps: 30060.94861
+  tps: 21343.27351
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-DarkmoonCard:Tsunami-62050"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-DarkmoonCard:Volcano-62047"
  value: {
-  dps: 28677.38985
-  tps: 20360.9468
+  dps: 28616.69626
+  tps: 20317.85434
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Deathbringer'sWill-50363"
  value: {
-  dps: 28885.97636
-  tps: 20509.04322
+  dps: 28918.10953
+  tps: 20531.85776
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-DestructiveShadowspiritDiamond"
  value: {
-  dps: 29693.44815
-  tps: 21082.34819
+  dps: 29742.79352
+  tps: 21117.3834
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-DislodgedForeignObject-50348"
  value: {
-  dps: 28411.05022
-  tps: 20171.84565
+  dps: 28406.447
+  tps: 20168.57737
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Dwyer'sCaber-70141"
  value: {
-  dps: 28996.31774
-  tps: 20587.3856
+  dps: 29059.59449
+  tps: 20632.31209
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-EffulgentShadowspiritDiamond"
  value: {
-  dps: 29628.86841
-  tps: 21036.49657
+  dps: 29682.86233
+  tps: 21074.83225
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ElectrosparkHeartstarter-67118"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-EmberShadowspiritDiamond"
  value: {
-  dps: 29628.86841
-  tps: 21036.49657
+  dps: 29682.86233
+  tps: 21074.83225
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-EnigmaticShadowspiritDiamond"
  value: {
-  dps: 29693.44815
-  tps: 21082.34819
+  dps: 29742.79352
+  tps: 21117.3834
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-EssenceoftheCyclone-59473"
  value: {
-  dps: 29745.28857
-  tps: 21119.15489
+  dps: 29802.17951
+  tps: 21159.54745
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-EssenceoftheCyclone-65140"
  value: {
-  dps: 29961.77628
-  tps: 21272.86116
+  dps: 30035.13243
+  tps: 21324.94402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-EssenceoftheEternalFlame-69002"
  value: {
-  dps: 29160.13
-  tps: 20703.6923
+  dps: 29178.94377
+  tps: 20717.05007
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-EternalShadowspiritDiamond"
  value: {
-  dps: 29628.86841
-  tps: 21036.49657
+  dps: 29682.86233
+  tps: 21074.83225
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-EyeofUnmaking-77200"
  value: {
-  dps: 29336.07566
-  tps: 20828.61372
+  dps: 29412.89469
+  tps: 20883.15523
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-EyeofUnmaking-77977"
  value: {
-  dps: 29182.47917
-  tps: 20719.56021
+  dps: 29258.91402
+  tps: 20773.82896
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-EyeofUnmaking-77997"
  value: {
-  dps: 29505.03179
-  tps: 20948.57257
+  dps: 29582.27342
+  tps: 21003.41413
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-FallofMortality-59500"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-FallofMortality-65124"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-FangsoftheFather"
  value: {
-  dps: 33577.89078
-  tps: 23840.30245
+  dps: 33609.04586
+  tps: 23862.42256
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Fear-77945"
  value: {
-  dps: 29519.99852
-  tps: 20959.19895
+  dps: 29487.82954
+  tps: 20936.35898
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-FieryQuintessence-69000"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Figurine-DemonPanther-52199"
  value: {
-  dps: 29740.75992
-  tps: 21115.93955
+  dps: 29828.18798
+  tps: 21178.01346
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Figurine-DreamOwl-52354"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Figurine-EarthenGuardian-52352"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Figurine-JeweledSerpent-52353"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Figurine-KingofBoars-52351"
  value: {
-  dps: 29039.87659
-  tps: 20618.31238
+  dps: 29072.30873
+  tps: 20641.3392
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-FireoftheDeep-77117"
  value: {
-  dps: 28707.52683
-  tps: 20382.34405
+  dps: 28691.01933
+  tps: 20370.62372
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-FleetShadowspiritDiamond"
  value: {
-  dps: 29615.11996
-  tps: 21026.73518
+  dps: 29678.5405
+  tps: 21071.76375
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ForlornShadowspiritDiamond"
  value: {
-  dps: 29628.86841
-  tps: 21036.49657
+  dps: 29682.86233
+  tps: 21074.83225
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-FoulGiftoftheDemonLord-72898"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-FuryofAngerforge-59461"
  value: {
-  dps: 28930.28258
-  tps: 20540.50063
+  dps: 28992.98596
+  tps: 20585.02003
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-GaleofShadows-56138"
  value: {
-  dps: 28493.13477
-  tps: 20230.12568
+  dps: 28523.72951
+  tps: 20251.84795
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-GaleofShadows-56462"
  value: {
-  dps: 28574.85585
-  tps: 20288.14765
+  dps: 28645.52694
+  tps: 20338.32413
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-GearDetector-61462"
  value: {
-  dps: 28999.29376
-  tps: 20589.49857
+  dps: 29076.84517
+  tps: 20644.56007
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Gladiator'sVestments"
  value: {
-  dps: 23918.7048
-  tps: 16982.28041
+  dps: 23911.16849
+  tps: 16976.92963
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-GlowingTwilightScale-54589"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Golad,TwilightofAspects-77949"
  value: {
-  dps: 30704.28676
-  tps: 21800.0436
+  dps: 30656.95866
+  tps: 21766.44065
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-GraceoftheHerald-55266"
  value: {
-  dps: 28893.31532
-  tps: 20514.25388
+  dps: 28948.99439
+  tps: 20553.78602
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-GraceoftheHerald-56295"
  value: {
-  dps: 29322.02562
-  tps: 20818.63819
+  dps: 29394.07162
+  tps: 20869.79085
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-HarmlightToken-63839"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Harrison'sInsigniaofPanache-65803"
  value: {
-  dps: 28649.88788
-  tps: 20341.4204
+  dps: 28790.24281
+  tps: 20441.0724
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-HeartofIgnacious-59514"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-HeartofIgnacious-65110"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-HeartofRage-59224"
  value: {
-  dps: 28695.91033
-  tps: 20374.09634
+  dps: 28791.06121
+  tps: 20441.65346
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-HeartofRage-65072"
  value: {
-  dps: 28781.07729
-  tps: 20434.56488
+  dps: 28877.38453
+  tps: 20502.94302
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-HeartofSolace-55868"
  value: {
-  dps: 29001.95984
-  tps: 20591.39148
+  dps: 29032.79207
+  tps: 20613.28237
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-HeartofSolace-56393"
  value: {
-  dps: 29143.0559
-  tps: 20691.56969
+  dps: 29218.72679
+  tps: 20745.29602
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-HeartofThunder-55845"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-HeartofThunder-56370"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-HeartoftheVile-66969"
  value: {
-  dps: 29007.97834
-  tps: 20595.66462
+  dps: 29070.67174
+  tps: 20640.17694
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Heartpierce-50641"
  value: {
-  dps: 30192.18859
-  tps: 21436.4539
+  dps: 30246.12071
+  tps: 21474.74571
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ImpassiveShadowspiritDiamond"
  value: {
-  dps: 29693.44815
-  tps: 21082.34819
+  dps: 29742.79352
+  tps: 21117.3834
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ImpatienceofYouth-62464"
  value: {
-  dps: 29220.87871
-  tps: 20746.82389
+  dps: 29159.63359
+  tps: 20703.33985
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ImpatienceofYouth-62469"
  value: {
-  dps: 29220.87871
-  tps: 20746.82389
+  dps: 29159.63359
+  tps: 20703.33985
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ImpetuousQuery-55881"
  value: {
-  dps: 28409.87709
-  tps: 20171.01274
+  dps: 28432.72412
+  tps: 20187.23413
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ImpetuousQuery-56406"
  value: {
-  dps: 28563.93677
-  tps: 20280.39511
+  dps: 28594.15498
+  tps: 20301.85004
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-IndomitablePride-77211"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-IndomitablePride-77983"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-IndomitablePride-78003"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-InsigniaofDiplomacy-61433"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-InsigniaoftheCorruptedMind-77203"
  value: {
-  dps: 28977.14385
-  tps: 20573.77213
+  dps: 28973.31066
+  tps: 20571.05057
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-InsigniaoftheCorruptedMind-77971"
  value: {
-  dps: 28896.00746
-  tps: 20516.1653
+  dps: 28803.61971
+  tps: 20450.56999
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-InsigniaoftheCorruptedMind-77991"
  value: {
-  dps: 29126.13246
-  tps: 20679.55405
+  dps: 29140.81159
+  tps: 20689.97623
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-InsigniaoftheEarthenLord-61429"
  value: {
-  dps: 28297.93508
-  tps: 20091.53391
+  dps: 28310.59878
+  tps: 20100.52514
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-JarofAncientRemedies-59354"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-JarofAncientRemedies-65029"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-JawsofDefeat-68926"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-JawsofDefeat-69111"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-JawsofRetribution"
  value: {
-  dps: 29912.91959
-  tps: 21238.17291
+  dps: 29997.95514
+  tps: 21298.54815
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-JujuofNimbleness-63840"
  value: {
-  dps: 29413.74829
-  tps: 20883.76129
+  dps: 29436.00634
+  tps: 20899.5645
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-KeytotheEndlessChamber-55795"
  value: {
-  dps: 29588.98321
-  tps: 21008.17808
+  dps: 29718.99446
+  tps: 21100.48607
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-KeytotheEndlessChamber-56328"
  value: {
-  dps: 30053.04606
-  tps: 21337.6627
+  dps: 30145.40092
+  tps: 21403.23465
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-KiroptyricSigil-77113"
  value: {
-  dps: 31154.40449
-  tps: 22119.62719
+  dps: 31071.11905
+  tps: 22060.49452
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-KvaldirBattleStandard-59685"
  value: {
-  dps: 28568.34418
-  tps: 20283.52437
+  dps: 28559.00266
+  tps: 20276.89189
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-KvaldirBattleStandard-59689"
  value: {
-  dps: 28568.34418
-  tps: 20283.52437
+  dps: 28559.00266
+  tps: 20276.89189
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-LadyLa-La'sSingingShell-67152"
  value: {
-  dps: 28307.43467
-  tps: 20098.27862
+  dps: 28178.32539
+  tps: 20006.61103
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-LastWord-50708"
  value: {
-  dps: 30192.18859
-  tps: 21436.4539
+  dps: 30246.12071
+  tps: 21474.74571
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-LeadenDespair-55816"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-LeadenDespair-56347"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-LeftEyeofRajh-56102"
  value: {
-  dps: 29266.2757
-  tps: 20779.05575
+  dps: 29388.31739
+  tps: 20865.70535
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-LeftEyeofRajh-56427"
  value: {
-  dps: 29416.54061
-  tps: 20885.74384
+  dps: 29503.47976
+  tps: 20947.47063
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-LicensetoSlay-58180"
  value: {
-  dps: 29177.39507
-  tps: 20715.9505
+  dps: 29108.65283
+  tps: 20667.14351
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-MagnetiteMirror-55814"
  value: {
-  dps: 28442.56443
-  tps: 20194.22075
+  dps: 28537.32913
+  tps: 20261.50368
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-MagnetiteMirror-56345"
  value: {
-  dps: 28570.16902
-  tps: 20284.82001
+  dps: 28665.19832
+  tps: 20352.29081
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-MandalaofStirringPatterns-62467"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-MandalaofStirringPatterns-62472"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-MarkofKhardros-56132"
  value: {
-  dps: 28917.31965
-  tps: 20531.29695
+  dps: 28987.32148
+  tps: 20580.99825
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-MarkofKhardros-56458"
  value: {
-  dps: 29043.9573
-  tps: 20621.20968
+  dps: 29223.4645
+  tps: 20748.65979
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-MatrixRestabilizer-68994"
  value: {
-  dps: 30411.35485
-  tps: 21592.06194
+  dps: 30578.73296
+  tps: 21710.9004
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-MatrixRestabilizer-69150"
  value: {
-  dps: 30868.77192
-  tps: 21916.82807
+  dps: 30886.99652
+  tps: 21929.76753
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-MawofOblivion"
  value: {
-  dps: 31129.88991
-  tps: 22102.22183
+  dps: 31199.69489
+  tps: 22151.78337
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-MightoftheOcean-55251"
  value: {
-  dps: 28673.46824
-  tps: 20358.16245
+  dps: 28861.65691
+  tps: 20491.7764
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-MightoftheOcean-56285"
  value: {
-  dps: 28995.9777
-  tps: 20587.14417
+  dps: 29126.27508
+  tps: 20679.6553
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-MirrorofBrokenImages-62466"
  value: {
-  dps: 28677.38985
-  tps: 20360.9468
+  dps: 28616.69626
+  tps: 20317.85434
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-MirrorofBrokenImages-62471"
  value: {
-  dps: 28677.38985
-  tps: 20360.9468
+  dps: 28616.69626
+  tps: 20317.85434
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-MithrilStopwatch-232013"
  value: {
-  dps: 28323.2201
-  tps: 20109.48627
+  dps: 28386.29078
+  tps: 20154.26645
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-MoonwellChalice-70142"
  value: {
-  dps: 28601.18801
-  tps: 20306.84348
+  dps: 28636.1794
+  tps: 20331.68737
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-MoonwellPhial-70143"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-NecromanticFocus-68982"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-NecromanticFocus-69139"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-No'Kaled,theElementsofDeath-77188"
  value: {
-  dps: 30192.18859
-  tps: 21436.4539
+  dps: 30246.12071
+  tps: 21474.74571
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-No'Kaled,theElementsofDeath-78472"
  value: {
-  dps: 30192.18859
-  tps: 21436.4539
+  dps: 30246.12071
+  tps: 21474.74571
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-No'Kaled,theElementsofDeath-78481"
  value: {
-  dps: 30192.18859
-  tps: 21436.4539
+  dps: 30246.12071
+  tps: 21474.74571
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Oremantle'sFavor-61448"
  value: {
-  dps: 28543.29356
-  tps: 20265.73843
+  dps: 28615.58229
+  tps: 20317.06343
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-PetrifiedPickledEgg-232014"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-PetrifiedTwilightScale-54591"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-PhylacteryoftheNamelessLich-50365"
  value: {
-  dps: 28179.79072
-  tps: 20007.65141
+  dps: 28250.27475
+  tps: 20057.69508
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-PorcelainCrab-55237"
  value: {
-  dps: 28367.99928
-  tps: 20141.27949
+  dps: 28433.55308
+  tps: 20187.82269
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-PorcelainCrab-56280"
  value: {
-  dps: 28570.14683
-  tps: 20284.80425
+  dps: 28625.55194
+  tps: 20324.14188
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-PowerfulShadowspiritDiamond"
  value: {
-  dps: 29628.86841
-  tps: 21036.49657
+  dps: 29682.86233
+  tps: 21074.83225
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Prestor'sTalismanofMachination-59441"
  value: {
-  dps: 29973.28964
-  tps: 21281.03564
+  dps: 29924.45281
+  tps: 21246.36149
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Rainsong-55854"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Rainsong-56377"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Rathrak,thePoisonousMind-77195"
  value: {
-  dps: 26409.09253
-  tps: 18750.45569
+  dps: 26338.92554
+  tps: 18700.63713
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Rathrak,thePoisonousMind-78475"
  value: {
-  dps: 26839.60996
-  tps: 19056.12307
+  dps: 26768.57938
+  tps: 19005.69136
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Rathrak,thePoisonousMind-78484"
  value: {
-  dps: 26026.59514
-  tps: 18478.88255
+  dps: 25957.1946
+  tps: 18429.60817
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ReflectionoftheLight-77115"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ResolveofUndying-77201"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ResolveofUndying-77978"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ResolveofUndying-77998"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ReverberatingShadowspiritDiamond"
  value: {
-  dps: 30068.72974
-  tps: 21348.79812
+  dps: 30123.76898
+  tps: 21387.87598
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-RevitalizingShadowspiritDiamond"
  value: {
-  dps: 29982.85491
-  tps: 21287.82698
+  dps: 30037.77636
+  tps: 21326.82122
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Ricket'sMagneticFireball-70144"
  value: {
-  dps: 29766.66662
-  tps: 21134.3333
+  dps: 29829.51415
+  tps: 21178.95505
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-RightEyeofRajh-56100"
  value: {
-  dps: 28933.70568
-  tps: 20542.93103
+  dps: 29063.50259
+  tps: 20635.08684
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-RightEyeofRajh-56431"
  value: {
-  dps: 29009.00304
-  tps: 20596.39216
+  dps: 29139.177
+  tps: 20688.81567
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-RosaryofLight-72901"
  value: {
-  dps: 29127.14385
-  tps: 20680.27213
+  dps: 29193.74204
+  tps: 20727.55685
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-RottingSkull-77116"
  value: {
-  dps: 29359.89119
-  tps: 20845.52274
+  dps: 29434.86938
+  tps: 20898.75726
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-RuneofZeth-68998"
  value: {
-  dps: 28410.90839
-  tps: 20171.74496
+  dps: 28470.80732
+  tps: 20214.2732
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-RuthlessGladiator'sBadgeofConquest-70399"
  value: {
-  dps: 29755.72037
-  tps: 21126.56147
+  dps: 29818.7195
+  tps: 21171.29084
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-RuthlessGladiator'sBadgeofConquest-72304"
  value: {
-  dps: 29854.45643
-  tps: 21196.66406
+  dps: 29917.29469
+  tps: 21241.27923
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-RuthlessGladiator'sBadgeofDominance-70401"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-RuthlessGladiator'sBadgeofDominance-72448"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-RuthlessGladiator'sBadgeofVictory-70400"
  value: {
-  dps: 28653.30177
-  tps: 20343.84426
+  dps: 28725.53228
+  tps: 20395.12792
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-RuthlessGladiator'sBadgeofVictory-72450"
  value: {
-  dps: 28691.21239
-  tps: 20370.7608
+  dps: 28763.37445
+  tps: 20421.99586
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-RuthlessGladiator'sInsigniaofConquest-70404"
  value: {
-  dps: 29942.10388
-  tps: 21258.89376
+  dps: 30007.39437
+  tps: 21305.25
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-RuthlessGladiator'sInsigniaofConquest-72309"
  value: {
-  dps: 30032.64951
-  tps: 21323.18115
+  dps: 30116.16072
+  tps: 21382.47411
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-RuthlessGladiator'sInsigniaofDominance-70402"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-RuthlessGladiator'sInsigniaofDominance-72449"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-RuthlessGladiator'sInsigniaofVictory-70403"
  value: {
-  dps: 28743.74993
-  tps: 20408.06245
+  dps: 28818.69702
+  tps: 20461.27488
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-RuthlessGladiator'sInsigniaofVictory-72455"
  value: {
-  dps: 28796.53858
-  tps: 20445.54239
+  dps: 28873.10997
+  tps: 20499.90808
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ScalesofLife-68915"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
   hps: 291.12785
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ScalesofLife-69109"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
   hps: 328.38949
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
-  dps: 29211.84939
-  tps: 20740.41307
+  dps: 29345.50147
+  tps: 20835.30604
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-SeaStar-55256"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-SeaStar-56290"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-SealoftheSevenSigns-77204"
+ value: {
+  dps: 28057.86482
+  tps: 19921.08402
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-SealoftheSevenSigns-77969"
+ value: {
+  dps: 28057.86482
+  tps: 19921.08402
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-SealoftheSevenSigns-77989"
+ value: {
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ShardofWoe-60233"
  value: {
-  dps: 28551.31026
-  tps: 20271.43028
+  dps: 28642.94177
+  tps: 20336.48866
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Shrine-CleansingPurifier-63838"
  value: {
-  dps: 28924.19675
-  tps: 20536.17969
+  dps: 28854.7949
+  tps: 20486.90438
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Sindragosa'sFlawlessFang-50364"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Skardyn'sGrace-56115"
  value: {
-  dps: 29555.39846
-  tps: 20984.33291
+  dps: 29675.07435
+  tps: 21069.30279
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Skardyn'sGrace-56440"
  value: {
-  dps: 29759.17479
-  tps: 21129.0141
+  dps: 29688.50346
+  tps: 21078.83746
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Slayer'sArmor"
+ value: {
+  dps: 26739.33604
+  tps: 18984.92859
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Sorrowsong-55879"
  value: {
-  dps: 28409.87709
-  tps: 20171.01274
+  dps: 28432.72412
+  tps: 20187.23413
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Sorrowsong-56400"
  value: {
-  dps: 28563.93677
-  tps: 20280.39511
+  dps: 28594.15498
+  tps: 20301.85004
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Soul'sAnguish-66994"
  value: {
-  dps: 28743.2662
-  tps: 20407.719
+  dps: 28877.1365
+  tps: 20502.76691
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-SoulCasket-58183"
  value: {
-  dps: 28677.38985
-  tps: 20360.9468
+  dps: 28616.69626
+  tps: 20317.85434
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Souldrinker-77193"
  value: {
-  dps: 30192.18859
-  tps: 21436.4539
+  dps: 30246.12071
+  tps: 21474.74571
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Souldrinker-78479"
  value: {
-  dps: 30192.18859
-  tps: 21436.4539
+  dps: 30246.12071
+  tps: 21474.74571
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Souldrinker-78488"
  value: {
-  dps: 30192.18859
-  tps: 21436.4539
+  dps: 30246.12071
+  tps: 21474.74571
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-SoulshifterVortex-77206"
  value: {
-  dps: 29171.01495
-  tps: 20711.42061
+  dps: 29190.42259
+  tps: 20725.20004
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-SoulshifterVortex-77970"
  value: {
-  dps: 29098.03142
-  tps: 20659.60231
+  dps: 29008.06645
+  tps: 20595.72718
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-SoulshifterVortex-77990"
  value: {
-  dps: 29331.22848
-  tps: 20825.17222
+  dps: 29220.51623
+  tps: 20746.56652
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-SpidersilkSpindle-68981"
  value: {
-  dps: 28647.29297
-  tps: 20339.57801
+  dps: 28667.17266
+  tps: 20353.69259
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-SpidersilkSpindle-69138"
  value: {
-  dps: 28696.85742
-  tps: 20374.76877
+  dps: 28727.83403
+  tps: 20396.76216
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-StarcatcherCompass-77202"
  value: {
-  dps: 30833.31233
-  tps: 21891.65176
+  dps: 30801.53945
+  tps: 21869.09301
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-StarcatcherCompass-77973"
  value: {
-  dps: 30538.09033
-  tps: 21682.04413
+  dps: 30556.97159
+  tps: 21695.44983
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-StarcatcherCompass-77993"
  value: {
-  dps: 31247.15081
-  tps: 22185.47707
+  dps: 31293.46007
+  tps: 22218.35665
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-StayofExecution-68996"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Stonemother'sKiss-61411"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-StumpofTime-62465"
  value: {
-  dps: 28581.26218
-  tps: 20292.69614
+  dps: 28513.52047
+  tps: 20244.59954
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-StumpofTime-62470"
  value: {
-  dps: 28581.26218
-  tps: 20292.69614
+  dps: 28513.52047
+  tps: 20244.59954
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-SymbioticWorm-59332"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-SymbioticWorm-65048"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-TalismanofSinisterOrder-65804"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Tank-CommanderInsignia-63841"
  value: {
-  dps: 28967.70996
-  tps: 20567.07407
+  dps: 28939.80454
+  tps: 20547.26122
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-TearofBlood-55819"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-TearofBlood-56351"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-TendrilsofBurrowingDark-55810"
  value: {
-  dps: 28380.72409
-  tps: 20150.3141
+  dps: 28389.73173
+  tps: 20156.70953
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-TendrilsofBurrowingDark-56339"
  value: {
-  dps: 28563.93677
-  tps: 20280.39511
+  dps: 28594.15498
+  tps: 20301.85004
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-TheHungerer-68927"
  value: {
-  dps: 30286.40458
-  tps: 21503.34725
+  dps: 30365.79013
+  tps: 21559.71099
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-TheHungerer-69112"
  value: {
-  dps: 30484.30661
-  tps: 21643.85769
+  dps: 30562.28228
+  tps: 21699.22042
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-TheSleeper-77947"
  value: {
-  dps: 29898.61682
-  tps: 21228.01794
+  dps: 29880.81573
+  tps: 21215.37917
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Theralion'sMirror-59519"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Theralion'sMirror-65105"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Throngus'sFinger-56121"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Throngus'sFinger-56449"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Tia'sGrace-55874"
  value: {
-  dps: 29568.29498
-  tps: 20993.48944
+  dps: 29597.78165
+  tps: 21014.42497
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Tia'sGrace-56394"
  value: {
-  dps: 29909.2573
-  tps: 21235.57268
+  dps: 29932.52398
+  tps: 21252.09202
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-TinyAbominationinaJar-50706"
  value: {
-  dps: 29470.18156
-  tps: 20923.8289
+  dps: 29603.77817
+  tps: 21018.6825
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Tyrande'sFavoriteDoll-64645"
  value: {
-  dps: 27980.15892
-  tps: 19865.91283
+  dps: 28056.82281
+  tps: 19920.34419
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-UnheededWarning-59520"
  value: {
-  dps: 29828.73776
-  tps: 21178.40381
+  dps: 29897.30565
+  tps: 21227.08701
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-UnquenchableFlame-67101"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-UnsolvableRiddle-62463"
  value: {
-  dps: 30079.94775
-  tps: 21356.7629
+  dps: 30046.57954
+  tps: 21333.07147
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-UnsolvableRiddle-62468"
  value: {
-  dps: 30079.94775
-  tps: 21356.7629
+  dps: 30046.57954
+  tps: 21333.07147
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-UnsolvableRiddle-68709"
  value: {
-  dps: 30079.94775
-  tps: 21356.7629
+  dps: 30046.57954
+  tps: 21333.07147
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Val'anyr,HammerofAncientKings-46017"
  value: {
-  dps: 26365.47904
-  tps: 18719.49012
+  dps: 26404.94436
+  tps: 18747.5105
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-VariablePulseLightningCapacitor-68925"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-VariablePulseLightningCapacitor-69110"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Varo'then'sBrooch-72899"
  value: {
-  dps: 29498.46956
-  tps: 20943.91339
+  dps: 29468.00111
+  tps: 20922.28079
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-VeilofLies-72900"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-VesselofAcceleration-68995"
  value: {
-  dps: 29094.05278
-  tps: 20656.77747
+  dps: 29151.7279
+  tps: 20697.72681
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-VesselofAcceleration-69167"
  value: {
-  dps: 29217.85329
-  tps: 20744.67584
+  dps: 29287.1285
+  tps: 20793.86124
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-VestmentsoftheDarkPhoenix"
  value: {
-  dps: 29558.78975
-  tps: 20986.74072
+  dps: 29525.10068
+  tps: 20962.82148
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-VialofShadows-77207"
  value: {
-  dps: 30369.5304
-  tps: 21562.36658
+  dps: 31344.15299
+  tps: 22254.34863
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-VialofShadows-77979"
  value: {
-  dps: 30120.31532
-  tps: 21385.42387
+  dps: 30969.09909
+  tps: 21988.06036
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-VialofShadows-77999"
  value: {
-  dps: 30652.87498
-  tps: 21763.54124
+  dps: 31772.15377
+  tps: 22558.22917
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-VialofStolenMemories-59515"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-VialofStolenMemories-65109"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ViciousGladiator'sBadgeofConquest-61033"
  value: {
-  dps: 29375.00318
-  tps: 20856.25226
+  dps: 29443.20865
+  tps: 20904.67814
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ViciousGladiator'sBadgeofConquest-70517"
  value: {
-  dps: 29544.48393
-  tps: 20976.58359
+  dps: 29599.52299
+  tps: 21015.66132
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ViciousGladiator'sBadgeofDominance-61035"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ViciousGladiator'sBadgeofDominance-70518"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ViciousGladiator'sBadgeofVictory-61034"
  value: {
-  dps: 28513.52697
-  tps: 20244.60415
+  dps: 28586.00985
+  tps: 20296.067
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ViciousGladiator'sBadgeofVictory-70519"
  value: {
-  dps: 28575.83225
-  tps: 20288.8409
+  dps: 28648.20263
+  tps: 20340.22387
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ViciousGladiator'sEmblemofAccuracy-61027"
  value: {
-  dps: 28590.19954
-  tps: 20299.04167
+  dps: 28573.2211
+  tps: 20286.98698
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ViciousGladiator'sEmblemofAlacrity-61028"
  value: {
-  dps: 28815.39875
-  tps: 20458.93312
+  dps: 28734.1311
+  tps: 20401.23308
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ViciousGladiator'sEmblemofCruelty-61026"
  value: {
-  dps: 28366.52188
-  tps: 20140.23053
+  dps: 28423.43524
+  tps: 20180.63902
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ViciousGladiator'sEmblemofProficiency-61030"
  value: {
-  dps: 28050.63605
-  tps: 19915.95159
+  dps: 28144.58805
+  tps: 19982.65751
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ViciousGladiator'sEmblemofProwess-61029"
  value: {
-  dps: 28754.38337
-  tps: 20415.61219
+  dps: 28678.03855
+  tps: 20361.40737
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ViciousGladiator'sEmblemofTenacity-61032"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ViciousGladiator'sInsigniaofConquest-61047"
  value: {
-  dps: 29531.42449
-  tps: 20967.31139
+  dps: 29608.59352
+  tps: 21022.1014
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ViciousGladiator'sInsigniaofConquest-70577"
  value: {
-  dps: 29689.49642
-  tps: 21079.54246
+  dps: 29771.36618
+  tps: 21137.66999
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ViciousGladiator'sInsigniaofDominance-61045"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ViciousGladiator'sInsigniaofDominance-70578"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ViciousGladiator'sInsigniaofVictory-61046"
  value: {
-  dps: 28580.46046
-  tps: 20292.12692
+  dps: 28659.06245
+  tps: 20347.93434
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ViciousGladiator'sInsigniaofVictory-70579"
  value: {
-  dps: 28661.86263
-  tps: 20349.92247
+  dps: 28739.13215
+  tps: 20404.78382
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Vishanka,JawsoftheEarth-78359"
  value: {
-  dps: 30211.85082
-  tps: 21450.41409
+  dps: 30063.53446
+  tps: 21345.10947
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Vishanka,JawsoftheEarth-78471"
  value: {
-  dps: 30304.98606
-  tps: 21516.5401
+  dps: 30146.74421
+  tps: 21404.18839
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Vishanka,JawsoftheEarth-78480"
  value: {
-  dps: 30142.2559
-  tps: 21401.00169
+  dps: 29993.42981
+  tps: 21295.33517
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-WillofUnbinding-77198"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-WillofUnbinding-77975"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-WillofUnbinding-77995"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-WindDancer'sRegalia"
  value: {
-  dps: 26859.23545
-  tps: 19070.05717
+  dps: 27011.52676
+  tps: 19178.184
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-WitchingHourglass-55787"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-WitchingHourglass-56320"
  value: {
-  dps: 27984.42658
-  tps: 19868.94288
+  dps: 28057.86482
+  tps: 19921.08402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-World-QuellerFocus-63842"
  value: {
-  dps: 28377.49447
-  tps: 20148.02107
+  dps: 28382.29071
+  tps: 20151.42641
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-WrathofUnchaining-77197"
  value: {
-  dps: 31411.49136
-  tps: 22302.15886
+  dps: 31476.94211
+  tps: 22348.6289
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-WrathofUnchaining-77974"
  value: {
-  dps: 31023.58863
-  tps: 22026.74792
+  dps: 31101.48482
+  tps: 22082.05422
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-WrathofUnchaining-77994"
  value: {
-  dps: 31864.06131
-  tps: 22623.48353
+  dps: 31918.30147
+  tps: 22661.99404
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Za'brox'sLuckyTooth-63742"
  value: {
-  dps: 28458.0599
-  tps: 20205.22253
+  dps: 28399.73167
+  tps: 20163.80949
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Za'brox'sLuckyTooth-63745"
  value: {
-  dps: 28458.0599
-  tps: 20205.22253
+  dps: 28399.73167
+  tps: 20163.80949
  }
 }
 dps_results: {
  key: "TestCombat-Average-Default"
  value: {
-  dps: 30118.20531
-  tps: 21383.92577
+  dps: 30125.34357
+  tps: 21388.99394
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-Combat-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 29886.95859
-  tps: 21219.7406
+  dps: 29941.46575
+  tps: 21258.44068
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-Combat-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 30192.18859
-  tps: 21436.4539
+  dps: 30246.12071
+  tps: 21474.74571
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-Combat-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 36848.95889
-  tps: 26162.76081
+  dps: 36869.8851
+  tps: 26177.61842
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-Combat-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 17077.14181
-  tps: 12124.77069
+  dps: 17121.17822
+  tps: 12156.03654
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-Combat-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 17260.90382
-  tps: 12255.24172
+  dps: 17273.95839
+  tps: 12264.51045
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-Combat-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 17348.17327
-  tps: 12317.20302
+  dps: 17386.4926
+  tps: 12344.40975
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 25999.21764
-  tps: 18459.44452
+  dps: 26045.24148
+  tps: 18492.12145
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 25937.80812
-  tps: 18415.84377
+  dps: 25988.74669
+  tps: 18452.01015
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 31736.44689
-  tps: 22532.87729
+  dps: 31745.64599
+  tps: 22539.40866
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 15077.93817
-  tps: 10705.3361
+  dps: 15081.39514
+  tps: 10707.79055
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 15006.10831
-  tps: 10654.3369
+  dps: 15021.73424
+  tps: 10665.43131
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 15156.01573
-  tps: 10760.77117
+  dps: 15198.28316
+  tps: 10790.78104
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 28914.93762
-  tps: 20529.60571
+  dps: 28948.28232
+  tps: 20553.28045
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 29167.87826
-  tps: 20709.19356
+  dps: 29205.36626
+  tps: 20735.81005
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 35540.37395
-  tps: 25233.6655
+  dps: 35556.12746
+  tps: 25244.8505
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 16611.99449
-  tps: 11794.51608
+  dps: 16618.0339
+  tps: 11798.80407
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 16744.25073
-  tps: 11888.41802
+  dps: 16745.53934
+  tps: 11889.33293
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 16743.1363
-  tps: 11887.62677
+  dps: 16788.27542
+  tps: 11919.67555
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 27169.23637
-  tps: 19290.15782
+  dps: 27242.55354
+  tps: 19342.21302
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 27480.50052
-  tps: 19511.15537
+  dps: 27565.12144
+  tps: 19571.23622
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 34240.18851
-  tps: 24310.53384
+  dps: 34251.99955
+  tps: 24318.91968
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 14985.33804
-  tps: 10639.59001
+  dps: 15009.02707
+  tps: 10656.40922
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 15105.32797
-  tps: 10724.78286
+  dps: 15131.51455
+  tps: 10743.37533
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 15447.85631
-  tps: 10967.97798
+  dps: 15479.84605
+  tps: 10990.6907
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p3_combat-Combat-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 37997.71444
-  tps: 26978.37725
+  dps: 37964.37187
+  tps: 26954.70403
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p3_combat-Combat-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 38401.02514
-  tps: 27264.72785
+  dps: 38391.67946
+  tps: 27258.09241
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p3_combat-Combat-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 45904.8221
-  tps: 32592.42369
+  dps: 46106.62911
+  tps: 32735.70667
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p3_combat-Combat-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 22086.17124
-  tps: 15681.18158
+  dps: 22015.42115
+  tps: 15630.94902
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p3_combat-Combat-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 22250.02742
-  tps: 15797.51947
+  dps: 22237.13387
+  tps: 15788.36505
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p3_combat-Combat-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 22528.43441
-  tps: 15995.18843
+  dps: 22592.74247
+  tps: 16040.84715
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p3_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 33493.36514
-  tps: 23780.28925
+  dps: 33501.97276
+  tps: 23786.40066
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p3_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 33515.14936
-  tps: 23795.75605
+  dps: 33515.43125
+  tps: 23795.95619
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p3_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 40089.64493
-  tps: 28463.6479
+  dps: 40256.14022
+  tps: 28581.85955
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p3_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 19699.11858
-  tps: 13986.37419
+  dps: 19683.00234
+  tps: 13974.93166
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p3_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 19661.96408
-  tps: 13959.9945
+  dps: 19623.49222
+  tps: 13932.67948
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p3_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 19937.09369
-  tps: 14155.33652
+  dps: 19982.21415
+  tps: 14187.37205
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p3_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 36785.60945
-  tps: 26117.78271
+  dps: 36799.66286
+  tps: 26127.76063
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p3_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 37172.53595
-  tps: 26392.50053
+  dps: 37169.12358
+  tps: 26390.07774
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p3_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 44356.55199
-  tps: 31493.15191
+  dps: 44533.13403
+  tps: 31618.52516
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p3_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 21476.27517
-  tps: 15248.15537
+  dps: 21463.42523
+  tps: 15239.03192
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p3_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 21671.46727
-  tps: 15386.74176
+  dps: 21646.1268
+  tps: 15368.75003
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p3_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 21846.07434
-  tps: 15510.71278
+  dps: 21827.37657
+  tps: 15497.43736
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p3_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 35019.26691
-  tps: 24863.67951
+  dps: 34983.83579
+  tps: 24838.52341
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p3_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 35424.82705
-  tps: 25151.62721
+  dps: 35432.96801
+  tps: 25157.40729
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p3_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 43054.85022
-  tps: 30568.94366
+  dps: 43286.6398
+  tps: 30733.51426
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p3_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 19612.66488
-  tps: 13924.99207
+  dps: 19580.72568
+  tps: 13902.31523
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p3_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 19749.52047
-  tps: 14022.15953
+  dps: 19767.38441
+  tps: 14034.84293
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p3_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 20177.62522
-  tps: 14326.11391
+  dps: 20300.08578
+  tps: 14413.06091
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-Combat-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 53050.26594
-  tps: 37665.68882
+  dps: 53602.11015
+  tps: 38057.49821
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-Combat-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 53483.10592
-  tps: 37973.0052
+  dps: 54068.60309
+  tps: 38388.7082
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-Combat-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 61415.21065
-  tps: 43604.79956
+  dps: 61445.35176
+  tps: 43626.19975
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-Combat-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 31594.08807
-  tps: 22431.80253
+  dps: 32279.40448
+  tps: 22918.37718
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-Combat-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 31861.46471
-  tps: 22621.63994
+  dps: 32535.99979
+  tps: 23100.55985
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-Combat-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 31305.65224
-  tps: 22227.01309
+  dps: 31584.25645
+  tps: 22424.82208
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 47291.52185
-  tps: 33576.98051
+  dps: 48204.91404
+  tps: 34225.48897
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 47160.61685
-  tps: 33484.03797
+  dps: 48052.88247
+  tps: 34117.54656
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 54049.67912
-  tps: 38375.27217
+  dps: 54527.20374
+  tps: 38714.31466
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 28529.58876
-  tps: 20256.00802
+  dps: 29377.87792
+  tps: 20858.29333
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 28353.13763
-  tps: 20130.72771
+  dps: 29227.10622
+  tps: 20751.24542
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 27990.37516
-  tps: 19873.16636
+  dps: 28437.46775
+  tps: 20190.6021
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 52979.7404
-  tps: 37615.61569
+  dps: 53549.21032
+  tps: 38019.93933
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 53379.77655
-  tps: 37899.64135
+  dps: 53960.96067
+  tps: 38312.28207
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 61308.01769
-  tps: 43528.69256
+  dps: 61304.74547
+  tps: 43526.36928
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 31655.02054
-  tps: 22475.06458
+  dps: 32352.02104
+  tps: 22969.93494
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 31855.43154
-  tps: 22617.3564
+  dps: 32558.91257
+  tps: 23116.82793
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 31312.42513
-  tps: 22231.82184
+  dps: 31553.91067
+  tps: 22403.27658
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 49052.90674
-  tps: 34827.56378
+  dps: 49658.67349
+  tps: 35257.65818
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 49521.81321
-  tps: 35160.48738
+  dps: 50143.40112
+  tps: 35601.81479
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 57519.64892
-  tps: 40838.95074
+  dps: 57658.76485
+  tps: 40937.72304
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 28148.90711
-  tps: 19985.72405
+  dps: 28838.42898
+  tps: 20475.28458
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 28374.61997
-  tps: 20145.98018
+  dps: 29059.51928
+  tps: 20632.25869
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 28113.8273
-  tps: 19960.81738
+  dps: 28437.03901
+  tps: 20190.2977
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-Combat-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 30122.74091
-  tps: 21387.14605
+  dps: 30030.80816
+  tps: 21321.87379
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-Combat-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 30407.09731
-  tps: 21589.03909
+  dps: 30344.55861
+  tps: 21544.63661
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-Combat-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 37085.32849
-  tps: 26330.58323
+  dps: 37037.14431
+  tps: 26296.37246
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-Combat-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 17256.45041
-  tps: 12252.07979
+  dps: 17231.34161
+  tps: 12234.25255
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-Combat-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 17425.14628
-  tps: 12371.85386
+  dps: 17402.08829
+  tps: 12355.48268
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-Combat-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 17727.4044
-  tps: 12586.45712
+  dps: 17740.71424
+  tps: 12595.90711
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 26208.80444
-  tps: 18608.25115
+  dps: 26126.96736
+  tps: 18550.14683
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 26142.77531
-  tps: 18561.37047
+  dps: 26080.76729
+  tps: 18517.34477
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 31913.20092
-  tps: 22658.37265
+  dps: 31884.25392
+  tps: 22637.82028
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 15211.15367
-  tps: 10799.91911
+  dps: 15159.28148
+  tps: 10763.08985
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 15139.11842
-  tps: 10748.77408
+  dps: 15117.16657
+  tps: 10733.18827
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 15497.73032
-  tps: 11003.38853
+  dps: 15519.63031
+  tps: 11018.93752
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 29089.80667
-  tps: 20653.76274
+  dps: 29035.85528
+  tps: 20615.45725
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 29350.61216
-  tps: 20838.93464
+  dps: 29319.84053
+  tps: 20817.08677
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 35770.35254
-  tps: 25396.9503
+  dps: 35705.15426
+  tps: 25350.65953
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 16741.69693
-  tps: 11886.60482
+  dps: 16713.57269
+  tps: 11866.63661
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 16881.65561
-  tps: 11985.97548
+  dps: 16856.90154
+  tps: 11968.40009
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 17123.13205
-  tps: 12157.42376
+  dps: 17161.57856
+  tps: 12184.72077
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 27374.01851
-  tps: 19435.55314
+  dps: 27297.05618
+  tps: 19380.90989
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 27682.35631
-  tps: 19654.47298
+  dps: 27625.65921
+  tps: 19614.21804
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 34433.00241
-  tps: 24447.43171
+  dps: 34379.29804
+  tps: 24409.30161
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 15114.2091
-  tps: 10731.08846
+  dps: 15088.29635
+  tps: 10712.69041
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 15234.4012
-  tps: 10816.42485
+  dps: 15219.17653
+  tps: 10805.61534
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 15769.07378
-  tps: 11196.04238
+  dps: 15794.18414
+  tps: 11213.87074
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p3_combat-Combat-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 38301.1637
-  tps: 27193.82623
+  dps: 38261.55056
+  tps: 27165.7009
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p3_combat-Combat-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 38711.43979
-  tps: 27485.12225
+  dps: 38686.95647
+  tps: 27467.73909
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p3_combat-Combat-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 46518.2816
-  tps: 33027.97994
+  dps: 46722.94288
+  tps: 33173.28945
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p3_combat-Combat-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 22288.60754
-  tps: 15824.91136
+  dps: 22214.71809
+  tps: 15772.44984
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p3_combat-Combat-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 22453.36429
-  tps: 15941.88865
+  dps: 22437.74422
+  tps: 15930.7984
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p3_combat-Combat-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 22898.39797
-  tps: 16257.86256
+  dps: 22963.45092
+  tps: 16304.05016
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p3_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 33756.28986
-  tps: 23966.9658
+  dps: 33758.325
+  tps: 23968.41075
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p3_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 33783.02285
-  tps: 23985.94622
+  dps: 33774.20488
+  tps: 23979.68546
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p3_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 40626.36694
-  tps: 28844.72053
+  dps: 40795.21243
+  tps: 28964.60082
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p3_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 19879.58831
-  tps: 14114.5077
+  dps: 19860.61639
+  tps: 14101.03764
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p3_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 19839.25236
-  tps: 14085.86918
+  dps: 19799.02849
+  tps: 14057.31023
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p3_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 20263.55231
-  tps: 14387.12214
+  dps: 20309.88406
+  tps: 14420.01768
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p3_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 37080.56093
-  tps: 26327.19826
+  dps: 37085.77998
+  tps: 26330.90379
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p3_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 37471.4134
-  tps: 26604.70351
+  dps: 37458.8693
+  tps: 26595.7972
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p3_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 44948.6106
-  tps: 31913.51352
+  dps: 45127.43606
+  tps: 32040.47961
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p3_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 21673.55243
-  tps: 15388.22222
+  dps: 21657.97242
+  tps: 15377.16042
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p3_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 21869.3311
-  tps: 15527.22508
+  dps: 21841.47778
+  tps: 15507.44922
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p3_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 22203.17698
-  tps: 15764.25566
+  dps: 22185.68811
+  tps: 15751.83856
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p3_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 35296.60901
-  tps: 25060.5924
+  dps: 35258.51248
+  tps: 25033.54386
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p3_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 35716.78059
-  tps: 25358.91422
+  dps: 35712.42389
+  tps: 25355.82096
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p3_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 43650.66007
-  tps: 30991.96865
+  dps: 43884.42904
+  tps: 31157.94462
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p3_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 19791.81082
-  tps: 14052.18568
+  dps: 19759.02141
+  tps: 14028.9052
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p3_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 19930.12836
-  tps: 14150.39114
+  dps: 19946.84567
+  tps: 14162.26042
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p3_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 20520.48188
-  tps: 14569.54214
+  dps: 20643.84533
+  tps: 14657.13018
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-Combat-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 53389.61992
-  tps: 37906.63014
+  dps: 53917.46072
+  tps: 38281.39711
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-Combat-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 53824.66731
-  tps: 38215.51379
+  dps: 54386.68927
+  tps: 38614.54939
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-Combat-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 62054.00421
-  tps: 44058.34299
+  dps: 62045.15415
+  tps: 44052.05944
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-Combat-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 31821.59516
-  tps: 22593.33256
+  dps: 32498.04466
+  tps: 23073.61171
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-Combat-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 32089.9671
-  tps: 22783.87664
+  dps: 32756.5999
+  tps: 23257.18593
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-Combat-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 31674.62247
-  tps: 22488.98195
+  dps: 31936.60298
+  tps: 22674.98812
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 47589.68965
-  tps: 33788.67965
+  dps: 48487.61278
+  tps: 34426.20508
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 47455.62482
-  tps: 33693.49362
+  dps: 48331.29906
+  tps: 34315.22233
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 54609.36493
-  tps: 38772.6491
+  dps: 55058.69598
+  tps: 39091.67415
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 28734.09635
-  tps: 20401.20841
+  dps: 29577.16711
+  tps: 20999.78865
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 28553.80657
-  tps: 20273.20266
+  dps: 29422.85483
+  tps: 20890.22693
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 28320.4738
-  tps: 20107.5364
+  dps: 28756.15883
+  tps: 20416.87277
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 53316.64633
-  tps: 37854.81889
+  dps: 53864.27362
+  tps: 38243.63427
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 53719.09557
-  tps: 38140.55785
+  dps: 54277.66505
+  tps: 38537.14219
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 61947.36168
-  tps: 43982.62679
+  dps: 61903.9564
+  tps: 43951.80905
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 31883.55731
-  tps: 22637.32569
+  dps: 32572.04959
+  tps: 23126.15521
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 32084.16242
-  tps: 22779.75532
+  dps: 32779.5997
+  tps: 23273.51578
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 31683.41356
-  tps: 22495.22363
+  dps: 31909.63296
+  tps: 22655.8394
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 49367.85121
-  tps: 35051.17436
+  dps: 49950.24475
+  tps: 35464.67377
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 49838.67186
-  tps: 35385.45702
+  dps: 50437.48258
+  tps: 35810.61263
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 58131.74945
-  tps: 41273.54211
+  dps: 58236.88026
+  tps: 41348.18498
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 28354.39438
-  tps: 20131.62001
+  dps: 29035.48079
+  tps: 20615.19136
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 28580.77925
-  tps: 20292.35327
+  dps: 29257.58217
+  tps: 20772.88334
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 28458.32202
-  tps: 20205.40863
+  dps: 28765.18015
+  tps: 20423.2779
  }
 }
 dps_results: {
  key: "TestCombat-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 27995.29301
-  tps: 19876.65804
+  dps: 28073.50673
+  tps: 19932.18978
  }
 }

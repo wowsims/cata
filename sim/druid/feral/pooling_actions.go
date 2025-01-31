@@ -20,6 +20,10 @@ func (pa *PoolingActions) create(prealloc uint) {
 	pa.actions = make([]PoolingAction, 0, prealloc)
 }
 
+func (pa *PoolingActions) reset() {
+	pa.actions = pa.actions[:0]
+}
+
 func (pa *PoolingActions) addAction(t time.Duration, cost float64) {
 	pa.actions = append(pa.actions, PoolingAction{t, cost})
 }

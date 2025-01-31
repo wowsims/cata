@@ -1767,24 +1767,19 @@ export const isSecondaryItemSlot = (slot: ItemSlot) => slot === ItemSlot.ItemSlo
 // Returns whether the given main-hand and off-hand items can be worn at the
 // same time.
 export function validWeaponCombo(mainHand: Item | null | undefined, offHand: Item | null | undefined, canDW2h: boolean): boolean {
-	if (mainHand == null || offHand == null) {
-		return true;
-	}
-
-	if (mainHand.handType == HandType.HandTypeTwoHand && !canDW2h) {
+	if (mainHand?.handType == HandType.HandTypeTwoHand && !canDW2h) {
 		return false;
 	} else if (
-		mainHand.handType == HandType.HandTypeTwoHand &&
-		(mainHand.weaponType == WeaponType.WeaponTypePolearm || mainHand.weaponType == WeaponType.WeaponTypeStaff)
+		mainHand?.handType == HandType.HandTypeTwoHand &&
+		(mainHand?.weaponType == WeaponType.WeaponTypePolearm || mainHand?.weaponType == WeaponType.WeaponTypeStaff)
 	) {
 		return false;
 	}
-
-	if (offHand.handType == HandType.HandTypeTwoHand && !canDW2h) {
+	if (offHand?.handType == HandType.HandTypeTwoHand && !canDW2h) {
 		return false;
 	} else if (
-		offHand.handType == HandType.HandTypeTwoHand &&
-		(offHand.weaponType == WeaponType.WeaponTypePolearm || offHand.weaponType == WeaponType.WeaponTypeStaff)
+		offHand?.handType == HandType.HandTypeTwoHand &&
+		(offHand?.weaponType == WeaponType.WeaponTypePolearm || offHand?.weaponType == WeaponType.WeaponTypeStaff)
 	) {
 		return false;
 	}

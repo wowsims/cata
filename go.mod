@@ -1,6 +1,6 @@
 module github.com/wowsims/cata
 
-go 1.21
+go 1.23
 
 require (
 	github.com/golang/protobuf v1.5.4

@@ -12,7 +12,7 @@ func (druid *Druid) registerSavageDefensePassive() {
 		return
 	}
 
-	savageDefenseAura := druid.NewDamageAbsorptionAuraForSchool(
+	druid.SavageDefenseAura = druid.NewDamageAbsorptionAuraForSchool(
 		"Savage Defense",
 		core.ActionID{SpellID: 62606},
 		10*time.Second,
@@ -25,7 +25,8 @@ func (druid *Druid) registerSavageDefensePassive() {
 			}
 
 			return freshShieldStrength
-		})
+		},
+	)
 
 	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
 		Name:       "Savage Defense Trigger",
@@ -35,7 +36,7 @@ func (druid *Druid) registerSavageDefensePassive() {
 		Harmful:    true,
 		ProcChance: 0.5,
 		Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-			savageDefenseAura.Activate(sim)
+			druid.SavageDefenseAura.Activate(sim)
 		},
 	})
 }

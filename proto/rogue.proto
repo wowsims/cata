@@ -131,6 +131,7 @@ message RogueOptions {
 	bool apply_poisons_manually = 6;
 	bool assume_bleed_active = 7;
 	float vanish_break_time = 8;
+	int32 starting_combo_points = 9;
 }
 
 message AssassinationRogue {

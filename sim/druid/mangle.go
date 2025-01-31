@@ -118,7 +118,7 @@ func (druid *Druid) registerMangleCatSpell() {
 				}
 
 				// 4pT11
-				if druid.StrengthOfThePantherAura != nil {
+				if druid.T11Feral4pBonus.IsActive() {
 					aura := druid.StrengthOfThePantherAura
 
 					if aura.IsActive() {

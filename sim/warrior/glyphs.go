@@ -69,14 +69,6 @@ func (warrior *Warrior) applyMinorGlyphs() {
 			FloatValue: 0.5,
 		})
 	}
-
-	if warrior.HasMinorGlyph(proto.WarriorMinorGlyph_GlyphOfShatteringThrow) {
-		warrior.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskShatteringThrow,
-			Kind:       core.SpellMod_CastTime_Pct,
-			FloatValue: -1.0,
-		})
-	}
 }
 
 func (warrior *Warrior) ApplyGlyphs() {

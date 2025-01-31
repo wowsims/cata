@@ -45,8 +45,8 @@ dps_results: {
 dps_results: {
  key: "TestProtectionWarrior-AllItems-AgonyandTorment"
  value: {
-  dps: 3962.47949
-  tps: 23461.20537
+  dps: 3972.65632
+  tps: 23497.12073
  }
 }
 dps_results: {
@@ -1478,6 +1478,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-SealoftheSevenSigns-77204"
+ value: {
+  dps: 4560.8072
+  tps: 27959.98603
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-SealoftheSevenSigns-77969"
+ value: {
+  dps: 4560.8072
+  tps: 27959.98603
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-SealoftheSevenSigns-77989"
+ value: {
+  dps: 4560.8072
+  tps: 27959.98603
+ }
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-ShardofWoe-60233"
  value: {
   dps: 4560.8072
@@ -1851,22 +1872,22 @@ dps_results: {
 dps_results: {
  key: "TestProtectionWarrior-AllItems-VialofShadows-77207"
  value: {
-  dps: 5043.36544
-  tps: 30425.14957
+  dps: 5299.58652
+  tps: 31706.25495
  }
 }
 dps_results: {
  key: "TestProtectionWarrior-AllItems-VialofShadows-77979"
  value: {
-  dps: 4972.51353
-  tps: 30064.64423
+  dps: 5206.42257
+  tps: 31234.18944
  }
 }
 dps_results: {
  key: "TestProtectionWarrior-AllItems-VialofShadows-77999"
  value: {
-  dps: 5104.76902
-  tps: 30757.55427
+  dps: 5392.2653
+  tps: 32195.03563
  }
 }
 dps_results: {

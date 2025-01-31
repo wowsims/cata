@@ -31,35 +31,28 @@ func (hunter *Hunter) newFlamingArrowSpell(spellID int32) core.SpellConfig {
 
 var ItemSetFlameWakersBattleGear = core.NewItemSet(core.ItemSet{
 	Name: "Flamewaker's Battlegear",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			hunter := agent.(HunterAgent).GetHunter()
 
 			var flamingArrowSpellForSteadyShot = hunter.RegisterSpell(hunter.newFlamingArrowSpell(56641))
 			var flamingArrowSpellForCobraShot = hunter.RegisterSpell(hunter.newFlamingArrowSpell(77767))
 
-			hunter.RegisterAura(core.Aura{
-				Label:    "T12 2-set",
-				Duration: core.NeverExpires,
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Activate(sim)
-				},
-				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell != hunter.SteadyShot && spell != hunter.CobraShot {
-						return
-					}
-					procChance := 0.1
-					if sim.RandomFloat("Flaming Arrow") < procChance {
-						if spell == hunter.SteadyShot {
-							flamingArrowSpellForSteadyShot.Cast(sim, result.Target)
-						} else {
-							flamingArrowSpellForCobraShot.Cast(sim, result.Target)
-						}
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
+				Name:           "T12 2-set",
+				ClassSpellMask: HunterSpellSteadyShot | HunterSpellCobraShot,
+				ProcChance:     0.1,
+				Callback:       core.CallbackOnSpellHitDealt,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.Matches(HunterSpellSteadyShot) {
+						flamingArrowSpellForSteadyShot.Cast(sim, result.Target)
+					} else {
+						flamingArrowSpellForCobraShot.Cast(sim, result.Target)
 					}
 				},
 			})
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			hunter := agent.(HunterAgent).GetHunter()
 			var baMod = hunter.AddDynamicMod(core.SpellModConfig{
 				Kind:       core.SpellMod_PowerCost_Pct,
@@ -95,32 +88,29 @@ var ItemSetFlameWakersBattleGear = core.NewItemSet(core.ItemSet{
 					baMod.Deactivate()
 				},
 			})
-			hunter.RegisterAura(core.Aura{
-				Label:    "T12 4-set",
-				Duration: core.NeverExpires,
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Activate(sim)
-				},
-				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell != hunter.AutoAttacks.RangedAuto() {
-						return
-					}
-					procChance := 0.1
-					if sim.RandomFloat("Burning Adrenaline") < procChance {
-						burningAdrenaline.Activate(sim)
-					}
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
+				Name:       "T12 4-set",
+				ProcChance: 0.1,
+				ProcMask:   core.ProcMaskRangedAuto,
+				Callback:   core.CallbackOnSpellHitDealt,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					burningAdrenaline.Activate(sim)
 				},
 			})
 		},
 	},
 })
+
 var ItemSetWyrmstalkerBattleGear = core.NewItemSet(core.ItemSet{
 	Name: "Wyrmstalker Battlegear",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			hunter := agent.(HunterAgent).GetHunter()
+
 			// Handled in Cobra and Steady code respectively
+			hunter.T13_2pc = setBonusAura
 		},
-		4: func(agent core.Agent) {
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			hunter := agent.(HunterAgent).GetHunter()
 			var chronoHunter = hunter.RegisterAura(core.Aura{ // 105919
 				Label:    "Chronohunter",
@@ -134,7 +124,7 @@ var ItemSetWyrmstalkerBattleGear = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
 				Name:           "T13 4-set",
 				Callback:       core.CallbackOnCastComplete,
 				ClassSpellMask: HunterSpellArcaneShot,
@@ -147,20 +137,30 @@ var ItemSetWyrmstalkerBattleGear = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
 var ItemSetLightningChargedBattleGear = core.NewItemSet(core.ItemSet{
 	Name: "Lightning-Charged Battlegear",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(_ core.Agent, setBonusAura *core.Aura) {
 			// 5% Crit on SS
-			agent.GetCharacter().AddStaticMod(core.SpellModConfig{
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_BonusCrit_Percent,
 				ClassMask:  HunterSpellSerpentSting,
 				FloatValue: 5,
 			})
 		},
-		4: func(agent core.Agent) {
-			// Cobra & Steady Shot < 0.2s cast time
-			// Cannot be spell modded for now
+		4: func(_ core.Agent, setBonusAura *core.Aura) {
+			// Cobra & Steady Shot -0.2s cast time
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:      core.SpellMod_CastTime_Flat,
+				ClassMask: HunterSpellCobraShot,
+				TimeValue: -200 * time.Millisecond,
+			})
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:      core.SpellMod_CastTime_Flat,
+				ClassMask: HunterSpellSteadyShot,
+				TimeValue: -200 * time.Millisecond,
+			})
 		},
 	},
 })
@@ -168,32 +168,32 @@ var ItemSetLightningChargedBattleGear = core.NewItemSet(core.ItemSet{
 var ItemSetGladiatorsPursuit = core.NewItemSet(core.ItemSet{
 	ID:   920,
 	Name: "Gladiator's Pursuit",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			hunter := agent.(HunterAgent).GetHunter()
-			hunter.AddStats(stats.Stats{
-				stats.Agility: 70,
-			})
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(_ core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachStatBuff(stats.Agility, 70)
 		},
-		4: func(agent core.Agent) {
-			hunter := agent.(HunterAgent).GetHunter()
+		4: func(_ core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachStatBuff(stats.Agility, 90)
+
 			// Multiply focus regen 1.05
-			hunter.AddStats(stats.Stats{
-				stats.Agility: 90,
+			focusRegenMultiplier := 1.05
+			setBonusAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.MultiplyFocusRegenSpeed(sim, focusRegenMultiplier)
 			})
+			setBonusAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.MultiplyFocusRegenSpeed(sim, 1/focusRegenMultiplier)
+			})
+
 		},
 	},
 })
 
 func (hunter *Hunter) addBloodthirstyGloves() {
-	switch hunter.Hands().ID {
-	case 64991, 64709, 60424, 65544, 70534, 70260, 70441, 72369, 73717, 73583:
-		hunter.AddStaticMod(core.SpellModConfig{
+	hunter.RegisterPvPGloveMod(
+		[]int32{64991, 64709, 60424, 65544, 70534, 70260, 70441, 72369, 73717, 73583},
+		core.SpellModConfig{
 			ClassMask: HunterSpellExplosiveTrap | HunterSpellBlackArrow,
 			Kind:      core.SpellMod_Cooldown_Flat,
 			TimeValue: -time.Second * 2,
 		})
-	default:
-		break
-	}
 }

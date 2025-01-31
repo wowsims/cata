@@ -1,8 +1,42 @@
 .item-swap-picker-root {
+	--item-swap-picker-size: 4rem;
+	--column-count: 4;
+
+	.input-item-swap-container {
+		flex-wrap: wrap;
+		gap: var(--spacer-2);
+	}
+
 	.picker-group {
-		grid-template-columns: none;
-		grid-auto-flow: column;
+		&:has(> div:last-child:nth-child(1)) {
+			--column-count: 1;
+		}
+		&:has(> div:last-child:nth-child(2)) {
+			--column-count: 2;
+		}
+		&:has(> div:last-child:nth-child(3)) {
+			--column-count: 3;
+		}
+		&:has(> div:last-child:nth-child(4)) {
+			--column-count: 4;
+		}
+
+		grid-template-columns: repeat(var(--column-count), var(--item-swap-picker-size));
+		grid-auto-flow: row;
 		align-items: center;
 		justify-content: flex-end;
+	}
+
+	.item-picker-sockets-container {
+		@include vertical-bottom;
+		@include horizontal-center;
+		width: 100%;
+		display: flex;
+		justify-content: center;
+	}
+
+	.icon-picker-button {
+		width: var(--item-swap-picker-size);
+		height: var(--item-swap-picker-size);
 	}
 }

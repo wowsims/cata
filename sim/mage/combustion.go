@@ -38,7 +38,7 @@ func (mage *Mage) registerCombustionSpell() {
 				spell.DealDamage(sim, result)
 				spell.RelatedDotSpell.Cast(sim, target)
 			}
-			if mage.t13ProcAura != nil && spell.ProcMask&core.ProcMaskSpellProc == 0 {
+			if mage.T13_4pc.IsActive() && spell.ProcMask&core.ProcMaskSpellProc == 0 {
 				spell.CD.Reduce(time.Second * time.Duration(5*mage.t13ProcAura.GetStacks()))
 			}
 		},

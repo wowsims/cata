@@ -1,4 +1,3 @@
-import { FireElementalSection } from '../../core/components/fire_elemental_inputs.js';
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs.js';
 import * as OtherInputs from '../../core/components/inputs/other_inputs.js';
 import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
@@ -124,8 +123,19 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	otherInputs: {
 		inputs: [EnhancementInputs.SyncTypeInput, OtherInputs.InputDelay, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
 	},
-	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
-	customSections: [ShamanInputs.TotemsSection, FireElementalSection],
+	itemSwapSlots: [
+		ItemSlot.ItemSlotHead,
+		ItemSlot.ItemSlotShoulder,
+		ItemSlot.ItemSlotBack,
+		ItemSlot.ItemSlotChest,
+		ItemSlot.ItemSlotHands,
+		ItemSlot.ItemSlotLegs,
+		ItemSlot.ItemSlotTrinket1,
+		ItemSlot.ItemSlotTrinket2,
+		ItemSlot.ItemSlotMainHand,
+		ItemSlot.ItemSlotOffHand,
+	],
+	customSections: [ShamanInputs.TotemsSection],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,

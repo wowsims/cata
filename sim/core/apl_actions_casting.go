@@ -283,6 +283,7 @@ func (rot *APLRotation) newActionCastAllStatBuffCooldowns(config *proto.APLActio
 }
 func (action *APLActionCastAllStatBuffCooldowns) processMajorCooldowns() {
 	matchingSpells := action.character.GetMatchingStatBuffSpells(action.statTypesToMatch)
+
 	action.allSubactions = MapSlice(matchingSpells, func(buffSpell *Spell) *APLActionCastSpell {
 		return &APLActionCastSpell{
 			spell:  buffSpell,
@@ -300,15 +301,25 @@ func (action *APLActionCastAllStatBuffCooldowns) processMajorCooldowns() {
 		}
 	})
 }
+func (action *APLActionCastAllStatBuffCooldowns) getEquippedSubActions() []*APLActionCastSpell {
+	return FilterSlice(action.allSubactions, func(subAction *APLActionCastSpell) bool {
+		return !subAction.spell.Flags.Matches(SpellFlagSwapped)
+	})
+}
 func (action *APLActionCastAllStatBuffCooldowns) IsReady(sim *Simulation) bool {
-	action.readySubactions = FilterSlice(action.allSubactions, func(subaction *APLActionCastSpell) bool {
-		return subaction.IsReady(sim)
+	allEquippedSubactions := action.getEquippedSubActions()
+	action.readySubactions = FilterSlice(allEquippedSubactions, func(subAction *APLActionCastSpell) bool {
+		return subAction.IsReady(sim)
 	})
 
-	return Ternary(action.character.Rotation.inSequence, len(action.readySubactions) == len(action.allSubactions), len(action.readySubactions) > 0)
+	return Ternary(action.character.Rotation.inSequence, len(action.readySubactions) == len(allEquippedSubactions), len(action.readySubactions) > 0)
 }
 func (action *APLActionCastAllStatBuffCooldowns) Execute(sim *Simulation) {
-	actionSetToUse := Ternary(sim.CurrentTime < 0, action.allSubactions, action.readySubactions)
+	actionSetToUse := action.readySubactions
+
+	if sim.CurrentTime < 0 {
+		actionSetToUse = action.getEquippedSubActions()
+	}
 
 	for _, subaction := range actionSetToUse {
 		subaction.Execute(sim)

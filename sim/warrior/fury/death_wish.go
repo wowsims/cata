@@ -18,17 +18,15 @@ func (war *FuryWarrior) RegisterDeathWish() {
 		Tag:      warrior.EnrageTag,
 		Duration: 30 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if sim.CurrentTime < 0 && war.Options.PrepullMastery > 0 {
-				masteryPoints := core.MasteryRatingToMasteryPoints(float64(war.Options.PrepullMastery))
-				prepullMultiplier := war.GetMasteryBonusMultiplier(masteryPoints)
-				bonusSnapshot = 1.0 + (0.2 * prepullMultiplier)
-			} else {
-				bonusSnapshot = 1.0 + (0.2 * war.EnrageEffectMultiplier)
-			}
+			bonusSnapshot = 1.0 + (0.2 * war.EnrageEffectMultiplier)
 
 			war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= bonusSnapshot
 			if !hasGlyph {
 				war.PseudoStats.DamageTakenMultiplier *= bonusSnapshot
+			}
+
+			if sim.Log != nil {
+				war.Log(sim, "[DEBUG]: Death Wish damage mod: %v", bonusSnapshot)
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {

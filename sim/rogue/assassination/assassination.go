@@ -7,9 +7,6 @@ import (
 	"github.com/wowsims/cata/sim/rogue"
 )
 
-const masteryDamagePerPoint = 0.035
-const masteryBaseEffect = 0.28
-
 func RegisterAssassinationRogue() {
 	core.RegisterAgentFactory(
 		proto.Player_AssassinationRogue{},
@@ -30,6 +27,9 @@ func RegisterAssassinationRogue() {
 func (sinRogue *AssassinationRogue) Initialize() {
 	sinRogue.Rogue.Initialize()
 
+	sinRogue.MasteryBaseValue = 0.28
+	sinRogue.MasteryMultiplier = 0.035
+
 	sinRogue.registerMutilateSpell()
 	sinRogue.registerOverkill()
 	sinRogue.registerColdBloodCD()
@@ -39,7 +39,8 @@ func (sinRogue *AssassinationRogue) Initialize() {
 
 	// Apply Mastery
 	// As far as I am able to find, Asn's Mastery is an additive bonus. To be tested.
-	masteryEffect := getMasteryBonus(sinRogue.GetStat(stats.MasteryRating))
+	masteryEffect := sinRogue.GetMasteryBonusFromRating(sinRogue.GetStat(stats.MasteryRating))
+
 	for _, spell := range sinRogue.InstantPoison {
 		spell.DamageMultiplierAdditive += masteryEffect
 	}
@@ -53,8 +54,9 @@ func (sinRogue *AssassinationRogue) Initialize() {
 	}
 
 	sinRogue.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-		masteryEffectOld := getMasteryBonus(oldMastery)
-		masteryEffectNew := getMasteryBonus(newMastery)
+		masteryEffectOld := sinRogue.GetMasteryBonusFromRating(oldMastery)
+		masteryEffectNew := sinRogue.GetMasteryBonusFromRating(newMastery)
+
 		for _, spell := range sinRogue.InstantPoison {
 			spell.DamageMultiplierAdditive -= masteryEffectOld
 			spell.DamageMultiplierAdditive += masteryEffectNew
@@ -78,10 +80,6 @@ func (sinRogue *AssassinationRogue) Initialize() {
 	if sinRogue.GetMHWeapon() != nil && sinRogue.GetMHWeapon().WeaponType == proto.WeaponType_WeaponTypeDagger {
 		sinRogue.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.2
 	}
-}
-
-func getMasteryBonus(masteryRating float64) float64 {
-	return masteryBaseEffect + core.MasteryRatingToMasteryPoints(masteryRating)*masteryDamagePerPoint
 }
 
 func NewAssassinationRogue(character *core.Character, options *proto.Player) *AssassinationRogue {

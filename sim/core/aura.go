@@ -47,8 +47,8 @@ type Aura struct {
 	ActionID        ActionID // If set, metrics will be tracked for this aura.
 	ActionIDForProc ActionID // If set, indicates that this aura is a trigger aura for the specified proc.
 
-	Icd  *Cooldown   // The internal cooldown if any
-	Ppmm *PPMManager // PPM manager for proc trigger auras if any
+	Icd *Cooldown           // The internal cooldown if any
+	Dpm *DynamicProcManager // Dynamic Proc manager for proc trigger auras if any
 
 	Duration time.Duration // Duration of aura, upon being applied.
 
@@ -98,7 +98,7 @@ type Aura struct {
 	OnPeriodicHealDealt   OnPeriodicDamage // Invoked when a hot tick occurs and this unit is the caster.
 	OnPeriodicHealTaken   OnPeriodicDamage // Invoked when a hot tick occurs and this unit is the target.
 
-	// If non-default, stat bonuses fron the OnGain callback of this aura will be
+	// If non-default, stat bonuses from the OnGain callback of this aura will be
 	// included in Character Stats in the UI.
 	BuildPhase CharacterBuildPhase
 
