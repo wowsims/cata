@@ -25,7 +25,7 @@ import P4Gear from './gear_sets/p4.gear.json';
 export const P4_PRESET = PresetUtils.makePresetGear('P4', P4Gear);
 
 import DefaultApl from './apls/default.apl.json';
-export const APL_ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('APL Default', DefaultApl);
+export const APL_ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('APL List View', DefaultApl);
 
 import { Stats } from '../../core/proto_utils/stats';
 import AoeApl from './apls/aoe.apl.json';
