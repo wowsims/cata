@@ -287,7 +287,7 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 
 	SpellMod_DamageDone_Flat: {
 		Apply:  applyDamageDoneAdd,
-		Remove: removeDamageDonAdd,
+		Remove: removeDamageDoneAdd,
 	},
 
 	SpellMod_PowerCost_Pct: {
@@ -401,7 +401,7 @@ func applyDamageDoneAdd(mod *SpellMod, spell *Spell) {
 	spell.DamageMultiplierAdditive += mod.floatValue
 }
 
-func removeDamageDonAdd(mod *SpellMod, spell *Spell) {
+func removeDamageDoneAdd(mod *SpellMod, spell *Spell) {
 	spell.DamageMultiplierAdditive -= mod.floatValue
 }
 
