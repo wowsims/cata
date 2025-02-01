@@ -33,7 +33,7 @@ var Tier6 = core.NewItemSet(core.ItemSet{
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
 				Kind:       core.SpellMod_DamageDone_Flat,
 				ClassMask:  RogueSpellBackstab | RogueSpellSinisterStrike | RogueSpellMutilate | RogueSpellHemorrhage,
-				FloatValue: 6.0,
+				FloatValue: .06,
 			})
 		},
 	},
