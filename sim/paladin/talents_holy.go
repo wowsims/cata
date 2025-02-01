@@ -1,8 +1,9 @@
 package paladin
 
 import (
-	"github.com/wowsims/cata/sim/core"
 	"time"
+
+	"github.com/wowsims/cata/sim/core"
 )
 
 func (paladin *Paladin) applyHolyTalents() {

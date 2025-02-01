@@ -445,8 +445,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-DislodgedForeignObject-50348"
  value: {
-  dps: 36865.85636
-  tps: 32801.15738
+  dps: 36856.13437
+  tps: 32799.25615
  }
 }
 dps_results: {
@@ -1110,8 +1110,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-NecromanticFocus-69139"
  value: {
-  dps: 38625.4688
-  tps: 34377.53228
+  dps: 38652.22877
+  tps: 34388.52318
  }
 }
 dps_results: {
@@ -1201,8 +1201,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-Rathrak,thePoisonousMind-78475"
  value: {
-  dps: 35001.90788
-  tps: 33375.74463
+  dps: 34992.05416
+  tps: 33362.49901
  }
 }
 dps_results: {
@@ -1285,8 +1285,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-RottingSkull-77116"
  value: {
-  dps: 37356.91342
-  tps: 33263.06771
+  dps: 37445.24188
+  tps: 33384.28544
  }
 }
 dps_results: {
@@ -1710,8 +1710,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-Ti'tahk,theStepsofTime-77190"
  value: {
-  dps: 52078.54039
-  tps: 46547.36693
+  dps: 52051.70575
+  tps: 46524.19347
  }
 }
 dps_results: {
@@ -1752,8 +1752,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-TinyAbominationinaJar-50706"
  value: {
-  dps: 35944.95044
-  tps: 31935.89884
+  dps: 35910.04787
+  tps: 31906.8722
  }
 }
 dps_results: {
@@ -2074,8 +2074,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-Average-Default"
  value: {
-  dps: 40371.25127
-  tps: 35870.49519
+  dps: 40370.40033
+  tps: 35869.35708
  }
 }
 dps_results: {
