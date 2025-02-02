@@ -50,9 +50,9 @@ export const P4TrollDefaultSimpleRotation = FireMage_Rotation.create({
 });
 
 export const P4NoTrollDefaultSimpleRotation = FireMage_Rotation.create({
-	combustThreshold: 370000,
-	combustLastMomentLustPercentage: 140000,
-	combustNoLustPercentage: 275000,
+	combustThreshold: 515000,
+	combustLastMomentLustPercentage: 150000,
+	combustNoLustPercentage: 300000,
 });
 
 export const P1_SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('P1 - Default', Spec.SpecFireMage, P1DefaultSimpleRotation);
@@ -183,18 +183,21 @@ export const P1_PRESET_BUILD = PresetUtils.makePresetBuild('P1 - Default', {
 	race: Race.RaceTroll,
 	gear: FIRE_P1_PRESET,
 	rotation: P1_SIMPLE_ROTATION_DEFAULT,
+	epWeights: DEFAULT_EP_PRESET,
 });
 
 export const P3_PRESET_BUILD = PresetUtils.makePresetBuild('P3 - Default (Troll)', {
 	race: Race.RaceTroll,
 	gear: FIRE_P3_PRESET,
 	rotation: P3_SIMPLE_ROTATION_DEFAULT,
+	epWeights: DEFAULT_EP_PRESET,
 });
 
 export const P3_PRESET_NO_TROLL = PresetUtils.makePresetBuild('P3 - Default (Worgen)', {
 	race: Race.RaceWorgen,
 	gear: FIRE_P3_PRESET,
 	rotation: P3_SIMPLE_ROTATION_NO_TROLL,
+	epWeights: DEFAULT_EP_PRESET,
 });
 
 export const P4_PRESET_BUILD = PresetUtils.makePresetBuild('P4 - WIP (Troll)', {
