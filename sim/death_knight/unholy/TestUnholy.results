@@ -230,8 +230,8 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-BloodthirstyGladiator'sInsigniaofDominance-64762"
  value: {
-  dps: 39381.68016
-  tps: 29253.84777
+  dps: 39381.71204
+  tps: 29253.90834
   hps: 645.72554
  }
 }
@@ -974,25 +974,25 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-InsigniaoftheCorruptedMind-77203"
  value: {
-  dps: 40411.72295
-  tps: 29820.61346
-  hps: 666.10038
+  dps: 40527.57267
+  tps: 29869.71869
+  hps: 666.88402
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-InsigniaoftheCorruptedMind-77971"
  value: {
-  dps: 40451.07102
-  tps: 29958.04115
-  hps: 667.66767
+  dps: 40369.31259
+  tps: 29910.65788
+  hps: 669.23497
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-InsigniaoftheCorruptedMind-77991"
  value: {
-  dps: 40575.17824
-  tps: 29982.32602
-  hps: 668.45132
+  dps: 40433.35614
+  tps: 29854.40525
+  hps: 666.88402
  }
 }
 dps_results: {
@@ -1550,8 +1550,8 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-RuthlessGladiator'sInsigniaofDominance-72449"
  value: {
-  dps: 39381.73294
-  tps: 29253.94806
+  dps: 39381.80847
+  tps: 29254.09156
   hps: 645.72554
  }
 }
@@ -2198,8 +2198,8 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-ViciousGladiator'sInsigniaofDominance-70578"
  value: {
-  dps: 39381.77181
-  tps: 29254.0219
+  dps: 39381.63872
+  tps: 29253.76903
   hps: 645.72554
  }
 }

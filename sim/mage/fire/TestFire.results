@@ -305,8 +305,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-CataclysmicGladiator'sInsigniaofDominance-73497"
  value: {
-  dps: 37593.12515
-  tps: 33358.54388
+  dps: 37570.11557
+  tps: 33338.24672
  }
 }
 dps_results: {
@@ -858,22 +858,22 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-InsigniaoftheCorruptedMind-77203"
  value: {
-  dps: 39735.67299
-  tps: 35446.14164
+  dps: 39743.03944
+  tps: 35322.19992
  }
 }
 dps_results: {
  key: "TestFire-AllItems-InsigniaoftheCorruptedMind-77971"
  value: {
-  dps: 39418.11667
-  tps: 35092.28545
+  dps: 39447.78565
+  tps: 35052.23851
  }
 }
 dps_results: {
  key: "TestFire-AllItems-InsigniaoftheCorruptedMind-77991"
  value: {
-  dps: 39875.70452
-  tps: 35653.48178
+  dps: 40209.8372
+  tps: 35827.83119
  }
 }
 dps_results: {
@@ -1355,15 +1355,15 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-RuthlessGladiator'sInsigniaofDominance-70402"
  value: {
-  dps: 36958.96011
-  tps: 32840.57318
+  dps: 37104.99565
+  tps: 32966.30651
  }
 }
 dps_results: {
  key: "TestFire-AllItems-RuthlessGladiator'sInsigniaofDominance-72449"
  value: {
-  dps: 37182.3082
-  tps: 33045.86657
+  dps: 37154.90657
+  tps: 33000.61508
  }
 }
 dps_results: {
@@ -1969,15 +1969,15 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-ViciousGladiator'sInsigniaofDominance-61045"
  value: {
-  dps: 36827.89265
-  tps: 32708.81148
+  dps: 36781.62847
+  tps: 32681.37446
  }
 }
 dps_results: {
  key: "TestFire-AllItems-ViciousGladiator'sInsigniaofDominance-70578"
  value: {
-  dps: 36796.82923
-  tps: 32695.04796
+  dps: 36790.165
+  tps: 32680.77923
  }
 }
 dps_results: {

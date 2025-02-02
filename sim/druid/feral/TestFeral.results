@@ -207,8 +207,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-BloodthirstyGladiator'sInsigniaofDominance-64762"
  value: {
-  dps: 30945.20504
-  tps: 46122.96254
+  dps: 30942.38154
+  tps: 45920.99828
  }
 }
 dps_results: {
@@ -305,8 +305,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-CataclysmicGladiator'sInsigniaofDominance-73497"
  value: {
-  dps: 30935.32315
-  tps: 46173.93578
+  dps: 30908.30867
+  tps: 46389.20875
  }
 }
 dps_results: {
@@ -851,22 +851,22 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-InsigniaoftheCorruptedMind-77203"
  value: {
-  dps: 31728.40842
-  tps: 45717.20133
+  dps: 31739.91345
+  tps: 46172.85209
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-InsigniaoftheCorruptedMind-77971"
  value: {
-  dps: 31633.2686
-  tps: 44927.13861
+  dps: 31738.09848
+  tps: 45307.60119
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-InsigniaoftheCorruptedMind-77991"
  value: {
-  dps: 31849.46005
-  tps: 45775.59858
+  dps: 31786.9474
+  tps: 45312.0224
  }
 }
 dps_results: {
@@ -1383,15 +1383,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-RuthlessGladiator'sInsigniaofDominance-70402"
  value: {
-  dps: 30920.62882
-  tps: 46177.69652
+  dps: 30895.43501
+  tps: 45959.03607
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-RuthlessGladiator'sInsigniaofDominance-72449"
  value: {
-  dps: 30958.45224
-  tps: 46374.67713
+  dps: 30903.15971
+  tps: 46639.80361
  }
 }
 dps_results: {
@@ -1994,15 +1994,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-ViciousGladiator'sInsigniaofDominance-61045"
  value: {
-  dps: 30876.54183
-  tps: 46296.37685
+  dps: 30878.73767
+  tps: 46008.79862
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-ViciousGladiator'sInsigniaofDominance-70578"
  value: {
-  dps: 30919.60274
-  tps: 45534.14914
+  dps: 30855.88582
+  tps: 45750.40482
  }
 }
 dps_results: {

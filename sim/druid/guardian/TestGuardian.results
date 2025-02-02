@@ -974,24 +974,24 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-InsigniaoftheCorruptedMind-77203"
  value: {
-  dps: 9827.68864
-  tps: 49206.87988
-  hps: 317.68208
+  dps: 9885.08813
+  tps: 49494.48483
+  hps: 316.2575
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-InsigniaoftheCorruptedMind-77971"
  value: {
-  dps: 9836.46147
-  tps: 49250.85945
+  dps: 9862.36374
+  tps: 49380.48515
   hps: 317.68208
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-InsigniaoftheCorruptedMind-77991"
  value: {
-  dps: 9866.66999
-  tps: 49402.03745
+  dps: 9895.66615
+  tps: 49546.58263
   hps: 320.53125
  }
 }
