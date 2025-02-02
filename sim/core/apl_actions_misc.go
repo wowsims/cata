@@ -189,7 +189,7 @@ func (action *APLActionActivateAllItemSwapStatBuffAuras) String() string {
 
 func (action *APLActionActivateAllItemSwapStatBuffAuras) PostFinalize(rot *APLRotation) {
 	if len(action.allSubactions) == 0 {
-		rot.ValidationMessage(proto.LogLevel_Warning, "%s will not activate any Auras! There are either no proc trinkets buffing the specified stat type(s).", action)
+		rot.ValidationMessage(proto.LogLevel_Warning, "%s will not activate any Auras! There are no proc items buffing the specified stat type(s).", action)
 	} else {
 		actionIDs := MapSlice(action.allSubactions, func(subaction *APLActionActivateAura) ActionID {
 			return subaction.aura.ActionID
