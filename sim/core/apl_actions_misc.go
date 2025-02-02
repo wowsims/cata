@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 type APLActionChangeTarget struct {
@@ -142,6 +143,60 @@ func (action *APLActionActivateAuraWithStacks) Execute(sim *Simulation) {
 }
 func (action *APLActionActivateAuraWithStacks) String() string {
 	return fmt.Sprintf("Activate Aura(%s) Stacks(%d)", action.aura.ActionID, action.numStacks)
+}
+
+type APLActionActivateAllItemSwapStatBuffAuras struct {
+	defaultAPLActionImpl
+	character *Character
+
+	statTypesToMatch []stats.Stat
+
+	allSubactions []*APLActionActivateAura
+}
+
+func (rot *APLRotation) newActionActivateAllItemSwapStatBuffAuras(config *proto.APLActionActivateAllItemSwapStatBuffAuras) APLActionImpl {
+
+	unit := rot.unit
+	character := unit.Env.Raid.GetPlayerFromUnit(unit).GetCharacter()
+	statTypesToMatch := stats.IntTupleToStatsList(config.StatType1, config.StatType2, config.StatType3)
+
+	allSubactions := MapSlice(rot.GetAPLItemProcAuras(statTypesToMatch, 0, false, true, &proto.UUID{Value: ""}), func(statBuffAura *StatBuffAura) *APLActionActivateAura {
+		return &APLActionActivateAura{
+			aura: statBuffAura.Aura,
+		}
+	})
+
+	return &APLActionActivateAllItemSwapStatBuffAuras{
+		character:        character,
+		statTypesToMatch: statTypesToMatch,
+		allSubactions:    allSubactions,
+	}
+}
+
+func (action *APLActionActivateAllItemSwapStatBuffAuras) IsReady(sim *Simulation) bool {
+	return len(action.allSubactions) > 0
+}
+
+func (action *APLActionActivateAllItemSwapStatBuffAuras) Execute(sim *Simulation) {
+	for _, subaction := range action.allSubactions {
+		subaction.Execute(sim)
+	}
+}
+
+func (action *APLActionActivateAllItemSwapStatBuffAuras) String() string {
+	return fmt.Sprintf("ActivateAllItemSwapStatBuffAurasFor(%s)", StringFromStatTypes(action.statTypesToMatch))
+}
+
+func (action *APLActionActivateAllItemSwapStatBuffAuras) PostFinalize(rot *APLRotation) {
+	if len(action.allSubactions) == 0 {
+		rot.ValidationMessage(proto.LogLevel_Warning, "%s will not activate any Auras! There are either no proc trinkets buffing the specified stat type(s).", action)
+	} else {
+		actionIDs := MapSlice(action.allSubactions, func(subaction *APLActionActivateAura) ActionID {
+			return subaction.aura.ActionID
+		})
+
+		rot.ValidationMessage(proto.LogLevel_Information, "%s will activate the following Auras: %s", action, StringFromActionIDs(actionIDs))
+	}
 }
 
 type APLActionTriggerICD struct {

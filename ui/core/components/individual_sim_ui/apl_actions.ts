@@ -2,6 +2,7 @@ import { itemSwapEnabledSpecs } from '../../individual_sim_ui.js';
 import { Player } from '../../player.js';
 import {
 	APLAction,
+	APLActionActivateAllItemSwapStatBuffAuras,
 	APLActionActivateAura,
 	APLActionActivateAuraWithStacks,
 	APLActionAutocastOtherCooldowns,
@@ -579,7 +580,7 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 	['activateAuraWithStacks']: inputBuilder({
 		label: 'Activate Aura With Stacks',
 		submenu: ['Misc'],
-		shortDescription: 'Activates and an aura with the specified number of stacks',
+		shortDescription: 'Activates an aura with the specified number of stacks',
 		includeIf: (player: Player<any>, isPrepull: boolean) => isPrepull,
 		newValue: () => APLActionActivateAuraWithStacks.create({
 			numStacks: 1,
@@ -588,6 +589,22 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 			label: 'stacks',
 			labelTooltip: 'Desired number of initial aura stacks.',
 		})],
+	}),
+	['activateAllItemSwapStatBuffAuras']: inputBuilder({
+		label: 'Activate All Item Swap Stat Buff Auras',
+		submenu: ['Misc'],
+		shortDescription: 'Activates all item/enchant auras that buff the specified stat type(s) using your Item Swap set.',
+		newValue: () =>
+			APLActionActivateAllItemSwapStatBuffAuras.create({
+				statType1: -1,
+				statType2: -1,
+				statType3: -1,
+			}),
+		fields: [
+			AplHelpers.statTypeFieldConfig('statType1'),
+			AplHelpers.statTypeFieldConfig('statType2'),
+			AplHelpers.statTypeFieldConfig('statType3'),
+		],
 	}),
 	['cancelAura']: inputBuilder({
 		label: 'Cancel Aura',

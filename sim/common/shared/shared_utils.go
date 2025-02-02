@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -97,14 +96,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 
 	effectFn(effectID, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		itemSwapIsEnabled := character.ItemSwap.IsEnabled()
-		itemExistsInMainEquip := true
-
-		var eligibleSlotsForItem []proto.ItemSlot
-		if !isEnchant {
-			eligibleSlotsForItem = character.ItemSwap.EligibleSlotsForItem(effectID)
-			itemExistsInMainEquip = !itemSwapIsEnabled || character.ItemSwap.ItemExistsInMainEquip(effectID, eligibleSlotsForItem)
-		}
+		eligibleSlots := core.Ternary(isEnchant, character.ItemSwap.EligibleSlotsForEffect(effectID), character.ItemSwap.EligibleSlotsForItem(effectID))
 
 		procID := core.ActionID{SpellID: config.AuraID}
 		if procID.IsEmptyAction() {
@@ -174,11 +166,10 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		if isEnchant {
 			character.ItemSwap.RegisterEnchantProc(effectID, triggerAura)
 		} else {
-			if itemExistsInMainEquip && core.CheckSliceOverlap(eligibleSlotsForItem, core.TrinketSlots()) {
-				character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
-			}
-			character.ItemSwap.RegisterProcWithSlots(effectID, triggerAura, eligibleSlotsForItem)
+			character.ItemSwap.RegisterProcWithSlots(effectID, triggerAura, eligibleSlots)
 		}
+
+		character.AddStatProcBuff(effectID, procAura, isEnchant, eligibleSlots)
 	})
 }
 
@@ -379,9 +370,7 @@ func NewStackingStatBonusEffect(config StackingStatBonusEffect) {
 	core.NewItemEffect(config.ItemID, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		itemSwapIsEnabled := character.ItemSwap.IsEnabled()
 		eligibleSlotsForItem := character.ItemSwap.EligibleSlotsForItem(config.ItemID)
-		itemExistsInMainEquip := !itemSwapIsEnabled || character.ItemSwap.ItemExistsInMainEquip(config.ItemID, eligibleSlotsForItem)
 
 		auraID := core.ActionID{SpellID: config.AuraID}
 		if auraID.IsEmptyAction() {
@@ -413,10 +402,7 @@ func NewStackingStatBonusEffect(config StackingStatBonusEffect) {
 			},
 		})
 
-		if itemExistsInMainEquip && core.CheckSliceOverlap(eligibleSlotsForItem, core.TrinketSlots()) {
-			character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
-		}
-
+		character.AddStatProcBuff(config.ItemID, procAura, false, eligibleSlotsForItem)
 		character.ItemSwap.RegisterProcWithSlots(config.ItemID, triggerAura, eligibleSlotsForItem)
 	})
 }

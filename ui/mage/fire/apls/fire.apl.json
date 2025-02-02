@@ -1,9 +1,13 @@
 {
 	"type": "TypeAPL",
 	"prepullActions": [
-		{"action":{"castSpell":{"spellId":{"spellId":30482}}},"doAtValue":{"const":{"val":"-5.5s"}}},
+		{"action":{"itemSwap":{"swapSet":"Swap1"}},"doAtValue":{"const":{"val":"-160s"}}},
+		{"action":{"castSpell":{"spellId":{"spellId":30482}}},"doAtValue":{"const":{"val":"-30s"}}},
+		{"action":{"activateAura":{"auraId":{"spellId":74221,"tag":2}}},"doAtValue":{"const":{"val":"-5.5s"}}},
+		{"action":{"activateAllItemSwapStatBuffAuras":{"statType1":7,"statType2":-1,"statType3":-1}},"doAtValue":{"const":{"val":"-5.5s"}}},
 		{"action":{"castSpell":{"spellId":{"spellId":55342}}},"doAtValue":{"const":{"val":"-4s"}}},
 		{"action":{"castSpell":{"spellId":{"otherId":"OtherActionPotion"}}},"doAtValue":{"const":{"val":"-2.5s"}}},
+		{"action":{"itemSwap":{"swapSet":"Main"}},"doAtValue":{"const":{"val":"-2.5s"}}},
 		{"action":{"castSpell":{"spellId":{"spellId":11366}}},"doAtValue":{"const":{"val":"-2.5s"}}}
 	],
 	"priorityList": [

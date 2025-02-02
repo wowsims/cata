@@ -268,7 +268,17 @@ func (swap *ItemSwap) GetUnequippedItemBySlot(slot proto.ItemSlot) *Item {
 }
 
 func (swap *ItemSwap) ItemExistsInMainEquip(itemID int32, possibleSlots []proto.ItemSlot) bool {
+	if !swap.IsEnabled() {
+		return swap.character.Equipment.containsItemInSlots(itemID, possibleSlots)
+	}
 	return swap.originalEquip.containsItemInSlots(itemID, possibleSlots)
+}
+
+func (swap *ItemSwap) EnchantExistsInMainEquip(effectID int32, possibleSlots []proto.ItemSlot) bool {
+	if !swap.IsEnabled() {
+		return swap.character.Equipment.containsEnchantInSlots(effectID, possibleSlots)
+	}
+	return swap.originalEquip.containsEnchantInSlots(effectID, possibleSlots)
 }
 
 func (swap *ItemSwap) ItemExistsInSwapEquip(itemID int32, possibleSlots []proto.ItemSlot) bool {

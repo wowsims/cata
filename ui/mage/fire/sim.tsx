@@ -122,6 +122,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		talents: [Presets.FireTalents],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.FIRE_P1_PRESET, Presets.FIRE_P3_PREBIS, Presets.FIRE_P3_PRESET,Presets.FIRE_P4_PRESET],
+		itemSwaps: [Presets.P4_ITEM_SWAP],
 		builds: [Presets.P1_PRESET_BUILD, Presets.P3_PRESET_BUILD, Presets.P3_PRESET_NO_TROLL, Presets.P4_PRESET_BUILD, Presets.P4_PRESET_NO_TROLL],
 	},
 

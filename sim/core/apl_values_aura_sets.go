@@ -9,7 +9,7 @@ import (
 )
 
 // Parent struct for all APL values that perform checks on the set of buff auras
-// associated with equipped proc trinkets.
+// associated with equipped proc items.
 type APLValueTrinketStatProcCheck struct {
 	DefaultAPLValueImpl
 
@@ -20,10 +20,10 @@ type APLValueTrinketStatProcCheck struct {
 	matchingAuras    []*StatBuffAura
 }
 
-func (rot *APLRotation) newTrinketStatProcValue(valueName string, statType1 int32, statType2 int32, statType3 int32, minIcdSeconds float64, requireMatch bool, uuid *proto.UUID) *APLValueTrinketStatProcCheck {
+func (rot *APLRotation) newItemStatProcValue(valueName string, statType1 int32, statType2 int32, statType3 int32, minIcdSeconds float64, requireMatch bool, uuid *proto.UUID) *APLValueTrinketStatProcCheck {
 	statTypesToMatch := stats.IntTupleToStatsList(statType1, statType2, statType3)
 	minIcd := DurationFromSeconds(minIcdSeconds)
-	matchingAuras := rot.GetAPLTrinketProcAuras(statTypesToMatch, minIcd, requireMatch, uuid)
+	matchingAuras := rot.GetAPLItemProcAuras(statTypesToMatch, minIcd, requireMatch, false, uuid)
 
 	if (len(matchingAuras) == 0) && requireMatch {
 		return nil
@@ -55,8 +55,8 @@ type APLValueAllTrinketStatProcsActive struct {
 	*APLValueTrinketStatProcCheck
 }
 
-func (rot *APLRotation) newValueAllTrinketStatProcsActive(config *proto.APLValueAllTrinketStatProcsActive, uuid *proto.UUID) APLValue {
-	parentImpl := rot.newTrinketStatProcValue("AllTrinketStatProcsActive", config.StatType1, config.StatType2, config.StatType3, config.MinIcdSeconds, true, uuid)
+func (rot *APLRotation) newValueAllItemStatProcsActive(config *proto.APLValueAllTrinketStatProcsActive, uuid *proto.UUID) APLValue {
+	parentImpl := rot.newItemStatProcValue("AllTrinketStatProcsActive", config.StatType1, config.StatType2, config.StatType3, config.MinIcdSeconds, true, uuid)
 
 	if parentImpl == nil {
 		return nil
@@ -84,7 +84,7 @@ type APLValueAnyTrinketStatProcsActive struct {
 }
 
 func (rot *APLRotation) newValueAnyTrinketStatProcsActive(config *proto.APLValueAnyTrinketStatProcsActive, uuid *proto.UUID) APLValue {
-	parentImpl := rot.newTrinketStatProcValue("AnyTrinketStatProcsActive", config.StatType1, config.StatType2, config.StatType3, config.MinIcdSeconds, true, uuid)
+	parentImpl := rot.newItemStatProcValue("AnyTrinketStatProcsActive", config.StatType1, config.StatType2, config.StatType3, config.MinIcdSeconds, true, uuid)
 
 	if parentImpl == nil {
 		return nil
@@ -111,8 +111,8 @@ type APLValueTrinketProcsMinRemainingTime struct {
 	*APLValueTrinketStatProcCheck
 }
 
-func (rot *APLRotation) newValueTrinketProcsMinRemainingTime(config *proto.APLValueTrinketProcsMinRemainingTime, uuid *proto.UUID) APLValue {
-	parentImpl := rot.newTrinketStatProcValue("TrinketProcsMinRemainingTime", config.StatType1, config.StatType2, config.StatType3, config.MinIcdSeconds, true, uuid)
+func (rot *APLRotation) newValueItemProcsMinRemainingTime(config *proto.APLValueTrinketProcsMinRemainingTime, uuid *proto.UUID) APLValue {
+	parentImpl := rot.newItemStatProcValue("TrinketProcsMinRemainingTime", config.StatType1, config.StatType2, config.StatType3, config.MinIcdSeconds, true, uuid)
 
 	if parentImpl == nil {
 		return nil
@@ -141,8 +141,8 @@ type APLValueTrinketProcsMaxRemainingICD struct {
 	*APLValueTrinketStatProcCheck
 }
 
-func (rot *APLRotation) newValueTrinketProcsMaxRemainingICD(config *proto.APLValueTrinketProcsMaxRemainingICD, uuid *proto.UUID) APLValue {
-	parentImpl := rot.newTrinketStatProcValue("TrinketProcsMaxRemainingICD", config.StatType1, config.StatType2, config.StatType3, config.MinIcdSeconds, true, uuid)
+func (rot *APLRotation) newValueItemsProcsMaxRemainingICD(config *proto.APLValueTrinketProcsMaxRemainingICD, uuid *proto.UUID) APLValue {
+	parentImpl := rot.newItemStatProcValue("TrinketProcsMaxRemainingICD", config.StatType1, config.StatType2, config.StatType3, config.MinIcdSeconds, true, uuid)
 
 	if parentImpl == nil {
 		return nil
@@ -171,8 +171,8 @@ type APLValueNumEquippedStatProcTrinkets struct {
 	*APLValueTrinketStatProcCheck
 }
 
-func (rot *APLRotation) newValueNumEquippedStatProcTrinkets(config *proto.APLValueNumEquippedStatProcTrinkets, uuid *proto.UUID) APLValue {
-	parentImpl := rot.newTrinketStatProcValue("NumEquippedStatProcTrinkets", config.StatType1, config.StatType2, config.StatType3, config.MinIcdSeconds, false, uuid)
+func (rot *APLRotation) newValueNumEquippedStatProcItems(config *proto.APLValueNumEquippedStatProcTrinkets, uuid *proto.UUID) APLValue {
+	parentImpl := rot.newItemStatProcValue("NumEquippedStatProcTrinkets", config.StatType1, config.StatType2, config.StatType3, config.MinIcdSeconds, false, uuid)
 
 	return &APLValueNumEquippedStatProcTrinkets{
 		APLValueTrinketStatProcCheck: parentImpl,

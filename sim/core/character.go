@@ -45,7 +45,9 @@ type Character struct {
 	Equipment
 
 	// Stat buff auras associated with any equipped proc trinkets.
-	TrinketProcBuffs []*StatBuffAura
+	ItemProcBuffs []*StatBuffAura
+	// Stat buff auras associated with any prepull (item swap) procs.
+	PrePullItemProcBuffs []*StatBuffAura
 
 	//Item Swap Handler
 	ItemSwap ItemSwap
@@ -725,10 +727,20 @@ func (character *Character) GetConjuredCD() *Timer {
 func (character *Character) GetPotionCD() *Timer {
 	return character.GetOrInitTimer(&character.potionCD)
 }
-func (character *Character) GetMatchingTrinketProcAuras(statTypesToMatch []stats.Stat, minIcd time.Duration) []*StatBuffAura {
-	includeIcdFilter := (minIcd > 0)
 
-	return FilterSlice(character.TrinketProcBuffs, func(aura *StatBuffAura) bool {
+func (character *Character) AddStatProcBuff(effectID int32, procAura *StatBuffAura, isEnchant bool, eligibleSlots []proto.ItemSlot) {
+	mainEquipItem := Ternary(isEnchant, character.ItemSwap.EnchantExistsInMainEquip, character.ItemSwap.ItemExistsInMainEquip)
+	if mainEquipItem(effectID, eligibleSlots) {
+		character.ItemProcBuffs = append(character.ItemProcBuffs, procAura)
+	} else {
+		character.PrePullItemProcBuffs = append(character.PrePullItemProcBuffs, procAura)
+	}
+}
+
+func (character *Character) GetMatchingItemProcAuras(statTypesToMatch []stats.Stat, minIcd time.Duration, isPrepull bool) []*StatBuffAura {
+	includeIcdFilter := (minIcd > 0)
+	itemsToParse := Ternary(isPrepull, character.PrePullItemProcBuffs, character.ItemProcBuffs)
+	return FilterSlice(itemsToParse, func(aura *StatBuffAura) bool {
 		return aura.BuffsMatchingStat(statTypesToMatch) && (!includeIcdFilter || ((aura.Icd != nil) && (aura.Icd.Duration > minIcd)))
 	})
 }

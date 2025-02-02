@@ -309,6 +309,8 @@ func init() {
 		})
 
 		character.ItemSwap.RegisterEnchantProc(4099, aura)
+		character.AddStatProcBuff(74245, mainHand, true, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
+		character.AddStatProcBuff(74245, offHand, true, []proto.ItemSlot{proto.ItemSlot_ItemSlotOffHand})
 	})
 
 	// Enchant: 4115, Spell: 75172 - Lightweave Embroidery
