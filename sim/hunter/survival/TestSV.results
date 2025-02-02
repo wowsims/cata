@@ -886,22 +886,22 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-InsigniaoftheCorruptedMind-77203"
  value: {
-  dps: 28871.86909
-  tps: 26069.67759
+  dps: 28864.91905
+  tps: 26054.95929
  }
 }
 dps_results: {
  key: "TestSV-AllItems-InsigniaoftheCorruptedMind-77971"
  value: {
-  dps: 28816.97919
-  tps: 26015.38613
+  dps: 28830.10994
+  tps: 26017.57121
  }
 }
 dps_results: {
  key: "TestSV-AllItems-InsigniaoftheCorruptedMind-77991"
  value: {
-  dps: 28906.58349
-  tps: 26092.18077
+  dps: 28854.38817
+  tps: 26030.16142
  }
 }
 dps_results: {

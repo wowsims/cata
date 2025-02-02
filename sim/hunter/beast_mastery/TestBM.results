@@ -900,22 +900,22 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-InsigniaoftheCorruptedMind-77203"
  value: {
-  dps: 24536.22197
-  tps: 15547.29365
+  dps: 24544.44428
+  tps: 15578.95556
  }
 }
 dps_results: {
  key: "TestBM-AllItems-InsigniaoftheCorruptedMind-77971"
  value: {
-  dps: 24333.95471
-  tps: 15365.72542
+  dps: 24414.66154
+  tps: 15414.26975
  }
 }
 dps_results: {
  key: "TestBM-AllItems-InsigniaoftheCorruptedMind-77991"
  value: {
-  dps: 24640.39082
-  tps: 15573.44397
+  dps: 24572.78064
+  tps: 15605.61669
  }
 }
 dps_results: {

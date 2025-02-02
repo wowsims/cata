@@ -974,25 +974,25 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-InsigniaoftheCorruptedMind-77203"
  value: {
-  dps: 22312.46167
-  tps: 112230.23172
-  hps: 5484.72241
+  dps: 22256.11583
+  tps: 111721.39529
+  hps: 5464.90304
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-InsigniaoftheCorruptedMind-77971"
  value: {
-  dps: 22065.56884
-  tps: 111226.79165
-  hps: 5485.88604
+  dps: 22108.59827
+  tps: 111019.93438
+  hps: 5466.33419
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-InsigniaoftheCorruptedMind-77991"
  value: {
-  dps: 22200.38879
-  tps: 112665.65089
-  hps: 5516.8885
+  dps: 22234.4724
+  tps: 112604.01878
+  hps: 5500.14109
  }
 }
 dps_results: {
