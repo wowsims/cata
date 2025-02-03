@@ -7,6 +7,8 @@ import ArmsApl from './apls/arms.apl.json';
 import P1ArmsBisGear from './gear_sets/p1_arms_bis.gear.json';
 import P1ArmsRealisticBisGear from './gear_sets/p1_arms_realistic_bis.gear.json';
 import P3ArmsBisGear from './gear_sets/p3_arms_bis.gear.json';
+import P4ArmsBisGear from './gear_sets/p4_arms_bis.gear.json';
+import ItemSwapP4Gear from './gear_sets/p4_arms_item_swap.gear.json';
 import PreraidArmsGear from './gear_sets/preraid_arms.gear.json';
 
 // Preset options for this spec.
@@ -17,6 +19,10 @@ export const PRERAID_ARMS_PRESET = PresetUtils.makePresetGear('Preraid', Preraid
 export const P1_ARMS_BIS_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1ArmsBisGear);
 export const P1_ARMS_REALISTIC_PRESET = PresetUtils.makePresetGear('P1 - Realistic', P1ArmsRealisticBisGear);
 export const P3_ARMS_BIS_PRESET = PresetUtils.makePresetGear('P3 - BIS', P3ArmsBisGear);
+export const P4_ARMS_BIS_PRESET = PresetUtils.makePresetGear('P4 - WIP', P4ArmsBisGear);
+
+export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4 - WIP', ItemSwapP4Gear);
+
 
 export const ROTATION_ARMS = PresetUtils.makePresetAPLRotation('Default', ArmsApl);
 
