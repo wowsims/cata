@@ -597,6 +597,7 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 		includeIf: (_, isPrepull: boolean) => isPrepull,
 		newValue: () =>
 			APLActionActivateAllItemSwapStatBuffAuras.create({
+				swapSet: ItemSwapSet.Main,
 				statType1: -1,
 				statType2: -1,
 				statType3: -1,
