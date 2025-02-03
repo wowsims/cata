@@ -340,7 +340,9 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			this.addDetailedResultsTab();
 		}
 
-		this.bt = this.addBulkTab();
+		// TODO: Fix intermittent memory leak in the Calculate Combos
+		// request so that this can be re-enabled.
+		//this.bt = this.addBulkTab();
 
 		this.addTopbarComponents();
 	}
