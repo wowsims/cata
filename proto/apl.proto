@@ -175,11 +175,11 @@ message APLValue {
         APLValueAuraShouldRefresh aura_should_refresh = 43;
 
         // Aggregate Aura set values
-        APLValueAllTrinketStatProcsActive all_trinket_stat_procs_active = 78;
-        APLValueAnyTrinketStatProcsActive any_trinket_stat_procs_active = 79;
-        APLValueTrinketProcsMinRemainingTime trinket_procs_min_remaining_time = 80;
-        APLValueTrinketProcsMaxRemainingICD trinket_procs_max_remaining_icd = 84;
-        APLValueNumEquippedStatProcTrinkets num_equipped_stat_proc_trinkets = 81;
+        APLValueAllTrinketStatProcsActive all_trinket_stat_procs_active = 78; // TODO: Rename in MoP as it includes all item/effect procs
+        APLValueAnyTrinketStatProcsActive any_trinket_stat_procs_active = 79; // TODO: Rename in MoP as it includes all item/effect procs
+        APLValueTrinketProcsMinRemainingTime trinket_procs_min_remaining_time = 80; // TODO: Rename in MoP as it includes all item/effect procs
+        APLValueTrinketProcsMaxRemainingICD trinket_procs_max_remaining_icd = 84; // TODO: Rename in MoP as it includes all item/effect procs
+        APLValueNumEquippedStatProcTrinkets num_equipped_stat_proc_trinkets = 81; // TODO: Rename in MoP as it includes all item/effect procs
         APLValueNumStatBuffCooldowns num_stat_buff_cooldowns = 85;
 
         // Dot values

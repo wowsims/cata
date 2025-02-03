@@ -294,18 +294,23 @@ func (swap *ItemSwap) EligibleSlotsForItem(itemID int32) []proto.ItemSlot {
 
 	if !swap.IsEnabled() {
 		return eligibleSlots
-	} else {
-		return FilterSlice(eligibleSlots, func(slot proto.ItemSlot) bool {
-			return (swap.originalEquip[slot].ID == itemID) || (swap.swapEquip[slot].ID == itemID)
-		})
 	}
+
+	return FilterSlice(eligibleSlots, func(slot proto.ItemSlot) bool {
+		return (swap.originalEquip[slot].ID == itemID) || (swap.swapEquip[slot].ID == itemID)
+	})
+
 }
 
 func (swap *ItemSwap) EligibleSlotsForEffect(effectID int32) []proto.ItemSlot {
 	var eligibleSlots []proto.ItemSlot
 
-	if swap.IsEnabled() {
-		for itemSlot := proto.ItemSlot(0); itemSlot < NumItemSlots; itemSlot++ {
+	for itemSlot := proto.ItemSlot(0); itemSlot < NumItemSlots; itemSlot++ {
+		if !swap.IsEnabled() {
+			if swap.character.Equipment.containsEnchantInSlot(effectID, itemSlot) {
+				eligibleSlots = append(eligibleSlots, itemSlot)
+			}
+		} else {
 			if swap.originalEquip.containsEnchantInSlot(effectID, itemSlot) || swap.swapEquip.containsEnchantInSlot(effectID, itemSlot) {
 				eligibleSlots = append(eligibleSlots, itemSlot)
 			}

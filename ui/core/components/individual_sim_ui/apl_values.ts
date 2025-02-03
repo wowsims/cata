@@ -1117,7 +1117,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 
 	// Aura Sets
 	allTrinketStatProcsActive: inputBuilder({
-		label: 'All Proc Buffs Active',
+		label: 'All Item Proc Buffs Active',
 		submenu: ['Aura Sets'],
 		shortDescription: '<b>True</b> if all item/enchant procs that buff the specified stat type(s) are currently active, otherwise <b>False</b>.',
 		fullDescription: `
@@ -1132,7 +1132,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.minIcdInput],
 	}),
 	anyTrinketStatProcsActive: inputBuilder({
-		label: 'Any Proc Buff Active',
+		label: 'Any Item Proc Buff Active',
 		submenu: ['Aura Sets'],
 		shortDescription: '<b>True</b> if any item/enchant procs that buff the specified stat type(s) are currently active, otherwise <b>False</b>.',
 		fullDescription: `
@@ -1147,7 +1147,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.minIcdInput],
 	}),
 	trinketProcsMinRemainingTime: inputBuilder({
-		label: 'Any Procs Min Remaining Time',
+		label: 'Item Procs Min Remaining Time',
 		submenu: ['Aura Sets'],
 		shortDescription:
 			'Shortest remaining duration on any active item/enchant procs that buff the specified stat type(s), or infinity if none are currently active.',
@@ -1160,7 +1160,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		fields: [AplHelpers.statTypeFieldConfig('statType1'), AplHelpers.statTypeFieldConfig('statType2'), AplHelpers.statTypeFieldConfig('statType3'), AplHelpers.minIcdInput],
 	}),
 	trinketProcsMaxRemainingIcd: inputBuilder({
-		label: 'Any Procs Max Remaining ICD',
+		label: 'Item Procs Max Remaining ICD',
 		submenu: ['Aura Sets'],
 		shortDescription:
 			'Longest remaining ICD on any inactive item/enchant procs that buff the specified stat type(s), or 0 if all are currently active.',
@@ -1175,7 +1175,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 	numEquippedStatProcTrinkets: inputBuilder({
 		label: 'Num Equipped Stat Proc Effects',
 		submenu: ['Aura Sets'],
-		shortDescription: 'Number of equipped passive item/enchant that buff the specified stat type(s) when they proc.',
+		shortDescription: 'Number of equipped passive item/enchant effects that buff the specified stat type(s) when they proc.',
 		newValue: () =>
 			APLValueNumEquippedStatProcTrinkets.create({
 				statType1: -1,

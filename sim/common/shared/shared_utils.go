@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -96,7 +97,12 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 
 	effectFn(effectID, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		eligibleSlots := core.Ternary(isEnchant, character.ItemSwap.EligibleSlotsForEffect(effectID), character.ItemSwap.EligibleSlotsForItem(effectID))
+		var eligibleSlots []proto.ItemSlot
+		if isEnchant {
+			eligibleSlots = character.ItemSwap.EligibleSlotsForEffect(effectID)
+		} else {
+			eligibleSlots = character.ItemSwap.EligibleSlotsForItem(effectID)
+		}
 
 		procID := core.ActionID{SpellID: config.AuraID}
 		if procID.IsEmptyAction() {
@@ -164,7 +170,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		}
 
 		if isEnchant {
-			character.ItemSwap.RegisterEnchantProc(effectID, triggerAura)
+			character.ItemSwap.RegisterEnchantProcWithSlots(effectID, triggerAura, eligibleSlots)
 		} else {
 			character.ItemSwap.RegisterProcWithSlots(effectID, triggerAura, eligibleSlots)
 		}
