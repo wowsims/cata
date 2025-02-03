@@ -2135,84 +2135,84 @@ dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-DefaultTalents-Standard-aoe-FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 113295.60051
-  tps: 47258.4021
+  tps: 47271.54902
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-DefaultTalents-Standard-aoe-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 43850.39976
-  tps: 1880.81202
+  dps: 44373.3486
+  tps: 1900.09028
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-DefaultTalents-Standard-aoe-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 52488.29731
-  tps: 2077.26257
+  dps: 53589.0489
+  tps: 2153.6531
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-DefaultTalents-Standard-aoe-NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 88432.21372
-  tps: 45612.89857
+  tps: 45615.65637
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-DefaultTalents-Standard-aoe-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 34136.47083
-  tps: 1610.74142
+  dps: 34086.94999
+  tps: 1612.01611
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-DefaultTalents-Standard-aoe-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 38902.36283
-  tps: 1707.78674
+  dps: 39402.96503
+  tps: 1757.09918
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-DefaultTalents-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 72025.07795
-  tps: 13878.23326
+  dps: 72605.49679
+  tps: 13826.2178
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-DefaultTalents-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 44096.91426
-  tps: 1883.3168
+  dps: 44046.59036
+  tps: 1906.94411
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-DefaultTalents-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 52878.67093
-  tps: 2055.17742
+  dps: 53049.58587
+  tps: 2136.46585
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-DefaultTalents-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 54625.77445
-  tps: 12536.49307
+  dps: 55752.5015
+  tps: 12509.14189
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-DefaultTalents-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 34080.99501
-  tps: 1608.33774
+  dps: 34257.77482
+  tps: 1586.84357
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-DefaultTalents-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 39241.3772
-  tps: 1759.72414
+  dps: 39528.11389
+  tps: 1709.36242
  }
 }
 dps_results: {
@@ -2260,85 +2260,85 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsAoE-Standard-aoe-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 167477.02518
-  tps: 85083.18377
+  dps: 167593.36848
+  tps: 85239.93155
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsAoE-Standard-aoe-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 43350.77469
-  tps: 1899.17612
+  dps: 43566.10328
+  tps: 1906.43461
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsAoE-Standard-aoe-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 52693.23485
-  tps: 2078.18548
+  dps: 53814.30713
+  tps: 2156.17697
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsAoE-Standard-aoe-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 135989.34787
-  tps: 77788.8383
+  dps: 136127.52977
+  tps: 77914.4234
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsAoE-Standard-aoe-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 33744.83932
-  tps: 1628.31502
+  dps: 33687.19109
+  tps: 1601.74482
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsAoE-Standard-aoe-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 39048.64207
-  tps: 1707.78674
+  dps: 39566.52355
+  tps: 1757.30046
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsAoE-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 68411.84941
-  tps: 13805.46682
+  dps: 68638.17341
+  tps: 13765.14634
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsAoE-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 43357.0693
-  tps: 1875.71699
+  dps: 43367.03495
+  tps: 1901.56133
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsAoE-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 53141.6735
-  tps: 2057.37205
+  dps: 53323.85734
+  tps: 2138.69766
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsAoE-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 52254.1649
-  tps: 12487.91357
+  dps: 53012.99848
+  tps: 12453.07273
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsAoE-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 33554.6973
-  tps: 1601.22286
+  dps: 33857.66941
+  tps: 1586.68061
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsAoE-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 39430.27446
-  tps: 1760.32594
+  dps: 39731.79898
+  tps: 1710.54453
  }
 }
 dps_results: {
@@ -2386,85 +2386,85 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsImprovedShields-Standard-aoe-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 151223.04836
-  tps: 82449.38687
+  dps: 151271.00132
+  tps: 82438.94489
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsImprovedShields-Standard-aoe-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 42067.68047
-  tps: 1857.13383
+  dps: 42262.12553
+  tps: 1869.28245
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsImprovedShields-Standard-aoe-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 51271.28529
-  tps: 2092.87521
+  dps: 51732.06276
+  tps: 2107.21658
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsImprovedShields-Standard-aoe-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 122734.93439
-  tps: 75633.78706
+  dps: 122913.71526
+  tps: 75787.41871
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsImprovedShields-Standard-aoe-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 32594.76083
-  tps: 1624.32628
+  dps: 32537.49523
+  tps: 1575.56049
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsImprovedShields-Standard-aoe-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 38148.1348
-  tps: 1739.21415
+  dps: 38247.44865
+  tps: 1748.78935
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsImprovedShields-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 68411.84941
-  tps: 13805.46682
+  dps: 68638.17341
+  tps: 13765.14634
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsImprovedShields-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 41970.36256
-  tps: 1873.69148
+  dps: 42282.60968
+  tps: 1890.36275
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsImprovedShields-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 51742.12587
-  tps: 2097.7014
+  dps: 51779.05463
+  tps: 2116.71552
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsImprovedShields-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 52254.1649
-  tps: 12487.91357
+  dps: 53012.99848
+  tps: 12453.07273
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsImprovedShields-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 32496.67344
-  tps: 1607.77203
+  dps: 32627.1007
+  tps: 1612.30595
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Orc-p3.default-TalentsImprovedShields-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 37974.61316
-  tps: 1740.88923
+  dps: 38196.96279
+  tps: 1702.03551
  }
 }
 dps_results: {
@@ -2513,84 +2513,84 @@ dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-DefaultTalents-Standard-aoe-FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 110495.50908
-  tps: 47579.63696
+  tps: 47579.66893
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-DefaultTalents-Standard-aoe-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 43565.22982
-  tps: 1894.14843
+  dps: 43739.94907
+  tps: 1903.34284
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-DefaultTalents-Standard-aoe-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 52703.60854
-  tps: 2057.71942
+  dps: 53256.44285
+  tps: 2104.03128
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-DefaultTalents-Standard-aoe-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 86045.28418
+  dps: 86046.78567
   tps: 45926.12605
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-DefaultTalents-Standard-aoe-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 33773.54839
-  tps: 1608.13184
+  dps: 33837.10952
+  tps: 1627.03789
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-DefaultTalents-Standard-aoe-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 38937.60242
-  tps: 1751.78983
+  dps: 39326.72418
+  tps: 1735.12677
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-DefaultTalents-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 69797.88839
-  tps: 14032.9604
+  dps: 69808.02332
+  tps: 14037.78476
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-DefaultTalents-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 43830.6355
-  tps: 1913.58868
+  dps: 43762.58362
+  tps: 1918.75016
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-DefaultTalents-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 52590.60216
-  tps: 2193.59422
+  dps: 53011.8341
+  tps: 2152.8638
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-DefaultTalents-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 53181.7042
-  tps: 12565.17621
+  dps: 53219.98488
+  tps: 12562.36324
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-DefaultTalents-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 33531.01299
-  tps: 1592.4288
+  dps: 33653.42363
+  tps: 1609.386
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-DefaultTalents-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 38407.51675
-  tps: 1731.71085
+  dps: 38665.70133
+  tps: 1718.28944
  }
 }
 dps_results: {
@@ -2638,85 +2638,85 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsAoE-Standard-aoe-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 164829.44377
-  tps: 85461.73796
+  dps: 164827.76623
+  tps: 85591.62126
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsAoE-Standard-aoe-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 43004.5981
-  tps: 1875.17684
+  dps: 42946.50491
+  tps: 1909.66655
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsAoE-Standard-aoe-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 52936.94014
-  tps: 2060.83856
+  dps: 53492.41841
+  tps: 2107.31092
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsAoE-Standard-aoe-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 133977.94278
-  tps: 78022.03627
+  dps: 134077.10532
+  tps: 78085.04988
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsAoE-Standard-aoe-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 33588.7795
-  tps: 1616.80353
+  dps: 33663.50992
+  tps: 1619.92822
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsAoE-Standard-aoe-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 39105.31201
-  tps: 1751.78983
+  dps: 39501.99981
+  tps: 1735.12677
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsAoE-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 66116.29073
-  tps: 13871.19623
+  dps: 66122.52604
+  tps: 13864.33641
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsAoE-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 43101.72926
-  tps: 1904.33135
+  dps: 43176.1561
+  tps: 1891.50443
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsAoE-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 52885.42497
-  tps: 2194.625
+  dps: 53320.52585
+  tps: 2154.64188
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsAoE-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 50771.0726
-  tps: 12517.34779
+  dps: 50785.72869
+  tps: 12519.17144
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsAoE-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 33360.95844
-  tps: 1621.92932
+  dps: 33261.93727
+  tps: 1595.55336
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsAoE-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 38602.43513
-  tps: 1733.00168
+  dps: 38862.01405
+  tps: 1719.17184
  }
 }
 dps_results: {
@@ -2764,85 +2764,85 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsImprovedShields-Standard-aoe-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 148366.94408
-  tps: 82661.26683
+  dps: 148351.64002
+  tps: 82768.45191
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsImprovedShields-Standard-aoe-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 41502.9454
-  tps: 1860.64553
+  dps: 41555.76762
+  tps: 1869.56201
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsImprovedShields-Standard-aoe-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 50880.24255
-  tps: 2108.96099
+  dps: 50831.44888
+  tps: 2057.26315
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsImprovedShields-Standard-aoe-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 120453.72564
-  tps: 75763.58652
+  dps: 120529.23634
+  tps: 75817.55456
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsImprovedShields-Standard-aoe-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 32101.22989
-  tps: 1612.64678
+  dps: 32312.71137
+  tps: 1617.65396
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsImprovedShields-Standard-aoe-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 37247.21364
-  tps: 1706.9346
+  dps: 38041.11769
+  tps: 1714.16918
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsImprovedShields-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 66116.29073
-  tps: 13871.19623
+  dps: 66122.52604
+  tps: 13864.33641
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsImprovedShields-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 41635.51312
-  tps: 1884.18268
+  dps: 41645.92364
+  tps: 1891.80635
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsImprovedShields-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 50743.48533
-  tps: 2157.86942
+  dps: 51229.72006
+  tps: 2052.57808
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsImprovedShields-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 50771.0726
-  tps: 12517.34779
+  dps: 50785.72869
+  tps: 12519.17144
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsImprovedShields-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 32075.03923
-  tps: 1607.54752
+  dps: 32343.42399
+  tps: 1632.07418
  }
 }
 dps_results: {
  key: "TestElemental-Settings-Troll-p3.default-TalentsImprovedShields-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 37414.21136
-  tps: 1694.45601
+  dps: 37471.06989
+  tps: 1733.91654
  }
 }
 dps_results: {

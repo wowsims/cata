@@ -234,6 +234,13 @@ func init() {
 		}))
 
 		character.ItemSwap.RegisterEnchantProc(4083, aura)
+
+		if character.AutoAttacks.AutoSwingMelee {
+			character.AddStatProcBuff(4083, mhAura, true, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
+			character.AddStatProcBuff(4083, ohAura, true, []proto.ItemSlot{proto.ItemSlot_ItemSlotOffHand})
+		} else {
+			character.AddStatProcBuff(4083, spAura, true, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
+		}
 	})
 
 	// Enchant: 4084, Spell: 74225 - Enchant Weapon - Heartsong
@@ -309,8 +316,10 @@ func init() {
 		})
 
 		character.ItemSwap.RegisterEnchantProc(4099, aura)
-		character.AddStatProcBuff(74245, mainHand, true, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
-		character.AddStatProcBuff(74245, offHand, true, []proto.ItemSlot{proto.ItemSlot_ItemSlotOffHand})
+		if character.AutoAttacks.AutoSwingMelee {
+			character.AddStatProcBuff(74245, mainHand, true, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
+			character.AddStatProcBuff(74245, offHand, true, []proto.ItemSlot{proto.ItemSlot_ItemSlotOffHand})
+		}
 	})
 
 	// Enchant: 4115, Spell: 75172 - Lightweave Embroidery
