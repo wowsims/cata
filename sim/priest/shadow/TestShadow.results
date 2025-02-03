@@ -103,7 +103,7 @@ dps_results: {
  value: {
   dps: 37958.30467
   tps: 32323.91039
-  hps: 116.66228
+  hps: 123.66202
  }
 }
 dps_results: {
@@ -396,22 +396,22 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-CunningoftheCruel-77208"
  value: {
-  dps: 40724.37816
-  tps: 34797.20404
+  dps: 40832.99997
+  tps: 34905.82585
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-CunningoftheCruel-77980"
  value: {
-  dps: 40437.66438
-  tps: 34544.73817
+  dps: 40532.02367
+  tps: 34639.09746
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-CunningoftheCruel-78000"
  value: {
-  dps: 41174.3447
-  tps: 35252.79582
+  dps: 41295.24948
+  tps: 35373.7006
  }
 }
 dps_results: {
@@ -1406,7 +1406,7 @@ dps_results: {
  value: {
   dps: 37482.04349
   tps: 31989.17328
-  hps: 370.51133
+  hps: 392.74201
  }
 }
 dps_results: {
@@ -1414,7 +1414,7 @@ dps_results: {
  value: {
   dps: 37482.04349
   tps: 31989.17328
-  hps: 417.93331
+  hps: 443.00931
  }
 }
 dps_results: {
