@@ -4,7 +4,7 @@
 		{"action":{"itemSwap":{"swapSet":"Swap1"}},"doAtValue":{"const":{"val":"-120s"}}},
 		{"action":{"castSpell":{"spellId":{"spellId":66842}}},"doAtValue":{"const":{"val":"-3s"}}},
 		{"action":{"castSpell":{"spellId":{"spellId":79206}}},"doAtValue":{"const":{"val":"-1s"}}},
-		{"action":{"activateAllItemSwapStatBuffAuras":{"statType1":14,"statType2":3,"statType3":7}},"doAtValue":{"const":{"val":"-1s"}}},
+		{"action":{"activateAllItemSwapStatBuffAuras":{"swapSet":"Swap1","statType1":14,"statType2":3,"statType3":7}},"doAtValue":{"const":{"val":"-1s"}}},
 		{"action":{"itemSwap":{"swapSet":"Main"}},"doAtValue":{"const":{"val":"-1s"}}},
 		{"action":{"castSpell":{"spellId":{"otherId":"OtherActionPotion"}}},"doAtValue":{"const":{"val":"-1s"}}},
 		{"action":{"castSpell":{"spellId":{"spellId":403}}},"doAtValue":{"const":{"val":"-1s"}}}

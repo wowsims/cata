@@ -159,8 +159,9 @@ func (rot *APLRotation) newActionActivateAllItemSwapStatBuffAuras(config *proto.
 	unit := rot.unit
 	character := unit.Env.Raid.GetPlayerFromUnit(unit).GetCharacter()
 	statTypesToMatch := stats.IntTupleToStatsList(config.StatType1, config.StatType2, config.StatType3)
+	isSwappedSet := config.SwapSet == proto.APLActionItemSwap_Swap1
 
-	allSubactions := MapSlice(rot.GetAPLItemProcAuras(statTypesToMatch, 0, false, true, &proto.UUID{Value: ""}), func(statBuffAura *StatBuffAura) *APLActionActivateAura {
+	allSubactions := MapSlice(rot.GetAPLItemProcAuras(statTypesToMatch, 0, false, isSwappedSet, &proto.UUID{Value: ""}), func(statBuffAura *StatBuffAura) *APLActionActivateAura {
 		return &APLActionActivateAura{
 			aura: statBuffAura.Aura,
 		}

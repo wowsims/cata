@@ -1,13 +1,14 @@
 {
 	"type": "TypeAPL",
 	"prepullActions": [
-		{"action":{"itemSwap":{"swapSet":"Swap1"}},"doAtValue":{"const":{"val":"-120s"}}},
+		{"action":{"itemSwap":{"swapSet":"Swap1"}},"doAtValue":{"const":{"val":"-160s"}}},
 		{"action":{"castSpell":{"spellId":{"itemId":70142}}},"doAtValue":{"const":{"val":"-22.5"}}},
 		{"action":{"castSpell":{"spellId":{"spellId":30146}}},"doAtValue":{"const":{"val":"-10s"}}},
 		{"action":{"castSpell":{"spellId":{"spellId":77801}}},"doAtValue":{"const":{"val":"-4.01s"}},"hide":true},
 		{"action":{"castSpell":{"spellId":{"spellId":74434}}},"doAtValue":{"const":{"val":"-4.01s"}},"hide":true},
 		{"action":{"castSpell":{"spellId":{"spellId":691}}},"doAtValue":{"const":{"val":"-4.01s"}},"hide":true},
-		{"action":{"activateAllItemSwapStatBuffAuras":{"statType1":11,"statType2":7,"statType3":-1}},"doAtValue":{"const":{"val":"-2.51s"}}},
+		{"action":{"activateAllItemSwapStatBuffAuras":{"swapSet":"Main","statType1":11,"statType2":-1,"statType3":-1}},"doAtValue":{"const":{"val":"-2.51s"}}},
+		{"action":{"activateAllItemSwapStatBuffAuras":{"swapSet":"Swap1","statType1":11,"statType2":7,"statType3":-1}},"doAtValue":{"const":{"val":"-2.51s"}}},
 		{"action":{"castSpell":{"spellId":{"otherId":"OtherActionPotion"}}},"doAtValue":{"const":{"val":"-2.51s"}}},
 		{"action":{"castSpell":{"spellId":{"spellId":59672}}},"doAtValue":{"const":{"val":"-2.51s"}}},
 		{"action":{"castSpell":{"spellId":{"spellId":82174}}},"doAtValue":{"const":{"val":"-2.49s"}}},
