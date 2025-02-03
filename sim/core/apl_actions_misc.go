@@ -145,7 +145,7 @@ func (action *APLActionActivateAuraWithStacks) String() string {
 	return fmt.Sprintf("Activate Aura(%s) Stacks(%d)", action.aura.ActionID, action.numStacks)
 }
 
-type APLActionActivateAllItemSwapStatBuffAuras struct {
+type APLActionActivateAllStatBuffAuras struct {
 	defaultAPLActionImpl
 	character *Character
 
@@ -154,7 +154,7 @@ type APLActionActivateAllItemSwapStatBuffAuras struct {
 	allSubactions []*APLActionActivateAura
 }
 
-func (rot *APLRotation) newActionActivateAllItemSwapStatBuffAuras(config *proto.APLActionActivateAllItemSwapStatBuffAuras) APLActionImpl {
+func (rot *APLRotation) newActionActivateAllStatBuffAuras(config *proto.APLActionActivateAllStatBuffAuras) APLActionImpl {
 
 	unit := rot.unit
 	character := unit.Env.Raid.GetPlayerFromUnit(unit).GetCharacter()
@@ -167,28 +167,28 @@ func (rot *APLRotation) newActionActivateAllItemSwapStatBuffAuras(config *proto.
 		}
 	})
 
-	return &APLActionActivateAllItemSwapStatBuffAuras{
+	return &APLActionActivateAllStatBuffAuras{
 		character:        character,
 		statTypesToMatch: statTypesToMatch,
 		allSubactions:    allSubactions,
 	}
 }
 
-func (action *APLActionActivateAllItemSwapStatBuffAuras) IsReady(sim *Simulation) bool {
+func (action *APLActionActivateAllStatBuffAuras) IsReady(sim *Simulation) bool {
 	return len(action.allSubactions) > 0
 }
 
-func (action *APLActionActivateAllItemSwapStatBuffAuras) Execute(sim *Simulation) {
+func (action *APLActionActivateAllStatBuffAuras) Execute(sim *Simulation) {
 	for _, subaction := range action.allSubactions {
 		subaction.Execute(sim)
 	}
 }
 
-func (action *APLActionActivateAllItemSwapStatBuffAuras) String() string {
-	return fmt.Sprintf("ActivateAllItemSwapStatBuffAurasFor(%s)", StringFromStatTypes(action.statTypesToMatch))
+func (action *APLActionActivateAllStatBuffAuras) String() string {
+	return fmt.Sprintf("ActivateAllStatBuffAurasFor(%s)", StringFromStatTypes(action.statTypesToMatch))
 }
 
-func (action *APLActionActivateAllItemSwapStatBuffAuras) PostFinalize(rot *APLRotation) {
+func (action *APLActionActivateAllStatBuffAuras) PostFinalize(rot *APLRotation) {
 	if len(action.allSubactions) == 0 {
 		rot.ValidationMessage(proto.LogLevel_Warning, "%s will not activate any Auras! There are no proc items buffing the specified stat type(s).", action)
 	} else {
