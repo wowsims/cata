@@ -197,7 +197,7 @@ func (action *APLActionActivateAllStatBuffProcAuras) UpdateSubactions() {
 }
 
 func (action *APLActionActivateAllStatBuffProcAuras) MeetsItemSwapRequirement() bool {
-	return (action.character.ItemSwap.IsEnabled() && action.swapSet == action.character.ItemSwap.swapSet) || action.swapSet == proto.APLActionItemSwap_Main
+	return (action.character.ItemSwap.IsEnabled() && action.swapSet != proto.APLActionItemSwap_Unknown) || action.swapSet == proto.APLActionItemSwap_Main
 }
 
 func (action *APLActionActivateAllStatBuffProcAuras) IsReady(sim *Simulation) bool {
@@ -215,12 +215,21 @@ func (action *APLActionActivateAllStatBuffProcAuras) String() string {
 }
 
 func (action *APLActionActivateAllStatBuffProcAuras) PostFinalize(rot *APLRotation) {
+	var aurasForSwapSet = []*APLActionActivateAura{}
+	for idx, subaction := range action.allSubactions {
+		isSwapped := action.allProcAuras[idx].IsSwapped
+		if (isSwapped && action.swapSet == proto.APLActionItemSwap_Swap1) || (!isSwapped && action.swapSet == proto.APLActionItemSwap_Main) {
+			aurasForSwapSet = append(aurasForSwapSet, subaction)
+		}
+	}
+
 	if !action.MeetsItemSwapRequirement() {
 		rot.ValidationMessage(proto.LogLevel_Warning, "No swap set configured in Settings.")
-	} else if len(action.allSubactions) == 0 {
-		rot.ValidationMessage(proto.LogLevel_Warning, "%s will not activate any Auras! There are no proc items buffing the specified stat type(s).", action)
+	} else if len(aurasForSwapSet) == 0 {
+		rot.ValidationMessage(proto.LogLevel_Warning, "%s will not activate any Auras! There are no proc items buffing the specified stat type(s) for the specified item set.", action)
 	} else {
-		actionIDs := MapSlice(action.allSubactions, func(subaction *APLActionActivateAura) ActionID {
+
+		actionIDs := MapSlice(aurasForSwapSet, func(subaction *APLActionActivateAura) ActionID {
 			return subaction.aura.ActionID
 		})
 
