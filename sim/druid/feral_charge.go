@@ -26,6 +26,10 @@ func (druid *Druid) registerCatCharge() {
 			IgnoreHaste: true,
 		},
 
+		ExtraCastCondition: func(_ *core.Simulation, _ *core.Unit) bool {
+			return !druid.PseudoStats.InFrontOfTarget && !druid.CannotShredTarget
+		},
+
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			// Leap speed is around 80 yards/second according to measurements
 			// from boЯsch. This is too fast to be modeled accurately using
