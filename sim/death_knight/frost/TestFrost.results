@@ -966,25 +966,25 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-InsigniaoftheCorruptedMind-77203"
  value: {
-  dps: 39113.88309
-  tps: 36770.56573
-  hps: 552.99269
+  dps: 39002.39601
+  tps: 36661.95418
+  hps: 554.54823
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-InsigniaoftheCorruptedMind-77971"
  value: {
-  dps: 38896.41971
-  tps: 36553.80403
-  hps: 552.21492
+  dps: 39042.4856
+  tps: 36694.24761
+  hps: 552.99269
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-InsigniaoftheCorruptedMind-77991"
  value: {
-  dps: 39152.777
-  tps: 36799.57029
-  hps: 559.21483
+  dps: 39089.24029
+  tps: 36723.78835
+  hps: 559.9926
  }
 }
 dps_results: {

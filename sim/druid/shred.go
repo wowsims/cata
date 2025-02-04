@@ -29,8 +29,8 @@ func (druid *Druid) registerShredSpell() {
 			},
 			IgnoreHaste: true,
 		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return !druid.PseudoStats.InFrontOfTarget
+		ExtraCastCondition: func(_ *core.Simulation, _ *core.Unit) bool {
+			return !druid.PseudoStats.InFrontOfTarget && !druid.CannotShredTarget
 		},
 
 		DamageMultiplier: 5.4,
@@ -90,7 +90,7 @@ func (druid *Druid) registerShredSpell() {
 }
 
 func (druid *Druid) CanShred() bool {
-	return !druid.PseudoStats.InFrontOfTarget && druid.CurrentEnergy() >= druid.CurrentShredCost()
+	return !druid.PseudoStats.InFrontOfTarget && !druid.CannotShredTarget && druid.CurrentEnergy() >= druid.CurrentShredCost()
 }
 
 func (druid *Druid) CurrentShredCost() float64 {
