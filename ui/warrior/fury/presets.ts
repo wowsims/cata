@@ -12,6 +12,10 @@ import P3FurySMFGear from './gear_sets/p3_fury_smf.gear.json';
 import ItemSwapP3SMFGear from './gear_sets/p3_fury_smf_item_swap.gear.json';
 import P3FuryTGGear from './gear_sets/p3_fury_tg.gear.json';
 import ItemSwapP3TGGear from './gear_sets/p3_fury_tg_item_swap.gear.json';
+import P4FurySMFGear from './gear_sets/p4_fury_smf.gear.json';
+import ItemSwapP4SMFGear from './gear_sets/p4_fury_smf_item_swap.gear.json';
+import P4FuryTGGear from './gear_sets/p4_fury_tg.gear.json';
+import ItemSwapP4TGGear from './gear_sets/p4_fury_tg_item_swap.gear.json';
 import PreraidFurySMFGear from './gear_sets/preraid_fury_smf.gear.json';
 import PreraidFuryTGGear from './gear_sets/preraid_fury_tg.gear.json';
 
@@ -64,9 +68,13 @@ export const P1_BIS_FURY_SMF_PRESET = PresetUtils.makePresetGear('P1 - SMF', P1F
 export const P1_BIS_FURY_TG_PRESET = PresetUtils.makePresetGear('P1 - TG', P1FuryTGGear, FURY_TG_PRESET_OPTIONS);
 export const P3_BIS_FURY_SMF_PRESET = PresetUtils.makePresetGear('P3 - SMF', P3FurySMFGear, FURY_SMF_PRESET_OPTIONS);
 export const P3_BIS_FURY_TG_PRESET = PresetUtils.makePresetGear('P3 - TG', P3FuryTGGear, FURY_TG_PRESET_OPTIONS);
+export const P4_BIS_FURY_TG_PRESET = PresetUtils.makePresetGear('P4 - TG - WIP', P4FuryTGGear, FURY_TG_PRESET_OPTIONS);
+export const P4_BIS_FURY_SMF_PRESET = PresetUtils.makePresetGear('P4 - SMF - WIP', P4FurySMFGear, FURY_SMF_PRESET_OPTIONS);
 
-export const P3_ITEM_SWAP_TG = PresetUtils.makePresetItemSwapGear('P3 - Item Swap - TG', ItemSwapP3TGGear);
-export const P3_ITEM_SWAP_SMF = PresetUtils.makePresetItemSwapGear('P3 - Item Swap - SMF', ItemSwapP3SMFGear);
+export const P3_ITEM_SWAP_TG = PresetUtils.makePresetItemSwapGear('P3 - TG', ItemSwapP3TGGear);
+export const P3_ITEM_SWAP_SMF = PresetUtils.makePresetItemSwapGear('P3 - SMF', ItemSwapP3SMFGear);
+export const P4_ITEM_SWAP_TG = PresetUtils.makePresetItemSwapGear('P4 - TG - WIP', ItemSwapP4TGGear);
+export const P4_ITEM_SWAP_SMF = PresetUtils.makePresetItemSwapGear('P4 - SMF - WIP', ItemSwapP4SMFGear);
 
 export const FURY_SMF_ROTATION = PresetUtils.makePresetAPLRotation('SMF', SMFFuryApl, FURY_SMF_PRESET_OPTIONS);
 export const FURY_TG_ROTATION = PresetUtils.makePresetAPLRotation('TG', TGFuryApl, FURY_TG_PRESET_OPTIONS);
@@ -244,4 +252,18 @@ export const P3_PRESET_BUILD_TG = PresetUtils.makePresetBuild('P3 - TG', {
 	talents: FuryTGTalents,
 	rotation: FURY_TG_ROTATION,
 	epWeights: P3_FURY_TG_EP_PRESET,
+});
+
+export const P4_PRESET_BUILD_TG = PresetUtils.makePresetBuild('P4 - TG - WIP', {
+	gear: P4_BIS_FURY_TG_PRESET,
+	talents: FuryTGTalents,
+	rotation: FURY_TG_ROTATION,
+	epWeights: P3_FURY_TG_EP_PRESET,
+});
+
+export const P4_PRESET_BUILD_SMF = PresetUtils.makePresetBuild('P4 - SMF - WIP', {
+	gear: P4_BIS_FURY_SMF_PRESET,
+	talents: FurySMFTalents,
+	rotation: FURY_SMF_ROTATION,
+	epWeights: P3_FURY_SMF_EP_PRESET,
 });
