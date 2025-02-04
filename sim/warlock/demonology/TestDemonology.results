@@ -87,8 +87,8 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-AllItems-ArrowofTime-72897"
  value: {
-  dps: 37291.57092
-  tps: 18996.02402
+  dps: 37394.43147
+  tps: 19121.93449
  }
 }
 dps_results: {
@@ -375,15 +375,15 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-AllItems-CrushingWeight-59506"
  value: {
-  dps: 37094.51732
-  tps: 19055.50024
+  dps: 37414.45984
+  tps: 19022.59718
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-CrushingWeight-65118"
  value: {
-  dps: 37287.18716
-  tps: 19053.85471
+  dps: 37426.21069
+  tps: 19138.51433
  }
 }
 dps_results: {
@@ -655,8 +655,8 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-AllItems-GearDetector-61462"
  value: {
-  dps: 36725.41567
-  tps: 18760.96322
+  dps: 36922.37732
+  tps: 18845.60494
  }
 }
 dps_results: {
@@ -830,22 +830,22 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-AllItems-InsigniaoftheCorruptedMind-77203"
  value: {
-  dps: 39771.26124
-  tps: 20465.82607
+  dps: 40112.93466
+  tps: 20475.07558
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-InsigniaoftheCorruptedMind-77971"
  value: {
-  dps: 39447.61621
-  tps: 20077.37329
+  dps: 39579.54982
+  tps: 20199.84173
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-InsigniaoftheCorruptedMind-77991"
  value: {
-  dps: 40457.00151
-  tps: 20587.65512
+  dps: 40689.12453
+  tps: 20603.57483
  }
 }
 dps_results: {
@@ -1096,8 +1096,8 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-AllItems-PetrifiedPickledEgg-232014"
  value: {
-  dps: 37832.65082
-  tps: 19325.95649
+  dps: 38079.95856
+  tps: 19369.26678
  }
 }
 dps_results: {
@@ -1138,29 +1138,29 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-AllItems-Prestor'sTalismanofMachination-59441"
  value: {
-  dps: 36725.41567
-  tps: 18760.96322
+  dps: 37076.53553
+  tps: 18786.42635
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Prestor'sTalismanofMachination-65026"
  value: {
-  dps: 36725.41567
-  tps: 18760.96322
+  dps: 37235.08686
+  tps: 19017.94366
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Rainsong-55854"
  value: {
-  dps: 36725.41567
-  tps: 18760.65223
+  dps: 37250.79697
+  tps: 18921.85837
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-Rainsong-56377"
  value: {
-  dps: 36725.41567
-  tps: 18760.55662
+  dps: 36918.61765
+  tps: 18799.81794
  }
 }
 dps_results: {
@@ -1371,22 +1371,22 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-AllItems-SealoftheSevenSigns-77204"
  value: {
-  dps: 38378.61907
-  tps: 19544.55526
+  dps: 39338.17019
+  tps: 19919.62427
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-SealoftheSevenSigns-77969"
  value: {
-  dps: 38179.6611
-  tps: 19472.73302
+  dps: 38949.00662
+  tps: 19683.46195
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-SealoftheSevenSigns-77989"
  value: {
-  dps: 38585.30327
-  tps: 19657.69944
+  dps: 39558.72199
+  tps: 19896.46036
  }
 }
 dps_results: {
@@ -1406,8 +1406,8 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-AllItems-Shrine-CleansingPurifier-63838"
  value: {
-  dps: 36725.41567
-  tps: 18760.96322
+  dps: 37255.25059
+  tps: 19025.05395
  }
 }
 dps_results: {
@@ -1497,22 +1497,22 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-AllItems-StarcatcherCompass-77202"
  value: {
-  dps: 38047.70491
-  tps: 19463.58994
+  dps: 38509.80416
+  tps: 19735.35862
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-StarcatcherCompass-77973"
  value: {
-  dps: 38045.42128
-  tps: 19433.04904
+  dps: 38109.79281
+  tps: 19462.1488
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-StarcatcherCompass-77993"
  value: {
-  dps: 38394.27926
-  tps: 19574.18466
+  dps: 38597.38857
+  tps: 19544.07801
  }
 }
 dps_results: {
@@ -1567,8 +1567,8 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-AllItems-Tank-CommanderInsignia-63841"
  value: {
-  dps: 36725.41567
-  tps: 18760.96322
+  dps: 37255.25059
+  tps: 19025.05395
  }
 }
 dps_results: {
@@ -1602,15 +1602,15 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-AllItems-TheHungerer-68927"
  value: {
-  dps: 36725.41567
-  tps: 18760.96322
+  dps: 37032.7524
+  tps: 18854.76151
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-TheHungerer-69112"
  value: {
-  dps: 36725.41567
-  tps: 18760.96322
+  dps: 36967.61553
+  tps: 18825.53989
  }
 }
 dps_results: {
@@ -1931,15 +1931,15 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-AllItems-WitchingHourglass-55787"
  value: {
-  dps: 37796.55766
-  tps: 19303.87373
+  dps: 37931.6537
+  tps: 19338.45225
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-WitchingHourglass-56320"
  value: {
-  dps: 38629.74941
-  tps: 19823.24759
+  dps: 38638.10471
+  tps: 19777.70027
  }
 }
 dps_results: {

@@ -456,7 +456,7 @@ export class ActionId {
 				break;
 			case 'Seal of Righteousness':
 				if (tag === 2) {
-					name += ' (DS)'
+					name += ' (DS)';
 				}
 				break;
 			// For targetted buffs, tag is the source player's raid index or -1 if none.
@@ -662,6 +662,15 @@ export class ActionId {
 				break;
 			case 'Virtuous Empowerment':
 				name = 'Battleplate of Radiant Glory - T13 2pc';
+				break;
+			case 'Hurricane':
+				if (tag == 1) {
+					name += ' (Main Hand)';
+				} else if (tag == 2) {
+					name += ' (Off Hand)';
+				} else if (tag == 3) {
+					name += ' (Spell)';
+				}
 				break;
 			case 'Landslide':
 				if (tag == 1) {

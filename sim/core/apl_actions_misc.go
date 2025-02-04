@@ -145,51 +145,79 @@ func (action *APLActionActivateAuraWithStacks) String() string {
 	return fmt.Sprintf("Activate Aura(%s) Stacks(%d)", action.aura.ActionID, action.numStacks)
 }
 
-type APLActionActivateAllStatBuffAuras struct {
+type APLActionActivateAllStatBuffProcAuras struct {
 	defaultAPLActionImpl
 	character *Character
 
+	swapSet          proto.APLActionItemSwap_SwapSet
 	statTypesToMatch []stats.Stat
 
-	allSubactions []*APLActionActivateAura
+	allProcAuras    []*StatBuffAura
+	allSubactions   []*APLActionActivateAura
+	validSubactions []*APLActionActivateAura
 }
 
-func (rot *APLRotation) newActionActivateAllStatBuffAuras(config *proto.APLActionActivateAllStatBuffAuras) APLActionImpl {
+func (rot *APLRotation) newActionactivateAllStatBuffProcAuras(config *proto.APLActionActivateAllStatBuffProcAuras) APLActionImpl {
 
 	unit := rot.unit
 	character := unit.Env.Raid.GetPlayerFromUnit(unit).GetCharacter()
 	statTypesToMatch := stats.IntTupleToStatsList(config.StatType1, config.StatType2, config.StatType3)
-	isSwappedSet := config.SwapSet == proto.APLActionItemSwap_Swap1
-
-	allSubactions := MapSlice(rot.GetAPLItemProcAuras(statTypesToMatch, 0, false, isSwappedSet, &proto.UUID{Value: ""}), func(statBuffAura *StatBuffAura) *APLActionActivateAura {
+	allProcAuras := rot.GetAPLItemProcAuras(statTypesToMatch, 0, false, &proto.UUID{Value: ""})
+	allSubactions := MapSlice(allProcAuras, func(statBuffAura *StatBuffAura) *APLActionActivateAura {
 		return &APLActionActivateAura{
 			aura: statBuffAura.Aura,
 		}
 	})
 
-	return &APLActionActivateAllStatBuffAuras{
+	action := &APLActionActivateAllStatBuffProcAuras{
 		character:        character,
 		statTypesToMatch: statTypesToMatch,
+		allProcAuras:     allProcAuras,
 		allSubactions:    allSubactions,
+		swapSet:          config.SwapSet,
+	}
+
+	action.UpdateSubactions()
+	character.RegisterItemSwapCallback(func(sim *Simulation) {
+		action.UpdateSubactions()
+	})
+
+	return action
+}
+
+func (action *APLActionActivateAllStatBuffProcAuras) UpdateSubactions() {
+	action.validSubactions = []*APLActionActivateAura{}
+
+	for idx, subaction := range action.allSubactions {
+		matchingAura := action.allProcAuras[idx]
+		if !matchingAura.IsSwapped {
+			action.validSubactions = append(action.validSubactions, subaction)
+		}
 	}
 }
 
-func (action *APLActionActivateAllStatBuffAuras) IsReady(sim *Simulation) bool {
-	return len(action.allSubactions) > 0
+func (action *APLActionActivateAllStatBuffProcAuras) MeetsItemSwapRequirement() bool {
+	return (action.character.ItemSwap.IsEnabled() && action.swapSet == action.character.ItemSwap.swapSet) || action.swapSet == proto.APLActionItemSwap_Main
 }
 
-func (action *APLActionActivateAllStatBuffAuras) Execute(sim *Simulation) {
-	for _, subaction := range action.allSubactions {
+func (action *APLActionActivateAllStatBuffProcAuras) IsReady(sim *Simulation) bool {
+	return true
+}
+
+func (action *APLActionActivateAllStatBuffProcAuras) Execute(sim *Simulation) {
+	for _, subaction := range action.validSubactions {
 		subaction.Execute(sim)
 	}
 }
 
-func (action *APLActionActivateAllStatBuffAuras) String() string {
-	return fmt.Sprintf("ActivateAllStatBuffAurasFor(%s)", StringFromStatTypes(action.statTypesToMatch))
+func (action *APLActionActivateAllStatBuffProcAuras) String() string {
+	return fmt.Sprintf("Activate All Stat Buff Proc Auras (%s) for swap set: %s", StringFromStatTypes(action.statTypesToMatch), action.swapSet)
 }
 
-func (action *APLActionActivateAllStatBuffAuras) PostFinalize(rot *APLRotation) {
-	if len(action.allSubactions) == 0 {
+func (action *APLActionActivateAllStatBuffProcAuras) PostFinalize(rot *APLRotation) {
+	if !action.MeetsItemSwapRequirement() {
+		rot.ValidationMessage(proto.LogLevel_Warning, "No swap set configured in Settings.")
+	} else if len(action.allSubactions) == 0 {
 		rot.ValidationMessage(proto.LogLevel_Warning, "%s will not activate any Auras! There are no proc items buffing the specified stat type(s).", action)
 	} else {
 		actionIDs := MapSlice(action.allSubactions, func(subaction *APLActionActivateAura) ActionID {

@@ -2,7 +2,7 @@ import { itemSwapEnabledSpecs } from '../../individual_sim_ui.js';
 import { Player } from '../../player.js';
 import {
 	APLAction,
-	APLActionActivateAllStatBuffAuras,
+	APLActionActivateAllStatBuffProcAuras,
 	APLActionActivateAura,
 	APLActionActivateAuraWithStacks,
 	APLActionAutocastOtherCooldowns,
@@ -590,13 +590,13 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 			labelTooltip: 'Desired number of initial aura stacks.',
 		})],
 	}),
-	['activateAllStatBuffAuras']: inputBuilder({
-		label: 'Activate All Stat Buff Auras',
+	['activateAllStatBuffProcAuras']: inputBuilder({
+		label: 'Activate All Stat Buff Proc Auras',
 		submenu: ['Misc'],
-		shortDescription: 'Activates all item/enchant auras that buff the specified stat type(s) using your specified Item Swap set.',
+		shortDescription: 'Activates all item/enchant proc auras that buff the specified stat type(s) using the currently equipped item set.',
 		includeIf: (_, isPrepull: boolean) => isPrepull,
 		newValue: () =>
-			APLActionActivateAllStatBuffAuras.create({
+			APLActionActivateAllStatBuffProcAuras.create({
 				swapSet: ItemSwapSet.Main,
 				statType1: -1,
 				statType2: -1,

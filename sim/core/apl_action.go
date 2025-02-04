@@ -179,8 +179,8 @@ func (rot *APLRotation) newAPLActionImpl(config *proto.APLAction) APLActionImpl 
 		return rot.newActionActivateAura(config.GetActivateAura())
 	case *proto.APLAction_ActivateAuraWithStacks:
 		return rot.newActionActivateAuraWithStacks(config.GetActivateAuraWithStacks())
-	case *proto.APLAction_ActivateAllStatBuffAuras:
-		return rot.newActionActivateAllStatBuffAuras(config.GetActivateAllStatBuffAuras())
+	case *proto.APLAction_ActivateAllStatBuffProcAuras:
+		return rot.newActionactivateAllStatBuffProcAuras(config.GetActivateAllStatBuffProcAuras())
 	case *proto.APLAction_CancelAura:
 		return rot.newActionCancelAura(config.GetCancelAura())
 	case *proto.APLAction_TriggerIcd:

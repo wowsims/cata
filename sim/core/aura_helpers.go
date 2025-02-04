@@ -214,6 +214,8 @@ type StatBuffAura struct {
 	// Any special conditions (beyond standard ICD checks etc.) that must be
 	// satisfied before this Aura can be activated.
 	CustomProcCondition CustomStatBuffProcCondition
+
+	IsSwapped bool
 }
 
 func (aura *StatBuffAura) BuffsMatchingStat(statTypesToMatch []stats.Stat) bool {

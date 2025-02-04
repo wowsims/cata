@@ -23,7 +23,7 @@ type APLValueTrinketStatProcCheck struct {
 func (rot *APLRotation) newItemStatProcValue(valueName string, statType1 int32, statType2 int32, statType3 int32, minIcdSeconds float64, requireMatch bool, uuid *proto.UUID) *APLValueTrinketStatProcCheck {
 	statTypesToMatch := stats.IntTupleToStatsList(statType1, statType2, statType3)
 	minIcd := DurationFromSeconds(minIcdSeconds)
-	matchingAuras := rot.GetAPLItemProcAuras(statTypesToMatch, minIcd, requireMatch, false, uuid)
+	matchingAuras := rot.GetAPLItemProcAuras(statTypesToMatch, minIcd, requireMatch, uuid)
 
 	if (len(matchingAuras) == 0) && requireMatch {
 		return nil
@@ -44,7 +44,10 @@ func (value *APLValueTrinketStatProcCheck) Finalize(rot *APLRotation) {
 		return
 	}
 
-	actionIDs := MapSlice(value.matchingAuras, func(aura *StatBuffAura) ActionID {
+	validAuras := FilterSlice(value.matchingAuras, func(aura *StatBuffAura) bool {
+		return !aura.IsSwapped
+	})
+	actionIDs := MapSlice(validAuras, func(aura *StatBuffAura) ActionID {
 		return aura.ActionID
 	})
 
@@ -71,7 +74,7 @@ func (value *APLValueAllTrinketStatProcsActive) Type() proto.APLValueType {
 }
 func (value *APLValueAllTrinketStatProcsActive) GetBool(sim *Simulation) bool {
 	for _, aura := range value.matchingAuras {
-		if (!aura.IsActive() || (aura.GetStacks() < aura.MaxStacks)) && aura.CanProc(sim) {
+		if !aura.IsSwapped && (!aura.IsActive() || (aura.GetStacks() < aura.MaxStacks)) && aura.CanProc(sim) {
 			return false
 		}
 	}
@@ -99,7 +102,7 @@ func (value *APLValueAnyTrinketStatProcsActive) Type() proto.APLValueType {
 }
 func (value *APLValueAnyTrinketStatProcsActive) GetBool(sim *Simulation) bool {
 	for _, aura := range value.matchingAuras {
-		if aura.IsActive() && (aura.GetStacks() == aura.MaxStacks) {
+		if !aura.IsSwapped && aura.IsActive() && (aura.GetStacks() == aura.MaxStacks) {
 			return true
 		}
 	}
@@ -129,7 +132,7 @@ func (value *APLValueTrinketProcsMinRemainingTime) GetDuration(sim *Simulation) 
 	minRemainingTime := NeverExpires
 
 	for _, aura := range value.matchingAuras {
-		if aura.IsActive() {
+		if !aura.IsSwapped && aura.IsActive() {
 			minRemainingTime = min(minRemainingTime, aura.RemainingDuration(sim))
 		}
 	}
@@ -159,7 +162,7 @@ func (value *APLValueTrinketProcsMaxRemainingICD) GetDuration(sim *Simulation) t
 	var maxRemainingICD time.Duration
 
 	for _, aura := range value.matchingAuras {
-		if !aura.IsActive() && (aura.Icd != nil) {
+		if !aura.IsSwapped && !aura.IsActive() && (aura.Icd != nil) {
 			maxRemainingICD = max(maxRemainingICD, aura.Icd.TimeToReady(sim))
 		}
 	}
@@ -183,7 +186,7 @@ func (value *APLValueNumEquippedStatProcTrinkets) Type() proto.APLValueType {
 }
 func (value *APLValueNumEquippedStatProcTrinkets) GetInt(sim *Simulation) int32 {
 	return int32(len(FilterSlice(value.matchingAuras, func(aura *StatBuffAura) bool {
-		return aura.CanProc(sim)
+		return !aura.IsSwapped && aura.CanProc(sim)
 	})))
 }
 

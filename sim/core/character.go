@@ -44,10 +44,8 @@ type Character struct {
 	// Current gear.
 	Equipment
 
-	// Stat buff auras associated with any equipped proc trinkets.
 	ItemProcBuffs []*StatBuffAura
-	// Stat buff auras associated with any prepull (item swap) procs.
-	PrePullItemProcBuffs []*StatBuffAura
+	// Stat buff auras associated with any proc trinkets.
 
 	//Item Swap Handler
 	ItemSwap ItemSwap
@@ -606,7 +604,7 @@ func (character *Character) GetDynamicProcMaskForWeaponEnchant(effectID int32) *
 func (character *Character) getDynamicProcMaskPointer(procMaskFn func() ProcMask) *ProcMask {
 	procMask := procMaskFn()
 
-	character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot) {
+	character.RegisterItemSwapCallbackForSlots(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot) {
 		procMask = procMaskFn()
 	})
 
@@ -729,18 +727,20 @@ func (character *Character) GetPotionCD() *Timer {
 }
 
 func (character *Character) AddStatProcBuff(effectID int32, procAura *StatBuffAura, isEnchant bool, eligibleSlots []proto.ItemSlot) {
-	mainEquipItem := Ternary(isEnchant, character.ItemSwap.EnchantExistsInMainEquip, character.ItemSwap.ItemExistsInMainEquip)
-	if mainEquipItem(effectID, eligibleSlots) {
-		character.ItemProcBuffs = append(character.ItemProcBuffs, procAura)
-	} else {
-		character.PrePullItemProcBuffs = append(character.PrePullItemProcBuffs, procAura)
-	}
+	hasEquippedCheck := Ternary(isEnchant, character.Equipment.containsEnchantInSlots, character.Equipment.containsItemInSlots)
+
+	procAura.IsSwapped = !hasEquippedCheck(effectID, eligibleSlots)
+	character.ItemProcBuffs = append(character.ItemProcBuffs, procAura)
+
+	character.RegisterItemSwapCallbackForSlots(eligibleSlots, func(sim *Simulation, slot proto.ItemSlot) {
+		procAura.IsSwapped = !hasEquippedCheck(effectID, eligibleSlots)
+	})
+
 }
 
-func (character *Character) GetMatchingItemProcAuras(statTypesToMatch []stats.Stat, minIcd time.Duration, isPrepull bool) []*StatBuffAura {
+func (character *Character) GetMatchingItemProcAuras(statTypesToMatch []stats.Stat, minIcd time.Duration) []*StatBuffAura {
 	includeIcdFilter := (minIcd > 0)
-	itemsToParse := Ternary(isPrepull, character.PrePullItemProcBuffs, character.ItemProcBuffs)
-	return FilterSlice(itemsToParse, func(aura *StatBuffAura) bool {
+	return FilterSlice(character.ItemProcBuffs, func(aura *StatBuffAura) bool {
 		return aura.BuffsMatchingStat(statTypesToMatch) && (!includeIcdFilter || ((aura.Icd != nil) && (aura.Icd.Duration > minIcd)))
 	})
 }
@@ -830,7 +830,7 @@ func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Sta
 		aura = MakePermanent(aura)
 	}
 
-	character.RegisterItemSwapCallback([]proto.ItemSlot{
+	character.RegisterItemSwapCallbackForSlots([]proto.ItemSlot{
 		proto.ItemSlot_ItemSlotHead,
 		proto.ItemSlot_ItemSlotShoulder,
 		proto.ItemSlot_ItemSlotChest,

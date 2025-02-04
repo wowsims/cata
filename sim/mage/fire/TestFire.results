@@ -87,8 +87,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-ArrowofTime-72897"
  value: {
-  dps: 36673.67551
-  tps: 32659.03079
+  dps: 36554.27759
+  tps: 32518.34913
  }
 }
 dps_results: {
@@ -368,15 +368,15 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-CrushingWeight-59506"
  value: {
-  dps: 36473.32109
-  tps: 32439.60398
+  dps: 36267.06095
+  tps: 32143.6694
  }
 }
 dps_results: {
  key: "TestFire-AllItems-CrushingWeight-65118"
  value: {
-  dps: 36563.46815
-  tps: 32590.14156
+  dps: 35559.26281
+  tps: 31641.57868
  }
 }
 dps_results: {
@@ -662,8 +662,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-GearDetector-61462"
  value: {
-  dps: 35603.53818
-  tps: 31632.81551
+  dps: 36029.45543
+  tps: 32053.36219
  }
 }
 dps_results: {
@@ -858,22 +858,22 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-InsigniaoftheCorruptedMind-77203"
  value: {
-  dps: 39734.48182
-  tps: 35443.3225
+  dps: 39216.95006
+  tps: 34943.08619
  }
 }
 dps_results: {
  key: "TestFire-AllItems-InsigniaoftheCorruptedMind-77971"
  value: {
-  dps: 39418.45756
-  tps: 35092.62634
+  dps: 39009.254
+  tps: 34706.37861
  }
 }
 dps_results: {
  key: "TestFire-AllItems-InsigniaoftheCorruptedMind-77991"
  value: {
-  dps: 39875.35154
-  tps: 35653.12879
+  dps: 40048.66297
+  tps: 35674.45924
  }
 }
 dps_results: {
@@ -1124,8 +1124,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-PetrifiedPickledEgg-232014"
  value: {
-  dps: 37173.45873
-  tps: 33011.32829
+  dps: 37386.75782
+  tps: 33267.24319
  }
 }
 dps_results: {
@@ -1166,29 +1166,29 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-Prestor'sTalismanofMachination-59441"
  value: {
-  dps: 35603.53818
-  tps: 31632.81551
+  dps: 35789.73754
+  tps: 31786.04038
  }
 }
 dps_results: {
  key: "TestFire-AllItems-Prestor'sTalismanofMachination-65026"
  value: {
-  dps: 35603.53818
-  tps: 31632.81551
+  dps: 35988.08699
+  tps: 31902.23693
  }
 }
 dps_results: {
  key: "TestFire-AllItems-Rainsong-55854"
  value: {
-  dps: 35603.53818
-  tps: 31632.81551
+  dps: 35583.49504
+  tps: 31701.88869
  }
 }
 dps_results: {
  key: "TestFire-AllItems-Rainsong-56377"
  value: {
-  dps: 35603.53818
-  tps: 31632.81551
+  dps: 35934.44487
+  tps: 32029.68535
  }
 }
 dps_results: {
@@ -1420,22 +1420,22 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-SealoftheSevenSigns-77204"
  value: {
-  dps: 37874.14343
-  tps: 33704.02044
+  dps: 38296.621
+  tps: 34045.48855
  }
 }
 dps_results: {
  key: "TestFire-AllItems-SealoftheSevenSigns-77969"
  value: {
-  dps: 37933.70417
-  tps: 33752.6823
+  dps: 38468.06843
+  tps: 34240.8992
  }
 }
 dps_results: {
  key: "TestFire-AllItems-SealoftheSevenSigns-77989"
  value: {
-  dps: 38087.58439
-  tps: 33924.92519
+  dps: 38779.1755
+  tps: 34488.19577
  }
 }
 dps_results: {
@@ -1448,8 +1448,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-Shrine-CleansingPurifier-63838"
  value: {
-  dps: 35603.53818
-  tps: 31632.81551
+  dps: 36352.15915
+  tps: 32471.18393
  }
 }
 dps_results: {
@@ -1563,22 +1563,22 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-StarcatcherCompass-77202"
  value: {
-  dps: 37126.48904
-  tps: 33064.91951
+  dps: 36774.27847
+  tps: 32740.33448
  }
 }
 dps_results: {
  key: "TestFire-AllItems-StarcatcherCompass-77973"
  value: {
-  dps: 37224.98954
-  tps: 33195.29046
+  dps: 36812.63147
+  tps: 32778.88868
  }
 }
 dps_results: {
  key: "TestFire-AllItems-StarcatcherCompass-77993"
  value: {
-  dps: 37687.17069
-  tps: 33678.54948
+  dps: 36862.62897
+  tps: 32890.66546
  }
 }
 dps_results: {
@@ -1633,8 +1633,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-Tank-CommanderInsignia-63841"
  value: {
-  dps: 35603.53818
-  tps: 31632.81551
+  dps: 36352.15915
+  tps: 32471.18393
  }
 }
 dps_results: {
@@ -1668,15 +1668,15 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-TheHungerer-68927"
  value: {
-  dps: 35603.53818
-  tps: 31632.81551
+  dps: 35227.43396
+  tps: 31349.55977
  }
 }
 dps_results: {
  key: "TestFire-AllItems-TheHungerer-69112"
  value: {
-  dps: 35603.53818
-  tps: 31632.81551
+  dps: 35629.18537
+  tps: 31726.99764
  }
 }
 dps_results: {
@@ -1710,22 +1710,22 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-Ti'tahk,theStepsofTime-77190"
  value: {
-  dps: 51456.50193
-  tps: 45956.66358
+  dps: 52051.17284
+  tps: 46523.66055
  }
 }
 dps_results: {
  key: "TestFire-AllItems-Ti'tahk,theStepsofTime-78477"
  value: {
-  dps: 53575.63986
-  tps: 47883.12462
+  dps: 54093.5643
+  tps: 48247.6107
  }
 }
 dps_results: {
  key: "TestFire-AllItems-Ti'tahk,theStepsofTime-78486"
  value: {
-  dps: 50192.1966
-  tps: 44897.13995
+  dps: 51280.52885
+  tps: 45742.49258
  }
 }
 dps_results: {
@@ -2018,15 +2018,15 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-WitchingHourglass-55787"
  value: {
-  dps: 37408.20668
-  tps: 33312.446
+  dps: 36899.65121
+  tps: 32842.12299
  }
 }
 dps_results: {
  key: "TestFire-AllItems-WitchingHourglass-56320"
  value: {
-  dps: 38201.66446
-  tps: 33899.76541
+  dps: 37854.51953
+  tps: 33731.46803
  }
 }
 dps_results: {

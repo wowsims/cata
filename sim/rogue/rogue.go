@@ -205,7 +205,7 @@ func (rogue *Rogue) Initialize() {
 	rogue.T12ToTLastBuff = 3
 
 	// re-configure poisons when performing an item swap
-	rogue.RegisterItemSwapCallback(core.MeleeWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot) {
+	rogue.RegisterItemSwapCallbackForSlots(core.MeleeWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot) {
 		if !rogue.Options.ApplyPoisonsManually {
 			if rogue.MainHand() == nil || rogue.OffHand() == nil {
 				return
