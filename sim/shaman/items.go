@@ -247,6 +247,7 @@ var ItemSetSpiritwalkersVestments = core.NewItemSet(core.ItemSet{
 				ClassSpellMask: SpellMaskSpiritwalkersGrace,
 				Callback:       core.CallbackOnApplyEffects,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					aura.Duration = spell.RelatedSelfBuff.Duration
 					aura.Activate(sim)
 				},
 			})
