@@ -115,7 +115,6 @@ func (cat *FeralDruid) newActionCatOptimalRotationAction(_ *core.APLRotation, co
 		BiteTime:            config.BiteTime,
 		BerserkBiteTime:     config.BerserkBiteTime,
 		BiteDuringExecute:   config.BiteDuringExecute,
-		MangleSpam:          false,
 		MinRoarOffset:       config.MinRoarOffset,
 		RipLeeway:           config.RipLeeway,
 		ManualParams:        config.ManualParams,

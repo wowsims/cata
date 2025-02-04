@@ -107,6 +107,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 			OtherInputs.DistanceFromTarget,
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
+			FeralInputs.CannotShredTarget,
 			OtherInputs.DarkIntentUptime,
 		],
 	},

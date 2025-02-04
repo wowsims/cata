@@ -31,6 +31,7 @@ type Druid struct {
 	RebirthTiming     float64
 	BleedsActive      int
 	AssumeBleedActive bool
+	CannotShredTarget bool
 
 	MHAutoSpell *core.Spell
 
