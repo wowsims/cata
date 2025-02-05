@@ -211,15 +211,15 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 
 	// Aura sets
 	case *proto.APLValue_AllTrinketStatProcsActive:
-		value = rot.newValueAllTrinketStatProcsActive(config.GetAllTrinketStatProcsActive(), config.Uuid)
+		value = rot.newValueAllItemStatProcsActive(config.GetAllTrinketStatProcsActive(), config.Uuid)
 	case *proto.APLValue_AnyTrinketStatProcsActive:
 		value = rot.newValueAnyTrinketStatProcsActive(config.GetAnyTrinketStatProcsActive(), config.Uuid)
 	case *proto.APLValue_TrinketProcsMinRemainingTime:
-		value = rot.newValueTrinketProcsMinRemainingTime(config.GetTrinketProcsMinRemainingTime(), config.Uuid)
+		value = rot.newValueItemProcsMinRemainingTime(config.GetTrinketProcsMinRemainingTime(), config.Uuid)
 	case *proto.APLValue_TrinketProcsMaxRemainingIcd:
-		value = rot.newValueTrinketProcsMaxRemainingICD(config.GetTrinketProcsMaxRemainingIcd(), config.Uuid)
+		value = rot.newValueItemsProcsMaxRemainingICD(config.GetTrinketProcsMaxRemainingIcd(), config.Uuid)
 	case *proto.APLValue_NumEquippedStatProcTrinkets:
-		value = rot.newValueNumEquippedStatProcTrinkets(config.GetNumEquippedStatProcTrinkets(), config.Uuid)
+		value = rot.newValueNumEquippedStatProcItems(config.GetNumEquippedStatProcTrinkets(), config.Uuid)
 	case *proto.APLValue_NumStatBuffCooldowns:
 		value = rot.newValueNumStatBuffCooldowns(config.GetNumStatBuffCooldowns(), config.Uuid)
 

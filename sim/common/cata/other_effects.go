@@ -418,7 +418,7 @@ func init() {
 				},
 			})
 
-			character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
+			character.AddStatProcBuff(heartItemID, procAura, false, core.TrinketSlots())
 		})
 
 		jarItemID := core.TernaryInt32(heroic, 65029, 59354)

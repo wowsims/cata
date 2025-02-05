@@ -2,6 +2,7 @@ import { itemSwapEnabledSpecs } from '../../individual_sim_ui.js';
 import { Player } from '../../player.js';
 import {
 	APLAction,
+	APLActionActivateAllStatBuffProcAuras,
 	APLActionActivateAura,
 	APLActionActivateAuraWithStacks,
 	APLActionAutocastOtherCooldowns,
@@ -534,7 +535,7 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 			<p>Once one of the sub-actions has been performed, the next sub-action will not necessarily be immediately executed next. The system will restart at the beginning of the whole actions list (not the sequence). If the sequence is executed again, it will perform the next sub-action.</p>
 			<p>When all actions have been performed, the sequence does NOT automatically reset; instead, it will be skipped from now on. Use the <b>Reset Sequence</b> action to reset it, if desired.</p>
 		`,
-		includeIf: (player: Player<any>, isPrepull: boolean) => !isPrepull,
+		includeIf: (_, isPrepull: boolean) => !isPrepull,
 		newValue: APLActionSequence.create,
 		fields: [AplHelpers.stringFieldConfig('name'), actionListFieldConfig('actions')],
 	}),
@@ -545,7 +546,7 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 		fullDescription: `
 			<p>Use the <b>name</b> field to refer to the sequence to be reset. The desired sequence must have the same (non-empty) value for its <b>name</b>.</p>
 		`,
-		includeIf: (player: Player<any>, isPrepull: boolean) => !isPrepull,
+		includeIf: (_, isPrepull: boolean) => !isPrepull,
 		newValue: APLActionResetSequence.create,
 		fields: [AplHelpers.stringFieldConfig('sequenceName')],
 	}),
@@ -557,7 +558,7 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 		fullDescription: `
 			<p>Strict Sequences do not begin unless ALL sub-actions are ready.</p>
 		`,
-		includeIf: (player: Player<any>, isPrepull: boolean) => !isPrepull,
+		includeIf: (_, isPrepull: boolean) => !isPrepull,
 		newValue: APLActionStrictSequence.create,
 		fields: [actionListFieldConfig('actions')],
 	}),
@@ -572,15 +573,15 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 		label: 'Activate Aura',
 		submenu: ['Misc'],
 		shortDescription: 'Activates an aura',
-		includeIf: (player: Player<any>, isPrepull: boolean) => isPrepull,
+		includeIf: (_, isPrepull: boolean) => isPrepull,
 		newValue: () => APLActionActivateAura.create(),
 		fields: [AplHelpers.actionIdFieldConfig('auraId', 'auras')],
 	}),
 	['activateAuraWithStacks']: inputBuilder({
 		label: 'Activate Aura With Stacks',
 		submenu: ['Misc'],
-		shortDescription: 'Activates and an aura with the specified number of stacks',
-		includeIf: (player: Player<any>, isPrepull: boolean) => isPrepull,
+		shortDescription: 'Activates an aura with the specified number of stacks',
+		includeIf: (_, isPrepull: boolean) => isPrepull,
 		newValue: () => APLActionActivateAuraWithStacks.create({
 			numStacks: 1,
 		}),
@@ -588,6 +589,25 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 			label: 'stacks',
 			labelTooltip: 'Desired number of initial aura stacks.',
 		})],
+	}),
+	['activateAllStatBuffProcAuras']: inputBuilder({
+		label: 'Activate All Stat Buff Proc Auras',
+		submenu: ['Misc'],
+		shortDescription: 'Activates all item/enchant proc auras that buff the specified stat type(s) using the specified item set.',
+		includeIf: (_, isPrepull: boolean) => isPrepull,
+		newValue: () =>
+			APLActionActivateAllStatBuffProcAuras.create({
+				swapSet: ItemSwapSet.Main,
+				statType1: -1,
+				statType2: -1,
+				statType3: -1,
+			}),
+		fields: [
+			itemSwapSetFieldConfig('swapSet'),
+			AplHelpers.statTypeFieldConfig('statType1'),
+			AplHelpers.statTypeFieldConfig('statType2'),
+			AplHelpers.statTypeFieldConfig('statType3'),
+		],
 	}),
 	['cancelAura']: inputBuilder({
 		label: 'Cancel Aura',
@@ -600,7 +620,7 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 		label: 'Trigger ICD',
 		submenu: ['Misc'],
 		shortDescription: "Triggers an aura's ICD, putting it on cooldown. Example usage would be to desync an ICD cooldown before combat starts.",
-		includeIf: (player: Player<any>, isPrepull: boolean) => isPrepull,
+		includeIf: (_, isPrepull: boolean) => isPrepull,
 		newValue: () => APLActionTriggerICD.create(),
 		fields: [AplHelpers.actionIdFieldConfig('auraId', 'icd_auras')],
 	}),

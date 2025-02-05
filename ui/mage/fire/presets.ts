@@ -15,6 +15,7 @@ import P1FireBisGear from './gear_sets/p1_fire.gear.json';
 import P3FireBisGear from './gear_sets/p3_fire.gear.json';
 import P3FirePrebisGear from './gear_sets/p3_fire_prebis.gear.json';
 import P4FireBisGear from './gear_sets/p4_fire.gear.json';
+import ItemSwapP4 from './gear_sets/p4_fire_item_swap.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -54,6 +55,8 @@ export const P4NoTrollDefaultSimpleRotation = FireMage_Rotation.create({
 	combustLastMomentLustPercentage: 150000,
 	combustNoLustPercentage: 300000,
 });
+
+export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4 - WIP - Haste', ItemSwapP4);
 
 export const P1_SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('P1 - Default', Spec.SpecFireMage, P1DefaultSimpleRotation);
 export const P3_SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('P3 - Default', Spec.SpecFireMage, P3TrollDefaultSimpleRotation);

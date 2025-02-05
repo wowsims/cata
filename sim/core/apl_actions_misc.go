@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 type APLActionChangeTarget struct {
@@ -142,6 +143,73 @@ func (action *APLActionActivateAuraWithStacks) Execute(sim *Simulation) {
 }
 func (action *APLActionActivateAuraWithStacks) String() string {
 	return fmt.Sprintf("Activate Aura(%s) Stacks(%d)", action.aura.ActionID, action.numStacks)
+}
+
+type APLActionActivateAllStatBuffProcAuras struct {
+	defaultAPLActionImpl
+	character *Character
+
+	swapSet          proto.APLActionItemSwap_SwapSet
+	statTypesToMatch []stats.Stat
+
+	allProcAuras  []*StatBuffAura
+	allSubactions []*APLActionActivateAura
+}
+
+func (rot *APLRotation) newActionactivateAllStatBuffProcAuras(config *proto.APLActionActivateAllStatBuffProcAuras) APLActionImpl {
+
+	unit := rot.unit
+	character := unit.Env.Raid.GetPlayerFromUnit(unit).GetCharacter()
+	statTypesToMatch := stats.IntTupleToStatsList(config.StatType1, config.StatType2, config.StatType3)
+	allProcAuras := FilterSlice(character.GetMatchingItemProcAuras(statTypesToMatch, 0), func(aura *StatBuffAura) bool {
+		return (aura.IsSwapped && (config.SwapSet == proto.APLActionItemSwap_Swap1)) || (!aura.IsSwapped && (config.SwapSet == proto.APLActionItemSwap_Main))
+	})
+	allSubactions := MapSlice(allProcAuras, func(statBuffAura *StatBuffAura) *APLActionActivateAura {
+		return &APLActionActivateAura{
+			aura: statBuffAura.Aura,
+		}
+	})
+
+	if !character.ItemSwap.IsEnabled() && config.SwapSet != proto.APLActionItemSwap_Main {
+		rot.ValidationMessage(proto.LogLevel_Warning, "No swap set configured in Settings.")
+		return nil
+	} else if len(allProcAuras) == 0 {
+		rot.ValidationMessage(proto.LogLevel_Warning, "There are no proc items buffing the specified stat type(s) for the specified item set.")
+		return nil
+	}
+
+	action := &APLActionActivateAllStatBuffProcAuras{
+		character:        character,
+		statTypesToMatch: statTypesToMatch,
+		allProcAuras:     allProcAuras,
+		allSubactions:    allSubactions,
+		swapSet:          config.SwapSet,
+	}
+
+	actionIDs := MapSlice(allProcAuras, func(aura *StatBuffAura) ActionID {
+		return aura.ActionID
+	})
+
+	rot.ValidationMessage(proto.LogLevel_Information, "%s will activate the following Auras: %s", action, StringFromActionIDs(actionIDs))
+
+	return action
+}
+
+func (action *APLActionActivateAllStatBuffProcAuras) IsReady(sim *Simulation) bool {
+	return true
+}
+
+func (action *APLActionActivateAllStatBuffProcAuras) Execute(sim *Simulation) {
+	if action.character.ItemSwap.IsEnabled() && (action.swapSet != action.character.ItemSwap.swapSet) {
+		return
+	}
+	for _, subaction := range action.allSubactions {
+		subaction.Execute(sim)
+	}
+}
+
+func (action *APLActionActivateAllStatBuffProcAuras) String() string {
+	return fmt.Sprintf("Activate All Stat Buff Proc Auras (%s) for swap set: %s", StringFromStatTypes(action.statTypesToMatch), action.swapSet)
 }
 
 type APLActionTriggerICD struct {
