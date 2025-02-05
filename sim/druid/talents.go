@@ -372,7 +372,6 @@ func (druid *Druid) applyGaleWinds() {
 func (druid *Druid) applyEarthAndMoon() {
 	if druid.Talents.EarthAndMoon {
 		druid.AddStaticMod(core.SpellModConfig{
-			ClassMask:  DruidDamagingSpells,
 			FloatValue: 0.02,
 			Kind:       core.SpellMod_DamageDone_Pct,
 		})
