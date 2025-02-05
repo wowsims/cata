@@ -11,8 +11,8 @@ import (
 type OnItemSwap func(*Simulation, proto.ItemSlot)
 
 type ItemSwap struct {
-	character       *Character
-	onSwapCallbacks [NumItemSlots][]OnItemSwap
+	character           *Character
+	onItemSwapCallbacks [NumItemSlots][]OnItemSwap
 
 	isFuryWarrior        bool
 	mhCritMultiplier     float64
@@ -104,11 +104,11 @@ func (character *Character) RegisterItemSwapCallback(slots []proto.ItemSlot, cal
 	}
 
 	if (character.Env != nil) && character.Env.IsFinalized() {
-		panic("Tried to add a new item swap callback in a finalized environment!")
+		panic("Tried to add a new item swap callback for slots in a finalized environment!")
 	}
 
 	for _, slot := range slots {
-		character.ItemSwap.onSwapCallbacks[slot] = append(character.ItemSwap.onSwapCallbacks[slot], callback)
+		character.ItemSwap.onItemSwapCallbacks[slot] = append(character.ItemSwap.onItemSwapCallbacks[slot], callback)
 	}
 }
 
@@ -267,14 +267,6 @@ func (swap *ItemSwap) GetUnequippedItemBySlot(slot proto.ItemSlot) *Item {
 	return &swap.unEquippedItems[slot]
 }
 
-func (swap *ItemSwap) ItemExistsInMainEquip(itemID int32, possibleSlots []proto.ItemSlot) bool {
-	return swap.originalEquip.containsItemInSlots(itemID, possibleSlots)
-}
-
-func (swap *ItemSwap) ItemExistsInSwapEquip(itemID int32, possibleSlots []proto.ItemSlot) bool {
-	return swap.swapEquip.containsItemInSlots(itemID, possibleSlots)
-}
-
 func (swap *ItemSwap) EligibleSlotsForItem(itemID int32) []proto.ItemSlot {
 	eligibleSlots := eligibleSlotsForItem(GetItemByID(itemID), swap.isFuryWarrior)
 
@@ -284,18 +276,23 @@ func (swap *ItemSwap) EligibleSlotsForItem(itemID int32) []proto.ItemSlot {
 
 	if !swap.IsEnabled() {
 		return eligibleSlots
-	} else {
-		return FilterSlice(eligibleSlots, func(slot proto.ItemSlot) bool {
-			return (swap.originalEquip[slot].ID == itemID) || (swap.swapEquip[slot].ID == itemID)
-		})
 	}
+
+	return FilterSlice(eligibleSlots, func(slot proto.ItemSlot) bool {
+		return (swap.originalEquip[slot].ID == itemID) || (swap.swapEquip[slot].ID == itemID)
+	})
+
 }
 
 func (swap *ItemSwap) EligibleSlotsForEffect(effectID int32) []proto.ItemSlot {
 	var eligibleSlots []proto.ItemSlot
 
-	if swap.IsEnabled() {
-		for itemSlot := proto.ItemSlot(0); itemSlot < NumItemSlots; itemSlot++ {
+	for itemSlot := proto.ItemSlot(0); itemSlot < NumItemSlots; itemSlot++ {
+		if !swap.IsEnabled() {
+			if swap.character.Equipment.containsEnchantInSlot(effectID, itemSlot) {
+				eligibleSlots = append(eligibleSlots, itemSlot)
+			}
+		} else {
 			if swap.originalEquip.containsEnchantInSlot(effectID, itemSlot) || swap.swapEquip.containsEnchantInSlot(effectID, itemSlot) {
 				eligibleSlots = append(eligibleSlots, itemSlot)
 			}
@@ -323,8 +320,8 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 
 		swap.swapItem(sim, slot, isPrepull, isReset)
 
-		for _, onSwap := range swap.onSwapCallbacks[slot] {
-			onSwap(sim, slot)
+		for _, onSwapSlot := range swap.onItemSwapCallbacks[slot] {
+			onSwapSlot(sim, slot)
 		}
 	}
 
