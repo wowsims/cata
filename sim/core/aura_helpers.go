@@ -214,6 +214,9 @@ type StatBuffAura struct {
 	// Any special conditions (beyond standard ICD checks etc.) that must be
 	// satisfied before this Aura can be activated.
 	CustomProcCondition CustomStatBuffProcCondition
+
+	// Whether the aura is currently swapped (in another item set) out or not.
+	IsSwapped bool
 }
 
 func (aura *StatBuffAura) BuffsMatchingStat(statTypesToMatch []stats.Stat) bool {
@@ -225,7 +228,7 @@ func (aura *StatBuffAura) BuffsMatchingStat(statTypesToMatch []stats.Stat) bool 
 }
 
 func (aura *StatBuffAura) CanProc(sim *Simulation) bool {
-	return (aura.CustomProcCondition == nil) || aura.CustomProcCondition(sim, aura.Aura)
+	return !aura.IsSwapped && ((aura.CustomProcCondition == nil) || aura.CustomProcCondition(sim, aura.Aura))
 }
 
 type StackingStatAura struct {

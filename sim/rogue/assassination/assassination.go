@@ -39,40 +39,15 @@ func (sinRogue *AssassinationRogue) Initialize() {
 
 	// Apply Mastery
 	// As far as I am able to find, Asn's Mastery is an additive bonus. To be tested.
-	masteryEffect := sinRogue.GetMasteryBonusFromRating(sinRogue.GetStat(stats.MasteryRating))
-
-	for _, spell := range sinRogue.InstantPoison {
-		spell.DamageMultiplierAdditive += masteryEffect
-	}
-	for _, spell := range sinRogue.WoundPoison {
-		spell.DamageMultiplierAdditive += masteryEffect
-	}
-	sinRogue.DeadlyPoison.DamageMultiplierAdditive += masteryEffect
-	sinRogue.Envenom.DamageMultiplierAdditive += masteryEffect
-	if sinRogue.Talents.VenomousWounds > 0 {
-		sinRogue.VenomousWounds.DamageMultiplierAdditive += masteryEffect
-	}
+	masteryMod := sinRogue.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  rogue.RogueSpellInstantPoison | rogue.RogueSpellWoundPoison | rogue.RogueSpellDeadlyPoison | rogue.RogueSpellEnvenom | rogue.RogueSpellVenomousWounds,
+		FloatValue: sinRogue.GetMasteryBonusFromRating(sinRogue.GetStat(stats.MasteryRating)),
+	})
+	masteryMod.Activate()
 
 	sinRogue.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-		masteryEffectOld := sinRogue.GetMasteryBonusFromRating(oldMastery)
-		masteryEffectNew := sinRogue.GetMasteryBonusFromRating(newMastery)
-
-		for _, spell := range sinRogue.InstantPoison {
-			spell.DamageMultiplierAdditive -= masteryEffectOld
-			spell.DamageMultiplierAdditive += masteryEffectNew
-		}
-		for _, spell := range sinRogue.WoundPoison {
-			spell.DamageMultiplierAdditive -= masteryEffectOld
-			spell.DamageMultiplierAdditive += masteryEffectNew
-		}
-		sinRogue.DeadlyPoison.DamageMultiplierAdditive -= masteryEffectOld
-		sinRogue.DeadlyPoison.DamageMultiplierAdditive += masteryEffectNew
-		sinRogue.Envenom.DamageMultiplierAdditive -= masteryEffectOld
-		sinRogue.Envenom.DamageMultiplierAdditive += masteryEffectNew
-		if sinRogue.Talents.VenomousWounds > 0 {
-			sinRogue.VenomousWounds.DamageMultiplierAdditive -= masteryEffectOld
-			sinRogue.VenomousWounds.DamageMultiplierAdditive += masteryEffectNew
-		}
+		masteryMod.UpdateFloatValue(sinRogue.GetMasteryBonusFromRating(newMastery))
 	})
 
 	// Assassin's Resolve: +20% Multiplicative physical damage (confirmed)

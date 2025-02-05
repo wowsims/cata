@@ -78,7 +78,7 @@ func (druid *Druid) RegisterCatFormAura() {
 	srm := druid.GetSavageRoarMultiplier()
 
 	statBonus := stats.Stats{
-		stats.AttackPower:         -20, // This offset is needed because the first 10 points of Agility do not contribute any Attack Power.
+		stats.AttackPower: -20, // This offset is needed because the first 10 points of Agility do not contribute any Attack Power.
 	}
 
 	agiApDep := druid.NewDynamicStatDependency(stats.Agility, stats.AttackPower, 2)
@@ -261,7 +261,7 @@ func (druid *Druid) RegisterBearFormAura() {
 			druid.PseudoStats.SpiritRegenMultiplier *= AnimalSpiritRegenSuppression
 
 			druid.AddStatsDynamic(sim, statBonus)
-			druid.ApplyBuildPhaseEquipScaling(sim, stats.Armor, baseBearArmorMulti)
+			druid.ApplyDynamicEquipScaling(sim, stats.Armor, baseBearArmorMulti)
 			druid.EnableBuildPhaseStatDep(sim, agiApDep)
 
 			// Preserve fraction of max health when shifting
@@ -288,7 +288,7 @@ func (druid *Druid) RegisterBearFormAura() {
 			druid.PseudoStats.SpiritRegenMultiplier /= AnimalSpiritRegenSuppression
 
 			druid.AddStatsDynamic(sim, statBonus.Invert())
-			druid.RemoveBuildPhaseEquipScaling(sim, stats.Armor, baseBearArmorMulti)
+			druid.RemoveDynamicEquipScaling(sim, stats.Armor, baseBearArmorMulti)
 			druid.DisableBuildPhaseStatDep(sim, agiApDep)
 
 			healthFrac := druid.CurrentHealth() / druid.MaxHealth()

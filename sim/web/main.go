@@ -389,6 +389,21 @@ func (s *server) runServer(useFS bool, host string, launchBrowser bool, simName 
 				f.Close()
 				fmt.Printf("Profiling complete.\n> ")
 			}()
+		case "heap_profile":
+			filename := fmt.Sprintf("profile_%d.heap", time.Now().Unix())
+			fmt.Printf("Capturing heap snapshot, output to %s\n", filename)
+			f, err := os.Create(filename)
+			if err != nil {
+				log.Fatal("could not create output file: ", err)
+			}
+			if err := pprof.WriteHeapProfile(f); err != nil {
+				log.Fatal("could not capture heap profile: ", err)
+			}
+			go func() {
+				time.Sleep(time.Second)
+				f.Close()
+				fmt.Printf("Profiling complete.\n> ")
+			}()
 		case "sims":
 			s.progMut.RLock()
 			fmt.Printf("Total Sims Running: %d\n", len(s.asyncProgresses))
@@ -400,7 +415,7 @@ func (s *server) runServer(useFS bool, host string, launchBrowser bool, simName 
 		case "quit":
 			os.Exit(1)
 		case "?":
-			fmt.Printf("Commands:\n\tsims - Lists all active async sims running currently.\n\tprofile - start a CPU profile for debugging performance\n\tquit - exits\n\n")
+			fmt.Printf("Commands:\n\tsims - Lists all active async sims running currently.\n\tprofile - start a CPU profile for debugging performance\n\theap_profile - capture a memory snapshot for debugging performance\n\tquit - exits\n\n")
 		case "":
 			// nothing.
 		default:

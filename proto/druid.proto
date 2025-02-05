@@ -186,6 +186,7 @@ message FeralDruid {
 
   message Options {
     DruidOptions class_options = 1;
+    bool cannot_shred_target = 2;
     bool assume_bleed_active = 4;
   }
   Options options = 3;

@@ -26,7 +26,7 @@ func (druid *Druid) applyThickHide() {
 	}
 
 	druid.ApplyEquipScaling(stats.Armor, []float64{1.0, 1.04, 1.07, 1.1}[numPoints])
-	druid.PseudoStats.ReducedCritTakenChance += 0.02*float64(numPoints)
+	druid.PseudoStats.ReducedCritTakenChance += 0.02 * float64(numPoints)
 
 	if !druid.InForm(Bear) {
 		return
@@ -38,11 +38,11 @@ func (druid *Druid) applyThickHide() {
 	thickHideBearMulti := 1.0 + 0.26*float64(numPoints)
 
 	druid.BearFormAura.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
-		druid.ApplyBuildPhaseEquipScaling(sim, stats.Armor, thickHideBearMulti)
+		druid.ApplyDynamicEquipScaling(sim, stats.Armor, thickHideBearMulti)
 	})
 
 	druid.BearFormAura.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
-		druid.RemoveBuildPhaseEquipScaling(sim, stats.Armor, thickHideBearMulti)
+		druid.RemoveDynamicEquipScaling(sim, stats.Armor, thickHideBearMulti)
 	})
 
 	druid.ApplyEquipScaling(stats.Armor, thickHideBearMulti)
@@ -191,14 +191,14 @@ func (druid *Druid) applyStarlightWrath() {
 
 func (druid *Druid) applyNaturesMajesty() {
 	if druid.Talents.NaturesMajesty > 0 {
-		druid.AddStat(stats.SpellCritPercent, 2 * float64(druid.Talents.NaturesMajesty))
+		druid.AddStat(stats.SpellCritPercent, 2*float64(druid.Talents.NaturesMajesty))
 	}
 }
 
 func (druid *Druid) applyMoonglow() {
 	if druid.Talents.Moonglow > 0 {
 		druid.AddStaticMod(core.SpellModConfig{
-	ClassMask:  DruidDamagingSpells | DruidHealingSpells,
+			ClassMask:  DruidDamagingSpells | DruidHealingSpells,
 			FloatValue: -0.03 * float64(druid.Talents.Moonglow),
 			Kind:       core.SpellMod_PowerCost_Pct,
 		})
@@ -372,7 +372,6 @@ func (druid *Druid) applyGaleWinds() {
 func (druid *Druid) applyEarthAndMoon() {
 	if druid.Talents.EarthAndMoon {
 		druid.AddStaticMod(core.SpellModConfig{
-			ClassMask:  DruidDamagingSpells,
 			FloatValue: 0.02,
 			Kind:       core.SpellMod_DamageDone_Pct,
 		})
@@ -905,7 +904,7 @@ func (druid *Druid) applyNaturalReaction() {
 	actionID := core.ActionID{SpellID: 59071}
 	rageMetrics := druid.NewRageMetrics(actionID)
 	numPoints := float64(druid.Talents.NaturalReaction)
-	rageAdded := 1.0 + 2.0*(numPoints - 1.0)
+	rageAdded := 1.0 + 2.0*(numPoints-1.0)
 
 	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
 		Name:     "Natural Reaction Trigger",
@@ -918,7 +917,7 @@ func (druid *Druid) applyNaturalReaction() {
 		},
 	})
 
-	druid.BearFormAura.AttachMultiplicativePseudoStatBuff(&druid.PseudoStats.DamageTakenMultiplier, 1.0 - 0.09*numPoints)
+	druid.BearFormAura.AttachMultiplicativePseudoStatBuff(&druid.PseudoStats.DamageTakenMultiplier, 1.0-0.09*numPoints)
 	druid.BearFormAura.AttachAdditivePseudoStatBuff(&druid.PseudoStats.BaseDodgeChance, 0.03*numPoints)
 }
 

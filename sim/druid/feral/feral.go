@@ -40,6 +40,7 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 	// }
 
 	cat.AssumeBleedActive = feralOptions.Options.AssumeBleedActive
+	cat.CannotShredTarget = feralOptions.Options.CannotShredTarget
 	cat.maxRipTicks = cat.MaxRipTicks()
 	cat.primalMadnessBonus = 10.0 * float64(cat.Talents.PrimalMadness)
 
@@ -77,6 +78,8 @@ type FeralDruid struct {
 	cachedRipEndThresh time.Duration
 	nextActionAt       time.Duration
 	usingHardcodedAPL  bool
+	pendingPool        *PoolingActions
+	pendingPoolWeaves  *PoolingActions
 }
 
 func (cat *FeralDruid) GetDruid() *druid.Druid {

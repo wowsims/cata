@@ -418,7 +418,7 @@ func init() {
 				},
 			})
 
-			character.TrinketProcBuffs = append(character.TrinketProcBuffs, procAura)
+			character.AddStatProcBuff(heartItemID, procAura, false, core.TrinketSlots())
 		})
 
 		jarItemID := core.TernaryInt32(heroic, 65029, 59354)
@@ -1415,6 +1415,7 @@ type IgniteDamageCalculator func(result *core.SpellResult) float64
 
 type IgniteConfig struct {
 	ActionID           core.ActionID
+	ClassSpellMask     int64
 	DisableCastMetrics bool
 	DotAuraLabel       string
 	DotAuraTag         string
@@ -1435,6 +1436,7 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 		ActionID:         config.ActionID,
 		SpellSchool:      core.SpellSchoolFire,
 		ProcMask:         core.ProcMaskSpellProc,
+		ClassSpellMask:   config.ClassSpellMask,
 		Flags:            spellFlags,
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func (mage *Mage) registerCombustionSpell() {
@@ -111,6 +112,40 @@ func (mage *Mage) registerCombustionSpell() {
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.Dot(target).Apply(sim)
+		},
+	})
+
+	combustionTickCount := 0
+	combustionTickDamage := 0.0
+	updateCombustionTickCountEstimate := func() {
+		combustionTickCount = int(mage.Combustion.RelatedDotSpell.Dot(mage.CurrentTarget).ExpectedTickCount())
+	}
+	updateCombustionTickDamageEstimate := func(sim *core.Simulation) {
+		combustionTickDamage = mage.Combustion.RelatedDotSpell.ExpectedTickDamage(sim, mage.CurrentTarget)
+	}
+
+	updateCombustionTotalDamageEstimate := func() {
+		combustionDotDamage := int32(float64(combustionTickCount) * combustionTickDamage)
+		mage.combustionDotEstimate = combustionDotDamage
+	}
+
+	mage.AddOnCastSpeedChanged(func(old float64, new float64) {
+		updateCombustionTickCountEstimate()
+		updateCombustionTotalDamageEstimate()
+	})
+
+	mage.AddOnTemporaryStatsChange(func(sim *core.Simulation, _ *core.Aura, stats stats.Stats) {
+		updateCombustionTickDamageEstimate(sim)
+		updateCombustionTotalDamageEstimate()
+	})
+
+	core.MakeProcTriggerAura(&mage.Unit, core.ProcTrigger{
+		Name:           "Combustion Dot Calculation Listener",
+		ClassSpellMask: MageSpellIgnite | MageSpellPyroblastDot | MageSpellLivingBombDot,
+		Callback:       core.CallbackOnCastComplete | core.CallbackOnPeriodicDamageDealt,
+		Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+			updateCombustionTickDamageEstimate(sim)
+			updateCombustionTotalDamageEstimate()
 		},
 	})
 }

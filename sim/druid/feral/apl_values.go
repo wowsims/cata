@@ -115,7 +115,6 @@ func (cat *FeralDruid) newActionCatOptimalRotationAction(_ *core.APLRotation, co
 		BiteTime:            config.BiteTime,
 		BerserkBiteTime:     config.BerserkBiteTime,
 		BiteDuringExecute:   config.BiteDuringExecute,
-		MangleSpam:          false,
 		MinRoarOffset:       config.MinRoarOffset,
 		RipLeeway:           config.RipLeeway,
 		ManualParams:        config.ManualParams,
@@ -127,6 +126,12 @@ func (cat *FeralDruid) newActionCatOptimalRotationAction(_ *core.APLRotation, co
 	}
 
 	cat.setupRotation(rotationOptions)
+
+	// Pre-allocate PoolingActions
+	cat.pendingPool = &PoolingActions{}
+	cat.pendingPool.create(4)
+	cat.pendingPoolWeaves = &PoolingActions{}
+	cat.pendingPoolWeaves.create(2)
 
 	return &APLActionCatOptimalRotationAction{
 		cat: cat,
@@ -169,7 +174,7 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 			cat.Enrage.Cast(sim, nil)
 		}
 
-		if cat.Maul.CanCast(sim, cat.CurrentTarget) && ((cat.CurrentRage() >= cat.Maul.DefaultCast.Cost + cat.MangleBear.DefaultCast.Cost) || (cat.AutoAttacks.NextAttackAt() < cat.NextGCDAt())) {
+		if cat.Maul.CanCast(sim, cat.CurrentTarget) && ((cat.CurrentRage() >= cat.Maul.DefaultCast.Cost+cat.MangleBear.DefaultCast.Cost) || (cat.AutoAttacks.NextAttackAt() < cat.NextGCDAt())) {
 			cat.Maul.Cast(sim, cat.CurrentTarget)
 		}
 	}

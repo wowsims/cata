@@ -1,6 +1,9 @@
 package assassination
 
-import "github.com/wowsims/cata/sim/core"
+import (
+	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/rogue"
+)
 
 func (sinRogue *AssassinationRogue) registerVenomousWounds() {
 	if sinRogue.Talents.VenomousWounds == 0 {
@@ -37,10 +40,11 @@ func (sinRogue *AssassinationRogue) registerVenomousWounds() {
 	}))
 
 	sinRogue.VenomousWounds = sinRogue.RegisterSpell(core.SpellConfig{
-		ActionID:    vwActionID,
-		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagPassiveSpell,
+		ActionID:       vwActionID,
+		ClassSpellMask: rogue.RogueSpellVenomousWounds,
+		SpellSchool:    core.SpellSchoolNature,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagPassiveSpell,
 
 		CritMultiplier:   sinRogue.MeleeCritMultiplier(false),
 		ThreatMultiplier: 1,

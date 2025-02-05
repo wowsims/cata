@@ -15,6 +15,12 @@ export const AssumeBleedActive = InputHelpers.makeSpecOptionsBooleanInput<Spec.S
 	extraCssClasses: ['within-raid-sim-hide'],
 });
 
+export const CannotShredTarget = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecFeralDruid>({
+	fieldName: 'cannotShredTarget',
+	label: 'Cannot Shred Target',
+	labelTooltip: 'Alternative to "In Front of Target" for modeling bosses that do not Parry or Block, but which you still cannot Shred.',
+});
+
 function ShouldShowAdvParamST(player: Player<Spec.SpecFeralDruid>): boolean {
 	const rot = player.getSimpleRotation();
 	return rot.manualParams && rot.rotationType == AplType.SingleTarget;
@@ -45,8 +51,8 @@ export const FeralDruidRotationConfig = {
 			label: 'Enable leave-weaving',
 			labelTooltip: 'Weave out of melee range for Stampede procs',
 			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
-				player.getSimpleRotation().rotationType == AplType.SingleTarget && player.getTalents().stampede > 0,
-			changeEmitter: (player: Player<Spec.SpecFeralDruid>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
+				player.getSimpleRotation().rotationType == AplType.SingleTarget && player.getTalents().stampede > 0 && !player.getSpecOptions().cannotShredTarget && !player.getInFrontOfTarget(),
+			changeEmitter: (player: Player<Spec.SpecFeralDruid>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter, player.specOptionsChangeEmitter, player.inFrontOfTargetChangeEmitter]),
 		}),
 		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
 			fieldName: 'bearWeave',

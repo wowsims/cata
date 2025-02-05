@@ -182,13 +182,6 @@ var ItemOverrides = []*proto.UIItem{
 	// Drape of Icy Intent
 	{Id: 45461, Phase: 2},
 
-	// Valentine's day event rewards
-	{Id: 51804, Phase: 2},
-	{Id: 51805, Phase: 2},
-	{Id: 51806, Phase: 2},
-	{Id: 51807, Phase: 2},
-	{Id: 51808, Phase: 2},
-
 	// Cata pre-patch event items
 	{Id: 53492, Phase: 5},
 
@@ -276,6 +269,18 @@ var ItemDenyList = map[int32]struct{}{
 
 	50251: {}, // 'one hand shadows edge'
 	53500: {}, // Tectonic Plate
+
+	// Old Valentine's day event rewards
+	51804: {},
+	51805: {},
+	51806: {},
+	51807: {},
+	51808: {},
+	68172: {},
+	68173: {},
+	68174: {},
+	68175: {},
+	68176: {},
 
 	48880: {}, // DK's Tier 9 Duplicates
 	48881: {}, // DK's Tier 9 Duplicates

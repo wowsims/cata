@@ -140,10 +140,7 @@ export const SET_BONUS_NOTICES = new Map<number, SetBonusNoticeData>([
 	[
 		1016, // Shaman T12
 		new Map<number, string>([
-			[
-				2,
-				'Requires testing to confirm exact proc behaviour for the 4.2 effect: Your damaging spells have a chance to reset the remaining cooldown on your Fire Elemental Totem.',
-			],
+			[2, 'Defaults to 4.2 T12 2PC Bonus: Your damaging spells have a chance to reset the remaining cooldown on your Fire Elemental Totem.'],
 		]),
 	],
 
@@ -161,6 +158,8 @@ export const SET_BONUS_NOTICES = new Map<number, SetBonusNoticeData>([
 	[1056, null], // Blood DK T13
 	[1060, null], // Resto Druid T13
 	[1066, null], // Healing Priest T13
-	[1067, null], // Shadow Priest T13
-	[1069, null], // Resto Shaman T13
+	[
+		1069, // Resto Shaman T13
+		new Map<number, string>([[2, 'Not implemented']]),
+	],
 ]);

@@ -41,7 +41,7 @@ message APLListItem {
     APLAction action = 3; // The action to be performed.
 }
 
-// NextIndex: 25
+// NextIndex: 26
 message APLAction {
     APLValue condition = 1; // If set, action will only execute if value is true or != 0.
 
@@ -69,6 +69,7 @@ message APLAction {
         APLActionChangeTarget change_target = 9;
         APLActionActivateAura activate_aura = 13;
         APLActionActivateAuraWithStacks activate_aura_with_stacks = 24;
+        APLActionActivateAllStatBuffProcAuras activate_all_stat_buff_proc_auras = 25;
         APLActionCancelAura cancel_aura = 10;
         APLActionTriggerICD trigger_icd = 11;
         APLActionItemSwap item_swap = 17;
@@ -174,11 +175,11 @@ message APLValue {
         APLValueAuraShouldRefresh aura_should_refresh = 43;
 
         // Aggregate Aura set values
-        APLValueAllTrinketStatProcsActive all_trinket_stat_procs_active = 78;
-        APLValueAnyTrinketStatProcsActive any_trinket_stat_procs_active = 79;
-        APLValueTrinketProcsMinRemainingTime trinket_procs_min_remaining_time = 80;
-        APLValueTrinketProcsMaxRemainingICD trinket_procs_max_remaining_icd = 84;
-        APLValueNumEquippedStatProcTrinkets num_equipped_stat_proc_trinkets = 81;
+        APLValueAllTrinketStatProcsActive all_trinket_stat_procs_active = 78; // TODO: Rename in MoP as it includes all item/effect procs
+        APLValueAnyTrinketStatProcsActive any_trinket_stat_procs_active = 79; // TODO: Rename in MoP as it includes all item/effect procs
+        APLValueTrinketProcsMinRemainingTime trinket_procs_min_remaining_time = 80; // TODO: Rename in MoP as it includes all item/effect procs
+        APLValueTrinketProcsMaxRemainingICD trinket_procs_max_remaining_icd = 84; // TODO: Rename in MoP as it includes all item/effect procs
+        APLValueNumEquippedStatProcTrinkets num_equipped_stat_proc_trinkets = 81; // TODO: Rename in MoP as it includes all item/effect procs
         APLValueNumStatBuffCooldowns num_stat_buff_cooldowns = 85;
 
         // Dot values
@@ -298,16 +299,24 @@ message APLActionActivateAuraWithStacks {
     int32 num_stacks = 2;
 }
 
+message APLActionActivateAllStatBuffProcAuras {
+	APLActionItemSwap.SwapSet swap_set = 1;
+
+    int32 stat_type1 = 2;
+    int32 stat_type2 = 3;
+    int32 stat_type3 = 4;
+}
+
 message APLActionTriggerICD {
     ActionID aura_id = 1;
 }
 
 message APLActionItemSwap {
-    enum SwapSet {
-        Unknown = 0;
-        Main = 1;
-        Swap1 = 2;
-    }
+	enum SwapSet {
+		Unknown = 0;
+		Main = 1;
+		Swap1 = 2;
+	}
 
     // The set to swap to.
     SwapSet swap_set = 1;

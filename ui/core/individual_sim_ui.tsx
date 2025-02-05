@@ -340,7 +340,9 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			this.addDetailedResultsTab();
 		}
 
-		this.bt = this.addBulkTab();
+		// TODO: Fix intermittent memory leak in the Calculate Combos
+		// request so that this can be re-enabled.
+		//this.bt = this.addBulkTab();
 
 		this.addTopbarComponents();
 	}
@@ -424,7 +426,12 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	}
 
 	private addBulkTab(): BulkTab {
-		return new BulkTab(this.simTabContentsContainer, this);
+		const bulkTab = new BulkTab(this.simTabContentsContainer, this);
+		bulkTab.navLink.hidden = !this.sim.getShowExperimental();
+		this.sim.showExperimentalChangeEmitter.on(() => {
+			bulkTab.navLink.hidden = !this.sim.getShowExperimental();
+		});
+		return bulkTab;
 	}
 
 	private addSettingsTab() {
