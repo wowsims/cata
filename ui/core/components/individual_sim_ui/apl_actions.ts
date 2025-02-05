@@ -593,7 +593,7 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 	['activateAllStatBuffProcAuras']: inputBuilder({
 		label: 'Activate All Stat Buff Proc Auras',
 		submenu: ['Misc'],
-		shortDescription: 'Activates all item/enchant proc auras that buff the specified stat type(s) using the currently equipped item set.',
+		shortDescription: 'Activates all item/enchant proc auras that buff the specified stat type(s) using the specified item set.',
 		includeIf: (_, isPrepull: boolean) => isPrepull,
 		newValue: () =>
 			APLActionActivateAllStatBuffProcAuras.create({

@@ -10,7 +10,7 @@ import (
 
 // Parent struct for all APL values that perform checks on the set of buff auras
 // associated with equipped proc items.
-type APLValueTrinketStatProcCheck struct {
+type APLValueItemStatProcCheck struct {
 	DefaultAPLValueImpl
 
 	baseName        string
@@ -20,7 +20,7 @@ type APLValueTrinketStatProcCheck struct {
 	matchingAuras    []*StatBuffAura
 }
 
-func (rot *APLRotation) newItemStatProcValue(valueName string, statType1 int32, statType2 int32, statType3 int32, minIcdSeconds float64, requireMatch bool, uuid *proto.UUID) *APLValueTrinketStatProcCheck {
+func (rot *APLRotation) newItemStatProcValue(valueName string, statType1 int32, statType2 int32, statType3 int32, minIcdSeconds float64, requireMatch bool, uuid *proto.UUID) *APLValueItemStatProcCheck {
 	statTypesToMatch := stats.IntTupleToStatsList(statType1, statType2, statType3)
 	minIcd := DurationFromSeconds(minIcdSeconds)
 	matchingAuras := rot.GetAPLItemProcAuras(statTypesToMatch, minIcd, requireMatch, uuid)
@@ -29,17 +29,17 @@ func (rot *APLRotation) newItemStatProcValue(valueName string, statType1 int32, 
 		return nil
 	}
 
-	return &APLValueTrinketStatProcCheck{
+	return &APLValueItemStatProcCheck{
 		baseName:         valueName,
 		includeWarnings:  requireMatch,
 		statTypesToMatch: statTypesToMatch,
 		matchingAuras:    matchingAuras,
 	}
 }
-func (value *APLValueTrinketStatProcCheck) String() string {
+func (value *APLValueItemStatProcCheck) String() string {
 	return fmt.Sprintf("%s(%s)", value.baseName, StringFromStatTypes(value.statTypesToMatch))
 }
-func (value *APLValueTrinketStatProcCheck) Finalize(rot *APLRotation) {
+func (value *APLValueItemStatProcCheck) Finalize(rot *APLRotation) {
 	if !value.includeWarnings {
 		return
 	}
@@ -54,8 +54,8 @@ func (value *APLValueTrinketStatProcCheck) Finalize(rot *APLRotation) {
 	rot.ValidationMessageByUUID(value.Uuid, proto.LogLevel_Information, "%s will check the following auras: %s", value, StringFromActionIDs(actionIDs))
 }
 
-type APLValueAllTrinketStatProcsActive struct {
-	*APLValueTrinketStatProcCheck
+type APLValueAllItemStatProcsActive struct {
+	*APLValueItemStatProcCheck
 }
 
 func (rot *APLRotation) newValueAllItemStatProcsActive(config *proto.APLValueAllTrinketStatProcsActive, uuid *proto.UUID) APLValue {
@@ -65,16 +65,16 @@ func (rot *APLRotation) newValueAllItemStatProcsActive(config *proto.APLValueAll
 		return nil
 	}
 
-	return &APLValueAllTrinketStatProcsActive{
-		APLValueTrinketStatProcCheck: parentImpl,
+	return &APLValueAllItemStatProcsActive{
+		APLValueItemStatProcCheck: parentImpl,
 	}
 }
-func (value *APLValueAllTrinketStatProcsActive) Type() proto.APLValueType {
+func (value *APLValueAllItemStatProcsActive) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeBool
 }
-func (value *APLValueAllTrinketStatProcsActive) GetBool(sim *Simulation) bool {
+func (value *APLValueAllItemStatProcsActive) GetBool(sim *Simulation) bool {
 	for _, aura := range value.matchingAuras {
-		if !aura.IsSwapped && (!aura.IsActive() || (aura.GetStacks() < aura.MaxStacks)) && aura.CanProc(sim) {
+		if (!aura.IsActive() || (aura.GetStacks() < aura.MaxStacks)) && aura.CanProc(sim) {
 			return false
 		}
 	}
@@ -82,8 +82,8 @@ func (value *APLValueAllTrinketStatProcsActive) GetBool(sim *Simulation) bool {
 	return true
 }
 
-type APLValueAnyTrinketStatProcsActive struct {
-	*APLValueTrinketStatProcCheck
+type APLValueAnyItemStatProcsActive struct {
+	*APLValueItemStatProcCheck
 }
 
 func (rot *APLRotation) newValueAnyTrinketStatProcsActive(config *proto.APLValueAnyTrinketStatProcsActive, uuid *proto.UUID) APLValue {
@@ -93,16 +93,16 @@ func (rot *APLRotation) newValueAnyTrinketStatProcsActive(config *proto.APLValue
 		return nil
 	}
 
-	return &APLValueAnyTrinketStatProcsActive{
-		APLValueTrinketStatProcCheck: parentImpl,
+	return &APLValueAnyItemStatProcsActive{
+		APLValueItemStatProcCheck: parentImpl,
 	}
 }
-func (value *APLValueAnyTrinketStatProcsActive) Type() proto.APLValueType {
+func (value *APLValueAnyItemStatProcsActive) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeBool
 }
-func (value *APLValueAnyTrinketStatProcsActive) GetBool(sim *Simulation) bool {
+func (value *APLValueAnyItemStatProcsActive) GetBool(sim *Simulation) bool {
 	for _, aura := range value.matchingAuras {
-		if !aura.IsSwapped && aura.IsActive() && (aura.GetStacks() == aura.MaxStacks) {
+		if aura.IsActive() && (aura.GetStacks() == aura.MaxStacks) {
 			return true
 		}
 	}
@@ -110,8 +110,8 @@ func (value *APLValueAnyTrinketStatProcsActive) GetBool(sim *Simulation) bool {
 	return false
 }
 
-type APLValueTrinketProcsMinRemainingTime struct {
-	*APLValueTrinketStatProcCheck
+type APLValueItemProcsMinRemainingTime struct {
+	*APLValueItemStatProcCheck
 }
 
 func (rot *APLRotation) newValueItemProcsMinRemainingTime(config *proto.APLValueTrinketProcsMinRemainingTime, uuid *proto.UUID) APLValue {
@@ -121,18 +121,18 @@ func (rot *APLRotation) newValueItemProcsMinRemainingTime(config *proto.APLValue
 		return nil
 	}
 
-	return &APLValueTrinketProcsMinRemainingTime{
-		APLValueTrinketStatProcCheck: parentImpl,
+	return &APLValueItemProcsMinRemainingTime{
+		APLValueItemStatProcCheck: parentImpl,
 	}
 }
-func (value *APLValueTrinketProcsMinRemainingTime) Type() proto.APLValueType {
+func (value *APLValueItemProcsMinRemainingTime) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeDuration
 }
-func (value *APLValueTrinketProcsMinRemainingTime) GetDuration(sim *Simulation) time.Duration {
+func (value *APLValueItemProcsMinRemainingTime) GetDuration(sim *Simulation) time.Duration {
 	minRemainingTime := NeverExpires
 
 	for _, aura := range value.matchingAuras {
-		if !aura.IsSwapped && aura.IsActive() {
+		if aura.IsActive() {
 			minRemainingTime = min(minRemainingTime, aura.RemainingDuration(sim))
 		}
 	}
@@ -140,8 +140,8 @@ func (value *APLValueTrinketProcsMinRemainingTime) GetDuration(sim *Simulation) 
 	return minRemainingTime
 }
 
-type APLValueTrinketProcsMaxRemainingICD struct {
-	*APLValueTrinketStatProcCheck
+type APLValueItemProcsMaxRemainingICD struct {
+	*APLValueItemStatProcCheck
 }
 
 func (rot *APLRotation) newValueItemsProcsMaxRemainingICD(config *proto.APLValueTrinketProcsMaxRemainingICD, uuid *proto.UUID) APLValue {
@@ -151,18 +151,18 @@ func (rot *APLRotation) newValueItemsProcsMaxRemainingICD(config *proto.APLValue
 		return nil
 	}
 
-	return &APLValueTrinketProcsMaxRemainingICD{
-		APLValueTrinketStatProcCheck: parentImpl,
+	return &APLValueItemProcsMaxRemainingICD{
+		APLValueItemStatProcCheck: parentImpl,
 	}
 }
-func (value *APLValueTrinketProcsMaxRemainingICD) Type() proto.APLValueType {
+func (value *APLValueItemProcsMaxRemainingICD) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeDuration
 }
-func (value *APLValueTrinketProcsMaxRemainingICD) GetDuration(sim *Simulation) time.Duration {
+func (value *APLValueItemProcsMaxRemainingICD) GetDuration(sim *Simulation) time.Duration {
 	var maxRemainingICD time.Duration
 
 	for _, aura := range value.matchingAuras {
-		if !aura.IsSwapped && !aura.IsActive() && (aura.Icd != nil) {
+		if aura.CanProc(sim) && !aura.IsActive() && (aura.Icd != nil) {
 			maxRemainingICD = max(maxRemainingICD, aura.Icd.TimeToReady(sim))
 		}
 	}
@@ -170,23 +170,23 @@ func (value *APLValueTrinketProcsMaxRemainingICD) GetDuration(sim *Simulation) t
 	return maxRemainingICD
 }
 
-type APLValueNumEquippedStatProcTrinkets struct {
-	*APLValueTrinketStatProcCheck
+type APLValueNumEquippedStatProcItems struct {
+	*APLValueItemStatProcCheck
 }
 
 func (rot *APLRotation) newValueNumEquippedStatProcItems(config *proto.APLValueNumEquippedStatProcTrinkets, uuid *proto.UUID) APLValue {
 	parentImpl := rot.newItemStatProcValue("NumEquippedStatProcItems", config.StatType1, config.StatType2, config.StatType3, config.MinIcdSeconds, false, uuid)
 
-	return &APLValueNumEquippedStatProcTrinkets{
-		APLValueTrinketStatProcCheck: parentImpl,
+	return &APLValueNumEquippedStatProcItems{
+		APLValueItemStatProcCheck: parentImpl,
 	}
 }
-func (value *APLValueNumEquippedStatProcTrinkets) Type() proto.APLValueType {
+func (value *APLValueNumEquippedStatProcItems) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeInt
 }
-func (value *APLValueNumEquippedStatProcTrinkets) GetInt(sim *Simulation) int32 {
+func (value *APLValueNumEquippedStatProcItems) GetInt(sim *Simulation) int32 {
 	return int32(len(FilterSlice(value.matchingAuras, func(aura *StatBuffAura) bool {
-		return !aura.IsSwapped && aura.CanProc(sim)
+		return aura.CanProc(sim)
 	})))
 }
 

@@ -8,13 +8,11 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-type OnItemSwap func(*Simulation)
-type OnItemSwapSlot func(*Simulation, proto.ItemSlot)
+type OnItemSwap func(*Simulation, proto.ItemSlot)
 
 type ItemSwap struct {
 	character           *Character
-	onSwapCallbacks     []OnItemSwap
-	onSwapSlotCallbacks [NumItemSlots][]OnItemSwapSlot
+	onItemSwapCallbacks [NumItemSlots][]OnItemSwap
 
 	isFuryWarrior        bool
 	mhCritMultiplier     float64
@@ -100,7 +98,7 @@ func (swap *ItemSwap) initialize(character *Character) {
 	swap.character = character
 }
 
-func (character *Character) RegisterItemSwapCallbackForSlots(slots []proto.ItemSlot, callback OnItemSwapSlot) {
+func (character *Character) RegisterItemSwapCallback(slots []proto.ItemSlot, callback OnItemSwap) {
 	if character == nil || !character.ItemSwap.IsEnabled() || len(slots) == 0 {
 		return
 	}
@@ -110,20 +108,8 @@ func (character *Character) RegisterItemSwapCallbackForSlots(slots []proto.ItemS
 	}
 
 	for _, slot := range slots {
-		character.ItemSwap.onSwapSlotCallbacks[slot] = append(character.ItemSwap.onSwapSlotCallbacks[slot], callback)
+		character.ItemSwap.onItemSwapCallbacks[slot] = append(character.ItemSwap.onItemSwapCallbacks[slot], callback)
 	}
-}
-
-func (character *Character) RegisterItemSwapCallback(callback OnItemSwap) {
-	if character == nil || !character.ItemSwap.IsEnabled() {
-		return
-	}
-
-	if (character.Env != nil) && character.Env.IsFinalized() {
-		panic("Tried to add a new item swap callback in a finalized environment!")
-	}
-
-	character.ItemSwap.onSwapCallbacks = append(character.ItemSwap.onSwapCallbacks, callback)
 }
 
 // Helper for handling Item Effects that use the itemID to toggle the aura on and off
@@ -170,7 +156,7 @@ func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
 	shouldUpdateIcd := isItemProc && (config.Aura.Icd != nil)
 
 	character := swap.character
-	character.RegisterItemSwapCallbackForSlots(config.Slots, func(sim *Simulation, _ proto.ItemSlot) {
+	character.RegisterItemSwapCallback(config.Slots, func(sim *Simulation, _ proto.ItemSlot) {
 		isItemSlotMatch := false
 
 		if isItemProc {
@@ -203,7 +189,7 @@ func (swap *ItemSwap) RegisterActive(itemID int32) {
 	itemActionID := ActionID{ItemID: itemID}
 	character := swap.character
 
-	character.RegisterItemSwapCallbackForSlots(slots, func(sim *Simulation, _ proto.ItemSlot) {
+	character.RegisterItemSwapCallback(slots, func(sim *Simulation, _ proto.ItemSlot) {
 		spell := character.GetSpell(itemActionID)
 		if spell == nil {
 			return
@@ -232,7 +218,7 @@ func (swap *ItemSwap) RegisterActive(itemID int32) {
 
 // Helper for handling Enchant On Use effects to set a 30s cd on the related spell.
 func (swap *ItemSwap) ProcessTinker(spell *Spell, slots []proto.ItemSlot) {
-	swap.character.RegisterItemSwapCallbackForSlots(slots, func(sim *Simulation, slot proto.ItemSlot) {
+	swap.character.RegisterItemSwapCallback(slots, func(sim *Simulation, slot proto.ItemSlot) {
 		if spell == nil || !swap.initialized {
 			return
 		}
@@ -279,24 +265,6 @@ func (swap *ItemSwap) GetEquippedItemBySlot(slot proto.ItemSlot) *Item {
 
 func (swap *ItemSwap) GetUnequippedItemBySlot(slot proto.ItemSlot) *Item {
 	return &swap.unEquippedItems[slot]
-}
-
-func (swap *ItemSwap) ItemExistsInMainEquip(itemID int32, possibleSlots []proto.ItemSlot) bool {
-	if !swap.IsEnabled() {
-		return swap.character.Equipment.containsItemInSlots(itemID, possibleSlots)
-	}
-	return swap.originalEquip.containsItemInSlots(itemID, possibleSlots)
-}
-
-func (swap *ItemSwap) EnchantExistsInMainEquip(effectID int32, possibleSlots []proto.ItemSlot) bool {
-	if !swap.IsEnabled() {
-		return swap.character.Equipment.containsEnchantInSlots(effectID, possibleSlots)
-	}
-	return swap.originalEquip.containsEnchantInSlots(effectID, possibleSlots)
-}
-
-func (swap *ItemSwap) ItemExistsInSwapEquip(itemID int32, possibleSlots []proto.ItemSlot) bool {
-	return swap.swapEquip.containsItemInSlots(itemID, possibleSlots)
 }
 
 func (swap *ItemSwap) EligibleSlotsForItem(itemID int32) []proto.ItemSlot {
@@ -352,13 +320,9 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 
 		swap.swapItem(sim, slot, isPrepull, isReset)
 
-		for _, onSwapSlot := range swap.onSwapSlotCallbacks[slot] {
+		for _, onSwapSlot := range swap.onItemSwapCallbacks[slot] {
 			onSwapSlot(sim, slot)
 		}
-	}
-
-	for _, onSwap := range swap.onSwapCallbacks {
-		onSwap(sim)
 	}
 
 	if !swap.IsValidSwap(swapSet) {

@@ -44,8 +44,8 @@ type Character struct {
 	// Current gear.
 	Equipment
 
+	// Stat buff auras associated with any proc effects in the Character's equippable items
 	ItemProcBuffs []*StatBuffAura
-	// Stat buff auras associated with any proc trinkets.
 
 	//Item Swap Handler
 	ItemSwap ItemSwap
@@ -604,7 +604,7 @@ func (character *Character) GetDynamicProcMaskForWeaponEnchant(effectID int32) *
 func (character *Character) getDynamicProcMaskPointer(procMaskFn func() ProcMask) *ProcMask {
 	procMask := procMaskFn()
 
-	character.RegisterItemSwapCallbackForSlots(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot) {
+	character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot) {
 		procMask = procMaskFn()
 	})
 
@@ -732,7 +732,7 @@ func (character *Character) AddStatProcBuff(effectID int32, procAura *StatBuffAu
 	procAura.IsSwapped = !hasEquippedCheck(effectID, eligibleSlots)
 	character.ItemProcBuffs = append(character.ItemProcBuffs, procAura)
 
-	character.RegisterItemSwapCallbackForSlots(eligibleSlots, func(sim *Simulation, slot proto.ItemSlot) {
+	character.RegisterItemSwapCallback(eligibleSlots, func(sim *Simulation, slot proto.ItemSlot) {
 		procAura.IsSwapped = !hasEquippedCheck(effectID, eligibleSlots)
 	})
 
@@ -830,7 +830,7 @@ func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Sta
 		aura = MakePermanent(aura)
 	}
 
-	character.RegisterItemSwapCallbackForSlots([]proto.ItemSlot{
+	character.RegisterItemSwapCallback([]proto.ItemSlot{
 		proto.ItemSlot_ItemSlotHead,
 		proto.ItemSlot_ItemSlotShoulder,
 		proto.ItemSlot_ItemSlotChest,

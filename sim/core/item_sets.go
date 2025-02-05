@@ -234,7 +234,7 @@ func (character *Character) makeSetBonusStatusAura(setName string, numPieces int
 		statusAura = MakePermanent(statusAura)
 	}
 
-	character.RegisterItemSwapCallbackForSlots(slots, func(sim *Simulation, _ proto.ItemSlot) {
+	character.RegisterItemSwapCallback(slots, func(sim *Simulation, _ proto.ItemSlot) {
 		if character.hasActiveSetBonus(setName, numPieces) {
 			if !statusAura.IsActive() {
 				statusAura.Activate(sim)
@@ -277,7 +277,7 @@ func (character *Character) RegisterPvPGloveMod(itemIDs []int32, config SpellMod
 
 	checkGloves()
 
-	character.RegisterItemSwapCallbackForSlots([]proto.ItemSlot{proto.ItemSlot_ItemSlotHands}, func(_ *Simulation, _ proto.ItemSlot) {
+	character.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotHands}, func(_ *Simulation, _ proto.ItemSlot) {
 		checkGloves()
 	})
 }
