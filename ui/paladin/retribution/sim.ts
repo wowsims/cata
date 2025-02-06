@@ -150,7 +150,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			communion: true,
 		}),
 		debuffs: Debuffs.create({
-			exposeArmor: true,
+			faerieFire: true,
 			bloodFrenzy: true,
 			mangle: true,
 			ebonPlaguebringer: true,
