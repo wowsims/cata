@@ -88,7 +88,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 		debuffs: Debuffs.create({
 			bloodFrenzy: true,
 			mangle: true,
-			sunderArmor: true,
+			faerieFire: true,
 			curseOfWeakness: true,
 			ebonPlaguebringer: true,
 		}),

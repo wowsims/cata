@@ -4,7 +4,6 @@ import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action'
 import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
-import { StatCap } from '../../core/proto_utils/stats';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLAction, APLListItem, APLRotation } from '../../core/proto/apl';
 import {
@@ -23,13 +22,13 @@ import {
 	Stat,
 } from '../../core/proto/common';
 import { HunterStingType, SurvivalHunter_Rotation } from '../../core/proto/hunter';
+import { StatCapType } from '../../core/proto/ui';
 import * as AplUtils from '../../core/proto_utils/apl_utils';
-import { Stats, UnitStat } from '../../core/proto_utils/stats';
+import { StatCap , Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as HunterInputs from '../inputs';
 import { sharedHunterDisplayStatsModifiers } from '../shared';
 import * as SVInputs from './inputs';
 import * as Presets from './presets';
-import { StatCapType } from '../../core/proto/ui';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	cssClass: 'survival-hunter-sim-ui',
@@ -109,7 +108,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 			vampiricTouch: true,
 		}),
 		debuffs: Debuffs.create({
-			sunderArmor: true,
+			faerieFire: true,
 			curseOfElements: true,
 			savageCombat: true,
 			bloodFrenzy: true,
