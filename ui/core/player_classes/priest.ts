@@ -14,19 +14,19 @@ export class Priest extends PlayerClass<Class.ClassPriest> {
 		[ShadowPriest.friendlyName]: ShadowPriest,
 	};
 	static races: Race[] = [
+		// [H]
+		Race.RaceTroll,
+		Race.RaceUndead,
+		Race.RaceTauren,
+		Race.RaceBloodElf,
+		Race.RaceGoblin,
 		// [A]
+		Race.RaceWorgen,
 		Race.RaceHuman,
 		Race.RaceDwarf,
 		Race.RaceNightElf,
 		Race.RaceGnome,
 		Race.RaceDraenei,
-		Race.RaceWorgen,
-		// [H]
-		Race.RaceUndead,
-		Race.RaceTauren,
-		Race.RaceTroll,
-		Race.RaceBloodElf,
-		Race.RaceGoblin,
 	];
 	static armorTypes: ArmorType[] = [ArmorType.ArmorTypeCloth];
 	static weaponTypes: EligibleWeaponType[] = [
