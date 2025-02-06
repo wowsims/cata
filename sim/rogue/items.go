@@ -235,7 +235,7 @@ var Tier13 = core.NewItemSet(core.ItemSet{
 			setBonusAura.AttachProcTrigger(core.ProcTrigger{
 				Name:           "Rogue T13 2P Bonus",
 				Callback:       core.CallbackOnApplyEffects,
-				ClassSpellMask: RogueSpellTricksOfTheTrade,
+				ClassSpellMask: RogueSpellTricksOfTheTradeThreat,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					aura.Activate(sim)
 				},

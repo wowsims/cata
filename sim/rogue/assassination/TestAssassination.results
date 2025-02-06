@@ -174,8 +174,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-BlackfangBattleweave"
  value: {
-  dps: 28147.3748
-  tps: 19984.6361
+  dps: 28383.36031
+  tps: 20152.18582
  }
 }
 dps_results: {
@@ -2465,141 +2465,141 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-Settings-Human-p4_assassination-Assassination-mutilate-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 55503.80948
-  tps: 39407.70473
+  dps: 55627.95698
+  tps: 39495.84946
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Human-p4_assassination-Assassination-mutilate-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 55503.80948
-  tps: 39407.70473
+  dps: 55627.95698
+  tps: 39495.84946
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Human-p4_assassination-Assassination-mutilate-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 69230.74436
-  tps: 49153.82849
+  dps: 69526.03643
+  tps: 49363.48587
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Human-p4_assassination-Assassination-mutilate-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 33958.60398
-  tps: 24110.60883
+  dps: 34144.56065
+  tps: 24242.63806
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Human-p4_assassination-Assassination-mutilate-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 33958.60398
-  tps: 24110.60883
+  dps: 34144.56065
+  tps: 24242.63806
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Human-p4_assassination-Assassination-mutilate-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 36402.93343
-  tps: 25846.08273
+  dps: 36152.68272
+  tps: 25668.40473
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Human-p4_assassination-MH Deadly OH Deadly-mutilate-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 43331.0524
-  tps: 30765.04721
+  dps: 43488.99827
+  tps: 30877.18877
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Human-p4_assassination-MH Deadly OH Deadly-mutilate-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 43331.0524
-  tps: 30765.04721
+  dps: 43488.99827
+  tps: 30877.18877
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Human-p4_assassination-MH Deadly OH Deadly-mutilate-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 54038.31563
-  tps: 38367.2041
+  dps: 54228.00886
+  tps: 38501.88629
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Human-p4_assassination-MH Deadly OH Deadly-mutilate-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 26640.19237
-  tps: 18914.53659
+  dps: 26782.94204
+  tps: 19015.88885
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Human-p4_assassination-MH Deadly OH Deadly-mutilate-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 26640.19237
-  tps: 18914.53659
+  dps: 26782.94204
+  tps: 19015.88885
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Human-p4_assassination-MH Deadly OH Deadly-mutilate-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 28906.56035
-  tps: 20523.65785
+  dps: 28785.42462
+  tps: 20437.65148
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Human-p4_assassination-MH Instant OH Deadly-mutilate-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 56418.62875
-  tps: 40057.22641
+  dps: 56654.55589
+  tps: 40224.73468
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Human-p4_assassination-MH Instant OH Deadly-mutilate-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 56418.62875
-  tps: 40057.22641
+  dps: 56654.55589
+  tps: 40224.73468
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Human-p4_assassination-MH Instant OH Deadly-mutilate-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 70705.07975
-  tps: 50200.60663
+  dps: 70932.03975
+  tps: 50361.74823
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Human-p4_assassination-MH Instant OH Deadly-mutilate-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 34387.79637
-  tps: 24415.33542
+  dps: 34626.3208
+  tps: 24584.68777
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Human-p4_assassination-MH Instant OH Deadly-mutilate-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 34387.79637
-  tps: 24415.33542
+  dps: 34626.3208
+  tps: 24584.68777
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Human-p4_assassination-MH Instant OH Deadly-mutilate-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 36898.92369
-  tps: 26198.23582
+  dps: 36780.88466
+  tps: 26114.42811
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Human-p4_assassination-MH Instant OH Instant-mutilate-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 29902.3526
-  tps: 21230.67035
+  dps: 29918.30916
+  tps: 21241.99951
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Human-p4_assassination-MH Instant OH Instant-mutilate-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 29902.3526
-  tps: 21230.67035
+  dps: 29918.30916
+  tps: 21241.99951
  }
 }
 dps_results: {
@@ -2612,22 +2612,22 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-Settings-Human-p4_assassination-MH Instant OH Instant-mutilate-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 17858.86305
-  tps: 12679.79277
+  dps: 17870.65771
+  tps: 12688.16697
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Human-p4_assassination-MH Instant OH Instant-mutilate-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 17858.86305
-  tps: 12679.79277
+  dps: 17870.65771
+  tps: 12688.16697
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Human-p4_assassination-MH Instant OH Instant-mutilate-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 19935.76623
-  tps: 14154.39402
+  dps: 19937.81896
+  tps: 14155.85146
  }
 }
 dps_results: {
@@ -2969,141 +2969,141 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-Settings-Orc-p4_assassination-Assassination-mutilate-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 55861.13892
-  tps: 39661.40864
+  dps: 55984.70387
+  tps: 39749.13975
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Orc-p4_assassination-Assassination-mutilate-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 55861.13892
-  tps: 39661.40864
+  dps: 55984.70387
+  tps: 39749.13975
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Orc-p4_assassination-Assassination-mutilate-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 69913.41777
-  tps: 49638.52662
+  dps: 70211.02526
+  tps: 49849.82793
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Orc-p4_assassination-Assassination-mutilate-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 34204.39343
-  tps: 24285.11934
+  dps: 34385.93593
+  tps: 24414.01451
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Orc-p4_assassination-Assassination-mutilate-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 34204.39343
-  tps: 24285.11934
+  dps: 34385.93593
+  tps: 24414.01451
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Orc-p4_assassination-Assassination-mutilate-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 36813.41909
-  tps: 26137.52755
+  dps: 36565.13056
+  tps: 25961.24269
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Orc-p4_assassination-MH Deadly OH Deadly-mutilate-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 43604.31699
-  tps: 30959.06507
+  dps: 43764.27322
+  tps: 31072.63399
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Orc-p4_assassination-MH Deadly OH Deadly-mutilate-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 43604.31699
-  tps: 30959.06507
+  dps: 43764.27322
+  tps: 31072.63399
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Orc-p4_assassination-MH Deadly OH Deadly-mutilate-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 54567.50811
-  tps: 38742.93076
+  dps: 54759.52822
+  tps: 38879.26504
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Orc-p4_assassination-MH Deadly OH Deadly-mutilate-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 26833.1504
-  tps: 19051.53679
+  dps: 26970.35704
+  tps: 19148.9535
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Orc-p4_assassination-MH Deadly OH Deadly-mutilate-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 26833.1504
-  tps: 19051.53679
+  dps: 26970.35704
+  tps: 19148.9535
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Orc-p4_assassination-MH Deadly OH Deadly-mutilate-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 29231.79461
-  tps: 20754.57417
+  dps: 29111.36267
+  tps: 20669.0675
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Orc-p4_assassination-MH Instant OH Deadly-mutilate-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 56779.1602
-  tps: 40313.20375
+  dps: 57015.2993
+  tps: 40480.86251
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Orc-p4_assassination-MH Instant OH Deadly-mutilate-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 56779.1602
-  tps: 40313.20375
+  dps: 57015.2993
+  tps: 40480.86251
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Orc-p4_assassination-MH Instant OH Deadly-mutilate-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 71401.68289
-  tps: 50695.19485
+  dps: 71632.34874
+  tps: 50858.96761
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Orc-p4_assassination-MH Instant OH Deadly-mutilate-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 34636.75914
-  tps: 24592.09899
+  dps: 34870.09781
+  tps: 24757.76944
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Orc-p4_assassination-MH Instant OH Deadly-mutilate-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 34636.75914
-  tps: 24592.09899
+  dps: 34870.09781
+  tps: 24757.76944
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Orc-p4_assassination-MH Instant OH Deadly-mutilate-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 37316.0507
-  tps: 26494.396
+  dps: 37198.84864
+  tps: 26411.18253
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Orc-p4_assassination-MH Instant OH Instant-mutilate-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 30084.94594
-  tps: 21360.31162
+  dps: 30100.99367
+  tps: 21371.70551
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Orc-p4_assassination-MH Instant OH Instant-mutilate-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 30084.94594
-  tps: 21360.31162
+  dps: 30100.99367
+  tps: 21371.70551
  }
 }
 dps_results: {
@@ -3116,22 +3116,22 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-Settings-Orc-p4_assassination-MH Instant OH Instant-mutilate-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 17979.27146
-  tps: 12765.28273
+  dps: 17991.54965
+  tps: 12774.00025
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Orc-p4_assassination-MH Instant OH Instant-mutilate-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 17979.27146
-  tps: 12765.28273
+  dps: 17991.54965
+  tps: 12774.00025
  }
 }
 dps_results: {
  key: "TestAssassination-Settings-Orc-p4_assassination-MH Instant OH Instant-mutilate-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 20178.50383
-  tps: 14326.73772
+  dps: 20180.6752
+  tps: 14328.27939
  }
 }
 dps_results: {
