@@ -59,6 +59,7 @@ export const ArcaneTalents = {
 
 export const DefaultArcaneOptions = MageOptions.create({
 	classOptions: {},
+	focusMagicPercentUptime: 90,
 	focusMagicTarget: UnitReference.create(),
 });
 

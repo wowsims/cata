@@ -59,7 +59,7 @@ var PlayerOptionsArcane = &proto.Player_ArcaneMage{
 	ArcaneMage: &proto.ArcaneMage{
 		Options: &proto.ArcaneMage_Options{
 			ClassOptions:            &proto.MageOptions{},
-			FocusMagicPercentUptime: 100,
+			FocusMagicPercentUptime: 90,
 		},
 	},
 }
