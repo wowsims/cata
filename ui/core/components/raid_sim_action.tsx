@@ -364,7 +364,7 @@ export class RaidSimResultsManager {
 		if (typeof curMetricsTemp === 'number') {
 			const curMetrics = curMetricsTemp as number;
 			const refMetrics = refMetricsTemp as number;
-			formatDeltaTextElem(elem, refMetrics, curMetrics, precision, lowerIsBetter);
+			formatDeltaTextElem(elem, refMetrics, curMetrics, precision, lowerIsBetter, undefined, true);
 		} else {
 			const curMetrics = curMetricsTemp as DistributionMetricsProto;
 			const refMetrics = refMetricsTemp as DistributionMetricsProto;
@@ -378,7 +378,7 @@ export class RaidSimResultsManager {
 				curMetrics.stdev,
 				!!preNormalizedErrors,
 			);
-			formatDeltaTextElem(elem, refMetrics.avg, curMetrics.avg, precision, lowerIsBetter, !isDiff);
+			formatDeltaTextElem(elem, refMetrics.avg, curMetrics.avg, precision, lowerIsBetter, !isDiff, true);
 		}
 	}
 
