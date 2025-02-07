@@ -102,7 +102,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		epWeights: [Presets.P3_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents],
-		rotations: [Presets.ROTATION_PRESET_DEFAULT],
+		rotations: [Presets.ROTATION_PRESET_DEFAULT, Presets.P4_T13_4PC_PRESET_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PRE_RAID, Presets.P1_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
 		itemSwaps: [Presets.P4_ITEM_SWAP],
