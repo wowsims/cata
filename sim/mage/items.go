@@ -1,6 +1,7 @@
 package mage
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -100,7 +101,7 @@ var ItemSetTimeLordsRegalia = core.NewItemSet(core.ItemSet{
 
 			newStolenTimeTrigger := func(procChance float64, spellMask int64) *core.Aura {
 				return setBonusAura.MakeDependentProcTriggerAura(&character.Unit, core.ProcTrigger{
-					Name:           "Stolen Time Trigger",
+					Name:           fmt.Sprintf("Stolen Time Trigger %f", procChance),
 					ActionID:       core.ActionID{ItemID: 105788},
 					Callback:       core.CallbackOnSpellHitDealt,
 					ClassSpellMask: spellMask,
