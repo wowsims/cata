@@ -105,7 +105,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
 			mangle: true,
-			sunderArmor: true,
+			faerieFire: true,
 			earthAndMoon: true,
 			bloodFrenzy: true,
 			shadowAndFlame: true,

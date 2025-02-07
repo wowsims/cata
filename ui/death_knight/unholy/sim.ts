@@ -92,7 +92,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			sunderArmor: true,
+			faerieFire: true,
 			brittleBones: true,
 			ebonPlaguebringer: true,
 			shadowAndFlame: true,

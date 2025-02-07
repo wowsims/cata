@@ -95,7 +95,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.ArcaneTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.ARCANE_P1_PRESET, Presets.ARCANE_P3_PREBIS_PRESET, Presets.ARCANE_P3_PRESET],
+		gear: [Presets.ARCANE_P1_PRESET, Presets.ARCANE_P3_PREBIS_PRESET, Presets.ARCANE_P3_PRESET, Presets.ARCANE_P4_PRESET],
 	},
 
 	autoRotation: (player: Player<Spec.SpecArcaneMage>): APLRotation => {
