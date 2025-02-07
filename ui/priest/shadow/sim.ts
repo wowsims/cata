@@ -7,10 +7,13 @@ import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
-import { Stats, UnitStat } from '../../core/proto_utils/stats';
+import { StatCapType } from '../../core/proto/ui';
+import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as PriestInputs from '../inputs';
 // import * as ShadowPriestInputs from './inputs';
 import * as Presets from './presets';
+
+const hasteBreakpoints = Presets.SHADOW_BREAKPOINTS.find(entry => entry.unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHastePercent))!.presets!;
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	cssClass: 'shadow-priest-sim-ui',
@@ -102,6 +105,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		rotations: [Presets.ROTATION_PRESET_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PRE_RAID, Presets.P1_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
+		itemSwaps: [Presets.P4_ITEM_SWAP],
+		builds: [Presets.P3_PRESET_BUILD, Presets.P4_PRESET_BUILD],
 	},
 
 	autoRotation: (player: Player<Spec.SpecShadowPriest>): APLRotation => {
@@ -142,6 +147,21 @@ export class ShadowPriestSimUI extends IndividualSimUI<Spec.SpecShadowPriest> {
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
 				statSelectionPresets: Presets.SHADOW_BREAKPOINTS,
+				updateSoftCaps: softCaps => {
+					const gear = player.getGear();
+					const hasT134P = gear.getItemSetCount('Regalia of Dying Light', 'Regalia of Dying light') >= 4;
+					if (hasT134P) {
+						softCaps.push(
+							StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent, {
+								breakpoints: [hasteBreakpoints.get('11-tick - DP')!],
+								capType: StatCapType.TypeSoftCap,
+								postCapEPs: [(Presets.P3_EP_PRESET.epWeights.getStat(Stat.StatCritRating) + 0.01) * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
+							}),
+						);
+					}
+
+					return softCaps;
+				},
 			});
 		});
 	}
