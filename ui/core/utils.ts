@@ -194,12 +194,25 @@ export function downloadString(data: string, fileName: string) {
 	downloadAnchorNode.remove();
 }
 
-export function formatDeltaTextElem(elem: HTMLElement, before: number, after: number, precision: number, lowerIsBetter?: boolean, noColor?: boolean) {
+export function formatDeltaTextElem(
+	elem: HTMLElement,
+	before: number,
+	after: number,
+	precision: number,
+	lowerIsBetter?: boolean,
+	noColor?: boolean,
+	showPercentage?: boolean,
+) {
 	const delta = after - before;
+	const deltaPct = Math.abs((delta / (before === 0 ? 1 : before)) * 100).toFixed(precision);
 	let deltaStr = delta.toFixed(precision);
 	if (delta >= 0) {
-		deltaStr = '+' + deltaStr;
+		deltaStr = `+${deltaStr}`;
 	}
+	if (showPercentage) {
+		deltaStr = `${deltaStr} (${deltaPct}%)`;
+	}
+
 	elem.textContent = deltaStr;
 
 	if (noColor || delta == 0) {
