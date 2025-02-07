@@ -155,7 +155,7 @@ export class ShadowPriestSimUI extends IndividualSimUI<Spec.SpecShadowPriest> {
 							StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent, {
 								breakpoints: [hasteBreakpoints.get('11-tick - DP')!],
 								capType: StatCapType.TypeSoftCap,
-								postCapEPs: [(Presets.P3_EP_PRESET.epWeights.getStat(Stat.StatCritRating) + 0.01) * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
+								postCapEPs: [(Presets.P3_EP_PRESET.epWeights.getStat(Stat.StatCritRating) + 0.02) * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
 							}),
 						);
 					}
