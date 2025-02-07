@@ -218,7 +218,7 @@ export const P3_PRESET_BUILD = PresetUtils.makePresetBuild('P3 - Default', {
 });
 
 export const P4_PRESET_BUILD = PresetUtils.makePresetBuild('P4 - WIP', {
-	race: Race.RaceWorgen,
+	race: Race.RaceTroll,
 	gear: P4_PRESET,
 	rotation: P4_T13_4PC_PRESET_DEFAULT,
 });
