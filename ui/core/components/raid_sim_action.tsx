@@ -677,7 +677,7 @@ export class RaidSimResultsManager {
 											</div>
 										) : undefined}
 										<div className="results-reference hide">
-											<span className="results-reference-diff"></span> vs reference
+											<span className="results-reference-diff"></span> vs ref
 										</div>
 									</td>
 								);
@@ -704,7 +704,7 @@ export class RaidSimResultsManager {
 								</span>
 							)}
 							<div className="results-reference hide">
-								<span className="results-reference-diff"></span> vs reference
+								<span className="results-reference-diff"></span> vs ref
 							</div>
 						</div>
 					);

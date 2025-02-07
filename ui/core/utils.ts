@@ -196,11 +196,13 @@ export function downloadString(data: string, fileName: string) {
 
 export function formatDeltaTextElem(elem: HTMLElement, before: number, after: number, precision: number, lowerIsBetter?: boolean, noColor?: boolean) {
 	const delta = after - before;
+	const deltaPct = Math.abs((delta / (before === 0 ? 1 : before)) * 100).toFixed(precision);
 	let deltaStr = delta.toFixed(precision);
 	if (delta >= 0) {
-		deltaStr = '+' + deltaStr;
+		deltaStr = `+${deltaStr}`;
 	}
-	elem.textContent = deltaStr;
+
+	elem.textContent = `${deltaStr} (${deltaPct}%)`;
 
 	if (noColor || delta == 0) {
 		elem.classList.remove('positive');
