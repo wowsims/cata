@@ -191,7 +191,7 @@ func (pet *WarlockPet) registerShadowBiteSpell() {
 		ClassSpellMask: WarlockSpellFelHunterShadowBite,
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.03,
-			Multiplier: 1,
+			Multiplier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

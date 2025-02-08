@@ -53,9 +53,9 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	baseFocusPerSecond *= 1.0 + (0.10 * float64(hunter.Talents.BestialDiscipline))
 
 	WHFocusIncreaseMod := hp.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PowerCost_Flat,
-		ProcMask:   core.ProcMaskMeleeMHSpecial,
-		FloatValue: float64(hp.Talents().WildHunt) * 12.5,
+		Kind:     core.SpellMod_PowerCost_Pct,
+		ProcMask: core.ProcMaskMeleeMHSpecial,
+		IntValue: int64(hp.Talents().WildHunt) * 50,
 	})
 
 	WHDamageMod := hp.AddDynamicMod(core.SpellModConfig{

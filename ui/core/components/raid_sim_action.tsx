@@ -364,7 +364,7 @@ export class RaidSimResultsManager {
 		if (typeof curMetricsTemp === 'number') {
 			const curMetrics = curMetricsTemp as number;
 			const refMetrics = refMetricsTemp as number;
-			formatDeltaTextElem(elem, refMetrics, curMetrics, precision, lowerIsBetter);
+			formatDeltaTextElem(elem, refMetrics, curMetrics, precision, lowerIsBetter, undefined, true);
 		} else {
 			const curMetrics = curMetricsTemp as DistributionMetricsProto;
 			const refMetrics = refMetricsTemp as DistributionMetricsProto;
@@ -378,7 +378,7 @@ export class RaidSimResultsManager {
 				curMetrics.stdev,
 				!!preNormalizedErrors,
 			);
-			formatDeltaTextElem(elem, refMetrics.avg, curMetrics.avg, precision, lowerIsBetter, !isDiff);
+			formatDeltaTextElem(elem, refMetrics.avg, curMetrics.avg, precision, lowerIsBetter, !isDiff, true);
 		}
 	}
 
@@ -677,7 +677,7 @@ export class RaidSimResultsManager {
 											</div>
 										) : undefined}
 										<div className="results-reference hide">
-											<span className="results-reference-diff"></span> vs reference
+											<span className="results-reference-diff"></span> vs ref
 										</div>
 									</td>
 								);
@@ -704,7 +704,7 @@ export class RaidSimResultsManager {
 								</span>
 							)}
 							<div className="results-reference hide">
-								<span className="results-reference-diff"></span> vs reference
+								<span className="results-reference-diff"></span> vs ref
 							</div>
 						</div>
 					);

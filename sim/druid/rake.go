@@ -107,5 +107,5 @@ func (druid *Druid) registerRakeSpell() {
 }
 
 func (druid *Druid) CurrentRakeCost() float64 {
-	return druid.Rake.ApplyCostModifiers(druid.Rake.DefaultCast.Cost)
+	return druid.Rake.Cost.GetCurrentCost()
 }

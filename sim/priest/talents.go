@@ -77,9 +77,9 @@ func (priest *Priest) ApplyTalents() {
 	// Mental Agillity
 	if priest.Talents.MentalAgility > 0 {
 		priest.AddStaticMod(core.SpellModConfig{
-			ClassMask:  PriestSpellInstant,
-			FloatValue: -0.04 * float64(priest.Talents.MentalAgility),
-			Kind:       core.SpellMod_PowerCost_Pct,
+			ClassMask: PriestSpellInstant,
+			IntValue:  -4 * int64(priest.Talents.MentalAgility),
+			Kind:      core.SpellMod_PowerCost_Pct,
 		})
 	}
 
@@ -217,9 +217,9 @@ func (priest *Priest) applyEvangelism() {
 	})
 
 	evangelismManaMod := priest.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PowerCost_Pct,
-		FloatValue: 0.0,
-		ClassMask:  PriestSpellSmite | PriestSpellHolyFire | PriestSpellPenance,
+		Kind:      core.SpellMod_PowerCost_Pct,
+		IntValue:  0,
+		ClassMask: PriestSpellSmite | PriestSpellHolyFire | PriestSpellPenance,
 	})
 
 	priest.HolyEvangelismProcAura = priest.GetOrRegisterAura(core.Aura{
@@ -227,11 +227,11 @@ func (priest *Priest) applyEvangelism() {
 		ActionID:  core.ActionID{SpellID: 81661},
 		Duration:  time.Second * 20,
 		MaxStacks: 5,
-		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, _ int32, newStacks int32) {
 			evangelismDmgMod.UpdateFloatValue(0.04 * float64(newStacks))
 			evangelismDmgMod.Activate()
 
-			evangelismManaMod.UpdateFloatValue(-0.06 * float64(newStacks))
+			evangelismManaMod.UpdateIntValue(-6 * int64(newStacks))
 			evangelismManaMod.Activate()
 		},
 
@@ -946,24 +946,24 @@ func (priest *Priest) applyShadowyApparition() {
 // 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 // 			if priest.Smite != nil {
 // 				priest.Smite.CastTimeMultiplier -= 1
-// 				priest.Smite.CostMultiplier -= 1
+// 				priest.Smite.Cost.Multiplier -= 100
 // 				priest.Smite.BonusCritRating -= 100 * core.CritRatingPerCritChance
 // 			}
 // 			if priest.FlashHeal != nil {
 // 				priest.FlashHeal.CastTimeMultiplier -= 1
-// 				priest.FlashHeal.CostMultiplier -= 1
+// 				priest.FlashHeal.Cost.Multiplier -= 100
 // 				priest.FlashHeal.BonusCritRating -= 100 * core.CritRatingPerCritChance
 // 			}
 // 		},
 // 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 // 			if priest.Smite != nil {
 // 				priest.Smite.CastTimeMultiplier += 1
-// 				priest.Smite.CostMultiplier += 1
+// 				priest.Smite.Cost.Multiplier += 100
 // 				priest.Smite.BonusCritRating += 100 * core.CritRatingPerCritChance
 // 			}
 // 			if priest.FlashHeal != nil {
 // 				priest.FlashHeal.CastTimeMultiplier += 1
-// 				priest.FlashHeal.CostMultiplier += 1
+// 				priest.FlashHeal.Cost.Multiplier += 100
 // 				priest.FlashHeal.BonusCritRating += 100 * core.CritRatingPerCritChance
 // 			}
 // 		},
@@ -1089,11 +1089,11 @@ func (priest *Priest) applyShadowyApparition() {
 // 		Duration: core.NeverExpires,
 // 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 // 			aura.Unit.AddStatDynamic(sim, stats.SpellCrit, 25*core.CritRatingPerCritChance)
-// 			aura.Unit.PseudoStats.CostMultiplier -= 1
+// 			aura.Unit.PseudoStats.CostMultiplier -= 100
 // 		},
 // 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 // 			aura.Unit.AddStatDynamic(sim, stats.SpellCrit, -25*core.CritRatingPerCritChance)
-// 			aura.Unit.PseudoStats.CostMultiplier += 1
+// 			aura.Unit.PseudoStats.CostMultiplier += 100
 // 		},
 // 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 // 			// Remove the buff and put skill on CD

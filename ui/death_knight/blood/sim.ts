@@ -100,7 +100,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
 			bloodFrenzy: true,
-			sunderArmor: true,
+			faerieFire: true,
 			ebonPlaguebringer: true,
 			criticalMass: true,
 			vindication: true,

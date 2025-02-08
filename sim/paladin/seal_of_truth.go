@@ -161,7 +161,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.14,
-			Multiplier: 1,
+			Multiplier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

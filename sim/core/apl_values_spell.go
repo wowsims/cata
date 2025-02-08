@@ -244,7 +244,10 @@ func (value *APLValueSpellCurrentCost) Type() proto.APLValueType {
 }
 func (value *APLValueSpellCurrentCost) GetFloat(_ *Simulation) float64 {
 	spell := value.spell
-	return spell.ApplyCostModifiers(spell.DefaultCast.Cost)
+	if spell.Cost == nil {
+		return 0
+	}
+	return spell.Cost.GetCurrentCost()
 }
 func (value *APLValueSpellCurrentCost) String() string {
 	return fmt.Sprintf("CurrentCost(%s)", value.spell.ActionID)

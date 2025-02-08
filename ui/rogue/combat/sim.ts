@@ -114,7 +114,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
 			mangle: true,
-			sunderArmor: true,
+			faerieFire: true,
 			shadowAndFlame: true,
 			earthAndMoon: true,
 			bloodFrenzy: true,

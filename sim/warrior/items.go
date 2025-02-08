@@ -228,9 +228,9 @@ var ItemSetColossalDragonplateBattlegear = core.NewItemSet(core.ItemSet{
 			character := agent.(WarriorAgent).GetWarrior()
 
 			mod := character.AddDynamicMod(core.SpellModConfig{
-				ClassMask:  SpellMaskHeroicStrike,
-				Kind:       core.SpellMod_PowerCost_Flat,
-				FloatValue: -10,
+				ClassMask: SpellMaskHeroicStrike,
+				Kind:      core.SpellMod_PowerCost_Flat,
+				IntValue:  -10,
 			})
 
 			actionID := core.ActionID{SpellID: 105860}
@@ -263,7 +263,7 @@ var ItemSetColossalDragonplateBattlegear = core.NewItemSet(core.ItemSet{
 			procCS := warrior.RegisterSpell(core.SpellConfig{
 				ActionID:    actionID,
 				SpellSchool: core.SpellSchoolPhysical,
-				Flags:       core.SpellFlagNoOnDamageDealt | core.SpellFlagNoOnCastComplete,
+				Flags:       core.SpellFlagNoOnDamageDealt | core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 				Cast: core.CastConfig{
 					DefaultCast: core.Cast{
 						GCD: 0,

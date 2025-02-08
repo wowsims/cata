@@ -4,13 +4,30 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/common/shared"
+	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func init() {
 	// HASTE
-	shared.NewHasteActive(67152, 617, time.Second*20, time.Minute*2)  // Lady La-La's Singing Shell
-	shared.NewHasteActive(60233, 1935, time.Second*10, time.Minute*1) // Shard of Woe
+	shared.NewHasteActive(67152, 617, time.Second*20, time.Minute*2) // Lady La-La's Singing Shell
+
+	// Shard of Woe
+	core.NewSimpleStatOffensiveTrinketEffectWithOtherEffects(60233, stats.Stats{stats.HasteRating: 1935}, time.Second*10, time.Minute*1, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		aura := core.MakePermanent(character.RegisterAura(core.Aura{
+			Label:    "Spell Cost Reduction",
+			ActionID: core.ActionID{ItemID: 91171},
+		}).AttachSpellMod(core.SpellModConfig{
+			Kind:         core.SpellMod_PowerCost_Flat,
+			ResourceType: proto.ResourceType_ResourceTypeMana,
+			IntValue:     -205,
+		}))
+
+		character.ItemSwap.RegisterProc(60233, aura)
+	})
 
 	// CRIT
 	shared.NewCritActive(66879, 512, time.Second*20, time.Minute*2)  // Bottled Lightning

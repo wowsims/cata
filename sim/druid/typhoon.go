@@ -24,7 +24,7 @@ func (druid *Druid) registerTyphoonSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.16,
-			Multiplier: 1 - (0.08 * core.TernaryFloat64(hasTyphoonGlyph, 1, 0)),
+			Multiplier: 100 - (8 * core.TernaryInt32(hasTyphoonGlyph, 1, 0)),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

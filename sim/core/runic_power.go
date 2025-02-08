@@ -604,7 +604,7 @@ func (rp *runicPowerBar) spendRuneCost(sim *Simulation, spell *Spell, cost RuneC
 		slots = append(slots, rp.spendRune(sim, 4, spell.UnholyRuneMetrics()))
 	}
 	if d > 0 {
-		defaultCost := RuneCost(spell.DefaultCast.Cost)
+		defaultCost := RuneCost(spell.Cost.GetCurrentCost())
 		for i, mu := int8(0), defaultCost.Unholy()-u; i < mu; i++ {
 			slots = append(slots, rp.spendDeathRune(sim, []int8{4, 5, 2, 3, 0, 1}, spell.DeathRuneMetrics()))
 		}
@@ -928,25 +928,26 @@ type RuneCostImpl struct {
 	deathRuneMetrics  *ResourceMetrics
 }
 
-func newRuneCost(spell *Spell, options RuneCostOptions) *RuneCostImpl {
-	baseCost := float64(NewRuneCost(int16(options.RunicPowerCost), options.BloodRuneCost, options.FrostRuneCost, options.UnholyRuneCost, 0))
-	spell.DefaultCast.Cost = baseCost
-	spell.CurCast.Cost = baseCost
+func newRuneCost(spell *Spell, options RuneCostOptions) *SpellCost {
+	return &SpellCost{
+		spell:      spell,
+		BaseCost:   float64(NewRuneCost(int16(options.RunicPowerCost), options.BloodRuneCost, options.FrostRuneCost, options.UnholyRuneCost, 0)),
+		Multiplier: 100,
+		SpellCostFunctions: &RuneCostImpl{
+			BloodRuneCost:  options.BloodRuneCost,
+			FrostRuneCost:  options.FrostRuneCost,
+			UnholyRuneCost: options.UnholyRuneCost,
+			RunicPowerCost: options.RunicPowerCost,
+			RunicPowerGain: options.RunicPowerGain,
+			Refundable:     options.Refundable,
+			RefundCost:     options.RefundCost,
 
-	return &RuneCostImpl{
-		BloodRuneCost:  options.BloodRuneCost,
-		FrostRuneCost:  options.FrostRuneCost,
-		UnholyRuneCost: options.UnholyRuneCost,
-		RunicPowerCost: options.RunicPowerCost,
-		RunicPowerGain: options.RunicPowerGain,
-		Refundable:     options.Refundable,
-		RefundCost:     options.RefundCost,
-
-		runicPowerMetrics: Ternary(options.RunicPowerCost > 0 || options.RunicPowerGain > 0, spell.Unit.NewRunicPowerMetrics(spell.ActionID), nil),
-		bloodRuneMetrics:  Ternary(options.BloodRuneCost > 0, spell.Unit.NewBloodRuneMetrics(spell.ActionID), nil),
-		frostRuneMetrics:  Ternary(options.FrostRuneCost > 0, spell.Unit.NewFrostRuneMetrics(spell.ActionID), nil),
-		unholyRuneMetrics: Ternary(options.UnholyRuneCost > 0, spell.Unit.NewUnholyRuneMetrics(spell.ActionID), nil),
-		deathRuneMetrics:  spell.Unit.NewDeathRuneMetrics(spell.ActionID),
+			runicPowerMetrics: Ternary(options.RunicPowerCost > 0 || options.RunicPowerGain > 0, spell.Unit.NewRunicPowerMetrics(spell.ActionID), nil),
+			bloodRuneMetrics:  Ternary(options.BloodRuneCost > 0, spell.Unit.NewBloodRuneMetrics(spell.ActionID), nil),
+			frostRuneMetrics:  Ternary(options.FrostRuneCost > 0, spell.Unit.NewFrostRuneMetrics(spell.ActionID), nil),
+			unholyRuneMetrics: Ternary(options.UnholyRuneCost > 0, spell.Unit.NewUnholyRuneMetrics(spell.ActionID), nil),
+			deathRuneMetrics:  spell.Unit.NewDeathRuneMetrics(spell.ActionID),
+		},
 	}
 }
 
@@ -962,7 +963,7 @@ func (rc *RuneCostImpl) GetConfig() RuneCostOptions {
 }
 
 func (rc *RuneCostImpl) MeetsRequirement(_ *Simulation, spell *Spell) bool {
-	spell.CurCast.Cost *= spell.CostMultiplier // TODO this looks fishy - multiplying and rune costs don't go well together
+	spell.CurCast.Cost = spell.Cost.GetCurrentCost() // TODO this looks fishy - multiplying and rune costs don't go well together
 
 	cost := RuneCost(spell.CurCast.Cost)
 	if cost == 0 {
@@ -1017,7 +1018,7 @@ func (rc *RuneCostImpl) spendRefundableCost(sim *Simulation, spell *Spell, resul
 }
 
 func (spell *Spell) SpendRefundableCost(sim *Simulation, result *SpellResult) {
-	spell.Cost.(*RuneCostImpl).spendRefundableCost(sim, spell, result)
+	spell.Cost.SpellCostFunctions.(*RuneCostImpl).spendRefundableCost(sim, spell, result)
 }
 
 func (rc *RuneCostImpl) spendRefundableCostAndConvertBloodRune(sim *Simulation, spell *Spell, result *SpellResult, convertChance float64) {
@@ -1062,7 +1063,7 @@ func (rc *RuneCostImpl) spendRefundableCostAndConvertBloodRune(sim *Simulation, 
 }
 
 func (spell *Spell) SpendRefundableCostAndConvertBloodRune(sim *Simulation, result *SpellResult, convertChance float64) {
-	spell.Cost.(*RuneCostImpl).spendRefundableCostAndConvertBloodRune(sim, spell, result, convertChance)
+	spell.Cost.SpellCostFunctions.(*RuneCostImpl).spendRefundableCostAndConvertBloodRune(sim, spell, result, convertChance)
 }
 
 func (rc *RuneCostImpl) spendCostAndConvertFrostOrUnholyRune(sim *Simulation, spell *Spell, result *SpellResult, convertChance float64, refundable bool) {
@@ -1100,11 +1101,11 @@ func (rc *RuneCostImpl) spendCostAndConvertFrostOrUnholyRune(sim *Simulation, sp
 }
 
 func (spell *Spell) SpendRefundableCostAndConvertFrostOrUnholyRune(sim *Simulation, result *SpellResult, convertChance float64) {
-	spell.Cost.(*RuneCostImpl).spendCostAndConvertFrostOrUnholyRune(sim, spell, result, convertChance, true)
+	spell.Cost.SpellCostFunctions.(*RuneCostImpl).spendCostAndConvertFrostOrUnholyRune(sim, spell, result, convertChance, true)
 }
 
 func (spell *Spell) SpendCostAndConvertFrostOrUnholyRune(sim *Simulation, result *SpellResult, convertChance float64) {
-	spell.Cost.(*RuneCostImpl).spendCostAndConvertFrostOrUnholyRune(sim, spell, result, convertChance, false)
+	spell.Cost.SpellCostFunctions.(*RuneCostImpl).spendCostAndConvertFrostOrUnholyRune(sim, spell, result, convertChance, false)
 }
 
 func (rc *RuneCostImpl) spendRefundableCostAndConvertBloodOrFrostRune(sim *Simulation, spell *Spell, result *SpellResult, convertChance float64) {
@@ -1153,7 +1154,7 @@ func (rc *RuneCostImpl) spendRefundableCostAndConvertBloodOrFrostRune(sim *Simul
 }
 
 func (spell *Spell) SpendRefundableCostAndConvertBloodOrFrostRune(sim *Simulation, result *SpellResult, convertChance float64) {
-	spell.Cost.(*RuneCostImpl).spendRefundableCostAndConvertBloodOrFrostRune(sim, spell, result, convertChance)
+	spell.Cost.SpellCostFunctions.(*RuneCostImpl).spendRefundableCostAndConvertBloodOrFrostRune(sim, spell, result, convertChance)
 }
 
 func (rc *RuneCostImpl) IssueRefund(_ *Simulation, _ *Spell) {
@@ -1162,25 +1163,25 @@ func (rc *RuneCostImpl) IssueRefund(_ *Simulation, _ *Spell) {
 }
 
 func (spell *Spell) RuneCostImpl() *RuneCostImpl {
-	return spell.Cost.(*RuneCostImpl)
+	return spell.Cost.SpellCostFunctions.(*RuneCostImpl)
 }
 
 func (spell *Spell) RunicPowerMetrics() *ResourceMetrics {
-	return spell.Cost.(*RuneCostImpl).runicPowerMetrics
+	return spell.Cost.SpellCostFunctions.(*RuneCostImpl).runicPowerMetrics
 }
 
 func (spell *Spell) BloodRuneMetrics() *ResourceMetrics {
-	return spell.Cost.(*RuneCostImpl).bloodRuneMetrics
+	return spell.Cost.SpellCostFunctions.(*RuneCostImpl).bloodRuneMetrics
 }
 
 func (spell *Spell) FrostRuneMetrics() *ResourceMetrics {
-	return spell.Cost.(*RuneCostImpl).frostRuneMetrics
+	return spell.Cost.SpellCostFunctions.(*RuneCostImpl).frostRuneMetrics
 }
 
 func (spell *Spell) UnholyRuneMetrics() *ResourceMetrics {
-	return spell.Cost.(*RuneCostImpl).unholyRuneMetrics
+	return spell.Cost.SpellCostFunctions.(*RuneCostImpl).unholyRuneMetrics
 }
 
 func (spell *Spell) DeathRuneMetrics() *ResourceMetrics {
-	return spell.Cost.(*RuneCostImpl).deathRuneMetrics
+	return spell.Cost.SpellCostFunctions.(*RuneCostImpl).deathRuneMetrics
 }

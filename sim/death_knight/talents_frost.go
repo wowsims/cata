@@ -125,9 +125,9 @@ func (dk *DeathKnight) applyRime() {
 	}
 
 	rimeMod := dk.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PowerCost_Pct,
-		FloatValue: -1,
-		ClassMask:  DeathKnightSpellIcyTouch | DeathKnightSpellHowlingBlast,
+		Kind:      core.SpellMod_PowerCost_Pct,
+		IntValue:  -100,
+		ClassMask: DeathKnightSpellIcyTouch | DeathKnightSpellHowlingBlast,
 	})
 
 	freezingFogAura := dk.GetOrRegisterAura(core.Aura{

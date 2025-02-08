@@ -33,7 +33,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isElementalOverload bool) core.Spe
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   core.TernaryFloat64(isElementalOverload, 0, 0.1),
-			Multiplier: 1 - 0.05*float64(shaman.Talents.Convection),
+			Multiplier: 100 - (5 * shaman.Talents.Convection),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

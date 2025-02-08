@@ -18,7 +18,7 @@ func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellS
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   baseCost,
-			Multiplier: 1 - 0.05*float64(shaman.Talents.Convection) - shaman.GetMentalQuicknessBonus(),
+			Multiplier: 100 - (5 * shaman.Talents.Convection) - shaman.GetMentalQuicknessBonus(),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

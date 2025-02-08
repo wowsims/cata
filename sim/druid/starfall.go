@@ -41,7 +41,7 @@ func (druid *Druid) registerStarfallSpell() {
 		Flags:       core.SpellFlagAPL,
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.35,
-			Multiplier: 1,
+			Multiplier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

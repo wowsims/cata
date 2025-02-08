@@ -2,7 +2,6 @@ package core
 
 import (
 	"fmt"
-	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
@@ -293,10 +292,4 @@ func (spell *Spell) makeCastFuncAutosOrProcs() CastSuccessFunc {
 
 		return true
 	}
-}
-
-func (spell *Spell) ApplyCostModifiers(cost float64) float64 {
-	cost -= spell.Unit.PseudoStats.CostReduction
-	cost = max(0, math.Floor(cost*spell.Unit.PseudoStats.CostMultiplier))
-	return max(0, math.Floor(cost*spell.CostMultiplier))
 }

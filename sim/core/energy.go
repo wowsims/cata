@@ -238,22 +238,26 @@ type EnergyCost struct {
 	ComboPointMetrics *ResourceMetrics
 }
 
-func newEnergyCost(spell *Spell, options EnergyCostOptions) *EnergyCost {
-	spell.DefaultCast.Cost = options.Cost
+func newEnergyCost(spell *Spell, options EnergyCostOptions) *SpellCost {
 	if options.Refund > 0 && options.RefundMetrics == nil {
 		options.RefundMetrics = spell.Unit.EnergyRefundMetrics
 	}
 
-	return &EnergyCost{
-		Refund:            options.Refund,
-		RefundMetrics:     options.RefundMetrics,
-		ResourceMetrics:   spell.Unit.NewEnergyMetrics(spell.ActionID),
-		ComboPointMetrics: spell.Unit.NewComboPointMetrics(spell.ActionID),
+	return &SpellCost{
+		spell:      spell,
+		BaseCost:   options.Cost,
+		Multiplier: 100,
+		SpellCostFunctions: &EnergyCost{
+			Refund:            options.Refund,
+			RefundMetrics:     options.RefundMetrics,
+			ResourceMetrics:   spell.Unit.NewEnergyMetrics(spell.ActionID),
+			ComboPointMetrics: spell.Unit.NewComboPointMetrics(spell.ActionID),
+		},
 	}
 }
 
 func (ec *EnergyCost) MeetsRequirement(_ *Simulation, spell *Spell) bool {
-	spell.CurCast.Cost = spell.ApplyCostModifiers(spell.CurCast.Cost)
+	spell.CurCast.Cost = spell.Cost.GetCurrentCost()
 	return spell.Unit.CurrentEnergy() >= spell.CurCast.Cost
 }
 func (ec *EnergyCost) CostFailureReason(_ *Simulation, spell *Spell) string {
@@ -263,15 +267,15 @@ func (ec *EnergyCost) SpendCost(sim *Simulation, spell *Spell) {
 	spell.Unit.SpendEnergy(sim, spell.CurCast.Cost, ec.ResourceMetrics)
 }
 func (ec *EnergyCost) IssueRefund(sim *Simulation, spell *Spell) {
-	if ec.Refund > 0 {
+	if ec.Refund > 0 && spell.CurCast.Cost > 0 {
 		spell.Unit.AddEnergy(sim, ec.Refund*spell.CurCast.Cost, ec.RefundMetrics)
 	}
 }
 
 func (spell *Spell) EnergyMetrics() *ResourceMetrics {
-	return spell.Cost.(*EnergyCost).ComboPointMetrics
+	return spell.Cost.SpellCostFunctions.(*EnergyCost).ResourceMetrics
 }
 
 func (spell *Spell) ComboPointMetrics() *ResourceMetrics {
-	return spell.Cost.(*EnergyCost).ComboPointMetrics
+	return spell.Cost.SpellCostFunctions.(*EnergyCost).ComboPointMetrics
 }

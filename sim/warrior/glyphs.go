@@ -44,9 +44,9 @@ func (warrior *Warrior) applyMajorGlyphs() {
 
 	if warrior.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfResonatingPower) {
 		warrior.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskThunderClap,
-			Kind:       core.SpellMod_PowerCost_Flat,
-			FloatValue: -5,
+			ClassMask: SpellMaskThunderClap,
+			Kind:      core.SpellMod_PowerCost_Flat,
+			IntValue:  -5,
 		})
 	}
 
@@ -64,9 +64,9 @@ func (warrior *Warrior) applyMinorGlyphs() {
 
 	if warrior.HasMinorGlyph(proto.WarriorMinorGlyph_GlyphOfFuriousSundering) {
 		warrior.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskSunderArmor,
-			Kind:       core.SpellMod_PowerCost_Pct,
-			FloatValue: 0.5,
+			ClassMask: SpellMaskSunderArmor,
+			Kind:      core.SpellMod_PowerCost_Pct,
+			IntValue:  -50,
 		})
 	}
 }

@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core/stats"
@@ -96,8 +97,8 @@ type Spell struct {
 	ResourceMetrics *ResourceMetrics
 	healthMetrics   []*ResourceMetrics
 
-	Cost               SpellCost // Cost for the spell.
-	DefaultCast        Cast      // Default cast parameters with all static effects applied.
+	Cost               *SpellCost // Cost for the spell.
+	DefaultCast        Cast       // Default cast parameters with all static effects applied.
 	CD                 Cooldown
 	SharedCD           Cooldown
 	ExtraCastCondition CanCastCondition
@@ -130,7 +131,6 @@ type Spell struct {
 	BonusSpellPower          float64
 	BonusExpertiseRating     float64
 	CastTimeMultiplier       float64
-	CostMultiplier           float64
 	CdMultiplier             float64
 	DamageMultiplier         float64
 	DamageMultiplierAdditive float64
@@ -227,7 +227,6 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		BonusSpellPower:          config.BonusSpellPower,
 		BonusExpertiseRating:     config.BonusExpertiseRating,
 		CastTimeMultiplier:       1,
-		CostMultiplier:           1,
 		CdMultiplier:             1,
 		DamageMultiplier:         config.DamageMultiplier,
 		DamageMultiplierAdditive: config.DamageMultiplierAdditive,
@@ -263,7 +262,6 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		spell.SchoolIndex = stats.SchoolIndexShadow
 	}
 
-	// newXXXCost() all update spell.DefaultCast.Cost
 	if config.ManaCost.BaseCost != 0 || config.ManaCost.FlatCost != 0 {
 		spell.Cost = newManaCost(spell, config.ManaCost)
 	} else if config.EnergyCost.Cost != 0 {
@@ -279,6 +277,10 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 	spell.createDots(config.Dot, false)
 	spell.createDots(config.Hot, true)
 	spell.createShields(config.Shield)
+
+	if spell.Cost != nil {
+		spell.DefaultCast.Cost = spell.Cost.BaseCost
+	}
 
 	var emptyCast Cast
 
@@ -439,6 +441,11 @@ func (spell *Spell) finalize() {
 		spell.splitSpellMetrics[i] = make([]SpellMetrics, len(spell.Unit.Env.AllUnits))
 	}
 	spell.SpellMetrics = spell.splitSpellMetrics[0]
+
+	// Set the "static" "default" cost here
+	if spell.Cost != nil {
+		spell.DefaultCast.Cost = spell.Cost.GetCurrentCost()
+	}
 }
 
 func (spell *Spell) reset(_ *Simulation) {
@@ -550,8 +557,6 @@ func (spell *Spell) CanCast(sim *Simulation, target *Unit) bool {
 	}
 
 	if spell.Cost != nil {
-		// temp hack
-		spell.CurCast.Cost = spell.DefaultCast.Cost
 		if !spell.Cost.MeetsRequirement(sim, spell) {
 			//if sim.Log != nil {
 			//	sim.Log("Cant cast because of resource cost")
@@ -631,6 +636,10 @@ func (spell *Spell) ExpectedTickDamageFromCurrentSnapshot(sim *Simulation, targe
 	return result.Damage
 }
 
+func (spell *Spell) EffectiveCritDamageMultiplier() float64 {
+	return (spell.CritMultiplier-1)*(spell.CritMultiplierAddative+1) + 1
+}
+
 // Time until either the cast is finished or GCD is ready again, whichever is longer
 func (spell *Spell) EffectiveCastTime() time.Duration {
 	// TODO: this is wrong for spells like shadowfury, that have a GCD of less than 1s
@@ -658,7 +667,7 @@ func (spell *Spell) Matches(mask int64) bool {
 
 // Handles computing the cost of spells and checking whether the Unit
 // meets them.
-type SpellCost interface {
+type SpellCostFunctions interface {
 	// Whether the Unit associated with the spell meets the resource cost
 	// requirements to cast the spell.
 	MeetsRequirement(*Simulation, *Spell) bool
@@ -673,10 +682,27 @@ type SpellCost interface {
 	IssueRefund(*Simulation, *Spell)
 }
 
-func (spell *Spell) IssueRefund(sim *Simulation) {
-	spell.Cost.IssueRefund(sim, spell)
+type SpellCost struct {
+	BaseCost     float64 // The base power cost before all modifiers.
+	FlatModifier int32   // Flat value added to base cost before pct mods
+	Multiplier   int32   // Multiplier for cost, stored as an int, e.g. 0.5 is stored as 50
+	spell        *Spell
+	SpellCostFunctions
 }
 
-func (spell *Spell) EffectiveCritDamageMultiplier() float64 {
-	return (spell.CritMultiplier-1)*(spell.CritMultiplierAddative+1) + 1
+func (sc *SpellCost) ApplyCostModifiers(cost float64) float64 {
+	spell := sc.spell
+	cost = max(0, cost+float64(sc.FlatModifier))
+	cost = max(0, math.Floor(cost*float64(spell.Unit.PseudoStats.CostMultiplier)/100))
+	cost = max(0, math.Floor(cost*float64(sc.Multiplier)/100))
+	return cost
+}
+
+// Get power cost after all modifiers.
+func (sc *SpellCost) GetCurrentCost() float64 {
+	return sc.ApplyCostModifiers(sc.BaseCost)
+}
+
+func (spell *Spell) IssueRefund(sim *Simulation) {
+	spell.Cost.IssueRefund(sim, spell)
 }

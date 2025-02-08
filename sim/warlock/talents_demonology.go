@@ -100,9 +100,9 @@ func (warlock *Warlock) registerMasterSummoner() {
 	})
 
 	warlock.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PowerCost_Pct,
-		ClassMask:  WarlockSummonSpells,
-		FloatValue: -0.5 * float64(warlock.Talents.MasterSummoner),
+		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask: WarlockSummonSpells,
+		IntValue:  -50 * int64(warlock.Talents.MasterSummoner),
 	})
 }
 

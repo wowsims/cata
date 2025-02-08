@@ -63,7 +63,7 @@ func (druid *Druid) registerSunfireImpactSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.09,
-			Multiplier: 1,
+			Multiplier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
