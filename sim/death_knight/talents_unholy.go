@@ -274,9 +274,9 @@ func (dk *DeathKnight) applySuddenDoom() {
 	}
 
 	mod := dk.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PowerCost_Pct,
-		ClassMask:  DeathKnightSpellDeathCoil | DeathKnightSpellDeathCoilHeal,
-		FloatValue: -1,
+		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask: DeathKnightSpellDeathCoil | DeathKnightSpellDeathCoilHeal,
+		IntValue:  -100,
 	})
 
 	suddenDoomProcAura := dk.GetOrRegisterAura(core.Aura{

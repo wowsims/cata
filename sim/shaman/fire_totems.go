@@ -20,7 +20,7 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 		ClassSpellMask: SpellMaskSearingTotem,
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.05,
-			Multiplier: 1 - 0.15*float64(shaman.Talents.TotemicFocus) - shaman.GetMentalQuicknessBonus(),
+			Multiplier: 100 - (15 * shaman.Talents.TotemicFocus) - shaman.GetMentalQuicknessBonus(),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -80,7 +80,7 @@ func (shaman *Shaman) registerMagmaTotemSpell() {
 		ClassSpellMask: SpellMaskMagmaTotem,
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.18,
-			Multiplier: 1 - 0.15*float64(shaman.Talents.TotemicFocus) - shaman.GetMentalQuicknessBonus(),
+			Multiplier: 100 - (15 * shaman.Talents.TotemicFocus) - shaman.GetMentalQuicknessBonus(),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

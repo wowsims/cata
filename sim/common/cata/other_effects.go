@@ -109,21 +109,23 @@ func init() {
 		character := agent.GetCharacter()
 		storedMana := 0.0
 
-		core.MakePermanent(character.RegisterAura(core.Aura{
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:     "Tyrande's Favorite Doll (Mana)",
 			ActionID: core.ActionID{ItemID: 64645},
-			Label:    "Tyrande's Favorite Doll (Mana)",
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				storedMana = 0.0
-			},
-			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			Callback: core.CallbackOnCastComplete,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				// Only Mana is converted
-				if !character.HasManaBar() {
+				if !character.HasManaBar() || spell.DefaultCast.Cost == 0 {
 					return
 				}
-
 				storedMana = math.Min(4200, storedMana+spell.DefaultCast.Cost*0.2)
 			},
-		}))
+		})
+		triggerAura.OnReset = func(aura *core.Aura, sim *core.Simulation) {
+			storedMana = 0
+		}
+
+		character.ItemSwap.RegisterProc(64645, triggerAura)
 
 		sharedTimer := character.GetOffensiveTrinketCD()
 		manaMetric := character.NewManaMetrics(core.ActionID{SpellID: 92601})
@@ -146,8 +148,8 @@ func init() {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					spell.CalcAndDealDamage(sim, aoeTarget, storedMana, spell.OutcomeMagicHitAndCrit)
 				}
-
 				character.AddMana(sim, storedMana, manaMetric)
+				storedMana = 0
 			},
 		})
 
@@ -729,9 +731,9 @@ func init() {
 			}
 
 			manaMod := character.AddDynamicMod(core.SpellModConfig{
-				School:     core.SpellSchoolHoly | core.SpellSchoolNature,
-				FloatValue: 0,
-				Kind:       core.SpellMod_PowerCost_Flat,
+				School:   core.SpellSchoolHoly | core.SpellSchoolNature,
+				IntValue: 0,
+				Kind:     core.SpellMod_PowerCost_Flat,
 			})
 
 			icd := core.Cooldown{
@@ -739,7 +741,7 @@ func init() {
 				Duration: time.Millisecond * 900,
 			}
 
-			manaReturn := core.TernaryFloat64(heroic, -115, -110)
+			manaReturn := core.TernaryInt64(heroic, -115, -110)
 
 			victoriousAura := character.GetOrRegisterAura(core.Aura{
 				Label:     "Victorious" + labelSuffix,
@@ -766,11 +768,11 @@ func init() {
 					manaMod.Activate()
 				},
 				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-					manaMod.UpdateFloatValue(manaReturn * float64(newStacks))
+					manaMod.UpdateIntValue(manaReturn * int64(newStacks))
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					manaMod.Deactivate()
-					manaMod.UpdateFloatValue(0)
+					manaMod.UpdateIntValue(0)
 				},
 			})
 

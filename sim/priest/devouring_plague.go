@@ -17,7 +17,7 @@ func (priest *Priest) registerDevouringPlagueSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.25,
-			Multiplier: 1,
+			Multiplier: 100,
 		},
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,

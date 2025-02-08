@@ -299,31 +299,25 @@ func (mb *manaBar) EndOOMEvent(sim *Simulation) {
 type ManaCostOptions struct {
 	BaseCost   float64
 	FlatCost   float64 // Alternative to BaseCost for giving a flat value.
-	Multiplier float64 // It's OK to leave this at 0, will default to 1.
+	Multiplier int32   // Will default to 100. Multiplier stored as an int, e.g. 0.6 is 60
 }
 type ManaCost struct {
 	ResourceMetrics *ResourceMetrics
 }
 
-func newManaCost(spell *Spell, options ManaCostOptions) *ManaCost {
-	baseCost := TernaryFloat64(options.FlatCost > 0, options.FlatCost, math.Floor(options.BaseCost*spell.Unit.BaseMana))
-	if player := spell.Unit.Env.Raid.GetPlayerFromUnit(spell.Unit); player != nil {
-		if player.GetCharacter().HasTrinketEquipped(45703) { // Spark of Hope
-			baseCost = max(0, baseCost-44)
-		} else if player.GetCharacter().HasTrinketEquipped(60233) { // Shard of Woe
-			baseCost = max(0, baseCost-205)
-		}
-	}
-
-	spell.DefaultCast.Cost = math.Floor(baseCost * TernaryFloat64(options.Multiplier == 0, 1, options.Multiplier))
-
-	return &ManaCost{
-		ResourceMetrics: spell.Unit.NewManaMetrics(spell.ActionID),
+func newManaCost(spell *Spell, options ManaCostOptions) *SpellCost {
+	return &SpellCost{
+		spell:      spell,
+		BaseCost:   TernaryFloat64(options.FlatCost > 0, options.FlatCost, options.BaseCost*spell.Unit.BaseMana),
+		Multiplier: TernaryInt32(options.Multiplier == 0, 100, options.Multiplier),
+		SpellCostFunctions: &ManaCost{
+			ResourceMetrics: spell.Unit.NewManaMetrics(spell.ActionID),
+		},
 	}
 }
 
 func (mc *ManaCost) MeetsRequirement(sim *Simulation, spell *Spell) bool {
-	spell.CurCast.Cost = spell.ApplyCostModifiers(spell.CurCast.Cost)
+	spell.CurCast.Cost = spell.Cost.GetCurrentCost()
 	meetsRequirement := spell.Unit.CurrentMana() >= spell.CurCast.Cost
 
 	if spell.CurCast.Cost > 0 {

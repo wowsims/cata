@@ -132,9 +132,9 @@ func (hunter *Hunter) registerBestialWrathCD() {
 		hunter.PseudoStats.DamageDealtMultiplier *= 1.1
 	}
 	bwCostMod := hunter.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PowerCost_Pct,
-		ClassMask:  HunterSpellsAll,
-		FloatValue: -0.5,
+		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask: HunterSpellsAll,
+		IntValue:  -50,
 	})
 	actionID := core.ActionID{SpellID: 19574}
 
@@ -346,9 +346,9 @@ func (hunter *Hunter) applyKillingStreak() {
 		FloatValue: float64(hunter.Talents.KillingStreak) * 0.1,
 	})
 	costMod := hunter.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PowerCost_Flat,
-		ClassMask:  HunterSpellKillCommand,
-		FloatValue: -(float64(hunter.Talents.KillingStreak) * 5),
+		Kind:      core.SpellMod_PowerCost_Flat,
+		ClassMask: HunterSpellKillCommand,
+		IntValue:  -(int64(hunter.Talents.KillingStreak) * 5),
 	})
 	hunter.KillingStreakAura = hunter.Pet.RegisterAura(core.Aura{
 		Label:    "Killing Streak",

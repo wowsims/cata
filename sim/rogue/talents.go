@@ -26,23 +26,23 @@ func (rogue *Rogue) ApplyTalents() {
 
 	if rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfTricksOfTheTrade) {
 		rogue.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_PowerCost_Flat,
-			FloatValue: -15,
-			ClassMask:  RogueSpellTricksOfTheTrade,
+			Kind:      core.SpellMod_PowerCost_Flat,
+			IntValue:  -15,
+			ClassMask: RogueSpellTricksOfTheTrade,
 		})
 	}
 
 	if rogue.Talents.SlaughterFromTheShadows > 0 {
 		rogue.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_PowerCost_Flat,
-			FloatValue: []float64{-0, -7, -14, -20}[rogue.Talents.SlaughterFromTheShadows],
-			ClassMask:  RogueSpellBackstab | RogueSpellAmbush,
+			Kind:      core.SpellMod_PowerCost_Flat,
+			IntValue:  []int64{-0, -7, -14, -20}[rogue.Talents.SlaughterFromTheShadows],
+			ClassMask: RogueSpellBackstab | RogueSpellAmbush,
 		})
 
 		rogue.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_PowerCost_Flat,
-			FloatValue: float64(-2 * rogue.Talents.SlaughterFromTheShadows),
-			ClassMask:  RogueSpellHemorrhage | RogueSpellFanOfKnives,
+			Kind:      core.SpellMod_PowerCost_Flat,
+			IntValue:  int64(-2 * rogue.Talents.SlaughterFromTheShadows),
+			ClassMask: RogueSpellHemorrhage | RogueSpellFanOfKnives,
 		})
 	}
 

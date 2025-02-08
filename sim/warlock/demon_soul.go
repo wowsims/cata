@@ -95,7 +95,7 @@ func (warlock *Warlock) registerDemonSoul() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.15,
-			Multiplier: 1,
+			Multiplier: 100,
 		},
 
 		Cast: core.CastConfig{

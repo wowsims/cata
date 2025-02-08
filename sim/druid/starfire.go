@@ -34,7 +34,7 @@ func (druid *Druid) registerStarfireSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.11,
-			Multiplier: 1,
+			Multiplier: 100,
 		},
 
 		Cast: core.CastConfig{

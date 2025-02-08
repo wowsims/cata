@@ -79,10 +79,10 @@ func (hp *HunterPet) applyOwlsFocus() {
 		ActionID: core.ActionID{SpellID: 53515},
 		Duration: time.Second * 8,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.CostMultiplier -= 1
+			aura.Unit.PseudoStats.CostMultiplier -= 100
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.CostMultiplier += 1
+			aura.Unit.PseudoStats.CostMultiplier += 100
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ProcMask.Matches(core.ProcMaskSpecial) {

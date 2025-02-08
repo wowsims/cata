@@ -15,7 +15,7 @@ func (shaman *Shaman) registerFireNovaSpell() {
 		ClassSpellMask: SpellMaskFireNova,
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.22,
-			Multiplier: 1 - 0.05*float64(shaman.Talents.Convection) - shaman.GetMentalQuicknessBonus(),
+			Multiplier: 100 - (5 * shaman.Talents.Convection) - shaman.GetMentalQuicknessBonus(),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

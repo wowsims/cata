@@ -46,9 +46,9 @@ func (mage *Mage) ApplyFireTalents() {
 	// Improved Scorch
 	if mage.Talents.ImprovedScorch > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
-			ClassMask:  MageSpellScorch,
-			FloatValue: -0.5 * float64(mage.Talents.ImprovedScorch),
-			Kind:       core.SpellMod_PowerCost_Pct,
+			ClassMask: MageSpellScorch,
+			IntValue:  -50 * int64(mage.Talents.ImprovedScorch),
+			Kind:      core.SpellMod_PowerCost_Pct,
 		})
 	}
 
@@ -158,9 +158,9 @@ func (mage *Mage) applyHotStreak() {
 	}
 
 	hotStreakCostMod := mage.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PowerCost_Pct,
-		FloatValue: -1,
-		ClassMask:  MageSpellPyroblast,
+		Kind:      core.SpellMod_PowerCost_Pct,
+		IntValue:  -100,
+		ClassMask: MageSpellPyroblast,
 	})
 
 	hotStreakCastTimeMod := mage.AddDynamicMod(core.SpellModConfig{

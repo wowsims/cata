@@ -56,9 +56,9 @@ func (paladin *Paladin) applyHallowedGround() {
 	})
 
 	paladin.AddStaticMod(core.SpellModConfig{
-		ClassMask:  SpellMaskConsecration,
-		Kind:       core.SpellMod_PowerCost_Pct,
-		FloatValue: -(0.4 * float64(paladin.Talents.HallowedGround)),
+		ClassMask: SpellMaskConsecration,
+		Kind:      core.SpellMod_PowerCost_Pct,
+		IntValue:  -(40 * int64(paladin.Talents.HallowedGround)),
 	})
 }
 

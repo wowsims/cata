@@ -9,14 +9,14 @@ import (
 func (hunter *Hunter) ApplyMMTalents() {
 	if hunter.Talents.Efficiency > 0 {
 		hunter.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_PowerCost_Flat,
-			ClassMask:  HunterSpellArcaneShot,
-			FloatValue: -float64(hunter.Talents.Efficiency),
+			Kind:      core.SpellMod_PowerCost_Flat,
+			ClassMask: HunterSpellArcaneShot,
+			IntValue:  -int64(hunter.Talents.Efficiency),
 		})
 		hunter.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_PowerCost_Flat,
-			ClassMask:  HunterSpellExplosiveShot | HunterSpellChimeraShot,
-			FloatValue: -(float64(hunter.Talents.Efficiency) * 2),
+			Kind:      core.SpellMod_PowerCost_Flat,
+			ClassMask: HunterSpellExplosiveShot | HunterSpellChimeraShot,
+			IntValue:  -(int64(hunter.Talents.Efficiency) * 2),
 		})
 	}
 	if hunter.Talents.CarefulAim > 0 {
@@ -73,9 +73,9 @@ func (hunter *Hunter) applyBombardment() {
 		return
 	}
 	costMod := hunter.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PowerCost_Pct,
-		ClassMask:  HunterSpellMultiShot,
-		FloatValue: -(0.25 * float64(hunter.Talents.Bombardment)),
+		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask: HunterSpellMultiShot,
+		IntValue:  -(25 * int64(hunter.Talents.Bombardment)),
 	})
 
 	bombardmentAura := hunter.RegisterAura(core.Aura{
@@ -104,9 +104,9 @@ func (hunter *Hunter) applyMasterMarksman() {
 		return
 	}
 	costMod := hunter.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PowerCost_Pct,
-		ClassMask:  HunterSpellAimedShot,
-		FloatValue: -1,
+		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask: HunterSpellAimedShot,
+		IntValue:  -100,
 	})
 	procChance := float64(hunter.Talents.MasterMarksman) * 0.2
 	hunter.MasterMarksmanAura = hunter.RegisterAura(core.Aura{
@@ -287,9 +287,9 @@ func (hunter *Hunter) registerSicEm() {
 	actionId := core.ActionID{SpellID: 83356}
 
 	sicEmMod := hunter.Pet.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PowerCost_Flat,
-		FloatValue: -(float64(hunter.Talents.SicEm) * 12.5),
-		ProcMask:   core.ProcMaskMeleeMHSpecial,
+		Kind:     core.SpellMod_PowerCost_Pct,
+		IntValue: -(int64(hunter.Talents.SicEm) * 50),
+		ProcMask: core.ProcMaskMeleeMHSpecial,
 	})
 
 	sicEmAura := hunter.Pet.RegisterAura(core.Aura{
@@ -303,7 +303,7 @@ func (hunter *Hunter) registerSicEm() {
 			sicEmMod.Deactivate()
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask == core.ProcMaskMeleeMHSpecial {
+			if spell.ProcMask.Matches(core.ProcMaskMeleeMHSpecial) {
 				aura.Deactivate(sim)
 			}
 		},
@@ -312,14 +312,14 @@ func (hunter *Hunter) registerSicEm() {
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: "Sic'Em Mod",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell == hunter.ArcaneShot || spell == hunter.AimedShot || spell.ClassSpellMask == HunterSpellExplosiveShot {
+			if spell.Matches(HunterSpellArcaneShot | HunterSpellAimedShot | HunterSpellExplosiveShot) {
 				if result.DidCrit() {
 					sicEmAura.Activate(sim)
 				}
 			}
 		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ClassSpellMask == HunterSpellExplosiveShot {
+			if spell.Matches(HunterSpellExplosiveShot) {
 				if result.DidCrit() {
 					sicEmAura.Activate(sim)
 				}

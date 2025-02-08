@@ -14,7 +14,7 @@ import (
 // 			character := agent.GetCharacter()
 // 			character.AddStaticMod(core.SpellModConfig{
 // 				Kind:       core.SpellMod_PowerCost_Pct,
-// 				FloatValue: -0.1,
+// 				IntValue: -100,
 // 				ClassMask:  PriestSpellPrayerOfHealing,
 // 			})
 // 		},
@@ -36,7 +36,7 @@ import (
 // 			character := agent.GetCharacter()
 // 			character.AddStaticMod(core.SpellModConfig{
 // 				Kind:       core.SpellMod_PowerCost_Pct,
-// 				FloatValue: -0.1,
+// 				IntValue: -10,
 // 				ClassMask:  PriestSpellMindBlast,
 // 			})
 // 		},
@@ -61,7 +61,7 @@ import (
 // 			character := agent.GetCharacter()
 // 			character.AddStaticMod(core.SpellModConfig{
 // 				Kind:       core.SpellMod_PowerCost_Pct,
-// 				FloatValue: -0.05,
+// 				IntValue: -5,
 // 				ClassMask:  PriestSpellGreaterHeal,
 // 			})
 // 		},
@@ -325,7 +325,7 @@ var ItemSetRegaliaOfTheCleansingFlame = core.NewItemSet(core.ItemSet{
 				ThreatMultiplier: 1.0,
 				ManaCost: core.ManaCostOptions{
 					BaseCost:   0.0,
-					Multiplier: 1,
+					Multiplier: 100,
 				},
 
 				Cast: core.CastConfig{

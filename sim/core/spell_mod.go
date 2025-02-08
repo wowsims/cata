@@ -3,6 +3,8 @@ package core
 import (
 	"strconv"
 	"time"
+
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 /*
@@ -14,6 +16,7 @@ type SpellModConfig struct {
 	Kind         SpellModType
 	School       SpellSchool
 	ProcMask     ProcMask
+	ResourceType proto.ResourceType
 	IntValue     int64
 	TimeValue    time.Duration
 	FloatValue   float64
@@ -27,6 +30,7 @@ type SpellMod struct {
 	Kind           SpellModType
 	School         SpellSchool
 	ProcMask       ProcMask
+	ResourceType   proto.ResourceType
 	floatValue     float64
 	intValue       int64
 	timeValue      time.Duration
@@ -47,7 +51,7 @@ type SpellModFunctions struct {
 func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 	functions := spellModMap[config.Kind]
 	if functions == nil {
-		panic("SpellMod " + strconv.Itoa(int(config.Kind)) + " not implmented")
+		panic("SpellMod " + strconv.Itoa(int(config.Kind)) + " not implemented")
 	}
 
 	var applyFn SpellModApply
@@ -65,18 +69,23 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 		removeFn = functions.Remove
 	}
 
+	if config.ResourceType > 0 && (config.ResourceType&proto.ResourceType_ResourceTypeMana|proto.ResourceType_ResourceTypeEnergy|proto.ResourceType_ResourceTypeRage|proto.ResourceType_ResourceTypeFocus == 0) {
+		panic("ResourceType " + strconv.Itoa(int(config.ResourceType)) + " for SpellMod is not implemented")
+	}
+
 	mod := &SpellMod{
-		ClassMask:  config.ClassMask,
-		Kind:       config.Kind,
-		School:     config.School,
-		ProcMask:   config.ProcMask,
-		floatValue: config.FloatValue,
-		intValue:   config.IntValue,
-		timeValue:  config.TimeValue,
-		keyValue:   config.KeyValue,
-		Apply:      applyFn,
-		Remove:     removeFn,
-		IsActive:   false,
+		ClassMask:    config.ClassMask,
+		Kind:         config.Kind,
+		School:       config.School,
+		ProcMask:     config.ProcMask,
+		ResourceType: config.ResourceType,
+		floatValue:   config.FloatValue,
+		intValue:     config.IntValue,
+		timeValue:    config.TimeValue,
+		keyValue:     config.KeyValue,
+		Apply:        applyFn,
+		Remove:       removeFn,
+		IsActive:     false,
 	}
 
 	unit.OnSpellRegistered(func(spell *Spell) {
@@ -104,6 +113,18 @@ func (unit *Unit) AddDynamicMod(config SpellModConfig) *SpellMod {
 func shouldApply(spell *Spell, mod *SpellMod) bool {
 	if spell.Flags.Matches(SpellFlagNoSpellMods) {
 		return false
+	}
+
+	if mod.ResourceType > 0 && spell.Cost != nil {
+		if _, ok := spell.Cost.SpellCostFunctions.(*ManaCost); mod.ResourceType == proto.ResourceType_ResourceTypeMana && !ok {
+			return false
+		} else if _, ok := spell.Cost.SpellCostFunctions.(*EnergyCost); mod.ResourceType == proto.ResourceType_ResourceTypeEnergy && !ok {
+			return false
+		} else if _, ok := spell.Cost.SpellCostFunctions.(*RageCost); mod.ResourceType == proto.ResourceType_ResourceTypeRage && !ok {
+			return false
+		} else if _, ok := spell.Cost.SpellCostFunctions.(*FocusCost); mod.ResourceType == proto.ResourceType_ResourceTypeFocus && !ok {
+			return false
+		}
 	}
 
 	if mod.ClassMask > 0 && !spell.Matches(mod.ClassMask) {
@@ -199,12 +220,12 @@ const (
 	// Uses FloatValue
 	SpellMod_DamageDone_Flat
 
-	// Will reduce spell.DefaultCast.Cost by % amount. -5% = -0.05
-	// Uses FloatValue
+	// Will reduce spell.Cost.Multiplier by % amount. -5% = -5
+	// Uses IntValue
 	SpellMod_PowerCost_Pct
 
-	// Increases or decreases spell.DefaultCast.Cost by flat amount
-	// Uses FloatValue
+	// Increases or decreases spell.Cost.FlatModifier by flat amount. -5 Mana = -5
+	// Uses IntValue
 	SpellMod_PowerCost_Flat
 
 	// Increases or decreases RuneCost.RunicPowerCost by flat amount
@@ -406,19 +427,27 @@ func removeDamageDoneAdd(mod *SpellMod, spell *Spell) {
 }
 
 func applyPowerCostPercent(mod *SpellMod, spell *Spell) {
-	spell.CostMultiplier += mod.floatValue
+	if spell.Cost != nil {
+		spell.Cost.Multiplier += int32(mod.intValue)
+	}
 }
 
 func removePowerCostPercent(mod *SpellMod, spell *Spell) {
-	spell.CostMultiplier -= mod.floatValue
+	if spell.Cost != nil {
+		spell.Cost.Multiplier -= int32(mod.intValue)
+	}
 }
 
 func applyPowerCostFlat(mod *SpellMod, spell *Spell) {
-	spell.DefaultCast.Cost += mod.floatValue
+	if spell.Cost != nil {
+		spell.Cost.FlatModifier += int32(mod.intValue)
+	}
 }
 
 func removePowerCostFlat(mod *SpellMod, spell *Spell) {
-	spell.DefaultCast.Cost -= mod.floatValue
+	if spell.Cost != nil {
+		spell.Cost.FlatModifier -= int32(mod.intValue)
+	}
 }
 
 func applyRunicPowerCostFlat(mod *SpellMod, spell *Spell) {

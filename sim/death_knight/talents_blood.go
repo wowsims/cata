@@ -105,9 +105,9 @@ func (dk *DeathKnight) applyCrimsonScourge() {
 	})
 
 	costMod := dk.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PowerCost_Pct,
-		ClassMask:  DeathKnightSpellBloodBoil,
-		FloatValue: -1,
+		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask: DeathKnightSpellBloodBoil,
+		IntValue:  -100,
 	})
 
 	procAura := dk.GetOrRegisterAura(core.Aura{
@@ -247,9 +247,9 @@ func (dk *DeathKnight) applyWillOfTheNecropolis() {
 	})
 
 	runeTapMod := dk.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PowerCost_Pct,
-		ClassMask:  DeathKnightSpellRuneTap,
-		FloatValue: -1,
+		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask: DeathKnightSpellRuneTap,
+		IntValue:  -100,
 	})
 
 	core.MakePermanent(dk.GetOrRegisterAura(core.Aura{

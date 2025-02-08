@@ -24,7 +24,7 @@ func (paladin *Paladin) registerHammerOfWrathSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.12,
-			Multiplier: 1,
+			Multiplier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
