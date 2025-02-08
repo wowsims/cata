@@ -606,8 +606,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-Firelord'sVestments"
  value: {
-  dps: 32049.80199
-  tps: 29898.93099
+  dps: 32049.76846
+  tps: 29898.90035
  }
 }
 dps_results: {
@@ -1448,8 +1448,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-ShardofWoe-60233"
  value: {
-  dps: 37931.56585
-  tps: 34668.0544
+  dps: 38014.75929
+  tps: 34723.32499
  }
 }
 dps_results: {
@@ -1745,8 +1745,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-TimeLord'sRegalia"
  value: {
-  dps: 32459.9579
-  tps: 30289.22717
+  dps: 32459.63714
+  tps: 30288.93037
  }
 }
 dps_results: {
@@ -1759,8 +1759,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-Tyrande'sFavoriteDoll-64645"
  value: {
-  dps: 36897.59352
-  tps: 33803.4074
+  dps: 36458.08843
+  tps: 33311.71056
  }
 }
 dps_results: {
