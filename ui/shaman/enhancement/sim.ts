@@ -148,13 +148,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.PRERAID_PRESET,
-			Presets.P1_ORC_PRESET,
-			Presets.P1_NON_ORC_PRESET,
-			Presets.P3_ORC_PRESET,
-			Presets.P3_NON_ORC_PRESET,
-		],
+		gear: [Presets.PRERAID_PRESET, Presets.P1_ORC_PRESET, Presets.P1_NON_ORC_PRESET, Presets.P3_ORC_PRESET, Presets.P3_NON_ORC_PRESET, Presets.P4_ORC_PRESET],
+		itemSwaps: [Presets.P4_ITEM_SWAP],
 	},
 
 	autoRotation: (player: Player<Spec.SpecEnhancementShaman>): APLRotation => {
