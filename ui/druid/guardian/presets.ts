@@ -38,12 +38,14 @@ import NefApl from './apls/nef.apl.json';
 import BethApl from './apls/bethtilac.apl.json';
 import BalerocMTApl from './apls/balerocMT.apl.json';
 import BalerocOTApl from './apls/balerocOT.apl.json';
+import BlackhornOTApl from './apls/blackhorn.apl.json';
 export const ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('APL Default', DefaultApl);
 export const ROTATION_CLEAVE = PresetUtils.makePresetAPLRotation('2-Target Cleave', CleaveApl);
 export const ROTATION_NEF = PresetUtils.makePresetAPLRotation('AoE (Nef Adds)', NefApl);
 export const ROTATION_BETH = PresetUtils.makePresetAPLRotation("Beth'tilac Phase 2", BethApl);
 export const ROTATION_BALEROC_MT = PresetUtils.makePresetAPLRotation("Baleroc MT", BalerocMTApl);
 export const ROTATION_BALEROC_OT = PresetUtils.makePresetAPLRotation("Baleroc OT", BalerocOTApl);
+export const ROTATION_BLACKHORN_OT = PresetUtils.makePresetAPLRotation("Blackhorn OT", BlackhornOTApl);
 
 export const ROTATION_PRESET_SIMPLE = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecGuardianDruid, DefaultSimpleRotation);
 
@@ -201,5 +203,13 @@ export const PRESET_BUILD_BALEROC_OT = PresetUtils.makePresetBuild("Baleroc OT",
 	encounter: PresetUtils.makePresetEncounter(
 		"Baleroc OT",
 		'http://localhost:5173/cata/druid/guardian/?i=rcmxe#eJzVUk9oHFUY3zcz2c6+JGUztSQZsL7sQeKShG3aFA3F3QSJG0kxmBDizZeZN7uvOzuzzMxmSU6xHhqLhxIQbRG1J6EnCYIY0YMXFVpILyXtwYr00IMFQZD0In7vTSbdre3Bo++wO9/3/b4/v9/34X4dEVRCVbSB0GWENhT0pYJ2FTSdyaKXURntITSZmlSyyEiZl9NX1fS8S9dYoHdnUa5XVwqD88qy8k4XpE6nrqvdZqYvJd9Y6SdF21XUu0ri+bX4m/Jh14Ca6zYeu3AfTpsaVgb6ckdwF1ZHT4b4ONbPp7GmP9rXchkM7tHC2MnQ0ExlMmUMmv24N9eNM9tIYL66mDbF/8f31GeFPtlGceiShrGSVQxAb8ahHQgtm0u4bMzgnnFsQBS8ty4q2MwP6Mjo/QG1OU2YD6NTMqYZPefbQ1ANK6dDE4P9zZ+aiBgl81VcMMdwNncU92yjjISr+oV0UmGnzRdXOBNXuPMekhWGzBfwsbtKVqIU3TpsowtLQrCpSyqfvq8aGfOImFF/OHzo/vvdLmPOfAOfNSbjOTpYtqkF+bg/f1zvMjLXE0fc7lQ8E+Blw6Nmj7Rvb3ba39/TOuyEQ9V08LKx9B/0zZvD7ZN9va/JyTQjs5M4nqq3yBN11afX7WDRa8KpglQfTQjzgWLvK+iaGl/l26VL6osZ+Tn3sNR39Yp4j4ovxR93ioMx7EGRpHOfZcpqDC2slg6u+rnSYAz9ufhK7NktDjny3S5O3bwh3u/F8ft6469r6nrPNHVZ4FtkfIKUyfKAlt9Dqf/h27B/LLWZwxfmv5h6EiPluP/tsakr6HTfmbPfvfVLMcGUyqiAttAHyDixSL0aCVu0QRw/IK8xi9dpxH2PTLvUZvnqrEOsKrNqzB4hUZWRFT8MSYu7LllhJIJkZpOVNSLLjJOAAiYAIPUk+hzlXhyzmwH3Kv9qAKU822+FYwMwz6YKZ0pmPR5x6pI3FwVknRHfIa+7frBGwohatTC/p8BQnu+NrsMqR5LWciYucyMmmzea4Gl6EXelGTagt8NhXlmHWD7ECA8JtaxmvelCmj1G5mhQAQar1G0yCLmu35LZME3kkwqjAan7ASO0UglYGPJV5q6RVpW70CASI9QZiwRTkTQ+UaiR8jx8A7bqu7YUWUQcHoTRs9QYISvNiNRpjRGXOyxuaHPH4VbTjQ5rnFtMVJ31HBZ4/hOSksUqsONeoylp8ooHdWzCHbk3uXRgKEuHdMUF9kPxefxR3EI3Eezi+WQXSzyC34UGDWqw43pDLJrlP0czHXTq3GtGcl+J/PHNhPxAXlJl1BUD0woD7eXKHqsPWBizTr21jn7x1gloRFdZAJlweVGLMe8ANePSOiMBc4TGTAJFU8ExIXSitIUs4JNfiBi15SFBu/Ymh1OIXUhy+QVYPVyCMA4lD1gdLtoGdxvJpEu29A+pJMjo'
+	),
+});
+
+export const PRESET_BUILD_BLACKHORN_OT = PresetUtils.makePresetBuild("Blackhorn OT", {
+	rotation: ROTATION_BLACKHORN_OT,
+	encounter: PresetUtils.makePresetEncounter(
+		"Blackhorn OT",
+		'http://localhost:5173/cata/druid/guardian/?i=cmxe#eJzdUkFrE0EUzputS2KCTUPRpgd9LdTagBIiihZxJ4vSHFMVWm9OstPu0M3usrNtMKdcvHhRKh7ak148eCj1IFR68WYLFnrSXvUkVI9C8SBOdhOt4h/Q7zTvzfe+93jvO3oiCUWgYEMb4CFAm8A6gV0CZioLl6ACewCTiUmShVxi2F/V9KrD7vIgmc7CaDqpFfNVcueIqjNTrwG2gKzr5LmWHk4NJCKco1uk7xP5BgcEnmpx7ja9r51OdV5PMh/pwNrUh9bg2ntj4tS9/emNk1+N/OZ4f/rlsy8G6qPf9YoWURNtQbuagzS/utLBtnE5zuwaI3MR3hnlnbcdfDZKL/r8/Q2tNTTDggaTIQ/QdFh9wfYCF0sXsIKzQ3phDxL/INrWG3oopHn2uPwnJ1rNlUyuvALxtl4ZXc6BsQwzScjlbjF3AWWT+ShctZ8l5hQuXneYL7mFoWhwPCNclLzuuZacwBoPm5yrhGgsOizscHr1ciRWvkqXYV4pHy9bFlr8LKuHYomFwnMjvYJ5M67tJX5vwEJs2qJuY+ihJSSrORynvECR2bhUv6G6Xq/TrOo0rTr1m4vqnL7NJMdKFccK58fQm8OaJ2UnDniDCVe480pZjd5VQyEPTcetWJPeoKUHxN/Z1FqZHrHrE+3/8Mm1UvnR332C4thPn2z/8kkRfgD/5btE'
 	),
 });

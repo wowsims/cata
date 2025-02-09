@@ -251,7 +251,7 @@ func (ai *BlackhornAI) registerDisruptingRoar() {
 		ActionID:         core.ActionID{SpellID: 108044},
 		SpellSchool:      core.SpellSchoolPhysical,
 		ProcMask:         core.ProcMaskSpellDamage,
-		Flags:            core.SpellFlagIgnoreResists,
+		Flags:            core.SpellFlagIgnoreResists | core.SpellFlagAPL,
 		DamageMultiplier: 1,
 
 		Cast: core.CastConfig{
@@ -274,7 +274,7 @@ func (ai *BlackhornAI) registerDisruptingRoar() {
 			}
 
 			// Different swing delay behavior from Devastate based on log analysis
-			spell.Unit.AutoAttacks.PauseMeleeBy(sim, core.BossGCD)
+			spell.Unit.AutoAttacks.PauseMeleeBy(sim, core.BossGCD+1)
 		},
 	})
 
