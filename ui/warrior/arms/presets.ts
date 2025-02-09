@@ -23,7 +23,6 @@ export const P4_ARMS_BIS_PRESET = PresetUtils.makePresetGear('P4 - WIP', P4ArmsB
 
 export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4 - WIP', ItemSwapP4Gear);
 
-
 export const ROTATION_ARMS = PresetUtils.makePresetAPLRotation('Default', ArmsApl);
 
 // Preset options for EP weights
