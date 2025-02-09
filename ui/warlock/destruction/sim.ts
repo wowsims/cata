@@ -105,7 +105,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 		rotations: [Presets.DEFAULT_APL],
 
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET],
+		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
+		itemSwaps: [Presets.P4_ITEM_SWAP],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecDestructionWarlock>): APLRotation => {

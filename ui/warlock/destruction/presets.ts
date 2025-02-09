@@ -13,6 +13,8 @@ import { WARLOCK_BREAKPOINTS } from '../presets';
 import DefaultApl from './apls/default.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
 import P3Gear from './gear_sets/p3.gear.json';
+import P4Gear from './gear_sets/p4.gear.json';
+import ItemSwapP4 from './gear_sets/p4_item_swap.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
@@ -24,6 +26,9 @@ export const BIS_TOOLTIP = "This gear preset is inspired from Zephan's Afflictio
 export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidGear);
 export const P1_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1Gear);
 export const P3_PRESET = PresetUtils.makePresetGear('P3 - BIS', P3Gear);
+export const P4_PRESET = PresetUtils.makePresetGear('P4 - BIS', P4Gear);
+
+export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4', ItemSwapP4);
 
 export const DEFAULT_APL = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
