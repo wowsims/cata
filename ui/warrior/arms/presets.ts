@@ -19,9 +19,9 @@ export const PRERAID_ARMS_PRESET = PresetUtils.makePresetGear('Preraid', Preraid
 export const P1_ARMS_BIS_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1ArmsBisGear);
 export const P1_ARMS_REALISTIC_PRESET = PresetUtils.makePresetGear('P1 - Realistic', P1ArmsRealisticBisGear);
 export const P3_ARMS_BIS_PRESET = PresetUtils.makePresetGear('P3 - BIS', P3ArmsBisGear);
-export const P4_ARMS_BIS_PRESET = PresetUtils.makePresetGear('P4 - WIP', P4ArmsBisGear);
+export const P4_ARMS_BIS_PRESET = PresetUtils.makePresetGear('P4', P4ArmsBisGear);
 
-export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4 - WIP', ItemSwapP4Gear);
+export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4', ItemSwapP4Gear);
 
 export const ROTATION_ARMS = PresetUtils.makePresetAPLRotation('Default', ArmsApl);
 
