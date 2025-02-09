@@ -121,7 +121,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [EnhancementInputs.SyncTypeInput, OtherInputs.InputDelay, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
+		inputs: [
+			EnhancementInputs.SyncTypeInput,
+			EnhancementInputs.UsePrepull2PT10,
+			OtherInputs.InputDelay,
+			OtherInputs.TankAssignment,
+			OtherInputs.InFrontOfTarget,
+		],
 	},
 	itemSwapSlots: [
 		ItemSlot.ItemSlotHead,
@@ -148,7 +154,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET, Presets.P1_ORC_PRESET, Presets.P1_NON_ORC_PRESET, Presets.P3_ORC_PRESET, Presets.P3_NON_ORC_PRESET, Presets.P4_ORC_PRESET],
+		gear: [
+			Presets.PRERAID_PRESET,
+			Presets.P1_ORC_PRESET,
+			Presets.P1_NON_ORC_PRESET,
+			Presets.P3_ORC_PRESET,
+			Presets.P3_NON_ORC_PRESET,
+			Presets.P4_ORC_PRESET,
+		],
 		itemSwaps: [Presets.P4_ITEM_SWAP],
 	},
 
