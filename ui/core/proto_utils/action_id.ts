@@ -588,6 +588,12 @@ export class ActionId {
 					name = 'Combust (T12 2P)';
 				}
 				break;
+			// Warrior - T13 4P proc
+			case 'Colossus Smash':
+				if (this.spellId === 108126) {
+					name += ' (T13 4P)';
+				}
+				break;
 			// Warrior - T12 4P proc
 			case 'Mortal Strike':
 				if (tag === 3) {

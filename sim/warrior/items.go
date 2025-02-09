@@ -263,7 +263,7 @@ var ItemSetColossalDragonplateBattlegear = core.NewItemSet(core.ItemSet{
 			procCS := warrior.RegisterSpell(core.SpellConfig{
 				ActionID:    actionID,
 				SpellSchool: core.SpellSchoolPhysical,
-				Flags:       core.SpellFlagNoOnDamageDealt | core.SpellFlagNoOnCastComplete,
+				Flags:       core.SpellFlagNoOnDamageDealt | core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 				Cast: core.CastConfig{
 					DefaultCast: core.Cast{
 						GCD: 0,

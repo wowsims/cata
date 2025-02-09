@@ -258,7 +258,7 @@ export class PartyPicker extends Component {
 				return;
 			}
 
-			formatDeltaTextElem(referenceDeltaElem, referenceDps, partyDps, 1);
+			formatDeltaTextElem(referenceDeltaElem, referenceDps, partyDps, 1, undefined, undefined, true);
 		});
 
 		this.rootElem.ondragstart = event => {
@@ -383,7 +383,7 @@ export class PlayerPicker extends Component {
 				this.resultsElem?.classList.remove('hide');
 				(this.dpsResultElem as HTMLElement).textContent = `${playerDps.toFixed(1)} DPS`;
 
-				if (referenceData) formatDeltaTextElem(this.referenceDeltaElem as HTMLElement, referenceDps, playerDps, 1);
+				if (referenceData) formatDeltaTextElem(this.referenceDeltaElem as HTMLElement, referenceDps, playerDps, 1, undefined, undefined, true);
 			}
 		});
 

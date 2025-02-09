@@ -151,8 +151,8 @@ dps_results: {
 dps_results: {
  key: "TestCombat-AllItems-BlackfangBattleweave"
  value: {
-  dps: 28317.54312
-  tps: 20105.45561
+  dps: 28467.24579
+  tps: 20211.74451
  }
 }
 dps_results: {
@@ -2498,169 +2498,169 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-Combat-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 53602.11015
-  tps: 38057.49821
+  dps: 53758.20411
+  tps: 38168.32492
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-Combat-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 54068.60309
-  tps: 38388.7082
+  dps: 54200.23302
+  tps: 38482.16544
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-Combat-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 61445.35176
-  tps: 43626.19975
+  dps: 61643.16676
+  tps: 43766.6484
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-Combat-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 32279.40448
-  tps: 22918.37718
+  dps: 32263.89888
+  tps: 22907.3682
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-Combat-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 32535.99979
-  tps: 23100.55985
+  dps: 32530.96275
+  tps: 23096.98355
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-Combat-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 31584.25645
-  tps: 22424.82208
+  dps: 31904.31574
+  tps: 22652.06418
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 48204.91404
-  tps: 34225.48897
+  dps: 48338.94803
+  tps: 34320.6531
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 48052.88247
-  tps: 34117.54656
+  dps: 48185.14781
+  tps: 34211.45494
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 54527.20374
-  tps: 38714.31466
+  dps: 54694.72176
+  tps: 38833.25245
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 29377.87792
-  tps: 20858.29333
+  dps: 29357.8176
+  tps: 20844.0505
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 29227.10622
-  tps: 20751.24542
+  dps: 29220.18795
+  tps: 20746.33344
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 28437.46775
-  tps: 20190.6021
+  dps: 28732.50799
+  tps: 20400.08067
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 53549.21032
-  tps: 38019.93933
+  dps: 53704.43597
+  tps: 38130.14954
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 53960.96067
-  tps: 38312.28207
+  dps: 54082.33406
+  tps: 38398.45718
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 61304.74547
-  tps: 43526.36928
+  dps: 61472.16114
+  tps: 43645.23441
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 32352.02104
-  tps: 22969.93494
+  dps: 32353.50342
+  tps: 22970.98743
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 32558.91257
-  tps: 23116.82793
+  dps: 32568.14063
+  tps: 23123.37985
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 31553.91067
-  tps: 22403.27658
+  dps: 31871.69781
+  tps: 22628.90545
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 49658.67349
-  tps: 35257.65818
+  dps: 49815.04362
+  tps: 35368.68097
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 50143.40112
-  tps: 35601.81479
+  dps: 50278.74741
+  tps: 35697.91066
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 57658.76485
-  tps: 40937.72304
+  dps: 57838.13224
+  tps: 41065.07389
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 28838.42898
-  tps: 20475.28458
+  dps: 28851.19212
+  tps: 20484.34641
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 29059.51928
-  tps: 20632.25869
+  dps: 29082.30427
+  tps: 20648.43603
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p4_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 28437.03901
-  tps: 20190.2977
+  dps: 28746.54653
+  tps: 20410.04804
  }
 }
 dps_results: {
@@ -3002,169 +3002,169 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-Combat-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 53917.46072
-  tps: 38281.39711
+  dps: 54068.50239
+  tps: 38388.6367
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-Combat-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 54386.68927
-  tps: 38614.54939
+  dps: 54512.21128
+  tps: 38703.67001
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-Combat-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 62045.15415
-  tps: 44052.05944
+  dps: 62242.94939
+  tps: 44192.49407
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-Combat-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 32498.04466
-  tps: 23073.61171
+  dps: 32475.56818
+  tps: 23057.65341
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-Combat-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 32756.5999
-  tps: 23257.18593
+  dps: 32744.17668
+  tps: 23248.36544
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-Combat-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 31936.60298
-  tps: 22674.98812
+  dps: 32256.44209
+  tps: 22902.07389
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 48487.61278
-  tps: 34426.20508
+  dps: 48616.56349
+  tps: 34517.76008
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 48331.29906
-  tps: 34315.22233
+  dps: 48458.27898
+  tps: 34405.37807
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Deadly OH Deadly-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 55058.69598
-  tps: 39091.67415
+  dps: 55226.19797
+  tps: 39210.60056
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 29577.16711
-  tps: 20999.78865
+  dps: 29550.85132
+  tps: 20981.10444
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 29422.85483
-  tps: 20890.22693
+  dps: 29409.63885
+  tps: 20880.84358
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Deadly OH Deadly-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 28756.15883
-  tps: 20416.87277
+  dps: 29050.99768
+  tps: 20626.20835
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 53864.27362
-  tps: 38243.63427
+  dps: 54014.00183
+  tps: 38349.9413
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 54277.66505
-  tps: 38537.14219
+  dps: 54392.98161
+  tps: 38619.01694
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Deadly OH Instant-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 61903.9564
-  tps: 43951.80905
+  dps: 62071.35648
+  tps: 44070.6631
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 32572.04959
-  tps: 23126.15521
+  dps: 32567.33457
+  tps: 23122.80755
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 32779.5997
-  tps: 23273.51578
+  dps: 32782.70229
+  tps: 23275.71862
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Deadly OH Instant-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 31909.63296
-  tps: 22655.8394
+  dps: 32227.35858
+  tps: 22881.42459
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 49950.24475
-  tps: 35464.67377
+  dps: 50102.7022
+  tps: 35572.91856
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 50437.48258
-  tps: 35810.61263
+  dps: 50568.2021
+  tps: 35903.42349
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Instant OH Instant-combat-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 58236.88026
-  tps: 41348.18498
+  dps: 58416.23016
+  tps: 41475.52342
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 29035.48079
-  tps: 20615.19136
+  dps: 29041.2649
+  tps: 20619.29808
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 29257.58217
-  tps: 20772.88334
+  dps: 29273.3201
+  tps: 20784.05727
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p4_combat-MH Instant OH Instant-combat-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 28765.18015
-  tps: 20423.2779
+  dps: 29074.33179
+  tps: 20642.77557
  }
 }
 dps_results: {
