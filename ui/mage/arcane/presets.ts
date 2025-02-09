@@ -15,7 +15,7 @@ import P3ArcanePrebisGear from './gear_sets/prebis.gear.json';
 export const ARCANE_P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1ArcaneBisGear, { talentTree: 0 });
 export const ARCANE_P3_PREBIS_PRESET = PresetUtils.makePresetGear('Pre-raid ', P3ArcanePrebisGear, { talentTree: 0 });
 export const ARCANE_P3_PRESET = PresetUtils.makePresetGear('P3 Preset', P3ArcaneBisGear, { talentTree: 0 });
-export const ARCANE_P4_PRESET = PresetUtils.makePresetGear('P4 - WIP', P4ArcaneBisGear, { talentTree: 0 });
+export const ARCANE_P4_PRESET = PresetUtils.makePresetGear('P4', P4ArcaneBisGear, { talentTree: 0 });
 /* export const DefaultSimpleRotation = MageRotation.create({
 	only3ArcaneBlastStacksBelowManaPercent: 0.15,
 	blastWithoutMissileBarrageAboveManaPercent: 0.2,

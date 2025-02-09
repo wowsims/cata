@@ -24,7 +24,7 @@ import ItemSwapP4 from './gear_sets/p4_fire_item_swap.gear.json';
 export const FIRE_P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1FireBisGear, { talentTree: 1 });
 export const FIRE_P3_PREBIS = PresetUtils.makePresetGear('P3 Pre-raid', P3FirePrebisGear, { talentTree: 1 });
 export const FIRE_P3_PRESET = PresetUtils.makePresetGear('P3 Preset', P3FireBisGear, { talentTree: 1 });
-export const FIRE_P4_PRESET = PresetUtils.makePresetGear('P4 - WIP', P4FireBisGear, { talentTree: 1 });
+export const FIRE_P4_PRESET = PresetUtils.makePresetGear('P4 Preset', P4FireBisGear, { talentTree: 1 });
 
 export const P1DefaultSimpleRotation = FireMage_Rotation.create({
 	combustThreshold: 470000,
@@ -56,7 +56,7 @@ export const P4NoTrollDefaultSimpleRotation = FireMage_Rotation.create({
 	combustNoLustPercentage: 300000,
 });
 
-export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4 - WIP - Haste', ItemSwapP4);
+export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4 - Haste', ItemSwapP4);
 
 export const P1_SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('P1 - Default', Spec.SpecFireMage, P1DefaultSimpleRotation);
 export const P3_SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('P3 - Default', Spec.SpecFireMage, P3TrollDefaultSimpleRotation);
@@ -203,13 +203,13 @@ export const P3_PRESET_NO_TROLL = PresetUtils.makePresetBuild('P3 - Default (Wor
 	epWeights: DEFAULT_EP_PRESET,
 });
 
-export const P4_PRESET_BUILD = PresetUtils.makePresetBuild('P4 - WIP (Troll)', {
+export const P4_PRESET_BUILD = PresetUtils.makePresetBuild('P4 - Default (Troll)', {
 	race: Race.RaceTroll,
 	gear: FIRE_P4_PRESET,
 	rotation: P4_SIMPLE_ROTATION_DEFAULT,
 });
 
-export const P4_PRESET_NO_TROLL = PresetUtils.makePresetBuild('P4 - WIP (Worgen)', {
+export const P4_PRESET_NO_TROLL = PresetUtils.makePresetBuild('P4 - Default (Worgen)', {
 	race: Race.RaceWorgen,
 	gear: FIRE_P4_PRESET,
 	rotation: P4_SIMPLE_ROTATION_NO_TROLL,

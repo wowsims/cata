@@ -5,7 +5,7 @@ import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_u
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl.js';
-import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
+import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
 import { UnitStat } from '../../core/proto_utils/stats.js';
 import * as ProtectionWarriorInputs from '../inputs.js';
 import * as Presets from './presets.js';
@@ -128,6 +128,25 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 			OtherInputs.InFrontOfTarget,
 		],
 	},
+	itemSwapSlots: [
+		ItemSlot.ItemSlotHead,
+		ItemSlot.ItemSlotNeck,
+		ItemSlot.ItemSlotShoulder,
+		ItemSlot.ItemSlotBack,
+		ItemSlot.ItemSlotChest,
+		ItemSlot.ItemSlotWrist,
+		ItemSlot.ItemSlotHands,
+		ItemSlot.ItemSlotWaist,
+		ItemSlot.ItemSlotLegs,
+		ItemSlot.ItemSlotFeet,
+		ItemSlot.ItemSlotFinger1,
+		ItemSlot.ItemSlotFinger2,
+		ItemSlot.ItemSlotTrinket1,
+		ItemSlot.ItemSlotTrinket2,
+		ItemSlot.ItemSlotMainHand,
+		ItemSlot.ItemSlotOffHand,
+		ItemSlot.ItemSlotRanged,
+	],
 	encounterPicker: {
 		// Whether to include 'Execute DuratFion (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,
@@ -140,7 +159,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_DEFAULT, Presets.ROTATION_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_BALANCED_PRESET, Presets.P1_BALANCED_PRESET, Presets.P3_BALANCED_PRESET],
+		gear: [Presets.PRERAID_BALANCED_PRESET, Presets.P1_BALANCED_PRESET, Presets.P3_BALANCED_PRESET, Presets.P4_BALANCED_PRESET],
+		itemSwaps: [Presets.P4_ITEM_SWAP],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecProtectionWarrior>): APLRotation => {
