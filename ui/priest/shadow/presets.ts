@@ -39,7 +39,7 @@ export const P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1Gear);
 export const P3_PRESET = PresetUtils.makePresetGear('P3 Preset', P3Gear);
 export const P4_PRESET = PresetUtils.makePresetGear('P4 Preset', P4Gear);
 
-export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4 - WIP', ItemSwapP4);
+export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4', ItemSwapP4);
 
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 export const P4_T13_4PC_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('T13 - 4PC', P4T134PCApl);
@@ -217,7 +217,7 @@ export const P3_PRESET_BUILD = PresetUtils.makePresetBuild('P3 - Default', {
 	rotation: ROTATION_PRESET_DEFAULT,
 });
 
-export const P4_PRESET_BUILD = PresetUtils.makePresetBuild('P4 - WIP', {
+export const P4_PRESET_BUILD = PresetUtils.makePresetBuild('P4 - Default', {
 	race: Race.RaceTroll,
 	gear: P4_PRESET,
 	rotation: P4_T13_4PC_PRESET_DEFAULT,

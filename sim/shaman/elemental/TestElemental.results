@@ -653,6 +653,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-AllItems-FrostWitch'sBattlegear"
+ value: {
+  dps: 26127.057
+  tps: 1487.0424
+ }
+}
+dps_results: {
  key: "TestElemental-AllItems-FuryofAngerforge-59461"
  value: {
   dps: 40048.03579

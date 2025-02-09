@@ -24,6 +24,8 @@ import P1NonOrcGear from './gear_sets/p1.non-orc.gear.json';
 import P1OrcGear from './gear_sets/p1.orc.gear.json';
 import P3NonOrcGear from './gear_sets/p3.non-orc.gear.json';
 import P3OrcGear from './gear_sets/p3.orc.gear.json';
+import P4OrcGear from './gear_sets/p4.orc.gear.json';
+import ItemSwapP4 from './gear_sets/p4_item_swap.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
@@ -34,9 +36,11 @@ export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidGear
 
 export const P1_ORC_PRESET = PresetUtils.makePresetGear('P1 - Orc', P1OrcGear);
 export const P1_NON_ORC_PRESET = PresetUtils.makePresetGear('P1 - Non-Orc', P1NonOrcGear);
-
 export const P3_ORC_PRESET = PresetUtils.makePresetGear('P3 - Orc', P3OrcGear);
 export const P3_NON_ORC_PRESET = PresetUtils.makePresetGear('P3 - Non-Orc', P3NonOrcGear);
+export const P4_ORC_PRESET = PresetUtils.makePresetGear('P4', P4OrcGear);
+
+export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4 - Item Swap', ItemSwapP4);
 
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
