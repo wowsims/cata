@@ -32,8 +32,8 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isElementalOverload bool) core.Spe
 		ClassSpellMask: core.TernaryInt64(isElementalOverload, SpellMaskLavaBurstOverload, SpellMaskLavaBurst),
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostFraction: core.TernaryFloat64(isElementalOverload, 0, 0.1),
-			PercentModifier:  100 - (5 * shaman.Talents.Convection),
+			BaseCostPercent: core.TernaryInt32(isElementalOverload, 0, 10),
+			PercentModifier: 100 - (5 * shaman.Talents.Convection),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

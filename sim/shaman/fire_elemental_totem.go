@@ -27,7 +27,7 @@ func (shaman *Shaman) registerFireElementalTotem() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskFireElementalTotem,
 		ManaCost: core.ManaCostOptions{
-			BaseCostFraction: 0.23,
+			BaseCostPercent: 23,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

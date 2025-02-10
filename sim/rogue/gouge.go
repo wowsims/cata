@@ -19,7 +19,7 @@ func (rogue *Rogue) registerGougeSpell() {
 		ClassSpellMask: RogueSpellGouge,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   45 - 15*float64(rogue.Talents.ImprovedGouge),
+			Cost:   45 - 15*rogue.Talents.ImprovedGouge,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

@@ -20,7 +20,7 @@ func (warlock *Warlock) registerImmolate() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellImmolate,
 
-		ManaCost: core.ManaCostOptions{BaseCostFraction: 0.08},
+		ManaCost: core.ManaCostOptions{BaseCostPercent: 8},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,

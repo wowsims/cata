@@ -320,7 +320,7 @@ func (shaman *Shaman) applyFulmination() {
 		Flags:          core.SpellFlagPassiveSpell,
 		ClassSpellMask: SpellMaskFulmination,
 		ManaCost: core.ManaCostOptions{
-			BaseCostFraction: 0,
+			BaseCostPercent: 0,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

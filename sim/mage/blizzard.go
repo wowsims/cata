@@ -56,7 +56,7 @@ func (mage *Mage) registerBlizzardSpell() {
 		Flags:          core.SpellFlagChanneled | core.SpellFlagAPL,
 		ClassSpellMask: MageSpellBlizzard,
 		ManaCost: core.ManaCostOptions{
-			BaseCostFraction: 0.74,
+			BaseCostPercent: 74,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

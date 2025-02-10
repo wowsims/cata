@@ -23,7 +23,7 @@ func (mage *Mage) registerFlameOrbSpell() {
 		ClassSpellMask: MageSpellFlameOrb,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostFraction: 0.06,
+			BaseCostPercent: 6,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

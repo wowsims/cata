@@ -30,7 +30,7 @@ func (paladin *Paladin) registerAvengingWrath() {
 		ClassSpellMask: SpellMaskAvengingWrath,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostFraction: 0.08,
+			BaseCostPercent: 8,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

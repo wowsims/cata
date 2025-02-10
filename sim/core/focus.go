@@ -187,7 +187,7 @@ func (fb *focusBar) disable(sim *Simulation) {
 }
 
 type FocusCostOptions struct {
-	Cost float64
+	Cost int32
 
 	Refund        float64
 	RefundMetrics *ResourceMetrics // Optional, will default to unit.FocusRefundMetrics if not supplied.

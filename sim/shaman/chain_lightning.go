@@ -17,7 +17,7 @@ func (shaman *Shaman) registerChainLightningSpell() {
 }
 
 func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spell {
-	spellConfig := shaman.newElectricSpellConfig(core.ActionID{SpellID: 421}, 0.26, time.Second*2, isElementalOverload, 0.571)
+	spellConfig := shaman.newElectricSpellConfig(core.ActionID{SpellID: 421}, 26, time.Second*2, isElementalOverload, 0.571)
 	spellConfig.ClassSpellMask = core.TernaryInt64(isElementalOverload, SpellMaskChainLightningOverload, SpellMaskChainLightning)
 
 	if !isElementalOverload {

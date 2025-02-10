@@ -23,7 +23,7 @@ func (warlock *Warlock) registerSummonInfernal(timer *core.Timer) {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellSummonInfernal,
 
-		ManaCost: core.ManaCostOptions{BaseCostFraction: 0.8},
+		ManaCost: core.ManaCostOptions{BaseCostPercent: 80},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				CastTime: 1500 * time.Millisecond,

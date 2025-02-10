@@ -21,7 +21,7 @@ func (paladin *Paladin) registerExorcism() {
 		MaxRange: 30,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostFraction: 0.3,
+			BaseCostPercent: 30,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

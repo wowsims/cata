@@ -190,8 +190,8 @@ func (pet *WarlockPet) registerShadowBiteSpell() {
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: WarlockSpellFelHunterShadowBite,
 		ManaCost: core.ManaCostOptions{
-			BaseCostFraction: 0.03,
-			PercentModifier:  100,
+			BaseCostPercent: 3,
+			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -237,7 +237,7 @@ func (pet *WarlockPet) registerFelstormSpell() {
 		Flags:          core.SpellFlagChanneled | core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIncludeTargetBonusDamage,
 		ClassSpellMask: WarlockSpellFelGuardFelstorm,
 
-		ManaCost: core.ManaCostOptions{BaseCostFraction: 0.02},
+		ManaCost: core.ManaCostOptions{BaseCostPercent: 2},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
@@ -287,7 +287,7 @@ func (pet *WarlockPet) registerLegionStrikeSpell() {
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIncludeTargetBonusDamage,
 		ClassSpellMask: WarlockSpellFelGuardLegionStrike,
 
-		ManaCost: core.ManaCostOptions{BaseCostFraction: 0.06},
+		ManaCost: core.ManaCostOptions{BaseCostPercent: 6},
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -323,7 +323,7 @@ func (pet *WarlockPet) registerFireboltSpell(warlock *Warlock) {
 		ClassSpellMask: WarlockSpellImpFireBolt,
 		MissileSpeed:   16,
 
-		ManaCost: core.ManaCostOptions{BaseCostFraction: 0.02},
+		ManaCost: core.ManaCostOptions{BaseCostPercent: 2},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
@@ -370,7 +370,7 @@ func (pet *WarlockPet) registerLashOfPainSpell() {
 		ClassSpellMask: WarlockSpellSuccubusLashOfPain,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostFraction: 0.03,
+			BaseCostPercent: 3,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

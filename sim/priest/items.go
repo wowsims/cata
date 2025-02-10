@@ -324,8 +324,8 @@ var ItemSetRegaliaOfTheCleansingFlame = core.NewItemSet(core.ItemSet{
 				DamageMultiplier: 1.0,
 				ThreatMultiplier: 1.0,
 				ManaCost: core.ManaCostOptions{
-					BaseCostFraction: 0.0,
-					PercentModifier:  100,
+					BaseCostPercent: 0,
+					PercentModifier: 100,
 				},
 
 				Cast: core.CastConfig{

@@ -14,7 +14,7 @@ func (paladin *Paladin) registerJudgement() {
 		Flags:       SpellFlagPrimaryJudgement | core.SpellFlagAPL | core.SpellFlagNoLogs | core.SpellFlagNoMetrics,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostFraction: 0.05,
+			BaseCostPercent: 5,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

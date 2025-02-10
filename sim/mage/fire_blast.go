@@ -15,7 +15,7 @@ func (mage *Mage) registerFireBlastSpell() {
 		ClassSpellMask: MageSpellFireBlast,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostFraction: 0.21,
+			BaseCostPercent: 21,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

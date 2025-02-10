@@ -16,7 +16,7 @@ func (rogue *Rogue) registerFeintSpell() {
 		ClassSpellMask: RogueSpellFeint,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost: core.TernaryFloat64(rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfFeint), 0, 20),
+			Cost: core.TernaryInt32(rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfFeint), 0, 20),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

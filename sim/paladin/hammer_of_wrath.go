@@ -23,8 +23,8 @@ func (paladin *Paladin) registerHammerOfWrathSpell() {
 		MaxRange:     30,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostFraction: 0.12,
-			PercentModifier:  100,
+			BaseCostPercent: 12,
+			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

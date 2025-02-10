@@ -38,7 +38,7 @@ func (warlock *Warlock) registerSummonDemon() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellSummonFelhunter,
 
-		ManaCost: core.ManaCostOptions{BaseCostFraction: 0.80},
+		ManaCost: core.ManaCostOptions{BaseCostPercent: 80},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
@@ -64,7 +64,7 @@ func (warlock *Warlock) registerSummonDemon() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellSummonImp,
 
-		ManaCost: core.ManaCostOptions{BaseCostFraction: 0.64},
+		ManaCost: core.ManaCostOptions{BaseCostPercent: 64},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
@@ -89,7 +89,7 @@ func (warlock *Warlock) registerSummonDemon() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellSummonSuccubus,
 
-		ManaCost: core.ManaCostOptions{BaseCostFraction: 0.80},
+		ManaCost: core.ManaCostOptions{BaseCostPercent: 80},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,

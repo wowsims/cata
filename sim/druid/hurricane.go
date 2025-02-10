@@ -37,8 +37,8 @@ func (druid *Druid) registerHurricaneSpell() {
 		ClassSpellMask: DruidSpellHurricane,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostFraction: 0.81,
-			PercentModifier:  100,
+			BaseCostPercent: 81,
+			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

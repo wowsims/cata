@@ -55,7 +55,7 @@ func (mage *Mage) registerLivingBombSpell() {
 		ClassSpellMask: MageSpellLivingBombDot,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostFraction: 0.17,
+			BaseCostPercent: 17,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

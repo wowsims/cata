@@ -38,7 +38,7 @@ func (affliction *AfflictionWarlock) registerHaunt() {
 		ClassSpellMask: warlock.WarlockSpellHaunt,
 		MissileSpeed:   20,
 
-		ManaCost: core.ManaCostOptions{BaseCostFraction: 0.12},
+		ManaCost: core.ManaCostOptions{BaseCostPercent: 12},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,

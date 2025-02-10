@@ -74,7 +74,7 @@ func (demonology *DemonologyWarlock) registerMetamorphosis() {
 		ClassSpellMask: warlock.WarlockSpellImmolationAura,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostFraction: 0.64,
+			BaseCostPercent: 64,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

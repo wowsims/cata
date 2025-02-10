@@ -2,7 +2,6 @@ package core
 
 import (
 	"fmt"
-	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core/stats"
@@ -262,7 +261,7 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		spell.SchoolIndex = stats.SchoolIndexShadow
 	}
 
-	if config.ManaCost.BaseCostFraction != 0 || config.ManaCost.FlatCost != 0 {
+	if config.ManaCost.BaseCostPercent != 0 || config.ManaCost.FlatCost != 0 {
 		spell.Cost = newManaCost(spell, config.ManaCost)
 	} else if config.EnergyCost.Cost != 0 {
 		spell.Cost = newEnergyCost(spell, config.EnergyCost)
@@ -279,7 +278,7 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 	spell.createShields(config.Shield)
 
 	if spell.Cost != nil {
-		spell.DefaultCast.Cost = spell.Cost.BaseCost
+		spell.DefaultCast.Cost = float64(spell.Cost.BaseCost)
 	}
 
 	var emptyCast Cast
@@ -683,19 +682,19 @@ type ResourceCostImpl interface {
 }
 
 type SpellCost struct {
-	BaseCost        float64 // The base power cost before all modifiers.
-	FlatModifier    int32   // Flat value added to base cost before pct mods
-	PercentModifier int32   // Multiplier for cost, stored as an int, e.g. 0.5 is stored as 50
+	BaseCost        int32 // The base power cost before all modifiers.
+	FlatModifier    int32 // Flat value added to base cost before pct mods
+	PercentModifier int32 // Multiplier for cost, stored as an int, e.g. 0.5 is stored as 50
 	spell           *Spell
 	ResourceCostImpl
 }
 
-func (sc *SpellCost) ApplyCostModifiers(cost float64) float64 {
+func (sc *SpellCost) ApplyCostModifiers(cost int32) float64 {
 	spell := sc.spell
-	cost = max(0, cost+float64(sc.FlatModifier))
-	cost = max(0, math.Floor(cost*float64(spell.Unit.PseudoStats.SpellCostPercentModifier)/100))
-	cost = max(0, math.Floor(cost*float64(sc.PercentModifier)/100))
-	return cost
+	cost = max(0, cost+sc.FlatModifier)
+	cost = max(0, int32(cost*spell.Unit.PseudoStats.SpellCostPercentModifier)/100)
+	cost = max(0, int32(cost*sc.PercentModifier)/100)
+	return float64(cost)
 }
 
 // Get power cost after all modifiers.

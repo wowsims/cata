@@ -17,7 +17,7 @@ func (mage *Mage) registerFireballSpell() {
 		MissileSpeed:   24,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostFraction: 0.09,
+			BaseCostPercent: 9,
 		},
 
 		Cast: core.CastConfig{

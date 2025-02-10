@@ -160,8 +160,8 @@ func (paladin *Paladin) registerSealOfTruth() {
 		Flags:       core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostFraction: 0.14,
-			PercentModifier:  100,
+			BaseCostPercent: 14,
+			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

@@ -58,7 +58,7 @@ func (sinRogue *AssassinationRogue) registerMutilateSpell() {
 		ClassSpellMask: rogue.RogueSpellMutilate,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   60 - core.TernaryFloat64(sinRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfMutilate), 5, 0),
+			Cost:   60 - core.TernaryInt32(sinRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfMutilate), 5, 0),
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

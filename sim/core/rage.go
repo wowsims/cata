@@ -214,7 +214,7 @@ func (rb *rageBar) doneIteration() {
 }
 
 type RageCostOptions struct {
-	Cost float64
+	Cost int32
 
 	Refund        float64
 	RefundMetrics *ResourceMetrics // Optional, will default to unit.RageRefundMetrics if not supplied.

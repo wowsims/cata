@@ -319,7 +319,7 @@ func (priest *Priest) applyArchangel() {
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
 		ManaCost: core.ManaCostOptions{
-			BaseCostFraction: 0,
+			BaseCostPercent: 0,
 		},
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
@@ -348,7 +348,7 @@ func (priest *Priest) applyArchangel() {
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
 		ManaCost: core.ManaCostOptions{
-			BaseCostFraction: 0,
+			BaseCostPercent: 0,
 		},
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
