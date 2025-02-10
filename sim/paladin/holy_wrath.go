@@ -22,7 +22,7 @@ func (paladin *Paladin) registerHolyWrath() {
 		MaxRange:     10,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.20,
+			BaseCostFraction: 0.20,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

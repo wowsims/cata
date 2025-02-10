@@ -135,7 +135,7 @@ type Spell struct {
 	DamageMultiplier         float64
 	DamageMultiplierAdditive float64
 	CritMultiplier           float64
-	CritMultiplierAddative   float64 // Addative critical damage bonus
+	CritMultiplierAdditive   float64 // Additive critical damage bonus
 
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
 
@@ -231,7 +231,7 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		DamageMultiplier:         config.DamageMultiplier,
 		DamageMultiplierAdditive: config.DamageMultiplierAdditive,
 		CritMultiplier:           config.CritMultiplier,
-		CritMultiplierAddative:   config.CritMultiplierAddative,
+		CritMultiplierAdditive:   config.CritMultiplierAddative,
 
 		BonusCoefficient: config.BonusCoefficient,
 
@@ -262,7 +262,7 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		spell.SchoolIndex = stats.SchoolIndexShadow
 	}
 
-	if config.ManaCost.BaseCost != 0 || config.ManaCost.FlatCost != 0 {
+	if config.ManaCost.BaseCostFraction != 0 || config.ManaCost.FlatCost != 0 {
 		spell.Cost = newManaCost(spell, config.ManaCost)
 	} else if config.EnergyCost.Cost != 0 {
 		spell.Cost = newEnergyCost(spell, config.EnergyCost)
@@ -636,8 +636,8 @@ func (spell *Spell) ExpectedTickDamageFromCurrentSnapshot(sim *Simulation, targe
 	return result.Damage
 }
 
-func (spell *Spell) EffectiveCritDamageMultiplier() float64 {
-	return (spell.CritMultiplier-1)*(spell.CritMultiplierAddative+1) + 1
+func (spell *Spell) CritDamageMultiplier() float64 {
+	return (spell.CritMultiplier-1)*(spell.CritMultiplierAdditive+1) + 1
 }
 
 // Time until either the cast is finished or GCD is ready again, whichever is longer
@@ -667,7 +667,7 @@ func (spell *Spell) Matches(mask int64) bool {
 
 // Handles computing the cost of spells and checking whether the Unit
 // meets them.
-type SpellCostFunctions interface {
+type ResourceCostImpl interface {
 	// Whether the Unit associated with the spell meets the resource cost
 	// requirements to cast the spell.
 	MeetsRequirement(*Simulation, *Spell) bool
@@ -683,18 +683,18 @@ type SpellCostFunctions interface {
 }
 
 type SpellCost struct {
-	BaseCost     float64 // The base power cost before all modifiers.
-	FlatModifier int32   // Flat value added to base cost before pct mods
-	Multiplier   int32   // Multiplier for cost, stored as an int, e.g. 0.5 is stored as 50
-	spell        *Spell
-	SpellCostFunctions
+	BaseCost        float64 // The base power cost before all modifiers.
+	FlatModifier    int32   // Flat value added to base cost before pct mods
+	PercentModifier int32   // Multiplier for cost, stored as an int, e.g. 0.5 is stored as 50
+	spell           *Spell
+	ResourceCostImpl
 }
 
 func (sc *SpellCost) ApplyCostModifiers(cost float64) float64 {
 	spell := sc.spell
 	cost = max(0, cost+float64(sc.FlatModifier))
-	cost = max(0, math.Floor(cost*float64(spell.Unit.PseudoStats.CostMultiplier)/100))
-	cost = max(0, math.Floor(cost*float64(sc.Multiplier)/100))
+	cost = max(0, math.Floor(cost*float64(spell.Unit.PseudoStats.SpellCostPercentModifier)/100))
+	cost = max(0, math.Floor(cost*float64(sc.PercentModifier)/100))
 	return cost
 }
 

@@ -47,7 +47,7 @@ func (warlock *Warlock) registerSeed() {
 		MissileSpeed:   28,
 		ClassSpellMask: WarlockSpellSeedOfCorruption,
 
-		ManaCost: core.ManaCostOptions{BaseCost: 0.34},
+		ManaCost: core.ManaCostOptions{BaseCostFraction: 0.34},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,

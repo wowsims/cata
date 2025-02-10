@@ -63,5 +63,5 @@ func (warrior *Warrior) RegisterExecuteSpell() {
 			}
 		},
 	})
-	rageMetrics = warrior.Execute.Cost.SpellCostFunctions.(*core.RageCost).ResourceMetrics
+	rageMetrics = warrior.Execute.RageMetrics()
 }

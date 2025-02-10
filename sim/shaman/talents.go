@@ -320,7 +320,7 @@ func (shaman *Shaman) applyFulmination() {
 		Flags:          core.SpellFlagPassiveSpell,
 		ClassSpellMask: SpellMaskFulmination,
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0,
+			BaseCostFraction: 0,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -604,9 +604,9 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 			multiDiff := 20 * (newStacks - oldStacks)
 			multiDiffFloat := float64(multiDiff) / 100
 			shaman.LightningBolt.CastTimeMultiplier -= multiDiffFloat
-			shaman.LightningBolt.Cost.Multiplier -= multiDiff
+			shaman.LightningBolt.Cost.PercentModifier -= multiDiff
 			shaman.ChainLightning.CastTimeMultiplier -= multiDiffFloat
-			shaman.ChainLightning.Cost.Multiplier -= multiDiff
+			shaman.ChainLightning.Cost.PercentModifier -= multiDiff
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !spell.Flags.Matches(SpellFlagElectric) {

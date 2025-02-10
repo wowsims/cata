@@ -13,8 +13,8 @@ func (shaman *Shaman) newTotemSpellConfig(baseCost float64, spellID int32) core.
 		Flags:    SpellFlagTotem | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   baseCost,
-			Multiplier: 100 - (15 * shaman.Talents.TotemicFocus),
+			BaseCostFraction: baseCost,
+			PercentModifier:  100 - (15 * shaman.Talents.TotemicFocus),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

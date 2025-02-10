@@ -9,7 +9,7 @@ import (
 func (druid *Druid) registerFaerieFireSpell() {
 	actionID := core.ActionID{SpellID: 770}
 	manaCostOptions := core.ManaCostOptions{
-		BaseCost: 0.08,
+		BaseCostFraction: 0.08,
 	}
 	gcd := core.GCDDefault
 	ignoreHaste := false

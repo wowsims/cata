@@ -27,7 +27,7 @@ func (shaman *Shaman) registerEarthElementalTotem() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskEarthElementalTotem,
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.24,
+			BaseCostFraction: 0.24,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

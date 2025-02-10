@@ -101,7 +101,7 @@ func (mage *Mage) registerIcyVeinsCD() {
 		Flags:          core.SpellFlagNoOnCastComplete,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.03,
+			BaseCostFraction: 0.03,
 		},
 
 		Cast: core.CastConfig{

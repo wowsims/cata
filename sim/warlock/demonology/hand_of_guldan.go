@@ -40,7 +40,7 @@ func (demonology *DemonologyWarlock) registerHandOfGuldan() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: warlock.WarlockSpellHandOfGuldan,
 
-		ManaCost: core.ManaCostOptions{BaseCost: 0.07},
+		ManaCost: core.ManaCostOptions{BaseCostFraction: 0.07},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,

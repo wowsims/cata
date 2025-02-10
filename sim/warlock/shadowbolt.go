@@ -18,7 +18,7 @@ func (warlock *Warlock) registerShadowBolt() {
 		ClassSpellMask: WarlockSpellShadowBolt,
 		MissileSpeed:   20,
 
-		ManaCost: core.ManaCostOptions{BaseCost: 0.10},
+		ManaCost: core.ManaCostOptions{BaseCostFraction: 0.10},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,

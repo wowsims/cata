@@ -15,7 +15,7 @@ func (mage *Mage) registerScorchSpell() {
 		ClassSpellMask: MageSpellScorch,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.08,
+			BaseCostFraction: 0.08,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

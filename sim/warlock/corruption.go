@@ -14,7 +14,7 @@ func (warlock *Warlock) registerCorruption() {
 		Flags:          core.SpellFlagHauntSE | core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellCorruption,
 
-		ManaCost: core.ManaCostOptions{BaseCost: 0.06},
+		ManaCost: core.ManaCostOptions{BaseCostFraction: 0.06},
 		Cast:     core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}},
 
 		DamageMultiplierAdditive: 1,

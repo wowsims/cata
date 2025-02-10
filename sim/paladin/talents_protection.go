@@ -141,7 +141,7 @@ func (paladin *Paladin) applyHammerOfTheRighteous() {
 		ClassSpellMask: SpellMaskHammerOfTheRighteousMelee,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.10,
+			BaseCostFraction: 0.10,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -383,7 +383,7 @@ func (paladin *Paladin) applyHolyShield() {
 		ClassSpellMask: SpellMaskHolyShield,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.03,
+			BaseCostFraction: 0.03,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

@@ -21,7 +21,7 @@ func (mage *Mage) registerMirrorImageCD() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: MageSpellMirrorImage,
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.1,
+			BaseCostFraction: 0.1,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -136,7 +136,7 @@ func (mi *MirrorImage) registerFrostboltSpell() {
 		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.01,
+			BaseCostFraction: 0.01,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -171,7 +171,7 @@ func (mi *MirrorImage) registerFireballSpell() {
 		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.01,
+			BaseCostFraction: 0.01,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -205,7 +205,7 @@ func (mi *MirrorImage) registerArcaneBlastSpell() {
 		ProcMask:    core.ProcMaskSpellDamage,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.07,
+			BaseCostFraction: 0.07,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -237,7 +237,7 @@ func (mi *MirrorImage) registerFireblastSpell() {
 		ProcMask:    core.ProcMaskSpellDamage,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.01,
+			BaseCostFraction: 0.01,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

@@ -18,7 +18,7 @@ func (mage *Mage) registerBlastWaveSpell() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: MageSpellBlastWave,
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.07,
+			BaseCostFraction: 0.07,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

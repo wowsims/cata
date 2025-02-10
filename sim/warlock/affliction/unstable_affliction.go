@@ -15,7 +15,7 @@ func (affliction *AfflictionWarlock) registerUnstableAffliction() {
 		Flags:          core.SpellFlagHauntSE | core.SpellFlagAPL,
 		ClassSpellMask: warlock.WarlockSpellUnstableAffliction,
 
-		ManaCost: core.ManaCostOptions{BaseCost: 0.15},
+		ManaCost: core.ManaCostOptions{BaseCostFraction: 0.15},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,

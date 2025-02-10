@@ -14,7 +14,7 @@ func (warlock *Warlock) registerShadowflame() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellShadowflame,
 
-		ManaCost: core.ManaCostOptions{BaseCost: 0.25},
+		ManaCost: core.ManaCostOptions{BaseCostFraction: 0.25},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,

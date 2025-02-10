@@ -79,7 +79,7 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskStormstrikeCast,
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.08,
+			BaseCostFraction: 0.08,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

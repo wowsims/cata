@@ -81,7 +81,7 @@ func (demonology *DemonologyWarlock) registerSummonFelguard() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: warlock.WarlockSpellSummonFelguard,
 
-		ManaCost: core.ManaCostOptions{BaseCost: 0.8},
+		ManaCost: core.ManaCostOptions{BaseCostFraction: 0.8},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,

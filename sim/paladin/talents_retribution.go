@@ -235,7 +235,7 @@ func (paladin *Paladin) applyDivineStorm() {
 		MaxRange: 8,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.05,
+			BaseCostFraction: 0.05,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

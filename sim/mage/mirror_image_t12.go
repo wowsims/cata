@@ -86,7 +86,7 @@ func (mi *T12MirrorImage) registerFireballSpell() {
 		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.01,
+			BaseCostFraction: 0.01,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

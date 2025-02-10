@@ -682,10 +682,10 @@ func (druid *Druid) applyStampede() {
 		Duration: time.Second * 10,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			druid.Ravage.Cost.Multiplier -= ravageCostMod
+			druid.Ravage.Cost.PercentModifier -= ravageCostMod
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			druid.Ravage.Cost.Multiplier += ravageCostMod
+			druid.Ravage.Cost.PercentModifier += ravageCostMod
 		},
 	})
 }

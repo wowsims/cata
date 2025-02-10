@@ -34,7 +34,7 @@ func (druid *Druid) registerBerserkCD() {
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
-				spell.Cost.Multiplier -= 50
+				spell.Cost.PercentModifier -= 50
 			}
 
 			if druid.PrimalMadnessAura != nil {
@@ -47,7 +47,7 @@ func (druid *Druid) registerBerserkCD() {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
-				spell.Cost.Multiplier += 50
+				spell.Cost.PercentModifier += 50
 			}
 
 			if druid.PrimalMadnessAura.IsActive() && !druid.TigersFuryAura.IsActive() {
@@ -89,10 +89,10 @@ func (druid *Druid) registerBerserkCD() {
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			druid.MangleBear.CD.Reset()
-			druid.MangleBear.Cost.Multiplier -= 100
+			druid.MangleBear.Cost.PercentModifier -= 100
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			druid.MangleBear.Cost.Multiplier += 100
+			druid.MangleBear.Cost.PercentModifier += 100
 		},
 	})
 }

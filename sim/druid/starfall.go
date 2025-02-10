@@ -40,8 +40,8 @@ func (druid *Druid) registerStarfallSpell() {
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL,
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.35,
-			Multiplier: 100,
+			BaseCostFraction: 0.35,
+			PercentModifier:  100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

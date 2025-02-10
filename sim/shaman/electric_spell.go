@@ -31,8 +31,8 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 		MetricSplits: 6,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   core.TernaryFloat64(isElementalOverload, 0, baseCost),
-			Multiplier: 100 - (5 * shaman.Talents.Convection),
+			BaseCostFraction: core.TernaryFloat64(isElementalOverload, 0, baseCost),
+			PercentModifier:  100 - (5 * shaman.Talents.Convection),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

@@ -14,8 +14,8 @@ func (priest *Priest) newMindFlaySpell() *core.Spell {
 		Flags:          core.SpellFlagChanneled | core.SpellFlagAPL,
 		ClassSpellMask: PriestSpellMindFlay,
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.08,
-			Multiplier: 100,
+			BaseCostFraction: 0.08,
+			PercentModifier:  100,
 		},
 
 		Cast: core.CastConfig{

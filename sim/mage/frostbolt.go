@@ -23,7 +23,7 @@ func (mage *Mage) registerFrostboltSpell() {
 		MissileSpeed:   28,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.13,
+			BaseCostFraction: 0.13,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

@@ -19,7 +19,7 @@ func (destro *DestructionWarlock) registerChaosBolt() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: warlock.WarlockSpellChaosBolt,
 
-		ManaCost: core.ManaCostOptions{BaseCost: 0.07},
+		ManaCost: core.ManaCostOptions{BaseCostFraction: 0.07},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,

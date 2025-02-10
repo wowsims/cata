@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"strconv"
 	"time"
 
@@ -69,8 +70,11 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 		removeFn = functions.Remove
 	}
 
-	if config.ResourceType > 0 && (config.ResourceType&proto.ResourceType_ResourceTypeMana|proto.ResourceType_ResourceTypeEnergy|proto.ResourceType_ResourceTypeRage|proto.ResourceType_ResourceTypeFocus == 0) {
-		panic("ResourceType " + strconv.Itoa(int(config.ResourceType)) + " for SpellMod is not implemented")
+	if config.ResourceType > 0 && (config.ResourceType != proto.ResourceType_ResourceTypeMana &&
+		config.ResourceType != proto.ResourceType_ResourceTypeEnergy &&
+		config.ResourceType != proto.ResourceType_ResourceTypeRage &&
+		config.ResourceType != proto.ResourceType_ResourceTypeFocus) {
+		panic(fmt.Sprintf("ResourceType %s for SpellMod is not implemented", config.ResourceType))
 	}
 
 	mod := &SpellMod{
@@ -116,13 +120,13 @@ func shouldApply(spell *Spell, mod *SpellMod) bool {
 	}
 
 	if mod.ResourceType > 0 && spell.Cost != nil {
-		if _, ok := spell.Cost.SpellCostFunctions.(*ManaCost); mod.ResourceType == proto.ResourceType_ResourceTypeMana && !ok {
+		if _, ok := spell.Cost.ResourceCostImpl.(*ManaCost); mod.ResourceType == proto.ResourceType_ResourceTypeMana && !ok {
 			return false
-		} else if _, ok := spell.Cost.SpellCostFunctions.(*EnergyCost); mod.ResourceType == proto.ResourceType_ResourceTypeEnergy && !ok {
+		} else if _, ok := spell.Cost.ResourceCostImpl.(*EnergyCost); mod.ResourceType == proto.ResourceType_ResourceTypeEnergy && !ok {
 			return false
-		} else if _, ok := spell.Cost.SpellCostFunctions.(*RageCost); mod.ResourceType == proto.ResourceType_ResourceTypeRage && !ok {
+		} else if _, ok := spell.Cost.ResourceCostImpl.(*RageCost); mod.ResourceType == proto.ResourceType_ResourceTypeRage && !ok {
 			return false
-		} else if _, ok := spell.Cost.SpellCostFunctions.(*FocusCost); mod.ResourceType == proto.ResourceType_ResourceTypeFocus && !ok {
+		} else if _, ok := spell.Cost.ResourceCostImpl.(*FocusCost); mod.ResourceType == proto.ResourceType_ResourceTypeFocus && !ok {
 			return false
 		}
 	}
@@ -428,13 +432,13 @@ func removeDamageDoneAdd(mod *SpellMod, spell *Spell) {
 
 func applyPowerCostPercent(mod *SpellMod, spell *Spell) {
 	if spell.Cost != nil {
-		spell.Cost.Multiplier += int32(mod.intValue)
+		spell.Cost.PercentModifier += int32(mod.intValue)
 	}
 }
 
 func removePowerCostPercent(mod *SpellMod, spell *Spell) {
 	if spell.Cost != nil {
-		spell.Cost.Multiplier -= int32(mod.intValue)
+		spell.Cost.PercentModifier -= int32(mod.intValue)
 	}
 }
 
@@ -479,11 +483,11 @@ func removeCooldownMultiplier(mod *SpellMod, spell *Spell) {
 }
 
 func applyCritMultiplierFlat(mod *SpellMod, spell *Spell) {
-	spell.CritMultiplierAddative += mod.floatValue
+	spell.CritMultiplierAdditive += mod.floatValue
 }
 
 func removeCritMultiplierFlat(mod *SpellMod, spell *Spell) {
-	spell.CritMultiplierAddative -= mod.floatValue
+	spell.CritMultiplierAdditive -= mod.floatValue
 }
 
 func applyCastTimePercent(mod *SpellMod, spell *Spell) {

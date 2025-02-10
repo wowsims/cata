@@ -38,8 +38,8 @@ func (warlock *Warlock) registerSoulFire() {
 		MissileSpeed:   24,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.09,
-			Multiplier: 100,
+			BaseCostFraction: 0.09,
+			PercentModifier:  100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

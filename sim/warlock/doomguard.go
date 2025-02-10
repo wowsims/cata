@@ -22,7 +22,7 @@ func (warlock *Warlock) registerSummonDoomguard(timer *core.Timer) {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellSummonDoomguard,
 
-		ManaCost: core.ManaCostOptions{BaseCost: 0.8},
+		ManaCost: core.ManaCostOptions{BaseCostFraction: 0.8},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{GCD: core.GCDDefault},
 			CD: core.Cooldown{
@@ -100,7 +100,7 @@ func (pet *DoomguardPet) registerDoomBolt() {
 		ClassSpellMask: WarlockSpellDoomguardDoomBolt,
 		MissileSpeed:   20,
 
-		ManaCost: core.ManaCostOptions{BaseCost: 0},
+		ManaCost: core.ManaCostOptions{BaseCostFraction: 0},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,

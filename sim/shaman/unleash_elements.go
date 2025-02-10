@@ -181,8 +181,8 @@ func (shaman *Shaman) registerUnleashElements() {
 		Flags:    core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.07,
-			Multiplier: 100 - (5 * shaman.Talents.Convection) - shaman.GetMentalQuicknessBonus(),
+			BaseCostFraction: 0.07,
+			PercentModifier:  100 - (5 * shaman.Talents.Convection) - shaman.GetMentalQuicknessBonus(),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

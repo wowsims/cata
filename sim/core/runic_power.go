@@ -930,10 +930,10 @@ type RuneCostImpl struct {
 
 func newRuneCost(spell *Spell, options RuneCostOptions) *SpellCost {
 	return &SpellCost{
-		spell:      spell,
-		BaseCost:   float64(NewRuneCost(int16(options.RunicPowerCost), options.BloodRuneCost, options.FrostRuneCost, options.UnholyRuneCost, 0)),
-		Multiplier: 100,
-		SpellCostFunctions: &RuneCostImpl{
+		spell:           spell,
+		BaseCost:        float64(NewRuneCost(int16(options.RunicPowerCost), options.BloodRuneCost, options.FrostRuneCost, options.UnholyRuneCost, 0)),
+		PercentModifier: 100,
+		ResourceCostImpl: &RuneCostImpl{
 			BloodRuneCost:  options.BloodRuneCost,
 			FrostRuneCost:  options.FrostRuneCost,
 			UnholyRuneCost: options.UnholyRuneCost,
@@ -1018,7 +1018,7 @@ func (rc *RuneCostImpl) spendRefundableCost(sim *Simulation, spell *Spell, resul
 }
 
 func (spell *Spell) SpendRefundableCost(sim *Simulation, result *SpellResult) {
-	spell.Cost.SpellCostFunctions.(*RuneCostImpl).spendRefundableCost(sim, spell, result)
+	spell.Cost.ResourceCostImpl.(*RuneCostImpl).spendRefundableCost(sim, spell, result)
 }
 
 func (rc *RuneCostImpl) spendRefundableCostAndConvertBloodRune(sim *Simulation, spell *Spell, result *SpellResult, convertChance float64) {
@@ -1063,7 +1063,7 @@ func (rc *RuneCostImpl) spendRefundableCostAndConvertBloodRune(sim *Simulation, 
 }
 
 func (spell *Spell) SpendRefundableCostAndConvertBloodRune(sim *Simulation, result *SpellResult, convertChance float64) {
-	spell.Cost.SpellCostFunctions.(*RuneCostImpl).spendRefundableCostAndConvertBloodRune(sim, spell, result, convertChance)
+	spell.Cost.ResourceCostImpl.(*RuneCostImpl).spendRefundableCostAndConvertBloodRune(sim, spell, result, convertChance)
 }
 
 func (rc *RuneCostImpl) spendCostAndConvertFrostOrUnholyRune(sim *Simulation, spell *Spell, result *SpellResult, convertChance float64, refundable bool) {
@@ -1101,11 +1101,11 @@ func (rc *RuneCostImpl) spendCostAndConvertFrostOrUnholyRune(sim *Simulation, sp
 }
 
 func (spell *Spell) SpendRefundableCostAndConvertFrostOrUnholyRune(sim *Simulation, result *SpellResult, convertChance float64) {
-	spell.Cost.SpellCostFunctions.(*RuneCostImpl).spendCostAndConvertFrostOrUnholyRune(sim, spell, result, convertChance, true)
+	spell.Cost.ResourceCostImpl.(*RuneCostImpl).spendCostAndConvertFrostOrUnholyRune(sim, spell, result, convertChance, true)
 }
 
 func (spell *Spell) SpendCostAndConvertFrostOrUnholyRune(sim *Simulation, result *SpellResult, convertChance float64) {
-	spell.Cost.SpellCostFunctions.(*RuneCostImpl).spendCostAndConvertFrostOrUnholyRune(sim, spell, result, convertChance, false)
+	spell.Cost.ResourceCostImpl.(*RuneCostImpl).spendCostAndConvertFrostOrUnholyRune(sim, spell, result, convertChance, false)
 }
 
 func (rc *RuneCostImpl) spendRefundableCostAndConvertBloodOrFrostRune(sim *Simulation, spell *Spell, result *SpellResult, convertChance float64) {
@@ -1154,7 +1154,7 @@ func (rc *RuneCostImpl) spendRefundableCostAndConvertBloodOrFrostRune(sim *Simul
 }
 
 func (spell *Spell) SpendRefundableCostAndConvertBloodOrFrostRune(sim *Simulation, result *SpellResult, convertChance float64) {
-	spell.Cost.SpellCostFunctions.(*RuneCostImpl).spendRefundableCostAndConvertBloodOrFrostRune(sim, spell, result, convertChance)
+	spell.Cost.ResourceCostImpl.(*RuneCostImpl).spendRefundableCostAndConvertBloodOrFrostRune(sim, spell, result, convertChance)
 }
 
 func (rc *RuneCostImpl) IssueRefund(_ *Simulation, _ *Spell) {
@@ -1163,25 +1163,25 @@ func (rc *RuneCostImpl) IssueRefund(_ *Simulation, _ *Spell) {
 }
 
 func (spell *Spell) RuneCostImpl() *RuneCostImpl {
-	return spell.Cost.SpellCostFunctions.(*RuneCostImpl)
+	return spell.Cost.ResourceCostImpl.(*RuneCostImpl)
 }
 
 func (spell *Spell) RunicPowerMetrics() *ResourceMetrics {
-	return spell.Cost.SpellCostFunctions.(*RuneCostImpl).runicPowerMetrics
+	return spell.Cost.ResourceCostImpl.(*RuneCostImpl).runicPowerMetrics
 }
 
 func (spell *Spell) BloodRuneMetrics() *ResourceMetrics {
-	return spell.Cost.SpellCostFunctions.(*RuneCostImpl).bloodRuneMetrics
+	return spell.Cost.ResourceCostImpl.(*RuneCostImpl).bloodRuneMetrics
 }
 
 func (spell *Spell) FrostRuneMetrics() *ResourceMetrics {
-	return spell.Cost.SpellCostFunctions.(*RuneCostImpl).frostRuneMetrics
+	return spell.Cost.ResourceCostImpl.(*RuneCostImpl).frostRuneMetrics
 }
 
 func (spell *Spell) UnholyRuneMetrics() *ResourceMetrics {
-	return spell.Cost.SpellCostFunctions.(*RuneCostImpl).unholyRuneMetrics
+	return spell.Cost.ResourceCostImpl.(*RuneCostImpl).unholyRuneMetrics
 }
 
 func (spell *Spell) DeathRuneMetrics() *ResourceMetrics {
-	return spell.Cost.SpellCostFunctions.(*RuneCostImpl).deathRuneMetrics
+	return spell.Cost.ResourceCostImpl.(*RuneCostImpl).deathRuneMetrics
 }

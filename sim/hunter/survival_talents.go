@@ -151,12 +151,12 @@ func (hunter *Hunter) applyTNT() {
 		MaxStacks: 2,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			if hunter.ExplosiveShot != nil {
-				hunter.ExplosiveShot.Cost.Multiplier -= 100
+				hunter.ExplosiveShot.Cost.PercentModifier -= 100
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			if hunter.ExplosiveShot != nil {
-				hunter.ExplosiveShot.Cost.Multiplier += 100
+				hunter.ExplosiveShot.Cost.PercentModifier += 100
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {

@@ -18,7 +18,7 @@ func (warlock *Warlock) registerShadowBurnSpell() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellShadowBurn,
 
-		ManaCost: core.ManaCostOptions{BaseCost: 0.15},
+		ManaCost: core.ManaCostOptions{BaseCostFraction: 0.15},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,

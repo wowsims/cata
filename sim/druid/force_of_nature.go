@@ -22,7 +22,7 @@ func (druid *Druid) registerForceOfNature() {
 		Flags:    core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.12,
+			BaseCostFraction: 0.12,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
