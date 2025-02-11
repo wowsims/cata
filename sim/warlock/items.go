@@ -248,7 +248,7 @@ var ItemSetVestmentsOfTheFacelessShroud = core.NewItemSet(core.ItemSet{
 			})
 
 			setBonusAura.AttachProcTrigger(core.ProcTrigger{
-				Name:           "Item - Warlock T13 4P Bonus",
+				Name:           "Item - Warlock T13 4P Bonus (Soulburn)",
 				ActionID:       core.ActionID{SpellID: 105787},
 				Callback:       core.CallbackOnCastComplete,
 				ClassSpellMask: WarlockSpellSoulBurn,
@@ -256,6 +256,8 @@ var ItemSetVestmentsOfTheFacelessShroud = core.NewItemSet(core.ItemSet{
 					aura.Activate(sim)
 				},
 			})
+
+			setBonusAura.ExposeToAPL(105787)
 
 			warlock.T13_4pc = setBonusAura
 		},

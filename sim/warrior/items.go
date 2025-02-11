@@ -121,6 +121,8 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 					buff.Activate(sim)
 				},
 			})
+
+			setBonusAura.ExposeToAPL(99234)
 		},
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			character := agent.(WarriorAgent).GetWarrior()
@@ -299,6 +301,8 @@ var ItemSetColossalDragonplateBattlegear = core.NewItemSet(core.ItemSet{
 				ClassSpellMask: SpellMaskMortalStrike,
 				ProcChance:     0.13,
 			}))
+
+			setBonusAura.ExposeToAPL(105907)
 		},
 	},
 })
