@@ -13,7 +13,7 @@ const (
 )
 
 // Shared precomputation logic for LB and CL.
-func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost int32, baseCastTime time.Duration, isElementalOverload bool, bonusCoefficient float64) core.SpellConfig {
+func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCostPercent int32, baseCastTime time.Duration, isElementalOverload bool, bonusCoefficient float64) core.SpellConfig {
 	mask := core.ProcMaskSpellDamage
 	flags := SpellFlagElectric | SpellFlagFocusable
 	if isElementalOverload {
@@ -31,7 +31,7 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost in
 		MetricSplits: 6,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: core.TernaryInt32(isElementalOverload, 0, baseCost),
+			BaseCostPercent: core.TernaryInt32(isElementalOverload, 0, baseCostPercent),
 			PercentModifier: 100 - (5 * shaman.Talents.Convection),
 		},
 		Cast: core.CastConfig{

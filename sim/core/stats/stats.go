@@ -453,7 +453,7 @@ type PseudoStats struct {
 
 func NewPseudoStats() PseudoStats {
 	return PseudoStats{
-		SpellCostPercentModifier: int32(100),
+		SpellCostPercentModifier: 100,
 
 		CastSpeedMultiplier:   1,
 		MeleeSpeedMultiplier:  1,

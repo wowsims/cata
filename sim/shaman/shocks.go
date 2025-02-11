@@ -7,7 +7,7 @@ import (
 )
 
 // Shared logic for all shocks.
-func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellSchool, baseCost int32, shockTimer *core.Timer, bonusCoefficient float64) core.SpellConfig {
+func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellSchool, baseCostPercent int32, shockTimer *core.Timer, bonusCoefficient float64) core.SpellConfig {
 	actionID := core.ActionID{SpellID: spellID}
 
 	return core.SpellConfig{
@@ -17,7 +17,7 @@ func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellS
 		Flags:       SpellFlagShock | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: baseCost,
+			BaseCostPercent: baseCostPercent,
 			PercentModifier: 100 - (5 * shaman.Talents.Convection) - shaman.GetMentalQuicknessBonus(),
 		},
 		Cast: core.CastConfig{

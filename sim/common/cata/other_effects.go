@@ -118,7 +118,7 @@ func init() {
 				if !character.HasManaBar() || spell.DefaultCast.Cost == 0 {
 					return
 				}
-				storedMana = math.Min(4200, storedMana+spell.DefaultCast.Cost*0.2)
+				storedMana = min(4200, storedMana+spell.DefaultCast.Cost*0.2)
 			},
 		})
 		triggerAura.OnReset = func(aura *core.Aura, sim *core.Simulation) {
