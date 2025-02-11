@@ -25,7 +25,7 @@ func (enh *EnhancementShaman) registerLavaLashSpell() {
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: shaman.SpellMaskLavaLash,
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.04,
+			BaseCostPercent: 4,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

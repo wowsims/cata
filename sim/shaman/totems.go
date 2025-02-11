@@ -7,14 +7,14 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-func (shaman *Shaman) newTotemSpellConfig(baseCost float64, spellID int32) core.SpellConfig {
+func (shaman *Shaman) newTotemSpellConfig(baseCostPercent int32, spellID int32) core.SpellConfig {
 	return core.SpellConfig{
 		ActionID: core.ActionID{SpellID: spellID},
 		Flags:    SpellFlagTotem | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   baseCost,
-			Multiplier: 100 - (15 * shaman.Talents.TotemicFocus),
+			BaseCostPercent: baseCostPercent,
+			PercentModifier: 100 - (15 * shaman.Talents.TotemicFocus),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -25,7 +25,7 @@ func (shaman *Shaman) newTotemSpellConfig(baseCost float64, spellID int32) core.
 }
 
 func (shaman *Shaman) registerWrathOfAirTotemSpell() {
-	config := shaman.newTotemSpellConfig(0.11, 3738)
+	config := shaman.newTotemSpellConfig(11, 3738)
 	config.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 		shaman.TotemExpirations[AirTotem] = sim.CurrentTime + time.Second*300
 	}
@@ -33,7 +33,7 @@ func (shaman *Shaman) registerWrathOfAirTotemSpell() {
 }
 
 func (shaman *Shaman) registerWindfuryTotemSpell() {
-	config := shaman.newTotemSpellConfig(0.11, 8512)
+	config := shaman.newTotemSpellConfig(11, 8512)
 	config.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 		shaman.TotemExpirations[AirTotem] = sim.CurrentTime + time.Second*300
 	}
@@ -41,7 +41,7 @@ func (shaman *Shaman) registerWindfuryTotemSpell() {
 }
 
 func (shaman *Shaman) registerManaSpringTotemSpell() {
-	config := shaman.newTotemSpellConfig(0.04, 5675)
+	config := shaman.newTotemSpellConfig(4, 5675)
 	config.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 		shaman.TotemExpirations[WaterTotem] = sim.CurrentTime + time.Second*300
 	}
@@ -49,7 +49,7 @@ func (shaman *Shaman) registerManaSpringTotemSpell() {
 }
 
 func (shaman *Shaman) registerHealingStreamTotemSpell() {
-	config := shaman.newTotemSpellConfig(0.03, 5394)
+	config := shaman.newTotemSpellConfig(3, 5394)
 	hsHeal := shaman.RegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 5394},
 		SpellSchool:      core.SpellSchoolNature,
@@ -83,7 +83,7 @@ func (shaman *Shaman) registerHealingStreamTotemSpell() {
 }
 
 func (shaman *Shaman) registerFlametongueTotemSpell() {
-	config := shaman.newTotemSpellConfig(0.11, 8227)
+	config := shaman.newTotemSpellConfig(11, 8227)
 	config.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 		shaman.TotemExpirations[FireTotem] = sim.CurrentTime + time.Second*300
 	}
@@ -91,7 +91,7 @@ func (shaman *Shaman) registerFlametongueTotemSpell() {
 }
 
 func (shaman *Shaman) registerStrengthOfEarthTotemSpell() {
-	config := shaman.newTotemSpellConfig(0.1, 8075)
+	config := shaman.newTotemSpellConfig(10, 8075)
 	config.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 		shaman.EarthElemental.Disable(sim)
 		shaman.TotemExpirations[EarthTotem] = sim.CurrentTime + time.Second*300
@@ -100,7 +100,7 @@ func (shaman *Shaman) registerStrengthOfEarthTotemSpell() {
 }
 
 func (shaman *Shaman) registerTremorTotemSpell() {
-	config := shaman.newTotemSpellConfig(0.02, 8143)
+	config := shaman.newTotemSpellConfig(2, 8143)
 	config.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 		shaman.EarthElemental.Disable(sim)
 		shaman.TotemExpirations[EarthTotem] = sim.CurrentTime + time.Second*300
@@ -109,7 +109,7 @@ func (shaman *Shaman) registerTremorTotemSpell() {
 }
 
 func (shaman *Shaman) registerStoneskinTotemSpell() {
-	config := shaman.newTotemSpellConfig(0.1, 8071)
+	config := shaman.newTotemSpellConfig(10, 8071)
 	config.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 		shaman.EarthElemental.Disable(sim)
 		shaman.TotemExpirations[EarthTotem] = sim.CurrentTime + time.Second*300

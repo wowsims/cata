@@ -18,17 +18,30 @@ func (shaman *Shaman) registerShamanisticRageCD() {
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageTakenMultiplier *= 0.7
-			shaman.PseudoStats.CostMultiplier -= 100
+			shaman.PseudoStats.SpellCostPercentModifier -= 100
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageTakenMultiplier /= 0.7
-			shaman.PseudoStats.CostMultiplier += 100
+			shaman.PseudoStats.SpellCostPercentModifier += 100
 		},
 	})
 
+	// 2pc T10 bonus aura
+	dummySetAura := shaman.RegisterAura(core.Aura{
+		Label:    "Frost Witch's Battlegear (2pc)",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Deactivate(sim)
+		},
+	})
+
+	if shaman.usePrepullEnh_2PT10 && !shaman.CouldHaveSetBonus(ItemSetFrostWitchBattlegear, 2) {
+		SharedEnhTier102PCAura(shaman, dummySetAura)
+	}
+
 	spell := shaman.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagNoOnCastComplete,
+		ActionID:       actionID,
+		ClassSpellMask: SpellMaskShamanisticRage,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
@@ -40,8 +53,14 @@ func (shaman *Shaman) registerShamanisticRageCD() {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			if sim.CurrentTime < 0 {
+				dummySetAura.Activate(sim)
+			} else {
+				dummySetAura.Deactivate(sim)
+			}
 			srAura.Activate(sim)
 		},
+		RelatedSelfBuff: srAura,
 	})
 
 	shaman.AddMajorCooldown(core.MajorCooldown{

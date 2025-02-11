@@ -192,8 +192,8 @@ func (druid *Druid) registerCatFormSpell() {
 		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.05,
-			Multiplier: 100 - (10 * druid.Talents.NaturalShapeshifter),
+			BaseCostPercent: 5,
+			PercentModifier: 100 - (10 * druid.Talents.NaturalShapeshifter),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -326,8 +326,8 @@ func (druid *Druid) registerBearFormSpell() {
 		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.05,
-			Multiplier: 100 - (10 * druid.Talents.NaturalShapeshifter),
+			BaseCostPercent: 5,
+			PercentModifier: 100 - (10 * druid.Talents.NaturalShapeshifter),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

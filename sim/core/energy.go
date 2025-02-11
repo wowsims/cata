@@ -226,7 +226,7 @@ func (eb *energyBar) disable(sim *Simulation) {
 }
 
 type EnergyCostOptions struct {
-	Cost float64
+	Cost int32
 
 	Refund        float64
 	RefundMetrics *ResourceMetrics // Optional, will default to unit.EnergyRefundMetrics if not supplied.
@@ -244,10 +244,10 @@ func newEnergyCost(spell *Spell, options EnergyCostOptions) *SpellCost {
 	}
 
 	return &SpellCost{
-		spell:      spell,
-		BaseCost:   options.Cost,
-		Multiplier: 100,
-		SpellCostFunctions: &EnergyCost{
+		spell:           spell,
+		BaseCost:        options.Cost,
+		PercentModifier: 100,
+		ResourceCostImpl: &EnergyCost{
 			Refund:            options.Refund,
 			RefundMetrics:     options.RefundMetrics,
 			ResourceMetrics:   spell.Unit.NewEnergyMetrics(spell.ActionID),
@@ -273,9 +273,9 @@ func (ec *EnergyCost) IssueRefund(sim *Simulation, spell *Spell) {
 }
 
 func (spell *Spell) EnergyMetrics() *ResourceMetrics {
-	return spell.Cost.SpellCostFunctions.(*EnergyCost).ResourceMetrics
+	return spell.Cost.ResourceCostImpl.(*EnergyCost).ResourceMetrics
 }
 
 func (spell *Spell) ComboPointMetrics() *ResourceMetrics {
-	return spell.Cost.SpellCostFunctions.(*EnergyCost).ComboPointMetrics
+	return spell.Cost.ResourceCostImpl.(*EnergyCost).ComboPointMetrics
 }

@@ -28,7 +28,7 @@ const (
 	SpellFlagFocusable = core.SpellFlagAgentReserved4
 )
 
-func NewShaman(character *core.Character, talents string, totems *proto.ShamanTotems, selfBuffs SelfBuffs, thunderstormRange bool, useDragonSoul_2PT12 bool) *Shaman {
+func NewShaman(character *core.Character, talents string, totems *proto.ShamanTotems, selfBuffs SelfBuffs, thunderstormRange bool, useDragonSoul_2PT12 bool, usePrepullEnh_2PT10 bool) *Shaman {
 	shaman := &Shaman{
 		Character:           *character,
 		Talents:             &proto.ShamanTalents{},
@@ -40,6 +40,7 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 		ThunderstormInRange: thunderstormRange,
 		ClassSpellScaling:   core.GetClassSpellScalingCoefficient(proto.Class_ClassShaman),
 		useDragonSoul_2PT12: useDragonSoul_2PT12,
+		usePrepullEnh_2PT10: usePrepullEnh_2PT10,
 	}
 	// shaman.waterShieldManaMetrics = shaman.NewManaMetrics(core.ActionID{SpellID: 57960})
 
@@ -176,8 +177,10 @@ type Shaman struct {
 	VolcanicRegalia4PT12Aura *core.Aura
 
 	useDragonSoul_2PT12 bool
+	usePrepullEnh_2PT10 bool
 
 	// Item sets
+	T10Enh2pc   *core.Aura
 	DungeonSet3 *core.Aura
 	T12Enh2pc   *core.Aura
 	T12Ele4pc   *core.Aura
@@ -363,6 +366,7 @@ const (
 	SpellMaskFeralSpirit
 	SpellMaskElementalMastery
 	SpellMaskSpiritwalkersGrace
+	SpellMaskShamanisticRage
 
 	SpellMaskStormstrike = SpellMaskStormstrikeCast | SpellMaskStormstrikeDamage
 	SpellMaskFlameShock  = SpellMaskFlameShockDirect | SpellMaskFlameShockDot

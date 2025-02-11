@@ -72,7 +72,7 @@ func (mage *Mage) GetFlameStrikeConfig(spellId int32, isProc bool) core.SpellCon
 		}
 
 		config.ManaCost = core.ManaCostOptions{
-			BaseCost: 0.30,
+			BaseCostPercent: 30,
 		}
 	} else {
 		config.ProcMask = core.ProcMaskSpellProc

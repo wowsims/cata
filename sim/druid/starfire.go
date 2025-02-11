@@ -33,8 +33,8 @@ func (druid *Druid) registerStarfireSpell() {
 		Flags:          core.SpellFlagAPL | SpellFlagOmenTrigger,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.11,
-			Multiplier: 100,
+			BaseCostPercent: 11,
+			PercentModifier: 100,
 		},
 
 		Cast: core.CastConfig{

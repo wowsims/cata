@@ -25,7 +25,7 @@ func (paladin *Paladin) registerConsecrationSpell() {
 		MaxRange: 8,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.55,
+			BaseCostPercent: 55,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

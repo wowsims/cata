@@ -35,7 +35,7 @@ func (mage *Mage) ApplyArcaneTalents() {
 	if mage.Talents.ImprovedArcaneMissiles > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
 			ClassMask: MageSpellArcaneMissilesCast,
-			IntValue:  int64(mage.Talents.ImprovedArcaneMissiles),
+			IntValue:  mage.Talents.ImprovedArcaneMissiles,
 			Kind:      core.SpellMod_DotNumberOfTicks_Flat,
 		})
 	}
@@ -74,7 +74,7 @@ func (mage *Mage) ApplyArcaneTalents() {
 
 		mage.AddStaticMod(core.SpellModConfig{
 			ClassMask: MageSpellArcaneExplosion,
-			IntValue:  -25 * int64(mage.Talents.ImprovedArcaneExplosion),
+			IntValue:  -25 * mage.Talents.ImprovedArcaneExplosion,
 			Kind:      core.SpellMod_PowerCost_Pct,
 		})
 	}
@@ -303,7 +303,7 @@ func (mage *Mage) registerArcanePowerCD() {
 				mage.arcanePowerGCDmod.Activate()
 			}
 
-			arcanePowerCostMod.UpdateIntValue(core.TernaryInt64(mage.T12_4pc.IsActive(), -10, 20))
+			arcanePowerCostMod.UpdateIntValue(core.TernaryInt32(mage.T12_4pc.IsActive(), -10, 20))
 			arcanePowerCostMod.Activate()
 
 			arcanePowerDmgMod.Activate()

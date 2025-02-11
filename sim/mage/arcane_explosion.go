@@ -14,7 +14,7 @@ func (mage *Mage) registerArcaneExplosionSpell() {
 		ClassSpellMask: MageSpellArcaneExplosion,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.15,
+			BaseCostPercent: 15,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

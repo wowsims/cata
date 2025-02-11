@@ -19,8 +19,8 @@ func (druid *Druid) registerWrathSpell() {
 		MissileSpeed:   20,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.09,
-			Multiplier: 100,
+			BaseCostPercent: 9,
+			PercentModifier: 100,
 		},
 
 		Cast: core.CastConfig{

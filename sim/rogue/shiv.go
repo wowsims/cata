@@ -8,9 +8,9 @@ import (
 )
 
 func (rogue *Rogue) registerShivSpell() {
-	baseCost := 20.0
+	baseCost := int32(20)
 	if ohWeapon := rogue.GetOHWeapon(); ohWeapon != nil {
-		baseCost = 20 + 10*ohWeapon.SwingSpeed
+		baseCost = baseCost + int32(10*ohWeapon.SwingSpeed)
 	}
 
 	rogue.Shiv = rogue.RegisterSpell(core.SpellConfig{

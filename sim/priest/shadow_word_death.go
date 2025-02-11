@@ -15,8 +15,8 @@ func (priest *Priest) registerShadowWordDeathSpell() {
 		ClassSpellMask: PriestSpellShadowWordDeath,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.12,
-			Multiplier: 100,
+			BaseCostPercent: 12,
+			PercentModifier: 100,
 		},
 
 		DamageMultiplier:         1,

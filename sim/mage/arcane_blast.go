@@ -42,7 +42,7 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			abDamageMod.UpdateFloatValue(abDamageScalar * float64(newStacks))
-			abCostMod.UpdateIntValue(150 * int64(newStacks))
+			abCostMod.UpdateIntValue(150 * newStacks)
 			abCastMod.UpdateTimeValue(time.Millisecond * time.Duration(-100*newStacks))
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -66,7 +66,7 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: MageSpellArcaneBlast,
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.05,
+			BaseCostPercent: 5,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

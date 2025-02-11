@@ -348,7 +348,7 @@ func (hunter *Hunter) applyKillingStreak() {
 	costMod := hunter.AddDynamicMod(core.SpellModConfig{
 		Kind:      core.SpellMod_PowerCost_Flat,
 		ClassMask: HunterSpellKillCommand,
-		IntValue:  -(int64(hunter.Talents.KillingStreak) * 5),
+		IntValue:  -hunter.Talents.KillingStreak * 5,
 	})
 	hunter.KillingStreakAura = hunter.Pet.RegisterAura(core.Aura{
 		Label:    "Killing Streak",

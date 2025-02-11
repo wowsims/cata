@@ -11,12 +11,12 @@ func (hunter *Hunter) ApplyMMTalents() {
 		hunter.AddStaticMod(core.SpellModConfig{
 			Kind:      core.SpellMod_PowerCost_Flat,
 			ClassMask: HunterSpellArcaneShot,
-			IntValue:  -int64(hunter.Talents.Efficiency),
+			IntValue:  -hunter.Talents.Efficiency,
 		})
 		hunter.AddStaticMod(core.SpellModConfig{
 			Kind:      core.SpellMod_PowerCost_Flat,
 			ClassMask: HunterSpellExplosiveShot | HunterSpellChimeraShot,
-			IntValue:  -(int64(hunter.Talents.Efficiency) * 2),
+			IntValue:  -hunter.Talents.Efficiency * 2,
 		})
 	}
 	if hunter.Talents.CarefulAim > 0 {
@@ -75,7 +75,7 @@ func (hunter *Hunter) applyBombardment() {
 	costMod := hunter.AddDynamicMod(core.SpellModConfig{
 		Kind:      core.SpellMod_PowerCost_Pct,
 		ClassMask: HunterSpellMultiShot,
-		IntValue:  -(25 * int64(hunter.Talents.Bombardment)),
+		IntValue:  -25 * hunter.Talents.Bombardment,
 	})
 
 	bombardmentAura := hunter.RegisterAura(core.Aura{
@@ -288,7 +288,7 @@ func (hunter *Hunter) registerSicEm() {
 
 	sicEmMod := hunter.Pet.AddDynamicMod(core.SpellModConfig{
 		Kind:     core.SpellMod_PowerCost_Pct,
-		IntValue: -(int64(hunter.Talents.SicEm) * 50),
+		IntValue: -hunter.Talents.SicEm * 50,
 		ProcMask: core.ProcMaskMeleeMHSpecial,
 	})
 

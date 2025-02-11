@@ -1,6 +1,8 @@
 package core
 
 import (
+	"fmt"
+	"slices"
 	"strconv"
 	"time"
 
@@ -17,7 +19,7 @@ type SpellModConfig struct {
 	School       SpellSchool
 	ProcMask     ProcMask
 	ResourceType proto.ResourceType
-	IntValue     int64
+	IntValue     int32
 	TimeValue    time.Duration
 	FloatValue   float64
 	KeyValue     string
@@ -32,7 +34,7 @@ type SpellMod struct {
 	ProcMask       ProcMask
 	ResourceType   proto.ResourceType
 	floatValue     float64
-	intValue       int64
+	intValue       int32
 	timeValue      time.Duration
 	keyValue       string
 	Apply          SpellModApply
@@ -69,8 +71,8 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 		removeFn = functions.Remove
 	}
 
-	if config.ResourceType > 0 && (config.ResourceType&proto.ResourceType_ResourceTypeMana|proto.ResourceType_ResourceTypeEnergy|proto.ResourceType_ResourceTypeRage|proto.ResourceType_ResourceTypeFocus == 0) {
-		panic("ResourceType " + strconv.Itoa(int(config.ResourceType)) + " for SpellMod is not implemented")
+	if (config.ResourceType > 0) && !slices.Contains([]proto.ResourceType{proto.ResourceType_ResourceTypeMana, proto.ResourceType_ResourceTypeEnergy, proto.ResourceType_ResourceTypeRage, proto.ResourceType_ResourceTypeFocus}, config.ResourceType) {
+		panic(fmt.Sprintf("ResourceType %s for SpellMod is not implemented", config.ResourceType))
 	}
 
 	mod := &SpellMod{
@@ -116,13 +118,13 @@ func shouldApply(spell *Spell, mod *SpellMod) bool {
 	}
 
 	if mod.ResourceType > 0 && spell.Cost != nil {
-		if _, ok := spell.Cost.SpellCostFunctions.(*ManaCost); mod.ResourceType == proto.ResourceType_ResourceTypeMana && !ok {
+		if _, ok := spell.Cost.ResourceCostImpl.(*ManaCost); mod.ResourceType == proto.ResourceType_ResourceTypeMana && !ok {
 			return false
-		} else if _, ok := spell.Cost.SpellCostFunctions.(*EnergyCost); mod.ResourceType == proto.ResourceType_ResourceTypeEnergy && !ok {
+		} else if _, ok := spell.Cost.ResourceCostImpl.(*EnergyCost); mod.ResourceType == proto.ResourceType_ResourceTypeEnergy && !ok {
 			return false
-		} else if _, ok := spell.Cost.SpellCostFunctions.(*RageCost); mod.ResourceType == proto.ResourceType_ResourceTypeRage && !ok {
+		} else if _, ok := spell.Cost.ResourceCostImpl.(*RageCost); mod.ResourceType == proto.ResourceType_ResourceTypeRage && !ok {
 			return false
-		} else if _, ok := spell.Cost.SpellCostFunctions.(*FocusCost); mod.ResourceType == proto.ResourceType_ResourceTypeFocus && !ok {
+		} else if _, ok := spell.Cost.ResourceCostImpl.(*FocusCost); mod.ResourceType == proto.ResourceType_ResourceTypeFocus && !ok {
 			return false
 		}
 	}
@@ -142,7 +144,7 @@ func shouldApply(spell *Spell, mod *SpellMod) bool {
 	return true
 }
 
-func (mod *SpellMod) UpdateIntValue(value int64) {
+func (mod *SpellMod) UpdateIntValue(value int32) {
 	if mod.IsActive {
 		mod.Deactivate()
 		mod.intValue = value
@@ -172,7 +174,7 @@ func (mod *SpellMod) UpdateFloatValue(value float64) {
 	}
 }
 
-func (mod *SpellMod) GetIntValue() int64 {
+func (mod *SpellMod) GetIntValue() int32 {
 	return mod.intValue
 }
 
@@ -220,7 +222,7 @@ const (
 	// Uses FloatValue
 	SpellMod_DamageDone_Flat
 
-	// Will reduce spell.Cost.Multiplier by % amount. -5% = -5
+	// Will reduce spell.Cost.PercentModifier by % amount. -5% = -5
 	// Uses IntValue
 	SpellMod_PowerCost_Pct
 
@@ -240,7 +242,7 @@ const (
 	// Uses FloatValue
 	SpellMod_Cooldown_Multiplier
 
-	// Will increase the AddativeCritMultiplier. +100% = 1.0
+	// Will increase the AdditiveCritMultiplier. +100% = 1.0
 	// Uses FloatValue
 	SpellMod_CritMultiplier_Flat
 
@@ -428,25 +430,25 @@ func removeDamageDoneAdd(mod *SpellMod, spell *Spell) {
 
 func applyPowerCostPercent(mod *SpellMod, spell *Spell) {
 	if spell.Cost != nil {
-		spell.Cost.Multiplier += int32(mod.intValue)
+		spell.Cost.PercentModifier += mod.intValue
 	}
 }
 
 func removePowerCostPercent(mod *SpellMod, spell *Spell) {
 	if spell.Cost != nil {
-		spell.Cost.Multiplier -= int32(mod.intValue)
+		spell.Cost.PercentModifier -= mod.intValue
 	}
 }
 
 func applyPowerCostFlat(mod *SpellMod, spell *Spell) {
 	if spell.Cost != nil {
-		spell.Cost.FlatModifier += int32(mod.intValue)
+		spell.Cost.FlatModifier += mod.intValue
 	}
 }
 
 func removePowerCostFlat(mod *SpellMod, spell *Spell) {
 	if spell.Cost != nil {
-		spell.Cost.FlatModifier -= int32(mod.intValue)
+		spell.Cost.FlatModifier -= mod.intValue
 	}
 }
 
@@ -479,11 +481,11 @@ func removeCooldownMultiplier(mod *SpellMod, spell *Spell) {
 }
 
 func applyCritMultiplierFlat(mod *SpellMod, spell *Spell) {
-	spell.CritMultiplierAddative += mod.floatValue
+	spell.CritMultiplierAdditive += mod.floatValue
 }
 
 func removeCritMultiplierFlat(mod *SpellMod, spell *Spell) {
-	spell.CritMultiplierAddative -= mod.floatValue
+	spell.CritMultiplierAdditive -= mod.floatValue
 }
 
 func applyCastTimePercent(mod *SpellMod, spell *Spell) {
@@ -522,12 +524,12 @@ func applyDotNumberOfTicks(mod *SpellMod, spell *Spell) {
 	if spell.dots != nil {
 		for _, dot := range spell.dots {
 			if dot != nil {
-				dot.BaseTickCount += int32(mod.intValue)
+				dot.BaseTickCount += mod.intValue
 			}
 		}
 	}
 	if spell.aoeDot != nil {
-		spell.aoeDot.BaseTickCount += int32(mod.intValue)
+		spell.aoeDot.BaseTickCount += mod.intValue
 	}
 }
 
@@ -535,12 +537,12 @@ func removeDotNumberOfTicks(mod *SpellMod, spell *Spell) {
 	if spell.dots != nil {
 		for _, dot := range spell.dots {
 			if dot != nil {
-				dot.BaseTickCount -= int32(mod.intValue)
+				dot.BaseTickCount -= mod.intValue
 			}
 		}
 	}
 	if spell.aoeDot != nil {
-		spell.aoeDot.BaseTickCount -= int32(mod.intValue)
+		spell.aoeDot.BaseTickCount -= mod.intValue
 	}
 }
 

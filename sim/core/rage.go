@@ -88,7 +88,7 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 
 			var metrics *ResourceMetrics
 			if spell.Cost != nil {
-				metrics = spell.Cost.SpellCostFunctions.(*RageCost).ResourceMetrics
+				metrics = spell.Cost.ResourceCostImpl.(*RageCost).ResourceMetrics
 			} else {
 				if spell.ResourceMetrics == nil {
 					spell.ResourceMetrics = spell.Unit.NewRageMetrics(spell.ActionID)
@@ -214,7 +214,7 @@ func (rb *rageBar) doneIteration() {
 }
 
 type RageCostOptions struct {
-	Cost float64
+	Cost int32
 
 	Refund        float64
 	RefundMetrics *ResourceMetrics // Optional, will default to unit.RageRefundMetrics if not supplied.
@@ -231,10 +231,10 @@ func newRageCost(spell *Spell, options RageCostOptions) *SpellCost {
 	}
 
 	return &SpellCost{
-		spell:      spell,
-		BaseCost:   options.Cost,
-		Multiplier: 100,
-		SpellCostFunctions: &RageCost{
+		spell:           spell,
+		BaseCost:        options.Cost,
+		PercentModifier: 100,
+		ResourceCostImpl: &RageCost{
 			Refund:          options.Refund,
 			RefundMetrics:   options.RefundMetrics,
 			ResourceMetrics: spell.Unit.NewRageMetrics(spell.ActionID),
@@ -258,4 +258,8 @@ func (rc *RageCost) IssueRefund(sim *Simulation, spell *Spell) {
 	if rc.Refund > 0 && spell.CurCast.Cost > 0 {
 		spell.Unit.AddRage(sim, rc.Refund*spell.CurCast.Cost, rc.RefundMetrics)
 	}
+}
+
+func (spell *Spell) RageMetrics() *ResourceMetrics {
+	return spell.Cost.ResourceCostImpl.(*RageCost).ResourceMetrics
 }

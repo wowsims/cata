@@ -187,7 +187,7 @@ func (fb *focusBar) disable(sim *Simulation) {
 }
 
 type FocusCostOptions struct {
-	Cost float64
+	Cost int32
 
 	Refund        float64
 	RefundMetrics *ResourceMetrics // Optional, will default to unit.FocusRefundMetrics if not supplied.
@@ -205,10 +205,10 @@ func newFocusCost(spell *Spell, options FocusCostOptions) *SpellCost {
 	}
 
 	return &SpellCost{
-		spell:      spell,
-		BaseCost:   options.Cost,
-		Multiplier: 100,
-		SpellCostFunctions: &FocusCost{
+		spell:           spell,
+		BaseCost:        options.Cost,
+		PercentModifier: 100,
+		ResourceCostImpl: &FocusCost{
 			Refund:          options.Refund,
 			RefundMetrics:   options.RefundMetrics,
 			ResourceMetrics: spell.Unit.NewFocusMetrics(spell.ActionID),

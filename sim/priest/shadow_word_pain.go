@@ -15,8 +15,8 @@ func (priest *Priest) registerShadowWordPainSpell() {
 		ClassSpellMask: PriestSpellShadowWordPain,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.22,
-			Multiplier: 100,
+			BaseCostPercent: 22,
+			PercentModifier: 100,
 		},
 
 		DamageMultiplier:         1,

@@ -26,8 +26,8 @@ func (shaman *Shaman) registerBloodlustCD() {
 		Flags:    core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.26,
-			Multiplier: 100 - shaman.GetMentalQuicknessBonus(),
+			BaseCostPercent: 26,
+			PercentModifier: 100 - shaman.GetMentalQuicknessBonus(),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

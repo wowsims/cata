@@ -62,8 +62,8 @@ func (druid *Druid) registerMoonfireImpactSpell() {
 		Flags:          core.SpellFlagAPL | SpellFlagOmenTrigger,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.09,
-			Multiplier: 100,
+			BaseCostPercent: 9,
+			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

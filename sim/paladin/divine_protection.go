@@ -49,7 +49,7 @@ func (paladin *Paladin) registerDivineProtectionSpell() {
 		ClassSpellMask: SpellMaskDivineProtection,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.03,
+			BaseCostPercent: 3,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

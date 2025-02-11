@@ -118,7 +118,7 @@ func init() {
 				if !character.HasManaBar() || spell.DefaultCast.Cost == 0 {
 					return
 				}
-				storedMana = math.Min(4200, storedMana+spell.DefaultCast.Cost*0.2)
+				storedMana = min(4200, storedMana+spell.DefaultCast.Cost*0.2)
 			},
 		})
 		triggerAura.OnReset = func(aura *core.Aura, sim *core.Simulation) {
@@ -741,7 +741,7 @@ func init() {
 				Duration: time.Millisecond * 900,
 			}
 
-			manaReturn := core.TernaryInt64(heroic, -115, -110)
+			manaReturn := core.TernaryInt32(heroic, -115, -110)
 
 			victoriousAura := character.GetOrRegisterAura(core.Aura{
 				Label:     "Victorious" + labelSuffix,
@@ -768,7 +768,7 @@ func init() {
 					manaMod.Activate()
 				},
 				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-					manaMod.UpdateIntValue(manaReturn * int64(newStacks))
+					manaMod.UpdateIntValue(manaReturn * newStacks)
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					manaMod.Deactivate()
