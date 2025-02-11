@@ -59,6 +59,8 @@ func (action *APLAction) GetAllSpells() []*Spell {
 			spells = append(spells, impl.spell)
 		} else if impl, ok := a.impl.(*APLActionMultidot); ok {
 			spells = append(spells, impl.spell)
+		} else if impl, ok := a.impl.(*APLActionStrictMultidot); ok {
+			spells = append(spells, impl.spell)
 		} else if impl, ok := a.impl.(*APLActionMultishield); ok {
 			spells = append(spells, impl.spell)
 		}
@@ -149,6 +151,8 @@ func (rot *APLRotation) newAPLActionImpl(config *proto.APLAction) APLActionImpl 
 		return rot.newActionChannelSpell(config.GetChannelSpell())
 	case *proto.APLAction_Multidot:
 		return rot.newActionMultidot(config.GetMultidot())
+	case *proto.APLAction_StrictMultidot:
+		return rot.newActionStrictMultidot(config.GetStrictMultidot())
 	case *proto.APLAction_Multishield:
 		return rot.newActionMultishield(config.GetMultishield())
 	case *proto.APLAction_CastAllStatBuffCooldowns:
