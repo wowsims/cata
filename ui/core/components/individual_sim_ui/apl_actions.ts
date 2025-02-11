@@ -23,6 +23,7 @@ import {
 	APLActionResetSequence,
 	APLActionSchedule,
 	APLActionSequence,
+	APLActionStrictMultidot,
 	APLActionStrictSequence,
 	APLActionTriggerICD,
 	APLActionWait,
@@ -359,6 +360,35 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 		includeIf: (player: Player<any>, isPrepull: boolean) => !isPrepull,
 		newValue: () =>
 			APLActionMultidot.create({
+				maxDots: 3,
+				maxOverlap: {
+					value: {
+						oneofKind: 'const',
+						const: {
+							val: '0ms',
+						},
+					},
+				},
+			}),
+		fields: [
+			AplHelpers.actionIdFieldConfig('spellId', 'castable_dot_spells', ''),
+			AplHelpers.numberFieldConfig('maxDots', false, {
+				label: 'Max Dots',
+				labelTooltip: 'Maximum number of DoTs to simultaneously apply.',
+			}),
+			AplValues.valueFieldConfig('maxOverlap', {
+				label: 'Overlap',
+				labelTooltip: 'Maximum amount of time before a DoT expires when it may be refreshed.',
+			}),
+		],
+	}),
+	['strictMultidot']: inputBuilder({
+		label: 'Strict Multi Dot',
+		submenu: ['Casting'],
+		shortDescription: 'Like a regular <b>Multi Dot</b>, except all Dots are applied immediately after each other. Keeps a DoT active on multiple targets by casting the specified spell.',
+		includeIf: (player: Player<any>, isPrepull: boolean) => !isPrepull,
+		newValue: () =>
+			APLActionStrictMultidot.create({
 				maxDots: 3,
 				maxOverlap: {
 					value: {

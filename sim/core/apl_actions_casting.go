@@ -194,6 +194,125 @@ func (action *APLActionMultidot) String() string {
 	return fmt.Sprintf("Multidot(%s)", action.spell.ActionID)
 }
 
+type APLActionStrictMultidot struct {
+	defaultAPLActionImpl
+	unit       *Unit
+	spell      *Spell
+	maxDots    int32
+	maxOverlap APLValue
+
+	isHeal       bool
+	targets      []*Unit
+	actions      []*APLAction
+	readyActions []*APLAction
+}
+
+func (rot *APLRotation) newActionStrictMultidot(config *proto.APLActionStrictMultidot) APLActionImpl {
+	unit := rot.unit
+
+	spell := rot.GetAPLMultidotSpell(config.SpellId)
+	if spell == nil {
+		return nil
+	}
+
+	maxOverlap := rot.coerceTo(rot.newAPLValue(config.MaxOverlap), proto.APLValueType_ValueTypeDuration)
+	if maxOverlap == nil {
+		maxOverlap = rot.newValueConst(&proto.APLValueConst{Val: "0ms"}, &proto.UUID{Value: ""})
+	}
+
+	isHeal := spell.Flags.Matches(SpellFlagHelpful)
+	maxDots := config.MaxDots
+	numTargets := int32(0)
+	var targets = []*Unit{}
+	if isHeal {
+		targets = unit.Env.Raid.AllPlayerUnits
+		numTargets = int32(len(targets))
+	} else {
+		numTargets = unit.Env.GetNumTargets()
+		targets = MapSlice(unit.Env.ActiveTargetUnits(), func(target *Target) *Unit {
+			return &target.Unit
+		})
+	}
+	if numTargets < maxDots {
+		rot.ValidationMessage(proto.LogLevel_Warning, "Encounter only has %d targets. Using that for Max Dots instead of %d", numTargets, maxDots)
+		maxDots = numTargets
+	}
+
+	actions := []*APLAction{}
+	for i := int32(0); i < maxDots; i++ {
+		if isHeal {
+			actions = append(actions, &APLAction{
+				impl: rot.newActionCastSpell(&proto.APLActionCastSpell{
+					SpellId: config.SpellId,
+					Target: &proto.UnitReference{
+						Type:  proto.UnitReference_Player,
+						Index: targets[i].Index,
+					},
+				}),
+			})
+		} else {
+			actions = append(actions, &APLAction{
+				impl: rot.newActionCastSpell(&proto.APLActionCastSpell{
+					SpellId: config.SpellId,
+					Target: &proto.UnitReference{
+						Type:  proto.UnitReference_Target,
+						Index: targets[i].Index,
+					},
+				}),
+			})
+		}
+	}
+
+	return &APLActionStrictMultidot{
+		unit:       rot.unit,
+		spell:      spell,
+		isHeal:     isHeal,
+		maxDots:    maxDots,
+		maxOverlap: maxOverlap,
+		actions:    actions,
+		targets:    targets,
+	}
+}
+func (action *APLActionStrictMultidot) GetAPLValues() []APLValue {
+	return []APLValue{action.maxOverlap}
+}
+func (action *APLActionStrictMultidot) Reset(*Simulation) {
+	action.readyActions = []*APLAction{}
+}
+func (action *APLActionStrictMultidot) IsReady(sim *Simulation) bool {
+	maxOverlap := action.maxOverlap.GetDuration(sim)
+	action.readyActions = []*APLAction{}
+
+	var previousTarget *Unit
+	for i := int32(0); i < action.maxDots; i++ {
+		target := action.targets[i]
+		dot := action.spell.Dot(target)
+		if (!dot.IsActive() || dot.RemainingDuration(sim) < maxOverlap) && action.spell.CanCastOrQueue(sim, target) {
+			action.readyActions = append(action.readyActions, action.actions[i])
+			previousTarget = target
+		} else if previousTarget != nil {
+			// If the Current Dot - Cast Time is less than the Previous Dot's Remaining Duration, add it to the renew queue
+			previousDot := action.spell.Dot(previousTarget)
+			if (!previousDot.IsActive() || dot.RemainingDuration(sim)-action.spell.EffectiveCastTime() < previousDot.RemainingDuration(sim)) && action.spell.CanCastOrQueue(sim, target) {
+				action.readyActions = append(action.readyActions, action.actions[i])
+				previousTarget = target
+			}
+		}
+	}
+
+	return len(action.readyActions) > 0
+}
+func (action *APLActionStrictMultidot) Execute(sim *Simulation) {
+	sequence := APLActionStrictSequence{
+		unit:       action.unit,
+		subactions: action.readyActions,
+	}
+	sequence.Execute(sim)
+}
+func (action *APLActionStrictMultidot) String() string {
+	return fmt.Sprintf("StrictMultidot(%s)", action.spell.ActionID)
+}
+
 type APLActionMultishield struct {
 	defaultAPLActionImpl
 	spell      *Spell
