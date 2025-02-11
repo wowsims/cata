@@ -222,7 +222,7 @@ const (
 	// Uses FloatValue
 	SpellMod_DamageDone_Flat
 
-	// Will reduce spell.Cost.Multiplier by % amount. -5% = -5
+	// Will reduce spell.Cost.PercentModifier by % amount. -5% = -5
 	// Uses IntValue
 	SpellMod_PowerCost_Pct
 
