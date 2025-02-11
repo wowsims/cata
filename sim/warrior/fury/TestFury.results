@@ -340,15 +340,15 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-ColossalDragonplateArmor"
  value: {
-  dps: 38298.92598
-  tps: 28851.03303
+  dps: 37588.78634
+  tps: 28671.61965
  }
 }
 dps_results: {
  key: "TestFury-AllItems-ColossalDragonplateBattlegear"
  value: {
-  dps: 43320.13163
-  tps: 33384.16272
+  dps: 42610.24292
+  tps: 33252.6485
  }
 }
 dps_results: {
@@ -494,15 +494,15 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-EarthenBattleplate"
  value: {
-  dps: 37101.4138
-  tps: 28495.55925
+  dps: 36925.23046
+  tps: 28631.00831
  }
 }
 dps_results: {
  key: "TestFury-AllItems-EarthenWarplate"
  value: {
-  dps: 41841.12372
-  tps: 32664.53451
+  dps: 40954.23259
+  tps: 32038.44996
  }
 }
 dps_results: {
@@ -704,8 +704,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-Gladiator'sBattlegear"
  value: {
-  dps: 36981.74985
-  tps: 28579.90051
+  dps: 36594.76094
+  tps: 28599.90788
  }
 }
 dps_results: {
@@ -1138,8 +1138,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-MoltenGiantBattleplate"
  value: {
-  dps: 38942.85866
-  tps: 29582.89682
+  dps: 39023.29437
+  tps: 29917.29603
  }
 }
 dps_results: {
