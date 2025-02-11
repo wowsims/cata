@@ -35,13 +35,13 @@ func (rogue *Rogue) ApplyTalents() {
 	if rogue.Talents.SlaughterFromTheShadows > 0 {
 		rogue.AddStaticMod(core.SpellModConfig{
 			Kind:      core.SpellMod_PowerCost_Flat,
-			IntValue:  []int64{-0, -7, -14, -20}[rogue.Talents.SlaughterFromTheShadows],
+			IntValue:  []int32{-0, -7, -14, -20}[rogue.Talents.SlaughterFromTheShadows],
 			ClassMask: RogueSpellBackstab | RogueSpellAmbush,
 		})
 
 		rogue.AddStaticMod(core.SpellModConfig{
 			Kind:      core.SpellMod_PowerCost_Flat,
-			IntValue:  int64(-2 * rogue.Talents.SlaughterFromTheShadows),
+			IntValue:  -2 * rogue.Talents.SlaughterFromTheShadows,
 			ClassMask: RogueSpellHemorrhage | RogueSpellFanOfKnives,
 		})
 	}

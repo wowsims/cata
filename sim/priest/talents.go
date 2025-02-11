@@ -78,7 +78,7 @@ func (priest *Priest) ApplyTalents() {
 	if priest.Talents.MentalAgility > 0 {
 		priest.AddStaticMod(core.SpellModConfig{
 			ClassMask: PriestSpellInstant,
-			IntValue:  -4 * int64(priest.Talents.MentalAgility),
+			IntValue:  -4 * priest.Talents.MentalAgility,
 			Kind:      core.SpellMod_PowerCost_Pct,
 		})
 	}
@@ -231,7 +231,7 @@ func (priest *Priest) applyEvangelism() {
 			evangelismDmgMod.UpdateFloatValue(0.04 * float64(newStacks))
 			evangelismDmgMod.Activate()
 
-			evangelismManaMod.UpdateIntValue(-6 * int64(newStacks))
+			evangelismManaMod.UpdateIntValue(-6 * newStacks)
 			evangelismManaMod.Activate()
 		},
 

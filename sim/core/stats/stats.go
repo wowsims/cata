@@ -363,8 +363,7 @@ type PseudoStats struct {
 	// Effects that apply when this unit is the attacker.
 	///////////////////////////////////////////////////
 
-	SpellCostPercentModifier int32   // Multiplies spell cost.
-	CostReduction            float64 // Reduces spell cost.
+	SpellCostPercentModifier int32 // Multiplies spell cost.
 
 	CastSpeedMultiplier   float64
 	MeleeSpeedMultiplier  float64

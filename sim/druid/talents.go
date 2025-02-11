@@ -199,7 +199,7 @@ func (druid *Druid) applyMoonglow() {
 	if druid.Talents.Moonglow > 0 {
 		druid.AddStaticMod(core.SpellModConfig{
 			ClassMask: DruidDamagingSpells | DruidHealingSpells,
-			IntValue:  -3 * int64(druid.Talents.Moonglow),
+			IntValue:  -3 * druid.Talents.Moonglow,
 			Kind:      core.SpellMod_PowerCost_Pct,
 		})
 	}
@@ -209,7 +209,7 @@ func (druid *Druid) applyGenesis() {
 	if druid.Talents.Genesis > 0 {
 		druid.AddStaticMod(core.SpellModConfig{
 			ClassMask: DruidSpellMoonfireDoT | DruidSpellSunfireDoT | DruidSpellInsectSwarm,
-			IntValue:  int64(1 * druid.Talents.Genesis),
+			IntValue:  1 * druid.Talents.Genesis,
 			Kind:      core.SpellMod_DotNumberOfTicks_Flat,
 		})
 
@@ -402,7 +402,7 @@ func (druid *Druid) applyLunarShower() {
 			lunarShowerDmgMod.UpdateFloatValue(float64(aura.GetStacks()) * 0.15)
 			lunarShowerDmgMod.Activate()
 
-			lunarShowerResourceMod.UpdateIntValue(int64(aura.GetStacks()) * -10)
+			lunarShowerResourceMod.UpdateIntValue(aura.GetStacks() * -10)
 			lunarShowerResourceMod.Activate()
 
 			// While under the effects of Lunar Shower, Moonfire and Sunfire generate 8 eclipse energy

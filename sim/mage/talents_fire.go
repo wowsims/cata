@@ -47,7 +47,7 @@ func (mage *Mage) ApplyFireTalents() {
 	if mage.Talents.ImprovedScorch > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
 			ClassMask: MageSpellScorch,
-			IntValue:  -50 * int64(mage.Talents.ImprovedScorch),
+			IntValue:  -50 * mage.Talents.ImprovedScorch,
 			Kind:      core.SpellMod_PowerCost_Pct,
 		})
 	}

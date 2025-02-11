@@ -12,7 +12,7 @@ func (dk *DeathKnight) ApplyUnholyTalents() {
 	if dk.Talents.Epidemic > 0 {
 		dk.AddStaticMod(core.SpellModConfig{
 			Kind:      core.SpellMod_DotNumberOfTicks_Flat,
-			IntValue:  []int64{0, 1, 2, 4}[dk.Talents.Epidemic],
+			IntValue:  []int32{0, 1, 2, 4}[dk.Talents.Epidemic],
 			ClassMask: DeathKnightSpellDisease,
 		})
 	}
