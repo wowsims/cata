@@ -291,9 +291,9 @@ func (action *APLActionStrictMultidot) IsReady(sim *Simulation) bool {
 			action.readyActions = append(action.readyActions, action.actions[i])
 			previousTarget = target
 		} else if previousTarget != nil {
-			// If the Current Dot - Cast Time is less than the Previous Dot's Remaining Duration, add it to the renew queue
 			previousDot := action.spell.Dot(previousTarget)
-			if (!previousDot.IsActive() || dot.RemainingDuration(sim)-action.spell.EffectiveCastTime() < previousDot.RemainingDuration(sim)) && action.spell.CanCastOrQueue(sim, target) {
+			// Take the previous Dot + Cast Time into account for the overlap check
+			if (!previousDot.IsActive() || dot.RemainingDuration(sim)-action.spell.EffectiveCastTime() <= previousDot.RemainingDuration(sim)) && action.spell.CanCastOrQueue(sim, target) {
 				action.readyActions = append(action.readyActions, action.actions[i])
 				previousTarget = target
 			}

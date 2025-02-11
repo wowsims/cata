@@ -385,7 +385,7 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 	['strictMultidot']: inputBuilder({
 		label: 'Strict Multi Dot',
 		submenu: ['Casting'],
-		shortDescription: 'Like a regular <b>Multi Dot</b>, except all Dots are applied immediately after each other. Keeps a DoT active on multiple targets by casting the specified spell.',
+		shortDescription: 'Like a regular <b>Multi Dot</b>, except all Dots are applied immediately after each other. Keeps a DoT active on multiple targets by casting the specified spell. Will take Cast Time/GCD into account when refreshing subsequent DoTs.',
 		includeIf: (player: Player<any>, isPrepull: boolean) => !isPrepull,
 		newValue: () =>
 			APLActionStrictMultidot.create({
