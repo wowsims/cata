@@ -244,7 +244,7 @@ const (
 	// Uses FloatValue
 	SpellMod_Cooldown_Multiplier
 
-	// Will increase the AddativeCritMultiplier. +100% = 1.0
+	// Will increase the AdditiveCritMultiplier. +100% = 1.0
 	// Uses FloatValue
 	SpellMod_CritMultiplier_Flat
 

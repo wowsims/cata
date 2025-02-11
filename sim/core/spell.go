@@ -44,7 +44,7 @@ type SpellConfig struct {
 	DamageMultiplier         float64
 	DamageMultiplierAdditive float64
 	CritMultiplier           float64
-	CritMultiplierAddative   float64 // Addative extra crit damage %
+	CritMultiplierAdditive   float64 // Additive extra crit damage %
 
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
 
@@ -230,7 +230,7 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		DamageMultiplier:         config.DamageMultiplier,
 		DamageMultiplierAdditive: config.DamageMultiplierAdditive,
 		CritMultiplier:           config.CritMultiplier,
-		CritMultiplierAdditive:   config.CritMultiplierAddative,
+		CritMultiplierAdditive:   config.CritMultiplierAdditive,
 
 		BonusCoefficient: config.BonusCoefficient,
 
@@ -692,8 +692,8 @@ type SpellCost struct {
 func (sc *SpellCost) ApplyCostModifiers(cost int32) float64 {
 	spell := sc.spell
 	cost = max(0, cost+sc.FlatModifier)
-	cost = max(0, int32(cost*spell.Unit.PseudoStats.SpellCostPercentModifier)/100)
-	cost = max(0, int32(cost*sc.PercentModifier)/100)
+	cost = max(0, cost*spell.Unit.PseudoStats.SpellCostPercentModifier/100)
+	cost = max(0, cost*sc.PercentModifier/100)
 	return float64(cost)
 }
 

@@ -258,17 +258,17 @@ func newEnergyCost(spell *Spell, options EnergyCostOptions) *SpellCost {
 
 func (ec *EnergyCost) MeetsRequirement(_ *Simulation, spell *Spell) bool {
 	spell.CurCast.Cost = spell.Cost.GetCurrentCost()
-	return spell.Unit.CurrentEnergy() >= float64(spell.CurCast.Cost)
+	return spell.Unit.CurrentEnergy() >= spell.CurCast.Cost
 }
 func (ec *EnergyCost) CostFailureReason(_ *Simulation, spell *Spell) string {
 	return fmt.Sprintf("not enough energy (Current Energy = %0.03f, Energy Cost = %0.03f)", spell.Unit.CurrentEnergy(), spell.CurCast.Cost)
 }
 func (ec *EnergyCost) SpendCost(sim *Simulation, spell *Spell) {
-	spell.Unit.SpendEnergy(sim, float64(spell.CurCast.Cost), ec.ResourceMetrics)
+	spell.Unit.SpendEnergy(sim, spell.CurCast.Cost, ec.ResourceMetrics)
 }
 func (ec *EnergyCost) IssueRefund(sim *Simulation, spell *Spell) {
 	if ec.Refund > 0 && spell.CurCast.Cost > 0 {
-		spell.Unit.AddEnergy(sim, ec.Refund*float64(spell.CurCast.Cost), ec.RefundMetrics)
+		spell.Unit.AddEnergy(sim, ec.Refund*spell.CurCast.Cost, ec.RefundMetrics)
 	}
 }
 
