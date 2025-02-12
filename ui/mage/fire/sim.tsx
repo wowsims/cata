@@ -1,3 +1,4 @@
+import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
 import * as Mechanics from '../../core/constants/mechanics';
@@ -94,7 +95,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	rotationInputs: FireInputs.MageRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
-		//Should add hymn of hope, revitalize, and
+		BuffDebuffInputs.ReplenishmentBuff,
+		BuffDebuffInputs.CritBuff,
+		BuffDebuffInputs.MP5Buff,
+		BuffDebuffInputs.StaminaBuff,
+		BuffDebuffInputs.ManaBuff,
 	],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
