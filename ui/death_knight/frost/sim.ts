@@ -175,6 +175,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 			Presets.PREBIS_MASTERFROST_GEAR_PRESET,
 			Presets.P1_MASTERFROST_GEAR_PRESET,
 			Presets.P3_MASTERFROST_GEAR_PRESET,
+			Presets.P4_MASTERFROST_GEAR_PRESET,
 		],
 		builds: [Presets.PRESET_BUILD_PREBIS, Presets.PRESET_BUILD_DW, Presets.PRESET_BUILD_2H, Presets.PRESET_BUILD_MASTERFROST],
 	},

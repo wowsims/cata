@@ -15,6 +15,7 @@ import P1DWGear from '../../death_knight/frost/gear_sets/p1.dw.gear.json';
 import P1MasterfrostGear from '../../death_knight/frost/gear_sets/p1.masterfrost.gear.json';
 import P3DWGear from '../../death_knight/frost/gear_sets/p3.dw.gear.json';
 import P3MasterfrostGear from '../../death_knight/frost/gear_sets/p3.masterfrost.gear.json';
+import P4MasterfrostGear from '../../death_knight/frost/gear_sets/p4.masterfrost.gear.json';
 import PreBISGear from '../../death_knight/frost/gear_sets/prebis.gear.json';
 
 // Preset options for this spec.
@@ -65,6 +66,7 @@ export const P3_DW_GEAR_PRESET = PresetUtils.makePresetGear('P3 DW Obliterate', 
 export const P1_2H_GEAR_PRESET = PresetUtils.makePresetGear('P1 Two Hand', P12HGear, TWOHAND_PRESET_OPTIONS);
 export const P1_MASTERFROST_GEAR_PRESET = PresetUtils.makePresetGear('P1 Masterfrost', P1MasterfrostGear, DW_PRESET_OPTIONS);
 export const P3_MASTERFROST_GEAR_PRESET = PresetUtils.makePresetGear('P3 Masterfrost', P3MasterfrostGear, DW_PRESET_OPTIONS);
+export const P4_MASTERFROST_GEAR_PRESET = PresetUtils.makePresetGear('P4 Masterfrost', P4MasterfrostGear, DW_PRESET_OPTIONS);
 export const PREBIS_MASTERFROST_GEAR_PRESET = PresetUtils.makePresetGear('Pre-bis Masterfrost', PreBISGear, DW_PRESET_OPTIONS);
 
 export const DUAL_WIELD_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('DW Obliterate', DualWieldAPL, DW_PRESET_OPTIONS);
