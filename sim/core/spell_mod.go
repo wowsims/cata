@@ -117,15 +117,19 @@ func shouldApply(spell *Spell, mod *SpellMod) bool {
 		return false
 	}
 
-	if mod.ResourceType > 0 && spell.Cost != nil {
-		if _, ok := spell.Cost.ResourceCostImpl.(*ManaCost); mod.ResourceType == proto.ResourceType_ResourceTypeMana && !ok {
+	if mod.ResourceType > 0 {
+		if spell.Cost == nil {
 			return false
-		} else if _, ok := spell.Cost.ResourceCostImpl.(*EnergyCost); mod.ResourceType == proto.ResourceType_ResourceTypeEnergy && !ok {
-			return false
-		} else if _, ok := spell.Cost.ResourceCostImpl.(*RageCost); mod.ResourceType == proto.ResourceType_ResourceTypeRage && !ok {
-			return false
-		} else if _, ok := spell.Cost.ResourceCostImpl.(*FocusCost); mod.ResourceType == proto.ResourceType_ResourceTypeFocus && !ok {
-			return false
+		} else {
+			if _, ok := spell.Cost.ResourceCostImpl.(*ManaCost); mod.ResourceType == proto.ResourceType_ResourceTypeMana && !ok {
+				return false
+			} else if _, ok := spell.Cost.ResourceCostImpl.(*EnergyCost); mod.ResourceType == proto.ResourceType_ResourceTypeEnergy && !ok {
+				return false
+			} else if _, ok := spell.Cost.ResourceCostImpl.(*RageCost); mod.ResourceType == proto.ResourceType_ResourceTypeRage && !ok {
+				return false
+			} else if _, ok := spell.Cost.ResourceCostImpl.(*FocusCost); mod.ResourceType == proto.ResourceType_ResourceTypeFocus && !ok {
+				return false
+			}
 		}
 	}
 

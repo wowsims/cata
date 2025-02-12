@@ -121,8 +121,10 @@ func init() {
 				storedMana = min(4200, storedMana+spell.DefaultCast.Cost*0.2)
 			},
 		})
+		oldOnReset := triggerAura.OnReset
 		triggerAura.OnReset = func(aura *core.Aura, sim *core.Simulation) {
 			storedMana = 0
+			oldOnReset(aura, sim)
 		}
 
 		character.ItemSwap.RegisterProc(64645, triggerAura)

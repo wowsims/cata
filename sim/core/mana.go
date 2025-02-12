@@ -308,7 +308,7 @@ type ManaCost struct {
 func newManaCost(spell *Spell, options ManaCostOptions) *SpellCost {
 	return &SpellCost{
 		spell:           spell,
-		BaseCost:        TernaryInt32(options.FlatCost > 0, options.FlatCost, int32(math.Floor(float64(options.BaseCostPercent)/100*spell.Unit.BaseMana))),
+		BaseCost:        TernaryInt32(options.FlatCost > 0, options.FlatCost, int32(float64(options.BaseCostPercent)/100*spell.Unit.BaseMana)),
 		PercentModifier: TernaryInt32(options.PercentModifier == 0, 100, options.PercentModifier),
 		ResourceCostImpl: &ManaCost{
 			ResourceMetrics: spell.Unit.NewManaMetrics(spell.ActionID),
