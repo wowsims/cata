@@ -32,7 +32,7 @@ import PreraidGear from './gear_sets/preraid.gear.json';
 export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidGear);
 export const P1_PRESET = PresetUtils.makePresetGear('P1 - Default', P1Gear);
 export const P3_PRESET = PresetUtils.makePresetGear('P3 - Default', P3GearDefault);
-export const P4_PRESET = PresetUtils.makePresetGear('P4 - WIP', P4GearDefault);
+export const P4_PRESET = PresetUtils.makePresetGear('P4', P4GearDefault);
 
 export const P3_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P3 - Item Swap', ItemSwapP3);
 export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4 - Item Swap', ItemSwapP4);

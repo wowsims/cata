@@ -7,6 +7,7 @@ import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from '../../death_knight/unholy/apls/default.apl.json';
 import P2BISGear from '../../death_knight/unholy/gear_sets/p2.bis.gear.json';
 import P3BISGear from '../../death_knight/unholy/gear_sets/p3.bis.gear.json';
+import P4BISGear from '../../death_knight/unholy/gear_sets/p4.bis.gear.json';
 import PreBISGear from '../../death_knight/unholy/gear_sets/prebis.gear.json';
 
 // Preset options for this spec.
@@ -15,6 +16,7 @@ import PreBISGear from '../../death_knight/unholy/gear_sets/prebis.gear.json';
 export const PREBIS_GEAR_PRESET = PresetUtils.makePresetGear('Pre-bis', PreBISGear);
 export const P2_BIS_GEAR_PRESET = PresetUtils.makePresetGear('P2 - BIS', P2BISGear);
 export const P3_BIS_GEAR_PRESET = PresetUtils.makePresetGear('P3 - BIS', P3BISGear);
+export const P4_BIS_GEAR_PRESET = PresetUtils.makePresetGear('P4 - BIS', P4BISGear);
 
 export const DEFAULT_ROTATION_PRESET = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
@@ -92,6 +94,12 @@ export const P2_PRESET = PresetUtils.makePresetBuild('P2', {
 
 export const P3_PRESET = PresetUtils.makePresetBuild('P3', {
 	gear: P3_BIS_GEAR_PRESET,
+	epWeights: P3_UNHOLY_EP_PRESET,
+	rotationType: APLRotationType.TypeAuto,
+})
+
+export const P4_PRESET = PresetUtils.makePresetBuild('P4', {
+	gear: P4_BIS_GEAR_PRESET,
 	epWeights: P3_UNHOLY_EP_PRESET,
 	rotationType: APLRotationType.TypeAuto,
 })

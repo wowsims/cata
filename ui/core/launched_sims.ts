@@ -43,8 +43,8 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 	},
 	// Druid
 	[Spec.SpecBalanceDruid]: {
-		phase: Phase.Phase3,
-		status: LaunchStatus.Launched,
+		phase: Phase.Phase4,
+		status: LaunchStatus.Beta,
 	},
 	[Spec.SpecFeralDruid]: {
 		phase: Phase.Phase3,
@@ -60,25 +60,25 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 	},
 	// Hunter
 	[Spec.SpecBeastMasteryHunter]: {
-		phase: Phase.Phase2,
+		phase: Phase.Phase3,
 		status: LaunchStatus.Launched,
 	},
 	[Spec.SpecMarksmanshipHunter]: {
-		phase: Phase.Phase2,
+		phase: Phase.Phase3,
 		status: LaunchStatus.Launched,
 	},
 	[Spec.SpecSurvivalHunter]: {
-		phase: Phase.Phase2,
+		phase: Phase.Phase3,
 		status: LaunchStatus.Launched,
 	},
 	// Mage
 	[Spec.SpecArcaneMage]: {
-		phase: Phase.Phase3,
-		status: LaunchStatus.Launched,
+		phase: Phase.Phase4,
+		status: LaunchStatus.Beta,
 	},
 	[Spec.SpecFireMage]: {
-		phase: Phase.Phase3,
-		status: LaunchStatus.Launched,
+		phase: Phase.Phase4,
+		status: LaunchStatus.Beta,
 	},
 	[Spec.SpecFrostMage]: {
 		phase: Phase.Phase2,
@@ -107,30 +107,30 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 		status: LaunchStatus.Unlaunched,
 	},
 	[Spec.SpecShadowPriest]: {
-		phase: Phase.Phase3,
-		status: LaunchStatus.Launched,
+		phase: Phase.Phase4,
+		status: LaunchStatus.Beta,
 	},
 	// Rogue
 	[Spec.SpecAssassinationRogue]: {
-		phase: Phase.Phase2,
-		status: LaunchStatus.Launched,
+		phase: Phase.Phase4,
+		status: LaunchStatus.Beta,
 	},
 	[Spec.SpecCombatRogue]: {
-		phase: Phase.Phase2,
-		status: LaunchStatus.Launched,
+		phase: Phase.Phase4,
+		status: LaunchStatus.Beta,
 	},
 	[Spec.SpecSubtletyRogue]: {
-		phase: Phase.Phase2,
-		status: LaunchStatus.Launched,
+		phase: Phase.Phase4,
+		status: LaunchStatus.Beta,
 	},
 	// Shaman
 	[Spec.SpecElementalShaman]: {
-		phase: Phase.Phase3,
-		status: LaunchStatus.Launched,
+		phase: Phase.Phase4,
+		status: LaunchStatus.Beta,
 	},
 	[Spec.SpecEnhancementShaman]: {
-		phase: Phase.Phase3,
-		status: LaunchStatus.Launched,
+		phase: Phase.Phase4,
+		status: LaunchStatus.Beta,
 	},
 	[Spec.SpecRestorationShaman]: {
 		phase: Phase.Phase2,
@@ -142,25 +142,25 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 		status: LaunchStatus.Launched,
 	},
 	[Spec.SpecDemonologyWarlock]: {
-		phase: Phase.Phase3,
-		status: LaunchStatus.Launched,
+		phase: Phase.Phase4,
+		status: LaunchStatus.Beta,
 	},
 	[Spec.SpecDestructionWarlock]: {
-		phase: Phase.Phase3,
-		status: LaunchStatus.Launched,
+		phase: Phase.Phase4,
+		status: LaunchStatus.Beta,
 	},
 	// Warrior
 	[Spec.SpecArmsWarrior]: {
-		phase: Phase.Phase3,
-		status: LaunchStatus.Launched,
+		phase: Phase.Phase4,
+		status: LaunchStatus.Beta,
 	},
 	[Spec.SpecFuryWarrior]: {
-		phase: Phase.Phase3,
-		status: LaunchStatus.Launched,
+		phase: Phase.Phase4,
+		status: LaunchStatus.Beta,
 	},
 	[Spec.SpecProtectionWarrior]: {
-		phase: Phase.Phase3,
-		status: LaunchStatus.Launched,
+		phase: Phase.Phase4,
+		status: LaunchStatus.Beta,
 	},
 };
 

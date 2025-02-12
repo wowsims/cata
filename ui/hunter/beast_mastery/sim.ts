@@ -98,7 +98,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 			vampiricTouch: true,
 		}),
 		debuffs: Debuffs.create({
-			sunderArmor: true,
+			faerieFire: true,
 			curseOfElements: true,
 			savageCombat: true,
 			bloodFrenzy: true,

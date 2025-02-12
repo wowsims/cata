@@ -39,10 +39,10 @@ import PreraidGear from './gear_sets/preraid.gear.json';
 export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidGear);
 export const P1_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1Gear);
 export const P3_PRESET = PresetUtils.makePresetGear('P3 - BIS', P3Gear);
-export const P4_PRESET = PresetUtils.makePresetGear('P4 - WIP', P4Gear);
+export const P4_PRESET = PresetUtils.makePresetGear('P4', P4Gear);
 
 export const P3_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P3 - Mastery', ItemSwapP3);
-export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4 - WIP - Mastery', ItemSwapP4);
+export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4 - Mastery', ItemSwapP4);
 
 export const APL_ShadowBolt = PresetUtils.makePresetAPLRotation('Shadow Bolt', ShadowBoltAPL);
 export const APL_Incinerate = PresetUtils.makePresetAPLRotation('Incinerate', IncinerateAPL);
