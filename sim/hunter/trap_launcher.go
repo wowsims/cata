@@ -26,7 +26,7 @@ func (hunter *Hunter) registerTrapLauncher() {
 		Flags:    core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		FocusCost: core.FocusCostOptions{
-			Cost: 20 - core.TernaryFloat64(hunter.HasMajorGlyph(proto.HunterMajorGlyph_GlyphOfTrapLauncher), 10, 0),
+			Cost: 20 - core.TernaryInt32(hunter.HasMajorGlyph(proto.HunterMajorGlyph_GlyphOfTrapLauncher), 10, 0),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

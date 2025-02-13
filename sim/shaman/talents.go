@@ -131,9 +131,9 @@ func (shaman *Shaman) applyElementalFocus() {
 
 	affectedSpells := SpellMaskLightningBolt | SpellMaskChainLightning | SpellMaskLavaBurst | SpellMaskFireNova | SpellMaskEarthShock | SpellMaskFlameShock | SpellMaskFrostShock
 	costReductionMod := shaman.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PowerCost_Pct,
-		ClassMask:  affectedSpells,
-		FloatValue: -0.4,
+		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask: affectedSpells,
+		IntValue:  -40,
 	})
 
 	oathBonus := 0.05 * float64(shaman.Talents.ElementalOath)
@@ -320,7 +320,7 @@ func (shaman *Shaman) applyFulmination() {
 		Flags:          core.SpellFlagPassiveSpell,
 		ClassSpellMask: SpellMaskFulmination,
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0,
+			BaseCostPercent: 0,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -601,11 +601,12 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 		Duration:  time.Second * 30,
 		MaxStacks: 5,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			multDiff := 0.2 * float64(newStacks-oldStacks)
-			shaman.LightningBolt.CastTimeMultiplier -= multDiff
-			shaman.LightningBolt.CostMultiplier -= multDiff
-			shaman.ChainLightning.CastTimeMultiplier -= multDiff
-			shaman.ChainLightning.CostMultiplier -= multDiff
+			multiDiff := 20 * (newStacks - oldStacks)
+			multiDiffFloat := float64(multiDiff) / 100
+			shaman.LightningBolt.CastTimeMultiplier -= multiDiffFloat
+			shaman.LightningBolt.Cost.PercentModifier -= multiDiff
+			shaman.ChainLightning.CastTimeMultiplier -= multiDiffFloat
+			shaman.ChainLightning.Cost.PercentModifier -= multiDiff
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !spell.Flags.Matches(SpellFlagElectric) {

@@ -13,7 +13,7 @@ func (shaman *Shaman) registerLightningBoltSpell() {
 }
 
 func (shaman *Shaman) newLightningBoltSpellConfig(isElementalOverload bool) core.SpellConfig {
-	spellConfig := shaman.newElectricSpellConfig(core.ActionID{SpellID: 403}, 0.06, time.Millisecond*2500, isElementalOverload, 0.714)
+	spellConfig := shaman.newElectricSpellConfig(core.ActionID{SpellID: 403}, 6, time.Millisecond*2500, isElementalOverload, 0.714)
 
 	if !isElementalOverload && shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfUnleashedLightning) {
 		spellConfig.Flags |= core.SpellFlagCanCastWhileMoving

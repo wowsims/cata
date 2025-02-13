@@ -56,9 +56,9 @@ func (paladin *Paladin) applyHallowedGround() {
 	})
 
 	paladin.AddStaticMod(core.SpellModConfig{
-		ClassMask:  SpellMaskConsecration,
-		Kind:       core.SpellMod_PowerCost_Pct,
-		FloatValue: -(0.4 * float64(paladin.Talents.HallowedGround)),
+		ClassMask: SpellMaskConsecration,
+		Kind:      core.SpellMod_PowerCost_Pct,
+		IntValue:  -40 * paladin.Talents.HallowedGround,
 	})
 }
 
@@ -141,7 +141,7 @@ func (paladin *Paladin) applyHammerOfTheRighteous() {
 		ClassSpellMask: SpellMaskHammerOfTheRighteousMelee,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.10,
+			BaseCostPercent: 10,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -383,7 +383,7 @@ func (paladin *Paladin) applyHolyShield() {
 		ClassSpellMask: SpellMaskHolyShield,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.03,
+			BaseCostPercent: 3,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

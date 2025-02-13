@@ -16,7 +16,7 @@ func (paladin *Paladin) registerCrusaderStrike() {
 		ClassSpellMask: SpellMaskCrusaderStrike,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.1,
+			BaseCostPercent: 10,
 		},
 
 		Cast: core.CastConfig{

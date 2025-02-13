@@ -235,9 +235,9 @@ func (war *ProtectionWarrior) applySwordAndBoard() {
 	})
 
 	costMod := war.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  warrior.SpellMaskShieldSlam,
-		Kind:       core.SpellMod_PowerCost_Pct,
-		FloatValue: -1.0,
+		ClassMask: warrior.SpellMaskShieldSlam,
+		Kind:      core.SpellMod_PowerCost_Pct,
+		IntValue:  -100,
 	})
 
 	actionID := core.ActionID{SpellID: 50227}

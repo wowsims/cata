@@ -16,8 +16,8 @@ func (druid *Druid) registerInsectSwarmSpell() {
 		Flags:          core.SpellFlagAPL | SpellFlagOmenTrigger,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.08,
-			Multiplier: 1,
+			BaseCostPercent: 8,
+			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

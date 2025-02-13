@@ -14,7 +14,7 @@ func (warlock *Warlock) registerSearingPain() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellSearingPain,
 
-		ManaCost: core.ManaCostOptions{BaseCost: 0.12},
+		ManaCost: core.ManaCostOptions{BaseCostPercent: 12},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,

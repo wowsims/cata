@@ -53,7 +53,7 @@ export default class BulkSimResultRenderer extends Component {
 			</>,
 		);
 
-		formatDeltaTextElem(dpsDeltaRef.value!, baseResult.unitMetrics!.dps!.avg, result.unitMetrics!.dps!.avg!, 2);
+		formatDeltaTextElem(dpsDeltaRef.value!, baseResult.unitMetrics!.dps!.avg, result.unitMetrics!.dps!.avg!, 2, undefined, undefined, true);
 
 		if (!!result.itemsAdded?.length) {
 			equipButtonRef.value?.addEventListener('click', () => {

@@ -102,7 +102,7 @@ func (spell *Spell) CanQueue(sim *Simulation, target *Unit) bool {
 
 	// By contrast, spells that are waiting on resources to cast *cannot* be queued
 	if spell.Cost != nil {
-		spell.CurCast.Cost = spell.DefaultCast.Cost
+		spell.CurCast.Cost = spell.Cost.GetCurrentCost()
 		if !spell.Cost.MeetsRequirement(sim, spell) {
 			return false
 		}

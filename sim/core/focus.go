@@ -128,7 +128,7 @@ func (fb *focusBar) SpendFocus(sim *Simulation, amount float64, metrics *Resourc
 }
 
 func (fb *focusBar) IsTicking(sim *Simulation) bool {
-	return (fb.nextFocusTick != 0) && (sim.CurrentTime <= fb.nextFocusTick) && (fb.nextFocusTick - sim.CurrentTime <= fb.focusTickDuration)
+	return (fb.nextFocusTick != 0) && (sim.CurrentTime <= fb.nextFocusTick) && (fb.nextFocusTick-sim.CurrentTime <= fb.focusTickDuration)
 }
 
 // Gives an immediate partial Focus tick and restarts the tick timer.
@@ -187,7 +187,7 @@ func (fb *focusBar) disable(sim *Simulation) {
 }
 
 type FocusCostOptions struct {
-	Cost float64
+	Cost int32
 
 	Refund        float64
 	RefundMetrics *ResourceMetrics // Optional, will default to unit.FocusRefundMetrics if not supplied.
@@ -199,21 +199,25 @@ type FocusCost struct {
 	ResourceMetrics *ResourceMetrics
 }
 
-func newFocusCost(spell *Spell, options FocusCostOptions) *FocusCost {
-	spell.DefaultCast.Cost = options.Cost
+func newFocusCost(spell *Spell, options FocusCostOptions) *SpellCost {
 	if options.Refund > 0 && options.RefundMetrics == nil {
 		options.RefundMetrics = spell.Unit.focusRefundMetrics
 	}
 
-	return &FocusCost{
-		Refund:          options.Refund,
-		RefundMetrics:   options.RefundMetrics,
-		ResourceMetrics: spell.Unit.NewFocusMetrics(spell.ActionID),
+	return &SpellCost{
+		spell:           spell,
+		BaseCost:        options.Cost,
+		PercentModifier: 100,
+		ResourceCostImpl: &FocusCost{
+			Refund:          options.Refund,
+			RefundMetrics:   options.RefundMetrics,
+			ResourceMetrics: spell.Unit.NewFocusMetrics(spell.ActionID),
+		},
 	}
 }
 
 func (ec *FocusCost) MeetsRequirement(_ *Simulation, spell *Spell) bool {
-	spell.CurCast.Cost = spell.ApplyCostModifiers(spell.CurCast.Cost)
+	spell.CurCast.Cost = spell.Cost.GetCurrentCost()
 	return spell.Unit.CurrentFocus() >= spell.CurCast.Cost
 }
 
@@ -224,7 +228,7 @@ func (ec *FocusCost) SpendCost(sim *Simulation, spell *Spell) {
 	spell.Unit.SpendFocus(sim, spell.CurCast.Cost, ec.ResourceMetrics)
 }
 func (ec *FocusCost) IssueRefund(sim *Simulation, spell *Spell) {
-	if ec.Refund > 0 {
+	if ec.Refund > 0 && spell.CurCast.Cost > 0 {
 		spell.Unit.AddFocus(sim, ec.Refund*spell.CurCast.Cost, ec.RefundMetrics)
 	}
 }

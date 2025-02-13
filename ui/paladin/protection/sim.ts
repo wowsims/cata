@@ -130,7 +130,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			shadowAndFlame: true,
 			bloodFrenzy: true,
 			mangle: true,
-			exposeArmor: true,
+			faerieFire: true,
 			sunderArmor: true,
 			vindication: true,
 			thunderClap: true,

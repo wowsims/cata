@@ -17,7 +17,7 @@ func (warlock *Warlock) registerIncinerate() {
 		MissileSpeed:   24,
 		ClassSpellMask: WarlockSpellIncinerate,
 
-		ManaCost: core.ManaCostOptions{BaseCost: 0.14},
+		ManaCost: core.ManaCostOptions{BaseCostPercent: 14},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,

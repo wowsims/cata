@@ -88,7 +88,7 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 
 			var metrics *ResourceMetrics
 			if spell.Cost != nil {
-				metrics = spell.Cost.(*RageCost).ResourceMetrics
+				metrics = spell.Cost.ResourceCostImpl.(*RageCost).ResourceMetrics
 			} else {
 				if spell.ResourceMetrics == nil {
 					spell.ResourceMetrics = spell.Unit.NewRageMetrics(spell.ActionID)
@@ -214,7 +214,7 @@ func (rb *rageBar) doneIteration() {
 }
 
 type RageCostOptions struct {
-	Cost float64
+	Cost int32
 
 	Refund        float64
 	RefundMetrics *ResourceMetrics // Optional, will default to unit.RageRefundMetrics if not supplied.
@@ -225,21 +225,25 @@ type RageCost struct {
 	ResourceMetrics *ResourceMetrics
 }
 
-func newRageCost(spell *Spell, options RageCostOptions) *RageCost {
-	spell.DefaultCast.Cost = options.Cost
+func newRageCost(spell *Spell, options RageCostOptions) *SpellCost {
 	if options.Refund > 0 && options.RefundMetrics == nil {
 		options.RefundMetrics = spell.Unit.RageRefundMetrics
 	}
 
-	return &RageCost{
-		Refund:          options.Refund,
-		RefundMetrics:   options.RefundMetrics,
-		ResourceMetrics: spell.Unit.NewRageMetrics(spell.ActionID),
+	return &SpellCost{
+		spell:           spell,
+		BaseCost:        options.Cost,
+		PercentModifier: 100,
+		ResourceCostImpl: &RageCost{
+			Refund:          options.Refund,
+			RefundMetrics:   options.RefundMetrics,
+			ResourceMetrics: spell.Unit.NewRageMetrics(spell.ActionID),
+		},
 	}
 }
 
 func (rc *RageCost) MeetsRequirement(_ *Simulation, spell *Spell) bool {
-	spell.CurCast.Cost = spell.ApplyCostModifiers(spell.CurCast.Cost)
+	spell.CurCast.Cost = spell.Cost.GetCurrentCost()
 	return spell.Unit.CurrentRage() >= spell.CurCast.Cost
 }
 func (rc *RageCost) CostFailureReason(sim *Simulation, spell *Spell) string {
@@ -254,4 +258,8 @@ func (rc *RageCost) IssueRefund(sim *Simulation, spell *Spell) {
 	if rc.Refund > 0 && spell.CurCast.Cost > 0 {
 		spell.Unit.AddRage(sim, rc.Refund*spell.CurCast.Cost, rc.RefundMetrics)
 	}
+}
+
+func (spell *Spell) RageMetrics() *ResourceMetrics {
+	return spell.Cost.ResourceCostImpl.(*RageCost).ResourceMetrics
 }

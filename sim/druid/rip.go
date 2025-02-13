@@ -112,7 +112,7 @@ func (druid *Druid) MaxRipTicks() int32 {
 }
 
 func (druid *Druid) CurrentRipCost() float64 {
-	return druid.Rip.ApplyCostModifiers(druid.Rip.DefaultCast.Cost)
+	return druid.Rip.Cost.GetCurrentCost()
 }
 
 func (druid *Druid) ApplyBloodletting(target *core.Unit) {

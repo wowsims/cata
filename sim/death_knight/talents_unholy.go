@@ -12,7 +12,7 @@ func (dk *DeathKnight) ApplyUnholyTalents() {
 	if dk.Talents.Epidemic > 0 {
 		dk.AddStaticMod(core.SpellModConfig{
 			Kind:      core.SpellMod_DotNumberOfTicks_Flat,
-			IntValue:  []int64{0, 1, 2, 4}[dk.Talents.Epidemic],
+			IntValue:  []int32{0, 1, 2, 4}[dk.Talents.Epidemic],
 			ClassMask: DeathKnightSpellDisease,
 		})
 	}
@@ -274,9 +274,9 @@ func (dk *DeathKnight) applySuddenDoom() {
 	}
 
 	mod := dk.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PowerCost_Pct,
-		ClassMask:  DeathKnightSpellDeathCoil | DeathKnightSpellDeathCoilHeal,
-		FloatValue: -1,
+		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask: DeathKnightSpellDeathCoil | DeathKnightSpellDeathCoilHeal,
+		IntValue:  -100,
 	})
 
 	suddenDoomProcAura := dk.GetOrRegisterAura(core.Aura{

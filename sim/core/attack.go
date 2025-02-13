@@ -808,6 +808,14 @@ func (aa *AutoAttacks) NextAttackAt() time.Duration {
 	return min(aa.mh.swingAt, aa.oh.swingAt)
 }
 
+// Used to prevent artificial Haste breakpoints arising from APL evaluations after autos occurring at
+// locally optimal timings.
+func (aa *AutoAttacks) RandomizeMeleeTiming(sim *Simulation) {
+	swingDur := aa.MainhandSwingSpeed()
+	randomAutoOffset := DurationFromSeconds(sim.RandomFloat("Melee Timing") * swingDur.Seconds() / 2)
+	aa.StopMeleeUntil(sim, sim.CurrentTime-swingDur+randomAutoOffset, true)
+}
+
 type DynamicProcManager struct {
 	procMasks   []ProcMask
 	procChances []float64

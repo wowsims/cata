@@ -57,9 +57,9 @@ func (paladin *Paladin) applyGlyphs() {
 	// Major Glyphs
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfHammerOfWrath) {
 		paladin.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_PowerCost_Pct,
-			ClassMask:  SpellMaskHammerOfWrath,
-			FloatValue: -1,
+			Kind:      core.SpellMod_PowerCost_Pct,
+			ClassMask: SpellMaskHammerOfWrath,
+			IntValue:  -100,
 		})
 	}
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfConsecration) {
@@ -76,9 +76,9 @@ func (paladin *Paladin) applyGlyphs() {
 	}
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfTheAsceticCrusader) {
 		paladin.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_PowerCost_Pct,
-			ClassMask:  SpellMaskCrusaderStrike,
-			FloatValue: -0.3,
+			Kind:      core.SpellMod_PowerCost_Pct,
+			ClassMask: SpellMaskCrusaderStrike,
+			IntValue:  -30,
 		})
 	}
 }

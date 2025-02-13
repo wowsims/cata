@@ -101,7 +101,7 @@ func (mage *Mage) registerIcyVeinsCD() {
 		Flags:          core.SpellFlagNoOnCastComplete,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.03,
+			BaseCostPercent: 3,
 		},
 
 		Cast: core.CastConfig{
@@ -196,9 +196,9 @@ func (mage *Mage) applyBrainFreeze() {
 	mage.brainFreezeProcChance = .05 * float64(mage.Talents.BrainFreeze)
 
 	brainFreezeCostMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellBrainFreeze,
-		FloatValue: -1,
-		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask: MageSpellBrainFreeze,
+		IntValue:  -100,
+		Kind:      core.SpellMod_PowerCost_Pct,
 	})
 
 	brainFreezeCastMod := mage.AddDynamicMod(core.SpellModConfig{

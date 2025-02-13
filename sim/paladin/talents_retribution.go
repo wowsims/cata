@@ -166,9 +166,9 @@ func (paladin *Paladin) applyArtOfWar() {
 	})
 
 	exorcismCostMod := paladin.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PowerCost_Pct,
-		ClassMask:  SpellMaskExorcism,
-		FloatValue: -1.0,
+		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask: SpellMaskExorcism,
+		IntValue:  -100,
 	})
 
 	exorcismDamageMod := paladin.AddDynamicMod(core.SpellModConfig{
@@ -235,7 +235,7 @@ func (paladin *Paladin) applyDivineStorm() {
 		MaxRange: 8,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.05,
+			BaseCostPercent: 5,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

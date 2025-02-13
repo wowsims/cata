@@ -16,7 +16,7 @@ func (warlock *Warlock) registerCurseOfElements() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellCurseOfElements,
 
-		ManaCost: core.ManaCostOptions{BaseCost: 0.1},
+		ManaCost: core.ManaCostOptions{BaseCostPercent: 10},
 		Cast:     core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}},
 
 		ThreatMultiplier: 1,
@@ -47,7 +47,7 @@ func (warlock *Warlock) registerCurseOfWeakness() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellCurseOfWeakness,
 
-		ManaCost: core.ManaCostOptions{BaseCost: 0.1},
+		ManaCost: core.ManaCostOptions{BaseCostPercent: 10},
 		Cast:     core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}},
 
 		ThreatMultiplier: 1,
@@ -85,7 +85,7 @@ func (warlock *Warlock) registerCurseOfTongues() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellCurseOfTongues,
 
-		ManaCost: core.ManaCostOptions{BaseCost: 0.04},
+		ManaCost: core.ManaCostOptions{BaseCostPercent: 4},
 		Cast:     core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}},
 
 		ThreatMultiplier: 1,
@@ -114,7 +114,7 @@ func (warlock *Warlock) registerBaneOfAgony() {
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: WarlockSpellBaneOfAgony,
 
-		ManaCost: core.ManaCostOptions{BaseCost: 0.1},
+		ManaCost: core.ManaCostOptions{BaseCostPercent: 10},
 		Cast:     core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}},
 
 		DamageMultiplierAdditive: 1,
@@ -162,7 +162,7 @@ func (warlock *Warlock) registerBaneOfDoom() {
 		Flags:          core.SpellFlagHauntSE | core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellBaneOfDoom,
 
-		ManaCost: core.ManaCostOptions{BaseCost: 0.15},
+		ManaCost: core.ManaCostOptions{BaseCostPercent: 15},
 		Cast:     core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}},
 
 		DamageMultiplierAdditive: 1,

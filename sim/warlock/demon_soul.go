@@ -94,8 +94,8 @@ func (warlock *Warlock) registerDemonSoul() {
 		ClassSpellMask: WarlockSpellDemonSoul,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.15,
-			Multiplier: 1,
+			BaseCostPercent: 15,
+			PercentModifier: 100,
 		},
 
 		Cast: core.CastConfig{

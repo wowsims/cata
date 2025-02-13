@@ -55,9 +55,9 @@ var ItemSetFlameWakersBattleGear = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent, setBonusAura *core.Aura) {
 			hunter := agent.(HunterAgent).GetHunter()
 			var baMod = hunter.AddDynamicMod(core.SpellModConfig{
-				Kind:       core.SpellMod_PowerCost_Pct,
-				ClassMask:  HunterSpellsTierTwelve,
-				FloatValue: -1,
+				Kind:      core.SpellMod_PowerCost_Pct,
+				ClassMask: HunterSpellsTierTwelve,
+				IntValue:  -100,
 			})
 			var burningAdrenaline = hunter.RegisterAura(core.Aura{
 				Label:    "Burning Adrenaline",
@@ -67,7 +67,7 @@ var ItemSetFlameWakersBattleGear = core.NewItemSet(core.ItemSet{
 					baMod.Activate()
 				},
 				OnApplyEffects: func(aura *core.Aura, sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-					if spell.ClassSpellMask&HunterSpellsTierTwelve == 0 || spell.ActionID.SpellID == 0 {
+					if !spell.Matches(HunterSpellsTierTwelve) || spell.ActionID.SpellID == 0 {
 						return
 					}
 					// https://www.bluetracker.gg/wow/topic/eu-en/510644-cataclysm-classic-hotfixes-11-december/
@@ -77,7 +77,7 @@ var ItemSetFlameWakersBattleGear = core.NewItemSet(core.ItemSet{
 					// 	return
 					// }
 
-					if hunter.HasActiveAura("Ready, Set, Aim...") && spell.ClassSpellMask == HunterSpellAimedShot {
+					if hunter.HasActiveAura("Ready, Set, Aim...") && spell.Matches(HunterSpellAimedShot) {
 						return
 					}
 

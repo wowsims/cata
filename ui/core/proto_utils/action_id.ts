@@ -84,6 +84,10 @@ export class ActionId {
 					name += ' (Magmaw)';
 				} else if (tag == 49416) {
 					name += ' (Blazing Bone Construct)';
+				} else if (tag == 56427) {
+					name += ' (Warmaster Blackhorn)';
+				} else if (tag == 56781) {
+					name += ' (Goriona)';
 				} else if (tag > 4191800) {
 					name += ` (Animated Bone Warrior ${(tag - 4191800).toFixed(0)})`;
 				}
@@ -582,6 +586,12 @@ export class ActionId {
 			case 'Shield Slam':
 				if (tag === 3) {
 					name = 'Combust (T12 2P)';
+				}
+				break;
+			// Warrior - T13 4P proc
+			case 'Colossus Smash':
+				if (this.spellId === 108126) {
+					name += ' (T13 4P)';
 				}
 				break;
 			// Warrior - T12 4P proc

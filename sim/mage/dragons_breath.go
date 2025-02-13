@@ -18,7 +18,7 @@ func (mage *Mage) registerDragonsBreathSpell() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: MageSpellDragonsBreath,
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.07,
+			BaseCostPercent: 7,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

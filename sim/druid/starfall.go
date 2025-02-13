@@ -18,7 +18,7 @@ func (druid *Druid) registerStarfallSpell() {
 	starfallTickSpell := druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 50288},
 		SpellSchool:    core.SpellSchoolArcane,
-		ProcMask:       core.ProcMaskSpellProc,
+		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: DruidSpellStarfall,
 		Flags:          SpellFlagOmenTrigger,
 
@@ -37,11 +37,11 @@ func (druid *Druid) registerStarfallSpell() {
 	druid.Starfall = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 48505},
 		SpellSchool: core.SpellSchoolArcane,
-		ProcMask:    core.ProcMaskSpellDamage,
+		ProcMask:    core.ProcMaskSpellProc,
 		Flags:       core.SpellFlagAPL,
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.35,
-			Multiplier: 1,
+			BaseCostPercent: 35,
+			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

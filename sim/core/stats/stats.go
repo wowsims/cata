@@ -363,8 +363,7 @@ type PseudoStats struct {
 	// Effects that apply when this unit is the attacker.
 	///////////////////////////////////////////////////
 
-	CostMultiplier float64 // Multiplies spell cost.
-	CostReduction  float64 // Reduces spell cost.
+	SpellCostPercentModifier int32 // Multiplies spell cost.
 
 	CastSpeedMultiplier   float64
 	MeleeSpeedMultiplier  float64
@@ -453,7 +452,7 @@ type PseudoStats struct {
 
 func NewPseudoStats() PseudoStats {
 	return PseudoStats{
-		CostMultiplier: 1,
+		SpellCostPercentModifier: 100,
 
 		CastSpeedMultiplier:   1,
 		MeleeSpeedMultiplier:  1,

@@ -2,30 +2,28 @@ import * as PresetUtils from '../../core/preset_utils.js';
 import {
 	BattleElixir,
 	Consumes,
-	Explosive,
-	Flask,
 	Food,
 	Glyphs,
 	GuardianElixir,
 	Potions,
 	Profession,
 	PseudoStat,
-	Spec,
 	Stat,
 	TinkerHands,
 } from '../../core/proto/common.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import {
 	ProtectionWarrior_Options as ProtectionWarriorOptions,
-	ProtectionWarrior_Rotation as ProtectionWarriorRotation,
 	WarriorMajorGlyph,
 	WarriorMinorGlyph,
 	WarriorPrimeGlyph,
 } from '../../core/proto/warrior.js';
 import { Stats } from '../../core/proto_utils/stats';
+import ItemSwapP4Gear from '../arms/gear_sets/p4_arms_item_swap.gear.json';
 import DefaultApl from './apls/default.apl.json';
 import P1BISGear from './gear_sets/p1_bis.gear.json';
 import P3BISGear from './gear_sets/p3_bis.gear.json';
+import P4BISGear from './gear_sets/p4_bis.gear.json';
 import PreraidBISGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
@@ -35,6 +33,9 @@ import PreraidBISGear from './gear_sets/preraid.gear.json';
 export const PRERAID_BALANCED_PRESET = PresetUtils.makePresetGear('Pre-raid', PreraidBISGear);
 export const P1_BALANCED_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1BISGear);
 export const P3_BALANCED_PRESET = PresetUtils.makePresetGear('P3 - BIS', P3BISGear);
+export const P4_BALANCED_PRESET = PresetUtils.makePresetGear('P4 - BIS', P4BISGear);
+
+export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4', ItemSwapP4Gear);
 
 export const ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('Default APL', DefaultApl);
 
