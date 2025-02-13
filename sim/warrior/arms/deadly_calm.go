@@ -15,9 +15,9 @@ func (war *ArmsWarrior) RegisterDeadlyCalm() {
 	dcActionID := core.ActionID{SpellID: 85730}
 
 	dcMod := war.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  warrior.SpellMaskSpecialAttack,
-		Kind:       core.SpellMod_PowerCost_Pct,
-		FloatValue: -1,
+		ClassMask: warrior.SpellMaskSpecialAttack,
+		Kind:      core.SpellMod_PowerCost_Pct,
+		IntValue:  -100,
 	})
 
 	dcAura := war.RegisterAura(core.Aura{

@@ -356,12 +356,16 @@ func (parentAura *Aura) MakeDependentProcTriggerAura(unit *Unit, config ProcTrig
 // Attaches a ProcTrigger to a parent Aura
 // Preffered use-case.
 // For non standard use-cases see: MakeDependentProcTriggerAura
-func (parentAura *Aura) AttachProcTrigger(config ProcTrigger) {
+// Returns parent aura for chaining
+func (parentAura *Aura) AttachProcTrigger(config ProcTrigger) *Aura {
 	ApplyProcTriggerCallback(parentAura.Unit, parentAura, config)
+
+	return parentAura
 }
 
 // Attaches a SpellMod to a parent Aura
-func (parentAura *Aura) AttachSpellMod(spellModConfig SpellModConfig) {
+// Returns parent aura for chaining
+func (parentAura *Aura) AttachSpellMod(spellModConfig SpellModConfig) *Aura {
 	parentAuraDep := parentAura.Unit.AddDynamicMod(spellModConfig)
 
 	parentAura.ApplyOnGain(func(_ *Aura, _ *Simulation) {
@@ -371,10 +375,13 @@ func (parentAura *Aura) AttachSpellMod(spellModConfig SpellModConfig) {
 	parentAura.ApplyOnExpire(func(_ *Aura, _ *Simulation) {
 		parentAuraDep.Deactivate()
 	})
+
+	return parentAura
 }
 
 // Attaches a StatDependency to a parent Aura
-func (parentAura *Aura) AttachStatDependency(statDep *stats.StatDependency) {
+// Returns parent aura for chaining
+func (parentAura *Aura) AttachStatDependency(statDep *stats.StatDependency) *Aura {
 
 	parentAura.ApplyOnGain(func(_ *Aura, sim *Simulation) {
 		parentAura.Unit.EnableBuildPhaseStatDep(sim, statDep)
@@ -383,10 +390,13 @@ func (parentAura *Aura) AttachStatDependency(statDep *stats.StatDependency) {
 	parentAura.ApplyOnExpire(func(_ *Aura, sim *Simulation) {
 		parentAura.Unit.DisableBuildPhaseStatDep(sim, statDep)
 	})
+
+	return parentAura
 }
 
 // Adds Stats to a parent Aura
-func (parentAura *Aura) AttachStatsBuff(stats stats.Stats) {
+// Returns parent aura for chaining
+func (parentAura *Aura) AttachStatsBuff(stats stats.Stats) *Aura {
 	parentAura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
 		aura.Unit.AddStatsDynamic(sim, stats)
 	})
@@ -398,17 +408,23 @@ func (parentAura *Aura) AttachStatsBuff(stats stats.Stats) {
 	if parentAura.IsActive() {
 		parentAura.Unit.AddStats(stats)
 	}
+
+	return parentAura
 }
 
 // Adds a Stat to a parent Aura
-func (parentAura *Aura) AttachStatBuff(stat stats.Stat, value float64) {
+// Returns parent aura for chaining
+func (parentAura *Aura) AttachStatBuff(stat stats.Stat, value float64) *Aura {
 	statsToAdd := stats.Stats{}
 	statsToAdd[stat] = value
 	parentAura.AttachStatsBuff(statsToAdd)
+
+	return parentAura
 }
 
 // Attaches a multiplicative PseudoStat buff to a parent Aura
-func (parentAura *Aura) AttachMultiplicativePseudoStatBuff(fieldPointer *float64, multiplier float64) {
+// Returns parent aura for chaining
+func (parentAura *Aura) AttachMultiplicativePseudoStatBuff(fieldPointer *float64, multiplier float64) *Aura {
 	parentAura.ApplyOnGain(func(_ *Aura, _ *Simulation) {
 		*fieldPointer *= multiplier
 	})
@@ -420,10 +436,13 @@ func (parentAura *Aura) AttachMultiplicativePseudoStatBuff(fieldPointer *float64
 	if parentAura.IsActive() {
 		*fieldPointer *= multiplier
 	}
+
+	return parentAura
 }
 
 // Attaches an additive PseudoStat buff to a parent Aura
-func (parentAura *Aura) AttachAdditivePseudoStatBuff(fieldPointer *float64, bonus float64) {
+// Returns parent aura for chaining
+func (parentAura *Aura) AttachAdditivePseudoStatBuff(fieldPointer *float64, bonus float64) *Aura {
 	parentAura.ApplyOnGain(func(_ *Aura, _ *Simulation) {
 		*fieldPointer += bonus
 	})
@@ -435,6 +454,8 @@ func (parentAura *Aura) AttachAdditivePseudoStatBuff(fieldPointer *float64, bonu
 	if parentAura.IsActive() {
 		*fieldPointer += bonus
 	}
+
+	return parentAura
 }
 
 type ShieldStrengthCalculator func(unit *Unit) float64

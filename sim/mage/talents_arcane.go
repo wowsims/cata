@@ -35,7 +35,7 @@ func (mage *Mage) ApplyArcaneTalents() {
 	if mage.Talents.ImprovedArcaneMissiles > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
 			ClassMask: MageSpellArcaneMissilesCast,
-			IntValue:  int64(mage.Talents.ImprovedArcaneMissiles),
+			IntValue:  mage.Talents.ImprovedArcaneMissiles,
 			Kind:      core.SpellMod_DotNumberOfTicks_Flat,
 		})
 	}
@@ -73,9 +73,9 @@ func (mage *Mage) ApplyArcaneTalents() {
 		})
 
 		mage.AddStaticMod(core.SpellModConfig{
-			ClassMask:  MageSpellArcaneExplosion,
-			FloatValue: -0.25 * float64(mage.Talents.ImprovedArcaneExplosion),
-			Kind:       core.SpellMod_PowerCost_Pct,
+			ClassMask: MageSpellArcaneExplosion,
+			IntValue:  -25 * mage.Talents.ImprovedArcaneExplosion,
+			Kind:      core.SpellMod_PowerCost_Pct,
 		})
 	}
 
@@ -92,9 +92,9 @@ func (mage *Mage) applyArcaneConcentration() {
 	procChance := []float64{0, 0.13, 0.27, 0.4}[mage.Talents.ArcaneConcentration]
 
 	clearCastingMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellsAllDamaging,
-		FloatValue: -10,
-		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask: MageSpellsAllDamaging,
+		IntValue:  -1000,
+		Kind:      core.SpellMod_PowerCost_Pct,
 	})
 
 	// The Clearcasting proc
@@ -283,9 +283,9 @@ func (mage *Mage) registerArcanePowerCD() {
 	actionID := core.ActionID{SpellID: 12042}
 
 	arcanePowerCostMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellsAllDamaging,
-		FloatValue: 0.2,
-		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask: MageSpellsAllDamaging,
+		IntValue:  20,
+		Kind:      core.SpellMod_PowerCost_Pct,
 	})
 
 	arcanePowerDmgMod := mage.AddDynamicMod(core.SpellModConfig{
@@ -303,7 +303,7 @@ func (mage *Mage) registerArcanePowerCD() {
 				mage.arcanePowerGCDmod.Activate()
 			}
 
-			arcanePowerCostMod.UpdateFloatValue(core.TernaryFloat64(mage.T12_4pc.IsActive(), -0.1, 0.2))
+			arcanePowerCostMod.UpdateIntValue(core.TernaryInt32(mage.T12_4pc.IsActive(), -10, 20))
 			arcanePowerCostMod.Activate()
 
 			arcanePowerDmgMod.Activate()

@@ -18,11 +18,11 @@ func (shaman *Shaman) registerShamanisticRageCD() {
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageTakenMultiplier *= 0.7
-			shaman.PseudoStats.CostMultiplier -= 1.0
+			shaman.PseudoStats.SpellCostPercentModifier -= 100
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageTakenMultiplier /= 0.7
-			shaman.PseudoStats.CostMultiplier += 1.0
+			shaman.PseudoStats.SpellCostPercentModifier += 100
 		},
 	})
 

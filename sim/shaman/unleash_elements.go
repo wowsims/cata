@@ -142,7 +142,7 @@ func (shaman *Shaman) registerUnleashLife() {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
-				spell.CostMultiplier -= 0.2
+				spell.DamageMultiplierAdditive -= 0.2
 			}
 		},
 	})
@@ -181,8 +181,8 @@ func (shaman *Shaman) registerUnleashElements() {
 		Flags:    core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.07,
-			Multiplier: 1 - 0.05*float64(shaman.Talents.Convection) - shaman.GetMentalQuicknessBonus(),
+			BaseCostPercent: 7,
+			PercentModifier: 100 - (5 * shaman.Talents.Convection) - shaman.GetMentalQuicknessBonus(),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

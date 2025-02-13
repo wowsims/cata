@@ -60,7 +60,7 @@ func (druid *Druid) registerFerociousBiteSpell() {
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
-				druid.SpendEnergy(sim, excessEnergy, spell.Cost.(*core.EnergyCost).ResourceMetrics)
+				druid.SpendEnergy(sim, excessEnergy, spell.EnergyMetrics())
 				druid.ApplyFeral4pT12(sim)
 				druid.SpendComboPoints(sim, spell.ComboPointMetrics())
 
@@ -92,5 +92,5 @@ func (druid *Druid) registerFerociousBiteSpell() {
 }
 
 func (druid *Druid) CurrentFerociousBiteCost() float64 {
-	return druid.FerociousBite.ApplyCostModifiers(druid.FerociousBite.DefaultCast.Cost)
+	return druid.FerociousBite.Cost.GetCurrentCost()
 }

@@ -16,7 +16,7 @@ func (Mage *FrostMage) registerSummonWaterElementalSpell() {
 		Flags:    core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.16,
+			BaseCostPercent: 16,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -120,7 +120,7 @@ func (we *WaterElemental) registerWaterboltSpell() {
 		ProcMask:    core.ProcMaskSpellDamage,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.01,
+			BaseCostPercent: 1,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

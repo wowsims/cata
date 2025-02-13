@@ -46,8 +46,8 @@ func (war *ArmsWarrior) applyGlyphOfSweepingStrikes() {
 	}
 
 	war.AddStaticMod(core.SpellModConfig{
-		ClassMask:  warrior.SpellMaskSweepingStrikes,
-		Kind:       core.SpellMod_PowerCost_Pct,
-		FloatValue: -1.0,
+		ClassMask: warrior.SpellMaskSweepingStrikes,
+		Kind:      core.SpellMod_PowerCost_Pct,
+		IntValue:  -100,
 	})
 }

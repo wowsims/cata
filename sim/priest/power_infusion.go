@@ -24,7 +24,7 @@ func (priest *Priest) registerPowerInfusionSpell() {
 		Flags:    core.SpellFlagHelpful,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.16,
+			BaseCostPercent: 16,
 		},
 		Cast: core.CastConfig{
 			CD: core.Cooldown{

@@ -27,7 +27,7 @@ func (prot *ProtectionPaladin) registerAvengersShieldSpell() {
 		MissileSpeed: 35,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.06,
+			BaseCostPercent: 6,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

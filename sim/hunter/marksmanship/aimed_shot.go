@@ -17,7 +17,7 @@ func (mmHunter *MarksmanshipHunter) registerAimedShotSpell() {
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		MissileSpeed:   40,
 		FocusCost: core.FocusCostOptions{
-			Cost: 50 - (float64(mmHunter.Talents.Efficiency) * 2),
+			Cost: 50 - mmHunter.Talents.Efficiency*2,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

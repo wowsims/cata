@@ -21,7 +21,7 @@ func (druid *Druid) registerWildMushrooms() {
 		Flags:    core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.11,
+			BaseCostPercent: 11,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

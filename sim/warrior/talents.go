@@ -78,9 +78,9 @@ func (warrior *Warrior) applyBattleTrance() {
 	}
 
 	btMod := warrior.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  battleTranceAffectedSpellsMask,
-		Kind:       core.SpellMod_PowerCost_Pct,
-		FloatValue: -1.0,
+		ClassMask: battleTranceAffectedSpellsMask,
+		Kind:      core.SpellMod_PowerCost_Pct,
+		IntValue:  -100,
 	})
 
 	triggerSpellMask := SpellMaskBloodthirst | SpellMaskMortalStrike | SpellMaskShieldSlam

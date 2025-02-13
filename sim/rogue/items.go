@@ -175,39 +175,39 @@ var Tier13 = core.NewItemSet(core.ItemSet{
 			rogue := agent.(RogueAgent).GetRogue()
 
 			bonus60e := rogue.AddDynamicMod(core.SpellModConfig{
-				Kind:       core.SpellMod_PowerCost_Flat,
-				FloatValue: -12,
-				ClassMask:  RogueSpellAmbush | RogueSpellBackstab | RogueSpellMutilate,
+				Kind:      core.SpellMod_PowerCost_Flat,
+				IntValue:  -12,
+				ClassMask: RogueSpellAmbush | RogueSpellBackstab | RogueSpellMutilate,
 			})
 
 			bonus45e := rogue.AddDynamicMod(core.SpellModConfig{
-				Kind:       core.SpellMod_PowerCost_Flat,
-				FloatValue: -9,
-				ClassMask:  RogueSpellSinisterStrike | RogueSpellGouge | RogueSpellGarrote,
+				Kind:      core.SpellMod_PowerCost_Flat,
+				IntValue:  -9,
+				ClassMask: RogueSpellSinisterStrike | RogueSpellGouge | RogueSpellGarrote,
 			})
 
 			bonus40e := rogue.AddDynamicMod(core.SpellModConfig{
-				Kind:       core.SpellMod_PowerCost_Flat,
-				FloatValue: -8,
-				ClassMask:  RogueSpellRevealingStrike,
+				Kind:      core.SpellMod_PowerCost_Flat,
+				IntValue:  -8,
+				ClassMask: RogueSpellRevealingStrike,
 			})
 
 			bonus35e := rogue.AddDynamicMod(core.SpellModConfig{
-				Kind:       core.SpellMod_PowerCost_Flat,
-				FloatValue: -7,
-				ClassMask:  RogueSpellEviscerate | RogueSpellEnvenom | RogueSpellHemorrhage,
+				Kind:      core.SpellMod_PowerCost_Flat,
+				IntValue:  -7,
+				ClassMask: RogueSpellEviscerate | RogueSpellEnvenom | RogueSpellHemorrhage,
 			})
 
 			bonus30e := rogue.AddDynamicMod(core.SpellModConfig{
-				Kind:       core.SpellMod_PowerCost_Flat,
-				FloatValue: -6,
-				ClassMask:  RogueSpellRecuperate,
+				Kind:      core.SpellMod_PowerCost_Flat,
+				IntValue:  -6,
+				ClassMask: RogueSpellRecuperate,
 			})
 
 			bonus25e := rogue.AddDynamicMod(core.SpellModConfig{
-				Kind:       core.SpellMod_PowerCost_Flat,
-				FloatValue: -5,
-				ClassMask:  RogueSpellSliceAndDice | RogueSpellRupture,
+				Kind:      core.SpellMod_PowerCost_Flat,
+				IntValue:  -5,
+				ClassMask: RogueSpellSliceAndDice | RogueSpellRupture,
 			})
 
 			aura := rogue.GetOrRegisterAura(core.Aura{

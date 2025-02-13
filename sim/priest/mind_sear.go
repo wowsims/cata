@@ -50,7 +50,7 @@ func (priest *Priest) newMindSearSpell() *core.Spell {
 	config.ActionID = core.ActionID{SpellID: 48045}
 	config.Flags = core.SpellFlagChanneled | core.SpellFlagAPL
 	config.ManaCost = core.ManaCostOptions{
-		BaseCost: 0.28,
+		BaseCostPercent: 28,
 	}
 
 	config.Cast = core.CastConfig{

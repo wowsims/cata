@@ -44,8 +44,8 @@ func (priest *Priest) registerMindSpike() {
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.12,
-			Multiplier: 1,
+			BaseCostPercent: 12,
+			PercentModifier: 100,
 		},
 
 		Cast: core.CastConfig{

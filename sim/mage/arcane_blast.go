@@ -15,9 +15,9 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		Kind:       core.SpellMod_DamageDone_Flat,
 	})
 	abCostMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellArcaneBlast,
-		FloatValue: 1.5,
-		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask: MageSpellArcaneBlast,
+		IntValue:  150,
+		Kind:      core.SpellMod_PowerCost_Pct,
 	})
 	abCastMod := mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask: MageSpellArcaneBlast,
@@ -42,7 +42,7 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			abDamageMod.UpdateFloatValue(abDamageScalar * float64(newStacks))
-			abCostMod.UpdateFloatValue(1.5 * float64(newStacks))
+			abCostMod.UpdateIntValue(150 * newStacks)
 			abCastMod.UpdateTimeValue(time.Millisecond * time.Duration(-100*newStacks))
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -66,7 +66,7 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: MageSpellArcaneBlast,
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.05,
+			BaseCostPercent: 5,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -83,6 +83,7 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 1.933 * mage.ClassSpellScaling
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+
 			if result.Landed() {
 				arcaneBlastAura.Activate(sim)
 				arcaneBlastAura.AddStack(sim)

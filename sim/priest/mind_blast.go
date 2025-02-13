@@ -18,8 +18,8 @@ func (priest *Priest) registerMindBlastSpell() {
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.17,
-			Multiplier: 1,
+			BaseCostPercent: 17,
+			PercentModifier: 100,
 		},
 
 		Cast: core.CastConfig{

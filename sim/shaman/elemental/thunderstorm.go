@@ -25,7 +25,7 @@ func (elemental *ElementalShaman) registerThunderstormSpell() {
 		ClassSpellMask: shaman.SpellMaskThunderstorm,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.0,
+			BaseCostPercent: 0,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

@@ -32,9 +32,9 @@ func (hunter *Hunter) ApplyGlyphs() {
 	}
 	if hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfKillCommand) {
 		hunter.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_PowerCost_Flat,
-			ClassMask:  HunterSpellKillCommand,
-			FloatValue: -3,
+			Kind:      core.SpellMod_PowerCost_Flat,
+			ClassMask: HunterSpellKillCommand,
+			IntValue:  -3,
 		})
 	}
 	if hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfChimeraShot) {
