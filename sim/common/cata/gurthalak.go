@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -53,10 +54,10 @@ func init() {
 				},
 			})
 
-			if character.Equipment.MainHand().ID == gurthalakItemID {
+			if character.ItemSwap.CouldHaveItemEquippedInSlot(gurthalakItemID, proto.ItemSlot_ItemSlotMainHand) {
 				makeGurthalakProcTrigger(character, gurthalakItemID, summonSpell, labelSuffix, true)
 			}
-			if character.Equipment.OffHand().ID == gurthalakItemID {
+			if character.ItemSwap.CouldHaveItemEquippedInSlot(gurthalakItemID, proto.ItemSlot_ItemSlotOffHand) {
 				makeGurthalakProcTrigger(character, gurthalakItemID, summonSpell, labelSuffix, false)
 			}
 		})
@@ -64,8 +65,12 @@ func init() {
 }
 
 func makeGurthalakProcTrigger(character *core.Character, gurthalakItemID int32, summonSpell *core.Spell, labelSuffix string, isMH bool) {
+	meleeWeaponSlots := core.MeleeWeaponSlots()
+	itemSlot := core.Ternary(isMH, meleeWeaponSlots[:1], meleeWeaponSlots[1:])
+	slotLabel := core.Ternary(isMH, "MH", "OH")
+
 	aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-		Name:       "Gurthalak Trigger " + labelSuffix + core.Ternary(isMH, "MH", "OH"),
+		Name:       "Gurthalak Trigger " + labelSuffix + slotLabel,
 		Callback:   core.CallbackOnSpellHitDealt,
 		ProcMask:   core.ProcMaskMelee,
 		Outcome:    core.OutcomeLanded,
@@ -76,8 +81,7 @@ func makeGurthalakProcTrigger(character *core.Character, gurthalakItemID int32, 
 		},
 	})
 
-	meleeWeaponSlots := core.MeleeWeaponSlots()
-	character.ItemSwap.RegisterProcWithSlots(gurthalakItemID, aura, core.Ternary(isMH, meleeWeaponSlots[:1], meleeWeaponSlots[1:]))
+	character.ItemSwap.RegisterProcWithSlots(gurthalakItemID, aura, itemSlot)
 }
 
 type TentacleOfTheOldOnesPet struct {

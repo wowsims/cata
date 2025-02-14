@@ -255,6 +255,10 @@ func (character *Character) hasItemEquipped(itemID int32, possibleSlots []proto.
 	return character.Equipment.containsItemInSlots(itemID, possibleSlots)
 }
 
+func (swap *ItemSwap) CouldHaveItemEquippedInSlot(itemID int32, slot proto.ItemSlot) bool {
+	return swap.character.Equipment.containsItemInSlots(itemID, []proto.ItemSlot{slot}) || swap.unEquippedItems.containsItemInSlots(itemID, []proto.ItemSlot{slot})
+}
+
 func (character *Character) hasEnchantEquipped(effectID int32, possibleSlots []proto.ItemSlot) bool {
 	return character.Equipment.containsEnchantInSlots(effectID, possibleSlots)
 }
@@ -275,13 +279,14 @@ func (swap *ItemSwap) EligibleSlotsForItem(itemID int32) []proto.ItemSlot {
 	}
 
 	if !swap.IsEnabled() {
-		return eligibleSlots
+		return FilterSlice(eligibleSlots, func(slot proto.ItemSlot) bool {
+			return (swap.character.Equipment[slot].ID == itemID)
+		})
 	}
 
 	return FilterSlice(eligibleSlots, func(slot proto.ItemSlot) bool {
 		return (swap.originalEquip[slot].ID == itemID) || (swap.swapEquip[slot].ID == itemID)
 	})
-
 }
 
 func (swap *ItemSwap) EligibleSlotsForEffect(effectID int32) []proto.ItemSlot {
