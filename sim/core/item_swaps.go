@@ -15,6 +15,7 @@ type ItemSwap struct {
 	onItemSwapCallbacks [NumItemSlots][]OnItemSwap
 
 	isFuryWarrior        bool
+	isFeralDruid         bool
 	mhCritMultiplier     float64
 	ohCritMultiplier     float64
 	rangedCritMultiplier float64
@@ -81,6 +82,7 @@ func (character *Character) enableItemSwap(itemSwap *proto.ItemSwap, mhCritMulti
 
 	character.ItemSwap = ItemSwap{
 		isFuryWarrior:        character.Spec == proto.Spec_SpecFuryWarrior,
+		isFeralDruid:         character.Spec == proto.Spec_SpecFeralDruid || character.Spec == proto.Spec_SpecGuardianDruid,
 		mhCritMultiplier:     mhCritMultiplier,
 		ohCritMultiplier:     ohCritMultiplier,
 		rangedCritMultiplier: rangedCritMultiplier,
@@ -372,7 +374,9 @@ func (swap *ItemSwap) swapItem(sim *Simulation, slot proto.ItemSlot, isPrepull b
 
 	switch slot {
 	case proto.ItemSlot_ItemSlotMainHand:
-		if character.AutoAttacks.AutoSwingMelee {
+		// Feral's concept of Paws is handeled in the druid.go Initialize()
+		// and doesn't need MH swap handling here.
+		if character.AutoAttacks.AutoSwingMelee && !swap.isFeralDruid {
 			character.AutoAttacks.SetMH(character.WeaponFromMainHand(swap.mhCritMultiplier))
 		}
 	case proto.ItemSlot_ItemSlotOffHand:

@@ -281,6 +281,15 @@ func (druid *Druid) Initialize() {
 		druid.BlazeOfGloryAura = druid.GetAura("Blaze of Glory")
 	})
 
+	druid.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand}, func(sim *core.Simulation, slot proto.ItemSlot) {
+		switch {
+		case druid.InForm(Cat):
+			druid.AutoAttacks.SetMH(druid.GetCatWeapon())
+		case druid.InForm(Bear):
+			druid.AutoAttacks.SetMH(druid.GetBearWeapon())
+		}
+	})
+
 	druid.registerFaerieFireSpell()
 	// druid.registerRebirthSpell()
 	druid.registerInnervateCD()
