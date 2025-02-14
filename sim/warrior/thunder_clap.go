@@ -14,7 +14,7 @@ func (warrior *Warrior) RegisterThunderClapSpell() {
 	warrior.ThunderClap = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 6343},
 		SpellSchool:    core.SpellSchoolPhysical,
-		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		ProcMask:       core.ProcMaskRangedSpecial,
 		Flags:          core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskThunderClap | SpellMaskSpecialAttack,
 
