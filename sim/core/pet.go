@@ -220,7 +220,7 @@ func (pet *Pet) EnableWithTimeout(sim *Simulation, petAgent PetAgent, petDuratio
 	sim.AddPendingAction(pet.timeoutAction)
 }
 
-func (pet *Pet) SetStartattackDelay(startAttackDelay time.Duration) {
+func (pet *Pet) SetStartAttackDelay(startAttackDelay time.Duration) {
 	pet.startAttackDelay = startAttackDelay
 }
 

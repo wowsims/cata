@@ -114,7 +114,7 @@ func NewTentacleOfTheOldOnesPet(character *core.Character) *TentacleOfTheOldOnes
 }
 
 func (pet *TentacleOfTheOldOnesPet) enable(sim *core.Simulation) {
-	pet.SetStartattackDelay(core.DurationFromSeconds(sim.RollWithLabel(1.0, core.BossGCD.Seconds(), "Tentacle Summon Delay")))
+	pet.SetStartAttackDelay(core.DurationFromSeconds(sim.RollWithLabel(1.0, core.BossGCD.Seconds(), "Tentacle Summon Delay")))
 
 	// It also inherits the owner's spell hit and crit, on each cast of Mind Flay.
 	// TODO: Verify this on the PTR
@@ -189,7 +189,7 @@ func (pet *TentacleOfTheOldOnesPet) registerMindFlay() {
 					dot := spell.Dot(target)
 					dot.Apply(sim)
 					// Delaying two NPC GCDs minus the total cast time of Mind Flay (3s)
-					pet.ExtendGCDUntil(sim, sim.CurrentTime+core.DurationFromSeconds(3.24))
+					pet.ExtendGCDUntil(sim, sim.CurrentTime+core.BossGCD*2)
 				} else {
 					spell.DealOutcome(sim, result)
 				}
