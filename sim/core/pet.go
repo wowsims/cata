@@ -220,6 +220,10 @@ func (pet *Pet) EnableWithTimeout(sim *Simulation, petAgent PetAgent, petDuratio
 	sim.AddPendingAction(pet.timeoutAction)
 }
 
+func (pet *Pet) SetStartAttackDelay(startAttackDelay time.Duration) {
+	pet.startAttackDelay = startAttackDelay
+}
+
 // Enables and possibly updates how the pet inherits its owner's stats. DK use only.
 func (pet *Pet) EnableDynamicStats(inheritance PetStatInheritance) {
 	if !slices.Contains(pet.Owner.DynamicStatsPets, pet) {
