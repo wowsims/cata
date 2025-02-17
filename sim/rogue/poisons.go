@@ -1,6 +1,7 @@
 package rogue
 
 import (
+	"fmt"
 	"strconv"
 	"time"
 
@@ -110,16 +111,9 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 					rogue.WoundPoison[DeadlyProc].Cast(sim, target)
 				}
 			}
-			if rogue.lastDeadlyPoisonProcMask.Matches(core.ProcMaskMeleeOH) {
-				switch rogue.Options.MhImbue {
-				case proto.RogueOptions_InstantPoison:
-					rogue.InstantPoison[DeadlyProc].Cast(sim, target)
-				case proto.RogueOptions_WoundPoison:
-					rogue.WoundPoison[DeadlyProc].Cast(sim, target)
-				}
-			}
+
 			// Confirmed: Thrown Deadly Poison proc only the MH poison, and is not proc'd from MH/OH Deadly Poison
-			if rogue.lastDeadlyPoisonProcMask.Matches(core.ProcMaskRanged) {
+			if rogue.lastDeadlyPoisonProcMask.Matches(core.ProcMaskMeleeOH | core.ProcMaskRanged | core.ProcMaskMeleeProc) {
 				switch rogue.Options.MhImbue {
 				case proto.RogueOptions_InstantPoison:
 					rogue.InstantPoison[DeadlyProc].Cast(sim, target)
@@ -127,6 +121,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 					rogue.WoundPoison[DeadlyProc].Cast(sim, target)
 				}
 			}
+
 			dot.Refresh(sim)
 			dot.TakeSnapshot(sim, false)
 		},
@@ -138,73 +133,57 @@ func (rogue *Rogue) procDeadlyPoison(sim *core.Simulation, spell *core.Spell, re
 	rogue.DeadlyPoison.Cast(sim, result.Target)
 }
 
-func (rogue *Rogue) getPoisonProcMask(imbue proto.RogueOptions_PoisonImbue) core.ProcMask {
-	var mask core.ProcMask
-	if rogue.Options.MhImbue == imbue {
-		mask |= core.ProcMaskMeleeMH
-	}
-	if rogue.Options.OhImbue == imbue {
+func (rogue *Rogue) getPoisonProcMaskForSlot(imbue proto.RogueOptions_PoisonImbue, itemSlot proto.ItemSlot) core.ProcMask {
+	mask := core.ProcMaskUnknown
+	switch {
+	case itemSlot == proto.ItemSlot_ItemSlotMainHand && rogue.Options.MhImbue == imbue:
+		mask |= core.ProcMaskMeleeMH | core.ProcMaskMeleeProc
+	case itemSlot == proto.ItemSlot_ItemSlotOffHand && rogue.Options.OhImbue == imbue:
 		mask |= core.ProcMaskMeleeOH
-	}
-	if rogue.Options.ThImbue == imbue {
+	case itemSlot == proto.ItemSlot_ItemSlotRanged && rogue.Options.ThImbue == imbue:
 		mask |= core.ProcMaskRanged
 	}
+
 	return mask
 }
 
 func (rogue *Rogue) applyDeadlyPoison() {
-	rogue.RegisterAura(core.Aura{
-		Label:    "Deadly Poison",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			procMask := rogue.getPoisonProcMask(proto.RogueOptions_DeadlyPoison)
-			if procMask == core.ProcMaskUnknown {
-				return
-			}
+	for _, itemSlot := range core.AllWeaponSlots() {
+		procMask := rogue.getPoisonProcMaskForSlot(proto.RogueOptions_DeadlyPoison, itemSlot)
+		dpm := rogue.AutoAttacks.NewStaticDynamicProcManager(1, procMask)
 
-			if !result.Landed() || !spell.ProcMask.Matches(procMask) {
-				return
-			}
-			if sim.RandomFloat("Deadly Poison") < rogue.GetDeadlyPoisonProcChance() {
-				rogue.procDeadlyPoison(sim, spell, result)
-			}
-		},
-	})
+		core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
+			Name:     fmt.Sprintf("Deadly Poison %s", itemSlot),
+			Outcome:  core.OutcomeLanded,
+			Callback: core.CallbackOnSpellHitDealt,
+			DPM:      dpm,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if sim.RandomFloat("Deadly Poison") < rogue.GetDeadlyPoisonProcChance() {
+					rogue.procDeadlyPoison(sim, spell, result)
+				}
+			},
+		})
+	}
+
 }
 
 func (rogue *Rogue) applyWoundPoison() {
-	procMask := rogue.getPoisonProcMask(proto.RogueOptions_WoundPoison)
-	if procMask == core.ProcMaskUnknown {
-		return
-	}
-
 	const basePPM = 0.5 / (1.4 / 60) // ~21.43, the former 50% normalized to a 1.4 speed weapon
-	rogue.woundPoisonPPMM = rogue.AutoAttacks.NewPPMManager(basePPM, procMask)
 
-	rogue.RegisterAura(core.Aura{
-		Label:    "Wound Poison",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() {
-				return
-			}
+	for _, itemSlot := range core.AllWeaponSlots() {
+		procMask := rogue.getPoisonProcMaskForSlot(proto.RogueOptions_WoundPoison, itemSlot)
+		rogue.woundPoisonPPMM[itemSlot] = rogue.AutoAttacks.NewPPMManager(basePPM, procMask)
 
-			procMask := rogue.getPoisonProcMask(proto.RogueOptions_WoundPoison)
-			if procMask == core.ProcMaskUnknown {
-				return
-			}
-
-			if rogue.woundPoisonPPMM.Proc(sim, spell.ProcMask, "Wound Poison") {
+		core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
+			Name:     fmt.Sprintf("Wound Poison %s", itemSlot),
+			Outcome:  core.OutcomeLanded,
+			Callback: core.CallbackOnSpellHitDealt,
+			DPM:      rogue.woundPoisonPPMM[itemSlot],
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				rogue.WoundPoison[NormalProc].Cast(sim, result.Target)
-			}
-		},
-	})
+			},
+		})
+	}
 }
 
 type PoisonProcSource int
@@ -323,39 +302,28 @@ func (rogue *Rogue) GetDeadlyPoisonProcChance() float64 {
 }
 
 func (rogue *Rogue) UpdateInstantPoisonPPM(bonusChance float64) {
-	procMask := rogue.getPoisonProcMask(proto.RogueOptions_InstantPoison)
-	if procMask == core.ProcMaskUnknown {
-		return
-	}
-
 	const basePPM = 0.2 / (1.4 / 60) // ~8.57, the former 20% normalized to a 1.4 speed weapon
-
 	ppm := basePPM * (1 + core.TernaryFloat64(rogue.Spec == proto.Spec_SpecAssassinationRogue, 0.5, 0) + bonusChance)
-	rogue.instantPoisonPPMM = rogue.AutoAttacks.NewStaticPPMManager(ppm, procMask)
+
+	for _, itemSlot := range core.AllWeaponSlots() {
+		procMask := rogue.getPoisonProcMaskForSlot(proto.RogueOptions_InstantPoison, itemSlot)
+		rogue.instantPoisonPPMM[itemSlot] = rogue.AutoAttacks.NewStaticPPMManager(ppm, procMask)
+	}
 }
 
 func (rogue *Rogue) applyInstantPoison() {
 	rogue.UpdateInstantPoisonPPM(0)
 
-	rogue.RegisterAura(core.Aura{
-		Label:    "Instant Poison",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() {
-				return
-			}
-
-			procMask := rogue.getPoisonProcMask(proto.RogueOptions_InstantPoison)
-			if procMask == core.ProcMaskUnknown {
-				return
-			}
-
-			if rogue.instantPoisonPPMM.Proc(sim, spell.ProcMask, "Instant Poison") {
-				rogue.InstantPoison[NormalProc].Cast(sim, result.Target)
-			}
-		},
-	})
+	for _, itemSlot := range core.AllWeaponSlots() {
+		core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
+			Name:     fmt.Sprintf("Instant Poison %s", itemSlot),
+			Outcome:  core.OutcomeLanded,
+			Callback: core.CallbackOnSpellHitDealt,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if rogue.instantPoisonPPMM[itemSlot].Proc(sim, spell.ProcMask, "Instant Poison") {
+					rogue.InstantPoison[NormalProc].Cast(sim, result.Target)
+				}
+			},
+		})
+	}
 }

@@ -905,7 +905,7 @@ func init() {
 			lightningStrike := character.RegisterSpell(core.SpellConfig{
 				ActionID:    actionID,
 				SpellSchool: core.SpellSchoolPhysical,
-				ProcMask:    core.ProcMaskEmpty,
+				ProcMask:    core.ProcMaskEmpty, // ProcMask is set in the trigger aura
 				Flags:       core.SpellFlagPassiveSpell,
 
 				DamageMultiplier: 1,
@@ -933,7 +933,7 @@ func init() {
 					} else {
 						apSnapshot = spell.RangedAttackPower(result.Target)
 					}
-
+					lightningStrike.ProcMask = core.Ternary(spell.ProcMask.Matches(core.ProcMaskRanged), core.ProcMaskRangedProc, core.ProcMaskMeleeProc)
 					lightningStrike.Cast(sim, result.Target)
 				},
 			})
@@ -955,7 +955,7 @@ func init() {
 			whirlingMaw := character.RegisterSpell(core.SpellConfig{
 				ActionID:    actionID,
 				SpellSchool: core.SpellSchoolPhysical,
-				ProcMask:    core.ProcMaskEmpty,
+				ProcMask:    core.ProcMaskMeleeProc,
 				Flags:       core.SpellFlagPassiveSpell,
 
 				DamageMultiplier: 1,
