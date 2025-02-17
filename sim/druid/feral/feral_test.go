@@ -31,12 +31,15 @@ func TestFeral(t *testing.T) {
 		Class:       proto.Class_ClassDruid,
 		Race:        proto.Race_RaceWorgen,
 		OtherRaces:  []proto.Race{proto.Race_RaceTroll},
-		GearSet:     core.GetGearSet("../../../ui/druid/feral/gear_sets", "preraid"),
+		GearSet:     core.GetGearSet("../../../ui/druid/feral/gear_sets", "p4"),
 		ItemSwapSet: core.GetItemSwapGearSet("../../../ui/druid/feral/gear_sets", "p4_item_swap"),
 
 		OtherGearSets: []core.GearSetCombo{
 			core.GetGearSet("../../../ui/druid/feral/gear_sets", "p3"),
-			core.GetGearSet("../../../ui/druid/feral/gear_sets", "p4"),
+		},
+
+		OtherItemSwapSets: []core.ItemSwapSetCombo{
+			{Label: "no_item_swap", ItemSwap: &proto.ItemSwap{}},
 		},
 
 		Talents:         StandardTalents,
