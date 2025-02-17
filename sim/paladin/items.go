@@ -98,7 +98,7 @@ var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 			paladin := agent.(PaladinAgent).GetPaladin()
 
 			damageMod := paladin.AddDynamicMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Pct,
+				Kind:       core.SpellMod_DamageDone_Flat,
 				ClassMask:  SpellMaskModifiedByZealOfTheCrusader,
 				FloatValue: 0.18,
 			})
