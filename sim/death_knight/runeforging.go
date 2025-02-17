@@ -240,7 +240,7 @@ func init() {
 			}
 
 			if weapon == nil {
-				return
+				continue
 			}
 
 			aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{

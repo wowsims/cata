@@ -218,6 +218,10 @@ func (shaman *Shaman) RegisterFlametongueImbue(procMask core.ProcMask) {
 			triggerProcMask = core.ProcMaskMeleeOH
 		}
 
+		if weapon == nil {
+			continue
+		}
+
 		flameTongueSpell := shaman.newFlametongueImbueSpell(weapon)
 		core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
 			Name:     fmt.Sprintf("Flametongue Imbue %s", itemSlot),
