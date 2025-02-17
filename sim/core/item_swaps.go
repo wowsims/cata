@@ -155,7 +155,7 @@ func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
 	isEnchantEffectProc := config.EnchantId != 0
 
 	// Enchant effects such as Weapon/Back do not trigger an ICD
-	shouldUpdateIcd := swap.initialized && isItemProc && (config.Aura.Icd != nil)
+	shouldUpdateIcd := isItemProc && (config.Aura.Icd != nil)
 
 	character := swap.character
 	character.RegisterItemSwapCallback(config.Slots, func(sim *Simulation, _ proto.ItemSlot) {
@@ -171,12 +171,12 @@ func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
 			if !config.Aura.IsActive() {
 				config.Aura.Activate(sim)
 			}
-			if shouldUpdateIcd {
+			if swap.initialized && shouldUpdateIcd {
 				config.Aura.Icd.Use(sim)
 			}
 		} else {
 			config.Aura.Deactivate(sim)
-			if shouldUpdateIcd {
+			if swap.initialized && shouldUpdateIcd {
 				// This is a hack to block ActivateAura APL
 				// actions from executing for unequipped items.
 				config.Aura.Icd.Set(NeverExpires)
