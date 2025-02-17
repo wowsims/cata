@@ -77,14 +77,14 @@ export const P4_EP_PRESET = PresetUtils.makePresetEpWeights(
 	Stats.fromMap(
 		{
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatStrength]: 2.28,
+			[Stat.StatStrength]: 2.29,
 
-			[Stat.StatCritRating]: 1.5,
-			[Stat.StatHasteRating]: 1.15,
-			[Stat.StatMasteryRating]: 1.68,
+			[Stat.StatCritRating]: 1.51,
+			[Stat.StatHasteRating]: 1.29,
+			[Stat.StatMasteryRating]: 1.66,
 
-			[Stat.StatHitRating]: 3.08,
-			[Stat.StatExpertiseRating]: 2.46,
+			[Stat.StatHitRating]: 2.97,
+			[Stat.StatExpertiseRating]: 2.38,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 7.97,
@@ -132,6 +132,7 @@ export const P4_PRESET = PresetUtils.makePresetBuild('P4', {
 	epWeights: P4_EP_PRESET,
 	talents: DefaultTalents,
 	rotationType: APLRotationType.TypeAuto,
+	itemSwap: ITEM_SWAP_4P_T11,
 });
 
 export const DefaultOptions = RetributionPaladinOptions.create({
@@ -151,8 +152,7 @@ export const DefaultConsumes = Consumes.create({
 
 export const OtherDefaults = {
 	profession1: Profession.Engineering,
-	profession2: Profession.Tailoring,
+	profession2: Profession.Blacksmithing,
 	distanceFromTarget: 5,
 	iterationCount: 25000,
 };
-
