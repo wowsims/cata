@@ -558,17 +558,11 @@ func (shaman *Shaman) applyFlurry() {
 		Duration: time.Millisecond * 500,
 	}
 
-	shaman.RegisterAura(core.Aura{
-		Label:    "Flurry",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskMelee) {
-				return
-			}
-
+	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+		Name:     "Flurry",
+		ProcMask: core.ProcMaskMelee | core.ProcMaskMeleeProc,
+		Callback: core.CallbackOnSpellHitDealt,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Outcome.Matches(core.OutcomeCrit) {
 				procAura.Activate(sim)
 				procAura.SetStacks(sim, 3)
@@ -617,23 +611,17 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 	})
 
 	// TODO: This was 2% per talent point and max of 10% proc in wotlk. Can't find data on proc chance in cata but the talent was reduced to 3 pts. Guessing it is 3/7/10 like other talents
-	dpm := shaman.AutoAttacks.NewPPMManager([]float64{0.0, 3.0, 6.0, 10.0}[shaman.Talents.MaelstromWeapon], core.ProcMaskMelee)
-	// This aura is hidden, just applies stacks of the proc aura.
-	shaman.RegisterAura(core.Aura{
-		Label:    "MaelstromWeapon",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() {
-				return
-			}
+	dpm := shaman.AutoAttacks.NewPPMManager([]float64{0.0, 3.0, 6.0, 10.0}[shaman.Talents.MaelstromWeapon], core.ProcMaskMeleeOrMeleeProc)
 
-			if dpm.Proc(sim, spell.ProcMask, "Maelstrom Weapon") {
-				shaman.MaelstromWeaponAura.Activate(sim)
-				shaman.MaelstromWeaponAura.AddStack(sim)
-			}
+	// This aura is hidden, just applies stacks of the proc aura.
+	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+		Name:     "Maelstrom Weapon",
+		Outcome:  core.OutcomeLanded,
+		Callback: core.CallbackOnSpellHitDealt,
+		DPM:      dpm,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			shaman.MaelstromWeaponAura.Activate(sim)
+			shaman.MaelstromWeaponAura.AddStack(sim)
 		},
 	})
 }

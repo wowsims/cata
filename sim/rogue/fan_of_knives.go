@@ -53,8 +53,8 @@ func (rogue *Rogue) registerFanOfKnives() {
 				fokSpell.DealDamage(sim, results[i])
 
 				if rogue.Talents.VilePoisons > 0 {
-					mhProcChance := poisonProcModifier * getPoisonsProcChance(core.ProcMaskMeleeMH, rogue.Options.MhImbue, rogue)
-					ohProcChance := poisonProcModifier * getPoisonsProcChance(core.ProcMaskMeleeOH, rogue.Options.OhImbue, rogue)
+					mhProcChance := poisonProcModifier * getPoisonsProcChance(core.ProcMaskMeleeMH, rogue.Options.MhImbue, proto.ItemSlot_ItemSlotMainHand, rogue)
+					ohProcChance := poisonProcModifier * getPoisonsProcChance(core.ProcMaskMeleeOH, rogue.Options.OhImbue, proto.ItemSlot_ItemSlotOffHand, rogue)
 
 					if sim.Proc(mhProcChance, "Vile Poisons FoK MH") {
 						switch rogue.Options.MhImbue {
@@ -82,12 +82,12 @@ func (rogue *Rogue) registerFanOfKnives() {
 	})
 }
 
-func getPoisonsProcChance(procMask core.ProcMask, imbue proto.RogueOptions_PoisonImbue, rogue *Rogue) float64 {
+func getPoisonsProcChance(procMask core.ProcMask, imbue proto.RogueOptions_PoisonImbue, itemSlot proto.ItemSlot, rogue *Rogue) float64 {
 	switch imbue {
 	case proto.RogueOptions_InstantPoison:
-		return rogue.instantPoisonPPMM.Chance(procMask)
+		return rogue.instantPoisonPPMM[itemSlot].Chance(procMask)
 	case proto.RogueOptions_WoundPoison:
-		return rogue.woundPoisonPPMM.Chance(procMask)
+		return rogue.woundPoisonPPMM[itemSlot].Chance(procMask)
 	case proto.RogueOptions_DeadlyPoison:
 		return rogue.GetDeadlyPoisonProcChance()
 	}

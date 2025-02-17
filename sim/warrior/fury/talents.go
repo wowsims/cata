@@ -51,7 +51,7 @@ func (war *FuryWarrior) applyFlurry() {
 		Name:     "Flurry Trigger",
 		ActionID: actionID,
 		Callback: core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskMelee,
+		ProcMask: core.ProcMaskMeleeOrMeleeProc,
 		Outcome:  core.OutcomeLanded,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.DidCrit() {

@@ -30,22 +30,23 @@ type ProcHandler func(sim *Simulation, spell *Spell, result *SpellResult)
 type ProcExtraCondition func(sim *Simulation, spell *Spell, result *SpellResult) bool
 
 type ProcTrigger struct {
-	Name            string
-	ActionID        ActionID
-	Duration        time.Duration
-	Callback        AuraCallback
-	ProcMask        ProcMask
-	ProcMaskExclude ProcMask
-	SpellFlags      SpellFlag
-	Outcome         HitOutcome
-	Harmful         bool
-	ProcChance      float64
-	PPM             float64
-	DPM             *DynamicProcManager
-	ICD             time.Duration
-	Handler         ProcHandler
-	ClassSpellMask  int64
-	ExtraCondition  ProcExtraCondition
+	Name              string
+	ActionID          ActionID
+	Duration          time.Duration
+	Callback          AuraCallback
+	ProcMask          ProcMask
+	ProcMaskExclude   ProcMask
+	SpellFlags        SpellFlag
+	SpellFlagsExclude SpellFlag
+	Outcome           HitOutcome
+	Harmful           bool
+	ProcChance        float64
+	PPM               float64
+	DPM               *DynamicProcManager
+	ICD               time.Duration
+	Handler           ProcHandler
+	ClassSpellMask    int64
+	ExtraCondition    ProcExtraCondition
 }
 
 func ApplyProcTriggerCallback(unit *Unit, procAura *Aura, config ProcTrigger) {
@@ -72,6 +73,9 @@ func ApplyProcTriggerCallback(unit *Unit, procAura *Aura, config ProcTrigger) {
 	handler := config.Handler
 	callback := func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
 		if config.SpellFlags != SpellFlagNone && !spell.Flags.Matches(config.SpellFlags) {
+			return
+		}
+		if config.SpellFlagsExclude != SpellFlagNone && spell.Flags.Matches(config.SpellFlagsExclude) {
 			return
 		}
 		if config.ClassSpellMask > 0 && config.ClassSpellMask&spell.ClassSpellMask == 0 {

@@ -1,6 +1,7 @@
 package shaman
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -103,37 +104,21 @@ func (shaman *Shaman) RegisterWindfuryImbue(procMask core.ProcMask) {
 		proc += 0.02
 	}
 
-	icd := core.Cooldown{
-		Timer:    shaman.NewTimer(),
-		Duration: time.Second * 3,
-	}
-
 	mhSpell := shaman.newWindfuryImbueSpell(true)
 	ohSpell := shaman.newWindfuryImbueSpell(false)
 
-	shaman.RegisterAura(core.Aura{
-		Label:    "Windfury Imbue",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || !spell.ProcMask.Matches(procMask) {
-				return
-			}
-
-			if !icd.IsReady(sim) {
-				return
-			}
-
-			if sim.RandomFloat("Windfury Imbue") < proc {
-				icd.Use(sim)
-
-				if spell.IsMH() {
-					mhSpell.Cast(sim, result.Target)
-				} else {
-					ohSpell.Cast(sim, result.Target)
-				}
+	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+		Name:       "Windfury Imbue",
+		ProcMask:   procMask,
+		ICD:        time.Second * 3,
+		ProcChance: proc,
+		Outcome:    core.OutcomeLanded,
+		Callback:   core.CallbackOnSpellHitDealt,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.IsMH() {
+				mhSpell.Cast(sim, result.Target)
+			} else {
+				ohSpell.Cast(sim, result.Target)
 			}
 		},
 	})
@@ -221,29 +206,30 @@ func (shaman *Shaman) RegisterFlametongueImbue(procMask core.ProcMask) {
 		return
 	}
 
-	mhSpell := shaman.newFlametongueImbueSpell(shaman.MainHand())
-	ohSpell := shaman.newFlametongueImbueSpell(shaman.OffHand())
+	for _, itemSlot := range core.MeleeWeaponSlots() {
+		var weapon *core.Item
+		var triggerProcMask core.ProcMask
+		switch {
+		case procMask.Matches(core.ProcMaskMeleeMH) && itemSlot == proto.ItemSlot_ItemSlotMainHand:
+			weapon = shaman.MainHand()
+			triggerProcMask = core.ProcMaskMeleeMH | core.ProcMaskMeleeProc
+		case procMask.Matches(core.ProcMaskMeleeOH) && itemSlot == proto.ItemSlot_ItemSlotOffHand:
+			weapon = shaman.OffHand()
+			triggerProcMask = core.ProcMaskMeleeOH
+		}
 
-	label := "Flametongue Imbue"
+		flameTongueSpell := shaman.newFlametongueImbueSpell(weapon)
+		core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+			Name:     fmt.Sprintf("Flametongue Imbue %s", itemSlot),
+			ProcMask: triggerProcMask,
+			Outcome:  core.OutcomeLanded,
+			Callback: core.CallbackOnSpellHitDealt,
+			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+				flameTongueSpell.Cast(sim, result.Target)
+			},
+		})
 
-	shaman.RegisterAura(core.Aura{
-		Label:    label,
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || !spell.ProcMask.Matches(procMask) {
-				return
-			}
-
-			if spell.IsMH() {
-				mhSpell.Cast(sim, result.Target)
-			} else {
-				ohSpell.Cast(sim, result.Target)
-			}
-		},
-	})
+	}
 
 	// Currently Imbues are carried over on item swap
 	// shaman.RegisterOnItemSwapWithImbue(5, &procMask, aura)
