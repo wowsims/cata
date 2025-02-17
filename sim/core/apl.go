@@ -170,14 +170,15 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 
 		// If user has Item Swapping enabled and hasn't swapped back to the main set do it here.
 		if character != nil && character.ItemSwap.IsEnabled() {
-			var hasMainSwap bool
+			skipItemSwapCheck := true
+			hasMainSwap := false
 			for _, prepullAction := range rotation.allPrepullActions() {
 				if action, ok := prepullAction.impl.(*APLActionItemSwap); ok {
 					hasMainSwap = action.swapSet == proto.APLActionItemSwap_Main
+					skipItemSwapCheck = false
 				}
 			}
-
-			if !hasMainSwap {
+			if !skipItemSwapCheck && !hasMainSwap {
 				unit.RegisterPrepullAction(-1, func(sim *Simulation) {
 					character.ItemSwap.SwapItems(sim, proto.APLActionItemSwap_Main, false)
 				})
