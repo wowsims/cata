@@ -31,7 +31,7 @@ func (subRogue *SubtletyRogue) registerHonorAmongThieves() {
 	}
 
 	subRogue.HonorAmongThieves = core.MakePermanent(subRogue.RegisterAura(core.Aura{
-		Label:    "Honor Among Thieves",
+		Label:    "Honor Among Thieves Combo Point Aura",
 		ActionID: honorAmongThievesID,
 		Icd:      &icd,
 		OnGain: func(_ *core.Aura, sim *core.Simulation) {
