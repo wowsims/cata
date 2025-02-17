@@ -1,6 +1,7 @@
 package cata
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -64,13 +65,13 @@ func init() {
 	}
 }
 
-func makeGurthalakProcTrigger(character *core.Character, gurthalakItemID int32, summonSpell *core.Spell, labelSuffix string, isMH bool) {
+func makeGurthalakProcTrigger(character *core.Character, itemID int32, summonSpell *core.Spell, labelSuffix string, isMH bool) {
 	meleeWeaponSlots := core.MeleeWeaponSlots()
 	itemSlot := core.Ternary(isMH, meleeWeaponSlots[:1], meleeWeaponSlots[1:])
 	slotLabel := core.Ternary(isMH, "MH", "OH")
 
 	aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-		Name:       "Gurthalak Trigger " + labelSuffix + slotLabel,
+		Name:       fmt.Sprintf("Gurthalak Trigger %s %s", labelSuffix, slotLabel),
 		Callback:   core.CallbackOnSpellHitDealt,
 		ProcMask:   core.ProcMaskMelee,
 		Outcome:    core.OutcomeLanded,
@@ -81,7 +82,7 @@ func makeGurthalakProcTrigger(character *core.Character, gurthalakItemID int32, 
 		},
 	})
 
-	character.ItemSwap.RegisterProcWithSlots(gurthalakItemID, aura, itemSlot)
+	character.ItemSwap.RegisterProcWithSlots(itemID, aura, itemSlot)
 }
 
 type TentacleOfTheOldOnesPet struct {
