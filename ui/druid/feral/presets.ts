@@ -23,6 +23,8 @@ import P3Gear from './gear_sets/p3.gear.json';
 export const P3_PRESET = PresetUtils.makePresetGear('P3', P3Gear);
 import P4Gear from './gear_sets/p4.gear.json';
 export const P4_PRESET = PresetUtils.makePresetGear('P4', P4Gear);
+import P4ItemSwapGear from './gear_sets/p4_item_swap.gear.json';
+export const P4_ITEM_SWAP_PRESET = PresetUtils.makePresetItemSwapGear('P4', P4ItemSwapGear);
 
 import DefaultApl from './apls/default.apl.json';
 export const APL_ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('APL List View', DefaultApl);

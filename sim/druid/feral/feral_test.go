@@ -28,10 +28,11 @@ var FeralItemFilter = core.ItemFilter{
 
 func TestFeral(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-		Class:      proto.Class_ClassDruid,
-		Race:       proto.Race_RaceWorgen,
-		OtherRaces: []proto.Race{proto.Race_RaceTroll},
-		GearSet:    core.GetGearSet("../../../ui/druid/feral/gear_sets", "preraid"),
+		Class:       proto.Class_ClassDruid,
+		Race:        proto.Race_RaceWorgen,
+		OtherRaces:  []proto.Race{proto.Race_RaceTroll},
+		GearSet:     core.GetGearSet("../../../ui/druid/feral/gear_sets", "preraid"),
+		ItemSwapSet: core.GetItemSwapGearSet("../../../ui/druid/feral/gear_sets", "p4_item_swap"),
 
 		OtherGearSets: []core.GearSetCombo{
 			core.GetGearSet("../../../ui/druid/feral/gear_sets", "p3"),
