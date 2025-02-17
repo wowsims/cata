@@ -187,7 +187,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.DefaultTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_RET_PRESET, Presets.P2_BIS_RET_PRESET, Presets.P3_BIS_RET_PRESET, Presets.P4_BIS_RET_PRESET],
+		gear: [Presets.P2_BIS_RET_PRESET, Presets.P3_BIS_RET_PRESET, Presets.P4_BIS_RET_PRESET, Presets.PRERAID_RET_PRESET],
 		itemSwaps: [Presets.ITEM_SWAP_4P_T11],
 		builds: [Presets.P2_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
 	},
