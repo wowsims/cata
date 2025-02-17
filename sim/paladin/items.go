@@ -90,22 +90,7 @@ var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 				ProcChance:     1,
 
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					// TODO: Measure the aura update delay distribution on PTR.
-					var delaySeconds float64
-					if sim.Proc(0.75, "T13 2pc") {
-						delaySeconds = 0.010 * sim.RandomFloat("T13 2pc"+paladin.Label)
-					} else {
-						delaySeconds = 0.090 + 0.020*sim.RandomFloat("T13 2pc"+paladin.Label)
-					}
-
-					core.StartDelayedAction(sim, core.DelayedActionOptions{
-						DoAt:     sim.CurrentTime + core.DurationFromSeconds(delaySeconds),
-						Priority: core.ActionPriorityRegen,
-
-						OnAction: func(_ *core.Simulation) {
-							paladin.GainHolyPower(sim, 1, hpMetrics)
-						},
-					})
+					paladin.GainHolyPower(sim, 1, hpMetrics)
 				},
 			})
 		},
@@ -113,7 +98,7 @@ var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 			paladin := agent.(PaladinAgent).GetPaladin()
 
 			damageMod := paladin.AddDynamicMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Pct,
+				Kind:       core.SpellMod_DamageDone_Flat,
 				ClassMask:  SpellMaskModifiedByZealOfTheCrusader,
 				FloatValue: 0.18,
 			})

@@ -94,7 +94,7 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 		status: LaunchStatus.Launched,
 	},
 	[Spec.SpecRetributionPaladin]: {
-		phase: Phase.Phase3,
+		phase: Phase.Phase4,
 		status: LaunchStatus.Launched,
 	},
 	// Priest
