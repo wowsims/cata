@@ -113,15 +113,25 @@ export class EncounterPicker extends Component {
 			//	});
 			//}
 
-			if (simUI.isIndividualSim() && (simUI as IndividualSimUI<any>).player.getPlayerSpec().isHealingSpec) {
+			if (simUI.isIndividualSim() && (simUI as IndividualSimUI<any>).player.canEnableTargetDummies()) {
+				const player = (simUI as IndividualSimUI<any>).player;
 				new NumberPicker(this.rootElem, simUI.sim.raid, {
 					id: 'encounter-num-allies',
 					label: 'Num Allies',
 					labelTooltip: 'Number of allied players in the raid.',
-					changedEvent: (raid: Raid) => raid.targetDummiesChangeEmitter,
+					changedEvent: (raid: Raid) => TypedEvent.onAny([raid.targetDummiesChangeEmitter, player.itemSwapSettings.changeEmitter]),
 					getValue: (raid: Raid) => raid.getTargetDummies(),
 					setValue: (eventID: EventID, raid: Raid, newValue: number) => {
 						raid.setTargetDummies(eventID, newValue);
+					},
+					showWhen: (raid: Raid) => {
+						const shouldEnable = player.shouldEnableTargetDummies();
+
+						if (!shouldEnable) {
+							raid.setTargetDummies(TypedEvent.nextEventID(), 0);
+						}
+
+						return shouldEnable;
 					},
 				});
 			}

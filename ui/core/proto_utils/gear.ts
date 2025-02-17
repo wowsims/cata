@@ -49,6 +49,33 @@ abstract class BaseGear {
 		return newInternalGear;
 	}
 
+	getTrinkets(): Array<EquippedItem | null> {
+		return [this.getEquippedItem(ItemSlot.ItemSlotTrinket1), this.getEquippedItem(ItemSlot.ItemSlotTrinket2)];
+	}
+
+	hasTrinket(itemId: number): boolean {
+		return this.getTrinkets()
+			.map(t => t?.item.id)
+			.includes(itemId);
+	}
+
+	hasTrinketFromOptions(itemIds: number[]): boolean {
+		return this.getTrinkets()
+			.filter((t): t is EquippedItem => !!t)
+			.map(t => t.item.id)
+			.some(id => itemIds.includes(id));
+	}
+
+	hasRelic(itemId: number): boolean {
+		const relicItem = this.getEquippedItem(ItemSlot.ItemSlotRanged);
+
+		if (!relicItem) {
+			return false;
+		}
+
+		return relicItem!.item.id == itemId;
+	}
+
 	/**
 	 * Returns a new Gear set with the item equipped.
 	 *
@@ -151,33 +178,6 @@ export class Gear extends BaseGear {
 
 	withEquippedItem(newSlot: ItemSlot, newItem: EquippedItem | null, canDualWield2H: boolean): Gear {
 		return new Gear(this.withEquippedItemInternal(newSlot, newItem, canDualWield2H));
-	}
-
-	getTrinkets(): Array<EquippedItem | null> {
-		return [this.getEquippedItem(ItemSlot.ItemSlotTrinket1), this.getEquippedItem(ItemSlot.ItemSlotTrinket2)];
-	}
-
-	hasTrinket(itemId: number): boolean {
-		return this.getTrinkets()
-			.map(t => t?.item.id)
-			.includes(itemId);
-	}
-
-	hasTrinketFromOptions(itemIds: number[]): boolean {
-		return this.getTrinkets()
-			.filter((t): t is EquippedItem => !!t)
-			.map(t => t.item.id)
-			.some(id => itemIds.includes(id));
-	}
-
-	hasRelic(itemId: number): boolean {
-		const relicItem = this.getEquippedItem(ItemSlot.ItemSlotRanged);
-
-		if (!relicItem) {
-			return false;
-		}
-
-		return relicItem!.item.id == itemId;
 	}
 
 	asSpec(): EquipmentSpec {
