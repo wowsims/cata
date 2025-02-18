@@ -39,7 +39,7 @@ func (priest *Priest) newMindFlaySpell() *core.Spell {
 			HasteReducesDuration: true,
 			BonusCoefficient:     0.2879999876,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, float64(priest.CalcScalingSpellDmg(mindFlayCoefficient)))
+				dot.Snapshot(target, priest.CalcScalingSpellDmg(mindFlayCoefficient))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
@@ -53,7 +53,7 @@ func (priest *Priest) newMindFlaySpell() *core.Spell {
 			}
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			return spell.CalcPeriodicDamage(sim, target, float64(priest.CalcScalingSpellDmg(mindFlayCoefficient)), spell.OutcomeExpectedMagicCrit)
+			return spell.CalcPeriodicDamage(sim, target, priest.CalcScalingSpellDmg(mindFlayCoefficient), spell.OutcomeExpectedMagicCrit)
 		},
 	})
 }
