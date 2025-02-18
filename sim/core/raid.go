@@ -119,8 +119,9 @@ type Raid struct {
 	dpsMetrics DistributionMetrics
 	hpsMetrics DistributionMetrics
 
-	AllPlayerUnits []*Unit // Cached list of all Players in the raid.
-	AllUnits       []*Unit // Cached list of all Units (players and pets) in the raid.
+	AllPlayerUnits   []*Unit // Cached list of all Players in the raid.
+	AllUnits         []*Unit // Cached list of all Units (players and pets) in the raid.
+	NumTargetDummies int     // Number of player units that are dummy targets for heals.
 
 	nextPetIndex int32
 
@@ -168,8 +169,8 @@ func NewRaid(raidConfig *proto.Raid) *Raid {
 		}
 	}
 
-	numDummies := min(24, int(raidConfig.TargetDummies))
-	for i := 0; i < numDummies; i++ {
+	raid.NumTargetDummies = min(24, int(raidConfig.TargetDummies))
+	for i := 0; i < raid.NumTargetDummies; i++ {
 		party, partyIndex := raid.GetFirstEmptyRaidIndex()
 		dummy := NewTargetDummy(i, party, partyIndex)
 		party.Players = append(party.Players, dummy)

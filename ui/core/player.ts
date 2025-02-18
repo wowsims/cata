@@ -381,6 +381,26 @@ export class Player<SpecType extends Spec> {
 		return this.playerClass.hexColor;
 	}
 
+	canEnableTargetDummies(): boolean {
+		const healingSpellClasses: Class[] = [Class.ClassDruid, Class.ClassPaladin, Class.ClassPriest, Class.ClassShaman];
+		return healingSpellClasses.includes(this.getClass());
+	}
+
+	shouldEnableTargetDummies(): boolean {
+		if (this.getPlayerSpec().isHealingSpec) {
+			return true;
+		}
+
+		if (!this.itemSwapSettings.getEnableItemSwap()) {
+			return false;
+		}
+
+		// Not comprehensive, add other relevant IDs here as needed.
+		const healingProcTrinkets: number[] = [72898, 77969, 77204, 77989];
+
+		return this.itemSwapSettings.getGear().hasTrinketFromOptions(healingProcTrinkets);
+	}
+
 	// TODO: Cata - Check this
 	isSpec<T extends Spec>(specId: T): this is Player<T> {
 		return (this.getSpec() as unknown) == specId;

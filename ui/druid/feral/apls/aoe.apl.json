@@ -1,5 +1,11 @@
 {
    "type": "TypeAPL",
+      "prepullActions": [
+        {"action":{"itemSwap":{"swapSet":"Swap1"}},"doAtValue":{"const":{"val":"-125s"}}},
+        {"action":{"channelSpell":{"spellId":{"spellId":740},"interruptIf":{"cmp":{"op":"OpGt","lhs":{"currentTime":{}},"rhs":{"const":{"val":"-2s"}}}}}},"doAtValue":{"const":{"val":"-5.5s"}}},
+        {"action":{"itemSwap":{"swapSet":"Main"}},"doAtValue":{"const":{"val":"-1.5s"}}},
+        {"action":{"castSpell":{"spellId":{"spellId":768}}},"doAtValue":{"const":{"val":"-1.5s"}}}
+      ],
       "priorityList": [
         {"action":{"autocastOtherCooldowns":{}}},
         {"action":{"condition":{"const":{"val":"false"}},"castSpell":{"spellId":{"spellId":50334}}}},

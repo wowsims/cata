@@ -280,7 +280,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 		RetributionAura(&character.Unit)
 	}
 
-	if len(character.Env.Raid.AllPlayerUnits) == 1 {
+	if len(character.Env.Raid.AllPlayerUnits)-character.Env.Raid.NumTargetDummies == 1 {
 		if raidBuffs.Bloodlust {
 			registerBloodlustCD(agent, 2825)
 		} else if raidBuffs.Heroism {

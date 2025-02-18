@@ -5,13 +5,14 @@ import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
-import { APLAction, APLListItem, APLRotation, APLRotation_Type as APLRotationType } from '../../core/proto/apl';
+import { APLAction, APLListItem, APLPrepullAction, APLRotation, APLRotation_Type as APLRotationType } from '../../core/proto/apl';
 import { Cooldowns, Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { FeralDruid_Rotation as DruidRotation, FeralDruid_Rotation_AplType as FeralRotationType } from '../../core/proto/druid';
 import * as AplUtils from '../../core/proto_utils/apl_utils';
 import { Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as FeralInputs from './inputs';
 import * as Presets from './presets';
+import { TypedEvent } from '../../core/typed_event';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	cssClass: 'feral-druid-sim-ui',
@@ -124,6 +125,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		rotations: [Presets.SIMPLE_ROTATION_DEFAULT, Presets.AOE_ROTATION_DEFAULT, Presets.APL_ROTATION_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
+		itemSwaps: [Presets.P4_ITEM_SWAP_PRESET],
 		builds: [Presets.PRESET_BUILD_DEFAULT, Presets.PRESET_BUILD_TENDON],
 	},
 
@@ -162,6 +164,24 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 				autocasts,
 			].filter(a => a) as Array<APLAction>),
 		);
+
+		if (simple.prepullTranquility && player.shouldEnableTargetDummies()) {
+			player.getRaid()?.setTargetDummies(TypedEvent.nextEventID(), 4);
+
+			const trinketSwap = APLPrepullAction.fromJsonString(`{"action":{"itemSwap":{"swapSet":"Swap1"}},"doAtValue":{"const":{"val":"-125s"}}}`);
+			const tranq = APLPrepullAction.fromJsonString(`{"action":{"channelSpell":{"spellId":{"spellId":740},"interruptIf":{"cmp":{"op":"OpGt","lhs":{"currentTime":{}},"rhs":{"const":{"val":"-2s"}}}}}},"doAtValue":{"const":{"val":"-5.5s"}}}`);
+			const swapBack = APLPrepullAction.fromJsonString(`{"action":{"itemSwap":{"swapSet":"Main"}},"doAtValue":{"const":{"val":"-1.5s"}}}`);
+			const shiftCat = APLPrepullAction.fromJsonString(`{"action":{"castSpell":{"spellId":{"spellId":768}}},"doAtValue":{"const":{"val":"-1.5s"}}}`);
+
+			prepullActions.push(
+				...([
+					trinketSwap,
+					tranq,
+					swapBack,
+					shiftCat,
+				].filter(a => a) as Array<APLPrepullAction>),
+			);
+		}
 
 		return APLRotation.create({
 			prepullActions: prepullActions,

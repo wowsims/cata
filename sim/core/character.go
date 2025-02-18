@@ -264,6 +264,10 @@ func (character *Character) EquipStats() stats.Stats {
 }
 
 func (character *Character) applyEquipment() {
+	if character.EquipScalingManager == nil {
+		return
+	}
+
 	if character.equipStatsApplied {
 		panic("Equipment stats already applied to character!")
 	}
