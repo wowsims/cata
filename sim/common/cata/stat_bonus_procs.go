@@ -1225,7 +1225,7 @@ func init() {
 		AuraID:     102662,
 		Bonus:      stats.Stats{stats.MasteryRating: 1149},
 		Duration:   time.Second * 20,
-		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt,
+		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt,
 		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellProc,
 		Outcome:    core.OutcomeLanded,
 		ProcChance: 0.15,
