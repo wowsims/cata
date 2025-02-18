@@ -74,6 +74,14 @@ export const FeralDruidRotationConfig = {
 				player.getSimpleRotation().rotationType == AplType.Aoe,
 		}),
 		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
+			fieldName: 'prepullTranquility',
+			label: 'Enable pre-pull Tranquility',
+			labelTooltip: 'Swap in configured healing trinkets before the pull and proc them using Tranquility',
+			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
+				player.shouldEnableTargetDummies(),
+			changeEmitter: (player: Player<Spec.SpecFeralDruid>) => TypedEvent.onAny([player.rotationChangeEmitter, player.itemSwapSettings.changeEmitter]),
+		}),
+		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
 			fieldName: 'manualParams',
 			label: 'Manual Advanced Parameters',
 			labelTooltip: 'Manually specify advanced parameters, otherwise will use preset defaults',

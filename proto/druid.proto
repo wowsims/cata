@@ -181,6 +181,7 @@ message FeralDruid {
 	bool allow_aoe_berserk = 9;
 	bool melee_weave = 15;
 	bool cancel_primal_madness = 10;
+        bool prepull_tranquility = 18;
   }
   Rotation rotation = 1;
 
