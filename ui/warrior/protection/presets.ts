@@ -8,6 +8,7 @@ import {
 	Potions,
 	Profession,
 	PseudoStat,
+	Race,
 	Stat,
 	TinkerHands,
 } from '../../core/proto/common.js';
@@ -24,6 +25,7 @@ import DefaultApl from './apls/default.apl.json';
 import P1BISGear from './gear_sets/p1_bis.gear.json';
 import P3BISGear from './gear_sets/p3_bis.gear.json';
 import P4BISGear from './gear_sets/p4_bis.gear.json';
+import P4NelfBISGear from './gear_sets/p4_nelf_bis.gear.json';
 import PreraidBISGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
@@ -34,6 +36,7 @@ export const PRERAID_BALANCED_PRESET = PresetUtils.makePresetGear('Pre-raid', Pr
 export const P1_BALANCED_PRESET = PresetUtils.makePresetGear('P1 - BIS', P1BISGear);
 export const P3_BALANCED_PRESET = PresetUtils.makePresetGear('P3 - BIS', P3BISGear);
 export const P4_BALANCED_PRESET = PresetUtils.makePresetGear('P4 - BIS', P4BISGear);
+export const P4_NELF_BALANCED_PRESET = PresetUtils.makePresetGear('P4 - BIS (Nelf)', P4NelfBISGear);
 
 export const P4_ITEM_SWAP = PresetUtils.makePresetItemSwapGear('P4', ItemSwapP4Gear);
 
@@ -105,3 +108,13 @@ export const OtherDefaults = {
 	profession1: Profession.Leatherworking,
 	profession2: Profession.Inscription,
 };
+
+export const P4_PRESET_BUILD = PresetUtils.makePresetBuild('P4 - Default', {
+	race: Race.RaceGnome,
+	gear: P4_BALANCED_PRESET,
+});
+
+export const P4_NELF_PRESET_BUILD = PresetUtils.makePresetBuild('P4 - Default (Nelf)', {
+	race: Race.RaceNightElf,
+	gear: P4_NELF_BALANCED_PRESET,
+});
