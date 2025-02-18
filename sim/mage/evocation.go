@@ -33,8 +33,8 @@ func (mage *Mage) registerEvocation() {
 			Aura: core.Aura{
 				Label: "Evocation",
 			},
-			NumberOfTicks:        11,
-			TickLength:           time.Millisecond * 810,
+			NumberOfTicks:        3,
+			TickLength:           time.Second * 2,
 			AffectedByCastSpeed:  true,
 			HasteReducesDuration: true,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
