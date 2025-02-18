@@ -1446,7 +1446,10 @@ func init() {
 					Timer:    character.NewTimer(),
 					Duration: time.Second * 50,
 				},
-				OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+				OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+					if spell.ProcMask.Matches(core.ProcMaskMeleeOrMeleeProc | core.ProcMaskRangedOrRangedProc) {
+						return
+					}
 					tryProcAndActivate(sim)
 				},
 				OnHealDealt: func(_ *core.Aura, sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
