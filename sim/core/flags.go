@@ -57,8 +57,8 @@ const (
 	ProcMaskSpellHealing
 	ProcMaskSpellProc       // Special mask for Spell procs that can trigger things (Can be used together with damage proc mask or alone)
 	ProcMaskMeleeProc       // Special mask for Melee procs that can trigger things (Can be used together with damage proc mask or alone)
+	ProcMaskRangedProc      // Special mask for Ranged procs that can trigger things (Can be used together with damage proc mask or alone)
 	ProcMaskSpellDamageProc // Mask for procs triggering from spell damage procs like FT weapon and rogue poisons
-	ProcMaskMeleeDamageProc // Mask for procs (e.g.  War Rune / Focuessed Attacks) triggering from melee damage procs
 )
 
 const (
@@ -83,10 +83,11 @@ const (
 
 	ProcMaskSpecial = ProcMaskMeleeOrRangedSpecial | ProcMaskSpellDamage
 
-	ProcMaskMeleeOrMeleeProc = ProcMaskMelee | ProcMaskMeleeProc
-	ProcMaskSpellOrSpellProc = ProcMaskSpellDamage | ProcMaskSpellProc
-	ProcMaskProc             = ProcMaskSpellProc | ProcMaskMeleeProc
-	ProcMaskDamageProc       = ProcMaskSpellDamageProc | ProcMaskMeleeDamageProc // Mask for Fiery Weapon and Blazefury Medalion that trigger melee and spell procs
+	ProcMaskMeleeOrMeleeProc   = ProcMaskMelee | ProcMaskMeleeProc
+	ProcMaskRangedOrRangedProc = ProcMaskRanged | ProcMaskRangedProc
+	ProcMaskSpellOrSpellProc   = ProcMaskSpellDamage | ProcMaskSpellProc
+
+	ProcMaskProc = ProcMaskSpellProc | ProcMaskRangedProc | ProcMaskMeleeProc
 )
 
 // Possible outcomes of any hit/damage roll.

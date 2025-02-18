@@ -221,22 +221,22 @@ dps_results: {
 dps_results: {
  key: "TestArms-AllItems-Bone-LinkFetish-77210"
  value: {
-  dps: 33905.56715
-  tps: 23040.80551
+  dps: 33937.2058
+  tps: 23070.67961
  }
 }
 dps_results: {
  key: "TestArms-AllItems-Bone-LinkFetish-77982"
  value: {
-  dps: 33527.17099
-  tps: 22748.64528
+  dps: 33468.19385
+  tps: 22732.56503
  }
 }
 dps_results: {
  key: "TestArms-AllItems-Bone-LinkFetish-78002"
  value: {
-  dps: 34297.74933
-  tps: 23299.96128
+  dps: 34327.74636
+  tps: 23332.19945
  }
 }
 dps_results: {
@@ -718,22 +718,22 @@ dps_results: {
 dps_results: {
  key: "TestArms-AllItems-Gurthalak,VoiceoftheDeeps-77191"
  value: {
-  dps: 38876.37978
-  tps: 23341.07954
+  dps: 38625.43298
+  tps: 23270.82444
  }
 }
 dps_results: {
  key: "TestArms-AllItems-Gurthalak,VoiceoftheDeeps-78478"
  value: {
-  dps: 39688.05554
-  tps: 23450.92951
+  dps: 39343.30184
+  tps: 23429.32161
  }
 }
 dps_results: {
  key: "TestArms-AllItems-Gurthalak,VoiceoftheDeeps-78487"
  value: {
-  dps: 38506.64347
-  tps: 23189.50409
+  dps: 38272.05659
+  tps: 23133.4057
  }
 }
 dps_results: {
@@ -1546,25 +1546,25 @@ dps_results: {
 dps_results: {
  key: "TestArms-AllItems-Souldrinker-77193"
  value: {
-  dps: 34214.93791
-  tps: 22835.68009
-  hps: 293.81411
+  dps: 34623.20547
+  tps: 23243.94765
+  hps: 1110.34922
  }
 }
 dps_results: {
  key: "TestArms-AllItems-Souldrinker-78479"
  value: {
-  dps: 34325.68989
-  tps: 22915.6604
-  hps: 334.39253
+  dps: 34791.78049
+  tps: 23381.751
+  hps: 1266.57372
  }
 }
 dps_results: {
  key: "TestArms-AllItems-Souldrinker-78488"
  value: {
-  dps: 34116.87974
-  tps: 22764.14922
-  hps: 253.66805
+  dps: 34464.40251
+  tps: 23111.67199
+  hps: 948.71358
  }
 }
 dps_results: {
@@ -1864,22 +1864,22 @@ dps_results: {
 dps_results: {
  key: "TestArms-AllItems-VialofShadows-77207"
  value: {
-  dps: 33436.32426
-  tps: 22881.46082
+  dps: 33586.6536
+  tps: 23020.52184
  }
 }
 dps_results: {
  key: "TestArms-AllItems-VialofShadows-77979"
  value: {
-  dps: 33228.16489
-  tps: 22836.38093
+  dps: 33390.80355
+  tps: 22965.10753
  }
 }
 dps_results: {
  key: "TestArms-AllItems-VialofShadows-77999"
  value: {
-  dps: 33724.44528
-  tps: 23176.57214
+  dps: 33916.98581
+  tps: 23355.67568
  }
 }
 dps_results: {

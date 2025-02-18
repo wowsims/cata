@@ -1602,25 +1602,22 @@ dps_results: {
 dps_results: {
  key: "TestMM-AllItems-Souldrinker-77193"
  value: {
-  dps: 24103.33834
-  tps: 21655.92656
-  hps: 4.27869
+  dps: 24101.199
+  tps: 21653.78721
  }
 }
 dps_results: {
  key: "TestMM-AllItems-Souldrinker-78479"
  value: {
-  dps: 24103.6355
-  tps: 21656.22371
-  hps: 4.873
+  dps: 24101.199
+  tps: 21653.78721
  }
 }
 dps_results: {
  key: "TestMM-AllItems-Souldrinker-78488"
  value: {
-  dps: 24103.04486
-  tps: 21655.63307
-  hps: 3.69172
+  dps: 24101.199
+  tps: 21653.78721
  }
 }
 dps_results: {

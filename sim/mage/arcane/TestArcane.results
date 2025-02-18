@@ -1511,25 +1511,22 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-Souldrinker-77193"
  value: {
-  dps: 38730.44982
-  tps: 35477.96787
-  hps: 125.47095
+  dps: 38678.34554
+  tps: 35425.86359
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Souldrinker-78479"
  value: {
-  dps: 38737.62841
-  tps: 35485.14646
-  hps: 142.75753
+  dps: 38678.34554
+  tps: 35425.86359
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-Souldrinker-78488"
  value: {
-  dps: 38723.34251
-  tps: 35470.86056
-  hps: 108.35602
+  dps: 38678.34554
+  tps: 35425.86359
  }
 }
 dps_results: {

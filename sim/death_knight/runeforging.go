@@ -1,9 +1,11 @@
 package death_knight
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -175,14 +177,6 @@ func init() {
 
 		// Rune of Razorice
 		newRazoriceHitSpell := func(character *core.Character, isMH bool) *core.Spell {
-			weapon := character.GetMHWeapon()
-			if !isMH {
-				weapon = character.GetOHWeapon()
-			}
-			if weapon == nil {
-				return nil
-			}
-
 			return character.GetOrRegisterSpell(core.SpellConfig{
 				ActionID:    actionID.WithTag(core.TernaryInt32(isMH, 1, 2)),
 				SpellSchool: core.SpellSchoolFrost,
@@ -230,28 +224,40 @@ func init() {
 			})
 		})
 
-		mhRazoriceSpell := newRazoriceHitSpell(character, true)
-		ohRazoriceSpell := newRazoriceHitSpell(character, false)
+		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(3370, 0, 1.0)
 
-		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:     "Razor Frost",
-			Callback: core.CallbackOnSpellHitDealt,
-			Outcome:  core.OutcomeLanded,
-			ICD:      time.Millisecond * 8,
-			DPM:      character.AutoAttacks.NewDynamicProcManagerForEnchant(3370, 0, 1.0),
+		for _, itemSlot := range core.MeleeWeaponSlots() {
+			spell := newRazoriceHitSpell(character, itemSlot == proto.ItemSlot_ItemSlotMainHand)
+			procMask := core.ProcMaskUnknown
+			var weapon *core.Item
+			switch {
+			case itemSlot == proto.ItemSlot_ItemSlotMainHand:
+				weapon = character.GetMHWeapon()
+				procMask |= core.ProcMaskMeleeMH | core.ProcMaskMeleeProc
+			case itemSlot == proto.ItemSlot_ItemSlotOffHand:
+				procMask |= core.ProcMaskMeleeOH
+				weapon = character.GetOHWeapon()
+			}
 
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				vulnAura := vulnAuras.Get(result.Target)
-				if spell.IsMH() {
-					mhRazoriceSpell.Cast(sim, result.Target)
-				} else {
-					ohRazoriceSpell.Cast(sim, result.Target)
-				}
-				vulnAura.Activate(sim)
-				vulnAura.AddStack(sim)
-			},
-		})
+			if weapon == nil {
+				continue
+			}
 
-		character.ItemSwap.RegisterEnchantProc(3370, aura)
+			aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:     fmt.Sprintf("Razor Frost %s", itemSlot),
+				Callback: core.CallbackOnSpellHitDealt,
+				Outcome:  core.OutcomeLanded,
+				ICD:      time.Millisecond * 8,
+				ProcMask: procMask,
+				DPM:      dpm,
+				Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+					vulnAura := vulnAuras.Get(result.Target)
+					spell.Cast(sim, result.Target)
+					vulnAura.Activate(sim)
+					vulnAura.AddStack(sim)
+				},
+			})
+			character.ItemSwap.RegisterEnchantProc(3370, aura)
+		}
 	})
 }
