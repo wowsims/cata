@@ -191,6 +191,12 @@ func init() {
 		// each weapon has a separate proc
 		// if spell proc occurs first, both MH and OH weapon get a separate proc up to 3
 		// if either MH or OH proc is running spell proc will refresh one of those
+		tryProcAndCastSpell := func(sim *core.Simulation, aura *core.Aura) {
+			if aura.Icd.IsReady(sim) && sim.Proc(0.15, "Hurricane") {
+				aura.Icd.Use(sim)
+				hurricaneSpellProc(sim)
+			}
+		}
 		aura := core.MakePermanent(character.GetOrRegisterAura(core.Aura{
 			Label: "Hurricane",
 
@@ -215,21 +221,19 @@ func init() {
 					return
 				}
 
-				if aura.Icd.IsReady(sim) && spell.ProcMask.Matches(core.ProcMaskSpellDamage) && sim.Proc(0.15, "Hurricane") {
-					aura.Icd.Use(sim)
-					hurricaneSpellProc(sim)
+				if spell.ProcMask.Matches(core.ProcMaskSpellDamage | core.ProcMaskSpellHealing) {
+					tryProcAndCastSpell(sim, aura)
 				}
 			},
-
+			OnPeriodicHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				tryProcAndCastSpell(sim, aura)
+			},
 			OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if !result.Landed() {
 					return
 				}
 
-				if aura.Icd.IsReady(sim) && sim.Proc(0.15, "Hurricane") {
-					aura.Icd.Use(sim)
-					hurricaneSpellProc(sim)
-				}
+				tryProcAndCastSpell(sim, aura)
 			},
 		}))
 
