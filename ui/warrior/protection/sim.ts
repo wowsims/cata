@@ -161,6 +161,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PRERAID_BALANCED_PRESET, Presets.P1_BALANCED_PRESET, Presets.P3_BALANCED_PRESET, Presets.P4_BALANCED_PRESET],
 		itemSwaps: [Presets.P4_ITEM_SWAP],
+		builds: [Presets.P4_PRESET_BUILD, Presets.P4_NELF_PRESET_BUILD],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecProtectionWarrior>): APLRotation => {
