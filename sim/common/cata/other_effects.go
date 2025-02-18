@@ -1215,23 +1215,32 @@ func init() {
 			}
 		})
 
-		// These spells ignore the slot the weapon is in.
-		// Any other ability should only trigger the proc if the weapon is in the right slot.
-		ignoresSlot := map[int32]bool{
-			23881: true, // Bloodthirst
-			6544:  true, // Heroic Leap
-			6343:  true, // Thunder Clap
-		}
-
 		// No'Kaled, the Elements of Death
 		// Equip: Your melee attacks have a chance to blast your enemy with Fire, Shadow, or Frost, dealing 6781/7654/8640 to 10171/11481/12960 damage.
 		// (Proc chance: 7%)
 		nokaledItemID := []int32{78481, 77188, 78472}[version]
+		makeNokaledBlastProcTrigger := func(character *core.Character, itemID int32, spells []*core.Spell, labelSuffix string, isMH bool) {
+			meleeWeaponSlots := core.MeleeWeaponSlots()
+			itemSlot := core.Ternary(isMH, meleeWeaponSlots[:1], meleeWeaponSlots[1:])
+			slotLabel := core.Ternary(isMH, "MH", "OH")
+
+			aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:       fmt.Sprintf("No'Kaled Trigger %s %s", labelSuffix, slotLabel),
+				ActionID:   core.ActionID{ItemID: itemID},
+				ProcMask:   core.ProcMaskMelee,
+				Outcome:    core.OutcomeLanded,
+				Callback:   core.CallbackOnSpellHitDealt,
+				ProcChance: 0.07,
+				Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+					spell := spells[int(sim.RollWithLabel(0, float64(len(spells)), "No'Kaled spell to cast"))]
+					spell.Cast(sim, result.Target)
+				},
+			})
+
+			character.ItemSwap.RegisterProcWithSlots(itemID, aura, itemSlot)
+		}
 		core.NewItemEffect(nokaledItemID, func(agent core.Agent) {
 			character := agent.GetCharacter()
-
-			defaultProcMask := core.ProcMaskMeleeProc
-			procMask := character.GetDynamicProcMaskForWeaponEffect(nokaledItemID)
 
 			minDamage := []float64{6781, 7654, 8640}[version]
 			maxDamage := []float64{10171, 11481, 12960}[version]
@@ -1269,27 +1278,12 @@ func init() {
 
 			spells := []*core.Spell{flameblast, iceblast, shadowblast}
 
-			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-				Name:     "No'Kaled Trigger" + labelSuffix,
-				ActionID: core.ActionID{ItemID: nokaledItemID},
-				Callback: core.CallbackOnSpellHitDealt,
-				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if !result.Landed() {
-						return
-					}
-
-					if _, ignore := ignoresSlot[spell.ActionID.SpellID]; !spell.ProcMask.Matches(*procMask|defaultProcMask) && !ignore {
-						return
-					}
-
-					if sim.Proc(0.07, "No'Kaled, the Elements of Death") {
-						spell := spells[int(sim.RollWithLabel(0, float64(len(spells)), "No'Kaled spell to cast"))]
-						spell.Cast(sim, result.Target)
-					}
-				},
-			})
-
-			character.ItemSwap.RegisterProc(nokaledItemID, triggerAura)
+			if character.ItemSwap.CouldHaveItemEquippedInSlot(nokaledItemID, proto.ItemSlot_ItemSlotMainHand) {
+				makeNokaledBlastProcTrigger(character, nokaledItemID, spells, labelSuffix, true)
+			}
+			if character.ItemSwap.CouldHaveItemEquippedInSlot(nokaledItemID, proto.ItemSlot_ItemSlotOffHand) {
+				makeNokaledBlastProcTrigger(character, nokaledItemID, spells, labelSuffix, false)
+			}
 		})
 
 		// Rathrak, the Poisonous Mind
