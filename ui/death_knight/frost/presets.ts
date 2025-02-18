@@ -261,7 +261,7 @@ export const PRESET_BUILD_2H = PresetUtils.makePresetBuild('P3 - Two Hand', {
 	epWeights: P1_TWOHAND_EP_PRESET,
 });
 
-export const PRESET_BUILD_MASTERFROST = PresetUtils.makePresetBuild('p4 - Masterfrost', {
+export const PRESET_BUILD_MASTERFROST = PresetUtils.makePresetBuild('P4 - Masterfrost', {
 	gear: P4_MASTERFROST_GEAR_PRESET,
 	talents: MasterfrostTalents,
 	rotationType: APLRotationType.TypeAuto,
