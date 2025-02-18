@@ -18,6 +18,7 @@ import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
 import T11Apl from './apls/t11.apl.json';
 import T12Apl from './apls/t12.apl.json';
+import T13Apl from './apls/t13.apl.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 import T11Gear from './gear_sets/t11.gear.json';
 import T12Gear from './gear_sets/t12.gear.json';
@@ -30,6 +31,7 @@ export const T13PresetGear = PresetUtils.makePresetGear('T13', T13Gear);
 
 export const T11PresetRotation = PresetUtils.makePresetAPLRotation('T11 4P', T11Apl);
 export const T12PresetRotation = PresetUtils.makePresetAPLRotation('T12', T12Apl);
+export const T13PresetRotation = PresetUtils.makePresetAPLRotation('T13', T13Apl);
 
 export const StandardEPWeights = PresetUtils.makePresetEpWeights(
 	'Standard',
@@ -118,6 +120,13 @@ export const OtherDefaults = {
 	darkIntentUptime: 100,
 };
 
+export const PresetBuildPreraid = PresetUtils.makePresetBuild('Balance Pre-raid', {
+	gear: PreraidPresetGear,
+	talents: StandardTalents,
+	rotation: T13PresetRotation,
+	epWeights: StandardEPWeights,
+});
+
 export const PresetBuildT11 = PresetUtils.makePresetBuild('Balance T11', {
 	gear: T11PresetGear,
 	talents: StandardTalents,
@@ -129,5 +138,12 @@ export const PresetBuildT12 = PresetUtils.makePresetBuild('Balance T12', {
 	gear: T12PresetGear,
 	talents: StandardTalents,
 	rotation: T12PresetRotation,
+	epWeights: StandardEPWeights,
+});
+
+export const PresetBuildT13 = PresetUtils.makePresetBuild('Balance T12', {
+	gear: T13PresetGear,
+	talents: StandardTalents,
+	rotation: T13PresetRotation,
 	epWeights: StandardEPWeights,
 });
