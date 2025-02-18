@@ -27,7 +27,7 @@ func TestBalance(t *testing.T) {
 		SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsBalance},
 		Rotation:    core.GetAplRotation("../../../ui/druid/balance/apls", "t11"),
 		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../../ui/druid/balance/apls", "t13"),
+			core.GetAplRotation("../../../ui/druid/balance/apls", "t12"),
 		},
 		ItemFilter: ItemFilter,
 	}))
