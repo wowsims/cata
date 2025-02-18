@@ -9,19 +9,21 @@ import (
 )
 
 type ProcStatBonusEffect struct {
-	Name       string
-	ItemID     int32
-	EnchantID  int32
-	AuraID     int32
-	Bonus      stats.Stats
-	Duration   time.Duration
-	Callback   core.AuraCallback
-	ProcMask   core.ProcMask
-	Outcome    core.HitOutcome
-	Harmful    bool
-	ProcChance float64
-	PPM        float64
-	ICD        time.Duration
+	Name              string
+	ItemID            int32
+	EnchantID         int32
+	AuraID            int32
+	Bonus             stats.Stats
+	Duration          time.Duration
+	Callback          core.AuraCallback
+	ProcMask          core.ProcMask
+	ProcMaskExclude   core.ProcMask
+	SpellFlagsExclude core.SpellFlag
+	Outcome           core.HitOutcome
+	Harmful           bool
+	ProcChance        float64
+	PPM               float64
+	ICD               time.Duration
 
 	// Any other custom proc conditions not covered by the above fields.
 	CustomProcCondition core.CustomStatBuffProcCondition
@@ -152,17 +154,19 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		}
 
 		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID:   triggerActionID,
-			Name:       config.Name,
-			Callback:   config.Callback,
-			ProcMask:   config.ProcMask,
-			Outcome:    config.Outcome,
-			Harmful:    config.Harmful,
-			ProcChance: config.ProcChance,
-			PPM:        config.PPM,
-			DPM:        dpm,
-			ICD:        config.ICD,
-			Handler:    handler,
+			ActionID:          triggerActionID,
+			Name:              config.Name,
+			Callback:          config.Callback,
+			ProcMask:          config.ProcMask,
+			ProcMaskExclude:   config.ProcMaskExclude,
+			SpellFlagsExclude: config.SpellFlagsExclude,
+			Outcome:           config.Outcome,
+			Harmful:           config.Harmful,
+			ProcChance:        config.ProcChance,
+			PPM:               config.PPM,
+			DPM:               dpm,
+			ICD:               config.ICD,
+			Handler:           handler,
 		})
 
 		if config.ICD != 0 {
@@ -257,20 +261,22 @@ func NewMasteryActive(itemID int32, bonus float64, duration time.Duration, coold
 }
 
 type StackingStatBonusCD struct {
-	Name        string
-	ID          int32
-	AuraID      int32
-	Bonus       stats.Stats
-	Duration    time.Duration
-	MaxStacks   int32
-	CD          time.Duration
-	Callback    core.AuraCallback
-	ProcMask    core.ProcMask
-	SpellFlags  core.SpellFlag
-	Outcome     core.HitOutcome
-	Harmful     bool
-	ProcChance  float64
-	IsDefensive bool
+	Name              string
+	ID                int32
+	AuraID            int32
+	Bonus             stats.Stats
+	Duration          time.Duration
+	MaxStacks         int32
+	CD                time.Duration
+	Callback          core.AuraCallback
+	ProcMask          core.ProcMask
+	ProcMaskExclude   core.ProcMask
+	SpellFlags        core.SpellFlag
+	SpellFlagsExclude core.SpellFlag
+	Outcome           core.HitOutcome
+	Harmful           bool
+	ProcChance        float64
+	IsDefensive       bool
 
 	// The stacks will only be granted as long as the trinket is active
 	TrinketLimitsDuration bool
@@ -310,13 +316,15 @@ func NewStackingStatBonusCD(config StackingStatBonusCD) {
 		}
 
 		core.ApplyProcTriggerCallback(&character.Unit, procAura, core.ProcTrigger{
-			Name:       config.Name,
-			Callback:   config.Callback,
-			ProcMask:   config.ProcMask,
-			SpellFlags: config.SpellFlags,
-			Outcome:    config.Outcome,
-			Harmful:    config.Harmful,
-			ProcChance: config.ProcChance,
+			Name:              config.Name,
+			Callback:          config.Callback,
+			ProcMask:          config.ProcMask,
+			ProcMaskExclude:   config.ProcMaskExclude,
+			SpellFlags:        config.SpellFlags,
+			SpellFlagsExclude: config.SpellFlagsExclude,
+			Outcome:           config.Outcome,
+			Harmful:           config.Harmful,
+			ProcChance:        config.ProcChance,
 			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
 				statAura.AddStack(sim)
 			},

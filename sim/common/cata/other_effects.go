@@ -1414,6 +1414,54 @@ func init() {
 
 			character.ItemSwap.RegisterProc(vishankaItemID, triggerAura)
 		})
+
+		// Ti'tahk, the Steps of Time
+		// Equip: Your spells have a chance to grant you 1708/1928/2176 haste rating for 10 sec and 342/386/435 haste rating to up to 3 allies within 20 yards.
+		// (Proc chance: 15%, 50s cooldown)
+		// The buff has two effects, one for the caster and one shared.
+		// * The first effect is 1366/1542/1741 haste rating on the caster.
+		// * The second effect is 342/386/435 haste rating on the caster and up to 3 allies within 20 yards.
+		// E.g. for the LFR version it's 1366 + 342 = 1708 haste rating for the caster with a shared ID so we just combine them.
+		// TODO: Add the shared buff as an optional misc raid buff?
+		//       Could be annoying with 3 different versions, uptime etc.
+		titahkItemID := []int32{78486, 77190, 78477}[version]
+		titahkAuraID := []int32{109842, 107804, 109844}[version]
+		titahkBonus := []float64{1366 + 342, 1542 + 386, 1741 + 435}[version]
+		titahkLabel := fmt.Sprintf("Ti'tahk, the Steps of Time %s", labelSuffix)
+		core.NewItemEffect(titahkItemID, func(agent core.Agent) {
+			character := agent.GetCharacter()
+			aura := character.NewTemporaryStatsAura(titahkLabel, core.ActionID{SpellID: titahkAuraID}, stats.Stats{stats.HasteRating: titahkBonus}, time.Second*10)
+
+			tryProcAndActivate := func(sim *core.Simulation) {
+				if sim.Proc(0.15, fmt.Sprintf("%s Trigger", titahkLabel)) {
+					aura.Activate(sim)
+				}
+			}
+
+			triggerAura := character.RegisterAura(core.Aura{
+				Label:    fmt.Sprintf("%s Trigger", titahkLabel),
+				ActionID: core.ActionID{ItemID: titahkItemID},
+				Duration: core.NeverExpires,
+				Icd: &core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Second * 50,
+				},
+				OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+					tryProcAndActivate(sim)
+				},
+				OnHealDealt: func(_ *core.Aura, sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+					tryProcAndActivate(sim)
+				},
+				OnCastComplete: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if spell.ProcMask.Matches(core.ProcMaskMeleeOrMeleeProc | core.ProcMaskRangedOrRangedProc) {
+						return
+					}
+					tryProcAndActivate(sim)
+				},
+			})
+
+			character.ItemSwap.RegisterProc(titahkItemID, triggerAura)
+		})
 	}
 }
 
