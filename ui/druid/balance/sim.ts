@@ -95,7 +95,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		rotations: [Presets.T11PresetRotation, Presets.T12PresetRotation],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PreraidPresetGear, Presets.T11PresetGear, Presets.T12PresetGear, Presets.T13PresetGear],
-		builds: [Presets.PresetBuildT11, Presets.PresetBuildT12, Presets.PresetBuildT13],
+		builds: [Presets.PresetBuildPreraid, Presets.PresetBuildT11, Presets.PresetBuildT12, Presets.PresetBuildT13],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecBalanceDruid>): APLRotation => {

@@ -17,15 +17,15 @@ func TestBalance(t *testing.T) {
 		Class: proto.Class_ClassDruid,
 		Race:  proto.Race_RaceNightElf,
 
-		GearSet: core.GetGearSet("../../../ui/druid/balance/gear_sets", "t11"),
+		GearSet: core.GetGearSet("../../../ui/druid/balance/gear_sets", "t13"),
 		OtherGearSets: []core.GearSetCombo{
-			core.GetGearSet("../../../ui/druid/balance/gear_sets", "t13"),
+			core.GetGearSet("../../../ui/druid/balance/gear_sets", "t12"),
 		},
 		Talents:     StandardTalents,
 		Glyphs:      StandardGlyphs,
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsBalance},
-		Rotation:    core.GetAplRotation("../../../ui/druid/balance/apls", "t11"),
+		Rotation:    core.GetAplRotation("../../../ui/druid/balance/apls", "t13"),
 		OtherRotations: []core.RotationCombo{
 			core.GetAplRotation("../../../ui/druid/balance/apls", "t12"),
 		},
