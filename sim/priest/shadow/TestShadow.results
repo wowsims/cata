@@ -1707,22 +1707,22 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-Ti'tahk,theStepsofTime-77190"
  value: {
-  dps: 52797.24533
-  tps: 44991.62092
+  dps: 52120.99053
+  tps: 44092.79863
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-Ti'tahk,theStepsofTime-78477"
  value: {
-  dps: 54638.43424
-  tps: 46483.9723
+  dps: 53586.96507
+  tps: 45294.44175
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-Ti'tahk,theStepsofTime-78486"
  value: {
-  dps: 51655.76021
-  tps: 43899.65409
+  dps: 50761.58147
+  tps: 42984.18253
  }
 }
 dps_results: {

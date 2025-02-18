@@ -1974,24 +1974,24 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-Ti'tahk,theStepsofTime-77190"
  value: {
-  dps: 53369.22253
-  tps: 73873.87242
+  dps: 53313.72086
+  tps: 74427.52523
   hps: 43.3126
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-Ti'tahk,theStepsofTime-78477"
  value: {
-  dps: 53360.95036
-  tps: 74201.43677
+  dps: 53313.72086
+  tps: 74427.45425
   hps: 45.44545
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-Ti'tahk,theStepsofTime-78486"
  value: {
-  dps: 53338.53024
-  tps: 74163.75415
+  dps: 53313.72086
+  tps: 74427.58795
   hps: 41.41459
  }
 }

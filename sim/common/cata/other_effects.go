@@ -1430,11 +1430,12 @@ func init() {
 		titahkLabel := fmt.Sprintf("Ti'tahk, the Steps of Time %s", labelSuffix)
 		core.NewItemEffect(titahkItemID, func(agent core.Agent) {
 			character := agent.GetCharacter()
-			aura := character.NewTemporaryStatsAura(titahkLabel, core.ActionID{SpellID: titahkAuraID}, stats.Stats{stats.HasteRating: titahkBonus}, time.Second*10)
+			procAura := character.NewTemporaryStatsAura(titahkLabel, core.ActionID{SpellID: titahkAuraID}, stats.Stats{stats.HasteRating: titahkBonus}, time.Second*10)
 
-			tryProcAndActivate := func(sim *core.Simulation) {
-				if sim.Proc(0.15, fmt.Sprintf("%s Trigger", titahkLabel)) {
-					aura.Activate(sim)
+			tryProcAndActivate := func(sim *core.Simulation, triggerAura *core.Aura) {
+				if triggerAura.Icd.IsReady(sim) && sim.Proc(0.15, fmt.Sprintf("%s Trigger", titahkLabel)) {
+					procAura.Activate(sim)
+					triggerAura.Icd.Use(sim)
 				}
 			}
 
@@ -1446,20 +1447,20 @@ func init() {
 					Timer:    character.NewTimer(),
 					Duration: time.Second * 50,
 				},
-				OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
 					if spell.ProcMask.Matches(core.ProcMaskMeleeOrMeleeProc | core.ProcMaskRangedOrRangedProc) {
 						return
 					}
-					tryProcAndActivate(sim)
+					tryProcAndActivate(sim, aura)
 				},
-				OnHealDealt: func(_ *core.Aura, sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-					tryProcAndActivate(sim)
+				OnHealDealt: func(aura *core.Aura, sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+					tryProcAndActivate(sim, aura)
 				},
-				OnCastComplete: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 					if spell.ProcMask.Matches(core.ProcMaskMeleeOrMeleeProc | core.ProcMaskRangedOrRangedProc) {
 						return
 					}
-					tryProcAndActivate(sim)
+					tryProcAndActivate(sim, aura)
 				},
 			})
 
