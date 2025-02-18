@@ -1,5 +1,6 @@
 import * as InputHelpers from '../../core/components/input_helpers';
 import { Spec } from '../../core/proto/common';
+import { TypedEvent } from '../../core/typed_event';
 
 // Configuration for spec-specific UI elements on the settings tab.
 // These don't need to be in a separate file but it keeps things cleaner.
@@ -32,6 +33,12 @@ export const MageRotationConfig = {
 			changeEmitter: player => player.rotationChangeEmitter,
 			getValue: player => player.getSimpleRotation().combustNoLustPercentage,
 			positive: true,
+		}),
+		InputHelpers.makeRotationBooleanInput<Spec.SpecFireMage>({
+			fieldName: 'prepullEvocation',
+			label: 'Enable pre-pull Evocation',
+			labelTooltip: 'Swap in configured gear before the pull and proc them using Evocation. This will be cast at -8s',
+			changeEmitter: player => TypedEvent.onAny([player.rotationChangeEmitter, player.itemSwapSettings.changeEmitter]),
 		}),
 	],
 };

@@ -138,6 +138,7 @@ message FireMage {
 		int32 combust_threshold = 4;
 		double combust_last_moment_lust_percentage = 5;
 		double combust_no_lust_percentage = 6;
+		bool prepull_evocation = 7;
 
 		// deprecated fields
 		int32 ignite_combust_threshold = 1 [deprecated=true];

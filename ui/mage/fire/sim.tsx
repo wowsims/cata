@@ -5,7 +5,7 @@ import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
-import { APLAction, APLListItem, APLRotation, APLRotation_Type, SimpleRotation } from '../../core/proto/apl';
+import { APLAction, APLListItem, APLPrepullAction, APLRotation, APLRotation_Type, SimpleRotation } from '../../core/proto/apl';
 import { Cooldowns, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
@@ -106,7 +106,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	otherInputs: {
 		inputs: [OtherInputs.InputDelay, OtherInputs.DistanceFromTarget, OtherInputs.TankAssignment, OtherInputs.DarkIntentUptime],
 	},
-	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotHands, ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2],
+	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotBack, ItemSlot.ItemSlotHands, ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: true,
@@ -126,7 +126,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.FireTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.FIRE_P1_PRESET, Presets.FIRE_P3_PREBIS, Presets.FIRE_P3_PRESET,Presets.FIRE_P4_PRESET],
+		gear: [Presets.FIRE_P1_PRESET, Presets.FIRE_P3_PREBIS, Presets.FIRE_P3_PRESET, Presets.FIRE_P4_PRESET],
 		itemSwaps: [Presets.P4_ITEM_SWAP],
 		builds: [Presets.P1_PRESET_BUILD, Presets.P3_PRESET_BUILD, Presets.P3_PRESET_NO_TROLL, Presets.P4_PRESET_BUILD, Presets.P4_PRESET_NO_TROLL],
 	},
@@ -143,7 +143,34 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		}
 
 		const rotation = Presets.FIRE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-		const { combustThreshold, combustLastMomentLustPercentage, combustNoLustPercentage } = simple;
+		const { combustThreshold, combustLastMomentLustPercentage, combustNoLustPercentage, prepullEvocation } = simple;
+
+		const swapToSwapped = APLPrepullAction.fromJson({ action: { itemSwap: { swapSet: 'Swap1' } }, doAtValue: { const: { val: '-160s' } } });
+		const channelEvocation = APLPrepullAction.fromJson({
+			action: {
+				channelSpell: {
+					spellId: { spellId: 12051 },
+					interruptIf: { cmp: { op: 'OpEq', lhs: { remainingTime: {} }, rhs: { const: { val: '-2.5s' } } } },
+				},
+			},
+			doAtValue: { const: { val: '-9s' } },
+		});
+		const castMirrorImages = APLPrepullAction.fromJson({
+			action: { castSpell: { spellId: { spellId: 55342 } } },
+			doAtValue: { const: { val: prepullEvocation ? '-10.5s' : '-4s' } },
+		});
+		const usePotion = APLPrepullAction.fromJson({
+			action: { castSpell: { spellId: { otherId: 'OtherActionPotion' } } },
+			doAtValue: { const: { val: prepullEvocation ? '-1.5s' : '-2.5s' } },
+		});
+		const swapToMain = APLPrepullAction.fromJson({
+			action: { itemSwap: { swapSet: 'Main' } },
+			doAtValue: { const: { val: prepullEvocation ? '-1.5s' : '-2.5s' } },
+		});
+		const castPyroBlast = APLPrepullAction.fromJson({
+			action: { castSpell: { spellId: { spellId: 11366 } } },
+			doAtValue: { const: { val: prepullEvocation ? '-1.5s' : '-2.5s' } },
+		});
 
 		const maxCombustDuringLust = APLAction.fromJsonString(
 			`{"condition":{"and":{"vals":[{"or":{"vals":[{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":26297}}},{"auraIsActive":{"auraId":{"spellId":26297}}},{"cmp":{"op":"OpLe","lhs":{"currentTime":{}},"rhs":{"const":{"val":"17s"}}}}]}},{"and":{"vals":[{"not":{"val":{"auraIsKnown":{"auraId":{"spellId":26297}}}}},{"cmp":{"op":"OpGt","lhs":{"auraRemainingTime":{"auraId":{"spellId":2825,"tag":-1}}},"rhs":{"const":{"val":"2s"}}}}]}}]}},{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":44457}}},{"cmp":{"op":"OpGt","lhs":{"mageCurrentCombustionDotEstimate":{}},"rhs":{"const":{"val":"${combustThreshold}"}}}}]}},"castSpell":{"spellId":{"spellId":11129}}}`,
@@ -159,6 +186,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		);
 
 		const modifiedSimpleRotation = rotation;
+
+		modifiedSimpleRotation.prepullActions = [];
+
+		const defaultPrepullOrder = [castMirrorImages, usePotion, castPyroBlast];
+		const evocationPrepullOrder = [swapToSwapped, castMirrorImages, channelEvocation, swapToMain, usePotion, castPyroBlast];
+
+		const prepullOrder = prepullEvocation ? evocationPrepullOrder : defaultPrepullOrder;
+
+		prepullOrder.forEach(action => {
+			modifiedSimpleRotation.prepullActions.push(action);
+		});
 
 		modifiedSimpleRotation.priorityList[5] = APLListItem.create({
 			action: maxCombustDuringLust,
