@@ -34,7 +34,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.FIRE_P3_PRESET.gear,
+		gear: Presets.FIRE_P4_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.DEFAULT_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
@@ -70,7 +70,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		consumes: Presets.DefaultFireConsumes,
 		// Default rotation settings.
 		rotationType: APLRotation_Type.TypeSimple,
-		simpleRotation: Presets.P3TrollDefaultSimpleRotation,
+		simpleRotation: Presets.P4TrollDefaultSimpleRotation,
 		// Default talents.
 		talents: Presets.FireTalents.data,
 		// Default spec-specific settings.

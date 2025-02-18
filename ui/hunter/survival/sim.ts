@@ -61,9 +61,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.SV_P3_PRESET.gear,
+		gear: Presets.SV_P4_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P3_EP_PRESET.epWeights,
+		epWeights: Presets.P4_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
 			return new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 8);

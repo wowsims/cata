@@ -19,14 +19,14 @@ func TestFury(t *testing.T) {
 		Race:       proto.Race_RaceTroll,
 		OtherRaces: []proto.Race{proto.Race_RaceWorgen},
 
-		GearSet:     core.GetGearSet("../../../ui/warrior/fury/gear_sets", "p3_fury_tg"),
-		ItemSwapSet: core.GetItemSwapGearSet("../../../ui/warrior/fury/gear_sets", "p3_fury_tg_item_swap"),
+		GearSet:     core.GetGearSet("../../../ui/warrior/fury/gear_sets", "p4_fury_tg"),
+		ItemSwapSet: core.GetItemSwapGearSet("../../../ui/warrior/fury/gear_sets", "p4_fury_tg_item_swap"),
 
 		OtherGearSets: []core.GearSetCombo{
-			core.GetGearSet("../../../ui/warrior/fury/gear_sets", "p3_fury_smf"),
+			core.GetGearSet("../../../ui/warrior/fury/gear_sets", "p4_fury_smf"),
 		},
 		OtherItemSwapSets: []core.ItemSwapSetCombo{
-			core.GetItemSwapGearSet("../../../ui/warrior/fury/gear_sets", "p3_fury_smf_item_swap"),
+			core.GetItemSwapGearSet("../../../ui/warrior/fury/gear_sets", "p4_fury_smf_item_swap"),
 		},
 		Talents: SMFTalents,
 		OtherTalentSets: []core.TalentsCombo{

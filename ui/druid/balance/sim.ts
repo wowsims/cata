@@ -45,7 +45,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.T12PresetGear.gear,
+		gear: Presets.T13PresetGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.StandardEPWeights.epWeights,
 		// Default stat caps for the Reforge optimizer
@@ -95,7 +95,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		rotations: [Presets.T11PresetRotation, Presets.T12PresetRotation],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PreraidPresetGear, Presets.T11PresetGear, Presets.T12PresetGear, Presets.T13PresetGear],
-		builds: [Presets.PresetBuildT11, Presets.PresetBuildT12],
+		builds: [Presets.PresetBuildT11, Presets.PresetBuildT12, Presets.PresetBuildT13],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecBalanceDruid>): APLRotation => {

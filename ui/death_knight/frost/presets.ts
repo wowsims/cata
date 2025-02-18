@@ -247,28 +247,28 @@ export const DefaultConsumes = Consumes.create({
 	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
 });
 
-export const PRESET_BUILD_DW = PresetUtils.makePresetBuild('DW Obliterate', {
+export const PRESET_BUILD_DW = PresetUtils.makePresetBuild('P3 - DW Obliterate', {
 	gear: P3_DW_GEAR_PRESET,
 	talents: DualWieldTalents,
 	rotationType: APLRotationType.TypeAuto,
 	epWeights: P3_DUAL_WIELD_EP_PRESET,
 });
 
-export const PRESET_BUILD_2H = PresetUtils.makePresetBuild('Two Hand', {
+export const PRESET_BUILD_2H = PresetUtils.makePresetBuild('P3 - Two Hand', {
 	gear: P1_2H_GEAR_PRESET,
 	talents: TwoHandTalents,
 	rotationType: APLRotationType.TypeAuto,
 	epWeights: P1_TWOHAND_EP_PRESET,
 });
 
-export const PRESET_BUILD_MASTERFROST = PresetUtils.makePresetBuild('Masterfrost', {
-	gear: P3_MASTERFROST_GEAR_PRESET,
+export const PRESET_BUILD_MASTERFROST = PresetUtils.makePresetBuild('p4 - Masterfrost', {
+	gear: P4_MASTERFROST_GEAR_PRESET,
 	talents: MasterfrostTalents,
 	rotationType: APLRotationType.TypeAuto,
 	epWeights: P1_MASTERFROST_EP_PRESET,
 });
 
-export const PRESET_BUILD_PREBIS = PresetUtils.makePresetBuild('Pre-bis', {
+export const PRESET_BUILD_PREBIS = PresetUtils.makePresetBuild('P3 - Pre-bis', {
 	gear: PREBIS_MASTERFROST_GEAR_PRESET,
 	talents: MasterfrostTalents,
 	rotationType: APLRotationType.TypeAuto,

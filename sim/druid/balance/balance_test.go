@@ -19,7 +19,7 @@ func TestBalance(t *testing.T) {
 
 		GearSet: core.GetGearSet("../../../ui/druid/balance/gear_sets", "t11"),
 		OtherGearSets: []core.GearSetCombo{
-			core.GetGearSet("../../../ui/druid/balance/gear_sets", "t12"),
+			core.GetGearSet("../../../ui/druid/balance/gear_sets", "t13"),
 		},
 		Talents:     StandardTalents,
 		Glyphs:      StandardGlyphs,
@@ -27,7 +27,7 @@ func TestBalance(t *testing.T) {
 		SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsBalance},
 		Rotation:    core.GetAplRotation("../../../ui/druid/balance/apls", "t11"),
 		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../../ui/druid/balance/apls", "t12"),
+			core.GetAplRotation("../../../ui/druid/balance/apls", "t13"),
 		},
 		ItemFilter: ItemFilter,
 	}))
