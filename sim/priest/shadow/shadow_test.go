@@ -18,7 +18,10 @@ func TestShadow(t *testing.T) {
 		Race:       proto.Race_RaceTroll,
 		OtherRaces: []proto.Race{proto.Race_RaceNightElf, proto.Race_RaceDraenei},
 
-		GearSet:  core.GetGearSet("../../../ui/priest/shadow/gear_sets", "p3"),
+		GearSet: core.GetGearSet("../../../ui/priest/shadow/gear_sets", "p4"),
+		OtherGearSets: []core.GearSetCombo{
+			core.GetGearSet("../../../ui/priest/shadow/gear_sets", "p3"),
+		},
 		Talents:  DefaultTalents,
 		Glyphs:   DefaultGlyphs,
 		Consumes: FullConsumes,
@@ -26,6 +29,9 @@ func TestShadow(t *testing.T) {
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
 
 		Rotation: core.GetAplRotation("../../../ui/priest/shadow/apls", "default"),
+		OtherRotations: []core.RotationCombo{
+			core.GetAplRotation("../../../ui/priest/shadow/apls", "default"),
+		},
 
 		ItemFilter: core.ItemFilter{
 			WeaponTypes: []proto.WeaponType{

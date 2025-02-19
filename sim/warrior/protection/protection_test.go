@@ -18,10 +18,9 @@ func TestProtectionWarrior(t *testing.T) {
 		Race:       proto.Race_RaceOrc,
 		OtherRaces: []proto.Race{proto.Race_RaceHuman},
 
-		GearSet: core.GetGearSet("../../../ui/warrior/protection/gear_sets", "p1_bis"),
+		GearSet: core.GetGearSet("../../../ui/warrior/protection/gear_sets", "p4_bis"),
 		OtherGearSets: []core.GearSetCombo{
 			core.GetGearSet("../../../ui/warrior/protection/gear_sets", "p3_bis"),
-			core.GetGearSet("../../../ui/warrior/protection/gear_sets", "preraid"),
 		},
 		Talents:     DefaultTalents,
 		Glyphs:      DefaultGlyphs,

@@ -34,12 +34,12 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 		status: LaunchStatus.Beta,
 	},
 	[Spec.SpecFrostDeathKnight]: {
-		phase: Phase.Phase3,
-		status: LaunchStatus.Launched,
+		phase: Phase.Phase4,
+		status: LaunchStatus.Beta,
 	},
 	[Spec.SpecUnholyDeathKnight]: {
-		phase: Phase.Phase3,
-		status: LaunchStatus.Launched,
+		phase: Phase.Phase4,
+		status: LaunchStatus.Beta,
 	},
 	// Druid
 	[Spec.SpecBalanceDruid]: {
@@ -68,8 +68,8 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 		status: LaunchStatus.Launched,
 	},
 	[Spec.SpecSurvivalHunter]: {
-		phase: Phase.Phase3,
-		status: LaunchStatus.Launched,
+		phase: Phase.Phase4,
+		status: LaunchStatus.Beta,
 	},
 	// Mage
 	[Spec.SpecArcaneMage]: {

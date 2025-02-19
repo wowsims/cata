@@ -88,7 +88,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P3_ORC_PRESET.gear,
+		gear: Presets.P4_ORC_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P3_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge optimizer

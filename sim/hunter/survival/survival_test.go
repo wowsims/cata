@@ -18,7 +18,7 @@ func TestSV(t *testing.T) {
 		Race:       proto.Race_RaceOrc,
 		OtherRaces: []proto.Race{proto.Race_RaceDwarf},
 
-		GearSet:     core.GetGearSet("../../../ui/hunter/survival/gear_sets", "preraid_sv"),
+		GearSet:     core.GetGearSet("../../../ui/hunter/survival/gear_sets", "p4_sv"),
 		Talents:     SVTalents,
 		Glyphs:      SVGlyphs,
 		Consumes:    FullConsumes,

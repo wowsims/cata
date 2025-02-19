@@ -45,7 +45,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.T12PresetGear.gear,
+		gear: Presets.T13PresetGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.StandardEPWeights.epWeights,
 		// Default stat caps for the Reforge optimizer

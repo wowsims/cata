@@ -17,7 +17,7 @@ func TestFire(t *testing.T) {
 		Class:      proto.Class_ClassMage,
 		Race:       proto.Race_RaceTroll,
 		OtherRaces: []proto.Race{proto.Race_RaceWorgen},
-		GearSet:    core.GetGearSet("../../../ui/mage/fire/gear_sets", "p3_fire"),
+		GearSet:    core.GetGearSet("../../../ui/mage/fire/gear_sets", "p4_fire"),
 		Talents:    FireTalents,
 		Glyphs:     FireGlyphs,
 		Consumes:   FullFireConsumes,

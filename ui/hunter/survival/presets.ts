@@ -19,7 +19,7 @@ import AoeApl from './apls/aoe.apl.json';
 import SvApl from './apls/sv.apl.json';
 import P1SVGear from './gear_sets/p1_sv.gear.json';
 import P3SVGear from './gear_sets/p3_sv.gear.json';
-import P4SVGear from './gear_sets/p4_sv_gear.json';
+import P4SVGear from './gear_sets/p4_sv.gear.json';
 import PreraidSVGear from './gear_sets/preraid_sv.gear.json';
 
 // Preset options for this spec.
