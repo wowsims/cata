@@ -111,7 +111,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	otherInputs: {
 		inputs: [
 			ElementalInputs.InThunderstormRange,
-			ShamanInputs.UseDragonSoul2PT12(),
 			OtherInputs.InputDelay,
 			OtherInputs.TankAssignment,
 			OtherInputs.DistanceFromTarget,

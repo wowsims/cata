@@ -215,7 +215,7 @@ message ShamanOptions {
 	CallTotem call = 3;
 	ShamanImbue imbue_mh = 4;
 
-	bool use_dragon_soul_2PT12 = 5;
+	bool use_dragon_soul_2PT12 = 5 [deprecated=true]; // No longer used because Phase 4 is live
 
 	// There's currently no way to swap two different set bonuses during prepull
 	bool use_prepull_enh_2PT10 = 6;
