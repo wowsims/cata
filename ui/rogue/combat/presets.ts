@@ -100,8 +100,8 @@ export const CBAT_NOKALED_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAttackPower]: 1,
 			[Stat.StatCritRating]: 1.19,
 			[Stat.StatHitRating]: 2.5,
-			[Stat.StatHasteRating]: 1.76,
-			[Stat.StatMasteryRating]: 1.78,
+			[Stat.StatHasteRating]: 1.78,
+			[Stat.StatMasteryRating]: 1.76,
 			[Stat.StatExpertiseRating]: 2.1,
 		},
 		{
