@@ -18,7 +18,7 @@ func TestArms(t *testing.T) {
 		Race:       proto.Race_RaceOrc,
 		OtherRaces: []proto.Race{proto.Race_RaceWorgen},
 
-		GearSet: core.GetGearSet("../../../ui/warrior/arms/gear_sets", "p1_arms_bis"),
+		GearSet: core.GetGearSet("../../../ui/warrior/arms/gear_sets", "p4_arms_bis"),
 		OtherGearSets: []core.GearSetCombo{
 			core.GetGearSet("../../../ui/warrior/arms/gear_sets", "p3_arms_bis"),
 		},

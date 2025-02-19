@@ -62,7 +62,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P3_PRESET.gear,
+		gear: Presets.P4_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.EP_PRESET_DEFAULT.epWeights,
 		// Default stat caps for the Reforge optimizer
@@ -111,7 +111,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	otherInputs: {
 		inputs: [
 			ElementalInputs.InThunderstormRange,
-			ShamanInputs.UseDragonSoul2PT12(),
 			OtherInputs.InputDelay,
 			OtherInputs.TankAssignment,
 			OtherInputs.DistanceFromTarget,
@@ -168,10 +167,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P3_PRESET.gear,
+					1: Presets.P4_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P3_PRESET.gear,
+					1: Presets.P4_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,

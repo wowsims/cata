@@ -46,7 +46,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P3_PRESET.gear,
+		gear: Presets.P4_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P3_EP_PRESET.epWeights,
 		statCaps: (() => {
@@ -110,7 +110,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	},
 
 	autoRotation: (player: Player<Spec.SpecShadowPriest>): APLRotation => {
-		return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
+		return Presets.P4_T13_4PC_PRESET_DEFAULT.rotation.rotation!;
 	},
 
 	raidSimPresets: [

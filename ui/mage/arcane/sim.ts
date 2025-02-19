@@ -30,7 +30,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.ARCANE_P3_PRESET.gear,
+		gear: Presets.ARCANE_P4_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
@@ -196,11 +196,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.ARCANE_P3_PRESET.gear,
+					1: Presets.ARCANE_P4_PRESET.gear,
 					2: Presets.ARCANE_P3_PREBIS_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.ARCANE_P3_PRESET.gear,
+					1: Presets.ARCANE_P4_PRESET.gear,
 					2: Presets.ARCANE_P3_PREBIS_PRESET.gear,
 				},
 			},

@@ -1403,7 +1403,7 @@ func init() {
 				Name:       "Vishanka Trigger" + labelSuffix,
 				ActionID:   core.ActionID{ItemID: vishankaItemID},
 				Callback:   core.CallbackOnSpellHitDealt,
-				ProcMask:   core.ProcMaskRanged | core.ProcMaskMeleeProc,
+				ProcMask:   core.ProcMaskRanged | core.ProcMaskRangedProc,
 				Outcome:    core.OutcomeLanded,
 				ProcChance: 0.15,
 				ICD:        time.Second * 17,

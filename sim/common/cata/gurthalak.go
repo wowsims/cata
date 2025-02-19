@@ -156,12 +156,6 @@ func (pet *TentacleOfTheOldOnesPet) registerMindFlay() {
 			ProcMask:    core.ProcMaskEmpty,
 			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagNoOnDamageDealt | core.SpellFlagChanneled,
 
-			Cast: core.CastConfig{
-				DefaultCast: core.Cast{
-					GCD: core.BossGCD,
-				},
-			},
-
 			Dot: core.DotConfig{
 				Aura: core.Aura{
 					Label: "Mind Flay " + labelSuffix,
@@ -183,6 +177,10 @@ func (pet *TentacleOfTheOldOnesPet) registerMindFlay() {
 			ThreatMultiplier:         1,
 			CritMultiplier:           pet.DefaultSpellCritMultiplier(),
 
+			ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+				return pet.ChanneledDot == nil
+			},
+
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 
@@ -193,6 +191,8 @@ func (pet *TentacleOfTheOldOnesPet) registerMindFlay() {
 					pet.ExtendGCDUntil(sim, sim.CurrentTime+core.BossGCD*2)
 				} else {
 					spell.DealOutcome(sim, result)
+					// No delay between a miss and the retry apparently
+					pet.QueueSpell(sim, spell, target, sim.CurrentTime)
 				}
 			},
 		})
@@ -211,18 +211,13 @@ func (pet *TentacleOfTheOldOnesPet) ExecuteCustomRotation(sim *core.Simulation) 
 		return
 	}
 
-	if !pet.GCD.IsReady(sim) {
-		return
-	}
-
 	mindFlay := pet.mindFlay[pet.ProccedItemVersion]
-	if mindFlay.CanCast(sim, pet.Owner.CurrentTarget) && pet.Unit.ChanneledDot == nil {
-		pet.PseudoStats.DamageDealtMultiplier = pet.Owner.PseudoStats.DamageDealtMultiplier
-		pet.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] = pet.Owner.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow]
-
-		mindFlay.Cast(sim, pet.Owner.CurrentTarget)
+	if !pet.GCD.IsReady(sim) || !mindFlay.CanCast(sim, pet.Owner.CurrentTarget) {
 		return
 	}
 
-	pet.ExtendGCDUntil(sim, sim.CurrentTime+core.BossGCD)
+	pet.PseudoStats.DamageDealtMultiplier = pet.Owner.PseudoStats.DamageDealtMultiplier
+	pet.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] = pet.Owner.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow]
+
+	mindFlay.Cast(sim, pet.Owner.CurrentTarget)
 }

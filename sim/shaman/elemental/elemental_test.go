@@ -18,7 +18,7 @@ func TestElemental(t *testing.T) {
 		Race:       proto.Race_RaceTroll,
 		OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
-		GearSet: core.GetGearSet("../../../ui/shaman/elemental/gear_sets", "p3.default"),
+		GearSet: core.GetGearSet("../../../ui/shaman/elemental/gear_sets", "p4.default"),
 		Talents: TalentsTotemDuration,
 		Glyphs:  StandardGlyphs,
 		OtherTalentSets: []core.TalentsCombo{
@@ -40,7 +40,7 @@ func TestElemental(t *testing.T) {
 			core.GetAplRotation("../../../ui/shaman/elemental/apls", "aoe"),
 			core.GetAplRotation("../../../ui/shaman/elemental/apls", "unleash"),
 		},
-		ItemSwapSet: core.GetItemSwapGearSet("../../../ui/shaman/elemental/gear_sets", "p3_item_swap"),
+		ItemSwapSet: core.GetItemSwapGearSet("../../../ui/shaman/elemental/gear_sets", "p4_item_swap"),
 
 		ItemFilter: core.ItemFilter{
 			WeaponTypes: []proto.WeaponType{
