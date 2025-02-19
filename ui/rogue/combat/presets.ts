@@ -107,7 +107,7 @@ export const CBAT_NOKALED_EP_PRESET = PresetUtils.makePresetEpWeights(
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 4.31,
 			[PseudoStat.PseudoStatOffHandDps]: 1.32,
-			[PseudoStat.PseudoStatSpellHitPercent]: 52,
+			[PseudoStat.PseudoStatSpellHitPercent]: 100, // Yeah this is a big number, idk Combat is weird this makes dps big
 			[PseudoStat.PseudoStatPhysicalHitPercent]: 250,
 		},
 	),

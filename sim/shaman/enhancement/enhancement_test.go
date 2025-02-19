@@ -19,7 +19,7 @@ func TestEnhancement(t *testing.T) {
 		OtherRaces: []proto.Race{proto.Race_RaceOrc, proto.Race_RaceTroll},
 
 		// The above line is the actual line for the ring but it is causing an error in the test
-		GearSet:     core.GetGearSet("../../../ui/shaman/enhancement/gear_sets", "p3.orc"),
+		GearSet:     core.GetGearSet("../../../ui/shaman/enhancement/gear_sets", "p4.orc"),
 		Talents:     StandardTalents,
 		Glyphs:      StandardGlyphs,
 		Consumes:    FullConsumes,

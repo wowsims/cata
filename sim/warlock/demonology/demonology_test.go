@@ -450,7 +450,7 @@ func TestDemonology(t *testing.T) {
 
 	// Incinerate
 	var demonologyTalentsIncenerate = "003-3312222300310212211-03202"
-	var demonologyGlyphsIncenerate = &proto.Glyphs{
+	var demonologyGlyphsIncinerate = &proto.Glyphs{
 		Prime1: int32(proto.WarlockPrimeGlyph_GlyphOfImmolate),
 		Prime2: int32(proto.WarlockPrimeGlyph_GlyphOfIncinerate),
 		Prime3: int32(proto.WarlockPrimeGlyph_GlyphOfMetamorphosis),
@@ -463,23 +463,23 @@ func TestDemonology(t *testing.T) {
 		Class:       proto.Class_ClassWarlock,
 		Race:        proto.Race_RaceOrc,
 		OtherRaces:  []proto.Race{proto.Race_RaceTroll, proto.Race_RaceGoblin, proto.Race_RaceHuman},
-		GearSet:     core.GetGearSet("../../../ui/warlock/demonology/gear_sets", "p3"),
-		ItemSwapSet: core.GetItemSwapGearSet("../../../ui/warlock/demonology/gear_sets", "p3_item_swap"),
-		Talents:     demonologyTalentsShadowBolt,
-		Glyphs:      demonologyGlyphsShadowBolt,
+		GearSet:     core.GetGearSet("../../../ui/warlock/demonology/gear_sets", "p4"),
+		ItemSwapSet: core.GetItemSwapGearSet("../../../ui/warlock/demonology/gear_sets", "p4_item_swap"),
+		Talents:     demonologyTalentsIncenerate,
+		Glyphs:      demonologyGlyphsIncinerate,
 		OtherTalentSets: []core.TalentsCombo{
 			{
 				Label:   "Incinerate",
-				Talents: demonologyTalentsIncenerate,
-				Glyphs:  demonologyGlyphsIncenerate,
+				Talents: demonologyTalentsShadowBolt,
+				Glyphs:  demonologyGlyphsShadowBolt,
 			},
 		},
 		Consumes:         fullConsumes,
 		SpecOptions:      core.SpecOptionsCombo{Label: "Demonology Warlock", SpecOptions: defaultDemonologyWarlock},
 		OtherSpecOptions: []core.SpecOptionsCombo{},
-		Rotation:         core.GetAplRotation("../../../ui/warlock/demonology/apls", "shadow-bolt"),
+		Rotation:         core.GetAplRotation("../../../ui/warlock/demonology/apls", "incinerate"),
 		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../../ui/warlock/demonology/apls", "incinerate"),
+			core.GetAplRotation("../../../ui/warlock/demonology/apls", "shadow-bolt"),
 		},
 		ItemFilter:       itemFilter,
 		StartingDistance: 25,

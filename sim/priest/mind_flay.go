@@ -7,6 +7,7 @@ import (
 )
 
 func (priest *Priest) newMindFlaySpell() *core.Spell {
+	mindFlayCoefficient := 0.19799999893
 	return priest.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 15407},
 		SpellSchool:    core.SpellSchoolShadow,
@@ -36,9 +37,9 @@ func (priest *Priest) newMindFlaySpell() *core.Spell {
 			TickLength:           time.Second * 1,
 			AffectedByCastSpeed:  true,
 			HasteReducesDuration: true,
-			BonusCoefficient:     0.288,
+			BonusCoefficient:     0.2879999876,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, 187.147)
+				dot.Snapshot(target, priest.CalcScalingSpellDmg(mindFlayCoefficient))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
@@ -52,8 +53,7 @@ func (priest *Priest) newMindFlaySpell() *core.Spell {
 			}
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			baseDamage := 187.147
-			return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicCrit)
+			return spell.CalcPeriodicDamage(sim, target, priest.CalcScalingSpellDmg(mindFlayCoefficient), spell.OutcomeExpectedMagicCrit)
 		},
 	})
 }
