@@ -141,7 +141,7 @@ export const PresetBuildT12 = PresetUtils.makePresetBuild('Balance T12', {
 	epWeights: StandardEPWeights,
 });
 
-export const PresetBuildT13 = PresetUtils.makePresetBuild('Balance T12', {
+export const PresetBuildT13 = PresetUtils.makePresetBuild('Balance T13', {
 	gear: T13PresetGear,
 	talents: StandardTalents,
 	rotation: T13PresetRotation,
