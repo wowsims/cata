@@ -59,15 +59,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-Anhuur'sHymnal-55889"
  value: {
-  dps: 42910.51782
-  tps: 29441.76145
+  dps: 42890.52088
+  tps: 29384.08376
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-Anhuur'sHymnal-56407"
  value: {
-  dps: 42948.13615
-  tps: 29455.53994
+  dps: 43077.89859
+  tps: 29520.82789
  }
 }
 dps_results: {
@@ -101,8 +101,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-Balespider'sBurningVestments"
  value: {
-  dps: 38867.38171
-  tps: 27351.11316
+  dps: 38273.7045
+  tps: 27312.11852
  }
 }
 dps_results: {
@@ -123,15 +123,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-BellofEnragingResonance-59326"
  value: {
-  dps: 44096.76203
-  tps: 30165.99759
+  dps: 44129.7291
+  tps: 30103.64107
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-BellofEnragingResonance-65053"
  value: {
-  dps: 44384.55068
-  tps: 30368.23539
+  dps: 44417.80924
+  tps: 30351.49065
  }
 }
 dps_results: {
@@ -214,8 +214,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-BloodthirstyGladiator'sInsigniaofDominance-64762"
  value: {
-  dps: 43186.65565
-  tps: 29630.45997
+  dps: 43258.52051
+  tps: 29660.60787
  }
 }
 dps_results: {
@@ -312,8 +312,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-CataclysmicGladiator'sInsigniaofDominance-73497"
  value: {
-  dps: 43934.66384
-  tps: 30117.00554
+  dps: 43942.78311
+  tps: 30112.04353
  }
 }
 dps_results: {
@@ -627,8 +627,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-FoulGiftoftheDemonLord-72898"
  value: {
-  dps: 44265.14596
-  tps: 30614.15476
+  dps: 44290.18099
+  tps: 30592.3179
  }
 }
 dps_results: {
@@ -662,8 +662,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-Gladiator'sFelshroud"
  value: {
-  dps: 32693.97206
-  tps: 23062.09803
+  dps: 31914.11596
+  tps: 23217.32739
  }
 }
 dps_results: {
@@ -697,8 +697,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-Harrison'sInsigniaofPanache-65803"
  value: {
-  dps: 42251.378
-  tps: 29025.78125
+  dps: 42126.92503
+  tps: 29041.75946
  }
 }
 dps_results: {
@@ -984,15 +984,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-MandalaofStirringPatterns-62467"
  value: {
-  dps: 42199.53928
-  tps: 29055.96525
+  dps: 42125.11678
+  tps: 28997.42685
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-MandalaofStirringPatterns-62472"
  value: {
-  dps: 42199.53928
-  tps: 29055.96525
+  dps: 42125.11678
+  tps: 28997.42685
  }
 }
 dps_results: {
@@ -1054,8 +1054,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-MithrilStopwatch-232013"
  value: {
-  dps: 43910.74213
-  tps: 30120.80434
+  dps: 44202.5377
+  tps: 30136.04744
  }
 }
 dps_results: {
@@ -1110,22 +1110,22 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-PhylacteryoftheNamelessLich-50365"
  value: {
-  dps: 43260.16033
-  tps: 29692.00989
+  dps: 43370.00655
+  tps: 29723.46722
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-PorcelainCrab-55237"
  value: {
-  dps: 42251.378
-  tps: 29025.78125
+  dps: 42126.92503
+  tps: 29041.75946
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-PorcelainCrab-56280"
  value: {
-  dps: 42251.378
-  tps: 29025.78125
+  dps: 42126.92503
+  tps: 29041.75946
  }
 }
 dps_results: {
@@ -1306,15 +1306,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-RuthlessGladiator'sInsigniaofDominance-70402"
  value: {
-  dps: 43647.44095
-  tps: 29937.70726
+  dps: 43680.46514
+  tps: 29869.76917
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-RuthlessGladiator'sInsigniaofDominance-72449"
  value: {
-  dps: 43665.37655
-  tps: 29956.22344
+  dps: 43765.82736
+  tps: 29925.5112
  }
 }
 dps_results: {
@@ -1350,8 +1350,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
-  dps: 42251.378
-  tps: 29025.78125
+  dps: 42126.92503
+  tps: 29041.75946
  }
 }
 dps_results: {
@@ -1392,8 +1392,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-ShadowflameRegalia"
  value: {
-  dps: 35997.4509
-  tps: 25534.4205
+  dps: 35193.02002
+  tps: 25676.66934
  }
 }
 dps_results: {
@@ -1462,22 +1462,22 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-SoulshifterVortex-77206"
  value: {
-  dps: 42971.98796
-  tps: 29709.81341
+  dps: 42944.6981
+  tps: 29694.61259
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-SoulshifterVortex-77970"
  value: {
-  dps: 42928.38723
-  tps: 29702.20415
+  dps: 42978.11111
+  tps: 29693.17331
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-SoulshifterVortex-77990"
  value: {
-  dps: 43056.76595
-  tps: 29778.40074
+  dps: 43052.58396
+  tps: 29674.20509
  }
 }
 dps_results: {
@@ -1532,15 +1532,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-StumpofTime-62465"
  value: {
-  dps: 43492.90981
-  tps: 29870.3548
+  dps: 43488.31893
+  tps: 29830.87193
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-StumpofTime-62470"
  value: {
-  dps: 43501.51296
-  tps: 29839.07569
+  dps: 43471.97558
+  tps: 29844.24326
  }
 }
 dps_results: {
@@ -1560,8 +1560,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-TalismanofSinisterOrder-65804"
  value: {
-  dps: 43278.89621
-  tps: 29774.06874
+  dps: 43325.25139
+  tps: 29729.16612
  }
 }
 dps_results: {
@@ -1588,15 +1588,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-TendrilsofBurrowingDark-55810"
  value: {
-  dps: 43173.26401
-  tps: 29694.38393
+  dps: 43094.2076
+  tps: 29668.67378
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-TendrilsofBurrowingDark-56339"
  value: {
-  dps: 43476.82395
-  tps: 29910.31508
+  dps: 43554.38686
+  tps: 29946.79328
  }
 }
 dps_results: {
@@ -1616,15 +1616,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-Theralion'sMirror-59519"
  value: {
-  dps: 43964.40563
-  tps: 30293.57282
+  dps: 43944.54782
+  tps: 30317.13342
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-Theralion'sMirror-65105"
  value: {
-  dps: 44153.92294
-  tps: 30433.79435
+  dps: 44230.90418
+  tps: 30576.30399
  }
 }
 dps_results: {
@@ -1721,8 +1721,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-Varo'then'sBrooch-72899"
  value: {
-  dps: 42251.378
-  tps: 29025.78125
+  dps: 42126.92503
+  tps: 29041.75946
  }
 }
 dps_results: {
@@ -1889,15 +1889,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-ViciousGladiator'sInsigniaofDominance-61045"
  value: {
-  dps: 43330.0602
-  tps: 29730.66325
+  dps: 43357.71854
+  tps: 29714.81118
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-ViciousGladiator'sInsigniaofDominance-70578"
  value: {
-  dps: 43467.50724
-  tps: 29823.98189
+  dps: 43475.66398
+  tps: 29799.53971
  }
 }
 dps_results: {
@@ -1987,8 +1987,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Average-Default"
  value: {
-  dps: 46450.76763
-  tps: 32503.23366
+  dps: 46451.33708
+  tps: 32502.51141
  }
 }
 dps_results: {
