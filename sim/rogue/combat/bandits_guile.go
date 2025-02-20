@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/rogue"
 )
 
 func (comRogue *CombatRogue) registerBanditsGuile() {
@@ -28,7 +29,7 @@ func (comRogue *CombatRogue) registerBanditsGuile() {
 			actionID = core.ActionID{SpellID: 84747}
 		}
 
-		damageMult := []float64{1.1, 1.2, 1.3}[index]
+		damageBonus := []float64{1.1, 1.2, 1.3}[index]
 
 		bgDamageAuras[index] = comRogue.RegisterAura(core.Aura{
 			Label:    label,
@@ -36,10 +37,15 @@ func (comRogue *CombatRogue) registerBanditsGuile() {
 			Duration: time.Second * 15,
 
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				comRogue.AttackTables[lastAttacked.UnitIndex].DamageTakenMultiplier *= damageMult
+				core.EnableDamageDoneByCaster(DDBC_BanditsGuile, DDBC_Total, comRogue.AttackTables[comRogue.CurrentTarget.UnitIndex], func(sim *core.Simulation, spell *core.Spell, attackTable *core.AttackTable) float64 {
+					if spell.Matches(rogue.RogueSpellsAll) || spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
+						return damageBonus
+					}
+					return 1.0
+				})
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				comRogue.AttackTables[lastAttacked.UnitIndex].DamageTakenMultiplier /= damageMult
+				core.DisableDamageDoneByCaster(0, comRogue.AttackTables[comRogue.CurrentTarget.UnitIndex])
 				if currentInsightIndex == 2 {
 					currentInsightIndex = -1
 					attackCounter = 0
