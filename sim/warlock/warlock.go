@@ -37,7 +37,7 @@ type Warlock struct {
 	EbonImp   *EbonImpPet
 	FieryImp  *FieryImpPet
 
-	SoulShards   int32
+	SoulShards   *core.Aura
 	SoulBurnAura *core.Aura
 
 	// Item sets
@@ -103,6 +103,16 @@ func (warlock *Warlock) Initialize() {
 			ActionID: core.ActionID{SpellID: 28176},
 		}))
 
+	warlock.SoulShards = core.MakePermanent(
+		warlock.RegisterAura(core.Aura{
+			Label:     "Soul Shards",
+			ActionID:  core.ActionID{ItemID: 6265},
+			MaxStacks: 3,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				aura.SetStacks(sim, 3)
+			},
+		}))
+
 	warlock.registerPetAbilities()
 
 	// warlock.registerBlackBook()
@@ -114,15 +124,6 @@ func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 }
 
 func (warlock *Warlock) Reset(sim *core.Simulation) {
-	warlock.SoulShards = 3
-}
-
-func (warlock *Warlock) AddSoulShard() {
-	warlock.SoulShards = min(warlock.SoulShards+1, 3)
-}
-
-func (warlock *Warlock) RemoveSoulShard() {
-	warlock.SoulShards = max(warlock.SoulShards-1, 0)
 }
 
 func NewWarlock(character *core.Character, options *proto.Player, warlockOptions *proto.WarlockOptions) *Warlock {

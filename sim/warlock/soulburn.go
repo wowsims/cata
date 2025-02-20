@@ -50,11 +50,13 @@ func (warlock *Warlock) registerSoulburn() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			warlock.SoulBurnAura.Activate(sim)
-			warlock.RemoveSoulShard()
+			if warlock.SoulShards.IsActive() {
+				warlock.SoulShards.RemoveStack(sim)
+			}
 		},
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warlock.SoulShards > 0
+			return warlock.SoulShards.GetStacks() > 0
 		},
 	})
 }
