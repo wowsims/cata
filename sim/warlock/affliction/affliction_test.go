@@ -405,7 +405,7 @@ func TestAffliction(t *testing.T) {
 		Class:            proto.Class_ClassWarlock,
 		Race:             proto.Race_RaceOrc,
 		OtherRaces:       []proto.Race{proto.Race_RaceTroll, proto.Race_RaceGoblin, proto.Race_RaceHuman},
-		GearSet:          core.GetGearSet("../../../ui/warlock/affliction/gear_sets", "p3"),
+		GearSet:          core.GetGearSet("../../../ui/warlock/affliction/gear_sets", "p4"),
 		Talents:          afflictionTalents,
 		Glyphs:           afflictionGlyphs,
 		Consumes:         fullConsumes,

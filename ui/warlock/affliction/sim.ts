@@ -30,7 +30,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAfflictionWarlock, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P3_PRESET.gear,
+		gear: Presets.P4_PRESET.gear,
 
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.DEFAULT_EP_PRESET.epWeights,
@@ -127,7 +127,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAfflictionWarlock, {
 		rotations: [Presets.APL_Default],
 
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET],
+		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecAfflictionWarlock>): APLRotation => {
