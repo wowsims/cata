@@ -268,7 +268,7 @@ export const PRESET_BUILD_MASTERFROST = PresetUtils.makePresetBuild('P4 - Master
 	epWeights: P1_MASTERFROST_EP_PRESET,
 });
 
-export const PRESET_BUILD_PREBIS = PresetUtils.makePresetBuild('P3 - Pre-bis', {
+export const PRESET_BUILD_PREBIS = PresetUtils.makePresetBuild('P4 - Pre-bis', {
 	gear: PREBIS_MASTERFROST_GEAR_PRESET,
 	talents: MasterfrostTalents,
 	rotationType: APLRotationType.TypeAuto,
