@@ -492,11 +492,51 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-DarkwalkerIdolofRage-92118"
+ value: {
+  dps: 51081.44292
+  tps: 35871.18201
+  hps: 690.18846
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-DarkwalkerStoneofRage-92117"
+ value: {
+  dps: 52135.09866
+  tps: 36789.07432
+  hps: 690.18846
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-Deathbringer'sWill-50363"
  value: {
   dps: 51043.48936
   tps: 35747.21055
   hps: 702.57646
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-DelivererIdolofDestruction-92113"
+ value: {
+  dps: 50835.73947
+  tps: 35642.9995
+  hps: 697.26732
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-DelivererStoneofDestruction-92151"
+ value: {
+  dps: 51710.71198
+  tps: 36564.95933
+  hps: 690.18846
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-DelivererStoneofWisdom-92115"
+ value: {
+  dps: 49916.501
+  tps: 34920.19375
+  hps: 690.18846
  }
 }
 dps_results: {
@@ -569,6 +609,22 @@ dps_results: {
   dps: 54226.82744
   tps: 37657.57993
   hps: 717.61903
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-EnlightenedIdolofDestruction-92144"
+ value: {
+  dps: 50904.30675
+  tps: 35736.96882
+  hps: 696.38246
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-EnlightenedStoneofDestruction-92143"
+ value: {
+  dps: 51733.63107
+  tps: 36521.30755
+  hps: 690.18846
  }
 }
 dps_results: {
@@ -704,6 +760,22 @@ dps_results: {
  value: {
   dps: 50381.36599
   tps: 35223.22322
+  hps: 690.18846
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ForestwalkerIdolofRage-92142"
+ value: {
+  dps: 51062.31331
+  tps: 35864.73193
+  hps: 690.18846
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ForestwalkerStoneofRage-92141"
+ value: {
+  dps: 52148.88189
+  tps: 36813.09925
   hps: 690.18846
  }
 }
@@ -1180,6 +1252,38 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-MartialDefenderIdol-92127"
+ value: {
+  dps: 49916.60019
+  tps: 34920.38221
+  hps: 717.82152
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-MartialDefenderStone-92126"
+ value: {
+  dps: 51843.08574
+  tps: 36580.45247
+  hps: 717.82152
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-MartialIdolofBattle-92128"
+ value: {
+  dps: 51918.88357
+  tps: 36348.43153
+  hps: 703.46131
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-MartialStoneofBattle-92129"
+ value: {
+  dps: 53051.60617
+  tps: 37519.44492
+  hps: 690.18846
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-MatrixRestabilizer-68994"
  value: {
   dps: 51297.78443
@@ -1252,6 +1356,46 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-NaturalistIdolofDestruction-92137"
+ value: {
+  dps: 50862.54088
+  tps: 35634.55633
+  hps: 695.4976
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-NaturalistIdolofRage-92133"
+ value: {
+  dps: 51066.73827
+  tps: 35864.1964
+  hps: 690.18846
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-NaturalistStoneofDestruction-92136"
+ value: {
+  dps: 51707.05564
+  tps: 36511.80409
+  hps: 690.18846
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-NaturalistStoneofRage-92138"
+ value: {
+  dps: 52161.17303
+  tps: 36817.47245
+  hps: 690.18846
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-NaturalistStoneofWisdom-92139"
+ value: {
+  dps: 49916.501
+  tps: 34920.19375
+  hps: 690.18846
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-NecromanticFocus-68982"
  value: {
   dps: 50771.2713
@@ -1280,6 +1424,46 @@ dps_results: {
  value: {
   dps: 50676.51811
   tps: 35476.40245
+  hps: 690.18846
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-PartisanDefenderIdol-92147"
+ value: {
+  dps: 49916.46905
+  tps: 34920.13304
+  hps: 717.82152
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-PartisanDefenderStone-92114"
+ value: {
+  dps: 51786.15171
+  tps: 36547.84314
+  hps: 717.82152
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-PartisanIdolofBattle-92148"
+ value: {
+  dps: 51845.89583
+  tps: 36230.13201
+  hps: 702.57646
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-PartisanStoneofBattle-92149"
+ value: {
+  dps: 53028.55454
+  tps: 37471.77814
+  hps: 690.18846
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-PartisanStoneofWisdom-92145"
+ value: {
+  dps: 49916.46905
+  tps: 34920.13304
   hps: 690.18846
  }
 }
@@ -1580,6 +1764,38 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-ScourgeheartDefenderIdol-92135"
+ value: {
+  dps: 49916.46905
+  tps: 34920.13304
+  hps: 717.82152
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ScourgeheartDefenderStone-92134"
+ value: {
+  dps: 51770.42366
+  tps: 36554.45383
+  hps: 717.82152
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ScourgeheartIdolofBattle-92167"
+ value: {
+  dps: 51999.6629
+  tps: 36333.22763
+  hps: 705.23103
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ScourgeheartStoneofBattle-92168"
+ value: {
+  dps: 53136.63811
+  tps: 37568.41558
+  hps: 690.18846
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-SeaStar-55256"
  value: {
   dps: 49916.501
@@ -1696,6 +1912,22 @@ dps_results: {
  value: {
   dps: 50640.1582
   tps: 35579.77153
+  hps: 690.18846
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SoulseizerIdolofDestruction-92125"
+ value: {
+  dps: 50993.04413
+  tps: 35768.49214
+  hps: 697.26732
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SoulseizerStoneofDestruction-92124"
+ value: {
+  dps: 51765.10923
+  tps: 36586.00073
   hps: 690.18846
  }
 }
@@ -1901,6 +2133,46 @@ dps_results: {
 }
 dps_results: {
  key: "TestUnholy-AllItems-Throngus'sFinger-56449"
+ value: {
+  dps: 49916.501
+  tps: 34920.19375
+  hps: 690.18846
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ThundercallerIdolofDestruction-92120"
+ value: {
+  dps: 50892.77969
+  tps: 35658.80922
+  hps: 694.61274
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ThundercallerIdolofRage-92116"
+ value: {
+  dps: 51080.58698
+  tps: 35875.61881
+  hps: 690.18846
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ThundercallerStoneofDestruction-92119"
+ value: {
+  dps: 51743.47726
+  tps: 36516.03751
+  hps: 690.18846
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ThundercallerStoneofRage-92121"
+ value: {
+  dps: 52192.66931
+  tps: 36825.55351
+  hps: 690.18846
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ThundercallerStoneofWisdom-92122"
  value: {
   dps: 49916.501
   tps: 34920.19375
@@ -2209,6 +2481,46 @@ dps_results: {
   dps: 51534.36692
   tps: 36086.9336
   hps: 694.61274
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-WaterdancerDefenderIdol-92399"
+ value: {
+  dps: 49916.501
+  tps: 34920.19375
+  hps: 717.82152
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-WaterdancerDefenderStone-92398"
+ value: {
+  dps: 51718.84532
+  tps: 36495.82522
+  hps: 717.82152
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-WaterdancerIdolofRage-92401"
+ value: {
+  dps: 51066.87195
+  tps: 35871.52627
+  hps: 690.18846
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-WaterdancerStoneofRage-92400"
+ value: {
+  dps: 52156.08301
+  tps: 36830.52132
+  hps: 690.18846
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-WaterdancerStoneofWisdom-92402"
+ value: {
+  dps: 49916.46905
+  tps: 34920.13304
+  hps: 690.18846
  }
 }
 dps_results: {

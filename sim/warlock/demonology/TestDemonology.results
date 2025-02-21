@@ -436,10 +436,45 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-AllItems-DarkwalkerIdolofRage-92118"
+ value: {
+  dps: 45037.05495
+  tps: 21473.00416
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-DarkwalkerStoneofRage-92117"
+ value: {
+  dps: 47859.56328
+  tps: 22583.07858
+ }
+}
+dps_results: {
  key: "TestDemonology-AllItems-Deathbringer'sWill-50363"
  value: {
   dps: 44474.55606
   tps: 21305.12009
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-DelivererIdolofDestruction-92113"
+ value: {
+  dps: 45646.60465
+  tps: 21735.49447
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-DelivererStoneofDestruction-92151"
+ value: {
+  dps: 49265.93456
+  tps: 23246.24083
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-DelivererStoneofWisdom-92115"
+ value: {
+  dps: 45176.76141
+  tps: 21564.09386
  }
 }
 dps_results: {
@@ -489,6 +524,20 @@ dps_results: {
  value: {
   dps: 47596.73441
   tps: 23693.88254
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-EnlightenedIdolofDestruction-92144"
+ value: {
+  dps: 45517.62575
+  tps: 21676.16336
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-EnlightenedStoneofDestruction-92143"
+ value: {
+  dps: 49380.30326
+  tps: 23314.44014
  }
 }
 dps_results: {
@@ -615,6 +664,20 @@ dps_results: {
  value: {
   dps: 44128.06654
   tps: 21134.09707
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-ForestwalkerIdolofRage-92142"
+ value: {
+  dps: 45037.05495
+  tps: 21473.00416
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-ForestwalkerStoneofRage-92141"
+ value: {
+  dps: 47788.0872
+  tps: 22551.44214
  }
 }
 dps_results: {
@@ -1010,6 +1073,34 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-AllItems-MartialDefenderIdol-92127"
+ value: {
+  dps: 44128.1796
+  tps: 21134.55293
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-MartialDefenderStone-92126"
+ value: {
+  dps: 47799.02273
+  tps: 22539.10974
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-MartialIdolofBattle-92128"
+ value: {
+  dps: 44808.12298
+  tps: 21479.80824
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-MartialStoneofBattle-92129"
+ value: {
+  dps: 47813.22982
+  tps: 22550.70201
+ }
+}
+dps_results: {
  key: "TestDemonology-AllItems-MatrixRestabilizer-68994"
  value: {
   dps: 44128.06654
@@ -1073,6 +1164,41 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-AllItems-NaturalistIdolofDestruction-92137"
+ value: {
+  dps: 45460.53865
+  tps: 21700.44627
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-NaturalistIdolofRage-92133"
+ value: {
+  dps: 45037.05495
+  tps: 21473.00416
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-NaturalistStoneofDestruction-92136"
+ value: {
+  dps: 49317.20727
+  tps: 23286.66887
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-NaturalistStoneofRage-92138"
+ value: {
+  dps: 47793.92094
+  tps: 22564.29065
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-NaturalistStoneofWisdom-92139"
+ value: {
+  dps: 45176.76141
+  tps: 21564.09386
+ }
+}
+dps_results: {
  key: "TestDemonology-AllItems-NecromanticFocus-68982"
  value: {
   dps: 46451.45028
@@ -1091,6 +1217,41 @@ dps_results: {
  value: {
   dps: 44382.37928
   tps: 21270.45361
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-PartisanDefenderIdol-92147"
+ value: {
+  dps: 44128.1796
+  tps: 21134.55293
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-PartisanDefenderStone-92114"
+ value: {
+  dps: 47788.35561
+  tps: 22551.13341
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-PartisanIdolofBattle-92148"
+ value: {
+  dps: 44808.12298
+  tps: 21479.80824
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-PartisanStoneofBattle-92149"
+ value: {
+  dps: 47868.06019
+  tps: 22591.91652
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-PartisanStoneofWisdom-92145"
+ value: {
+  dps: 45176.76141
+  tps: 21564.09386
  }
 }
 dps_results: {
@@ -1355,6 +1516,34 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-AllItems-ScourgeheartDefenderIdol-92135"
+ value: {
+  dps: 44128.1796
+  tps: 21134.55293
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-ScourgeheartDefenderStone-92134"
+ value: {
+  dps: 47500.04634
+  tps: 22359.07313
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-ScourgeheartIdolofBattle-92167"
+ value: {
+  dps: 44808.12298
+  tps: 21479.80824
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-ScourgeheartStoneofBattle-92168"
+ value: {
+  dps: 47636.89034
+  tps: 22450.48571
+ }
+}
+dps_results: {
  key: "TestDemonology-AllItems-SeaStar-55256"
  value: {
   dps: 44575.02644
@@ -1457,6 +1646,20 @@ dps_results: {
  value: {
   dps: 46287.15487
   tps: 22098.28402
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-SoulseizerIdolofDestruction-92125"
+ value: {
+  dps: 45689.34015
+  tps: 21723.64539
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-SoulseizerStoneofDestruction-92124"
+ value: {
+  dps: 49235.08276
+  tps: 23250.39951
  }
 }
 dps_results: {
@@ -1639,6 +1842,41 @@ dps_results: {
  value: {
   dps: 44128.06654
   tps: 21134.09707
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-ThundercallerIdolofDestruction-92120"
+ value: {
+  dps: 45518.65662
+  tps: 21603.0833
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-ThundercallerIdolofRage-92116"
+ value: {
+  dps: 45037.05495
+  tps: 21473.00416
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-ThundercallerStoneofDestruction-92119"
+ value: {
+  dps: 49181.77752
+  tps: 23212.64656
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-ThundercallerStoneofRage-92121"
+ value: {
+  dps: 47872.76976
+  tps: 22617.3211
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-ThundercallerStoneofWisdom-92122"
+ value: {
+  dps: 45176.76141
+  tps: 21564.09386
  }
 }
 dps_results: {
@@ -1912,6 +2150,41 @@ dps_results: {
  value: {
   dps: 44128.06654
   tps: 21134.09707
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-WaterdancerDefenderIdol-92399"
+ value: {
+  dps: 44128.1796
+  tps: 21134.55293
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-WaterdancerDefenderStone-92398"
+ value: {
+  dps: 47813.2387
+  tps: 22564.00961
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-WaterdancerIdolofRage-92401"
+ value: {
+  dps: 45037.05495
+  tps: 21473.00416
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-WaterdancerStoneofRage-92400"
+ value: {
+  dps: 47808.49615
+  tps: 22553.53592
+ }
+}
+dps_results: {
+ key: "TestDemonology-AllItems-WaterdancerStoneofWisdom-92402"
+ value: {
+  dps: 45176.76141
+  tps: 21564.09386
  }
 }
 dps_results: {
