@@ -15,6 +15,10 @@ import * as Presets from './presets';
 
 const hasteBreakpoints = Presets.SHADOW_BREAKPOINTS.find(entry => entry.unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHastePercent))!.presets!;
 
+const hasT134 = (player: Player<Spec.SpecShadowPriest>) => {
+	return player.getGear().getItemSetCount('Regalia of Dying Light', 'Regalia of Dying light') >= 4;
+};
+
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	cssClass: 'shadow-priest-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Priest),
@@ -110,6 +114,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	},
 
 	autoRotation: (player: Player<Spec.SpecShadowPriest>): APLRotation => {
+		if (hasT134(player)) {
+			return Presets.P4_T13_4PC_PRESET_DEFAULT.rotation.rotation!;
+		}
 		return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
 
@@ -148,9 +155,7 @@ export class ShadowPriestSimUI extends IndividualSimUI<Spec.SpecShadowPriest> {
 			new ReforgeOptimizer(this, {
 				statSelectionPresets: Presets.SHADOW_BREAKPOINTS,
 				updateSoftCaps: softCaps => {
-					const gear = player.getGear();
-					const hasT134P = gear.getItemSetCount('Regalia of Dying Light', 'Regalia of Dying light') >= 4;
-					if (hasT134P) {
+					if (hasT134(player)) {
 						softCaps.push(
 							StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent, {
 								breakpoints: [hasteBreakpoints.get('7-tick - VT')!],
