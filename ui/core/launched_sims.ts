@@ -34,12 +34,12 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 		status: LaunchStatus.Beta,
 	},
 	[Spec.SpecFrostDeathKnight]: {
-		phase: Phase.Phase3,
-		status: LaunchStatus.Launched,
+		phase: Phase.Phase4,
+		status: LaunchStatus.Beta,
 	},
 	[Spec.SpecUnholyDeathKnight]: {
-		phase: Phase.Phase3,
-		status: LaunchStatus.Launched,
+		phase: Phase.Phase4,
+		status: LaunchStatus.Beta,
 	},
 	// Druid
 	[Spec.SpecBalanceDruid]: {
@@ -68,8 +68,8 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 		status: LaunchStatus.Launched,
 	},
 	[Spec.SpecSurvivalHunter]: {
-		phase: Phase.Phase3,
-		status: LaunchStatus.Launched,
+		phase: Phase.Phase4,
+		status: LaunchStatus.Beta,
 	},
 	// Mage
 	[Spec.SpecArcaneMage]: {
@@ -113,15 +113,15 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 	// Rogue
 	[Spec.SpecAssassinationRogue]: {
 		phase: Phase.Phase4,
-		status: LaunchStatus.Beta,
+		status: LaunchStatus.Launched,
 	},
 	[Spec.SpecCombatRogue]: {
 		phase: Phase.Phase4,
-		status: LaunchStatus.Beta,
+		status: LaunchStatus.Launched,
 	},
 	[Spec.SpecSubtletyRogue]: {
 		phase: Phase.Phase4,
-		status: LaunchStatus.Beta,
+		status: LaunchStatus.Launched,
 	},
 	// Shaman
 	[Spec.SpecElementalShaman]: {
@@ -138,8 +138,8 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 	},
 	// Warlock
 	[Spec.SpecAfflictionWarlock]: {
-		phase: Phase.Phase3,
-		status: LaunchStatus.Launched,
+		phase: Phase.Phase4,
+		status: LaunchStatus.Beta,
 	},
 	[Spec.SpecDemonologyWarlock]: {
 		phase: Phase.Phase4,

@@ -13,13 +13,13 @@ export const MISSING_RANDOM_SUFFIX_WARNING = <p className="mb-0">Please select a
 	</>
 );*/
 
-const DTR_FIRST_IMPLEMENTATION_WARNING = (
-	<>
-		<p className="fw-bold">This item was implemented based on the first round of testing on PTR.</p>
-		<p>Results may change as we get more logs and reports on interactions.</p>
-		<WantToHelpMessage />
-	</>
-);
+// const DTR_FIRST_IMPLEMENTATION_WARNING = (
+// 	<>
+// 		<p className="fw-bold">This item was implemented based on the first round of testing on PTR.</p>
+// 		<p>Results may change as we get more logs and reports on interactions.</p>
+// 		<WantToHelpMessage />
+// 	</>
+// );
 
 const TENTATIVE_IMPLEMENTATION_WARNING = (
 	<>
@@ -39,53 +39,15 @@ const WILL_NOT_BE_IMPLEMENTED_ITEMS = [
 	77981, 77209, 78001,
 	// Heart of Unliving - LFR, Normal, Heroic
 	77976, 77199, 77996,
-	// Seal of the Seven Signs - LFR, Normal, Heroic
-	77969, 77204, 77989,
-
 	// Maw of the Dragonlord - LFR, Normal, Heroic
 	78485, 77196, 78476,
 ];
 
 const TENTATIVE_IMPLEMENTATION_ITEMS = [
-	// Vial of Shadows - LFR, Normal, Heroic
-	77979, 77207, 77999,
-	// Bone-Link Fetish - LFR, Normal, Heroic
-	77982, 77210, 78002,
-	// Cunning of the Cruel - LFR, Normal, Heroic
-	77980, 77208, 78000,
-	// Indomitable Pride - LFR, Normal, Heroic
-	77983, 77211, 78003,
-	// Creche of the Final Dragon - LFR, Normal, Heroic
-	77972, 77205, 77992,
-	// Insignia of the Corrupted Mind - LFR, Normal, Heroic
-	77971, 77203, 77991,
-	// Soulshifter Vortex - LFR, Normal, Heroic
-	77970, 77206, 77990,
-	// Starcatcher Compass - LFR, Normal, Heroic
-	77973, 77202, 77993,
-	// Eye of Unmaking - LFR, Normal, Heroic
-	77977, 77200, 77997,
-	// Resolve of Undying - LFR, Normal, Heroic
-	77978, 77201, 77998,
-	// Will of Unbinding - LFR, Normal, Heroic
-	77975, 77198, 77995,
-	// Wrath of Unchaining - LFR, Normal, Heroic
-	77974, 77197, 77994,
-
 	// No'Kaled, the Elements of Death - LFR, Normal, Heroic
 	78481, 77188, 78472,
-	// Kiril, Fury of Beasts - LFR, Normal, Heroic
-	78482, 77194, 78473,
-	// Ti'tahk, the Steps of Time - LFR, Normal, Heroic
-	78486, 77190, 78477,
-	// Souldrinker - LFR, Normal, Heroic
-	78488, 77193, 78479,
 	// Rathrak, the Poisonous Mind - LFR, Normal, Heroic
 	78484, 77195, 78475,
-	// Vishanka, Jaws of the Earth - LFR, Normal, Heroic
-	78480, 78359, 78471,
-	// Gurthalak, Voice of the Deeps - LFR, Normal, Heroic
-	78487, 77191, 78478,
 
 	// Veil of Lies
 	72900,
@@ -112,22 +74,6 @@ export const ITEM_NOTICES = new Map<number, ItemNoticeData>([
 			[Spec.SpecUnknown]: TENTATIVE_IMPLEMENTATION_WARNING,
 		},
 	]),
-	// Dragonwrath, Tarecgosa's Rest
-	[
-		71086,
-		{
-			[Spec.SpecUnknown]: <p className="mb-0">This item is unsupported for this spec.</p>,
-			[Spec.SpecBalanceDruid]: DTR_FIRST_IMPLEMENTATION_WARNING,
-			[Spec.SpecArcaneMage]: DTR_FIRST_IMPLEMENTATION_WARNING,
-			[Spec.SpecFireMage]: DTR_FIRST_IMPLEMENTATION_WARNING,
-			[Spec.SpecFrostMage]: DTR_FIRST_IMPLEMENTATION_WARNING,
-			[Spec.SpecShadowPriest]: DTR_FIRST_IMPLEMENTATION_WARNING,
-			[Spec.SpecElementalShaman]: DTR_FIRST_IMPLEMENTATION_WARNING,
-			[Spec.SpecAfflictionWarlock]: DTR_FIRST_IMPLEMENTATION_WARNING,
-			[Spec.SpecDemonologyWarlock]: DTR_FIRST_IMPLEMENTATION_WARNING,
-			[Spec.SpecDestructionWarlock]: DTR_FIRST_IMPLEMENTATION_WARNING,
-		},
-	],
 ]);
 
 export const GENERIC_MISSING_SET_BONUS_NOTICE_DATA = new Map<number, string>([

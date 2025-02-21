@@ -18,7 +18,7 @@ func TestFrost(t *testing.T) {
 		Race:       proto.Race_RaceOrc,
 		OtherRaces: []proto.Race{proto.Race_RaceWorgen},
 
-		GearSet: core.GetGearSet("../../../ui/death_knight/frost/gear_sets", "p3.masterfrost"),
+		GearSet: core.GetGearSet("../../../ui/death_knight/frost/gear_sets", "p4.masterfrost"),
 		Talents: MasterfrostTalents,
 		OtherTalentSets: []core.TalentsCombo{
 			{

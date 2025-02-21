@@ -18,7 +18,7 @@ func TestUnholy(t *testing.T) {
 		Race:       proto.Race_RaceOrc,
 		OtherRaces: []proto.Race{proto.Race_RaceWorgen},
 
-		GearSet:     core.GetGearSet("../../../ui/death_knight/unholy/gear_sets", "p3.bis"),
+		GearSet:     core.GetGearSet("../../../ui/death_knight/unholy/gear_sets", "p4.bis"),
 		Talents:     UnholyTalents,
 		Glyphs:      UnholyDefaultGlyphs,
 		Consumes:    FullConsumes,

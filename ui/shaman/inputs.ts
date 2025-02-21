@@ -2,10 +2,8 @@ import { ContentBlock } from '../core/components/content_block';
 import { Input } from '../core/components/input';
 import * as InputHelpers from '../core/components/input_helpers';
 import { IconEnumPicker } from '../core/components/pickers/icon_enum_picker';
-import { NumberPicker } from '../core/components/pickers/number_picker';
 import { IndividualSimUI } from '../core/individual_sim_ui';
 import { Player } from '../core/player';
-import { Spec } from '../core/proto/common';
 import { AirTotem, CallTotem, EarthTotem, FireTotem, ShamanImbue, ShamanShield, ShamanTotems, TotemSet, WaterTotem } from '../core/proto/shaman';
 import { ActionId } from '../core/proto_utils/action_id';
 import { ShamanSpecs } from '../core/proto_utils/utils';
@@ -33,20 +31,6 @@ export const ShamanImbueMH = <SpecType extends ShamanSpecs>() =>
 			{ actionId: ActionId.fromSpellId(8024), value: ShamanImbue.FlametongueWeapon },
 			{ actionId: ActionId.fromSpellId(8033), value: ShamanImbue.FrostbrandWeapon },
 		],
-	});
-
-export const UseDragonSoul2PT12 = <SpecType extends ShamanSpecs>() =>
-	InputHelpers.makeClassOptionsBooleanInput<SpecType>({
-		fieldName: 'useDragonSoul2PT12',
-		label: 'Use Dragon Soul Tier 12 2PC effect',
-		labelTooltip: 'When set to true: Your Lightning Bolt has a 30% chance to reduce the remaining cooldown of your Fire Elemental Totem by 4 seconds..',
-		getValue: player => player.getClassOptions().useDragonSoul2PT12,
-		setValue: (eventID, player, newValue: boolean) => {
-			const newOptions = player.getClassOptions();
-			newOptions.useDragonSoul2PT12 = newValue;
-
-			player.setClassOptions(eventID, newOptions);
-		},
 	});
 
 export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<any>): ContentBlock {

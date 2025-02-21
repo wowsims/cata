@@ -114,11 +114,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P3_BIS_RET_PRESET.gear,
+		gear: Presets.P4_BIS_RET_PRESET.gear,
 		// Default item swap set.
 		itemSwap: Presets.ITEM_SWAP_4P_T11.itemSwap,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P3_EP_PRESET.epWeights,
+		epWeights: Presets.P4_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: getStatCaps(),
 		// Default consumes settings.

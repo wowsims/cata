@@ -56,8 +56,8 @@ func (warlock *Warlock) registerSoulFire() {
 			baseDamage := warlock.CalcAndRollDamageRange(sim, 2.54299998283, 0.22499999404)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
-			if warlock.T13_4pc.IsActive() && warlock.SoulBurnAura.IsActive() {
-				warlock.AddSoulShard()
+			if warlock.T13_4pc.IsActive() && warlock.SoulBurnAura.IsActive() && warlock.SoulShards.IsActive() {
+				warlock.SoulShards.AddStack(sim)
 			}
 
 			warlock.SoulBurnAura.Deactivate(sim)

@@ -15,10 +15,11 @@ func (comRogue *CombatRogue) registerKillingSpreeCD() {
 	}
 
 	mhWeaponSwing := comRogue.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 51690, Tag: 1}, // actual spellID is 57841
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		ActionID:       core.ActionID{SpellID: 51690, Tag: 1}, // actual spellID is 57841
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		ClassSpellMask: rogue.RogueSpellKillingSpreeHit,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   comRogue.MeleeCritMultiplier(false),
@@ -34,10 +35,11 @@ func (comRogue *CombatRogue) registerKillingSpreeCD() {
 		},
 	})
 	ohWeaponSwing := comRogue.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 51690, Tag: 2}, // actual spellID is 57842
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeOHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		ActionID:       core.ActionID{SpellID: 51690, Tag: 2}, // actual spellID is 57842
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeOHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		ClassSpellMask: rogue.RogueSpellKillingSpreeHit,
 
 		DamageMultiplier: 1 * comRogue.DWSMultiplier(),
 		CritMultiplier:   comRogue.MeleeCritMultiplier(false),

@@ -7,6 +7,13 @@ import (
 	"github.com/wowsims/cata/sim/rogue"
 )
 
+// Damage Done By Caster setup
+const (
+	DDBC_BanditsGuile int = iota
+
+	DDBC_Total
+)
+
 func RegisterCombatRogue() {
 	core.RegisterAgentFactory(
 		proto.Player_CombatRogue{},

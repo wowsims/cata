@@ -23,10 +23,15 @@ func (sinRogue *AssassinationRogue) registerVendetta() {
 			ActionID: actionID,
 			Duration: duration,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				sinRogue.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier *= 1.2
+				core.EnableDamageDoneByCaster(DDBC_Vendetta, DDBC_Total, sinRogue.AttackTables[aura.Unit.UnitIndex], func(sim *core.Simulation, spell *core.Spell, attackTable *core.AttackTable) float64 {
+					if spell.Matches(rogue.RogueSpellsAll) || spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
+						return 1.2
+					}
+					return 1.0
+				})
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				sinRogue.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier /= 1.2
+				core.DisableDamageDoneByCaster(0, sinRogue.AttackTables[aura.Unit.UnitIndex])
 			},
 		})
 	})

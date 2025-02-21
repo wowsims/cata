@@ -53,7 +53,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P3_PRESET_COMBAT.gear,
+		gear: Presets.P4_PRESET_COMBAT.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.CBAT_STANDARD_EP_PRESET.epWeights,
 		// Stat caps for reforge optimizer

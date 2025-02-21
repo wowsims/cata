@@ -381,6 +381,7 @@ const (
 	RogueSpellAdrenalineRush
 	RogueSpellBladeFlurry
 	RogueSpellKillingSpree
+	RogueSpellKillingSpreeHit
 	RogueSpellMainGauche
 	RogueSpellRevealingStrike
 	RogueSpellColdBlood
