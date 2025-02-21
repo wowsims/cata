@@ -522,11 +522,51 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-DarkwalkerIdolofRage-92118"
+ value: {
+  dps: 6307.0484
+  tps: 37525.737
+  hps: 1026.74532
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-DarkwalkerStoneofRage-92117"
+ value: {
+  dps: 6298.94717
+  tps: 37472.70436
+  hps: 1026.74532
+ }
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-Deathbringer'sWill-50363"
  value: {
   dps: 6404.54733
   tps: 38108.33972
   hps: 1029.91919
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-DelivererIdolofDestruction-92113"
+ value: {
+  dps: 6200.01407
+  tps: 36922.92593
+  hps: 1026.74532
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-DelivererStoneofDestruction-92151"
+ value: {
+  dps: 6200.01407
+  tps: 36922.92593
+  hps: 1026.74532
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-DelivererStoneofWisdom-92115"
+ value: {
+  dps: 6200.01407
+  tps: 36922.92593
+  hps: 1026.74532
  }
 }
 dps_results: {
@@ -599,6 +639,22 @@ dps_results: {
   dps: 6245.49415
   tps: 37158.45877
   hps: 1076.98616
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-EnlightenedIdolofDestruction-92144"
+ value: {
+  dps: 6200.01407
+  tps: 36922.92593
+  hps: 1026.74532
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-EnlightenedStoneofDestruction-92143"
+ value: {
+  dps: 6200.01407
+  tps: 36922.92593
+  hps: 1026.74532
  }
 }
 dps_results: {
@@ -743,6 +799,22 @@ dps_results: {
   dps: 6627.45059
   tps: 39385.70574
   hps: 1080.70103
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-ForestwalkerIdolofRage-92142"
+ value: {
+  dps: 6329.11621
+  tps: 37632.90545
+  hps: 1026.74532
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-ForestwalkerStoneofRage-92141"
+ value: {
+  dps: 6298.94717
+  tps: 37472.70436
+  hps: 1026.74532
  }
 }
 dps_results: {
@@ -1202,6 +1274,38 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-MartialDefenderIdol-92127"
+ value: {
+  dps: 6217.46082
+  tps: 37010.15966
+  hps: 1061.63882
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-MartialDefenderStone-92126"
+ value: {
+  dps: 6217.46082
+  tps: 37010.15966
+  hps: 1061.63882
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-MartialIdolofBattle-92128"
+ value: {
+  dps: 6520.11687
+  tps: 38790.97859
+  hps: 1026.74532
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-MartialStoneofBattle-92129"
+ value: {
+  dps: 6433.03576
+  tps: 38358.31025
+  hps: 1026.74532
+ }
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-MatrixRestabilizer-68994"
  value: {
   dps: 6330.97632
@@ -1290,6 +1394,46 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-NaturalistIdolofDestruction-92137"
+ value: {
+  dps: 6200.01407
+  tps: 36922.92593
+  hps: 1026.74532
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-NaturalistIdolofRage-92133"
+ value: {
+  dps: 6303.42547
+  tps: 37496.63707
+  hps: 1026.74532
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-NaturalistStoneofDestruction-92136"
+ value: {
+  dps: 6200.01407
+  tps: 36922.92593
+  hps: 1026.74532
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-NaturalistStoneofRage-92138"
+ value: {
+  dps: 6298.94717
+  tps: 37472.70436
+  hps: 1026.74532
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-NaturalistStoneofWisdom-92139"
+ value: {
+  dps: 6200.01407
+  tps: 36922.92593
+  hps: 1026.74532
+ }
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-NecromanticFocus-68982"
  value: {
   dps: 6200.01407
@@ -1334,6 +1478,46 @@ dps_results: {
  value: {
   dps: 6340.84338
   tps: 37790.41677
+  hps: 1026.74532
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-PartisanDefenderIdol-92147"
+ value: {
+  dps: 6217.46082
+  tps: 37010.15966
+  hps: 1061.63882
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-PartisanDefenderStone-92114"
+ value: {
+  dps: 6217.46082
+  tps: 37010.15966
+  hps: 1061.63882
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-PartisanIdolofBattle-92148"
+ value: {
+  dps: 6515.58994
+  tps: 38769.9691
+  hps: 1026.74532
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-PartisanStoneofBattle-92149"
+ value: {
+  dps: 6433.03576
+  tps: 38358.31025
+  hps: 1026.74532
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-PartisanStoneofWisdom-92145"
+ value: {
+  dps: 6200.01407
+  tps: 36922.92593
   hps: 1026.74532
  }
 }
@@ -1655,6 +1839,38 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-ScourgeheartDefenderIdol-92135"
+ value: {
+  dps: 6217.46082
+  tps: 37010.15966
+  hps: 1061.63882
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-ScourgeheartDefenderStone-92134"
+ value: {
+  dps: 6217.46082
+  tps: 37010.15966
+  hps: 1061.63882
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-ScourgeheartIdolofBattle-92167"
+ value: {
+  dps: 6513.2093
+  tps: 38765.45587
+  hps: 1026.74532
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-ScourgeheartStoneofBattle-92168"
+ value: {
+  dps: 6433.03576
+  tps: 38358.31025
+  hps: 1026.74532
+ }
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-SeaStar-55256"
  value: {
   dps: 6200.01407
@@ -1780,6 +1996,22 @@ dps_results: {
   dps: 6228.06641
   tps: 37063.18763
   hps: 1082.85001
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-SoulseizerIdolofDestruction-92125"
+ value: {
+  dps: 6200.01407
+  tps: 36922.92593
+  hps: 1026.74532
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-SoulseizerStoneofDestruction-92124"
+ value: {
+  dps: 6200.01407
+  tps: 36922.92593
+  hps: 1026.74532
  }
 }
 dps_results: {
@@ -1976,6 +2208,46 @@ dps_results: {
 }
 dps_results: {
  key: "TestProtectionWarrior-AllItems-Throngus'sFinger-56449"
+ value: {
+  dps: 6200.01407
+  tps: 36922.92593
+  hps: 1026.74532
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-ThundercallerIdolofDestruction-92120"
+ value: {
+  dps: 6200.01407
+  tps: 36922.92593
+  hps: 1026.74532
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-ThundercallerIdolofRage-92116"
+ value: {
+  dps: 6308.15496
+  tps: 37521.65386
+  hps: 1026.74532
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-ThundercallerStoneofDestruction-92119"
+ value: {
+  dps: 6200.01407
+  tps: 36922.92593
+  hps: 1026.74532
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-ThundercallerStoneofRage-92121"
+ value: {
+  dps: 6298.94717
+  tps: 37472.70436
+  hps: 1026.74532
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-ThundercallerStoneofWisdom-92122"
  value: {
   dps: 6200.01407
   tps: 36922.92593
@@ -2315,6 +2587,46 @@ dps_results: {
   dps: 6280.14175
   tps: 37215.58766
   hps: 1076.7482
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-WaterdancerDefenderIdol-92399"
+ value: {
+  dps: 6217.46082
+  tps: 37010.15966
+  hps: 1061.63882
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-WaterdancerDefenderStone-92398"
+ value: {
+  dps: 6217.46082
+  tps: 37010.15966
+  hps: 1061.63882
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-WaterdancerIdolofRage-92401"
+ value: {
+  dps: 6297.25511
+  tps: 37461.67078
+  hps: 1026.74532
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-WaterdancerStoneofRage-92400"
+ value: {
+  dps: 6298.94717
+  tps: 37472.70436
+  hps: 1026.74532
+ }
+}
+dps_results: {
+ key: "TestProtectionWarrior-AllItems-WaterdancerStoneofWisdom-92402"
+ value: {
+  dps: 6200.01407
+  tps: 36922.92593
+  hps: 1026.74532
  }
 }
 dps_results: {

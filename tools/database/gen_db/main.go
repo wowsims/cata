@@ -192,12 +192,18 @@ func InferPhase(item *proto.UIItem) int32 {
 	}
 
 	switch item.Ilvl {
-	case 359, 372, 379:
-		return 1
 	case 353:
 		return 2
 	case 358, 371, 391:
 		return 3
+	case 359:
+		if item.Quality == proto.ItemQuality_ItemQualityUncommon {
+			return 4
+		}
+
+		return 1
+	case 372, 379:
+		return 1
 	case 377, 390:
 		return 4
 	case 365:
