@@ -9,10 +9,12 @@ import (
 )
 
 type OnItemSwap func(*Simulation, proto.ItemSlot)
+type OnEquipSwap func(*Simulation)
 
 type ItemSwap struct {
-	character           *Character
-	onItemSwapCallbacks [NumItemSlots][]OnItemSwap
+	character            *Character
+	onItemSwapCallbacks  [NumItemSlots][]OnItemSwap
+	onEquipSwapCallbacks []OnEquipSwap
 
 	isFuryWarrior        bool
 	isFeralDruid         bool
@@ -112,6 +114,18 @@ func (character *Character) RegisterItemSwapCallback(slots []proto.ItemSlot, cal
 	for _, slot := range slots {
 		character.ItemSwap.onItemSwapCallbacks[slot] = append(character.ItemSwap.onItemSwapCallbacks[slot], callback)
 	}
+}
+
+func (character *Character) RegisterEquipSwapCallback(callback OnEquipSwap) {
+	if character == nil || !character.ItemSwap.IsEnabled() {
+		return
+	}
+
+	if (character.Env != nil) && character.Env.IsFinalized() {
+		panic("Tried to add a new item swap callback for slots in a finalized environment!")
+	}
+
+	character.ItemSwap.onEquipSwapCallbacks = append(character.ItemSwap.onEquipSwapCallbacks, callback)
 }
 
 // Helper for handling Item Effects that use the itemID to toggle the aura on and off
@@ -350,6 +364,10 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 		character.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime, false)
 		character.AutoAttacks.StopRangedUntil(sim, sim.CurrentTime)
 		character.ExtendGCDUntil(sim, max(character.NextGCDAt(), sim.CurrentTime+GCDDefault))
+	}
+
+	for _, onEquipSwap := range swap.onEquipSwapCallbacks {
+		onEquipSwap(sim)
 	}
 
 	swap.swapSet = swapSet

@@ -1791,25 +1791,24 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-Souldrinker-77193"
  value: {
-  dps: 50388.3754
-  tps: 46085.81221
-  hps: 5.44374
+  dps: 50389.67688
+  tps: 46087.11369
+  hps: 8.04669
  }
 }
 dps_results: {
  key: "TestSV-AllItems-Souldrinker-78479"
  value: {
-  dps: 50387.90784
-  tps: 46085.34465
-  hps: 4.5086
+  dps: 50385.65353
+  tps: 46083.09034
  }
 }
 dps_results: {
  key: "TestSV-AllItems-Souldrinker-78488"
  value: {
-  dps: 50387.97055
-  tps: 46085.40736
-  hps: 4.63403
+  dps: 50387.38274
+  tps: 46084.81955
+  hps: 3.4584
  }
 }
 dps_results: {

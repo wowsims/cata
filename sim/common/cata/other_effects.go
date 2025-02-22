@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -1148,30 +1147,16 @@ func init() {
 		// Equip: Your melee attacks have a chance to drain your target's health, damaging the target for an amount equal to 1.3%/1.5%/1.7% of your maximum health and healing you for twice that amount.
 		// (Proc chance: 15%)
 		souldrinkerItemID := []int32{78488, 77193, 78479}[version]
-		makeDrainLifeProcTrigger := func(character *core.Character, itemID int32, drainLifeSpell *core.Spell, labelSuffix string, isMH bool) {
-			meleeWeaponSlots := core.MeleeWeaponSlots()
-			itemSlot := core.Ternary(isMH, meleeWeaponSlots[:1], meleeWeaponSlots[1:])
-			slotLabel := core.Ternary(isMH, "MH", "OH")
-
-			aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-				Name:       fmt.Sprintf("Drain Life Trigger %s %s", labelSuffix, slotLabel),
-				ActionID:   core.ActionID{ItemID: itemID},
-				ProcMask:   core.ProcMaskMelee,
-				Outcome:    core.OutcomeLanded,
-				Callback:   core.CallbackOnSpellHitDealt,
-				ProcChance: 0.15,
-				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					drainLifeSpell.Cast(sim, result.Target)
-				},
-			})
-
-			character.ItemSwap.RegisterProcWithSlots(itemID, aura, itemSlot)
-		}
 
 		core.NewItemEffect(souldrinkerItemID, func(agent core.Agent) {
+			getTotalEquippedSouldrinker := func(character *core.Character, itemID int32) float64 {
+				return float64(min(2, character.Equipment.CountEquippedItemBySlots(itemID, core.MeleeWeaponSlots())))
+			}
+
 			character := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: []int32{109828, 108022, 109831}[version]}
 			hpModifier := []float64{0.013, 0.015, 0.017}[version]
+			totalEquipped := getTotalEquippedSouldrinker(character, souldrinkerItemID)
 
 			var damageDealt float64
 			drainLifeHeal := character.RegisterSpell(core.SpellConfig{
@@ -1207,12 +1192,25 @@ func init() {
 				},
 			})
 
-			if character.ItemSwap.CouldHaveItemEquippedInSlot(souldrinkerItemID, proto.ItemSlot_ItemSlotMainHand) {
-				makeDrainLifeProcTrigger(character, souldrinkerItemID, drainLife, labelSuffix, true)
-			}
-			if character.ItemSwap.CouldHaveItemEquippedInSlot(souldrinkerItemID, proto.ItemSlot_ItemSlotOffHand) {
-				makeDrainLifeProcTrigger(character, souldrinkerItemID, drainLife, labelSuffix, false)
-			}
+			label := fmt.Sprintf("Drain Life Trigger %s", labelSuffix)
+			aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:     label,
+				ActionID: core.ActionID{ItemID: souldrinkerItemID},
+				ProcMask: core.ProcMaskMelee,
+				Outcome:  core.OutcomeLanded,
+				Callback: core.CallbackOnSpellHitDealt,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if sim.Proc(0.15/totalEquipped, label) {
+						drainLife.Cast(sim, result.Target)
+					}
+				},
+			})
+
+			character.RegisterEquipSwapCallback(func(sim *core.Simulation) {
+				totalEquipped = getTotalEquippedSouldrinker(character, souldrinkerItemID)
+			})
+
+			character.ItemSwap.RegisterProcWithSlots(souldrinkerItemID, aura, core.MeleeWeaponSlots())
 		})
 
 		// These spells ignore the slot the weapon is in.

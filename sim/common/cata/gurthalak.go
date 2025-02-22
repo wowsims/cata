@@ -5,20 +5,27 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
 // Gurthalak, Voice of the Deeps
 // Equip: Your melee attacks have a chance to cause you to summon a Tentacle of the Old Ones to fight by your side for 12 sec.
 // (Proc chance: 2%)
+var gurthalakItemIDs = []int32{78487, 77191, 78478}
+
 func init() {
+
+	getTotalEquipped := func(character *core.Character, itemID int32) float64 {
+		return float64(min(2, character.Equipment.CountEquippedItemBySlots(itemID, core.MeleeWeaponSlots())))
+	}
+
 	for _, v := range []ItemVersion{ItemVersionLFR, ItemVersionNormal, ItemVersionHeroic} {
 		version := v // Gotta scope this for the closure
 		labelSuffix := []string{" (LFR)", "", " (Heroic)"}[version]
 
-		gurthalakItemID := []int32{78487, 77191, 78478}[version]
+		gurthalakItemID := gurthalakItemIDs[version]
 		summonSpellID := []int32{109838, 107818, 109840}[version]
+
 		core.NewItemEffect(gurthalakItemID, func(agent core.Agent) {
 			var gurthalak GurthalakAgent
 			if gurth, canEquip := agent.(GurthalakAgent); canEquip {
@@ -28,6 +35,7 @@ func init() {
 			}
 
 			character := agent.GetCharacter()
+			totalEquipped := getTotalEquipped(character, gurthalakItemID)
 
 			summonSpell := character.RegisterSpell(core.SpellConfig{
 				ActionID:    core.ActionID{SpellID: summonSpellID},
@@ -55,34 +63,29 @@ func init() {
 				},
 			})
 
-			if character.ItemSwap.CouldHaveItemEquippedInSlot(gurthalakItemID, proto.ItemSlot_ItemSlotMainHand) {
-				makeGurthalakProcTrigger(character, gurthalakItemID, summonSpell, labelSuffix, true)
-			}
-			if character.ItemSwap.CouldHaveItemEquippedInSlot(gurthalakItemID, proto.ItemSlot_ItemSlotOffHand) {
-				makeGurthalakProcTrigger(character, gurthalakItemID, summonSpell, labelSuffix, false)
-			}
+			label := fmt.Sprintf("Gurthalak Trigger %s", labelSuffix)
+
+			aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:     label,
+				Callback: core.CallbackOnSpellHitDealt,
+				ProcMask: core.ProcMaskMelee,
+				Outcome:  core.OutcomeLanded,
+				Harmful:  true,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if sim.Proc(0.02/totalEquipped, label) {
+						summonSpell.Cast(sim, result.Target)
+					}
+				},
+			})
+
+			character.RegisterEquipSwapCallback(func(sim *core.Simulation) {
+				totalEquipped = getTotalEquipped(character, gurthalakItemID)
+			})
+
+			character.ItemSwap.RegisterProcWithSlots(gurthalakItemID, aura, core.MeleeWeaponSlots())
 		})
 	}
-}
 
-func makeGurthalakProcTrigger(character *core.Character, itemID int32, summonSpell *core.Spell, labelSuffix string, isMH bool) {
-	meleeWeaponSlots := core.MeleeWeaponSlots()
-	itemSlot := core.Ternary(isMH, meleeWeaponSlots[:1], meleeWeaponSlots[1:])
-	slotLabel := core.Ternary(isMH, "MH", "OH")
-
-	aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-		Name:       fmt.Sprintf("Gurthalak Trigger %s %s", labelSuffix, slotLabel),
-		Callback:   core.CallbackOnSpellHitDealt,
-		ProcMask:   core.ProcMaskMelee,
-		Outcome:    core.OutcomeLanded,
-		ProcChance: 0.02,
-		Harmful:    true,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			summonSpell.Cast(sim, result.Target)
-		},
-	})
-
-	character.ItemSwap.RegisterProcWithSlots(itemID, aura, itemSlot)
 }
 
 type TentacleOfTheOldOnesPet struct {
