@@ -1154,9 +1154,7 @@ func init() {
 		// Souldrinker
 		// Equip: Your melee attacks have a chance to drain your target's health, damaging the target for an amount equal to 1.3%/1.5%/1.7% of your maximum health and healing you for twice that amount.
 		// (Proc chance: 15%)
-
-		souldrinkerItemIDs := []int32{78488, 77193, 78479}
-		souldrinkerItemID := souldrinkerItemIDs[version]
+		souldrinkerItemID := []int32{78488, 77193, 78479}[version]
 		core.NewItemEffect(souldrinkerItemID, func(agent core.Agent) {
 			character := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: []int32{109828, 108022, 109831}[version]}
