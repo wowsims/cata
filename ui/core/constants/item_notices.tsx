@@ -83,12 +83,6 @@ export const GENERIC_MISSING_SET_BONUS_NOTICE_DATA = new Map<number, string>([
 
 export const SET_BONUS_NOTICES = new Map<number, SetBonusNoticeData>([
 	// Custom notices
-	[
-		1016, // Shaman T12
-		new Map<number, string>([
-			[2, 'Defaults to 4.2 T12 2PC Bonus: Your damaging spells have a chance to reset the remaining cooldown on your Fire Elemental Totem.'],
-		]),
-	],
 
 	// Generic "not yet implemented" notices
 	[928, null], // Resto Druid T11
