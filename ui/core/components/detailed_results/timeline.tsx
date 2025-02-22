@@ -1,3 +1,4 @@
+import ApexCharts from 'apexcharts'
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
@@ -13,8 +14,6 @@ import { TypedEvent } from '../../typed_event';
 import { bucket, distinct, fragmentToString, maxIndex, stringComparator } from '../../utils';
 import { actionColors } from './color_settings';
 import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component';
-
-declare let ApexCharts: any;
 
 type TooltipHandler = (dataPointIndex: number) => Element;
 
