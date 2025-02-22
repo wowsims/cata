@@ -58,7 +58,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 	modifyDisplayStats: (player: Player<Spec.SpecMarksmanshipHunter>) => {
 		return sharedHunterDisplayStatsModifiers(player);
 	},
-
+	itemSwapSlots: [
+		ItemSlot.ItemSlotMainHand,
+		ItemSlot.ItemSlotRanged,
+		ItemSlot.ItemSlotHands,
+		ItemSlot.ItemSlotTrinket1,
+		ItemSlot.ItemSlotTrinket2,
+		ItemSlot.ItemSlotFinger1,
+		ItemSlot.ItemSlotFinger2,
+	],
 	defaults: {
 		// Default equipped gear.
 		gear: Presets.MM_T12_PRESET.gear,
@@ -69,6 +77,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 			const hitCap = new Stats().withPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, 8);
 			return hitCap;
 		})(),
+
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,

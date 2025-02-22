@@ -162,7 +162,10 @@ func (hunter *Hunter) applyTNT() {
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell == hunter.ExplosiveShot {
 				hunter.ExplosiveShot.CD.Reset()
-				aura.RemoveStack(sim)
+				// Weird check but..
+				if !aura.Unit.HasActiveAura("Burning Adrenaline") {
+					aura.RemoveStack(sim)
+				}
 			}
 		},
 		// OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {

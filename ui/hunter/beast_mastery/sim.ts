@@ -59,6 +59,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 	modifyDisplayStats: (player: Player<Spec.SpecBeastMasteryHunter>) => {
 		return sharedHunterDisplayStatsModifiers(player);
 	},
+	itemSwapSlots: [
+		ItemSlot.ItemSlotMainHand,
+		ItemSlot.ItemSlotRanged,
+		ItemSlot.ItemSlotHands,
+		ItemSlot.ItemSlotTrinket1,
+		ItemSlot.ItemSlotTrinket2,
+		ItemSlot.ItemSlotFinger1,
+		ItemSlot.ItemSlotFinger2,
+	],
 	defaults: {
 		// Default equipped gear.
 		gear: Presets.BM_P3_PRESET.gear,
