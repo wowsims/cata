@@ -24,7 +24,7 @@ import {
 import { HunterStingType, SurvivalHunter_Rotation } from '../../core/proto/hunter';
 import { StatCapType } from '../../core/proto/ui';
 import * as AplUtils from '../../core/proto_utils/apl_utils';
-import { StatCap , Stats, UnitStat } from '../../core/proto_utils/stats';
+import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as HunterInputs from '../inputs';
 import { sharedHunterDisplayStatsModifiers } from '../shared';
 import * as SVInputs from './inputs';
@@ -58,7 +58,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	modifyDisplayStats: (player: Player<Spec.SpecSurvivalHunter>) => {
 		return sharedHunterDisplayStatsModifiers(player);
 	},
-
+	itemSwapSlots: [
+		ItemSlot.ItemSlotMainHand,
+		ItemSlot.ItemSlotRanged,
+		ItemSlot.ItemSlotHands,
+		ItemSlot.ItemSlotTrinket1,
+		ItemSlot.ItemSlotTrinket2,
+		ItemSlot.ItemSlotFinger1,
+		ItemSlot.ItemSlotFinger2,
+	],
 	defaults: {
 		// Default equipped gear.
 		gear: Presets.SV_P4_PRESET.gear,
@@ -70,9 +78,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 		})(),
 		softCapBreakpoints: (() => {
 			const hasteSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatRangedHastePercent, {
-				breakpoints: [
-					20
-				],
+				breakpoints: [20],
 				capType: StatCapType.TypeSoftCap,
 				postCapEPs: [0.89 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT],
 			});
@@ -150,7 +156,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 		rotations: [Presets.ROTATION_PRESET_SV, Presets.ROTATION_PRESET_AOE],
 		// Preset gear configurations that the user can quickly select.
 		builds: [Presets.P2_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
-		gear: [Presets.SV_PRERAID_PRESET, Presets.SV_P1_PRESET, Presets.SV_P3_PRESET,  Presets.SV_P4_PRESET],
+		gear: [Presets.SV_PRERAID_PRESET, Presets.SV_P1_PRESET, Presets.SV_P3_PRESET, Presets.SV_P4_PRESET],
 	},
 
 	autoRotation: (player: Player<Spec.SpecSurvivalHunter>): APLRotation => {

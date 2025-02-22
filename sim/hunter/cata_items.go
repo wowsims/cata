@@ -66,16 +66,10 @@ var ItemSetFlameWakersBattleGear = core.NewItemSet(core.ItemSet{
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					baMod.Activate()
 				},
-				OnApplyEffects: func(aura *core.Aura, sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 					if !spell.Matches(HunterSpellsTierTwelve) || spell.ActionID.SpellID == 0 {
 						return
 					}
-					// https://www.bluetracker.gg/wow/topic/eu-en/510644-cataclysm-classic-hotfixes-11-december/
-					// Breaks both Arcane Shot and Explosive Shot consuming of Burning Adrenaline
-					// Arcane Shot is free if Lock and Load is up
-					// if hunter.LockAndLoadAura.IsActive() && (spell.ClassSpellMask == HunterSpellExplosiveShot || spell.SpellID == 53301 || spell.SpellID == 1215485) {
-					// 	return
-					// }
 
 					if hunter.HasActiveAura("Ready, Set, Aim...") && spell.Matches(HunterSpellAimedShot) {
 						return
@@ -118,9 +112,11 @@ var ItemSetWyrmstalkerBattleGear = core.NewItemSet(core.ItemSet{
 				ActionID: core.ActionID{SpellID: 105919},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					aura.Unit.MultiplyRangedSpeed(sim, 1.3)
+					hunter.Pet.Unit.MultiplyAttackSpeed(sim, 1.3)
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					aura.Unit.MultiplyRangedSpeed(sim, 1/1.3)
+					hunter.Pet.Unit.MultiplyAttackSpeed(sim, 1/1.3)
 				},
 			})
 
