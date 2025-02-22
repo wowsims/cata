@@ -774,15 +774,15 @@ dps_results: {
 dps_results: {
  key: "TestArms-AllItems-Gurthalak,VoiceoftheDeeps-77191"
  value: {
-  dps: 59208.3739
-  tps: 35365.49531
+  dps: 56604.32401
+  tps: 35379.45364
  }
 }
 dps_results: {
  key: "TestArms-AllItems-Gurthalak,VoiceoftheDeeps-78487"
  value: {
-  dps: 58869.08325
-  tps: 35278.65913
+  dps: 56293.64019
+  tps: 35286.49882
  }
 }
 dps_results: {
@@ -1728,25 +1728,25 @@ dps_results: {
 dps_results: {
  key: "TestArms-AllItems-Souldrinker-77193"
  value: {
-  dps: 55115.6542
-  tps: 35511.93374
-  hps: 1528.82701
+  dps: 54574.35792
+  tps: 34970.63746
+  hps: 446.23444
  }
 }
 dps_results: {
  key: "TestArms-AllItems-Souldrinker-78479"
  value: {
-  dps: 55305.31972
-  tps: 35670.82226
-  hps: 1711.52846
+  dps: 54690.80251
+  tps: 35056.30505
+  hps: 482.49405
  }
 }
 dps_results: {
  key: "TestArms-AllItems-Souldrinker-78488"
  value: {
-  dps: 54919.60333
-  tps: 35342.41476
-  hps: 1306.23352
+  dps: 54453.62498
+  tps: 34876.43641
+  hps: 374.27682
  }
 }
 dps_results: {

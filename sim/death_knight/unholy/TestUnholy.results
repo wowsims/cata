@@ -302,9 +302,9 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-Bryntroll,theBoneArbiter-50709"
  value: {
-  dps: 55758.38049
-  tps: 38486.09031
-  hps: 631.89104
+  dps: 54514.62897
+  tps: 38474.02614
+  hps: 633.68618
  }
 }
 dps_results: {
@@ -854,16 +854,16 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-Gurthalak,VoiceoftheDeeps-77191"
  value: {
-  dps: 60929.86477
-  tps: 39458.80017
+  dps: 57108.81252
+  tps: 39407.35098
   hps: 664.76889
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-Gurthalak,VoiceoftheDeeps-78487"
  value: {
-  dps: 60220.30562
-  tps: 39210.73938
+  dps: 56495.29614
+  tps: 39198.23249
   hps: 660.15059
  }
 }
@@ -1838,9 +1838,9 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-Shadowmourne-49623"
  value: {
-  dps: 57125.44769
-  tps: 39404.75675
-  hps: 653.99326
+  dps: 55932.93424
+  tps: 39453.24347
+  hps: 654.89782
  }
 }
 dps_results: {

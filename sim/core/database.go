@@ -324,16 +324,6 @@ func (equipment *Equipment) containsItemInSlots(itemID int32, possibleSlots []pr
 	})
 }
 
-func (equipment *Equipment) CountEquippedItemBySlots(itemID int32, possibleSlots []proto.ItemSlot) int {
-	count := 0
-	for _, slot := range possibleSlots {
-		if equipment[slot].ID == itemID {
-			count++
-		}
-	}
-	return count
-}
-
 func (equipment *Equipment) ToEquipmentSpecProto() *proto.EquipmentSpec {
 	return &proto.EquipmentSpec{
 		Items: MapSlice(equipment[:], func(item Item) *proto.ItemSpec {

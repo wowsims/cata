@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -1143,20 +1144,25 @@ func init() {
 			character.ItemSwap.RegisterProc(kirilItemID, triggerAura)
 		})
 
+		// These spells ignore the slot the weapon is in.
+		// Any other ability should only trigger the proc if the weapon is in the right slot.
+		ignoresSlot := map[int32]bool{
+			23881: true, // Bloodthirst
+			6544:  true, // Heroic Leap
+		}
+
 		// Souldrinker
 		// Equip: Your melee attacks have a chance to drain your target's health, damaging the target for an amount equal to 1.3%/1.5%/1.7% of your maximum health and healing you for twice that amount.
 		// (Proc chance: 15%)
-		souldrinkerItemID := []int32{78488, 77193, 78479}[version]
 
+		souldrinkerItemIDs := []int32{78488, 77193, 78479}
+		souldrinkerItemID := souldrinkerItemIDs[version]
 		core.NewItemEffect(souldrinkerItemID, func(agent core.Agent) {
-			getTotalEquippedSouldrinker := func(character *core.Character, itemID int32) float64 {
-				return float64(min(2, character.Equipment.CountEquippedItemBySlots(itemID, core.MeleeWeaponSlots())))
-			}
-
 			character := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: []int32{109828, 108022, 109831}[version]}
+			label := fmt.Sprintf("Drain Life Trigger %s", labelSuffix)
 			hpModifier := []float64{0.013, 0.015, 0.017}[version]
-			totalEquipped := getTotalEquippedSouldrinker(character, souldrinkerItemID)
+			meleeWeaponSlots := core.MeleeWeaponSlots()
 
 			var damageDealt float64
 			drainLifeHeal := character.RegisterSpell(core.SpellConfig{
@@ -1192,34 +1198,37 @@ func init() {
 				},
 			})
 
-			label := fmt.Sprintf("Drain Life Trigger %s", labelSuffix)
-			aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-				Name:     label,
-				ActionID: core.ActionID{ItemID: souldrinkerItemID},
-				ProcMask: core.ProcMaskMelee,
-				Outcome:  core.OutcomeLanded,
-				Callback: core.CallbackOnSpellHitDealt,
-				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if sim.Proc(0.15/totalEquipped, label) {
-						drainLife.Cast(sim, result.Target)
-					}
-				},
-			})
+			makeProcTrigger := func(character *core.Character, isMH bool) {
+				itemSlot := core.Ternary(isMH, meleeWeaponSlots[:1], meleeWeaponSlots[1:])
+				procMask := core.Ternary(isMH, core.ProcMaskMeleeMH|core.ProcMaskMeleeProc, core.ProcMaskMeleeOH)
 
-			character.RegisterEquipSwapCallback(func(sim *core.Simulation) {
-				totalEquipped = getTotalEquippedSouldrinker(character, souldrinkerItemID)
-			})
+				aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+					Name:     fmt.Sprintf("%s %s", label, core.Ternary(isMH, "MH", "OH")),
+					ActionID: core.ActionID{ItemID: souldrinkerItemID},
+					ProcMask: core.ProcMaskMelee,
+					Outcome:  core.OutcomeLanded,
+					Callback: core.CallbackOnSpellHitDealt,
+					Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+						if _, ignore := ignoresSlot[spell.ActionID.SpellID]; !spell.ProcMask.Matches(procMask) && !ignore {
+							return
+						}
 
-			character.ItemSwap.RegisterProcWithSlots(souldrinkerItemID, aura, core.MeleeWeaponSlots())
+						if sim.Proc(0.15, label) {
+							drainLife.Cast(sim, result.Target)
+						}
+					},
+				})
+
+				character.ItemSwap.RegisterProcWithSlots(souldrinkerItemID, aura, itemSlot)
+			}
+
+			if character.ItemSwap.CouldHaveItemEquippedInSlot(souldrinkerItemID, proto.ItemSlot_ItemSlotMainHand) {
+				makeProcTrigger(character, true)
+			}
+			if character.ItemSwap.CouldHaveItemEquippedInSlot(souldrinkerItemID, proto.ItemSlot_ItemSlotOffHand) {
+				makeProcTrigger(character, false)
+			}
 		})
-
-		// These spells ignore the slot the weapon is in.
-		// Any other ability should only trigger the proc if the weapon is in the right slot.
-		ignoresSlot := map[int32]bool{
-			23881: true, // Bloodthirst
-			6544:  true, // Heroic Leap
-			6343:  true, // Thunder Clap
-		}
 
 		// No'Kaled, the Elements of Death
 		// Equip: Your melee attacks have a chance to blast your enemy with Fire, Shadow, or Frost, dealing 6781/7654/8640 to 10171/11481/12960 damage.
