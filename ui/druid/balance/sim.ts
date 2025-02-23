@@ -64,8 +64,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		individualBuffs: Presets.DefaultIndividualBuffs,
 		debuffs: Presets.DefaultDebuffs,
 		other: Presets.OtherDefaults,
-		rotationType: APLRotation_Type.TypeAPL,
-		simpleRotation: Presets.T13PresetRotation,
+		rotationType: APLRotation_Type.TypeAuto,
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
@@ -97,11 +96,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		rotations: [Presets.T11PresetRotation, Presets.T12PresetRotation, Presets.T13PresetRotation],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PreraidPresetGear, Presets.T11PresetGear, Presets.T12PresetGear, Presets.T13PresetGear],
+		itemSwaps: [Presets.T13PresetItemSwapGear],
 		builds: [Presets.PresetBuildPreraid, Presets.PresetBuildT11, Presets.PresetBuildT12, Presets.PresetBuildT13],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecBalanceDruid>): APLRotation => {
-		return Presets.T12PresetRotation.rotation.rotation!;
+		return Presets.T13PresetRotation.rotation.rotation!;
 	},
 
 	raidSimPresets: [

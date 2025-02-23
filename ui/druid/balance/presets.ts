@@ -23,11 +23,14 @@ import PreraidGear from './gear_sets/preraid.gear.json';
 import T11Gear from './gear_sets/t11.gear.json';
 import T12Gear from './gear_sets/t12.gear.json';
 import T13Gear from './gear_sets/t13.gear.json';
+import T13ItemSwapGear from './gear_sets/t13_item_swap.gear.json';
 
 export const PreraidPresetGear = PresetUtils.makePresetGear('Pre-raid', PreraidGear);
 export const T11PresetGear = PresetUtils.makePresetGear('T11', T11Gear);
 export const T12PresetGear = PresetUtils.makePresetGear('T12', T12Gear);
 export const T13PresetGear = PresetUtils.makePresetGear('T13', T13Gear);
+
+export const T13PresetItemSwapGear = PresetUtils.makePresetItemSwapGear('T13 - Item Swap', T13ItemSwapGear);
 
 export const T11PresetRotation = PresetUtils.makePresetAPLRotation('T11 4P', T11Apl);
 export const T12PresetRotation = PresetUtils.makePresetAPLRotation('T12', T12Apl);
