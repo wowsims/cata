@@ -41,7 +41,6 @@ func (paladin *Paladin) registerInquisition() {
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
-			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return paladin.GetHolyPowerValue() > 0

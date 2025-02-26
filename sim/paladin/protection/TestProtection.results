@@ -2343,8 +2343,8 @@ dps_results: {
 dps_results: {
  key: "TestProtection-Settings-BloodElf-T12-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 50806.89786
-  tps: 260888.77446
+  dps: 50903.67508
+  tps: 261357.38848
  }
 }
 dps_results: {
@@ -2385,8 +2385,8 @@ dps_results: {
 dps_results: {
  key: "TestProtection-Settings-Human-T12-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 50499.47065
-  tps: 259173.95323
+  dps: 50283.0777
+  tps: 258081.32182
  }
 }
 dps_results: {
