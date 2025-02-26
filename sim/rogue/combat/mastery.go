@@ -6,41 +6,41 @@ import (
 )
 
 func (comRogue *CombatRogue) applyMastery() {
-
-	comRogue.mainGauche = comRogue.RegisterSpell(core.SpellConfig{
+	mgAttack := comRogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 86392},
 		SpellSchool:    core.SpellSchoolPhysical,
-		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagPassiveSpell,
+		ProcMask:       core.ProcMaskEmpty, // MG Appears to be unable to proc anything EXCEPT poisons. This specific case is handled by Poisons directly.
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 		ClassSpellMask: rogue.RogueSpellMainGauche,
 
-		DamageMultiplier: 1,
-		CritMultiplier:   comRogue.MeleeCritMultiplier(false),
-		ThreatMultiplier: 1,
+		DamageMultiplier:         1.0,
+		DamageMultiplierAdditive: 1.0,
+		CritMultiplier:           comRogue.MeleeCritMultiplier(false),
+		ThreatMultiplier:         1.0,
 
-		BonusCoefficient: 1,
+		BonusCoefficient: 1.0,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0 +
-				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},
 	})
 
-	comRogue.mainGaucheAura = comRogue.RegisterAura(core.Aura{
-		Label:    "Mastery: Main Gauche",
-		Duration: core.NeverExpires,
-		// ActionID Excluded to not clog up Buffs metrics
-
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMeleeMH|core.ProcMaskMeleeProc) && spell != comRogue.mainGauche && spell != comRogue.Rupture {
-				mgProcChance := comRogue.GetMasteryBonus()
-
-				if sim.Proc(mgProcChance, "Main Gauche") {
-					comRogue.mainGauche.Cast(sim, result.Target)
-				}
+	core.MakeProcTriggerAura(&comRogue.Unit, core.ProcTrigger{
+		Name:     "Mastery: Main Gauche",
+		Callback: core.CallbackOnSpellHitDealt,
+		Outcome:  core.OutcomeLanded,
+		ProcMask: core.ProcMaskMeleeMH | core.ProcMaskMeleeProc,
+		ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
+			if spell == comRogue.Rupture {
+				return false
 			}
+
+			// Implement the proc in here so we can get the most up to date proc chance from mastery
+			return sim.Proc(comRogue.GetMasteryBonus(), "Main Gauche")
+		},
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			mgAttack.Cast(sim, result.Target)
 		},
 	})
 }

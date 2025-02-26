@@ -68,10 +68,6 @@ func (combatRogue *CombatRogue) Initialize() {
 
 type CombatRogue struct {
 	*rogue.Rogue
-
-	mainGauche *core.Spell
-
-	mainGaucheAura *core.Aura
 }
 
 func (combatRogue *CombatRogue) GetRogue() *rogue.Rogue {
@@ -80,8 +76,6 @@ func (combatRogue *CombatRogue) GetRogue() *rogue.Rogue {
 
 func (combatRogue *CombatRogue) Reset(sim *core.Simulation) {
 	combatRogue.Rogue.Reset(sim)
-
-	combatRogue.mainGaucheAura.Activate(sim)
 
 	if combatRogue.Talents.BanditsGuile > 0 {
 		combatRogue.BanditsGuileAura.Activate(sim)

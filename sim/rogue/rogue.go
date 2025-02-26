@@ -78,9 +78,9 @@ type Rogue struct {
 
 	lastDeadlyPoisonProcMask core.ProcMask
 
-	deadlyPoisonProcChanceBonus float64
-	instantPoisonPPMM           [proto.ItemSlot_ItemSlotRanged + 1]*core.DynamicProcManager
-	woundPoisonPPMM             [proto.ItemSlot_ItemSlotRanged + 1]*core.DynamicProcManager
+	deadlyPoisonPPHM  [proto.ItemSlot_ItemSlotRanged + 1]*core.DynamicProcManager
+	instantPoisonPPMM [proto.ItemSlot_ItemSlotRanged + 1]*core.DynamicProcManager
+	woundPoisonPPMM   [proto.ItemSlot_ItemSlotRanged + 1]*core.DynamicProcManager
 
 	AdrenalineRushAura   *core.Aura
 	BladeFlurryAura      *core.Aura
