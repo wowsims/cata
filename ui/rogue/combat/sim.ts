@@ -64,10 +64,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 		softCapBreakpoints: (() => {
 			// Running just under spell cap is typically preferrable to being over.
 			const spellHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent, {
-				breakpoints: [16.90, 16.95, 16.96, 16.97, 16.98, 16.99, 17],
+				breakpoints: [16.95, 16.96, 16.97, 16.98, 16.99, 17],
 				capType: StatCapType.TypeSoftCap,
 				// These are set by the active EP weight in the updateSoftCaps callback
-				postCapEPs: [0, 0, 0, 0, 0, 0, 0],
+				postCapEPs: [0, 0, 0, 0, 0, 0],
 			});
 
 			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
@@ -77,14 +77,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 				postCapEPs: [0, 0],
 			});
 
-			const hasteRatingSoftCapConfig = StatCap.fromStat(Stat.StatHasteRating, {
-				breakpoints: [2070, 2150, 2250, 2350, 2450],
-				capType: StatCapType.TypeSoftCap,
-				// These are set by the active EP weight in the updateSoftCaps callback
-				postCapEPs: [0, 0, 0, 0, 0],
-			})
-
-			return [meleeHitSoftCapConfig, spellHitSoftCapConfig, hasteRatingSoftCapConfig];
+			return [meleeHitSoftCapConfig, spellHitSoftCapConfig];
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
@@ -152,7 +145,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	},
 
 	presets: {
-		epWeights: [Presets.CBAT_STANDARD_EP_PRESET, Presets.CBAT_4PT12_EP_PRESET, Presets.CBAT_T13_EP_PRESET, Presets.CBAT_NOKALED_EP_PRESET],
+		epWeights: [Presets.CBAT_STANDARD_EP_PRESET, Presets.CBAT_4PT12_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.CombatTalents],
 		// Preset rotations that the user can quickly select.
@@ -195,39 +188,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	],
 });
 
-// Check if the player is wearing any combination of the legendary dagger stages in both MH and OH
-const hasAnyLegendaryStage = (player: Player<Spec.SpecCombatRogue>): boolean => {
-	const mhWepId = player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.id;
-	const ohWepId = player.getEquippedItem(ItemSlot.ItemSlotOffHand)?.id;
-
-	return (mhWepId == 77945 || mhWepId == 77947 || mhWepId == 77949) &&
-		   (ohWepId == 77946 || ohWepId == 77948 || ohWepId == 77950);
-}
-
-// Check if the player is wearing the final legendary stage
-const hasFinalLegendaryStage = (player: Player<Spec.SpecCombatRogue>): boolean => {
-	const mhWepId = player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.id;
-	const ohWepId = player.getEquippedItem(ItemSlot.ItemSlotOffHand)?.id;
-
-	return mhWepId == 77949 && ohWepId == 77950;
-}
-
 const getActiveEPWeight = (player: Player<Spec.SpecCombatRogue>, sim: Sim): Stats => {
 	if (sim.getUseCustomEPValues()) {
 		return player.getEpWeights();
 	} else {
-		const mhWepId = player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.id;
 		const playerGear = player.getGear();
-		let avgIlvl = 0;
-		playerGear.asArray().forEach(v => avgIlvl += v?.item.ilvl || 0);
-		avgIlvl /= playerGear.asArray().length;
-		if (mhWepId == 78472 || mhWepId == 77188 || mhWepId == 78481) { // No'Kaled MH
-			return Presets.CBAT_NOKALED_EP_PRESET.epWeights;
-		} else if (playerGear.getItemSetCount("Vestments of the Dark Phoenix") >= 4) {
+		if (playerGear.getItemSetCount("Vestments of the Dark Phoenix") >= 4) {
 			return Presets.CBAT_4PT12_EP_PRESET.epWeights;
-		} else if (hasAnyLegendaryStage(player)) {
-			return Presets.CBAT_T13_EP_PRESET.epWeights;
-		}  else {
+		} else {
 			return Presets.CBAT_STANDARD_EP_PRESET.epWeights;
 		}
 	}
@@ -241,28 +209,12 @@ export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 			new ReforgeOptimizer(this, {
 				updateSoftCaps: (softCaps: StatCap[]) => {
 					const activeEPWeight = getActiveEPWeight(player, this.sim);
-					const hasteEP = activeEPWeight.getStat(Stat.StatHasteRating);
-					const hasteSoftCap = softCaps.find(v => v.unitStat.equalsStat(Stat.StatHasteRating));
-					const hasAnyLego = hasAnyLegendaryStage(player)
-					const hasFinalLego = hasFinalLegendaryStage(player)
-					if (hasteSoftCap) {
-						// If wearing either Fear or Sleeper in MH, Haste EP is never overtaken by Mastery
-						if (hasAnyLego && !hasFinalLego)
-							hasteSoftCap.postCapEPs = [hasteEP, hasteEP, hasteEP, hasteEP, hasteEP]
-						else
-							hasteSoftCap.postCapEPs = [hasteEP - 0.1, hasteEP - 0.2, hasteEP - 0.3, hasteEP - 0.4, hasteEP - 0.5];
-					}
 
 					// Dynamic adjustments to the static Hit soft cap EP
 					const meleeSoftCap = softCaps.find(v => v.unitStat.equalsPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent));
-					const spellSoftCap = softCaps.find(v => v.unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHitPercent));
 					if (meleeSoftCap) {
 						const initialEP = activeEPWeight.getPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent);
-						meleeSoftCap.postCapEPs = [initialEP/2, 0];
-					}
-					if (spellSoftCap) {
-						const initialEP = activeEPWeight.getPseudoStat(PseudoStat.PseudoStatSpellHitPercent);
-						spellSoftCap.postCapEPs = [initialEP/1.25, initialEP/2, initialEP/4, initialEP/8, initialEP/16, initialEP/32, 0];
+						meleeSoftCap.postCapEPs = [initialEP*0.6, 0];
 					}
 
 					return softCaps
@@ -273,8 +225,12 @@ export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 				updateGearStatsModifier: (baseStats: Stats) => {
 					// Human/Orc racials for MH. Maxing Expertise for OH is a DPS loss when the MH matches the racial.
 					const mhWepType = player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponType;
-					if ((player.getRace() == Race.RaceHuman && (mhWepType == WeaponType.WeaponTypeSword || mhWepType ==  WeaponType.WeaponTypeMace) ||
-						(player.getRace() == Race.RaceOrc && mhWepType == WeaponType.WeaponTypeAxe)))
+					const playerRace = player.getRace();
+					if (
+						(playerRace == Race.RaceHuman && (mhWepType == WeaponType.WeaponTypeSword || mhWepType == WeaponType.WeaponTypeMace) ||
+						(playerRace == Race.RaceOrc && (mhWepType == WeaponType.WeaponTypeAxe || mhWepType == WeaponType.WeaponTypeFist)) ||
+						(playerRace == Race.RaceGnome && (mhWepType == WeaponType.WeaponTypeDagger || mhWepType == WeaponType.WeaponTypeSword)))
+					)
 					{
 						return baseStats.addStat(Stat.StatExpertiseRating, 90);
 					}

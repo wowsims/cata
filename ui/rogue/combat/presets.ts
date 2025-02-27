@@ -28,17 +28,17 @@ export const CBAT_STANDARD_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAgility]: 2.85,
 			[Stat.StatStrength]: 1.05,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatCritRating]: 0.9,
-			[Stat.StatHitRating]: 2.21,
-			[Stat.StatHasteRating]: 1.36,
-			[Stat.StatMasteryRating]: 1.33,
-			[Stat.StatExpertiseRating]: 1.74,
+			[Stat.StatCritRating]: 1.20,
+			[Stat.StatHitRating]: 2.5,
+			[Stat.StatHasteRating]: 1.58,
+			[Stat.StatMasteryRating]: 1.41,
+			[Stat.StatExpertiseRating]: 2.1,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 4.31,
 			[PseudoStat.PseudoStatOffHandDps]: 1.32,
-			[PseudoStat.PseudoStatSpellHitPercent]: 46,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 220,
+			[PseudoStat.PseudoStatSpellHitPercent]: 52,
+			[PseudoStat.PseudoStatPhysicalHitPercent]: 249,
 		},
 	),
 );
@@ -51,64 +51,17 @@ export const CBAT_4PT12_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAgility]: 2.85,
 			[Stat.StatStrength]: 1.05,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatCritRating]: 1.09,
+			[Stat.StatCritRating]: 1.16,
 			[Stat.StatHitRating]: 2.21,
-			[Stat.StatHasteRating]: 1.52,
-			[Stat.StatMasteryRating]: 1.41,
-			[Stat.StatExpertiseRating]: 1.74,
+			[Stat.StatHasteRating]: 1.38,
+			[Stat.StatMasteryRating]: 1.28,
+			[Stat.StatExpertiseRating]: 2.1,
 		},
 		{
 			[PseudoStat.PseudoStatMainHandDps]: 4.31,
 			[PseudoStat.PseudoStatOffHandDps]: 1.32,
 			[PseudoStat.PseudoStatSpellHitPercent]: 46,
 			[PseudoStat.PseudoStatPhysicalHitPercent]: 230,
-		},
-	),
-);
-
-// Legendary daggers push up Haste significantly. It effectively removes the need to balance Haste vs Mastery.
-export const CBAT_T13_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'Combat Legendary',
-	Stats.fromMap(
-		{
-			[Stat.StatAgility]: 2.85,
-			[Stat.StatStrength]: 1.05,
-			[Stat.StatAttackPower]: 1,
-			[Stat.StatCritRating]: 1.19,
-			[Stat.StatHitRating]: 2.5,
-			[Stat.StatHasteRating]: 1.79,
-			[Stat.StatMasteryRating]: 1.48,
-			[Stat.StatExpertiseRating]: 2.1,
-		},
-		{
-			[PseudoStat.PseudoStatMainHandDps]: 4.31,
-			[PseudoStat.PseudoStatOffHandDps]: 1.32,
-			[PseudoStat.PseudoStatSpellHitPercent]: 52,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 249,
-		},
-	),
-);
-
-
-// No'Kaled MH MASSIVELY inflates Mastery's EP value as Main Gauche procs can proc weapon effects
-export const CBAT_NOKALED_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'Combat No\'Kaled',
-	Stats.fromMap(
-		{
-			[Stat.StatAgility]: 2.85,
-			[Stat.StatStrength]: 1.05,
-			[Stat.StatAttackPower]: 1,
-			[Stat.StatCritRating]: 1.19,
-			[Stat.StatHitRating]: 2.5,
-			[Stat.StatHasteRating]: 1.78,
-			[Stat.StatMasteryRating]: 1.76,
-			[Stat.StatExpertiseRating]: 2.1,
-		},
-		{
-			[PseudoStat.PseudoStatMainHandDps]: 4.31,
-			[PseudoStat.PseudoStatOffHandDps]: 1.32,
-			[PseudoStat.PseudoStatSpellHitPercent]: 100, // Yeah this is a big number, idk Combat is weird this makes dps big
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 250,
 		},
 	),
 );
