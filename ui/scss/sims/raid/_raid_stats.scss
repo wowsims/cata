@@ -3,7 +3,7 @@
 }
 .raid-stats {
 	.raid-stats-section {
-		margin-bottom: calc(var(--block-spacer) * 2);
+		margin-bottom: var(--section-spacer);
 
 		.raid-stats-section-label {
 			font-weight: bold;

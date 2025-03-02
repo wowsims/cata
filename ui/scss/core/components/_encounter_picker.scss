@@ -1,10 +1,7 @@
-@import './enum_picker';
-@import './list_picker';
-@import './number_picker';
-
 .encounter-picker-root {
 	display: flex;
 	flex-wrap: wrap;
+	gap: var(--block-spacer);
 
 	.execute-group {
 		width: 100%;
@@ -30,6 +27,13 @@
 .advanced-encounter-picker-modal {
 	.modal-body {
 		overflow: auto;
+		gap: var(--block-spacer);
+	}
+
+	.encounter-header {
+		display: flex;
+		flex-direction: column;
+		gap: var(--block-spacer);
 	}
 
 	.encounter-picker {
@@ -46,7 +50,7 @@
 
 	.target-picker-root {
 		display: grid;
-		gap: var(--spacer-3);
+		gap: var(--block-spacer);
 		grid-template-columns: 1fr;
 		@include media-breakpoint-up(xl) {
 			grid-template-columns: 1fr 1fr 1fr;

@@ -1,8 +1,4 @@
 .summary-table-root {
-	@include media-breakpoint-down(xl) {
-		margin-bottom: var(--container-padding);
-	}
-
 	@include media-breakpoint-down(md) {
 		width: 100%;
 	}
@@ -19,11 +15,13 @@
 	}
 
 	.content-block-header {
-		grid-gap: var(--spacer-2);
-
 		.summary-table-reset-button {
 			margin-left: auto;
 		}
+	}
+
+	.content-block-body {
+		gap: var(--spacer-1);
 	}
 }
 
@@ -39,10 +37,6 @@
 	:last-child {
 		margin-left: auto;
 	}
-
-	&:not(:last-child) {
-		margin-bottom: var(--spacer-1);
-	}
 }
 
 .summary-table-link {
@@ -51,8 +45,6 @@
 }
 
 .summary-table-footer {
-	margin-top: var(--spacer-1);
-
 	.positive {
 		color: var(--bs-success);
 	}

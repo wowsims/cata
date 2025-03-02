@@ -1,10 +1,12 @@
 .item-swap-picker-root {
 	--item-swap-picker-size: 4rem;
 	--column-count: 4;
+	display: grid;
+	gap: var(--block-spacer);
 
 	.input-item-swap-container {
 		flex-wrap: wrap;
-		gap: var(--spacer-2);
+		gap: var(--block-spacer);
 	}
 
 	.picker-group {

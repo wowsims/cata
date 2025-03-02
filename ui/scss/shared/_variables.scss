@@ -78,9 +78,9 @@ $theme-colors: map-merge($theme-colors, $custom-alpha);
 
 $custom-breakpoints: (
 	xxxl: 1600px,
-	1080p: 1900px,
-	1440p: 2500px,
-	4k: 3800px,
+	1080p: 1920px,
+	1440p: 2560px,
+	4k: 3840px,
 );
 
 // Spacer variables
@@ -284,7 +284,6 @@ $input-focus-color: $white;
 $input-font-size: var(--content-font-size);
 $input-placeholder-color: $border-color;
 
-// Input
 :root {
 	--input-padding-y: #{$input-padding-y};
 	--input-padding-x: #{$input-padding-x};
@@ -321,6 +320,7 @@ $form-check-input-focus-box-shadow: 0 0 0.25rem $primary;
 $form-check-input-checked-bg-color: $primary;
 $form-check-input-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='none' stroke='#{color-contrast($primary)}' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/></svg>");
 $form-check-input-checked-border-color: var(--bs-primary);
+$form-check-margin-bottom: 0;
 $form-check-padding-start: $form-check-input-width;
 
 $form-label-margin-bottom: 0.25rem;

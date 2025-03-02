@@ -1,6 +1,5 @@
 .input-root {
 	width: 100%;
-	margin-bottom: var(--block-spacer);
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
@@ -9,7 +8,13 @@
 		filter: opacity(0.5);
 	}
 
-	&:not(.input-inline) {
+	&:not(.input-inline):not(.icon-picker) {
+		@include media-breakpoint-down(md) {
+			flex-direction: column !important;
+			align-items: flex-start !important;
+			gap: calc(var(--spacer-2));
+		}
+
 		label {
 			white-space: nowrap;
 			overflow: hidden;
@@ -55,9 +60,8 @@
 .picker-group {
 	width: 100%;
 	display: grid;
-	gap: var(--spacer-3);
+	gap: var(--block-spacer);
 	grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-	margin-bottom: var(--spacer-3);
 
 	.input-root {
 		margin-bottom: 0;

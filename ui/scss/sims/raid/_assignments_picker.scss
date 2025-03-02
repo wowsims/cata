@@ -1,6 +1,6 @@
 .assigned-buff-picker-root {
 	&:not(:last-child) {
-		margin-bottom: calc(var(--block-spacer) * 2);
+		margin-bottom: var(--section-spacer);
 	}
 
 	.assigned-buff-player {

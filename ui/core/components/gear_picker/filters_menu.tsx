@@ -287,7 +287,7 @@ export class FiltersMenu extends BaseModal {
 
 	private newSection(name: string): HTMLElement {
 		const section = document.createElement('div');
-		section.classList.add('menu-section');
+		section.classList.add('menu-section', `${name.toLowerCase().replaceAll(' ', '-')}-section`);
 		this.body.appendChild(section);
 		section.innerHTML = `
 			<div class="menu-section-header">

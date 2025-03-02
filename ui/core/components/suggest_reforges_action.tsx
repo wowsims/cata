@@ -95,11 +95,7 @@ class RelativeStatCap {
 				[68927, 1532], // The Hungerer (N)
 			]),
 		],
-		[
-			Stat.StatMasteryRating,
-			new Map([
-			]),
-		],
+		[Stat.StatMasteryRating, new Map([])],
 	]);
 
 	static canEnable(player: Player<any>): boolean {
@@ -114,7 +110,9 @@ class RelativeStatCap {
 
 		this.forcedHighestStat = UnitStat.fromStat(forcedHighestStat);
 		this.constrainedStats = RelativeStatCap.relevantStats.filter(stat => stat !== forcedHighestStat).map(stat => UnitStat.fromStat(stat));
-		this.constraintKeys = this.constrainedStats.map(unitStat => this.forcedHighestStat.getShortName(playerClass) + "Minus" + unitStat.getShortName(playerClass));
+		this.constraintKeys = this.constrainedStats.map(
+			unitStat => this.forcedHighestStat.getShortName(playerClass) + 'Minus' + unitStat.getShortName(playerClass),
+		);
 	}
 
 	updateCoefficients(coefficients: YalpsCoefficients, stat: Stat, amount: number) {
@@ -494,7 +492,7 @@ export class ReforgeOptimizer {
 					label: 'Freeze item slots',
 					labelTooltip:
 						'Flag one or more item slots to be "frozen", which will prevent the optimizer from changing the Reforge in that slot from its current setting. This can be useful for hybrid classes who use the same gear piece for multiple raid roles.',
-					inline: false,
+					inline: true,
 					changedEvent: () => this.freezeItemSlotsChangeEmitter,
 					getValue: () => this.freezeItemSlots,
 					setValue: (eventID, _player, newValue) => {
@@ -550,6 +548,7 @@ export class ReforgeOptimizer {
 								const picker = new BooleanPicker(null, this.player, {
 									id: 'reforge-optimizer-freeze-' + ItemSlot[slot],
 									label: slotNames.get(slot),
+									inline: true,
 									changedEvent: () => this.freezeItemSlotsChangeEmitter,
 									getValue: () => this.frozenItemSlots.get(slot) || false,
 									setValue: (_eventID, _player, newValue) => {
@@ -1018,14 +1017,25 @@ export class ReforgeOptimizer {
 		}
 
 		if (this.relativeStatCap) {
-			const statsWithoutBaseMastery = baseStats.addStat(Stat.StatMasteryRating, -this.player.getBaseMastery() * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
+			const statsWithoutBaseMastery = baseStats.addStat(
+				Stat.StatMasteryRating,
+				-this.player.getBaseMastery() * Mechanics.MASTERY_RATING_PER_MASTERY_POINT,
+			);
 			this.relativeStatCap.updateConstraints(constraints, gear, statsWithoutBaseMastery);
 		}
 
 		return constraints;
 	}
 
-	async solveModel(gear: Gear, weights: Stats, reforgeCaps: Stats, reforgeSoftCaps: StatCap[], variables: YalpsVariables, constraints: YalpsConstraints, maxIterations: number): Promise<number> {
+	async solveModel(
+		gear: Gear,
+		weights: Stats,
+		reforgeCaps: Stats,
+		reforgeSoftCaps: StatCap[],
+		variables: YalpsVariables,
+		constraints: YalpsConstraints,
+		maxIterations: number,
+	): Promise<number> {
 		// Calculate EP scores for each Reforge option
 		if (isDevMode()) {
 			console.log('Stat weights for this iteration:');
@@ -1060,7 +1070,7 @@ export class ReforgeOptimizer {
 
 		if (isNaN(solution.result)) {
 			if (maxIterations > 500000) {
-				throw solution
+				throw solution;
 			} else {
 				if (isDevMode()) console.log('No feasible solution was found, doubling max iterations...');
 				return await this.solveModel(gear, weights, reforgeCaps, reforgeSoftCaps, variables, constraints, maxIterations * 2);

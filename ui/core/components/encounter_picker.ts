@@ -278,9 +278,9 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 		this.targetIndex = targetIndex;
 
 		this.rootElem.innerHTML = `
-			<div class="target-picker-section target-picker-section1"></div>
-			<div class="target-picker-section target-picker-section2"></div>
-			<div class="target-picker-section target-picker-section3 threat-metrics"></div>
+			<div class="picker-group target-picker-section target-picker-section1"></div>
+			<div class="picker-group target-picker-section target-picker-section2"></div>
+			<div class="picker-group target-picker-section target-picker-section3 threat-metrics"></div>
 		`;
 
 		const section1 = this.rootElem.querySelector<HTMLElement>('.target-picker-section1')!;
@@ -614,7 +614,7 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 		}
 
 		if (newValue.inputType == InputType.Number) {
-			if (this.numberPicker && (this.numberPicker.inputConfig.label === newValue.label)) {
+			if (this.numberPicker && this.numberPicker.inputConfig.label === newValue.label) {
 				return;
 			}
 
@@ -632,7 +632,7 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 				},
 			});
 		} else if (newValue.inputType == InputType.Bool) {
-			if (this.boolPicker && (this.boolPicker.inputConfig.label === newValue.label)) {
+			if (this.boolPicker && this.boolPicker.inputConfig.label === newValue.label) {
 				return;
 			}
 

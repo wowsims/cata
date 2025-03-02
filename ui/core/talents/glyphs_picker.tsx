@@ -8,9 +8,9 @@ import { setItemQualityCssClass } from '../css_utils.js';
 import { Player } from '../player.js';
 import { Glyphs, ItemQuality } from '../proto/common.js';
 import { ActionId } from '../proto_utils/action_id.js';
+import { Database } from '../proto_utils/database.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { stringComparator } from '../utils.js';
-import { Database } from '../proto_utils/database.js';
 
 export type GlyphConfig = {
 	name: string;
@@ -60,15 +60,15 @@ export class GlyphsPicker extends Component {
 		const minorGlyphs = Object.keys(glyphsConfig.minorGlyphs).map(idStr => Number(idStr));
 
 		const primeGlyphsBlock = new ContentBlock(this.rootElem, 'prime-glyphs', {
-			header: { title: 'Prime Glyphs', extraCssClasses: ['border-0', 'mb-1'] },
+			header: { title: 'Prime Glyphs', extraCssClasses: ['border-0'] },
 		});
 
 		const majorGlyphsBlock = new ContentBlock(this.rootElem, 'major-glyphs', {
-			header: { title: 'Major Glyphs', extraCssClasses: ['border-0', 'mb-1'] },
+			header: { title: 'Major Glyphs', extraCssClasses: ['border-0'] },
 		});
 
 		const minorGlyphsBlock = new ContentBlock(this.rootElem, 'minor-glyphs', {
-			header: { title: 'Minor Glyphs', extraCssClasses: ['border-0', 'mb-1'] },
+			header: { title: 'Minor Glyphs', extraCssClasses: ['border-0'] },
 		});
 		this.selectorModal = new GlyphSelectorModal(this.rootElem.closest('.individual-sim-ui')!);
 
@@ -174,7 +174,7 @@ class GlyphPicker extends Input<Player<any>, number> {
 		const nameElemRef = ref<HTMLSpanElement>();
 
 		this.rootElem.appendChild(
-			<a ref={anchorElemRef} attributes={{ role: 'button' }} className="d-flex w-100">
+			<a ref={anchorElemRef} attributes={{ role: 'button' }} className="glyph-link">
 				<img ref={iconElemRef} className="item-picker-icon" />
 				<div className="item-picker-labels-container">
 					<span ref={nameElemRef} className="item-picker-name-container" />
@@ -225,7 +225,7 @@ class GlyphPicker extends Input<Player<any>, number> {
 			}
 
 			this.iconElem.src = this.selectedGlyph.iconUrl;
-			this.nameElem.textContent = this.selectedGlyph.name;
+			this.nameElem.textContent = this.selectedGlyph.name.replace(/Glyph of /, '');
 		} else {
 			this.clear();
 		}

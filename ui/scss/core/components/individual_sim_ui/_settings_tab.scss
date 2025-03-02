@@ -1,10 +1,12 @@
+@use 'sass:map';
+
 @import './consumes_picker';
 @import './cooldowns_picker';
 
 .settings-tab {
-	.tab-panel-left {
-		@include media-breakpoint-up(xl) {
-			grid-template-columns: 1fr 1fr 1.25fr;
+	.tab-pane-content-container {
+		.tab-panel-left {
+			grid-template-columns: 2fr 2fr 3fr;
 		}
 	}
 
@@ -32,20 +34,42 @@
 	}
 
 	.buffs-settings,
+	.world-buffs-settings,
 	.debuffs-settings {
 		.content-block-body {
 			display: grid;
 			grid-template-columns: repeat(3, minmax(0, 1fr));
+			grid-gap: var(--block-spacer);
+
+			@include media-breakpoint-down(md) {
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+			}
 
 			& > .icon-picker {
-				margin-bottom: var(--spacer-1) !important;
-
-				&:not(:nth-child(3n)) {
-					margin-right: var(--spacer-2);
-				}
-
 				.form-label {
 					white-space: normal;
+				}
+			}
+		}
+	}
+}
+
+@include media-breakpoint-down(xxl) {
+	.settings-tab {
+		.tab-pane-content-container {
+			flex-direction: column;
+		}
+	}
+}
+
+@include media-breakpoint-down(xl) {
+	.settings-tab {
+		.tab-pane-content-container {
+			.tab-panel-left {
+				flex-wrap: wrap;
+
+				.tab-panel-col {
+					flex-basis: 100%;
 				}
 			}
 		}
