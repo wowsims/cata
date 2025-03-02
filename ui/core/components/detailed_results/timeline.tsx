@@ -112,6 +112,10 @@ export class Timeline extends ResultComponent {
 				height: '100%',
 				id: 'dpsResources',
 				type: 'line',
+				zoom: {
+					enabled: true,
+					allowMouseWheelZoom: false,
+				},
 			},
 			series: [], // Set dynamically
 			xaxis: {

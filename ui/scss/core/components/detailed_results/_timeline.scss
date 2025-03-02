@@ -92,7 +92,9 @@
 }
 
 .timeline-plot {
-	height: 50vh;
+	&.dps-resources-plot {
+		height: 32rem;
+	}
 
 	.apexcharts-tooltip.apexcharts-theme-dark {
 		box-shadow: none;
