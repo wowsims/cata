@@ -1,6 +1,7 @@
 import { ItemSwapSettings } from './components/item_swap_picker';
 import Toast from './components/toast';
 import * as Mechanics from './constants/mechanics';
+import { SimSettingCategories } from './constants/sim_settings';
 import { MAX_PARTY_SIZE, Party } from './party';
 import { PlayerClass } from './player_class';
 import { PlayerSpec } from './player_spec';
@@ -75,7 +76,7 @@ import {
 	withSpec,
 } from './proto_utils/utils';
 import { Raid } from './raid';
-import { Sim, SimSettingCategories } from './sim';
+import { Sim } from './sim';
 import { playerTalentStringToProto } from './talents/factory';
 import { EventID, TypedEvent } from './typed_event';
 import { omitDeep, stringComparator, sum } from './utils';

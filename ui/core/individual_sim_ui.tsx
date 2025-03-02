@@ -2,11 +2,24 @@ import { CharacterStats, StatMods, StatWrites } from './components/character_sta
 import { ContentBlock } from './components/content_block';
 import { EmbeddedDetailedResults } from './components/detailed_results';
 import { EncounterPickerConfig } from './components/encounter_picker';
-import * as Exporters from './components/exporters';
 import * as IconInputs from './components/icon_inputs';
-import * as Importers from './components/importers';
 import { BulkTab } from './components/individual_sim_ui/bulk_tab';
+import {
+	Individual60UEPExporter,
+	IndividualCLIExporter,
+	IndividualJsonExporter,
+	IndividualLinkExporter,
+	IndividualPawnEPExporter,
+	IndividualWowheadGearPlannerExporter,
+} from './components/individual_sim_ui/exporters';
 import { GearTab } from './components/individual_sim_ui/gear_tab';
+import {
+	Individual60UImporter,
+	IndividualAddonImporter,
+	IndividualJsonImporter,
+	IndividualLinkImporter,
+	IndividualWowheadGearPlannerImporter,
+} from './components/individual_sim_ui/importers';
 import { RotationTab } from './components/individual_sim_ui/rotation_tab';
 import { SettingsTab } from './components/individual_sim_ui/settings_tab';
 import { TalentsTab } from './components/individual_sim_ui/talents_tab';
@@ -15,6 +28,7 @@ import { ItemNotice } from './components/item_notice/item_notice';
 import { addRaidSimAction, RaidSimResultsManager } from './components/raid_sim_action';
 import { SavedDataConfig } from './components/saved_data_manager';
 import { addStatWeightsAction, EpWeightsMenu } from './components/stat_weights_action';
+import { SimSettingCategories } from './constants/sim_settings';
 import * as Tooltips from './constants/tooltips';
 import { getSpecLaunchStatus, LaunchStatus, simLaunchStatuses } from './launched_sims';
 import { Player, PlayerConfig, registerSpecConfig as registerPlayerConfig } from './player';
@@ -47,7 +61,6 @@ import { getMetaGemConditionDescription } from './proto_utils/gems';
 import { armorTypeNames, professionNames } from './proto_utils/names';
 import { pseudoStatIsCapped, StatCap, Stats, UnitStat } from './proto_utils/stats';
 import { getTalentPoints, SpecOptions, SpecRotation } from './proto_utils/utils';
-import { SimSettingCategories } from './sim';
 import { SimUI, SimWarning } from './sim_ui';
 import { MAX_POINTS_PLAYER } from './talents/talents_picker';
 import { EventID, TypedEvent } from './typed_event';
@@ -365,7 +378,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			// Loading from link needs to happen after loading saved settings, so that partial link imports
 			// (e.g. rotation only) include the previous settings for other categories.
 			try {
-				const urlParseResults = Importers.IndividualLinkImporter.tryParseUrlLocation(window.location);
+				const urlParseResults = IndividualLinkImporter.tryParseUrlLocation(window.location);
 				if (urlParseResults) {
 					this.fromProto(initEventID, urlParseResults.settings, urlParseResults.categories);
 				}
@@ -454,17 +467,17 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	}
 
 	private addTopbarComponents() {
-		this.simHeader.addImportLink('JSON', new Importers.IndividualJsonImporter(this.rootElem, this), true);
-		this.simHeader.addImportLink('60U Cata', new Importers.Individual60UImporter(this.rootElem, this), true);
-		this.simHeader.addImportLink('WoWHead', new Importers.IndividualWowheadGearPlannerImporter(this.rootElem, this), false, false);
-		this.simHeader.addImportLink('Addon', new Importers.IndividualAddonImporter(this.rootElem, this), true);
+		this.simHeader.addImportLink('JSON', new IndividualJsonImporter(this.rootElem, this), true);
+		this.simHeader.addImportLink('60U Cata', new Individual60UImporter(this.rootElem, this), true);
+		this.simHeader.addImportLink('WoWHead', new IndividualWowheadGearPlannerImporter(this.rootElem, this), false, false);
+		this.simHeader.addImportLink('Addon', new IndividualAddonImporter(this.rootElem, this), true);
 
-		this.simHeader.addExportLink('Link', new Exporters.IndividualLinkExporter(this.rootElem, this), false);
-		this.simHeader.addExportLink('JSON', new Exporters.IndividualJsonExporter(this.rootElem, this), true);
-		this.simHeader.addExportLink('WoWHead', new Exporters.IndividualWowheadGearPlannerExporter(this.rootElem, this), false, false);
-		this.simHeader.addExportLink('60U Cata EP', new Exporters.Individual60UEPExporter(this.rootElem, this), false);
-		this.simHeader.addExportLink('Pawn EP', new Exporters.IndividualPawnEPExporter(this.rootElem, this), false);
-		this.simHeader.addExportLink('CLI', new Exporters.IndividualCLIExporter(this.rootElem, this), true);
+		this.simHeader.addExportLink('Link', new IndividualLinkExporter(this.rootElem, this), false);
+		this.simHeader.addExportLink('JSON', new IndividualJsonExporter(this.rootElem, this), true);
+		this.simHeader.addExportLink('WoWHead', new IndividualWowheadGearPlannerExporter(this.rootElem, this), false, false);
+		this.simHeader.addExportLink('60U Cata EP', new Individual60UEPExporter(this.rootElem, this), false);
+		this.simHeader.addExportLink('Pawn EP', new IndividualPawnEPExporter(this.rootElem, this), false);
+		this.simHeader.addExportLink('CLI', new IndividualCLIExporter(this.rootElem, this), true);
 	}
 
 	applyDefaultRotation(eventID: EventID) {
@@ -637,7 +650,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	}
 
 	toLink(): string {
-		return Exporters.IndividualLinkExporter.createLink(this);
+		return IndividualLinkExporter.createLink(this);
 	}
 
 	fromProto(eventID: EventID, settings: IndividualSimSettings, includeCategories?: Array<SimSettingCategories>) {
