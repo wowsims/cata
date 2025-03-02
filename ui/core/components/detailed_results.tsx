@@ -365,20 +365,6 @@ export abstract class DetailedResults extends Component {
 	}
 }
 
-export class WindowedDetailedResults extends DetailedResults {
-	constructor(parent: HTMLElement) {
-		super(parent, null, new URLSearchParams(window.location.search).get('cssScheme') ?? '');
-
-		window.addEventListener('message', async event => await this.handleMessage(DetailedResultsUpdate.fromJson(event.data)));
-
-		this.rootElem.insertAdjacentHTML('beforeend', `<div class="sim-bg"></div>`);
-	}
-
-	async postMessage(update: DetailedResultsUpdate): Promise<void> {
-		await this.handleMessage(update);
-	}
-}
-
 export class EmbeddedDetailedResults extends DetailedResults {
 	private tabWindow: Window | null = null;
 
