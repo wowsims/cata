@@ -3,6 +3,7 @@ import './shared/bootstrap_overrides';
 
 import * as Popper from '@popperjs/core';
 import { Dropdown, Modal, Tab } from 'bootstrap';
+import { Chart, registerables } from 'chart.js';
 import tippy from 'tippy.js';
 
 declare global {
@@ -11,6 +12,9 @@ declare global {
 		bootstrap: any;
 	}
 }
+
+Chart.register(...registerables);
+Chart.defaults.color = 'white';
 
 tippy.setDefaultProps({ arrow: false, allowHTML: true });
 window.Popper = Popper;

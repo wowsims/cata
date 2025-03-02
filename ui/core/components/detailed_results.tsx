@@ -20,8 +20,6 @@ import { Timeline } from './detailed_results/timeline';
 import { ToplineResults } from './detailed_results/topline_results';
 import { RaidSimResultsManager } from './raid_sim_action';
 
-declare let Chart: any;
-
 type Tab = {
 	isActive?: boolean;
 	targetId: string;
@@ -185,8 +183,6 @@ export abstract class DetailedResults extends Component {
 		this.simUI = simUI;
 
 		this.simUI?.sim.settingsChangeEmitter.on(async () => await this.updateSettings());
-
-		Chart.defaults.color = 'white';
 
 		// Allow styling the sticky toolbar
 		const toolbar = document.querySelector('.dr-toolbar') as HTMLElement;

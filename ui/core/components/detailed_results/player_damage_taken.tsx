@@ -1,10 +1,10 @@
 import tippy from 'tippy.js';
 
-import { SimResult, SimResultFilter, UnitMetrics } from '../../proto_utils/sim_result.js';
+import { UnitMetrics } from '../../proto_utils/sim_result.js';
 import { maxIndex, sum } from '../../utils.js';
 import { ColumnSortType, MetricsTable } from './metrics_table/metrics_table.jsx';
 import { MetricsTotalBar } from './metrics_table/metrics_total_bar';
-import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component.js';
+import { ResultComponentConfig, SimResultData } from './result_component.js';
 import { ResultsFilter } from './results_filter.js';
 import { SourceChart } from './source_chart.js';
 
@@ -37,7 +37,7 @@ export class PlayerDamageTakenMetricsTable extends MetricsTable<UnitMetrics> {
 								player: player.unitIndex,
 							};
 							const targetActions = targets.map(target => target.getPlayerAndPetActions().map(action => action.forTarget(playerFilter))).flat();
-							const sourceChart = new SourceChart(chartContainer, targetActions);
+							new SourceChart(chartContainer, targetActions);
 						}
 						return chartContainer;
 					};
