@@ -139,7 +139,7 @@ export class TalentsPicker<ModObject extends Player<any> | HunterPet<any>, Talen
 			carouselNextBtn.addEventListener('click', slideNext);
 
 			if (this.isPlayer()) {
-				new GlyphsPicker(containerElem, this.modObject, classGlyphsConfig[this.modObject.getClass()]);
+				new GlyphsPicker(this.rootElem, this.modObject, classGlyphsConfig[this.modObject.getClass()]);
 			}
 		}
 

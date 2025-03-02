@@ -1,13 +1,13 @@
-.saved-data-manager-root {
-	margin-bottom: calc(var(--block-spacer) * 2);
+@use 'sass:map';
 
+.saved-data-manager-root {
 	.saved-data-container {
 		display: flex;
 		flex-direction: column;
+		gap: var(--block-spacer);
 
 		.saved-data-presets,
 		.saved-data-custom {
-			margin-bottom: var(--block-spacer);
 			display: flex;
 			flex-wrap: wrap;
 			gap: var(--block-spacer);
@@ -25,27 +25,19 @@
 
 		.saved-data-save-input {
 			margin-bottom: var(--block-spacer);
-
-			@include media-breakpoint-down(xxl) {
-				width: 100%;
-			}
-		}
-
-		.saved-data-save-button {
-			@include media-breakpoint-down(xxl) {
-				width: 100%;
-			}
 		}
 	}
 }
 
 .saved-data-set-chip {
+	@extend .btn;
+
 	padding: 0;
-	border: 1px solid var(--bs-primary);
+	border: 1px solid var(--bs-primary) !important;
 	display: flex;
 	font-size: var(--content-font-size);
 	font-weight: normal;
-	transition: var(--btn-transition);
+	transition: $btn-transition;
 
 	&.active {
 		background-color: var(--bs-primary);
@@ -66,12 +58,26 @@
 
 	.saved-data-set-name {
 		padding: var(--spacer-2);
-		color: var(--bs-body-color);
+		color: $body-color;
 	}
 
 	.saved-data-set-delete {
 		padding: var(--spacer-2) 0;
 		margin-right: var(--spacer-2);
-		color: var(--bs-body-color);
+		color: $body-color;
+	}
+}
+
+@include media-breakpoint-down(xxl) {
+	.saved-data-manager-root {
+		.saved-data-create-container {
+			.saved-data-save-input {
+				width: 100%;
+			}
+
+			.saved-data-save-button {
+				width: 100%;
+			}
+		}
 	}
 }

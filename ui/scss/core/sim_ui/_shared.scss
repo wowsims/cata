@@ -59,8 +59,7 @@ th {
 			}
 		}
 		.sim-content {
-			padding-left: var(--container-padding);
-			padding-right: var(--container-padding);
+			padding: 0 var(--container-padding) var(--container-padding) var(--container-padding);
 			flex: 4;
 			z-index: 1;
 		}

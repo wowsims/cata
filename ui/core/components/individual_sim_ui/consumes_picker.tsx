@@ -32,7 +32,7 @@ export class ConsumesPicker extends Component {
 
 		const row = this.rootElem.appendChild(
 			<ConsumeRow label="Potions">
-				<div ref={potionsRef} className="consumes-row-inputs consumes-potions"></div>
+				<div ref={potionsRef} className="picker-group icon-group consumes-row-inputs consumes-potions"></div>
 			</ConsumeRow>,
 		);
 		const potionsElem = potionsRef.value!;
@@ -60,7 +60,7 @@ export class ConsumesPicker extends Component {
 
 		this.rootElem.appendChild(
 			<ConsumeRow label="Elixirs">
-				<div className="consumes-row-inputs">
+				<div className="picker-group icon-group consumes-row-inputs">
 					<div ref={flaskRef} className="consumes-flasks"></div>
 					<span className="elixir-space">or</span>
 					<div ref={battleElixirsRef} className="consumes-battle-elixirs"></div>
@@ -84,7 +84,7 @@ export class ConsumesPicker extends Component {
 		const foodRef = ref<HTMLDivElement>();
 		this.rootElem.appendChild(
 			<ConsumeRow label="Food">
-				<div ref={foodRef} className="consumes-row-inputs consumes-food"></div>
+				<div ref={foodRef} className="picker-group icon-group consumes-row-inputs consumes-food"></div>
 			</ConsumeRow>,
 		);
 		const foodsElem = foodRef.value!;
@@ -97,7 +97,7 @@ export class ConsumesPicker extends Component {
 		const engiConsumesRef = ref<HTMLDivElement>();
 		const row = this.rootElem.appendChild(
 			<ConsumeRow label="Engineering">
-				<div ref={engiConsumesRef} className="consumes-row-inputs consumes-engi"></div>
+				<div ref={engiConsumesRef} className="picker-group icon-group consumes-row-inputs consumes-engi"></div>
 			</ConsumeRow>,
 		);
 		const engiConsumesElem = engiConsumesRef.value!;
@@ -120,7 +120,7 @@ export class ConsumesPicker extends Component {
 			const petConsumesRef = ref<HTMLDivElement>();
 			this.rootElem.appendChild(
 				<ConsumeRow label="Pet">
-					<div ref={petConsumesRef} className="consumes-row-inputs consumes-pet"></div>
+					<div ref={petConsumesRef} className="picker-group icon-group consumes-row-inputs consumes-pet"></div>
 				</ConsumeRow>,
 			);
 			const petConsumesElem = petConsumesRef.value!;

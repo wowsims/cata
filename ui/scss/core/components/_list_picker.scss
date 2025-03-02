@@ -1,14 +1,10 @@
 .list-picker-root {
 	flex-direction: column;
 	align-items: center;
-
-	&:not(:last-child) {
-		margin-bottom: var(--block-spacer);
-	}
+	gap: var(--block-spacer);
 
 	.list-picker-title {
 		width: 100%;
-		padding-bottom: var(--spacer-2);
 		border-bottom: var(--border-default);
 		margin-bottom: var(--block-spacer);
 		font-size: 1rem;
@@ -17,10 +13,13 @@
 
 	.list-picker-items {
 		width: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: var(--block-spacer);
 
 		.list-picker-item-container {
 			border: var(--border-default);
-			
+
 			&.dragfrom {
 				background-color: color-mix(in srgb, var(--bs-body-bg) 80%, transparent);
 				filter: opacity(0.5);
@@ -29,10 +28,6 @@
 
 			&.draggable:has(> .list-picker-item-header .list-picker-item-popover.hover) {
 				background-color: color-mix(in srgb, var(--bs-primary) 5%, transparent);
-			}
-
-			&:not(:last-child) {
-				margin-bottom: var(--spacer-3);
 			}
 
 			&.inline {
@@ -46,7 +41,7 @@
 			}
 
 			&:not(.inline) {
-				padding: var(--spacer-3) var(--spacer-3) 0 var(--spacer-3);
+				padding: var(--spacer-3);
 
 				.list-picker-item-header {
 					.list-picker-item-action:first-of-type {
@@ -62,26 +57,26 @@
 				display: flex;
 				align-items: center;
 				flex: 1;
+				--list-picker-item-spacing: var(--spacer-2);
+				gap: var(--list-picker-item-spacing);
 
 				.list-picker-item-title {
 					margin-bottom: 0;
 				}
 
 				.list-picker-item-action {
-					margin-left: var(--spacer-2);
-					
 					&.list-picker-item-move {
 						cursor: move;
 					}
 				}
 
 				.list-picker-item-popover:popover-open {
+					@extend .tippy-content;
+
 					inset: unset;
 					position: relative;
-					background-color: color-mix(in srgb, var(--bs-body-bg) 80%, transparent);
-					border: 1px solid black;
-					border-radius: 5px;
-					padding: 5px 10px;
+					display: flex;
+					gap: var(--list-picker-item-spacing);
 				}
 			}
 		}
@@ -89,7 +84,6 @@
 
 	.list-picker-new-button {
 		width: 100%;
-		margin-top: var(--spacer-3);
 	}
 
 	&.horizontal {
@@ -97,7 +91,7 @@
 		align-items: center;
 
 		.list-picker-items {
-			display: flex;
+			flex-direction: row;
 			flex-wrap: wrap;
 			align-items: center;
 		}

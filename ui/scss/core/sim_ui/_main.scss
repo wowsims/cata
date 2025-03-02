@@ -12,11 +12,9 @@
 			max-width: 100%;
 			flex-grow: 1;
 			padding-top: var(--gap-width);
-			padding-bottom: var(--gap-width);
 
 			@include media-breakpoint-down(lg) {
 				padding-top: calc(var(--gap-width-sm) * 2);
-				padding-bottom: calc(var(--gap-width-sm) * 2);
 			}
 		}
 	}

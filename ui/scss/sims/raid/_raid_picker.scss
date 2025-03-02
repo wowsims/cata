@@ -5,7 +5,7 @@
 	.raid-controls,
 	.new-player-picker-root,
 	.parties-container {
-		margin-bottom: calc(var(--block-spacer) * 2);
+		margin-bottom: var(--section-spacer);
 		display: grid;
 		grid-gap: var(--block-spacer);
 	}
@@ -23,7 +23,7 @@
 	}
 
 	.new-player-picker-root {
-		margin-bottom: calc(var(--block-spacer) * 2);
+		margin-bottom: var(--section-spacer);
 		grid-template-columns: repeat(5, 1fr);
 
 		@include media-breakpoint-down(md) {
@@ -43,7 +43,7 @@
 	}
 
 	.parties-container {
-		grid-row-gap: calc(var(--block-spacer) * 2);
+		grid-row-gap: var(--section-spacer);
 	}
 
 	.parties-container-small {

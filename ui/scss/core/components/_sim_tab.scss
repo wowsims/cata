@@ -7,24 +7,38 @@
 		flex-direction: column;
 	}
 
+	@include media-breakpoint-down(lg) {
+		gap: var(--section-spacer);
+	}
+
 	.tab-panel-left,
 	.tab-panel-right {
 		width: 100%;
 	}
 
 	.tab-panel-left {
+		display: grid;
+		gap: var(--section-spacer);
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 		flex: 4;
-		&:has(.tab-panel-col) {
-			display: grid;
-			gap: var(--section-spacer);
-			grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+
+		@include media-breakpoint-down(lg) {
+			display: flex;
+			flex-direction: column !important;
 		}
 	}
 
 	.tab-panel-right {
-		flex: 1.25;
+		min-width: 200px;
 		display: flex;
 		flex-direction: column;
-		min-width: 200px;
+		gap: var(--section-spacer);
+		flex: 1.25;
+	}
+
+	.tab-panel-col {
+		display: flex;
+		flex-direction: column;
+		gap: var(--section-spacer);
 	}
 }

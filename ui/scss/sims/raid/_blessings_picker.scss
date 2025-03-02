@@ -8,7 +8,7 @@
 		}
 
 		.blessings-picker-spec {
-			margin-right: calc(var(--block-spacer) * 2);
+			margin-right: var(--section-spacer);
 
 			.blessings-spec-icon {
 				@extend .icon-md;
@@ -25,7 +25,7 @@
 					filter: none !important;
 				}
 
-				&> .icon-picker-button:not(.active) {
+				& > .icon-picker-button:not(.active) {
 					filter: grayscale(1);
 				}
 			}

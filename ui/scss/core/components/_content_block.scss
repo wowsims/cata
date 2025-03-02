@@ -1,20 +1,20 @@
 .content-block {
 	display: flex;
 	flex-direction: column;
+	gap: var(--block-spacer);
 
-	&:not(:last-child) {
-		margin-bottom: var(--section-spacer);
+	.content-block-header {
+		border-bottom: var(--border-default);
+		display: flex;
+
+		.content-block-title {
+			font-weight: bold;
+		}
 	}
-}
 
-.content-block-header {
-	border-bottom: var(--border-default);
-	margin-bottom: var(--block-spacer);
-	display: flex;
-	align-items: baseline;
-}
-
-.content-block-body {
-	display: flex;
-	flex-direction: column;
+	.content-block-body {
+		display: flex;
+		flex-direction: column;
+		gap: var(--block-spacer);
+	}
 }

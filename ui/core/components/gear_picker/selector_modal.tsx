@@ -76,7 +76,7 @@ export default class SelectorModal extends BaseModal {
 		this.contentElem = this.rootElem.querySelector<HTMLElement>('.selector-modal-tab-content')!;
 
 		this.body.appendChild(
-			<div className="d-flex align-items-center form-text mt-3">
+			<div className="d-flex align-items-center form-text">
 				<i className="fas fa-circle-exclamation fa-xl me-2"></i>
 				<span>
 					If gear is missing, check the selected phase and your gear filters.

@@ -24,13 +24,16 @@ export class RotationTab extends SimTab {
 	readonly leftPanel: HTMLElement;
 	readonly rightPanel: HTMLElement;
 
+	readonly leftCol: HTMLElement = this.buildColumn(1, 'rotation-tab-col');
+
 	constructor(parentElem: HTMLElement, simUI: IndividualSimUI<any>) {
 		super(parentElem, simUI, { identifier: 'rotation-tab', title: 'Rotation' });
 		this.simUI = simUI;
 
 		this.leftPanel = (<div className="rotation-tab-left tab-panel-left" />) as HTMLElement;
-
 		this.rightPanel = (<div className="rotation-tab-right tab-panel-right" />) as HTMLElement;
+
+		this.leftPanel.appendChild(this.leftCol);
 
 		this.contentContainer.appendChild(this.leftPanel);
 		this.contentContainer.appendChild(this.rightPanel);
@@ -76,7 +79,7 @@ export class RotationTab extends SimTab {
 		const headerRef = ref<HTMLDivElement>();
 		const resetButtonRef = ref<HTMLButtonElement>();
 		const rotationTypeSelectRef = ref<HTMLDivElement>();
-		this.leftPanel.appendChild(
+		this.leftCol.appendChild(
 			<div ref={headerRef} className="rotation-tab-header d-flex justify-content-between align-items-baseline">
 				<div ref={rotationTypeSelectRef} />
 				<button ref={resetButtonRef} className="btn btn-sm btn-link btn-reset summary-table-reset-button">
@@ -121,12 +124,12 @@ export class RotationTab extends SimTab {
 	}
 
 	private buildAutoContent() {
-		this.leftPanel.appendChild(<div className="rotation-tab-auto" />);
+		this.leftCol.appendChild(<div className="rotation-tab-auto" />);
 	}
 
 	private buildAplContent() {
 		const contentRef = ref<HTMLDivElement>();
-		this.leftPanel.appendChild(<div ref={contentRef} className="rotation-tab-apl" />);
+		this.leftCol.appendChild(<div ref={contentRef} className="rotation-tab-apl" />);
 
 		new APLRotationPicker(contentRef.value!, this.simUI, this.simUI.player);
 	}
@@ -137,7 +140,7 @@ export class RotationTab extends SimTab {
 		}
 		const cssClass = 'rotation-tab-simple';
 
-		const contentBlock = new ContentBlock(this.leftPanel, 'rotation-settings', {
+		const contentBlock = new ContentBlock(this.leftCol, 'rotation-settings', {
 			header: { title: 'Rotation' },
 		});
 		contentBlock.rootElem.classList.add(cssClass);
@@ -155,7 +158,7 @@ export class RotationTab extends SimTab {
 		}
 
 		this.configureInputSection(contentBlock.bodyElement, this.simUI.individualConfig.rotationInputs);
-		const cooldownsContentBlock = new ContentBlock(this.leftPanel, 'cooldown-settings', {
+		const cooldownsContentBlock = new ContentBlock(this.leftCol, 'cooldown-settings', {
 			header: { title: 'Cooldowns', tooltip: Tooltips.COOLDOWNS_SECTION },
 		});
 		cooldownsContentBlock.rootElem.classList.add(cssClass);

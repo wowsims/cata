@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 .icon-picker {
 	width: unset !important;
 	margin-bottom: 0;
@@ -16,17 +18,16 @@
 		filter: grayscale(1);
 
 		&.active {
-			border-color: var(--bs-success);
+			border-color: $success;
 			filter: none;
 		}
 	}
 
-	.icon-picker-button,
-	.icon-dropdown-option {
-		position: relative;
-		display: block;
-		background-color: grey;
+	.icon-picker-button {
+		cursor: pointer;
+	}
 
+	.icon-dropdown-option {
 		.icon-picker-label {
 			position: absolute;
 			bottom: 0;
@@ -63,6 +64,7 @@
 
 	label {
 		margin-left: var(--spacer-2);
+		margin-bottom: 0;
 	}
 
 	.dropdown-menu {
@@ -89,12 +91,8 @@
 	}
 }
 
-.picker-group {
-	&.icon-group {
-		gap: var(--spacer-1);
-
-		& > * {
-			flex: 0;
-		}
-	}
+.picker-group.icon-group {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--spacer-1);
 }
