@@ -17,7 +17,6 @@ import { getEnumValues, isExternal } from '../../utils';
 import { WorkerProgressCallback } from '../../worker_pool';
 import { ItemData } from '../gear_picker/item_list';
 import SelectorModal from '../gear_picker/selector_modal';
-import { BulkGearJsonImporter } from '../importers/bulk_gear_json_importer';
 import { BooleanPicker } from '../pickers/boolean_picker';
 import { ResultsViewer } from '../results_viewer';
 import { SimTab } from '../sim_tab';
@@ -27,6 +26,7 @@ import BulkItemSearch from './bulk/bulk_item_search';
 import BulkSimResultRenderer from './bulk/bulk_sim_results_renderer';
 import GemSelectorModal from './bulk/gem_selector_modal';
 import { BulkSimItemSlot, getBulkItemSlotFromSlot } from './bulk/utils';
+import { BulkGearJsonImporter } from './importers';
 
 const WEB_DEFAULT_ITERATIONS = 1000;
 const WEB_ITERATIONS_LIMIT = 50_000;

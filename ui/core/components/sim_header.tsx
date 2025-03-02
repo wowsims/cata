@@ -2,13 +2,13 @@ import clsx from 'clsx';
 import tippy, { ReferenceElement as TippyReferenceElement } from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
-import { REPO_CHOOSE_NEW_ISSUE_URL, REPO_NEW_ISSUE_URL, REPO_RELEASES_URL } from '../constants/other';
+import { REPO_CHOOSE_NEW_ISSUE_URL, REPO_RELEASES_URL } from '../constants/other';
 import { SimUI } from '../sim_ui';
 import { isLocal, noop } from '../utils';
 import { Component } from './component';
-import { Exporter } from './exporters';
+import { Exporter } from './exporter';
 import { SimToolbarItem } from './header/sim_toolbar_item';
-import { Importer } from './importers';
+import { Importer } from './importer';
 import { SettingsMenu } from './settings_menu';
 import { SimTab } from './sim_tab';
 import { SocialLinks } from './social_links';

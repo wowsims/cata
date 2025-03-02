@@ -43,5 +43,9 @@
 				grid-column-gap: var(--bs-modal-padding);
 			}
 		}
+
+		.filters-menu-section-bool-list {
+			grid-row-gap: var(--spacer-1);
+		}
 	}
 }

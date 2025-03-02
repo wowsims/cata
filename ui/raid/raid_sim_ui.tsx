@@ -13,7 +13,8 @@ import { Sim } from '../core/sim';
 import { SimUI } from '../core/sim_ui';
 import { EventID, TypedEvent } from '../core/typed_event';
 import { BlessingsPicker } from './blessings_picker';
-import * as ImportExport from './import_export';
+import { RaidJsonExporter } from './components/exporters';
+import { RaidJsonImporter, RaidWCLImporter } from './components/importers';
 import { implementedSpecs } from './presets';
 import { RaidPicker } from './raid_picker';
 import { RaidTab } from './raid_tab';
@@ -97,10 +98,10 @@ export class RaidSimUI extends SimUI {
 	}
 
 	private addTopbarComponents() {
-		this.simHeader.addImportLink('JSON', new ImportExport.RaidJsonImporter(this.rootElem, this));
-		this.simHeader.addImportLink('WCL', new ImportExport.RaidWCLImporter(this.rootElem, this));
+		this.simHeader.addImportLink('JSON', new RaidJsonImporter(this.rootElem, this));
+		this.simHeader.addImportLink('WCL', new RaidWCLImporter(this.rootElem, this));
 
-		this.simHeader.addExportLink('JSON', new ImportExport.RaidJsonExporter(this.rootElem, this));
+		this.simHeader.addExportLink('JSON', new RaidJsonExporter(this.rootElem, this));
 	}
 
 	private addRaidTab() {
