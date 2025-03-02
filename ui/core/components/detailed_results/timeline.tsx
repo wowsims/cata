@@ -1,4 +1,4 @@
-import ApexCharts from 'apexcharts'
+import ApexCharts from 'apexcharts';
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
@@ -104,12 +104,14 @@ export class Timeline extends ResultComponent {
 		this.dpsResourcesPlotElem = this.rootElem.querySelector('.dps-resources-plot')!;
 		this.dpsResourcesPlot = new ApexCharts(this.dpsResourcesPlotElem, {
 			chart: {
-				type: 'line',
-				foreColor: 'white',
-				id: 'dpsResources',
 				animations: {
 					enabled: false,
 				},
+				background: 'transparent',
+				foreColor: 'white',
+				height: '100%',
+				id: 'dpsResources',
+				type: 'line',
 			},
 			series: [], // Set dynamically
 			xaxis: {
