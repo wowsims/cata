@@ -78,9 +78,10 @@ $theme-colors: map-merge($theme-colors, $custom-alpha);
 
 $custom-breakpoints: (
 	xxxl: 1600px,
-	1080p: 1920px,
-	1440p: 2560px,
-	4k: 3840px,
+	// Intentionally 1 higher than standard resolution
+	1080p: 1921px,
+	1440p: 2561px,
+	4k: 3841px,
 );
 
 // Spacer variables
