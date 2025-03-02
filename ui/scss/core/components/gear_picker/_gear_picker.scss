@@ -27,7 +27,7 @@
 
 			// Add space to separate weapon categories
 			&:nth-child(6) {
-				margin-bottom: calc(var(--container-padding) - var(--block-spacer));
+				margin-bottom: var(--section-spacer);
 			}
 		}
 	}
