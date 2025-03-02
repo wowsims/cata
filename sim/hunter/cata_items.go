@@ -112,11 +112,15 @@ var ItemSetWyrmstalkerBattleGear = core.NewItemSet(core.ItemSet{
 				ActionID: core.ActionID{SpellID: 105919},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					aura.Unit.MultiplyRangedSpeed(sim, 1.3)
-					hunter.Pet.Unit.MultiplyAttackSpeed(sim, 1.3)
+					if hunter.Pet != nil {
+						hunter.Pet.Unit.MultiplyAttackSpeed(sim, 1.3)
+					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					aura.Unit.MultiplyRangedSpeed(sim, 1/1.3)
-					hunter.Pet.Unit.MultiplyAttackSpeed(sim, 1/1.3)
+					if hunter.Pet != nil {
+						hunter.Pet.Unit.MultiplyAttackSpeed(sim, 1/1.3)
+					}
 				},
 			})
 
