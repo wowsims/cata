@@ -117,7 +117,10 @@ export default defineConfig(({ command, mode }) => {
 			rollupOptions: {
 				input: {
 					...glob.sync(path.resolve(BASE_PATH, '**/index.html').replace(/\\/g, '/')).reduce<Record<string, string>>((acc, cur) => {
-						const name = path.relative(__dirname, cur);
+						const name = path
+							.relative(__dirname, cur)
+							.replace(/\\/g, '/')
+							.replace(/\/+/g, '/');
 						acc[name] = cur;
 						return acc;
 					}, {}),
