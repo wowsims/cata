@@ -2238,25 +2238,25 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-Ti'tahk,theStepsofTime-77190"
  value: {
-  dps: 10677.21579
-  tps: 53453.55041
+  dps: 10598.35875
+  tps: 53058.25835
   hps: 356.7355
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Ti'tahk,theStepsofTime-78477"
  value: {
-  dps: 10787.91778
-  tps: 54006.94684
+  dps: 10630.07293
+  tps: 53216.85592
   hps: 356.7355
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Ti'tahk,theStepsofTime-78486"
  value: {
-  dps: 10696.7603
-  tps: 53550.87274
-  hps: 358.34242
+  dps: 10598.35875
+  tps: 53058.25835
+  hps: 356.7355
  }
 }
 dps_results: {
