@@ -1182,28 +1182,6 @@ func init() {
 			ProcChance: 0.15,
 			ICD:        time.Second * 115,
 		})
-
-		// Ti'tahk, the Steps of Time
-		// Equip: Your spells have a chance to grant you 1708/1928/2176 haste rating for 10 sec and 342/386/435 haste rating to up to 3 allies within 20 yards.
-		// (Proc chance: 15%, 50s cooldown)
-		// The buff has two effects, one for the caster and one shared.
-		// * The first effect is 1366/1542/1741 haste rating on the caster.
-		// * The second effect is 342/386/435 haste rating on the caster and up to 3 allies within 20 yards.
-		// E.g. for the LFR version it's 1366 + 342 = 1708 haste rating for the caster with a shared ID so we just combine them.
-		// TODO: Add the shared buff as an optional misc raid buff?
-		//       Could be annoying with 3 different versions, uptime etc.
-		shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
-			Name:       "Ti'tahk, the Steps of Time" + labelSuffix,
-			ItemID:     []int32{78486, 77190, 78477}[version],
-			AuraID:     []int32{109842, 107804, 109844}[version],
-			Bonus:      stats.Stats{stats.HasteRating: []float64{1366 + 342, 1542 + 386, 1741 + 435}[version]},
-			Duration:   time.Second * 10,
-			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt,
-			ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing | core.ProcMaskSpellProc,
-			Outcome:    core.OutcomeLanded,
-			ProcChance: 0.15,
-			ICD:        time.Second * 50,
-		})
 	}
 
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
