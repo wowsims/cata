@@ -803,15 +803,14 @@ func FillTalentsProto(data protoreflect.Message, talentsStr string, treeSizes [3
 }
 
 func (character *Character) MeetsArmorSpecializationRequirement(armorType proto.ArmorType) bool {
-	if character.Head().ArmorType != armorType ||
-		character.Shoulder().ArmorType != armorType ||
-		character.Chest().ArmorType != armorType ||
-		character.Wrist().ArmorType != armorType ||
-		character.Hands().ArmorType != armorType ||
-		character.Waist().ArmorType != armorType ||
-		character.Legs().ArmorType != armorType ||
-		character.Feet().ArmorType != armorType {
-		return false
+	for _, itemSlot := range ArmorSpecializationSlots() {
+		item := character.Equipment[itemSlot]
+		if item.ArmorType == proto.ArmorType_ArmorTypeUnknown {
+			continue
+		}
+		if item.ArmorType != armorType {
+			return false
+		}
 	}
 
 	return true
@@ -834,16 +833,7 @@ func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Sta
 		aura = MakePermanent(aura)
 	}
 
-	character.RegisterItemSwapCallback([]proto.ItemSlot{
-		proto.ItemSlot_ItemSlotHead,
-		proto.ItemSlot_ItemSlotShoulder,
-		proto.ItemSlot_ItemSlotChest,
-		proto.ItemSlot_ItemSlotWrist,
-		proto.ItemSlot_ItemSlotHands,
-		proto.ItemSlot_ItemSlotWaist,
-		proto.ItemSlot_ItemSlotLegs,
-		proto.ItemSlot_ItemSlotFeet,
-	},
+	character.RegisterItemSwapCallback(ArmorSpecializationSlots(),
 		func(sim *Simulation, _ proto.ItemSlot) {
 			if character.MeetsArmorSpecializationRequirement(armorType) {
 				if !aura.IsActive() {
