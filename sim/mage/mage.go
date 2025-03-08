@@ -43,6 +43,8 @@ type Mage struct {
 
 	arcaneMissilesProcAura *core.Aura
 	arcanePotencyAura      *core.Aura
+	arcanePowerAura        *core.Aura
+	presenceOfMindAura     *core.Aura
 	FingersOfFrostAura     *core.Aura
 
 	arcaneMissileCritSnapshot float64
