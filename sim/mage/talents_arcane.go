@@ -180,7 +180,7 @@ func (mage *Mage) registerPresenceOfMindCD() {
 
 	var pomSpell *core.Spell
 
-	presenceOfMindAura := mage.RegisterAura(core.Aura{
+	mage.presenceOfMindAura = mage.RegisterAura(core.Aura{
 		Label:    "Presence of Mind",
 		ActionID: core.ActionID{SpellID: 12043},
 		Duration: time.Hour,
@@ -216,14 +216,14 @@ func (mage *Mage) registerPresenceOfMindCD() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return mage.GCD.IsReady(sim)
+			return mage.GCD.IsReady(sim) && !mage.arcanePowerAura.IsActive()
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			if mage.arcanePotencyAura != nil {
 				mage.arcanePotencyAura.Activate(sim)
 				mage.arcanePotencyAura.SetStacks(sim, 2)
 			}
-			presenceOfMindAura.Activate(sim)
+			mage.presenceOfMindAura.Activate(sim)
 		},
 	})
 
@@ -281,10 +281,9 @@ func (mage *Mage) registerArcanePowerCD() {
 	}
 
 	actionID := core.ActionID{SpellID: 12042}
-
 	arcanePowerCostMod := mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask: MageSpellsAllDamaging,
-		IntValue:  20,
+		IntValue:  10,
 		Kind:      core.SpellMod_PowerCost_Pct,
 	})
 
@@ -294,11 +293,15 @@ func (mage *Mage) registerArcanePowerCD() {
 		Kind:       core.SpellMod_DamageDone_Pct,
 	})
 
-	arcanePowerAura := mage.RegisterAura(core.Aura{
+	mage.arcanePowerAura = mage.RegisterAura(core.Aura{
 		Label:    "Arcane Power Aura",
 		ActionID: actionID,
 		Duration: time.Second * 15,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+	})
+
+	mage.arcanePowerAura.NewExclusiveEffect("ManaCost", true, core.ExclusiveEffect{
+		Priority: 10,
+		OnGain: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
 			if mage.arcanePowerGCDmod != nil {
 				mage.arcanePowerGCDmod.Activate()
 			}
@@ -308,10 +311,11 @@ func (mage *Mage) registerArcanePowerCD() {
 
 			arcanePowerDmgMod.Activate()
 		},
-		OnExpire: func(_ *core.Aura, sim *core.Simulation) {
+		OnExpire: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
 			if mage.arcanePowerGCDmod != nil {
 				mage.arcanePowerGCDmod.Deactivate()
 			}
+
 			arcanePowerCostMod.Deactivate()
 			arcanePowerDmgMod.Deactivate()
 			if mage.t13ProcAura != nil {
@@ -330,8 +334,11 @@ func (mage *Mage) registerArcanePowerCD() {
 				Duration: time.Second * 120,
 			},
 		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return !mage.presenceOfMindAura.IsActive()
+		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			arcanePowerAura.Activate(sim)
+			mage.arcanePowerAura.Activate(sim)
 			if mage.T13_4pc.IsActive() {
 				spell.CD.Reduce(time.Second * time.Duration(7*mage.t13ProcAura.GetStacks()))
 			}

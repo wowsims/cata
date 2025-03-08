@@ -1279,14 +1279,17 @@ func PowerInfusionAura(character *Unit, actionTag int32) *Aura {
 		Tag:      PowerInfusionAuraTag,
 		ActionID: actionID,
 		Duration: PowerInfusionDuration,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			if character.HasManaBar() {
-				character.PseudoStats.SpellCostPercentModifier -= 20
+	})
+	aura.NewExclusiveEffect("ManaCost", true, ExclusiveEffect{
+		Priority: -20,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			if ee.Aura.Unit.HasManaBar() {
+				ee.Aura.Unit.PseudoStats.SpellCostPercentModifier -= 20
 			}
 		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			if character.HasManaBar() {
-				character.PseudoStats.SpellCostPercentModifier += 20
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			if ee.Aura.Unit.HasManaBar() {
+				ee.Aura.Unit.PseudoStats.SpellCostPercentModifier += 20
 			}
 		},
 	})
