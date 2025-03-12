@@ -44,6 +44,7 @@ func (warlock *Warlock) registerDrainLife() {
 			warlock.SoulBurnAura.Deactivate(sim)
 			if result.Landed() {
 				spell.Dot(target).Apply(sim)
+				spell.DealOutcome(sim, result)
 			}
 		},
 	})

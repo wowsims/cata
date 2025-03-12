@@ -68,6 +68,7 @@ func (warlock *Warlock) registerDrainSoul() {
 				dot := spell.Dot(target)
 				dot.Apply(sim)
 				dot.UpdateExpires(dot.ExpiresAt())
+				spell.DealOutcome(sim, result)
 			}
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
