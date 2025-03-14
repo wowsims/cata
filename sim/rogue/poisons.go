@@ -180,7 +180,7 @@ func (rogue *Rogue) applyWoundPoison() {
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				procMask := core.Ternary(spell.SpellID == 86392, core.ProcMaskMeleeMH, spell.ProcMask)
 				if rogue.woundPoisonPPMM[itemSlot].Proc(sim, procMask, "Wound Poison") {
-					rogue.InstantPoison[NormalProc].Cast(sim, result.Target)
+					rogue.WoundPoison[NormalProc].Cast(sim, result.Target)
 				}
 			},
 		})
