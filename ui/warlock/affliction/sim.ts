@@ -128,6 +128,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAfflictionWarlock, {
 
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
+		itemSwaps: [Presets.P4_ITEM_SWAP],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecAfflictionWarlock>): APLRotation => {
