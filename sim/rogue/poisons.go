@@ -31,8 +31,11 @@ func (rogue *Rogue) registerPoisonAuras() {
 }
 
 func (rogue *Rogue) registerDeadlyPoisonSpell() {
+	baseDamage := 0.11999999732 * rogue.ClassSpellScaling
+	apScaling := 0.03500000015
+
 	rogue.DeadlyPoison = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 96648},
+		ActionID:       core.ActionID{SpellID: 2818},
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamageProc,
 		ClassSpellMask: RogueSpellDeadlyPoison,
@@ -70,7 +73,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 
 			OnSnapshot: func(_ *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				if stacks := dot.GetStacks(); stacks > 0 {
-					dot.SnapshotBaseDamage = (135 + 0.035*dot.Spell.MeleeAttackPower()) * float64(stacks)
+					dot.SnapshotBaseDamage = (baseDamage + apScaling*dot.Spell.MeleeAttackPower()) * float64(stacks)
 					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
 					dot.SnapshotCritChance = dot.Spell.SpellCritChance(attackTable.Defender)
 					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
@@ -199,6 +202,10 @@ const (
 func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 	isShivProc := procSource == ShivProc
 	ipBaseDamage := 0.31299999356 * rogue.ClassSpellScaling
+	ipVariance := 0.28000000119 * ipBaseDamage
+	minHit := ipBaseDamage - ipVariance/2
+	apScaling := 0.09000000358
+
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 8680, Tag: int32(procSource)},
 		SpellSchool:    core.SpellSchoolNature,
@@ -212,7 +219,9 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := ipBaseDamage + 0.09*spell.MeleeAttackPower()
+			baseDamage := minHit +
+				sim.RandomFloat("Instant Poison")*ipVariance +
+				apScaling*spell.MeleeAttackPower()
 			if isShivProc {
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
 			} else {
