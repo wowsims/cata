@@ -340,7 +340,8 @@ func (mage *Mage) registerArcanePowerCD() {
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			mage.arcanePowerAura.Activate(sim)
 			if mage.T13_4pc.IsActive() {
-				spell.CD.Reduce(time.Second * time.Duration(7*mage.t13ProcAura.GetStacks()))
+				// We need to manually set the CD to the correct value because of Arcane Flows talent being applied after the CD
+				spell.CD.Set(sim.CurrentTime + time.Duration(float64(spell.CD.Duration-time.Second*time.Duration(7*mage.t13ProcAura.GetStacks()))*spell.CdMultiplier))
 			}
 		},
 	})
