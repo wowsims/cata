@@ -452,8 +452,8 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-DarkwalkerStoneofRage-92117"
  value: {
-  dps: 26474.04035
-  tps: 18796.56865
+  dps: 25927.33812
+  tps: 18408.41007
  }
 }
 dps_results: {
@@ -473,8 +473,8 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-DelivererStoneofDestruction-92151"
  value: {
-  dps: 25331.38134
-  tps: 17985.28075
+  dps: 24788.0041
+  tps: 17599.48291
  }
 }
 dps_results: {
@@ -543,8 +543,8 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-EnlightenedStoneofDestruction-92143"
  value: {
-  dps: 25263.47615
-  tps: 17937.06807
+  dps: 24810.254
+  tps: 17615.28034
  }
 }
 dps_results: {
@@ -690,8 +690,8 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-ForestwalkerStoneofRage-92141"
  value: {
-  dps: 26285.9456
-  tps: 18663.02138
+  dps: 25793.73501
+  tps: 18313.55185
  }
 }
 dps_results: {
@@ -1117,8 +1117,8 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-MartialDefenderStone-92126"
  value: {
-  dps: 25246.75719
-  tps: 17925.1976
+  dps: 24809.96218
+  tps: 17615.07315
  }
 }
 dps_results: {
@@ -1131,8 +1131,8 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-MartialStoneofBattle-92129"
  value: {
-  dps: 25679.73271
-  tps: 18232.61022
+  dps: 25147.54171
+  tps: 17854.75461
  }
 }
 dps_results: {
@@ -1222,15 +1222,15 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-NaturalistStoneofDestruction-92136"
  value: {
-  dps: 25293.48319
-  tps: 17958.37306
+  dps: 24731.81723
+  tps: 17559.59024
  }
 }
 dps_results: {
  key: "TestSubtlety-AllItems-NaturalistStoneofRage-92138"
  value: {
-  dps: 26361.33867
-  tps: 18716.55046
+  dps: 25787.70786
+  tps: 18309.27258
  }
 }
 dps_results: {
@@ -1271,8 +1271,8 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-PartisanDefenderStone-92114"
  value: {
-  dps: 25190.44692
-  tps: 17885.21732
+  dps: 24709.38973
+  tps: 17543.66671
  }
 }
 dps_results: {
@@ -1285,8 +1285,8 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-PartisanStoneofBattle-92149"
  value: {
-  dps: 25636.36579
-  tps: 18201.81971
+  dps: 25170.76403
+  tps: 17871.24246
  }
 }
 dps_results: {
@@ -1581,8 +1581,8 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-ScourgeheartDefenderStone-92134"
  value: {
-  dps: 25234.66397
-  tps: 17916.61142
+  dps: 24753.11705
+  tps: 17574.71311
  }
 }
 dps_results: {
@@ -1595,8 +1595,8 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-ScourgeheartStoneofBattle-92168"
  value: {
-  dps: 25751.37528
-  tps: 18283.47645
+  dps: 25155.82627
+  tps: 17860.63665
  }
 }
 dps_results: {
@@ -1714,8 +1714,8 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-SoulseizerStoneofDestruction-92124"
  value: {
-  dps: 25176.90365
-  tps: 17875.60159
+  dps: 24880.86353
+  tps: 17665.41311
  }
 }
 dps_results: {
@@ -1924,15 +1924,15 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-ThundercallerStoneofDestruction-92119"
  value: {
-  dps: 25270.52537
-  tps: 17942.07302
+  dps: 24815.72207
+  tps: 17619.16267
  }
 }
 dps_results: {
  key: "TestSubtlety-AllItems-ThundercallerStoneofRage-92121"
  value: {
-  dps: 26243.12532
-  tps: 18632.61898
+  dps: 25837.90929
+  tps: 18344.9156
  }
 }
 dps_results: {
@@ -2246,8 +2246,8 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-WaterdancerDefenderStone-92398"
  value: {
-  dps: 25289.11165
-  tps: 17955.26927
+  dps: 24916.4165
+  tps: 17690.65571
  }
 }
 dps_results: {
@@ -2260,8 +2260,8 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-WaterdancerStoneofRage-92400"
  value: {
-  dps: 26266.00663
-  tps: 18648.8647
+  dps: 25984.82245
+  tps: 18449.22394
  }
 }
 dps_results: {

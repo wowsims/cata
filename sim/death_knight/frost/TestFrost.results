@@ -502,8 +502,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-DarkwalkerStoneofRage-92117"
  value: {
-  dps: 50658.82291
-  tps: 48038.47226
+  dps: 49592.91299
+  tps: 46972.56235
   hps: 1665.75456
  }
 }
@@ -526,8 +526,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-DelivererStoneofDestruction-92151"
  value: {
-  dps: 50373.86456
-  tps: 47787.8516
+  dps: 49344.79777
+  tps: 46758.78481
   hps: 1665.75456
  }
 }
@@ -622,8 +622,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-EnlightenedStoneofDestruction-92143"
  value: {
-  dps: 50421.95491
-  tps: 47835.94195
+  dps: 49321.48255
+  tps: 46735.46959
   hps: 1665.75456
  }
 }
@@ -774,8 +774,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-ForestwalkerStoneofRage-92141"
  value: {
-  dps: 50650.69075
-  tps: 48030.34011
+  dps: 49610.82965
+  tps: 46990.47901
   hps: 1665.75456
  }
 }
@@ -1278,8 +1278,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-MartialDefenderStone-92126"
  value: {
-  dps: 50443.26155
-  tps: 47857.24859
+  dps: 49361.8666
+  tps: 46775.85364
   hps: 1733.25938
  }
 }
@@ -1294,8 +1294,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-MartialStoneofBattle-92129"
  value: {
-  dps: 51706.71209
-  tps: 49060.56142
+  dps: 50610.71582
+  tps: 47964.56516
   hps: 1665.75456
  }
 }
@@ -1390,16 +1390,16 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-NaturalistStoneofDestruction-92136"
  value: {
-  dps: 50394.74995
-  tps: 47808.73699
+  dps: 49347.23933
+  tps: 46761.22637
   hps: 1665.75456
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-NaturalistStoneofRage-92138"
  value: {
-  dps: 50650.91014
-  tps: 48030.5595
+  dps: 49609.13043
+  tps: 46988.77979
   hps: 1665.75456
  }
 }
@@ -1478,8 +1478,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-PartisanDefenderStone-92114"
  value: {
-  dps: 50413.14545
-  tps: 47827.13249
+  dps: 49362.9598
+  tps: 46776.94685
   hps: 1733.25938
  }
 }
@@ -1494,8 +1494,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-PartisanStoneofBattle-92149"
  value: {
-  dps: 51688.18839
-  tps: 49042.03772
+  dps: 50598.6308
+  tps: 47952.48013
   hps: 1665.75456
  }
 }
@@ -1814,8 +1814,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-ScourgeheartDefenderStone-92134"
  value: {
-  dps: 50408.68256
-  tps: 47822.6696
+  dps: 49362.22625
+  tps: 46776.21329
   hps: 1733.25938
  }
 }
@@ -1830,8 +1830,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-ScourgeheartStoneofBattle-92168"
  value: {
-  dps: 51694.36666
-  tps: 49048.216
+  dps: 50601.83292
+  tps: 47955.68225
   hps: 1665.75456
  }
 }
@@ -1982,8 +1982,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-SoulseizerStoneofDestruction-92124"
  value: {
-  dps: 50408.34311
-  tps: 47822.33015
+  dps: 49347.01887
+  tps: 46761.00591
   hps: 1665.75456
  }
 }
@@ -2214,16 +2214,16 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-ThundercallerStoneofDestruction-92119"
  value: {
-  dps: 50399.51026
-  tps: 47813.4973
+  dps: 49361.14583
+  tps: 46775.13287
   hps: 1665.75456
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-ThundercallerStoneofRage-92121"
  value: {
-  dps: 50652.79388
-  tps: 48032.44323
+  dps: 49611.113
+  tps: 46990.76236
   hps: 1665.75456
  }
 }
@@ -2558,8 +2558,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-WaterdancerDefenderStone-92398"
  value: {
-  dps: 50435.20265
-  tps: 47849.1897
+  dps: 49367.36008
+  tps: 46781.34712
   hps: 1733.25938
  }
 }
@@ -2574,8 +2574,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-WaterdancerStoneofRage-92400"
  value: {
-  dps: 50656.22091
-  tps: 48035.87026
+  dps: 49593.55744
+  tps: 46973.2068
   hps: 1665.75456
  }
 }

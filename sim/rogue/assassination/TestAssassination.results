@@ -489,8 +489,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-DarkwalkerStoneofRage-92117"
  value: {
-  dps: 30120.22938
-  tps: 21385.36286
+  dps: 29313.15776
+  tps: 20812.34201
  }
 }
 dps_results: {
@@ -510,8 +510,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-DelivererStoneofDestruction-92151"
  value: {
-  dps: 28760.85907
-  tps: 20420.20994
+  dps: 28016.70791
+  tps: 19891.86261
  }
 }
 dps_results: {
@@ -580,8 +580,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-EnlightenedStoneofDestruction-92143"
  value: {
-  dps: 28794.04553
-  tps: 20443.77233
+  dps: 28012.83295
+  tps: 19889.1114
  }
 }
 dps_results: {
@@ -727,8 +727,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-ForestwalkerStoneofRage-92141"
  value: {
-  dps: 30119.87169
-  tps: 21385.1089
+  dps: 29312.23189
+  tps: 20811.68464
  }
 }
 dps_results: {
@@ -1154,8 +1154,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-MartialDefenderStone-92126"
  value: {
-  dps: 28819.57731
-  tps: 20461.89989
+  dps: 28014.26099
+  tps: 19890.1253
  }
 }
 dps_results: {
@@ -1168,8 +1168,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-MartialStoneofBattle-92129"
  value: {
-  dps: 29320.16718
-  tps: 20817.3187
+  dps: 28502.35907
+  tps: 20236.67494
  }
 }
 dps_results: {
@@ -1259,15 +1259,15 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-NaturalistStoneofDestruction-92136"
  value: {
-  dps: 28801.03629
-  tps: 20448.73577
+  dps: 28012.95224
+  tps: 19889.19609
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-NaturalistStoneofRage-92138"
  value: {
-  dps: 30128.98969
-  tps: 21391.58268
+  dps: 29323.01265
+  tps: 20819.33898
  }
 }
 dps_results: {
@@ -1308,8 +1308,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-PartisanDefenderStone-92114"
  value: {
-  dps: 28814.8596
-  tps: 20458.55032
+  dps: 28005.99923
+  tps: 19884.25945
  }
 }
 dps_results: {
@@ -1322,8 +1322,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-PartisanStoneofBattle-92149"
  value: {
-  dps: 29301.21827
-  tps: 20803.86497
+  dps: 28499.71925
+  tps: 20234.80067
  }
 }
 dps_results: {
@@ -1618,8 +1618,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-ScourgeheartDefenderStone-92134"
  value: {
-  dps: 28792.64708
-  tps: 20442.77943
+  dps: 28007.96507
+  tps: 19885.6552
  }
 }
 dps_results: {
@@ -1632,8 +1632,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-ScourgeheartStoneofBattle-92168"
  value: {
-  dps: 29291.9541
-  tps: 20797.28741
+  dps: 28497.67159
+  tps: 20233.34683
  }
 }
 dps_results: {
@@ -1751,8 +1751,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-SoulseizerStoneofDestruction-92124"
  value: {
-  dps: 28782.17768
-  tps: 20435.34615
+  dps: 28007.58517
+  tps: 19885.38547
  }
 }
 dps_results: {
@@ -1961,15 +1961,15 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-ThundercallerStoneofDestruction-92119"
  value: {
-  dps: 28802.0521
-  tps: 20449.45699
+  dps: 28011.94918
+  tps: 19888.48392
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-ThundercallerStoneofRage-92121"
  value: {
-  dps: 30148.67161
-  tps: 21405.55684
+  dps: 29310.00731
+  tps: 20810.10519
  }
 }
 dps_results: {
@@ -2283,8 +2283,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-WaterdancerDefenderStone-92398"
  value: {
-  dps: 28786.03149
-  tps: 20438.08236
+  dps: 28019.33493
+  tps: 19893.7278
  }
 }
 dps_results: {
@@ -2297,8 +2297,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-WaterdancerStoneofRage-92400"
  value: {
-  dps: 30106.76724
-  tps: 21375.80474
+  dps: 29311.37247
+  tps: 20811.07445
  }
 }
 dps_results: {

@@ -473,8 +473,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-DarkwalkerStoneofRage-92117"
  value: {
-  dps: 49306.80379
-  tps: 31936.54463
+  dps: 48011.9057
+  tps: 31330.48045
  }
 }
 dps_results: {
@@ -494,8 +494,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-DelivererStoneofDestruction-92151"
  value: {
-  dps: 48039.16977
-  tps: 31154.44577
+  dps: 46743.87965
+  tps: 30529.03043
  }
 }
 dps_results: {
@@ -571,8 +571,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-EnlightenedStoneofDestruction-92143"
  value: {
-  dps: 48042.00085
-  tps: 31152.14333
+  dps: 46741.16851
+  tps: 30530.22332
  }
 }
 dps_results: {
@@ -711,8 +711,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-ForestwalkerStoneofRage-92141"
  value: {
-  dps: 49339.28782
-  tps: 31950.96926
+  dps: 48016.00891
+  tps: 31329.74075
  }
 }
 dps_results: {
@@ -1131,8 +1131,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-MartialDefenderStone-92126"
  value: {
-  dps: 47964.99244
-  tps: 31113.0271
+  dps: 46686.06523
+  tps: 30505.29751
  }
 }
 dps_results: {
@@ -1145,8 +1145,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-MartialStoneofBattle-92129"
  value: {
-  dps: 48537.30342
-  tps: 31427.65953
+  dps: 47240.99096
+  tps: 30816.54264
  }
 }
 dps_results: {
@@ -1229,15 +1229,15 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-NaturalistStoneofDestruction-92136"
  value: {
-  dps: 48017.10945
-  tps: 31140.02202
+  dps: 46768.71336
+  tps: 30540.79531
  }
 }
 dps_results: {
  key: "TestEnhancement-AllItems-NaturalistStoneofRage-92138"
  value: {
-  dps: 49306.63794
-  tps: 31954.92795
+  dps: 48011.96848
+  tps: 31326.03536
  }
 }
 dps_results: {
@@ -1292,8 +1292,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-PartisanDefenderStone-92114"
  value: {
-  dps: 47922.08786
-  tps: 31066.42498
+  dps: 46665.18088
+  tps: 30482.86919
  }
 }
 dps_results: {
@@ -1306,8 +1306,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-PartisanStoneofBattle-92149"
  value: {
-  dps: 48485.26179
-  tps: 31410.11602
+  dps: 47222.43673
+  tps: 30810.04622
  }
 }
 dps_results: {
@@ -1616,8 +1616,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-ScourgeheartDefenderStone-92134"
  value: {
-  dps: 47940.57435
-  tps: 31097.47709
+  dps: 46684.51202
+  tps: 30500.62864
  }
 }
 dps_results: {
@@ -1630,8 +1630,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-ScourgeheartStoneofBattle-92168"
  value: {
-  dps: 48503.28376
-  tps: 31413.3763
+  dps: 47225.15229
+  tps: 30806.57863
  }
 }
 dps_results: {
@@ -1749,8 +1749,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-SoulseizerStoneofDestruction-92124"
  value: {
-  dps: 48025.39345
-  tps: 31132.52024
+  dps: 46739.75827
+  tps: 30522.66474
  }
 }
 dps_results: {
@@ -1973,15 +1973,15 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-ThundercallerStoneofDestruction-92119"
  value: {
-  dps: 47985.57499
-  tps: 31107.31421
+  dps: 46754.37724
+  tps: 30537.83377
  }
 }
 dps_results: {
  key: "TestEnhancement-AllItems-ThundercallerStoneofRage-92121"
  value: {
-  dps: 49321.76014
-  tps: 31959.81159
+  dps: 48023.51847
+  tps: 31335.23444
  }
 }
 dps_results: {
@@ -2309,8 +2309,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-WaterdancerDefenderStone-92398"
  value: {
-  dps: 47960.89709
-  tps: 31108.83395
+  dps: 46673.52268
+  tps: 30497.74664
  }
 }
 dps_results: {
@@ -2323,8 +2323,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-WaterdancerStoneofRage-92400"
  value: {
-  dps: 49326.90069
-  tps: 31953.51093
+  dps: 48020.37455
+  tps: 31339.33585
  }
 }
 dps_results: {

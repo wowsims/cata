@@ -62,7 +62,7 @@ func main() {
 		tools.WriteFile(fmt.Sprintf("%s/wowhead_gearplannerdb.txt", inputsDir), tools.ReadWebRequired("https://nether.wowhead.com/cata/data/gear-planner?dv=100"))
 		return
 	} else if *genAsset == "wago-db2-items" {
-		tools.WriteFile(fmt.Sprintf("%s/wago_db2_items.csv", inputsDir), tools.ReadWebRequired("https://wago.tools/db2/ItemSparse/csv?build=4.4.0.53627"))
+		tools.WriteFile(fmt.Sprintf("%s/wago_db2_items.csv", inputsDir), tools.ReadWebRequired("https://wago.tools/db2/ItemSparse/csv?build=4.4.2.59536"))
 		return
 	} else if *genAsset == "reforge-stats" {
 		//Todo: fill this when we have information from wowhead @ Neteyes - Gehennas
