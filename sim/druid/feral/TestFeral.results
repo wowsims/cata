@@ -502,8 +502,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-DarkwalkerStoneofRage-92117"
  value: {
-  dps: 51428.93657
-  tps: 69400.44335
+  dps: 50546.01597
+  tps: 66978.82171
   hps: 26.77086
  }
 }
@@ -542,8 +542,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-DelivererStoneofDestruction-92151"
  value: {
-  dps: 49698.14286
-  tps: 66503.58272
+  dps: 48800.45569
+  tps: 66090.92166
   hps: 28.5205
  }
 }
@@ -630,8 +630,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-EnlightenedStoneofDestruction-92143"
  value: {
-  dps: 49710.27179
-  tps: 67774.07293
+  dps: 48874.15623
+  tps: 65623.79889
   hps: 28.5205
  }
 }
@@ -790,8 +790,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-ForestwalkerStoneofRage-92141"
  value: {
-  dps: 51315.27745
-  tps: 69582.97497
+  dps: 50556.85079
+  tps: 68795.59967
   hps: 26.77086
  }
 }
@@ -1286,8 +1286,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-MartialDefenderStone-92126"
  value: {
-  dps: 49625.56977
-  tps: 66727.23704
+  dps: 48967.79735
+  tps: 66711.24184
   hps: 26.77086
  }
 }
@@ -1302,8 +1302,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-MartialStoneofBattle-92129"
  value: {
-  dps: 50426.62616
-  tps: 67899.21692
+  dps: 49401.5431
+  tps: 65989.91664
   hps: 26.77086
  }
 }
@@ -1398,16 +1398,16 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-NaturalistStoneofDestruction-92136"
  value: {
-  dps: 49689.50813
-  tps: 65911.41224
+  dps: 48822.98317
+  tps: 66136.67268
   hps: 28.5205
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-NaturalistStoneofRage-92138"
  value: {
-  dps: 51340.03413
-  tps: 69726.28264
+  dps: 50395.57217
+  tps: 68306.79846
   hps: 26.77086
  }
 }
@@ -1470,8 +1470,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-PartisanDefenderStone-92114"
  value: {
-  dps: 49890.86633
-  tps: 67019.41939
+  dps: 48909.67291
+  tps: 65878.27254
   hps: 26.77086
  }
 }
@@ -1486,8 +1486,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-PartisanStoneofBattle-92149"
  value: {
-  dps: 50321.05314
-  tps: 68400.16353
+  dps: 49460.84827
+  tps: 67311.49433
   hps: 26.77086
  }
 }
@@ -1830,8 +1830,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-ScourgeheartDefenderStone-92134"
  value: {
-  dps: 49790.75252
-  tps: 67429.60701
+  dps: 48783.03935
+  tps: 66118.8043
   hps: 26.77086
  }
 }
@@ -1846,8 +1846,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-ScourgeheartStoneofBattle-92168"
  value: {
-  dps: 50368.65806
-  tps: 68724.73375
+  dps: 49548.73576
+  tps: 67099.39744
   hps: 26.77086
  }
 }
@@ -1974,8 +1974,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-SoulseizerStoneofDestruction-92124"
  value: {
-  dps: 49697.46366
-  tps: 67034.49515
+  dps: 48881.77729
+  tps: 66286.67276
   hps: 28.5205
  }
 }
@@ -2222,16 +2222,16 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-ThundercallerStoneofDestruction-92119"
  value: {
-  dps: 49607.99258
-  tps: 66249.4285
+  dps: 48763.27345
+  tps: 65373.45796
   hps: 28.5205
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-ThundercallerStoneofRage-92121"
  value: {
-  dps: 51338.50916
-  tps: 69355.9268
+  dps: 50490.95208
+  tps: 68032.56936
   hps: 26.77086
  }
 }
@@ -2582,8 +2582,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-WaterdancerDefenderStone-92398"
  value: {
-  dps: 49658.83387
-  tps: 67156.64463
+  dps: 48907.29132
+  tps: 67311.07208
   hps: 26.77086
  }
 }
@@ -2598,8 +2598,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-WaterdancerStoneofRage-92400"
  value: {
-  dps: 51419.85683
-  tps: 69357.20926
+  dps: 50671.35631
+  tps: 68519.55544
   hps: 26.77086
  }
 }
