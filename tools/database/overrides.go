@@ -17,6 +17,36 @@ var OtherItemIdsToFetch = []string{
 }
 
 var ItemOverrides = []*proto.UIItem{
+	// Boosted 359 green weapon damage stats are way off
+	// min and max show as double of their actual values in tooltips...
+	// some scaling is happening that wowhead can't pick up
+	{ /** Martial Sword */ Id: 92074, WeaponDamageMin: 776, WeaponDamageMax: 1443},
+	{ /** Scourgeheart Blade */ Id: 92110, WeaponDamageMin: 841, WeaponDamageMax: 1564},
+	{ /** Partisan Sword */ Id: 92111, WeaponDamageMin: 776, WeaponDamageMax: 1443},
+	{ /** Thundercaller Mace */ Id: 92112, WeaponDamageMin: 841, WeaponDamageMax: 1564},
+	{ /** Darkwalker Shiv */ Id: 92192, WeaponDamageMin: 582, WeaponDamageMax: 1083},
+	{ /** Partisan Scepter */ Id: 92202, WeaponDamageMin: 388, WeaponDamageMax: 721},
+	{ /** Darkwalker Sword */ Id: 92203, WeaponDamageMin: 841, WeaponDamageMax: 1564},
+	{ /** Darkwalker Dagger */ Id: 92204, WeaponDamageMin: 582, WeaponDamageMax: 1083},
+	{ /** Thundercaller Gavel */ Id: 92205, WeaponDamageMin: 388, WeaponDamageMax: 721},
+	{ /** Thundercaller Scepter */ Id: 92206, WeaponDamageMin: 388, WeaponDamageMax: 721},
+	{ /** Scourgeheart Maul */ Id: 92353, WeaponDamageMin: 1795, WeaponDamageMax: 2694},
+	{ /** Scourgeheart Hammer */ Id: 92354, WeaponDamageMin: 1795, WeaponDamageMax: 2694},
+	{ /** Naturalist Stave */ Id: 92355, WeaponDamageMin: 554, WeaponDamageMax: 832},
+	{ /** Naturalist Spear */ Id: 92356, WeaponDamageMin: 1496, WeaponDamageMax: 2245},
+	{ /** Forestwalker Spear */ Id: 92357, WeaponDamageMin: 1496, WeaponDamageMax: 2245},
+	{ /** Naturalist Staff */ Id: 92358, WeaponDamageMin: 554, WeaponDamageMax: 832},
+	{ /** Enlightened Staff */ Id: 92359, WeaponDamageMin: 554, WeaponDamageMax: 832},
+	{ /** Partisan Greatsword */ Id: 92360, WeaponDamageMin: 1795, WeaponDamageMax: 2694},
+	{ /** Deliverer Stave */ Id: 92361, WeaponDamageMin: 554, WeaponDamageMax: 832},
+	{ /** Deliverer Staff */ Id: 92362, WeaponDamageMin: 554, WeaponDamageMax: 832},
+	{ /** Martial Maul */ Id: 92363, WeaponDamageMin: 1795, WeaponDamageMax: 2694},
+	{ /** Martial Greatsword */ Id: 92364, WeaponDamageMin: 1795, WeaponDamageMax: 2694},
+	{ /** Soulseizer Staff */ Id: 92365, WeaponDamageMin: 554, WeaponDamageMax: 832},
+	{ /** Waterdancer Spire */ Id: 92372, WeaponDamageMin: 1496, WeaponDamageMax: 2245},
+	{ /** Waterdancer Staff */ Id: 92373, WeaponDamageMin: 554, WeaponDamageMax: 832},
+	{ /** Waterdancer Sword */ Id: 92405, WeaponDamageMin: 841, WeaponDamageMax: 1564},
+
 	// TODO: Remove these when blizzard fixes the item data
 	{ /** Alysra's Razor (H) */ Id: 71427, WeaponDamageMin: 610, WeaponDamageMax: 1134, WeaponSpeed: 1.4},
 	{ /** Arathar, the Eye of Flame (H) */ Id: 71611, WeaponDamageMin: 1865, WeaponDamageMax: 3465, WeaponSpeed: 3.0},
