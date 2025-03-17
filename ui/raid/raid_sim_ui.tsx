@@ -1,6 +1,6 @@
 import { default as pako } from 'pako';
 
-import { EmbeddedDetailedResults } from '../core/components/detailed_results';
+import { DetailedResults } from '../core/components/detailed_results';
 import { addRaidSimAction, RaidSimResultsManager, ReferenceData } from '../core/components/raid_sim_action';
 import { raidSimStatus } from '../core/launched_sims';
 import { Player } from '../core/player';
@@ -116,7 +116,7 @@ export class RaidSimUI extends SimUI {
 		const detailedResults = (<div className="detailed-results"></div>) as HTMLElement;
 		this.addTab('Results', 'detailed-results-tab', detailedResults);
 
-		new EmbeddedDetailedResults(detailedResults, this, this.raidSimResultsManager!);
+		new DetailedResults(detailedResults, this, this.raidSimResultsManager!);
 	}
 
 	private recomputeSettingsLayout() {
