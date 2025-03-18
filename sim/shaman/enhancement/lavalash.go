@@ -58,13 +58,21 @@ func (enh *EnhancementShaman) registerLavaLashSpell() {
 				return
 			}
 
-			if enh.Talents.SearingFlames > 0 {
-				if searingFlames.GetStacks() > 0 {
+			if enh.Talents.ImprovedLavaLash > 0 {
+				flameShockDot := enh.FlameShock.Dot(target)
+
+				if flameShockDot != nil && flameShockDot.IsActive() {
 					numberSpread := 0
-					maxTargets := 4
-					for _, otherTarget := range sim.Encounter.TargetUnits {
+					maxTargets := min(4, len(sim.Encounter.TargetUnits))
+
+					validTargets := core.FilterSlice(sim.Encounter.TargetUnits, func(unit *core.Unit) bool {
+						dot := enh.FlameShock.Dot(unit)
+						return dot == nil || !dot.IsActive()
+					})
+
+					for _, otherTarget := range validTargets {
 						if otherTarget != target {
-							enh.FlameShock.Cast(sim, otherTarget)
+							enh.FlameShock.RelatedDotSpell.Dot(otherTarget).Apply(sim)
 							numberSpread++
 						}
 
@@ -72,9 +80,11 @@ func (enh *EnhancementShaman) registerLavaLashSpell() {
 							return
 						}
 					}
-
-					searingFlames.SetStacks(sim, 0)
 				}
+			}
+
+			if enh.Talents.SearingFlames > 0 && searingFlames.GetStacks() > 0 {
+				searingFlames.SetStacks(sim, 0)
 			}
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
