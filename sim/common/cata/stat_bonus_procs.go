@@ -1357,13 +1357,13 @@ func init() {
 			Name:       name,
 			ItemID:     id,
 			AuraID:     133630,
-			Bonus:      stats.Stats{stats.MasteryRating: 2573},
+			Bonus:      stats.Stats{stats.MasteryRating: 1926},
 			Duration:   time.Second * 20,
 			Callback:   core.CallbackOnSpellHitDealt,
 			ProcMask:   core.ProcMaskDirect | core.ProcMaskProc,
 			Outcome:    core.OutcomeLanded,
-			ProcChance: 0.15,
-			ICD:        time.Second * 65,
+			ProcChance: 0.10,
+			ICD:        time.Second * 100,
 		})
 	}
 

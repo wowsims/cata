@@ -473,7 +473,7 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-DarkwalkerStoneofRage-92117"
  value: {
-  dps: 25533.55891
+  dps: 25235.35575
   tps: 15752.39176
  }
 }
@@ -494,7 +494,7 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-DelivererStoneofDestruction-92151"
  value: {
-  dps: 24475.54352
+  dps: 24200.67129
   tps: 15118.55967
  }
 }
@@ -571,7 +571,7 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-EnlightenedStoneofDestruction-92143"
  value: {
-  dps: 24487.08547
+  dps: 24214.80859
   tps: 15118.55967
  }
 }
@@ -718,7 +718,7 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-ForestwalkerStoneofRage-92141"
  value: {
-  dps: 25507.84566
+  dps: 25228.52081
   tps: 15752.39176
  }
 }
@@ -1180,7 +1180,7 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-MartialDefenderStone-92126"
  value: {
-  dps: 24490.33783
+  dps: 24213.21622
   tps: 15118.55967
  }
 }
@@ -1194,7 +1194,7 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-MartialStoneofBattle-92129"
  value: {
-  dps: 24482.83454
+  dps: 24215.38881
   tps: 15118.55967
  }
 }
@@ -1278,14 +1278,14 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-NaturalistStoneofDestruction-92136"
  value: {
-  dps: 24446.57222
+  dps: 24199.81072
   tps: 15118.55967
  }
 }
 dps_results: {
  key: "TestBM-AllItems-NaturalistStoneofRage-92138"
  value: {
-  dps: 25511.72271
+  dps: 25228.89216
   tps: 15752.39176
  }
 }
@@ -1348,7 +1348,7 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-PartisanDefenderStone-92114"
  value: {
-  dps: 24491.41066
+  dps: 24207.20505
   tps: 15118.55967
  }
 }
@@ -1362,7 +1362,7 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-PartisanStoneofBattle-92149"
  value: {
-  dps: 24474.0561
+  dps: 24216.80687
   tps: 15118.55967
  }
 }
@@ -1665,7 +1665,7 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-ScourgeheartDefenderStone-92134"
  value: {
-  dps: 24497.4808
+  dps: 24217.7334
   tps: 15118.55967
  }
 }
@@ -1679,7 +1679,7 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-ScourgeheartStoneofBattle-92168"
  value: {
-  dps: 24499.02398
+  dps: 24217.47994
   tps: 15118.55967
  }
 }
@@ -1819,7 +1819,7 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-SoulseizerStoneofDestruction-92124"
  value: {
-  dps: 24474.09794
+  dps: 24217.83677
   tps: 15118.55967
  }
 }
@@ -2022,14 +2022,14 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-ThundercallerStoneofDestruction-92119"
  value: {
-  dps: 24461.54056
+  dps: 24209.19056
   tps: 15118.55967
  }
 }
 dps_results: {
  key: "TestBM-AllItems-ThundercallerStoneofRage-92121"
  value: {
-  dps: 25498.88728
+  dps: 25239.97253
   tps: 15752.39176
  }
 }
@@ -2358,7 +2358,7 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-WaterdancerDefenderStone-92398"
  value: {
-  dps: 24495.94552
+  dps: 24219.21356
   tps: 15118.55967
  }
 }
@@ -2372,7 +2372,7 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-WaterdancerStoneofRage-92400"
  value: {
-  dps: 25540.10732
+  dps: 25237.96168
   tps: 15752.39176
  }
 }
