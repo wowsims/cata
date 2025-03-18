@@ -2309,43 +2309,43 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p4-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 106940.90999
-  tps: 90560.11977
+  dps: 112774.82413
+  tps: 96786.84599
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p4-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 48575.90599
-  tps: 23816.33891
+  dps: 52000.86008
+  tps: 26501.38303
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p4-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 85009.58493
-  tps: 39743.78032
+  dps: 87408.69744
+  tps: 42021.86279
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p4-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 91226.94462
-  tps: 80949.84103
+  dps: 96224.99357
+  tps: 85796.26831
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p4-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 35621.93744
-  tps: 17464.62403
+  dps: 38371.23319
+  tps: 19397.15824
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p4-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 57207.46878
-  tps: 27347.72615
+  dps: 59436.76114
+  tps: 28589.55267
  }
 }
 dps_results: {
@@ -2477,43 +2477,43 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Settings-Human-p4-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 105509.23757
-  tps: 89232.71502
+  dps: 112093.41177
+  tps: 95933.76175
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p4-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 48166.77493
-  tps: 23697.4008
+  dps: 51860.77951
+  tps: 26389.29854
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p4-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 83869.61979
-  tps: 39222.46053
+  dps: 86715.06341
+  tps: 41706.67881
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p4-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 90582.91918
-  tps: 80534.4419
+  dps: 96173.73301
+  tps: 85652.92915
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p4-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 35553.01546
-  tps: 17482.06651
+  dps: 37999.28562
+  tps: 19281.84105
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p4-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 57699.58483
-  tps: 27692.52607
+  dps: 59283.21895
+  tps: 28788.66989
  }
 }
 dps_results: {
@@ -2645,43 +2645,43 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Settings-Orc-p4-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 107315.71317
-  tps: 89681.33052
+  dps: 113924.77238
+  tps: 96395.29355
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p4-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 49429.49251
-  tps: 23918.11822
+  dps: 53162.19022
+  tps: 26622.02924
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p4-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 86750.74752
-  tps: 39893.51624
+  dps: 89611.75646
+  tps: 42380.92059
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p4-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 92405.28895
-  tps: 81057.61699
+  dps: 98062.23337
+  tps: 86310.46727
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p4-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 36603.78645
-  tps: 17650.60001
+  dps: 39050.07329
+  tps: 19454.03128
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p4-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 59982.83092
-  tps: 28193.64721
+  dps: 61592.17086
+  tps: 29302.4626
  }
 }
 dps_results: {
@@ -2813,43 +2813,43 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Settings-Troll-p4-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 107425.70815
-  tps: 90809.25502
+  dps: 112643.51435
+  tps: 96074.94907
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p4-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 49122.13615
-  tps: 24077.3353
+  dps: 52424.32902
+  tps: 26623.3461
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p4-DefaultTalents-Demonology Warlock-shadow-bolt-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 87613.33456
-  tps: 41225.69406
+  dps: 89468.7834
+  tps: 42951.48967
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p4-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 93498.69758
-  tps: 82882.21613
+  dps: 98676.50529
+  tps: 87410.55633
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p4-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 36166.88613
-  tps: 17652.81844
+  dps: 38563.72484
+  tps: 19549.23275
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p4-DefaultTalents-Demonology Warlock-shadow-bolt-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 60223.01613
-  tps: 28375.25888
+  dps: 61671.13318
+  tps: 29571.9467
  }
 }
 dps_results: {
