@@ -42,7 +42,7 @@
 		{"action":{"condition":{"spellIsReady":{"spellId":{"spellId":71521}}},"castSpell":{"spellId":{"spellId":71521}}}},
 		{"action":{"condition":{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":89937}}},{"auraIsActive":{"auraId":{"spellId":89937}}}]}},"castSpell":{"spellId":{"spellId":77799}}}},
 		{"action":{"condition":{"spellIsReady":{"spellId":{"spellId":47897}}},"castSpell":{"spellId":{"spellId":47897}}}},
-		{"action":{"condition":{"auraIsActive":{"auraId":{"spellId":17941}}},"castSpell":{"spellId":{"spellId":686}}}},
+		{"action":{"condition":{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":17941}}},{"auraIsActive":{"auraId":{"spellId":17941}}}]}},"castSpell":{"spellId":{"spellId":686}}}},
 		{"action":{"condition":{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":71165}}},{"auraIsActive":{"auraId":{"spellId":71165}}}]}},"castSpell":{"spellId":{"spellId":29722}}}},
 		{"action":{"condition":{"auraIsActive":{"auraId":{"spellId":74434}}},"castSpell":{"spellId":{"spellId":6353}}}},
 		{"action":{"condition":{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":63167}}},{"auraIsActive":{"auraId":{"spellId":63167}}}]}},"castSpell":{"spellId":{"spellId":6353}}}},
