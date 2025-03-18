@@ -103,7 +103,9 @@ func (warlock *Warlock) registerBackdraft() {
 			castTimeMod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Matches(WarlockSpellShadowBolt | WarlockSpellIncinerate | WarlockSpellChaosBolt) {
+			if spell.Matches(WarlockSpellShadowBolt|WarlockSpellIncinerate|WarlockSpellChaosBolt) &&
+				// DTR procs don't consume backdraft stacks
+				!spell.ProcMask.Matches(core.ProcMaskSpellProc) {
 				aura.RemoveStack(sim)
 			}
 		},
