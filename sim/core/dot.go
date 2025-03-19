@@ -171,7 +171,7 @@ func (dot *Dot) BaseDuration() time.Duration {
 }
 
 // Copy's the original DoT's period and duration to the current DoT.
-// This is only currently used for Mage's Impact DoT spreading.
+// This is only currently used for Mage's Impact DoT spreading and Enhancement's ImprovedLava Lash.
 func (dot *Dot) CopyDotAndApply(sim *Simulation, originaldot *Dot) {
 	dot.TakeSnapshot(sim, false)
 	dot.SnapshotBaseDamage = originaldot.SnapshotBaseDamage
