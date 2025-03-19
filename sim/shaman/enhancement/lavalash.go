@@ -72,7 +72,7 @@ func (enh *EnhancementShaman) registerLavaLashSpell() {
 
 					for _, otherTarget := range validTargets {
 						if otherTarget != target {
-							enh.FlameShock.RelatedDotSpell.Dot(otherTarget).Apply(sim)
+							enh.FlameShock.RelatedDotSpell.Dot(otherTarget).CopyDotAndApply(sim, flameShockDot)
 							numberSpread++
 						}
 
