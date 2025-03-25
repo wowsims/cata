@@ -32,7 +32,7 @@ func QueryItems() ([]*proto.UIItem, error) {
 			rpp.Epic as RPPEpic,
 			rpp.Superior as RPPSuperior,
 			rpp.Good as RPPGood,
-			s.Field_1_15_3_55112_014 as StatPercent,
+			s.Field_1_15_3_55112_014 as StatValue,
 			s.StatModifier_bonusStat as bonusStat,
 			(at.Cloth * al.Clothmodifier) AS clothArmorValue,
 			(at.Leather * al.LeatherModifier) AS leatherArmorValue,
@@ -41,13 +41,19 @@ func QueryItems() ([]*proto.UIItem, error) {
 			CASE 
 				WHEN s.InventoryType = 20 THEN 5 
 				ELSE s.InventoryType 
-			END AS ArmorLocationID
+			END AS ArmorLocationID,
+			ias.Quality as shieldArmorValues,
+			s.StatPercentEditor as StatPercentEditor,
+			s.SocketType as SocketTypes,
+			s.Socket_match_enchantment_ID as SocketEnchantmentId,
+			s.Flags_0 as Flags_0
 		FROM Item i
 		JOIN ItemSparse s ON i.ID = s.ID
 		JOIN ItemClass ic ON i.ClassID = ic.ClassID
 		JOIN ItemSubClass isc ON i.ClassID = isc.ClassID AND i.SubClassID = isc.SubClassID
 		JOIN RandPropPoints rpp ON s.ItemLevel = rpp.ID
 		LEFT JOIN ArmorLocation al ON al.ID = ArmorLocationId
+		LEFT JOIN ItemArmorShield ias ON s.ItemLevel = ias.ItemLevel
 		JOIN ItemArmorTotal at ON s.ItemLevel = at.ItemLevel
 		WHERE s.ID = ?;
 	`
@@ -72,7 +78,7 @@ func QueryItems() ([]*proto.UIItem, error) {
 			}
 		}
 		return rows.Err()
-	}, 78723) // Pass the item ID or remove this and WHERE s.ID = ?; if you want all items
+	}, 78489) // Pass the item ID or remove this and WHERE s.ID = ?; if you want all items
 
 	return items, nil
 }

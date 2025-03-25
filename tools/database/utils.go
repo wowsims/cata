@@ -11,6 +11,7 @@ func parseIntArrayField(jsonStr string, expectedLen int) ([]int, error) {
 		return nil, err
 	}
 	if len(arr) != expectedLen {
+		fmt.Println("expected array of length %d, got %d", expectedLen, len(arr))
 		return nil, fmt.Errorf("expected array of length %d, got %d", expectedLen, len(arr))
 	}
 	return arr, nil
@@ -36,4 +37,7 @@ func decodeJSONFloatArray(raw string) []float64 {
 		return nil
 	}
 	return arr
+}
+func (f ItemFlags) Has(flag ItemFlags) bool {
+	return f&flag != 0
 }

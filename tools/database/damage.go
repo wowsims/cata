@@ -9,7 +9,7 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-func processWeaponDamage(helper *DBHelper, raw rawItemData, item *proto.UIItem) error {
+func processWeaponDamage(helper *DBHelper, raw RawItemData, item *proto.UIItem) error {
 	invTypeStr, ok := inventoryTypeMap[raw.invType]
 	if !ok {
 		invTypeStr = "Unknown"

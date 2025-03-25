@@ -44,7 +44,16 @@ var inventoryTypeMap = map[int]string{
 	27: "Ranged",
 	28: "Ranged",
 }
-
+var SocketTypeToGemColorMap = map[int]proto.GemColor{
+	0: proto.GemColor_GemColorUnknown,
+	1: proto.GemColor_GemColorMeta,
+	2: proto.GemColor_GemColorRed,
+	3: proto.GemColor_GemColorYellow,
+	4: proto.GemColor_GemColorBlue,
+	5: proto.GemColor_GemColorUnknown,
+	6: proto.GemColor_GemColorCogwheel,
+	7: proto.GemColor_GemColorPrismatic,
+}
 var inventoryTypeMapToItemType = map[int]proto.ItemType{
 	0:  proto.ItemType_ItemTypeUnknown,
 	1:  proto.ItemType_ItemTypeHead,
@@ -61,7 +70,7 @@ var inventoryTypeMapToItemType = map[int]proto.ItemType{
 	12: proto.ItemType_ItemTypeTrinket,
 	13: proto.ItemType_ItemTypeWeapon,
 	14: proto.ItemType_ItemTypeWeapon,
-	15: proto.ItemType_ItemTypeWeapon,
+	15: proto.ItemType_ItemTypeRanged,
 	16: proto.ItemType_ItemTypeBack,
 	17: proto.ItemType_ItemTypeWeapon,
 	18: proto.ItemType_ItemTypeUnknown,
@@ -172,6 +181,7 @@ var subClassNameToWeaponAndHandType = map[string]WeaponAndHand{
 	"Crossbows":          {Weapon: proto.WeaponType_WeaponTypeUnknown, Hand: proto.HandType_HandTypeUnknown},
 	"Wands":              {Weapon: proto.WeaponType_WeaponTypeUnknown, Hand: proto.HandType_HandTypeUnknown},
 	"Fishing Poles":      {Weapon: proto.WeaponType_WeaponTypePolearm, Hand: proto.HandType_HandTypeTwoHand},
+	"Shields":            {Weapon: proto.WeaponType_WeaponTypeShield, Hand: proto.HandType_HandTypeOffHand},
 }
 
 var subClassNameRoRangedWeaponType = map[string]proto.RangedWeaponType{
@@ -181,3 +191,32 @@ var subClassNameRoRangedWeaponType = map[string]proto.RangedWeaponType{
 	"Wands":     proto.RangedWeaponType_RangedWeaponTypeWand,
 	"Relic":     proto.RangedWeaponType_RangedWeaponTypeRelic,
 }
+
+type ItemFlags int
+
+const (
+	Unknown1       ItemFlags = 1 << iota // 1
+	ConjuredItem                         // 2
+	OpenableItem                         // 4
+	HeroicItem                           // 8
+	DeprecatedItem                       // 16
+	Totem                                // 32
+	Spelltriggerer                       // 64
+	Unknown3                             // 128
+	Wand                                 // 256
+	Wrap                                 // 512
+	Producer                             // 1024
+	MultiLoot                            // 2048
+	BGItem                               // 4096
+	Charter                              // 8192
+	ReadableItem                         // 16384
+	PvPItem                              // 32768
+	Duration                             // 65536
+	Unknown4                             // 131072
+	Prospectable                         // 262144
+	UniqueEquipped                       // 524288
+	Unknown5                             // 1048576
+	Unknown6                             // 2097152
+	ThrowingWeapon                       // 4194304
+	Unknown7                             // 8388608
+)

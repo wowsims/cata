@@ -1,0 +1,191 @@
+package database
+
+import (
+	"database/sql"
+	"fmt"
+)
+
+// Tables
+var RawItems []RawItemData
+var RandPropPoints []RandPropPointsStruct
+var ItemStatEffects []ItemStatEffect
+var ItemStatEffectById map[int]ItemStatEffect
+
+// Loading tables
+// Below is the definition and loading of tables
+//
+
+// Raw Item Data
+//
+//
+
+type RawItemData struct {
+	id                  int
+	name                string
+	invType             int
+	itemDelay           int
+	overallQuality      int
+	dmgVariance         float64
+	dbMinDamage         string
+	dbMaxDamage         string
+	itemLevel           int
+	itemClassName       string
+	itemSubClassName    string
+	rppEpic             string
+	rppSuperior         string
+	rppGood             string
+	statValue           string
+	bonusStat           string
+	clothArmorValue     float64
+	leatherArmorValue   float64
+	mailArmorValue      float64
+	plateArmorValue     float64
+	armorLocID          int
+	shieldArmorValues   string
+	statPercentEditor   string
+	socketTypes         string
+	socketEnchantmentId int
+	flags0              ItemFlags
+}
+
+// func ScanRawItemData(rows *sql.Rows) (RawItemData, error) {
+// 	var raw RawItemData
+// 	err := rows.Scan(&raw.id, &raw.name, &raw.invType, &raw.itemDelay, &raw.overallQuality, &raw.dmgVariance,
+// 		&raw.dbMinDamage, &raw.dbMaxDamage, &raw.itemLevel, &raw.itemClassName, &raw.itemSubClassName,
+// 		&raw.rppEpic, &raw.rppSuperior, &raw.rppGood, &raw.statValue, &raw.bonusStat,
+// 		&raw.clothArmorValue, &raw.leatherArmorValue, &raw.mailArmorValue, &raw.plateArmorValue,
+// 		&raw.armorLocID, &raw.shieldArmorValues, &raw.statPercentEditor, &raw.socketTypes)
+// 	return raw, err
+// }
+
+// func LoadRawItems(dbHelper *DBHelper) {
+// 	query := `
+// 		SELECT
+// 			i.ID,
+// 			s.Display_lang AS Name,
+// 			i.InventoryType,
+// 			s.ItemDelay,
+// 			s.OverallQualityID,
+// 			s.DmgVariance,
+// 			s.MinDamage,
+// 			s.MaxDamage,
+// 			s.ItemLevel,
+// 			ic.ClassName_lang AS ItemClassName,
+// 			isc.VerboseName_lang AS ItemSubClassName,
+// 			rpp.Epic as RPPEpic,
+// 			rpp.Superior as RPPSuperior,
+// 			rpp.Good as RPPGood,
+// 			s.Field_1_15_3_55112_014 as StatValue,
+// 			s.StatModifier_bonusStat as bonusStat,
+// 			(at.Cloth * al.Clothmodifier) AS clothArmorValue,
+// 			(at.Leather * al.LeatherModifier) AS leatherArmorValue,
+// 			(at.Mail * al.Chainmodifier) AS mailArmorValue,
+// 			(at.Plate * al.Platemodifier) AS plateArmorValue,
+// 			CASE
+// 				WHEN s.InventoryType = 20 THEN 5
+// 				ELSE s.InventoryType
+// 			END AS ArmorLocationID,
+// 			ias.Quality as shieldArmorValues,
+// 			s.StatPercentEditor as StatPercentEditor,
+// 			s.SocketType as SocketTypes
+// 		FROM Item i
+// 		JOIN ItemSparse s ON i.ID = s.ID
+// 		JOIN ItemClass ic ON i.ClassID = ic.ClassID
+// 		JOIN ItemSubClass isc ON i.ClassID = isc.ClassID AND i.SubClassID = isc.SubClassID
+// 		JOIN RandPropPoints rpp ON s.ItemLevel = rpp.ID
+// 		LEFT JOIN ArmorLocation al ON al.ID = ArmorLocationId
+// 		LEFT JOIN ItemArmorShield ias ON s.ItemLevel = ias.ItemLevel
+// 		JOIN ItemArmorTotal at ON s.ItemLevel = at.ItemLevel
+// 		WHERE s.ID = ?;
+// 	`
+// 	items, err := LoadRows(dbHelper.db, query, ScanRawItemData)
+// 	if err != nil {
+// 		fmt.Errorf("Error in query load items")
+// 	}
+// 	RawItems = items
+// }
+
+// RandPropPoints
+//
+//
+//
+
+type RandPropPointsStruct struct {
+	ItemLevel int
+	Epic      []int
+	Superior  []int
+	Good      []int
+}
+
+func ScanRandPropPoints(rows *sql.Rows) (RandPropPointsStruct, error) {
+	var raw RandPropPointsStruct
+	var epicString, superiorString, goodString string
+
+	err := rows.Scan(&raw.ItemLevel, &epicString, &superiorString, &goodString)
+	raw.Epic, err = parseIntArrayField(epicString, 5)
+	if err != nil {
+		fmt.Errorf("Error loading items")
+	}
+	raw.Superior, err = parseIntArrayField(superiorString, 5)
+	if err != nil {
+		fmt.Errorf("Error loading items")
+	}
+	raw.Good, err = parseIntArrayField(goodString, 5)
+	if err != nil {
+		fmt.Errorf("Error loading items")
+	}
+	return raw, err
+}
+
+func LoadRandPropPoints(dbHelper *DBHelper) {
+	query := `SELECT ID as ItemLevel, Epic, Superiors, Good FROM RandPropPoints;`
+	items, err := LoadRows(dbHelper.db, query, ScanRandPropPoints)
+	if err != nil {
+		fmt.Errorf("Error in query load items")
+	}
+
+	RandPropPoints = items
+}
+
+//ItemStatEffects
+// Used for straight up item stat effects from SpellItemEnchantment (socket bonuses for now, single stat)
+//
+
+type ItemStatEffect struct {
+	ID              int
+	EffectPointsMin []int
+	EffectPointsMax []int
+	EffectArg       []int
+}
+
+func ScanItemStatEffects(rows *sql.Rows) (ItemStatEffect, error) {
+	var raw ItemStatEffect
+	var ePointsMin, epointsMax, eArgs string
+	err := rows.Scan(&raw.ID, &ePointsMin, &epointsMax, &eArgs)
+	raw.EffectPointsMin, err = parseIntArrayField(ePointsMin, 3)
+	if err != nil {
+		fmt.Errorf("Error loading ItemStatEffects ePointsMin")
+	}
+	raw.EffectPointsMax, err = parseIntArrayField(epointsMax, 3)
+	if err != nil {
+		fmt.Errorf("Error loading ItemStatEffects epointsMax")
+	}
+	raw.EffectArg, err = parseIntArrayField(eArgs, 3)
+	if err != nil {
+		fmt.Errorf("Error loading ItemStatEffects eArgs")
+	}
+	return raw, err
+}
+
+func LoadItemStatEffects(dbHelper *DBHelper) {
+	query := `SELECT ID, EffectPointsMin, EffectPointsMax, EffectArg FROM SpellItemEnchantment WHERE Effect_0 = 5`
+	items, err := LoadRows(dbHelper.db, query, ScanItemStatEffects)
+	if err != nil {
+		fmt.Errorf("Error in query load items")
+	}
+
+	ItemStatEffects = items
+	ItemStatEffectById = CacheBy(ItemStatEffects, func(effect ItemStatEffect) int {
+		return effect.ID
+	})
+}

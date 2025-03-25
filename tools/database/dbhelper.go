@@ -42,3 +42,29 @@ func (d *DBHelper) QueryAndProcess(query string, process func(*sql.Rows) error, 
 		log.Fatalf("processing error: %v", err)
 	}
 }
+
+func LoadRows[T any](db *sql.DB, query string, scanFunc func(*sql.Rows) (T, error), args ...interface{}) ([]T, error) {
+	rows, err := db.Query(query, args...)
+	if err != nil {
+		return nil, fmt.Errorf("query error: %w", err)
+	}
+	defer rows.Close()
+
+	var results []T
+	for rows.Next() {
+		item, err := scanFunc(rows)
+		if err != nil {
+			return nil, fmt.Errorf("scan error: %w", err)
+		}
+		results = append(results, item)
+	}
+	return results, nil
+}
+
+func CacheBy[T any, K comparable](items []T, keyFunc func(T) K) map[K]T {
+	cache := make(map[K]T)
+	for _, item := range items {
+		cache[keyFunc(item)] = item
+	}
+	return cache
+}
