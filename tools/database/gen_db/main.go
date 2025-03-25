@@ -27,6 +27,10 @@ import (
 // go run ./tools/database/gen_db -outDir=assets -gen=wago-db2-items
 // go run ./tools/database/gen_db -outDir=assets -gen=db
 
+// To test new DB generation
+//
+// go run ./tools/database/gen_db -outDir=assets -gen=testDb
+
 var exactId = flag.Int("id", 0, "ID to scan for")
 var minId = flag.Int("minid", 0, "Minimum ID to scan for")
 var maxId = flag.Int("maxid", 0, "Maximum ID to scan for")
@@ -35,7 +39,10 @@ var genAsset = flag.String("gen", "", "Asset to generate. Valid values are 'db',
 
 func main() {
 	flag.Parse()
-
+	if *genAsset == "testDb" {
+		database.QueryItems()
+		return
+	}
 	if *exactId != 0 {
 		minId = exactId
 		maxId = exactId
