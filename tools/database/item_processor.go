@@ -1,7 +1,6 @@
 package database
 
 import (
-	"database/sql"
 	"fmt"
 	"math"
 
@@ -9,27 +8,19 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-func processItemRow(helper *DBHelper, rows *sql.Rows) (*proto.UIItem, error) {
-	var raw RawItemData
-
-	if err := rows.Scan(
-		&raw.id, &raw.name, &raw.invType, &raw.itemDelay, &raw.overallQuality, &raw.dmgVariance,
-		&raw.dbMinDamage, &raw.dbMaxDamage, &raw.itemLevel, &raw.itemClassName, &raw.itemSubClassName,
-		&raw.rppEpic, &raw.rppSuperior, &raw.rppGood, &raw.statValue, &raw.bonusStat,
-		&raw.clothArmorValue, &raw.leatherArmorValue, &raw.mailArmorValue, &raw.plateArmorValue,
-		&raw.armorLocID, &raw.shieldArmorValues, &raw.statPercentEditor, &raw.socketTypes, &raw.socketEnchantmentId, &raw.flags0,
-	); err != nil {
-		return nil, err
-	}
-
+func RawItemToUIItem(helper *DBHelper, raw RawItemData) (*proto.UIItem, error) {
 	item := &proto.UIItem{
 		Type:    inventoryTypeMapToItemType[raw.invType],
 		Quality: qualityToItemQualityMap[raw.overallQuality],
 		Stats:   stats.Stats{}.ToProtoArray(),
+		SetName: raw.itemSetName,
+		SetId:   int32(raw.itemSetId),
+		Name:    raw.name,
+
+		Id:   int32(raw.id),
+		Ilvl: int32(raw.itemLevel),
 	}
-	item.Name = raw.name
-	item.Id = int32(raw.id)
-	item.Ilvl = int32(raw.itemLevel)
+
 	if raw.flags0.Has(UniqueEquipped) {
 		item.Unique = true
 	}
@@ -37,28 +28,31 @@ func processItemRow(helper *DBHelper, rows *sql.Rows) (*proto.UIItem, error) {
 		item.Heroic = true
 	}
 	if item.Type == proto.ItemType_ItemTypeWeapon {
-		if err := processWeaponDamage(helper, raw, item); err != nil {
-			fmt.Printf("processWeaponDamage error for item %d: %v\n", raw.id, err)
-		}
 		weaponType, handType, rangedType := determineWeaponTypes(raw.itemSubClassName, raw.invType)
-		if raw.invType != 15 { // not a ranged weapon
-			item.WeaponType = weaponType
-			item.HandType = handType
-		} else {
-			item.RangedWeaponType = rangedType
+		if weaponType != proto.WeaponType_WeaponTypeShield && weaponType != proto.WeaponType_WeaponTypeShield {
+
+			if err := processWeaponDamage(helper, raw, item); err != nil {
+				fmt.Printf("processWeaponDamage error for item %d: %v\n", raw.id, err)
+			}
+			if raw.invType != 15 { // not a ranged weapon
+				item.WeaponType = weaponType
+				item.HandType = handType
+			} else {
+				item.RangedWeaponType = rangedType
+			}
+			item.WeaponSpeed = float64(raw.itemDelay) / 1000.0
 		}
-		item.WeaponSpeed = float64(raw.itemDelay) / 1000.0
 	}
-	fmt.Println("APPLYING ARMOR VALU", raw.itemClassName, raw.itemSubClassName)
+
 	if raw.itemClassName == "Armor" {
 		item.ArmorType = subClassToArmorType[raw.itemSubClassName]
-		fmt.Println("APPLYING ARMOR VALU")
 		applyArmorValue(item, raw)
 	}
 
 	if err := processStats(raw, item); err != nil {
 		fmt.Printf("processStats error for item %d: %v\n", raw.id, err)
 	}
+
 	socketTypes, err := parseIntArrayField(raw.socketTypes, 3)
 	if err != nil {
 		fmt.Printf("Error parsing socketTypes: %v\n", err)
@@ -68,7 +62,6 @@ func processItemRow(helper *DBHelper, rows *sql.Rows) (*proto.UIItem, error) {
 			continue
 		}
 		var gemType = SocketTypeToGemColorMap[socketType]
-		fmt.Println(gemType.String())
 		item.GemSockets = append(item.GemSockets, gemType)
 	}
 
@@ -86,6 +79,7 @@ func processItemRow(helper *DBHelper, rows *sql.Rows) (*proto.UIItem, error) {
 		stat, err := MapBonusStatIndexToStat(effectStat)
 
 		if err == false {
+			fmt.Println("Error parsing statValue: \n", err, effectStat)
 			fmt.Printf("Error parsing statValue: %v\n", err, effectStat)
 		}
 		value := gemBonus.EffectPointsMin[i]

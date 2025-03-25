@@ -17,6 +17,18 @@ func parseIntArrayField(jsonStr string, expectedLen int) ([]int, error) {
 	return arr, nil
 }
 
+func parseFloatArrayField(jsonStr string, expectedLen int) ([]float64, error) {
+	var arr []float64
+	if err := json.Unmarshal([]byte(jsonStr), &arr); err != nil {
+		return nil, err
+	}
+	if len(arr) != expectedLen {
+		fmt.Println("expected array of length %d, got %d", expectedLen, len(arr))
+		return nil, fmt.Errorf("expected array of length %d, got %d", expectedLen, len(arr))
+	}
+	return arr, nil
+}
+
 func decodeJSONIntArray(raw string) []int {
 	var arr []int
 	if raw == "" {

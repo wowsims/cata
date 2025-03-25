@@ -1,84 +1,78 @@
 package database
 
 import (
-	"database/sql"
-	"encoding/json"
+	"bytes"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/tools"
 )
 
+func printProgressBar(current, total int) {
+	percent := float64(current) / float64(total)
+	barLength := 50
+	filledLength := int(percent * float64(barLength))
+	bar := ""
+	for i := 0; i < filledLength; i++ {
+		bar += "="
+	}
+	for i := filledLength; i < barLength; i++ {
+		bar += " "
+	}
+	fmt.Printf("\r[%s] %d%% (%d of %d)", bar, int(percent*100), current, total)
+}
+
 func QueryItems() ([]*proto.UIItem, error) {
+	iconsMap, err := LoadArtTexturePaths("./assets/db_inputs/ArtTextureID.lua")
+	if err != nil {
+		return nil, fmt.Errorf("failed to initialize icons map: %v", err)
+	}
 	helper, err := NewDBHelper("./tools/database/wowsims.db")
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize database helper: %v", err)
 	}
 	defer helper.Close()
-
-	query := `
-		SELECT 
-			i.ID, 
-			s.Display_lang AS Name,
-			i.InventoryType,
-			s.ItemDelay,
-			s.OverallQualityID,
-			s.DmgVariance,
-			s.MinDamage, 
-			s.MaxDamage,
-			s.ItemLevel,
-			ic.ClassName_lang AS ItemClassName,
-			isc.VerboseName_lang AS ItemSubClassName,
-			rpp.Epic as RPPEpic,
-			rpp.Superior as RPPSuperior,
-			rpp.Good as RPPGood,
-			s.Field_1_15_3_55112_014 as StatValue,
-			s.StatModifier_bonusStat as bonusStat,
-			(at.Cloth * al.Clothmodifier) AS clothArmorValue,
-			(at.Leather * al.LeatherModifier) AS leatherArmorValue,
-			(at.Mail * al.Chainmodifier) AS mailArmorValue,
-			(at.Plate * al.Platemodifier) AS plateArmorValue,
-			CASE 
-				WHEN s.InventoryType = 20 THEN 5 
-				ELSE s.InventoryType 
-			END AS ArmorLocationID,
-			ias.Quality as shieldArmorValues,
-			s.StatPercentEditor as StatPercentEditor,
-			s.SocketType as SocketTypes,
-			s.Socket_match_enchantment_ID as SocketEnchantmentId,
-			s.Flags_0 as Flags_0
-		FROM Item i
-		JOIN ItemSparse s ON i.ID = s.ID
-		JOIN ItemClass ic ON i.ClassID = ic.ClassID
-		JOIN ItemSubClass isc ON i.ClassID = isc.ClassID AND i.SubClassID = isc.SubClassID
-		JOIN RandPropPoints rpp ON s.ItemLevel = rpp.ID
-		LEFT JOIN ArmorLocation al ON al.ID = ArmorLocationId
-		LEFT JOIN ItemArmorShield ias ON s.ItemLevel = ias.ItemLevel
-		JOIN ItemArmorTotal at ON s.ItemLevel = at.ItemLevel
-		WHERE s.ID = ?;
-	`
-
 	var items []*proto.UIItem
 
-	helper.QueryAndProcess(query, func(rows *sql.Rows) error {
-		for rows.Next() {
-			item, err := processItemRow(helper, rows)
+	LoadItemDamageTables(helper)
+	LoadRawItems(helper)
+
+	total := len(RawItems)
+	for i, rawItem := range RawItems {
+		switch rawItem.itemClassName {
+		case "Weapon", "Armor":
+			item, err := RawItemToUIItem(helper, rawItem)
 			if err != nil {
 				log.Printf("Error processing item row: %v", err)
 				continue
 			}
 			items = append(items, item)
-			jsonItem, err := json.MarshalIndent(item, "", "  ")
-
-			if err != nil {
-				log.Printf("Error marshaling item (ID: %d): %v", item.Id, err)
-			} else {
-				fmt.Println("Marshalled UIItem:")
-				fmt.Println(string(jsonItem))
-			}
+			item.Icon = GetIconName(iconsMap, rawItem.FDID)
+			break
+		default:
+			//fmt.Println("Currently not processing", rawItem.itemClassName)
+			break
 		}
-		return rows.Err()
-	}, 78489) // Pass the item ID or remove this and WHERE s.ID = ?; if you want all items
 
+		printProgressBar(i+1, total)
+		//First we process equippable items (UIITems)
+
+		//Then we handle Gems
+		//Then we handle food and pots
+	}
+	var buffer bytes.Buffer
+
+	tools.WriteProtoArrayToBuffer(items, &buffer, "items")
+
+	jsonString := buffer.String()
+
+	filePath := "./assets/db_inputs/testItems.json"
+	os.WriteFile(filePath, []byte(jsonString), 0644)
+	if err != nil {
+		log.Fatalf("Failed to write JSON file: %s", err.Error())
+	}
+	log.Printf("JSON successfully written to %s", filePath)
 	return items, nil
 }

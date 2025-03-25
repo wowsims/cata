@@ -1,8 +1,6 @@
 package database
 
 import (
-	"fmt"
-	"log"
 	"math"
 	"strings"
 
@@ -10,21 +8,17 @@ import (
 )
 
 func processWeaponDamage(helper *DBHelper, raw RawItemData, item *proto.UIItem) error {
-	invTypeStr, ok := inventoryTypeMap[raw.invType]
-	if !ok {
-		invTypeStr = "Unknown"
-	}
+	// invTypeStr, ok := inventoryTypeMap[raw.invType]
+	// if !ok {
+	// 	invTypeStr = "Unknown"
+	// }
 
 	tableSuffix := invTypeToTableNameSuffix(raw.invType)
 	tableName := "ItemDamage" + tableSuffix
-	colName := fmt.Sprintf("Quality_%d", raw.overallQuality)
-
-	qualityQuery := fmt.Sprintf("SELECT %s FROM %s WHERE ItemLevel = ?", colName, tableName)
-	var qualityValue float64
-	if err := helper.db.QueryRow(qualityQuery, raw.itemLevel).Scan(&qualityValue); err != nil {
-		log.Printf("failed to query quality from %s: %v", tableName, err)
-		return err
+	if raw.overallQuality == 7 { // Skip heirlooms for now lazy
+		return nil
 	}
+	qualityValue := ItemDamageByTableAndItemLevel[tableName][raw.itemLevel].Quality[raw.overallQuality]
 
 	multiplier := float64(raw.itemDelay) / 1000.0
 	baseDamage := qualityValue * multiplier
@@ -32,13 +26,13 @@ func processWeaponDamage(helper *DBHelper, raw RawItemData, item *proto.UIItem) 
 	calcMaxDamage := baseDamage * (1 + raw.dmgVariance/2)
 
 	// For now we log the damage calculations
-	fmt.Printf("processWeaponDamage - Item ID: %d\n", raw.id)
-	fmt.Printf("Name: %s, InvType: %s, ItemLevel: %d\n", raw.name, invTypeStr, raw.itemLevel)
-	fmt.Printf("Delay: %d (Multiplier: %.2f), Quality: %d (Value: %.2f)\n", raw.itemDelay, multiplier, raw.overallQuality, qualityValue)
-	fmt.Printf("Damage Variance: %.2f\n", raw.dmgVariance)
-	fmt.Printf("Calculated Base Damage: %.2f, Min: %.2f, Max: %.2f\n", baseDamage, calcMinDamage, calcMaxDamage)
-	fmt.Printf("DB Min: %s, DB Max: %s\n", raw.dbMinDamage, raw.dbMaxDamage)
-	fmt.Println("-----------")
+	// fmt.Printf("processWeaponDamage - Item ID: %d\n", raw.id)
+	// fmt.Printf("Name: %s, InvType: %s, ItemLevel: %d\n", raw.name, invTypeStr, raw.itemLevel)
+	// fmt.Printf("Delay: %d (Multiplier: %.2f), Quality: %d (Value: %.2f)\n", raw.itemDelay, multiplier, raw.overallQuality, qualityValue)
+	// fmt.Printf("Damage Variance: %.2f\n", raw.dmgVariance)
+	// fmt.Printf("Calculated Base Damage: %.2f, Min: %.2f, Max: %.2f\n", baseDamage, calcMinDamage, calcMaxDamage)
+	// fmt.Printf("DB Min: %s, DB Max: %s\n", raw.dbMinDamage, raw.dbMaxDamage)
+	// fmt.Println("-----------")
 	item.WeaponDamageMax = math.Round(calcMaxDamage)
 	item.WeaponDamageMin = math.Round(calcMinDamage)
 
@@ -54,6 +48,8 @@ func invTypeToTableNameSuffix(invType int) string {
 	switch clean {
 	case "Bow", "Crossbow", "Gun":
 		return "Ranged"
+	case "MainHand", "OffHand":
+		return "OneHand"
 	default:
 		return clean
 	}
