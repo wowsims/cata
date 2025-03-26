@@ -40,7 +40,7 @@ var inventoryTypeMap = map[int]string{
 	23: "Held",
 	24: "Ammo",
 	25: "Ranged",
-	26: "Ranged",
+	26: "Wand",
 	27: "Ranged",
 	28: "Ranged",
 }
@@ -81,7 +81,7 @@ var inventoryTypeMapToItemType = map[int]proto.ItemType{
 	23: proto.ItemType_ItemTypeUnknown,
 	24: proto.ItemType_ItemTypeUnknown,
 	25: proto.ItemType_ItemTypeWeapon,
-	26: proto.ItemType_ItemTypeWeapon,
+	26: proto.ItemType_ItemTypeRanged,
 	27: proto.ItemType_ItemTypeWeapon,
 	28: proto.ItemType_ItemTypeWeapon,
 }

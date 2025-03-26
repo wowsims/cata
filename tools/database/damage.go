@@ -8,18 +8,17 @@ import (
 )
 
 func processWeaponDamage(helper *DBHelper, raw RawItemData, item *proto.UIItem) error {
-	// invTypeStr, ok := inventoryTypeMap[raw.invType]
-	// if !ok {
-	// 	invTypeStr = "Unknown"
-	// }
-
 	tableSuffix := invTypeToTableNameSuffix(raw.invType)
 	tableName := "ItemDamage" + tableSuffix
 	if raw.overallQuality == 7 { // Skip heirlooms for now lazy
 		return nil
 	}
-	qualityValue := ItemDamageByTableAndItemLevel[tableName][raw.itemLevel].Quality[raw.overallQuality]
 
+	if raw.flags1&0x200 != 0 {
+		tableName += "Caster"
+	}
+
+	qualityValue := ItemDamageByTableAndItemLevel[tableName][raw.itemLevel].Quality[raw.overallQuality]
 	multiplier := float64(raw.itemDelay) / 1000.0
 	baseDamage := qualityValue * multiplier
 	calcMinDamage := baseDamage * (1 - raw.dmgVariance/2)
@@ -44,6 +43,7 @@ func invTypeToTableNameSuffix(invType int) string {
 	if !ok {
 		invTypeStr = "Unknown"
 	}
+
 	clean := strings.ReplaceAll(invTypeStr, " ", "")
 	switch clean {
 	case "Bow", "Crossbow", "Gun":

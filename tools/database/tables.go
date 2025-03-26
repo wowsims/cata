@@ -46,6 +46,7 @@ type RawItemData struct {
 	socketTypes         string
 	socketEnchantmentId int
 	flags0              ItemFlags
+	flags1              ItemFlags
 	FDID                int
 	itemSetName         string
 	itemSetId           int
@@ -57,7 +58,7 @@ func ScanRawItemData(rows *sql.Rows) (RawItemData, error) {
 		&raw.dbMinDamage, &raw.dbMaxDamage, &raw.itemLevel, &raw.itemClassName, &raw.itemSubClassName,
 		&raw.rppEpic, &raw.rppSuperior, &raw.rppGood, &raw.statValue, &raw.bonusStat,
 		&raw.clothArmorValue, &raw.leatherArmorValue, &raw.mailArmorValue, &raw.plateArmorValue,
-		&raw.armorLocID, &raw.shieldArmorValues, &raw.statPercentEditor, &raw.socketTypes, &raw.socketEnchantmentId, &raw.flags0, &raw.FDID, &raw.itemSetName, &raw.itemSetId)
+		&raw.armorLocID, &raw.shieldArmorValues, &raw.statPercentEditor, &raw.socketTypes, &raw.socketEnchantmentId, &raw.flags0, &raw.FDID, &raw.itemSetName, &raw.itemSetId, &raw.flags1)
 	return raw, err
 }
 
@@ -95,7 +96,8 @@ func LoadRawItems(dbHelper *DBHelper) {
 			s.Flags_0 as Flags_0,
 			i.IconFileDataId as FDID,
 			COALESCE(itemset.Name_lang, '') as ItemSetName,
-			COALESCE(itemset.ID, 0) as ItemSetID
+			COALESCE(itemset.ID, 0) as ItemSetID,
+			s.Flags_1 as Flags_1
 		FROM Item i
 		JOIN ItemSparse s ON i.ID = s.ID
 		JOIN ItemClass ic ON i.ClassID = ic.ClassID

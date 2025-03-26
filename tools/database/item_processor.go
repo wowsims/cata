@@ -27,19 +27,16 @@ func RawItemToUIItem(helper *DBHelper, raw RawItemData) (*proto.UIItem, error) {
 	if raw.flags0.Has(HeroicItem) {
 		item.Heroic = true
 	}
-	if item.Type == proto.ItemType_ItemTypeWeapon {
+	if item.Type == proto.ItemType_ItemTypeWeapon || item.Type == proto.ItemType_ItemTypeRanged {
 		weaponType, handType, rangedType := determineWeaponTypes(raw.itemSubClassName, raw.invType)
-		if weaponType != proto.WeaponType_WeaponTypeShield && weaponType != proto.WeaponType_WeaponTypeShield {
-
+		if weaponType != proto.WeaponType_WeaponTypeShield {
 			if err := processWeaponDamage(helper, raw, item); err != nil {
 				fmt.Printf("processWeaponDamage error for item %d: %v\n", raw.id, err)
 			}
-			if raw.invType != 15 { // not a ranged weapon
-				item.WeaponType = weaponType
-				item.HandType = handType
-			} else {
-				item.RangedWeaponType = rangedType
-			}
+			item.WeaponType = weaponType
+			item.HandType = handType
+			item.RangedWeaponType = rangedType
+
 			item.WeaponSpeed = float64(raw.itemDelay) / 1000.0
 		}
 	}
@@ -97,15 +94,18 @@ func determineWeaponTypes(subClassName string, invType int) (proto.WeaponType, p
 	weaponType := proto.WeaponType_WeaponTypeUnknown
 	handType := proto.HandType_HandTypeUnknown
 	rangedType := proto.RangedWeaponType_RangedWeaponTypeUnknown
-	if invType != 15 { // non-ranged weapon
+	switch invType {
+	case 15, 26:
+		if rt, ok := subClassNameRoRangedWeaponType[subClassName]; ok {
+			rangedType = rt
+		}
+		break
+	default:
 		if w, ok := subClassNameToWeaponAndHandType[subClassName]; ok {
 			weaponType = w.Weapon
 			handType = w.Hand
 		}
-	} else { // ranged weapon
-		if rt, ok := subClassNameRoRangedWeaponType[subClassName]; ok {
-			rangedType = rt
-		}
+		break
 	}
 	return weaponType, handType, rangedType
 }
