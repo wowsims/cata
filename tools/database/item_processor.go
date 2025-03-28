@@ -10,15 +10,23 @@ import (
 
 func RawItemToUIItem(helper *DBHelper, raw RawItemData) (*proto.UIItem, error) {
 	item := &proto.UIItem{
-		Type:    inventoryTypeMapToItemType[raw.invType],
-		Quality: qualityToItemQualityMap[raw.overallQuality],
-		Stats:   stats.Stats{}.ToProtoArray(),
-		SetName: raw.itemSetName,
-		SetId:   int32(raw.itemSetId),
-		Name:    raw.name,
+		Type:           inventoryTypeMapToItemType[raw.invType],
+		Quality:        qualityToItemQualityMap[raw.overallQuality],
+		Stats:          stats.Stats{}.ToProtoArray(),
+		SetName:        raw.itemSetName,
+		SetId:          int32(raw.itemSetId),
+		Name:           raw.name,
+		ClassAllowlist: GetClassesFromClassMask(raw.classMask),
+		Id:             int32(raw.id),
+		Ilvl:           int32(raw.itemLevel),
+	}
 
-		Id:   int32(raw.id),
-		Ilvl: int32(raw.itemLevel),
+	if raw.flags1&0x1 != 0 {
+		item.FactionRestriction = proto.UIItem_FACTION_RESTRICTION_HORDE_ONLY
+	}
+
+	if raw.flags1&0x2 != 0 {
+		item.FactionRestriction = proto.UIItem_FACTION_RESTRICTION_ALLIANCE_ONLY
 	}
 
 	if raw.flags0.Has(UniqueEquipped) {

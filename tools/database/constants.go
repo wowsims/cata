@@ -86,6 +86,133 @@ var inventoryTypeMapToItemType = map[int]proto.ItemType{
 	28: proto.ItemType_ItemTypeWeapon,
 }
 
+type InventoryType int64
+
+// Define each inventory slot as a bit flag.
+const (
+	InvTypeNonEquip       InventoryType = 0
+	InvTypeHead           InventoryType = 1 << 1  // 2
+	InvTypeNeck           InventoryType = 1 << 2  // 4
+	InvTypeShoulder       InventoryType = 1 << 3  // 8
+	InvTypeShirt          InventoryType = 1 << 4  // 16
+	InvTypeChest          InventoryType = 1 << 5  // 32
+	InvTypeWaist          InventoryType = 1 << 6  // 64
+	InvTypeLegs           InventoryType = 1 << 7  // 128
+	InvTypeFeet           InventoryType = 1 << 8  // 256
+	InvTypeWrist          InventoryType = 1 << 9  // 512
+	InvTypeHand           InventoryType = 1 << 10 // 1024
+	InvTypeFinger         InventoryType = 1 << 11 // 2048
+	InvTypeTrinket        InventoryType = 1 << 12 // 4096
+	InvTypeWeapon         InventoryType = 1 << 13 // 8192
+	InvTypeShield         InventoryType = 1 << 14 // 16384
+	InvTypeRanged         InventoryType = 1 << 15 // 32768
+	InvTypeCloak          InventoryType = 1 << 16 // 65536
+	InvType2HWeapon       InventoryType = 1 << 17 // 131072
+	InvTypeBag            InventoryType = 1 << 18 // 262144
+	InvTypeTabard         InventoryType = 1 << 19 // 524288
+	InvTypeRobe           InventoryType = 1 << 20 // 1048576
+	InvTypeMainHand       InventoryType = 1 << 21 // 2097152
+	InvTypeOffHand        InventoryType = 1 << 22 // 4194304
+	InvTypeHoldable       InventoryType = 1 << 23 // 8388608
+	InvTypeAmmo           InventoryType = 1 << 24 // 16777216
+	InvTypeThrown         InventoryType = 1 << 25 // 33554432
+	InvTypeRangedRight    InventoryType = 1 << 26 // 67108864
+	InvTypeQuiver         InventoryType = 1 << 27 // 134217728
+	InvTypeRelic          InventoryType = 1 << 28 // 268435456
+	InvTypeProfessionTool InventoryType = 1 << 29 // 536870912
+	InvTypeProfessionGear InventoryType = 1 << 30 // 1073741824
+	// … additional entries could follow if needed.
+)
+
+type ItemSubClass int
+
+// Define each item subclass as a bit flag (only those with a name).
+const (
+	OneHandedAxes    ItemSubClass = 1 << 0  // 1    from "One-Handed Axes" (SubClassID 0)
+	TwoHandedAxes    ItemSubClass = 1 << 1  // 2    from "Two-Handed Axes" (SubClassID 1)
+	Bows             ItemSubClass = 1 << 2  // 4    from "Bows" (SubClassID 2)
+	Guns             ItemSubClass = 1 << 3  // 8    from "Guns" (SubClassID 3)
+	OneHandedMaces   ItemSubClass = 1 << 4  // 16   from "One-Handed Maces" (SubClassID 4)
+	TwoHandedMaces   ItemSubClass = 1 << 5  // 32   from "Two-Handed Maces" (SubClassID 5)
+	Polearms         ItemSubClass = 1 << 6  // 64   from "Polearms" (SubClassID 6)
+	OneHandedSwords  ItemSubClass = 1 << 7  // 128  from "One-Handed Swords" (SubClassID 7)
+	TwoHandedSwords  ItemSubClass = 1 << 8  // 256  from "Two-Handed Swords" (SubClassID 8)
+	Staves           ItemSubClass = 1 << 10 // 1024 from "Staves" (SubClassID 10)
+	OneHandedExotics ItemSubClass = 1 << 11 // 2048 from "One-Handed Exotics" (SubClassID 11)
+	TwoHandedExotics ItemSubClass = 1 << 12 // 4096 from "Two-Handed Exotics" (SubClassID 12)
+	FistWeapons      ItemSubClass = 1 << 13 // 8192 from "Fist Weapons" (SubClassID 13)
+	Daggers          ItemSubClass = 1 << 15 // 32768 from "Daggers" (SubClassID 15)
+)
+
+var SubclassNames = map[ItemSubClass]string{
+	OneHandedAxes:    "One-Handed Axes",
+	TwoHandedAxes:    "Two-Handed Axes",
+	Bows:             "Bows",
+	Guns:             "Guns",
+	OneHandedMaces:   "One-Handed Maces",
+	TwoHandedMaces:   "Two-Handed Maces",
+	Polearms:         "Polearms",
+	OneHandedSwords:  "One-Handed Swords",
+	TwoHandedSwords:  "Two-Handed Swords",
+	Staves:           "Staves",
+	OneHandedExotics: "One-Handed Exotics",
+	TwoHandedExotics: "Two-Handed Exotics",
+	FistWeapons:      "Fist Weapons",
+	Daggers:          "Daggers",
+}
+
+type EnchantType struct {
+	ItemType   proto.ItemType
+	WeaponType proto.WeaponType
+}
+
+// SELECT
+//
+//	 se.ID as effectId,
+//	 sn.Name_lang as name,
+//	 se.SpellID as spellId,
+//	 ie.ParentItemID as ItemId,
+//	 sie.Field_1_15_3_55112_014 as professionId,
+//	 sie.Effect as Effect,
+//	 sie.EffectPointsMax as EffectPoints,
+//	 sie.EffectArg as EffectArgs,
+//	 sie.ID,
+//	 CASE
+//		WHEN sei.EquippedItemClass = 4 THEN 1
+//		ELSE 0
+//
+// END AS isWeaponEnchant,
+//
+//	sei.EquippedItemInvTypes as InvTypes,
+//	sei.EquippedItemSubclass
+//
+// FROM SpellEffect se
+// JOIN Spell s ON se.SpellID = s.ID
+// JOIN SpellName sn ON se.SpellID = sn.ID
+// JOIN SpellItemEnchantment sie ON se.EffectMiscValue_0 = sie.ID
+// LEFT JOIN ItemEffect ie ON se.SpellID = ie.SpellID
+// LEFT JOIN SpellEquippedItems sei ON se.SpellId = sei.SpellID
+// WHERE se.Effect = 53
+var inventoryNames = map[InventoryType]EnchantType{
+	InvTypeHead:     {ItemType: proto.ItemType_ItemTypeHead, WeaponType: proto.WeaponType_WeaponTypeUnknown},
+	InvTypeNeck:     {ItemType: proto.ItemType_ItemTypeNeck, WeaponType: proto.WeaponType_WeaponTypeUnknown},
+	InvTypeShoulder: {ItemType: proto.ItemType_ItemTypeShoulder, WeaponType: proto.WeaponType_WeaponTypeUnknown},
+	InvTypeChest:    {ItemType: proto.ItemType_ItemTypeChest, WeaponType: proto.WeaponType_WeaponTypeUnknown},
+	InvTypeWaist:    {ItemType: proto.ItemType_ItemTypeWaist, WeaponType: proto.WeaponType_WeaponTypeUnknown},
+	InvTypeLegs:     {ItemType: proto.ItemType_ItemTypeLegs, WeaponType: proto.WeaponType_WeaponTypeUnknown},
+	InvTypeFeet:     {ItemType: proto.ItemType_ItemTypeFeet, WeaponType: proto.WeaponType_WeaponTypeUnknown},
+	InvTypeWrist:    {ItemType: proto.ItemType_ItemTypeWrist, WeaponType: proto.WeaponType_WeaponTypeUnknown},
+	InvTypeHand:     {ItemType: proto.ItemType_ItemTypeHands, WeaponType: proto.WeaponType_WeaponTypeUnknown},
+	InvTypeFinger:   {ItemType: proto.ItemType_ItemTypeFinger, WeaponType: proto.WeaponType_WeaponTypeUnknown},
+	InvTypeTrinket:  {ItemType: proto.ItemType_ItemTypeTrinket, WeaponType: proto.WeaponType_WeaponTypeUnknown},
+
+	InvTypeWeapon:   {ItemType: proto.ItemType_ItemTypeWeapon, WeaponType: proto.WeaponType_WeaponTypeUnknown}, // One-Hand
+	InvTypeShield:   {ItemType: proto.ItemType_ItemTypeWeapon, WeaponType: proto.WeaponType_WeaponTypeShield},  // Off Hand
+	InvTypeRanged:   {ItemType: proto.ItemType_ItemTypeRanged, WeaponType: proto.WeaponType_WeaponTypeUnknown},
+	InvTypeCloak:    {ItemType: proto.ItemType_ItemTypeBack, WeaponType: proto.WeaponType_WeaponTypeUnknown},
+	InvType2HWeapon: {ItemType: proto.ItemType_ItemTypeWeapon, WeaponType: proto.WeaponType_WeaponTypeUnknown},
+}
+
 func MapBonusStatIndexToStat(index int) (proto.Stat, bool) {
 	switch index {
 	case 0: // Mana
@@ -219,4 +346,37 @@ const (
 	Unknown6                             // 2097152
 	ThrowingWeapon                       // 4194304
 	Unknown7                             // 8388608
+)
+
+type Db2Class struct {
+	protoClass proto.Class
+	ID         int
+}
+
+var classes = []Db2Class{
+	{proto.Class_ClassWarrior, 1},
+	{proto.Class_ClassPaladin, 2},
+	{proto.Class_ClassHunter, 3},
+	{proto.Class_ClassRogue, 4},
+	{proto.Class_ClassPriest, 5},
+	{proto.Class_ClassDeathKnight, 6},
+	{proto.Class_ClassShaman, 7},
+	{proto.Class_ClassMage, 8},
+	{proto.Class_ClassWarlock, 9},
+	{proto.Class_ClassDruid, 11},
+}
+
+type GemType int
+
+const (
+	Meta   GemType = 0x1
+	Red    GemType = 0x2
+	Yellow GemType = 0x4
+	Blue   GemType = 0x8
+	// Combined colors:
+	Orange    GemType = Red | Yellow        // 0x6
+	Purple    GemType = Red | Blue          // 0xa
+	Green     GemType = Yellow | Blue       // 0xc
+	Prismatic GemType = Red | Yellow | Blue // 0xe
+	Cogwheel  GemType = 0x20
 )

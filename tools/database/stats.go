@@ -7,6 +7,20 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
+func processGemStats(raw RawGem, gem *proto.UIGem) error {
+	for i, effect := range raw.Effect {
+		if effect == 5 {
+			stat, err := MapBonusStatIndexToStat(raw.StatList[i])
+			if err != true {
+				return fmt.Errorf("Error mapping bonus stat to stat")
+			}
+			amount := raw.StatBonus[i]
+			gem.Stats[stat] = float64(amount)
+		}
+	}
+	return nil
+}
+
 func processStats(raw RawItemData, item *proto.UIItem) error {
 	epic, err := parseIntArrayField(raw.rppEpic, 5)
 	if err != nil {
@@ -63,6 +77,9 @@ func processStats(raw RawItemData, item *proto.UIItem) error {
 					item.Stats[stat] = value
 				}
 			}
+		}
+		if raw.qualityModifier > 0 {
+			item.Stats[proto.Stat_StatBonusArmor] = raw.qualityModifier
 		}
 	}
 
