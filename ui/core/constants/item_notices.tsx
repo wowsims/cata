@@ -44,15 +44,8 @@ const WILL_NOT_BE_IMPLEMENTED_ITEMS = [
 ];
 
 const TENTATIVE_IMPLEMENTATION_ITEMS = [
-	// No'Kaled, the Elements of Death - LFR, Normal, Heroic
-	78481, 77188, 78472,
-	// Rathrak, the Poisonous Mind - LFR, Normal, Heroic
-	78484, 77195, 78475,
-
 	// Veil of Lies
 	72900,
-	// Foul Gift of the Demon Lord
-	72898,
 	// Arrow of Time
 	72897,
 	// Rosary of Light
