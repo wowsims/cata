@@ -90,6 +90,8 @@ func (allocationMap RandomPropAllocationsByIlvl) CalcItemAllocation(item *proto.
 			}
 		}
 	}
-
+	if idx == -1 {
+		fmt.Println(item)
+	}
 	return allocationMap[item.Ilvl][item.Quality][idx]
 }

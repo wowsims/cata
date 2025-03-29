@@ -78,7 +78,7 @@ var inventoryTypeMapToItemType = map[int]proto.ItemType{
 	20: proto.ItemType_ItemTypeChest,
 	21: proto.ItemType_ItemTypeWeapon,
 	22: proto.ItemType_ItemTypeWeapon,
-	23: proto.ItemType_ItemTypeUnknown,
+	23: proto.ItemType_ItemTypeWeapon,
 	24: proto.ItemType_ItemTypeUnknown,
 	25: proto.ItemType_ItemTypeWeapon,
 	26: proto.ItemType_ItemTypeRanged,
@@ -245,7 +245,6 @@ func MapBonusStatIndexToStat(index int) (proto.Stat, bool) {
 		return proto.Stat_StatParryRating, true
 	case 49: // Mastery
 		return proto.Stat_StatMasteryRating, true
-
 	case 38: // AttackPower
 		return proto.Stat_StatAttackPower, true
 	case 39: // RangedAttackPower
@@ -275,6 +274,21 @@ func MapBonusStatIndexToStat(index int) (proto.Stat, bool) {
 	}
 }
 
+var ProfessionIdToProfession = map[int]proto.Profession{
+	0:   proto.Profession_ProfessionUnknown,
+	164: proto.Profession_Blacksmithing,
+	165: proto.Profession_Leatherworking,
+	171: proto.Profession_Alchemy,
+	182: proto.Profession_Herbalism,
+	186: proto.Profession_Mining,
+	197: proto.Profession_Tailoring,
+	202: proto.Profession_Engineering,
+	333: proto.Profession_Enchanting,
+	393: proto.Profession_Skinning,
+	755: proto.Profession_Jewelcrafting,
+	773: proto.Profession_Inscription,
+	794: proto.Profession_Archeology,
+}
 var subClassToArmorType = map[string]proto.ArmorType{
 	"Cloth":   proto.ArmorType_ArmorTypeCloth,
 	"Leather": proto.ArmorType_ArmorTypeLeather,

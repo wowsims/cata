@@ -1,31 +1,17 @@
 package database
 
 import (
-	"bytes"
 	"fmt"
 	"log"
-	"os"
+	"strings"
 
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
-	"github.com/wowsims/cata/tools"
 )
 
-func printProgressBar(current, total int) {
-	percent := float64(current) / float64(total)
-	barLength := 50
-	filledLength := int(percent * float64(barLength))
-	bar := ""
-	for i := 0; i < filledLength; i++ {
-		bar += "="
-	}
-	for i := filledLength; i < barLength; i++ {
-		bar += " "
-	}
-	fmt.Printf("\r[%s] %d%% (%d of %d)", bar, int(percent*100), current, total)
-}
-
-func QueryItems() ([]*proto.UIItem, error) {
+// QueryUIItems loads raw items from the database, converts them to UIItems,
+// and returns a slice of UIItems.
+func QueryUIItems() ([]*proto.UIItem, error) {
 	iconsMap, err := LoadArtTexturePaths("./assets/db_inputs/ArtTextureID.lua")
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize icons map: %v", err)
@@ -35,13 +21,15 @@ func QueryItems() ([]*proto.UIItem, error) {
 		return nil, fmt.Errorf("failed to initialize database helper: %v", err)
 	}
 	defer helper.Close()
-	var items []*proto.UIItem
 
+	LoadItemStatEffects(helper)
+	// Load necessary raw item data.
 	LoadItemDamageTables(helper)
-	LoadRawItems(helper, "s.OverallQualityId != 7 AND s.ScalingStatDistributionID == 0 AND s.ItemLevel > 240")
+	LoadRawItems(helper, "s.OverallQualityId != 7 AND s.ScalingStatDistributionID == 0 AND (ItemClassName = 'Armor' OR ItemClassName = 'Weapon') AND s.Display_lang != '' AND (s.ID != 34219 AND s.Display_lang NOT LIKE '%Test%' AND s.Display_lang NOT LIKE 'QA%')")
 
+	var items []*proto.UIItem
 	total := len(RawItems)
-	fmt.Println("Parsing items\n\n")
+	fmt.Println("Parsing items\n")
 	for i, rawItem := range RawItems {
 		switch rawItem.itemClassName {
 		case "Weapon", "Armor":
@@ -50,65 +38,121 @@ func QueryItems() ([]*proto.UIItem, error) {
 				log.Printf("Error processing item row: %v", err)
 				continue
 			}
+			item.Icon = strings.ToLower(GetIconName(iconsMap, rawItem.FDID))
 			items = append(items, item)
-			item.Icon = GetIconName(iconsMap, rawItem.FDID)
-			break
 		default:
-			//fmt.Println("Currently not processing", rawItem.itemClassName)
-			break
+			// Skip items we are not processing.
 		}
+		if i%500 == 0 {
 
-		printProgressBar(i+1, total)
+			printProgressBar(i+1, total)
+		}
 	}
-	var buffer bytes.Buffer
+	fmt.Println() // Newline after progress bar.
+	return items, nil
+}
 
-	tools.WriteProtoArrayToBuffer(items, &buffer, "items")
-
-	jsonString := buffer.String()
-
-	filePath := "./assets/db_inputs/testItems.json"
-	os.WriteFile(filePath, []byte(jsonString), 0644)
+// QueryUIGems loads raw gems from the database, converts them to UIGems,
+// and returns a slice of UIGems.
+func QueryUIGems() ([]*proto.UIGem, error) {
+	iconsMap, err := LoadArtTexturePaths("./assets/db_inputs/ArtTextureID.lua")
 	if err != nil {
-		log.Fatalf("Failed to write JSON file: %s", err.Error())
+		return nil, fmt.Errorf("failed to initialize icons map: %v", err)
 	}
-	log.Printf("JSON successfully written to %s", filePath)
+	helper, err := NewDBHelper("./tools/database/wowsims.db")
+	if err != nil {
+		return nil, fmt.Errorf("failed to initialize database helper: %v", err)
+	}
+	defer helper.Close()
 
-	//Start loading gems
 	LoadRawGems(helper)
+	LoadRawSpellEffects(helper)
 	totalGems := len(RawGems)
-	fmt.Println("Parsing gems\n\n")
+	var gems []*proto.UIGem
+	fmt.Println("Parsing gems\n")
 	for i, rawGem := range RawGems {
 		gem := &proto.UIGem{
 			Id:      int32(rawGem.ItemId),
-			Icon:    GetIconName(iconsMap, rawGem.FDID),
+			Name:    rawGem.Name,
+			Icon:    strings.ToLower(GetIconName(iconsMap, rawGem.FDID)),
 			Quality: qualityToItemQualityMap[rawGem.Quality],
 			Stats:   stats.Stats{}.ToProtoArray(),
 			Color:   ConvertGemTypeToProto(rawGem.GemType),
 			Unique:  rawGem.Flags.Has(UniqueEquipped),
 		}
+
 		if rawGem.IsJc {
 			gem.RequiredProfession = proto.Profession_Jewelcrafting
 		}
 		processGemStats(rawGem, gem)
-
+		gems = append(gems, gem)
 		printProgressBar(i+1, totalGems)
 	}
+	fmt.Println() // Newline after progress bar.
+	return gems, nil
+}
 
-	//Start loading enchants
+// QueryUIEnchants loads raw enchants, converts them to UIEnchants,
+// and returns two slices: one for enchants and one for complex enchant effect IDs (thats not as simple as adding stats).
+func QueryUIEnchants() ([]*proto.UIEnchant, []int, error) {
+	iconsMap, err := LoadArtTexturePaths("./assets/db_inputs/ArtTextureID.lua")
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to initialize icons map: %v", err)
+	}
+	helper, err := NewDBHelper("./tools/database/wowsims.db")
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to initialize database helper: %v", err)
+	}
+	defer helper.Close()
+
 	LoadRawEnchants(helper)
 	totalEnchants := len(RawEnchants)
-	fmt.Println("Parsing enchants\n\n")
+	var enchants []*proto.UIEnchant
+	var complexEnchants []int
+	fmt.Println("Parsing enchants\n")
 	for i, rawEnchant := range RawEnchants {
 		enchant := &proto.UIEnchant{
-			Name:           rawEnchant.Name,
-			ItemId:         int32(rawEnchant.ItemId),
-			SpellId:        int32(rawEnchant.SpellId),
-			ClassAllowlist: GetClassesFromClassMask(rawEnchant.ClassMask),
-			ExtraTypes:     []proto.ItemType{},
+			Name:               rawEnchant.Name,
+			ItemId:             int32(rawEnchant.ItemId),
+			SpellId:            int32(rawEnchant.SpellId),
+			EffectId:           int32(rawEnchant.EffectId),
+			ClassAllowlist:     GetClassesFromClassMask(rawEnchant.ClassMask),
+			ExtraTypes:         []proto.ItemType{},
+			Stats:              stats.Stats{}.ToProtoArray(),
+			Quality:            qualityToItemQualityMap[rawEnchant.Quality],
+			RequiredProfession: GetProfession(rawEnchant.RequiredProfession),
 		}
-		if rawEnchant.IsWeaponEnchant {
-			//Handle this diff
+
+		if rawEnchant.FDID == 0 {
+			enchant.Icon = "trade_engraving"
 		} else {
+			enchant.Icon = strings.ToLower(GetIconName(iconsMap, rawEnchant.FDID))
+		}
+
+		if rawEnchant.IsWeaponEnchant {
+			// Process weapon enchants.
+			enchant.Type = proto.ItemType_ItemTypeWeapon
+			if rawEnchant.SubClassMask == 1024 {
+				// Staff only.
+				enchant.EnchantType = proto.EnchantType_EnchantTypeStaff
+			}
+			if rawEnchant.SubClassMask == 262156 {
+				enchant.Type = proto.ItemType_ItemTypeRanged
+			}
+			if rawEnchant.SubClassMask == 136546 {
+				// Two-handed weapon.
+				enchant.EnchantType = proto.EnchantType_EnchantTypeTwoHand
+			}
+		} else {
+			// Process non-weapon enchants.
+			if rawEnchant.SubClassMask == 65 {
+				enchant.EnchantType = proto.EnchantType_EnchantTypeOffHand
+				enchant.Type = proto.ItemType_ItemTypeWeapon
+			}
+			if rawEnchant.SubClassMask == 96 || rawEnchant.SubClassMask == 64 {
+				enchant.EnchantType = proto.EnchantType_EnchantTypeShield
+				enchant.Type = proto.ItemType_ItemTypeWeapon
+			}
 			for flag, name := range inventoryNames {
 				if InventoryType(rawEnchant.InvTypesMask)&flag != 0 {
 					if enchant.Type != proto.ItemType_ItemTypeUnknown {
@@ -119,9 +163,16 @@ func QueryItems() ([]*proto.UIItem, error) {
 				}
 			}
 		}
+		processEnchantStats(rawEnchant, enchant)
+		if enchant.Type == proto.ItemType_ItemTypeUnknown {
+			fmt.Println(rawEnchant)
+		}
+		enchants = append(enchants, enchant)
+		if enchantHasComplexEffect(rawEnchant) {
+			complexEnchants = append(complexEnchants, rawEnchant.EffectId)
+		}
 		printProgressBar(i+1, totalEnchants)
 	}
-	//Start loading enchants
-
-	return items, nil
+	fmt.Println() // Newline after progress bar.
+	return enchants, complexEnchants, nil
 }

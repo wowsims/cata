@@ -160,6 +160,15 @@ func (db *WowDatabase) MergeNpc(src *proto.UINPC) {
 	}
 }
 
+func (db *WowDatabase) AddItemIconClean(id int32, icon string, name string) {
+	db.ItemIcons[id] = &proto.IconData{Id: id, Name: name, Icon: icon}
+
+}
+
+func (db *WowDatabase) AddSpellIconClean(id int32, icon string, name string) {
+	db.SpellIcons[id] = &proto.IconData{Id: id, Name: name, Icon: icon}
+
+}
 func (db *WowDatabase) AddItemIcon(id int32, tooltips map[int32]WowheadItemResponse) {
 	if tooltip, ok := tooltips[id]; ok {
 		if tooltip.GetName() == "" || tooltip.GetIcon() == "" {

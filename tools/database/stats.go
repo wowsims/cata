@@ -5,22 +5,96 @@ import (
 	"math"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
+
+func (raw RawRandomSuffix) ToProto() *proto.ItemRandomSuffix {
+	suffix := &proto.ItemRandomSuffix{
+		Name:  raw.Name,
+		Id:    int32(raw.ID),
+		Stats: stats.Stats{}.ToProtoArray(),
+	}
+	for i, effect := range raw.Effects {
+		if effect == 5 || effect == 4 {
+			stat, _ := MapBonusStatIndexToStat(raw.EffectArgs[i])
+			amount := raw.AllocationPct[i]
+			suffix.Stats[stat] = float64(amount)
+
+		}
+	}
+	return suffix
+}
 
 func processGemStats(raw RawGem, gem *proto.UIGem) error {
 	for i, effect := range raw.Effect {
-		if effect == 5 {
-			stat, err := MapBonusStatIndexToStat(raw.StatList[i])
+		if effect == 5 || effect == 4 { // Stats
+
+			stat, err := MapBonusStatIndexToStat(raw.StatBonus[i])
+
 			if err != true {
 				return fmt.Errorf("Error mapping bonus stat to stat")
 			}
-			amount := raw.StatBonus[i]
+			amount := raw.StatList[i]
 			gem.Stats[stat] = float64(amount)
+		}
+		if effect == 3 {
+			spellEffects := RawSpellEffectBySpellIdAndIndex[raw.StatBonus[i]]
+
+			for _, spellEffect := range spellEffects {
+				if spellEffect.EffectMiscValues[0] == -1 && spellEffect.EffectAura == 29 {
+					// all stats
+					gem.Stats[proto.Stat_StatAgility] += float64(spellEffect.EffectBasePoints)
+					gem.Stats[proto.Stat_StatIntellect] += float64(spellEffect.EffectBasePoints)
+					gem.Stats[proto.Stat_StatSpirit] += float64(spellEffect.EffectBasePoints)
+					gem.Stats[proto.Stat_StatStamina] += float64(spellEffect.EffectBasePoints)
+					gem.Stats[proto.Stat_StatStrength] += float64(spellEffect.EffectBasePoints)
+				}
+			}
 		}
 	}
 	return nil
 }
 
+func enchantHasComplexEffect(enchant RawEnchant) bool {
+	for _, effect := range enchant.Effects {
+		if effect != 5 && effect != 0 {
+			return true
+		}
+	}
+	return false
+}
+
+func processEnchantStats(rawEnchant RawEnchant, enchant *proto.UIEnchant) error {
+	for i, effect := range rawEnchant.Effects {
+		if effect == 5 {
+			stat, err := MapBonusStatIndexToStat(rawEnchant.EffectArgs[i])
+			if err != true {
+				return fmt.Errorf("Error mapping bonus stat to stat")
+			}
+			amount := rawEnchant.EffectPoints[i]
+			enchant.Stats[stat] = float64(amount)
+
+			if stat == proto.Stat_StatAttackPower {
+				enchant.Stats[proto.Stat_StatRangedAttackPower] = float64(amount)
+			}
+		}
+		if effect == 3 {
+			spellEffects := RawSpellEffectBySpellIdAndIndex[rawEnchant.EffectArgs[i]]
+
+			for _, spellEffect := range spellEffects {
+				if spellEffect.EffectMiscValues[0] == -1 && spellEffect.EffectAura == 29 {
+					// all stats
+					enchant.Stats[proto.Stat_StatAgility] += float64(spellEffect.EffectBasePoints)
+					enchant.Stats[proto.Stat_StatIntellect] += float64(spellEffect.EffectBasePoints)
+					enchant.Stats[proto.Stat_StatSpirit] += float64(spellEffect.EffectBasePoints)
+					enchant.Stats[proto.Stat_StatStamina] += float64(spellEffect.EffectBasePoints)
+					enchant.Stats[proto.Stat_StatStrength] += float64(spellEffect.EffectBasePoints)
+				}
+			}
+		}
+	}
+	return nil
+}
 func processStats(raw RawItemData, item *proto.UIItem) error {
 	epic, err := parseIntArrayField(raw.rppEpic, 5)
 	if err != nil {

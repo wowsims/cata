@@ -17,7 +17,6 @@ func processWeaponDamage(helper *DBHelper, raw RawItemData, item *proto.UIItem) 
 	if raw.flags1&0x200 != 0 {
 		tableName += "Caster"
 	}
-
 	qualityValue := ItemDamageByTableAndItemLevel[tableName][raw.itemLevel].Quality[raw.overallQuality]
 	multiplier := float64(raw.itemDelay) / 1000.0
 	baseDamage := qualityValue * multiplier

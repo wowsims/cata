@@ -10,15 +10,19 @@ import (
 
 func RawItemToUIItem(helper *DBHelper, raw RawItemData) (*proto.UIItem, error) {
 	item := &proto.UIItem{
-		Type:           inventoryTypeMapToItemType[raw.invType],
-		Quality:        qualityToItemQualityMap[raw.overallQuality],
-		Stats:          stats.Stats{}.ToProtoArray(),
-		SetName:        raw.itemSetName,
-		SetId:          int32(raw.itemSetId),
-		Name:           raw.name,
-		ClassAllowlist: GetClassesFromClassMask(raw.classMask),
-		Id:             int32(raw.id),
-		Ilvl:           int32(raw.itemLevel),
+		Type:                inventoryTypeMapToItemType[raw.invType],
+		Quality:             qualityToItemQualityMap[raw.overallQuality],
+		Stats:               stats.Stats{}.ToProtoArray(),
+		SetName:             raw.itemSetName,
+		SetId:               int32(raw.itemSetId),
+		Name:                raw.name,
+		ClassAllowlist:      GetClassesFromClassMask(raw.classMask),
+		Id:                  int32(raw.id),
+		Ilvl:                int32(raw.itemLevel),
+		RandomSuffixOptions: raw.RandomSuffixOptions,
+	}
+	if raw.invType == 23 {
+		item.HandType = proto.HandType_HandTypeOffHand
 	}
 
 	if raw.flags1&0x1 != 0 {
@@ -37,7 +41,7 @@ func RawItemToUIItem(helper *DBHelper, raw RawItemData) (*proto.UIItem, error) {
 	}
 	if item.Type == proto.ItemType_ItemTypeWeapon || item.Type == proto.ItemType_ItemTypeRanged {
 		weaponType, handType, rangedType := determineWeaponTypes(raw.itemSubClassName, raw.invType)
-		if weaponType != proto.WeaponType_WeaponTypeShield {
+		if weaponType != proto.WeaponType_WeaponTypeShield && weaponType != proto.WeaponType_WeaponTypeOffHand {
 			if err := processWeaponDamage(helper, raw, item); err != nil {
 				fmt.Printf("processWeaponDamage error for item %d: %v\n", raw.id, err)
 			}
@@ -71,7 +75,6 @@ func RawItemToUIItem(helper *DBHelper, raw RawItemData) (*proto.UIItem, error) {
 	}
 
 	//Orm-style
-	LoadItemStatEffects(helper)
 
 	var gemBonus = ItemStatEffectById[raw.socketEnchantmentId]
 	//since its a socket bonus we know it should be straight forward to use min value?
@@ -84,7 +87,7 @@ func RawItemToUIItem(helper *DBHelper, raw RawItemData) (*proto.UIItem, error) {
 		stat, err := MapBonusStatIndexToStat(effectStat)
 
 		if err == false {
-			fmt.Println("Error parsing statValue: \n", err, effectStat)
+			fmt.Println("Error parsing statValue: \n", err, effectStat, raw)
 			fmt.Printf("Error parsing statValue: %v\n", err, effectStat)
 		}
 		value := gemBonus.EffectPointsMin[i]
@@ -108,6 +111,19 @@ func determineWeaponTypes(subClassName string, invType int) (proto.WeaponType, p
 			rangedType = rt
 		}
 		break
+	case 21:
+		handType = proto.HandType_HandTypeMainHand
+		if w, ok := subClassNameToWeaponAndHandType[subClassName]; ok {
+			weaponType = w.Weapon
+		}
+	case 23:
+		handType = proto.HandType_HandTypeOffHand
+		weaponType = proto.WeaponType_WeaponTypeOffHand
+	case 22:
+		handType = proto.HandType_HandTypeOffHand
+		if w, ok := subClassNameToWeaponAndHandType[subClassName]; ok {
+			weaponType = w.Weapon
+		}
 	default:
 		if w, ok := subClassNameToWeaponAndHandType[subClassName]; ok {
 			weaponType = w.Weapon

@@ -4,6 +4,11 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"os"
+	"path/filepath"
+	"sort"
+	"strconv"
+	"strings"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -54,6 +59,7 @@ func LoadRows[T any](db *sql.DB, query string, scanFunc func(*sql.Rows) (T, erro
 	for rows.Next() {
 		item, err := scanFunc(rows)
 		if err != nil {
+			fmt.Println(err.Error())
 			return nil, fmt.Errorf("scan error: %w", err)
 		}
 		results = append(results, item)
@@ -67,4 +73,52 @@ func CacheBy[T any, K comparable](items []T, keyFunc func(T) K) map[K]T {
 		cache[keyFunc(item)] = item
 	}
 	return cache
+}
+
+func RunOverrides(dbHelper *DBHelper, overridesFolder string) error {
+	entries, err := os.ReadDir(overridesFolder)
+	if err != nil {
+		return fmt.Errorf("error reading overrides folder: %w", err)
+	}
+
+	type sqlFile struct {
+		path  string
+		order int
+	}
+
+	var files []sqlFile
+	for _, entry := range entries {
+		if !entry.IsDir() && strings.HasSuffix(entry.Name(), ".sql") {
+			base := strings.TrimSuffix(entry.Name(), ".sql")
+			order, err := strconv.Atoi(base)
+			if err != nil {
+				continue
+			}
+
+			files = append(files, sqlFile{
+				path:  filepath.Join(overridesFolder, entry.Name()),
+				order: order,
+			})
+		}
+	}
+
+	sort.Slice(files, func(i, j int) bool {
+		return files[i].order < files[j].order
+	})
+
+	for _, f := range files {
+		content, err := os.ReadFile(f.path)
+		if err != nil {
+			return fmt.Errorf("error reading file %s: %w", f.path, err)
+		}
+		fmt.Println("Running override file", f.path)
+		_, err = dbHelper.db.Exec(string(content))
+		if err != nil {
+
+			fmt.Println(err.Error())
+			return fmt.Errorf("error executing SQL file %s: %w", f.path, err)
+		}
+	}
+
+	return nil
 }

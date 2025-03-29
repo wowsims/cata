@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"strings"
+
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 // Tables
@@ -13,6 +15,7 @@ var ItemStatEffects []ItemStatEffect
 var ItemStatEffectById map[int]ItemStatEffect
 var RawGems []RawGem
 var RawEnchants []RawEnchant
+var RawSpellEffectBySpellIdAndIndex map[int]map[int]RawSpellEffect
 
 // Loading tables
 // Below is the definition and loading of tables
@@ -56,17 +59,21 @@ type RawItemData struct {
 	classMask           int
 	raceMask            int
 	qualityModifier     float64 //In seemingly all cases this is bonus armor
+	RandomSuffixOptions []int32
 }
 
 func ScanRawItemData(rows *sql.Rows) (RawItemData, error) {
 	var raw RawItemData
+	var randomSuffixOptions sql.NullString
 	err := rows.Scan(&raw.id, &raw.name, &raw.invType, &raw.itemDelay, &raw.overallQuality, &raw.dmgVariance,
 		&raw.dbMinDamage, &raw.dbMaxDamage, &raw.itemLevel, &raw.itemClassName, &raw.itemSubClassName,
 		&raw.rppEpic, &raw.rppSuperior, &raw.rppGood, &raw.statValue, &raw.bonusStat,
 		&raw.clothArmorValue, &raw.leatherArmorValue, &raw.mailArmorValue, &raw.plateArmorValue,
-		&raw.armorLocID, &raw.shieldArmorValues, &raw.statPercentEditor, &raw.socketTypes, &raw.socketEnchantmentId, &raw.flags0, &raw.FDID, &raw.itemSetName, &raw.itemSetId, &raw.flags1, &raw.classMask, &raw.raceMask, &raw.qualityModifier)
+		&raw.armorLocID, &raw.shieldArmorValues, &raw.statPercentEditor, &raw.socketTypes, &raw.socketEnchantmentId, &raw.flags0, &raw.FDID, &raw.itemSetName, &raw.itemSetId, &raw.flags1, &raw.classMask, &raw.raceMask, &raw.qualityModifier, &randomSuffixOptions)
+	raw.RandomSuffixOptions = ParseRandomSuffixOptions(randomSuffixOptions)
 	return raw, err
 }
+
 func LoadRawItems(dbHelper *DBHelper, filter string) {
 	baseQuery := `
 		SELECT 
@@ -105,7 +112,12 @@ func LoadRawItems(dbHelper *DBHelper, filter string) {
 			s.Flags_1 as Flags_1,
 			s.AllowableClass as ClassMask,
 			s.AllowableRace as RaceMask,
-			s.QualityModifier
+			s.QualityModifier,
+			(
+			SELECT group_concat(-ench, ',')
+				FROM item_enchantment_template
+				WHERE entry = s.ItemRandomSuffixGroupID
+			) AS RandomSuffixOptions
 		FROM Item i
 		JOIN ItemSparse s ON i.ID = s.ID
 		JOIN ItemClass ic ON i.ClassID = ic.ClassID
@@ -114,17 +126,13 @@ func LoadRawItems(dbHelper *DBHelper, filter string) {
 		LEFT JOIN ArmorLocation al ON al.ID = ArmorLocationId
 		LEFT JOIN ItemArmorShield ias ON s.ItemLevel = ias.ItemLevel
 		LEFT JOIN ItemSet itemset ON s.ItemSet = itemset.ID
-		JOIN ItemArmorTotal at ON s.ItemLevel = at.ItemLevel`
+		JOIN ItemArmorTotal at ON s.ItemLevel = at.ItemLevel
+		`
 
-	// Filter string can be provided provided, we just append it to the query. For multiple conditions, the filter string should include real SQL ("s.ID = 78737" or "s.ItemLevel > 50 AND s.OverallQualityID = 4").
 	if strings.TrimSpace(filter) != "" {
 		baseQuery += " WHERE " + filter
 	}
 
-	// For debugging, you might want to see the complete query:
-	fmt.Println("Executing query:", baseQuery)
-
-	// LoadRows is assumed to be a function that executes the query and maps the results using ScanRawItemData.
 	items, err := LoadRows(dbHelper.db, baseQuery, ScanRawItemData)
 	fmt.Println("Loaded Items:", len(items))
 	if err != nil {
@@ -167,7 +175,7 @@ func ScanRandPropPoints(rows *sql.Rows) (RandPropPointsStruct, error) {
 }
 
 func LoadRandPropPoints(dbHelper *DBHelper) {
-	query := `SELECT ID as ItemLevel, Epic, Superiors, Good FROM RandPropPoints;`
+	query := `SELECT ID as ItemLevel, Epic, Superior, Good FROM RandPropPoints;`
 	items, err := LoadRows(dbHelper.db, query, ScanRandPropPoints)
 	if err != nil {
 		fmt.Errorf("Error in query load items")
@@ -284,17 +292,20 @@ func ScanGemTable(rows *sql.Rows) (RawGem, error) {
 	var statListString string
 	var statBonusString string
 	var effectString string
-	err := rows.Scan(&raw.ItemId, &raw.Name, &raw.FDID, &statListString, statBonusString, &raw.MinItemLevel, &raw.Quality, effectString, &raw.IsJc, &raw.Flags)
+	err := rows.Scan(&raw.ItemId, &raw.Name, &raw.FDID, &raw.GemType, &statListString, &statBonusString, &raw.MinItemLevel, &raw.Quality, &effectString, &raw.IsJc, &raw.Flags)
 	raw.StatList, err = parseIntArrayField(statListString, 3)
 	if err != nil {
+		fmt.Println(err.Error(), 3, statListString)
 		fmt.Errorf("Error loading GemTable statListString")
 	}
 	raw.StatBonus, err = parseIntArrayField(statBonusString, 3)
 	if err != nil {
+		fmt.Println(err.Error(), 1, statBonusString, raw.ItemId)
 		fmt.Errorf("Error loading GemTable statBonusString")
 	}
 	raw.Effect, err = parseIntArrayField(effectString, 3)
 	if err != nil {
+		fmt.Println(err.Error(), 2, effectString, raw.ItemId)
 		fmt.Errorf("Error loading GemTable effectString")
 	}
 	return raw, err
@@ -310,7 +321,7 @@ func LoadRawGems(dbHelper *DBHelper) error {
 		sie.EffectArg as StatBonus,
 		gp.Min_item_level MinItemLevel,
 		s.OverallQualityId Quality,
-		s.Effect,
+		sie.Effect,
 		CASE 
 			WHEN s.RequiredSkill = 755 THEN 1
 			ELSE 0
@@ -323,6 +334,7 @@ func LoadRawGems(dbHelper *DBHelper) error {
 		WHERE i.ClassID = 3`
 	items, err := LoadRows(dbHelper.db, query, ScanGemTable)
 	if err != nil {
+		fmt.Println(err.Error())
 		return fmt.Errorf("error loading items for GemTables: %w", err)
 	}
 
@@ -332,18 +344,21 @@ func LoadRawGems(dbHelper *DBHelper) error {
 }
 
 type RawEnchant struct {
-	EffectId        int
-	Name            string
-	SpellId         int
-	ItemId          int
-	ProfessionId    int
-	Effects         []int
-	EffectPoints    []int
-	EffectArgs      []int
-	IsWeaponEnchant bool
-	InvTypesMask    int
-	SubClassMask    int
-	ClassMask       int
+	EffectId           int
+	Name               string
+	SpellId            int
+	ItemId             int
+	ProfessionId       int
+	Effects            []int
+	EffectPoints       []int
+	EffectArgs         []int
+	IsWeaponEnchant    bool
+	InvTypesMask       int
+	SubClassMask       int
+	ClassMask          int
+	FDID               int
+	Quality            int
+	RequiredProfession int
 }
 
 func ScanEnchantsTable(rows *sql.Rows) (RawEnchant, error) {
@@ -351,39 +366,60 @@ func ScanEnchantsTable(rows *sql.Rows) (RawEnchant, error) {
 	var effectsString string
 	var effectPointsString string
 	var effectArgsString string
-	err := rows.Scan(&raw.EffectId, &raw.Name, &raw.SpellId, &raw.ItemId, &raw.ProfessionId, &effectsString, &effectPointsString, &effectArgsString, &raw.IsWeaponEnchant, &raw.InvTypesMask, &raw.SubClassMask, &raw.ClassMask)
+	err := rows.Scan(
+		&raw.EffectId,
+		&raw.Name,
+		&raw.SpellId,
+		&raw.ItemId,
+		&raw.ProfessionId,
+		&effectsString,
+		&effectPointsString,
+		&effectArgsString,
+		&raw.IsWeaponEnchant,
+		&raw.InvTypesMask,
+		&raw.SubClassMask,
+		&raw.ClassMask, &raw.FDID, &raw.Quality, &raw.RequiredProfession)
+	if raw.InvTypesMask > 0 {
+		//fmt.Println(raw.InvTypesMask)
+	}
 	raw.Effects, err = parseIntArrayField(effectsString, 3)
 	if err != nil {
-		fmt.Errorf("Error loading GemTable effectsString")
+		fmt.Println(err.Error(), 3, effectsString)
+		fmt.Errorf("Error loading ScanEnchantsTable effectsString")
 	}
 	raw.EffectPoints, err = parseIntArrayField(effectPointsString, 3)
 	if err != nil {
-		fmt.Errorf("Error loading GemTable effectPointsString")
+		fmt.Println(err.Error(), 1, effectPointsString)
+		fmt.Errorf("Error loading ScanEnchantsTable effectPointsString")
 	}
 	raw.EffectArgs, err = parseIntArrayField(effectArgsString, 3)
 	if err != nil {
-		fmt.Errorf("Error loading GemTable effectArgsString")
+		fmt.Println(err.Error(), 2, effectArgsString)
+		fmt.Errorf("Error loading ScanEnchantsTable effectArgsString")
 	}
 	return raw, err
 }
 
 func LoadRawEnchants(dbHelper *DBHelper) error {
-	query := `SELECT
-		se.ID as effectId,
+	query := `SELECT DISTINCT
+		sie.ID as effectId,
 		sn.Name_lang as name,
 		se.SpellID as spellId,
-		ie.ParentItemID as ItemId,
+		COALESCE(ie.ParentItemID, 0) as ItemId,
 		sie.Field_1_15_3_55112_014 as professionId,
 		sie.Effect as Effect,
 		sie.EffectPointsMax as EffectPoints,
 		sie.EffectArg as EffectArgs,
 		CASE 
-			WHEN sei.EquippedItemClass = 4 THEN 1
-			ELSE 0
+			WHEN sei.EquippedItemClass = 4 THEN false
+			ELSE true
 		END AS isWeaponEnchant,
 		sei.EquippedItemInvTypes as InvTypes,
 		sei.EquippedItemSubclass,
-		sla.ClassMask
+		COALESCE(sla.ClassMask, 0),
+		COALESCE(it.IconFileDataID, 0),
+		COALESCE(isp.OverallQualityID, 1),
+		COALESCE(sie.Field_1_15_3_55112_014, 0) as RequiredProfession
 		FROM SpellEffect se 
 		JOIN Spell s ON se.SpellID = s.ID
 		JOIN SpellName sn ON se.SpellID = sn.ID
@@ -391,7 +427,9 @@ func LoadRawEnchants(dbHelper *DBHelper) error {
 		LEFT JOIN ItemEffect ie ON se.SpellID = ie.SpellID
 		LEFT JOIN SpellEquippedItems sei ON se.SpellId = sei.SpellID
 		LEFT JOIN SkillLineAbility sla ON se.SpellID = sla.Spell
-		WHERE se.Effect = 53`
+		LEFT JOIN Item it ON ie.ParentItemId = it.ID
+		LEFT JOIN ItemSparse isp ON ie.ParentItemId = isp.ID
+		WHERE se.Effect = 53 GROUP BY sie.ID`
 	items, err := LoadRows(dbHelper.db, query, ScanEnchantsTable)
 	if err != nil {
 		return fmt.Errorf("error loading items for GemTables: %w", err)
@@ -399,5 +437,313 @@ func LoadRawEnchants(dbHelper *DBHelper) error {
 
 	RawEnchants = items
 
+	return nil
+}
+
+//RandPropPoints
+
+type RandPropAllocationRow struct {
+	Ilvl       int32
+	Allocation RandomPropAllocation
+}
+
+func ScanRandPropAllocationRow(rows *sql.Rows) (RandPropAllocationRow, error) {
+	var row RandPropAllocationRow
+	var damageReplaceStat int
+	err := rows.Scan(
+		&row.Ilvl,
+		&damageReplaceStat,
+		&row.Allocation.Epic0,
+		&row.Allocation.Epic1,
+		&row.Allocation.Epic2,
+		&row.Allocation.Epic3,
+		&row.Allocation.Epic4,
+		&row.Allocation.Superior0,
+		&row.Allocation.Superior1,
+		&row.Allocation.Superior2,
+		&row.Allocation.Superior3,
+		&row.Allocation.Superior4,
+		&row.Allocation.Good0,
+		&row.Allocation.Good1,
+		&row.Allocation.Good2,
+		&row.Allocation.Good3,
+		&row.Allocation.Good4,
+	)
+	return row, err
+}
+
+func LoadRandomPropAllocations(dbHelper *DBHelper) (RandomPropAllocationsByIlvl, error) {
+	query := `SELECT ID, DamageReplaceStat, Epic_0, Epic_1, Epic_2, Epic_3, Epic_4, Superior_0, Superior_1, Superior_2, Superior_3, Superior_4, Good_0, Good_1, Good_2 ,Good_3, Good_4 FROM RandPropPoints`
+	rowsData, err := LoadRows[RandPropAllocationRow](dbHelper.db, query, ScanRandPropAllocationRow)
+	if err != nil {
+		return nil, fmt.Errorf("error loading random property allocations: %w", err)
+	}
+
+	processed := make(RandomPropAllocationsByIlvl)
+	for _, r := range rowsData {
+		processed[r.Ilvl] = RandomPropAllocationMap{
+			proto.ItemQuality_ItemQualityEpic:     [5]int32{r.Allocation.Epic0, r.Allocation.Epic1, r.Allocation.Epic2, r.Allocation.Epic3, r.Allocation.Epic4},
+			proto.ItemQuality_ItemQualityRare:     [5]int32{r.Allocation.Superior0, r.Allocation.Superior1, r.Allocation.Superior2, r.Allocation.Superior3, r.Allocation.Superior4},
+			proto.ItemQuality_ItemQualityUncommon: [5]int32{r.Allocation.Good0, r.Allocation.Good1, r.Allocation.Good2, r.Allocation.Good3, r.Allocation.Good4},
+		}
+	}
+
+	return processed, nil
+}
+
+type RawSpellEffect struct {
+	ID                             int
+	DifficultyID                   int
+	EffectIndex                    int
+	Effect                         int
+	EffectAmplitude                float64
+	EffectAttributes               int
+	EffectAura                     int
+	EffectAuraPeriod               int
+	EffectBasePoints               int
+	EffectBonusCoefficient         float64
+	EffectChainAmplitude           float64
+	EffectChainTargets             int
+	EffectDieSides                 int
+	EffectItemType                 int
+	EffectMechanic                 int
+	EffectPointsPerResource        float64
+	EffectPosFacing                float64
+	EffectRealPointsPerLevel       float64
+	EffectTriggerSpell             int
+	BonusCoefficientFromAP         float64
+	PvpMultiplier                  float64
+	Coefficient                    float64
+	Variance                       float64
+	ResourceCoefficient            float64
+	GroupSizeBasePointsCoefficient float64
+	// Grouped properties parsed from JSON strings:
+	EffectMiscValues      []int // from EffectMiscValue, EffectMiscValue_0, EffectMiscValue_1
+	EffectRadiusIndices   []int // from EffectRadiusIndex, EffectRadiusIndex_0, EffectRadiusIndex_1
+	EffectSpellClassMasks []int // from EffectSpellClassMask, EffectSpellClassMask_0, EffectSpellClassMask_1, EffectSpellClassMask_2, EffectSpellClassMask_3
+	ImplicitTargets       []int // from ImplicitTarget, ImplicitTarget_0, ImplicitTarget_1
+	SpellID               int
+}
+
+func ScanSpellEffect(rows *sql.Rows) (RawSpellEffect, error) {
+	var raw RawSpellEffect
+	// Temporary strings to hold the concatenated JSON for grouped fields.
+	var miscValuesStr, radiusIndicesStr, spellClassMasksStr, implicitTargetsStr string
+
+	err := rows.Scan(
+		&raw.ID,
+		&raw.DifficultyID,
+		&raw.EffectIndex,
+		&raw.Effect,
+		&raw.EffectAmplitude,
+		&raw.EffectAttributes,
+		&raw.EffectAura,
+		&raw.EffectAuraPeriod,
+		&raw.EffectBasePoints,
+		&raw.EffectBonusCoefficient,
+		&raw.EffectChainAmplitude,
+		&raw.EffectChainTargets,
+		&raw.EffectDieSides,
+		&raw.EffectItemType,
+		&raw.EffectMechanic,
+		&raw.EffectPointsPerResource,
+		&raw.EffectPosFacing,
+		&raw.EffectRealPointsPerLevel,
+		&raw.EffectTriggerSpell,
+		&raw.BonusCoefficientFromAP,
+		&raw.PvpMultiplier,
+		&raw.Coefficient,
+		&raw.Variance,
+		&raw.ResourceCoefficient,
+		&raw.GroupSizeBasePointsCoefficient,
+		&miscValuesStr,
+		&radiusIndicesStr,
+		&spellClassMasksStr,
+		&implicitTargetsStr,
+		&raw.SpellID,
+	)
+	if err != nil {
+		return raw, err
+	}
+
+	raw.EffectMiscValues, err = parseIntArrayField(miscValuesStr, 2)
+	if err != nil {
+		return raw, fmt.Errorf("error parsing EffectMiscValues: %w", err)
+	}
+	raw.EffectRadiusIndices, err = parseIntArrayField(radiusIndicesStr, 2)
+	if err != nil {
+		return raw, fmt.Errorf("error parsing EffectRadiusIndices: %w", err)
+	}
+	raw.EffectSpellClassMasks, err = parseIntArrayField(spellClassMasksStr, 4)
+	if err != nil {
+		return raw, fmt.Errorf("error parsing EffectSpellClassMasks: %w", err)
+	}
+	raw.ImplicitTargets, err = parseIntArrayField(implicitTargetsStr, 2)
+	if err != nil {
+		return raw, fmt.Errorf("error parsing ImplicitTargets: %w", err)
+	}
+
+	return raw, nil
+}
+
+func LoadRawSpellEffects(dbHelper *DBHelper) error {
+	query := `
+	SELECT
+		ID,
+		DifficultyID,
+		EffectIndex,
+		Effect,
+		EffectAmplitude,
+		EffectAttributes,
+		EffectAura,
+		EffectAuraPeriod,
+		EffectBasePoints,
+		EffectBonusCoefficient,
+		EffectChainAmplitude,
+		EffectChainTargets,
+		EffectDieSides,
+		EffectItemType,
+		EffectMechanic,
+		EffectPointsPerResource,
+		EffectPos_facing,
+		EffectRealPointsPerLevel,
+		EffectTriggerSpell,
+		BonusCoefficientFromAP,
+		PvpMultiplier,
+		Coefficient,
+		Variance,
+		ResourceCoefficient,
+		GroupSizeBasePointsCoefficient,
+		EffectMiscValue,
+		EffectRadiusIndex,
+		EffectSpellClassMask,
+		ImplicitTarget,
+		SpellID
+	FROM SpellEffect
+	`
+	items, err := LoadRows(dbHelper.db, query, ScanSpellEffect)
+	if err != nil {
+		return fmt.Errorf("error loading SpellEffects: %w", err)
+	}
+	groupedBySpellID := make(map[int][]RawSpellEffect)
+	for _, effect := range items {
+		groupedBySpellID[effect.SpellID] = append(groupedBySpellID[effect.SpellID], effect)
+	}
+
+	RawSpellEffectBySpellIdAndIndex = make(map[int]map[int]RawSpellEffect)
+	for spellID, effects := range groupedBySpellID {
+		RawSpellEffectBySpellIdAndIndex[spellID] = CacheBy(effects, func(e RawSpellEffect) int {
+			return e.EffectIndex
+		})
+	}
+	return nil
+}
+
+// RawRandomSuffix represents the combined result of the ItemRandomSuffix row
+// with its joined SpellItemEnchantment columns.
+type RawRandomSuffix struct {
+	ID            int
+	Name          string
+	AllocationPct []int // AllocationPct_0-4
+	EffectArgs    []int // EffectArg_0-4
+	Effects       []int // Effect_0-4
+}
+
+// ScanRawRandomSuffix scans one row from the query result into a RawRandomSuffix struct.
+func ScanRawRandomSuffix(rows *sql.Rows) (RawRandomSuffix, error) {
+	var raw RawRandomSuffix
+	var (
+		id     int
+		name   string
+		alloc0 int
+		alloc1 int
+		alloc2 int
+		alloc3 int
+		alloc4 int
+		eArg0  int
+		eArg1  int
+		eArg2  int
+		eArg3  int
+		eArg4  int
+		eff0   int
+		eff1   int
+		eff2   int
+		eff3   int
+		eff4   int
+	)
+
+	// The order here must match the SELECT list order.
+	err := rows.Scan(
+		&id,
+		&name,
+		&alloc0,
+		&alloc1,
+		&alloc2,
+		&alloc3,
+		&alloc4,
+		&eArg0,
+		&eArg1,
+		&eArg2,
+		&eArg3,
+		&eArg4,
+		&eff0,
+		&eff1,
+		&eff2,
+		&eff3,
+		&eff4,
+	)
+	if err != nil {
+		return raw, err
+	}
+
+	raw.ID = id
+	raw.Name = name
+	raw.AllocationPct = []int{alloc0, alloc1, alloc2, alloc3, alloc4}
+	raw.EffectArgs = []int{eArg0, eArg1, eArg2, eArg3, eArg4}
+	raw.Effects = []int{eff0, eff1, eff2, eff3, eff4}
+
+	return raw, nil
+}
+
+var RawRandomSuffixes []RawRandomSuffix
+var RawRandomSuffixesById map[int]RawRandomSuffix
+
+func LoadRawRandomSuffixes(dbHelper *DBHelper) error {
+	query := `
+	SELECT 
+		COALESCE(-irs.ID, 0) AS ID,
+		COALESCE(irs.Name_lang, '') AS Name_lang,
+		COALESCE(irs.AllocationPct_0, 0) AS AllocationPct_0,
+		COALESCE(irs.AllocationPct_1, 0) AS AllocationPct_1,
+		COALESCE(irs.AllocationPct_2, 0) AS AllocationPct_2,
+		COALESCE(irs.AllocationPct_3, 0) AS AllocationPct_3,
+		COALESCE(irs.AllocationPct_4, 0) AS AllocationPct_4,
+		COALESCE(sie0.EffectArg_0, 0) AS EffectArg_0,
+		COALESCE(sie1.EffectArg_0, 0) AS EffectArg_1,
+		COALESCE(sie2.EffectArg_0, 0) AS EffectArg_2,
+		COALESCE(sie3.EffectArg_0, 0) AS EffectArg_3,
+		COALESCE(sie4.EffectArg_0, 0) AS EffectArg_4,
+		COALESCE(sie0.Effect_0, 0) AS Effect_0,
+		COALESCE(sie1.Effect_0, 0) AS Effect_1,
+		COALESCE(sie2.Effect_0, 0) AS Effect_2,
+		COALESCE(sie3.Effect_0, 0) AS Effect_3,
+		COALESCE(sie4.Effect_0, 0) AS Effect_4
+	FROM ItemRandomSuffix irs
+	LEFT JOIN SpellItemEnchantment sie0 ON irs.Enchantment_0 = sie0.ID
+	LEFT JOIN SpellItemEnchantment sie1 ON irs.Enchantment_1 = sie1.ID
+	LEFT JOIN SpellItemEnchantment sie2 ON irs.Enchantment_2 = sie2.ID
+	LEFT JOIN SpellItemEnchantment sie3 ON irs.Enchantment_3 = sie3.ID
+	LEFT JOIN SpellItemEnchantment sie4 ON irs.Enchantment_4 = sie4.ID;
+`
+	// Use your generic LoadRows function to scan each row into a RawRandomSuffix.
+	items, err := LoadRows(dbHelper.db, query, ScanRawRandomSuffix)
+	if err != nil {
+		return fmt.Errorf("error loading RawRandomSuffixes: %w", err)
+	}
+
+	RawRandomSuffixes = items
+	RawRandomSuffixesById = CacheBy(items, func(suffix RawRandomSuffix) int {
+		return suffix.ID
+	})
 	return nil
 }
