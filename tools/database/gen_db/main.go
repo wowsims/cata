@@ -26,15 +26,12 @@ import (
 // go run ./tools/database/gen_db -outDir=assets -gen=wago-db2-items
 // go run ./tools/database/gen_db -outDir=assets -gen=db
 
-// To test new DB generation
-//
-// go run ./tools/database/gen_db -outDir=assets -gen=testDb
-
 var exactId = flag.Int("id", 0, "ID to scan for")
 var minId = flag.Int("minid", 0, "Minimum ID to scan for")
 var maxId = flag.Int("maxid", 0, "Maximum ID to scan for")
 var outDir = flag.String("outDir", "assets", "Path to output directory for writing generated .go files.")
 var genAsset = flag.String("gen", "", "Asset to generate. Valid values are 'db', 'atlasloot', 'wowhead-items', 'wowhead-spells', 'wowhead-itemdb', 'cata-items', and 'wago-db2-items'")
+var dbPath = flag.String("dbPath", "./tools/database/wowsims.db", "Location of wowsims.db file from the DB2ToSqliteTool")
 
 func main() {
 	flag.Parse()
@@ -42,6 +39,8 @@ func main() {
 		minId = exactId
 		maxId = exactId
 	}
+
+	database.DatabasePath = *dbPath
 
 	if *outDir == "" {
 		panic("outDir flag is required!")
@@ -77,7 +76,7 @@ func main() {
 	var db2Gems []*proto.UIGem
 	var db2Enchants []*proto.UIEnchant
 
-	helper, _ := database.NewDBHelper("./tools/database/wowsims.db")
+	helper, _ := database.NewDBHelper()
 	defer helper.Close()
 
 	database.RunOverrides(helper, "./tools/database/overrides")

@@ -16,7 +16,7 @@ func QueryUIItems() ([]*proto.UIItem, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize icons map: %v", err)
 	}
-	helper, err := NewDBHelper("./tools/database/wowsims.db")
+	helper, err := NewDBHelper()
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize database helper: %v", err)
 	}
@@ -59,7 +59,7 @@ func QueryUIGems() ([]*proto.UIGem, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize icons map: %v", err)
 	}
-	helper, err := NewDBHelper("./tools/database/wowsims.db")
+	helper, err := NewDBHelper()
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize database helper: %v", err)
 	}
@@ -99,7 +99,7 @@ func QueryUIEnchants() ([]*proto.UIEnchant, []int, error) {
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to initialize icons map: %v", err)
 	}
-	helper, err := NewDBHelper("./tools/database/wowsims.db")
+	helper, err := NewDBHelper()
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to initialize database helper: %v", err)
 	}
