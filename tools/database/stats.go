@@ -143,10 +143,16 @@ func processStats(raw RawItemData, item *proto.UIItem) error {
 					calculated := percent[i] * rpp
 
 					var statMod = statMods[i]
-					value := math.Round(float64(calculated)/10000) - float64(statMod)
+					value := (float64(calculated) / 10000) - float64(statMod)
+
+					value = math.Round(value)
 					// Remap Armor stat to BonusArmor if needed idk
 					if stat == proto.Stat_StatArmor {
 						stat = proto.Stat_StatBonusArmor
+					}
+					if raw.id == 78391 {
+						fmt.Println("This item rounds weirdly and idk why")
+						fmt.Println(percent[i], rpp, statMod, value, (float64(calculated)/10000)-float64(statMod), calculated)
 					}
 					item.Stats[stat] = value
 				}
@@ -158,6 +164,14 @@ func processStats(raw RawItemData, item *proto.UIItem) error {
 	}
 
 	return ParseStats(raw.id, raw.name, raw.invType, raw.itemLevel)
+}
+
+func blizzardRound(val float64) float64 {
+	intPart, fracPart := math.Modf(val)
+	if fracPart > 0.725 {
+		return intPart + 1
+	}
+	return intPart
 }
 
 func ParseStats(id int, name string, invType int, itemLevel int) error {

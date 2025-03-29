@@ -10,7 +10,7 @@ require (
 	github.com/spf13/cobra v1.7.0
 	github.com/tailscale/hujson v0.0.0-20221223112325-20486734a56a
 	golang.org/x/exp v0.0.0-20221028150844-83b7d23a625f
-	google.golang.org/protobuf v1.36.6
+	google.golang.org/protobuf v1.34.2
 )
 
 require (
