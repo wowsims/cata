@@ -8,7 +8,6 @@ import (
 	"log"
 	"os"
 	"slices"
-	"strconv"
 	"strings"
 
 	"github.com/wowsims/cata/sim"
@@ -32,14 +31,16 @@ var minId = flag.Int("minid", 0, "Minimum ID to scan for")
 var maxId = flag.Int("maxid", 0, "Maximum ID to scan for")
 var outDir = flag.String("outDir", "assets", "Path to output directory for writing generated .go files.")
 var genAsset = flag.String("gen", "", "Asset to generate. Valid values are 'db', 'atlasloot', 'wowhead-items', 'wowhead-spells', 'wowhead-itemdb', 'cata-items', and 'wago-db2-items'")
+var dbPath = flag.String("dbPath", "./tools/database/wowsims.db", "Location of wowsims.db file from the DB2ToSqliteTool")
 
 func main() {
 	flag.Parse()
-
 	if *exactId != 0 {
 		minId = exactId
 		maxId = exactId
 	}
+
+	database.DatabasePath = *dbPath
 
 	if *outDir == "" {
 		panic("outDir flag is required!")
@@ -71,39 +72,71 @@ func main() {
 	} else if *genAsset != "db" {
 		panic("Invalid gen value")
 	}
-	itemTooltips := database.NewWowheadItemTooltipManager(fmt.Sprintf("%s/wowhead_item_tooltips.csv", inputsDir)).Read()
+	var db2Items []*proto.UIItem
+	var db2Gems []*proto.UIGem
+	var db2Enchants []*proto.UIEnchant
+
+	helper, _ := database.NewDBHelper()
+	defer helper.Close()
+
+	database.RunOverrides(helper, "./tools/database/overrides")
+	database.LoadRawRandomSuffixes(helper)
+
+	randPropsByIlvl, _ := database.LoadRandomPropAllocations(helper)
+
+	uiItems, err := database.QueryUIItems()
+	if err != nil {
+
+	}
+	uiGems, err := database.QueryUIGems()
+	if err != nil {
+
+	}
+	uiEnchants, _, err := database.QueryUIEnchants()
+	if err != nil {
+
+	}
+	db2Items = uiItems
+	db2Gems = uiGems
+	db2Enchants = uiEnchants
+
+	//itemTooltips := database.NewWowheadItemTooltipManager(fmt.Sprintf("%s/wowhead_item_tooltips.csv", inputsDir)).Read()
 	spellTooltips := database.NewWowheadSpellTooltipManager(fmt.Sprintf("%s/wowhead_spell_tooltips.csv", inputsDir)).Read()
-	wowheadDB := database.ParseWowheadDB(tools.ReadFile(fmt.Sprintf("%s/wowhead_gearplannerdb.txt", inputsDir)))
+	//wowheadDB := database.ParseWowheadDB(tools.ReadFile(fmt.Sprintf("%s/wowhead_gearplannerdb.txt", inputsDir)))
 	atlaslootDB := database.ReadDatabaseFromJson(tools.ReadFile(fmt.Sprintf("%s/atlasloot_db.json", inputsDir)))
-	wagoItems := database.ParseWagoDB(tools.ReadFile(fmt.Sprintf("%s/wago_db2_items.csv", inputsDir)))
+	//wagoItems := database.ParseWagoDB(tools.ReadFile(fmt.Sprintf("%s/wago_db2_items.csv", inputsDir)))
 
 	// Todo: https://web.archive.org/web/20120201045249js_/http://www.wowhead.com/data=item-scaling
 	reforgeStats := database.ParseWowheadReforgeStats(tools.ReadFile(fmt.Sprintf("%s/wowhead_reforge_stats.json", inputsDir)))
-	randomPropAllocations := database.ParseRandPropPointsTable(tools.ReadFile(fmt.Sprintf("%s/RandPropPoints.json", inputsDir)))
+	//randomPropAllocations := database.ParseRandPropPointsTable(tools.ReadFile(fmt.Sprintf("%s/RandPropPoints.json", inputsDir)))
 
 	db := database.NewWowDatabase()
 	db.Encounters = core.PresetEncounters
 	db.GlyphIDs = getGlyphIDsFromJson(fmt.Sprintf("%s/glyph_id_map.json", inputsDir))
 	db.ReforgeStats = reforgeStats.ToProto()
 
-	for _, response := range itemTooltips {
-		if response.IsEquippable() {
-			// Only included items that are in wowheads gearplanner db
-			// Wowhead doesn't seem to have a field/flag to signify 'not available / in game' but their gearplanner db has them filtered
-			item := response.ToItemProto()
-			if _, ok := wowheadDB.Items[strconv.Itoa(int(item.Id))]; ok {
-				db.MergeItem(item)
-			}
-		} else if response.IsGem() {
-			db.MergeGem(response.ToGemProto())
-		}
-	}
-	for _, wowheadItem := range wowheadDB.Items {
-		item := wowheadItem.ToProto()
-		if _, ok := db.Items[item.Id]; ok {
-			db.MergeItem(item)
-		}
-	}
+	db.MergeItems(db2Items)
+	db.MergeGems(db2Gems)
+	db.MergeEnchants(db2Enchants)
+
+	// for _, response := range itemTooltips {
+	// 	if response.IsEquippable() {
+	// 		// Only included items that are in wowheads gearplanner db
+	// 		// Wowhead doesn't seem to have a field/flag to signify 'not available / in game' but their gearplanner db has them filtered
+	// 		item := response.ToItemProto()
+	// 		if _, ok := wowheadDB.Items[strconv.Itoa(int(item.Id))]; ok {
+	// 			db.MergeItem(item)
+	// 		}
+	// 	} else if response.IsGem() {
+	// 		db.MergeGem(response.ToGemProto())
+	// 	}
+	// }
+	// for _, wowheadItem := range wowheadDB.Items {
+	// 	item := wowheadItem.ToProto()
+	// 	if _, ok := db.Items[item.Id]; ok {
+	// 		db.MergeItem(item)
+	// 	}
+	// }
 	for _, item := range atlaslootDB.Items {
 		if _, ok := db.Items[item.Id]; ok {
 			db.MergeItem(item)
@@ -112,10 +145,10 @@ func main() {
 
 	db.MergeItems(database.ItemOverrides)
 	db.MergeGems(database.GemOverrides)
-	db.MergeEnchants(database.EnchantOverrides)
+	//db.MergeEnchants(database.EnchantOverrides)
 	ApplyGlobalFilters(db)
-	AttachFactionInformation(db, wagoItems)
-	AttachItemSetIDs(db, wagoItems)
+	//AttachFactionInformation(db, wagoItems)
+	//AttachItemSetIDs(db, wagoItems)
 
 	leftovers := db.Clone()
 	ApplyNonSimmableFilters(leftovers)
@@ -124,17 +157,21 @@ func main() {
 	ApplySimmableFilters(db)
 	for _, enchant := range db.Enchants {
 		if enchant.ItemId != 0 {
-			db.AddItemIcon(enchant.ItemId, itemTooltips)
+			db.AddItemIconClean(enchant.ItemId, enchant.Icon, enchant.Name)
 		}
 		if enchant.SpellId != 0 {
-			db.AddSpellIcon(enchant.SpellId, spellTooltips)
+			db.AddSpellIconClean(enchant.ItemId, enchant.Icon, enchant.Name)
 		}
 	}
 
-	for _, itemID := range database.ExtraItemIcons {
-		db.AddItemIcon(itemID, itemTooltips)
+	// for _, itemID := range database.ExtraItemIcons {
+	// 	//	db.AddItemIcon(itemID, itemTooltips)
+	// }
+	for _, randomSuffix := range database.RawRandomSuffixes {
+		if _, exists := db.RandomSuffixes[int32(randomSuffix.ID)]; !exists {
+			db.RandomSuffixes[int32(randomSuffix.ID)] = randomSuffix.ToProto()
+		}
 	}
-
 	for _, item := range db.Items {
 		for _, source := range item.Sources {
 			if crafted := source.GetCrafted(); crafted != nil {
@@ -142,14 +179,8 @@ func main() {
 			}
 		}
 
-		for _, randomSuffixID := range item.RandomSuffixOptions {
-			if _, exists := db.RandomSuffixes[randomSuffixID]; !exists {
-				db.RandomSuffixes[randomSuffixID] = wowheadDB.RandomSuffixes[strconv.Itoa(int(randomSuffixID))].ToProto()
-			}
-		}
-
 		if len(item.RandomSuffixOptions) > 0 {
-			item.RandPropPoints = randomPropAllocations.CalcItemAllocation(item)
+			item.RandPropPoints = randPropsByIlvl.CalcItemAllocation(item)
 		}
 
 		// Auto-populate phase information if missing on Wowhead

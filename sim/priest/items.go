@@ -413,8 +413,7 @@ var ItemSetRegaliaOfTheCleansingFlame = core.NewItemSet(core.ItemSet{
 
 // T13 - Shadow
 var ItemSetRegaliaOfDyingLight = core.NewItemSet(core.ItemSet{
-	Name:            "Regalia of Dying Light",
-	AlternativeName: "Regalia of Dying light",
+	Name: "Regalia of Dying Light",
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
