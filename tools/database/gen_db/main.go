@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"compress/gzip"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -13,10 +14,28 @@ import (
 	"github.com/wowsims/cata/sim"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/dbc"
 	_ "github.com/wowsims/cata/sim/encounters" // Needed for preset encounters.
 	"github.com/wowsims/cata/tools"
 	"github.com/wowsims/cata/tools/database"
 )
+
+func writeGzipFile(filePath string, data []byte) error {
+	// Create the file
+	f, err := os.Create(filePath)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	// Create a gzip writer on top of the file writer
+	gw := gzip.NewWriter(f)
+	defer gw.Close()
+
+	// Write the data to the gzip writer
+	_, err = gw.Write(data)
+	return err
+}
 
 // To do a full re-scrape, delete the previous output file first.
 // go run ./tools/database/gen_db -outDir=assets -gen=atlasloot
@@ -53,90 +72,156 @@ func main() {
 		db := database.ReadAtlasLootData()
 		db.WriteJson(fmt.Sprintf("%s/atlasloot_db.json", inputsDir))
 		return
-	} else if *genAsset == "wowhead-items" {
-		database.NewWowheadItemTooltipManager(fmt.Sprintf("%s/wowhead_item_tooltips.csv", inputsDir)).Fetch(int32(*minId), int32(*maxId), database.OtherItemIdsToFetch)
-		return
 	} else if *genAsset == "wowhead-spells" {
 		database.NewWowheadSpellTooltipManager(fmt.Sprintf("%s/wowhead_spell_tooltips.csv", inputsDir)).Fetch(int32(*minId), int32(*maxId), []string{})
-		return
-	} else if *genAsset == "wowhead-gearplannerdb" {
-		tools.WriteFile(fmt.Sprintf("%s/wowhead_gearplannerdb.txt", inputsDir), tools.ReadWebRequired("https://nether.wowhead.com/cata/data/gear-planner?dv=100"))
-		return
-	} else if *genAsset == "wago-db2-items" {
-		tools.WriteFile(fmt.Sprintf("%s/wago_db2_items.csv", inputsDir), tools.ReadWebRequired("https://wago.tools/db2/ItemSparse/csv?build=4.4.2.59536"))
 		return
 	} else if *genAsset == "reforge-stats" {
 		//Todo: fill this when we have information from wowhead @ Neteyes - Gehennas
 		// For now, the version we have was taken from https://web.archive.org/web/20120201045249js_/http://www.wowhead.com/data=item-scaling
 		return
+	} else if *genAsset == "dbc" {
+		helper, _ := database.NewDBHelper()
+		defer helper.Close()
+
+		database.RunOverrides(helper, "./tools/database/overrides")
+
+		randomSuffixes, err := database.LoadRawRandomSuffixes(helper)
+		if err == nil {
+			json, _ := json.Marshal(randomSuffixes)
+			if err := writeGzipFile(fmt.Sprintf("%s/dbc/random_suffix.json", inputsDir), json); err != nil {
+				log.Fatalf("Error writing file: %v", err)
+			}
+		}
+
+		items, err := database.LoadRawItems(helper, "s.OverallQualityId != 7 AND s.ScalingStatDistributionID == 0 AND (ItemClassName = 'Armor' OR ItemClassName = 'Weapon') AND s.Display_lang != '' AND (s.ID != 34219 AND s.Display_lang NOT LIKE '%Test%' AND s.Display_lang NOT LIKE 'QA%')")
+		if err == nil {
+			json, _ := json.Marshal(items)
+			if err := writeGzipFile(fmt.Sprintf("%s/dbc/items.json", inputsDir), json); err != nil {
+				log.Fatalf("Error writing file: %v", err)
+			}
+		}
+
+		randPropsByIlvl, err := database.LoadRandomPropAllocations(helper)
+		if err == nil {
+			json, _ := json.Marshal(randPropsByIlvl)
+			if err := writeGzipFile(fmt.Sprintf("%s/dbc/rand_prop_points.json", inputsDir), json); err != nil {
+				log.Fatalf("Error writing file: %v", err)
+			}
+		}
+
+		gems, err := database.LoadRawGems(helper)
+		if err == nil {
+			json, _ := json.Marshal(gems)
+			if err := writeGzipFile(fmt.Sprintf("%s/dbc/gems.json", inputsDir), json); err != nil {
+				log.Fatalf("Error writing file: %v", err)
+			}
+		}
+
+		enchants, err := database.LoadRawEnchants(helper)
+		if err == nil {
+			json, _ := json.Marshal(enchants)
+			if err := writeGzipFile(fmt.Sprintf("%s/dbc/enchants.json", inputsDir), json); err != nil {
+				log.Fatalf("Error writing file: %v", err)
+			}
+		}
+
+		spellEffects, err := database.LoadRawSpellEffects(helper)
+		if err == nil {
+			json, _ := json.Marshal(spellEffects)
+			if err := writeGzipFile(fmt.Sprintf("%s/dbc/spell_effects.json", inputsDir), json); err != nil {
+				log.Fatalf("Error writing file: %v", err)
+			}
+		}
+
+		itemStatEffects, err := database.LoadItemStatEffects(helper)
+		if err == nil {
+			json, _ := json.Marshal(itemStatEffects)
+			if err := writeGzipFile(fmt.Sprintf("%s/dbc/item_stat_effects.json", inputsDir), json); err != nil {
+				log.Fatalf("Error writing file: %v", err)
+			}
+		}
+
+		itemDamageTables, err := database.LoadItemDamageTables(helper)
+		if err == nil {
+			json, _ := json.Marshal(itemDamageTables)
+			if err := writeGzipFile(fmt.Sprintf("%s/dbc/item_damage_tables.json", inputsDir), json); err != nil {
+				log.Fatalf("Error writing file: %v", err)
+			}
+		}
+		itemArmorTotal, err := database.LoadItemArmorTotal(helper)
+		if err == nil {
+			json, _ := json.Marshal(itemArmorTotal)
+			if err := writeGzipFile(fmt.Sprintf("%s/dbc/item_armor_total.json", inputsDir), json); err != nil {
+				log.Fatalf("Error writing file: %v", err)
+			}
+		}
+		itemArmorQuality, err := database.LoadItemArmorQuality(helper)
+		if err == nil {
+			json, _ := json.Marshal(itemArmorQuality)
+			if err := writeGzipFile(fmt.Sprintf("%s/dbc/item_armor_quality.json", inputsDir), json); err != nil {
+				log.Fatalf("Error writing file: %v", err)
+			}
+		} else {
+			fmt.Println("Couldnt load quality")
+		}
+		itemArmorShield, err := database.LoadItemArmorShield(helper)
+		if err == nil {
+			json, _ := json.Marshal(itemArmorShield)
+			if err := writeGzipFile(fmt.Sprintf("%s/dbc/item_armor_shield.json", inputsDir), json); err != nil {
+				log.Fatalf("Error writing file: %v", err)
+			}
+		}
+		armorLocation, err := database.LoadArmorLocation(helper)
+		if err == nil {
+			json, _ := json.Marshal(armorLocation)
+			if err := writeGzipFile(fmt.Sprintf("%s/dbc/armor_location.json", inputsDir), json); err != nil {
+				log.Fatalf("Error writing file: %v", err)
+			}
+		}
+		return
 	} else if *genAsset != "db" {
 		panic("Invalid gen value")
 	}
-	var db2Items []*proto.UIItem
-	var db2Gems []*proto.UIGem
-	var db2Enchants []*proto.UIEnchant
 
-	helper, _ := database.NewDBHelper()
-	defer helper.Close()
-
-	database.RunOverrides(helper, "./tools/database/overrides")
-	database.LoadRawRandomSuffixes(helper)
-
-	randPropsByIlvl, _ := database.LoadRandomPropAllocations(helper)
-
-	uiItems, err := database.QueryUIItems()
-	if err != nil {
-
-	}
-	uiGems, err := database.QueryUIGems()
-	if err != nil {
-
-	}
-	uiEnchants, _, err := database.QueryUIEnchants()
-	if err != nil {
-
-	}
-	db2Items = uiItems
-	db2Gems = uiGems
-	db2Enchants = uiEnchants
-
-	//itemTooltips := database.NewWowheadItemTooltipManager(fmt.Sprintf("%s/wowhead_item_tooltips.csv", inputsDir)).Read()
+	//Todo: See if we cant get rid of these as well
 	spellTooltips := database.NewWowheadSpellTooltipManager(fmt.Sprintf("%s/wowhead_spell_tooltips.csv", inputsDir)).Read()
-	//wowheadDB := database.ParseWowheadDB(tools.ReadFile(fmt.Sprintf("%s/wowhead_gearplannerdb.txt", inputsDir)))
 	atlaslootDB := database.ReadDatabaseFromJson(tools.ReadFile(fmt.Sprintf("%s/atlasloot_db.json", inputsDir)))
-	//wagoItems := database.ParseWagoDB(tools.ReadFile(fmt.Sprintf("%s/wago_db2_items.csv", inputsDir)))
 
 	// Todo: https://web.archive.org/web/20120201045249js_/http://www.wowhead.com/data=item-scaling
 	reforgeStats := database.ParseWowheadReforgeStats(tools.ReadFile(fmt.Sprintf("%s/wowhead_reforge_stats.json", inputsDir)))
-	//randomPropAllocations := database.ParseRandPropPointsTable(tools.ReadFile(fmt.Sprintf("%s/RandPropPoints.json", inputsDir)))
 
 	db := database.NewWowDatabase()
 	db.Encounters = core.PresetEncounters
 	db.GlyphIDs = getGlyphIDsFromJson(fmt.Sprintf("%s/glyph_id_map.json", inputsDir))
 	db.ReforgeStats = reforgeStats.ToProto()
 
-	db.MergeItems(db2Items)
-	db.MergeGems(db2Gems)
-	db.MergeEnchants(db2Enchants)
+	iconsMap, _ := database.LoadArtTexturePaths("./assets/db_inputs/ArtTextureID.lua")
+	var instance = dbc.GetDBC()
 
-	// for _, response := range itemTooltips {
-	// 	if response.IsEquippable() {
-	// 		// Only included items that are in wowheads gearplanner db
-	// 		// Wowhead doesn't seem to have a field/flag to signify 'not available / in game' but their gearplanner db has them filtered
-	// 		item := response.ToItemProto()
-	// 		if _, ok := wowheadDB.Items[strconv.Itoa(int(item.Id))]; ok {
-	// 			db.MergeItem(item)
-	// 		}
-	// 	} else if response.IsGem() {
-	// 		db.MergeGem(response.ToGemProto())
-	// 	}
-	// }
-	// for _, wowheadItem := range wowheadDB.Items {
-	// 	item := wowheadItem.ToProto()
-	// 	if _, ok := db.Items[item.Id]; ok {
-	// 		db.MergeItem(item)
-	// 	}
-	// }
+	for _, item := range instance.Items {
+		parsed := item.ToUIItem()
+		if parsed.Icon == "" {
+			parsed.Icon = strings.ToLower(database.GetIconName(iconsMap, item.FDID))
+		}
+		db.MergeItem(parsed)
+	}
+
+	for _, gem := range instance.Gems {
+		parsed := gem.ToProto()
+		if parsed.Icon == "" {
+			parsed.Icon = strings.ToLower(database.GetIconName(iconsMap, gem.FDID))
+		}
+		db.MergeGem(parsed)
+	}
+
+	for _, enchant := range instance.Enchants {
+		parsed := enchant.ToProto()
+		if parsed.Icon == "" {
+			parsed.Icon = strings.ToLower(database.GetIconName(iconsMap, enchant.FDID))
+		}
+		db.MergeEnchant(parsed)
+	}
+
 	for _, item := range atlaslootDB.Items {
 		if _, ok := db.Items[item.Id]; ok {
 			db.MergeItem(item)
@@ -145,10 +230,9 @@ func main() {
 
 	db.MergeItems(database.ItemOverrides)
 	db.MergeGems(database.GemOverrides)
-	//db.MergeEnchants(database.EnchantOverrides)
+	db.MergeEnchants(database.EnchantOverrides)
+
 	ApplyGlobalFilters(db)
-	//AttachFactionInformation(db, wagoItems)
-	//AttachItemSetIDs(db, wagoItems)
 
 	leftovers := db.Clone()
 	ApplyNonSimmableFilters(leftovers)
@@ -167,7 +251,7 @@ func main() {
 	// for _, itemID := range database.ExtraItemIcons {
 	// 	//	db.AddItemIcon(itemID, itemTooltips)
 	// }
-	for _, randomSuffix := range database.RawRandomSuffixes {
+	for _, randomSuffix := range dbc.GetDBC().RandomSuffix {
 		if _, exists := db.RandomSuffixes[int32(randomSuffix.ID)]; !exists {
 			db.RandomSuffixes[int32(randomSuffix.ID)] = randomSuffix.ToProto()
 		}
@@ -177,10 +261,6 @@ func main() {
 			if crafted := source.GetCrafted(); crafted != nil {
 				db.AddSpellIcon(crafted.SpellId, spellTooltips)
 			}
-		}
-
-		if len(item.RandomSuffixOptions) > 0 {
-			item.RandPropPoints = randPropsByIlvl.CalcItemAllocation(item)
 		}
 
 		// Auto-populate phase information if missing on Wowhead
@@ -363,6 +443,11 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 	db.SpellIcons = core.FilterMap(db.SpellIcons, func(_ int32, icon *proto.IconData) bool {
 		return icon.Name != "" && icon.Icon != ""
 	})
+
+	db.Enchants = core.FilterMap(db.Enchants, func(_ database.EnchantDBKey, enchant *proto.UIEnchant) bool {
+		return !strings.HasPrefix(enchant.Name, "QA")
+	})
+
 }
 
 // AttachFactionInformation attaches faction information (faction restrictions) to the DB items.

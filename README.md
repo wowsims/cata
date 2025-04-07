@@ -155,6 +155,29 @@ make wowsimcata
 
 # Generate code for items. Only necessary if you changed the items generator.
 make items
+
+# Generate data from WoW client files
+# Requires dotnet 9 to run
+# Uses tools/database/generator-settings.json
+make clientdata
+
+# Same as clientdata but from the ptr client
+# Saves the db in wowsims.ptr.db
+make clientdataptr
+
+# Generate code from WoW client files
+# Used before make items
+# Optimal usage would be something like make clientdata && make dbc && make items and then skip the part you do not want to reload.
+make dbc
+```
+
+## (Optional) Installing Dotnet 9 - Required if generating client data
+```sh
+curl -L https://dot.net/v1/dotnet-install.sh -o dotnet-install.sh
+chmod +x ./dotnet-install.sh
+./dotnet-install.sh --channel 9.0
+echo 'export PATH=$PATH:$HOME/.dotnet' >> ~/.bashrc
+source ~/.bashrc
 ```
 
 # Adding a Sim

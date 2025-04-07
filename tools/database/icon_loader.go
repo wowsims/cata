@@ -52,5 +52,5 @@ func GetIconName(artPaths map[int]string, fdid int) string {
 	if len(parts) == 0 {
 		return ""
 	}
-	return parts[len(parts)-1]
+	return strings.TrimSpace(parts[len(parts)-1])
 }

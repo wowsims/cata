@@ -17,8 +17,10 @@ type DBHelper struct {
 	db *sql.DB
 }
 
-func NewDBHelper(dbPath string) (*DBHelper, error) {
-	db, err := sql.Open("sqlite3", dbPath)
+var DatabasePath string
+
+func NewDBHelper() (*DBHelper, error) {
+	db, err := sql.Open("sqlite3", DatabasePath)
 	if err != nil {
 		return nil, fmt.Errorf("error opening database: %v", err)
 	}
