@@ -55,10 +55,10 @@ type Item struct {
 }
 
 func (item *Item) ToUIItem() *proto.UIItem {
-	return item.ToUScaledIItem(item.ItemLevel)
+	return item.ToScaledUIItem(item.ItemLevel)
 }
 
-func (item *Item) ToUScaledIItem(itemLevel int) *proto.UIItem {
+func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
 	var weaponType, handType, rangedType = item.GetWeaponTypes()
 	uiItem := &proto.UIItem{
 		Type:                MapInventoryTypeToItemType[item.InventoryType],
@@ -291,23 +291,12 @@ func (item *Item) GetWeaponTypes() (proto.WeaponType, proto.HandType, proto.Rang
 			rangedWeaponType = proto.RangedWeaponType_RangedWeaponTypeWand
 		case ITEM_SUBCLASS_WEAPON_THROWN:
 			rangedWeaponType = proto.RangedWeaponType_RangedWeaponTypeThrown
-		case ITEM_SUBCLASS_WEAPON_AXE2:
-		case ITEM_SUBCLASS_WEAPON_SWORD2:
-		case ITEM_SUBCLASS_WEAPON_EXOTIC2:
-		case ITEM_SUBCLASS_WEAPON_MACE2:
-		case ITEM_SUBCLASS_WEAPON_POLEARM:
-		case ITEM_SUBCLASS_WEAPON_STAFF:
-		case ITEM_SUBCLASS_WEAPON_SPEAR:
-		case ITEM_SUBCLASS_WEAPON_FISHING_POLE:
+		case ITEM_SUBCLASS_WEAPON_AXE2, ITEM_SUBCLASS_WEAPON_FISHING_POLE, ITEM_SUBCLASS_WEAPON_SPEAR, ITEM_SUBCLASS_WEAPON_STAFF, ITEM_SUBCLASS_WEAPON_POLEARM, ITEM_SUBCLASS_WEAPON_MACE2,
+			ITEM_SUBCLASS_WEAPON_EXOTIC2, ITEM_SUBCLASS_WEAPON_SWORD2:
 			handType = proto.HandType_HandTypeTwoHand
 			weaponType = MapWeaponSubClassToWeaponType[item.ItemSubClass]
-		case ITEM_SUBCLASS_WEAPON_AXE:
-		case ITEM_SUBCLASS_WEAPON_DAGGER:
-		case ITEM_SUBCLASS_WEAPON_SWORD:
-		case ITEM_SUBCLASS_WEAPON_FIST:
-		case ITEM_SUBCLASS_WEAPON_WARGLAIVE:
-		case ITEM_SUBCLASS_WEAPON_EXOTIC:
-		case ITEM_SUBCLASS_WEAPON_MACE:
+		case ITEM_SUBCLASS_WEAPON_EXOTIC, ITEM_SUBCLASS_WEAPON_MACE, ITEM_SUBCLASS_WEAPON_WARGLAIVE, ITEM_SUBCLASS_WEAPON_FIST, ITEM_SUBCLASS_WEAPON_SWORD,
+			ITEM_SUBCLASS_WEAPON_DAGGER, ITEM_SUBCLASS_WEAPON_AXE:
 			if item.InventoryType == INVTYPE_WEAPON {
 				handType = proto.HandType_HandTypeOneHand
 			} else if item.InventoryType == INVTYPE_WEAPONOFFHAND {

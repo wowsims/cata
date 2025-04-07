@@ -432,7 +432,7 @@ func LoadRawEnchants(dbHelper *DBHelper) ([]dbc.Enchant, error) {
 		LEFT JOIN SkillLineAbility sla ON se.SpellID = sla.Spell
 		LEFT JOIN Item it ON ie.ParentItemId = it.ID
 		LEFT JOIN ItemSparse isp ON ie.ParentItemId = isp.ID
-		WHERE se.Effect = 53 GROUP BY sn.Name_lang`
+		WHERE se.Effect = 53 GROUP BY sn.Name_lang, sie.ID`
 	items, err := LoadRows(dbHelper.db, query, ScanEnchantsTable)
 	if err != nil {
 		return nil, fmt.Errorf("error loading items for GemTables: %w", err)
