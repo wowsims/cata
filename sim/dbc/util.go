@@ -73,22 +73,36 @@ var classes = []DbcClass{
 }
 
 func readGzipFile(filename string) ([]byte, error) {
-	// Open the gzip file
 	f, err := os.Open(filename)
 	if err != nil {
-		return nil, err
+		return nil, DataLoadError{
+			Source:   filename,
+			DataType: "gzip file",
+			Reason:   err.Error(),
+		}
 	}
 	defer f.Close()
 
-	// Create a gzip reader on the file
 	gzReader, err := gzip.NewReader(f)
 	if err != nil {
-		return nil, err
+		return nil, DataLoadError{
+			Source:   filename,
+			DataType: "gzip",
+			Reason:   err.Error(),
+		}
 	}
 	defer gzReader.Close()
 
-	// Read the decompressed data
-	return io.ReadAll(gzReader)
+	data, err := io.ReadAll(gzReader)
+	if err != nil {
+		return nil, DataLoadError{
+			Source:   filename,
+			DataType: "decompression",
+			Reason:   err.Error(),
+		}
+	}
+
+	return data, nil
 }
 
 func processEnchantmentEffects(

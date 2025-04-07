@@ -9,14 +9,6 @@ import (
 	"github.com/wowsims/cata/sim/dbc"
 )
 
-// Tables
-var RawItems []dbc.Item
-var ItemStatEffects []dbc.ItemStatEffect
-var ItemStatEffectById map[int]dbc.ItemStatEffect
-var RawGems []dbc.Gem
-var RawEnchants []dbc.Enchant
-var RawSpellEffectBySpellIdAndIndex map[int]map[int]dbc.SpellEffect
-
 // Loading tables
 // Below is the definition and loading of tables
 //
@@ -31,86 +23,59 @@ func ScanRawItemData(rows *sql.Rows) (dbc.Item, error) {
 	var statPercentageOfSocket string
 	var bonusAmountCalculated string
 	var bonusStatString string
+	var statValue string
+	var socketTypes string
+	var statPercentEditor string
 	err := rows.Scan(&raw.Id, &raw.Name, &raw.InventoryType, &raw.ItemDelay, &raw.OverallQuality, &raw.DmgVariance,
-		&raw.DbMinDamage, &raw.DbMaxDamage, &raw.ItemLevel, &raw.ItemClassName, &raw.ItemSubClassName,
-		&raw.RppEpic, &raw.RppSuperior, &raw.RppGood, &raw.StatValue, &bonusStatString,
-		&raw.ClothArmorValue, &raw.LeatherArmorValue, &raw.MailArmorValue, &raw.PlateArmorValue,
-		&raw.ArmorLocID, &raw.ShieldArmorValues, &raw.StatPercentEditor, &raw.SocketTypes, &raw.SocketEnchantmentId, &raw.Flags0, &raw.FDID, &raw.ItemSetName, &raw.ItemSetId, &raw.Flags1, &raw.ClassMask, &raw.RaceMask, &raw.QualityModifier, &randomSuffixOptions, &statPercentageOfSocket, &bonusAmountCalculated, &raw.ItemClass, &raw.ItemSubClass)
+		&raw.ItemLevel,
+		&statValue, &bonusStatString,
+		&statPercentEditor, &socketTypes, &raw.SocketEnchantmentId, &raw.Flags0, &raw.FDID, &raw.ItemSetName, &raw.ItemSetId, &raw.Flags1, &raw.ClassMask, &raw.RaceMask, &raw.QualityModifier, &randomSuffixOptions, &statPercentageOfSocket, &bonusAmountCalculated, &raw.ItemClass, &raw.ItemSubClass)
 
-	raw.RandomSuffixOptions = ParseRandomSuffixOptions(randomSuffixOptions)
+	var parseErr error
+	raw.RandomSuffixOptions, parseErr = ParseRandomSuffixOptions(randomSuffixOptions)
+	if parseErr != nil {
+		return raw, fmt.Errorf("failed to parse RandomSuffixOptions: %w", parseErr)
+	}
+
 	raw.StatPercentageOfSocket, err = parseFloatArrayField(statPercentageOfSocket, 10)
 	if err != nil {
-		fmt.Println("Parse error4", statPercentageOfSocket)
-		raw.StatPercentageOfSocket = make([]float64, 10)
+		return raw, fmt.Errorf("failed to parse StatPercentageOfSocket: %w %s", err, statPercentageOfSocket)
 	}
-	raw.StatAlloc, err = parseFloatArrayField(raw.StatValue, 10)
+	raw.StatAlloc, err = parseFloatArrayField(statValue, 10)
 	if err != nil {
-		fmt.Println("Parse error", statPercentageOfSocket)
-		raw.StatAlloc = make([]float64, 10)
+		return raw, fmt.Errorf("failed to parse StatAlloc: %w", err)
 	}
 	raw.BonusAmountCalculated, err = parseFloatArrayField(bonusAmountCalculated, 10)
 	if err != nil {
-		fmt.Println("Parse error3", bonusAmountCalculated)
-		raw.BonusAmountCalculated = make([]float64, 10)
+		return raw, fmt.Errorf("failed to parse BonusAmountCalculated: %w", err)
 	}
 	raw.BonusStat, err = parseIntArrayField(bonusStatString, 10)
 	if err != nil {
-		fmt.Println("Parse error2")
-		raw.BonusStat = make([]int, 10)
+		return raw, fmt.Errorf("failed to parse BonusStat: %w", err)
 	}
-	raw.Sockets, err = parseIntArrayField(raw.SocketTypes, 3)
+	raw.Sockets, err = parseIntArrayField(socketTypes, 3)
 	if err != nil {
-		fmt.Println("Parse error1")
-		raw.Sockets = make([]int, 3)
+		return raw, fmt.Errorf("failed to parse Sockets: %w", err)
 	}
-	raw.SocketModifier, err = parseFloatArrayField(raw.StatPercentEditor, 10)
+	raw.SocketModifier, err = parseFloatArrayField(statPercentEditor, 10)
 	if err != nil {
-		fmt.Println("Parse error1")
-		raw.Sockets = make([]int, 3)
+		return raw, fmt.Errorf("failed to parse SocketModifier: %w", err)
 	}
 	return raw, err
 }
 
 func LoadRawItems(dbHelper *DBHelper, filter string) ([]dbc.Item, error) {
 	baseQuery := `
-		SELECT 
-			i.ID, 
+		SELECT
+			i.ID,
 			s.Display_lang AS Name,
 			i.InventoryType,
 			s.ItemDelay,
 			s.OverallQualityID,
 			s.DmgVariance,
-			s.MinDamage, 
-			s.MaxDamage,
 			s.ItemLevel,
-			ic.ClassName_lang AS ItemClassName,
-			CASE 
-				WHEN isc.VerboseName_lang IS NULL OR isc.VerboseName_lang = '' 
-				THEN DisplayName_lang 
-				ELSE isc.VerboseName_lang 
-			END AS ItemSubClassName,
-			rpp.Epic as RPPEpic,
-			rpp.Superior as RPPSuperior,
-			rpp.Good as RPPGood,
 			s.Field_1_15_3_55112_014 as StatValue,
 			s.StatModifier_bonusStat as bonusStat,
-			COALESCE(at.Cloth, 0) 
-				* COALESCE(al.Clothmodifier, 1) 
-				* CAST(json_extract(iaq.Qualitymod, '$[' || s.OverallQualityID || ']') AS REAL) AS clothArmorValue,
-			COALESCE(at.Leather, 0) 
-				* COALESCE(al.LeatherModifier, 1) 
-				* CAST(json_extract(iaq.Qualitymod, '$[' || s.OverallQualityID || ']') AS REAL) AS leatherArmorValue,
-			COALESCE(at.Mail, 0) 
-				* COALESCE(al.Chainmodifier, 1) 
-				* CAST(json_extract(iaq.Qualitymod, '$[' || s.OverallQualityID || ']') AS REAL) AS mailArmorValue,
-			COALESCE(at.Plate, 0) 
-				* COALESCE(al.Platemodifier, 1) 
-				* CAST(json_extract(iaq.Qualitymod, '$[' || s.OverallQualityID || ']') AS REAL) AS plateArmorValue,
-			CASE 
-				WHEN s.InventoryType = 20 THEN 5 
-				ELSE s.InventoryType 
-			END AS ArmorLocationID,
-			ias.Quality as shieldArmorValues,
 			s.StatPercentEditor as StatPercentEditor,
 			s.SocketType as SocketTypes,
 			s.Socket_match_enchantment_ID as SocketEnchantmentId,
@@ -123,7 +88,7 @@ func LoadRawItems(dbHelper *DBHelper, filter string) ([]dbc.Item, error) {
 			s.AllowableRace as RaceMask,
 			s.QualityModifier,
 			(
-			SELECT group_concat(-ench, ',')
+				SELECT group_concat(-ench, ',')
 				FROM item_enchantment_template
 				WHERE entry = s.ItemRandomSuffixGroupID
 			) AS RandomSuffixOptions,
@@ -136,7 +101,6 @@ func LoadRawItems(dbHelper *DBHelper, filter string) ([]dbc.Item, error) {
 		JOIN ItemClass ic ON i.ClassID = ic.ClassID
 		JOIN ItemSubClass isc ON i.ClassID = isc.ClassID AND i.SubClassID = isc.SubClassID
 		JOIN RandPropPoints rpp ON s.ItemLevel = rpp.ID
-		LEFT JOIN ArmorLocation al ON al.ID = ArmorLocationId
 		LEFT JOIN ItemArmorShield ias ON s.ItemLevel = ias.ItemLevel
 		LEFT JOIN ItemSet itemset ON s.ItemSet = itemset.ID
 		LEFT JOIN ItemArmorQuality iaq ON s.ItemLevel = iaq.ID
@@ -153,7 +117,7 @@ func LoadRawItems(dbHelper *DBHelper, filter string) ([]dbc.Item, error) {
 		fmt.Println("Error loading items:", err.Error())
 		return nil, err
 	}
-	RawItems = items
+
 	return items, nil
 }
 
@@ -167,15 +131,15 @@ func ScanItemStatEffects(rows *sql.Rows) (dbc.ItemStatEffect, error) {
 	err := rows.Scan(&raw.ID, &ePointsMin, &epointsMax, &eArgs)
 	raw.EffectPointsMin, err = parseIntArrayField(ePointsMin, 3)
 	if err != nil {
-		fmt.Errorf("Error loading ItemStatEffects ePointsMin")
+		return raw, fmt.Errorf("failed to parse EffectPointsMin: %w", err)
 	}
 	raw.EffectPointsMax, err = parseIntArrayField(epointsMax, 3)
 	if err != nil {
-		fmt.Errorf("Error loading ItemStatEffects epointsMax")
+		return raw, fmt.Errorf("failed to parse EffectPointsMax: %w", err)
 	}
 	raw.EffectArg, err = parseIntArrayField(eArgs, 3)
 	if err != nil {
-		fmt.Errorf("Error loading ItemStatEffects eArgs")
+		return raw, fmt.Errorf("failed to parse EffectArg: %w", err)
 	}
 	return raw, err
 }
@@ -187,10 +151,6 @@ func LoadItemStatEffects(dbHelper *DBHelper) ([]dbc.ItemStatEffect, error) {
 		return nil, fmt.Errorf("Error in query load items")
 	}
 
-	ItemStatEffects = items
-	ItemStatEffectById = CacheBy(ItemStatEffects, func(effect dbc.ItemStatEffect) int {
-		return effect.ID
-	})
 	return items, nil
 }
 
@@ -198,11 +158,16 @@ func ScanItemDamageTable(rows *sql.Rows) (dbc.ItemDamageTable, error) {
 	var raw dbc.ItemDamageTable
 	var qualityString string
 	err := rows.Scan(&raw.ItemLevel, &qualityString)
+	if err != nil {
+		return raw, fmt.Errorf("scanning item damage table: %w", err)
+	}
+
 	raw.Quality, err = parseFloatArrayField(qualityString, 7)
 	if err != nil {
-		fmt.Errorf("Error loading ItemDamageTable qualityString")
+		return raw, fmt.Errorf("parsing quality string '%s': %w", qualityString, err)
 	}
-	return raw, err
+
+	return raw, nil
 }
 
 var ItemDamageByTableAndItemLevel = make(map[string]map[int]dbc.ItemDamageTable)
@@ -246,12 +211,16 @@ func ScanItemArmorQualityTable(rows *sql.Rows) (dbc.ItemArmorQuality, error) {
 	var raw dbc.ItemArmorQuality
 	var qualityString string
 	err := rows.Scan(&raw.ItemLevel, &qualityString)
+	if err != nil {
+		return raw, fmt.Errorf("scanning item armor quality: %w", err)
+	}
+
 	raw.Quality, err = parseFloatArrayField(qualityString, 7)
 	if err != nil {
-		fmt.Println(err.Error(), 3, qualityString)
-		fmt.Errorf("Error loading ScanItemArmorQualityTable")
+		return raw, fmt.Errorf("parsing quality string '%s': %w", qualityString, err)
 	}
-	return raw, err
+
+	return raw, nil
 }
 
 func LoadItemArmorShield(dbHelper *DBHelper) (map[int]dbc.ItemArmorShield, error) {
@@ -267,12 +236,16 @@ func ScanItemArmorShieldTable(rows *sql.Rows) (dbc.ItemArmorShield, error) {
 	var raw dbc.ItemArmorShield
 	var qualityString string
 	err := rows.Scan(&raw.ItemLevel, &qualityString)
+	if err != nil {
+		return raw, fmt.Errorf("scanning item armor shield: %w", err)
+	}
+
 	raw.Quality, err = parseFloatArrayField(qualityString, 7)
 	if err != nil {
-		fmt.Println(err.Error(), 3, qualityString)
-		fmt.Errorf("Error loading ScanItemArmorShieldTable")
+		return raw, fmt.Errorf("parsing quality string '%s': %w", qualityString, err)
 	}
-	return raw, err
+
+	return raw, nil
 }
 func LoadItemArmorTotal(dbHelper *DBHelper) (map[int]dbc.ItemArmorTotal, error) {
 	query := "SELECT ItemLevel, Cloth, Leather, Mail, Plate FROM ItemArmorTotal"
@@ -315,22 +288,26 @@ func ScanGemTable(rows *sql.Rows) (dbc.Gem, error) {
 	var statBonusString string
 	var effectString string
 	err := rows.Scan(&raw.ItemId, &raw.Name, &raw.FDID, &raw.GemType, &statListString, &statBonusString, &raw.MinItemLevel, &raw.Quality, &effectString, &raw.IsJc, &raw.Flags0)
+	if err != nil {
+		return raw, fmt.Errorf("scanning gem data: %w", err)
+	}
+
 	raw.EffectPoints, err = parseIntArrayField(statListString, 3)
 	if err != nil {
-		fmt.Println(err.Error(), 3, statListString)
-		fmt.Errorf("Error loading GemTable statListString")
+		return raw, fmt.Errorf("parsing effect points for gem %d (%s): %w", raw.ItemId, statListString, err)
 	}
+
 	raw.EffectArgs, err = parseIntArrayField(statBonusString, 3)
 	if err != nil {
-		fmt.Println(err.Error(), 1, statBonusString, raw.ItemId)
-		fmt.Errorf("Error loading GemTable statBonusString")
+		return raw, fmt.Errorf("parsing effect args for gem %d (%s): %w", raw.ItemId, statBonusString, err)
 	}
+
 	raw.Effects, err = parseIntArrayField(effectString, 3)
 	if err != nil {
-		fmt.Println(err.Error(), 2, effectString, raw.ItemId)
-		fmt.Errorf("Error loading GemTable effectString")
+		return raw, fmt.Errorf("parsing effects for gem %d (%s): %w", raw.ItemId, effectString, err)
 	}
-	return raw, err
+
+	return raw, nil
 }
 
 func LoadRawGems(dbHelper *DBHelper) ([]dbc.Gem, error) {
@@ -344,12 +321,12 @@ func LoadRawGems(dbHelper *DBHelper) ([]dbc.Gem, error) {
 		gp.Min_item_level MinItemLevel,
 		s.OverallQualityId Quality,
 		sie.Effect,
-		CASE 
+		CASE
 			WHEN s.RequiredSkill = 755 THEN 1
 			ELSE 0
 		END AS IsJc,
 		s.Flags_0
-		FROM ItemSparse s 
+		FROM ItemSparse s
 		JOIN Item i ON s.ID = i.ID
 		JOIN GemProperties gp ON s.Gem_properties = gp.ID
 		JOIN SpellItemEnchantment sie ON gp.Enchant_ID = sie.ID
@@ -358,8 +335,6 @@ func LoadRawGems(dbHelper *DBHelper) ([]dbc.Gem, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error loading items for GemTables: %w", err)
 	}
-
-	RawGems = items
 
 	return items, nil
 }
@@ -382,25 +357,26 @@ func ScanEnchantsTable(rows *sql.Rows) (dbc.Enchant, error) {
 		&raw.InventoryType,
 		&raw.SubClassMask,
 		&raw.ClassMask, &raw.FDID, &raw.Quality, &raw.RequiredProfession)
-	if raw.InventoryType > 0 {
-		//fmt.Println(raw.InvTypesMask)
+	if err != nil {
+		return raw, fmt.Errorf("scanning enchant data for effect ID %d: %w", raw.EffectId, err)
 	}
+
 	raw.Effects, err = parseIntArrayField(effectsString, 3)
 	if err != nil {
-		fmt.Println(err.Error(), 3, effectsString)
-		fmt.Errorf("Error loading ScanEnchantsTable effectsString")
+		return raw, fmt.Errorf("parsing effects for enchant %d (%s): %w", raw.EffectId, effectsString, err)
 	}
+
 	raw.EffectPoints, err = parseIntArrayField(effectPointsString, 3)
 	if err != nil {
-		fmt.Println(err.Error(), 1, effectPointsString)
-		fmt.Errorf("Error loading ScanEnchantsTable effectPointsString")
+		return raw, fmt.Errorf("parsing effect points for enchant %d (%s): %w", raw.EffectId, effectPointsString, err)
 	}
+
 	raw.EffectArgs, err = parseIntArrayField(effectArgsString, 3)
 	if err != nil {
-		fmt.Println(err.Error(), 2, effectArgsString)
-		fmt.Errorf("Error loading ScanEnchantsTable effectArgsString")
+		return raw, fmt.Errorf("parsing effect args for enchant %d (%s): %w", raw.EffectId, effectArgsString, err)
 	}
-	return raw, err
+
+	return raw, nil
 }
 
 func LoadRawEnchants(dbHelper *DBHelper) ([]dbc.Enchant, error) {
@@ -413,17 +389,17 @@ func LoadRawEnchants(dbHelper *DBHelper) ([]dbc.Enchant, error) {
 		sie.Effect as Effect,
 		sie.EffectPointsMin as EffectPoints,
 		sie.EffectArg as EffectArgs,
-		CASE 
+		CASE
 			WHEN sei.EquippedItemClass = 4 THEN false
 			ELSE true
 		END AS isWeaponEnchant,
-		sei.EquippedItemInvTypes as InvTypes,
-		sei.EquippedItemSubclass,
+		COALESCE(sei.EquippedItemInvTypes, 0) as InvTypes,
+		COALESCE(sei.EquippedItemSubclass, 0),
 		COALESCE(sla.ClassMask, 0),
 		COALESCE(it.IconFileDataID, 0),
 		COALESCE(isp.OverallQualityID, 1),
 		COALESCE(sie.Field_1_15_3_55112_014, 0) as RequiredProfession
-		FROM SpellEffect se 
+		FROM SpellEffect se
 		JOIN Spell s ON se.SpellID = s.ID
 		JOIN SpellName sn ON se.SpellID = sn.ID
 		JOIN SpellItemEnchantment sie ON se.EffectMiscValue_0 = sie.ID
@@ -437,8 +413,6 @@ func LoadRawEnchants(dbHelper *DBHelper) ([]dbc.Enchant, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error loading items for GemTables: %w", err)
 	}
-
-	RawEnchants = items
 
 	return items, nil
 }
@@ -599,7 +573,7 @@ func LoadRawSpellEffects(dbHelper *DBHelper) (map[int]map[int]dbc.SpellEffect, e
 		groupedBySpellID[effect.SpellID] = append(groupedBySpellID[effect.SpellID], effect)
 	}
 
-	RawSpellEffectBySpellIdAndIndex = make(map[int]map[int]dbc.SpellEffect)
+	RawSpellEffectBySpellIdAndIndex := make(map[int]map[int]dbc.SpellEffect)
 	for spellID, effects := range groupedBySpellID {
 		RawSpellEffectBySpellIdAndIndex[spellID] = CacheBy(effects, func(e dbc.SpellEffect) int {
 			return e.EffectIndex
@@ -672,7 +646,7 @@ var RawRandomSuffixesById map[int]dbc.RandomSuffix
 
 func LoadRawRandomSuffixes(dbHelper *DBHelper) ([]dbc.RandomSuffix, error) {
 	query := `
-	SELECT 
+	SELECT
 		COALESCE(-irs.ID, 0) AS ID,
 		COALESCE(irs.Name_lang, '') AS Name_lang,
 		COALESCE(irs.AllocationPct_0, 0) AS AllocationPct_0,

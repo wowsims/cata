@@ -11,11 +11,10 @@ import (
 func parseIntArrayField(jsonStr string, expectedLen int) ([]int, error) {
 	var arr []int
 	if err := json.Unmarshal([]byte(jsonStr), &arr); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("unmarshaling JSON array: %w", err)
 	}
 	if len(arr) != expectedLen {
-		fmt.Println("expected array of length %d, got %d", expectedLen, len(arr))
-		return nil, fmt.Errorf("expected array of length %d, got %d", expectedLen, len(arr))
+		return nil, fmt.Errorf("invalid array length: expected %d, got %d", expectedLen, len(arr))
 	}
 	return arr, nil
 }
@@ -23,28 +22,42 @@ func parseIntArrayField(jsonStr string, expectedLen int) ([]int, error) {
 func parseFloatArrayField(jsonStr string, expectedLen int) ([]float64, error) {
 	var arr []float64
 	if err := json.Unmarshal([]byte(jsonStr), &arr); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("unmarshaling JSON array: %w", err)
 	}
 	if len(arr) != expectedLen {
-		fmt.Println("expected array of length %d, got %d", expectedLen, len(arr))
-		return nil, fmt.Errorf("expected array of length %d, got %d", expectedLen, len(arr))
+		return nil, fmt.Errorf("invalid array length: expected %d, got %d", expectedLen, len(arr))
 	}
 	return arr, nil
 }
 
-func ParseRandomSuffixOptions(optionsString sql.NullString) []int32 {
+func ParseRandomSuffixOptions(optionsString sql.NullString) ([]int32, error) {
 	if !optionsString.Valid || optionsString.String == "" {
-		return []int32{}
+		return []int32{}, nil
 	}
+
 	parts := strings.Split(optionsString.String, ",")
 	var opts []int32
-	for _, part := range parts {
+	var parseErrors []string
+
+	for i, part := range parts {
 		part = strings.TrimSpace(part)
-		if num, err := strconv.Atoi(part); err == nil {
-			opts = append(opts, int32(num))
+		if part == "" {
+			continue
 		}
+
+		num, err := strconv.Atoi(part)
+		if err != nil {
+			parseErrors = append(parseErrors, fmt.Sprintf("part %d (%s): %v", i, part, err))
+			continue
+		}
+		opts = append(opts, int32(num))
 	}
-	return opts
+
+	if len(parseErrors) > 0 {
+		return opts, fmt.Errorf("some values couldn't be parsed: %s", strings.Join(parseErrors, "; "))
+	}
+
+	return opts, nil
 }
 
 // func GetProfession(id int) proto.Profession {

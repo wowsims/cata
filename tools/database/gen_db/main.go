@@ -93,7 +93,7 @@ func main() {
 			}
 		}
 
-		items, err := database.LoadRawItems(helper, "s.OverallQualityId != 7 AND s.ScalingStatDistributionID == 0 AND (ItemClassName = 'Armor' OR ItemClassName = 'Weapon') AND s.Display_lang != '' AND (s.ID != 34219 AND s.Display_lang NOT LIKE '%Test%' AND s.Display_lang NOT LIKE 'QA%')")
+		items, err := database.LoadRawItems(helper, "s.OverallQualityId != 7 AND s.ScalingStatDistributionID = 0 AND s.OverallQualityId != 0 AND (i.ClassID = 2 OR i.ClassID = 4) AND s.Display_lang != '' AND (s.ID != 34219 AND s.Display_lang NOT LIKE '%Test%' AND s.Display_lang NOT LIKE 'QA%')")
 		if err == nil {
 			json, _ := json.Marshal(items)
 			if err := writeGzipFile(fmt.Sprintf("%s/dbc/items.json", inputsDir), json); err != nil {
@@ -445,7 +445,7 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 	})
 
 	db.Enchants = core.FilterMap(db.Enchants, func(_ database.EnchantDBKey, enchant *proto.UIEnchant) bool {
-		return !strings.HasPrefix(enchant.Name, "QA")
+		return !strings.HasPrefix(enchant.Name, "QA") && !strings.HasPrefix(enchant.Name, "Test") && !strings.HasPrefix(enchant.Name, "TEST")
 	})
 
 }

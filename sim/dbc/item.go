@@ -15,27 +15,11 @@ type Item struct {
 	ItemDelay              int
 	OverallQuality         ItemQuality
 	DmgVariance            float64
-	DbMinDamage            string
-	DbMaxDamage            string
 	ItemLevel              int
-	ItemClassName          string
 	ItemClass              int
 	ItemSubClass           int
-	ItemSubClassName       string
-	RppEpic                string
-	RppSuperior            string
-	RppGood                string
-	StatValue              string
 	StatAlloc              []float64
 	BonusStat              []int
-	ClothArmorValue        float64
-	LeatherArmorValue      float64
-	MailArmorValue         float64
-	PlateArmorValue        float64
-	ArmorLocID             int
-	ShieldArmorValues      string
-	StatPercentEditor      string
-	SocketTypes            string
 	SocketEnchantmentId    int
 	Flags0                 ItemStaticFlags0
 	Flags1                 ItemStaticFlags1

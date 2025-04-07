@@ -2,6 +2,7 @@ package dbc
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"sync"
 )
@@ -43,48 +44,65 @@ var (
 	once        sync.Once
 )
 
+func InitDBC() error {
+	dbcInstance = NewDBC()
+
+	if err := dbcInstance.loadItems("./assets/db_inputs/dbc/items.json"); err != nil {
+		return fmt.Errorf("loading items: %w", err)
+	}
+	if err := dbcInstance.loadGems("./assets/db_inputs/dbc/gems.json"); err != nil {
+		return fmt.Errorf("loading gems: %w", err)
+	}
+	if err := dbcInstance.loadEnchants("./assets/db_inputs/dbc/enchants.json"); err != nil {
+		return fmt.Errorf("loading enchants: %w", err)
+	}
+	if err := dbcInstance.loadItemStatEffects("./assets/db_inputs/dbc/item_stat_effects.json"); err != nil {
+		return fmt.Errorf("loading item stat effects: %w", err)
+	}
+	if err := dbcInstance.loadSpellEffects("./assets/db_inputs/dbc/spell_effects.json"); err != nil {
+		return fmt.Errorf("loading spell effects: %w", err)
+	}
+	if err := dbcInstance.loadRandomSuffix("./assets/db_inputs/dbc/random_suffix.json"); err != nil {
+		return fmt.Errorf("loading random suffixes: %w", err)
+	}
+	if err := dbcInstance.loadRandomPropertiesByIlvl("./assets/db_inputs/dbc/rand_prop_points.json"); err != nil {
+		return fmt.Errorf("loading random properties: %w", err)
+	}
+	if err := dbcInstance.loadItemDamageTables("./assets/db_inputs/dbc/item_damage_tables.json"); err != nil {
+		return fmt.Errorf("loading item damage tables: %w", err)
+	}
+	if err := dbcInstance.LoadItemArmorQuality("./assets/db_inputs/dbc/item_armor_quality.json"); err != nil {
+		return fmt.Errorf("loading item armor quality: %w", err)
+	}
+	if err := dbcInstance.LoadItemArmorTotal("./assets/db_inputs/dbc/item_armor_total.json"); err != nil {
+		return fmt.Errorf("loading item armor total: %w", err)
+	}
+	if err := dbcInstance.LoadItemArmorShield("./assets/db_inputs/dbc/item_armor_shield.json"); err != nil {
+		return fmt.Errorf("loading item armor shield: %w", err)
+	}
+	if err := dbcInstance.LoadArmorLocation("./assets/db_inputs/dbc/armor_location.json"); err != nil {
+		return fmt.Errorf("loading armor location: %w", err)
+	}
+
+	return nil
+}
+
+// GetDBC returns the DBC singleton instance
 func GetDBC() *DBC {
 	once.Do(func() {
-		dbcInstance = NewDBC()
-
-		if err := dbcInstance.loadItems("./assets/db_inputs/dbc/items.json"); err != nil {
-			log.Fatalf("Error loading items: %v", err)
-		}
-		if err := dbcInstance.loadGems("./assets/db_inputs/dbc/gems.json"); err != nil {
-			log.Fatalf("Error loading gems: %v", err)
-		}
-		if err := dbcInstance.loadEnchants("./assets/db_inputs/dbc/enchants.json"); err != nil {
-			log.Fatalf("Error loading enchants: %v", err)
-		}
-		if err := dbcInstance.loadItemStatEffects("./assets/db_inputs/dbc/item_stat_effects.json"); err != nil {
-			log.Fatalf("Error loading item stat effects: %v", err)
-		}
-		if err := dbcInstance.loadSpellEffects("./assets/db_inputs/dbc/spell_effects.json"); err != nil {
-			log.Fatalf("Error loading spell effects: %v", err)
-		}
-		if err := dbcInstance.loadRandomSuffix("./assets/db_inputs/dbc/random_suffix.json"); err != nil {
-			log.Fatalf("Error loading random suffixes: %v", err)
-		}
-		if err := dbcInstance.loadRandomPropertiesByIlvl("./assets/db_inputs/dbc/rand_prop_points.json"); err != nil {
-			log.Fatalf("Error loading item damage tables: %v", err)
-		}
-		if err := dbcInstance.loadItemDamageTables("./assets/db_inputs/dbc/item_damage_tables.json"); err != nil {
-			log.Fatalf("Error loading item damage tables: %v", err)
-		}
-		if err := dbcInstance.LoadItemArmorQuality("./assets/db_inputs/dbc/item_armor_quality.json"); err != nil {
-			log.Fatalf("Error loading item damage tables: %v", err)
-		}
-		if err := dbcInstance.LoadItemArmorTotal("./assets/db_inputs/dbc/item_armor_total.json"); err != nil {
-			log.Fatalf("Error loading item damage tables: %v", err)
-		}
-		if err := dbcInstance.LoadItemArmorShield("./assets/db_inputs/dbc/item_armor_shield.json"); err != nil {
-			log.Fatalf("Error loading item damage tables: %v", err)
-		}
-		if err := dbcInstance.LoadArmorLocation("./assets/db_inputs/dbc/armor_location.json"); err != nil {
-			log.Fatalf("Error loading item damage tables: %v", err)
+		if err := InitDBC(); err != nil {
+			log.Fatalf("Failed to initialize DBC: %v", err)
 		}
 	})
 	return dbcInstance
+}
+
+func GetDBCWithError() (*DBC, error) {
+	var err error
+	once.Do(func() {
+		err = InitDBC()
+	})
+	return dbcInstance, err
 }
 
 func (d *DBC) loadRandomPropertiesByIlvl(filename string) error {
@@ -92,10 +110,16 @@ func (d *DBC) loadRandomPropertiesByIlvl(filename string) error {
 	if err != nil {
 		return err
 	}
+
 	var properties RandomPropAllocationsByIlvl
 	if err = json.Unmarshal(data, &properties); err != nil {
-		return err
+		return ParseError{
+			Source: filename,
+			Field:  "RandomProps",
+			Reason: err.Error(),
+		}
 	}
+
 	d.RandomPropertiesByIlvl = properties
 	return nil
 }
@@ -105,10 +129,16 @@ func (d *DBC) loadItems(filename string) error {
 	if err != nil {
 		return err
 	}
+
 	var items []Item
 	if err = json.Unmarshal(data, &items); err != nil {
-		return err
+		return ParseError{
+			Source: filename,
+			Field:  "Item",
+			Reason: err.Error(),
+		}
 	}
+
 	for i := range items {
 		item := &items[i]
 		d.Items[item.Id] = item
@@ -121,10 +151,16 @@ func (d *DBC) loadGems(filename string) error {
 	if err != nil {
 		return err
 	}
+
 	var gems []Gem
 	if err = json.Unmarshal(data, &gems); err != nil {
-		return err
+		return ParseError{
+			Source: filename,
+			Field:  "Gem",
+			Reason: err.Error(),
+		}
 	}
+
 	for i := range gems {
 		gem := &gems[i]
 		d.Gems[gem.ItemId] = gem
@@ -137,10 +173,16 @@ func (d *DBC) loadEnchants(filename string) error {
 	if err != nil {
 		return err
 	}
+
 	var enchants []Enchant
 	if err = json.Unmarshal(data, &enchants); err != nil {
-		return err
+		return ParseError{
+			Source: filename,
+			Field:  "Enchant",
+			Reason: err.Error(),
+		}
 	}
+
 	for i := range enchants {
 		enchant := &enchants[i]
 		d.Enchants[enchant.EffectId] = enchant
@@ -153,10 +195,16 @@ func (d *DBC) loadItemStatEffects(filename string) error {
 	if err != nil {
 		return err
 	}
+
 	var effects []ItemStatEffect
 	if err = json.Unmarshal(data, &effects); err != nil {
-		return err
+		return ParseError{
+			Source: filename,
+			Field:  "ItemStatEffect",
+			Reason: err.Error(),
+		}
 	}
+
 	for i := range effects {
 		effect := &effects[i]
 		d.ItemStatEffects[effect.ID] = effect
@@ -169,10 +217,16 @@ func (d *DBC) loadSpellEffects(filename string) error {
 	if err != nil {
 		return err
 	}
+
 	var effects map[int]map[int]SpellEffect
 	if err = json.Unmarshal(data, &effects); err != nil {
-		return err
+		return ParseError{
+			Source: filename,
+			Field:  "SpellEffect",
+			Reason: err.Error(),
+		}
 	}
+
 	d.SpellEffects = effects
 	return nil
 }
@@ -182,10 +236,16 @@ func (d *DBC) loadRandomSuffix(filename string) error {
 	if err != nil {
 		return err
 	}
+
 	var suffixes []RandomSuffix
 	if err = json.Unmarshal(data, &suffixes); err != nil {
-		return err
+		return ParseError{
+			Source: filename,
+			Field:  "RandomSuffix",
+			Reason: err.Error(),
+		}
 	}
+
 	for i := range suffixes {
 		suffix := &suffixes[i]
 		d.RandomSuffix[suffix.ID] = suffix
@@ -198,10 +258,16 @@ func (d *DBC) LoadItemArmorQuality(filename string) error {
 	if err != nil {
 		return err
 	}
+
 	var tables map[int]ItemArmorQuality
 	if err = json.Unmarshal(data, &tables); err != nil {
-		return err
+		return ParseError{
+			Source: filename,
+			Field:  "ItemArmorQuality",
+			Reason: err.Error(),
+		}
 	}
+
 	d.ItemArmorQuality = tables
 	return nil
 }
@@ -210,10 +276,16 @@ func (d *DBC) LoadArmorLocation(filename string) error {
 	if err != nil {
 		return err
 	}
+
 	var tables map[int]ArmorLocation
 	if err = json.Unmarshal(data, &tables); err != nil {
-		return err
+		return ParseError{
+			Source: filename,
+			Field:  "ArmorLocation",
+			Reason: err.Error(),
+		}
 	}
+
 	d.ArmorLocation = tables
 	return nil
 }
@@ -222,10 +294,16 @@ func (d *DBC) LoadItemArmorShield(filename string) error {
 	if err != nil {
 		return err
 	}
+
 	var tables map[int]ItemArmorShield
 	if err = json.Unmarshal(data, &tables); err != nil {
-		return err
+		return ParseError{
+			Source: filename,
+			Field:  "ItemArmorShield",
+			Reason: err.Error(),
+		}
 	}
+
 	d.ItemArmorShield = tables
 	return nil
 }
@@ -235,10 +313,16 @@ func (d *DBC) LoadItemArmorTotal(filename string) error {
 	if err != nil {
 		return err
 	}
+
 	var tables map[int]ItemArmorTotal
 	if err = json.Unmarshal(data, &tables); err != nil {
-		return err
+		return ParseError{
+			Source: filename,
+			Field:  "ItemArmorTotal",
+			Reason: err.Error(),
+		}
 	}
+
 	d.ItemArmorTotal = tables
 	return nil
 }
@@ -248,10 +332,16 @@ func (d *DBC) loadItemDamageTables(filename string) error {
 	if err != nil {
 		return err
 	}
+
 	var tables map[string]map[int]ItemDamageTable
 	if err = json.Unmarshal(data, &tables); err != nil {
-		return err
+		return ParseError{
+			Source: filename,
+			Field:  "ItemDamage",
+			Reason: err.Error(),
+		}
 	}
+
 	d.ItemDamageTable = tables
 	return nil
 }
