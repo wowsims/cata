@@ -7,6 +7,16 @@
   },
   "TargetDirectory": "dbfilesclient",
   "DatabaseFile": "wowsims.db",
+  "GameTablesOutDirectory": "../../assets/db_inputs/dbc/GameTables",
+  "GameTables": [
+	"SpellScaling",
+	"ChanceToMeleeCrit",
+	"ChanceToMeleeCritBase",
+	"ChanceToSpellCrit",
+	"ChanceToSpellCritBase",
+	"CombatRatings",
+	"OCTBaseMPByClass"
+  ],
   "Tables": [
     "Spell",
     "Item",
@@ -19,6 +29,7 @@
     "ItemBonus",
     "ItemEffect",
     "ItemClass",
+	"SpellCategory",
     "ItemRandomProperties",
     "ItemExtendedCost",
     "ItemRandomSuffix",
@@ -45,6 +56,8 @@
     "SpellRadius",
     "SpellMisc",
     "SpellLevels",
+	"SpellPower",
+	"SpellLabel",
     "SpellName",
     "ScalingStatDistribution",
     "SpellCooldowns",

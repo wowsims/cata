@@ -55,10 +55,14 @@ buildInstance.LoadConfigs(buildInstance.Settings.BuildConfig, buildInstance.Sett
 buildInstance.Load();
 
 var tables = configuration.GetSection("Tables").Get<IEnumerable<string>>();
+var gameTables = configuration.GetSection("GameTables").Get<IEnumerable<string>>() ;
+
+var gameTablesOutDir = configuration.GetSection("GameTablesOutDirectory").Get<string>() ?? "GameTables";
 
 var targetDirectory = configuration.GetValue<string>("TargetDirectory") ?? "dbfilesclient";
 
 Directory.CreateDirectory(targetDirectory);
+Directory.CreateDirectory(gameTablesOutDir);
 
 var fsProvider = new FilesystemDBCProvider(targetDirectory, true);
 var githubDbdProvider = new GithubDBDProvider(true);
@@ -67,7 +71,13 @@ var dbcd = new DBCD.DBCD(fsProvider, githubDbdProvider);
 
 var dbDefinitions = new Dictionary<string, Structs.DBDefinition>();
 var storageMap = new Dictionary<string, IDBCDStorage>();
-
+if (gameTables != null && gameTables.Any()) {
+	foreach (var gameTable in gameTables)
+	{
+		var file = buildInstance.OpenFileByFDID(listFile.GetFDID($"gametables/{gameTable}.txt"));
+        await File.WriteAllBytesAsync($"{gameTablesOutDir}/{gameTable}.txt", file);
+	}
+}
 if (tables != null)
     foreach (var tableName in tables)
     {

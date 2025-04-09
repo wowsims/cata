@@ -63,4 +63,6 @@ public class BindableSettings : Settings
         get => base.ListfileURL;
         set => base.ListfileURL = value;
     }
+	public List<string> GameTables {get; set; } = [];
+	public string GameTablesOutDirectory {get; set; } = "";
 }

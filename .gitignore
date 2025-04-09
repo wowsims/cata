@@ -38,25 +38,4 @@ tmp/
 wowsimcata*.so
 wowsimcata*.dll
 wowsimcata*.h
-
-# DB2ToSqlite stuff
-dbcs
-cache
-caches
-temp
-manifests
-knownPushIDs.json
-*.csv
-*.csv.bak
-*.txt
-versionHistory.json
-WTL.db
-WTL.db-journal
-extract
-dump
-db.db
-listfile.csv
-dbfilesclient
-DBDCache
 wowsims.db
-.idea
