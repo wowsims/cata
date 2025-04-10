@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/dbc"
 )
 
@@ -421,7 +420,7 @@ func LoadRawEnchants(dbHelper *DBHelper) ([]dbc.Enchant, error) {
 
 type RandPropAllocationRow struct {
 	Ilvl       int32
-	Allocation RandomPropAllocation
+	Allocation dbc.RandomPropAllocation
 }
 
 func ScanRandPropAllocationRow(rows *sql.Rows) (RandPropAllocationRow, error) {
@@ -449,20 +448,16 @@ func ScanRandPropAllocationRow(rows *sql.Rows) (RandPropAllocationRow, error) {
 	return row, err
 }
 
-func LoadRandomPropAllocations(dbHelper *DBHelper) (RandomPropAllocationsByIlvl, error) {
+func LoadRandomPropAllocations(dbHelper *DBHelper) (map[int32]RandPropAllocationRow, error) {
 	query := `SELECT ID, DamageReplaceStat, Epic_0, Epic_1, Epic_2, Epic_3, Epic_4, Superior_0, Superior_1, Superior_2, Superior_3, Superior_4, Good_0, Good_1, Good_2 ,Good_3, Good_4 FROM RandPropPoints`
 	rowsData, err := LoadRows(dbHelper.db, query, ScanRandPropAllocationRow)
 	if err != nil {
 		return nil, fmt.Errorf("error loading random property allocations: %w", err)
 	}
 
-	processed := make(RandomPropAllocationsByIlvl)
+	processed := make(map[int32]RandPropAllocationRow)
 	for _, r := range rowsData {
-		processed[r.Ilvl] = RandomPropAllocationMap{
-			proto.ItemQuality_ItemQualityEpic:     [5]int32{r.Allocation.Epic0, r.Allocation.Epic1, r.Allocation.Epic2, r.Allocation.Epic3, r.Allocation.Epic4},
-			proto.ItemQuality_ItemQualityRare:     [5]int32{r.Allocation.Superior0, r.Allocation.Superior1, r.Allocation.Superior2, r.Allocation.Superior3, r.Allocation.Superior4},
-			proto.ItemQuality_ItemQualityUncommon: [5]int32{r.Allocation.Good0, r.Allocation.Good1, r.Allocation.Good2, r.Allocation.Good3, r.Allocation.Good4},
-		}
+		processed[r.Ilvl] = r
 	}
 
 	return processed, nil

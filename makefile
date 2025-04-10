@@ -236,30 +236,23 @@ winlib: sim/core/proto/api.pb.go
 .PHONY: items
 items: sim/core/items/all_items.go sim/core/proto/api.pb.go
 
-.PHONY: dbc
-
-dbc:
-	@echo "Running DBC generation tool"
-	go run tools/database/gen_db/*.go -outDir=./assets -gen=dbc
-
 CLIENTDATA_SETTINGS := $(shell realpath ./tools/database/generator-settings.json)
+CLIENTDATAPTR_SETTINGS := $(shell realpath ./tools/database/ptr-generator-settings.json)
 CLIENTDATA_OUTPUT   := $(shell realpath ./tools/database/wowsims.db)
 
-.PHONY: clientdata
-
-clientdata:
-	@echo "Running DB2ToSqlite tool"
+.PHONY: db
+db:
+	@echo "Running DB2ToSqlite for clientdata"
 	cd tools/DB2ToSqlite && dotnet run -- -s $(CLIENTDATA_SETTINGS) --output $(CLIENTDATA_OUTPUT)
+	@echo "Running DBC generation tool"
+	go run tools/database/gen_db/*.go -outDir=./assets -gen=db
 
-CLIENTDATAPTR_SETTINGS := $(shell realpath ./tools/database/ptr-generator-settings.json)
-CLIENTDATAPTR_OUTPUT   := $(shell realpath ./tools/database/wowsims.ptr.db)
-
-.PHONY: clientdataptr
-
-clientdataptr:
-	@echo "Running DB2ToSqlite tool"
-	cd tools/DB2ToSqlite && dotnet run -- -s $(CLIENTDATAPTR_SETTINGS) --output $(CLIENTDATAPTR_OUTPUT)
-
+.PHONY: ptrdb
+ptrdb:
+	@echo "Running DB2ToSqlite for clientdata"
+	cd tools/DB2ToSqlite && dotnet run -- -s $(CLIENTDATAPTR_SETTINGS) --output $(CLIENTDATA_OUTPUT)
+	@echo "Running DBC generation tool"
+	go run tools/database/gen_db/*.go -outDir=./assets -gen=db
 
 sim/core/items/all_items.go: $(call rwildcard,tools/database,*.go) $(call rwildcard,sim/core/proto,*.go)
 	go run tools/database/gen_db/*.go -outDir=./assets -gen=db

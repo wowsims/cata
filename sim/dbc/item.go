@@ -53,7 +53,7 @@ func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
 		Name:                item.Name,
 		ClassAllowlist:      GetClassesFromClassMask(item.ClassMask),
 		Id:                  int32(item.Id),
-		Ilvl:                int32(itemLevel),
+		Ilvl:                int32(item.ItemLevel),
 		RandomSuffixOptions: item.RandomSuffixOptions,
 		WeaponDamageMin:     item.WeaponDmgMin(itemLevel),
 		WeaponDamageMax:     item.WeaponDmgMax(itemLevel),
@@ -64,8 +64,15 @@ func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
 		GemSockets:          item.GetGemSlots(),
 		SocketBonus:         item.GetGemBonus().ToProtoArray(),
 		IsScaled:            item.ItemLevel != itemLevel,
+		ScaledIlvl:          int32(itemLevel),
 	}
-
+	if item.ItemLevel > 400 { // No need to scale unless its a good item
+		uiItem.DmgVariance = item.DmgVariance
+		uiItem.ArmorModifier = item.GetArmorModifier()
+		uiItem.QualityModifier = item.QualityModifier
+		uiItem.SocketModifier = item.GetSocketModifier()
+		uiItem.StatAllocation = item.GetStatAlloc()
+	}
 	item.ParseItemFlags(uiItem)
 
 	if item.ItemClass == ITEM_CLASS_ARMOR {
@@ -214,6 +221,30 @@ func (item *Item) ApproximateScaleCoeff(currIlvl int, newIlvl int) float64 {
 	return 1.0 / math.Pow(1.15, diff/15.0)
 }
 
+func (item *Item) GetSocketModifier() []float64 {
+	stats := stats.Stats{}
+	for i, alloc := range item.BonusStat {
+		stat, success := MapBonusStatIndexToStat(alloc)
+		if !success {
+			continue
+		}
+		stats[stat] = item.SocketModifier[i]
+	}
+	return stats.ToProtoArray()
+}
+
+func (item *Item) GetStatAlloc() []float64 {
+	stats := stats.Stats{}
+	for i, alloc := range item.BonusStat {
+		stat, success := MapBonusStatIndexToStat(alloc)
+		if !success {
+			continue
+		}
+		stats[stat] = item.StatAlloc[i]
+	}
+	return stats.ToProtoArray()
+}
+
 func (item *Item) GetArmorValue(itemLevel int) int {
 	if item.Id == 0 || item.OverallQuality > 5 {
 		return 0
@@ -251,6 +282,28 @@ func (item *Item) GetArmorValue(itemLevel int) int {
 		return 0
 	}
 	return int(math.Floor(total_armor*quality*armorModifier.Modifier[item.ItemSubClass-1] + 0.5))
+}
+
+func (item *Item) GetArmorModifier() float64 {
+	armorModifier := GetDBC().ArmorLocation[item.InventoryType]
+	if item.InventoryType == INVTYPE_ROBE {
+		armorModifier = GetDBC().ArmorLocation[INVTYPE_CHEST]
+	}
+	switch item.InventoryType {
+	case INVTYPE_HEAD, INVTYPE_SHOULDERS, INVTYPE_CHEST, INVTYPE_WAIST, INVTYPE_LEGS, INVTYPE_FEET, INVTYPE_WRISTS, INVTYPE_HANDS, INVTYPE_CLOAK, INVTYPE_ROBE:
+		switch item.ItemSubClass {
+		case ITEM_SUBCLASS_ARMOR_CLOTH:
+		case ITEM_SUBCLASS_ARMOR_LEATHER:
+		case ITEM_SUBCLASS_ARMOR_MAIL:
+		case ITEM_SUBCLASS_ARMOR_PLATE:
+		}
+	default:
+		return 0
+	}
+	if item.ItemSubClass == 0 {
+		return 0
+	}
+	return armorModifier.Modifier[item.ItemSubClass-1]
 }
 
 func (item *Item) GetWeaponTypes() (proto.WeaponType, proto.HandType, proto.RangedWeaponType) {

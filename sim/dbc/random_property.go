@@ -23,3 +23,19 @@ type RandomPropAllocation struct {
 type RandomPropAllocationMap map[proto.ItemQuality][5]int32
 
 type RandomPropAllocationsByIlvl map[int32]RandomPropAllocationMap
+
+func (r RandomPropAllocation) ToProto() *proto.RandomPropAllocation {
+	return &proto.RandomPropAllocation{
+		Allocations: &proto.QualityAllocations{
+			Good: &proto.QualityGroup{
+				Slots: []int32{r.Good0, r.Good1, r.Good2, r.Good3, r.Good4},
+			},
+			Superior: &proto.QualityGroup{
+				Slots: []int32{r.Superior0, r.Superior1, r.Superior2, r.Superior3, r.Superior4},
+			},
+			Epic: &proto.QualityGroup{
+				Slots: []int32{r.Epic0, r.Epic1, r.Epic2, r.Epic3, r.Epic4},
+			},
+		},
+	}
+}

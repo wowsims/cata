@@ -43,6 +43,20 @@ type WowDatabase struct {
 
 	Encounters []*proto.PresetEncounter
 	GlyphIDs   []*proto.GlyphID
+
+	RandomPropAllocationsByIlvl map[int32]*proto.RandomPropAllocation
+
+	ItemDamageOneHandCaster map[int32]*proto.ItemQualityValue
+	ItemDamageOneHand       map[int32]*proto.ItemQualityValue
+	ItemDamageTwoHandCaster map[int32]*proto.ItemQualityValue
+	ItemDamageTwoHand       map[int32]*proto.ItemQualityValue
+	ItemDamageRanged        map[int32]*proto.ItemQualityValue
+	ItemDamageThrown        map[int32]*proto.ItemQualityValue
+	ItemDamageWand          map[int32]*proto.ItemQualityValue
+
+	ArmorValues       map[int32]*proto.ItemQualityValue
+	ShieldArmorValues map[int32]*proto.ItemQualityValue
+	TotalArmorValues  map[int32]*proto.ItemArmorTotal
 }
 
 func NewWowDatabase() *WowDatabase {
@@ -57,6 +71,20 @@ func NewWowDatabase() *WowDatabase {
 		ItemIcons:    make(map[int32]*proto.IconData),
 		SpellIcons:   make(map[int32]*proto.IconData),
 		ReforgeStats: make(map[int32]*proto.ReforgeStat),
+
+		RandomPropAllocationsByIlvl: make(map[int32]*proto.RandomPropAllocation),
+
+		ItemDamageOneHand:       make(map[int32]*proto.ItemQualityValue),
+		ItemDamageTwoHandCaster: make(map[int32]*proto.ItemQualityValue),
+		ItemDamageTwoHand:       make(map[int32]*proto.ItemQualityValue),
+		ItemDamageRanged:        make(map[int32]*proto.ItemQualityValue),
+		ItemDamageThrown:        make(map[int32]*proto.ItemQualityValue),
+		ItemDamageWand:          make(map[int32]*proto.ItemQualityValue),
+		ItemDamageOneHandCaster: make(map[int32]*proto.ItemQualityValue),
+
+		ArmorValues:       make(map[int32]*proto.ItemQualityValue),
+		ShieldArmorValues: make(map[int32]*proto.ItemQualityValue),
+		TotalArmorValues:  make(map[int32]*proto.ItemArmorTotal),
 	}
 }
 
@@ -72,6 +100,20 @@ func (db *WowDatabase) Clone() *WowDatabase {
 		ItemIcons:    maps.Clone(db.ItemIcons),
 		SpellIcons:   maps.Clone(db.SpellIcons),
 		ReforgeStats: maps.Clone(db.ReforgeStats),
+
+		RandomPropAllocationsByIlvl: maps.Clone(db.RandomPropAllocationsByIlvl),
+
+		ItemDamageOneHandCaster: maps.Clone(db.ItemDamageOneHandCaster),
+		ItemDamageOneHand:       maps.Clone(db.ItemDamageOneHand),
+		ItemDamageTwoHandCaster: maps.Clone(db.ItemDamageTwoHandCaster),
+		ItemDamageTwoHand:       maps.Clone(db.ItemDamageTwoHand),
+		ItemDamageRanged:        maps.Clone(db.ItemDamageRanged),
+		ItemDamageThrown:        maps.Clone(db.ItemDamageThrown),
+		ItemDamageWand:          maps.Clone(db.ItemDamageWand),
+
+		ArmorValues:       maps.Clone(db.ArmorValues),
+		ShieldArmorValues: maps.Clone(db.ShieldArmorValues),
+		TotalArmorValues:  maps.Clone(db.TotalArmorValues),
 	}
 }
 
@@ -102,6 +144,7 @@ func (db *WowDatabase) MergeEnchants(arr []*proto.UIEnchant) {
 		db.MergeEnchant(enchant)
 	}
 }
+
 func (db *WowDatabase) MergeEnchant(src *proto.UIEnchant) {
 	key := EnchantToDBKey(src)
 	if dst, ok := db.Enchants[key]; ok {
@@ -217,19 +260,43 @@ func (db *WowDatabase) ToUIProto() *proto.UIDatabase {
 		}
 		return int(v1.Type - v2.Type)
 	})
-
+	armorTotals := make([]*proto.ItemArmorTotal, 0, len(db.TotalArmorValues))
+	for _, at := range db.TotalArmorValues {
+		armorTotals = append(armorTotals, at)
+	}
+	slices.SortFunc(armorTotals, func(a, b *proto.ItemArmorTotal) int {
+		return int(a.Id - b.Id)
+	})
+	randomPropPoints := make([]*proto.RandomPropAllocation, 0, len(db.RandomPropAllocationsByIlvl))
+	for _, alloc := range db.RandomPropAllocationsByIlvl {
+		randomPropPoints = append(randomPropPoints, alloc)
+	}
+	slices.SortFunc(randomPropPoints, func(a, b *proto.RandomPropAllocation) int {
+		return int(a.Id - b.Id)
+	})
 	return &proto.UIDatabase{
-		Items:          mapToSlice(db.Items),
-		RandomSuffixes: mapToSlice(db.RandomSuffixes),
-		Enchants:       enchants,
-		Gems:           mapToSlice(db.Gems),
-		Encounters:     db.Encounters,
-		Zones:          mapToSlice(db.Zones),
-		Npcs:           mapToSlice(db.Npcs),
-		ItemIcons:      mapToSlice(db.ItemIcons),
-		SpellIcons:     mapToSlice(db.SpellIcons),
-		GlyphIds:       db.GlyphIDs,
-		ReforgeStats:   mapToSlice(db.ReforgeStats),
+		Items:               mapToSlice(db.Items),
+		RandomSuffixes:      mapToSlice(db.RandomSuffixes),
+		Enchants:            enchants,
+		Gems:                mapToSlice(db.Gems),
+		Encounters:          db.Encounters,
+		Zones:               mapToSlice(db.Zones),
+		Npcs:                mapToSlice(db.Npcs),
+		ItemIcons:           mapToSlice(db.ItemIcons),
+		SpellIcons:          mapToSlice(db.SpellIcons),
+		GlyphIds:            db.GlyphIDs,
+		ReforgeStats:        mapToSlice(db.ReforgeStats),
+		RandomPropPoints:    randomPropPoints,
+		ItemDamage_1HCaster: mapToSlice(db.ItemDamageOneHandCaster),
+		ItemDamage_1H:       mapToSlice(db.ItemDamageOneHand),
+		ItemDamage_2H:       mapToSlice(db.ItemDamageTwoHandCaster),
+		ItemDamage_2HCaster: mapToSlice(db.ItemDamageTwoHand),
+		ItemDamageRanged:    mapToSlice(db.ItemDamageRanged),
+		ItemDamageThrown:    mapToSlice(db.ItemDamageThrown),
+		ItemDamageWand:      mapToSlice(db.ItemDamageWand),
+		ArmorValues:         mapToSlice(db.ArmorValues),
+		ShieldArmorValues:   mapToSlice(db.ShieldArmorValues),
+		ArmorTotalValue:     armorTotals,
 	}
 }
 
@@ -253,15 +320,26 @@ func ReadDatabaseFromJson(jsonStr string) *WowDatabase {
 	}
 
 	return &WowDatabase{
-		Items:          sliceToMap(dbProto.Items),
-		RandomSuffixes: sliceToMap(dbProto.RandomSuffixes),
-		Enchants:       enchants,
-		Gems:           sliceToMap(dbProto.Gems),
-		Zones:          sliceToMap(dbProto.Zones),
-		Npcs:           sliceToMap(dbProto.Npcs),
-		ItemIcons:      sliceToMap(dbProto.ItemIcons),
-		SpellIcons:     sliceToMap(dbProto.SpellIcons),
-		ReforgeStats:   sliceToMap(dbProto.ReforgeStats),
+		Items:                       sliceToMap(dbProto.Items),
+		RandomSuffixes:              sliceToMap(dbProto.RandomSuffixes),
+		Enchants:                    enchants,
+		Gems:                        sliceToMap(dbProto.Gems),
+		Zones:                       sliceToMap(dbProto.Zones),
+		Npcs:                        sliceToMap(dbProto.Npcs),
+		ItemIcons:                   sliceToMap(dbProto.ItemIcons),
+		SpellIcons:                  sliceToMap(dbProto.SpellIcons),
+		ReforgeStats:                sliceToMap(dbProto.ReforgeStats),
+		RandomPropAllocationsByIlvl: sliceToMap(dbProto.RandomPropPoints),
+		ItemDamageRanged:            sliceToMap(dbProto.ItemDamageRanged),
+		ItemDamageThrown:            sliceToMap(dbProto.ItemDamageThrown),
+		ItemDamageWand:              sliceToMap(dbProto.ItemDamageWand),
+		ItemDamageOneHand:           sliceToMap(dbProto.ItemDamage_1H),
+		ItemDamageOneHandCaster:     sliceToMap(dbProto.ItemDamage_1HCaster),
+		ItemDamageTwoHandCaster:     sliceToMap(dbProto.ItemDamage_2HCaster),
+		ItemDamageTwoHand:           sliceToMap(dbProto.ItemDamage_2H),
+		ArmorValues:                 sliceToMap(dbProto.ArmorValues),
+		ShieldArmorValues:           sliceToMap(dbProto.ShieldArmorValues),
+		TotalArmorValues:            sliceToMap(dbProto.ArmorTotalValue),
 	}
 }
 
@@ -311,8 +389,43 @@ func (db *WowDatabase) WriteJson(jsonFilePath string) {
 	tools.WriteProtoArrayToBuffer(uidb.Encounters, buffer, "encounters")
 	buffer.WriteString(",\n")
 	tools.WriteProtoArrayToBuffer(uidb.GlyphIds, buffer, "glyphIds")
+	buffer.WriteString(",\n")
+	tools.WriteProtoArrayToBuffer(uidb.ItemDamageWand, buffer, "itemDamageWand")
+	buffer.WriteString(",\n")
+	tools.WriteProtoArrayToBuffer(uidb.ItemDamageRanged, buffer, "itemDamageRanged")
+	buffer.WriteString(",\n")
+	tools.WriteProtoArrayToBuffer(uidb.ItemDamage_1H, buffer, "itemDamage1h")
+	buffer.WriteString(",\n")
+	tools.WriteProtoArrayToBuffer(uidb.ItemDamage_1HCaster, buffer, "itemDamage1hCaster")
+	buffer.WriteString(",\n")
+	tools.WriteProtoArrayToBuffer(uidb.ItemDamage_2H, buffer, "itemDamage2h")
+	buffer.WriteString(",\n")
+	tools.WriteProtoArrayToBuffer(uidb.ItemDamage_2HCaster, buffer, "itemDamage2hCaster")
+	buffer.WriteString(",\n")
+	tools.WriteProtoArrayToBuffer(uidb.ItemDamageThrown, buffer, "itemDamageThrown")
+	buffer.WriteString(",\n")
+	tools.WriteProtoArrayToBuffer(uidb.ArmorValues, buffer, "armorValues")
+	buffer.WriteString(",\n")
+	tools.WriteProtoArrayToBuffer(uidb.ShieldArmorValues, buffer, "shieldArmorValues")
+	buffer.WriteString(",\n")
+	tools.WriteProtoArrayToBuffer(uidb.ArmorTotalValue, buffer, "armorTotalValue")
+	buffer.WriteString(",\n")
+	tools.WriteProtoArrayToBuffer(uidb.RandomPropPoints, buffer, "randomPropPoints")
 	buffer.WriteString("\n")
-
 	buffer.WriteString("}")
 	os.WriteFile(jsonFilePath, buffer.Bytes(), 0666)
+}
+func sliceToMapBy[T any](vs []T, keyFunc func(T) int32) map[int32]T {
+	m := make(map[int32]T, len(vs))
+	for _, v := range vs {
+		m[keyFunc(v)] = v
+	}
+	return m
+}
+func mapValuesToSlice[T any](m map[string]T) []T {
+	out := make([]T, 0, len(m))
+	for _, v := range m {
+		out = append(out, v)
+	}
+	return out
 }

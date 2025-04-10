@@ -910,6 +910,8 @@ var DenyListNameRegexes = []*regexp.Regexp{
 	regexp.MustCompile(`Bracer 3`),
 	regexp.MustCompile(`DB\d`),
 	regexp.MustCompile(`DEPRECATED`),
+	regexp.MustCompile(`OLD`),
+	regexp.MustCompile(`Deprecated`),
 	regexp.MustCompile(`Deprecated: Keanna`),
 	regexp.MustCompile(`Indalamar`),
 	regexp.MustCompile(`Monster -`),

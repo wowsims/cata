@@ -79,110 +79,119 @@ func main() {
 		//Todo: fill this when we have information from wowhead @ Neteyes - Gehennas
 		// For now, the version we have was taken from https://web.archive.org/web/20120201045249js_/http://www.wowhead.com/data=item-scaling
 		return
-	} else if *genAsset == "dbc" {
-		helper, _ := database.NewDBHelper()
-		defer helper.Close()
-
-		database.RunOverrides(helper, "./tools/database/overrides")
-
-		randomSuffixes, err := database.LoadRawRandomSuffixes(helper)
-		if err == nil {
-			json, _ := json.Marshal(randomSuffixes)
-			if err := writeGzipFile(fmt.Sprintf("%s/dbc/random_suffix.json", inputsDir), json); err != nil {
-				log.Fatalf("Error writing file: %v", err)
-			}
-		}
-
-		items, err := database.LoadRawItems(helper, "s.OverallQualityId != 7 AND s.ScalingStatDistributionID = 0 AND s.OverallQualityId != 0 AND (i.ClassID = 2 OR i.ClassID = 4) AND s.Display_lang != '' AND (s.ID != 34219 AND s.Display_lang NOT LIKE '%Test%' AND s.Display_lang NOT LIKE 'QA%')")
-		if err == nil {
-			json, _ := json.Marshal(items)
-			if err := writeGzipFile(fmt.Sprintf("%s/dbc/items.json", inputsDir), json); err != nil {
-				log.Fatalf("Error writing file: %v", err)
-			}
-		}
-
-		randPropsByIlvl, err := database.LoadRandomPropAllocations(helper)
-		if err == nil {
-			json, _ := json.Marshal(randPropsByIlvl)
-			if err := writeGzipFile(fmt.Sprintf("%s/dbc/rand_prop_points.json", inputsDir), json); err != nil {
-				log.Fatalf("Error writing file: %v", err)
-			}
-		}
-
-		gems, err := database.LoadRawGems(helper)
-		if err == nil {
-			json, _ := json.Marshal(gems)
-			if err := writeGzipFile(fmt.Sprintf("%s/dbc/gems.json", inputsDir), json); err != nil {
-				log.Fatalf("Error writing file: %v", err)
-			}
-		}
-
-		enchants, err := database.LoadRawEnchants(helper)
-		if err == nil {
-			json, _ := json.Marshal(enchants)
-			if err := writeGzipFile(fmt.Sprintf("%s/dbc/enchants.json", inputsDir), json); err != nil {
-				log.Fatalf("Error writing file: %v", err)
-			}
-		}
-
-		spellEffects, err := database.LoadRawSpellEffects(helper)
-		if err == nil {
-			json, _ := json.Marshal(spellEffects)
-			if err := writeGzipFile(fmt.Sprintf("%s/dbc/spell_effects.json", inputsDir), json); err != nil {
-				log.Fatalf("Error writing file: %v", err)
-			}
-		}
-
-		itemStatEffects, err := database.LoadItemStatEffects(helper)
-		if err == nil {
-			json, _ := json.Marshal(itemStatEffects)
-			if err := writeGzipFile(fmt.Sprintf("%s/dbc/item_stat_effects.json", inputsDir), json); err != nil {
-				log.Fatalf("Error writing file: %v", err)
-			}
-		}
-
-		itemDamageTables, err := database.LoadItemDamageTables(helper)
-		if err == nil {
-			json, _ := json.Marshal(itemDamageTables)
-			if err := writeGzipFile(fmt.Sprintf("%s/dbc/item_damage_tables.json", inputsDir), json); err != nil {
-				log.Fatalf("Error writing file: %v", err)
-			}
-		}
-		itemArmorTotal, err := database.LoadItemArmorTotal(helper)
-		if err == nil {
-			json, _ := json.Marshal(itemArmorTotal)
-			if err := writeGzipFile(fmt.Sprintf("%s/dbc/item_armor_total.json", inputsDir), json); err != nil {
-				log.Fatalf("Error writing file: %v", err)
-			}
-		}
-		itemArmorQuality, err := database.LoadItemArmorQuality(helper)
-		if err == nil {
-			json, _ := json.Marshal(itemArmorQuality)
-			if err := writeGzipFile(fmt.Sprintf("%s/dbc/item_armor_quality.json", inputsDir), json); err != nil {
-				log.Fatalf("Error writing file: %v", err)
-			}
-		} else {
-			fmt.Println("Couldnt load quality")
-		}
-		itemArmorShield, err := database.LoadItemArmorShield(helper)
-		if err == nil {
-			json, _ := json.Marshal(itemArmorShield)
-			if err := writeGzipFile(fmt.Sprintf("%s/dbc/item_armor_shield.json", inputsDir), json); err != nil {
-				log.Fatalf("Error writing file: %v", err)
-			}
-		}
-		armorLocation, err := database.LoadArmorLocation(helper)
-		if err == nil {
-			json, _ := json.Marshal(armorLocation)
-			if err := writeGzipFile(fmt.Sprintf("%s/dbc/armor_location.json", inputsDir), json); err != nil {
-				log.Fatalf("Error writing file: %v", err)
-			}
-		}
-		return
 	} else if *genAsset != "db" {
 		panic("Invalid gen value")
 	}
+	helper, _ := database.NewDBHelper()
+	defer helper.Close()
 
+	database.RunOverrides(helper, "./tools/database/overrides")
+
+	randomSuffixes, err := database.LoadRawRandomSuffixes(helper)
+	if err == nil {
+		json, _ := json.Marshal(randomSuffixes)
+		if err := writeGzipFile(fmt.Sprintf("%s/dbc/random_suffix.json", inputsDir), json); err != nil {
+			log.Fatalf("Error writing file: %v", err)
+		}
+	}
+
+	items, err := database.LoadRawItems(helper, "s.OverallQualityId != 7 AND s.ScalingStatDistributionID = 0 AND s.OverallQualityId != 0 AND (i.ClassID = 2 OR i.ClassID = 4) AND s.Display_lang != '' AND (s.ID != 34219 AND s.Display_lang NOT LIKE '%Test%' AND s.Display_lang NOT LIKE 'QA%')")
+	if err == nil {
+		json, _ := json.Marshal(items)
+		if err := writeGzipFile(fmt.Sprintf("%s/dbc/items.json", inputsDir), json); err != nil {
+			log.Fatalf("Error writing file: %v", err)
+		}
+	}
+
+	randPropsByIlvl, err := database.LoadRandomPropAllocations(helper)
+	if err == nil {
+		processed := make(dbc.RandomPropAllocationsByIlvl)
+		for _, r := range randPropsByIlvl {
+			processed[r.Ilvl] = dbc.RandomPropAllocationMap{
+				proto.ItemQuality_ItemQualityEpic:     [5]int32{r.Allocation.Epic0, r.Allocation.Epic1, r.Allocation.Epic2, r.Allocation.Epic3, r.Allocation.Epic4},
+				proto.ItemQuality_ItemQualityRare:     [5]int32{r.Allocation.Superior0, r.Allocation.Superior1, r.Allocation.Superior2, r.Allocation.Superior3, r.Allocation.Superior4},
+				proto.ItemQuality_ItemQualityUncommon: [5]int32{r.Allocation.Good0, r.Allocation.Good1, r.Allocation.Good2, r.Allocation.Good3, r.Allocation.Good4},
+			}
+		}
+		json, _ := json.Marshal(processed)
+		if err := writeGzipFile(fmt.Sprintf("%s/dbc/rand_prop_points.json", inputsDir), json); err != nil {
+			log.Fatalf("Error writing file: %v", err)
+		}
+	}
+
+	gems, err := database.LoadRawGems(helper)
+	if err == nil {
+		json, _ := json.Marshal(gems)
+		if err := writeGzipFile(fmt.Sprintf("%s/dbc/gems.json", inputsDir), json); err != nil {
+			log.Fatalf("Error writing file: %v", err)
+		}
+	}
+
+	enchants, err := database.LoadRawEnchants(helper)
+	if err == nil {
+		json, _ := json.Marshal(enchants)
+		if err := writeGzipFile(fmt.Sprintf("%s/dbc/enchants.json", inputsDir), json); err != nil {
+			log.Fatalf("Error writing file: %v", err)
+		}
+	}
+
+	spellEffects, err := database.LoadRawSpellEffects(helper)
+	if err == nil {
+		json, _ := json.Marshal(spellEffects)
+		if err := writeGzipFile(fmt.Sprintf("%s/dbc/spell_effects.json", inputsDir), json); err != nil {
+			log.Fatalf("Error writing file: %v", err)
+		}
+	}
+
+	itemStatEffects, err := database.LoadItemStatEffects(helper)
+	if err == nil {
+		json, _ := json.Marshal(itemStatEffects)
+		if err := writeGzipFile(fmt.Sprintf("%s/dbc/item_stat_effects.json", inputsDir), json); err != nil {
+			log.Fatalf("Error writing file: %v", err)
+		}
+	}
+
+	itemDamageTables, err := database.LoadItemDamageTables(helper)
+	if err == nil {
+		json, _ := json.Marshal(itemDamageTables)
+		if err := writeGzipFile(fmt.Sprintf("%s/dbc/item_damage_tables.json", inputsDir), json); err != nil {
+			log.Fatalf("Error writing file: %v", err)
+		}
+	}
+
+	itemArmorTotal, err := database.LoadItemArmorTotal(helper)
+	if err == nil {
+		json, _ := json.Marshal(itemArmorTotal)
+		if err := writeGzipFile(fmt.Sprintf("%s/dbc/item_armor_total.json", inputsDir), json); err != nil {
+			log.Fatalf("Error writing file: %v", err)
+		}
+	}
+
+	itemArmorQuality, err := database.LoadItemArmorQuality(helper)
+	if err == nil {
+		json, _ := json.Marshal(itemArmorQuality)
+		if err := writeGzipFile(fmt.Sprintf("%s/dbc/item_armor_quality.json", inputsDir), json); err != nil {
+			log.Fatalf("Error writing file: %v", err)
+		}
+	} else {
+		fmt.Println("Couldnt load quality")
+	}
+
+	itemArmorShield, err := database.LoadItemArmorShield(helper)
+	if err == nil {
+		json, _ := json.Marshal(itemArmorShield)
+		if err := writeGzipFile(fmt.Sprintf("%s/dbc/item_armor_shield.json", inputsDir), json); err != nil {
+			log.Fatalf("Error writing file: %v", err)
+		}
+	}
+
+	armorLocation, err := database.LoadArmorLocation(helper)
+	if err == nil {
+		json, _ := json.Marshal(armorLocation)
+		if err := writeGzipFile(fmt.Sprintf("%s/dbc/armor_location.json", inputsDir), json); err != nil {
+			log.Fatalf("Error writing file: %v", err)
+		}
+	}
 	//Todo: See if we cant get rid of these as well
 	spellTooltips := database.NewWowheadSpellTooltipManager(fmt.Sprintf("%s/wowhead_spell_tooltips.csv", inputsDir)).Read()
 	atlaslootDB := database.ReadDatabaseFromJson(tools.ReadFile(fmt.Sprintf("%s/atlasloot_db.json", inputsDir)))
@@ -233,7 +242,161 @@ func main() {
 	db.MergeEnchants(database.EnchantOverrides)
 
 	ApplyGlobalFilters(db)
+	for _, item := range instance.Items {
+		var parsed *proto.UIItem
+		if db.Items[int32(item.Id)] == nil || item.ItemLevel < 400 { // No need to scale items less than ilvl 400, that will never happen
+			continue
+		}
+		parsed = db.Items[int32(item.Id)]
 
+		maxUpgradeSteps := []int{1, 2, 3, 4}
+
+		if db.RandomPropAllocationsByIlvl[parsed.Ilvl] == nil {
+			new := &proto.RandomPropAllocation{}
+			props := randPropsByIlvl[parsed.Ilvl]
+			new.Id = parsed.Ilvl
+			new.Allocations = props.Allocation.ToProto().Allocations
+			db.RandomPropAllocationsByIlvl[parsed.Ilvl] = new
+			for _, num := range maxUpgradeSteps {
+				updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
+				if db.RandomPropAllocationsByIlvl[int32(updatedIlvl)] == nil {
+					total := randPropsByIlvl[int32(updatedIlvl)]
+					prop := &proto.RandomPropAllocation{}
+					prop.Id = total.Ilvl
+					prop.Allocations = total.Allocation.ToProto().Allocations
+					db.RandomPropAllocationsByIlvl[int32(updatedIlvl)] = prop
+				}
+
+			}
+		}
+
+		if parsed.Stats[proto.Stat_StatArmor] > 0 {
+			if db.TotalArmorValues[parsed.Ilvl] == nil {
+				armorTotal := itemArmorTotal[int(parsed.Ilvl)]
+				db.TotalArmorValues[parsed.Ilvl] = armorTotal.ToProto()
+			}
+			if db.ArmorValues[parsed.Ilvl] == nil {
+				armorValues := itemArmorQuality[int(parsed.Ilvl)]
+				db.ArmorValues[parsed.Ilvl] = armorValues.ToProto()
+			}
+			if db.ShieldArmorValues[parsed.Ilvl] == nil {
+				armorValues := itemArmorShield[int(parsed.Ilvl)]
+				db.ShieldArmorValues[parsed.Ilvl] = armorValues.ToProto()
+			}
+
+			for _, num := range maxUpgradeSteps {
+				updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
+
+				if db.ShieldArmorValues[int32(updatedIlvl)] == nil {
+					total := itemArmorShield[updatedIlvl]
+					db.ShieldArmorValues[int32(updatedIlvl)] = total.ToProto()
+				}
+				if db.ArmorValues[int32(updatedIlvl)] == nil {
+					total := itemArmorQuality[updatedIlvl]
+					db.ArmorValues[int32(updatedIlvl)] = total.ToProto()
+				}
+				if db.TotalArmorValues[int32(updatedIlvl)] == nil {
+					armorTotal := itemArmorTotal[updatedIlvl]
+					db.TotalArmorValues[int32(updatedIlvl)] = armorTotal.ToProto()
+				}
+
+			}
+		}
+
+		switch item.InventoryType {
+		case dbc.INVTYPE_WEAPON, dbc.INVTYPE_WEAPONMAINHAND, dbc.INVTYPE_WEAPONOFFHAND:
+			{
+				if item.Flags1.Has(dbc.CASTER_WEAPON) {
+					damageValues := itemDamageTables["ItemDamageOneHandCaster"][int(parsed.Ilvl)]
+					db.ItemDamageOneHandCaster[parsed.Ilvl] = damageValues.ToProto()
+					for _, num := range maxUpgradeSteps {
+
+						updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
+						if db.ItemDamageOneHandCaster[int32(updatedIlvl)] == nil {
+							total := itemDamageTables["ItemDamageOneHandCaster"][updatedIlvl]
+							db.ItemDamageOneHandCaster[int32(updatedIlvl)] = total.ToProto()
+						}
+
+					}
+				} else {
+					damageValues := itemDamageTables["ItemDamageOneHand"][int(parsed.Ilvl)]
+					db.ItemDamageOneHand[parsed.Ilvl] = damageValues.ToProto()
+					for _, num := range maxUpgradeSteps {
+
+						updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
+						if db.ItemDamageOneHand[int32(updatedIlvl)] == nil {
+							total := itemDamageTables["ItemDamageOneHand"][updatedIlvl]
+							db.ItemDamageOneHand[int32(updatedIlvl)] = total.ToProto()
+						}
+
+					}
+				}
+			}
+		case dbc.INVTYPE_2HWEAPON:
+			if item.Flags1.Has(dbc.CASTER_WEAPON) {
+				damageValues := itemDamageTables["ItemDamageTwoHandCaster"][int(parsed.Ilvl)]
+				db.ItemDamageTwoHandCaster[parsed.Ilvl] = damageValues.ToProto()
+				for _, num := range maxUpgradeSteps {
+
+					updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
+					if db.ItemDamageTwoHandCaster[int32(updatedIlvl)] == nil {
+						total := itemDamageTables["ItemDamageTwoHandCaster"][updatedIlvl]
+						db.ItemDamageTwoHandCaster[int32(updatedIlvl)] = total.ToProto()
+					}
+
+				}
+			} else {
+				damageValues := itemDamageTables["ItemDamageTwoHand"][int(parsed.Ilvl)]
+				db.ItemDamageTwoHand[parsed.Ilvl] = damageValues.ToProto()
+				for _, num := range maxUpgradeSteps {
+
+					updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
+					if db.ItemDamageTwoHand[int32(updatedIlvl)] == nil {
+						total := itemDamageTables["ItemDamageTwoHand"][updatedIlvl]
+						db.ItemDamageTwoHand[int32(updatedIlvl)] = total.ToProto()
+					}
+
+				}
+			}
+		case dbc.INVTYPE_RANGED, dbc.INVTYPE_THROWN, dbc.INVTYPE_RANGEDRIGHT:
+			switch item.ItemSubClass {
+			case dbc.ITEM_SUBCLASS_WEAPON_BOW, dbc.ITEM_SUBCLASS_WEAPON_GUN, dbc.ITEM_SUBCLASS_WEAPON_CROSSBOW:
+				damageValues := itemDamageTables["ItemDamageRanged"][int(parsed.Ilvl)]
+				db.ItemDamageRanged[parsed.Ilvl] = damageValues.ToProto()
+				for _, num := range maxUpgradeSteps {
+
+					updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
+					if db.ItemDamageRanged[int32(updatedIlvl)] == nil {
+						total := itemDamageTables["ItemDamageRanged"][updatedIlvl]
+						db.ItemDamageRanged[int32(updatedIlvl)] = total.ToProto()
+					}
+				}
+			case dbc.ITEM_SUBCLASS_WEAPON_THROWN:
+				damageValues := itemDamageTables["ItemDamageThrown"][int(parsed.Ilvl)]
+				db.ItemDamageThrown[parsed.Ilvl] = damageValues.ToProto()
+				for _, num := range maxUpgradeSteps {
+
+					updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
+					if db.ItemDamageThrown[int32(updatedIlvl)] == nil {
+						total := itemDamageTables["ItemDamageThrown"][updatedIlvl]
+						db.ItemDamageThrown[int32(updatedIlvl)] = total.ToProto()
+					}
+
+				}
+			case dbc.ITEM_SUBCLASS_WEAPON_WAND:
+				damageValues := itemDamageTables["ItemDamageWand"][int(parsed.Ilvl)]
+				db.ItemDamageWand[parsed.Ilvl] = damageValues.ToProto()
+				for _, num := range maxUpgradeSteps {
+					updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
+					if db.ItemDamageWand[int32(updatedIlvl)] == nil {
+						ItemDamageWand := itemDamageTables["ItemDamageWand"][updatedIlvl]
+						db.ItemDamageWand[int32(updatedIlvl)] = ItemDamageWand.ToProto()
+					}
+
+				}
+			}
+		}
+	}
 	leftovers := db.Clone()
 	ApplyNonSimmableFilters(leftovers)
 	leftovers.WriteBinaryAndJson(fmt.Sprintf("%s/leftover_db.bin", dbDir), fmt.Sprintf("%s/leftover_db.json", dbDir))
@@ -350,7 +513,7 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		if _, ok := database.ItemDenyList[item.Id]; ok {
 			return false
 		}
-		if item.Ilvl > 416 {
+		if item.Ilvl > 416 || item.Ilvl < 100 {
 			return false
 		}
 		for _, pattern := range database.DenyListNameRegexes {
@@ -856,4 +1019,20 @@ func GetAllRotationSpellIds() map[string][]int32 {
 		ret_db[r.Name] = spells
 	}
 	return ret_db
+}
+func updateMapWithUpgrades[T any](m map[int32]*T, baseIlvl int32, maxUpgradeSteps []int,
+	lookup func(int) *T, upgradeFunc func(base, step int) int) {
+
+	base := int(baseIlvl)
+	if m[baseIlvl] == nil {
+		m[baseIlvl] = lookup(base)
+	}
+
+	for _, step := range maxUpgradeSteps {
+		upgraded := upgradeFunc(base, step)
+		ilvlKey := int32(upgraded)
+		if m[ilvlKey] == nil {
+			m[ilvlKey] = lookup(upgraded)
+		}
+	}
 }

@@ -7,7 +7,7 @@
   },
   "TargetDirectory": "dbfilesclient",
   "DatabaseFile": "wowsims.db",
-  "GameTablesOutDirectory": "../../assets/db_inputs/dbc/GameTables",
+  "GameTablesOutDirectory": "../../assets/db_inputs/basestats",
   "GameTables": [
 	"SpellScaling",
 	"ChanceToMeleeCrit",
@@ -49,6 +49,7 @@
     "ItemArmorShield",
     "ItemArmorQuality",
     "SkillLineAbility",
+	"SkillLine",
     "Curve",
     "CurvePoint",
     "Difficulty",

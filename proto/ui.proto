@@ -25,6 +25,27 @@ message UIDatabase {
 
 	repeated GlyphID glyph_ids = 7;
 	repeated ReforgeStat reforge_stats = 12;
+
+	repeated RandomPropAllocation random_prop_points = 13;
+	repeated ItemArmorTotal armor_total_value = 16;
+
+	repeated ItemQualityValue item_damage_1h_caster = 17;
+
+	repeated ItemQualityValue item_damage_1h = 18;
+
+	repeated ItemQualityValue item_damage_2h_caster = 19;
+
+	repeated ItemQualityValue item_damage_2h = 20;
+
+	repeated ItemQualityValue item_damage_ranged = 21;
+
+	repeated ItemQualityValue item_damage_thrown = 22;
+
+	repeated ItemQualityValue item_damage_wand = 23;
+
+	repeated ItemQualityValue shield_armor_values = 24; // shield, armor
+
+	repeated ItemQualityValue armor_values = 26; // shield, armor
 }
 
 message UIZone {
@@ -41,7 +62,7 @@ message UINPC {
 // Contains all information about an Item needed by the UI.
 // Generally this will include everything needed by the sim, plus some
 // additional data for displaying / filtering.
-// Next tag: 30.
+// Next tag: 35.
 message UIItem {
 	int32 id = 1;
 	string name = 2;
@@ -68,7 +89,7 @@ message UIItem {
 	ItemQuality quality = 17;
 	bool unique = 18;
 	bool heroic = 19;
-	int32 rand_prop_points = 27;
+	int32 rand_prop_points = 27; // possibly not needed once dbc scaling is in
 
 	// Classes that are allowed to use the item. Empty indicates no special class restrictions.
 	repeated Class class_allowlist = 20;
@@ -89,7 +110,16 @@ message UIItem {
 	}
 
 	FactionRestriction faction_restriction = 25;
+
+	// Neccessary for scaling items in MoP
 	bool is_scaled = 29;
+	int32 scaled_ilvl = 30;
+	double dmg_variance = 31;
+	double armor_modifier = 32;
+	double quality_modifier = 33;
+	repeated double socket_modifier = 34;
+	double max_ilvl = 35;
+	repeated double stat_allocation = 36;
 }
 
 enum Expansion {
