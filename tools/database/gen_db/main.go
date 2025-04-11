@@ -448,6 +448,23 @@ func main() {
 		}
 	}
 
+	descriptions := make(map[int32]string)
+	for _, enchant := range db.Enchants {
+		var dbcEnch = instance.Enchants[int(enchant.EffectId)]
+		descriptions[enchant.EffectId] = dbcEnch.EffectName
+	}
+	file, err := os.Create("assets/enchants/descriptions.json")
+	if err != nil {
+		log.Fatalf("Failed to create file: %v", err)
+	}
+	defer file.Close()
+
+	encoder := json.NewEncoder(file)
+	encoder.SetIndent("", "  ")
+	if err := encoder.Encode(descriptions); err != nil {
+		log.Fatalf("Failed to encode JSON: %v", err)
+	}
+
 	atlasDBProto := atlaslootDB.ToUIProto()
 	db.MergeZones(atlasDBProto.Zones)
 	db.MergeNpcs(atlasDBProto.Npcs)
@@ -608,6 +625,11 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 	})
 
 	db.Enchants = core.FilterMap(db.Enchants, func(_ database.EnchantDBKey, enchant *proto.UIEnchant) bool {
+		for _, pattern := range database.DenyListNameRegexes {
+			if pattern.MatchString(enchant.Name) {
+				return false
+			}
+		}
 		return !strings.HasPrefix(enchant.Name, "QA") && !strings.HasPrefix(enchant.Name, "Test") && !strings.HasPrefix(enchant.Name, "TEST")
 	})
 

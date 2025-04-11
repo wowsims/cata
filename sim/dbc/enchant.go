@@ -21,6 +21,7 @@ type Enchant struct {
 	FDID               int
 	Quality            ItemQuality
 	RequiredProfession int
+	EffectName         string
 }
 
 func (enchant *Enchant) ToProto() *proto.UIEnchant {

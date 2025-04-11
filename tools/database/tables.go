@@ -355,7 +355,7 @@ func ScanEnchantsTable(rows *sql.Rows) (dbc.Enchant, error) {
 		&raw.IsWeaponEnchant,
 		&raw.InventoryType,
 		&raw.SubClassMask,
-		&raw.ClassMask, &raw.FDID, &raw.Quality, &raw.RequiredProfession)
+		&raw.ClassMask, &raw.FDID, &raw.Quality, &raw.RequiredProfession, &raw.EffectName)
 	if err != nil {
 		return raw, fmt.Errorf("scanning enchant data for effect ID %d: %w", raw.EffectId, err)
 	}
@@ -381,7 +381,10 @@ func ScanEnchantsTable(rows *sql.Rows) (dbc.Enchant, error) {
 func LoadRawEnchants(dbHelper *DBHelper) ([]dbc.Enchant, error) {
 	query := `SELECT DISTINCT
 		sie.ID as effectId,
-		sn.Name_lang as name,
+		CASE
+		    WHEN sn.Name_lang LIKE '%+%' THEN COALESCE(isp.Display_lang, sn.Name_lang)
+		    ELSE sn.Name_lang
+		END AS name,
 		se.SpellID as spellId,
 		COALESCE(ie.ParentItemID, 0) as ItemId,
 		sie.Field_1_15_3_55112_014 as professionId,
@@ -397,7 +400,8 @@ func LoadRawEnchants(dbHelper *DBHelper) ([]dbc.Enchant, error) {
 		COALESCE(sla.ClassMask, 0),
 		COALESCE(it.IconFileDataID, 0),
 		COALESCE(isp.OverallQualityID, 1),
-		COALESCE(sie.Field_1_15_3_55112_014, 0) as RequiredProfession
+		COALESCE(sie.Field_1_15_3_55112_014, 0) as RequiredProfession,
+		COALESCE(sie.Name_lang, "")
 		FROM SpellEffect se
 		JOIN Spell s ON se.SpellID = s.ID
 		JOIN SpellName sn ON se.SpellID = sn.ID

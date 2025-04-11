@@ -52,5 +52,7 @@ func GetIconName(artPaths map[int]string, fdid int) string {
 	if len(parts) == 0 {
 		return ""
 	}
-	return strings.TrimSpace(parts[len(parts)-1])
+	iconName := strings.TrimSpace(parts[len(parts)-1])
+	iconName = strings.ReplaceAll(iconName, " ", "-")
+	return iconName
 }
