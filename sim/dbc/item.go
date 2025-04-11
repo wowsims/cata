@@ -66,7 +66,7 @@ func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
 		IsScaled:            item.ItemLevel != itemLevel,
 		ScaledIlvl:          int32(itemLevel),
 	}
-	if item.ItemLevel > 400 { // No need to scale unless its a good item
+	if item.ItemLevel >= 458 {
 		uiItem.DmgVariance = item.DmgVariance
 		uiItem.ArmorModifier = item.GetArmorModifier()
 		uiItem.QualityModifier = item.QualityModifier
@@ -117,6 +117,9 @@ func (item *Item) GetStats(itemLevel int) *stats.Stats {
 			continue
 		}
 		stats[stat] = item.GetScaledStat(i, itemLevel)
+		if stat == proto.Stat_StatAttackPower {
+			stats[proto.Stat_StatRangedAttackPower] = item.GetScaledStat(i, itemLevel) // Apply RAP as well. Might not be true for 1.12 idk
+		}
 	}
 
 	armor := item.GetArmorValue(itemLevel)

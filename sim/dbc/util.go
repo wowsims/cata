@@ -2,7 +2,9 @@ package dbc
 
 import (
 	"compress/gzip"
+	"fmt"
 	"io"
+	"math"
 	"os"
 
 	"github.com/wowsims/cata/sim/core/proto"
@@ -120,11 +122,17 @@ func processEnchantmentEffects(
 		case ITEM_ENCHANTMENT_STAT:
 			stat, _ := MapBonusStatIndexToStat(effectArgs[i])
 			outStats[stat] = float64(effectPoints[i])
+			if effectPoints[i] == 72 {
+				fmt.Println("Add to AP", stat)
+			}
 			// If the bonus stat is attack power, copy it to ranged attack power
 			if addRanged && stat == proto.Stat_StatAttackPower {
+				if effectPoints[i] == 72 {
+					fmt.Println("Add to APRange", stat)
+				}
 				outStats[proto.Stat_StatRangedAttackPower] = float64(effectPoints[i])
 			}
-		case ITEM_ENCHANTMENT_EQUIP_SPELL:
+		case ITEM_ENCHANTMENT_EQUIP_SPELL: //Buff
 			spellEffects := dbcInstance.SpellEffects[effectArgs[i]]
 			for _, spellEffect := range spellEffects {
 				if spellEffect.EffectMiscValues[0] == -1 &&
@@ -136,6 +144,55 @@ func processEnchantmentEffects(
 					outStats[proto.Stat_StatSpirit] += float64(spellEffect.EffectBasePoints)
 					outStats[proto.Stat_StatStamina] += float64(spellEffect.EffectBasePoints)
 					outStats[proto.Stat_StatStrength] += float64(spellEffect.EffectBasePoints)
+					continue
+				}
+				if spellEffect.EffectType == E_APPLY_AURA && spellEffect.EffectAura == A_MOD_STAT {
+
+				}
+
+				school := SpellSchool(spellEffect.EffectMiscValues[0])
+				if spellEffect.EffectAura == A_MOD_TARGET_RESISTANCE {
+
+					if school == SPELL_PENETRATION {
+						outStats[proto.Stat_StatSpellPenetration] += math.Abs(float64(spellEffect.EffectBasePoints))
+						continue
+					}
+					//Todo: Leave this for classic because maybe
+					// if school.Has(HOLY) {
+					// 	//outStats[proto.Stat_StatHo] += float64(+spellEffect.EffectBasePoints) We dont have this?
+					// }
+					// if school.Has(FIRE) {
+					// 	outStats[proto.Stat_StatFireResistance] += float64(+spellEffect.EffectBasePoints)
+					// }
+					// if school.Has(NATURE) {
+					// 	outStats[proto.Stat_StatNatureResistance] += float64(+spellEffect.EffectBasePoints)
+					// }
+					// if school.Has(FROST) {
+					// 	outStats[proto.Stat_StatFrostResistance] += float64(+spellEffect.EffectBasePoints)
+					// }
+					// if school.Has(SHADOW) {
+					// 	outStats[proto.Stat_StatShadowResistance] += float64(+spellEffect.EffectBasePoints)
+					// }
+				}
+				if spellEffect.EffectAura == A_MOD_RESISTANCE {
+					// if school.Has(HOLY) {
+					//outStats[proto.Stat_StatHo] += float64(+spellEffect.EffectBasePoints) We dont have this?
+					//}
+					if school.Has(FIRE) {
+						outStats[proto.Stat_StatFireResistance] += float64(spellEffect.EffectBasePoints)
+					}
+					if school.Has(ARCANE) {
+						outStats[proto.Stat_StatArcaneResistance] += float64(spellEffect.EffectBasePoints)
+					}
+					if school.Has(NATURE) {
+						outStats[proto.Stat_StatNatureResistance] += float64(spellEffect.EffectBasePoints)
+					}
+					if school.Has(FROST) {
+						outStats[proto.Stat_StatFrostResistance] += float64(spellEffect.EffectBasePoints)
+					}
+					if school.Has(SHADOW) {
+						outStats[proto.Stat_StatShadowResistance] += float64(spellEffect.EffectBasePoints)
+					}
 				}
 			}
 		case ITEM_ENCHANTMENT_COMBAT_SPELL:

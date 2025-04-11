@@ -244,7 +244,7 @@ func main() {
 	ApplyGlobalFilters(db)
 	for _, item := range instance.Items {
 		var parsed *proto.UIItem
-		if db.Items[int32(item.Id)] == nil || item.ItemLevel < 400 { // No need to scale items less than ilvl 400, that will never happen
+		if db.Items[int32(item.Id)] == nil || item.ItemLevel <= 458 { // No need to scale items less than ilvl 400, that will never happen
 			continue
 		}
 		parsed = db.Items[int32(item.Id)]

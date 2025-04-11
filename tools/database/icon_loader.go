@@ -52,7 +52,6 @@ func GetIconName(artPaths map[int]string, fdid int) string {
 	if len(parts) == 0 {
 		return ""
 	}
-	iconName := strings.TrimSpace(parts[len(parts)-1])
-	iconName = strings.ReplaceAll(iconName, " ", "-")
+	iconName := strings.ReplaceAll(parts[len(parts)-1], " ", "-") //Wowhhead doesnt trim space..
 	return iconName
 }

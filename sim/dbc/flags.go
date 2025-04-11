@@ -43,6 +43,24 @@ func (f ItemStaticFlags0) Has(flag ItemStaticFlags0) bool {
 	return f&flag != 0
 }
 
+type SpellSchool int
+
+const (
+	PHYSICAL SpellSchool = 1 << iota // 0x1
+	HOLY                             // 0x2
+	FIRE                             // 0x4
+	NATURE                           // 0x8
+	FROST                            // 0x10
+	SHADOW                           // 0x20
+	ARCANE                           // 0x40
+
+	SPELL_PENETRATION = FIRE | NATURE | FROST | SHADOW | ARCANE // 0x7E
+)
+
+func (f SpellSchool) Has(flag SpellSchool) bool {
+	return f&flag != 0
+}
+
 type ItemStaticFlags1 uint32
 
 const (
