@@ -8,7 +8,7 @@ import (
 
 func (hunter *Hunter) ApplyBMTalents() {
 	if hunter.Talents.ImprovedKillCommand > 0 {
-		hunter.AddStaticMod(core.SpellModConfig{
+		hunter.Pet.AddStaticMod(core.SpellModConfig{
 			Kind:       core.SpellMod_BonusCrit_Percent,
 			ClassMask:  HunterSpellKillCommand,
 			FloatValue: float64(hunter.Talents.ImprovedKillCommand) * 5,

@@ -93,11 +93,11 @@ func (hp *HunterPet) RegisterKillCommandSpell() *core.Spell {
 	actionID := core.ActionID{SpellID: 34026}
 
 	return hp.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL,
-
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: HunterSpellKillCommand,
 		FocusCost: core.FocusCostOptions{
 			Cost: 0,
 		},
