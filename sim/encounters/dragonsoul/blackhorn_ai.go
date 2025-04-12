@@ -99,6 +99,13 @@ func blackhornTargetInputs() []*proto.TargetInput {
 			InputType:   proto.InputType_Number,
 			NumberValue: 73,
 		},
+		{
+			Label:       "Nerf state",
+			Tooltip:     "Strength of the stacking Power of the Aspects debuff",
+			InputType:   proto.InputType_Enum,
+			EnumOptions: []string{"0%", "5%", "10%", "15%", "20%", "25%", "30%", "35%"},
+			EnumValue:   0,
+		},
 	}
 }
 
@@ -129,6 +136,7 @@ type BlackhornAI struct {
 	disableAddAt                 time.Duration
 	cleavePhaseVengeanceInterval time.Duration
 	cleavePhaseVengeanceGain     int32
+	nerfLevel                    int32
 
 	// Spell + aura references
 	Devastate      *core.Spell
@@ -162,6 +170,7 @@ func (ai *BlackhornAI) Initialize(target *core.Target, config *proto.Target) {
 		ai.disableAddAt = core.DurationFromSeconds(config.TargetInputs[1].NumberValue)
 		ai.cleavePhaseVengeanceGain = 100 - int32(config.TargetInputs[2].NumberValue)
 		ai.cleavePhaseVengeanceInterval = ai.disableAddAt / time.Duration(ai.cleavePhaseVengeanceGain)
+		ai.nerfLevel = config.TargetInputs[3].EnumValue
 	}
 
 	// Register relevant spells and auras
@@ -169,6 +178,7 @@ func (ai *BlackhornAI) Initialize(target *core.Target, config *proto.Target) {
 	ai.registerDisruptingRoar()
 	ai.registerVengeance()
 	ai.registerTwilightBreath()
+	ai.registerPowerOfTheAspects()
 }
 
 func (ai *BlackhornAI) registerDevastate() {
@@ -391,6 +401,36 @@ func (ai *BlackhornAI) registerTwilightBreath() {
 			})
 		})
 	}
+}
+
+func (ai *BlackhornAI) registerPowerOfTheAspects() {
+	if !ai.isBoss || (ai.nerfLevel == 0) {
+		return
+	}
+
+	damageMultiplier := 1.0 - 0.05*float64(ai.nerfLevel)
+	auraID := 109250 + ai.nerfLevel
+
+	debuffConfig := core.Aura{
+		Label:    "Power of the Aspects",
+		ActionID: core.ActionID{SpellID: auraID},
+		Duration: core.NeverExpires,
+
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.DamageDealtMultiplier *= damageMultiplier
+		},
+
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.DamageDealtMultiplier /= damageMultiplier
+		},
+	}
+
+	ai.BossUnit.GetOrRegisterAura(debuffConfig)
+	ai.AddUnit.GetOrRegisterAura(debuffConfig)
 }
 
 func (ai *BlackhornAI) Reset(sim *core.Simulation) {
