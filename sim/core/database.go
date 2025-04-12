@@ -18,6 +18,8 @@ var GemsByID = map[int32]Gem{}
 var RandomSuffixesByID = map[int32]RandomSuffix{}
 var EnchantsByEffectID = map[int32]Enchant{}
 var ReforgeStatsByID = map[int32]ReforgeStat{}
+var ConsumableByID = map[int32]Consumable{}
+var EffectsById = map[int32]*proto.SpellEffect{}
 var mutex = &sync.Mutex{}
 
 func addToDatabase(newDB *proto.SimDatabase) {
@@ -55,6 +57,16 @@ func addToDatabase(newDB *proto.SimDatabase) {
 			ReforgeStatsByID[v.Id] = ReforgeStatFromProto(v)
 		}
 	}
+	for _, v := range newDB.Consumables {
+		if _, ok := ConsumableByID[v.Id]; !ok {
+			ConsumableByID[v.Id] = ConsumableFromProto(v)
+		}
+	}
+	for _, v := range newDB.Effects {
+		if _, ok := EffectsById[v.Id]; !ok {
+			EffectsById[v.Id] = v
+		}
+	}
 }
 
 type ReforgeStat struct {
@@ -81,6 +93,46 @@ func ReforgeStatToProto(stat ReforgeStat) *proto.ReforgeStat {
 		FromStat:   stat.FromStat,
 		ToStat:     stat.ToStat,
 		Multiplier: stat.Multiplier,
+	}
+}
+
+type Consumable struct {
+	Id           int32
+	Type         proto.ConsumableType
+	SubType      proto.ConsumableSubType
+	Stats        []float64
+	IsMainStat   bool
+	Name         string
+	Icon         string
+	BuffDuration int32
+	EffectIds    []int32
+}
+
+func ConsumableFromProto(consumable *proto.Consumable) Consumable {
+	return Consumable{
+		Id:           consumable.Id,
+		Type:         consumable.Type,
+		SubType:      consumable.SubType,
+		Stats:        consumable.Stats,
+		IsMainStat:   consumable.IsMainStat,
+		Name:         consumable.Name,
+		Icon:         consumable.Icon,
+		BuffDuration: consumable.BuffDuration,
+		EffectIds:    consumable.EffectIds,
+	}
+}
+
+func ConsumableToProto(consumable *Consumable) *proto.Consumable {
+	return &proto.Consumable{
+		Id:           consumable.Id,
+		Type:         consumable.Type,
+		SubType:      consumable.SubType,
+		Stats:        consumable.Stats,
+		IsMainStat:   consumable.IsMainStat,
+		Name:         consumable.Name,
+		Icon:         consumable.Icon,
+		BuffDuration: consumable.BuffDuration,
+		EffectIds:    consumable.EffectIds,
 	}
 }
 

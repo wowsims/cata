@@ -202,3 +202,18 @@ func processEnchantmentEffects(
 		}
 	}
 }
+func intSliceToInt32Slice(in []int) []int32 {
+	out := make([]int32, len(in))
+	for i, v := range in {
+		out[i] = int32(v)
+	}
+	return out
+}
+
+func int32SliceToIntSlice(in []int32) []int {
+	out := make([]int, len(in))
+	for i, v := range in {
+		out[i] = int(v)
+	}
+	return out
+}

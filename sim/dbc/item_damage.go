@@ -1,7 +1,6 @@
 package dbc
 
 import (
-	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
@@ -36,7 +35,12 @@ func (item *Item) WeaponDps(itemLevel int) float64 {
 		quality = 4 // Heirlooms = epic
 	}
 
-	ilvl := core.TernaryInt(itemLevel > 0, itemLevel, item.ItemLevel)
+	ilvl := 0
+	if itemLevel > 0 {
+		ilvl = itemLevel
+	} else {
+		ilvl = item.ItemLevel
+	}
 
 	switch item.InventoryType {
 	case INVTYPE_WEAPON, INVTYPE_WEAPONMAINHAND, INVTYPE_WEAPONOFFHAND:

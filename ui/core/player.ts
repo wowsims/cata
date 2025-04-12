@@ -18,6 +18,7 @@ import {
 import { APLRotation, APLRotation_Type as APLRotationType, SimpleRotation } from './proto/apl';
 import {
 	Class,
+	Consumable,
 	Consumes,
 	Cooldowns,
 	Faction,
@@ -1439,6 +1440,8 @@ export class Player<SpecType extends Spec> {
 	private toDatabase(): SimDatabase {
 		const dbGear = this.getGear().toDatabase(this.sim.db);
 		const dbItemSwapGear = this.itemSwapSettings.getGear().toDatabase(this.sim.db);
+		const consumes: Consumable[] = [];
+
 		return Database.mergeSimDatabases(dbGear, dbItemSwapGear);
 	}
 

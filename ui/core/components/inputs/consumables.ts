@@ -3,6 +3,7 @@ import {
 	BattleElixir,
 	Class,
 	Conjured,
+	Consumable,
 	Consumes,
 	Explosive,
 	Flask,
@@ -262,10 +263,58 @@ export const FLASKS_CONFIG = [
 		stats: [Stat.StatArcaneResistance, Stat.StatFireResistance, Stat.StatFrostResistance, Stat.StatNatureResistance, Stat.StatShadowResistance],
 	},
 ] as ConsumableStatOption<Flask>[];
+export interface ConsumableInputOptions {
+	consumesFieldName: keyof Consumes;
+	setValue?: (eventID: EventID, player: Player<any>, newValue: number) => void;
+}
+
+export function makeConsumableInput(
+	items: Consumable[],
+	options: ConsumableInputOptions,
+	tooltip?: string,
+): InputHelpers.TypedIconEnumPickerConfig<Player<any>, number> {
+	return {
+		type: 'iconEnum',
+		tooltip: tooltip,
+		numColumns: items.length > 5 ? 2 : 1,
+		values: [{ value: 0, iconUrl: '', tooltip: 'None' }].concat(
+			items.map(item => ({
+				value: item.id,
+				iconUrl: item.icon,
+				actionId: ActionId.fromItemId(item.id),
+				tooltip: item.name,
+			})),
+		),
+		equals: (a: number, b: number) => a === b,
+		zeroValue: 0,
+		changedEvent: (player: Player<any>) => player.consumesChangeEmitter,
+		getValue: (player: Player<any>) => player.getConsumes()[options.consumesFieldName] as number,
+		setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
+			if (options.setValue) {
+				options.setValue(eventID, player, newValue);
+			}
+
+			const newConsumes = {
+				...player.getConsumes(),
+				[options.consumesFieldName]: newValue,
+			};
+
+			if (options.consumesFieldName === 'flaskId') {
+				newConsumes.guardianElixirId = 0;
+				newConsumes.battleElixirId = 0;
+			}
+
+			if (options.consumesFieldName === 'battleElixirId' || options.consumesFieldName === 'guardianElixirId') {
+				newConsumes.flaskId = 0;
+			}
+			player.setConsumes(eventID, newConsumes);
+		},
+	};
+}
 
 export const makeFlasksInput = makeConsumeInputFactory({
-	consumesFieldName: 'flask',
-	onSet: (eventID: EventID, player: Player<any>, newValue: Flask) => {
+	consumesFieldName: 'flaskId',
+	onSet: (eventID: EventID, player: Player<any>, newValue: number) => {
 		if (newValue) {
 			const newConsumes = player.getConsumes();
 			newConsumes.battleElixir = BattleElixir.BattleElixirUnknown;

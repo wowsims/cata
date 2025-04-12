@@ -3,7 +3,6 @@ package dbc
 import (
 	"math"
 
-	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
@@ -252,7 +251,12 @@ func (item *Item) GetArmorValue(itemLevel int) int {
 	if item.Id == 0 || item.OverallQuality > 5 {
 		return 0
 	}
-	ilvl := core.TernaryInt(itemLevel > 0, itemLevel, item.ItemLevel)
+	ilvl := 0
+	if itemLevel > 0 {
+		ilvl = itemLevel
+	} else {
+		ilvl = item.ItemLevel
+	}
 
 	if item.ItemClass == ITEM_CLASS_ARMOR && item.ItemSubClass == ITEM_SUBCLASS_ARMOR_SHIELD {
 		return int(math.Floor(GetDBC().ItemArmorShield[ilvl].Quality[item.OverallQuality] + 0.5))

@@ -67,6 +67,7 @@
 	"SpellRange",
 	"SpellReagents",
     "SpellItemEnchantment",
-    "SpellEffect"
+    "SpellEffect",
+	"SpellDuration"
   ]
 }

@@ -700,6 +700,7 @@ func ScanConsumable(rows *sql.Rows) (dbc.Consumable, error) {
 		&consumable.SpellCategoryFlags,
 		&itemEffectsStr,
 		&consumable.ElixirType,
+		&consumable.Duration,
 	)
 	if err != nil {
 		return consumable, fmt.Errorf("scanning consumable data: %w", err)
@@ -747,12 +748,15 @@ func LoadConsumables(dbHelper *DBHelper) ([]dbc.Consumable, error) {
 					WHEN sp.Description_lang LIKE '%Guardian Elixir%' THEN 1
 					WHEN sp.Description_lang LIKE '%Battle Elixir%' THEN 2
 					ELSE 0
-				END AS ElixirType
+				END AS ElixirType,
+				COALESCE(sd.Duration, 0) as Duration
 			FROM Item i
 			JOIN ItemSparse s ON i.ID = s.ID
 			LEFT JOIN ItemEffect ie ON i.ID = ie.ParentItemID
 			LEFT JOIN SpellCategory sc ON ie.SpellCategoryID = sc.ID
 			LEFT JOIN Spell sp ON ie.SpellID = sp.ID
+			LEFT JOIN SpellMisc sm ON ie.SpellId = sm.SpellID
+			LEFT JOIN SpellDuration sd ON sm.DurationIndex = sd.ID
 			WHERE ((i.ClassID = 0 AND i.SubclassID IS NOT 0 AND i.SubclassID IS NOT 8 AND i.SubclassID IS NOT 6) OR (i.ClassID = 7 AND i.SubclassID = 2)) AND ItemEffects is not null AND s.RequiredLevel >= 80
 			AND s.Display_lang != ''
 			AND s.Display_lang NOT LIKE '%Test%'

@@ -378,7 +378,7 @@ export class Gear extends BaseGear {
 		let setItemCount = 0;
 		for (const slot of validSetItemSlots) {
 			const item = this.getEquippedItem(slot);
-			if (item?.item?.setName === name || (alternativeName &&item?.item.setName === alternativeName)) setItemCount++;
+			if (item?.item?.setName === name || (alternativeName && item?.item.setName === alternativeName)) setItemCount++;
 		}
 
 		return setItemCount;

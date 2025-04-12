@@ -255,7 +255,7 @@ func main() {
 	}
 	for _, consumable := range consumables {
 		protoConsumable := consumable.ToProto()
-		//Todo: fdid
+		protoConsumable.Icon = strings.ToLower(database.GetIconName(iconsMap, consumable.IconFileDataID))
 		db.MergeConsumable(protoConsumable)
 	}
 	db.MergeItems(database.ItemOverrides)
@@ -435,6 +435,16 @@ func main() {
 	// for _, itemID := range database.ExtraItemIcons {
 	// 	//	db.AddItemIcon(itemID, itemTooltips)
 	// }
+
+	for _, consume := range db.Consumables {
+		if len(consume.EffectIds) > 0 {
+			for _, se := range consume.EffectIds {
+				effect := instance.SpellEffectsById[int(se)]
+				db.MergeEffect(effect.ToProto())
+			}
+		}
+	}
+
 	for _, randomSuffix := range dbc.GetDBC().RandomSuffix {
 		if _, exists := db.RandomSuffixes[int32(randomSuffix.ID)]; !exists {
 			db.RandomSuffixes[int32(randomSuffix.ID)] = randomSuffix.ToProto()
@@ -658,7 +668,7 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		if contains(database.ConsumableAllowList, consumable.Id) {
 			return true
 		}
-		if allZero(consumable.Stats) {
+		if allZero(consumable.Stats) && consumable.Type != proto.ConsumableType_ConsumableTypePotion {
 			return false
 		}
 		for _, pattern := range database.DenyListNameRegexes {

@@ -48,6 +48,7 @@ message UIDatabase {
 	repeated ItemQualityValue armor_values = 26; // shield, armor
 
 	repeated Consumable consumables = 27;
+	repeated SpellEffect effects = 28;
 }
 
 message UIZone {

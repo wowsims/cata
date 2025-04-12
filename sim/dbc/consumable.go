@@ -17,6 +17,7 @@ type Consumable struct {
 	SpellCategoryFlags int             // Spell category flags
 	ItemEffects        []int           // Item effect IDs
 	ElixirType         int
+	Duration           int
 }
 
 func (c *Consumable) ToMap() map[string]interface{} {
@@ -37,12 +38,14 @@ func (c *Consumable) ToMap() map[string]interface{} {
 // ToProto converts the Consumable to a proto representation.
 func (c *Consumable) ToProto() *proto.Consumable {
 	return &proto.Consumable{
-		Id:         int32(c.Id),
-		Type:       c.SubClassId.ToProto(),
-		SubType:    subType[c.ElixirType],
-		Stats:      c.GetStatModifiers().ToProtoArray(),
-		Name:       c.Name,
-		IsMainStat: false, // Todo: Should be food currently, might be more in MoP, figure out how to tell
+		Id:           int32(c.Id),
+		Type:         c.SubClassId.ToProto(),
+		SubType:      subType[c.ElixirType],
+		Stats:        c.GetStatModifiers().ToProtoArray(),
+		Name:         c.Name,
+		IsMainStat:   false, // Todo: Should be food currently, might be more in MoP, figure out how to tell
+		BuffDuration: int32(c.Duration / 1000),
+		EffectIds:    c.GetNonStatEffectIds(),
 	}
 }
 
@@ -63,6 +66,26 @@ func GetConsumable(itemId int) *Consumable {
 	return dbcInstance.Consumables[itemId]
 }
 
+func (consumable *Consumable) GetNonStatEffectIds() []int32 {
+	var effectIds []int32
+
+	statAuraTypes := map[SpellEffectType]bool{
+		E_HEAL: true,
+	}
+	for _, effectID := range consumable.ItemEffects {
+		if effect := GetItemEffect(effectID); effect != nil {
+			if spellEffects, ok := dbcInstance.SpellEffects[effect.SpellID]; ok {
+				for _, spellEffect := range spellEffects {
+					if statAuraTypes[spellEffect.EffectType] {
+						effectIds = append(effectIds, int32(spellEffect.ID))
+					}
+				}
+			}
+		}
+	}
+
+	return effectIds
+}
 func (consumable *Consumable) GetStatModifiers() *stats.Stats {
 	stats := &stats.Stats{}
 	for _, effectID := range consumable.ItemEffects {

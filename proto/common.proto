@@ -462,6 +462,38 @@ enum ConsumableSubType {
 	ConsumableSubTypeBattleElixir = 1;
 	ConsumableSubTypeGuardianElixir = 2;
 }
+message SpellEffect {
+    int32 id = 1;
+    int32 difficulty_id = 2;
+    int32 effect_index = 3;
+    int32 effect_type = 4;
+    double effect_amplitude = 5;
+    int32 effect_attributes = 6;
+    int32 effect_aura = 7;
+    int32 effect_aura_period = 8;
+    int32 effect_base_points = 9;
+    double effect_bonus_coefficient = 10;
+    double effect_chain_amplitude = 11;
+    int32 effect_chain_targets = 12;
+    int32 effect_die_sides = 13;
+    int32 effect_item_type = 14;
+    int32 effect_mechanic = 15;
+    double effect_points_per_resource = 16;
+    double effect_pos_facing = 17;
+    double effect_real_points_per_level = 18;
+    int32 effect_trigger_spell = 19;
+    double bonus_coefficient_from_ap = 20;
+    double pvp_multiplier = 21;
+    double coefficient = 22;
+    double variance = 23;
+    double resource_coefficient = 24;
+    double group_size_base_points_coefficient = 25;
+    repeated int32 effect_misc_values = 26;
+    repeated int32 effect_radius_indices = 27;
+    repeated int32 effect_spell_class_masks = 28;
+    repeated int32 implicit_targets = 29;
+    int32 spell_id = 30;
+}
 message Consumable {
 	int32 id = 1;
 	ConsumableType type = 2;
@@ -470,6 +502,8 @@ message Consumable {
 	bool is_main_stat = 5;
 	string name = 6;
 	string icon = 7;
+	int32 buff_duration = 8;
+	repeated int32 effect_ids = 9;
 }
 
 enum Flask {
@@ -739,7 +773,7 @@ message Debuffs {
 }
 
 message Consumes {
-	Flask flask = 1;
+	Flask flask = 1; // Deprecate and move to 21;
 	BattleElixir battle_elixir = 2;
 	GuardianElixir guardian_elixir = 3;
 
@@ -749,8 +783,8 @@ message Consumes {
 	int32 pet_scroll_of_agility = 8;
 	int32 pet_scroll_of_strength = 9;
 
-	Potions default_potion = 10;
-	Potions prepop_potion = 11;
+	Potions default_potion = 10; // Deprecate and move to 20 in migration
+	Potions prepop_potion = 11; // Deprecate and move to 19 in migration
 	Conjured default_conjured = 12;
 
 	bool explosive_big_daddy = 15;
@@ -758,6 +792,12 @@ message Consumes {
 	reserved 17; // deprecated old explosive
 
 	TinkerHands tinker_hands = 18;
+	int32 prepot_id = 19;
+	int32 pot_id = 20;
+	int32 flask_id = 21;
+	int32 battle_elixir_id = 22;
+	int32 guardian_elixir_id = 23;
+	int32 food_id = 24;
 }
 
 enum MobType {
@@ -907,6 +947,8 @@ message SimDatabase {
 	repeated ItemQualityValue shield_armor_values = 15; // shield, armor
 
 	repeated ItemQualityValue armor_values = 16; // shield, armor
+	repeated Consumable consumables = 17;
+	repeated SpellEffect effects = 18;
 }
 
 // Contains only the Item info needed by the sim.

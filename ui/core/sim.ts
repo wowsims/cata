@@ -243,6 +243,29 @@ export class Sim {
 				if (gearChanged) {
 					player.equipment = gear.asSpec();
 				}
+
+				const pdb = player.database!;
+
+				type ConsumableIdKey = 'flaskId' | 'battleElixirId' | 'guardianElixirId' | 'foodId' | 'potId' | 'prepotId';
+				const consumableIdFields: ConsumableIdKey[] = ['potId', 'prepotId', 'flaskId', 'battleElixirId', 'guardianElixirId', 'foodId'];
+				consumableIdFields.forEach(field => {
+					const id = player.consumes?.[field] ?? 0;
+					if (id && id !== 0) {
+						const consume = this.db.getConsumable(id);
+						if (consume) {
+							pdb.consumables[consume.id] = consume;
+							if (consume.effectIds.length > 0) {
+								consume.effectIds.forEach(id => {
+									const effect = this.db.getSpellEffect(id);
+									if (effect) {
+										pdb.effects[effect.id] = effect;
+									}
+								});
+							}
+						}
+					}
+				});
+				player.database = pdb;
 			});
 		});
 
@@ -297,6 +320,8 @@ export class Sim {
 		playerDatabase.gems.push(...bulkItemsDb.gems);
 		playerDatabase.reforgeStats.push(...bulkItemsDb.reforgeStats);
 		playerDatabase.randomSuffixes.push(...bulkItemsDb.randomSuffixes);
+		playerDatabase.consumables.push(...bulkItemsDb.consumables);
+		playerDatabase.effects.push(...bulkItemsDb.effects);
 
 		this.bulkSimStartEmitter.emit(TypedEvent.nextEventID(), request);
 
@@ -443,7 +468,6 @@ export class Sim {
 		// Capture the current players so we avoid issues if something changes while
 		// request is in-flight.
 		const players = this.raid.getPlayers();
-
 		const req = ComputeStatsRequest.create({
 			raid: this.getModifiedRaidProto(),
 			encounter: this.encounter.toProto(),

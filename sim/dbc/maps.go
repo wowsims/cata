@@ -32,15 +32,15 @@ var MapArmorSubclassToArmorType = map[int]proto.ArmorType{
 
 func MapMainStatToStat(index int) (proto.Stat, bool) {
 	switch index {
-	case 1:
+	case 0:
 		return proto.Stat_StatStrength, true
-	case 2:
+	case 1:
 		return proto.Stat_StatAgility, true
-	case 3:
+	case 2:
 		return proto.Stat_StatStamina, true
-	case 4:
+	case 3:
 		return proto.Stat_StatIntellect, true
-	case 5:
+	case 4:
 		return proto.Stat_StatSpirit, true
 	}
 	return 0, false

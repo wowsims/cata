@@ -1,5 +1,7 @@
 import { CHARACTER_LEVEL } from '../constants/mechanics.js';
 import {
+	Consumable,
+	ConsumableType,
 	EquipmentSpec,
 	GemColor,
 	ItemRandomSuffix,
@@ -10,6 +12,8 @@ import {
 	PresetTarget,
 	ReforgeStat,
 	SimDatabase,
+	SpellEffect,
+	Stat,
 } from '../proto/common.js';
 import { GlyphID, IconData, UIDatabase, UIEnchant as Enchant, UIGem as Gem, UIItem as Item, UINPC as Npc, UIZone as Zone } from '../proto/ui.js';
 import { distinct } from '../utils.js';
@@ -83,6 +87,9 @@ export class Database {
 	private readonly itemIcons: Record<number, Promise<IconData>> = {};
 	private readonly spellIcons: Record<number, Promise<IconData>> = {};
 	private readonly glyphIds: Array<GlyphID> = [];
+	private readonly consumables = new Map<number, Consumable>();
+	private readonly spellEffects = new Map<number, SpellEffect>();
+
 	private loadedLeftovers = false;
 
 	private constructor(db: UIDatabase) {
@@ -136,6 +143,8 @@ export class Database {
 		db.itemIcons.forEach(data => (this.itemIcons[data.id] = Promise.resolve(data)));
 		db.spellIcons.forEach(data => (this.spellIcons[data.id] = Promise.resolve(data)));
 		db.glyphIds.forEach(id => this.glyphIds.push(id));
+		db.consumables.forEach(consumable => this.consumables.set(consumable.id, consumable));
+		db.effects.forEach(effect => this.spellEffects.set(effect.id, effect));
 	}
 
 	getAllItems(): Array<Item> {
@@ -157,7 +166,22 @@ export class Database {
 	getItemIdsForSet(setId: number): Array<number> {
 		return this.getAllItemIds().filter(itemId => this.getItemById(itemId)!.setId === setId);
 	}
-
+	getSpellEffect(effectId: number): SpellEffect | undefined {
+		return this.spellEffects.get(effectId);
+	}
+	getConsumables(): Array<Consumable> {
+		return Array.from(this.consumables.values());
+	}
+	getConsumable(itemId: number): Consumable | undefined {
+		return this.consumables.get(itemId);
+	}
+	getConsumablesByType(type: ConsumableType): Array<Consumable> {
+		return this.getConsumables().filter(consume => consume.type == type);
+	}
+	getConsumablesByTypeAndStats(type: ConsumableType, stats: Array<Stat>): Array<Consumable> {
+		const consumes = this.getConsumables().filter(consume => consume.type === type);
+		return consumes.filter(consume => stats.some(index => consume.stats[index] > 0));
+	}
 	getRandomSuffixById(id: number): ItemRandomSuffix | undefined {
 		return this.randomSuffixes.get(id);
 	}
@@ -341,6 +365,8 @@ export class Database {
 			reforgeStats: distinct(db1.reforgeStats.concat(db2.reforgeStats), (a, b) => a.id == b.id),
 			enchants: distinct(db1.enchants.concat(db2.enchants), (a, b) => a.effectId == b.effectId),
 			gems: distinct(db1.gems.concat(db2.gems), (a, b) => a.id == b.id),
+			effects: distinct(db1.effects.concat(db2.effects), (a, b) => a.id == b.id),
+			consumables: distinct(db1.consumables.concat(db2.consumables), (a, b) => a.id == b.id),
 		});
 	}
 }

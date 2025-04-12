@@ -7,6 +7,8 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
+const MAX_SCALING_LEVEL = 100
+
 type SpellEffect struct {
 	ID                             int
 	DifficultyID                   int
@@ -39,6 +41,76 @@ type SpellEffect struct {
 	EffectSpellClassMasks []int // from EffectSpellClassMask, EffectSpellClassMask_0, EffectSpellClassMask_1, EffectSpellClassMask_2, EffectSpellClassMask_3
 	ImplicitTargets       []int // from ImplicitTarget, ImplicitTarget_0, ImplicitTarget_1
 	SpellID               int
+}
+
+func (se *SpellEffect) ToProto() *proto.SpellEffect {
+	return &proto.SpellEffect{
+		Id:                             int32(se.ID),
+		DifficultyId:                   int32(se.DifficultyID),
+		EffectIndex:                    int32(se.EffectIndex),
+		EffectType:                     int32(se.EffectType),
+		EffectAmplitude:                se.EffectAmplitude,
+		EffectAttributes:               int32(se.EffectAttributes),
+		EffectAura:                     int32(se.EffectAura),
+		EffectAuraPeriod:               int32(se.EffectAuraPeriod),
+		EffectBasePoints:               int32(se.EffectBasePoints),
+		EffectBonusCoefficient:         se.EffectBonusCoefficient,
+		EffectChainAmplitude:           se.EffectChainAmplitude,
+		EffectChainTargets:             int32(se.EffectChainTargets),
+		EffectDieSides:                 int32(se.EffectDieSides),
+		EffectItemType:                 int32(se.EffectItemType),
+		EffectMechanic:                 int32(se.EffectMechanic),
+		EffectPointsPerResource:        se.EffectPointsPerResource,
+		EffectPosFacing:                se.EffectPosFacing,
+		EffectRealPointsPerLevel:       se.EffectRealPointsPerLevel,
+		EffectTriggerSpell:             int32(se.EffectTriggerSpell),
+		BonusCoefficientFromAp:         se.BonusCoefficientFromAP,
+		PvpMultiplier:                  se.PvpMultiplier,
+		Coefficient:                    se.Coefficient,
+		Variance:                       se.Variance,
+		ResourceCoefficient:            se.ResourceCoefficient,
+		GroupSizeBasePointsCoefficient: se.GroupSizeBasePointsCoefficient,
+		EffectMiscValues:               intSliceToInt32Slice(se.EffectMiscValues),
+		EffectRadiusIndices:            intSliceToInt32Slice(se.EffectRadiusIndices),
+		EffectSpellClassMasks:          intSliceToInt32Slice(se.EffectSpellClassMasks),
+		ImplicitTargets:                intSliceToInt32Slice(se.ImplicitTargets),
+		SpellId:                        int32(se.SpellID),
+	}
+}
+
+func FromProto(pbSe *proto.SpellEffect) *SpellEffect {
+	return &SpellEffect{
+		ID:                             int(pbSe.GetId()),
+		DifficultyID:                   int(pbSe.GetDifficultyId()),
+		EffectIndex:                    int(pbSe.GetEffectIndex()),
+		EffectType:                     SpellEffectType(pbSe.GetEffectType()),
+		EffectAmplitude:                pbSe.GetEffectAmplitude(),
+		EffectAttributes:               int(pbSe.GetEffectAttributes()),
+		EffectAura:                     EffectAuraType(pbSe.GetEffectAura()),
+		EffectAuraPeriod:               int(pbSe.GetEffectAuraPeriod()),
+		EffectBasePoints:               int(pbSe.GetEffectBasePoints()),
+		EffectBonusCoefficient:         pbSe.GetEffectBonusCoefficient(),
+		EffectChainAmplitude:           pbSe.GetEffectChainAmplitude(),
+		EffectChainTargets:             int(pbSe.GetEffectChainTargets()),
+		EffectDieSides:                 int(pbSe.GetEffectDieSides()),
+		EffectItemType:                 int(pbSe.GetEffectItemType()),
+		EffectMechanic:                 int(pbSe.GetEffectMechanic()),
+		EffectPointsPerResource:        pbSe.GetEffectPointsPerResource(),
+		EffectPosFacing:                pbSe.GetEffectPosFacing(),
+		EffectRealPointsPerLevel:       pbSe.GetEffectRealPointsPerLevel(),
+		EffectTriggerSpell:             int(pbSe.GetEffectTriggerSpell()),
+		BonusCoefficientFromAP:         pbSe.GetBonusCoefficientFromAp(),
+		PvpMultiplier:                  pbSe.GetPvpMultiplier(),
+		Coefficient:                    pbSe.GetCoefficient(),
+		Variance:                       pbSe.GetVariance(),
+		ResourceCoefficient:            pbSe.GetResourceCoefficient(),
+		GroupSizeBasePointsCoefficient: pbSe.GetGroupSizeBasePointsCoefficient(),
+		EffectMiscValues:               int32SliceToIntSlice(pbSe.GetEffectMiscValues()),
+		EffectRadiusIndices:            int32SliceToIntSlice(pbSe.GetEffectRadiusIndices()),
+		EffectSpellClassMasks:          int32SliceToIntSlice(pbSe.GetEffectSpellClassMasks()),
+		ImplicitTargets:                int32SliceToIntSlice(pbSe.GetImplicitTargets()),
+		SpellID:                        int(pbSe.GetSpellId()),
+	}
 }
 
 func (effect *SpellEffect) ParseStatEffect() *stats.Stats {

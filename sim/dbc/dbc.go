@@ -13,6 +13,7 @@ type DBC struct {
 	Enchants               map[int]*Enchant                   // ItemEchantment ID
 	ItemStatEffects        map[int]*ItemStatEffect            // ItemID? something anyway
 	SpellEffects           map[int]map[int]SpellEffect        // Search by spellID and effect index
+	SpellEffectsById       map[int]SpellEffect                // Search by effectid
 	RandomSuffix           map[int]*RandomSuffix              // Item level
 	ItemDamageTable        map[string]map[int]ItemDamageTable // By Table name and item level
 	RandomPropertiesByIlvl map[int32]RandomPropAllocationMap
@@ -31,6 +32,7 @@ func NewDBC() *DBC {
 		Enchants:               make(map[int]*Enchant),
 		ItemStatEffects:        make(map[int]*ItemStatEffect),
 		SpellEffects:           make(map[int]map[int]SpellEffect),
+		SpellEffectsById:       make(map[int]SpellEffect),
 		RandomSuffix:           make(map[int]*RandomSuffix),
 		ItemDamageTable:        make(map[string]map[int]ItemDamageTable),
 		RandomPropertiesByIlvl: make(map[int32]RandomPropAllocationMap),
@@ -280,6 +282,11 @@ func (d *DBC) loadSpellEffects(filename string) error {
 	}
 
 	d.SpellEffects = effects
+	for _, spell := range effects {
+		for _, effect := range spell {
+			d.SpellEffectsById[effect.ID] = effect
+		}
+	}
 	return nil
 }
 

@@ -59,6 +59,7 @@ type WowDatabase struct {
 	TotalArmorValues  map[int32]*proto.ItemArmorTotal
 
 	Consumables map[int32]*proto.Consumable
+	Effects     map[int32]*proto.SpellEffect
 }
 
 func NewWowDatabase() *WowDatabase {
@@ -89,6 +90,7 @@ func NewWowDatabase() *WowDatabase {
 		TotalArmorValues:  make(map[int32]*proto.ItemArmorTotal),
 
 		Consumables: make(map[int32]*proto.Consumable),
+		Effects:     make(map[int32]*proto.SpellEffect),
 	}
 }
 
@@ -119,6 +121,7 @@ func (db *WowDatabase) Clone() *WowDatabase {
 		ShieldArmorValues: maps.Clone(db.ShieldArmorValues),
 		TotalArmorValues:  maps.Clone(db.TotalArmorValues),
 		Consumables:       maps.Clone(db.Consumables),
+		Effects:           maps.Clone(db.Effects),
 	}
 }
 
@@ -212,6 +215,13 @@ func (db *WowDatabase) MergeConsumable(src *proto.Consumable) {
 		googleProto.Merge(dst, src)
 	} else {
 		db.Consumables[src.Id] = src
+	}
+}
+func (db *WowDatabase) MergeEffect(src *proto.SpellEffect) {
+	if dst, ok := db.Effects[src.Id]; ok {
+		googleProto.Merge(dst, src)
+	} else {
+		db.Effects[src.Id] = src
 	}
 }
 func (db *WowDatabase) AddItemIconClean(id int32, icon string, name string) {
@@ -309,6 +319,7 @@ func (db *WowDatabase) ToUIProto() *proto.UIDatabase {
 		ShieldArmorValues:   mapToSlice(db.ShieldArmorValues),
 		ArmorTotalValue:     armorTotals,
 		Consumables:         mapToSlice(db.Consumables),
+		Effects:             mapToSlice(db.Effects),
 	}
 }
 
@@ -353,6 +364,7 @@ func ReadDatabaseFromJson(jsonStr string) *WowDatabase {
 		ShieldArmorValues:           sliceToMap(dbProto.ShieldArmorValues),
 		TotalArmorValues:            sliceToMap(dbProto.ArmorTotalValue),
 		Consumables:                 sliceToMap(dbProto.Consumables),
+		Effects:                     sliceToMap(dbProto.Effects),
 	}
 }
 
@@ -426,21 +438,9 @@ func (db *WowDatabase) WriteJson(jsonFilePath string) {
 	tools.WriteProtoArrayToBuffer(uidb.RandomPropPoints, buffer, "randomPropPoints")
 	buffer.WriteString(",\n")
 	tools.WriteProtoArrayToBuffer(uidb.Consumables, buffer, "consumables")
+	buffer.WriteString(",\n")
+	tools.WriteProtoArrayToBuffer(uidb.Effects, buffer, "effects")
 	buffer.WriteString("\n")
 	buffer.WriteString("}")
 	os.WriteFile(jsonFilePath, buffer.Bytes(), 0666)
-}
-func sliceToMapBy[T any](vs []T, keyFunc func(T) int32) map[int32]T {
-	m := make(map[int32]T, len(vs))
-	for _, v := range vs {
-		m[keyFunc(v)] = v
-	}
-	return m
-}
-func mapValuesToSlice[T any](m map[string]T) []T {
-	out := make([]T, 0, len(m))
-	for _, v := range m {
-		out = append(out, v)
-	}
-	return out
 }

@@ -19,6 +19,8 @@ func init() {
 		Gems:           make([]*proto.SimGem, len(db.Gems)),
 		ReforgeStats:   make([]*proto.ReforgeStat, len(db.ReforgeStats)),
 		RandomSuffixes: make([]*proto.ItemRandomSuffix, len(db.RandomSuffixes)),
+		Consumables:    make([]*proto.Consumable, len(db.Consumables)),
+		Effects:        make([]*proto.SpellEffect, len(db.Effects)),
 	}
 
 	for i, item := range db.Items {
@@ -73,6 +75,14 @@ func init() {
 			ToStat:     reforgeStat.ToStat,
 			Multiplier: reforgeStat.Multiplier,
 		}
+	}
+
+	for i, consumable := range db.Consumables {
+		simDB.Consumables[i] = consumable
+	}
+
+	for i, effect := range db.Effects {
+		simDB.Effects[i] = effect
 	}
 
 	addToDatabase(simDB)
