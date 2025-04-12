@@ -30,6 +30,21 @@ var MapArmorSubclassToArmorType = map[int]proto.ArmorType{
 	0:                           proto.ArmorType_ArmorTypeUnknown,
 }
 
+func MapMainStatToStat(index int) (proto.Stat, bool) {
+	switch index {
+	case 1:
+		return proto.Stat_StatStrength, true
+	case 2:
+		return proto.Stat_StatAgility, true
+	case 3:
+		return proto.Stat_StatStamina, true
+	case 4:
+		return proto.Stat_StatIntellect, true
+	case 5:
+		return proto.Stat_StatSpirit, true
+	}
+	return 0, false
+}
 func MapBonusStatIndexToStat(index int) (proto.Stat, bool) {
 	switch index {
 	case 0: // Mana
@@ -242,4 +257,77 @@ var MapInventoryTypeToEnchantMetaType = map[InventoryTypeFlag]EnchantMetaType{
 	RANGED:           {ItemType: proto.ItemType_ItemTypeRanged, WeaponType: proto.WeaponType_WeaponTypeUnknown},
 	CLOAK:            {ItemType: proto.ItemType_ItemTypeBack, WeaponType: proto.WeaponType_WeaponTypeUnknown},
 	TWO_H_WEAPON:     {ItemType: proto.ItemType_ItemTypeWeapon, WeaponType: proto.WeaponType_WeaponTypeUnknown},
+}
+var consumableClassToProto = map[ConsumableClass]proto.ConsumableType{
+	EXPLOSIVES_AND_DEVICES: proto.ConsumableType_ConsumableTypeExplosive,
+	POTION:                 proto.ConsumableType_ConsumableTypePotion,
+	ELIXIR:                 proto.ConsumableType_ConsumableTypeElixir,
+	FLASK:                  proto.ConsumableType_ConsumableTypeFlask,
+	SCROLL:                 proto.ConsumableType_ConsumableTypeScroll,
+	FOOD:                   proto.ConsumableType_ConsumableTypeFood,
+	BANDAGE:                proto.ConsumableType_ConsumableTypeUnknown,
+	OTHER:                  proto.ConsumableType_ConsumableTypeUnknown,
+}
+
+func getMatchingRatingMods(value int) []RatingModType {
+	allMods := []RatingModType{
+		RATING_MOD_DODGE,
+		RATING_MOD_PARRY,
+		RATING_MOD_HIT_MELEE,
+		RATING_MOD_HIT_RANGED,
+		RATING_MOD_HIT_SPELL,
+		RATING_MOD_CRIT_MELEE,
+		RATING_MOD_CRIT_RANGED,
+		RATING_MOD_CRIT_SPELL,
+		RATING_MOD_MULTISTRIKE,
+		RATING_MOD_READINESS,
+		RATING_MOD_SPEED,
+		RATING_MOD_RESILIENCE,
+		RATING_MOD_LEECH,
+		RATING_MOD_HASTE_MELEE,
+		RATING_MOD_HASTE_RANGED,
+		RATING_MOD_HASTE_SPELL,
+		RATING_MOD_AVOIDANCE,
+		RATING_MOD_EXPERTISE,
+		RATING_MOD_MASTERY,
+		RATING_MOD_PVP_POWER,
+		RATING_MOD_VERS_DAMAGE,
+		RATING_MOD_VERS_HEAL,
+		RATING_MOD_VERS_MITIG,
+	}
+
+	var result []RatingModType
+	for _, mod := range allMods {
+		if value&int(mod) != 0 {
+			result = append(result, mod)
+		}
+	}
+	return result
+}
+
+var RatingModToStat = map[RatingModType]proto.Stat{
+	RATING_MOD_DODGE:        proto.Stat_StatDodgeRating,
+	RATING_MOD_PARRY:        proto.Stat_StatParryRating,
+	RATING_MOD_HIT_MELEE:    proto.Stat_StatHitRating,
+	RATING_MOD_HIT_RANGED:   proto.Stat_StatHitRating,
+	RATING_MOD_HIT_SPELL:    proto.Stat_StatHitRating,
+	RATING_MOD_CRIT_MELEE:   proto.Stat_StatCritRating,
+	RATING_MOD_CRIT_RANGED:  proto.Stat_StatCritRating,
+	RATING_MOD_CRIT_SPELL:   proto.Stat_StatCritRating,
+	RATING_MOD_MULTISTRIKE:  -1,
+	RATING_MOD_READINESS:    -1,
+	RATING_MOD_SPEED:        -1,
+	RATING_MOD_RESILIENCE:   proto.Stat_StatResilienceRating,
+	RATING_MOD_LEECH:        -1,
+	RATING_MOD_HASTE_MELEE:  proto.Stat_StatHasteRating,
+	RATING_MOD_HASTE_RANGED: proto.Stat_StatHasteRating,
+	RATING_MOD_HASTE_SPELL:  proto.Stat_StatHasteRating,
+	RATING_MOD_AVOIDANCE:    -1,
+	RATING_MOD_EXPERTISE:    proto.Stat_StatExpertiseRating,
+	RATING_MOD_MASTERY:      proto.Stat_StatMasteryRating,
+	RATING_MOD_PVP_POWER:    -1,
+
+	RATING_MOD_VERS_DAMAGE: -1,
+	RATING_MOD_VERS_HEAL:   -1,
+	RATING_MOD_VERS_MITIG:  -1,
 }

@@ -726,6 +726,9 @@ var ExtraItemIcons = []int32{
 	49634,
 }
 
+// Item Ids of consumables to allow
+var ConsumableAllowList = []int32{}
+
 // Raid buffs / debuffs
 var SharedSpellsIcons = []int32{
 	// Revitalize, Rejuv, WG

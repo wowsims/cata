@@ -192,6 +192,23 @@ func main() {
 			log.Fatalf("Error writing file: %v", err)
 		}
 	}
+
+	itemeffects, err := database.LoadItemEffects(helper)
+	if err == nil {
+		json, _ := json.Marshal(itemeffects)
+		if err := writeGzipFile(fmt.Sprintf("%s/dbc/item_effects.json", inputsDir), json); err != nil {
+			log.Fatalf("Error writing file: %v", err)
+		}
+	}
+
+	consumables, err := database.LoadConsumables(helper)
+	if err == nil {
+		json, _ := json.Marshal(consumables)
+		if err := writeGzipFile(fmt.Sprintf("%s/dbc/consumables.json", inputsDir), json); err != nil {
+			log.Fatalf("Error writing file: %v", err)
+		}
+	}
+
 	//Todo: See if we cant get rid of these as well
 	spellTooltips := database.NewWowheadSpellTooltipManager(fmt.Sprintf("%s/wowhead_spell_tooltips.csv", inputsDir)).Read()
 	atlaslootDB := database.ReadDatabaseFromJson(tools.ReadFile(fmt.Sprintf("%s/atlasloot_db.json", inputsDir)))
@@ -236,7 +253,11 @@ func main() {
 			db.MergeItem(item)
 		}
 	}
-
+	for _, consumable := range consumables {
+		protoConsumable := consumable.ToProto()
+		//Todo: fdid
+		db.MergeConsumable(protoConsumable)
+	}
 	db.MergeItems(database.ItemOverrides)
 	db.MergeGems(database.GemOverrides)
 	db.MergeEnchants(database.EnchantOverrides)
@@ -633,6 +654,43 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		return !strings.HasPrefix(enchant.Name, "QA") && !strings.HasPrefix(enchant.Name, "Test") && !strings.HasPrefix(enchant.Name, "TEST")
 	})
 
+	db.Consumables = core.FilterMap(db.Consumables, func(_ int32, consumable *proto.Consumable) bool {
+		if contains(database.ConsumableAllowList, consumable.Id) {
+			return true
+		}
+		if allZero(consumable.Stats) {
+			return false
+		}
+		for _, pattern := range database.DenyListNameRegexes {
+			if pattern.MatchString(consumable.Name) {
+				return false
+			}
+		}
+
+		if consumable.Type == proto.ConsumableType_ConsumableTypeUnknown || consumable.Type == proto.ConsumableType_ConsumableTypeScroll {
+			return false
+		}
+
+		return !strings.HasPrefix(consumable.Name, "QA") && !strings.HasPrefix(consumable.Name, "Test") && !strings.HasPrefix(consumable.Name, "TEST")
+	})
+}
+
+func contains(slice []int32, value int32) bool {
+	for _, v := range slice {
+		if v == value {
+			return true
+		}
+	}
+	return false
+}
+
+func allZero(stats []float64) bool {
+	for _, val := range stats {
+		if val != 0 {
+			return false
+		}
+	}
+	return true
 }
 
 // AttachFactionInformation attaches faction information (faction restrictions) to the DB items.

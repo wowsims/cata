@@ -20,6 +20,8 @@ type DBC struct {
 	ItemArmorShield        map[int]ItemArmorShield
 	ItemArmorTotal         map[int]ItemArmorTotal
 	ArmorLocation          map[int]ArmorLocation
+	Consumables            map[int]*Consumable // Item ID
+	ItemEffects            map[int]*ItemEffect // Parent Item ID
 }
 
 func NewDBC() *DBC {
@@ -36,6 +38,8 @@ func NewDBC() *DBC {
 		ItemArmorShield:        make(map[int]ItemArmorShield),
 		ItemArmorTotal:         make(map[int]ItemArmorTotal),
 		ArmorLocation:          make(map[int]ArmorLocation),
+		Consumables:            make(map[int]*Consumable),
+		ItemEffects:            make(map[int]*ItemEffect),
 	}
 }
 
@@ -83,7 +87,12 @@ func InitDBC() error {
 	if err := dbcInstance.LoadArmorLocation("./assets/db_inputs/dbc/armor_location.json"); err != nil {
 		return fmt.Errorf("loading armor location: %w", err)
 	}
-
+	if err := dbcInstance.loadConsumables("./assets/db_inputs/dbc/consumables.json"); err != nil {
+		return fmt.Errorf("loading consumables: %w", err)
+	}
+	if err := dbcInstance.loadItemEffects("./assets/db_inputs/dbc/item_effects.json"); err != nil {
+		return fmt.Errorf("loading item effects: %w", err)
+	}
 	return nil
 }
 
@@ -105,6 +114,49 @@ func GetDBCWithError() (*DBC, error) {
 	return dbcInstance, err
 }
 
+func (d *DBC) loadConsumables(filename string) error {
+	data, err := readGzipFile(filename)
+	if err != nil {
+		return err
+	}
+
+	var consumables []Consumable
+	if err = json.Unmarshal(data, &consumables); err != nil {
+		return ParseError{
+			Source: filename,
+			Field:  "Consumable",
+			Reason: err.Error(),
+		}
+	}
+
+	for i := range consumables {
+		consumable := &consumables[i]
+		d.Consumables[consumable.Id] = consumable
+	}
+	return nil
+}
+
+func (d *DBC) loadItemEffects(filename string) error {
+	data, err := readGzipFile(filename)
+	if err != nil {
+		return err
+	}
+
+	var effects []ItemEffect
+	if err = json.Unmarshal(data, &effects); err != nil {
+		return ParseError{
+			Source: filename,
+			Field:  "ItemEffect",
+			Reason: err.Error(),
+		}
+	}
+
+	for i := range effects {
+		effect := &effects[i]
+		d.ItemEffects[effect.ID] = effect
+	}
+	return nil
+}
 func (d *DBC) loadRandomPropertiesByIlvl(filename string) error {
 	data, err := readGzipFile(filename)
 	if err != nil {

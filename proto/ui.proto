@@ -46,6 +46,8 @@ message UIDatabase {
 	repeated ItemQualityValue shield_armor_values = 24; // shield, armor
 
 	repeated ItemQualityValue armor_values = 26; // shield, armor
+
+	repeated Consumable consumables = 27;
 }
 
 message UIZone {

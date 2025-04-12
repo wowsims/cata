@@ -448,6 +448,29 @@ enum Conjured {
 	ConjuredHealthstone = 5;
 	ConjuredRogueThistleTea = 4;
 }
+enum ConsumableType {
+	ConsumableTypeUnknown = 0;
+	ConsumableTypePotion = 1;
+	ConsumableTypeFlask = 2;
+	ConsumableTypeFood = 3;
+	ConsumableTypeScroll = 4;
+	ConsumableTypeExplosive = 5;
+	ConsumableTypeElixir = 6;
+}
+enum ConsumableSubType {
+	ConsumableSubTypeUnknown = 0;
+	ConsumableSubTypeBattleElixir = 1;
+	ConsumableSubTypeGuardianElixir = 2;
+}
+message Consumable {
+	int32 id = 1;
+	ConsumableType type = 2;
+	ConsumableSubType sub_type = 3;
+	repeated double stats = 4;
+	bool is_main_stat = 5;
+	string name = 6;
+	string icon = 7;
+}
 
 enum Flask {
 	FlaskUnknown = 0;

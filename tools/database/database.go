@@ -57,6 +57,8 @@ type WowDatabase struct {
 	ArmorValues       map[int32]*proto.ItemQualityValue
 	ShieldArmorValues map[int32]*proto.ItemQualityValue
 	TotalArmorValues  map[int32]*proto.ItemArmorTotal
+
+	Consumables map[int32]*proto.Consumable
 }
 
 func NewWowDatabase() *WowDatabase {
@@ -85,6 +87,8 @@ func NewWowDatabase() *WowDatabase {
 		ArmorValues:       make(map[int32]*proto.ItemQualityValue),
 		ShieldArmorValues: make(map[int32]*proto.ItemQualityValue),
 		TotalArmorValues:  make(map[int32]*proto.ItemArmorTotal),
+
+		Consumables: make(map[int32]*proto.Consumable),
 	}
 }
 
@@ -114,6 +118,7 @@ func (db *WowDatabase) Clone() *WowDatabase {
 		ArmorValues:       maps.Clone(db.ArmorValues),
 		ShieldArmorValues: maps.Clone(db.ShieldArmorValues),
 		TotalArmorValues:  maps.Clone(db.TotalArmorValues),
+		Consumables:       maps.Clone(db.Consumables),
 	}
 }
 
@@ -202,7 +207,13 @@ func (db *WowDatabase) MergeNpc(src *proto.UINPC) {
 		db.Npcs[src.Id] = src
 	}
 }
-
+func (db *WowDatabase) MergeConsumable(src *proto.Consumable) {
+	if dst, ok := db.Consumables[src.Id]; ok {
+		googleProto.Merge(dst, src)
+	} else {
+		db.Consumables[src.Id] = src
+	}
+}
 func (db *WowDatabase) AddItemIconClean(id int32, icon string, name string) {
 	db.ItemIcons[id] = &proto.IconData{Id: id, Name: name, Icon: icon}
 
@@ -297,6 +308,7 @@ func (db *WowDatabase) ToUIProto() *proto.UIDatabase {
 		ArmorValues:         mapToSlice(db.ArmorValues),
 		ShieldArmorValues:   mapToSlice(db.ShieldArmorValues),
 		ArmorTotalValue:     armorTotals,
+		Consumables:         mapToSlice(db.Consumables),
 	}
 }
 
@@ -340,6 +352,7 @@ func ReadDatabaseFromJson(jsonStr string) *WowDatabase {
 		ArmorValues:                 sliceToMap(dbProto.ArmorValues),
 		ShieldArmorValues:           sliceToMap(dbProto.ShieldArmorValues),
 		TotalArmorValues:            sliceToMap(dbProto.ArmorTotalValue),
+		Consumables:                 sliceToMap(dbProto.Consumables),
 	}
 }
 
@@ -411,6 +424,8 @@ func (db *WowDatabase) WriteJson(jsonFilePath string) {
 	tools.WriteProtoArrayToBuffer(uidb.ArmorTotalValue, buffer, "armorTotalValue")
 	buffer.WriteString(",\n")
 	tools.WriteProtoArrayToBuffer(uidb.RandomPropPoints, buffer, "randomPropPoints")
+	buffer.WriteString(",\n")
+	tools.WriteProtoArrayToBuffer(uidb.Consumables, buffer, "consumables")
 	buffer.WriteString("\n")
 	buffer.WriteString("}")
 	os.WriteFile(jsonFilePath, buffer.Bytes(), 0666)

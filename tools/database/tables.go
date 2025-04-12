@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/wowsims/cata/sim/dbc"
@@ -681,4 +682,136 @@ func LoadRawRandomSuffixes(dbHelper *DBHelper) ([]dbc.RandomSuffix, error) {
 		return suffix.ID
 	})
 	return items, nil
+}
+
+func ScanConsumable(rows *sql.Rows) (dbc.Consumable, error) {
+	var consumable dbc.Consumable
+	var itemEffectsStr sql.NullString
+
+	err := rows.Scan(
+		&consumable.Id,
+		&consumable.Name,
+		&consumable.ItemLevel,
+		&consumable.RequiredLevel,
+		&consumable.ClassId,
+		&consumable.SubClassId,
+		&consumable.IconFileDataID,
+		&consumable.SpellCategoryID,
+		&consumable.SpellCategoryFlags,
+		&itemEffectsStr,
+		&consumable.ElixirType,
+	)
+	if err != nil {
+		return consumable, fmt.Errorf("scanning consumable data: %w", err)
+	}
+
+	if !itemEffectsStr.Valid || itemEffectsStr.String == "" || itemEffectsStr.String == "null" {
+		consumable.ItemEffects = []int{}
+	} else {
+		parts := strings.Split(itemEffectsStr.String, ",")
+		effects := make([]int, 0, len(parts))
+		for _, part := range parts {
+			token := strings.TrimSpace(part)
+			num, err := strconv.Atoi(token)
+			if err != nil {
+				fmt.Printf("Warning: parsing item effects for consumable %d (%s): %v\n", consumable.Id, token, err)
+				effects = []int{}
+				break
+			}
+			effects = append(effects, num)
+		}
+		consumable.ItemEffects = effects
+	}
+
+	return consumable, nil
+}
+
+func LoadConsumables(dbHelper *DBHelper) ([]dbc.Consumable, error) {
+	query := `
+		SELECT
+				i.ID,
+				s.Display_lang AS Name,
+				s.ItemLevel,
+				s.RequiredLevel,
+				i.ClassID,
+				i.SubClassID,
+				i.IconFileDataID,
+				COALESCE(ie.SpellCategoryID, 0) AS SpellCategoryID,
+				COALESCE(sc.Flags, 0) AS SpellCategoryFlags,
+				(
+					SELECT group_concat(ie2.ID, ',')
+					FROM ItemEffect ie2
+					WHERE ie2.ParentItemID = i.ID
+				) AS ItemEffects,
+				CASE
+					WHEN sp.Description_lang LIKE '%Guardian Elixir%' THEN 1
+					WHEN sp.Description_lang LIKE '%Battle Elixir%' THEN 2
+					ELSE 0
+				END AS ElixirType
+			FROM Item i
+			JOIN ItemSparse s ON i.ID = s.ID
+			LEFT JOIN ItemEffect ie ON i.ID = ie.ParentItemID
+			LEFT JOIN SpellCategory sc ON ie.SpellCategoryID = sc.ID
+			LEFT JOIN Spell sp ON ie.SpellID = sp.ID
+			WHERE ((i.ClassID = 0 AND i.SubclassID IS NOT 0 AND i.SubclassID IS NOT 8 AND i.SubclassID IS NOT 6) OR (i.ClassID = 7 AND i.SubclassID = 2)) AND ItemEffects is not null AND s.RequiredLevel >= 80
+			AND s.Display_lang != ''
+			AND s.Display_lang NOT LIKE '%Test%'
+			AND s.Display_lang NOT LIKE 'QA%'
+			GROUP BY i.ID
+	`
+
+	consumables, err := LoadRows(dbHelper.db, query, ScanConsumable)
+	if err != nil {
+		return nil, fmt.Errorf("error loading consumables: %w", err)
+	}
+
+	fmt.Println("Loaded Consumables:", len(consumables))
+	return consumables, nil
+}
+
+func ScanItemEffect(rows *sql.Rows) (dbc.ItemEffect, error) {
+	var effect dbc.ItemEffect
+
+	err := rows.Scan(
+		&effect.ID,
+		&effect.LegacySlotIndex,
+		&effect.TriggerType,
+		&effect.Charges,
+		&effect.CoolDownMSec,
+		&effect.CategoryCoolDownMSec,
+		&effect.SpellCategoryID,
+		&effect.SpellID,
+		&effect.ChrSpecializationID,
+		&effect.ParentItemID,
+	)
+	if err != nil {
+		return effect, fmt.Errorf("scanning item effect data: %w", err)
+	}
+
+	return effect, nil
+}
+
+func LoadItemEffects(dbHelper *DBHelper) ([]dbc.ItemEffect, error) {
+	query := `
+	SELECT
+		ID,
+		LegacySlotIndex,
+		TriggerType,
+		Charges,
+		CoolDownMSec,
+		CategoryCoolDownMSec,
+		SpellCategoryID,
+		SpellID,
+		ChrSpecializationID,
+		ParentItemID
+	FROM ItemEffect
+	`
+
+	effects, err := LoadRows(dbHelper.db, query, ScanItemEffect)
+	if err != nil {
+		return nil, fmt.Errorf("error loading item effects: %w", err)
+	}
+
+	fmt.Println("Loaded ItemEffects:", len(effects))
+	return effects, nil
 }

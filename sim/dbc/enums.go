@@ -1046,3 +1046,17 @@ const (
 	A_MOD_GATHERING_ITEMS_GAINED_PERCENT EffectAuraType = 623
 	A_MOD_DAMAGE_FROM_MANA               EffectAuraType = 624
 )
+
+type ConsumableClass int
+
+const (
+	EXPLOSIVES_AND_DEVICES ConsumableClass = iota
+	POTION
+	ELIXIR
+	FLASK
+	SCROLL
+	FOOD
+	ITEM_ENHANCEMENT
+	BANDAGE
+	OTHER
+)

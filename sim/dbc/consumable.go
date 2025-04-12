@@ -1,0 +1,80 @@
+package dbc
+
+import (
+	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
+)
+
+type Consumable struct {
+	Id                 int             // Item ID
+	Name               string          // Item name
+	ItemLevel          int             // Item level
+	RequiredLevel      int             // Required level to use
+	ClassId            int             // Item class ID (should be 0 for consumables)
+	SubClassId         ConsumableClass // Item subclass ID
+	IconFileDataID     int             // Icon file data ID
+	SpellCategoryID    int             // Spell category ID
+	SpellCategoryFlags int             // Spell category flags
+	ItemEffects        []int           // Item effect IDs
+	ElixirType         int
+}
+
+func (c *Consumable) ToMap() map[string]interface{} {
+	return map[string]interface{}{
+		"Id":                 c.Id,
+		"Name":               c.Name,
+		"ItemLevel":          c.ItemLevel,
+		"RequiredLevel":      c.RequiredLevel,
+		"ClassId":            c.ClassId,
+		"SubClassId":         c.SubClassId,
+		"IconFileDataID":     c.IconFileDataID,
+		"SpellCategoryID":    c.SpellCategoryID,
+		"SpellCategoryFlags": c.SpellCategoryFlags,
+		"ItemEffects":        c.ItemEffects,
+	}
+}
+
+// ToProto converts the Consumable to a proto representation.
+func (c *Consumable) ToProto() *proto.Consumable {
+	return &proto.Consumable{
+		Id:         int32(c.Id),
+		Type:       c.SubClassId.ToProto(),
+		SubType:    subType[c.ElixirType],
+		Stats:      c.GetStatModifiers().ToProtoArray(),
+		Name:       c.Name,
+		IsMainStat: false, // Todo: Should be food currently, might be more in MoP, figure out how to tell
+	}
+}
+
+func (s ConsumableClass) ToProto() proto.ConsumableType {
+	if val, ok := consumableClassToProto[s]; ok {
+		return val
+	}
+	return proto.ConsumableType_ConsumableTypeUnknown
+}
+
+var subType = map[int]proto.ConsumableSubType{
+	0: proto.ConsumableSubType_ConsumableSubTypeUnknown,
+	1: proto.ConsumableSubType_ConsumableSubTypeGuardianElixir,
+	2: proto.ConsumableSubType_ConsumableSubTypeBattleElixir,
+}
+
+func GetConsumable(itemId int) *Consumable {
+	return dbcInstance.Consumables[itemId]
+}
+
+func (consumable *Consumable) GetStatModifiers() *stats.Stats {
+	stats := &stats.Stats{}
+	for _, effectID := range consumable.ItemEffects {
+		if effect := GetItemEffect(effectID); effect != nil {
+
+			if spellEffects, ok := dbcInstance.SpellEffects[effect.SpellID]; ok {
+				for _, spellEffect := range spellEffects {
+					stat := spellEffect.ParseStatEffect()
+					stats.AddInplace(stat)
+				}
+			}
+		}
+	}
+	return stats
+}
