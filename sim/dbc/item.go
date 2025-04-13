@@ -202,6 +202,9 @@ func (item *Item) WeaponDmgMin(itemLevel int) float64 {
 	}
 	total := item.WeaponDps(itemLevel)*(float64(item.ItemDelay)/1000.0)*(1-item.DmgVariance/2) +
 		(item.QualityModifier * (float64(item.ItemDelay) / 1000.0))
+	if total < 0 {
+		total = 1
+	}
 	return math.Floor(total)
 }
 
@@ -211,7 +214,10 @@ func (item *Item) WeaponDmgMax(itemLevel int) float64 {
 	}
 	total := item.WeaponDps(itemLevel)*(float64(item.ItemDelay)/1000.0)*(1+item.DmgVariance/2) +
 		(item.QualityModifier * (float64(item.ItemDelay) / 1000.0))
-	return math.Floor(total + 0.5) // Todo: Check if this works every time
+	if total < 0 {
+		total = 1
+	}
+	return math.Floor(total + 0.5)
 }
 
 func (item *Item) ApproximateScaleCoeff(currIlvl int, newIlvl int) float64 {

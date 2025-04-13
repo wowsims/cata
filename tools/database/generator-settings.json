@@ -68,6 +68,9 @@
 	"SpellReagents",
     "SpellItemEnchantment",
     "SpellEffect",
-	"SpellDuration"
+	"SpellDuration",
+	"GlyphProperties",
+	"Talent",
+	"TalentTab"
   ]
 }

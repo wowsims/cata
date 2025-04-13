@@ -87,6 +87,8 @@ func main() {
 
 	database.RunOverrides(helper, "./tools/database/overrides")
 
+	database.GenerateProtos()
+
 	randomSuffixes, err := database.LoadRawRandomSuffixes(helper)
 	if err == nil {
 		json, _ := json.Marshal(randomSuffixes)

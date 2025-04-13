@@ -48,7 +48,7 @@ var FireGlyphs = &proto.Glyphs{
 	Prime2: int32(proto.MagePrimeGlyph_GlyphOfPyroblast),
 	Prime3: int32(proto.MagePrimeGlyph_GlyphOfMoltenArmor),
 	Major1: int32(proto.MageMajorGlyph_GlyphOfEvocation),
-	Major2: int32(proto.MageMajorGlyph_GlyphOfDragonSBreath),
+	Major2: int32(proto.MageMajorGlyph_GlyphOfDragonsBreath),
 	Major3: int32(proto.MageMajorGlyph_GlyphOfInvisibility),
 }
 

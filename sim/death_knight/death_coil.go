@@ -9,7 +9,7 @@ var DeathCoilActionID = core.ActionID{SpellID: 47541}
 
 func (dk *DeathKnight) registerDeathCoilSpell() {
 	rpMetrics := dk.NewRunicPowerMetrics(core.ActionID{SpellID: 58679})
-	hasGlyphOfDeathsEmbrace := dk.HasMinorGlyph(proto.DeathKnightMinorGlyph_GlyphOfDeathSEmbrace)
+	hasGlyphOfDeathsEmbrace := dk.HasMinorGlyph(proto.DeathKnightMinorGlyph_GlyphOfDeathsEmbrace)
 
 	// Death Coil Heal
 	dk.RegisterSpell(core.SpellConfig{

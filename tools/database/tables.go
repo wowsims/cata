@@ -819,3 +819,139 @@ func LoadItemEffects(dbHelper *DBHelper) ([]dbc.ItemEffect, error) {
 	fmt.Println("Loaded ItemEffects:", len(effects))
 	return effects, nil
 }
+
+type RawGlyph struct {
+	ItemId      int32
+	Name        string
+	SpellId     int32
+	Description string
+	GlyphType   int32
+	ClassMask   int32
+	FDID        int32
+}
+
+func ScanGlyphs(rows *sql.Rows) (RawGlyph, error) {
+	var glyph RawGlyph
+
+	err := rows.Scan(
+		&glyph.ItemId,
+		&glyph.SpellId,
+		&glyph.Name,
+		&glyph.Description,
+		&glyph.GlyphType,
+		&glyph.ClassMask,
+		&glyph.FDID,
+	)
+	if err != nil {
+		return glyph, fmt.Errorf("scanning glyph data: %w", err)
+	}
+
+	return glyph, nil
+}
+
+func LoadGlyphs(dbHelper *DBHelper) ([]RawGlyph, error) {
+	query := `
+SELECT DISTINCT i.ID, se.ID, is2.Display_lang, glyphSpell.Description_lang, gp.Field_3_4_0_43659_001, i.SubclassID, i.IconFileDataID
+FROM Item i
+LEFT JOIN ItemSparse is2 ON i.ID = is2.ID
+LEFT JOIN ItemEffect ie ON ie.ParentItemID  = i.ID
+JOIN SpellEffect se ON se.SpellID = ie.SpellID AND se.Effect=74
+LEFT JOIN GlyphProperties gp ON gp.ID = se.EffectMiscValue_0
+LEFT JOIN Spell glyphSpell ON glyphSpell.ID = gp.SpellID
+LEFT JOIN SpellEffect gse ON gse.SpellID = glyphSpell.ID
+WHERE i.ClassID = 16
+GROUP BY i.ID
+
+	`
+
+	effects, err := LoadRows(dbHelper.db, query, ScanGlyphs)
+	if err != nil {
+		return nil, fmt.Errorf("error loading glyphs : %w", err)
+	}
+
+	fmt.Println("Loaded glyphs:", len(effects))
+	return effects, nil
+}
+
+type RawTalent struct {
+	TierID         int
+	TalentName     string
+	ColumnIndex    int
+	ClassMask      int
+	SpellRank      string
+	PrereqRank     string
+	PrereqTalent   string
+	TabName        string
+	BackgroundFile string
+	PrereqRow      sql.NullInt64
+	PrereqCol      sql.NullInt64
+}
+
+func ScanTalent(rows *sql.Rows) (RawTalent, error) {
+	var talent RawTalent
+
+	err := rows.Scan(
+		&talent.TierID,
+		&talent.TalentName,
+		&talent.ColumnIndex,
+		&talent.ClassMask,
+		&talent.SpellRank,
+		&talent.PrereqRank,
+		&talent.PrereqTalent,
+		&talent.TabName,
+		&talent.BackgroundFile,
+		&talent.PrereqRow,
+		&talent.PrereqCol,
+	)
+	if err != nil {
+		return talent, fmt.Errorf("scanning talent data: %w", err)
+	}
+
+	return talent, nil
+}
+
+func LoadTalents(dbHelper *DBHelper) ([]RawTalent, error) {
+	query := `
+SELECT
+  t.TierID,
+  sn.Name_lang,
+  t.ColumnIndex,
+  tb.ClassMask,
+  t.SpellRank,
+  t.PrereqRank,
+  t.PrereqTalent,
+  tb.Name_lang AS TabName,
+  tb.BackgroundFile,
+  (SELECT t2.TierID
+     FROM Talent t2
+     WHERE t2.ID = (
+         SELECT value
+         FROM json_each(t.PrereqTalent)
+         WHERE value <> 0
+         LIMIT 1
+     )
+  ) AS PrereqRow,
+  (SELECT t2.ColumnIndex
+     FROM Talent t2
+     WHERE t2.ID = (
+         SELECT value
+         FROM json_each(t.PrereqTalent)
+         WHERE value <> 0
+         LIMIT 1
+     )
+  ) AS PrereqCol
+FROM Talent t
+JOIN TalentTab tb ON t.TabID = tb.ID
+JOIN SpellName sn ON sn.ID = t.SpellRank_0
+WHERE tb.MasterySpellID_0 IS NOT 0
+ORDER BY tb.Name_lang;
+`
+
+	talents, err := LoadRows(dbHelper.db, query, ScanTalent)
+	if err != nil {
+		return nil, fmt.Errorf("error loading talents: %w", err)
+	}
+
+	fmt.Println("Loaded talents:", len(talents))
+	return talents, nil
+}

@@ -37,7 +37,7 @@ var UnholyDefaultGlyphs = &proto.Glyphs{
 	Major1: int32(proto.DeathKnightMajorGlyph_GlyphOfPestilence),
 	Major2: int32(proto.DeathKnightMajorGlyph_GlyphOfBloodBoil),
 	Major3: int32(proto.DeathKnightMajorGlyph_GlyphOfAntiMagicShell),
-	Minor1: int32(proto.DeathKnightMinorGlyph_GlyphOfDeathSEmbrace),
+	Minor1: int32(proto.DeathKnightMinorGlyph_GlyphOfDeathsEmbrace),
 	Minor2: int32(proto.DeathKnightMinorGlyph_GlyphOfHornOfWinter),
 }
 
