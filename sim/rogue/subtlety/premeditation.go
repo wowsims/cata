@@ -31,7 +31,7 @@ func (subRogue *SubtletyRogue) registerPremeditation() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return subRogue.IsStealthed()
+			return subRogue.IsStealthed() || subRogue.HasActiveAura("Shadowmeld")
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
