@@ -5,9 +5,6 @@ option go_package = "./proto";
 // DO NOT REMOVE THE COMMENTS
 // BEGIN GENERATED
 // WarlockTalents message.
-
-
-// WarlockTalents message.
 message WarlockTalents {
     // Affliction
     int32 doom_and_gloom = 1;

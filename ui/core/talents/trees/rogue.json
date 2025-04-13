@@ -1,7 +1,7 @@
 [
   {
     "name": "Assassination",
-    "backgroundUrl": "RogueAssassination",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/182.jpg",
     "talents": [
       {
         "fieldName": "deadlyMomentum",
@@ -205,7 +205,7 @@
   },
   {
     "name": "Combat",
-    "backgroundUrl": "RogueCombat",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/181.jpg",
     "talents": [
       {
         "fieldName": "improvedRecuperate",
@@ -405,7 +405,7 @@
   },
   {
     "name": "Subtlety",
-    "backgroundUrl": "RogueSubtlety",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/183.jpg",
     "talents": [
       {
         "fieldName": "nightstalker",

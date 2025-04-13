@@ -1,7 +1,7 @@
 [
   {
     "name": "Blood",
-    "backgroundUrl": "DeathKnightBlood",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/398.jpg",
     "talents": [
       {
         "fieldName": "butchery",
@@ -211,7 +211,7 @@
   },
   {
     "name": "Frost",
-    "backgroundUrl": "DeathKnightFrost",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/399.jpg",
     "talents": [
       {
         "fieldName": "runicPowerMastery",
@@ -421,7 +421,7 @@
   },
   {
     "name": "Unholy",
-    "backgroundUrl": "DeathKnightUnholy",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/400.jpg",
     "talents": [
       {
         "fieldName": "unholyCommand",

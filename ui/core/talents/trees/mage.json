@@ -1,7 +1,7 @@
 [
   {
     "name": "Arcane",
-    "backgroundUrl": "MageArcane",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/799.jpg",
     "talents": [
       {
         "fieldName": "arcaneConcentration",
@@ -237,7 +237,7 @@
   },
   {
     "name": "Fire",
-    "backgroundUrl": "MageFire",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/851.jpg",
     "talents": [
       {
         "fieldName": "masterOfElements",
@@ -461,7 +461,7 @@
   },
   {
     "name": "Frost",
-    "backgroundUrl": "MageFrost",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/823.jpg",
     "talents": [
       {
         "fieldName": "earlyFrost",

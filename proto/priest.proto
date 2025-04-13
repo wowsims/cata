@@ -7,9 +7,6 @@ import "common.proto";
 // DO NOT REMOVE THE COMMENTS
 // BEGIN GENERATED
 // PriestTalents message.
-
-
-// PriestTalents message.
 message PriestTalents {
     // Discipline
     int32 improved_power_word_shield = 1;

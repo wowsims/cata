@@ -1,7 +1,7 @@
 [
   {
     "name": "Affliction",
-    "backgroundUrl": "WarlockCurses",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/871.jpg",
     "talents": [
       {
         "fieldName": "doomAndGloom",
@@ -195,7 +195,7 @@
   },
   {
     "name": "Demonology",
-    "backgroundUrl": "WarlockSummoning",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/867.jpg",
     "talents": [
       {
         "fieldName": "demonicEmbrace",
@@ -403,7 +403,7 @@
   },
   {
     "name": "Destruction",
-    "backgroundUrl": "WarlockDestruction",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/865.jpg",
     "talents": [
       {
         "fieldName": "bane",

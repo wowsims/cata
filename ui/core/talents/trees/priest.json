@@ -1,7 +1,7 @@
 [
   {
     "name": "Discipline",
-    "backgroundUrl": "PriestDiscipline",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/760.jpg",
     "talents": [
       {
         "fieldName": "improvedPowerWordShield",
@@ -229,7 +229,7 @@
   },
   {
     "name": "Holy",
-    "backgroundUrl": "PriestHoly",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/813.jpg",
     "talents": [
       {
         "fieldName": "improvedRenew",
@@ -461,7 +461,7 @@
   },
   {
     "name": "Shadow",
-    "backgroundUrl": "PriestShadow",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/795.jpg",
     "talents": [
       {
         "fieldName": "darkness",

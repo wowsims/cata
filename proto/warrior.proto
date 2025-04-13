@@ -5,8 +5,6 @@ option go_package = "./proto";
 // DO NOT REMOVE THE COMMENTS
 // BEGIN GENERATED
 // WarriorTalents message.
-
-// WarriorTalents message.
 message WarriorTalents {
     // Arms
     int32 war_academy = 1;

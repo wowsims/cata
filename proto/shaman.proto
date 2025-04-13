@@ -5,9 +5,6 @@ option go_package = "./proto";
 // DO NOT REMOVE THE COMMENTS
 // BEGIN GENERATED
 // ShamanTalents message.
-
-
-// ShamanTalents message.
 message ShamanTalents {
     // Elemental
     int32 acuity = 1;
@@ -114,7 +111,6 @@ enum ShamanMinorGlyph {
     ShamanMinorGlyphNone = 0;
     GlyphOfWaterBreathing = 43344;
     GlyphOfAstralRecall = 43381;
-    DeprecatedGlyphOfTheArcticWolf = 43383;
     GlyphOfRenewedLife = 43385;
     GlyphOfTheArcticWolf = 43386;
     GlyphOfWaterWalking = 43388;

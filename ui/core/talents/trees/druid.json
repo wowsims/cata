@@ -1,7 +1,7 @@
 [
   {
     "name": "Balance",
-    "backgroundUrl": "DruidBalance",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/752.jpg",
     "talents": [
       {
         "fieldName": "naturesGrace",
@@ -227,7 +227,7 @@
   },
   {
     "name": "Feral Combat",
-    "backgroundUrl": "DruidFeralCombat",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/750.jpg",
     "talents": [
       {
         "fieldName": "feralSwiftness",
@@ -465,7 +465,7 @@
   },
   {
     "name": "Restoration",
-    "backgroundUrl": "DruidRestoration",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/748.jpg",
     "talents": [
       {
         "fieldName": "blessingOfTheGrove",

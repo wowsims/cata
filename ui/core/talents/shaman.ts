@@ -171,11 +171,6 @@ export const shamanGlyphsConfig: GlyphsConfig = {
 			description: "Reduces the cooldown of your Astral Recall spell by ${$58058m1/-60000}.1 min.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_glyph_minorshaman.jpg",
 		},
-		[ShamanMinorGlyph.DeprecatedGlyphOfTheArcticWolf]: {
-			name: "Deprecated Glyph of the Arctic Wolf",
-			description: "Alters the appearance of your Ghost Wolf transformation, causing it to resemble an arctic wolf.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_rune_05.jpg",
-		},
 		[ShamanMinorGlyph.GlyphOfRenewedLife]: {
 			name: "Glyph of Renewed Life",
 			description: "Your Reincarnation spell no longer requires a reagent.",

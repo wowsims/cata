@@ -1,7 +1,7 @@
 [
   {
     "name": "Elemental",
-    "backgroundUrl": "ShamanElementalCombat",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/261.jpg",
     "talents": [
       {
         "fieldName": "acuity",
@@ -209,7 +209,7 @@
   },
   {
     "name": "Enhancement",
-    "backgroundUrl": "ShamanEnhancement",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/263.jpg",
     "talents": [
       {
         "fieldName": "elementalWeapons",
@@ -409,7 +409,7 @@
   },
   {
     "name": "Restoration",
-    "backgroundUrl": "ShamanRestoration",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/262.jpg",
     "talents": [
       {
         "fieldName": "ancestralResolve",

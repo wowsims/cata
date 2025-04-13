@@ -3,9 +3,9 @@ import { GlyphsConfig } from './glyphs_picker.js';
 import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
 import DeathKnightTalentJson from './trees/death_knight.json';
 
-export const death_knightTalentsConfig: TalentsConfig<DeathKnightTalents> = newTalentsConfig(DeathKnightTalentJson);
+export const deathKnightTalentsConfig: TalentsConfig<DeathKnightTalents> = newTalentsConfig(DeathKnightTalentJson);
 
-export const death_knightGlyphsConfig: GlyphsConfig = {
+export const deathKnightGlyphsConfig: GlyphsConfig = {
 	primeGlyphs: {
 		[DeathKnightPrimeGlyph.GlyphOfHeartStrike]: {
 			name: "Glyph of Heart Strike",

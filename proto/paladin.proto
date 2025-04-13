@@ -5,8 +5,6 @@ option go_package = "./proto";
 // DO NOT REMOVE THE COMMENTS
 // BEGIN GENERATED
 // PaladinTalents message.
-
-// PaladinTalents message.
 message PaladinTalents {
     // Holy
     int32 arbiter_of_the_light = 1;

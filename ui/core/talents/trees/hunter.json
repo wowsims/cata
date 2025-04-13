@@ -1,7 +1,7 @@
 [
   {
     "name": "Beast Mastery",
-    "backgroundUrl": "HunterBeastMastery",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/811.jpg",
     "talents": [
       {
         "fieldName": "improvedKillCommand",
@@ -213,7 +213,7 @@
   },
   {
     "name": "Marksmanship",
-    "backgroundUrl": "HunterMarksmanship",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/807.jpg",
     "talents": [
       {
         "fieldName": "goForTheThroat",
@@ -417,7 +417,7 @@
   },
   {
     "name": "Survival",
-    "backgroundUrl": "HunterSurvival",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/809.jpg",
     "talents": [
       {
         "fieldName": "hunterVsWild",

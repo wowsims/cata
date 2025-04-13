@@ -117,7 +117,6 @@ enum DeathKnightMinorGlyph {
     GlyphOfDeathGate = 43673;
 }
 
-
 // END GENERATED
 message DeathKnightOptions {
 	double starting_runic_power = 1;

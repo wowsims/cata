@@ -7,9 +7,6 @@ import "common.proto";
 // DO NOT REMOVE THE COMMENTS
 // BEGIN GENERATED
 // RogueTalents message.
-
-
-// RogueTalents message.
 message RogueTalents {
     // Assassination
     int32 deadly_momentum = 1;

@@ -1,7 +1,7 @@
 [
   {
     "name": "Arms",
-    "backgroundUrl": "WarriorArms",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/746.jpg",
     "talents": [
       {
         "fieldName": "warAcademy",
@@ -219,7 +219,7 @@
   },
   {
     "name": "Fury",
-    "backgroundUrl": "WarriorFury",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/815.jpg",
     "talents": [
       {
         "fieldName": "bloodCraze",
@@ -447,7 +447,7 @@
   },
   {
     "name": "Protection",
-    "backgroundUrl": "WarriorProtection",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/845.jpg",
     "talents": [
       {
         "fieldName": "incite",

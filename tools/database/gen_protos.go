@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"regexp"
 	"slices"
 	"strings"
 	"text/template"
@@ -84,6 +83,7 @@ type TalentLocation struct {
 type ClassData struct {
 	ClassName          string
 	LowerCaseClassName string
+	FileName           string
 	Talents            []TalentConfig
 	TalentTabs         []TalentTabConfig
 	GlyphsPrime        []Glyph
@@ -142,10 +142,10 @@ enum {{.ClassName}}MinorGlyph {
 }
 `
 
-const tsTemplateStr = `import { {{.ClassName}}MajorGlyph, {{.ClassName}}MinorGlyph, {{.ClassName}}PrimeGlyph, {{.ClassName}}Talents } from '../proto/{{.LowerCaseClassName}}.js';
+const tsTemplateStr = `import { {{.ClassName}}MajorGlyph, {{.ClassName}}MinorGlyph, {{.ClassName}}PrimeGlyph, {{.ClassName}}Talents } from '../proto/{{.FileName}}.js';
 import { GlyphsConfig } from './glyphs_picker.js';
 import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
-import {{.ClassName}}TalentJson from './trees/{{.LowerCaseClassName}}.json';
+import {{.ClassName}}TalentJson from './trees/{{.FileName}}.json';
 
 export const {{.LowerCaseClassName}}TalentsConfig: TalentsConfig<{{.ClassName}}Talents> = newTalentsConfig({{.ClassName}}TalentJson);
 
@@ -304,20 +304,19 @@ func createOrUpdateProtoFile(filePath string, data ClassData) error {
 	return nil
 }
 func updateGeneratedProtoSection(fileContent, newContent string) (string, error) {
-	regexPattern := `(?s)(// BEGIN GENERATED.*(?:\r?\n)).*?(// END GENERATED)`
-	re, err := regexp.Compile(regexPattern)
-	if err != nil {
-		return "", fmt.Errorf("failed to compile regex: %w", err)
+	const beginMarker = "// BEGIN GENERATED"
+	const endMarker = "// END GENERATED"
+	beginIdx := strings.Index(fileContent, beginMarker)
+	if beginIdx == -1 {
+		return "", fmt.Errorf("begin marker %q not found in the file", beginMarker)
 	}
-
-	// Replacement: preserve the first marker, add the new content with a newline, then the end marker.
-	replacement := fmt.Sprintf("$1%s\n$2", newContent)
-	updatedContent := re.ReplaceAllString(fileContent, replacement)
-
-	if updatedContent == fileContent {
-		return "", fmt.Errorf("generated markers not found in the file")
+	endIdx := strings.LastIndex(fileContent, endMarker)
+	if endIdx == -1 {
+		return "", fmt.Errorf("end marker %q not found in the file", endMarker)
 	}
-
+	endIdx += len(endMarker)
+	newBlock := fmt.Sprintf("%s\n%s\n%s", beginMarker, newContent, endMarker)
+	updatedContent := fileContent[:beginIdx] + newBlock + fileContent[endIdx:]
 	return updatedContent, nil
 }
 
@@ -353,6 +352,11 @@ func generateTsFile(data ClassData) error {
 		return err
 	}
 	data.ClassName = strings.ReplaceAll(data.ClassName, "_", "")
+	data.FileName = data.LowerCaseClassName
+	data.LowerCaseClassName = strings.ReplaceAll(data.LowerCaseClassName, "_", "")
+	if data.LowerCaseClassName == "deathknight" {
+		data.LowerCaseClassName = "deathKnight"
+	}
 	if err := tmpl.Execute(file, data); err != nil {
 		return fmt.Errorf("error executing template for %s: %w", data.ClassName, err)
 	}
@@ -410,7 +414,7 @@ func transformRawTalentsToTabs(rawTalents []RawTalent) ([]TalentTabConfig, error
 		if !exists {
 			tab = &TalentTabConfig{
 				Name:          rt.TabName,
-				BackgroundUrl: rt.BackgroundFile,
+				BackgroundUrl: fmt.Sprintf("https://wow.zamimg.com/images/wow/talents/backgrounds/cata/%s.jpg", rt.BackgroundFile),
 				Talents:       []TalentConfig{},
 			}
 			tabsMap[rt.TabName] = tab
@@ -616,6 +620,9 @@ func GenerateProtos() {
 
 		// Process glyphs
 		for _, raw := range rawGlyphs {
+			if strings.Contains(raw.Name, "Deprecated") || strings.Contains(raw.Name, "zzz") {
+				continue
+			}
 			if glyphBelongsToClass(raw, dbc) {
 				g := convertRawGlyphToGlyph(raw)
 				g.IconUrl = "https://wow.zamimg.com/images/wow/icons/large/" + strings.ToLower(GetIconName(iconsMap, int(raw.FDID))) + ".jpg"

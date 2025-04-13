@@ -114,7 +114,6 @@ enum HunterMinorGlyph {
     GlyphOfScareBeast = 43356;
 }
 
-
 // END GENERATED
 
 message HunterPetTalents {

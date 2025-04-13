@@ -1,7 +1,7 @@
 [
   {
     "name": "Holy",
-    "backgroundUrl": "PALADINHOLY",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/831.jpg",
     "talents": [
       {
         "fieldName": "arbiterOfTheLight",
@@ -215,7 +215,7 @@
   },
   {
     "name": "Protection",
-    "backgroundUrl": "PALADINPROTECTION",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/839.jpg",
     "talents": [
       {
         "fieldName": "divinity",
@@ -437,7 +437,7 @@
   },
   {
     "name": "Retribution",
-    "backgroundUrl": "PALADINCOMBAT",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/855.jpg",
     "talents": [
       {
         "fieldName": "eyeForAnEye",

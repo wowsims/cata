@@ -7,8 +7,6 @@ import "common.proto";
 // DO NOT REMOVE THE COMMENTS
 // BEGIN GENERATED
 // MageTalents message.
-
-// MageTalents message.
 message MageTalents {
     // Arcane
     int32 arcane_concentration = 1;

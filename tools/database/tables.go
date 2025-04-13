@@ -921,7 +921,7 @@ SELECT
   t.PrereqRank,
   t.PrereqTalent,
   tb.Name_lang AS TabName,
-  tb.BackgroundFile,
+  tb.ID,
   (SELECT t2.TierID
      FROM Talent t2
      WHERE t2.ID = (
