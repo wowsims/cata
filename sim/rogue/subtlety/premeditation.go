@@ -16,7 +16,7 @@ func (subRogue *SubtletyRogue) registerPremeditation() {
 
 	subRogue.Premeditation = subRogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 14183},
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagNoOnCastComplete,
 		ClassSpellMask: rogue.RogueSpellPremeditation,
 
 		Cast: core.CastConfig{
