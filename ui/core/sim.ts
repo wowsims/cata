@@ -23,7 +23,14 @@ import {
 } from './proto/api.js';
 import {
 	ArmorType,
+	BattleElixir,
+	Consumable,
+	ConsumableType,
 	Faction,
+	Flask,
+	Food,
+	GuardianElixir,
+	Potions,
 	Profession,
 	PseudoStat,
 	RangedWeaponType,
@@ -212,6 +219,28 @@ export class Sim {
 	setModifyRaidProto(newModFn: (raidProto: RaidProto) => void) {
 		this.modifyRaidProto = newModFn;
 	}
+
+	normalizeName(name: string): string {
+		return name
+			.replace(/[^\w\s]/g, '') // Remove punctuation (for instance, apostrophes)
+			.split(/\s+/)
+			.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+			.join('');
+	}
+
+	getEnumKeyFromValue<T extends Record<string, string | number>>(enumObj: T, value: number): string | undefined {
+		return (enumObj as any)[value];
+	}
+
+	findInputItemForEnum<T extends Record<string, string | number>, U extends { name: string }>(enumObj: T, enumValue: number, items: U[]): U | undefined {
+		const targetEnumKey = this.getEnumKeyFromValue(enumObj, enumValue);
+		if (!targetEnumKey) {
+			return undefined;
+		}
+		// Compare the normalized names to the enum key.
+		console.log(items.find(item => this.normalizeName(item.name) === targetEnumKey));
+		return items.find(item => this.normalizeName(item.name) === targetEnumKey);
+	}
 	getModifiedRaidProto(): RaidProto {
 		const raidProto = this.raid.toProto(false, true);
 		this.modifyRaidProto(raidProto);
@@ -248,6 +277,44 @@ export class Sim {
 
 				type ConsumableIdKey = 'flaskId' | 'battleElixirId' | 'guardianElixirId' | 'foodId' | 'potId' | 'prepotId';
 				const consumableIdFields: ConsumableIdKey[] = ['potId', 'prepotId', 'flaskId', 'battleElixirId', 'guardianElixirId', 'foodId'];
+
+				if (player.consumes && typeof player.consumes !== 'undefined') {
+					if (player.consumes.prepopPotion != Potions.UnknownPotion && player.consumes.prepotId == 0) {
+						player.consumes.prepotId =
+							this.findInputItemForEnum(Potions, player.consumes.defaultPotion, this.db.getConsumablesByType(ConsumableType.ConsumableTypePotion))
+								?.id ?? 0;
+					}
+					if (player.consumes.defaultPotion != Potions.UnknownPotion && player.consumes.potId == 0) {
+						player.consumes.potId =
+							this.findInputItemForEnum(Potions, player.consumes.defaultPotion, this.db.getConsumablesByType(ConsumableType.ConsumableTypePotion))
+								?.id ?? 0;
+					}
+					if (player.consumes.flask != Flask.FlaskUnknown && player.consumes.flaskId == 0) {
+						player.consumes.flaskId =
+							this.findInputItemForEnum(Flask, player.consumes.flask, this.db.getConsumablesByType(ConsumableType.ConsumableTypeFlask))?.id ?? 0;
+					}
+					if (player.consumes.food != Food.FoodUnknown && player.consumes.foodId == 0) {
+						player.consumes.foodId =
+							this.findInputItemForEnum(Food, player.consumes.flask, this.db.getConsumablesByType(ConsumableType.ConsumableTypeFood))?.id ?? 0;
+					}
+					if (player.consumes.guardianElixir != GuardianElixir.GuardianElixirUnknown && player.consumes.guardianElixirId == 0) {
+						player.consumes.guardianElixirId =
+							this.findInputItemForEnum(
+								GuardianElixir,
+								player.consumes.guardianElixir,
+								this.db.getConsumablesByType(ConsumableType.ConsumableTypeElixir),
+							)?.id ?? 0;
+					}
+					if (player.consumes.battleElixir != BattleElixir.BattleElixirUnknown && player.consumes.battleElixirId == 0) {
+						player.consumes.battleElixirId =
+							this.findInputItemForEnum(
+								BattleElixir,
+								player.consumes.battleElixir,
+								this.db.getConsumablesByType(ConsumableType.ConsumableTypeElixir),
+							)?.id ?? 0;
+					}
+				}
+
 				consumableIdFields.forEach(field => {
 					const id = player.consumes?.[field] ?? 0;
 					if (id && id !== 0) {

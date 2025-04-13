@@ -982,20 +982,21 @@ func ScanSpellIcon(rows *sql.Rows) (SpellIcon, error) {
 func LoadSpellIcons(dbHelper *DBHelper) (map[int]SpellIcon, error) {
 	query := `
 		SELECT
-		sm.SpellID,
-		sm.SpellIconFileDataID,
-		(
-			(sm.Attributes_4 & 0x00001000) <> 0
-			OR EXISTS (
-			SELECT 1
-			FROM SpellEffect se
-			WHERE se.SpellID = sm.SpellID
-				AND se.Effect = 6
-			)
-		) AS HasBuff,
-		sn.Name_lang
-		FROM SpellMisc sm
-		LEFT JOIN SpellName sn ON sn.ID = sm.SpellID;
+  sm.SpellID,
+  sm.SpellIconFileDataID,
+  (
+    (sm.Attributes_4 & 0x00001000) <> 0
+    OR EXISTS (
+      SELECT 1
+      FROM SpellEffect se
+      WHERE se.SpellID = sm.SpellID
+        AND se.Effect = 6
+    ) OR (ss.AuraDescription_lang != '' and ss.AuraDescription_lang is not null)
+  ) AS HasBuff,
+  sn.Name_lang
+FROM SpellMisc sm
+LEFT JOIN Spell ss ON ss.ID = sm.SpellID
+LEFT JOIN SpellName sn ON sn.ID = sm.SpellID;
 `
 
 	talents, err := LoadRows(dbHelper.db, query, ScanSpellIcon)

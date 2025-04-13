@@ -1,6 +1,7 @@
 import { ItemSwapSettings } from './components/item_swap_picker';
 import Toast from './components/toast';
 import * as Mechanics from './constants/mechanics';
+import { CURRENT_API_VERSION } from './constants/other';
 import { SimSettingCategories } from './constants/sim_settings';
 import { MAX_PARTY_SIZE, Party } from './party';
 import { PlayerClass } from './player_class';
@@ -1440,8 +1441,6 @@ export class Player<SpecType extends Spec> {
 	private toDatabase(): SimDatabase {
 		const dbGear = this.getGear().toDatabase(this.sim.db);
 		const dbItemSwapGear = this.itemSwapSettings.getGear().toDatabase(this.sim.db);
-		const consumes: Consumable[] = [];
-
 		return Database.mergeSimDatabases(dbGear, dbItemSwapGear);
 	}
 

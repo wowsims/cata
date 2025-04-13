@@ -1,7 +1,6 @@
 package core
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
@@ -87,36 +86,28 @@ var PotionAuraTag = "Potion"
 
 func registerPotionCD(agent Agent, consumes *proto.Consumes) {
 	character := agent.GetCharacter()
-	defaultPotion := consumes.PotId
-	startingPotion := consumes.PrepotId
+	potion := consumes.PotId
+	prepot := consumes.PrepotId
 
 	potionCD := character.GetPotionCD()
-	// if character.Spec == proto.Spec_SpecBalanceDruid {
-	// 	// Create both pots spells so they will be selectable in APL UI regardless of settings.
-	// 	speedMCD := makePotionActivation(proto.Potions_PotionOfSpeed, character, potionCD)
-	// 	wildMagicMCD := makePotionActivation(proto.Potions_PotionOfWildMagic, character, potionCD)
-	// 	speedMCD.Spell.Flags |= SpellFlagAPL | SpellFlagMCD
-	// 	wildMagicMCD.Spell.Flags |= SpellFlagAPL | SpellFlagMCD
-	// }
 
-	if defaultPotion == 0 && startingPotion == 0 {
+	if potion == 0 && prepot == 0 {
 		return
 	}
 	var mcd MajorCooldown
-	if startingPotion != 0 {
-		mcd = makePotionActivationSpell(startingPotion, character, potionCD)
+	if prepot != 0 {
+		mcd = makePotionActivationSpell(prepot, character, potionCD)
 		if mcd.Spell != nil {
 			mcd.Spell.Flags |= SpellFlagPrepullPotion
 		}
-
 	}
 
 	var defaultMCD MajorCooldown
-	if defaultPotion == startingPotion {
+	if potion == prepot {
 		defaultMCD = mcd
 	} else {
-		if defaultPotion != 0 {
-			defaultMCD = makePotionActivationSpell(defaultPotion, character, potionCD)
+		if potion != 0 {
+			defaultMCD = makePotionActivationSpell(potion, character, potionCD)
 		}
 	}
 	if defaultMCD.Spell != nil {
@@ -137,10 +128,22 @@ func (character *Character) HasAlchStone() bool {
 
 func makePotionActivationSpell(potionId int32, character *Character, potionCD *Timer) MajorCooldown {
 	potion := ConsumableByID[potionId]
-	if potion.Id == 0 {
-		fmt.Println("Something is very wrong", ConsumableByID)
-	}
 	mcd := makePotionActivationSpellInternal(potion, character, potionCD)
+	if mcd.Spell != nil {
+		// Mark as 'Encounter Only' so that users are forced to select the generic Potion
+		// placeholder action instead of specific potion spells, in APL prepull. This
+		// prevents a mismatch between Consumes and Rotation settings.
+		mcd.Spell.Flags |= SpellFlagEncounterOnly | SpellFlagPotion
+		oldApplyEffects := mcd.Spell.ApplyEffects
+		mcd.Spell.ApplyEffects = func(sim *Simulation, target *Unit, spell *Spell) {
+			oldApplyEffects(sim, target, spell)
+			if sim.CurrentTime < 0 {
+				potionCD.Set(sim.CurrentTime + time.Minute)
+
+				character.UpdateMajorCooldowns()
+			}
+		}
+	}
 	return mcd
 
 }
