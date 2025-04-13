@@ -101,7 +101,7 @@ export const DefaultTalents = {
 		glyphs: Glyphs.create({
 			prime1: PaladinPrimeGlyph.GlyphOfSealOfTruth,
 			prime2: PaladinPrimeGlyph.GlyphOfExorcism,
-			prime3: PaladinPrimeGlyph.GlyphOfTemplarSVerdict,
+			prime3: PaladinPrimeGlyph.GlyphOfTemplarsVerdict,
 			major1: PaladinMajorGlyph.GlyphOfTheAsceticCrusader,
 			major2: PaladinMajorGlyph.GlyphOfHammerOfWrath,
 			major3: PaladinMajorGlyph.GlyphOfConsecration,

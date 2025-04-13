@@ -91,7 +91,7 @@ export const FireTalents = {
 			prime2: PrimeGlyph.GlyphOfPyroblast,
 			prime3: PrimeGlyph.GlyphOfMoltenArmor,
 			major1: MajorGlyph.GlyphOfEvocation,
-			major2: MajorGlyph.GlyphOfDragonSBreath,
+			major2: MajorGlyph.GlyphOfDragonsBreath,
 			major3: MajorGlyph.GlyphOfInvisibility,
 			minor1: MinorGlyph.GlyphOfMirrorImage,
 			minor2: MinorGlyph.GlyphOfArmors,

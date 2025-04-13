@@ -102,17 +102,22 @@ func registerPotionCD(agent Agent, consumes *proto.Consumes) {
 	if defaultPotion == 0 && startingPotion == 0 {
 		return
 	}
+	var mcd MajorCooldown
+	if startingPotion != 0 {
+		mcd = makePotionActivationSpell(startingPotion, character, potionCD)
+		if mcd.Spell != nil {
+			mcd.Spell.Flags |= SpellFlagPrepullPotion
+		}
 
-	startingMCD := makePotionActivationSpell(startingPotion, character, potionCD)
-	if startingMCD.Spell != nil {
-		startingMCD.Spell.Flags |= SpellFlagPrepullPotion
 	}
 
 	var defaultMCD MajorCooldown
 	if defaultPotion == startingPotion {
-		defaultMCD = startingMCD
+		defaultMCD = mcd
 	} else {
-		defaultMCD = makePotionActivationSpell(defaultPotion, character, potionCD)
+		if defaultPotion != 0 {
+			defaultMCD = makePotionActivationSpell(defaultPotion, character, potionCD)
+		}
 	}
 	if defaultMCD.Spell != nil {
 		defaultMCD.Spell.Flags |= SpellFlagCombatPotion
