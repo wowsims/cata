@@ -212,7 +212,7 @@ func main() {
 	}
 
 	//Todo: See if we cant get rid of these as well
-	spellTooltips := database.NewWowheadSpellTooltipManager(fmt.Sprintf("%s/wowhead_spell_tooltips.csv", inputsDir)).Read()
+	//spellTooltips := database.NewWowheadSpellTooltipManager(fmt.Sprintf("%s/wowhead_spell_tooltips.csv", inputsDir)).Read()
 	atlaslootDB := database.ReadDatabaseFromJson(tools.ReadFile(fmt.Sprintf("%s/atlasloot_db.json", inputsDir)))
 
 	// Todo: https://web.archive.org/web/20120201045249js_/http://www.wowhead.com/data=item-scaling
@@ -452,10 +452,14 @@ func main() {
 			db.RandomSuffixes[int32(randomSuffix.ID)] = randomSuffix.ToProto()
 		}
 	}
+
+	icons, err := database.LoadSpellIcons(helper)
 	for _, item := range db.Items {
 		for _, source := range item.Sources {
 			if crafted := source.GetCrafted(); crafted != nil {
-				db.AddSpellIcon(crafted.SpellId, spellTooltips)
+				iconEntry := icons[int(crafted.SpellId)]
+				icon := &proto.IconData{Id: int32(iconEntry.SpellID), Name: iconEntry.Name, Icon: strings.ToLower(database.GetIconName(iconsMap, iconEntry.FDID)), HasBuff: iconEntry.HasBuff}
+				db.SpellIcons[crafted.SpellId] = icon
 			}
 		}
 
@@ -465,19 +469,28 @@ func main() {
 		}
 	}
 
+	if err != nil {
+		panic("error loading icons")
+	}
 	for _, spellId := range database.SharedSpellsIcons {
-		db.AddSpellIcon(spellId, spellTooltips)
+		iconEntry := icons[int(spellId)]
+		icon := &proto.IconData{Id: int32(iconEntry.SpellID), Name: iconEntry.Name, Icon: strings.ToLower(database.GetIconName(iconsMap, iconEntry.FDID)), HasBuff: iconEntry.HasBuff}
+		db.SpellIcons[spellId] = icon
 	}
 
 	for _, spellIds := range GetAllTalentSpellIds(&inputsDir) {
 		for _, spellId := range spellIds {
-			db.AddSpellIcon(spellId, spellTooltips)
+			iconEntry := icons[int(spellId)]
+			icon := &proto.IconData{Id: int32(iconEntry.SpellID), Name: iconEntry.Name, Icon: strings.ToLower(database.GetIconName(iconsMap, iconEntry.FDID)), HasBuff: iconEntry.HasBuff}
+			db.SpellIcons[spellId] = icon
 		}
 	}
 
 	for _, spellIds := range GetAllRotationSpellIds() {
 		for _, spellId := range spellIds {
-			db.AddSpellIcon(spellId, spellTooltips)
+			iconEntry := icons[int(spellId)]
+			icon := &proto.IconData{Id: int32(iconEntry.SpellID), Name: iconEntry.Name, Icon: strings.ToLower(database.GetIconName(iconsMap, iconEntry.FDID)), HasBuff: iconEntry.HasBuff}
+			db.SpellIcons[spellId] = icon
 		}
 	}
 

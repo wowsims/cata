@@ -955,3 +955,57 @@ ORDER BY tb.Name_lang;
 	fmt.Println("Loaded talents:", len(talents))
 	return talents, nil
 }
+
+type SpellIcon struct {
+	SpellID int
+	FDID    int
+	HasBuff bool
+	Name    string
+}
+
+func ScanSpellIcon(rows *sql.Rows) (SpellIcon, error) {
+	var icon SpellIcon
+
+	err := rows.Scan(
+		&icon.SpellID,
+		&icon.FDID,
+		&icon.HasBuff,
+		&icon.Name,
+	)
+	if err != nil {
+		return icon, fmt.Errorf("scanning talent data: %w", err)
+	}
+
+	return icon, nil
+}
+
+func LoadSpellIcons(dbHelper *DBHelper) (map[int]SpellIcon, error) {
+	query := `
+		SELECT
+		sm.SpellID,
+		sm.SpellIconFileDataID,
+		(
+			(sm.Attributes_4 & 0x00001000) <> 0
+			OR EXISTS (
+			SELECT 1
+			FROM SpellEffect se
+			WHERE se.SpellID = sm.SpellID
+				AND se.Effect = 6
+			)
+		) AS HasBuff,
+		sn.Name_lang
+		FROM SpellMisc sm
+		LEFT JOIN SpellName sn ON sn.ID = sm.SpellID;
+`
+
+	talents, err := LoadRows(dbHelper.db, query, ScanSpellIcon)
+	if err != nil {
+		return nil, fmt.Errorf("error loading spellicons: %w", err)
+	}
+	iconsByID := make(map[int]SpellIcon, len(talents))
+	for _, icon := range talents {
+		iconsByID[icon.SpellID] = icon
+	}
+	fmt.Println("Loaded spellicons:", len(talents))
+	return iconsByID, nil
+}
