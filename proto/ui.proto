@@ -456,6 +456,8 @@ message SimRunData {
 
 // Sent by the sim to the detailed results page.
 message DetailedResultsUpdate {
+	option deprecated = true;
+
 	oneof data {
 		// Show results from a run.
 		SimRunData run_data = 1;
