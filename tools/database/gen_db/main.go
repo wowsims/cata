@@ -474,6 +474,9 @@ func main() {
 	}
 	for _, spellId := range database.SharedSpellsIcons {
 		iconEntry := icons[int(spellId)]
+		if iconEntry.Name == "" {
+			continue
+		}
 		icon := &proto.IconData{Id: int32(iconEntry.SpellID), Name: iconEntry.Name, Icon: strings.ToLower(database.GetIconName(iconsMap, iconEntry.FDID)), HasBuff: iconEntry.HasBuff}
 		db.SpellIcons[spellId] = icon
 	}
@@ -481,6 +484,9 @@ func main() {
 	for _, spellIds := range GetAllTalentSpellIds(&inputsDir) {
 		for _, spellId := range spellIds {
 			iconEntry := icons[int(spellId)]
+			if iconEntry.Name == "" {
+				continue
+			}
 			icon := &proto.IconData{Id: int32(iconEntry.SpellID), Name: iconEntry.Name, Icon: strings.ToLower(database.GetIconName(iconsMap, iconEntry.FDID)), HasBuff: iconEntry.HasBuff}
 			db.SpellIcons[spellId] = icon
 		}
@@ -489,6 +495,9 @@ func main() {
 	for _, spellIds := range GetAllRotationSpellIds() {
 		for _, spellId := range spellIds {
 			iconEntry := icons[int(spellId)]
+			if iconEntry.Name == "" {
+				continue
+			}
 			icon := &proto.IconData{Id: int32(iconEntry.SpellID), Name: iconEntry.Name, Icon: strings.ToLower(database.GetIconName(iconsMap, iconEntry.FDID)), HasBuff: iconEntry.HasBuff}
 			db.SpellIcons[spellId] = icon
 		}

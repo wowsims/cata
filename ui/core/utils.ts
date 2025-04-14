@@ -404,6 +404,5 @@ export const findInputItemForEnum = <T extends Record<string, string | number>, 
 	if (!targetEnumKey) {
 		return undefined;
 	}
-	console.log(items.find(item => normalizeName(item.name) === targetEnumKey));
 	return items.find(item => normalizeName(item.name) === targetEnumKey);
 };

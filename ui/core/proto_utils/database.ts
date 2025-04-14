@@ -180,7 +180,7 @@ export class Database {
 	}
 	getConsumablesByTypeAndStats(type: ConsumableType, stats: Array<Stat>): Array<Consumable> {
 		const consumes = this.getConsumables().filter(consume => consume.type === type);
-		return consumes.filter(consume => stats.some(index => consume.stats[index] > 0));
+		return consumes.filter(consume => stats.some(index => consume.stats[index] > 0 || consume.id == 62290 || consume.id == 62649));
 	}
 	getRandomSuffixById(id: number): ItemRandomSuffix | undefined {
 		return this.randomSuffixes.get(id);
