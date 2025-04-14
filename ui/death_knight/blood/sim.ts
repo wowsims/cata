@@ -6,7 +6,7 @@ import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_u
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
-import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
+import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as DeathKnightInputs from '../inputs';
 import * as BloodInputs from './inputs';
@@ -108,19 +108,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 		}),
 	},
 
-	modifyDisplayStats: (player: Player<Spec.SpecBloodDeathKnight>) => {
-		// Blood Presence is a combat buff but we want to include its bonus in the stats
-		const currentStats = player.getCurrentStats();
-		if (currentStats.finalStats) {
-			const bonusStamina = currentStats.finalStats.stats[Stat.StatStamina] * 0.08;
-			const bonusHealth = bonusStamina * 14;
-			const stats = new Stats().addStat(Stat.StatHealth, bonusHealth).addStat(Stat.StatStamina, bonusStamina);
-			return {
-				buffs: stats,
-			};
-		}
-		return {};
-	},
+	// modifyDisplayStats: (player: Player<Spec.SpecBloodDeathKnight>) => {
+	// },
 
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [],
@@ -146,6 +135,25 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 			OtherInputs.DarkIntentUptime,
 		],
 	},
+	itemSwapSlots: [
+		ItemSlot.ItemSlotHead,
+		ItemSlot.ItemSlotNeck,
+		ItemSlot.ItemSlotShoulder,
+		ItemSlot.ItemSlotBack,
+		ItemSlot.ItemSlotChest,
+		ItemSlot.ItemSlotWrist,
+		ItemSlot.ItemSlotHands,
+		ItemSlot.ItemSlotWaist,
+		ItemSlot.ItemSlotLegs,
+		ItemSlot.ItemSlotFeet,
+		ItemSlot.ItemSlotFinger1,
+		ItemSlot.ItemSlotFinger2,
+		ItemSlot.ItemSlotTrinket1,
+		ItemSlot.ItemSlotTrinket2,
+		ItemSlot.ItemSlotMainHand,
+		ItemSlot.ItemSlotOffHand,
+		ItemSlot.ItemSlotRanged,
+	],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,

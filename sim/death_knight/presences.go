@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -23,9 +24,10 @@ func (dk *DeathKnight) registerBloodPresenceAura(timer *core.Timer) {
 	runeRegenSpeed := 1.0 + 0.1*float64(dk.Talents.ImprovedBloodPresence)
 
 	presenceAura := dk.GetOrRegisterAura(core.Aura{
-		Label:    "Blood Presence",
-		ActionID: actionID,
-		Duration: core.NeverExpires,
+		Label:      "Blood Presence",
+		ActionID:   actionID,
+		Duration:   core.NeverExpires,
+		BuildPhase: core.Ternary(dk.Spec == proto.Spec_SpecBloodDeathKnight, core.CharacterBuildPhaseBase, core.CharacterBuildPhaseNone),
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.ReducedCritTakenChance += critReduction
 			aura.Unit.PseudoStats.ThreatMultiplier *= threatMult

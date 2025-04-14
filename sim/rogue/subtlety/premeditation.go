@@ -16,7 +16,7 @@ func (subRogue *SubtletyRogue) registerPremeditation() {
 
 	subRogue.Premeditation = subRogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 14183},
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagNoOnCastComplete,
 		ClassSpellMask: rogue.RogueSpellPremeditation,
 
 		Cast: core.CastConfig{
@@ -31,7 +31,7 @@ func (subRogue *SubtletyRogue) registerPremeditation() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return subRogue.IsStealthed()
+			return subRogue.IsStealthed() || subRogue.HasActiveAura("Shadowmeld")
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
