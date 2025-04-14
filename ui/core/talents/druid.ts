@@ -1,9 +1,7 @@
 import { DruidMajorGlyph, DruidMinorGlyph, DruidPrimeGlyph, DruidTalents } from '../proto/druid.js';
 import { GlyphsConfig } from './glyphs_picker.js';
 import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
-import DruidTalentJson from './trees/druid.json';
-
-export const druidTalentsConfig: TalentsConfig<DruidTalents> = newTalentsConfig(DruidTalentJson);
+import DruidTalentJson from './trees/druid.json';export const druidTalentsConfig: TalentsConfig<DruidTalents> = newTalentsConfig(DruidTalentJson);
 
 export const druidGlyphsConfig: GlyphsConfig = {
 	primeGlyphs: {

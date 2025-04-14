@@ -58,6 +58,11 @@ func applyConsumeEffects(agent Agent) {
 	}
 
 	if consumes.FoodId != 0 {
+		// This is an example of how we could do overrides
+		if consumes.FoodId == 62290 || consumes.FoodId == 62649 {
+			character.AddStat(stats.Stamina, 90)
+			character.AddStat(character.GetHighestStatType([]stats.Stat{stats.Strength, stats.Agility, stats.Intellect}), 90)
+		}
 		food := ConsumableByID[consumes.FoodId]
 		character.AddStats(stats.FromProtoArray(food.Stats))
 	}
@@ -67,14 +72,6 @@ func applyConsumeEffects(agent Agent) {
 	// 		character.PseudoStats.MobTypeAttackPower += 265
 	// 	}
 	// }
-
-	//Todo: These probably need override implementations because they are server side scripts
-	// case proto.Food_FoodSeafoodFeast:
-	// 	character.AddStat(stats.Stamina, 90)
-	// 	character.AddStat(character.GetHighestStatType([]stats.Stat{stats.Strength, stats.Agility, stats.Intellect}), 90)
-	// case proto.Food_FoodFortuneCookie:
-	// 	character.AddStat(stats.Stamina, 90)
-	// 	character.AddStat(character.GetHighestStatType([]stats.Stat{stats.Strength, stats.Agility, stats.Intellect}), 90)
 
 	registerPotionCD(agent, consumes)
 	registerConjuredCD(agent, consumes)

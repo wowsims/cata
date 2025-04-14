@@ -18,6 +18,12 @@ import "warrior.proto";
 
 // NextIndex: 55
 message Player {
+	// Proto version at the time Player were saved.
+	// A "breaking change" here is defined as anything that will break saved
+	// browser data or old sim links; the version need not be incremented if
+	// you simply append a new rarely-used PseudoStat to the end of the
+	// array, for example.
+	int32 api_version = 54;
 	// Label used for logging.
 	string name = 51;
 

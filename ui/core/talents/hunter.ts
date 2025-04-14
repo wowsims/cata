@@ -1,9 +1,7 @@
 import { HunterMajorGlyph, HunterMinorGlyph, HunterPrimeGlyph, HunterTalents } from '../proto/hunter.js';
 import { GlyphsConfig } from './glyphs_picker.js';
 import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
-import HunterTalentJson from './trees/hunter.json';
-
-export const hunterTalentsConfig: TalentsConfig<HunterTalents> = newTalentsConfig(HunterTalentJson);
+import HunterTalentJson from './trees/hunter.json';export const hunterTalentsConfig: TalentsConfig<HunterTalents> = newTalentsConfig(HunterTalentJson);
 
 export const hunterGlyphsConfig: GlyphsConfig = {
 	primeGlyphs: {

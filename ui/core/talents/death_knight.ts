@@ -1,9 +1,7 @@
 import { DeathKnightMajorGlyph, DeathKnightMinorGlyph, DeathKnightPrimeGlyph, DeathKnightTalents } from '../proto/death_knight.js';
 import { GlyphsConfig } from './glyphs_picker.js';
 import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
-import DeathKnightTalentJson from './trees/death_knight.json';
-
-export const deathKnightTalentsConfig: TalentsConfig<DeathKnightTalents> = newTalentsConfig(DeathKnightTalentJson);
+import DeathKnightTalentJson from './trees/death_knight.json';export const deathKnightTalentsConfig: TalentsConfig<DeathKnightTalents> = newTalentsConfig(DeathKnightTalentJson);
 
 export const deathKnightGlyphsConfig: GlyphsConfig = {
 	primeGlyphs: {

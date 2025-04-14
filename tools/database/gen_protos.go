@@ -146,13 +146,13 @@ const tsTemplateStr = `import { {{.ClassName}}MajorGlyph, {{.ClassName}}MinorGly
 import { GlyphsConfig } from './glyphs_picker.js';
 import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
 import {{.ClassName}}TalentJson from './trees/{{.FileName}}.json';
-
+{{- $class := .ClassName -}}
 export const {{.LowerCaseClassName}}TalentsConfig: TalentsConfig<{{.ClassName}}Talents> = newTalentsConfig({{.ClassName}}TalentJson);
 
 export const {{.LowerCaseClassName}}GlyphsConfig: GlyphsConfig = {
 	primeGlyphs: {
 		{{- range .GlyphsPrime }}
-		[{{$.ClassName}}PrimeGlyph.{{.EnumName}}]: {
+		[{{$.ClassName}}PrimeGlyph.{{protoOverride .EnumName $class}}]: {
 			name: "{{.Name}}",
 			description: "{{.Description}}",
 			iconUrl: "{{.IconUrl}}",
@@ -161,7 +161,7 @@ export const {{.LowerCaseClassName}}GlyphsConfig: GlyphsConfig = {
 	},
 	majorGlyphs: {
 		{{- range .GlyphsMajor }}
-		[{{$.ClassName}}MajorGlyph.{{.EnumName}}]: {
+		[{{$.ClassName}}MajorGlyph.{{protoOverride .EnumName $class}}]: {
 			name: "{{.Name}}",
 			description: "{{.Description}}",
 			iconUrl: "{{.IconUrl}}",
@@ -170,7 +170,7 @@ export const {{.LowerCaseClassName}}GlyphsConfig: GlyphsConfig = {
 	},
 	minorGlyphs: {
 		{{- range .GlyphsMinor }}
-		[{{$.ClassName}}MinorGlyph.{{.EnumName}}]: {
+		[{{$.ClassName}}MinorGlyph.{{protoOverride .EnumName $class}}]: {
 			name: "{{.Name}}",
 			description: "{{.Description}}",
 			iconUrl: "{{.IconUrl}}",
@@ -343,9 +343,10 @@ func generateTsFile(data ClassData) error {
 	defer file.Close()
 
 	funcMap := template.FuncMap{
-		"add":         func(a, b int) int { return a + b },
-		"toCamelCase": toCamelCase,
-		"toSnakeCase": toSnakeCase,
+		"add":           func(a, b int) int { return a + b },
+		"toCamelCase":   toCamelCase,
+		"toSnakeCase":   toSnakeCase,
+		"protoOverride": protoOverride,
 	}
 	tmpl, err := template.New("tsTemplate").Funcs(funcMap).Parse(tsTemplateStr)
 	if err != nil {

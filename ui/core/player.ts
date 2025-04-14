@@ -18,18 +18,24 @@ import {
 } from './proto/api';
 import { APLRotation, APLRotation_Type as APLRotationType, SimpleRotation } from './proto/apl';
 import {
+	BattleElixir,
 	Class,
 	Consumable,
+	ConsumableType,
 	Consumes,
 	Cooldowns,
 	Faction,
+	Flask,
+	Food,
 	GemColor,
 	Glyphs,
+	GuardianElixir,
 	HandType,
 	HealingModel,
 	IndividualBuffs,
 	ItemRandomSuffix,
 	ItemSlot,
+	Potions,
 	Profession,
 	PseudoStat,
 	Race,
@@ -81,7 +87,7 @@ import { Raid } from './raid';
 import { Sim } from './sim';
 import { playerTalentStringToProto } from './talents/factory';
 import { EventID, TypedEvent } from './typed_event';
-import { omitDeep, stringComparator, sum } from './utils';
+import { findInputItemForEnum, omitDeep, stringComparator, sum } from './utils';
 import { WorkerProgressCallback } from './worker_pool';
 
 export interface AuraStats {
@@ -1508,6 +1514,9 @@ export class Player<SpecType extends Spec> {
 	}
 
 	fromProto(eventID: EventID, proto: PlayerProto, includeCategories?: Array<SimSettingCategories>) {
+		// Fix potential out-of-date protos before importing
+		Player.updateProtoVersion(proto);
+
 		const loadCategory = (cat: SimSettingCategories) => !includeCategories || includeCategories.length == 0 || includeCategories.includes(cat);
 
 		TypedEvent.freezeAllAndDo(() => {
@@ -1595,5 +1604,47 @@ export class Player<SpecType extends Spec> {
 
 	getMasteryPerPointModifier(): number {
 		return Mechanics.masteryPercentPerPoint.get(this.getSpec()) || 0;
+	}
+
+	static updateProtoVersion(proto: PlayerProto) {
+		if (!(proto.apiVersion < CURRENT_API_VERSION)) {
+			return;
+		}
+		Database.get().then((db: Database) => {
+			if (proto.consumes && typeof proto.consumes !== 'undefined') {
+				if (proto.consumes.prepopPotion != Potions.UnknownPotion && proto.consumes.prepotId == 0) {
+					proto.consumes.prepotId =
+						findInputItemForEnum(Potions, proto.consumes.defaultPotion, db.getConsumablesByType(ConsumableType.ConsumableTypePotion))?.id ?? 0;
+				}
+				if (proto.consumes.defaultPotion != Potions.UnknownPotion && proto.consumes.potId == 0) {
+					proto.consumes.potId =
+						findInputItemForEnum(Potions, proto.consumes.defaultPotion, db.getConsumablesByType(ConsumableType.ConsumableTypePotion))?.id ?? 0;
+				}
+				if (proto.consumes.flask != Flask.FlaskUnknown && proto.consumes.flaskId == 0) {
+					proto.consumes.flaskId =
+						findInputItemForEnum(Flask, proto.consumes.flask, db.getConsumablesByType(ConsumableType.ConsumableTypeFlask))?.id ?? 0;
+				}
+				if (proto.consumes.food != Food.FoodUnknown && proto.consumes.foodId == 0) {
+					proto.consumes.foodId =
+						findInputItemForEnum(Food, proto.consumes.flask, db.getConsumablesByType(ConsumableType.ConsumableTypeFood))?.id ?? 0;
+
+					if (proto.consumes.food === Food.FoodSeafoodFeast) {
+						proto.consumes.foodId = 62290;
+					} else if (proto.consumes.food === Food.FoodFortuneCookie) {
+						proto.consumes.foodId = 62649;
+					}
+				}
+				if (proto.consumes.guardianElixir != GuardianElixir.GuardianElixirUnknown && proto.consumes.guardianElixirId == 0) {
+					proto.consumes.guardianElixirId =
+						findInputItemForEnum(GuardianElixir, proto.consumes.guardianElixir, db.getConsumablesByType(ConsumableType.ConsumableTypeElixir))?.id ??
+						0;
+				}
+				if (proto.consumes.battleElixir != BattleElixir.BattleElixirUnknown && proto.consumes.battleElixirId == 0) {
+					proto.consumes.battleElixirId =
+						findInputItemForEnum(BattleElixir, proto.consumes.battleElixir, db.getConsumablesByType(ConsumableType.ConsumableTypeElixir))?.id ?? 0;
+				}
+			}
+			proto.apiVersion = CURRENT_API_VERSION;
+		});
 	}
 }

@@ -1,9 +1,7 @@
 import { PaladinMajorGlyph, PaladinMinorGlyph, PaladinPrimeGlyph, PaladinTalents } from '../proto/paladin.js';
 import { GlyphsConfig } from './glyphs_picker.js';
 import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
-import PaladinTalentJson from './trees/paladin.json';
-
-export const paladinTalentsConfig: TalentsConfig<PaladinTalents> = newTalentsConfig(PaladinTalentJson);
+import PaladinTalentJson from './trees/paladin.json';export const paladinTalentsConfig: TalentsConfig<PaladinTalents> = newTalentsConfig(PaladinTalentJson);
 
 export const paladinGlyphsConfig: GlyphsConfig = {
 	primeGlyphs: {

@@ -727,7 +727,11 @@ var ExtraItemIcons = []int32{
 }
 
 // Item Ids of consumables to allow
-var ConsumableAllowList = []int32{}
+var ConsumableAllowList = []int32{
+	//Fortune Cookie and Feast
+	62649,
+	62290,
+}
 
 // Raid buffs / debuffs
 var SharedSpellsIcons = []int32{
