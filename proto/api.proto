@@ -6,7 +6,7 @@ option go_package = "./proto";
 import "common.proto";
 import "apl.proto";
 import "db.proto";
-import "core.proto";
+import "spell.proto";
 import "death_knight.proto";
 import "druid.proto";
 import "hunter.proto";

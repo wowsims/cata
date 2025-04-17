@@ -272,6 +272,17 @@ func main() {
 
 		maxUpgradeSteps := []int{1, 2, 3, 4}
 
+		ilvls := []int{int(parsed.Ilvl)}
+
+		for _, step := range maxUpgradeSteps {
+			ilvls = append(ilvls, item.ItemLevel+item.UpgradeItemLevelBy(step))
+		}
+
+		// MoP Challenge mode downgrade
+		if parsed.Ilvl > 630 {
+			ilvls = append(ilvls, 630)
+		}
+
 		if db.RandomPropAllocationsByIlvl[parsed.Ilvl] == nil {
 			new := make(map[int32]*proto.QualityAllocations)
 			props := randPropsByIlvl[parsed.Ilvl]
@@ -288,128 +299,88 @@ func main() {
 		}
 
 		if parsed.Stats[proto.Stat_StatArmor] > 0 {
-			if db.TotalArmorValues[parsed.Ilvl] == nil {
-				armorTotal := itemArmorTotal[int(parsed.Ilvl)]
-				db.TotalArmorValues[parsed.Ilvl] = armorTotal.ToProto()
-			}
-			if db.Armor.ArmorValues[parsed.Ilvl] == nil {
-				armorValues := itemArmorQuality[int(parsed.Ilvl)]
-				db.Armor.ArmorValues[parsed.Ilvl] = armorValues.ToProto()
-			}
-			if db.Armor.ShieldArmorValues[parsed.Ilvl] == nil {
-				armorValues := itemArmorShield[int(parsed.Ilvl)]
-				db.Armor.ShieldArmorValues[parsed.Ilvl] = armorValues.ToProto()
-			}
-
-			for _, num := range maxUpgradeSteps {
-				updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
-
-				if db.Armor.ShieldArmorValues[int32(updatedIlvl)] == nil {
-					total := itemArmorShield[updatedIlvl]
-					db.Armor.ShieldArmorValues[int32(updatedIlvl)] = total.ToProto()
-				}
-				if db.Armor.ShieldArmorValues[int32(updatedIlvl)] == nil {
-					total := itemArmorQuality[updatedIlvl]
-					db.Armor.ShieldArmorValues[int32(updatedIlvl)] = total.ToProto()
-				}
-				if db.TotalArmorValues[int32(updatedIlvl)] == nil {
-					armorTotal := itemArmorTotal[updatedIlvl]
-					db.TotalArmorValues[int32(updatedIlvl)] = armorTotal.ToProto()
-				}
-
+			for _, lvl := range ilvls {
+				ensureArmorTotal(
+					db.TotalArmorValues,
+					itemArmorTotal,
+					int32(lvl),
+				)
+				ensureArmorQuality(
+					&db.ArmorDb.ArmorValues,
+					itemArmorQuality,
+					int32(lvl),
+				)
+				ensureShieldArmor(
+					&db.ArmorDb.ShieldArmorValues,
+					itemArmorShield,
+					int32(lvl),
+				)
 			}
 		}
-
 		switch item.InventoryType {
 		case dbc.INVTYPE_WEAPON, dbc.INVTYPE_WEAPONMAINHAND, dbc.INVTYPE_WEAPONOFFHAND:
-			{
-				if item.Flags1.Has(dbc.CASTER_WEAPON) {
-					damageValues := itemDamageTables["ItemDamageOneHandCaster"][int(parsed.Ilvl)]
-					db.WeaponDamage.Caster_1H[parsed.Ilvl] = damageValues.ToProto()
-					for _, num := range maxUpgradeSteps {
-
-						updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
-						if db.WeaponDamage.Caster_1H[int32(updatedIlvl)] == nil {
-							total := itemDamageTables["ItemDamageOneHandCaster"][updatedIlvl]
-							db.WeaponDamage.Caster_1H[int32(updatedIlvl)] = total.ToProto()
-						}
-
-					}
-				} else {
-					damageValues := itemDamageTables["ItemDamageOneHand"][int(parsed.Ilvl)]
-					db.WeaponDamage.Melee_1H[parsed.Ilvl] = damageValues.ToProto()
-					for _, num := range maxUpgradeSteps {
-
-						updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
-						if db.WeaponDamage.Melee_1H[int32(updatedIlvl)] == nil {
-							total := itemDamageTables["ItemDamageOneHand"][updatedIlvl]
-							db.WeaponDamage.Melee_1H[int32(updatedIlvl)] = total.ToProto()
-						}
-
-					}
-				}
-			}
-		case dbc.INVTYPE_2HWEAPON:
 			if item.Flags1.Has(dbc.CASTER_WEAPON) {
-				damageValues := itemDamageTables["ItemDamageTwoHandCaster"][int(parsed.Ilvl)]
-				db.WeaponDamage.Caster_2H[parsed.Ilvl] = damageValues.ToProto()
-				for _, num := range maxUpgradeSteps {
-
-					updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
-					if db.WeaponDamage.Caster_2H[int32(updatedIlvl)] == nil {
-						total := itemDamageTables["ItemDamageTwoHandCaster"][updatedIlvl]
-						db.WeaponDamage.Caster_2H[int32(updatedIlvl)] = total.ToProto()
-					}
-
+				for _, lvl := range ilvls {
+					ensureWeaponDamage(
+						&db.WeaponDamageDb.Caster_1H,
+						itemDamageTables["ItemDamageOneHandCaster"],
+						int32(lvl),
+					)
 				}
 			} else {
-				damageValues := itemDamageTables["ItemDamageTwoHand"][int(parsed.Ilvl)]
-				db.WeaponDamage.Melee_2H[parsed.Ilvl] = damageValues.ToProto()
-				for _, num := range maxUpgradeSteps {
-
-					updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
-					if db.WeaponDamage.Melee_2H[int32(updatedIlvl)] == nil {
-						total := itemDamageTables["ItemDamageTwoHand"][updatedIlvl]
-						db.WeaponDamage.Melee_2H[int32(updatedIlvl)] = total.ToProto()
-					}
-
+				for _, lvl := range ilvls {
+					ensureWeaponDamage(
+						&db.WeaponDamageDb.Melee_1H,
+						itemDamageTables["ItemDamageOneHand"],
+						int32(lvl),
+					)
 				}
 			}
+
+		case dbc.INVTYPE_2HWEAPON:
+			if item.Flags1.Has(dbc.CASTER_WEAPON) {
+				for _, lvl := range ilvls {
+					ensureWeaponDamage(
+						&db.WeaponDamageDb.Caster_2H,
+						itemDamageTables["ItemDamageTwoHandCaster"],
+						int32(lvl),
+					)
+				}
+			} else {
+				for _, lvl := range ilvls {
+					ensureWeaponDamage(
+						&db.WeaponDamageDb.Melee_2H,
+						itemDamageTables["ItemDamageTwoHand"],
+						int32(lvl),
+					)
+				}
+			}
+
 		case dbc.INVTYPE_RANGED, dbc.INVTYPE_THROWN, dbc.INVTYPE_RANGEDRIGHT:
 			switch item.ItemSubClass {
 			case dbc.ITEM_SUBCLASS_WEAPON_BOW, dbc.ITEM_SUBCLASS_WEAPON_GUN, dbc.ITEM_SUBCLASS_WEAPON_CROSSBOW:
-				damageValues := itemDamageTables["ItemDamageRanged"][int(parsed.Ilvl)]
-				db.WeaponDamage.Ranged[parsed.Ilvl] = damageValues.ToProto()
-				for _, num := range maxUpgradeSteps {
-
-					updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
-					if db.WeaponDamage.Ranged[int32(updatedIlvl)] == nil {
-						total := itemDamageTables["ItemDamageRanged"][updatedIlvl]
-						db.WeaponDamage.Ranged[int32(updatedIlvl)] = total.ToProto()
-					}
+				for _, lvl := range ilvls {
+					ensureWeaponDamage(
+						&db.WeaponDamageDb.Ranged,
+						itemDamageTables["ItemDamageRanged"],
+						int32(lvl),
+					)
 				}
 			case dbc.ITEM_SUBCLASS_WEAPON_THROWN:
-				damageValues := itemDamageTables["ItemDamageThrown"][int(parsed.Ilvl)]
-				db.WeaponDamage.Thrown[parsed.Ilvl] = damageValues.ToProto()
-				for _, num := range maxUpgradeSteps {
-
-					updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
-					if db.WeaponDamage.Thrown[int32(updatedIlvl)] == nil {
-						total := itemDamageTables["ItemDamageThrown"][updatedIlvl]
-						db.WeaponDamage.Thrown[int32(updatedIlvl)] = total.ToProto()
-					}
-
+				for _, lvl := range ilvls {
+					ensureWeaponDamage(
+						&db.WeaponDamageDb.Thrown,
+						itemDamageTables["ItemDamageThrown"],
+						int32(lvl),
+					)
 				}
 			case dbc.ITEM_SUBCLASS_WEAPON_WAND:
-				damageValues := itemDamageTables["ItemDamageWand"][int(parsed.Ilvl)]
-				db.WeaponDamage.Wand[parsed.Ilvl] = damageValues.ToProto()
-				for _, num := range maxUpgradeSteps {
-					updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
-					if db.WeaponDamage.Wand[int32(updatedIlvl)] == nil {
-						ItemDamageWand := itemDamageTables["ItemDamageWand"][updatedIlvl]
-						db.WeaponDamage.Wand[int32(updatedIlvl)] = ItemDamageWand.ToProto()
-					}
-
+				for _, lvl := range ilvls {
+					ensureWeaponDamage(
+						&db.WeaponDamageDb.Wand,
+						itemDamageTables["ItemDamageWand"],
+						int32(lvl),
+					)
 				}
 			}
 		}
@@ -421,16 +392,12 @@ func main() {
 	ApplySimmableFilters(db)
 	for _, enchant := range db.Enchants {
 		if enchant.ItemId != 0 {
-			db.AddItemIconClean(enchant.ItemId, enchant.Icon, enchant.Name)
+			db.AddItemIcon(enchant.ItemId, enchant.Icon, enchant.Name)
 		}
 		if enchant.SpellId != 0 {
-			db.AddSpellIconClean(enchant.ItemId, enchant.Icon, enchant.Name)
+			db.AddSpellIcon(enchant.ItemId, enchant.Icon, enchant.Name)
 		}
 	}
-
-	// for _, itemID := range database.ExtraItemIcons {
-	// 	//	db.AddItemIcon(itemID, itemTooltips)
-	// }
 
 	for _, consume := range db.Consumables {
 		if len(consume.EffectIds) > 0 {
@@ -1110,6 +1077,7 @@ func GetAllRotationSpellIds() map[string][]int32 {
 	}
 	return ret_db
 }
+
 func updateMapWithUpgrades[T any](m map[int32]*T, baseIlvl int32, maxUpgradeSteps []int,
 	lookup func(int) *T, upgradeFunc func(base, step int) int) {
 
@@ -1123,6 +1091,69 @@ func updateMapWithUpgrades[T any](m map[int32]*T, baseIlvl int32, maxUpgradeStep
 		ilvlKey := int32(upgraded)
 		if m[ilvlKey] == nil {
 			m[ilvlKey] = lookup(upgraded)
+		}
+	}
+}
+
+func ensureArmorTotal(
+	dest map[int32]*proto.ItemArmorTotal,
+	src map[int]dbc.ItemArmorTotal,
+	lvl int32,
+) {
+	if _, ok := dest[lvl]; !ok {
+		if tbl, found := src[int(lvl)]; found {
+			dest[lvl] = tbl.ToProto()
+		}
+	}
+}
+
+func ensureArmorQuality(
+	dest *[]*proto.ItemQualityValue,
+	src map[int]dbc.ItemArmorQuality,
+	lvl int32,
+) {
+	if int(lvl) >= len(*dest) {
+		buf := make([]*proto.ItemQualityValue, lvl+1)
+		copy(buf, *dest)
+		*dest = buf
+	}
+	if (*dest)[lvl] == nil {
+		if tbl, found := src[int(lvl)]; found {
+			(*dest)[lvl] = tbl.ToProto()
+		}
+	}
+}
+
+func ensureShieldArmor(
+	dest *[]*proto.ItemQualityValue,
+	src map[int]dbc.ItemArmorShield,
+	lvl int32,
+) {
+	if int(lvl) >= len(*dest) {
+		buf := make([]*proto.ItemQualityValue, lvl+1)
+		copy(buf, *dest)
+		*dest = buf
+	}
+	if (*dest)[lvl] == nil {
+		if tbl, found := src[int(lvl)]; found {
+			(*dest)[lvl] = tbl.ToProto()
+		}
+	}
+}
+
+func ensureWeaponDamage(
+	dest *[]*proto.ItemQualityValue,
+	src map[int]dbc.ItemDamageTable,
+	lvl int32,
+) {
+	if int(lvl) >= len(*dest) {
+		buf := make([]*proto.ItemQualityValue, lvl+1)
+		copy(buf, *dest)
+		*dest = buf
+	}
+	if (*dest)[lvl] == nil {
+		if tbl, found := src[int(lvl)]; found {
+			(*dest)[lvl] = tbl.ToProto()
 		}
 	}
 }

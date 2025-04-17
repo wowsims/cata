@@ -44,8 +44,8 @@ type WowDatabase struct {
 	GlyphIDs   []*proto.GlyphID
 
 	RandomPropAllocationsByIlvl map[int32]*proto.QualityAllocations
-	WeaponDamage                *proto.WeaponDamageDatabase
-	Armor                       *proto.ArmorValueDatabase
+	WeaponDamageDb              *proto.WeaponDamageDatabase
+	ArmorDb                     *proto.ArmorValueDatabase
 
 	TotalArmorValues map[int32]*proto.ItemArmorTotal
 
@@ -67,8 +67,8 @@ func NewWowDatabase() *WowDatabase {
 		ReforgeStats: make(map[int32]*proto.ReforgeStat),
 
 		RandomPropAllocationsByIlvl: make(map[int32]*proto.QualityAllocations),
-		WeaponDamage:                &proto.WeaponDamageDatabase{},
-		Armor:                       &proto.ArmorValueDatabase{},
+		WeaponDamageDb:              &proto.WeaponDamageDatabase{},
+		ArmorDb:                     &proto.ArmorValueDatabase{},
 		TotalArmorValues:            make(map[int32]*proto.ItemArmorTotal),
 
 		Consumables: make(map[int32]*proto.Consumable),
@@ -91,8 +91,8 @@ func (db *WowDatabase) Clone() *WowDatabase {
 
 		RandomPropAllocationsByIlvl: maps.Clone(db.RandomPropAllocationsByIlvl),
 
-		WeaponDamage:     googleProto.Clone(db.WeaponDamage).(*proto.WeaponDamageDatabase),
-		Armor:            googleProto.Clone(db.Armor).(*proto.ArmorValueDatabase),
+		WeaponDamageDb:   googleProto.Clone(db.WeaponDamageDb).(*proto.WeaponDamageDatabase),
+		ArmorDb:          googleProto.Clone(db.ArmorDb).(*proto.ArmorValueDatabase),
 		TotalArmorValues: maps.Clone(db.TotalArmorValues),
 		Consumables:      maps.Clone(db.Consumables),
 		Effects:          maps.Clone(db.Effects),
@@ -202,12 +202,12 @@ func (db *WowDatabase) MergeEffect(src *proto.SpellEffect) {
 	}
 }
 
-func (db *WowDatabase) AddItemIconClean(id int32, icon string, name string) {
+func (db *WowDatabase) AddItemIcon(id int32, icon string, name string) {
 	db.ItemIcons[id] = &proto.IconData{Id: id, Name: name, Icon: icon}
 
 }
 
-func (db *WowDatabase) AddSpellIconClean(id int32, icon string, name string) {
+func (db *WowDatabase) AddSpellIcon(id int32, icon string, name string) {
 	db.SpellIcons[id] = &proto.IconData{Id: id, Name: name, Icon: icon}
 
 }
@@ -267,8 +267,8 @@ func (db *WowDatabase) ToUIProto() *proto.UIDatabase {
 		ReforgeStats:     mapToSlice(db.ReforgeStats),
 		RandomPropPoints: db.RandomPropAllocationsByIlvl,
 		ArmorTotalValue:  mapToSliceByIlvl(db.TotalArmorValues),
-		WeaponDamage:     db.WeaponDamage,
-		Armor:            db.Armor,
+		WeaponDamageDb:   db.WeaponDamageDb,
+		ArmorDb:          db.ArmorDb,
 		Consumables:      mapToSlice(db.Consumables),
 		SpellEffects:     mapToSlice(db.Effects),
 	}
@@ -310,8 +310,8 @@ func ReadDatabaseFromJson(jsonStr string) *WowDatabase {
 		SpellIcons:                  sliceToMap(dbProto.SpellIcons),
 		ReforgeStats:                sliceToMap(dbProto.ReforgeStats),
 		RandomPropAllocationsByIlvl: dbProto.RandomPropPoints,
-		WeaponDamage:                dbProto.WeaponDamage,
-		Armor:                       dbProto.Armor,
+		WeaponDamageDb:              dbProto.WeaponDamageDb,
+		ArmorDb:                     dbProto.ArmorDb,
 		TotalArmorValues:            sliceToMapIlvl(dbProto.ArmorTotalValue),
 		Consumables:                 sliceToMap(dbProto.Consumables),
 		Effects:                     sliceToMap(dbProto.SpellEffects),
@@ -364,9 +364,9 @@ func (db *WowDatabase) WriteJson(jsonFilePath string) {
 	buffer.WriteString(",\n")
 	tools.WriteProtoArrayToBuffer(uidb.GlyphIds, buffer, "glyphIds")
 	buffer.WriteString(",\n")
-	tools.WriteArmorValuesToBuffer(uidb.Armor, buffer, "armorValue")
+	tools.WriteArmorValuesToBuffer(uidb.ArmorDb, buffer, "armorValue")
 	buffer.WriteString(",\n")
-	tools.WriteWeaponDamageToBuffer(uidb.WeaponDamage, buffer, "weaponDamage")
+	tools.WriteWeaponDamageToBuffer(uidb.WeaponDamageDb, buffer, "weaponDamage")
 	buffer.WriteString(",\n")
 	tools.WriteProtoArrayToBuffer(uidb.ArmorTotalValue, buffer, "armorTotalValue")
 	buffer.WriteString(",\n")

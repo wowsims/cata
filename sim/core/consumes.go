@@ -40,7 +40,7 @@ func applyConsumeEffects(agent Agent) {
 			break
 		case 9224:
 			if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
-				character.PseudoStats.MobTypeAttackPower += 180
+				character.PseudoStats.MobTypeAttackPower += 105
 			}
 		default:
 			if elixir.Stats[stats.MasteryRating] > 0 {

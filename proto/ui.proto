@@ -31,8 +31,8 @@ message UIDatabase {
 	map<int32, QualityAllocations> random_prop_points = 13; // keyed by ilvl
 	repeated ItemArmorTotal armor_total_value = 16;
 
-	WeaponDamageDatabase weapon_damage = 17;
-	ArmorValueDatabase armor = 18;
+	WeaponDamageDatabase weapon_damage_db = 17;
+	ArmorValueDatabase armor_db = 18;
 
 	repeated Consumable consumables = 19;
 	repeated SpellEffect spell_effects = 20;

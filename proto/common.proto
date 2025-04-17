@@ -722,6 +722,7 @@ message Debuffs {
 
 // Deprecate this entirely with time
 message Consumes {
+	option deprecated = true;
 	Flask flask = 1 [deprecated = true];
 	BattleElixir battle_elixir = 2 [deprecated = true];
 	GuardianElixir guardian_elixir = 3 [deprecated = true];
