@@ -125,6 +125,9 @@ func (item *Item) GetStats(itemLevel int) *stats.Stats {
 	if armor > 0 {
 		stats[proto.Stat_StatArmor] = float64(armor)
 
+		if item.QualityModifier > 0 {
+			stats[proto.Stat_StatBonusArmor] = item.QualityModifier
+		}
 	}
 	return stats
 }
@@ -273,8 +276,8 @@ func (item *Item) GetArmorValue(itemLevel int) int {
 	}
 	total_armor := 0.0
 	quality := 0.0
-
-	armorModifier := GetDBC().ArmorLocation[item.InventoryType]
+	//	3688.5300292969 * 1.37000000477 * 0.15999999642
+	armorModifier := GetDBC().ArmorLocation[item.InventoryType] //	0.15999999642 	3688.5300292969 	1.37000000477
 	if item.InventoryType == INVTYPE_ROBE {
 		armorModifier = GetDBC().ArmorLocation[INVTYPE_CHEST]
 	}

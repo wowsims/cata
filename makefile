@@ -233,8 +233,8 @@ nixlib: sim/core/proto/api.pb.go
 winlib: sim/core/proto/api.pb.go
 	GOOS=windows GOARCH=amd64 GOAMD64=v2 CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc go build -buildmode=c-shared -o wowsimcata-windows.dll --tags=with_db ./sim/lib/library.go
 
-.PHONY: items
-items: sim/core/items/all_items.go sim/core/proto/api.pb.go
+.PHONY: simdb
+simdb: sim/core/items/all_items.go sim/core/proto/api.pb.go
 
 CLIENTDATA_SETTINGS := $(shell realpath ./tools/database/generator-settings.json)
 CLIENTDATAPTR_SETTINGS := $(shell realpath ./tools/database/ptr-generator-settings.json)

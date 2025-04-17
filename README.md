@@ -163,13 +163,14 @@ make wowsimcata
 # make dist/cata && ./wowsimcata --usefs would rebuild the whole client and host it. (you would have had to run `make devserver` to build the wowsimcata binary first.)
 ./wowsimcata --usefs
 
-# Generate code for items. Only necessary if you changed the items generator.
-make items
+# Generate code for the sim database (db.json). Only necessary if you changed the items generator.
+# Useful only if you're actively working on the generator
+make simdb
 
 # Generate data from WoW client files
 # Requires dotnet 9 to run
 # Uses tools/database/generator-settings.json for settings
-# Also runs make items
+# Also runs make simdb
 # This is what you will use most of the time for generation
 make db
 
