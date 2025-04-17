@@ -81,9 +81,9 @@ func applyConsumeEffects(agent Agent) {
 	}
 
 	registerPotionCD(agent, consumables)
-	registerConjuredCD(agent, consumes)
-	registerExplosivesCD(agent, consumes)
-	registerTinkerHandsCD(agent, consumes)
+	registerConjuredCD(agent, consumables)
+	registerExplosivesCD(agent, consumables)
+	registerTinkerHandsCD(agent, consumables)
 }
 
 var PotionAuraTag = "Potion"
@@ -159,11 +159,7 @@ type resourceGainConfig struct {
 }
 
 func makePotionActivationSpellInternal(potion Consumable, character *Character, potionCD *Timer) MajorCooldown {
-	alchStoneEquipped := character.HasAlchStone()
-	stoneMul := 1.0
-	if alchStoneEquipped {
-		stoneMul = 1.4
-	}
+	stoneMul := TernaryFloat64(character.HasAlchStone(), 1.4, 1.0)
 
 	potionCast := CastConfig{
 		CD: Cooldown{
@@ -177,14 +173,18 @@ func makePotionActivationSpellInternal(potion Consumable, character *Character, 
 	}
 
 	actionID := ActionID{ItemID: potion.Id}
-	aura := character.NewTemporaryStatsAura(potion.Name, actionID, potion.Stats, time.Second*time.Duration(potion.BuffDuration))
+	var aura *StatBuffAura
 	mcd := MajorCooldown{
-		Type: aura.InferCDType(),
 		Spell: character.GetOrRegisterSpell(SpellConfig{
 			ActionID: actionID,
 			Flags:    SpellFlagNoOnCastComplete,
 			Cast:     potionCast,
 		}),
+	}
+	if potion.BuffDuration > 0 {
+		// Add stat buff aura if applicable
+		aura = character.NewTemporaryStatsAura(potion.Name, actionID, potion.Stats, time.Second*time.Duration(potion.BuffDuration))
+		mcd.Type = aura.InferCDType()
 	}
 	var gains []resourceGainConfig
 	resourceMetrics := make(map[proto.ResourceType]*ResourceMetrics)
@@ -212,7 +212,7 @@ func makePotionActivationSpellInternal(potion Consumable, character *Character, 
 	}
 
 	mcd.Spell.ApplyEffects = func(sim *Simulation, _ *Unit, _ *Spell) {
-		if potion.BuffDuration > 0 {
+		if aura != nil {
 			aura.Activate(sim)
 		}
 		for _, config := range gains {
@@ -245,11 +245,12 @@ func makePotionActivationSpellInternal(potion Consumable, character *Character, 
 
 var ConjuredAuraTag = "Conjured"
 
-func registerConjuredCD(agent Agent, consumes *proto.Consumes) {
+func registerConjuredCD(agent Agent, consumes *proto.ConsumesSpec) {
 	character := agent.GetCharacter()
-	conjuredType := consumes.DefaultConjured
 
-	if conjuredType == proto.Conjured_ConjuredDarkRune {
+	//Todo: Implement dynamic handling like pots etc.
+	switch consumes.ConjuredId {
+	case 20520:
 		actionID := ActionID{ItemID: 20520}
 		manaMetrics := character.NewManaMetrics(actionID)
 		// damageTakenManaMetrics := character.NewManaMetrics(ActionID{SpellID: 33776})
@@ -285,7 +286,7 @@ func registerConjuredCD(agent Agent, consumes *proto.Consumes) {
 				return character.MaxMana()-(character.CurrentMana()+totalRegen) >= 1500
 			},
 		})
-	} else if conjuredType == proto.Conjured_ConjuredHealthstone {
+	case 5512:
 		actionID := ActionID{ItemID: 5512}
 		healthMetrics := character.NewHealthMetrics(actionID)
 
@@ -318,13 +319,14 @@ func registerConjuredCD(agent Agent, consumes *proto.Consumes) {
 var BigDaddyActionID = ActionID{SpellID: 89637}
 var HighpoweredBoltGunActionID = ActionID{ItemID: 40771}
 
-func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
+func registerExplosivesCD(agent Agent, consumes *proto.ConsumesSpec) {
+	//Todo: Get them dynamically from dbc data
 	character := agent.GetCharacter()
 	if !character.HasProfession(proto.Profession_Engineering) {
 		return
 	}
-
-	if consumes.ExplosiveBigDaddy {
+	switch consumes.ExplosiveId {
+	case 89637:
 		bomb := character.GetOrRegisterSpell(SpellConfig{
 			ActionID:    BigDaddyActionID,
 			SpellSchool: SpellSchoolFire,
@@ -365,9 +367,7 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 			Type:     CooldownTypeDPS | CooldownTypeExplosive,
 			Priority: CooldownPriorityLow + 10,
 		})
-	}
-
-	if consumes.HighpoweredBoltGun {
+	case 40771:
 		boltGun := character.GetOrRegisterSpell(SpellConfig{
 			ActionID:    ActionID{SpellID: 82207},
 			SpellSchool: SpellSchoolFire,
@@ -412,17 +412,18 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 	}
 }
 
-func registerTinkerHandsCD(agent Agent, consumes *proto.Consumes) {
-	if consumes.TinkerHands == proto.TinkerHands_TinkerHandsNone {
+func registerTinkerHandsCD(agent Agent, consumes *proto.ConsumesSpec) {
+	if consumes.TinkerId == 0 {
 		return
 	}
 	character := agent.GetCharacter()
 	if !character.HasProfession(proto.Profession_Engineering) {
 		return
 	}
-
-	switch consumes.TinkerHands {
-	case proto.TinkerHands_TinkerHandsSynapseSprings:
+	//Todo: Get them dynamically from dbc data
+	// We switch on Enchant ID
+	switch consumes.TinkerId {
+	case 4179:
 		// Enchant: 4179, Spell: 82174 - Synapse Springs
 		statType := character.GetHighestStatType([]stats.Stat{stats.Intellect, stats.Strength, stats.Agility})
 
@@ -480,7 +481,7 @@ func registerTinkerHandsCD(agent Agent, consumes *proto.Consumes) {
 			Type:     CooldownTypeDPS,
 		})
 		character.ItemSwap.ProcessTinker(spell, []proto.ItemSlot{proto.ItemSlot_ItemSlotHands})
-	case proto.TinkerHands_TinkerHandsQuickflipDeflectionPlates:
+	case 4180:
 		// Enchant: 4180, Spell: 82176 - Quickflip Deflection Plates
 		actionID := ActionID{SpellID: 82176}
 		statAura := character.NewTemporaryStatsAura(
@@ -513,7 +514,7 @@ func registerTinkerHandsCD(agent Agent, consumes *proto.Consumes) {
 			Type:     CooldownTypeSurvival,
 		})
 		character.ItemSwap.ProcessTinker(spell, []proto.ItemSlot{proto.ItemSlot_ItemSlotHands})
-	case proto.TinkerHands_TinkerHandsTazikShocker:
+	case 4181:
 		// Enchant: 4181, Spell: 82180 - Tazik Shocker
 		actionID := ActionID{SpellID: 82179}
 		spell := character.GetOrRegisterSpell(SpellConfig{
@@ -546,7 +547,7 @@ func registerTinkerHandsCD(agent Agent, consumes *proto.Consumes) {
 			Priority: CooldownPriorityLow,
 			Type:     CooldownTypeDPS,
 		})
-	case proto.TinkerHands_TinkerHandsSpinalHealingInjector:
+	case 4182:
 		// Enchant: 4182, Spell: 82184 - Spinal Healing Injector
 		actionID := ActionID{SpellID: 82184}
 		healthMetric := character.NewHealthMetrics(actionID)
@@ -582,7 +583,7 @@ func registerTinkerHandsCD(agent Agent, consumes *proto.Consumes) {
 			Type:     CooldownTypeSurvival,
 		})
 		character.ItemSwap.ProcessTinker(spell, []proto.ItemSlot{proto.ItemSlot_ItemSlotHands})
-	case proto.TinkerHands_TinkerHandsZ50ManaGulper:
+	case 4183:
 		// Enchant: 4183, Spell: 82186 - Z50 Mana Gulper
 		actionId := ActionID{SpellID: 82186}
 		manaMetric := character.NewManaMetrics(actionId)

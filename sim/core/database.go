@@ -63,7 +63,7 @@ func addToDatabase(newDB *proto.SimDatabase) {
 			ConsumablesByID[v.Id] = ConsumableFromProto(v)
 		}
 	}
-	for _, v := range newDB.Effects {
+	for _, v := range newDB.SpellEffects {
 		if _, ok := SpellEffectsById[v.Id]; !ok {
 			SpellEffectsById[v.Id] = v
 		}
@@ -103,7 +103,6 @@ type Consumable struct {
 	Stats         stats.Stats
 	BuffsMainStat bool
 	Name          string
-	Icon          string
 	BuffDuration  time.Duration
 	EffectIds     []int32
 }
@@ -115,21 +114,7 @@ func ConsumableFromProto(consumable *proto.Consumable) Consumable {
 		Stats:         stats.FromProtoArray(consumable.Stats),
 		BuffsMainStat: consumable.BuffsMainStat,
 		Name:          consumable.Name,
-		Icon:          consumable.Icon,
 		BuffDuration:  time.Second * time.Duration(consumable.BuffDuration),
-		EffectIds:     consumable.EffectIds,
-	}
-}
-
-func ConsumableToProto(consumable *Consumable) *proto.Consumable {
-	return &proto.Consumable{
-		Id:            consumable.Id,
-		Type:          consumable.Type,
-		Stats:         consumable.Stats.ToProtoArray(),
-		BuffsMainStat: consumable.BuffsMainStat,
-		Name:          consumable.Name,
-		Icon:          consumable.Icon,
-		BuffDuration:  int32(consumable.BuffDuration.Seconds()),
 		EffectIds:     consumable.EffectIds,
 	}
 }

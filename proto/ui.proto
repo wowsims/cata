@@ -28,14 +28,14 @@ message UIDatabase {
 	repeated GlyphID glyph_ids = 7;
 	repeated ReforgeStat reforge_stats = 12;
 
-	repeated RandomPropAllocation random_prop_points = 13;
+	map<int32, QualityAllocations> random_prop_points = 13; // keyed by ilvl
 	repeated ItemArmorTotal armor_total_value = 16;
 
 	WeaponDamageDatabase weapon_damage = 17;
 	ArmorValueDatabase armor = 18;
 
 	repeated Consumable consumables = 19;
-	repeated SpellEffect effects = 20;
+	repeated SpellEffect spell_effects = 20;
 }
 
 message UIZone {
@@ -102,14 +102,12 @@ message UIItem {
 	FactionRestriction faction_restriction = 25;
 
 	// Neccessary for scaling items in MoP
-	bool is_scaled = 29;
-	int32 scaled_ilvl = 30;
-	double dmg_variance = 31;
-	double armor_modifier = 32;
-	double quality_modifier = 33;
-	repeated double socket_modifier = 34;
-	double max_ilvl = 35;
-	repeated double stat_allocation = 36;
+	double dmg_variance = 29;
+	double armor_modifier = 30;
+	double quality_modifier = 31;
+	repeated double socket_modifier = 32;
+	double max_ilvl = 33;
+	repeated double stat_allocation = 34;
 }
 
 enum Expansion {

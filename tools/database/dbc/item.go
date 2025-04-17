@@ -62,8 +62,6 @@ func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
 		WeaponSpeed:         float64(item.ItemDelay) / 1000,
 		GemSockets:          item.GetGemSlots(),
 		SocketBonus:         item.GetGemBonus().ToProtoArray(),
-		IsScaled:            item.ItemLevel != itemLevel,
-		ScaledIlvl:          int32(itemLevel),
 	}
 	if item.ItemLevel >= 458 {
 		uiItem.DmgVariance = item.DmgVariance

@@ -33,7 +33,6 @@ func StringFromActionIDs(actionIDs []ActionID) string {
 	return strings.Join(names, ", ")
 }
 func (unit *Unit) ExecuteResourceGain(sim *Simulation, resource proto.ResourceType, amount float64, metrics *ResourceMetrics) {
-
 	switch {
 	case resource == proto.ResourceType_ResourceTypeMana && amount > 0:
 		unit.AddMana(sim, amount, metrics)

@@ -43,7 +43,7 @@ type WowDatabase struct {
 	Encounters []*proto.PresetEncounter
 	GlyphIDs   []*proto.GlyphID
 
-	RandomPropAllocationsByIlvl map[int32]*proto.RandomPropAllocation
+	RandomPropAllocationsByIlvl map[int32]*proto.QualityAllocations
 	WeaponDamage                *proto.WeaponDamageDatabase
 	Armor                       *proto.ArmorValueDatabase
 
@@ -66,7 +66,7 @@ func NewWowDatabase() *WowDatabase {
 		SpellIcons:   make(map[int32]*proto.IconData),
 		ReforgeStats: make(map[int32]*proto.ReforgeStat),
 
-		RandomPropAllocationsByIlvl: make(map[int32]*proto.RandomPropAllocation),
+		RandomPropAllocationsByIlvl: make(map[int32]*proto.QualityAllocations),
 		WeaponDamage:                &proto.WeaponDamageDatabase{},
 		Armor:                       &proto.ArmorValueDatabase{},
 		TotalArmorValues:            make(map[int32]*proto.ItemArmorTotal),
@@ -265,12 +265,12 @@ func (db *WowDatabase) ToUIProto() *proto.UIDatabase {
 		SpellIcons:       mapToSlice(db.SpellIcons),
 		GlyphIds:         db.GlyphIDs,
 		ReforgeStats:     mapToSlice(db.ReforgeStats),
-		RandomPropPoints: mapToSliceByIlvl(db.RandomPropAllocationsByIlvl),
+		RandomPropPoints: db.RandomPropAllocationsByIlvl,
 		ArmorTotalValue:  mapToSliceByIlvl(db.TotalArmorValues),
 		WeaponDamage:     db.WeaponDamage,
 		Armor:            db.Armor,
 		Consumables:      mapToSlice(db.Consumables),
-		Effects:          mapToSlice(db.Effects),
+		SpellEffects:     mapToSlice(db.Effects),
 	}
 }
 
@@ -309,12 +309,12 @@ func ReadDatabaseFromJson(jsonStr string) *WowDatabase {
 		ItemIcons:                   sliceToMap(dbProto.ItemIcons),
 		SpellIcons:                  sliceToMap(dbProto.SpellIcons),
 		ReforgeStats:                sliceToMap(dbProto.ReforgeStats),
-		RandomPropAllocationsByIlvl: sliceToMapIlvl(dbProto.RandomPropPoints),
+		RandomPropAllocationsByIlvl: dbProto.RandomPropPoints,
 		WeaponDamage:                dbProto.WeaponDamage,
 		Armor:                       dbProto.Armor,
 		TotalArmorValues:            sliceToMapIlvl(dbProto.ArmorTotalValue),
 		Consumables:                 sliceToMap(dbProto.Consumables),
-		Effects:                     sliceToMap(dbProto.Effects),
+		Effects:                     sliceToMap(dbProto.SpellEffects),
 	}
 }
 
@@ -370,11 +370,11 @@ func (db *WowDatabase) WriteJson(jsonFilePath string) {
 	buffer.WriteString(",\n")
 	tools.WriteProtoArrayToBuffer(uidb.ArmorTotalValue, buffer, "armorTotalValue")
 	buffer.WriteString(",\n")
-	tools.WriteProtoArrayToBuffer(uidb.RandomPropPoints, buffer, "randomPropPoints")
+	tools.WriteProtoMapToBuffer(uidb.RandomPropPoints, buffer, "randomPropPoints")
 	buffer.WriteString(",\n")
 	tools.WriteProtoArrayToBuffer(uidb.Consumables, buffer, "consumables")
 	buffer.WriteString(",\n")
-	tools.WriteProtoArrayToBuffer(uidb.Effects, buffer, "effects")
+	tools.WriteProtoArrayToBuffer(uidb.SpellEffects, buffer, "effects")
 	buffer.WriteString("\n")
 	buffer.WriteString("}")
 	os.WriteFile(jsonFilePath, buffer.Bytes(), 0666)

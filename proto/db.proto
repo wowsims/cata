@@ -11,11 +11,11 @@ message SimDatabase {
 	repeated SimEnchant enchants = 2;
 	repeated SimGem gems = 3;
 	repeated ReforgeStat reforge_stats = 6;
-	repeated RandomPropAllocation random_prop_points = 7;
-	WeaponDamageDatabase weapon_damage = 8;
-	ArmorValueDatabase armor = 9;
+	map<int32, QualityAllocations> random_prop_points = 7; // keyed by ilvl
+	WeaponDamageDatabase weapon_damage_db = 8;
+	ArmorValueDatabase armor_db = 9;
 	repeated Consumable consumables = 10;
-	repeated SpellEffect effects = 11;
+	repeated SpellEffect spell_effects = 11;
 	repeated ItemArmorTotal armor_total_value = 12;
 }
 
@@ -43,12 +43,10 @@ message SimItem {
 	int32 set_id = 16;
 
 	// Neccessary for scaling items in MoP
-	bool is_scaled = 17;
-	int32 scaled_ilvl = 18;
-	double dmg_variance = 19;
-	double armor_modifier = 20;
-	double quality_modifier = 21;
-	double socket_modifier = 22;
+	double dmg_variance = 17;
+	double armor_modifier = 18;
+	double quality_modifier = 19;
+	double socket_modifier = 20;
 }
 
 message Consumable {
@@ -83,11 +81,6 @@ message ItemArmorTotal {
 	double leather = 3;
 	double mail = 4;
 	double plate = 5;
-}
-
-message RandomPropAllocation {
-  int32 item_level = 1;
-  QualityAllocations allocations = 2;
 }
 
 message QualityAllocations {

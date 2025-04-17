@@ -273,19 +273,15 @@ func main() {
 		maxUpgradeSteps := []int{1, 2, 3, 4}
 
 		if db.RandomPropAllocationsByIlvl[parsed.Ilvl] == nil {
-			new := &proto.RandomPropAllocation{}
+			new := make(map[int32]*proto.QualityAllocations)
 			props := randPropsByIlvl[parsed.Ilvl]
-			new.ItemLevel = parsed.Ilvl
-			new.Allocations = props.Allocation.ToProto().Allocations
-			db.RandomPropAllocationsByIlvl[parsed.Ilvl] = new
+			new[parsed.Ilvl] = props.Allocation.ToProto()
+			db.RandomPropAllocationsByIlvl[parsed.Ilvl] = props.Allocation.ToProto()
 			for _, num := range maxUpgradeSteps {
 				updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
 				if db.RandomPropAllocationsByIlvl[int32(updatedIlvl)] == nil {
 					total := randPropsByIlvl[int32(updatedIlvl)]
-					prop := &proto.RandomPropAllocation{}
-					prop.ItemLevel = total.Ilvl
-					prop.Allocations = total.Allocation.ToProto().Allocations
-					db.RandomPropAllocationsByIlvl[int32(updatedIlvl)] = prop
+					db.RandomPropAllocationsByIlvl[int32(updatedIlvl)] = total.Allocation.ToProto()
 				}
 
 			}
