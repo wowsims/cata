@@ -6,6 +6,8 @@ option go_package = "./proto";
 import "api.proto";
 import "apl.proto";
 import "common.proto";
+import "db.proto";
+import "spell.proto";
 import "paladin.proto";
 
 // Holds all WoW data for the UI.
@@ -29,26 +31,11 @@ message UIDatabase {
 	repeated RandomPropAllocation random_prop_points = 13;
 	repeated ItemArmorTotal armor_total_value = 16;
 
-	repeated ItemQualityValue item_damage_1h_caster = 17;
+	WeaponDamageDatabase weapon_damage = 17;
+	ArmorValueDatabase armor = 18;
 
-	repeated ItemQualityValue item_damage_1h = 18;
-
-	repeated ItemQualityValue item_damage_2h_caster = 19;
-
-	repeated ItemQualityValue item_damage_2h = 20;
-
-	repeated ItemQualityValue item_damage_ranged = 21;
-
-	repeated ItemQualityValue item_damage_thrown = 22;
-
-	repeated ItemQualityValue item_damage_wand = 23;
-
-	repeated ItemQualityValue shield_armor_values = 24; // shield, armor
-
-	repeated ItemQualityValue armor_values = 26; // shield, armor
-
-	repeated Consumable consumables = 27;
-	repeated SpellEffect effects = 28;
+	repeated Consumable consumables = 19;
+	repeated SpellEffect effects = 20;
 }
 
 message UIZone {

@@ -1,7 +1,5 @@
 import { CHARACTER_LEVEL } from '../constants/mechanics.js';
 import {
-	Consumable,
-	ConsumableType,
 	EquipmentSpec,
 	GemColor,
 	ItemRandomSuffix,
@@ -12,9 +10,9 @@ import {
 	PresetTarget,
 	ReforgeStat,
 	SimDatabase,
-	SpellEffect,
 	Stat,
 } from '../proto/common.js';
+import { Consumable, ConsumableType, SpellEffect } from '../proto/db';
 import { GlyphID, IconData, UIDatabase, UIEnchant as Enchant, UIGem as Gem, UIItem as Item, UINPC as Npc, UIZone as Zone } from '../proto/ui.js';
 import { distinct } from '../utils.js';
 import { WOWHEAD_EXPANSION_ENV } from '../wowhead';

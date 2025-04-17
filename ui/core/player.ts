@@ -20,8 +20,6 @@ import { APLRotation, APLRotation_Type as APLRotationType, SimpleRotation } from
 import {
 	BattleElixir,
 	Class,
-	Consumable,
-	ConsumableType,
 	Consumes,
 	Cooldowns,
 	Faction,
@@ -46,6 +44,7 @@ import {
 	UnitReference,
 	UnitStats,
 } from './proto/common';
+import { ConsumableType } from './proto/db';
 import {
 	DungeonDifficulty,
 	RaidFilterOption,
@@ -1611,40 +1610,54 @@ export class Player<SpecType extends Spec> {
 			return;
 		}
 		const db = await Database.get();
+		if (!proto.consumables) {
+			proto.consumables!;
+		}
 		if (proto.consumes && typeof proto.consumes !== 'undefined') {
-			if (proto.consumes.prepopPotion != Potions.UnknownPotion && proto.consumes.prepotId == 0) {
-				proto.consumes.prepotId =
+			if (proto.consumes.prepopPotion != Potions.UnknownPotion && proto.consumables.prepotId == 0) {
+				proto.consumables.prepotId =
 					findInputItemForEnum(Potions, proto.consumes.defaultPotion, db.getConsumablesByType(ConsumableType.ConsumableTypePotion))?.id ?? 0;
 				proto.consumes.prepopPotion = Potions.UnknownPotion;
 			}
-			if (proto.consumes.defaultPotion != Potions.UnknownPotion && proto.consumes.potId == 0) {
-				proto.consumes.potId =
+			if (proto.consumes.defaultPotion != Potions.UnknownPotion && proto.consumables.potId == 0) {
+				proto.consumables.potId =
 					findInputItemForEnum(Potions, proto.consumes.defaultPotion, db.getConsumablesByType(ConsumableType.ConsumableTypePotion))?.id ?? 0;
 				proto.consumes.defaultPotion = Potions.UnknownPotion;
 			}
-			if (proto.consumes.flask != Flask.FlaskUnknown && proto.consumes.flaskId == 0) {
-				proto.consumes.flaskId =
+			if (proto.consumes.flask != Flask.FlaskUnknown && proto.consumables.flaskId == 0) {
+				proto.consumables.flaskId =
 					findInputItemForEnum(Flask, proto.consumes.flask, db.getConsumablesByType(ConsumableType.ConsumableTypeFlask))?.id ?? 0;
 				proto.consumes.flask = Flask.FlaskUnknown;
 			}
-			if (proto.consumes.food != Food.FoodUnknown && proto.consumes.foodId == 0) {
-				proto.consumes.foodId = findInputItemForEnum(Food, proto.consumes.flask, db.getConsumablesByType(ConsumableType.ConsumableTypeFood))?.id ?? 0;
+			if (proto.consumes.food != Food.FoodUnknown && proto.consumables.foodId == 0) {
+				proto.consumables.foodId =
+					findInputItemForEnum(Food, proto.consumes.flask, db.getConsumablesByType(ConsumableType.ConsumableTypeFood))?.id ?? 0;
 
 				if (proto.consumes.food === Food.FoodSeafoodFeast) {
-					proto.consumes.foodId = 62290;
+					proto.consumables.foodId = 62290;
 				} else if (proto.consumes.food === Food.FoodFortuneCookie) {
-					proto.consumes.foodId = 62649;
+					proto.consumables.foodId = 62649;
 				}
 				proto.consumes.food = Food.FoodUnknown;
 			}
-			if (proto.consumes.guardianElixir != GuardianElixir.GuardianElixirUnknown && proto.consumes.guardianElixirId == 0) {
-				proto.consumes.guardianElixirId =
-					findInputItemForEnum(GuardianElixir, proto.consumes.guardianElixir, db.getConsumablesByType(ConsumableType.ConsumableTypeElixir))?.id ?? 0;
+			if (
+				typeof proto.consumes?.guardianElixir !== 'undefined' &&
+				proto.consumes.guardianElixir != GuardianElixir.GuardianElixirUnknown &&
+				proto.consumables.guardianElixirId == 0
+			) {
+				proto.consumables.guardianElixirId =
+					findInputItemForEnum(GuardianElixir, proto.consumes.guardianElixir, db.getConsumablesByType(ConsumableType.ConsumableTypeGuardianElixir))
+						?.id ?? 0;
 				proto.consumes.guardianElixir = GuardianElixir.GuardianElixirUnknown;
 			}
-			if (proto.consumes.battleElixir != BattleElixir.BattleElixirUnknown && proto.consumes.battleElixirId == 0) {
-				proto.consumes.battleElixirId =
-					findInputItemForEnum(BattleElixir, proto.consumes.battleElixir, db.getConsumablesByType(ConsumableType.ConsumableTypeElixir))?.id ?? 0;
+			if (
+				typeof proto.consumes?.battleElixir !== 'undefined' &&
+				proto.consumes.battleElixir != BattleElixir.BattleElixirUnknown &&
+				proto.consumables.battleElixirId == 0
+			) {
+				proto.consumables.battleElixirId =
+					findInputItemForEnum(BattleElixir, proto.consumes.battleElixir, db.getConsumablesByType(ConsumableType.ConsumableTypeBattleElixir))?.id ??
+					0;
 				proto.consumes.battleElixir = BattleElixir.BattleElixirUnknown;
 			}
 		}

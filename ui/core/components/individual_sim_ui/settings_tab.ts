@@ -20,7 +20,7 @@ import { MultiIconPicker } from '../pickers/multi_icon_picker.js';
 import { NumberPicker } from '../pickers/number_picker.js';
 import { SavedDataManager } from '../saved_data_manager';
 import { SimTab } from '../sim_tab';
-import { ConsumesPicker } from './new_consumes_picker';
+import { ConsumesPicker } from './consumes_picker.jsx';
 import { PresetConfigurationPicker } from './preset_configuration_picker.jsx';
 
 export class SettingsTab extends SimTab {

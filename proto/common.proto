@@ -425,6 +425,7 @@ enum TinkerHands {
 }
 
 enum Potions {
+	option deprecated = true;
 	UnknownPotion = 0;
 	GolembloodPotion = 1; //58146
 	PotionOfTheTolvir = 2; //58145
@@ -448,65 +449,9 @@ enum Conjured {
 	ConjuredHealthstone = 5;
 	ConjuredRogueThistleTea = 4;
 }
-enum ConsumableType {
-	ConsumableTypeUnknown = 0;
-	ConsumableTypePotion = 1;
-	ConsumableTypeFlask = 2;
-	ConsumableTypeFood = 3;
-	ConsumableTypeScroll = 4;
-	ConsumableTypeExplosive = 5;
-	ConsumableTypeElixir = 6;
-}
-enum ConsumableSubType {
-	ConsumableSubTypeUnknown = 0;
-	ConsumableSubTypeBattleElixir = 1;
-	ConsumableSubTypeGuardianElixir = 2;
-}
-message SpellEffect {
-    int32 id = 1;
-    int32 difficulty_id = 2;
-    int32 effect_index = 3;
-    int32 effect_type = 4;
-    double effect_amplitude = 5;
-    int32 effect_attributes = 6;
-    int32 effect_aura = 7;
-    int32 effect_aura_period = 8;
-    int32 effect_base_points = 9;
-    double effect_bonus_coefficient = 10;
-    double effect_chain_amplitude = 11;
-    int32 effect_chain_targets = 12;
-    int32 effect_die_sides = 13;
-    int32 effect_item_type = 14;
-    int32 effect_mechanic = 15;
-    double effect_points_per_resource = 16;
-    double effect_pos_facing = 17;
-    double effect_real_points_per_level = 18;
-    int32 effect_trigger_spell = 19;
-    double bonus_coefficient_from_ap = 20;
-    double pvp_multiplier = 21;
-    double coefficient = 22;
-    double variance = 23;
-    double resource_coefficient = 24;
-    double group_size_base_points_coefficient = 25;
-    repeated int32 effect_misc_values = 26;
-    repeated int32 effect_radius_indices = 27;
-    repeated int32 effect_spell_class_masks = 28;
-    repeated int32 implicit_targets = 29;
-    int32 spell_id = 30;
-}
-message Consumable {
-	int32 id = 1;
-	ConsumableType type = 2;
-	ConsumableSubType sub_type = 3;
-	repeated double stats = 4;
-	bool is_main_stat = 5;
-	string name = 6;
-	string icon = 7;
-	int32 buff_duration = 8;
-	repeated int32 effect_ids = 9;
-}
 
 enum Flask {
+	option deprecated = true;
 	FlaskUnknown = 0;
 	FlaskOfTitanicStrength = 1;
 	FlaskOfTheWinds = 2;
@@ -524,6 +469,7 @@ enum Flask {
 }
 
 enum BattleElixir {
+	option deprecated = true;
 	BattleElixirUnknown = 0;
 	ElixirOfTheMaster = 1;
 	ElixirOfMightySpeed = 2;
@@ -549,6 +495,7 @@ enum BattleElixir {
 }
 
 enum GuardianElixir {
+	option deprecated = true;
 	GuardianElixirUnknown = 0;
 	ElixirOfDeepEarth = 1;
 	PrismaticElixir = 2;
@@ -563,6 +510,7 @@ enum GuardianElixir {
 }
 
 enum Food {
+	option deprecated = true;
 	FoodUnknown = 0;
 	FoodFishFeast = 1;
 	FoodGreatFeast = 2;
@@ -772,19 +720,20 @@ message Debuffs {
 	bool earth_shock = 31;
 }
 
+// Deprecate this entirely with time
 message Consumes {
-	Flask flask = 1; // Deprecate and move to 21;
-	BattleElixir battle_elixir = 2;
-	GuardianElixir guardian_elixir = 3;
+	Flask flask = 1 [deprecated = true];
+	BattleElixir battle_elixir = 2 [deprecated = true];
+	GuardianElixir guardian_elixir = 3 [deprecated = true];
 
-	Food food = 6;
+	Food food = 6 [deprecated = true];
 	reserved 7; // deprecated petfood
 
 	int32 pet_scroll_of_agility = 8;
 	int32 pet_scroll_of_strength = 9;
 
-	Potions default_potion = 10; // Deprecate and move to 20 in migration
-	Potions prepop_potion = 11; // Deprecate and move to 19 in migration
+	Potions default_potion = 10 [deprecated = true];
+	Potions prepop_potion = 11 [deprecated = true];
 	Conjured default_conjured = 12;
 
 	bool explosive_big_daddy = 15;
@@ -792,12 +741,18 @@ message Consumes {
 	reserved 17; // deprecated old explosive
 
 	TinkerHands tinker_hands = 18;
-	int32 prepot_id = 19;
-	int32 pot_id = 20;
-	int32 flask_id = 21;
-	int32 battle_elixir_id = 22;
-	int32 guardian_elixir_id = 23;
-	int32 food_id = 24;
+}
+
+
+message ConsumesSpec {
+	int32 prepot_id = 1;
+	int32 pot_id = 2;
+	int32 flask_id = 3;
+	int32 battle_elixir_id = 4;
+	int32 guardian_elixir_id = 5;
+	int32 food_id = 6;
+	int32 explosive_id = 7;
+	int32 tinker_id = 8;
 }
 
 enum MobType {
@@ -923,65 +878,19 @@ message EquipmentSpec {
 	repeated ItemSpec items = 1;
 }
 
-message SimDatabase {
-	repeated SimItem items = 1;
-	repeated ItemRandomSuffix random_suffixes = 5;
-	repeated SimEnchant enchants = 2;
-	repeated SimGem gems = 3;
-	repeated ReforgeStat reforge_stats = 6;
-	repeated RandomPropAllocation random_prop_points = 7;
-	repeated ItemQualityValue item_damage_1h_caster = 8;
-
-	repeated ItemQualityValue item_damage_1h = 9;
-
-	repeated ItemQualityValue item_damage_2h_caster = 10;
-
-	repeated ItemQualityValue item_damage_2h = 11;
-
-	repeated ItemQualityValue item_damage_ranged = 12;
-
-	repeated ItemQualityValue item_damage_thrown = 13;
-
-	repeated ItemQualityValue item_damage_wand = 14;
-
-	repeated ItemQualityValue shield_armor_values = 15; // shield, armor
-
-	repeated ItemQualityValue armor_values = 16; // shield, armor
-	repeated Consumable consumables = 17;
-	repeated SpellEffect effects = 18;
+enum ConsumableType {
+	ConsumableTypeUnknown = 0;
+	ConsumableTypePotion = 1;
+	ConsumableTypeFlask = 2;
+	ConsumableTypeFood = 3;
+	ConsumableTypeScroll = 4;
+	ConsumableTypeExplosive = 5;
+	ConsumableTypeBattleElixir = 6;
+	ConsumableTypeGuardianElixir = 7;
 }
 
-// Contains only the Item info needed by the sim.
-message SimItem {
-	int32 id = 1;
-	string name = 2;
 
-	ItemType type = 3;
-	ArmorType armor_type = 4;
-	WeaponType weapon_type = 5;
-	HandType hand_type = 6;
-	RangedWeaponType ranged_weapon_type = 7;
 
-	repeated double stats = 8;
-	repeated GemColor gem_sockets = 9;
-	repeated double socketBonus = 10;
-
-	double weapon_damage_min = 11;
-	double weapon_damage_max = 12;
-	double weapon_speed = 13;
-
-	string set_name = 14;
-	int32 rand_prop_points = 15; // Possibly not needed after dbc scaling is in
-	int32 set_id = 16;
-
-	// Neccessary for scaling items in MoP
-	bool is_scaled = 17;
-	int32 scaled_ilvl = 18;
-	double dmg_variance = 19;
-	double armor_modifier = 20;
-	double quality_modifier = 21;
-	double socket_modifier = 22;
-}
 
 // Extra enum for describing which items are eligible for an enchant, when
 // ItemType alone is not enough.
@@ -1160,40 +1069,3 @@ enum LogLevel {
 	Undefined = -1;
 }
 
-message QualityValues {
-  double common = 1;
-  double uncommon = 2;
-  double rare = 3;
-  double epic = 4;
-  double legendary = 5;
-  double artifact = 6;
-  double heirloom = 7;
-}
-
-message ItemQualityValue {
-  int32 id = 1;
-  QualityValues quality = 2;
-}
-
-message ItemArmorTotal {
-	int32 id = 1;
-	double cloth = 2;
-	double leather = 3;
-	double mail = 4;
-	double plate = 5;
-}
-
-message RandomPropAllocation {
-  int32 id = 1;
-  QualityAllocations allocations = 2;
-}
-
-message QualityAllocations {
-  QualityGroup good = 1;
-  QualityGroup superior = 2;
-  QualityGroup epic = 3;
-}
-
-message QualityGroup {
-  repeated int32 slots = 1;
-}

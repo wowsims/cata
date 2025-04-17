@@ -66,10 +66,15 @@
     "SpellClassOptions",
 	"SpellRange",
 	"SpellReagents",
+	"SpellInterrupts",
     "SpellItemEnchantment",
+	"SpellCategories",
+	"SpellShapeshift",
     "SpellEffect",
 	"SpellDuration",
+	"SpellAuraOptions",
 	"GlyphProperties",
+	"SpellMechanic",
 	"Talent",
 	"TalentTab"
   ]

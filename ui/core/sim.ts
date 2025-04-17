@@ -23,14 +23,7 @@ import {
 } from './proto/api.js';
 import {
 	ArmorType,
-	BattleElixir,
-	Consumable,
-	ConsumableType,
 	Faction,
-	Flask,
-	Food,
-	GuardianElixir,
-	Potions,
 	Profession,
 	PseudoStat,
 	RangedWeaponType,
@@ -258,7 +251,7 @@ export class Sim {
 				const consumableIdFields: ConsumableIdKey[] = ['potId', 'prepotId', 'flaskId', 'battleElixirId', 'guardianElixirId', 'foodId'];
 
 				consumableIdFields.forEach(field => {
-					const id = player.consumes?.[field] ?? 0;
+					const id = player.consumables?.[field] ?? 0;
 					if (id && id !== 0) {
 						const consume = this.db.getConsumable(id);
 						if (consume) {

@@ -3,8 +3,8 @@ import {
 	BattleElixir,
 	Class,
 	Conjured,
-	Consumable,
 	Consumes,
+	ConsumesSpec,
 	Explosive,
 	Flask,
 	Food,
@@ -15,6 +15,7 @@ import {
 	Stat,
 	TinkerHands,
 } from '../../proto/common';
+import { Consumable } from '../../proto/db';
 import { ActionId } from '../../proto_utils/action_id';
 import { EventID, TypedEvent } from '../../typed_event';
 import { makeBooleanConsumeInput } from '../icon_inputs';
@@ -264,7 +265,7 @@ export const FLASKS_CONFIG = [
 	},
 ] as ConsumableStatOption<Flask>[];
 export interface ConsumableInputOptions {
-	consumesFieldName: keyof Consumes;
+	consumesFieldName: keyof ConsumesSpec;
 	setValue?: (eventID: EventID, player: Player<any>, newValue: number) => void;
 }
 

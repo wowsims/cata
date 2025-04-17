@@ -14,10 +14,10 @@ import (
 	"github.com/wowsims/cata/sim"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/dbc"
 	_ "github.com/wowsims/cata/sim/encounters" // Needed for preset encounters.
 	"github.com/wowsims/cata/tools"
 	"github.com/wowsims/cata/tools/database"
+	"github.com/wowsims/cata/tools/database/dbc"
 )
 
 func writeGzipFile(filePath string, data []byte) error {
@@ -39,25 +39,14 @@ func writeGzipFile(filePath string, data []byte) error {
 
 // To do a full re-scrape, delete the previous output file first.
 // go run ./tools/database/gen_db -outDir=assets -gen=atlasloot
-// go run ./tools/database/gen_db -outDir=assets -gen=wowhead-items
-// go run ./tools/database/gen_db -outDir=assets -gen=wowhead-spells -maxid=75000
-// go run ./tools/database/gen_db -outDir=assets -gen=wowhead-gearplannerdb
-// go run ./tools/database/gen_db -outDir=assets -gen=wago-db2-items
 // go run ./tools/database/gen_db -outDir=assets -gen=db
 
-var exactId = flag.Int("id", 0, "ID to scan for")
-var minId = flag.Int("minid", 0, "Minimum ID to scan for")
-var maxId = flag.Int("maxid", 0, "Maximum ID to scan for")
 var outDir = flag.String("outDir", "assets", "Path to output directory for writing generated .go files.")
 var genAsset = flag.String("gen", "", "Asset to generate. Valid values are 'db', 'atlasloot', 'wowhead-items', 'wowhead-spells', 'wowhead-itemdb', 'cata-items', and 'wago-db2-items'")
 var dbPath = flag.String("dbPath", "./tools/database/wowsims.db", "Location of wowsims.db file from the DB2ToSqliteTool")
 
 func main() {
 	flag.Parse()
-	if *exactId != 0 {
-		minId = exactId
-		maxId = exactId
-	}
 
 	database.DatabasePath = *dbPath
 
@@ -71,9 +60,6 @@ func main() {
 	if *genAsset == "atlasloot" {
 		db := database.ReadAtlasLootData()
 		db.WriteJson(fmt.Sprintf("%s/atlasloot_db.json", inputsDir))
-		return
-	} else if *genAsset == "wowhead-spells" {
-		database.NewWowheadSpellTooltipManager(fmt.Sprintf("%s/wowhead_spell_tooltips.csv", inputsDir)).Fetch(int32(*minId), int32(*maxId), []string{})
 		return
 	} else if *genAsset == "reforge-stats" {
 		//Todo: fill this when we have information from wowhead @ Neteyes - Gehennas
@@ -109,7 +95,7 @@ func main() {
 	if err == nil {
 		processed := make(dbc.RandomPropAllocationsByIlvl)
 		for _, r := range randPropsByIlvl {
-			processed[r.Ilvl] = dbc.RandomPropAllocationMap{
+			processed[int(r.Ilvl)] = dbc.RandomPropAllocationMap{
 				proto.ItemQuality_ItemQualityEpic:     [5]int32{r.Allocation.Epic0, r.Allocation.Epic1, r.Allocation.Epic2, r.Allocation.Epic3, r.Allocation.Epic4},
 				proto.ItemQuality_ItemQualityRare:     [5]int32{r.Allocation.Superior0, r.Allocation.Superior1, r.Allocation.Superior2, r.Allocation.Superior3, r.Allocation.Superior4},
 				proto.ItemQuality_ItemQualityUncommon: [5]int32{r.Allocation.Good0, r.Allocation.Good1, r.Allocation.Good2, r.Allocation.Good3, r.Allocation.Good4},
@@ -210,9 +196,16 @@ func main() {
 			log.Fatalf("Error writing file: %v", err)
 		}
 	}
-
+	spells, err := database.LoadSpells(helper)
+	if err == nil {
+		json, _ := json.Marshal(spells)
+		if err := writeGzipFile(fmt.Sprintf("%s/dbc/spells.json", inputsDir), json); err != nil {
+			log.Fatalf("Error writing file: %v", err)
+		}
+	} else {
+		log.Fatalf("Error %v", err)
+	}
 	//Todo: See if we cant get rid of these as well
-	//spellTooltips := database.NewWowheadSpellTooltipManager(fmt.Sprintf("%s/wowhead_spell_tooltips.csv", inputsDir)).Read()
 	atlaslootDB := database.ReadDatabaseFromJson(tools.ReadFile(fmt.Sprintf("%s/atlasloot_db.json", inputsDir)))
 
 	// Todo: https://web.archive.org/web/20120201045249js_/http://www.wowhead.com/data=item-scaling
@@ -277,7 +270,7 @@ func main() {
 		if db.RandomPropAllocationsByIlvl[parsed.Ilvl] == nil {
 			new := &proto.RandomPropAllocation{}
 			props := randPropsByIlvl[parsed.Ilvl]
-			new.Id = parsed.Ilvl
+			new.ItemLevel = parsed.Ilvl
 			new.Allocations = props.Allocation.ToProto().Allocations
 			db.RandomPropAllocationsByIlvl[parsed.Ilvl] = new
 			for _, num := range maxUpgradeSteps {
@@ -285,7 +278,7 @@ func main() {
 				if db.RandomPropAllocationsByIlvl[int32(updatedIlvl)] == nil {
 					total := randPropsByIlvl[int32(updatedIlvl)]
 					prop := &proto.RandomPropAllocation{}
-					prop.Id = total.Ilvl
+					prop.ItemLevel = total.Ilvl
 					prop.Allocations = total.Allocation.ToProto().Allocations
 					db.RandomPropAllocationsByIlvl[int32(updatedIlvl)] = prop
 				}
@@ -298,25 +291,25 @@ func main() {
 				armorTotal := itemArmorTotal[int(parsed.Ilvl)]
 				db.TotalArmorValues[parsed.Ilvl] = armorTotal.ToProto()
 			}
-			if db.ArmorValues[parsed.Ilvl] == nil {
+			if db.Armor.ArmorValues[parsed.Ilvl] == nil {
 				armorValues := itemArmorQuality[int(parsed.Ilvl)]
-				db.ArmorValues[parsed.Ilvl] = armorValues.ToProto()
+				db.Armor.ArmorValues[parsed.Ilvl] = armorValues.ToProto()
 			}
-			if db.ShieldArmorValues[parsed.Ilvl] == nil {
+			if db.Armor.ShieldArmorValues[parsed.Ilvl] == nil {
 				armorValues := itemArmorShield[int(parsed.Ilvl)]
-				db.ShieldArmorValues[parsed.Ilvl] = armorValues.ToProto()
+				db.Armor.ShieldArmorValues[parsed.Ilvl] = armorValues.ToProto()
 			}
 
 			for _, num := range maxUpgradeSteps {
 				updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
 
-				if db.ShieldArmorValues[int32(updatedIlvl)] == nil {
+				if db.Armor.ShieldArmorValues[int32(updatedIlvl)] == nil {
 					total := itemArmorShield[updatedIlvl]
-					db.ShieldArmorValues[int32(updatedIlvl)] = total.ToProto()
+					db.Armor.ShieldArmorValues[int32(updatedIlvl)] = total.ToProto()
 				}
-				if db.ArmorValues[int32(updatedIlvl)] == nil {
+				if db.Armor.ShieldArmorValues[int32(updatedIlvl)] == nil {
 					total := itemArmorQuality[updatedIlvl]
-					db.ArmorValues[int32(updatedIlvl)] = total.ToProto()
+					db.Armor.ShieldArmorValues[int32(updatedIlvl)] = total.ToProto()
 				}
 				if db.TotalArmorValues[int32(updatedIlvl)] == nil {
 					armorTotal := itemArmorTotal[updatedIlvl]
@@ -331,25 +324,25 @@ func main() {
 			{
 				if item.Flags1.Has(dbc.CASTER_WEAPON) {
 					damageValues := itemDamageTables["ItemDamageOneHandCaster"][int(parsed.Ilvl)]
-					db.ItemDamageOneHandCaster[parsed.Ilvl] = damageValues.ToProto()
+					db.WeaponDamage.Caster_1H[parsed.Ilvl] = damageValues.ToProto()
 					for _, num := range maxUpgradeSteps {
 
 						updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
-						if db.ItemDamageOneHandCaster[int32(updatedIlvl)] == nil {
+						if db.WeaponDamage.Caster_1H[int32(updatedIlvl)] == nil {
 							total := itemDamageTables["ItemDamageOneHandCaster"][updatedIlvl]
-							db.ItemDamageOneHandCaster[int32(updatedIlvl)] = total.ToProto()
+							db.WeaponDamage.Caster_1H[int32(updatedIlvl)] = total.ToProto()
 						}
 
 					}
 				} else {
 					damageValues := itemDamageTables["ItemDamageOneHand"][int(parsed.Ilvl)]
-					db.ItemDamageOneHand[parsed.Ilvl] = damageValues.ToProto()
+					db.WeaponDamage.Melee_1H[parsed.Ilvl] = damageValues.ToProto()
 					for _, num := range maxUpgradeSteps {
 
 						updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
-						if db.ItemDamageOneHand[int32(updatedIlvl)] == nil {
+						if db.WeaponDamage.Melee_1H[int32(updatedIlvl)] == nil {
 							total := itemDamageTables["ItemDamageOneHand"][updatedIlvl]
-							db.ItemDamageOneHand[int32(updatedIlvl)] = total.ToProto()
+							db.WeaponDamage.Melee_1H[int32(updatedIlvl)] = total.ToProto()
 						}
 
 					}
@@ -358,25 +351,25 @@ func main() {
 		case dbc.INVTYPE_2HWEAPON:
 			if item.Flags1.Has(dbc.CASTER_WEAPON) {
 				damageValues := itemDamageTables["ItemDamageTwoHandCaster"][int(parsed.Ilvl)]
-				db.ItemDamageTwoHandCaster[parsed.Ilvl] = damageValues.ToProto()
+				db.WeaponDamage.Caster_2H[parsed.Ilvl] = damageValues.ToProto()
 				for _, num := range maxUpgradeSteps {
 
 					updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
-					if db.ItemDamageTwoHandCaster[int32(updatedIlvl)] == nil {
+					if db.WeaponDamage.Caster_2H[int32(updatedIlvl)] == nil {
 						total := itemDamageTables["ItemDamageTwoHandCaster"][updatedIlvl]
-						db.ItemDamageTwoHandCaster[int32(updatedIlvl)] = total.ToProto()
+						db.WeaponDamage.Caster_2H[int32(updatedIlvl)] = total.ToProto()
 					}
 
 				}
 			} else {
 				damageValues := itemDamageTables["ItemDamageTwoHand"][int(parsed.Ilvl)]
-				db.ItemDamageTwoHand[parsed.Ilvl] = damageValues.ToProto()
+				db.WeaponDamage.Melee_2H[parsed.Ilvl] = damageValues.ToProto()
 				for _, num := range maxUpgradeSteps {
 
 					updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
-					if db.ItemDamageTwoHand[int32(updatedIlvl)] == nil {
+					if db.WeaponDamage.Melee_2H[int32(updatedIlvl)] == nil {
 						total := itemDamageTables["ItemDamageTwoHand"][updatedIlvl]
-						db.ItemDamageTwoHand[int32(updatedIlvl)] = total.ToProto()
+						db.WeaponDamage.Melee_2H[int32(updatedIlvl)] = total.ToProto()
 					}
 
 				}
@@ -385,35 +378,35 @@ func main() {
 			switch item.ItemSubClass {
 			case dbc.ITEM_SUBCLASS_WEAPON_BOW, dbc.ITEM_SUBCLASS_WEAPON_GUN, dbc.ITEM_SUBCLASS_WEAPON_CROSSBOW:
 				damageValues := itemDamageTables["ItemDamageRanged"][int(parsed.Ilvl)]
-				db.ItemDamageRanged[parsed.Ilvl] = damageValues.ToProto()
+				db.WeaponDamage.Ranged[parsed.Ilvl] = damageValues.ToProto()
 				for _, num := range maxUpgradeSteps {
 
 					updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
-					if db.ItemDamageRanged[int32(updatedIlvl)] == nil {
+					if db.WeaponDamage.Ranged[int32(updatedIlvl)] == nil {
 						total := itemDamageTables["ItemDamageRanged"][updatedIlvl]
-						db.ItemDamageRanged[int32(updatedIlvl)] = total.ToProto()
+						db.WeaponDamage.Ranged[int32(updatedIlvl)] = total.ToProto()
 					}
 				}
 			case dbc.ITEM_SUBCLASS_WEAPON_THROWN:
 				damageValues := itemDamageTables["ItemDamageThrown"][int(parsed.Ilvl)]
-				db.ItemDamageThrown[parsed.Ilvl] = damageValues.ToProto()
+				db.WeaponDamage.Thrown[parsed.Ilvl] = damageValues.ToProto()
 				for _, num := range maxUpgradeSteps {
 
 					updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
-					if db.ItemDamageThrown[int32(updatedIlvl)] == nil {
+					if db.WeaponDamage.Thrown[int32(updatedIlvl)] == nil {
 						total := itemDamageTables["ItemDamageThrown"][updatedIlvl]
-						db.ItemDamageThrown[int32(updatedIlvl)] = total.ToProto()
+						db.WeaponDamage.Thrown[int32(updatedIlvl)] = total.ToProto()
 					}
 
 				}
 			case dbc.ITEM_SUBCLASS_WEAPON_WAND:
 				damageValues := itemDamageTables["ItemDamageWand"][int(parsed.Ilvl)]
-				db.ItemDamageWand[parsed.Ilvl] = damageValues.ToProto()
+				db.WeaponDamage.Wand[parsed.Ilvl] = damageValues.ToProto()
 				for _, num := range maxUpgradeSteps {
 					updatedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(num)
-					if db.ItemDamageWand[int32(updatedIlvl)] == nil {
+					if db.WeaponDamage.Wand[int32(updatedIlvl)] == nil {
 						ItemDamageWand := itemDamageTables["ItemDamageWand"][updatedIlvl]
-						db.ItemDamageWand[int32(updatedIlvl)] = ItemDamageWand.ToProto()
+						db.WeaponDamage.Wand[int32(updatedIlvl)] = ItemDamageWand.ToProto()
 					}
 
 				}
@@ -692,6 +685,7 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		if contains(database.ConsumableAllowList, consumable.Id) {
 			return true
 		}
+
 		if allZero(consumable.Stats) && consumable.Type != proto.ConsumableType_ConsumableTypePotion {
 			return false
 		}
@@ -727,27 +721,12 @@ func allZero(stats []float64) bool {
 	return true
 }
 
-// AttachFactionInformation attaches faction information (faction restrictions) to the DB items.
-func AttachFactionInformation(db *database.WowDatabase, factionRestrictions map[int32]database.WagoDbItem) {
-	for _, item := range db.Items {
-		if item.FactionRestriction == proto.UIItem_FACTION_RESTRICTION_UNSPECIFIED {
-			item.FactionRestriction = factionRestrictions[item.Id].FactionRestriction
-		}
-	}
-}
-
-// AttachItemSetIDs attaches item set ids to the DB items.
-func AttachItemSetIDs(db *database.WowDatabase, wagoItems map[int32]database.WagoDbItem) {
-	for _, item := range db.Items {
-		item.SetId = wagoItems[item.Id].ItemSetID
-	}
-}
-
 // Filters out entities which shouldn't be included in the sim.
 func ApplySimmableFilters(db *database.WowDatabase) {
 	db.Items = core.FilterMap(db.Items, simmableItemFilter)
 	db.Gems = core.FilterMap(db.Gems, simmableGemFilter)
 }
+
 func ApplyNonSimmableFilters(db *database.WowDatabase) {
 	db.Items = core.FilterMap(db.Items, func(id int32, item *proto.UIItem) bool {
 		return !simmableItemFilter(id, item)

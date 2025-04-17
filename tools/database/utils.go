@@ -10,6 +10,9 @@ import (
 
 func parseIntArrayField(jsonStr string, expectedLen int) ([]int, error) {
 	var arr []int
+	if jsonStr == "" {
+		return arr, nil
+	}
 	if err := json.Unmarshal([]byte(jsonStr), &arr); err != nil {
 		return nil, fmt.Errorf("unmarshaling JSON array: %w", err)
 	}

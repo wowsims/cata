@@ -119,6 +119,27 @@ func (unit *Unit) SpendMana(sim *Simulation, amount float64, metrics *ResourceMe
 	unit.Metrics.ManaSpent += amount
 }
 
+func (unit *Unit) ExecuteResourceGain(sim *Simulation, resource proto.ResourceType, amount float64, actionId ActionID) {
+	metrics := unit.Metrics.NewResourceMetrics(actionId, resource)
+
+	switch {
+	case resource == proto.ResourceType_ResourceTypeMana && amount > 0:
+		unit.AddMana(sim, amount, metrics)
+	case resource == proto.ResourceType_ResourceTypeMana && amount < 0:
+		unit.SpendMana(sim, amount, metrics)
+	case resource == proto.ResourceType_ResourceTypeHealth && amount > 0:
+		unit.GainHealth(sim, amount, metrics)
+	case resource == proto.ResourceType_ResourceTypeHealth && amount < 0:
+		unit.RemoveHealth(sim, amount)
+	case resource == proto.ResourceType_ResourceTypeRage && amount < 0:
+		unit.SpendRage(sim, amount, metrics)
+	case resource == proto.ResourceType_ResourceTypeRage && amount > 0:
+		unit.AddRage(sim, amount, metrics)
+	default:
+		// other resources as needed
+	}
+}
+
 func (mb *manaBar) doneIteration(sim *Simulation) {
 	if mb.unit == nil {
 		return

@@ -731,6 +731,8 @@ var ConsumableAllowList = []int32{
 	//Fortune Cookie and Feast
 	62649,
 	62290,
+	//Migty Rage Potion
+	13442,
 }
 
 // Raid buffs / debuffs

@@ -5,20 +5,20 @@ import (
 
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
-	"github.com/wowsims/cata/sim/dbc"
 )
 
 // Registers all consume-related effects to the Agent.
 func applyConsumeEffects(agent Agent) {
 	character := agent.GetCharacter()
 	consumes := character.Consumes
+	consumables := character.Consumables
 	if consumes == nil {
 		return
 	}
 	alchemyFlaskBonus := TernaryFloat64(character.HasProfession(proto.Profession_Alchemy), 80, 0)
 	alchemyBattleElixirBonus := TernaryFloat64(character.HasProfession(proto.Profession_Alchemy), 40, 0)
-	if consumes.FlaskId != 0 {
-		flask := ConsumableByID[consumes.FlaskId]
+	if consumables.FlaskId != 0 {
+		flask := ConsumablesByID[consumables.FlaskId]
 		if flask.Stats[stats.Strength] > 0 {
 			flask.Stats[stats.Strength] += alchemyFlaskBonus
 		} else if flask.Stats[stats.Agility] > 0 {
@@ -30,50 +30,57 @@ func applyConsumeEffects(agent Agent) {
 		} else if flask.Stats[stats.Stamina] > 0 {
 			flask.Stats[stats.Stamina] += alchemyFlaskBonus * 1.5
 		}
-		character.AddStats(stats.FromProtoArray(flask.Stats))
+		character.AddStats(flask.Stats)
 	}
 
-	if consumes.BattleElixirId != 0 {
-		elixir := ConsumableByID[consumes.BattleElixirId]
-		if elixir.Stats[stats.MasteryRating] > 0 {
-			elixir.Stats[stats.MasteryRating] += alchemyBattleElixirBonus
-		} else if elixir.Stats[stats.HasteRating] > 0 {
-			elixir.Stats[stats.HasteRating] += alchemyBattleElixirBonus
-		} else if elixir.Stats[stats.CritRating] > 0 {
-			elixir.Stats[stats.CritRating] += alchemyBattleElixirBonus
-		} else if elixir.Stats[stats.ExpertiseRating] > 0 {
-			elixir.Stats[stats.ExpertiseRating] += alchemyBattleElixirBonus
-		} else if elixir.Stats[stats.Spirit] > 0 {
-			elixir.Stats[stats.Spirit] += alchemyBattleElixirBonus
+	if consumables.BattleElixirId != 0 {
+		elixir := ConsumablesByID[consumables.BattleElixirId]
+		switch consumables.BattleElixirId {
+		case 0:
+			break
+		case 9224:
+			if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
+				character.PseudoStats.MobTypeAttackPower += 265
+			}
+		default:
+			if elixir.Stats[stats.MasteryRating] > 0 {
+				elixir.Stats[stats.MasteryRating] += alchemyBattleElixirBonus
+			} else if elixir.Stats[stats.HasteRating] > 0 {
+				elixir.Stats[stats.HasteRating] += alchemyBattleElixirBonus
+			} else if elixir.Stats[stats.CritRating] > 0 {
+				elixir.Stats[stats.CritRating] += alchemyBattleElixirBonus
+			} else if elixir.Stats[stats.ExpertiseRating] > 0 {
+				elixir.Stats[stats.ExpertiseRating] += alchemyBattleElixirBonus
+			} else if elixir.Stats[stats.Spirit] > 0 {
+				elixir.Stats[stats.Spirit] += alchemyBattleElixirBonus
+			}
+			character.AddStats(elixir.Stats)
 		}
-		character.AddStats(stats.FromProtoArray(elixir.Stats))
+
 	}
 
-	if consumes.GuardianElixirId != 0 {
-		elixir := ConsumableByID[consumes.GuardianElixirId]
-		if elixir.Stats[stats.Armor] > 0 {
+	if consumables.GuardianElixirId != 0 {
+		elixir := ConsumablesByID[consumables.GuardianElixirId]
+		if character.HasProfession(proto.Profession_Alchemy) && elixir.Stats[stats.Armor] > 0 {
 			elixir.Stats[stats.Armor] += 280
 		}
-		character.AddStats(stats.FromProtoArray(elixir.Stats))
+		character.AddStats(elixir.Stats)
 	}
+	if consumables.FoodId != 0 {
+		food := ConsumablesByID[consumables.FoodId]
 
-	if consumes.FoodId != 0 {
-		// This is an example of how we could do overrides
-		if consumes.FoodId == 62290 || consumes.FoodId == 62649 {
-			character.AddStat(stats.Stamina, 90)
-			character.AddStat(character.GetHighestStatType([]stats.Stat{stats.Strength, stats.Agility, stats.Intellect}), 90)
+		var foodBuffStats stats.Stats
+		if food.BuffsMainStat {
+			buffAmount := food.Stats[stats.Stamina]
+			foodBuffStats[stats.Stamina] = buffAmount
+			foodBuffStats[character.GetHighestStatType([]stats.Stat{stats.Strength, stats.Agility, stats.Intellect})] = buffAmount
+		} else {
+			foodBuffStats = food.Stats
 		}
-		food := ConsumableByID[consumes.FoodId]
-		character.AddStats(stats.FromProtoArray(food.Stats))
+		character.AddStats(foodBuffStats)
 	}
-	// Todo: Implement this?
-	// case proto.BattleElixir_ElixirOfDemonslaying:
-	// 	if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
-	// 		character.PseudoStats.MobTypeAttackPower += 265
-	// 	}
-	// }
 
-	registerPotionCD(agent, consumes)
+	registerPotionCD(agent, consumables)
 	registerConjuredCD(agent, consumes)
 	registerExplosivesCD(agent, consumes)
 	registerTinkerHandsCD(agent, consumes)
@@ -81,7 +88,7 @@ func applyConsumeEffects(agent Agent) {
 
 var PotionAuraTag = "Potion"
 
-func registerPotionCD(agent Agent, consumes *proto.Consumes) {
+func registerPotionCD(agent Agent, consumes *proto.ConsumesSpec) {
 	character := agent.GetCharacter()
 	potion := consumes.PotId
 	prepot := consumes.PrepotId
@@ -124,7 +131,7 @@ func (character *Character) HasAlchStone() bool {
 }
 
 func makePotionActivationSpell(potionId int32, character *Character, potionCD *Timer) MajorCooldown {
-	potion := ConsumableByID[potionId]
+	potion := ConsumablesByID[potionId]
 	mcd := makePotionActivationSpellInternal(potion, character, potionCD)
 	if mcd.Spell != nil {
 		// Mark as 'Encounter Only' so that users are forced to select the generic Potion
@@ -144,8 +151,20 @@ func makePotionActivationSpell(potionId int32, character *Character, potionCD *T
 	return mcd
 
 }
+
+type resourceGainConfig struct {
+	resType proto.ResourceType
+	min     float64
+	spread  float64
+}
+
 func makePotionActivationSpellInternal(potion Consumable, character *Character, potionCD *Timer) MajorCooldown {
 	alchStoneEquipped := character.HasAlchStone()
+	stoneMul := 1.0
+	if alchStoneEquipped {
+		stoneMul = 1.4
+	}
+
 	potionCast := CastConfig{
 		CD: Cooldown{
 			Timer:    potionCD,
@@ -157,97 +176,51 @@ func makePotionActivationSpellInternal(potion Consumable, character *Character, 
 		},
 	}
 
-	//Simple stat potion
-
 	actionID := ActionID{ItemID: potion.Id}
-	if len(potion.EffectIds) == 0 {
-		aura := character.NewTemporaryStatsAura(potion.Name, actionID, stats.FromProtoArray(potion.Stats), time.Second*time.Duration(potion.BuffDuration))
-		return MajorCooldown{
-			Type: CooldownTypeDPS,
-
-			Spell: character.GetOrRegisterSpell(SpellConfig{
-				ActionID: actionID,
-				Flags:    SpellFlagNoOnCastComplete,
-				Cast:     potionCast,
-				ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
-					aura.Activate(sim)
-				},
-			}),
-		}
-	} else if len(potion.EffectIds) >= 1 {
-		// We assume its a hp or mana pot?
-		// What other pots are there?
-		mcd := MajorCooldown{
-			Type: CooldownTypeSurvival,
-			Spell: character.GetOrRegisterSpell(SpellConfig{
-				ActionID: actionID,
-				Flags:    SpellFlagNoOnCastComplete,
-				Cast:     potionCast,
-				ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
-					for _, effectId := range potion.EffectIds {
-						effect := EffectsById[effectId]
-						if effect.EffectType == int32(dbc.E_HEAL) {
-							healthMetrics := character.NewHealthMetrics(actionID)
-							healthGain := sim.RollWithLabel(float64(effect.EffectBasePoints+1), float64(effect.EffectBasePoints+effect.EffectDieSides), potion.Name)
-							if alchStoneEquipped {
-								healthGain *= 1.40
-							}
-							character.GainHealth(sim, healthGain*character.PseudoStats.HealingTakenMultiplier, healthMetrics)
-						}
-						if effect.EffectType == int32(dbc.E_ENERGIZE) {
-							manaMetrics := character.NewManaMetrics(actionID)
-							manaGain := sim.RollWithLabel(float64(effect.EffectBasePoints+1), float64(effect.EffectBasePoints+effect.EffectDieSides), potion.Name)
-							if alchStoneEquipped {
-								manaGain *= 1.4
-							}
-							character.AddMana(sim, manaGain, manaMetrics)
-						}
-					}
-				},
-			})}
-		spell := character.GetOrRegisterSpell(SpellConfig{
+	aura := character.NewTemporaryStatsAura(potion.Name, actionID, potion.Stats, time.Second*time.Duration(potion.BuffDuration))
+	mcd := MajorCooldown{
+		Type: aura.InferCDType(),
+		Spell: character.GetOrRegisterSpell(SpellConfig{
 			ActionID: actionID,
 			Flags:    SpellFlagNoOnCastComplete,
 			Cast:     potionCast,
 			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
-				for _, effectId := range potion.EffectIds {
-					effect := EffectsById[effectId]
-					if effect.EffectType == int32(dbc.E_ENERGIZE) {
-						manaMetrics := character.NewManaMetrics(actionID)
-						manaGain := sim.RollWithLabel(float64(effect.EffectBasePoints+1), float64(effect.EffectBasePoints+effect.EffectDieSides), potion.Name)
-						if alchStoneEquipped {
-							manaGain *= 1.4
-						}
-						character.AddMana(sim, manaGain, manaMetrics)
-						mcd.Type = CooldownTypeMana
-						mcd.ShouldActivate = func(sim *Simulation, character *Character) bool {
-							totalRegen := character.ManaRegenPerSecondWhileCombat() * 5
-							manaGain := manaGain
-							if alchStoneEquipped {
-								manaGain *= 1.4
-							}
-							return character.MaxMana()-(character.CurrentMana()+totalRegen) >= manaGain
-						}
-					}
-					if effect.EffectType == int32(dbc.E_HEAL) {
-						healthMetrics := character.NewHealthMetrics(actionID)
-						healthGain := sim.RollWithLabel(float64(effect.EffectBasePoints+1), float64(effect.EffectBasePoints+effect.EffectDieSides), potion.Name)
-						if alchStoneEquipped {
-							healthGain *= 1.40
-						}
-						character.GainHealth(sim, healthGain*character.PseudoStats.HealingTakenMultiplier, healthMetrics)
-						mcd.Type = CooldownTypeSurvival
 
-					}
-
-				}
 			},
-		})
-		mcd.Spell = spell
-		return mcd
+		}),
+	}
+	var gains []resourceGainConfig
+
+	for _, effectID := range potion.EffectIds {
+		e := SpellEffectsById[effectID]
+		if e.Type == proto.EffectType_EffectTypeResourceGain && e.GetResourceType() != 0 {
+			if e.GetResourceType() == proto.ResourceType_ResourceTypeMana {
+				mcd.Type = CooldownTypeMana
+			} else if e.GetResourceType() == proto.ResourceType_ResourceTypeHealth {
+				mcd.Type = CooldownTypeSurvival
+			} else {
+				mcd.Type = CooldownTypeDPS
+			}
+			gains = append(gains, resourceGainConfig{
+				resType: e.GetResourceType(),
+				min:     e.MinEffectSize,
+				spread:  e.EffectSpread,
+			})
+		}
 	}
 
-	return MajorCooldown{}
+	mcd.Spell.ApplyEffects = func(sim *Simulation, _ *Unit, _ *Spell) {
+		if potion.BuffDuration > 0 {
+			aura.Activate(sim)
+		}
+		for _, config := range gains {
+			gain := config.min + sim.RandomFloat(potion.Name)*config.spread
+			gain *= stoneMul
+			character.ExecuteResourceGain(sim, config.resType, gain, actionID)
+		}
+	}
+	return mcd
+
 }
 
 var ConjuredAuraTag = "Conjured"

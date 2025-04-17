@@ -368,6 +368,18 @@ func (mcdm *majorCooldownManager) sort() {
 	})
 }
 
+func (aura *StatBuffAura) InferCDType() CooldownType {
+	cdType := CooldownTypeUnknown
+
+	if aura.BuffsMatchingStat([]stats.Stat{stats.Armor, stats.BlockPercent, stats.DodgeRating, stats.ParryRating, stats.Health, stats.ArcaneResistance, stats.FireResistance, stats.FrostResistance, stats.NatureResistance, stats.ShadowResistance}) {
+		cdType |= CooldownTypeSurvival
+	} else {
+		cdType |= CooldownTypeDPS
+	}
+
+	return cdType
+}
+
 // Add a major cooldown to the given agent, which provides a temporary boost to a single stat.
 // This is use for effects like Icon of the Silver Crescent and Bloodlust Brooch.
 func RegisterTemporaryStatsOnUseCD(character *Character, auraLabel string, tempStats stats.Stats, duration time.Duration, config SpellConfig) {

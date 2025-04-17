@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/wowsims/cata/sim/dbc"
+	"github.com/wowsims/cata/tools/database/dbc"
 )
 
 // Loading tables
@@ -14,8 +14,6 @@ import (
 //
 
 // Raw Item Data
-//
-//
 
 func ScanRawItemData(rows *sql.Rows) (dbc.Item, error) {
 	var raw dbc.Item
@@ -472,7 +470,6 @@ func ScanSpellEffect(rows *sql.Rows) (dbc.SpellEffect, error) {
 	var raw dbc.SpellEffect
 	// Temporary strings to hold the concatenated JSON for grouped fields.
 	var miscValuesStr, radiusIndicesStr, spellClassMasksStr, implicitTargetsStr string
-
 	err := rows.Scan(
 		&raw.ID,
 		&raw.DifficultyID,
@@ -504,6 +501,7 @@ func ScanSpellEffect(rows *sql.Rows) (dbc.SpellEffect, error) {
 		&spellClassMasksStr,
 		&implicitTargetsStr,
 		&raw.SpellID,
+		&raw.ScalingType,
 	)
 	if err != nil {
 		return raw, err
@@ -532,37 +530,39 @@ func ScanSpellEffect(rows *sql.Rows) (dbc.SpellEffect, error) {
 func LoadRawSpellEffects(dbHelper *DBHelper) (map[int]map[int]dbc.SpellEffect, error) {
 	query := `
 	SELECT
-		ID,
-		DifficultyID,
-		EffectIndex,
-		Effect,
-		EffectAmplitude,
-		EffectAttributes,
-		EffectAura,
-		EffectAuraPeriod,
-		EffectBasePoints,
-		EffectBonusCoefficient,
-		EffectChainAmplitude,
-		EffectChainTargets,
-		EffectDieSides,
-		EffectItemType,
-		EffectMechanic,
-		EffectPointsPerResource,
-		EffectPos_facing,
-		EffectRealPointsPerLevel,
-		EffectTriggerSpell,
-		BonusCoefficientFromAP,
-		PvpMultiplier,
-		Coefficient,
-		Variance,
-		ResourceCoefficient,
-		GroupSizeBasePointsCoefficient,
-		EffectMiscValue,
-		EffectRadiusIndex,
-		EffectSpellClassMask,
-		ImplicitTarget,
-		SpellID
-	FROM SpellEffect
+		se.ID,
+		se.DifficultyID,
+		se.EffectIndex,
+		se.Effect,
+		se.EffectAmplitude,
+		se.EffectAttributes,
+		se.EffectAura,
+		se.EffectAuraPeriod,
+		se.EffectBasePoints,
+		se.EffectBonusCoefficient,
+		se.EffectChainAmplitude,
+		se.EffectChainTargets,
+		se.EffectDieSides,
+		se.EffectItemType,
+		se.EffectMechanic,
+		se.EffectPointsPerResource,
+		se.EffectPos_facing,
+		se.EffectRealPointsPerLevel,
+		se.EffectTriggerSpell,
+		se.BonusCoefficientFromAP,
+		se.PvpMultiplier,
+		se.Coefficient,
+		se.Variance,
+		se.ResourceCoefficient,
+		se.GroupSizeBasePointsCoefficient,
+		se.EffectMiscValue,
+		se.EffectRadiusIndex,
+		se.EffectSpellClassMask,
+		se.ImplicitTarget,
+		se.SpellID,
+		COALESCE(ss.Class, 0)
+	FROM SpellEffect se
+	LEFT JOIN SpellScaling ss ON se.SpellID = ss.SpellID
 	`
 	items, err := LoadRows(dbHelper.db, query, ScanSpellEffect)
 	if err != nil {
@@ -757,7 +757,7 @@ func LoadConsumables(dbHelper *DBHelper) ([]dbc.Consumable, error) {
 			LEFT JOIN Spell sp ON ie.SpellID = sp.ID
 			LEFT JOIN SpellMisc sm ON ie.SpellId = sm.SpellID
 			LEFT JOIN SpellDuration sd ON sm.DurationIndex = sd.ID
-			WHERE ((i.ClassID = 0 AND i.SubclassID IS NOT 0 AND i.SubclassID IS NOT 8 AND i.SubclassID IS NOT 6) OR (i.ClassID = 7 AND i.SubclassID = 2)) AND ItemEffects is not null AND s.RequiredLevel >= 80
+			WHERE ((i.ClassID = 0 AND i.SubclassID IS NOT 0 AND i.SubclassID IS NOT 8 AND i.SubclassID IS NOT 6) OR (i.ClassID = 7 AND i.SubclassID = 2)) AND ItemEffects is not null AND (s.RequiredLevel >= 80 OR i.ID = 22788 OR i.ID = 13442)
 			AND s.Display_lang != ''
 			AND s.Display_lang NOT LIKE '%Test%'
 			AND s.Display_lang NOT LIKE 'QA%'
@@ -1010,4 +1010,156 @@ LEFT JOIN SpellName sn ON sn.ID = sm.SpellID;
 	}
 	fmt.Println("Loaded spellicons:", len(talents))
 	return iconsByID, nil
+}
+
+func ScanSpells(rows *sql.Rows) (dbc.Spell, error) {
+	var spell dbc.Spell
+
+	var stringAttr string
+	var stringClassMask string
+	var stringProcType string              //2
+	var stringAuraIFlags string            //2
+	var stringChannelInterruptFlags string // 2
+	var stringShapeShift string            //2
+
+	err := rows.Scan(
+		&spell.NameLang,
+		&spell.ID,
+		&spell.SchoolMask,
+		&spell.Speed,
+		&spell.LaunchDelay,
+		&spell.MinDuration,
+		&spell.MaxScalingLevel,
+		&spell.MinScalingLevel,
+		&spell.ScalesFromItemLevel,
+		&spell.SpellLevel,
+		&spell.BaseLevel,
+		&spell.MaxLevel,
+		&spell.MaxPassiveAuraLevel,
+		&spell.Cooldown,
+		&spell.GCD,
+		&spell.RangeIndex,
+		&stringAttr,
+		&spell.CategoryFlags,
+		&spell.MaxCharges,
+		&spell.ChargeRecoveryTime,
+		&spell.CategoryTypeMask,
+		&spell.Category,
+		&spell.Duration,
+		&spell.ProcChance,
+		&spell.ProcCharges,
+		&stringProcType,
+		&spell.ProcCategoryRecovery,
+		&spell.SpellProcsPerMinuteID,
+		&spell.EquippedItemClass,
+		&spell.EquippedItemInvTypes,
+		&spell.EquippedItemSubclass,
+		&spell.CastTimeMin,
+		&stringClassMask,
+		&spell.SpellClassSet,
+		&stringAuraIFlags,
+		&stringChannelInterruptFlags,
+		&stringShapeShift,
+	)
+	if err != nil {
+		return spell, fmt.Errorf("scanning spell data: %w", err)
+	}
+
+	spell.Attributes, err = parseIntArrayField(stringAttr, 16)
+	if err != nil {
+		return spell, fmt.Errorf("parsing attributes args for spell %d (%s): %w", spell.ID, stringAttr, err)
+	}
+	spell.SpellClassMask, err = parseIntArrayField(stringClassMask, 4)
+	if err != nil {
+		return spell, fmt.Errorf("parsing classmask args for spell %d (%s): %w", spell.ID, stringClassMask, err)
+	}
+
+	spell.ProcTypeMask, err = parseIntArrayField(stringProcType, 2)
+	if err != nil {
+		return spell, fmt.Errorf("parsing ProcTypeMask args for spell %d (%s): %w", spell.ID, stringProcType, err)
+	}
+	spell.AuraInterruptFlags, err = parseIntArrayField(stringAuraIFlags, 2)
+	if err != nil {
+		return spell, fmt.Errorf("parsing stringAuraIFlags args for spell %d (%s): %w", spell.ID, stringAuraIFlags, err)
+	}
+	spell.ChannelInterruptFlags, err = parseIntArrayField(stringChannelInterruptFlags, 2)
+	if err != nil {
+		return spell, fmt.Errorf("parsing stringChannelInterruptFlags args for spell %d (%s): %w", spell.ID, stringChannelInterruptFlags, err)
+	}
+	spell.ShapeshiftMask, err = parseIntArrayField(stringShapeShift, 2)
+	if err != nil {
+		return spell, fmt.Errorf("parsing stringShapeShift args for spell %d (%s): %w", spell.ID, stringShapeShift, err)
+	}
+
+	return spell, nil
+}
+
+func LoadSpells(dbHelper *DBHelper) ([]dbc.Spell, error) {
+	query := `
+		SELECT DISTINCT
+		sn.Name_lang,
+		sn.ID,
+		sm.SchoolMask,
+		sm.Speed,
+		sm.LaunchDelay,
+		sm.MinDuration,
+		COALESCE(ss.MaxScalingLevel, 0),
+		COALESCE(ss.MinScalingLevel, 0),
+		COALESCE(ss.ScalesFromItemLevel, 0),
+		COALESCE(sl.SpellLevel, 0),
+		COALESCE(sl.BaseLevel, 0),
+		COALESCE(sl.MaxLevel, 0),
+		COALESCE(sl.MaxPassiveAuraLevel, 0),
+		COALESCE(sc.RecoveryTime, 0),
+		COALESCE(sc.StartRecoveryTime, 0),
+		COALESCE(sm.RangeIndex, 0),
+		COALESCE(sm."Attributes", ""),
+		COALESCE(ssc.Flags, 0),
+		COALESCE(ssc.MaxCharges, 0),
+		COALESCE(ssc.ChargeRecoveryTime, 0),
+		COALESCE(ssc.TypeMask, 0),
+		COALESCE(scs.Category,0),
+		COALESCE(sd.Duration,0),
+		COALESCE(sao.ProcChance,0),
+		COALESCE(sao.ProcCharges,0),
+		COALESCE(sao.ProcTypeMask, ""),
+		COALESCE(sao.ProcCategoryRecovery, 0),
+		COALESCE(sao.SpellProcsPerMinuteID, 0),
+		COALESCE(sei.EquippedItemClass, 0),
+		COALESCE(sei.EquippedItemInvTypes, 0),
+		COALESCE(sei.EquippedItemSubclass,0),
+		COALESCE(ss.CastTimeMin, 0),
+		COALESCE(sco.SpellClassMask, ""),
+		COALESCE(sco.SpellClassSet, 0),
+		COALESCE(si.AuraInterruptFlags, ""),
+		COALESCE(si.ChannelInterruptFlags, ""),
+		COALESCE(ssp.ShapeshiftMask, "")
+		FROM Spell s
+		LEFT JOIN SpellName sn ON s.ID = sn.ID
+		LEFT JOIN SpellEffect se ON s.ID = se.SpellID
+		LEFT JOIN SpellMisc sm ON s.ID = sm.SpellID
+		LEFT JOIN SpellLevels sl ON s.ID = sl.SpellID
+		LEFT JOIN SpellCooldowns sc ON s.ID = sc.SpellID
+		LEFT JOIN SpellScaling ss ON s.ID = ss.SpellID
+		LEFT JOIN SpellLabel slb ON s.ID = slb.SpellID
+		LEFT JOIN SpellCategories scs ON s.ID = scs.SpellID
+		LEFT JOIN SpellCategory ssc ON ssc.ID = scs.Category
+		LEFT JOIN SpellDuration sd ON sm.DurationIndex = sd.ID
+		LEFT JOIN SpellPower sp ON sp.SpellID = s.ID
+		LEFT JOIN SpellInterrupts si ON si.SpellID = s.ID
+		LEFT JOIN SpellEquippedItems sei ON sei.SpellID = s.ID
+		LEFT JOIN SpellAuraOptions sao ON sao.SpellID = s.ID
+		LEFT JOIN SpellClassOptions sco ON s.ID = sco.SpellID
+		LEFT JOIN SpellShapeshift ssp ON ssp.SpellID = s.ID
+		WHERE sco.SpellClassSet is not null
+		GROUP BY s.ID
+`
+
+	spells, err := LoadRows(dbHelper.db, query, ScanSpells)
+	if err != nil {
+		return nil, fmt.Errorf("error loading spells: %w", err)
+	}
+
+	fmt.Println("Loaded spells:", len(spells))
+	return spells, nil
 }
