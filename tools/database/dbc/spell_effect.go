@@ -52,8 +52,11 @@ func (se *SpellEffect) ToProto() *proto.SpellEffect {
 		SpellId:       int32(se.SpellID),
 		Index:         int32(se.EffectIndex),
 		Type:          proto.EffectType(se.EffectType),
-		EffectSpread:  float64(se.EffectDieSides), // Todo: something weird here only true for pots?
+		EffectSpread:  se.Delta(BASE_LEVEL, BASE_LEVEL), // Todo: something weird here only true for pots?
 		MinEffectSize: se.Min(BASE_LEVEL, BASE_LEVEL),
+	}
+	if spellEffect.EffectSpread == 0 {
+		spellEffect.EffectSpread = float64(se.EffectDieSides)
 	}
 	switch se.EffectType {
 	case E_ENERGIZE:
@@ -158,7 +161,7 @@ func (s *SpellEffect) Max(pLevel int, level int) float64 {
 
 func (s *SpellEffect) scaledDelta(budget float64) float64 {
 	if s.Variance != 0 && budget > 0 {
-		return s.Coefficient * s.Variance * budget
+		return s.Coefficient * float64(s.Variance) * budget
 	}
 	return 0
 }
