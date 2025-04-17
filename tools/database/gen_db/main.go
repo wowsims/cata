@@ -682,7 +682,7 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 	})
 
 	db.Consumables = core.FilterMap(db.Consumables, func(_ int32, consumable *proto.Consumable) bool {
-		if contains(database.ConsumableAllowList, consumable.Id) {
+		if slices.Contains(database.ConsumableAllowList, consumable.Id) {
 			return true
 		}
 
@@ -701,15 +701,6 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 
 		return !strings.HasPrefix(consumable.Name, "QA") && !strings.HasPrefix(consumable.Name, "Test") && !strings.HasPrefix(consumable.Name, "TEST")
 	})
-}
-
-func contains(slice []int32, value int32) bool {
-	for _, v := range slice {
-		if v == value {
-			return true
-		}
-	}
-	return false
 }
 
 func allZero(stats []float64) bool {

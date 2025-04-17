@@ -11,20 +11,16 @@ import (
 	"unicode"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/tools/database/dbc"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 )
-
-type DbcClass struct {
-	ProtoClass proto.Class
-	ID         int
-}
 
 func convertTalentClassID(raw int) int {
 	return 1 << (raw - 1)
 }
 
-var dbcClasses = []DbcClass{
+var dbcClasses = []dbc.DbcClass{
 	{ProtoClass: proto.Class_ClassWarrior, ID: 1},
 	{ProtoClass: proto.Class_ClassPaladin, ID: 2},
 	{ProtoClass: proto.Class_ClassHunter, ID: 3},
@@ -37,7 +33,7 @@ var dbcClasses = []DbcClass{
 	{ProtoClass: proto.Class_ClassDruid, ID: 11},
 }
 
-func classNameFromDBC(dbc DbcClass) string {
+func classNameFromDBC(dbc dbc.DbcClass) string {
 	switch dbc.ID {
 	case 1:
 		return "Warrior"
@@ -234,28 +230,13 @@ func generateTemplateContent(data ClassData) (string, error) {
 
 	data.ClassName = strings.ReplaceAll(data.ClassName, "_", "")
 	slices.SortFunc(data.GlyphsMajor, func(a, b Glyph) int {
-		if a.ID < b.ID {
-			return -1
-		} else if a.ID > b.ID {
-			return 1
-		}
-		return 0
+		return a.ID - b.ID
 	})
 	slices.SortFunc(data.GlyphsMinor, func(a, b Glyph) int {
-		if a.ID < b.ID {
-			return -1
-		} else if a.ID > b.ID {
-			return 1
-		}
-		return 0
+		return a.ID - b.ID
 	})
 	slices.SortFunc(data.GlyphsPrime, func(a, b Glyph) int {
-		if a.ID < b.ID {
-			return -1
-		} else if a.ID > b.ID {
-			return 1
-		}
-		return 0
+		return a.ID - b.ID
 	})
 
 	tmpl, err := template.New("protoTemplate").Funcs(funcMap).Parse(protoTemplateStr)
@@ -562,7 +543,7 @@ func GenerateTalentJsonFromDB(dbHelper *DBHelper) error {
 	return nil
 }
 
-func glyphBelongsToClass(r RawGlyph, dbc DbcClass) bool {
+func glyphBelongsToClass(r RawGlyph, dbc dbc.DbcClass) bool {
 	return r.ClassMask == int32(dbc.ID)
 }
 func properTitle(s string) string {

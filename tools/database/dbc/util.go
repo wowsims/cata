@@ -50,14 +50,14 @@ func GetClassesFromClassMask(mask int) []proto.Class {
 	for _, class := range classes {
 		// Calculate the bit flag using 1 << (ID - 1)
 		if mask&(1<<(class.ID-1)) != 0 {
-			result = append(result, class.protoClass)
+			result = append(result, class.ProtoClass)
 		}
 	}
 	return result
 }
 
 type DbcClass struct {
-	protoClass proto.Class
+	ProtoClass proto.Class
 	ID         int
 }
 
