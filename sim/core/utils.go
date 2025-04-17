@@ -48,7 +48,7 @@ func (unit *Unit) ExecuteResourceGain(sim *Simulation, resource proto.ResourceTy
 	case resource == proto.ResourceType_ResourceTypeRage && amount > 0:
 		unit.AddRage(sim, amount/10, metrics)
 	default:
-		// other resources as needed
+		panic("Unsupported Resource Type in ExecuteResourceGain")
 	}
 }
 func GetTristateValueInt32(effect proto.TristateEffect, regularValue int32, impValue int32) int32 {
