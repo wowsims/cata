@@ -61,19 +61,6 @@ type DbcClass struct {
 	ID         int
 }
 
-var classes = []DbcClass{
-	{proto.Class_ClassWarrior, 1},
-	{proto.Class_ClassPaladin, 2},
-	{proto.Class_ClassHunter, 3},
-	{proto.Class_ClassRogue, 4},
-	{proto.Class_ClassPriest, 5},
-	{proto.Class_ClassDeathKnight, 6},
-	{proto.Class_ClassShaman, 7},
-	{proto.Class_ClassMage, 8},
-	{proto.Class_ClassWarlock, 9},
-	{proto.Class_ClassDruid, 11},
-}
-
 func readGzipFile(filename string) ([]byte, error) {
 	f, err := os.Open(filename)
 	if err != nil {
@@ -201,19 +188,4 @@ func processEnchantmentEffects(
 			// Not processed
 		}
 	}
-}
-func intSliceToInt32Slice(in []int) []int32 {
-	out := make([]int32, len(in))
-	for i, v := range in {
-		out[i] = int32(v)
-	}
-	return out
-}
-
-func int32SliceToIntSlice(in []int32) []int {
-	out := make([]int, len(in))
-	for i, v := range in {
-		out[i] = int(v)
-	}
-	return out
 }

@@ -6,8 +6,6 @@ func MapResistanceToStat(index int) (proto.Stat, bool) {
 	switch index {
 	case 0:
 		return proto.Stat_StatBonusArmor, true
-	case 1:
-		return proto.Stat_StatArmor, false // Holy
 	case 2:
 		return proto.Stat_StatFireResistance, true
 	case 3:
@@ -345,4 +343,16 @@ var RatingModToStat = map[RatingModType]proto.Stat{
 	RATING_MOD_VERS_DAMAGE: -1,
 	RATING_MOD_VERS_HEAL:   -1,
 	RATING_MOD_VERS_MITIG:  -1,
+}
+var classes = []DbcClass{
+	{proto.Class_ClassWarrior, 1},
+	{proto.Class_ClassPaladin, 2},
+	{proto.Class_ClassHunter, 3},
+	{proto.Class_ClassRogue, 4},
+	{proto.Class_ClassPriest, 5},
+	{proto.Class_ClassDeathKnight, 6},
+	{proto.Class_ClassShaman, 7},
+	{proto.Class_ClassMage, 8},
+	{proto.Class_ClassWarlock, 9},
+	{proto.Class_ClassDruid, 11},
 }
