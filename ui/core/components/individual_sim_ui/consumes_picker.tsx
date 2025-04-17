@@ -2,7 +2,7 @@ import { ref } from 'tsx-vanilla';
 
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { Player } from '../../player';
-import { ConsumableType } from '../../proto/db';
+import { ConsumableType } from '../../proto/common';
 import { Database } from '../../proto_utils/database';
 import { TypedEvent } from '../../typed_event';
 import { Component } from '../component';
