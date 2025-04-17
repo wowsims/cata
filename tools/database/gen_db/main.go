@@ -689,6 +689,11 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		if allZero(consumable.Stats) && consumable.Type != proto.ConsumableType_ConsumableTypePotion {
 			return false
 		}
+
+		if consumable.Id == 57099 {
+			return false
+		}
+
 		for _, pattern := range database.DenyListNameRegexes {
 			if pattern.MatchString(consumable.Name) {
 				return false
