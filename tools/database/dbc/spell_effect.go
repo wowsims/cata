@@ -64,6 +64,7 @@ func (se *SpellEffect) ToProto() *proto.SpellEffect {
 	case E_HEAL:
 		spellEffect.MiscValue0 = &proto.SpellEffect_ResourceType{ResourceType: proto.ResourceType_ResourceTypeHealth}
 	}
+
 	return spellEffect
 }
 

@@ -40,7 +40,7 @@ func applyConsumeEffects(agent Agent) {
 			break
 		case 9224:
 			if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
-				character.PseudoStats.MobTypeAttackPower += 265
+				character.PseudoStats.MobTypeAttackPower += 180
 			}
 		default:
 			if elixir.Stats[stats.MasteryRating] > 0 {
@@ -184,17 +184,15 @@ func makePotionActivationSpellInternal(potion Consumable, character *Character, 
 			ActionID: actionID,
 			Flags:    SpellFlagNoOnCastComplete,
 			Cast:     potionCast,
-			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
-
-			},
 		}),
 	}
 	var gains []resourceGainConfig
+	resourceMetrics := make(map[proto.ResourceType]*ResourceMetrics)
 
 	for _, effectID := range potion.EffectIds {
 		e := SpellEffectsById[effectID]
 		if e.Type == proto.EffectType_EffectTypeResourceGain && e.GetResourceType() != 0 {
-			if e.GetResourceType() == proto.ResourceType_ResourceTypeMana {
+			if e.GetResourceType() == proto.ResourceType_ResourceTypeMana && mcd.Type != CooldownTypeSurvival {
 				mcd.Type = CooldownTypeMana
 			} else if e.GetResourceType() == proto.ResourceType_ResourceTypeHealth {
 				mcd.Type = CooldownTypeSurvival
@@ -206,6 +204,10 @@ func makePotionActivationSpellInternal(potion Consumable, character *Character, 
 				min:     e.MinEffectSize,
 				spread:  e.EffectSpread,
 			})
+			// Preload resource types that are found on this item
+			if e.GetResourceType() != 0 && resourceMetrics[e.GetResourceType()] == nil {
+				resourceMetrics[e.GetResourceType()] = character.Metrics.NewResourceMetrics(actionID, e.GetResourceType())
+			}
 		}
 	}
 
@@ -216,9 +218,27 @@ func makePotionActivationSpellInternal(potion Consumable, character *Character, 
 		for _, config := range gains {
 			gain := config.min + sim.RandomFloat(potion.Name)*config.spread
 			gain *= stoneMul
-			character.ExecuteResourceGain(sim, config.resType, gain, actionID)
+			if config.resType == proto.ResourceType_ResourceTypeHealth {
+				gain *= character.PseudoStats.HealingTakenMultiplier
+			}
+			character.ExecuteResourceGain(sim, config.resType, gain, resourceMetrics[config.resType])
 		}
 	}
+
+	mcd.ShouldActivate = func(sim *Simulation, character *Character) bool {
+		shouldActivate := true
+		for _, config := range gains {
+			switch config.resType {
+			case proto.ResourceType_ResourceTypeMana:
+				totalRegen := character.ManaRegenPerSecondWhileCombat() * 5
+				manaGain := config.min
+				manaGain *= stoneMul
+				shouldActivate = character.MaxMana()-(character.CurrentMana()+totalRegen) >= manaGain
+			}
+		}
+		return shouldActivate
+	}
+
 	return mcd
 
 }

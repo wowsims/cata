@@ -253,6 +253,11 @@ func main() {
 		protoConsumable.Icon = strings.ToLower(database.GetIconName(iconsMap, consumable.IconFileDataID))
 		db.MergeConsumable(protoConsumable)
 	}
+
+	for _, consumable := range database.ConsumableOverrides {
+		db.MergeConsumable(consumable)
+	}
+
 	db.MergeItems(database.ItemOverrides)
 	db.MergeGems(database.GemOverrides)
 	db.MergeEnchants(database.EnchantOverrides)

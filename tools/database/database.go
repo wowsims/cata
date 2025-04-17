@@ -252,20 +252,7 @@ func (db *WowDatabase) ToUIProto() *proto.UIDatabase {
 		}
 		return int(v1.Type - v2.Type)
 	})
-	armorTotals := make([]*proto.ItemArmorTotal, 0, len(db.TotalArmorValues))
-	for _, at := range db.TotalArmorValues {
-		armorTotals = append(armorTotals, at)
-	}
-	slices.SortFunc(armorTotals, func(a, b *proto.ItemArmorTotal) int {
-		return int(a.ItemLevel - b.ItemLevel)
-	})
-	randomPropPoints := make([]*proto.RandomPropAllocation, 0, len(db.RandomPropAllocationsByIlvl))
-	for _, alloc := range db.RandomPropAllocationsByIlvl {
-		randomPropPoints = append(randomPropPoints, alloc)
-	}
-	slices.SortFunc(randomPropPoints, func(a, b *proto.RandomPropAllocation) int {
-		return int(a.ItemLevel - b.ItemLevel)
-	})
+
 	return &proto.UIDatabase{
 		Items:            mapToSlice(db.Items),
 		RandomSuffixes:   mapToSlice(db.RandomSuffixes),
@@ -278,8 +265,8 @@ func (db *WowDatabase) ToUIProto() *proto.UIDatabase {
 		SpellIcons:       mapToSlice(db.SpellIcons),
 		GlyphIds:         db.GlyphIDs,
 		ReforgeStats:     mapToSlice(db.ReforgeStats),
-		RandomPropPoints: randomPropPoints,
-		ArmorTotalValue:  armorTotals,
+		RandomPropPoints: mapToSliceByIlvl(db.RandomPropAllocationsByIlvl),
+		ArmorTotalValue:  mapToSliceByIlvl(db.TotalArmorValues),
 		WeaponDamage:     db.WeaponDamage,
 		Armor:            db.Armor,
 		Consumables:      mapToSlice(db.Consumables),

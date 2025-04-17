@@ -32,21 +32,19 @@ func StringFromActionIDs(actionIDs []ActionID) string {
 
 	return strings.Join(names, ", ")
 }
-
-func (unit *Unit) ExecuteResourceGain(sim *Simulation, resource proto.ResourceType, amount float64, actionId ActionID) {
-	metrics := unit.Metrics.NewResourceMetrics(actionId, resource)
+func (unit *Unit) ExecuteResourceGain(sim *Simulation, resource proto.ResourceType, amount float64, metrics *ResourceMetrics) {
 
 	switch {
 	case resource == proto.ResourceType_ResourceTypeMana && amount > 0:
 		unit.AddMana(sim, amount, metrics)
 	case resource == proto.ResourceType_ResourceTypeMana && amount < 0:
-		unit.SpendMana(sim, amount, metrics)
+		unit.SpendMana(sim, -amount, metrics)
 	case resource == proto.ResourceType_ResourceTypeHealth && amount > 0:
 		unit.GainHealth(sim, amount, metrics)
 	case resource == proto.ResourceType_ResourceTypeHealth && amount < 0:
-		unit.RemoveHealth(sim, amount)
+		unit.RemoveHealth(sim, -amount)
 	case resource == proto.ResourceType_ResourceTypeRage && amount < 0:
-		unit.SpendRage(sim, amount/10, metrics)
+		unit.SpendRage(sim, -amount/10, metrics)
 	case resource == proto.ResourceType_ResourceTypeRage && amount > 0:
 		unit.AddRage(sim, amount/10, metrics)
 	default:

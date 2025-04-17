@@ -17,7 +17,7 @@ type Consumable struct {
 	SpellCategoryFlags int             // Spell category flags
 	ItemEffects        []int           // Item effect IDs
 	ElixirType         int
-	Duration           int
+	Duration           int // In milliseconds
 }
 
 func (c *Consumable) ToMap() map[string]interface{} {

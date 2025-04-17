@@ -15,7 +15,10 @@ var OtherItemIdsToFetch = []string{
 	"211850",
 	"211851",
 }
-
+var ConsumableOverrides = []*proto.Consumable{
+	{Id: 62290, BuffsMainStat: true, Stats: stats.Stats{stats.Stamina: 90}.ToProtoArray()},
+	{Id: 62649, BuffsMainStat: true, Stats: stats.Stats{stats.Stamina: 90}.ToProtoArray()},
+}
 var ItemOverrides = []*proto.UIItem{
 	// Boosted 359 green weapon damage stats are way off
 	// min and max show as double of their actual values in tooltips...

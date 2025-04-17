@@ -9,13 +9,7 @@
   "DatabaseFile": "wowsims.db",
   "GameTablesOutDirectory": "../../assets/db_inputs/basestats",
   "GameTables": [
-	"SpellScaling",
-	"ChanceToMeleeCrit",
-	"ChanceToMeleeCritBase",
-	"ChanceToSpellCrit",
-	"ChanceToSpellCritBase",
-	"CombatRatings",
-	"OCTBaseMPByClass"
+
   ],
   "Tables": [
     "Spell",
