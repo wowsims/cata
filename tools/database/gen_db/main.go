@@ -279,8 +279,8 @@ func main() {
 		}
 
 		// MoP Challenge mode downgrade
-		if parsed.Ilvl > 630 {
-			ilvls = append(ilvls, 630)
+		if parsed.Ilvl > 463 {
+			ilvls = append(ilvls, 463)
 		}
 
 		if db.RandomPropAllocationsByIlvl[parsed.Ilvl] == nil {
@@ -1076,23 +1076,6 @@ func GetAllRotationSpellIds() map[string][]int32 {
 		ret_db[r.Name] = spells
 	}
 	return ret_db
-}
-
-func updateMapWithUpgrades[T any](m map[int32]*T, baseIlvl int32, maxUpgradeSteps []int,
-	lookup func(int) *T, upgradeFunc func(base, step int) int) {
-
-	base := int(baseIlvl)
-	if m[baseIlvl] == nil {
-		m[baseIlvl] = lookup(base)
-	}
-
-	for _, step := range maxUpgradeSteps {
-		upgraded := upgradeFunc(base, step)
-		ilvlKey := int32(upgraded)
-		if m[ilvlKey] == nil {
-			m[ilvlKey] = lookup(upgraded)
-		}
-	}
 }
 
 func ensureArmorTotal(
