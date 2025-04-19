@@ -14,11 +14,17 @@ func init() {
 	WITH_DB = true
 
 	simDB := &proto.SimDatabase{
-		Items:          make([]*proto.SimItem, len(db.Items)),
-		Enchants:       make([]*proto.SimEnchant, len(db.Enchants)),
-		Gems:           make([]*proto.SimGem, len(db.Gems)),
-		ReforgeStats:   make([]*proto.ReforgeStat, len(db.ReforgeStats)),
-		RandomSuffixes: make([]*proto.ItemRandomSuffix, len(db.RandomSuffixes)),
+		Items:            make([]*proto.SimItem, len(db.Items)),
+		Enchants:         make([]*proto.SimEnchant, len(db.Enchants)),
+		Gems:             make([]*proto.SimGem, len(db.Gems)),
+		ReforgeStats:     make([]*proto.ReforgeStat, len(db.ReforgeStats)),
+		RandomSuffixes:   make([]*proto.ItemRandomSuffix, len(db.RandomSuffixes)),
+		Consumables:      make([]*proto.Consumable, len(db.Consumables)),
+		SpellEffects:     make([]*proto.SpellEffect, len(db.SpellEffects)),
+		RandomPropPoints: make(map[int32]*proto.QualityAllocations, len(db.RandomPropPoints)),
+		ArmorTotalValue:  make(map[int32]*proto.ItemArmorTotal, len(db.ArmorTotalValue)),
+		ArmorDb:          &proto.ArmorValueDatabase{},
+		WeaponDamageDb:   &proto.WeaponDamageDatabase{},
 	}
 
 	for i, item := range db.Items {
@@ -38,7 +44,8 @@ func init() {
 			WeaponSpeed:      item.WeaponSpeed,
 			SetName:          item.SetName,
 			SetId:            item.SetId,
-			RandPropPoints:   item.RandPropPoints,
+			Ilvl:             item.Ilvl,
+			Quality:          item.Quality,
 		}
 	}
 
@@ -75,5 +82,20 @@ func init() {
 		}
 	}
 
+	for i, consumable := range db.Consumables {
+		simDB.Consumables[i] = consumable
+	}
+
+	for i, effect := range db.SpellEffects {
+		simDB.SpellEffects[i] = effect
+	}
+	for i, v := range db.RandomPropPoints {
+		simDB.RandomPropPoints[i] = v
+	}
+	for _, v := range db.ArmorTotalValue {
+		simDB.ArmorTotalValue[v.ItemLevel] = v
+	}
+	simDB.ArmorDb = db.ArmorDb
+	simDB.WeaponDamageDb = db.WeaponDamageDb
 	addToDatabase(simDB)
 }

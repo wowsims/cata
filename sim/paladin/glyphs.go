@@ -23,7 +23,7 @@ func (paladin *Paladin) applyGlyphs() {
 			FloatValue: 0.1,
 		})
 	}
-	if paladin.HasPrimeGlyph(proto.PaladinPrimeGlyph_GlyphOfTemplarSVerdict) {
+	if paladin.HasPrimeGlyph(proto.PaladinPrimeGlyph_GlyphOfTemplarsVerdict) {
 		paladin.AddStaticMod(core.SpellModConfig{
 			Kind:       core.SpellMod_DamageDone_Flat,
 			ClassMask:  SpellMaskTemplarsVerdict,

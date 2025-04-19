@@ -1,6 +1,7 @@
 import * as PresetUtils from '../../core/preset_utils.js';
 import {
 	Consumes,
+	ConsumesSpec,
 	Debuffs,
 	Flask,
 	Food,
@@ -81,7 +82,12 @@ export const DefaultConsumes = Consumes.create({
 	defaultPotion: Potions.VolcanicPotion,
 	prepopPotion: Potions.VolcanicPotion,
 });
-
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58086, // Flask of the Draconic Mind
+	foodId: 62290, // Seafood Magnifique Feast
+	potId: 58091, // Volcanic Potion
+	prepotId: 58091, // Volcanic Potion
+});
 export const DefaultRaidBuffs = RaidBuffs.create({
 	arcaneBrilliance: true,
 	bloodlust: true,
@@ -143,7 +149,6 @@ export const PresetBuildT12 = PresetUtils.makePresetBuild('Balance T12', {
 	rotation: T12PresetRotation,
 	epWeights: StandardEPWeights,
 });
-
 
 export const PresetBuildT13 = PresetUtils.makePresetBuild('Balance T13', {
 	gear: T13PresetGear,

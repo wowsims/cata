@@ -14,11 +14,11 @@ import {
 	RaidSimRequest,
 	RaidSimResult,
 	ResourceMetrics as ResourceMetricsProto,
-	ResourceType,
 	TargetedActionMetrics as TargetedActionMetricsProto,
 	UnitMetrics as UnitMetricsProto,
 } from '../proto/api.js';
 import { Class, Encounter as EncounterProto, SpellSchool, Target as TargetProto } from '../proto/common.js';
+import { ResourceType } from '../proto/spell';
 import { SimRun } from '../proto/ui.js';
 import { ActionId, defaultTargetIcon } from '../proto_utils/action_id.js';
 import { getPlayerSpecFromPlayer } from '../proto_utils/utils.js';

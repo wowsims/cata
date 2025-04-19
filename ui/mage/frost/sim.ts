@@ -40,6 +40,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default consumes settings.
 		consumes: Presets.DefaultFrostConsumes,
+		consumables: Presets.DefaultConsumables,
 		// Default talents.
 		talents: Presets.FrostTalents.data,
 		// Default spec-specific settings.
@@ -178,6 +179,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 			talents: Presets.FrostTalents.data,
 			specOptions: Presets.DefaultFrostOptions,
 			consumes: Presets.DefaultFrostConsumes,
+			consumables: Presets.DefaultConsumables,
 			otherDefaults: Presets.OtherDefaults,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,

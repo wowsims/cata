@@ -21,7 +21,7 @@ func TestSV(t *testing.T) {
 		GearSet:     core.GetGearSet("../../../ui/hunter/survival/gear_sets", "p4_sv"),
 		Talents:     SVTalents,
 		Glyphs:      SVGlyphs,
-		Consumes:    FullConsumes,
+		Consumables: FullConsumesSpec,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
 		Rotation:    core.GetAplRotation("../../../ui/hunter/survival/apls", "sv"),
 		OtherRotations: []core.RotationCombo{
@@ -58,7 +58,7 @@ func BenchmarkSimulate(b *testing.B) {
 				Race:           proto.Race_RaceOrc,
 				Class:          proto.Class_ClassHunter,
 				Equipment:      core.GetGearSet("../../ui/hunter/survival/gear_sets", "preraid_sv").GearSet,
-				Consumes:       FullConsumes,
+				Consumables:    FullConsumesSpec,
 				Spec:           PlayerOptionsBasic,
 				Glyphs:         SVGlyphs,
 				TalentsString:  SVTalents,
@@ -80,9 +80,17 @@ func BenchmarkSimulate(b *testing.B) {
 	core.RaidBenchmark(b, rsr)
 }
 
-var FullConsumes = &proto.Consumes{
-	Flask:         proto.Flask_FlaskOfTheWinds,
-	DefaultPotion: proto.Potions_PotionOfTheTolvir,
+//	export const DefaultConsumables = ConsumesSpec.create({
+//		flaskId: 58087, // Flask of the Winds
+//		foodId: 62290, // Seafood Magnifique Feast
+//		potId: 58145, // Potion of the Tol'vir
+//		prepotId: 58145, // Potion of the Tol'vir
+//		conjuredId: 5512, // Conjured Healthstone
+//		tinkerId: 82174, // Synapse Springs
+//	});
+var FullConsumesSpec = &proto.ConsumesSpec{
+	FlaskId: 58087,
+	PotId:   58145,
 }
 var SVTalents = "03-2302-23203003023022121311"
 var SVGlyphs = &proto.Glyphs{

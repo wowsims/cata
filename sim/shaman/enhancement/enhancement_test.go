@@ -22,7 +22,7 @@ func TestEnhancement(t *testing.T) {
 		GearSet:     core.GetGearSet("../../../ui/shaman/enhancement/gear_sets", "p4.orc"),
 		Talents:     StandardTalents,
 		Glyphs:      StandardGlyphs,
-		Consumes:    FullConsumes,
+		Consumables: FullConsumesSpec,
 		SpecOptions: core.SpecOptionsCombo{Label: "Standard", SpecOptions: PlayerOptionsStandard},
 		Rotation:    core.GetAplRotation("../../../ui/shaman/enhancement/apls", "default"),
 
@@ -51,11 +51,11 @@ var StandardGlyphs = &proto.Glyphs{
 	Prime3: int32(proto.ShamanPrimeGlyph_GlyphOfFeralSpirit),
 }
 
-var FullConsumes = &proto.Consumes{
-	Flask:         proto.Flask_FlaskOfTheWinds,
-	Food:          proto.Food_FoodGrilledDragon,
-	DefaultPotion: proto.Potions_PotionOfTheTolvir,
-	PrepopPotion:  proto.Potions_PotionOfTheTolvir,
+var FullConsumesSpec = &proto.ConsumesSpec{
+	FlaskId:  58087, // Flask of the Winds
+	FoodId:   62662, // Grilled Dragon
+	PotId:    58145, // Potion of the Tol'vir
+	PrepotId: 58145, // Potion of the Tol'vir
 }
 
 var TotemsBasic = &proto.ShamanTotems{

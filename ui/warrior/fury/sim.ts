@@ -72,6 +72,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
+		consumables: Presets.DefaultConsumables,
 		// Default talents.
 		talents: Presets.FuryTGTalents.data,
 		// Default spec-specific settings.
@@ -165,8 +166,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 			Presets.P4_BIS_FURY_TG_PRESET,
 			Presets.P4_BIS_FURY_SMF_PRESET,
 		],
-		itemSwaps: [Presets.P3_ITEM_SWAP_SMF, Presets.P3_ITEM_SWAP_TG, Presets.P4_ITEM_SWAP_TG,Presets.P4_ITEM_SWAP_SMF],
-		builds: [Presets.P1_PRESET_BUILD_SMF, Presets.P1_PRESET_BUILD_TG, Presets.P3_PRESET_BUILD_SMF, Presets.P3_PRESET_BUILD_TG, Presets.P4_PRESET_BUILD_TG, Presets.P4_PRESET_BUILD_SMF],
+		itemSwaps: [Presets.P3_ITEM_SWAP_SMF, Presets.P3_ITEM_SWAP_TG, Presets.P4_ITEM_SWAP_TG, Presets.P4_ITEM_SWAP_SMF],
+		builds: [
+			Presets.P1_PRESET_BUILD_SMF,
+			Presets.P1_PRESET_BUILD_TG,
+			Presets.P3_PRESET_BUILD_SMF,
+			Presets.P3_PRESET_BUILD_TG,
+			Presets.P4_PRESET_BUILD_TG,
+			Presets.P4_PRESET_BUILD_SMF,
+		],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecFuryWarrior>): APLRotation => {
@@ -179,6 +187,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 			talents: Presets.FurySMFTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
+			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceWorgen,

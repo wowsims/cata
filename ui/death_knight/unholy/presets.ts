@@ -1,6 +1,6 @@
 import * as PresetUtils from '../../core/preset_utils';
 import { APLRotation_Type as APLRotationType } from '../../core/proto/apl.js';
-import { Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Stat, TinkerHands, UnitReference } from '../../core/proto/common';
+import { Consumes, ConsumesSpec, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Stat, TinkerHands, UnitReference } from '../../core/proto/common';
 import { DeathKnightMajorGlyph, DeathKnightMinorGlyph, DeathKnightPrimeGlyph, UnholyDeathKnight_Options } from '../../core/proto/death_knight';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
@@ -31,7 +31,7 @@ export const P2_UNHOLY_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatExpertiseRating]: 0.94,
 			[Stat.StatHasteRating]: 2.4,
 			[Stat.StatHitRating]: 2.6,
-			[Stat.StatCritRating]: (1.43 + 0.69),
+			[Stat.StatCritRating]: 1.43 + 0.69,
 			[Stat.StatMasteryRating]: 1.65,
 		},
 		{
@@ -48,7 +48,7 @@ export const P3_UNHOLY_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatArmor]: 0.03,
 			[Stat.StatAttackPower]: 1,
 			[Stat.StatExpertiseRating]: 1.13,
-			[Stat.StatHasteRating]: 2.40,
+			[Stat.StatHasteRating]: 2.4,
 			[Stat.StatHitRating]: 2.61,
 			[Stat.StatCritRating]: 2.33,
 			[Stat.StatMasteryRating]: 1.87,
@@ -73,7 +73,7 @@ export const DefaultTalents = {
 			major1: DeathKnightMajorGlyph.GlyphOfPestilence,
 			major2: DeathKnightMajorGlyph.GlyphOfBloodBoil,
 			major3: DeathKnightMajorGlyph.GlyphOfAntiMagicShell,
-			minor1: DeathKnightMinorGlyph.GlyphOfDeathSEmbrace,
+			minor1: DeathKnightMinorGlyph.GlyphOfDeathsEmbrace,
 			minor2: DeathKnightMinorGlyph.GlyphOfPathOfFrost,
 			minor3: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
 		}),
@@ -84,25 +84,25 @@ export const PREBIS_PRESET = PresetUtils.makePresetBuild('Pre-bis', {
 	gear: PREBIS_GEAR_PRESET,
 	epWeights: P2_UNHOLY_EP_PRESET,
 	rotationType: APLRotationType.TypeAuto,
-})
+});
 
 export const P2_PRESET = PresetUtils.makePresetBuild('P2', {
 	gear: P2_BIS_GEAR_PRESET,
 	epWeights: P2_UNHOLY_EP_PRESET,
 	rotationType: APLRotationType.TypeAuto,
-})
+});
 
 export const P3_PRESET = PresetUtils.makePresetBuild('P3', {
 	gear: P3_BIS_GEAR_PRESET,
 	epWeights: P3_UNHOLY_EP_PRESET,
 	rotationType: APLRotationType.TypeAuto,
-})
+});
 
 export const P4_PRESET = PresetUtils.makePresetBuild('P4', {
 	gear: P4_BIS_GEAR_PRESET,
 	epWeights: P3_UNHOLY_EP_PRESET,
 	rotationType: APLRotationType.TypeAuto,
-})
+});
 
 export const DefaultOptions = UnholyDeathKnight_Options.create({
 	classOptions: {
@@ -124,4 +124,11 @@ export const DefaultConsumes = Consumes.create({
 	defaultPotion: Potions.GolembloodPotion,
 	prepopPotion: Potions.GolembloodPotion,
 	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
+});
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58088, // Flask of Titanic Strength
+	foodId: 62670, // Beer-Basted Crocolisk
+	potId: 58146, // Golemblood Potion
+	prepotId: 58146, // Golemblood Potion
+	tinkerId: 82174, // Synapse Springs
 });

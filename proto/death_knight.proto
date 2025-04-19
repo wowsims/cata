@@ -5,114 +5,119 @@ option go_package = "./proto";
 
 import "common.proto";
 
+// DO NOT REMOVE THE COMMENTS
+// BEGIN GENERATED
+// DeathKnightTalents message.
 message DeathKnightTalents {
-	// Blood
-	int32 butchery = 1;
-	int32 blade_barrier = 2;
-	int32 bladed_armor = 3;
-	int32 improved_blood_tap = 4;
-	int32 scent_of_blood = 5;
-	int32 scarlet_fever = 6;
-	int32 hand_of_doom = 7;
-	int32 blood_caked_blade = 8;
-	bool bone_shield = 9;
-	int32 toughness = 10;
-	int32 abominations_might = 11;
-	int32 sanguine_fortitude = 12;
-	int32 blood_parasite = 13;
-	int32 improved_blood_presence = 14;
-	int32 will_of_the_necropolis = 15;
-	bool rune_tap = 16;
-	bool vampiric_blood = 17;
-	int32 improved_death_strike = 18;
-	int32 crimson_scourge = 19;
-	bool dancing_rune_weapon = 20;
-
-	// Frost
-	int32 runic_power_mastery = 21;
-	int32 icy_reach = 22;
-	int32 nerves_of_cold_steel = 23;
-	int32 annihilation = 24;
-	bool lichborne = 25;
-	int32 on_a_pale_horse = 26;
-	int32 endless_winter = 27;
-	int32 merciless_combat = 28;
-	int32 chill_of_the_grave = 29;
-	int32 killing_machine = 30;
-	int32 rime = 31;
-	bool pillar_of_frost = 32;
-	bool improved_icy_talons = 33;
-	int32 brittle_bones = 34;
-	int32 chilblains = 35;
-	bool hungering_cold = 36;
-	int32 improved_frost_presence = 37;
-	int32 threat_of_thassarian = 38;
-	int32 might_of_the_frozen_wastes = 39;
-	bool howling_blast = 40;
-
-	// Unholy
-	int32 unholy_command = 41;
-	int32 virulence = 42;
-	int32 epidemic = 43;
-	int32 desecration = 44;
-	int32 resilient_infection = 45;
-	int32 morbidity = 46;
-	int32 runic_corruption = 47;
-	bool unholy_frenzy = 48;
-	int32 contagion = 49;
-	int32 shadow_infusion = 50;
-	int32 deaths_advance = 51;
-	int32 magic_suppression = 52;
-	int32 rage_of_rivendare = 53;
-	bool unholy_blight = 54;
-	bool anti_magic_zone = 55;
-	int32 improved_unholy_presence = 56;
-	bool dark_transformation = 57;
-	int32 ebon_plaguebringer = 58;
-	int32 sudden_doom = 59;
-	bool summon_gargoyle = 60;
+    // Blood
+    int32 butchery = 1;
+    int32 blade_barrier = 2;
+    int32 bladed_armor = 3;
+    int32 improved_blood_tap = 4;
+    int32 scent_of_blood = 5;
+    int32 scarlet_fever = 6;
+    int32 hand_of_doom = 7;
+    int32 blood_caked_blade = 8;
+    bool bone_shield = 9;
+    int32 toughness = 10;
+    int32 abominations_might = 11;
+    int32 sanguine_fortitude = 12;
+    int32 blood_parasite = 13;
+    int32 improved_blood_presence = 14;
+    int32 will_of_the_necropolis = 15;
+    bool rune_tap = 16;
+    bool vampiric_blood = 17;
+    int32 improved_death_strike = 18;
+    int32 crimson_scourge = 19;
+    bool dancing_rune_weapon = 20;
+    // Frost
+    int32 runic_power_mastery = 21;
+    int32 icy_reach = 22;
+    int32 nerves_of_cold_steel = 23;
+    int32 annihilation = 24;
+    bool lichborne = 25;
+    int32 on_a_pale_horse = 26;
+    int32 endless_winter = 27;
+    int32 merciless_combat = 28;
+    int32 chill_of_the_grave = 29;
+    int32 killing_machine = 30;
+    int32 rime = 31;
+    bool pillar_of_frost = 32;
+    bool improved_icy_talons = 33;
+    int32 brittle_bones = 34;
+    int32 chilblains = 35;
+    bool hungering_cold = 36;
+    int32 improved_frost_presence = 37;
+    int32 threat_of_thassarian = 38;
+    int32 might_of_the_frozen_wastes = 39;
+    bool howling_blast = 40;
+    // Unholy
+    int32 unholy_command = 41;
+    int32 virulence = 42;
+    int32 epidemic = 43;
+    int32 desecration = 44;
+    int32 resilient_infection = 45;
+    int32 morbidity = 46;
+    int32 runic_corruption = 47;
+    bool unholy_frenzy = 48;
+    int32 contagion = 49;
+    int32 shadow_infusion = 50;
+    int32 deaths_advance = 51;
+    int32 magic_suppression = 52;
+    int32 rage_of_rivendare = 53;
+    bool unholy_blight = 54;
+    bool anti_magic_zone = 55;
+    int32 improved_unholy_presence = 56;
+    bool dark_transformation = 57;
+    int32 ebon_plaguebringer = 58;
+    int32 sudden_doom = 59;
+    bool summon_gargoyle = 60;
 }
 
 enum DeathKnightPrimeGlyph {
-	DeathKnightPrimeGlyphNone = 0;
-	GlyphOfDeathAndDecay = 43542;
-	GlyphOfDeathCoil = 45804;
-	GlyphOfDeathStrike = 43827;
-	GlyphOfFrostStrike = 43543;
-	GlyphOfHeartStrike = 43534;
-	GlyphOfHowlingBlast = 45806;
-	GlyphOfIcyTouch = 43546;
-	GlyphOfObliterate = 43547;
-	GlyphOfRaiseDead = 43549;
-	GlyphOfRuneStrike = 43550;
-	GlyphOfScourgeStrike = 43551;
-}
-enum DeathKnightMajorGlyph {
-	DeathKnightMajorGlyphNone = 0;
-	GlyphOfAntiMagicShell = 43533;
-	GlyphOfBloodBoil = 43826;
-	GlyphOfBoneShield = 43536;
-	GlyphOfChainsOfIce = 43537;
-	GlyphOfDancingRuneWeapon = 45799;
-	GlyphOfDarkSuccor = 68793;
-	GlyphOfDeathGrip = 43541;
-	GlyphOfHungeringCold = 45800;
-	GlyphOfPestilence = 43548;
-	GlyphOfPillarOfFrost = 43553;
-	GlyphOfRuneTap = 43825;
-	GlyphOfStrangulate = 43552;
-	GlyphOfVampiricBlood = 43554;
-}
-enum DeathKnightMinorGlyph {
-	DeathKnightMinorGlyphNone = 0;
-	GlyphOfBloodTap = 43535;
-	GlyphOfDeathGate = 43673;
-	GlyphOfDeathSEmbrace = 43539;
-	GlyphOfHornOfWinter = 43544;
-	GlyphOfPathOfFrost = 43671;
-	GlyphOfResilientGrip = 43672;
+    DeathKnightPrimeGlyphNone = 0;
+    GlyphOfHeartStrike = 43534;
+    GlyphOfDeathAndDecay = 43542;
+    GlyphOfFrostStrike = 43543;
+    GlyphOfIcyTouch = 43546;
+    GlyphOfObliterate = 43547;
+    GlyphOfRaiseDead = 43549;
+    GlyphOfRuneStrike = 43550;
+    GlyphOfScourgeStrike = 43551;
+    GlyphOfDeathStrike = 43827;
+    DeprecatedGlyphOfTheGhoul = 44432;
+    GlyphOfDeathCoil = 45804;
+    GlyphOfHowlingBlast = 45806;
 }
 
+enum DeathKnightMajorGlyph {
+    DeathKnightMajorGlyphNone = 0;
+    GlyphOfAntiMagicShell = 43533;
+    GlyphOfBoneShield = 43536;
+    GlyphOfChainsOfIce = 43537;
+    GlyphOfDeathGrip = 43541;
+    GlyphOfPestilence = 43548;
+    GlyphOfStrangulate = 43552;
+    GlyphOfPillarOfFrost = 43553;
+    GlyphOfVampiricBlood = 43554;
+    GlyphOfRuneTap = 43825;
+    GlyphOfBloodBoil = 43826;
+    GlyphOfDancingRuneWeapon = 45799;
+    GlyphOfHungeringCold = 45800;
+    GlyphOfDarkSuccor = 68793;
+}
+
+enum DeathKnightMinorGlyph {
+    DeathKnightMinorGlyphNone = 0;
+    GlyphOfBloodTap = 43535;
+    GlyphOfDeathsEmbrace = 43539;
+    GlyphOfHornOfWinter = 43544;
+    GlyphOfPathOfFrost = 43671;
+    GlyphOfResilientGrip = 43672;
+    GlyphOfDeathGate = 43673;
+}
+
+// END GENERATED
 message DeathKnightOptions {
 	double starting_runic_power = 1;
 	double pet_uptime = 2;

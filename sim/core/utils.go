@@ -2,6 +2,7 @@ package core
 
 import (
 	"cmp"
+	"fmt"
 	"hash/fnv"
 	"math"
 	"slices"
@@ -32,7 +33,24 @@ func StringFromActionIDs(actionIDs []ActionID) string {
 
 	return strings.Join(names, ", ")
 }
-
+func (unit *Unit) ExecuteResourceGain(sim *Simulation, resource proto.ResourceType, amount float64, metrics *ResourceMetrics) {
+	switch {
+	case resource == proto.ResourceType_ResourceTypeMana && amount > 0:
+		unit.AddMana(sim, amount, metrics)
+	case resource == proto.ResourceType_ResourceTypeMana && amount < 0:
+		unit.SpendMana(sim, -amount, metrics)
+	case resource == proto.ResourceType_ResourceTypeHealth && amount > 0:
+		unit.GainHealth(sim, amount, metrics)
+	case resource == proto.ResourceType_ResourceTypeHealth && amount < 0:
+		unit.RemoveHealth(sim, -amount)
+	case resource == proto.ResourceType_ResourceTypeRage && amount < 0:
+		unit.SpendRage(sim, -amount/10, metrics)
+	case resource == proto.ResourceType_ResourceTypeRage && amount > 0:
+		unit.AddRage(sim, amount/10, metrics)
+	default:
+		panic("Unsupported Resource Type in ExecuteResourceGain")
+	}
+}
 func GetTristateValueInt32(effect proto.TristateEffect, regularValue int32, impValue int32) int32 {
 	if effect == proto.TristateEffect_TristateEffectRegular {
 		return regularValue
@@ -281,4 +299,77 @@ func GetCurrentProtoVersion() int32 {
 	options := versionMessage.ProtoReflect().Descriptor().Options()
 	optionValue := googleproto.GetExtension(options, proto.E_CurrentVersionNumber)
 	return optionValue.(int32)
+}
+
+var slotIdx = map[proto.ItemType]int{
+	proto.ItemType_ItemTypeHead:  0,
+	proto.ItemType_ItemTypeChest: 0,
+	proto.ItemType_ItemTypeLegs:  0,
+
+	proto.ItemType_ItemTypeShoulder: 1,
+	proto.ItemType_ItemTypeWaist:    1,
+	proto.ItemType_ItemTypeFeet:     1,
+	proto.ItemType_ItemTypeHands:    1,
+	proto.ItemType_ItemTypeTrinket:  1,
+
+	proto.ItemType_ItemTypeNeck:   2,
+	proto.ItemType_ItemTypeWrist:  2,
+	proto.ItemType_ItemTypeFinger: 2,
+	proto.ItemType_ItemTypeBack:   2,
+}
+
+var rangedTypes = map[proto.RangedWeaponType]struct{}{
+	proto.RangedWeaponType_RangedWeaponTypeBow:      {},
+	proto.RangedWeaponType_RangedWeaponTypeCrossbow: {},
+	proto.RangedWeaponType_RangedWeaponTypeGun:      {},
+	proto.RangedWeaponType_RangedWeaponTypeThrown:   {},
+	proto.RangedWeaponType_RangedWeaponTypeWand:     {},
+	proto.RangedWeaponType_RangedWeaponTypeRelic:    {},
+}
+
+var offhandWeapons = map[proto.WeaponType]struct{}{
+	proto.WeaponType_WeaponTypeOffHand: {},
+	proto.WeaponType_WeaponTypeShield:  {},
+}
+
+func calculateRandomPropSlotIndex(item *Item) int {
+	if base, ok := slotIdx[item.Type]; ok {
+		return base
+	}
+
+	if item.Type == proto.ItemType_ItemTypeRanged {
+		if _, ok := rangedTypes[item.RangedWeaponType]; ok {
+			return 4
+		}
+	}
+
+	if item.Type == proto.ItemType_ItemTypeWeapon {
+		if _, ok := offhandWeapons[item.WeaponType]; ok {
+			return 2
+		}
+		if item.HandType == proto.HandType_HandTypeTwoHand {
+			return 0
+		}
+		return 3
+	}
+
+	panic(fmt.Sprintf("Unrecognized ItemType %v in calculateRandomPropSlotIndex %v", item.Type, item.RangedWeaponType))
+}
+
+func pickQualityArray(a *proto.QualityAllocations, q proto.ItemQuality) []int32 {
+	if a == nil {
+		return []int32{}
+	}
+	switch q {
+	case proto.ItemQuality_ItemQualityJunk:
+		return a.Good
+	case proto.ItemQuality_ItemQualityCommon, proto.ItemQuality_ItemQualityUncommon:
+		return a.Good
+	case proto.ItemQuality_ItemQualityRare:
+		return a.Superior
+	case proto.ItemQuality_ItemQualityEpic, proto.ItemQuality_ItemQualityLegendary:
+		return a.Epic
+	default:
+		return a.Good //Todo: what
+	}
 }

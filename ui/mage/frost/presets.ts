@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Conjured, Consumes, Faction, Flask, Food, Glyphs, Potions, Profession, Spec, Stat } from '../../core/proto/common';
+import { Conjured, Consumes, ConsumesSpec, Faction, Flask, Food, Glyphs, Potions, Profession, Spec, Stat } from '../../core/proto/common';
 import { FrostMage_Options as MageOptions, MageMajorGlyph, MageMinorGlyph } from '../../core/proto/mage';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
@@ -64,7 +64,13 @@ export const DefaultFrostConsumes = Consumes.create({
 	flask: Flask.FlaskOfTheFrostWyrm,
 	food: Food.FoodFishFeast,
 });
-
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58086, // Flask of the Draconic Mind
+	foodId: 62290, // Seafood Magnifique Feast
+	potId: 58091, // Volcanic Potion
+	prepotId: 58091, // Volcanic Potion
+	tinkerId: 82174, // Synapse Springs
+});
 export const OtherDefaults = {
 	distanceFromTarget: 20,
 	profession1: Profession.Engineering,

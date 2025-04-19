@@ -1,7 +1,7 @@
 import { ConjuredHealthstone, TinkerHandsSynapseSprings } from '../../core/components/inputs/consumables';
 import * as PresetUtils from '../../core/preset_utils';
 import { APLRotation_Type as APLRotationType } from '../../core/proto/apl.js';
-import { Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, RotationType, Spec, Stat } from '../../core/proto/common';
+import { Consumes, ConsumesSpec, Flask, Food, Glyphs, Potions, Profession, PseudoStat, RotationType, Spec, Stat } from '../../core/proto/common';
 import {
 	HunterMajorGlyph as MajorGlyph,
 	HunterMinorGlyph as MinorGlyph,
@@ -124,8 +124,6 @@ export const P4_PRESET = PresetUtils.makePresetBuild('P4', {
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.
 
-
-
 export const SVDefaultOptions = HunterOptions.create({
 	classOptions: {
 		useHuntersMark: true,
@@ -144,7 +142,14 @@ export const DefaultConsumes = Consumes.create({
 	food: Food.FoodSeafoodFeast,
 	tinkerHands: TinkerHandsSynapseSprings.value,
 });
-
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58087, // Flask of the Winds
+	foodId: 62290, // Seafood Magnifique Feast
+	potId: 58145, // Potion of the Tol'vir
+	prepotId: 58145, // Potion of the Tol'vir
+	conjuredId: 5512, // Conjured Healthstone
+	tinkerId: 82174, // Synapse Springs
+});
 export const OtherDefaults = {
 	distanceFromTarget: 24,
 	profession1: Profession.Engineering,

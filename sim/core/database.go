@@ -5,6 +5,7 @@ import (
 	"math"
 	"slices"
 	"sync"
+	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -18,6 +19,12 @@ var GemsByID = map[int32]Gem{}
 var RandomSuffixesByID = map[int32]RandomSuffix{}
 var EnchantsByEffectID = map[int32]Enchant{}
 var ReforgeStatsByID = map[int32]ReforgeStat{}
+var ConsumablesByID = map[int32]Consumable{}
+var SpellEffectsById = map[int32]*proto.SpellEffect{}
+var RandomPropPointsByIlvl = map[int32]*proto.QualityAllocations{}
+var ArmorValueDatabase = &proto.ArmorValueDatabase{}
+var WeaponValueDatabase = &proto.WeaponDamageDatabase{}
+var ItemArmorTotalByIlvl = map[int32]*proto.ItemArmorTotal{}
 var mutex = &sync.Mutex{}
 
 func addToDatabase(newDB *proto.SimDatabase) {
@@ -55,6 +62,28 @@ func addToDatabase(newDB *proto.SimDatabase) {
 			ReforgeStatsByID[v.Id] = ReforgeStatFromProto(v)
 		}
 	}
+	for _, v := range newDB.Consumables {
+		if _, ok := ConsumablesByID[v.Id]; !ok {
+			ConsumablesByID[v.Id] = ConsumableFromProto(v)
+		}
+	}
+	for _, v := range newDB.SpellEffects {
+		if _, ok := SpellEffectsById[v.Id]; !ok {
+			SpellEffectsById[v.Id] = v
+		}
+	}
+	for i, v := range newDB.RandomPropPoints {
+		if _, ok := RandomPropPointsByIlvl[i]; !ok {
+			RandomPropPointsByIlvl[i] = v
+		}
+	}
+	for _, v := range newDB.ArmorTotalValue {
+		if _, ok := ItemArmorTotalByIlvl[v.ItemLevel]; !ok {
+			ItemArmorTotalByIlvl[v.ItemLevel] = v
+		}
+	}
+	ArmorValueDatabase = newDB.ArmorDb
+	WeaponValueDatabase = newDB.WeaponDamageDb
 }
 
 type ReforgeStat struct {
@@ -84,6 +113,28 @@ func ReforgeStatToProto(stat ReforgeStat) *proto.ReforgeStat {
 	}
 }
 
+type Consumable struct {
+	Id            int32
+	Type          proto.ConsumableType
+	Stats         stats.Stats
+	BuffsMainStat bool
+	Name          string
+	BuffDuration  time.Duration
+	EffectIds     []int32
+}
+
+func ConsumableFromProto(consumable *proto.Consumable) Consumable {
+	return Consumable{
+		Id:            consumable.Id,
+		Type:          consumable.Type,
+		Stats:         stats.FromProtoArray(consumable.Stats),
+		BuffsMainStat: consumable.BuffsMainStat,
+		Name:          consumable.Name,
+		BuffDuration:  time.Second * time.Duration(consumable.BuffDuration),
+		EffectIds:     consumable.EffectIds,
+	}
+}
+
 type Item struct {
 	ID        int32
 	Type      proto.ItemType
@@ -96,12 +147,11 @@ type Item struct {
 	WeaponDamageMax  float64
 	SwingSpeed       float64
 
-	Name             string
-	Stats            stats.Stats // Stats applied to wearer
-	Quality          proto.ItemQuality
-	SetName          string // Empty string if not part of a set.
-	SetID            int32  // 0 if not part of a set.
-	RandomPropPoints int32  // Used to rescale random suffix stats
+	Name    string
+	Stats   stats.Stats // Stats applied to wearer
+	Quality proto.ItemQuality
+	SetName string // Empty string if not part of a set.
+	SetID   int32  // 0 if not part of a set.
 
 	GemSockets  []proto.GemColor
 	SocketBonus stats.Stats
@@ -113,7 +163,26 @@ type Item struct {
 	Reforging    *ReforgeStat
 
 	//Internal use
-	TempEnchant int32
+	TempEnchant     int32
+	Ilvl            int32
+	DmgVariance     float64
+	ArmorModifier   float64
+	QualityModifier float64
+	SocketModifier  []float64
+	StatAllocation  stats.Stats //key=stat id, value=allocation number
+}
+
+func (item *Item) UpgradeItemLevelBy(upgradeLevel int) int {
+	if item.Quality == proto.ItemQuality_ItemQualityUncommon {
+		return upgradeLevel * 8
+	}
+	if item.Quality == proto.ItemQuality_ItemQualityRare {
+		return upgradeLevel * 4
+	}
+	if item.Quality == proto.ItemQuality_ItemQualityEpic {
+		return upgradeLevel * 4
+	}
+	return 0
 }
 
 func ItemFromProto(pData *proto.SimItem) Item {
@@ -123,6 +192,7 @@ func ItemFromProto(pData *proto.SimItem) Item {
 		Type:             pData.Type,
 		ArmorType:        pData.ArmorType,
 		WeaponType:       pData.WeaponType,
+		Quality:          pData.Quality,
 		HandType:         pData.HandType,
 		RangedWeaponType: pData.RangedWeaponType,
 		WeaponDamageMin:  pData.WeaponDamageMin,
@@ -133,7 +203,12 @@ func ItemFromProto(pData *proto.SimItem) Item {
 		SocketBonus:      stats.FromProtoArray(pData.SocketBonus),
 		SetName:          pData.SetName,
 		SetID:            pData.SetId,
-		RandomPropPoints: pData.RandPropPoints,
+		Ilvl:             pData.Ilvl,
+		DmgVariance:      pData.DmgVariance,
+		ArmorModifier:    pData.ArmorModifier,
+		QualityModifier:  pData.QualityModifier,
+		SocketModifier:   pData.SocketModifier,
+		StatAllocation:   stats.FromProtoArray(pData.StatAllocation),
 	}
 }
 
@@ -154,6 +229,168 @@ func (item *Item) ToItemSpecProto() *proto.ItemSpec {
 	}
 
 	return itemSpec
+}
+
+var qualityReaders = map[proto.ItemQuality]func(*proto.QualityValues) float64{
+	proto.ItemQuality_ItemQualityCommon:    func(v *proto.QualityValues) float64 { return v.Common },
+	proto.ItemQuality_ItemQualityUncommon:  func(v *proto.QualityValues) float64 { return v.Uncommon },
+	proto.ItemQuality_ItemQualityRare:      func(v *proto.QualityValues) float64 { return v.Rare },
+	proto.ItemQuality_ItemQualityEpic:      func(v *proto.QualityValues) float64 { return v.Epic },
+	proto.ItemQuality_ItemQualityLegendary: func(v *proto.QualityValues) float64 { return v.Legendary },
+	proto.ItemQuality_ItemQualityArtifact:  func(v *proto.QualityValues) float64 { return v.Artifact },
+	proto.ItemQuality_ItemQualityHeirloom:  func(v *proto.QualityValues) float64 { return v.Heirloom },
+}
+
+func (item *Item) ValueForQuality(vals *proto.QualityValues) float64 {
+	if fn, ok := qualityReaders[item.Quality]; ok {
+		return fn(vals)
+	}
+	return 0
+}
+
+func (item *Item) WeaponDps(itemLevel int32) float64 {
+	var ilvl int32
+	if itemLevel > 0 {
+		ilvl = itemLevel
+	} else {
+		ilvl = item.Ilvl
+	}
+	caster := item.Stats[stats.SpellPower] > 0
+
+	var table []*proto.ItemQualityValue
+
+	switch item.Type {
+	case proto.ItemType_ItemTypeWeapon:
+		if item.HandType == proto.HandType_HandTypeTwoHand {
+			if caster {
+				table = WeaponValueDatabase.Caster_2H
+			} else {
+				table = WeaponValueDatabase.Melee_2H
+			}
+		} else {
+			if caster {
+				table = WeaponValueDatabase.Caster_1H
+			} else {
+				table = WeaponValueDatabase.Melee_1H
+			}
+		}
+	case proto.ItemType_ItemTypeRanged:
+		switch item.RangedWeaponType {
+		case proto.RangedWeaponType_RangedWeaponTypeBow,
+			proto.RangedWeaponType_RangedWeaponTypeCrossbow,
+			proto.RangedWeaponType_RangedWeaponTypeGun:
+			table = WeaponValueDatabase.Ranged
+
+		case proto.RangedWeaponType_RangedWeaponTypeThrown:
+			table = WeaponValueDatabase.Thrown
+
+		case proto.RangedWeaponType_RangedWeaponTypeWand:
+			table = WeaponValueDatabase.Wand
+
+		default:
+			return 0
+		}
+	}
+	idx := int(ilvl)
+	if idx < 0 || idx >= len(table) || table[idx] == nil {
+		return 0
+	}
+	return item.ValueForQuality(table[ilvl].Quality)
+}
+
+func (item *Item) DamageMin(itemLevel int32) float64 {
+	if itemLevel == 0 {
+		itemLevel = item.Ilvl
+	}
+	total := item.WeaponDps(itemLevel)*(float64(item.SwingSpeed))*(1-item.DmgVariance/2) +
+		(item.QualityModifier * (float64(item.SwingSpeed)))
+	if total < 0 {
+		total = 1
+	}
+	return math.Floor(total)
+}
+
+func (item *Item) DamageMax(itemLevel int32) float64 {
+	if itemLevel == 0 {
+		itemLevel = item.Ilvl
+	}
+	total := item.WeaponDps(itemLevel)*(float64(item.SwingSpeed))*(1+item.DmgVariance/2) +
+		(item.QualityModifier * (float64(item.SwingSpeed)))
+	if total < 0 {
+		total = 1
+	}
+	return math.Floor(total + 0.5)
+}
+func (item *Item) GetArmorValue(itemLevel int32) int {
+	if item.Quality > 5 {
+		return 0
+	}
+
+	var ilvl int32
+	if itemLevel > 0 {
+		ilvl = itemLevel
+	} else {
+		ilvl = item.Ilvl
+	}
+	if item.WeaponType == proto.WeaponType_WeaponTypeShield {
+		return int(math.Floor(item.ValueForQuality(ArmorValueDatabase.ShieldArmorValues[ilvl].Quality)) + 0.5)
+	}
+	if item.ArmorType == proto.ArmorType_ArmorTypeUnknown {
+		return 0
+	}
+	total_armor := 0.0
+	quality := 0.0
+	armorTotal := ItemArmorTotalByIlvl[ilvl]
+	switch item.ArmorType {
+	case proto.ArmorType_ArmorTypeCloth:
+		total_armor = armorTotal.Cloth
+	case proto.ArmorType_ArmorTypeLeather:
+		total_armor = armorTotal.Leather
+	case proto.ArmorType_ArmorTypeMail:
+		total_armor = armorTotal.Mail
+	case proto.ArmorType_ArmorTypePlate:
+		total_armor = armorTotal.Plate
+	}
+
+	quality = item.ValueForQuality(ArmorValueDatabase.ArmorValues[ilvl].Quality)
+	return int(math.Floor(total_armor*quality*item.ArmorModifier + 0.5))
+}
+
+func (item *Item) GetStats(itemLevel int32) *stats.Stats {
+	statsArr := &stats.Stats{}
+	for stat := range item.StatAllocation {
+		statsArr[stat] = item.GetScaledStat(stats.Stat(stat), itemLevel)
+		if stat == int(stats.AttackPower) {
+			statsArr[stats.RangedAttackPower] = item.GetScaledStat(stats.Stat(stat), itemLevel)
+		}
+	}
+	return statsArr
+}
+
+func (item *Item) GetScaledStat(stat stats.Stat, itemLevel int32) float64 {
+	slotType := item.Type
+	budget := 0.0
+
+	if slotType == proto.ItemType_ItemTypeUnknown {
+		return 0.0
+	}
+
+	budget = float64(item.RandPropPoints(itemLevel))
+	if item.StatAllocation[stat] > 0 && budget > 0 {
+		rawValue := math.Round(item.StatAllocation[stat] * budget * 0.0001)
+		return rawValue - item.SocketModifier[stat]
+	} else {
+		return math.Floor(item.Stats[stat] * item.ApproximateScaleCoeff(item.Ilvl, itemLevel))
+	}
+}
+
+func (item *Item) ApproximateScaleCoeff(currIlvl int32, newIlvl int32) float64 {
+	if currIlvl == 0 || newIlvl == 0 {
+		return 1.0
+	}
+
+	diff := float64(currIlvl - newIlvl)
+	return 1.0 / math.Pow(1.15, diff/15.0)
 }
 
 type RandomSuffix struct {
@@ -199,11 +436,13 @@ func GemFromProto(pData *proto.SimGem) Gem {
 }
 
 type ItemSpec struct {
-	ID           int32
-	RandomSuffix int32
-	Enchant      int32
-	Gems         []int32
-	Reforging    int32
+	ID            int32
+	RandomSuffix  int32
+	Enchant       int32
+	Gems          []int32
+	Reforging     int32
+	UpgradeLevel  proto.UpgradeLevel
+	ChallengeMode bool
 }
 
 type Equipment [proto.ItemSlot_ItemSlotRanged + 1]Item
@@ -339,11 +578,13 @@ func ProtoToEquipmentSpec(es *proto.EquipmentSpec) EquipmentSpec {
 	var coreEquip EquipmentSpec
 	for i, item := range es.Items {
 		coreEquip[i] = ItemSpec{
-			ID:           item.Id,
-			RandomSuffix: item.RandomSuffix,
-			Enchant:      item.Enchant,
-			Gems:         item.Gems,
-			Reforging:    item.Reforging,
+			ID:            item.Id,
+			RandomSuffix:  item.RandomSuffix,
+			Enchant:       item.Enchant,
+			Gems:          item.Gems,
+			Reforging:     item.Reforging,
+			UpgradeLevel:  item.UpgradeLevel,
+			ChallengeMode: item.ChallengeMode,
 		}
 	}
 	return coreEquip
@@ -355,6 +596,17 @@ func NewItem(itemSpec ItemSpec) Item {
 		item = foundItem
 	} else {
 		panic(fmt.Sprintf("No item with id: %d", itemSpec.ID))
+	}
+	if itemSpec.UpgradeLevel != proto.UpgradeLevel_UPGRADE_LEVEL_NONE {
+
+		scaledIlvl := item.Ilvl + int32(item.UpgradeItemLevelBy(int(itemSpec.UpgradeLevel)))
+
+		item.Stats = *item.GetStats(scaledIlvl)
+		if item.WeaponType != proto.WeaponType_WeaponTypeUnknown {
+			item.WeaponDamageMin = item.DamageMin(scaledIlvl)
+			item.WeaponDamageMax = item.DamageMax(scaledIlvl)
+		}
+		item.Ilvl = scaledIlvl
 	}
 
 	if itemSpec.RandomSuffix != 0 {
@@ -409,7 +661,7 @@ func validateReforging(item *Item, reforging ReforgeStat) bool {
 	// Validate that the item can reforge these to stats
 	reforgeableStats := stats.Stats{}
 	if item.RandomSuffix.ID != 0 {
-		reforgeableStats = reforgeableStats.Add(item.RandomSuffix.Stats.Multiply(float64(item.RandomPropPoints) / 10000.).Floor())
+		reforgeableStats = reforgeableStats.Add(item.RandomSuffix.Stats.Multiply(float64(item.RandPropPoints(item.Ilvl)) / 10000.).Floor())
 	} else {
 		reforgeableStats = reforgeableStats.Add(item.Stats)
 	}
@@ -467,6 +719,20 @@ func (equipment *Equipment) Stats() stats.Stats {
 	return equipStats
 }
 
+func (e *Item) RandPropPoints(itemLevel int32) int32 {
+	ilvl := e.Ilvl
+	if itemLevel != e.Ilvl {
+		ilvl = itemLevel
+	}
+	allocs := RandomPropPointsByIlvl[ilvl]
+	bucket := pickQualityArray(allocs, e.Quality)
+	if len(bucket) == 0 {
+		return 0
+	}
+	idx := calculateRandomPropSlotIndex(e)
+	return bucket[idx]
+}
+
 func ItemEquipmentStats(item Item) stats.Stats {
 	equipStats := stats.Stats{}
 
@@ -478,11 +744,12 @@ func ItemEquipmentStats(item Item) stats.Stats {
 
 	// Random suffix stats can be Reforged, so apply those prior to any Reforges
 	rawSuffixStats := item.RandomSuffix.Stats
-	equipStats = equipStats.Add(rawSuffixStats.Multiply(float64(item.RandomPropPoints) / 10000.).Floor())
+
+	equipStats = equipStats.Add(rawSuffixStats.Multiply(float64(item.RandPropPoints(item.Ilvl)) / 10000.).Floor())
 
 	// Apply reforging
 	if item.Reforging != nil {
-		itemStats := item.Stats.Add(rawSuffixStats.Multiply(float64(item.RandomPropPoints) / 10000.).Floor())
+		itemStats := item.Stats.Add(rawSuffixStats.Multiply(float64(item.RandPropPoints(item.Ilvl)) / 10000.).Floor())
 		reforgingChanges := stats.Stats{}
 		fromStat := item.Reforging.FromStat
 

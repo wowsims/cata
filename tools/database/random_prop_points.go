@@ -90,6 +90,5 @@ func (allocationMap RandomPropAllocationsByIlvl) CalcItemAllocation(item *proto.
 			}
 		}
 	}
-
 	return allocationMap[item.Ilvl][item.Quality][idx]
 }

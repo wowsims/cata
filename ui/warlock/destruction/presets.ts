@@ -1,5 +1,18 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Debuffs, Flask, Food, Glyphs, IndividualBuffs, Potions, Profession, RaidBuffs, Stat, TinkerHands } from '../../core/proto/common';
+import {
+	Consumes,
+	ConsumesSpec,
+	Debuffs,
+	Flask,
+	Food,
+	Glyphs,
+	IndividualBuffs,
+	Potions,
+	Profession,
+	RaidBuffs,
+	Stat,
+	TinkerHands,
+} from '../../core/proto/common';
 import { SavedTalents } from '../../core/proto/ui';
 import {
 	DestructionWarlock_Options as WarlockOptions,
@@ -80,6 +93,13 @@ export const DefaultConsumes = Consumes.create({
 	food: Food.FoodSeafoodFeast,
 	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
 	explosiveBigDaddy: false,
+});
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58086, // Flask of the Draconic Mind
+	foodId: 62290, // Seafood Magnifique Feast
+	potId: 58091, // Volcanic Potion
+	prepotId: 58091, // Volcanic Potion
+	tinkerId: 82174, // Synapse Springs
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({

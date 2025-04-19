@@ -51,7 +51,7 @@ type Character struct {
 	ItemSwap ItemSwap
 
 	// Consumables this Character will be using.
-	Consumes *proto.Consumes
+	Consumables *proto.ConsumesSpec
 
 	// Base stats for this Character.
 	baseStats stats.Stats
@@ -150,9 +150,9 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 	}
 	character.PrimaryTalentTree = GetPrimaryTalentTreeIndex(player.TalentsString)
 
-	character.Consumes = &proto.Consumes{}
-	if player.Consumes != nil {
-		character.Consumes = player.Consumes
+	character.Consumables = &proto.ConsumesSpec{}
+	if player.Consumables != nil {
+		character.Consumables = player.Consumables
 	}
 
 	character.baseStats = BaseStats[BaseStatsKey{Race: character.Race, Class: character.Class}]
