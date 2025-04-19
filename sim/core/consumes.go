@@ -35,8 +35,6 @@ func applyConsumeEffects(agent Agent) {
 	if consumables.BattleElixirId != 0 {
 		elixir := ConsumablesByID[consumables.BattleElixirId]
 		switch consumables.BattleElixirId {
-		case 0:
-			break
 		case 9224:
 			if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
 				character.PseudoStats.MobTypeAttackPower += 105
