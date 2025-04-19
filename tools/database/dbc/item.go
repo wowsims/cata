@@ -63,7 +63,7 @@ func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
 		GemSockets:          item.GetGemSlots(),
 		SocketBonus:         item.GetGemBonus().ToProtoArray(),
 	}
-	if item.ItemLevel >= 390 || len(item.RandomSuffixOptions) > 0 {
+	if item.ItemLevel >= 458 || len(item.RandomSuffixOptions) > 0 {
 		uiItem.DmgVariance = item.DmgVariance
 		uiItem.ArmorModifier = item.GetArmorModifier()
 		uiItem.QualityModifier = item.QualityModifier

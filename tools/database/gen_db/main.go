@@ -269,7 +269,7 @@ func main() {
 			continue
 		}
 		parsed = db.Items[int32(item.Id)]
-		if parsed.Ilvl < 390 && parsed.RandomSuffixOptions == nil {
+		if parsed.Ilvl < 458 && parsed.RandomSuffixOptions == nil {
 			continue
 		}
 		maxUpgradeSteps := []int{1, 2, 3, 4}
@@ -277,7 +277,7 @@ func main() {
 		ilvls := []int{int(parsed.Ilvl)}
 
 		for _, step := range maxUpgradeSteps {
-			if parsed.Ilvl >= 390 {
+			if parsed.Ilvl >= 458 {
 				ilvls = append(ilvls, item.ItemLevel+item.UpgradeItemLevelBy(step))
 			}
 		}
