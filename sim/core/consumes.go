@@ -10,9 +10,8 @@ import (
 // Registers all consume-related effects to the Agent.
 func applyConsumeEffects(agent Agent) {
 	character := agent.GetCharacter()
-	consumes := character.Consumes
 	consumables := character.Consumables
-	if consumes == nil {
+	if consumables == nil {
 		return
 	}
 	alchemyFlaskBonus := TernaryFloat64(character.HasProfession(proto.Profession_Alchemy), 80, 0)
