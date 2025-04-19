@@ -22,9 +22,9 @@ func TestShadow(t *testing.T) {
 		OtherGearSets: []core.GearSetCombo{
 			core.GetGearSet("../../../ui/priest/shadow/gear_sets", "p3"),
 		},
-		Talents:  DefaultTalents,
-		Glyphs:   DefaultGlyphs,
-		Consumes: FullConsumes,
+		Talents:     DefaultTalents,
+		Glyphs:      DefaultGlyphs,
+		Consumables: FullConsumesSpec,
 
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
 
@@ -61,14 +61,13 @@ var DefaultGlyphs = &proto.Glyphs{
 	Minor3: int32(proto.PriestMinorGlyph_GlyphOfShadowfiend),
 }
 
-var FullConsumes = &proto.Consumes{
-	Flask:         proto.Flask_FlaskOfTheDraconicMind,
-	Food:          proto.Food_FoodSeafoodFeast,
-	DefaultPotion: proto.Potions_VolcanicPotion,
-	PrepopPotion:  proto.Potions_VolcanicPotion,
-	TinkerHands:   proto.TinkerHands_TinkerHandsSynapseSprings,
+var FullConsumesSpec = &proto.ConsumesSpec{
+	FlaskId:  58086, // Flask of the Draconic Mind
+	FoodId:   62290, // Seafood Magnifique Feast
+	PotId:    58091, // Volcanic Potion
+	PrepotId: 58091, // Volcanic Potion
+	TinkerId: 4179,  // Synapse Springs
 }
-
 var PlayerOptionsBasic = &proto.Player_ShadowPriest{
 	ShadowPriest: &proto.ShadowPriest{
 		Options: &proto.ShadowPriest_Options{
