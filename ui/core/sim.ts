@@ -1,7 +1,7 @@
 import { hasTouch } from '../shared/bootstrap_overrides';
 import { SimRequest } from '../worker/types';
 import { getBrowserLanguageCode, setLanguageCode } from './constants/lang';
-import * as OtherConstants from './constants/other';
+import { CURRENT_PHASE, LOCAL_STORAGE_PREFIX } from './constants/other';
 import { Encounter } from './encounter';
 import { Player, UnitMetadata } from './player';
 import {
@@ -33,7 +33,7 @@ import {
 	UnitReference_Type as UnitType,
 	WeaponType,
 } from './proto/common.js';
-import { ArmorValueDatabase, Consumable, ItemArmorTotal, QualityAllocations, SimDatabase, WeaponDamageDatabase } from './proto/db';
+import { Consumable, ItemArmorTotal, QualityAllocations, SimDatabase } from './proto/db';
 import { SpellEffect } from './proto/spell';
 import { DatabaseFilters, RaidFilterOption, SimSettings as SimSettingsProto, SourceFilterOption } from './proto/ui.js';
 import { Database } from './proto_utils/database.js';
@@ -60,7 +60,7 @@ interface SimProps {
 	type?: SimType;
 }
 
-const WASM_CONCURRENCY_STORAGE_KEY = `${OtherConstants.LOCAL_STORAGE_PREFIX}_wasmconcurrency`;
+const WASM_CONCURRENCY_STORAGE_KEY = `${LOCAL_STORAGE_PREFIX}_wasmconcurrency`;
 
 // Core Sim module which deals only with api types, no UI-related stuff.
 export class Sim {
@@ -68,7 +68,7 @@ export class Sim {
 
 	iterations = 12500;
 
-	private phase: number = OtherConstants.CURRENT_PHASE;
+	private phase: number = CURRENT_PHASE;
 	private faction: Faction = Faction.Alliance;
 	private fixedRngSeed = 0;
 	private filters: DatabaseFilters = Sim.defaultFilters();
@@ -865,7 +865,7 @@ export class Sim {
 	fromProto(eventID: EventID, proto: SimSettingsProto) {
 		TypedEvent.freezeAllAndDo(() => {
 			this.setIterations(eventID, proto.iterations || 12500);
-			this.setPhase(eventID, proto.phase || OtherConstants.CURRENT_PHASE);
+			this.setPhase(eventID, proto.phase || CURRENT_PHASE);
 			this.setFixedRngSeed(eventID, Number(proto.fixedRngSeed));
 			this.setShowDamageMetrics(eventID, proto.showDamageMetrics);
 			this.setShowThreatMetrics(eventID, proto.showThreatMetrics);
@@ -908,7 +908,7 @@ export class Sim {
 			eventID,
 			SimSettingsProto.create({
 				iterations: 12500,
-				phase: OtherConstants.CURRENT_PHASE,
+				phase: CURRENT_PHASE,
 				faction: Faction.Alliance,
 				showDamageMetrics: !isHealingSim,
 				showThreatMetrics: isTankSim,

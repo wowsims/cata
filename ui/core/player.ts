@@ -1,5 +1,3 @@
-import ItemList from './components/gear_picker/item_list';
-import { ConjuredDarkRune } from './components/inputs/consumables';
 import { ItemSwapSettings } from './components/item_swap_picker';
 import Toast from './components/toast';
 import * as Mechanics from './constants/mechanics';
@@ -27,7 +25,6 @@ import {
 	Consumes,
 	ConsumesSpec,
 	Cooldowns,
-	Explosive,
 	Faction,
 	Flask,
 	Food,
@@ -37,7 +34,6 @@ import {
 	HandType,
 	HealingModel,
 	IndividualBuffs,
-	ItemQuality,
 	ItemRandomSuffix,
 	ItemSlot,
 	Potions,
@@ -52,7 +48,7 @@ import {
 	UnitStats,
 	WeaponType,
 } from './proto/common';
-import { QualityValues, SimDatabase } from './proto/db';
+import { SimDatabase } from './proto/db';
 import {
 	DungeonDifficulty,
 	RaidFilterOption,
@@ -95,7 +91,7 @@ import { Raid } from './raid';
 import { Sim } from './sim';
 import { playerTalentStringToProto } from './talents/factory';
 import { EventID, TypedEvent } from './typed_event';
-import { findInputItemForEnum, omitDeep, randPropPoints, stringComparator, sum, upgradeItemLevelBy } from './utils';
+import { findInputItemForEnum, omitDeep, randPropPoints, stringComparator, sum } from './utils';
 import { WorkerProgressCallback } from './worker_pool';
 
 export interface AuraStats {

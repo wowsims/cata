@@ -21,7 +21,7 @@ export const REPO_NEW_ISSUE_URL = `${REPO_URL}/issues/new`;
 export const REPO_CHOOSE_NEW_ISSUE_URL = `${REPO_NEW_ISSUE_URL}/choose`;
 
 // Get 'elemental_shaman', the pathname part after the repo name
-const pathnameParts = typeof window !== 'undefined' ? window?.location.pathname.split('/') : [];
+const pathnameParts = window?.location.pathname.split('/');
 const repoPartIdx = pathnameParts.findIndex(part => part == REPO_NAME);
 export const SPEC_DIRECTORY = repoPartIdx == -1 ? '' : pathnameParts[repoPartIdx + 1];
 
