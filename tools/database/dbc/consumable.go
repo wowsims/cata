@@ -39,7 +39,7 @@ func (c *Consumable) ToMap() map[string]interface{} {
 func (c *Consumable) ToProto() *proto.Consumable {
 	return &proto.Consumable{
 		Id:            int32(c.Id),
-		Type:          c.SubClassId.ToProto(),
+		Type:          c.GetConsumableType(),
 		Stats:         c.GetStatModifiers().ToProtoArray(),
 		Name:          c.Name,
 		BuffsMainStat: false, // Todo: Should be food currently, might be more in MoP, figure out how to tell
@@ -48,7 +48,7 @@ func (c *Consumable) ToProto() *proto.Consumable {
 	}
 }
 func (c *Consumable) GetConsumableType() proto.ConsumableType {
-	if c.SubClassId == FLASK {
+	if c.SubClassId == ELIXIR {
 		switch c.ElixirType {
 		case 1:
 			return proto.ConsumableType_ConsumableTypeGuardianElixir

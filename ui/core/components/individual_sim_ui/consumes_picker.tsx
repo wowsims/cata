@@ -90,7 +90,7 @@ export class ConsumesPicker extends Component {
 		const simpleFlasksOptions = ConsumablesInputs.makeConsumableInput(flasks, { consumesFieldName: 'flaskId' }, '');
 		buildIconInput(flasksElem, this.simUI.player, simpleFlasksOptions);
 
-		const battleElixirs = this.db.getConsumablesByTypeAndStats(ConsumableType.ConsumableTypeBattleElixir, this.simUI.individualConfig.epStats);
+		const battleElixirs = this.db.getConsumablesByType(ConsumableType.ConsumableTypeBattleElixir);
 		const battleElixirOptions = ConsumablesInputs.makeConsumableInput(battleElixirs, { consumesFieldName: 'battleElixirId' }, '');
 
 		const guardianElixirs = this.db.getConsumablesByType(ConsumableType.ConsumableTypeGuardianElixir);

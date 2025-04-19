@@ -1,5 +1,20 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Race, RaidBuffs, Spec, Stat, TinkerHands } from '../../core/proto/common';
+import {
+	Consumes,
+	ConsumesSpec,
+	Debuffs,
+	Flask,
+	Food,
+	Glyphs,
+	Potions,
+	Profession,
+	PseudoStat,
+	Race,
+	RaidBuffs,
+	Spec,
+	Stat,
+	TinkerHands,
+} from '../../core/proto/common';
 import {
 	FireMage_Options as MageOptions,
 	FireMage_Rotation,
@@ -127,6 +142,13 @@ export const DefaultFireConsumes = Consumes.create({
 	defaultPotion: Potions.VolcanicPotion,
 	prepopPotion: Potions.VolcanicPotion,
 	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
+});
+export const DefaultFireConsumables = ConsumesSpec.create({
+	flaskId: 58086, // Flask of the Draconic Mind
+	foodId: 62290, // Seafood Magnifique Feast
+	potId: 58091, // Volcanic Potion
+	prepotId: 58091, // Volcanic Potion
+	tinkerId: 82174, // Synapse Springs
 });
 
 export const DefaultDebuffs = Debuffs.create({

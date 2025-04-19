@@ -16,7 +16,7 @@ message SimDatabase {
 	ArmorValueDatabase armor_db = 9;
 	repeated Consumable consumables = 10;
 	repeated SpellEffect spell_effects = 11;
-	repeated ItemArmorTotal armor_total_value = 12;
+	map<int32, ItemArmorTotal> armor_total_value = 12;
 }
 
 // Contains only the Item info needed by the sim.
@@ -39,14 +39,16 @@ message SimItem {
 	double weapon_speed = 13;
 
 	string set_name = 14;
-	int32 rand_prop_points = 15 [deprecated = true]; // Possibly not needed after dbc scaling is in
-	int32 set_id = 16;
+	int32 set_id = 15;
 
 	// Neccessary for scaling items in MoP
-	double dmg_variance = 17;
-	double armor_modifier = 18;
-	double quality_modifier = 19;
-	double socket_modifier = 20;
+	double dmg_variance = 16;
+	double armor_modifier = 17;
+	double quality_modifier = 18;
+	repeated double socket_modifier = 19;
+	int32 ilvl = 20;
+	repeated double stat_allocation = 21;
+	ItemQuality quality = 22;
 }
 
 message Consumable {

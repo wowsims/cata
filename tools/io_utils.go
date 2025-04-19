@@ -171,7 +171,9 @@ func WriteProtoMapToBuffer[K constraints.Ordered, V googleProto.Message](
 			log.Printf("[ERROR] Failed to marshal key %v: %v", k, err)
 			continue
 		}
-
+		if bytes.Equal(jsonBytes, []byte("{}")) {
+			continue
+		}
 		buffer.WriteString(`"`)
 		buffer.WriteString(fmt.Sprint(k))
 		buffer.WriteString(`":`)
@@ -200,6 +202,9 @@ func WriteWeaponDamageToBuffer(wd *proto.WeaponDamageDatabase, buffer *bytes.Buf
 			jsonBytes, err := protojson.MarshalOptions{UseEnumNumbers: true}.Marshal(elem)
 			if err != nil {
 				log.Printf("Couldn't to marshal: %s", err.Error())
+			}
+			if bytes.Equal(jsonBytes, []byte("{}")) {
+				continue
 			}
 			json.Compact(buffer, jsonBytes)
 			if i != len(data)-1 {
@@ -240,6 +245,9 @@ func WriteArmorValuesToBuffer(ad *proto.ArmorValueDatabase, buffer *bytes.Buffer
 			jsonBytes, err := protojson.MarshalOptions{UseEnumNumbers: true}.Marshal(elem)
 			if err != nil {
 				log.Printf("[ERROR] Failed to marshal: %s", err.Error())
+			}
+			if bytes.Equal(jsonBytes, []byte("{}")) {
+				continue
 			}
 			json.Compact(buffer, jsonBytes)
 			if i != len(data)-1 {

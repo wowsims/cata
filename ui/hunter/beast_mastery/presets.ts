@@ -1,6 +1,6 @@
 import { ConjuredHealthstone, TinkerHandsSynapseSprings } from '../../core/components/inputs/consumables';
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, RotationType, Spec, Stat } from '../../core/proto/common';
+import { Consumes, ConsumesSpec, Flask, Food, Glyphs, Potions, Profession, PseudoStat, RotationType, Spec, Stat } from '../../core/proto/common';
 import {
 	BeastMasteryHunter_Options as BeastMasteryOptions,
 	BeastMasteryHunter_Rotation as BeastMasteryRotation,
@@ -119,7 +119,14 @@ export const DefaultConsumes = Consumes.create({
 	food: Food.FoodSeafoodFeast,
 	tinkerHands: TinkerHandsSynapseSprings.value,
 });
-
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58087, // Flask of the Winds
+	foodId: 62290, // Seafood Magnifique Feast
+	potId: 58145, // Potion of the Tol'vir
+	prepotId: 58145, // Potion of the Tol'vir
+	conjuredId: 5512, // Conjured Healthstone
+	tinkerId: 82174, // Synapse Springs
+});
 export const OtherDefaults = {
 	distanceFromTarget: 24,
 	profession1: Profession.Engineering,

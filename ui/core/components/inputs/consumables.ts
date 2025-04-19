@@ -32,7 +32,7 @@ export interface ConsumableStatOption<T> extends ItemStatOption<T> {
 }
 
 export interface ConsumeInputFactoryArgs<T extends number> {
-	consumesFieldName: keyof Consumes;
+	consumesFieldName: keyof ConsumesSpec;
 	// Additional callback if logic besides syncing consumes is required
 	onSet?: (eventactionId: EventID, player: Player<any>, newValue: T) => void;
 	showWhen?: (player: Player<any>) => boolean;
@@ -66,7 +66,7 @@ function makeConsumeInputFactory<T extends number, SpecType extends Spec>(
 			getValue: (player: Player<any>) => player.getConsumes()[args.consumesFieldName] as T,
 			setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
 				const newConsumes = player.getConsumes();
-
+				console.log(newConsumes);
 				if (newConsumes[args.consumesFieldName] === newValue) {
 					return;
 				}
@@ -89,15 +89,15 @@ function makeConsumeInputFactory<T extends number, SpecType extends Spec>(
 
 export const ConjuredDarkRune = {
 	actionId: ActionId.fromItemId(12662),
-	value: Conjured.ConjuredDarkRune,
+	value: 12662,
 };
 export const ConjuredHealthstone = {
 	actionId: ActionId.fromItemId(5512),
-	value: Conjured.ConjuredHealthstone,
+	value: 5512,
 };
 export const ConjuredRogueThistleTea = {
 	actionId: ActionId.fromItemId(7676),
-	value: Conjured.ConjuredRogueThistleTea,
+	value: 7676,
 	showWhen: <SpecType extends Spec>(player: Player<SpecType>) => player.getClass() == Class.ClassRogue,
 };
 
@@ -107,7 +107,7 @@ export const CONJURED_CONFIG = [
 	{ config: ConjuredDarkRune, stats: [Stat.StatIntellect] },
 ] as ConsumableStatOption<Conjured>[];
 
-export const makeConjuredInput = makeConsumeInputFactory({ consumesFieldName: 'defaultConjured' });
+export const makeConjuredInput = makeConsumeInputFactory({ consumesFieldName: 'conjuredId' });
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 EXPLOSIVES
@@ -146,12 +146,12 @@ export const makeConjuredInput = makeConsumeInputFactory({ consumesFieldName: 'd
 
 export const ExplosiveBigDaddy = makeBooleanConsumeInput({
 	actionId: ActionId.fromItemId(63396),
-	fieldName: 'explosiveBigDaddy',
+	fieldName: 'explosiveId',
 	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
 });
 export const HighpoweredBoltGun = makeBooleanConsumeInput({
 	actionId: ActionId.fromItemId(60223),
-	fieldName: 'highpoweredBoltGun',
+	fieldName: 'explosiveId',
 	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
 });
 
@@ -161,23 +161,23 @@ export const HighpoweredBoltGun = makeBooleanConsumeInput({
 
 export const TinkerHandsSynapseSprings = {
 	actionId: ActionId.fromSpellId(82174),
-	value: TinkerHands.TinkerHandsSynapseSprings,
+	value: 82174,
 };
 export const TinkerHandsQuickflipDeflectionPlates = {
 	actionId: ActionId.fromSpellId(82176),
-	value: TinkerHands.TinkerHandsQuickflipDeflectionPlates,
+	value: 82176,
 };
 export const TinkerHandsTazikShocker = {
 	actionId: ActionId.fromSpellId(82179),
-	value: TinkerHands.TinkerHandsTazikShocker,
+	value: 82179,
 };
 export const TinkerHandsSpinalHealingInjector = {
 	actionId: ActionId.fromSpellId(82184),
-	value: TinkerHands.TinkerHandsSpinalHealingInjector,
+	value: 82184,
 };
 export const TinkerHandsZ50ManaGulper = {
 	actionId: ActionId.fromSpellId(82186),
-	value: TinkerHands.TinkerHandsZ50ManaGulper,
+	value: 82186,
 };
 
 export const TINKERS_HANDS_CONFIG = [
@@ -189,7 +189,7 @@ export const TINKERS_HANDS_CONFIG = [
 ] as ConsumableStatOption<TinkerHands>[];
 
 export const makeTinkerHandsInput = makeConsumeInputFactory({
-	consumesFieldName: 'tinkerHands',
+	consumesFieldName: 'tinkerId',
 	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
 });
 
@@ -313,18 +313,6 @@ export function makeConsumableInput(
 	};
 }
 
-export const makeFlasksInput = makeConsumeInputFactory({
-	consumesFieldName: 'flaskId',
-	onSet: (eventID: EventID, player: Player<any>, newValue: number) => {
-		if (newValue) {
-			const newConsumes = player.getConsumes();
-			newConsumes.battleElixir = BattleElixir.BattleElixirUnknown;
-			newConsumes.guardianElixir = GuardianElixir.GuardianElixirUnknown;
-			player.setConsumes(eventID, newConsumes);
-		}
-	},
-});
-
 // Battle Elixirs
 export const ElixirOfTheMaster = {
 	actionId: ActionId.fromItemId(58148),
@@ -421,17 +409,6 @@ export const BATTLE_ELIXIRS_CONFIG = [
 	{ config: WrathElixir, stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower] },
 ] as ConsumableStatOption<BattleElixir>[];
 
-export const makeBattleElixirsInput = makeConsumeInputFactory({
-	consumesFieldName: 'battleElixir',
-	onSet: (eventID: EventID, player: Player<any>, newValue: BattleElixir) => {
-		if (newValue) {
-			const newConsumes = player.getConsumes();
-			newConsumes.flask = Flask.FlaskUnknown;
-			player.setConsumes(eventID, newConsumes);
-		}
-	},
-});
-
 // Guardian Elixirs
 export const ElixirOfDeepEarth = {
 	actionId: ActionId.fromItemId(58093),
@@ -479,17 +456,6 @@ export const GUARDIAN_ELIXIRS_CONFIG = [
 	{ config: ElixirOfProtection, stats: [Stat.StatArmor] },
 	{ config: ElixirOfSpirit, stats: [Stat.StatSpirit] },
 ] as ConsumableStatOption<GuardianElixir>[];
-
-export const makeGuardianElixirsInput = makeConsumeInputFactory({
-	consumesFieldName: 'guardianElixir',
-	onSet: (eventID: EventID, player: Player<any>, newValue: GuardianElixir) => {
-		if (newValue) {
-			const newConsumes = player.getConsumes();
-			newConsumes.flask = Flask.FlaskUnknown;
-			player.setConsumes(eventID, newConsumes);
-		}
-	},
-});
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 FOOD
@@ -658,23 +624,6 @@ export const FOOD_CONFIG = [
 	{ config: FoodMightyRhinoDogs, stats: [Stat.StatMP5] },
 ] as ConsumableStatOption<Food>[];
 
-export const makeFoodInput = makeConsumeInputFactory({ consumesFieldName: 'food' });
-
-///////////////////////////////////////////////////////////////////////////
-//                                 PET
-///////////////////////////////////////////////////////////////////////////
-
-export const PetScrollOfAgilityV = makeBooleanConsumeInput({
-	actionId: ActionId.fromItemId(27498),
-	fieldName: 'petScrollOfAgility',
-	value: 5,
-});
-export const PetScrollOfStrengthV = makeBooleanConsumeInput({
-	actionId: ActionId.fromItemId(27503),
-	fieldName: 'petScrollOfStrength',
-	value: 5,
-});
-
 ///////////////////////////////////////////////////////////////////////////
 //                                 POTIONS
 ///////////////////////////////////////////////////////////////////////////
@@ -749,8 +698,3 @@ export const PRE_POTIONS_CONFIG = [
 	{ config: PotionOfSpeed, stats: [Stat.StatHasteRating] },
 	{ config: FlameCap, stats: [] },
 ] as ConsumableStatOption<Potions>[];
-
-export const makePotionsInput = makeConsumeInputFactory({ consumesFieldName: 'defaultPotion' });
-export const makePrepopPotionsInput = makeConsumeInputFactory({
-	consumesFieldName: 'prepopPotion',
-});

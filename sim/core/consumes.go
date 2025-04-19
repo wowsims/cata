@@ -183,7 +183,7 @@ func makePotionActivationSpellInternal(potion Consumable, character *Character, 
 	}
 	if potion.BuffDuration > 0 {
 		// Add stat buff aura if applicable
-		aura = character.NewTemporaryStatsAura(potion.Name, actionID, potion.Stats, time.Second*time.Duration(potion.BuffDuration))
+		aura = character.NewTemporaryStatsAura(potion.Name, actionID, potion.Stats, time.Duration(potion.BuffDuration))
 		mcd.Type = aura.InferCDType()
 	}
 	var gains []resourceGainConfig
@@ -421,9 +421,9 @@ func registerTinkerHandsCD(agent Agent, consumes *proto.ConsumesSpec) {
 		return
 	}
 	//Todo: Get them dynamically from dbc data
-	// We switch on Enchant ID
+	// We switch on spell id apparently
 	switch consumes.TinkerId {
-	case 4179:
+	case 82174:
 		// Enchant: 4179, Spell: 82174 - Synapse Springs
 		statType := character.GetHighestStatType([]stats.Stat{stats.Intellect, stats.Strength, stats.Agility})
 
@@ -481,7 +481,7 @@ func registerTinkerHandsCD(agent Agent, consumes *proto.ConsumesSpec) {
 			Type:     CooldownTypeDPS,
 		})
 		character.ItemSwap.ProcessTinker(spell, []proto.ItemSlot{proto.ItemSlot_ItemSlotHands})
-	case 4180:
+	case 82176:
 		// Enchant: 4180, Spell: 82176 - Quickflip Deflection Plates
 		actionID := ActionID{SpellID: 82176}
 		statAura := character.NewTemporaryStatsAura(
@@ -514,7 +514,7 @@ func registerTinkerHandsCD(agent Agent, consumes *proto.ConsumesSpec) {
 			Type:     CooldownTypeSurvival,
 		})
 		character.ItemSwap.ProcessTinker(spell, []proto.ItemSlot{proto.ItemSlot_ItemSlotHands})
-	case 4181:
+	case 82180:
 		// Enchant: 4181, Spell: 82180 - Tazik Shocker
 		actionID := ActionID{SpellID: 82179}
 		spell := character.GetOrRegisterSpell(SpellConfig{
@@ -547,7 +547,7 @@ func registerTinkerHandsCD(agent Agent, consumes *proto.ConsumesSpec) {
 			Priority: CooldownPriorityLow,
 			Type:     CooldownTypeDPS,
 		})
-	case 4182:
+	case 82184:
 		// Enchant: 4182, Spell: 82184 - Spinal Healing Injector
 		actionID := ActionID{SpellID: 82184}
 		healthMetric := character.NewHealthMetrics(actionID)

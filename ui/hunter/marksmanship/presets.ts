@@ -1,6 +1,6 @@
 import { ConjuredHealthstone, TinkerHandsSynapseSprings } from '../../core/components/inputs/consumables';
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, RotationType, Spec, Stat } from '../../core/proto/common';
+import { Consumes, ConsumesSpec, Flask, Food, Glyphs, Potions, Profession, PseudoStat, RotationType, Spec, Stat } from '../../core/proto/common';
 import {
 	BeastMasteryHunter_Options as HunterOptions,
 	BeastMasteryHunter_Rotation as HunterRotation,
@@ -102,7 +102,6 @@ export const MMDefaultOptions = HunterOptions.create({
 		petUptime: 1,
 	},
 });
-
 export const DefaultConsumes = Consumes.create({
 	defaultPotion: Potions.PotionOfTheTolvir,
 	prepopPotion: Potions.PotionOfTheTolvir,
@@ -110,6 +109,15 @@ export const DefaultConsumes = Consumes.create({
 	defaultConjured: ConjuredHealthstone.value,
 	food: Food.FoodSeafoodFeast,
 	tinkerHands: TinkerHandsSynapseSprings.value,
+});
+
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58087, // Flask of the Winds
+	foodId: 62290, // Seafood Magnifique Feast
+	potId: 58145, // Potion of the Tol'vir
+	prepotId: 58145, // Potion of the Tol'vir
+	conjuredId: 5512, // Conjured Healthstone
+	tinkerId: 82174, // Synapse Springs
 });
 
 export const OtherDefaults = {

@@ -29,7 +29,7 @@ message UIDatabase {
 	repeated ReforgeStat reforge_stats = 12;
 
 	map<int32, QualityAllocations> random_prop_points = 13; // keyed by ilvl
-	repeated ItemArmorTotal armor_total_value = 16;
+	map<int32, ItemArmorTotal> armor_total_value = 16;
 
 	WeaponDamageDatabase weapon_damage_db = 17;
 	ArmorValueDatabase armor_db = 18;
@@ -79,7 +79,6 @@ message UIItem {
 	ItemQuality quality = 17;
 	bool unique = 18;
 	bool heroic = 19;
-	int32 rand_prop_points = 27; // possibly not needed once dbc scaling is in
 
 	// Classes that are allowed to use the item. Empty indicates no special class restrictions.
 	repeated Class class_allowlist = 20;
@@ -88,7 +87,7 @@ message UIItem {
 	// Name of the item set to which this item belongs, if any.
 	string set_name = 22;
 	// ID of the item set to which this item belongs, if any. (useful for shared pvp set bonuses)
-	int32 set_id = 28;
+	int32 set_id = 27;
 
 	Expansion expansion = 24;
 	repeated UIItemSource sources = 23;
@@ -102,12 +101,12 @@ message UIItem {
 	FactionRestriction faction_restriction = 25;
 
 	// Neccessary for scaling items in MoP
-	double dmg_variance = 29;
-	double armor_modifier = 30;
-	double quality_modifier = 31;
-	repeated double socket_modifier = 32;
-	double max_ilvl = 33;
-	repeated double stat_allocation = 34;
+	double dmg_variance = 28;
+	double armor_modifier = 29;
+	double quality_modifier = 30;
+	repeated double socket_modifier = 31;
+	int32 max_ilvl = 32;
+	repeated double stat_allocation = 33;
 }
 
 enum Expansion {
@@ -413,6 +412,7 @@ message SavedSettings {
 	double distance_from_target = 12;
 	HealingModel healing_model = 13;
 	double dark_intent_uptime = 19;
+	ConsumesSpec consumables = 20;
 }
 
 message SavedTalents {

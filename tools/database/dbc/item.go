@@ -63,21 +63,18 @@ func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
 		GemSockets:          item.GetGemSlots(),
 		SocketBonus:         item.GetGemBonus().ToProtoArray(),
 	}
-	if item.ItemLevel >= 458 {
+	if item.ItemLevel >= 390 || len(item.RandomSuffixOptions) > 0 {
 		uiItem.DmgVariance = item.DmgVariance
 		uiItem.ArmorModifier = item.GetArmorModifier()
 		uiItem.QualityModifier = item.QualityModifier
 		uiItem.SocketModifier = item.GetSocketModifier()
-		uiItem.StatAllocation = item.GetStatAlloc()
+		uiItem.StatAllocation = item.GetStatAlloc().ToProtoArray()
+		uiItem.MaxIlvl = int32(item.ItemLevel) + int32(item.UpgradeItemLevelBy(4))
 	}
 	item.ParseItemFlags(uiItem)
 
 	if item.ItemClass == ITEM_CLASS_ARMOR {
 		uiItem.ArmorType = MapArmorSubclassToArmorType[item.ItemSubClass]
-	}
-
-	if item.GetRandomSuffixType() != -1 {
-		uiItem.RandPropPoints = dbcInstance.RandomPropertiesByIlvl[itemLevel][uiItem.Quality][item.GetRandomSuffixType()]
 	}
 
 	return uiItem
@@ -104,7 +101,6 @@ func (item *Item) ParseItemFlags(uiItem *proto.UIItem) {
 func GetDbcItem(itemId int) Item {
 	return GetDBC().Items[itemId]
 }
-
 func (item *Item) GetStats(itemLevel int) *stats.Stats {
 	stats := &stats.Stats{}
 	for i, alloc := range item.BonusStat {
@@ -242,16 +238,16 @@ func (item *Item) GetSocketModifier() []float64 {
 	return stats.ToProtoArray()
 }
 
-func (item *Item) GetStatAlloc() []float64 {
+func (item *Item) GetStatAlloc() stats.Stats {
 	stats := stats.Stats{}
 	for i, alloc := range item.BonusStat {
 		stat, success := MapBonusStatIndexToStat(alloc)
 		if !success {
 			continue
 		}
-		stats[stat] = item.StatAlloc[i]
+		stats[int32(stat)] = item.StatAlloc[i]
 	}
-	return stats.ToProtoArray()
+	return stats
 }
 
 func (item *Item) GetArmorValue(itemLevel int) int {

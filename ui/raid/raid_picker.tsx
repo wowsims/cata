@@ -726,7 +726,7 @@ class NewPlayerPicker extends Component {
 									newPlayer.setTalentsString(eventID, matchingPreset.talents.talentsString);
 									newPlayer.setGlyphs(eventID, matchingPreset.talents.glyphs || Glyphs.create());
 									newPlayer.setSpecOptions(eventID, matchingPreset.specOptions);
-									newPlayer.setConsumes(eventID, matchingPreset.consumes);
+									newPlayer.setConsumes(eventID, matchingPreset.consumables);
 									newPlayer.setName(eventID, matchingPreset.defaultName ?? playerSpec.friendlyName);
 									newPlayer.setProfession1(eventID, matchingPreset.otherDefaults?.profession1 || Profession.Engineering);
 									newPlayer.setProfession2(eventID, matchingPreset.otherDefaults?.profession2 || Profession.Jewelcrafting);

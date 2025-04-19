@@ -27,13 +27,14 @@ import {
 	Profession,
 	PseudoStat,
 	RangedWeaponType,
-	SimDatabase,
 	Spec,
 	Stat,
 	UnitReference,
 	UnitReference_Type as UnitType,
 	WeaponType,
 } from './proto/common.js';
+import { ArmorValueDatabase, Consumable, ItemArmorTotal, QualityAllocations, SimDatabase, WeaponDamageDatabase } from './proto/db';
+import { SpellEffect } from './proto/spell';
 import { DatabaseFilters, RaidFilterOption, SimSettings as SimSettingsProto, SourceFilterOption } from './proto/ui.js';
 import { Database } from './proto_utils/database.js';
 import { SimResult } from './proto_utils/sim_result.js';
@@ -244,29 +245,80 @@ export class Sim {
 				if (gearChanged) {
 					player.equipment = gear.asSpec();
 				}
+
 				// Include consumables in the player db
 				const pdb = player.database!;
-
-				type ConsumableIdKey = 'flaskId' | 'battleElixirId' | 'guardianElixirId' | 'foodId' | 'potId' | 'prepotId';
-				const consumableIdFields: ConsumableIdKey[] = ['potId', 'prepotId', 'flaskId', 'battleElixirId', 'guardianElixirId', 'foodId'];
-
-				consumableIdFields.forEach(field => {
-					const id = player.consumables?.[field] ?? 0;
-					if (id && id !== 0) {
-						const consume = this.db.getConsumable(id);
-						if (consume) {
-							pdb.consumables[consume.id] = consume;
-							if (consume.effectIds.length > 0) {
-								consume.effectIds.forEach(id => {
-									const effect = this.db.getSpellEffect(id);
-									if (effect) {
-										pdb.effects[effect.id] = effect;
-									}
-								});
-							}
+				pdb.armorDb = this.db.getArmorDb();
+				pdb.weaponDamageDb = this.db.getWeaponDamageDb();
+				pdb.armorTotalValue = [] as ItemArmorTotal[];
+				pdb.randomPropPoints = [] as QualityAllocations[];
+				gear.asArray().forEach(gear => {
+					if (!pdb.randomPropPoints[gear?.item.ilvl ?? 0]) {
+						if (this.db.getQualityAllocByIlvl(gear?.item.ilvl ?? 0)) {
+							pdb.randomPropPoints[gear?.item.ilvl ?? 0] = this.db.getQualityAllocByIlvl(gear?.item.ilvl ?? 0)!;
+						}
+					}
+					if (!pdb.armorTotalValue[gear?.item.ilvl ?? 0]) {
+						if (this.db.getArmorTotalValueByIlvl(gear?.item.ilvl ?? 0)) {
+							pdb.armorTotalValue[gear?.item.ilvl ?? 0] = this.db.getArmorTotalValueByIlvl(gear?.item.ilvl ?? 0)!;
 						}
 					}
 				});
+
+				type ConsumableIdKey =
+					| 'flaskId'
+					| 'battleElixirId'
+					| 'guardianElixirId'
+					| 'foodId'
+					| 'potId'
+					| 'prepotId'
+					| 'tinkerId'
+					| 'conjuredId'
+					| 'explosiveId';
+				const consumableIdFields: ConsumableIdKey[] = [
+					'potId',
+					'prepotId',
+					'flaskId',
+					'battleElixirId',
+					'guardianElixirId',
+					'foodId',
+					'tinkerId',
+					'conjuredId',
+					'explosiveId',
+				];
+
+				const newConsumables: Consumable[] = [];
+				const newSpellEffects: SpellEffect[] = [];
+				const seenConsumableIds = new Set<number>();
+				const seenEffectIds = new Set<number>();
+
+				for (const field of consumableIdFields) {
+					const cid = player.consumables?.[field];
+					if (!cid || seenConsumableIds.has(cid)) continue;
+
+					const consume = this.db.getConsumable(cid);
+					if (!consume) continue;
+
+					seenConsumableIds.add(consume.id);
+					newConsumables.push(consume);
+
+					for (const eid of consume.effectIds) {
+						if (seenEffectIds.has(eid)) continue;
+						const effect = this.db.getSpellEffect(eid);
+						if (!effect) continue;
+
+						seenEffectIds.add(effect.id);
+						newSpellEffects.push(effect);
+					}
+				}
+
+				// swap in the fresh arrays
+				pdb.consumables = newConsumables;
+				pdb.spellEffects = newSpellEffects;
+
+				// replace the old maps in one go
+				pdb.consumables = newConsumables;
+				pdb.spellEffects = newSpellEffects;
 				player.database = pdb;
 			});
 		});
@@ -323,7 +375,7 @@ export class Sim {
 		playerDatabase.reforgeStats.push(...bulkItemsDb.reforgeStats);
 		playerDatabase.randomSuffixes.push(...bulkItemsDb.randomSuffixes);
 		playerDatabase.consumables.push(...bulkItemsDb.consumables);
-		playerDatabase.effects.push(...bulkItemsDb.effects);
+		playerDatabase.spellEffects.push(...bulkItemsDb.spellEffects);
 
 		this.bulkSimStartEmitter.emit(TypedEvent.nextEventID(), request);
 
@@ -466,17 +518,15 @@ export class Sim {
 		eventID = TypedEvent.nextEventID();
 
 		await this.waitForInit();
-
 		// Capture the current players so we avoid issues if something changes while
 		// request is in-flight.
+
 		const players = this.raid.getPlayers();
 		const req = ComputeStatsRequest.create({
 			raid: this.getModifiedRaidProto(),
 			encounter: this.encounter.toProto(),
 		});
-
 		const result = await this.workerPool.computeStats(req);
-
 		if (result.errorResult != '') {
 			this.crashEmitter.emit(eventID, new SimError(result.errorResult));
 			return;

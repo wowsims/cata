@@ -2,6 +2,11 @@
 import cloneDeep from 'lodash/cloneDeep';
 import { v4 as uuidv4 } from 'uuid';
 
+import { HandType, ItemQuality, ItemType, RangedWeaponType, WeaponType } from './proto/common';
+import { QualityAllocations, QualityValues } from './proto/db';
+import { UIItem } from './proto/ui';
+import { Database } from './proto_utils/database';
+
 export const randomUUID = () => uuidv4();
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -405,4 +410,111 @@ export const findInputItemForEnum = <T extends Record<string, string | number>, 
 		return undefined;
 	}
 	return items.find(item => normalizeName(item.name) === targetEnumKey);
+};
+export const rangedTypes = new Set<RangedWeaponType>([
+	RangedWeaponType.RangedWeaponTypeBow,
+	RangedWeaponType.RangedWeaponTypeCrossbow,
+	RangedWeaponType.RangedWeaponTypeGun,
+]);
+export const thrownTypes = new Set<RangedWeaponType>([RangedWeaponType.RangedWeaponTypeThrown]);
+export const wandTypes = new Set<RangedWeaponType>([RangedWeaponType.RangedWeaponTypeWand]);
+export const offhandWeapons = new Set<WeaponType>([WeaponType.WeaponTypeOffHand, WeaponType.WeaponTypeShield]);
+export const qualityKeys: Array<keyof QualityValues | null> = [null, 'common', 'uncommon', 'rare', 'epic', 'legendary', 'artifact', 'heirloom'];
+export const valueForQuality = (q: ItemQuality, vals: QualityValues): number => {
+	const key = qualityKeys[q];
+	return key != null ? vals[key] : 0;
+};
+export const randPropPoints = (itemLevel: number, item: UIItem): number => {
+	const db = Database.getSync();
+	const allocs = db.getQualityAllocByIlvl(itemLevel);
+	if (allocs) {
+		const bucket = pickQualityArray(allocs, item.quality);
+		const idx = calculateRandomPropSlotIndex(item);
+		return bucket[idx];
+	}
+	return 0;
+};
+
+const SLOT_IDX: Partial<Record<ItemType, number>> = {
+	[ItemType.ItemTypeHead]: 0,
+	[ItemType.ItemTypeChest]: 0,
+	[ItemType.ItemTypeLegs]: 0,
+
+	[ItemType.ItemTypeShoulder]: 1,
+	[ItemType.ItemTypeWaist]: 1,
+	[ItemType.ItemTypeFeet]: 1,
+	[ItemType.ItemTypeHands]: 1,
+	[ItemType.ItemTypeTrinket]: 1,
+
+	[ItemType.ItemTypeNeck]: 2,
+	[ItemType.ItemTypeWrist]: 2,
+	[ItemType.ItemTypeFinger]: 2,
+	[ItemType.ItemTypeBack]: 2,
+};
+
+const RANGED_TYPES = new Set<RangedWeaponType>([
+	RangedWeaponType.RangedWeaponTypeBow,
+	RangedWeaponType.RangedWeaponTypeCrossbow,
+	RangedWeaponType.RangedWeaponTypeGun,
+	RangedWeaponType.RangedWeaponTypeThrown,
+	RangedWeaponType.RangedWeaponTypeWand,
+]);
+
+const OFFHAND_WEAPONS = new Set<WeaponType>([WeaponType.WeaponTypeOffHand, WeaponType.WeaponTypeShield]);
+
+export function calculateRandomPropSlotIndex(item: UIItem): number {
+	const base = SLOT_IDX[item.type];
+	if (base !== undefined) return base;
+
+	if (item.type === ItemType.ItemTypeRanged) {
+		if (RANGED_TYPES.has(item.rangedWeaponType)) {
+			return 4;
+		}
+	}
+
+	if (item.type === ItemType.ItemTypeWeapon) {
+		if (OFFHAND_WEAPONS.has(item.weaponType)) {
+			return 2;
+		}
+		if (item.handType === HandType.HandTypeTwoHand) {
+			return 0;
+		}
+		// everything else (one‑hand main hands, daggers, etc) = 3
+		return 3;
+	}
+
+	throw new Error(`Cannot calculate random‐prop slot for item type=${item.type}`);
+}
+
+export function pickQualityArray(allocs: QualityAllocations, quality: ItemQuality): number[] {
+	switch (quality) {
+		case ItemQuality.ItemQualityCommon:
+		case ItemQuality.ItemQualityUncommon:
+			return allocs.good;
+		case ItemQuality.ItemQualityRare:
+			return allocs.superior;
+		case ItemQuality.ItemQualityEpic:
+			return allocs.epic;
+		default:
+			throw new Error(`Quality ${quality} has no random‐prop data`);
+	}
+}
+export const approximateScaleCoeff = (currIlvl: number, newIlvl: number): number => {
+	if (currIlvl === 0 || newIlvl === 0) {
+		return 1;
+	}
+
+	const diff = currIlvl - newIlvl;
+	return 1 / Math.pow(1.15, diff / 15);
+};
+export const upgradeItemLevelBy = (quality: ItemQuality, upgradeLevel: number): number => {
+	switch (quality) {
+		case ItemQuality.ItemQualityUncommon:
+			return upgradeLevel * 8;
+		case ItemQuality.ItemQualityRare:
+		case ItemQuality.ItemQualityEpic:
+			return upgradeLevel * 4;
+		default:
+			return 0;
+	}
 };

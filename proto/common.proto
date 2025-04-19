@@ -875,6 +875,17 @@ message ItemSpec {
 	int32 enchant = 3;
 	repeated int32 gems = 4;
 	int32 reforging = 5; //reforging id
+	UpgradeLevel upgrade_level = 7;
+	bool challenge_mode = 8;
+	ItemQuality quality = 9;
+}
+
+enum UpgradeLevel {
+  UPGRADE_LEVEL_NONE  = 0;
+  UPGRADE_LEVEL_ONE   = 1;
+  UPGRADE_LEVEL_TWO   = 2;
+  UPGRADE_LEVEL_THREE = 3;
+  UPGRADE_LEVEL_FOUR  = 4;
 }
 
 message EquipmentSpec {

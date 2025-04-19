@@ -266,7 +266,7 @@ func (db *WowDatabase) ToUIProto() *proto.UIDatabase {
 		GlyphIds:         db.GlyphIDs,
 		ReforgeStats:     mapToSlice(db.ReforgeStats),
 		RandomPropPoints: db.RandomPropAllocationsByIlvl,
-		ArmorTotalValue:  mapToSliceByIlvl(db.TotalArmorValues),
+		ArmorTotalValue:  db.TotalArmorValues,
 		WeaponDamageDb:   db.WeaponDamageDb,
 		ArmorDb:          db.ArmorDb,
 		Consumables:      mapToSlice(db.Consumables),
@@ -312,7 +312,7 @@ func ReadDatabaseFromJson(jsonStr string) *WowDatabase {
 		RandomPropAllocationsByIlvl: dbProto.RandomPropPoints,
 		WeaponDamageDb:              dbProto.WeaponDamageDb,
 		ArmorDb:                     dbProto.ArmorDb,
-		TotalArmorValues:            sliceToMapIlvl(dbProto.ArmorTotalValue),
+		TotalArmorValues:            dbProto.ArmorTotalValue,
 		Consumables:                 sliceToMap(dbProto.Consumables),
 		Effects:                     sliceToMap(dbProto.SpellEffects),
 	}
@@ -364,17 +364,17 @@ func (db *WowDatabase) WriteJson(jsonFilePath string) {
 	buffer.WriteString(",\n")
 	tools.WriteProtoArrayToBuffer(uidb.GlyphIds, buffer, "glyphIds")
 	buffer.WriteString(",\n")
-	tools.WriteArmorValuesToBuffer(uidb.ArmorDb, buffer, "armorValue")
+	tools.WriteArmorValuesToBuffer(uidb.ArmorDb, buffer, "armorDb")
 	buffer.WriteString(",\n")
-	tools.WriteWeaponDamageToBuffer(uidb.WeaponDamageDb, buffer, "weaponDamage")
+	tools.WriteWeaponDamageToBuffer(uidb.WeaponDamageDb, buffer, "weaponDamageDb")
 	buffer.WriteString(",\n")
-	tools.WriteProtoArrayToBuffer(uidb.ArmorTotalValue, buffer, "armorTotalValue")
+	tools.WriteProtoMapToBuffer(uidb.ArmorTotalValue, buffer, "armorTotalValue")
 	buffer.WriteString(",\n")
 	tools.WriteProtoMapToBuffer(uidb.RandomPropPoints, buffer, "randomPropPoints")
 	buffer.WriteString(",\n")
 	tools.WriteProtoArrayToBuffer(uidb.Consumables, buffer, "consumables")
 	buffer.WriteString(",\n")
-	tools.WriteProtoArrayToBuffer(uidb.SpellEffects, buffer, "effects")
+	tools.WriteProtoArrayToBuffer(uidb.SpellEffects, buffer, "spellEffects")
 	buffer.WriteString("\n")
 	buffer.WriteString("}")
 	os.WriteFile(jsonFilePath, buffer.Bytes(), 0666)

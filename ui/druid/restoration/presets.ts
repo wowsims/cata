@@ -1,6 +1,7 @@
 import * as PresetUtils from '../../core/preset_utils';
 import {
 	Consumes,
+	ConsumesSpec,
 	Debuffs,
 	Flask,
 	Food,
@@ -84,7 +85,11 @@ export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskOfTheFrostWyrm,
 	food: Food.FoodFishFeast,
 });
-
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 0, // Flask of the Frost Wyrm (not in list)
+	foodId: 62290, // Seafood Magnifique Feast
+	potId: 57192, // Mythical Mana Potion
+});
 export const DefaultRaidBuffs = RaidBuffs.create({
 	arcaneBrilliance: true,
 	bloodlust: true,

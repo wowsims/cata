@@ -1,24 +1,41 @@
 import { CHARACTER_LEVEL } from '../constants/mechanics.js';
 import {
+	ArmorType,
+	ConsumableType,
 	EquipmentSpec,
 	GemColor,
+	HandType,
+	ItemQuality,
 	ItemRandomSuffix,
 	ItemSlot,
 	ItemSpec,
 	ItemSwap,
+	ItemType,
 	PresetEncounter,
 	PresetTarget,
 	ReforgeStat,
-	SimDatabase,
 	Stat,
+	UpgradeLevel,
+	WeaponType,
 } from '../proto/common.js';
-import { Consumable, ConsumableType, SpellEffect } from '../proto/db';
+import {
+	ArmorValueDatabase,
+	Consumable,
+	ItemArmorTotal,
+	ItemQualityValue,
+	QualityAllocations,
+	QualityValues,
+	SimDatabase,
+	WeaponDamageDatabase,
+} from '../proto/db';
+import { SpellEffect } from '../proto/spell';
 import { GlyphID, IconData, UIDatabase, UIEnchant as Enchant, UIGem as Gem, UIItem as Item, UINPC as Npc, UIZone as Zone } from '../proto/ui.js';
-import { distinct } from '../utils.js';
+import { distinct, randPropPoints, rangedTypes, thrownTypes, upgradeItemLevelBy, valueForQuality, wandTypes } from '../utils.js';
 import { WOWHEAD_EXPANSION_ENV } from '../wowhead';
 import { EquippedItem } from './equipped_item.js';
 import { Gear, ItemSwapGear } from './gear.js';
 import { gemEligibleForSocket, gemMatchesSocket } from './gems.js';
+import { damageMax, damageMin, getStats } from './items';
 import { getEligibleEnchantSlots, getEligibleItemSlots } from './utils.js';
 
 const dbUrlJson = '/cata/assets/database/db.json';
@@ -30,19 +47,34 @@ const READ_JSON = true;
 
 export class Database {
 	private static loadPromise: Promise<Database> | null = null;
-	static get(): Promise<Database> {
-		if (Database.loadPromise == null) {
-			if (READ_JSON) {
-				Database.loadPromise = fetch(dbUrlJson)
-					.then(response => response.json())
-					.then(json => new Database(UIDatabase.fromJson(json)));
-			} else {
-				Database.loadPromise = fetch(dbUrlBin)
-					.then(response => response.arrayBuffer())
-					.then(buffer => new Database(UIDatabase.fromBinary(new Uint8Array(buffer))));
-			}
+	private static instance: Database | null = null;
+
+	static async get(): Promise<Database> {
+		if (!Database.loadPromise) {
+			Database.loadPromise = (async () => {
+				let dbData: UIDatabase;
+				if (READ_JSON) {
+					const resp = await fetch(dbUrlJson);
+					const json = await resp.json();
+					dbData = UIDatabase.fromJson(json);
+				} else {
+					const buf = await fetch(dbUrlBin).then(r => r.arrayBuffer());
+					const bytes = new Uint8Array(buf);
+					dbData = UIDatabase.fromBinary(bytes);
+				}
+				const db = new Database(dbData);
+				Database.instance = db;
+				return db;
+			})();
 		}
 		return Database.loadPromise;
+	}
+
+	static getSync(): Database {
+		if (!Database.instance) {
+			throw new Error('Database not yet loaded; call `await Database.get()` before using getSync()');
+		}
+		return Database.instance;
 	}
 
 	static getLeftovers(): Promise<UIDatabase> {
@@ -87,6 +119,10 @@ export class Database {
 	private readonly glyphIds: Array<GlyphID> = [];
 	private readonly consumables = new Map<number, Consumable>();
 	private readonly spellEffects = new Map<number, SpellEffect>();
+	public readonly randPropPoints = new Map<number, QualityAllocations>();
+	public armorValues = ArmorValueDatabase.create();
+	public weaponDamageValues = WeaponDamageDatabase.create();
+	public readonly itemArmorTotal = new Map<number, ItemArmorTotal>();
 
 	private loadedLeftovers = false;
 
@@ -142,7 +178,29 @@ export class Database {
 		db.spellIcons.forEach(data => (this.spellIcons[data.id] = Promise.resolve(data)));
 		db.glyphIds.forEach(id => this.glyphIds.push(id));
 		db.consumables.forEach(consumable => this.consumables.set(consumable.id, consumable));
-		db.effects.forEach(effect => this.spellEffects.set(effect.id, effect));
+		Object.entries(db.randomPropPoints).forEach(([idStr, effect]) => {
+			const id = Number(idStr);
+			this.randPropPoints.set(id, effect);
+		});
+		this.armorValues = db.armorDb ?? ArmorValueDatabase.create();
+		this.weaponDamageValues = db.weaponDamageDb ?? WeaponDamageDatabase.create();
+		Object.entries(db.armorTotalValue).forEach(([idStr, val]) => {
+			const id = Number(idStr);
+			this.itemArmorTotal.set(id, val);
+		});
+		//db.armorTotalValue.forEach(armor => this.itemArmorTotal.set(armor.itemLevel, armor));
+	}
+	getWeaponDamageDb(): WeaponDamageDatabase {
+		return this.weaponDamageValues;
+	}
+	getArmorDb(): ArmorValueDatabase {
+		return this.armorValues;
+	}
+	getArmorTotalValueByIlvl(ilvl: number): ItemArmorTotal | undefined {
+		return this.itemArmorTotal.get(ilvl);
+	}
+	getQualityAllocByIlvl(ilvl: number): QualityAllocations | undefined {
+		return this.randPropPoints.get(ilvl);
 	}
 
 	getAllItems(): Array<Item> {
@@ -229,6 +287,15 @@ export class Database {
 		const item = this.items.get(itemSpec.id);
 		if (!item) return null;
 
+		if (itemSpec.upgradeLevel !== UpgradeLevel.NONE) {
+			const scaledIlvl = item.ilvl + upgradeItemLevelBy(item.quality, itemSpec.upgradeLevel);
+			item.stats = getStats(item, scaledIlvl);
+			if (item.weaponType !== WeaponType.WeaponTypeUnknown) {
+				item.weaponDamageMax = damageMax(item, scaledIlvl);
+				item.weaponDamageMin = damageMin(item, scaledIlvl);
+			}
+			item.ilvl = scaledIlvl;
+		}
 		let enchant: Enchant | null = null;
 		if (itemSpec.enchant) {
 			const slots = getEligibleItemSlots(item);
@@ -363,8 +430,12 @@ export class Database {
 			reforgeStats: distinct(db1.reforgeStats.concat(db2.reforgeStats), (a, b) => a.id == b.id),
 			enchants: distinct(db1.enchants.concat(db2.enchants), (a, b) => a.effectId == b.effectId),
 			gems: distinct(db1.gems.concat(db2.gems), (a, b) => a.id == b.id),
-			effects: distinct(db1.effects.concat(db2.effects), (a, b) => a.id == b.id),
+			spellEffects: distinct(db1.spellEffects.concat(db2.spellEffects), (a, b) => a.id == b.id),
 			consumables: distinct(db1.consumables.concat(db2.consumables), (a, b) => a.id == b.id),
+			randomPropPoints: {
+				...db2.randomPropPoints,
+				...db1.randomPropPoints,
+			},
 		});
 	}
 }

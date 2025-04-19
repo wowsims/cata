@@ -265,17 +265,21 @@ func main() {
 	ApplyGlobalFilters(db)
 	for _, item := range instance.Items {
 		var parsed *proto.UIItem
-		if db.Items[int32(item.Id)] == nil || item.ItemLevel <= 458 { // No need to scale items less than ilvl 400, that will never happen
+		if db.Items[int32(item.Id)] == nil { // No need to scale items less than ilvl 458, that will never happen
 			continue
 		}
 		parsed = db.Items[int32(item.Id)]
-
+		if parsed.Ilvl < 390 && parsed.RandomSuffixOptions == nil {
+			continue
+		}
 		maxUpgradeSteps := []int{1, 2, 3, 4}
 
 		ilvls := []int{int(parsed.Ilvl)}
 
 		for _, step := range maxUpgradeSteps {
-			ilvls = append(ilvls, item.ItemLevel+item.UpgradeItemLevelBy(step))
+			if parsed.Ilvl >= 390 {
+				ilvls = append(ilvls, item.ItemLevel+item.UpgradeItemLevelBy(step))
+			}
 		}
 
 		// MoP Challenge mode downgrade

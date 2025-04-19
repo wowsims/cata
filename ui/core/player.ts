@@ -1,3 +1,5 @@
+import ItemList from './components/gear_picker/item_list';
+import { ConjuredDarkRune } from './components/inputs/consumables';
 import { ItemSwapSettings } from './components/item_swap_picker';
 import Toast from './components/toast';
 import * as Mechanics from './constants/mechanics';
@@ -20,8 +22,12 @@ import { APLRotation, APLRotation_Type as APLRotationType, SimpleRotation } from
 import {
 	BattleElixir,
 	Class,
+	Conjured,
+	ConsumableType,
 	Consumes,
+	ConsumesSpec,
 	Cooldowns,
+	Explosive,
 	Faction,
 	Flask,
 	Food,
@@ -31,6 +37,7 @@ import {
 	HandType,
 	HealingModel,
 	IndividualBuffs,
+	ItemQuality,
 	ItemRandomSuffix,
 	ItemSlot,
 	Potions,
@@ -38,13 +45,14 @@ import {
 	PseudoStat,
 	Race,
 	ReforgeStat,
-	SimDatabase,
 	Spec,
 	Stat,
+	TinkerHands,
 	UnitReference,
 	UnitStats,
+	WeaponType,
 } from './proto/common';
-import { ConsumableType } from './proto/db';
+import { QualityValues, SimDatabase } from './proto/db';
 import {
 	DungeonDifficulty,
 	RaidFilterOption,
@@ -59,6 +67,7 @@ import { Database } from './proto_utils/database';
 import { EquippedItem, getWeaponDPS, ReforgeData } from './proto_utils/equipped_item';
 import { Gear, ItemSwapGear } from './proto_utils/gear';
 import { gemMatchesSocket, isUnrestrictedGem } from './proto_utils/gems';
+import { damageMax, damageMin, getStats } from './proto_utils/items';
 import { StatCap, Stats } from './proto_utils/stats';
 import {
 	AL_CATEGORY_HARD_MODE,
@@ -86,7 +95,7 @@ import { Raid } from './raid';
 import { Sim } from './sim';
 import { playerTalentStringToProto } from './talents/factory';
 import { EventID, TypedEvent } from './typed_event';
-import { findInputItemForEnum, omitDeep, stringComparator, sum } from './utils';
+import { findInputItemForEnum, omitDeep, randPropPoints, stringComparator, sum, upgradeItemLevelBy } from './utils';
 import { WorkerProgressCallback } from './worker_pool';
 
 export interface AuraStats {
@@ -242,6 +251,7 @@ export class Player<SpecType extends Spec> {
 	private name = '';
 	private buffs: IndividualBuffs = IndividualBuffs.create();
 	private consumes: Consumes = Consumes.create();
+	private consumables: ConsumesSpec = ConsumesSpec.create();
 	private bonusStats: Stats = new Stats();
 	private gear: Gear = new Gear({});
 	//private bulkEquipmentSpec: BulkEquipmentSpec = BulkEquipmentSpec.create();
@@ -700,16 +710,19 @@ export class Player<SpecType extends Spec> {
 		this.buffsChangeEmitter.emit(eventID);
 	}
 
-	getConsumes(): Consumes {
+	getConsumes(): ConsumesSpec {
+		// Make a defensive copy
+		return ConsumesSpec.clone(this.consumables);
+	}
+	getOldConsumes(): Consumes {
 		// Make a defensive copy
 		return Consumes.clone(this.consumes);
 	}
-
-	setConsumes(eventID: EventID, newConsumes: Consumes) {
-		if (Consumes.equals(this.consumes, newConsumes)) return;
+	setConsumes(eventID: EventID, newConsumes: ConsumesSpec) {
+		if (ConsumesSpec.equals(this.consumables, newConsumes)) return;
 
 		// Make a defensive copy
-		this.consumes = Consumes.clone(newConsumes);
+		this.consumables = ConsumesSpec.clone(newConsumes);
 		this.consumesChangeEmitter.emit(eventID);
 	}
 
@@ -1152,13 +1165,29 @@ export class Player<SpecType extends Spec> {
 				itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatRangedDps, weaponDps);
 			}
 		}
+		// For items that can be upgraded, we calculate EP based on the highest possible item level
+		if (item.maxIlvl > 0) {
+			const scaledItem = Item.clone(item);
+			itemStats = new Stats(getStats(item, item.maxIlvl));
+			if (scaledItem.weaponType !== WeaponType.WeaponTypeUnknown) {
+				scaledItem.weaponDamageMax = damageMax(item, item.maxIlvl);
+				scaledItem.weaponDamageMin = damageMin(item, item.maxIlvl);
+			}
+			const weaponDps = getWeaponDPS(scaledItem);
+			if (slot == ItemSlot.ItemSlotMainHand) {
+				itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatMainHandDps, weaponDps);
+			} else if (slot == ItemSlot.ItemSlotOffHand) {
+				itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatOffHandDps, weaponDps);
+			} else if (slot == ItemSlot.ItemSlotRanged) {
+				itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatRangedDps, weaponDps);
+			}
+		}
 
 		// For random suffix items, use the suffix option with the highest EP for the purposes of ranking items in the picker.
 		let maxSuffixEP = 0;
-
 		if (item.randomSuffixOptions.length > 0) {
 			const suffixEPs = item.randomSuffixOptions.map(id => this.computeRandomSuffixEP(this.sim.db.getRandomSuffixById(id)! || 0));
-			maxSuffixEP = (Math.max(...suffixEPs) * item.randPropPoints) / 10000;
+			maxSuffixEP = (Math.max(...suffixEPs) * randPropPoints(item.ilvl, item)) / 10000;
 		}
 
 		let ep = itemStats.computeEP(this.epWeights) + maxSuffixEP;
@@ -1486,7 +1515,7 @@ export class Player<SpecType extends Spec> {
 		}
 		if (exportCategory(SimSettingCategories.Consumes)) {
 			PlayerProto.mergePartial(player, {
-				consumes: this.getConsumes(),
+				consumables: this.getConsumes(),
 			});
 		}
 		if (exportCategory(SimSettingCategories.Miscellaneous)) {
@@ -1543,7 +1572,7 @@ export class Player<SpecType extends Spec> {
 					this.setAplRotation(eventID, proto.rotation || APLRotation.create());
 				}
 				if (loadCategory(SimSettingCategories.Consumes)) {
-					this.setConsumes(eventID, proto.consumes || Consumes.create());
+					this.setConsumes(eventID, proto.consumables || ConsumesSpec.create());
 				}
 				if (loadCategory(SimSettingCategories.Miscellaneous)) {
 					this.setSpecOptions(eventID, this.specTypeFunctions.optionsFromPlayer(proto));
@@ -1611,23 +1640,20 @@ export class Player<SpecType extends Spec> {
 		}
 		const db = await Database.get();
 		if (!proto.consumables) {
-			proto.consumables!;
+			proto.consumables = ConsumesSpec.create();
 		}
 		if (proto.consumes && typeof proto.consumes !== 'undefined') {
 			if (proto.consumes.prepopPotion != Potions.UnknownPotion && proto.consumables.prepotId == 0) {
 				proto.consumables.prepotId =
 					findInputItemForEnum(Potions, proto.consumes.defaultPotion, db.getConsumablesByType(ConsumableType.ConsumableTypePotion))?.id ?? 0;
-				proto.consumes.prepopPotion = Potions.UnknownPotion;
 			}
 			if (proto.consumes.defaultPotion != Potions.UnknownPotion && proto.consumables.potId == 0) {
 				proto.consumables.potId =
 					findInputItemForEnum(Potions, proto.consumes.defaultPotion, db.getConsumablesByType(ConsumableType.ConsumableTypePotion))?.id ?? 0;
-				proto.consumes.defaultPotion = Potions.UnknownPotion;
 			}
 			if (proto.consumes.flask != Flask.FlaskUnknown && proto.consumables.flaskId == 0) {
 				proto.consumables.flaskId =
 					findInputItemForEnum(Flask, proto.consumes.flask, db.getConsumablesByType(ConsumableType.ConsumableTypeFlask))?.id ?? 0;
-				proto.consumes.flask = Flask.FlaskUnknown;
 			}
 			if (proto.consumes.food != Food.FoodUnknown && proto.consumables.foodId == 0) {
 				proto.consumables.foodId =
@@ -1638,7 +1664,6 @@ export class Player<SpecType extends Spec> {
 				} else if (proto.consumes.food === Food.FoodFortuneCookie) {
 					proto.consumables.foodId = 62649;
 				}
-				proto.consumes.food = Food.FoodUnknown;
 			}
 			if (
 				typeof proto.consumes?.guardianElixir !== 'undefined' &&
@@ -1648,7 +1673,6 @@ export class Player<SpecType extends Spec> {
 				proto.consumables.guardianElixirId =
 					findInputItemForEnum(GuardianElixir, proto.consumes.guardianElixir, db.getConsumablesByType(ConsumableType.ConsumableTypeGuardianElixir))
 						?.id ?? 0;
-				proto.consumes.guardianElixir = GuardianElixir.GuardianElixirUnknown;
 			}
 			if (
 				typeof proto.consumes?.battleElixir !== 'undefined' &&
@@ -1658,9 +1682,44 @@ export class Player<SpecType extends Spec> {
 				proto.consumables.battleElixirId =
 					findInputItemForEnum(BattleElixir, proto.consumes.battleElixir, db.getConsumablesByType(ConsumableType.ConsumableTypeBattleElixir))?.id ??
 					0;
-				proto.consumes.battleElixir = BattleElixir.BattleElixirUnknown;
+			}
+			if (typeof proto.consumes?.explosiveBigDaddy !== 'undefined' && proto.consumes.explosiveBigDaddy && proto.consumables.explosiveId == 0) {
+				proto.consumables.explosiveId = 63396;
+			}
+			if (
+				typeof proto.consumes?.defaultConjured !== 'undefined' &&
+				proto.consumes.defaultConjured != Conjured.ConjuredUnknown &&
+				proto.consumables.conjuredId == 0
+			) {
+				switch (proto.consumes.defaultConjured) {
+					case Conjured.ConjuredDarkRune:
+						proto.consumables.conjuredId = 20520;
+					case Conjured.ConjuredHealthstone:
+						proto.consumables.conjuredId = 5512;
+					case Conjured.ConjuredRogueThistleTea:
+						proto.consumables.conjuredId = 7676;
+				}
+			}
+			if (
+				typeof proto.consumes?.tinkerHands !== 'undefined' &&
+				proto.consumes.tinkerHands != TinkerHands.TinkerHandsNone &&
+				proto.consumables.tinkerId == 0
+			) {
+				switch (proto.consumes.tinkerHands) {
+					case TinkerHands.TinkerHandsSynapseSprings:
+						proto.consumables.tinkerId = 4179;
+					case TinkerHands.TinkerHandsTazikShocker:
+						proto.consumables.tinkerId = 4181;
+					case TinkerHands.TinkerHandsQuickflipDeflectionPlates:
+						proto.consumables.tinkerId = 4180;
+					case TinkerHands.TinkerHandsSpinalHealingInjector:
+						proto.consumables.tinkerId = 4182;
+					case TinkerHands.TinkerHandsZ50ManaGulper:
+						proto.consumables.tinkerId = 4183;
+				}
 			}
 		}
+		proto.consumes = Consumes.create(); // null consumes
 		proto.apiVersion = CURRENT_API_VERSION;
 	}
 }
