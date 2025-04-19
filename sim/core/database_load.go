@@ -44,7 +44,7 @@ func init() {
 			WeaponSpeed:      item.WeaponSpeed,
 			SetName:          item.SetName,
 			SetId:            item.SetId,
-			ItemLevel:        item.Ilvl,
+			Ilvl:             item.Ilvl,
 			Quality:          item.Quality,
 		}
 	}
