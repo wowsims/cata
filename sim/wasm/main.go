@@ -4,7 +4,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"runtime/debug"
 	"strings"
@@ -45,7 +44,6 @@ func main() {
 }
 
 func computeStats(this js.Value, args []js.Value) (response interface{}) {
-	fmt.Println("Received compute stats")
 	defer func() {
 		if err := recover(); err != nil {
 			errStr := ""
@@ -91,7 +89,6 @@ func computeStats(this js.Value, args []js.Value) (response interface{}) {
 }
 
 func computeStatsJson(this js.Value, args []js.Value) (response interface{}) {
-	fmt.Println("Received compute stats")
 	defer func() {
 		if err := recover(); err != nil {
 			errStr := ""

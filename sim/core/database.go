@@ -661,7 +661,6 @@ func validateReforging(item *Item, reforging ReforgeStat) bool {
 	// Validate that the item can reforge these to stats
 	reforgeableStats := stats.Stats{}
 	if item.RandomSuffix.ID != 0 {
-		fmt.Println("item.RandPropPoints(item.ItemLevel)", item.RandPropPoints(item.Ilvl), item.Ilvl)
 		reforgeableStats = reforgeableStats.Add(item.RandomSuffix.Stats.Multiply(float64(item.RandPropPoints(item.Ilvl)) / 10000.).Floor())
 	} else {
 		reforgeableStats = reforgeableStats.Add(item.Stats)
@@ -726,14 +725,11 @@ func (e *Item) RandPropPoints(itemLevel int32) int32 {
 		ilvl = itemLevel
 	}
 	allocs := RandomPropPointsByIlvl[ilvl]
-	fmt.Println("ALLOCS", allocs)
 	bucket := pickQualityArray(allocs, e.Quality)
-	fmt.Println("BUCKET", bucket)
 	if len(bucket) == 0 {
 		return 0
 	}
 	idx := calculateRandomPropSlotIndex(e)
-	fmt.Println("INDEX", idx)
 	return bucket[idx]
 }
 

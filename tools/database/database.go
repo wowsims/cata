@@ -188,6 +188,10 @@ func (db *WowDatabase) MergeNpc(src *proto.UINPC) {
 
 func (db *WowDatabase) MergeConsumable(src *proto.Consumable) {
 	if dst, ok := db.Consumables[src.Id]; ok {
+		if src.Stats != nil {
+			dst.Stats = src.Stats
+			src.Stats = nil
+		}
 		googleProto.Merge(dst, src)
 	} else {
 		db.Consumables[src.Id] = src

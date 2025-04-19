@@ -66,7 +66,6 @@ function makeConsumeInputFactory<T extends number, SpecType extends Spec>(
 			getValue: (player: Player<any>) => player.getConsumes()[args.consumesFieldName] as T,
 			setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
 				const newConsumes = player.getConsumes();
-				console.log(newConsumes);
 				if (newConsumes[args.consumesFieldName] === newValue) {
 					return;
 				}
@@ -144,16 +143,23 @@ export const makeConjuredInput = makeConsumeInputFactory({ consumesFieldName: 'c
 // 	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
 // });
 
-export const ExplosiveBigDaddy = makeBooleanConsumeInput({
+export const ExplosiveBigDaddy = {
 	actionId: ActionId.fromItemId(63396),
-	fieldName: 'explosiveId',
+	value: 63396,
 	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
-});
-export const HighpoweredBoltGun = makeBooleanConsumeInput({
+};
+
+export const HighpoweredBoltGun = {
 	actionId: ActionId.fromItemId(60223),
-	fieldName: 'explosiveId',
+	value: 63396,
 	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
-});
+};
+
+export const EXPLOSIVE_CONFIG = [
+	{ config: ExplosiveBigDaddy, stats: [] },
+	{ config: HighpoweredBoltGun, stats: [] },
+] as ConsumableStatOption<Explosive>[];
+export const makeExplosivesInput = makeConsumeInputFactory({ consumesFieldName: 'explosiveId' });
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Tinkers
