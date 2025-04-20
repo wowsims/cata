@@ -942,17 +942,17 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-HeartofThunder-55845"
  value: {
-  dps: 48475.47043
-  tps: 45889.45747
-  hps: 1671.96289
+  dps: 48475.51922
+  tps: 45889.50626
+  hps: 1672.06047
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-HeartofThunder-56370"
  value: {
-  dps: 48488.65583
-  tps: 45902.64287
-  hps: 1673.9842
+  dps: 48488.72051
+  tps: 45902.70755
+  hps: 1674.11355
  }
 }
 dps_results: {
@@ -1030,9 +1030,9 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-InsigniaofDiplomacy-61433"
  value: {
-  dps: 48436.5445
-  tps: 45850.53154
-  hps: 1671.35729
+  dps: 48436.58853
+  tps: 45850.57557
+  hps: 1671.44535
  }
 }
 dps_results: {
@@ -2310,8 +2310,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-Val'anyr,HammerofAncientKings-46017"
  value: {
-  dps: 43427.13291
-  tps: 40589.69677
+  dps: 42936.90395
+  tps: 40099.46781
   hps: 616.48011
  }
 }
@@ -2454,17 +2454,17 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-ViciousGladiator'sEmblemofAccuracy-61027"
  value: {
-  dps: 48983.13655
-  tps: 46374.06573
-  hps: 1735.1709
+  dps: 48983.03446
+  tps: 46373.96363
+  hps: 1734.96671
  }
 }
 dps_results: {
  key: "TestFrost-AllItems-ViciousGladiator'sEmblemofAlacrity-61028"
  value: {
-  dps: 48935.1046
-  tps: 46297.07941
-  hps: 1705.94445
+  dps: 48935.00251
+  tps: 46296.97732
+  hps: 1705.90223
  }
 }
 dps_results: {
@@ -2478,9 +2478,9 @@ dps_results: {
 dps_results: {
  key: "TestFrost-AllItems-ViciousGladiator'sEmblemofProficiency-61030"
  value: {
-  dps: 49085.17488
-  tps: 46478.75541
-  hps: 1720.77136
+  dps: 49085.27697
+  tps: 46478.8575
+  hps: 1720.97555
  }
 }
 dps_results: {

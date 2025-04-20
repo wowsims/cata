@@ -325,11 +325,18 @@ func (item *Item) GetWeaponTypes() (proto.WeaponType, proto.HandType, proto.Rang
 	weaponType := proto.WeaponType_WeaponTypeUnknown
 	rangedWeaponType := proto.RangedWeaponType_RangedWeaponTypeUnknown
 	handType := proto.HandType_HandTypeUnknown
+
 	switch item.ItemClass {
 	case ITEM_CLASS_ARMOR:
 		switch item.ItemSubClass {
 		case ITEM_SUBCLASS_ARMOR_RELIC:
 			rangedWeaponType = proto.RangedWeaponType_RangedWeaponTypeRelic
+		case ITEM_SUBCLASS_ARMOR_MISC:
+			if item.InventoryType == INVTYPE_HOLDABLE {
+
+				handType = proto.HandType_HandTypeOffHand
+				weaponType = proto.WeaponType_WeaponTypeOffHand
+			}
 		}
 	case ITEM_CLASS_WEAPON:
 		switch item.ItemSubClass {

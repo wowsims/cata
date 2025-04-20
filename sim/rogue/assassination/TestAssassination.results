@@ -776,8 +776,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-Gladiator'sVestments"
  value: {
-  dps: 23487.76024
-  tps: 16676.30977
+  dps: 27279.01292
+  tps: 19368.09917
  }
 }
 dps_results: {
@@ -1399,22 +1399,22 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-AllItems-Rathrak,thePoisonousMind-77195"
  value: {
-  dps: 29184.65269
-  tps: 20721.10341
+  dps: 27825.99641
+  tps: 19756.45745
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-Rathrak,thePoisonousMind-78475"
  value: {
-  dps: 29569.16927
-  tps: 20994.11018
+  dps: 28037.24858
+  tps: 19906.44649
  }
 }
 dps_results: {
  key: "TestAssassination-AllItems-Rathrak,thePoisonousMind-78484"
  value: {
-  dps: 28888.4829
-  tps: 20510.82286
+  dps: 27685.84393
+  tps: 19656.94919
  }
 }
 dps_results: {

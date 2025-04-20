@@ -1390,22 +1390,22 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-Rathrak,thePoisonousMind-77195"
  value: {
-  dps: 42446.34171
-  tps: 28249.66144
+  dps: 41138.9646
+  tps: 27008.66551
  }
 }
 dps_results: {
  key: "TestEnhancement-AllItems-Rathrak,thePoisonousMind-78475"
  value: {
-  dps: 42971.37694
-  tps: 28685.29064
+  dps: 41488.30904
+  tps: 27275.74685
  }
 }
 dps_results: {
  key: "TestEnhancement-AllItems-Rathrak,thePoisonousMind-78484"
  value: {
-  dps: 42070.95789
-  tps: 27923.1102
+  dps: 40914.1793
+  tps: 26825.00212
  }
 }
 dps_results: {
@@ -2085,8 +2085,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-Val'anyr,HammerofAncientKings-46017"
  value: {
-  dps: 41135.01302
-  tps: 26741.09634
+  dps: 40687.91522
+  tps: 26318.12635
  }
 }
 dps_results: {
