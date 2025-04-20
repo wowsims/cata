@@ -410,12 +410,14 @@ enum TristateEffect {
 }
 
 enum Explosive {
+	option deprecated = true;
 	ExplosiveUnknown = 0;
 	ExplosiveSaroniteBomb = 1;
 	ExplosiveCobaltFragBomb = 2;
 }
 
 enum TinkerHands {
+	option deprecated = true;
 	TinkerHandsNone = 0;
 	TinkerHandsSynapseSprings = 1;
 	TinkerHandsTazikShocker = 2;
@@ -444,6 +446,7 @@ enum Potions {
 }
 
 enum Conjured {
+	option deprecated = true;
 	ConjuredUnknown = 0;
 	ConjuredDarkRune = 1;
 	ConjuredHealthstone = 5;
