@@ -3,7 +3,6 @@ import {
 	BattleElixir,
 	Class,
 	Conjured,
-	Consumes,
 	ConsumesSpec,
 	Explosive,
 	Flask,
@@ -18,7 +17,6 @@ import {
 import { Consumable } from '../../proto/db';
 import { ActionId } from '../../proto_utils/action_id';
 import { EventID, TypedEvent } from '../../typed_event';
-import { makeBooleanConsumeInput } from '../icon_inputs';
 import * as InputHelpers from '../input_helpers';
 import { IconEnumValueConfig } from '../pickers/icon_enum_picker';
 import { ActionInputConfig, ItemStatOption } from './stat_options';

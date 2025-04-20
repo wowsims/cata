@@ -28,7 +28,9 @@ func ScanRawItemData(rows *sql.Rows) (dbc.Item, error) {
 		&raw.ItemLevel,
 		&statValue, &bonusStatString,
 		&statPercentEditor, &socketTypes, &raw.SocketEnchantmentId, &raw.Flags0, &raw.FDID, &raw.ItemSetName, &raw.ItemSetId, &raw.Flags1, &raw.ClassMask, &raw.RaceMask, &raw.QualityModifier, &randomSuffixOptions, &statPercentageOfSocket, &bonusAmountCalculated, &raw.ItemClass, &raw.ItemSubClass)
-
+	if err != nil {
+		panic("Error scanning item data")
+	}
 	var parseErr error
 	raw.RandomSuffixOptions, parseErr = ParseRandomSuffixOptions(randomSuffixOptions)
 	if parseErr != nil {
@@ -127,6 +129,9 @@ func ScanItemStatEffects(rows *sql.Rows) (dbc.ItemStatEffect, error) {
 	var raw dbc.ItemStatEffect
 	var ePointsMin, epointsMax, eArgs string
 	err := rows.Scan(&raw.ID, &ePointsMin, &epointsMax, &eArgs)
+	if err != nil {
+		panic("Error scanning item stat effects")
+	}
 	raw.EffectPointsMin, err = parseIntArrayField(ePointsMin, 3)
 	if err != nil {
 		return raw, fmt.Errorf("failed to parse EffectPointsMin: %w", err)
@@ -146,7 +151,7 @@ func LoadItemStatEffects(dbHelper *DBHelper) ([]dbc.ItemStatEffect, error) {
 	query := `SELECT ID, EffectPointsMin, EffectPointsMax, EffectArg FROM SpellItemEnchantment WHERE Effect_0 = 5`
 	items, err := LoadRows(dbHelper.db, query, ScanItemStatEffects)
 	if err != nil {
-		return nil, fmt.Errorf("Error in query load items")
+		return nil, fmt.Errorf("error in query load items")
 	}
 
 	return items, nil
@@ -197,7 +202,7 @@ func LoadItemDamageTables(dbHelper *DBHelper) (map[string]map[int]dbc.ItemDamage
 }
 
 func LoadItemArmorQuality(dbHelper *DBHelper) (map[int]dbc.ItemArmorQuality, error) {
-	query := fmt.Sprintf("SELECT ID, Qualitymod FROM ItemArmorQuality")
+	query := "SELECT ID, Qualitymod FROM ItemArmorQuality"
 	result, err := LoadRows(dbHelper.db, query, ScanItemArmorQualityTable)
 
 	return CacheBy(result, func(table dbc.ItemArmorQuality) int {
@@ -222,7 +227,7 @@ func ScanItemArmorQualityTable(rows *sql.Rows) (dbc.ItemArmorQuality, error) {
 }
 
 func LoadItemArmorShield(dbHelper *DBHelper) (map[int]dbc.ItemArmorShield, error) {
-	query := fmt.Sprintf("SELECT ItemLevel, Quality FROM ItemArmorShield")
+	query := "SELECT ItemLevel, Quality FROM ItemArmorShield"
 	result, err := LoadRows(dbHelper.db, query, ScanItemArmorShieldTable)
 
 	return CacheBy(result, func(table dbc.ItemArmorShield) int {

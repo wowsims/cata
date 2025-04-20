@@ -400,7 +400,8 @@ message SavedSettings {
 	PartyBuffs party_buffs = 2;
 	Debuffs debuffs = 7;
 	IndividualBuffs player_buffs = 3;
-	Consumes consumes = 4;
+	// We deprecated Consumes in favor of ConsumesSpec
+	Consumes consumes = 4 [deprecated=true];
 	Race race = 5;
 	repeated Profession professions = 9;
 	bool enable_item_swap = 18;

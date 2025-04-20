@@ -219,9 +219,6 @@ func (db *WowDatabase) AddSpellIcon(id int32, icon string, name string) {
 type idKeyed interface {
 	GetId() int32
 }
-type ilvlKeyed interface {
-	GetItemLevel() int32
-}
 
 func mapToSlice[T idKeyed](m map[int32]T) []T {
 	vs := make([]T, 0, len(m))
@@ -230,17 +227,6 @@ func mapToSlice[T idKeyed](m map[int32]T) []T {
 	}
 	slices.SortFunc(vs, func(a, b T) int {
 		return int(a.GetId() - b.GetId())
-	})
-	return vs
-}
-
-func mapToSliceByIlvl[T ilvlKeyed](m map[int32]T) []T {
-	vs := make([]T, 0, len(m))
-	for _, v := range m {
-		vs = append(vs, v)
-	}
-	slices.SortFunc(vs, func(a, b T) int {
-		return int(a.GetItemLevel() - b.GetItemLevel())
 	})
 	return vs
 }
@@ -282,13 +268,6 @@ func sliceToMap[T idKeyed](vs []T) map[int32]T {
 	m := make(map[int32]T, len(vs))
 	for _, v := range vs {
 		m[v.GetId()] = v
-	}
-	return m
-}
-func sliceToMapIlvl[T ilvlKeyed](vs []T) map[int32]T {
-	m := make(map[int32]T, len(vs))
-	for _, v := range vs {
-		m[v.GetItemLevel()] = v
 	}
 	return m
 }
