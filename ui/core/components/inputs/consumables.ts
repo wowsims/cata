@@ -145,13 +145,13 @@ export const makeConjuredInput = makeConsumeInputFactory({ consumesFieldName: 'c
 
 export const ExplosiveBigDaddy = {
 	actionId: ActionId.fromItemId(63396),
-	value: 63396,
+	value: 89637,
 	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
 };
 
 export const HighpoweredBoltGun = {
 	actionId: ActionId.fromItemId(60223),
-	value: 63396,
+	value: 82207,
 	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
 };
 

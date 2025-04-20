@@ -1680,7 +1680,7 @@ export class Player<SpecType extends Spec> {
 					0;
 			}
 			if (typeof proto.consumes?.explosiveBigDaddy !== 'undefined' && proto.consumes.explosiveBigDaddy && proto.consumables.explosiveId == 0) {
-				proto.consumables.explosiveId = 63396;
+				proto.consumables.explosiveId = 89637;
 			}
 			if (
 				typeof proto.consumes?.defaultConjured !== 'undefined' &&

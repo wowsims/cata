@@ -164,7 +164,7 @@ export const DefaultConsumables = ConsumesSpec.create({
 	potId: 58145, // Potion of the Tol'vir
 	prepotId: 58145, // Potion of the Tol'vir
 	tinkerId: 82174, // Synapse Springs
-	explosiveId: 63396, // Big Daddy Explosive
+	explosiveId: 89637, // Big Daddy Explosive
 });
 export const OtherDefaults = {
 	distanceFromTarget: 25,
