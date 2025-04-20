@@ -675,6 +675,8 @@ var ConsumableAllowList = []int32{
 	62290,
 	//Migty Rage Potion
 	13442,
+	// Dark Rune
+	20520,
 }
 
 // Raid buffs / debuffs

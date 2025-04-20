@@ -134,6 +134,6 @@ var FullConsumesSpec = &proto.ConsumesSpec{
 	FoodId:     62671, // Severed Sagefish Head
 	PotId:      58091, // Volcanic Potion
 	PrepotId:   58091, // Volcanic Potion
-	ConjuredId: 12662, // Dark Rune
+	ConjuredId: 20520, // Dark Rune
 	TinkerId:   82174, // Synapse Springs
 }
