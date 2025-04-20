@@ -77,6 +77,11 @@ func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
 		uiItem.ArmorType = MapArmorSubclassToArmorType[item.ItemSubClass]
 	}
 
+	if item.ItemSubClass == ITEM_SUBCLASS_ARMOR_SHIELD {
+		uiItem.HandType = proto.HandType_HandTypeOffHand
+		uiItem.WeaponType = proto.WeaponType_WeaponTypeShield
+	}
+
 	return uiItem
 }
 

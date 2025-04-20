@@ -497,6 +497,18 @@ func InferPhase(item *proto.UIItem) int32 {
 	if item.Ilvl <= 352 {
 		return 1
 	}
+	// Since Atlasloot populates before we run inferphase, we can use Atlasloot data to help us infer the phase
+	// Such as here where I check the Zone Id to correctly place Firelands and DS Dungeons in the correct phase
+	for _, source := range item.Sources {
+		if drop := source.GetDrop(); drop != nil {
+			switch drop.ZoneId {
+			case 5723: // Firelands
+				return 3
+			case 5789, 5844, 5788: // Dragon Soul dungeons
+				return 4
+			}
+		}
+	}
 
 	if item.Ilvl >= 397 {
 		return 4 // Heroic Rag loot should already be tagged correctly by Wowhead.
