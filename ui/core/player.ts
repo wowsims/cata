@@ -1703,15 +1703,15 @@ export class Player<SpecType extends Spec> {
 			) {
 				switch (proto.consumes.tinkerHands) {
 					case TinkerHands.TinkerHandsSynapseSprings:
-						proto.consumables.tinkerId = 4179;
+						proto.consumables.tinkerId = 82174;
 					case TinkerHands.TinkerHandsTazikShocker:
-						proto.consumables.tinkerId = 4181;
+						proto.consumables.tinkerId = 82180;
 					case TinkerHands.TinkerHandsQuickflipDeflectionPlates:
-						proto.consumables.tinkerId = 4180;
+						proto.consumables.tinkerId = 82177;
 					case TinkerHands.TinkerHandsSpinalHealingInjector:
-						proto.consumables.tinkerId = 4182;
+						proto.consumables.tinkerId = 82184;
 					case TinkerHands.TinkerHandsZ50ManaGulper:
-						proto.consumables.tinkerId = 4183;
+						proto.consumables.tinkerId = 82186;
 				}
 			}
 		}

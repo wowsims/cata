@@ -64,5 +64,5 @@ var FullArcaneConsumesSpec = &proto.ConsumesSpec{
 	FoodId:   62290, // Seafood Magnifique Feast
 	PotId:    58091, // Volcanic Potion
 	PrepotId: 58091, // Volcanic Potion
-	TinkerId: 4179,  // Synapse Springs
+	TinkerId: 82174, // Synapse Springs
 }

@@ -108,5 +108,5 @@ var FullConsumesSpec = &proto.ConsumesSpec{
 	FoodId:   62663, // Lavascale Minestrone
 	PotId:    58146, // Golemblood Potion
 	PrepotId: 58146, // Golemblood Potion
-	TinkerId: 4179,  // Synapse Springs
+	TinkerId: 82174, // Synapse Springs
 }

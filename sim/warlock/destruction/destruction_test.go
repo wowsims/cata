@@ -341,7 +341,7 @@ func TestDestruction(t *testing.T) {
 		FoodId:      62671, // Severed Sagefish Head
 		PotId:       58091, // Volcanic Potion
 		ExplosiveId: 89637, // Big Daddy Explosive
-		TinkerId:    4179,  // Synapse Springs
+		TinkerId:    82174, // Synapse Springs
 	}
 
 	var destructionTalents = "003-03202-3320202312201312211"
