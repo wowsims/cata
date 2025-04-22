@@ -27,7 +27,7 @@ import * as InputHelpers from './components/input_helpers';
 import { ItemNotice } from './components/item_notice/item_notice';
 import { addRaidSimAction, RaidSimResultsManager } from './components/raid_sim_action';
 import { SavedDataConfig } from './components/saved_data_manager';
-import { addStatWeightsAction, EpWeightsMenu } from './components/stat_weights_action';
+import { addStatWeightsAction, EpWeightsMenu, StatWeightActionSettings } from './components/stat_weights_action';
 import { SimSettingCategories } from './constants/sim_settings';
 import * as Tooltips from './constants/tooltips';
 import { getSpecLaunchStatus, LaunchStatus, simLaunchStatuses } from './launched_sims';
@@ -211,6 +211,7 @@ export interface Settings {
 export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	readonly player: Player<SpecType>;
 	readonly individualConfig: IndividualSimUIConfig<SpecType>;
+	private readonly statWeightActionSettings: StatWeightActionSettings;
 
 	private raidSimResultsManager: RaidSimResultsManager | null;
 	epWeightsModal: EpWeightsMenu | null = null;
@@ -237,6 +238,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		this.raidSimResultsManager = null;
 		this.prevEpIterations = 0;
 		this.prevEpSimResult = null;
+		this.statWeightActionSettings = new StatWeightActionSettings(this);
 
 		if (!isDevMode() && getSpecLaunchStatus(this.player) === LaunchStatus.Unlaunched) {
 			this.handleSimUnlaunched();
@@ -400,7 +402,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	private addSidebarComponents() {
 		this.raidSimResultsManager = addRaidSimAction(this);
 		this.sim.waitForInit().then(() => {
-			this.epWeightsModal = addStatWeightsAction(this);
+			this.epWeightsModal = addStatWeightsAction(this, this.statWeightActionSettings);
 		});
 
 		new CharacterStats(
@@ -577,6 +579,8 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 				} else {
 					this.sim.raid.setTanks(eventID, []);
 				}
+
+				this.statWeightActionSettings.applyDefaults(eventID);
 			}
 		});
 	}

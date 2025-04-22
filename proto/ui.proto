@@ -376,6 +376,10 @@ message SavedGearSet {
 	UnitStats bonus_stats_stats = 3;
 }
 
+message SavedStatWeightSettings {
+	UnitStats excluded_from_calc = 1;
+}
+
 // Local storage data for other settings.
 message SavedSettings {
 	RaidBuffs raid_buffs = 1;
