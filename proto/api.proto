@@ -34,7 +34,7 @@ message Player {
 
 	EquipmentSpec equipment = 3;
 
-	// We are deprecated Consumes in favor of ConsumesSpec
+	// We have deprecated Consumes in favor of ConsumesSpec
 	Consumes consumes = 4 [deprecated=true];
 	ConsumesSpec consumables = 55;
 

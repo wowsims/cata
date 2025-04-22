@@ -250,17 +250,19 @@ export class Sim {
 				const pdb = player.database!;
 				pdb.armorDb = this.db.getArmorDb();
 				pdb.weaponDamageDb = this.db.getWeaponDamageDb();
-				pdb.armorTotalValue = [] as ItemArmorTotal[];
-				pdb.randomPropPoints = [] as QualityAllocations[];
+				pdb.randomPropPoints = []
+				pdb.armorTotalValue = []
 				gear.asArray().forEach(gear => {
 					if (!pdb.randomPropPoints[gear?.item.ilvl ?? 0]) {
-						if (this.db.getQualityAllocByIlvl(gear?.item.ilvl ?? 0)) {
-							pdb.randomPropPoints[gear?.item.ilvl ?? 0] = this.db.getQualityAllocByIlvl(gear?.item.ilvl ?? 0)!;
+						const randomPropPoints = this.db.getQualityAllocByIlvl(gear?.item.ilvl ?? 0)
+						if (randomPropPoints) {
+							pdb.randomPropPoints[gear?.item.ilvl ?? 0] = randomPropPoints!;
 						}
 					}
 					if (!pdb.armorTotalValue[gear?.item.ilvl ?? 0]) {
-						if (this.db.getArmorTotalValueByIlvl(gear?.item.ilvl ?? 0)) {
-							pdb.armorTotalValue[gear?.item.ilvl ?? 0] = this.db.getArmorTotalValueByIlvl(gear?.item.ilvl ?? 0)!;
+						const armorTotalValue = this.db.getArmorTotalValueByIlvl(gear?.item.ilvl ?? 0)
+						if (armorTotalValue) {
+							pdb.armorTotalValue[gear?.item.ilvl ?? 0] = armorTotalValue!;
 						}
 					}
 				});
