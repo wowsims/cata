@@ -43,12 +43,6 @@ type WowDatabase struct {
 	Encounters []*proto.PresetEncounter
 	GlyphIDs   []*proto.GlyphID
 
-	RandomPropAllocationsByIlvl map[int32]*proto.QualityAllocations
-	WeaponDamageDb              *proto.WeaponDamageDatabase
-	ArmorDb                     *proto.ArmorValueDatabase
-
-	TotalArmorValues map[int32]*proto.ItemArmorTotal
-
 	Consumables map[int32]*proto.Consumable
 	Effects     map[int32]*proto.SpellEffect
 }
@@ -65,11 +59,6 @@ func NewWowDatabase() *WowDatabase {
 		ItemIcons:    make(map[int32]*proto.IconData),
 		SpellIcons:   make(map[int32]*proto.IconData),
 		ReforgeStats: make(map[int32]*proto.ReforgeStat),
-
-		RandomPropAllocationsByIlvl: make(map[int32]*proto.QualityAllocations),
-		WeaponDamageDb:              &proto.WeaponDamageDatabase{},
-		ArmorDb:                     &proto.ArmorValueDatabase{},
-		TotalArmorValues:            make(map[int32]*proto.ItemArmorTotal),
 
 		Consumables: make(map[int32]*proto.Consumable),
 		Effects:     make(map[int32]*proto.SpellEffect),
@@ -89,13 +78,8 @@ func (db *WowDatabase) Clone() *WowDatabase {
 		SpellIcons:   maps.Clone(db.SpellIcons),
 		ReforgeStats: maps.Clone(db.ReforgeStats),
 
-		RandomPropAllocationsByIlvl: maps.Clone(db.RandomPropAllocationsByIlvl),
-
-		WeaponDamageDb:   googleProto.Clone(db.WeaponDamageDb).(*proto.WeaponDamageDatabase),
-		ArmorDb:          googleProto.Clone(db.ArmorDb).(*proto.ArmorValueDatabase),
-		TotalArmorValues: maps.Clone(db.TotalArmorValues),
-		Consumables:      maps.Clone(db.Consumables),
-		Effects:          maps.Clone(db.Effects),
+		Consumables: maps.Clone(db.Consumables),
+		Effects:     maps.Clone(db.Effects),
 	}
 }
 

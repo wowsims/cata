@@ -19,7 +19,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 	"golang.org/x/exp/constraints"
 	protojson "google.golang.org/protobuf/encoding/protojson"
 	googleProto "google.golang.org/protobuf/proto"
@@ -185,86 +184,6 @@ func WriteProtoMapToBuffer[K constraints.Ordered, V googleProto.Message](
 		}
 		buffer.WriteString("\n")
 	}
-
-	buffer.WriteString("}")
-}
-func WriteWeaponDamageToBuffer(wd *proto.WeaponDamageDatabase, buffer *bytes.Buffer, name string) {
-	buffer.WriteString("\"")
-	buffer.WriteString(name)
-	buffer.WriteString("\": {\n")
-
-	writeField := func(fieldName string, data []*proto.ItemQualityValue, isLast bool) {
-		buffer.WriteString("\"")
-		buffer.WriteString(fieldName)
-		buffer.WriteString("\": [\n")
-
-		for i, elem := range data {
-			jsonBytes, err := protojson.MarshalOptions{UseEnumNumbers: true}.Marshal(elem)
-			if err != nil {
-				log.Printf("Couldn't to marshal: %s", err.Error())
-			}
-			if bytes.Equal(jsonBytes, []byte("{}")) {
-				continue
-			}
-			json.Compact(buffer, jsonBytes)
-			if i != len(data)-1 {
-				buffer.WriteString(",")
-			}
-			buffer.WriteString("\n")
-		}
-		buffer.WriteString("]")
-		if !isLast {
-			buffer.WriteString(",\n")
-		} else {
-			buffer.WriteString("\n")
-		}
-	}
-
-	writeField("caster_1h", wd.Caster_1H, false)
-	writeField("melee_1h", wd.Melee_1H, false)
-	writeField("caster_2h", wd.Caster_2H, false)
-	writeField("melee_2h", wd.Melee_2H, false)
-	writeField("ranged", wd.Ranged, false)
-	writeField("thrown", wd.Thrown, false)
-	writeField("wand", wd.Wand, true)
-
-	buffer.WriteString("}")
-}
-
-func WriteArmorValuesToBuffer(ad *proto.ArmorValueDatabase, buffer *bytes.Buffer, name string) {
-	buffer.WriteString("\"")
-	buffer.WriteString(name)
-	buffer.WriteString("\": {\n")
-
-	writeField := func(fieldName string, data []*proto.ItemQualityValue, isLast bool) {
-		buffer.WriteString("\"")
-		buffer.WriteString(fieldName)
-		buffer.WriteString("\": [\n")
-
-		for i, elem := range data {
-			jsonBytes, err := protojson.MarshalOptions{UseEnumNumbers: true}.Marshal(elem)
-			if err != nil {
-				log.Printf("[ERROR] Failed to marshal: %s", err.Error())
-			}
-			if bytes.Equal(jsonBytes, []byte("{}")) {
-				continue
-			}
-			json.Compact(buffer, jsonBytes)
-			if i != len(data)-1 {
-				buffer.WriteString(",")
-			}
-			buffer.WriteString("\n")
-		}
-		buffer.WriteString("]")
-		if !isLast {
-			buffer.WriteString(",\n")
-		} else {
-			buffer.WriteString("\n")
-		}
-	}
-
-	writeField("armor_values", ad.ArmorValues, false)
-	writeField("shield_armor_values", ad.ShieldArmorValues, true)
 
 	buffer.WriteString("}")
 }

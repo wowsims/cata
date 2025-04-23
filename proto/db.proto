@@ -11,12 +11,10 @@ message SimDatabase {
 	repeated SimEnchant enchants = 2;
 	repeated SimGem gems = 3;
 	repeated ReforgeStat reforge_stats = 6;
-	map<int32, QualityAllocations> random_prop_points = 7; // keyed by ilvl
-	WeaponDamageDatabase weapon_damage_db = 8;
-	ArmorValueDatabase armor_db = 9;
-	repeated Consumable consumables = 10;
-	repeated SpellEffect spell_effects = 11;
-	map<int32, ItemArmorTotal> armor_total_value = 12;
+
+	repeated Consumable consumables = 7;
+	repeated SpellEffect spell_effects = 8;
+
 }
 
 // Contains only the Item info needed by the sim.
@@ -59,47 +57,4 @@ message Consumable {
 	//In seconds
 	int32 buff_duration = 7;
 	repeated int32 effect_ids = 8;
-}
-message QualityValues {
-  double common = 1;
-  double uncommon = 2;
-  double rare = 3;
-  double epic = 4;
-  double legendary = 5;
-  double artifact = 6;
-  double heirloom = 7;
-}
-
-message ItemQualityValue {
-  int32 item_level = 1;
-  QualityValues quality = 2;
-}
-
-message ItemArmorTotal {
-  int32 item_level = 1;
-	double cloth = 2;
-	double leather = 3;
-	double mail = 4;
-	double plate = 5;
-}
-
-message QualityAllocations {
-  repeated int32 good = 1;
-  repeated int32 superior = 2;
-  repeated int32 epic = 3;
-}
-
-message WeaponDamageDatabase {
-    repeated ItemQualityValue caster_1h = 1;
-    repeated ItemQualityValue melee_1h = 2;
-    repeated ItemQualityValue caster_2h = 3;
-    repeated ItemQualityValue melee_2h = 4;
-    repeated ItemQualityValue ranged = 5;
-    repeated ItemQualityValue thrown = 6;
-    repeated ItemQualityValue wand = 7;
-}
-
-message ArmorValueDatabase {
-	repeated ItemQualityValue shield_armor_values = 1; // shield
-	repeated ItemQualityValue armor_values = 2; // armor
 }

@@ -6,6 +6,7 @@ import (
 	"io"
 	"math"
 	"os"
+	"slices"
 
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -48,11 +49,11 @@ func GetProfession(id int) proto.Profession {
 func GetClassesFromClassMask(mask int) []proto.Class {
 	var result []proto.Class
 	for _, class := range classes {
-		// Calculate the bit flag using 1 << (ID - 1)
 		if mask&(1<<(class.ID-1)) != 0 {
 			result = append(result, class.ProtoClass)
 		}
 	}
+	slices.Sort(result)
 	return result
 }
 

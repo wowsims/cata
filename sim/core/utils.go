@@ -2,7 +2,6 @@ package core
 
 import (
 	"cmp"
-	"fmt"
 	"hash/fnv"
 	"math"
 	"slices"
@@ -16,6 +15,26 @@ import (
 
 func DurationFromSeconds(numSeconds float64) time.Duration {
 	return time.Duration(float64(time.Second) * numSeconds)
+}
+
+func MapToIndexedArray(stats map[int32]float64) []float64 {
+	if stats == nil {
+		return nil
+	}
+	var maxIndex int32
+	for k := range stats {
+		if k > maxIndex {
+			maxIndex = k
+		}
+	}
+
+	arr := make([]float64, maxIndex+1)
+
+	for k, v := range stats {
+		arr[k] = v
+	}
+
+	return arr
 }
 
 func FirstMapEntry[K comparable, V any](m map[K]V) (K, V, bool) {
@@ -320,77 +339,4 @@ func GetCurrentProtoVersion() int32 {
 	options := versionMessage.ProtoReflect().Descriptor().Options()
 	optionValue := googleproto.GetExtension(options, proto.E_CurrentVersionNumber)
 	return optionValue.(int32)
-}
-
-var slotIdx = map[proto.ItemType]int{
-	proto.ItemType_ItemTypeHead:  0,
-	proto.ItemType_ItemTypeChest: 0,
-	proto.ItemType_ItemTypeLegs:  0,
-
-	proto.ItemType_ItemTypeShoulder: 1,
-	proto.ItemType_ItemTypeWaist:    1,
-	proto.ItemType_ItemTypeFeet:     1,
-	proto.ItemType_ItemTypeHands:    1,
-	proto.ItemType_ItemTypeTrinket:  1,
-
-	proto.ItemType_ItemTypeNeck:   2,
-	proto.ItemType_ItemTypeWrist:  2,
-	proto.ItemType_ItemTypeFinger: 2,
-	proto.ItemType_ItemTypeBack:   2,
-}
-
-var rangedTypes = map[proto.RangedWeaponType]struct{}{
-	proto.RangedWeaponType_RangedWeaponTypeBow:      {},
-	proto.RangedWeaponType_RangedWeaponTypeCrossbow: {},
-	proto.RangedWeaponType_RangedWeaponTypeGun:      {},
-	proto.RangedWeaponType_RangedWeaponTypeThrown:   {},
-	proto.RangedWeaponType_RangedWeaponTypeWand:     {},
-	proto.RangedWeaponType_RangedWeaponTypeRelic:    {},
-}
-
-var offhandWeapons = map[proto.WeaponType]struct{}{
-	proto.WeaponType_WeaponTypeOffHand: {},
-	proto.WeaponType_WeaponTypeShield:  {},
-}
-
-func calculateRandomPropSlotIndex(item *Item) int {
-	if base, ok := slotIdx[item.Type]; ok {
-		return base
-	}
-
-	if item.Type == proto.ItemType_ItemTypeRanged {
-		if _, ok := rangedTypes[item.RangedWeaponType]; ok {
-			return 4
-		}
-	}
-
-	if item.Type == proto.ItemType_ItemTypeWeapon {
-		if _, ok := offhandWeapons[item.WeaponType]; ok {
-			return 2
-		}
-		if item.HandType == proto.HandType_HandTypeTwoHand {
-			return 0
-		}
-		return 3
-	}
-
-	panic(fmt.Sprintf("Unrecognized ItemType %v in calculateRandomPropSlotIndex %v", item.Type, item.RangedWeaponType))
-}
-
-func pickQualityArray(a *proto.QualityAllocations, q proto.ItemQuality) []int32 {
-	if a == nil {
-		return []int32{}
-	}
-	switch q {
-	case proto.ItemQuality_ItemQualityJunk:
-		return a.Good
-	case proto.ItemQuality_ItemQualityCommon, proto.ItemQuality_ItemQualityUncommon:
-		return a.Good
-	case proto.ItemQuality_ItemQualityRare:
-		return a.Superior
-	case proto.ItemQuality_ItemQualityEpic, proto.ItemQuality_ItemQualityLegendary:
-		return a.Epic
-	default:
-		return a.Good //Todo: what
-	}
 }

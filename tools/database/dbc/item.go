@@ -50,23 +50,25 @@ func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
 	uiItem := &proto.UIItem{
 		Type:                MapInventoryTypeToItemType[item.InventoryType],
 		Quality:             item.OverallQuality.ToProto(),
-		Stats:               item.GetStats(itemLevel).ToProtoArray(),
 		SetName:             item.ItemSetName,
 		SetId:               int32(item.ItemSetId),
 		Name:                item.Name,
 		ClassAllowlist:      GetClassesFromClassMask(item.ClassMask),
 		Id:                  int32(item.Id),
-		Ilvl:                int32(item.ItemLevel),
+		Ilvl:                int32(item.ItemLevel), // This is the base item level of the item
 		RandomSuffixOptions: item.RandomSuffixOptions,
-		WeaponDamageMin:     item.WeaponDmgMin(itemLevel),
-		WeaponDamageMax:     item.WeaponDmgMax(itemLevel),
 		RangedWeaponType:    rangedType,
 		HandType:            handType,
 		WeaponType:          weaponType,
 		WeaponSpeed:         float64(item.ItemDelay) / 1000,
 		GemSockets:          item.GetGemSlots(),
 		SocketBonus:         item.GetGemBonus().ToProtoArray(),
-		RandPropPoints:      item.GetRandPropPoints(item.ItemLevel),
+		//The following properties are
+		// Scaled to the max possible itemlevel for EP and filtering
+		Stats:           item.GetStats(item.GetMaxIlvl()).ToProtoArray(),
+		WeaponDamageMin: item.WeaponDmgMin(item.GetMaxIlvl()),
+		WeaponDamageMax: item.WeaponDmgMax(item.GetMaxIlvl()),
+		RandPropPoints:  item.GetRandPropPoints(item.GetMaxIlvl()),
 	}
 
 	item.ParseItemFlags(uiItem)
@@ -86,6 +88,7 @@ func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
 		WeaponDamageMax: uiItem.WeaponDamageMax,
 		Stats:           item.GetStats(item.ItemLevel).ToProtoMap(),
 		RandPropPoints:  uiItem.RandPropPoints,
+		IsBase:          true, // This denotes that the scaling properties are for the base item
 	}
 
 	// Amount of upgrade steps is defined in MAX_UPGRADE_LEVELS
@@ -99,19 +102,29 @@ func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
 				WeaponDamageMax: item.WeaponDmgMax(upgradedIlvl),
 				Stats:           item.GetStats(upgradedIlvl).ToProtoMap(),
 				RandPropPoints:  item.GetRandPropPoints(upgradedIlvl),
+				UpgradeStep:     int32(upgradeLevel), // Upgradestep is for the UI to visualize the upgrade path if needed
 			}
 		}
 	}
+
 	if item.ItemLevel > 460 {
 		scalingProperties[460] = &proto.ScalingItemProperties{
 			WeaponDamageMin: item.WeaponDmgMin(460),
 			WeaponDamageMax: item.WeaponDmgMax(460),
 			Stats:           item.GetStats(460).ToProtoMap(),
 			RandPropPoints:  item.GetRandPropPoints(460),
+			// No need to define isbase or upgradestep here since we'll always select the 460 version
 		}
 	}
 	uiItem.ScalingOptions = scalingProperties
 	return uiItem
+}
+
+func (item *Item) GetMaxIlvl() int {
+	if item.ItemLevel > 458 {
+		return item.ItemLevel + item.UpgradeItemLevelBy(MAX_UPGRADE_LEVELS)
+	}
+	return item.ItemLevel
 }
 
 func (item *Item) ParseItemFlags(uiItem *proto.UIItem) {

@@ -1,34 +1,10 @@
 package dbc
 
-import (
-	"github.com/wowsims/cata/sim/core/proto"
-)
-
 type ItemDamageTable struct {
 	ItemLevel int
 	Quality   []float64
 }
 
-func (iat *ItemDamageTable) ToProto() *proto.ItemQualityValue {
-	if len(iat.Quality) != 7 {
-		return &proto.ItemQualityValue{
-			ItemLevel: int32(iat.ItemLevel),
-		}
-	}
-
-	return &proto.ItemQualityValue{
-		ItemLevel: int32(iat.ItemLevel),
-		Quality: &proto.QualityValues{
-			Common:    iat.Quality[0],
-			Uncommon:  iat.Quality[1],
-			Rare:      iat.Quality[2],
-			Epic:      iat.Quality[3],
-			Legendary: iat.Quality[4],
-			Artifact:  iat.Quality[5],
-			Heirloom:  iat.Quality[6],
-		},
-	}
-}
 func (item *Item) WeaponDps(itemLevel int) float64 {
 	quality := item.OverallQuality
 	if item.OverallQuality > 6 {

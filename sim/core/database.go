@@ -151,6 +151,7 @@ type Item struct {
 	TempEnchant    int32
 	ScalingOptions map[int32]*proto.ScalingItemProperties
 	Ilvl           int32
+	RandPropPoints int32
 }
 
 func (item *Item) UpgradeItemLevelBy(upgradeLevel int) int {
@@ -202,23 +203,6 @@ func (item *Item) ToItemSpecProto() *proto.ItemSpec {
 	}
 
 	return itemSpec
-}
-
-var qualityReaders = map[proto.ItemQuality]func(*proto.QualityValues) float64{
-	proto.ItemQuality_ItemQualityCommon:    func(v *proto.QualityValues) float64 { return v.Common },
-	proto.ItemQuality_ItemQualityUncommon:  func(v *proto.QualityValues) float64 { return v.Uncommon },
-	proto.ItemQuality_ItemQualityRare:      func(v *proto.QualityValues) float64 { return v.Rare },
-	proto.ItemQuality_ItemQualityEpic:      func(v *proto.QualityValues) float64 { return v.Epic },
-	proto.ItemQuality_ItemQualityLegendary: func(v *proto.QualityValues) float64 { return v.Legendary },
-	proto.ItemQuality_ItemQualityArtifact:  func(v *proto.QualityValues) float64 { return v.Artifact },
-	proto.ItemQuality_ItemQualityHeirloom:  func(v *proto.QualityValues) float64 { return v.Heirloom },
-}
-
-func (item *Item) ValueForQuality(vals *proto.QualityValues) float64 {
-	if fn, ok := qualityReaders[item.Quality]; ok {
-		return fn(vals)
-	}
-	return 0
 }
 
 type RandomSuffix struct {
@@ -423,10 +407,16 @@ func NewItem(itemSpec ItemSpec) Item {
 	} else {
 		panic(fmt.Sprintf("No item with id: %d", itemSpec.ID))
 	}
-
+	scalingOptions := item.ScalingOptions[itemSpec.ScaledIlvl]
+	if scalingOptions == nil {
+		panic(fmt.Sprintf("Scaling options not found for %s (%v)", item.Name, itemSpec.ScaledIlvl))
+	}
 	// Set the itemlevel again because it could be scaled
 	item.Ilvl = itemSpec.ScaledIlvl // ScaledIlvl should always be set
-	// DO we need this? We kinda do when turning Item back to ItemSpec..
+	item.Stats = stats.Stats(MapToIndexedArray(scalingOptions.GetStats()))
+	item.WeaponDamageMax = scalingOptions.WeaponDamageMax
+	item.WeaponDamageMin = scalingOptions.WeaponDamageMin
+	item.RandPropPoints = scalingOptions.RandPropPoints
 
 	if itemSpec.RandomSuffix != 0 {
 		if randomSuffix, ok := RandomSuffixesByID[itemSpec.RandomSuffix]; ok {
@@ -549,11 +539,11 @@ func ItemEquipmentStats(item Item) stats.Stats {
 
 	// Random suffix stats can be Reforged, so apply those prior to any Reforges
 	rawSuffixStats := item.RandomSuffix.Stats
-	equipStats = equipStats.Add(rawSuffixStats.Multiply(float64(item.ScalingOptions[item.Ilvl].RandPropPoints) / 10000.).Floor())
+	equipStats = equipStats.Add(rawSuffixStats.Multiply(float64(item.RandPropPoints) / 10000.).Floor())
 
 	// Apply reforging
 	if item.Reforging != nil {
-		itemStats := item.Stats.Add(rawSuffixStats.Multiply(float64(item.ScalingOptions[item.Ilvl].RandPropPoints) / 10000.).Floor())
+		itemStats := item.Stats.Add(rawSuffixStats.Multiply(float64(item.RandPropPoints) / 10000.).Floor())
 		reforgingChanges := stats.Stats{}
 		fromStat := item.Reforging.FromStat
 

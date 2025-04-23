@@ -1,6 +1,8 @@
 package dbc
 
 import (
+	"slices"
+
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
@@ -73,6 +75,7 @@ func (enchant *Enchant) ToProto() *proto.UIEnchant {
 				}
 			}
 		}
+		slices.Sort(uiEnchant.ExtraTypes)
 	}
 	stats := stats.Stats{}
 	processEnchantmentEffects(enchant.Effects, enchant.EffectArgs, enchant.EffectPoints, &stats, true)
