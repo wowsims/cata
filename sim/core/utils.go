@@ -16,24 +16,14 @@ import (
 func DurationFromSeconds(numSeconds float64) time.Duration {
 	return time.Duration(float64(time.Second) * numSeconds)
 }
-
-func MapToIndexedArray(stats map[int32]float64) []float64 {
-	if stats == nil {
-		return nil
-	}
-	var maxIndex int32
-	for k := range stats {
-		if k > maxIndex {
-			maxIndex = k
+func MapToFixedStatsArray(statsArr map[int32]float64) []float64 {
+	arr := make([]float64, stats.UnitStatsLen)
+	for k, v := range statsArr {
+		if int(k) >= stats.UnitStatsLen || k < 0 {
+			continue // skip out-of-range keys
 		}
-	}
-
-	arr := make([]float64, maxIndex+1)
-
-	for k, v := range stats {
 		arr[k] = v
 	}
-
 	return arr
 }
 

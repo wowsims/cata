@@ -1,7 +1,7 @@
-// Only include this file in the build when we specify the 'with_db' tag.
-// Without the tag, the database will start out completely empty.
 //go:build with_db
 
+// Only include this file in the build when we specify the 'with_db' tag.
+// Without the tag, the database will start out completely empty.
 package core
 
 import (
@@ -14,17 +14,13 @@ func init() {
 	WITH_DB = true
 
 	simDB := &proto.SimDatabase{
-		Items:            make([]*proto.SimItem, len(db.Items)),
-		Enchants:         make([]*proto.SimEnchant, len(db.Enchants)),
-		Gems:             make([]*proto.SimGem, len(db.Gems)),
-		ReforgeStats:     make([]*proto.ReforgeStat, len(db.ReforgeStats)),
-		RandomSuffixes:   make([]*proto.ItemRandomSuffix, len(db.RandomSuffixes)),
-		Consumables:      make([]*proto.Consumable, len(db.Consumables)),
-		SpellEffects:     make([]*proto.SpellEffect, len(db.SpellEffects)),
-		RandomPropPoints: make(map[int32]*proto.QualityAllocations, len(db.RandomPropPoints)),
-		ArmorTotalValue:  make(map[int32]*proto.ItemArmorTotal, len(db.ArmorTotalValue)),
-		ArmorDb:          &proto.ArmorValueDatabase{},
-		WeaponDamageDb:   &proto.WeaponDamageDatabase{},
+		Items:          make([]*proto.SimItem, len(db.Items)),
+		Enchants:       make([]*proto.SimEnchant, len(db.Enchants)),
+		Gems:           make([]*proto.SimGem, len(db.Gems)),
+		ReforgeStats:   make([]*proto.ReforgeStat, len(db.ReforgeStats)),
+		RandomSuffixes: make([]*proto.ItemRandomSuffix, len(db.RandomSuffixes)),
+		Consumables:    make([]*proto.Consumable, len(db.Consumables)),
+		SpellEffects:   make([]*proto.SpellEffect, len(db.SpellEffects)),
 	}
 
 	for i, item := range db.Items {
@@ -36,16 +32,12 @@ func init() {
 			WeaponType:       item.WeaponType,
 			HandType:         item.HandType,
 			RangedWeaponType: item.RangedWeaponType,
-			Stats:            item.Stats,
 			GemSockets:       item.GemSockets,
 			SocketBonus:      item.SocketBonus,
-			WeaponDamageMin:  item.WeaponDamageMin,
-			WeaponDamageMax:  item.WeaponDamageMax,
 			WeaponSpeed:      item.WeaponSpeed,
 			SetName:          item.SetName,
 			SetId:            item.SetId,
-			Ilvl:             item.Ilvl,
-			Quality:          item.Quality,
+			ScalingOptions:   item.ScalingOptions,
 		}
 	}
 
@@ -89,13 +81,6 @@ func init() {
 	for i, effect := range db.SpellEffects {
 		simDB.SpellEffects[i] = effect
 	}
-	for i, v := range db.RandomPropPoints {
-		simDB.RandomPropPoints[i] = v
-	}
-	for _, v := range db.ArmorTotalValue {
-		simDB.ArmorTotalValue[v.ItemLevel] = v
-	}
-	simDB.ArmorDb = db.ArmorDb
-	simDB.WeaponDamageDb = db.WeaponDamageDb
+
 	addToDatabase(simDB)
 }
