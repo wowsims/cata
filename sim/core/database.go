@@ -409,15 +409,18 @@ func NewItem(itemSpec ItemSpec) Item {
 	}
 	scalingOptions := item.ScalingOptions[itemSpec.ScaledIlvl]
 	if scalingOptions == nil {
-		for _, scaling := range item.ScalingOptions {
+		for ilvl, scaling := range item.ScalingOptions {
 			if scaling.IsBase {
 				scalingOptions = scaling
+				item.Ilvl = ilvl // ScaledIlvl should always be set
 				break
 			}
 		}
+	} else {
+		item.Ilvl = itemSpec.ScaledIlvl
 	}
 	// Set the itemlevel again because it could be scaled
-	item.Ilvl = itemSpec.ScaledIlvl // ScaledIlvl should always be set
+
 	item.Stats = stats.Stats(MapToFixedStatsArray(scalingOptions.GetStats()))
 	item.WeaponDamageMax = scalingOptions.WeaponDamageMax
 	item.WeaponDamageMin = scalingOptions.WeaponDamageMin
