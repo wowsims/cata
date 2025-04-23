@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"slices"
 	"strings"
 
@@ -21,6 +22,9 @@ import (
 )
 
 func writeGzipFile(filePath string, data []byte) error {
+	if err := os.MkdirAll(filepath.Dir(filePath), 0755); err != nil {
+		return fmt.Errorf("failed to create directories for %s: %w", filePath, err)
+	}
 	// Create the file
 	f, err := os.Create(filePath)
 	if err != nil {
@@ -68,10 +72,15 @@ func main() {
 	} else if *genAsset != "db" {
 		panic("Invalid gen value")
 	}
-	helper, _ := database.NewDBHelper()
+	helper, err := database.NewDBHelper()
+	if err != nil {
+		log.Fatalf("failed to initialize database: %v", err)
+	}
 	defer helper.Close()
 
-	database.RunOverrides(helper, "./tools/database/overrides")
+	if err := database.RunOverrides(helper, "tools/database/overrides"); err != nil {
+		log.Fatalf("failed to run overrides: %v", err)
+	}
 
 	database.GenerateProtos()
 

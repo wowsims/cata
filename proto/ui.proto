@@ -28,14 +28,8 @@ message UIDatabase {
 	repeated GlyphID glyph_ids = 7;
 	repeated ReforgeStat reforge_stats = 12;
 
-	map<int32, QualityAllocations> random_prop_points = 13; // keyed by ilvl
-	map<int32, ItemArmorTotal> armor_total_value = 16;
-
-	WeaponDamageDatabase weapon_damage_db = 17;
-	ArmorValueDatabase armor_db = 18;
-
-	repeated Consumable consumables = 19;
-	repeated SpellEffect spell_effects = 20;
+	repeated Consumable consumables = 13;
+	repeated SpellEffect spell_effects = 14;
 }
 
 message UIZone {
@@ -68,6 +62,8 @@ message UIItem {
 	repeated GemColor gem_sockets = 10;
 	repeated double socketBonus = 11;
 	repeated int32 random_suffix_options = 26;
+	int32 rand_prop_points = 27;
+
 
 	// Weapon stats, needed for computing proper EP for melee weapons
 	double weapon_damage_min = 12;
@@ -87,7 +83,7 @@ message UIItem {
 	// Name of the item set to which this item belongs, if any.
 	string set_name = 22;
 	// ID of the item set to which this item belongs, if any. (useful for shared pvp set bonuses)
-	int32 set_id = 27;
+	int32 set_id = 28;
 
 	Expansion expansion = 24;
 	repeated UIItemSource sources = 23;
@@ -99,14 +95,7 @@ message UIItem {
 	}
 
 	FactionRestriction faction_restriction = 25;
-
-	// Neccessary for scaling items in MoP
-	double dmg_variance = 28;
-	double armor_modifier = 29;
-	double quality_modifier = 30;
-	repeated double socket_modifier = 31;
-	int32 max_ilvl = 32;
-	repeated double stat_allocation = 33;
+	map<int32, ScalingItemProperties> scaling_options = 29; // keys are the other ilvl variants that this item could potentially have
 }
 
 enum Expansion {

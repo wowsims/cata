@@ -244,23 +244,19 @@ func (db *WowDatabase) ToUIProto() *proto.UIDatabase {
 	})
 
 	return &proto.UIDatabase{
-		Items:            mapToSlice(db.Items),
-		RandomSuffixes:   mapToSlice(db.RandomSuffixes),
-		Enchants:         enchants,
-		Gems:             mapToSlice(db.Gems),
-		Encounters:       db.Encounters,
-		Zones:            mapToSlice(db.Zones),
-		Npcs:             mapToSlice(db.Npcs),
-		ItemIcons:        mapToSlice(db.ItemIcons),
-		SpellIcons:       mapToSlice(db.SpellIcons),
-		GlyphIds:         db.GlyphIDs,
-		ReforgeStats:     mapToSlice(db.ReforgeStats),
-		RandomPropPoints: db.RandomPropAllocationsByIlvl,
-		ArmorTotalValue:  db.TotalArmorValues,
-		WeaponDamageDb:   db.WeaponDamageDb,
-		ArmorDb:          db.ArmorDb,
-		Consumables:      mapToSlice(db.Consumables),
-		SpellEffects:     mapToSlice(db.Effects),
+		Items:          mapToSlice(db.Items),
+		RandomSuffixes: mapToSlice(db.RandomSuffixes),
+		Enchants:       enchants,
+		Gems:           mapToSlice(db.Gems),
+		Encounters:     db.Encounters,
+		Zones:          mapToSlice(db.Zones),
+		Npcs:           mapToSlice(db.Npcs),
+		ItemIcons:      mapToSlice(db.ItemIcons),
+		SpellIcons:     mapToSlice(db.SpellIcons),
+		GlyphIds:       db.GlyphIDs,
+		ReforgeStats:   mapToSlice(db.ReforgeStats),
+		Consumables:    mapToSlice(db.Consumables),
+		SpellEffects:   mapToSlice(db.Effects),
 	}
 }
 
@@ -283,21 +279,17 @@ func ReadDatabaseFromJson(jsonStr string) *WowDatabase {
 	}
 
 	return &WowDatabase{
-		Items:                       sliceToMap(dbProto.Items),
-		RandomSuffixes:              sliceToMap(dbProto.RandomSuffixes),
-		Enchants:                    enchants,
-		Gems:                        sliceToMap(dbProto.Gems),
-		Zones:                       sliceToMap(dbProto.Zones),
-		Npcs:                        sliceToMap(dbProto.Npcs),
-		ItemIcons:                   sliceToMap(dbProto.ItemIcons),
-		SpellIcons:                  sliceToMap(dbProto.SpellIcons),
-		ReforgeStats:                sliceToMap(dbProto.ReforgeStats),
-		RandomPropAllocationsByIlvl: dbProto.RandomPropPoints,
-		WeaponDamageDb:              dbProto.WeaponDamageDb,
-		ArmorDb:                     dbProto.ArmorDb,
-		TotalArmorValues:            dbProto.ArmorTotalValue,
-		Consumables:                 sliceToMap(dbProto.Consumables),
-		Effects:                     sliceToMap(dbProto.SpellEffects),
+		Items:          sliceToMap(dbProto.Items),
+		RandomSuffixes: sliceToMap(dbProto.RandomSuffixes),
+		Enchants:       enchants,
+		Gems:           sliceToMap(dbProto.Gems),
+		Zones:          sliceToMap(dbProto.Zones),
+		Npcs:           sliceToMap(dbProto.Npcs),
+		ItemIcons:      sliceToMap(dbProto.ItemIcons),
+		SpellIcons:     sliceToMap(dbProto.SpellIcons),
+		ReforgeStats:   sliceToMap(dbProto.ReforgeStats),
+		Consumables:    sliceToMap(dbProto.Consumables),
+		Effects:        sliceToMap(dbProto.SpellEffects),
 	}
 }
 
@@ -346,14 +338,6 @@ func (db *WowDatabase) WriteJson(jsonFilePath string) {
 	tools.WriteProtoArrayToBuffer(uidb.Encounters, buffer, "encounters")
 	buffer.WriteString(",\n")
 	tools.WriteProtoArrayToBuffer(uidb.GlyphIds, buffer, "glyphIds")
-	buffer.WriteString(",\n")
-	tools.WriteArmorValuesToBuffer(uidb.ArmorDb, buffer, "armorDb")
-	buffer.WriteString(",\n")
-	tools.WriteWeaponDamageToBuffer(uidb.WeaponDamageDb, buffer, "weaponDamageDb")
-	buffer.WriteString(",\n")
-	tools.WriteProtoMapToBuffer(uidb.ArmorTotalValue, buffer, "armorTotalValue")
-	buffer.WriteString(",\n")
-	tools.WriteProtoMapToBuffer(uidb.RandomPropPoints, buffer, "randomPropPoints")
 	buffer.WriteString(",\n")
 	tools.WriteProtoArrayToBuffer(uidb.Consumables, buffer, "consumables")
 	buffer.WriteString(",\n")

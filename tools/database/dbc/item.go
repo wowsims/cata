@@ -7,6 +7,9 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
+const MAX_UPGRADE_LEVELS = 2
+const UPGRADE_SYSTEM_ACTIVE = true
+
 type Item struct {
 	Id                     int
 	Name                   string
@@ -42,6 +45,7 @@ func (item *Item) ToUIItem() *proto.UIItem {
 }
 
 func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
+	scalingProperties := make(map[int32]*proto.ScalingItemProperties)
 	var weaponType, handType, rangedType = item.GetWeaponTypes()
 	uiItem := &proto.UIItem{
 		Type:                MapInventoryTypeToItemType[item.InventoryType],
@@ -62,15 +66,9 @@ func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
 		WeaponSpeed:         float64(item.ItemDelay) / 1000,
 		GemSockets:          item.GetGemSlots(),
 		SocketBonus:         item.GetGemBonus().ToProtoArray(),
+		RandPropPoints:      item.GetRandPropPoints(item.ItemLevel),
 	}
-	if item.ItemLevel >= 458 || len(item.RandomSuffixOptions) > 0 {
-		uiItem.DmgVariance = item.DmgVariance
-		uiItem.ArmorModifier = item.GetArmorModifier()
-		uiItem.QualityModifier = item.QualityModifier
-		uiItem.SocketModifier = item.GetSocketModifier()
-		uiItem.StatAllocation = item.GetStatAlloc().ToProtoArray()
-		uiItem.MaxIlvl = int32(item.ItemLevel) + int32(item.UpgradeItemLevelBy(4))
-	}
+
 	item.ParseItemFlags(uiItem)
 
 	if item.ItemClass == ITEM_CLASS_ARMOR {
@@ -82,6 +80,37 @@ func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
 		uiItem.WeaponType = proto.WeaponType_WeaponTypeShield
 	}
 
+	// Append base itemlevel stats
+	scalingProperties[int32(item.ItemLevel)] = &proto.ScalingItemProperties{
+		WeaponDamageMin: uiItem.WeaponDamageMin,
+		WeaponDamageMax: uiItem.WeaponDamageMax,
+		Stats:           item.GetStats(item.ItemLevel).ToProtoMap(),
+		RandPropPoints:  uiItem.RandPropPoints,
+	}
+
+	// Amount of upgrade steps is defined in MAX_UPGRADE_LEVELS
+	// In P2 of MoP it is expected to be 2 steps
+	//
+	if item.ItemLevel > 458 && UPGRADE_SYSTEM_ACTIVE {
+		for upgradeLevel := range MAX_UPGRADE_LEVELS {
+			upgradedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(upgradeLevel)
+			scalingProperties[int32(upgradedIlvl)] = &proto.ScalingItemProperties{
+				WeaponDamageMin: item.WeaponDmgMin(upgradedIlvl),
+				WeaponDamageMax: item.WeaponDmgMax(upgradedIlvl),
+				Stats:           item.GetStats(upgradedIlvl).ToProtoMap(),
+				RandPropPoints:  item.GetRandPropPoints(upgradedIlvl),
+			}
+		}
+	}
+	if item.ItemLevel > 460 {
+		scalingProperties[460] = &proto.ScalingItemProperties{
+			WeaponDamageMin: item.WeaponDmgMin(460),
+			WeaponDamageMax: item.WeaponDmgMax(460),
+			Stats:           item.GetStats(460).ToProtoMap(),
+			RandPropPoints:  item.GetRandPropPoints(460),
+		}
+	}
+	uiItem.ScalingOptions = scalingProperties
 	return uiItem
 }
 
@@ -130,7 +159,14 @@ func (item *Item) GetStats(itemLevel int) *stats.Stats {
 	}
 	return stats
 }
-
+func (item *Item) GetRandPropPoints(itemLevel int) int32 {
+	suffixType := item.GetRandomSuffixType()
+	randomProperty := GetDBC().RandomPropertiesByIlvl[itemLevel]
+	if suffixType < 0 {
+		return 0
+	}
+	return randomProperty[item.OverallQuality.ToProto()][item.GetRandomSuffixType()]
+}
 func (item *Item) GetScaledStat(index int, itemLevel int) float64 {
 	//Todo check if overflow array
 
