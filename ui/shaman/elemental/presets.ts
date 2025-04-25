@@ -68,7 +68,7 @@ export const EP_PRESET_CLEAVE = PresetUtils.makePresetEpWeights(
 );
 
 // Default talents. Uses the wowhead calculator format, make the talents on
-// https://wowhead.com/cata/talent-calc and copy the numbers in the url.
+// https://wowhead.com/mop-classic/talent-calc and copy the numbers in the url.
 export const TalentsTotemDuration = {
 	name: 'Totem Duration',
 	data: SavedTalents.create({
@@ -168,17 +168,17 @@ export const DefaultConsumables = ConsumesSpec.create({
 
 const ENCOUNTER_SINGLE_TARGET = PresetUtils.makePresetEncounter(
 	'Single Target Dummy',
-	'http://localhost:5173/cata/shaman/elemental/?i=e#eJyTYhJgVzrO5MHMyQACB4ocBMEMBj8HyVkzQeCkvSVE5IK9YhoYXLN3PHsGBN7YG/UwFaz6zFjFHZSYmaIQkliUnlqiECHBrnWDkYEeIKDFgZrGNaQcRzbPx2LuHEd0NeDQaFjE6TiTERJAN+2halgcABeZKLc=',
+	'http://localhost:5173/mop/shaman/elemental/?i=e#eJyTYhJgVzrO5MHMyQACB4ocBMEMBj8HyVkzQeCkvSVE5IK9YhoYXLN3PHsGBN7YG/UwFaz6zFjFHZSYmaIQkliUnlqiECHBrnWDkYEeIKDFgZrGNaQcRzbPx2LuHEd0NeDQaFjE6TiTERJAN+2halgcABeZKLc=',
 );
 
 const ENCOUNTER_CLEAVE = PresetUtils.makePresetEncounter(
 	'Cleave',
-	'http://localhost:5173/cata/shaman/elemental/?i=e#eJyTYhJgV7rG4sHMyQACB4ocBMEMBj8HyVkzQeCkvSVE5IK9YhoYXLN3PHsGBN7YG/UwFaz6zFjFHZSYmaIQkliUnlqiECHBrnWDkYEeIKDFgZrGNaQcRzbPx2LuHEd0NeDQaFjE6TiTERJAN+2halgcRoMDJTgATH8+LA==',
+	'http://localhost:5173/mop/shaman/elemental/?i=e#eJyTYhJgV7rG4sHMyQACB4ocBMEMBj8HyVkzQeCkvSVE5IK9YhoYXLN3PHsGBN7YG/UwFaz6zFjFHZSYmaIQkliUnlqiECHBrnWDkYEeIKDFgZrGNaQcRzbPx2LuHEd0NeDQaFjE6TiTERJAN+2halgcRoMDJTgATH8+LA==',
 );
 
 const ENCOUNTER_AOE = PresetUtils.makePresetEncounter(
 	'AOE (4+)',
-	'http://localhost:5173/cata/shaman/elemental/?i=e#eJyTYhJgV/rC4cHMyQACDWkOgmAGg4iD5KyZIHDS3hIicsFeMQ0Mrtk7nj0DAm/sjXqYClZ9ZqziDkrMTFEISSxKTy1RiJBg17rByEAPENDiQE3jGlKOI5vnYzF3jiO6GnBoNCzidJzJCAmgm/ZQNSwOo8ExGhwMo8GBAPiCAwDGf2iQ',
+	'http://localhost:5173/mop/shaman/elemental/?i=e#eJyTYhJgV/rC4cHMyQACDWkOgmAGg4iD5KyZIHDS3hIicsFeMQ0Mrtk7nj0DAm/sjXqYClZ9ZqziDkrMTFEISSxKTy1RiJBg17rByEAPENDiQE3jGlKOI5vnYzF3jiO6GnBoNCzidJzJCAmgm/ZQNSwOo8ExGhwMo8GBAPiCAwDGf2iQ',
 );
 
 export const P3_PRESET_BUILD_DEFAULT = PresetUtils.makePresetBuild('Default', {

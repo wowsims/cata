@@ -5,179 +5,212 @@ import WarlockTalentJson from './trees/warlock.json';export const warlockTalents
 
 export const warlockGlyphsConfig: GlyphsConfig = {
 	primeGlyphs: {
-		[WarlockPrimeGlyph.GlyphOfIncinerate]: {
-			name: "Glyph of Incinerate",
-			description: "Increases the damage done by Incinerate by $56242m1%.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_fire_burnout.jpg",
-		},
-		[WarlockPrimeGlyph.GlyphOfConflagrate]: {
-			name: "Glyph of Conflagrate",
-			description: "Reduces the cooldown of your Conflagrate by $/1000;S1 sec.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_fire_fireball.jpg",
-		},
-		[WarlockPrimeGlyph.GlyphOfCorruption]: {
-			name: "Glyph of Corruption",
-			description: "Your Corruption spell has a $s1% chance to cause you to enter a Shadow Trance state after damaging the opponent.  The Shadow Trance state reduces the casting time of your next Shadow Bolt spell by $17941s1%.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_abominationexplosion.jpg",
-		},
-		[WarlockPrimeGlyph.GlyphOfBaneOfAgony]: {
-			name: "Glyph of Bane of Agony",
-			description: "Increases the duration of your Bane of Agony by ${$56241m1/1000} sec.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_curseofsargeras.jpg",
-		},
-		[WarlockPrimeGlyph.GlyphOfFelguard]: {
-			name: "Glyph of Felguard",
-			description: "Increases the damage done by your Felguard's Legion Strike by $s1%.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelguard.jpg",
-		},
-		[WarlockPrimeGlyph.GlyphOfImmolate]: {
-			name: "Glyph of Immolate",
-			description: "Increases the periodic damage of your Immolate by $56228s1%.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_fire_immolation.jpg",
-		},
-		[WarlockPrimeGlyph.GlyphOfImp]: {
-			name: "Glyph of Imp",
-			description: "Increases the damage done by your Imp's Firebolt spell by $56248s1%.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonimp.jpg",
-		},
-		[WarlockPrimeGlyph.GlyphOfShadowburn]: {
-			name: "Glyph of Shadowburn",
-			description: "If your Shadowburn fails to kill the target at or below $s1% health, your Shadowburn's cooldown is instantly reset. This effect has a $91001d cooldown.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_scourgebuild.jpg",
-		},
-		[WarlockPrimeGlyph.GlyphOfUnstableAffliction]: {
-			name: "Glyph of Unstable Affliction",
-			description: "Decreases the casting time of your Unstable Affliction by ${$56233m1/-1000}.1 sec.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_unstableaffliction_3.jpg",
-		},
-		[WarlockPrimeGlyph.GlyphOfHaunt]: {
-			name: "Glyph of Haunt",
-			description: "The bonus damage granted by your Haunt spell is increased by an additional $63302s1%.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warlock_haunt.jpg",
-		},
-		[WarlockPrimeGlyph.GlyphOfMetamorphosis]: {
-			name: "Glyph of Metamorphosis",
-			description: "Increases the duration of your Metamorphosis by ${$63303m1/1000} sec.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_demonform.jpg",
-		},
-		[WarlockPrimeGlyph.GlyphOfChaosBolt]: {
-			name: "Glyph of Chaos Bolt",
-			description: "Reduces the cooldown on Chaos Bolt by ${$63304m1/-1000} sec.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warlock_chaosbolt.jpg",
-		},
-		[WarlockPrimeGlyph.GlyphOfLashOfPain]: {
-			name: "Glyph of Lash of Pain",
-			description: "Increases the damage done by your Succubus' Lash of Pain by $s1%.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_curse.jpg",
-		},
 	},
 	majorGlyphs: {
-		[WarlockMajorGlyph.GlyphOfDeathCoilWl]: {
-			name: "Glyph of Death Coil",
-			description: "Increases the duration of your Death Coil by ${$56232m1/1000}.1 sec.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_deathcoil.jpg",
+		[WarlockMajorGlyph.GlyphOfConflagrate]: {
+			name: "Glyph of Conflagrate",
+			description: "Conflagrate no longer requires Immolate to snare the target.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_fire_fireball.jpg",
+		},
+		[WarlockMajorGlyph.GlyphOfSiphonLife]: {
+			name: "Glyph of Siphon Life",
+			description: "Your $?s348[Immolate][]$?!s348[Corruption][] spell will heal you for ${$m1/1000}.1% of your maximum health when dealing $?s348[periodic ][]damage.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_requiem.jpg",
 		},
 		[WarlockMajorGlyph.GlyphOfFear]: {
 			name: "Glyph of Fear",
-			description: "Your Fear causes the target to tremble in place instead of fleeing in fear, but now causes Fear to have a $s1 sec cooldown.",
+			description: "Your Fear causes the target to tremble in place instead of fleeing in fear.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_possession.jpg",
 		},
-		[WarlockMajorGlyph.GlyphOfFelhunter]: {
-			name: "Glyph of Felhunter",
-			description: "When your Felhunter uses Devour Magic, you will also be healed for that amount.",
+		[WarlockMajorGlyph.GlyphOfDemonTraining]: {
+			name: "Glyph of Demon Training",
+			description: "Improves your demon's special abilities:
+
+Your $?s108499[Fel Imp][Imp]'s Firebolt cast time is reduced by 50% and fires in bursts of three.
+
+Increases your $?s108499[Voidlord][Voidwalker]'s total armor by $s1%.
+
+Your $?s108499[Shivarra][Succubus]'s $?s108499[Mesmerizes][Seduction] ability also removes all damage over time effects from the target.
+
+When your $?s108499[Observer][Felhunter] uses $?s108499[Clone Magic][Devour Magic], you will also be healed for that amount.
+
+Increases your $?s108499[Wrathguard][Felguard]'s total health by $s3%.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelhunter.jpg",
 		},
 		[WarlockMajorGlyph.GlyphOfHealthstone]: {
 			name: "Glyph of Healthstone",
-			description: "You receive $56224s1% more healing from using a healthstone.",
+			description: "You receive $56224s1% more healing from using a healthstone, but the health is restored over ${$m2/1000} sec.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_stone_04.jpg",
 		},
-		[WarlockMajorGlyph.GlyphOfHowlOfTerror]: {
-			name: "Glyph of Howl of Terror",
-			description: "Reduces the cooldown on your Howl of Terror spell by ${$56217m1/-1000} sec.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_deathscream.jpg",
+		[WarlockMajorGlyph.GlyphOfCurseOfTheElements]: {
+			name: "Glyph of Curse of the Elements",
+			description: "Curse of the Elements hits $s1 additional nearby targets.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/.jpg",
 		},
-		[WarlockMajorGlyph.GlyphOfSoulSwap]: {
-			name: "Glyph of Soul Swap",
-			description: "Your Soul Swap leaves your damage-over-time spells behind on the target you Soul Swapped from, but gives Soul Swap a $s1 sec cooldown.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warlock_soulswap.jpg",
+		[WarlockMajorGlyph.GlyphOfImpSwarm]: {
+			name: "Glyph of Imp Swarm",
+			description: "Teaches you the ability Imp Swarm. 
+Requires Demonology.
+
+$@spellicon104316 $@spellname104316
+$@spelldesc104316",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warlock_impoweredimp.jpg",
 		},
-		[WarlockMajorGlyph.GlyphOfShadowBolt]: {
-			name: "Glyph of Shadow Bolt",
-			description: "Reduces the mana cost of your Shadow Bolt by $56240s1%.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_shadowbolt.jpg",
+		[WarlockMajorGlyph.GlyphOfHavoc]: {
+			name: "Glyph of Havoc",
+			description: "Havoc gains $s1 additional charges, but the cooldown is increased by ${$m2/1000} seconds.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warlock_baneofhavoc.jpg",
 		},
 		[WarlockMajorGlyph.GlyphOfSoulstone]: {
 			name: "Glyph of Soulstone",
-			description: "Increases the amount of health you gain from resurrecting via a Soulstone by an additional $56231s1%.",
+			description: "Players resurrected by Soulstone are returned to life with ${60+$56231m1}% health.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_orb_04.jpg",
 		},
-		[WarlockMajorGlyph.GlyphOfSeduction]: {
-			name: "Glyph of Seduction",
-			description: "Your Succubus's Seduction ability also removes all damage over time effects from the target.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_mindsteal.jpg",
+		[WarlockMajorGlyph.GlyphOfUnstableAffliction]: {
+			name: "Glyph of Unstable Affliction",
+			description: "Reduces the cast time of Unstable Affliction by $s1%.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_unstableaffliction_3.jpg",
 		},
-		[WarlockMajorGlyph.GlyphOfVoidwalker]: {
-			name: "Glyph of Voidwalker",
-			description: "Increases your Voidwalker's total health by $56247s1%.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonvoidwalker.jpg",
+		[WarlockMajorGlyph.GlyphOfSoulConsumption]: {
+			name: "Glyph of Soul Consumption",
+			description: "$?c0|c1[Your Drain Soul restores $58068s1% of your total health after you kill a target that yields experience or honor. ][]$?c0|c2[You restore $58068s1% of your total health after you kill a target in Demon Form that yields experience or honor. ][]$?c0|c3[You restore $58068s1% of your total health after you kill a target with Chaos Bolt that yields experience or honor. ][]",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warlock_soulsiphon.jpg",
+		},
+		[WarlockMajorGlyph.GlyphOfCurseOfExhaustion]: {
+			name: "Glyph of Curse of Exhaustion",
+			description: "Curse of Exhaustion now reduces the targets movement speed by $?s58080[$18223m1][${($18223m1+$m1)*-1}]%, lasts half as long and has a ${$m3/1000} second cooldown.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_grimward.jpg",
+		},
+		[WarlockMajorGlyph.GlyphOfDrainLife]: {
+			name: "Glyph of Drain Life",
+			description: "Increases the healing of your Drain Life by $s1%.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_lifedrain02.jpg",
+		},
+		[WarlockMajorGlyph.GlyphOfDemonHunting]: {
+			name: "Glyph of Demon Hunting",
+			description: "Requires Demonology.
+
+Teaches you the ability $@spellname114168. 
+
+$@spellname114168
+$@spelldesc114168",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg",
+		},
+		[WarlockMajorGlyph.GlyphOfEmberTap]: {
+			name: "Glyph of Ember Tap",
+			description: "Ember Tap heals you for an additional $s3% of your health, but the health is restored over ${$m2/1000} sec.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_ember.jpg",
 		},
 		[WarlockMajorGlyph.GlyphOfDemonicCircle]: {
 			name: "Glyph of Demonic Circle",
 			description: "Reduces the cooldown on Demonic Circle by ${$63309m1/-1000} sec.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_demoniccircleteleport.jpg",
 		},
-		[WarlockMajorGlyph.GlyphOfShadowflame]: {
-			name: "Glyph of Shadowflame",
-			description: "Your Shadowflame also applies a $63310s1% movement speed slow to its victims.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warlock_shadowflame.jpg",
+		[WarlockMajorGlyph.GlyphOfUnendingResolve]: {
+			name: "Glyph of Unending Resolve",
+			description: "The damage reduction of Unending Resolve is reduced by $s1%, but the cooldown is reduced by ${$m2/-1000} sec.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_demonictactics.jpg",
 		},
 		[WarlockMajorGlyph.GlyphOfLifeTap]: {
 			name: "Glyph of Life Tap",
-			description: "Reduces the global cooldown of your Life Tap by 0.5 sec.",
+			description: "Your Life Tap no longer consumes health, but instead absorbs ${($MHP*0.15)} healing received. This effect stacks.
+
+The absorb lasts ${$m1/1000} sec.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_burningspirit.jpg",
 		},
-		[WarlockMajorGlyph.GlyphOfSoulLink]: {
-			name: "Glyph of Soul Link",
-			description: "Increases the percentage of damage shared via your Soul Link by an additional $63312s1%.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_gathershadows.jpg",
+		[WarlockMajorGlyph.GlyphOfEternalResolve]: {
+			name: "Glyph of Eternal Resolve",
+			description: "Unending Resolve can no longer be activated, but passively provides $148688s1% damage reduction from all sources.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_demonictactics.jpg",
+		},
+		[WarlockMajorGlyph.GlyphOfSupernova]: {
+			name: "Glyph of Supernova",
+			description: "When you are killed, all enemies within $135031A1 yards take damage equal to 10% of your maximum health per Burning Ember held.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_fire_ragnaros_supernova.jpg",
+		},
+		[WarlockMajorGlyph.GlyphOfHavoc]: {
+			name: "Glyph of Havoc",
+			description: "Havoc gains $s1 additional charges, but the cooldown is increased by ${$m2/1000} seconds.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warlock_baneofhavoc.jpg",
 		},
 	},
 	minorGlyphs: {
+		[WarlockMinorGlyph.GlyphOfHandOfGuldan]: {
+			name: "Glyph of Hand of Gul'dan",
+			description: "Your Hand of Gul'dan can now be targeted at a location.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/.jpg",
+		},
+		[WarlockMinorGlyph.GlyphOfVerdantSpheres]: {
+			name: "Glyph of Verdant Spheres",
+			description: "$?c3[When you have a Burning Ember, it appears around your character as a Verdant Sphere.][Your Soul Shards are transformed into Verdant Spheres.]",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_enchantedpearlb.jpg",
+		},
+		[WarlockMinorGlyph.GlyphOfNightmares]: {
+			name: "Glyph of Nightmares",
+			description: "Your Felsteed and Dreadsteed can cross water while running and leave a trail of flames.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_mount_nightmarehorse.jpg",
+		},
+		[WarlockMinorGlyph.GlyphOfFelguard]: {
+			name: "Glyph of Felguard",
+			description: "Your Felguard will equip a random two-handed axe, sword or polearm from your backpack.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelguard.jpg",
+		},
 		[WarlockMinorGlyph.GlyphOfHealthFunnel]: {
 			name: "Glyph of Health Funnel",
-			description: "Reduces the pushback suffered from damaging attacks while channeling your Health Funnel spell by $56238s1%.",
+			description: "Your Health Funnel instantly restores $114189s1% of your demon's health, but has a 10 sec. cooldown.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_lifedrain.jpg",
+		},
+		[WarlockMinorGlyph.GlyphOfSubtlety]: {
+			name: "Glyph of Subtlety",
+			description: "Your Soul Shards no longer display while out of combat.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_rogue_masterofsubtlety.jpg",
+		},
+		[WarlockMinorGlyph.GlyphOfShadowBolt]: {
+			name: "Glyph of Shadow Bolt",
+			description: "Splits your Shadow Bolt into three smaller attacks.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_shadowbolt.jpg",
+		},
+		[WarlockMinorGlyph.GlyphOfCarrionSwarm]: {
+			name: "Glyph of Carrion Swarm",
+			description: "Your Carrion Swarm no longer knocks targets back.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warlock_demonicpower.jpg",
+		},
+		[WarlockMinorGlyph.GlyphOfFallingMeteor]: {
+			name: "Glyph of Falling Meteor",
+			description: "If you use Demonic Leap while falling, you slam into the ground rapidly and will not die from falling damage.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_fire_meteorstorm.jpg",
 		},
 		[WarlockMinorGlyph.GlyphOfUnendingBreath]: {
 			name: "Glyph of Unending Breath",
 			description: "Increases the swim speed of targets affected by your Unending Breath spell by $58079s1%.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_demonbreath.jpg",
 		},
-		[WarlockMinorGlyph.GlyphOfDrainSoul]: {
-			name: "Glyph of Drain Soul",
-			description: "Your Drain Soul restores $58068s1% of your total mana after you kill a target that yields experience or honor.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_haunting.jpg",
-		},
 		[WarlockMinorGlyph.GlyphOfEyeOfKilrogg]: {
 			name: "Glyph of Eye of Kilrogg",
-			description: "Increases the movement speed of your Eye of Kilrogg by $s1% and allows it to fly in areas where flying mounts are enabled.",
+			description: "Your Eye of Kilrogg is no longer stealthed and can now place your Demonic Circle.  The casting Warlock must be within line of sight of the Eye of Kilrogg to place the Demonic Circle.
+
+In addition, the movement speed of your Eye of Kilrogg is increased by $s1% and allows it to fly in areas where flying mounts are enabled.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_evileye.jpg",
-		},
-		[WarlockMinorGlyph.GlyphOfCurseOfExhaustion]: {
-			name: "Glyph of Curse of Exhaustion",
-			description: "Increases the range of your Curse of Exhaustion spell by $58080s1 yards.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_grimward.jpg",
 		},
 		[WarlockMinorGlyph.GlyphOfSubjugateDemon]: {
 			name: "Glyph of Subjugate Demon",
 			description: "Reduces the cast time of your Subjugate Demon spell by $58107s1%.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_enslavedemon.jpg",
 		},
-		[WarlockMinorGlyph.GlyphOfRitualOfSouls]: {
-			name: "Glyph of Ritual of Souls",
-			description: "Reduces the mana cost of your Ritual of Souls spell by $58094s1%.",
+		[WarlockMinorGlyph.GlyphOfSoulwell]: {
+			name: "Glyph of Soulwell",
+			description: "Your soulwell glows with an eerie light.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_shadesofdarkness.jpg",
+		},
+		[WarlockMinorGlyph.GlyphOfCrimsonBanish]: {
+			name: "Glyph of Crimson Banish",
+			description: "Your Banish spell is now red.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_cripple.jpg",
+		},
+		[WarlockMinorGlyph.GlyphOfGatewayAttunement]: {
+			name: "Glyph of Gateway Attunement",
+			description: "Demonic Gateways will automatically activate when you step near them.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/.jpg",
 		},
 	},
 };

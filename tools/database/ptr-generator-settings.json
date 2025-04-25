@@ -4,12 +4,19 @@
 		"BuildConfig": "buildConfig",
 		"CDNConfig": "cdnConfig",
 		"Region": "us",
-		"Product": "wow_classic_ptr"
+		"Product": "wow_classic_beta"
 	},
 	"TargetDirectory": "dbfilesclient",
 	"DatabaseFile": "wowsims.db",
 	"GameTablesOutDirectory": "../../assets/db_inputs/basestats",
-	"GameTables": [],
+	"GameTables": [
+		"chancetomeleecrit",
+		"chancetomeleecritbase",
+		"chancetospellcrit",
+		"chancetospellcritbase",
+		"combatratings",
+		"octbasempbyclass"
+	],
 	"Tables": [
 		"Spell",
 		"Item",

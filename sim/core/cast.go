@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 // A cast corresponds to any action which causes the in-game castbar to be

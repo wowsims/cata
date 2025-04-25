@@ -1,12 +1,12 @@
 package fury
 
 import (
-	_ "github.com/wowsims/cata/sim/common" // imported to get item effects included.
+	_ "github.com/wowsims/mop/sim/common" // imported to get item effects included.
 
 	"testing"
 
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func init() {

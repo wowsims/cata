@@ -1,8 +1,8 @@
 package frost
 
 import (
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/death_knight"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/death_knight"
 )
 
 var frostStrikeActionID = core.ActionID{SpellID: 49143}

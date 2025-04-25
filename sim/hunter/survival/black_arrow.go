@@ -3,8 +3,8 @@ package survival
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/hunter"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/hunter"
 )
 
 func (svHunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {

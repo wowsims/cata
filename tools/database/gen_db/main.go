@@ -12,13 +12,13 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/wowsims/cata/sim"
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	_ "github.com/wowsims/cata/sim/encounters" // Needed for preset encounters.
-	"github.com/wowsims/cata/tools"
-	"github.com/wowsims/cata/tools/database"
-	"github.com/wowsims/cata/tools/database/dbc"
+	"github.com/wowsims/mop/sim"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	_ "github.com/wowsims/mop/sim/encounters" // Needed for preset encounters.
+	"github.com/wowsims/mop/tools"
+	"github.com/wowsims/mop/tools/database"
+	"github.com/wowsims/mop/tools/database/dbc"
 )
 
 func writeGzipFile(filePath string, data []byte) error {
@@ -46,7 +46,7 @@ func writeGzipFile(filePath string, data []byte) error {
 // go run ./tools/database/gen_db -outDir=assets -gen=db
 
 var outDir = flag.String("outDir", "assets", "Path to output directory for writing generated .go files.")
-var genAsset = flag.String("gen", "", "Asset to generate. Valid values are 'db', 'atlasloot', 'wowhead-items', 'wowhead-spells', 'wowhead-itemdb', 'cata-items', and 'wago-db2-items'")
+var genAsset = flag.String("gen", "", "Asset to generate. Valid values are 'db', 'atlasloot', 'wowhead-items', 'wowhead-spells', 'wowhead-itemdb', 'mop-items', and 'wago-db2-items'")
 var dbPath = flag.String("dbPath", "./tools/database/wowsims.db", "Location of wowsims.db file from the DB2ToSqliteTool")
 
 func main() {
@@ -92,7 +92,7 @@ func main() {
 		}
 	}
 
-	items, err := database.LoadRawItems(helper, "s.OverallQualityId != 7 AND s.ScalingStatDistributionID = 0 AND s.OverallQualityId != 0 AND (i.ClassID = 2 OR i.ClassID = 4) AND s.Display_lang != '' AND (s.ID != 34219 AND s.Display_lang NOT LIKE '%Test%' AND s.Display_lang NOT LIKE 'QA%')")
+	items, err := database.LoadRawItems(helper, "s.OverallQualityId != 7 AND s.Field_1_15_7_59706_054 = 0 AND s.OverallQualityId != 0 AND (i.ClassID = 2 OR i.ClassID = 4) AND s.Display_lang != '' AND (s.ID != 34219 AND s.Display_lang NOT LIKE '%Test%' AND s.Display_lang NOT LIKE 'QA%')")
 	if err == nil {
 		json, _ := json.Marshal(items)
 		if err := writeGzipFile(fmt.Sprintf("%s/dbc/items.json", inputsDir), json); err != nil {
@@ -457,7 +457,7 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		return true
 	})
 
-	// There is an 'unavailable' version of every naxx set, e.g. https://www.wowhead.com/cata/item=43728/bonescythe-gauntlets
+	// There is an 'unavailable' version of every naxx set, e.g. https://www.wowhead.com/mop-classic/item=43728/bonescythe-gauntlets
 	heroesItems := core.FilterMap(db.Items, func(_ int32, item *proto.UIItem) bool {
 		return strings.HasPrefix(item.Name, "Heroes' ")
 	})
@@ -471,7 +471,7 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		return true
 	})
 
-	// There is an 'unavailable' version of many t8 set pieces, e.g. https://www.wowhead.com/cata/item=46235/darkruned-gauntlets
+	// There is an 'unavailable' version of many t8 set pieces, e.g. https://www.wowhead.com/mop-classic/item=46235/darkruned-gauntlets
 	valorousItems := core.FilterMap(db.Items, func(_ int32, item *proto.UIItem) bool {
 		return strings.HasPrefix(item.Name, "Valorous ")
 	})
@@ -485,7 +485,7 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		return true
 	})
 
-	// There is an 'unavailable' version of many t9 set pieces, e.g. https://www.wowhead.com/cata/item=48842/thralls-hauberk
+	// There is an 'unavailable' version of many t9 set pieces, e.g. https://www.wowhead.com/mop-classic/item=48842/thralls-hauberk
 	triumphItems := core.FilterMap(db.Items, func(_ int32, item *proto.UIItem) bool {
 		return strings.HasSuffix(item.Name, "of Triumph")
 	})
@@ -611,12 +611,12 @@ func simmableItemFilter(_ int32, item *proto.UIItem) bool {
 	} else if item.Quality >= proto.ItemQuality_ItemQualityHeirloom {
 		return false
 	} else if item.Quality <= proto.ItemQuality_ItemQualityEpic {
-		if item.Ilvl < 277 {
+		if item.Ilvl < 372 {
 			return false
 		}
 	} else {
 		// Epic and legendary items might come from classic, so use a lower ilvl threshold.
-		if item.Ilvl <= 200 {
+		if item.Ilvl <= 359 {
 			return false
 		}
 	}

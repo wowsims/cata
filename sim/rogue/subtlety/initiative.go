@@ -1,6 +1,6 @@
 package subtlety
 
-import "github.com/wowsims/cata/sim/core"
+import "github.com/wowsims/mop/sim/core"
 
 func (subRogue *SubtletyRogue) applyInitiative() {
 	if subRogue.Talents.Initiative == 0 {

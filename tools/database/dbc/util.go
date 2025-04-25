@@ -8,8 +8,8 @@ import (
 	"os"
 	"slices"
 
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 func SocketCost(level int) float64 {

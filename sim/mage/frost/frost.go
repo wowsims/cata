@@ -1,9 +1,9 @@
 package frost
 
 import (
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/mage"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/mage"
 )
 
 func RegisterFrostMage() {

@@ -22,7 +22,7 @@ output_file_path = sys.argv[2]
 
 driver.implicitly_wait(2)
 
-driver.get('https://wowhead.com/cata/pet-talent-calc/')
+driver.get('https://wowhead.com/mop-classic/pet-talent-calc/')
 trees = driver.find_elements(By.CLASS_NAME, "ctc-tree")
 
 with open(output_file_path, "w") as outfile:

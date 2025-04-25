@@ -10,8 +10,8 @@ import (
 	"text/template"
 	"unicode"
 
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/tools/database/dbc"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/tools/database/dbc"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 )
@@ -303,7 +303,10 @@ func updateGeneratedProtoSection(fileContent, newContent string) (string, error)
 
 func protoOverride(name string, className string) string {
 	if name == "GlyphOfDeathCoil" && className == "Warlock" {
-		return "GlyphOfDeathCoilWl"
+		return "GlyphOfDeathCoilWarlock"
+	}
+	if name == "GlyphOfStampede" && className == "Hunter" {
+		return "GlyphOfStampedeHunter"
 	}
 	if name == "Tnt" || name == "tnt" {
 		return "TNT"

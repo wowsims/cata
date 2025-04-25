@@ -30,7 +30,7 @@ export class Individual60UEPExporter<SpecType extends Spec> extends IndividualEx
 		});
 
 		return (
-			`https://sixtyupgrades.com/cata/ep/import?name=${encodeURIComponent(`${player.getPlayerSpec().friendlyName} WoWSims Weights`)}` +
+			`https://sixtyupgrades.com/mop/ep/import?name=${encodeURIComponent(`${player.getPlayerSpec().friendlyName} WoWSims Weights`)}` +
 			Object.keys(namesToWeights)
 				.map(statName => `&${statName}=${namesToWeights[statName].toFixed(3)}`)
 				.join('')

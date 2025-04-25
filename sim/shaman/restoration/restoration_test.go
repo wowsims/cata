@@ -1,7 +1,7 @@
 package restoration
 
 import (
-	_ "github.com/wowsims/cata/sim/common"
+	_ "github.com/wowsims/mop/sim/common"
 )
 
 func init() {

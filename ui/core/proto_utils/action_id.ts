@@ -165,7 +165,7 @@ export class ActionId {
 
 	static makeItemUrl(id: number, randomSuffixId?: number, reforgeId?: number): string {
 		const langPrefix = getWowheadLanguagePrefix();
-		const url = new URL(`https://wowhead.com/cata/${langPrefix}item=${id}`);
+		const url = new URL(`https://wowhead.com/mop-classic/${langPrefix}item=${id}`);
 		url.searchParams.set('level', String(CHARACTER_LEVEL));
 		url.searchParams.set('rand', String(randomSuffixId || 0));
 		if (reforgeId) url.searchParams.set('forg', String(reforgeId));
@@ -176,7 +176,7 @@ export class ActionId {
 		if (USE_WOTLK_DB) {
 			return `https://wotlkdb.com/?spell=${id}`;
 		} else {
-			return `https://wowhead.com/cata/${langPrefix}spell=${id}`;
+			return `https://wowhead.com/mop-classic/${langPrefix}spell=${id}`;
 		}
 	}
 	static async makeItemTooltipData(id: number, params?: Omit<WowheadTooltipItemParams, 'itemId'>) {
@@ -190,7 +190,7 @@ export class ActionId {
 		if (USE_WOTLK_DB) {
 			return 'https://wotlkdb.com/?quest=' + id;
 		} else {
-			return `https://wowhead.com/cata/${langPrefix}quest=${id}`;
+			return `https://wowhead.com/mop-classic/${langPrefix}quest=${id}`;
 		}
 	}
 	static makeNpcUrl(id: number): string {
@@ -198,7 +198,7 @@ export class ActionId {
 		if (USE_WOTLK_DB) {
 			return 'https://wotlkdb.com/?npc=' + id;
 		} else {
-			return `https://wowhead.com/cata/${langPrefix}npc=${id}`;
+			return `https://wowhead.com/mop-classic/${langPrefix}npc=${id}`;
 		}
 	}
 	static makeZoneUrl(id: number): string {
@@ -206,7 +206,7 @@ export class ActionId {
 		if (USE_WOTLK_DB) {
 			return 'https://wotlkdb.com/?zone=' + id;
 		} else {
-			return `https://wowhead.com/cata/${langPrefix}zone=${id}`;
+			return `https://wowhead.com/mop-classic/${langPrefix}zone=${id}`;
 		}
 	}
 
@@ -944,7 +944,7 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Water Elemental': ActionId.fromSpellId(31687),
 };
 
-// https://wowhead.com/cata/hunter-pets
+// https://wowhead.com/mop-classic/hunter-pets
 const petNameToIcon: Record<string, string> = {
 	Bat: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_bat.jpg',
 	Bear: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_bear.jpg',
@@ -1008,7 +1008,7 @@ export const resourceTypeToIcon: Record<ResourceType, string> = {
 	[ResourceType.ResourceTypeBloodRune]: 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_bloodpresence.jpg',
 	[ResourceType.ResourceTypeFrostRune]: 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_frostpresence.jpg',
 	[ResourceType.ResourceTypeUnholyRune]: 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_unholypresence.jpg',
-	[ResourceType.ResourceTypeDeathRune]: '/cata/assets/img/death_rune.png',
+	[ResourceType.ResourceTypeDeathRune]: '/mop/assets/img/death_rune.png',
 	[ResourceType.ResourceTypeSolarEnergy]: 'https://wow.zamimg.com/images/wow/icons/large/ability_druid_eclipseorange.jpg',
 	[ResourceType.ResourceTypeLunarEnergy]: 'https://wow.zamimg.com/images/wow/icons/large/ability_druid_eclipse.jpg',
 	[ResourceType.ResourceTypeHolyPower]: 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_holybolt.jpg',

@@ -1,6 +1,6 @@
 package dbc
 
-import "github.com/wowsims/cata/sim/core/proto"
+import "github.com/wowsims/mop/sim/core/proto"
 
 type RandomPropAllocation struct {
 	Epic0     int32 `json:"Epic_0"`

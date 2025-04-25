@@ -3,8 +3,8 @@ package dbc
 import (
 	"math"
 
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 const MAX_UPGRADE_LEVELS = 2

@@ -3,8 +3,8 @@ package core
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 // This is just the static bonuses. Most professions are handled elsewhere.

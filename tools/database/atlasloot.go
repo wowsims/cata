@@ -7,9 +7,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/tools"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/tools"
 )
 
 func ReadAtlasLootData() *WowDatabase {
@@ -26,9 +26,9 @@ func ReadAtlasLootData() *WowDatabase {
 	readAtlasLootDungeonData(db, proto.Expansion_ExpansionWotlk, "https://raw.githubusercontent.com/Hoizame/AtlasLootClassic/master/AtlasLootClassic_DungeonsAndRaids/data-wrath.lua")
 
 	// Cata addon
-	readAtlasLootSourceData(db, proto.Expansion_ExpansionCata, "https://raw.githubusercontent.com/snowflame0/AtlasLootClassic_Cata/main/AtlasLootClassic_Data/source-cata.lua")
-	readAtlasLootDungeonData(db, proto.Expansion_ExpansionCata, "https://raw.githubusercontent.com/snowflame0/AtlasLootClassic_Cata/main/AtlasLootClassic_DungeonsAndRaids/data-cata.lua")
-	readAtlasLootFactionData(db, "https://raw.githubusercontent.com/snowflame0/AtlasLootClassic_Cata/main/AtlasLootClassic_Factions/data-cata.lua")
+	readAtlasLootSourceData(db, proto.Expansion_ExpansionCata, "https://raw.githubusercontent.com/snowflame0/AtlasLootClassic_Cata/main/AtlasLootClassic_Data/source-mop.lua")
+	readAtlasLootDungeonData(db, proto.Expansion_ExpansionCata, "https://raw.githubusercontent.com/snowflame0/AtlasLootClassic_Cata/main/AtlasLootClassic_DungeonsAndRaids/data-mop.lua")
+	readAtlasLootFactionData(db, "https://raw.githubusercontent.com/snowflame0/AtlasLootClassic_Cata/main/AtlasLootClassic_Factions/data-mop.lua")
 
 	readZoneData(db)
 
@@ -323,7 +323,7 @@ func readZoneData(db *WowDatabase) {
 	zoneTM := &WowheadTooltipManager{
 		TooltipManager{
 			FilePath:   "",
-			UrlPattern: "https://nether.wowhead.com/cata/tooltip/zone/%s",
+			UrlPattern: "https://nether.wowhead.com/mop-classic/tooltip/zone/%s",
 		},
 	}
 	zoneTooltips := zoneTM.FetchFromWeb(zoneIDStrs)

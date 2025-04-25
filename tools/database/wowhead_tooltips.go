@@ -8,9 +8,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 type WowheadTooltipManager struct {
@@ -28,7 +28,7 @@ func NewWowheadItemTooltipManager(filePath string) *WowheadTooltipManager {
 	return &WowheadTooltipManager{
 		TooltipManager{
 			FilePath:   filePath,
-			UrlPattern: "https://nether.wowhead.com/cata/tooltip/item/%s?lvl=85",
+			UrlPattern: "https://nether.wowhead.com/mop-classic/tooltip/item/%s?lvl=85",
 		},
 	}
 }
@@ -37,7 +37,7 @@ func NewWowheadSpellTooltipManager(filePath string) *WowheadTooltipManager {
 	return &WowheadTooltipManager{
 		TooltipManager{
 			FilePath:   filePath,
-			UrlPattern: "https://nether.wowhead.com/cata/tooltip/spell/%s",
+			UrlPattern: "https://nether.wowhead.com/mop-classic/tooltip/spell/%s",
 		},
 	}
 }
@@ -156,7 +156,7 @@ func (item WowheadItemResponse) GetIntValue(pattern *regexp.Regexp) int {
 	return item.GetTooltipRegexValue(pattern, 1)
 }
 
-var expansionRegex = regexp.MustCompile(`(tbc|wotlk|cata)`)
+var expansionRegex = regexp.MustCompile(`(tbc|wotlk|cata|mop)`)
 
 var armorRegex = regexp.MustCompile(`<!--amr-->([0-9]+) Armor`)
 var agilityRegex = regexp.MustCompile(`<!--stat3-->\+([0-9]+) Agility`)
@@ -646,7 +646,7 @@ var dodgeGemStatRegexes = []*regexp.Regexp{regexp.MustCompile(`\+([0-9]+) Dodge 
 var parryGemStatRegexes = []*regexp.Regexp{regexp.MustCompile(`\+([0-9]+) Parry Rating`)}
 var resilienceGemStatRegexes = []*regexp.Regexp{regexp.MustCompile(`\+([0-9]+) Resilience Rating`)}
 var allResistGemStatRegexes = []*regexp.Regexp{regexp.MustCompile(`\+([0-9]+) Resist All`)}
-var masteryGemStatRegexes = []*regexp.Regexp{regexp.MustCompile(`\+([0-9]+) Mastery Rating`)} //https://www.wowhead.com/cata/spell=101748/zen-elven-peridot
+var masteryGemStatRegexes = []*regexp.Regexp{regexp.MustCompile(`\+([0-9]+) Mastery Rating`)} //https://www.wowhead.com/mop-classic/spell=101748/zen-elven-peridot
 
 func (item WowheadItemResponse) GetGemStats() stats.Stats {
 	stats := stats.Stats{

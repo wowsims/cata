@@ -3,9 +3,9 @@ package paladin
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/proto"
 
-	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/mop/sim/core"
 )
 
 func (paladin *Paladin) registerHammerOfWrathSpell() {

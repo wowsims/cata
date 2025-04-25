@@ -8,8 +8,8 @@ import (
 	"runtime"
 	"runtime/debug"
 
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/simsignals"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/simsignals"
 	googleProto "google.golang.org/protobuf/proto"
 )
 

@@ -8,13 +8,13 @@ import { ConfigEnv, defineConfig, PluginOption, UserConfigExport } from 'vite';
 import { checker } from 'vite-plugin-checker';
 
 export const BASE_PATH = path.resolve(__dirname, 'ui');
-export const OUT_DIR = path.join(__dirname, 'dist', 'cata');
+export const OUT_DIR = path.join(__dirname, 'dist', 'mop');
 
 function serveExternalAssets() {
 	const workerMappings = {
-		'/cata/sim_worker.js': '/cata/local_worker.js',
-		'/cata/net_worker.js': '/cata/net_worker.js',
-		'/cata/lib.wasm': '/cata/lib.wasm',
+		'/mop/sim_worker.js': '/mop/local_worker.js',
+		'/mop/net_worker.js': '/mop/net_worker.js',
+		'/mop/lib.wasm': '/mop/lib.wasm',
 	};
 
 	return {
@@ -25,15 +25,15 @@ function serveExternalAssets() {
 
 				if (Object.keys(workerMappings).includes(url)) {
 					const targetPath = workerMappings[url as keyof typeof workerMappings];
-					const assetsPath = path.resolve(__dirname, './dist/cata');
-					const requestedPath = path.join(assetsPath, targetPath.replace('/cata/', ''));
+					const assetsPath = path.resolve(__dirname, './dist/mop');
+					const requestedPath = path.join(assetsPath, targetPath.replace('/mop/', ''));
 					serveFile(res, requestedPath);
 					return;
 				}
 
-				if (url.includes('/cata/assets')) {
+				if (url.includes('/mop/assets')) {
 					const assetsPath = path.resolve(__dirname, './assets');
-					const assetRelativePath = url.split('/cata/assets')[1];
+					const assetRelativePath = url.split('/mop/assets')[1];
 					const requestedPath = path.join(assetsPath, assetRelativePath);
 
 					serveFile(res, requestedPath);
@@ -87,7 +87,7 @@ function determineContentType(filePath: string) {
 
 export const getBaseConfig = ({ command, mode }: ConfigEnv) =>
 	({
-		base: '/cata/',
+		base: '/mop/',
 		root: path.join(__dirname, 'ui'),
 		build: {
 			outDir: OUT_DIR,

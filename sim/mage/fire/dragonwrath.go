@@ -1,8 +1,8 @@
 package fire
 
 import (
-	"github.com/wowsims/cata/sim/common/cata"
-	"github.com/wowsims/cata/sim/core/proto"
+	cata "github.com/wowsims/mop/sim/common/cata"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func init() {

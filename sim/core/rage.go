@@ -3,7 +3,7 @@ package core
 import (
 	"fmt"
 
-	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 const MaxRage = 100.0
@@ -78,7 +78,7 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 			// 	damage = result.PreOutcomeDamage
 			// }
 
-			// rage in cata is normalized so it only depends on weapon swing speed and some multipliers
+			// rage in mop is normalized so it only depends on weapon swing speed and some multipliers
 			generatedRage := hitFactor * speed
 			generatedRage *= options.RageMultiplier
 

@@ -3,7 +3,7 @@ import { UIEnchant as Enchant } from '../proto/ui.js';
 let descriptionsPromise: Promise<Record<number, string>> | null = null;
 function fetchEnchantDescriptions(): Promise<Record<number, string>> {
 	if (descriptionsPromise == null) {
-		descriptionsPromise = fetch('/cata/assets/enchants/descriptions.json')
+		descriptionsPromise = fetch('/mop/assets/enchants/descriptions.json')
 			.then(response => response.json())
 			.then(json => {
 				const descriptionsMap: Record<number, string> = {};

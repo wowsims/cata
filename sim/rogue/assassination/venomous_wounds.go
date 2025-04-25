@@ -1,8 +1,8 @@
 package assassination
 
 import (
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/rogue"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/rogue"
 )
 
 func (sinRogue *AssassinationRogue) registerVenomousWounds() {

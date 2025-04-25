@@ -1,7 +1,7 @@
 package death_knight
 
 import (
-	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/mop/sim/core"
 )
 
 var BloodBoilActionID = core.ActionID{SpellID: 48721}

@@ -41,7 +41,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 		softCapBreakpoints: (() => {
 			// Sources:
 			// https://www.icy-veins.com/cataclysm-classic/arcane-mage-pve-stat-priority
-			// https://www.wowhead.com/cata/guide/classes/mage/arcane/dps-stat-priority-attributes-pve
+			// https://www.wowhead.com/mop-classic/guide/classes/mage/arcane/dps-stat-priority-attributes-pve
 			const breakpoints = [23.14];
 			const hasteSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHastePercent, {
 				breakpoints,

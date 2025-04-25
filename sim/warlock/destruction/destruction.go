@@ -1,9 +1,9 @@
 package destruction
 
 import (
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/warlock"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/warlock"
 )
 
 func RegisterDestructionWarlock() {

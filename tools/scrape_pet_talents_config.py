@@ -47,9 +47,9 @@ def get_other_spell_ranks(spell_name: str, ignore_int: int) -> List[int]:
 	overrides = {
 		"T N T": "t.n.t",
 	}
-	
+
 	formatted_spell_name = overrides.get(spell_name, spell_name.replace(' ', '+'))
-	driver.get(f"https://www.wowhead.com/cata/spells/pet-abilities/{className}/name:{formatted_spell_name}")
+	driver.get(f"https://www.wowhead.com/mop-classic/spells/pet-abilities/{className}/name:{formatted_spell_name}")
 	driver.implicitly_wait(2)
 
 	spell_ids = []
@@ -58,7 +58,7 @@ def get_other_spell_ranks(spell_name: str, ignore_int: int) -> List[int]:
 	print(f"Found {len(rows)} for {spell_name}")
 	for row in rows:
 		questionable_elements = row.find_elements(By.XPATH, ".//*[contains(@style, 'inv_misc_questionmark.jpg')]")
-        
+
 		if questionable_elements:
             # If any questionable elements found, skip this row
 			print("Skipping row")
@@ -77,7 +77,7 @@ def rowcol(v):
 
 to_export = []
 
-driver.get('https://wowhead.com/cata/pet-talent-calc/')
+driver.get('https://wowhead.com/mop-classic/pet-talent-calc/')
 try:
     wait = WebDriverWait(driver, 10)
     accept_button = wait.until(EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler")))

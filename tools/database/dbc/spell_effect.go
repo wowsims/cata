@@ -4,8 +4,8 @@ import (
 	"math"
 	"slices"
 
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 const MAX_SCALING_LEVEL = 100

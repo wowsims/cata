@@ -3,7 +3,7 @@ package druid
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/mop/sim/core"
 )
 
 // Right now, add the additional GCD + mana cost for shifting back to Moonkin form as a hack

@@ -4,7 +4,7 @@ import (
 	"sort"
 	"time"
 
-	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/mop/sim/core"
 )
 
 func (mage *Mage) registerLivingBombSpell() {

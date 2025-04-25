@@ -6,111 +6,54 @@ option go_package = "./proto";
 // BEGIN GENERATED
 // WarlockTalents message.
 message WarlockTalents {
-    // Affliction
-    int32 doom_and_gloom = 1;
-    int32 improved_life_tap = 2;
-    int32 improved_corruption = 3;
-    int32 jinx = 4;
-    int32 soul_siphon = 5;
-    int32 siphon_life = 6;
-    bool curse_of_exhaustion = 7;
-    int32 improved_fear = 8;
-    int32 eradication = 9;
-    int32 improved_howl_of_terror = 10;
-    bool soul_swap = 11;
-    int32 shadow_embrace = 12;
-    int32 deaths_embrace = 13;
-    int32 nightfall = 14;
-    bool soulburn_seed_of_corruption = 15;
-    int32 everlasting_affliction = 16;
-    int32 pandemic = 17;
-    bool haunt = 18;
-    // Demonology
-    int32 demonic_embrace = 19;
-    int32 dark_arts = 20;
-    int32 fel_synergy = 21;
-    int32 demonic_rebirth = 22;
-    int32 mana_feed = 23;
-    int32 demonic_aegis = 24;
-    int32 master_summoner = 25;
-    int32 impending_doom = 26;
-    bool demonic_empowerment = 27;
-    int32 improved_health_funnel = 28;
-    int32 molten_core = 29;
-    bool hand_of_guldan = 30;
-    int32 aura_of_foreboding = 31;
-    int32 ancient_grimoire = 32;
-    bool inferno = 33;
-    int32 decimation = 34;
-    int32 cremation = 35;
-    bool demonic_pact = 36;
-    bool metamorphosis = 37;
-    // Destruction
-    int32 bane = 38;
-    int32 shadow_and_flame = 39;
-    int32 improved_immolate = 40;
-    int32 aftermath = 41;
-    int32 emberstorm = 42;
-    int32 improved_searing_pain = 43;
-    int32 improved_soul_fire = 44;
-    int32 backdraft = 45;
-    bool shadowburn = 46;
-    int32 burning_embers = 47;
-    int32 soul_leech = 48;
-    int32 backlash = 49;
-    bool nether_ward = 50;
-    int32 fire_and_brimstone = 51;
-    bool shadowfury = 52;
-    int32 nether_protection = 53;
-    int32 empowered_imp = 54;
-    bool bane_of_havoc = 55;
-    bool chaos_bolt = 56;
 }
 
 enum WarlockPrimeGlyph {
     WarlockPrimeGlyphNone = 0;
-    GlyphOfIncinerate = 42453;
-    GlyphOfConflagrate = 42454;
-    GlyphOfCorruption = 42455;
-    GlyphOfBaneOfAgony = 42456;
-    GlyphOfFelguard = 42459;
-    GlyphOfImmolate = 42464;
-    GlyphOfImp = 42465;
-    GlyphOfShadowburn = 42468;
-    GlyphOfUnstableAffliction = 42472;
-    GlyphOfHaunt = 45779;
-    GlyphOfMetamorphosis = 45780;
-    GlyphOfChaosBolt = 45781;
-    GlyphOfLashOfPain = 50077;
 }
 
 enum WarlockMajorGlyph {
     WarlockMajorGlyphNone = 0;
-    GlyphOfDeathCoilWl = 42457;
+    GlyphOfConflagrate = 42454;
+    GlyphOfSiphonLife = 42455;
     GlyphOfFear = 42458;
-    GlyphOfFelhunter = 42460;
+    GlyphOfDemonTraining = 42460;
     GlyphOfHealthstone = 42462;
-    GlyphOfHowlOfTerror = 42463;
-    GlyphOfSoulSwap = 42466;
-    GlyphOfShadowBolt = 42467;
+    GlyphOfCurseOfTheElements = 42464;
+    GlyphOfImpSwarm = 42465;
+    GlyphOfHavoc = 42466;
     GlyphOfSoulstone = 42470;
-    GlyphOfSeduction = 42471;
-    GlyphOfVoidwalker = 42473;
+    GlyphOfUnstableAffliction = 42472;
+    GlyphOfSoulConsumption = 43390;
+    GlyphOfCurseOfExhaustion = 43392;
+    GlyphOfDrainLife = 45779;
+    GlyphOfDemonHunting = 45780;
+    GlyphOfEmberTap = 45781;
     GlyphOfDemonicCircle = 45782;
-    GlyphOfShadowflame = 45783;
+    GlyphOfUnendingResolve = 45783;
     GlyphOfLifeTap = 45785;
-    GlyphOfSoulLink = 45789;
+    GlyphOfEternalResolve = 50077;
+    GlyphOfSupernova = 93197;
+    GlyphOfHavoc = 104054;
 }
 
 enum WarlockMinorGlyph {
     WarlockMinorGlyphNone = 0;
+    GlyphOfHandOfGuldan = 42453;
+    GlyphOfVerdantSpheres = 42456;
+    GlyphOfNightmares = 42457;
+    GlyphOfFelguard = 42459;
     GlyphOfHealthFunnel = 42461;
+    GlyphOfSubtlety = 42463;
+    GlyphOfShadowBolt = 42467;
+    GlyphOfCarrionSwarm = 42471;
+    GlyphOfFallingMeteor = 42473;
     GlyphOfUnendingBreath = 43389;
-    GlyphOfDrainSoul = 43390;
     GlyphOfEyeOfKilrogg = 43391;
-    GlyphOfCurseOfExhaustion = 43392;
     GlyphOfSubjugateDemon = 43393;
-    GlyphOfRitualOfSouls = 43394;
+    GlyphOfSoulwell = 43394;
+    GlyphOfCrimsonBanish = 45789;
+    GlyphOfGatewayAttunement = 93202;
 }
 
 // END GENERATED

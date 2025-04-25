@@ -430,7 +430,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 					!
 				</p>
 				<p>
-					You can check out our other sims <a href="/cata/">here</a>
+					You can check out our other sims <a href="/mop/">here</a>
 				</p>
 			</div>,
 		);

@@ -39,7 +39,7 @@ pretty_class_name = "".join(word.title() for i, word in enumerate(class_name.spl
 lower_class_name = "".join(word if i == 0 else word.title() for i, word in enumerate(class_name.split("-")))
 def get_glyphs_ids():
 	glyphs_ids = []
-	driver.get("https://www.wowhead.com/cata/spells/glyphs/"+class_name)
+	driver.get("https://www.wowhead.com/mop-classic/spells/glyphs/"+class_name)
 	glyphs_list = driver.find_element(By.CLASS_NAME, "listview-mode-default")
 	rows = glyphs_list.find_elements(By.CLASS_NAME, "listview-row")
 	for row in rows:
@@ -87,7 +87,7 @@ def get_glyphs_data(glyph_button):
 
 driver.implicitly_wait(2)
 
-driver.get('https://wowhead.com/cata/talent-calc/' + class_name)
+driver.get('https://wowhead.com/mop-classic/talent-calc/' + class_name)
 try:
     wait = WebDriverWait(driver, 10)
     accept_button = wait.until(EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler")))
@@ -106,7 +106,7 @@ webdriver.ActionChains(driver).send_keys(Keys.ESCAPE).perform()
 major_glyphs_data = get_glyphs_data(major_glyph_slot)
 webdriver.ActionChains(driver).send_keys(Keys.ESCAPE).perform()
 minor_glyphs_data = get_glyphs_data(minor_glyph_slot)
-        
+
 glyph_ids = get_glyphs_ids()
 driver.quit()
 

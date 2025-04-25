@@ -9,10 +9,10 @@ import (
 	"strings"
 	"syscall/js"
 
-	"github.com/wowsims/cata/sim"
-	"github.com/wowsims/cata/sim/core"
-	proto "github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/simsignals"
+	"github.com/wowsims/mop/sim"
+	"github.com/wowsims/mop/sim/core"
+	proto "github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/simsignals"
 	protojson "google.golang.org/protobuf/encoding/protojson"
 	googleProto "google.golang.org/protobuf/proto"
 )

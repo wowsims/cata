@@ -171,7 +171,7 @@ export class Encounter {
 
 	static defaultTargetProto(): TargetProto {
 		// Copy default raid target used as fallback for missing DB.
-		// https://github.com/wowsims/cata/blob/3570c4fcf1a4e2cd81926019d4a1b3182f613de1/sim/encounters/register_all.go#L24
+		// https://github.com/wowsims/mop/blob/3570c4fcf1a4e2cd81926019d4a1b3182f613de1/sim/encounters/register_all.go#L24
 		return TargetProto.create({
 			id: 31146,
 			name: 'Raid Target',

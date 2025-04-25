@@ -1,7 +1,7 @@
 package holy
 
 import (
-	_ "github.com/wowsims/cata/sim/common" // imported to get item effects included.
+	_ "github.com/wowsims/mop/sim/common" // imported to get item effects included.
 )
 
 func init() {

@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/wowsims/cata/tools/database/dbc"
+	"github.com/wowsims/mop/tools/database/dbc"
 )
 
 // Loading tables
@@ -78,7 +78,7 @@ func LoadRawItems(dbHelper *DBHelper, filter string) ([]dbc.Item, error) {
 			s.StatModifier_bonusStat as bonusStat,
 			s.StatPercentEditor as StatPercentEditor,
 			s.SocketType as SocketTypes,
-			s.Socket_match_enchantment_ID as SocketEnchantmentId,
+			s.Field_1_15_7_59706_036 as SocketEnchantmentId,
 			s.Flags_0 as Flags_0,
 			i.IconFileDataId as FDID,
 			COALESCE(itemset.Name_lang, '') as ItemSetName,
@@ -331,7 +331,7 @@ func LoadRawGems(dbHelper *DBHelper) ([]dbc.Gem, error) {
 		s.Flags_0
 		FROM ItemSparse s
 		JOIN Item i ON s.ID = i.ID
-		JOIN GemProperties gp ON s.Gem_properties = gp.ID
+		JOIN GemProperties gp ON s.Field_1_15_7_59706_035  = gp.ID
 		JOIN SpellItemEnchantment sie ON gp.Enchant_ID = sie.ID
 		WHERE i.ClassID = 3`
 	items, err := LoadRows(dbHelper.db, query, ScanGemTable)

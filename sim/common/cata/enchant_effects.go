@@ -1,12 +1,12 @@
-package cata
+package mop
 
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/common/shared"
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/common/shared"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 func init() {
@@ -49,7 +49,7 @@ func init() {
 	})
 
 	// Enchant: 4067, Spell: 74197 - Enchant Weapon - Avalanche
-	// http://elitistjerks.com/f79/t110302-enhsim_cataclysm/p4/#post1832162
+	// http://elitistjerks.com/f79/t110302-enhsim_mopclysm/p4/#post1832162
 	// Research indicates that the proc itself does not behave as game tables suggest <.<
 	core.NewEnchantEffect(4067, func(agent core.Agent) {
 		character := agent.GetCharacter()
