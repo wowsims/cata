@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/mop/sim/core"
 )
 
 func (mage *Mage) GetFlameStrikeConfig(spellId int32, isProc bool) core.SpellConfig {

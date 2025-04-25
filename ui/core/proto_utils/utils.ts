@@ -158,7 +158,7 @@ import { Stats } from './stats.js';
 
 export const NUM_SPECS = getEnumValues(Spec).length;
 
-export const raidSimIcon = '/cata/assets/img/raid_icon.png';
+export const raidSimIcon = '/mop/assets/img/raid_icon.png';
 export const raidSimLabel = 'Full Raid Sim';
 
 // Converts '1231321-12313123-0' to [40, 21, 0].

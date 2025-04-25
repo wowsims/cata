@@ -3,12 +3,11 @@ package mage
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/common/cata"
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
-//"github.com/wowsims/cata/sim/core/proto"
+//"github.com/wowsims/mop/sim/core/proto"
 
 func (mage *Mage) ApplyFireTalents() {
 	// Cooldowns/Special Implementations
@@ -346,7 +345,7 @@ func (mage *Mage) applyIgnite() {
 
 	igniteDamageMultiplier := []float64{0.0, 0.13, 0.26, 0.40}[mage.Talents.Ignite]
 
-	mage.Ignite = cata.RegisterIgniteEffect(&mage.Unit, cata.IgniteConfig{
+	mage.Ignite = mop.RegisterIgniteEffect(&mage.Unit, mop.IgniteConfig{
 		ActionID:       core.ActionID{SpellID: 12846},
 		ClassSpellMask: MageSpellIgnite,
 		DotAuraLabel:   "Ignite",

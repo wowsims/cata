@@ -3,10 +3,10 @@ package fury
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
-	"github.com/wowsims/cata/sim/warrior"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
+	"github.com/wowsims/mop/sim/warrior"
 )
 
 func (war *FuryWarrior) RegisterDeathWish() {

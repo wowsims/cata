@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 type SpellResult struct {

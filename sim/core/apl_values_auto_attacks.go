@@ -3,7 +3,7 @@ package core
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 type APLValueAutoTimeToNext struct {

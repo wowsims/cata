@@ -3,10 +3,10 @@ package warrior
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/common/cata"
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/common/mop"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 var ItemSetGladiatorsBattlegear = core.NewItemSet(core.ItemSet{
@@ -174,7 +174,7 @@ var ItemSetMoltenGiantBattleplate = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			character := agent.(WarriorAgent).GetWarrior()
 
-			cata.RegisterIgniteEffect(&character.Unit, cata.IgniteConfig{
+			mop.RegisterIgniteEffect(&character.Unit, mop.IgniteConfig{
 				ActionID:           core.ActionID{SpellID: 23922}.WithTag(3), // actual 99240
 				DisableCastMetrics: true,
 				DotAuraLabel:       "Combust",

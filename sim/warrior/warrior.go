@@ -3,10 +3,10 @@ package warrior
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/common/cata"
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/common/mop"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 var TalentTreeSizes = [3]int{20, 21, 20}
@@ -135,15 +135,15 @@ type Warrior struct {
 	ColossusSmashAuras     core.AuraArray
 
 	// Cached Gurthalak tentacles
-	gurthalakTentacles []*cata.TentacleOfTheOldOnesPet
+	gurthalakTentacles []*mop.TentacleOfTheOldOnesPet
 }
 
-func (warrior *Warrior) GetTentacles() []*cata.TentacleOfTheOldOnesPet {
+func (warrior *Warrior) GetTentacles() []*mop.TentacleOfTheOldOnesPet {
 	return warrior.gurthalakTentacles
 }
 
-func (warrior *Warrior) NewTentacleOfTheOldOnesPet() *cata.TentacleOfTheOldOnesPet {
-	pet := cata.NewTentacleOfTheOldOnesPet(&warrior.Character)
+func (warrior *Warrior) NewTentacleOfTheOldOnesPet() *mop.TentacleOfTheOldOnesPet {
+	pet := mop.NewTentacleOfTheOldOnesPet(&warrior.Character)
 	warrior.AddPet(pet)
 	return pet
 }
@@ -211,7 +211,7 @@ func NewWarrior(character *core.Character, talents string, inputs WarriorInputs)
 	// Dodge no longer granted from agility
 	warrior.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	warrior.AddStat(stats.ParryRating, -warrior.GetBaseStats()[stats.Strength]*0.27) // Does not apply to base Strength
-	warrior.AddStatDependency(stats.Strength, stats.ParryRating, 0.27)               // Change from block to pary in cata (4.2 Changed from 25->27 percent)
+	warrior.AddStatDependency(stats.Strength, stats.ParryRating, 0.27)               // Change from block to pary in mop (4.2 Changed from 25->27 percent)
 	warrior.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	// Base dodge unaffected by Diminishing Returns
@@ -220,7 +220,7 @@ func NewWarrior(character *core.Character, talents string, inputs WarriorInputs)
 	warrior.CriticalBlockChance = append(warrior.CriticalBlockChance, 0.0, 0.0)
 
 	if mh, oh := warrior.MainHand(), warrior.OffHand(); mh.Name == "Gurthalak, Voice of the Deeps" || oh.Name == "Gurthalak, Voice of the Deeps" {
-		warrior.gurthalakTentacles = make([]*cata.TentacleOfTheOldOnesPet, 10)
+		warrior.gurthalakTentacles = make([]*mop.TentacleOfTheOldOnesPet, 10)
 
 		for i := 0; i < 10; i++ {
 			warrior.gurthalakTentacles[i] = warrior.NewTentacleOfTheOldOnesPet()

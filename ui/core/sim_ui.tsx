@@ -352,7 +352,7 @@ export abstract class SimUI extends Component {
 			const hash = this.hashCode(errorStr);
 			const link = this.toLink();
 			const rngSeed = this.sim.getLastUsedRngSeed();
-			fetch('https://api.github.com/search/issues?q=is:issue+is:open+repo:wowsims/cata+' + hash)
+			fetch('https://api.github.com/search/issues?q=is:issue+is:open+repo:wowsims/mop+' + hash)
 				.then(resp => {
 					resp.json().then(issues => {
 						if (issues.total_count > 0) {

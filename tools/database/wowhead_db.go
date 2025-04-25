@@ -7,11 +7,11 @@ import (
 	"strings"
 
 	"github.com/tailscale/hujson"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
-// Example db input file: https://nether.wowhead.com/cata/data/gear-planner?dv=100
+// Example db input file: https://nether.wowhead.com/mop-classic/data/gear-planner?dv=100
 
 func ParseWowheadDB(dbContents string) WowheadDatabase {
 	var wowheadDB WowheadDatabase
@@ -39,7 +39,7 @@ func ParseWowheadDB(dbContents string) WowheadDatabase {
 
 		commaIdx := strings.Index(dbPart, ",")
 		dbContents := dbPart[commaIdx+1:]
-		if dbName == "wow.gearPlanner.cata.item" {
+		if dbName == "wow.gearPlanner.mop.item" {
 			standardized, err := hujson.Standardize([]byte(dbContents)) // Removes invalid JSON, such as trailing commas
 			if err != nil {
 				log.Fatalf("Failed to standardize json %s\n\n%s\n\n%s", err, dbContents[0:30], dbContents[len(dbContents)-30:])
@@ -51,7 +51,7 @@ func ParseWowheadDB(dbContents string) WowheadDatabase {
 			}
 		}
 
-		if dbName == "wow.gearPlanner.cata.randomEnchant" {
+		if dbName == "wow.gearPlanner.mop.randomEnchant" {
 			standardized, err := hujson.Standardize([]byte(dbContents)) // Removes invalid JSON, such as trailing commas
 			if err != nil {
 				log.Fatalf("Failed to standardize json %s\n\n%s\n\n%s", err, dbContents[0:30], dbContents[len(dbContents)-30:])

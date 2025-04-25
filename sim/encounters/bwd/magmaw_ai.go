@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
-	"github.com/wowsims/cata/sim/encounters/default_ai"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
+	"github.com/wowsims/mop/sim/encounters/default_ai"
 )
 
 func createMagmawPreset(bossPrefix string, raidSize int, isHeroic bool,

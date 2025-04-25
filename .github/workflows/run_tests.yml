@@ -38,7 +38,7 @@ jobs:
 
             - name: Build 🔧
               run: |
-                  make dist/cata/.dirstamp
+                  make dist/mop/.dirstamp
 
             - name: Test
               run: |

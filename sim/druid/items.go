@@ -3,9 +3,9 @@ package druid
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/common/cata"
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/common/mop"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 // T11 Feral
@@ -110,7 +110,7 @@ var ItemSetObsidianArborweaveBattlegarb = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			// TODO: Verify behavior after PTR testing
 			druid := agent.(DruidAgent).GetDruid()
-			cata.RegisterIgniteEffect(&druid.Unit, cata.IgniteConfig{
+			mop.RegisterIgniteEffect(&druid.Unit, mop.IgniteConfig{
 				ActionID:         core.ActionID{SpellID: 99002},
 				DotAuraLabel:     "Fiery Claws",
 				IncludeAuraDelay: true,

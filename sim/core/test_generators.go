@@ -5,7 +5,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/proto"
 	googleProto "google.golang.org/protobuf/proto"
 )
 

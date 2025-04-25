@@ -3,7 +3,7 @@ package death_knight
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/mop/sim/core"
 )
 
 func (dk *DeathKnight) registerBloodTapSpell() {

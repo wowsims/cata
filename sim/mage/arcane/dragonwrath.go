@@ -1,10 +1,9 @@
 package arcane
 
 import (
-	"github.com/wowsims/cata/sim/common/cata"
-	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func init() {
-	cata.CreateDTRClassConfig(proto.Spec_SpecArcaneMage, 1.0/12)
+	mop.CreateDTRClassConfig(proto.Spec_SpecArcaneMage, 1.0/12)
 }

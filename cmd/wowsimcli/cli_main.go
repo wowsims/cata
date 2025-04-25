@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/wowsims/cata/cmd/wowsimcli/cmd"
-	"github.com/wowsims/cata/sim"
+	"github.com/wowsims/mop/cmd/wowsimcli/cmd"
+	"github.com/wowsims/mop/sim"
 )
 
 func init() {

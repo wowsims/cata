@@ -3,7 +3,7 @@ package feral
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/mop/sim/core"
 )
 
 func (cat *FeralDruid) calcExpectedSwipeDamage(sim *core.Simulation) (float64, float64) {

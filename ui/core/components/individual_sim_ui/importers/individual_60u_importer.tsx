@@ -13,7 +13,7 @@ export class Individual60UImporter<SpecType extends Spec> extends IndividualImpo
 			<>
 				<p>
 					Import settings from{' '}
-					<a href="https://sixtyupgrades.com/cata" target="_blank">
+					<a href="https://sixtyupgrades.com/mop" target="_blank">
 						Sixty Upgrades
 					</a>
 					.

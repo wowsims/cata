@@ -5,9 +5,9 @@ import (
 	"math"
 	"time"
 
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 func addBaleroc(raidPrefix string) {
@@ -152,7 +152,7 @@ func (ai *BalerocAI) randomizeAutoTiming(sim *core.Simulation) {
 	// synchronizing with damage events.
 	swingDur := ai.Target.AutoAttacks.MainhandSwingSpeed()
 	randomAutoOffset := core.DurationFromSeconds(sim.RandomFloat("Melee Timing") * swingDur.Seconds() / 2)
-	ai.Target.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime - swingDur + randomAutoOffset, true)
+	ai.Target.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime-swingDur+randomAutoOffset, true)
 }
 
 func (ai *BalerocAI) Reset(sim *core.Simulation) {
@@ -162,7 +162,7 @@ func (ai *BalerocAI) Reset(sim *core.Simulation) {
 
 	// Randomize melee and cast timings to prevent fake APL-Haste couplings.
 	ai.randomizeAutoTiming(sim)
-	ai.Target.ExtendGCDUntil(sim, sim.CurrentTime + core.DurationFromSeconds(sim.RandomFloat("Specials Timing") * core.BossGCD.Seconds()))
+	ai.Target.ExtendGCDUntil(sim, sim.CurrentTime+core.DurationFromSeconds(sim.RandomFloat("Specials Timing")*core.BossGCD.Seconds()))
 }
 
 func (ai *BalerocAI) swapTargets(sim *core.Simulation, newTankTarget *core.Unit) {
@@ -203,7 +203,7 @@ func (ai *BalerocAI) registerBlazeOfGlory() {
 		hpDepByStackCount := map[int32]*stats.StatDependency{}
 
 		for i := int32(1); i <= maxPossibleStacks; i++ {
-			hpDepByStackCount[i] = tankUnit.NewDynamicMultiplyStat(stats.Health, 1.0 + 0.2*float64(i))
+			hpDepByStackCount[i] = tankUnit.NewDynamicMultiplyStat(stats.Health, 1.0+0.2*float64(i))
 		}
 
 		// Blaze of Glory applications also heal the player, just like
@@ -275,13 +275,13 @@ func (ai *BalerocAI) registerBlades() {
 
 	sharedBladeCastHandler := func(sim *core.Simulation) {
 		// First, schedule a swing timer reset to fire on cast completion.
-		ai.Target.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime + bladeCastTime, true)
+		ai.Target.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+bladeCastTime, true)
 
 		// Then delay the off-hand until the aura expires.
 		swingDur := ai.Target.AutoAttacks.MainhandSwingSpeed()
 		first2hSwing := ai.Target.AutoAttacks.NextAttackAt()
 		num2hSwings := bladeDuration / swingDur
-		ai.Target.AutoAttacks.SetOffhandSwingAt(first2hSwing + num2hSwings * swingDur + swingDur / 2)
+		ai.Target.AutoAttacks.SetOffhandSwingAt(first2hSwing + num2hSwings*swingDur + swingDur/2)
 
 		// Finally, reset the CD on Blaze of Glory at start of cast.
 		ai.blazeOfGlory.CD.Set(sim.CurrentTime + ai.blazeOfGlory.CD.Duration)
@@ -417,7 +417,7 @@ func (ai *BalerocAI) registerBlades() {
 		DamageMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, tankTarget *core.Unit, spell *core.Spell) {
-			result := spell.CalcAndDealDamage(sim, tankTarget, max(0.9 * tankTarget.MaxHealth(), 250000), spell.OutcomeEnemyMeleeWhite)
+			result := spell.CalcAndDealDamage(sim, tankTarget, max(0.9*tankTarget.MaxHealth(), 250000), spell.OutcomeEnemyMeleeWhite)
 
 			if result.Landed() {
 				debuffAura := tankTarget.GetAuraByID(decimatingStrikeActionID)
@@ -459,15 +459,15 @@ func (ai *BalerocAI) registerVitalSpark() {
 
 		var avgGain float64
 
-		if sim.CurrentTime <= vitalFlameDuration * 2 {
+		if sim.CurrentTime <= vitalFlameDuration*2 {
 			avgGain = ai.initialHealerStackGain * 2
-		} else if sim.CurrentTime <= vitalFlameDuration * 4 {
+		} else if sim.CurrentTime <= vitalFlameDuration*4 {
 			avgGain = ai.initialHealerStackGain
 		} else {
 			avgGain = ai.steadyHealerStackGain
 		}
 
-		return int32(math.Round(sim.Roll(avgGain - 1, avgGain + 1)))
+		return int32(math.Round(sim.Roll(avgGain-1, avgGain+1)))
 	}
 
 	vitalFlameConfig := core.Aura{
@@ -495,7 +495,7 @@ func (ai *BalerocAI) registerVitalSpark() {
 
 				OnAction: func(sim *core.Simulation) {
 					aura.Refresh(sim)
-					aura.SetStacks(sim, aura.GetStacks() + calcStackGain(sim))
+					aura.SetStacks(sim, aura.GetStacks()+calcStackGain(sim))
 				},
 			})
 		},

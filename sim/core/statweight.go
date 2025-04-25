@@ -6,9 +6,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/simsignals"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/simsignals"
+	"github.com/wowsims/mop/sim/core/stats"
 	googleProto "google.golang.org/protobuf/proto"
 )
 

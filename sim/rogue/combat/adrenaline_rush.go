@@ -3,9 +3,9 @@ package combat
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/rogue"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/rogue"
 )
 
 var AdrenalineRushActionID = core.ActionID{SpellID: 13750}

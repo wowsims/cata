@@ -210,7 +210,7 @@ export class IndividualWowheadGearPlannerExporter<SpecType extends Spec> extends
 
 		const classStr = player.getPlayerClass().friendlyName.replaceAll(/\s/g, '-').toLowerCase();
 		const raceStr = raceNames.get(player.getRace())!.replaceAll(/\s/g, '-').toLowerCase();
-		const url = `https://www.wowhead.com/cata/gear-planner/${classStr}/${raceStr}/`;
+		const url = `https://www.wowhead.com/mop-classic/gear-planner/${classStr}/${raceStr}/`;
 
 		const addGlyph = (glyphItemId: number): number => {
 			const spellId = this.simUI.sim.db.glyphItemToSpellId(glyphItemId);

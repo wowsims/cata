@@ -84,7 +84,7 @@ export const buildWowheadTooltipDataset = async (options: WowheadTooltipItemPara
 	const lang = getLanguageCode();
 	const params = new URLSearchParams();
 	const langPrefix = lang ? lang + '.' : '';
-	params.set('domain', `${langPrefix}cata`);
+	params.set('domain', `${langPrefix}mop-classic`);
 	params.set('dataEnv', String(WOWHEAD_EXPANSION_ENV));
 
 	params.set('lvl', String(options.level || CHARACTER_LEVEL));

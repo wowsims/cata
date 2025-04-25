@@ -1,11 +1,12 @@
 package core
 
 import (
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 // Could be in constants.go, but they won't be used anywhere else
 // C values are divided by 100 so that we are working with 1% = 0.01
+// TODO: UPDATE FOR MOP
 // Reference for Cata values: https://web.archive.org/web/20130127084642/http://elitistjerks.com/f15/t29453-combat_ratings_level_85_cataclysm/
 const Diminish_k_Druid = 0.972
 const Diminish_k_Nondruid = 0.956

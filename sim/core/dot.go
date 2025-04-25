@@ -113,7 +113,7 @@ func (dot *Dot) recomputeAuraDuration(sim *Simulation) {
 
 	// we a have running dot tick
 	// the next tick never gets clipped and is added onto the dot's time for hasted dots
-	// see: https://github.com/wowsims/cata/issues/50
+	// see: https://github.com/wowsims/mop/issues/50
 	if dot.IsActive() {
 		dot.Duration += nextTick
 		dot.remainingTicks++

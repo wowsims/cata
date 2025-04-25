@@ -3,7 +3,7 @@ package warrior
 import (
 	"math"
 
-	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/mop/sim/core"
 )
 
 func (warrior *Warrior) RegisterExecuteSpell() {

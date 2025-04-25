@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 // Log used for fitting damage parameters: https://classic.warcraftlogs.com/reports/NTgLfqc2atyFh8BX#fight=26&type=damage-taken&target=325&view=events&pins=0%24Off%24%23244F4B%24auras-gained%241%240.0.0.Any%240.0.0.Any%24true%240.0.0.Any%24true%2479330%2463%5E2%24Off%24%23909049%24auras-gained%241%240.0.0.Any%240.0.0.Any%24true%240.0.0.Any%24true%241160%24true%24true%2495%24and%24auras-gained%241%240.0.0.Any%240.0.0.Any%24true%240.0.0.Any%24true%246343%24true%24true%2495

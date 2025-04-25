@@ -93,7 +93,7 @@ export const P4_EP_PRESET = PresetUtils.makePresetEpWeights(
 );
 
 // Default talents. Uses the wowhead calculator format, make the talents on
-// https://wowhead.com/cata/talent-calc and copy the numbers in the url.
+// https://wowhead.com/mop-classic/talent-calc and copy the numbers in the url.
 export const DefaultTalents = {
 	name: 'Default',
 	data: SavedTalents.create({

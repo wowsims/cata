@@ -1,11 +1,11 @@
 package mage
 
 import (
-	//"github.com/wowsims/cata/sim/core/proto"
+	//"github.com/wowsims/mop/sim/core/proto"
 
 	"time"
 
-	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/mop/sim/core"
 )
 
 func (mage *Mage) ApplyArcaneTalents() {

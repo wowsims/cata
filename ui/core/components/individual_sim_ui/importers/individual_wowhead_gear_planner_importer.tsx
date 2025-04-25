@@ -194,10 +194,10 @@ function parseTalentString(talentString: string): { talents: string; glyphs: num
 }
 
 function parseWowheadGearLink(link: string): any {
-	// Extract the part after 'cata/gear-planner/'
-	const match = link.match(/cata\/gear-planner\/(.+)/);
+	// Extract the part after 'mop-classic/gear-planner/'
+	const match = link.match(/mop-classic\/gear-planner\/(.+)/);
 	if (!match) {
-		throw new Error(`Invalid WCL URL ${link}, must look like "https://www.wowhead.com/cata/gear-planner/CLASS/RACE/XXXX"`);
+		throw new Error(`Invalid WCL URL ${link}, must look like "https://www.wowhead.com/mop-classic/gear-planner/CLASS/RACE/XXXX"`);
 	}
 	const e = match[1];
 	return readHash(e);
@@ -212,7 +212,7 @@ export class IndividualWowheadGearPlannerImporter<SpecType extends Spec> extends
 			<>
 				<p>
 					Import settings from{' '}
-					<a href="https://www.wowhead.com/cata/gear-planner" target="_blank">
+					<a href="https://www.wowhead.com/mop-classic/gear-planner" target="_blank">
 						Wowhead Gear Planner
 					</a>
 					.
@@ -243,9 +243,9 @@ export class IndividualWowheadGearPlannerImporter<SpecType extends Spec> extends
 	}
 
 	async onImport(url: string) {
-		const match = url.match(/www\.wowhead\.com\/cata\/gear-planner\/([a-z\-]+)\/([a-z\-]+)\/([a-zA-Z0-9_\-]+)/);
+		const match = url.match(/www\.wowhead\.com\/mop-classic\/gear-planner\/([a-z\-]+)\/([a-z\-]+)\/([a-zA-Z0-9_\-]+)/);
 		if (!match) {
-			throw new Error(`Invalid WCL URL ${url}, must look like "https://www.wowhead.com/cata/gear-planner/CLASS/RACE/XXXX"`);
+			throw new Error(`Invalid WCL URL ${url}, must look like "https://www.wowhead.com/mop-classic/gear-planner/CLASS/RACE/XXXX"`);
 		}
 		console.log(url);
 

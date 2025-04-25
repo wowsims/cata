@@ -1,13 +1,13 @@
-package cata
+package mop
 
 import (
 	"fmt"
 	"math"
 	"time"
 
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 type ItemVersion int32
@@ -1098,7 +1098,7 @@ func init() {
 		// (Proc chance: 15%, 55s cooldown)
 		// TODO: Verify if the aura is cancelled when swapping druid forms
 		// Video from 4.3.0 showing that it doesn't: https://www.youtube.com/watch?v=A6PYbDRaH6E
-		// Comment from 4.3.3 stating that it does: https://www.wowhead.com/cata/item=77194/kiril-fury-of-beasts#comments:id=1639024
+		// Comment from 4.3.3 stating that it does: https://www.wowhead.com/mop-classic/item=77194/kiril-fury-of-beasts#comments:id=1639024
 		kirilItemID := []int32{78482, 77194, 78473}[version]
 		core.NewItemEffect(kirilItemID, func(agent core.Agent) {
 			character := agent.GetCharacter()

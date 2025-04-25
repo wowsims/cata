@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/proto"
 	"google.golang.org/protobuf/encoding/prototext"
 )
 
@@ -34,7 +34,7 @@ func readExpectedProtoVersion(fileName string, allowMissingFile bool) (int32, er
 func TestProtoVersioning(t *testing.T) {
 	// First run the "buf breaking" utility to determine whether any breaking proto changes have been made compared to the
 	// remote master.
-	cmd := exec.Command("npx", "buf", "breaking", "--against", "https://github.com/wowsims/cata.git#branch=master,subdir=proto")
+	cmd := exec.Command("npx", "buf", "breaking", "--against", "https://github.com/wowsims/mop.git#branch=master,subdir=proto")
 	cmd.Dir = "../../"
 	out, err := cmd.CombinedOutput()
 
