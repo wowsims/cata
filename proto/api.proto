@@ -432,8 +432,7 @@ message APLValidation {
 	string validation = 2;
 }
 message APLActionStats {
-	repeated string warnings = 1 [deprecated=true];
-	repeated APLValidation validations = 2;
+	repeated APLValidation validations = 1;
 }
 message UUIDValidations {
 	UUID uuid = 1;

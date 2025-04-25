@@ -80,14 +80,9 @@ message ArcaneMage {
 message FireMage {
 	message Rotation {
 		// Minimum Combustion threshold to cast Combustion at during lust
-		int32 combust_threshold = 4;
-		double combust_last_moment_lust_percentage = 5;
-		double combust_no_lust_percentage = 6;
-
-		// deprecated fields
-		int32 ignite_combust_threshold = 1 [deprecated=true];
-		double ignite_last_moment_lust_percentage = 2 [deprecated=true];
-		double ignite_no_lust_percentage = 3 [deprecated=true];
+		int32 combust_threshold = 1;
+		double combust_last_moment_lust_percentage = 2;
+		double combust_no_lust_percentage = 3;
 	}
 
 	message Options {

@@ -70,9 +70,7 @@ message WarlockOptions {
 
 	Summon summon = 1;
 	bool detonate_seed = 2;
-	int32 prepull_mastery = 3; // Used for static Mastery Item Swap sets
-	int32 prepull_post_snapshot_mana = 4 [deprecated=true]; // Use Item Swap sets instead
-	bool use_item_swap_bonus_stats = 5;
+	bool use_item_swap_bonus_stats = 3;
 }
 
 message AfflictionWarlock {

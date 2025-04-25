@@ -199,14 +199,5 @@ export class Encounter {
 		if (!(proto.apiVersion < CURRENT_API_VERSION)) {
 			return;
 		}
-		// First migrate the stats arrays embedded in each target.
-		proto.targets.forEach(target => {
-			target.stats = Stats.migrateStatsArray(target.stats, proto.apiVersion, this.defaultTargetProto().stats);
-		});
-
-		// Any other required data migration code should go here.
-
-		// Flag the version as up-to-date once all migrations are done.
-		proto.apiVersion = CURRENT_API_VERSION;
 	}
 }
