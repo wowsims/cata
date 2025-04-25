@@ -46,7 +46,6 @@ import {
 	TinkerHands,
 	UnitReference,
 	UnitStats,
-	WeaponType,
 } from './proto/common';
 import { SimDatabase } from './proto/db';
 import {
@@ -63,7 +62,6 @@ import { Database } from './proto_utils/database';
 import { EquippedItem, getWeaponDPS, ReforgeData } from './proto_utils/equipped_item';
 import { Gear, ItemSwapGear } from './proto_utils/gear';
 import { gemMatchesSocket, isUnrestrictedGem } from './proto_utils/gems';
-import { damageMax, damageMin, getStats } from './proto_utils/items';
 import { StatCap, Stats } from './proto_utils/stats';
 import {
 	AL_CATEGORY_HARD_MODE,
@@ -91,7 +89,7 @@ import { Raid } from './raid';
 import { Sim } from './sim';
 import { playerTalentStringToProto } from './talents/factory';
 import { EventID, TypedEvent } from './typed_event';
-import { findInputItemForEnum, omitDeep, randPropPoints, stringComparator, sum } from './utils';
+import { findInputItemForEnum, omitDeep, stringComparator, sum } from './utils';
 import { WorkerProgressCallback } from './worker_pool';
 
 export interface AuraStats {
@@ -1161,29 +1159,12 @@ export class Player<SpecType extends Spec> {
 				itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatRangedDps, weaponDps);
 			}
 		}
-		// For items that can be upgraded, we calculate EP based on the highest possible item level
-		if (item.maxIlvl > 0) {
-			const scaledItem = Item.clone(item);
-			itemStats = new Stats(getStats(item, item.maxIlvl));
-			if (scaledItem.weaponType !== WeaponType.WeaponTypeUnknown) {
-				scaledItem.weaponDamageMax = damageMax(item, item.maxIlvl);
-				scaledItem.weaponDamageMin = damageMin(item, item.maxIlvl);
-			}
-			const weaponDps = getWeaponDPS(scaledItem);
-			if (slot == ItemSlot.ItemSlotMainHand) {
-				itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatMainHandDps, weaponDps);
-			} else if (slot == ItemSlot.ItemSlotOffHand) {
-				itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatOffHandDps, weaponDps);
-			} else if (slot == ItemSlot.ItemSlotRanged) {
-				itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatRangedDps, weaponDps);
-			}
-		}
 
 		// For random suffix items, use the suffix option with the highest EP for the purposes of ranking items in the picker.
 		let maxSuffixEP = 0;
 		if (item.randomSuffixOptions.length > 0) {
 			const suffixEPs = item.randomSuffixOptions.map(id => this.computeRandomSuffixEP(this.sim.db.getRandomSuffixById(id)! || 0));
-			maxSuffixEP = (Math.max(...suffixEPs) * randPropPoints(item.ilvl, item)) / 10000;
+			maxSuffixEP = (Math.max(...suffixEPs) * item.randPropPoints) / 10000;
 		}
 
 		let ep = itemStats.computeEP(this.epWeights) + maxSuffixEP;

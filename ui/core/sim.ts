@@ -33,7 +33,7 @@ import {
 	UnitReference_Type as UnitType,
 	WeaponType,
 } from './proto/common.js';
-import { Consumable, ItemArmorTotal, QualityAllocations, SimDatabase } from './proto/db';
+import { Consumable,  SimDatabase } from './proto/db';
 import { SpellEffect } from './proto/spell';
 import { DatabaseFilters, RaidFilterOption, SimSettings as SimSettingsProto, SourceFilterOption } from './proto/ui.js';
 import { Database } from './proto_utils/database.js';
@@ -248,24 +248,6 @@ export class Sim {
 
 				// Include consumables in the player db
 				const pdb = player.database!;
-				pdb.armorDb = this.db.getArmorDb();
-				pdb.weaponDamageDb = this.db.getWeaponDamageDb();
-				pdb.randomPropPoints = []
-				pdb.armorTotalValue = []
-				gear.asArray().forEach(gear => {
-					if (!pdb.randomPropPoints[gear?.item.ilvl ?? 0]) {
-						const randomPropPoints = this.db.getQualityAllocByIlvl(gear?.item.ilvl ?? 0)
-						if (randomPropPoints) {
-							pdb.randomPropPoints[gear?.item.ilvl ?? 0] = randomPropPoints!;
-						}
-					}
-					if (!pdb.armorTotalValue[gear?.item.ilvl ?? 0]) {
-						const armorTotalValue = this.db.getArmorTotalValueByIlvl(gear?.item.ilvl ?? 0)
-						if (armorTotalValue) {
-							pdb.armorTotalValue[gear?.item.ilvl ?? 0] = armorTotalValue!;
-						}
-					}
-				});
 
 				type ConsumableIdKey =
 					| 'flaskId'
