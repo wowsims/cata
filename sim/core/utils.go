@@ -16,6 +16,37 @@ import (
 func DurationFromSeconds(numSeconds float64) time.Duration {
 	return time.Duration(float64(time.Second) * numSeconds)
 }
+func MapToFixedStatsArray(statsArr map[int32]float64) []float64 {
+	arr := make([]float64, stats.UnitStatsLen)
+	for k, v := range statsArr {
+		if int(k) >= stats.UnitStatsLen || k < 0 {
+			continue // skip out-of-range keys
+		}
+		arr[k] = v
+	}
+	return arr
+}
+
+func FirstMapEntry[K comparable, V any](m map[K]V) (K, V, bool) {
+	for k, v := range m {
+		return k, v, true
+	}
+	var zeroK K
+	var zeroV V
+	return zeroK, zeroV, false
+}
+
+func LastMapEntry[K comparable, V any](m map[K]V) (K, V, bool) {
+	var lastK K
+	var lastV V
+	found := false
+	for k, v := range m {
+		lastK = k
+		lastV = v
+		found = true
+	}
+	return lastK, lastV, found
+}
 
 func StringFromStatTypes(statTypes []stats.Stat) string {
 	statNames := MapSlice(statTypes, func(statType stats.Stat) string {
@@ -32,7 +63,24 @@ func StringFromActionIDs(actionIDs []ActionID) string {
 
 	return strings.Join(names, ", ")
 }
-
+func (unit *Unit) ExecuteResourceGain(sim *Simulation, resource proto.ResourceType, amount float64, metrics *ResourceMetrics) {
+	switch {
+	case resource == proto.ResourceType_ResourceTypeMana && amount > 0:
+		unit.AddMana(sim, amount, metrics)
+	case resource == proto.ResourceType_ResourceTypeMana && amount < 0:
+		unit.SpendMana(sim, -amount, metrics)
+	case resource == proto.ResourceType_ResourceTypeHealth && amount > 0:
+		unit.GainHealth(sim, amount, metrics)
+	case resource == proto.ResourceType_ResourceTypeHealth && amount < 0:
+		unit.RemoveHealth(sim, -amount)
+	case resource == proto.ResourceType_ResourceTypeRage && amount < 0:
+		unit.SpendRage(sim, -amount/10, metrics)
+	case resource == proto.ResourceType_ResourceTypeRage && amount > 0:
+		unit.AddRage(sim, amount/10, metrics)
+	default:
+		panic("Unsupported Resource Type in ExecuteResourceGain")
+	}
+}
 func GetTristateValueInt32(effect proto.TristateEffect, regularValue int32, impValue int32) int32 {
 	if effect == proto.TristateEffect_TristateEffectRegular {
 		return regularValue

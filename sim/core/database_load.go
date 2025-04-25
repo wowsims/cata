@@ -1,7 +1,7 @@
-// Only include this file in the build when we specify the 'with_db' tag.
-// Without the tag, the database will start out completely empty.
 //go:build with_db
 
+// Only include this file in the build when we specify the 'with_db' tag.
+// Without the tag, the database will start out completely empty.
 package core
 
 import (
@@ -19,6 +19,8 @@ func init() {
 		Gems:           make([]*proto.SimGem, len(db.Gems)),
 		ReforgeStats:   make([]*proto.ReforgeStat, len(db.ReforgeStats)),
 		RandomSuffixes: make([]*proto.ItemRandomSuffix, len(db.RandomSuffixes)),
+		Consumables:    make([]*proto.Consumable, len(db.Consumables)),
+		SpellEffects:   make([]*proto.SpellEffect, len(db.SpellEffects)),
 	}
 
 	for i, item := range db.Items {
@@ -30,15 +32,12 @@ func init() {
 			WeaponType:       item.WeaponType,
 			HandType:         item.HandType,
 			RangedWeaponType: item.RangedWeaponType,
-			Stats:            item.Stats,
 			GemSockets:       item.GemSockets,
 			SocketBonus:      item.SocketBonus,
-			WeaponDamageMin:  item.WeaponDamageMin,
-			WeaponDamageMax:  item.WeaponDamageMax,
 			WeaponSpeed:      item.WeaponSpeed,
 			SetName:          item.SetName,
 			SetId:            item.SetId,
-			RandPropPoints:   item.RandPropPoints,
+			ScalingOptions:   item.ScalingOptions,
 		}
 	}
 
@@ -73,6 +72,14 @@ func init() {
 			ToStat:     reforgeStat.ToStat,
 			Multiplier: reforgeStat.Multiplier,
 		}
+	}
+
+	for i, consumable := range db.Consumables {
+		simDB.Consumables[i] = consumable
+	}
+
+	for i, effect := range db.SpellEffects {
+		simDB.SpellEffects[i] = effect
 	}
 
 	addToDatabase(simDB)

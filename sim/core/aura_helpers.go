@@ -235,6 +235,18 @@ func (aura *StatBuffAura) CanProc(sim *Simulation) bool {
 	return !aura.IsSwapped && ((aura.CustomProcCondition == nil) || aura.CustomProcCondition(sim, aura.Aura))
 }
 
+func (aura *StatBuffAura) InferCDType() CooldownType {
+	cdType := CooldownTypeUnknown
+
+	if aura.BuffsMatchingStat([]stats.Stat{stats.Armor, stats.BlockPercent, stats.DodgeRating, stats.ParryRating, stats.Health, stats.ArcaneResistance, stats.FireResistance, stats.FrostResistance, stats.NatureResistance, stats.ShadowResistance}) {
+		cdType |= CooldownTypeSurvival
+	} else {
+		cdType |= CooldownTypeDPS
+	}
+
+	return cdType
+}
+
 type StackingStatAura struct {
 	Aura          Aura
 	BonusPerStack stats.Stats

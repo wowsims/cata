@@ -71,6 +71,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
+		consumables: Presets.DefaultConsumables,
 		// Default talents.
 		talents: Presets.TalentsTotemDuration.data,
 		// Default spec-specific settings.
@@ -109,12 +110,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			ElementalInputs.InThunderstormRange,
-			OtherInputs.InputDelay,
-			OtherInputs.TankAssignment,
-			OtherInputs.DistanceFromTarget,
-		],
+		inputs: [ElementalInputs.InThunderstormRange, OtherInputs.InputDelay, OtherInputs.TankAssignment, OtherInputs.DistanceFromTarget],
 	},
 	itemSwapSlots: [
 		ItemSlot.ItemSlotHead,
@@ -159,6 +155,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 			talents: Presets.TalentsTotemDuration.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
+			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceDraenei,

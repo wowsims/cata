@@ -1,5 +1,6 @@
 import { CHARACTER_LEVEL } from '../constants/mechanics.js';
 import {
+	ConsumableType,
 	EquipmentSpec,
 	GemColor,
 	ItemRandomSuffix,
@@ -9,8 +10,10 @@ import {
 	PresetEncounter,
 	PresetTarget,
 	ReforgeStat,
-	SimDatabase,
+	Stat,
 } from '../proto/common.js';
+import { Consumable, SimDatabase } from '../proto/db';
+import { SpellEffect } from '../proto/spell';
 import { GlyphID, IconData, UIDatabase, UIEnchant as Enchant, UIGem as Gem, UIItem as Item, UINPC as Npc, UIZone as Zone } from '../proto/ui.js';
 import { distinct } from '../utils.js';
 import { WOWHEAD_EXPANSION_ENV } from '../wowhead';
@@ -28,22 +31,37 @@ const READ_JSON = true;
 
 export class Database {
 	private static loadPromise: Promise<Database> | null = null;
-	static get(): Promise<Database> {
-		if (Database.loadPromise == null) {
-			if (READ_JSON) {
-				Database.loadPromise = fetch(dbUrlJson)
-					.then(response => response.json())
-					.then(json => new Database(UIDatabase.fromJson(json)));
-			} else {
-				Database.loadPromise = fetch(dbUrlBin)
-					.then(response => response.arrayBuffer())
-					.then(buffer => new Database(UIDatabase.fromBinary(new Uint8Array(buffer))));
-			}
+	private static instance: Database | null = null;
+
+	static async get(): Promise<Database> {
+		if (!Database.loadPromise) {
+			Database.loadPromise = (async () => {
+				let dbData: UIDatabase;
+				if (READ_JSON) {
+					const resp = await fetch(dbUrlJson);
+					const json = await resp.json();
+					dbData = UIDatabase.fromJson(json);
+				} else {
+					const buf = await fetch(dbUrlBin).then(r => r.arrayBuffer());
+					const bytes = new Uint8Array(buf);
+					dbData = UIDatabase.fromBinary(bytes);
+				}
+				const db = new Database(dbData);
+				Database.instance = db;
+				return db;
+			})();
 		}
 		return Database.loadPromise;
 	}
 
-	static getLeftovers(): Promise<UIDatabase> {
+	static getSync(): Database {
+		if (!Database.instance) {
+			throw new Error('Database not yet loaded; call `await Database.get()` before using getSync()');
+		}
+		return Database.instance;
+	}
+
+	static async getLeftovers(): Promise<UIDatabase> {
 		if (READ_JSON) {
 			return fetch(leftoversUrlJson)
 				.then(response => response.json())
@@ -83,6 +101,9 @@ export class Database {
 	private readonly itemIcons: Record<number, Promise<IconData>> = {};
 	private readonly spellIcons: Record<number, Promise<IconData>> = {};
 	private readonly glyphIds: Array<GlyphID> = [];
+	private readonly consumables = new Map<number, Consumable>();
+	private readonly spellEffects = new Map<number, SpellEffect>();
+
 	private loadedLeftovers = false;
 
 	private constructor(db: UIDatabase) {
@@ -136,6 +157,7 @@ export class Database {
 		db.itemIcons.forEach(data => (this.itemIcons[data.id] = Promise.resolve(data)));
 		db.spellIcons.forEach(data => (this.spellIcons[data.id] = Promise.resolve(data)));
 		db.glyphIds.forEach(id => this.glyphIds.push(id));
+		db.consumables.forEach(consumable => this.consumables.set(consumable.id, consumable));
 	}
 
 	getAllItems(): Array<Item> {
@@ -157,7 +179,22 @@ export class Database {
 	getItemIdsForSet(setId: number): Array<number> {
 		return this.getAllItemIds().filter(itemId => this.getItemById(itemId)!.setId === setId);
 	}
-
+	getSpellEffect(effectId: number): SpellEffect | undefined {
+		return this.spellEffects.get(effectId);
+	}
+	getConsumables(): Array<Consumable> {
+		return Array.from(this.consumables.values());
+	}
+	getConsumable(itemId: number): Consumable | undefined {
+		return this.consumables.get(itemId);
+	}
+	getConsumablesByType(type: ConsumableType): Array<Consumable> {
+		return this.getConsumables().filter(consume => consume.type == type);
+	}
+	getConsumablesByTypeAndStats(type: ConsumableType, stats: Array<Stat>): Array<Consumable> {
+		const consumes = this.getConsumables().filter(consume => consume.type === type);
+		return consumes.filter(consume => stats.some(index => consume.stats[index] > 0 || consume.id == 62290 || consume.id == 62649));
+	}
 	getRandomSuffixById(id: number): ItemRandomSuffix | undefined {
 		return this.randomSuffixes.get(id);
 	}
@@ -341,6 +378,8 @@ export class Database {
 			reforgeStats: distinct(db1.reforgeStats.concat(db2.reforgeStats), (a, b) => a.id == b.id),
 			enchants: distinct(db1.enchants.concat(db2.enchants), (a, b) => a.effectId == b.effectId),
 			gems: distinct(db1.gems.concat(db2.gems), (a, b) => a.id == b.id),
+			spellEffects: distinct(db1.spellEffects.concat(db2.spellEffects), (a, b) => a.id == b.id),
+			consumables: distinct(db1.consumables.concat(db2.consumables), (a, b) => a.id == b.id),
 		});
 	}
 }

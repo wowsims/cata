@@ -1,7 +1,7 @@
 import { getWowheadLanguagePrefix } from '../constants/lang';
 import { CHARACTER_LEVEL } from '../constants/mechanics';
-import { ResourceType } from '../proto/api';
 import { ActionID as ActionIdProto, ItemRandomSuffix, OtherAction, ReforgeStat } from '../proto/common';
+import { ResourceType } from '../proto/spell';
 import { IconData, UIItem as Item } from '../proto/ui';
 import { buildWowheadTooltipDataset, WowheadTooltipItemParams, WowheadTooltipSpellParams } from '../wowhead';
 import { Database } from './database';

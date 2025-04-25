@@ -846,9 +846,9 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-Gladiator'sSanctuary"
  value: {
-  dps: 9477.79105
-  tps: 47453.48398
-  hps: 356.7355
+  dps: 10834.01771
+  tps: 54237.09209
+  hps: 358.34242
  }
 }
 dps_results: {
@@ -1582,24 +1582,24 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-Rathrak,thePoisonousMind-77195"
  value: {
-  dps: 9633.05534
-  tps: 48230.52213
+  dps: 8767.69062
+  tps: 43903.69852
   hps: 351.91475
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Rathrak,thePoisonousMind-78475"
  value: {
-  dps: 9912.82208
-  tps: 49629.46624
+  dps: 8925.73664
+  tps: 44694.03904
   hps: 351.91475
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Rathrak,thePoisonousMind-78484"
  value: {
-  dps: 9498.82846
-  tps: 47559.24001
+  dps: 8726.38327
+  tps: 43697.01404
   hps: 348.70092
  }
 }
@@ -2334,8 +2334,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-Val'anyr,HammerofAncientKings-46017"
  value: {
-  dps: 8343.13061
-  tps: 41781.26785
+  dps: 8073.01173
+  tps: 40430.67345
   hps: 348.70092
  }
 }

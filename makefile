@@ -174,7 +174,7 @@ wowsimmop: binary_dist devserver
 .PHONY: devserver
 devserver: sim/core/proto/api.pb.go sim/web/main.go binary_dist/dist.go
 	@echo "Starting server compile now..."
-	@if go build -o wowsimmop ./sim/web/main.go; then \
+	@if go build -o wowsimmop ./sim/web/main.go ; then \
 		printf "\033[1;32mBuild Completed Successfully\033[0m\n"; \
 	else \
 		printf "\033[1;31mBUILD FAILED\033[0m\n"; \
@@ -236,8 +236,26 @@ nixlib: sim/core/proto/api.pb.go
 winlib: sim/core/proto/api.pb.go
 	GOOS=windows GOARCH=amd64 GOAMD64=v2 CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc go build -buildmode=c-shared -o wowsimmop-windows.dll --tags=with_db ./sim/lib/library.go
 
-.PHONY: items
-items: sim/core/items/all_items.go sim/core/proto/api.pb.go
+.PHONY: simdb
+simdb: sim/core/items/all_items.go sim/core/proto/api.pb.go
+
+CLIENTDATA_SETTINGS := $(shell realpath ./tools/database/generator-settings.json)
+CLIENTDATAPTR_SETTINGS := $(shell realpath ./tools/database/ptr-generator-settings.json)
+CLIENTDATA_OUTPUT   := $(shell realpath ./tools/database/wowsims.db)
+
+.PHONY: db
+db:
+	@echo "Running DB2ToSqlite for clientdata"
+	cd tools/DB2ToSqlite && dotnet run -- -s $(CLIENTDATA_SETTINGS) --output $(CLIENTDATA_OUTPUT)
+	@echo "Running DBC generation tool"
+	go run tools/database/gen_db/*.go -outDir=./assets -gen=db
+
+.PHONY: ptrdb
+ptrdb:
+	@echo "Running DB2ToSqlite for clientdata"
+	cd tools/DB2ToSqlite && dotnet run -- -s $(CLIENTDATAPTR_SETTINGS) --output $(CLIENTDATA_OUTPUT)
+	@echo "Running DBC generation tool"
+	go run tools/database/gen_db/*.go -outDir=./assets -gen=db
 
 sim/core/items/all_items.go: $(call rwildcard,tools/database,*.go) $(call rwildcard,sim/core/proto,*.go)
 	go run tools/database/gen_db/*.go -outDir=./assets -gen=db

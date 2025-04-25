@@ -318,7 +318,8 @@ func readZoneData(db *WowDatabase) {
 		zoneIDs = append(zoneIDs, zoneID)
 	}
 	zoneIDStrs := core.MapSlice(zoneIDs, func(zoneID int32) string { return strconv.Itoa(int(zoneID)) })
-
+	//Todo: This is the only place still needing the tooltip manager
+	//Remove it
 	zoneTM := &WowheadTooltipManager{
 		TooltipManager{
 			FilePath:   "",

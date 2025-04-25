@@ -358,6 +358,26 @@ func (stats Stats) ToProtoArray() []float64 {
 	return stats[:ProtoStatsLen]
 }
 
+func (stats Stats) ToProtoMap() map[int32]float64 {
+	m := make(map[int32]float64, SimStatsLen)
+	for i := 0; i < int(SimStatsLen); i++ {
+		if stats[i] != 0 {
+			m[int32(i)] = stats[i]
+		}
+	}
+	return m
+}
+
+func FromProtoMap(m map[int32]float64) Stats {
+	var stats Stats
+	for k, v := range m {
+		if k >= 0 && k < int32(SimStatsLen) {
+			stats[k] = v
+		}
+	}
+	return stats
+}
+
 type PseudoStats struct {
 	///////////////////////////////////////////////////
 	// Effects that apply when this unit is the attacker.

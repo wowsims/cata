@@ -1,4 +1,4 @@
-import { ResourceType } from '../../proto/api';
+import { ResourceType } from '../../proto/spell';
 import { resourceNames } from '../../proto_utils/names';
 import { ResourceMetrics } from '../../proto_utils/sim_result';
 import { orderedResourceTypes } from '../../proto_utils/utils';

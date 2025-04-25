@@ -5,6 +5,7 @@ import (
 	"math"
 	"slices"
 	"sync"
+	"time"
 
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
@@ -18,6 +19,9 @@ var GemsByID = map[int32]Gem{}
 var RandomSuffixesByID = map[int32]RandomSuffix{}
 var EnchantsByEffectID = map[int32]Enchant{}
 var ReforgeStatsByID = map[int32]ReforgeStat{}
+var ConsumablesByID = map[int32]Consumable{}
+var SpellEffectsById = map[int32]*proto.SpellEffect{}
+
 var mutex = &sync.Mutex{}
 
 func addToDatabase(newDB *proto.SimDatabase) {
@@ -55,6 +59,16 @@ func addToDatabase(newDB *proto.SimDatabase) {
 			ReforgeStatsByID[v.Id] = ReforgeStatFromProto(v)
 		}
 	}
+	for _, v := range newDB.Consumables {
+		if _, ok := ConsumablesByID[v.Id]; !ok {
+			ConsumablesByID[v.Id] = ConsumableFromProto(v)
+		}
+	}
+	for _, v := range newDB.SpellEffects {
+		if _, ok := SpellEffectsById[v.Id]; !ok {
+			SpellEffectsById[v.Id] = v
+		}
+	}
 }
 
 type ReforgeStat struct {
@@ -84,6 +98,28 @@ func ReforgeStatToProto(stat ReforgeStat) *proto.ReforgeStat {
 	}
 }
 
+type Consumable struct {
+	Id            int32
+	Type          proto.ConsumableType
+	Stats         stats.Stats
+	BuffsMainStat bool
+	Name          string
+	BuffDuration  time.Duration
+	EffectIds     []int32
+}
+
+func ConsumableFromProto(consumable *proto.Consumable) Consumable {
+	return Consumable{
+		Id:            consumable.Id,
+		Type:          consumable.Type,
+		Stats:         stats.FromProtoArray(consumable.Stats),
+		BuffsMainStat: consumable.BuffsMainStat,
+		Name:          consumable.Name,
+		BuffDuration:  time.Second * time.Duration(consumable.BuffDuration),
+		EffectIds:     consumable.EffectIds,
+	}
+}
+
 type Item struct {
 	ID        int32
 	Type      proto.ItemType
@@ -96,12 +132,11 @@ type Item struct {
 	WeaponDamageMax  float64
 	SwingSpeed       float64
 
-	Name             string
-	Stats            stats.Stats // Stats applied to wearer
-	Quality          proto.ItemQuality
-	SetName          string // Empty string if not part of a set.
-	SetID            int32  // 0 if not part of a set.
-	RandomPropPoints int32  // Used to rescale random suffix stats
+	Name    string
+	Stats   stats.Stats // Stats applied to wearer
+	Quality proto.ItemQuality
+	SetName string // Empty string if not part of a set.
+	SetID   int32  // 0 if not part of a set.
 
 	GemSockets  []proto.GemColor
 	SocketBonus stats.Stats
@@ -113,7 +148,23 @@ type Item struct {
 	Reforging    *ReforgeStat
 
 	//Internal use
-	TempEnchant int32
+	TempEnchant    int32
+	ScalingOptions map[int32]*proto.ScalingItemProperties
+	Ilvl           int32
+	RandPropPoints int32
+}
+
+func (item *Item) UpgradeItemLevelBy(upgradeLevel int) int {
+	if item.Quality == proto.ItemQuality_ItemQualityUncommon {
+		return upgradeLevel * 8
+	}
+	if item.Quality == proto.ItemQuality_ItemQualityRare {
+		return upgradeLevel * 4
+	}
+	if item.Quality == proto.ItemQuality_ItemQualityEpic {
+		return upgradeLevel * 4
+	}
+	return 0
 }
 
 func ItemFromProto(pData *proto.SimItem) Item {
@@ -125,15 +176,12 @@ func ItemFromProto(pData *proto.SimItem) Item {
 		WeaponType:       pData.WeaponType,
 		HandType:         pData.HandType,
 		RangedWeaponType: pData.RangedWeaponType,
-		WeaponDamageMin:  pData.WeaponDamageMin,
-		WeaponDamageMax:  pData.WeaponDamageMax,
 		SwingSpeed:       pData.WeaponSpeed,
-		Stats:            stats.FromProtoArray(pData.Stats),
 		GemSockets:       pData.GemSockets,
 		SocketBonus:      stats.FromProtoArray(pData.SocketBonus),
 		SetName:          pData.SetName,
 		SetID:            pData.SetId,
-		RandomPropPoints: pData.RandPropPoints,
+		ScalingOptions:   pData.ScalingOptions,
 	}
 }
 
@@ -143,6 +191,7 @@ func (item *Item) ToItemSpecProto() *proto.ItemSpec {
 		RandomSuffix: item.RandomSuffix.ID,
 		Enchant:      item.Enchant.EffectID,
 		Gems:         MapSlice(item.Gems, func(gem Gem) int32 { return gem.ID }),
+		ScaledIlvl:   item.Ilvl,
 	}
 
 	// Check if Reforging is not nil before accessing ID
@@ -204,6 +253,7 @@ type ItemSpec struct {
 	Enchant      int32
 	Gems         []int32
 	Reforging    int32
+	ScaledIlvl   int32
 }
 
 type Equipment [proto.ItemSlot_ItemSlotRanged + 1]Item
@@ -344,6 +394,7 @@ func ProtoToEquipmentSpec(es *proto.EquipmentSpec) EquipmentSpec {
 			Enchant:      item.Enchant,
 			Gems:         item.Gems,
 			Reforging:    item.Reforging,
+			ScaledIlvl:   item.ScaledIlvl,
 		}
 	}
 	return coreEquip
@@ -356,6 +407,24 @@ func NewItem(itemSpec ItemSpec) Item {
 	} else {
 		panic(fmt.Sprintf("No item with id: %d", itemSpec.ID))
 	}
+	scalingOptions := item.ScalingOptions[itemSpec.ScaledIlvl]
+	if scalingOptions == nil {
+		for ilvl, scaling := range item.ScalingOptions {
+			if scaling.IsBase {
+				scalingOptions = scaling
+				item.Ilvl = ilvl // ScaledIlvl should always be set
+				break
+			}
+		}
+	} else {
+		item.Ilvl = itemSpec.ScaledIlvl
+	}
+	// Set the itemlevel again because it could be scaled
+
+	item.Stats = stats.Stats(MapToFixedStatsArray(scalingOptions.GetStats()))
+	item.WeaponDamageMax = scalingOptions.WeaponDamageMax
+	item.WeaponDamageMin = scalingOptions.WeaponDamageMin
+	item.RandPropPoints = scalingOptions.RandPropPoints
 
 	if itemSpec.RandomSuffix != 0 {
 		if randomSuffix, ok := RandomSuffixesByID[itemSpec.RandomSuffix]; ok {
@@ -409,7 +478,7 @@ func validateReforging(item *Item, reforging ReforgeStat) bool {
 	// Validate that the item can reforge these to stats
 	reforgeableStats := stats.Stats{}
 	if item.RandomSuffix.ID != 0 {
-		reforgeableStats = reforgeableStats.Add(item.RandomSuffix.Stats.Multiply(float64(item.RandomPropPoints) / 10000.).Floor())
+		reforgeableStats = reforgeableStats.Add(item.RandomSuffix.Stats.Multiply(float64(item.ScalingOptions[item.Ilvl].RandPropPoints) / 10000.).Floor())
 	} else {
 		reforgeableStats = reforgeableStats.Add(item.Stats)
 	}
@@ -478,11 +547,11 @@ func ItemEquipmentStats(item Item) stats.Stats {
 
 	// Random suffix stats can be Reforged, so apply those prior to any Reforges
 	rawSuffixStats := item.RandomSuffix.Stats
-	equipStats = equipStats.Add(rawSuffixStats.Multiply(float64(item.RandomPropPoints) / 10000.).Floor())
+	equipStats = equipStats.Add(rawSuffixStats.Multiply(float64(item.RandPropPoints) / 10000.).Floor())
 
 	// Apply reforging
 	if item.Reforging != nil {
-		itemStats := item.Stats.Add(rawSuffixStats.Multiply(float64(item.RandomPropPoints) / 10000.).Floor())
+		itemStats := item.Stats.Add(rawSuffixStats.Multiply(float64(item.RandPropPoints) / 10000.).Floor())
 		reforgingChanges := stats.Stats{}
 		fromStat := item.Reforging.FromStat
 

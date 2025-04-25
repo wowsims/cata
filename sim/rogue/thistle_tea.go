@@ -4,11 +4,10 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func (rogue *Rogue) registerThistleTeaCD() {
-	if rogue.Consumes.DefaultConjured != proto.Conjured_ConjuredRogueThistleTea {
+	if rogue.Consumables.ConjuredId != 7676 {
 		return
 	}
 

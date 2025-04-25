@@ -2,6 +2,7 @@ import * as PresetUtils from '../../core/preset_utils.js';
 import {
 	BattleElixir,
 	Consumes,
+	ConsumesSpec,
 	Food,
 	Glyphs,
 	GuardianElixir,
@@ -13,12 +14,7 @@ import {
 	TinkerHands,
 } from '../../core/proto/common.js';
 import { SavedTalents } from '../../core/proto/ui.js';
-import {
-	ProtectionWarrior_Options as ProtectionWarriorOptions,
-	WarriorMajorGlyph,
-	WarriorMinorGlyph,
-	WarriorPrimeGlyph,
-} from '../../core/proto/warrior.js';
+import { ProtectionWarrior_Options as ProtectionWarriorOptions, WarriorMajorGlyph, WarriorMinorGlyph, WarriorPrimeGlyph } from '../../core/proto/warrior.js';
 import { Stats } from '../../core/proto_utils/stats';
 import ItemSwapP4Gear from '../arms/gear_sets/p4_arms_item_swap.gear.json';
 import DefaultApl from './apls/default.apl.json';
@@ -102,6 +98,15 @@ export const DefaultConsumes = Consumes.create({
 	prepopPotion: Potions.EarthenPotion,
 	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
 	explosiveBigDaddy: true,
+});
+export const DefaultConsumables = ConsumesSpec.create({
+	battleElixirId: 58148, // Elixir of the Master (not found in list)
+	guardianElixirId: 58093, // Elixir of Deep Earth (not found in list)
+	foodId: 62670, // Beer-Basted Crocolisk
+	potId: 58090, // Earthen Potion
+	prepotId: 58090, // Earthen Potion
+	tinkerId: 82174, // Synapse Springs
+	explosiveId: 89637, // Big Daddy Explosive
 });
 
 export const OtherDefaults = {

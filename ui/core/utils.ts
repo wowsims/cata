@@ -2,6 +2,7 @@
 import cloneDeep from 'lodash/cloneDeep';
 import { v4 as uuidv4 } from 'uuid';
 
+
 export const randomUUID = () => uuidv4();
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -382,4 +383,27 @@ export const isLocal = () => getEnvironment() === 'local';
 export const isExternal = () => getEnvironment() === 'external';
 export const isDevMode = () => {
 	return import.meta.env.DEV;
+};
+export const normalizeName = (name: string): string => {
+	return name
+		.replace(/[^\w\s]/g, '')
+		.split(/\s+/)
+		.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+		.join('');
+};
+
+export const getEnumKeyFromValue = <T extends Record<string, string | number>>(enumObj: T, value: number): string | undefined => {
+	return (enumObj as any)[value];
+};
+
+export const findInputItemForEnum = <T extends Record<string, string | number>, U extends { name: string }>(
+	enumObj: T,
+	enumValue: number,
+	items: U[],
+): U | undefined => {
+	const targetEnumKey = getEnumKeyFromValue(enumObj, enumValue);
+	if (!targetEnumKey) {
+		return undefined;
+	}
+	return items.find(item => normalizeName(item.name) === targetEnumKey);
 };

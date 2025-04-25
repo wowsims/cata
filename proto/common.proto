@@ -30,7 +30,14 @@ message ProtoVersion {
 	// The actual field value is only used within unit tests.
 	int32 saved_version_number = 1;
 }
-
+message ScalingItemProperties {
+    int32 rand_prop_points = 1;
+    double weapon_damage_min = 2;
+    double weapon_damage_max = 3;
+    map<int32, double> stats = 4; // for compactness
+	bool is_base = 5; // Is this the base itemlevel for the item
+	int32 upgrade_step = 6; // If upgrade which upgrade step does this represent, null if not
+}
 enum Spec {
 	SpecUnknown = 0;
 
@@ -74,7 +81,7 @@ enum Spec {
 	SpecArmsWarrior = 28;
 	SpecFuryWarrior = 29;
 	SpecProtectionWarrior = 30;
-	
+
 	SpecBrewmasterMonk = 32;
 	SpecMistweaverMonk = 33;
 	SpecWindwalkerMonk = 34;
@@ -417,12 +424,14 @@ enum TristateEffect {
 }
 
 enum Explosive {
+	option deprecated = true;
 	ExplosiveUnknown = 0;
 	ExplosiveSaroniteBomb = 1;
 	ExplosiveCobaltFragBomb = 2;
 }
 
 enum TinkerHands {
+	option deprecated = true;
 	TinkerHandsNone = 0;
 	TinkerHandsSynapseSprings = 1;
 	TinkerHandsTazikShocker = 2;
@@ -432,6 +441,7 @@ enum TinkerHands {
 }
 
 enum Potions {
+	option deprecated = true;
 	UnknownPotion = 0;
 	GolembloodPotion = 1; //58146
 	PotionOfTheTolvir = 2; //58145
@@ -450,6 +460,7 @@ enum Potions {
 }
 
 enum Conjured {
+	option deprecated = true;
 	ConjuredUnknown = 0;
 	ConjuredDarkRune = 1;
 	ConjuredHealthstone = 5;
@@ -457,6 +468,7 @@ enum Conjured {
 }
 
 enum Flask {
+	option deprecated = true;
 	FlaskUnknown = 0;
 	FlaskOfTitanicStrength = 1;
 	FlaskOfTheWinds = 2;
@@ -474,6 +486,7 @@ enum Flask {
 }
 
 enum BattleElixir {
+	option deprecated = true;
 	BattleElixirUnknown = 0;
 	ElixirOfTheMaster = 1;
 	ElixirOfMightySpeed = 2;
@@ -499,6 +512,7 @@ enum BattleElixir {
 }
 
 enum GuardianElixir {
+	option deprecated = true;
 	GuardianElixirUnknown = 0;
 	ElixirOfDeepEarth = 1;
 	PrismaticElixir = 2;
@@ -513,6 +527,7 @@ enum GuardianElixir {
 }
 
 enum Food {
+	option deprecated = true;
 	FoodUnknown = 0;
 	FoodFishFeast = 1;
 	FoodGreatFeast = 2;
@@ -720,10 +735,12 @@ message Debuffs {
 	bool earth_shock = 31;
 }
 
+// Deprecate this entirely with time
 message Consumes {
-	Flask flask = 1;
-	BattleElixir battle_elixir = 2;
-	GuardianElixir guardian_elixir = 3;
+	option deprecated = true;
+	Flask flask = 1 [deprecated = true];
+	BattleElixir battle_elixir = 2 [deprecated = true];
+	GuardianElixir guardian_elixir = 3 [deprecated = true];
 
 	Food food = 6;
 
@@ -738,6 +755,20 @@ message Consumes {
 	bool highpowered_bolt_gun = 13;
 
 	TinkerHands tinker_hands = 14;
+}
+
+
+message ConsumesSpec {
+	int32 prepot_id = 1;
+	int32 pot_id = 2;
+	int32 flask_id = 3;
+	int32 battle_elixir_id = 4;
+	int32 guardian_elixir_id = 5;
+	int32 food_id = 6;
+	int32 explosive_id = 7;
+	int32 conjured_id = 9;
+
+	int32 tinker_id = 10;
 }
 
 enum MobType {
@@ -857,43 +888,27 @@ message ItemSpec {
 	int32 enchant = 3;
 	repeated int32 gems = 4;
 	int32 reforging = 5; //reforging id
+	int32 scaled_ilvl = 7;
 }
+
 
 message EquipmentSpec {
 	repeated ItemSpec items = 1;
 }
 
-message SimDatabase {
-	repeated SimItem items = 1;
-	repeated ItemRandomSuffix random_suffixes = 5;
-	repeated SimEnchant enchants = 2;
-	repeated SimGem gems = 3;
-	repeated ReforgeStat reforge_stats = 6;
+enum ConsumableType {
+	ConsumableTypeUnknown = 0;
+	ConsumableTypePotion = 1;
+	ConsumableTypeFlask = 2;
+	ConsumableTypeFood = 3;
+	ConsumableTypeScroll = 4;
+	ConsumableTypeExplosive = 5;
+	ConsumableTypeBattleElixir = 6;
+	ConsumableTypeGuardianElixir = 7;
 }
 
-// Contains only the Item info needed by the sim.
-message SimItem {
-	int32 id = 1;
-	string name = 2;
 
-	ItemType type = 3;
-	ArmorType armor_type = 4;
-	WeaponType weapon_type = 5;
-	HandType hand_type = 6;
-	RangedWeaponType ranged_weapon_type = 7;
 
-	repeated double stats = 8;
-	repeated GemColor gem_sockets = 9;
-	repeated double socketBonus = 10;
-
-	double weapon_damage_min = 11;
-	double weapon_damage_max = 12;
-	double weapon_speed = 13;
-
-	string set_name = 14;
-	int32 rand_prop_points = 15;
-	int32 set_id = 16;
-}
 
 // Extra enum for describing which items are eligible for an enchant, when
 // ItemType alone is not enough.
@@ -1068,3 +1083,4 @@ enum LogLevel {
 
 	Undefined = -1;
 }
+

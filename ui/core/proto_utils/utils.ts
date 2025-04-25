@@ -3,7 +3,7 @@ import { PlayerClass } from '../player_class.js';
 import { PlayerClasses } from '../player_classes';
 import { PlayerSpec } from '../player_spec.js';
 import { PlayerSpecs } from '../player_specs';
-import { Player, ResourceType } from '../proto/api.js';
+import { Player } from '../proto/api.js';
 import {
 	Class,
 	EnchantType,
@@ -127,6 +127,7 @@ import {
 	ShamanOptions,
 	ShamanTalents,
 } from '../proto/shaman.js';
+import { ResourceType } from '../proto/spell';
 import { BlessingsAssignment, BlessingsAssignments, UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../proto/ui.js';
 import {
 	AfflictionWarlock,
@@ -2035,7 +2036,6 @@ export const orderedResourceTypes: Array<ResourceType> = [
 
 export const AL_CATEGORY_HARD_MODE = 'Hard Mode';
 export const AL_CATEGORY_TITAN_RUNE = 'Titan Rune';
-
 
 // Utilities for migrating protos between versions
 

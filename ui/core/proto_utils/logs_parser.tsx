@@ -1,8 +1,9 @@
 import clsx from 'clsx';
 
 import { CacheHandler } from '../cache_handler';
-import { RaidSimResult, ResourceType } from '../proto/api.js';
+import { RaidSimResult } from '../proto/api.js';
 import { SpellSchool } from '../proto/common';
+import { ResourceType } from '../proto/spell';
 import { bucket, getEnumValues, stringComparator, sum } from '../utils.js';
 import { ActionId } from './action_id.js';
 import { resourceNames, spellSchoolNames, stringToResourceType } from './names.js';

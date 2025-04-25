@@ -12,12 +12,14 @@ import (
 	"net/http"
 	"os"
 	"slices"
+	"sort"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"golang.org/x/exp/constraints"
 	protojson "google.golang.org/protobuf/encoding/protojson"
 	googleProto "google.golang.org/protobuf/proto"
 )
@@ -144,6 +146,46 @@ func WriteProtoArrayToBuffer[T googleProto.Message](arr []T, buffer *bytes.Buffe
 		buffer.WriteString("\n")
 	}
 	buffer.WriteString("]")
+}
+func WriteProtoMapToBuffer[K constraints.Ordered, V googleProto.Message](
+	m map[K]V,
+	buffer *bytes.Buffer,
+	name string,
+) {
+	buffer.WriteString(`"`)
+	buffer.WriteString(name)
+	buffer.WriteString(`":{` + "\n")
+
+	keys := make([]K, 0, len(m))
+	for k := range m {
+		keys = append(keys, k)
+	}
+	sort.Slice(keys, func(i, j int) bool {
+		return keys[i] < keys[j]
+	})
+
+	for i, k := range keys {
+		jsonBytes, err := protojson.MarshalOptions{UseEnumNumbers: true}.Marshal(m[k])
+		if err != nil {
+			log.Printf("[ERROR] Failed to marshal key %v: %v", k, err)
+			continue
+		}
+		if bytes.Equal(jsonBytes, []byte("{}")) {
+			continue
+		}
+		buffer.WriteString(`"`)
+		buffer.WriteString(fmt.Sprint(k))
+		buffer.WriteString(`":`)
+		// Format using Compact() so we get a stable output (no random diffs for version control).
+		json.Compact(buffer, jsonBytes)
+
+		if i != len(keys)-1 {
+			buffer.WriteString(",")
+		}
+		buffer.WriteString("\n")
+	}
+
+	buffer.WriteString("}")
 }
 
 // Fetches web results a single url, and returns the page contents as a string.

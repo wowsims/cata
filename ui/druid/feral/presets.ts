@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Spec, Stat, TinkerHands } from '../../core/proto/common';
+import { Consumes, ConsumesSpec, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Spec, Stat, TinkerHands } from '../../core/proto/common';
 import {
 	DruidMajorGlyph,
 	DruidMinorGlyph,
@@ -46,7 +46,7 @@ export const BEARWEAVE_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatHitRating]: 0.36,
 			[Stat.StatExpertiseRating]: 0.34,
 			[Stat.StatCritRating]: 0.32,
-			[Stat.StatHasteRating]: 0.30,
+			[Stat.StatHasteRating]: 0.3,
 			[Stat.StatMasteryRating]: 0.33,
 		},
 		{
@@ -65,7 +65,7 @@ export const MONOCAT_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatHitRating]: 0.31,
 			[Stat.StatExpertiseRating]: 0.31,
 			[Stat.StatCritRating]: 0.31,
-			[Stat.StatHasteRating]: 0.30,
+			[Stat.StatHasteRating]: 0.3,
 			[Stat.StatMasteryRating]: 0.33,
 		},
 		{
@@ -150,7 +150,6 @@ export const HybridTalents = {
 export const DefaultOptions = FeralDruidOptions.create({
 	assumeBleedActive: true,
 });
-
 export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskOfTheWinds,
 	food: Food.FoodSkeweredEel,
@@ -159,7 +158,14 @@ export const DefaultConsumes = Consumes.create({
 	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
 	explosiveBigDaddy: true,
 });
-
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58087, // Flask of the Winds
+	foodId: 62669, // Skewered Eel
+	potId: 58145, // Potion of the Tol'vir
+	prepotId: 58145, // Potion of the Tol'vir
+	tinkerId: 82174, // Synapse Springs
+	explosiveId: 89637, // Big Daddy Explosive
+});
 export const OtherDefaults = {
 	distanceFromTarget: 25,
 	highHpThreshold: 0.8,
@@ -168,18 +174,18 @@ export const OtherDefaults = {
 	profession2: Profession.ProfessionUnknown,
 };
 
-export const PRESET_BUILD_DEFAULT = PresetUtils.makePresetBuild("Single Target Default", {
+export const PRESET_BUILD_DEFAULT = PresetUtils.makePresetBuild('Single Target Default', {
 	rotation: SIMPLE_ROTATION_DEFAULT,
 	encounter: PresetUtils.makePresetEncounter(
-		"Single Target Default",
-		'http://localhost:5173/mop/druid/feral/?i=rcmxe#eJzjEuNgzGBsYGScwMi4gpFxByNjAxPjBiZGJyYPRiEGqUNMs5jZAnISK1OLOLgFGJV4OZgMJAOYIpgqQBqcGLJYpJgUGE8wsdxiYnjE9ItRgknpKyPXJ8ZqpaTUxKLw1MSyVCWrkqLSVB2l3MTMvBIgdktMLcpMdcssQshk5jnn5yblF7vlFwVlFihZmeoolRanBiVmw5UAuU6ZJXBuEpAdkpkL5BsaAnmpRcWpRdlOcEEzVDMhOk0h2lxKizLz0l0rUpNLEeYVZRb4pKaWJ1YCDQTrDcpPLPJPSytOLVGyMgYKFeelZqP6JjUnNRVJpPYFU0ojMwMYWDoshLIiHbqYGZSOM3kwc4L5B4ocBCEyfg6Ss2aCwEl7S4jIBXvFNDC4Zu8IkXppb9TDVLDqM2MVd1BiZopCSGJRemqJQoQEu9YNRgZ6gIAWB2oa15ByHNk8H4u5cxzR1YBDo2ERp+NMRkgo3LSHqmFxAABYiZHH'
+		'Single Target Default',
+		'http://localhost:5173/mop/druid/feral/?i=rcmxe#eJzjEuNgzGBsYGScwMi4gpFxByNjAxPjBiZGJyYPRiEGqUNMs5jZAnISK1OLOLgFGJV4OZgMJAOYIpgqQBqcGLJYpJgUGE8wsdxiYnjE9ItRgknpKyPXJ8ZqpaTUxKLw1MSyVCWrkqLSVB2l3MTMvBIgdktMLcpMdcssQshk5jnn5yblF7vlFwVlFihZmeoolRanBiVmw5UAuU6ZJXBuEpAdkpkL5BsaAnmpRcWpRdlOcEEzVDMhOk0h2lxKizLz0l0rUpNLEeYVZRb4pKaWJ1YCDQTrDcpPLPJPSytOLVGyMgYKFeelZqP6JjUnNRVJpPYFU0ojMwMYWDoshLIiHbqYGZSOM3kwc4L5B4ocBCEyfg6Ss2aCwEl7S4jIBXvFNDC4Zu8IkXppb9TDVLDqM2MVd1BiZopCSGJRemqJQoQEu9YNRgZ6gIAWB2oa15ByHNk8H4u5cxzR1YBDo2ERp+NMRkgo3LSHqmFxAABYiZHH',
 	),
-})
+});
 
-export const PRESET_BUILD_TENDON = PresetUtils.makePresetBuild("Single Target Burst", {
+export const PRESET_BUILD_TENDON = PresetUtils.makePresetBuild('Single Target Burst', {
 	rotation: APL_ROTATION_TENDON,
 	encounter: PresetUtils.makePresetEncounter(
-		"Single Target Burst",
-		'http://localhost:5173/mop/druid/feral/?i=rcmxe#eJzjEuZgzGBsYGScwMi4gpFxByNjAxOjE5MHoxCDVA/zLGa2gJzEytQiDm4BRiVuDiYDyQCmCpBaJ4YsFikmBcYTTCy3mBgeMR1jkmDmEubiyGLjYuFoms2sxM7FysWsa1oMF/z3gwUqaFjMJcLFLgVkcjzUUOLkAorqGugBlYpycUiBlM7rZEYSFtKW0uSSl5Ll4tjECNHDJajFz8EsxOTFIAU20dCwGKzvXyOrULxULFewVCCXoZA+kgZlLUWoBslNTGIcjEKcqxihNkGMMDIrRjcVJMS5Ca4MSAssPMYsJColjCbMsfMsoxAwNKwYIJIgl6cl5hSnwjwjJCIlhCwMctRbDSFeKe5JjBwSjBGMCcA4gJjwgimlkZkBDEQcFkJZkQ5dzAxKx5k8mDkhAsYOghDGB3vJWTNB4KS9JUTkgr1iGhhcs3eESL20N+phKlj1mbGKOygxM0UhJLEoPbVEIUKCXesGIwM9QECLAzWNa0g5jmyej8XcOY7oasCh0bCI03EmIyQUbtpD1bA4AADkI2mj'
+		'Single Target Burst',
+		'http://localhost:5173/mop/druid/feral/?i=rcmxe#eJzjEuZgzGBsYGScwMi4gpFxByNjAxOjE5MHoxCDVA/zLGa2gJzEytQiDm4BRiVuDiYDyQCmCpBaJ4YsFikmBcYTTCy3mBgeMR1jkmDmEubiyGLjYuFoms2sxM7FysWsa1oMF/z3gwUqaFjMJcLFLgVkcjzUUOLkAorqGugBlYpycUiBlM7rZEYSFtKW0uSSl5Ll4tjECNHDJajFz8EsxOTFIAU20dCwGKzvXyOrULxULFewVCCXoZA+kgZlLUWoBslNTGIcjEKcqxihNkGMMDIrRjcVJMS5Ca4MSAssPMYsJColjCbMsfMsoxAwNKwYIJIgl6cl5hSnwjwjJCIlhCwMctRbDSFeKe5JjBwSjBGMCcA4gJjwgimlkZkBDEQcFkJZkQ5dzAxKx5k8mDkhAsYOghDGB3vJWTNB4KS9JUTkgr1iGhhcs3eESL20N+phKlj1mbGKOygxM0UhJLEoPbVEIUKCXesGIwM9QECLAzWNa0g5jmyej8XcOY7oasCh0bCI03EmIyQUbtpD1bA4AADkI2mj',
 	),
-})
+});
