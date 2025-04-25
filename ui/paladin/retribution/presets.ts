@@ -96,7 +96,7 @@ export const P4_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const DefaultTalents = {
 	name: 'Default',
 	data: SavedTalents.create({
-		talentsString: '203002-02-23203213211113002311',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: PaladinMajorGlyph.GlyphOfTheAsceticCrusader,
 			major2: PaladinMajorGlyph.GlyphOfHammerOfWrath,

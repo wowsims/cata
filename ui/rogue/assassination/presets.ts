@@ -95,7 +95,7 @@ export const P4_EP_LEGENDARY_PRESET = PresetUtils.makePresetEpWeights(
 export const AssassinationTalentsDefault = {
 	name: 'Assassination 31/2/8',
 	data: SavedTalents.create({
-		talentsString: '0333230013122110321-002-203003',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: RogueMajorGlyph.GlyphOfFeint,
 			major2: RogueMajorGlyph.GlyphOfTricksOfTheTrade,

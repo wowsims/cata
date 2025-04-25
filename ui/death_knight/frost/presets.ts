@@ -181,7 +181,7 @@ export const P1_MASTERFROST_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const DualWieldTalents = {
 	name: 'DW Obliterate',
 	data: SavedTalents.create({
-		talentsString: '2032-20330022233112012301-003',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: DeathKnightMajorGlyph.GlyphOfAntiMagicShell,
 			major2: DeathKnightMajorGlyph.GlyphOfDeathGrip,
@@ -197,7 +197,7 @@ export const DualWieldTalents = {
 export const TwoHandTalents = {
 	name: 'Two Hand',
 	data: SavedTalents.create({
-		talentsString: '103-32030022233112012031-033',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: DeathKnightMajorGlyph.GlyphOfPestilence,
 			major2: DeathKnightMajorGlyph.GlyphOfBloodBoil,
@@ -213,7 +213,7 @@ export const TwoHandTalents = {
 export const MasterfrostTalents = {
 	name: 'Masterfrost',
 	data: SavedTalents.create({
-		talentsString: '2032-30330012233112012301-03',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: DeathKnightMajorGlyph.GlyphOfPestilence,
 			major2: DeathKnightMajorGlyph.GlyphOfBloodBoil,

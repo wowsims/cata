@@ -71,7 +71,7 @@ export const EP_PRESET_CLEAVE = PresetUtils.makePresetEpWeights(
 export const TalentsTotemDuration = {
 	name: 'Totem Duration',
 	data: SavedTalents.create({
-		talentsString: '303202321223110132-201-20302',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: ShamanMajorGlyph.GlyphOfLightningShield,
 			major2: ShamanMajorGlyph.GlyphOfHealingStreamTotem,
@@ -86,7 +86,7 @@ export const TalentsTotemDuration = {
 export const TalentsImprovedShields = {
 	name: 'Improved Shields',
 	data: SavedTalents.create({
-		talentsString: '3032023212231101321-2030022',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: ShamanMajorGlyph.GlyphOfLightningShield,
 			major2: ShamanMajorGlyph.GlyphOfHealingStreamTotem,

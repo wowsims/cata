@@ -142,7 +142,7 @@ export const SHADOW_BREAKPOINTS: UnitStatPresets[] = [
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		talentsString: '032212--322032210201222100231',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: MajorGlyph.GlyphOfFade,
 			major2: MajorGlyph.GlyphOfInnerFire,

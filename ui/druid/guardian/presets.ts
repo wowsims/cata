@@ -106,7 +106,7 @@ export const BALANCED_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		talentsString: '-2300322312310001220311-020331',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: DruidMajorGlyph.GlyphOfFrenziedRegeneration,
 			major2: DruidMajorGlyph.GlyphOfMaul,
@@ -121,7 +121,7 @@ export const StandardTalents = {
 export const InfectedWoundsBuild = {
 	name: 'Infected Wounds',
 	data: SavedTalents.create({
-		talentsString: '-2302322310310001220311-020331',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: DruidMajorGlyph.GlyphOfFrenziedRegeneration,
 			major2: DruidMajorGlyph.GlyphOfMaul,

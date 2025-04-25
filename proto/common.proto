@@ -997,15 +997,12 @@ message ActionID {
 }
 
 message Glyphs {
-	int32 prime1 = 1;
-	int32 prime2 = 2;
-	int32 prime3 = 3;
-	int32 major1 = 4;
-	int32 major2 = 5;
-	int32 major3 = 6;
-	int32 minor1 = 7;
-	int32 minor2 = 8;
-	int32 minor3 = 9;
+	int32 major1 = 1;
+	int32 major2 = 2;
+	int32 major3 = 3;
+	int32 minor1 = 4;
+	int32 minor2 = 5;
+	int32 minor3 = 6;
 }
 
 // Custom options for a particular cooldown.

@@ -116,13 +116,6 @@ message {{$class}}Talents {
 {{- end }}
 }
 
-enum {{.ClassName}}PrimeGlyph {
-    {{.ClassName}}PrimeGlyphNone = 0;
-    {{- range .GlyphsPrime }}
-    {{ protoOverride .EnumName $class }} = {{ .ID }};
-    {{- end }}
-}
-
 enum {{.ClassName}}MajorGlyph {
     {{.ClassName}}MajorGlyphNone = 0;
     {{- range .GlyphsMajor }}
@@ -138,7 +131,7 @@ enum {{.ClassName}}MinorGlyph {
 }
 `
 
-const tsTemplateStr = `import { {{.ClassName}}MajorGlyph, {{.ClassName}}MinorGlyph, {{.ClassName}}PrimeGlyph, {{.ClassName}}Talents } from '../proto/{{.FileName}}.js';
+const tsTemplateStr = `import { {{.ClassName}}MajorGlyph, {{.ClassName}}MinorGlyph, {{.ClassName}}Talents } from '../proto/{{.FileName}}.js';
 import { GlyphsConfig } from './glyphs_picker.js';
 import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
 import {{.ClassName}}TalentJson from './trees/{{.FileName}}.json';
@@ -146,15 +139,6 @@ import {{.ClassName}}TalentJson from './trees/{{.FileName}}.json';
 export const {{.LowerCaseClassName}}TalentsConfig: TalentsConfig<{{.ClassName}}Talents> = newTalentsConfig({{.ClassName}}TalentJson);
 
 export const {{.LowerCaseClassName}}GlyphsConfig: GlyphsConfig = {
-	primeGlyphs: {
-		{{- range .GlyphsPrime }}
-		[{{$.ClassName}}PrimeGlyph.{{protoOverride .EnumName $class}}]: {
-			name: "{{.Name}}",
-			description: "{{.Description}}",
-			iconUrl: "{{.IconUrl}}",
-		},
-		{{- end }}
-	},
 	majorGlyphs: {
 		{{- range .GlyphsMajor }}
 		[{{$.ClassName}}MajorGlyph.{{protoOverride .EnumName $class}}]: {
@@ -379,6 +363,7 @@ func generateTalentJson(tabs []TalentTabConfig, className string) error {
 		"toCamelCase": toCamelCase,
 		"toSnakeCase": toSnakeCase,
 	}
+
 	tmpl, err := template.New("talentJson").Funcs(funcMap).Parse(talentJsonTemplate)
 	if err != nil {
 		return err
@@ -563,7 +548,7 @@ func convertRawGlyphToGlyph(r RawGlyph) Glyph {
 				"-", ""),
 			" ", ""),
 		Name:        r.Name,
-		Description: r.Description,
+		Description: template.JSEscapeString(r.Description),
 		IconUrl:     "",
 		ID:          int(r.ItemId),
 	}

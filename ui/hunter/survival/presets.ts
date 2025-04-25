@@ -34,7 +34,7 @@ export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AOE', AoeA
 export const SurvivalTalents = {
 	name: 'Survival',
 	data: SavedTalents.create({
-		talentsString: '03-2302-03203203023022121311',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: MajorGlyph.GlyphOfDisengage,
 			major2: MajorGlyph.GlyphOfRaptorStrike,

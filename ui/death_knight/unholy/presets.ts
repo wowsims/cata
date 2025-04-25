@@ -65,7 +65,7 @@ export const P3_UNHOLY_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const DefaultTalents = {
 	name: 'Default',
 	data: SavedTalents.create({
-		talentsString: '2032-1-13300321230231021231',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: DeathKnightMajorGlyph.GlyphOfPestilence,
 			major2: DeathKnightMajorGlyph.GlyphOfBloodBoil,

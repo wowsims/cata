@@ -40,7 +40,7 @@ export const PREPATCH_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const DefaultTalents = {
 	name: 'Default',
 	data: SavedTalents.create({
-		talentsString: '00110000100100101',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: MonkMajorGlyph.MonkMajorGlyphSpinningCraneKick,
 			major2: MonkMajorGlyph.MonkMajorGlyphTouchOfKarma,

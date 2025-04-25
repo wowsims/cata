@@ -78,7 +78,7 @@ export const Mastery_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const DemonologyTalentsShadowBolt = {
 	name: 'Shadow bolt',
 	data: SavedTalents.create({
-		talentsString: '-3312222300310212211-33202',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: MajorGlyph.GlyphOfShadowBolt,
 			major2: MajorGlyph.GlyphOfLifeTap,
@@ -92,7 +92,7 @@ export const DemonologyTalentsShadowBolt = {
 export const DemonologyTalentsIncinerate = {
 	name: 'Incinerate',
 	data: SavedTalents.create({
-		talentsString: '003-3312222300310212211-03202',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: MajorGlyph.GlyphOfSoulstone,
 			major2: MajorGlyph.GlyphOfLifeTap,

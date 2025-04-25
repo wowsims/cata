@@ -55,7 +55,7 @@ export const StandardEPWeights = PresetUtils.makePresetEpWeights(
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		talentsString: '33230221123212111001-01-020331',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: DruidMajorGlyph.GlyphOfStarfall,
 			major2: DruidMajorGlyph.GlyphOfRebirth,

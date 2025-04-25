@@ -78,7 +78,7 @@ export const P3_BLOOD_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const BloodTalents = {
 	name: 'Blood',
 	data: SavedTalents.create({
-		talentsString: '02323203102122111321-3-033',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: DeathKnightMajorGlyph.GlyphOfAntiMagicShell,
 			major2: DeathKnightMajorGlyph.GlyphOfDancingRuneWeapon,

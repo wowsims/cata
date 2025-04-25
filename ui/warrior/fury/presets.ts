@@ -184,7 +184,7 @@ export const P3_FURY_TG_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const FurySMFTalents = {
 	name: 'SMF',
 	data: SavedTalents.create({
-		talentsString: '302003-032222031301101223201-2',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: WarriorMajorGlyph.GlyphOfCleaving,
 			major2: WarriorMajorGlyph.GlyphOfDeathWish,
@@ -200,7 +200,7 @@ export const FurySMFTalents = {
 export const FuryTGTalents = {
 	name: 'TG',
 	data: SavedTalents.create({
-		talentsString: '302003-03222203130110122321-2',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: WarriorMajorGlyph.GlyphOfCleaving,
 			major2: WarriorMajorGlyph.GlyphOfDeathWish,

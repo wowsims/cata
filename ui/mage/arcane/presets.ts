@@ -53,7 +53,7 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const ArcaneTalents = {
 	name: 'Default',
 	data: SavedTalents.create({
-		talentsString: '303302221230122210121-23-03',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: MajorGlyph.GlyphOfEvocation,
 			major2: MajorGlyph.GlyphOfArcanePower,

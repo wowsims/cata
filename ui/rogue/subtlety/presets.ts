@@ -73,7 +73,7 @@ export const P4_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const SubtletyTalents = {
 	name: 'Subtlety',
 	data: SavedTalents.create({
-		talentsString: '023003-002-0332031321310012321',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: RogueMajorGlyph.GlyphOfTricksOfTheTrade,
 			major2: RogueMajorGlyph.GlyphOfSprint,

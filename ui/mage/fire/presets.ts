@@ -99,7 +99,7 @@ export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const FireTalents = {
 	name: 'Fire',
 	data: SavedTalents.create({
-		talentsString: '003-230330221120121213231-03',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: MajorGlyph.GlyphOfEvocation,
 			major2: MajorGlyph.GlyphOfDragonsBreath,

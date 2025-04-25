@@ -72,7 +72,7 @@ export const CBAT_4PT12_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const CombatTalents = {
 	name: 'Combat',
 	data: SavedTalents.create({
-		talentsString: '0322-2332030310230012321-003',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: RogueMajorGlyph.GlyphOfBladeFlurry,
 			major2: RogueMajorGlyph.GlyphOfTricksOfTheTrade,

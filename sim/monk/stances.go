@@ -80,7 +80,8 @@ func (monk *Monk) registerStanceOfTheWiseSerpent(stanceCD *core.Timer) {
 	hitDep := monk.NewDynamicStatDependency(stats.Spirit, stats.HitRating, 0.5)
 	expDep := monk.NewDynamicStatDependency(stats.Spirit, stats.ExpertiseRating, 0.5)
 	hasteDep := monk.NewDynamicMultiplyStat(stats.HasteRating, 1.5)
-	apDep := monk.NewDynamicStatDependency(stats.SpellPower, stats.AttackPower, 2)
+	// TODO: This should be a replacement not a dependency.
+	// apDep := monk.NewDynamicStatDependency(stats.SpellPower, stats.AttackPower, 2)
 
 	dmgDone := 0.0
 
@@ -125,14 +126,14 @@ func (monk *Monk) registerStanceOfTheWiseSerpent(stanceCD *core.Timer) {
 			monk.EnableDynamicStatDep(sim, hitDep)
 			monk.EnableDynamicStatDep(sim, expDep)
 			monk.EnableDynamicStatDep(sim, hasteDep)
-			monk.EnableDynamicStatDep(sim, apDep)
+			// monk.EnableDynamicStatDep(sim, apDep)
 			monk.SetCurrentPowerBar(core.ManaBar)
 			eminenceAura.Activate(sim)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			eminenceAura.Deactivate(sim)
 			monk.SetCurrentPowerBar(core.EnergyBar)
-			monk.DisableDynamicStatDep(sim, apDep)
+			// monk.DisableDynamicStatDep(sim, apDep)
 			monk.DisableDynamicStatDep(sim, hasteDep)
 			monk.DisableDynamicStatDep(sim, expDep)
 			monk.DisableDynamicStatDep(sim, hitDep)

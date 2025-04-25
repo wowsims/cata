@@ -113,7 +113,7 @@ export const AOE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('AoE De
 export const StandardTalents = {
 	name: 'Mono-Cat',
 	data: SavedTalents.create({
-		talentsString: '-2320322312012121202301-020301',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: DruidMajorGlyph.GlyphOfThorns,
 			major2: DruidMajorGlyph.GlyphOfFeralCharge,
@@ -128,7 +128,7 @@ export const StandardTalents = {
 export const HybridTalents = {
 	name: 'Hybrid',
 	data: SavedTalents.create({
-		talentsString: '-2300322312310001220311-020331',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: DruidMajorGlyph.GlyphOfFrenziedRegeneration,
 			major2: DruidMajorGlyph.GlyphOfMaul,

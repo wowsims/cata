@@ -76,7 +76,7 @@ export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const BeastMasteryTalents = {
 	name: 'Beast Mastery',
 	data: SavedTalents.create({
-		talentsString: '2330230311320112121-2302-03',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: MajorGlyph.GlyphOfBestialWrath,
 			major2: MajorGlyph.GlyphOfRaptorStrike,

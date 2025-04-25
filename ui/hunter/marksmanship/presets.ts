@@ -77,7 +77,7 @@ export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const MarksmanTalents = {
 	name: 'Marksman',
 	data: SavedTalents.create({
-		talentsString: '032002-2302320232120231201-03',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: MajorGlyph.GlyphOfDisengage,
 			major2: MajorGlyph.GlyphOfRaptorStrike,

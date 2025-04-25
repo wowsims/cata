@@ -772,39 +772,39 @@ func GetAllRotationSpellIds() map[string][]int32 {
 		{Name: "bloodDeathKnight", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassDeathKnight,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "23323223130222311321",
+			TalentsString: "",
 		}, &proto.Player_BloodDeathKnight{BloodDeathKnight: &proto.BloodDeathKnight{Options: &proto.BloodDeathKnight_Options{ClassOptions: &proto.DeathKnightOptions{}}, Rotation: &proto.BloodDeathKnight_Rotation{}}}), nil, nil, nil)},
 		{Name: "frostDeathKnight", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassDeathKnight,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "-32231222233112212331",
+			TalentsString: "",
 		}, &proto.Player_FrostDeathKnight{FrostDeathKnight: &proto.FrostDeathKnight{Options: &proto.FrostDeathKnight_Options{ClassOptions: &proto.DeathKnightOptions{}}}}), nil, nil, nil)},
 		{Name: "unholyDeathKnight", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassDeathKnight,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "--22322321232331121231",
+			TalentsString: "",
 		}, &proto.Player_UnholyDeathKnight{UnholyDeathKnight: &proto.UnholyDeathKnight{Options: &proto.UnholyDeathKnight_Options{ClassOptions: &proto.DeathKnightOptions{}}}}), nil, nil, nil)},
 
 		// Druid
 		{Name: "balanceDruid", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassDruid,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "33233221123212111231-2",
+			TalentsString: "",
 		}, &proto.Player_BalanceDruid{BalanceDruid: &proto.BalanceDruid{Options: &proto.BalanceDruid_Options{ClassOptions: &proto.DruidOptions{}}}}), nil, nil, nil)},
 		{Name: "feralDruid", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassDruid,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "-2322322312012221222311",
+			TalentsString: "",
 		}, &proto.Player_FeralDruid{FeralDruid: &proto.FeralDruid{Options: &proto.FeralDruid_Options{ClassOptions: &proto.DruidOptions{}}, Rotation: &proto.FeralDruid_Rotation{}}}), nil, nil, nil)},
 		// {Name: "guardianDruid", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 		// 	Class:         proto.Class_ClassDruid,
 		// 	Equipment:     &proto.EquipmentSpec{},
-		// 	TalentsString: "-503232132322010353120300313511-20350001",
+		// 	TalentsString: "",
 		// }, &proto.Player_FeralTankDruid{FeralTankDruid: &proto.FeralTankDruid{Options: &proto.FeralTankDruid_Options{ClassOptions: &proto.DruidOptions{}}}}), nil, nil, nil)},
 		{Name: "restorationDruid", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassDruid,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "-2322322312012221222311",
+			TalentsString: "",
 		}, &proto.Player_RestorationDruid{RestorationDruid: &proto.RestorationDruid{Options: &proto.RestorationDruid_Options{ClassOptions: &proto.DruidOptions{}}}}), nil, nil, nil)},
 
 		// Hunter
@@ -812,19 +812,19 @@ func GetAllRotationSpellIds() map[string][]int32 {
 			Class:         proto.Class_ClassHunter,
 			Race:          proto.Race_RaceTroll,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "003-2322321232122231221",
+			TalentsString: "",
 		}, &proto.Player_BeastMasteryHunter{BeastMasteryHunter: &proto.BeastMasteryHunter{Options: &proto.BeastMasteryHunter_Options{ClassOptions: &proto.HunterOptions{}}}}), nil, nil, nil)},
 		{Name: "marksmanshipHunter", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassHunter,
 			Race:          proto.Race_RaceTroll,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "-0320321232120131221-332002",
+			TalentsString: "",
 		}, &proto.Player_MarksmanshipHunter{MarksmanshipHunter: &proto.MarksmanshipHunter{Options: &proto.MarksmanshipHunter_Options{ClassOptions: &proto.HunterOptions{}}}}), nil, nil, nil)},
 		{Name: "survivalHunter", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassHunter,
 			Race:          proto.Race_RaceTroll,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "--33222223123222121321",
+			TalentsString: "",
 		}, &proto.Player_SurvivalHunter{SurvivalHunter: &proto.SurvivalHunter{Options: &proto.SurvivalHunter_Options{ClassOptions: &proto.HunterOptions{}}}}), nil, nil, nil)},
 
 		// Mage
@@ -832,71 +832,71 @@ func GetAllRotationSpellIds() map[string][]int32 {
 			Class:         proto.Class_ClassMage,
 			Race:          proto.Race_RaceTroll,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "323322221232122212121",
+			TalentsString: "",
 		}, &proto.Player_ArcaneMage{ArcaneMage: &proto.ArcaneMage{Options: &proto.ArcaneMage_Options{ClassOptions: &proto.MageOptions{}}}}), nil, nil, nil)},
 		{Name: "fireMage", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassMage,
 			Race:          proto.Race_RaceTroll,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "001-232332221121121213231",
+			TalentsString: "",
 		}, &proto.Player_FireMage{FireMage: &proto.FireMage{Options: &proto.FireMage_Options{ClassOptions: &proto.MageOptions{}}}}), nil, nil, nil)},
 		{Name: "frostMage", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassMage,
 			Race:          proto.Race_RaceTroll,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "--2323223213331321221",
+			TalentsString: "",
 		}, &proto.Player_FrostMage{FrostMage: &proto.FrostMage{Options: &proto.FrostMage_Options{ClassOptions: &proto.MageOptions{}}}}), nil, nil, nil)},
 
 		// Paladin
 		{Name: "holyPaladin", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassPaladin,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "23332221222131312321",
+			TalentsString: "",
 		}, &proto.Player_HolyPaladin{HolyPaladin: &proto.HolyPaladin{Options: &proto.HolyPaladin_Options{ClassOptions: &proto.PaladinOptions{}}}}), nil, nil, nil)},
 		{Name: "protPaladin", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassPaladin,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "003-32223223122121121231",
+			TalentsString: "",
 		}, &proto.Player_ProtectionPaladin{ProtectionPaladin: &proto.ProtectionPaladin{Options: &proto.ProtectionPaladin_Options{ClassOptions: &proto.PaladinOptions{}}}}), nil, nil, nil)},
 		{Name: "retPaladin", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassPaladin,
 			Race:          proto.Race_RaceBloodElf,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "-3-23223213211113212321",
+			TalentsString: "",
 		}, &proto.Player_RetributionPaladin{RetributionPaladin: &proto.RetributionPaladin{Options: &proto.RetributionPaladin_Options{ClassOptions: &proto.PaladinOptions{}}}}), nil, nil, nil)},
 
 		// Priest
 		{Name: "disciplinePriest", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassPriest,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "233213121213222312221",
+			TalentsString: "",
 		}, &proto.Player_DisciplinePriest{DisciplinePriest: &proto.DisciplinePriest{Options: &proto.DisciplinePriest_Options{ClassOptions: &proto.PriestOptions{}}}}), nil, nil, nil)},
 		{Name: "holyPriest", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassPriest,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "013-233122221211221123211",
+			TalentsString: "",
 		}, &proto.Player_HolyPriest{HolyPriest: &proto.HolyPriest{Options: &proto.HolyPriest_Options{ClassOptions: &proto.PriestOptions{}}}}), nil, nil, nil)},
 		{Name: "shadowPriest", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassPriest,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "-002-322232212211222121231",
+			TalentsString: "",
 		}, &proto.Player_ShadowPriest{ShadowPriest: &proto.ShadowPriest{Options: &proto.ShadowPriest_Options{ClassOptions: &proto.PriestOptions{}}}}), nil, nil, nil)},
 
 		// Rogue
 		{Name: "assassinationRogue", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassRogue,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "2333232213322112321",
+			TalentsString: "",
 		}, &proto.Player_AssassinationRogue{AssassinationRogue: &proto.AssassinationRogue{Options: &proto.AssassinationRogue_Options{ClassOptions: &proto.RogueOptions{}}}}), nil, nil, nil)},
 		{Name: "combatRogue", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassRogue,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "-2332232312232212321",
+			TalentsString: "",
 		}, &proto.Player_CombatRogue{CombatRogue: &proto.CombatRogue{Options: &proto.CombatRogue_Options{ClassOptions: &proto.RogueOptions{}}}}), nil, nil, nil)},
 		{Name: "subtletyRogue", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassRogue,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "--2331232321313312321",
+			TalentsString: "",
 		}, &proto.Player_SubtletyRogue{SubtletyRogue: &proto.SubtletyRogue{Options: &proto.SubtletyRogue_Options{ClassOptions: &proto.RogueOptions{}}}}), nil, nil, nil)},
 
 		// Shaman
@@ -904,70 +904,70 @@ func GetAllRotationSpellIds() map[string][]int32 {
 			Class:         proto.Class_ClassShaman,
 			Race:          proto.Race_RaceTroll,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "3230323212231121321-22",
+			TalentsString: "",
 		}, &proto.Player_ElementalShaman{ElementalShaman: &proto.ElementalShaman{Options: &proto.ElementalShaman_Options{ClassOptions: &proto.ShamanOptions{}}}}), nil, nil, nil)},
 		{Name: "enhancementShaman", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassShaman,
 			Race:          proto.Race_RaceTroll,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "-2331322313223212321",
+			TalentsString: "",
 		}, &proto.Player_EnhancementShaman{EnhancementShaman: &proto.EnhancementShaman{Options: &proto.EnhancementShaman_Options{ClassOptions: &proto.ShamanOptions{}}}}), nil, nil, nil)},
 		{Name: "restorationShaman", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassShaman,
 			Race:          proto.Race_RaceTroll,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "--23322232132123121321",
+			TalentsString: "",
 		}, &proto.Player_RestorationShaman{RestorationShaman: &proto.RestorationShaman{Options: &proto.RestorationShaman_Options{ClassOptions: &proto.ShamanOptions{}}}}), nil, nil, nil)},
 
 		// Warlock
 		{Name: "afflictionWarlock", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassWarlock,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "223222123213321321-31",
+			TalentsString: "",
 		}, &proto.Player_AfflictionWarlock{AfflictionWarlock: &proto.AfflictionWarlock{Options: &proto.AfflictionWarlock_Options{ClassOptions: &proto.WarlockOptions{}}}}), nil, nil, nil)},
 		{Name: "demonologyWarlock", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassWarlock,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "013-3322222312312212211",
+			TalentsString: "",
 		}, &proto.Player_DemonologyWarlock{DemonologyWarlock: &proto.DemonologyWarlock{Options: &proto.DemonologyWarlock_Options{ClassOptions: &proto.WarlockOptions{}}}}), nil, nil, nil)},
 		{Name: "destructionWarlock", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassWarlock,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "-022-3322222312221312211",
+			TalentsString: "",
 		}, &proto.Player_DestructionWarlock{DestructionWarlock: &proto.DestructionWarlock{Options: &proto.DestructionWarlock_Options{ClassOptions: &proto.WarlockOptions{}}}}), nil, nil, nil)},
 
 		// Warrior
 		{Name: "armsWarrior", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassWarrior,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "32222323122212312211-2",
+			TalentsString: "",
 		}, &proto.Player_ArmsWarrior{ArmsWarrior: &proto.ArmsWarrior{Options: &proto.ArmsWarrior_Options{ClassOptions: &proto.WarriorOptions{}}}}), nil, nil, nil)},
 		{Name: "furyWarrior", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassWarrior,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "002-332222131321111223211",
+			TalentsString: "",
 		}, &proto.Player_FuryWarrior{FuryWarrior: &proto.FuryWarrior{Options: &proto.FuryWarrior_Options{ClassOptions: &proto.WarriorOptions{}}}}), nil, nil, nil)},
 		{Name: "protectionWarrior", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassWarrior,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "-002-33233221121212212231",
+			TalentsString: "",
 		}, &proto.Player_ProtectionWarrior{ProtectionWarrior: &proto.ProtectionWarrior{Options: &proto.ProtectionWarrior_Options{ClassOptions: &proto.WarriorOptions{}}}}), nil, nil, nil)},
 
 		// Monk
 		{Name: "brewmasterMonk", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassMonk,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "111111111111111111",
+			TalentsString: "",
 		}, &proto.Player_BrewmasterMonk{BrewmasterMonk: &proto.BrewmasterMonk{Options: &proto.BrewmasterMonk_Options{ClassOptions: &proto.MonkOptions{}, Stance: proto.MonkStance_SturdyOx}}}), nil, nil, nil)},
 		{Name: "mistweaverMonk", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassMonk,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "111111111111111111",
+			TalentsString: "",
 		}, &proto.Player_MistweaverMonk{MistweaverMonk: &proto.MistweaverMonk{Options: &proto.MistweaverMonk_Options{ClassOptions: &proto.MonkOptions{}, Stance: proto.MonkStance_WiseSerpent}}}), nil, nil, nil)},
 		{Name: "windwalkerMonk", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassMonk,
 			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "111111111111111111",
+			TalentsString: "",
 		}, &proto.Player_WindwalkerMonk{WindwalkerMonk: &proto.WindwalkerMonk{Options: &proto.WindwalkerMonk_Options{ClassOptions: &proto.MonkOptions{}}}}), nil, nil, nil)},
 	}
 
