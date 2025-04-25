@@ -15,11 +15,12 @@ import * as RetributionInputs from './inputs.js';
 import * as Presets from './presets.js';
 
 const isGlyphOfSealOfTruthActive = (player: Player<Spec.SpecRetributionPaladin>): boolean => {
-	const currentSeal = player.getSpecOptions().classOptions?.seal;
-	return (
-		player.getPrimeGlyps().includes(PaladinPrimeGlyph.GlyphOfSealOfTruth) &&
-		(currentSeal === PaladinSeal.Truth || currentSeal === PaladinSeal.Righteousness)
-	);
+	// const currentSeal = player.getSpecOptions().classOptions?.seal;
+	// return (
+	// 	player.getPrimeGlyps().includes(PaladinPrimeGlyph.GlyphOfSealOfTruth) &&
+	// 	(currentSeal === PaladinSeal.Truth || currentSeal === PaladinSeal.Righteousness)
+	// );
+	return false
 };
 
 const modifyDisplayStats = (player: Player<Spec.SpecRetributionPaladin>) => {

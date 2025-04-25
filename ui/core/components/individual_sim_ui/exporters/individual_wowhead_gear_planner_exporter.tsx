@@ -226,9 +226,6 @@ export class IndividualWowheadGearPlannerExporter<SpecType extends Spec> extends
 			level: CHARACTER_LEVEL,
 			talents: player.getTalentsString().split('-'),
 			glyphs: [
-				addGlyph(glyphs.prime1),
-				addGlyph(glyphs.prime2),
-				addGlyph(glyphs.prime3),
 				addGlyph(glyphs.major1),
 				addGlyph(glyphs.major2),
 				addGlyph(glyphs.major3),

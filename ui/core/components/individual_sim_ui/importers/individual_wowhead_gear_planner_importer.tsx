@@ -289,9 +289,6 @@ export class IndividualWowheadGearPlannerImporter<SpecType extends Spec> extends
 		});
 
 		const glyphs = Glyphs.create({
-			prime1: this.simUI.sim.db.glyphSpellToItemId(glyphIds[0]),
-			prime2: this.simUI.sim.db.glyphSpellToItemId(glyphIds[1]),
-			prime3: this.simUI.sim.db.glyphSpellToItemId(glyphIds[2]),
 			major1: this.simUI.sim.db.glyphSpellToItemId(glyphIds[3]),
 			major2: this.simUI.sim.db.glyphSpellToItemId(glyphIds[4]),
 			major3: this.simUI.sim.db.glyphSpellToItemId(glyphIds[5]),
