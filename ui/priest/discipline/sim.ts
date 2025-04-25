@@ -49,7 +49,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDisciplinePriest, {
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
 		consumables: Presets.DefaultConsumables,
 		// Default talents.
 		talents: Presets.StandardTalents.data,
@@ -113,7 +112,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDisciplinePriest, {
 			spec: Spec.SpecDisciplinePriest,
 			talents: Presets.StandardTalents.data,
 			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
 			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,

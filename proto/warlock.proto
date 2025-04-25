@@ -8,10 +8,6 @@ option go_package = "./proto";
 message WarlockTalents {
 }
 
-enum WarlockPrimeGlyph {
-    WarlockPrimeGlyphNone = 0;
-}
-
 enum WarlockMajorGlyph {
     WarlockMajorGlyphNone = 0;
     GlyphOfConflagrate = 42454;
@@ -21,7 +17,6 @@ enum WarlockMajorGlyph {
     GlyphOfHealthstone = 42462;
     GlyphOfCurseOfTheElements = 42464;
     GlyphOfImpSwarm = 42465;
-    GlyphOfHavoc = 42466;
     GlyphOfSoulstone = 42470;
     GlyphOfUnstableAffliction = 42472;
     GlyphOfSoulConsumption = 43390;

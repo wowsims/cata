@@ -138,13 +138,6 @@ export const DefaultOptions = RetributionPaladinOptions.create({
 	},
 });
 
-export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfTitanicStrength,
-	food: Food.FoodBeerBasedCrocolisk,
-	defaultPotion: Potions.GolembloodPotion,
-	prepopPotion: Potions.GolembloodPotion,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
-});
 export const DefaultConsumables = ConsumesSpec.create({
 	flaskId: 58088, // Flask of Titanic Strength
 	foodId: 62670, // Beer-Basted Crocolisk

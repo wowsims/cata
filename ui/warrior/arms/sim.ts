@@ -61,7 +61,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
 		consumables: Presets.DefaultConsumables,
 		// Default talents.
 		talents: Presets.ArmsTalents.data,
@@ -157,7 +156,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 			spec: Spec.SpecArmsWarrior,
 			talents: Presets.ArmsTalents.data,
 			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
 			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,

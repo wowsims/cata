@@ -98,7 +98,6 @@ export interface RaidSimPreset<SpecType extends Spec> {
 	spec: Spec;
 	talents: SavedTalents;
 	specOptions: SpecOptions<SpecType>;
-	consumes: Consumes;
 	consumables: ConsumesSpec;
 	defaultName?: string;
 	defaultFactionRaces: Record<Faction, Race>;
@@ -146,7 +145,6 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 		 * breakpoint for the second listed stat (if present), etc.
 		 */
 		softCapBreakpoints?: StatCap[];
-		consumes: Consumes;
 		consumables: ConsumesSpec;
 		talents: SavedTalents;
 		specOptions: SpecOptions<SpecType>;
@@ -205,7 +203,6 @@ export interface Settings {
 	raidBuffs: RaidBuffs;
 	partyBuffs: PartyBuffs;
 	individualBuffs: IndividualBuffs;
-	consumes: Consumes;
 	consumables: ConsumesSpec;
 	race: Race;
 	professions?: Array<Profession>;

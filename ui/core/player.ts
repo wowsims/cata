@@ -244,7 +244,6 @@ export class Player<SpecType extends Spec> {
 
 	private name = '';
 	private buffs: IndividualBuffs = IndividualBuffs.create();
-	private consumes: Consumes = Consumes.create();
 	private consumables: ConsumesSpec = ConsumesSpec.create();
 	private bonusStats: Stats = new Stats();
 	private gear: Gear = new Gear({});
@@ -708,10 +707,7 @@ export class Player<SpecType extends Spec> {
 		// Make a defensive copy
 		return ConsumesSpec.clone(this.consumables);
 	}
-	getOldConsumes(): Consumes {
-		// Make a defensive copy
-		return Consumes.clone(this.consumes);
-	}
+
 	setConsumes(eventID: EventID, newConsumes: ConsumesSpec) {
 		if (ConsumesSpec.equals(this.consumables, newConsumes)) return;
 
@@ -1615,88 +1611,5 @@ export class Player<SpecType extends Spec> {
 		if (!(proto.apiVersion < CURRENT_API_VERSION)) {
 			return;
 		}
-		const db = await Database.get();
-		if (!proto.consumables) {
-			proto.consumables = ConsumesSpec.create();
-		}
-		if (proto.consumes && typeof proto.consumes !== 'undefined') {
-			if (proto.consumes.prepopPotion != Potions.UnknownPotion && proto.consumables.prepotId == 0) {
-				proto.consumables.prepotId =
-					findInputItemForEnum(Potions, proto.consumes.defaultPotion, db.getConsumablesByType(ConsumableType.ConsumableTypePotion))?.id ?? 0;
-			}
-			if (proto.consumes.defaultPotion != Potions.UnknownPotion && proto.consumables.potId == 0) {
-				proto.consumables.potId =
-					findInputItemForEnum(Potions, proto.consumes.defaultPotion, db.getConsumablesByType(ConsumableType.ConsumableTypePotion))?.id ?? 0;
-			}
-			if (proto.consumes.flask != Flask.FlaskUnknown && proto.consumables.flaskId == 0) {
-				proto.consumables.flaskId =
-					findInputItemForEnum(Flask, proto.consumes.flask, db.getConsumablesByType(ConsumableType.ConsumableTypeFlask))?.id ?? 0;
-			}
-			if (proto.consumes.food != Food.FoodUnknown && proto.consumables.foodId == 0) {
-				proto.consumables.foodId =
-					findInputItemForEnum(Food, proto.consumes.flask, db.getConsumablesByType(ConsumableType.ConsumableTypeFood))?.id ?? 0;
-
-				if (proto.consumes.food === Food.FoodSeafoodFeast) {
-					proto.consumables.foodId = 62290;
-				} else if (proto.consumes.food === Food.FoodFortuneCookie) {
-					proto.consumables.foodId = 62649;
-				}
-			}
-			if (
-				typeof proto.consumes?.guardianElixir !== 'undefined' &&
-				proto.consumes.guardianElixir != GuardianElixir.GuardianElixirUnknown &&
-				proto.consumables.guardianElixirId == 0
-			) {
-				proto.consumables.guardianElixirId =
-					findInputItemForEnum(GuardianElixir, proto.consumes.guardianElixir, db.getConsumablesByType(ConsumableType.ConsumableTypeGuardianElixir))
-						?.id ?? 0;
-			}
-			if (
-				typeof proto.consumes?.battleElixir !== 'undefined' &&
-				proto.consumes.battleElixir != BattleElixir.BattleElixirUnknown &&
-				proto.consumables.battleElixirId == 0
-			) {
-				proto.consumables.battleElixirId =
-					findInputItemForEnum(BattleElixir, proto.consumes.battleElixir, db.getConsumablesByType(ConsumableType.ConsumableTypeBattleElixir))?.id ??
-					0;
-			}
-			if (typeof proto.consumes?.explosiveBigDaddy !== 'undefined' && proto.consumes.explosiveBigDaddy && proto.consumables.explosiveId == 0) {
-				proto.consumables.explosiveId = 89637;
-			}
-			if (
-				typeof proto.consumes?.defaultConjured !== 'undefined' &&
-				proto.consumes.defaultConjured != Conjured.ConjuredUnknown &&
-				proto.consumables.conjuredId == 0
-			) {
-				switch (proto.consumes.defaultConjured) {
-					case Conjured.ConjuredDarkRune:
-						proto.consumables.conjuredId = 20520;
-					case Conjured.ConjuredHealthstone:
-						proto.consumables.conjuredId = 5512;
-					case Conjured.ConjuredRogueThistleTea:
-						proto.consumables.conjuredId = 7676;
-				}
-			}
-			if (
-				typeof proto.consumes?.tinkerHands !== 'undefined' &&
-				proto.consumes.tinkerHands != TinkerHands.TinkerHandsNone &&
-				proto.consumables.tinkerId == 0
-			) {
-				switch (proto.consumes.tinkerHands) {
-					case TinkerHands.TinkerHandsSynapseSprings:
-						proto.consumables.tinkerId = 82174;
-					case TinkerHands.TinkerHandsTazikShocker:
-						proto.consumables.tinkerId = 82180;
-					case TinkerHands.TinkerHandsQuickflipDeflectionPlates:
-						proto.consumables.tinkerId = 82177;
-					case TinkerHands.TinkerHandsSpinalHealingInjector:
-						proto.consumables.tinkerId = 82184;
-					case TinkerHands.TinkerHandsZ50ManaGulper:
-						proto.consumables.tinkerId = 82186;
-				}
-			}
-		}
-		proto.consumes = Consumes.create(); // null consumes
-		proto.apiVersion = CURRENT_API_VERSION;
 	}
 }

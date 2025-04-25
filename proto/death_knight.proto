@@ -11,10 +11,6 @@ import "common.proto";
 message DeathKnightTalents {
 }
 
-enum DeathKnightPrimeGlyph {
-    DeathKnightPrimeGlyphNone = 0;
-}
-
 enum DeathKnightMajorGlyph {
     DeathKnightMajorGlyphNone = 0;
     GlyphOfAntiMagicShell = 43533;

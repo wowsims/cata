@@ -57,7 +57,7 @@ export class ConsumesPicker extends Component {
 
 		const potionsPicker = buildIconInput(potionsElem, this.simUI.player, potionsOptions);
 
-		//Todo: Move conjured to DBC
+		// TODO: Move conjured to DBC
 		const conjuredOptions = ConsumablesInputs.makeConjuredInput(relevantStatOptions(ConsumablesInputs.CONJURED_CONFIG, this.simUI));
 		const conjuredPicker = buildIconInput(potionsElem, this.simUI.player, conjuredOptions);
 
@@ -123,7 +123,7 @@ export class ConsumesPicker extends Component {
 		);
 		const engiConsumesElem = engiConsumesRef.value!;
 
-		// Todo: make this from dbc as well
+		// TODO: make this from dbc as well
 		const tinkerOptions = ConsumablesInputs.makeTinkerHandsInput(relevantStatOptions(ConsumablesInputs.TINKERS_HANDS_CONFIG, this.simUI), 'Gloves Tinkers');
 		const tinkerPicker = buildIconInput(engiConsumesElem, this.simUI.player, tinkerOptions);
 

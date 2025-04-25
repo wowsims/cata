@@ -10,10 +10,6 @@ import "common.proto";
 message RogueTalents {
 }
 
-enum RoguePrimeGlyph {
-    RoguePrimeGlyphNone = 0;
-}
-
 enum RogueMajorGlyph {
     RogueMajorGlyphNone = 0;
     GlyphOfShadowWalk = 42954;

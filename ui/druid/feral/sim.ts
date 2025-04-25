@@ -55,7 +55,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
 		consumables: Presets.DefaultConsumables,
 		// Default rotation settings.
 		rotationType: APLRotationType.TypeSimple,
@@ -190,7 +189,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 			spec: Spec.SpecFeralDruid,
 			talents: Presets.StandardTalents.data,
 			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
 			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,

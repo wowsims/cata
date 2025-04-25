@@ -76,11 +76,6 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	blessingOfMight: true,
 	communion: true,
 });
-export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.VolcanicPotion,
-	flask: Flask.FlaskOfTheDraconicMind,
-	food: Food.FoodSeafoodFeast,
-});
 export const DefaultConsumables = ConsumesSpec.create({
 	flaskId: 58086, // Flask of the Draconic Mind
 	foodId: 62290, // Seafood Magnifique Feast

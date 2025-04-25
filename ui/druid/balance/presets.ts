@@ -73,12 +73,6 @@ export const DefaultOptions = BalanceDruidOptions.create({
 	},
 });
 
-export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfTheDraconicMind,
-	food: Food.FoodSeafoodFeast,
-	defaultPotion: Potions.VolcanicPotion,
-	prepopPotion: Potions.VolcanicPotion,
-});
 export const DefaultConsumables = ConsumesSpec.create({
 	flaskId: 58086, // Flask of the Draconic Mind
 	foodId: 62290, // Seafood Magnifique Feast

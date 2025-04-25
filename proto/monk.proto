@@ -28,11 +28,6 @@ message MonkTalents {
 	bool invoke_xuen_the_white_tiger = 17;
 	bool chi_torpedo = 18;
 }
-
-enum MonkPrimeGlyph {
-	MonkPrimeGlyphNone = 0;
-}
-
 enum MonkMajorGlyph {
 	MonkMajorGlyphNone = 0;
 	MonkMajorGlyphAfterlife = 87891;

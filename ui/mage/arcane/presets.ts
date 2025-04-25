@@ -1,16 +1,11 @@
 import * as PresetUtils from '../../core/preset_utils';
 import {
-	Consumes,
 	ConsumesSpec,
 	Debuffs,
-	Flask,
-	Food,
 	Glyphs,
-	Potions,
 	Profession,
 	RaidBuffs,
 	Stat,
-	TinkerHands,
 	UnitReference,
 } from '../../core/proto/common';
 import { ArcaneMage_Options as MageOptions, MageMajorGlyph as MajorGlyph } from '../../core/proto/mage';
@@ -72,7 +67,7 @@ export const DefaultArcaneOptions = MageOptions.create({
 	focusMagicPercentUptime: 90,
 	focusMagicTarget: UnitReference.create(),
 });
-export const DefaultFConsumables = ConsumesSpec.create({
+export const DefaultConsumables = ConsumesSpec.create({
 	flaskId: 58086, // Flask of the Draconic Mind
 	foodId: 62290, // Seafood Magnifique Feast
 	potId: 58091, // Volcanic Potion
@@ -94,14 +89,6 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	blessingOfKings: true,
 	blessingOfMight: true,
 	communion: true,
-});
-
-export const DefaultArcaneConsumes = Consumes.create({
-	flask: Flask.FlaskOfTheDraconicMind,
-	food: Food.FoodSeafoodFeast,
-	defaultPotion: Potions.VolcanicPotion,
-	prepopPotion: Potions.VolcanicPotion,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
 });
 
 export const DefaultDebuffs = Debuffs.create({

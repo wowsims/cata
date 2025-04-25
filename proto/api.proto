@@ -19,7 +19,7 @@ import "shaman.proto";
 import "warlock.proto";
 import "warrior.proto";
 
-// NextIndex: 57
+// NextIndex: 58
 message Player {
 	// Proto version at the time Player were saved.
 	// A "breaking change" here is defined as anything that will break saved
@@ -35,9 +35,7 @@ message Player {
 
 	EquipmentSpec equipment = 3;
 
-	// We have deprecated Consumes in favor of ConsumesSpec
-	Consumes consumes = 4 [deprecated=true];
-	ConsumesSpec consumables = 55;
+	ConsumesSpec consumables = 4;
 
 	UnitStats bonus_stats = 5;
 
@@ -64,13 +62,9 @@ message Player {
 		FireMage fire_mage = 19;
 		FrostMage frost_mage = 20;
 
-		BrewmasterMonk brewmaster_monk = 54;
-		MistweaverMonk mistweaver_monk = 55;
-		WindwalkerMonk windwalker_monk = 56;
-
-		BrewmasterMonk brewmaster_monk = 54;
-		MistweaverMonk mistweaver_monk = 55;
-		WindwalkerMonk windwalker_monk = 56;
+		BrewmasterMonk brewmaster_monk = 55;
+		MistweaverMonk mistweaver_monk = 56;
+		WindwalkerMonk windwalker_monk = 57;
 
 		HolyPaladin holy_paladin = 21;
 		ProtectionPaladin protection_paladin = 22;
@@ -97,7 +91,7 @@ message Player {
 		ProtectionWarrior protection_warrior = 38;
 	}
 
-	// Talents in wowhead format, e.g. '01102123133-12312312-'
+	// Talents in wowhead format, e.g. '000000'
 	string talents_string = 39;
 	Glyphs glyphs = 40;
 	Profession profession1 = 41;

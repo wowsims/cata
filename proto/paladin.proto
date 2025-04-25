@@ -8,10 +8,6 @@ option go_package = "./proto";
 message PaladinTalents {
 }
 
-enum PaladinPrimeGlyph {
-    PaladinPrimeGlyphNone = 0;
-}
-
 enum PaladinMajorGlyph {
     PaladinMajorGlyphNone = 0;
     GlyphOfDoubleJeopardy = 41092;

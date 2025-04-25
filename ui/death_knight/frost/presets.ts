@@ -4,19 +4,14 @@ import * as PresetUtils from '../../core/preset_utils';
 import { makeSpecChangeWarningToast } from '../../core/preset_utils';
 import { APLRotation_Type as APLRotationType } from '../../core/proto/apl';
 import {
-	Consumes,
 	ConsumesSpec,
-	Flask,
-	Food,
 	Glyphs,
 	HandType,
 	ItemSlot,
-	Potions,
 	Profession,
 	PseudoStat,
 	Spec,
 	Stat,
-	TinkerHands,
 } from '../../core/proto/common';
 import { DeathKnightMajorGlyph, DeathKnightMinorGlyph, FrostDeathKnight_Options } from '../../core/proto/death_knight';
 import { SavedTalents } from '../../core/proto/ui';
@@ -244,13 +239,6 @@ export const OtherDefaults = {
 	distanceFromTarget: 5,
 };
 
-export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfTitanicStrength,
-	food: Food.FoodBeerBasedCrocolisk,
-	defaultPotion: Potions.GolembloodPotion,
-	prepopPotion: Potions.GolembloodPotion,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
-});
 export const DefaultConsumables = ConsumesSpec.create({
 	flaskId: 58088, // Flask of Titanic Strength
 	foodId: 62670, // Beer-Basted Crocolisk

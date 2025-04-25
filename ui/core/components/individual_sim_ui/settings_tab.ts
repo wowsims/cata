@@ -340,7 +340,6 @@ export class SettingsTab extends SimTab {
 			partyBuffs: this.simUI.player.getParty()?.getBuffs() || PartyBuffs.create(),
 			playerBuffs: this.simUI.player.getBuffs(),
 			debuffs: this.simUI.sim.raid.getDebuffs(),
-			consumes: this.simUI.player.getOldConsumes(),
 			consumables: this.simUI.player.getConsumes(),
 			race: this.simUI.player.getRace(),
 			professions: this.simUI.player.getProfessions(),

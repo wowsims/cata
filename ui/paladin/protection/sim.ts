@@ -93,7 +93,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		// Values for now are pre-Cata initial WAG
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
 		consumables: Presets.DefaultConsumables,
 		// Default talents.
 		talents: Presets.DefaultTalents.data,
@@ -180,7 +179,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			spec: Spec.SpecProtectionPaladin,
 			talents: Presets.DefaultTalents.data,
 			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
 			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,

@@ -8,10 +8,6 @@ option go_package = "./proto";
 message ShamanTalents {
 }
 
-enum ShamanPrimeGlyph {
-    ShamanPrimeGlyphNone = 0;
-}
-
 enum ShamanMajorGlyph {
     ShamanMajorGlyphNone = 0;
     GlyphOfUnstableEarth = 41517;

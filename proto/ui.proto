@@ -390,8 +390,7 @@ message SavedSettings {
 	PartyBuffs party_buffs = 2;
 	Debuffs debuffs = 7;
 	IndividualBuffs player_buffs = 3;
-	// We deprecated Consumes in favor of ConsumesSpec
-	Consumes consumes = 4 [deprecated=true];
+	ConsumesSpec consumables = 4;
 	Race race = 5;
 	repeated Profession professions = 9;
 	bool enable_item_swap = 18;
@@ -403,7 +402,6 @@ message SavedSettings {
 	double distance_from_target = 12;
 	HealingModel healing_model = 13;
 	double dark_intent_uptime = 19;
-	ConsumesSpec consumables = 20;
 }
 
 message SavedTalents {

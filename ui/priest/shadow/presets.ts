@@ -160,13 +160,6 @@ export const DefaultOptions = Options.create({
 	},
 });
 
-export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfTheDraconicMind,
-	food: Food.FoodSeafoodFeast,
-	defaultPotion: Potions.VolcanicPotion,
-	prepopPotion: Potions.VolcanicPotion,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
-});
 export const DefaultConsumables = ConsumesSpec.create({
 	flaskId: 58086, // Flask of the Draconic Mind
 	foodId: 62290, // Seafood Magnifique Feast

@@ -41,4 +41,5 @@ enum ResourceType {
 	ResourceTypeSolarEnergy = 12;
 	ResourceTypeLunarEnergy = 13;
 	ResourceTypeHolyPower = 14;
+	ResourceTypeChi = 15;
 }

@@ -10,10 +10,6 @@ import "common.proto";
 message PriestTalents {
 }
 
-enum PriestPrimeGlyph {
-    PriestPrimeGlyphNone = 0;
-}
-
 enum PriestMajorGlyph {
     PriestMajorGlyphNone = 0;
     GlyphOfCircleOfHealing = 42396;
@@ -65,7 +61,6 @@ enum PriestMinorGlyph {
     GlyphOfHolyResurrection = 87276;
     GlyphOfTheValkyr = 87277;
     GlyphOfShadowyFriends = 87392;
-    GlyphOfAngels = 102153;
     GlyphOfAngels = 104109;
     GlyphOfTheSha = 104120;
     GlyphOfShiftedAppearances = 104121;

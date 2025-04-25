@@ -8,10 +8,6 @@ option go_package = "./proto";
 message WarriorTalents {
 }
 
-enum WarriorPrimeGlyph {
-    WarriorPrimeGlyphNone = 0;
-}
-
 enum WarriorMajorGlyph {
     WarriorMajorGlyphNone = 0;
     GlyphOfLongCharge = 43397;

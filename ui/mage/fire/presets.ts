@@ -132,13 +132,6 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	communion: true,
 });
 
-export const DefaultFireConsumes = Consumes.create({
-	flask: Flask.FlaskOfTheDraconicMind,
-	food: Food.FoodSeafoodFeast,
-	defaultPotion: Potions.VolcanicPotion,
-	prepopPotion: Potions.VolcanicPotion,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
-});
 export const DefaultFireConsumables = ConsumesSpec.create({
 	flaskId: 58086, // Flask of the Draconic Mind
 	foodId: 62290, // Seafood Magnifique Feast

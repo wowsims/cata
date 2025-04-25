@@ -30,7 +30,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
 		consumables: Presets.DefaultConsumables,
 		// Default talents.
 		talents: Presets.StandardTalents.data,
@@ -81,7 +80,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 			spec: Spec.SpecHolyPaladin,
 			talents: Presets.StandardTalents.data,
 			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
 			consumables: Presets.DefaultConsumables,
 			otherDefaults: Presets.OtherDefaults,
 			defaultFactionRaces: {

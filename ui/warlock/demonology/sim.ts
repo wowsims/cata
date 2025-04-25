@@ -66,7 +66,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 			return [hasteSoftCapConfig, masterySoftCapConfig];
 		})(),
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
 		consumables: Presets.DefaultConsumables,
 
 		// Default talents.
@@ -162,7 +161,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 			spec: Spec.SpecDemonologyWarlock,
 			talents: Presets.DemonologyTalentsIncinerate.data,
 			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
 			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,

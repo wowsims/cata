@@ -10,10 +10,6 @@ import "common.proto";
 message DruidTalents {
 }
 
-enum DruidPrimeGlyph {
-    DruidPrimeGlyphNone = 0;
-}
-
 enum DruidMajorGlyph {
     DruidMajorGlyphNone = 0;
     GlyphOfFrenziedRegeneration = 40896;
