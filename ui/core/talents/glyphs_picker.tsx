@@ -19,7 +19,6 @@ export type GlyphConfig = {
 };
 
 export type GlyphsConfig = {
-	primeGlyphs: Record<number, GlyphConfig>;
 	majorGlyphs: Record<number, GlyphConfig>;
 	minorGlyphs: Record<number, GlyphConfig>;
 };
@@ -46,7 +45,6 @@ export class GlyphsPicker extends Component {
 	private readonly glyphsConfig: GlyphsConfig;
 	readonly selectorModal: GlyphSelectorModal;
 	readonly player: Player<any>;
-	primeGlyphPickers: Array<GlyphPicker> = [];
 	majorGlyphPickers: Array<GlyphPicker> = [];
 	minorGlyphPickers: Array<GlyphPicker> = [];
 
@@ -55,13 +53,8 @@ export class GlyphsPicker extends Component {
 		this.glyphsConfig = glyphsConfig;
 		this.player = player;
 
-		const primeGlyphs = Object.keys(glyphsConfig.primeGlyphs).map(idStr => Number(idStr));
 		const majorGlyphs = Object.keys(glyphsConfig.majorGlyphs).map(idStr => Number(idStr));
 		const minorGlyphs = Object.keys(glyphsConfig.minorGlyphs).map(idStr => Number(idStr));
-
-		const primeGlyphsBlock = new ContentBlock(this.rootElem, 'prime-glyphs', {
-			header: { title: 'Prime Glyphs', extraCssClasses: ['border-0'] },
-		});
 
 		const majorGlyphsBlock = new ContentBlock(this.rootElem, 'major-glyphs', {
 			header: { title: 'Major Glyphs', extraCssClasses: ['border-0'] },
@@ -73,24 +66,11 @@ export class GlyphsPicker extends Component {
 		this.selectorModal = new GlyphSelectorModal(this.rootElem.closest('.individual-sim-ui')!);
 
 		Database.get().then(db => {
-			const primeGlyphsData = primeGlyphs.map(glyph => this.getGlyphData(glyph, db));
 			const majorGlyphsData = majorGlyphs.map(glyph => this.getGlyphData(glyph, db));
 			const minorGlyphsData = minorGlyphs.map(glyph => this.getGlyphData(glyph, db));
 
-			primeGlyphsData.sort((a, b) => stringComparator(a.name, b.name));
 			majorGlyphsData.sort((a, b) => stringComparator(a.name, b.name));
 			minorGlyphsData.sort((a, b) => stringComparator(a.name, b.name));
-
-			this.primeGlyphPickers = (['prime1', 'prime2', 'prime3'] as Array<keyof Glyphs>).map(
-				glyphField =>
-					new GlyphPicker(primeGlyphsBlock.bodyElement, {
-						label: 'Prime',
-						player,
-						selectorModal: this.selectorModal,
-						glyphOptions: primeGlyphsData,
-						glyphField,
-					}),
-			);
 
 			this.majorGlyphPickers = (['major1', 'major2', 'major3'] as Array<keyof Glyphs>).map(
 				glyphField =>
@@ -119,7 +99,7 @@ export class GlyphsPicker extends Component {
 	// In case we ever want to parse description from tooltip HTML.
 	//static descriptionRegex = /<a href=\\"\/wotlk.*>(.*)<\/a>/g;
 	getGlyphData(glyph: number, db: Database): GlyphData {
-		const glyphConfig = this.glyphsConfig.primeGlyphs[glyph] || this.glyphsConfig.majorGlyphs[glyph] || this.glyphsConfig.minorGlyphs[glyph];
+		const glyphConfig = this.glyphsConfig.majorGlyphs[glyph] || this.glyphsConfig.minorGlyphs[glyph];
 
 		return {
 			id: glyph,

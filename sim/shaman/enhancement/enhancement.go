@@ -52,7 +52,7 @@ func NewEnhancementShaman(character *core.Character, options *proto.Player) *Enh
 	})
 
 	enh.ApplySyncType(enhOptions.SyncType)
-	enh.ApplyFlametongueImbue(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeapon))
+	// enh.ApplyFlametongueImbue(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeapon))
 
 	if !enh.HasMHWeapon() {
 		enh.SelfBuffs.ImbueMH = proto.ShamanImbue_NoImbue
@@ -62,10 +62,10 @@ func NewEnhancementShaman(character *core.Character, options *proto.Player) *Enh
 		enh.SelfBuffs.ImbueOH = proto.ShamanImbue_NoImbue
 	}
 
-	enh.SpiritWolves = &shaman.SpiritWolves{
-		SpiritWolf1: enh.NewSpiritWolf(1),
-		SpiritWolf2: enh.NewSpiritWolf(2),
-	}
+	// enh.SpiritWolves = &shaman.SpiritWolves{
+	// 	SpiritWolf1: enh.NewSpiritWolf(1),
+	// 	SpiritWolf2: enh.NewSpiritWolf(2),
+	// }
 
 	return enh
 }
@@ -97,12 +97,12 @@ func (enh *EnhancementShaman) ApplyTalents() {
 func (enh *EnhancementShaman) Initialize() {
 	enh.Shaman.Initialize()
 	// In the Initialize due to frost brand adding the aura to the enemy
-	enh.RegisterFrostbrandImbue(enh.getImbueProcMask(proto.ShamanImbue_FrostbrandWeapon))
-	enh.RegisterFlametongueImbue(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeapon))
-	enh.RegisterWindfuryImbue(enh.getImbueProcMask(proto.ShamanImbue_WindfuryWeapon))
+	// enh.RegisterFrostbrandImbue(enh.getImbueProcMask(proto.ShamanImbue_FrostbrandWeapon))
+	// enh.RegisterFlametongueImbue(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeapon))
+	// enh.RegisterWindfuryImbue(enh.getImbueProcMask(proto.ShamanImbue_WindfuryWeapon))
 
 	if enh.ItemSwap.IsEnabled() {
-		enh.ApplyFlametongueImbueSwap(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeapon))
+		// enh.ApplyFlametongueImbueSwap(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeapon))
 		enh.RegisterItemSwapCallback(core.MeleeWeaponSlots(), func(_ *core.Simulation, slot proto.ItemSlot) {
 			enh.ApplySyncType(proto.ShamanSyncType_Auto)
 		})
@@ -135,7 +135,7 @@ func (enh *EnhancementShaman) Initialize() {
 	}))
 
 	enh.applyPrimalWisdom()
-	enh.registerLavaLashSpell()
+	// enh.registerLavaLashSpell()
 }
 
 func (enh EnhancementShaman) getMasteryBonus() float64 {

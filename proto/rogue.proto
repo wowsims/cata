@@ -69,22 +69,6 @@ message RogueTalents {
 	int32 serrated_blades = 56;
 	bool shadow_dance = 57;
 }
-
-enum RoguePrimeGlyph {
-	RoguePrimeGlyphNone = 0;
-	GlyphOfAdrenalineRush = 42954;
-	GlyphOfBackstab = 42956;
-	GlyphOfEviscerate = 42961;
-	GlyphOfHemorrhage = 42967;
-	GlyphOfKillingSpree = 45762;
-	GlyphOfMutilate = 45768;
-	GlyphOfRevealingStrike = 42965;
-	GlyphOfRupture = 42969;
-	GlyphOfShadowDance = 45764;
-	GlyphOfSinisterStrike = 42972;
-	GlyphOfSliceAndDice = 42973;
-	GlyphOfVendetta = 45761;
-}
 enum RogueMajorGlyph {
 	RogueMajorGlyphNone = 0;
 	GlyphOfAmbush = 42955;

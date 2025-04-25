@@ -127,8 +127,8 @@ type Shaman struct {
 	FlameShock *core.Spell
 	FrostShock *core.Spell
 
-	FeralSpirit  *core.Spell
-	SpiritWolves *SpiritWolves
+	FeralSpirit *core.Spell
+	// SpiritWolves *SpiritWolves
 
 	FireElemental      *FireElemental
 	FireElementalTotem *core.Spell
@@ -191,9 +191,6 @@ func (shaman *Shaman) GetCharacter() *core.Character {
 	return &shaman.Character
 }
 
-func (shaman *Shaman) HasPrimeGlyph(glyph proto.ShamanPrimeGlyph) bool {
-	return shaman.HasGlyph(int32(glyph))
-}
 func (shaman *Shaman) HasMajorGlyph(glyph proto.ShamanMajorGlyph) bool {
 	return shaman.HasGlyph(int32(glyph))
 }
@@ -201,74 +198,74 @@ func (shaman *Shaman) HasMinorGlyph(glyph proto.ShamanMinorGlyph) bool {
 	return shaman.HasGlyph(int32(glyph))
 }
 
-func (shaman *Shaman) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+// func (shaman *Shaman) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 
-	if shaman.Totems.Fire != proto.FireTotem_NoFireTotem && shaman.Talents.TotemicWrath {
-		raidBuffs.TotemicWrath = true
-	}
+// 	if shaman.Totems.Fire != proto.FireTotem_NoFireTotem && shaman.Talents.TotemicWrath {
+// 		raidBuffs.TotemicWrath = true
+// 	}
 
-	if shaman.Totems.Fire == proto.FireTotem_FlametongueTotem {
-		raidBuffs.FlametongueTotem = true
-	}
+// 	if shaman.Totems.Fire == proto.FireTotem_FlametongueTotem {
+// 		raidBuffs.FlametongueTotem = true
+// 	}
 
-	if shaman.Totems.Water == proto.WaterTotem_ManaSpringTotem {
-		raidBuffs.ManaSpringTotem = true
-	}
+// 	if shaman.Totems.Water == proto.WaterTotem_ManaSpringTotem {
+// 		raidBuffs.ManaSpringTotem = true
+// 	}
 
-	if shaman.Talents.ManaTideTotem {
-		raidBuffs.ManaTideTotemCount++
-	}
+// 	if shaman.Talents.ManaTideTotem {
+// 		raidBuffs.ManaTideTotemCount++
+// 	}
 
-	switch shaman.Totems.Air {
-	case proto.AirTotem_WrathOfAirTotem:
-		raidBuffs.WrathOfAirTotem = true
-	case proto.AirTotem_WindfuryTotem:
-		raidBuffs.WindfuryTotem = true
-	}
+// 	switch shaman.Totems.Air {
+// 	case proto.AirTotem_WrathOfAirTotem:
+// 		raidBuffs.WrathOfAirTotem = true
+// 	case proto.AirTotem_WindfuryTotem:
+// 		raidBuffs.WindfuryTotem = true
+// 	}
 
-	switch shaman.Totems.Earth {
-	case proto.EarthTotem_StrengthOfEarthTotem:
-		raidBuffs.StrengthOfEarthTotem = true
-	case proto.EarthTotem_StoneskinTotem:
-		raidBuffs.StoneskinTotem = true
-	}
+// 	switch shaman.Totems.Earth {
+// 	case proto.EarthTotem_StrengthOfEarthTotem:
+// 		raidBuffs.StrengthOfEarthTotem = true
+// 	case proto.EarthTotem_StoneskinTotem:
+// 		raidBuffs.StoneskinTotem = true
+// 	}
 
-	if shaman.Talents.UnleashedRage > 0 {
-		raidBuffs.UnleashedRage = true
-	}
+// 	if shaman.Talents.UnleashedRage > 0 {
+// 		raidBuffs.UnleashedRage = true
+// 	}
 
-	if shaman.Talents.ElementalOath > 0 {
-		raidBuffs.ElementalOath = true
-	}
-}
+// 	if shaman.Talents.ElementalOath > 0 {
+// 		raidBuffs.ElementalOath = true
+// 	}
+// }
 
 func (shaman *Shaman) Initialize() {
-	shaman.registerChainLightningSpell()
-	shaman.registerFireElementalTotem()
-	shaman.registerEarthElementalTotem()
-	shaman.registerFireNovaSpell()
-	shaman.registerLavaBurstSpell()
-	shaman.registerLightningBoltSpell()
-	shaman.registerLightningShieldSpell()
+	// shaman.registerChainLightningSpell()
+	// shaman.registerFireElementalTotem()
+	// shaman.registerEarthElementalTotem()
+	// shaman.registerFireNovaSpell()
+	// shaman.registerLavaBurstSpell()
+	// shaman.registerLightningBoltSpell()
+	// shaman.registerLightningShieldSpell()
 	shaman.registerSpiritwalkersGraceSpell()
-	shaman.registerMagmaTotemSpell()
-	shaman.registerSearingTotemSpell()
-	shaman.registerShocks()
-	shaman.registerUnleashElements()
+	// shaman.registerMagmaTotemSpell()
+	// shaman.registerSearingTotemSpell()
+	// shaman.registerShocks()
+	// shaman.registerUnleashElements()
 
-	shaman.registerStrengthOfEarthTotemSpell()
-	shaman.registerFlametongueTotemSpell()
-	shaman.registerTremorTotemSpell()
-	shaman.registerStoneskinTotemSpell()
-	shaman.registerWindfuryTotemSpell()
-	shaman.registerWrathOfAirTotemSpell()
-	shaman.registerManaSpringTotemSpell()
-	shaman.registerHealingStreamTotemSpell()
+	// shaman.registerStrengthOfEarthTotemSpell()
+	// shaman.registerFlametongueTotemSpell()
+	// shaman.registerTremorTotemSpell()
+	// shaman.registerStoneskinTotemSpell()
+	// shaman.registerWindfuryTotemSpell()
+	// shaman.registerWrathOfAirTotemSpell()
+	// shaman.registerManaSpringTotemSpell()
+	// shaman.registerHealingStreamTotemSpell()
 
 	// // This registration must come after all the totems are registered
-	shaman.registerCallOfTheElements()
-	shaman.registerCallOfTheAncestors()
-	shaman.registerCallOfTheSpirits()
+	// shaman.registerCallOfTheElements()
+	// shaman.registerCallOfTheAncestors()
+	// shaman.registerCallOfTheSpirits()
 
 	shaman.registerBloodlustCD()
 }
@@ -301,6 +298,8 @@ func (shaman *Shaman) RegisterHealingSpells() {
 	// 	})
 	// }
 }
+
+func (shaman *Shaman) ApplyTalents() {}
 
 func (shaman *Shaman) Reset(sim *core.Simulation) {
 

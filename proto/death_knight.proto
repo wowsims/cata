@@ -72,21 +72,6 @@ message DeathKnightTalents {
 	int32 sudden_doom = 59;
 	bool summon_gargoyle = 60;
 }
-
-enum DeathKnightPrimeGlyph {
-	DeathKnightPrimeGlyphNone = 0;
-	GlyphOfDeathAndDecay = 43542;
-	GlyphOfDeathCoil = 45804;
-	GlyphOfDeathStrike = 43827;
-	GlyphOfFrostStrike = 43543;
-	GlyphOfHeartStrike = 43534;
-	GlyphOfHowlingBlast = 45806;
-	GlyphOfIcyTouch = 43546;
-	GlyphOfObliterate = 43547;
-	GlyphOfRaiseDead = 43549;
-	GlyphOfRuneStrike = 43550;
-	GlyphOfScourgeStrike = 43551;
-}
 enum DeathKnightMajorGlyph {
 	DeathKnightMajorGlyphNone = 0;
 	GlyphOfAntiMagicShell = 43533;

@@ -53,11 +53,11 @@ type DeathKnight struct {
 	Inputs DeathKnightInputs
 
 	// Pets
-	Ghoul      *GhoulPet
-	Gargoyle   *GargoylePet
-	ArmyGhoul  []*GhoulPet
-	RuneWeapon *RuneWeaponPet
-	Bloodworm  []*BloodwormPet
+	// Ghoul      *GhoulPet
+	// Gargoyle   *GargoylePet
+	// ArmyGhoul  []*GhoulPet
+	// RuneWeapon *RuneWeaponPet
+	Bloodworm []*BloodwormPet
 
 	// Diseases
 	FrostFeverSpell  *core.Spell
@@ -97,68 +97,65 @@ func (dk *DeathKnight) GetCharacter() *core.Character {
 func (dk *DeathKnight) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 }
 
-func (dk *DeathKnight) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	if dk.Talents.AbominationsMight > 0 {
-		raidBuffs.AbominationsMight = true
-	}
+// func (dk *DeathKnight) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+// 	if dk.Talents.AbominationsMight > 0 {
+// 		raidBuffs.AbominationsMight = true
+// 	}
 
-	if dk.Talents.ImprovedIcyTalons {
-		raidBuffs.IcyTalons = true
-	}
+// 	if dk.Talents.ImprovedIcyTalons {
+// 		raidBuffs.IcyTalons = true
+// 	}
 
-	// TODO: Make horn of winter dynamic
-	raidBuffs.HornOfWinter = true
-}
+// 	// TODO: Make horn of winter dynamic
+// 	raidBuffs.HornOfWinter = true
+// }
 
 func (dk *DeathKnight) ApplyTalents() {
-	dk.ApplyBloodTalents()
-	dk.ApplyFrostTalents()
-	dk.ApplyUnholyTalents()
+	// dk.ApplyBloodTalents()
+	// dk.ApplyFrostTalents()
+	// dk.ApplyUnholyTalents()
 
-	dk.ApplyGlyphs()
+	// dk.ApplyGlyphs()
 }
 
 func (dk *DeathKnight) Initialize() {
-	dk.registerPresences()
-	dk.registerFrostFever()
-	dk.registerBloodPlague()
-	dk.registerOutbreak()
-	dk.registerHornOfWinterSpell()
-	dk.registerIcyTouchSpell()
-	dk.registerPlagueStrikeSpell()
-	dk.registerDeathCoilSpell()
-	dk.registerDeathAndDecaySpell()
-	dk.registerFesteringStrikeSpell()
-	dk.registerEmpowerRuneWeaponSpell()
-	dk.registerUnholyFrenzySpell()
-	dk.registerSummonGargoyleSpell()
-	dk.registerArmyOfTheDeadSpell()
-	dk.registerRaiseDeadSpell()
-	dk.registerBloodTapSpell()
-	dk.registerObliterateSpell()
-	dk.registerHowlingBlastSpell()
-	dk.registerPillarOfFrostSpell()
-	dk.registerPestilenceSpell()
-	dk.registerBloodBoilSpell()
-	dk.registerRuneStrikeSpell()
-	dk.registerDeathStrikeSpell()
-	dk.registerRuneTapSpell()
-	dk.registerVampiricBloodSpell()
-	dk.registerIceboundFortitudeSpell()
-	dk.registerBoneShieldSpell()
-	dk.registerDancingRuneWeaponSpell()
-	dk.registerDeathPactSpell()
-	dk.registerAntiMagicShellSpell()
-	dk.registerRunicPowerDecay()
-	dk.registerBloodStrikeSpell()
+	// dk.registerPresences()
+	// dk.registerFrostFever()
+	// dk.registerBloodPlague()
+	// dk.registerOutbreak()
+	// dk.registerHornOfWinterSpell()
+	// dk.registerIcyTouchSpell()
+	// dk.registerPlagueStrikeSpell()
+	// dk.registerDeathCoilSpell()
+	// dk.registerDeathAndDecaySpell()
+	// dk.registerFesteringStrikeSpell()
+	// dk.registerEmpowerRuneWeaponSpell()
+	// dk.registerUnholyFrenzySpell()
+	// dk.registerSummonGargoyleSpell()
+	// dk.registerArmyOfTheDeadSpell()
+	// dk.registerRaiseDeadSpell()
+	// dk.registerBloodTapSpell()
+	// dk.registerObliterateSpell()
+	// dk.registerHowlingBlastSpell()
+	// dk.registerPillarOfFrostSpell()
+	// dk.registerPestilenceSpell()
+	// dk.registerBloodBoilSpell()
+	// dk.registerRuneStrikeSpell()
+	// dk.registerDeathStrikeSpell()
+	// dk.registerRuneTapSpell()
+	// dk.registerVampiricBloodSpell()
+	// dk.registerIceboundFortitudeSpell()
+	// dk.registerBoneShieldSpell()
+	// dk.registerDancingRuneWeaponSpell()
+	// dk.registerDeathPactSpell()
+	// dk.registerAntiMagicShellSpell()
+	// dk.registerRunicPowerDecay()
+	// dk.registerBloodStrikeSpell()
 }
 
 func (dk *DeathKnight) Reset(sim *core.Simulation) {
 }
 
-func (dk *DeathKnight) HasPrimeGlyph(glyph proto.DeathKnightPrimeGlyph) bool {
-	return dk.HasGlyph(int32(glyph))
-}
 func (dk *DeathKnight) HasMajorGlyph(glyph proto.DeathKnightMajorGlyph) bool {
 	return dk.HasGlyph(int32(glyph))
 }
@@ -175,7 +172,9 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 	}
 	core.FillTalentsProto(dk.Talents.ProtoReflect(), talents, TalentTreeSizes)
 
-	maxRunicPower := 100.0 + 10.0*float64(dk.Talents.RunicPowerMastery)
+	// TODO: Fix this to work with the new talent system.
+	// maxRunicPower := 100.0 + 10.0*float64(dk.Talents.RunicPowerMastery)
+	maxRunicPower := 100.0
 	currentRunicPower := math.Min(maxRunicPower, dk.Inputs.StartingRunicPower)
 
 	dk.EnableRunicPowerBar(
@@ -221,27 +220,27 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 	dk.PseudoStats.BaseDodgeChance += 0.05
 	dk.PseudoStats.BaseParryChance += 0.05
 
-	if dk.Talents.SummonGargoyle {
-		dk.Gargoyle = dk.NewGargoyle()
-	}
+	// if dk.Talents.SummonGargoyle {
+	// 	dk.Gargoyle = dk.NewGargoyle()
+	// }
 
-	dk.Ghoul = dk.NewGhoulPet(dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight)
+	// dk.Ghoul = dk.NewGhoulPet(dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight)
 
-	dk.ArmyGhoul = make([]*GhoulPet, 8)
-	for i := 0; i < 8; i++ {
-		dk.ArmyGhoul[i] = dk.NewArmyGhoulPet(i)
-	}
+	// dk.ArmyGhoul = make([]*GhoulPet, 8)
+	// for i := 0; i < 8; i++ {
+	// 	dk.ArmyGhoul[i] = dk.NewArmyGhoulPet(i)
+	// }
 
-	if dk.Talents.BloodParasite > 0 {
-		dk.Bloodworm = make([]*BloodwormPet, 5)
-		for i := 0; i < 5; i++ {
-			dk.Bloodworm[i] = dk.NewBloodwormPet(i)
-		}
-	}
+	// if dk.Talents.BloodParasite > 0 {
+	// 	dk.Bloodworm = make([]*BloodwormPet, 5)
+	// 	for i := 0; i < 5; i++ {
+	// 		dk.Bloodworm[i] = dk.NewBloodwormPet(i)
+	// 	}
+	// }
 
-	if dk.Talents.DancingRuneWeapon {
-		dk.RuneWeapon = dk.NewRuneWeapon()
-	}
+	// if dk.Talents.DancingRuneWeapon {
+	// 	dk.RuneWeapon = dk.NewRuneWeapon()
+	// }
 
 	dk.EnableAutoAttacks(dk, core.AutoAttackOptions{
 		MainHand:       dk.WeaponFromMainHand(dk.DefaultMeleeCritMultiplier()),
@@ -263,9 +262,11 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 func (dk *DeathKnight) registerRunicPowerDecay() {
 	decayMetrics := dk.NewRunicPowerMetrics(core.ActionID{OtherID: proto.OtherAction_OtherActionPrepull})
 
+	// TODO: Fix this to work with the new talent system.
 	// Base decay rate is about 1.25/s
 	// For some reason Butchery works out of combat which reduces this by 1/5 or 2/5 respectively
-	decayRate := []float64{1.25, 1.05, 0.85}[dk.Talents.Butchery]
+	// decayRate := []float64{1.25, 1.05, 0.85}[dk.Talents.Butchery]
+	decayRate := 1.25
 
 	var decay *core.PendingAction
 	dk.RunicPowerDecayAura = dk.GetOrRegisterAura(core.Aura{

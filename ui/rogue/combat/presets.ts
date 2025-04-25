@@ -1,13 +1,13 @@
 import * as PresetUtils from '../../core/preset_utils';
 import { Conjured, Consumes, Flask, Food, Glyphs, Potions, PseudoStat, Stat } from '../../core/proto/common';
-import { CombatRogue_Options as RogueOptions, RogueMajorGlyph, RogueOptions_PoisonImbue, RoguePrimeGlyph } from '../../core/proto/rogue';
+import { CombatRogue_Options as RogueOptions, RogueMajorGlyph, RogueOptions_PoisonImbue } from '../../core/proto/rogue';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import CombatApl from './apls/combat.apl.json';
 import P1CombatGear from './gear_sets/p1_combat.gear.json';
 import P3CombatGear from './gear_sets/p3_combat.gear.json';
 import P4CombatGear from './gear_sets/p4_combat.gear.json';
-import PreraidCombatGear from './gear_sets/preraid_combat.gear.json'
+import PreraidCombatGear from './gear_sets/preraid_combat.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -28,7 +28,7 @@ export const CBAT_STANDARD_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAgility]: 2.85,
 			[Stat.StatStrength]: 1.05,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatCritRating]: 1.20,
+			[Stat.StatCritRating]: 1.2,
 			[Stat.StatHitRating]: 2.5,
 			[Stat.StatHasteRating]: 1.58,
 			[Stat.StatMasteryRating]: 1.41,
@@ -74,9 +74,6 @@ export const CombatTalents = {
 	data: SavedTalents.create({
 		talentsString: '0322-2332030310230012321-003',
 		glyphs: Glyphs.create({
-			prime1: RoguePrimeGlyph.GlyphOfAdrenalineRush,
-			prime2: RoguePrimeGlyph.GlyphOfSinisterStrike,
-			prime3: RoguePrimeGlyph.GlyphOfSliceAndDice,
 			major1: RogueMajorGlyph.GlyphOfBladeFlurry,
 			major2: RogueMajorGlyph.GlyphOfTricksOfTheTrade,
 			major3: RogueMajorGlyph.GlyphOfGouge,

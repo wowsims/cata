@@ -74,7 +74,7 @@ func (bear *GuardianDruid) Initialize() {
 }
 
 func (bear *GuardianDruid) ApplyTalents() {
-	bear.Druid.ApplyTalents()
+	// bear.Druid.ApplyTalents()
 	bear.MultiplyStat(stats.AttackPower, 1.25) // Aggression passive
 	core.ApplyVengeanceEffect(&bear.Character, bear.vengeance, 84840)
 }

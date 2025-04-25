@@ -13,7 +13,7 @@ import {
 	Stat,
 	UnitReference,
 } from '../../core/proto/common.js';
-import { BalanceDruid_Options as BalanceDruidOptions, DruidMajorGlyph, DruidMinorGlyph, DruidPrimeGlyph } from '../../core/proto/druid.js';
+import { BalanceDruid_Options as BalanceDruidOptions, DruidMajorGlyph, DruidMinorGlyph } from '../../core/proto/druid.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
 import T11Apl from './apls/t11.apl.json';
@@ -56,9 +56,6 @@ export const StandardTalents = {
 	data: SavedTalents.create({
 		talentsString: '33230221123212111001-01-020331',
 		glyphs: Glyphs.create({
-			prime1: DruidPrimeGlyph.GlyphOfInsectSwarm,
-			prime2: DruidPrimeGlyph.GlyphOfMoonfire,
-			prime3: DruidPrimeGlyph.GlyphOfWrath,
 			major1: DruidMajorGlyph.GlyphOfStarfall,
 			major2: DruidMajorGlyph.GlyphOfRebirth,
 			major3: DruidMajorGlyph.GlyphOfMonsoon,

@@ -78,9 +78,6 @@ func TestGuardian(t *testing.T) {
 
 var StandardTalents = "-2300322312310001220311-020331"
 var StandardGlyphs = &proto.Glyphs{
-	Prime1: int32(proto.DruidPrimeGlyph_GlyphOfMangle),
-	Prime2: int32(proto.DruidPrimeGlyph_GlyphOfLacerate),
-	Prime3: int32(proto.DruidPrimeGlyph_GlyphOfBerserk),
 	Major1: int32(proto.DruidMajorGlyph_GlyphOfFrenziedRegeneration),
 	Major2: int32(proto.DruidMajorGlyph_GlyphOfMaul),
 	Major3: int32(proto.DruidMajorGlyph_GlyphOfRebirth),

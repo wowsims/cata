@@ -1,91 +1,15 @@
-import { ShamanMajorGlyph, ShamanMinorGlyph,ShamanPrimeGlyph, ShamanTalents } from '../proto/shaman.js';
+import { ShamanMajorGlyph, ShamanMinorGlyph, ShamanTalents } from '../proto/shaman.js';
 import { GlyphsConfig } from './glyphs_picker.js';
-import { newTalentsConfig,TalentsConfig } from './talents_picker.js';
+import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
 import ShamanTalentJson from './trees/shaman.json';
 
 export const shamanTalentsConfig: TalentsConfig<ShamanTalents> = newTalentsConfig(ShamanTalentJson);
 export const shamanGlyphsConfig: GlyphsConfig = {
-	primeGlyphs: {
-		[ShamanPrimeGlyph.GlyphOfEarthShield]: {
-			name: 'Glyph of Earth Shield',
-			description: 'Increases the amount healed by your Earth Shield by 20%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_skinofearth.jpg',
-		},
-		[ShamanPrimeGlyph.GlyphOfEarthlivingWeapon]: {
-			name: 'Glyph of Earthliving Weapon',
-			description: 'Increases the effectiveness of your Earthliving weapon\'s periodic healing by 20%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shaman_unleashweapon_life.jpg',
-		},
-		[ShamanPrimeGlyph.GlyphOfFeralSpirit]: {
-			name: 'Glyph of Feral Spirit',
-			description: 'Your spirit wolves gain an additional 30% of your attack power.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shaman_feralspirit.jpg',
-		},
-		[ShamanPrimeGlyph.GlyphOfFireElementalTotem]: {
-			name: 'Glyph of Fire Elemental Totem',
-			description: 'Reduces the cooldown of your Fire Elemental Totem by 5 min.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_fire_elemental_totem.jpg',
-		},
-		[ShamanPrimeGlyph.GlyphOfFlameShock]: {
-			name: 'Glyph of Flame Shock',
-			description: 'Increases the duration of your Flame Shock by 50%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_fire_flameshock.jpg',
-		},
-		[ShamanPrimeGlyph.GlyphOfFlametongueWeapon]: {
-			name: 'Glyph of Flametongue Weapon',
-			description: 'Increases your spell critical strike chance by 2% on each of your weapons with Flametongue Weapon active.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shaman_unleashweapon_flame.jpg',
-		},
-		[ShamanPrimeGlyph.GlyphOfLavaBurst]: {
-			name: 'Glyph of Lava Burst',
-			description: 'Your Lava Burst spell deals 10% more damage.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shaman_lavaburst.jpg',
-		},
-		[ShamanPrimeGlyph.GlyphOfLavaLash]: {
-			name: 'Glyph of Lava Lash',
-			description: 'Increases the damage dealt by your Lava Lash ability by 20%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_shaman_lavalash.jpg',
-		},
-		[ShamanPrimeGlyph.GlyphOfLightningBolt]: {
-			name: 'Glyph of Lightning Bolt',
-			description: 'Increases the damage dealt by Lightning Bolt by 4%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_lightning.jpg',
-		},
-		[ShamanPrimeGlyph.GlyphOfRiptide]: {
-			name: 'Glyph of Riptide',
-			description: 'Increases the duration of Riptide by 40%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_riptide.jpg',
-		},
-		[ShamanPrimeGlyph.GlyphOfShocking]: {
-			name: 'Glyph of Shocking',
-			description: 'Reduces your global cooldown when casting your shock spells by 0.0 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_earthshock.jpg',
-		},
-		[ShamanPrimeGlyph.GlyphOfStormstrike]: {
-			name: 'Glyph of Stormstrike',
-			description: 'Increases the critical strike chance bonus from your Stormstrike ability by an additional 10%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_shaman_stormstrike.jpg',
-		},
-		[ShamanPrimeGlyph.GlyphOfUnleashedLightning]: {
-			name: 'Glyph of Unleashed Lightning',
-			description: 'Allows Lightning Bolt to be cast while moving.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_lightning.jpg',
-		},
-		[ShamanPrimeGlyph.GlyphOfWaterShield]: {
-			name: 'Glyph of Water Shield',
-			description: 'Increases the passive mana regeneration of your Water Shield spell by 50%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_shaman_watershield.jpg',
-		},
-		[ShamanPrimeGlyph.GlyphOfWindfuryWeapon]: {
-			name: 'Glyph of Windfury Weapon',
-			description: 'Increases the chance per swing for Windfury Weapon to trigger by 2%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shaman_unleashweapon_wind.jpg',
-		},
-	},
 	majorGlyphs: {
 		[ShamanMajorGlyph.GlyphOfChainHeal]: {
 			name: 'Glyph of Chain Heal',
-			description: 'Increases healing done by your Chain Heal spell to targets beyond the first by 15%, but decreases the amount received by the initial target by 10%.',
+			description:
+				'Increases healing done by your Chain Heal spell to targets beyond the first by 15%, but decreases the amount received by the initial target by 10%.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_healingwavegreater.jpg',
 		},
 		[ShamanMajorGlyph.GlyphOfChainLightning]: {
@@ -115,7 +39,8 @@ export const shamanGlyphsConfig: GlyphsConfig = {
 		},
 		[ShamanMajorGlyph.GlyphOfGroundingTotem]: {
 			name: 'Glyph of Grounding Totem',
-			description: 'Instead of absorbing a spell, your Grounding Totem reflects the next harmful spell back at its caster, but the cooldown of your Grounding Totem is increased by 35 sec.',
+			description:
+				'Instead of absorbing a spell, your Grounding Totem reflects the next harmful spell back at its caster, but the cooldown of your Grounding Totem is increased by 35 sec.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_groundingtotem.jpg',
 		},
 		[ShamanMajorGlyph.GlyphOfHealingStreamTotem]: {
@@ -145,7 +70,8 @@ export const shamanGlyphsConfig: GlyphsConfig = {
 		},
 		[ShamanMajorGlyph.GlyphOfStoneclawTotem]: {
 			name: 'Glyph of Stoneclaw Totem',
-			description: 'Your Stoneclaw Totem also places a damage absorb shield on you, equal to 4 times the strength of the shield it places on your totems.',
+			description:
+				'Your Stoneclaw Totem also places a damage absorb shield on you, equal to 4 times the strength of the shield it places on your totems.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_stoneclawtotem.jpg',
 		},
 		[ShamanMajorGlyph.GlyphOfThunder]: {
@@ -177,7 +103,8 @@ export const shamanGlyphsConfig: GlyphsConfig = {
 		},
 		[ShamanMinorGlyph.GlyphOfThunderstorm]: {
 			name: 'Glyph of Thunderstorm',
-			description: 'Increases the mana you receive from your Thunderstorm spell by 2%, but it no longer knocks enemies back or reduces their movement speed.',
+			description:
+				'Increases the mana you receive from your Thunderstorm spell by 2%, but it no longer knocks enemies back or reduces their movement speed.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shaman_thunderstorm.jpg',
 		},
 		[ShamanMinorGlyph.GlyphOfWaterBreathing]: {

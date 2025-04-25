@@ -1,4 +1,4 @@
-package marksmanship
+package beast_mastery
 
 import (
 	"testing"
@@ -9,23 +9,23 @@ import (
 )
 
 func init() {
-	RegisterMarksmanshipHunter()
+	RegisterBeastMasteryHunter()
 }
 
-func TestMM(t *testing.T) {
+func TestBM(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
 		Class:      proto.Class_ClassHunter,
 		Race:       proto.Race_RaceOrc,
 		OtherRaces: []proto.Race{proto.Race_RaceDwarf},
 
-		GearSet:     core.GetGearSet("../../../ui/hunter/marksmanship/gear_sets", "preraid_mm"),
-		Talents:     MMTalents,
-		Glyphs:      MMGlyphs,
+		GearSet:     core.GetGearSet("../../../ui/hunter/beast_mastery/gear_sets", "preraid_bm"),
+		Talents:     BMTalents,
+		Glyphs:      BMGlyphs,
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
-		Rotation:    core.GetAplRotation("../../../ui/hunter/marksmanship/apls", "mm"),
+		Rotation:    core.GetAplRotation("../../../ui/hunter/beast_mastery/apls", "bm"),
 		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../../ui/hunter/marksmanship/apls", "mm"),
+			core.GetAplRotation("../../../ui/hunter/beast_mastery/apls", "bm_advanced"),
 		},
 
 		ItemFilter:       ItemFilter,
@@ -58,11 +58,11 @@ func BenchmarkSimulate(b *testing.B) {
 			&proto.Player{
 				Race:           proto.Race_RaceOrc,
 				Class:          proto.Class_ClassHunter,
-				Equipment:      core.GetGearSet("../../../ui/hunter/marksmanship/gear_sets", "preraid_mm").GearSet,
+				Equipment:      core.GetGearSet("../../../ui/hunter/beast_mastery/gear_sets", "preraid_bm").GearSet,
 				Consumes:       FullConsumes,
 				Spec:           PlayerOptionsBasic,
-				Glyphs:         MMGlyphs,
-				TalentsString:  MMTalents,
+				Glyphs:         BMGlyphs,
+				TalentsString:  BMTalents,
 				Buffs:          core.FullIndividualBuffs,
 				ReactionTimeMs: 100,
 			},
@@ -85,16 +85,14 @@ var FullConsumes = &proto.Consumes{
 	Flask:         proto.Flask_FlaskOfTheWinds,
 	DefaultPotion: proto.Potions_PotionOfTheTolvir,
 }
-var MMTalents = "032002-2302320032120231221-03"
 
-var MMGlyphs = &proto.Glyphs{
-	Prime1: int32(proto.HunterPrimeGlyph_GlyphOfArcaneShot),
-	Prime2: int32(proto.HunterPrimeGlyph_GlyphOfRapidFire),
-	Prime3: int32(proto.HunterPrimeGlyph_HunterPrimeGlyphNone),
+var BMTalents = "2330230311320112121-2302-03"
+var BMGlyphs = &proto.Glyphs{
+	Major1: int32(proto.HunterMajorGlyph_GlyphOfBestialWrath),
 }
 var FerocityTalents = &proto.HunterPetTalents{
 	SerpentSwiftness: 2,
-	Dive:             true,
+	Dash:             true,
 	SpikedCollar:     3,
 	Bloodthirsty:     1,
 	CullingTheHerd:   3,
@@ -104,14 +102,13 @@ var FerocityTalents = &proto.HunterPetTalents{
 	SharkAttack:      2,
 }
 
-var PlayerOptionsBasic = &proto.Player_MarksmanshipHunter{
-	MarksmanshipHunter: &proto.MarksmanshipHunter{
-		Options: &proto.MarksmanshipHunter_Options{
+var PlayerOptionsBasic = &proto.Player_BeastMasteryHunter{
+	BeastMasteryHunter: &proto.BeastMasteryHunter{
+		Options: &proto.BeastMasteryHunter_Options{
 			ClassOptions: &proto.HunterOptions{
-				PetType:           proto.HunterOptions_Wolf,
-				PetTalents:        FerocityTalents,
-				PetUptime:         0.9,
-				TimeToTrapWeaveMs: 0,
+				PetType:    proto.HunterOptions_Wolf,
+				PetTalents: FerocityTalents,
+				PetUptime:  1,
 			},
 		},
 	},

@@ -1,4 +1,4 @@
-import {DeathKnightMajorGlyph, DeathKnightMinorGlyph, DeathKnightPrimeGlyph, DeathKnightTalents } from '../proto/death_knight';
+import { DeathKnightMajorGlyph, DeathKnightMinorGlyph, DeathKnightTalents } from '../proto/death_knight';
 import { GlyphsConfig } from './glyphs_picker.jsx';
 import { newTalentsConfig, TalentsConfig } from './talents_picker.jsx';
 import DkTalentsJson from './trees/death_knight.json';
@@ -6,63 +6,6 @@ import DkTalentsJson from './trees/death_knight.json';
 export const deathKnightTalentsConfig: TalentsConfig<DeathKnightTalents> = newTalentsConfig(DkTalentsJson);
 
 export const deathKnightGlyphsConfig: GlyphsConfig = {
-	primeGlyphs: {
-		[DeathKnightPrimeGlyph.GlyphOfDeathAndDecay]: {
-			name: 'Glyph of Death and Decay',
-			description: 'Increases the duration of your Death and Decay spell by 50%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_deathanddecay.jpg',
-		},
-		[DeathKnightPrimeGlyph.GlyphOfDeathCoil]: {
-			name: 'Glyph of Death Coil',
-			description: 'Increases the damage or healing done by Death Coil by 15%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_deathcoil.jpg',
-		},
-		[DeathKnightPrimeGlyph.GlyphOfDeathStrike]: {
-			name: 'Glyph of Death Strike',
-			description: 'Increases your Death Strike\'s damage by 2% for every 5 Runic Power you currently have (up to a maximum of 40%). The Runic Power is not consumed by this effect.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_butcher2.jpg',
-		},
-		[DeathKnightPrimeGlyph.GlyphOfFrostStrike]: {
-			name: 'Glyph of Frost Strike',
-			description: 'Reduces the cost of your Frost Strike by 8 Runic Power.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_empowerruneblade2.jpg',
-		},
-		[DeathKnightPrimeGlyph.GlyphOfHeartStrike]: {
-			name: 'Glyph of Heart Strike',
-			description: 'Increases the damage of your Heart Strike ability by 30%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/inv_weapon_shortblade_40.jpg',
-		},
-		[DeathKnightPrimeGlyph.GlyphOfHowlingBlast]: {
-			name: 'Glyph of Howling Blast',
-			description: 'Your Howling Blast ability now infects your targets with Frost Fever.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_frost_arcticwinds.jpg',
-		},
-		[DeathKnightPrimeGlyph.GlyphOfIcyTouch]: {
-			name: 'Glyph of Icy Touch',
-			description: 'Your Frost Fever disease deals 20% additional damage.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_icetouch.jpg',
-		},
-		[DeathKnightPrimeGlyph.GlyphOfObliterate]: {
-			name: 'Glyph of Obliterate',
-			description: 'Increases the damage of your Obliterate ability by 20%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_classicon.jpg',
-		},
-		[DeathKnightPrimeGlyph.GlyphOfRaiseDead]: {
-			name: 'Glyph of Raise Dead',
-			description: 'Your Ghoul receives an additional 40% of your Strength and 40% of your Stamina.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_animatedead.jpg',
-		},
-		[DeathKnightPrimeGlyph.GlyphOfRuneStrike]: {
-			name: 'Glyph of Rune Strike',
-			description: 'Increases the critical strike chance of your Rune Strike by 10%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_darkconviction.jpg',
-		},
-		[DeathKnightPrimeGlyph.GlyphOfScourgeStrike]: {
-			name: 'Glyph of Scourge Strike',
-			description: 'Increases the Shadow damage portion of your Scourge Strike by 30%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_scourgestrike.jpg',
-		},
-	},
 	majorGlyphs: {
 		[DeathKnightMajorGlyph.GlyphOfAntiMagicShell]: {
 			name: 'Glyph of Anti-Magic Shell',
@@ -91,7 +34,8 @@ export const deathKnightGlyphsConfig: GlyphsConfig = {
 		},
 		[DeathKnightMajorGlyph.GlyphOfDarkSuccor]: {
 			name: 'Glyph of Dark Succor',
-			description: 'Your next Death Strike performed while in Frost or Unholy Presence, within 15 sec after killing an enemy that yields experience or honor, will restore at least 20% of your maximum health.',
+			description:
+				'Your next Death Strike performed while in Frost or Unholy Presence, within 15 sec after killing an enemy that yields experience or honor, will restore at least 20% of your maximum health.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_butcher2.jpg',
 		},
 		[DeathKnightMajorGlyph.GlyphOfDeathGrip]: {
@@ -111,7 +55,8 @@ export const deathKnightGlyphsConfig: GlyphsConfig = {
 		},
 		[DeathKnightMajorGlyph.GlyphOfPillarOfFrost]: {
 			name: 'Glyph of Pillar of Frost',
-			description: 'Empowers your Pillar of Frost, making you immune to all effects that cause loss of control of your character, but also freezing you in place while the ability is active.',
+			description:
+				'Empowers your Pillar of Frost, making you immune to all effects that cause loss of control of your character, but also freezing you in place while the ability is active.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_deathknight_pillaroffrost.jpg',
 		},
 		[DeathKnightMajorGlyph.GlyphOfRuneTap]: {
@@ -126,7 +71,8 @@ export const deathKnightGlyphsConfig: GlyphsConfig = {
 		},
 		[DeathKnightMajorGlyph.GlyphOfVampiricBlood]: {
 			name: 'Glyph of Vampiric Blood',
-			description: 'Increases the bonus healing received while your Vampiric Blood is active by an additional 15%, but your Vampiric Blood no longer grants you health.',
+			description:
+				'Increases the bonus healing received while your Vampiric Blood is active by an additional 15%, but your Vampiric Blood no longer grants you health.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_lifedrain.jpg',
 		},
 	},
@@ -142,7 +88,7 @@ export const deathKnightGlyphsConfig: GlyphsConfig = {
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_arcane_teleportundercity.jpg',
 		},
 		[DeathKnightMinorGlyph.GlyphOfDeathSEmbrace]: {
-			name: 'Glyph of Death\'s Embrace',
+			name: "Glyph of Death's Embrace",
 			description: 'Your Death Coil refunds 20 Runic Power when used to heal an allied minion.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_deathcoil.jpg',
 		},

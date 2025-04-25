@@ -66,23 +66,6 @@ message WarlockTalents {
 	bool bane_of_havoc = 55;
 	bool chaos_bolt = 56;
 }
-
-enum WarlockPrimeGlyph {
-	WarlockPrimeGlyphNone = 0;
-	GlyphOfBaneOfAgony = 42456;
-	GlyphOfChaosBolt = 45781;
-	GlyphOfConflagrate = 42454;
-	GlyphOfCorruption = 42455;
-	GlyphOfFelguard = 42459;
-	GlyphOfHaunt = 45779;
-	GlyphOfImmolate = 42464;
-	GlyphOfImp = 42465;
-	GlyphOfIncinerate = 42453;
-	GlyphOfLashOfPain = 50077;
-	GlyphOfMetamorphosis = 45780;
-	GlyphOfShadowburn = 42468;
-	GlyphOfUnstableAffliction = 42472;
-}
 enum WarlockMajorGlyph {
 	WarlockMajorGlyphNone = 0;
 	GlyphOfDeathCoilWl = 42457;

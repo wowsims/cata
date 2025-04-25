@@ -51,6 +51,8 @@ func (resto *RestorationDruid) Initialize() {
 	resto.Druid.Initialize()
 }
 
+func (resto *RestorationDruid) ApplyTalents() {}
+
 func (resto *RestorationDruid) Reset(sim *core.Simulation) {
 	resto.Druid.Reset(sim)
 }

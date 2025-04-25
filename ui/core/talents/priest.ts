@@ -1,73 +1,11 @@
-import { PriestMajorGlyph, PriestMinorGlyph,PriestPrimeGlyph, PriestTalents } from '../proto/priest.js';
+import { PriestMajorGlyph, PriestMinorGlyph, PriestTalents } from '../proto/priest.js';
 import { GlyphsConfig } from './glyphs_picker.js';
-import { newTalentsConfig,TalentsConfig } from './talents_picker.js';
+import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
 import PriestTalentJson from './trees/priest.json';
 
 export const priestTalentsConfig: TalentsConfig<PriestTalents> = newTalentsConfig(PriestTalentJson);
 
 export const priestGlyphsConfig: GlyphsConfig = {
-	primeGlyphs: {
-		[PriestPrimeGlyph.GlyphOfDispersion]: {
-			name: 'Glyph of Dispersion',
-			description: 'Reduces the cooldown on Dispersion by 45 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_dispersion.jpg',
-		},
-		[PriestPrimeGlyph.GlyphOfFlashHeal]: {
-			name: 'Glyph of Flash Heal',
-			description: 'Increases the critical effect chance of your Flash Heal on targets at or below 25% health by 10%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_flashheal.jpg',
-		},
-		[PriestPrimeGlyph.GlyphOfGuardianSpirit]: {
-			name: 'Glyph of Guardian Spirit',
-			description: 'Reduces the cooldown of your Guardian Spirit by 30 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_guardianspirit.jpg',
-		},
-		[PriestPrimeGlyph.GlyphOfLightwell]: {
-			name: 'Glyph of Lightwell',
-			description: 'Increases the total amount of charges of your Lightwell by 5.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_summonlightwell.jpg',
-		},
-		[PriestPrimeGlyph.GlyphOfMindFlay]: {
-			name: 'Glyph of Mind Flay',
-			description: 'Increases the damage done by your Mind Flay spell by 10%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_siphonmana.jpg',
-		},
-		[PriestPrimeGlyph.GlyphOfPenance]: {
-			name: 'Glyph of Penance',
-			description: 'Reduces the cooldown of Penance by 2 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_penance.jpg',
-		},
-		[PriestPrimeGlyph.GlyphOfPowerWordBarrier]: {
-			name: 'Glyph of Power Word: Barrier',
-			description: 'Increases the healing received while under Power Word: Barrier by 10%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_powerwordbarrier.jpg',
-		},
-		[PriestPrimeGlyph.GlyphOfPowerWordShield]: {
-			name: 'Glyph of Power Word: Shield',
-			description: 'Your Power Word: Shield also heals the target for 20% of the absorption amount.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_powerwordshield.jpg',
-		},
-		[PriestPrimeGlyph.GlyphOfPrayerOfHealing]: {
-			name: 'Glyph of Prayer of Healing',
-			description: 'Your Prayer of Healing spell also heals an additional 20% of its initial heal over 6 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_prayerofhealing02.jpg',
-		},
-		[PriestPrimeGlyph.GlyphOfRenew]: {
-			name: 'Glyph of Renew',
-			description: 'Increases the amount healed by your Renew by an additional 25%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_renew.jpg',
-		},
-		[PriestPrimeGlyph.GlyphOfShadowWordDeath]: {
-			name: 'Glyph of Shadow Word: Death',
-			description: 'If your Shadow Word: Death fails to kill the target at or below 25% health, your Shadow Word: Death\'s cooldown is instantly reset. This effect cannot occur more often than once every 6 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_demonicfortitude.jpg',
-		},
-		[PriestPrimeGlyph.GlyphOfShadowWordPain]: {
-			name: 'Glyph of Shadow Word: Pain',
-			description: 'Increases the periodic damage of your Shadow Word: Pain by 10%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_shadowwordpain.jpg',
-		},
-	},
 	majorGlyphs: {
 		[PriestMajorGlyph.GlyphOfCircleOfHealing]: {
 			name: 'Glyph of Circle of Healing',
@@ -126,7 +64,8 @@ export const priestGlyphsConfig: GlyphsConfig = {
 		},
 		[PriestMajorGlyph.GlyphOfPsychicScream]: {
 			name: 'Glyph of Psychic Scream',
-			description: 'Targets of your Psychic Scream spell now tremble in place instead of fleeing in fear, but the cooldown of Psychic Scream is increased by 3 sec.',
+			description:
+				'Targets of your Psychic Scream spell now tremble in place instead of fleeing in fear, but the cooldown of Psychic Scream is increased by 3 sec.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_psychicscream.jpg',
 		},
 		[PriestMajorGlyph.GlyphOfScourgeImprisonment]: {

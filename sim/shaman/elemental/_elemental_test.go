@@ -63,25 +63,16 @@ func TestElemental(t *testing.T) {
 var TalentsTotemDuration = "303202321223110132-201-20302"
 var TalentsImprovedShields = "3032023212231101321-2030022"
 var StandardGlyphs = &proto.Glyphs{
-	Prime1: int32(proto.ShamanPrimeGlyph_GlyphOfFlameShock),
-	Prime2: int32(proto.ShamanPrimeGlyph_GlyphOfLavaBurst),
-	Prime3: int32(proto.ShamanPrimeGlyph_GlyphOfUnleashedLightning),
 	Major1: int32(proto.ShamanMajorGlyph_GlyphOfLightningShield),
 	Major2: int32(proto.ShamanMajorGlyph_GlyphOfHealingStreamTotem),
 	Major3: int32(proto.ShamanMajorGlyph_GlyphOfStoneclawTotem),
 }
 var AoEGlyphs = &proto.Glyphs{
-	Prime1: int32(proto.ShamanPrimeGlyph_GlyphOfFlameShock),
-	Prime2: int32(proto.ShamanPrimeGlyph_GlyphOfLavaBurst),
-	Prime3: int32(proto.ShamanPrimeGlyph_GlyphOfUnleashedLightning),
 	Major1: int32(proto.ShamanMajorGlyph_GlyphOfLightningShield),
 	Major2: int32(proto.ShamanMajorGlyph_GlyphOfChainLightning),
 	Major3: int32(proto.ShamanMajorGlyph_GlyphOfStoneclawTotem),
 }
 var AlternateGlyphs = &proto.Glyphs{
-	Prime1: int32(proto.FireTotem_FireElementalTotem),
-	Prime2: int32(proto.ShamanImbue_FlametongueWeapon),
-	Prime3: int32(proto.ShamanPrimeGlyph_GlyphOfUnleashedLightning),
 	Major1: int32(proto.ShamanMajorGlyph_GlyphOfLightningShield),
 	Major2: int32(proto.ShamanMajorGlyph_GlyphOfHealingStreamTotem),
 	Major3: int32(proto.ShamanMajorGlyph_GlyphOfStoneclawTotem),

@@ -73,22 +73,6 @@ message MageTalents {
 	int32 frostfire_orb = 60;
 	bool deep_freeze = 61;
 }
-enum MagePrimeGlyph {
-	MagePrimeGlyphNone = 0;
-	GlyphOfArcaneBarrage = 45738;
-	GlyphOfArcaneBlast = 44955;
-	GlyphOfArcaneMissiles = 42735;
-	GlyphOfConeOfCold = 42753;
-	GlyphOfDeepFreeze = 45736;
-	GlyphOfFireball = 42739;
-	GlyphOfFrostbolt = 42742;
-	GlyphOfFrostfire = 44684;
-	GlyphOfIceLance = 42745;
-	GlyphOfLivingBomb = 63539;
-	GlyphOfMageArmor = 42749;
-	GlyphOfMoltenArmor = 42751;
-	GlyphOfPyroblast = 42743;
-}
 enum MageMajorGlyph {
 	MageMajorGlyphNone = 0;
 	GlyphOfArcanePower = 42736;

@@ -4,7 +4,7 @@ import * as PresetUtils from '../../core/preset_utils';
 import { makeSpecChangeWarningToast } from '../../core/preset_utils';
 import { APLRotation_Type as APLRotationType } from '../../core/proto/apl';
 import { Consumes, Flask, Food, Glyphs, HandType, ItemSlot, Potions, Profession, PseudoStat, Spec, Stat, TinkerHands } from '../../core/proto/common';
-import { DeathKnightMajorGlyph, DeathKnightMinorGlyph, DeathKnightPrimeGlyph, FrostDeathKnight_Options } from '../../core/proto/death_knight';
+import { DeathKnightMajorGlyph, DeathKnightMinorGlyph, FrostDeathKnight_Options } from '../../core/proto/death_knight';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import TwoHandAPL from '../../death_knight/frost/apls/2h.apl.json';
@@ -174,9 +174,6 @@ export const DualWieldTalents = {
 	data: SavedTalents.create({
 		talentsString: '2032-20330022233112012301-003',
 		glyphs: Glyphs.create({
-			prime1: DeathKnightPrimeGlyph.GlyphOfFrostStrike,
-			prime2: DeathKnightPrimeGlyph.GlyphOfObliterate,
-			prime3: DeathKnightPrimeGlyph.GlyphOfRaiseDead,
 			major1: DeathKnightMajorGlyph.GlyphOfAntiMagicShell,
 			major2: DeathKnightMajorGlyph.GlyphOfDeathGrip,
 			major3: DeathKnightMajorGlyph.GlyphOfDarkSuccor,
@@ -193,9 +190,6 @@ export const TwoHandTalents = {
 	data: SavedTalents.create({
 		talentsString: '103-32030022233112012031-033',
 		glyphs: Glyphs.create({
-			prime1: DeathKnightPrimeGlyph.GlyphOfFrostStrike,
-			prime2: DeathKnightPrimeGlyph.GlyphOfObliterate,
-			prime3: DeathKnightPrimeGlyph.GlyphOfHowlingBlast,
 			major1: DeathKnightMajorGlyph.GlyphOfPestilence,
 			major2: DeathKnightMajorGlyph.GlyphOfBloodBoil,
 			major3: DeathKnightMajorGlyph.GlyphOfDarkSuccor,
@@ -212,9 +206,6 @@ export const MasterfrostTalents = {
 	data: SavedTalents.create({
 		talentsString: '2032-30330012233112012301-03',
 		glyphs: Glyphs.create({
-			prime1: DeathKnightPrimeGlyph.GlyphOfFrostStrike,
-			prime2: DeathKnightPrimeGlyph.GlyphOfObliterate,
-			prime3: DeathKnightPrimeGlyph.GlyphOfHowlingBlast,
 			major1: DeathKnightMajorGlyph.GlyphOfPestilence,
 			major2: DeathKnightMajorGlyph.GlyphOfBloodBoil,
 			major3: DeathKnightMajorGlyph.GlyphOfDarkSuccor,

@@ -55,9 +55,6 @@ var ItemFilter = core.ItemFilter{
 
 var DefaultTalents = "320003-002-33213201121210212031"
 var DefaultGlyphs = &proto.Glyphs{
-	Prime1: int32(proto.WarriorPrimeGlyph_GlyphOfRevenge),
-	Prime2: int32(proto.WarriorPrimeGlyph_GlyphOfShieldSlam),
-	Prime3: int32(proto.WarriorPrimeGlyph_GlyphOfDevastate),
 	Major1: int32(proto.WarriorMajorGlyph_GlyphOfShieldWall),
 	Major2: int32(proto.WarriorMajorGlyph_GlyphOfShockwave),
 	Major3: int32(proto.WarriorMajorGlyph_GlyphOfThunderClap),

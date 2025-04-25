@@ -4,7 +4,6 @@ import { Conjured, Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoSta
 import {
 	DruidMajorGlyph,
 	DruidMinorGlyph,
-	DruidPrimeGlyph,
 	GuardianDruid_Options as DruidOptions,
 	GuardianDruid_Rotation as DruidRotation,
 } from '../../core/proto/druid.js';
@@ -109,9 +108,6 @@ export const StandardTalents = {
 	data: SavedTalents.create({
 		talentsString: '-2300322312310001220311-020331',
 		glyphs: Glyphs.create({
-			prime1: DruidPrimeGlyph.GlyphOfMangle,
-			prime2: DruidPrimeGlyph.GlyphOfLacerate,
-			prime3: DruidPrimeGlyph.GlyphOfBerserk,
 			major1: DruidMajorGlyph.GlyphOfFrenziedRegeneration,
 			major2: DruidMajorGlyph.GlyphOfMaul,
 			major3: DruidMajorGlyph.GlyphOfRebirth,
@@ -127,9 +123,6 @@ export const InfectedWoundsBuild = {
 	data: SavedTalents.create({
 		talentsString: '-2302322310310001220311-020331',
 		glyphs: Glyphs.create({
-			prime1: DruidPrimeGlyph.GlyphOfMangle,
-			prime2: DruidPrimeGlyph.GlyphOfRip,
-			prime3: DruidPrimeGlyph.GlyphOfBerserk,
 			major1: DruidMajorGlyph.GlyphOfFrenziedRegeneration,
 			major2: DruidMajorGlyph.GlyphOfMaul,
 			major3: DruidMajorGlyph.GlyphOfRebirth,

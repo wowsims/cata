@@ -6,7 +6,6 @@ import {
 	WarlockMajorGlyph as MajorGlyph,
 	WarlockMinorGlyph as MinorGlyph,
 	WarlockOptions_Summon as Summon,
-	WarlockPrimeGlyph as PrimeGlyph,
 } from '../../core/proto/warlock';
 import { Stats } from '../../core/proto_utils/stats';
 import { WARLOCK_BREAKPOINTS } from '../presets';
@@ -53,9 +52,6 @@ export const DestructionTalents = {
 	data: SavedTalents.create({
 		talentsString: '003-03202-3320202312201312211',
 		glyphs: Glyphs.create({
-			prime1: PrimeGlyph.GlyphOfConflagrate,
-			prime2: PrimeGlyph.GlyphOfImmolate,
-			prime3: PrimeGlyph.GlyphOfImp,
 			major1: MajorGlyph.GlyphOfLifeTap,
 			major2: MajorGlyph.GlyphOfSoulLink,
 			major3: MajorGlyph.GlyphOfHealthstone,

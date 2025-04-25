@@ -70,20 +70,7 @@ message PaladinTalents {
 	int32 acts_of_sacrifice = 59;
 	bool zealotry = 60;
 }
-enum PaladinPrimeGlyph {
-	PaladinPrimeGlyphNone = 0;
-	GlyphOfCrusaderStrike = 41098;
-	GlyphOfDivineFavor = 41106;
-	GlyphOfExorcism = 41103;
-	GlyphOfHammerOfTheRighteous = 45742;
-	GlyphOfHolyShock = 45746;
-	GlyphOfJudgement = 41092;
-	GlyphOfSealOfInsight = 41110;
-	GlyphOfSealOfTruth = 43869;
-	GlyphOfShieldOfTheRighteous = 45744;
-	GlyphOfTemplarSVerdict = 45743;
-	GlyphOfWordOfGlory = 41105;
-}
+
 enum PaladinMajorGlyph {
 	PaladinMajorGlyphNone = 0;
 	GlyphOfBeaconOfLight = 45741;

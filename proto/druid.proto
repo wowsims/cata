@@ -76,25 +76,6 @@ message DruidTalents {
 	bool tree_of_life = 63;
 }
 
-enum DruidPrimeGlyph {
-	DruidPrimeGlyphNone = 0;
-	GlyphOfBerserk = 45601;
-	GlyphOfBloodletting = 40901;
-	GlyphOfInsectSwarm = 40919;
-	GlyphOfLacerate = 67484;
-	GlyphOfLifebloom = 40915;
-	GlyphOfMangle = 40900;
-	GlyphOfMoonfire = 40923;
-	GlyphOfRegrowth = 40912;
-	GlyphOfRejuvenation = 40913;
-	GlyphOfRip = 40902;
-	GlyphOfSavageRoar = 45604;
-	GlyphOfStarfire = 40916;
-	GlyphOfStarsurge = 45603;
-	GlyphOfSwiftmend = 40906;
-	GlyphOfTigersFury = 67487;
-	GlyphOfWrath = 40922;
-}
 enum DruidMajorGlyph {
 	DruidMajorGlyphNone = 0;
 	GlyphOfBarkskin = 45623;

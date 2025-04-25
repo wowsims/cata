@@ -78,8 +78,8 @@ func (mmHunter *MarksmanshipHunter) Initialize() {
 		FloatValue: 0.15,
 	})
 
-	mmHunter.registerAimedShotSpell()
-	mmHunter.registerChimeraShotSpell()
+	// mmHunter.registerAimedShotSpell()
+	// mmHunter.registerChimeraShotSpell()
 	mmHunter.applyMastery()
 }
 

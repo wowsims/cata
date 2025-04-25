@@ -1,63 +1,11 @@
-import { HunterMajorGlyph, HunterMinorGlyph, HunterPetTalents, HunterPrimeGlyph, HunterTalents } from '../proto/hunter.js';
+import { HunterMajorGlyph, HunterMinorGlyph, HunterTalents } from '../proto/hunter.js';
 import { GlyphsConfig } from './glyphs_picker.js';
-import { newTalentsConfig,TalentsConfig } from './talents_picker.js';
+import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
 import HunterTalentJson from './trees/hunter.json';
 
 export const hunterTalentsConfig: TalentsConfig<HunterTalents> = newTalentsConfig(HunterTalentJson);
 
 export const hunterGlyphsConfig: GlyphsConfig = {
-	primeGlyphs: {
-		[HunterPrimeGlyph.GlyphOfAimedShot]: {
-			name: 'Glyph of Aimed Shot',
-			description: 'When you critically hit with Aimed Shot, you instantly gain 5 Focus.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/inv_spear_07.jpg',
-		},
-		[HunterPrimeGlyph.GlyphOfArcaneShot]: {
-			name: 'Glyph of Arcane Shot',
-			description: 'Your Arcane Shot deals 12% more damage.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_impalingbolt.jpg',
-		},
-		[HunterPrimeGlyph.GlyphOfChimeraShot]: {
-			name: 'Glyph of Chimera Shot',
-			description: 'Reduces the cooldown of Chimera Shot by 1 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_hunter_chimerashot2.jpg',
-		},
-		[HunterPrimeGlyph.GlyphOfDazzledPrey]: {
-			name: 'Glyph of Dazzled Prey',
-			description: 'Your Steady Shot and Cobra Shot abilities generate an additional 2 Focus on targets afflicted by a daze effect.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_rogue_cheatdeath.jpg',
-		},
-		[HunterPrimeGlyph.GlyphOfExplosiveShot]: {
-			name: 'Glyph of Explosive Shot',
-			description: 'Increases the critical strike chance of Explosive Shot by 6%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_hunter_explosiveshot.jpg',
-		},
-		[HunterPrimeGlyph.GlyphOfKillCommand]: {
-			name: 'Glyph of Kill Command',
-			description: 'Reduces the Focus cost of your Kill Command by 3.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_hunter_killcommand.jpg',
-		},
-		[HunterPrimeGlyph.GlyphOfKillShot]: {
-			name: 'Glyph of Kill Shot',
-			description: 'If the damage from your Kill Shot fails to kill a target at or below 20% health, your Kill Shot\'s cooldown is instantly reset. This effect has a 6 sec cooldown.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_hunter_assassinate2.jpg',
-		},
-		[HunterPrimeGlyph.GlyphOfRapidFire]: {
-			name: 'Glyph of Rapid Fire',
-			description: 'Increases the haste from Rapid Fire by an additional 10%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_hunter_runningshot.jpg',
-		},
-		[HunterPrimeGlyph.GlyphOfSerpentSting]: {
-			name: 'Glyph of Serpent Sting',
-			description: 'Increases the periodic critical strike chance of your Serpent Sting by 6%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_hunter_quickshot.jpg',
-		},
-		[HunterPrimeGlyph.GlyphOfSteadyShot]: {
-			name: 'Glyph of Steady Shot',
-			description: 'Increases the damage dealt by Steady Shot by 10%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_hunter_steadyshot.jpg',
-		},
-	},
 	majorGlyphs: {
 		[HunterMajorGlyph.GlyphOfBestialWrath]: {
 			name: 'Glyph of Bestial Wrath',
@@ -81,7 +29,7 @@ export const hunterGlyphsConfig: GlyphsConfig = {
 		},
 		[HunterMajorGlyph.GlyphOfFreezingTrap]: {
 			name: 'Glyph of Freezing Trap',
-			description: 'When your Freezing Trap breaks, the victim\'s movement speed is reduced by 70% for 4 sec.',
+			description: "When your Freezing Trap breaks, the victim's movement speed is reduced by 70% for 4 sec.",
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_frost_chainsofice.jpg',
 		},
 		[HunterMajorGlyph.GlyphOfIceTrap]: {
@@ -95,8 +43,8 @@ export const hunterGlyphsConfig: GlyphsConfig = {
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_fire_flameshock.jpg',
 		},
 		[HunterMajorGlyph.GlyphOfMasterSCall]: {
-			name: 'Glyph of Master\'s Call',
-			description: 'Increases the duration of your Master\'s Call by 4 sec.',
+			name: "Glyph of Master's Call",
+			description: "Increases the duration of your Master's Call by 4 sec.",
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_hunter_masterscall.jpg',
 		},
 		[HunterMajorGlyph.GlyphOfMending]: {
@@ -121,7 +69,7 @@ export const hunterGlyphsConfig: GlyphsConfig = {
 		},
 		[HunterMajorGlyph.GlyphOfSilencingShot]: {
 			name: 'Glyph of Silencing Shot',
-			description: 'When you successfully silence an enemy\'s spell cast with Silencing Shot, you instantly gain 10 Focus.',
+			description: "When you successfully silence an enemy's spell cast with Silencing Shot, you instantly gain 10 Focus.",
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_theblackarrow.jpg',
 		},
 		[HunterMajorGlyph.GlyphOfSnakeTrap]: {

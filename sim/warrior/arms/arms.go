@@ -137,8 +137,10 @@ func (war *ArmsWarrior) GetWarrior() *warrior.Warrior {
 func (war *ArmsWarrior) Initialize() {
 	war.Warrior.Initialize()
 	war.RegisterSpecializationEffects()
-	war.RegisterMortalStrike()
+	// war.RegisterMortalStrike()
 }
+
+func (war *ArmsWarrior) ApplyTalents() {}
 
 func (war *ArmsWarrior) Reset(sim *core.Simulation) {
 	war.Warrior.Reset(sim)

@@ -85,11 +85,7 @@ var FullConsumes = &proto.Consumes{
 	DefaultPotion: proto.Potions_PotionOfTheTolvir,
 }
 var SVTalents = "03-2302-23203003023022121311"
-var SVGlyphs = &proto.Glyphs{
-	Prime1: int32(proto.HunterPrimeGlyph_GlyphOfExplosiveShot),
-	Prime2: int32(proto.HunterPrimeGlyph_GlyphOfKillShot),
-	Prime3: int32(proto.HunterPrimeGlyph_GlyphOfSerpentSting),
-}
+var SVGlyphs = &proto.Glyphs{}
 
 var FerocityTalents = &proto.HunterPetTalents{
 	SerpentSwiftness: 2,

@@ -41,8 +41,11 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 
 	cat.AssumeBleedActive = feralOptions.Options.AssumeBleedActive
 	cat.CannotShredTarget = feralOptions.Options.CannotShredTarget
-	cat.maxRipTicks = cat.MaxRipTicks()
-	cat.primalMadnessBonus = 10.0 * float64(cat.Talents.PrimalMadness)
+	// TODO: Fix this to work with the new talent system.
+	// cat.maxRipTicks = cat.MaxRipTicks()
+	// cat.primalMadnessBonus = 10.0 * float64(cat.Talents.PrimalMadness)
+	cat.maxRipTicks = 0
+	cat.primalMadnessBonus = 0
 
 	cat.EnableEnergyBar(core.EnergyBarOptions{
 		MaxComboPoints: 5,
@@ -66,7 +69,7 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 type FeralDruid struct {
 	*druid.Druid
 
-	Rotation FeralDruidRotation
+	// Rotation FeralDruidRotation
 
 	readyToShift       bool
 	readyToGift        bool
@@ -80,8 +83,8 @@ type FeralDruid struct {
 	cachedRipEndThresh time.Duration
 	nextActionAt       time.Duration
 	usingHardcodedAPL  bool
-	pendingPool        *PoolingActions
-	pendingPoolWeaves  *PoolingActions
+	// pendingPool        *PoolingActions
+	// pendingPoolWeaves  *PoolingActions
 }
 
 func (cat *FeralDruid) GetDruid() *druid.Druid {
@@ -114,15 +117,15 @@ func (cat *FeralDruid) Initialize() {
 		}
 	}
 
-	cat.TigersFuryAura.ApplyOnGain(snapshotHandler)
-	cat.TigersFuryAura.ApplyOnExpire(snapshotHandler)
+	// cat.TigersFuryAura.ApplyOnGain(snapshotHandler)
+	// cat.TigersFuryAura.ApplyOnExpire(snapshotHandler)
 	cat.AddOnTemporaryStatsChange(func(sim *core.Simulation, buffAura *core.Aura, _ stats.Stats) {
 		snapshotHandler(buffAura, sim)
 	})
 }
 
 func (cat *FeralDruid) ApplyTalents() {
-	cat.Druid.ApplyTalents()
+	// cat.Druid.ApplyTalents()
 	cat.MultiplyStat(stats.AttackPower, 1.25) // Aggression passive
 }
 

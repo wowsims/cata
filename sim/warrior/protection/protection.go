@@ -140,6 +140,8 @@ func (war *ProtectionWarrior) Initialize() {
 	war.RegisterShieldSlam()
 }
 
+func (war *ProtectionWarrior) ApplyTalents() {}
+
 func (war *ProtectionWarrior) Reset(sim *core.Simulation) {
 	war.Warrior.Reset(sim)
 }

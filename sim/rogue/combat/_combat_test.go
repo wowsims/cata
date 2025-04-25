@@ -1,4 +1,4 @@
-package subtlety
+package combat
 
 import (
 	"testing"
@@ -9,29 +9,29 @@ import (
 )
 
 func init() {
-	RegisterSubtletyRogue()
+	RegisterCombatRogue()
 }
 
-func TestSubtlety(t *testing.T) {
+func TestCombat(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
 		Class:      proto.Class_ClassRogue,
 		Race:       proto.Race_RaceHuman,
 		OtherRaces: []proto.Race{proto.Race_RaceOrc},
-		GearSet:    core.GetGearSet("../../../ui/rogue/subtlety/gear_sets", "p1_subtlety"),
+		GearSet:    core.GetGearSet("../../../ui/rogue/combat/gear_sets", "p1_combat"),
 		OtherGearSets: []core.GearSetCombo{
-			core.GetGearSet("../../../ui/rogue/subtlety/gear_sets", "p3_subtlety"),
-			core.GetGearSet("../../../ui/rogue/subtlety/gear_sets", "p4_subtlety"),
+			core.GetGearSet("../../../ui/rogue/combat/gear_sets", "p3_combat"),
+			core.GetGearSet("../../../ui/rogue/combat/gear_sets", "p4_combat"),
 		},
-		Talents:     SubtletyTalents,
-		Glyphs:      SubtletyGlyphs,
+		Talents:     CombatTalents,
+		Glyphs:      CombatGlyphs,
 		Consumes:    FullConsumes,
-		SpecOptions: core.SpecOptionsCombo{Label: "Subtlety", SpecOptions: PlayerOptionsID},
+		SpecOptions: core.SpecOptionsCombo{Label: "Combat", SpecOptions: PlayerOptionsID},
 		OtherSpecOptions: []core.SpecOptionsCombo{
 			{Label: "MH Deadly OH Instant", SpecOptions: PlayerOptionsDI},
 			{Label: "MH Instant OH Instant", SpecOptions: PlayerOptionsII},
 			{Label: "MH Deadly OH Deadly", SpecOptions: PlayerOptionsDD},
 		},
-		Rotation:       core.GetAplRotation("../../../ui/rogue/subtlety/apls", "subtlety"),
+		Rotation:       core.GetAplRotation("../../../ui/rogue/combat/apls", "combat"),
 		OtherRotations: []core.RotationCombo{},
 		ItemFilter: core.ItemFilter{
 			ArmorType: proto.ArmorType_ArmorTypeLeather,
@@ -43,22 +43,27 @@ func TestSubtlety(t *testing.T) {
 			},
 			WeaponTypes: []proto.WeaponType{
 				proto.WeaponType_WeaponTypeDagger,
+				proto.WeaponType_WeaponTypeFist,
+				proto.WeaponType_WeaponTypeAxe,
+				proto.WeaponType_WeaponTypeMace,
+				proto.WeaponType_WeaponTypeSword,
+			},
+			HandTypes: []proto.HandType{
+				proto.HandType_HandTypeMainHand,
+				proto.HandType_HandTypeOffHand,
+				proto.HandType_HandTypeOneHand,
 			},
 		},
 	}))
 }
 
-var SubtletyTalents = "023003-002-0332031321310012321"
+var CombatTalents = "0322-2332030310230012321-003"
 
-var SubtletyGlyphs = &proto.Glyphs{
-	Prime1: int32(proto.RoguePrimeGlyph_GlyphOfBackstab),
-	Prime2: int32(proto.RoguePrimeGlyph_GlyphOfSliceAndDice),
-	Prime3: int32(proto.RoguePrimeGlyph_GlyphOfShadowDance),
-}
+var CombatGlyphs = &proto.Glyphs{}
 
-var PlayerOptionsDI = &proto.Player_SubtletyRogue{
-	SubtletyRogue: &proto.SubtletyRogue{
-		Options: &proto.SubtletyRogue_Options{
+var PlayerOptionsDI = &proto.Player_CombatRogue{
+	CombatRogue: &proto.CombatRogue{
+		Options: &proto.CombatRogue_Options{
 			ClassOptions: &proto.RogueOptions{
 				MhImbue: proto.RogueOptions_DeadlyPoison,
 				OhImbue: proto.RogueOptions_InstantPoison,
@@ -68,9 +73,9 @@ var PlayerOptionsDI = &proto.Player_SubtletyRogue{
 	},
 }
 
-var PlayerOptionsID = &proto.Player_SubtletyRogue{
-	SubtletyRogue: &proto.SubtletyRogue{
-		Options: &proto.SubtletyRogue_Options{
+var PlayerOptionsID = &proto.Player_CombatRogue{
+	CombatRogue: &proto.CombatRogue{
+		Options: &proto.CombatRogue_Options{
 			ClassOptions: &proto.RogueOptions{
 				MhImbue: proto.RogueOptions_InstantPoison,
 				OhImbue: proto.RogueOptions_DeadlyPoison,
@@ -80,9 +85,9 @@ var PlayerOptionsID = &proto.Player_SubtletyRogue{
 	},
 }
 
-var PlayerOptionsDD = &proto.Player_SubtletyRogue{
-	SubtletyRogue: &proto.SubtletyRogue{
-		Options: &proto.SubtletyRogue_Options{
+var PlayerOptionsDD = &proto.Player_CombatRogue{
+	CombatRogue: &proto.CombatRogue{
+		Options: &proto.CombatRogue_Options{
 			ClassOptions: &proto.RogueOptions{
 				MhImbue: proto.RogueOptions_DeadlyPoison,
 				OhImbue: proto.RogueOptions_DeadlyPoison,
@@ -92,9 +97,9 @@ var PlayerOptionsDD = &proto.Player_SubtletyRogue{
 	},
 }
 
-var PlayerOptionsII = &proto.Player_SubtletyRogue{
-	SubtletyRogue: &proto.SubtletyRogue{
-		Options: &proto.SubtletyRogue_Options{
+var PlayerOptionsII = &proto.Player_CombatRogue{
+	CombatRogue: &proto.CombatRogue{
+		Options: &proto.CombatRogue_Options{
 			ClassOptions: &proto.RogueOptions{
 				MhImbue: proto.RogueOptions_InstantPoison,
 				OhImbue: proto.RogueOptions_InstantPoison,

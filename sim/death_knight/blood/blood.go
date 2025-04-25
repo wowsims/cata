@@ -61,11 +61,12 @@ func (bdk *BloodDeathKnight) GetDeathKnight() *death_knight.DeathKnight {
 func (bdk *BloodDeathKnight) Initialize() {
 	bdk.DeathKnight.Initialize()
 
-	bdk.registerHeartStrikeSpell()
+	// bdk.registerHeartStrikeSpell()
 
-	if bdk.Talents.DancingRuneWeapon {
-		bdk.RuneWeapon.AddCopySpell(HeartStrikeActionID, bdk.registerDrwHeartStrikeSpell())
-	}
+	// TODO: Fix this to work with the new talent system.
+	// if bdk.Talents.DancingRuneWeapon {
+	// 	bdk.RuneWeapon.AddCopySpell(HeartStrikeActionID, bdk.registerDrwHeartStrikeSpell())
+	// }
 }
 
 func (bdk BloodDeathKnight) getBloodShieldMasteryBonus() float64 {

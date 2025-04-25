@@ -10,7 +10,6 @@ type SpellEffectWeaponDmgPctConfig struct {
 }
 
 func (config *SpellEffectWeaponDmgPctConfig) CalcSpellDamagePct() float64 {
-
 	return config.BaseWeapon_Pct + (config.EffectPerLevel * (float64(config.MaxSpellLevel - config.BaseSpellLevel)) / 100)
 }
 

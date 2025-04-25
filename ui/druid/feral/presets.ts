@@ -3,7 +3,6 @@ import { Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Spec, S
 import {
 	DruidMajorGlyph,
 	DruidMinorGlyph,
-	DruidPrimeGlyph,
 	FeralDruid_Options as FeralDruidOptions,
 	FeralDruid_Rotation as FeralDruidRotation,
 	FeralDruid_Rotation_AplType,
@@ -116,9 +115,6 @@ export const StandardTalents = {
 	data: SavedTalents.create({
 		talentsString: '-2320322312012121202301-020301',
 		glyphs: Glyphs.create({
-			prime1: DruidPrimeGlyph.GlyphOfRip,
-			prime2: DruidPrimeGlyph.GlyphOfBloodletting,
-			prime3: DruidPrimeGlyph.GlyphOfBerserk,
 			major1: DruidMajorGlyph.GlyphOfThorns,
 			major2: DruidMajorGlyph.GlyphOfFeralCharge,
 			major3: DruidMajorGlyph.GlyphOfRebirth,
@@ -134,9 +130,6 @@ export const HybridTalents = {
 	data: SavedTalents.create({
 		talentsString: '-2300322312310001220311-020331',
 		glyphs: Glyphs.create({
-			prime1: DruidPrimeGlyph.GlyphOfRip,
-			prime2: DruidPrimeGlyph.GlyphOfBloodletting,
-			prime3: DruidPrimeGlyph.GlyphOfBerserk,
 			major1: DruidMajorGlyph.GlyphOfFrenziedRegeneration,
 			major2: DruidMajorGlyph.GlyphOfMaul,
 			major3: DruidMajorGlyph.GlyphOfRebirth,

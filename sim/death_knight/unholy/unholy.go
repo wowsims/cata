@@ -63,7 +63,7 @@ func (uhdk *UnholyDeathKnight) GetDeathKnight() *death_knight.DeathKnight {
 func (uhdk *UnholyDeathKnight) Initialize() {
 	uhdk.DeathKnight.Initialize()
 
-	uhdk.registerScourgeStrikeSpell()
+	// uhdk.registerScourgeStrikeSpell()
 }
 
 func (uhdk *UnholyDeathKnight) ApplyTalents() {

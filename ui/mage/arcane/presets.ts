@@ -1,6 +1,6 @@
 import * as PresetUtils from '../../core/preset_utils';
 import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, RaidBuffs, Stat, TinkerHands, UnitReference } from '../../core/proto/common';
-import { ArcaneMage_Options as MageOptions, MageMajorGlyph as MajorGlyph, MagePrimeGlyph as PrimeGlyph } from '../../core/proto/mage';
+import { ArcaneMage_Options as MageOptions, MageMajorGlyph as MajorGlyph } from '../../core/proto/mage';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import ArcaneApl from './apls/arcane.apl.json';
@@ -35,7 +35,7 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 		[Stat.StatSpellPower]: 1,
 		[Stat.StatHitRating]: 1.52,
 		[Stat.StatCritRating]: 0.65,
-		[Stat.StatHasteRating]: 0.70,
+		[Stat.StatHasteRating]: 0.7,
 		[Stat.StatMasteryRating]: 0.67,
 	}),
 );
@@ -47,9 +47,6 @@ export const ArcaneTalents = {
 	data: SavedTalents.create({
 		talentsString: '303302221230122210121-23-03',
 		glyphs: Glyphs.create({
-			prime1: PrimeGlyph.GlyphOfArcaneMissiles,
-			prime2: PrimeGlyph.GlyphOfArcaneBlast,
-			prime3: PrimeGlyph.GlyphOfMageArmor,
 			major1: MajorGlyph.GlyphOfEvocation,
 			major2: MajorGlyph.GlyphOfArcanePower,
 			major3: MajorGlyph.GlyphOfManaShield,

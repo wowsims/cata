@@ -30,17 +30,17 @@ func (subRogue *SubtletyRogue) Initialize() {
 	subRogue.MasteryBaseValue = 0.2
 	subRogue.MasteryMultiplier = .025
 
-	subRogue.registerHemorrhageSpell()
-	subRogue.registerSanguinaryVein()
-	subRogue.registerPremeditation()
-	subRogue.registerHonorAmongThieves()
+	// subRogue.registerHemorrhageSpell()
+	// subRogue.registerSanguinaryVein()
+	// subRogue.registerPremeditation()
+	// subRogue.registerHonorAmongThieves()
 
-	subRogue.applyInitiative()
-	subRogue.applyFindWeakness()
+	// subRogue.applyInitiative()
+	// subRogue.applyFindWeakness()
 
 	subRogue.registerMasterOfSubtletyCD()
-	subRogue.registerShadowDanceCD()
-	subRogue.registerPreparationCD()
+	// subRogue.registerShadowDanceCD()
+	// subRogue.registerPreparationCD()
 	subRogue.registerShadowstepCD()
 
 	// Apply Mastery

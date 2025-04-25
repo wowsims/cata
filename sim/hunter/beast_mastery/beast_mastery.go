@@ -41,29 +41,31 @@ func (bmHunter *BeastMasteryHunter) Initialize() {
 	bmHunter.Hunter.Initialize()
 
 	// Apply BM Hunter mastery
-	baseMasteryRating := bmHunter.GetStat(stats.MasteryRating)
-	kcMod := bmHunter.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		ClassMask:  hunter.HunterSpellKillCommand,
-		FloatValue: bmHunter.getMasteryBonus(baseMasteryRating),
-	})
+	// baseMasteryRating := bmHunter.GetStat(stats.MasteryRating)
+	// kcMod := bmHunter.AddDynamicMod(core.SpellModConfig{
+	// 	Kind:       core.SpellMod_DamageDone_Pct,
+	// 	ClassMask:  hunter.HunterSpellKillCommand,
+	// 	FloatValue: bmHunter.getMasteryBonus(baseMasteryRating),
+	// })
 
-	if bmHunter.Pet != nil {
-		bmHunter.Pet.PseudoStats.DamageDealtMultiplier *= bmHunter.getMasteryBonus(baseMasteryRating)
-		kcMod.Activate()
-	}
+	// if bmHunter.Pet != nil {
+	// 	bmHunter.Pet.PseudoStats.DamageDealtMultiplier *= bmHunter.getMasteryBonus(baseMasteryRating)
+	// 	kcMod.Activate()
+	// }
 
-	bmHunter.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMasteryRating float64, newMasteryRating float64) {
-		if bmHunter.Pet != nil {
-			bmHunter.Pet.PseudoStats.DamageDealtMultiplier /= bmHunter.getMasteryBonus(oldMasteryRating)
-			bmHunter.Pet.PseudoStats.DamageDealtMultiplier *= bmHunter.getMasteryBonus(newMasteryRating)
-			kcMod.UpdateFloatValue(bmHunter.getMasteryBonus(newMasteryRating))
-		}
-	})
+	// bmHunter.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMasteryRating float64, newMasteryRating float64) {
+	// 	if bmHunter.Pet != nil {
+	// 		bmHunter.Pet.PseudoStats.DamageDealtMultiplier /= bmHunter.getMasteryBonus(oldMasteryRating)
+	// 		bmHunter.Pet.PseudoStats.DamageDealtMultiplier *= bmHunter.getMasteryBonus(newMasteryRating)
+	// 		kcMod.UpdateFloatValue(bmHunter.getMasteryBonus(newMasteryRating))
+	// 	}
+	// })
 
 	// BM Hunter Spec Bonus
 	bmHunter.MultiplyStat(stats.RangedAttackPower, 1.30)
 }
+func (hunter *BeastMasteryHunter) ApplyTalents() {}
+
 func (hunter *BeastMasteryHunter) getMasteryBonus(masteryRating float64) float64 {
 	return 1.134 + ((masteryRating / core.MasteryRatingPerMasteryPoint) * 0.0167)
 }
