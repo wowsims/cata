@@ -1,8 +1,7 @@
 import { GemColor, ItemRandomSuffix, ItemSpec, ItemType, Profession, ReforgeStat, Stat } from '../proto/common.js';
 import { UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../proto/ui.js';
-import { calculateRandomPropSlotIndex, distinct, pickQualityArray } from '../utils.js';
+import { distinct } from '../utils.js';
 import { ActionId } from './action_id.js';
-import { Database } from './database';
 import { gemEligibleForSocket, gemMatchesSocket } from './gems.js';
 import { Stats } from './stats.js';
 import { enchantAppliesToItem } from './utils.js';
@@ -67,14 +66,7 @@ export class EquippedItem {
 		return this._randomSuffix ? ItemRandomSuffix.clone(this._randomSuffix) : null;
 	}
 	get randPropPoints(): number {
-		const db = Database.getSync();
-		const allocs = db.getQualityAllocByIlvl(this._item.ilvl);
-		if (allocs) {
-			const bucket = pickQualityArray(allocs, this._item.quality);
-			const idx = calculateRandomPropSlotIndex(this._item);
-			return bucket[idx];
-		}
-		return 0;
+		return this._item.randPropPoints;
 	}
 	get enchant(): Enchant | null {
 		// Make a defensive copy

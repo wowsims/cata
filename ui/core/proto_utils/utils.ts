@@ -9,7 +9,6 @@ import {
 	EnchantType,
 	Faction,
 	HandType,
-	ItemQuality,
 	ItemSlot,
 	ItemType,
 	Race,
@@ -19,7 +18,6 @@ import {
 	UnitReference_Type,
 	WeaponType,
 } from '../proto/common.js';
-import { QualityAllocations } from '../proto/db';
 import {
 	BloodDeathKnight,
 	BloodDeathKnight_Options,
@@ -129,7 +127,7 @@ import {
 	ShamanTalents,
 } from '../proto/shaman.js';
 import { ResourceType } from '../proto/spell';
-import { BlessingsAssignment, BlessingsAssignments, UIEnchant as Enchant, UIGem as Gem, UIItem as Item, UIItem } from '../proto/ui.js';
+import { BlessingsAssignment, BlessingsAssignments, UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../proto/ui.js';
 import {
 	AfflictionWarlock,
 	AfflictionWarlock_Options,

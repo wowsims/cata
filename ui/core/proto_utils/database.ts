@@ -1,41 +1,25 @@
 import { CHARACTER_LEVEL } from '../constants/mechanics.js';
 import {
-	ArmorType,
 	ConsumableType,
 	EquipmentSpec,
 	GemColor,
-	HandType,
-	ItemQuality,
 	ItemRandomSuffix,
 	ItemSlot,
 	ItemSpec,
 	ItemSwap,
-	ItemType,
 	PresetEncounter,
 	PresetTarget,
 	ReforgeStat,
 	Stat,
-	UpgradeLevel,
-	WeaponType,
 } from '../proto/common.js';
-import {
-	ArmorValueDatabase,
-	Consumable,
-	ItemArmorTotal,
-	ItemQualityValue,
-	QualityAllocations,
-	QualityValues,
-	SimDatabase,
-	WeaponDamageDatabase,
-} from '../proto/db';
+import { Consumable, SimDatabase } from '../proto/db';
 import { SpellEffect } from '../proto/spell';
 import { GlyphID, IconData, UIDatabase, UIEnchant as Enchant, UIGem as Gem, UIItem as Item, UINPC as Npc, UIZone as Zone } from '../proto/ui.js';
-import { distinct, randPropPoints, rangedTypes, thrownTypes, upgradeItemLevelBy, valueForQuality, wandTypes } from '../utils.js';
+import { distinct } from '../utils.js';
 import { WOWHEAD_EXPANSION_ENV } from '../wowhead';
 import { EquippedItem } from './equipped_item.js';
 import { Gear, ItemSwapGear } from './gear.js';
 import { gemEligibleForSocket, gemMatchesSocket } from './gems.js';
-import { damageMax, damageMin, getStats } from './items';
 import { getEligibleEnchantSlots, getEligibleItemSlots } from './utils.js';
 
 const dbUrlJson = '/cata/assets/database/db.json';
@@ -77,7 +61,7 @@ export class Database {
 		return Database.instance;
 	}
 
-	static getLeftovers(): Promise<UIDatabase> {
+	static async getLeftovers(): Promise<UIDatabase> {
 		if (READ_JSON) {
 			return fetch(leftoversUrlJson)
 				.then(response => response.json())
@@ -119,10 +103,6 @@ export class Database {
 	private readonly glyphIds: Array<GlyphID> = [];
 	private readonly consumables = new Map<number, Consumable>();
 	private readonly spellEffects = new Map<number, SpellEffect>();
-	public readonly randPropPoints = new Map<number, QualityAllocations>();
-	public armorValues = ArmorValueDatabase.create();
-	public weaponDamageValues = WeaponDamageDatabase.create();
-	public readonly itemArmorTotal = new Map<number, ItemArmorTotal>();
 
 	private loadedLeftovers = false;
 
@@ -178,29 +158,6 @@ export class Database {
 		db.spellIcons.forEach(data => (this.spellIcons[data.id] = Promise.resolve(data)));
 		db.glyphIds.forEach(id => this.glyphIds.push(id));
 		db.consumables.forEach(consumable => this.consumables.set(consumable.id, consumable));
-		Object.entries(db.randomPropPoints).forEach(([idStr, effect]) => {
-			const id = Number(idStr);
-			this.randPropPoints.set(id, effect);
-		});
-		this.armorValues = db.armorDb ?? ArmorValueDatabase.create();
-		this.weaponDamageValues = db.weaponDamageDb ?? WeaponDamageDatabase.create();
-		Object.entries(db.armorTotalValue).forEach(([idStr, val]) => {
-			const id = Number(idStr);
-			this.itemArmorTotal.set(id, val);
-		});
-		//db.armorTotalValue.forEach(armor => this.itemArmorTotal.set(armor.itemLevel, armor));
-	}
-	getWeaponDamageDb(): WeaponDamageDatabase {
-		return this.weaponDamageValues;
-	}
-	getArmorDb(): ArmorValueDatabase {
-		return this.armorValues;
-	}
-	getArmorTotalValueByIlvl(ilvl: number): ItemArmorTotal | undefined {
-		return this.itemArmorTotal.get(ilvl);
-	}
-	getQualityAllocByIlvl(ilvl: number): QualityAllocations | undefined {
-		return this.randPropPoints.get(ilvl);
 	}
 
 	getAllItems(): Array<Item> {
@@ -287,15 +244,6 @@ export class Database {
 		const item = this.items.get(itemSpec.id);
 		if (!item) return null;
 
-		if (itemSpec.upgradeLevel !== UpgradeLevel.NONE) {
-			const scaledIlvl = item.ilvl + upgradeItemLevelBy(item.quality, itemSpec.upgradeLevel);
-			item.stats = getStats(item, scaledIlvl);
-			if (item.weaponType !== WeaponType.WeaponTypeUnknown) {
-				item.weaponDamageMax = damageMax(item, scaledIlvl);
-				item.weaponDamageMin = damageMin(item, scaledIlvl);
-			}
-			item.ilvl = scaledIlvl;
-		}
 		let enchant: Enchant | null = null;
 		if (itemSpec.enchant) {
 			const slots = getEligibleItemSlots(item);
@@ -432,10 +380,6 @@ export class Database {
 			gems: distinct(db1.gems.concat(db2.gems), (a, b) => a.id == b.id),
 			spellEffects: distinct(db1.spellEffects.concat(db2.spellEffects), (a, b) => a.id == b.id),
 			consumables: distinct(db1.consumables.concat(db2.consumables), (a, b) => a.id == b.id),
-			randomPropPoints: {
-				...db2.randomPropPoints,
-				...db1.randomPropPoints,
-			},
 		});
 	}
 }
