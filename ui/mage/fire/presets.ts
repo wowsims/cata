@@ -20,7 +20,6 @@ import {
 	FireMage_Rotation,
 	MageMajorGlyph as MajorGlyph,
 	MageMinorGlyph as MinorGlyph,
-	MagePrimeGlyph as PrimeGlyph,
 } from '../../core/proto/mage';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats, UnitStat, UnitStatPresets } from '../../core/proto_utils/stats';
@@ -102,9 +101,6 @@ export const FireTalents = {
 	data: SavedTalents.create({
 		talentsString: '003-230330221120121213231-03',
 		glyphs: Glyphs.create({
-			prime1: PrimeGlyph.GlyphOfFireball,
-			prime2: PrimeGlyph.GlyphOfPyroblast,
-			prime3: PrimeGlyph.GlyphOfMoltenArmor,
 			major1: MajorGlyph.GlyphOfEvocation,
 			major2: MajorGlyph.GlyphOfDragonsBreath,
 			major3: MajorGlyph.GlyphOfInvisibility,

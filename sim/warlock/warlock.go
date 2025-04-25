@@ -26,16 +26,16 @@ type Warlock struct {
 	Shadowburn           *core.Spell
 	UnstableAffliction   *core.Spell
 
-	ActivePet *WarlockPet
-	Felhunter *WarlockPet
-	Felguard  *WarlockPet
-	Imp       *WarlockPet
-	Succubus  *WarlockPet
+	// ActivePet *WarlockPet
+	// Felhunter *WarlockPet
+	// Felguard  *WarlockPet
+	// Imp       *WarlockPet
+	// Succubus  *WarlockPet
 
-	Doomguard *DoomguardPet
-	Infernal  *InfernalPet
-	EbonImp   *EbonImpPet
-	FieryImp  *FieryImpPet
+	// Doomguard *DoomguardPet
+	// Infernal  *InfernalPet
+	// EbonImp   *EbonImpPet
+	// FieryImp  *FieryImpPet
 
 	SoulShards   *core.Aura
 	SoulBurnAura *core.Aura
@@ -55,47 +55,47 @@ func (warlock *Warlock) GetWarlock() *Warlock {
 func (warlock *Warlock) ApplyTalents() {
 	warlock.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeCloth, 86091)
 
-	warlock.ApplyAfflictionTalents()
-	warlock.ApplyDemonologyTalents()
-	warlock.ApplyDestructionTalents()
+	// warlock.ApplyAfflictionTalents()
+	// warlock.ApplyDemonologyTalents()
+	// warlock.ApplyDestructionTalents()
 
-	warlock.ApplyGlyphs()
+	// warlock.ApplyGlyphs()
 }
 
 func (warlock *Warlock) Initialize() {
-	warlock.registerBaneOfAgony()
-	warlock.registerBaneOfDoom()
+	// warlock.registerBaneOfAgony()
+	// warlock.registerBaneOfDoom()
 	warlock.registerCorruption()
-	warlock.registerCurseOfElements()
-	warlock.registerCurseOfTongues()
-	warlock.registerCurseOfWeakness()
-	warlock.registerDemonSoul()
-	warlock.registerDrainLife()
-	warlock.registerDrainSoul()
-	warlock.registerFelFlame()
-	warlock.registerImmolate()
-	warlock.registerIncinerate()
-	warlock.registerLifeTap()
+	// warlock.registerCurseOfElements()
+	// warlock.registerCurseOfTongues()
+	// warlock.registerCurseOfWeakness()
+	// warlock.registerDemonSoul()
+	// warlock.registerDrainLife()
+	// warlock.registerDrainSoul()
+	// warlock.registerFelFlame()
+	// warlock.registerImmolate()
+	// warlock.registerIncinerate()
+	// warlock.registerLifeTap()
 	warlock.registerSearingPain()
 	warlock.registerSeed()
-	warlock.registerShadowBolt()
+	// warlock.registerShadowBolt()
 	warlock.registerShadowflame()
-	warlock.registerSoulFire()
+	// warlock.registerSoulFire()
 	warlock.registerSoulHarvest()
 	warlock.registerSoulburn()
-	warlock.registerSummonDemon()
+	// warlock.registerSummonDemon()
 
-	doomguardInfernalTimer := warlock.NewTimer()
-	warlock.registerSummonDoomguard(doomguardInfernalTimer)
-	warlock.registerSummonInfernal(doomguardInfernalTimer)
+	// doomguardInfernalTimer := warlock.NewTimer()
+	// warlock.registerSummonDoomguard(doomguardInfernalTimer)
+	// warlock.registerSummonInfernal(doomguardInfernalTimer)
 
 	// TODO: vile hack to make the APLs work for now ...
-	if !warlock.CouldHaveSetBonus(ItemSetMaleficRaiment, 4) {
-		warlock.RegisterAura(core.Aura{
-			Label:    "Fel Spark",
-			ActionID: core.ActionID{SpellID: 89937},
-		})
-	}
+	// if !warlock.CouldHaveSetBonus(ItemSetMaleficRaiment, 4) {
+	// 	warlock.RegisterAura(core.Aura{
+	// 		Label:    "Fel Spark",
+	// 		ActionID: core.ActionID{SpellID: 89937},
+	// 	})
+	// }
 
 	core.MakePermanent(
 		warlock.RegisterAura(core.Aura{
@@ -113,7 +113,7 @@ func (warlock *Warlock) Initialize() {
 			},
 		}))
 
-	warlock.registerPetAbilities()
+	// warlock.registerPetAbilities()
 
 	// warlock.registerBlackBook()
 }
@@ -141,12 +141,12 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 	// Add Fel Armor SP by default
 	warlock.AddStat(stats.SpellPower, 638)
 
-	warlock.EbonImp = warlock.NewEbonImp()
-	warlock.Infernal = warlock.NewInfernalPet()
-	warlock.Doomguard = warlock.NewDoomguardPet()
-	warlock.FieryImp = warlock.NewFieryImp()
+	// warlock.EbonImp = warlock.NewEbonImp()
+	// warlock.Infernal = warlock.NewInfernalPet()
+	// warlock.Doomguard = warlock.NewDoomguardPet()
+	// warlock.FieryImp = warlock.NewFieryImp()
 
-	warlock.registerPets()
+	// warlock.registerPets()
 
 	return warlock
 }
@@ -154,10 +154,6 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 // Agent is a generic way to access underlying warlock on any of the agents.
 type WarlockAgent interface {
 	GetWarlock() *Warlock
-}
-
-func (warlock *Warlock) HasPrimeGlyph(glyph proto.WarlockPrimeGlyph) bool {
-	return warlock.HasGlyph(int32(glyph))
 }
 
 func (warlock *Warlock) HasMajorGlyph(glyph proto.WarlockMajorGlyph) bool {

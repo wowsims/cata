@@ -20,7 +20,6 @@ import {
 	WarlockMajorGlyph as MajorGlyph,
 	WarlockMinorGlyph as MinorGlyph,
 	WarlockOptions_Summon as Summon,
-	WarlockPrimeGlyph as PrimeGlyph,
 } from '../../core/proto/warlock';
 import { Stats, UnitStat } from '../../core/proto_utils/stats';
 import { WARLOCK_BREAKPOINTS } from '../presets';
@@ -81,9 +80,6 @@ export const DemonologyTalentsShadowBolt = {
 	data: SavedTalents.create({
 		talentsString: '-3312222300310212211-33202',
 		glyphs: Glyphs.create({
-			prime1: PrimeGlyph.GlyphOfImmolate,
-			prime2: PrimeGlyph.GlyphOfCorruption,
-			prime3: PrimeGlyph.GlyphOfMetamorphosis,
 			major1: MajorGlyph.GlyphOfShadowBolt,
 			major2: MajorGlyph.GlyphOfLifeTap,
 			major3: MajorGlyph.GlyphOfFelhunter,
@@ -98,9 +94,6 @@ export const DemonologyTalentsIncinerate = {
 	data: SavedTalents.create({
 		talentsString: '003-3312222300310212211-03202',
 		glyphs: Glyphs.create({
-			prime1: PrimeGlyph.GlyphOfImmolate,
-			prime2: PrimeGlyph.GlyphOfIncinerate,
-			prime3: PrimeGlyph.GlyphOfMetamorphosis,
 			major1: MajorGlyph.GlyphOfSoulstone,
 			major2: MajorGlyph.GlyphOfLifeTap,
 			major3: MajorGlyph.GlyphOfSoulLink,

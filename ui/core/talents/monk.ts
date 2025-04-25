@@ -6,7 +6,6 @@ import MonkTalentJson from './trees/monk.json';
 export const monkTalentsConfig: TalentsConfig<MonkTalents> = newTalentsConfig(MonkTalentJson);
 
 export const monkGlyphsConfig: GlyphsConfig = {
-	primeGlyphs: {},
 	majorGlyphs: {
 		[MonkMajorGlyph.MonkMajorGlyphAfterlife]: {
 			name: 'Glyph of Afterlife',

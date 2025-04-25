@@ -212,10 +212,6 @@ func (paladin *Paladin) GetCharacter() *core.Character {
 	return &paladin.Character
 }
 
-func (paladin *Paladin) HasPrimeGlyph(glyph proto.PaladinPrimeGlyph) bool {
-	return paladin.HasGlyph(int32(glyph))
-}
-
 func (paladin *Paladin) HasMajorGlyph(glyph proto.PaladinMajorGlyph) bool {
 	return paladin.HasGlyph(int32(glyph))
 }
@@ -227,40 +223,42 @@ func (paladin *Paladin) GetPaladin() *Paladin {
 	return paladin
 }
 
-func (paladin *Paladin) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	if paladin.PaladinAura == proto.PaladinAura_Devotion {
-		raidBuffs.DevotionAura = true
-	}
-	if paladin.PaladinAura == proto.PaladinAura_Retribution {
-		raidBuffs.RetributionAura = true
-	}
-	if paladin.PaladinAura == proto.PaladinAura_Resistance {
-		raidBuffs.ResistanceAura = true
-	}
-	if paladin.Talents.Communion {
-		raidBuffs.Communion = true
-	}
-}
+// func (paladin *Paladin) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+// 	if paladin.PaladinAura == proto.PaladinAura_Devotion {
+// 		raidBuffs.DevotionAura = true
+// 	}
+// 	if paladin.PaladinAura == proto.PaladinAura_Retribution {
+// 		raidBuffs.RetributionAura = true
+// 	}
+// 	if paladin.PaladinAura == proto.PaladinAura_Resistance {
+// 		raidBuffs.ResistanceAura = true
+// 	}
+// 	if paladin.Talents.Communion {
+// 		raidBuffs.Communion = true
+// 	}
+// }
 
 func (paladin *Paladin) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (paladin *Paladin) Initialize() {
-	paladin.applyGlyphs()
+	// paladin.applyGlyphs()
 	paladin.registerSpells()
 	paladin.addBloodthirstyGloves()
 }
+
+func (paladin *Paladin) ApplyTalents() {}
 
 func (paladin *Paladin) registerSpells() {
 	paladin.registerCrusaderStrike()
 	paladin.registerExorcism()
 	paladin.registerJudgement()
-	paladin.registerSealOfTruth()
+	// paladin.registerSealOfTruth()
 	paladin.registerSealOfInsight()
-	paladin.registerSealOfRighteousness()
+	// paladin.registerSealOfRighteousness()
 	paladin.registerSealOfJustice()
-	paladin.registerInquisition()
-	paladin.registerHammerOfWrathSpell()
+	// paladin.registerInquisition()
+	// paladin.registerHammerOfWrathSpell()
 	paladin.registerAvengingWrath()
 	paladin.registerDivinePleaSpell()
 	paladin.registerConsecrationSpell()

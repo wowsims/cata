@@ -81,14 +81,10 @@ export class IndividualAddonImporter<SpecType extends Spec> extends IndividualIm
 		const glyphsConfig = classGlyphsConfig[charClass];
 
 		const db = await Database.get();
-		const primeGlyphIDs = (importJson['glyphs']['prime'] as Array<string | JsonObject>).map(g => glyphToID(g, db, glyphsConfig.primeGlyphs));
 		const majorGlyphIDs = (importJson['glyphs']['major'] as Array<string | JsonObject>).map(g => glyphToID(g, db, glyphsConfig.majorGlyphs));
 		const minorGlyphIDs = (importJson['glyphs']['minor'] as Array<string | JsonObject>).map(g => glyphToID(g, db, glyphsConfig.minorGlyphs));
 
 		const glyphs = Glyphs.create({
-			prime1: primeGlyphIDs[0] || 0,
-			prime2: primeGlyphIDs[1] || 0,
-			prime3: primeGlyphIDs[2] || 0,
 			major1: majorGlyphIDs[0] || 0,
 			major2: majorGlyphIDs[1] || 0,
 			major3: majorGlyphIDs[2] || 0,

@@ -50,9 +50,6 @@ func TestShadow(t *testing.T) {
 
 var DefaultTalents = "032212--322032210201222100231"
 var DefaultGlyphs = &proto.Glyphs{
-	Prime1: int32(proto.PriestPrimeGlyph_GlyphOfMindFlay),
-	Prime2: int32(proto.PriestPrimeGlyph_GlyphOfShadowWordPain),
-	Prime3: int32(proto.PriestPrimeGlyph_GlyphOfShadowWordDeath),
 	Major1: int32(proto.PriestMajorGlyph_GlyphOfFade),
 	Major2: int32(proto.PriestMajorGlyph_GlyphOfInnerFire),
 	Major3: int32(proto.PriestMajorGlyph_GlyphOfSpiritTap),

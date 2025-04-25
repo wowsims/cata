@@ -101,6 +101,8 @@ func (war *FuryWarrior) Initialize() {
 	war.RegisterBloodthirst()
 }
 
+func (war *FuryWarrior) ApplyTalents() {}
+
 func (war *FuryWarrior) Reset(sim *core.Simulation) {
 	war.Warrior.Reset(sim)
 }

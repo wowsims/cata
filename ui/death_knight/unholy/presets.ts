@@ -1,7 +1,7 @@
 import * as PresetUtils from '../../core/preset_utils';
 import { APLRotation_Type as APLRotationType } from '../../core/proto/apl.js';
 import { Consumes, ConsumesSpec, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Stat, TinkerHands, UnitReference } from '../../core/proto/common';
-import { DeathKnightMajorGlyph, DeathKnightMinorGlyph, DeathKnightPrimeGlyph, UnholyDeathKnight_Options } from '../../core/proto/death_knight';
+import { DeathKnightMajorGlyph, DeathKnightMinorGlyph, UnholyDeathKnight_Options } from '../../core/proto/death_knight';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from '../../death_knight/unholy/apls/default.apl.json';
@@ -67,9 +67,6 @@ export const DefaultTalents = {
 	data: SavedTalents.create({
 		talentsString: '2032-1-13300321230231021231',
 		glyphs: Glyphs.create({
-			prime1: DeathKnightPrimeGlyph.GlyphOfDeathCoil,
-			prime2: DeathKnightPrimeGlyph.GlyphOfScourgeStrike,
-			prime3: DeathKnightPrimeGlyph.GlyphOfRaiseDead,
 			major1: DeathKnightMajorGlyph.GlyphOfPestilence,
 			major2: DeathKnightMajorGlyph.GlyphOfBloodBoil,
 			major3: DeathKnightMajorGlyph.GlyphOfAntiMagicShell,

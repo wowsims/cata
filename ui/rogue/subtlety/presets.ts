@@ -1,7 +1,7 @@
 import * as Mechanics from '../../core/constants/mechanics';
 import * as PresetUtils from '../../core/preset_utils';
 import { Conjured, Consumes, ConsumesSpec, Flask, Food, Glyphs, Potions, PseudoStat, Stat } from '../../core/proto/common';
-import { RogueMajorGlyph, RogueOptions_PoisonImbue, RoguePrimeGlyph, SubtletyRogue_Options as RogueOptions } from '../../core/proto/rogue';
+import { RogueMajorGlyph, RogueOptions_PoisonImbue, SubtletyRogue_Options as RogueOptions } from '../../core/proto/rogue';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import SubtletyApl from './apls/subtlety.apl.json';
@@ -76,9 +76,6 @@ export const SubtletyTalents = {
 	data: SavedTalents.create({
 		talentsString: '023003-002-0332031321310012321',
 		glyphs: Glyphs.create({
-			prime1: RoguePrimeGlyph.GlyphOfBackstab,
-			prime2: RoguePrimeGlyph.GlyphOfHemorrhage,
-			prime3: RoguePrimeGlyph.GlyphOfSliceAndDice,
 			major1: RogueMajorGlyph.GlyphOfTricksOfTheTrade,
 			major2: RogueMajorGlyph.GlyphOfSprint,
 			major3: RogueMajorGlyph.GlyphOfFeint,

@@ -31,9 +31,6 @@ func TestUnholy(t *testing.T) {
 
 var UnholyTalents = "2032-1-13300321230231021231"
 var UnholyDefaultGlyphs = &proto.Glyphs{
-	Prime1: int32(proto.DeathKnightPrimeGlyph_GlyphOfDeathCoil),
-	Prime2: int32(proto.DeathKnightPrimeGlyph_GlyphOfScourgeStrike),
-	Prime3: int32(proto.DeathKnightPrimeGlyph_GlyphOfRaiseDead),
 	Major1: int32(proto.DeathKnightMajorGlyph_GlyphOfPestilence),
 	Major2: int32(proto.DeathKnightMajorGlyph_GlyphOfBloodBoil),
 	Major3: int32(proto.DeathKnightMajorGlyph_GlyphOfAntiMagicShell),

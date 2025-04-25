@@ -47,9 +47,6 @@ var ItemFilter = core.ItemFilter{
 
 var ArcaneTalents = "303322021230122210121-23-03"
 var ArcaneGlyphs = &proto.Glyphs{
-	Prime1: int32(proto.MagePrimeGlyph_GlyphOfArcaneMissiles),
-	Prime2: int32(proto.MagePrimeGlyph_GlyphOfArcaneBlast),
-	Prime3: int32(proto.MagePrimeGlyph_GlyphOfMageArmor),
 	Major1: int32(proto.MageMajorGlyph_GlyphOfEvocation),
 	Major2: int32(proto.MageMajorGlyph_GlyphOfArcanePower),
 	Major3: int32(proto.MageMajorGlyph_GlyphOfManaShield),

@@ -65,11 +65,7 @@ func TestAssassination(t *testing.T) {
 
 var AssassinationTalents = "0333230013122110321-002-203003"
 
-var AssassinationGlyphs = &proto.Glyphs{
-	Prime1: int32(proto.RoguePrimeGlyph_GlyphOfBackstab),
-	Prime2: int32(proto.RoguePrimeGlyph_GlyphOfRupture),
-	Prime3: int32(proto.RoguePrimeGlyph_GlyphOfMutilate),
-}
+var AssassinationGlyphs = &proto.Glyphs{}
 
 var PlayerOptionsAssassinationDI = &proto.Player_AssassinationRogue{
 	AssassinationRogue: &proto.AssassinationRogue{

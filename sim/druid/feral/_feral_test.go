@@ -105,9 +105,6 @@ func TestFeral(t *testing.T) {
 
 var StandardTalents = "-2320322312012121202301-020301"
 var StandardGlyphs = &proto.Glyphs{
-	Prime1: int32(proto.DruidPrimeGlyph_GlyphOfRip),
-	Prime2: int32(proto.DruidPrimeGlyph_GlyphOfBloodletting),
-	Prime3: int32(proto.DruidPrimeGlyph_GlyphOfBerserk),
 	Major1: int32(proto.DruidMajorGlyph_GlyphOfThorns),
 	Major2: int32(proto.DruidMajorGlyph_GlyphOfFeralCharge),
 	Major3: int32(proto.DruidMajorGlyph_GlyphOfRebirth),
@@ -115,9 +112,6 @@ var StandardGlyphs = &proto.Glyphs{
 
 var HybridTalents = "-2300322312310001220311-020331"
 var HybridGlyphs = &proto.Glyphs{
-	Prime1: int32(proto.DruidPrimeGlyph_GlyphOfRip),
-	Prime2: int32(proto.DruidPrimeGlyph_GlyphOfBloodletting),
-	Prime3: int32(proto.DruidPrimeGlyph_GlyphOfBerserk),
 	Major1: int32(proto.DruidMajorGlyph_GlyphOfFrenziedRegeneration),
 	Major2: int32(proto.DruidMajorGlyph_GlyphOfMaul),
 	Major3: int32(proto.DruidMajorGlyph_GlyphOfRebirth),

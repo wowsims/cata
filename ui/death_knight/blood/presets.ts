@@ -1,6 +1,6 @@
 import * as PresetUtils from '../../core/preset_utils.js';
 import { Consumes, ConsumesSpec, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Stat, TinkerHands } from '../../core/proto/common.js';
-import { BloodDeathKnight_Options, DeathKnightMajorGlyph, DeathKnightMinorGlyph, DeathKnightPrimeGlyph } from '../../core/proto/death_knight';
+import { BloodDeathKnight_Options, DeathKnightMajorGlyph, DeathKnightMinorGlyph } from '../../core/proto/death_knight';
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
 import DefensiveBloodApl from './apls/defensive.apl.json';
@@ -80,9 +80,6 @@ export const BloodTalents = {
 	data: SavedTalents.create({
 		talentsString: '02323203102122111321-3-033',
 		glyphs: Glyphs.create({
-			prime1: DeathKnightPrimeGlyph.GlyphOfDeathStrike,
-			prime2: DeathKnightPrimeGlyph.GlyphOfHeartStrike,
-			prime3: DeathKnightPrimeGlyph.GlyphOfRuneStrike,
 			major1: DeathKnightMajorGlyph.GlyphOfAntiMagicShell,
 			major2: DeathKnightMajorGlyph.GlyphOfDancingRuneWeapon,
 			major3: DeathKnightMajorGlyph.GlyphOfBoneShield,

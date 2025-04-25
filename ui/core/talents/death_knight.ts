@@ -1,11 +1,9 @@
-import { DeathKnightMajorGlyph, DeathKnightMinorGlyph, DeathKnightPrimeGlyph, DeathKnightTalents } from '../proto/death_knight.js';
+import { DeathKnightMajorGlyph, DeathKnightMinorGlyph, DeathKnightTalents } from '../proto/death_knight.js';
 import { GlyphsConfig } from './glyphs_picker.js';
 import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
 import DeathKnightTalentJson from './trees/death_knight.json';export const deathKnightTalentsConfig: TalentsConfig<DeathKnightTalents> = newTalentsConfig(DeathKnightTalentJson);
 
 export const deathKnightGlyphsConfig: GlyphsConfig = {
-	primeGlyphs: {
-	},
 	majorGlyphs: {
 		[DeathKnightMajorGlyph.GlyphOfAntiMagicShell]: {
 			name: "Glyph of Anti-Magic Shell",
@@ -99,7 +97,7 @@ export const deathKnightGlyphsConfig: GlyphsConfig = {
 		},
 		[DeathKnightMajorGlyph.GlyphOfDeathCoil]: {
 			name: "Glyph of Death Coil",
-			description: "Your Death Coil spell is now usable on all allies.  When cast on a non-undead ally, Death Coil shrouds them with a protective barrier that absorbs up to $<damage> damage.",
+			description: "Your Death Coil spell is now usable on all allies.  When cast on a non-undead ally, Death Coil shrouds them with a protective barrier that absorbs up to $\u003Cdamage\u003E damage.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_deathcoil.jpg",
 		},
 		[DeathKnightMajorGlyph.GlyphOfDarkSuccor]: {

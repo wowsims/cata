@@ -1,11 +1,9 @@
-import { WarriorMajorGlyph, WarriorMinorGlyph, WarriorPrimeGlyph, WarriorTalents } from '../proto/warrior.js';
+import { WarriorMajorGlyph, WarriorMinorGlyph, WarriorTalents } from '../proto/warrior.js';
 import { GlyphsConfig } from './glyphs_picker.js';
 import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
 import WarriorTalentJson from './trees/warrior.json';export const warriorTalentsConfig: TalentsConfig<WarriorTalents> = newTalentsConfig(WarriorTalentJson);
 
 export const warriorGlyphsConfig: GlyphsConfig = {
-	primeGlyphs: {
-	},
 	majorGlyphs: {
 		[WarriorMajorGlyph.GlyphOfLongCharge]: {
 			name: "Glyph of Long Charge",
@@ -24,7 +22,7 @@ export const warriorGlyphsConfig: GlyphsConfig = {
 		},
 		[WarriorMajorGlyph.GlyphOfHinderingStrikes]: {
 			name: "Glyph of Hindering Strikes",
-			description: "Your Heroic Strike and Cleave now also reduce the target's movement speed by $129923s1% for $129923d.",
+			description: "Your Heroic Strike and Cleave now also reduce the target\'s movement speed by $129923s1% for $129923d.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_cleave.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfHeavyRepercussions]: {
@@ -94,8 +92,7 @@ export const warriorGlyphsConfig: GlyphsConfig = {
 		},
 		[WarriorMajorGlyph.GlyphOfVictoryRush]: {
 			name: "Glyph of Victory Rush",
-			description: "Increases the total healing provided by your Victory Rush by $58382s1%.  
-This glyph has no effect if combined with the Impending Victory talent.",
+			description: "Increases the total healing provided by your Victory Rush by $58382s1%.  \u000D\u000AThis glyph has no effect if combined with the Impending Victory talent.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_devastate.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfRagingWind]: {
@@ -207,7 +204,7 @@ This glyph has no effect if combined with the Impending Victory talent.",
 		},
 		[WarriorMinorGlyph.GlyphOfTheBlazingTrail]: {
 			name: "Glyph of the Blazing Trail",
-			description: "Your Charge leaves a trail of fire in its wake. If you're going to Charge why not do it with some style?",
+			description: "Your Charge leaves a trail of fire in its wake. If you\'re going to Charge why not do it with some style?",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_fire_burningspeed.jpg",
 		},
 		[WarriorMinorGlyph.GlyphOfTheRagingWhirlwind]: {

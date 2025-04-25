@@ -1,11 +1,9 @@
-import { HunterMajorGlyph, HunterMinorGlyph, HunterPrimeGlyph, HunterTalents } from '../proto/hunter.js';
+import { HunterMajorGlyph, HunterMinorGlyph, HunterTalents } from '../proto/hunter.js';
 import { GlyphsConfig } from './glyphs_picker.js';
 import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
 import HunterTalentJson from './trees/hunter.json';export const hunterTalentsConfig: TalentsConfig<HunterTalents> = newTalentsConfig(HunterTalentJson);
 
 export const hunterGlyphsConfig: GlyphsConfig = {
-	primeGlyphs: {
-	},
 	majorGlyphs: {
 		[HunterMajorGlyph.GlyphOfCamouflage]: {
 			name: "Glyph of Camouflage",
@@ -19,7 +17,7 @@ export const hunterGlyphsConfig: GlyphsConfig = {
 		},
 		[HunterMajorGlyph.GlyphOfMending]: {
 			name: "Glyph of Mending",
-			description: "Your Mend Pet now heals every $s3 sec, and heals for an additional $s4% of your pet's health over its duration.",
+			description: "Your Mend Pet now heals every $s3 sec, and heals for an additional $s4% of your pet\'s health over its duration.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_bandage_15.jpg",
 		},
 		[HunterMajorGlyph.GlyphOfDistractingShot]: {
@@ -44,7 +42,7 @@ export const hunterGlyphsConfig: GlyphsConfig = {
 		},
 		[HunterMajorGlyph.GlyphOfFreezingTrap]: {
 			name: "Glyph of Freezing Trap",
-			description: "When your Freezing Trap breaks, the victim's movement speed is reduced by $61394s1% for $61394d.",
+			description: "When your Freezing Trap breaks, the victim\'s movement speed is reduced by $61394s1% for $61394d.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_frost_chainsofice.jpg",
 		},
 		[HunterMajorGlyph.GlyphOfIceTrap]: {
@@ -109,7 +107,7 @@ export const hunterGlyphsConfig: GlyphsConfig = {
 		},
 		[HunterMajorGlyph.GlyphOfMastersCall]: {
 			name: "Glyph of Master's Call",
-			description: "Increases the duration of your Master's Call by $/1000;S1 sec.",
+			description: "Increases the duration of your Master\'s Call by $/1000;S1 sec.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_masterscall.jpg",
 		},
 		[HunterMajorGlyph.GlyphOfScatterShot]: {
@@ -161,9 +159,7 @@ export const hunterGlyphsConfig: GlyphsConfig = {
 		},
 		[HunterMinorGlyph.GlyphOfFireworks]: {
 			name: "Glyph of Fireworks",
-			description: "Teaches you the ability Fireworks.
-
-Launch fireworks from your gun, bow or crossbow.",
+			description: "Teaches you the ability Fireworks.\u000D\u000A\u000D\u000ALaunch fireworks from your gun, bow or crossbow.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_missilelargecluster_red.jpg",
 		},
 		[HunterMinorGlyph.GlyphOfAspectOfThePack]: {
@@ -183,9 +179,7 @@ Launch fireworks from your gun, bow or crossbow.",
 		},
 		[HunterMinorGlyph.GlyphOfAspectOfTheBeast]: {
 			name: "Glyph of Aspect of the Beast",
-			description: "Teaches you the ability Aspect of the Beast.
-
-The Hunter takes on the aspects of a beast, becoming untrackable.  Only one Aspect can be active at a time.",
+			description: "Teaches you the ability Aspect of the Beast.\u000D\u000A\u000D\u000AThe Hunter takes on the aspects of a beast, becoming untrackable.  Only one Aspect can be active at a time.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_mount_pinktiger.jpg",
 		},
 		[HunterMinorGlyph.GlyphOfDirection]: {
@@ -195,14 +189,12 @@ The Hunter takes on the aspects of a beast, becoming untrackable.  Only one Aspe
 		},
 		[HunterMinorGlyph.GlyphOfMarking]: {
 			name: "Glyph of Marking",
-			description: "Your Hunter's Mark ability now places a bullseye on your target instead of its usual visual.",
+			description: "Your Hunter\'s Mark ability now places a bullseye on your target instead of its usual visual.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_mastermarksman.jpg",
 		},
 		[HunterMinorGlyph.GlyphOfFetch]: {
 			name: "Glyph of Fetch",
-			description: "Teaches you the ability Fetch.
-
-Command your pet to retrieve the loot from a nearby corpse within $125050A1 yards.",
+			description: "Teaches you the ability Fetch.\u000D\u000A\u000D\u000ACommand your pet to retrieve the loot from a nearby corpse within $125050A1 yards.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_bone_01.jpg",
 		},
 		[HunterMinorGlyph.GlyphOfFocusedFire]: {

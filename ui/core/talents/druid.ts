@@ -1,11 +1,9 @@
-import { DruidMajorGlyph, DruidMinorGlyph, DruidPrimeGlyph, DruidTalents } from '../proto/druid.js';
+import { DruidMajorGlyph, DruidMinorGlyph, DruidTalents } from '../proto/druid.js';
 import { GlyphsConfig } from './glyphs_picker.js';
 import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
 import DruidTalentJson from './trees/druid.json';export const druidTalentsConfig: TalentsConfig<DruidTalents> = newTalentsConfig(DruidTalentJson);
 
 export const druidGlyphsConfig: GlyphsConfig = {
-	primeGlyphs: {
-	},
 	majorGlyphs: {
 		[DruidMajorGlyph.GlyphOfFrenziedRegeneration]: {
 			name: "Glyph of Frenzied Regeneration",
@@ -19,12 +17,12 @@ export const druidGlyphsConfig: GlyphsConfig = {
 		},
 		[DruidMajorGlyph.GlyphOfOmens]: {
 			name: "Glyph of Omens",
-			description: "While you are not in an Eclipse, the following abilities now grant $s1 Solar or Lunar Energy: Entangling Roots, Cyclone, Faerie Fire, Faerie Swarm, Mass Entanglement, Typhoon, Disorienting Roar, Ursol's Vortex, and Mighty Bash.",
+			description: "While you are not in an Eclipse, the following abilities now grant $s1 Solar or Lunar Energy: Entangling Roots, Cyclone, Faerie Fire, Faerie Swarm, Mass Entanglement, Typhoon, Disorienting Roar, Ursol\'s Vortex, and Mighty Bash.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_vehicle_sonicshockwave.jpg",
 		},
 		[DruidMajorGlyph.GlyphOfShred]: {
 			name: "Glyph of Shred",
-			description: "While Berserk or Tiger's Fury is active, Shred has no positional requirement.",
+			description: "While Berserk or Tiger\'s Fury is active, Shred has no positional requirement.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_vampiricaura.jpg",
 		},
 		[DruidMajorGlyph.GlyphOfProwl]: {
@@ -64,7 +62,7 @@ export const druidGlyphsConfig: GlyphsConfig = {
 		},
 		[DruidMajorGlyph.GlyphOfHealingTouch]: {
 			name: "Glyph of Healing Touch",
-			description: "When you cast Healing Touch, the cooldown on your Nature's Swiftness is reduced by $s1 sec.",
+			description: "When you cast Healing Touch, the cooldown on your Nature\'s Swiftness is reduced by $s1 sec.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_healingtouch.jpg",
 		},
 		[DruidMajorGlyph.GlyphOfEfflorescence]: {
@@ -89,7 +87,7 @@ export const druidGlyphsConfig: GlyphsConfig = {
 		},
 		[DruidMajorGlyph.GlyphOfNaturesGrasp]: {
 			name: "Glyph of Nature's Grasp",
-			description: "Reduces the cooldown of Nature's Grasp by ${$m1/-1000} sec.",
+			description: "Reduces the cooldown of Nature\'s Grasp by ${$m1/-1000} sec.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_natureswrath.jpg",
 		},
 		[DruidMajorGlyph.GlyphOfSavagery]: {
@@ -144,7 +142,7 @@ export const druidGlyphsConfig: GlyphsConfig = {
 		},
 		[DruidMajorGlyph.GlyphOfBarkskin]: {
 			name: "Glyph of Barkskin",
-			description: "Reduces the chance you'll be critically hit by $63057s1% while Barkskin is active.",
+			description: "Reduces the chance you\'ll be critically hit by $63057s1% while Barkskin is active.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_stoneclawtotem.jpg",
 		},
 		[DruidMajorGlyph.GlyphOfFerociousBite]: {
@@ -196,9 +194,7 @@ export const druidGlyphsConfig: GlyphsConfig = {
 		},
 		[DruidMinorGlyph.GlyphOfCharmWoodlandCreature]: {
 			name: "Glyph of Charm Woodland Creature",
-			description: "Teaches you the ability Charm Woodland Creature.
-
-Allows the Druid to befriend an ambient creature, which will follow the Druid for $127757d.",
+			description: "Teaches you the ability Charm Woodland Creature.\u000D\u000A\u000D\u000AAllows the Druid to befriend an ambient creature, which will follow the Druid for $127757d.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_rabbit.jpg",
 		},
 		[DruidMinorGlyph.GlyphOfStars]: {
@@ -213,9 +209,7 @@ Allows the Druid to befriend an ambient creature, which will follow the Druid fo
 		},
 		[DruidMinorGlyph.GlyphOfTheTreant]: {
 			name: "Glyph of the Treant",
-			description: "Teaches you the ability Treant Form.
-
-Shapeshift into Treant Form.",
+			description: "Teaches you the ability Treant Form.\u000D\u000A\u000D\u000AShapeshift into Treant Form.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_druid_treeoflife.jpg",
 		},
 		[DruidMinorGlyph.ZzoldGlyphOfTheChameleon]: {
@@ -230,7 +224,7 @@ Shapeshift into Treant Form.",
 		},
 		[DruidMinorGlyph.GlyphOfFocus]: {
 			name: "Glyph of Focus",
-			description: "Reduces Starfall's radius by $62080s1%.",
+			description: "Reduces Starfall\'s radius by $62080s1%.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_arcane_arcanepotency.jpg",
 		},
 		[DruidMinorGlyph.GlyphOfTheSproutingMushroom]: {

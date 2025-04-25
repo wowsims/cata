@@ -14,7 +14,7 @@ import {
 	TinkerHands,
 } from '../../core/proto/common.js';
 import { SavedTalents } from '../../core/proto/ui.js';
-import { ProtectionWarrior_Options as ProtectionWarriorOptions, WarriorMajorGlyph, WarriorMinorGlyph, WarriorPrimeGlyph } from '../../core/proto/warrior.js';
+import { ProtectionWarrior_Options as ProtectionWarriorOptions, WarriorMajorGlyph, WarriorMinorGlyph } from '../../core/proto/warrior.js';
 import { Stats } from '../../core/proto_utils/stats';
 import ItemSwapP4Gear from '../arms/gear_sets/p4_arms_item_swap.gear.json';
 import DefaultApl from './apls/default.apl.json';
@@ -70,9 +70,6 @@ export const StandardTalents = {
 	data: SavedTalents.create({
 		talentsString: '320003-002-33213201121210212031',
 		glyphs: Glyphs.create({
-			prime1: WarriorPrimeGlyph.GlyphOfRevenge,
-			prime2: WarriorPrimeGlyph.GlyphOfShieldSlam,
-			prime3: WarriorPrimeGlyph.GlyphOfDevastate,
 			major1: WarriorMajorGlyph.GlyphOfShieldWall,
 			major2: WarriorMajorGlyph.GlyphOfShockwave,
 			major3: WarriorMajorGlyph.GlyphOfThunderClap,

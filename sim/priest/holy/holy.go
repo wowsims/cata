@@ -56,6 +56,9 @@ func (holyPriest *HolyPriest) Initialize() {
 	// holyPriest.RegisterHymnOfHopeCD()
 }
 
+func (holyPriest *HolyPriest) ApplyTalents() {
+}
+
 func (holyPriest *HolyPriest) Reset(sim *core.Simulation) {
 	//holyPriest.Priest.Reset(sim)
 }

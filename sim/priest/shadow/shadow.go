@@ -40,10 +40,11 @@ func NewShadowPriest(character *core.Character, options *proto.Player) *ShadowPr
 		options: shadowOptions.Options,
 	}
 
-	spriest.SelfBuffs.PowerInfusionTarget = &proto.UnitReference{}
-	if spriest.Talents.PowerInfusion && shadowOptions.Options.PowerInfusionTarget != nil {
-		spriest.SelfBuffs.PowerInfusionTarget = shadowOptions.Options.PowerInfusionTarget
-	}
+	// TODO: Fix this to work with the new talent system.
+	// spriest.SelfBuffs.PowerInfusionTarget = &proto.UnitReference{}
+	// if spriest.Talents.PowerInfusion && shadowOptions.Options.PowerInfusionTarget != nil {
+	// 	spriest.SelfBuffs.PowerInfusionTarget = shadowOptions.Options.PowerInfusionTarget
+	// }
 
 	return spriest
 }
@@ -70,7 +71,7 @@ func getMasteryBonus(masteryPoints float64) float64 {
 }
 
 func (spriest *ShadowPriest) ApplyTalents() {
-	spriest.Priest.ApplyTalents()
+	// spriest.Priest.ApplyTalents()
 
 	// apply shadow spec specific auras
 	// make it an aura so it's visible that it's used in the timeline
@@ -174,7 +175,9 @@ func handleShadowOrbPower(spriest *ShadowPriest, sim *core.Simulation, spell *co
 	}
 
 	if spell.ClassSpellMask&(priest.PriestSpellShadowWordPain|priest.PriestSpellMindFlay) > 0 {
-		procChance := 0.1 + float64(spriest.Talents.HarnessedShadows)*0.04
+		// TODO: Fix this to work with the new talent system.
+		// procChance := 0.1 + float64(spriest.Talents.HarnessedShadows)*0.04
+		procChance := 0.1
 		if sim.Proc(procChance, "Shadow Orb Power") {
 			spriest.ShadowOrbsAura.Activate(sim)
 			spriest.ShadowOrbsAura.AddStack(sim)

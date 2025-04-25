@@ -1,11 +1,9 @@
-import { MageMajorGlyph, MageMinorGlyph, MagePrimeGlyph, MageTalents } from '../proto/mage.js';
+import { MageMajorGlyph, MageMinorGlyph, MageTalents } from '../proto/mage.js';
 import { GlyphsConfig } from './glyphs_picker.js';
 import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
 import MageTalentJson from './trees/mage.json';export const mageTalentsConfig: TalentsConfig<MageTalents> = newTalentsConfig(MageTalentJson);
 
 export const mageGlyphsConfig: GlyphsConfig = {
-	primeGlyphs: {
-	},
 	majorGlyphs: {
 		[MageMajorGlyph.GlyphOfArcaneExplosion]: {
 			name: "Glyph of Arcane Explosion",
@@ -19,11 +17,7 @@ export const mageGlyphsConfig: GlyphsConfig = {
 		},
 		[MageMajorGlyph.GlyphOfEvocation]: {
 			name: "Glyph of Evocation",
-			description: "Your Evocation ability also causes you to regain ${$56380m1*4}% of your health over its duration. 
-
-With the Invocation talent, you instead gain $125440m1% of your health upon completing an Evocation.
-
-With the Rune of Power talent, you gain $56380m2% of your health per second while standing in your own Rune of Power.",
+			description: "Your Evocation ability also causes you to regain ${$56380m1*4}% of your health over its duration. \u000D\u000A\u000D\u000AWith the Invocation talent, you instead gain $125440m1% of your health upon completing an Evocation.\u000D\u000A\u000D\u000AWith the Rune of Power talent, you gain $56380m2% of your health per second while standing in your own Rune of Power.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_purge.jpg",
 		},
 		[MageMajorGlyph.GlyphOfCombustion]: {
@@ -68,7 +62,7 @@ With the Rune of Power talent, you gain $56380m2% of your health per second whil
 		},
 		[MageMajorGlyph.GlyphOfIcyVeins]: {
 			name: "Glyph of Icy Veins",
-			description: "Your Icy Veins causes your Frostbolt, Frostfire Bolt, Ice Lance, and your Water Elemental's Waterbolt spells to split into 3 smaller bolts that each do ${100+$131078m1}% damage, instead of increasing spell casting speed.",
+			description: "Your Icy Veins causes your Frostbolt, Frostfire Bolt, Ice Lance, and your Water Elemental\'s Waterbolt spells to split into 3 smaller bolts that each do ${100+$131078m1}% damage, instead of increasing spell casting speed.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_frost_coldhearted.jpg",
 		},
 		[MageMajorGlyph.GlyphOfSpellsteal]: {
@@ -145,9 +139,7 @@ With the Rune of Power talent, you gain $56380m2% of your health per second whil
 		},
 		[MageMinorGlyph.GlyphOfConjureFamiliar]: {
 			name: "Glyph of Conjure Familiar",
-			description: "Teaches you the ability Conjure Familiar.
-
-$@spelldesc126578",
+			description: "Teaches you the ability Conjure Familiar.\u000D\u000A\u000D\u000A$@spelldesc126578",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_elementalabsorption.jpg",
 		},
 		[MageMinorGlyph.GlyphOfTheMonkey]: {
@@ -167,14 +159,12 @@ $@spelldesc126578",
 		},
 		[MageMinorGlyph.GlyphOfArcaneLanguage]: {
 			name: "Glyph of Arcane Language",
-			description: "Your Arcane Brilliance spell allows you to comprehend your allies' racial languages.",
+			description: "Your Arcane Brilliance spell allows you to comprehend your allies\' racial languages.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_fish_68.jpg",
 		},
 		[MageMinorGlyph.GlyphOfIllusion]: {
 			name: "Glyph of Illusion",
-			description: "Teaches you the ability Illusion.
-
-Transforms the Mage to look like someone else for $94632d.",
+			description: "Teaches you the ability Illusion.\u000D\u000A\u000D\u000ATransforms the Mage to look like someone else for $94632d.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_mask_01.jpg",
 		},
 		[MageMinorGlyph.GlyphOfMirrorImage]: {

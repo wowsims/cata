@@ -69,9 +69,9 @@ func (moonkin *BalanceDruid) Initialize() {
 
 func (moonkin *BalanceDruid) ApplyTalents() {
 
-	moonkin.EnableEclipseBar()
-	moonkin.RegisterEclipseAuras()
-	moonkin.RegisterEclipseEnergyGainAura()
+	// moonkin.EnableEclipseBar()
+	// moonkin.RegisterEclipseAuras()
+	// moonkin.RegisterEclipseEnergyGainAura()
 
 	// Moonfury passive
 	moonkin.RegisterAura(
@@ -101,7 +101,7 @@ func (moonkin *BalanceDruid) ApplyTalents() {
 	})
 
 	// Apply druid talents
-	moonkin.Druid.ApplyTalents()
+	// moonkin.Druid.ApplyTalents()
 }
 
 func (moonkin *BalanceDruid) Reset(sim *core.Simulation) {

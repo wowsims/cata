@@ -6,7 +6,6 @@ import {
 	BeastMasteryHunter_Rotation as BeastMasteryRotation,
 	HunterMajorGlyph as MajorGlyph,
 	HunterOptions_PetType as PetType,
-	HunterPrimeGlyph as PrimeGlyph,
 	HunterStingType as StingType,
 } from '../../core/proto/hunter';
 import { SavedTalents } from '../../core/proto/ui';
@@ -79,9 +78,6 @@ export const BeastMasteryTalents = {
 	data: SavedTalents.create({
 		talentsString: '2330230311320112121-2302-03',
 		glyphs: Glyphs.create({
-			prime1: PrimeGlyph.GlyphOfArcaneShot,
-			prime2: PrimeGlyph.GlyphOfKillCommand,
-			prime3: PrimeGlyph.GlyphOfKillShot,
 			major1: MajorGlyph.GlyphOfBestialWrath,
 			major2: MajorGlyph.GlyphOfRaptorStrike,
 			major3: MajorGlyph.GlyphOfTrapLauncher,

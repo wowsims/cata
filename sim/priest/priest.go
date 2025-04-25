@@ -98,16 +98,16 @@ func (priest *Priest) Initialize() {
 	}
 
 	priest.registerDevouringPlagueSpell()
-	priest.registerShadowWordPainSpell()
+	// priest.registerShadowWordPainSpell()
 
 	priest.registerMindBlastSpell()
 	priest.registerShadowWordDeathSpell()
 	priest.registerShadowfiendSpell()
-	priest.registerVampiricTouchSpell()
-	priest.registerDispersionSpell()
+	// priest.registerVampiricTouchSpell()
+	// priest.registerDispersionSpell()
 	priest.registerMindSpike()
 
-	priest.registerPowerInfusionSpell()
+	// priest.registerPowerInfusionSpell()
 
 	priest.newMindFlaySpell()
 	priest.newMindSearSpell()
@@ -161,9 +161,6 @@ type PriestAgent interface {
 	GetPriest() *Priest
 }
 
-func (hunter *Priest) HasPrimeGlyph(glyph proto.PriestPrimeGlyph) bool {
-	return hunter.HasGlyph(int32(glyph))
-}
 func (hunter *Priest) HasMajorGlyph(glyph proto.PriestMajorGlyph) bool {
 	return hunter.HasGlyph(int32(glyph))
 }

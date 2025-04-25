@@ -44,9 +44,10 @@ func newDisciplinePriest(character *core.Character, options *proto.Player) *Disc
 	}
 
 	discPriest.SelfBuffs.PowerInfusionTarget = &proto.UnitReference{}
-	if discPriest.Talents.PowerInfusion && discPriest.Options.PowerInfusionTarget != nil {
-		discPriest.SelfBuffs.PowerInfusionTarget = discPriest.Options.PowerInfusionTarget
-	}
+	// TODO: Fix this to work with the new talent system.
+	// if discPriest.Talents.PowerInfusion && discPriest.Options.PowerInfusionTarget != nil {
+	// 	discPriest.SelfBuffs.PowerInfusionTarget = discPriest.Options.PowerInfusionTarget
+	// }
 
 	return discPriest
 }
@@ -71,6 +72,9 @@ func (discPriest *DisciplinePriest) Initialize() {
 
 	// // discPriest.ApplyRapture(discPriest.Options.RapturesPerMinute)
 	// discPriest.RegisterHymnOfHopeCD()
+}
+
+func (holyPriest *DisciplinePriest) ApplyTalents() {
 }
 
 func (discPriest *DisciplinePriest) Reset(sim *core.Simulation) {

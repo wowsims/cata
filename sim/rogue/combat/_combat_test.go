@@ -59,11 +59,7 @@ func TestCombat(t *testing.T) {
 
 var CombatTalents = "0322-2332030310230012321-003"
 
-var CombatGlyphs = &proto.Glyphs{
-	Prime1: int32(proto.RoguePrimeGlyph_GlyphOfSinisterStrike),
-	Prime2: int32(proto.RoguePrimeGlyph_GlyphOfSliceAndDice),
-	Prime3: int32(proto.RoguePrimeGlyph_GlyphOfAdrenalineRush),
-}
+var CombatGlyphs = &proto.Glyphs{}
 
 var PlayerOptionsDI = &proto.Player_CombatRogue{
 	CombatRogue: &proto.CombatRogue{

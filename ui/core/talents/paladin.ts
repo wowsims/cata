@@ -1,11 +1,9 @@
-import { PaladinMajorGlyph, PaladinMinorGlyph, PaladinPrimeGlyph, PaladinTalents } from '../proto/paladin.js';
+import { PaladinMajorGlyph, PaladinMinorGlyph, PaladinTalents } from '../proto/paladin.js';
 import { GlyphsConfig } from './glyphs_picker.js';
 import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
 import PaladinTalentJson from './trees/paladin.json';export const paladinTalentsConfig: TalentsConfig<PaladinTalents> = newTalentsConfig(PaladinTalentJson);
 
 export const paladinGlyphsConfig: GlyphsConfig = {
-	primeGlyphs: {
-	},
 	majorGlyphs: {
 		[PaladinMajorGlyph.GlyphOfDoubleJeopardy]: {
 			name: "Glyph of Double Jeopardy",
@@ -29,7 +27,7 @@ export const paladinGlyphsConfig: GlyphsConfig = {
 		},
 		[PaladinMajorGlyph.GlyphOfTemplarsVerdict]: {
 			name: "Glyph of Templar's Verdict",
-			description: "You take $115668s1% less damage for $115668d after dealing damage with Templar's Verdict or Exorcism.",
+			description: "You take $115668s1% less damage for $115668d after dealing damage with Templar\'s Verdict or Exorcism.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_paladin_templarsverdict.jpg",
 		},
 		[PaladinMajorGlyph.GlyphOfAvengingWrath]: {
@@ -44,7 +42,7 @@ export const paladinGlyphsConfig: GlyphsConfig = {
 		},
 		[PaladinMajorGlyph.GlyphOfFocusedShield]: {
 			name: "Glyph of Focused Shield",
-			description: "Your Avenger's Shield hits $s1 fewer targets, but for $s2% more damage.",
+			description: "Your Avenger\'s Shield hits $s1 fewer targets, but for $s2% more damage.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_holy_avengersshield.jpg",
 		},
 		[PaladinMajorGlyph.GlyphOfBurdenOfGuilt]: {
@@ -74,9 +72,7 @@ export const paladinGlyphsConfig: GlyphsConfig = {
 		},
 		[PaladinMajorGlyph.GlyphOfHarshWords]: {
 			name: "Glyph of Harsh Words",
-			description: "Your Word of Glory can now also be used on enemy targets, causing Holy damage approximately equal to the amount it would have healed.
-
-Does not work with Eternal Flame.",
+			description: "Your Word of Glory can now also be used on enemy targets, causing Holy damage approximately equal to the amount it would have healed.\u000D\u000A\u000D\u000ADoes not work with Eternal Flame.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_helmet_96.jpg",
 		},
 		[PaladinMajorGlyph.GlyphOfDivinity]: {
@@ -91,9 +87,7 @@ Does not work with Eternal Flame.",
 		},
 		[PaladinMajorGlyph.GlyphOfBlessedLife]: {
 			name: "Glyph of Blessed Life",
-			description: "You have a $54943h% chance to gain a charge of Holy Power whenever you are affected by a Stun, Fear or Immobilize effect.
-
-This effect cannot occur more than once every $54943s2 sec.",
+			description: "You have a $54943h% chance to gain a charge of Holy Power whenever you are affected by a Stun, Fear or Immobilize effect.\u000D\u000A\u000D\u000AThis effect cannot occur more than once every $54943s2 sec.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_holy_healingaura.jpg",
 		},
 		[PaladinMajorGlyph.GlyphOfFlashOfLight]: {
@@ -108,7 +102,7 @@ This effect cannot occur more than once every $54943s2 sec.",
 		},
 		[PaladinMajorGlyph.GlyphOfDazingShield]: {
 			name: "Glyph of Dazing Shield",
-			description: "Your Avenger's Shield now also dazes targets for $63529d.",
+			description: "Your Avenger\'s Shield now also dazes targets for $63529d.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_holy_avengersshield.jpg",
 		},
 		[PaladinMajorGlyph.GlyphOfImmediateTruth]: {
@@ -190,9 +184,7 @@ This effect cannot occur more than once every $54943s2 sec.",
 		},
 		[PaladinMinorGlyph.GlyphOfContemplation]: {
 			name: "Glyph of Contemplation",
-			description: "Teaches you the ability Contemplation.
-
-Allows you a moment of peace as you kneel in quiet contemplation to ponder the nature of the Light.",
+			description: "Teaches you the ability Contemplation.\u000D\u000A\u000D\u000AAllows you a moment of peace as you kneel in quiet contemplation to ponder the nature of the Light.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_relics_libramofhope.jpg",
 		},
 		[PaladinMinorGlyph.GlyphOfWingedVengeance]: {

@@ -1,11 +1,9 @@
-import { RogueMajorGlyph, RogueMinorGlyph, RoguePrimeGlyph, RogueTalents } from '../proto/rogue.js';
+import { RogueMajorGlyph, RogueMinorGlyph, RogueTalents } from '../proto/rogue.js';
 import { GlyphsConfig } from './glyphs_picker.js';
 import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
 import RogueTalentJson from './trees/rogue.json';export const rogueTalentsConfig: TalentsConfig<RogueTalents> = newTalentsConfig(RogueTalentJson);
 
 export const rogueGlyphsConfig: GlyphsConfig = {
-	primeGlyphs: {
-	},
 	majorGlyphs: {
 		[RogueMajorGlyph.GlyphOfShadowWalk]: {
 			name: "Glyph of Shadow Walk",
@@ -54,7 +52,7 @@ export const rogueGlyphsConfig: GlyphsConfig = {
 		},
 		[RogueMajorGlyph.GlyphOfGarrote]: {
 			name: "Glyph of Garrote",
-			description: "Increases the duration of your Garrote ability's silence effect by ${$56812m1/1000}.1 sec.",
+			description: "Increases the duration of your Garrote ability\'s silence effect by ${$56812m1/1000}.1 sec.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_rogue_garrote.jpg",
 		},
 		[RogueMajorGlyph.GlyphOfGouge]: {
@@ -136,9 +134,7 @@ export const rogueGlyphsConfig: GlyphsConfig = {
 		},
 		[RogueMinorGlyph.GlyphOfDetection]: {
 			name: "Glyph of Detection",
-			description: "Teaches you the ability Detection.
-
-Focus intently on trying to detect certain creatures.",
+			description: "Teaches you the ability Detection.\u000D\u000A\u000D\u000AFocus intently on trying to detect certain creatures.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_spy.jpg",
 		},
 		[RogueMinorGlyph.GlyphOfHemorrhage]: {

@@ -1,11 +1,9 @@
-import { WarlockMajorGlyph, WarlockMinorGlyph, WarlockPrimeGlyph, WarlockTalents } from '../proto/warlock.js';
+import { WarlockMajorGlyph, WarlockMinorGlyph, WarlockTalents } from '../proto/warlock.js';
 import { GlyphsConfig } from './glyphs_picker.js';
 import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
 import WarlockTalentJson from './trees/warlock.json';export const warlockTalentsConfig: TalentsConfig<WarlockTalents> = newTalentsConfig(WarlockTalentJson);
 
 export const warlockGlyphsConfig: GlyphsConfig = {
-	primeGlyphs: {
-	},
 	majorGlyphs: {
 		[WarlockMajorGlyph.GlyphOfConflagrate]: {
 			name: "Glyph of Conflagrate",
@@ -24,17 +22,7 @@ export const warlockGlyphsConfig: GlyphsConfig = {
 		},
 		[WarlockMajorGlyph.GlyphOfDemonTraining]: {
 			name: "Glyph of Demon Training",
-			description: "Improves your demon's special abilities:
-
-Your $?s108499[Fel Imp][Imp]'s Firebolt cast time is reduced by 50% and fires in bursts of three.
-
-Increases your $?s108499[Voidlord][Voidwalker]'s total armor by $s1%.
-
-Your $?s108499[Shivarra][Succubus]'s $?s108499[Mesmerizes][Seduction] ability also removes all damage over time effects from the target.
-
-When your $?s108499[Observer][Felhunter] uses $?s108499[Clone Magic][Devour Magic], you will also be healed for that amount.
-
-Increases your $?s108499[Wrathguard][Felguard]'s total health by $s3%.",
+			description: "Improves your demon\'s special abilities:\u000D\u000A\u000D\u000AYour $?s108499[Fel Imp][Imp]\'s Firebolt cast time is reduced by 50% and fires in bursts of three.\u000D\u000A\u000D\u000AIncreases your $?s108499[Voidlord][Voidwalker]\'s total armor by $s1%.\u000D\u000A\u000D\u000AYour $?s108499[Shivarra][Succubus]\'s $?s108499[Mesmerizes][Seduction] ability also removes all damage over time effects from the target.\u000D\u000A\u000D\u000AWhen your $?s108499[Observer][Felhunter] uses $?s108499[Clone Magic][Devour Magic], you will also be healed for that amount.\u000D\u000A\u000D\u000AIncreases your $?s108499[Wrathguard][Felguard]\'s total health by $s3%.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelhunter.jpg",
 		},
 		[WarlockMajorGlyph.GlyphOfHealthstone]: {
@@ -49,11 +37,7 @@ Increases your $?s108499[Wrathguard][Felguard]'s total health by $s3%.",
 		},
 		[WarlockMajorGlyph.GlyphOfImpSwarm]: {
 			name: "Glyph of Imp Swarm",
-			description: "Teaches you the ability Imp Swarm. 
-Requires Demonology.
-
-$@spellicon104316 $@spellname104316
-$@spelldesc104316",
+			description: "Teaches you the ability Imp Swarm. \u000D\u000ARequires Demonology.\u000D\u000A\u000D\u000A$@spellicon104316 $@spellname104316\u000D\u000A$@spelldesc104316",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warlock_impoweredimp.jpg",
 		},
 		[WarlockMajorGlyph.GlyphOfHavoc]: {
@@ -88,12 +72,7 @@ $@spelldesc104316",
 		},
 		[WarlockMajorGlyph.GlyphOfDemonHunting]: {
 			name: "Glyph of Demon Hunting",
-			description: "Requires Demonology.
-
-Teaches you the ability $@spellname114168. 
-
-$@spellname114168
-$@spelldesc114168",
+			description: "Requires Demonology.\u000D\u000A\u000D\u000ATeaches you the ability $@spellname114168. \u000D\u000A\u000D\u000A$@spellname114168\u000D\u000A$@spelldesc114168",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg",
 		},
 		[WarlockMajorGlyph.GlyphOfEmberTap]: {
@@ -113,9 +92,7 @@ $@spelldesc114168",
 		},
 		[WarlockMajorGlyph.GlyphOfLifeTap]: {
 			name: "Glyph of Life Tap",
-			description: "Your Life Tap no longer consumes health, but instead absorbs ${($MHP*0.15)} healing received. This effect stacks.
-
-The absorb lasts ${$m1/1000} sec.",
+			description: "Your Life Tap no longer consumes health, but instead absorbs ${($MHP*0.15)} healing received. This effect stacks.\u000D\u000A\u000D\u000AThe absorb lasts ${$m1/1000} sec.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_burningspirit.jpg",
 		},
 		[WarlockMajorGlyph.GlyphOfEternalResolve]: {
@@ -137,7 +114,7 @@ The absorb lasts ${$m1/1000} sec.",
 	minorGlyphs: {
 		[WarlockMinorGlyph.GlyphOfHandOfGuldan]: {
 			name: "Glyph of Hand of Gul'dan",
-			description: "Your Hand of Gul'dan can now be targeted at a location.",
+			description: "Your Hand of Gul\'dan can now be targeted at a location.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/.jpg",
 		},
 		[WarlockMinorGlyph.GlyphOfVerdantSpheres]: {
@@ -157,7 +134,7 @@ The absorb lasts ${$m1/1000} sec.",
 		},
 		[WarlockMinorGlyph.GlyphOfHealthFunnel]: {
 			name: "Glyph of Health Funnel",
-			description: "Your Health Funnel instantly restores $114189s1% of your demon's health, but has a 10 sec. cooldown.",
+			description: "Your Health Funnel instantly restores $114189s1% of your demon\'s health, but has a 10 sec. cooldown.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_lifedrain.jpg",
 		},
 		[WarlockMinorGlyph.GlyphOfSubtlety]: {
@@ -187,9 +164,7 @@ The absorb lasts ${$m1/1000} sec.",
 		},
 		[WarlockMinorGlyph.GlyphOfEyeOfKilrogg]: {
 			name: "Glyph of Eye of Kilrogg",
-			description: "Your Eye of Kilrogg is no longer stealthed and can now place your Demonic Circle.  The casting Warlock must be within line of sight of the Eye of Kilrogg to place the Demonic Circle.
-
-In addition, the movement speed of your Eye of Kilrogg is increased by $s1% and allows it to fly in areas where flying mounts are enabled.",
+			description: "Your Eye of Kilrogg is no longer stealthed and can now place your Demonic Circle.  The casting Warlock must be within line of sight of the Eye of Kilrogg to place the Demonic Circle.\u000D\u000A\u000D\u000AIn addition, the movement speed of your Eye of Kilrogg is increased by $s1% and allows it to fly in areas where flying mounts are enabled.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_evileye.jpg",
 		},
 		[WarlockMinorGlyph.GlyphOfSubjugateDemon]: {

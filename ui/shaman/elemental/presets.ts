@@ -8,7 +8,6 @@ import {
 	FireTotem,
 	ShamanMajorGlyph,
 	ShamanMinorGlyph,
-	ShamanPrimeGlyph,
 	ShamanShield,
 	ShamanTotems,
 	TotemSet,
@@ -74,9 +73,6 @@ export const TalentsTotemDuration = {
 	data: SavedTalents.create({
 		talentsString: '303202321223110132-201-20302',
 		glyphs: Glyphs.create({
-			prime1: ShamanPrimeGlyph.GlyphOfFlameShock,
-			prime2: ShamanPrimeGlyph.GlyphOfLavaBurst,
-			prime3: ShamanPrimeGlyph.GlyphOfUnleashedLightning,
 			major1: ShamanMajorGlyph.GlyphOfLightningShield,
 			major2: ShamanMajorGlyph.GlyphOfHealingStreamTotem,
 			major3: ShamanMajorGlyph.GlyphOfStoneclawTotem,
@@ -92,9 +88,6 @@ export const TalentsImprovedShields = {
 	data: SavedTalents.create({
 		talentsString: '3032023212231101321-2030022',
 		glyphs: Glyphs.create({
-			prime1: ShamanPrimeGlyph.GlyphOfFlameShock,
-			prime2: ShamanPrimeGlyph.GlyphOfLavaBurst,
-			prime3: ShamanPrimeGlyph.GlyphOfUnleashedLightning,
 			major1: ShamanMajorGlyph.GlyphOfLightningShield,
 			major2: ShamanMajorGlyph.GlyphOfHealingStreamTotem,
 			major3: ShamanMajorGlyph.GlyphOfStoneclawTotem,

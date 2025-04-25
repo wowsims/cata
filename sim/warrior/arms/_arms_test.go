@@ -34,9 +34,6 @@ func TestArms(t *testing.T) {
 
 var ArmsTalents = "32120303120212312201-0322-3"
 var ArmsDefaultGlyphs = &proto.Glyphs{
-	Prime1: int32(proto.WarriorPrimeGlyph_GlyphOfMortalStrike),
-	Prime2: int32(proto.WarriorPrimeGlyph_GlyphOfOverpower),
-	Prime3: int32(proto.WarriorPrimeGlyph_GlyphOfSlam),
 	Major1: int32(proto.WarriorMajorGlyph_GlyphOfColossusSmash),
 	Major2: int32(proto.WarriorMajorGlyph_GlyphOfShieldWall),
 	Major3: int32(proto.WarriorMajorGlyph_GlyphOfRapidCharge),

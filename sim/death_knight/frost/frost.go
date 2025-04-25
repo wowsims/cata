@@ -54,7 +54,7 @@ func (fdk FrostDeathKnight) getMasteryFrostBonus() float64 {
 func (fdk *FrostDeathKnight) Initialize() {
 	fdk.DeathKnight.Initialize()
 
-	fdk.registerFrostStrikeSpell()
+	// fdk.registerFrostStrikeSpell()
 }
 
 func (fdk *FrostDeathKnight) ApplyTalents() {

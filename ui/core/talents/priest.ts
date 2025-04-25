@@ -1,11 +1,9 @@
-import { PriestMajorGlyph, PriestMinorGlyph, PriestPrimeGlyph, PriestTalents } from '../proto/priest.js';
+import { PriestMajorGlyph, PriestMinorGlyph, PriestTalents } from '../proto/priest.js';
 import { GlyphsConfig } from './glyphs_picker.js';
 import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
 import PriestTalentJson from './trees/priest.json';export const priestTalentsConfig: TalentsConfig<PriestTalents> = newTalentsConfig(PriestTalentJson);
 
 export const priestGlyphsConfig: GlyphsConfig = {
-	primeGlyphs: {
-	},
 	majorGlyphs: {
 		[PriestMajorGlyph.GlyphOfCircleOfHealing]: {
 			name: "Glyph of Circle of Healing",
@@ -34,11 +32,7 @@ export const priestGlyphsConfig: GlyphsConfig = {
 		},
 		[PriestMajorGlyph.GlyphOfHolyNova]: {
 			name: "Glyph of Holy Nova",
-			description: "Teaches you the ability Holy Nova.
-
-Causes an explosion of holy light around the caster, causing $132157s1 Holy damage to all enemy targets within $132157A1 yards and healing up to 5 targets within $23455A1 yards for $23455s1. 
-
-Healing is divided among the number of targets healed.  These effects cause no threat.",
+			description: "Teaches you the ability Holy Nova.\u000D\u000A\u000D\u000ACauses an explosion of holy light around the caster, causing $132157s1 Holy damage to all enemy targets within $132157A1 yards and healing up to 5 targets within $23455A1 yards for $23455s1. \u000D\u000A\u000D\u000AHealing is divided among the number of targets healed.  These effects cause no threat.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_holy_holynova.jpg",
 		},
 		[PriestMajorGlyph.GlyphOfInnerFire]: {
@@ -83,7 +77,7 @@ Healing is divided among the number of targets healed.  These effects cause no t
 		},
 		[PriestMajorGlyph.GlyphOfPsychicScream]: {
 			name: "Glyph of Psychic Scream",
-			description: "Targets of your Psychic Scream and your Psyfiend's Psychic Terror now tremble in place instead of fleeing in fear.",
+			description: "Targets of your Psychic Scream and your Psyfiend\'s Psychic Terror now tremble in place instead of fleeing in fear.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_psychicscream.jpg",
 		},
 		[PriestMajorGlyph.GlyphOfRenew]: {
@@ -158,14 +152,12 @@ Healing is divided among the number of targets healed.  These effects cause no t
 		},
 		[PriestMajorGlyph.GlyphOfMindFlay]: {
 			name: "Glyph of Mind Flay",
-			description: "Your Mind Flay spell no longer slows your victim's movement speed.  Instead, each time Mind Flay deals damage you will be granted $120587s1% increased movement speed for $120587d, stacking up to $120587u times.",
+			description: "Your Mind Flay spell no longer slows your victim\'s movement speed.  Instead, each time Mind Flay deals damage you will be granted $120587s1% increased movement speed for $120587d, stacking up to $120587u times.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_siphonmana.jpg",
 		},
 		[PriestMajorGlyph.GlyphOfShadowWordDeath]: {
 			name: "Glyph of Shadow Word: Death",
-			description: "Your Shadow Word: Death can now be cast at any time, but deals 25% damage against targets above 20% health$?s15407[ and does not generate a Shadow Orb when used against them][].  
-
-Casting Shadow Word: Death now also does damage to you equivalent to the damage it would do to an enemy above 20% health.",
+			description: "Your Shadow Word: Death can now be cast at any time, but deals 25% damage against targets above 20% health$?s15407[ and does not generate a Shadow Orb when used against them][].  \u000D\u000A\u000D\u000ACasting Shadow Word: Death now also does damage to you equivalent to the damage it would do to an enemy above 20% health.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_demonicfortitude.jpg",
 		},
 		[PriestMajorGlyph.GlyphOfVampiricEmbrace]: {
@@ -175,9 +167,7 @@ Casting Shadow Word: Death now also does damage to you equivalent to the damage 
 		},
 		[PriestMajorGlyph.ZzoldGlyphOfVampiricTouch]: {
 			name: "zzOLD Glyph of Vampiric Touch",
-			description: "Your Shadow Word: Death can now be cast at any time, but deals 25% damage against targets above 20% health$?s15407[ and does not generate a Shadow Orb when used against them][].  
-
-Casting Shadow Word: Death now also does damage to you equivalent to the damage it would do to an enemy above 20% health.",
+			description: "Your Shadow Word: Death can now be cast at any time, but deals 25% damage against targets above 20% health$?s15407[ and does not generate a Shadow Orb when used against them][].  \u000D\u000A\u000D\u000ACasting Shadow Word: Death now also does damage to you equivalent to the damage it would do to an enemy above 20% health.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_demonicfortitude.jpg",
 		},
 		[PriestMajorGlyph.GlyphOfLightspring]: {
@@ -224,9 +214,7 @@ Casting Shadow Word: Death now also does damage to you equivalent to the damage 
 		},
 		[PriestMinorGlyph.GlyphOfConfession]: {
 			name: "Glyph of Confession",
-			description: "Teaches you the ability Confession.
-
-Compels a friendly target to confess a secret.",
+			description: "Teaches you the ability Confession.\u000D\u000A\u000D\u000ACompels a friendly target to confess a secret.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_soothingkiss.jpg",
 		},
 		[PriestMinorGlyph.GlyphOfHolyResurrection]: {
@@ -236,7 +224,7 @@ Compels a friendly target to confess a secret.",
 		},
 		[PriestMinorGlyph.GlyphOfTheValkyr]: {
 			name: "Glyph of the Val'kyr",
-			description: "While Spirit of Redemption is active, you now appear as a Val'kyr.",
+			description: "While Spirit of Redemption is active, you now appear as a Val\'kyr.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/achievement_boss_svalasorrowgrave.jpg",
 		},
 		[PriestMinorGlyph.GlyphOfShadowyFriends]: {
@@ -261,9 +249,7 @@ Compels a friendly target to confess a secret.",
 		},
 		[PriestMinorGlyph.GlyphOfShiftedAppearances]: {
 			name: "Glyph of Shifted Appearances",
-			description: "Void Shift causes you and your target to exchange appearances for several seconds.
-
-Does not affect mounted players.",
+			description: "Void Shift causes you and your target to exchange appearances for several seconds.\u000D\u000A\u000D\u000ADoes not affect mounted players.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/.jpg",
 		},
 		[PriestMinorGlyph.GlyphOfInspiredHymns]: {

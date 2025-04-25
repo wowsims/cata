@@ -23,7 +23,6 @@ import {
 	ShamanImbue,
 	ShamanMajorGlyph,
 	ShamanMinorGlyph,
-	ShamanPrimeGlyph,
 	ShamanShield,
 	ShamanSyncType,
 	ShamanTotems,
@@ -88,9 +87,6 @@ export const StandardTalents = {
 	data: SavedTalents.create({
 		talentsString: '3022003-2333310013003012321',
 		glyphs: Glyphs.create({
-			prime1: ShamanPrimeGlyph.GlyphOfLavaLash,
-			prime2: ShamanPrimeGlyph.GlyphOfStormstrike,
-			prime3: ShamanPrimeGlyph.GlyphOfFeralSpirit,
 			major1: ShamanMajorGlyph.GlyphOfLightningShield,
 			major2: ShamanMajorGlyph.GlyphOfHealingStreamTotem,
 			major3: ShamanMajorGlyph.GlyphOfFireNova,

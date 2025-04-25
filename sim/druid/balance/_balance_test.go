@@ -35,9 +35,6 @@ func TestBalance(t *testing.T) {
 
 var StandardTalents = "33230221123212111001-01-020331"
 var StandardGlyphs = &proto.Glyphs{
-	Prime1: int32(proto.DruidPrimeGlyph_GlyphOfInsectSwarm),
-	Prime2: int32(proto.DruidPrimeGlyph_GlyphOfMoonfire),
-	Prime3: int32(proto.DruidPrimeGlyph_GlyphOfWrath),
 	Major1: int32(proto.DruidMajorGlyph_GlyphOfStarfall),
 	Major2: int32(proto.DruidMajorGlyph_GlyphOfRebirth),
 	Major3: int32(proto.DruidMajorGlyph_GlyphOfMonsoon),

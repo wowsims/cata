@@ -38,9 +38,6 @@ func TestBlood(t *testing.T) {
 
 var BloodTalents = "02323203102122111321-3-033"
 var BloodDefaultGlyphs = &proto.Glyphs{
-	Prime1: int32(proto.DeathKnightPrimeGlyph_GlyphOfDeathStrike),
-	Prime2: int32(proto.DeathKnightPrimeGlyph_GlyphOfHeartStrike),
-	Prime3: int32(proto.DeathKnightPrimeGlyph_GlyphOfRuneStrike),
 	Major1: int32(proto.DeathKnightMajorGlyph_GlyphOfAntiMagicShell),
 	Major2: int32(proto.DeathKnightMajorGlyph_GlyphOfDancingRuneWeapon),
 	Major3: int32(proto.DeathKnightMajorGlyph_GlyphOfBoneShield),

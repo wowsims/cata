@@ -50,11 +50,7 @@ func TestSubtlety(t *testing.T) {
 
 var SubtletyTalents = "023003-002-0332031321310012321"
 
-var SubtletyGlyphs = &proto.Glyphs{
-	Prime1: int32(proto.RoguePrimeGlyph_GlyphOfBackstab),
-	Prime2: int32(proto.RoguePrimeGlyph_GlyphOfSliceAndDice),
-	Prime3: int32(proto.RoguePrimeGlyph_GlyphOfShadowDance),
-}
+var SubtletyGlyphs = &proto.Glyphs{}
 
 var PlayerOptionsDI = &proto.Player_SubtletyRogue{
 	SubtletyRogue: &proto.SubtletyRogue{

@@ -1,11 +1,9 @@
-import { ShamanMajorGlyph, ShamanMinorGlyph, ShamanPrimeGlyph, ShamanTalents } from '../proto/shaman.js';
+import { ShamanMajorGlyph, ShamanMinorGlyph, ShamanTalents } from '../proto/shaman.js';
 import { GlyphsConfig } from './glyphs_picker.js';
 import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
 import ShamanTalentJson from './trees/shaman.json';export const shamanTalentsConfig: TalentsConfig<ShamanTalents> = newTalentsConfig(ShamanTalentJson);
 
 export const shamanGlyphsConfig: GlyphsConfig = {
-	primeGlyphs: {
-	},
 	majorGlyphs: {
 		[ShamanMajorGlyph.GlyphOfUnstableEarth]: {
 			name: "Glyph of Unstable Earth",
@@ -69,7 +67,7 @@ export const shamanGlyphsConfig: GlyphsConfig = {
 		},
 		[ShamanMajorGlyph.GlyphOfTelluricCurrents]: {
 			name: "Glyph of Telluric Currents",
-			description: "Causes your Lightning Bolt to restore $<mana>% of your mana when it strikes an enemy.",
+			description: "Causes your Lightning Bolt to restore $\u003Cmana\u003E% of your mana when it strikes an enemy.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_lightning_lightningbolt01.jpg",
 		},
 		[ShamanMajorGlyph.GlyphOfGroundingTotem]: {
@@ -79,7 +77,7 @@ export const shamanGlyphsConfig: GlyphsConfig = {
 		},
 		[ShamanMajorGlyph.GlyphOfSpiritwalkersGrace]: {
 			name: "Glyph of Spiritwalker's Grace",
-			description: "Increases the duration of your Spiritwalker's Grace by ${$55446m1/1000} sec.",
+			description: "Increases the duration of your Spiritwalker\'s Grace by ${$55446m1/1000} sec.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shaman_spiritwalkersgrace.jpg",
 		},
 		[ShamanMajorGlyph.GlyphOfWaterShield]: {
@@ -119,7 +117,7 @@ export const shamanGlyphsConfig: GlyphsConfig = {
 		},
 		[ShamanMajorGlyph.GlyphOfFeralSpirit]: {
 			name: "Glyph of Feral Spirit",
-			description: "Increases the healing done by your Feral Spirits' Spirit Hunt by $s1%.",
+			description: "Increases the healing done by your Feral Spirits\' Spirit Hunt by $s1%.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shaman_feralspirit.jpg",
 		},
 		[ShamanMajorGlyph.GlyphOfRiptide]: {
@@ -216,7 +214,7 @@ export const shamanGlyphsConfig: GlyphsConfig = {
 		},
 		[ShamanMinorGlyph.GlyphOfFlamingSerpent]: {
 			name: "Glyph of Flaming Serpent",
-			description: "Your Searing Totem now resembles Vol'jin's Serpent Ward.",
+			description: "Your Searing Totem now resembles Vol\'jin\'s Serpent Ward.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_guardianward.jpg",
 		},
 		[ShamanMinorGlyph.GlyphOfTheCompy]: {
@@ -231,7 +229,7 @@ export const shamanGlyphsConfig: GlyphsConfig = {
 		},
 		[ShamanMinorGlyph.GlyphOfAstralFixation]: {
 			name: "Glyph of Astral Fixation",
-			description: "Astral Recall now takes you to your capital's Earthshrine.",
+			description: "Astral Recall now takes you to your capital\'s Earthshrine.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_astralrecalgroup.jpg",
 		},
 		[ShamanMinorGlyph.GlyphOfRainOfFrogs]: {

@@ -5,7 +5,6 @@ import {
 	PaladinAura,
 	PaladinMajorGlyph as MajorGlyph,
 	PaladinMinorGlyph as MinorGlyph,
-	PaladinPrimeGlyph as PrimeGlyph,
 	PaladinSeal,
 } from '../../core/proto/paladin.js';
 import { SavedTalents } from '../../core/proto/ui.js';
@@ -44,9 +43,6 @@ export const StandardTalents = {
 	data: SavedTalents.create({
 		talentsString: '03331001221131312301-3-032002',
 		glyphs: Glyphs.create({
-			prime1: PrimeGlyph.GlyphOfHolyShock,
-			prime2: PrimeGlyph.GlyphOfSealOfInsight,
-			prime3: PrimeGlyph.GlyphOfDivineFavor,
 			major1: MajorGlyph.GlyphOfDivinePlea,
 			major2: MajorGlyph.GlyphOfDivinity,
 			major3: MajorGlyph.GlyphOfTheAsceticCrusader,
