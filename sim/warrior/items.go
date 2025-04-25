@@ -3,7 +3,7 @@ package warrior
 import (
 	"time"
 
-	"github.com/wowsims/mop/sim/common/mop"
+	"github.com/wowsims/mop/sim/common/cata"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
@@ -174,7 +174,7 @@ var ItemSetMoltenGiantBattleplate = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			character := agent.(WarriorAgent).GetWarrior()
 
-			mop.RegisterIgniteEffect(&character.Unit, mop.IgniteConfig{
+			cata.RegisterIgniteEffect(&character.Unit, cata.IgniteConfig{
 				ActionID:           core.ActionID{SpellID: 23922}.WithTag(3), // actual 99240
 				DisableCastMetrics: true,
 				DotAuraLabel:       "Combust",

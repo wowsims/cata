@@ -3,7 +3,7 @@ package paladin
 import (
 	"time"
 
-	"github.com/wowsims/mop/sim/common/mop"
+	"github.com/wowsims/mop/sim/common/cata"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
@@ -187,18 +187,18 @@ type Paladin struct {
 	AncientPowerAura        *core.Aura
 
 	// Cached Gurthalak tentacles
-	gurthalakTentacles []*mop.TentacleOfTheOldOnesPet
+	gurthalakTentacles []*cata.TentacleOfTheOldOnesPet
 
 	// Item sets
 	T11Ret4pc *core.Aura
 }
 
-func (paladin *Paladin) GetTentacles() []*mop.TentacleOfTheOldOnesPet {
+func (paladin *Paladin) GetTentacles() []*cata.TentacleOfTheOldOnesPet {
 	return paladin.gurthalakTentacles
 }
 
-func (paladin *Paladin) NewTentacleOfTheOldOnesPet() *mop.TentacleOfTheOldOnesPet {
-	pet := mop.NewTentacleOfTheOldOnesPet(&paladin.Character)
+func (paladin *Paladin) NewTentacleOfTheOldOnesPet() *cata.TentacleOfTheOldOnesPet {
+	pet := cata.NewTentacleOfTheOldOnesPet(&paladin.Character)
 	paladin.AddPet(pet)
 	return pet
 }
@@ -330,7 +330,7 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 	paladin.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	if mh := paladin.MainHand(); mh.Name == "Gurthalak, Voice of the Deeps" {
-		paladin.gurthalakTentacles = make([]*mop.TentacleOfTheOldOnesPet, 10)
+		paladin.gurthalakTentacles = make([]*cata.TentacleOfTheOldOnesPet, 10)
 
 		for i := 0; i < 10; i++ {
 			paladin.gurthalakTentacles[i] = paladin.NewTentacleOfTheOldOnesPet()
