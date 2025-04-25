@@ -3,15 +3,14 @@ import { Spec } from "../proto/common";
 export const CHARACTER_LEVEL = 90;
 export const BOSS_LEVEL = CHARACTER_LEVEL + 3;
 
-export const EXPERTISE_PER_QUARTER_PERCENT_REDUCTION = 30.027197;
+export const EXPERTISE_PER_QUARTER_PERCENT_REDUCTION = 340;
+export const HASTE_RATING_PER_HASTE_PERCENT = 425;
 export const CRIT_RATING_PER_CRIT_PERCENT = 600;
 export const PHYSICAL_HIT_RATING_PER_HIT_PERCENT = 340;
-export const EXPERTISE_RATING_PER_HIT_PERCENT = 340;
 export const SPELL_HIT_RATING_PER_HIT_PERCENT = 340;
-export const HASTE_RATING_PER_HASTE_PERCENT = 425;
-export const MASTERY_RATING_PER_MASTERY_POINT = 600;
 export const DODGE_RATING_PER_DODGE_PERCENT = 885;
 export const PARRY_RATING_PER_PARRY_PERCENT = 885;
+export const MASTERY_RATING_PER_MASTERY_POINT = 0;
 
 // TODO: Adjust for MoP values
 // Mastery Ratings have various increments based on spec.
