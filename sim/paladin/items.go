@@ -3,7 +3,7 @@ package paladin
 import (
 	"time"
 
-	"github.com/wowsims/mop/sim/common/mop"
+	"github.com/wowsims/mop/sim/common/cata"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/stats"
 )
@@ -36,7 +36,7 @@ var ItemSetBattleplateOfImmolation = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			paladin := agent.(PaladinAgent).GetPaladin()
 
-			mop.RegisterIgniteEffect(&paladin.Unit, mop.IgniteConfig{
+			cata.RegisterIgniteEffect(&paladin.Unit, cata.IgniteConfig{
 				ActionID:           core.ActionID{SpellID: 35395}.WithTag(3), // actual 99092
 				DisableCastMetrics: true,
 				DotAuraLabel:       "Flames of the Faithful" + paladin.Label,

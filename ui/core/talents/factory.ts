@@ -6,6 +6,7 @@ import { druidGlyphsConfig, druidTalentsConfig } from './druid.js';
 import { GlyphsConfig } from './glyphs_picker.js';
 import { hunterGlyphsConfig, hunterTalentsConfig } from './hunter.js';
 import { mageGlyphsConfig, mageTalentsConfig } from './mage.js';
+import { monkGlyphsConfig, monkTalentsConfig } from './monk.js';
 import { paladinGlyphsConfig, paladinTalentsConfig } from './paladin.js';
 import { priestGlyphsConfig, priestTalentsConfig } from './priest.js';
 import { rogueGlyphsConfig, rogueTalentsConfig } from './rogue.js';
@@ -21,6 +22,7 @@ export const classTalentsConfig: Record<Class, TalentsConfig<any>> = {
 	[Class.ClassShaman]: shamanTalentsConfig,
 	[Class.ClassHunter]: hunterTalentsConfig,
 	[Class.ClassMage]: mageTalentsConfig,
+	[Class.ClassMonk]: monkTalentsConfig,
 	[Class.ClassRogue]: rogueTalentsConfig,
 	[Class.ClassPaladin]: paladinTalentsConfig,
 	[Class.ClassPriest]: priestTalentsConfig,
@@ -35,6 +37,7 @@ export const classGlyphsConfig: Record<Class, GlyphsConfig> = {
 	[Class.ClassShaman]: shamanGlyphsConfig,
 	[Class.ClassHunter]: hunterGlyphsConfig,
 	[Class.ClassMage]: mageGlyphsConfig,
+	[Class.ClassMonk]: monkGlyphsConfig,
 	[Class.ClassRogue]: rogueGlyphsConfig,
 	[Class.ClassPaladin]: paladinGlyphsConfig,
 	[Class.ClassPriest]: priestGlyphsConfig,

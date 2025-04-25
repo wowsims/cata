@@ -45,7 +45,9 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 	cat.primalMadnessBonus = 10.0 * float64(cat.Talents.PrimalMadness)
 
 	cat.EnableEnergyBar(core.EnergyBarOptions{
-		MaxEnergy: 100.0,
+		MaxComboPoints: 5,
+		MaxEnergy:      100.0,
+		UnitClass:      proto.Class_ClassDruid,
 	})
 	cat.EnableRageBar(core.RageBarOptions{RageMultiplier: 1, MHSwingSpeed: 2.5})
 

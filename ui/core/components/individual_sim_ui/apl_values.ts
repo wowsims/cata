@@ -1,5 +1,3 @@
-import tippy from 'tippy.js';
-
 import { Player } from '../../player.js';
 import {
 	APLValue,
@@ -60,10 +58,14 @@ import {
 	APLValueMath,
 	APLValueMath_MathOperator as MathOperator,
 	APLValueMax,
+	APLValueMaxComboPoints,
 	APLValueMaxEnergy,
 	APLValueMaxFocus,
 	APLValueMaxRunicPower,
 	APLValueMin,
+	APLValueMonkCurrentChi,
+	APLValueMonkMaxChi,
+	APLValueMonkNextChiBrewRecharge,
 	APLValueNextRuneCooldown,
 	APLValueNot,
 	APLValueNumberTargets,
@@ -96,11 +98,10 @@ import {
 	APLValueWarlockShouldRecastDrainSoul,
 	APLValueWarlockShouldRefreshCorruption,
 } from '../../proto/apl.js';
-import { Class, Spec, UUID } from '../../proto/common.js';
+import { Class, Spec } from '../../proto/common.js';
 import { ShamanTotems_TotemType as TotemType } from '../../proto/shaman.js';
-import { ActionId } from '../../proto_utils/action_id';
 import { EventID } from '../../typed_event.js';
-import { existsInDOM, randomUUID } from '../../utils';
+import { randomUUID } from '../../utils';
 import { Input, InputConfig } from '../input.js';
 import { TextDropdownPicker, TextDropdownValueConfig } from '../pickers/dropdown_picker.jsx';
 import { ListItemPickerConfig, ListPicker } from '../pickers/list_picker.jsx';
@@ -741,7 +742,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		includeIf(player: Player<any>, _isPrepull: boolean) {
 			const clss = player.getClass();
 			const spec = player.getSpec();
-			return spec === Spec.SpecFeralDruid || spec === Spec.SpecGuardianDruid || clss === Class.ClassRogue;
+			return spec === Spec.SpecFeralDruid || spec === Spec.SpecGuardianDruid || clss === Class.ClassRogue || clss === Class.ClassMonk;
 		},
 		fields: [],
 	}),
@@ -753,7 +754,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		includeIf(player: Player<any>, _isPrepull: boolean) {
 			const clss = player.getClass();
 			const spec = player.getSpec();
-			return spec === Spec.SpecFeralDruid || spec === Spec.SpecGuardianDruid || clss === Class.ClassRogue;
+			return spec === Spec.SpecFeralDruid || spec === Spec.SpecGuardianDruid || clss === Class.ClassRogue || clss === Class.ClassMonk;
 		},
 		fields: [],
 	}),
@@ -765,7 +766,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		includeIf(player: Player<any>, _isPrepull: boolean) {
 			const clss = player.getClass();
 			const spec = player.getSpec();
-			return spec === Spec.SpecFeralDruid || spec === Spec.SpecGuardianDruid || clss === Class.ClassRogue;
+			return spec === Spec.SpecFeralDruid || spec === Spec.SpecGuardianDruid || clss === Class.ClassRogue || clss === Class.ClassMonk;
 		},
 		fields: [],
 	}),
@@ -777,13 +778,13 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		includeIf(player: Player<any>, _isPrepull: boolean) {
 			const clss = player.getClass();
 			const spec = player.getSpec();
-			return spec === Spec.SpecFeralDruid || spec === Spec.SpecGuardianDruid || clss === Class.ClassRogue;
+			return spec === Spec.SpecFeralDruid || spec === Spec.SpecGuardianDruid || clss === Class.ClassRogue || clss === Class.ClassMonk;
 		},
 		fields: [valueFieldConfig('targetEnergy')],
 	}),
 	currentComboPoints: inputBuilder({
-		label: 'Combo Points',
-		submenu: ['Resources'],
+		label: 'Current Combo Points',
+		submenu: ['Resources', 'Combo Points'],
 		shortDescription: 'Amount of currently available Combo Points.',
 		newValue: APLValueCurrentComboPoints.create,
 		includeIf(player: Player<any>, _isPrepull: boolean) {
@@ -791,6 +792,34 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 			const spec = player.getSpec();
 			return spec === Spec.SpecFeralDruid || spec === Spec.SpecGuardianDruid || clss === Class.ClassRogue;
 		},
+		fields: [],
+	}),
+	maxComboPoints: inputBuilder({
+		label: 'Max Combo Points',
+		submenu: ['Resources', 'Combo Points'],
+		shortDescription: 'Amount of maximum available Combo Points.',
+		newValue: APLValueMaxComboPoints.create,
+		includeIf(player: Player<any>, _isPrepull: boolean) {
+			const clss = player.getClass();
+			const spec = player.getSpec();
+			return spec === Spec.SpecFeralDruid || spec === Spec.SpecGuardianDruid || clss === Class.ClassRogue;
+		},
+		fields: [],
+	}),
+	monkCurrentChi: inputBuilder({
+		label: 'Current Chi',
+		submenu: ['Resources', 'Chi'],
+		shortDescription: 'Amount of currently available Chi.',
+		newValue: APLValueMonkCurrentChi.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() === Class.ClassMonk,
+		fields: [],
+	}),
+	monkMaxChi: inputBuilder({
+		label: 'Max Chi',
+		submenu: ['Resources', 'Chi'],
+		shortDescription: 'Amount of maximum available Chi.',
+		newValue: APLValueMonkMaxChi.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() === Class.ClassMonk,
 		fields: [],
 	}),
 	currentRunicPower: inputBuilder({
@@ -1113,6 +1142,14 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 				labelTooltip: 'Maximum amount of time before the aura expires when it may be refreshed.',
 			}),
 		],
+	}),
+	monkNextChiBrewRecharge: inputBuilder({
+		label: 'Next Chi Brew Recharge',
+		submenu: ['Aura'],
+		shortDescription: 'Returns the amount of time until the next Chi Brew stack will be ready.',
+		newValue: APLValueMonkNextChiBrewRecharge.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassMonk,
+		fields: [],
 	}),
 
 	// Aura Sets

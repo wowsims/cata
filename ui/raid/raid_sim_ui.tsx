@@ -229,7 +229,7 @@ export class RaidSimUI extends SimUI {
 
 	// Returns the actual key to use for local storage, based on the given key part and the site context.
 	getStorageKey(keyPart: string): string {
-		return '__cata_raid__' + keyPart;
+		return '__mop_raid__' + keyPart;
 	}
 
 	getSavedRaidStorageKey(): string {

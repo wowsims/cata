@@ -1,0 +1,188 @@
+[
+	{
+		"name": "Monk",
+		"backgroundUrl": "https://wow.zamimg.com/images/tools/dragonflight-talent-calc/blizzard/talentbg-monk-windwalker.jpg",
+		"talents": [
+			{
+				"fieldName": "celerity",
+				"fancyName": "Celerity",
+				"location": {
+					"rowIdx": 0,
+					"colIdx": 0
+				},
+				"spellIds": [115173],
+				"maxPoints": 1
+			},
+			{
+				"fieldName": "tigersLust",
+				"fancyName": "Tiger's Lust",
+				"location": {
+					"rowIdx": 0,
+					"colIdx": 1
+				},
+				"spellIds": [116841],
+				"maxPoints": 1
+			},
+			{
+				"fieldName": "momentum",
+				"fancyName": "Momentum",
+				"location": {
+					"rowIdx": 0,
+					"colIdx": 2
+				},
+				"spellIds": [115174],
+				"maxPoints": 1
+			},
+			{
+				"fieldName": "chiWave",
+				"fancyName": "Chi Wave",
+				"location": {
+					"rowIdx": 1,
+					"colIdx": 0
+				},
+				"spellIds": [115098],
+				"maxPoints": 1
+			},
+			{
+				"fieldName": "zenSphere",
+				"fancyName": "Zen Sphere",
+				"location": {
+					"rowIdx": 1,
+					"colIdx": 1
+				},
+				"spellIds": [124081],
+				"maxPoints": 1
+			},
+			{
+				"fieldName": "chiBurst",
+				"fancyName": "Chi Burst",
+				"location": {
+					"rowIdx": 1,
+					"colIdx": 2
+				},
+				"spellIds": [123986],
+				"maxPoints": 1
+			},
+			{
+				"fieldName": "powerStrikes",
+				"fancyName": "Power Strikes",
+				"location": {
+					"rowIdx": 2,
+					"colIdx": 0
+				},
+				"spellIds": [121817],
+				"maxPoints": 1
+			},
+			{
+				"fieldName": "ascension",
+				"fancyName": "Ascension",
+				"location": {
+					"rowIdx": 2,
+					"colIdx": 1
+				},
+				"spellIds": [115396],
+				"maxPoints": 1
+			},
+			{
+				"fieldName": "chiBrew",
+				"fancyName": "Chi Brew",
+				"location": {
+					"rowIdx": 2,
+					"colIdx": 2
+				},
+				"spellIds": [115399],
+				"maxPoints": 1
+			},
+			{
+				"fieldName": "ringOfPeace",
+				"fancyName": "Ring of Peace",
+				"location": {
+					"rowIdx": 3,
+					"colIdx": 0
+				},
+				"spellIds": [116844],
+				"maxPoints": 1
+			},
+			{
+				"fieldName": "chargingOxWave",
+				"fancyName": "Charging Ox Wave",
+				"location": {
+					"rowIdx": 3,
+					"colIdx": 1
+				},
+				"spellIds": [119392],
+				"maxPoints": 1
+			},
+			{
+				"fieldName": "legSweep",
+				"fancyName": "Leg Sweep",
+				"location": {
+					"rowIdx": 3,
+					"colIdx": 2
+				},
+				"spellIds": [119381],
+				"maxPoints": 1
+			},
+			{
+				"fieldName": "healingElixirs",
+				"fancyName": "Healing Elixirs",
+				"location": {
+					"rowIdx": 4,
+					"colIdx": 0
+				},
+				"spellIds": [122280],
+				"maxPoints": 1
+			},
+			{
+				"fieldName": "dampenHarm",
+				"fancyName": "Dampen Harm",
+				"location": {
+					"rowIdx": 4,
+					"colIdx": 1
+				},
+				"spellIds": [122278],
+				"maxPoints": 1
+			},
+			{
+				"fieldName": "diffuseMagic",
+				"fancyName": "Diffuse Magic",
+				"location": {
+					"rowIdx": 4,
+					"colIdx": 2
+				},
+				"spellIds": [122783],
+				"maxPoints": 1
+			},
+			{
+				"fieldName": "rushingJadeWind",
+				"fancyName": "Rushing Jade Wind",
+				"location": {
+					"rowIdx": 5,
+					"colIdx": 0
+				},
+				"spellIds": [116847],
+				"maxPoints": 1
+			},
+			{
+				"fieldName": "invokeXuen",
+				"fancyName": "Invoke Xuen, the White Tiger",
+				"location": {
+					"rowIdx": 5,
+					"colIdx": 1
+				},
+				"spellIds": [123904],
+				"maxPoints": 1
+			},
+			{
+				"fieldName": "chiTorpedo",
+				"fancyName": "Chi Torpedo",
+				"location": {
+					"rowIdx": 5,
+					"colIdx": 2
+				},
+				"spellIds": [115008],
+				"maxPoints": 1
+			}
+		]
+	}
+]

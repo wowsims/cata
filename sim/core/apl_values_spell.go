@@ -96,6 +96,9 @@ func (value *APLValueSpellTimeToReady) Type() proto.APLValueType {
 func (value *APLValueSpellTimeToReady) GetDuration(sim *Simulation) time.Duration {
 	return value.spell.TimeToReady(sim)
 }
+func (value *APLValueSpellTimeToReady) GetFloat(sim *Simulation) float64 {
+	return value.spell.TimeToReady(sim).Seconds()
+}
 func (value *APLValueSpellTimeToReady) String() string {
 	return fmt.Sprintf("Time To Ready(%s)", value.spell.ActionID)
 }

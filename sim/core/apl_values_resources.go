@@ -388,6 +388,31 @@ func (value *APLValueCurrentComboPoints) String() string {
 	return "Current Combo Points"
 }
 
+type APLValueMaxComboPoints struct {
+	DefaultAPLValueImpl
+	maxComboPoints int32
+}
+
+func (rot *APLRotation) newValueMaxComboPoints(_ *proto.APLValueMaxComboPoints, uuid *proto.UUID) APLValue {
+	unit := rot.unit
+	if !unit.HasEnergyBar() {
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Error, "%s does not use Combo Points", unit.Label)
+		return nil
+	}
+	return &APLValueMaxComboPoints{
+		maxComboPoints: unit.MaxComboPoints(),
+	}
+}
+func (value *APLValueMaxComboPoints) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeInt
+}
+func (value *APLValueMaxComboPoints) GetInt(sim *Simulation) int32 {
+	return value.maxComboPoints
+}
+func (value *APLValueMaxComboPoints) String() string {
+	return fmt.Sprintf("Max Combo Points(%d)", value.maxComboPoints)
+}
+
 type APLValueCurrentRunicPower struct {
 	DefaultAPLValueImpl
 	unit *Unit

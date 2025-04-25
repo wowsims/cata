@@ -820,7 +820,7 @@ export class ResourceChangedLog extends SimLog {
 
 	static parse(params: SimLogParams): Promise<ResourceChangedLog> | null {
 		const match = params.raw.match(
-			/(Gained|Spent) (\d+\.?\d*) (health|mana|energy|focus|rage|combo points|runic power|blood rune|frost rune|unholy rune|death rune|solar energy|lunar energy|holy power) from (.*?) \((\d+\.?\d*) --> (\d+\.?\d*)\)( of (\d+\.?\d*) total)?/,
+			/(Gained|Spent) (\d+\.?\d*) (health|mana|energy|focus|rage|chi|combo points|runic power|blood rune|frost rune|unholy rune|death rune|solar energy|lunar energy|holy power) from (.*?) \((\d+\.?\d*) --> (\d+\.?\d*)\)( of (\d+\.?\d*) total)?/,
 		);
 		if (match) {
 			const resourceType = stringToResourceType(match[3]);
