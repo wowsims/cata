@@ -78,7 +78,7 @@ export type WowheadTooltipSpellParams = {
 	difficultyId?: 14 | 15 | 16;
 };
 
-export const WOWHEAD_EXPANSION_ENV = 11;
+export const WOWHEAD_EXPANSION_ENV = 15;
 
 export const buildWowheadTooltipDataset = async (options: WowheadTooltipItemParams | WowheadTooltipSpellParams) => {
 	const lang = getLanguageCode();
