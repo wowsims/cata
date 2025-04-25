@@ -67,20 +67,20 @@ docker run --rm -v $(pwd):/mop wowsims-mop npm install
 
 # Now you can run the commands as shown in the Commands sections, preceding everything with, "docker run --rm -it -p 8080:8080 -v $(pwd):/mop wowsims-mop".
 # For convenience, set this as an environment variable:
-CATA_CMD="docker run --rm -it -p 8080:8080 -v $(pwd):/mop wowsims-mop"
+MOP_CMD="docker run --rm -it -p 8080:8080 -v $(pwd):/mop wowsims-mop"
 
 #For the watch commands assign this environment variable:
-CATA_WATCH_CMD="docker run --rm -it -p 8080:8080 -p 3333:3333 -p 5173:5173 -e WATCH=1 -v $(pwd):/mop wowsims-mop"
+MOP_WATCH_CMD="docker run --rm -it -p 8080:8080 -p 3333:3333 -p 5173:5173 -e WATCH=1 -v $(pwd):/mop wowsims-mop"
 
 # ... do some coding on the sim ...
 
 # Run tests
-$(echo $CATA_CMD) make test
+$(echo $MOP_CMD) make test
 
 # ... do some coding on the UI ...
 
 # Host a local site
-$(echo $CATA_CMD) make host
+$(echo $MOP_CMD) make host
 ```
 
 ## Windows

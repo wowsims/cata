@@ -95,7 +95,7 @@ export class SimTitleDropdown extends Component {
 				<div className="sim-link-content">
 					<img src={this.getSimIconPath(data)} className="sim-link-icon" />
 					<div className="d-flex flex-column">
-						<span className="sim-link-label text-white">WoWSims - Cataclysm</span>
+						<span className="sim-link-label text-white">WoWSims - Mists of Pandaria</span>
 						<span className="sim-link-title">
 							{data.type === 'Raid' && raidSimLabel}
 							{data.type === 'Spec' && PlayerSpecs.getFullSpecName(data.spec)}
