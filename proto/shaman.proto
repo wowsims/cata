@@ -176,16 +176,6 @@ message ShamanTotems {
 	AirTotem air = 9;
 	FireTotem fire = 10;
 	WaterTotem water = 11;
-
-	bool use_fire_elemental = 12 [deprecated=true];
-
-	// Bonus spell power for fire elemental snapshotting.
-	int32 bonus_spellpower = 13 [deprecated=true]; // No longer used in favor of Item Swapping
-	// Bonus intellect for fire elemental snapshotting.
-	int32 bonus_intellect = 15 [deprecated=true]; // No longer used in favor of Item Swapping
-
-	// Snapshot fire elemental using Tier 10 4 set bonus.
-	bool enh_tier_ten_bonus = 14 [deprecated=true]; // No longer used in favor of Item Swapping
 }
 
 enum ShamanShield {
@@ -214,11 +204,6 @@ message ShamanOptions {
 	ShamanTotems totems = 2;
 	CallTotem call = 3;
 	ShamanImbue imbue_mh = 4;
-
-	bool use_dragon_soul_2PT12 = 5 [deprecated=true]; // No longer used because Phase 4 is live
-
-	// There's currently no way to swap two different set bonuses during prepull
-	bool use_prepull_enh_2PT10 = 6;
 }
 
 message ElementalShaman {

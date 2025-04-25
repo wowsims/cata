@@ -25,7 +25,7 @@ message ProtoVersion {
 	// protos need to define an api_version field so that the UI code knows
 	// to up-convert these protos to the new format whenever api_version is
 	// missing (0) or lower than current_version_number.
-	option (current_version_number) = 3;
+	option (current_version_number) = 1;
 
 	// The actual field value is only used within unit tests.
 	int32 saved_version_number = 1;
@@ -661,11 +661,6 @@ message IndividualBuffs {
 	int32 shattering_throw_count = 103;
 	bool focus_magic = 22;
 	bool dark_intent = 27;
-
-	// Deprecated Fields: leave these in the message to avoid breaking user
-	// data in live sims. Next expansion launches are a convenient time to
-	// clear out these fields.
-	int32 tricks_of_the_trade_count = 19 [deprecated=true];
 }
 
 message Debuffs {
@@ -721,20 +716,18 @@ message Consumes {
 	GuardianElixir guardian_elixir = 3;
 
 	Food food = 6;
-	reserved 7; // deprecated petfood
 
-	int32 pet_scroll_of_agility = 8;
-	int32 pet_scroll_of_strength = 9;
+	int32 pet_scroll_of_agility = 7;
+	int32 pet_scroll_of_strength = 8;
 
-	Potions default_potion = 10;
-	Potions prepop_potion = 11;
-	Conjured default_conjured = 12;
+	Potions default_potion = 9;
+	Potions prepop_potion = 10;
+	Conjured default_conjured = 11;
 
-	bool explosive_big_daddy = 15;
-	bool highpowered_bolt_gun = 16;
-	reserved 17; // deprecated old explosive
+	bool explosive_big_daddy = 12;
+	bool highpowered_bolt_gun = 13;
 
-	TinkerHands tinker_hands = 18;
+	TinkerHands tinker_hands = 14;
 }
 
 enum MobType {
@@ -1038,11 +1031,8 @@ message CustomSpell {
 }
 
 message ItemSwap {
-	ItemSpec mh_item = 1 [deprecated=true];
-	ItemSpec oh_item = 2 [deprecated=true];
-	ItemSpec ranged_item = 3 [deprecated=true];
-	repeated ItemSpec items = 4;
-	UnitStats prepull_bonus_stats = 5;
+	repeated ItemSpec items = 1;
+	UnitStats prepull_bonus_stats = 2;
 }
 
 message Duration {

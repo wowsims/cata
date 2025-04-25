@@ -614,36 +614,31 @@ message APLValueAllTrinketStatProcsActive {
     int32 stat_type1 = 1;
     int32 stat_type2 = 2;
     int32 stat_type3 = 3;
-    bool exclude_stacking_procs = 4 [deprecated=true];
-    double min_icd_seconds = 5;
+    double min_icd_seconds = 4;
 }
 message APLValueAnyTrinketStatProcsActive {
     int32 stat_type1 = 1;
     int32 stat_type2 = 2;
     int32 stat_type3 = 3;
-    bool exclude_stacking_procs = 4 [deprecated=true];
-    double min_icd_seconds = 5;
+    double min_icd_seconds = 4;
 }
 message APLValueTrinketProcsMinRemainingTime {
     int32 stat_type1 = 1;
     int32 stat_type2 = 2;
     int32 stat_type3 = 3;
-    bool exclude_stacking_procs = 4 [deprecated=true];
-    double min_icd_seconds = 5;
+    double min_icd_seconds = 4;
 }
 message APLValueTrinketProcsMaxRemainingICD {
     int32 stat_type1 = 1;
     int32 stat_type2 = 2;
     int32 stat_type3 = 3;
-    bool exclude_stacking_procs = 4 [deprecated=true];
-    double min_icd_seconds = 5;
+    double min_icd_seconds = 4;
 }
 message APLValueNumEquippedStatProcTrinkets {
     int32 stat_type1 = 1;
     int32 stat_type2 = 2;
     int32 stat_type3 = 3;
-    bool exclude_stacking_procs = 4 [deprecated=true];
-    double min_icd_seconds = 5;
+    double min_icd_seconds = 4;
 }
 message APLValueNumStatBuffCooldowns {
     int32 stat_type1 = 1;
