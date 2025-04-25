@@ -124,7 +124,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	otherInputs: {
 		inputs: [
 			EnhancementInputs.SyncTypeInput,
-			EnhancementInputs.UsePrepull2PT10,
 			OtherInputs.InputDelay,
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
