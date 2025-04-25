@@ -1,9 +1,5 @@
 package shaman
 
-import (
-	"github.com/wowsims/mop/sim/core"
-)
-
 // var ItemSetThrallsRegalia = core.NewItemSet(core.ItemSet{
 // 	Name:            "Thrall's Regalia",
 // 	AlternativeName: "Nobundo's Regalia",
@@ -229,41 +225,6 @@ import (
 // 		},
 // 	},
 // })
-
-var ItemSetFrostWitchBattlegear = core.NewItemSet(core.ItemSet{
-	Name: "Frost Witch's Battlegear",
-	Bonuses: map[int32]core.ApplySetBonus{
-		2: func(agent core.Agent, setBonusAura *core.Aura) {
-			shaman := agent.(ShamanAgent).GetShaman()
-
-			SharedEnhTier102PCAura(shaman, setBonusAura)
-
-			shaman.T10Enh2pc = setBonusAura
-		},
-		4: func(agent core.Agent, setBonusAura *core.Aura) {
-		},
-	},
-})
-
-func SharedEnhTier102PCAura(shaman *Shaman, parentAura *core.Aura) {
-	procAura := shaman.RegisterAura(core.Aura{
-		Label:    "Elemental Rage",
-		ActionID: core.ActionID{SpellID: 70829},
-	})
-	procAura.AttachMultiplicativePseudoStatBuff(&shaman.PseudoStats.DamageDealtMultiplier, 1.12)
-
-	parentAura.AttachProcTrigger(core.ProcTrigger{
-		Name:           "Elemental Rage - Trigger",
-		ClassSpellMask: SpellMaskShamanisticRage,
-		Callback:       core.CallbackOnCastComplete,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if parentAura.IsActive() {
-				procAura.Duration = spell.RelatedSelfBuff.Duration
-				procAura.Activate(sim)
-			}
-		},
-	})
-}
 
 // var ItemSetGladiatorsEarthshaker = core.NewItemSet(core.ItemSet{
 // 	Name: "Gladiator's Earthshaker",

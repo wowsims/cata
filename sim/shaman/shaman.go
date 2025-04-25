@@ -28,7 +28,7 @@ const (
 	SpellFlagFocusable = core.SpellFlagAgentReserved4
 )
 
-func NewShaman(character *core.Character, talents string, totems *proto.ShamanTotems, selfBuffs SelfBuffs, thunderstormRange bool, usePrepullEnh_2PT10 bool) *Shaman {
+func NewShaman(character *core.Character, talents string, totems *proto.ShamanTotems, selfBuffs SelfBuffs, thunderstormRange bool) *Shaman {
 	shaman := &Shaman{
 		Character:           *character,
 		Talents:             &proto.ShamanTalents{},
@@ -39,7 +39,6 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 		SelfBuffs:           selfBuffs,
 		ThunderstormInRange: thunderstormRange,
 		ClassSpellScaling:   core.GetClassSpellScalingCoefficient(proto.Class_ClassShaman),
-		usePrepullEnh_2PT10: usePrepullEnh_2PT10,
 	}
 	// shaman.waterShieldManaMetrics = shaman.NewManaMetrics(core.ActionID{SpellID: 57960})
 
@@ -171,14 +170,10 @@ type Shaman struct {
 	Riptide            *core.Spell
 	EarthShield        *core.Spell
 
-	waterShieldManaMetrics *core.ResourceMetrics
-
+	waterShieldManaMetrics   *core.ResourceMetrics
 	VolcanicRegalia4PT12Aura *core.Aura
 
-	usePrepullEnh_2PT10 bool
-
 	// Item sets
-	T10Enh2pc   *core.Aura
 	DungeonSet3 *core.Aura
 	T12Enh2pc   *core.Aura
 	T12Ele4pc   *core.Aura

@@ -40,7 +40,7 @@ func NewElementalShaman(character *core.Character, options *proto.Player) *Eleme
 
 	inRange := eleOptions.ThunderstormRange == proto.ElementalShaman_Options_TSInRange
 	ele := &ElementalShaman{
-		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, inRange, false),
+		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, inRange),
 	}
 
 	if mh := ele.GetMHWeapon(); mh != nil {
