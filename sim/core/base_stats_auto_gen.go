@@ -5,8 +5,8 @@ package core
 // **************************************
 
 import (
-	"github.com/wowsims/mop/sim/core/proto"
-	"github.com/wowsims/mop/sim/core/stats"
+	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 const ExpertisePerQuarterPercentReduction = 340.000000
@@ -20,31 +20,31 @@ const MasteryRatingPerMasteryPoint = 0.000000
 
 var CritPerAgiMaxLevel = map[proto.Class]float64{
 	proto.Class_ClassUnknown:     0.0,
-	proto.Class_ClassWarrior:     1000000.0000,
-	proto.Class_ClassPaladin:     1000000.0000,
-	proto.Class_ClassHunter:      125951.8100,
-	proto.Class_ClassRogue:       125951.8100,
-	proto.Class_ClassPriest:      79683.7950,
-	proto.Class_ClassDeathKnight: 1000000.0000,
-	proto.Class_ClassShaman:      125951.8100,
-	proto.Class_ClassMage:        78090.1180,
-	proto.Class_ClassWarlock:     76558.9420,
-	proto.Class_ClassMonk:        125951.8100,
-	proto.Class_ClassDruid:       125951.8100,
+	proto.Class_ClassWarrior:     0.0001,
+	proto.Class_ClassPaladin:     0.0001,
+	proto.Class_ClassHunter:      0.0008,
+	proto.Class_ClassRogue:       0.0008,
+	proto.Class_ClassPriest:      0.0013,
+	proto.Class_ClassDeathKnight: 0.0001,
+	proto.Class_ClassShaman:      0.0008,
+	proto.Class_ClassMage:        0.0013,
+	proto.Class_ClassWarlock:     0.0013,
+	proto.Class_ClassMonk:        0.0008,
+	proto.Class_ClassDruid:       0.0008,
 }
 var CritPerIntMaxLevel = map[proto.Class]float64{
 	proto.Class_ClassUnknown:     0.0,
-	proto.Class_ClassWarrior:     1000000.0000,
-	proto.Class_ClassPaladin:     253366.3600,
-	proto.Class_ClassHunter:      1000000.0000,
-	proto.Class_ClassRogue:       1000000.0000,
-	proto.Class_ClassPriest:      253366.3600,
-	proto.Class_ClassDeathKnight: 1000000.0000,
-	proto.Class_ClassShaman:      253366.3600,
-	proto.Class_ClassMage:        253366.3600,
-	proto.Class_ClassWarlock:     253366.3600,
-	proto.Class_ClassMonk:        253366.3600,
-	proto.Class_ClassDruid:       253366.3600,
+	proto.Class_ClassWarrior:     0.0001,
+	proto.Class_ClassPaladin:     0.0004,
+	proto.Class_ClassHunter:      0.0001,
+	proto.Class_ClassRogue:       0.0001,
+	proto.Class_ClassPriest:      0.0004,
+	proto.Class_ClassDeathKnight: 0.0001,
+	proto.Class_ClassShaman:      0.0004,
+	proto.Class_ClassMage:        0.0004,
+	proto.Class_ClassWarlock:     0.0004,
+	proto.Class_ClassMonk:        0.0004,
+	proto.Class_ClassDruid:       0.0004,
 }
 var ExtraClassBaseStats = map[proto.Class]stats.Stats{
 	proto.Class_ClassUnknown: {},
