@@ -94,7 +94,7 @@ proto.Class_ClassUnknown: 0.0,'''
         cName = c.split()
         cName = ''.join(cName)
         mc = 1/float(cs.MCrit[str(BASE_LEVEL)][Offs[c]])
-        output += f"\nproto.Class_Class{cName}: {mc:.4f},"
+        output += f"\nproto.Class_Class{cName}: {mc:.8f},"
     output += "\n}\n"
 
     output += '''var CritPerIntMaxLevel = map[proto.Class]float64{
@@ -103,7 +103,7 @@ proto.Class_ClassUnknown: 0.0,'''
         cName = c.split()
         cName = ''.join(cName)
         mc = 1/float(cs.SCrit[str(BASE_LEVEL)][Offs[c]])
-        output += f"\nproto.Class_Class{cName}: {mc:.4f},"
+        output += f"\nproto.Class_Class{cName}: {mc:.8f},"
     output += "\n}\n"
 
     output += '''var ExtraClassBaseStats = map[proto.Class]stats.Stats{
