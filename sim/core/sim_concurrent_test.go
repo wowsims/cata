@@ -4,11 +4,11 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/death_knight/blood"
-	"github.com/wowsims/cata/sim/druid/feral"
-	"github.com/wowsims/cata/sim/hunter/marksmanship"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/death_knight/blood"
+	"github.com/wowsims/mop/sim/druid/feral"
+	"github.com/wowsims/mop/sim/hunter/marksmanship"
 )
 
 func getTestPlayerMM() *proto.Player {

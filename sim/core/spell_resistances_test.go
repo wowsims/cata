@@ -4,9 +4,9 @@ import (
 	"math"
 	"testing"
 
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/simsignals"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/simsignals"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 func Test_PartialResistsVsPlayer(t *testing.T) {
@@ -17,7 +17,7 @@ func Test_PartialResistsVsPlayer(t *testing.T) {
 	}
 	defender := &Unit{
 		Type:  PlayerUnit,
-		Level: 85,
+		Level: 90,
 		stats: stats.Stats{},
 	}
 
@@ -82,7 +82,7 @@ func Test_PartialResistsVsPlayer(t *testing.T) {
 func Test_PartialResistsVsBoss(t *testing.T) {
 	attacker := &Unit{
 		Type:  PlayerUnit,
-		Level: 85,
+		Level: 90,
 		stats: stats.Stats{},
 	}
 	defender := &Unit{

@@ -3,9 +3,9 @@ package rogue
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 const (
@@ -277,8 +277,10 @@ func NewRogue(character *core.Character, options *proto.RogueOptions, talents st
 	}
 
 	rogue.EnableEnergyBar(core.EnergyBarOptions{
+		MaxComboPoints:      5,
 		MaxEnergy:           maxEnergy,
 		StartingComboPoints: options.StartingComboPoints,
+		UnitClass:           proto.Class_ClassRogue,
 	})
 
 	rogue.EnableAutoAttacks(rogue, core.AutoAttackOptions{

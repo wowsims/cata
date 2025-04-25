@@ -7,9 +7,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/tools"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/tools"
 )
 
 func ReadAtlasLootData() *WowDatabase {
@@ -322,7 +322,7 @@ func readZoneData(db *WowDatabase) {
 	zoneTM := &WowheadTooltipManager{
 		TooltipManager{
 			FilePath:   "",
-			UrlPattern: "https://nether.wowhead.com/cata/tooltip/zone/%s",
+			UrlPattern: "https://nether.wowhead.com/mop-classic/tooltip/zone/%s",
 		},
 	}
 	zoneTooltips := zoneTM.FetchFromWeb(zoneIDStrs)

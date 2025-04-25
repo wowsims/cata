@@ -3,7 +3,7 @@ package core
 import (
 	"testing"
 
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 func TestSunderArmorStacks(t *testing.T) {
@@ -142,7 +142,7 @@ func TestDamageReductionFromArmor(t *testing.T) {
 	}
 	attacker := Unit{
 		Type:  PlayerUnit,
-		Level: 85,
+		Level: 90,
 	}
 	spell := &Spell{}
 	target.stats = target.initialStats

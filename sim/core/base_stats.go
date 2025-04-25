@@ -1,8 +1,8 @@
 package core
 
 import (
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 type BaseStatsKey struct {
@@ -106,6 +106,20 @@ var RaceOffsets = map[proto.Race]stats.Stats{
 		stats.Spirit:    -1,
 		stats.Stamina:   0,
 	},
+	proto.Race_RaceAlliancePandaren: {
+		stats.Agility:   -2,
+		stats.Strength:  0,
+		stats.Intellect: -1,
+		stats.Spirit:    2,
+		stats.Stamina:   1,
+	},
+	proto.Race_RaceHordePandaren: {
+		stats.Agility:   -2,
+		stats.Strength:  0,
+		stats.Intellect: -1,
+		stats.Spirit:    2,
+		stats.Stamina:   1,
+	},
 }
 
 var ClassBaseStats = map[proto.Class]stats.Stats{
@@ -199,19 +213,29 @@ var ClassBaseStats = map[proto.Class]stats.Stats{
 		stats.Stamina:     106,
 		stats.AttackPower: float64(CharacterLevel)*3.0 - 10,
 	},
+	proto.Class_ClassMonk: {
+		stats.Health:      43285,
+		stats.Agility:     85,
+		stats.Strength:    68,
+		stats.Intellect:   135,
+		stats.Spirit:      154,
+		stats.Stamina:     86,
+		stats.AttackPower: float64(CharacterLevel)*2.0 - 20,
+	},
 }
 
 var ClassBaseScaling = map[proto.Class]float64{
-	proto.Class_ClassDeathKnight: 1125.227400,
-	proto.Class_ClassDruid:       986.626460,
-	proto.Class_ClassHunter:      1125.227400,
-	proto.Class_ClassMage:        937.330080,
-	proto.Class_ClassPaladin:     1029.493400,
-	proto.Class_ClassPriest:      945.188840,
-	proto.Class_ClassRogue:       1125.227400,
-	proto.Class_ClassShaman:      1004.487900,
-	proto.Class_ClassWarlock:     962.335630,
-	proto.Class_ClassWarrior:     1125.227400,
+	proto.Class_ClassDeathKnight: 1507.454300,
+	proto.Class_ClassDruid:       1327.328600,
+	proto.Class_ClassHunter:      1507.454300,
+	proto.Class_ClassMage:        1263.083400,
+	proto.Class_ClassMonk:        1327.328600,
+	proto.Class_ClassPaladin:     1384.037200,
+	proto.Class_ClassPriest:      1273.156700,
+	proto.Class_ClassRogue:       1507.454300,
+	proto.Class_ClassShaman:      1351.280400,
+	proto.Class_ClassWarlock:     1295.840200,
+	proto.Class_ClassWarrior:     1507.454300,
 }
 
 func AddBaseStatsCombo(r proto.Race, c proto.Class) {
@@ -319,4 +343,19 @@ func init() {
 	AddBaseStatsCombo(proto.Race_RaceGoblin, proto.Class_ClassWarrior)
 	AddBaseStatsCombo(proto.Race_RaceWorgen, proto.Class_ClassWarrior)
 	AddBaseStatsCombo(proto.Race_RaceBloodElf, proto.Class_ClassWarrior)
+
+	AddBaseStatsCombo(proto.Race_RaceDraenei, proto.Class_ClassMonk)
+	AddBaseStatsCombo(proto.Race_RaceDwarf, proto.Class_ClassMonk)
+	AddBaseStatsCombo(proto.Race_RaceGnome, proto.Class_ClassMonk)
+	AddBaseStatsCombo(proto.Race_RaceHuman, proto.Class_ClassMonk)
+	AddBaseStatsCombo(proto.Race_RaceNightElf, proto.Class_ClassMonk)
+	AddBaseStatsCombo(proto.Race_RaceWorgen, proto.Class_ClassMonk)
+	AddBaseStatsCombo(proto.Race_RaceAlliancePandaren, proto.Class_ClassMonk)
+	AddBaseStatsCombo(proto.Race_RaceBloodElf, proto.Class_ClassMonk)
+	AddBaseStatsCombo(proto.Race_RaceOrc, proto.Class_ClassMonk)
+	AddBaseStatsCombo(proto.Race_RaceTauren, proto.Class_ClassMonk)
+	AddBaseStatsCombo(proto.Race_RaceTroll, proto.Class_ClassMonk)
+	AddBaseStatsCombo(proto.Race_RaceUndead, proto.Class_ClassMonk)
+	AddBaseStatsCombo(proto.Race_RaceGoblin, proto.Class_ClassMonk)
+	AddBaseStatsCombo(proto.Race_RaceHordePandaren, proto.Class_ClassMonk)
 }

@@ -4,14 +4,14 @@ import (
 	"log"
 	"time"
 
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 /*
 Base classes for Dragonwrath, Tarecgosa's Rest support
 All relevant mechanics should be tracked and documented at:
-https://github.com/wowsims/cata/issues/946
+https://github.com/wowsims/mop/issues/946
 */
 const (
 	supressNone   int8 = 0

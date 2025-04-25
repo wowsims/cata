@@ -31,7 +31,7 @@ jobs:
 
             - name: Build 🔧
               run: |
-                  make dist/cata/.dirstamp
+                  make dist/mop/.dirstamp
 
             - name: Update proto version file
               run: |
@@ -60,5 +60,5 @@ jobs:
               uses: JamesIves/github-pages-deploy-action@4.1.5
               with:
                   branch: gh-pages
-                  folder: dist/cata
+                  folder: dist/mop
                   single-commit: true

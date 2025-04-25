@@ -3,10 +3,10 @@ package warrior
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/common/cata"
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/common/cata"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 var TalentTreeSizes = [3]int{20, 21, 20}
@@ -211,7 +211,7 @@ func NewWarrior(character *core.Character, talents string, inputs WarriorInputs)
 	// Dodge no longer granted from agility
 	warrior.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	warrior.AddStat(stats.ParryRating, -warrior.GetBaseStats()[stats.Strength]*0.27) // Does not apply to base Strength
-	warrior.AddStatDependency(stats.Strength, stats.ParryRating, 0.27)               // Change from block to pary in cata (4.2 Changed from 25->27 percent)
+	warrior.AddStatDependency(stats.Strength, stats.ParryRating, 0.27)               // Change from block to pary in mop (4.2 Changed from 25->27 percent)
 	warrior.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	// Base dodge unaffected by Diminishing Returns

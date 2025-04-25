@@ -3,10 +3,10 @@ package core
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
-const CharacterLevel = 85
+const CharacterLevel = 90
 
 const GCDMin = time.Second * 1
 const GCDDefault = time.Millisecond * 1500
@@ -22,15 +22,7 @@ const EnemyAutoAttackAPCoefficient = 1.0 / (14.0 * 177.0)
 const AverageMagicPartialResistMultiplier = 0.94
 
 // IDs for items used in core
-const (
-	ItemIDAtieshMage            = 22589
-	ItemIDAtieshWarlock         = 22630
-	ItemIDBraidedEterniumChain  = 24114
-	ItemIDChainOfTheTwilightOwl = 24121
-	ItemIDEyeOfTheNight         = 24116
-	ItemIDJadePendantOfBlasting = 20966
-	ItemIDTheLightningCapacitor = 28785
-)
+// const ()
 
 type Hand bool
 

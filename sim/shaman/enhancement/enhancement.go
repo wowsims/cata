@@ -3,10 +3,10 @@ package enhancement
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
-	"github.com/wowsims/cata/sim/shaman"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
+	"github.com/wowsims/mop/sim/shaman"
 )
 
 func RegisterEnhancementShaman() {
@@ -41,7 +41,7 @@ func NewEnhancementShaman(character *core.Character, options *proto.Player) *Enh
 	}
 
 	enh := &EnhancementShaman{
-		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, true, enhOptions.ClassOptions.UsePrepullEnh_2PT10),
+		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, true),
 	}
 
 	// Enable Auto Attacks for this spec

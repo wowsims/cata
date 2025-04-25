@@ -3,10 +3,10 @@ package elemental
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
-	"github.com/wowsims/cata/sim/shaman"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
+	"github.com/wowsims/mop/sim/shaman"
 )
 
 func RegisterElementalShaman() {
@@ -40,7 +40,7 @@ func NewElementalShaman(character *core.Character, options *proto.Player) *Eleme
 
 	inRange := eleOptions.ThunderstormRange == proto.ElementalShaman_Options_TSInRange
 	ele := &ElementalShaman{
-		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, inRange, false),
+		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, inRange),
 	}
 
 	if mh := ele.GetMHWeapon(); mh != nil {

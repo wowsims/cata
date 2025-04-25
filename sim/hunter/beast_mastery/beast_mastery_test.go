@@ -3,9 +3,9 @@ package beast_mastery
 import (
 	"testing"
 
-	_ "github.com/wowsims/cata/sim/common" // imported to get item effects included.
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
+	_ "github.com/wowsims/mop/sim/common" // imported to get item effects included.
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func init() {
@@ -28,8 +28,8 @@ func TestBM(t *testing.T) {
 			core.GetAplRotation("../../../ui/hunter/beast_mastery/apls", "bm_advanced"),
 		},
 
-		ItemFilter:         ItemFilter,
-		StartingDistance:   5.1,
+		ItemFilter:       ItemFilter,
+		StartingDistance: 5.1,
 	}))
 }
 

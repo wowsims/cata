@@ -17,7 +17,7 @@ SPELL_CRIT_BASE = "chancetospellcritbase.txt"
 COMBAT_RATINGS = "combatratings.txt"
 RATING_SCALAR = "octclasscombatratingscalar.txt"
 
-BASE_LEVEL = 85
+BASE_LEVEL = 90
 
 Offs = {
     "Warrior": 0,
@@ -90,7 +90,7 @@ import (
 
     output += '''var CritPerAgiMaxLevel = map[proto.Class]float64{
 proto.Class_ClassUnknown: 0.0,'''
-    for c in ["Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Death Knight", "Shaman", "Mage", "Warlock", "Druid"]:
+    for c in ["Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Death Knight", "Shaman", "Mage", "Warlock", "Monk", "Druid"]:
         cName = c.split()
         cName = ''.join(cName)
         mc = float(cs.MCrit[str(BASE_LEVEL)][Offs[c]])*100
@@ -99,7 +99,7 @@ proto.Class_ClassUnknown: 0.0,'''
 
     output += '''var CritPerIntMaxLevel = map[proto.Class]float64{
 proto.Class_ClassUnknown: 0.0,'''
-    for c in ["Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Death Knight", "Shaman", "Mage", "Warlock", "Druid"]:
+    for c in ["Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Death Knight", "Shaman", "Mage", "Warlock", "Monk", "Druid"]:
         cName = c.split()
         cName = ''.join(cName)
         mc = float(cs.SCrit[str(BASE_LEVEL)][Offs[c]])*100
@@ -108,7 +108,7 @@ proto.Class_ClassUnknown: 0.0,'''
 
     output += '''var ExtraClassBaseStats = map[proto.Class]stats.Stats{
 proto.Class_ClassUnknown: {},'''
-    for c in ["Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Death Knight", "Shaman", "Mage", "Warlock", "Druid"]:
+    for c in ["Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Death Knight", "Shaman", "Mage", "Warlock", "Monk", "Druid"]:
         cName = c.split()
         cName = ''.join(cName)
         output += f"\nproto.Class_Class{cName}: {{"

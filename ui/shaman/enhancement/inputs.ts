@@ -33,16 +33,3 @@ export const SyncTypeInput = InputHelpers.makeSpecOptionsEnumInput<Spec.SpecEnha
 		{ name: 'Delayed Offhand', value: ShamanSyncType.DelayOffhandSwings },
 	],
 });
-
-export const UsePrepull2PT10 = InputHelpers.makeClassOptionsBooleanInput<Spec.SpecEnhancementShaman>({
-	fieldName: 'usePrepullEnh2PT10',
-	label: 'Use Tier 10 2PC effect during prepull',
-	labelTooltip: 'Will use the Tier 10 2PC effect during the prepull.',
-	getValue: player => player.getClassOptions().usePrepullEnh2PT10,
-	setValue: (eventID, player, newValue: boolean) => {
-		const newOptions = player.getClassOptions();
-		newOptions.usePrepullEnh2PT10 = newValue;
-
-		player.setClassOptions(eventID, newOptions);
-	},
-});

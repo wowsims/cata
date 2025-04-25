@@ -1,10 +1,10 @@
 package restoration
 
 import (
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
-	"github.com/wowsims/cata/sim/shaman"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
+	"github.com/wowsims/mop/sim/shaman"
 )
 
 func RegisterRestorationShaman() {
@@ -37,7 +37,7 @@ func NewRestorationShaman(character *core.Character, options *proto.Player) *Res
 	}
 
 	resto := &RestorationShaman{
-		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, false, false),
+		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, false),
 	}
 
 	if resto.HasMHWeapon() {

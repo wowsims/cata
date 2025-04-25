@@ -3,8 +3,8 @@ package assassination
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/rogue"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/rogue"
 )
 
 func (sinRogue *AssassinationRogue) applySealFate() {

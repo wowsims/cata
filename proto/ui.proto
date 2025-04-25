@@ -97,6 +97,7 @@ enum Expansion {
 	ExpansionTbc = 2;
 	ExpansionWotlk = 3;
 	ExpansionCata = 4;
+	ExpansionMop = 5;
 }
 
 enum DungeonDifficulty {

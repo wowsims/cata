@@ -3,9 +3,9 @@ package cata
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/common/shared"
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/common/shared"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 func init() {

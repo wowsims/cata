@@ -8,9 +8,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 type CataTooltipManager struct {
@@ -45,7 +45,7 @@ func NewCataItemTooltipManager(filePath string) *CataTooltipManager {
 	return &CataTooltipManager{
 		TooltipManager{
 			FilePath:   filePath,
-			UrlPattern: "https://cata.evowow.com/?item=%s&power",
+			UrlPattern: "https://mop.evowow.com/?item=%s&power",
 		},
 	}
 }

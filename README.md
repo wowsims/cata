@@ -1,23 +1,23 @@
-Welcome to the WoW Cataclysm Classic simulator! If you have questions or are thinking about contributing, [join our discord](https://discord.gg/jJMPr9JWwx "https://discord.gg/jJMPr9JWwx") to chat!
+Welcome to the WoW Mists of Pandaria Classic simulator! If you have questions or are thinking about contributing, [join our discord](https://discord.gg/jJMPr9JWwx "https://discord.gg/jJMPr9JWwx") to chat!
 
 The primary goal of this project is to provide a framework that makes it easy to build a DPS sim for any class/spec, with a polished UI and accurate results. Each community will have ownership / responsibility over their portion of the sim, to ensure accuracy and that their community is represented. By having all the individual sims on the same engine, we can also have a combined 'raid sim' for testing raid compositions.
 
 This project is licensed with MIT license. We request that anyone using this software in their own project to make sure there is a user visible link back to the original project.
 
-[Live sims can be found here.](https://wowsims.github.io/cata "https://wowsims.github.io/cata")
+[Live sims can be found here.](https://wowsims.github.io/mop "https://wowsims.github.io/mop")
 
 [Support our devs via Patreon.](https://www.patreon.com/wowsims)
 
 # Downloading Sim
 
 Links for latest Sim build:
-- [Windows Sim](https://github.com/wowsims/cata/releases/latest/download/wowsimcata-windows.exe.zip)
-- [MacOS Sim](https://github.com/wowsims/cata/releases/latest/download/wowsimcata-amd64-darwin.zip)
-- [Linux Sim](https://github.com/wowsims/cata/releases/latest/download/wowsimcata-amd64-linux.zip)
+- [Windows Sim](https://github.com/wowsims/mop/releases/latest/download/wowsimmop-windows.exe.zip)
+- [MacOS Sim](https://github.com/wowsims/mop/releases/latest/download/wowsimmop-amd64-darwin.zip)
+- [Linux Sim](https://github.com/wowsims/mop/releases/latest/download/wowsimmop-amd64-linux.zip)
 
 Then unzip the downloaded file, then open the unzipped file to open the sim in your browser!
 
-Alternatively, you can choose from a specific relase on the [Releases](https://github.com/wowsims/cata/releases) page and click the suitable link under "Assets"
+Alternatively, you can choose from a specific relase on the [Releases](https://github.com/wowsims/mop/releases) page and click the suitable link under "Assets"
 # Local Dev Installation
 
 This project has dependencies on Go >=1.23, protobuf-compiler and the corresponding Go plugins, and node >= 20.
@@ -35,7 +35,7 @@ echo 'export GOPATH=$HOME/go' >> $HOME/.bashrc
 echo 'export PATH=$PATH:$GOPATH/bin' >> $HOME/.bashrc
 source $HOME/.bashrc
 
-cd cata
+cd mop
 
 # Install protobuf compiler and Go plugins
 sudo apt update && sudo apt upgrade
@@ -54,29 +54,29 @@ npm install
 ## Docker
 Alternatively, install Docker and your workflow will look something like this:
 ```sh
-git clone https://github.com/wowsims/cata.git
-cd cata
+git clone https://github.com/wowsims/mop.git
+cd mop
 
 # Build the docker image and install npm dependencies (only need to run these once).
-docker build --tag wowsims-cata .
-docker run --rm -v $(pwd):/cata wowsims-cata npm install
+docker build --tag wowsims-mop .
+docker run --rm -v $(pwd):/mop wowsims-mop npm install
 
-# Now you can run the commands as shown in the Commands sections, preceding everything with, "docker run --rm -it -p 8080:8080 -v $(pwd):/cata wowsims-cata".
+# Now you can run the commands as shown in the Commands sections, preceding everything with, "docker run --rm -it -p 8080:8080 -v $(pwd):/mop wowsims-mop".
 # For convenience, set this as an environment variable:
-CATA_CMD="docker run --rm -it -p 8080:8080 -v $(pwd):/cata wowsims-cata"
+MOP_CMD="docker run --rm -it -p 8080:8080 -v $(pwd):/mop wowsims-mop"
 
 #For the watch commands assign this environment variable:
-CATA_WATCH_CMD="docker run --rm -it -p 8080:8080 -p 3333:3333 -p 5173:5173 -e WATCH=1 -v $(pwd):/cata wowsims-cata"
+MOP_WATCH_CMD="docker run --rm -it -p 8080:8080 -p 3333:3333 -p 5173:5173 -e WATCH=1 -v $(pwd):/mop wowsims-mop"
 
 # ... do some coding on the sim ...
 
 # Run tests
-$(echo $CATA_CMD) make test
+$(echo $MOP_CMD) make test
 
 # ... do some coding on the UI ...
 
 # Host a local site
-$(echo $CATA_CMD) make host
+$(echo $MOP_CMD) make host
 ```
 
 ## Windows
@@ -103,8 +103,8 @@ make test
 make update-tests
 
 # Host a local version of the UI at http://localhost:8080. Visit it by pointing a browser to
-# http://localhost:8080/cata/YOUR_SPEC_HERE, where YOUR_SPEC_HERE is the directory under ui/ with your custom code.
-# Recompiles the entire client before launching using `make dist/cata`
+# http://localhost:8080/mop/YOUR_SPEC_HERE, where YOUR_SPEC_HERE is the directory under ui/ with your custom code.
+# Recompiles the entire client before launching using `make dist/mop`
 make host
 
 # With file-watching so the server auto-restarts and recompiles on Go or TS changes:
@@ -116,7 +116,7 @@ make clean
 # Recompiles the ts only for the given spec (e.g. make host_elemental_shaman)
 make host_$spec
 
-# Recompiles the `wowsimcata` server binary and runs it, hosting /dist directory at http://localhost:3333/cata.
+# Recompiles the `wowsimmop` server binary and runs it, hosting /dist directory at http://localhost:3333/mop.
 # This is the fastest way to iterate on core go simulator code so you don't have to wait for client rebuilds.
 # To rebuild client for a spec just do 'make $spec' and refresh browser.
 make rundevserver
@@ -125,7 +125,7 @@ make rundevserver
 WATCH=1 make rundevserver
 
 
-# The same as rundevserver, recompiles  `wowsimcata` binary and runs it on port 3333. Instead of serving content from the dist folder,
+# The same as rundevserver, recompiles  `wowsimmop` binary and runs it on port 3333. Instead of serving content from the dist folder,
 # this command also runs `vite serve` to start the Vite dev server on port 5173 (or similar) and automatically reloads the page on .ts changes in less than a second.
 # This allows for more rapid development, with sub second reloads on TS changes. This combines the benefits of `WATCH=1 make rundevserver` and `WATCH=1 make host`
 # to create something that allows you to work in any part of the code with ease and speed.
@@ -142,16 +142,16 @@ make webworkers
 # With file watch enabled
 WATCH=1 make webworkers
 
-# Creates the 'wowsimcata' binary that can host the UI and run simulations natively (instead of with wasm).
+# Creates the 'wowsimmop' binary that can host the UI and run simulations natively (instead of with wasm).
 # Builds the UI and the compiles it into the binary so that you can host the sim as a server instead of wasm on the client.
-# It does this by first doing make dist/cata and then copying all those files to binary_dist/cata and loading all the files in that directory into its binary on compile.
-make wowsimcata
+# It does this by first doing make dist/mop and then copying all those files to binary_dist/mop and loading all the files in that directory into its binary on compile.
+make wowsimmop
 
 # Using the --usefs flag will instead of hosting the client built into the binary, it will host whatever code is found in the /dist directory.
 # Use --wasm to host the client with the wasm simulator.
 # The server also disables all caching so that refreshes should pickup any changed files in dist/. The client will still call to the server to run simulations so you can iterate more quickly on client changes.
-# make dist/cata && ./wowsimcata --usefs would rebuild the whole client and host it. (you would have had to run `make devserver` to build the wowsimcata binary first.)
-./wowsimcata --usefs
+# make dist/mop && ./wowsimmop --usefs would rebuild the whole client and host it. (you would have had to run `make devserver` to build the wowsimmop binary first.)
+./wowsimmop --usefs
 
 # Generate code for items. Only necessary if you changed the items generator.
 make items
@@ -185,7 +185,7 @@ The UI and sim can be done in either order, but it is generally recommended to b
 
 No .html is needed, it will be generated based on `ui/index_template.html` and the `$SPEC` name.
 
-When you're ready to try out the site, run `make host` and navigate to `http://localhost:8080/cata/$SPEC`.
+When you're ready to try out the site, run `make host` and navigate to `http://localhost:8080/mop/$SPEC`.
 
 ## Implement the Sim
 This step is where most of the magic happens. A few highlights to start understanding the sim code:

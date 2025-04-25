@@ -17,6 +17,7 @@ $death-knight: rgb(194, 46, 70);
 $druid: rgb(255, 125, 10);
 $hunter: rgb(171, 212, 115);
 $mage: rgb(105, 204, 240);
+$monk: rgb(0, 255, 152);
 $paladin: rgb(245, 140, 186);
 $priest: rgb(255, 255, 255);
 $rogue: rgb(255, 245, 105);
@@ -29,6 +30,7 @@ $class-colors: (
 	druid: $druid,
 	hunter: $hunter,
 	mage: $mage,
+	monk: $monk,
 	paladin: $paladin,
 	priest: $priest,
 	raid: $brand,
@@ -128,12 +130,14 @@ $mana-color: #2e93fa;
 $energy-color: #ffd700;
 $rage-color: #ff0000;
 $focus-color: #cd853f;
+$chi-color: #00ff98;
 $combo-points-color: #ffa07a;
 $lunar-energy-color: #4a8aff;
 $solar-energy-color: #d2952b;
 $holy-power-color: #eed98a;
 
 $resource-colors: (
+	chi: $chi-color,
 	combo-points: $combo-points-color,
 	energy: $energy-color,
 	focus: $focus-color,

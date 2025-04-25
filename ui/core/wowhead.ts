@@ -78,13 +78,13 @@ export type WowheadTooltipSpellParams = {
 	difficultyId?: 14 | 15 | 16;
 };
 
-export const WOWHEAD_EXPANSION_ENV = 11;
+export const WOWHEAD_EXPANSION_ENV = 15;
 
 export const buildWowheadTooltipDataset = async (options: WowheadTooltipItemParams | WowheadTooltipSpellParams) => {
 	const lang = getLanguageCode();
 	const params = new URLSearchParams();
 	const langPrefix = lang ? lang + '.' : '';
-	params.set('domain', `${langPrefix}cata`);
+	params.set('domain', `${langPrefix}mop-classic`);
 	params.set('dataEnv', String(WOWHEAD_EXPANSION_ENV));
 
 	params.set('lvl', String(options.level || CHARACTER_LEVEL));

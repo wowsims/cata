@@ -1,17 +1,18 @@
 import { Spec } from "../proto/common";
 
-export const CHARACTER_LEVEL = 85;
+export const CHARACTER_LEVEL = 90;
 export const BOSS_LEVEL = CHARACTER_LEVEL + 3;
 
-export const EXPERTISE_PER_QUARTER_PERCENT_REDUCTION = 30.027197;
-export const CRIT_RATING_PER_CRIT_PERCENT = 179.280040;
-export const PHYSICAL_HIT_RATING_PER_HIT_PERCENT = 120.108800;
-export const SPELL_HIT_RATING_PER_HIT_PERCENT = 102.445740;
-export const HASTE_RATING_PER_HASTE_PERCENT = 128.057160;
-export const MASTERY_RATING_PER_MASTERY_POINT = 179.280040;
-export const DODGE_RATING_PER_DODGE_PERCENT = 176.718900;
-export const PARRY_RATING_PER_PARRY_PERCENT = 176.718900;
+export const EXPERTISE_PER_QUARTER_PERCENT_REDUCTION = 340;
+export const HASTE_RATING_PER_HASTE_PERCENT = 425;
+export const CRIT_RATING_PER_CRIT_PERCENT = 600;
+export const PHYSICAL_HIT_RATING_PER_HIT_PERCENT = 340;
+export const SPELL_HIT_RATING_PER_HIT_PERCENT = 340;
+export const DODGE_RATING_PER_DODGE_PERCENT = 885;
+export const PARRY_RATING_PER_PARRY_PERCENT = 885;
+export const MASTERY_RATING_PER_MASTERY_POINT = 0;
 
+// TODO: Adjust for MoP values
 // Mastery Ratings have various increments based on spec.
 export const masteryPercentPerPoint: Map<Spec, number> = new Map([
 	[Spec.SpecAssassinationRogue, 3.5],
@@ -45,4 +46,5 @@ export const masteryPercentPerPoint: Map<Spec, number> = new Map([
 	[Spec.SpecAfflictionWarlock, 1.625],
 	[Spec.SpecDemonologyWarlock, 2.3],
 	[Spec.SpecDestructionWarlock, 1.35],
+	[Spec.SpecWindwalkerMonk, 2.5],
 ]);

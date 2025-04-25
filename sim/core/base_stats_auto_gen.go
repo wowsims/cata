@@ -5,95 +5,102 @@ package core
 // **************************************
 
 import (
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
-const ExpertisePerQuarterPercentReduction = 30.027197
-const HasteRatingPerHastePercent = 128.057160
-const CritRatingPerCritPercent = 179.280040
-const PhysicalHitRatingPerHitPercent = 120.108800
-const SpellHitRatingPerHitPercent = 102.445740
-const DodgeRatingPerDodgePercent = 176.718900
-const ParryRatingPerParryPercent = 176.718900
-const MasteryRatingPerMasteryPoint = 179.280040
+const ExpertisePerQuarterPercentReduction = 340.000000
+const HasteRatingPerHastePercent = 425.000000
+const CritRatingPerCritPercent = 600.000000
+const PhysicalHitRatingPerHitPercent = 340.000000
+const SpellHitRatingPerHitPercent = 340.000000
+const DodgeRatingPerDodgePercent = 885.000000
+const ParryRatingPerParryPercent = 885.000000
+const MasteryRatingPerMasteryPoint = 0.000000
 
 var CritPerAgiMaxLevel = map[proto.Class]float64{
 	proto.Class_ClassUnknown:     0.0,
-	proto.Class_ClassWarrior:     0.0041,
-	proto.Class_ClassPaladin:     0.0049,
-	proto.Class_ClassHunter:      0.0031,
-	proto.Class_ClassRogue:       0.0031,
-	proto.Class_ClassPriest:      0.0049,
-	proto.Class_ClassDeathKnight: 0.0041,
-	proto.Class_ClassShaman:      0.0031,
-	proto.Class_ClassMage:        0.0050,
-	proto.Class_ClassWarlock:     0.0051,
-	proto.Class_ClassDruid:       0.0031,
+	proto.Class_ClassWarrior:     1000000.0000,
+	proto.Class_ClassPaladin:     1000000.0000,
+	proto.Class_ClassHunter:      125951.8100,
+	proto.Class_ClassRogue:       125951.8100,
+	proto.Class_ClassPriest:      79683.7950,
+	proto.Class_ClassDeathKnight: 1000000.0000,
+	proto.Class_ClassShaman:      125951.8100,
+	proto.Class_ClassMage:        78090.1180,
+	proto.Class_ClassWarlock:     76558.9420,
+	proto.Class_ClassMonk:        125951.8100,
+	proto.Class_ClassDruid:       125951.8100,
 }
 var CritPerIntMaxLevel = map[proto.Class]float64{
 	proto.Class_ClassUnknown:     0.0,
-	proto.Class_ClassWarrior:     0.0000,
-	proto.Class_ClassPaladin:     0.0015,
-	proto.Class_ClassHunter:      0.0000,
-	proto.Class_ClassRogue:       0.0000,
-	proto.Class_ClassPriest:      0.0015,
-	proto.Class_ClassDeathKnight: 0.0000,
-	proto.Class_ClassShaman:      0.0015,
-	proto.Class_ClassMage:        0.0015,
-	proto.Class_ClassWarlock:     0.0015,
-	proto.Class_ClassDruid:       0.0015,
+	proto.Class_ClassWarrior:     1000000.0000,
+	proto.Class_ClassPaladin:     253366.3600,
+	proto.Class_ClassHunter:      1000000.0000,
+	proto.Class_ClassRogue:       1000000.0000,
+	proto.Class_ClassPriest:      253366.3600,
+	proto.Class_ClassDeathKnight: 1000000.0000,
+	proto.Class_ClassShaman:      253366.3600,
+	proto.Class_ClassMage:        253366.3600,
+	proto.Class_ClassWarlock:     253366.3600,
+	proto.Class_ClassMonk:        253366.3600,
+	proto.Class_ClassDruid:       253366.3600,
 }
 var ExtraClassBaseStats = map[proto.Class]stats.Stats{
 	proto.Class_ClassUnknown: {},
 	proto.Class_ClassWarrior: {
 		stats.Mana:                0.0000,
 		stats.SpellCritPercent:    0.0000,
-		stats.PhysicalCritPercent: 0.0000,
+		stats.PhysicalCritPercent: 5.0000,
 	},
 	proto.Class_ClassPaladin: {
-		stats.Mana:                23422.0000,
-		stats.SpellCritPercent:    3.3355,
-		stats.PhysicalCritPercent: 0.6520,
+		stats.Mana:                60000.0000,
+		stats.SpellCritPercent:    3.3400,
+		stats.PhysicalCritPercent: 5.0000,
 	},
 	proto.Class_ClassHunter: {
 		stats.Mana:                0.0000,
 		stats.SpellCritPercent:    0.0000,
-		stats.PhysicalCritPercent: -1.5320,
+		stats.PhysicalCritPercent: -1.5300,
 	},
 	proto.Class_ClassRogue: {
 		stats.Mana:                0.0000,
 		stats.SpellCritPercent:    0.0000,
-		stats.PhysicalCritPercent: -0.2950,
+		stats.PhysicalCritPercent: -0.3000,
 	},
 	proto.Class_ClassPriest: {
-		stats.Mana:                20590.0000,
-		stats.SpellCritPercent:    1.2375,
-		stats.PhysicalCritPercent: 3.1765,
+		stats.Mana:                300000.0000,
+		stats.SpellCritPercent:    1.2400,
+		stats.PhysicalCritPercent: 3.1800,
 	},
 	proto.Class_ClassDeathKnight: {
 		stats.Mana:                0.0000,
 		stats.SpellCritPercent:    0.0000,
-		stats.PhysicalCritPercent: 0.0000,
+		stats.PhysicalCritPercent: 5.0000,
 	},
 	proto.Class_ClassShaman: {
-		stats.Mana:                23430.0000,
-		stats.SpellCritPercent:    2.2010,
-		stats.PhysicalCritPercent: 2.9220,
+		stats.Mana:                60000.0000,
+		stats.SpellCritPercent:    2.2000,
+		stats.PhysicalCritPercent: 2.9200,
 	},
 	proto.Class_ClassMage: {
-		stats.Mana:                17418.0000,
-		stats.SpellCritPercent:    0.9075,
-		stats.PhysicalCritPercent: 3.4540,
+		stats.Mana:                300000.0000,
+		stats.SpellCritPercent:    0.9100,
+		stats.PhysicalCritPercent: 3.4500,
 	},
 	proto.Class_ClassWarlock: {
-		stats.Mana:                20553.0000,
+		stats.Mana:                300000.0000,
 		stats.SpellCritPercent:    1.7000,
-		stats.PhysicalCritPercent: 2.6220,
+		stats.PhysicalCritPercent: 2.6200,
+	},
+	proto.Class_ClassMonk: {
+		stats.Mana:                300000.0000,
+		stats.SpellCritPercent:    1.8500,
+		stats.PhysicalCritPercent: 7.4800,
 	},
 	proto.Class_ClassDruid: {
-		stats.Mana:                18635.0000,
-		stats.SpellCritPercent:    1.8515,
-		stats.PhysicalCritPercent: 7.4755,
+		stats.Mana:                60000.0000,
+		stats.SpellCritPercent:    1.8500,
+		stats.PhysicalCritPercent: 7.4800,
 	},
 }

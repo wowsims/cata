@@ -19,10 +19,10 @@ import { Gear, ItemSwapGear } from './gear.js';
 import { gemEligibleForSocket, gemMatchesSocket } from './gems.js';
 import { getEligibleEnchantSlots, getEligibleItemSlots } from './utils.js';
 
-const dbUrlJson = '/cata/assets/database/db.json';
-const dbUrlBin = '/cata/assets/database/db.bin';
-const leftoversUrlJson = '/cata/assets/database/leftover_db.json';
-const leftoversUrlBin = '/cata/assets/database/leftover_db.bin';
+const dbUrlJson = '/mop/assets/database/db.json';
+const dbUrlBin = '/mop/assets/database/db.bin';
+const leftoversUrlJson = '/mop/assets/database/leftover_db.json';
+const leftoversUrlBin = '/mop/assets/database/leftover_db.bin';
 // When changing this value, don't forget to change the html <link> for preloading!
 const READ_JSON = true;
 
@@ -318,7 +318,7 @@ export class Database {
 		return Database.getWowheadTooltipData(id, 'spell');
 	}
 	private static async getWowheadTooltipData(id: number, tooltipPostfix: string): Promise<IconData> {
-		const url = `https://nether.wowhead.com/cata/tooltip/${tooltipPostfix}/${id}?lvl=${CHARACTER_LEVEL}&dataEnv=${WOWHEAD_EXPANSION_ENV}`;
+		const url = `https://nether.wowhead.com/mop-classic/tooltip/${tooltipPostfix}/${id}?lvl=${CHARACTER_LEVEL}&dataEnv=${WOWHEAD_EXPANSION_ENV}`;
 		try {
 			const response = await fetch(url);
 			const json = await response.json();

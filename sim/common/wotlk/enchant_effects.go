@@ -3,10 +3,10 @@ package wotlk
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/common/shared"
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/common/shared"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 func init() {
@@ -247,81 +247,6 @@ func init() {
 		w.BaseDamageMin += 15
 		w.BaseDamageMax += 15
 	})
-
-	//core.NewEnchantEffect(3603, func(agent core.Agent) {
-	//	character := agent.GetCharacter()
-	//	actionID := core.ActionID{SpellID: 54757}
-
-	//	spell := character.GetOrRegisterSpell(core.SpellConfig{
-	//		ActionID:    actionID,
-	//		SpellSchool: core.SpellSchoolFire,
-	//		ProcMask:    core.ProcMaskEmpty,
-	//		Flags:       core.SpellFlagNoOnCastComplete,
-
-	//		Cast: core.CastConfig{
-	//			CD: core.Cooldown{
-	//				Timer:    character.NewTimer(),
-	//				Duration: time.Second * 45,
-	//			},
-	//			SharedCD: core.Cooldown{
-	//				Timer:    character.GetOffensiveTrinketCD(),
-	//				Duration: time.Second * 10,
-	//			},
-	//		},
-
-	//		DamageMultiplier: 1,
-	//		CritMultiplier:   character.GetSpellCritMultiplier(),
-	//		ThreatMultiplier: 1,
-
-	//		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-	//			spell.CalcAndDealDamage(sim, target, sim.Roll(1654, 2020), spell.OutcomeMagicCrit)
-	//		},
-	//	})
-
-	//	character.AddMajorCooldown(core.MajorCooldown{
-	//		Spell:    spell,
-	//		Priority: core.CooldownPriorityLow, // Use low prio so other actives get used first.
-	//		Type:     core.CooldownTypeDPS,
-	//	})
-	//})
-
-	//core.NewEnchantEffect(3604, func(agent core.Agent) {
-	//	character := agent.GetCharacter()
-	//	actionID := core.ActionID{SpellID: 54758}
-
-	//	procAura := character.NewTemporaryStatsAura("Hyperspeed Acceleration", actionID, stats.Stats{stats.HasteRating: 340}, time.Second*12)
-
-	//	spell := character.GetOrRegisterSpell(core.SpellConfig{
-	//		ActionID:    actionID,
-	//		SpellSchool: core.SpellSchoolPhysical,
-	//		Flags:       core.SpellFlagNoOnCastComplete,
-
-	//		Cast: core.CastConfig{
-	//			CD: core.Cooldown{
-	//				Timer:    character.NewTimer(),
-	//				Duration: time.Second * 60,
-	//			},
-	//			// Shared CD with Offensive trinkets has been removed.
-	//			// https://twitter.com/AggrendWoW/status/1579664462843633664
-	//			// Change possibly temporary, but developers have confirmed it was intended.
-
-	//			// SharedCD: core.Cooldown{
-	//			// 	Timer:    character.GetOffensiveTrinketCD(),
-	//			// 	Duration: time.Second * 12,
-	//			// },
-	//		},
-
-	//		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-	//			procAura.Activate(sim)
-	//		},
-	//	})
-
-	//	character.AddMajorCooldown(core.MajorCooldown{
-	//		Spell:    spell,
-	//		Priority: core.CooldownPriorityLow, // Use low prio so other actives get used first.
-	//		Type:     core.CooldownTypeDPS,
-	//	})
-	//})
 
 	// Enchant: 3722, Spell: 55642 - Lightweave Embroidery
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{

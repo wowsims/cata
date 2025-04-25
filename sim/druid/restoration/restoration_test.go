@@ -1,7 +1,7 @@
 package restoration
 
 import (
-	_ "github.com/wowsims/cata/sim/common" // imported to get caster sets included. (we use spellfire here)
+	_ "github.com/wowsims/mop/sim/common" // imported to get caster sets included. (we use spellfire here)
 )
 
 func init() {

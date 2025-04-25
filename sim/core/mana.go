@@ -5,8 +5,8 @@ import (
 	"math"
 	"time"
 
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 const ThreatPerManaGained = 0.5

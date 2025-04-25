@@ -5,9 +5,9 @@ import (
 	"math"
 	"time"
 
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 type ItemVersion int32
@@ -1098,7 +1098,7 @@ func init() {
 		// (Proc chance: 15%, 55s cooldown)
 		// TODO: Verify if the aura is cancelled when swapping druid forms
 		// Video from 4.3.0 showing that it doesn't: https://www.youtube.com/watch?v=A6PYbDRaH6E
-		// Comment from 4.3.3 stating that it does: https://www.wowhead.com/cata/item=77194/kiril-fury-of-beasts#comments:id=1639024
+		// Comment from 4.3.3 stating that it does: https://www.wowhead.com/mop-classic/item=77194/kiril-fury-of-beasts#comments:id=1639024
 		kirilItemID := []int32{78482, 77194, 78473}[version]
 		core.NewItemEffect(kirilItemID, func(agent core.Agent) {
 			character := agent.GetCharacter()
@@ -1483,6 +1483,9 @@ type IgniteConfig struct {
 	ProcTrigger        core.ProcTrigger // Ignores the Handler field and creates a custom one, but uses all others.
 	DamageCalculator   IgniteDamageCalculator
 	IncludeAuraDelay   bool // "munching" and "free roll-over" interactions
+	SpellSchool        core.SpellSchool
+	NumberOfTicks      int32
+	TickLength         time.Duration
 	SetBonusAura       *core.Aura
 }
 
@@ -1493,9 +1496,21 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 		spellFlags |= core.SpellFlagPassiveSpell
 	}
 
+	if config.SpellSchool == 0 {
+		config.SpellSchool = core.SpellSchoolFire
+	}
+
+	if config.NumberOfTicks == 0 {
+		config.NumberOfTicks = 2
+	}
+
+	if config.TickLength == 0 {
+		config.TickLength = time.Second * 2
+	}
+
 	igniteSpell := unit.RegisterSpell(core.SpellConfig{
 		ActionID:         config.ActionID,
-		SpellSchool:      core.SpellSchoolFire,
+		SpellSchool:      config.SpellSchool,
 		ProcMask:         core.ProcMaskSpellProc,
 		ClassSpellMask:   config.ClassSpellMask,
 		Flags:            spellFlags,
@@ -1509,8 +1524,8 @@ func RegisterIgniteEffect(unit *core.Unit, config IgniteConfig) *core.Spell {
 				MaxStacks: math.MaxInt32,
 			},
 
-			NumberOfTicks:       2,
-			TickLength:          time.Second * 2,
+			NumberOfTicks:       config.NumberOfTicks,
+			TickLength:          config.TickLength,
 			AffectedByCastSpeed: false,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {

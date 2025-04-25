@@ -38,6 +38,10 @@ type PendingAction struct {
 	consumed  bool
 }
 
+func (pa *PendingAction) IsConsumed() bool {
+	return pa == nil || pa.consumed
+}
+
 func (pa *PendingAction) Cancel(sim *Simulation) {
 	if pa.cancelled {
 		return

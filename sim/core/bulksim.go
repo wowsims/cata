@@ -12,8 +12,8 @@ import (
 
 	goproto "google.golang.org/protobuf/proto"
 
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/simsignals"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/simsignals"
 )
 
 const (

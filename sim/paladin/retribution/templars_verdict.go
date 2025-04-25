@@ -1,8 +1,8 @@
 package retribution
 
 import (
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/paladin"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/paladin"
 )
 
 func (retPaladin *RetributionPaladin) RegisterTemplarsVerdict() {

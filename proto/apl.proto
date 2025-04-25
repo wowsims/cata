@@ -85,7 +85,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 94
+// NextIndex: 98
 message APLValue {
 	UUID uuid = 87;
 
@@ -125,6 +125,7 @@ message APLValue {
         APLValueCurrentSolarEnergy current_solar_energy = 68;
         APLValueCurrentLunarEnergy current_lunar_energy = 69;
 		APLValueCurrentHolyPower current_holy_power = 75;
+		APLValueMaxComboPoints max_combo_points = 94;
 		APLValueMaxEnergy max_energy = 88;
 		APLValueMaxFocus max_focus = 89;
 		APLValueMaxRunicPower max_runic_power = 86;
@@ -208,6 +209,9 @@ message APLValue {
 		APLValueMageCurrentCombustionDotEstimate mage_current_combustion_dot_estimate = 77;
 		APLValueShamanCanSnapshotStrongerFireElemental shaman_can_snapshot_stronger_fire_elemental = 82;
         APLValueShamanFireElementalDuration shaman_fire_elemental_duration = 83;
+        APLValueMonkCurrentChi monk_current_chi = 95;
+		APLValueMonkMaxChi monk_max_chi = 96;
+		APLValueMonkNextChiBrewRecharge monk_next_chi_brew_recharge = 97;
     }
 }
 
@@ -467,6 +471,7 @@ message APLValueCurrentRunicPower {}
 message APLValueCurrentSolarEnergy {}
 message APLValueCurrentLunarEnergy {}
 message APLValueCurrentHolyPower {}
+message APLValueMaxComboPoints {}
 message APLValueMaxEnergy {}
 message APLValueMaxFocus {}
 message APLValueMaxRunicPower {}
@@ -614,36 +619,31 @@ message APLValueAllTrinketStatProcsActive {
     int32 stat_type1 = 1;
     int32 stat_type2 = 2;
     int32 stat_type3 = 3;
-    bool exclude_stacking_procs = 4 [deprecated=true];
-    double min_icd_seconds = 5;
+    double min_icd_seconds = 4;
 }
 message APLValueAnyTrinketStatProcsActive {
     int32 stat_type1 = 1;
     int32 stat_type2 = 2;
     int32 stat_type3 = 3;
-    bool exclude_stacking_procs = 4 [deprecated=true];
-    double min_icd_seconds = 5;
+    double min_icd_seconds = 4;
 }
 message APLValueTrinketProcsMinRemainingTime {
     int32 stat_type1 = 1;
     int32 stat_type2 = 2;
     int32 stat_type3 = 3;
-    bool exclude_stacking_procs = 4 [deprecated=true];
-    double min_icd_seconds = 5;
+    double min_icd_seconds = 4;
 }
 message APLValueTrinketProcsMaxRemainingICD {
     int32 stat_type1 = 1;
     int32 stat_type2 = 2;
     int32 stat_type3 = 3;
-    bool exclude_stacking_procs = 4 [deprecated=true];
-    double min_icd_seconds = 5;
+    double min_icd_seconds = 4;
 }
 message APLValueNumEquippedStatProcTrinkets {
     int32 stat_type1 = 1;
     int32 stat_type2 = 2;
     int32 stat_type3 = 3;
-    bool exclude_stacking_procs = 4 [deprecated=true];
-    double min_icd_seconds = 5;
+    double min_icd_seconds = 4;
 }
 message APLValueNumStatBuffCooldowns {
     int32 stat_type1 = 1;
@@ -692,3 +692,7 @@ message APLValueShamanCanSnapshotStrongerFireElemental {
 }
 message APLValueShamanFireElementalDuration {
 }
+
+message APLValueMonkCurrentChi {}
+message APLValueMonkMaxChi {}
+message APLValueMonkNextChiBrewRecharge {}

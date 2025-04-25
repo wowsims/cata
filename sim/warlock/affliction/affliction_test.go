@@ -7,11 +7,11 @@ import (
 
 	_ "unsafe"
 
-	_ "github.com/wowsims/cata/sim/common"
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/simsignals"
-	"github.com/wowsims/cata/sim/core/stats"
+	_ "github.com/wowsims/mop/sim/common"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/simsignals"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 func init() {
@@ -265,7 +265,7 @@ func TestDrainSoul3SE(t *testing.T) {
 	checkDotTick(t, sim, drainSoul.CurDot(), attackTable, 4115.6938, 1.823900)
 }
 
-//go:linkname sim_advance github.com/wowsims/cata/sim/core.(*Simulation).advance
+//go:linkname sim_advance github.com/wowsims/mop/sim/core.(*Simulation).advance
 func sim_advance(*core.Simulation, time.Duration)
 
 func TestDrainSoulExecute3SE(t *testing.T) {

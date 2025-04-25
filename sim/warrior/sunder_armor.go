@@ -1,8 +1,8 @@
 package warrior
 
 import (
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func (warrior *Warrior) RegisterSunderArmor() *core.Spell {
@@ -44,7 +44,7 @@ func (warrior *Warrior) RegisterSunderArmor() *core.Spell {
 
 		if result.Landed() {
 			warrior.TryApplySunderArmorEffect(sim, target)
-			// https://www.wowhead.com/cata/item=43427/glyph-of-sunder-armor - also applies to devastate in cata
+			// https://www.wowhead.com/mop-classic/item=43427/glyph-of-sunder-armor - also applies to devastate in cata
 			if hasGlyph && numTargets > 1 {
 				nextTarget := warrior.Env.NextTargetUnit(target)
 				warrior.TryApplySunderArmorEffect(sim, nextTarget)

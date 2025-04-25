@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 type OnApplyEffects func(aura *Aura, sim *Simulation, target *Unit, spell *Spell)
@@ -264,7 +264,7 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 	if config.ManaCost.BaseCostPercent != 0 || config.ManaCost.FlatCost != 0 {
 		spell.Cost = newManaCost(spell, config.ManaCost)
 	} else if config.EnergyCost.Cost != 0 {
-		spell.Cost = newEnergyCost(spell, config.EnergyCost)
+		spell.Cost = newEnergyCost(spell, config.EnergyCost, &unit.energyBar)
 	} else if config.RageCost.Cost != 0 {
 		spell.Cost = newRageCost(spell, config.RageCost)
 	} else if config.RuneCost.BloodRuneCost != 0 || config.RuneCost.FrostRuneCost != 0 || config.RuneCost.UnholyRuneCost != 0 || config.RuneCost.RunicPowerCost != 0 || config.RuneCost.RunicPowerGain != 0 {

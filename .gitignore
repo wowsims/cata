@@ -14,16 +14,16 @@ dist
 binary_dist
 sim/web/__debug_bin
 /wowsimcli*
-/wowsimcata*
+/wowsimmop*
 
 # temporary files
 *.results.tmp
 package.json.tmp
 
 #.dockerignore
-/cata/
+/mop/
 *.code-workspace
-wowsimcata
+wowsimmop
 
 # old result file
 TestAPL.results
@@ -35,6 +35,6 @@ TestAPL.results
 tmp/
 
 # lib
-wowsimcata*.so
-wowsimcata*.dll
-wowsimcata*.h
+wowsimmop*.so
+wowsimmop*.dll
+wowsimmop*.h

@@ -11,12 +11,12 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/wowsims/cata/sim"
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	_ "github.com/wowsims/cata/sim/encounters" // Needed for preset encounters.
-	"github.com/wowsims/cata/tools"
-	"github.com/wowsims/cata/tools/database"
+	"github.com/wowsims/mop/sim"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
+	_ "github.com/wowsims/mop/sim/encounters" // Needed for preset encounters.
+	"github.com/wowsims/mop/tools"
+	"github.com/wowsims/mop/tools/database"
 )
 
 // To do a full re-scrape, delete the previous output file first.
@@ -31,7 +31,7 @@ var exactId = flag.Int("id", 0, "ID to scan for")
 var minId = flag.Int("minid", 0, "Minimum ID to scan for")
 var maxId = flag.Int("maxid", 0, "Maximum ID to scan for")
 var outDir = flag.String("outDir", "assets", "Path to output directory for writing generated .go files.")
-var genAsset = flag.String("gen", "", "Asset to generate. Valid values are 'db', 'atlasloot', 'wowhead-items', 'wowhead-spells', 'wowhead-itemdb', 'cata-items', and 'wago-db2-items'")
+var genAsset = flag.String("gen", "", "Asset to generate. Valid values are 'db', 'atlasloot', 'wowhead-items', 'wowhead-spells', 'wowhead-itemdb', 'mop-items', and 'wago-db2-items'")
 
 func main() {
 	flag.Parse()
@@ -59,7 +59,7 @@ func main() {
 		database.NewWowheadSpellTooltipManager(fmt.Sprintf("%s/wowhead_spell_tooltips.csv", inputsDir)).Fetch(int32(*minId), int32(*maxId), []string{})
 		return
 	} else if *genAsset == "wowhead-gearplannerdb" {
-		tools.WriteFile(fmt.Sprintf("%s/wowhead_gearplannerdb.txt", inputsDir), tools.ReadWebRequired("https://nether.wowhead.com/cata/data/gear-planner?dv=100"))
+		tools.WriteFile(fmt.Sprintf("%s/wowhead_gearplannerdb.txt", inputsDir), tools.ReadWebRequired("https://nether.wowhead.com/mop-classic/data/gear-planner?dv=100"))
 		return
 	} else if *genAsset == "wago-db2-items" {
 		tools.WriteFile(fmt.Sprintf("%s/wago_db2_items.csv", inputsDir), tools.ReadWebRequired("https://wago.tools/db2/ItemSparse/csv?build=4.4.2.59536"))
@@ -250,7 +250,7 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		return true
 	})
 
-	// There is an 'unavailable' version of every naxx set, e.g. https://www.wowhead.com/cata/item=43728/bonescythe-gauntlets
+	// There is an 'unavailable' version of every naxx set, e.g. https://www.wowhead.com/mop-classic/item=43728/bonescythe-gauntlets
 	heroesItems := core.FilterMap(db.Items, func(_ int32, item *proto.UIItem) bool {
 		return strings.HasPrefix(item.Name, "Heroes' ")
 	})
@@ -264,7 +264,7 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		return true
 	})
 
-	// There is an 'unavailable' version of many t8 set pieces, e.g. https://www.wowhead.com/cata/item=46235/darkruned-gauntlets
+	// There is an 'unavailable' version of many t8 set pieces, e.g. https://www.wowhead.com/mop-classic/item=46235/darkruned-gauntlets
 	valorousItems := core.FilterMap(db.Items, func(_ int32, item *proto.UIItem) bool {
 		return strings.HasPrefix(item.Name, "Valorous ")
 	})
@@ -278,7 +278,7 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		return true
 	})
 
-	// There is an 'unavailable' version of many t9 set pieces, e.g. https://www.wowhead.com/cata/item=48842/thralls-hauberk
+	// There is an 'unavailable' version of many t9 set pieces, e.g. https://www.wowhead.com/mop-classic/item=48842/thralls-hauberk
 	triumphItems := core.FilterMap(db.Items, func(_ int32, item *proto.UIItem) bool {
 		return strings.HasSuffix(item.Name, "of Triumph")
 	})
@@ -716,6 +716,23 @@ func GetAllRotationSpellIds() map[string][]int32 {
 			Equipment:     &proto.EquipmentSpec{},
 			TalentsString: "-002-33233221121212212231",
 		}, &proto.Player_ProtectionWarrior{ProtectionWarrior: &proto.ProtectionWarrior{Options: &proto.ProtectionWarrior_Options{ClassOptions: &proto.WarriorOptions{}}}}), nil, nil, nil)},
+
+		// Monk
+		{Name: "brewmasterMonk", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+			Class:         proto.Class_ClassMonk,
+			Equipment:     &proto.EquipmentSpec{},
+			TalentsString: "111111111111111111",
+		}, &proto.Player_BrewmasterMonk{BrewmasterMonk: &proto.BrewmasterMonk{Options: &proto.BrewmasterMonk_Options{ClassOptions: &proto.MonkOptions{}, Stance: proto.MonkStance_SturdyOx}}}), nil, nil, nil)},
+		{Name: "mistweaverMonk", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+			Class:         proto.Class_ClassMonk,
+			Equipment:     &proto.EquipmentSpec{},
+			TalentsString: "111111111111111111",
+		}, &proto.Player_MistweaverMonk{MistweaverMonk: &proto.MistweaverMonk{Options: &proto.MistweaverMonk_Options{ClassOptions: &proto.MonkOptions{}, Stance: proto.MonkStance_WiseSerpent}}}), nil, nil, nil)},
+		{Name: "windwalkerMonk", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+			Class:         proto.Class_ClassMonk,
+			Equipment:     &proto.EquipmentSpec{},
+			TalentsString: "111111111111111111",
+		}, &proto.Player_WindwalkerMonk{WindwalkerMonk: &proto.WindwalkerMonk{Options: &proto.WindwalkerMonk_Options{ClassOptions: &proto.MonkOptions{}}}}), nil, nil, nil)},
 	}
 
 	ret_db := make(map[string][]int32, 0)

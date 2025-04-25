@@ -1,6 +1,6 @@
 package combat
 
-import "github.com/wowsims/cata/sim/core"
+import "github.com/wowsims/mop/sim/core"
 
 func (comRogue *CombatRogue) applyCombatPotency() {
 	if comRogue.Talents.CombatPotency == 0 {

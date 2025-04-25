@@ -3,8 +3,8 @@ package hunter
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 func (hp *HunterPet) ApplyTalents() {
@@ -392,7 +392,7 @@ func (hp *HunterPet) registerWolverineBite() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 1 + (spell.MeleeAttackPower()*0.40)*0.10 // https://www.wowhead.com/cata/spell=53508/wolverine-bite ? Reading this right?
+			baseDamage := 1 + (spell.MeleeAttackPower()*0.40)*0.10 // https://www.wowhead.com/mop-classic/spell=53508/wolverine-bite ? Reading this right?
 			//baseDamage *= hp.killCommandMult()
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)

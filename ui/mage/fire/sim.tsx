@@ -136,12 +136,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	},
 
 	simpleRotation: (player, simple): APLRotation => {
-		// Migrate old Ignite based settings to new format by defaulting to the P3 rotation.
-		if (simple.igniteCombustThreshold !== 0 || simple.igniteLastMomentLustPercentage !== 0 || simple.igniteNoLustPercentage !== 0) {
-			const rotation = player.getRace() === Race.RaceTroll ? Presets.P3TrollDefaultSimpleRotation : Presets.P3NoTrollDefaultSimpleRotation;
-			player.setSimpleRotation(TypedEvent.nextEventID(), rotation);
-		}
-
 		const rotation = Presets.FIRE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 		const { combustThreshold, combustLastMomentLustPercentage, combustNoLustPercentage } = simple;
 

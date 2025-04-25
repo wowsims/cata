@@ -8,8 +8,8 @@ import (
 
 	googleProto "google.golang.org/protobuf/proto"
 
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 type BuffConfig struct {
@@ -95,9 +95,9 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 	character := agent.GetCharacter()
 
 	// % Stats Buffs
-	// https://www.wowhead.com/cata/spell=1126/mark-of-the-wild
-	// https://www.wowhead.com/cata/spell=20217/blessing-of-kings
-	// https://www.wowhead.com/cata/item=63140/drums-of-the-burning-wild
+	// https://www.wowhead.com/mop-classic/spell=1126/mark-of-the-wild
+	// https://www.wowhead.com/mop-classic/spell=20217/blessing-of-kings
+	// https://www.wowhead.com/mop-classic/item=63140/drums-of-the-burning-wild
 	if raidBuffs.BlessingOfKings {
 		BlessingOfKingsAura(&character.Unit)
 	}
@@ -108,6 +108,10 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 
 	if raidBuffs.MarkOfTheWild {
 		MarkOfTheWildAura(&character.Unit)
+	}
+
+	if raidBuffs.LegacyOfTheEmperor {
+		LegacyOfTheEmperorAura(&character.Unit)
 	}
 
 	// Resistances
@@ -178,6 +182,10 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 
 	if raidBuffs.FuriousHowl {
 		FuriousHowl(&character.Unit)
+	}
+
+	if raidBuffs.LegacyOfTheWhiteTiger {
+		LegacyOfTheWhiteTiger(&character.Unit)
 	}
 
 	// +% Attackpower
@@ -408,17 +416,21 @@ func DrumsOfTheBurningWildAura(unit *Unit) *Aura {
 	return aura
 }
 
+func LegacyOfTheEmperorAura(unit *Unit) *Aura {
+	return makeExclusiveAllStatPercentBuff(unit, "Legacy of the Emperor", ActionID{SpellID: 115921}, 1.05)
+}
+
 ///////////////////////////////////////////////////////////////////////////
 //							Resistances
 ///////////////////////////////////////////////////////////////////////////
 
-// https://www.wowhead.com/cata/item=63140/drums-of-the-burning-wild
-// https://www.wowhead.com/cata/spell=1126/mark-of-the-wild
-// https://www.wowhead.com/cata/spell=20217/blessing-of-kings
-// https://www.wowhead.com/cata/spell=8184/elemental-resistance-totem
-// https://www.wowhead.com/cata/spell=19891/resistance-aura
-// https://www.wowhead.com/cata/spell=20043/aspect-of-the-wild
-// https://www.wowhead.com/cata/spell=27683/shadow-protection
+// https://www.wowhead.com/mop-classic/item=63140/drums-of-the-burning-wild
+// https://www.wowhead.com/mop-classic/spell=1126/mark-of-the-wild
+// https://www.wowhead.com/mop-classic/spell=20217/blessing-of-kings
+// https://www.wowhead.com/mop-classic/spell=8184/elemental-resistance-totem
+// https://www.wowhead.com/mop-classic/spell=19891/resistance-aura
+// https://www.wowhead.com/mop-classic/spell=20043/aspect-of-the-wild
+// https://www.wowhead.com/mop-classic/spell=27683/shadow-protection
 
 func ElementalResistanceTotemAura(unit *Unit) *Aura {
 	return makeExclusiveBuff(unit, BuffConfig{
@@ -468,7 +480,7 @@ func AspectOfTheWildAura(unit *Unit) *Aura {
 //							Stamina
 ///////////////////////////////////////////////////////////////////////////
 
-// https://www.wowhead.com/cata/spell=21562/power-word-fortitude
+// https://www.wowhead.com/mop-classic/spell=21562/power-word-fortitude
 func PowerWordFortitudeAura(unit *Unit) *Aura {
 	return makeExclusiveBuff(unit, BuffConfig{
 		"Power Word: Fortitude",
@@ -479,7 +491,7 @@ func PowerWordFortitudeAura(unit *Unit) *Aura {
 	})
 }
 
-// https://www.wowhead.com/cata/spell=6307/blood-pact
+// https://www.wowhead.com/mop-classic/spell=6307/blood-pact
 func BloodPactAura(unit *Unit) *Aura {
 	return makeExclusiveBuff(unit, BuffConfig{
 		"Blood Pact",
@@ -490,7 +502,7 @@ func BloodPactAura(unit *Unit) *Aura {
 	})
 }
 
-// https://www.wowhead.com/cata/spell=469/commanding-shout
+// https://www.wowhead.com/mop-classic/spell=469/commanding-shout
 func CommandingShoutAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
 	baseAura := makeExclusiveBuff(unit, BuffConfig{
 		"Commanding Shout",
@@ -527,7 +539,7 @@ func applyStaminaBuffs(unit *Unit, raidBuffs *proto.RaidBuffs) {
 //							Strength and Agility
 ///////////////////////////////////////////////////////////////////////////
 
-// https://www.wowhead.com/cata/spell=8075/strength-of-earth-totem
+// https://www.wowhead.com/mop-classic/spell=8075/strength-of-earth-totem
 func StrengthOfEarthTotemAura(unit *Unit) *Aura {
 	return makeExclusiveBuff(unit, BuffConfig{
 		"Strength of Earth Totem",
@@ -547,7 +559,7 @@ func RoarOfCourageAura(unit *Unit) *Aura {
 		}})
 }
 
-// https://www.wowhead.com/cata/spell=57330/horn-of-winter
+// https://www.wowhead.com/mop-classic/spell=57330/horn-of-winter
 func HornOfWinterAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
 	baseAura := makeExclusiveBuff(unit, BuffConfig{
 		"Horn of Winter",
@@ -566,7 +578,7 @@ func HornOfWinterAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
 	return baseAura
 }
 
-// https://www.wowhead.com/cata/spell=6673/battle-shout
+// https://www.wowhead.com/mop-classic/spell=6673/battle-shout
 func BattleShoutAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
 	baseAura := makeExclusiveBuff(unit, BuffConfig{
 		"Battle Shout",
@@ -603,10 +615,10 @@ func applyStrengthAgilityBuffs(unit *Unit, raidBuffs *proto.RaidBuffs) {
 //							Attack Power
 ///////////////////////////////////////////////////////////////////////////
 
-// https://www.wowhead.com/cata/spell=30808/unleashed-rage
-// https://www.wowhead.com/cata/spell=19506/trueshot-aura
-// https://www.wowhead.com/cata/spell=53138/abominations-might
-// https://www.wowhead.com/cata/spell=19740/blessing-of-might
+// https://www.wowhead.com/mop-classic/spell=30808/unleashed-rage
+// https://www.wowhead.com/mop-classic/spell=19506/trueshot-aura
+// https://www.wowhead.com/mop-classic/spell=53138/abominations-might
+// https://www.wowhead.com/mop-classic/spell=19740/blessing-of-might
 
 func UnleashedRageAura(unit *Unit) *Aura {
 	return makeExclusiveBuff(unit, BuffConfig{
@@ -812,6 +824,18 @@ func FuriousHowl(unit *Unit) *Aura {
 	return baseAura
 }
 
+func LegacyOfTheWhiteTiger(unit *Unit) *Aura {
+	baseAura := makeExclusiveBuff(unit, BuffConfig{
+		"Legacy of the White Tiger",
+		ActionID{SpellID: 116781},
+		[]StatConfig{
+			{stats.PhysicalCritPercent, 5, false},
+			{stats.SpellCritPercent, 5, false},
+		}})
+
+	return baseAura
+}
+
 // /////////////////////////////////////////////////////////////////////////
 //
 //	Spell Haste
@@ -963,6 +987,7 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	raidBuffs.Rampage = false
 	raidBuffs.TerrifyingRoar = false
 	raidBuffs.FuriousHowl = false
+	raidBuffs.LegacyOfTheWhiteTiger = false
 	// AP%
 	raidBuffs.TrueshotAura = false
 	raidBuffs.UnleashedRage = false
@@ -999,6 +1024,7 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	raidBuffs.MarkOfTheWild = false
 	raidBuffs.BlessingOfKings = false
 	raidBuffs.DrumsOfTheBurningWild = false
+	raidBuffs.LegacyOfTheEmperor = false
 
 	individualBuffs.HymnOfHopeCount = 0
 	individualBuffs.InnervateCount = 0

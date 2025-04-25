@@ -165,7 +165,7 @@ export class ActionId {
 
 	static makeItemUrl(id: number, randomSuffixId?: number, reforgeId?: number): string {
 		const langPrefix = getWowheadLanguagePrefix();
-		const url = new URL(`https://wowhead.com/cata/${langPrefix}item=${id}`);
+		const url = new URL(`https://wowhead.com/mop-classic/${langPrefix}item=${id}`);
 		url.searchParams.set('level', String(CHARACTER_LEVEL));
 		url.searchParams.set('rand', String(randomSuffixId || 0));
 		if (reforgeId) url.searchParams.set('forg', String(reforgeId));
@@ -176,7 +176,7 @@ export class ActionId {
 		if (USE_WOTLK_DB) {
 			return `https://wotlkdb.com/?spell=${id}`;
 		} else {
-			return `https://wowhead.com/cata/${langPrefix}spell=${id}`;
+			return `https://wowhead.com/mop-classic/${langPrefix}spell=${id}`;
 		}
 	}
 	static async makeItemTooltipData(id: number, params?: Omit<WowheadTooltipItemParams, 'itemId'>) {
@@ -190,7 +190,7 @@ export class ActionId {
 		if (USE_WOTLK_DB) {
 			return 'https://wotlkdb.com/?quest=' + id;
 		} else {
-			return `https://wowhead.com/cata/${langPrefix}quest=${id}`;
+			return `https://wowhead.com/mop-classic/${langPrefix}quest=${id}`;
 		}
 	}
 	static makeNpcUrl(id: number): string {
@@ -198,7 +198,7 @@ export class ActionId {
 		if (USE_WOTLK_DB) {
 			return 'https://wotlkdb.com/?npc=' + id;
 		} else {
-			return `https://wowhead.com/cata/${langPrefix}npc=${id}`;
+			return `https://wowhead.com/mop-classic/${langPrefix}npc=${id}`;
 		}
 	}
 	static makeZoneUrl(id: number): string {
@@ -206,7 +206,7 @@ export class ActionId {
 		if (USE_WOTLK_DB) {
 			return 'https://wotlkdb.com/?zone=' + id;
 		} else {
-			return `https://wowhead.com/cata/${langPrefix}zone=${id}`;
+			return `https://wowhead.com/mop-classic/${langPrefix}zone=${id}`;
 		}
 	}
 
@@ -689,6 +689,55 @@ export class ActionId {
 					name += ' (Off Hand)';
 				}
 				break;
+			case 'Tiger Strikes':
+				if (this.spellId === 12274) {
+					name += ' (Main Hand)';
+				} else {
+					name += ' (Off Hand)';
+				}
+				break;
+			case 'Blackout Kick':
+				if (tag === 2) {
+					name += ' (DoT)';
+				}
+				break;
+			case 'Expel Harm':
+				if (this.spellId === 115072) {
+					name += ' (Heal)';
+				} else {
+					name += ' (Damage)';
+				}
+				break;
+			case 'Chi Wave':
+				if (this.spellId === 132463) {
+					name += ' (Heal)';
+				} else if (this.spellId === 132467) {
+					name += ' (Damage)';
+				}
+				break;
+			case 'Zen Sphere':
+				if (this.spellId === 124081) {
+					name += ' (Heal)';
+				} else if (this.spellId === 124098) {
+					name += ' (Damage)';
+				} else if (this.spellId === 124101) {
+					name += ': Detonate (Heal)';
+				} else if (this.spellId === 125033) {
+					name += ': Detonate (Damage)';
+				}
+				break;
+			case 'Chi Burst':
+				if (this.spellId === 130654) {
+					name += ' (Heal)';
+				} else if (this.spellId === 148135) {
+					name += ' (Damage)';
+				}
+				break;
+			case 'Rushing Jade Wind':
+				if (this.spellId === 148187) {
+					name += ' (Hit)';
+				}
+				break;
 			default:
 				if (tag) {
 					name += ' (??)';
@@ -696,8 +745,9 @@ export class ActionId {
 				break;
 		}
 
-		const iconOverrideId = this.spellTooltipOverride || this.spellIconOverride;
 		let iconUrl = ActionId.makeIconUrl(tooltipData['icon']);
+
+		const iconOverrideId = this.spellTooltipOverride || this.spellIconOverride;
 		if (iconOverrideId) {
 			const overrideTooltipData = await ActionId.getTooltipData(iconOverrideId);
 			iconUrl = ActionId.makeIconUrl(overrideTooltipData['icon']);
@@ -944,7 +994,7 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Water Elemental': ActionId.fromSpellId(31687),
 };
 
-// https://wowhead.com/cata/hunter-pets
+// https://wowhead.com/mop-classic/hunter-pets
 const petNameToIcon: Record<string, string> = {
 	Bat: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_bat.jpg',
 	Bear: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_bear.jpg',
@@ -1002,13 +1052,14 @@ export const resourceTypeToIcon: Record<ResourceType, string> = {
 	[ResourceType.ResourceTypeMana]: 'https://wow.zamimg.com/images/wow/icons/medium/inv_elemental_mote_mana.jpg',
 	[ResourceType.ResourceTypeEnergy]: 'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_shadowworddominate.jpg',
 	[ResourceType.ResourceTypeRage]: 'https://wow.zamimg.com/images/wow/icons/medium/spell_misc_emotionangry.jpg',
+	[ResourceType.ResourceTypeChi]: 'https://wow.zamimg.com/images/wow/icons/medium/ability_monk_healthsphere.jpg',
 	[ResourceType.ResourceTypeComboPoints]: 'https://wow.zamimg.com/images/wow/icons/medium/inv_mace_2h_pvp410_c_01.jpg',
 	[ResourceType.ResourceTypeFocus]: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_focusfire.jpg',
 	[ResourceType.ResourceTypeRunicPower]: 'https://wow.zamimg.com/images/wow/icons/medium/inv_sword_62.jpg',
 	[ResourceType.ResourceTypeBloodRune]: 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_bloodpresence.jpg',
 	[ResourceType.ResourceTypeFrostRune]: 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_frostpresence.jpg',
 	[ResourceType.ResourceTypeUnholyRune]: 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_unholypresence.jpg',
-	[ResourceType.ResourceTypeDeathRune]: '/cata/assets/img/death_rune.png',
+	[ResourceType.ResourceTypeDeathRune]: '/mop/assets/img/death_rune.png',
 	[ResourceType.ResourceTypeSolarEnergy]: 'https://wow.zamimg.com/images/wow/icons/large/ability_druid_eclipseorange.jpg',
 	[ResourceType.ResourceTypeLunarEnergy]: 'https://wow.zamimg.com/images/wow/icons/large/ability_druid_eclipse.jpg',
 	[ResourceType.ResourceTypeHolyPower]: 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_holybolt.jpg',
