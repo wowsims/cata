@@ -14,7 +14,7 @@ import {
 } from './components/individual_sim_ui/exporters';
 import { GearTab } from './components/individual_sim_ui/gear_tab';
 import {
-	Individual60UImporter,
+	// Individual60UImporter,
 	IndividualAddonImporter,
 	IndividualJsonImporter,
 	IndividualLinkImporter,
@@ -64,7 +64,6 @@ import { armorTypeNames, professionNames } from './proto_utils/names';
 import { pseudoStatIsCapped, StatCap, Stats, UnitStat } from './proto_utils/stats';
 import { getTalentPoints, SpecOptions, SpecRotation } from './proto_utils/utils';
 import { SimUI, SimWarning } from './sim_ui';
-import { MAX_POINTS_PLAYER } from './talents/talents_picker';
 import { EventID, TypedEvent } from './typed_event';
 import { isDevMode } from './utils';
 
@@ -238,7 +237,6 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		this.raidSimResultsManager = null;
 		this.prevEpIterations = 0;
 		this.prevEpSimResult = null;
-		const maxPoints = player.isClass(Class.ClassMonk) ? 6 : MAX_POINTS_PLAYER;
 
 		if (!isDevMode() && getSpecLaunchStatus(this.player) === LaunchStatus.Unlaunched) {
 			this.handleSimUnlaunched();
@@ -290,10 +288,8 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 				if (talentPoints == 0) {
 					// Just return here, so we don't show a warning during page load.
 					return '';
-				} else if (talentPoints < maxPoints) {
+				} else if (talentPoints < 6) {
 					return 'Unspent talent points.';
-				} else if (talentPoints > maxPoints) {
-					return 'More than maximum talent points spent.';
 				} else {
 					return '';
 				}
@@ -470,14 +466,14 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 	private addTopbarComponents() {
 		this.simHeader.addImportLink('JSON', new IndividualJsonImporter(this.rootElem, this), true);
-		this.simHeader.addImportLink('60U Cata', new Individual60UImporter(this.rootElem, this), true);
+		// this.simHeader.addImportLink('60U Cata', new Individual60UImporter(this.rootElem, this), true);
 		this.simHeader.addImportLink('WoWHead', new IndividualWowheadGearPlannerImporter(this.rootElem, this), false, false);
 		this.simHeader.addImportLink('Addon', new IndividualAddonImporter(this.rootElem, this), true);
 
 		this.simHeader.addExportLink('Link', new IndividualLinkExporter(this.rootElem, this), false);
 		this.simHeader.addExportLink('JSON', new IndividualJsonExporter(this.rootElem, this), true);
 		this.simHeader.addExportLink('WoWHead', new IndividualWowheadGearPlannerExporter(this.rootElem, this), false, false);
-		this.simHeader.addExportLink('60U Cata EP', new Individual60UEPExporter(this.rootElem, this), false);
+		// this.simHeader.addExportLink('60U Cata EP', new Individual60UEPExporter(this.rootElem, this), false);
 		this.simHeader.addExportLink('Pawn EP', new IndividualPawnEPExporter(this.rootElem, this), false);
 		this.simHeader.addExportLink('CLI', new IndividualCLIExporter(this.rootElem, this), true);
 	}

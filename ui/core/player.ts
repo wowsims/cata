@@ -72,7 +72,6 @@ import {
 	emptyUnitReference,
 	enchantAppliesToItem,
 	getMetaGemEffectEP,
-	getTalentTree,
 	getTalentTreePoints,
 	isPVPItem,
 	newUnitReference,
@@ -89,7 +88,7 @@ import { Raid } from './raid';
 import { Sim } from './sim';
 import { playerTalentStringToProto } from './talents/factory';
 import { EventID, TypedEvent } from './typed_event';
-import { findInputItemForEnum, omitDeep, stringComparator, sum } from './utils';
+import { omitDeep, stringComparator, sum } from './utils';
 import { WorkerProgressCallback } from './worker_pool';
 
 export interface AuraStats {
@@ -919,10 +918,6 @@ export class Player<SpecType extends Spec> {
 		this.talentsString = newTalentsString;
 		this.talents = null;
 		this.talentsChangeEmitter.emit(eventID);
-	}
-
-	getTalentTree(): number {
-		return getTalentTree(this.getTalentsString());
 	}
 
 	getTalentTreePoints(): Array<number> {

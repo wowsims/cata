@@ -122,8 +122,6 @@ const SpellMaskModifiedByZealOfTheCrusader = SpellMaskTemplarsVerdict |
 	SpellMaskSealOfRighteousness |
 	SpellMaskSealOfJustice
 
-var TalentTreeSizes = [3]int{20, 20, 20}
-
 type Paladin struct {
 	core.Character
 	HolyPowerBar
@@ -299,7 +297,7 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 		sharedBuilderBaseCD: time.Millisecond * core.TernaryDuration(character.Spec == proto.Spec_SpecProtectionPaladin, 3000, 4500),
 	}
 
-	core.FillTalentsProto(paladin.Talents.ProtoReflect(), talentsStr, TalentTreeSizes)
+	core.FillTalentsProto(paladin.Talents.ProtoReflect(), talentsStr)
 
 	paladin.PseudoStats.CanParry = true
 

@@ -967,21 +967,7 @@ export class ReforgeOptimizer {
 	applyReforgeStat(coefficients: YalpsCoefficients, stat: Stat, amount: number, preCapEPs: Stats) {
 		// Handle Spirit to Spell Hit conversion for hybrid casters separately from standard dependencies
 		if (stat == Stat.StatSpirit && this.isHybridCaster) {
-			let appliedAmount = amount / Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT;
-
-			switch (this.player.getSpec()) {
-				case Spec.SpecBalanceDruid:
-					appliedAmount *= 0.5 * (this.player.getTalents() as SpecTalents<Spec.SpecBalanceDruid>).balanceOfPower;
-					break;
-				case Spec.SpecShadowPriest:
-					appliedAmount *= 0.5 * (this.player.getTalents() as SpecTalents<Spec.SpecShadowPriest>).twistedFaith;
-					break;
-				case Spec.SpecElementalShaman:
-					appliedAmount *= [0, 0.33, 0.66, 1][(this.player.getTalents() as SpecTalents<Spec.SpecElementalShaman>).elementalPrecision];
-					break;
-			}
-
-			this.setPseudoStatCoefficient(coefficients, PseudoStat.PseudoStatSpellHitPercent, appliedAmount);
+			this.setPseudoStatCoefficient(coefficients, PseudoStat.PseudoStatSpellHitPercent, amount / Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT);
 		}
 
 		// If a highest Stat constraint is to be enforced, then update the

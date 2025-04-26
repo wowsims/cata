@@ -7,8 +7,6 @@ import (
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
-var TalentTreeSizes = [3]int{20, 21, 20}
-
 type WarriorInputs struct {
 	StanceSnapshot bool
 }
@@ -200,7 +198,7 @@ func NewWarrior(character *core.Character, talents string, inputs WarriorInputs)
 		WarriorInputs:     inputs,
 		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassWarrior),
 	}
-	core.FillTalentsProto(warrior.Talents.ProtoReflect(), talents, TalentTreeSizes)
+	core.FillTalentsProto(warrior.Talents.ProtoReflect(), talents)
 
 	warrior.PseudoStats.CanParry = true
 	warrior.PrecisionKnown = false

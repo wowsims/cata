@@ -334,7 +334,9 @@ export class Database {
 
 	static async getItemIconData(itemId: number): Promise<IconData> {
 		const db = await Database.get();
-		if (!db.itemIcons[itemId]) {
+		const data = await db.spellIcons[itemId]
+
+		if (!data?.icon) {
 			db.itemIcons[itemId] = Database.getWowheadItemTooltipData(itemId);
 		}
 		return await db.itemIcons[itemId];
@@ -342,10 +344,12 @@ export class Database {
 
 	static async getSpellIconData(spellId: number): Promise<IconData> {
 		const db = await Database.get();
-		if (!db.spellIcons[spellId]) {
+		const data = await db.spellIcons[spellId]
+
+		if (!data?.icon) {
 			db.spellIcons[spellId] = Database.getWowheadSpellTooltipData(spellId);
 		}
-		return await db.spellIcons[spellId];
+		return db.spellIcons[spellId];
 	}
 
 	private static async getWowheadItemTooltipData(id: number): Promise<IconData> {

@@ -336,6 +336,7 @@ func main() {
 			if iconEntry.Name == "" {
 				continue
 			}
+
 			icon := &proto.IconData{Id: int32(iconEntry.SpellID), Name: iconEntry.Name, Icon: strings.ToLower(database.GetIconName(iconsMap, iconEntry.FDID)), HasBuff: iconEntry.HasBuff}
 			db.SpellIcons[spellId] = icon
 		}

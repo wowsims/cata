@@ -1,9 +1,8 @@
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { Player } from '../../player';
-import { Class, Glyphs, Spec } from '../../proto/common';
+import { Glyphs, Spec } from '../../proto/common';
 import { SavedTalents } from '../../proto/ui';
 import { classTalentsConfig } from '../../talents/factory';
-import { HunterPetTalentsPicker } from '../../talents/hunter_pet';
 import { TalentsPicker } from '../../talents/talents_picker';
 import { EventID, TypedEvent } from '../../typed_event';
 import { SavedDataManager } from '../saved_data_manager';
@@ -20,10 +19,8 @@ export class TalentsTab<SpecType extends Spec> extends SimTab {
 		super(parentElem, simUI, { identifier: 'talents-tab', title: 'Talents' });
 		this.simUI = simUI;
 
-		this.leftPanel = document.createElement('div');
-		this.leftPanel.classList.add('talents-tab-left', 'tab-panel-left');
-		this.rightPanel = document.createElement('div');
-		this.rightPanel.classList.add('talents-tab-right', 'tab-panel-right', 'within-raid-sim-hide');
+		this.leftPanel = (<div className="talents-tab-left tab-panel-left" />) as HTMLElement;
+		this.rightPanel = (<div className="talents-tab-right tab-panel-right within-raid-sim-hide" />) as HTMLElement;
 
 		this.contentContainer.appendChild(this.leftPanel);
 		this.contentContainer.appendChild(this.rightPanel);
@@ -32,11 +29,7 @@ export class TalentsTab<SpecType extends Spec> extends SimTab {
 	}
 
 	protected buildTabContent() {
-		if (this.simUI.player.getClass() == Class.ClassHunter) {
-			this.buildHunterPickers();
-		} else {
-			this.buildTalentsPicker(this.leftPanel);
-		}
+		this.buildTalentsPicker(this.leftPanel);
 
 		this.buildPresetConfigurationPicker();
 		this.buildSavedTalentsPicker();
@@ -45,65 +38,14 @@ export class TalentsTab<SpecType extends Spec> extends SimTab {
 	private buildTalentsPicker(parentElem: HTMLElement) {
 		new TalentsPicker(parentElem, this.simUI.player, {
 			playerClass: this.simUI.player.getClass(),
-			trees: classTalentsConfig[this.simUI.player.getClass()],
+			playerSpec: this.simUI.player.getSpec(),
+			tree: classTalentsConfig[this.simUI.player.getClass()],
 			changedEvent: (player: Player<any>) => player.talentsChangeEmitter,
 			getValue: (player: Player<any>) => player.getTalentsString(),
 			setValue: (eventID: EventID, player: Player<any>, newValue: string) => {
 				player.setTalentsString(eventID, newValue);
 			},
-			pointsPerRow: 5,
 		});
-	}
-
-	private buildHunterPickers() {
-		this.leftPanel.innerHTML = `
-      <div class="hunter-talents-pickers-container tab-content">
-        <ul class="nav nav-tabs" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button
-              class="nav-link active"
-              type="button"
-              role="tab"
-              data-bs-toggle="tab"
-              data-bs-target="#player-talents-tab"
-              aria-controls="#player-talents-tab"
-              aria-selected="true"
-            >
-              Player
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button
-              class="nav-link"
-              type="button"
-              role="tab"
-              data-bs-toggle="tab"
-              data-bs-target="#pet-talents-tab"
-              aria-controls="#pet-talents-tab"
-              aria-selected="false"
-            >
-              Pet</button
-            >
-          </li>
-        </ul>
-        <div id="player-talents-tab" class="tab-pane fade active show" role="tabpanel">
-        </div>
-        <div id="pet-talents-tab" class="tab-pane fade" role="tabpanel">
-        </div>
-      </div>
-    `;
-
-		const playerTab = this.leftPanel.querySelector('#player-talents-tab') as HTMLElement;
-		const petTab = this.leftPanel.querySelector('#pet-talents-tab') as HTMLElement;
-
-		this.buildTalentsPicker(playerTab);
-		this.buildHunterPetPicker(petTab);
-	}
-
-	private buildHunterPetPicker(parentElem: HTMLElement) {
-		if (this.simUI.player.isClass(Class.ClassHunter)) {
-			new HunterPetTalentsPicker(parentElem, this.simUI, this.simUI.player);
-		}
 	}
 
 	private buildPresetConfigurationPicker() {

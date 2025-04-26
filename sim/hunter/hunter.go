@@ -8,8 +8,6 @@ import (
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
-var TalentTreeSizes = [3]int{19, 19, 20}
-
 const ThoridalTheStarsFuryItemID = 34334
 
 type Hunter struct {
@@ -94,7 +92,7 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassHunter),
 	}
 
-	core.FillTalentsProto(hunter.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
+	core.FillTalentsProto(hunter.Talents.ProtoReflect(), options.TalentsString)
 	focusPerSecond := 4.0
 
 	// TODO: Fix this to work with the new talent system.

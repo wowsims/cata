@@ -159,7 +159,7 @@ func NewMonk(character *core.Character, options *proto.MonkOptions, talents stri
 		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassMonk),
 	}
 
-	core.FillTalentsProto(monk.Talents.ProtoReflect(), talents, [3]int{5, 0, 0})
+	core.FillTalentsProto(monk.Talents.ProtoReflect(), talents)
 
 	monk.PseudoStats.CanParry = true
 

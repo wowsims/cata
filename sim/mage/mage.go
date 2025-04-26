@@ -6,8 +6,6 @@ import (
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
-var TalentTreeSizes = [3]int{21, 21, 19}
-
 type Mage struct {
 	core.Character
 
@@ -169,7 +167,7 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassMage),
 	}
 
-	core.FillTalentsProto(mage.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
+	core.FillTalentsProto(mage.Talents.ProtoReflect(), options.TalentsString)
 
 	mage.EnableManaBar()
 	mage.SetDefaultSpellCritMultiplier(mage.SpellCritMultiplier(1.33, 0.0))

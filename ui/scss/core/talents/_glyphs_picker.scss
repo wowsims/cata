@@ -9,12 +9,8 @@
 	@include media-breakpoint-between(md, 1080p) {
 		width: 100%;
 		gap: 0;
-		grid-template-columns: repeat(3, 1fr);
-		padding-top: 0;
-	}
-
-	@include media-breakpoint-down(md) {
 		grid-template-columns: repeat(2, 1fr);
+		padding-top: 0;
 	}
 
 	.content-block {

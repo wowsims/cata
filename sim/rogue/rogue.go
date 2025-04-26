@@ -14,8 +14,6 @@ const (
 	SpellFlagColdBlooded = core.SpellFlagAgentReserved4
 )
 
-var TalentTreeSizes = [3]int{19, 19, 19}
-
 const RogueBleedTag = "RogueBleed"
 
 type Rogue struct {
@@ -262,7 +260,7 @@ func NewRogue(character *core.Character, options *proto.RogueOptions, talents st
 		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassRogue),
 	}
 
-	core.FillTalentsProto(rogue.Talents.ProtoReflect(), talents, TalentTreeSizes)
+	core.FillTalentsProto(rogue.Talents.ProtoReflect(), talents)
 
 	// Passive rogue threat reduction: https://wotlk.wowhead.com/spell=21184/rogue-passive-dnd
 	rogue.PseudoStats.ThreatMultiplier *= 0.71

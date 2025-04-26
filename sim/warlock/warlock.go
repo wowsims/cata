@@ -132,7 +132,7 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 		Talents:   &proto.WarlockTalents{},
 		Options:   warlockOptions,
 	}
-	core.FillTalentsProto(warlock.Talents.ProtoReflect(), options.TalentsString, [3]int{18, 19, 19})
+	core.FillTalentsProto(warlock.Talents.ProtoReflect(), options.TalentsString)
 	warlock.EnableManaBar()
 	warlock.SetDefaultSpellCritMultiplier(warlock.SpellCritMultiplier(1.33, 0.0))
 

@@ -16,8 +16,6 @@ const (
 	PetExpertiseRatingScale = ExpertiseCapRatio * (4 * core.ExpertisePerQuarterPercentReduction)
 )
 
-var TalentTreeSizes = [3]int{20, 20, 20}
-
 // Damage Done By Caster setup
 const (
 	DDBC_MercilessCombat   int = 0
@@ -170,7 +168,7 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 		Inputs:            inputs,
 		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassDeathKnight),
 	}
-	core.FillTalentsProto(dk.Talents.ProtoReflect(), talents, TalentTreeSizes)
+	core.FillTalentsProto(dk.Talents.ProtoReflect(), talents)
 
 	// TODO: Fix this to work with the new talent system.
 	// maxRunicPower := 100.0 + 10.0*float64(dk.Talents.RunicPowerMastery)
