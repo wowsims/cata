@@ -379,63 +379,63 @@ func main() {
 
 // Uses heuristics on ilvl + source to infer release phase of an item when missing.
 func InferPhase(item *proto.UIItem) int32 {
-	if item.Ilvl <= 352 {
+	if item.Ilvl <= 463 {
 		return 1
 	}
 	// Since Atlasloot populates before we run inferphase, we can use Atlasloot data to help us infer the phase
 	// Such as here where I check the Zone Id to correctly place Firelands and DS Dungeons in the correct phase
-	for _, source := range item.Sources {
-		if drop := source.GetDrop(); drop != nil {
-			switch drop.ZoneId {
-			case 5723: // Firelands
-				return 3
-			case 5789, 5844, 5788: // Dragon Soul dungeons
-				return 4
-			}
-		}
-	}
+	// for _, source := range item.Sources {
+	// 	if drop := source.GetDrop(); drop != nil {
+	// 		switch drop.ZoneId {
+	// 		case 5723: // Firelands
+	// 			return 3
+	// 		case 5789, 5844, 5788: // Dragon Soul dungeons
+	// 			return 4
+	// 		}
+	// 	}
+	// }
 
-	if item.Ilvl >= 397 {
-		return 4 // Heroic Rag loot should already be tagged correctly by Wowhead.
-	}
+	// if item.Ilvl >= 397 {
+	// 	return 4 // Heroic Rag loot should already be tagged correctly by Wowhead.
+	// }
 
 	switch item.Ilvl {
-	case 353:
-		return 2
-	case 358, 371, 391:
-		return 3
-	case 359:
-		if item.Quality == proto.ItemQuality_ItemQualityUncommon {
-			return 4
-		}
+	// case 353:
+	// 	return 2
+	// case 358, 371, 391:
+	// 	return 3
+	// case 359:
+	// 	if item.Quality == proto.ItemQuality_ItemQualityUncommon {
+	// 		return 4
+	// 	}
 
-		return 1
-	case 372, 379:
-		return 1
-	case 377, 390:
-		return 4
-	case 365:
-		if strings.Contains(item.Name, "Vicious") {
-			return 1
-		}
+	// 	return 1
+	// case 372, 379:
+	// 	return 1
+	// case 377, 390:
+	// 	return 4
+	// case 365:
+	// 	if strings.Contains(item.Name, "Vicious") {
+	// 		return 1
+	// 	}
 
-		return 3
-	case 378:
-		for _, itemSource := range item.Sources {
-			dropSource := itemSource.GetDrop()
+	// 	return 3
+	// case 378:
+	// 	for _, itemSource := range item.Sources {
+	// 		dropSource := itemSource.GetDrop()
 
-			if (dropSource != nil) && slices.Contains([]int32{5788, 5789, 5844}, dropSource.ZoneId) {
-				return 4
-			}
-		}
+	// 		if (dropSource != nil) && slices.Contains([]int32{5788, 5789, 5844}, dropSource.ZoneId) {
+	// 			return 4
+	// 		}
+	// 	}
 
-		return 3
-	case 384:
-		if strings.Contains(item.Name, "Ruthless") {
-			return 3
-		}
+	// 	return 3
+	// case 384:
+	// 	if strings.Contains(item.Name, "Ruthless") {
+	// 		return 3
+	// 	}
 
-		return 4
+	// 	return 4
 	default:
 		return 0
 	}
@@ -447,7 +447,7 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		if _, ok := database.ItemDenyList[item.Id]; ok {
 			return false
 		}
-		if item.Ilvl > 416 || item.Ilvl < 100 {
+		if item.Ilvl > 600 || item.Ilvl < 100 {
 			return false
 		}
 		for _, pattern := range database.DenyListNameRegexes {

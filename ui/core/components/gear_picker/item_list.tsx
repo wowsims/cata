@@ -129,7 +129,8 @@ export default class ItemList<T extends ItemListType> {
 		const epButtonRef = ref<HTMLButtonElement>();
 		const filtersButtonRef = ref<HTMLButtonElement>();
 		const showEpValuesRef = ref<HTMLDivElement>();
-		const phaseSelectorRef = ref<HTMLDivElement>();
+		// TODO: Turn this back on once we have proper phase data
+		// const phaseSelectorRef = ref<HTMLDivElement>();
 		const matchingGemsRef = ref<HTMLDivElement>();
 		const show1hWeaponRef = ref<HTMLDivElement>();
 		const show2hWeaponRef = ref<HTMLDivElement>();
@@ -148,7 +149,8 @@ export default class ItemList<T extends ItemListType> {
 							Filters
 						</button>
 					)}
-					<div ref={phaseSelectorRef} className="selector-modal-phase-selector" />
+					{/* // TODO: Turn this back on once we have proper phase data */}
+					{/* <div ref={phaseSelectorRef} className="selector-modal-phase-selector" /> */}
 					<div ref={show1hWeaponRef} className="sim-input selector-modal-boolean-option selector-modal-show-1h-weapons hide" />
 					<div ref={show2hWeaponRef} className="sim-input selector-modal-boolean-option selector-modal-show-2h-weapons hide" />
 					<div ref={matchingGemsRef} className="sim-input selector-modal-boolean-option selector-modal-show-matching-gems" />
@@ -216,7 +218,8 @@ export default class ItemList<T extends ItemListType> {
 			}
 		}
 
-		if (phaseSelectorRef.value) makePhaseSelector(phaseSelectorRef.value, player.sim);
+		// TODO: Turn this back on once we have proper phase data
+		// if (phaseSelectorRef.value) makePhaseSelector(phaseSelectorRef.value, player.sim);
 
 		if (label === SelectorModalTabs.Items) {
 			const filtersMenu = new FiltersMenu(parent, player, currentSlot);
@@ -356,9 +359,10 @@ export default class ItemList<T extends ItemListType> {
 		itemIdxs = itemIdxs.filter(i => {
 			const listItemData = this.itemData[i];
 
-			if (listItemData.phase > this.player.sim.getPhase()) {
-				return false;
-			}
+			// TODO: Turn this back on once we have proper phase data
+			// if (listItemData.phase > this.player.sim.getPhase()) {
+			// 	return false;
+			// }
 
 			if (!!this.searchInput.value.length) {
 				const formatQuery = (value: string) => value.toLowerCase().replaceAll(/[^a-zA-Z0-9\s]/g, '');
