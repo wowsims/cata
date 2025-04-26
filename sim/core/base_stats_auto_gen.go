@@ -16,7 +16,7 @@ const PhysicalHitRatingPerHitPercent = 340.000000
 const SpellHitRatingPerHitPercent = 340.000000
 const DodgeRatingPerDodgePercent = 885.000000
 const ParryRatingPerParryPercent = 885.000000
-const MasteryRatingPerMasteryPoint = 0.000000
+const MasteryRatingPerMasteryPoint = 600.000000
 
 var CritPerAgiMaxLevel = map[proto.Class]float64{
 	proto.Class_ClassUnknown:     0.0,
