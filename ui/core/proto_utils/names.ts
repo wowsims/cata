@@ -44,7 +44,7 @@ export const raceNames: Map<Race, string> = new Map([
 	[Race.RaceNightElf, 'Night Elf'],
 	[Race.RaceOrc, 'Orc'],
 	[Race.RaceAlliancePandaren, 'Pandaren (A)'],
-	[Race.RaceHordePandaren, 'Pandaren (A)'],
+	[Race.RaceHordePandaren, 'Pandaren (H)'],
 	[Race.RaceTauren, 'Tauren'],
 	[Race.RaceTroll, 'Troll'],
 	[Race.RaceUndead, 'Undead'],
