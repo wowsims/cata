@@ -6,6 +6,24 @@ option go_package = "./proto";
 // BEGIN GENERATED
 // WarriorTalents message.
 message WarriorTalents {
+    bool juggernaut = 1;
+    bool double_time = 2;
+    bool warbringer = 3;
+    bool enraged_regeneration = 4;
+    bool second_wind = 5;
+    bool impending_victory = 6;
+    bool staggering_shout = 7;
+    bool piercing_howl = 8;
+    bool disrupting_shout = 9;
+    bool bladestorm = 10;
+    bool shockwave = 11;
+    bool dragon_roar = 12;
+    bool mass_spell_reflection = 13;
+    bool safeguard = 14;
+    bool vigilance = 15;
+    bool avatar = 16;
+    bool bloodbath = 17;
+    bool storm_bolt = 18;
 }
 
 enum WarriorMajorGlyph {

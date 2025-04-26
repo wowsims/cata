@@ -11,7 +11,7 @@ func (monk *Monk) registerFortifyingBrew() {
 	actionID := core.ActionID{SpellID: 126456}
 	healthMetrics := monk.NewHealthMetrics(actionID)
 
-	hasGlyphOfFortifyingBrew := monk.HasMajorGlyph(proto.MonkMajorGlyph_MonkMajorGlyphFortifyingBrew)
+	hasGlyphOfFortifyingBrew := monk.HasMajorGlyph(proto.MonkMajorGlyph_GlyphOfFortifyingBrew)
 	healthModifier := core.TernaryFloat64(hasGlyphOfFortifyingBrew, 0.10, 0.20)
 	damageTakenModifier := core.TernaryFloat64(hasGlyphOfFortifyingBrew, 0.75, 0.8)
 

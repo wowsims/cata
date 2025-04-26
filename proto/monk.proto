@@ -3,73 +3,77 @@ package proto;
 
 option go_package = "./proto";
 
+import "common.proto";
+// DO NOT REMOVE THE COMMENTS
+// BEGIN GENERATED
+// MonkTalents message.
 message MonkTalents {
-	bool celerity = 1;
-	bool tigers_lust = 2;
-	bool momentum = 3;
-
-	bool chi_wave = 4;
-	bool zen_sphere = 5;
-	bool chi_burst = 6;
-
-	bool power_strikes = 7;
-	bool ascension = 8;
-	bool chi_brew = 9;
-
-	bool ring_of_peace = 10;
-	bool charging_ox_wave = 11;
-	bool leg_sweep = 12;
-
-	bool healing_elixirs = 13;
-	bool dampen_harm = 14;
-	bool diffuse_magic = 15;
-
-	bool rushing_jade_wind = 16;
-	bool invoke_xuen_the_white_tiger = 17;
-	bool chi_torpedo = 18;
+    bool celerity = 1;
+    bool tigers_lust = 2;
+    bool momentum = 3;
+    bool chi_wave = 4;
+    bool zen_sphere = 5;
+    bool chi_burst = 6;
+    bool power_strikes = 7;
+    bool ascension = 8;
+    bool chi_brew = 9;
+    bool ring_of_peace = 10;
+    bool charging_ox_wave = 11;
+    bool leg_sweep = 12;
+    bool healing_elixirs = 13;
+    bool dampen_harm = 14;
+    bool diffuse_magic = 15;
+    bool rushing_jade_wind = 16;
+    bool invoke_xuen_the_white_tiger = 17;
+    bool chi_torpedo = 18;
 }
+
 enum MonkMajorGlyph {
-	MonkMajorGlyphNone = 0;
-	MonkMajorGlyphAfterlife = 87891;
-	MonkMajorGlyphBreathOfFire = 85685;
-	MonkMajorGlyphClash = 85687;
-	MonkMajorGlyphDetox = 87899;
-	MonkMajorGlyphEnduringHealingSphere = 85689;
-	MonkMajorGlyphFistsOfFury = 87892;
-	MonkMajorGlyphFortifyingBrew = 87893;
-	MonkMajorGlyphFortuitousSpheres = 87896;
-	MonkMajorGlyphGuard = 85691;
-	MonkMajorGlyphLeerOfTheOx = 87894;
-	MonkMajorGlyphLifeCocoon = 87895;
-	MonkMajorGlyphManaTea = 85692;
-	MonkMajorGlyphNimbleBrew = 87880;
-	MonkMajorGlyphParalysis = 87897;
-	MonkMajorGlyphRapidRolling = 82345;
-	MonkMajorGlyphRenewingMists = 85696;
-	MonkMajorGlyphSparring = 87898;
-	MonkMajorGlyphSpinningCraneKick = 85697;
-	MonkMajorGlyphSurgingMist = 85699;
-	MonkMajorGlyphTargetedExpulsion = 87901;
-	MonkMajorGlyphTouchOfDeath = 85700;
-	MonkMajorGlyphTouchOfKarma = 87900;
-	MonkMajorGlyphTranscendence = 84652;
-	MonkMajorGlyphZenMeditation = 85695;
+    MonkMajorGlyphNone = 0;
+    GlyphOfRapidRolling = 82345;
+    GlyphOfTranscendence = 84652;
+    GlyphOfBreathOfFire = 85685;
+    GlyphOfClash = 85687;
+    GlyphOfEnduringHealingSphere = 85689;
+    GlyphOfGuard = 85691;
+    GlyphOfManaTea = 85692;
+    GlyphOfZenMeditation = 85695;
+    GlyphOfRenewingMists = 85696;
+    GlyphOfSpinningCraneKick = 85697;
+    GlyphOfSurgingMist = 85699;
+    GlyphOfTouchOfDeath = 85700;
+    GlyphOfNimbleBrew = 87880;
+    GlyphOfAfterlife = 87891;
+    GlyphOfFistsOfFury = 87892;
+    GlyphOfFortifyingBrew = 87893;
+    GlyphOfLeerOfTheOx = 87894;
+    GlyphOfLifeCocoon = 87895;
+    GlyphOfFortuitousSpheres = 87896;
+    GlyphOfParalysis = 87897;
+    GlyphOfSparring = 87898;
+    GlyphOfDetox = 87899;
+    GlyphOfTouchOfKarma = 87900;
+    GlyphOfTargetedExpulsion = 87901;
 }
 
 enum MonkMinorGlyph {
-	MonkMinorGlyphNone = 0;
-	MonkMinorGlyphBlackoutKick = 90715;
-	MonkMinorGlyphCracklingTigerLightning = 87881;
-	MonkMinorGlyphFightingPose = 87888;
-	MonkMinorGlyphFlyingSerpentKick = 87882;
-	MonkMinorGlyphHonor = 87883;
-	MonkMinorGlyphJab = 87884;
-	MonkMinorGlyphRisingTigerKick = 87885;
-	MonkMinorGlyphSpinningFireBlossom = 85698;
-	MonkMinorGlyphSpiritRoll = 87887;
-	MonkMinorGlyphWaterRoll = 87889;
-	MonkMinorGlyphZenFlight = 87890;
+    MonkMinorGlyphNone = 0;
+    GlyphOfSpinningFireBlossom = 85698;
+    ZzoldGlyphOfFlyingSerpentKick = 85712;
+    GlyphOfCracklingTigerLightning = 87881;
+    GlyphOfFlyingSerpentKick = 87882;
+    GlyphOfHonor = 87883;
+    GlyphOfJab = 87884;
+    GlyphOfRisingTigerKick = 87885;
+    ZzoldGlyphOfSpinningFireBlossom = 87886;
+    GlyphOfSpiritRoll = 87887;
+    GlyphOfFightingPose = 87888;
+    GlyphOfWaterRoll = 87889;
+    GlyphOfZenFlight = 87890;
+    GlyphOfBlackoutKick = 90715;
 }
+
+// END GENERATED
 
 enum MonkStance {
 	None = 0;

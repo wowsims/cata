@@ -105,11 +105,6 @@ export const warlockGlyphsConfig: GlyphsConfig = {
 			description: "When you are killed, all enemies within $135031A1 yards take damage equal to 10% of your maximum health per Burning Ember held.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_fire_ragnaros_supernova.jpg",
 		},
-		[WarlockMajorGlyph.GlyphOfHavoc]: {
-			name: "Glyph of Havoc",
-			description: "Havoc gains $s1 additional charges, but the cooldown is increased by ${$m2/1000} seconds.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warlock_baneofhavoc.jpg",
-		},
 	},
 	minorGlyphs: {
 		[WarlockMinorGlyph.GlyphOfHandOfGuldan]: {

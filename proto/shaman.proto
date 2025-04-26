@@ -6,6 +6,24 @@ option go_package = "./proto";
 // BEGIN GENERATED
 // ShamanTalents message.
 message ShamanTalents {
+    bool natures_guardian = 1;
+    bool stone_bulwark_totem = 2;
+    bool astral_shift = 3;
+    bool frozen_power = 4;
+    bool earthgrab_totem = 5;
+    bool windwalk_totem = 6;
+    bool call_of_the_elements = 7;
+    bool totemic_persistence = 8;
+    bool totemic_projection = 9;
+    bool elemental_mastery = 10;
+    bool ancestral_swiftness = 11;
+    bool echo_of_the_elements = 12;
+    bool rushing_streams = 13;
+    bool ancestral_guidance = 14;
+    bool conductivity = 15;
+    bool unleashed_fury = 16;
+    bool primal_elementalist = 17;
+    bool elemental_blast = 18;
 }
 
 enum ShamanMajorGlyph {

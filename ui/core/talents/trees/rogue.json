@@ -1,2 +1,168 @@
-[
-]
+
+{
+	"backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/TODO.jpg",
+	"talents": [
+		{
+			"fieldName": "nightstalker",
+			"fancyName": "Nightstalker",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 0
+			},
+			"spellId": 14062
+		},
+		{
+			"fieldName": "subterfuge",
+			"fancyName": "Subterfuge",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 1
+			},
+			"spellId": 108208
+		},
+		{
+			"fieldName": "shadowFocus",
+			"fancyName": "Shadow Focus",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 2
+			},
+			"spellId": 108209
+		},
+		{
+			"fieldName": "deadlyThrow",
+			"fancyName": "Deadly Throw",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 0
+			},
+			"spellId": 26679
+		},
+		{
+			"fieldName": "nerveStrike",
+			"fancyName": "Nerve Strike",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 1
+			},
+			"spellId": 108210
+		},
+		{
+			"fieldName": "combatReadiness",
+			"fancyName": "Combat Readiness",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 2
+			},
+			"spellId": 74001
+		},
+		{
+			"fieldName": "cheatDeath",
+			"fancyName": "Cheat Death",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 0
+			},
+			"spellId": 31230
+		},
+		{
+			"fieldName": "leechingPoison",
+			"fancyName": "Leeching Poison",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 1
+			},
+			"spellId": 108211
+		},
+		{
+			"fieldName": "elusiveness",
+			"fancyName": "Elusiveness",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 2
+			},
+			"spellId": 79008
+		},
+		{
+			"fieldName": "cloakAndDagger",
+			"fancyName": "Cloak and Dagger",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 0
+			},
+			"spellId": 138106
+		},
+		{
+			"fieldName": "shadowstep",
+			"fancyName": "Shadowstep",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 1
+			},
+			"spellId": 36554
+		},
+		{
+			"fieldName": "burstOfSpeed",
+			"fancyName": "Burst of Speed",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 2
+			},
+			"spellId": 108212
+		},
+		{
+			"fieldName": "preyOnTheWeak",
+			"fancyName": "Prey on the Weak",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 0
+			},
+			"spellId": 131511
+		},
+		{
+			"fieldName": "paralyticPoison",
+			"fancyName": "Paralytic Poison",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 1
+			},
+			"spellId": 108215
+		},
+		{
+			"fieldName": "dirtyTricks",
+			"fancyName": "Dirty Tricks",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 2
+			},
+			"spellId": 108216
+		},
+		{
+			"fieldName": "shurikenToss",
+			"fancyName": "Shuriken Toss",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 0
+			},
+			"spellId": 114014
+		},
+		{
+			"fieldName": "markedForDeath",
+			"fancyName": "Marked for Death",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 1
+			},
+			"spellId": 137619
+		},
+		{
+			"fieldName": "anticipation",
+			"fancyName": "Anticipation",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 2
+			},
+			"spellId": 114015
+		}
+	]
+}

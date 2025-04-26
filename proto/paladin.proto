@@ -6,6 +6,24 @@ option go_package = "./proto";
 // BEGIN GENERATED
 // PaladinTalents message.
 message PaladinTalents {
+    bool speed_of_light = 1;
+    bool long_arm_of_the_law = 2;
+    bool pursuit_of_justice = 3;
+    bool fist_of_justice = 4;
+    bool repentance = 5;
+    bool evil_is_a_point_of_view = 6;
+    bool selfless_healer = 7;
+    bool eternal_flame = 8;
+    bool sacred_shield = 9;
+    bool hand_of_purity = 10;
+    bool unbreakable_spirit = 11;
+    bool clemency = 12;
+    bool holy_avenger = 13;
+    bool sanctified_wrath = 14;
+    bool divine_purpose = 15;
+    bool holy_prism = 16;
+    bool lights_hammer = 17;
+    bool execution_sentence = 18;
 }
 
 enum PaladinMajorGlyph {

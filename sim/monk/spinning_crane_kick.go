@@ -64,7 +64,7 @@ func (monk *Monk) registerSpinningCraneKick() {
 		},
 	})
 
-	glyphOfSpinningCraneKick := monk.HasMajorGlyph(proto.MonkMajorGlyph_MonkMajorGlyphSpinningCraneKick)
+	glyphOfSpinningCraneKick := monk.HasMajorGlyph(proto.MonkMajorGlyph_GlyphOfSpinningCraneKick)
 	spinningCraneKickAura := monk.RegisterAura(core.Aura{
 		Label:    "Spinning Crane Kick" + monk.Label,
 		ActionID: actionID,

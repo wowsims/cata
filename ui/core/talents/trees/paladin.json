@@ -1,2 +1,168 @@
-[
-]
+
+{
+	"backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/TODO.jpg",
+	"talents": [
+		{
+			"fieldName": "speedOfLight",
+			"fancyName": "Speed of Light",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 0
+			},
+			"spellId": 85499
+		},
+		{
+			"fieldName": "longArmOfTheLaw",
+			"fancyName": "Long Arm of the Law",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 1
+			},
+			"spellId": 87172
+		},
+		{
+			"fieldName": "pursuitOfJustice",
+			"fancyName": "Pursuit of Justice",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 2
+			},
+			"spellId": 26023
+		},
+		{
+			"fieldName": "fistOfJustice",
+			"fancyName": "Fist of Justice",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 0
+			},
+			"spellId": 105593
+		},
+		{
+			"fieldName": "repentance",
+			"fancyName": "Repentance",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 1
+			},
+			"spellId": 20066
+		},
+		{
+			"fieldName": "evilIsAPointOfView",
+			"fancyName": "Evil is a Point of View",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 2
+			},
+			"spellId": 110301
+		},
+		{
+			"fieldName": "selflessHealer",
+			"fancyName": "Selfless Healer",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 0
+			},
+			"spellId": 85804
+		},
+		{
+			"fieldName": "eternalFlame",
+			"fancyName": "Eternal Flame",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 1
+			},
+			"spellId": 114163
+		},
+		{
+			"fieldName": "sacredShield",
+			"fancyName": "Sacred Shield",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 2
+			},
+			"spellId": 20925
+		},
+		{
+			"fieldName": "handOfPurity",
+			"fancyName": "Hand of Purity",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 0
+			},
+			"spellId": 114039
+		},
+		{
+			"fieldName": "unbreakableSpirit",
+			"fancyName": "Unbreakable Spirit",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 1
+			},
+			"spellId": 114154
+		},
+		{
+			"fieldName": "clemency",
+			"fancyName": "Clemency",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 2
+			},
+			"spellId": 105622
+		},
+		{
+			"fieldName": "holyAvenger",
+			"fancyName": "Holy Avenger",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 0
+			},
+			"spellId": 105809
+		},
+		{
+			"fieldName": "sanctifiedWrath",
+			"fancyName": "Sanctified Wrath",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 1
+			},
+			"spellId": 53376
+		},
+		{
+			"fieldName": "divinePurpose",
+			"fancyName": "Divine Purpose",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 2
+			},
+			"spellId": 86172
+		},
+		{
+			"fieldName": "holyPrism",
+			"fancyName": "Holy Prism",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 0
+			},
+			"spellId": 114165
+		},
+		{
+			"fieldName": "lightsHammer",
+			"fancyName": "Light's Hammer",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 1
+			},
+			"spellId": 114158
+		},
+		{
+			"fieldName": "executionSentence",
+			"fancyName": "Execution Sentence",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 2
+			},
+			"spellId": 114157
+		}
+	]
+}

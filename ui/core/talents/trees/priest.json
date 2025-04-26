@@ -1,2 +1,168 @@
-[
-]
+
+{
+	"backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/TODO.jpg",
+	"talents": [
+		{
+			"fieldName": "voidTendrils",
+			"fancyName": "Void Tendrils",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 0
+			},
+			"spellId": 108920
+		},
+		{
+			"fieldName": "psyfiend",
+			"fancyName": "Psyfiend",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 1
+			},
+			"spellId": 108921
+		},
+		{
+			"fieldName": "dominateMind",
+			"fancyName": "Dominate Mind",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 2
+			},
+			"spellId": 605
+		},
+		{
+			"fieldName": "bodyAndSoul",
+			"fancyName": "Body and Soul",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 0
+			},
+			"spellId": 64129
+		},
+		{
+			"fieldName": "angelicFeather",
+			"fancyName": "Angelic Feather",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 1
+			},
+			"spellId": 121536
+		},
+		{
+			"fieldName": "phantasm",
+			"fancyName": "Phantasm",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 2
+			},
+			"spellId": 108942
+		},
+		{
+			"fieldName": "fromDarknessComesLight",
+			"fancyName": "From Darkness, Comes Light",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 0
+			},
+			"spellId": 109186
+		},
+		{
+			"fieldName": "mindbender",
+			"fancyName": "Mindbender",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 1
+			},
+			"spellId": 123040
+		},
+		{
+			"fieldName": "solaceAndInsanity",
+			"fancyName": "Solace and Insanity",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 2
+			},
+			"spellId": 139139
+		},
+		{
+			"fieldName": "desperatePrayer",
+			"fancyName": "Desperate Prayer",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 0
+			},
+			"spellId": 19236
+		},
+		{
+			"fieldName": "spectralGuise",
+			"fancyName": "Spectral Guise",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 1
+			},
+			"spellId": 112833
+		},
+		{
+			"fieldName": "angelicBulwark",
+			"fancyName": "Angelic Bulwark",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 2
+			},
+			"spellId": 108945
+		},
+		{
+			"fieldName": "twistOfFate",
+			"fancyName": "Twist of Fate",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 0
+			},
+			"spellId": 109142
+		},
+		{
+			"fieldName": "powerInfusion",
+			"fancyName": "Power Infusion",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 1
+			},
+			"spellId": 10060
+		},
+		{
+			"fieldName": "divineInsight",
+			"fancyName": "Divine Insight",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 2
+			},
+			"spellId": 109175
+		},
+		{
+			"fieldName": "cascade",
+			"fancyName": "Cascade",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 0
+			},
+			"spellId": 121135
+		},
+		{
+			"fieldName": "divineStar",
+			"fancyName": "Divine Star",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 1
+			},
+			"spellId": 110744
+		},
+		{
+			"fieldName": "halo",
+			"fancyName": "Halo",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 2
+			},
+			"spellId": 120517
+		}
+	]
+}

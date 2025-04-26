@@ -1,2 +1,168 @@
-[
-]
+
+{
+	"backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/TODO.jpg",
+	"talents": [
+		{
+			"fieldName": "roilingBlood",
+			"fancyName": "Roiling Blood",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 0
+			},
+			"spellId": 108170
+		},
+		{
+			"fieldName": "plagueLeech",
+			"fancyName": "Plague Leech",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 1
+			},
+			"spellId": 123693
+		},
+		{
+			"fieldName": "unholyBlight",
+			"fancyName": "Unholy Blight",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 2
+			},
+			"spellId": 115989
+		},
+		{
+			"fieldName": "lichborne",
+			"fancyName": "Lichborne",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 0
+			},
+			"spellId": 49039
+		},
+		{
+			"fieldName": "antimagicZone",
+			"fancyName": "Anti-Magic Zone",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 1
+			},
+			"spellId": 51052
+		},
+		{
+			"fieldName": "purgatory",
+			"fancyName": "Purgatory",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 2
+			},
+			"spellId": 114556
+		},
+		{
+			"fieldName": "deathsAdvance",
+			"fancyName": "Death's Advance",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 0
+			},
+			"spellId": 96268
+		},
+		{
+			"fieldName": "chilblains",
+			"fancyName": "Chilblains",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 1
+			},
+			"spellId": 50041
+		},
+		{
+			"fieldName": "asphyxiate",
+			"fancyName": "Asphyxiate",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 2
+			},
+			"spellId": 108194
+		},
+		{
+			"fieldName": "deathPact",
+			"fancyName": "Death Pact",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 0
+			},
+			"spellId": 48743
+		},
+		{
+			"fieldName": "deathSiphon",
+			"fancyName": "Death Siphon",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 1
+			},
+			"spellId": 108196
+		},
+		{
+			"fieldName": "conversion",
+			"fancyName": "Conversion",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 2
+			},
+			"spellId": 119975
+		},
+		{
+			"fieldName": "bloodTap",
+			"fancyName": "Blood Tap",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 0
+			},
+			"spellId": 45529
+		},
+		{
+			"fieldName": "runicEmpowerment",
+			"fancyName": "Runic Empowerment",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 1
+			},
+			"spellId": 81229
+		},
+		{
+			"fieldName": "runicCorruption",
+			"fancyName": "Runic Corruption",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 2
+			},
+			"spellId": 51462
+		},
+		{
+			"fieldName": "gorefiendsGrasp",
+			"fancyName": "Gorefiend's Grasp",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 0
+			},
+			"spellId": 108199
+		},
+		{
+			"fieldName": "remorselessWinter",
+			"fancyName": "Remorseless Winter",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 1
+			},
+			"spellId": 108200
+		},
+		{
+			"fieldName": "desecratedGround",
+			"fancyName": "Desecrated Ground",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 2
+			},
+			"spellId": 108201
+		}
+	]
+}

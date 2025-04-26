@@ -92,6 +92,8 @@ func (s *SpellEffect) ScalingClass() proto.Class {
 		return proto.Class_ClassMage
 	case 9:
 		return proto.Class_ClassWarlock
+	case 10:
+		return proto.Class_ClassMonk
 	case 11:
 		return proto.Class_ClassDruid
 	default:

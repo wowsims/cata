@@ -880,17 +880,11 @@ GROUP BY i.ID
 }
 
 type RawTalent struct {
-	TierID         int
-	TalentName     string
-	ColumnIndex    int
-	ClassMask      int
-	SpellRank      string
-	PrereqRank     string
-	PrereqTalent   string
-	TabName        string
-	BackgroundFile string
-	PrereqRow      sql.NullInt64
-	PrereqCol      sql.NullInt64
+	TierID      int
+	TalentName  string
+	ColumnIndex int
+	ClassMask   int
+	SpellID     int
 }
 
 func ScanTalent(rows *sql.Rows) (RawTalent, error) {
@@ -901,13 +895,7 @@ func ScanTalent(rows *sql.Rows) (RawTalent, error) {
 		&talent.TalentName,
 		&talent.ColumnIndex,
 		&talent.ClassMask,
-		&talent.SpellRank,
-		&talent.PrereqRank,
-		&talent.PrereqTalent,
-		&talent.TabName,
-		&talent.BackgroundFile,
-		&talent.PrereqRow,
-		&talent.PrereqCol,
+		&talent.SpellID,
 	)
 	if err != nil {
 		return talent, fmt.Errorf("scanning talent data: %w", err)
@@ -922,35 +910,12 @@ SELECT
   t.TierID,
   sn.Name_lang,
   t.ColumnIndex,
-  tb.ClassMask,
-  t.SpellRank,
-  t.PrereqRank,
-  t.PrereqTalent,
-  tb.Name_lang AS TabName,
-  tb.ID,
-  (SELECT t2.TierID
-     FROM Talent t2
-     WHERE t2.ID = (
-         SELECT value
-         FROM json_each(t.PrereqTalent)
-         WHERE value <> 0
-         LIMIT 1
-     )
-  ) AS PrereqRow,
-  (SELECT t2.ColumnIndex
-     FROM Talent t2
-     WHERE t2.ID = (
-         SELECT value
-         FROM json_each(t.PrereqTalent)
-         WHERE value <> 0
-         LIMIT 1
-     )
-  ) AS PrereqCol
+  t.ClassID,
+  t.SpellID
 FROM Talent t
-JOIN TalentTab tb ON t.TabID = tb.ID
-JOIN SpellName sn ON sn.ID = t.SpellRank_0
-WHERE tb.MasterySpellID_0 IS NOT 0
-ORDER BY tb.Name_lang;
+JOIN SpellName sn ON sn.ID = t.SpellID
+WHERE sn.Name_lang IS NOT "Dummy 5.0 Talent"
+ORDER BY t.ClassID;
 `
 
 	talents, err := LoadRows(dbHelper.db, query, ScanTalent)

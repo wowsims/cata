@@ -237,11 +237,6 @@ export const priestGlyphsConfig: GlyphsConfig = {
 			description: "Your heal spells momentarily grant you angelic wings.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_priest_archangel.jpg",
 		},
-		[PriestMinorGlyph.GlyphOfAngels]: {
-			name: "Glyph of Angels",
-			description: "Your heal spells momentarily grant you angelic wings.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_priest_archangel.jpg",
-		},
 		[PriestMinorGlyph.GlyphOfTheSha]: {
 			name: "Glyph of the Sha",
 			description: "Transforms your Shadowfiend and Mindbender into a Sha Beast.",

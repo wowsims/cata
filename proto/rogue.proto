@@ -8,6 +8,24 @@ import "common.proto";
 // BEGIN GENERATED
 // RogueTalents message.
 message RogueTalents {
+    bool nightstalker = 1;
+    bool subterfuge = 2;
+    bool shadow_focus = 3;
+    bool deadly_throw = 4;
+    bool nerve_strike = 5;
+    bool combat_readiness = 6;
+    bool cheat_death = 7;
+    bool leeching_poison = 8;
+    bool elusiveness = 9;
+    bool cloak_and_dagger = 10;
+    bool shadowstep = 11;
+    bool burst_of_speed = 12;
+    bool prey_on_the_weak = 13;
+    bool paralytic_poison = 14;
+    bool dirty_tricks = 15;
+    bool shuriken_toss = 16;
+    bool marked_for_death = 17;
+    bool anticipation = 18;
 }
 
 enum RogueMajorGlyph {

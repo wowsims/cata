@@ -2,7 +2,6 @@ package database
 
 import (
 	"cmp"
-	"encoding/json"
 	"fmt"
 	"os"
 	"slices"
@@ -30,6 +29,7 @@ var dbcClasses = []dbc.DbcClass{
 	{ProtoClass: proto.Class_ClassShaman, ID: 7},
 	{ProtoClass: proto.Class_ClassMage, ID: 8},
 	{ProtoClass: proto.Class_ClassWarlock, ID: 9},
+	{ProtoClass: proto.Class_ClassMonk, ID: 10},
 	{ProtoClass: proto.Class_ClassDruid, ID: 11},
 }
 
@@ -53,6 +53,8 @@ func classNameFromDBC(dbc dbc.DbcClass) string {
 		return "Mage"
 	case 9:
 		return "Warlock"
+	case 10:
+		return "Monk"
 	case 11:
 		return "Druid"
 	default:
@@ -61,13 +63,10 @@ func classNameFromDBC(dbc dbc.DbcClass) string {
 }
 
 type TalentConfig struct {
-	FieldName        string          `json:"fieldName"`
-	FancyName        string          `json:"fancyName"`
-	Location         TalentLocation  `json:"location"`
-	SpellIds         []int           `json:"spellIds"`
-	MaxPoints        int             `json:"maxPoints"`
-	PrereqLocation   *TalentLocation `json:"prereqLocation,omitempty"`
-	TabName          string          `json:"tabName"`
+	FieldName        string         `json:"fieldName"`
+	FancyName        string         `json:"fancyName"`
+	Location         TalentLocation `json:"location"`
+	SpellId          int            `json:"spellId"`
 	ProtoFieldNumber int
 }
 
@@ -81,8 +80,7 @@ type ClassData struct {
 	LowerCaseClassName string
 	FileName           string
 	Talents            []TalentConfig
-	TalentTabs         []TalentTabConfig
-	GlyphsPrime        []Glyph
+	TalentTab          TalentTabConfig
 	GlyphsMajor        []Glyph
 	GlyphsMinor        []Glyph
 }
@@ -104,15 +102,8 @@ const protoTemplateStr = `
 {{- $class := .ClassName -}}
 // {{.ClassName}}Talents message.
 message {{$class}}Talents {
-{{- range $tab := .TalentTabs }}
-    // {{$tab.Name}}
-{{- range $talent := $tab.Talents }}
-    {{- if eq $talent.MaxPoints 1 }}
+{{- range $talent := .TalentTab.Talents }}
     bool {{ final $talent.FancyName $class }} = {{ $talent.ProtoFieldNumber }};
-    {{- else }}
-    int32 {{ final $talent.FancyName $class }} = {{ $talent.ProtoFieldNumber }};
-    {{- end }}
-{{- end }}
 {{- end }}
 }
 
@@ -160,34 +151,24 @@ export const {{.LowerCaseClassName}}GlyphsConfig: GlyphsConfig = {
 };
 `
 
-const talentJsonTemplate = `[
-{{- $n := len . }}
-{{- range $i, $tab := . }}
-  {
-    "name": "{{ $tab.Name }}",
-    "backgroundUrl": "{{ $tab.BackgroundUrl }}",
-    "talents": [
-    {{- $m := len $tab.Talents }}
-    {{- range $j, $talent := $tab.Talents }}
-      {
-        "fieldName": "{{ toCamelCase $talent.FancyName }}",
-        "fancyName": "{{ $talent.FancyName }}",
-        "location": {
-          "rowIdx": {{ $talent.Location.RowIdx }},
-          "colIdx": {{ $talent.Location.ColIdx }}
-        },
-        "spellIds": [{{- range $k, $id := $talent.SpellIds }}{{if $k}}, {{end}}{{ $id }}{{- end }}],
-        "maxPoints": {{ $talent.MaxPoints }}{{ if $talent.PrereqLocation }},
-        "prereqLocation": {
-          "rowIdx": {{ $talent.PrereqLocation.RowIdx }},
-          "colIdx": {{ $talent.PrereqLocation.ColIdx }}
-        }{{ end }}
-      }{{ if ne (add $j 1) $m }},{{ end }}
-    {{- end }}
-    ]
-  }{{ if ne (add $i 1) $n }},{{ end }}
-{{- end }}
-]
+const talentJsonTemplate = `
+{
+	"backgroundUrl": "{{ .BackgroundUrl }}",
+	"talents": [
+	{{- $m := len .Talents }}
+	{{- range $j, $talent := .Talents }}
+		{
+			"fieldName": "{{ toCamelCase $talent.FancyName }}",
+			"fancyName": "{{ $talent.FancyName }}",
+			"location": {
+				"rowIdx": {{ $talent.Location.RowIdx }},
+				"colIdx": {{ $talent.Location.ColIdx }}
+			},
+			"spellId": {{ $talent.SpellId }}
+		}{{ if ne (add $j 1) $m }},{{ end }}
+	{{- end }}
+	]
+}
 `
 
 func generateProtoFile(data ClassData) error {
@@ -213,13 +194,11 @@ func generateTemplateContent(data ClassData) (string, error) {
 	}
 
 	data.ClassName = strings.ReplaceAll(data.ClassName, "_", "")
+
 	slices.SortFunc(data.GlyphsMajor, func(a, b Glyph) int {
 		return a.ID - b.ID
 	})
 	slices.SortFunc(data.GlyphsMinor, func(a, b Glyph) int {
-		return a.ID - b.ID
-	})
-	slices.SortFunc(data.GlyphsPrime, func(a, b Glyph) int {
 		return a.ID - b.ID
 	})
 
@@ -338,12 +317,11 @@ func finalFieldName(fancyName, className string) string {
 }
 
 type TalentTabConfig struct {
-	Name          string         `json:"name"`
 	BackgroundUrl string         `json:"backgroundUrl"`
 	Talents       []TalentConfig `json:"talents"`
 }
 
-func generateTalentJson(tabs []TalentTabConfig, className string) error {
+func generateTalentJson(tab TalentTabConfig, className string) error {
 	// Create the directory if it doesn't exist
 	dirPath := "ui/core/talents/trees"
 	if err := os.MkdirAll(dirPath, 0755); err != nil {
@@ -369,7 +347,7 @@ func generateTalentJson(tabs []TalentTabConfig, className string) error {
 		return err
 	}
 
-	if err := tmpl.Execute(file, tabs); err != nil {
+	if err := tmpl.Execute(file, tab); err != nil {
 		return fmt.Errorf("error executing template for %s: %w", className, err)
 	}
 
@@ -377,32 +355,13 @@ func generateTalentJson(tabs []TalentTabConfig, className string) error {
 	return nil
 }
 
-func transformRawTalentsToTabs(rawTalents []RawTalent) ([]TalentTabConfig, error) {
-	tabsMap := make(map[string]*TalentTabConfig)
+func transformRawTalentsToTab(rawTalents []RawTalent) (TalentTabConfig, error) {
+	tab := TalentTabConfig{
+		BackgroundUrl: fmt.Sprintf("https://wow.zamimg.com/images/wow/talents/backgrounds/cata/%s.jpg", "TODO"),
+		Talents:       []TalentConfig{},
+	}
+
 	for _, rt := range rawTalents {
-		tab, exists := tabsMap[rt.TabName]
-		if !exists {
-			tab = &TalentTabConfig{
-				Name:          rt.TabName,
-				BackgroundUrl: fmt.Sprintf("https://wow.zamimg.com/images/wow/talents/backgrounds/cata/%s.jpg", rt.BackgroundFile),
-				Talents:       []TalentConfig{},
-			}
-			tabsMap[rt.TabName] = tab
-		}
-
-		var spellIds []int
-		if err := json.Unmarshal([]byte(rt.SpellRank), &spellIds); err != nil {
-			return nil, fmt.Errorf("parsing SpellRank for talent %s: %w", rt.TalentName, err)
-		}
-
-		filtered := []int{}
-		for _, id := range spellIds {
-			if id != 0 {
-				filtered = append(filtered, id)
-			}
-		}
-
-		maxPoints := len(filtered)
 		fieldName := strings.ToLower(rt.TalentName[:1]) + rt.TalentName[1:]
 		talent := TalentConfig{
 			FieldName: fieldName,
@@ -411,15 +370,7 @@ func transformRawTalentsToTabs(rawTalents []RawTalent) ([]TalentTabConfig, error
 				RowIdx: rt.TierID,
 				ColIdx: rt.ColumnIndex,
 			},
-			SpellIds:  filtered,
-			MaxPoints: maxPoints,
-		}
-
-		if (rt.PrereqRow.Valid && rt.PrereqRow.Int64 != 0) || (rt.PrereqCol.Valid && rt.PrereqCol.Int64 != 0) {
-			talent.PrereqLocation = &TalentLocation{
-				RowIdx: int(rt.PrereqRow.Int64),
-				ColIdx: int(rt.PrereqCol.Int64),
-			}
+			SpellId: rt.SpellID,
 		}
 
 		tab.Talents = append(tab.Talents, talent)
@@ -431,43 +382,20 @@ func transformRawTalentsToTabs(rawTalents []RawTalent) ([]TalentTabConfig, error
 		})
 	}
 
-	var tabs []TalentTabConfig
-
-	for _, t := range tabsMap {
-		tabs = append(tabs, *t)
-	}
-	slices.SortFunc(tabs, func(a, b TalentTabConfig) int {
-		return cmp.Compare(a.Name, b.Name)
-	})
 	fieldNum := 1
-	for i := range tabs {
-		for j := range tabs[i].Talents {
-			tabs[i].Talents[j].ProtoFieldNumber = fieldNum
-			fieldNum++
-		}
+	for i := range tab.Talents {
+		tab.Talents[i].ProtoFieldNumber = fieldNum
+		fieldNum++
 	}
-	return tabs, nil
+
+	return tab, nil
 }
 
 func transformRawTalentsToConfigsForClass(rawTalents []RawTalent, classID int) ([]TalentConfig, error) {
 	var talents []TalentConfig
+
 	for _, rt := range rawTalents {
-
-		converted := convertTalentClassID(classID)
-		if converted == rt.ClassMask {
-			var spellIds []int
-			if err := json.Unmarshal([]byte(rt.SpellRank), &spellIds); err != nil {
-				return nil, fmt.Errorf("parsing SpellRank for talent %s: %w", rt.TalentName, err)
-			}
-
-			filtered := []int{}
-			for _, id := range spellIds {
-				if id != 0 {
-					filtered = append(filtered, id)
-				}
-			}
-
-			maxPoints := len(filtered)
+		if classID == rt.ClassMask {
 			fieldName := strings.ToLower(rt.TalentName[:1]) + rt.TalentName[1:]
 			talent := TalentConfig{
 				FieldName: fieldName,
@@ -476,15 +404,7 @@ func transformRawTalentsToConfigsForClass(rawTalents []RawTalent, classID int) (
 					RowIdx: rt.TierID,
 					ColIdx: rt.ColumnIndex,
 				},
-				SpellIds:  filtered,
-				MaxPoints: maxPoints,
-			}
-
-			if (rt.PrereqRow.Valid && rt.PrereqRow.Int64 != 0) || (rt.PrereqCol.Valid && rt.PrereqCol.Int64 != 0) {
-				talent.PrereqLocation = &TalentLocation{
-					RowIdx: int(rt.PrereqRow.Int64),
-					ColIdx: int(rt.PrereqCol.Int64),
-				}
+				SpellId: rt.SpellID,
 			}
 
 			talents = append(talents, talent)
@@ -511,19 +431,18 @@ func GenerateTalentJsonFromDB(dbHelper *DBHelper) error {
 
 		classTalents := []RawTalent{}
 		for _, rt := range rawTalents {
-			converted := convertTalentClassID(dbc.ID)
-			if converted == rt.ClassMask {
+			if dbc.ID == rt.ClassMask {
 				classTalents = append(classTalents, rt)
 			}
 		}
 
-		tabs, err := transformRawTalentsToTabs(classTalents)
+		tab, err := transformRawTalentsToTab(classTalents)
 		if err != nil {
 			fmt.Printf("Error transforming talents for %s: %v\n", className, err)
 			continue
 		}
 
-		if err := generateTalentJson(tabs, className); err != nil {
+		if err := generateTalentJson(tab, className); err != nil {
 			fmt.Printf("Error generating talent JSON for %s: %v\n", className, err)
 		}
 	}
@@ -562,6 +481,7 @@ func GenerateProtos() {
 	}
 	defer helper.Close()
 
+	var ignoredGlyphs = []int32{102153, 104054}
 	rawGlyphs, err := LoadGlyphs(helper)
 	if err != nil {
 		fmt.Printf("Error loading glyphs: %v\n", err)
@@ -582,23 +502,20 @@ func GenerateProtos() {
 			ClassName:          className,
 			LowerCaseClassName: strings.ToLower(className),
 			Talents:            []TalentConfig{},
-			TalentTabs:         []TalentTabConfig{},
-			GlyphsPrime:        []Glyph{},
+			TalentTab:          TalentTabConfig{},
 			GlyphsMajor:        []Glyph{},
 			GlyphsMinor:        []Glyph{},
 		}
 
 		// Process glyphs
 		for _, raw := range rawGlyphs {
-			if strings.Contains(raw.Name, "Deprecated") || strings.Contains(raw.Name, "zzz") {
+			if slices.Contains(ignoredGlyphs, raw.ItemId) || strings.Contains(raw.Name, "Deprecated") || strings.Contains(raw.Name, "zzz") {
 				continue
 			}
 			if glyphBelongsToClass(raw, dbc) {
 				g := convertRawGlyphToGlyph(raw)
 				g.IconUrl = "https://wow.zamimg.com/images/wow/icons/large/" + strings.ToLower(GetIconName(iconsMap, int(raw.FDID))) + ".jpg"
 				switch raw.GlyphType {
-				case 2: // prime
-					data.GlyphsPrime = append(data.GlyphsPrime, g)
 				case 0: // major
 					data.GlyphsMajor = append(data.GlyphsMajor, g)
 				case 1: // minor
@@ -610,8 +527,7 @@ func GenerateProtos() {
 		}
 		classTalents := []RawTalent{}
 		for _, rt := range rawTalents {
-			converted := convertTalentClassID(dbc.ID)
-			if converted == rt.ClassMask {
+			if dbc.ID == rt.ClassMask {
 				classTalents = append(classTalents, rt)
 			}
 		}
@@ -619,28 +535,14 @@ func GenerateProtos() {
 		if err != nil {
 			fmt.Printf("Error processing talents for %s: %v\n", className, err)
 		}
-		talentTabs, err := transformRawTalentsToTabs(classTalents)
-		slices.SortFunc(talentTabs, func(a, b TalentTabConfig) int {
-			return cmp.Compare(a.Name, b.Name)
-		})
+		talentTab, err := transformRawTalentsToTab(classTalents)
+
 		if err != nil {
 			fmt.Printf("Error grouping talents for %s: %v\n", className, err)
 		}
-		var filteredTabs []TalentTabConfig
-		for _, tab := range talentTabs {
-			var filteredTalents []TalentConfig
-			for _, t := range tab.Talents {
-				if convertTalentClassID(t.MaxPoints) == convertTalentClassID(dbc.ID) {
-					filteredTalents = append(filteredTalents, t)
-				}
-			}
-			if len(filteredTalents) > 0 {
-				tab.Talents = filteredTalents
-				filteredTabs = append(filteredTabs, tab)
-			}
-		}
+
 		data.Talents = talents
-		data.TalentTabs = talentTabs
+		data.TalentTab = talentTab
 
 		classesData = append(classesData, data)
 	}

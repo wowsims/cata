@@ -354,5 +354,6 @@ var classes = []DbcClass{
 	{proto.Class_ClassShaman, 7},
 	{proto.Class_ClassMage, 8},
 	{proto.Class_ClassWarlock, 9},
+	{proto.Class_ClassMonk, 10},
 	{proto.Class_ClassDruid, 11},
 }

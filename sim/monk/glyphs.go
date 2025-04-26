@@ -6,11 +6,11 @@ import (
 )
 
 func (monk *Monk) applyGlyphs() {
-	if monk.HasMajorGlyph(proto.MonkMajorGlyph_MonkMajorGlyphFistsOfFury) {
+	if monk.HasMajorGlyph(proto.MonkMajorGlyph_GlyphOfFistsOfFury) {
 		monk.registerGlyphOfFistsOfFury()
 	}
 
-	if monk.HasMajorGlyph(proto.MonkMajorGlyph_MonkMajorGlyphTargetedExpulsion) {
+	if monk.HasMajorGlyph(proto.MonkMajorGlyph_GlyphOfTargetedExpulsion) {
 		monk.AddStaticMod(core.SpellModConfig{
 			Kind:       core.SpellMod_DamageDone_Pct,
 			ClassMask:  MonkSpellExpelHarm,

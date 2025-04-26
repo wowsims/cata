@@ -16,7 +16,7 @@ func (ww *WindwalkerMonk) registerPassives() {
 }
 
 func (ww *WindwalkerMonk) registerCombatConditioning() {
-	if !ww.HasMinorGlyph(proto.MonkMinorGlyph_MonkMinorGlyphBlackoutKick) && ww.PseudoStats.InFrontOfTarget {
+	if !ww.HasMinorGlyph(proto.MonkMinorGlyph_GlyphOfBlackoutKick) && ww.PseudoStats.InFrontOfTarget {
 		return
 	}
 

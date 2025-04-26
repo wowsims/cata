@@ -46,6 +46,7 @@ func (dbc *DBC) LoadSpellScaling() error {
 				proto.Class_ClassShaman:      parseScalingValue(parts[7]),
 				proto.Class_ClassMage:        parseScalingValue(parts[8]),
 				proto.Class_ClassWarlock:     parseScalingValue(parts[9]),
+				proto.Class_ClassMonk:        parseScalingValue(parts[10]),
 				proto.Class_ClassDruid:       parseScalingValue(parts[11]),
 				proto.Class_ClassUnknown:     parseScalingValue(parts[12]),
 			},

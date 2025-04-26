@@ -9,6 +9,24 @@ import "common.proto";
 // BEGIN GENERATED
 // DeathKnightTalents message.
 message DeathKnightTalents {
+    bool roiling_blood = 1;
+    bool plague_leech = 2;
+    bool unholy_blight = 3;
+    bool lichborne = 4;
+    bool anti_magic_zone = 5;
+    bool purgatory = 6;
+    bool deaths_advance = 7;
+    bool chilblains = 8;
+    bool asphyxiate = 9;
+    bool death_pact = 10;
+    bool death_siphon = 11;
+    bool conversion = 12;
+    bool blood_tap = 13;
+    bool runic_empowerment = 14;
+    bool runic_corruption = 15;
+    bool gorefiends_grasp = 16;
+    bool remorseless_winter = 17;
+    bool desecrated_ground = 18;
 }
 
 enum DeathKnightMajorGlyph {

@@ -8,6 +8,24 @@ import "common.proto";
 // BEGIN GENERATED
 // HunterTalents message.
 message HunterTalents {
+    bool posthaste = 1;
+    bool narrow_escape = 2;
+    bool crouching_tiger_hidden_chimera = 3;
+    bool binding_shot = 4;
+    bool wyvern_sting = 5;
+    bool intimidation = 6;
+    bool exhilaration = 7;
+    bool aspect_of_the_iron_hawk = 8;
+    bool spirit_bond = 9;
+    bool fervor = 10;
+    bool dire_beast = 11;
+    bool thrill_of_the_hunt = 12;
+    bool a_murder_of_crows = 13;
+    bool blink_strikes = 14;
+    bool lynx_rush = 15;
+    bool glaive_toss = 16;
+    bool powershot = 17;
+    bool barrage = 18;
 }
 
 enum HunterMajorGlyph {
@@ -60,50 +78,10 @@ enum HunterMinorGlyph {
 
 // END GENERATED
 
-message HunterPetTalents {
-	// Ferocity
-	int32 serpent_swiftness = 1;
-	bool dash = 2;
-	int32 great_stamina = 3;
-	int32 natural_armor = 4;
-	int32 improved_cower = 5;
-	int32 bloodthirsty = 6;
-	int32 spiked_collar = 7;
-	bool boars_speed = 8;
-	int32 culling_the_herd = 9;
-	int32 lionhearted = 10;
-	bool charge = 11;
-	bool heart_of_the_phoenix = 12;
-	int32 spiders_bite = 13;
-	int32 great_resistance = 14;
-	bool rabid = 15;
-	bool lick_your_wounds = 16;
-	bool call_of_the_wild = 17;
-	int32 shark_attack = 18;
-	int32 wild_hunt = 19;
-
-	// Tenacity
-	int32 blood_of_the_rhino = 20;
-	int32 pet_barding = 21;
-	int32 guard_dog = 22;
-	bool thunderstomp = 23;
-	int32 grace_of_the_mantis = 24;
-	bool last_stand = 25;
-	bool taunt = 26;
-	bool roar_of_sacrifice = 27;
-	bool intervene = 28;
-	int32 silverback = 29;
-
-	// Cunning
-	bool dive = 30;
-	int32 mobility = 31;
-	int32 owls_focus = 32;
-	bool carrion_feeder = 33;
-	int32 cornered = 34;
-	int32 feeding_frenzy = 35;
-	bool wolverine_bite = 36;
-	bool roar_of_recovery = 37;
-	bool bullheaded = 38;
+enum PetSpec {
+	Ferocity = 0;
+	Tenacity = 1;
+	Cunning = 2;
 }
 
 enum HunterStingType {
@@ -164,7 +142,7 @@ message HunterOptions {
 	}
 	PetType pet_type = 2;
 
-	HunterPetTalents pet_talents = 3;
+	PetSpec pet_spec = 3;
 	double pet_uptime = 4;
 	double time_to_trap_weave_ms = 5;
 	bool use_hunters_mark = 6;

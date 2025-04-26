@@ -643,50 +643,38 @@ type TalentConfig struct {
 	FieldName string `json:"fieldName"`
 	// Spell ID for each rank of this talent.
 	// Omitted ranks will be inferred by incrementing from the last provided rank.
-	SpellIds  []int32 `json:"spellIds"`
-	MaxPoints int32   `json:"maxPoints"`
+	SpellId int32 `json:"spellId"`
 }
 
 type TalentTreeConfig struct {
-	Name          string         `json:"name"`
 	BackgroundUrl string         `json:"backgroundUrl"`
 	Talents       []TalentConfig `json:"talents"`
 }
 
 func getSpellIdsFromTalentJson(infile *string) []int32 {
 	data, err := os.ReadFile(*infile)
+
 	if err != nil {
 		log.Fatalf("failed to load talent json file: %s", err)
 	}
 
 	var buf bytes.Buffer
+
 	err = json.Compact(&buf, []byte(data))
 	if err != nil {
 		log.Fatalf("failed to compact json: %s", err)
 	}
 
-	var talents []TalentTreeConfig
+	var talentTree TalentTreeConfig
 
-	err = json.Unmarshal(buf.Bytes(), &talents)
+	err = json.Unmarshal(buf.Bytes(), &talentTree)
 	if err != nil {
 		log.Fatalf("failed to parse talent to json %s", err)
 	}
-
 	spellIds := make([]int32, 0)
 
-	for _, tree := range talents {
-		for _, talent := range tree.Talents {
-			spellIds = append(spellIds, talent.SpellIds...)
-
-			// Infer omitted spell IDs.
-			if len(talent.SpellIds) < int(talent.MaxPoints) {
-				curSpellId := talent.SpellIds[len(talent.SpellIds)-1]
-				for i := len(talent.SpellIds); i < int(talent.MaxPoints); i++ {
-					curSpellId++
-					spellIds = append(spellIds, curSpellId)
-				}
-			}
-		}
+	for _, talent := range talentTree.Talents {
+		spellIds = append(spellIds, talent.SpellId)
 	}
 
 	return spellIds
@@ -698,9 +686,6 @@ func GetAllTalentSpellIds(inputsDir *string) map[string][]int32 {
 		"death_knight.json",
 		"druid.json",
 		"hunter.json",
-		"hunter_cunning.json",
-		"hunter_ferocity.json",
-		"hunter_tenacity.json",
 		"mage.json",
 		"paladin.json",
 		"priest.json",
@@ -708,6 +693,7 @@ func GetAllTalentSpellIds(inputsDir *string) map[string][]int32 {
 		"shaman.json",
 		"warlock.json",
 		"warrior.json",
+		"monk.json",
 	}
 
 	ret_db := make(map[string][]int32, 0)

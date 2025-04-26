@@ -8,6 +8,24 @@ import "common.proto";
 // BEGIN GENERATED
 // DruidTalents message.
 message DruidTalents {
+    bool feline_swiftness = 1;
+    bool displacer_beast = 2;
+    bool wild_charge = 3;
+    bool yseras_gift = 4;
+    bool renewal = 5;
+    bool cenarion_ward = 6;
+    bool faerie_swarm = 7;
+    bool mass_entanglement = 8;
+    bool typhoon = 9;
+    bool soul_of_the_forest = 10;
+    bool incarnation = 11;
+    bool force_of_nature = 12;
+    bool disorienting_roar = 13;
+    bool ursols_vortex = 14;
+    bool mighty_bash = 15;
+    bool heart_of_the_wild = 16;
+    bool dream_of_cenarius = 17;
+    bool natures_vigil = 18;
 }
 
 enum DruidMajorGlyph {

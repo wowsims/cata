@@ -1,188 +1,168 @@
-[
-	{
-		"name": "Monk",
-		"backgroundUrl": "https://wow.zamimg.com/images/tools/dragonflight-talent-calc/blizzard/talentbg-monk-windwalker.jpg",
-		"talents": [
-			{
-				"fieldName": "celerity",
-				"fancyName": "Celerity",
-				"location": {
-					"rowIdx": 0,
-					"colIdx": 0
-				},
-				"spellIds": [115173],
-				"maxPoints": 1
+
+{
+	"backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/TODO.jpg",
+	"talents": [
+		{
+			"fieldName": "celerity",
+			"fancyName": "Celerity",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 0
 			},
-			{
-				"fieldName": "tigersLust",
-				"fancyName": "Tiger's Lust",
-				"location": {
-					"rowIdx": 0,
-					"colIdx": 1
-				},
-				"spellIds": [116841],
-				"maxPoints": 1
+			"spellId": 115173
+		},
+		{
+			"fieldName": "tigersLust",
+			"fancyName": "Tiger's Lust",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 1
 			},
-			{
-				"fieldName": "momentum",
-				"fancyName": "Momentum",
-				"location": {
-					"rowIdx": 0,
-					"colIdx": 2
-				},
-				"spellIds": [115174],
-				"maxPoints": 1
+			"spellId": 116841
+		},
+		{
+			"fieldName": "momentum",
+			"fancyName": "Momentum",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 2
 			},
-			{
-				"fieldName": "chiWave",
-				"fancyName": "Chi Wave",
-				"location": {
-					"rowIdx": 1,
-					"colIdx": 0
-				},
-				"spellIds": [115098],
-				"maxPoints": 1
+			"spellId": 115174
+		},
+		{
+			"fieldName": "chiWave",
+			"fancyName": "Chi Wave",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 0
 			},
-			{
-				"fieldName": "zenSphere",
-				"fancyName": "Zen Sphere",
-				"location": {
-					"rowIdx": 1,
-					"colIdx": 1
-				},
-				"spellIds": [124081],
-				"maxPoints": 1
+			"spellId": 115098
+		},
+		{
+			"fieldName": "zenSphere",
+			"fancyName": "Zen Sphere",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 1
 			},
-			{
-				"fieldName": "chiBurst",
-				"fancyName": "Chi Burst",
-				"location": {
-					"rowIdx": 1,
-					"colIdx": 2
-				},
-				"spellIds": [123986],
-				"maxPoints": 1
+			"spellId": 124081
+		},
+		{
+			"fieldName": "chiBurst",
+			"fancyName": "Chi Burst",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 2
 			},
-			{
-				"fieldName": "powerStrikes",
-				"fancyName": "Power Strikes",
-				"location": {
-					"rowIdx": 2,
-					"colIdx": 0
-				},
-				"spellIds": [121817],
-				"maxPoints": 1
+			"spellId": 123986
+		},
+		{
+			"fieldName": "powerStrikes",
+			"fancyName": "Power Strikes",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 0
 			},
-			{
-				"fieldName": "ascension",
-				"fancyName": "Ascension",
-				"location": {
-					"rowIdx": 2,
-					"colIdx": 1
-				},
-				"spellIds": [115396],
-				"maxPoints": 1
+			"spellId": 121817
+		},
+		{
+			"fieldName": "ascension",
+			"fancyName": "Ascension",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 1
 			},
-			{
-				"fieldName": "chiBrew",
-				"fancyName": "Chi Brew",
-				"location": {
-					"rowIdx": 2,
-					"colIdx": 2
-				},
-				"spellIds": [115399],
-				"maxPoints": 1
+			"spellId": 115396
+		},
+		{
+			"fieldName": "chiBrew",
+			"fancyName": "Chi Brew",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 2
 			},
-			{
-				"fieldName": "ringOfPeace",
-				"fancyName": "Ring of Peace",
-				"location": {
-					"rowIdx": 3,
-					"colIdx": 0
-				},
-				"spellIds": [116844],
-				"maxPoints": 1
+			"spellId": 115399
+		},
+		{
+			"fieldName": "ringOfPeace",
+			"fancyName": "Ring of Peace",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 0
 			},
-			{
-				"fieldName": "chargingOxWave",
-				"fancyName": "Charging Ox Wave",
-				"location": {
-					"rowIdx": 3,
-					"colIdx": 1
-				},
-				"spellIds": [119392],
-				"maxPoints": 1
+			"spellId": 116844
+		},
+		{
+			"fieldName": "chargingOxWave",
+			"fancyName": "Charging Ox Wave",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 1
 			},
-			{
-				"fieldName": "legSweep",
-				"fancyName": "Leg Sweep",
-				"location": {
-					"rowIdx": 3,
-					"colIdx": 2
-				},
-				"spellIds": [119381],
-				"maxPoints": 1
+			"spellId": 119392
+		},
+		{
+			"fieldName": "legSweep",
+			"fancyName": "Leg Sweep",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 2
 			},
-			{
-				"fieldName": "healingElixirs",
-				"fancyName": "Healing Elixirs",
-				"location": {
-					"rowIdx": 4,
-					"colIdx": 0
-				},
-				"spellIds": [122280],
-				"maxPoints": 1
+			"spellId": 119381
+		},
+		{
+			"fieldName": "healingElixirs",
+			"fancyName": "Healing Elixirs",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 0
 			},
-			{
-				"fieldName": "dampenHarm",
-				"fancyName": "Dampen Harm",
-				"location": {
-					"rowIdx": 4,
-					"colIdx": 1
-				},
-				"spellIds": [122278],
-				"maxPoints": 1
+			"spellId": 122280
+		},
+		{
+			"fieldName": "dampenHarm",
+			"fancyName": "Dampen Harm",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 1
 			},
-			{
-				"fieldName": "diffuseMagic",
-				"fancyName": "Diffuse Magic",
-				"location": {
-					"rowIdx": 4,
-					"colIdx": 2
-				},
-				"spellIds": [122783],
-				"maxPoints": 1
+			"spellId": 122278
+		},
+		{
+			"fieldName": "diffuseMagic",
+			"fancyName": "Diffuse Magic",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 2
 			},
-			{
-				"fieldName": "rushingJadeWind",
-				"fancyName": "Rushing Jade Wind",
-				"location": {
-					"rowIdx": 5,
-					"colIdx": 0
-				},
-				"spellIds": [116847],
-				"maxPoints": 1
+			"spellId": 122783
+		},
+		{
+			"fieldName": "rushingJadeWind",
+			"fancyName": "Rushing Jade Wind",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 0
 			},
-			{
-				"fieldName": "invokeXuen",
-				"fancyName": "Invoke Xuen, the White Tiger",
-				"location": {
-					"rowIdx": 5,
-					"colIdx": 1
-				},
-				"spellIds": [123904],
-				"maxPoints": 1
+			"spellId": 116847
+		},
+		{
+			"fieldName": "invokeXuenTheWhiteTiger",
+			"fancyName": "Invoke Xuen, the White Tiger",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 1
 			},
-			{
-				"fieldName": "chiTorpedo",
-				"fancyName": "Chi Torpedo",
-				"location": {
-					"rowIdx": 5,
-					"colIdx": 2
-				},
-				"spellIds": [115008],
-				"maxPoints": 1
-			}
-		]
-	}
-]
+			"spellId": 123904
+		},
+		{
+			"fieldName": "chiTorpedo",
+			"fancyName": "Chi Torpedo",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 2
+			},
+			"spellId": 115008
+		}
+	]
+}

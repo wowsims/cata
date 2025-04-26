@@ -8,6 +8,24 @@ import "common.proto";
 // BEGIN GENERATED
 // PriestTalents message.
 message PriestTalents {
+    bool void_tendrils = 1;
+    bool psyfiend = 2;
+    bool dominate_mind = 3;
+    bool body_and_soul = 4;
+    bool angelic_feather = 5;
+    bool phantasm = 6;
+    bool from_darkness_comes_light = 7;
+    bool mindbender = 8;
+    bool solace_and_insanity = 9;
+    bool desperate_prayer = 10;
+    bool spectral_guise = 11;
+    bool angelic_bulwark = 12;
+    bool twist_of_fate = 13;
+    bool power_infusion = 14;
+    bool divine_insight = 15;
+    bool cascade = 16;
+    bool divine_star = 17;
+    bool halo = 18;
 }
 
 enum PriestMajorGlyph {

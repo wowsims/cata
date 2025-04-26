@@ -8,6 +8,24 @@ import "common.proto";
 // BEGIN GENERATED
 // MageTalents message.
 message MageTalents {
+    bool presence_of_mind = 1;
+    bool blazing_speed = 2;
+    bool ice_floes = 3;
+    bool temporal_shield = 4;
+    bool flameglow = 5;
+    bool ice_barrier = 6;
+    bool ring_of_frost = 7;
+    bool ice_ward = 8;
+    bool frostjaw = 9;
+    bool greater_invisibility = 10;
+    bool cauterize = 11;
+    bool cold_snap = 12;
+    bool nether_tempest = 13;
+    bool living_bomb = 14;
+    bool frost_bomb = 15;
+    bool invocation = 16;
+    bool rune_of_power = 17;
+    bool incanters_ward = 18;
 }
 
 enum MageMajorGlyph {
