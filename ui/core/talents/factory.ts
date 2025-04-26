@@ -47,29 +47,30 @@ export const classGlyphsConfig: Record<Class, GlyphsConfig> = {
 
 export function talentSpellIdsToTalentString(playerClass: Class, talentIds: Array<number>): string {
 	// TODO: Fix once we know the actual output
-	return ''
-	const talentsConfig = classTalentsConfig[playerClass];
+	return '';
 
-	const talentsStr = talentsConfig?
-		.map(treeConfig => {
-			const treeStr = treeConfig.talents
-				.map(talentConfig => {
-					const spellIdIndex = talentConfig.spellIds.findIndex(spellId => talentIds.includes(spellId));
-					if (spellIdIndex == -1) {
-						return '0';
-					} else {
-						return String(spellIdIndex + 1);
-					}
-				})
-				.join('')
-				.replace(/0+$/g, '');
+	// const talentsConfig = classTalentsConfig[playerClass];
 
-			return treeStr;
-		})
-		.join('-')
-		.replace(/-+$/g, '');
+	// const talentsStr = talentsConfig?
+	// 	.map(treeConfig => {
+	// 		const treeStr = treeConfig.talents
+	// 			.map(talentConfig => {
+	// 				const spellIdIndex = talentConfig.spellIds.findIndex(spellId => talentIds.includes(spellId));
+	// 				if (spellIdIndex == -1) {
+	// 					return '0';
+	// 				} else {
+	// 					return String(spellIdIndex + 1);
+	// 				}
+	// 			})
+	// 			.join('')
+	// 			.replace(/0+$/g, '');
 
-	return talentsStr;
+	// 		return treeStr;
+	// 	})
+	// 	.join('-')
+	// 	.replace(/-+$/g, '');
+
+	// return talentsStr;
 }
 
 export function playerTalentStringToProto<SpecType extends Spec>(playerSpec: PlayerSpec<SpecType>, talentString: string): SpecTalents<SpecType> {
