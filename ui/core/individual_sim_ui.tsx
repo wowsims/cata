@@ -5,7 +5,7 @@ import { EncounterPickerConfig } from './components/encounter_picker';
 import * as IconInputs from './components/icon_inputs';
 import { BulkTab } from './components/individual_sim_ui/bulk_tab';
 import {
-	Individual60UEPExporter,
+	// Individual60UEPExporter,
 	IndividualCLIExporter,
 	IndividualJsonExporter,
 	IndividualLinkExporter,
