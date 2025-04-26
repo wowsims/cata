@@ -47,3 +47,8 @@ Druid:
     - ui/druid/**/*
     - sim/druid/**/*
     - proto/druid.proto
+
+Monk:
+    - ui/monk/**/*
+    - sim/monk/**/*
+    - proto/monk.proto
