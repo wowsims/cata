@@ -190,7 +190,7 @@ func (pet *TentacleOfTheOldOnesPet) registerMindFlay() {
 			DamageMultiplier:         1,
 			DamageMultiplierAdditive: 1,
 			ThreatMultiplier:         1,
-			CritMultiplier:           pet.DefaultSpellCritMultiplier(),
+			CritMultiplier:           pet.DefaultCritMultiplier(),
 
 			ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 				return pet.ChanneledDot == nil

@@ -59,7 +59,7 @@ func init() {
 			SpellSchool:      core.SpellSchoolNature,
 			ProcMask:         core.ProcMaskProc,
 			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			CritMultiplier:   character.DefaultCritMultiplier(),
 			ThreatMultiplier: 1,
 			MissileSpeed:     20,
 
@@ -113,7 +113,7 @@ func init() {
 			SpellSchool:      core.SpellSchoolNature,
 			ProcMask:         core.ProcMaskProc,
 			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			CritMultiplier:   character.DefaultCritMultiplier(),
 			ThreatMultiplier: 1,
 			MissileSpeed:     20,
 

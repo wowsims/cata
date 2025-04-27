@@ -114,7 +114,7 @@ func (paladin *Paladin) applyHammerOfTheRighteous() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   paladin.DefaultSpellCritMultiplier(),
+		CritMultiplier:   paladin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -158,7 +158,7 @@ func (paladin *Paladin) applyHammerOfTheRighteous() {
 		},
 
 		DamageMultiplier: 0.3,
-		CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   paladin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -275,7 +275,7 @@ func (paladin *Paladin) applyShieldOfTheRighteous() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   paladin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

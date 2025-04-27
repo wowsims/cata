@@ -30,7 +30,7 @@ func (druid *Druid) registerSwipeBearSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   druid.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		MaxRange:         8,
 
@@ -64,7 +64,7 @@ func (druid *Druid) registerSwipeCatSpell() {
 		},
 
 		DamageMultiplier: weaponMulti,
-		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   druid.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 

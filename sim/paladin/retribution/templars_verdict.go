@@ -27,7 +27,7 @@ func (retPaladin *RetributionPaladin) RegisterTemplarsVerdict() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   retPaladin.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   retPaladin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

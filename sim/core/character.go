@@ -127,7 +127,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 
 		majorCooldownManager: newMajorCooldownManager(player.Cooldowns),
 	}
-	character.spellCritMultiplier = character.defaultSpellCritMultiplier()
+	character.spellCritMultiplier = character.DefaultCritMultiplier()
 	character.GCD = character.NewTimer()
 	character.RotationTimer = character.NewTimer()
 
@@ -177,7 +177,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 	character.PseudoStats.InFrontOfTarget = player.InFrontOfTarget
 
 	if player.EnableItemSwap && player.ItemSwap != nil {
-		character.enableItemSwap(player.ItemSwap, character.DefaultMeleeCritMultiplier(), character.DefaultMeleeCritMultiplier(), 0)
+		character.enableItemSwap(player.ItemSwap, character.DefaultCritMultiplier(), character.DefaultCritMultiplier(), 0)
 	}
 
 	character.EquipScalingManager = character.NewEquipScalingManager()
@@ -378,6 +378,7 @@ func (character *Character) calculateCritMultiplier(normalCritDamage float64, pr
 	if character.HasMetaGemEquipped(34220) ||
 		character.HasMetaGemEquipped(32409) ||
 		character.HasMetaGemEquipped(41285) ||
+		character.HasMetaGemEquipped(41376) ||
 		character.HasMetaGemEquipped(41398) ||
 		character.HasMetaGemEquipped(52291) ||
 		character.HasMetaGemEquipped(52297) ||
@@ -388,34 +389,11 @@ func (character *Character) calculateCritMultiplier(normalCritDamage float64, pr
 	}
 	return 1.0 + (normalCritDamage*primaryModifiers-1.0)*(1.0+secondaryModifiers)
 }
-func (character *Character) calculateHealingCritMultiplier(normalCritDamage float64, primaryModifiers float64, secondaryModifiers float64) float64 {
-	if character.HasMetaGemEquipped(41376) ||
-		character.HasMetaGemEquipped(52291) ||
-		character.HasMetaGemEquipped(52297) ||
-		character.HasMetaGemEquipped(68778) ||
-		character.HasMetaGemEquipped(68779) ||
-		character.HasMetaGemEquipped(68780) {
-		primaryModifiers *= 1.03
-	}
-	return 1.0 + (normalCritDamage*primaryModifiers-1.0)*(1.0+secondaryModifiers)
-}
-func (character *Character) SpellCritMultiplier(primaryModifiers float64, secondaryModifiers float64) float64 {
-	return character.calculateCritMultiplier(1.5, primaryModifiers, secondaryModifiers)
-}
-func (character *Character) MeleeCritMultiplier(primaryModifiers float64, secondaryModifiers float64) float64 {
+func (character *Character) CritMultiplier(primaryModifiers float64, secondaryModifiers float64) float64 {
 	return character.calculateCritMultiplier(2.0, primaryModifiers, secondaryModifiers)
 }
-func (character *Character) HealingCritMultiplier(primaryModifiers float64, secondaryModifiers float64) float64 {
-	return character.calculateHealingCritMultiplier(2.0, primaryModifiers, secondaryModifiers)
-}
-func (character *Character) defaultSpellCritMultiplier() float64 {
-	return character.SpellCritMultiplier(1, 0)
-}
-func (character *Character) DefaultMeleeCritMultiplier() float64 {
-	return character.MeleeCritMultiplier(1, 0)
-}
-func (character *Character) DefaultHealingCritMultiplier() float64 {
-	return character.HealingCritMultiplier(1, 0)
+func (character *Character) DefaultCritMultiplier() float64 {
+	return character.CritMultiplier(1, 0)
 }
 
 func (character *Character) SetDefaultSpellCritMultiplier(spellCritMultiplier float64) {
@@ -767,9 +745,9 @@ func FillTalentsProto(data protoreflect.Message, talentsStr string) {
 func (character *Character) MeetsArmorSpecializationRequirement(armorType proto.ArmorType) bool {
 	for _, itemSlot := range ArmorSpecializationSlots() {
 		item := character.Equipment[itemSlot]
-		if item.ArmorType == proto.ArmorType_ArmorTypeUnknown {
-			continue
-		}
+		// if item.ArmorType == proto.ArmorType_ArmorTypeUnknown {
+		// 	continue
+		// }
 		if item.ArmorType != armorType {
 			return false
 		}

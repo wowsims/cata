@@ -53,7 +53,7 @@ func (demonology *DemonologyWarlock) registerHandOfGuldan() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   demonology.DefaultSpellCritMultiplier(),
+		CritMultiplier:   demonology.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.96799999475,
 

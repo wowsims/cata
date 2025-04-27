@@ -62,7 +62,7 @@ func (monk *Monk) registerChiWave() {
 		return
 	}
 
-	avgScaling := monk.ClassSpellScaling * 0.4499999881
+	avgScaling := monk.CalcScalingSpellDmg(0.4499999881)
 	var nextTarget *core.Unit
 	tickIndex := 0
 
@@ -78,7 +78,7 @@ func (monk *Monk) registerChiWave() {
 
 		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1.0,
-		CritMultiplier:   monk.DefaultSpellCritMultiplier(),
+		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := avgScaling + spell.MeleeAttackPower()*0.45
@@ -108,7 +108,7 @@ func (monk *Monk) registerChiWave() {
 
 		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1.0,
-		CritMultiplier:   monk.DefaultSpellCritMultiplier(),
+		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseHealing := avgScaling + spell.MeleeAttackPower()*0.45
@@ -176,10 +176,18 @@ func (monk *Monk) registerZenSphere() {
 	}
 
 	numTargets := monk.Env.GetNumTargets()
+
+	avgTickScaling := monk.CalcScalingSpellDmg(0.1040000021)
 	// The 15% extra is from a hotfix not represented in the tooltip.
-	avgTickScaling := monk.ClassSpellScaling * 0.1040000021 * 1.15
-	avgDetonateHealScaling := monk.ClassSpellScaling * 0.2689999938 * 1.15
-	avgDetonateDmgScaling := monk.ClassSpellScaling * 0.4230000079 * 1.15
+	avgTickBonusCoefficient := 0.09 * 1.15
+
+	avgDetonateHealScaling := monk.CalcScalingSpellDmg(0.2689999938)
+	// The 15% extra is from a hotfix not represented in the tooltip.
+	avgDetonateHealBonusCoefficient := 0.234 * 1.15
+
+	avgDetonateDmgScaling := monk.CalcScalingSpellDmg(0.4230000079)
+	// The 15% extra is from a hotfix not represented in the tooltip.
+	avgDetonateDmgBonusCoefficient := 0.368 * 1.15
 
 	detonateDamageSpell := monk.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 125033},
@@ -191,10 +199,10 @@ func (monk *Monk) registerZenSphere() {
 
 		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1.0,
-		CritMultiplier:   monk.DefaultSpellCritMultiplier(),
+		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := avgDetonateDmgScaling + spell.MeleeAttackPower()*0.368
+			baseDamage := avgDetonateDmgScaling + spell.MeleeAttackPower()*avgDetonateDmgBonusCoefficient
 
 			results := make([]*core.SpellResult, numTargets)
 
@@ -219,10 +227,10 @@ func (monk *Monk) registerZenSphere() {
 
 		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1.0,
-		CritMultiplier:   monk.DefaultSpellCritMultiplier(),
+		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseHealing := avgDetonateHealScaling + spell.MeleeAttackPower()*0.234
+			baseHealing := avgDetonateHealScaling + spell.MeleeAttackPower()*avgDetonateHealBonusCoefficient
 			spell.CalcAndDealHealing(sim, target, baseHealing, spell.OutcomeHealingCrit)
 		},
 	})
@@ -238,7 +246,7 @@ func (monk *Monk) registerZenSphere() {
 
 		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1.0,
-		CritMultiplier:   monk.DefaultSpellCritMultiplier(),
+		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -250,9 +258,9 @@ func (monk *Monk) registerZenSphere() {
 			NumberOfTicks:       8,
 			TickLength:          time.Second * 2,
 			AffectedByCastSpeed: false,
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				healValue := avgTickScaling + dot.Spell.MeleeAttackPower()*0.09
-				target = sim.GetTargetUnit(currentTargetIndex)
+			OnTick: func(sim *core.Simulation, _ *core.Unit, dot *core.Dot) {
+				healValue := avgTickScaling + dot.Spell.MeleeAttackPower()*avgTickBonusCoefficient
+				target := sim.GetTargetUnit(currentTargetIndex)
 				dot.Spell.CalcAndDealPeriodicDamage(sim, target, healValue, dot.OutcomeTickMagicCrit)
 				currentTargetIndex = sim.NextTargetUnit(target).UnitIndex
 			},
@@ -285,7 +293,7 @@ func (monk *Monk) registerZenSphere() {
 
 		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1.0,
-		CritMultiplier:   monk.DefaultSpellCritMultiplier(),
+		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		Hot: core.DotConfig{
 			Aura: core.Aura{
@@ -304,13 +312,13 @@ func (monk *Monk) registerZenSphere() {
 			TickLength:          time.Second * 2,
 			AffectedByCastSpeed: false,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				healValue := avgTickScaling + dot.Spell.MeleeAttackPower()*0.09
+				healValue := avgTickScaling + dot.Spell.MeleeAttackPower()*avgTickBonusCoefficient
 				dot.Spell.CalcAndDealPeriodicHealing(sim, target, healValue, dot.OutcomeTickHealingCrit)
 			},
 		},
 
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			target = spell.Unit
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+			target := spell.Unit
 
 			if target.CurrentHealthPercent() <= 0.35 {
 				detonateHealingSpell.Cast(sim, target)
@@ -339,7 +347,7 @@ func (monk *Monk) registerChiBurst() {
 	}
 
 	numTargets := monk.Env.GetNumTargets()
-	avgDmgScaling := monk.ClassSpellScaling * 1.2100000381
+	avgDmgScaling := monk.CalcScalingSpellDmg(1.2100000381)
 
 	chiBurstDamageSpell := monk.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 148135},
@@ -351,7 +359,7 @@ func (monk *Monk) registerChiBurst() {
 
 		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1.0,
-		CritMultiplier:   monk.DefaultSpellCritMultiplier(),
+		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := avgDmgScaling + spell.MeleeAttackPower()*1.21
@@ -381,10 +389,10 @@ func (monk *Monk) registerChiBurst() {
 
 		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1.0,
-		CritMultiplier:   monk.DefaultSpellCritMultiplier(),
+		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseHealing := monk.ClassSpellScaling + spell.MeleeAttackPower()
+			baseHealing := monk.CalcScalingSpellDmg(1) + spell.MeleeAttackPower()
 
 			result := spell.CalcHealing(sim, target, baseHealing, spell.OutcomeHealingCrit)
 
@@ -556,8 +564,7 @@ func (monk *Monk) registerChiBrew() {
 	actionID := core.ActionID{SpellID: 115399}
 	chiMetrics := monk.NewChiMetrics(actionID)
 
-	var chiBrewAura *core.Aura
-	chiBrewAura = monk.RegisterAura(core.Aura{
+	chiBrewAura := monk.RegisterAura(core.Aura{
 		Label:     "Chi Brew" + monk.Label,
 		ActionID:  actionID,
 		Duration:  core.NeverExpires,
@@ -675,7 +682,7 @@ func (monk *Monk) registerRushingJadeWind() {
 
 		DamageMultiplier: 1.4, // 1.59 * (1.4 / 1.59),
 		ThreatMultiplier: 1,
-		CritMultiplier:   monk.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			results := make([]*core.SpellResult, numTargets)

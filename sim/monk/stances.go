@@ -93,7 +93,7 @@ func (monk *Monk) registerStanceOfTheWiseSerpent(stanceCD *core.Timer) {
 
 		DamageMultiplier: 0.25,
 		ThreatMultiplier: 1.0,
-		CritMultiplier:   monk.DefaultSpellCritMultiplier(),
+		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.CalcAndDealHealing(sim, target, dmgDone, spell.OutcomeHealing)

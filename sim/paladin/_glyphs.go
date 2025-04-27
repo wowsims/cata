@@ -101,7 +101,7 @@ func registerGlyphOfExorcism(paladin *Paladin) {
 		Flags:          core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   paladin.DefaultSpellCritMultiplier(),
+		CritMultiplier:   paladin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{

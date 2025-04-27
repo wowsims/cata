@@ -527,7 +527,7 @@ func registerTinkerHandsCD(agent Agent, consumes *proto.ConsumesSpec) {
 			},
 
 			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			CritMultiplier:   character.DefaultCritMultiplier(),
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *Simulation, unit *Unit, spell *Spell) {

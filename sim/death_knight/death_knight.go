@@ -241,8 +241,8 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 	// }
 
 	dk.EnableAutoAttacks(dk, core.AutoAttackOptions{
-		MainHand:       dk.WeaponFromMainHand(dk.DefaultMeleeCritMultiplier()),
-		OffHand:        dk.WeaponFromOffHand(dk.DefaultMeleeCritMultiplier()),
+		MainHand:       dk.WeaponFromMainHand(dk.DefaultCritMultiplier()),
+		OffHand:        dk.WeaponFromOffHand(dk.DefaultCritMultiplier()),
 		AutoSwingMelee: true,
 	})
 

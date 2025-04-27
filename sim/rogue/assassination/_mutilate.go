@@ -30,7 +30,7 @@ func (sinRogue *AssassinationRogue) newMutilateHitSpell(isMH bool) *core.Spell {
 
 		DamageMultiplier:         1.86, // 84 * 1.3220000267 + 75
 		DamageMultiplierAdditive: 1 + 0.1*float64(sinRogue.Talents.Opportunity),
-		CritMultiplier:           sinRogue.MeleeCritMultiplier(true),
+		CritMultiplier:           sinRogue.CritMultiplier(true),
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

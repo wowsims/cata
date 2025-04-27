@@ -28,7 +28,7 @@ func (priest *Priest) newMindFlaySpell() *core.Spell {
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
 		ThreatMultiplier:         1,
-		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
+		CritMultiplier:           priest.DefaultCritMultiplier(),
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "MindFlay-" + priest.Label,

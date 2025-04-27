@@ -34,7 +34,7 @@ func (warrior *Warrior) RegisterRendSpell() {
 
 		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1,
-		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   warrior.DefaultCritMultiplier(),
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

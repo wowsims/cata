@@ -48,7 +48,7 @@ func (rogue *Rogue) registerEviscerate() {
 		DamageMultiplierAdditive: 1 +
 			[]float64{0.0, 0.07, 0.14, 0.2}[rogue.Talents.CoupDeGrace] +
 			[]float64{0.0, 0.07, 0.14, 0.2}[rogue.Talents.Aggression],
-		CritMultiplier:   rogue.MeleeCritMultiplier(false),
+		CritMultiplier:   rogue.CritMultiplier(false),
 		ThreatMultiplier: 1,
 
 		BonusCoefficient: 1,

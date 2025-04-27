@@ -23,7 +23,7 @@ func init() {
 			Flags:       core.SpellFlagIgnoreModifiers | core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete,
 
 			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			CritMultiplier:   character.DefaultCritMultiplier(),
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -59,7 +59,7 @@ func init() {
 			ProcMask:    core.ProcMaskSpellProc,
 
 			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			CritMultiplier:   character.DefaultCritMultiplier(),
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -126,7 +126,7 @@ func init() {
 			ProcMask:    core.ProcMaskSpellProc,
 
 			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			CritMultiplier:   character.DefaultCritMultiplier(),
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

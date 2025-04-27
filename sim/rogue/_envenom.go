@@ -57,7 +57,7 @@ func (rogue *Rogue) registerEnvenom() {
 		DamageMultiplierAdditive: 1 +
 			0.12*float64(rogue.Talents.VilePoisons) +
 			[]float64{0, 0.07, .14, .20}[rogue.Talents.CoupDeGrace],
-		CritMultiplier:   rogue.MeleeCritMultiplier(false),
+		CritMultiplier:   rogue.CritMultiplier(false),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

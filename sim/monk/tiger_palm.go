@@ -64,7 +64,7 @@ func (monk *Monk) registerTigerPalm() {
 
 		DamageMultiplier: 3.0,
 		ThreatMultiplier: 1,
-		CritMultiplier:   monk.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return monk.ComboPoints() >= 1 || monk.ComboBreakerTigerPalmAura.IsActive()

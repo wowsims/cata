@@ -221,7 +221,7 @@ func (druid *Druid) GetCharacter() *core.Character {
 // }
 
 func (druid *Druid) BalanceCritMultiplier() float64 {
-	return druid.SpellCritMultiplier(1, 0)
+	return druid.CritMultiplier(1, 0)
 }
 
 func (druid *Druid) HasMajorGlyph(glyph proto.DruidMajorGlyph) bool {

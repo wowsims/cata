@@ -14,7 +14,7 @@ func (priest *Priest) getMindSearBaseConfig() core.SpellConfig {
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
 		ThreatMultiplier:         1,
-		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
+		CritMultiplier:           priest.DefaultCritMultiplier(),
 		BonusCoefficient:         0.2622,
 	}
 }

@@ -53,7 +53,7 @@ func (druid *Druid) GetCatWeapon() core.Weapon {
 		BaseDamageMax:        unscaledWeapon.BaseDamageMax / unscaledWeapon.SwingSpeed,
 		SwingSpeed:           1.0,
 		NormalizedSwingSpeed: 1.0,
-		CritMultiplier:       druid.DefaultMeleeCritMultiplier(),
+		CritMultiplier:       druid.DefaultCritMultiplier(),
 		AttackPowerPerDPS:    core.DefaultAttackPowerPerDPS,
 		MaxRange:             core.MaxMeleeRange,
 	}
@@ -66,7 +66,7 @@ func (druid *Druid) GetBearWeapon() core.Weapon {
 		BaseDamageMax:        unscaledWeapon.BaseDamageMax / unscaledWeapon.SwingSpeed * 2.5,
 		SwingSpeed:           2.5,
 		NormalizedSwingSpeed: 2.5,
-		CritMultiplier:       druid.DefaultMeleeCritMultiplier(),
+		CritMultiplier:       druid.DefaultCritMultiplier(),
 		AttackPowerPerDPS:    core.DefaultAttackPowerPerDPS,
 		MaxRange:             core.MaxMeleeRange,
 	}
@@ -158,7 +158,7 @@ func (druid *Druid) RegisterCatFormAura() {
 			}
 
 			if !druid.Env.MeasuringStats {
-				druid.AutoAttacks.SetMH(druid.WeaponFromMainHand(druid.DefaultMeleeCritMultiplier()))
+				druid.AutoAttacks.SetMH(druid.WeaponFromMainHand(druid.DefaultCritMultiplier()))
 				druid.AutoAttacks.EnableAutoSwing(sim)
 				druid.UpdateManaRegenRates()
 
@@ -308,7 +308,7 @@ func (druid *Druid) RegisterBearFormAura() {
 
 			if !druid.Env.MeasuringStats {
 				druid.RemoveHealth(sim, druid.CurrentHealth()-healthFrac*druid.MaxHealth())
-				druid.AutoAttacks.SetMH(druid.WeaponFromMainHand(druid.DefaultMeleeCritMultiplier()))
+				druid.AutoAttacks.SetMH(druid.WeaponFromMainHand(druid.DefaultCritMultiplier()))
 				druid.AutoAttacks.EnableAutoSwing(sim)
 				druid.UpdateManaRegenRates()
 				druid.EnrageAura.Deactivate(sim)

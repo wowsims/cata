@@ -31,7 +31,7 @@ func (dk *BloodDeathKnight) registerHeartStrikeSpell() {
 		},
 
 		DamageMultiplier: 1.75,
-		CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   dk.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

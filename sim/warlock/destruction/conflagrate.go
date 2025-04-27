@@ -30,7 +30,7 @@ func (destruction *DestructionWarlock) registerConflagrate() {
 		},
 
 		DamageMultiplier: 1.0,
-		CritMultiplier:   destruction.DefaultSpellCritMultiplier(),
+		CritMultiplier:   destruction.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.17599999905,
 

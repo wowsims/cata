@@ -168,7 +168,7 @@ func (dk *DeathKnight) NewRuneWeapon() *RuneWeaponPet {
 	runeWeapon.OnPetEnable = runeWeapon.enable
 	runeWeapon.OnPetDisable = runeWeapon.disable
 
-	mhWeapon := dk.WeaponFromMainHand(dk.DefaultMeleeCritMultiplier())
+	mhWeapon := dk.WeaponFromMainHand(dk.DefaultCritMultiplier())
 
 	baseDamage := mhWeapon.AverageDamage() / mhWeapon.SwingSpeed * 3.5
 	mhWeapon.BaseDamageMin = baseDamage - 150

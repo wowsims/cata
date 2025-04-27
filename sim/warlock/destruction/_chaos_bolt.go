@@ -32,7 +32,7 @@ func (destro *DestructionWarlock) registerChaosBolt() {
 		},
 
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           destro.DefaultSpellCritMultiplier(),
+		CritMultiplier:           destro.DefaultCritMultiplier(),
 		ThreatMultiplier:         1,
 		BonusCoefficient:         0.62800002098,
 

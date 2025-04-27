@@ -17,7 +17,7 @@ func (hunter *Hunter) newFlamingArrowSpell(spellID int32) core.SpellConfig {
 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 0.8,
-		CritMultiplier:   hunter.CritMultiplier(false, false, false),
+		CritMultiplier:   hunter.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		BonusCoefficient: 1,

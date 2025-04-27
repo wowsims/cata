@@ -55,7 +55,7 @@ func (ww *WindwalkerMonk) registerRisingSunKick() {
 
 		DamageMultiplier: 14.4 * 0.89,
 		ThreatMultiplier: 1,
-		CritMultiplier:   ww.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   ww.DefaultCritMultiplier(),
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return ww.ComboPoints() >= 2

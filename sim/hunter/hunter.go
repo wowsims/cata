@@ -132,9 +132,9 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 }
 
 func (hunter *Hunter) Initialize() {
-	hunter.AutoAttacks.MHConfig().CritMultiplier = hunter.CritMultiplier(false, false, false)
-	hunter.AutoAttacks.OHConfig().CritMultiplier = hunter.CritMultiplier(false, false, false)
-	hunter.AutoAttacks.RangedConfig().CritMultiplier = hunter.CritMultiplier(false, false, false)
+	hunter.AutoAttacks.MHConfig().CritMultiplier = hunter.DefaultCritMultiplier()
+	hunter.AutoAttacks.OHConfig().CritMultiplier = hunter.DefaultCritMultiplier()
+	hunter.AutoAttacks.RangedConfig().CritMultiplier = hunter.DefaultCritMultiplier()
 
 	hunter.FireTrapTimer = hunter.NewTimer()
 
@@ -206,13 +206,6 @@ func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 }
 
 func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
-}
-
-func (hunter *Hunter) CritMultiplier(isRanged bool, isMFDSpell bool, doubleDipMS bool) float64 {
-	primaryModifier := 1.0
-	secondaryModifier := 0.0
-
-	return hunter.MeleeCritMultiplier(primaryModifier, secondaryModifier)
 }
 
 func (hunter *Hunter) HasMajorGlyph(glyph proto.HunterMajorGlyph) bool {

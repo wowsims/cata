@@ -170,7 +170,6 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 	core.FillTalentsProto(mage.Talents.ProtoReflect(), options.TalentsString)
 
 	mage.EnableManaBar()
-	mage.SetDefaultSpellCritMultiplier(mage.SpellCritMultiplier(1.33, 0.0))
 
 	mage.mirrorImage = mage.NewMirrorImage()
 	// mage.flameOrb = mage.NewFlameOrb()

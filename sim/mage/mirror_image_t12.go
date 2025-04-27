@@ -96,7 +96,7 @@ func (mi *T12MirrorImage) registerFireballSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   mi.DefaultSpellCritMultiplier(),
+		CritMultiplier:   mi.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

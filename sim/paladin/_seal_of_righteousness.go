@@ -24,7 +24,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 		ClassSpellMask: SpellMaskJudgementOfRighteousness,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   paladin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -47,7 +47,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 			MaxRange: core.MaxMeleeRange,
 
 			DamageMultiplier: 1,
-			CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),
+			CritMultiplier:   paladin.DefaultCritMultiplier(),
 			ThreatMultiplier: 1,
 
 			ApplyEffects: applyEffects,

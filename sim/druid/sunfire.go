@@ -21,7 +21,7 @@ func (druid *Druid) registerSunfireDoTSpell() {
 		Flags:          SpellFlagOmenTrigger | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   druid.BalanceCritMultiplier(),
+		CritMultiplier:   druid.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -73,7 +73,7 @@ func (druid *Druid) registerSunfireImpactSpell() {
 
 		DamageMultiplier: 1,
 
-		CritMultiplier:   druid.BalanceCritMultiplier(),
+		CritMultiplier:   druid.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.18,
 

@@ -50,7 +50,7 @@ func (warrior *Warrior) RegisterOverpowerSpell() {
 		},
 
 		DamageMultiplier: 1.25,
-		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   warrior.DefaultCritMultiplier(),
 		ThreatMultiplier: 0.75,
 
 		BonusCoefficient: 1,

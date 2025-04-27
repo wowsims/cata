@@ -55,8 +55,8 @@ func NewFuryWarrior(character *core.Character, options *proto.Player) *FuryWarri
 
 	war.EnableRageBar(rbo)
 	war.EnableAutoAttacks(war, core.AutoAttackOptions{
-		MainHand:       war.WeaponFromMainHand(war.DefaultMeleeCritMultiplier()),
-		OffHand:        war.WeaponFromOffHand(war.DefaultMeleeCritMultiplier()),
+		MainHand:       war.WeaponFromMainHand(war.DefaultCritMultiplier()),
+		OffHand:        war.WeaponFromOffHand(war.DefaultCritMultiplier()),
 		AutoSwingMelee: true,
 	})
 

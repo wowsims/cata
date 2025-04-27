@@ -17,7 +17,7 @@ func (dk *DeathKnight) registerBloodStrikeSpell() {
 
 		DamageMultiplier:         0.8,
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           dk.DefaultMeleeCritMultiplier(),
+		CritMultiplier:           dk.DefaultCritMultiplier(),
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -52,7 +52,7 @@ func (dk *DeathKnight) registerBloodStrikeSpell() {
 		},
 
 		DamageMultiplier: 0.8,
-		CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   dk.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

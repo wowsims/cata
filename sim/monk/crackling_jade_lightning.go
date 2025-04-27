@@ -21,7 +21,7 @@ func (monk *Monk) registerCracklingJadeLightning() {
 	energyMetrics := monk.NewEnergyMetrics(actionID)
 	manaMetrics := monk.NewManaMetrics(actionID)
 	chiMetrics := monk.NewChiMetrics(core.ActionID{SpellID: 123333})
-	avgScaling := monk.ClassSpellScaling * 0.1800000072
+	avgScaling := monk.CalcScalingSpellDmg(0.1800000072)
 
 	monk.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
@@ -86,7 +86,7 @@ func (monk *Monk) registerCracklingJadeLightning() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		CritMultiplier:   monk.DefaultSpellCritMultiplier(),
+		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)

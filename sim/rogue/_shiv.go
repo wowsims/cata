@@ -31,7 +31,7 @@ func (rogue *Rogue) registerShivSpell() {
 		},
 
 		DamageMultiplier: 1 * rogue.DWSMultiplier(),
-		CritMultiplier:   rogue.MeleeCritMultiplier(true),
+		CritMultiplier:   rogue.CritMultiplier(true),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

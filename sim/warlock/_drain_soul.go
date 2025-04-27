@@ -40,7 +40,7 @@ func (warlock *Warlock) registerDrainSoul() {
 
 		DamageMultiplierAdditive: 1,
 		DamageMultiplier:         1,
-		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
+		CritMultiplier:           warlock.DefaultCritMultiplier(),
 		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{

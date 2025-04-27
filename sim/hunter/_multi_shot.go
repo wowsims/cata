@@ -29,7 +29,7 @@ func (hunter *Hunter) registerMultiShotSpell() {
 		BonusCritPercent:         0,
 		DamageMultiplierAdditive: 1,
 		DamageMultiplier:         1.21,
-		CritMultiplier:           hunter.CritMultiplier(true, false, false),
+		CritMultiplier:           hunter.DefaultCritMultiplier(),
 		ThreatMultiplier:         1,
 
 		BonusCoefficient: 1,

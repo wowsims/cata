@@ -33,7 +33,7 @@ func (hunter *Hunter) registerKillCommandSpell() {
 			},
 		},
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           hunter.CritMultiplier(false, false, false),
+		CritMultiplier:           hunter.DefaultCritMultiplier(),
 		ThreatMultiplier:         1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if hunter.Pet != nil && hunter.Pet.KillCommand != nil {

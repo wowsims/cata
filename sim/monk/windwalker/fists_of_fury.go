@@ -32,7 +32,7 @@ func (ww *WindwalkerMonk) registerFistsOfFury() {
 
 		DamageMultiplier: 7.5 * 0.89,
 		ThreatMultiplier: 1,
-		CritMultiplier:   ww.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   ww.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			results := make([]*core.SpellResult, numTargets)

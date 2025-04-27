@@ -34,7 +34,7 @@ func (dk *DeathKnight) registerHowlingBlastSpell() {
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
-		CritMultiplier: dk.DefaultMeleeCritMultiplier(),
+		CritMultiplier: dk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for idx, aoeTarget := range sim.Encounter.TargetUnits {

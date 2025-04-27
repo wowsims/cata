@@ -68,7 +68,7 @@ func (treant *BurningTreant) registerFireseedSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   treant.DefaultSpellCritMultiplier(),
+		CritMultiplier:   treant.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

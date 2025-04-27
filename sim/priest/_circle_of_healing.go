@@ -42,7 +42,7 @@ func (priest *Priest) registerCircleOfHealingSpell() {
 			(1 + .02*float64(priest.Talents.FocusedPower)) *
 			(1 + .02*float64(priest.Talents.DivineProvidence)) *
 			core.TernaryFloat64(priest.CouldHaveSetBonus(ItemSetCrimsonAcolytesRaiment, 4), 1.1, 1),
-		CritMultiplier:   priest.DefaultHealingCritMultiplier(),
+		CritMultiplier:   priest.DefaultCritMultiplier(),
 		ThreatMultiplier: 1 - []float64{0, .07, .14, .20}[priest.Talents.SilentResolve],
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

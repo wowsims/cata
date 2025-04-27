@@ -22,7 +22,7 @@ func (monk *Monk) registerExpelHarm() {
 
 		DamageMultiplier: 0.5,
 		ThreatMultiplier: 1,
-		CritMultiplier:   monk.DefaultSpellCritMultiplier(),
+		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.CalcAndDealDamage(sim, target, healingDone, spell.OutcomeMagicHitAndCrit)
@@ -58,7 +58,7 @@ func (monk *Monk) registerExpelHarm() {
 
 		DamageMultiplier: 7,
 		ThreatMultiplier: 1.0,
-		CritMultiplier:   monk.DefaultSpellCritMultiplier(),
+		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := monk.CalculateMonkStrikeDamage(sim, spell)

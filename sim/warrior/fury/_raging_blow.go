@@ -19,7 +19,7 @@ func (war *FuryWarrior) RegisterRagingBlow() {
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
 
 		DamageMultiplier: 1.0,
-		CritMultiplier:   war.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   war.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			ohBaseDamage := spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
@@ -54,7 +54,7 @@ func (war *FuryWarrior) RegisterRagingBlow() {
 		},
 
 		DamageMultiplier: 1.0,
-		CritMultiplier:   war.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   war.DefaultCritMultiplier(),
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return war.StanceMatches(warrior.BerserkerStance) && war.HasActiveAuraWithTag(warrior.EnrageTag) && war.HasOHWeapon()

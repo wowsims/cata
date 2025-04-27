@@ -31,7 +31,7 @@ func NewBrewmasterMonk(character *core.Character, options *proto.Player) *Brewma
 		Monk:           monk.NewMonk(character, monkOptions.Options.ClassOptions, options.TalentsString),
 		StartingStance: monkOptions.Options.Stance,
 	}
-	bm.SetStartingStance()
+	bm.Stance = monk.SturdyOx
 
 	bm.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 	bm.AddStatDependency(stats.Agility, stats.AttackPower, 2)
@@ -65,10 +65,12 @@ func (bm *BrewmasterMonk) Initialize() {
 func (bm *BrewmasterMonk) ApplyTalents() {
 	bm.Monk.ApplyTalents()
 	bm.ApplyArmorSpecializationEffect(stats.Stamina, proto.ArmorType_ArmorTypeLeather, 120225)
+
+	bm.registerGuard()
 }
 
 func (bm *BrewmasterMonk) Reset(sim *core.Simulation) {
-	bm.SetStartingStance()
+	bm.Stance = monk.SturdyOx
 	bm.Monk.Reset(sim)
 }
 

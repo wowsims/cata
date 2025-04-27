@@ -19,7 +19,7 @@ func (svHunter *SurvivalHunter) registerExplosiveShotSpell() {
 		ProcMask:         core.ProcMaskRangedSpecial,
 		DamageMultiplier: 1,
 		ClassSpellMask:   hunter.HunterSpellExplosiveShot,
-		CritMultiplier:   svHunter.SpellCritMultiplier(1, 1),
+		CritMultiplier:   svHunter.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		Flags:            core.SpellFlagMeleeMetrics,
 		Dot: core.DotConfig{
@@ -70,7 +70,7 @@ func (svHunter *SurvivalHunter) registerExplosiveShotSpell() {
 			},
 		},
 		DamageMultiplier: 1,
-		CritMultiplier:   svHunter.SpellCritMultiplier(1, 1),
+		CritMultiplier:   svHunter.CritMultiplier(1, 1),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
