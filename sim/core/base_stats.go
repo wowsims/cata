@@ -215,12 +215,12 @@ var ClassBaseStats = map[proto.Class]stats.Stats{
 	},
 	proto.Class_ClassMonk: {
 		stats.Health:      43285,
-		stats.Agility:     85,
-		stats.Strength:    68,
-		stats.Intellect:   135,
-		stats.Spirit:      154,
-		stats.Stamina:     86,
-		stats.AttackPower: float64(CharacterLevel)*2.0 - 20,
+		stats.Agility:     105,
+		stats.Strength:    88,
+		stats.Intellect:   156,
+		stats.Spirit:      173,
+		stats.Stamina:     105,
+		stats.AttackPower: float64(CharacterLevel)*2.0 - 30,
 	},
 }
 
