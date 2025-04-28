@@ -66,10 +66,7 @@ func (monk *Monk) CalculateMonkStrikeDamage(sim *core.Simulation, spell *core.Sp
 		totalDamage *= 0.898882275
 	}
 
-	apMod := 1.0 / core.DefaultAttackPowerPerDPS
-	if monk.Spec == proto.Spec_SpecBrewmasterMonk {
-		apMod = 1.0 / 11.0
-	}
+	apMod := monk.GetAttackPowerPerDPS()
 
 	if !hasMainHand && !hasOffHand {
 		// Unarmed
