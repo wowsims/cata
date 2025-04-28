@@ -68,8 +68,6 @@ func (monk *Monk) CalculateMonkStrikeDamage(sim *core.Simulation, spell *core.Sp
 
 	apMod := 1.0 / core.DefaultAttackPowerPerDPS
 	if monk.Spec == proto.Spec_SpecBrewmasterMonk {
-		// Brewmaster monks does a flat 40% of total damage as well as AP per DPS being 11 instead of 14
-		totalDamage *= 0.4
 		apMod = 1.0 / 11.0
 	}
 
