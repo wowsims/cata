@@ -16,7 +16,7 @@ func (rogue *Rogue) registerFanOfKnives() {
 		ClassSpellMask: RogueSpellFanOfKnives,
 
 		DamageMultiplier: 0.8 * core.TernaryFloat64(rogue.Spec == proto.Spec_SpecCombatRogue, 1.75, 1.0),
-		CritMultiplier:   rogue.MeleeCritMultiplier(false), // TODO (TheBackstabi, 3/16/2024) - Verify what crit table FoK is on
+		CritMultiplier:   rogue.CritMultiplier(false), // TODO (TheBackstabi, 3/16/2024) - Verify what crit table FoK is on
 		ThreatMultiplier: 1,
 	})
 

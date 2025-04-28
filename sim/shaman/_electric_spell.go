@@ -49,7 +49,7 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCostPer
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
+		CritMultiplier:   shaman.DefaultCritMultiplier(),
 		BonusCoefficient: bonusCoefficient,
 	}
 

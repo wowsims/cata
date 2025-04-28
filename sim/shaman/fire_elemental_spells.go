@@ -27,7 +27,7 @@ func (fireElemental *FireElemental) registerFireBlast() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   fireElemental.SpellCritMultiplier(1.33, 0), // Spell 85801
+		CritMultiplier:   fireElemental.CritMultiplier(1.0, 0), // Spell 85801
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.429,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -59,7 +59,7 @@ func (fireElemental *FireElemental) registerFireNova() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   fireElemental.SpellCritMultiplier(1.33, 0), // Spell 85801
+		CritMultiplier:   fireElemental.CritMultiplier(1.0, 0), // Spell 85801
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1.00,
 
@@ -82,7 +82,7 @@ func (fireElemental *FireElemental) registerFireShieldAura() {
 		ProcMask:    core.ProcMaskEmpty,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   fireElemental.SpellCritMultiplier(1.33, 0), // Spell 85801
+		CritMultiplier:   fireElemental.CritMultiplier(1.0, 0), // Spell 85801
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.032,
 

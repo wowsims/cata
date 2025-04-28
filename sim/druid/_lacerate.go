@@ -34,7 +34,7 @@ func (druid *Druid) registerLacerateSpell() {
 
 		BonusCritPercent: core.TernaryFloat64(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfLacerate), 5, 0),
 		DamageMultiplier: initialDamageMul,
-		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   druid.DefaultCritMultiplier(),
 		ThreatMultiplier: 1, // Changed in Cata
 		MaxRange:         core.MaxMeleeRange,
 		FlatThreatBonus:  0, // Removed in Cata

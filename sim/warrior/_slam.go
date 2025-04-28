@@ -27,7 +27,7 @@ func (warrior *Warrior) RegisterSlamSpell() {
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
 
 		DamageMultiplier: weaponDamageConfig.CalcSpellDamagePct(),
-		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   warrior.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			ohBaseDamage := weaponDamageConfig.CalcAddedSpellDamage() + spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
@@ -65,7 +65,7 @@ func (warrior *Warrior) RegisterSlamSpell() {
 		},
 
 		DamageMultiplier: weaponDamageConfig.CalcSpellDamagePct(),
-		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   warrior.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  140,
 

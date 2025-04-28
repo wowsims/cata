@@ -9,7 +9,16 @@
 	"TargetDirectory": "dbfilesclient",
 	"DatabaseFile": "wowsims.db",
 	"GameTablesOutDirectory": "../../assets/db_inputs/basestats",
-	"GameTables": ["chancetomeleecrit", "chancetomeleecritbase", "chancetospellcrit", "chancetospellcritbase", "combatratings", "octbasempbyclass"],
+	"GameTables": [
+		"chancetomeleecrit",
+		"chancetomeleecritbase",
+		"chancetospellcrit",
+		"chancetospellcritbase",
+		"combatratings",
+		"octbasempbyclass",
+		"OCTBaseHPByClass",
+		"SpellScaling"
+	],
 	"Tables": [
 		"Spell",
 		"Item",

@@ -28,7 +28,7 @@ func (mage *Mage) registerFireBlastSpell() {
 		},
 
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
+		CritMultiplier:           mage.DefaultCritMultiplier(),
 		BonusCoefficient:         0.429,
 		ThreatMultiplier:         1,
 

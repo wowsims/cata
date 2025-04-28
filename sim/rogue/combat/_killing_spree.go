@@ -22,7 +22,7 @@ func (comRogue *CombatRogue) registerKillingSpreeCD() {
 		ClassSpellMask: rogue.RogueSpellKillingSpreeHit,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   comRogue.MeleeCritMultiplier(false),
+		CritMultiplier:   comRogue.CritMultiplier(false),
 		ThreatMultiplier: 1,
 
 		BonusCoefficient: 1,
@@ -42,7 +42,7 @@ func (comRogue *CombatRogue) registerKillingSpreeCD() {
 		ClassSpellMask: rogue.RogueSpellKillingSpreeHit,
 
 		DamageMultiplier: 1 * comRogue.DWSMultiplier(),
-		CritMultiplier:   comRogue.MeleeCritMultiplier(false),
+		CritMultiplier:   comRogue.CritMultiplier(false),
 		ThreatMultiplier: 1,
 
 		BonusCoefficient: 1,

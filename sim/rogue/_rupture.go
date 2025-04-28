@@ -46,7 +46,7 @@ func (rogue *Rogue) registerRupture() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   rogue.MeleeCritMultiplier(false),
+		CritMultiplier:   rogue.CritMultiplier(false),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{

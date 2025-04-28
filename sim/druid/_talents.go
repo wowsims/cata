@@ -561,7 +561,7 @@ func (druid *Druid) applyFurySwipes() {
 		ProcMask:         core.ProcMaskMeleeMHSpecial,
 		Flags:            core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
 		DamageMultiplier: 3.1,
-		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   druid.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 
@@ -877,8 +877,8 @@ func (druid *Druid) applyLotp() {
 // 		return
 // 	}
 
-// 	onGainMod := druid.MeleeCritMultiplier(Cat)
-// 	onExpireMod := druid.MeleeCritMultiplier(Humanoid)
+// 	onGainMod := druid.CritMultiplier(Cat)
+// 	onExpireMod := druid.CritMultiplier(Humanoid)
 
 // 	druid.PredatoryInstinctsAura = druid.RegisterAura(core.Aura{
 // 		Label:    "Predatory Instincts",

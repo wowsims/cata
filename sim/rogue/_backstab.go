@@ -43,7 +43,7 @@ func (rogue *Rogue) registerBackstabSpell() {
 		// Sinister Calling (Subtlety Spec Passive) is Multiplicative
 		DamageMultiplier: 2.07 *
 			core.TernaryFloat64(rogue.Spec == proto.Spec_SpecSubtletyRogue, 1.4, 1),
-		CritMultiplier:   rogue.MeleeCritMultiplier(true),
+		CritMultiplier:   rogue.CritMultiplier(true),
 		ThreatMultiplier: 1,
 
 		BonusCoefficient: 1,

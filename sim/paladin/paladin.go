@@ -310,7 +310,7 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 	}
 
 	paladin.EnableAutoAttacks(paladin, core.AutoAttackOptions{
-		MainHand:       paladin.WeaponFromMainHand(paladin.DefaultMeleeCritMultiplier()),
+		MainHand:       paladin.WeaponFromMainHand(paladin.DefaultCritMultiplier()),
 		AutoSwingMelee: true,
 	})
 

@@ -17,7 +17,7 @@ func (paladin *Paladin) registerSealOfInsight() {
 		ClassSpellMask: SpellMaskJudgementOfInsight,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   paladin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

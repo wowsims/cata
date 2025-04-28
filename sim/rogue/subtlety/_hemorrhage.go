@@ -27,7 +27,7 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 		Flags:       core.SpellFlagIgnoreAttackerModifiers | core.SpellFlagPassiveSpell, // From initial testing, Hemo DoT only benefits from debuffs on target, such as 30% bleed damage
 
 		ThreatMultiplier: 1,
-		CritMultiplier:   subRogue.MeleeCritMultiplier(false), // Per WoWHead data, Lethality does not boost the DoT directly,
+		CritMultiplier:   subRogue.CritMultiplier(false), // Per WoWHead data, Lethality does not boost the DoT directly,
 		DamageMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -73,7 +73,7 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 		},
 
 		DamageMultiplier: core.TernaryFloat64(subRogue.HasDagger(core.MainHand), 3.25, 2.24),
-		CritMultiplier:   subRogue.MeleeCritMultiplier(true),
+		CritMultiplier:   subRogue.CritMultiplier(true),
 		ThreatMultiplier: 1,
 
 		BonusCoefficient: 1,

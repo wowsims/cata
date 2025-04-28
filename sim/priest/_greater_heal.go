@@ -34,7 +34,7 @@ func (priest *Priest) registerGreaterHealSpell() {
 			(1 + .01*float64(priest.Talents.BlessedResilience)) *
 			(1 + .02*float64(priest.Talents.FocusedPower)) *
 			core.TernaryFloat64(priest.CouldHaveSetBonus(ItemSetVestmentsOfAbsolution, 4), 1.05, 1),
-		CritMultiplier:   priest.DefaultHealingCritMultiplier(),
+		CritMultiplier:   priest.DefaultCritMultiplier(),
 		ThreatMultiplier: 1 - []float64{0, .07, .14, .20}[priest.Talents.SilentResolve],
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

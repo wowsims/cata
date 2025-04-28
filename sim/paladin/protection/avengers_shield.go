@@ -41,7 +41,7 @@ func (prot *ProtectionPaladin) registerAvengersShieldSpell() {
 		},
 
 		DamageMultiplier: core.TernaryFloat64(glyphedSingleTargetAS, 1.3, 1),
-		CritMultiplier:   prot.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   prot.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

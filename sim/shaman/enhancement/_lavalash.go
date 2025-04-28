@@ -38,7 +38,7 @@ func (enh *EnhancementShaman) registerLavaLashSpell() {
 			},
 		},
 		DamageMultiplier: damageMultiplier,
-		CritMultiplier:   enh.DefaultSpellCritMultiplier(),
+		CritMultiplier:   enh.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())

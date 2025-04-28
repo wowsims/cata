@@ -43,7 +43,7 @@ func (druid *Druid) registerWildMushrooms() {
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		ClassSpellMask:   DruidSpellWildMushroomDetonate,
-		CritMultiplier:   druid.DefaultSpellCritMultiplier(),
+		CritMultiplier:   druid.DefaultCritMultiplier(),
 		BonusCoefficient: 0.6032,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			min, max := core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassDruid, 0.9464, 0.19)
@@ -72,7 +72,7 @@ func (druid *Druid) registerWildMushrooms() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		CritMultiplier:   druid.DefaultSpellCritMultiplier(),
+		CritMultiplier:   druid.DefaultCritMultiplier(),
 		BonusCoefficient: 0.6032,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

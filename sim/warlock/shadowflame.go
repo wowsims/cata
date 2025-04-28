@@ -26,7 +26,7 @@ func (warlock *Warlock) registerShadowflame() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
+		CritMultiplier:   warlock.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.10199999809,
 
@@ -48,7 +48,7 @@ func (warlock *Warlock) registerShadowflame() {
 			Flags:          core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,
-			CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
+			CritMultiplier:   warlock.DefaultCritMultiplier(),
 
 			Dot: core.DotConfig{
 				Aura:                core.Aura{Label: "Shadowflame (DoT)"},

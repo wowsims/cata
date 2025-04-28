@@ -31,7 +31,7 @@ func (druid *Druid) registerMaulSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   druid.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  30,
 		BonusCoefficient: 1,

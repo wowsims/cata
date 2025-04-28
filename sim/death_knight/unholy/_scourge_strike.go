@@ -54,7 +54,7 @@ func (dk *UnholyDeathKnight) registerScourgeStrikeSpell() {
 		DamageMultiplierAdditive: 1,
 		DamageMultiplier:         1,
 
-		CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   dk.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

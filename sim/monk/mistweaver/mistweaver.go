@@ -28,10 +28,8 @@ func NewMistweaverMonk(character *core.Character, options *proto.Player) *Mistwe
 	monkOptions := options.GetMistweaverMonk()
 
 	mw := &MistweaverMonk{
-		Monk:           monk.NewMonk(character, monkOptions.Options.ClassOptions, options.TalentsString),
-		StartingStance: monkOptions.Options.Stance,
+		Monk: monk.NewMonk(character, monkOptions.Options.ClassOptions, options.TalentsString),
 	}
-	mw.SetStartingStance()
 	mw.EnableManaBar()
 
 	strAPDep := mw.NewDynamicStatDependency(stats.Strength, stats.AttackPower, 1)
@@ -50,18 +48,8 @@ func NewMistweaverMonk(character *core.Character, options *proto.Player) *Mistwe
 	return mw
 }
 
-func (mw *MistweaverMonk) SetStartingStance() {
-	switch mw.StartingStance {
-	case proto.MonkStance_WiseSerpent:
-		mw.Stance = monk.WiseSerpent
-	case proto.MonkStance_FierceTiger:
-		mw.Stance = monk.FierceTiger
-	}
-}
-
 type MistweaverMonk struct {
 	*monk.Monk
-	StartingStance proto.MonkStance
 }
 
 func (mw *MistweaverMonk) GetMonk() *monk.Monk {
@@ -79,7 +67,6 @@ func (mw *MistweaverMonk) ApplyTalents() {
 }
 
 func (mw *MistweaverMonk) Reset(sim *core.Simulation) {
-	mw.SetStartingStance()
 	mw.Monk.Reset(sim)
 }
 

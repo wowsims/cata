@@ -134,7 +134,6 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 	}
 	core.FillTalentsProto(warlock.Talents.ProtoReflect(), options.TalentsString)
 	warlock.EnableManaBar()
-	warlock.SetDefaultSpellCritMultiplier(warlock.SpellCritMultiplier(1.33, 0.0))
 
 	warlock.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 

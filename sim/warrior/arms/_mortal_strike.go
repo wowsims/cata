@@ -42,7 +42,7 @@ func (war *ArmsWarrior) RegisterMortalStrike() {
 		},
 
 		DamageMultiplier: weaponDamageConfig.CalcSpellDamagePct(),
-		CritMultiplier:   war.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   war.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := weaponDamageConfig.CalcAddedSpellDamage() +

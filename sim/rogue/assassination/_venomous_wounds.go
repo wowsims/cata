@@ -46,7 +46,7 @@ func (sinRogue *AssassinationRogue) registerVenomousWounds() {
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagPassiveSpell,
 
-		CritMultiplier:   sinRogue.MeleeCritMultiplier(false),
+		CritMultiplier:   sinRogue.CritMultiplier(false),
 		ThreatMultiplier: 1,
 		DamageMultiplier: 1,
 

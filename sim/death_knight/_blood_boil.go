@@ -26,7 +26,7 @@ func (dk *DeathKnight) registerBloodBoilSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   dk.DefaultCritMultiplier(),
 		ThreatMultiplier: 1.0,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

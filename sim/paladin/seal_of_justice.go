@@ -16,7 +16,7 @@ func (paladin *Paladin) registerSealOfJustice() {
 		ClassSpellMask: SpellMaskJudgementOfJustice,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   paladin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -37,7 +37,7 @@ func (paladin *Paladin) registerSealOfJustice() {
 		ClassSpellMask: SpellMaskSealOfJustice,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   paladin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

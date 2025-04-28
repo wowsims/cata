@@ -24,7 +24,7 @@ func (warrior *Warrior) RegisterWhirlwindSpell() {
 
 			DamageMultiplier: 1.0,
 			ThreatMultiplier: 1.25,
-			CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
+			CritMultiplier:   warrior.DefaultCritMultiplier(),
 
 			BonusCoefficient: 1,
 
@@ -72,7 +72,7 @@ func (warrior *Warrior) RegisterWhirlwindSpell() {
 
 		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1.25,
-		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   warrior.DefaultCritMultiplier(),
 
 		BonusCoefficient: 1,
 

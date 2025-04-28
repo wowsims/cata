@@ -37,7 +37,7 @@ func (war *ArmsWarrior) RegisterBladestorm() {
 		},
 
 		DamageMultiplier: 1.0,
-		CritMultiplier:   war.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   war.DefaultCritMultiplier(),
 
 		Dot: core.DotConfig{
 			IsAOE: true,

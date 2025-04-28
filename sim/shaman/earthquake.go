@@ -16,7 +16,7 @@ func (shaman *Shaman) registerEarthquakeSpell() {
 		ProcMask:         core.ProcMaskSpellProc,
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
+		CritMultiplier:   shaman.DefaultCritMultiplier(),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.SpellMetrics[target.UnitIndex].Casts-- // Do not count pulses as casts
 			// Coefficient damage calculated manually because it's a Nature spell but deals Physical damage

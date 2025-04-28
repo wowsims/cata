@@ -51,7 +51,7 @@ func (druid *Druid) registerStarfireSpell() {
 
 		DamageMultiplier: 1,
 
-		CritMultiplier: druid.BalanceCritMultiplier(),
+		CritMultiplier: druid.DefaultCritMultiplier(),
 
 		ThreatMultiplier: 1,
 

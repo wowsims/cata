@@ -17,7 +17,7 @@ func (dk *FrostDeathKnight) registerFrostStrikeSpell() {
 
 		DamageMultiplier:         1.3,
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           dk.DefaultMeleeCritMultiplier(),
+		CritMultiplier:           dk.DefaultCritMultiplier(),
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -49,7 +49,7 @@ func (dk *FrostDeathKnight) registerFrostStrikeSpell() {
 
 		DamageMultiplier:         1.3,
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           dk.DefaultMeleeCritMultiplier(),
+		CritMultiplier:           dk.DefaultCritMultiplier(),
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

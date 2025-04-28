@@ -143,7 +143,7 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 				ProcMask:    core.ProcMaskEmpty,
 				Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
 
-				CritMultiplier:   character.DefaultMeleeCritMultiplier(),
+				CritMultiplier:   character.DefaultCritMultiplier(),
 				DamageMultiplier: 1,
 				ThreatMultiplier: 1,
 

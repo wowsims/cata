@@ -28,7 +28,7 @@ func (mage *Mage) registerCombustionSpell() {
 			},
 		},
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
+		CritMultiplier:           mage.DefaultCritMultiplier(),
 		BonusCoefficient:         1.113,
 		ThreatMultiplier:         1,
 
@@ -76,7 +76,7 @@ func (mage *Mage) registerCombustionSpell() {
 		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		CritMultiplier:   mage.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{

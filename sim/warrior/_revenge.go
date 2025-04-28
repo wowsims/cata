@@ -57,7 +57,7 @@ func (warrior *Warrior) RegisterRevengeSpell() {
 		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  121,
-		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   warrior.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			ap := spell.MeleeAttackPower() * 0.31

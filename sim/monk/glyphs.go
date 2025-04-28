@@ -20,18 +20,11 @@ func (monk *Monk) applyGlyphs() {
 }
 
 func (monk *Monk) registerGlyphOfFistsOfFury() {
-	actionID := core.ActionID{SpellID: 125671}
+
 	parryBuff := monk.RegisterAura(core.Aura{
 		Label:    "Glyph of Fists of Fury" + monk.Label,
-		ActionID: actionID,
-
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			monk.PseudoStats.BaseParryChance += 1
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			monk.PseudoStats.BaseParryChance -= 1
-		},
-	})
+		ActionID: core.ActionID{SpellID: 125671},
+	}).AttachAdditivePseudoStatBuff(&monk.PseudoStats.BaseParryChance, 1)
 
 	core.MakeProcTriggerAura(&monk.Unit, core.ProcTrigger{
 		Name:           "Glyph of Fists of Fury Trigger" + monk.Label,

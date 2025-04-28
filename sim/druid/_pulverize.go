@@ -41,7 +41,7 @@ func (druid *Druid) registerPulverizeSpell() {
 		},
 
 		DamageMultiplier: 0.6,
-		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   druid.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 		MaxRange:         core.MaxMeleeRange,

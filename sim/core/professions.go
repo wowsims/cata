@@ -39,7 +39,7 @@ func (character *Character) applyProfessionEffects() {
 			},
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
-			CritMultiplier:   character.DefaultHealingCritMultiplier(),
+			CritMultiplier:   character.DefaultCritMultiplier(),
 			ApplyEffects: func(sim *Simulation, _ *Unit, spell *Spell) {
 				amount := sim.RollWithLabel(720, 2160, "Healing Roll")
 				spell.CalcAndDealHealing(sim, spell.Unit, amount, spell.OutcomeHealingCrit)

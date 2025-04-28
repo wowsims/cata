@@ -74,7 +74,7 @@ func (dk *DeathKnight) registerDeathStrikeSpell() {
 		ClassSpellMask: DeathKnightSpellDeathStrike,
 
 		DamageMultiplier: 1.5,
-		CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   dk.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -110,7 +110,7 @@ func (dk *DeathKnight) registerDeathStrikeSpell() {
 		},
 
 		DamageMultiplier: 1.5,
-		CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   dk.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

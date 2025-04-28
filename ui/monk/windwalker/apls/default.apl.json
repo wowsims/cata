@@ -1,6 +1,7 @@
 {
 	"type": "TypeAPL",
 	"prepullActions": [
+		{ "action": { "castSpell": { "spellId": { "spellId": 103985 } } }, "doAtValue": { "const": { "val": "-20s"} } },
 		{ "action": { "castSpell": { "spellId": { "spellId": 115072 } } }, "doAtValue": { "const": { "val": "-19s" } }, "hide": true },
 		{ "action": { "castSpell": { "spellId": { "spellId": 115072 } } }, "doAtValue": { "const": { "val": "-4s" } } },
 		{ "action": { "castSpell": { "spellId": { "otherId": "OtherActionPotion" } } }, "doAtValue": { "const": { "val": "-0.1s" } } }

@@ -55,7 +55,7 @@ func (shaman *Shaman) registerHealingSurgeSpell() {
 
 		BonusCritRating:  core.CritRatingPerCritChance,
 		DamageMultiplier: 1,
-		CritMultiplier:   shaman.DefaultHealingCritMultiplier(),
+		CritMultiplier:   shaman.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -120,7 +120,7 @@ func (shaman *Shaman) registerRiptideSpell() {
 
 		BonusCritRating:  core.CritRatingPerCritChance,
 		DamageMultiplier: 1,
-		CritMultiplier:   shaman.DefaultHealingCritMultiplier(),
+		CritMultiplier:   shaman.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		Hot: core.DotConfig{
@@ -207,7 +207,7 @@ func (shaman *Shaman) registerHealingWaveSpell() {
 
 		BonusCritRating:  core.CritRatingPerCritChance,
 		DamageMultiplier: 1,
-		CritMultiplier:   shaman.DefaultHealingCritMultiplier(),
+		CritMultiplier:   shaman.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -340,7 +340,7 @@ func (shaman *Shaman) registerChainHealSpell() {
 		},
 		BonusCritRating:  core.CritRatingPerCritChance,
 		DamageMultiplier: 1 + 0.1*float64(shaman.Talents.ImprovedChainHeal),
-		CritMultiplier:   shaman.DefaultHealingCritMultiplier(),
+		CritMultiplier:   shaman.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

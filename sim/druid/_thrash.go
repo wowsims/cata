@@ -39,7 +39,7 @@ func (druid *Druid) registerThrashBearSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   druid.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
