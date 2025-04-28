@@ -308,6 +308,9 @@ func main() {
 			if crafted := source.GetCrafted(); crafted != nil {
 				iconEntry := icons[int(crafted.SpellId)]
 				icon := &proto.IconData{Id: int32(iconEntry.SpellID), Name: iconEntry.Name, Icon: strings.ToLower(database.GetIconName(iconsMap, iconEntry.FDID)), HasBuff: iconEntry.HasBuff}
+				if iconEntry.SpellID == 0 {
+					continue
+				}
 				db.SpellIcons[crafted.SpellId] = icon
 			}
 		}
@@ -327,6 +330,9 @@ func main() {
 			continue
 		}
 		icon := &proto.IconData{Id: int32(iconEntry.SpellID), Name: iconEntry.Name, Icon: strings.ToLower(database.GetIconName(iconsMap, iconEntry.FDID)), HasBuff: iconEntry.HasBuff}
+		if iconEntry.SpellID == 0 {
+			continue
+		}
 		db.SpellIcons[spellId] = icon
 	}
 
@@ -338,6 +344,9 @@ func main() {
 			}
 
 			icon := &proto.IconData{Id: int32(iconEntry.SpellID), Name: iconEntry.Name, Icon: strings.ToLower(database.GetIconName(iconsMap, iconEntry.FDID)), HasBuff: iconEntry.HasBuff}
+			if iconEntry.SpellID == 0 {
+				continue
+			}
 			db.SpellIcons[spellId] = icon
 		}
 	}
@@ -349,6 +358,9 @@ func main() {
 				continue
 			}
 			icon := &proto.IconData{Id: int32(iconEntry.SpellID), Name: iconEntry.Name, Icon: strings.ToLower(database.GetIconName(iconsMap, iconEntry.FDID)), HasBuff: iconEntry.HasBuff}
+			if iconEntry.SpellID == 0 {
+				continue
+			}
 			db.SpellIcons[spellId] = icon
 		}
 	}
@@ -538,7 +550,7 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		return icon.Name != "" && icon.Icon != ""
 	})
 	db.SpellIcons = core.FilterMap(db.SpellIcons, func(_ int32, icon *proto.IconData) bool {
-		return icon.Name != "" && icon.Icon != ""
+		return icon.Name != "" && icon.Icon != "" && icon.Id != 0
 	})
 
 	db.Enchants = core.FilterMap(db.Enchants, func(_ database.EnchantDBKey, enchant *proto.UIEnchant) bool {

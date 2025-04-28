@@ -1,6 +1,8 @@
 package dbc
 
 import (
+	"sort"
+
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
 )
@@ -92,7 +94,9 @@ func (consumable *Consumable) GetNonStatEffectIds() []int32 {
 			}
 		}
 	}
-
+	sort.Slice(effectIds, func(i, j int) bool {
+		return i > j
+	})
 	return effectIds
 }
 func (consumable *Consumable) GetStatModifiers() *stats.Stats {
