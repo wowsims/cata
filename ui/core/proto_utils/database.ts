@@ -33,16 +33,16 @@ export class Database {
 	private static loadPromise: Promise<Database> | null = null;
 	private static instance: Database | null = null;
 
-	static async get(): Promise<Database> {
+	static async get(options: { signal?: AbortSignal } = {}): Promise<Database> {
 		if (!Database.loadPromise) {
 			Database.loadPromise = (async () => {
 				let dbData: UIDatabase;
 				if (READ_JSON) {
-					const resp = await fetch(dbUrlJson);
+					const resp = await fetch(dbUrlJson, { signal: options?.signal });
 					const json = await resp.json();
 					dbData = UIDatabase.fromJson(json);
 				} else {
-					const buf = await fetch(dbUrlBin).then(r => r.arrayBuffer());
+					const buf = await fetch(dbUrlBin, { signal: options?.signal }).then(r => r.arrayBuffer());
 					const bytes = new Uint8Array(buf);
 					dbData = UIDatabase.fromBinary(bytes);
 				}
@@ -332,32 +332,36 @@ export class Database {
 		return Array.from(this.presetTargets.values());
 	}
 
-	static async getItemIconData(itemId: number): Promise<IconData> {
-		const db = await Database.get();
-		if (!db.itemIcons[itemId]) {
-			db.itemIcons[itemId] = Database.getWowheadItemTooltipData(itemId);
+	static async getItemIconData(itemId: number, options: { signal?: AbortSignal } = {}): Promise<IconData> {
+		const db = await Database.get({ signal: options?.signal });
+		const data = await db.spellIcons[itemId];
+
+		if (!data?.icon) {
+			db.itemIcons[itemId] = Database.getWowheadItemTooltipData(itemId, { signal: options?.signal });
 		}
 		return await db.itemIcons[itemId];
 	}
 
-	static async getSpellIconData(spellId: number): Promise<IconData> {
-		const db = await Database.get();
-		if (!db.spellIcons[spellId]) {
-			db.spellIcons[spellId] = Database.getWowheadSpellTooltipData(spellId);
+	static async getSpellIconData(spellId: number, options: { signal?: AbortSignal } = {}): Promise<IconData> {
+		const db = await Database.get({ signal: options?.signal });
+		const data = await db.spellIcons[spellId];
+
+		if (!data?.icon) {
+			db.spellIcons[spellId] = Database.getWowheadSpellTooltipData(spellId, { signal: options?.signal });
 		}
 		return await db.spellIcons[spellId];
 	}
 
-	private static async getWowheadItemTooltipData(id: number): Promise<IconData> {
-		return Database.getWowheadTooltipData(id, 'item');
+	private static async getWowheadItemTooltipData(id: number, options: { signal?: AbortSignal } = {}): Promise<IconData> {
+		return Database.getWowheadTooltipData(id, 'item', { signal: options?.signal });
 	}
-	private static async getWowheadSpellTooltipData(id: number): Promise<IconData> {
-		return Database.getWowheadTooltipData(id, 'spell');
+	private static async getWowheadSpellTooltipData(id: number, options: { signal?: AbortSignal } = {}): Promise<IconData> {
+		return Database.getWowheadTooltipData(id, 'spell', { signal: options?.signal });
 	}
-	private static async getWowheadTooltipData(id: number, tooltipPostfix: string): Promise<IconData> {
-		const url = `https://nether.wowhead.com/cata/tooltip/${tooltipPostfix}/${id}?lvl=${CHARACTER_LEVEL}&dataEnv=${WOWHEAD_EXPANSION_ENV}`;
+	private static async getWowheadTooltipData(id: number, tooltipPostfix: string, options: { signal?: AbortSignal } = {}): Promise<IconData> {
+		const url = `https://nether.wowhead.com/mop-classic/tooltip/${tooltipPostfix}/${id}?lvl=${CHARACTER_LEVEL}&dataEnv=${WOWHEAD_EXPANSION_ENV}`;
 		try {
-			const response = await fetch(url);
+			const response = await fetch(url, { signal: options?.signal });
 			const json = await response.json();
 			return IconData.create({
 				id: id,
@@ -366,6 +370,9 @@ export class Database {
 				hasBuff: json['buff'] !== '',
 			});
 		} catch (e) {
+			if (e instanceof DOMException && e.name === 'AbortError') {
+				return IconData.create();
+			}
 			console.error('Error while fetching url: ' + url + '\n\n' + e);
 			return IconData.create();
 		}
