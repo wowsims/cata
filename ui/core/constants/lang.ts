@@ -28,7 +28,7 @@ export function getLanguageCode(): string {
 
 export function getWowheadLanguagePrefix(): string {
 	const lang = getCurrentLang();
-	return lang === 'en' ? '' : lang + '/';
+	return lang === 'en' ? '' : `${lang}/`;
 }
 
 export function setLanguageCode(newLang: string) {
