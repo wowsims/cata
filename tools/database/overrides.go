@@ -678,6 +678,9 @@ var ConsumableAllowList = []int32{
 	// Dark Rune
 	20520,
 }
+var ConsumableDenyList = []int32{
+	57099,
+}
 
 // Raid buffs / debuffs
 var SharedSpellsIcons = []int32{

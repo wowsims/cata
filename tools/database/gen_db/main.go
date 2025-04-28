@@ -566,12 +566,11 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		if slices.Contains(database.ConsumableAllowList, consumable.Id) {
 			return true
 		}
-
-		if allZero(consumable.Stats) && consumable.Type != proto.ConsumableType_ConsumableTypePotion {
+		if slices.Contains(database.ConsumableAllowList, consumable.Id) {
 			return false
 		}
 
-		if consumable.Id == 57099 {
+		if allZero(consumable.Stats) && consumable.Type != proto.ConsumableType_ConsumableTypePotion {
 			return false
 		}
 

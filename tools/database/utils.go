@@ -62,31 +62,3 @@ func ParseRandomSuffixOptions(optionsString sql.NullString) ([]int32, error) {
 
 	return opts, nil
 }
-
-// func GetProfession(id int) proto.Profession {
-// 	if profession, ok := dbc.MapProfessionIdToProfession[id]; ok {
-// 		return profession
-// 	}
-// 	return 0
-// }
-
-// func GetSubclasses(mask int) []string {
-// 	var result []string
-// 	for flag, name := range dbc.MapItemSubclassNames {
-// 		if mask&int(flag) != 0 {
-// 			result = append(result, name)
-// 		}
-// 	}
-// 	return result
-// }
-
-// func GetClassesFromClassMask(mask int) []proto.Class {
-// 	var result []proto.Class
-// 	for _, class := range classes {
-// 		// Calculate the bit flag using 1 << (ID - 1)
-// 		if mask&(1<<(class.ID-1)) != 0 {
-// 			result = append(result, class.protoClass)
-// 		}
-// 	}
-// 	return result
-// }
