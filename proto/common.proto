@@ -888,7 +888,7 @@ message ItemSpec {
 	int32 enchant = 3;
 	repeated int32 gems = 4;
 	int32 reforging = 5; //reforging id
-	int32 scaled_ilvl = 7;
+	int32 scaled_ilvl = 7; // If this is set it means we select something other than the base item in ScalingOptions
 }
 
 

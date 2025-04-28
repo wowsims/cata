@@ -108,7 +108,7 @@ export const mageGlyphsConfig: GlyphsConfig = {
 		[MageMajorGlyph.GlyphOfInfernoBlast]: {
 			name: "Glyph of Inferno Blast",
 			description: "Your Inferno Blast spell spreads Pyroblast, Ignite, and Combustion to $s1 additional target.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/.jpg",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_mage_infernoblast.jpg",
 		},
 		[MageMajorGlyph.GlyphOfArmors]: {
 			name: "Glyph of Armors",
@@ -130,7 +130,7 @@ export const mageGlyphsConfig: GlyphsConfig = {
 		[MageMinorGlyph.GlyphOfCrittermorph]: {
 			name: "Glyph of Crittermorph",
 			description: "When cast on critters, your Polymorph spells now last $120091d and can be cast on multiple targets.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/.jpg",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_doublepolymorph2.jpg",
 		},
 		[MageMinorGlyph.GlyphOfThePorcupine]: {
 			name: "Glyph of the Porcupine",

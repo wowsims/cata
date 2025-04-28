@@ -33,7 +33,7 @@ export const warlockGlyphsConfig: GlyphsConfig = {
 		[WarlockMajorGlyph.GlyphOfCurseOfTheElements]: {
 			name: "Glyph of Curse of the Elements",
 			description: "Curse of the Elements hits $s1 additional nearby targets.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/.jpg",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/warlock_curse_shadow.jpg",
 		},
 		[WarlockMajorGlyph.GlyphOfImpSwarm]: {
 			name: "Glyph of Imp Swarm",
@@ -110,7 +110,7 @@ export const warlockGlyphsConfig: GlyphsConfig = {
 		[WarlockMinorGlyph.GlyphOfHandOfGuldan]: {
 			name: "Glyph of Hand of Gul'dan",
 			description: "Your Hand of Gul\'dan can now be targeted at a location.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/.jpg",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warlock_handofguldan.jpg",
 		},
 		[WarlockMinorGlyph.GlyphOfVerdantSpheres]: {
 			name: "Glyph of Verdant Spheres",
@@ -180,7 +180,7 @@ export const warlockGlyphsConfig: GlyphsConfig = {
 		[WarlockMinorGlyph.GlyphOfGatewayAttunement]: {
 			name: "Glyph of Gateway Attunement",
 			description: "Demonic Gateways will automatically activate when you step near them.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/.jpg",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_warlock_demonicportal_green.jpg",
 		},
 	},
 };

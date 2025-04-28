@@ -53,7 +53,7 @@ export const paladinGlyphsConfig: GlyphsConfig = {
 		[PaladinMajorGlyph.GlyphOfBlindingLight]: {
 			name: "Glyph of Blinding Light",
 			description: "Your Blinding Light now knocks down targets for $115752d instead of Blinding them.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/.jpg",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_paladin_blindinglight.jpg",
 		},
 		[PaladinMajorGlyph.GlyphOfFinalWrath]: {
 			name: "Glyph of Final Wrath",

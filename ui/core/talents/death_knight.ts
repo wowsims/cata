@@ -108,7 +108,7 @@ export const deathKnightGlyphsConfig: GlyphsConfig = {
 		[DeathKnightMajorGlyph.GlyphOfSwiftDeath]: {
 			name: "Glyph of Swift Death",
 			description: "The haste effect granted by Soul Reaper now also increases your movement speed by $114868s2% for the duration.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/.jpg",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_deathknight_soulreaper.jpg",
 		},
 		[DeathKnightMajorGlyph.GlyphOfLoudHorn]: {
 			name: "Glyph of Loud Horn",
@@ -160,7 +160,7 @@ export const deathKnightGlyphsConfig: GlyphsConfig = {
 		[DeathKnightMinorGlyph.GlyphOfResilientGrip]: {
 			name: "Glyph of Resilient Grip",
 			description: "When your Death Grip ability fails because its target is immune, its cooldown is reset.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/.jpg",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/warlock_curse_shadow.jpg",
 		},
 		[DeathKnightMinorGlyph.GlyphOfDeathGate]: {
 			name: "Glyph of Death Gate",
@@ -185,7 +185,7 @@ export const deathKnightGlyphsConfig: GlyphsConfig = {
 		[DeathKnightMinorGlyph.GlyphOfTheLongWinter]: {
 			name: "Glyph of the Long Winter",
 			description: "The effect of your Horn of Winter now lasts for 1 hour.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/.jpg",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_deathknight_remorselesswinters.jpg",
 		},
 	},
 };

@@ -4,20 +4,22 @@ The primary goal of this project is to provide a framework that makes it easy to
 
 This project is licensed with MIT license. We request that anyone using this software in their own project to make sure there is a user visible link back to the original project.
 
-[Live sims can be found here.](https://wowsims.github.io/mop "https://wowsims.github.io/mop")
+[Live sims can be found here.](https://wowsims.github.io/mop 'https://wowsims.github.io/mop')
 
 [Support our devs via Patreon.](https://www.patreon.com/wowsims)
 
 # Downloading Sim
 
 Links for latest Sim build:
-- [Windows Sim](https://github.com/wowsims/mop/releases/latest/download/wowsimmop-windows.exe.zip)
-- [MacOS Sim](https://github.com/wowsims/mop/releases/latest/download/wowsimmop-amd64-darwin.zip)
-- [Linux Sim](https://github.com/wowsims/mop/releases/latest/download/wowsimmop-amd64-linux.zip)
+
+-   [Windows Sim](https://github.com/wowsims/mop/releases/latest/download/wowsimmop-windows.exe.zip)
+-   [MacOS Sim](https://github.com/wowsims/mop/releases/latest/download/wowsimmop-amd64-darwin.zip)
+-   [Linux Sim](https://github.com/wowsims/mop/releases/latest/download/wowsimmop-amd64-linux.zip)
 
 Then unzip the downloaded file, then open the unzipped file to open the sim in your browser!
 
 Alternatively, you can choose from a specific relase on the [Releases](https://github.com/wowsims/mop/releases) page and click the suitable link under "Assets"
+
 # Local Dev Installation
 
 This project has dependencies on Go >=1.23, protobuf-compiler and the corresponding Go plugins, and node >= 20.
@@ -162,7 +164,7 @@ make wowsimmop
 ./wowsimmop --usefs
 
 # Generate code for the sim database (db.json). Only necessary if you changed the items generator.
-# Useful only if you're actively working on the generator
+# Useful only if you're actively working on the generator and have already run make db locally at least once.
 make simdb
 
 # Generate data from WoW client files

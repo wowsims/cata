@@ -113,7 +113,7 @@ export const warriorGlyphsConfig: GlyphsConfig = {
 		[WarriorMajorGlyph.GlyphOfVictoriousThrow]: {
 			name: "Glyph of Victorious Throw",
 			description: "Increases the range of Victory Rush and Impending Victory by $s1 yards.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/.jpg",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_warrior_wildstrike.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfSpellReflection]: {
 			name: "Glyph of Spell Reflection",

@@ -2,6 +2,7 @@ package dbc
 
 import (
 	"slices"
+	"sort"
 
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
@@ -66,12 +67,22 @@ func (enchant *Enchant) ToProto() *proto.UIEnchant {
 			uiEnchant.EnchantType = proto.EnchantType_EnchantTypeShield
 			uiEnchant.Type = proto.ItemType_ItemTypeWeapon
 		}
-		for flag, name := range MapInventoryTypeToEnchantMetaType {
+		// Sort flags for consistent generation
+		var flags []int
+		for flag := range MapInventoryTypeToEnchantMetaType {
+			flags = append(flags, int(flag))
+		}
+
+		sort.Ints(flags)
+
+		for _, f := range flags {
+			flag := InventoryTypeFlag(f)
+			m := MapInventoryTypeToEnchantMetaType[flag]
 			if enchant.InventoryType.Has(flag) {
 				if uiEnchant.Type != proto.ItemType_ItemTypeUnknown {
-					uiEnchant.ExtraTypes = append(uiEnchant.ExtraTypes, name.ItemType)
+					uiEnchant.ExtraTypes = append(uiEnchant.ExtraTypes, m.ItemType)
 				} else {
-					uiEnchant.Type = name.ItemType
+					uiEnchant.Type = m.ItemType
 				}
 			}
 		}

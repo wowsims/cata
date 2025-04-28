@@ -185,7 +185,7 @@ export const shamanGlyphsConfig: GlyphsConfig = {
 		[ShamanMinorGlyph.GlyphOfTotemicEncirclement]: {
 			name: "Glyph of Totemic Encirclement",
 			description: "When you cast a totem spell, you also place unempowered totems for any elements that are not currently active.  These totems have $s1 health and produce no other effects.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/.jpg",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_shaman_totemrelocation.jpg",
 		},
 		[ShamanMinorGlyph.GlyphOfThunderstorm]: {
 			name: "Glyph of Thunderstorm",
@@ -225,7 +225,7 @@ export const shamanGlyphsConfig: GlyphsConfig = {
 		[ShamanMinorGlyph.GlyphOfElementalFamiliars]: {
 			name: "Glyph of Elemental Familiars",
 			description: "Summons a random Fire, Water, or Nature familiar.  Familiars of different types have a tendency to fight each other.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/.jpg",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_pet_pandarenelemental.jpg",
 		},
 		[ShamanMinorGlyph.GlyphOfAstralFixation]: {
 			name: "Glyph of Astral Fixation",
@@ -235,7 +235,7 @@ export const shamanGlyphsConfig: GlyphsConfig = {
 		[ShamanMinorGlyph.GlyphOfRainOfFrogs]: {
 			name: "Glyph of Rain of Frogs",
 			description: "You summon a rain storm of frogs at your targeted location.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/.jpg",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_pet_toad_blue.jpg",
 		},
 	},
 };

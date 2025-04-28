@@ -1,42 +1,44 @@
 package database
 
 import (
-	"bufio"
+	"encoding/csv"
 	"fmt"
+	"io"
 	"os"
-	"regexp"
+	"path/filepath"
 	"strconv"
 	"strings"
 )
 
 func LoadArtTexturePaths(filePath string) (map[int]string, error) {
-	paths := make(map[int]string)
-
-	// Open the file only once.
-	file, err := os.Open(filePath)
+	f, err := os.Open(filePath)
 	if err != nil {
-		return nil, fmt.Errorf("failed to open file: %v", err)
+		return nil, fmt.Errorf("failed to open file %q: %w", filePath, err)
 	}
-	defer file.Close()
+	defer f.Close()
 
-	// Regex to capture the key and its corresponding path.
-	// It matches lines like:
-	//    [130646]="Interface/AbilitiesFrame/UI-AbilityPanel-BotLeft",
-	// and captures "130646" and "Interface/AbilitiesFrame/UI-AbilityPanel-BotLeft".
-	re := regexp.MustCompile(`\[\s*(\d+)\s*\]\s*=\s*"(.*?)"`)
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		line := scanner.Text()
-		matches := re.FindStringSubmatch(line)
-		if len(matches) == 3 {
-			key, _ := strconv.Atoi(matches[1])
-			value := matches[2]
-			paths[key] = value
+	r := csv.NewReader(f)
+	r.Comma = ';'
+	r.TrimLeadingSpace = true
+
+	paths := make(map[int]string)
+	for {
+		record, err := r.Read()
+		if err == io.EOF {
+			break
 		}
-	}
+		if err != nil {
+			return nil, fmt.Errorf("error reading CSV: %w", err)
+		}
+		if len(record) < 2 {
+			continue
+		}
 
-	if err := scanner.Err(); err != nil {
-		return nil, fmt.Errorf("error reading file: %v", err)
+		key, err := strconv.Atoi(record[0])
+		if err != nil {
+			return nil, fmt.Errorf("invalid key %q on line %v: %w", record[0], record, err)
+		}
+		paths[key] = record[1]
 	}
 
 	return paths, nil
@@ -48,10 +50,9 @@ func GetIconName(artPaths map[int]string, fdid int) string {
 		return ""
 	}
 
-	parts := strings.Split(path, "/")
-	if len(parts) == 0 {
-		return ""
-	}
-	iconName := strings.ReplaceAll(parts[len(parts)-1], " ", "-") //Wowhhead doesnt trim space..
-	return iconName
+	fileName := filepath.Base(path)
+	fileName = strings.ReplaceAll(fileName, " ", "-")
+	fileName = strings.TrimSuffix(fileName, filepath.Ext(fileName))
+
+	return strings.ToLower(fileName)
 }
