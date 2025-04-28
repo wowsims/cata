@@ -481,6 +481,9 @@ func InferPhase(item *proto.UIItem) int32 {
 // Filters out entities which shouldn't be included anywhere.
 func ApplyGlobalFilters(db *database.WowDatabase) {
 	db.Items = core.FilterMap(db.Items, func(_ int32, item *proto.UIItem) bool {
+		if _, ok := database.ItemAllowList[item.Id]; ok {
+			return true
+		}
 		if _, ok := database.ItemDenyList[item.Id]; ok {
 			return false
 		}
