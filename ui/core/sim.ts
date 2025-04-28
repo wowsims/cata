@@ -3,6 +3,7 @@ import { SimRequest } from '../worker/types';
 import { getBrowserLanguageCode, setLanguageCode } from './constants/lang';
 import * as OtherConstants from './constants/other';
 import { Encounter } from './encounter';
+import { getCurrentLang, setCurrentLang } from './locale_service';
 import { Player, UnitMetadata } from './player';
 import {
 	BulkSettings,
@@ -183,6 +184,8 @@ export class Sim {
 		this.changeEmitter = TypedEvent.onAny([this.settingsChangeEmitter, this.raid.changeEmitter, this.encounter.changeEmitter]);
 
 		TypedEvent.onAny([this.raid.changeEmitter, this.encounter.changeEmitter]).on(eventID => this.updateCharacterStats(eventID));
+
+		this.language = getCurrentLang();
 	}
 
 	waitForInit(): Promise<void> {
@@ -729,6 +732,7 @@ export class Sim {
 		newLanguage = newLanguage || getBrowserLanguageCode();
 		if (newLanguage != this.language) {
 			this.language = newLanguage;
+			setCurrentLang(this.language);
 			setLanguageCode(this.language);
 			this.languageChangeEmitter.emit(eventID);
 		}
