@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/tools/database/dbc"
 )
 
@@ -1132,4 +1133,68 @@ func LoadSpells(dbHelper *DBHelper) ([]dbc.Spell, error) {
 
 	fmt.Println("Loaded spells:", len(spells))
 	return spells, nil
+}
+
+func ScanDropRow(rows *sql.Rows) (int, *proto.DropSource, error) {
+	var (
+		itemID int
+		mask   int
+		ds     proto.DropSource
+	)
+	err := rows.Scan(
+		&itemID,
+		&mask,
+		&ds.NpcId,
+		&ds.ZoneId,
+		&ds.OtherName,
+	)
+
+	if err != nil {
+		return 0, &ds, fmt.Errorf("scanning drop row: %w", err)
+	}
+	return itemID, &ds, nil
+}
+
+func LoadDropSources(dbHelper *DBHelper) (map[int][]*proto.DropSource, error) {
+	const query = `
+		SELECT DISTINCT
+		jei.ItemID,
+		jei.DifficultyMask,
+		0                               AS NpcId,
+		COALESCE(COALESCE(
+			NULLIF(ji.AreaID, 0),
+			at.ID
+		), 0)                                AS ZoneId,
+		je.Name_lang                     AS OtherName
+		FROM JournalEncounterItem AS jei
+		INNER JOIN JournalEncounter AS je
+		ON je.ID = jei.JournalEncounterID
+		INNER JOIN JournalInstance AS ji
+		ON ji.ID = je.JournalInstanceID
+		LEFT JOIN AreaTable AS at
+		ON (
+			at.ZoneName       = ji.Name_lang
+			OR at.AreaName_lang  = ji.Name_lang
+		)
+		GROUP BY jei.ItemID
+    `
+	rows, err := dbHelper.db.Query(query)
+	if err != nil {
+		return nil, fmt.Errorf("querying drop sources: %w", err)
+	}
+	defer rows.Close()
+
+	sourcesByItem := make(map[int][]*proto.DropSource)
+	for rows.Next() {
+		itemID, raw, err := ScanDropRow(rows)
+		if err != nil {
+			return nil, err
+		}
+		sourcesByItem[itemID] = append(sourcesByItem[itemID], raw)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("iterating drop rows: %w", err)
+	}
+
+	return sourcesByItem, nil
 }
