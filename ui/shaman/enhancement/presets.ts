@@ -90,9 +90,6 @@ export const StandardTalents = {
 			major1: ShamanMajorGlyph.GlyphOfLightningShield,
 			major2: ShamanMajorGlyph.GlyphOfHealingStreamTotem,
 			major3: ShamanMajorGlyph.GlyphOfFireNova,
-			minor1: ShamanMinorGlyph.GlyphOfWaterWalking,
-			minor2: ShamanMinorGlyph.GlyphOfRenewedLife,
-			minor3: ShamanMinorGlyph.GlyphOfTheArcticWolf,
 		}),
 	}),
 };

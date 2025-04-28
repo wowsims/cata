@@ -75,7 +75,6 @@ export const CombatTalents = {
 		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: RogueMajorGlyph.GlyphOfBladeFlurry,
-			major2: RogueMajorGlyph.GlyphOfTricksOfTheTrade,
 			major3: RogueMajorGlyph.GlyphOfGouge,
 		}),
 	}),

@@ -1,12 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import {
-	ConsumesSpec,
-	Glyphs,
-	Profession,
-	PseudoStat,
-	Race,
-	Stat,
-} from '../../core/proto/common.js';
+import { ConsumesSpec, Glyphs, Profession, PseudoStat, Race, Stat } from '../../core/proto/common.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import { ProtectionWarrior_Options as ProtectionWarriorOptions, WarriorMajorGlyph, WarriorMinorGlyph } from '../../core/proto/warrior.js';
 import { Stats } from '../../core/proto_utils/stats';
@@ -65,11 +58,6 @@ export const StandardTalents = {
 		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: WarriorMajorGlyph.GlyphOfShieldWall,
-			major2: WarriorMajorGlyph.GlyphOfShockwave,
-			major3: WarriorMajorGlyph.GlyphOfThunderClap,
-			minor1: WarriorMinorGlyph.GlyphOfBattle,
-			minor2: WarriorMinorGlyph.GlyphOfBerserkerRage,
-			minor3: WarriorMinorGlyph.GlyphOfDemoralizingShout,
 		}),
 	}),
 };

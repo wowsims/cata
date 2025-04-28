@@ -47,11 +47,11 @@ const FURY_SMF_PRESET_OPTIONS = {
 						player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeTwoHand,
 					message: 'Check your gear: You have a two-handed weapon equipped, but the selected option is for one-handed weapons.',
 				},
-				{
-					condition: (player: Player<Spec.SpecFuryWarrior>) =>
-						player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeTwoHand || !player.getTalents().singleMindedFury,
-					message: "Check your talents: You have selected a two-handed spec but don't have [Single-Minded Fury] talented.",
-				},
+				// {
+				// 	condition: (player: Player<Spec.SpecFuryWarrior>) =>
+				// 		player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeTwoHand || !player.getTalents().singleMindedFury,
+				// 	message: "Check your talents: You have selected a two-handed spec but don't have [Single-Minded Fury] talented.",
+				// },
 			],
 			player,
 		);
@@ -66,10 +66,10 @@ const FURY_TG_PRESET_OPTIONS = {
 						player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeOneHand,
 					message: 'Check your gear: You have a one-handed weapon equipped, but the selected option is for two-handed weapons.',
 				},
-				{
-					condition: (player: Player<Spec.SpecFuryWarrior>) => !player.getTalents().titansGrip,
-					message: "Check your talents: You have selected a one-handed spec but don't have [Titan's Grip] talented.",
-				},
+				// {
+				// 	condition: (player: Player<Spec.SpecFuryWarrior>) => !player.getTalents().titansGrip,
+				// 	message: "Check your talents: You have selected a one-handed spec but don't have [Titan's Grip] talented.",
+				// },
 			],
 			player,
 		);
@@ -186,12 +186,7 @@ export const FurySMFTalents = {
 	data: SavedTalents.create({
 		talentsString: '',
 		glyphs: Glyphs.create({
-			major1: WarriorMajorGlyph.GlyphOfCleaving,
-			major2: WarriorMajorGlyph.GlyphOfDeathWish,
 			major3: WarriorMajorGlyph.GlyphOfColossusSmash,
-			minor1: WarriorMinorGlyph.GlyphOfCommand,
-			minor2: WarriorMinorGlyph.GlyphOfBattle,
-			minor3: WarriorMinorGlyph.GlyphOfBerserkerRage,
 		}),
 	}),
 	...FURY_SMF_PRESET_OPTIONS,
@@ -202,12 +197,7 @@ export const FuryTGTalents = {
 	data: SavedTalents.create({
 		talentsString: '',
 		glyphs: Glyphs.create({
-			major1: WarriorMajorGlyph.GlyphOfCleaving,
-			major2: WarriorMajorGlyph.GlyphOfDeathWish,
 			major3: WarriorMajorGlyph.GlyphOfColossusSmash,
-			minor1: WarriorMinorGlyph.GlyphOfCommand,
-			minor2: WarriorMinorGlyph.GlyphOfBattle,
-			minor3: WarriorMinorGlyph.GlyphOfBerserkerRage,
 		}),
 	}),
 	...FURY_TG_PRESET_OPTIONS,

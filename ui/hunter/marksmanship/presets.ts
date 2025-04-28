@@ -10,7 +10,6 @@ import {
 } from '../../core/proto/hunter';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
-import { ferocityDefault } from '../../core/talents/hunter_pet';
 import AoeApl from './apls/aoe.apl.json';
 import MmApl from './apls/mm.apl.json';
 import P1MMGear from './gear_sets/p1_mm.gear.json';
@@ -80,21 +79,14 @@ export const MarksmanTalents = {
 		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: MajorGlyph.GlyphOfDisengage,
-			major2: MajorGlyph.GlyphOfRaptorStrike,
-			major3: MajorGlyph.GlyphOfTrapLauncher,
 		}),
 	}),
 };
-
-const mmAdj = ferocityDefault;
-mmAdj.wildHunt = 1;
-mmAdj.sharkAttack = 1;
 
 export const MMDefaultOptions = HunterOptions.create({
 	classOptions: {
 		useHuntersMark: true,
 		petType: PetType.Wolf,
-		petTalents: mmAdj,
 		petUptime: 1,
 	},
 });

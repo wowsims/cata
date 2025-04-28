@@ -1,12 +1,7 @@
 import * as Mechanics from '../../core/constants/mechanics.js';
 import * as PresetUtils from '../../core/preset_utils.js';
 import { Conjured, Consumes, ConsumesSpec, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Spec, Stat, TinkerHands } from '../../core/proto/common';
-import {
-	DruidMajorGlyph,
-	DruidMinorGlyph,
-	GuardianDruid_Options as DruidOptions,
-	GuardianDruid_Rotation as DruidRotation,
-} from '../../core/proto/druid.js';
+import { DruidMajorGlyph, DruidMinorGlyph, GuardianDruid_Options as DruidOptions, GuardianDruid_Rotation as DruidRotation } from '../../core/proto/druid.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -111,9 +106,6 @@ export const StandardTalents = {
 			major1: DruidMajorGlyph.GlyphOfFrenziedRegeneration,
 			major2: DruidMajorGlyph.GlyphOfMaul,
 			major3: DruidMajorGlyph.GlyphOfRebirth,
-			minor1: DruidMinorGlyph.GlyphOfDash,
-			minor2: DruidMinorGlyph.GlyphOfChallengingRoar,
-			minor3: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
 		}),
 	}),
 };
@@ -126,9 +118,6 @@ export const InfectedWoundsBuild = {
 			major1: DruidMajorGlyph.GlyphOfFrenziedRegeneration,
 			major2: DruidMajorGlyph.GlyphOfMaul,
 			major3: DruidMajorGlyph.GlyphOfRebirth,
-			minor1: DruidMinorGlyph.GlyphOfDash,
-			minor2: DruidMinorGlyph.GlyphOfChallengingRoar,
-			minor3: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
 		}),
 	}),
 };

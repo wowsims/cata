@@ -146,10 +146,6 @@ export const StandardTalents = {
 		glyphs: Glyphs.create({
 			major1: MajorGlyph.GlyphOfFade,
 			major2: MajorGlyph.GlyphOfInnerFire,
-			major3: MajorGlyph.GlyphOfSpiritTap,
-			minor1: MinorGlyph.GlyphOfFading,
-			minor2: MinorGlyph.GlyphOfFortitude,
-			minor3: MinorGlyph.GlyphOfShadowfiend,
 		}),
 	}),
 };

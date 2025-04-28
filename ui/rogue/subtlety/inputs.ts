@@ -9,5 +9,5 @@ export const HonorAmongThievesCritRate = InputHelpers.makeSpecOptionsNumberInput
 	fieldName: 'honorAmongThievesCritRate',
 	label: 'Honor of Thieves Crit Rate',
 	labelTooltip: 'Number of crits other group members generate within 100 seconds',
-	showWhen: (player: Player<Spec.SpecSubtletyRogue>) => player.getTalents().honorAmongThieves > 0,
+	showWhen: (player: Player<Spec.SpecSubtletyRogue>) => false,
 });

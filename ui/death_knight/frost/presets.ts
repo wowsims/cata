@@ -3,16 +3,7 @@ import { Player } from '../../core/player';
 import * as PresetUtils from '../../core/preset_utils';
 import { makeSpecChangeWarningToast } from '../../core/preset_utils';
 import { APLRotation_Type as APLRotationType } from '../../core/proto/apl';
-import {
-	ConsumesSpec,
-	Glyphs,
-	HandType,
-	ItemSlot,
-	Profession,
-	PseudoStat,
-	Spec,
-	Stat,
-} from '../../core/proto/common';
+import { ConsumesSpec, Glyphs, HandType, ItemSlot, Profession, PseudoStat, Spec, Stat } from '../../core/proto/common';
 import { DeathKnightMajorGlyph, DeathKnightMinorGlyph, FrostDeathKnight_Options } from '../../core/proto/death_knight';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
@@ -41,10 +32,10 @@ const DW_PRESET_OPTIONS = {
 						player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeTwoHand,
 					message: 'Check your gear: You have a two-handed weapon equipped, but the selected option is for dual wield.',
 				},
-				{
-					condition: (player: Player<Spec.SpecFrostDeathKnight>) => !player.getTalents().threatOfThassarian,
-					message: "Check your talents: You have selected a dual-wield spec but don't have [Threat Of Thassarian] talented.",
-				},
+				// {
+				// 	condition: (player: Player<Spec.SpecFrostDeathKnight>) => !player.getTalents().threatOfThassarian,
+				// 	message: "Check your talents: You have selected a dual-wield spec but don't have [Threat Of Thassarian] talented.",
+				// },
 			],
 			player,
 		);
@@ -60,10 +51,10 @@ const TWOHAND_PRESET_OPTIONS = {
 						player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeOneHand,
 					message: 'Check your gear: You have a one-handed weapon equipped, but the selected option is for dual wield',
 				},
-				{
-					condition: (player: Player<Spec.SpecFrostDeathKnight>) => !player.getTalents().mightOfTheFrozenWastes,
-					message: "Check your talents: You have selected a two-handed spec but don't have [Might of the Frozen Wastes] talented",
-				},
+				// {
+				// 	condition: (player: Player<Spec.SpecFrostDeathKnight>) => !player.getTalents().mightOfTheFrozenWastes,
+				// 	message: "Check your talents: You have selected a two-handed spec but don't have [Might of the Frozen Wastes] talented",
+				// },
 			],
 			player,
 		);
@@ -200,7 +191,6 @@ export const TwoHandTalents = {
 		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: DeathKnightMajorGlyph.GlyphOfPestilence,
-			major2: DeathKnightMajorGlyph.GlyphOfBloodBoil,
 			major3: DeathKnightMajorGlyph.GlyphOfDarkSuccor,
 			minor1: DeathKnightMinorGlyph.GlyphOfDeathGate,
 			minor2: DeathKnightMinorGlyph.GlyphOfPathOfFrost,
@@ -216,7 +206,6 @@ export const MasterfrostTalents = {
 		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: DeathKnightMajorGlyph.GlyphOfPestilence,
-			major2: DeathKnightMajorGlyph.GlyphOfBloodBoil,
 			major3: DeathKnightMajorGlyph.GlyphOfDarkSuccor,
 			minor1: DeathKnightMinorGlyph.GlyphOfDeathGate,
 			minor2: DeathKnightMinorGlyph.GlyphOfPathOfFrost,

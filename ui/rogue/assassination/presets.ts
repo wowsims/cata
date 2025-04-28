@@ -98,7 +98,6 @@ export const AssassinationTalentsDefault = {
 		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: RogueMajorGlyph.GlyphOfFeint,
-			major2: RogueMajorGlyph.GlyphOfTricksOfTheTrade,
 			major3: RogueMajorGlyph.GlyphOfSprint,
 		}),
 	}),

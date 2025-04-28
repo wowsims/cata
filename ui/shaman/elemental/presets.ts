@@ -75,10 +75,7 @@ export const TalentsTotemDuration = {
 		glyphs: Glyphs.create({
 			major1: ShamanMajorGlyph.GlyphOfLightningShield,
 			major2: ShamanMajorGlyph.GlyphOfHealingStreamTotem,
-			major3: ShamanMajorGlyph.GlyphOfStoneclawTotem,
 			minor1: ShamanMinorGlyph.GlyphOfThunderstorm,
-			minor2: ShamanMinorGlyph.GlyphOfRenewedLife,
-			minor3: ShamanMinorGlyph.GlyphOfTheArcticWolf,
 		}),
 	}),
 };
@@ -90,10 +87,7 @@ export const TalentsImprovedShields = {
 		glyphs: Glyphs.create({
 			major1: ShamanMajorGlyph.GlyphOfLightningShield,
 			major2: ShamanMajorGlyph.GlyphOfHealingStreamTotem,
-			major3: ShamanMajorGlyph.GlyphOfStoneclawTotem,
 			minor1: ShamanMinorGlyph.GlyphOfThunderstorm,
-			minor2: ShamanMinorGlyph.GlyphOfRenewedLife,
-			minor3: ShamanMinorGlyph.GlyphOfTheArcticWolf,
 		}),
 	}),
 };

@@ -97,10 +97,7 @@ export const FireTalents = {
 		talentsString: '212111',
 		glyphs: Glyphs.create({
 			major1: MajorGlyph.GlyphOfEvocation,
-			major2: MajorGlyph.GlyphOfDragonsBreath,
-			major3: MajorGlyph.GlyphOfInvisibility,
 			minor1: MinorGlyph.GlyphOfMirrorImage,
-			minor2: MinorGlyph.GlyphOfArmors,
 			minor3: MinorGlyph.GlyphOfTheMonkey,
 		}),
 	}),

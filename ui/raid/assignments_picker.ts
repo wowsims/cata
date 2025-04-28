@@ -179,9 +179,7 @@ class UnholyFrenzyPicker extends AssignedBuffPicker {
 	}
 
 	getSourcePlayers(): Array<Player<any>> {
-		return this.raidSimUI
-			.getActivePlayers()
-			.filter(player => player.isSpec(Spec.SpecUnholyDeathKnight) && (player.getTalents() as DeathKnightTalents).unholyFrenzy);
+		return this.raidSimUI.getActivePlayers().filter(player => player.isSpec(Spec.SpecUnholyDeathKnight) && false);
 	}
 
 	getPlayerValue(player: Player<any>): UnitReference {

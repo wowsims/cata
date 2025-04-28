@@ -77,11 +77,7 @@ export const BeastMasteryTalents = {
 	name: 'Beast Mastery',
 	data: SavedTalents.create({
 		talentsString: '',
-		glyphs: Glyphs.create({
-			major1: MajorGlyph.GlyphOfBestialWrath,
-			major2: MajorGlyph.GlyphOfRaptorStrike,
-			major3: MajorGlyph.GlyphOfTrapLauncher,
-		}),
+		glyphs: Glyphs.create({}),
 	}),
 };
 
@@ -90,20 +86,6 @@ export const BMDefaultOptions = BeastMasteryOptions.create({
 		petUptime: 1,
 		useHuntersMark: true,
 		petType: PetType.Wolf,
-		petTalents: {
-			serpentSwiftness: 2,
-			dash: true,
-			bloodthirsty: 1,
-			spikedCollar: 3,
-			boarsSpeed: true,
-			cullingTheHerd: 3,
-			charge: true,
-			spidersBite: 3,
-			rabid: true,
-			callOfTheWild: true,
-			sharkAttack: 2,
-			wildHunt: 2,
-		},
 	},
 });
 

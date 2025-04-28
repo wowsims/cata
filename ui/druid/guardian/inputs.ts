@@ -27,22 +27,23 @@ export const GuardianDruidRotationConfig = {
 		InputHelpers.makeRotationNumberInput<Spec.SpecGuardianDruid>({
 			fieldName: 'demoTime',
 			label: 'Demo Roar refresh leeway',
-			labelTooltip: 'Refresh Demoralizing Roar when remaining duration is less than this value (in seconds). Larger values provide safety buffer against misses, but at the cost of lower DPS.',
-			showWhen: (player: Player<Spec.SpecGuardianDruid>) =>
-				player.getSimpleRotation().maintainDemoralizingRoar,
+			labelTooltip:
+				'Refresh Demoralizing Roar when remaining duration is less than this value (in seconds). Larger values provide safety buffer against misses, but at the cost of lower DPS.',
+			showWhen: (player: Player<Spec.SpecGuardianDruid>) => player.getSimpleRotation().maintainDemoralizingRoar,
 		}),
 		InputHelpers.makeRotationNumberInput<Spec.SpecGuardianDruid>({
 			fieldName: 'pulverizeTime',
 			label: 'Pulverize refresh leeway',
-			labelTooltip: 'Refresh Pulverize when remaining duration is less than this value (in seconds). Note that Mangle, Thrash, and Faerie Fire usage on cooldown takes priority over this rule, unless Lacerate itself is about to fall off.',
+			labelTooltip:
+				'Refresh Pulverize when remaining duration is less than this value (in seconds). Note that Mangle, Thrash, and Faerie Fire usage on cooldown takes priority over this rule, unless Lacerate itself is about to fall off.',
 		}),
-		InputHelpers.makeRotationBooleanInput<Spec.SpecGuardianDruid>({
-			fieldName: 'prepullStampede',
-			label: 'Assume pre-pull Stampede',
-			labelTooltip: 'Activate Stampede Haste buff at the start of each pull. Models the effects of initiating the pull with Feral Charge.',
-			showWhen: (player: Player<Spec.SpecGuardianDruid>) =>
-				player.getTalents().stampede > 0,
-			changeEmitter: (player: Player<Spec.SpecGuardianDruid>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
-		}),
+		// InputHelpers.makeRotationBooleanInput<Spec.SpecGuardianDruid>({
+		// 	fieldName: 'prepullStampede',
+		// 	label: 'Assume pre-pull Stampede',
+		// 	labelTooltip: 'Activate Stampede Haste buff at the start of each pull. Models the effects of initiating the pull with Feral Charge.',
+		// 	showWhen: (player: Player<Spec.SpecGuardianDruid>) =>
+		// 		player.getTalents().stampede > 0,
+		// 	changeEmitter: (player: Player<Spec.SpecGuardianDruid>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
+		// }),
 	],
 };

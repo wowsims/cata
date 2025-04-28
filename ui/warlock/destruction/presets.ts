@@ -66,10 +66,7 @@ export const DestructionTalents = {
 		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: MajorGlyph.GlyphOfLifeTap,
-			major2: MajorGlyph.GlyphOfSoulLink,
 			major3: MajorGlyph.GlyphOfHealthstone,
-			minor1: MinorGlyph.GlyphOfDrainSoul,
-			minor2: MinorGlyph.GlyphOfRitualOfSouls,
 			minor3: MinorGlyph.GlyphOfUnendingBreath,
 		}),
 	}),

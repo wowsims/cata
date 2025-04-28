@@ -1,6 +1,6 @@
 import * as PresetUtils from '../../core/preset_utils';
 import { Consumes, ConsumesSpec, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Stat, TinkerHands } from '../../core/proto/common';
-import { MistweaverMonk_Options as MistweaverMonkOptions, MonkMajorGlyph, MonkMinorGlyph,MonkStance } from '../../core/proto/monk';
+import { MistweaverMonk_Options as MistweaverMonkOptions, MonkMajorGlyph, MonkMinorGlyph, MonkStance } from '../../core/proto/monk';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import DefaultGear from './gear_sets/default.gear.json';
@@ -42,12 +42,12 @@ export const DefaultTalents = {
 	data: SavedTalents.create({
 		talentsString: '',
 		glyphs: Glyphs.create({
-			major1: MonkMajorGlyph.MonkMajorGlyphSpinningCraneKick,
-			major2: MonkMajorGlyph.MonkMajorGlyphTouchOfKarma,
-			major3: MonkMajorGlyph.MonkMajorGlyphZenMeditation,
-			minor1: MonkMinorGlyph.MonkMinorGlyphBlackoutKick,
-			minor2: MonkMinorGlyph.MonkMinorGlyphJab,
-			minor3: MonkMinorGlyph.MonkMinorGlyphWaterRoll,
+			major1: MonkMajorGlyph.GlyphOfSpinningCraneKick,
+			major2: MonkMajorGlyph.GlyphOfTouchOfKarma,
+			major3: MonkMajorGlyph.GlyphOfZenMeditation,
+			minor1: MonkMinorGlyph.GlyphOfBlackoutKick,
+			minor2: MonkMinorGlyph.GlyphOfJab,
+			minor3: MonkMinorGlyph.GlyphOfWaterRoll,
 		}),
 	}),
 };
