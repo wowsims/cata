@@ -113,7 +113,7 @@ export const priestGlyphsConfig: GlyphsConfig = {
 		[PriestMajorGlyph.GlyphOfLevitate]: {
 			name: "Glyph of Levitate",
 			description: "Increases your movement speed while Levitating and for 10 sec afterward by $s1%.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/.jpg",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_priest_pathofdevout.jpg",
 		},
 		[PriestMajorGlyph.GlyphOfReflectiveShield]: {
 			name: "Glyph of Reflective Shield",
@@ -240,12 +240,12 @@ export const priestGlyphsConfig: GlyphsConfig = {
 		[PriestMinorGlyph.GlyphOfTheSha]: {
 			name: "Glyph of the Sha",
 			description: "Transforms your Shadowfiend and Mindbender into a Sha Beast.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/.jpg",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_hand_1h_shaclaw.jpg",
 		},
 		[PriestMinorGlyph.GlyphOfShiftedAppearances]: {
 			name: "Glyph of Shifted Appearances",
 			description: "Void Shift causes you and your target to exchange appearances for several seconds.\u000D\u000A\u000D\u000ADoes not affect mounted players.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/.jpg",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_priest_voidshift.jpg",
 		},
 		[PriestMinorGlyph.GlyphOfInspiredHymns]: {
 			name: "Glyph of Inspired Hymns",

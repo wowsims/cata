@@ -128,7 +128,7 @@ export const druidGlyphsConfig: GlyphsConfig = {
 		[DruidMajorGlyph.GlyphOfMightOfUrsoc]: {
 			name: "Glyph of Might of Ursoc",
 			description: "Increases the health gain from Might of Ursoc by $m1%, but increases the cooldown by ${$m2/60000} min.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/.jpg",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_druid_mightofursoc.jpg",
 		},
 		[DruidMajorGlyph.GlyphOfStampedingRoar]: {
 			name: "Glyph of Stampeding Roar",

@@ -104,8 +104,10 @@ SqliteDbCreator.CreateDatabaseWithDefinitions(dbDefinitions, databaseFile, build
 
 if (HotfixManager.hotfixReaders.Count == 0)
     HotfixManager.LoadCaches(settings.BaseDir);
-if (!HotfixManager.hotfixReaders.TryGetValue(buildNumber, out var hotfixReader))
-    throw new Exception("No hotfix found for build " + buildNumber);
+if (!HotfixManager.hotfixReaders.TryGetValue(buildNumber, out var hotfixReader)) {
+
+    Console.WriteLine("No hotfixes found");
+}
 
 var connectionString = new SqliteConnectionStringBuilder
 {
@@ -120,7 +122,9 @@ conn.Open();
 foreach (var tableName in tables)
 {
     var storage = storageMap[tableName];
-    storage.ApplyingHotfixes(hotfixReader);
+	if(hotfixReader is not null) {
+    	storage.ApplyingHotfixes(hotfixReader);
+	}
     SqliteDataInserter.InsertRows(storage, tableName, dbDefinitions[tableName], conn, buildNumber);
 }
 

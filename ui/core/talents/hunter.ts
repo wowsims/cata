@@ -48,7 +48,7 @@ export const hunterGlyphsConfig: GlyphsConfig = {
 		[HunterMajorGlyph.GlyphOfIceTrap]: {
 			name: "Glyph of Ice Trap",
 			description: "Increases the radius of the effect from your Ice Trap by $56847s1 yards.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/.jpg",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_hunter_icetrap.jpg",
 		},
 		[HunterMajorGlyph.GlyphOfMisdirection]: {
 			name: "Glyph of Misdirection",
@@ -123,7 +123,7 @@ export const hunterGlyphsConfig: GlyphsConfig = {
 		[HunterMajorGlyph.GlyphOfBlackIce]: {
 			name: "Glyph of Black Ice",
 			description: "While you move through the area affected by your Ice Trap you gain $83559s1% movement speed.",
-			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/.jpg",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_hunter_blackicetrap.jpg",
 		},
 		[HunterMajorGlyph.GlyphOfTheLeanPack]: {
 			name: "Glyph of the Lean Pack",
