@@ -214,6 +214,16 @@ func main() {
 	} else {
 		log.Fatalf("Error %v", err)
 	}
+	dropSources, err := database.LoadDropSources(helper)
+	if err == nil {
+		json, _ := json.Marshal(dropSources)
+		if err := writeGzipFile(fmt.Sprintf("%s/dbc/dropSources.json", inputsDir), json); err != nil {
+			log.Fatalf("Error writing file: %v", err)
+		}
+	} else {
+		log.Fatalf("Error %v", err)
+	}
+
 	//Todo: See if we cant get rid of these as well
 	atlaslootDB := database.ReadDatabaseFromJson(tools.ReadFile(fmt.Sprintf("%s/atlasloot_db.json", inputsDir)))
 
@@ -315,6 +325,20 @@ func main() {
 			}
 		}
 
+		// Fetch Journal entry data
+		dropSource := dropSources[int(item.Id)]
+		if dropSource != nil {
+			sources := make([]*proto.UIItemSource, 0, len(dropSource))
+			for _, drop := range dropSource {
+				sources = append(sources, &proto.UIItemSource{
+					Source: &proto.UIItemSource_Drop{
+						Drop: drop,
+					},
+				})
+			}
+			item.Sources = sources
+
+		}
 		// Auto-populate phase information if missing on Wowhead
 		if item.Phase < 2 {
 			item.Phase = InferPhase(item)
@@ -394,18 +418,19 @@ func InferPhase(item *proto.UIItem) int32 {
 	if item.Ilvl <= 463 {
 		return 1
 	}
-	// Since Atlasloot populates before we run inferphase, we can use Atlasloot data to help us infer the phase
-	// Such as here where I check the Zone Id to correctly place Firelands and DS Dungeons in the correct phase
-	// for _, source := range item.Sources {
-	// 	if drop := source.GetDrop(); drop != nil {
-	// 		switch drop.ZoneId {
-	// 		case 5723: // Firelands
-	// 			return 3
-	// 		case 5789, 5844, 5788: // Dragon Soul dungeons
-	// 			return 4
-	// 		}
-	// 	}
-	// }
+	// Since we populate some drops before we run inferphase, we can use Atlasloot data to help us infer the phase
+	for _, source := range item.Sources {
+		if drop := source.GetDrop(); drop != nil {
+			switch drop.ZoneId {
+			case 6297, 6125, 6067: // MSV, Terrace, Heart of Fear
+				return 1
+			case 6622: // Throne of Thunder
+				return 2
+			case 6738: //Siege
+				return 3
+			}
+		}
+	}
 
 	// if item.Ilvl >= 397 {
 	// 	return 4 // Heroic Rag loot should already be tagged correctly by Wowhead.
@@ -566,7 +591,7 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		if slices.Contains(database.ConsumableAllowList, consumable.Id) {
 			return true
 		}
-		if slices.Contains(database.ConsumableAllowList, consumable.Id) {
+		if slices.Contains(database.ConsumableDenyList, consumable.Id) {
 			return false
 		}
 

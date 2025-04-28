@@ -78,6 +78,11 @@
 		"GlyphProperties",
 		"SpellMechanic",
 		"Talent",
-		"TalentTab"
+		"TalentTab",
+		"Map",
+		"JournalEncounter",
+		"JournalEncounterItem",
+		"AreaTable",
+		"JournalInstance"
 	]
 }
