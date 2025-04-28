@@ -30,7 +30,7 @@ func ScanRawItemData(rows *sql.Rows) (dbc.Item, error) {
 		&statValue, &bonusStatString,
 		&statPercentEditor, &socketTypes, &raw.SocketEnchantmentId, &raw.Flags0, &raw.FDID, &raw.ItemSetName, &raw.ItemSetId, &raw.Flags1, &raw.ClassMask, &raw.RaceMask, &raw.QualityModifier, &randomSuffixOptions, &statPercentageOfSocket, &bonusAmountCalculated, &raw.ItemClass, &raw.ItemSubClass)
 	if err != nil {
-		panic("Error scanning item data")
+		panic(err)
 	}
 	var parseErr error
 	raw.RandomSuffixOptions, parseErr = ParseRandomSuffixOptions(randomSuffixOptions)
