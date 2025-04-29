@@ -11,15 +11,11 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"slices"
-	"sort"
-	"strconv"
 	"strings"
 	"sync"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"golang.org/x/exp/constraints"
 	protojson "google.golang.org/protobuf/encoding/protojson"
 	googleProto "google.golang.org/protobuf/proto"
 )
@@ -88,44 +84,6 @@ func WriteFileLines(filePath string, lines []string) {
 	}
 }
 
-func WriteMapSortByIntKey(filePath string, contents map[string]string) {
-	WriteMapCustomSort(filePath, contents, func(a, b string) int {
-		intA, err1 := strconv.Atoi(a)
-		intB, err2 := strconv.Atoi(b)
-		if err1 != nil {
-			panic(err1)
-		}
-		if err2 != nil {
-			panic(err2)
-		}
-		return intA - intB
-	})
-}
-func WriteMapCustomSort(filePath string, contents map[string]string, sortFunc func(a, b string) int) {
-	type Elem struct {
-		key string
-		val string
-	}
-
-	elems := make([]Elem, len(contents))
-	i := 0
-	for k, v := range contents {
-		elems[i] = Elem{key: k, val: v}
-		i++
-	}
-
-	// Sort so the output is stable.
-	slices.SortStableFunc(elems, func(a, b Elem) int {
-		return sortFunc(a.key, b.key)
-	})
-
-	lines := core.MapSlice(elems, func(elem Elem) string {
-		return fmt.Sprintf("%s,%s", elem.key, elem.val)
-	})
-
-	WriteFileLines(filePath, lines)
-}
-
 func WriteProtoArrayToBuffer[T googleProto.Message](arr []T, buffer *bytes.Buffer, name string) {
 	buffer.WriteString("\"")
 	buffer.WriteString(name)
@@ -146,46 +104,6 @@ func WriteProtoArrayToBuffer[T googleProto.Message](arr []T, buffer *bytes.Buffe
 		buffer.WriteString("\n")
 	}
 	buffer.WriteString("]")
-}
-func WriteProtoMapToBuffer[K constraints.Ordered, V googleProto.Message](
-	m map[K]V,
-	buffer *bytes.Buffer,
-	name string,
-) {
-	buffer.WriteString(`"`)
-	buffer.WriteString(name)
-	buffer.WriteString(`":{` + "\n")
-
-	keys := make([]K, 0, len(m))
-	for k := range m {
-		keys = append(keys, k)
-	}
-	sort.Slice(keys, func(i, j int) bool {
-		return keys[i] < keys[j]
-	})
-
-	for i, k := range keys {
-		jsonBytes, err := protojson.MarshalOptions{UseEnumNumbers: true}.Marshal(m[k])
-		if err != nil {
-			log.Printf("[ERROR] Failed to marshal key %v: %v", k, err)
-			continue
-		}
-		if bytes.Equal(jsonBytes, []byte("{}")) {
-			continue
-		}
-		buffer.WriteString(`"`)
-		buffer.WriteString(fmt.Sprint(k))
-		buffer.WriteString(`":`)
-		// Format using Compact() so we get a stable output (no random diffs for version control).
-		json.Compact(buffer, jsonBytes)
-
-		if i != len(keys)-1 {
-			buffer.WriteString(",")
-		}
-		buffer.WriteString("\n")
-	}
-
-	buffer.WriteString("}")
 }
 
 // Fetches web results a single url, and returns the page contents as a string.

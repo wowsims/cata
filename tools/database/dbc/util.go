@@ -12,33 +12,6 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-func SocketCost(level int) float64 {
-	cost := 0.0
-
-	if level >= 19 {
-		cost++
-	}
-	if level >= 31 {
-		cost++
-	}
-	if level >= 43 {
-		cost++
-	}
-	if level >= 55 {
-		cost++
-	}
-	if level >= 89 {
-		cost++
-	}
-	if level >= 100 {
-		cost++
-	}
-	if level >= 178 {
-		cost += 2
-	}
-	return cost
-}
-
 func GetProfession(id int) proto.Profession {
 	if profession, ok := MapProfessionIdToProfession[id]; ok {
 		return profession

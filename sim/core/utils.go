@@ -27,27 +27,6 @@ func MapToFixedStatsArray(statsArr map[int32]float64) []float64 {
 	return arr
 }
 
-func FirstMapEntry[K comparable, V any](m map[K]V) (K, V, bool) {
-	for k, v := range m {
-		return k, v, true
-	}
-	var zeroK K
-	var zeroV V
-	return zeroK, zeroV, false
-}
-
-func LastMapEntry[K comparable, V any](m map[K]V) (K, V, bool) {
-	var lastK K
-	var lastV V
-	found := false
-	for k, v := range m {
-		lastK = k
-		lastV = v
-		found = true
-	}
-	return lastK, lastV, found
-}
-
 func StringFromStatTypes(statTypes []stats.Stat) string {
 	statNames := MapSlice(statTypes, func(statType stats.Stat) string {
 		return statType.StatName()

@@ -146,9 +146,6 @@ func (item *Item) ParseItemFlags(uiItem *proto.UIItem) {
 	}
 }
 
-func GetDbcItem(itemId int) Item {
-	return GetDBC().Items[itemId]
-}
 func (item *Item) GetStats(itemLevel int) *stats.Stats {
 	stats := &stats.Stats{}
 	for i, alloc := range item.BonusStat {

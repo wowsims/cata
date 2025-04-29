@@ -115,14 +115,6 @@ func GetDBC() *DBC {
 	return dbcInstance
 }
 
-func GetDBCWithError() (*DBC, error) {
-	var err error
-	once.Do(func() {
-		err = InitDBC()
-	})
-	return dbcInstance, err
-}
-
 func (d *DBC) loadConsumables(filename string) error {
 	data, err := readGzipFile(filename)
 	if err != nil {

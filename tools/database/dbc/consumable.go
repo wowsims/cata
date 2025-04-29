@@ -71,10 +71,6 @@ func (s ConsumableClass) ToProto() proto.ConsumableType {
 	return proto.ConsumableType_ConsumableTypeUnknown
 }
 
-func GetConsumable(itemId int) Consumable {
-	return dbcInstance.Consumables[itemId]
-}
-
 func (consumable *Consumable) GetNonStatEffectIds() []int32 {
 	var effectIds []int32
 
