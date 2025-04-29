@@ -51,6 +51,10 @@ func (bm *BrewmasterMonk) registerStagger() {
 	}
 
 	bm.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		if spell.SpellSchool != core.SpellSchoolPhysical {
+			return
+		}
+
 		target := result.Target
 		dot := staggerSpell.SelfHot()
 		outstandingDamage := dot.OutstandingDmg()
