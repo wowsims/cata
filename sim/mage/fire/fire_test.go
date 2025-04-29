@@ -60,9 +60,7 @@ var PlayerOptionsFire = &proto.Player_FireMage{
 	},
 }
 var FullArcaneConsumesSpec = &proto.ConsumesSpec{
-	FlaskId:  58086, // Flask of the Draconic Mind
-	FoodId:   62290, // Seafood Magnifique Feast
-	PotId:    58091, // Volcanic Potion
-	PrepotId: 58091, // Volcanic Potion
-	TinkerId: 82174, // Synapse Springs
+	FlaskId: 46376, // Flask of the Frost Wyrm
+	FoodId:  45568, // Firecracker Salmon
+	PotId:   54221, // Potion of Speed
 }

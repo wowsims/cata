@@ -587,7 +587,7 @@ func GenerateProtos() {
 	}
 
 	var classesData []ClassData
-	iconsMap, _ := LoadArtTexturePaths("./assets/db_inputs/ArtTextureID.lua")
+	iconsMap, _ := LoadArtTexturePaths("./tools/DB2ToSqlite/listfile.csv")
 	for _, dbc := range dbcClasses {
 		className := classNameFromDBC(dbc)
 		data := ClassData{

@@ -164,7 +164,7 @@ make wowsimcata
 ./wowsimcata --usefs
 
 # Generate code for the sim database (db.json). Only necessary if you changed the items generator.
-# Useful only if you're actively working on the generator
+# Useful only if you're actively working on the generator and have already run make db locally at least once.
 make simdb
 
 # Generate data from WoW client files

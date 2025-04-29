@@ -180,7 +180,7 @@ func makePotionActivationSpellInternal(potion Consumable, character *Character, 
 	}
 	if potion.BuffDuration > 0 {
 		// Add stat buff aura if applicable
-		aura = character.NewTemporaryStatsAura(potion.Name, actionID, potion.Stats, time.Duration(potion.BuffDuration))
+		aura = character.NewTemporaryStatsAura(potion.Name, actionID, potion.Stats, potion.BuffDuration)
 		mcd.Type = aura.InferCDType()
 	}
 	var gains []resourceGainConfig
@@ -188,22 +188,23 @@ func makePotionActivationSpellInternal(potion Consumable, character *Character, 
 
 	for _, effectID := range potion.EffectIds {
 		e := SpellEffectsById[effectID]
-		if e.Type == proto.EffectType_EffectTypeResourceGain && e.GetResourceType() != 0 {
-			if e.GetResourceType() == proto.ResourceType_ResourceTypeMana && mcd.Type != CooldownTypeSurvival {
+		resourceType := e.GetResourceType()
+		if e.Type == proto.EffectType_EffectTypeResourceGain && resourceType != 0 {
+			if resourceType == proto.ResourceType_ResourceTypeMana && mcd.Type != CooldownTypeSurvival {
 				mcd.Type = CooldownTypeMana
-			} else if e.GetResourceType() == proto.ResourceType_ResourceTypeHealth {
+			} else if resourceType == proto.ResourceType_ResourceTypeHealth {
 				mcd.Type = CooldownTypeSurvival
 			} else {
 				mcd.Type = CooldownTypeDPS
 			}
 			gains = append(gains, resourceGainConfig{
-				resType: e.GetResourceType(),
+				resType: resourceType,
 				min:     e.MinEffectSize,
 				spread:  e.EffectSpread,
 			})
 			// Preload resource types that are found on this item
-			if e.GetResourceType() != 0 && resourceMetrics[e.GetResourceType()] == nil {
-				resourceMetrics[e.GetResourceType()] = character.Metrics.NewResourceMetrics(actionID, e.GetResourceType())
+			if resourceMetrics[resourceType] == nil {
+				resourceMetrics[resourceType] = character.Metrics.NewResourceMetrics(actionID, resourceType)
 			}
 		}
 	}
@@ -228,7 +229,7 @@ func makePotionActivationSpellInternal(potion Consumable, character *Character, 
 			switch config.resType {
 			case proto.ResourceType_ResourceTypeMana:
 				totalRegen := character.ManaRegenPerSecondWhileCombat() * 5
-				manaGain := config.min
+				manaGain := config.min + config.spread
 				manaGain *= stoneMul
 				shouldActivate = character.MaxMana()-(character.CurrentMana()+totalRegen) >= manaGain
 			}

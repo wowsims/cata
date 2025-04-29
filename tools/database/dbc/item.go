@@ -7,8 +7,9 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-const MAX_UPGRADE_LEVELS = 2
-const UPGRADE_SYSTEM_ACTIVE = true
+var MAX_UPGRADE_LEVELS = []int{1, 2}
+
+const UPGRADE_SYSTEM_ACTIVE = false
 
 type Item struct {
 	Id                     int
@@ -122,7 +123,7 @@ func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
 
 func (item *Item) GetMaxIlvl() int {
 	if item.ItemLevel > 458 {
-		return item.ItemLevel + item.UpgradeItemLevelBy(MAX_UPGRADE_LEVELS)
+		return item.ItemLevel + item.UpgradeItemLevelBy(MAX_UPGRADE_LEVELS[len(MAX_UPGRADE_LEVELS)-1])
 	}
 	return item.ItemLevel
 }

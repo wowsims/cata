@@ -677,6 +677,12 @@ var ConsumableAllowList = []int32{
 	13442,
 	// Dark Rune
 	20520,
+	46376, // Flask of the Frost Wyrm
+	45568, // Firecracker Salmon
+	54221, // Potion of Speed
+}
+var ConsumableDenyList = []int32{
+	57099,
 }
 
 // Raid buffs / debuffs

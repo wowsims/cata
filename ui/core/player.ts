@@ -1520,9 +1520,9 @@ export class Player<SpecType extends Spec> {
 
 	fromProto(eventID: EventID, proto: PlayerProto, includeCategories?: Array<SimSettingCategories>) {
 		// Fix potential out-of-date protos before importing
-		Player.updateProtoVersion(proto).then(() => {
-			const loadCategory = (cat: SimSettingCategories) => !includeCategories || includeCategories.length == 0 || includeCategories.includes(cat);
-			TypedEvent.freezeAllAndDo(() => {
+		TypedEvent.freezeAllAndDo(() => {
+			Player.updateProtoVersion(proto).then(() => {
+				const loadCategory = (cat: SimSettingCategories) => !includeCategories || includeCategories.length == 0 || includeCategories.includes(cat);
 				eventID = TypedEvent.nextEventID();
 				if (loadCategory(SimSettingCategories.Gear)) {
 					this.setGear(eventID, proto.equipment ? this.sim.db.lookupEquipmentSpec(proto.equipment) : new Gear({}));

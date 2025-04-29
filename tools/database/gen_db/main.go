@@ -225,7 +225,7 @@ func main() {
 	db.GlyphIDs = getGlyphIDsFromJson(fmt.Sprintf("%s/glyph_id_map.json", inputsDir))
 	db.ReforgeStats = reforgeStats.ToProto()
 
-	iconsMap, _ := database.LoadArtTexturePaths("./assets/db_inputs/ArtTextureID.lua")
+	iconsMap, _ := database.LoadArtTexturePaths("./tools/DB2ToSqlite/listfile.csv")
 	var instance = dbc.GetDBC()
 
 	for _, item := range instance.Items {
@@ -312,7 +312,6 @@ func main() {
 			}
 		}
 
-		// Auto-populate phase information if missing on Wowhead
 		if item.Phase < 2 {
 			item.Phase = InferPhase(item)
 		}
@@ -553,12 +552,10 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		if slices.Contains(database.ConsumableAllowList, consumable.Id) {
 			return true
 		}
-
-		if allZero(consumable.Stats) && consumable.Type != proto.ConsumableType_ConsumableTypePotion {
+		if slices.Contains(database.ConsumableDenyList, consumable.Id) {
 			return false
 		}
-
-		if consumable.Id == 57099 {
+		if allZero(consumable.Stats) && consumable.Type != proto.ConsumableType_ConsumableTypePotion {
 			return false
 		}
 

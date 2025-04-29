@@ -459,7 +459,6 @@ type CharacterSuiteConfig struct {
 	ItemSwapSet      ItemSwapSetCombo
 	StartingDistance float64
 
-	//Consumes    *proto.Consumes
 	Consumables *proto.ConsumesSpec
 
 	IsHealer        bool

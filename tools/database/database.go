@@ -191,11 +191,17 @@ func (db *WowDatabase) MergeEffect(src *proto.SpellEffect) {
 }
 
 func (db *WowDatabase) AddItemIcon(id int32, icon string, name string) {
+	if id == 0 {
+		return
+	}
 	db.ItemIcons[id] = &proto.IconData{Id: id, Name: name, Icon: icon}
 
 }
 
 func (db *WowDatabase) AddSpellIcon(id int32, icon string, name string) {
+	if id == 0 {
+		return
+	}
 	db.SpellIcons[id] = &proto.IconData{Id: id, Name: name, Icon: icon}
 
 }
