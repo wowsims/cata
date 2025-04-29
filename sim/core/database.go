@@ -408,6 +408,7 @@ func NewItem(itemSpec ItemSpec) Item {
 		panic(fmt.Sprintf("No item with id: %d", itemSpec.ID))
 	}
 	scalingOptions := item.ScalingOptions[itemSpec.ScaledIlvl]
+
 	if scalingOptions == nil {
 		for ilvl, scaling := range item.ScalingOptions {
 			if scaling.IsBase {
@@ -419,11 +420,14 @@ func NewItem(itemSpec ItemSpec) Item {
 	} else {
 		item.Ilvl = itemSpec.ScaledIlvl
 	}
-	// Set the itemlevel again because it could be scaled
 
+	// Set the itemlevel again because it could be scaled
 	item.Stats = stats.Stats(MapToFixedStatsArray(scalingOptions.GetStats()))
-	item.WeaponDamageMax = scalingOptions.WeaponDamageMax
-	item.WeaponDamageMin = scalingOptions.WeaponDamageMin
+
+	if scalingOptions.WeaponDamageMax > 0 {
+		item.WeaponDamageMax = scalingOptions.WeaponDamageMax
+		item.WeaponDamageMin = scalingOptions.WeaponDamageMin
+	}
 	item.RandPropPoints = scalingOptions.RandPropPoints
 
 	if itemSpec.RandomSuffix != 0 {

@@ -7,7 +7,8 @@ import (
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
-const MAX_UPGRADE_LEVELS = 2
+var MAX_UPGRADE_LEVELS = []int{1, 2}
+
 const UPGRADE_SYSTEM_ACTIVE = true
 
 type Item struct {
@@ -95,14 +96,16 @@ func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
 	// In P2 of MoP it is expected to be 2 steps
 	//
 	if item.ItemLevel > 458 && UPGRADE_SYSTEM_ACTIVE {
-		for upgradeLevel := range MAX_UPGRADE_LEVELS {
+		for _, upgradeLevel := range MAX_UPGRADE_LEVELS {
 			upgradedIlvl := item.ItemLevel + item.UpgradeItemLevelBy(upgradeLevel)
-			scalingProperties[int32(upgradedIlvl)] = &proto.ScalingItemProperties{
-				WeaponDamageMin: item.WeaponDmgMin(upgradedIlvl),
-				WeaponDamageMax: item.WeaponDmgMax(upgradedIlvl),
-				Stats:           item.GetStats(upgradedIlvl).ToProtoMap(),
-				RandPropPoints:  item.GetRandPropPoints(upgradedIlvl),
-				UpgradeStep:     int32(upgradeLevel), // Upgradestep is for the UI to visualize the upgrade path if needed
+			if upgradedIlvl != item.ItemLevel {
+				scalingProperties[int32(upgradedIlvl)] = &proto.ScalingItemProperties{
+					WeaponDamageMin: item.WeaponDmgMin(upgradedIlvl),
+					WeaponDamageMax: item.WeaponDmgMax(upgradedIlvl),
+					Stats:           item.GetStats(upgradedIlvl).ToProtoMap(),
+					RandPropPoints:  item.GetRandPropPoints(upgradedIlvl),
+					UpgradeStep:     int32(upgradeLevel), // Upgradestep is for the UI to visualize the upgrade path if needed
+				}
 			}
 		}
 	}
@@ -122,7 +125,7 @@ func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
 
 func (item *Item) GetMaxIlvl() int {
 	if item.ItemLevel > 458 {
-		return item.ItemLevel + item.UpgradeItemLevelBy(MAX_UPGRADE_LEVELS)
+		return item.ItemLevel + item.UpgradeItemLevelBy(MAX_UPGRADE_LEVELS[len(MAX_UPGRADE_LEVELS)-1])
 	}
 	return item.ItemLevel
 }
