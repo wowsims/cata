@@ -214,6 +214,7 @@ func main() {
 	} else {
 		log.Fatalf("Error %v", err)
 	}
+
 	//Todo: See if we cant get rid of these as well
 	atlaslootDB := database.ReadDatabaseFromJson(tools.ReadFile(fmt.Sprintf("%s/atlasloot_db.json", inputsDir)))
 
@@ -227,7 +228,7 @@ func main() {
 
 	iconsMap, _ := database.LoadArtTexturePaths("./tools/DB2ToSqlite/listfile.csv")
 	var instance = dbc.GetDBC()
-
+	instance.LoadSpellScaling()
 	for _, item := range instance.Items {
 		parsed := item.ToUIItem()
 		if parsed.Icon == "" {

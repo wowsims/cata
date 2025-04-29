@@ -102,6 +102,7 @@ func InitDBC() error {
 	if err := dbcInstance.loadSpells("./assets/db_inputs/dbc/spells.json"); err != nil {
 		return fmt.Errorf("loading spells: %w", err)
 	}
+	dbcInstance.LoadSpellScaling()
 	return nil
 }
 
