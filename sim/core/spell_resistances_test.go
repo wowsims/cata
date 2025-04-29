@@ -17,7 +17,7 @@ func Test_PartialResistsVsPlayer(t *testing.T) {
 	}
 	defender := &Unit{
 		Type:  PlayerUnit,
-		Level: 90,
+		Level: 85,
 		stats: stats.Stats{},
 	}
 
@@ -82,7 +82,7 @@ func Test_PartialResistsVsPlayer(t *testing.T) {
 func Test_PartialResistsVsBoss(t *testing.T) {
 	attacker := &Unit{
 		Type:  PlayerUnit,
-		Level: 90,
+		Level: 85,
 		stats: stats.Stats{},
 	}
 	defender := &Unit{
