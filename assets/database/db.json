@@ -11077,7 +11077,7 @@
 {"id":62678,"type":3,"stats":[75,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"name":"Crispy \"Bakon\" Snack","icon":"inv_misc_food_71","buffDuration":3600,"effectIds":[89732]},
 {"id":62679,"type":3,"stats":[0,0,110,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"name":"Enriched Fish Biscuit","icon":"inv_misc_food_meat_raw_10","buffDuration":3600,"effectIds":[89735]},
 {"id":63300,"type":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"name":"Rogue's Draught","icon":"inv_potion_24","effectIds":[78550]},
-{"id":67415,"type":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"name":"Draught of War","icon":"inv_misc_potiona4","effectIds":[98601,98597]},
+{"id":67415,"type":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"name":"Draught of War","icon":"inv_misc_potiona4","effectIds":[98597,98601]},
 {"id":67416,"type":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"name":"Mythical Battle Draught","icon":"inv_alchemy_elixir_02","effectIds":[98598]},
 {"id":67438,"type":2,"stats":[0,0,0,0,300,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"name":"Flask of Flowing Water","icon":"inv_potione_4","buffDuration":3600},
 {"id":67944,"type":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"name":"Firelord's Draught","icon":"inv_misc_potiona5"}
