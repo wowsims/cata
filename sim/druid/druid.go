@@ -47,7 +47,6 @@ type Druid struct {
 	FrenziedRegeneration  *DruidSpell
 	Hurricane             *DruidSpell
 	HurricaneTickSpell    *DruidSpell
-	InsectSwarm           *DruidSpell
 	GiftOfTheWild         *DruidSpell
 	Lacerate              *DruidSpell
 	Languish              *DruidSpell
@@ -158,7 +157,6 @@ const (
 	DruidSpellHibernate
 	DruidSpellHurricane
 	DruidSpellInnervate
-	DruidSpellInsectSwarm
 	DruidSpellMangleBear
 	DruidSpellMangleCat
 	DruidSpellMaul
@@ -190,12 +188,12 @@ const (
 
 	DruidSpellLast
 	DruidSpellsAll      = DruidSpellLast<<1 - 1
-	DruidSpellDoT       = DruidSpellInsectSwarm | DruidSpellMoonfireDoT | DruidSpellSunfireDoT
+	DruidSpellDoT       = DruidSpellMoonfireDoT | DruidSpellSunfireDoT
 	DruidSpellHoT       = DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellRegrowth | DruidSpellWildGrowth
-	DruidSpellInstant   = DruidSpellBarkskin | DruidSpellInsectSwarm | DruidSpellMoonfire | DruidSpellStarfall | DruidSpellSunfire | DruidSpellFearieFire | DruidSpellBarkskin
+	DruidSpellInstant   = DruidSpellBarkskin | DruidSpellMoonfire | DruidSpellStarfall | DruidSpellSunfire | DruidSpellFearieFire | DruidSpellBarkskin
 	DruidSpellMangle    = DruidSpellMangleBear | DruidSpellMangleCat
 	DruidArcaneSpells   = DruidSpellMoonfire | DruidSpellMoonfireDoT | DruidSpellStarfire | DruidSpellStarsurge | DruidSpellStarfall
-	DruidNatureSpells   = DruidSpellWrath | DruidSpellInsectSwarm | DruidSpellStarsurge | DruidSpellSunfire | DruidSpellSunfireDoT | DruidSpellTyphoon | DruidSpellHurricane
+	DruidNatureSpells   = DruidSpellWrath | DruidSpellStarsurge | DruidSpellSunfire | DruidSpellSunfireDoT | DruidSpellTyphoon | DruidSpellHurricane
 	DruidHealingSpells  = DruidSpellHealingTouch | DruidSpellRegrowth | DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellNourish | DruidSpellSwiftmend
 	DruidDamagingSpells = DruidArcaneSpells | DruidNatureSpells
 )
@@ -293,7 +291,6 @@ func (druid *Druid) Initialize() {
 
 func (druid *Druid) RegisterBalanceSpells() {
 	druid.registerHurricaneSpell()
-	druid.registerInsectSwarmSpell()
 	druid.registerMoonfireSpell()
 	druid.registerSunfireSpell()
 	// druid.registerStarfireSpell()

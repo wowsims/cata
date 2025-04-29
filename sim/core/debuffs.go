@@ -723,28 +723,6 @@ func MarkOfBloodAura(target *Unit) *Aura {
 	return aura
 }
 
-func InsectSwarmAura(target *Unit) *Aura {
-	aura := target.GetOrRegisterAura(Aura{
-		Label:    "InsectSwarmMiss",
-		ActionID: ActionID{SpellID: 27013},
-		Duration: time.Second * 12,
-	})
-	increasedMissEffect(aura, 0.03)
-	return aura
-}
-
-func increasedMissEffect(aura *Aura, increasedMissChance float64) *ExclusiveEffect {
-	return aura.NewExclusiveEffect("IncreasedMiss", false, ExclusiveEffect{
-		Priority: increasedMissChance,
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.IncreasedMissChance += increasedMissChance
-		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.IncreasedMissChance -= increasedMissChance
-		},
-	})
-}
-
 func CrystalYieldAura(target *Unit) *Aura {
 	return target.GetOrRegisterAura(Aura{
 		Label:    "Crystal Yield",
