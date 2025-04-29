@@ -142,7 +142,7 @@ func TestDamageReductionFromArmor(t *testing.T) {
 	}
 	attacker := Unit{
 		Type:  PlayerUnit,
-		Level: 90,
+		Level: 85,
 	}
 	spell := &Spell{}
 	target.stats = target.initialStats

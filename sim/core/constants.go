@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/mop/sim/core/proto"
 )
 
-const CharacterLevel = 90
+const CharacterLevel = 85
 
 const GCDMin = time.Second * 1
 const GCDDefault = time.Millisecond * 1500
