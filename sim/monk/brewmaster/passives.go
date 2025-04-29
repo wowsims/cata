@@ -10,12 +10,13 @@ import (
 func (bm *BrewmasterMonk) registerPassives() {
 	bm.registerBrewmasterTraining()
 	bm.registerElusiveBrew()
+	bm.registerGiftOfTheOx()
 }
 
 func (bm *BrewmasterMonk) registerBrewmasterTraining() {
 	// Fortifying Brew
 	// Also increases your Stagger amount by 20% while active.
-	// TODO
+
 	// Tiger Palm
 	// Tiger Palm no longer costs Chi, and when you deal damage with Tiger Palm the amount of your next Guard is increased by 15%. Lasts 30 sec.
 	// Tiger Palm Chi mod is implemented in tiger_palm.go
