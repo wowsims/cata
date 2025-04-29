@@ -344,11 +344,11 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			id: 'target-picker-level',
 			label: 'Level',
 			values: [
+				{ name: '85', value: 85 },
 				{ name: '93', value: 93 },
 				{ name: '92', value: 92 },
 				{ name: '91', value: 91 },
 				{ name: '90', value: 90 },
-				{ name: '88', value: 88 },
 			],
 			changedEvent: () => encounter.targetsChangeEmitter,
 			getValue: () => this.getTarget().level,
