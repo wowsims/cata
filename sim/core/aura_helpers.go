@@ -348,9 +348,14 @@ func (character *Character) NewTemporaryStatsAuraWrapped(auraLabel string, actio
 		modConfig(&config)
 	}
 
+	buffedStatTypes := buffs.GetBuffedStatTypes()
+	if amountHealed > 0 {
+		buffedStatTypes = append(buffedStatTypes, stats.Health)
+	}
+
 	return &StatBuffAura{
 		Aura:            character.GetOrRegisterAura(config),
-		BuffedStatTypes: buffs.GetBuffedStatTypes(),
+		BuffedStatTypes: buffedStatTypes,
 	}
 }
 
