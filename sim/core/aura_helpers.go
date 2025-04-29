@@ -305,6 +305,8 @@ func (character *Character) NewTemporaryStatsAuraWrapped(auraLabel string, actio
 	amountHealed := buffs[stats.Health]
 	includesHealthBuff := amountHealed > 0
 
+	buffedStatTypes := buffs.GetBuffedStatTypes()
+
 	if includesHealthBuff {
 		healthMetrics = character.NewHealthMetrics(actionID)
 		buffs[stats.Health] = 0
@@ -346,11 +348,6 @@ func (character *Character) NewTemporaryStatsAuraWrapped(auraLabel string, actio
 
 	if modConfig != nil {
 		modConfig(&config)
-	}
-
-	buffedStatTypes := buffs.GetBuffedStatTypes()
-	if amountHealed > 0 {
-		buffedStatTypes = append(buffedStatTypes, stats.Health)
 	}
 
 	return &StatBuffAura{
