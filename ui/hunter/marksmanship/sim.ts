@@ -116,7 +116,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [HunterInputs.PetTypeInput()],
+	playerIconInputs: [],
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: MMInputs.MMRotationConfig,
 	petConsumeInputs: [],

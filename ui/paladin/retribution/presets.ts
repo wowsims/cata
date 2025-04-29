@@ -98,12 +98,7 @@ export const DefaultTalents = {
 	data: SavedTalents.create({
 		talentsString: '',
 		glyphs: Glyphs.create({
-			major1: PaladinMajorGlyph.GlyphOfTheAsceticCrusader,
-			major2: PaladinMajorGlyph.GlyphOfHammerOfWrath,
 			major3: PaladinMajorGlyph.GlyphOfConsecration,
-			minor1: PaladinMinorGlyph.GlyphOfRighteousness,
-			minor2: PaladinMinorGlyph.GlyphOfTruth,
-			minor3: PaladinMinorGlyph.GlyphOfBlessingOfMight,
 		}),
 	}),
 };

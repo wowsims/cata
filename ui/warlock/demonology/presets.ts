@@ -80,11 +80,7 @@ export const DemonologyTalentsShadowBolt = {
 	data: SavedTalents.create({
 		talentsString: '',
 		glyphs: Glyphs.create({
-			major1: MajorGlyph.GlyphOfShadowBolt,
 			major2: MajorGlyph.GlyphOfLifeTap,
-			major3: MajorGlyph.GlyphOfFelhunter,
-			minor1: MinorGlyph.GlyphOfDrainSoul,
-			minor2: MinorGlyph.GlyphOfRitualOfSouls,
 			minor3: MinorGlyph.GlyphOfUnendingBreath,
 		}),
 	}),
@@ -96,9 +92,6 @@ export const DemonologyTalentsIncinerate = {
 		glyphs: Glyphs.create({
 			major1: MajorGlyph.GlyphOfSoulstone,
 			major2: MajorGlyph.GlyphOfLifeTap,
-			major3: MajorGlyph.GlyphOfSoulLink,
-			minor1: MinorGlyph.GlyphOfDrainSoul,
-			minor2: MinorGlyph.GlyphOfRitualOfSouls,
 			minor3: MinorGlyph.GlyphOfUnendingBreath,
 		}),
 	}),

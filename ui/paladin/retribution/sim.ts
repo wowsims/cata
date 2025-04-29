@@ -7,7 +7,7 @@ import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation, APLRotation_Type } from '../../core/proto/apl.js';
 import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
-import { PaladinPrimeGlyph, PaladinSeal } from '../../core/proto/paladin';
+import { PaladinSeal } from '../../core/proto/paladin';
 import { Stats, UnitStat } from '../../core/proto_utils/stats.js';
 import { TypedEvent } from '../../core/typed_event.js';
 import * as PaladinInputs from '../inputs.js';
@@ -20,7 +20,7 @@ const isGlyphOfSealOfTruthActive = (player: Player<Spec.SpecRetributionPaladin>)
 	// 	player.getPrimeGlyps().includes(PaladinPrimeGlyph.GlyphOfSealOfTruth) &&
 	// 	(currentSeal === PaladinSeal.Truth || currentSeal === PaladinSeal.Righteousness)
 	// );
-	return false
+	return false;
 };
 
 const modifyDisplayStats = (player: Player<Spec.SpecRetributionPaladin>) => {

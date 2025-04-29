@@ -391,36 +391,36 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							actionId: ActionId.fromSpellId(19740),
 							playerData: playerClass(Class.ClassPaladin),
 						},
-						{
-							label: 'Abominations Might',
-							actionId: ActionId.fromSpellId(53138),
-							playerData: playerClassAndTalent(Class.ClassDeathKnight, 'abominationsMight'),
-						},
-						{
-							label: 'Unleashed Rage',
-							actionId: ActionId.fromSpellId(30808),
-							playerData: playerClassAndTalent(Class.ClassShaman, 'unleashedRage'),
-						},
+						// {
+						// 	label: 'Abominations Might',
+						// 	actionId: ActionId.fromSpellId(53138),
+						// 	playerData: playerClassAndTalent(Class.ClassDeathKnight, 'abominationsMight'),
+						// },
+						// {
+						// 	label: 'Unleashed Rage',
+						// 	actionId: ActionId.fromSpellId(30808),
+						// 	playerData: playerClassAndTalent(Class.ClassShaman, 'unleashedRage'),
+						// },
 						{
 							label: 'Trueshot Aura',
 							actionId: ActionId.fromSpellId(19506),
-							playerData: playerClassAndTalent(Class.ClassHunter, 'trueshotAura'),
+							playerData: playerClass(Class.ClassHunter),
 						},
 					],
 				},
 				{
 					label: 'Spell Power',
 					effects: [
-						{
-							label: 'Demonic Pact',
-							actionId: ActionId.fromSpellId(47236),
-							playerData: playerClassAndTalent(Class.ClassWarlock, 'demonicPact'),
-						},
-						{
-							label: 'Totemic Wrath',
-							actionId: ActionId.fromSpellId(77746),
-							playerData: playerClassAndTalent(Class.ClassShaman, 'totemicWrath'),
-						},
+						// {
+						// 	label: 'Demonic Pact',
+						// 	actionId: ActionId.fromSpellId(47236),
+						// 	playerData: playerClassAndTalent(Class.ClassWarlock, 'demonicPact'),
+						// },
+						// {
+						// 	label: 'Totemic Wrath',
+						// 	actionId: ActionId.fromSpellId(77746),
+						// 	playerData: playerClassAndTalent(Class.ClassShaman, 'totemicWrath'),
+						// },
 						{
 							label: 'Arcane Brilliance',
 							actionId: ActionId.fromSpellId(1459),
@@ -439,36 +439,36 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 				{
 					label: '+3% Damage',
 					effects: [
-						{
-							label: 'Communion',
-							actionId: ActionId.fromSpellId(31876),
-							playerData: playerClassAndTalent(Class.ClassPaladin, 'communion'),
-						},
-						{
-							label: 'Arcane Tactics',
-							actionId: ActionId.fromSpellId(82930),
-							playerData: playerClassAndTalent(Class.ClassMage, 'arcaneTactics'),
-						},
-						{
-							label: 'Ferocious Inspiration',
-							actionId: ActionId.fromSpellId(34460),
-							playerData: playerClassAndTalent(Class.ClassHunter, 'ferociousInspiration'),
-						},
+						// {
+						// 	label: 'Communion',
+						// 	actionId: ActionId.fromSpellId(31876),
+						// 	playerData: playerClassAndTalent(Class.ClassPaladin, 'communion'),
+						// },
+						// {
+						// 	label: 'Arcane Tactics',
+						// 	actionId: ActionId.fromSpellId(82930),
+						// 	playerData: playerClassAndTalent(Class.ClassMage, 'arcaneTactics'),
+						// },
+						// {
+						// 	label: 'Ferocious Inspiration',
+						// 	actionId: ActionId.fromSpellId(34460),
+						// 	playerData: playerClassAndTalent(Class.ClassHunter, 'ferociousInspiration'),
+						// },
 					],
 				},
 				{
 					label: 'Melee Haste',
 					effects: [
-						{
-							label: 'Icy Talons',
-							actionId: ActionId.fromSpellId(55610),
-							playerData: playerClassAndTalent(Class.ClassDeathKnight, 'improvedIcyTalons'),
-						},
-						{
-							label: 'Hunting Party',
-							actionId: ActionId.fromSpellId(53290),
-							playerData: playerClassAndTalent(Class.ClassHunter, 'huntingParty'),
-						},
+						// {
+						// 	label: 'Icy Talons',
+						// 	actionId: ActionId.fromSpellId(55610),
+						// 	playerData: playerClassAndTalent(Class.ClassDeathKnight, 'improvedIcyTalons'),
+						// },
+						// {
+						// 	label: 'Hunting Party',
+						// 	actionId: ActionId.fromSpellId(53290),
+						// 	playerData: playerClassAndTalent(Class.ClassHunter, 'huntingParty'),
+						// },
 						{
 							label: 'Windfury Totem',
 							actionId: ActionId.fromSpellId(8512),
@@ -479,16 +479,16 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 				{
 					label: 'Spell Haste',
 					effects: [
-						{
-							label: 'Shadow Form',
-							actionId: ActionId.fromSpellId(15473),
-							playerData: playerClassAndTalent(Class.ClassPriest, 'shadowform'),
-						},
-						{
-							label: 'Moonkin Form',
-							actionId: ActionId.fromSpellId(24858),
-							playerData: playerClassAndTalent(Class.ClassDruid, 'moonkinForm'),
-						},
+						// {
+						// 	label: 'Shadow Form',
+						// 	actionId: ActionId.fromSpellId(15473),
+						// 	playerData: playerClassAndTalent(Class.ClassPriest, 'shadowform'),
+						// },
+						// {
+						// 	label: 'Moonkin Form',
+						// 	actionId: ActionId.fromSpellId(24858),
+						// 	playerData: playerClassAndTalent(Class.ClassDruid, 'moonkinForm'),
+						// },
 						{
 							label: 'Wrath of Air Totem',
 							actionId: ActionId.fromSpellId(3738),
@@ -499,26 +499,26 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 				{
 					label: '+5% Crit',
 					effects: [
-						{
-							label: 'Leader of the Pack',
-							actionId: ActionId.fromSpellId(17007),
-							playerData: playerClassAndTalent(Class.ClassDruid, 'leaderOfThePack'),
-						},
-						{
-							label: 'Elemental Oath',
-							actionId: ActionId.fromSpellId(51470),
-							playerData: playerClassAndTalent(Class.ClassShaman, 'elementalOath'),
-						},
-						{
-							label: 'Honor Among Thieves',
-							actionId: ActionId.fromSpellId(51701),
-							playerData: playerClassAndTalent(Class.ClassRogue, 'honorAmongThieves'),
-						},
-						{
-							label: 'Rampage',
-							actionId: ActionId.fromSpellId(29801),
-							playerData: playerClassAndTalent(Class.ClassWarrior, 'rampage'),
-						},
+						// {
+						// 	label: 'Leader of the Pack',
+						// 	actionId: ActionId.fromSpellId(17007),
+						// 	playerData: playerClassAndTalent(Class.ClassDruid, 'leaderOfThePack'),
+						// },
+						// {
+						// 	label: 'Elemental Oath',
+						// 	actionId: ActionId.fromSpellId(51470),
+						// 	playerData: playerClassAndTalent(Class.ClassShaman, 'elementalOath'),
+						// },
+						// {
+						// 	label: 'Honor Among Thieves',
+						// 	actionId: ActionId.fromSpellId(51701),
+						// 	playerData: playerClassAndTalent(Class.ClassRogue, 'honorAmongThieves'),
+						// },
+						// {
+						// 	label: 'Rampage',
+						// 	actionId: ActionId.fromSpellId(29801),
+						// 	playerData: playerClassAndTalent(Class.ClassWarrior, 'rampage'),
+						// },
 					],
 				},
 				{
@@ -562,31 +562,31 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 				{
 					label: 'Replenishment',
 					effects: [
-						{
-							label: 'Vampiric Touch',
-							actionId: ActionId.fromSpellId(34914),
-							playerData: playerClassAndTalent(Class.ClassPriest, 'vampiricTouch'),
-						},
-						{
-							label: 'Communion',
-							actionId: ActionId.fromSpellId(31876),
-							playerData: playerClassAndTalent(Class.ClassPaladin, 'communion'),
-						},
-						{
-							label: 'Revitalize',
-							actionId: ActionId.fromSpellId(48544),
-							playerData: playerClassAndTalent(Class.ClassDruid, 'revitalize'),
-						},
-						{
-							label: 'Soul Leach',
-							actionId: ActionId.fromSpellId(30295),
-							playerData: playerClassAndTalent(Class.ClassWarlock, 'soulLeech'),
-						},
-						{
-							label: 'Enduring Winter',
-							actionId: ActionId.fromSpellId(86508),
-							playerData: playerClassAndTalent(Class.ClassMage, 'enduringWinter'),
-						},
+						// {
+						// 	label: 'Vampiric Touch',
+						// 	actionId: ActionId.fromSpellId(34914),
+						// 	playerData: playerClassAndTalent(Class.ClassPriest, 'vampiricTouch'),
+						// },
+						// {
+						// 	label: 'Communion',
+						// 	actionId: ActionId.fromSpellId(31876),
+						// 	playerData: playerClassAndTalent(Class.ClassPaladin, 'communion'),
+						// },
+						// {
+						// 	label: 'Revitalize',
+						// 	actionId: ActionId.fromSpellId(48544),
+						// 	playerData: playerClassAndTalent(Class.ClassDruid, 'revitalize'),
+						// },
+						// {
+						// 	label: 'Soul Leach',
+						// 	actionId: ActionId.fromSpellId(30295),
+						// 	playerData: playerClassAndTalent(Class.ClassWarlock, 'soulLeech'),
+						// },
+						// {
+						// 	label: 'Enduring Winter',
+						// 	actionId: ActionId.fromSpellId(86508),
+						// 	playerData: playerClassAndTalent(Class.ClassMage, 'enduringWinter'),
+						// },
 					],
 				},
 				{
@@ -675,11 +675,11 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 				{
 					label: 'Focus Magic',
 					effects: [
-						{
-							label: 'Focus Magic',
-							actionId: ActionId.fromSpellId(54648),
-							playerData: playerClassAndTalent(Class.ClassMage, 'focusMagic'),
-						},
+						// {
+						// 	label: 'Focus Magic',
+						// 	actionId: ActionId.fromSpellId(54648),
+						// 	playerData: playerClassAndTalent(Class.ClassMage, 'focusMagic'),
+						// },
 					],
 				},
 				{
@@ -702,46 +702,46 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						},
 					],
 				},
-				{
-					label: 'Unholy Frenzy',
-					effects: [
-						{
-							label: 'Unholy Frenzy',
-							actionId: ActionId.fromSpellId(49016),
-							playerData: playerClassAndTalent(Class.ClassDeathKnight, 'unholyFrenzy'),
-						},
-					],
-				},
-				{
-					label: 'Pain Suppression',
-					effects: [
-						{
-							label: 'Pain Suppression',
-							actionId: ActionId.fromSpellId(33206),
-							playerData: playerClassAndTalent(Class.ClassPriest, 'painSuppression'),
-						},
-					],
-				},
-				{
-					label: 'Divine Guardian',
-					effects: [
-						{
-							label: 'Divine Guardian',
-							actionId: ActionId.fromSpellId(70940),
-							playerData: playerClassAndTalent(Class.ClassPaladin, 'divineGuardian'),
-						},
-					],
-				},
-				{
-					label: 'Mana Tide',
-					effects: [
-						{
-							label: 'Mana Tide Totem',
-							actionId: ActionId.fromSpellId(16190),
-							playerData: playerClassAndTalent(Class.ClassShaman, 'manaTideTotem'),
-						},
-					],
-				},
+				// {
+				// 	label: 'Unholy Frenzy',
+				// 	effects: [
+				// 		{
+				// 			label: 'Unholy Frenzy',
+				// 			actionId: ActionId.fromSpellId(49016),
+				// 			playerData: playerClassAndTalent(Class.ClassDeathKnight, 'unholyFrenzy'),
+				// 		},
+				// 	],
+				// },
+				// {
+				// 	label: 'Pain Suppression',
+				// 	effects: [
+				// 		{
+				// 			label: 'Pain Suppression',
+				// 			actionId: ActionId.fromSpellId(33206),
+				// 			playerData: playerClassAndTalent(Class.ClassPriest, 'painSuppression'),
+				// 		},
+				// 	],
+				// },
+				// {
+				// 	label: 'Divine Guardian',
+				// 	effects: [
+				// 		{
+				// 			label: 'Divine Guardian',
+				// 			actionId: ActionId.fromSpellId(70940),
+				// 			playerData: playerClassAndTalent(Class.ClassPaladin, 'divineGuardian'),
+				// 		},
+				// 	],
+				// },
+				// {
+				// 	label: 'Mana Tide',
+				// 	effects: [
+				// 		{
+				// 			label: 'Mana Tide Totem',
+				// 			actionId: ActionId.fromSpellId(16190),
+				// 			playerData: playerClassAndTalent(Class.ClassShaman, 'manaTideTotem'),
+				// 		},
+				// 	],
+				// },
 			],
 		},
 		{
@@ -775,21 +775,21 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 				{
 					label: 'Phys Vuln',
 					effects: [
-						{
-							label: 'Blood Frenzy',
-							actionId: ActionId.fromSpellId(29859),
-							playerData: playerClassAndTalent(Class.ClassWarrior, 'bloodFrenzy'),
-						},
-						{
-							label: 'Savage Combat',
-							actionId: ActionId.fromSpellId(58413),
-							playerData: playerClassAndTalent(Class.ClassRogue, 'savageCombat'),
-						},
-						{
-							label: 'Brittle Bones',
-							actionId: ActionId.fromSpellId(81328),
-							playerData: playerClassAndTalent(Class.ClassDeathKnight, 'brittleBones'),
-						},
+						// {
+						// 	label: 'Blood Frenzy',
+						// 	actionId: ActionId.fromSpellId(29859),
+						// 	playerData: playerClassAndTalent(Class.ClassWarrior, 'bloodFrenzy'),
+						// },
+						// {
+						// 	label: 'Savage Combat',
+						// 	actionId: ActionId.fromSpellId(58413),
+						// 	playerData: playerClassAndTalent(Class.ClassRogue, 'savageCombat'),
+						// },
+						// {
+						// 	label: 'Brittle Bones',
+						// 	actionId: ActionId.fromSpellId(81328),
+						// 	playerData: playerClassAndTalent(Class.ClassDeathKnight, 'brittleBones'),
+						// },
 						{
 							label: 'Acid Spit',
 							actionId: ActionId.fromSpellId(55749),
@@ -800,21 +800,21 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 				{
 					label: '+Bleed %',
 					effects: [
-						{
-							label: 'Blood Frenzy',
-							actionId: ActionId.fromSpellId(29859),
-							playerData: playerClassAndTalent(Class.ClassWarrior, 'bloodFrenzy'),
-						},
+						// {
+						// 	label: 'Blood Frenzy',
+						// 	actionId: ActionId.fromSpellId(29859),
+						// 	playerData: playerClassAndTalent(Class.ClassWarrior, 'bloodFrenzy'),
+						// },
 						{
 							label: 'Mangle',
 							actionId: ActionId.fromSpellId(33878),
 							playerData: playerClass(Class.ClassDruid, player => player.isSpec(Spec.SpecFeralDruid)),
 						},
-						{
-							label: 'Hemorrhage',
-							actionId: ActionId.fromSpellId(16511),
-							playerData: playerClassAndTalent(Class.ClassRogue, 'hemorrhage'),
-						},
+						// {
+						// 	label: 'Hemorrhage',
+						// 	actionId: ActionId.fromSpellId(16511),
+						// 	playerData: playerClassAndTalent(Class.ClassRogue, 'hemorrhage'),
+						// },
 						{
 							label: 'Stampede',
 							actionId: ActionId.fromSpellId(57386),
@@ -825,41 +825,41 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 				{
 					label: 'Spell Crit',
 					effects: [
-						{
-							label: 'Critical Mass',
-							actionId: ActionId.fromSpellId(12873),
-							playerData: playerClassAndTalent(Class.ClassMage, 'criticalMass'),
-						},
-						{
-							label: 'Shadow and Flame',
-							actionId: ActionId.fromSpellId(17801),
-							playerData: playerClassAndTalent(Class.ClassWarlock, 'shadowAndFlame'),
-						},
+						// {
+						// 	label: 'Critical Mass',
+						// 	actionId: ActionId.fromSpellId(12873),
+						// 	playerData: playerClassAndTalent(Class.ClassMage, 'criticalMass'),
+						// },
+						// {
+						// 	label: 'Shadow and Flame',
+						// 	actionId: ActionId.fromSpellId(17801),
+						// 	playerData: playerClassAndTalent(Class.ClassWarlock, 'shadowAndFlame'),
+						// },
 					],
 				},
 				{
 					label: 'Spell Dmg',
 					effects: [
-						{
-							label: 'Ebon Plaguebringer',
-							actionId: ActionId.fromSpellId(51160),
-							playerData: playerClassAndTalent(Class.ClassDeathKnight, 'ebonPlaguebringer'),
-						},
-						{
-							label: 'Earth and Moon',
-							actionId: ActionId.fromSpellId(60433),
-							playerData: playerSpecAndTalent(Spec.SpecBalanceDruid, 'earthAndMoon'),
-						},
+						// {
+						// 	label: 'Ebon Plaguebringer',
+						// 	actionId: ActionId.fromSpellId(51160),
+						// 	playerData: playerClassAndTalent(Class.ClassDeathKnight, 'ebonPlaguebringer'),
+						// },
+						// {
+						// 	label: 'Earth and Moon',
+						// 	actionId: ActionId.fromSpellId(60433),
+						// 	playerData: playerSpecAndTalent(Spec.SpecBalanceDruid, 'earthAndMoon'),
+						// },
 						{
 							label: 'Curse of Elements',
 							actionId: ActionId.fromSpellId(1490),
 							playerData: playerClass(Class.ClassWarlock),
 						},
-						{
-							label: 'Master Poisoner',
-							actionId: ActionId.fromSpellId(58410),
-							playerData: playerClassAndTalent(Class.ClassRogue, 'masterPoisoner'),
-						},
+						// {
+						// 	label: 'Master Poisoner',
+						// 	actionId: ActionId.fromSpellId(58410),
+						// 	playerData: playerClassAndTalent(Class.ClassRogue, 'masterPoisoner'),
+						// },
 						{
 							label: 'Fire Breath',
 							actionId: ActionId.fromSpellId(34889),
@@ -880,13 +880,13 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 				{
 					label: '-Dmg %',
 					effects: [
-						{
-							label: 'Vindication',
-							actionId: ActionId.fromSpellId(26016),
-							playerData: playerClassAndTalent(Class.ClassPaladin, 'vindication', player =>
-								[Spec.SpecRetributionPaladin, Spec.SpecProtectionPaladin].includes(player.getSpec()),
-							),
-						},
+						// {
+						// 	label: 'Vindication',
+						// 	actionId: ActionId.fromSpellId(26016),
+						// 	playerData: playerClassAndTalent(Class.ClassPaladin, 'vindication', player =>
+						// 		[Spec.SpecRetributionPaladin, Spec.SpecProtectionPaladin].includes(player.getSpec()),
+						// 	),
+						// },
 						{
 							label: 'Curse of Weakness',
 							actionId: ActionId.fromSpellId(702),
@@ -897,11 +897,11 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							actionId: ActionId.fromSpellId(99),
 							playerData: playerClass(Class.ClassDruid, player => player.isSpec(Spec.SpecFeralDruid)),
 						},
-						{
-							label: 'Scarlet Fever',
-							actionId: ActionId.fromSpellId(81130),
-							playerData: playerClassAndTalent(Class.ClassDeathKnight, 'scarletFever'),
-						},
+						// {
+						// 	label: 'Scarlet Fever',
+						// 	actionId: ActionId.fromSpellId(81130),
+						// 	playerData: playerClassAndTalent(Class.ClassDeathKnight, 'scarletFever'),
+						// },
 						{
 							label: 'Demoralizing Shout',
 							actionId: ActionId.fromSpellId(1160),
@@ -922,18 +922,18 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							actionId: ActionId.fromSpellId(59921),
 							playerData: playerClass(Class.ClassDeathKnight),
 						},
-						{
-							label: 'Judgements of the Just',
-							actionId: ActionId.fromSpellId(53696),
-							playerData: playerClassAndTalent(Class.ClassPaladin, 'judgementsOfTheJust'),
-						},
-						{
-							label: 'Infected Wounds',
-							actionId: ActionId.fromSpellId(48484),
-							playerData: playerClassAndTalent(Class.ClassDruid, 'infectedWounds', player =>
-								[Spec.SpecFeralDruid, Spec.SpecFeralDruid].includes(player.getSpec()),
-							),
-						},
+						// {
+						// 	label: 'Judgements of the Just',
+						// 	actionId: ActionId.fromSpellId(53696),
+						// 	playerData: playerClassAndTalent(Class.ClassPaladin, 'judgementsOfTheJust'),
+						// },
+						// {
+						// 	label: 'Infected Wounds',
+						// 	actionId: ActionId.fromSpellId(48484),
+						// 	playerData: playerClassAndTalent(Class.ClassDruid, 'infectedWounds', player =>
+						// 		[Spec.SpecFeralDruid, Spec.SpecFeralDruid].includes(player.getSpec()),
+						// 	),
+						// },
 						{
 							label: 'Earth Shock',
 							actionId: ActionId.fromSpellId(8042),

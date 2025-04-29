@@ -13,7 +13,6 @@ import {
 } from '../../core/proto/hunter';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
-import { ferocityDefault } from '../../core/talents/hunter_pet';
 import AoeApl from './apls/aoe.apl.json';
 import SvApl from './apls/sv.apl.json';
 import P1SVGear from './gear_sets/p1_sv.gear.json';
@@ -37,8 +36,6 @@ export const SurvivalTalents = {
 		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: MajorGlyph.GlyphOfDisengage,
-			major2: MajorGlyph.GlyphOfRaptorStrike,
-			major3: MajorGlyph.GlyphOfTrapLauncher,
 		}),
 	}),
 };
@@ -124,20 +121,11 @@ export const SVDefaultOptions = HunterOptions.create({
 	classOptions: {
 		useHuntersMark: true,
 		petType: PetType.Wolf,
-		petTalents: ferocityDefault,
 		petUptime: 1,
 	},
 	sniperTrainingUptime: 0.9,
 });
 
-export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.PotionOfTheTolvir,
-	prepopPotion: Potions.PotionOfTheTolvir,
-	flask: Flask.FlaskOfTheWinds,
-	defaultConjured: ConjuredHealthstone.value,
-	food: Food.FoodSeafoodFeast,
-	tinkerHands: TinkerHandsSynapseSprings.value,
-});
 export const DefaultConsumables = ConsumesSpec.create({
 	flaskId: 58087, // Flask of the Winds
 	foodId: 62290, // Seafood Magnifique Feast

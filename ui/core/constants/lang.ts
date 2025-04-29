@@ -1,3 +1,5 @@
+import { getCurrentLang, setCurrentLang } from '../locale_service';
+
 export const wowheadSupportedLanguages: Record<string, string> = {
 	'en': 'English',
 	'cn': '简体中文',
@@ -21,18 +23,14 @@ export function getBrowserLanguageCode(): string {
 }
 
 export function getLanguageCode(): string {
-	return cachedLanguageCode_;
+	return getCurrentLang();
 }
 
 export function getWowheadLanguagePrefix(): string {
-	return cachedWowheadLanguagePrefix_;
+	const lang = getCurrentLang();
+	return lang === 'en' ? '' : `${lang}/`;
 }
 
 export function setLanguageCode(newLang: string) {
-	// Use '' instead of 'en' because wowhead doesn't like having the en/ prefix.
-	cachedLanguageCode_ = newLang == 'en' ? '' : newLang;
-	cachedWowheadLanguagePrefix_ = cachedLanguageCode_ ? cachedLanguageCode_ + '/' : '';
+	setCurrentLang(newLang);
 }
-
-let cachedLanguageCode_ = '';
-let cachedWowheadLanguagePrefix_ = '';

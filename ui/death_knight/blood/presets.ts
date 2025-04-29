@@ -82,7 +82,6 @@ export const BloodTalents = {
 		glyphs: Glyphs.create({
 			major1: DeathKnightMajorGlyph.GlyphOfAntiMagicShell,
 			major2: DeathKnightMajorGlyph.GlyphOfDancingRuneWeapon,
-			major3: DeathKnightMajorGlyph.GlyphOfBoneShield,
 			minor1: DeathKnightMinorGlyph.GlyphOfDeathGate,
 			minor2: DeathKnightMinorGlyph.GlyphOfPathOfFrost,
 			minor3: DeathKnightMinorGlyph.GlyphOfHornOfWinter,

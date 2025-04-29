@@ -115,12 +115,7 @@ export const StandardTalents = {
 	data: SavedTalents.create({
 		talentsString: '',
 		glyphs: Glyphs.create({
-			major1: DruidMajorGlyph.GlyphOfThorns,
-			major2: DruidMajorGlyph.GlyphOfFeralCharge,
 			major3: DruidMajorGlyph.GlyphOfRebirth,
-			minor1: DruidMinorGlyph.GlyphOfDash,
-			minor2: DruidMinorGlyph.GlyphOfMarkOfTheWild,
-			minor3: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
 		}),
 	}),
 };
@@ -133,9 +128,6 @@ export const HybridTalents = {
 			major1: DruidMajorGlyph.GlyphOfFrenziedRegeneration,
 			major2: DruidMajorGlyph.GlyphOfMaul,
 			major3: DruidMajorGlyph.GlyphOfRebirth,
-			minor1: DruidMinorGlyph.GlyphOfDash,
-			minor2: DruidMinorGlyph.GlyphOfChallengingRoar,
-			minor3: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
 		}),
 	}),
 };

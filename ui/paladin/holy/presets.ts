@@ -45,10 +45,6 @@ export const StandardTalents = {
 		glyphs: Glyphs.create({
 			major1: MajorGlyph.GlyphOfDivinePlea,
 			major2: MajorGlyph.GlyphOfDivinity,
-			major3: MajorGlyph.GlyphOfTheAsceticCrusader,
-			minor1: MinorGlyph.GlyphOfInsight,
-			minor2: MinorGlyph.GlyphOfBlessingOfKings,
-			minor3: MinorGlyph.GlyphOfBlessingOfMight,
 		}),
 	}),
 };

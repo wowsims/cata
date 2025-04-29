@@ -1,10 +1,9 @@
 package dbc
 
 import (
-	"sort"
-
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
+	"golang.org/x/exp/slices"
 )
 
 type Consumable struct {
@@ -82,6 +81,7 @@ func (consumable *Consumable) GetNonStatEffectIds() []int32 {
 		E_HEAL:     true,
 		E_ENERGIZE: true,
 	}
+	slices.Sort(consumable.ItemEffects)
 	for _, effectID := range consumable.ItemEffects {
 		effect := GetItemEffect(effectID)
 		if effect.ID != 0 {
@@ -94,9 +94,8 @@ func (consumable *Consumable) GetNonStatEffectIds() []int32 {
 			}
 		}
 	}
-	sort.Slice(effectIds, func(i, j int) bool {
-		return i > j
-	})
+	slices.Sort(effectIds)
+
 	return effectIds
 }
 func (consumable *Consumable) GetStatModifiers() *stats.Stats {

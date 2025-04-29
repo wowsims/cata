@@ -50,9 +50,18 @@ export const FeralDruidRotationConfig = {
 			fieldName: 'meleeWeave',
 			label: 'Enable leave-weaving',
 			labelTooltip: 'Weave out of melee range for Stampede procs',
-			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
-				player.getSimpleRotation().rotationType == AplType.SingleTarget && player.getTalents().stampede > 0 && !player.getSpecOptions().cannotShredTarget && !player.getInFrontOfTarget(),
-			changeEmitter: (player: Player<Spec.SpecFeralDruid>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter, player.specOptionsChangeEmitter, player.inFrontOfTargetChangeEmitter]),
+			// showWhen: (player: Player<Spec.SpecFeralDruid>) =>
+			// 	player.getSimpleRotation().rotationType == AplType.SingleTarget &&
+			// 	player.getTalents().stampede > 0 &&
+			// 	!player.getSpecOptions().cannotShredTarget &&
+			// 	!player.getInFrontOfTarget(),
+			changeEmitter: (player: Player<Spec.SpecFeralDruid>) =>
+				TypedEvent.onAny([
+					player.rotationChangeEmitter,
+					player.talentsChangeEmitter,
+					player.specOptionsChangeEmitter,
+					player.inFrontOfTargetChangeEmitter,
+				]),
 		}),
 		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
 			fieldName: 'bearWeave',
@@ -63,30 +72,26 @@ export const FeralDruidRotationConfig = {
 			fieldName: 'snekWeave',
 			label: 'Use Albino Snake',
 			labelTooltip: 'Reset swing timer at the end of bear-weaves using Albino Snake pet',
-			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
-				player.getSimpleRotation().bearWeave,
+			showWhen: (player: Player<Spec.SpecFeralDruid>) => player.getSimpleRotation().bearWeave,
 		}),
 		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
 			fieldName: 'allowAoeBerserk',
 			label: 'Allow AoE Berserk',
 			labelTooltip: 'Allow Berserk usage in AoE rotation',
-			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
-				player.getSimpleRotation().rotationType == AplType.Aoe,
+			showWhen: (player: Player<Spec.SpecFeralDruid>) => player.getSimpleRotation().rotationType == AplType.Aoe,
 		}),
 		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
 			fieldName: 'prepullTranquility',
 			label: 'Enable pre-pull Tranquility',
 			labelTooltip: 'Swap in configured healing trinkets before the pull and proc them using Tranquility',
-			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
-				player.shouldEnableTargetDummies(),
+			showWhen: (player: Player<Spec.SpecFeralDruid>) => player.shouldEnableTargetDummies(),
 			changeEmitter: (player: Player<Spec.SpecFeralDruid>) => TypedEvent.onAny([player.rotationChangeEmitter, player.itemSwapSettings.changeEmitter]),
 		}),
 		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
 			fieldName: 'manualParams',
 			label: 'Manual Advanced Parameters',
 			labelTooltip: 'Manually specify advanced parameters, otherwise will use preset defaults',
-			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
-				player.getSimpleRotation().rotationType == AplType.SingleTarget,
+			showWhen: (player: Player<Spec.SpecFeralDruid>) => player.getSimpleRotation().rotationType == AplType.SingleTarget,
 		}),
 		InputHelpers.makeRotationNumberInput<Spec.SpecFeralDruid>({
 			fieldName: 'minRoarOffset',
@@ -126,22 +131,22 @@ export const FeralDruidRotationConfig = {
 			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
 				ShouldShowAdvParamST(player) && player.getSimpleRotation().useBite == true && player.getSimpleRotation().biteModeType == BiteModeType.Emperical,
 		}),
-		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
-			fieldName: 'biteDuringExecute',
-			label: 'Bite during Execute phase',
-			labelTooltip: 'Bite aggressively during Execute phase',
-			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
-				ShouldShowAdvParamST(player) && player.getTalents().bloodInTheWater > 0,
-			changeEmitter: (player: Player<Spec.SpecFeralDruid>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
-		}),
-		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
-			fieldName: 'cancelPrimalMadness',
-			label: 'Enable Primal Madness cancellation',
-			labelTooltip: 'Click off Primal Madness buff when doing so will result in net Energy gains',
-			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
-				(ShouldShowAdvParamST(player) || (player.getSimpleRotation().rotationType == AplType.Aoe)) && (player.getTalents().primalMadness > 0),
-			changeEmitter: (player: Player<Spec.SpecFeralDruid>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
-		}),
+		// InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
+		// 	fieldName: 'biteDuringExecute',
+		// 	label: 'Bite during Execute phase',
+		// 	labelTooltip: 'Bite aggressively during Execute phase',
+		// 	showWhen: (player: Player<Spec.SpecFeralDruid>) =>
+		// 		ShouldShowAdvParamST(player) && player.getTalents().bloodInTheWater > 0,
+		// 	changeEmitter: (player: Player<Spec.SpecFeralDruid>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
+		// }),
+		// InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
+		// 	fieldName: 'cancelPrimalMadness',
+		// 	label: 'Enable Primal Madness cancellation',
+		// 	labelTooltip: 'Click off Primal Madness buff when doing so will result in net Energy gains',
+		// 	showWhen: (player: Player<Spec.SpecFeralDruid>) =>
+		// 		(ShouldShowAdvParamST(player) || (player.getSimpleRotation().rotationType == AplType.Aoe)) && (player.getTalents().primalMadness > 0),
+		// 	changeEmitter: (player: Player<Spec.SpecFeralDruid>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
+		// }),
 		// Can be uncommented if/when analytical bite mode is added
 		//InputHelpers.makeRotationEnumInput<Spec.SpecFeralDruid, BiteModeType>({
 		//	fieldName: 'biteModeType',

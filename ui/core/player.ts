@@ -716,7 +716,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	canDualWield2H(): boolean {
-		return this.getSpec() == Spec.SpecFuryWarrior && (this.getTalents() as SpecTalents<Spec.SpecFuryWarrior>).titansGrip;
+		return this.getSpec() == Spec.SpecFuryWarrior;
 	}
 
 	equipItem(eventID: EventID, slot: ItemSlot, newItem: EquippedItem | null) {
@@ -789,14 +789,14 @@ export class Player<SpecType extends Spec> {
 		const remainingParryCap = Math.max(parryCap - expertise, 0.0);
 		const remainingExpertiseCap = remainingDodgeCap + remainingParryCap;
 
-		let specSpecificOffset = 0.0;
+		const specSpecificOffset = 0.0;
 
-		if (this.getSpec() === Spec.SpecEnhancementShaman) {
-			// Elemental Devastation uptime is near 100%
-			// TODO: Cata - Check this
-			const ranks = (this as unknown as Player<Spec.SpecEnhancementShaman>).getTalents().elementalDevastation;
-			specSpecificOffset = 3.0 * ranks;
-		}
+		// if (this.getSpec() === Spec.SpecEnhancementShaman) {
+		// 	// Elemental Devastation uptime is near 100%
+		// 	// TODO: Cata - Check this
+		// 	const ranks = (this as unknown as Player<Spec.SpecEnhancementShaman>).getTalents().elementalDevastation;
+		// 	specSpecificOffset = 3.0 * ranks;
+		// }
 
 		const baseCritCap = 100.0 - glancing + suppression - remainingMeleeHitCap - remainingExpertiseCap - specSpecificOffset;
 		const playerCritCapDelta = meleeCrit - baseCritCap;

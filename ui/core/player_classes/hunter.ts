@@ -30,15 +30,7 @@ export class Hunter extends PlayerClass<Class.ClassHunter> {
 		Race.RaceGoblin,
 	];
 	static armorTypes: ArmorType[] = [ArmorType.ArmorTypeMail];
-	static weaponTypes: EligibleWeaponType[] = [
-		{ weaponType: WeaponType.WeaponTypeAxe, canUseTwoHand: true },
-		{ weaponType: WeaponType.WeaponTypeDagger },
-		{ weaponType: WeaponType.WeaponTypeFist },
-		{ weaponType: WeaponType.WeaponTypeOffHand },
-		{ weaponType: WeaponType.WeaponTypePolearm, canUseTwoHand: true },
-		{ weaponType: WeaponType.WeaponTypeSword, canUseTwoHand: true },
-		{ weaponType: WeaponType.WeaponTypeStaff, canUseTwoHand: true },
-	];
+	static weaponTypes: EligibleWeaponType[] = []; // hunter cannot wear weapons anymore
 	static rangedWeaponTypes: RangedWeaponType[] = [
 		RangedWeaponType.RangedWeaponTypeBow,
 		RangedWeaponType.RangedWeaponTypeCrossbow,

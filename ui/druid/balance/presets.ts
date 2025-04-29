@@ -57,12 +57,7 @@ export const StandardTalents = {
 	data: SavedTalents.create({
 		talentsString: '',
 		glyphs: Glyphs.create({
-			major1: DruidMajorGlyph.GlyphOfStarfall,
 			major2: DruidMajorGlyph.GlyphOfRebirth,
-			major3: DruidMajorGlyph.GlyphOfMonsoon,
-			minor1: DruidMinorGlyph.GlyphOfTyphoon,
-			minor2: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
-			minor3: DruidMinorGlyph.GlyphOfMarkOfTheWild,
 		}),
 	}),
 };

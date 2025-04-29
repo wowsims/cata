@@ -54,12 +54,7 @@ export const ArmsTalents = {
 	data: SavedTalents.create({
 		talentsString: '',
 		glyphs: Glyphs.create({
-			major1: WarriorMajorGlyph.GlyphOfCleaving,
 			major2: WarriorMajorGlyph.GlyphOfSweepingStrikes,
-			major3: WarriorMajorGlyph.GlyphOfThunderClap,
-			minor1: WarriorMinorGlyph.GlyphOfBerserkerRage,
-			minor2: WarriorMinorGlyph.GlyphOfCommand,
-			minor3: WarriorMinorGlyph.GlyphOfBattle,
 		}),
 	}),
 };
