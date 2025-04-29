@@ -214,7 +214,7 @@ func main() {
 	} else {
 		log.Fatalf("Error %v", err)
 	}
-	dropSources, err := database.LoadDropSources(helper)
+	dropSources, names, err := database.LoadDropSources(helper)
 	if err == nil {
 		json, _ := json.Marshal(dropSources)
 		if err := writeGzipFile(fmt.Sprintf("%s/dbc/dropSources.json", inputsDir), json); err != nil {
@@ -335,6 +335,8 @@ func main() {
 						Drop: drop,
 					},
 				})
+				db.MergeZone(&proto.UIZone{Id: drop.ZoneId, Name: names[int(drop.ZoneId)]})
+				db.MergeNpc(&proto.UINPC{Id: drop.NpcId, Name: drop.OtherName, ZoneId: drop.ZoneId})
 			}
 			item.Sources = sources
 
@@ -418,6 +420,10 @@ func InferPhase(item *proto.UIItem) int32 {
 	if item.Ilvl <= 463 {
 		return 1
 	}
+	if item.Ilvl > 516 {
+		return 2
+	}
+
 	// Since we populate some drops before we run inferphase, we can use Atlasloot data to help us infer the phase
 	for _, source := range item.Sources {
 		if drop := source.GetDrop(); drop != nil {
@@ -432,6 +438,20 @@ func InferPhase(item *proto.UIItem) int32 {
 		}
 	}
 
+	if (item.Ilvl >= 489) && item.RandomSuffixOptions != nil && len(item.RandomSuffixOptions) > 0 {
+		return 2 // These are random throne of thunder drops
+	}
+	if item.Ilvl > 440 && item.Quality < proto.ItemQuality_ItemQualityRare {
+		return 3 // Green items should not have high ilvl until salvage in 5.4
+	}
+	switch item.Ilvl {
+	case 476, 483, 489, 496, 509, 502, 516, 503: // Should be p1 raids and pvp items
+		if strings.Contains(item.Name, "Tyrannical") {
+			return 2
+		}
+
+		return 1
+	}
 	// if item.Ilvl >= 397 {
 	// 	return 4 // Heroic Rag loot should already be tagged correctly by Wowhead.
 	// }

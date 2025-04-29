@@ -1135,37 +1135,42 @@ func LoadSpells(dbHelper *DBHelper) ([]dbc.Spell, error) {
 	return spells, nil
 }
 
-func ScanDropRow(rows *sql.Rows) (int, *proto.DropSource, error) {
+func ScanDropRow(rows *sql.Rows) (itemID int, ds *proto.DropSource, instanceName string, err error) {
 	var (
-		itemID int
-		mask   int
-		ds     proto.DropSource
+		mask       int
+		dropSource proto.DropSource
+		jiName     string
 	)
-	err := rows.Scan(
+	err = rows.Scan(
 		&itemID,
 		&mask,
-		&ds.NpcId,
-		&ds.ZoneId,
-		&ds.OtherName,
+		&dropSource.NpcId,
+		&dropSource.ZoneId,
+		&dropSource.OtherName,
+		&jiName,
 	)
-
 	if err != nil {
-		return 0, &ds, fmt.Errorf("scanning drop row: %w", err)
+		return 0, nil, "", fmt.Errorf("scanning drop row: %w", err)
 	}
-	return itemID, &ds, nil
+	return itemID, &dropSource, jiName, nil
 }
 
-func LoadDropSources(dbHelper *DBHelper) (map[int][]*proto.DropSource, error) {
+func LoadDropSources(dbHelper *DBHelper) (
+	sourcesByItem map[int][]*proto.DropSource,
+	namesByZone map[int]string,
+	err error,
+) {
 	const query = `
 		SELECT DISTINCT
 		jei.ItemID,
 		jei.DifficultyMask,
-		0                               AS NpcId,
+		je.ID                               AS NpcId,
 		COALESCE(COALESCE(
 			NULLIF(ji.AreaID, 0),
 			at.ID
 		), 0)                                AS ZoneId,
-		je.Name_lang                     AS OtherName
+		je.Name_lang                     AS OtherName,
+		ji.Name_lang
 		FROM JournalEncounterItem AS jei
 		INNER JOIN JournalEncounter AS je
 		ON je.ID = jei.JournalEncounterID
@@ -1178,23 +1183,27 @@ func LoadDropSources(dbHelper *DBHelper) (map[int][]*proto.DropSource, error) {
 		)
 		GROUP BY jei.ItemID
     `
+
 	rows, err := dbHelper.db.Query(query)
 	if err != nil {
-		return nil, fmt.Errorf("querying drop sources: %w", err)
+		return nil, nil, fmt.Errorf("querying drop sources: %w", err)
 	}
 	defer rows.Close()
 
-	sourcesByItem := make(map[int][]*proto.DropSource)
+	sourcesByItem = make(map[int][]*proto.DropSource)
+	namesByZone = make(map[int]string)
+
 	for rows.Next() {
-		itemID, raw, err := ScanDropRow(rows)
-		if err != nil {
-			return nil, err
+		itemID, ds, jiName, scanErr := ScanDropRow(rows)
+		if scanErr != nil {
+			return nil, nil, scanErr
 		}
-		sourcesByItem[itemID] = append(sourcesByItem[itemID], raw)
+		sourcesByItem[itemID] = append(sourcesByItem[itemID], ds)
+		namesByZone[int(ds.ZoneId)] = jiName
 	}
-	if err := rows.Err(); err != nil {
-		return nil, fmt.Errorf("iterating drop rows: %w", err)
+	if err = rows.Err(); err != nil {
+		return nil, nil, fmt.Errorf("iterating drop rows: %w", err)
 	}
 
-	return sourcesByItem, nil
+	return sourcesByItem, namesByZone, nil
 }
