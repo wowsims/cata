@@ -67,7 +67,7 @@ type Character struct {
 
 	professions [2]proto.Profession
 
-	glyphs            [9]int32
+	glyphs            [6]int32
 	PrimaryTalentTree uint8
 
 	// Used for effects like "Increased Armor Value from Items"
@@ -136,10 +136,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 	character.Label = fmt.Sprintf("%s (#%d)", character.Name, character.Index+1)
 
 	if player.Glyphs != nil {
-		character.glyphs = [9]int32{
-			player.Glyphs.Prime1,
-			player.Glyphs.Prime2,
-			player.Glyphs.Prime3,
+		character.glyphs = [6]int32{
 			player.Glyphs.Major1,
 			player.Glyphs.Major2,
 			player.Glyphs.Major3,

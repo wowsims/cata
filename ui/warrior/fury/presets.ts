@@ -2,7 +2,7 @@ import { Player } from '../../core/player';
 import * as PresetUtils from '../../core/preset_utils';
 import { Consumes, Flask, Food, Glyphs, HandType, ItemSlot, Potions, Profession, PseudoStat, Spec, Stat, TinkerHands } from '../../core/proto/common';
 import { SavedTalents } from '../../core/proto/ui';
-import { FuryWarrior_Options as WarriorOptions, WarriorMajorGlyph, WarriorMinorGlyph, WarriorPrimeGlyph } from '../../core/proto/warrior';
+import { FuryWarrior_Options as WarriorOptions, WarriorMajorGlyph, WarriorMinorGlyph } from '../../core/proto/warrior';
 import { Stats } from '../../core/proto_utils/stats';
 import SMFFuryApl from './apls/smf.apl.json';
 import TGFuryApl from './apls/tg.apl.json';
@@ -172,9 +172,6 @@ export const FurySMFTalents = {
 	data: SavedTalents.create({
 		talentsString: '302003-032222031301101223201-2',
 		glyphs: Glyphs.create({
-			prime1: WarriorPrimeGlyph.GlyphOfBloodthirst,
-			prime2: WarriorPrimeGlyph.GlyphOfRagingBlow,
-			prime3: WarriorPrimeGlyph.GlyphOfSlam,
 			major1: WarriorMajorGlyph.GlyphOfCleaving,
 			major2: WarriorMajorGlyph.GlyphOfDeathWish,
 			major3: WarriorMajorGlyph.GlyphOfColossusSmash,
@@ -191,9 +188,6 @@ export const FuryTGTalents = {
 	data: SavedTalents.create({
 		talentsString: '302003-03222203130110122321-2',
 		glyphs: Glyphs.create({
-			prime1: WarriorPrimeGlyph.GlyphOfBloodthirst,
-			prime2: WarriorPrimeGlyph.GlyphOfRagingBlow,
-			prime3: WarriorPrimeGlyph.GlyphOfSlam,
 			major1: WarriorMajorGlyph.GlyphOfCleaving,
 			major2: WarriorMajorGlyph.GlyphOfDeathWish,
 			major3: WarriorMajorGlyph.GlyphOfColossusSmash,

@@ -1,58 +1,11 @@
-import { WarriorMajorGlyph, WarriorMinorGlyph,WarriorPrimeGlyph, WarriorTalents } from '../proto/warrior.js';
+import { WarriorMajorGlyph, WarriorMinorGlyph, WarriorTalents } from '../proto/warrior.js';
 import { GlyphsConfig } from './glyphs_picker.js';
-import { newTalentsConfig,TalentsConfig } from './talents_picker.js';
+import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
 import WarriorTalentJson from './trees/warrior.json';
 
 export const warriorTalentsConfig: TalentsConfig<WarriorTalents> = newTalentsConfig(WarriorTalentJson);
 
 export const warriorGlyphsConfig: GlyphsConfig = {
-	primeGlyphs: {
-		[WarriorPrimeGlyph.GlyphOfBladestorm]: {
-			name: 'Glyph of Bladestorm',
-			description: 'Reduces the cooldown on Bladestorm by 15 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_warrior_bladestorm.jpg',
-		},
-		[WarriorPrimeGlyph.GlyphOfBloodthirst]: {
-			name: 'Glyph of Bloodthirst',
-			description: 'Increases the damage of Bloodthirst by 10%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_bloodlust.jpg',
-		},
-		[WarriorPrimeGlyph.GlyphOfDevastate]: {
-			name: 'Glyph of Devastate',
-			description: 'Increases the critical strike chance of Devastate by 5%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/inv_sword_11.jpg',
-		},
-		[WarriorPrimeGlyph.GlyphOfMortalStrike]: {
-			name: 'Glyph of Mortal Strike',
-			description: 'Increases the damage of Mortal Strike by 10%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_warrior_savageblow.jpg',
-		},
-		[WarriorPrimeGlyph.GlyphOfOverpower]: {
-			name: 'Glyph of Overpower',
-			description: 'Increases the damage of Overpower by 10%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_meleedamage.jpg',
-		},
-		[WarriorPrimeGlyph.GlyphOfRagingBlow]: {
-			name: 'Glyph of Raging Blow',
-			description: 'Increases the critical strike chance of Raging Blow by 5%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_hunter_swiftstrike.jpg',
-		},
-		[WarriorPrimeGlyph.GlyphOfRevenge]: {
-			name: 'Glyph of Revenge',
-			description: 'Increases the damage of Revenge by 10%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_warrior_revenge.jpg',
-		},
-		[WarriorPrimeGlyph.GlyphOfShieldSlam]: {
-			name: 'Glyph of Shield Slam',
-			description: 'Increases the damage of Shield Slam by 10%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/inv_shield_05.jpg',
-		},
-		[WarriorPrimeGlyph.GlyphOfSlam]: {
-			name: 'Glyph of Slam',
-			description: 'Increases the critical strike chance of Slam by 5%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_warrior_decisivestrike.jpg',
-		},
-	},
 	majorGlyphs: {
 		[WarriorMajorGlyph.GlyphOfCleaving]: {
 			name: 'Glyph of Cleaving',
@@ -180,6 +133,6 @@ export const warriorGlyphsConfig: GlyphsConfig = {
 			name: 'Glyph of Intimidating Shout',
 			description: 'All targets of your Intimidating Shout now tremble in place instead of fleeing in fear.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_golemthunderclap.jpg',
-		}
+		},
 	},
 };

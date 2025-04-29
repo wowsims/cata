@@ -5,18 +5,19 @@ import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation, APLRotation_Type } from '../../core/proto/apl.js';
 import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
-import { PaladinPrimeGlyph, PaladinSeal } from '../../core/proto/paladin.js';
+import { PaladinSeal } from '../../core/proto/paladin.js';
 import { Stats, UnitStat } from '../../core/proto_utils/stats.js';
 import { TypedEvent } from '../../core/typed_event.js';
 import * as PaladinInputs from '../inputs.js';
 import * as Presets from './presets.js';
 
 const isGlyphOfSealOfTruthActive = (player: Player<Spec.SpecProtectionPaladin>): boolean => {
-	const currentSeal = player.getSpecOptions().classOptions?.seal;
-	return (
-		player.getPrimeGlyps().includes(PaladinPrimeGlyph.GlyphOfSealOfTruth) &&
-		(currentSeal === PaladinSeal.Truth || currentSeal === PaladinSeal.Righteousness)
-	);
+	// const currentSeal = player.getSpecOptions().classOptions?.seal;
+	// return (
+	// 	player.getPrimeGlyps().includes(PaladinPrimeGlyph.GlyphOfSealOfTruth) &&
+	// 	(currentSeal === PaladinSeal.Truth || currentSeal === PaladinSeal.Righteousness)
+	// );
+	return false;
 };
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {

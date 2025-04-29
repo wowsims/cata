@@ -1,68 +1,11 @@
-import {PaladinMajorGlyph, PaladinMinorGlyph,PaladinPrimeGlyph, PaladinTalents } from '../proto/paladin.js';
+import { PaladinMajorGlyph, PaladinMinorGlyph, PaladinTalents } from '../proto/paladin.js';
 import { GlyphsConfig } from './glyphs_picker.js';
-import { newTalentsConfig,TalentsConfig } from './talents_picker.js';
+import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
 import PaladinTalentJson from './trees/paladin.json';
 
 export const paladinTalentsConfig: TalentsConfig<PaladinTalents> = newTalentsConfig(PaladinTalentJson);
 
 export const paladinGlyphsConfig: GlyphsConfig = {
-	primeGlyphs: {
-		[PaladinPrimeGlyph.GlyphOfCrusaderStrike]: {
-			name: 'Glyph of Crusader Strike',
-			description: 'Increases the critical strike chance of Crusader Strike by 5%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_crusaderstrike.jpg',
-		},
-		[PaladinPrimeGlyph.GlyphOfDivineFavor]: {
-			name: 'Glyph of Divine Favor',
-			description: 'Increases the duration of Divine Favor by 10 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_divineillumination.jpg',
-		},
-		[PaladinPrimeGlyph.GlyphOfExorcism]: {
-			name: 'Glyph of Exorcism',
-			description: 'Your Exorcism causes an additional 20% of its damage over 6 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_excorcism_02.jpg',
-		},
-		[PaladinPrimeGlyph.GlyphOfHammerOfTheRighteous]: {
-			name: 'Glyph of Hammer of the Righteous',
-			description: 'Increases the damage of both the physical and Holy components of Hammer of the Righteous by 10%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_paladin_hammeroftherighteous.jpg',
-		},
-		[PaladinPrimeGlyph.GlyphOfHolyShock]: {
-			name: 'Glyph of Holy Shock',
-			description: 'Increases the critical effect chance of Holy Shock by 5%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_searinglight.jpg',
-		},
-		[PaladinPrimeGlyph.GlyphOfJudgement]: {
-			name: 'Glyph of Judgement',
-			description: 'Your Judgement deals 10% more damage.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_righteousfury.jpg',
-		},
-		[PaladinPrimeGlyph.GlyphOfSealOfInsight]: {
-			name: 'Glyph of Seal of Insight',
-			description: 'While Seal of Insight is active, the effect of your healing spells is increased by 5%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_healingaura.jpg',
-		},
-		[PaladinPrimeGlyph.GlyphOfSealOfTruth]: {
-			name: 'Glyph of Seal of Truth',
-			description: 'Your Seal of Truth and Seal of Righteousness also grant 10 expertise while active.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_sealofvengeance.jpg',
-		},
-		[PaladinPrimeGlyph.GlyphOfShieldOfTheRighteous]: {
-			name: 'Glyph of Shield of the Righteous',
-			description: 'Increases the damage of Shield of the Righteous by 10%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_paladin_shieldofvengeance.jpg',
-		},
-		[PaladinPrimeGlyph.GlyphOfTemplarSVerdict]: {
-			name: 'Glyph of Templar\'s Verdict',
-			description: 'Increases the damage of Templar\'s Verdict by 15%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_paladin_templarsverdict.jpg',
-		},
-		[PaladinPrimeGlyph.GlyphOfWordOfGlory]: {
-			name: 'Glyph of Word of Glory',
-			description: 'Increases the healing done by Word of Glory by 10%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/inv_helmet_96.jpg',
-		},
-	},
 	majorGlyphs: {
 		[PaladinMajorGlyph.GlyphOfBeaconOfLight]: {
 			name: 'Glyph of Beacon of Light',
@@ -81,7 +24,7 @@ export const paladinGlyphsConfig: GlyphsConfig = {
 		},
 		[PaladinMajorGlyph.GlyphOfDazingShield]: {
 			name: 'Glyph of Dazing Shield',
-			description: 'Your Avenger\'s Shield now also dazes targets.',
+			description: "Your Avenger's Shield now also dazes targets.",
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_avengersshield.jpg',
 		},
 		[PaladinMajorGlyph.GlyphOfDivinePlea]: {
@@ -101,7 +44,7 @@ export const paladinGlyphsConfig: GlyphsConfig = {
 		},
 		[PaladinMajorGlyph.GlyphOfFocusedShield]: {
 			name: 'Glyph of Focused Shield',
-			description: 'Your Avenger\'s Shield hits 2 fewer targets, but for 30% more damage.',
+			description: "Your Avenger's Shield hits 2 fewer targets, but for 30% more damage.",
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_avengersshield.jpg',
 		},
 		[PaladinMajorGlyph.GlyphOfHammerOfJustice]: {

@@ -7,7 +7,6 @@ import {
 	HunterMinorGlyph as MinorGlyph,
 	HunterOptions_Ammo as Ammo,
 	HunterOptions_PetType as PetType,
-	HunterPrimeGlyph as PrimeGlyph,
 	HunterStingType,
 	SurvivalHunter_Options as HunterOptions,
 	SurvivalHunter_Rotation as HunterRotation,
@@ -37,9 +36,6 @@ export const SurvivalTalents = {
 	data: SavedTalents.create({
 		talentsString: '03-2302-03203203023022121311',
 		glyphs: Glyphs.create({
-			prime1: PrimeGlyph.GlyphOfExplosiveShot,
-			prime2: PrimeGlyph.GlyphOfKillShot,
-			prime3: PrimeGlyph.GlyphOfArcaneShot,
 			major1: MajorGlyph.GlyphOfDisengage,
 			major2: MajorGlyph.GlyphOfRaptorStrike,
 			major3: MajorGlyph.GlyphOfTrapLauncher,

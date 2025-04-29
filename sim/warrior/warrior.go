@@ -1,8 +1,6 @@
 package warrior
 
 import (
-	"time"
-
 	"github.com/wowsims/mop/sim/common/cata"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
@@ -85,7 +83,7 @@ type Warrior struct {
 	WarriorInputs
 
 	// Current state
-	Stance                 Stance
+	// Stance                 Stance
 	EnrageEffectMultiplier float64
 	CriticalBlockChance    []float64 // Can be gained as non-prot via certain talents and spells
 	PrecisionKnown         bool
@@ -152,47 +150,47 @@ func (warrior *Warrior) GetCharacter() *core.Character {
 	return &warrior.Character
 }
 
-func (warrior *Warrior) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	if warrior.Talents.Rampage {
-		raidBuffs.Rampage = true
-	}
-}
+// func (warrior *Warrior) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+// 	if warrior.Talents.Rampage {
+// 		raidBuffs.Rampage = true
+// 	}
+// }
 
 func (warrior *Warrior) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (warrior *Warrior) Initialize() {
-	warrior.registerStances()
+	// warrior.registerStances()
 	warrior.EnrageEffectMultiplier = 1.0
 	warrior.hsCleaveCD = warrior.NewTimer()
 	warrior.shoutsCD = warrior.NewTimer()
 
-	warrior.RegisterBerserkerRageSpell()
-	warrior.RegisterColossusSmash()
-	warrior.RegisterDemoralizingShoutSpell()
-	warrior.RegisterExecuteSpell()
-	warrior.RegisterHeroicStrikeSpell()
-	warrior.RegisterCleaveSpell()
+	// warrior.RegisterBerserkerRageSpell()
+	// warrior.RegisterColossusSmash()
+	// warrior.RegisterDemoralizingShoutSpell()
+	// warrior.RegisterExecuteSpell()
+	// warrior.RegisterHeroicStrikeSpell()
+	// warrior.RegisterCleaveSpell()
 	warrior.RegisterHeroicLeap()
-	warrior.RegisterHeroicThrow()
+	// warrior.RegisterHeroicThrow()
 	warrior.RegisterInnerRage()
-	warrior.RegisterOverpowerSpell()
+	// warrior.RegisterOverpowerSpell()
 	warrior.RegisterRecklessnessCD()
-	warrior.RegisterRendSpell()
-	warrior.RegisterRevengeSpell()
-	warrior.RegisterShatteringThrowCD()
-	warrior.RegisterShieldBlockCD()
+	// warrior.RegisterRendSpell()
+	// warrior.RegisterRevengeSpell()
+	// warrior.RegisterShatteringThrowCD()
+	// warrior.RegisterShieldBlockCD()
 	warrior.RegisterShieldWallCD()
-	warrior.RegisterShouts()
-	warrior.RegisterSlamSpell()
-	warrior.RegisterSunderArmor()
-	warrior.RegisterThunderClapSpell()
-	warrior.RegisterWhirlwindSpell()
-	warrior.RegisterCharge()
+	// warrior.RegisterShouts()
+	// warrior.RegisterSlamSpell()
+	// warrior.RegisterSunderArmor()
+	// warrior.RegisterThunderClapSpell()
+	// warrior.RegisterWhirlwindSpell()
+	// warrior.RegisterCharge()
 }
 
 func (warrior *Warrior) Reset(_ *core.Simulation) {
-	warrior.Stance = StanceNone
+	// warrior.Stance = StanceNone
 }
 
 func NewWarrior(character *core.Character, talents string, inputs WarriorInputs) *Warrior {
@@ -230,21 +228,12 @@ func NewWarrior(character *core.Character, talents string, inputs WarriorInputs)
 	return warrior
 }
 
-func (warrior *Warrior) HasPrimeGlyph(glyph proto.WarriorPrimeGlyph) bool {
-	return warrior.HasGlyph(int32(glyph))
-}
-
 func (warrior *Warrior) HasMajorGlyph(glyph proto.WarriorMajorGlyph) bool {
 	return warrior.HasGlyph(int32(glyph))
 }
 
 func (warrior *Warrior) HasMinorGlyph(glyph proto.WarriorMinorGlyph) bool {
 	return warrior.HasGlyph(int32(glyph))
-}
-
-func (warrior *Warrior) IntensifyRageCooldown(baseCd time.Duration) time.Duration {
-	baseCd /= 100
-	return []time.Duration{baseCd * 100, baseCd * 90, baseCd * 80}[warrior.Talents.IntensifyRage]
 }
 
 // Shared cooldown for Deadly Calm and Recklessness Activation

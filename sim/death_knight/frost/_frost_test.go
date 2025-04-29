@@ -1,4 +1,4 @@
-package unholy
+package frost
 
 import (
 	"testing"
@@ -9,44 +9,54 @@ import (
 )
 
 func init() {
-	RegisterUnholyDeathKnight()
+	RegisterFrostDeathKnight()
 }
 
-func TestUnholy(t *testing.T) {
+func TestFrost(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
 		Class:      proto.Class_ClassDeathKnight,
 		Race:       proto.Race_RaceOrc,
 		OtherRaces: []proto.Race{proto.Race_RaceWorgen},
 
-		GearSet:     core.GetGearSet("../../../ui/death_knight/unholy/gear_sets", "p4.bis"),
-		Talents:     UnholyTalents,
-		Glyphs:      UnholyDefaultGlyphs,
+		GearSet: core.GetGearSet("../../../ui/death_knight/frost/gear_sets", "p4.masterfrost"),
+		Talents: MasterfrostTalents,
+		OtherTalentSets: []core.TalentsCombo{
+			{
+				Label:   "TwoHand",
+				Talents: TwoHandTalents,
+				Glyphs:  FrostDefaultGlyphs,
+			},
+			{
+				Label:   "DualWield",
+				Talents: DualWieldTalents,
+				Glyphs:  FrostDefaultGlyphs,
+			},
+		},
+		Glyphs:      FrostDefaultGlyphs,
 		Consumes:    FullConsumes,
-		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsUnholy},
-		Rotation:    core.GetAplRotation("../../../ui/death_knight/unholy/apls", "default"),
+		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsFrost},
+		Rotation:    core.GetAplRotation("../../../ui/death_knight/frost/apls", "masterfrost"),
 
 		ItemFilter: ItemFilter,
 	}))
 }
 
-var UnholyTalents = "2032-1-13300321230231021231"
-var UnholyDefaultGlyphs = &proto.Glyphs{
-	Prime1: int32(proto.DeathKnightPrimeGlyph_GlyphOfDeathCoil),
-	Prime2: int32(proto.DeathKnightPrimeGlyph_GlyphOfScourgeStrike),
-	Prime3: int32(proto.DeathKnightPrimeGlyph_GlyphOfRaiseDead),
+var DualWieldTalents = "2032-20330022233112012301-003"
+var TwoHandTalents = "103-32030022233112012031-033"
+var MasterfrostTalents = "2032-30330012233112012301-03"
+
+var FrostDefaultGlyphs = &proto.Glyphs{
 	Major1: int32(proto.DeathKnightMajorGlyph_GlyphOfPestilence),
 	Major2: int32(proto.DeathKnightMajorGlyph_GlyphOfBloodBoil),
-	Major3: int32(proto.DeathKnightMajorGlyph_GlyphOfAntiMagicShell),
-	Minor1: int32(proto.DeathKnightMinorGlyph_GlyphOfDeathSEmbrace),
-	Minor2: int32(proto.DeathKnightMinorGlyph_GlyphOfHornOfWinter),
+	Major3: int32(proto.DeathKnightMajorGlyph_GlyphOfDarkSuccor),
+	// No interesting minor glyphs.
 }
 
-var PlayerOptionsUnholy = &proto.Player_UnholyDeathKnight{
-	UnholyDeathKnight: &proto.UnholyDeathKnight{
-		Options: &proto.UnholyDeathKnight_Options{
+var PlayerOptionsFrost = &proto.Player_FrostDeathKnight{
+	FrostDeathKnight: &proto.FrostDeathKnight{
+		Options: &proto.FrostDeathKnight_Options{
 			ClassOptions: &proto.DeathKnightOptions{
-				PetUptime:          1.0,
-				StartingRunicPower: 100,
+				PetUptime: 1.0,
 			},
 		},
 	},
@@ -62,10 +72,13 @@ var FullConsumes = &proto.Consumes{
 
 var ItemFilter = core.ItemFilter{
 	ArmorType: proto.ArmorType_ArmorTypePlate,
+
 	HandTypes: []proto.HandType{
+		proto.HandType_HandTypeMainHand,
+		proto.HandType_HandTypeOffHand,
+		proto.HandType_HandTypeOneHand,
 		proto.HandType_HandTypeTwoHand,
 	},
-
 	WeaponTypes: []proto.WeaponType{
 		proto.WeaponType_WeaponTypeAxe,
 		proto.WeaponType_WeaponTypeSword,

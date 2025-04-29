@@ -70,19 +70,6 @@ message HunterTalents {
 	int32 serpent_spread = 57;
 	bool black_arrow = 58;
 }
-enum HunterPrimeGlyph {
-	HunterPrimeGlyphNone = 0;
-	GlyphOfAimedShot = 42897;
-	GlyphOfArcaneShot = 42898;
-	GlyphOfChimeraShot = 45625;
-	GlyphOfDazzledPrey = 42909;
-	GlyphOfExplosiveShot = 45731;
-	GlyphOfKillCommand = 42915;
-	GlyphOfKillShot = 45732;
-	GlyphOfRapidFire = 42911;
-	GlyphOfSerpentSting = 42912;
-	GlyphOfSteadyShot = 42914;
-}
 enum HunterMajorGlyph {
 	HunterMajorGlyphNone = 0;
 	GlyphOfBestialWrath = 42902;

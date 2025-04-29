@@ -75,22 +75,6 @@ message PriestTalents {
 	int32 shadowy_apparition = 62;
 	bool dispersion = 63;
 }
-
-enum PriestPrimeGlyph {
-	PriestPrimeGlyphNone = 0;
-	GlyphOfDispersion = 45753;
-	GlyphOfFlashHeal = 42400;
-	GlyphOfGuardianSpirit = 45755;
-	GlyphOfLightwell = 42403;
-	GlyphOfMindFlay = 42415;
-	GlyphOfPenance = 45756;
-	GlyphOfPowerWordBarrier = 42407;
-	GlyphOfPowerWordShield = 42408;
-	GlyphOfPrayerOfHealing = 42409;
-	GlyphOfRenew = 42411;
-	GlyphOfShadowWordDeath = 42414;
-	GlyphOfShadowWordPain = 42406;
-}
 enum PriestMajorGlyph {
 	PriestMajorGlyphNone = 0;
 	GlyphOfCircleOfHealing = 42396;

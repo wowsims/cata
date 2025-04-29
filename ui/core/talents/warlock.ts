@@ -1,78 +1,11 @@
-import { WarlockMajorGlyph, WarlockMinorGlyph,WarlockPrimeGlyph, WarlockTalents } from '../proto/warlock.js';
+import { WarlockMajorGlyph, WarlockMinorGlyph, WarlockTalents } from '../proto/warlock.js';
 import { GlyphsConfig } from './glyphs_picker.js';
-import { newTalentsConfig,TalentsConfig } from './talents_picker.js';
+import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
 import WarlockTalentJson from './trees/warlock.json';
 
 export const warlockTalentsConfig: TalentsConfig<WarlockTalents> = newTalentsConfig(WarlockTalentJson);
 
 export const warlockGlyphsConfig: GlyphsConfig = {
-	primeGlyphs: {
-		[WarlockPrimeGlyph.GlyphOfBaneOfAgony]: {
-			name: 'Glyph of Bane of Agony',
-			description: 'Increases the duration of your Bane of Agony by 4 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_curseofsargeras.jpg',
-		},
-		[WarlockPrimeGlyph.GlyphOfChaosBolt]: {
-			name: 'Glyph of Chaos Bolt',
-			description: 'Reduces the cooldown on Chaos Bolt by 2 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_warlock_chaosbolt.jpg',
-		},
-		[WarlockPrimeGlyph.GlyphOfConflagrate]: {
-			name: 'Glyph of Conflagrate',
-			description: 'Reduces the cooldown of your Conflagrate by 2 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_fire_fireball.jpg',
-		},
-		[WarlockPrimeGlyph.GlyphOfCorruption]: {
-			name: 'Glyph of Corruption',
-			description: 'Your Corruption spell has a 4% chance to cause you to enter a Shadow Trance state after damaging the opponent. The Shadow Trance state reduces the casting time of your next Shadow Bolt spell by 100%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_abominationexplosion.jpg',
-		},
-		[WarlockPrimeGlyph.GlyphOfFelguard]: {
-			name: 'Glyph of Felguard',
-			description: 'Increases the damage done by your Felguard\'s Legion Strike by 5%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelguard.jpg',
-		},
-		[WarlockPrimeGlyph.GlyphOfHaunt]: {
-			name: 'Glyph of Haunt',
-			description: 'The bonus damage granted by your Haunt spell is increased by an additional 3%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_warlock_haunt.jpg',
-		},
-		[WarlockPrimeGlyph.GlyphOfImmolate]: {
-			name: 'Glyph of Immolate',
-			description: 'Increases the periodic damage of your Immolate by 10%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_fire_immolation.jpg',
-		},
-		[WarlockPrimeGlyph.GlyphOfImp]: {
-			name: 'Glyph of Imp',
-			description: 'Increases the damage done by your Imp\'s Firebolt spell by 20%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonimp.jpg',
-		},
-		[WarlockPrimeGlyph.GlyphOfIncinerate]: {
-			name: 'Glyph of Incinerate',
-			description: 'Increases the damage done by Incinerate by 5%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_fire_burnout.jpg',
-		},
-		[WarlockPrimeGlyph.GlyphOfLashOfPain]: {
-			name: 'Glyph of Lash of Pain',
-			description: 'Increases the damage done by your Succubus\' Lash of Pain by 25%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_curse.jpg',
-		},
-		[WarlockPrimeGlyph.GlyphOfMetamorphosis]: {
-			name: 'Glyph of Metamorphosis',
-			description: 'Increases the duration of your Metamorphosis by 6 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_demonform.jpg',
-		},
-		[WarlockPrimeGlyph.GlyphOfShadowburn]: {
-			name: 'Glyph of Shadowburn',
-			description: 'If your Shadowburn fails to kill the target at or below 20% health, your Shadowburn\'s cooldown is instantly reset. This effect has a 6 sec cooldown.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_scourgebuild.jpg',
-		},
-		[WarlockPrimeGlyph.GlyphOfUnstableAffliction]: {
-			name: 'Glyph of Unstable Affliction',
-			description: 'Decreases the casting time of your Unstable Affliction by 0.2 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_unstableaffliction_3.jpg',
-		},
-	},
 	majorGlyphs: {
 		[WarlockMajorGlyph.GlyphOfDeathCoilWl]: {
 			name: 'Glyph of Death Coil',
@@ -111,7 +44,7 @@ export const warlockGlyphsConfig: GlyphsConfig = {
 		},
 		[WarlockMajorGlyph.GlyphOfSeduction]: {
 			name: 'Glyph of Seduction',
-			description: 'Your Succubus\'s Seduction ability also removes all damage over time effects from the target.',
+			description: "Your Succubus's Seduction ability also removes all damage over time effects from the target.",
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_mindsteal.jpg',
 		},
 		[WarlockMajorGlyph.GlyphOfShadowBolt]: {
@@ -131,7 +64,8 @@ export const warlockGlyphsConfig: GlyphsConfig = {
 		},
 		[WarlockMajorGlyph.GlyphOfSoulSwap]: {
 			name: 'Glyph of Soul Swap',
-			description: 'Your Soul Swap leaves your damage-over-time spells behind on the target you Soul Swapped from, but gives Soul Swap a 30 sec cooldown.',
+			description:
+				'Your Soul Swap leaves your damage-over-time spells behind on the target you Soul Swapped from, but gives Soul Swap a 30 sec cooldown.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_warlock_soulswap.jpg',
 		},
 		[WarlockMajorGlyph.GlyphOfSoulstone]: {
@@ -141,7 +75,7 @@ export const warlockGlyphsConfig: GlyphsConfig = {
 		},
 		[WarlockMajorGlyph.GlyphOfVoidwalker]: {
 			name: 'Glyph of Voidwalker',
-			description: 'Increases your Voidwalker\'s total health by 20%.',
+			description: "Increases your Voidwalker's total health by 20%.",
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonvoidwalker.jpg',
 		},
 	},

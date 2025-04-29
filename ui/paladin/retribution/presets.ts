@@ -5,7 +5,6 @@ import {
 	PaladinAura as PaladinAura,
 	PaladinMajorGlyph,
 	PaladinMinorGlyph,
-	PaladinPrimeGlyph,
 	PaladinSeal,
 	RetributionPaladin_Options as RetributionPaladinOptions,
 } from '../../core/proto/paladin.js';
@@ -99,9 +98,6 @@ export const DefaultTalents = {
 	data: SavedTalents.create({
 		talentsString: '203002-02-23203213211113002311',
 		glyphs: Glyphs.create({
-			prime1: PaladinPrimeGlyph.GlyphOfSealOfTruth,
-			prime2: PaladinPrimeGlyph.GlyphOfExorcism,
-			prime3: PaladinPrimeGlyph.GlyphOfTemplarSVerdict,
 			major1: PaladinMajorGlyph.GlyphOfTheAsceticCrusader,
 			major2: PaladinMajorGlyph.GlyphOfHammerOfWrath,
 			major3: PaladinMajorGlyph.GlyphOfConsecration,

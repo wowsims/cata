@@ -28,8 +28,8 @@ func (hunter *SurvivalHunter) Initialize() {
 	// Initialize global Hunter spells
 	hunter.Hunter.Initialize()
 
-	hunter.registerExplosiveShotSpell()
-	hunter.registerBlackArrowSpell(hunter.FireTrapTimer)
+	// hunter.registerExplosiveShotSpell()
+	// hunter.registerBlackArrowSpell(hunter.FireTrapTimer)
 	// Apply SV Hunter mastery
 	schoolsAffectedBySurvivalMastery := []stats.SchoolIndex{
 		stats.SchoolIndexNature,

@@ -23,7 +23,7 @@ type Hunter struct {
 	MarksmanshipOptions *proto.MarksmanshipHunter_Options
 	SurvivalOptions     *proto.SurvivalHunter_Options
 
-	Pet *HunterPet
+	// Pet *HunterPet
 
 	// The most recent time at which moving could have started, for trap weaving.
 	mayMoveAt time.Duration
@@ -97,7 +97,9 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 	core.FillTalentsProto(hunter.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 	focusPerSecond := 4.0
 
-	hunter.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), focusPerSecond, true, nil)
+	// TODO: Fix this to work with the new talent system.
+	// hunter.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), focusPerSecond, true, nil)
+	hunter.EnableFocusBar(100, focusPerSecond, true, nil)
 
 	hunter.PseudoStats.CanParry = true
 
@@ -127,7 +129,7 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 	}
 
 	hunter.AddStatDependencies()
-	hunter.Pet = hunter.NewHunterPet()
+	// hunter.Pet = hunter.NewHunterPet()
 	return hunter
 }
 
@@ -138,28 +140,30 @@ func (hunter *Hunter) Initialize() {
 
 	hunter.FireTrapTimer = hunter.NewTimer()
 
-	hunter.ApplyGlyphs()
+	// hunter.ApplyGlyphs()
 	hunter.RegisterSpells()
 
-	hunter.addBloodthirstyGloves()
+	// hunter.addBloodthirstyGloves()
 }
 
+func (hunter *Hunter) ApplyTalents() {}
+
 func (hunter *Hunter) RegisterSpells() {
-	hunter.registerSteadyShotSpell()
+	// hunter.registerSteadyShotSpell()
 	hunter.registerArcaneShotSpell()
 	hunter.registerKillShotSpell()
-	hunter.registerAspectOfTheHawkSpell()
-	hunter.registerSerpentStingSpell()
-	hunter.registerMultiShotSpell()
-	hunter.registerKillCommandSpell()
-	hunter.registerExplosiveTrapSpell(hunter.FireTrapTimer)
-	hunter.registerCobraShotSpell()
-	hunter.registerRapidFireCD()
-	hunter.registerSilencingShotSpell()
+	// hunter.registerAspectOfTheHawkSpell()
+	// hunter.registerSerpentStingSpell()
+	// hunter.registerMultiShotSpell()
+	// hunter.registerKillCommandSpell()
+	// hunter.registerExplosiveTrapSpell(hunter.FireTrapTimer)
+	// hunter.registerCobraShotSpell()
+	// hunter.registerRapidFireCD()
+	// hunter.registerSilencingShotSpell()
 	hunter.registerRaptorStrikeSpell()
-	hunter.registerTrapLauncher()
+	// hunter.registerTrapLauncher()
 	hunter.registerHuntersMarkSpell()
-	hunter.registerAspectOfTheFoxSpell()
+	// hunter.registerAspectOfTheFoxSpell()
 }
 
 func (hunter *Hunter) AddStatDependencies() {
@@ -169,12 +173,13 @@ func (hunter *Hunter) AddStatDependencies() {
 }
 
 func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	if hunter.Talents.TrueshotAura {
-		raidBuffs.TrueshotAura = true
-	}
-	if hunter.Talents.FerociousInspiration && hunter.Options.PetType != proto.HunterOptions_PetNone {
-		raidBuffs.FerociousInspiration = true
-	}
+	// TODO: Fix this to work with the new talent system.
+	// if hunter.Talents.TrueshotAura {
+	// 	raidBuffs.TrueshotAura = true
+	// }
+	// if hunter.Talents.FerociousInspiration && hunter.Options.PetType != proto.HunterOptions_PetNone {
+	// 	raidBuffs.FerociousInspiration = true
+	// }
 
 	if hunter.Options.PetType == proto.HunterOptions_CoreHound {
 		raidBuffs.Bloodlust = true
@@ -195,9 +200,11 @@ func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 		raidBuffs.FuriousHowl = true
 	}
 
-	if hunter.Talents.HuntingParty {
-		raidBuffs.HuntingParty = true
-	}
+	// TODO: Fix this to work with the new talent system.
+	//
+	//	if hunter.Talents.HuntingParty {
+	//		raidBuffs.HuntingParty = true
+	//	}
 }
 
 func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
@@ -210,9 +217,6 @@ func (hunter *Hunter) CritMultiplier(isRanged bool, isMFDSpell bool, doubleDipMS
 	return hunter.MeleeCritMultiplier(primaryModifier, secondaryModifier)
 }
 
-func (hunter *Hunter) HasPrimeGlyph(glyph proto.HunterPrimeGlyph) bool {
-	return hunter.HasGlyph(int32(glyph))
-}
 func (hunter *Hunter) HasMajorGlyph(glyph proto.HunterMajorGlyph) bool {
 	return hunter.HasGlyph(int32(glyph))
 }

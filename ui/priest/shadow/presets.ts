@@ -18,7 +18,6 @@ import {
 	PriestMajorGlyph as MajorGlyph,
 	PriestMinorGlyph as MinorGlyph,
 	PriestOptions_Armor,
-	PriestPrimeGlyph as PrimeGlyph,
 	ShadowPriest_Options as Options,
 } from '../../core/proto/priest';
 import { SavedTalents } from '../../core/proto/ui';
@@ -144,9 +143,6 @@ export const StandardTalents = {
 	data: SavedTalents.create({
 		talentsString: '032212--322032210201222100231',
 		glyphs: Glyphs.create({
-			prime1: PrimeGlyph.GlyphOfShadowWordPain,
-			prime2: PrimeGlyph.GlyphOfMindFlay,
-			prime3: PrimeGlyph.GlyphOfShadowWordDeath,
 			major1: MajorGlyph.GlyphOfFade,
 			major2: MajorGlyph.GlyphOfInnerFire,
 			major3: MajorGlyph.GlyphOfSpiritTap,

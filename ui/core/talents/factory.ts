@@ -31,7 +31,7 @@ export const classTalentsConfig: Record<Class, TalentsConfig<any>> = {
 };
 
 export const classGlyphsConfig: Record<Class, GlyphsConfig> = {
-	[Class.ClassUnknown]: { primeGlyphs: [], majorGlyphs: [], minorGlyphs: [] },
+	[Class.ClassUnknown]: { majorGlyphs: [], minorGlyphs: [] },
 	[Class.ClassDeathKnight]: deathKnightGlyphsConfig,
 	[Class.ClassDruid]: druidGlyphsConfig,
 	[Class.ClassShaman]: shamanGlyphsConfig,

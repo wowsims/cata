@@ -75,7 +75,9 @@ func (druid *Druid) GetBearWeapon() core.Weapon {
 func (druid *Druid) RegisterCatFormAura() {
 	actionID := core.ActionID{SpellID: 768}
 
-	srm := druid.GetSavageRoarMultiplier()
+	// TODO: Fix this to work with the new talent system.
+	// srm := druid.GetSavageRoarMultiplier()
+	srm := 1.8
 
 	statBonus := stats.Stats{
 		stats.AttackPower: -20, // This offset is needed because the first 10 points of Agility do not contribute any Attack Power.
@@ -160,7 +162,7 @@ func (druid *Druid) RegisterCatFormAura() {
 				druid.AutoAttacks.EnableAutoSwing(sim)
 				druid.UpdateManaRegenRates()
 
-				druid.TigersFuryAura.Deactivate(sim)
+				// druid.TigersFuryAura.Deactivate(sim)
 
 				// These buffs stay up, but corresponding changes don't
 				if druid.SavageRoarAura.IsActive() {
@@ -178,9 +180,9 @@ func (druid *Druid) RegisterCatFormAura() {
 		},
 	})
 
-	if druid.Talents.FeralSwiftness > 0 {
-		druid.CatFormAura.NewMovementSpeedEffect(0.15 * float64(druid.Talents.FeralSwiftness))
-	}
+	// if druid.Talents.FeralSwiftness > 0 {
+	// 	druid.CatFormAura.NewMovementSpeedEffect(0.15 * float64(druid.Talents.FeralSwiftness))
+	// }
 }
 
 func (druid *Druid) registerCatFormSpell() {
@@ -193,7 +195,9 @@ func (druid *Druid) registerCatFormSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 5,
-			PercentModifier: 100 - (10 * druid.Talents.NaturalShapeshifter),
+			// TODO: Fix this to work with the new talent system.
+			// PercentModifier: 100 - (10 * druid.Talents.NaturalShapeshifter),
+			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -203,7 +207,9 @@ func (druid *Druid) registerCatFormSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			maxShiftEnergy := float64(100*druid.Talents.Furor) / 3.0
+			// TODO: Fix this to work with the new talent system.
+			// maxShiftEnergy := float64(100*druid.Talents.Furor) / 3.0
+			maxShiftEnergy := 100 / 3.0
 
 			energyDelta := maxShiftEnergy - druid.CurrentEnergy()
 
@@ -319,7 +325,9 @@ func (druid *Druid) registerBearFormSpell() {
 	actionID := core.ActionID{SpellID: 5487}
 	rageMetrics := druid.NewRageMetrics(actionID)
 
-	furorProcChance := float64(druid.Talents.Furor) / 3.0
+	// TODO: Fix this to work with the new talent system.
+	// furorProcChance := float64(druid.Talents.Furor) / 3.0
+	furorProcChance := 0 / 3.0
 
 	druid.BearForm = druid.RegisterSpell(Any, core.SpellConfig{
 		ActionID: actionID,
@@ -327,7 +335,9 @@ func (druid *Druid) registerBearFormSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 5,
-			PercentModifier: 100 - (10 * druid.Talents.NaturalShapeshifter),
+			// TODO: Fix this to work with the new talent system.
+			// PercentModifier: 100 - (10 * druid.Talents.NaturalShapeshifter),
+			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

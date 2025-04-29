@@ -18,11 +18,7 @@ func getTestPlayerMM() *proto.Player {
 	}
 	var MMTalents = "032002-2302320032120231221-03"
 
-	var MMGlyphs = &proto.Glyphs{
-		Prime1: int32(proto.HunterPrimeGlyph_GlyphOfArcaneShot),
-		Prime2: int32(proto.HunterPrimeGlyph_GlyphOfRapidFire),
-		Prime3: int32(proto.HunterPrimeGlyph_HunterPrimeGlyphNone),
-	}
+	var MMGlyphs = &proto.Glyphs{}
 	var FerocityTalents = &proto.HunterPetTalents{
 		SerpentSwiftness: 2,
 		Dive:             true,
@@ -67,9 +63,6 @@ func getTestPlayerMM() *proto.Player {
 func getTestPlayerBloodDk() *proto.Player {
 	var BloodTalents = "03323203132212311321--003"
 	var BloodDefaultGlyphs = &proto.Glyphs{
-		Prime1: int32(proto.DeathKnightPrimeGlyph_GlyphOfDeathStrike),
-		Prime2: int32(proto.DeathKnightPrimeGlyph_GlyphOfHeartStrike),
-		Prime3: int32(proto.DeathKnightPrimeGlyph_GlyphOfRuneStrike),
 		Major1: int32(proto.DeathKnightMajorGlyph_GlyphOfVampiricBlood),
 		Major2: int32(proto.DeathKnightMajorGlyph_GlyphOfDancingRuneWeapon),
 		Major3: int32(proto.DeathKnightMajorGlyph_GlyphOfBoneShield),
@@ -109,9 +102,6 @@ func getTestPlayerBloodDk() *proto.Player {
 func getTestPlayerFeralCat() *proto.Player {
 	var StandardTalents = "-2320322312012121202301-020301"
 	var StandardGlyphs = &proto.Glyphs{
-		Prime1: int32(proto.DruidPrimeGlyph_GlyphOfRip),
-		Prime2: int32(proto.DruidPrimeGlyph_GlyphOfBloodletting),
-		Prime3: int32(proto.DruidPrimeGlyph_GlyphOfBerserk),
 		Major1: int32(proto.DruidMajorGlyph_GlyphOfThorns),
 		Major2: int32(proto.DruidMajorGlyph_GlyphOfFeralCharge),
 		Major3: int32(proto.DruidMajorGlyph_GlyphOfRebirth),

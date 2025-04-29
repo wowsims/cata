@@ -71,18 +71,6 @@ message WarriorTalents {
 	int32 sword_and_board = 60;
 	bool shockwave = 61;
 }
-enum WarriorPrimeGlyph {
-	WarriorPrimeGlyphNone = 0;
-	GlyphOfBladestorm = 45790;
-	GlyphOfBloodthirst = 43416;
-	GlyphOfDevastate = 43415;
-	GlyphOfMortalStrike = 43421;
-	GlyphOfOverpower = 43422;
-	GlyphOfRagingBlow = 43432;
-	GlyphOfRevenge = 43424;
-	GlyphOfShieldSlam = 43425;
-	GlyphOfSlam = 43423;
-}
 enum WarriorMajorGlyph {
 	WarriorMajorGlyphNone = 0;
 	GlyphOfCleaving = 43414;

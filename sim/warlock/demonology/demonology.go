@@ -1,8 +1,6 @@
 package demonology
 
 import (
-	"time"
-
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/warlock"
@@ -46,9 +44,9 @@ func (demonology *DemonologyWarlock) GetWarlock() *warlock.Warlock {
 func (demonology *DemonologyWarlock) Initialize() {
 	demonology.Warlock.Initialize()
 
-	demonology.registerHandOfGuldan()
-	demonology.registerMetamorphosis()
-	demonology.registerSummonFelguard()
+	// demonology.registerHandOfGuldan()
+	// demonology.registerMetamorphosis()
+	// demonology.registerSummonFelguard()
 }
 
 func (demonology *DemonologyWarlock) ApplyTalents() {
@@ -62,39 +60,39 @@ func (demonology *DemonologyWarlock) ApplyTalents() {
 	})
 }
 
-func (demonology *DemonologyWarlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	raidBuffs.DemonicPact = demonology.Talents.DemonicPact && demonology.Options.Summon != proto.WarlockOptions_NoSummon
-}
+// func (demonology *DemonologyWarlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+// 	raidBuffs.DemonicPact = demonology.Talents.DemonicPact && demonology.Options.Summon != proto.WarlockOptions_NoSummon
+// }
 
 func (demonology *DemonologyWarlock) Reset(sim *core.Simulation) {
 	demonology.Warlock.Reset(sim)
 }
 
-func (demonology *DemonologyWarlock) registerSummonFelguard() {
-	stunActionID := core.ActionID{SpellID: 32752}
+// func (demonology *DemonologyWarlock) registerSummonFelguard() {
+// 	stunActionID := core.ActionID{SpellID: 32752}
 
-	demonology.Felguard.RegisterAura(demonology.GetSummonStunAura())
-	demonology.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 30146},
-		SpellSchool:    core.SpellSchoolShadow,
-		ProcMask:       core.ProcMaskEmpty,
-		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: warlock.WarlockSpellSummonFelguard,
+// 	demonology.Felguard.RegisterAura(demonology.GetSummonStunAura())
+// 	demonology.RegisterSpell(core.SpellConfig{
+// 		ActionID:       core.ActionID{SpellID: 30146},
+// 		SpellSchool:    core.SpellSchoolShadow,
+// 		ProcMask:       core.ProcMaskEmpty,
+// 		Flags:          core.SpellFlagAPL,
+// 		ClassSpellMask: warlock.WarlockSpellSummonFelguard,
 
-		ManaCost: core.ManaCostOptions{BaseCostPercent: 80},
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD:      core.GCDDefault,
-				CastTime: 6 * time.Second,
-			},
-			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				demonology.ActivatePetSummonStun(sim, stunActionID)
-			},
-		},
+// 		ManaCost: core.ManaCostOptions{BaseCostPercent: 80},
+// 		Cast: core.CastConfig{
+// 			DefaultCast: core.Cast{
+// 				GCD:      core.GCDDefault,
+// 				CastTime: 6 * time.Second,
+// 			},
+// 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
+// 				demonology.ActivatePetSummonStun(sim, stunActionID)
+// 			},
+// 		},
 
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			demonology.SoulBurnAura.Deactivate(sim)
-			demonology.ChangeActivePet(sim, demonology.Warlock.Felguard)
-		},
-	})
-}
+// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+// 			demonology.SoulBurnAura.Deactivate(sim)
+// 			demonology.ChangeActivePet(sim, demonology.Warlock.Felguard)
+// 		},
+// 	})
+// }

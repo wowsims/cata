@@ -1,78 +1,11 @@
-import {MageMajorGlyph, MageMinorGlyph,MagePrimeGlyph, MageTalents } from '../proto/mage.js';
+import { MageMajorGlyph, MageMinorGlyph, MageTalents } from '../proto/mage.js';
 import { GlyphsConfig } from './glyphs_picker.js';
-import { newTalentsConfig,TalentsConfig } from './talents_picker.js';
+import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
 import MageTalentJson from './trees/mage.json';
 
 export const mageTalentsConfig: TalentsConfig<MageTalents> = newTalentsConfig(MageTalentJson);
 
 export const mageGlyphsConfig: GlyphsConfig = {
-	primeGlyphs: {
-		[MagePrimeGlyph.GlyphOfArcaneBarrage]: {
-			name: 'Glyph of Arcane Barrage',
-			description: 'Increases the damage of your Arcane Barrage spell by 4%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_mage_arcanebarrage.jpg',
-		},
-		[MagePrimeGlyph.GlyphOfArcaneBlast]: {
-			name: 'Glyph of Arcane Blast',
-			description: 'Increases the damage from your Arcane Blast buff by 3%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_arcane_blast.jpg',
-		},
-		[MagePrimeGlyph.GlyphOfArcaneMissiles]: {
-			name: 'Glyph of Arcane Missiles',
-			description: 'Increases the critical strike chance of your Arcane Missiles spell by 5%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_starfall.jpg',
-		},
-		[MagePrimeGlyph.GlyphOfConeOfCold]: {
-			name: 'Glyph of Cone of Cold',
-			description: 'Increases the damage of your Cone of Cold spell by 25%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_frost_glacier.jpg',
-		},
-		[MagePrimeGlyph.GlyphOfDeepFreeze]: {
-			name: 'Glyph of Deep Freeze',
-			description: 'Your Deep Freeze deals 20% additional damage.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_mage_deepfreeze.jpg',
-		},
-		[MagePrimeGlyph.GlyphOfFireball]: {
-			name: 'Glyph of Fireball',
-			description: 'Increases the critical strike chance of your Fireball spell by 5%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_fire_flamebolt.jpg',
-		},
-		[MagePrimeGlyph.GlyphOfFrostbolt]: {
-			name: 'Glyph of Frostbolt',
-			description: 'Increases the critical strike chance of your Frostbolt spell by 5%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_frost_frostbolt02.jpg',
-		},
-		[MagePrimeGlyph.GlyphOfFrostfire]: {
-			name: 'Glyph of Frostfire',
-			description: 'Increases the damage done by your Frostfire Bolt by 15% and your Frostfire Bolt now deals 3% additional damage over 12 sec, stacking up to 3 times, but no longer reduces the victim\'s movement speed.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_mage_frostfirebolt.jpg',
-		},
-		[MagePrimeGlyph.GlyphOfIceLance]: {
-			name: 'Glyph of Ice Lance',
-			description: 'Increases the damage of your Ice Lance spell by 5%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_frost_frostblast.jpg',
-		},
-		[MagePrimeGlyph.GlyphOfLivingBomb]: {
-			name: 'Glyph of Living Bomb',
-			description: 'Increases the damage of your Living Bomb spell by 3%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_mage_livingbomb.jpg',
-		},
-		[MagePrimeGlyph.GlyphOfMageArmor]: {
-			name: 'Glyph of Mage Armor',
-			description: 'Your Mage Armor regenerates 20% more mana.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_magearmor.jpg',
-		},
-		[MagePrimeGlyph.GlyphOfMoltenArmor]: {
-			name: 'Glyph of Molten Armor',
-			description: 'Your Molten Armor grants an additional 2% spell critical strike chance.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_mage_moltenarmor.jpg',
-		},
-		[MagePrimeGlyph.GlyphOfPyroblast]: {
-			name: 'Glyph of Pyroblast',
-			description: 'Increases the critical strike chance of your Pyroblast spell by 5%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_fire_fireball02.jpg',
-		},
-	},
 	majorGlyphs: {
 		[MageMajorGlyph.GlyphOfArcanePower]: {
 			name: 'Glyph of Arcane Power',
@@ -81,7 +14,7 @@ export const mageGlyphsConfig: GlyphsConfig = {
 		},
 		[MageMajorGlyph.GlyphOfBlastWave]: {
 			name: 'Glyph of Blast Wave',
-			description: 'Increases the duration of Blast Wave\'s slowing effect by 1 sec.',
+			description: "Increases the duration of Blast Wave's slowing effect by 1 sec.",
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_excorcism_02.jpg',
 		},
 		[MageMajorGlyph.GlyphOfBlink]: {
@@ -90,8 +23,8 @@ export const mageGlyphsConfig: GlyphsConfig = {
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_arcane_blink.jpg',
 		},
 		[MageMajorGlyph.GlyphOfDragonSBreath]: {
-			name: 'Glyph of Dragon\'s Breath',
-			description: 'Reduces the cooldown of your Dragon\'s Breath by 3 sec.',
+			name: "Glyph of Dragon's Breath",
+			description: "Reduces the cooldown of your Dragon's Breath by 3 sec.",
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_head_dragon_01.jpg',
 		},
 		[MageMajorGlyph.GlyphOfEvocation]: {

@@ -54,14 +54,14 @@ func (combatRogue *CombatRogue) Initialize() {
 	combatRogue.AdditiveEnergyRegenBonus += 0.25
 	combatRogue.MultiplyStat(stats.AttackPower, 1.3)
 
-	combatRogue.registerRevealingStrike()
-	combatRogue.registerBladeFlurry()
-	combatRogue.registerBanditsGuile()
+	// combatRogue.registerRevealingStrike()
+	// combatRogue.registerBladeFlurry()
+	// combatRogue.registerBanditsGuile()
 
-	combatRogue.applyCombatPotency()
+	// combatRogue.applyCombatPotency()
 
-	combatRogue.registerKillingSpreeCD()
-	combatRogue.registerAdrenalineRushCD()
+	// combatRogue.registerKillingSpreeCD()
+	// combatRogue.registerAdrenalineRushCD()
 
 	combatRogue.applyMastery()
 }
@@ -77,8 +77,9 @@ func (combatRogue *CombatRogue) GetRogue() *rogue.Rogue {
 func (combatRogue *CombatRogue) Reset(sim *core.Simulation) {
 	combatRogue.Rogue.Reset(sim)
 
-	if combatRogue.Talents.BanditsGuile > 0 {
-		combatRogue.BanditsGuileAura.Activate(sim)
-	}
+	// TODO: Fix this to work with the new talent system.
+	// if combatRogue.Talents.BanditsGuile > 0 {
+	// 	combatRogue.BanditsGuileAura.Activate(sim)
+	// }
 
 }

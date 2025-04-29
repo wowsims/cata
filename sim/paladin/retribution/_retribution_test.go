@@ -87,9 +87,6 @@ func BenchmarkSimulate(b *testing.B) {
 
 var StandardTalents = "203002-02-23203213211113002311"
 var StandardGlyphs = &proto.Glyphs{
-	Prime1: int32(proto.PaladinPrimeGlyph_GlyphOfTemplarSVerdict),
-	Prime2: int32(proto.PaladinPrimeGlyph_GlyphOfSealOfTruth),
-	Prime3: int32(proto.PaladinPrimeGlyph_GlyphOfExorcism),
 	Major1: int32(proto.PaladinMajorGlyph_GlyphOfHammerOfWrath),
 	Major2: int32(proto.PaladinMajorGlyph_GlyphOfTheAsceticCrusader),
 	Major3: int32(proto.PaladinMajorGlyph_GlyphOfConsecration),

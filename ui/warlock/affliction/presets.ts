@@ -6,7 +6,6 @@ import {
 	WarlockMajorGlyph as MajorGlyph,
 	WarlockMinorGlyph as MinorGlyph,
 	WarlockOptions_Summon as Summon,
-	WarlockPrimeGlyph as PrimeGlyph,
 } from '../../core/proto/warlock';
 import { Stats } from '../../core/proto_utils/stats';
 import { WARLOCK_BREAKPOINTS } from '../presets';
@@ -51,9 +50,6 @@ export const AfflictionTalents = {
 	data: SavedTalents.create({
 		talentsString: '223222003013321321-03-33',
 		glyphs: Glyphs.create({
-			prime1: PrimeGlyph.GlyphOfHaunt,
-			prime2: PrimeGlyph.GlyphOfUnstableAffliction,
-			prime3: PrimeGlyph.GlyphOfCorruption,
 			major1: MajorGlyph.GlyphOfShadowBolt,
 			major2: MajorGlyph.GlyphOfSoulLink,
 			major3: MajorGlyph.GlyphOfSoulSwap,

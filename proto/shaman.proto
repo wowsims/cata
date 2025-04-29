@@ -68,24 +68,6 @@ message ShamanTalents {
 	int32 blessing_of_the_eternals = 57;
 	bool riptide = 58;
 }
-enum ShamanPrimeGlyph {
-	ShamanPrimeGlyphNone = 0;
-	GlyphOfEarthShield = 45775;
-	GlyphOfEarthlivingWeapon = 41527;
-	GlyphOfFeralSpirit = 45771;
-	GlyphOfFireElementalTotem = 41529;
-	GlyphOfFlameShock = 41531;
-	GlyphOfFlametongueWeapon = 41532;
-	GlyphOfLavaBurst = 41524;
-	GlyphOfLavaLash = 41540;
-	GlyphOfLightningBolt = 41536;
-	GlyphOfRiptide = 45772;
-	GlyphOfShocking = 41526;
-	GlyphOfStormstrike = 41539;
-	GlyphOfUnleashedLightning = 71155;
-	GlyphOfWaterShield = 41541;
-	GlyphOfWindfuryWeapon = 41542;
-}
 enum ShamanMajorGlyph {
 	ShamanMajorGlyphNone = 0;
 	GlyphOfChainHeal = 41517;

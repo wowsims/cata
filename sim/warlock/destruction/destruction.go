@@ -49,7 +49,7 @@ func (destruction *DestructionWarlock) GetWarlock() *warlock.Warlock {
 func (destruction *DestructionWarlock) Initialize() {
 	destruction.Warlock.Initialize()
 
-	destruction.registerChaosBolt()
+	// destruction.registerChaosBolt()
 	destruction.registerConflagrate()
 }
 

@@ -18,7 +18,7 @@ var TalentTreeSizes = [3]int{20, 22, 21}
 type Druid struct {
 	core.Character
 	SelfBuffs
-	eclipseEnergyBar
+	// eclipseEnergyBar
 	Talents *proto.DruidTalents
 
 	ClassSpellScaling float64
@@ -109,7 +109,7 @@ type Druid struct {
 	StampedeBearAura         *core.Aura
 	StrengthOfThePantherAura *core.Aura
 	SurvivalInstinctsAura    *core.Aura
-	TigersFuryAura           *core.Aura
+	// TigersFuryAura           *core.Aura
 
 	BleedCategories core.ExclusiveCategoryArray
 
@@ -210,24 +210,20 @@ func (druid *Druid) GetCharacter() *core.Character {
 	return &druid.Character
 }
 
-func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	if druid.InForm(Cat|Bear) && druid.Talents.LeaderOfThePack {
-		raidBuffs.LeaderOfThePack = true
-	}
+// func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+// 	if druid.InForm(Cat|Bear) && druid.Talents.LeaderOfThePack {
+// 		raidBuffs.LeaderOfThePack = true
+// 	}
 
-	if druid.InForm(Moonkin) {
-		raidBuffs.MoonkinForm = true
-	}
+// 	if druid.InForm(Moonkin) {
+// 		raidBuffs.MoonkinForm = true
+// 	}
 
-	raidBuffs.MarkOfTheWild = true
-}
+// 	raidBuffs.MarkOfTheWild = true
+// }
 
 func (druid *Druid) BalanceCritMultiplier() float64 {
 	return druid.SpellCritMultiplier(1, 0)
-}
-
-func (druid *Druid) HasPrimeGlyph(glyph proto.DruidPrimeGlyph) bool {
-	return druid.HasGlyph(int32(glyph))
 }
 
 func (druid *Druid) HasMajorGlyph(glyph proto.DruidMajorGlyph) bool {
@@ -290,9 +286,9 @@ func (druid *Druid) Initialize() {
 		}
 	})
 
-	druid.registerFaerieFireSpell()
+	// druid.registerFaerieFireSpell()
 	// druid.registerRebirthSpell()
-	druid.registerInnervateCD()
+	// druid.registerInnervateCD()
 	druid.registerTranquilityCD()
 	druid.applyOmenOfClarity()
 }
@@ -302,54 +298,54 @@ func (druid *Druid) RegisterBalanceSpells() {
 	druid.registerInsectSwarmSpell()
 	druid.registerMoonfireSpell()
 	druid.registerSunfireSpell()
-	druid.registerStarfireSpell()
+	// druid.registerStarfireSpell()
 	druid.registerWrathSpell()
-	druid.registerStarfallSpell()
-	druid.registerTyphoonSpell()
-	druid.registerForceOfNature()
+	// druid.registerStarfallSpell()
+	// druid.registerTyphoonSpell()
+	// druid.registerForceOfNature()
 	druid.registerStarsurgeSpell()
 	druid.registerWildMushrooms()
 }
 
 func (druid *Druid) RegisterFeralCatSpells() {
 	druid.registerBearFormSpell()
-	druid.registerBerserkCD()
-	druid.registerCatCharge()
+	// druid.registerBerserkCD()
+	// druid.registerCatCharge()
 	druid.registerCatFormSpell()
-	druid.registerEnrageSpell()
-	druid.registerFerociousBiteSpell()
-	druid.registerLacerateSpell()
-	druid.registerMangleBearSpell()
-	druid.registerMangleCatSpell()
-	druid.registerMaulSpell()
-	druid.registerRakeSpell()
-	druid.registerRavageSpell()
-	druid.registerRipSpell()
-	druid.registerSavageRoarSpell()
-	druid.registerShredSpell()
+	// druid.registerEnrageSpell()
+	// druid.registerFerociousBiteSpell()
+	// druid.registerLacerateSpell()
+	// druid.registerMangleBearSpell()
+	// druid.registerMangleCatSpell()
+	// druid.registerMaulSpell()
+	// druid.registerRakeSpell()
+	// druid.registerRavageSpell()
+	// druid.registerRipSpell()
+	// druid.registerSavageRoarSpell()
+	// druid.registerShredSpell()
 	druid.registerSwipeBearSpell()
 	druid.registerSwipeCatSpell()
-	druid.registerThrashBearSpell()
-	druid.registerTigersFurySpell()
+	// druid.registerThrashBearSpell()
+	// druid.registerTigersFurySpell()
 }
 
 func (druid *Druid) RegisterFeralTankSpells() {
 	druid.registerBarkskinCD()
 	druid.registerBearFormSpell()
-	druid.registerBerserkCD()
+	// druid.registerBerserkCD()
 	druid.registerDemoralizingRoarSpell()
-	druid.registerEnrageSpell()
+	// druid.registerEnrageSpell()
 	druid.registerFrenziedRegenerationCD()
-	druid.registerMangleBearSpell()
-	druid.registerMaulSpell()
-	druid.registerLacerateSpell()
-	druid.registerPulverizeSpell()
-	druid.registerRakeSpell()
-	druid.registerRipSpell()
+	// druid.registerMangleBearSpell()
+	// druid.registerMaulSpell()
+	// druid.registerLacerateSpell()
+	// druid.registerPulverizeSpell()
+	// druid.registerRakeSpell()
+	// druid.registerRipSpell()
 	druid.registerSavageDefensePassive()
-	druid.registerSurvivalInstinctsCD()
+	// druid.registerSurvivalInstinctsCD()
 	druid.registerSwipeBearSpell()
-	druid.registerThrashBearSpell()
+	// druid.registerThrashBearSpell()
 }
 
 func (druid *Druid) RegisterLeatherSpecialization() {
@@ -365,7 +361,7 @@ func (druid *Druid) RegisterLeatherSpecialization() {
 }
 
 func (druid *Druid) Reset(_ *core.Simulation) {
-	druid.eclipseEnergyBar.reset()
+	// druid.eclipseEnergyBar.reset()
 	druid.BleedsActive = 0
 	druid.form = druid.StartingForm
 	druid.disabledMCDs = []*core.MajorCooldown{}
@@ -397,17 +393,17 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 
 	druid.RegisterLeatherSpecialization()
 
-	if druid.Talents.ForceOfNature {
-		druid.Treants = &Treants{
-			Treant1: druid.NewTreant(),
-			Treant2: druid.NewTreant(),
-			Treant3: druid.NewTreant(),
-		}
-	}
+	// if druid.Talents.ForceOfNature {
+	// 	druid.Treants = &Treants{
+	// 		Treant1: druid.NewTreant(),
+	// 		Treant2: druid.NewTreant(),
+	// 		Treant3: druid.NewTreant(),
+	// 	}
+	// }
 
-	if druid.CouldHaveSetBonus(ItemSetObsidianArborweaveRegalia, 2) {
-		druid.BurningTreant = druid.NewBurningTreant()
-	}
+	// if druid.CouldHaveSetBonus(ItemSetObsidianArborweaveRegalia, 2) {
+	// 	druid.BurningTreant = druid.NewBurningTreant()
+	// }
 
 	return druid
 }

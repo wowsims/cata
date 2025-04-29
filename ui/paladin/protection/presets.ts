@@ -4,7 +4,6 @@ import {
 	PaladinAura as PaladinAura,
 	PaladinMajorGlyph,
 	PaladinMinorGlyph,
-	PaladinPrimeGlyph,
 	PaladinSeal,
 	ProtectionPaladin_Options as ProtectionPaladinOptions,
 } from '../../core/proto/paladin.js';
@@ -58,17 +57,14 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const DefaultTalents = {
 	name: 'Default',
 	data: SavedTalents.create({
-		"talentsString": "-32023013122121101231-032032",
-		"glyphs": {
-		  "prime1": PaladinPrimeGlyph.GlyphOfShieldOfTheRighteous,
-		  "prime2": PaladinPrimeGlyph.GlyphOfCrusaderStrike,
-		  "prime3": PaladinPrimeGlyph.GlyphOfSealOfTruth,
-		  "major1": PaladinMajorGlyph.GlyphOfTheAsceticCrusader,
-		  "major2": PaladinMajorGlyph.GlyphOfLayOnHands,
-		  "major3": PaladinMajorGlyph.GlyphOfFocusedShield,
-		  "minor1": PaladinMinorGlyph.GlyphOfTruth,
-		  "minor2": PaladinMinorGlyph.GlyphOfBlessingOfMight,
-		  "minor3": PaladinMinorGlyph.GlyphOfInsight,
+		talentsString: '-32023013122121101231-032032',
+		glyphs: {
+			major1: PaladinMajorGlyph.GlyphOfTheAsceticCrusader,
+			major2: PaladinMajorGlyph.GlyphOfLayOnHands,
+			major3: PaladinMajorGlyph.GlyphOfFocusedShield,
+			minor1: PaladinMinorGlyph.GlyphOfTruth,
+			minor2: PaladinMinorGlyph.GlyphOfBlessingOfMight,
+			minor3: PaladinMinorGlyph.GlyphOfInsight,
 		},
 	}),
 };

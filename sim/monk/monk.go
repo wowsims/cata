@@ -112,9 +112,6 @@ func (monk *Monk) GetMonk() *Monk {
 func (monk *Monk) AddRaidBuffs(_ *proto.RaidBuffs)   {}
 func (monk *Monk) AddPartyBuffs(_ *proto.PartyBuffs) {}
 
-func (monk *Monk) HasPrimeGlyph(glyph proto.MonkPrimeGlyph) bool {
-	return monk.HasGlyph(int32(glyph))
-}
 func (monk *Monk) HasMajorGlyph(glyph proto.MonkMajorGlyph) bool {
 	return monk.HasGlyph(int32(glyph))
 }
