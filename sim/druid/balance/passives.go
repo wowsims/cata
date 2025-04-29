@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/stats"
 	"github.com/wowsims/mop/sim/druid"
 )
 
@@ -59,7 +60,10 @@ func (moonkin *BalanceDruid) registerShootingStars() {
 	})
 }
 
-func (moonkin *BalanceDruid) registerBalanceOfPower() {}
+func (moonkin *BalanceDruid) registerBalanceOfPower() {
+	moonkin.AddStat(stats.SpellHitPercent, -moonkin.GetBaseStats()[stats.Spirit]/core.SpellHitRatingPerHitPercent)
+	moonkin.AddStatDependency(stats.Spirit, stats.SpellHitPercent, 1/core.SpellHitRatingPerHitPercent)
+}
 
 func (moonkin *BalanceDruid) registerEuphoria() {}
 
