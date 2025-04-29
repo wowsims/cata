@@ -11,6 +11,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"slices"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -104,6 +106,44 @@ func WriteProtoArrayToBuffer[T googleProto.Message](arr []T, buffer *bytes.Buffe
 		buffer.WriteString("\n")
 	}
 	buffer.WriteString("]")
+}
+
+func WriteMapSortByIntKey(filePath string, contents map[string]string) {
+	WriteMapCustomSort(filePath, contents, func(a, b string) int {
+		intA, err1 := strconv.Atoi(a)
+		intB, err2 := strconv.Atoi(b)
+		if err1 != nil {
+			panic(err1)
+		}
+		if err2 != nil {
+			panic(err2)
+		}
+		return intA - intB
+	})
+}
+func WriteMapCustomSort(filePath string, contents map[string]string, sortFunc func(a, b string) int) {
+	type Elem struct {
+		key string
+		val string
+	}
+
+	elems := make([]Elem, len(contents))
+	i := 0
+	for k, v := range contents {
+		elems[i] = Elem{key: k, val: v}
+		i++
+	}
+
+	// Sort so the output is stable.
+	slices.SortStableFunc(elems, func(a, b Elem) int {
+		return sortFunc(a.key, b.key)
+	})
+
+	lines := core.MapSlice(elems, func(elem Elem) string {
+		return fmt.Sprintf("%s,%s", elem.key, elem.val)
+	})
+
+	WriteFileLines(filePath, lines)
 }
 
 // Fetches web results a single url, and returns the page contents as a string.
