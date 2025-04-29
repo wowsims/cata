@@ -217,6 +217,10 @@ func (effect *SpellEffect) ParseStatEffect() *stats.Stats {
 		return stats
 	}
 
+	if effect.EffectAura == A_MOD_DAMAGE_DONE && effect.EffectType == E_APPLY_AURA {
+		stats[proto.Stat_StatSpellPower] = float64(effect.EffectBasePoints)
+	}
+
 	if effect.EffectMiscValues[0] == -1 &&
 		effect.EffectType == E_APPLY_AURA &&
 		effect.EffectAura == A_MOD_STAT {
