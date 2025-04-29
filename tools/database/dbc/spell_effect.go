@@ -208,17 +208,13 @@ func (data *SpellEffect) ClassFlag(index uint) uint32 {
 	return uint32(data.EffectSpellClassMasks[index/32]) & (1 << (index % 32))
 }
 
-func (effect *SpellEffect) ParseStatEffect(scalingLevel int) *stats.Stats {
+func (effect *SpellEffect) ParseStatEffect() *stats.Stats {
 	stats := &stats.Stats{}
 	if effect.EffectAura == A_MOD_STAT && effect.EffectType == E_APPLY_AURA {
-		stat, _ := MapMainStatToStat(effect.EffectMiscValues[0])
-		if effect.EffectBasePoints > 0 {
+		if effect.EffectMiscValues[0] > 0 {
+			stat, _ := MapMainStatToStat(effect.EffectMiscValues[0])
 
 			stats[stat] = float64(effect.EffectBasePoints)
-			return stats
-		} else if effect.Coefficient > 0 {
-			scalingValue := dbcInstance.SpellScalings[scalingLevel]
-			stats[stat] = effect.Coefficient * scalingValue.Values[proto.Class_ClassUnknown]
 			return stats
 		}
 	}
