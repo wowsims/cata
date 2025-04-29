@@ -40,7 +40,7 @@ func (bm *BrewmasterMonk) registerBrewmasterTraining() {
 	// Blackout Kick
 	// After you Blackout Kick, you gain Shuffle, increasing your parry chance by 20%
 	// and your Stagger amount by an additional 20% for 6 sec.
-	// TODO: Add Stagger amount increase
+	// Stagger amount is implemented in stagger.go
 	bm.ShuffleAura = bm.RegisterAura(core.Aura{
 		Label:    "Shuffle",
 		ActionID: core.ActionID{SpellID: 115307},
@@ -53,7 +53,11 @@ func (bm *BrewmasterMonk) registerBrewmasterTraining() {
 		Callback:       core.CallbackOnSpellHitDealt,
 		Outcome:        core.OutcomeLanded,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			wasActive := bm.ShuffleAura.IsActive()
 			bm.ShuffleAura.Activate(sim)
+			if wasActive {
+				bm.ShuffleAura.UpdateExpires(bm.ShuffleAura.ExpiresAt() + 6*time.Second)
+			}
 		},
 	})
 }

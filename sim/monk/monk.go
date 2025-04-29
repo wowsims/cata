@@ -258,6 +258,7 @@ const (
 	MonkSpellBreathOfFire
 	MonkSpellKegSmash
 	MonkSpellGuard
+	MonkSpellStagger
 
 	MonkSpellLast
 	MonkSpellsAll = MonkSpellLast<<1 - 1
