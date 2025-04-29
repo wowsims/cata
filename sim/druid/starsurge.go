@@ -15,7 +15,7 @@ func (druid *Druid) registerStarsurgeSpell() {
 		SpellSchool:    core.SpellSchoolArcane | core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: DruidSpellStarsurge,
-		Flags:          core.SpellFlagAPL | SpellFlagOmenTrigger,
+		Flags:          core.SpellFlagAPL,
 		MissileSpeed:   20,
 
 		DamageMultiplier:         1,

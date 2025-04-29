@@ -18,7 +18,7 @@ func (druid *Druid) registerMoonfireDoTSpell() {
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: DruidSpellMoonfireDoT,
-		Flags:          SpellFlagOmenTrigger | core.SpellFlagPassiveSpell,
+		Flags:          core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   druid.DefaultCritMultiplier(),
@@ -52,14 +52,13 @@ func (druid *Druid) registerMoonfireDoTSpell() {
 }
 
 func (druid *Druid) registerMoonfireImpactSpell() {
-	druid.SetSpellEclipseEnergy(DruidSpellMoonfire, MoonfireBaseEnergyGain, MoonfireBaseEnergyGain)
 
 	druid.Moonfire = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 8921},
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: DruidSpellMoonfire,
-		Flags:          core.SpellFlagAPL | SpellFlagOmenTrigger,
+		Flags:          core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 9,
@@ -83,11 +82,6 @@ func (druid *Druid) registerMoonfireImpactSpell() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
-				if druid.Sunfire.Dot(target).IsActive() {
-					druid.Sunfire.Dot(target).Deactivate(sim)
-				}
-
-				druid.ExtendingMoonfireStacks = 3
 				druid.Moonfire.RelatedDotSpell.Cast(sim, target)
 			}
 

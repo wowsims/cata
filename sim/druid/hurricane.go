@@ -11,7 +11,6 @@ func (druid *Druid) registerHurricaneSpell() {
 		ActionID:       core.ActionID{SpellID: 42231},
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellProc,
-		Flags:          SpellFlagOmenTrigger,
 		ClassSpellMask: DruidSpellHurricane,
 
 		CritMultiplier:   druid.DefaultCritMultiplier(),

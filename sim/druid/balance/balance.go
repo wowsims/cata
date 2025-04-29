@@ -58,13 +58,9 @@ func (moonkin *BalanceDruid) GetDruid() *druid.Druid {
 func (moonkin *BalanceDruid) Initialize() {
 	moonkin.Druid.Initialize()
 
-	moonkin.RegisterBalanceSpells()
+	moonkin.RegisterBalancePassives()
 
-	// if moonkin.OwlkinFrenzyAura != nil && moonkin.Options.OkfUptime > 0 {
-	// 	moonkin.Env.RegisterPreFinalizeEffect(func() {
-	// 		core.ApplyFixedUptimeAura(moonkin.OwlkinFrenzyAura, float64(moonkin.Options.OkfUptime), time.Second*5, 0)
-	// 	})
-	// }
+	moonkin.RegisterBalanceSpells()
 }
 
 func (moonkin *BalanceDruid) ApplyTalents() {
@@ -72,33 +68,6 @@ func (moonkin *BalanceDruid) ApplyTalents() {
 	// moonkin.EnableEclipseBar()
 	// moonkin.RegisterEclipseAuras()
 	// moonkin.RegisterEclipseEnergyGainAura()
-
-	// Moonfury passive
-	moonkin.RegisterAura(
-		core.Aura{
-			Label:    "Moonfury",
-			Duration: core.NeverExpires,
-			ActionID: core.ActionID{
-				SpellID: 16913,
-			},
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-		},
-	)
-
-	moonkin.AddStaticMod(core.SpellModConfig{
-		ClassMask:  druid.DruidSpellWrath | druid.DruidSpellStarfire | druid.DruidSpellStarsurge | druid.DruidSpellStarfall | druid.DruidSpellDoT,
-		Kind:       core.SpellMod_CritMultiplier_Flat,
-		FloatValue: 1.0,
-	})
-
-	moonkin.AddStaticMod(core.SpellModConfig{
-		School:     core.SpellSchoolArcane | core.SpellSchoolNature,
-		ClassMask:  druid.DruidSpellsAll,
-		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: 0.1,
-	})
 
 	// Apply druid talents
 	// moonkin.Druid.ApplyTalents()

@@ -9,8 +9,7 @@ import (
 )
 
 const (
-	SpellFlagNaturesGrace = core.SpellFlagAgentReserved1
-	SpellFlagOmenTrigger  = core.SpellFlagAgentReserved2
+	SpellFlagOmenTrigger = core.SpellFlagAgentReserved1
 )
 
 type Druid struct {
@@ -49,7 +48,6 @@ type Druid struct {
 	HurricaneTickSpell    *DruidSpell
 	GiftOfTheWild         *DruidSpell
 	Lacerate              *DruidSpell
-	Languish              *DruidSpell
 	MangleBear            *DruidSpell
 	MangleCat             *DruidSpell
 	Maul                  *DruidSpell
@@ -92,7 +90,6 @@ type Druid struct {
 	FrenziedRegenerationAura *core.Aura
 	LunarEclipseProcAura     *core.Aura
 	MaulQueueAura            *core.Aura
-	MoonkinT84PCAura         *core.Aura
 	NaturesGraceProcAura     *core.Aura
 	OwlkinFrenzyAura         *core.Aura
 	PredatoryInstinctsAura   *core.Aura
@@ -116,10 +113,7 @@ type Druid struct {
 
 	ProcOoc func(sim *core.Simulation)
 
-	ExtendingMoonfireStacks int
-
-	Treants       *Treants
-	BurningTreant *BurningTreant
+	Treants *Treants
 
 	form         DruidForm
 	disabledMCDs []*core.MajorCooldown
@@ -135,17 +129,9 @@ type Druid struct {
 }
 
 const (
-	WrathBaseEnergyGain     float64 = 13 + 1.0/3
-	StarsurgeBaseEnergyGain float64 = 15
+	WrathBaseEnergyGain     float64 = 15
+	StarsurgeBaseEnergyGain float64 = 20
 	StarfireBaseEnergyGain  float64 = 20
-	MoonfireBaseEnergyGain  float64 = 0
-	SunfireBaseEnergyGain   float64 = 0
-
-	MoonfireLunarShowerEnergyGain float64 = MoonfireBaseEnergyGain + 8
-	SunfireLunarShowerEnergyGain  float64 = SunfireBaseEnergyGain + 8
-
-	Wrath4PT12EnergyGain    float64 = WrathBaseEnergyGain + 3
-	Starfire4PT12EnergyGain float64 = StarfireBaseEnergyGain + 5
 )
 
 const (
@@ -218,10 +204,6 @@ func (druid *Druid) GetCharacter() *core.Character {
 // 	raidBuffs.MarkOfTheWild = true
 // }
 
-func (druid *Druid) BalanceCritMultiplier() float64 {
-	return druid.CritMultiplier(1, 0)
-}
-
 func (druid *Druid) HasMajorGlyph(glyph proto.DruidMajorGlyph) bool {
 	return druid.HasGlyph(int32(glyph))
 }
@@ -229,10 +211,6 @@ func (druid *Druid) HasMajorGlyph(glyph proto.DruidMajorGlyph) bool {
 func (druid *Druid) HasMinorGlyph(glyph proto.DruidMinorGlyph) bool {
 	return druid.HasGlyph(int32(glyph))
 }
-
-// func (druid *Druid) TryMaul(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
-// 	return druid.MaulReplaceMH(sim, mhSwingSpell)
-// }
 
 func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *DruidSpell {
 	prev := config.ExtraCastCondition
@@ -394,10 +372,6 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 	// 		Treant2: druid.NewTreant(),
 	// 		Treant3: druid.NewTreant(),
 	// 	}
-	// }
-
-	// if druid.CouldHaveSetBonus(ItemSetObsidianArborweaveRegalia, 2) {
-	// 	druid.BurningTreant = druid.NewBurningTreant()
 	// }
 
 	return druid
