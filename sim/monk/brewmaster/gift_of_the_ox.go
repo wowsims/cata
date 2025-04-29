@@ -16,7 +16,7 @@ func (bm *BrewmasterMonk) registerGiftOfTheOx() {
 		Label:     "Gift Of The Ox" + bm.Label,
 		ActionID:  giftOfTheOxPassiveActionID,
 		Duration:  time.Minute * 1,
-		MaxStacks: 3,
+		MaxStacks: 15,
 	})
 
 	bm.RegisterSpell(core.SpellConfig{

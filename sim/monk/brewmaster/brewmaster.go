@@ -28,7 +28,8 @@ func NewBrewmasterMonk(character *core.Character, options *proto.Player) *Brewma
 	monkOptions := options.GetBrewmasterMonk()
 
 	bm := &BrewmasterMonk{
-		Monk: monk.NewMonk(character, monkOptions.Options.ClassOptions, options.TalentsString),
+		Monk:      monk.NewMonk(character, monkOptions.Options.ClassOptions, options.TalentsString),
+		vengeance: &core.VengeanceTracker{},
 	}
 
 	bm.AddStatDependency(stats.Strength, stats.AttackPower, 1)
@@ -43,8 +44,11 @@ func NewBrewmasterMonk(character *core.Character, options *proto.Player) *Brewma
 type BrewmasterMonk struct {
 	*monk.Monk
 
+	vengeance *core.VengeanceTracker
+
 	// Auras
 	PowerGuardAura *core.Aura
+	ShuffleAura    *core.Aura
 
 	DizzyingHazeAuras core.AuraArray
 }
@@ -61,6 +65,7 @@ func (bm *BrewmasterMonk) Initialize() {
 func (bm *BrewmasterMonk) ApplyTalents() {
 	bm.Monk.ApplyTalents()
 	bm.ApplyArmorSpecializationEffect(stats.Stamina, proto.ArmorType_ArmorTypeLeather, 120225)
+	core.ApplyVengeanceEffect(&bm.Character, bm.vengeance, 120267)
 }
 
 func (bm *BrewmasterMonk) Reset(sim *core.Simulation) {

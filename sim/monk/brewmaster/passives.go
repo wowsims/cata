@@ -11,6 +11,7 @@ func (bm *BrewmasterMonk) registerPassives() {
 	bm.registerBrewmasterTraining()
 	bm.registerElusiveBrew()
 	bm.registerGiftOfTheOx()
+	bm.registerStagger()
 }
 
 func (bm *BrewmasterMonk) registerBrewmasterTraining() {
@@ -39,5 +40,20 @@ func (bm *BrewmasterMonk) registerBrewmasterTraining() {
 	// Blackout Kick
 	// After you Blackout Kick, you gain Shuffle, increasing your parry chance by 20%
 	// and your Stagger amount by an additional 20% for 6 sec.
-	// TODO
+	// TODO: Add Stagger amount increase
+	bm.ShuffleAura = bm.RegisterAura(core.Aura{
+		Label:    "Shuffle",
+		ActionID: core.ActionID{SpellID: 115307},
+		Duration: 6 * time.Second,
+	}).AttachAdditivePseudoStatBuff(&bm.PseudoStats.BaseParryChance, 0.2)
+
+	core.MakeProcTriggerAura(&bm.Unit, core.ProcTrigger{
+		Name:           "Shuffle Trigger",
+		ClassSpellMask: monk.MonkSpellBlackoutKick,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			bm.ShuffleAura.Activate(sim)
+		},
+	})
 }
