@@ -62,5 +62,5 @@ var PlayerOptionsFire = &proto.Player_FireMage{
 var FullFireConsumesSpec = &proto.ConsumesSpec{
 	FlaskId: 46376, // Flask of the Frost Wyrm
 	FoodId:  34767, // Firecracker Salmon
-	PotId:   54221, // Potion of Speed
+	PotId:   40211, // Potion of Speed
 }
