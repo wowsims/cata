@@ -14,13 +14,6 @@ func (druid *Druid) applyOmenOfClarity() {
 		Duration: time.Second * 15,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			affectedSpells = core.FilterSlice([]*DruidSpell{
-				// Balance
-				druid.Starfire,
-				druid.Wrath,
-				druid.Hurricane,
-				druid.WildMushrooms,
-				druid.ForceOfNature,
-				druid.Starsurge,
 
 				// Feral
 				druid.DemoralizingRoar,
