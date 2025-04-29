@@ -42,6 +42,11 @@ func NewBrewmasterMonk(character *core.Character, options *proto.Player) *Brewma
 
 type BrewmasterMonk struct {
 	*monk.Monk
+
+	// Auras
+	PowerGuardAura *core.Aura
+
+	DizzyingHazeAuras core.AuraArray
 }
 
 func (bm *BrewmasterMonk) GetMonk() *monk.Monk {
@@ -56,8 +61,6 @@ func (bm *BrewmasterMonk) Initialize() {
 func (bm *BrewmasterMonk) ApplyTalents() {
 	bm.Monk.ApplyTalents()
 	bm.ApplyArmorSpecializationEffect(stats.Stamina, proto.ArmorType_ArmorTypeLeather, 120225)
-
-	bm.registerGuard()
 }
 
 func (bm *BrewmasterMonk) Reset(sim *core.Simulation) {
@@ -66,7 +69,18 @@ func (bm *BrewmasterMonk) Reset(sim *core.Simulation) {
 
 func (bm *BrewmasterMonk) RegisterSpecializationEffects() {
 	bm.RegisterMastery()
+	bm.registerPassives()
+
+	bm.registerKegSmash()
+	bm.registerBreathOfFire()
+	bm.registerGuard()
+	bm.registerDizzyingHaze()
 }
 
 func (bm *BrewmasterMonk) RegisterMastery() {
+
+}
+
+func (bm *BrewmasterMonk) GetMasteryBonus() float64 {
+	return 0.5 + 0.0625*bm.GetMasteryPoints()
 }

@@ -67,7 +67,7 @@ func (monk *Monk) registerTigerPalm() {
 		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return monk.ComboPoints() >= 1 || monk.ComboBreakerTigerPalmAura.IsActive()
+			return isBrewmaster || monk.ComboPoints() >= 1 || monk.ComboBreakerTigerPalmAura.IsActive()
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

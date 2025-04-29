@@ -21,6 +21,7 @@ Increases the amount your Guard absorbs by 10%, but your Guard can only absorb m
 */
 func (bm *BrewmasterMonk) registerGuard() {
 	actionID := core.ActionID{SpellID: 115295}
+	chiMetrics := bm.NewChiMetrics(actionID)
 
 	spellSchool := core.SpellSchoolPhysical | core.SpellSchoolArcane | core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolHoly | core.SpellSchoolNature | core.SpellSchoolShadow
 
@@ -34,7 +35,7 @@ func (bm *BrewmasterMonk) registerGuard() {
 		30*time.Second,
 		spellSchool,
 		func(_ *core.Unit) float64 {
-			return bm.GetStat(stats.AttackPower)*1.971 + bm.CalcScalingSpellDmg(13)
+			return (bm.GetStat(stats.AttackPower)*1.971 + bm.CalcScalingSpellDmg(13)) * core.TernaryFloat64(bm.PowerGuardAura.IsActive(), 1.15, 1)
 		},
 	)
 
@@ -56,11 +57,13 @@ func (bm *BrewmasterMonk) registerGuard() {
 		},
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return bm.ComboPoints() >= 2
+			return bm.StanceMatches(monk.SturdyOx) && bm.ComboPoints() >= 2
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			aura.Activate(sim)
+			bm.PowerGuardAura.Deactivate(sim)
+			bm.SpendChi(sim, 2, chiMetrics)
 		},
 	})
 }

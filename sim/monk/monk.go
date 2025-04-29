@@ -251,6 +251,12 @@ const (
 	MonkSpellSpinningFireBlossom
 
 	// Brewmaster
+	MonkSpellElusiveBrew
+	MonkSpellDizzyingHaze
+	MonkSpellDizzyingHazeProjectile
+
+	MonkSpellBreathOfFire
+	MonkSpellKegSmash
 	MonkSpellGuard
 
 	MonkSpellLast

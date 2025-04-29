@@ -37,8 +37,7 @@ func (monk *Monk) registerExpelHarm() {
 		ClassSpellMask: MonkSpellExpelHarm,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   core.TernaryInt32(monk.StanceMatches(WiseSerpent), 0, 40),
-			Refund: 0.8,
+			Cost: core.TernaryInt32(monk.StanceMatches(WiseSerpent), 0, 40),
 		},
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: core.TernaryInt32(monk.StanceMatches(WiseSerpent), 250, 0),
