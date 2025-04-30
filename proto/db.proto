@@ -27,24 +27,15 @@ message SimItem {
 	WeaponType weapon_type = 5;
 	HandType hand_type = 6;
 	RangedWeaponType ranged_weapon_type = 7;
+	repeated GemColor gem_sockets = 8;
+	repeated double socketBonus = 9;
 
-	//repeated double stats = 8;
-	reserved 8;
-	repeated GemColor gem_sockets = 9;
-	repeated double socketBonus = 10;
+	double weapon_speed = 10;
 
-	//double weapon_damage_min = 11;
-	reserved 11;
-	//double weapon_damage_max = 12;
-	reserved 12;
-	double weapon_speed = 13;
+	string set_name = 11;
+	int32 set_id = 12;
 
-	string set_name = 14;
-	//int32 rand_prop_points = 15;
-	reserved 15;
-	int32 set_id = 16;
-
-	map<int32, ScalingItemProperties> scaling_options = 17; // keys are the other ilvl variants that this item could potentially have
+	map<int32, ScalingItemProperties> scaling_options = 13; // keys are the all ilvl variants that this item could potentially have
 }
 
 message Consumable {
