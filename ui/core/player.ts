@@ -1622,31 +1622,24 @@ export class Player<SpecType extends Spec> {
 		if (proto.consumes && typeof proto.consumes !== 'undefined') {
 			if (proto.consumes.prepopPotion != Potions.UnknownPotion && proto.consumables.prepotId == 0) {
 				proto.consumables.prepotId =
-					findInputItemForEnum(Potions, proto.consumes.defaultPotion, db.getConsumablesByType(ConsumableType.ConsumableTypePotion))?.id ?? 0;
+					findInputItemForEnum(Potions, proto.consumes.prepopPotion, db.getConsumablesByType(ConsumableType.ConsumableTypePotion))?.id ?? 0;
+				console.log('Found preopop', proto.consumables.prepotId, 'FROM', proto.consumes.prepopPotion);
 			}
 			if (proto.consumes.defaultPotion != Potions.UnknownPotion && proto.consumables.potId == 0) {
 				proto.consumables.potId =
 					findInputItemForEnum(Potions, proto.consumes.defaultPotion, db.getConsumablesByType(ConsumableType.ConsumableTypePotion))?.id ?? 0;
+				console.log('Found pot', proto.consumables.potId, 'FROM', proto.consumes.defaultPotion);
 			}
 			if (proto.consumes.flask != Flask.FlaskUnknown && proto.consumables.flaskId == 0) {
 				proto.consumables.flaskId =
 					findInputItemForEnum(Flask, proto.consumes.flask, db.getConsumablesByType(ConsumableType.ConsumableTypeFlask))?.id ?? 0;
+				console.log('FOUND FLASK', proto.consumables.flaskId, 'FROM', proto.consumes.flask);
 			}
 			if (proto.consumes.food != Food.FoodUnknown && proto.consumables.foodId == 0) {
-				proto.consumables.foodId =
-					findInputItemForEnum(Food, proto.consumes.flask, db.getConsumablesByType(ConsumableType.ConsumableTypeFood))?.id ?? 0;
-
-				if (proto.consumes.food === Food.FoodSeafoodFeast) {
-					proto.consumables.foodId = 62290;
-				} else if (proto.consumes.food === Food.FoodFortuneCookie) {
-					proto.consumables.foodId = 62649;
-				}
+				proto.consumables.foodId = findInputItemForEnum(Food, proto.consumes.food, db.getConsumablesByType(ConsumableType.ConsumableTypeFood))?.id ?? 0;
+				console.log('FOUND FOOD', proto.consumables.foodId, 'FROM', proto.consumes.food);
 			}
-			if (
-				typeof proto.consumes?.guardianElixir !== 'undefined' &&
-				proto.consumes.guardianElixir != GuardianElixir.GuardianElixirUnknown &&
-				proto.consumables.guardianElixirId == 0
-			) {
+			if (!!proto.consumes?.guardianElixir && proto.consumables.guardianElixirId == 0) {
 				proto.consumables.guardianElixirId =
 					findInputItemForEnum(GuardianElixir, proto.consumes.guardianElixir, db.getConsumablesByType(ConsumableType.ConsumableTypeGuardianElixir))
 						?.id ?? 0;

@@ -1,8 +1,10 @@
+import { Stats } from '../../core/proto_utils/stats';
 import { CHARACTER_LEVEL } from '../constants/mechanics.js';
 import {
 	ConsumableType,
 	EquipmentSpec,
 	GemColor,
+	ItemLevelState,
 	ItemRandomSuffix,
 	ItemSlot,
 	ItemSpec,
@@ -112,7 +114,18 @@ export class Database {
 
 	// Add all data from the db proto into this database.
 	private loadProto(db: UIDatabase) {
-		db.items.forEach(item => this.items.set(item.id, item));
+		db.items.forEach(item => {
+			const itemCopy = { ...item };
+			// Pre populate the item with stats from the highest base state the item can have.
+			// We use this in EP calculations
+			const maxScaling = item.scalingOptions[Math.max(...Object.keys(item.scalingOptions).map(Number))];
+			itemCopy.weaponDamageMax = maxScaling.weaponDamageMax;
+			itemCopy.weaponDamageMin = maxScaling.weaponDamageMin;
+			itemCopy.randPropPoints = maxScaling.randPropPoints;
+			itemCopy.stats = Stats.fromMap(maxScaling.stats).asProtoArray();
+
+			this.items.set(itemCopy.id, itemCopy);
+		});
 		db.randomSuffixes.forEach(randomSuffix => this.randomSuffixes.set(randomSuffix.id, randomSuffix));
 		db.reforgeStats.forEach(reforgeStat => this.reforgeStats.set(reforgeStat.id, reforgeStat));
 		db.enchants.forEach(enchant => {
@@ -192,8 +205,7 @@ export class Database {
 		return this.getConsumables().filter(consume => consume.type == type);
 	}
 	getConsumablesByTypeAndStats(type: ConsumableType, stats: Array<Stat>): Array<Consumable> {
-		const consumes = this.getConsumables().filter(consume => consume.type === type);
-		return consumes.filter(consume => stats.some(index => consume.stats[index] > 0 || consume.id == 62290 || consume.id == 62649));
+		return this.getConsumablesByType(type).filter(consume => consume.buffsMainStat || stats.some(index => consume.stats[index] > 0));
 	}
 	getRandomSuffixById(id: number): ItemRandomSuffix | undefined {
 		return this.randomSuffixes.get(id);
@@ -359,7 +371,7 @@ export class Database {
 		return Database.getWowheadTooltipData(id, 'spell', { signal: options?.signal });
 	}
 	private static async getWowheadTooltipData(id: number, tooltipPostfix: string, options: { signal?: AbortSignal } = {}): Promise<IconData> {
-		const url = `https://nether.wowhead.com/mop-classic/tooltip/${tooltipPostfix}/${id}?lvl=${CHARACTER_LEVEL}&dataEnv=${WOWHEAD_EXPANSION_ENV}`;
+		const url = `https://nether.wowhead.com/cata/tooltip/${tooltipPostfix}/${id}?lvl=${CHARACTER_LEVEL}&dataEnv=${WOWHEAD_EXPANSION_ENV}`;
 		try {
 			const response = await fetch(url, { signal: options?.signal });
 			const json = await response.json();

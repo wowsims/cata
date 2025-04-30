@@ -33,7 +33,7 @@ import {
 	UnitReference_Type as UnitType,
 	WeaponType,
 } from './proto/common.js';
-import { Consumable,  SimDatabase } from './proto/db';
+import { Consumable, SimDatabase } from './proto/db';
 import { SpellEffect } from './proto/spell';
 import { DatabaseFilters, RaidFilterOption, SimSettings as SimSettingsProto, SourceFilterOption } from './proto/ui.js';
 import { Database } from './proto_utils/database.js';
@@ -297,10 +297,6 @@ export class Sim {
 				}
 
 				// swap in the fresh arrays
-				pdb.consumables = newConsumables;
-				pdb.spellEffects = newSpellEffects;
-
-				// replace the old maps in one go
 				pdb.consumables = newConsumables;
 				pdb.spellEffects = newSpellEffects;
 				player.database = pdb;

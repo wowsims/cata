@@ -97,7 +97,6 @@ export interface RaidSimPreset<SpecType extends Spec> {
 	spec: Spec;
 	talents: SavedTalents;
 	specOptions: SpecOptions<SpecType>;
-	consumes: Consumes;
 	consumables: ConsumesSpec;
 	defaultName?: string;
 	defaultFactionRaces: Record<Faction, Race>;
@@ -145,7 +144,6 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 		 * breakpoint for the second listed stat (if present), etc.
 		 */
 		softCapBreakpoints?: StatCap[];
-		consumes: Consumes;
 		consumables: ConsumesSpec;
 		talents: SavedTalents;
 		specOptions: SpecOptions<SpecType>;
@@ -372,6 +370,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			if (savedSettings != null) {
 				try {
 					const settings = IndividualSimSettings.fromJsonString(savedSettings, { ignoreUnknownFields: true });
+
 					this.fromProto(initEventID, settings);
 				} catch (e) {
 					console.warn('Failed to parse saved settings: ' + e);
