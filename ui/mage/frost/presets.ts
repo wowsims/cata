@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Conjured, Consumes, ConsumesSpec, Faction, Flask, Food, Glyphs, Potions, Profession, Spec, Stat } from '../../core/proto/common';
+import { ConsumesSpec, Faction, Profession, Stat } from '../../core/proto/common';
 import { FrostMage_Options as MageOptions, MageMajorGlyph, MageMinorGlyph } from '../../core/proto/mage';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
@@ -58,12 +58,6 @@ export const DefaultFrostOptions = MageOptions.create({
 	waterElementalDisobeyChance: 0.1,
 });
 
-export const DefaultFrostConsumes = Consumes.create({
-	defaultPotion: Potions.PotionOfSpeed,
-	defaultConjured: Conjured.ConjuredDarkRune,
-	flask: Flask.FlaskOfTheFrostWyrm,
-	food: Food.FoodFishFeast,
-});
 export const DefaultConsumables = ConsumesSpec.create({
 	flaskId: 58086, // Flask of the Draconic Mind
 	foodId: 62290, // Seafood Magnifique Feast

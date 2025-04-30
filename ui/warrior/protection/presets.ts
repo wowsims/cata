@@ -1,18 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import {
-	BattleElixir,
-	Consumes,
-	ConsumesSpec,
-	Food,
-	Glyphs,
-	GuardianElixir,
-	Potions,
-	Profession,
-	PseudoStat,
-	Race,
-	Stat,
-	TinkerHands,
-} from '../../core/proto/common.js';
+import { ConsumesSpec, Glyphs, Profession, PseudoStat, Race, Stat } from '../../core/proto/common.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import { ProtectionWarrior_Options as ProtectionWarriorOptions, WarriorMajorGlyph, WarriorMinorGlyph, WarriorPrimeGlyph } from '../../core/proto/warrior.js';
 import { Stats } from '../../core/proto_utils/stats';
@@ -89,16 +76,6 @@ export const DefaultOptions = ProtectionWarriorOptions.create({
 	},
 });
 
-export const DefaultConsumes = Consumes.create({
-	// flask: Flask.FlaskOfSteelskin,
-	battleElixir: BattleElixir.ElixirOfTheMaster,
-	guardianElixir: GuardianElixir.ElixirOfDeepEarth,
-	food: Food.FoodBeerBasedCrocolisk,
-	defaultPotion: Potions.EarthenPotion,
-	prepopPotion: Potions.EarthenPotion,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
-	explosiveBigDaddy: true,
-});
 export const DefaultConsumables = ConsumesSpec.create({
 	battleElixirId: 58148, // Elixir of the Master (not found in list)
 	guardianElixirId: 58093, // Elixir of Deep Earth (not found in list)

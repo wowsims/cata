@@ -1,20 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import {
-	Consumes,
-	ConsumesSpec,
-	Debuffs,
-	Flask,
-	Food,
-	Glyphs,
-	IndividualBuffs,
-	Potions,
-	Profession,
-	PseudoStat,
-	Race,
-	RaidBuffs,
-	Stat,
-	TinkerHands,
-} from '../../core/proto/common';
+import { ConsumesSpec, Debuffs, Glyphs, IndividualBuffs, Profession, PseudoStat, Race, RaidBuffs, Stat } from '../../core/proto/common';
 import {
 	PriestMajorGlyph as MajorGlyph,
 	PriestMinorGlyph as MinorGlyph,
@@ -164,13 +149,6 @@ export const DefaultOptions = Options.create({
 	},
 });
 
-export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfTheDraconicMind,
-	food: Food.FoodSeafoodFeast,
-	defaultPotion: Potions.VolcanicPotion,
-	prepopPotion: Potions.VolcanicPotion,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
-});
 export const DefaultConsumables = ConsumesSpec.create({
 	flaskId: 58086, // Flask of the Draconic Mind
 	foodId: 62290, // Seafood Magnifique Feast

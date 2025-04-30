@@ -1,20 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import {
-	Consumes,
-	ConsumesSpec,
-	Debuffs,
-	Flask,
-	Food,
-	Glyphs,
-	Potions,
-	Profession,
-	PseudoStat,
-	Race,
-	RaidBuffs,
-	Spec,
-	Stat,
-	TinkerHands,
-} from '../../core/proto/common';
+import { ConsumesSpec, Debuffs, Glyphs, Profession, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import {
 	FireMage_Options as MageOptions,
 	FireMage_Rotation,
@@ -136,13 +121,6 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	communion: true,
 });
 
-export const DefaultFireConsumes = Consumes.create({
-	flask: Flask.FlaskOfTheDraconicMind,
-	food: Food.FoodSeafoodFeast,
-	defaultPotion: Potions.VolcanicPotion,
-	prepopPotion: Potions.VolcanicPotion,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
-});
 export const DefaultFireConsumables = ConsumesSpec.create({
 	flaskId: 58086, // Flask of the Draconic Mind
 	foodId: 62290, // Seafood Magnifique Feast

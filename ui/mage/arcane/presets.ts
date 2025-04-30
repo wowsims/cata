@@ -1,18 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import {
-	Consumes,
-	ConsumesSpec,
-	Debuffs,
-	Flask,
-	Food,
-	Glyphs,
-	Potions,
-	Profession,
-	RaidBuffs,
-	Stat,
-	TinkerHands,
-	UnitReference,
-} from '../../core/proto/common';
+import { ConsumesSpec, Debuffs, Glyphs, Profession, RaidBuffs, Stat, UnitReference } from '../../core/proto/common';
 import { ArcaneMage_Options as MageOptions, MageMajorGlyph as MajorGlyph, MagePrimeGlyph as PrimeGlyph } from '../../core/proto/mage';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
@@ -97,14 +84,6 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	blessingOfKings: true,
 	blessingOfMight: true,
 	communion: true,
-});
-
-export const DefaultArcaneConsumes = Consumes.create({
-	flask: Flask.FlaskOfTheDraconicMind,
-	food: Food.FoodSeafoodFeast,
-	defaultPotion: Potions.VolcanicPotion,
-	prepopPotion: Potions.VolcanicPotion,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
 });
 
 export const DefaultDebuffs = Debuffs.create({

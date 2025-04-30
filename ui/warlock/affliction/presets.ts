@@ -1,18 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import {
-	Consumes,
-	ConsumesSpec,
-	Debuffs,
-	Flask,
-	Food,
-	Glyphs,
-	IndividualBuffs,
-	Potions,
-	Profession,
-	RaidBuffs,
-	Stat,
-	TinkerHands,
-} from '../../core/proto/common';
+import { ConsumesSpec, Debuffs, Glyphs, IndividualBuffs, Profession, RaidBuffs, Stat } from '../../core/proto/common';
 import { SavedTalents } from '../../core/proto/ui';
 import {
 	AfflictionWarlock_Options as WarlockOptions,
@@ -84,14 +71,6 @@ export const DefaultOptions = WarlockOptions.create({
 	},
 });
 
-export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.VolcanicPotion,
-	prepopPotion: Potions.VolcanicPotion,
-	flask: Flask.FlaskOfTheDraconicMind,
-	food: Food.FoodSeafoodFeast,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
-	explosiveBigDaddy: false,
-});
 export const DefaultConsumables = ConsumesSpec.create({
 	flaskId: 58086, // Flask of the Draconic Mind
 	foodId: 62290, // Seafood Magnifique Feast

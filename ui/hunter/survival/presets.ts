@@ -1,16 +1,11 @@
-import { ConjuredHealthstone, TinkerHandsSynapseSprings } from '../../core/components/inputs/consumables';
 import * as PresetUtils from '../../core/preset_utils';
 import { APLRotation_Type as APLRotationType } from '../../core/proto/apl.js';
-import { Consumes, ConsumesSpec, Flask, Food, Glyphs, Potions, Profession, PseudoStat, RotationType, Spec, Stat } from '../../core/proto/common';
+import { ConsumesSpec, Glyphs, Profession, PseudoStat, Stat } from '../../core/proto/common';
 import {
 	HunterMajorGlyph as MajorGlyph,
-	HunterMinorGlyph as MinorGlyph,
-	HunterOptions_Ammo as Ammo,
 	HunterOptions_PetType as PetType,
 	HunterPrimeGlyph as PrimeGlyph,
-	HunterStingType,
 	SurvivalHunter_Options as HunterOptions,
-	SurvivalHunter_Rotation as HunterRotation,
 } from '../../core/proto/hunter';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
@@ -134,14 +129,6 @@ export const SVDefaultOptions = HunterOptions.create({
 	sniperTrainingUptime: 0.9,
 });
 
-export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.PotionOfTheTolvir,
-	prepopPotion: Potions.PotionOfTheTolvir,
-	flask: Flask.FlaskOfTheWinds,
-	defaultConjured: ConjuredHealthstone.value,
-	food: Food.FoodSeafoodFeast,
-	tinkerHands: TinkerHandsSynapseSprings.value,
-});
 export const DefaultConsumables = ConsumesSpec.create({
 	flaskId: 58087, // Flask of the Winds
 	foodId: 62290, // Seafood Magnifique Feast
