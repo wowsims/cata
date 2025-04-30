@@ -744,6 +744,8 @@ export class ActionId {
 					name += ' (Dot)';
 				}
 				break;
+			case 'Dampen Harm':
+				break;
 			default:
 				if (tag) {
 					name += ' (??)';

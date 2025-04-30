@@ -117,8 +117,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
-			OtherInputs.InFrontOfTarget,
 			OtherInputs.InputDelay,
+			OtherInputs.TankAssignment,
+			OtherInputs.HpPercentForDefensives,
+			OtherInputs.IncomingHps,
+			OtherInputs.HealingCadence,
+			OtherInputs.HealingCadenceVariation,
+			OtherInputs.AbsorbFrac,
+			OtherInputs.BurstWindow,
+			OtherInputs.InspirationUptime,
+			OtherInputs.InFrontOfTarget,
 		],
 	},
 	encounterPicker: {

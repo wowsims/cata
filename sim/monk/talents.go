@@ -642,12 +642,65 @@ func (monk *Monk) registerChiBrew() {
 }
 
 func (monk *Monk) registerHealingElixirs() {
+	if !monk.Talents.HealingElixirs {
+		return
+	}
 }
 
 func (monk *Monk) registerDampenHarm() {
+	if !monk.Talents.DampenHarm {
+		return
+	}
+
+	actionId := core.ActionID{SpellID: 122278}
+
+	aura := monk.RegisterAura(core.Aura{
+		Label:     "Dampen Harm" + monk.Label,
+		ActionID:  actionId.WithTag(1),
+		MaxStacks: 3,
+		Duration:  time.Second * 45,
+	})
+
+	monk.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		if !aura.IsActive() || !result.Landed() || result.Damage < result.Target.MaxHealth()*0.2 {
+			return
+		}
+
+		aura.RemoveStack(sim)
+		result.Damage /= 2
+	})
+
+	spell := monk.RegisterSpell(core.SpellConfig{
+		ActionID:       actionId,
+		SpellSchool:    core.SpellSchoolPhysical,
+		ClassSpellMask: MonkSpellDampenHarm,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: time.Second,
+			},
+			CD: core.Cooldown{
+				Timer:    monk.NewTimer(),
+				Duration: 90 * time.Second,
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			aura.Activate(sim)
+			aura.SetStacks(sim, 3)
+		},
+	})
+
+	monk.AddMajorCooldown(core.MajorCooldown{
+		Spell: spell,
+		Type:  core.CooldownTypeSurvival,
+	})
 }
 
 func (monk *Monk) registerDiffuseMagic() {
+	if !monk.Talents.DiffuseMagic {
+		return
+	}
 }
 
 /*
