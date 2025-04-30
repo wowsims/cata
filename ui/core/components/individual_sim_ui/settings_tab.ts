@@ -3,6 +3,7 @@ import { Encounter } from '../../encounter';
 import { IndividualSimUI, InputSection } from '../../individual_sim_ui';
 import { Consumes, ConsumesSpec, Debuffs, HealingModel, IndividualBuffs, ItemSwap, PartyBuffs, Profession, RaidBuffs } from '../../proto/common';
 import { SavedEncounter, SavedSettings } from '../../proto/ui';
+import { Database } from '../../proto_utils/database';
 import { professionNames, raceNames } from '../../proto_utils/names';
 import { Stats } from '../../proto_utils/stats';
 import { EventID, TypedEvent } from '../../typed_event';
@@ -56,8 +57,9 @@ export class SettingsTab extends SimTab {
 
 		this.contentContainer.appendChild(this.leftPanel);
 		this.contentContainer.appendChild(this.rightPanel);
-
-		this.buildTabContent();
+		Database.get().then(() => {
+			this.buildTabContent();
+		});
 	}
 
 	protected buildTabContent() {

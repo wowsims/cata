@@ -75,7 +75,9 @@ import {
 	getTalentTree,
 	getTalentTreePoints,
 	isPVPItem,
+	migrateOldProto,
 	newUnitReference,
+	ProtoConversionMap,
 	raceToFaction,
 	SpecClasses,
 	SpecOptions,
@@ -1521,53 +1523,52 @@ export class Player<SpecType extends Spec> {
 	fromProto(eventID: EventID, proto: PlayerProto, includeCategories?: Array<SimSettingCategories>) {
 		// Fix potential out-of-date protos before importing
 		TypedEvent.freezeAllAndDo(() => {
-			Player.updateProtoVersion(proto).then(() => {
-				const loadCategory = (cat: SimSettingCategories) => !includeCategories || includeCategories.length == 0 || includeCategories.includes(cat);
-				eventID = TypedEvent.nextEventID();
-				if (loadCategory(SimSettingCategories.Gear)) {
-					this.setGear(eventID, proto.equipment ? this.sim.db.lookupEquipmentSpec(proto.equipment) : new Gear({}));
-					this.itemSwapSettings.setItemSwapSettings(
-						eventID,
-						proto.enableItemSwap,
-						proto.itemSwap ? this.sim.db.lookupItemSwap(proto.itemSwap) : new ItemSwapGear({}),
-						Stats.fromProto(proto.itemSwap?.prepullBonusStats),
-					);
-					this.setBonusStats(eventID, Stats.fromProto(proto.bonusStats || UnitStats.create()));
-					//this.setBulkEquipmentSpec(eventID, BulkEquipmentSpec.create()); // Do not persist the bulk equipment settings.
-				}
-				if (loadCategory(SimSettingCategories.Talents)) {
-					this.setTalentsString(eventID, proto.talentsString);
-					this.setGlyphs(eventID, proto.glyphs || Glyphs.create());
-				}
-				if (loadCategory(SimSettingCategories.Rotation)) {
-					if (proto.rotation?.type == APLRotationType.TypeUnknown) {
-						if (!proto.rotation) {
-							proto.rotation = APLRotation.create();
-						}
-						proto.rotation.type = APLRotationType.TypeAuto;
+			Player.updateProtoVersion(proto);
+			const loadCategory = (cat: SimSettingCategories) => !includeCategories || includeCategories.length == 0 || includeCategories.includes(cat);
+			eventID = TypedEvent.nextEventID();
+			if (loadCategory(SimSettingCategories.Gear)) {
+				this.setGear(eventID, proto.equipment ? this.sim.db.lookupEquipmentSpec(proto.equipment) : new Gear({}));
+				this.itemSwapSettings.setItemSwapSettings(
+					eventID,
+					proto.enableItemSwap,
+					proto.itemSwap ? this.sim.db.lookupItemSwap(proto.itemSwap) : new ItemSwapGear({}),
+					Stats.fromProto(proto.itemSwap?.prepullBonusStats),
+				);
+				this.setBonusStats(eventID, Stats.fromProto(proto.bonusStats || UnitStats.create()));
+				//this.setBulkEquipmentSpec(eventID, BulkEquipmentSpec.create()); // Do not persist the bulk equipment settings.
+			}
+			if (loadCategory(SimSettingCategories.Talents)) {
+				this.setTalentsString(eventID, proto.talentsString);
+				this.setGlyphs(eventID, proto.glyphs || Glyphs.create());
+			}
+			if (loadCategory(SimSettingCategories.Rotation)) {
+				if (proto.rotation?.type == APLRotationType.TypeUnknown) {
+					if (!proto.rotation) {
+						proto.rotation = APLRotation.create();
 					}
-					this.setAplRotation(eventID, proto.rotation || APLRotation.create());
+					proto.rotation.type = APLRotationType.TypeAuto;
 				}
-				if (loadCategory(SimSettingCategories.Consumes)) {
-					this.setConsumes(eventID, proto.consumables || ConsumesSpec.create());
-				}
-				if (loadCategory(SimSettingCategories.Miscellaneous)) {
-					this.setSpecOptions(eventID, this.specTypeFunctions.optionsFromPlayer(proto));
-					this.setName(eventID, proto.name);
-					this.setRace(eventID, proto.race);
-					this.setProfession1(eventID, proto.profession1);
-					this.setProfession2(eventID, proto.profession2);
-					this.setReactionTime(eventID, proto.reactionTimeMs);
-					this.setChannelClipDelay(eventID, proto.channelClipDelayMs);
-					this.setInFrontOfTarget(eventID, proto.inFrontOfTarget);
-					this.setDistanceFromTarget(eventID, proto.distanceFromTarget);
-					this.setHealingModel(eventID, proto.healingModel || HealingModel.create());
-					this.setDarkIntentUptime(eventID, proto.darkIntentUptime);
-				}
-				if (loadCategory(SimSettingCategories.External)) {
-					this.setBuffs(eventID, proto.buffs || IndividualBuffs.create());
-				}
-			});
+				this.setAplRotation(eventID, proto.rotation || APLRotation.create());
+			}
+			if (loadCategory(SimSettingCategories.Consumes)) {
+				this.setConsumes(eventID, proto.consumables || ConsumesSpec.create());
+			}
+			if (loadCategory(SimSettingCategories.Miscellaneous)) {
+				this.setSpecOptions(eventID, this.specTypeFunctions.optionsFromPlayer(proto));
+				this.setName(eventID, proto.name);
+				this.setRace(eventID, proto.race);
+				this.setProfession1(eventID, proto.profession1);
+				this.setProfession2(eventID, proto.profession2);
+				this.setReactionTime(eventID, proto.reactionTimeMs);
+				this.setChannelClipDelay(eventID, proto.channelClipDelayMs);
+				this.setInFrontOfTarget(eventID, proto.inFrontOfTarget);
+				this.setDistanceFromTarget(eventID, proto.distanceFromTarget);
+				this.setHealingModel(eventID, proto.healingModel || HealingModel.create());
+				this.setDarkIntentUptime(eventID, proto.darkIntentUptime);
+			}
+			if (loadCategory(SimSettingCategories.External)) {
+				this.setBuffs(eventID, proto.buffs || IndividualBuffs.create());
+			}
 		});
 	}
 
@@ -1610,86 +1611,108 @@ export class Player<SpecType extends Spec> {
 	getMasteryPerPointModifier(): number {
 		return Mechanics.masteryPercentPerPoint.get(this.getSpec()) || 0;
 	}
-
-	static async updateProtoVersion(proto: PlayerProto) {
+	static updateProtoVersion(proto: PlayerProto) {
 		if (!(proto.apiVersion < CURRENT_API_VERSION)) {
 			return;
 		}
-		const db = await Database.get();
-		if (!proto.consumables) {
-			proto.consumables = ConsumesSpec.create();
-		}
-		if (proto.consumes && typeof proto.consumes !== 'undefined') {
-			if (proto.consumes.prepopPotion != Potions.UnknownPotion && proto.consumables.prepotId == 0) {
-				proto.consumables.prepotId =
-					findInputItemForEnum(Potions, proto.consumes.prepopPotion, db.getConsumablesByType(ConsumableType.ConsumableTypePotion))?.id ?? 0;
-				console.log('Found preopop', proto.consumables.prepotId, 'FROM', proto.consumes.prepopPotion);
-			}
-			if (proto.consumes.defaultPotion != Potions.UnknownPotion && proto.consumables.potId == 0) {
-				proto.consumables.potId =
-					findInputItemForEnum(Potions, proto.consumes.defaultPotion, db.getConsumablesByType(ConsumableType.ConsumableTypePotion))?.id ?? 0;
-				console.log('Found pot', proto.consumables.potId, 'FROM', proto.consumes.defaultPotion);
-			}
-			if (proto.consumes.flask != Flask.FlaskUnknown && proto.consumables.flaskId == 0) {
-				proto.consumables.flaskId =
-					findInputItemForEnum(Flask, proto.consumes.flask, db.getConsumablesByType(ConsumableType.ConsumableTypeFlask))?.id ?? 0;
-				console.log('FOUND FLASK', proto.consumables.flaskId, 'FROM', proto.consumes.flask);
-			}
-			if (proto.consumes.food != Food.FoodUnknown && proto.consumables.foodId == 0) {
-				proto.consumables.foodId = findInputItemForEnum(Food, proto.consumes.food, db.getConsumablesByType(ConsumableType.ConsumableTypeFood))?.id ?? 0;
-				console.log('FOUND FOOD', proto.consumables.foodId, 'FROM', proto.consumes.food);
-			}
-			if (!!proto.consumes?.guardianElixir && proto.consumables.guardianElixirId == 0) {
-				proto.consumables.guardianElixirId =
-					findInputItemForEnum(GuardianElixir, proto.consumes.guardianElixir, db.getConsumablesByType(ConsumableType.ConsumableTypeGuardianElixir))
-						?.id ?? 0;
-			}
-			if (
-				typeof proto.consumes?.battleElixir !== 'undefined' &&
-				proto.consumes.battleElixir != BattleElixir.BattleElixirUnknown &&
-				proto.consumables.battleElixirId == 0
-			) {
-				proto.consumables.battleElixirId =
-					findInputItemForEnum(BattleElixir, proto.consumes.battleElixir, db.getConsumablesByType(ConsumableType.ConsumableTypeBattleElixir))?.id ??
-					0;
-			}
-			if (typeof proto.consumes?.explosiveBigDaddy !== 'undefined' && proto.consumes.explosiveBigDaddy && proto.consumables.explosiveId == 0) {
-				proto.consumables.explosiveId = 89637;
-			}
-			if (
-				typeof proto.consumes?.defaultConjured !== 'undefined' &&
-				proto.consumes.defaultConjured != Conjured.ConjuredUnknown &&
-				proto.consumables.conjuredId == 0
-			) {
-				switch (proto.consumes.defaultConjured) {
-					case Conjured.ConjuredDarkRune:
-						proto.consumables.conjuredId = 20520;
-					case Conjured.ConjuredHealthstone:
-						proto.consumables.conjuredId = 5512;
-					case Conjured.ConjuredRogueThistleTea:
-						proto.consumables.conjuredId = 7676;
-				}
-			}
-			if (
-				typeof proto.consumes?.tinkerHands !== 'undefined' &&
-				proto.consumes.tinkerHands != TinkerHands.TinkerHandsNone &&
-				proto.consumables.tinkerId == 0
-			) {
-				switch (proto.consumes.tinkerHands) {
-					case TinkerHands.TinkerHandsSynapseSprings:
-						proto.consumables.tinkerId = 82174;
-					case TinkerHands.TinkerHandsTazikShocker:
-						proto.consumables.tinkerId = 82180;
-					case TinkerHands.TinkerHandsQuickflipDeflectionPlates:
-						proto.consumables.tinkerId = 82177;
-					case TinkerHands.TinkerHandsSpinalHealingInjector:
-						proto.consumables.tinkerId = 82184;
-					case TinkerHands.TinkerHandsZ50ManaGulper:
-						proto.consumables.tinkerId = 82186;
-				}
-			}
-		}
-		proto.consumes = Consumes.create(); // null consumes
+
+		const conversionMap: ProtoConversionMap<PlayerProto> = new Map([
+			[
+				4,
+				(oldProto: PlayerProto) => {
+					const db = Database.getSync();
+
+					// Ensure consumables object exists
+					if (!oldProto.consumables) {
+						oldProto.consumables = ConsumesSpec.create();
+					}
+
+					// Migrate all of the old `consumes` → `consumables` logic
+					if (oldProto.consumes) {
+						if (oldProto.consumes.prepopPotion != Potions.UnknownPotion && oldProto.consumables.prepotId === 0) {
+							oldProto.consumables.prepotId =
+								findInputItemForEnum(Potions, oldProto.consumes.prepopPotion, db.getConsumablesByType(ConsumableType.ConsumableTypePotion))
+									?.id ?? 0;
+						}
+						if (oldProto.consumes.defaultPotion != Potions.UnknownPotion && oldProto.consumables.potId === 0) {
+							oldProto.consumables.potId =
+								findInputItemForEnum(Potions, oldProto.consumes.defaultPotion, db.getConsumablesByType(ConsumableType.ConsumableTypePotion))
+									?.id ?? 0;
+						}
+						if (oldProto.consumes.flask != Flask.FlaskUnknown && oldProto.consumables.flaskId === 0) {
+							oldProto.consumables.flaskId =
+								findInputItemForEnum(Flask, oldProto.consumes.flask, db.getConsumablesByType(ConsumableType.ConsumableTypeFlask))?.id ?? 0;
+						}
+						if (oldProto.consumes.food != Food.FoodUnknown && oldProto.consumables.foodId === 0) {
+							oldProto.consumables.foodId =
+								findInputItemForEnum(Food, oldProto.consumes.food, db.getConsumablesByType(ConsumableType.ConsumableTypeFood))?.id ?? 0;
+						}
+						if (oldProto.consumes.guardianElixir && oldProto.consumables.guardianElixirId === 0) {
+							oldProto.consumables.guardianElixirId =
+								findInputItemForEnum(
+									GuardianElixir,
+									oldProto.consumes.guardianElixir,
+									db.getConsumablesByType(ConsumableType.ConsumableTypeGuardianElixir),
+								)?.id ?? 0;
+						}
+						if (oldProto.consumes.battleElixir != BattleElixir.BattleElixirUnknown && oldProto.consumables.battleElixirId === 0) {
+							oldProto.consumables.battleElixirId =
+								findInputItemForEnum(
+									BattleElixir,
+									oldProto.consumes.battleElixir,
+									db.getConsumablesByType(ConsumableType.ConsumableTypeBattleElixir),
+								)?.id ?? 0;
+						}
+						if (oldProto.consumes.highpoweredBoltGun && oldProto.consumables.explosiveId === 0) {
+							oldProto.consumables.explosiveId = 82207;
+						}
+						if (oldProto.consumes.explosiveBigDaddy && oldProto.consumables.explosiveId === 0) {
+							oldProto.consumables.explosiveId = 89637;
+						}
+						if (oldProto.consumes.defaultConjured != Conjured.ConjuredUnknown && oldProto.consumables.conjuredId === 0) {
+							switch (oldProto.consumes.defaultConjured) {
+								case Conjured.ConjuredDarkRune:
+									oldProto.consumables.conjuredId = 20520;
+									break;
+								case Conjured.ConjuredHealthstone:
+									oldProto.consumables.conjuredId = 5512;
+									break;
+								case Conjured.ConjuredRogueThistleTea:
+									oldProto.consumables.conjuredId = 7676;
+									break;
+							}
+						}
+						if (oldProto.consumes.tinkerHands != TinkerHands.TinkerHandsNone && oldProto.consumables.tinkerId === 0) {
+							switch (oldProto.consumes.tinkerHands) {
+								case TinkerHands.TinkerHandsSynapseSprings:
+									oldProto.consumables.tinkerId = 82174;
+									break;
+								case TinkerHands.TinkerHandsTazikShocker:
+									oldProto.consumables.tinkerId = 82180;
+									break;
+								case TinkerHands.TinkerHandsQuickflipDeflectionPlates:
+									oldProto.consumables.tinkerId = 82177;
+									break;
+								case TinkerHands.TinkerHandsSpinalHealingInjector:
+									oldProto.consumables.tinkerId = 82184;
+									break;
+								case TinkerHands.TinkerHandsZ50ManaGulper:
+									oldProto.consumables.tinkerId = 82186;
+									break;
+							}
+						}
+					}
+
+					oldProto.consumes = Consumes.create();
+					oldProto.apiVersion = 4;
+					return oldProto;
+				},
+			],
+		]);
+
+		migrateOldProto<PlayerProto>(proto, proto.apiVersion, conversionMap);
+
+		// Mark as fully up-to-date
 		proto.apiVersion = CURRENT_API_VERSION;
 	}
 }

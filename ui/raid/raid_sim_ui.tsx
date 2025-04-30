@@ -8,6 +8,7 @@ import { Raid as RaidProto, SimType } from '../core/proto/api';
 import { Class, Encounter as EncounterProto } from '../core/proto/common';
 import { Blessings } from '../core/proto/paladin';
 import { BlessingsAssignments, RaidSimSettings } from '../core/proto/ui';
+import { Database } from '../core/proto_utils/database';
 import { getPlayerSpecFromPlayer, makeDefaultBlessings } from '../core/proto_utils/utils';
 import { Sim } from '../core/sim';
 import { SimUI } from '../core/sim_ui';
@@ -57,10 +58,13 @@ export class RaidSimUI extends SimUI {
 		this.sim.setModifyRaidProto(raidProto => this.modifyRaidProto(raidProto));
 		this.sim.waitForInit().then(() => this.loadSettings());
 
+		// Assure that the database is loaded before loading the following components
 		this.addSidebarComponents();
 		this.addTopbarComponents();
 		this.addRaidTab();
+
 		this.addSettingsTab();
+
 		this.addDetailedResultsTab();
 	}
 
