@@ -63,7 +63,7 @@ func (bm *BrewmasterMonk) registerStagger() {
 		result.Damage -= newStaggeredDamage
 
 		totalDamage := outstandingDamage + newStaggeredDamage
-		newTickCount := dot.BaseTickCount + core.TernaryInt32(dot.IsActive(), 1, 0)
+		newTickCount := dot.BaseTickCount
 		damagePerTick := totalDamage / float64(newTickCount)
 
 		refreshStagger(sim, target, damagePerTick)

@@ -688,6 +688,8 @@ export class ActionId {
 					name += ' (Off Hand)';
 				}
 				break;
+
+			// Monk
 			case 'Tiger Strikes':
 				if (this.spellId === 12274) {
 					name += ' (Main Hand)';
@@ -735,6 +737,11 @@ export class ActionId {
 			case 'Rushing Jade Wind':
 				if (this.spellId === 148187) {
 					name += ' (Hit)';
+				}
+				break;
+			case 'Stagger':
+				if (this.tag === 1) {
+					name += ' (Dot)';
 				}
 				break;
 			default:
