@@ -67,7 +67,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 			return [hasteSoftCapConfig];
 		})(),
 		// Default consumes settings.
-		consumes: Presets.DefaultFireConsumes,
 		consumables: Presets.DefaultFireConsumables,
 		// Default rotation settings.
 		rotationType: APLRotation_Type.TypeSimple,
@@ -207,7 +206,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 			spec: Spec.SpecFireMage,
 			talents: Presets.FireTalents.data,
 			specOptions: Presets.DefaultFireOptions,
-			consumes: Presets.DefaultFireConsumes,
 			consumables: Presets.DefaultFireConsumables,
 			otherDefaults: Presets.OtherDefaults,
 			defaultFactionRaces: {

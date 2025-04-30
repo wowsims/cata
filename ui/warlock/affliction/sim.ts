@@ -59,7 +59,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAfflictionWarlock, {
 			return [masterySoftCapConfig];
 		})(),
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
+
 		consumables: Presets.DefaultConsumables,
 
 		// Default talents.
@@ -141,7 +141,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAfflictionWarlock, {
 			spec: Spec.SpecAfflictionWarlock,
 			talents: Presets.AfflictionTalents.data,
 			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
+
 			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,

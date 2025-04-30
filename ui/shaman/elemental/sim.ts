@@ -70,7 +70,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 17);
 		})(),
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
+
 		consumables: Presets.DefaultConsumables,
 		// Default talents.
 		talents: Presets.TalentsTotemDuration.data,
@@ -154,7 +154,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 			spec: Spec.SpecElementalShaman,
 			talents: Presets.TalentsTotemDuration.data,
 			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
+
 			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,

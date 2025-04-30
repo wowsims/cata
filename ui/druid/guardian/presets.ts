@@ -1,6 +1,6 @@
 import * as Mechanics from '../../core/constants/mechanics.js';
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Conjured, Consumes, ConsumesSpec, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Spec, Stat, TinkerHands } from '../../core/proto/common';
+import { ConsumesSpec, Glyphs, Profession, PseudoStat, Spec, Stat } from '../../core/proto/common';
 import {
 	DruidMajorGlyph,
 	DruidMinorGlyph,
@@ -144,14 +144,6 @@ export const DefaultOptions = DruidOptions.create({
 	startingRage: 15,
 });
 
-export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfSteelskin,
-	food: Food.FoodSkeweredEel,
-	prepopPotion: Potions.PotionOfTheTolvir,
-	defaultPotion: Potions.PotionOfTheTolvir,
-	defaultConjured: Conjured.ConjuredHealthstone,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
-});
 export const DefaultConsumables = ConsumesSpec.create({
 	flaskId: 58085, // Flask of Steelskin
 	foodId: 62669, // Skewered Eel

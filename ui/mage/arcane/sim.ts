@@ -52,7 +52,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 			return [hasteSoftCapConfig];
 		})(),
 		// Default consumes settings.
-		consumes: Presets.DefaultArcaneConsumes,
 		consumables: Presets.DefaultFConsumables,
 		// Default talents.
 		talents: Presets.ArcaneTalents.data,
@@ -187,7 +186,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 			spec: Spec.SpecArcaneMage,
 			talents: Presets.ArcaneTalents.data,
 			specOptions: Presets.DefaultArcaneOptions,
-			consumes: Presets.DefaultArcaneConsumes,
 			consumables: Presets.DefaultFConsumables,
 			otherDefaults: Presets.OtherDefaults,
 			defaultFactionRaces: {

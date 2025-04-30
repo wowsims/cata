@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, ConsumesSpec, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Spec, Stat, TinkerHands } from '../../core/proto/common';
+import { ConsumesSpec, Glyphs, Profession, PseudoStat, Spec, Stat } from '../../core/proto/common';
 import {
 	DruidMajorGlyph,
 	DruidMinorGlyph,
@@ -150,14 +150,7 @@ export const HybridTalents = {
 export const DefaultOptions = FeralDruidOptions.create({
 	assumeBleedActive: true,
 });
-export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfTheWinds,
-	food: Food.FoodSkeweredEel,
-	defaultPotion: Potions.PotionOfTheTolvir,
-	prepopPotion: Potions.PotionOfTheTolvir,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
-	explosiveBigDaddy: true,
-});
+
 export const DefaultConsumables = ConsumesSpec.create({
 	flaskId: 58087, // Flask of the Winds
 	foodId: 62669, // Skewered Eel
@@ -166,6 +159,7 @@ export const DefaultConsumables = ConsumesSpec.create({
 	tinkerId: 82174, // Synapse Springs
 	explosiveId: 89637, // Big Daddy Explosive
 });
+
 export const OtherDefaults = {
 	distanceFromTarget: 25,
 	highHpThreshold: 0.8,
