@@ -290,6 +290,45 @@ var MapPowerTypeEnumToResourceType = map[int32]proto.ResourceType{
 	22: proto.ResourceType_ResourceTypeUnholyRune,
 }
 
+var DbcClasses = []DbcClass{
+	{ProtoClass: proto.Class_ClassWarrior, ID: 1},
+	{ProtoClass: proto.Class_ClassPaladin, ID: 2},
+	{ProtoClass: proto.Class_ClassHunter, ID: 3},
+	{ProtoClass: proto.Class_ClassRogue, ID: 4},
+	{ProtoClass: proto.Class_ClassPriest, ID: 5},
+	{ProtoClass: proto.Class_ClassDeathKnight, ID: 6},
+	{ProtoClass: proto.Class_ClassShaman, ID: 7},
+	{ProtoClass: proto.Class_ClassMage, ID: 8},
+	{ProtoClass: proto.Class_ClassWarlock, ID: 9},
+	{ProtoClass: proto.Class_ClassDruid, ID: 11},
+}
+
+func ClassNameFromDBC(dbc DbcClass) string {
+	switch dbc.ID {
+	case 1:
+		return "Warrior"
+	case 2:
+		return "Paladin"
+	case 3:
+		return "Hunter"
+	case 4:
+		return "Rogue"
+	case 5:
+		return "Priest"
+	case 6:
+		return "Death_Knight"
+	case 7:
+		return "Shaman"
+	case 8:
+		return "Mage"
+	case 9:
+		return "Warlock"
+	case 11:
+		return "Druid"
+	default:
+		return "Unknown"
+	}
+}
 func getMatchingRatingMods(value int) []RatingModType {
 	allMods := []RatingModType{
 		RATING_MOD_DODGE,

@@ -396,10 +396,6 @@ func NewItem(itemSpec ItemSpec) Item {
 	}
 
 	scalingOptions := item.ScalingOptions[int32(itemSpec.UpgradeStep)]
-	if scalingOptions == nil {
-		scalingOptions = item.ScalingOptions[int32(proto.ItemLevelState_Base)]
-	}
-
 	item.Ilvl = scalingOptions.ItemLevel
 	item.Stats = stats.FromProtoMap(scalingOptions.Stats)
 	item.WeaponDamageMax = scalingOptions.WeaponDamageMax
@@ -458,7 +454,7 @@ func validateReforging(item *Item, reforging ReforgeStat) bool {
 	// Validate that the item can reforge these to stats
 	reforgeableStats := stats.Stats{}
 	if item.RandomSuffix.ID != 0 {
-		reforgeableStats = reforgeableStats.Add(item.RandomSuffix.Stats.Multiply(float64(item.ScalingOptions[item.Ilvl].RandPropPoints) / 10000.).Floor())
+		reforgeableStats = reforgeableStats.Add(item.RandomSuffix.Stats.Multiply(float64(item.RandPropPoints) / 10000.).Floor())
 	} else {
 		reforgeableStats = reforgeableStats.Add(item.Stats)
 	}

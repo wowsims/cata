@@ -10,7 +10,6 @@ import (
 	"text/template"
 	"unicode"
 
-	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/tools/database/dbc"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
@@ -18,46 +17,6 @@ import (
 
 func convertTalentClassID(raw int) int {
 	return 1 << (raw - 1)
-}
-
-var dbcClasses = []dbc.DbcClass{
-	{ProtoClass: proto.Class_ClassWarrior, ID: 1},
-	{ProtoClass: proto.Class_ClassPaladin, ID: 2},
-	{ProtoClass: proto.Class_ClassHunter, ID: 3},
-	{ProtoClass: proto.Class_ClassRogue, ID: 4},
-	{ProtoClass: proto.Class_ClassPriest, ID: 5},
-	{ProtoClass: proto.Class_ClassDeathKnight, ID: 6},
-	{ProtoClass: proto.Class_ClassShaman, ID: 7},
-	{ProtoClass: proto.Class_ClassMage, ID: 8},
-	{ProtoClass: proto.Class_ClassWarlock, ID: 9},
-	{ProtoClass: proto.Class_ClassDruid, ID: 11},
-}
-
-func classNameFromDBC(dbc dbc.DbcClass) string {
-	switch dbc.ID {
-	case 1:
-		return "Warrior"
-	case 2:
-		return "Paladin"
-	case 3:
-		return "Hunter"
-	case 4:
-		return "Rogue"
-	case 5:
-		return "Priest"
-	case 6:
-		return "Death_Knight"
-	case 7:
-		return "Shaman"
-	case 8:
-		return "Mage"
-	case 9:
-		return "Warlock"
-	case 11:
-		return "Druid"
-	default:
-		return "Unknown"
-	}
 }
 
 type TalentConfig struct {
@@ -518,12 +477,12 @@ func GenerateTalentJsonFromDB(dbHelper *DBHelper) error {
 		return fmt.Errorf("error loading talents: %w", err)
 	}
 
-	for _, dbc := range dbcClasses {
-		className := classNameFromDBC(dbc)
+	for _, dbcClass := range dbc.DbcClasses {
+		className := dbc.ClassNameFromDBC(dbcClass)
 
 		classTalents := []RawTalent{}
 		for _, rt := range rawTalents {
-			converted := convertTalentClassID(dbc.ID)
+			converted := convertTalentClassID(dbcClass.ID)
 			if converted == rt.ClassMask {
 				classTalents = append(classTalents, rt)
 			}
@@ -588,8 +547,8 @@ func GenerateProtos() {
 
 	var classesData []ClassData
 	iconsMap, _ := LoadArtTexturePaths("./tools/DB2ToSqlite/listfile.csv")
-	for _, dbc := range dbcClasses {
-		className := classNameFromDBC(dbc)
+	for _, dbcClass := range dbc.DbcClasses {
+		className := dbc.ClassNameFromDBC(dbcClass)
 		data := ClassData{
 			ClassName:          className,
 			LowerCaseClassName: strings.ToLower(className),
@@ -605,7 +564,7 @@ func GenerateProtos() {
 			if strings.Contains(raw.Name, "Deprecated") || strings.Contains(raw.Name, "zzz") {
 				continue
 			}
-			if glyphBelongsToClass(raw, dbc) {
+			if glyphBelongsToClass(raw, dbcClass) {
 				g := convertRawGlyphToGlyph(raw)
 				g.IconUrl = "https://wow.zamimg.com/images/wow/icons/large/" + strings.ToLower(GetIconName(iconsMap, int(raw.FDID))) + ".jpg"
 				switch raw.GlyphType {
@@ -622,12 +581,12 @@ func GenerateProtos() {
 		}
 		classTalents := []RawTalent{}
 		for _, rt := range rawTalents {
-			converted := convertTalentClassID(dbc.ID)
+			converted := convertTalentClassID(dbcClass.ID)
 			if converted == rt.ClassMask {
 				classTalents = append(classTalents, rt)
 			}
 		}
-		talents, err := transformRawTalentsToConfigsForClass(rawTalents, dbc.ID)
+		talents, err := transformRawTalentsToConfigsForClass(rawTalents, dbcClass.ID)
 		if err != nil {
 			fmt.Printf("Error processing talents for %s: %v\n", className, err)
 		}
@@ -642,7 +601,7 @@ func GenerateProtos() {
 		for _, tab := range talentTabs {
 			var filteredTalents []TalentConfig
 			for _, t := range tab.Talents {
-				if convertTalentClassID(t.MaxPoints) == convertTalentClassID(dbc.ID) {
+				if convertTalentClassID(t.MaxPoints) == convertTalentClassID(dbcClass.ID) {
 					filteredTalents = append(filteredTalents, t)
 				}
 			}

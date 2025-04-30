@@ -6,6 +6,7 @@ import (
 	"io"
 	"math"
 	"os"
+	"path/filepath"
 	"slices"
 
 	"github.com/wowsims/cata/sim/core/proto"
@@ -35,7 +36,26 @@ type DbcClass struct {
 	ID         int
 }
 
-func readGzipFile(filename string) ([]byte, error) {
+func WriteGzipFile(filePath string, data []byte) error {
+	if err := os.MkdirAll(filepath.Dir(filePath), 0755); err != nil {
+		return fmt.Errorf("failed to create directories for %s: %w", filePath, err)
+	}
+	// Create the file
+	f, err := os.Create(filePath)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	// Create a gzip writer on top of the file writer
+	gw := gzip.NewWriter(f)
+	defer gw.Close()
+
+	// Write the data to the gzip writer
+	_, err = gw.Write(data)
+	return err
+}
+func ReadGzipFile(filename string) ([]byte, error) {
 	f, err := os.Open(filename)
 	if err != nil {
 		return nil, DataLoadError{
@@ -83,9 +103,6 @@ func processEnchantmentEffects(
 		case ITEM_ENCHANTMENT_STAT:
 			stat, _ := MapBonusStatIndexToStat(effectArgs[i])
 			outStats[stat] = float64(effectPoints[i])
-			if effectPoints[i] == 72 {
-				fmt.Println("Add to AP", stat)
-			}
 			// If the bonus stat is attack power, copy it to ranged attack power
 			if addRanged && stat == proto.Stat_StatAttackPower {
 				if effectPoints[i] == 72 {
