@@ -359,8 +359,8 @@ func (stats Stats) ToProtoArray() []float64 {
 }
 
 func (stats Stats) ToProtoMap() map[int32]float64 {
-	m := make(map[int32]float64, SimStatsLen)
-	for i := 0; i < int(SimStatsLen); i++ {
+	m := make(map[int32]float64, ProtoStatsLen)
+	for i := 0; i < int(ProtoStatsLen); i++ {
 		if stats[i] != 0 {
 			m[int32(i)] = stats[i]
 		}
@@ -371,9 +371,8 @@ func (stats Stats) ToProtoMap() map[int32]float64 {
 func FromProtoMap(m map[int32]float64) Stats {
 	var stats Stats
 	for k, v := range m {
-		if k >= 0 && k < int32(SimStatsLen) {
-			stats[k] = v
-		}
+		stats[k] = v
+
 	}
 	return stats
 }

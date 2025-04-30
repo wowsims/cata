@@ -105,7 +105,6 @@ func SetupFakeSim() *Simulation {
 						{
 							Name:      "Caster",
 							Class:     proto.Class_ClassShaman,
-							Consumes:  &proto.Consumes{},
 							Buffs:     &proto.IndividualBuffs{},
 							Spec:      &proto.Player_ElementalShaman{},
 							Equipment: &proto.EquipmentSpec{},
