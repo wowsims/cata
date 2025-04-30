@@ -57,7 +57,7 @@ export class SettingsTab extends SimTab {
 
 		this.contentContainer.appendChild(this.leftPanel);
 		this.contentContainer.appendChild(this.rightPanel);
-		Database.get().then(() => {
+		this.simUI.sim.waitForInit().then(() => {
 			this.buildTabContent();
 		});
 	}
