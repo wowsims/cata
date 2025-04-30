@@ -288,6 +288,7 @@ var MapPowerTypeEnumToResourceType = map[int32]proto.ResourceType{
 	20: proto.ResourceType_ResourceTypeBloodRune,
 	21: proto.ResourceType_ResourceTypeFrostRune,
 	22: proto.ResourceType_ResourceTypeUnholyRune,
+	29: proto.ResourceType_ResourceTypeDeathRune,
 }
 
 var DbcClasses = []DbcClass{

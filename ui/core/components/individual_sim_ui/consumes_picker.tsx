@@ -122,18 +122,15 @@ export class ConsumesPicker extends Component {
 		);
 		const engiConsumesElem = engiConsumesRef.value!;
 
-		// Todo: make this from dbc as well
 		const tinkerOptions = ConsumablesInputs.makeTinkerHandsInput(relevantStatOptions(ConsumablesInputs.TINKERS_HANDS_CONFIG, this.simUI), 'Gloves Tinkers');
 		const tinkerPicker = buildIconInput(engiConsumesElem, this.simUI.player, tinkerOptions);
 
 		const explosivesoptions = ConsumablesInputs.makeExplosivesInput(relevantStatOptions(ConsumablesInputs.EXPLOSIVE_CONFIG, this.simUI), 'Explosives');
 		const explosivePicker = buildIconInput(engiConsumesElem, this.simUI.player, explosivesoptions);
 
-		//const explosivePicker = buildIconInput(engiConsumesElem, this.simUI.player, ConsumablesInputs.ExplosiveBigDaddy);
-		//const highpoweredBoltGunPicker = buildIconInput(engiConsumesElem, this.simUI.player, ConsumablesInputs.HighpoweredBoltGun);
-
 		const events = TypedEvent.onAny([this.simUI.player.professionChangeEmitter]).on(() => this.updateRow(row, [explosivePicker, tinkerPicker]));
 		this.addOnDisposeCallback(() => events.dispose());
+
 		// Initial update of row based on current state.
 		this.updateRow(row, [explosivePicker, tinkerPicker]);
 	}
