@@ -153,7 +153,7 @@ func (bm *BrewmasterMonk) registerGiftOfTheOx() {
 
 	bm.RegisterSpell(core.SpellConfig{
 		ActionID:       giftOfTheOxHealActionID,
-		ClassSpellMask: monk.MonkSpellChiSphere,
+		ClassSpellMask: monk.MonkSpellGiftOfTheOx,
 		SpellSchool:    core.SpellSchoolNature,
 		Flags:          core.SpellFlagPassiveSpell | core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 		ProcMask:       core.ProcMaskSpellHealing,
@@ -188,18 +188,15 @@ func (bm *BrewmasterMonk) registerGiftOfTheOx() {
 		Callback: core.CallbackOnSpellHitDealt,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			procChance := 0.0
-			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
-				if bm.HandType == proto.HandType_HandTypeOneHand {
-					procChance = 0.03 * bm.MainHand().SwingSpeed
-				} else {
-					procChance = 0.06 * bm.MainHand().SwingSpeed
-				}
+
+			// Source:
+			// https://www.wowhead.com/blue-tracker/topic/beta-class-balance-analysis-pt-ii-6397900436#2
+			// https://www.wowhead.com/blue-tracker/topic/beta-class-balance-analysis-5889309137#59115992048
+			// https://web.archive.org/web/20130801205930/http://elitistjerks.com/f99/t131791-like_water_brewmasters_resource_8_1_13_a/#Gift_of_the_Ox
+			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) || spell.ClassSpellMask == monk.MonkSpellTigerStrikes {
+				procChance = core.Ternary(bm.HandType == proto.HandType_HandTypeOneHand, 0.051852, 0.06)
 			} else if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) {
-				if bm.HandType == proto.HandType_HandTypeOneHand {
-					procChance = bm.MainHand().SwingSpeed / 50
-				} else {
-					procChance = bm.MainHand().SwingSpeed / 25
-				}
+				procChance = 0.10
 			}
 
 			if sim.Proc(procChance, "Gift of The Ox") {

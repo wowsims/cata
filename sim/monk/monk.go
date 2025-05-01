@@ -139,6 +139,7 @@ func (monk *Monk) Initialize() {
 }
 
 func (monk *Monk) registerSpells() {
+	monk.registerHealingSphere()
 	monk.registerBlackoutKick()
 	monk.registerExpelHarm()
 	monk.registerJab()
@@ -217,6 +218,7 @@ const (
 	MonkSpellTigerPalm
 	MonkSpellCracklingJadeLightning
 	MonkSpellFortifyingBrew
+	MonkSpellHealingSphere
 
 	// -- Talents
 	// Level 15
@@ -263,6 +265,7 @@ const (
 	MonkSpellStagger
 	MonkSpellAvertHarm
 	MonkSpellPurifyingBrew
+	MonkSpellGiftOfTheOx
 
 	MonkSpellLast
 	MonkSpellsAll = MonkSpellLast<<1 - 1

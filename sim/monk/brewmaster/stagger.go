@@ -32,6 +32,10 @@ func (bm *BrewmasterMonk) registerStagger() {
 			AffectedByCastSpeed: false,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				if !dot.Aura.IsActive() {
+					return
+				}
+
 				damage := max(0, dot.SnapshotBaseDamage)
 				target.RemoveHealth(sim, damage)
 
@@ -39,7 +43,6 @@ func (bm *BrewmasterMonk) registerStagger() {
 					bm.Log(sim, "[DEBUG] Stagger ticked for %0.0f Damage", damage)
 				}
 
-				dot.Aura.Activate(sim)
 				dot.Aura.SetStacks(sim, int32(damage))
 			},
 		},
@@ -72,12 +75,22 @@ func (bm *BrewmasterMonk) registerStagger() {
 			return
 		}
 
+		// Dampen Harm
+		if bm.DampenHarmAura.IsActive() && result.Damage > result.Target.MaxHealth()*0.2 {
+			bm.DampenHarmAura.RemoveStack(sim)
+			result.Damage /= 2
+		}
+
 		avertHarmIsActive := bm.AvertHarmAura.IsActive()
 		// By default Stagger only works with physical abilities
 		// unless Avert Harm is active, then Magic abilities will be staggered as well (without the 20% bonus)
 		if !spell.SpellSchool.Matches(core.SpellSchoolPhysical) && !avertHarmIsActive {
 			return
 		}
+
+		target := result.Target
+		dot := staggerSpell.SelfHot()
+		outstandingDamage := dot.OutstandingDmg()
 
 		// Avert Harm will only gain 20% Stagger from Melee abilities (non-auto attacks)
 		avertHarmMultiplier := core.TernaryFloat64(avertHarmIsActive && !spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && spell.SpellSchool.Matches(core.SpellSchoolPhysical), 0.2, 0)
@@ -86,9 +99,6 @@ func (bm *BrewmasterMonk) registerStagger() {
 
 		staggerMultiplier := min(1, bm.GetMasteryBonus()) + shuffleMultiplier + fortifyingBrewMultiplier + avertHarmMultiplier
 
-		target := result.Target
-		dot := staggerSpell.SelfHot()
-		outstandingDamage := dot.OutstandingDmg()
 		staggeredDamage := result.Damage * staggerMultiplier
 		result.Damage -= staggeredDamage
 
@@ -101,14 +111,6 @@ func (bm *BrewmasterMonk) registerStagger() {
 		}
 
 		bm.RefreshStagger(sim, target, damagePerTick)
-
-		// Dampen Harm
-		if !bm.DampenHarmAura.IsActive() || !result.Landed() || result.Damage < result.Target.MaxHealth()*0.2 {
-			return
-		}
-
-		bm.DampenHarmAura.RemoveStack(sim)
-		result.Damage /= 2
 	})
 
 }

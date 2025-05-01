@@ -54,7 +54,7 @@ func (monk *Monk) registerExpelHarm() {
 			},
 		},
 
-		DamageMultiplier: 7,
+		DamageMultiplier: 4.77,
 		ThreatMultiplier: 1.0,
 		CritMultiplier:   monk.DefaultCritMultiplier(),
 

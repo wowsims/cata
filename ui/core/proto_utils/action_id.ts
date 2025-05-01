@@ -746,6 +746,18 @@ export class ActionId {
 				break;
 			case 'Dampen Harm':
 				break;
+			case 'Healing Sphere':
+				if (this.spellId === 115460) {
+					if (tag === 1) {
+						name += ' (Stacks)';
+					} else {
+						name += ' (Cast)';
+					}
+				}
+				if (this.spellId === 115464) {
+					name += ' (Heal)';
+				}
+				break;
 			default:
 				if (tag) {
 					name += ' (??)';
