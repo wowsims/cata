@@ -1,9 +1,11 @@
 package brewmaster
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/monk"
 )
 
@@ -11,11 +13,13 @@ func (bm *BrewmasterMonk) registerPassives() {
 	bm.registerBrewmasterTraining()
 	bm.registerElusiveBrew()
 	bm.registerGiftOfTheOx()
+	bm.registerDesperateMeasures()
 }
 
 func (bm *BrewmasterMonk) registerBrewmasterTraining() {
 	// Fortifying Brew
 	// Also increases your Stagger amount by 20% while active.
+	// Fortifying Brew Stagger mod is implemented in stagger.go
 
 	// Tiger Palm
 	// Tiger Palm no longer costs Chi, and when you deal damage with Tiger Palm the amount of your next Guard is increased by 15%. Lasts 30 sec.
@@ -56,6 +60,181 @@ func (bm *BrewmasterMonk) registerBrewmasterTraining() {
 			bm.ShuffleAura.Activate(sim)
 			if wasActive {
 				bm.ShuffleAura.UpdateExpires(bm.ShuffleAura.ExpiresAt() + 6*time.Second)
+			}
+		},
+	})
+}
+
+func (bm *BrewmasterMonk) registerElusiveBrew() {
+	buffActionID := core.ActionID{SpellID: 115308}
+	stackActionID := core.ActionID{SpellID: 128938}
+
+	stackingAura := core.MakePermanent(bm.RegisterAura(core.Aura{
+		Label:     "Brewing: Elusive Brew" + bm.Label,
+		ActionID:  stackActionID,
+		Duration:  core.NeverExpires,
+		MaxStacks: 15,
+	}))
+
+	buffAura := bm.RegisterAura(core.Aura{
+		Label:    "Elusive Brew" + bm.Label,
+		ActionID: buffActionID,
+		Duration: 0,
+	}).AttachAdditivePseudoStatBuff(&bm.PseudoStats.BaseDodgeChance, 0.3)
+
+	core.MakeProcTriggerAura(&bm.Unit, core.ProcTrigger{
+		Name:     "Brewing: Elusive Brew Proc",
+		ActionID: stackActionID,
+		Outcome:  core.OutcomeCrit,
+		ProcMask: core.ProcMaskMeleeWhiteHit,
+		Callback: core.CallbackOnSpellHitDealt,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			stacks := 0.0
+			if bm.HandType == proto.HandType_HandTypeOneHand {
+				stacks = 1.5 * bm.MainHand().SwingSpeed / 2.6
+			} else {
+				stacks = 3 * bm.MainHand().SwingSpeed / 3.6
+			}
+
+			if sim.Proc(math.Mod(stacks, 1), "Brewing: Elusive Brew") {
+				stacks = math.Ceil(stacks)
+			} else {
+				stacks = math.Floor(stacks)
+			}
+
+			stackingAura.Activate(sim)
+			stackingAura.SetStacks(sim, stackingAura.GetStacks()+int32(stacks))
+		},
+	})
+
+	spell := bm.RegisterSpell(core.SpellConfig{
+		ActionID:       buffActionID,
+		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+		ClassSpellMask: monk.MonkSpellElusiveBrew,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
+			IgnoreHaste: true,
+			CD: core.Cooldown{
+				Timer:    bm.NewTimer(),
+				Duration: time.Second * 6,
+			},
+		},
+
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return bm.StanceMatches(monk.SturdyOx) && stackingAura.GetStacks() > 0
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			buffAura.Duration = time.Duration(stackingAura.GetStacks()) * time.Second
+			buffAura.Activate(sim)
+			stackingAura.SetStacks(sim, 0)
+		},
+	})
+
+	bm.AddMajorCooldown(core.MajorCooldown{
+		Spell: spell,
+		Type:  core.CooldownTypeSurvival,
+	})
+}
+
+func (bm *BrewmasterMonk) registerGiftOfTheOx() {
+	giftOfTheOxPassiveActionID := core.ActionID{SpellID: 124502}
+	giftOfTheOxHealActionID := core.ActionID{SpellID: 124507}
+
+	giftOfTheOxStackingAura := bm.RegisterAura(core.Aura{
+		Label:     "Gift Of The Ox" + bm.Label,
+		ActionID:  giftOfTheOxPassiveActionID,
+		Duration:  time.Minute * 1,
+		MaxStacks: 15,
+	})
+
+	bm.RegisterSpell(core.SpellConfig{
+		ActionID:       giftOfTheOxHealActionID,
+		ClassSpellMask: monk.MonkSpellChiSphere,
+		SpellSchool:    core.SpellSchoolNature,
+		Flags:          core.SpellFlagPassiveSpell | core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+		ProcMask:       core.ProcMaskSpellHealing,
+
+		DamageMultiplier: 1,
+		CritMultiplier:   1,
+
+		BonusCoefficient: 0.5025,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
+		},
+
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return giftOfTheOxStackingAura.IsActive() && giftOfTheOxStackingAura.GetStacks() > 0
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			heal := bm.CalcScalingSpellDmg(4.5) + spell.MeleeAttackPower()*spell.BonusCoefficient
+			spell.CalcAndDealHealing(sim, spell.Unit, heal, spell.OutcomeHealing)
+			giftOfTheOxStackingAura.RemoveStack(sim)
+		},
+		RelatedSelfBuff: giftOfTheOxStackingAura,
+	})
+
+	core.MakeProcTriggerAura(&bm.Unit, core.ProcTrigger{
+		Name:     "Gift of The Ox Proc",
+		ActionID: giftOfTheOxPassiveActionID,
+		ProcMask: core.ProcMaskMelee,
+		Callback: core.CallbackOnSpellHitDealt,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			procChance := 0.0
+			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
+				if bm.HandType == proto.HandType_HandTypeOneHand {
+					procChance = 0.03 * bm.MainHand().SwingSpeed
+				} else {
+					procChance = 0.06 * bm.MainHand().SwingSpeed
+				}
+			} else if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) {
+				if bm.HandType == proto.HandType_HandTypeOneHand {
+					procChance = bm.MainHand().SwingSpeed / 50
+				} else {
+					procChance = bm.MainHand().SwingSpeed / 25
+				}
+			}
+
+			if sim.Proc(procChance, "Gift of The Ox") {
+				giftOfTheOxStackingAura.Activate(sim)
+				giftOfTheOxStackingAura.AddStack(sim)
+			}
+		},
+	})
+
+}
+
+func (bm *BrewmasterMonk) registerDesperateMeasures() {
+	actionID := core.ActionID{SpellID: 126060}
+
+	aura := bm.RegisterAura(core.Aura{
+		Label:    "Desperate Measures" + bm.Label,
+		ActionID: actionID,
+		Duration: core.NeverExpires,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask:  monk.MonkSpellExpelHarm,
+		Kind:       core.SpellMod_Cooldown_Multiplier,
+		FloatValue: -1,
+	})
+
+	core.MakeProcTriggerAura(&bm.Unit, core.ProcTrigger{
+		Name:     "Desperate Measures Health Monitor" + bm.Label,
+		ActionID: actionID,
+		Duration: 0,
+		Outcome:  core.OutcomeHit,
+		Callback: core.CallbackOnSpellHitTaken,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Target.CurrentHealthPercent() <= 0.35 {
+				aura.Activate(sim)
+			} else {
+				aura.Deactivate(sim)
 			}
 		},
 	})

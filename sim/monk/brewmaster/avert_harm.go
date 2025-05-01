@@ -22,7 +22,7 @@ func (bm *BrewmasterMonk) registerAvertHarm() {
 		Outcome:  core.OutcomeHit,
 		Callback: core.CallbackOnSpellHitTaken,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Target.CurrentHealthPercent() <= 0.1 {
+			if spell.RelatedSelfBuff != nil && result.Target.CurrentHealthPercent() <= 0.1 {
 				spell.RelatedSelfBuff.Deactivate(sim)
 			}
 		},

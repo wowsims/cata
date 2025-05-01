@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/stats"
 )
 
 func (monk *Monk) registerExpelHarm() {
@@ -62,13 +61,13 @@ func (monk *Monk) registerExpelHarm() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := monk.CalculateMonkStrikeDamage(sim, spell)
 
-			hpBefore := target.GetStat(stats.Health)
+			hpBefore := spell.Unit.CurrentHealth()
 			// Can only target ourselves for now
-			result := spell.CalcHealing(sim, &monk.Unit, baseDamage, spell.OutcomeHealing)
-			hpAfter := target.GetStat(stats.Health)
+			spell.CalcAndDealHealing(sim, spell.Unit, baseDamage, spell.OutcomeHealing)
+			hpAfter := spell.Unit.CurrentHealth()
 			healingDone = hpAfter - hpBefore
 
-			if result.Landed() && healingDone > 0 {
+			if healingDone > 0 {
 				// Should be the closest target
 				expelHarmDamageSpell.Cast(sim, monk.CurrentTarget)
 			}
