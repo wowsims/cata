@@ -22,18 +22,13 @@ func GetProfession(id int) proto.Profession {
 
 func GetClassesFromClassMask(mask int) []proto.Class {
 	var result []proto.Class
-	for _, class := range classes {
+	for _, class := range Classes {
 		if mask&(1<<(class.ID-1)) != 0 {
 			result = append(result, class.ProtoClass)
 		}
 	}
 	slices.Sort(result)
 	return result
-}
-
-type DbcClass struct {
-	ProtoClass proto.Class
-	ID         int
 }
 
 func WriteGzipFile(filePath string, data []byte) error {

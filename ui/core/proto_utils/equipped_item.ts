@@ -58,10 +58,6 @@ export class EquippedItem {
 		return this._item.id;
 	}
 
-	get itemLevel(): number {
-		return this._item.ilvl;
-	}
-
 	get randomSuffix(): ItemRandomSuffix | null {
 		return this._randomSuffix ? ItemRandomSuffix.clone(this._randomSuffix) : null;
 	}

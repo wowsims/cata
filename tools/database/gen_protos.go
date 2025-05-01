@@ -477,7 +477,7 @@ func GenerateTalentJsonFromDB(dbHelper *DBHelper) error {
 		return fmt.Errorf("error loading talents: %w", err)
 	}
 
-	for _, dbcClass := range dbc.DbcClasses {
+	for _, dbcClass := range dbc.Classes {
 		className := dbc.ClassNameFromDBC(dbcClass)
 
 		classTalents := []RawTalent{}
@@ -547,7 +547,7 @@ func GenerateProtos() {
 
 	var classesData []ClassData
 	iconsMap, _ := LoadArtTexturePaths("./tools/DB2ToSqlite/listfile.csv")
-	for _, dbcClass := range dbc.DbcClasses {
+	for _, dbcClass := range dbc.Classes {
 		className := dbc.ClassNameFromDBC(dbcClass)
 		data := ClassData{
 			ClassName:          className,

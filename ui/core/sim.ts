@@ -42,7 +42,7 @@ import { Raid } from './raid.js';
 import { runConcurrentSim, runConcurrentStatWeights } from './sim_concurrent';
 import { RequestTypes, SimSignalManager } from './sim_signal_manager';
 import { EventID, TypedEvent } from './typed_event.js';
-import { getEnumValues, noop } from './utils.js';
+import { getEnumValues, isDevMode, noop } from './utils.js';
 import { generateRequestId, WorkerPool, WorkerProgressCallback } from './worker_pool.js';
 
 export type RaidSimData = {
@@ -254,7 +254,9 @@ export class Sim {
 				const seenConsumableIds = new Set<number>();
 				const seenEffectIds = new Set<number>();
 				Object.entries(player.consumables ?? []).forEach(([field, cid]) => {
-					console.log(field, cid);
+					if (isDevMode()) {
+						console.log(field, cid);
+					}
 					if (!cid || seenConsumableIds.has(cid)) return;
 					const consume = this.db.getConsumable(cid);
 					if (!consume) return;

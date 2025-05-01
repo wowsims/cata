@@ -43,8 +43,7 @@ message ScalingItemProperties {
     double weapon_damage_min = 2;
     double weapon_damage_max = 3;
     map<int32, double> stats = 4; // for compactness
-	ItemLevelState upgrade_step = 5; // Defines which upgrade state the spec represents
-	int32 item_level = 6;
+	int32 ilvl = 6;
 }
 enum Spec {
 	SpecUnknown = 0;

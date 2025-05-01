@@ -122,6 +122,7 @@ export class Database {
 			itemCopy.weaponDamageMax = maxScaling.weaponDamageMax;
 			itemCopy.weaponDamageMin = maxScaling.weaponDamageMin;
 			itemCopy.randPropPoints = maxScaling.randPropPoints;
+			itemCopy.ilvl = maxScaling.ilvl;
 			itemCopy.stats = Stats.fromMap(maxScaling.stats).asProtoArray();
 
 			this.items.set(itemCopy.id, itemCopy);

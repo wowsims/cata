@@ -4,9 +4,12 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"log"
+	"os"
 	"strconv"
 	"strings"
 
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/tools/database/dbc"
 )
 
@@ -495,7 +498,7 @@ func ScanRandPropAllocationRow(rows *sql.Rows) (RandPropAllocationRow, error) {
 	return row, err
 }
 
-func LoadRandomPropAllocations(dbHelper *DBHelper) (map[int32]RandPropAllocationRow, error) {
+func LoadAndWriteRandomPropAllocations(dbHelper *DBHelper, inputsDir string) (map[int32]RandPropAllocationRow, error) {
 	query := `SELECT ID, DamageReplaceStat, Epic_0, Epic_1, Epic_2, Epic_3, Epic_4, Superior_0, Superior_1, Superior_2, Superior_3, Superior_4, Good_0, Good_1, Good_2 ,Good_3, Good_4 FROM RandPropPoints`
 	rowsData, err := LoadRows(dbHelper.db, query, ScanRandPropAllocationRow)
 	if err != nil {
@@ -507,6 +510,18 @@ func LoadRandomPropAllocations(dbHelper *DBHelper) (map[int32]RandPropAllocation
 		processed[r.Ilvl] = r
 	}
 
+	randProps := make(dbc.RandomPropAllocationsByIlvl)
+	for _, r := range processed {
+		randProps[int(r.Ilvl)] = dbc.RandomPropAllocationMap{
+			proto.ItemQuality_ItemQualityEpic:     [5]int32{r.Allocation.Epic0, r.Allocation.Epic1, r.Allocation.Epic2, r.Allocation.Epic3, r.Allocation.Epic4},
+			proto.ItemQuality_ItemQualityRare:     [5]int32{r.Allocation.Superior0, r.Allocation.Superior1, r.Allocation.Superior2, r.Allocation.Superior3, r.Allocation.Superior4},
+			proto.ItemQuality_ItemQualityUncommon: [5]int32{r.Allocation.Good0, r.Allocation.Good1, r.Allocation.Good2, r.Allocation.Good3, r.Allocation.Good4},
+		}
+	}
+	json, _ := json.Marshal(randProps)
+	if err := dbc.WriteGzipFile(fmt.Sprintf("%s/dbc/rand_prop_points.json", inputsDir), json); err != nil {
+		log.Fatalf("Error writing file: %v", err)
+	}
 	return processed, nil
 }
 
@@ -1226,4 +1241,27 @@ func LoadAndWriteSpells(dbHelper *DBHelper, inputsDir string) ([]dbc.Spell, erro
 		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
 	return spells, nil
+}
+
+func LoadAndWriteEnchantDescriptions(outputPath string, db *WowDatabase, instance *dbc.DBC) error {
+	descriptions := make(map[int32]string)
+
+	for _, enchant := range db.Enchants {
+		dbcEnch := instance.Enchants[int(enchant.EffectId)]
+		descriptions[enchant.EffectId] = dbcEnch.EffectName
+	}
+
+	file, err := os.Create(outputPath)
+	if err != nil {
+		return fmt.Errorf("failed to create file: %w", err)
+	}
+	defer file.Close()
+
+	encoder := json.NewEncoder(file)
+	encoder.SetIndent("", "  ")
+	if err := encoder.Encode(descriptions); err != nil {
+		return fmt.Errorf("failed to encode JSON: %w", err)
+	}
+
+	return nil
 }

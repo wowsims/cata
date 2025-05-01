@@ -150,8 +150,8 @@ type Item struct {
 	//Internal use
 	TempEnchant    int32
 	ScalingOptions map[int32]*proto.ScalingItemProperties
-	Ilvl           int32
 	RandPropPoints int32
+	UpgradeStep    proto.ItemLevelState
 }
 
 func ItemFromProto(pData *proto.SimItem) Item {
@@ -178,7 +178,7 @@ func (item *Item) ToItemSpecProto() *proto.ItemSpec {
 		RandomSuffix: item.RandomSuffix.ID,
 		Enchant:      item.Enchant.EffectID,
 		Gems:         MapSlice(item.Gems, func(gem Gem) int32 { return gem.ID }),
-		//UpgradeStep:   item.Up, Need to find upgrade step here if we ever want to test them
+		UpgradeStep:  item.UpgradeStep,
 	}
 
 	// Check if Reforging is not nil before accessing ID
@@ -396,11 +396,11 @@ func NewItem(itemSpec ItemSpec) Item {
 	}
 
 	scalingOptions := item.ScalingOptions[int32(itemSpec.UpgradeStep)]
-	item.Ilvl = scalingOptions.ItemLevel
 	item.Stats = stats.FromProtoMap(scalingOptions.Stats)
 	item.WeaponDamageMax = scalingOptions.WeaponDamageMax
 	item.WeaponDamageMin = scalingOptions.WeaponDamageMin
 	item.RandPropPoints = scalingOptions.RandPropPoints
+	item.UpgradeStep = itemSpec.UpgradeStep
 
 	if itemSpec.RandomSuffix != 0 {
 		if randomSuffix, ok := RandomSuffixesByID[itemSpec.RandomSuffix]; ok {
