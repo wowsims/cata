@@ -212,12 +212,12 @@ func (data *SpellEffect) ClassFlag(index uint) uint32 {
 func (effect *SpellEffect) ParseStatEffect() *stats.Stats {
 	stats := &stats.Stats{}
 	scale := effect.ScalingClass()
-	spell := dbcInstance.Spells[effect.ID]
+	spell := dbcInstance.Spells[effect.SpellID]
 	stat, _ := MapMainStatToStat(effect.EffectMiscValues[0])
 
 	switch {
 	case effect.EffectAura == A_MOD_STAT && effect.EffectType == E_APPLY_AURA:
-		stats[stat] = float64(effect.Coefficient * dbcInstance.SpellScaling(scale, spell.MaxScalingLevel))
+		stats[stat] = math.Round(float64(effect.Coefficient * dbcInstance.SpellScaling(scale, spell.MaxScalingLevel)))
 		if effect.Coefficient <= 0 {
 			// if Coefficient is not set, we fall back to EffectBasePoints
 			stats[stat] = float64(effect.EffectBasePoints)
