@@ -154,19 +154,6 @@ type Item struct {
 	RandPropPoints int32
 }
 
-func (item *Item) UpgradeItemLevelBy(upgradeLevel int) int {
-	if item.Quality == proto.ItemQuality_ItemQualityUncommon {
-		return upgradeLevel * 8
-	}
-	if item.Quality == proto.ItemQuality_ItemQualityRare {
-		return upgradeLevel * 4
-	}
-	if item.Quality == proto.ItemQuality_ItemQualityEpic {
-		return upgradeLevel * 4
-	}
-	return 0
-}
-
 func ItemFromProto(pData *proto.SimItem) Item {
 	return Item{
 		ID:               pData.Id,
@@ -191,7 +178,7 @@ func (item *Item) ToItemSpecProto() *proto.ItemSpec {
 		RandomSuffix: item.RandomSuffix.ID,
 		Enchant:      item.Enchant.EffectID,
 		Gems:         MapSlice(item.Gems, func(gem Gem) int32 { return gem.ID }),
-		ScaledIlvl:   item.Ilvl,
+		//UpgradeStep:   item.Up, Need to find upgrade step here if we ever want to test them
 	}
 
 	// Check if Reforging is not nil before accessing ID
@@ -253,7 +240,7 @@ type ItemSpec struct {
 	Enchant      int32
 	Gems         []int32
 	Reforging    int32
-	ScaledIlvl   int32
+	UpgradeStep  proto.ItemLevelState
 }
 
 type Equipment [proto.ItemSlot_ItemSlotRanged + 1]Item
@@ -394,7 +381,7 @@ func ProtoToEquipmentSpec(es *proto.EquipmentSpec) EquipmentSpec {
 			Enchant:      item.Enchant,
 			Gems:         item.Gems,
 			Reforging:    item.Reforging,
-			ScaledIlvl:   item.ScaledIlvl,
+			UpgradeStep:  item.UpgradeStep,
 		}
 	}
 	return coreEquip
@@ -407,27 +394,12 @@ func NewItem(itemSpec ItemSpec) Item {
 	} else {
 		panic(fmt.Sprintf("No item with id: %d", itemSpec.ID))
 	}
-	scalingOptions := item.ScalingOptions[itemSpec.ScaledIlvl]
 
-	if scalingOptions == nil {
-		for ilvl, scaling := range item.ScalingOptions {
-			if scaling.IsBase {
-				scalingOptions = scaling
-				item.Ilvl = ilvl // ScaledIlvl should always be set
-				break
-			}
-		}
-	} else {
-		item.Ilvl = itemSpec.ScaledIlvl
-	}
-
-	// Set the itemlevel again because it could be scaled
-	item.Stats = stats.Stats(MapToFixedStatsArray(scalingOptions.GetStats()))
-
-	if scalingOptions.WeaponDamageMax > 0 {
-		item.WeaponDamageMax = scalingOptions.WeaponDamageMax
-		item.WeaponDamageMin = scalingOptions.WeaponDamageMin
-	}
+	scalingOptions := item.ScalingOptions[int32(itemSpec.UpgradeStep)]
+	item.Ilvl = scalingOptions.ItemLevel
+	item.Stats = stats.FromProtoMap(scalingOptions.Stats)
+	item.WeaponDamageMax = scalingOptions.WeaponDamageMax
+	item.WeaponDamageMin = scalingOptions.WeaponDamageMin
 	item.RandPropPoints = scalingOptions.RandPropPoints
 
 	if itemSpec.RandomSuffix != 0 {
@@ -482,7 +454,7 @@ func validateReforging(item *Item, reforging ReforgeStat) bool {
 	// Validate that the item can reforge these to stats
 	reforgeableStats := stats.Stats{}
 	if item.RandomSuffix.ID != 0 {
-		reforgeableStats = reforgeableStats.Add(item.RandomSuffix.Stats.Multiply(float64(item.ScalingOptions[item.Ilvl].RandPropPoints) / 10000.).Floor())
+		reforgeableStats = reforgeableStats.Add(item.RandomSuffix.Stats.Multiply(float64(item.RandPropPoints) / 10000.).Floor())
 	} else {
 		reforgeableStats = reforgeableStats.Add(item.Stats)
 	}

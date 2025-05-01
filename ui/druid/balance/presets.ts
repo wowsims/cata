@@ -1,20 +1,16 @@
 import * as PresetUtils from '../../core/preset_utils.js';
 import {
-	Consumes,
 	ConsumesSpec,
 	Debuffs,
-	Flask,
-	Food,
 	Glyphs,
 	IndividualBuffs,
 	PartyBuffs,
-	Potions,
 	Profession,
 	RaidBuffs,
 	Stat,
 	UnitReference,
 } from '../../core/proto/common.js';
-import { BalanceDruid_Options as BalanceDruidOptions, DruidMajorGlyph, DruidMinorGlyph } from '../../core/proto/druid.js';
+import { BalanceDruid_Options as BalanceDruidOptions, DruidMajorGlyph } from '../../core/proto/druid.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
 import T11Apl from './apls/t11.apl.json';

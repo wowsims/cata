@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, ConsumesSpec, Flask, Food, Glyphs, Potions, Stat } from '../../core/proto/common.js';
+import { ConsumesSpec, Stat } from '../../core/proto/common.js';
 import { RestorationShaman_Options as RestorationShamanOptions, ShamanMajorGlyph, ShamanMinorGlyph, ShamanShield } from '../../core/proto/shaman.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
@@ -68,11 +68,6 @@ export const DefaultOptions = RestorationShamanOptions.create({
 		shield: ShamanShield.WaterShield,
 	},
 	earthShieldPPM: 0,
-});
-export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.RunicManaInjector,
-	flask: Flask.FlaskOfTheFrostWyrm,
-	food: Food.FoodFishFeast,
 });
 
 export const DefaultConsumables = ConsumesSpec.create({

@@ -126,14 +126,6 @@ export const DefaultOptions = DruidOptions.create({
 	startingRage: 15,
 });
 
-export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfSteelskin,
-	food: Food.FoodSkeweredEel,
-	prepopPotion: Potions.PotionOfTheTolvir,
-	defaultPotion: Potions.PotionOfTheTolvir,
-	defaultConjured: Conjured.ConjuredHealthstone,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
-});
 export const DefaultConsumables = ConsumesSpec.create({
 	flaskId: 58085, // Flask of Steelskin
 	foodId: 62669, // Skewered Eel

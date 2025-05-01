@@ -102,6 +102,7 @@ func InitDBC() error {
 	if err := dbcInstance.loadSpells("./assets/db_inputs/dbc/spells.json"); err != nil {
 		return fmt.Errorf("loading spells: %w", err)
 	}
+	dbcInstance.LoadSpellScaling()
 	return nil
 }
 
@@ -115,16 +116,8 @@ func GetDBC() *DBC {
 	return dbcInstance
 }
 
-func GetDBCWithError() (*DBC, error) {
-	var err error
-	once.Do(func() {
-		err = InitDBC()
-	})
-	return dbcInstance, err
-}
-
 func (d *DBC) loadConsumables(filename string) error {
-	data, err := readGzipFile(filename)
+	data, err := ReadGzipFile(filename)
 	if err != nil {
 		return err
 	}
@@ -145,7 +138,7 @@ func (d *DBC) loadConsumables(filename string) error {
 	return nil
 }
 func (d *DBC) loadSpells(filename string) error {
-	data, err := readGzipFile(filename)
+	data, err := ReadGzipFile(filename)
 	if err != nil {
 		return err
 	}
@@ -166,7 +159,7 @@ func (d *DBC) loadSpells(filename string) error {
 	return nil
 }
 func (d *DBC) loadItemEffects(filename string) error {
-	data, err := readGzipFile(filename)
+	data, err := ReadGzipFile(filename)
 	if err != nil {
 		return err
 	}
@@ -187,7 +180,7 @@ func (d *DBC) loadItemEffects(filename string) error {
 	return nil
 }
 func (d *DBC) loadRandomPropertiesByIlvl(filename string) error {
-	data, err := readGzipFile(filename)
+	data, err := ReadGzipFile(filename)
 	if err != nil {
 		return err
 	}
@@ -206,7 +199,7 @@ func (d *DBC) loadRandomPropertiesByIlvl(filename string) error {
 }
 
 func (d *DBC) loadItems(filename string) error {
-	data, err := readGzipFile(filename)
+	data, err := ReadGzipFile(filename)
 	if err != nil {
 		return err
 	}
@@ -228,7 +221,7 @@ func (d *DBC) loadItems(filename string) error {
 }
 
 func (d *DBC) loadGems(filename string) error {
-	data, err := readGzipFile(filename)
+	data, err := ReadGzipFile(filename)
 	if err != nil {
 		return err
 	}
@@ -250,7 +243,7 @@ func (d *DBC) loadGems(filename string) error {
 }
 
 func (d *DBC) loadEnchants(filename string) error {
-	data, err := readGzipFile(filename)
+	data, err := ReadGzipFile(filename)
 	if err != nil {
 		return err
 	}
@@ -272,7 +265,7 @@ func (d *DBC) loadEnchants(filename string) error {
 }
 
 func (d *DBC) loadItemStatEffects(filename string) error {
-	data, err := readGzipFile(filename)
+	data, err := ReadGzipFile(filename)
 	if err != nil {
 		return err
 	}
@@ -294,7 +287,7 @@ func (d *DBC) loadItemStatEffects(filename string) error {
 }
 
 func (d *DBC) loadSpellEffects(filename string) error {
-	data, err := readGzipFile(filename)
+	data, err := ReadGzipFile(filename)
 	if err != nil {
 		return err
 	}
@@ -318,7 +311,7 @@ func (d *DBC) loadSpellEffects(filename string) error {
 }
 
 func (d *DBC) loadRandomSuffix(filename string) error {
-	data, err := readGzipFile(filename)
+	data, err := ReadGzipFile(filename)
 	if err != nil {
 		return err
 	}
@@ -340,7 +333,7 @@ func (d *DBC) loadRandomSuffix(filename string) error {
 }
 
 func (d *DBC) LoadItemArmorQuality(filename string) error {
-	data, err := readGzipFile(filename)
+	data, err := ReadGzipFile(filename)
 	if err != nil {
 		return err
 	}
@@ -358,7 +351,7 @@ func (d *DBC) LoadItemArmorQuality(filename string) error {
 	return nil
 }
 func (d *DBC) LoadArmorLocation(filename string) error {
-	data, err := readGzipFile(filename)
+	data, err := ReadGzipFile(filename)
 	if err != nil {
 		return err
 	}
@@ -376,7 +369,7 @@ func (d *DBC) LoadArmorLocation(filename string) error {
 	return nil
 }
 func (d *DBC) LoadItemArmorShield(filename string) error {
-	data, err := readGzipFile(filename)
+	data, err := ReadGzipFile(filename)
 	if err != nil {
 		return err
 	}
@@ -395,7 +388,7 @@ func (d *DBC) LoadItemArmorShield(filename string) error {
 }
 
 func (d *DBC) LoadItemArmorTotal(filename string) error {
-	data, err := readGzipFile(filename)
+	data, err := ReadGzipFile(filename)
 	if err != nil {
 		return err
 	}
@@ -414,7 +407,7 @@ func (d *DBC) LoadItemArmorTotal(filename string) error {
 }
 
 func (d *DBC) loadItemDamageTables(filename string) error {
-	data, err := readGzipFile(filename)
+	data, err := ReadGzipFile(filename)
 	if err != nil {
 		return err
 	}

@@ -1,15 +1,11 @@
-import { ConjuredHealthstone, TinkerHandsSynapseSprings } from '../../core/components/inputs/consumables';
 import * as PresetUtils from '../../core/preset_utils';
 import { APLRotation_Type as APLRotationType } from '../../core/proto/apl.js';
-import { Consumes, ConsumesSpec, Flask, Food, Glyphs, Potions, Profession, PseudoStat, RotationType, Spec, Stat } from '../../core/proto/common';
+import { ConsumesSpec, Glyphs, Profession, PseudoStat, Stat } from '../../core/proto/common';
 import {
 	HunterMajorGlyph as MajorGlyph,
-	HunterMinorGlyph as MinorGlyph,
-	HunterOptions_Ammo as Ammo,
 	HunterOptions_PetType as PetType,
 	HunterStingType,
 	SurvivalHunter_Options as HunterOptions,
-	SurvivalHunter_Rotation as HunterRotation,
 } from '../../core/proto/hunter';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';

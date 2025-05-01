@@ -18,32 +18,23 @@ import {
 } from './proto/api';
 import { APLRotation, APLRotation_Type as APLRotationType, SimpleRotation } from './proto/apl';
 import {
-	BattleElixir,
 	Class,
-	Conjured,
-	ConsumableType,
-	Consumes,
 	ConsumesSpec,
 	Cooldowns,
 	Faction,
-	Flask,
-	Food,
 	GemColor,
 	Glyphs,
-	GuardianElixir,
 	HandType,
 	HealingModel,
 	IndividualBuffs,
 	ItemRandomSuffix,
 	ItemSlot,
-	Potions,
 	Profession,
 	PseudoStat,
 	Race,
 	ReforgeStat,
 	Spec,
 	Stat,
-	TinkerHands,
 	UnitReference,
 	UnitStats,
 } from './proto/common';
@@ -1507,54 +1498,53 @@ export class Player<SpecType extends Spec> {
 
 	fromProto(eventID: EventID, proto: PlayerProto, includeCategories?: Array<SimSettingCategories>) {
 		// Fix potential out-of-date protos before importing
-		Player.updateProtoVersion(proto).then(() => {
+		TypedEvent.freezeAllAndDo(() => {
+			Player.updateProtoVersion(proto);
 			const loadCategory = (cat: SimSettingCategories) => !includeCategories || includeCategories.length == 0 || includeCategories.includes(cat);
-			TypedEvent.freezeAllAndDo(() => {
-				eventID = TypedEvent.nextEventID();
-				if (loadCategory(SimSettingCategories.Gear)) {
-					this.setGear(eventID, proto.equipment ? this.sim.db.lookupEquipmentSpec(proto.equipment) : new Gear({}));
-					this.itemSwapSettings.setItemSwapSettings(
-						eventID,
-						proto.enableItemSwap,
-						proto.itemSwap ? this.sim.db.lookupItemSwap(proto.itemSwap) : new ItemSwapGear({}),
-						Stats.fromProto(proto.itemSwap?.prepullBonusStats),
-					);
-					this.setBonusStats(eventID, Stats.fromProto(proto.bonusStats || UnitStats.create()));
-					//this.setBulkEquipmentSpec(eventID, BulkEquipmentSpec.create()); // Do not persist the bulk equipment settings.
-				}
-				if (loadCategory(SimSettingCategories.Talents)) {
-					this.setTalentsString(eventID, proto.talentsString);
-					this.setGlyphs(eventID, proto.glyphs || Glyphs.create());
-				}
-				if (loadCategory(SimSettingCategories.Rotation)) {
-					if (proto.rotation?.type == APLRotationType.TypeUnknown) {
-						if (!proto.rotation) {
-							proto.rotation = APLRotation.create();
-						}
-						proto.rotation.type = APLRotationType.TypeAuto;
+			eventID = TypedEvent.nextEventID();
+			if (loadCategory(SimSettingCategories.Gear)) {
+				this.setGear(eventID, proto.equipment ? this.sim.db.lookupEquipmentSpec(proto.equipment) : new Gear({}));
+				this.itemSwapSettings.setItemSwapSettings(
+					eventID,
+					proto.enableItemSwap,
+					proto.itemSwap ? this.sim.db.lookupItemSwap(proto.itemSwap) : new ItemSwapGear({}),
+					Stats.fromProto(proto.itemSwap?.prepullBonusStats),
+				);
+				this.setBonusStats(eventID, Stats.fromProto(proto.bonusStats || UnitStats.create()));
+				//this.setBulkEquipmentSpec(eventID, BulkEquipmentSpec.create()); // Do not persist the bulk equipment settings.
+			}
+			if (loadCategory(SimSettingCategories.Talents)) {
+				this.setTalentsString(eventID, proto.talentsString);
+				this.setGlyphs(eventID, proto.glyphs || Glyphs.create());
+			}
+			if (loadCategory(SimSettingCategories.Rotation)) {
+				if (proto.rotation?.type == APLRotationType.TypeUnknown) {
+					if (!proto.rotation) {
+						proto.rotation = APLRotation.create();
 					}
-					this.setAplRotation(eventID, proto.rotation || APLRotation.create());
+					proto.rotation.type = APLRotationType.TypeAuto;
 				}
-				if (loadCategory(SimSettingCategories.Consumes)) {
-					this.setConsumes(eventID, proto.consumables || ConsumesSpec.create());
-				}
-				if (loadCategory(SimSettingCategories.Miscellaneous)) {
-					this.setSpecOptions(eventID, this.specTypeFunctions.optionsFromPlayer(proto));
-					this.setName(eventID, proto.name);
-					this.setRace(eventID, proto.race);
-					this.setProfession1(eventID, proto.profession1);
-					this.setProfession2(eventID, proto.profession2);
-					this.setReactionTime(eventID, proto.reactionTimeMs);
-					this.setChannelClipDelay(eventID, proto.channelClipDelayMs);
-					this.setInFrontOfTarget(eventID, proto.inFrontOfTarget);
-					this.setDistanceFromTarget(eventID, proto.distanceFromTarget);
-					this.setHealingModel(eventID, proto.healingModel || HealingModel.create());
-					this.setDarkIntentUptime(eventID, proto.darkIntentUptime);
-				}
-				if (loadCategory(SimSettingCategories.External)) {
-					this.setBuffs(eventID, proto.buffs || IndividualBuffs.create());
-				}
-			});
+				this.setAplRotation(eventID, proto.rotation || APLRotation.create());
+			}
+			if (loadCategory(SimSettingCategories.Consumes)) {
+				this.setConsumes(eventID, proto.consumables || ConsumesSpec.create());
+			}
+			if (loadCategory(SimSettingCategories.Miscellaneous)) {
+				this.setSpecOptions(eventID, this.specTypeFunctions.optionsFromPlayer(proto));
+				this.setName(eventID, proto.name);
+				this.setRace(eventID, proto.race);
+				this.setProfession1(eventID, proto.profession1);
+				this.setProfession2(eventID, proto.profession2);
+				this.setReactionTime(eventID, proto.reactionTimeMs);
+				this.setChannelClipDelay(eventID, proto.channelClipDelayMs);
+				this.setInFrontOfTarget(eventID, proto.inFrontOfTarget);
+				this.setDistanceFromTarget(eventID, proto.distanceFromTarget);
+				this.setHealingModel(eventID, proto.healingModel || HealingModel.create());
+				this.setDarkIntentUptime(eventID, proto.darkIntentUptime);
+			}
+			if (loadCategory(SimSettingCategories.External)) {
+				this.setBuffs(eventID, proto.buffs || IndividualBuffs.create());
+			}
 		});
 	}
 
@@ -1597,8 +1587,7 @@ export class Player<SpecType extends Spec> {
 	getMasteryPerPointModifier(): number {
 		return Mechanics.masteryPercentPerPoint.get(this.getSpec()) || 0;
 	}
-
-	static async updateProtoVersion(proto: PlayerProto) {
+	static updateProtoVersion(proto: PlayerProto) {
 		if (!(proto.apiVersion < CURRENT_API_VERSION)) {
 			return;
 		}
