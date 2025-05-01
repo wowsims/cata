@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"math"
 	"slices"
 	"strconv"
 	"time"
@@ -97,6 +98,16 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 			if mod.IsActive {
 				mod.Apply(mod, spell)
 			}
+		}
+	})
+
+	unit.RegisterResetEffect(func(s *Simulation) {
+		for _, spell := range unit.Spellbook {
+			spell.DamageMultiplierAdditive = math.Round(spell.DamageMultiplierAdditive*10000) / 10000
+
+			// Possibly add other spell mod variables here to safely round them
+			// Spell values are not reset on Iteration Reset so small floating point errors by multiplying / adding to a field
+			// Will carry over through iterations
 		}
 	})
 
