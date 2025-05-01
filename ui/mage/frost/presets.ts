@@ -58,12 +58,6 @@ export const DefaultFrostOptions = MageOptions.create({
 	waterElementalDisobeyChance: 0.1,
 });
 
-export const DefaultFrostConsumes = Consumes.create({
-	defaultPotion: Potions.PotionOfSpeed,
-	defaultConjured: Conjured.ConjuredDarkRune,
-	flask: Flask.FlaskOfTheFrostWyrm,
-	food: Food.FoodFishFeast,
-});
 export const DefaultConsumables = ConsumesSpec.create({
 	flaskId: 58086, // Flask of the Draconic Mind
 	foodId: 62290, // Seafood Magnifique Feast

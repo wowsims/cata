@@ -206,81 +206,60 @@ func (effect *SpellEffect) IsPeriodicDamageEffect() bool {
 }
 
 func (data *SpellEffect) ClassFlag(index uint) uint32 {
-	// Ensure the operation is performed within uint32 context
 	return uint32(data.EffectSpellClassMasks[index/32]) & (1 << (index % 32))
 }
 
 func (effect *SpellEffect) ParseStatEffect() *stats.Stats {
 	stats := &stats.Stats{}
-	if effect.EffectAura == A_MOD_STAT && effect.EffectType == E_APPLY_AURA {
-		stat, _ := MapMainStatToStat(effect.EffectMiscValues[0])
+	scale := effect.ScalingClass()
+	spell := dbcInstance.Spells[effect.ID]
+	stat, _ := MapMainStatToStat(effect.EffectMiscValues[0])
 
-		stats[stat] = float64(effect.EffectBasePoints)
-		return stats
-	}
+	switch {
+	case effect.EffectAura == A_MOD_STAT && effect.EffectType == E_APPLY_AURA:
+		stats[stat] = float64(effect.Coefficient * dbcInstance.SpellScaling(scale, spell.MaxScalingLevel))
+		if effect.Coefficient <= 0 {
+			// if Coefficient is not set, we fall back to EffectBasePoints
+			stats[stat] = float64(effect.EffectBasePoints)
+		}
 
-	if effect.EffectMiscValues[0] == -1 &&
-		effect.EffectType == E_APPLY_AURA &&
-		effect.EffectAura == A_MOD_STAT {
-		// Apply bonus to all stats
-		stats[proto.Stat_StatAgility] = float64(effect.EffectBasePoints)
-		stats[proto.Stat_StatIntellect] = float64(effect.EffectBasePoints)
-		stats[proto.Stat_StatSpirit] = float64(effect.EffectBasePoints)
-		stats[proto.Stat_StatStamina] = float64(effect.EffectBasePoints)
-		stats[proto.Stat_StatStrength] = float64(effect.EffectBasePoints)
-		return stats
-	}
-	school := SpellSchool(effect.EffectMiscValues[0])
-	if effect.EffectAura == A_MOD_TARGET_RESISTANCE {
-		if school == SPELL_PENETRATION {
-			stats[proto.Stat_StatSpellPenetration] += math.Abs(float64(effect.EffectBasePoints))
-			return stats
-		}
-	}
+	case effect.EffectAura == A_MOD_DAMAGE_DONE && effect.EffectType == E_APPLY_AURA:
+		// Apply spell power, A_MOD_HEALING_DONE is also a possibility for healing power
+		stats[proto.Stat_StatSpellPower] = float64(effect.EffectBasePoints)
 
-	if effect.EffectAura == A_OBS_MOD_HEALTH {
-		return stats
-	}
+	case effect.EffectMiscValues[0] == -1 && effect.EffectAura == A_MOD_STAT && effect.EffectType == E_APPLY_AURA:
+		// -1 represents ALL STATS if present in MiscValue 0
+		for _, s := range []proto.Stat{
+			proto.Stat_StatAgility, proto.Stat_StatIntellect, proto.Stat_StatSpirit,
+			proto.Stat_StatStamina, proto.Stat_StatStrength,
+		} {
+			stats[s] = float64(effect.EffectBasePoints)
+		}
 
-	if effect.EffectAura == A_MOD_RESISTANCE {
-		if school.Has(FIRE) {
-			stats[proto.Stat_StatFireResistance] += float64(effect.EffectBasePoints)
-		}
-		if school.Has(ARCANE) {
-			stats[proto.Stat_StatArcaneResistance] += float64(effect.EffectBasePoints)
-		}
-		if school.Has(NATURE) {
-			stats[proto.Stat_StatNatureResistance] += float64(effect.EffectBasePoints)
-		}
-		if school.Has(FROST) {
-			stats[proto.Stat_StatFrostResistance] += float64(effect.EffectBasePoints)
-		}
-		if school.Has(SHADOW) {
-			stats[proto.Stat_StatShadowResistance] += float64(effect.EffectBasePoints)
-		}
-		if school.Has(PHYSICAL) {
-			stats[proto.Stat_StatArmor] += float64(effect.EffectBasePoints)
-		}
-	}
+	case effect.EffectAura == A_MOD_TARGET_RESISTANCE && SpellSchool(effect.EffectMiscValues[0]) == SPELL_PENETRATION:
+		stats[proto.Stat_StatSpellPenetration] += math.Abs(float64(effect.EffectBasePoints))
 
-	if effect.EffectAura == A_MOD_RATING {
-		matching := getMatchingRatingMods(effect.EffectMiscValues[0])
-		for _, rating := range matching {
-			statMod := RatingModToStat[rating]
-			if statMod != -1 {
+	case effect.EffectAura == A_MOD_RESISTANCE:
+		school := SpellSchool(effect.EffectMiscValues[0])
+		for schoolType, stat := range SpellSchoolToStat {
+			if school.Has(schoolType) {
+				stats[stat] += float64(effect.EffectBasePoints)
+			}
+		}
+
+	case effect.EffectAura == A_MOD_RATING:
+		for _, rating := range getMatchingRatingMods(effect.EffectMiscValues[0]) {
+			if statMod := RatingModToStat[rating]; statMod != -1 {
 				stats[statMod] = float64(effect.EffectBasePoints)
 			}
 		}
-	}
 
-	if effect.EffectAura == A_MOD_INCREASE_ENERGY {
+	case effect.EffectAura == A_MOD_INCREASE_ENERGY:
 		stats[proto.Stat_StatMana] = float64(effect.EffectBasePoints)
-	}
 
-	if effect.EffectAura == A_PERIODIC_TRIGGER_SPELL && effect.EffectAuraPeriod == 10000 { // Make sure if its a food
-		subEffects := dbcInstance.SpellEffects[effect.EffectTriggerSpell]
-		for _, subEffect := range subEffects {
-			stats.AddInplace(subEffect.ParseStatEffect())
+	case effect.EffectAura == A_PERIODIC_TRIGGER_SPELL && effect.EffectAuraPeriod == 10000:
+		for _, sub := range dbcInstance.SpellEffects[effect.EffectTriggerSpell] {
+			stats.AddInplace(sub.ParseStatEffect())
 		}
 	}
 

@@ -34,7 +34,7 @@ import {
 	UnitReference_Type as UnitType,
 	WeaponType,
 } from './proto/common.js';
-import { Consumable,  SimDatabase } from './proto/db';
+import { Consumable, SimDatabase } from './proto/db';
 import { SpellEffect } from './proto/spell';
 import { DatabaseFilters, RaidFilterOption, SimSettings as SimSettingsProto, SourceFilterOption } from './proto/ui.js';
 import { Database } from './proto_utils/database.js';
@@ -252,43 +252,17 @@ export class Sim {
 				// Include consumables in the player db
 				const pdb = player.database!;
 
-				type ConsumableIdKey =
-					| 'flaskId'
-					| 'battleElixirId'
-					| 'guardianElixirId'
-					| 'foodId'
-					| 'potId'
-					| 'prepotId'
-					| 'tinkerId'
-					| 'conjuredId'
-					| 'explosiveId';
-				const consumableIdFields: ConsumableIdKey[] = [
-					'potId',
-					'prepotId',
-					'flaskId',
-					'battleElixirId',
-					'guardianElixirId',
-					'foodId',
-					'tinkerId',
-					'conjuredId',
-					'explosiveId',
-				];
-
 				const newConsumables: Consumable[] = [];
 				const newSpellEffects: SpellEffect[] = [];
 				const seenConsumableIds = new Set<number>();
 				const seenEffectIds = new Set<number>();
-
-				for (const field of consumableIdFields) {
-					const cid = player.consumables?.[field];
-					if (!cid || seenConsumableIds.has(cid)) continue;
-
+				Object.entries(player.consumables ?? []).forEach(([field, cid]) => {
+					console.log(field, cid);
+					if (!cid || seenConsumableIds.has(cid)) return;
 					const consume = this.db.getConsumable(cid);
-					if (!consume) continue;
-
+					if (!consume) return;
 					seenConsumableIds.add(consume.id);
 					newConsumables.push(consume);
-
 					for (const eid of consume.effectIds) {
 						if (seenEffectIds.has(eid)) continue;
 						const effect = this.db.getSpellEffect(eid);
@@ -297,13 +271,9 @@ export class Sim {
 						seenEffectIds.add(effect.id);
 						newSpellEffects.push(effect);
 					}
-				}
+				});
 
 				// swap in the fresh arrays
-				pdb.consumables = newConsumables;
-				pdb.spellEffects = newSpellEffects;
-
-				// replace the old maps in one go
 				pdb.consumables = newConsumables;
 				pdb.spellEffects = newSpellEffects;
 				player.database = pdb;

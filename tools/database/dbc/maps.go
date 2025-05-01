@@ -237,6 +237,14 @@ type EnchantMetaType struct {
 	WeaponType proto.WeaponType
 }
 
+var SpellSchoolToStat = map[SpellSchool]proto.Stat{
+	FIRE:     proto.Stat_StatFireResistance,
+	ARCANE:   proto.Stat_StatArcaneResistance,
+	NATURE:   proto.Stat_StatNatureResistance,
+	FROST:    proto.Stat_StatFrostResistance,
+	SHADOW:   proto.Stat_StatShadowResistance,
+	PHYSICAL: proto.Stat_StatArmor,
+}
 var MapInventoryTypeToEnchantMetaType = map[InventoryTypeFlag]EnchantMetaType{
 	HEAD:     {ItemType: proto.ItemType_ItemTypeHead, WeaponType: proto.WeaponType_WeaponTypeUnknown},
 	NECK:     {ItemType: proto.ItemType_ItemTypeNeck, WeaponType: proto.WeaponType_WeaponTypeUnknown},
@@ -277,11 +285,55 @@ var MapPowerTypeEnumToResourceType = map[int32]proto.ResourceType{
 	7:  proto.ResourceType_ResourceTypeNone, // Soulshards
 	8:  proto.ResourceType_ResourceTypeLunarEnergy,
 	9:  proto.ResourceType_ResourceTypeHolyPower,
+	12: proto.ResourceType_ResourceTypeChi,
 	20: proto.ResourceType_ResourceTypeBloodRune,
 	21: proto.ResourceType_ResourceTypeFrostRune,
 	22: proto.ResourceType_ResourceTypeUnholyRune,
+	29: proto.ResourceType_ResourceTypeDeathRune,
 }
 
+var DbcClasses = []DbcClass{
+	{ProtoClass: proto.Class_ClassWarrior, ID: 1},
+	{ProtoClass: proto.Class_ClassPaladin, ID: 2},
+	{ProtoClass: proto.Class_ClassHunter, ID: 3},
+	{ProtoClass: proto.Class_ClassRogue, ID: 4},
+	{ProtoClass: proto.Class_ClassPriest, ID: 5},
+	{ProtoClass: proto.Class_ClassDeathKnight, ID: 6},
+	{ProtoClass: proto.Class_ClassShaman, ID: 7},
+	{ProtoClass: proto.Class_ClassMage, ID: 8},
+	{ProtoClass: proto.Class_ClassWarlock, ID: 9},
+	{ProtoClass: proto.Class_ClassMonk, ID: 10},
+	{ProtoClass: proto.Class_ClassDruid, ID: 11},
+}
+
+func ClassNameFromDBC(dbc DbcClass) string {
+	switch dbc.ID {
+	case 1:
+		return "Warrior"
+	case 2:
+		return "Paladin"
+	case 3:
+		return "Hunter"
+	case 4:
+		return "Rogue"
+	case 5:
+		return "Priest"
+	case 6:
+		return "Death_Knight"
+	case 7:
+		return "Shaman"
+	case 8:
+		return "Mage"
+	case 9:
+		return "Warlock"
+	case 10:
+		return "Monk"
+	case 11:
+		return "Druid"
+	default:
+		return "Unknown"
+	}
+}
 func getMatchingRatingMods(value int) []RatingModType {
 	allMods := []RatingModType{
 		RATING_MOD_DODGE,
