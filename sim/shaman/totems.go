@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-func (shaman *Shaman) newTotemSpellConfig(baseCostPercent int32, spellID int32) core.SpellConfig {
+func (shaman *Shaman) newTotemSpellConfig(baseCostPercent float64, spellID int32) core.SpellConfig {
 	return core.SpellConfig{
 		ActionID: core.ActionID{SpellID: spellID},
 		Flags:    SpellFlagTotem | core.SpellFlagAPL,
