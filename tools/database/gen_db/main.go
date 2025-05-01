@@ -71,20 +71,10 @@ func main() {
 	if err != nil {
 		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
-	randPropsByIlvl, err := database.LoadRandomPropAllocations(helper)
-	if err == nil {
-		processed := make(dbc.RandomPropAllocationsByIlvl)
-		for _, r := range randPropsByIlvl {
-			processed[int(r.Ilvl)] = dbc.RandomPropAllocationMap{
-				proto.ItemQuality_ItemQualityEpic:     [5]int32{r.Allocation.Epic0, r.Allocation.Epic1, r.Allocation.Epic2, r.Allocation.Epic3, r.Allocation.Epic4},
-				proto.ItemQuality_ItemQualityRare:     [5]int32{r.Allocation.Superior0, r.Allocation.Superior1, r.Allocation.Superior2, r.Allocation.Superior3, r.Allocation.Superior4},
-				proto.ItemQuality_ItemQualityUncommon: [5]int32{r.Allocation.Good0, r.Allocation.Good1, r.Allocation.Good2, r.Allocation.Good3, r.Allocation.Good4},
-			}
-		}
-		json, _ := json.Marshal(processed)
-		if err := dbc.WriteGzipFile(fmt.Sprintf("%s/dbc/rand_prop_points.json", inputsDir), json); err != nil {
-			log.Fatalf("Error writing file: %v", err)
-		}
+
+	_, err = database.LoadAndWriteRandomPropAllocations(helper, inputsDir)
+	if err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
 
 	_, err = database.LoadAndWriteRawGems(helper, inputsDir)
@@ -164,6 +154,7 @@ func main() {
 		if parsed.Icon == "" {
 			parsed.Icon = strings.ToLower(database.GetIconName(iconsMap, item.FDID))
 		}
+
 		db.MergeItem(parsed)
 	}
 
@@ -201,13 +192,10 @@ func main() {
 	db.MergeItems(database.ItemOverrides)
 	db.MergeGems(database.GemOverrides)
 	db.MergeEnchants(database.EnchantOverrides)
-
 	ApplyGlobalFilters(db)
-
 	leftovers := db.Clone()
 	ApplyNonSimmableFilters(leftovers)
 	leftovers.WriteBinaryAndJson(fmt.Sprintf("%s/leftover_db.bin", dbDir), fmt.Sprintf("%s/leftover_db.json", dbDir))
-
 	ApplySimmableFilters(db)
 	for _, enchant := range db.Enchants {
 		if enchant.ItemId != 0 {
@@ -227,112 +215,46 @@ func main() {
 		}
 	}
 
-	for _, randomSuffix := range dbc.GetDBC().RandomSuffix {
+	for _, randomSuffix := range instance.RandomSuffix {
 		if _, exists := db.RandomSuffixes[int32(randomSuffix.ID)]; !exists {
 			db.RandomSuffixes[int32(randomSuffix.ID)] = randomSuffix.ToProto()
 		}
 	}
 
 	icons, err := database.LoadSpellIcons(helper)
+	if err != nil {
+		panic("error loading icons")
+	}
+
+	addSpellIcons(db, database.SharedSpellsIcons, icons, iconsMap)
+
+	for _, group := range GetAllTalentSpellIds(&inputsDir) {
+		addSpellIcons(db, group, icons, iconsMap)
+	}
+
+	for _, group := range GetAllRotationSpellIds() {
+		addSpellIcons(db, group, icons, iconsMap)
+	}
+
+	craftedSpellIds := []int32{}
 	for _, item := range db.Items {
 		for _, source := range item.Sources {
 			if crafted := source.GetCrafted(); crafted != nil {
-				iconEntry := icons[int(crafted.SpellId)]
-				icon := &proto.IconData{Id: int32(iconEntry.SpellID), Name: iconEntry.Name, Icon: strings.ToLower(database.GetIconName(iconsMap, iconEntry.FDID)), HasBuff: iconEntry.HasBuff}
-				if iconEntry.SpellID == 0 {
-					continue
-				}
-				db.SpellIcons[crafted.SpellId] = icon
+				craftedSpellIds = append(craftedSpellIds, crafted.SpellId)
 			}
 		}
 
-		// Fetch Journal entry data
-		dropSource := dropSources[int(item.Id)]
-		if dropSource != nil {
-			sources := make([]*proto.UIItemSource, 0, len(dropSource))
-			for _, drop := range dropSource {
-				sources = append(sources, &proto.UIItemSource{
-					Source: &proto.UIItemSource_Drop{
-						Drop: drop,
-					},
-				})
-				db.MergeZone(&proto.UIZone{Id: drop.ZoneId, Name: names[int(drop.ZoneId)]})
-				db.MergeNpc(&proto.UINPC{Id: drop.NpcId, Name: drop.OtherName, ZoneId: drop.ZoneId})
-			}
-			item.Sources = sources
-
-		}
-		// Auto-populate phase information if missing on Wowhead
 		if item.Phase < 2 {
 			item.Phase = InferPhase(item)
 		}
 	}
+	addSpellIcons(db, craftedSpellIds, icons, iconsMap)
 
-	if err != nil {
-		panic("error loading icons")
-	}
-	for _, spellId := range database.SharedSpellsIcons {
-		iconEntry := icons[int(spellId)]
-		if iconEntry.Name == "" {
-			continue
-		}
-		icon := &proto.IconData{Id: int32(iconEntry.SpellID), Name: iconEntry.Name, Icon: strings.ToLower(database.GetIconName(iconsMap, iconEntry.FDID)), HasBuff: iconEntry.HasBuff}
-		if iconEntry.SpellID == 0 {
-			continue
-		}
-		db.SpellIcons[spellId] = icon
-	}
-
-	for _, spellIds := range GetAllTalentSpellIds(&inputsDir) {
-		for _, spellId := range spellIds {
-			iconEntry := icons[int(spellId)]
-			if iconEntry.Name == "" {
-				continue
-			}
-
-			icon := &proto.IconData{Id: int32(iconEntry.SpellID), Name: iconEntry.Name, Icon: strings.ToLower(database.GetIconName(iconsMap, iconEntry.FDID)), HasBuff: iconEntry.HasBuff}
-			if iconEntry.SpellID == 0 {
-				continue
-			}
-			db.SpellIcons[spellId] = icon
-		}
-	}
-
-	for _, spellIds := range GetAllRotationSpellIds() {
-		for _, spellId := range spellIds {
-			iconEntry := icons[int(spellId)]
-			if iconEntry.Name == "" {
-				continue
-			}
-			icon := &proto.IconData{Id: int32(iconEntry.SpellID), Name: iconEntry.Name, Icon: strings.ToLower(database.GetIconName(iconsMap, iconEntry.FDID)), HasBuff: iconEntry.HasBuff}
-			if iconEntry.SpellID == 0 {
-				continue
-			}
-			db.SpellIcons[spellId] = icon
-		}
-	}
-
-	descriptions := make(map[int32]string)
-	for _, enchant := range db.Enchants {
-		var dbcEnch = instance.Enchants[int(enchant.EffectId)]
-		descriptions[enchant.EffectId] = dbcEnch.EffectName
-	}
-	file, err := os.Create("assets/enchants/descriptions.json")
-	if err != nil {
-		log.Fatalf("Failed to create file: %v", err)
-	}
-	defer file.Close()
-
-	encoder := json.NewEncoder(file)
-	encoder.SetIndent("", "  ")
-	if err := encoder.Encode(descriptions); err != nil {
-		log.Fatalf("Failed to encode JSON: %v", err)
-	}
+	database.LoadAndWriteEnchantDescriptions("assets/enchants/descriptions.json", db, instance)
 
 	atlasDBProto := atlaslootDB.ToUIProto()
 	db.MergeZones(atlasDBProto.Zones)
 	db.MergeNpcs(atlasDBProto.Npcs)
-
 	db.WriteBinaryAndJson(fmt.Sprintf("%s/db.bin", dbDir), fmt.Sprintf("%s/db.json", dbDir))
 }
 
@@ -428,7 +350,10 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		if _, ok := database.ItemDenyList[item.Id]; ok {
 			return false
 		}
-		if item.Ilvl > 600 || item.Ilvl < 100 {
+		if len(item.ScalingOptions) <= 0 {
+			return false
+		}
+		if item.ScalingOptions[0].Ilvl > 600 || item.ScalingOptions[0].Ilvl < 100 {
 			return false
 		}
 		for _, pattern := range database.DenyListNameRegexes {
@@ -591,16 +516,16 @@ func simmableItemFilter(_ int32, item *proto.UIItem) bool {
 	} else if item.Quality >= proto.ItemQuality_ItemQualityHeirloom {
 		return false
 	} else if item.Quality <= proto.ItemQuality_ItemQualityEpic {
-		if item.Ilvl < 372 {
+		if item.ScalingOptions[0].Ilvl < 372 {
 			return false
 		}
 	} else {
 		// Epic and legendary items might come from classic, so use a lower ilvl threshold.
-		if item.Ilvl <= 359 {
+		if item.ScalingOptions[0].Ilvl <= 359 {
 			return false
 		}
 	}
-	if item.Ilvl == 0 {
+	if item.ScalingOptions[0].Ilvl == 0 {
 		fmt.Printf("Missing ilvl: %s\n", item.Name)
 	}
 
@@ -959,4 +884,19 @@ func GetAllRotationSpellIds() map[string][]int32 {
 		ret_db[r.Name] = spells
 	}
 	return ret_db
+}
+
+func addSpellIcons(db *database.WowDatabase, spellIds []int32, icons map[int]database.SpellIcon, iconsMap map[int]string) {
+	for _, spellId := range spellIds {
+		iconEntry := icons[int(spellId)]
+		if iconEntry.Name == "" {
+			continue
+		}
+		db.SpellIcons[spellId] = &proto.IconData{
+			Id:      int32(iconEntry.SpellID),
+			Name:    iconEntry.Name,
+			Icon:    strings.ToLower(database.GetIconName(iconsMap, iconEntry.FDID)),
+			HasBuff: iconEntry.HasBuff,
+		}
+	}
 }

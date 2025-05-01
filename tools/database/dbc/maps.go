@@ -292,20 +292,6 @@ var MapPowerTypeEnumToResourceType = map[int32]proto.ResourceType{
 	29: proto.ResourceType_ResourceTypeDeathRune,
 }
 
-var DbcClasses = []DbcClass{
-	{ProtoClass: proto.Class_ClassWarrior, ID: 1},
-	{ProtoClass: proto.Class_ClassPaladin, ID: 2},
-	{ProtoClass: proto.Class_ClassHunter, ID: 3},
-	{ProtoClass: proto.Class_ClassRogue, ID: 4},
-	{ProtoClass: proto.Class_ClassPriest, ID: 5},
-	{ProtoClass: proto.Class_ClassDeathKnight, ID: 6},
-	{ProtoClass: proto.Class_ClassShaman, ID: 7},
-	{ProtoClass: proto.Class_ClassMage, ID: 8},
-	{ProtoClass: proto.Class_ClassWarlock, ID: 9},
-	{ProtoClass: proto.Class_ClassMonk, ID: 10},
-	{ProtoClass: proto.Class_ClassDruid, ID: 11},
-}
-
 func ClassNameFromDBC(dbc DbcClass) string {
 	switch dbc.ID {
 	case 1:
@@ -396,7 +382,13 @@ var RatingModToStat = map[RatingModType]proto.Stat{
 	RATING_MOD_VERS_HEAL:   -1,
 	RATING_MOD_VERS_MITIG:  -1,
 }
-var classes = []DbcClass{
+
+type DbcClass struct {
+	ProtoClass proto.Class
+	ID         int
+}
+
+var Classes = []DbcClass{
 	{proto.Class_ClassWarrior, 1},
 	{proto.Class_ClassPaladin, 2},
 	{proto.Class_ClassHunter, 3},

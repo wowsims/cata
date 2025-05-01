@@ -49,6 +49,7 @@ import {
 	UIItem_FactionRestriction,
 } from './proto/ui';
 import { ActionId } from './proto_utils/action_id';
+import { convertConsumesToSpec } from './proto_utils/consumes';
 import { Database } from './proto_utils/database';
 import { EquippedItem, getWeaponDPS, ReforgeData } from './proto_utils/equipped_item';
 import { Gear, ItemSwapGear } from './proto_utils/gear';
