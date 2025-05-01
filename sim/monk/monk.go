@@ -42,6 +42,8 @@ type Monk struct {
 	ComboBreakerTigerPalmAura    *core.Aura
 
 	ChiSphereAura          *core.Aura
+	DampenHarmAura         *core.Aura
+	FortifyingBrewAura     *core.Aura
 	PowerStrikesAura       *core.Aura
 	PowerStrikesChiMetrics *core.ResourceMetrics
 
@@ -259,6 +261,8 @@ const (
 	MonkSpellKegSmash
 	MonkSpellGuard
 	MonkSpellStagger
+	MonkSpellAvertHarm
+	MonkSpellPurifyingBrew
 
 	MonkSpellLast
 	MonkSpellsAll = MonkSpellLast<<1 - 1

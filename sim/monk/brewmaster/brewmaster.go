@@ -46,9 +46,12 @@ type BrewmasterMonk struct {
 
 	vengeance *core.VengeanceTracker
 
+	RefreshStagger func(sim *core.Simulation, target *core.Unit, damagePerTick float64)
+
 	// Auras
 	PowerGuardAura *core.Aura
 	ShuffleAura    *core.Aura
+	AvertHarmAura  *core.Aura
 
 	DizzyingHazeAuras core.AuraArray
 }
@@ -76,6 +79,8 @@ func (bm *BrewmasterMonk) RegisterSpecializationEffects() {
 	bm.RegisterMastery()
 	bm.registerPassives()
 
+	bm.registerAvertHarm()
+	bm.registerPurifyingBrew()
 	bm.registerKegSmash()
 	bm.registerBreathOfFire()
 	bm.registerGuard()
@@ -83,7 +88,7 @@ func (bm *BrewmasterMonk) RegisterSpecializationEffects() {
 }
 
 func (bm *BrewmasterMonk) RegisterMastery() {
-
+	bm.registerStagger()
 }
 
 func (bm *BrewmasterMonk) GetMasteryBonus() float64 {

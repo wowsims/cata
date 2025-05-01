@@ -11,7 +11,6 @@ func (bm *BrewmasterMonk) registerPassives() {
 	bm.registerBrewmasterTraining()
 	bm.registerElusiveBrew()
 	bm.registerGiftOfTheOx()
-	bm.registerStagger()
 }
 
 func (bm *BrewmasterMonk) registerBrewmasterTraining() {

@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
@@ -654,21 +655,24 @@ func (monk *Monk) registerDampenHarm() {
 
 	actionId := core.ActionID{SpellID: 122278}
 
-	aura := monk.RegisterAura(core.Aura{
+	monk.DampenHarmAura = monk.RegisterAura(core.Aura{
 		Label:     "Dampen Harm" + monk.Label,
 		ActionID:  actionId.WithTag(1),
 		MaxStacks: 3,
 		Duration:  time.Second * 45,
 	})
 
-	monk.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-		if !aura.IsActive() || !result.Landed() || result.Damage < result.Target.MaxHealth()*0.2 {
-			return
-		}
+	// Dampen Harms Damage Reduction for BRM is implemented in stagger.go
+	if monk.Spec != proto.Spec_SpecBrewmasterMonk {
+		monk.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !monk.DampenHarmAura.IsActive() || !result.Landed() || result.Damage < result.Target.MaxHealth()*0.2 {
+				return
+			}
 
-		aura.RemoveStack(sim)
-		result.Damage /= 2
-	})
+			monk.DampenHarmAura.RemoveStack(sim)
+			result.Damage /= 2
+		})
+	}
 
 	spell := monk.RegisterSpell(core.SpellConfig{
 		ActionID:       actionId,
@@ -686,8 +690,8 @@ func (monk *Monk) registerDampenHarm() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			aura.Activate(sim)
-			aura.SetStacks(sim, 3)
+			monk.DampenHarmAura.Activate(sim)
+			monk.DampenHarmAura.SetStacks(sim, 3)
 		},
 	})
 

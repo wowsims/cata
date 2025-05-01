@@ -16,7 +16,7 @@ func (monk *Monk) registerFortifyingBrew() {
 	damageTakenModifier := core.TernaryFloat64(hasGlyphOfFortifyingBrew, 0.75, 0.8)
 
 	var bonusHealth float64
-	fortifyingBrewAura := monk.RegisterAura(core.Aura{
+	monk.FortifyingBrewAura = monk.RegisterAura(core.Aura{
 		Label:    "Fortifying Brew" + monk.Label,
 		ActionID: actionID,
 		Duration: time.Second * 20,
@@ -32,7 +32,7 @@ func (monk *Monk) registerFortifyingBrew() {
 		},
 	})
 
-	monk.RegisterSpell(core.SpellConfig{
+	spell := monk.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 		ClassSpellMask: MonkSpellFortifyingBrew,
@@ -48,7 +48,12 @@ func (monk *Monk) registerFortifyingBrew() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			fortifyingBrewAura.Activate(sim)
+			monk.FortifyingBrewAura.Activate(sim)
 		},
+	})
+
+	monk.AddMajorCooldown(core.MajorCooldown{
+		Spell: spell,
+		Type:  core.CooldownTypeSurvival,
 	})
 }

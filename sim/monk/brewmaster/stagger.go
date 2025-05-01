@@ -32,10 +32,15 @@ func (bm *BrewmasterMonk) registerStagger() {
 			AffectedByCastSpeed: false,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				newHealth := max(0, dot.SnapshotBaseDamage)
-				target.RemoveHealth(sim, newHealth)
+				damage := max(0, dot.SnapshotBaseDamage)
+				target.RemoveHealth(sim, damage)
+
+				if sim.Log != nil && dot.Aura.IsActive() {
+					bm.Log(sim, "[DEBUG] Stagger ticked for %0.0f Damage", damage)
+				}
+
 				dot.Aura.Activate(sim)
-				dot.Aura.SetStacks(sim, int32(newHealth))
+				dot.Aura.SetStacks(sim, int32(damage))
 			},
 		},
 
@@ -44,29 +49,66 @@ func (bm *BrewmasterMonk) registerStagger() {
 		},
 	})
 
-	refreshStagger := func(sim *core.Simulation, target *core.Unit, damagePerTick float64) {
+	bm.RefreshStagger = func(sim *core.Simulation, target *core.Unit, damagePerTick float64) {
 		dot := staggerSpell.SelfHot()
-		dot.SnapshotBaseDamage = damagePerTick
-		staggerSpell.Cast(sim, target)
+		if damagePerTick <= 0 {
+			dot.Deactivate(sim)
+			if sim.Log != nil {
+				bm.Log(sim, "[DEBUG] Stagger reset")
+			}
+		} else {
+			oldDamagePerTick := dot.SnapshotBaseDamage
+			dot.SnapshotBaseDamage = damagePerTick
+			staggerSpell.Cast(sim, target)
+			if sim.Log != nil && dot.Aura.IsActive() {
+				bm.Log(sim, "[DEBUG] Stagger tick refreshed from: %0.0f -> %0.0f", oldDamagePerTick, damagePerTick)
+			}
+		}
+
 	}
 
 	bm.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-		if spell.SpellSchool != core.SpellSchoolPhysical {
+		if !result.Landed() {
 			return
 		}
+
+		avertHarmIsActive := bm.AvertHarmAura.IsActive()
+		// By default Stagger only works with physical abilities
+		// unless Avert Harm is active, then Magic abilities will be staggered as well (without the 20% bonus)
+		if !spell.SpellSchool.Matches(core.SpellSchoolPhysical) && !avertHarmIsActive {
+			return
+		}
+
+		// Avert Harm will only gain 20% Stagger from Melee abilities (non-auto attacks)
+		avertHarmMultiplier := core.TernaryFloat64(avertHarmIsActive && !spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && spell.SpellSchool.Matches(core.SpellSchoolPhysical), 0.2, 0)
+		shuffleMultiplier := core.TernaryFloat64(bm.ShuffleAura.IsActive(), 0.2, 0)
+		fortifyingBrewMultiplier := core.TernaryFloat64(bm.FortifyingBrewAura.IsActive(), 0.2, 0)
+
+		staggerMultiplier := min(1, bm.GetMasteryBonus()) + shuffleMultiplier + fortifyingBrewMultiplier + avertHarmMultiplier
 
 		target := result.Target
 		dot := staggerSpell.SelfHot()
 		outstandingDamage := dot.OutstandingDmg()
-		staggerMultiplier := min(1, bm.GetMasteryBonus()) + core.TernaryFloat64(bm.ShuffleAura.IsActive(), 0.2, 0)
-		newStaggeredDamage := result.Damage * staggerMultiplier
-		result.Damage -= newStaggeredDamage
+		staggeredDamage := result.Damage * staggerMultiplier
+		result.Damage -= staggeredDamage
 
-		totalDamage := outstandingDamage + newStaggeredDamage
+		newOutstandingDamage := outstandingDamage + staggeredDamage
 		newTickCount := dot.BaseTickCount
-		damagePerTick := totalDamage / float64(newTickCount)
+		damagePerTick := newOutstandingDamage / float64(newTickCount)
 
-		refreshStagger(sim, target, damagePerTick)
+		if sim.Log != nil {
+			bm.Log(sim, "[DEBUG] Stagger (%0.2f%%) mitigated %0.0f Damage - New outstanding Damage %0.0f", staggerMultiplier*100, staggeredDamage, newOutstandingDamage)
+		}
+
+		bm.RefreshStagger(sim, target, damagePerTick)
+
+		// Dampen Harm
+		if !bm.DampenHarmAura.IsActive() || !result.Landed() || result.Damage < result.Target.MaxHealth()*0.2 {
+			return
+		}
+
+		bm.DampenHarmAura.RemoveStack(sim)
+		result.Damage /= 2
 	})
 
 }
