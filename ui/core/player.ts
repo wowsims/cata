@@ -18,32 +18,24 @@ import {
 } from './proto/api';
 import { APLRotation, APLRotation_Type as APLRotationType, SimpleRotation } from './proto/apl';
 import {
-	BattleElixir,
 	Class,
-	Conjured,
-	ConsumableType,
 	Consumes,
 	ConsumesSpec,
 	Cooldowns,
 	Faction,
-	Flask,
-	Food,
 	GemColor,
 	Glyphs,
-	GuardianElixir,
 	HandType,
 	HealingModel,
 	IndividualBuffs,
 	ItemRandomSuffix,
 	ItemSlot,
-	Potions,
 	Profession,
 	PseudoStat,
 	Race,
 	ReforgeStat,
 	Spec,
 	Stat,
-	TinkerHands,
 	UnitReference,
 	UnitStats,
 } from './proto/common';
@@ -58,6 +50,7 @@ import {
 	UIItem_FactionRestriction,
 } from './proto/ui';
 import { ActionId } from './proto_utils/action_id';
+import { convertConsumesToSpec } from './proto_utils/consumes';
 import { Database } from './proto_utils/database';
 import { EquippedItem, getWeaponDPS, ReforgeData } from './proto_utils/equipped_item';
 import { Gear, ItemSwapGear } from './proto_utils/gear';
@@ -710,10 +703,12 @@ export class Player<SpecType extends Spec> {
 		// Make a defensive copy
 		return ConsumesSpec.clone(this.consumables);
 	}
+
 	getOldConsumes(): Consumes {
 		// Make a defensive copy
 		return Consumes.clone(this.consumes);
 	}
+
 	setConsumes(eventID: EventID, newConsumes: ConsumesSpec) {
 		if (ConsumesSpec.equals(this.consumables, newConsumes)) return;
 
@@ -1621,89 +1616,11 @@ export class Player<SpecType extends Spec> {
 				4,
 				(oldProto: PlayerProto) => {
 					const db = Database.getSync();
-
 					// Ensure consumables object exists
 					if (!oldProto.consumables) {
 						oldProto.consumables = ConsumesSpec.create();
 					}
-
-					// Migrate all of the old `consumes` → `consumables` logic
-					if (oldProto.consumes) {
-						if (oldProto.consumes.prepopPotion != Potions.UnknownPotion && oldProto.consumables.prepotId === 0) {
-							oldProto.consumables.prepotId =
-								findInputItemForEnum(Potions, oldProto.consumes.prepopPotion, db.getConsumablesByType(ConsumableType.ConsumableTypePotion))
-									?.id ?? 0;
-						}
-						if (oldProto.consumes.defaultPotion != Potions.UnknownPotion && oldProto.consumables.potId === 0) {
-							oldProto.consumables.potId =
-								findInputItemForEnum(Potions, oldProto.consumes.defaultPotion, db.getConsumablesByType(ConsumableType.ConsumableTypePotion))
-									?.id ?? 0;
-						}
-						if (oldProto.consumes.flask != Flask.FlaskUnknown && oldProto.consumables.flaskId === 0) {
-							oldProto.consumables.flaskId =
-								findInputItemForEnum(Flask, oldProto.consumes.flask, db.getConsumablesByType(ConsumableType.ConsumableTypeFlask))?.id ?? 0;
-						}
-						if (oldProto.consumes.food != Food.FoodUnknown && oldProto.consumables.foodId === 0) {
-							oldProto.consumables.foodId =
-								findInputItemForEnum(Food, oldProto.consumes.food, db.getConsumablesByType(ConsumableType.ConsumableTypeFood))?.id ?? 0;
-						}
-						if (oldProto.consumes.guardianElixir && oldProto.consumables.guardianElixirId === 0) {
-							oldProto.consumables.guardianElixirId =
-								findInputItemForEnum(
-									GuardianElixir,
-									oldProto.consumes.guardianElixir,
-									db.getConsumablesByType(ConsumableType.ConsumableTypeGuardianElixir),
-								)?.id ?? 0;
-						}
-						if (oldProto.consumes.battleElixir != BattleElixir.BattleElixirUnknown && oldProto.consumables.battleElixirId === 0) {
-							oldProto.consumables.battleElixirId =
-								findInputItemForEnum(
-									BattleElixir,
-									oldProto.consumes.battleElixir,
-									db.getConsumablesByType(ConsumableType.ConsumableTypeBattleElixir),
-								)?.id ?? 0;
-						}
-						if (oldProto.consumes.highpoweredBoltGun && oldProto.consumables.explosiveId === 0) {
-							oldProto.consumables.explosiveId = 82207;
-						}
-						if (oldProto.consumes.explosiveBigDaddy && oldProto.consumables.explosiveId === 0) {
-							oldProto.consumables.explosiveId = 89637;
-						}
-						if (oldProto.consumes.defaultConjured != Conjured.ConjuredUnknown && oldProto.consumables.conjuredId === 0) {
-							switch (oldProto.consumes.defaultConjured) {
-								case Conjured.ConjuredDarkRune:
-									oldProto.consumables.conjuredId = 20520;
-									break;
-								case Conjured.ConjuredHealthstone:
-									oldProto.consumables.conjuredId = 5512;
-									break;
-								case Conjured.ConjuredRogueThistleTea:
-									oldProto.consumables.conjuredId = 7676;
-									break;
-							}
-						}
-						if (oldProto.consumes.tinkerHands != TinkerHands.TinkerHandsNone && oldProto.consumables.tinkerId === 0) {
-							switch (oldProto.consumes.tinkerHands) {
-								case TinkerHands.TinkerHandsSynapseSprings:
-									oldProto.consumables.tinkerId = 82174;
-									break;
-								case TinkerHands.TinkerHandsTazikShocker:
-									oldProto.consumables.tinkerId = 82180;
-									break;
-								case TinkerHands.TinkerHandsQuickflipDeflectionPlates:
-									oldProto.consumables.tinkerId = 82177;
-									break;
-								case TinkerHands.TinkerHandsSpinalHealingInjector:
-									oldProto.consumables.tinkerId = 82184;
-									break;
-								case TinkerHands.TinkerHandsZ50ManaGulper:
-									oldProto.consumables.tinkerId = 82186;
-									break;
-							}
-						}
-					}
-
-					oldProto.consumes = Consumes.create();
+					oldProto.consumables = convertConsumesToSpec(oldProto.consumes, db, oldProto.consumables);
 					oldProto.apiVersion = 4;
 					return oldProto;
 				},
