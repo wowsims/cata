@@ -9,8 +9,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/tools/database/dbc"
+	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/tools/database/dbc"
 )
 
 // Loading tables
@@ -1229,4 +1229,80 @@ func LoadAndWriteEnchantDescriptions(outputPath string, db *WowDatabase, instanc
 	}
 
 	return nil
+}
+
+func ScanDropRow(rows *sql.Rows) (itemID int, ds *proto.DropSource, instanceName string, err error) {
+	var (
+		mask       int
+		dropSource proto.DropSource
+		jiName     string
+	)
+	err = rows.Scan(
+		&itemID,
+		&mask,
+		&dropSource.NpcId,
+		&dropSource.ZoneId,
+		&dropSource.OtherName,
+		&jiName,
+	)
+	if err != nil {
+		return 0, nil, "", fmt.Errorf("scanning drop row: %w", err)
+	}
+	return itemID, &dropSource, jiName, nil
+}
+
+func LoadAndWriteDropSources(dbHelper *DBHelper, inputsDir string) (
+	sourcesByItem map[int][]*proto.DropSource,
+	namesByZone map[int]string,
+	err error,
+) {
+	const query = `
+		SELECT DISTINCT
+		jei.ItemID,
+		jei.DifficultyMask,
+		je.ID                               AS NpcId,
+		COALESCE(COALESCE(
+			NULLIF(ji.AreaID, 0),
+			at.ID
+		), 0)                                AS ZoneId,
+		je.Name_lang                     AS OtherName,
+		ji.Name_lang
+		FROM JournalEncounterItem AS jei
+		INNER JOIN JournalEncounter AS je
+		ON je.ID = jei.JournalEncounterID
+		INNER JOIN JournalInstance AS ji
+		ON ji.ID = je.JournalInstanceID
+		LEFT JOIN AreaTable AS at
+		ON (
+			at.ZoneName       = ji.Name_lang
+			OR at.AreaName_lang  = ji.Name_lang
+		)
+		GROUP BY jei.ItemID
+    `
+
+	rows, err := dbHelper.db.Query(query)
+	if err != nil {
+		return nil, nil, fmt.Errorf("querying drop sources: %w", err)
+	}
+	defer rows.Close()
+
+	sourcesByItem = make(map[int][]*proto.DropSource)
+	namesByZone = make(map[int]string)
+
+	for rows.Next() {
+		itemID, ds, jiName, scanErr := ScanDropRow(rows)
+		if scanErr != nil {
+			return nil, nil, scanErr
+		}
+		sourcesByItem[itemID] = append(sourcesByItem[itemID], ds)
+		namesByZone[int(ds.ZoneId)] = jiName
+	}
+	if err = rows.Err(); err != nil {
+		return nil, nil, fmt.Errorf("iterating drop rows: %w", err)
+	}
+	json, _ := json.Marshal(sourcesByItem)
+	if err := dbc.WriteGzipFile(fmt.Sprintf("%s/dbc/dropSources.json", inputsDir), json); err != nil {
+		log.Fatalf("Error writing file: %v", err)
+	}
+	return sourcesByItem, namesByZone, nil
 }

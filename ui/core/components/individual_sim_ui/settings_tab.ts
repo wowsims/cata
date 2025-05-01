@@ -282,16 +282,9 @@ export class SettingsTab extends SimTab {
 						party.setBuffs(eventID, newSettings.partyBuffs || PartyBuffs.create());
 					}
 					simUI.player.setBuffs(eventID, newSettings.playerBuffs || IndividualBuffs.create());
-					if (newSettings.consumes) {
-						const migratedConsumes = convertConsumesToSpec(
-							newSettings.consumes,
-							Database.getSync(),
-							newSettings.consumables ?? ConsumesSpec.create(),
-						);
-						simUI.player.setConsumes(eventID, migratedConsumes);
-					} else {
-						simUI.player.setConsumes(eventID, newSettings.consumables || ConsumesSpec.create());
-					}
+
+					simUI.player.setConsumes(eventID, newSettings.consumables || ConsumesSpec.create());
+
 					simUI.player.setRace(eventID, newSettings.race);
 					simUI.player.setProfessions(eventID, newSettings.professions);
 					simUI.player.itemSwapSettings.setItemSwapSettings(

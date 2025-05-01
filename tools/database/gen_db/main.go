@@ -125,14 +125,9 @@ func main() {
 	if err != nil {
 		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
-	dropSources, names, err := database.LoadDropSources(helper)
-	if err == nil {
-		json, _ := json.Marshal(dropSources)
-		if err := dbc.WriteGzipFile(fmt.Sprintf("%s/dbc/dropSources.json", inputsDir), json); err != nil {
-			log.Fatalf("Error writing file: %v", err)
-		}
-	} else {
-		log.Fatalf("Error %v", err)
+	_, _, err = database.LoadAndWriteDropSources(helper, inputsDir)
+	if err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
 
 	//Todo: See if we cant get rid of these as well
