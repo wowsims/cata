@@ -2,13 +2,11 @@ package main
 
 import (
 	"bytes"
-	"compress/gzip"
 	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
 	"os"
-	"path/filepath"
 	"slices"
 	"strings"
 
@@ -20,26 +18,6 @@ import (
 	"github.com/wowsims/mop/tools/database"
 	"github.com/wowsims/mop/tools/database/dbc"
 )
-
-func writeGzipFile(filePath string, data []byte) error {
-	if err := os.MkdirAll(filepath.Dir(filePath), 0755); err != nil {
-		return fmt.Errorf("failed to create directories for %s: %w", filePath, err)
-	}
-	// Create the file
-	f, err := os.Create(filePath)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-
-	// Create a gzip writer on top of the file writer
-	gw := gzip.NewWriter(f)
-	defer gw.Close()
-
-	// Write the data to the gzip writer
-	_, err = gw.Write(data)
-	return err
-}
 
 // To do a full re-scrape, delete the previous output file first.
 // go run ./tools/database/gen_db -outDir=assets -gen=atlasloot
@@ -84,22 +62,15 @@ func main() {
 
 	database.GenerateProtos()
 
-	randomSuffixes, err := database.LoadRawRandomSuffixes(helper)
-	if err == nil {
-		json, _ := json.Marshal(randomSuffixes)
-		if err := writeGzipFile(fmt.Sprintf("%s/dbc/random_suffix.json", inputsDir), json); err != nil {
-			log.Fatalf("Error writing file: %v", err)
-		}
+	_, err = database.LoadAndWriteRawRandomSuffixes(helper, inputsDir)
+	if err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
 
-	items, err := database.LoadRawItems(helper, "s.OverallQualityId != 7 AND s.Field_1_15_7_59706_054 = 0 AND s.OverallQualityId != 0 AND (i.ClassID = 2 OR i.ClassID = 4) AND s.Display_lang != '' AND (s.ID != 34219 AND s.Display_lang NOT LIKE '%Test%' AND s.Display_lang NOT LIKE 'QA%')")
-	if err == nil {
-		json, _ := json.Marshal(items)
-		if err := writeGzipFile(fmt.Sprintf("%s/dbc/items.json", inputsDir), json); err != nil {
-			log.Fatalf("Error writing file: %v", err)
-		}
+	_, err = database.LoadAndWriteRawItems(helper, "s.OverallQualityId != 7 AND s.Field_1_15_7_59706_054 = 0 AND s.OverallQualityId != 0 AND (i.ClassID = 2 OR i.ClassID = 4) AND s.Display_lang != '' AND (s.ID != 34219 AND s.Display_lang NOT LIKE '%Test%' AND s.Display_lang NOT LIKE 'QA%')", inputsDir)
+	if err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
-
 	randPropsByIlvl, err := database.LoadRandomPropAllocations(helper)
 	if err == nil {
 		processed := make(dbc.RandomPropAllocationsByIlvl)
@@ -111,113 +82,63 @@ func main() {
 			}
 		}
 		json, _ := json.Marshal(processed)
-		if err := writeGzipFile(fmt.Sprintf("%s/dbc/rand_prop_points.json", inputsDir), json); err != nil {
+		if err := dbc.WriteGzipFile(fmt.Sprintf("%s/dbc/rand_prop_points.json", inputsDir), json); err != nil {
 			log.Fatalf("Error writing file: %v", err)
 		}
 	}
 
-	gems, err := database.LoadRawGems(helper)
-	if err == nil {
-		json, _ := json.Marshal(gems)
-		if err := writeGzipFile(fmt.Sprintf("%s/dbc/gems.json", inputsDir), json); err != nil {
-			log.Fatalf("Error writing file: %v", err)
-		}
+	_, err = database.LoadAndWriteRawGems(helper, inputsDir)
+	if err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
-
-	enchants, err := database.LoadRawEnchants(helper)
-	if err == nil {
-		json, _ := json.Marshal(enchants)
-		if err := writeGzipFile(fmt.Sprintf("%s/dbc/enchants.json", inputsDir), json); err != nil {
-			log.Fatalf("Error writing file: %v", err)
-		}
+	_, err = database.LoadAndWriteRawEnchants(helper, inputsDir)
+	if err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
-
-	spellEffects, err := database.LoadRawSpellEffects(helper)
-	if err == nil {
-		json, _ := json.Marshal(spellEffects)
-		if err := writeGzipFile(fmt.Sprintf("%s/dbc/spell_effects.json", inputsDir), json); err != nil {
-			log.Fatalf("Error writing file: %v", err)
-		}
+	_, err = database.LoadAndWriteRawSpellEffects(helper, inputsDir)
+	if err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
-
-	itemStatEffects, err := database.LoadItemStatEffects(helper)
-	if err == nil {
-		json, _ := json.Marshal(itemStatEffects)
-		if err := writeGzipFile(fmt.Sprintf("%s/dbc/item_stat_effects.json", inputsDir), json); err != nil {
-			log.Fatalf("Error writing file: %v", err)
-		}
+	_, err = database.LoadAndWriteItemStatEffects(helper, inputsDir)
+	if err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
-
-	itemDamageTables, err := database.LoadItemDamageTables(helper)
-	if err == nil {
-		json, _ := json.Marshal(itemDamageTables)
-		if err := writeGzipFile(fmt.Sprintf("%s/dbc/item_damage_tables.json", inputsDir), json); err != nil {
-			log.Fatalf("Error writing file: %v", err)
-		}
+	_, err = database.LoadAndWriteItemDamageTables(helper, inputsDir)
+	if err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
-
-	itemArmorTotal, err := database.LoadItemArmorTotal(helper)
-	if err == nil {
-		json, _ := json.Marshal(itemArmorTotal)
-		if err := writeGzipFile(fmt.Sprintf("%s/dbc/item_armor_total.json", inputsDir), json); err != nil {
-			log.Fatalf("Error writing file: %v", err)
-		}
+	_, err = database.LoadAndWriteItemArmorTotal(helper, inputsDir)
+	if err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
-
-	itemArmorQuality, err := database.LoadItemArmorQuality(helper)
-	if err == nil {
-		json, _ := json.Marshal(itemArmorQuality)
-		if err := writeGzipFile(fmt.Sprintf("%s/dbc/item_armor_quality.json", inputsDir), json); err != nil {
-			log.Fatalf("Error writing file: %v", err)
-		}
-	} else {
-		fmt.Println("Couldnt load quality")
+	_, err = database.LoadAndWriteItemArmorQuality(helper, inputsDir)
+	if err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
-
-	itemArmorShield, err := database.LoadItemArmorShield(helper)
-	if err == nil {
-		json, _ := json.Marshal(itemArmorShield)
-		if err := writeGzipFile(fmt.Sprintf("%s/dbc/item_armor_shield.json", inputsDir), json); err != nil {
-			log.Fatalf("Error writing file: %v", err)
-		}
+	_, err = database.LoadAndWriteItemArmorShield(helper, inputsDir)
+	if err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
-
-	armorLocation, err := database.LoadArmorLocation(helper)
-	if err == nil {
-		json, _ := json.Marshal(armorLocation)
-		if err := writeGzipFile(fmt.Sprintf("%s/dbc/armor_location.json", inputsDir), json); err != nil {
-			log.Fatalf("Error writing file: %v", err)
-		}
+	_, err = database.LoadAndWriteArmorLocation(helper, inputsDir)
+	if err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
-
-	itemeffects, err := database.LoadItemEffects(helper)
-	if err == nil {
-		json, _ := json.Marshal(itemeffects)
-		if err := writeGzipFile(fmt.Sprintf("%s/dbc/item_effects.json", inputsDir), json); err != nil {
-			log.Fatalf("Error writing file: %v", err)
-		}
+	_, err = database.LoadAndWriteItemEffects(helper, inputsDir)
+	if err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
-
-	consumables, err := database.LoadConsumables(helper)
-	if err == nil {
-		json, _ := json.Marshal(consumables)
-		if err := writeGzipFile(fmt.Sprintf("%s/dbc/consumables.json", inputsDir), json); err != nil {
-			log.Fatalf("Error writing file: %v", err)
-		}
+	_, err = database.LoadAndWriteSpells(helper, inputsDir)
+	if err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
-	spells, err := database.LoadSpells(helper)
-	if err == nil {
-		json, _ := json.Marshal(spells)
-		if err := writeGzipFile(fmt.Sprintf("%s/dbc/spells.json", inputsDir), json); err != nil {
-			log.Fatalf("Error writing file: %v", err)
-		}
-	} else {
-		log.Fatalf("Error %v", err)
+	consumables, err := database.LoadAndWriteConsumables(helper, inputsDir)
+	if err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
 	dropSources, names, err := database.LoadDropSources(helper)
 	if err == nil {
 		json, _ := json.Marshal(dropSources)
-		if err := writeGzipFile(fmt.Sprintf("%s/dbc/dropSources.json", inputsDir), json); err != nil {
+		if err := dbc.WriteGzipFile(fmt.Sprintf("%s/dbc/dropSources.json", inputsDir), json); err != nil {
 			log.Fatalf("Error writing file: %v", err)
 		}
 	} else {
@@ -237,7 +158,7 @@ func main() {
 
 	iconsMap, _ := database.LoadArtTexturePaths("./tools/DB2ToSqlite/listfile.csv")
 	var instance = dbc.GetDBC()
-
+	instance.LoadSpellScaling()
 	for _, item := range instance.Items {
 		parsed := item.ToUIItem()
 		if parsed.Icon == "" {
@@ -617,7 +538,6 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		if slices.Contains(database.ConsumableDenyList, consumable.Id) {
 			return false
 		}
-
 		if allZero(consumable.Stats) && consumable.Type != proto.ConsumableType_ConsumableTypePotion {
 			return false
 		}

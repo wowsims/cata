@@ -20,7 +20,7 @@ func TestFire(t *testing.T) {
 		GearSet:     core.GetGearSet("../../../ui/mage/fire/gear_sets", "p4_fire"),
 		Talents:     FireTalents,
 		Glyphs:      FireGlyphs,
-		Consumables: FullArcaneConsumesSpec,
+		Consumables: FullFireConsumesSpec,
 
 		SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
 		Rotation:    core.GetAplRotation("../../../ui/mage/fire/apls", "fire"),
@@ -56,10 +56,8 @@ var PlayerOptionsFire = &proto.Player_FireMage{
 		},
 	},
 }
-var FullArcaneConsumesSpec = &proto.ConsumesSpec{
-	FlaskId:  58086, // Flask of the Draconic Mind
-	FoodId:   62290, // Seafood Magnifique Feast
-	PotId:    58091, // Volcanic Potion
-	PrepotId: 58091, // Volcanic Potion
-	TinkerId: 82174, // Synapse Springs
+var FullFireConsumesSpec = &proto.ConsumesSpec{
+	FlaskId: 46376, // Flask of the Frost Wyrm
+	FoodId:  34767, // Firecracker Salmon
+	PotId:   40211, // Potion of Speed
 }

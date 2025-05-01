@@ -30,13 +30,21 @@ message ProtoVersion {
 	// The actual field value is only used within unit tests.
 	int32 saved_version_number = 1;
 }
+enum ItemLevelState {
+    Base = 0;
+    ChallengeMode = -1;
+    UpgradeStepOne = 1;
+    UpgradeStepTwo = 2;
+    UpgradeStepThree = 3;
+    UpgradeStepFour = 4;
+}
 message ScalingItemProperties {
     int32 rand_prop_points = 1;
     double weapon_damage_min = 2;
     double weapon_damage_max = 3;
     map<int32, double> stats = 4; // for compactness
-	bool is_base = 5; // Is this the base itemlevel for the item
-	int32 upgrade_step = 6; // If upgrade which upgrade step does this represent, null if not
+	ItemLevelState upgrade_step = 5; // Defines which upgrade state the spec represents
+	int32 item_level = 6;
 }
 enum Spec {
 	SpecUnknown = 0;
@@ -888,7 +896,7 @@ message ItemSpec {
 	int32 enchant = 3;
 	repeated int32 gems = 4;
 	int32 reforging = 5; //reforging id
-	int32 scaled_ilvl = 7; // If this is set it means we select something other than the base item in ScalingOptions
+	ItemLevelState upgrade_step = 7;
 }
 
 

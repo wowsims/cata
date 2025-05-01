@@ -2,7 +2,6 @@
 import cloneDeep from 'lodash/cloneDeep';
 import { v4 as uuidv4 } from 'uuid';
 
-
 export const randomUUID = () => uuidv4();
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -391,6 +390,9 @@ export const normalizeName = (name: string): string => {
 		.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
 		.join('');
 };
+export const formatName = (name: string): string => {
+	return name.replace('Food', '');
+};
 
 export const getEnumKeyFromValue = <T extends Record<string, string | number>>(enumObj: T, value: number): string | undefined => {
 	return (enumObj as any)[value];
@@ -405,5 +407,7 @@ export const findInputItemForEnum = <T extends Record<string, string | number>, 
 	if (!targetEnumKey) {
 		return undefined;
 	}
-	return items.find(item => normalizeName(item.name) === targetEnumKey);
+	return items.find(item => {
+		return normalizeName(item.name) === formatName(targetEnumKey);
+	});
 };

@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"strconv"
 	"strings"
@@ -65,7 +66,7 @@ func ScanRawItemData(rows *sql.Rows) (dbc.Item, error) {
 	return raw, err
 }
 
-func LoadRawItems(dbHelper *DBHelper, filter string) ([]dbc.Item, error) {
+func LoadAndWriteRawItems(dbHelper *DBHelper, filter string, inputsDir string) ([]dbc.Item, error) {
 	baseQuery := `
 		SELECT
 			i.ID,
@@ -118,6 +119,10 @@ func LoadRawItems(dbHelper *DBHelper, filter string) ([]dbc.Item, error) {
 		fmt.Println("Error loading items:", err.Error())
 		return nil, err
 	}
+	json, _ := json.Marshal(items)
+	if err := dbc.WriteGzipFile(fmt.Sprintf("%s/dbc/items.json", inputsDir), json); err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
+	}
 
 	return items, nil
 }
@@ -148,13 +153,16 @@ func ScanItemStatEffects(rows *sql.Rows) (dbc.ItemStatEffect, error) {
 	return raw, err
 }
 
-func LoadItemStatEffects(dbHelper *DBHelper) ([]dbc.ItemStatEffect, error) {
+func LoadAndWriteItemStatEffects(dbHelper *DBHelper, inputsDir string) ([]dbc.ItemStatEffect, error) {
 	query := `SELECT ID, EffectPointsMin, EffectPointsMax, EffectArg FROM SpellItemEnchantment WHERE Effect_0 = 5`
 	items, err := LoadRows(dbHelper.db, query, ScanItemStatEffects)
 	if err != nil {
 		return nil, fmt.Errorf("error in query load items")
 	}
-
+	json, _ := json.Marshal(items)
+	if err := dbc.WriteGzipFile(fmt.Sprintf("%s/dbc/item_stat_effects.json", inputsDir), json); err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
+	}
 	return items, nil
 }
 
@@ -186,7 +194,7 @@ var itemDamageTableNames = []string{
 	"ItemDamageWand",
 }
 
-func LoadItemDamageTables(dbHelper *DBHelper) (map[string]map[int]dbc.ItemDamageTable, error) {
+func LoadAndWriteItemDamageTables(dbHelper *DBHelper, inputsDir string) (map[string]map[int]dbc.ItemDamageTable, error) {
 	for _, tableName := range itemDamageTableNames {
 		query := fmt.Sprintf("SELECT ItemLevel, Quality FROM %s", tableName)
 		items, err := LoadRows(dbHelper.db, query, ScanItemDamageTable)
@@ -199,16 +207,25 @@ func LoadItemDamageTables(dbHelper *DBHelper) (map[string]map[int]dbc.ItemDamage
 			return table.ItemLevel
 		})
 	}
+	json, _ := json.Marshal(ItemDamageByTableAndItemLevel)
+	if err := dbc.WriteGzipFile(fmt.Sprintf("%s/dbc/item_damage_tables.json", inputsDir), json); err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
+	}
 	return ItemDamageByTableAndItemLevel, nil
 }
 
-func LoadItemArmorQuality(dbHelper *DBHelper) (map[int]dbc.ItemArmorQuality, error) {
+func LoadAndWriteItemArmorQuality(dbHelper *DBHelper, inputsDir string) (map[int]dbc.ItemArmorQuality, error) {
 	query := "SELECT ID, Qualitymod FROM ItemArmorQuality"
 	result, err := LoadRows(dbHelper.db, query, ScanItemArmorQualityTable)
 
-	return CacheBy(result, func(table dbc.ItemArmorQuality) int {
+	cache := CacheBy(result, func(table dbc.ItemArmorQuality) int {
 		return table.ItemLevel
-	}), err
+	})
+	json, _ := json.Marshal(cache)
+	if err := dbc.WriteGzipFile(fmt.Sprintf("%s/dbc/item_armor_quality.json", inputsDir), json); err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
+	}
+	return cache, err
 }
 
 func ScanItemArmorQualityTable(rows *sql.Rows) (dbc.ItemArmorQuality, error) {
@@ -227,13 +244,18 @@ func ScanItemArmorQualityTable(rows *sql.Rows) (dbc.ItemArmorQuality, error) {
 	return raw, nil
 }
 
-func LoadItemArmorShield(dbHelper *DBHelper) (map[int]dbc.ItemArmorShield, error) {
+func LoadAndWriteItemArmorShield(dbHelper *DBHelper, inputsDir string) (map[int]dbc.ItemArmorShield, error) {
 	query := "SELECT ItemLevel, Quality FROM ItemArmorShield"
 	result, err := LoadRows(dbHelper.db, query, ScanItemArmorShieldTable)
 
-	return CacheBy(result, func(table dbc.ItemArmorShield) int {
+	cache := CacheBy(result, func(table dbc.ItemArmorShield) int {
 		return table.ItemLevel
-	}), err
+	})
+	json, _ := json.Marshal(cache)
+	if err := dbc.WriteGzipFile(fmt.Sprintf("%s/dbc/item_armor_shield.json", inputsDir), json); err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
+	}
+	return cache, err
 }
 
 func ScanItemArmorShieldTable(rows *sql.Rows) (dbc.ItemArmorShield, error) {
@@ -251,12 +273,18 @@ func ScanItemArmorShieldTable(rows *sql.Rows) (dbc.ItemArmorShield, error) {
 
 	return raw, nil
 }
-func LoadItemArmorTotal(dbHelper *DBHelper) (map[int]dbc.ItemArmorTotal, error) {
+func LoadAndWriteItemArmorTotal(dbHelper *DBHelper, inputsDir string) (map[int]dbc.ItemArmorTotal, error) {
 	query := "SELECT ItemLevel, Cloth, Leather, Mail, Plate FROM ItemArmorTotal"
 	result, err := LoadRows(dbHelper.db, query, ScanItemArmorTotalTable)
-	return CacheBy(result, func(table dbc.ItemArmorTotal) int {
+	cached := CacheBy(result, func(table dbc.ItemArmorTotal) int {
 		return table.ItemLevel
-	}), err
+	})
+	json, _ := json.Marshal(cached)
+	if err := dbc.WriteGzipFile(fmt.Sprintf("%s/dbc/item_armor_total.json", inputsDir), json); err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
+	}
+
+	return cached, err
 }
 
 func ScanItemArmorTotalTable(rows *sql.Rows) (dbc.ItemArmorTotal, error) {
@@ -270,12 +298,17 @@ func ScanItemArmorTotalTable(rows *sql.Rows) (dbc.ItemArmorTotal, error) {
 	return raw, err
 }
 
-func LoadArmorLocation(dbHelper *DBHelper) (map[int]dbc.ArmorLocation, error) {
+func LoadAndWriteArmorLocation(dbHelper *DBHelper, inputsDir string) (map[int]dbc.ArmorLocation, error) {
 	query := "SELECT ID, Clothmodifier, Leathermodifier, Chainmodifier, Platemodifier, Modifier FROM ArmorLocation"
 	result, err := LoadRows(dbHelper.db, query, ScanArmorLocation)
-	return CacheBy(result, func(table dbc.ArmorLocation) int {
+	cache := CacheBy(result, func(table dbc.ArmorLocation) int {
 		return table.Id
-	}), err
+	})
+	json, _ := json.Marshal(cache)
+	if err := dbc.WriteGzipFile(fmt.Sprintf("%s/dbc/armor_location.json", inputsDir), json); err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
+	}
+	return cache, err
 }
 
 func ScanArmorLocation(rows *sql.Rows) (dbc.ArmorLocation, error) {
@@ -314,7 +347,7 @@ func ScanGemTable(rows *sql.Rows) (dbc.Gem, error) {
 	return raw, nil
 }
 
-func LoadRawGems(dbHelper *DBHelper) ([]dbc.Gem, error) {
+func LoadAndWriteRawGems(dbHelper *DBHelper, inputsDir string) ([]dbc.Gem, error) {
 	query := `SELECT
 		s.ID,
 		s.Display_lang as Name,
@@ -339,7 +372,10 @@ func LoadRawGems(dbHelper *DBHelper) ([]dbc.Gem, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error loading items for GemTables: %w", err)
 	}
-
+	json, _ := json.Marshal(items)
+	if err := dbc.WriteGzipFile(fmt.Sprintf("%s/dbc/gems.json", inputsDir), json); err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
+	}
 	return items, nil
 }
 
@@ -383,7 +419,7 @@ func ScanEnchantsTable(rows *sql.Rows) (dbc.Enchant, error) {
 	return raw, nil
 }
 
-func LoadRawEnchants(dbHelper *DBHelper) ([]dbc.Enchant, error) {
+func LoadAndWriteRawEnchants(dbHelper *DBHelper, inputsDir string) ([]dbc.Enchant, error) {
 	query := `SELECT DISTINCT
 		sie.ID as effectId,
 		CASE
@@ -421,7 +457,10 @@ func LoadRawEnchants(dbHelper *DBHelper) ([]dbc.Enchant, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error loading items for GemTables: %w", err)
 	}
-
+	json, _ := json.Marshal(items)
+	if err := dbc.WriteGzipFile(fmt.Sprintf("%s/dbc/enchants.json", inputsDir), json); err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
+	}
 	return items, nil
 }
 
@@ -533,7 +572,7 @@ func ScanSpellEffect(rows *sql.Rows) (dbc.SpellEffect, error) {
 	return raw, nil
 }
 
-func LoadRawSpellEffects(dbHelper *DBHelper) (map[int]map[int]dbc.SpellEffect, error) {
+func LoadAndWriteRawSpellEffects(dbHelper *DBHelper, inputsDir string) (map[int]map[int]dbc.SpellEffect, error) {
 	query := `
 	SELECT
 		se.ID,
@@ -584,6 +623,10 @@ func LoadRawSpellEffects(dbHelper *DBHelper) (map[int]map[int]dbc.SpellEffect, e
 		RawSpellEffectBySpellIdAndIndex[spellID] = CacheBy(effects, func(e dbc.SpellEffect) int {
 			return e.EffectIndex
 		})
+	}
+	json, _ := json.Marshal(RawSpellEffectBySpellIdAndIndex)
+	if err := dbc.WriteGzipFile(fmt.Sprintf("%s/dbc/spell_effects.json", inputsDir), json); err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
 	}
 	return RawSpellEffectBySpellIdAndIndex, nil
 }
@@ -650,7 +693,7 @@ func ScanRawRandomSuffix(rows *sql.Rows) (dbc.RandomSuffix, error) {
 var RawRandomSuffixes []dbc.RandomSuffix
 var RawRandomSuffixesById map[int]dbc.RandomSuffix
 
-func LoadRawRandomSuffixes(dbHelper *DBHelper) ([]dbc.RandomSuffix, error) {
+func LoadAndWriteRawRandomSuffixes(dbHelper *DBHelper, inputsDir string) ([]dbc.RandomSuffix, error) {
 	query := `
 	SELECT
 		COALESCE(-irs.ID, 0) AS ID,
@@ -687,6 +730,10 @@ func LoadRawRandomSuffixes(dbHelper *DBHelper) ([]dbc.RandomSuffix, error) {
 	RawRandomSuffixesById = CacheBy(items, func(suffix dbc.RandomSuffix) int {
 		return suffix.ID
 	})
+	json, _ := json.Marshal(items)
+	if err := dbc.WriteGzipFile(fmt.Sprintf("%s/dbc/random_suffix.json", inputsDir), json); err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
+	}
 	return items, nil
 }
 
@@ -733,7 +780,7 @@ func ScanConsumable(rows *sql.Rows) (dbc.Consumable, error) {
 	return consumable, nil
 }
 
-func LoadConsumables(dbHelper *DBHelper) ([]dbc.Consumable, error) {
+func LoadAndWriteConsumables(dbHelper *DBHelper, inputsDir string) ([]dbc.Consumable, error) {
 	query := `
 		SELECT
 				i.ID,
@@ -763,7 +810,7 @@ func LoadConsumables(dbHelper *DBHelper) ([]dbc.Consumable, error) {
 			LEFT JOIN Spell sp ON ie.SpellID = sp.ID
 			LEFT JOIN SpellMisc sm ON ie.SpellId = sm.SpellID
 			LEFT JOIN SpellDuration sd ON sm.DurationIndex = sd.ID
-			WHERE ((i.ClassID = 0 AND i.SubclassID IS NOT 0 AND i.SubclassID IS NOT 8 AND i.SubclassID IS NOT 6) OR (i.ClassID = 7 AND i.SubclassID = 2)) AND ItemEffects is not null AND (s.RequiredLevel >= 80 OR i.ID = 22788 OR i.ID = 13442)
+			WHERE ((i.ClassID = 0 AND i.SubclassID IS NOT 0 AND i.SubclassID IS NOT 8 AND i.SubclassID IS NOT 6) OR (i.ClassID = 7 AND i.SubclassID = 2)) AND ItemEffects is not null AND (s.RequiredLevel >= 70 OR i.ID = 22788 OR i.ID = 13442)
 			AND s.Display_lang != ''
 			AND s.Display_lang NOT LIKE '%Test%'
 			AND s.Display_lang NOT LIKE 'QA%'
@@ -776,6 +823,10 @@ func LoadConsumables(dbHelper *DBHelper) ([]dbc.Consumable, error) {
 	}
 
 	fmt.Println("Loaded Consumables:", len(consumables))
+	json, _ := json.Marshal(consumables)
+	if err := dbc.WriteGzipFile(fmt.Sprintf("%s/dbc/consumables.json", inputsDir), json); err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
+	}
 	return consumables, nil
 }
 
@@ -801,7 +852,7 @@ func ScanItemEffect(rows *sql.Rows) (dbc.ItemEffect, error) {
 	return effect, nil
 }
 
-func LoadItemEffects(dbHelper *DBHelper) ([]dbc.ItemEffect, error) {
+func LoadAndWriteItemEffects(dbHelper *DBHelper, inputsDir string) ([]dbc.ItemEffect, error) {
 	query := `
 	SELECT
 		ID,
@@ -823,6 +874,10 @@ func LoadItemEffects(dbHelper *DBHelper) ([]dbc.ItemEffect, error) {
 	}
 
 	fmt.Println("Loaded ItemEffects:", len(effects))
+	json, _ := json.Marshal(effects)
+	if err := dbc.WriteGzipFile(fmt.Sprintf("%s/dbc/item_effects.json", inputsDir), json); err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
+	}
 	return effects, nil
 }
 
@@ -1065,7 +1120,7 @@ func ScanSpells(rows *sql.Rows) (dbc.Spell, error) {
 	return spell, nil
 }
 
-func LoadSpells(dbHelper *DBHelper) ([]dbc.Spell, error) {
+func LoadAndWriteSpells(dbHelper *DBHelper, inputsDir string) ([]dbc.Spell, error) {
 	query := `
 		SELECT DISTINCT
 		sn.Name_lang,
@@ -1132,6 +1187,10 @@ func LoadSpells(dbHelper *DBHelper) ([]dbc.Spell, error) {
 	}
 
 	fmt.Println("Loaded spells:", len(spells))
+	json, _ := json.Marshal(spells)
+	if err := dbc.WriteGzipFile(fmt.Sprintf("%s/dbc/spells.json", inputsDir), json); err != nil {
+		panic(fmt.Sprintf("Error loading DBC data %v", err))
+	}
 	return spells, nil
 }
 

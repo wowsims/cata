@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, ConsumesSpec, Flask, Food, Glyphs, Potions, Profession, Stat, TinkerHands } from '../../core/proto/common.js';
+import { ConsumesSpec, Glyphs, Profession, Stat } from '../../core/proto/common.js';
 import {
 	AirTotem,
 	CallTotem,

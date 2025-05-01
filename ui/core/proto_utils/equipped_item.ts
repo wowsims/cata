@@ -65,9 +65,6 @@ export class EquippedItem {
 	get randomSuffix(): ItemRandomSuffix | null {
 		return this._randomSuffix ? ItemRandomSuffix.clone(this._randomSuffix) : null;
 	}
-	get randPropPoints(): number {
-		return this._item.randPropPoints;
-	}
 	get enchant(): Enchant | null {
 		// Make a defensive copy
 		return this._enchant ? Enchant.clone(this._enchant) : null;
@@ -233,7 +230,7 @@ export class EquippedItem {
 		const item = this.item;
 		if (this._randomSuffix)
 			item.stats = item.stats.map((stat, index) =>
-				this._randomSuffix!.stats[index] > 0 ? Math.floor((this._randomSuffix!.stats[index] * this.randPropPoints) / 10000) : stat,
+				this._randomSuffix!.stats[index] > 0 ? Math.floor((this._randomSuffix!.stats[index] * item.randPropPoints) / 10000) : stat,
 			);
 
 		return new EquippedItem(item, this._enchant, this._gems, this._randomSuffix, this._reforge);

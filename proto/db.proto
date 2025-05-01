@@ -27,7 +27,6 @@ message SimItem {
 	WeaponType weapon_type = 5;
 	HandType hand_type = 6;
 	RangedWeaponType ranged_weapon_type = 7;
-
 	repeated GemColor gem_sockets = 8;
 	repeated double socketBonus = 9;
 
@@ -36,7 +35,7 @@ message SimItem {
 	string set_name = 11;
 	int32 set_id = 12;
 
-	map<int32, ScalingItemProperties> scaling_options = 13; // keys are the other ilvl variants that this item could potentially have
+	map<int32, ScalingItemProperties> scaling_options = 13; // keys are the all ilvl variants that this item could potentially have
 }
 
 message Consumable {
