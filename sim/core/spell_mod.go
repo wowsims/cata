@@ -26,6 +26,7 @@ type SpellModConfig struct {
 	KeyValue     string
 	ApplyCustom  SpellModApply
 	RemoveCustom SpellModRemove
+	OnReset      SpellModOnReset
 }
 
 type SpellMod struct {
@@ -42,13 +43,17 @@ type SpellMod struct {
 	Remove         SpellModRemove
 	IsActive       bool
 	AffectedSpells []*Spell
+	OnReset        SpellModOnReset
 }
 
 type SpellModApply func(mod *SpellMod, spell *Spell)
 type SpellModRemove func(mod *SpellMod, spell *Spell)
+type SpellModOnReset func(mod *SpellMod)
+
 type SpellModFunctions struct {
-	Apply  SpellModApply
-	Remove SpellModRemove
+	Apply   SpellModApply
+	Remove  SpellModRemove
+	OnReset SpellModOnReset
 }
 
 func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
@@ -59,6 +64,7 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 
 	var applyFn SpellModApply
 	var removeFn SpellModRemove
+	var resetFn SpellModOnReset
 
 	if config.Kind == SpellMod_Custom {
 		if (config.ApplyCustom == nil) || (config.RemoveCustom == nil) {
@@ -67,9 +73,16 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 
 		applyFn = config.ApplyCustom
 		removeFn = config.RemoveCustom
+
+		if config.OnReset != nil {
+			resetFn = config.OnReset
+		} else {
+			resetFn = functions.OnReset
+		}
 	} else {
 		applyFn = functions.Apply
 		removeFn = functions.Remove
+		resetFn = functions.OnReset
 	}
 
 	if (config.ResourceType > 0) && !slices.Contains([]proto.ResourceType{proto.ResourceType_ResourceTypeMana, proto.ResourceType_ResourceTypeEnergy, proto.ResourceType_ResourceTypeRage, proto.ResourceType_ResourceTypeFocus}, config.ResourceType) {
@@ -89,6 +102,7 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 		Apply:        applyFn,
 		Remove:       removeFn,
 		IsActive:     false,
+		OnReset:      resetFn,
 	}
 
 	unit.OnSpellRegistered(func(spell *Spell) {
@@ -101,15 +115,11 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 		}
 	})
 
-	unit.RegisterResetEffect(func(s *Simulation) {
-		for _, spell := range unit.Spellbook {
-			spell.DamageMultiplierAdditive = math.Round(spell.DamageMultiplierAdditive*10000) / 10000
-
-			// Possibly add other spell mod variables here to safely round them
-			// Spell values are not reset on Iteration Reset so small floating point errors by multiplying / adding to a field
-			// Will carry over through iterations
-		}
-	})
+	if mod.OnReset != nil {
+		unit.RegisterResetEffect(func(s *Simulation) {
+			mod.OnReset(mod)
+		})
+	}
 
 	return mod
 }
@@ -324,8 +334,9 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 	},
 
 	SpellMod_DamageDone_Flat: {
-		Apply:  applyDamageDoneAdd,
-		Remove: removeDamageDoneAdd,
+		Apply:   applyDamageDoneAdd,
+		Remove:  removeDamageDoneAdd,
+		OnReset: onResetDamageDoneAdd,
 	},
 
 	SpellMod_PowerCost_Pct: {
@@ -441,6 +452,14 @@ func applyDamageDoneAdd(mod *SpellMod, spell *Spell) {
 
 func removeDamageDoneAdd(mod *SpellMod, spell *Spell) {
 	spell.DamageMultiplierAdditive -= mod.floatValue
+}
+
+// Required to round floating point errors that might leak between iterations
+// Edge case if many addtions / substractions with different float numbers are done in random order
+func onResetDamageDoneAdd(mod *SpellMod) {
+	for _, spell := range mod.AffectedSpells {
+		spell.DamageMultiplierAdditive = math.Round(spell.DamageMultiplierAdditive*10000) / 10000
+	}
 }
 
 func applyPowerCostPercent(mod *SpellMod, spell *Spell) {
