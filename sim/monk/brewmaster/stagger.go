@@ -75,12 +75,6 @@ func (bm *BrewmasterMonk) registerStagger() {
 			return
 		}
 
-		// Dampen Harm
-		if bm.DampenHarmAura.IsActive() && result.Damage > result.Target.MaxHealth()*0.2 {
-			bm.DampenHarmAura.RemoveStack(sim)
-			result.Damage /= 2
-		}
-
 		avertHarmIsActive := bm.AvertHarmAura.IsActive()
 		// By default Stagger only works with physical abilities
 		// unless Avert Harm is active, then Magic abilities will be staggered as well (without the 20% bonus)
@@ -111,6 +105,13 @@ func (bm *BrewmasterMonk) registerStagger() {
 		}
 
 		bm.RefreshStagger(sim, target, damagePerTick)
+
+		// Dampen Harm
+		// This is applied after other DR and Stagger
+		if bm.DampenHarmAura.IsActive() && result.Damage > result.Target.MaxHealth()*0.2 {
+			bm.DampenHarmAura.RemoveStack(sim)
+			result.Damage /= 2
+		}
 	})
 
 }

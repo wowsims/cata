@@ -20,12 +20,13 @@ Increases the amount your Guard absorbs by 10%, but your Guard can only absorb m
 -- Glyph of Guard --
 */
 func (bm *BrewmasterMonk) registerGuard() {
-	actionID := core.ActionID{SpellID: 115295}
+	hasGlyph := bm.HasMajorGlyph(proto.MonkMajorGlyph_GlyphOfGuard)
+	spellId := core.TernaryInt32(hasGlyph, 123402, 115295)
+	actionID := core.ActionID{SpellID: spellId}
 	chiMetrics := bm.NewChiMetrics(actionID)
-
 	spellSchool := core.SpellSchoolPhysical | core.SpellSchoolArcane | core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolHoly | core.SpellSchoolNature | core.SpellSchoolShadow
 
-	if bm.HasMajorGlyph(proto.MonkMajorGlyph_GlyphOfGuard) {
+	if hasGlyph {
 		spellSchool ^= core.SpellSchoolPhysical
 	}
 
@@ -35,7 +36,7 @@ func (bm *BrewmasterMonk) registerGuard() {
 		30*time.Second,
 		spellSchool,
 		func(_ *core.Unit) float64 {
-			return (bm.GetStat(stats.AttackPower)*1.971 + bm.CalcScalingSpellDmg(13)) * core.TernaryFloat64(bm.PowerGuardAura.IsActive(), 1.15, 1)
+			return (bm.GetStat(stats.AttackPower)*1.971 + bm.CalcScalingSpellDmg(13)) * core.TernaryFloat64(hasGlyph, 1.1, 1) * core.TernaryFloat64(bm.PowerGuardAura.IsActive(), 1.15, 1)
 		},
 	)
 

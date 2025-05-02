@@ -34,6 +34,8 @@ type Monk struct {
 	StanceOfTheWiseSerpent *core.Spell
 	StanceOfTheFierceTiger *core.Spell
 
+	HealingSphereSummon *core.Spell
+
 	StanceOfTheFierceTigerAura *core.Aura
 	StanceOfTheSturdyOxAura    *core.Aura
 	StanceOfTheWiseSerpentAura *core.Aura

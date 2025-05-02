@@ -144,11 +144,14 @@ func (bm *BrewmasterMonk) registerGiftOfTheOx() {
 	giftOfTheOxPassiveActionID := core.ActionID{SpellID: 124502}
 	giftOfTheOxHealActionID := core.ActionID{SpellID: 124507}
 
+	hasGlyph := bm.HasMajorGlyph(proto.MonkMajorGlyph_GlyphOfEnduringHealingSphere)
+	sphereDuration := time.Minute*1 + core.TernaryDuration(hasGlyph, time.Minute*3, 0)
+
 	giftOfTheOxStackingAura := bm.RegisterAura(core.Aura{
 		Label:     "Gift Of The Ox" + bm.Label,
 		ActionID:  giftOfTheOxPassiveActionID,
-		Duration:  time.Minute * 1,
-		MaxStacks: 15,
+		Duration:  sphereDuration,
+		MaxStacks: math.MaxInt32,
 	})
 
 	bm.RegisterSpell(core.SpellConfig{
@@ -161,7 +164,7 @@ func (bm *BrewmasterMonk) registerGiftOfTheOx() {
 		DamageMultiplier: 1,
 		CritMultiplier:   1,
 
-		BonusCoefficient: 0.5025,
+		BonusCoefficient: 0.2508,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

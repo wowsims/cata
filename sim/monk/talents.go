@@ -447,10 +447,13 @@ func (monk *Monk) registerPowerStrikes() {
 	chiSphereSpellActionID := core.ActionID{SpellID: 121283}
 	chiSphereChiMetrics := monk.NewChiMetrics(chiSphereSpellActionID)
 
+	hasGlyph := monk.HasMajorGlyph(proto.MonkMajorGlyph_GlyphOfEnduringHealingSphere)
+	chiSphereduration := time.Minute*2 + core.TernaryDuration(hasGlyph, time.Minute*3, 0)
+
 	monk.ChiSphereAura = monk.RegisterAura(core.Aura{
 		Label:     "Chi Sphere" + monk.Label,
 		ActionID:  core.ActionID{SpellID: 121286},
-		Duration:  time.Minute * 2,
+		Duration:  time.Minute * chiSphereduration,
 		MaxStacks: 10,
 	})
 

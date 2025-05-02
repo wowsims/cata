@@ -5,11 +5,15 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func (monk *Monk) registerHealingSphere() {
+	hasGlyph := monk.HasMajorGlyph(proto.MonkMajorGlyph_GlyphOfEnduringHealingSphere)
 	healingSphereActionID := core.ActionID{SpellID: 115460}
 	healingSphereHealActionID := core.ActionID{SpellID: 115464}
+
+	duration := time.Minute*1 + core.TernaryDuration(hasGlyph, time.Minute*3, 0)
 
 	stacksAura := monk.RegisterAura(core.Aura{
 		Label:     "Healing Sphere Stacks" + monk.Label,
@@ -24,13 +28,15 @@ func (monk *Monk) registerHealingSphere() {
 		healingSpheres[i] = monk.RegisterAura(core.Aura{
 			Label:    fmt.Sprintf("Healing Sphere #%v %v", i, monk.Label),
 			ActionID: healingSphereActionID,
-			Duration: time.Minute * 1,
+			Duration: duration,
 		})
 	}
 
 	addHealingSphere := func(sim *core.Simulation) {
 		for _, healingSphere := range healingSpheres {
 			if !healingSphere.IsActive() {
+				stacksAura.Activate(sim)
+				stacksAura.AddStack(sim)
 				healingSphere.Activate(sim)
 				break
 			}
@@ -56,7 +62,7 @@ func (monk *Monk) registerHealingSphere() {
 
 		DamageMultiplier: 1,
 
-		BonusCoefficient: 0.5025,
+		BonusCoefficient: 0.75,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -76,7 +82,7 @@ func (monk *Monk) registerHealingSphere() {
 	})
 
 	// Healing Sphere - Use
-	monk.RegisterSpell(core.SpellConfig{
+	monk.HealingSphereSummon = monk.RegisterSpell(core.SpellConfig{
 		ActionID:       healingSphereActionID,
 		ClassSpellMask: MonkSpellHealingSphere,
 		SpellSchool:    core.SpellSchoolNature,
@@ -109,17 +115,7 @@ func (monk *Monk) registerHealingSphere() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			stacksAura.Activate(sim)
-			stacksAura.AddStack(sim)
-
-			// Delay the Healing Sphere so it can't be used immediately
-			startAt := sim.RandomFloat("Healing Sphere Drop") * 200.0
-			sim.AddPendingAction(&core.PendingAction{
-				NextActionAt: time.Millisecond * time.Duration(startAt),
-				OnAction: func(sim *core.Simulation) {
-					addHealingSphere(sim)
-				},
-			})
+			addHealingSphere(sim)
 		},
 	})
 }
