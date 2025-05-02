@@ -13,8 +13,6 @@ const (
 	SpellFlagOmenTrigger  = core.SpellFlagAgentReserved2
 )
 
-var TalentTreeSizes = [3]int{20, 22, 21}
-
 type Druid struct {
 	core.Character
 	SelfBuffs
@@ -223,7 +221,7 @@ func (druid *Druid) GetCharacter() *core.Character {
 // }
 
 func (druid *Druid) BalanceCritMultiplier() float64 {
-	return druid.SpellCritMultiplier(1, 0)
+	return druid.CritMultiplier(1, 0)
 }
 
 func (druid *Druid) HasMajorGlyph(glyph proto.DruidMajorGlyph) bool {
@@ -379,7 +377,7 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 		EclipseEnergyMap:  make(EclipseEnergyMap),
 	}
 
-	core.FillTalentsProto(druid.Talents.ProtoReflect(), talents, TalentTreeSizes)
+	core.FillTalentsProto(druid.Talents.ProtoReflect(), talents)
 	druid.EnableManaBar()
 
 	druid.AddStatDependency(stats.Strength, stats.AttackPower, 1)

@@ -317,7 +317,7 @@ func (priest *Priest) applyArchangel() {
 		ClassSpellMask:           PriestSpellArchangel,
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
+		CritMultiplier:           priest.DefaultCritMultiplier(),
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 0,
 		},
@@ -346,7 +346,7 @@ func (priest *Priest) applyArchangel() {
 		ClassSpellMask:           PriestSpellDarkArchangel,
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
+		CritMultiplier:           priest.DefaultCritMultiplier(),
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 0,
 		},
@@ -391,7 +391,7 @@ func (priest *Priest) applyImprovedMindBlast() {
 		ClassSpellMask:           PriestSpellMindTrauma,
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
+		CritMultiplier:           priest.DefaultCritMultiplier(),
 		Flags:                    core.SpellFlagNoMetrics,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			mindTraumaAura.Get(target).Activate(sim)
@@ -442,7 +442,7 @@ func (priest *Priest) applyImprovedDevouringPlague() {
 		ThreatMultiplier:         1,
 		ClassSpellMask:           PriestSpellImprovedDevouringPlague,
 		Flags:                    core.SpellFlagPassiveSpell,
-		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
+		CritMultiplier:           priest.DefaultCritMultiplier(),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			dot := priest.DevouringPlague.Dot(target)
 			dpTickDamage := dot.SnapshotBaseDamage
@@ -635,7 +635,7 @@ func (priest *Priest) applyShadowyApparition() {
 		Flags:                    core.SpellFlagPassiveSpell,
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
+		CritMultiplier:           priest.DefaultCritMultiplier(),
 		SpellSchool:              core.SpellSchoolShadow,
 
 		BonusCoefficient: spellScaling,

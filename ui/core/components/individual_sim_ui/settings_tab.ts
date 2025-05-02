@@ -1,7 +1,7 @@
 import * as Tooltips from '../../constants/tooltips.js';
 import { Encounter } from '../../encounter';
 import { IndividualSimUI, InputSection } from '../../individual_sim_ui';
-import { Consumes, Debuffs, HealingModel, IndividualBuffs, ItemSwap, PartyBuffs, Profession, RaidBuffs } from '../../proto/common';
+import { ConsumesSpec, Debuffs, HealingModel, IndividualBuffs, ItemSwap, PartyBuffs, Profession, RaidBuffs } from '../../proto/common';
 import { SavedEncounter, SavedSettings } from '../../proto/ui';
 import { professionNames, raceNames } from '../../proto_utils/names';
 import { Stats } from '../../proto_utils/stats';
@@ -20,7 +20,7 @@ import { MultiIconPicker } from '../pickers/multi_icon_picker.js';
 import { NumberPicker } from '../pickers/number_picker.js';
 import { SavedDataManager } from '../saved_data_manager';
 import { SimTab } from '../sim_tab';
-import { ConsumesPicker } from './consumes_picker';
+import { ConsumesPicker } from './consumes_picker.jsx';
 import { PresetConfigurationPicker } from './preset_configuration_picker.jsx';
 
 export class SettingsTab extends SimTab {
@@ -56,8 +56,9 @@ export class SettingsTab extends SimTab {
 
 		this.contentContainer.appendChild(this.leftPanel);
 		this.contentContainer.appendChild(this.rightPanel);
-
-		this.buildTabContent();
+		this.simUI.sim.waitForInit().then(() => {
+			this.buildTabContent();
+		});
 	}
 
 	protected buildTabContent() {
@@ -169,8 +170,7 @@ export class SettingsTab extends SimTab {
 		const contentBlock = new ContentBlock(column, 'consumes-settings', {
 			header: { title: 'Consumables' },
 		});
-
-		new ConsumesPicker(contentBlock.bodyElement, this, this.simUI);
+		ConsumesPicker.create(contentBlock.bodyElement, this, this.simUI);
 	}
 
 	private buildOtherSettings() {
@@ -280,7 +280,9 @@ export class SettingsTab extends SimTab {
 						party.setBuffs(eventID, newSettings.partyBuffs || PartyBuffs.create());
 					}
 					simUI.player.setBuffs(eventID, newSettings.playerBuffs || IndividualBuffs.create());
-					simUI.player.setConsumes(eventID, newSettings.consumes || Consumes.create());
+
+					simUI.player.setConsumes(eventID, newSettings.consumables || ConsumesSpec.create());
+
 					simUI.player.setRace(eventID, newSettings.race);
 					simUI.player.setProfessions(eventID, newSettings.professions);
 					simUI.player.itemSwapSettings.setItemSwapSettings(
@@ -341,7 +343,7 @@ export class SettingsTab extends SimTab {
 			partyBuffs: this.simUI.player.getParty()?.getBuffs() || PartyBuffs.create(),
 			playerBuffs: this.simUI.player.getBuffs(),
 			debuffs: this.simUI.sim.raid.getDebuffs(),
-			consumes: this.simUI.player.getConsumes(),
+			consumables: this.simUI.player.getConsumes(),
 			race: this.simUI.player.getRace(),
 			professions: this.simUI.player.getProfessions(),
 			enableItemSwap: this.simUI.player.itemSwapSettings.getEnableItemSwap(),

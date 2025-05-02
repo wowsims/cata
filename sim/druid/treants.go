@@ -60,7 +60,7 @@ func (druid *Druid) NewTreant() *Treant {
 			BaseDamageMin:  252,
 			BaseDamageMax:  357,
 			SwingSpeed:     1.9,
-			CritMultiplier: druid.BalanceCritMultiplier(),
+			CritMultiplier: druid.DefaultCritMultiplier(),
 		},
 		AutoSwingMelee: true,
 	})

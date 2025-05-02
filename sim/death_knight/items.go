@@ -178,7 +178,7 @@ var ItemSetElementiumDeathplateBattlearmor = core.NewItemSet(core.ItemSet{
 				Flags:            core.SpellFlagAPL | core.SpellFlagPassiveSpell,
 				ProcMask:         core.ProcMaskEmpty,
 				DamageMultiplier: 1,
-				CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
+				CritMultiplier:   dk.DefaultCritMultiplier(),
 				ThreatMultiplier: 1,
 
 				Dot: core.DotConfig{

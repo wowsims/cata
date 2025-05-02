@@ -82,7 +82,7 @@ func (priest *Priest) registerPrayerOfMendingSpell() {
 			(1 + .02*float64(priest.Talents.DivineProvidence)) *
 			(1 + .01*float64(priest.Talents.TwinDisciplines)) *
 			core.TernaryFloat64(priest.CouldHaveSetBonus(ItemSetZabrasRaiment, 2), 1.2, 1),
-		CritMultiplier:   priest.DefaultHealingCritMultiplier(),
+		CritMultiplier:   priest.DefaultCritMultiplier(),
 		ThreatMultiplier: 1 - []float64{0, .07, .14, .20}[priest.Talents.SilentResolve],
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

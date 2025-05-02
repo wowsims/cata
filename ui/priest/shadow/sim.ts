@@ -57,7 +57,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 17);
 		})(),
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
+		consumables: Presets.DefaultConsumables,
 		// Default talents.
 		talents: Presets.StandardTalents.data,
 		// Default spec-specific settings.
@@ -125,7 +125,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 			spec: Spec.SpecShadowPriest,
 			talents: Presets.StandardTalents.data,
 			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
+			consumables: Presets.DefaultConsumables,
 			otherDefaults: Presets.OtherDefaults,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,

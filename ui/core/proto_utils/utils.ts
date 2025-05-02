@@ -3,7 +3,7 @@ import { PlayerClass } from '../player_class.js';
 import { PlayerClasses } from '../player_classes';
 import { PlayerSpec } from '../player_spec.js';
 import { PlayerSpecs } from '../player_specs';
-import { Player, ResourceType } from '../proto/api.js';
+import { Player } from '../proto/api.js';
 import {
 	Class,
 	EnchantType,
@@ -73,7 +73,18 @@ import {
 	MageOptions,
 	MageTalents,
 } from '../proto/mage.js';
-import { BrewmasterMonk, BrewmasterMonk_Options, BrewmasterMonk_Rotation, MistweaverMonk, MistweaverMonk_Options, MistweaverMonk_Rotation, MonkTalents, WindwalkerMonk, WindwalkerMonk_Options, WindwalkerMonk_Rotation } from '../proto/monk.js';
+import {
+	BrewmasterMonk,
+	BrewmasterMonk_Options,
+	BrewmasterMonk_Rotation,
+	MistweaverMonk,
+	MistweaverMonk_Options,
+	MistweaverMonk_Rotation,
+	MonkTalents,
+	WindwalkerMonk,
+	WindwalkerMonk_Options,
+	WindwalkerMonk_Rotation,
+} from '../proto/monk.js';
 import {
 	Blessings,
 	HolyPaladin,
@@ -127,6 +138,7 @@ import {
 	ShamanOptions,
 	ShamanTalents,
 } from '../proto/shaman.js';
+import { ResourceType } from '../proto/spell';
 import { BlessingsAssignment, BlessingsAssignments, UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../proto/ui.js';
 import {
 	AfflictionWarlock,
@@ -154,7 +166,7 @@ import {
 	WarriorOptions,
 	WarriorTalents,
 } from '../proto/warrior.js';
-import { getEnumValues, intersection, maxIndex, sum } from '../utils.js';
+import { getEnumValues, intersection } from '../utils.js';
 import { Stats } from './stats.js';
 
 export const NUM_SPECS = getEnumValues(Spec).length;
@@ -162,23 +174,14 @@ export const NUM_SPECS = getEnumValues(Spec).length;
 export const raidSimIcon = '/mop/assets/img/raid_icon.png';
 export const raidSimLabel = 'Full Raid Sim';
 
-// Converts '1231321-12313123-0' to [40, 21, 0].
+// Converts '111111' to [1, 1, 1, 1, 1, 1].
 export function getTalentTreePoints(talentsString: string): Array<number> {
-	const trees = talentsString.split('-');
-	if (trees.length == 2) {
-		trees.push('0');
-	}
-	return trees.map(tree => sum([...tree].map(char => parseInt(char) || 0)));
+	const talents = talentsString.split('');
+	return talents.map(Number);
 }
 
 export function getTalentPoints(talentsString: string): number {
-	return sum(getTalentTreePoints(talentsString));
-}
-
-// Returns the index of the talent tree (0, 1, or 2) that has the most points.
-export function getTalentTree(talentsString: string): number {
-	const points = getTalentTreePoints(talentsString);
-	return maxIndex(points) || 0;
+	return getTalentTreePoints(talentsString).filter(Boolean).length;
 }
 
 // Gets the URL for the individual sim corresponding to the given spec.
@@ -2035,7 +2038,6 @@ export const orderedResourceTypes: Array<ResourceType> = [
 
 export const AL_CATEGORY_HARD_MODE = 'Hard Mode';
 export const AL_CATEGORY_TITAN_RUNE = 'Titan Rune';
-
 
 // Utilities for migrating protos between versions
 

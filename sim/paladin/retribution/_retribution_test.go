@@ -30,7 +30,7 @@ func TestRetribution(t *testing.T) {
 		},
 		Talents:     StandardTalents,
 		Glyphs:      StandardGlyphs,
-		Consumes:    FullConsumes,
+		Consumables: FullConsumesSpec,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: DefaultOptions},
 		Rotation:    core.GetAplRotation("../../../ui/paladin/retribution/apls", "default"),
 		ItemSwapSet: core.GetItemSwapGearSet("../../../ui/paladin/retribution/gear_sets", "item_swap_4p_t11"),
@@ -60,7 +60,7 @@ func BenchmarkSimulate(b *testing.B) {
 				Race:           proto.Race_RaceBloodElf,
 				Class:          proto.Class_ClassPaladin,
 				Equipment:      core.GetGearSet("../../../ui/paladin/retribution/gear_sets", "p4_bis").GearSet,
-				Consumes:       FullConsumes,
+				Consumables:    FullConsumesSpec,
 				Spec:           DefaultOptions,
 				Glyphs:         StandardGlyphs,
 				TalentsString:  StandardTalents,
@@ -106,10 +106,10 @@ var DefaultOptions = &proto.Player_RetributionPaladin{
 	},
 }
 
-var FullConsumes = &proto.Consumes{
-	Flask:         proto.Flask_FlaskOfTitanicStrength,
-	DefaultPotion: proto.Potions_GolembloodPotion,
-	PrepopPotion:  proto.Potions_GolembloodPotion,
-	Food:          proto.Food_FoodBeerBasedCrocolisk,
-	TinkerHands:   proto.TinkerHands_TinkerHandsSynapseSprings,
+var FullConsumesSpec = &proto.ConsumesSpec{
+	FlaskId:  58088, // Flask of Titanic Strength
+	FoodId:   62670, // Beer‑Basted Crocolisk
+	PotId:    58146, // Golemblood Potion
+	PrepotId: 58146, // Golemblood Potion
+	TinkerId: 82174, // Synapse Springs
 }

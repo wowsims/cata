@@ -10,9 +10,9 @@ import { Cooldowns, Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, Pse
 import { FeralDruid_Rotation as DruidRotation, FeralDruid_Rotation_AplType as FeralRotationType } from '../../core/proto/druid';
 import * as AplUtils from '../../core/proto_utils/apl_utils';
 import { Stats, UnitStat } from '../../core/proto_utils/stats';
+import { TypedEvent } from '../../core/typed_event';
 import * as FeralInputs from './inputs';
 import * as Presets from './presets';
-import { TypedEvent } from '../../core/typed_event';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	cssClass: 'feral-druid-sim-ui',
@@ -37,20 +37,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	epReferenceStat: Stat.StatAgility,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[
-			Stat.StatHealth,
-			Stat.StatStrength,
-			Stat.StatAgility,
-			Stat.StatAttackPower,
-			Stat.StatExpertiseRating,
-			Stat.StatMasteryRating,
-			Stat.StatMana,
-		],
-		[
-			PseudoStat.PseudoStatPhysicalHitPercent,
-			PseudoStat.PseudoStatPhysicalCritPercent,
-			PseudoStat.PseudoStatMeleeHastePercent,
-		],
+		[Stat.StatHealth, Stat.StatStrength, Stat.StatAgility, Stat.StatAttackPower, Stat.StatExpertiseRating, Stat.StatMasteryRating, Stat.StatMana],
+		[PseudoStat.PseudoStatPhysicalHitPercent, PseudoStat.PseudoStatPhysicalCritPercent, PseudoStat.PseudoStatMeleeHastePercent],
 	),
 
 	defaults: {
@@ -67,7 +55,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
+		consumables: Presets.DefaultConsumables,
 		// Default rotation settings.
 		rotationType: APLRotationType.TypeSimple,
 		simpleRotation: Presets.DefaultRotation,
@@ -136,8 +124,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	simpleRotation: (player: Player<Spec.SpecFeralDruid>, simple: DruidRotation, cooldowns: Cooldowns): APLRotation => {
 		const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
 
-		const synapseSprings = APLAction.fromJsonString(`{"condition":{"or":{"vals":[{"auraIsActive":{"auraId":{"spellId":5217}}},{"cmp":{"op":"OpLt","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"11s"}}}}]}},"castSpell":{"spellId":{"spellId":82174}}}`);
-		const potion = APLAction.fromJsonString(`{"condition":{"or":{"vals":[{"and":{"vals":[{"auraIsActive":{"auraId":{"spellId":5217}}},{"cmp":{"op":"OpLt","lhs":{"remainingTime":{}},"rhs":{"math":{"op":"OpAdd","lhs":{"spellTimeToReady":{"spellId":{"spellId":50334}}},"rhs":{"const":{"val":"26s"}}}}}}]}},{"cmp":{"op":"OpLt","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"26s"}}}},{"auraIsActive":{"auraId":{"spellId":50334}}}]}},"castSpell":{"spellId":{"itemId":58145}}}`);
+		const synapseSprings = APLAction.fromJsonString(
+			`{"condition":{"or":{"vals":[{"auraIsActive":{"auraId":{"spellId":5217}}},{"cmp":{"op":"OpLt","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"11s"}}}}]}},"castSpell":{"spellId":{"spellId":82174}}}`,
+		);
+		const potion = APLAction.fromJsonString(
+			`{"condition":{"or":{"vals":[{"and":{"vals":[{"auraIsActive":{"auraId":{"spellId":5217}}},{"cmp":{"op":"OpLt","lhs":{"remainingTime":{}},"rhs":{"math":{"op":"OpAdd","lhs":{"spellTimeToReady":{"spellId":{"spellId":50334}}},"rhs":{"const":{"val":"26s"}}}}}}]}},{"cmp":{"op":"OpLt","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"26s"}}}},{"auraIsActive":{"auraId":{"spellId":50334}}}]}},"castSpell":{"spellId":{"itemId":58145}}}`,
+		);
 		const trollRacial = APLAction.fromJsonString(`{"condition":{"auraIsActive":{"auraId":{"spellId":50334}}},"castSpell":{"spellId":{"spellId":26297}}}`);
 		const blockZerk = APLAction.fromJsonString(`{"condition":{"const":{"val":"false"}},"castSpell":{"spellId":{"spellId":50334}}}`);
 		const blockEnrage = APLAction.fromJsonString(`{"condition":{"const":{"val":"false"}},"castSpell":{"spellId":{"spellId":5229}}}`);
@@ -148,11 +140,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 				simple.snekWeave
 			},"minRoarOffset":${simple.minRoarOffset.toFixed(2)},"ripLeeway":${simple.ripLeeway.toFixed(0)},"useRake":${simple.useRake},"useBite":${
 				simple.useBite
-			},"biteDuringExecute":${simple.biteDuringExecute},"biteTime":${simple.biteTime.toFixed(2)},"berserkBiteTime":${simple.berserkBiteTime.toFixed(2)},"cancelPrimalMadness":${simple.cancelPrimalMadness}}}`,
+			},"biteDuringExecute":${simple.biteDuringExecute},"biteTime":${simple.biteTime.toFixed(2)},"berserkBiteTime":${simple.berserkBiteTime.toFixed(
+				2,
+			)},"cancelPrimalMadness":${simple.cancelPrimalMadness}}}`,
 		);
 		const autocasts = APLAction.fromJsonString(`{"autocastOtherCooldowns":{}}`);
 
-		const singleTarget = (simple.rotationType == FeralRotationType.SingleTarget);
+		const singleTarget = simple.rotationType == FeralRotationType.SingleTarget;
 		actions.push(
 			...([
 				singleTarget ? synapseSprings : null,
@@ -169,18 +163,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 			player.getRaid()?.setTargetDummies(TypedEvent.nextEventID(), 4);
 
 			const trinketSwap = APLPrepullAction.fromJsonString(`{"action":{"itemSwap":{"swapSet":"Swap1"}},"doAtValue":{"const":{"val":"-125s"}}}`);
-			const tranq = APLPrepullAction.fromJsonString(`{"action":{"channelSpell":{"spellId":{"spellId":740},"interruptIf":{"cmp":{"op":"OpGt","lhs":{"currentTime":{}},"rhs":{"const":{"val":"-2s"}}}}}},"doAtValue":{"const":{"val":"-5.5s"}}}`);
+			const tranq = APLPrepullAction.fromJsonString(
+				`{"action":{"channelSpell":{"spellId":{"spellId":740},"interruptIf":{"cmp":{"op":"OpGt","lhs":{"currentTime":{}},"rhs":{"const":{"val":"-2s"}}}}}},"doAtValue":{"const":{"val":"-5.5s"}}}`,
+			);
 			const swapBack = APLPrepullAction.fromJsonString(`{"action":{"itemSwap":{"swapSet":"Main"}},"doAtValue":{"const":{"val":"-1.5s"}}}`);
 			const shiftCat = APLPrepullAction.fromJsonString(`{"action":{"castSpell":{"spellId":{"spellId":768}}},"doAtValue":{"const":{"val":"-1.5s"}}}`);
 
-			prepullActions.push(
-				...([
-					trinketSwap,
-					tranq,
-					swapBack,
-					shiftCat,
-				].filter(a => a) as Array<APLPrepullAction>),
-			);
+			prepullActions.push(...([trinketSwap, tranq, swapBack, shiftCat].filter(a => a) as Array<APLPrepullAction>));
 		}
 
 		return APLRotation.create({
@@ -200,7 +189,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 			spec: Spec.SpecFeralDruid,
 			talents: Presets.StandardTalents.data,
 			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
+			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceNightElf,

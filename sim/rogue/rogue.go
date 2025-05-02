@@ -14,8 +14,6 @@ const (
 	SpellFlagColdBlooded = core.SpellFlagAgentReserved4
 )
 
-var TalentTreeSizes = [3]int{19, 19, 19}
-
 const RogueBleedTag = "RogueBleed"
 
 type Rogue struct {
@@ -172,9 +170,9 @@ func (rogue *Rogue) HasMinorGlyph(glyph proto.RogueMinorGlyph) bool {
 
 func (rogue *Rogue) Initialize() {
 	// Update auto crit multipliers now that we have the targets.
-	rogue.AutoAttacks.MHConfig().CritMultiplier = rogue.MeleeCritMultiplier(false)
-	rogue.AutoAttacks.OHConfig().CritMultiplier = rogue.MeleeCritMultiplier(false)
-	rogue.AutoAttacks.RangedConfig().CritMultiplier = rogue.MeleeCritMultiplier(false)
+	rogue.AutoAttacks.MHConfig().CritMultiplier = rogue.CritMultiplier(false)
+	rogue.AutoAttacks.OHConfig().CritMultiplier = rogue.CritMultiplier(false)
+	rogue.AutoAttacks.RangedConfig().CritMultiplier = rogue.CritMultiplier(false)
 
 	// rogue.registerStealthAura()
 	// rogue.registerVanishSpell()
@@ -242,16 +240,13 @@ func (rogue *Rogue) Reset(sim *core.Simulation) {
 	rogue.T12ToTLastBuff = 3
 }
 
-func (rogue *Rogue) MeleeCritMultiplier(applyLethality bool) float64 {
+func (rogue *Rogue) CritMultiplier(applyLethality bool) float64 {
 	secondaryModifier := 0.0
 	// TODO: Fix this to work with the new talent system.
 	// if applyLethality {
 	// 	secondaryModifier += 0.1 * float64(rogue.Talents.Lethality)
 	// }
-	return rogue.Character.MeleeCritMultiplier(1.0, secondaryModifier)
-}
-func (rogue *Rogue) SpellCritMultiplier() float64 {
-	return rogue.Character.SpellCritMultiplier(1, 0)
+	return rogue.GetCharacter().CritMultiplier(1.0, secondaryModifier)
 }
 
 func NewRogue(character *core.Character, options *proto.RogueOptions, talents string) *Rogue {
@@ -262,7 +257,7 @@ func NewRogue(character *core.Character, options *proto.RogueOptions, talents st
 		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassRogue),
 	}
 
-	core.FillTalentsProto(rogue.Talents.ProtoReflect(), talents, TalentTreeSizes)
+	core.FillTalentsProto(rogue.Talents.ProtoReflect(), talents)
 
 	// Passive rogue threat reduction: https://wotlk.wowhead.com/spell=21184/rogue-passive-dnd
 	rogue.PseudoStats.ThreatMultiplier *= 0.71

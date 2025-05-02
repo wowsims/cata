@@ -37,7 +37,7 @@ func (rogue *Rogue) registerAmbushSpell() {
 		DamageMultiplierAdditive: 1 +
 			0.05*float64(rogue.Talents.ImprovedAmbush) +
 			0.1*float64(rogue.Talents.Opportunity),
-		CritMultiplier:   rogue.MeleeCritMultiplier(false),
+		CritMultiplier:   rogue.CritMultiplier(false),
 		ThreatMultiplier: 1,
 
 		BonusCoefficient: 1,

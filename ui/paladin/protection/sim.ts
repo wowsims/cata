@@ -45,11 +45,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatFrostResistance,
 		Stat.StatMasteryRating,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatMainHandDps,
-		PseudoStat.PseudoStatPhysicalHitPercent,
-		PseudoStat.PseudoStatSpellHitPercent,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatPhysicalHitPercent, PseudoStat.PseudoStatSpellHitPercent],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -98,7 +94,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		// Values for now are pre-Cata initial WAG
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
+		consumables: Presets.DefaultConsumables,
 		// Default talents.
 		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
@@ -172,12 +168,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.PRERAID_PRESET,
-			Presets.T11_PRESET,
-			Presets.T11CTC_PRESET,
-			Presets.T12_PRESET,
-		],
+		gear: [Presets.PRERAID_PRESET, Presets.T11_PRESET, Presets.T11CTC_PRESET, Presets.T12_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecProtectionPaladin>): APLRotation => {
@@ -189,7 +180,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			spec: Spec.SpecProtectionPaladin,
 			talents: Presets.DefaultTalents.data,
 			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
+			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceHuman,

@@ -95,12 +95,12 @@ type RotationCombo struct {
 	Rotation *proto.APLRotation
 }
 type BuffsCombo struct {
-	Label    string
-	Raid     *proto.RaidBuffs
-	Party    *proto.PartyBuffs
-	Debuffs  *proto.Debuffs
-	Player   *proto.IndividualBuffs
-	Consumes *proto.Consumes
+	Label       string
+	Raid        *proto.RaidBuffs
+	Party       *proto.PartyBuffs
+	Debuffs     *proto.Debuffs
+	Player      *proto.IndividualBuffs
+	Consumables *proto.ConsumesSpec
 }
 type EncounterCombo struct {
 	Label     string
@@ -194,7 +194,7 @@ func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsR
 				Equipment:          gearSetCombo.GearSet,
 				TalentsString:      talentSetCombo.Talents,
 				Glyphs:             talentSetCombo.Glyphs,
-				Consumes:           buffsCombo.Consumes,
+				Consumables:        buffsCombo.Consumables,
 				Buffs:              buffsCombo.Player,
 				Profession1:        proto.Profession_Engineering,
 				Cooldowns:          combos.Cooldowns,
@@ -459,7 +459,7 @@ type CharacterSuiteConfig struct {
 	ItemSwapSet      ItemSwapSetCombo
 	StartingDistance float64
 
-	Consumes *proto.Consumes
+	Consumables *proto.ConsumesSpec
 
 	IsHealer        bool
 	IsTank          bool
@@ -500,7 +500,7 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 			Class:         config.Class,
 			Race:          config.Race,
 			Equipment:     config.GearSet.GearSet,
-			Consumes:      config.Consumes,
+			Consumables:   config.Consumables,
 			Buffs:         FullIndividualBuffs,
 			TalentsString: config.Talents,
 			Glyphs:        config.Glyphs,
@@ -550,12 +550,12 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 							Label: "NoBuffs",
 						},
 						{
-							Label:    "FullBuffs",
-							Raid:     FullRaidBuffs,
-							Party:    FullPartyBuffs,
-							Debuffs:  FullDebuffs,
-							Player:   FullIndividualBuffs,
-							Consumes: config.Consumes,
+							Label:       "FullBuffs",
+							Raid:        FullRaidBuffs,
+							Party:       FullPartyBuffs,
+							Debuffs:     FullDebuffs,
+							Player:      FullIndividualBuffs,
+							Consumables: config.Consumables,
 						},
 					},
 					IsHealer:          config.IsHealer,

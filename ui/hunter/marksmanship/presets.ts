@@ -1,6 +1,5 @@
-import { ConjuredHealthstone, TinkerHandsSynapseSprings } from '../../core/components/inputs/consumables';
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, RotationType, Spec, Stat } from '../../core/proto/common';
+import { ConsumesSpec, Glyphs, Profession, PseudoStat, RotationType, Spec, Stat } from '../../core/proto/common';
 import {
 	BeastMasteryHunter_Options as HunterOptions,
 	BeastMasteryHunter_Rotation as HunterRotation,
@@ -10,7 +9,6 @@ import {
 } from '../../core/proto/hunter';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
-import { ferocityDefault } from '../../core/talents/hunter_pet';
 import AoeApl from './apls/aoe.apl.json';
 import MmApl from './apls/mm.apl.json';
 import P1MMGear from './gear_sets/p1_mm.gear.json';
@@ -77,35 +75,27 @@ export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const MarksmanTalents = {
 	name: 'Marksman',
 	data: SavedTalents.create({
-		talentsString: '032002-2302320232120231201-03',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: MajorGlyph.GlyphOfDisengage,
-			major2: MajorGlyph.GlyphOfRaptorStrike,
-			major3: MajorGlyph.GlyphOfTrapLauncher,
 		}),
 	}),
 };
-
-const mmAdj = ferocityDefault;
-mmAdj.wildHunt = 1;
-mmAdj.sharkAttack = 1;
 
 export const MMDefaultOptions = HunterOptions.create({
 	classOptions: {
 		useHuntersMark: true,
 		petType: PetType.Wolf,
-		petTalents: mmAdj,
 		petUptime: 1,
 	},
 });
-
-export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.PotionOfTheTolvir,
-	prepopPotion: Potions.PotionOfTheTolvir,
-	flask: Flask.FlaskOfTheWinds,
-	defaultConjured: ConjuredHealthstone.value,
-	food: Food.FoodSeafoodFeast,
-	tinkerHands: TinkerHandsSynapseSprings.value,
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58087, // Flask of the Winds
+	foodId: 62290, // Seafood Magnifique Feast
+	potId: 58145, // Potion of the Tol'vir
+	prepotId: 58145, // Potion of the Tol'vir
+	conjuredId: 5512, // Conjured Healthstone
+	tinkerId: 82174, // Synapse Springs
 });
 
 export const OtherDefaults = {

@@ -26,6 +26,8 @@ type Monk struct {
 	MistweaverOptions *proto.MistweaverMonk_Options
 	WindwalkerOptions *proto.WindwalkerMonk_Options
 
+	HandType proto.HandType
+
 	Stance Stance
 
 	StanceOfTheSturdyOx    *core.Spell
@@ -109,7 +111,11 @@ func (monk *Monk) GetMonk() *Monk {
 	return monk
 }
 
-func (monk *Monk) AddRaidBuffs(_ *proto.RaidBuffs)   {}
+func (monk *Monk) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+	// raidBuffs.LegacyOfTheEmperor = true
+	// raidBuffs.LegacyOfTheWhiteTiger = true
+}
+
 func (monk *Monk) AddPartyBuffs(_ *proto.PartyBuffs) {}
 
 func (monk *Monk) HasMajorGlyph(glyph proto.MonkMajorGlyph) bool {
@@ -120,8 +126,8 @@ func (monk *Monk) HasMinorGlyph(glyph proto.MonkMinorGlyph) bool {
 }
 
 func (monk *Monk) Initialize() {
-	monk.AutoAttacks.MHConfig().CritMultiplier = monk.MeleeCritMultiplier()
-	monk.AutoAttacks.OHConfig().CritMultiplier = monk.MeleeCritMultiplier()
+	monk.AutoAttacks.MHConfig().CritMultiplier = monk.DefaultCritMultiplier()
+	monk.AutoAttacks.OHConfig().CritMultiplier = monk.DefaultCritMultiplier()
 
 	monk.registerStances()
 	monk.applyGlyphs()
@@ -144,11 +150,21 @@ func (monk *Monk) Reset(sim *core.Simulation) {
 	monk.ChangeStance(sim, monk.Stance)
 }
 
-func (monk *Monk) MeleeCritMultiplier() float64 {
-	return monk.Character.MeleeCritMultiplier(1, 0)
+func (monk *Monk) GetHandType() proto.HandType {
+	mh := monk.GetMHWeapon()
+
+	if mh != nil && (mh.WeaponType == proto.WeaponType_WeaponTypeStaff || mh.WeaponType == proto.WeaponType_WeaponTypePolearm) {
+		return proto.HandType_HandTypeTwoHand
+
+	}
+	return proto.HandType_HandTypeOneHand
 }
-func (monk *Monk) SpellCritMultiplier() float64 {
-	return monk.Character.SpellCritMultiplier(1, 0)
+
+func (monk *Monk) GetAttackPowerPerDPS() float64 {
+	if monk.Spec == proto.Spec_SpecBrewmasterMonk {
+		return 1.0 / 11.0
+	}
+	return 1.0 / core.DefaultAttackPowerPerDPS
 }
 
 func NewMonk(character *core.Character, options *proto.MonkOptions, talents string) *Monk {
@@ -159,7 +175,7 @@ func NewMonk(character *core.Character, options *proto.MonkOptions, talents stri
 		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassMonk),
 	}
 
-	core.FillTalentsProto(monk.Talents.ProtoReflect(), talents, [3]int{5, 0, 0})
+	core.FillTalentsProto(monk.Talents.ProtoReflect(), talents)
 
 	monk.PseudoStats.CanParry = true
 
@@ -176,6 +192,12 @@ func NewMonk(character *core.Character, options *proto.MonkOptions, talents stri
 	})
 
 	monk.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, core.CritPerAgiMaxLevel[character.Class])
+
+	monk.HandType = monk.GetHandType()
+
+	monk.RegisterItemSwapCallback(core.MeleeWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot) {
+		monk.HandType = monk.GetHandType()
+	})
 
 	return monk
 }
@@ -227,6 +249,9 @@ const (
 	MonkSpellTigereyeBrew
 	MonkSpellTigerStrikes
 	MonkSpellSpinningFireBlossom
+
+	// Brewmaster
+	MonkSpellGuard
 
 	MonkSpellLast
 	MonkSpellsAll = MonkSpellLast<<1 - 1

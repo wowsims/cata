@@ -51,7 +51,7 @@ func (affliction *AfflictionWarlock) registerHaunt() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   affliction.DefaultSpellCritMultiplier(),
+		CritMultiplier:   affliction.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.5577,
 

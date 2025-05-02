@@ -34,7 +34,7 @@ func (war *ProtectionWarrior) RegisterShockwave() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   war.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   war.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

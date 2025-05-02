@@ -33,7 +33,7 @@ func TestElemental(t *testing.T) {
 				Glyphs:  AlternateGlyphs,
 			},
 		},
-		Consumes:    FullConsumes,
+		Consumables: FullConsumesSpec,
 		SpecOptions: core.SpecOptionsCombo{Label: "Standard", SpecOptions: PlayerOptionsFireElemental},
 		Rotation:    core.GetAplRotation("../../../ui/shaman/elemental/apls", "default"),
 		OtherRotations: []core.RotationCombo{
@@ -120,11 +120,11 @@ var PlayerOptionsFireElemental = &proto.Player_ElementalShaman{
 	},
 }
 
-var FullConsumes = &proto.Consumes{
-	Flask:           proto.Flask_FlaskOfTheDraconicMind,
-	Food:            proto.Food_FoodSeveredSagefish,
-	DefaultPotion:   proto.Potions_VolcanicPotion,
-	PrepopPotion:    proto.Potions_VolcanicPotion,
-	DefaultConjured: proto.Conjured_ConjuredDarkRune,
-	TinkerHands:     proto.TinkerHands_TinkerHandsSynapseSprings,
+var FullConsumesSpec = &proto.ConsumesSpec{
+	FlaskId:    58086, // Flask of the Draconic Mind
+	FoodId:     62671, // Severed Sagefish Head
+	PotId:      58091, // Volcanic Potion
+	PrepotId:   58091, // Volcanic Potion
+	ConjuredId: 20520, // Dark Rune
+	TinkerId:   82174, // Synapse Springs
 }

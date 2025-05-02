@@ -26,7 +26,7 @@ func (hunter *Hunter) registerRaptorStrikeSpell() {
 			},
 		},
 		DamageMultiplier: 1,
-		CritMultiplier:   hunter.CritMultiplier(false, false, false),
+		CritMultiplier:   hunter.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		BonusCoefficient: 1,

@@ -1,6 +1,6 @@
 import * as PresetUtils from '../../core/preset_utils';
 import { APLRotation_Type as APLRotationType } from '../../core/proto/apl.js';
-import { Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Stat, TinkerHands, UnitReference } from '../../core/proto/common';
+import { ConsumesSpec, Glyphs, Profession, PseudoStat, Stat, UnitReference } from '../../core/proto/common';
 import { DeathKnightMajorGlyph, DeathKnightMinorGlyph, UnholyDeathKnight_Options } from '../../core/proto/death_knight';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
@@ -65,12 +65,11 @@ export const P3_UNHOLY_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const DefaultTalents = {
 	name: 'Default',
 	data: SavedTalents.create({
-		talentsString: '2032-1-13300321230231021231',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: DeathKnightMajorGlyph.GlyphOfPestilence,
-			major2: DeathKnightMajorGlyph.GlyphOfBloodBoil,
 			major3: DeathKnightMajorGlyph.GlyphOfAntiMagicShell,
-			minor1: DeathKnightMinorGlyph.GlyphOfDeathSEmbrace,
+			minor1: DeathKnightMinorGlyph.GlyphOfDeathsEmbrace,
 			minor2: DeathKnightMinorGlyph.GlyphOfPathOfFrost,
 			minor3: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
 		}),
@@ -115,10 +114,10 @@ export const OtherDefaults = {
 	distanceFromTarget: 5,
 };
 
-export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfTitanicStrength,
-	food: Food.FoodBeerBasedCrocolisk,
-	defaultPotion: Potions.GolembloodPotion,
-	prepopPotion: Potions.GolembloodPotion,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58088, // Flask of Titanic Strength
+	foodId: 62670, // Beer-Basted Crocolisk
+	potId: 58146, // Golemblood Potion
+	prepotId: 58146, // Golemblood Potion
+	tinkerId: 82174, // Synapse Springs
 });

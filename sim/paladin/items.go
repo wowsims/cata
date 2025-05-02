@@ -3,7 +3,7 @@ package paladin
 import (
 	"time"
 
-	"github.com/wowsims/mop/sim/common/cata"
+	cata "github.com/wowsims/mop/sim/common/cata"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/stats"
 )

@@ -34,7 +34,7 @@ func (monk *Monk) CalculateMonkStrikeDamage(sim *core.Simulation, spell *core.Sp
 	staffOrPolearm := false
 	hasMainHand := false
 	mh := monk.MainHand()
-	mhw := monk.WeaponFromMainHand(monk.MeleeCritMultiplier())
+	mhw := monk.WeaponFromMainHand(monk.DefaultCritMultiplier())
 	if mh != nil && mh.WeaponType != proto.WeaponType_WeaponTypeUnknown {
 		staffOrPolearm = mh.WeaponType == proto.WeaponType_WeaponTypeStaff || mh.WeaponType == proto.WeaponType_WeaponTypePolearm
 		dmg := mhw.BaseDamage(sim) / mhw.SwingSpeed
@@ -50,7 +50,7 @@ func (monk *Monk) CalculateMonkStrikeDamage(sim *core.Simulation, spell *core.Sp
 	hasOffHand := false
 	oh := monk.OffHand()
 	if oh != nil && oh.WeaponType != proto.WeaponType_WeaponTypeUnknown {
-		ohw := monk.WeaponFromOffHand(monk.MeleeCritMultiplier())
+		ohw := monk.WeaponFromOffHand(monk.DefaultCritMultiplier())
 		dmg := ohw.BaseDamage(sim) / ohw.SwingSpeed * 0.5
 		totalDamage += dmg
 		hasOffHand = true
@@ -66,12 +66,7 @@ func (monk *Monk) CalculateMonkStrikeDamage(sim *core.Simulation, spell *core.Sp
 		totalDamage *= 0.898882275
 	}
 
-	apMod := 1.0 / core.DefaultAttackPowerPerDPS
-	if monk.Spec == proto.Spec_SpecBrewmasterMonk {
-		// Brewmaster monks does a flat 40% of total damage as well as AP per DPS being 11 instead of 14
-		totalDamage *= 0.4
-		apMod = 1.0 / 11.0
-	}
+	apMod := monk.GetAttackPowerPerDPS()
 
 	if !hasMainHand && !hasOffHand {
 		// Unarmed

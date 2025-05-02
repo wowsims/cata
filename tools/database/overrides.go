@@ -15,72 +15,14 @@ var OtherItemIdsToFetch = []string{
 	"211850",
 	"211851",
 }
-
+var ConsumableOverrides = []*proto.Consumable{
+	{Id: 62290, BuffsMainStat: true, Stats: stats.Stats{stats.Stamina: 90}.ToProtoArray()},
+	{Id: 62649, BuffsMainStat: true, Stats: stats.Stats{stats.Stamina: 90}.ToProtoArray()},
+}
 var ItemOverrides = []*proto.UIItem{
 	// Boosted 359 green weapon damage stats are way off
 	// min and max show as double of their actual values in tooltips...
 	// some scaling is happening that wowhead can't pick up
-	{ /** Martial Sword */ Id: 92074, WeaponDamageMin: 776, WeaponDamageMax: 1443},
-	{ /** Scourgeheart Blade */ Id: 92110, WeaponDamageMin: 841, WeaponDamageMax: 1564},
-	{ /** Partisan Sword */ Id: 92111, WeaponDamageMin: 776, WeaponDamageMax: 1443},
-	{ /** Thundercaller Mace */ Id: 92112, WeaponDamageMin: 841, WeaponDamageMax: 1564},
-	{ /** Darkwalker Shiv */ Id: 92192, WeaponDamageMin: 582, WeaponDamageMax: 1083},
-	{ /** Partisan Scepter */ Id: 92202, WeaponDamageMin: 388, WeaponDamageMax: 721},
-	{ /** Darkwalker Sword */ Id: 92203, WeaponDamageMin: 841, WeaponDamageMax: 1564},
-	{ /** Darkwalker Dagger */ Id: 92204, WeaponDamageMin: 582, WeaponDamageMax: 1083},
-	{ /** Thundercaller Gavel */ Id: 92205, WeaponDamageMin: 388, WeaponDamageMax: 721},
-	{ /** Thundercaller Scepter */ Id: 92206, WeaponDamageMin: 388, WeaponDamageMax: 721},
-	{ /** Scourgeheart Maul */ Id: 92353, WeaponDamageMin: 1795, WeaponDamageMax: 2694},
-	{ /** Scourgeheart Hammer */ Id: 92354, WeaponDamageMin: 1795, WeaponDamageMax: 2694},
-	{ /** Naturalist Stave */ Id: 92355, WeaponDamageMin: 554, WeaponDamageMax: 832},
-	{ /** Naturalist Spear */ Id: 92356, WeaponDamageMin: 1496, WeaponDamageMax: 2245},
-	{ /** Forestwalker Spear */ Id: 92357, WeaponDamageMin: 1496, WeaponDamageMax: 2245},
-	{ /** Naturalist Staff */ Id: 92358, WeaponDamageMin: 554, WeaponDamageMax: 832},
-	{ /** Enlightened Staff */ Id: 92359, WeaponDamageMin: 554, WeaponDamageMax: 832},
-	{ /** Partisan Greatsword */ Id: 92360, WeaponDamageMin: 1795, WeaponDamageMax: 2694},
-	{ /** Deliverer Stave */ Id: 92361, WeaponDamageMin: 554, WeaponDamageMax: 832},
-	{ /** Deliverer Staff */ Id: 92362, WeaponDamageMin: 554, WeaponDamageMax: 832},
-	{ /** Martial Maul */ Id: 92363, WeaponDamageMin: 1795, WeaponDamageMax: 2694},
-	{ /** Martial Greatsword */ Id: 92364, WeaponDamageMin: 1795, WeaponDamageMax: 2694},
-	{ /** Soulseizer Staff */ Id: 92365, WeaponDamageMin: 554, WeaponDamageMax: 832},
-	{ /** Waterdancer Spire */ Id: 92372, WeaponDamageMin: 1496, WeaponDamageMax: 2245},
-	{ /** Waterdancer Staff */ Id: 92373, WeaponDamageMin: 554, WeaponDamageMax: 832},
-	{ /** Waterdancer Sword */ Id: 92405, WeaponDamageMin: 841, WeaponDamageMax: 1564},
-
-	// TODO: Remove these when blizzard fixes the item data
-	{ /** Alysra's Razor (H) */ Id: 71427, WeaponDamageMin: 610, WeaponDamageMax: 1134, WeaponSpeed: 1.4},
-	{ /** Arathar, the Eye of Flame (H) */ Id: 71611, WeaponDamageMin: 1865, WeaponDamageMax: 3465, WeaponSpeed: 3.0},
-	{ /** Arbalest of Erupting Fury (H) */ Id: 71414, WeaponDamageMin: 2015, WeaponDamageMax: 3024, WeaponSpeed: 3.0},
-	{ /** Avool's Incendiary Shanker */ Id: 71779, WeaponDamageMin: 695, WeaponDamageMax: 1291, WeaponSpeed: 1.8},
-	{ /** Avool's Incendiary Shanker (H) */ Id: 71778, WeaponDamageMin: 784, WeaponDamageMax: 1458, WeaponSpeed: 1.8},
-	{ /** Deflecting Star (H) */ Id: 71592, WeaponDamageMin: 1410, WeaponDamageMax: 2116, WeaponSpeed: 2.1},
-	{ /** Entrail Disgorger */ Id: 71787, WeaponDamageMin: 618, WeaponDamageMax: 927, WeaponSpeed: 1.4},
-	{ /** Entrail Disgorger (H) */ Id: 71786, WeaponDamageMin: 697, WeaponDamageMax: 1046, WeaponSpeed: 1.4},
-	{ /** Eye of Purification */ Id: 71776, WeaponDamageMin: 463, WeaponDamageMax: 861, WeaponSpeed: 2.4},
-	{ /** Eye of Purification (H) */ Id: 71777, WeaponDamageMin: 523, WeaponDamageMax: 972, WeaponSpeed: 2.4},
-	{ /** Feeding Frenzy (H) */ Id: 71441, WeaponDamageMin: 896, WeaponDamageMax: 1345, WeaponSpeed: 1.8},
-	{ /** Funeral Pyre (H) */ Id: 71409, WeaponDamageMin: 597, WeaponDamageMax: 897, WeaponSpeed: 2.4},
-	{ /** Gatecrasher (H) */ Id: 71454, WeaponDamageMin: 1133, WeaponDamageMax: 2105, WeaponSpeed: 2.6},
-	{ /** Giantslicer (H) */ Id: 71593, WeaponDamageMin: 1410, WeaponDamageMax: 2116, WeaponSpeed: 2.1},
-	{ /** Ko'gun, Hammer of the Firelord (H) */ Id: 71615, WeaponDamageMin: 484, WeaponDamageMax: 899, WeaponSpeed: 2.1},
-	{ /** Morningstar Shard (H) */ Id: 71568, WeaponDamageMin: 1343, WeaponDamageMax: 2016, WeaponSpeed: 2.0},
-	{ /** Sho'ravon, Greatstaff of Annihilation */ Id: 71798, WeaponDamageMin: 560, WeaponDamageMax: 840, WeaponSpeed: 2.4},
-	{ /** Skullstealer Greataxe (H) */ Id: 71445, WeaponDamageMin: 2418, WeaponDamageMax: 3628, WeaponSpeed: 3.6},
-	{ /** Smoldering Censer of Purity */ Id: 71775, WeaponDamageMin: 640, WeaponDamageMax: 960, WeaponSpeed: 2.9},
-	{ /** Smoldering Censer of Purity (H) */ Id: 71774, WeaponDamageMin: 722, WeaponDamageMax: 1084, WeaponSpeed: 2.9},
-	{ /** Volcanospike (H) */ Id: 71422, WeaponDamageMin: 348, WeaponDamageMax: 648, WeaponSpeed: 1.6},
-	{ /** Zoid's Firelit Greatsword */ Id: 71780, WeaponDamageMin: 2142, WeaponDamageMax: 3214, WeaponSpeed: 3.6},
-	{ /** Zoid's Firelit Greatsword (H) */ Id: 71781, WeaponDamageMin: 2418, WeaponDamageMax: 3628, WeaponSpeed: 3.6},
-
-	{ /** Raz's Pauldrons */ Id: 56318, SocketBonus: stats.Stats{stats.HitRating: 20}.ToProtoArray()},
-
-	{ /** Destruction Holo-gogs */ Id: 32494, ClassAllowlist: []proto.Class{proto.Class_ClassMage, proto.Class_ClassPriest, proto.Class_ClassWarlock}},
-	{ /** Gadgetstorm Goggles */ Id: 32476, ClassAllowlist: []proto.Class{proto.Class_ClassShaman}},
-	{ /** Magnified Moon Specs */ Id: 32480, ClassAllowlist: []proto.Class{proto.Class_ClassDruid}},
-	{ /** Quad Deathblow X44 Goggles */ Id: 34353, ClassAllowlist: []proto.Class{proto.Class_ClassDruid, proto.Class_ClassRogue}},
-	{ /** Hyper-Magnified Moon Specs */ Id: 35182, ClassAllowlist: []proto.Class{proto.Class_ClassDruid}},
-	{ /** Lightning Etched Specs */ Id: 34355, ClassAllowlist: []proto.Class{proto.Class_ClassShaman}},
-	{ /** Annihilator Holo-Gogs */ Id: 34847, ClassAllowlist: []proto.Class{proto.Class_ClassMage, proto.Class_ClassPriest, proto.Class_ClassWarlock}},
 
 	// Balance T9 "of Conquest" Alliance set
 	{Id: 48158, SetName: "Malfurion's Regalia"},
@@ -246,6 +188,7 @@ var ItemOverrides = []*proto.UIItem{
 
 // Keep these sorted by item ID.
 var ItemAllowList = map[int32]struct{}{
+	2140: {},
 	//Shaman Dungeon Set 3 Tidefury
 	27510: {}, // Tidefury Gauntlets
 	27802: {}, // Tidefury Shoulderguards
@@ -726,6 +669,23 @@ var ExtraItemIcons = []int32{
 	49634,
 }
 
+// Item Ids of consumables to allow
+var ConsumableAllowList = []int32{
+	//Fortune Cookie and Feast
+	62649,
+	62290,
+	//Migty Rage Potion
+	13442,
+	// Dark Rune
+	20520,
+	46376, // Flask of the Frost Wyrm
+	45568, // Firecracker Salmon
+	54221, // Potion of Speed
+}
+var ConsumableDenyList = []int32{
+	57099,
+}
+
 // Raid buffs / debuffs
 var SharedSpellsIcons = []int32{
 	// Revitalize, Rejuv, WG
@@ -910,6 +870,8 @@ var DenyListNameRegexes = []*regexp.Regexp{
 	regexp.MustCompile(`Bracer 3`),
 	regexp.MustCompile(`DB\d`),
 	regexp.MustCompile(`DEPRECATED`),
+	regexp.MustCompile(`OLD`),
+	regexp.MustCompile(`Deprecated`),
 	regexp.MustCompile(`Deprecated: Keanna`),
 	regexp.MustCompile(`Indalamar`),
 	regexp.MustCompile(`Monster -`),
@@ -918,6 +880,10 @@ var DenyListNameRegexes = []*regexp.Regexp{
 	regexp.MustCompile(`QR XXXX`),
 	regexp.MustCompile(`TEST`),
 	regexp.MustCompile(`Test`),
+	regexp.MustCompile(`Enchant Template`),
+	regexp.MustCompile(`Arcane Amalgamation`),
+	regexp.MustCompile(`Deleted`),
+	regexp.MustCompile(`DELETED`),
 	regexp.MustCompile(`zOLD`),
 	regexp.MustCompile(`Archaic Spell`),
 	regexp.MustCompile(`Well Repaired`),

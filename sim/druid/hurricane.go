@@ -14,7 +14,7 @@ func (druid *Druid) registerHurricaneSpell() {
 		Flags:          SpellFlagOmenTrigger,
 		ClassSpellMask: DruidSpellHurricane,
 
-		CritMultiplier:   druid.BalanceCritMultiplier(),
+		CritMultiplier:   druid.DefaultCritMultiplier(),
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.095,

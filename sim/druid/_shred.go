@@ -34,7 +34,7 @@ func (druid *Druid) registerShredSpell() {
 		},
 
 		DamageMultiplier: 5.4,
-		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   druid.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 		MaxRange:         core.MaxMeleeRange,

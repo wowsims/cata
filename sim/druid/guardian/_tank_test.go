@@ -25,7 +25,7 @@ func TestGuardian(t *testing.T) {
 
 		Talents:     StandardTalents,
 		Glyphs:      StandardGlyphs,
-		Consumes:    FullConsumes,
+		Consumables: FullConsumesSpec,
 		SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsDefault},
 		Rotation:    core.GetAplRotation("../../../ui/druid/guardian/apls", "default"),
 
@@ -90,11 +90,10 @@ var PlayerOptionsDefault = &proto.Player_GuardianDruid{
 		},
 	},
 }
-
-var FullConsumes = &proto.Consumes{
-	Flask:           proto.Flask_FlaskOfSteelskin,
-	Food:            proto.Food_FoodSkeweredEel,
-	DefaultPotion:   proto.Potions_PotionOfTheTolvir,
-	PrepopPotion:    proto.Potions_PotionOfTheTolvir,
-	DefaultConjured: proto.Conjured_ConjuredHealthstone,
+var FullConsumesSpec = &proto.ConsumesSpec{
+	FlaskId:    58085, // Flask of Steelskin
+	FoodId:     62669, // Skewered Eel
+	PotId:      58145, // Potion of the Tol'vir
+	PrepotId:   58145, // Potion of the Tol'vir
+	ConjuredId: 5512,  // Conjured Healthstone
 }

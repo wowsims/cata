@@ -30,7 +30,21 @@ message ProtoVersion {
 	// The actual field value is only used within unit tests.
 	int32 saved_version_number = 1;
 }
-
+enum ItemLevelState {
+    Base = 0;
+    ChallengeMode = -1;
+    UpgradeStepOne = 1;
+    UpgradeStepTwo = 2;
+    UpgradeStepThree = 3;
+    UpgradeStepFour = 4;
+}
+message ScalingItemProperties {
+    int32 rand_prop_points = 1;
+    double weapon_damage_min = 2;
+    double weapon_damage_max = 3;
+    map<int32, double> stats = 4; // for compactness
+	int32 ilvl = 6;
+}
 enum Spec {
 	SpecUnknown = 0;
 
@@ -416,143 +430,6 @@ enum TristateEffect {
 	TristateEffectImproved = 2;
 }
 
-enum Explosive {
-	ExplosiveUnknown = 0;
-	ExplosiveSaroniteBomb = 1;
-	ExplosiveCobaltFragBomb = 2;
-}
-
-enum TinkerHands {
-	TinkerHandsNone = 0;
-	TinkerHandsSynapseSprings = 1;
-	TinkerHandsTazikShocker = 2;
-	TinkerHandsQuickflipDeflectionPlates = 3;
-	TinkerHandsSpinalHealingInjector = 4;
-	TinkerHandsZ50ManaGulper = 8;
-}
-
-enum Potions {
-	UnknownPotion = 0;
-	GolembloodPotion = 1; //58146
-	PotionOfTheTolvir = 2; //58145
-	PotionOfConcentration = 3; //57194
-	VolcanicPotion = 4; //58091
-	EarthenPotion = 5; //58090
-	MightyRejuvenationPotion = 6; //57193
-	MythicalHealingPotion = 7; //57191
-	MythicalManaPotion = 8; // 57192
-	PotionOfSpeed = 9;
-	HastePotion = 10;
-	MightyRagePotion = 11;
-	RunicManaInjector = 12;
-	RunicHealingInjector = 13;
-	FlameCap = 14;
-}
-
-enum Conjured {
-	ConjuredUnknown = 0;
-	ConjuredDarkRune = 1;
-	ConjuredHealthstone = 5;
-	ConjuredRogueThistleTea = 4;
-}
-
-enum Flask {
-	FlaskUnknown = 0;
-	FlaskOfTitanicStrength = 1;
-	FlaskOfTheWinds = 2;
-	FlaskOfSteelskin = 3;
-	FlaskOfFlowingWater = 4;
-	FlaskOfTheDraconicMind = 5;
-
-	// Wotlk
-	FlaskOfTheFrostWyrm = 6;
-	FlaskOfEndlessRage = 7;
-	FlaskOfPureMojo = 8;
-	FlaskOfStoneblood = 9;
-	LesserFlaskOfToughness = 10;
-	LesserFlaskOfResistance = 11;
-}
-
-enum BattleElixir {
-	BattleElixirUnknown = 0;
-	ElixirOfTheMaster = 1;
-	ElixirOfMightySpeed = 2;
-	ElixirOfImpossibleAccuracy = 3;
-	ElixirOfTheCobra = 4;
-	ElixirOfTheNaga = 5;
-	GhostElixir = 6;
-
-	//Wotlk
-	ElixirOfAccuracy = 7;
-	ElixirOfArmorPiercing = 8;
-	ElixirOfDeadlyStrikes = 9;
-	ElixirOfExpertise = 10;
-	ElixirOfLightningSpeed = 11;
-	ElixirOfMightyAgility = 12;
-	ElixirOfMightyStrength = 13;
-	GurusElixir = 14;
-	SpellpowerElixir = 15;
-	WrathElixir = 16;
-
-	// TBC
-	ElixirOfDemonslaying = 17;
-}
-
-enum GuardianElixir {
-	GuardianElixirUnknown = 0;
-	ElixirOfDeepEarth = 1;
-	PrismaticElixir = 2;
-
-	//Wotlk
-	ElixirOfMightyDefense = 3;
-	ElixirOfMightyFortitude = 4;
-	ElixirOfMightyMageblood = 5;
-	ElixirOfMightyThoughts = 6;
-	ElixirOfProtection = 7;
-	ElixirOfSpirit = 8;
-}
-
-enum Food {
-	FoodUnknown = 0;
-	FoodFishFeast = 1;
-	FoodGreatFeast = 2;
-	FoodBlackenedDragonfin = 3;
-	FoodHeartyRhino = 4;
-	FoodMegaMammothMeal = 5;
-	FoodSpicedWormBurger = 6;
-	FoodRhinoliciousWormsteak = 7;
-	FoodImperialMantaSteak = 8;
-	FoodSnapperExtreme = 9;
-	FoodMightyRhinoDogs = 10;
-	FoodFirecrackerSalmon = 11;
-	FoodCuttlesteak = 12;
-	FoodDragonfinFilet = 13;
-
-	// TBC Foods
-	FoodBlackenedBasilisk = 14;
-	FoodGrilledMudfish = 15;
-	FoodRavagerDog = 16;
-	FoodRoastedClefthoof = 17;
-	FoodSkullfishSoup = 18;
-	FoodSpicyHotTalbuk = 19;
-	FoodFishermansFeast = 20;
-
-	// Cata
-	FoodSeafoodFeast = 21;
-	FoodFortuneCookie = 22;
-	FoodSeveredSagefish = 23;
-	FoodBeerBasedCrocolisk = 24;
-	FoodSkeweredEel = 25;
-	FoodDeliciousSagefishTail = 26;
-	FoodBasiliskLiverdog = 27;
-	FoodBakedRockfish = 28;
-	FoodCrocoliskAuGratin = 29;
-	FoodGrilledDragon = 30;
-	FoodLavascaleMinestrone = 31;
-	FoodBlackbellySushi = 32;
-	FoodMushroomSauceMudfish = 33;
-}
-
 // Buffs that affect the entire raid.
 // TODO: Reindex
 // next index: 48
@@ -720,24 +597,17 @@ message Debuffs {
 	bool earth_shock = 31;
 }
 
-message Consumes {
-	Flask flask = 1;
-	BattleElixir battle_elixir = 2;
-	GuardianElixir guardian_elixir = 3;
+message ConsumesSpec {
+	int32 prepot_id = 1;
+	int32 pot_id = 2;
+	int32 flask_id = 3;
+	int32 battle_elixir_id = 4;
+	int32 guardian_elixir_id = 5;
+	int32 food_id = 6;
+	int32 explosive_id = 7;
+	int32 conjured_id = 9;
 
-	Food food = 6;
-
-	int32 pet_scroll_of_agility = 7;
-	int32 pet_scroll_of_strength = 8;
-
-	Potions default_potion = 9;
-	Potions prepop_potion = 10;
-	Conjured default_conjured = 11;
-
-	bool explosive_big_daddy = 12;
-	bool highpowered_bolt_gun = 13;
-
-	TinkerHands tinker_hands = 14;
+	int32 tinker_id = 10;
 }
 
 enum MobType {
@@ -857,43 +727,27 @@ message ItemSpec {
 	int32 enchant = 3;
 	repeated int32 gems = 4;
 	int32 reforging = 5; //reforging id
+	ItemLevelState upgrade_step = 7;
 }
+
 
 message EquipmentSpec {
 	repeated ItemSpec items = 1;
 }
 
-message SimDatabase {
-	repeated SimItem items = 1;
-	repeated ItemRandomSuffix random_suffixes = 5;
-	repeated SimEnchant enchants = 2;
-	repeated SimGem gems = 3;
-	repeated ReforgeStat reforge_stats = 6;
+enum ConsumableType {
+	ConsumableTypeUnknown = 0;
+	ConsumableTypePotion = 1;
+	ConsumableTypeFlask = 2;
+	ConsumableTypeFood = 3;
+	ConsumableTypeScroll = 4;
+	ConsumableTypeExplosive = 5;
+	ConsumableTypeBattleElixir = 6;
+	ConsumableTypeGuardianElixir = 7;
 }
 
-// Contains only the Item info needed by the sim.
-message SimItem {
-	int32 id = 1;
-	string name = 2;
 
-	ItemType type = 3;
-	ArmorType armor_type = 4;
-	WeaponType weapon_type = 5;
-	HandType hand_type = 6;
-	RangedWeaponType ranged_weapon_type = 7;
 
-	repeated double stats = 8;
-	repeated GemColor gem_sockets = 9;
-	repeated double socketBonus = 10;
-
-	double weapon_damage_min = 11;
-	double weapon_damage_max = 12;
-	double weapon_speed = 13;
-
-	string set_name = 14;
-	int32 rand_prop_points = 15;
-	int32 set_id = 16;
-}
 
 // Extra enum for describing which items are eligible for an enchant, when
 // ItemType alone is not enough.
@@ -982,15 +836,12 @@ message ActionID {
 }
 
 message Glyphs {
-	int32 prime1 = 1;
-	int32 prime2 = 2;
-	int32 prime3 = 3;
-	int32 major1 = 4;
-	int32 major2 = 5;
-	int32 major3 = 6;
-	int32 minor1 = 7;
-	int32 minor2 = 8;
-	int32 minor3 = 9;
+	int32 major1 = 1;
+	int32 major2 = 2;
+	int32 major3 = 3;
+	int32 minor1 = 4;
+	int32 minor2 = 5;
+	int32 minor3 = 6;
 }
 
 // Custom options for a particular cooldown.
@@ -1068,3 +919,4 @@ enum LogLevel {
 
 	Undefined = -1;
 }
+

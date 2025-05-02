@@ -56,7 +56,7 @@ func NewArmsWarrior(character *core.Character, options *proto.Player) *ArmsWarri
 	war.EnableRageBar(rbo)
 
 	war.EnableAutoAttacks(war, core.AutoAttackOptions{
-		MainHand:       war.WeaponFromMainHand(war.DefaultMeleeCritMultiplier()),
+		MainHand:       war.WeaponFromMainHand(war.DefaultCritMultiplier()),
 		AutoSwingMelee: true,
 	})
 
@@ -100,7 +100,7 @@ func (war *ArmsWarrior) RegisterMastery() {
 
 		DamageMultiplier:         1.0,
 		DamageMultiplierAdditive: 1.0,
-		CritMultiplier:           war.DefaultMeleeCritMultiplier(),
+		CritMultiplier:           war.DefaultCritMultiplier(),
 		ThreatMultiplier:         1.0,
 
 		BonusCoefficient: 1.0,

@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, Flask, Food, Glyphs, Potions, Profession, Stat, TinkerHands } from '../../core/proto/common.js';
+import { ConsumesSpec, Glyphs, Profession, Stat } from '../../core/proto/common.js';
 import {
 	AirTotem,
 	CallTotem,
@@ -71,14 +71,11 @@ export const EP_PRESET_CLEAVE = PresetUtils.makePresetEpWeights(
 export const TalentsTotemDuration = {
 	name: 'Totem Duration',
 	data: SavedTalents.create({
-		talentsString: '303202321223110132-201-20302',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: ShamanMajorGlyph.GlyphOfLightningShield,
 			major2: ShamanMajorGlyph.GlyphOfHealingStreamTotem,
-			major3: ShamanMajorGlyph.GlyphOfStoneclawTotem,
 			minor1: ShamanMinorGlyph.GlyphOfThunderstorm,
-			minor2: ShamanMinorGlyph.GlyphOfRenewedLife,
-			minor3: ShamanMinorGlyph.GlyphOfTheArcticWolf,
 		}),
 	}),
 };
@@ -86,14 +83,11 @@ export const TalentsTotemDuration = {
 export const TalentsImprovedShields = {
 	name: 'Improved Shields',
 	data: SavedTalents.create({
-		talentsString: '3032023212231101321-2030022',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: ShamanMajorGlyph.GlyphOfLightningShield,
 			major2: ShamanMajorGlyph.GlyphOfHealingStreamTotem,
-			major3: ShamanMajorGlyph.GlyphOfStoneclawTotem,
 			minor1: ShamanMinorGlyph.GlyphOfThunderstorm,
-			minor2: ShamanMinorGlyph.GlyphOfRenewedLife,
-			minor3: ShamanMinorGlyph.GlyphOfTheArcticWolf,
 		}),
 	}),
 };
@@ -144,12 +138,12 @@ export const OtherDefaults = {
 	profession2: Profession.Tailoring,
 };
 
-export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.VolcanicPotion,
-	prepopPotion: Potions.VolcanicPotion,
-	flask: Flask.FlaskOfTheDraconicMind,
-	food: Food.FoodSeafoodFeast,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58086, // Flask of the Draconic Mind
+	foodId: 62290, // Seafood Magnifique Feast
+	potId: 58091, // Volcanic Potion
+	prepotId: 58091, // Volcanic Potion
+	tinkerId: 82174, // Synapse Springs
 });
 
 const ENCOUNTER_SINGLE_TARGET = PresetUtils.makePresetEncounter(

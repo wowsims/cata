@@ -1,118 +1,201 @@
 import { MageMajorGlyph, MageMinorGlyph, MageTalents } from '../proto/mage.js';
 import { GlyphsConfig } from './glyphs_picker.js';
 import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
-import MageTalentJson from './trees/mage.json';
-
-export const mageTalentsConfig: TalentsConfig<MageTalents> = newTalentsConfig(MageTalentJson);
+import MageTalentJson from './trees/mage.json';export const mageTalentsConfig: TalentsConfig<MageTalents> = newTalentsConfig(MageTalentJson);
 
 export const mageGlyphsConfig: GlyphsConfig = {
 	majorGlyphs: {
-		[MageMajorGlyph.GlyphOfArcanePower]: {
-			name: 'Glyph of Arcane Power',
-			description: 'While Arcane Power is active the global cooldown of your Blink, Mana Shield, and Mirror Image is reduced to zero.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_lightning.jpg',
-		},
-		[MageMajorGlyph.GlyphOfBlastWave]: {
-			name: 'Glyph of Blast Wave',
-			description: "Increases the duration of Blast Wave's slowing effect by 1 sec.",
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_excorcism_02.jpg',
+		[MageMajorGlyph.GlyphOfArcaneExplosion]: {
+			name: "Glyph of Arcane Explosion",
+			description: "Increases the radius of your Arcane Explosion by $s2 yards.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_wispsplode.jpg",
 		},
 		[MageMajorGlyph.GlyphOfBlink]: {
-			name: 'Glyph of Blink',
-			description: 'Increases the distance you travel with the Blink spell by 5 yards.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_arcane_blink.jpg',
-		},
-		[MageMajorGlyph.GlyphOfDragonSBreath]: {
-			name: "Glyph of Dragon's Breath",
-			description: "Reduces the cooldown of your Dragon's Breath by 3 sec.",
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_head_dragon_01.jpg',
+			name: "Glyph of Blink",
+			description: "Increases the distance you travel with the Blink spell by $56365s1 yards.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_arcane_blink.jpg",
 		},
 		[MageMajorGlyph.GlyphOfEvocation]: {
-			name: 'Glyph of Evocation',
-			description: 'Your Evocation ability also causes you to regain 40% of your health over its duration.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_purge.jpg',
+			name: "Glyph of Evocation",
+			description: "Your Evocation ability also causes you to regain ${$56380m1*4}% of your health over its duration. \u000D\u000A\u000D\u000AWith the Invocation talent, you instead gain $125440m1% of your health upon completing an Evocation.\u000D\u000A\u000D\u000AWith the Rune of Power talent, you gain $56380m2% of your health per second while standing in your own Rune of Power.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_purge.jpg",
 		},
-		[MageMajorGlyph.GlyphOfFrostArmor]: {
-			name: 'Glyph of Frost Armor',
-			description: 'Your Frost Armor also causes you to regenerate 2% of your maximum mana every 5 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_frost_frostarmor02.jpg',
+		[MageMajorGlyph.GlyphOfCombustion]: {
+			name: "Glyph of Combustion",
+			description: "Increases the direct damage, the duration of the damage over time effect and the cooldown of Combustion by $s1%.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_fire_sealoffire.jpg",
 		},
 		[MageMajorGlyph.GlyphOfFrostNova]: {
-			name: 'Glyph of Frost Nova',
-			description: 'Your Frost Nova targets can take an additional 20% damage before the Frost Nova effect automatically breaks.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_frost_frostnova.jpg',
-		},
-		[MageMajorGlyph.GlyphOfIceBarrier]: {
-			name: 'Glyph of Ice Barrier',
-			description: 'Increases the amount of damage absorbed by your Ice Barrier by 30%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_ice_lament.jpg',
+			name: "Glyph of Frost Nova",
+			description: "Reduces the cooldown of Frost Nova by ${$m1/-1000} sec.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_frost_frostnova.jpg",
 		},
 		[MageMajorGlyph.GlyphOfIceBlock]: {
-			name: 'Glyph of Ice Block',
-			description: 'Your Frost Nova cooldown is now reset every time you use Ice Block.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_frost_frost.jpg',
+			name: "Glyph of Ice Block",
+			description: "When Ice Block terminates, it triggers an instant free Frost Nova and makes you immune to all spells for $115760d.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_frost_frost.jpg",
 		},
-		[MageMajorGlyph.GlyphOfIcyVeins]: {
-			name: 'Glyph of Icy Veins',
-			description: 'Your Icy Veins ability also removes all movement slowing and cast time slowing effects.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_frost_coldhearted.jpg',
+		[MageMajorGlyph.GlyphOfSplittingIce]: {
+			name: "Glyph of Splitting Ice",
+			description: "Your Ice Lance and Icicles now hit $s1 additional target for $s2% damage.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_frost_frostblast.jpg",
 		},
-		[MageMajorGlyph.GlyphOfInvisibility]: {
-			name: 'Glyph of Invisibility',
-			description: 'Increases your movement speed while Invisible by 40%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_mage_invisibility.jpg',
+		[MageMajorGlyph.GlyphOfConeOfCold]: {
+			name: "Glyph of Cone of Cold",
+			description: "Increases the damage done by Cone of Cold by $s1%.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_frost_glacier.jpg",
 		},
-		[MageMajorGlyph.GlyphOfManaShield]: {
-			name: 'Glyph of Mana Shield',
-			description: 'Reduces the cooldown of your Mana Shield by 2 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_detectlesserinvisibility.jpg',
+		[MageMajorGlyph.GlyphOfRapidDisplacement]: {
+			name: "Glyph of Rapid Displacement",
+			description: "Blink now has 2 charges, gaining a charge every 15 sec, but no longer frees the caster from stuns and bonds.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_arcane_blink.jpg",
+		},
+		[MageMajorGlyph.GlyphOfManaGem]: {
+			name: "Glyph of Mana Gem",
+			description: "Your Conjure Mana Gem spell now creates a Brilliant Mana Gem, which holds up to $s2 charges.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_jewelcrafting_gem_05.jpg",
 		},
 		[MageMajorGlyph.GlyphOfPolymorph]: {
-			name: 'Glyph of Polymorph',
-			description: 'Your Polymorph spell also removes all damage over time effects from the target.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_polymorph.jpg',
+			name: "Glyph of Polymorph",
+			description: "Your Polymorph spell also removes all damage over time effects from the target.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_polymorph.jpg",
+		},
+		[MageMajorGlyph.GlyphOfIcyVeins]: {
+			name: "Glyph of Icy Veins",
+			description: "Your Icy Veins causes your Frostbolt, Frostfire Bolt, Ice Lance, and your Water Elemental\'s Waterbolt spells to split into 3 smaller bolts that each do ${100+$131078m1}% damage, instead of increasing spell casting speed.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_frost_coldhearted.jpg",
+		},
+		[MageMajorGlyph.GlyphOfSpellsteal]: {
+			name: "Glyph of Spellsteal",
+			description: "Spellsteal now also heals you for $115714s1% of your maximum health when it successfully steals a spell.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_arcane_arcane02.jpg",
+		},
+		[MageMajorGlyph.GlyphOfFrostfireBolt]: {
+			name: "Glyph of Frostfire Bolt",
+			description: "Reduces the cast time of Frostfire Bolt by ${$m1/-1000}.1 sec.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_mage_frostfirebolt.jpg",
+		},
+		[MageMajorGlyph.GlyphOfRemoveCurse]: {
+			name: "Glyph of Remove Curse",
+			description: "Increases the damage you deal by $115701s1% for $115701d after you successfully remove a curse.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_removecurse.jpg",
+		},
+		[MageMajorGlyph.GlyphOfArcanePower]: {
+			name: "Glyph of Arcane Power",
+			description: "Increases the duration and cooldown of Arcane Power by $s1%.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_lightning.jpg",
+		},
+		[MageMajorGlyph.GlyphOfWaterElemental]: {
+			name: "Glyph of Water Elemental",
+			description: "Increases the health of your Water Elemental by $s1%, and allows it to cast while moving. When in Assist mode and in combat, commanding your Water Elemental to Follow will cause it to stay near you and autocast Waterbolt when your target is in range.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_frost_summonwaterelemental_2.jpg",
 		},
 		[MageMajorGlyph.GlyphOfSlow]: {
-			name: 'Glyph of Slow',
-			description: 'Increases the range of your Slow spell by 5 yards.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_slow.jpg',
+			name: "Glyph of Slow",
+			description: "Your Arcane Blast spell applies the Slow spell to any target it damages if no target is currently affected by your Slow.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_slow.jpg",
+		},
+		[MageMajorGlyph.GlyphOfDeepFreeze]: {
+			name: "Glyph of Deep Freeze",
+			description: "Your Deep Freeze spell is no longer on the global cooldown, but its duration is reduced by ${$m2/-1000} sec.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_mage_deepfreeze.jpg",
+		},
+		[MageMajorGlyph.GlyphOfCounterspell]: {
+			name: "Glyph of Counterspell",
+			description: "Your Counterspell can now be cast while casting or channeling other spells, but its cooldown is increased by $s2 sec.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_frost_iceshock.jpg",
+		},
+		[MageMajorGlyph.GlyphOfInfernoBlast]: {
+			name: "Glyph of Inferno Blast",
+			description: "Your Inferno Blast spell spreads Pyroblast, Ignite, and Combustion to $s1 additional target.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_mage_infernoblast.jpg",
+		},
+		[MageMajorGlyph.GlyphOfArmors]: {
+			name: "Glyph of Armors",
+			description: "Reduces the cast time of your Frost Armor, Mage Armor, and Molten Armor spells by ${$m1/-1000}.1 sec, and increases the defensive effect of each Armor by an additional $s2%.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_frost_frostarmor02.jpg",
 		},
 	},
 	minorGlyphs: {
-		[MageMinorGlyph.GlyphOfArcaneBrilliance]: {
-			name: 'Glyph of Arcane Brilliance',
-			description: 'Reduces the mana cost of your Arcane Brilliance spell by 50%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_magicalsentry.jpg',
+		[MageMinorGlyph.GlyphOfLooseMana]: {
+			name: "Glyph of Loose Mana",
+			description: "Your Mana Gem now restores mana over ${$m1/1000} sec, rather than instantly.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_gem_sapphire_02.jpg",
 		},
-		[MageMinorGlyph.GlyphOfArmors]: {
-			name: 'Glyph of Armors',
-			description: 'Increases the duration of your Armor spells by 30 min.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_frost_chillingarmor.jpg',
+		[MageMinorGlyph.GlyphOfMomentum]: {
+			name: "Glyph of Momentum",
+			description: "Your Blink spell teleports you in the direction you are moving instead of the direction you are facing.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_arcane_blink.jpg",
 		},
-		[MageMinorGlyph.GlyphOfConjuring]: {
-			name: 'Glyph of Conjuring',
-			description: 'Reduces the mana cost of your Conjuring spells by 50%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_mage_conjurefoodrank9.jpg',
+		[MageMinorGlyph.GlyphOfCrittermorph]: {
+			name: "Glyph of Crittermorph",
+			description: "When cast on critters, your Polymorph spells now last $120091d and can be cast on multiple targets.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_doublepolymorph2.jpg",
 		},
-		[MageMinorGlyph.GlyphOfMirrorImage]: {
-			name: 'Glyph of Mirror Image',
-			description: 'Your Mirror Images cast Arcane Blast or Fireball instead of Frostbolt depending on your primary talent tree.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_magic_lesserinvisibilty.jpg',
+		[MageMinorGlyph.GlyphOfThePorcupine]: {
+			name: "Glyph of the Porcupine",
+			description: "Your Polymorph spell polymorphs the target into a porcupine instead.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_magic_polymorphpig.jpg",
 		},
-		[MageMinorGlyph.GlyphOfSlowFall]: {
-			name: 'Glyph of Slow Fall',
-			description: 'Your Slow Fall spell no longer requires a reagent.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_magic_featherfall.jpg',
+		[MageMinorGlyph.GlyphOfConjureFamiliar]: {
+			name: "Glyph of Conjure Familiar",
+			description: "Teaches you the ability Conjure Familiar.\u000D\u000A\u000D\u000A$@spelldesc126578",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_elementalabsorption.jpg",
 		},
 		[MageMinorGlyph.GlyphOfTheMonkey]: {
-			name: 'Glyph of the Monkey',
-			description: 'Your Polymorph: Sheep spell polymorphs the target into a monkey instead.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_hunter_aspectofthemonkey.jpg',
+			name: "Glyph of the Monkey",
+			description: "Your Polymorph spell polymorphs the target into a monkey instead.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_aspectofthemonkey.jpg",
 		},
 		[MageMinorGlyph.GlyphOfThePenguin]: {
-			name: 'Glyph of the Penguin',
-			description: 'Your Polymorph: Sheep spell polymorphs the target into a penguin instead.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_penguinpet.jpg',
+			name: "Glyph of the Penguin",
+			description: "Your Polymorph spell polymorphs the target into a penguin instead.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_penguinpet.jpg",
+		},
+		[MageMinorGlyph.GlyphOfTheBearCub]: {
+			name: "Glyph of the Bear Cub",
+			description: "Your Polymorph spell polymorphs the target into a polar bear cub instead.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_pet_babyblizzardbear.jpg",
+		},
+		[MageMinorGlyph.GlyphOfArcaneLanguage]: {
+			name: "Glyph of Arcane Language",
+			description: "Your Arcane Brilliance spell allows you to comprehend your allies\' racial languages.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_fish_68.jpg",
+		},
+		[MageMinorGlyph.GlyphOfIllusion]: {
+			name: "Glyph of Illusion",
+			description: "Teaches you the ability Illusion.\u000D\u000A\u000D\u000ATransforms the Mage to look like someone else for $94632d.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_mask_01.jpg",
+		},
+		[MageMinorGlyph.GlyphOfMirrorImage]: {
+			name: "Glyph of Mirror Image",
+			description: "Your Mirror Images cast Arcane Blast or Fireball instead of Frostbolt depending on your primary talent tree.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_magic_lesserinvisibilty.jpg",
+		},
+		[MageMinorGlyph.GlyphOfRapidTeleportation]: {
+			name: "Glyph of Rapid Teleportation",
+			description: "$@spelldesc46989",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_arcane_portaldalaran.jpg",
+		},
+		[MageMinorGlyph.GlyphOfDiscreetMagic]: {
+			name: "Glyph of Discreet Magic",
+			description: "Your Nether Tempest, Living Bomb, Frost Bomb, Arcane Barrage, and Inferno Blast no longer affect targets more than $s1 yds away from their primary target.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_enchant_essencemagicsmall.jpg",
+		},
+		[MageMinorGlyph.GlyphOfTheUnboundElemental]: {
+			name: "Glyph of the Unbound Elemental",
+			description: "Your Water Elemental is replaced by an Unbound Water Elemental.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_frost_summonwaterelemental.jpg",
+		},
+		[MageMinorGlyph.GlyphOfEvaporation]: {
+			name: "Glyph of Evaporation",
+			description: "Reduces the size of your Water Elemental by $s1%.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_elemental_mote_water01.jpg",
+		},
+		[MageMinorGlyph.GlyphOfCondensation]: {
+			name: "Glyph of Condensation",
+			description: "Increases the size of your Water Elemental by $s1%.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_volatilewater.jpg",
 		},
 	},
 };

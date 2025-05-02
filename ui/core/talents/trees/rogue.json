@@ -1,791 +1,168 @@
-[
-   {
-     "name": "Assassination",
-     "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/182.jpg",
-     "talents": [
-       {
-         "fieldName": "deadlyMomentum",
-         "fancyName": "Deadly Momentum",
-         "location": {
-           "rowIdx": 0,
-           "colIdx": 0
-         },
-         "spellIds": [
-           79121,
-           79122
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "coupDeGrace",
-         "fancyName": "Coup De Grace",
-         "location": {
-           "rowIdx": 0,
-           "colIdx": 1
-         },
-         "spellIds": [
-           14162,
-           14163,
-           14164
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "lethality",
-         "fancyName": "Lethality",
-         "location": {
-           "rowIdx": 0,
-           "colIdx": 2
-         },
-         "spellIds": [
-           14128,
-           14132,
-           14135
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "ruthlessness",
-         "fancyName": "Ruthlessness",
-         "location": {
-           "rowIdx": 1,
-           "colIdx": 0
-         },
-         "spellIds": [
-           14156,
-           14160,
-           14161
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "quickening",
-         "fancyName": "Quickening",
-         "location": {
-           "rowIdx": 1,
-           "colIdx": 1
-         },
-         "spellIds": [
-           31208,
-           31209
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "puncturingWounds",
-         "fancyName": "Puncturing Wounds",
-         "location": {
-           "rowIdx": 1,
-           "colIdx": 2
-         },
-         "spellIds": [
-           13733,
-           13865,
-           13866
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "blackjack",
-         "fancyName": "Blackjack",
-         "location": {
-           "rowIdx": 1,
-           "colIdx": 3
-         },
-         "spellIds": [
-           79123,
-           79125
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "deadlyBrew",
-         "fancyName": "Deadly Brew",
-         "location": {
-           "rowIdx": 2,
-           "colIdx": 0
-         },
-         "spellIds": [
-           51625,
-           51626
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "coldBlood",
-         "fancyName": "Cold Blood",
-         "location": {
-           "rowIdx": 2,
-           "colIdx": 1
-         },
-         "spellIds": [
-           14177
-         ],
-         "maxPoints": 1
-       },
-       {
-         "fieldName": "vilePoisons",
-         "fancyName": "Vile Poisons",
-         "location": {
-           "rowIdx": 2,
-           "colIdx": 2
-         },
-         "spellIds": [
-           16513,
-           16514,
-           16515
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "deadenedNerves",
-         "fancyName": "Deadened Nerves",
-         "location": {
-           "rowIdx": 3,
-           "colIdx": 0
-         },
-         "spellIds": [
-           31380,
-           31382,
-           31383
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "sealFate",
-         "fancyName": "Seal Fate",
-         "location": {
-           "rowIdx": 3,
-           "colIdx": 1
-         },
-         "spellIds": [
-           14186,
-           14190
-         ],
-         "maxPoints": 2,
-         "prereqLocation": {
-           "rowIdx": 2,
-           "colIdx": 1
-         }
-       },
-       {
-         "fieldName": "murderousIntent",
-         "fancyName": "Murderous Intent",
-         "location": {
-           "rowIdx": 4,
-           "colIdx": 0
-         },
-         "spellIds": [
-           14158,
-           14159
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "overkill",
-         "fancyName": "Overkill",
-         "location": {
-           "rowIdx": 4,
-           "colIdx": 1
-         },
-         "spellIds": [
-           58426
-         ],
-         "maxPoints": 1
-       },
-       {
-         "fieldName": "masterPoisoner",
-         "fancyName": "Master Poisoner",
-         "location": {
-           "rowIdx": 4,
-           "colIdx": 2
-         },
-         "spellIds": [
-           58410
-         ],
-         "maxPoints": 1,
-         "prereqLocation": {
-           "rowIdx": 2,
-           "colIdx": 2
-         }
-       },
-       {
-         "fieldName": "improvedExposeArmor",
-         "fancyName": "Improved Expose Armor",
-         "location": {
-           "rowIdx": 4,
-           "colIdx": 3
-         },
-         "spellIds": [
-           14168,
-           14169
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "cutToTheChase",
-         "fancyName": "Cut To The Chase",
-         "location": {
-           "rowIdx": 5,
-           "colIdx": 1
-         },
-         "spellIds": [
-           51664,
-           51665,
-           51667
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "venomousWounds",
-         "fancyName": "Venomous Wounds",
-         "location": {
-           "rowIdx": 5,
-           "colIdx": 2
-         },
-         "spellIds": [
-           79133,
-           79134
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "vendetta",
-         "fancyName": "Vendetta",
-         "location": {
-           "rowIdx": 6,
-           "colIdx": 1
-         },
-         "spellIds": [
-           79140
-         ],
-         "maxPoints": 1
-       }
-     ]
-   },
-   {
-     "name": "Combat",
-     "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/181.jpg",
-     "talents": [
-       {
-         "fieldName": "improvedRecuperate",
-         "fancyName": "Improved Recuperate",
-         "location": {
-           "rowIdx": 0,
-           "colIdx": 0
-         },
-         "spellIds": [
-           79007,
-           79008
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "improvedSinisterStrike",
-         "fancyName": "Improved Sinister Strike",
-         "location": {
-           "rowIdx": 0,
-           "colIdx": 1
-         },
-         "spellIds": [
-           13732,
-           13863,
-           79004
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "precision",
-         "fancyName": "Precision",
-         "location": {
-           "rowIdx": 0,
-           "colIdx": 2
-         },
-         "spellIds": [
-           13705,
-           13832,
-           13843
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "improvedSliceAndDice",
-         "fancyName": "Improved Slice And Dice",
-         "location": {
-           "rowIdx": 1,
-           "colIdx": 0
-         },
-         "spellIds": [
-           14165,
-           14166
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "improvedSprint",
-         "fancyName": "Improved Sprint",
-         "location": {
-           "rowIdx": 1,
-           "colIdx": 1
-         },
-         "spellIds": [
-           13743,
-           13875
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "aggression",
-         "fancyName": "Aggression",
-         "location": {
-           "rowIdx": 1,
-           "colIdx": 2
-         },
-         "spellIds": [
-           18427,
-           18428,
-           18429
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "improvedKick",
-         "fancyName": "Improved Kick",
-         "location": {
-           "rowIdx": 1,
-           "colIdx": 3
-         },
-         "spellIds": [
-           13754,
-           13867
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "lightningReflexes",
-         "fancyName": "Lightning Reflexes",
-         "location": {
-           "rowIdx": 2,
-           "colIdx": 0
-         },
-         "spellIds": [
-           13712,
-           13788,
-           13789
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "revealingStrike",
-         "fancyName": "Revealing Strike",
-         "location": {
-           "rowIdx": 2,
-           "colIdx": 1
-         },
-         "spellIds": [
-           84617
-         ],
-         "maxPoints": 1
-       },
-       {
-         "fieldName": "reinforcedLeather",
-         "fancyName": "Reinforced Leather",
-         "location": {
-           "rowIdx": 2,
-           "colIdx": 2
-         },
-         "spellIds": [
-           79077,
-           79079
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "improvedGouge",
-         "fancyName": "Improved Gouge",
-         "location": {
-           "rowIdx": 2,
-           "colIdx": 3
-         },
-         "spellIds": [
-           13741,
-           13793
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "combatPotency",
-         "fancyName": "Combat Potency",
-         "location": {
-           "rowIdx": 3,
-           "colIdx": 1
-         },
-         "spellIds": [
-           35541,
-           35550,
-           35551
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "bladeTwisting",
-         "fancyName": "Blade Twisting",
-         "location": {
-           "rowIdx": 3,
-           "colIdx": 2
-         },
-         "spellIds": [
-           31124,
-           31126
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "throwingSpecialization",
-         "fancyName": "Throwing Specialization",
-         "location": {
-           "rowIdx": 4,
-           "colIdx": 0
-         },
-         "spellIds": [
-           5952,
-           51679
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "adrenalineRush",
-         "fancyName": "Adrenaline Rush",
-         "location": {
-           "rowIdx": 4,
-           "colIdx": 1
-         },
-         "spellIds": [
-           13750
-         ],
-         "maxPoints": 1
-       },
-       {
-         "fieldName": "savageCombat",
-         "fancyName": "Savage Combat",
-         "location": {
-           "rowIdx": 4,
-           "colIdx": 2
-         },
-         "spellIds": [
-           51682,
-           58413
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "banditsGuile",
-         "fancyName": "Bandits Guile",
-         "location": {
-           "rowIdx": 5,
-           "colIdx": 0
-         },
-         "spellIds": [
-           84652,
-           84653,
-           84654
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "restlessBlades",
-         "fancyName": "Restless Blades",
-         "location": {
-           "rowIdx": 5,
-           "colIdx": 2
-         },
-         "spellIds": [
-           79095,
-           79096
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "killingSpree",
-         "fancyName": "Killing Spree",
-         "location": {
-           "rowIdx": 6,
-           "colIdx": 1
-         },
-         "spellIds": [
-           51690
-         ],
-         "maxPoints": 1,
-         "prereqLocation": {
-           "rowIdx": 4,
-           "colIdx": 1
-         }
-       }
-     ]
-   },
-   {
-     "name": "Subtlety",
-     "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/183.jpg",
-     "talents": [
-       {
-         "fieldName": "nightstalker",
-         "fancyName": "Nightstalker",
-         "location": {
-           "rowIdx": 0,
-           "colIdx": 0
-         },
-         "spellIds": [
-           13975,
-           14062
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "improvedAmbush",
-         "fancyName": "Improved Ambush",
-         "location": {
-           "rowIdx": 0,
-           "colIdx": 1
-         },
-         "spellIds": [
-           14079,
-           14080,
-           84661
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "relentlessStrikes",
-         "fancyName": "Relentless Strikes",
-         "location": {
-           "rowIdx": 0,
-           "colIdx": 2
-         },
-         "spellIds": [
-           14179,
-           58422,
-           58423
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "elusiveness",
-         "fancyName": "Elusiveness",
-         "location": {
-           "rowIdx": 1,
-           "colIdx": 0
-         },
-         "spellIds": [
-           13981,
-           14066
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "waylay",
-         "fancyName": "Waylay",
-         "location": {
-           "rowIdx": 1,
-           "colIdx": 1
-         },
-         "spellIds": [
-           51692,
-           51696
-         ],
-         "maxPoints": 2,
-         "prereqLocation": {
-           "rowIdx": 0,
-           "colIdx": 1
-         }
-       },
-       {
-         "fieldName": "opportunity",
-         "fancyName": "Opportunity",
-         "location": {
-           "rowIdx": 1,
-           "colIdx": 2
-         },
-         "spellIds": [
-           14057,
-           14072,
-           79141
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "initiative",
-         "fancyName": "Initiative",
-         "location": {
-           "rowIdx": 1,
-           "colIdx": 3
-         },
-         "spellIds": [
-           13976,
-           13979
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "energeticRecovery",
-         "fancyName": "Energetic Recovery",
-         "location": {
-           "rowIdx": 2,
-           "colIdx": 0
-         },
-         "spellIds": [
-           79150,
-           79151,
-           79152
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "findWeakness",
-         "fancyName": "Find Weakness",
-         "location": {
-           "rowIdx": 2,
-           "colIdx": 1
-         },
-         "spellIds": [
-           51632,
-           91023
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "hemorrhage",
-         "fancyName": "Hemorrhage",
-         "location": {
-           "rowIdx": 2,
-           "colIdx": 2
-         },
-         "spellIds": [
-           16511
-         ],
-         "maxPoints": 1
-       },
-       {
-         "fieldName": "honorAmongThieves",
-         "fancyName": "Honor Among Thieves",
-         "location": {
-           "rowIdx": 3,
-           "colIdx": 0
-         },
-         "spellIds": [
-           51698,
-           51700,
-           51701
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "premeditation",
-         "fancyName": "Premeditation",
-         "location": {
-           "rowIdx": 3,
-           "colIdx": 1
-         },
-         "spellIds": [
-           14183
-         ],
-         "maxPoints": 1
-       },
-       {
-         "fieldName": "envelopingShadows",
-         "fancyName": "Enveloping Shadows",
-         "location": {
-           "rowIdx": 3,
-           "colIdx": 3
-         },
-         "spellIds": [
-           31211,
-           31212,
-           31213
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "cheatDeath",
-         "fancyName": "Cheat Death",
-         "location": {
-           "rowIdx": 4,
-           "colIdx": 0
-         },
-         "spellIds": [
-           31228,
-           31229,
-           31230
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "preparation",
-         "fancyName": "Preparation",
-         "location": {
-           "rowIdx": 4,
-           "colIdx": 1
-         },
-         "spellIds": [
-           14185
-         ],
-         "maxPoints": 1
-       },
-       {
-         "fieldName": "sanguinaryVein",
-         "fancyName": "Sanguinary Vein",
-         "location": {
-           "rowIdx": 4,
-           "colIdx": 2
-         },
-         "spellIds": [
-           79146,
-           79147
-         ],
-         "maxPoints": 2,
-         "prereqLocation": {
-           "rowIdx": 2,
-           "colIdx": 2
-         }
-       },
-       {
-         "fieldName": "slaughterFromTheShadows",
-         "fancyName": "Slaughter From The Shadows",
-         "location": {
-           "rowIdx": 5,
-           "colIdx": 1
-         },
-         "spellIds": [
-           51708,
-           51709,
-           51710
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "serratedBlades",
-         "fancyName": "Serrated Blades",
-         "location": {
-           "rowIdx": 5,
-           "colIdx": 2
-         },
-         "spellIds": [
-           14171,
-           14172
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "shadowDance",
-         "fancyName": "Shadow Dance",
-         "location": {
-           "rowIdx": 6,
-           "colIdx": 1
-         },
-         "spellIds": [
-           51713
-         ],
-         "maxPoints": 1
-       }
-     ]
-   }
- ]
+
+{
+	"backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/TODO.jpg",
+	"talents": [
+		{
+			"fieldName": "nightstalker",
+			"fancyName": "Nightstalker",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 0
+			},
+			"spellId": 14062
+		},
+		{
+			"fieldName": "subterfuge",
+			"fancyName": "Subterfuge",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 1
+			},
+			"spellId": 108208
+		},
+		{
+			"fieldName": "shadowFocus",
+			"fancyName": "Shadow Focus",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 2
+			},
+			"spellId": 108209
+		},
+		{
+			"fieldName": "deadlyThrow",
+			"fancyName": "Deadly Throw",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 0
+			},
+			"spellId": 26679
+		},
+		{
+			"fieldName": "nerveStrike",
+			"fancyName": "Nerve Strike",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 1
+			},
+			"spellId": 108210
+		},
+		{
+			"fieldName": "combatReadiness",
+			"fancyName": "Combat Readiness",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 2
+			},
+			"spellId": 74001
+		},
+		{
+			"fieldName": "cheatDeath",
+			"fancyName": "Cheat Death",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 0
+			},
+			"spellId": 31230
+		},
+		{
+			"fieldName": "leechingPoison",
+			"fancyName": "Leeching Poison",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 1
+			},
+			"spellId": 108211
+		},
+		{
+			"fieldName": "elusiveness",
+			"fancyName": "Elusiveness",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 2
+			},
+			"spellId": 79008
+		},
+		{
+			"fieldName": "cloakAndDagger",
+			"fancyName": "Cloak and Dagger",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 0
+			},
+			"spellId": 138106
+		},
+		{
+			"fieldName": "shadowstep",
+			"fancyName": "Shadowstep",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 1
+			},
+			"spellId": 36554
+		},
+		{
+			"fieldName": "burstOfSpeed",
+			"fancyName": "Burst of Speed",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 2
+			},
+			"spellId": 108212
+		},
+		{
+			"fieldName": "preyOnTheWeak",
+			"fancyName": "Prey on the Weak",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 0
+			},
+			"spellId": 131511
+		},
+		{
+			"fieldName": "paralyticPoison",
+			"fancyName": "Paralytic Poison",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 1
+			},
+			"spellId": 108215
+		},
+		{
+			"fieldName": "dirtyTricks",
+			"fancyName": "Dirty Tricks",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 2
+			},
+			"spellId": 108216
+		},
+		{
+			"fieldName": "shurikenToss",
+			"fancyName": "Shuriken Toss",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 0
+			},
+			"spellId": 114014
+		},
+		{
+			"fieldName": "markedForDeath",
+			"fancyName": "Marked for Death",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 1
+			},
+			"spellId": 137619
+		},
+		{
+			"fieldName": "anticipation",
+			"fancyName": "Anticipation",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 2
+			},
+			"spellId": 114015
+		}
+	]
+}

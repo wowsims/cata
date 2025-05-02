@@ -38,7 +38,7 @@ func (svHunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 		},
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		CritMultiplier:   svHunter.DefaultSpellCritMultiplier(),
+		CritMultiplier:   svHunter.DefaultCritMultiplier(),
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

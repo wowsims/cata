@@ -39,7 +39,7 @@ func (paladin *Paladin) registerExorcism() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   paladin.DefaultSpellCritMultiplier(),
+		CritMultiplier:   paladin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

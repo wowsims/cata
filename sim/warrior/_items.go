@@ -3,7 +3,7 @@ package warrior
 import (
 	"time"
 
-	"github.com/wowsims/mop/sim/common/cata"
+	cata "github.com/wowsims/mop/sim/common/cata"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
@@ -143,7 +143,7 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 				ProcMask:    core.ProcMaskEmpty,
 				Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
 
-				CritMultiplier:   character.DefaultMeleeCritMultiplier(),
+				CritMultiplier:   character.DefaultCritMultiplier(),
 				DamageMultiplier: 1,
 				ThreatMultiplier: 1,
 

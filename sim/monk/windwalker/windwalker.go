@@ -30,7 +30,6 @@ func NewWindwalkerMonk(character *core.Character, options *proto.Player) *Windwa
 	ww := &WindwalkerMonk{
 		Monk: monk.NewMonk(character, monkOptions.Options.ClassOptions, options.TalentsString),
 	}
-	ww.Stance = monk.FierceTiger
 
 	ww.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 	ww.AddStatDependency(stats.Agility, stats.AttackPower, 2)
@@ -61,7 +60,6 @@ func (ww *WindwalkerMonk) ApplyTalents() {
 }
 
 func (ww *WindwalkerMonk) Reset(sim *core.Simulation) {
-	ww.Stance = monk.FierceTiger
 	ww.Monk.Reset(sim)
 }
 

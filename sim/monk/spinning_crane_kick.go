@@ -47,7 +47,7 @@ func (monk *Monk) registerSpinningCraneKick() {
 
 		DamageMultiplier: 1.75, // 1.59 * (1.75 / 1.59),
 		ThreatMultiplier: 1,
-		CritMultiplier:   monk.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			results := make([]*core.SpellResult, numTargets)
@@ -64,7 +64,7 @@ func (monk *Monk) registerSpinningCraneKick() {
 		},
 	})
 
-	glyphOfSpinningCraneKick := monk.HasMajorGlyph(proto.MonkMajorGlyph_MonkMajorGlyphSpinningCraneKick)
+	glyphOfSpinningCraneKick := monk.HasMajorGlyph(proto.MonkMajorGlyph_GlyphOfSpinningCraneKick)
 	spinningCraneKickAura := monk.RegisterAura(core.Aura{
 		Label:    "Spinning Crane Kick" + monk.Label,
 		ActionID: actionID,

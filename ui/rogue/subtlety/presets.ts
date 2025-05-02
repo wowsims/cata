@@ -1,6 +1,5 @@
-import * as Mechanics from '../../core/constants/mechanics';
 import * as PresetUtils from '../../core/preset_utils';
-import { Conjured, Consumes, Flask, Food, Glyphs, Potions, PseudoStat, Stat } from '../../core/proto/common';
+import { ConsumesSpec, Glyphs, PseudoStat, Stat } from '../../core/proto/common';
 import { RogueMajorGlyph, RogueOptions_PoisonImbue, SubtletyRogue_Options as RogueOptions } from '../../core/proto/rogue';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
@@ -74,9 +73,8 @@ export const P4_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const SubtletyTalents = {
 	name: 'Subtlety',
 	data: SavedTalents.create({
-		talentsString: '023003-002-0332031321310012321',
+		talentsString: '',
 		glyphs: Glyphs.create({
-			major1: RogueMajorGlyph.GlyphOfTricksOfTheTrade,
 			major2: RogueMajorGlyph.GlyphOfSprint,
 			major3: RogueMajorGlyph.GlyphOfFeint,
 		}),
@@ -95,12 +93,12 @@ export const DefaultOptions = RogueOptions.create({
 	honorAmongThievesCritRate: 400,
 });
 
-export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.PotionOfTheTolvir,
-	prepopPotion: Potions.PotionOfTheTolvir,
-	defaultConjured: Conjured.ConjuredRogueThistleTea,
-	flask: Flask.FlaskOfTheWinds,
-	food: Food.FoodSkeweredEel,
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58087, // Flask of the Winds
+	foodId: 62669, // Skewered Eel
+	potId: 58145, // Potion of the Tol'vir
+	prepotId: 58145, // Potion of the Tol'vir
+	conjuredId: 7676, // Thistle Tea
 });
 
 export const OtherDefaults = {

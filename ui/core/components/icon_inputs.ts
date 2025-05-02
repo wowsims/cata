@@ -1,6 +1,6 @@
 import { Party } from '../party.js';
 import { Player } from '../player';
-import { Consumes, Debuffs, Faction, IndividualBuffs, PartyBuffs, RaidBuffs, Spec } from '../proto/common.js';
+import { ConsumesSpec, Debuffs, Faction, IndividualBuffs, PartyBuffs, RaidBuffs, Spec } from '../proto/common.js';
 import { ActionId } from '../proto_utils/action_id.js';
 import { Raid } from '../raid';
 import { EventID, TypedEvent } from '../typed_event';
@@ -85,13 +85,13 @@ export function makeBooleanIndividualBuffInput<SpecType extends Spec>(
 }
 
 export function makeBooleanConsumeInput<SpecType extends Spec>(
-	config: BooleanInputConfig<Consumes>,
+	config: BooleanInputConfig<ConsumesSpec>,
 ): InputHelpers.TypedIconPickerConfig<Player<SpecType>, boolean> {
-	return InputHelpers.makeBooleanIconInput<any, Consumes, Player<SpecType>>(
+	return InputHelpers.makeBooleanIconInput<any, ConsumesSpec, Player<SpecType>>(
 		{
 			getModObject: (player: Player<SpecType>) => player,
 			getValue: (player: Player<SpecType>) => player.getConsumes(),
-			setValue: (eventID: EventID, player: Player<SpecType>, newVal: Consumes) => player.setConsumes(eventID, newVal),
+			setValue: (eventID: EventID, player: Player<SpecType>, newVal: ConsumesSpec) => player.setConsumes(eventID, newVal),
 			changeEmitter: (player: Player<SpecType>) => TypedEvent.onAny([player.consumesChangeEmitter, player.professionChangeEmitter]),
 			showWhen: (player: Player<SpecType>) => !config.showWhen || config.showWhen(player),
 		},

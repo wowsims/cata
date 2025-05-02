@@ -1,19 +1,16 @@
 import * as PresetUtils from '../../core/preset_utils.js';
 import {
-	Consumes,
+	ConsumesSpec,
 	Debuffs,
-	Flask,
-	Food,
 	Glyphs,
 	IndividualBuffs,
 	PartyBuffs,
-	Potions,
 	Profession,
 	RaidBuffs,
 	Stat,
 	UnitReference,
 } from '../../core/proto/common.js';
-import { BalanceDruid_Options as BalanceDruidOptions, DruidMajorGlyph, DruidMinorGlyph } from '../../core/proto/druid.js';
+import { BalanceDruid_Options as BalanceDruidOptions, DruidMajorGlyph } from '../../core/proto/druid.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
 import T11Apl from './apls/t11.apl.json';
@@ -54,14 +51,9 @@ export const StandardEPWeights = PresetUtils.makePresetEpWeights(
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		talentsString: '33230221123212111001-01-020331',
+		talentsString: '',
 		glyphs: Glyphs.create({
-			major1: DruidMajorGlyph.GlyphOfStarfall,
 			major2: DruidMajorGlyph.GlyphOfRebirth,
-			major3: DruidMajorGlyph.GlyphOfMonsoon,
-			minor1: DruidMinorGlyph.GlyphOfTyphoon,
-			minor2: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
-			minor3: DruidMinorGlyph.GlyphOfMarkOfTheWild,
 		}),
 	}),
 };
@@ -72,13 +64,12 @@ export const DefaultOptions = BalanceDruidOptions.create({
 	},
 });
 
-export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfTheDraconicMind,
-	food: Food.FoodSeafoodFeast,
-	defaultPotion: Potions.VolcanicPotion,
-	prepopPotion: Potions.VolcanicPotion,
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58086, // Flask of the Draconic Mind
+	foodId: 62290, // Seafood Magnifique Feast
+	potId: 58091, // Volcanic Potion
+	prepotId: 58091, // Volcanic Potion
 });
-
 export const DefaultRaidBuffs = RaidBuffs.create({
 	arcaneBrilliance: true,
 	bloodlust: true,
@@ -140,7 +131,6 @@ export const PresetBuildT12 = PresetUtils.makePresetBuild('Balance T12', {
 	rotation: T12PresetRotation,
 	epWeights: StandardEPWeights,
 });
-
 
 export const PresetBuildT13 = PresetUtils.makePresetBuild('Balance T13', {
 	gear: T13PresetGear,

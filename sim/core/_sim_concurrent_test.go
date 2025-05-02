@@ -12,10 +12,6 @@ import (
 )
 
 func getTestPlayerMM() *proto.Player {
-	var FullConsumes = &proto.Consumes{
-		Flask:         proto.Flask_FlaskOfTheWinds,
-		DefaultPotion: proto.Potions_PotionOfTheTolvir,
-	}
 	var MMTalents = "032002-2302320032120231221-03"
 
 	var MMGlyphs = &proto.Glyphs{}
@@ -51,7 +47,6 @@ func getTestPlayerMM() *proto.Player {
 		Class:          proto.Class_ClassHunter,
 		Equipment:      core.GetGearSet("../../ui/hunter/marksmanship/gear_sets", "preraid_mm").GearSet,
 		Rotation:       core.GetAplRotation("../../ui/hunter/marksmanship/apls", "mm").Rotation,
-		Consumes:       FullConsumes,
 		Spec:           PlayerOptionsBasic,
 		Glyphs:         MMGlyphs,
 		TalentsString:  MMTalents,

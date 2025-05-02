@@ -31,21 +31,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDisciplinePriest, {
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[
-			Stat.StatHealth,
-			Stat.StatMana,
-			Stat.StatStamina,
-			Stat.StatIntellect,
-			Stat.StatSpirit,
-			Stat.StatSpellPower,
-			Stat.StatMP5,
-			Stat.StatMasteryRating,
-		],
-		[
-			PseudoStat.PseudoStatSpellHitPercent,
-			PseudoStat.PseudoStatSpellCritPercent,
-			PseudoStat.PseudoStatSpellHastePercent,
-		],
+		[Stat.StatHealth, Stat.StatMana, Stat.StatStamina, Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatMP5, Stat.StatMasteryRating],
+		[PseudoStat.PseudoStatSpellHitPercent, PseudoStat.PseudoStatSpellCritPercent, PseudoStat.PseudoStatSpellHastePercent],
 	),
 	// modifyDisplayStats: (player: Player<Spec.SpecDisciplinePriest>) => {
 	// 	let stats = new Stats();
@@ -62,7 +49,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDisciplinePriest, {
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
+		consumables: Presets.DefaultConsumables,
 		// Default talents.
 		talents: Presets.StandardTalents.data,
 		// Default spec-specific settings.
@@ -125,7 +112,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDisciplinePriest, {
 			spec: Spec.SpecDisciplinePriest,
 			talents: Presets.StandardTalents.data,
 			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
+			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceDwarf,

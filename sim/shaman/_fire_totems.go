@@ -29,7 +29,7 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
+		CritMultiplier:   shaman.DefaultCritMultiplier(),
 		BonusCoefficient: 0.167,
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -89,7 +89,7 @@ func (shaman *Shaman) registerMagmaTotemSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
+		CritMultiplier:   shaman.DefaultCritMultiplier(),
 
 		Dot: core.DotConfig{
 			IsAOE: true,

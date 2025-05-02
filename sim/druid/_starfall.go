@@ -23,7 +23,7 @@ func (druid *Druid) registerStarfallSpell() {
 		Flags:          SpellFlagOmenTrigger,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   druid.BalanceCritMultiplier(),
+		CritMultiplier:   druid.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.247,
 

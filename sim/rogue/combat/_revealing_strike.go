@@ -66,7 +66,7 @@ func (comRogue *CombatRogue) registerRevealingStrike() {
 		},
 
 		DamageMultiplier: 1.29,
-		CritMultiplier:   comRogue.MeleeCritMultiplier(false),
+		CritMultiplier:   comRogue.CritMultiplier(false),
 		ThreatMultiplier: 1,
 
 		BonusCoefficient: 1,

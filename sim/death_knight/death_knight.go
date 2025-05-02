@@ -4,7 +4,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/wowsims/mop/sim/common/cata"
+	cata "github.com/wowsims/mop/sim/common/cata"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
@@ -15,8 +15,6 @@ const (
 	ExpertiseCapRatio       = 6.5 / 8.0  // 0.8125
 	PetExpertiseRatingScale = ExpertiseCapRatio * (4 * core.ExpertisePerQuarterPercentReduction)
 )
-
-var TalentTreeSizes = [3]int{20, 20, 20}
 
 // Damage Done By Caster setup
 const (
@@ -170,7 +168,7 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 		Inputs:            inputs,
 		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassDeathKnight),
 	}
-	core.FillTalentsProto(dk.Talents.ProtoReflect(), talents, TalentTreeSizes)
+	core.FillTalentsProto(dk.Talents.ProtoReflect(), talents)
 
 	// TODO: Fix this to work with the new talent system.
 	// maxRunicPower := 100.0 + 10.0*float64(dk.Talents.RunicPowerMastery)
@@ -243,8 +241,8 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 	// }
 
 	dk.EnableAutoAttacks(dk, core.AutoAttackOptions{
-		MainHand:       dk.WeaponFromMainHand(dk.DefaultMeleeCritMultiplier()),
-		OffHand:        dk.WeaponFromOffHand(dk.DefaultMeleeCritMultiplier()),
+		MainHand:       dk.WeaponFromMainHand(dk.DefaultCritMultiplier()),
+		OffHand:        dk.WeaponFromOffHand(dk.DefaultCritMultiplier()),
 		AutoSwingMelee: true,
 	})
 

@@ -1,6 +1,5 @@
-import { ConjuredHealthstone, TinkerHandsSynapseSprings } from '../../core/components/inputs/consumables';
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, RotationType, Spec, Stat } from '../../core/proto/common';
+import { ConsumesSpec, Glyphs, Profession, PseudoStat, RotationType, Spec, Stat } from '../../core/proto/common';
 import {
 	BeastMasteryHunter_Options as BeastMasteryOptions,
 	BeastMasteryHunter_Rotation as BeastMasteryRotation,
@@ -76,12 +75,8 @@ export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const BeastMasteryTalents = {
 	name: 'Beast Mastery',
 	data: SavedTalents.create({
-		talentsString: '2330230311320112121-2302-03',
-		glyphs: Glyphs.create({
-			major1: MajorGlyph.GlyphOfBestialWrath,
-			major2: MajorGlyph.GlyphOfRaptorStrike,
-			major3: MajorGlyph.GlyphOfTrapLauncher,
-		}),
+		talentsString: '',
+		glyphs: Glyphs.create({}),
 	}),
 };
 
@@ -90,32 +85,17 @@ export const BMDefaultOptions = BeastMasteryOptions.create({
 		petUptime: 1,
 		useHuntersMark: true,
 		petType: PetType.Wolf,
-		petTalents: {
-			serpentSwiftness: 2,
-			dash: true,
-			bloodthirsty: 1,
-			spikedCollar: 3,
-			boarsSpeed: true,
-			cullingTheHerd: 3,
-			charge: true,
-			spidersBite: 3,
-			rabid: true,
-			callOfTheWild: true,
-			sharkAttack: 2,
-			wildHunt: 2,
-		},
 	},
 });
 
-export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.PotionOfTheTolvir,
-	prepopPotion: Potions.PotionOfTheTolvir,
-	flask: Flask.FlaskOfTheWinds,
-	defaultConjured: ConjuredHealthstone.value,
-	food: Food.FoodSeafoodFeast,
-	tinkerHands: TinkerHandsSynapseSprings.value,
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58087, // Flask of the Winds
+	foodId: 62290, // Seafood Magnifique Feast
+	potId: 58145, // Potion of the Tol'vir
+	prepotId: 58145, // Potion of the Tol'vir
+	conjuredId: 5512, // Conjured Healthstone
+	tinkerId: 82174, // Synapse Springs
 });
-
 export const OtherDefaults = {
 	distanceFromTarget: 24,
 	profession1: Profession.Engineering,

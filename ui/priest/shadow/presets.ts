@@ -1,19 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import {
-	Consumes,
-	Debuffs,
-	Flask,
-	Food,
-	Glyphs,
-	IndividualBuffs,
-	Potions,
-	Profession,
-	PseudoStat,
-	Race,
-	RaidBuffs,
-	Stat,
-	TinkerHands,
-} from '../../core/proto/common';
+import { ConsumesSpec, Debuffs, Glyphs, IndividualBuffs, Profession, PseudoStat, Race, RaidBuffs, Stat } from '../../core/proto/common';
 import {
 	PriestMajorGlyph as MajorGlyph,
 	PriestMinorGlyph as MinorGlyph,
@@ -141,14 +127,10 @@ export const SHADOW_BREAKPOINTS: UnitStatPresets[] = [
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		talentsString: '032212--322032210201222100231',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: MajorGlyph.GlyphOfFade,
 			major2: MajorGlyph.GlyphOfInnerFire,
-			major3: MajorGlyph.GlyphOfSpiritTap,
-			minor1: MinorGlyph.GlyphOfFading,
-			minor2: MinorGlyph.GlyphOfFortitude,
-			minor3: MinorGlyph.GlyphOfShadowfiend,
 		}),
 	}),
 };
@@ -159,12 +141,12 @@ export const DefaultOptions = Options.create({
 	},
 });
 
-export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfTheDraconicMind,
-	food: Food.FoodSeafoodFeast,
-	defaultPotion: Potions.VolcanicPotion,
-	prepopPotion: Potions.VolcanicPotion,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58086, // Flask of the Draconic Mind
+	foodId: 62290, // Seafood Magnifique Feast
+	potId: 58091, // Volcanic Potion
+	prepotId: 58091, // Volcanic Potion
+	tinkerId: 82174, // Synapse Springs
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({

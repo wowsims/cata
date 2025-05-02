@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Stat, TinkerHands } from '../../core/proto/common';
+import { ConsumesSpec, Glyphs, Profession, PseudoStat, Stat } from '../../core/proto/common';
 import { MonkMajorGlyph, MonkMinorGlyph, MonkOptions } from '../../core/proto/monk';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
@@ -62,14 +62,14 @@ export const PREPATCH_DW_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const DefaultTalents = {
 	name: 'Default',
 	data: SavedTalents.create({
-		talentsString: '00110000100100101',
+		talentsString: '',
 		glyphs: Glyphs.create({
-			major1: MonkMajorGlyph.MonkMajorGlyphSpinningCraneKick,
-			major2: MonkMajorGlyph.MonkMajorGlyphTouchOfKarma,
-			major3: MonkMajorGlyph.MonkMajorGlyphZenMeditation,
-			minor1: MonkMinorGlyph.MonkMinorGlyphBlackoutKick,
-			minor2: MonkMinorGlyph.MonkMinorGlyphJab,
-			minor3: MonkMinorGlyph.MonkMinorGlyphWaterRoll,
+			major1: MonkMajorGlyph.GlyphOfSpinningCraneKick,
+			major2: MonkMajorGlyph.GlyphOfTouchOfKarma,
+			major3: MonkMajorGlyph.GlyphOfZenMeditation,
+			minor1: MonkMinorGlyph.GlyphOfBlackoutKick,
+			minor2: MonkMinorGlyph.GlyphOfJab,
+			minor3: MonkMinorGlyph.GlyphOfWaterRoll,
 		}),
 	}),
 };
@@ -78,12 +78,12 @@ export const DefaultOptions = MonkOptions.create({
 	classOptions: {},
 });
 
-export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.PotionOfTheTolvir,
-	prepopPotion: Potions.PotionOfTheTolvir,
-	flask: Flask.FlaskOfTheWinds,
-	food: Food.FoodSeafoodFeast,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58087, // Flask of the Winds
+	foodId: 62290, // Seafood Magnifique Feast
+	potId: 58145, // Potion of the Tol'vir
+	prepotId: 58145, // Potion of the Tol'vir
+	tinkerId: 82174, // Synapse Springs
 });
 
 export const OtherDefaults = {

@@ -67,7 +67,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 			return [hasteSoftCapConfig];
 		})(),
 		// Default consumes settings.
-		consumes: Presets.DefaultFireConsumes,
+		consumables: Presets.DefaultFireConsumables,
 		// Default rotation settings.
 		rotationType: APLRotation_Type.TypeSimple,
 		simpleRotation: Presets.P4TrollDefaultSimpleRotation,
@@ -126,7 +126,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.FireTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.FIRE_P1_PRESET, Presets.FIRE_P3_PREBIS, Presets.FIRE_P3_PRESET,Presets.FIRE_P4_PRESET],
+		gear: [Presets.FIRE_P1_PRESET, Presets.FIRE_P3_PREBIS, Presets.FIRE_P3_PRESET, Presets.FIRE_P4_PRESET],
 		itemSwaps: [Presets.P4_ITEM_SWAP],
 		builds: [Presets.P1_PRESET_BUILD, Presets.P3_PRESET_BUILD, Presets.P3_PRESET_NO_TROLL, Presets.P4_PRESET_BUILD, Presets.P4_PRESET_NO_TROLL],
 	},
@@ -200,7 +200,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 			spec: Spec.SpecFireMage,
 			talents: Presets.FireTalents.data,
 			specOptions: Presets.DefaultFireOptions,
-			consumes: Presets.DefaultFireConsumes,
+			consumables: Presets.DefaultFireConsumables,
 			otherDefaults: Presets.OtherDefaults,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,

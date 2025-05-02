@@ -37,7 +37,7 @@ func (warlock *Warlock) registerSummonInfernal(timer *core.Timer) {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
+		CritMultiplier:   warlock.DefaultCritMultiplier(),
 		BonusCoefficient: 0.76499998569,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

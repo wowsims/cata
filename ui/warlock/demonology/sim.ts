@@ -66,7 +66,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 			return [hasteSoftCapConfig, masterySoftCapConfig];
 		})(),
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
+		consumables: Presets.DefaultConsumables,
 
 		// Default talents.
 		talents: Presets.DemonologyTalentsIncinerate.data,
@@ -147,7 +147,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
-		itemSwaps: [Presets.P3_ITEM_SWAP,Presets.P4_ITEM_SWAP],
+		itemSwaps: [Presets.P3_ITEM_SWAP, Presets.P4_ITEM_SWAP],
 
 		builds: [Presets.PRESET_BUILD_SHADOWBOLT, Presets.PRESET_BUILD_INCINERATE],
 	},
@@ -161,7 +161,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 			spec: Spec.SpecDemonologyWarlock,
 			talents: Presets.DemonologyTalentsIncinerate.data,
 			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
+			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceHuman,

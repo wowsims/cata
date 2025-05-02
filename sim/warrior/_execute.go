@@ -32,7 +32,7 @@ func (warrior *Warrior) RegisterExecuteSpell() {
 			return sim.IsExecutePhase20() && warrior.StanceMatches(BattleStance|BerserkerStance)
 		},
 
-		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   warrior.DefaultCritMultiplier(),
 		DamageMultiplier: 1.0,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

@@ -55,7 +55,7 @@ func (mage *Mage) registerFlameOrbExplodeSpell() {
 		ClassSpellMask: MageSpellFlameOrb,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		CritMultiplier:   mage.DefaultCritMultiplier(),
 		BonusCoefficient: 0.193,
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -150,7 +150,7 @@ func (fo *FlameOrb) registerFlameOrbTickSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   fo.mageOwner.DefaultSpellCritMultiplier(),
+		CritMultiplier:   fo.mageOwner.DefaultCritMultiplier(),
 		BonusCoefficient: 0.134,
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

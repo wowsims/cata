@@ -53,7 +53,6 @@ func NewProcStatBonusEffectWithDamageProc(config ProcStatBonusEffect, damage Dam
 
 	factory_StatBonusEffect(config, func(agent core.Agent) ExtraSpellInfo {
 		character := agent.GetCharacter()
-		critMultiplier := core.TernaryFloat64(damage.IsMelee, character.DefaultMeleeCritMultiplier(), character.DefaultSpellCritMultiplier())
 
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:                 core.ActionID{SpellID: damage.SpellID},
@@ -61,7 +60,7 @@ func NewProcStatBonusEffectWithDamageProc(config ProcStatBonusEffect, damage Dam
 			ProcMask:                 procMask,
 			Flags:                    core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 			DamageMultiplier:         1,
-			CritMultiplier:           critMultiplier,
+			CritMultiplier:           character.DefaultCritMultiplier(),
 			DamageMultiplierAdditive: 1,
 			ThreatMultiplier:         1,
 			BonusCoefficient:         damage.BonusCoefficient,
@@ -481,8 +480,6 @@ func NewProcDamageEffect(config ProcDamageEffect) {
 	effectFn(effectID, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		critMultiplier := core.TernaryFloat64(config.IsMelee, character.DefaultMeleeCritMultiplier(), character.DefaultSpellCritMultiplier())
-
 		minDmg := config.MinDmg
 		maxDmg := config.MaxDmg
 
@@ -497,7 +494,7 @@ func NewProcDamageEffect(config ProcDamageEffect) {
 			Flags:       config.Flags,
 
 			DamageMultiplier: 1,
-			CritMultiplier:   critMultiplier,
+			CritMultiplier:   character.DefaultCritMultiplier(),
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

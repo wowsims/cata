@@ -35,7 +35,7 @@ func (druid *Druid) registerMangleBearSpell() {
 		},
 
 		DamageMultiplier: 1.9 * glyphBonus,
-		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   druid.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 		MaxRange:         core.MaxMeleeRange,
@@ -97,7 +97,7 @@ func (druid *Druid) registerMangleCatSpell() {
 		},
 
 		DamageMultiplier: 5.4 * glyphBonus,
-		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   druid.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 		MaxRange:         core.MaxMeleeRange,

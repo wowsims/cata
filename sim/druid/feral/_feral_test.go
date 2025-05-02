@@ -45,7 +45,7 @@ func TestFeral(t *testing.T) {
 		Talents:         StandardTalents,
 		Glyphs:          StandardGlyphs,
 		OtherTalentSets: []core.TalentsCombo{{Label: "HybridTalents", Talents: HybridTalents, Glyphs: HybridGlyphs}},
-		Consumes:        FullConsumes,
+		Consumables:     FullConsumesSpec,
 		SpecOptions:     core.SpecOptionsCombo{Label: "ExternalBleed", SpecOptions: PlayerOptionsMonoCat},
 		Rotation:        core.GetAplRotation("../../../ui/druid/feral/apls", "default"),
 
@@ -161,10 +161,10 @@ var PlayerOptionsMonoCatNoBleed = &proto.Player_FeralDruid{
 // 	},
 // }
 
-var FullConsumes = &proto.Consumes{
-	Flask:             proto.Flask_FlaskOfTheWinds,
-	Food:              proto.Food_FoodSkeweredEel,
-	DefaultPotion:     proto.Potions_PotionOfTheTolvir,
-	PrepopPotion:      proto.Potions_PotionOfTheTolvir,
-	ExplosiveBigDaddy: true,
+var FullConsumesSpec = &proto.ConsumesSpec{
+	FlaskId:     58087, // Flask of the Winds
+	FoodId:      62669, // Skewered Eel
+	PotId:       58145, // Potion of the Tol'vir
+	PrepotId:    58145, // Potion of the Tol'vir
+	ExplosiveId: 89637, // Big Daddy Explosive
 }

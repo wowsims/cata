@@ -36,7 +36,7 @@ func (mmHunter *MarksmanshipHunter) registerAimedShotSpell() {
 			},
 		},
 		DamageMultiplier: 1.6,
-		CritMultiplier:   mmHunter.CritMultiplier(true, true, false),
+		CritMultiplier:   mmHunter.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

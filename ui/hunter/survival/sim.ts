@@ -87,7 +87,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
+		consumables: Presets.DefaultConsumables,
 		// Default talents.
 		talents: Presets.SurvivalTalents.data,
 		// Default spec-specific settings.
@@ -122,7 +122,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [HunterInputs.PetTypeInput()],
+	playerIconInputs: [],
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: SVInputs.SVRotationConfig,
 	petConsumeInputs: [],
@@ -135,7 +135,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 			HunterInputs.PetUptime(),
 			HunterInputs.AQTierPrepull(),
 			HunterInputs.NaxxTierPrepull(),
-			SVInputs.SniperTrainingUptime,
 			OtherInputs.InputDelay,
 			OtherInputs.DistanceFromTarget,
 			OtherInputs.TankAssignment,
@@ -187,7 +186,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 			talents: Presets.SurvivalTalents.data,
 			specOptions: Presets.SVDefaultOptions,
 
-			consumes: Presets.DefaultConsumes,
+			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceWorgen,

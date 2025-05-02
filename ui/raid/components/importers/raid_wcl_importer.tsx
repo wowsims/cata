@@ -87,7 +87,7 @@ class WCLSimPlayer {
 		this.player.applySharedDefaults(eventID);
 		this.player.setTalentsString(eventID, this.preset.talents.talentsString);
 		this.player.setGlyphs(eventID, this.preset.talents.glyphs!);
-		this.player.setConsumes(eventID, this.preset.consumes);
+		this.player.setConsumes(eventID, this.preset.consumables);
 		this.player.setSpecOptions(eventID, this.preset.specOptions);
 		this.player.setProfessions(eventID, [Profession.Engineering, Profession.Jewelcrafting]);
 

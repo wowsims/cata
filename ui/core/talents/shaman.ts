@@ -1,121 +1,241 @@
 import { ShamanMajorGlyph, ShamanMinorGlyph, ShamanTalents } from '../proto/shaman.js';
 import { GlyphsConfig } from './glyphs_picker.js';
 import { newTalentsConfig, TalentsConfig } from './talents_picker.js';
-import ShamanTalentJson from './trees/shaman.json';
+import ShamanTalentJson from './trees/shaman.json';export const shamanTalentsConfig: TalentsConfig<ShamanTalents> = newTalentsConfig(ShamanTalentJson);
 
-export const shamanTalentsConfig: TalentsConfig<ShamanTalents> = newTalentsConfig(ShamanTalentJson);
 export const shamanGlyphsConfig: GlyphsConfig = {
 	majorGlyphs: {
-		[ShamanMajorGlyph.GlyphOfChainHeal]: {
-			name: 'Glyph of Chain Heal',
-			description:
-				'Increases healing done by your Chain Heal spell to targets beyond the first by 15%, but decreases the amount received by the initial target by 10%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_healingwavegreater.jpg',
+		[ShamanMajorGlyph.GlyphOfUnstableEarth]: {
+			name: "Glyph of Unstable Earth",
+			description: "Causes your Earthquake spell to also reduce the movement speed of affected targets by $s1% for $77478d.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shaman_earthquake.jpg",
 		},
 		[ShamanMajorGlyph.GlyphOfChainLightning]: {
-			name: 'Glyph of Chain Lightning',
-			description: 'Your Chain Lightning spell now strikes 2 additional targets, but deals 10% less initial damage.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_chainlightning.jpg',
+			name: "Glyph of Chain Lightning",
+			description: "$@spelldesc55538",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_chainlightning.jpg",
 		},
-		[ShamanMajorGlyph.GlyphOfElementalMastery]: {
-			name: 'Glyph of Elemental Mastery',
-			description: 'While your Elemental Mastery ability is active, you take 20% less damage from all sources.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_wispheal.jpg',
+		[ShamanMajorGlyph.GlyphOfSpiritWalk]: {
+			name: "Glyph of Spirit Walk",
+			description: "Reduces the cooldown of your Spirit Walk ability by $s1%.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_tracking.jpg",
+		},
+		[ShamanMajorGlyph.GlyphOfCapacitorTotem]: {
+			name: "Glyph of Capacitor Totem",
+			description: "Reduces the charging time of your Capacitor Totem by ${$m1/-1000} sec.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_brilliance.jpg",
+		},
+		[ShamanMajorGlyph.GlyphOfPurge]: {
+			name: "Glyph of Purge",
+			description: "Your Purge dispels $s1 additional Magic effect but has a ${$m2/1000} sec cooldown.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_purge.jpg",
+		},
+		[ShamanMajorGlyph.GlyphOfFireElementalTotem]: {
+			name: "Glyph of Fire Elemental Totem",
+			description: "Reduces the cooldown and duration of your Fire Elemental Totem by $s1%.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_fire_elemental_totem.jpg",
 		},
 		[ShamanMajorGlyph.GlyphOfFireNova]: {
-			name: 'Glyph of Fire Nova',
-			description: 'Increases the radius of your Fire Nova spell by 5 yards.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shaman_firenova.jpg',
+			name: "Glyph of Fire Nova",
+			description: "Increases the radius of your Fire Nova spell by $55450s1 yards.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shaman_firenova.jpg",
 		},
-		[ShamanMajorGlyph.GlyphOfFrostShock]: {
-			name: 'Glyph of Frost Shock',
-			description: 'Increases the duration of your Frost Shock by 2 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_frost_frostshock.jpg',
+		[ShamanMajorGlyph.GlyphOfFlameShock]: {
+			name: "Glyph of Flame Shock",
+			description: "When your Flame Shock deals damage, it heals you for $55447s1% of the damage dealt.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_fire_flameshock.jpg",
 		},
-		[ShamanMajorGlyph.GlyphOfGhostWolf]: {
-			name: 'Glyph of Ghost Wolf',
-			description: 'Your Ghost Wolf form grants an additional 5% movement speed.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_spiritwolf.jpg',
-		},
-		[ShamanMajorGlyph.GlyphOfGroundingTotem]: {
-			name: 'Glyph of Grounding Totem',
-			description:
-				'Instead of absorbing a spell, your Grounding Totem reflects the next harmful spell back at its caster, but the cooldown of your Grounding Totem is increased by 35 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_groundingtotem.jpg',
+		[ShamanMajorGlyph.GlyphOfWindShear]: {
+			name: "Glyph of Wind Shear",
+			description: "Increases the school lockout duration of Wind Shear by ${$55451m1/1000} sec, but also increases the cooldown by ${$55451m2/1000} sec.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_cyclone.jpg",
 		},
 		[ShamanMajorGlyph.GlyphOfHealingStreamTotem]: {
-			name: 'Glyph of Healing Stream Totem',
-			description: 'Your Healing Stream Totem also increases the Fire, Frost, and Nature resistance of party and raid members within 30 yards by 85.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/inv_spear_04.jpg',
+			name: "Glyph of Healing Stream Totem",
+			description: "When your Healing Stream Totem heals an ally, it also reduces their Fire, Frost, and Nature damage taken by $119523s1% for $119523d.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_spear_04.jpg",
 		},
 		[ShamanMajorGlyph.GlyphOfHealingWave]: {
-			name: 'Glyph of Healing Wave',
-			description: 'Your Healing Wave also heals you for 20% of the healing effect when you heal someone else.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_healingwavegreater.jpg',
-		},
-		[ShamanMajorGlyph.GlyphOfHex]: {
-			name: 'Glyph of Hex',
-			description: 'Reduces the cooldown of your Hex spell by 10 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shaman_hex.jpg',
-		},
-		[ShamanMajorGlyph.GlyphOfLightningShield]: {
-			name: 'Glyph of Lightning Shield',
-			description: 'Your Lightning Shield can no longer drop below 3 charges from dealing damage to attackers.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_lightningshield.jpg',
-		},
-		[ShamanMajorGlyph.GlyphOfShamanisticRage]: {
-			name: 'Glyph of Shamanistic Rage',
-			description: 'Activating your Shamanistic Rage ability also cleanses you of all dispellable Magic debuffs.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_shamanrage.jpg',
-		},
-		[ShamanMajorGlyph.GlyphOfStoneclawTotem]: {
-			name: 'Glyph of Stoneclaw Totem',
-			description:
-				'Your Stoneclaw Totem also places a damage absorb shield on you, equal to 4 times the strength of the shield it places on your totems.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_stoneclawtotem.jpg',
-		},
-		[ShamanMajorGlyph.GlyphOfThunder]: {
-			name: 'Glyph of Thunder',
-			description: 'Reduces the cooldown on Thunderstorm by 10 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shaman_thunderstorm.jpg',
+			name: "Glyph of Healing Wave",
+			description: "Your Healing Wave also heals you for $55440s1% of the healing effect when you heal someone else.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_healingwavegreater.jpg",
 		},
 		[ShamanMajorGlyph.GlyphOfTotemicRecall]: {
-			name: 'Glyph of Totemic Recall',
-			description: 'Causes your Totemic Recall ability to return an additional 50% of the mana cost of any recalled totems.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shaman_totemrecall.jpg',
+			name: "Glyph of Totemic Recall",
+			description: "Causes your Totemic Recall ability to return the full mana cost of any recalled totems.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shaman_totemrecall.jpg",
+		},
+		[ShamanMajorGlyph.GlyphOfTelluricCurrents]: {
+			name: "Glyph of Telluric Currents",
+			description: "Causes your Lightning Bolt to restore $\u003Cmana\u003E% of your mana when it strikes an enemy.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_lightning_lightningbolt01.jpg",
+		},
+		[ShamanMajorGlyph.GlyphOfGroundingTotem]: {
+			name: "Glyph of Grounding Totem",
+			description: "Instead of absorbing a spell, your Grounding Totem reflects the next harmful spell back at its caster, but the cooldown of your Grounding Totem is increased by ${$55441m1/1000} sec.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_groundingtotem.jpg",
+		},
+		[ShamanMajorGlyph.GlyphOfSpiritwalkersGrace]: {
+			name: "Glyph of Spiritwalker's Grace",
+			description: "Increases the duration of your Spiritwalker\'s Grace by ${$55446m1/1000} sec.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shaman_spiritwalkersgrace.jpg",
+		},
+		[ShamanMajorGlyph.GlyphOfWaterShield]: {
+			name: "Glyph of Water Shield",
+			description: "Increases the mana generated reactively by your Water Shield when you are attacked by $s1%, but reduces the passive mana generation by $s2%.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_shaman_watershield.jpg",
+		},
+		[ShamanMajorGlyph.GlyphOfCleansingWaters]: {
+			name: "Glyph of Cleansing Waters",
+			description: "When you dispel a harmful Magic or Curse effect from an ally, you also heal the target for $s1% of your maximum health.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_regeneration_02.jpg",
+		},
+		[ShamanMajorGlyph.GlyphOfFrostShock]: {
+			name: "Glyph of Frost Shock",
+			description: "Decreases the cooldown incurred by your Frost Shock by ${$55443m1/-1000} sec.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_frost_frostshock.jpg",
+		},
+		[ShamanMajorGlyph.GlyphOfChaining]: {
+			name: "Glyph of Chaining",
+			description: "Increases the jump distance of your Chain Heal spell by $s2%, but gives the spell a ${$m1/1000} sec cooldown.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_druid_empoweredtouch.jpg",
+		},
+		[ShamanMajorGlyph.GlyphOfHealingStorm]: {
+			name: "Glyph of Healing Storm",
+			description: "Each application of Maelstrom Weapon also increases your direct healing done by $s1%.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shaman_maelstromweapon.jpg",
+		},
+		[ShamanMajorGlyph.GlyphOfGhostWolf]: {
+			name: "Glyph of Ghost Wolf",
+			description: "While in Ghost Wolf form, you are less hindered by effects that would reduce movement speed.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_spiritwolf.jpg",
+		},
+		[ShamanMajorGlyph.GlyphOfThunder]: {
+			name: "Glyph of Thunder",
+			description: "Reduces the cooldown on Thunderstorm by ${$63270m1/-1000} sec.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shaman_thunderstorm.jpg",
+		},
+		[ShamanMajorGlyph.GlyphOfFeralSpirit]: {
+			name: "Glyph of Feral Spirit",
+			description: "Increases the healing done by your Feral Spirits\' Spirit Hunt by $s1%.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shaman_feralspirit.jpg",
+		},
+		[ShamanMajorGlyph.GlyphOfRiptide]: {
+			name: "Glyph of Riptide",
+			description: "Removes the cooldown of Riptide, but reduces the initial direct healing by $s2%.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_riptide.jpg",
+		},
+		[ShamanMajorGlyph.GlyphOfShamanisticRage]: {
+			name: "Glyph of Shamanistic Rage",
+			description: "Activating your Shamanistic Rage ability also cleanses you of all dispellable harmful Magic effects.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_shamanrage.jpg",
+		},
+		[ShamanMajorGlyph.GlyphOfHex]: {
+			name: "Glyph of Hex",
+			description: "Reduces the cooldown of your Hex spell by ${$63291m1/-1000} sec.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shaman_hex.jpg",
+		},
+		[ShamanMajorGlyph.GlyphOfTotemicVigor]: {
+			name: "Glyph of Totemic Vigor",
+			description: "Increases the health of your totems by $s1% of your maximum health.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_relics_totemofrebirth.jpg",
+		},
+		[ShamanMajorGlyph.GlyphOfLightningShield]: {
+			name: "Glyph of Lightning Shield",
+			description: "When your Lightning Shield is triggered, you take $142912s1% less damage for $142912d.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_lightningshield.jpg",
+		},
+		[ShamanMajorGlyph.GlyphOfPurging]: {
+			name: "Glyph of Purging",
+			description: "Successfully Purging a target now grants a stack of Maelstrom Weapon.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shaman_improvedreincarnation.jpg",
+		},
+		[ShamanMajorGlyph.GlyphOfEternalEarth]: {
+			name: "Glyph of Eternal Earth",
+			description: "Your Lightning Bolt has a chance to add a charge to your currently active Earth Shield.  This cannot cause Earth Shield to exceed $s1 charges.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shaman_improvedearthshield.jpg",
 		},
 	},
 	minorGlyphs: {
+		[ShamanMinorGlyph.GlyphOfTheLakestrider]: {
+			name: "Glyph of the Lakestrider",
+			description: "You automatically gain Water Walking while you are in Ghost Wolf form.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_frost_windwalkon.jpg",
+		},
+		[ShamanMinorGlyph.GlyphOfLavaLash]: {
+			name: "Glyph of Lava Lash",
+			description: "Your Lava Lash ability no longer spreads Flame Shock to nearby targets.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_shaman_lavalash.jpg",
+		},
 		[ShamanMinorGlyph.GlyphOfAstralRecall]: {
-			name: 'Glyph of Astral Recall',
-			description: 'Reduces the cooldown of your Astral Recall spell by 7.5 min.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_astralrecal.jpg',
+			name: "Glyph of Astral Recall",
+			description: "Reduces the cooldown of your Astral Recall spell by ${$m1/-60000} minutes.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_astralrecal.jpg",
 		},
-		[ShamanMinorGlyph.GlyphOfRenewedLife]: {
-			name: 'Glyph of Renewed Life',
-			description: 'Your Reincarnation spell no longer requires a reagent.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shaman_improvedreincarnation.jpg',
+		[ShamanMinorGlyph.GlyphOfFarSight]: {
+			name: "Glyph of Far Sight",
+			description: "Your Far Sight spell may be used indoors.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_farsight.jpg",
 		},
-		[ShamanMinorGlyph.GlyphOfTheArcticWolf]: {
-			name: 'Glyph of the Arctic Wolf',
-			description: 'Alters the appearance of your Ghost Wolf transformation, causing it to resemble an arctic wolf.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_mount_whitedirewolf.jpg',
+		[ShamanMinorGlyph.GlyphOfTheSpectralWolf]: {
+			name: "Glyph of the Spectral Wolf",
+			description: "Alters the appearance of your Ghost Wolf transformation, causing it to resemble a large, spectral wolf.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_mount_whitedirewolf.jpg",
+		},
+		[ShamanMinorGlyph.GlyphOfTotemicEncirclement]: {
+			name: "Glyph of Totemic Encirclement",
+			description: "When you cast a totem spell, you also place unempowered totems for any elements that are not currently active.  These totems have $s1 health and produce no other effects.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_shaman_totemrelocation.jpg",
 		},
 		[ShamanMinorGlyph.GlyphOfThunderstorm]: {
-			name: 'Glyph of Thunderstorm',
-			description:
-				'Increases the mana you receive from your Thunderstorm spell by 2%, but it no longer knocks enemies back or reduces their movement speed.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shaman_thunderstorm.jpg',
+			name: "Glyph of Thunderstorm",
+			description: "Removes the knockback effect from your Thunderstorm spell.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shaman_thunderstorm.jpg",
 		},
-		[ShamanMinorGlyph.GlyphOfWaterBreathing]: {
-			name: 'Glyph of Water Breathing',
-			description: 'Your Water Breathing spell no longer requires a reagent.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_demonbreath.jpg',
+		[ShamanMinorGlyph.GlyphOfDeluge]: {
+			name: "Glyph of Deluge",
+			description: "Your Chain Heal now has a watery appearance.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_healingwavegreater.jpg",
 		},
-		[ShamanMinorGlyph.GlyphOfWaterWalking]: {
-			name: 'Glyph of Water Walking',
-			description: 'Your Water Walking spell no longer requires a reagent.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_frost_windwalkon.jpg',
+		[ShamanMinorGlyph.GlyphOfSpiritRaptors]: {
+			name: "Glyph of Spirit Raptors",
+			description: "Your Spirit Wolves are replaced with Spirit Raptors.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/trade_archaeology_dinosaurskeleton.jpg",
+		},
+		[ShamanMinorGlyph.GlyphOfLingeringAncestors]: {
+			name: "Glyph of Lingering Ancestors",
+			description: "Resurrecting someone with Ancestral Spirit causes a ghostly ancestor to follow them around for a short time.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_shaman_ancestralawakening.jpg",
+		},
+		[ShamanMinorGlyph.GlyphOfSpiritWolf]: {
+			name: "Glyph of Spirit Wolf",
+			description: "Ghost Wolf can be now be used while you are a ghost.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_spiritwolf.jpg",
+		},
+		[ShamanMinorGlyph.GlyphOfFlamingSerpent]: {
+			name: "Glyph of Flaming Serpent",
+			description: "Your Searing Totem now resembles Vol\'jin\'s Serpent Ward.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_guardianward.jpg",
+		},
+		[ShamanMinorGlyph.GlyphOfTheCompy]: {
+			name: "Glyph of the Compy",
+			description: "Your Hex now transforms enemies into a Compy.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_pet_raptor.jpg",
+		},
+		[ShamanMinorGlyph.GlyphOfElementalFamiliars]: {
+			name: "Glyph of Elemental Familiars",
+			description: "Summons a random Fire, Water, or Nature familiar.  Familiars of different types have a tendency to fight each other.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_pet_pandarenelemental.jpg",
+		},
+		[ShamanMinorGlyph.GlyphOfAstralFixation]: {
+			name: "Glyph of Astral Fixation",
+			description: "Astral Recall now takes you to your capital\'s Earthshrine.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_astralrecalgroup.jpg",
+		},
+		[ShamanMinorGlyph.GlyphOfRainOfFrogs]: {
+			name: "Glyph of Rain of Frogs",
+			description: "You summon a rain storm of frogs at your targeted location.",
+			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_pet_toad_blue.jpg",
 		},
 	},
 };

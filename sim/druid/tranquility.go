@@ -19,7 +19,7 @@ func (druid *Druid) registerTranquilityCD() {
 		Flags:            core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		CritMultiplier:   druid.DefaultSpellCritMultiplier(),
+		CritMultiplier:   druid.DefaultCritMultiplier(),
 
 		// TODO: Healing value calculations are very likely incorrect and will need a closer look if we care about
 		// modeling the actual healing output from the spell. Right now this is just a placeholder for pre-pull use in
@@ -81,7 +81,7 @@ func (druid *Druid) registerTranquilityCD() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		CritMultiplier:   druid.DefaultSpellCritMultiplier(),
+		CritMultiplier:   druid.DefaultCritMultiplier(),
 
 		// TODO: Healing value calculations are very likely incorrect and will need a closer look if we
 		// care about modeling the actual healing output from the spell. Right now this is just a

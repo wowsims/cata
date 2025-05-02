@@ -2,99 +2,85 @@ syntax = "proto3";
 package proto;
 
 option go_package = "./proto";
-
+// DO NOT REMOVE THE COMMENTS
+// BEGIN GENERATED
+// ShamanTalents message.
 message ShamanTalents {
-	// Elemental
-	int32 acuity = 1;
-	int32 convection = 2;
-	int32 concussion = 3;
-	int32 call_of_flame = 4;
-	int32 elemental_warding = 5;
-	int32 reverberation = 6;
-	int32 elemental_precision = 7;
-	int32 rolling_thunder = 8;
-	bool elemental_focus = 9;
-	int32 elemental_reach = 10;
-	int32 elemental_oath = 11;
-	int32 lava_flows = 12;
-	bool fulmination = 13;
-	bool elemental_mastery = 14;
-	int32 earths_grasp = 15;
-	bool totemic_wrath = 16;
-	int32 feedback = 17;
-	int32 lava_surge = 18;
-	bool earthquake = 19;
-
-	// Enhancement
-	int32 elemental_weapons = 20;
-	int32 focused_strikes = 21;
-	int32 improved_shields = 22;
-	int32 elemental_devastation = 23;
-	int32 flurry = 24;
-	int32 ancestral_swiftness = 25;
-	int32 totemic_reach = 26;
-	int32 toughness = 27;
-	bool stormstrike = 28;
-	int32 static_shock = 29;
-	int32 frozen_power = 30;
-	int32 seasoned_winds = 31;
-	int32 searing_flames = 32;
-	int32 earthen_power = 33;
-	bool shamanistic_rage = 34;
-	int32 unleashed_rage = 35;
-	int32 maelstrom_weapon = 36;
-	int32 improved_lava_lash = 37;
-	bool feral_spirit = 38;
-
-	// Restoration
-	int32 ancestral_resolve = 39;
-	int32 tidal_focus = 40;
-	int32 spark_of_life = 41;
-	int32 resurgence = 42;
-	int32 totemic_focus = 43;
-	int32 focused_insight = 44;
-	int32 natures_guardian = 45;
-	int32 ancestral_healing = 46;
-	bool natures_swiftness = 47;
-	int32 natures_blessing = 48;
-	int32 soothing_rains = 49;
-	bool improved_cleanse_spirit = 50;
-	int32 cleansing_waters = 51;
-	int32 ancestral_awakening = 52;
-	bool mana_tide_totem = 53;
-	int32 telluric_currents = 54;
-	bool spirit_link_totem = 55;
-	int32 tidal_waves = 56;
-	int32 blessing_of_the_eternals = 57;
-	bool riptide = 58;
+    bool natures_guardian = 1;
+    bool stone_bulwark_totem = 2;
+    bool astral_shift = 3;
+    bool frozen_power = 4;
+    bool earthgrab_totem = 5;
+    bool windwalk_totem = 6;
+    bool call_of_the_elements = 7;
+    bool totemic_persistence = 8;
+    bool totemic_projection = 9;
+    bool elemental_mastery = 10;
+    bool ancestral_swiftness = 11;
+    bool echo_of_the_elements = 12;
+    bool rushing_streams = 13;
+    bool ancestral_guidance = 14;
+    bool conductivity = 15;
+    bool unleashed_fury = 16;
+    bool primal_elementalist = 17;
+    bool elemental_blast = 18;
 }
+
 enum ShamanMajorGlyph {
-	ShamanMajorGlyphNone = 0;
-	GlyphOfChainHeal = 41517;
-	GlyphOfChainLightning = 41518;
-	GlyphOfElementalMastery = 41552;
-	GlyphOfFireNova = 41530;
-	GlyphOfFrostShock = 41547;
-	GlyphOfGhostWolf = 43725;
-	GlyphOfGroundingTotem = 41538;
-	GlyphOfHealingStreamTotem = 41533;
-	GlyphOfHealingWave = 41534;
-	GlyphOfHex = 45777;
-	GlyphOfLightningShield = 41537;
-	GlyphOfShamanisticRage = 45776;
-	GlyphOfStoneclawTotem = 45778;
-	GlyphOfThunder = 45770;
-	GlyphOfTotemicRecall = 41535;
+    ShamanMajorGlyphNone = 0;
+    GlyphOfUnstableEarth = 41517;
+    GlyphOfChainLightning = 41518;
+    GlyphOfSpiritWalk = 41524;
+    GlyphOfCapacitorTotem = 41526;
+    GlyphOfPurge = 41527;
+    GlyphOfFireElementalTotem = 41529;
+    GlyphOfFireNova = 41530;
+    GlyphOfFlameShock = 41531;
+    GlyphOfWindShear = 41532;
+    GlyphOfHealingStreamTotem = 41533;
+    GlyphOfHealingWave = 41534;
+    GlyphOfTotemicRecall = 41535;
+    GlyphOfTelluricCurrents = 41536;
+    GlyphOfGroundingTotem = 41538;
+    GlyphOfSpiritwalkersGrace = 41539;
+    GlyphOfWaterShield = 41541;
+    GlyphOfCleansingWaters = 41542;
+    GlyphOfFrostShock = 41547;
+    GlyphOfChaining = 41552;
+    GlyphOfHealingStorm = 43344;
+    GlyphOfGhostWolf = 43725;
+    GlyphOfThunder = 45770;
+    GlyphOfFeralSpirit = 45771;
+    GlyphOfRiptide = 45772;
+    GlyphOfShamanisticRage = 45776;
+    GlyphOfHex = 45777;
+    GlyphOfTotemicVigor = 45778;
+    GlyphOfLightningShield = 71155;
+    GlyphOfPurging = 104052;
+    GlyphOfEternalEarth = 104053;
 }
+
 enum ShamanMinorGlyph {
-	ShamanMinorGlyphNone = 0;
-	GlyphOfAstralRecall = 43381;
-	GlyphOfRenewedLife = 43385;
-	GlyphOfTheArcticWolf = 43386;
-	GlyphOfThunderstorm = 44923;
-	GlyphOfWaterBreathing = 43344;
-	GlyphOfWaterWalking = 43388;
+    ShamanMinorGlyphNone = 0;
+    GlyphOfTheLakestrider = 41537;
+    GlyphOfLavaLash = 41540;
+    GlyphOfAstralRecall = 43381;
+    GlyphOfFarSight = 43385;
+    GlyphOfTheSpectralWolf = 43386;
+    GlyphOfTotemicEncirclement = 43388;
+    GlyphOfThunderstorm = 44923;
+    GlyphOfDeluge = 45775;
+    GlyphOfSpiritRaptors = 104126;
+    GlyphOfLingeringAncestors = 104127;
+    GlyphOfSpiritWolf = 104128;
+    GlyphOfFlamingSerpent = 104129;
+    GlyphOfTheCompy = 104130;
+    GlyphOfElementalFamiliars = 104131;
+    GlyphOfAstralFixation = 104133;
+    GlyphOfRainOfFrogs = 104134;
 }
+
+// END GENERATED
 
 enum EarthTotem {
 	NoEarthTotem = 0;

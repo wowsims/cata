@@ -15,7 +15,7 @@ func (comRogue *CombatRogue) applyMastery() {
 
 		DamageMultiplier:         1.0,
 		DamageMultiplierAdditive: 1.0,
-		CritMultiplier:           comRogue.MeleeCritMultiplier(false),
+		CritMultiplier:           comRogue.CritMultiplier(false),
 		ThreatMultiplier:         1.0,
 
 		BonusCoefficient: 1.0,

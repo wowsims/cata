@@ -36,7 +36,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 		ClassSpellMask: SpellMaskCensure,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   paladin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -94,7 +94,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 		ClassSpellMask: SpellMaskJudgementOfTruth,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   paladin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -116,7 +116,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 		ClassSpellMask: SpellMaskSealOfTruth,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   paladin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

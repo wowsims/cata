@@ -1,5 +1,5 @@
-import { ResourceType } from '../proto/api';
 import { ArmorType, Class, ItemSlot, Profession, PseudoStat, Race, RangedWeaponType, Spec, Stat, WeaponType } from '../proto/common';
+import { ResourceType } from '../proto/spell';
 import { DungeonDifficulty, RaidFilterOption, RepFaction, RepLevel, SourceFilterOption, StatCapType } from '../proto/ui';
 
 export const armorTypeNames: Map<ArmorType, string> = new Map([
@@ -44,7 +44,7 @@ export const raceNames: Map<Race, string> = new Map([
 	[Race.RaceNightElf, 'Night Elf'],
 	[Race.RaceOrc, 'Orc'],
 	[Race.RaceAlliancePandaren, 'Pandaren (A)'],
-	[Race.RaceHordePandaren, 'Pandaren (A)'],
+	[Race.RaceHordePandaren, 'Pandaren (H)'],
 	[Race.RaceTauren, 'Tauren'],
 	[Race.RaceTroll, 'Troll'],
 	[Race.RaceUndead, 'Undead'],

@@ -28,29 +28,20 @@ func NewBrewmasterMonk(character *core.Character, options *proto.Player) *Brewma
 	monkOptions := options.GetBrewmasterMonk()
 
 	bm := &BrewmasterMonk{
-		Monk:           monk.NewMonk(character, monkOptions.Options.ClassOptions, options.TalentsString),
-		StartingStance: monkOptions.Options.Stance,
+		Monk: monk.NewMonk(character, monkOptions.Options.ClassOptions, options.TalentsString),
 	}
-	bm.SetStartingStance()
 
 	bm.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 	bm.AddStatDependency(stats.Agility, stats.AttackPower, 2)
 
-	return bm
-}
+	// Brewmaster monks does a flat 85% of total damage as well as AP per DPS being 11 instead of 14
+	bm.PseudoStats.DamageDealtMultiplier *= 0.85
 
-func (bm *BrewmasterMonk) SetStartingStance() {
-	switch bm.StartingStance {
-	case proto.MonkStance_SturdyOx:
-		bm.Stance = monk.SturdyOx
-	case proto.MonkStance_FierceTiger:
-		bm.Stance = monk.FierceTiger
-	}
+	return bm
 }
 
 type BrewmasterMonk struct {
 	*monk.Monk
-	StartingStance proto.MonkStance
 }
 
 func (bm *BrewmasterMonk) GetMonk() *monk.Monk {
@@ -65,10 +56,11 @@ func (bm *BrewmasterMonk) Initialize() {
 func (bm *BrewmasterMonk) ApplyTalents() {
 	bm.Monk.ApplyTalents()
 	bm.ApplyArmorSpecializationEffect(stats.Stamina, proto.ArmorType_ArmorTypeLeather, 120225)
+
+	bm.registerGuard()
 }
 
 func (bm *BrewmasterMonk) Reset(sim *core.Simulation) {
-	bm.SetStartingStance()
 	bm.Monk.Reset(sim)
 }
 

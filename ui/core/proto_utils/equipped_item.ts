@@ -61,7 +61,6 @@ export class EquippedItem {
 	get randomSuffix(): ItemRandomSuffix | null {
 		return this._randomSuffix ? ItemRandomSuffix.clone(this._randomSuffix) : null;
 	}
-
 	get enchant(): Enchant | null {
 		// Make a defensive copy
 		return this._enchant ? Enchant.clone(this._enchant) : null;

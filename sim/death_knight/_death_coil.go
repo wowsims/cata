@@ -9,7 +9,7 @@ var DeathCoilActionID = core.ActionID{SpellID: 47541}
 
 func (dk *DeathKnight) registerDeathCoilSpell() {
 	rpMetrics := dk.NewRunicPowerMetrics(core.ActionID{SpellID: 58679})
-	hasGlyphOfDeathsEmbrace := dk.HasMinorGlyph(proto.DeathKnightMinorGlyph_GlyphOfDeathSEmbrace)
+	hasGlyphOfDeathsEmbrace := dk.HasMinorGlyph(proto.DeathKnightMinorGlyph_GlyphOfDeathsEmbrace)
 
 	// Death Coil Heal
 	dk.RegisterSpell(core.SpellConfig{
@@ -29,7 +29,7 @@ func (dk *DeathKnight) registerDeathCoilSpell() {
 		},
 
 		DamageMultiplier: 3.5,
-		CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   dk.DefaultCritMultiplier(),
 		ThreatMultiplier: 1.0,
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
@@ -63,7 +63,7 @@ func (dk *DeathKnight) registerDeathCoilSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   dk.DefaultCritMultiplier(),
 		ThreatMultiplier: 1.0,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

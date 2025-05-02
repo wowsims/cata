@@ -32,7 +32,7 @@ func (hunter *MarksmanshipHunter) applyMastery() {
 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 0.8, // Wowwiki says it remains 80%
-		CritMultiplier:   hunter.CritMultiplier(false, false, false),
+		CritMultiplier:   hunter.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		BonusCoefficient: 1,

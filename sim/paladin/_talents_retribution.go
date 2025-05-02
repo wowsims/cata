@@ -104,7 +104,7 @@ func (paladin *Paladin) applySealsOfCommand() {
 		ClassSpellMask: SpellMaskSealsOfCommand,
 
 		DamageMultiplier: 0.07,
-		CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   paladin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1.0,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -250,7 +250,7 @@ func (paladin *Paladin) applyDivineStorm() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   paladin.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			numHits := 0

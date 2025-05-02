@@ -30,7 +30,7 @@ func (dk *DeathKnight) registerDeathAndDecaySpell() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1.9,
-		CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   dk.DefaultCritMultiplier(),
 
 		Dot: core.DotConfig{
 			IsAOE: true,

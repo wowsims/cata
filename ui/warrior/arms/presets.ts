@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Stat, TinkerHands } from '../../core/proto/common';
+import { ConsumesSpec, Glyphs, Profession, PseudoStat, Stat } from '../../core/proto/common';
 import { SavedTalents } from '../../core/proto/ui';
 import { ArmsWarrior_Options as WarriorOptions, WarriorMajorGlyph, WarriorMinorGlyph } from '../../core/proto/warrior';
 import { Stats } from '../../core/proto_utils/stats';
@@ -52,14 +52,9 @@ export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const ArmsTalents = {
 	name: 'Default',
 	data: SavedTalents.create({
-		talentsString: '30220303120212312211-0322-3',
+		talentsString: '',
 		glyphs: Glyphs.create({
-			major1: WarriorMajorGlyph.GlyphOfCleaving,
 			major2: WarriorMajorGlyph.GlyphOfSweepingStrikes,
-			major3: WarriorMajorGlyph.GlyphOfThunderClap,
-			minor1: WarriorMinorGlyph.GlyphOfBerserkerRage,
-			minor2: WarriorMinorGlyph.GlyphOfCommand,
-			minor3: WarriorMinorGlyph.GlyphOfBattle,
 		}),
 	}),
 };
@@ -70,12 +65,12 @@ export const DefaultOptions = WarriorOptions.create({
 	},
 });
 
-export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfTitanicStrength,
-	food: Food.FoodBeerBasedCrocolisk,
-	defaultPotion: Potions.GolembloodPotion,
-	prepopPotion: Potions.GolembloodPotion,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58088, // Flask of Titanic Strength
+	foodId: 62670, // Beer-Basted Crocolisk
+	potId: 58146, // Golemblood Potion
+	prepotId: 58146, // Golemblood Potion
+	tinkerId: 82174, // Synapse Springs
 });
 
 export const OtherDefaults = {

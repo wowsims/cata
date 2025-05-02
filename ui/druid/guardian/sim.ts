@@ -97,7 +97,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
+		consumables: Presets.DefaultConsumables,
 		// Default rotation settings.
 		rotationType: APLRotationType.TypeSimple,
 		simpleRotation: Presets.DefaultSimpleRotation,
@@ -162,95 +162,103 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		rotations: [Presets.ROTATION_PRESET_SIMPLE, Presets.ROTATION_DEFAULT, Presets.ROTATION_CLEAVE, Presets.ROTATION_NEF],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
-		builds: [Presets.PRESET_BUILD_BOSS_DUMMY, Presets.PRESET_BUILD_MAGMAW, Presets.PRESET_BUILD_NEF, Presets.PRESET_BUILD_BETHTILAC, Presets.PRESET_BUILD_BALEROC_MT, Presets.PRESET_BUILD_BALEROC_OT, Presets.PRESET_BUILD_BLACKHORN_OT],
+		builds: [
+			Presets.PRESET_BUILD_BOSS_DUMMY,
+			Presets.PRESET_BUILD_MAGMAW,
+			Presets.PRESET_BUILD_NEF,
+			Presets.PRESET_BUILD_BETHTILAC,
+			Presets.PRESET_BUILD_BALEROC_MT,
+			Presets.PRESET_BUILD_BALEROC_OT,
+			Presets.PRESET_BUILD_BLACKHORN_OT,
+		],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecGuardianDruid>): APLRotation => {
 		return Presets.ROTATION_DEFAULT.rotation.rotation!;
 	},
 
-	simpleRotation: (player: Player<Spec.SpecGuardianDruid>, simple: DruidRotation, cooldowns: Cooldowns): APLRotation => {
-		const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
+	// simpleRotation: (player: Player<Spec.SpecGuardianDruid>, simple: DruidRotation, cooldowns: Cooldowns): APLRotation => {
+	// 	// const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
 
-		const stampedeSpellId = player.getTalents().stampede == 1 ? 81016 : 81017;
-		const preStampede = APLPrepullAction.fromJsonString(
-			`{"action":{"activateAura":{"auraId":{"spellId":${stampedeSpellId.toFixed(0)}}}},"doAtValue":{"const":{"val":"-0.1s"}}}`,
-		);
+	// 	// const stampedeSpellId = player.getTalents().stampede == 1 ? 81016 : 81017;
+	// 	// const preStampede = APLPrepullAction.fromJsonString(
+	// 	// 	`{"action":{"activateAura":{"auraId":{"spellId":${stampedeSpellId.toFixed(0)}}}},"doAtValue":{"const":{"val":"-0.1s"}}}`,
+	// 	// );
 
-		const emergencySpellId = player.getTalents().pulverize ? 80313 : 33745;
-		const emergencyPulverize = APLAction.fromJsonString(
-			`{"condition":{"and":{"vals":[{"dotIsActive":{"targetUnit":{"type":"Target"},"spellId":{"spellId":33745}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":33745}}},"rhs":{"const":{"val":"3"}}}},{"cmp":{"op":"OpLe","lhs":{"dotRemainingTime":{"targetUnit":{"type":"Target"},"spellId":{"spellId":33745}}},"rhs":{"const":{"val":"${simple.pulverizeTime.toFixed(
-				1,
-			)}s"}}}}]}},"castSpell":{"spellId":{"spellId":${emergencySpellId.toFixed(0)}},"target":{"type":"Target"}}}`,
-		);
-		const faerieFireMaintain = APLAction.fromJsonString(
-			`{"condition":{"or":{"vals":[{"not":{"val":{"auraIsActive":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":770}}}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":770}}},"rhs":{"const":{"val":"6s"}}}}]}},"castSpell":{"spellId":{"spellId":16857},"target":{"type":"Target"}}}`,
-		);
-		const demoRoar = APLAction.fromJsonString(
-			`{"condition":{"auraShouldRefresh":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":99},"maxOverlap":{"const":{"val":"${simple.demoTime.toFixed(
-				1,
-			)}s"}}}},"castSpell":{"spellId":{"spellId":99},"target":{"type":"Target"}}}`,
-		);
-		const berserk = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":50334}}}`);
-		const enrage = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":5229}}}`);
-		const synapseSprings = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":82174}}}`);
-		const lacerateForProcs = APLAction.fromJsonString(
-			`{"condition":{"and":{"vals":[{"not":{"val":{"dotIsActive":{"targetUnit":{"type":"Target"},"spellId":{"spellId":33745}}}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":50334}}}}},{"cmp":{"op":"OpGt","lhs":{"spellTimeToReady":{"spellId":{"spellId":50334}}},"rhs":{"const":{"val":"3s"}}}}]}},"castSpell":{"spellId":{"spellId":33745},"target":{"type":"Target"}}}`,
-		);
-		const mangle = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":33878},"target":{"type":"Target"}}}`);
-		const thrash = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":77758},"target":{"type":"Target"}}}`);
-		const faerieFireFiller = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":16857},"target":{"type":"Target"}}}`);
-		const pulverize = APLAction.fromJsonString(
-			`{"condition":{"and":{"vals":[{"dotIsActive":{"targetUnit":{"type":"Target"},"spellId":{"spellId":33745}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":33745}}},"rhs":{"const":{"val":"3"}}}},{"or":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":80951}}}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":80951}}},"rhs":{"const":{"val":"${simple.pulverizeTime.toFixed(
-				1,
-			)}s"}}}}]}}]}},"castSpell":{"spellId":{"spellId":80313},"target":{"type":"Target"}}}`,
-		);
-		const lacerateBuild = APLAction.fromJsonString(
-			`{"condition":{"cmp":{"op":"OpLt","lhs":{"auraNumStacks":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":33745}}},"rhs":{"const":{"val":"3"}}}},"castSpell":{"spellId":{"spellId":33745},"target":{"type":"Target"}}}`,
-		);
-		const maul = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":6807},"target":{"type":"Target"}}}`);
+	// 	// const emergencySpellId = player.getTalents().pulverize ? 80313 : 33745;
+	// 	// const emergencyPulverize = APLAction.fromJsonString(
+	// 	// 	`{"condition":{"and":{"vals":[{"dotIsActive":{"targetUnit":{"type":"Target"},"spellId":{"spellId":33745}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":33745}}},"rhs":{"const":{"val":"3"}}}},{"cmp":{"op":"OpLe","lhs":{"dotRemainingTime":{"targetUnit":{"type":"Target"},"spellId":{"spellId":33745}}},"rhs":{"const":{"val":"${simple.pulverizeTime.toFixed(
+	// 	// 		1,
+	// 	// 	)}s"}}}}]}},"castSpell":{"spellId":{"spellId":${emergencySpellId.toFixed(0)}},"target":{"type":"Target"}}}`,
+	// 	// );
+	// 	// const faerieFireMaintain = APLAction.fromJsonString(
+	// 	// 	`{"condition":{"or":{"vals":[{"not":{"val":{"auraIsActive":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":770}}}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":770}}},"rhs":{"const":{"val":"6s"}}}}]}},"castSpell":{"spellId":{"spellId":16857},"target":{"type":"Target"}}}`,
+	// 	// );
+	// 	// const demoRoar = APLAction.fromJsonString(
+	// 	// 	`{"condition":{"auraShouldRefresh":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":99},"maxOverlap":{"const":{"val":"${simple.demoTime.toFixed(
+	// 	// 		1,
+	// 	// 	)}s"}}}},"castSpell":{"spellId":{"spellId":99},"target":{"type":"Target"}}}`,
+	// 	// );
+	// 	// const berserk = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":50334}}}`);
+	// 	// const enrage = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":5229}}}`);
+	// 	// const synapseSprings = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":82174}}}`);
+	// 	// const lacerateForProcs = APLAction.fromJsonString(
+	// 	// 	`{"condition":{"and":{"vals":[{"not":{"val":{"dotIsActive":{"targetUnit":{"type":"Target"},"spellId":{"spellId":33745}}}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":50334}}}}},{"cmp":{"op":"OpGt","lhs":{"spellTimeToReady":{"spellId":{"spellId":50334}}},"rhs":{"const":{"val":"3s"}}}}]}},"castSpell":{"spellId":{"spellId":33745},"target":{"type":"Target"}}}`,
+	// 	// );
+	// 	// const mangle = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":33878},"target":{"type":"Target"}}}`);
+	// 	// const thrash = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":77758},"target":{"type":"Target"}}}`);
+	// 	// const faerieFireFiller = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":16857},"target":{"type":"Target"}}}`);
+	// 	// const pulverize = APLAction.fromJsonString(
+	// 	// 	`{"condition":{"and":{"vals":[{"dotIsActive":{"targetUnit":{"type":"Target"},"spellId":{"spellId":33745}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":33745}}},"rhs":{"const":{"val":"3"}}}},{"or":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":80951}}}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":80951}}},"rhs":{"const":{"val":"${simple.pulverizeTime.toFixed(
+	// 	// 		1,
+	// 	// 	)}s"}}}}]}}]}},"castSpell":{"spellId":{"spellId":80313},"target":{"type":"Target"}}}`,
+	// 	// );
+	// 	// const lacerateBuild = APLAction.fromJsonString(
+	// 	// 	`{"condition":{"cmp":{"op":"OpLt","lhs":{"auraNumStacks":{"sourceUnit":{"type":"Target"},"auraId":{"spellId":33745}}},"rhs":{"const":{"val":"3"}}}},"castSpell":{"spellId":{"spellId":33745},"target":{"type":"Target"}}}`,
+	// 	// );
+	// 	// const maul = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":6807},"target":{"type":"Target"}}}`);
 
-		prepullActions.push(...([simple.prepullStampede ? preStampede : null].filter(a => a) as Array<APLPrepullAction>));
+	// 	// prepullActions.push(...([simple.prepullStampede ? preStampede : null].filter(a => a) as Array<APLPrepullAction>));
 
-		actions.push(
-			...([
-				emergencyPulverize,
-				simple.maintainFaerieFire ? faerieFireMaintain : null,
-				simple.maintainDemoralizingRoar ? demoRoar : null,
-				berserk,
-				enrage,
-				synapseSprings,
-				lacerateForProcs,
-				mangle,
-				thrash,
-				faerieFireFiller,
-				pulverize,
-				lacerateBuild,
-				maul,
-			].filter(a => a) as Array<APLAction>),
-		);
+	// 	// actions.push(
+	// 	// 	...([
+	// 	// 		emergencyPulverize,
+	// 	// 		simple.maintainFaerieFire ? faerieFireMaintain : null,
+	// 	// 		simple.maintainDemoralizingRoar ? demoRoar : null,
+	// 	// 		berserk,
+	// 	// 		enrage,
+	// 	// 		synapseSprings,
+	// 	// 		lacerateForProcs,
+	// 	// 		mangle,
+	// 	// 		thrash,
+	// 	// 		faerieFireFiller,
+	// 	// 		pulverize,
+	// 	// 		lacerateBuild,
+	// 	// 		maul,
+	// 	// 	].filter(a => a) as Array<APLAction>),
+	// 	// );
 
-		return APLRotation.create({
-			simple: SimpleRotation.create({
-				cooldowns: Cooldowns.create({
-					hpPercentForDefensives: cooldowns.hpPercentForDefensives,
-				}),
-			}),
-			prepullActions: prepullActions,
-			priorityList: actions.map(action =>
-				APLListItem.create({
-					action: action,
-				}),
-			),
-		});
-	},
+	// 	// return APLRotation.create({
+	// 	// 	simple: SimpleRotation.create({
+	// 	// 		cooldowns: Cooldowns.create({
+	// 	// 			hpPercentForDefensives: cooldowns.hpPercentForDefensives,
+	// 	// 		}),
+	// 	// 	}),
+	// 	// 	prepullActions: prepullActions,
+	// 	// 	priorityList: actions.map(action =>
+	// 	// 		APLListItem.create({
+	// 	// 			action: action,
+	// 	// 		}),
+	// 	// 	),
+	// 	// });
+	// },
 
 	raidSimPresets: [
 		{
 			spec: Spec.SpecGuardianDruid,
 			talents: Presets.StandardTalents.data,
 			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
+			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceNightElf,

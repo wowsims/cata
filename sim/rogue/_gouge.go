@@ -38,7 +38,7 @@ func (rogue *Rogue) registerGougeSpell() {
 
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           rogue.MeleeCritMultiplier(false),
+		CritMultiplier:           rogue.CritMultiplier(false),
 		ThreatMultiplier:         1,
 
 		BonusCoefficient: 1,

@@ -36,7 +36,7 @@ func (warrior *Warrior) RegisterHeroicStrikeSpell() {
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  259,
-		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   warrior.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 8 + (spell.MeleeAttackPower() * 0.6)
@@ -82,7 +82,7 @@ func (warrior *Warrior) RegisterCleaveSpell() {
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  225,
-		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   warrior.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			curTarget := target

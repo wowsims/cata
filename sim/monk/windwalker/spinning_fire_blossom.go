@@ -35,7 +35,7 @@ func (ww *WindwalkerMonk) registerSpinningFireBlossom() {
 
 		DamageMultiplier: 2.1,
 		ThreatMultiplier: 1,
-		CritMultiplier:   ww.DefaultSpellCritMultiplier(), // TODO: Spell or melee?
+		CritMultiplier:   ww.DefaultCritMultiplier(), // TODO: Spell or melee?
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return ww.ComboPoints() >= 1

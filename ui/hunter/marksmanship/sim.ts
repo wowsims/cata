@@ -80,7 +80,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
+		consumables: Presets.DefaultConsumables,
 		// Default talents.
 		talents: Presets.MarksmanTalents.data,
 		// Default spec-specific settings.
@@ -116,7 +116,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [HunterInputs.PetTypeInput()],
+	playerIconInputs: [],
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: MMInputs.MMRotationConfig,
 	petConsumeInputs: [],
@@ -230,7 +230,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 			spec: Spec.SpecMarksmanshipHunter,
 			talents: Presets.MarksmanTalents.data,
 			specOptions: Presets.MMDefaultOptions,
-			consumes: Presets.DefaultConsumes,
+			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceWorgen,

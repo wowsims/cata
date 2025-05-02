@@ -3,7 +3,7 @@ package paladin
 import (
 	"time"
 
-	"github.com/wowsims/mop/sim/common/cata"
+	cata "github.com/wowsims/mop/sim/common/cata"
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
@@ -121,8 +121,6 @@ const SpellMaskModifiedByZealOfTheCrusader = SpellMaskTemplarsVerdict |
 	SpellMaskSealOfTruth |
 	SpellMaskSealOfRighteousness |
 	SpellMaskSealOfJustice
-
-var TalentTreeSizes = [3]int{20, 20, 20}
 
 type Paladin struct {
 	core.Character
@@ -299,7 +297,7 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 		sharedBuilderBaseCD: time.Millisecond * core.TernaryDuration(character.Spec == proto.Spec_SpecProtectionPaladin, 3000, 4500),
 	}
 
-	core.FillTalentsProto(paladin.Talents.ProtoReflect(), talentsStr, TalentTreeSizes)
+	core.FillTalentsProto(paladin.Talents.ProtoReflect(), talentsStr)
 
 	paladin.PseudoStats.CanParry = true
 
@@ -312,7 +310,7 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 	}
 
 	paladin.EnableAutoAttacks(paladin, core.AutoAttackOptions{
-		MainHand:       paladin.WeaponFromMainHand(paladin.DefaultMeleeCritMultiplier()),
+		MainHand:       paladin.WeaponFromMainHand(paladin.DefaultCritMultiplier()),
 		AutoSwingMelee: true,
 	})
 

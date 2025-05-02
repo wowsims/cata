@@ -1,845 +1,168 @@
-[
-	{
-	  "name": "Arms",
-	  "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/746.jpg",
-	  "talents": [
+
+{
+	"backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/TODO.jpg",
+	"talents": [
 		{
-		  "fieldName": "warAcademy",
-		  "fancyName": "War Academy",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			84570,
-			84571,
-			84572
-		  ],
-		  "maxPoints": 3
+			"fieldName": "juggernaut",
+			"fancyName": "Juggernaut",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 0
+			},
+			"spellId": 103826
 		},
 		{
-		  "fieldName": "fieldDressing",
-		  "fancyName": "Field Dressing",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			84579,
-			84580
-		  ],
-		  "maxPoints": 2
+			"fieldName": "doubleTime",
+			"fancyName": "Double Time",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 1
+			},
+			"spellId": 103827
 		},
 		{
-		  "fieldName": "blitz",
-		  "fancyName": "Blitz",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			80976,
-			80977
-		  ],
-		  "maxPoints": 2
+			"fieldName": "warbringer",
+			"fancyName": "Warbringer",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 2
+			},
+			"spellId": 103828
 		},
 		{
-		  "fieldName": "tacticalMastery",
-		  "fancyName": "Tactical Mastery",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			12295,
-			12676
-		  ],
-		  "maxPoints": 2
+			"fieldName": "enragedRegeneration",
+			"fancyName": "Enraged Regeneration",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 0
+			},
+			"spellId": 55694
 		},
 		{
-		  "fieldName": "secondWind",
-		  "fancyName": "Second Wind",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			29834,
-			29838
-		  ],
-		  "maxPoints": 2
+			"fieldName": "secondWind",
+			"fancyName": "Second Wind",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 1
+			},
+			"spellId": 29838
 		},
 		{
-		  "fieldName": "deepWounds",
-		  "fancyName": "Deep Wounds",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			12834,
-			12849,
-			12867
-		  ],
-		  "maxPoints": 3
+			"fieldName": "impendingVictory",
+			"fancyName": "Impending Victory",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 2
+			},
+			"spellId": 103840
 		},
 		{
-		  "fieldName": "drumsOfWar",
-		  "fancyName": "Drums Of War",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			12290,
-			12963
-		  ],
-		  "maxPoints": 2
+			"fieldName": "staggeringShout",
+			"fancyName": "Staggering Shout",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 0
+			},
+			"spellId": 107566
 		},
 		{
-		  "fieldName": "tasteForBlood",
-		  "fancyName": "Taste For Blood",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			56636,
-			56637,
-			56638
-		  ],
-		  "maxPoints": 3
+			"fieldName": "piercingHowl",
+			"fancyName": "Piercing Howl",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 1
+			},
+			"spellId": 12323
 		},
 		{
-		  "fieldName": "sweepingStrikes",
-		  "fancyName": "Sweeping Strikes",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			12328
-		  ],
-		  "maxPoints": 1
+			"fieldName": "disruptingShout",
+			"fancyName": "Disrupting Shout",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 2
+			},
+			"spellId": 102060
 		},
 		{
-		  "fieldName": "impale",
-		  "fancyName": "Impale",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			16493,
-			16494
-		  ],
-		  "maxPoints": 2,
-		  "prereqLocation": {
-			"rowIdx": 1,
-			"colIdx": 2
-		  }
+			"fieldName": "bladestorm",
+			"fancyName": "Bladestorm",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 0
+			},
+			"spellId": 46924
 		},
 		{
-		  "fieldName": "improvedHamstring",
-		  "fancyName": "Improved Hamstring",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			12289,
-			12668
-		  ],
-		  "maxPoints": 2
+			"fieldName": "shockwave",
+			"fancyName": "Shockwave",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 1
+			},
+			"spellId": 46968
 		},
 		{
-		  "fieldName": "improvedSlam",
-		  "fancyName": "Improved Slam",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			86655,
-			12330
-		  ],
-		  "maxPoints": 2
+			"fieldName": "dragonRoar",
+			"fancyName": "Dragon Roar",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 2
+			},
+			"spellId": 118000
 		},
 		{
-		  "fieldName": "deadlyCalm",
-		  "fancyName": "Deadly Calm",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			85730
-		  ],
-		  "maxPoints": 1
+			"fieldName": "massSpellReflection",
+			"fancyName": "Mass Spell Reflection",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 0
+			},
+			"spellId": 114028
 		},
 		{
-		  "fieldName": "bloodFrenzy",
-		  "fancyName": "Blood Frenzy",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			29836,
-			29859
-		  ],
-		  "maxPoints": 2
+			"fieldName": "safeguard",
+			"fancyName": "Safeguard",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 1
+			},
+			"spellId": 114029
 		},
 		{
-		  "fieldName": "lambsToTheSlaughter",
-		  "fancyName": "Lambs To The Slaughter",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			84583,
-			84588,
-			84587
-		  ],
-		  "maxPoints": 3
+			"fieldName": "vigilance",
+			"fancyName": "Vigilance",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 2
+			},
+			"spellId": 114030
 		},
 		{
-		  "fieldName": "juggernaut",
-		  "fancyName": "Juggernaut",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			64976
-		  ],
-		  "maxPoints": 1
+			"fieldName": "avatar",
+			"fancyName": "Avatar",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 0
+			},
+			"spellId": 107574
 		},
 		{
-		  "fieldName": "suddenDeath",
-		  "fancyName": "Sudden Death",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			29723,
-			29725
-		  ],
-		  "maxPoints": 2
+			"fieldName": "bloodbath",
+			"fancyName": "Bloodbath",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 1
+			},
+			"spellId": 12292
 		},
 		{
-		  "fieldName": "wreckingCrew",
-		  "fancyName": "Wrecking Crew",
-		  "location": {
-			"rowIdx": 5,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			46867,
-			56611,
-			56612
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "throwdown",
-		  "fancyName": "Throwdown",
-		  "location": {
-			"rowIdx": 5,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			85388
-		  ],
-		  "maxPoints": 1,
-		    "prereqLocation": {
-			  "rowIdx": 4,
-			  "colIdx": 1
-		  }
-		},
-		{
-		  "fieldName": "bladestorm",
-		  "fancyName": "Bladestorm",
-		  "location": {
-			"rowIdx": 6,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			46924
-		  ],
-		  "maxPoints": 1,
-		  "prereqLocation": {
-			"rowIdx": 4,
-			"colIdx": 1
-		  }
+			"fieldName": "stormBolt",
+			"fancyName": "Storm Bolt",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 2
+			},
+			"spellId": 107570
 		}
-	  ]
-	},
-	{
-	  "name": "Fury",
-	  "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/815.jpg",
-	  "talents": [
-		{
-		  "fieldName": "bloodCraze",
-		  "fancyName": "Blood Craze",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			16487,
-			16489,
-			16492
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "battleTrance",
-		  "fancyName": "Battle Trance",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			12322,
-			85741,
-			85742
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "cruelty",
-		  "fancyName": "Cruelty",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			12320,
-			12852
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "executioner",
-		  "fancyName": "Executioner",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			20502,
-			20503
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "boomingVoice",
-		  "fancyName": "Booming Voice",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			12321,
-			12835
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "rudeInterruption",
-		  "fancyName": "Rude Interruption",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			61216,
-			61221
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "piercingHowl",
-		  "fancyName": "Piercing Howl",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			12323
-		  ],
-		  "maxPoints": 1
-		},
-		{
-		  "fieldName": "flurry",
-		  "fancyName": "Flurry",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			12319,
-			12971,
-			12972
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "deathWish",
-		  "fancyName": "Death Wish",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			12292
-		  ],
-		  "maxPoints": 1
-		},
-		{
-		  "fieldName": "enrage",
-		  "fancyName": "Enrage",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			12317,
-			13045,
-			13046
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "dieByTheSword",
-		  "fancyName": "Die By The Sword",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			81913,
-			81914
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "ragingBlow",
-		  "fancyName": "Raging Blow",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			85288
-		  ],
-		  "maxPoints": 1,
-		  "prereqLocation": {
-			"rowIdx": 2,
-			"colIdx": 1
-		  }
-		},
-		{
-		  "fieldName": "rampage",
-		  "fancyName": "Rampage",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			29801
-		  ],
-		  "maxPoints": 1,
-		  "prereqLocation": {
-			"rowIdx": 3,
-			"colIdx": 1
-		  }
-		},
-		{
-		  "fieldName": "heroicFury",
-		  "fancyName": "Heroic Fury",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			60970
-		  ],
-		  "maxPoints": 1
-		},
-		{
-		  "fieldName": "furiousAttacks",
-		  "fancyName": "Furious Attacks",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			46910
-		  ],
-		  "maxPoints": 1
-		},
-		{
-		  "fieldName": "meatCleaver",
-		  "fancyName": "Meat Cleaver",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			12329,
-			12950
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "intensifyRage",
-		  "fancyName": "Intensify Rage",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			46908,
-			46909
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "bloodsurge",
-		  "fancyName": "Bloodsurge",
-		  "location": {
-			"rowIdx": 5,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			46913,
-			46914,
-			46915
-		  ],
-		  "maxPoints": 3,
-		  "prereqLocation": {
-			"rowIdx": 3,
-			"colIdx": 1
-		  }
-		},
-		{
-		  "fieldName": "skirmisher",
-		  "fancyName": "Skirmisher",
-		  "location": {
-			"rowIdx": 5,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			29888,
-			29889
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "titansGrip",
-		  "fancyName": "Titans Grip",
-		  "location": {
-			"rowIdx": 6,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			46917
-		  ],
-		  "maxPoints": 1
-		},
-		{
-		  "fieldName": "singleMindedFury",
-		  "fancyName": "Single Minded Fury",
-		  "location": {
-			"rowIdx": 6,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			81099
-		  ],
-		  "maxPoints": 1
-		}
-	  ]
-	},
-	{
-	  "name": "Protection",
-	  "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/845.jpg",
-	  "talents": [
-		{
-		  "fieldName": "incite",
-		  "fancyName": "Incite",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			50685,
-			50686,
-			50687
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "toughness",
-		  "fancyName": "Toughness",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			12299,
-			12761,
-			12762
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "bloodAndThunder",
-		  "fancyName": "Blood And Thunder",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			84614,
-			84615
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "shieldSpecialization",
-		  "fancyName": "Shield Specialization",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			12298,
-			12724,
-			12725
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "shieldMastery",
-		  "fancyName": "Shield Mastery",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			29598,
-			84607,
-			84608
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "holdTheLine",
-		  "fancyName": "Hold The Line",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			84604,
-			84621
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "gagOrder",
-		  "fancyName": "Gag Order",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			12311,
-			12958
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "lastStand",
-		  "fancyName": "Last Stand",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			12975
-		  ],
-		  "maxPoints": 1
-		},
-		{
-		  "fieldName": "concussionBlow",
-		  "fancyName": "Concussion Blow",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			12809
-		  ],
-		  "maxPoints": 1
-		},
-		{
-		  "fieldName": "bastionOfDefense",
-		  "fancyName": "Bastion Of Defense",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			29593,
-			29594
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "warbringer",
-		  "fancyName": "Warbringer",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			57499
-		  ],
-		  "maxPoints": 1
-		},
-		{
-		  "fieldName": "improvedRevenge",
-		  "fancyName": "Improved Revenge",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			12797,
-			12799
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "devastate",
-		  "fancyName": "Devastate",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			20243
-		  ],
-		  "maxPoints": 1
-		},
-		{
-		  "fieldName": "impendingVictory",
-		  "fancyName": "Impending Victory",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			80128,
-			80129
-		  ],
-		  "maxPoints": 2,
-		  "prereqLocation": {
-			"rowIdx": 3,
-			"colIdx": 2
-		  }
-		},
-		{
-		  "fieldName": "thunderstruck",
-		  "fancyName": "Thunderstruck",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			80979,
-			80980
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "vigilance",
-		  "fancyName": "Vigilance",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			50720
-		  ],
-		  "maxPoints": 1,
-		  "prereqLocation": {
-			"rowIdx": 2,
-			"colIdx": 1
-		  }
-		},
-		{
-		  "fieldName": "heavyRepercussions",
-		  "fancyName": "Heavy Repercussions",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			86894,
-			86896
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "safeguard",
-		  "fancyName": "Safeguard",
-		  "location": {
-			"rowIdx": 5,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			46945,
-			46949
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "swordAndBoard",
-		  "fancyName": "Sword And Board",
-		  "location": {
-			"rowIdx": 5,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			46951,
-			46952,
-			46953
-		  ],
-		  "maxPoints": 3,
-		  "prereqLocation": {
-			"rowIdx": 3,
-			"colIdx": 2
-		  }
-		},
-		{
-		  "fieldName": "shockwave",
-		  "fancyName": "Shockwave",
-		  "location": {
-			"rowIdx": 6,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			46968
-		  ],
-		  "maxPoints": 1
-		}
-	  ]
-	}
-  ]
+	]
+}

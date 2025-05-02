@@ -4,105 +4,88 @@ package proto;
 option go_package = "./proto";
 
 import "common.proto";
-
+// DO NOT REMOVE THE COMMENTS
+// BEGIN GENERATED
+// PriestTalents message.
 message PriestTalents {
-	// Discipline
-	int32 improved_power_word_shield = 1;
-	int32 twin_disciplines = 2;
-	int32 mental_agility = 3;
-	int32 evangelism = 4;
-	bool archangel = 5;
-	int32 inner_sanctum = 6;
-	int32 soul_warding = 7;
-	int32 renewed_hope = 8;
-	bool power_infusion = 9;
-	int32 atonement = 10;
-	bool inner_focus = 11;
-	int32 rapture = 12;
-	int32 borrowed_time = 13;
-	int32 reflective_shield = 14;
-	int32 strength_of_soul = 15;
-	int32 divine_aegis = 16;
-	bool pain_suppression = 17;
-	int32 train_of_thought = 18;
-	int32 focused_will = 19;
-	int32 grace = 20;
-	bool power_word_barrier = 21;
-
-	// Holy
-	int32 improved_renew = 22;
-	int32 empowered_healing = 23;
-	int32 divine_fury = 24;
-	bool desperate_prayer = 25;
-	int32 surge_of_light = 26;
-	int32 inspiration = 27;
-	int32 divine_touch = 28;
-	int32 holy_concentration = 29;
-	bool lightwell = 30;
-	int32 tome_of_light = 31;
-	bool rapid_renewal = 32;
-	bool spirit_of_redemption = 33;
-	int32 serendipity = 34;
-	int32 body_and_soul = 35;
-	bool chakra = 36;
-	bool revelations = 37;
-	int32 blessed_resilience = 38;
-	int32 test_of_faith = 39;
-	int32 heavenly_voice = 40;
-	bool circle_of_healing = 41;
-	bool guardian_spirit = 42;
-
-	// Shadow
-	int32 darkness = 43;
-	int32 improved_shadow_word_pain = 44;
-	int32 veiled_shadows = 45;
-	int32 improved_psychic_scream = 46;
-	int32 improved_mind_blast = 47;
-	int32 improved_devouring_plague = 48;
-	int32 twisted_faith = 49;
-	bool shadowform = 50;
-	int32 phantasm = 51;
-	int32 harnessed_shadows = 52;
-	bool silence = 53;
-	bool vampiric_embrace = 54;
-	int32 masochism = 55;
-	int32 mind_melt = 56;
-	int32 pain_and_suffering = 57;
-	bool vampiric_touch = 58;
-	int32 paralysis = 59;
-	bool psychic_horror = 60;
-	int32 sin_and_punishment = 61;
-	int32 shadowy_apparition = 62;
-	bool dispersion = 63;
+    bool void_tendrils = 1;
+    bool psyfiend = 2;
+    bool dominate_mind = 3;
+    bool body_and_soul = 4;
+    bool angelic_feather = 5;
+    bool phantasm = 6;
+    bool from_darkness_comes_light = 7;
+    bool mindbender = 8;
+    bool solace_and_insanity = 9;
+    bool desperate_prayer = 10;
+    bool spectral_guise = 11;
+    bool angelic_bulwark = 12;
+    bool twist_of_fate = 13;
+    bool power_infusion = 14;
+    bool divine_insight = 15;
+    bool cascade = 16;
+    bool divine_star = 17;
+    bool halo = 18;
 }
+
 enum PriestMajorGlyph {
-	PriestMajorGlyphNone = 0;
-	GlyphOfCircleOfHealing = 42396;
-	GlyphOfDesperation = 45760;
-	GlyphOfDispelMagic = 42397;
-	GlyphOfDivineAccuracy = 45758;
-	GlyphOfFade = 42398;
-	GlyphOfFearWard = 42399;
-	GlyphOfHolyNova = 42401;
-	GlyphOfInnerFire = 42402;
-	GlyphOfMassDispel = 42404;
-	GlyphOfPrayerOfMending = 42417;
-	GlyphOfPsychicHorror = 42405;
-	GlyphOfPsychicScream = 42410;
-	GlyphOfScourgeImprisonment = 42412;
-	GlyphOfSmite = 42416;
-	GlyphOfSpiritTap = 45757;
+    PriestMajorGlyphNone = 0;
+    GlyphOfCircleOfHealing = 42396;
+    GlyphOfPurify = 42397;
+    GlyphOfFade = 42398;
+    GlyphOfFearWard = 42399;
+    GlyphOfInnerSanctum = 42400;
+    GlyphOfHolyNova = 42401;
+    GlyphOfInnerFire = 42402;
+    GlyphOfDeepWells = 42403;
+    GlyphOfMassDispel = 42404;
+    GlyphOfPsychicHorror = 42405;
+    GlyphOfHolyFire = 42406;
+    GlyphOfWeakenedSoul = 42407;
+    GlyphOfPowerWordShield = 42408;
+    GlyphOfSpiritOfRedemption = 42409;
+    GlyphOfPsychicScream = 42410;
+    GlyphOfRenew = 42411;
+    GlyphOfScourgeImprisonment = 42412;
+    GlyphOfMindBlast = 42414;
+    GlyphOfDispelMagic = 42415;
+    GlyphOfSmite = 42416;
+    GlyphOfPrayerOfMending = 42417;
+    GlyphOfLevitate = 43370;
+    GlyphOfReflectiveShield = 43372;
+    GlyphOfDispersion = 45753;
+    GlyphOfLeapOfFaith = 45755;
+    GlyphOfPenance = 45756;
+    GlyphOfFocusedMending = 45757;
+    GlyphOfMindSpike = 45758;
+    GlyphOfBindingHeal = 45760;
+    GlyphOfMindFlay = 79513;
+    GlyphOfShadowWordDeath = 79514;
+    GlyphOfVampiricEmbrace = 79515;
+    ZzoldGlyphOfVampiricTouch = 85708;
+    GlyphOfLightspring = 87875;
+    GlyphOfLightwell = 87902;
 }
+
 enum PriestMinorGlyph {
-	PriestMinorGlyphNone = 0;
-	GlyphOfFading = 43342;
-	GlyphOfFortitude = 43371;
-	GlyphOfLevitate = 43370;
-	GlyphOfShackleUndead = 43373;
-	GlyphOfShadow = 77101;
-	GlyphOfShadowProtection = 43372;
-	GlyphOfShadowfiend = 43374;
+    PriestMinorGlyphNone = 0;
+    GlyphOfShadowRavens = 43342;
+    GlyphOfBorrowedTime = 43371;
+    GlyphOfShackleUndead = 43373;
+    GlyphOfDarkArchangel = 43374;
+    GlyphOfShadow = 77101;
+    GlyphOfTheHeavens = 79538;
+    GlyphOfConfession = 86541;
+    GlyphOfHolyResurrection = 87276;
+    GlyphOfTheValkyr = 87277;
+    GlyphOfShadowyFriends = 87392;
+    GlyphOfAngels = 104109;
+    GlyphOfTheSha = 104120;
+    GlyphOfShiftedAppearances = 104121;
+    GlyphOfInspiredHymns = 104122;
 }
+
+// END GENERATED
 
 message PriestOptions {
 	enum Armor {

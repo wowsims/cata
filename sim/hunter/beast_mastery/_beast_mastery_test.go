@@ -21,7 +21,7 @@ func TestBM(t *testing.T) {
 		GearSet:     core.GetGearSet("../../../ui/hunter/beast_mastery/gear_sets", "preraid_bm"),
 		Talents:     BMTalents,
 		Glyphs:      BMGlyphs,
-		Consumes:    FullConsumes,
+		Consumables: FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
 		Rotation:    core.GetAplRotation("../../../ui/hunter/beast_mastery/apls", "bm"),
 		OtherRotations: []core.RotationCombo{
@@ -59,7 +59,7 @@ func BenchmarkSimulate(b *testing.B) {
 				Race:           proto.Race_RaceOrc,
 				Class:          proto.Class_ClassHunter,
 				Equipment:      core.GetGearSet("../../../ui/hunter/beast_mastery/gear_sets", "preraid_bm").GearSet,
-				Consumes:       FullConsumes,
+				Consumables:    FullConsumes,
 				Spec:           PlayerOptionsBasic,
 				Glyphs:         BMGlyphs,
 				TalentsString:  BMTalents,
@@ -81,11 +81,10 @@ func BenchmarkSimulate(b *testing.B) {
 	core.RaidBenchmark(b, rsr)
 }
 
-var FullConsumes = &proto.Consumes{
-	Flask:         proto.Flask_FlaskOfTheWinds,
-	DefaultPotion: proto.Potions_PotionOfTheTolvir,
+var FullConsumes = &proto.ConsumesSpec{
+	FlaskId: 58087,
+	PotId:   58145,
 }
-
 var BMTalents = "2330230311320112121-2302-03"
 var BMGlyphs = &proto.Glyphs{
 	Major1: int32(proto.HunterMajorGlyph_GlyphOfBestialWrath),

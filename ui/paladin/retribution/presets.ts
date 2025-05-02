@@ -1,6 +1,6 @@
 import * as PresetUtils from '../../core/preset_utils.js';
 import { APLRotation_Type as APLRotationType } from '../../core/proto/apl.js';
-import { Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Stat, TinkerHands } from '../../core/proto/common.js';
+import { ConsumesSpec, Glyphs, Profession, PseudoStat, Stat } from '../../core/proto/common.js';
 import {
 	PaladinAura as PaladinAura,
 	PaladinMajorGlyph,
@@ -96,14 +96,9 @@ export const P4_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const DefaultTalents = {
 	name: 'Default',
 	data: SavedTalents.create({
-		talentsString: '203002-02-23203213211113002311',
+		talentsString: '',
 		glyphs: Glyphs.create({
-			major1: PaladinMajorGlyph.GlyphOfTheAsceticCrusader,
-			major2: PaladinMajorGlyph.GlyphOfHammerOfWrath,
 			major3: PaladinMajorGlyph.GlyphOfConsecration,
-			minor1: PaladinMinorGlyph.GlyphOfRighteousness,
-			minor2: PaladinMinorGlyph.GlyphOfTruth,
-			minor3: PaladinMinorGlyph.GlyphOfBlessingOfMight,
 		}),
 	}),
 };
@@ -137,13 +132,12 @@ export const DefaultOptions = RetributionPaladinOptions.create({
 		seal: PaladinSeal.Truth,
 	},
 });
-
-export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfTitanicStrength,
-	food: Food.FoodBeerBasedCrocolisk,
-	defaultPotion: Potions.GolembloodPotion,
-	prepopPotion: Potions.GolembloodPotion,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58088, // Flask of Titanic Strength
+	foodId: 62670, // Beer-Basted Crocolisk
+	potId: 58146, // Golemblood Potion
+	prepotId: 58146, // Golemblood Potion
+	tinkerId: 82174, // Synapse Springs
 });
 
 export const OtherDefaults = {

@@ -70,7 +70,7 @@ func (dk *DeathKnight) registerFrostFever() {
 		ClassSpellMask: DeathKnightSpellFrostFever,
 
 		DamageMultiplier: 1.15,
-		CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   dk.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -110,7 +110,7 @@ func (dk *DeathKnight) registerBloodPlague() {
 		ClassSpellMask: DeathKnightSpellBloodPlague,
 
 		DamageMultiplier: 1.15,
-		CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   dk.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -157,7 +157,7 @@ func (dk *DeathKnight) registerDrwOutbreakSpell() *core.Spell {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: DeathKnightSpellOutbreak,
 
-		CritMultiplier: dk.DefaultMeleeCritMultiplier(),
+		CritMultiplier: dk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)

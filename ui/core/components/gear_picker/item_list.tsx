@@ -216,6 +216,7 @@ export default class ItemList<T extends ItemListType> {
 			}
 		}
 
+		// TODO: Turn this back on once we have proper phase data
 		if (phaseSelectorRef.value) makePhaseSelector(phaseSelectorRef.value, player.sim);
 
 		if (label === SelectorModalTabs.Items) {
@@ -681,7 +682,8 @@ export default class ItemList<T extends ItemListType> {
 			const zone = sim.db.getZone(src.zoneId);
 			const npc = sim.db.getNpc(src.npcId);
 			if (!zone) {
-				throw new Error('No zone found for item: ' + item);
+				console.error('No zone found for item:', item);
+				return <></>;
 			}
 
 			const category = src.category ? ` - ${src.category}` : '';

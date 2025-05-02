@@ -21,7 +21,7 @@ func TestProtection(t *testing.T) {
 		GearSet:     core.GetGearSet("../../../ui/paladin/protection/gear_sets", "T12"),
 		Talents:     StandardTalents,
 		Glyphs:      StandardGlyphs,
-		Consumes:    FullConsumes,
+		Consumables: FullConsumesSpec,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: DefaultOptions},
 		Rotation:    core.GetAplRotation("../../../ui/paladin/protection/apls", "default"),
 
@@ -55,7 +55,7 @@ func BenchmarkSimulate(b *testing.B) {
 				Race:           proto.Race_RaceBloodElf,
 				Class:          proto.Class_ClassPaladin,
 				Equipment:      core.GetGearSet("../../../ui/paladin/protection/gear_sets", "T12").GearSet,
-				Consumes:       FullConsumes,
+				Consumables:    FullConsumesSpec,
 				Spec:           DefaultOptions,
 				Glyphs:         StandardGlyphs,
 				TalentsString:  StandardTalents,
@@ -100,10 +100,10 @@ var DefaultOptions = &proto.Player_ProtectionPaladin{
 	},
 }
 
-var FullConsumes = &proto.Consumes{
-	Flask:         proto.Flask_FlaskOfSteelskin,
-	Food:          proto.Food_FoodLavascaleMinestrone,
-	DefaultPotion: proto.Potions_GolembloodPotion,
-	PrepopPotion:  proto.Potions_GolembloodPotion,
-	TinkerHands:   proto.TinkerHands_TinkerHandsSynapseSprings,
+var FullConsumesSpec = &proto.ConsumesSpec{
+	FlaskId:  58085, // Flask of Steelskin
+	FoodId:   62663, // Lavascale Minestrone
+	PotId:    58146, // Golemblood Potion
+	PrepotId: 58146, // Golemblood Potion
+	TinkerId: 82174, // Synapse Springs
 }

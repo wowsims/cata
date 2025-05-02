@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Stat, TinkerHands } from '../../core/proto/common.js';
+import { ConsumesSpec, Glyphs, Profession, PseudoStat, Stat } from '../../core/proto/common.js';
 import { BloodDeathKnight_Options, DeathKnightMajorGlyph, DeathKnightMinorGlyph } from '../../core/proto/death_knight';
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
@@ -78,11 +78,10 @@ export const P3_BLOOD_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const BloodTalents = {
 	name: 'Blood',
 	data: SavedTalents.create({
-		talentsString: '02323203102122111321-3-033',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: DeathKnightMajorGlyph.GlyphOfAntiMagicShell,
 			major2: DeathKnightMajorGlyph.GlyphOfDancingRuneWeapon,
-			major3: DeathKnightMajorGlyph.GlyphOfBoneShield,
 			minor1: DeathKnightMinorGlyph.GlyphOfDeathGate,
 			minor2: DeathKnightMinorGlyph.GlyphOfPathOfFrost,
 			minor3: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
@@ -106,12 +105,12 @@ export const DefaultOptions = BloodDeathKnight_Options.create({
 	},
 });
 
-export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfSteelskin,
-	food: Food.FoodBeerBasedCrocolisk,
-	defaultPotion: Potions.GolembloodPotion,
-	prepopPotion: Potions.GolembloodPotion,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58085, // Flask of Steelskin
+	foodId: 62670, // Beer-Basted Crocolisk
+	potId: 58146, // Golemblood Potion
+	prepotId: 58146, // Golemblood Potion
+	tinkerId: 82174, // TinkerHandsSynapseSprings (not in list)
 });
 
 export const OtherDefaults = {

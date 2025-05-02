@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { BattleElixir, Consumes, Food, Glyphs, GuardianElixir, Potions, Profession, PseudoStat, Race, Stat, TinkerHands } from '../../core/proto/common.js';
+import { ConsumesSpec, Glyphs, Profession, PseudoStat, Race, Stat } from '../../core/proto/common.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import { ProtectionWarrior_Options as ProtectionWarriorOptions, WarriorMajorGlyph, WarriorMinorGlyph } from '../../core/proto/warrior.js';
 import { Stats } from '../../core/proto_utils/stats';
@@ -55,14 +55,9 @@ export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		talentsString: '320003-002-33213201121210212031',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: WarriorMajorGlyph.GlyphOfShieldWall,
-			major2: WarriorMajorGlyph.GlyphOfShockwave,
-			major3: WarriorMajorGlyph.GlyphOfThunderClap,
-			minor1: WarriorMinorGlyph.GlyphOfBattle,
-			minor2: WarriorMinorGlyph.GlyphOfBerserkerRage,
-			minor3: WarriorMinorGlyph.GlyphOfDemoralizingShout,
 		}),
 	}),
 };
@@ -73,15 +68,14 @@ export const DefaultOptions = ProtectionWarriorOptions.create({
 	},
 });
 
-export const DefaultConsumes = Consumes.create({
-	// flask: Flask.FlaskOfSteelskin,
-	battleElixir: BattleElixir.ElixirOfTheMaster,
-	guardianElixir: GuardianElixir.ElixirOfDeepEarth,
-	food: Food.FoodBeerBasedCrocolisk,
-	defaultPotion: Potions.EarthenPotion,
-	prepopPotion: Potions.EarthenPotion,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
-	explosiveBigDaddy: true,
+export const DefaultConsumables = ConsumesSpec.create({
+	battleElixirId: 58148, // Elixir of the Master (not found in list)
+	guardianElixirId: 58093, // Elixir of Deep Earth (not found in list)
+	foodId: 62670, // Beer-Basted Crocolisk
+	potId: 58090, // Earthen Potion
+	prepotId: 58090, // Earthen Potion
+	tinkerId: 82174, // Synapse Springs
+	explosiveId: 89637, // Big Daddy Explosive
 });
 
 export const OtherDefaults = {

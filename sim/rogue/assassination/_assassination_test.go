@@ -26,7 +26,7 @@ func TestAssassination(t *testing.T) {
 
 		Talents:     AssassinationTalents,
 		Glyphs:      AssassinationGlyphs,
-		Consumes:    FullConsumes,
+		Consumables: FullConsumesSpec,
 		SpecOptions: core.SpecOptionsCombo{Label: "Assassination", SpecOptions: PlayerOptionsAssassinationDI},
 
 		OtherSpecOptions: []core.SpecOptionsCombo{
@@ -114,9 +114,8 @@ var PlayerOptionsAssassinationII = &proto.Player_AssassinationRogue{
 		},
 	},
 }
-
-var FullConsumes = &proto.Consumes{
-	Flask:           proto.Flask_FlaskOfTheWinds,
-	DefaultPotion:   proto.Potions_PotionOfTheTolvir,
-	DefaultConjured: proto.Conjured_ConjuredRogueThistleTea,
+var FullConsumesSpec = &proto.ConsumesSpec{
+	FlaskId:    58087, // Flask of the Winds
+	PotId:      58145, // Potion of the Tol'vir
+	ConjuredId: 7676,  // Thistle Tea
 }

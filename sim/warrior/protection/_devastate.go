@@ -30,7 +30,7 @@ func (war *ProtectionWarrior) RegisterDevastate() {
 		},
 
 		DamageMultiplier: 1.0,
-		CritMultiplier:   war.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   war.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  315,
 

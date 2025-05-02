@@ -33,7 +33,7 @@ func (hunter *Hunter) registerKillShotSpell() {
 			return sim.IsExecutePhase20()
 		},
 		DamageMultiplier: 1.5,
-		CritMultiplier:   hunter.CritMultiplier(true, true, false),
+		CritMultiplier:   hunter.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			normalizedWeaponDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target))

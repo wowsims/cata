@@ -49,7 +49,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isElementalOverload bool) core.Spe
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
+		CritMultiplier:   shaman.DefaultCritMultiplier(),
 		BonusCoefficient: 0.628,
 	}
 

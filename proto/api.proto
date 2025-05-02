@@ -5,6 +5,8 @@ option go_package = "./proto";
 
 import "common.proto";
 import "apl.proto";
+import "db.proto";
+import "spell.proto";
 import "death_knight.proto";
 import "druid.proto";
 import "hunter.proto";
@@ -17,8 +19,14 @@ import "shaman.proto";
 import "warlock.proto";
 import "warrior.proto";
 
-// NextIndex: 57
+// NextIndex: 58
 message Player {
+	// Proto version at the time Player were saved.
+	// A "breaking change" here is defined as anything that will break saved
+	// browser data or old sim links; the version need not be incremented if
+	// you simply append a new rarely-used PseudoStat to the end of the
+	// array, for example.
+	int32 api_version = 54;
 	// Label used for logging.
 	string name = 51;
 
@@ -26,7 +34,9 @@ message Player {
 	Class class = 2;
 
 	EquipmentSpec equipment = 3;
-	Consumes consumes = 4;
+
+	ConsumesSpec consumables = 4;
+
 	UnitStats bonus_stats = 5;
 
 	bool enable_item_swap = 6;
@@ -51,10 +61,10 @@ message Player {
 		ArcaneMage arcane_mage = 18;
 		FireMage fire_mage = 19;
 		FrostMage frost_mage = 20;
-		
-		BrewmasterMonk brewmaster_monk = 54;
-		MistweaverMonk mistweaver_monk = 55;
-		WindwalkerMonk windwalker_monk = 56;
+
+		BrewmasterMonk brewmaster_monk = 55;
+		MistweaverMonk mistweaver_monk = 56;
+		WindwalkerMonk windwalker_monk = 57;
 
 		HolyPaladin holy_paladin = 21;
 		ProtectionPaladin protection_paladin = 22;
@@ -81,7 +91,7 @@ message Player {
 		ProtectionWarrior protection_warrior = 38;
 	}
 
-	// Talents in wowhead format, e.g. '01102123133-12312312-'
+	// Talents in wowhead format, e.g. '000000'
 	string talents_string = 39;
 	Glyphs glyphs = 40;
 	Profession profession1 = 41;
@@ -255,25 +265,6 @@ message AuraMetrics {
 	double procs_avg = 4;
 
 	AggregatorData aggregator_data = 5;
-}
-
-enum ResourceType {
-	ResourceTypeNone = 0;
-	ResourceTypeMana = 1;
-	ResourceTypeEnergy = 2;
-	ResourceTypeRage = 3;
-	ResourceTypeComboPoints = 4;
-	ResourceTypeFocus = 5;
-	ResourceTypeHealth = 6;
-	ResourceTypeRunicPower = 7;
-	ResourceTypeBloodRune = 8;
-	ResourceTypeFrostRune = 9;
-	ResourceTypeUnholyRune = 10;
-	ResourceTypeDeathRune = 11;
-	ResourceTypeSolarEnergy = 12;
-	ResourceTypeLunarEnergy = 13;
-	ResourceTypeHolyPower = 14;
-	ResourceTypeChi = 15;
 }
 
 message ResourceMetrics {
@@ -644,3 +635,4 @@ message BulkSimCombosResult {
 	int32 num_iterations = 2;
 	string error_result = 3; // only set if sim failed.
 }
+

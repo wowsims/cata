@@ -80,7 +80,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
+		consumables: Presets.DefaultConsumables,
 		// Default talents.
 		talents: Presets.MasterfrostTalents.data,
 		// Default spec-specific settings.
@@ -112,11 +112,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	autoRotation: (player: Player<Spec.SpecFrostDeathKnight>): APLRotation => {
 		const talents = player.getTalents();
 
-		if (talents.mightOfTheFrozenWastes > 0) {
-			return Presets.TWO_HAND_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-		} else if (talents.epidemic > 0) {
-			return Presets.DUAL_WIELD_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-		}
+		// if (talents.mightOfTheFrozenWastes > 0) {
+		// 	return Presets.TWO_HAND_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+		// } else if (talents.epidemic > 0) {
+		// 	return Presets.DUAL_WIELD_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+		// }
 
 		return Presets.MASTERFROST_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
@@ -185,7 +185,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 			spec: Spec.SpecFrostDeathKnight,
 			talents: Presets.MasterfrostTalents.data,
 			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
+			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceHuman,
@@ -218,28 +218,28 @@ export class FrostDeathKnightSimUI extends IndividualSimUI<Spec.SpecFrostDeathKn
 			new ReforgeOptimizer(this, {
 				updateSoftCaps: (softCaps: StatCap[]) => {
 					const talents = player.getTalents();
-					if (talents.mightOfTheFrozenWastes > 0 || talents.epidemic > 0) {
-						const physicalHitCap = softCaps.find(v => v.unitStat.equalsPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent));
-						if (physicalHitCap) {
-							physicalHitCap.breakpoints = [8];
-							physicalHitCap.postCapEPs = [0];
-						}
+					// if (talents.mightOfTheFrozenWastes > 0 || talents.epidemic > 0) {
+					// 	const physicalHitCap = softCaps.find(v => v.unitStat.equalsPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent));
+					// 	if (physicalHitCap) {
+					// 		physicalHitCap.breakpoints = [8];
+					// 		physicalHitCap.postCapEPs = [0];
+					// 	}
 
-						const spellHitCap = softCaps.findIndex(v => v.unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHitPercent));
-						if (spellHitCap > -1) {
-							softCaps.splice(spellHitCap, 1);
-						}
-					}
+					// 	const spellHitCap = softCaps.findIndex(v => v.unitStat.equalsPseudoStat(PseudoStat.PseudoStatSpellHitPercent));
+					// 	if (spellHitCap > -1) {
+					// 		softCaps.splice(spellHitCap, 1);
+					// 	}
+					// }
 					return softCaps;
 				},
-				getEPDefaults: (player: Player<Spec.SpecFrostDeathKnight>) => {
-					const talents = player.getTalents();
-					return talents.mightOfTheFrozenWastes > 0
-						? Presets.P1_TWOHAND_EP_PRESET.epWeights
-						: talents.epidemic > 0
-						? Presets.P3_DUAL_WIELD_EP_PRESET.epWeights
-						: Presets.P1_MASTERFROST_EP_PRESET.epWeights;
-				},
+				// getEPDefaults: (player: Player<Spec.SpecFrostDeathKnight>) => {
+				// 	const talents = player.getTalents();
+				// 	return talents.mightOfTheFrozenWastes > 0
+				// 		? Presets.P1_TWOHAND_EP_PRESET.epWeights
+				// 		: talents.epidemic > 0
+				// 		? Presets.P3_DUAL_WIELD_EP_PRESET.epWeights
+				// 		: Presets.P1_MASTERFROST_EP_PRESET.epWeights;
+				// },
 			});
 		});
 	}

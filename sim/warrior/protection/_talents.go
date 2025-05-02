@@ -135,7 +135,7 @@ func (war *ProtectionWarrior) applyImpendingVictory() {
 		},
 
 		DamageMultiplier: 1.0,
-		CritMultiplier:   war.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   war.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.MeleeAttackPower() * 0.56

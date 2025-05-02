@@ -37,7 +37,7 @@ func TestFury(t *testing.T) {
 			},
 		},
 		Glyphs:      FuryGlyphs,
-		Consumes:    FullConsumes,
+		Consumables: FullConsumesSpec,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsFury},
 		Rotation:    core.GetAplRotation("../../../ui/warrior/fury/apls", "tg"),
 		OtherRotations: []core.RotationCombo{
@@ -81,10 +81,10 @@ var PlayerOptionsFury = &proto.Player_FuryWarrior{
 	},
 }
 
-var FullConsumes = &proto.Consumes{
-	Flask:         proto.Flask_FlaskOfTitanicStrength,
-	DefaultPotion: proto.Potions_GolembloodPotion,
-	PrepopPotion:  proto.Potions_GolembloodPotion,
-	Food:          proto.Food_FoodBeerBasedCrocolisk,
-	TinkerHands:   proto.TinkerHands_TinkerHandsSynapseSprings,
+var FullConsumesSpec = &proto.ConsumesSpec{
+	FlaskId:  58088, // Flask of Titanic Strength
+	FoodId:   62670, // Beer‑Basted Crocolisk
+	PotId:    58146, // Golemblood Potion
+	PrepotId: 58146, // Golemblood Potion
+	TinkerId: 82174, // Synapse Springs
 }

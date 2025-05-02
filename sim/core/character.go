@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"slices"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/wowsims/mop/sim/core/proto"
@@ -51,7 +50,7 @@ type Character struct {
 	ItemSwap ItemSwap
 
 	// Consumables this Character will be using.
-	Consumes *proto.Consumes
+	Consumables *proto.ConsumesSpec
 
 	// Base stats for this Character.
 	baseStats stats.Stats
@@ -67,8 +66,7 @@ type Character struct {
 
 	professions [2]proto.Profession
 
-	glyphs            [6]int32
-	PrimaryTalentTree uint8
+	glyphs [6]int32
 
 	// Used for effects like "Increased Armor Value from Items"
 	*EquipScalingManager
@@ -129,7 +127,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 
 		majorCooldownManager: newMajorCooldownManager(player.Cooldowns),
 	}
-	character.spellCritMultiplier = character.defaultSpellCritMultiplier()
+	character.spellCritMultiplier = character.DefaultCritMultiplier()
 	character.GCD = character.NewTimer()
 	character.RotationTimer = character.NewTimer()
 
@@ -145,11 +143,10 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 			player.Glyphs.Minor3,
 		}
 	}
-	character.PrimaryTalentTree = GetPrimaryTalentTreeIndex(player.TalentsString)
 
-	character.Consumes = &proto.Consumes{}
-	if player.Consumes != nil {
-		character.Consumes = player.Consumes
+	character.Consumables = &proto.ConsumesSpec{}
+	if player.Consumables != nil {
+		character.Consumables = player.Consumables
 	}
 
 	character.baseStats = BaseStats[BaseStatsKey{Race: character.Race, Class: character.Class}]
@@ -180,7 +177,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 	character.PseudoStats.InFrontOfTarget = player.InFrontOfTarget
 
 	if player.EnableItemSwap && player.ItemSwap != nil {
-		character.enableItemSwap(player.ItemSwap, character.DefaultMeleeCritMultiplier(), character.DefaultMeleeCritMultiplier(), 0)
+		character.enableItemSwap(player.ItemSwap, character.DefaultCritMultiplier(), character.DefaultCritMultiplier(), 0)
 	}
 
 	character.EquipScalingManager = character.NewEquipScalingManager()
@@ -381,6 +378,7 @@ func (character *Character) calculateCritMultiplier(normalCritDamage float64, pr
 	if character.HasMetaGemEquipped(34220) ||
 		character.HasMetaGemEquipped(32409) ||
 		character.HasMetaGemEquipped(41285) ||
+		character.HasMetaGemEquipped(41376) ||
 		character.HasMetaGemEquipped(41398) ||
 		character.HasMetaGemEquipped(52291) ||
 		character.HasMetaGemEquipped(52297) ||
@@ -391,34 +389,11 @@ func (character *Character) calculateCritMultiplier(normalCritDamage float64, pr
 	}
 	return 1.0 + (normalCritDamage*primaryModifiers-1.0)*(1.0+secondaryModifiers)
 }
-func (character *Character) calculateHealingCritMultiplier(normalCritDamage float64, primaryModifiers float64, secondaryModifiers float64) float64 {
-	if character.HasMetaGemEquipped(41376) ||
-		character.HasMetaGemEquipped(52291) ||
-		character.HasMetaGemEquipped(52297) ||
-		character.HasMetaGemEquipped(68778) ||
-		character.HasMetaGemEquipped(68779) ||
-		character.HasMetaGemEquipped(68780) {
-		primaryModifiers *= 1.03
-	}
-	return 1.0 + (normalCritDamage*primaryModifiers-1.0)*(1.0+secondaryModifiers)
-}
-func (character *Character) SpellCritMultiplier(primaryModifiers float64, secondaryModifiers float64) float64 {
-	return character.calculateCritMultiplier(1.5, primaryModifiers, secondaryModifiers)
-}
-func (character *Character) MeleeCritMultiplier(primaryModifiers float64, secondaryModifiers float64) float64 {
+func (character *Character) CritMultiplier(primaryModifiers float64, secondaryModifiers float64) float64 {
 	return character.calculateCritMultiplier(2.0, primaryModifiers, secondaryModifiers)
 }
-func (character *Character) HealingCritMultiplier(primaryModifiers float64, secondaryModifiers float64) float64 {
-	return character.calculateHealingCritMultiplier(2.0, primaryModifiers, secondaryModifiers)
-}
-func (character *Character) defaultSpellCritMultiplier() float64 {
-	return character.SpellCritMultiplier(1, 0)
-}
-func (character *Character) DefaultMeleeCritMultiplier() float64 {
-	return character.MeleeCritMultiplier(1, 0)
-}
-func (character *Character) DefaultHealingCritMultiplier() float64 {
-	return character.HealingCritMultiplier(1, 0)
+func (character *Character) DefaultCritMultiplier() float64 {
+	return character.CritMultiplier(1, 0)
 }
 
 func (character *Character) SetDefaultSpellCritMultiplier(spellCritMultiplier float64) {
@@ -746,65 +721,33 @@ func (character *Character) GetMatchingItemProcAuras(statTypesToMatch []stats.St
 	})
 }
 
-// Returns the talent tree (0, 1, or 2) of the tree with the most points.
-//
-// talentStr is expected to be a wowhead-formatted talent string, e.g.
-// "12123131-123123123-123123213"
-func GetPrimaryTalentTreeIndex(talentStr string) uint8 {
-	trees := strings.Split(talentStr, "-")
-	bestTree := 0
-	bestTreePoints := 0
-
-	for treeIdx, treeStr := range trees {
-		points := 0
-		for talentIdx := 0; talentIdx < len(treeStr); talentIdx++ {
-			v, _ := strconv.Atoi(string(treeStr[talentIdx]))
-			points += v
-		}
-
-		if points > bestTreePoints {
-			bestTreePoints = points
-			bestTree = treeIdx
-		}
-	}
-
-	return uint8(bestTree)
-}
-
 // Uses proto reflection to set fields in a talents proto (e.g. MageTalents,
 // WarriorTalents) based on a talentsStr. treeSizes should contain the number
 // of talents in each tree, usually around 30. This is needed because talent
 // strings truncate 0's at the end of each tree, so we can't infer the start index
 // of the tree from the string.
-func FillTalentsProto(data protoreflect.Message, talentsStr string, treeSizes [3]int) {
-	treeStrs := strings.Split(talentsStr, "-")
+func FillTalentsProto(data protoreflect.Message, talentsStr string) {
 	fieldDescriptors := data.Descriptor().Fields()
 
-	var offset int
-	for treeIdx, treeStr := range treeStrs {
-		for talentIdx, talentValStr := range treeStr {
-			talentVal, _ := strconv.Atoi(string(talentValStr))
-			talentOffset := offset + talentIdx + 1
+	for talentIdx, talentValStr := range talentsStr {
+		talentVal, _ := strconv.Atoi(string(talentValStr))
+		if talentVal != 0 {
+			talentOffset := talentIdx*3 + talentVal
 			fd := fieldDescriptors.ByNumber(protowire.Number(talentOffset))
 			if fd == nil {
 				panic(fmt.Sprintf("Couldn't find proto field for talent #%d, full string: %s", talentOffset, talentsStr))
 			}
-			if fd.Kind() == protoreflect.BoolKind {
-				data.Set(fd, protoreflect.ValueOfBool(talentVal == 1))
-			} else { // Int32Kind
-				data.Set(fd, protoreflect.ValueOfInt32(int32(talentVal)))
-			}
+			data.Set(fd, protoreflect.ValueOfBool(true))
 		}
-		offset += treeSizes[treeIdx]
 	}
 }
 
 func (character *Character) MeetsArmorSpecializationRequirement(armorType proto.ArmorType) bool {
 	for _, itemSlot := range ArmorSpecializationSlots() {
 		item := character.Equipment[itemSlot]
-		if item.ArmorType == proto.ArmorType_ArmorTypeUnknown {
-			continue
-		}
+		// if item.ArmorType == proto.ArmorType_ArmorTypeUnknown {
+		// 	continue
+		// }
 		if item.ArmorType != armorType {
 			return false
 		}

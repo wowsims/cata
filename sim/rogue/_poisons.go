@@ -215,7 +215,7 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1 + 0.12*float64(rogue.Talents.VilePoisons),
-		CritMultiplier:           rogue.SpellCritMultiplier(),
+		CritMultiplier:           rogue.DefaultCritMultiplier()(),
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -242,7 +242,7 @@ func (rogue *Rogue) makeWoundPoison(procSource PoisonProcSource) *core.Spell {
 
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1 + 0.12*float64(rogue.Talents.VilePoisons),
-		CritMultiplier:           rogue.SpellCritMultiplier(),
+		CritMultiplier:           rogue.DefaultCritMultiplier(),
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

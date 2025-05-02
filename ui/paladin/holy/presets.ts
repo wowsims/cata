@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
+import { ConsumesSpec, Debuffs, Glyphs, Profession, RaidBuffs, Stat } from '../../core/proto/common.js';
 import {
 	HolyPaladin_Options as Paladin_Options,
 	PaladinAura,
@@ -41,14 +41,10 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		talentsString: '03331001221131312301-3-032002',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: MajorGlyph.GlyphOfDivinePlea,
 			major2: MajorGlyph.GlyphOfDivinity,
-			major3: MajorGlyph.GlyphOfTheAsceticCrusader,
-			minor1: MinorGlyph.GlyphOfInsight,
-			minor2: MinorGlyph.GlyphOfBlessingOfKings,
-			minor3: MinorGlyph.GlyphOfBlessingOfMight,
 		}),
 	}),
 };
@@ -76,13 +72,11 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	blessingOfMight: true,
 	communion: true,
 });
-
-export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.VolcanicPotion,
-	flask: Flask.FlaskOfTheDraconicMind,
-	food: Food.FoodSeafoodFeast,
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58086, // Flask of the Draconic Mind
+	foodId: 62290, // Seafood Magnifique Feast
+	potId: 58091, // Volcanic Potion
 });
-
 export const DefaultDebuffs = Debuffs.create({
 	bloodFrenzy: true,
 	sunderArmor: true,

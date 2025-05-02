@@ -17,10 +17,10 @@ func TestArcane(t *testing.T) {
 		Class: proto.Class_ClassMage,
 		Race:  proto.Race_RaceTroll,
 
-		GearSet:  core.GetGearSet("../../../ui/mage/arcane/gear_sets", "p3"),
-		Talents:  ArcaneTalents,
-		Glyphs:   ArcaneGlyphs,
-		Consumes: FullArcaneConsumes,
+		GearSet:     core.GetGearSet("../../../ui/mage/arcane/gear_sets", "p3"),
+		Talents:     ArcaneTalents,
+		Glyphs:      ArcaneGlyphs,
+		Consumables: FullArcaneConsumesSpec,
 
 		SpecOptions: core.SpecOptionsCombo{Label: "Arcane", SpecOptions: PlayerOptionsArcane},
 		Rotation:    core.GetAplRotation("../../../ui/mage/arcane/apls", "arcane"),
@@ -61,10 +61,10 @@ var PlayerOptionsArcane = &proto.Player_ArcaneMage{
 	},
 }
 
-var FullArcaneConsumes = &proto.Consumes{
-	Flask:         proto.Flask_FlaskOfTheDraconicMind,
-	Food:          proto.Food_FoodSeafoodFeast,
-	DefaultPotion: proto.Potions_VolcanicPotion,
-	PrepopPotion:  proto.Potions_VolcanicPotion,
-	TinkerHands:   proto.TinkerHands_TinkerHandsSynapseSprings,
+var FullArcaneConsumesSpec = &proto.ConsumesSpec{
+	FlaskId:  58086, // Flask of the Draconic Mind
+	FoodId:   62290, // Seafood Magnifique Feast
+	PotId:    58091, // Volcanic Potion
+	PrepotId: 58091, // Volcanic Potion
+	TinkerId: 82174, // Synapse Springs
 }

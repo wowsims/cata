@@ -4,110 +4,85 @@ package proto;
 option go_package = "./proto";
 
 import "common.proto";
-
+// DO NOT REMOVE THE COMMENTS
+// BEGIN GENERATED
+// DruidTalents message.
 message DruidTalents {
-	// Balance
-	int32 natures_grace = 1;
-	int32 starlight_wrath = 2;
-	int32 natures_majesty = 3;
-	int32 genesis = 4;
-	int32 moonglow = 5;
-	int32 balance_of_power = 6;
-	int32 euphoria = 7;
-	bool moonkin_form = 8;
-	bool typhoon = 9;
-	int32 shooting_stars = 10;
-	int32 owlkin_frenzy = 11;
-	int32 gale_winds = 12;
-	bool solar_beam = 13;
-	int32 dreamstate = 14;
-	bool force_of_nature = 15;
-	bool sunfire = 16;
-	bool earth_and_moon = 17;
-	int32 fungal_growth = 18;
-	int32 lunar_shower = 19;
-	bool starfall = 20;
-
-	// Feral Combat
-	int32 feral_swiftness = 21;
-	int32 furor = 22;
-	int32 predatory_strikes = 23;
-	int32 infected_wounds = 24;
-	int32 fury_swipes = 25;
-	int32 primal_fury = 26;
-	int32 feral_aggression = 27;
-	int32 king_of_the_jungle = 28;
-	bool feral_charge = 29;
-	int32 stampede = 30;
-	int32 thick_hide = 31;
-	bool leader_of_the_pack = 32;
-	int32 brutal_impact = 33;
-	int32 nurturing_instinct = 34;
-	int32 primal_madness = 35;
-	bool survival_instincts = 36;
-	int32 endless_carnage = 37;
-	int32 natural_reaction = 38;
-	int32 blood_in_the_water = 39;
-	int32 rend_and_tear = 40;
-	bool pulverize = 41;
-	bool berserk = 42;
-
-	// Restoration
-	int32 blessing_of_the_grove = 43;
-	int32 natural_shapeshifter = 44;
-	int32 naturalist = 45;
-	int32 heart_of_the_wild = 46;
-	int32 perseverance = 47;
-	bool master_shapeshifter = 48;
-	int32 improved_rejuvenation = 49;
-	int32 living_seed = 50;
-	int32 revitalize = 51;
-	bool natures_swiftness = 52;
-	int32 fury_of_stormrage = 53;
-	int32 natures_bounty = 54;
-	int32 empowered_touch = 55;
-	int32 malfurions_gift = 56;
-	int32 efflorescence = 57;
-	bool wild_growth = 58;
-	bool natures_cure = 59;
-	int32 natures_ward = 60;
-	int32 gift_of_the_earthmother = 61;
-	bool swift_rejuvenation = 62;
-	bool tree_of_life = 63;
+    bool feline_swiftness = 1;
+    bool displacer_beast = 2;
+    bool wild_charge = 3;
+    bool yseras_gift = 4;
+    bool renewal = 5;
+    bool cenarion_ward = 6;
+    bool faerie_swarm = 7;
+    bool mass_entanglement = 8;
+    bool typhoon = 9;
+    bool soul_of_the_forest = 10;
+    bool incarnation = 11;
+    bool force_of_nature = 12;
+    bool disorienting_roar = 13;
+    bool ursols_vortex = 14;
+    bool mighty_bash = 15;
+    bool heart_of_the_wild = 16;
+    bool dream_of_cenarius = 17;
+    bool natures_vigil = 18;
 }
 
 enum DruidMajorGlyph {
-	DruidMajorGlyphNone = 0;
-	GlyphOfBarkskin = 45623;
-	GlyphOfEntanglingRoots = 40924;
-	GlyphOfFaerieFire = 67485;
-	GlyphOfFeralCharge = 67486;
-	GlyphOfFerociousBite = 48720;
-	GlyphOfFocus = 44928;
-	GlyphOfFrenziedRegeneration = 40896;
-	GlyphOfHealingTouch = 40914;
-	GlyphOfHurricane = 40920;
-	GlyphOfInnervate = 40908;
-	GlyphOfMaul = 40897;
-	GlyphOfMonsoon = 45622;
-	GlyphOfOmenOfClarity = 206580;
-	GlyphOfPounce = 40903;
-	GlyphOfRebirth = 40909;
-	GlyphOfSolarBeam = 40899;
-	GlyphOfStarfall = 40921;
-	GlyphOfThorns = 43332;
-	GlyphOfWildGrowth = 45602;
+    DruidMajorGlyphNone = 0;
+    GlyphOfFrenziedRegeneration = 40896;
+    GlyphOfMaul = 40897;
+    GlyphOfOmens = 40899;
+    GlyphOfShred = 40901;
+    GlyphOfProwl = 40902;
+    GlyphOfPounce = 40903;
+    GlyphOfStampede = 40906;
+    GlyphOfInnervate = 40908;
+    GlyphOfRebirth = 40909;
+    GlyphOfRegrowth = 40912;
+    GlyphOfRejuvenation = 40913;
+    GlyphOfHealingTouch = 40914;
+    GlyphOfEfflorescence = 40915;
+    GlyphOfGuidedStars = 40916;
+    GlyphOfHurricane = 40920;
+    GlyphOfSkullBash = 40921;
+    GlyphOfNaturesGrasp = 40922;
+    GlyphOfSavagery = 40923;
+    GlyphOfEntanglingRoots = 40924;
+    GlyphOfBlooming = 43331;
+    GlyphOfDash = 43674;
+    GlyphOfMasterShapeshifter = 44928;
+    GlyphOfSurvivalInstincts = 45601;
+    GlyphOfWildGrowth = 45602;
+    GlyphOfMightOfUrsoc = 45603;
+    GlyphOfStampedingRoar = 45604;
+    GlyphOfCyclone = 45622;
+    GlyphOfBarkskin = 45623;
+    GlyphOfFerociousBite = 48720;
+    GlyphOfFaeSilence = 67484;
+    GlyphOfFaerieFire = 67485;
+    GlyphOfCatForm = 67487;
 }
+
 enum DruidMinorGlyph {
-	DruidMinorGlyphNone = 0;
-	GlyphOfAquaticForm = 43316;
-	GlyphOfChallengingRoar = 43334;
-	GlyphOfDash = 43674;
-	GlyphOfMarkOfTheWild = 43335;
-	GlyphOfTheTreant = 68039;
-	GlyphOfTyphoon = 44922;
-	GlyphOfUnburdenedRebirth = 43331;
+    DruidMinorGlyphNone = 0;
+    GlyphOfTheStag = 40900;
+    GlyphOfTheOrca = 40919;
+    GlyphOfAquaticForm = 43316;
+    GlyphOfGrace = 43332;
+    GlyphOfTheChameleon = 43334;
+    GlyphOfCharmWoodlandCreature = 43335;
+    GlyphOfStars = 44922;
+    GlyphOfThePredator = 67486;
+    GlyphOfTheTreant = 68039;
+    ZzoldGlyphOfTheChameleon = 76729;
+    GlyphOfTheCheetah = 89868;
+    GlyphOfFocus = 93203;
+    GlyphOfTheSproutingMushroom = 104102;
+    GlyphOfOneWithNature = 104103;
 }
+
+// END GENERATED
 
 message DruidOptions {
 	UnitReference innervate_target = 1;

@@ -47,7 +47,7 @@
 	}
 }
 
-#talents-carousel {
+.talents-picker-list {
 	flex: 1;
 	@include media-breakpoint-down(lg) {
 		display: flex;
@@ -55,51 +55,6 @@
 		overflow-x: hidden;
 		margin-left: calc(-1 * var(--container-padding));
 		margin-right: calc(-1 * var(--container-padding));
-	}
-
-	.carousel-inner {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		overflow: unset;
-		transform: unset;
-		@include media-breakpoint-down(lg) {
-			width: unset;
-			min-width: unset;
-			transition: transform 0.15s ease-in-out;
-		}
-	}
-
-	.carousel-item {
-		display: block;
-		width: unset;
-		margin-right: unset;
-		float: unset;
-		@include media-breakpoint-down(xxxl) {
-			flex: 1;
-		}
-
-		@include media-breakpoint-down(lg) {
-			opacity: 0.5;
-			transition: opacity 0.15s ease-in-out;
-		}
-
-		&.active {
-			@include media-breakpoint-down(lg) {
-				opacity: 1;
-			}
-		}
-
-		// Offset to keep the border sizes consistent
-		&:not(:first-child) {
-			margin-left: -1px;
-		}
-	}
-
-	.carousel-control-prev,
-	.carousel-control-next {
-		@include media-breakpoint-up(lg) {
-			display: none;
-		}
 	}
 }
 
@@ -117,105 +72,103 @@
 	&:not(:first-child) {
 		margin-left: -1px;
 	}
+}
 
-	.talent-tree-header {
-		padding: var(--talent-tree-header-padding-y) var(--talent-tree-header-padding-x);
-		display: flex;
-		align-items: center;
-		color: var(--bs-white);
-		background: var(--bs-black);
-		font-size: 1rem;
-		z-index: 1;
+.talent-tree-header {
+	padding: var(--talent-tree-header-padding-y) var(--talent-tree-header-padding-x);
+	display: flex;
+	align-items: center;
+	color: var(--bs-white);
+	background: var(--bs-black);
+	font-size: 1rem;
+	z-index: 1;
 
-		.talent-tree-icon {
-			width: var(--talent-tree-header-icon-size);
-			height: var(--talent-tree-header-icon-size);
-			margin-right: var(--talent-tree-header-padding-x);
-			border-radius: 100%;
-		}
-
-		.talent-tree-title {
-			margin-right: var(--talent-tree-header-padding-x);
-			flex: 1;
-			font-weight: bold;
-			white-space: nowrap;
-		}
-
-		.talent-tree-reset {
-			line-height: 1;
-			margin-right: calc(-1 * var(--btn-padding-x));
-		}
+	.talent-tree-icon {
+		width: var(--talent-tree-header-icon-size);
+		height: var(--talent-tree-header-icon-size);
+		margin-right: var(--talent-tree-header-padding-x);
+		border-radius: 100%;
 	}
 
-	.talent-tree-background {
-		position: absolute;
-		inset: var(--talent-tree-header-size) 0 0 0;
-		background-repeat: no-repeat;
-		background-size: 100% 100%;
-		box-shadow: inset 0 0 var(--talent-tree-header-size) 1rem var(--bs-black);
-		z-index: 0;
+	.talent-tree-title {
+		margin-right: var(--talent-tree-header-padding-x);
+		flex: 1;
+		font-weight: bold;
+		white-space: nowrap;
 	}
 
-	.talent-tree-main {
-		display: grid;
-		margin: var(--block-spacer) 2vw;
-		z-index: 1;
-
-		@include media-breakpoint-down(xxxl) {
-			margin: var(--block-spacer) auto;
-		}
-		@include media-breakpoint-down(lg) {
-			margin: var(--block-spacer) var(--talent-icon-size);
-		}
+	.talent-tree-reset {
+		line-height: 1;
+		margin-right: calc(-1 * var(--btn-padding-x));
 	}
 }
 
+.talent-tree-background {
+	position: absolute;
+	inset: var(--talent-tree-header-size) 0 0 0;
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	box-shadow: inset 0 0 var(--talent-tree-header-size) 1rem var(--bs-black);
+	z-index: 0;
+}
+
+.talent-tree-main {
+	margin: var(--block-spacer) 2vw;
+	z-index: 1;
+
+	@include media-breakpoint-down(xxxl) {
+		margin: var(--block-spacer) auto;
+	}
+	@include media-breakpoint-down(lg) {
+		margin: var(--block-spacer) var(--talent-icon-size);
+	}
+}
+
+.talent-tree-row {
+	display: grid;
+	grid-template-columns: 4rem repeat(3, 1fr);
+}
+
+.talent-tree-level {
+	padding: calc(var(--talent-icon-size) / 5);
+	align-content: center;
+	justify-self: center;
+}
+
 .talent-picker-root {
-	@include wowhead-background-icon;
-	width: var(--talent-icon-size);
-	height: var(--talent-icon-size);
-	margin: calc(var(--talent-icon-size) / 5);
-	border: 1px solid var(--bs-talent-partial);
-	border-radius: 4px;
+	--talent-border-color: var(--bs-gray-600);
+	display: flex;
+	align-items: center;
+	gap: var(--spacer-2);
+	padding: calc(var(--talent-icon-size) / 5);
+	border: 2px solid transparent;
 
-	&[data-points='0']:not(.talent-picker-can-add) {
-		filter: grayscale(100%);
-
-		.talent-picker-points {
+	.talent-tree-row:has([data-selected='true']) & {
+		&:not([data-selected='true']) {
 			filter: grayscale(100%);
 		}
 	}
 
-	&.talent-full {
-		border-color: var(--bs-talent-full);
-		.talent-picker-points {
-			color: var(--bs-talent-full);
-		}
+	&[data-selected='true'] {
+		--talent-border-color: color-mix(in srgb, var(--bs-talent-full) 40%, transparent);
+		border-color: var(--talent-border-color);
 	}
 }
 
-.talent-picker-points {
-	margin: 0;
-	color: var(--bs-talent-partial);
-	background-color: var(--bs-black);
-	position: absolute;
-	bottom: -8px;
-	right: -8px;
-	padding: 0px 2px;
-	border-radius: 2px;
-	font-size: 11px;
+.talent-picker-icon {
+	@include wowhead-background-icon;
+	width: var(--talent-icon-size);
+	height: var(--talent-icon-size);
+	border-radius: 4px;
+	border: 1px solid var(--talent-border-color);
 
-	.talent-picker-root[data-points='0']:not(.talent-picker-can-add) & {
-		filter: grayscale(100%);
+	[data-selected='true'] & {
+		border-color: var(--talent-border-color);
 	}
-
-	.talent-picker-root.talent-full & {
-		color: var(--bs-talent-full);
-	}
-
-	.talents-picker-root.talents-full .talent-picker-root[data-points='0'] & {
-		display: none;
-	}
+}
+.talent-picker-label {
+	font-size: var(--btn-font-size);
+	color: var(--bs-white);
 }
 
 .icon-input:not(.active),

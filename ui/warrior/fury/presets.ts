@@ -1,6 +1,6 @@
 import { Player } from '../../core/player';
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Flask, Food, Glyphs, HandType, ItemSlot, Potions, Profession, PseudoStat, Spec, Stat, TinkerHands } from '../../core/proto/common';
+import { ConsumesSpec, Glyphs, HandType, ItemSlot, Profession, PseudoStat, Spec, Stat } from '../../core/proto/common';
 import { SavedTalents } from '../../core/proto/ui';
 import { FuryWarrior_Options as WarriorOptions, WarriorMajorGlyph, WarriorMinorGlyph } from '../../core/proto/warrior';
 import { Stats } from '../../core/proto_utils/stats';
@@ -33,11 +33,11 @@ const FURY_SMF_PRESET_OPTIONS = {
 						player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeTwoHand,
 					message: 'Check your gear: You have a two-handed weapon equipped, but the selected option is for one-handed weapons.',
 				},
-				{
-					condition: (player: Player<Spec.SpecFuryWarrior>) =>
-						player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeTwoHand || !player.getTalents().singleMindedFury,
-					message: "Check your talents: You have selected a two-handed spec but don't have [Single-Minded Fury] talented.",
-				},
+				// {
+				// 	condition: (player: Player<Spec.SpecFuryWarrior>) =>
+				// 		player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeTwoHand || !player.getTalents().singleMindedFury,
+				// 	message: "Check your talents: You have selected a two-handed spec but don't have [Single-Minded Fury] talented.",
+				// },
 			],
 			player,
 		);
@@ -52,10 +52,10 @@ const FURY_TG_PRESET_OPTIONS = {
 						player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeOneHand,
 					message: 'Check your gear: You have a one-handed weapon equipped, but the selected option is for two-handed weapons.',
 				},
-				{
-					condition: (player: Player<Spec.SpecFuryWarrior>) => !player.getTalents().titansGrip,
-					message: "Check your talents: You have selected a one-handed spec but don't have [Titan's Grip] talented.",
-				},
+				// {
+				// 	condition: (player: Player<Spec.SpecFuryWarrior>) => !player.getTalents().titansGrip,
+				// 	message: "Check your talents: You have selected a one-handed spec but don't have [Titan's Grip] talented.",
+				// },
 			],
 			player,
 		);
@@ -170,14 +170,9 @@ export const P3_FURY_TG_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const FurySMFTalents = {
 	name: 'SMF',
 	data: SavedTalents.create({
-		talentsString: '302003-032222031301101223201-2',
+		talentsString: '',
 		glyphs: Glyphs.create({
-			major1: WarriorMajorGlyph.GlyphOfCleaving,
-			major2: WarriorMajorGlyph.GlyphOfDeathWish,
 			major3: WarriorMajorGlyph.GlyphOfColossusSmash,
-			minor1: WarriorMinorGlyph.GlyphOfCommand,
-			minor2: WarriorMinorGlyph.GlyphOfBattle,
-			minor3: WarriorMinorGlyph.GlyphOfBerserkerRage,
 		}),
 	}),
 	...FURY_SMF_PRESET_OPTIONS,
@@ -186,14 +181,9 @@ export const FurySMFTalents = {
 export const FuryTGTalents = {
 	name: 'TG',
 	data: SavedTalents.create({
-		talentsString: '302003-03222203130110122321-2',
+		talentsString: '',
 		glyphs: Glyphs.create({
-			major1: WarriorMajorGlyph.GlyphOfCleaving,
-			major2: WarriorMajorGlyph.GlyphOfDeathWish,
 			major3: WarriorMajorGlyph.GlyphOfColossusSmash,
-			minor1: WarriorMinorGlyph.GlyphOfCommand,
-			minor2: WarriorMinorGlyph.GlyphOfBattle,
-			minor3: WarriorMinorGlyph.GlyphOfBerserkerRage,
 		}),
 	}),
 	...FURY_TG_PRESET_OPTIONS,
@@ -206,12 +196,12 @@ export const DefaultOptions = WarriorOptions.create({
 	syncType: 0,
 });
 
-export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfTitanicStrength,
-	food: Food.FoodBeerBasedCrocolisk,
-	defaultPotion: Potions.GolembloodPotion,
-	prepopPotion: Potions.GolembloodPotion,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58088, // Flask of Titanic Strength
+	foodId: 62670, // Beer-Basted Crocolisk
+	potId: 58146, // Golemblood Potion
+	prepotId: 58146, // Golemblood Potion
+	tinkerId: 82174, // Synapse Springs
 });
 
 export const OtherDefaults = {

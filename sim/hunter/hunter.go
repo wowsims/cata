@@ -8,8 +8,6 @@ import (
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
-var TalentTreeSizes = [3]int{19, 19, 20}
-
 const ThoridalTheStarsFuryItemID = 34334
 
 type Hunter struct {
@@ -94,7 +92,7 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassHunter),
 	}
 
-	core.FillTalentsProto(hunter.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
+	core.FillTalentsProto(hunter.Talents.ProtoReflect(), options.TalentsString)
 	focusPerSecond := 4.0
 
 	// TODO: Fix this to work with the new talent system.
@@ -134,9 +132,9 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 }
 
 func (hunter *Hunter) Initialize() {
-	hunter.AutoAttacks.MHConfig().CritMultiplier = hunter.CritMultiplier(false, false, false)
-	hunter.AutoAttacks.OHConfig().CritMultiplier = hunter.CritMultiplier(false, false, false)
-	hunter.AutoAttacks.RangedConfig().CritMultiplier = hunter.CritMultiplier(false, false, false)
+	hunter.AutoAttacks.MHConfig().CritMultiplier = hunter.DefaultCritMultiplier()
+	hunter.AutoAttacks.OHConfig().CritMultiplier = hunter.DefaultCritMultiplier()
+	hunter.AutoAttacks.RangedConfig().CritMultiplier = hunter.DefaultCritMultiplier()
 
 	hunter.FireTrapTimer = hunter.NewTimer()
 
@@ -208,13 +206,6 @@ func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 }
 
 func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
-}
-
-func (hunter *Hunter) CritMultiplier(isRanged bool, isMFDSpell bool, doubleDipMS bool) float64 {
-	primaryModifier := 1.0
-	secondaryModifier := 0.0
-
-	return hunter.MeleeCritMultiplier(primaryModifier, secondaryModifier)
 }
 
 func (hunter *Hunter) HasMajorGlyph(glyph proto.HunterMajorGlyph) bool {

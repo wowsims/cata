@@ -1,12 +1,7 @@
 import * as Mechanics from '../../core/constants/mechanics.js';
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Conjured, Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Spec, Stat, TinkerHands } from '../../core/proto/common';
-import {
-	DruidMajorGlyph,
-	DruidMinorGlyph,
-	GuardianDruid_Options as DruidOptions,
-	GuardianDruid_Rotation as DruidRotation,
-} from '../../core/proto/druid.js';
+import { ConsumesSpec, Glyphs, Profession, PseudoStat, Spec, Stat } from '../../core/proto/common';
+import { DruidMajorGlyph, GuardianDruid_Options as DruidOptions, GuardianDruid_Rotation as DruidRotation } from '../../core/proto/druid.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -31,20 +26,20 @@ export const DefaultSimpleRotation = DruidRotation.create({
 });
 
 import { Stats } from '../../core/proto_utils/stats';
+import BalerocMTApl from './apls/balerocMT.apl.json';
+import BalerocOTApl from './apls/balerocOT.apl.json';
+import BethApl from './apls/bethtilac.apl.json';
+import BlackhornOTApl from './apls/blackhorn.apl.json';
 import CleaveApl from './apls/cleave.apl.json';
 import DefaultApl from './apls/default.apl.json';
 import NefApl from './apls/nef.apl.json';
-import BethApl from './apls/bethtilac.apl.json';
-import BalerocMTApl from './apls/balerocMT.apl.json';
-import BalerocOTApl from './apls/balerocOT.apl.json';
-import BlackhornOTApl from './apls/blackhorn.apl.json';
 export const ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('APL Default', DefaultApl);
 export const ROTATION_CLEAVE = PresetUtils.makePresetAPLRotation('2-Target Cleave', CleaveApl);
 export const ROTATION_NEF = PresetUtils.makePresetAPLRotation('AoE (Nef Adds)', NefApl);
 export const ROTATION_BETH = PresetUtils.makePresetAPLRotation("Beth'tilac Phase 2", BethApl);
-export const ROTATION_BALEROC_MT = PresetUtils.makePresetAPLRotation("Baleroc MT", BalerocMTApl);
-export const ROTATION_BALEROC_OT = PresetUtils.makePresetAPLRotation("Baleroc OT", BalerocOTApl);
-export const ROTATION_BLACKHORN_OT = PresetUtils.makePresetAPLRotation("Blackhorn OT", BlackhornOTApl);
+export const ROTATION_BALEROC_MT = PresetUtils.makePresetAPLRotation('Baleroc MT', BalerocMTApl);
+export const ROTATION_BALEROC_OT = PresetUtils.makePresetAPLRotation('Baleroc OT', BalerocOTApl);
+export const ROTATION_BLACKHORN_OT = PresetUtils.makePresetAPLRotation('Blackhorn OT', BlackhornOTApl);
 
 export const ROTATION_PRESET_SIMPLE = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecGuardianDruid, DefaultSimpleRotation);
 
@@ -84,17 +79,17 @@ export const BALANCED_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAgility]: 1.0,
 			[Stat.StatArmor]: 0.66,
 			[Stat.StatBonusArmor]: 0.15,
-			[Stat.StatDodgeRating]: 0.60,
+			[Stat.StatDodgeRating]: 0.6,
 			[Stat.StatMasteryRating]: 0.22,
 			[Stat.StatStrength]: 0.16,
 			[Stat.StatAttackPower]: 0.15,
 			[Stat.StatHitRating]: 0.61,
 			[Stat.StatExpertiseRating]: 1.07,
 			[Stat.StatCritRating]: 0.36,
-			[Stat.StatHasteRating]: 0.10,
+			[Stat.StatHasteRating]: 0.1,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 0.50,
+			[PseudoStat.PseudoStatMainHandDps]: 0.5,
 			[PseudoStat.PseudoStatPhysicalHitPercent]: 0.535 * Mechanics.PHYSICAL_HIT_RATING_PER_HIT_PERCENT,
 			[PseudoStat.PseudoStatSpellHitPercent]: 0.075 * Mechanics.SPELL_HIT_RATING_PER_HIT_PERCENT,
 		},
@@ -106,14 +101,11 @@ export const BALANCED_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		talentsString: '-2300322312310001220311-020331',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: DruidMajorGlyph.GlyphOfFrenziedRegeneration,
 			major2: DruidMajorGlyph.GlyphOfMaul,
 			major3: DruidMajorGlyph.GlyphOfRebirth,
-			minor1: DruidMinorGlyph.GlyphOfDash,
-			minor2: DruidMinorGlyph.GlyphOfChallengingRoar,
-			minor3: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
 		}),
 	}),
 };
@@ -121,14 +113,11 @@ export const StandardTalents = {
 export const InfectedWoundsBuild = {
 	name: 'Infected Wounds',
 	data: SavedTalents.create({
-		talentsString: '-2302322310310001220311-020331',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: DruidMajorGlyph.GlyphOfFrenziedRegeneration,
 			major2: DruidMajorGlyph.GlyphOfMaul,
 			major3: DruidMajorGlyph.GlyphOfRebirth,
-			minor1: DruidMinorGlyph.GlyphOfDash,
-			minor2: DruidMinorGlyph.GlyphOfChallengingRoar,
-			minor3: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
 		}),
 	}),
 };
@@ -137,15 +126,14 @@ export const DefaultOptions = DruidOptions.create({
 	startingRage: 15,
 });
 
-export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfSteelskin,
-	food: Food.FoodSkeweredEel,
-	prepopPotion: Potions.PotionOfTheTolvir,
-	defaultPotion: Potions.PotionOfTheTolvir,
-	defaultConjured: Conjured.ConjuredHealthstone,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58085, // Flask of Steelskin
+	foodId: 62669, // Skewered Eel
+	potId: 58145, // Potion of the Tol'vir
+	prepotId: 58145, // Potion of the Tol'vir
+	conjuredId: 5512, // Conjured Healthstone
+	tinkerId: 82174, // Synapse Springs
 });
-
 export const OtherDefaults = {
 	iterationCount: 50000,
 	profession1: Profession.Engineering,
@@ -184,26 +172,26 @@ export const PRESET_BUILD_BETHTILAC = PresetUtils.makePresetBuild("Beth'tilac Ph
 	),
 });
 
-export const PRESET_BUILD_BALEROC_MT = PresetUtils.makePresetBuild("Baleroc MT", {
+export const PRESET_BUILD_BALEROC_MT = PresetUtils.makePresetBuild('Baleroc MT', {
 	rotation: ROTATION_BALEROC_MT,
 	encounter: PresetUtils.makePresetEncounter(
-		"Baleroc MT",
-		'http://localhost:5173/mop/druid/guardian/?i=cmxe#eJzVUr9PFEEUZvbQ3IkmB5oIJJIHlV4QkYhRY7LLxeCRQLzIxWDn3O7s3eRmZ8/Z2bscFbEyxsLQQaNURit7Y60mklAZbKwoKLQ12vl2lkPA+Af4is3szPd+fN/3TpzNEiAOqZMVQp4RsmKRNxbZskgxlyfXSIlsE3LDypOBnuGH65njZUE7TGX78mTsVDYzOVS2lqwHxzCv2PM60zec6+8xMeF8sHp3Le+nRTYy6dV950nmUs4c5787/etrSfyyL6SHL/bl9PDKHkrxuzYcH3ueK2XSnMmWs1f7jDOUQj/a19ObLXvUN/HZntn8lMQ3e2on2/yxkVk+WaSCqdCFqWkowdJgb2Gb9PyHseK9dw78nn9UfjlzFGPk2Hl7emaNXOm/evPd3a92F+OUyCRZJU/JwEiFygZEbdoEP1Rwi7k8oJqHEoqCeqxQn/PBrTO3wbxx0HUG1TCKoM2FgCoDjcnMg2oHTJkpUBQxCoFUGvQC5TJ982LFZe2vBlhKemE7mhjEeR5nsmQA5iTXnAq4U0kgywxCH26LUHUg0tRtRIVtC4eSoby4jFaOd1ubmbjJ1cw0b8Z4E0vNhfmNmtjb5zivqQNuiG/AI6CuGwexwDRvAuapqiGDFhUxwychwrbJxml0CDVGFQShYkBrNcWiiLeY6EC7zgU20MkIAWM6YZokTU1PNqBUxjNi66HwjMjJi89VpP+lxjhUYw0BbTAQ3GdpQ4/7PndjofdrLFS6qs5JnykZHpEUKnVkx2UzNjR5TWIdD7hvfDOmI0NTOqJVgexHu/uxSjYJenGu68U9rvG72KSqgR4HzcRoVnhBZg/RCbiMtfGrK3+6MxHfkxfqjIpkYFpjqL2x7I/6iMUxAyo7h/qlrgNqRFtMYSZunm4zJvdQs4IGDBTzE42ZASZNE45dQiNIyEU+hUXNqGcWCdsdbLI/ReKFIVdYROtxE5KffckVC3CjPbw+QLLbJe/8Bt31bfM='
+		'Baleroc MT',
+		'http://localhost:5173/mop/druid/guardian/?i=cmxe#eJzVUr9PFEEUZvbQ3IkmB5oIJJIHlV4QkYhRY7LLxeCRQLzIxWDn3O7s3eRmZ8/Z2bscFbEyxsLQQaNURit7Y60mklAZbKwoKLQ12vl2lkPA+Af4is3szPd+fN/3TpzNEiAOqZMVQp4RsmKRNxbZskgxlyfXSIlsE3LDypOBnuGH65njZUE7TGX78mTsVDYzOVS2lqwHxzCv2PM60zec6+8xMeF8sHp3Le+nRTYy6dV950nmUs4c5787/etrSfyyL6SHL/bl9PDKHkrxuzYcH3ueK2XSnMmWs1f7jDOUQj/a19ObLXvUN/HZntn8lMQ3e2on2/yxkVk+WaSCqdCFqWkowdJgb2Gb9PyHseK9dw78nn9UfjlzFGPk2Hl7emaNXOm/evPd3a92F+OUyCRZJU/JwEiFygZEbdoEP1Rwi7k8oJqHEoqCeqxQn/PBrTO3wbxx0HUG1TCKoM2FgCoDjcnMg2oHTJkpUBQxCoFUGvQC5TJ982LFZe2vBlhKemE7mhjEeR5nsmQA5iTXnAq4U0kgywxCH26LUHUg0tRtRIVtC4eSoby4jFaOd1ubmbjJ1cw0b8Z4E0vNhfmNmtjb5zivqQNuiG/AI6CuGwexwDRvAuapqiGDFhUxwychwrbJxml0CDVGFQShYkBrNcWiiLeY6EC7zgU20MkIAWM6YZokTU1PNqBUxjNi66HwjMjJi89VpP+lxjhUYw0BbTAQ3GdpQ4/7PndjofdrLFS6qs5JnykZHpEUKnVkx2UzNjR5TWIdD7hvfDOmI0NTOqJVgexHu/uxSjYJenGu68U9rvG72KSqgR4HzcRoVnhBZg/RCbiMtfGrK3+6MxHfkxfqjIpkYFpjqL2x7I/6iMUxAyo7h/qlrgNqRFtMYSZunm4zJvdQs4IGDBTzE42ZASZNE45dQiNIyEU+hUXNqGcWCdsdbLI/ReKFIVdYROtxE5KffckVC3CjPbw+QLLbJe/8Bt31bfM=',
 	),
 });
 
-export const PRESET_BUILD_BALEROC_OT = PresetUtils.makePresetBuild("Baleroc OT", {
+export const PRESET_BUILD_BALEROC_OT = PresetUtils.makePresetBuild('Baleroc OT', {
 	rotation: ROTATION_BALEROC_OT,
 	encounter: PresetUtils.makePresetEncounter(
-		"Baleroc OT",
-		'http://localhost:5173/mop/druid/guardian/?i=rcmxe#eJzVUk9oHFUY3zcz2c6+JGUztSQZsL7sQeKShG3aFA3F3QSJG0kxmBDizZeZN7uvOzuzzMxmSU6xHhqLhxIQbRG1J6EnCYIY0YMXFVpILyXtwYr00IMFQZD0In7vTSbdre3Bo++wO9/3/b4/v9/34X4dEVRCVbSB0GWENhT0pYJ2FTSdyaKXURntITSZmlSyyEiZl9NX1fS8S9dYoHdnUa5XVwqD88qy8k4XpE6nrqvdZqYvJd9Y6SdF21XUu0ri+bX4m/Jh14Ca6zYeu3AfTpsaVgb6ckdwF1ZHT4b4ONbPp7GmP9rXchkM7tHC2MnQ0ExlMmUMmv24N9eNM9tIYL66mDbF/8f31GeFPtlGceiShrGSVQxAb8ahHQgtm0u4bMzgnnFsQBS8ty4q2MwP6Mjo/QG1OU2YD6NTMqYZPefbQ1ANK6dDE4P9zZ+aiBgl81VcMMdwNncU92yjjISr+oV0UmGnzRdXOBNXuPMekhWGzBfwsbtKVqIU3TpsowtLQrCpSyqfvq8aGfOImFF/OHzo/vvdLmPOfAOfNSbjOTpYtqkF+bg/f1zvMjLXE0fc7lQ8E+Blw6Nmj7Rvb3ba39/TOuyEQ9V08LKx9B/0zZvD7ZN9va/JyTQjs5M4nqq3yBN11afX7WDRa8KpglQfTQjzgWLvK+iaGl/l26VL6osZ+Tn3sNR39Yp4j4ovxR93ioMx7EGRpHOfZcpqDC2slg6u+rnSYAz9ufhK7NktDjny3S5O3bwh3u/F8ft6469r6nrPNHVZ4FtkfIKUyfKAlt9Dqf/h27B/LLWZwxfmv5h6EiPluP/tsakr6HTfmbPfvfVLMcGUyqiAttAHyDixSL0aCVu0QRw/IK8xi9dpxH2PTLvUZvnqrEOsKrNqzB4hUZWRFT8MSYu7LllhJIJkZpOVNSLLjJOAAiYAIPUk+hzlXhyzmwH3Kv9qAKU822+FYwMwz6YKZ0pmPR5x6pI3FwVknRHfIa+7frBGwohatTC/p8BQnu+NrsMqR5LWciYucyMmmzea4Gl6EXelGTagt8NhXlmHWD7ECA8JtaxmvelCmj1G5mhQAQar1G0yCLmu35LZME3kkwqjAan7ASO0UglYGPJV5q6RVpW70CASI9QZiwRTkTQ+UaiR8jx8A7bqu7YUWUQcHoTRs9QYISvNiNRpjRGXOyxuaHPH4VbTjQ5rnFtMVJ31HBZ4/hOSksUqsONeoylp8ooHdWzCHbk3uXRgKEuHdMUF9kPxefxR3EI3Eezi+WQXSzyC34UGDWqw43pDLJrlP0czHXTq3GtGcl+J/PHNhPxAXlJl1BUD0woD7eXKHqsPWBizTr21jn7x1gloRFdZAJlweVGLMe8ANePSOiMBc4TGTAJFU8ExIXSitIUs4JNfiBi15SFBu/Ymh1OIXUhy+QVYPVyCMA4lD1gdLtoGdxvJpEu29A+pJMjo'
+		'Baleroc OT',
+		'http://localhost:5173/mop/druid/guardian/?i=rcmxe#eJzVUk9oHFUY3zcz2c6+JGUztSQZsL7sQeKShG3aFA3F3QSJG0kxmBDizZeZN7uvOzuzzMxmSU6xHhqLhxIQbRG1J6EnCYIY0YMXFVpILyXtwYr00IMFQZD0In7vTSbdre3Bo++wO9/3/b4/v9/34X4dEVRCVbSB0GWENhT0pYJ2FTSdyaKXURntITSZmlSyyEiZl9NX1fS8S9dYoHdnUa5XVwqD88qy8k4XpE6nrqvdZqYvJd9Y6SdF21XUu0ri+bX4m/Jh14Ca6zYeu3AfTpsaVgb6ckdwF1ZHT4b4ONbPp7GmP9rXchkM7tHC2MnQ0ExlMmUMmv24N9eNM9tIYL66mDbF/8f31GeFPtlGceiShrGSVQxAb8ahHQgtm0u4bMzgnnFsQBS8ty4q2MwP6Mjo/QG1OU2YD6NTMqYZPefbQ1ANK6dDE4P9zZ+aiBgl81VcMMdwNncU92yjjISr+oV0UmGnzRdXOBNXuPMekhWGzBfwsbtKVqIU3TpsowtLQrCpSyqfvq8aGfOImFF/OHzo/vvdLmPOfAOfNSbjOTpYtqkF+bg/f1zvMjLXE0fc7lQ8E+Blw6Nmj7Rvb3ba39/TOuyEQ9V08LKx9B/0zZvD7ZN9va/JyTQjs5M4nqq3yBN11afX7WDRa8KpglQfTQjzgWLvK+iaGl/l26VL6osZ+Tn3sNR39Yp4j4ovxR93ioMx7EGRpHOfZcpqDC2slg6u+rnSYAz9ufhK7NktDjny3S5O3bwh3u/F8ft6469r6nrPNHVZ4FtkfIKUyfKAlt9Dqf/h27B/LLWZwxfmv5h6EiPluP/tsakr6HTfmbPfvfVLMcGUyqiAttAHyDixSL0aCVu0QRw/IK8xi9dpxH2PTLvUZvnqrEOsKrNqzB4hUZWRFT8MSYu7LllhJIJkZpOVNSLLjJOAAiYAIPUk+hzlXhyzmwH3Kv9qAKU822+FYwMwz6YKZ0pmPR5x6pI3FwVknRHfIa+7frBGwohatTC/p8BQnu+NrsMqR5LWciYucyMmmzea4Gl6EXelGTagt8NhXlmHWD7ECA8JtaxmvelCmj1G5mhQAQar1G0yCLmu35LZME3kkwqjAan7ASO0UglYGPJV5q6RVpW70CASI9QZiwRTkTQ+UaiR8jx8A7bqu7YUWUQcHoTRs9QYISvNiNRpjRGXOyxuaHPH4VbTjQ5rnFtMVJ31HBZ4/hOSksUqsONeoylp8ooHdWzCHbk3uXRgKEuHdMUF9kPxefxR3EI3Eezi+WQXSzyC34UGDWqw43pDLJrlP0czHXTq3GtGcl+J/PHNhPxAXlJl1BUD0woD7eXKHqsPWBizTr21jn7x1gloRFdZAJlweVGLMe8ANePSOiMBc4TGTAJFU8ExIXSitIUs4JNfiBi15SFBu/Ymh1OIXUhy+QVYPVyCMA4lD1gdLtoGdxvJpEu29A+pJMjo',
 	),
 });
 
-export const PRESET_BUILD_BLACKHORN_OT = PresetUtils.makePresetBuild("Blackhorn OT", {
+export const PRESET_BUILD_BLACKHORN_OT = PresetUtils.makePresetBuild('Blackhorn OT', {
 	rotation: ROTATION_BLACKHORN_OT,
 	encounter: PresetUtils.makePresetEncounter(
-		"Blackhorn OT",
+		'Blackhorn OT',
 		'http://localhost:5173/mop/druid/guardian/?i=cmxe#eJzdUs9rE0EUzpu1MWmCTUPRpgedFmJtQImJEQ3iboLSnCS1QuvNSXaSHZPshp1Jgznl4sWLUvHQHkQvHjyUXoRKL95swUJO2quehOhRKJ6cyQ+t4j+g32F4881733u8+UZP+CAOBljQBngE0EawiaCDIOsPwSXIwT5A2pNGIQh7pvi65s1XyT3q+gIhmAn4tHgkj+6MyLqs/w3ADqBNL3qpBab8454ezhk76EgHaZ/RdzhA8Fzr07eNB9ppv4qeBT8Z4xvzH1sTGx/0uVP3uwtbJ7/pke3ZscCrF1917J3pHs1pvVRPmxkD2Qkjsr6msKtf7jMdfbrUw3s9s/dO4YueeDpS725prckl4tYIF9TF2SopVizHtXEihXN4edIb2wfPP4i2+dY4dDUi5Enmz5zeaq4Ew5k16G/rtT7IOdBXYckH4fAtYlcwb5I6Zrbczwqpxi5er5I6pyYWrEbxGWZjTouObfI5XKCiSakkWK1RJULlDOv5dF/5qrEKZal8PGOa2KRnSVGwFSKYY/f0YtnFfu2Q+L0BEbhpsaKFhYNNxkmhSvG848pkMsvlq5C/N+y0LDstyE5j2Yb8zrpFOMW5PI7GklHslHDB4VzdXVojzGZ2WSrL0QdqmPFD01Gzr2nclJp3fSg8eoO6JcyFfIpdWBQutcvCUqrCooouVpRg3mlKSw3YDK/TolCqhUaplEbxaBqlomntfFwdKkqoKKGipIqSqWjiIarvbWut4HCqgSm1/8OU1xKZx383JWbHfppy95cp4/ADEKDaLg==',
 	),
 });

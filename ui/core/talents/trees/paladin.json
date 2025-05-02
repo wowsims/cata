@@ -1,825 +1,168 @@
-[
-   {
-     "name": "Holy",
-     "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/831.jpg",
-     "talents": [
-       {
-         "fieldName": "arbiterOfTheLight",
-         "fancyName": "Arbiter Of The Light",
-         "location": {
-           "rowIdx": 0,
-           "colIdx": 0
-         },
-         "spellIds": [
-           20359,
-           20360
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "protectorOfTheInnocent",
-         "fancyName": "Protector Of The Innocent",
-         "location": {
-           "rowIdx": 0,
-           "colIdx": 1
-         },
-         "spellIds": [
-           20138,
-           20139,
-           20140
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "judgementsOfThePure",
-         "fancyName": "Judgements Of The Pure",
-         "location": {
-           "rowIdx": 0,
-           "colIdx": 2
-         },
-         "spellIds": [
-           53671,
-           53673,
-           54151
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "clarityOfPurpose",
-         "fancyName": "Clarity Of Purpose",
-         "location": {
-           "rowIdx": 1,
-           "colIdx": 0
-         },
-         "spellIds": [
-           85462,
-           85463,
-           85464
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "lastWord",
-         "fancyName": "Last Word",
-         "location": {
-           "rowIdx": 1,
-           "colIdx": 1
-         },
-         "spellIds": [
-           20234,
-           20235
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "blazingLight",
-         "fancyName": "Blazing Light",
-         "location": {
-           "rowIdx": 1,
-           "colIdx": 2
-         },
-         "spellIds": [
-           20237,
-           20238
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "denounce",
-         "fancyName": "Denounce",
-         "location": {
-           "rowIdx": 2,
-           "colIdx": 0
-         },
-         "spellIds": [
-           31825,
-           85510
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "divineFavor",
-         "fancyName": "Divine Favor",
-         "location": {
-           "rowIdx": 2,
-           "colIdx": 1
-         },
-         "spellIds": [
-           31842
-         ],
-         "maxPoints": 1
-       },
-       {
-         "fieldName": "infusionOfLight",
-         "fancyName": "Infusion Of Light",
-         "location": {
-           "rowIdx": 2,
-           "colIdx": 2
-         },
-         "spellIds": [
-           53569,
-           53576
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "daybreak",
-         "fancyName": "Daybreak",
-         "location": {
-           "rowIdx": 2,
-           "colIdx": 3
-         },
-         "spellIds": [
-           88820,
-           88821
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "enlightenedJudgements",
-         "fancyName": "Enlightened Judgements",
-         "location": {
-           "rowIdx": 3,
-           "colIdx": 0
-         },
-         "spellIds": [
-           53556,
-           53557
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "beaconOfLight",
-         "fancyName": "Beacon Of Light",
-         "location": {
-           "rowIdx": 3,
-           "colIdx": 1
-         },
-         "spellIds": [
-           53563
-         ],
-         "maxPoints": 1
-       },
-       {
-         "fieldName": "speedOfLight",
-         "fancyName": "Speed Of Light",
-         "location": {
-           "rowIdx": 3,
-           "colIdx": 2
-         },
-         "spellIds": [
-           85495,
-           85498,
-           85499
-         ],
-         "maxPoints": 3,
-         "prereqLocation": {
-           "rowIdx": 2,
-           "colIdx": 2
-         }
-       },
-       {
-         "fieldName": "sacredCleansing",
-         "fancyName": "Sacred Cleansing",
-         "location": {
-           "rowIdx": 3,
-           "colIdx": 3
-         },
-         "spellIds": [
-           53551
-         ],
-         "maxPoints": 1
-       },
-       {
-         "fieldName": "conviction",
-         "fancyName": "Conviction",
-         "location": {
-           "rowIdx": 4,
-           "colIdx": 0
-         },
-         "spellIds": [
-           20049,
-           20056,
-           20057
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "auraMastery",
-         "fancyName": "Aura Mastery",
-         "location": {
-           "rowIdx": 4,
-           "colIdx": 2
-         },
-         "spellIds": [
-           31821
-         ],
-         "maxPoints": 1
-       },
-       {
-         "fieldName": "paragonOfVirtue",
-         "fancyName": "Paragon Of Virtue",
-         "location": {
-           "rowIdx": 4,
-           "colIdx": 3
-         },
-         "spellIds": [
-           93418,
-           93417
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "towerOfRadiance",
-         "fancyName": "Tower Of Radiance",
-         "location": {
-           "rowIdx": 5,
-           "colIdx": 1
-         },
-         "spellIds": [
-           84800,
-           85511,
-           85512
-         ],
-         "maxPoints": 3,
-         "prereqLocation": {
-           "rowIdx": 3,
-           "colIdx": 1
-         }
-       },
-       {
-         "fieldName": "blessedLife",
-         "fancyName": "Blessed Life",
-         "location": {
-           "rowIdx": 5,
-           "colIdx": 2
-         },
-         "spellIds": [
-           31828,
-           31829
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "lightOfDawn",
-         "fancyName": "Light Of Dawn",
-         "location": {
-           "rowIdx": 6,
-           "colIdx": 1
-         },
-         "spellIds": [
-           85222
-         ],
-         "maxPoints": 1
-       }
-     ]
-   },
-   {
-     "name": "Protection",
-     "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/839.jpg",
-     "talents": [
-       {
-         "fieldName": "divinity",
-         "fancyName": "Divinity",
-         "location": {
-           "rowIdx": 0,
-           "colIdx": 0
-         },
-         "spellIds": [
-           63646,
-           63647,
-           63648
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "sealsOfThePure",
-         "fancyName": "Seals Of The Pure",
-         "location": {
-           "rowIdx": 0,
-           "colIdx": 1
-         },
-         "spellIds": [
-           20224,
-           20225
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "eternalGlory",
-         "fancyName": "Eternal Glory",
-         "location": {
-           "rowIdx": 0,
-           "colIdx": 2
-         },
-         "spellIds": [
-           87163,
-           87164
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "judgementsOfTheJust",
-         "fancyName": "Judgements Of The Just",
-         "location": {
-           "rowIdx": 1,
-           "colIdx": 0
-         },
-         "spellIds": [
-           53695,
-           53696
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "toughness",
-         "fancyName": "Toughness",
-         "location": {
-           "rowIdx": 1,
-           "colIdx": 1
-         },
-         "spellIds": [
-           20143,
-           20145,
-           20144
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "improvedHammerOfJustice",
-         "fancyName": "Improved Hammer Of Justice",
-         "location": {
-           "rowIdx": 1,
-           "colIdx": 2
-         },
-         "spellIds": [
-           20487,
-           20488
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "hallowedGround",
-         "fancyName": "Hallowed Ground",
-         "location": {
-           "rowIdx": 2,
-           "colIdx": 0
-         },
-         "spellIds": [
-           84631,
-           84633
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "sanctuary",
-         "fancyName": "Sanctuary",
-         "location": {
-           "rowIdx": 2,
-           "colIdx": 1
-         },
-         "spellIds": [
-           20911,
-           84628,
-           84629
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "hammerOfTheRighteous",
-         "fancyName": "Hammer Of The Righteous",
-         "location": {
-           "rowIdx": 2,
-           "colIdx": 2
-         },
-         "spellIds": [
-           53595
-         ],
-         "maxPoints": 1
-       },
-       {
-         "fieldName": "wrathOfTheLightbringer",
-         "fancyName": "Wrath Of The Lightbringer",
-         "location": {
-           "rowIdx": 2,
-           "colIdx": 3
-         },
-         "spellIds": [
-           84635,
-           84636
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "reckoning",
-         "fancyName": "Reckoning",
-         "location": {
-           "rowIdx": 3,
-           "colIdx": 0
-         },
-         "spellIds": [
-           20177,
-           20179
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "shieldOfTheRighteous",
-         "fancyName": "Shield Of The Righteous",
-         "location": {
-           "rowIdx": 3,
-           "colIdx": 1
-         },
-         "spellIds": [
-           53600
-         ],
-         "maxPoints": 1,
-         "prereqLocation": {
-           "rowIdx": 2,
-           "colIdx": 1
-         }
-       },
-       {
-         "fieldName": "grandCrusader",
-         "fancyName": "Grand Crusader",
-         "location": {
-           "rowIdx": 3,
-           "colIdx": 2
-         },
-         "spellIds": [
-           75806,
-           85043
-         ],
-         "maxPoints": 2,
-         "prereqLocation": {
-           "rowIdx": 2,
-           "colIdx": 2
-         }
-       },
-       {
-         "fieldName": "vindication",
-         "fancyName": "Vindication",
-         "location": {
-           "rowIdx": 4,
-           "colIdx": 0
-         },
-         "spellIds": [
-           26016
-         ],
-         "maxPoints": 1
-       },
-       {
-         "fieldName": "holyShield",
-         "fancyName": "Holy Shield",
-         "location": {
-           "rowIdx": 4,
-           "colIdx": 1
-         },
-         "spellIds": [
-           20925
-         ],
-         "maxPoints": 1,
-         "prereqLocation": {
-           "rowIdx": 3,
-           "colIdx": 1
-         }
-       },
-       {
-         "fieldName": "guardedByTheLight",
-         "fancyName": "Guarded By The Light",
-         "location": {
-           "rowIdx": 4,
-           "colIdx": 2
-         },
-         "spellIds": [
-           85639,
-           85646
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "divineGuardian",
-         "fancyName": "Divine Guardian",
-         "location": {
-           "rowIdx": 4,
-           "colIdx": 3
-         },
-         "spellIds": [
-           70940
-         ],
-         "maxPoints": 1
-       },
-       {
-         "fieldName": "sacredDuty",
-         "fancyName": "Sacred Duty",
-         "location": {
-           "rowIdx": 5,
-           "colIdx": 1
-         },
-         "spellIds": [
-           53709,
-           53710
-         ],
-         "maxPoints": 2,
-         "prereqLocation": {
-           "rowIdx": 4,
-           "colIdx": 1
-         }
-       },
-       {
-         "fieldName": "shieldOfTheTemplar",
-         "fancyName": "Shield Of The Templar",
-         "location": {
-           "rowIdx": 5,
-           "colIdx": 2
-         },
-         "spellIds": [
-           31848,
-           31849,
-           84854
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "ardentDefender",
-         "fancyName": "Ardent Defender",
-         "location": {
-           "rowIdx": 6,
-           "colIdx": 1
-         },
-         "spellIds": [
-           31850
-         ],
-         "maxPoints": 1
-       }
-     ]
-   },
-   {
-     "name": "Retribution",
-     "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/855.jpg",
-     "talents": [
-       {
-         "fieldName": "eyeForAnEye",
-         "fancyName": "Eye For An Eye",
-         "location": {
-           "rowIdx": 0,
-           "colIdx": 0
-         },
-         "spellIds": [
-           9799,
-           25988
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "crusade",
-         "fancyName": "Crusade",
-         "location": {
-           "rowIdx": 0,
-           "colIdx": 1
-         },
-         "spellIds": [
-           31866,
-           31867,
-           31868
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "improvedJudgement",
-         "fancyName": "Improved Judgement",
-         "location": {
-           "rowIdx": 0,
-           "colIdx": 2
-         },
-         "spellIds": [
-           87174,
-           87175
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "guardiansFavor",
-         "fancyName": "Guardians Favor",
-         "location": {
-           "rowIdx": 1,
-           "colIdx": 0
-         },
-         "spellIds": [
-           20174,
-           20175
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "ruleOfLaw",
-         "fancyName": "Rule Of Law",
-         "location": {
-           "rowIdx": 1,
-           "colIdx": 1
-         },
-         "spellIds": [
-           85457,
-           85458,
-           87461
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "pursuitOfJustice",
-         "fancyName": "Pursuit Of Justice",
-         "location": {
-           "rowIdx": 1,
-           "colIdx": 3
-         },
-         "spellIds": [
-           26022,
-           26023
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "communion",
-         "fancyName": "Communion",
-         "location": {
-           "rowIdx": 2,
-           "colIdx": 0
-         },
-         "spellIds": [
-           31876
-         ],
-         "maxPoints": 1
-       },
-       {
-         "fieldName": "theArtOfWar",
-         "fancyName": "The Art Of War",
-         "location": {
-           "rowIdx": 2,
-           "colIdx": 1
-         },
-         "spellIds": [
-           53486,
-           53488,
-           87138
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "longArmOfTheLaw",
-         "fancyName": "Long Arm Of The Law",
-         "location": {
-           "rowIdx": 2,
-           "colIdx": 2
-         },
-         "spellIds": [
-           87168,
-           87172
-         ],
-         "maxPoints": 2,
-         "prereqLocation": {
-           "rowIdx": 0,
-           "colIdx": 2
-         }
-       },
-       {
-         "fieldName": "divineStorm",
-         "fancyName": "Divine Storm",
-         "location": {
-           "rowIdx": 2,
-           "colIdx": 3
-         },
-         "spellIds": [
-           53385
-         ],
-         "maxPoints": 1
-       },
-       {
-         "fieldName": "sacredShield",
-         "fancyName": "Sacred Shield",
-         "location": {
-           "rowIdx": 3,
-           "colIdx": 0
-         },
-         "spellIds": [
-           85285
-         ],
-         "maxPoints": 1
-       },
-       {
-         "fieldName": "sanctityOfBattle",
-         "fancyName": "Sanctity Of Battle",
-         "location": {
-           "rowIdx": 3,
-           "colIdx": 1
-         },
-         "spellIds": [
-           25956
-         ],
-         "maxPoints": 1
-       },
-       {
-         "fieldName": "sealsOfCommand",
-         "fancyName": "Seals Of Command",
-         "location": {
-           "rowIdx": 3,
-           "colIdx": 2
-         },
-         "spellIds": [
-           85126
-         ],
-         "maxPoints": 1
-       },
-       {
-         "fieldName": "sanctifiedWrath",
-         "fancyName": "Sanctified Wrath",
-         "location": {
-           "rowIdx": 3,
-           "colIdx": 3
-         },
-         "spellIds": [
-           53375,
-           90286,
-           53376
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "selflessHealer",
-         "fancyName": "Selfless Healer",
-         "location": {
-           "rowIdx": 4,
-           "colIdx": 0
-         },
-         "spellIds": [
-           85803,
-           85804
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "repentance",
-         "fancyName": "Repentance",
-         "location": {
-           "rowIdx": 4,
-           "colIdx": 1
-         },
-         "spellIds": [
-           20066
-         ],
-         "maxPoints": 1
-       },
-       {
-         "fieldName": "divinePurpose",
-         "fancyName": "Divine Purpose",
-         "location": {
-           "rowIdx": 4,
-           "colIdx": 2
-         },
-         "spellIds": [
-           85117,
-           86172
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "inquiryOfFaith",
-         "fancyName": "Inquiry Of Faith",
-         "location": {
-           "rowIdx": 5,
-           "colIdx": 1
-         },
-         "spellIds": [
-           53380,
-           53381,
-           53382
-         ],
-         "maxPoints": 3
-       },
-       {
-         "fieldName": "actsOfSacrifice",
-         "fancyName": "Acts Of Sacrifice",
-         "location": {
-           "rowIdx": 5,
-           "colIdx": 2
-         },
-         "spellIds": [
-           85446,
-           85795
-         ],
-         "maxPoints": 2
-       },
-       {
-         "fieldName": "zealotry",
-         "fancyName": "Zealotry",
-         "location": {
-           "rowIdx": 6,
-           "colIdx": 1
-         },
-         "spellIds": [
-           85696
-         ],
-         "maxPoints": 1
-       }
-     ]
-   }
- ]
+
+{
+	"backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/TODO.jpg",
+	"talents": [
+		{
+			"fieldName": "speedOfLight",
+			"fancyName": "Speed of Light",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 0
+			},
+			"spellId": 85499
+		},
+		{
+			"fieldName": "longArmOfTheLaw",
+			"fancyName": "Long Arm of the Law",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 1
+			},
+			"spellId": 87172
+		},
+		{
+			"fieldName": "pursuitOfJustice",
+			"fancyName": "Pursuit of Justice",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 2
+			},
+			"spellId": 26023
+		},
+		{
+			"fieldName": "fistOfJustice",
+			"fancyName": "Fist of Justice",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 0
+			},
+			"spellId": 105593
+		},
+		{
+			"fieldName": "repentance",
+			"fancyName": "Repentance",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 1
+			},
+			"spellId": 20066
+		},
+		{
+			"fieldName": "evilIsAPointOfView",
+			"fancyName": "Evil is a Point of View",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 2
+			},
+			"spellId": 110301
+		},
+		{
+			"fieldName": "selflessHealer",
+			"fancyName": "Selfless Healer",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 0
+			},
+			"spellId": 85804
+		},
+		{
+			"fieldName": "eternalFlame",
+			"fancyName": "Eternal Flame",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 1
+			},
+			"spellId": 114163
+		},
+		{
+			"fieldName": "sacredShield",
+			"fancyName": "Sacred Shield",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 2
+			},
+			"spellId": 20925
+		},
+		{
+			"fieldName": "handOfPurity",
+			"fancyName": "Hand of Purity",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 0
+			},
+			"spellId": 114039
+		},
+		{
+			"fieldName": "unbreakableSpirit",
+			"fancyName": "Unbreakable Spirit",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 1
+			},
+			"spellId": 114154
+		},
+		{
+			"fieldName": "clemency",
+			"fancyName": "Clemency",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 2
+			},
+			"spellId": 105622
+		},
+		{
+			"fieldName": "holyAvenger",
+			"fancyName": "Holy Avenger",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 0
+			},
+			"spellId": 105809
+		},
+		{
+			"fieldName": "sanctifiedWrath",
+			"fancyName": "Sanctified Wrath",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 1
+			},
+			"spellId": 53376
+		},
+		{
+			"fieldName": "divinePurpose",
+			"fancyName": "Divine Purpose",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 2
+			},
+			"spellId": 86172
+		},
+		{
+			"fieldName": "holyPrism",
+			"fancyName": "Holy Prism",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 0
+			},
+			"spellId": 114165
+		},
+		{
+			"fieldName": "lightsHammer",
+			"fancyName": "Light's Hammer",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 1
+			},
+			"spellId": 114158
+		},
+		{
+			"fieldName": "executionSentence",
+			"fancyName": "Execution Sentence",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 2
+			},
+			"spellId": 114157
+		}
+	]
+}

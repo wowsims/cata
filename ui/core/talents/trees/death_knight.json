@@ -1,828 +1,168 @@
-[
-	{
-	  "name": "Blood",
-	  "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/398.jpg",
-	  "talents": [
+
+{
+	"backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/TODO.jpg",
+	"talents": [
 		{
-		  "fieldName": "butchery",
-		  "fancyName": "Butchery",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			48979,
-			49483
-		  ],
-		  "maxPoints": 2
+			"fieldName": "roilingBlood",
+			"fancyName": "Roiling Blood",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 0
+			},
+			"spellId": 108170
 		},
 		{
-		  "fieldName": "bladeBarrier",
-		  "fancyName": "Blade Barrier",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			49182,
-			49500,
-			49501
-		  ],
-		  "maxPoints": 3
+			"fieldName": "plagueLeech",
+			"fancyName": "Plague Leech",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 1
+			},
+			"spellId": 123693
 		},
 		{
-		  "fieldName": "bladedArmor",
-		  "fancyName": "Bladed Armor",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			48978,
-			49390,
-			49391,
-			49393
-		  ],
-		  "maxPoints": 3
+			"fieldName": "unholyBlight",
+			"fancyName": "Unholy Blight",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 2
+			},
+			"spellId": 115989
 		},
 		{
-		  "fieldName": "improvedBloodTap",
-		  "fancyName": "Improved Blood Tap",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			94553,
-			94555
-		  ],
-		  "maxPoints": 2
+			"fieldName": "lichborne",
+			"fancyName": "Lichborne",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 0
+			},
+			"spellId": 49039
 		},
 		{
-		  "fieldName": "scentOfBlood",
-		  "fancyName": "Scent Of Blood",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			49004,
-			49508,
-			49509
-		  ],
-		  "maxPoints": 3
+			"fieldName": "antimagicZone",
+			"fancyName": "Anti-Magic Zone",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 1
+			},
+			"spellId": 51052
 		},
 		{
-		  "fieldName": "scarletFever",
-		  "fancyName": "Scarlet Fever",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			81131,
-			81132
-		  ],
-		  "maxPoints": 2
+			"fieldName": "purgatory",
+			"fancyName": "Purgatory",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 2
+			},
+			"spellId": 114556
 		},
 		{
-		  "fieldName": "handOfDoom",
-		  "fancyName": "Hand Of Doom",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			85793,
-			85794
-		  ],
-		  "maxPoints": 2
+			"fieldName": "deathsAdvance",
+			"fancyName": "Death's Advance",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 0
+			},
+			"spellId": 96268
 		},
 		{
-		  "fieldName": "bloodCakedBlade",
-		  "fancyName": "Blood Caked Blade",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			49219,
-			49627,
-			49628
-		  ],
-		  "maxPoints": 3
+			"fieldName": "chilblains",
+			"fancyName": "Chilblains",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 1
+			},
+			"spellId": 50041
 		},
 		{
-		  "fieldName": "boneShield",
-		  "fancyName": "Bone Shield",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			49222
-		  ],
-		  "maxPoints": 1
+			"fieldName": "asphyxiate",
+			"fancyName": "Asphyxiate",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 2
+			},
+			"spellId": 108194
 		},
 		{
-		  "fieldName": "toughness",
-		  "fancyName": "Toughness",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			49042,
-			49786,
-			49787
-		  ],
-		  "maxPoints": 3
+			"fieldName": "deathPact",
+			"fancyName": "Death Pact",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 0
+			},
+			"spellId": 48743
 		},
 		{
-		  "fieldName": "abominationsMight",
-		  "fancyName": "Abominations Might",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			53137,
-			53138
-		  ],
-		  "maxPoints": 2
+			"fieldName": "deathSiphon",
+			"fancyName": "Death Siphon",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 1
+			},
+			"spellId": 108196
 		},
 		{
-		  "fieldName": "sanguineFortitude",
-		  "fancyName": "Sanguine Fortitude",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			81125,
-			81127
-		  ],
-		  "maxPoints": 2
+			"fieldName": "conversion",
+			"fancyName": "Conversion",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 2
+			},
+			"spellId": 119975
 		},
 		{
-		  "fieldName": "bloodParasite",
-		  "fancyName": "Blood Parasite",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			49027,
-			49542
-		  ],
-		  "maxPoints": 2
+			"fieldName": "bloodTap",
+			"fancyName": "Blood Tap",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 0
+			},
+			"spellId": 45529
 		},
 		{
-		  "fieldName": "improvedBloodPresence",
-		  "fancyName": "Improved Blood Presence",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			50365,
-			50371
-		  ],
-		  "maxPoints": 2
+			"fieldName": "runicEmpowerment",
+			"fancyName": "Runic Empowerment",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 1
+			},
+			"spellId": 81229
 		},
 		{
-		  "fieldName": "willOfTheNecropolis",
-		  "fancyName": "Will Of The Necropolis",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			52284,
-			81163,
-			81164
-		  ],
-		  "maxPoints": 3,
-		  "prereqLocation": {
-			"rowIdx": 4,
-			"colIdx": 1
-		  }
+			"fieldName": "runicCorruption",
+			"fancyName": "Runic Corruption",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 2
+			},
+			"spellId": 51462
 		},
 		{
-		  "fieldName": "runeTap",
-		  "fancyName": "Rune Tap",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			48982
-		  ],
-		  "maxPoints": 1
+			"fieldName": "gorefiendsGrasp",
+			"fancyName": "Gorefiend's Grasp",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 0
+			},
+			"spellId": 108199
 		},
 		{
-		  "fieldName": "vampiricBlood",
-		  "fancyName": "Vampiric Blood",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			55233
-		  ],
-		  "maxPoints": 1
+			"fieldName": "remorselessWinter",
+			"fancyName": "Remorseless Winter",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 1
+			},
+			"spellId": 108200
 		},
 		{
-		  "fieldName": "improvedDeathStrike",
-		  "fancyName": "Improved Death Strike",
-		  "location": {
-			"rowIdx": 5,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			62905,
-			62908,
-			81138
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "crimsonScourge",
-		  "fancyName": "Crimson Scourge",
-		  "location": {
-			"rowIdx": 5,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			81135,
-			81136
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "dancingRuneWeapon",
-		  "fancyName": "Dancing Rune Weapon",
-		  "location": {
-			"rowIdx": 6,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			49028
-		  ],
-		  "maxPoints": 1
+			"fieldName": "desecratedGround",
+			"fancyName": "Desecrated Ground",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 2
+			},
+			"spellId": 108201
 		}
-	  ]
-	},
-	{
-	  "name": "Frost",
-	  "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/399.jpg",
-	  "talents": [
-		{
-		  "fieldName": "runicPowerMastery",
-		  "fancyName": "Runic Power Mastery",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			49455,
-			50147,
-			91145
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "icyReach",
-		  "fancyName": "Icy Reach",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			55061,
-			55062
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "nervesOfColdSteel",
-		  "fancyName": "Nerves Of Cold Steel",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			49226,
-			50137,
-			50138
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "annihilation",
-		  "fancyName": "Annihilation",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			51468,
-			51472,
-			51473
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "lichborne",
-		  "fancyName": "Lichborne",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			49039
-		  ],
-		  "maxPoints": 1
-		},
-		{
-		  "fieldName": "onAPaleHorse",
-		  "fancyName": "On A Pale Horse",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			51983,
-			51986
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "endlessWinter",
-		  "fancyName": "Endless Winter",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			49137,
-			49657
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "mercilessCombat",
-		  "fancyName": "Merciless Combat",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			49024,
-			49538
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "chillOfTheGrave",
-		  "fancyName": "Chill Of The Grave",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			49149,
-			50115
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "killingMachine",
-		  "fancyName": "Killing Machine",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			51123,
-			51127,
-			51128
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "rime",
-		  "fancyName": "Rime",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			49188,
-			56822,
-			59057
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "pillarOfFrost",
-		  "fancyName": "Pillar Of Frost",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			51271
-		  ],
-		  "maxPoints": 1
-		},
-		{
-		  "fieldName": "improvedIcyTalons",
-		  "fancyName": "Improved Icy Talons",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			55610
-		  ],
-		  "maxPoints": 1
-		},
-		{
-		  "fieldName": "brittleBones",
-		  "fancyName": "Brittle Bones",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			81327,
-			81328
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "chilblains",
-		  "fancyName": "Chilblains",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			50040,
-			50041
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "hungeringCold",
-		  "fancyName": "Hungering Cold",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			49203
-		  ],
-		  "maxPoints": 1
-		},
-		{
-		  "fieldName": "improvedFrostPresence",
-		  "fancyName": "Improved Frost Presence",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			50384,
-			50385
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "threatOfThassarian",
-		  "fancyName": "Threat Of Thassarian",
-		  "location": {
-			"rowIdx": 5,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			65661,
-			66191,
-			66192
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "mightOfTheFrozenWastes",
-		  "fancyName": "Might Of The Frozen Wastes",
-		  "location": {
-			"rowIdx": 5,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			81330,
-			81332,
-			81333
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "howlingBlast",
-		  "fancyName": "Howling Blast",
-		  "location": {
-			"rowIdx": 6,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			49184
-		  ],
-		  "maxPoints": 1,
-		  "prereqLocation": {
-			"rowIdx": 4,
-			"colIdx": 1
-		  }
-		}
-	  ]
-	},
-	{
-	  "name": "Unholy",
-	  "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/400.jpg",
-	  "talents": [
-		{
-		  "fieldName": "unholyCommand",
-		  "fancyName": "Unholy Command",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			49588,
-			49589
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "virulence",
-		  "fancyName": "Virulence",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			48962,
-			49567,
-			49568
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "epidemic",
-		  "fancyName": "Epidemic",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			49036,
-			49562,
-			81334
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "desecration",
-		  "fancyName": "Desecration",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			55666,
-			55667
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "resilientInfection",
-		  "fancyName": "Resilient Infection",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			81338,
-			81339
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "morbidity",
-		  "fancyName": "Morbidity",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			48963,
-			49564,
-			49565
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "runicCorruption",
-		  "fancyName": "Runic Corruption",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			51459,
-			51462
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "unholyFrenzy",
-		  "fancyName": "Unholy Frenzy",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			49016
-		  ],
-		  "maxPoints": 1
-		},
-		{
-		  "fieldName": "contagion",
-		  "fancyName": "Contagion",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			91316,
-			91319
-		  ],
-		  "maxPoints": 2,
-		  "prereqLocation": {
-			"rowIdx": 0,
-			"colIdx": 2
-		  }
-		},
-		{
-		  "fieldName": "shadowInfusion",
-		  "fancyName": "Shadow Infusion",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			48965,
-			49571,
-			49572
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "deathsAdvance",
-		  "fancyName": "Deaths Advance",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			96269,
-			96270
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "magicSuppression",
-		  "fancyName": "Magic Suppression",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			49224,
-			49610,
-			49611
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "rageOfRivendare",
-		  "fancyName": "Rage Of Rivendare",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			51745,
-			51746,
-			91323
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "unholyBlight",
-		  "fancyName": "Unholy Blight",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			49194
-		  ],
-		  "maxPoints": 1
-		},
-		{
-		  "fieldName": "antiMagicZone",
-		  "fancyName": "Anti Magic Zone",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			51052
-		  ],
-		  "maxPoints": 1,
-		  "prereqLocation": {
-			"rowIdx": 3,
-			"colIdx": 1
-		  }
-		},
-		{
-		  "fieldName": "improvedUnholyPresence",
-		  "fancyName": "Improved Unholy Presence",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			50391,
-			50392
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "darkTransformation",
-		  "fancyName": "Dark Transformation",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			63560
-		  ],
-		  "maxPoints": 1,
-		  "prereqLocation": {
-			"rowIdx": 2,
-			"colIdx": 3
-		  }
-		},
-		{
-		  "fieldName": "ebonPlaguebringer",
-		  "fancyName": "Ebon Plaguebringer",
-		  "location": {
-			"rowIdx": 5,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			51099,
-			51160
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "suddenDoom",
-		  "fancyName": "Sudden Doom",
-		  "location": {
-			"rowIdx": 5,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			49018,
-			49529,
-			49530
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "summonGargoyle",
-		  "fancyName": "Summon Gargoyle",
-		  "location": {
-			"rowIdx": 6,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			49206
-		  ],
-		  "maxPoints": 1
-		}
-	  ]
-	}
-  ]
+	]
+}

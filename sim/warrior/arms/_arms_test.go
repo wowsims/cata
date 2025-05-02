@@ -24,7 +24,7 @@ func TestArms(t *testing.T) {
 		},
 		Talents:     ArmsTalents,
 		Glyphs:      ArmsDefaultGlyphs,
-		Consumes:    FullConsumes,
+		Consumables: FullConsumesSpec,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsArms},
 		Rotation:    core.GetAplRotation("../../../ui/warrior/arms/apls", "arms"),
 
@@ -50,12 +50,12 @@ var PlayerOptionsArms = &proto.Player_ArmsWarrior{
 	},
 }
 
-var FullConsumes = &proto.Consumes{
-	Flask:         proto.Flask_FlaskOfTitanicStrength,
-	DefaultPotion: proto.Potions_GolembloodPotion,
-	PrepopPotion:  proto.Potions_GolembloodPotion,
-	Food:          proto.Food_FoodBeerBasedCrocolisk,
-	TinkerHands:   proto.TinkerHands_TinkerHandsSynapseSprings,
+var FullConsumesSpec = &proto.ConsumesSpec{
+	FlaskId:  58088, // Flask of Titanic Strength
+	FoodId:   62670, // Beer‑Basted Crocolisk
+	PotId:    58146, // Golemblood Potion
+	PrepotId: 58146, // Golemblood Potion
+	TinkerId: 82174, // Synapse Springs
 }
 
 var ItemFilter = core.ItemFilter{

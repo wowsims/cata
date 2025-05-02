@@ -20,7 +20,7 @@ func (druid *Druid) registerStarsurgeSpell() {
 
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           druid.DefaultSpellCritMultiplier(),
+		CritMultiplier:           druid.DefaultCritMultiplier(),
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 11,
 			PercentModifier: 100,

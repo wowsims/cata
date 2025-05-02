@@ -2,107 +2,83 @@ syntax = "proto3";
 package proto;
 
 option go_package = "./proto";
-
+// DO NOT REMOVE THE COMMENTS
+// BEGIN GENERATED
+// WarriorTalents message.
 message WarriorTalents {
-	// Arms
-	int32 war_academy = 1;
-	int32 field_dressing = 2;
-	int32 blitz = 3;
-	int32 tactical_mastery = 4;
-	int32 second_wind = 5;
-	int32 deep_wounds = 6;
-	int32 drums_of_war = 7;
-	int32 taste_for_blood = 8;
-	bool sweeping_strikes = 9;
-	int32 impale = 10;
-	int32 improved_hamstring = 11;
-	int32 improved_slam = 12;
-	bool deadly_calm = 13;
-	int32 blood_frenzy = 14;
-	int32 lambs_to_the_slaughter = 15;
-	bool juggernaut = 16;
-	int32 sudden_death = 17;
-	int32 wrecking_crew = 18;
-	bool throwdown = 19;
-	bool bladestorm = 20;
-
-	// Fury
-	int32 blood_craze = 21;
-	int32 battle_trance = 22;
-	int32 cruelty = 23;
-	int32 executioner = 24;
-	int32 booming_voice = 25;
-	int32 rude_interruption = 26;
-	bool piercing_howl = 27;
-	int32 flurry = 28;
-	bool death_wish = 29;
-	int32 enrage = 30;
-	int32 die_by_the_sword = 31;
-	bool raging_blow = 32;
-	bool rampage = 33;
-	bool heroic_fury = 34;
-	bool furious_attacks = 35;
-	int32 meat_cleaver = 36;
-	int32 intensify_rage = 37;
-	int32 bloodsurge = 38;
-	int32 skirmisher = 39;
-	bool titans_grip = 40;
-	bool single_minded_fury = 41;
-
-	// Protection
-	int32 incite = 42;
-	int32 toughness = 43;
-	int32 blood_and_thunder = 44;
-	int32 shield_specialization = 45;
-	int32 shield_mastery = 46;
-	int32 hold_the_line = 47;
-	int32 gag_order = 48;
-	bool last_stand = 49;
-	bool concussion_blow = 50;
-	int32 bastion_of_defense = 51;
-	bool warbringer = 52;
-	int32 improved_revenge = 53;
-	bool devastate = 54;
-	int32 impending_victory = 55;
-	int32 thunderstruck = 56;
-	bool vigilance = 57;
-	int32 heavy_repercussions = 58;
-	int32 safeguard = 59;
-	int32 sword_and_board = 60;
-	bool shockwave = 61;
+    bool juggernaut = 1;
+    bool double_time = 2;
+    bool warbringer = 3;
+    bool enraged_regeneration = 4;
+    bool second_wind = 5;
+    bool impending_victory = 6;
+    bool staggering_shout = 7;
+    bool piercing_howl = 8;
+    bool disrupting_shout = 9;
+    bool bladestorm = 10;
+    bool shockwave = 11;
+    bool dragon_roar = 12;
+    bool mass_spell_reflection = 13;
+    bool safeguard = 14;
+    bool vigilance = 15;
+    bool avatar = 16;
+    bool bloodbath = 17;
+    bool storm_bolt = 18;
 }
+
 enum WarriorMajorGlyph {
-	WarriorMajorGlyphNone = 0;
-	GlyphOfCleaving = 43414;
-	GlyphOfColossusSmash = 63481;
-	GlyphOfDeathWish = 67483;
-	GlyphOfHeroicThrow = 43418;
-	GlyphOfIntercept = 67482;
-	GlyphOfIntervene = 43419;
-	GlyphOfLongCharge = 43397;
-	GlyphOfPiercingHowl = 43417;
-	GlyphOfRapidCharge = 43413;
-	GlyphOfResonatingPower = 43430;
-	GlyphOfShieldWall = 45797;
-	GlyphOfShockwave = 45792;
-	GlyphOfSpellReflection = 45795;
-	GlyphOfSunderArmor = 43427;
-	GlyphOfSweepingStrikes = 43428;
-	GlyphOfThunderClap = 43399;
-	GlyphOfVictoryRush = 43431;
+    WarriorMajorGlyphNone = 0;
+    GlyphOfLongCharge = 43397;
+    GlyphOfUnendingRage = 43399;
+    GlyphOfEnragedSpeed = 43413;
+    GlyphOfHinderingStrikes = 43414;
+    GlyphOfHeavyRepercussions = 43415;
+    GlyphOfBloodthirst = 43416;
+    GlyphOfRudeInterruption = 43417;
+    GlyphOfGagOrder = 43418;
+    GlyphOfBlitz = 43419;
+    GlyphOfMortalStrike = 43421;
+    GlyphOfDieByTheSword = 43422;
+    GlyphOfHamstring = 43423;
+    GlyphOfHoldTheLine = 43424;
+    GlyphOfShieldSlam = 43425;
+    GlyphOfHoarseVoice = 43427;
+    GlyphOfSweepingStrikes = 43428;
+    GlyphOfResonatingPower = 43430;
+    GlyphOfVictoryRush = 43431;
+    GlyphOfRagingWind = 43432;
+    GlyphOfWhirlwind = 45790;
+    GlyphOfDeathFromAbove = 45792;
+    GlyphOfVictoriousThrow = 45793;
+    GlyphOfSpellReflection = 45795;
+    GlyphOfShieldWall = 45797;
+    GlyphOfColossusSmash = 63481;
+    GlyphOfBullRush = 67482;
+    GlyphOfRecklessness = 67483;
+    GlyphOfIncite = 83096;
+    GlyphOfImpalingThrows = 104055;
+    GlyphOfTheExecutor = 104056;
 }
+
 enum WarriorMinorGlyph {
-	WarriorMinorGlyphNone = 0;
-	GlyphOfBattle = 43395;
-	GlyphOfBerserkerRage = 43396;
-	GlyphOfBloodyHealing = 43412;
-	GlyphOfCommand = 49084;
-	GlyphOfDemoralizingShout = 43398;
-	GlyphOfEnduringVictory = 43400;
-	GlyphOfFuriousSundering = 45793;
-	GlyphOfIntimidatingShout = 45794;
-	GlyphOfShatteringThrow = 206953;
+    WarriorMinorGlyphNone = 0;
+    GlyphOfMysticShout = 43395;
+    GlyphOfBloodcurdlingShout = 43396;
+    GlyphOfGushingWound = 43398;
+    GlyphOfMightyVictory = 43400;
+    GlyphOfBloodyHealing = 43412;
+    GlyphOfIntimidatingShout = 45794;
+    GlyphOfThunderStrike = 49084;
+    GlyphOfCrowFeast = 80587;
+    GlyphOfBurningAnger = 80588;
+    GlyphOfTheBlazingTrail = 85221;
+    GlyphOfTheRagingWhirlwind = 104135;
+    GlyphOfTheSubtleDefender = 104136;
+    GlyphOfTheWatchfulEye = 104137;
+    GlyphOfTheWeaponmaster = 104138;
 }
+
+// END GENERATED
 
 message WarriorOptions {
 	double starting_rage = 1;

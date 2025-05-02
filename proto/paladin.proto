@@ -2,106 +2,85 @@ syntax = "proto3";
 package proto;
 
 option go_package = "./proto";
-
+// DO NOT REMOVE THE COMMENTS
+// BEGIN GENERATED
+// PaladinTalents message.
 message PaladinTalents {
-	// Holy
-	int32 arbiter_of_the_light = 1;
-	int32 protector_of_the_innocent = 2;
-	int32 judgements_of_the_pure = 3;
-	int32 clarity_of_purpose = 4;
-	int32 last_word = 5;
-	int32 blazing_light = 6;
-	int32 denounce = 7;
-	bool divine_favor = 8;
-	int32 infusion_of_light = 9;
-	int32 daybreak = 10;
-	int32 enlightened_judgements = 11;
-	bool beacon_of_light = 12;
-	int32 speed_of_light = 13;
-	bool sacred_cleansing = 14;
-	int32 conviction = 15;
-	bool aura_mastery = 16;
-	int32 paragon_of_virtue = 17;
-	int32 tower_of_radiance = 18;
-	int32 blessed_life = 19;
-	bool light_of_dawn = 20;
-
-	// Protection
-	int32 divinity = 21;
-	int32 seals_of_the_pure = 22;
-	int32 eternal_glory = 23;
-	int32 judgements_of_the_just = 24;
-	int32 toughness = 25;
-	int32 improved_hammer_of_justice = 26;
-	int32 hallowed_ground = 27;
-	int32 sanctuary = 28;
-	bool hammer_of_the_righteous = 29;
-	int32 wrath_of_the_lightbringer = 30;
-	int32 reckoning = 31;
-	bool shield_of_the_righteous = 32;
-	int32 grand_crusader = 33;
-	bool vindication = 34;
-	bool holy_shield = 35;
-	int32 guarded_by_the_light = 36;
-	bool divine_guardian = 37;
-	int32 sacred_duty = 38;
-	int32 shield_of_the_templar = 39;
-	bool ardent_defender = 40;
-
-	// Retribution
-	int32 eye_for_an_eye = 41;
-	int32 crusade = 42;
-	int32 improved_judgement = 43;
-	int32 guardians_favor = 44;
-	int32 rule_of_law = 45;
-	int32 pursuit_of_justice = 46;
-	bool communion = 47;
-	int32 the_art_of_war = 48;
-	int32 long_arm_of_the_law = 49;
-	bool divine_storm = 50;
-	bool sacred_shield = 51;
-	bool sanctity_of_battle = 52;
-	bool seals_of_command = 53;
-	int32 sanctified_wrath = 54;
-	int32 selfless_healer = 55;
-	bool repentance = 56;
-	int32 divine_purpose = 57;
-	int32 inquiry_of_faith = 58;
-	int32 acts_of_sacrifice = 59;
-	bool zealotry = 60;
+    bool speed_of_light = 1;
+    bool long_arm_of_the_law = 2;
+    bool pursuit_of_justice = 3;
+    bool fist_of_justice = 4;
+    bool repentance = 5;
+    bool evil_is_a_point_of_view = 6;
+    bool selfless_healer = 7;
+    bool eternal_flame = 8;
+    bool sacred_shield = 9;
+    bool hand_of_purity = 10;
+    bool unbreakable_spirit = 11;
+    bool clemency = 12;
+    bool holy_avenger = 13;
+    bool sanctified_wrath = 14;
+    bool divine_purpose = 15;
+    bool holy_prism = 16;
+    bool lights_hammer = 17;
+    bool execution_sentence = 18;
 }
 
 enum PaladinMajorGlyph {
-	PaladinMajorGlyphNone = 0;
-	GlyphOfBeaconOfLight = 45741;
-	GlyphOfCleansing = 41104;
-	GlyphOfConsecration = 41099;
-	GlyphOfDazingShield = 43868;
-	GlyphOfDivinePlea = 45745;
-	GlyphOfDivineProtection = 41096;
-	GlyphOfDivinity = 41108;
-	GlyphOfFocusedShield = 41101;
-	GlyphOfHammerOfJustice = 41095;
-	GlyphOfHammerOfWrath = 41097;
-	GlyphOfHolyWrath = 43867;
-	GlyphOfLayOnHands = 43367;
-	GlyphOfLightOfDawn = 41109;
-	GlyphOfRebuke = 41094;
-	GlyphOfReckoning = 204385;
-	GlyphOfSalvation = 45747;
-	GlyphOfTheAsceticCrusader = 41107;
-	GlyphOfTheLongWord = 66918;
-	GlyphOfTurnEvil = 41102;
+    PaladinMajorGlyphNone = 0;
+    GlyphOfDoubleJeopardy = 41092;
+    GlyphOfDevotionAura = 41094;
+    GlyphOfHolyWrath = 41095;
+    GlyphOfDivineProtection = 41096;
+    GlyphOfTemplarsVerdict = 41097;
+    GlyphOfAvengingWrath = 41098;
+    GlyphOfConsecration = 41099;
+    GlyphOfFocusedShield = 41101;
+    GlyphOfBurdenOfGuilt = 41102;
+    GlyphOfBlindingLight = 41103;
+    GlyphOfFinalWrath = 41104;
+    GlyphOfWordOfGlory = 41105;
+    GlyphOfIllumination = 41106;
+    GlyphOfHarshWords = 41107;
+    GlyphOfDivinity = 41108;
+    GlyphOfLightOfDawn = 41109;
+    GlyphOfBlessedLife = 41110;
+    GlyphOfFlashOfLight = 43367;
+    GlyphOfDenounce = 43867;
+    GlyphOfDazingShield = 43868;
+    GlyphOfImmediateTruth = 43869;
+    GlyphOfBeaconOfLight = 45741;
+    GlyphOfHammerOfTheRighteous = 45742;
+    GlyphOfDivineStorm = 45743;
+    GlyphOfTheAlabasterShield = 45744;
+    GlyphOfDivinePlea = 45745;
+    GlyphOfHolyShock = 45746;
+    GlyphOfInquisition = 45747;
+    GlyphOfProtectorOfTheInnocent = 66918;
+    GlyphOfTheBattleHealer = 81956;
+    GlyphOfMassExorcism = 83107;
+    GlyphOfDivineShield = 104050;
+    GlyphOfHandOfSacrifice = 104051;
 }
+
 enum PaladinMinorGlyph {
-	PaladinMinorGlyphNone = 0;
-	GlyphOfBlessingOfKings = 43365;
-	GlyphOfBlessingOfMight = 43340;
-	GlyphOfInsight = 43366;
-	GlyphOfJustice = 43369;
-	GlyphOfRighteousness = 41100;
-	GlyphOfTruth = 43368;
+    PaladinMinorGlyphNone = 0;
+    GlyphOfTheLuminousCharger = 41100;
+    GlyphOfTheMountedKing = 43340;
+    GlyphOfContemplation = 43365;
+    GlyphOfWingedVengeance = 43366;
+    GlyphOfSealOfBlood = 43368;
+    GlyphOfFireFromTheHeavens = 43369;
+    GlyphOfFocusedWrath = 80581;
+    GlyphOfTheFallingAvenger = 80584;
+    GlyphOfTheRighteousRetreat = 80585;
+    GlyphOfBladedJudgment = 80586;
+    GlyphOfRighteousRetreat = 85716;
+    GlyphOfTheExorcist = 104107;
+    GlyphOfPillarOfLight = 104108;
 }
+
+// END GENERATED
 
 enum Blessings {
 	BlessingUnknown = 0;

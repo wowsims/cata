@@ -56,7 +56,7 @@ func (monk *Monk) registerBlackoutKick() {
 
 		DamageMultiplier: 7.12,
 		ThreatMultiplier: 1,
-		CritMultiplier:   monk.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return monk.ComboPoints() >= 2 || monk.ComboBreakerBlackoutKickAura.IsActive()

@@ -24,7 +24,7 @@ func TestSubtlety(t *testing.T) {
 		},
 		Talents:     SubtletyTalents,
 		Glyphs:      SubtletyGlyphs,
-		Consumes:    FullConsumes,
+		Consumables: FullConsumesSpec,
 		SpecOptions: core.SpecOptionsCombo{Label: "Subtlety", SpecOptions: PlayerOptionsID},
 		OtherSpecOptions: []core.SpecOptionsCombo{
 			{Label: "MH Deadly OH Instant", SpecOptions: PlayerOptionsDI},
@@ -100,8 +100,8 @@ var PlayerOptionsII = &proto.Player_SubtletyRogue{
 	},
 }
 
-var FullConsumes = &proto.Consumes{
-	Flask:           proto.Flask_FlaskOfTheWinds,
-	DefaultPotion:   proto.Potions_PotionOfTheTolvir,
-	DefaultConjured: proto.Conjured_ConjuredRogueThistleTea,
+var FullConsumesSpec = &proto.ConsumesSpec{
+	FlaskId:    58087, // Flask of the Winds
+	PotId:      58145, // Potion of the Tol'vir
+	ConjuredId: 7676,  // Thistle Tea
 }

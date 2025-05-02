@@ -3,7 +3,7 @@ import { Player } from '../../core/player';
 import * as PresetUtils from '../../core/preset_utils';
 import { makeSpecChangeWarningToast } from '../../core/preset_utils';
 import { APLRotation_Type as APLRotationType } from '../../core/proto/apl';
-import { Consumes, Flask, Food, Glyphs, HandType, ItemSlot, Potions, Profession, PseudoStat, Spec, Stat, TinkerHands } from '../../core/proto/common';
+import { ConsumesSpec, Glyphs, HandType, ItemSlot, Profession, PseudoStat, Spec, Stat } from '../../core/proto/common';
 import { DeathKnightMajorGlyph, DeathKnightMinorGlyph, FrostDeathKnight_Options } from '../../core/proto/death_knight';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
@@ -32,10 +32,10 @@ const DW_PRESET_OPTIONS = {
 						player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeTwoHand,
 					message: 'Check your gear: You have a two-handed weapon equipped, but the selected option is for dual wield.',
 				},
-				{
-					condition: (player: Player<Spec.SpecFrostDeathKnight>) => !player.getTalents().threatOfThassarian,
-					message: "Check your talents: You have selected a dual-wield spec but don't have [Threat Of Thassarian] talented.",
-				},
+				// {
+				// 	condition: (player: Player<Spec.SpecFrostDeathKnight>) => !player.getTalents().threatOfThassarian,
+				// 	message: "Check your talents: You have selected a dual-wield spec but don't have [Threat Of Thassarian] talented.",
+				// },
 			],
 			player,
 		);
@@ -51,10 +51,10 @@ const TWOHAND_PRESET_OPTIONS = {
 						player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeOneHand,
 					message: 'Check your gear: You have a one-handed weapon equipped, but the selected option is for dual wield',
 				},
-				{
-					condition: (player: Player<Spec.SpecFrostDeathKnight>) => !player.getTalents().mightOfTheFrozenWastes,
-					message: "Check your talents: You have selected a two-handed spec but don't have [Might of the Frozen Wastes] talented",
-				},
+				// {
+				// 	condition: (player: Player<Spec.SpecFrostDeathKnight>) => !player.getTalents().mightOfTheFrozenWastes,
+				// 	message: "Check your talents: You have selected a two-handed spec but don't have [Might of the Frozen Wastes] talented",
+				// },
 			],
 			player,
 		);
@@ -172,7 +172,7 @@ export const P1_MASTERFROST_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const DualWieldTalents = {
 	name: 'DW Obliterate',
 	data: SavedTalents.create({
-		talentsString: '2032-20330022233112012301-003',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: DeathKnightMajorGlyph.GlyphOfAntiMagicShell,
 			major2: DeathKnightMajorGlyph.GlyphOfDeathGrip,
@@ -188,10 +188,9 @@ export const DualWieldTalents = {
 export const TwoHandTalents = {
 	name: 'Two Hand',
 	data: SavedTalents.create({
-		talentsString: '103-32030022233112012031-033',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: DeathKnightMajorGlyph.GlyphOfPestilence,
-			major2: DeathKnightMajorGlyph.GlyphOfBloodBoil,
 			major3: DeathKnightMajorGlyph.GlyphOfDarkSuccor,
 			minor1: DeathKnightMinorGlyph.GlyphOfDeathGate,
 			minor2: DeathKnightMinorGlyph.GlyphOfPathOfFrost,
@@ -204,10 +203,9 @@ export const TwoHandTalents = {
 export const MasterfrostTalents = {
 	name: 'Masterfrost',
 	data: SavedTalents.create({
-		talentsString: '2032-30330012233112012301-03',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: DeathKnightMajorGlyph.GlyphOfPestilence,
-			major2: DeathKnightMajorGlyph.GlyphOfBloodBoil,
 			major3: DeathKnightMajorGlyph.GlyphOfDarkSuccor,
 			minor1: DeathKnightMinorGlyph.GlyphOfDeathGate,
 			minor2: DeathKnightMinorGlyph.GlyphOfPathOfFrost,
@@ -230,14 +228,13 @@ export const OtherDefaults = {
 	distanceFromTarget: 5,
 };
 
-export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfTitanicStrength,
-	food: Food.FoodBeerBasedCrocolisk,
-	defaultPotion: Potions.GolembloodPotion,
-	prepopPotion: Potions.GolembloodPotion,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58088, // Flask of Titanic Strength
+	foodId: 62670, // Beer-Basted Crocolisk
+	potId: 58146, // Golemblood Potion
+	prepotId: 58146, // Golemblood Potion
+	tinkerId: 82174, // Synapse Springs
 });
-
 export const PRESET_BUILD_DW = PresetUtils.makePresetBuild('P3 - DW Obliterate', {
 	gear: P3_DW_GEAR_PRESET,
 	talents: DualWieldTalents,

@@ -33,7 +33,7 @@ func (warlock *Warlock) registerShadowBurnSpell() {
 		},
 
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
+		CritMultiplier:           warlock.DefaultCritMultiplier(),
 		ThreatMultiplier:         1,
 		BonusCoefficient:         1.05599999428,
 

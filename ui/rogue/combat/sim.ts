@@ -81,7 +81,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
+		consumables: Presets.DefaultConsumables,
 		// Default talents.
 		talents: Presets.CombatTalents.data,
 		// Default spec-specific settings.
@@ -186,7 +186,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 			spec: Spec.SpecCombatRogue,
 			talents: Presets.CombatTalents.data,
 			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
+			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceHuman,
@@ -211,13 +211,13 @@ const getActiveEPWeight = (player: Player<Spec.SpecCombatRogue>, sim: Sim): Stat
 		return player.getEpWeights();
 	} else {
 		const playerGear = player.getGear();
-		if (playerGear.getItemSetCount("Vestments of the Dark Phoenix") >= 4) {
+		if (playerGear.getItemSetCount('Vestments of the Dark Phoenix') >= 4) {
 			return Presets.CBAT_4PT12_EP_PRESET.epWeights;
 		} else {
 			return Presets.CBAT_STANDARD_EP_PRESET.epWeights;
 		}
 	}
-}
+};
 
 export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecCombatRogue>) {
@@ -232,10 +232,10 @@ export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 					const meleeSoftCap = softCaps.find(v => v.unitStat.equalsPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent));
 					if (meleeSoftCap) {
 						const initialEP = activeEPWeight.getPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent);
-						meleeSoftCap.postCapEPs = [initialEP*0.6, 0];
+						meleeSoftCap.postCapEPs = [initialEP * 0.6, 0];
 					}
 
-					return softCaps
+					return softCaps;
 				},
 				getEPDefaults: (player: Player<Spec.SpecCombatRogue>) => {
 					return getActiveEPWeight(player, this.sim);
@@ -245,14 +245,13 @@ export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 					const mhWepType = player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponType;
 					const playerRace = player.getRace();
 					if (
-						(playerRace == Race.RaceHuman && (mhWepType == WeaponType.WeaponTypeSword || mhWepType == WeaponType.WeaponTypeMace) ||
+						(playerRace == Race.RaceHuman && (mhWepType == WeaponType.WeaponTypeSword || mhWepType == WeaponType.WeaponTypeMace)) ||
 						(playerRace == Race.RaceOrc && (mhWepType == WeaponType.WeaponTypeAxe || mhWepType == WeaponType.WeaponTypeFist)) ||
-						(playerRace == Race.RaceGnome && (mhWepType == WeaponType.WeaponTypeDagger || mhWepType == WeaponType.WeaponTypeSword)))
-					)
-					{
+						(playerRace == Race.RaceGnome && (mhWepType == WeaponType.WeaponTypeDagger || mhWepType == WeaponType.WeaponTypeSword))
+					) {
 						return baseStats.addStat(Stat.StatExpertiseRating, 90);
 					}
-					return baseStats
+					return baseStats;
 				},
 			});
 		});

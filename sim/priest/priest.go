@@ -6,8 +6,6 @@ import (
 	"github.com/wowsims/mop/sim/core/stats"
 )
 
-var TalentTreeSizes = [3]int{21, 21, 21}
-
 type Priest struct {
 	core.Character
 	SelfBuffs
@@ -150,7 +148,7 @@ func New(char *core.Character, selfBuffs SelfBuffs, talents string) *Priest {
 		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassPriest),
 	}
 
-	core.FillTalentsProto(priest.Talents.ProtoReflect(), talents, TalentTreeSizes)
+	core.FillTalentsProto(priest.Talents.ProtoReflect(), talents)
 	priest.EnableManaBar()
 	priest.ShadowfiendPet = priest.NewShadowfiend()
 	return priest

@@ -35,7 +35,7 @@ func (war *ProtectionWarrior) RegisterShieldSlam() {
 		},
 
 		DamageMultiplier: 1.0,
-		CritMultiplier:   war.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   war.DefaultCritMultiplier(),
 		ThreatMultiplier: 1.3,
 		FlatThreatBonus:  770,
 

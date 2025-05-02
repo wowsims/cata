@@ -21,21 +21,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: UnitStat.createDisplayStatArray(
-		[
-			Stat.StatHealth,
-			Stat.StatMana,
-			Stat.StatIntellect,
-			Stat.StatSpirit,
-			Stat.StatSpellPower,
-			Stat.StatMasteryRating,
-			Stat.StatArmor,
-			Stat.StatStamina,
-		],
-		[
-			PseudoStat.PseudoStatSpellHastePercent,
-			PseudoStat.PseudoStatSpellCritPercent,
-			PseudoStat.PseudoStatSpellHitPercent,
-		],
+		[Stat.StatHealth, Stat.StatMana, Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatMasteryRating, Stat.StatArmor, Stat.StatStamina],
+		[PseudoStat.PseudoStatSpellHastePercent, PseudoStat.PseudoStatSpellCritPercent, PseudoStat.PseudoStatSpellHitPercent],
 	),
 	defaults: {
 		// Default equipped gear.
@@ -43,7 +30,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
+		consumables: Presets.DefaultConsumables,
 		// Default talents.
 		talents: Presets.StandardTalents.data,
 		// Default spec-specific settings.
@@ -93,7 +80,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 			spec: Spec.SpecHolyPaladin,
 			talents: Presets.StandardTalents.data,
 			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
+			consumables: Presets.DefaultConsumables,
 			otherDefaults: Presets.OtherDefaults,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,

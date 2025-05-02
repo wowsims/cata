@@ -4,101 +4,78 @@ package proto;
 option go_package = "./proto";
 
 import "common.proto";
-
+// DO NOT REMOVE THE COMMENTS
+// BEGIN GENERATED
+// RogueTalents message.
 message RogueTalents {
-	// Assassination
-	int32 deadly_momentum = 1;
-	int32 coup_de_grace = 2;
-	int32 lethality = 3;
-	int32 ruthlessness = 4;
-	int32 quickening = 5;
-	int32 puncturing_wounds = 6;
-	int32 blackjack = 7;
-	int32 deadly_brew = 8;
-	bool cold_blood = 9;
-	int32 vile_poisons = 10;
-	int32 deadened_nerves = 11;
-	int32 seal_fate = 12;
-	int32 murderous_intent = 13;
-	bool overkill = 14;
-	bool master_poisoner = 15;
-	int32 improved_expose_armor = 16;
-	int32 cut_to_the_chase = 17;
-	int32 venomous_wounds = 18;
-	bool vendetta = 19;
-
-	// Combat
-	int32 improved_recuperate = 20;
-	int32 improved_sinister_strike = 21;
-	int32 precision = 22;
-	int32 improved_slice_and_dice = 23;
-	int32 improved_sprint = 24;
-	int32 aggression = 25;
-	int32 improved_kick = 26;
-	int32 lightning_reflexes = 27;
-	bool revealing_strike = 28;
-	int32 reinforced_leather = 29;
-	int32 improved_gouge = 30;
-	int32 combat_potency = 31;
-	int32 blade_twisting = 32;
-	int32 throwing_specialization = 33;
-	bool adrenaline_rush = 34;
-	int32 savage_combat = 35;
-	int32 bandits_guile = 36;
-	int32 restless_blades = 37;
-	bool killing_spree = 38;
-
-	// Subtlety
-	int32 nightstalker = 39;
-	int32 improved_ambush = 40;
-	int32 relentless_strikes = 41;
-	int32 elusiveness = 42;
-	int32 waylay = 43;
-	int32 opportunity = 44;
-	int32 initiative = 45;
-	int32 energetic_recovery = 46;
-	int32 find_weakness = 47;
-	bool hemorrhage = 48;
-	int32 honor_among_thieves = 49;
-	bool premeditation = 50;
-	int32 enveloping_shadows = 51;
-	int32 cheat_death = 52;
-	bool preparation = 53;
-	int32 sanguinary_vein = 54;
-	int32 slaughter_from_the_shadows = 55;
-	int32 serrated_blades = 56;
-	bool shadow_dance = 57;
+    bool nightstalker = 1;
+    bool subterfuge = 2;
+    bool shadow_focus = 3;
+    bool deadly_throw = 4;
+    bool nerve_strike = 5;
+    bool combat_readiness = 6;
+    bool cheat_death = 7;
+    bool leeching_poison = 8;
+    bool elusiveness = 9;
+    bool cloak_and_dagger = 10;
+    bool shadowstep = 11;
+    bool burst_of_speed = 12;
+    bool prey_on_the_weak = 13;
+    bool paralytic_poison = 14;
+    bool dirty_tricks = 15;
+    bool shuriken_toss = 16;
+    bool marked_for_death = 17;
+    bool anticipation = 18;
 }
+
 enum RogueMajorGlyph {
-	RogueMajorGlyphNone = 0;
-	GlyphOfAmbush = 42955;
-	GlyphOfBladeFlurry = 42957;
-	GlyphOfBlind = 64493;
-	GlyphOfCloakOfShadows = 45769;
-	GlyphOfCripplingPoison = 42958;
-	GlyphOfDeadlyThrow = 42959;
-	GlyphOfEvasion = 42960;
-	GlyphOfExposeArmor = 42962;
-	GlyphOfFanOfKnives = 45766;
-	GlyphOfFeint = 42963;
-	GlyphOfGarrote = 42964;
-	GlyphOfGouge = 42966;
-	GlyphOfKick = 42971;
-	GlyphOfPreparation = 42968;
-	GlyphOfSap = 42970;
-	GlyphOfSprint = 42974;
-	GlyphOfTricksOfTheTrade = 45767;
-	GlyphOfVanish = 63420;
+    RogueMajorGlyphNone = 0;
+    GlyphOfShadowWalk = 42954;
+    GlyphOfAmbush = 42955;
+    GlyphOfBladeFlurry = 42957;
+    GlyphOfSharpKnives = 42958;
+    GlyphOfRecuperate = 42959;
+    GlyphOfEvasion = 42960;
+    GlyphOfRecovery = 42961;
+    GlyphOfExposeArmor = 42962;
+    GlyphOfFeint = 42963;
+    GlyphOfGarrote = 42964;
+    GlyphOfGouge = 42966;
+    GlyphOfSmokeBomb = 42968;
+    GlyphOfCheapShot = 42969;
+    GlyphOfHemorraghingVeins = 42970;
+    GlyphOfKick = 42971;
+    GlyphOfRedirect = 42972;
+    GlyphOfShiv = 42973;
+    GlyphOfSprint = 42974;
+    GlyphOfVendetta = 45761;
+    GlyphOfStealth = 45764;
+    GlyphOfDeadlyMomentum = 45766;
+    GlyphOfCloakOfShadows = 45769;
+    GlyphOfVanish = 63420;
+    GlyphOfBlind = 64493;
 }
+
 enum RogueMinorGlyph {
-	RogueMinorGlyphNone = 0;
-	GlyphOfBlurredSpeed = 43379;
-	GlyphOfDistract = 43376;
-	GlyphOfPickLock = 43377;
-	GlyphOfPickPocket = 43343;
-	GlyphOfPoisons = 43380;
-	GlyphOfSafeFall = 43378;
+    RogueMinorGlyphNone = 0;
+    GlyphOfDecoy = 42956;
+    GlyphOfDetection = 42965;
+    GlyphOfHemorrhage = 42967;
+    GlyphOfPickPocket = 43343;
+    GlyphOfDistract = 43376;
+    GlyphOfPickLock = 43377;
+    GlyphOfSafeFall = 43378;
+    GlyphOfBlurredSpeed = 43379;
+    GlyphOfPoisons = 43380;
+    GlyphOfKillingSpree = 45762;
+    GlyphOfTricksOfTheTrade = 45767;
+    GlyphOfDisguise = 45768;
+    ZzoldGlyphOfStabbing = 71799;
+    GlyphOfHeadhunting = 104123;
+    GlyphOfImprovedDistraction = 104124;
 }
+
+// END GENERATED
 
 message RogueOptions {
 	UnitReference tricks_of_the_trade_target = 1;

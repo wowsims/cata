@@ -14,13 +14,13 @@ func init() {
 
 func TestFire(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-		Class:      proto.Class_ClassMage,
-		Race:       proto.Race_RaceTroll,
-		OtherRaces: []proto.Race{proto.Race_RaceWorgen},
-		GearSet:    core.GetGearSet("../../../ui/mage/fire/gear_sets", "p4_fire"),
-		Talents:    FireTalents,
-		Glyphs:     FireGlyphs,
-		Consumes:   FullFireConsumes,
+		Class:       proto.Class_ClassMage,
+		Race:        proto.Race_RaceTroll,
+		OtherRaces:  []proto.Race{proto.Race_RaceWorgen},
+		GearSet:     core.GetGearSet("../../../ui/mage/fire/gear_sets", "p4_fire"),
+		Talents:     FireTalents,
+		Glyphs:      FireGlyphs,
+		Consumables: FullFireConsumesSpec,
 
 		SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
 		Rotation:    core.GetAplRotation("../../../ui/mage/fire/apls", "fire"),
@@ -45,7 +45,7 @@ var ItemFilter = core.ItemFilter{
 var FireTalents = "203-230330221120121213031-03"
 var FireGlyphs = &proto.Glyphs{
 	Major1: int32(proto.MageMajorGlyph_GlyphOfEvocation),
-	Major2: int32(proto.MageMajorGlyph_GlyphOfDragonSBreath),
+	Major2: int32(proto.MageMajorGlyph_GlyphOfDragonsBreath),
 	Major3: int32(proto.MageMajorGlyph_GlyphOfInvisibility),
 }
 
@@ -56,9 +56,8 @@ var PlayerOptionsFire = &proto.Player_FireMage{
 		},
 	},
 }
-
-var FullFireConsumes = &proto.Consumes{
-	Flask:         proto.Flask_FlaskOfTheFrostWyrm,
-	Food:          proto.Food_FoodFirecrackerSalmon,
-	DefaultPotion: proto.Potions_PotionOfSpeed,
+var FullFireConsumesSpec = &proto.ConsumesSpec{
+	FlaskId: 46376, // Flask of the Frost Wyrm
+	FoodId:  34767, // Firecracker Salmon
+	PotId:   40211, // Potion of Speed
 }

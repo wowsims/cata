@@ -4,102 +4,77 @@ package proto;
 option go_package = "./proto";
 
 import "common.proto";
-
+// DO NOT REMOVE THE COMMENTS
+// BEGIN GENERATED
+// MageTalents message.
 message MageTalents {
-	// Arcane
-	int32 arcane_concentration = 1;
-	int32 improved_counterspell = 2;
-	int32 netherwind_presence = 3;
-	int32 torment_the_weak = 4;
-	int32 invocation = 5;
-	int32 improved_arcane_missiles = 6;
-	int32 improved_blink = 7;
-	int32 arcane_flows = 8;
-	bool presence_of_mind = 9;
-	int32 missile_barrage = 10;
-	int32 prismatic_cloak = 11;
-	int32 improved_polymorph = 12;
-	bool arcane_tactics = 13;
-	int32 incanters_absorption = 14;
-	int32 improved_arcane_explosion = 15;
-	int32 arcane_potency = 16;
-	bool slow = 17;
-	int32 nether_vortex = 18;
-	bool focus_magic = 19;
-	int32 improved_mana_gem = 20;
-	bool arcane_power = 21;
-
-	// Fire
-	int32 master_of_elements = 22;
-	int32 burning_soul = 23;
-	int32 improved_fire_blast = 24;
-	int32 ignite = 25;
-	int32 fire_power = 26;
-	int32 blazing_speed = 27;
-	int32 impact = 28;
-	int32 cauterize = 29;
-	bool blast_wave = 30;
-	bool hot_streak = 31;
-	int32 improved_scorch = 32;
-	bool molten_shields = 33;
-	bool combustion = 34;
-	int32 improved_hot_streak = 35;
-	bool firestarter = 36;
-	int32 improved_flamestrike = 37;
-	bool dragons_breath = 38;
-	int32 molten_fury = 39;
-	int32 pyromaniac = 40;
-	int32 critical_mass = 41;
-	bool living_bomb = 42;
-
-	// Frost
-	int32 early_frost = 43;
-	int32 piercing_ice = 44;
-	int32 shatter = 45;
-	int32 ice_floes = 46;
-	int32 improved_cone_of_cold = 47;
-	int32 piercing_chill = 48;
-	int32 permafrost = 49;
-	int32 ice_shards = 50;
-	bool icy_veins = 51;
-	int32 fingers_of_frost = 52;
-	int32 improved_freeze = 53;
-	int32 enduring_winter = 54;
-	bool cold_snap = 55;
-	int32 brain_freeze = 56;
-	int32 shattered_barrier = 57;
-	bool ice_barrier = 58;
-	int32 reactive_barrier = 59;
-	int32 frostfire_orb = 60;
-	bool deep_freeze = 61;
+    bool presence_of_mind = 1;
+    bool blazing_speed = 2;
+    bool ice_floes = 3;
+    bool temporal_shield = 4;
+    bool flameglow = 5;
+    bool ice_barrier = 6;
+    bool ring_of_frost = 7;
+    bool ice_ward = 8;
+    bool frostjaw = 9;
+    bool greater_invisibility = 10;
+    bool cauterize = 11;
+    bool cold_snap = 12;
+    bool nether_tempest = 13;
+    bool living_bomb = 14;
+    bool frost_bomb = 15;
+    bool invocation = 16;
+    bool rune_of_power = 17;
+    bool incanters_ward = 18;
 }
+
 enum MageMajorGlyph {
-	MageMajorGlyphNone = 0;
-	GlyphOfArcanePower = 42736;
-	GlyphOfBlastWave = 44920;
-	GlyphOfBlink = 42737;
-	GlyphOfDragonSBreath = 42754;
-	GlyphOfEvocation = 42738;
-	GlyphOfFrostArmor = 69773;
-	GlyphOfFrostNova = 42741;
-	GlyphOfIceBarrier = 45740;
-	GlyphOfIceBlock = 42744;
-	GlyphOfIcyVeins = 42746;
-	GlyphOfInvisibility = 42748;
-	GlyphOfManaShield = 50045;
-	GlyphOfPolymorph = 42752;
-	GlyphOfSlow = 45737;
+    MageMajorGlyphNone = 0;
+    GlyphOfArcaneExplosion = 42736;
+    GlyphOfBlink = 42737;
+    GlyphOfEvocation = 42738;
+    GlyphOfCombustion = 42739;
+    GlyphOfFrostNova = 42741;
+    GlyphOfIceBlock = 42744;
+    GlyphOfSplittingIce = 42745;
+    GlyphOfConeOfCold = 42746;
+    GlyphOfRapidDisplacement = 42748;
+    GlyphOfManaGem = 42749;
+    GlyphOfPolymorph = 42752;
+    GlyphOfIcyVeins = 42753;
+    GlyphOfSpellsteal = 42754;
+    GlyphOfFrostfireBolt = 44684;
+    GlyphOfRemoveCurse = 44920;
+    GlyphOfArcanePower = 44955;
+    GlyphOfWaterElemental = 45736;
+    GlyphOfSlow = 45737;
+    GlyphOfDeepFreeze = 45740;
+    GlyphOfCounterspell = 50045;
+    GlyphOfInfernoBlast = 63539;
+    GlyphOfArmors = 69773;
 }
+
 enum MageMinorGlyph {
-	MageMinorGlyphNone = 0;
-	GlyphOfArcaneBrilliance = 43339;
-	GlyphOfArmors = 63416;
-	GlyphOfConjuring = 43359;
-	GlyphOfMirrorImage = 45739;
-	GlyphOfSlowFall = 43364;
-	GlyphOfTheMonkey = 43360;
-	GlyphOfThePenguin = 43361;
+    MageMinorGlyphNone = 0;
+    GlyphOfLooseMana = 42735;
+    GlyphOfMomentum = 42743;
+    GlyphOfCrittermorph = 42751;
+    GlyphOfThePorcupine = 43339;
+    GlyphOfConjureFamiliar = 43359;
+    GlyphOfTheMonkey = 43360;
+    GlyphOfThePenguin = 43361;
+    GlyphOfTheBearCub = 43362;
+    GlyphOfArcaneLanguage = 43364;
+    GlyphOfIllusion = 45738;
+    GlyphOfMirrorImage = 45739;
+    GlyphOfRapidTeleportation = 63416;
+    GlyphOfDiscreetMagic = 92727;
+    GlyphOfTheUnboundElemental = 104104;
+    GlyphOfEvaporation = 104105;
+    GlyphOfCondensation = 104106;
 }
+
+// END GENERATED
 
 message MageOptions {
 }

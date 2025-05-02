@@ -1,11 +1,16 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Race, RaidBuffs, Spec, Stat, TinkerHands } from '../../core/proto/common';
 import {
-	FireMage_Options as MageOptions,
-	FireMage_Rotation,
-	MageMajorGlyph as MajorGlyph,
-	MageMinorGlyph as MinorGlyph,
-} from '../../core/proto/mage';
+	ConsumesSpec,
+	Debuffs,
+	Glyphs,
+	Profession,
+	PseudoStat,
+	Race,
+	RaidBuffs,
+	Spec,
+	Stat,
+} from '../../core/proto/common';
+import { FireMage_Options as MageOptions, FireMage_Rotation, MageMajorGlyph as MajorGlyph, MageMinorGlyph as MinorGlyph } from '../../core/proto/mage';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats, UnitStat, UnitStatPresets } from '../../core/proto_utils/stats';
 import FireApl from './apls/fire.apl.json';
@@ -20,10 +25,10 @@ import ItemSwapP4 from './gear_sets/p4_fire_item_swap.gear.json';
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const FIRE_P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1FireBisGear, { talentTree: 1 });
-export const FIRE_P3_PREBIS = PresetUtils.makePresetGear('P3 Pre-raid', P3FirePrebisGear, { talentTree: 1 });
-export const FIRE_P3_PRESET = PresetUtils.makePresetGear('P3 Preset', P3FireBisGear, { talentTree: 1 });
-export const FIRE_P4_PRESET = PresetUtils.makePresetGear('P4 Preset', P4FireBisGear, { talentTree: 1 });
+export const FIRE_P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1FireBisGear);
+export const FIRE_P3_PREBIS = PresetUtils.makePresetGear('P3 Pre-raid', P3FirePrebisGear);
+export const FIRE_P3_PRESET = PresetUtils.makePresetGear('P3 Preset', P3FireBisGear);
+export const FIRE_P4_PRESET = PresetUtils.makePresetGear('P4 Preset', P4FireBisGear);
 
 export const P1DefaultSimpleRotation = FireMage_Rotation.create({
 	combustThreshold: 470000,
@@ -64,7 +69,7 @@ export const P4_SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('
 export const P4_SIMPLE_ROTATION_NO_TROLL = PresetUtils.makePresetSimpleRotation('P4 - Not Troll', Spec.SpecFireMage, P4NoTrollDefaultSimpleRotation);
 
 //export const ROTATION_PRESET_SIMPLE = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecFireMage, DefaultSimpleRotation);
-export const FIRE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('APL', FireApl, { talentTree: 1 });
+export const FIRE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('APL', FireApl);
 
 // Preset options for EP weights
 export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(
@@ -84,13 +89,10 @@ export const DEFAULT_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const FireTalents = {
 	name: 'Fire',
 	data: SavedTalents.create({
-		talentsString: '003-230330221120121213231-03',
+		talentsString: '212111',
 		glyphs: Glyphs.create({
 			major1: MajorGlyph.GlyphOfEvocation,
-			major2: MajorGlyph.GlyphOfDragonSBreath,
-			major3: MajorGlyph.GlyphOfInvisibility,
 			minor1: MinorGlyph.GlyphOfMirrorImage,
-			minor2: MinorGlyph.GlyphOfArmors,
 			minor3: MinorGlyph.GlyphOfTheMonkey,
 		}),
 	}),
@@ -117,12 +119,12 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	communion: true,
 });
 
-export const DefaultFireConsumes = Consumes.create({
-	flask: Flask.FlaskOfTheDraconicMind,
-	food: Food.FoodSeafoodFeast,
-	defaultPotion: Potions.VolcanicPotion,
-	prepopPotion: Potions.VolcanicPotion,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
+export const DefaultFireConsumables = ConsumesSpec.create({
+	flaskId: 58086, // Flask of the Draconic Mind
+	foodId: 62290, // Seafood Magnifique Feast
+	potId: 58091, // Volcanic Potion
+	prepotId: 58091, // Volcanic Potion
+	tinkerId: 82174, // Synapse Springs
 });
 
 export const DefaultDebuffs = Debuffs.create({

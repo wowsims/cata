@@ -78,6 +78,11 @@ export class ItemRenderer extends Component {
 	private notice: ItemNotice | null = null;
 	socketsElem: HTMLAnchorElement[] = [];
 
+	// Can be used to remove any events in addEventListener
+	// https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#add_an_abortable_listener
+	public abortController?: AbortController;
+	public signal?: AbortSignal;
+
 	constructor(parent: HTMLElement, root: HTMLElement, player: Player<any>) {
 		super(parent, 'item-picker-root', root);
 		this.player = player;
@@ -89,6 +94,7 @@ export class ItemRenderer extends Component {
 		const enchantElem = ref<HTMLAnchorElement>();
 		const reforgeElem = ref<HTMLAnchorElement>();
 		const sce = ref<HTMLDivElement>();
+
 		this.rootElem.appendChild(
 			<>
 				<div className="item-picker-icon-wrapper">
@@ -116,6 +122,7 @@ export class ItemRenderer extends Component {
 	}
 
 	clear(slot: ItemSlot) {
+		this.abortController?.abort();
 		this.nameElem.removeAttribute('data-wowhead');
 		this.nameElem.removeAttribute('href');
 		this.notice?.dispose();
@@ -139,6 +146,9 @@ export class ItemRenderer extends Component {
 	}
 
 	update(newItem: EquippedItem) {
+		this.abortController = new AbortController();
+		this.signal = this.abortController.signal;
+
 		const nameSpan = <span className="item-picker-name">{newItem.item.name}</span>;
 		const isEligibleForRandomSuffix = !!newItem.hasRandomSuffixOptions();
 		const hasRandomSuffix = !!newItem.randomSuffix;
@@ -180,8 +190,9 @@ export class ItemRenderer extends Component {
 
 		newItem
 			.asActionId()
-			.fill()
+			.fill(undefined, { signal: this.signal })
 			.then(filledId => {
+				if (this.signal?.aborted) return;
 				filledId.setBackgroundAndHref(this.iconElem);
 				filledId.setWowheadHref(this.nameElem);
 			});

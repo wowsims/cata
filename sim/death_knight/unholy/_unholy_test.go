@@ -21,7 +21,7 @@ func TestUnholy(t *testing.T) {
 		GearSet:     core.GetGearSet("../../../ui/death_knight/unholy/gear_sets", "p4.bis"),
 		Talents:     UnholyTalents,
 		Glyphs:      UnholyDefaultGlyphs,
-		Consumes:    FullConsumes,
+		Consumables: FullConsumesSpec,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsUnholy},
 		Rotation:    core.GetAplRotation("../../../ui/death_knight/unholy/apls", "default"),
 
@@ -34,7 +34,7 @@ var UnholyDefaultGlyphs = &proto.Glyphs{
 	Major1: int32(proto.DeathKnightMajorGlyph_GlyphOfPestilence),
 	Major2: int32(proto.DeathKnightMajorGlyph_GlyphOfBloodBoil),
 	Major3: int32(proto.DeathKnightMajorGlyph_GlyphOfAntiMagicShell),
-	Minor1: int32(proto.DeathKnightMinorGlyph_GlyphOfDeathSEmbrace),
+	Minor1: int32(proto.DeathKnightMinorGlyph_GlyphOfDeathsEmbrace),
 	Minor2: int32(proto.DeathKnightMinorGlyph_GlyphOfHornOfWinter),
 }
 
@@ -49,12 +49,12 @@ var PlayerOptionsUnholy = &proto.Player_UnholyDeathKnight{
 	},
 }
 
-var FullConsumes = &proto.Consumes{
-	Flask:         proto.Flask_FlaskOfTitanicStrength,
-	DefaultPotion: proto.Potions_GolembloodPotion,
-	PrepopPotion:  proto.Potions_GolembloodPotion,
-	Food:          proto.Food_FoodBeerBasedCrocolisk,
-	TinkerHands:   proto.TinkerHands_TinkerHandsSynapseSprings,
+var FullConsumesSpec = &proto.ConsumesSpec{
+	FlaskId:  58088, // Flask of Titanic Strength
+	FoodId:   62670, // Beer‑Basted Crocolisk
+	PotId:    58146, // Golemblood Potion
+	PrepotId: 58146, // Golemblood Potion
+	TinkerId: 82174, // Synapse Springs
 }
 
 var ItemFilter = core.ItemFilter{

@@ -24,7 +24,7 @@ func TestProtectionWarrior(t *testing.T) {
 		},
 		Talents:     DefaultTalents,
 		Glyphs:      DefaultGlyphs,
-		Consumes:    FullConsumes,
+		Consumables: FullConsumesSpec,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
 		Rotation:    core.GetAplRotation("../../../ui/warrior/protection/apls", "default"),
 
@@ -73,9 +73,9 @@ var PlayerOptionsBasic = &proto.Player_ProtectionWarrior{
 	},
 }
 
-var FullConsumes = &proto.Consumes{
-	Flask:         proto.Flask_FlaskOfSteelskin,
-	DefaultPotion: proto.Potions_EarthenPotion,
-	PrepopPotion:  proto.Potions_EarthenPotion,
-	Food:          proto.Food_FoodBeerBasedCrocolisk,
+var FullConsumesSpec = &proto.ConsumesSpec{
+	FlaskId:  58085, // Flask of Steelskin
+	FoodId:   62670, // Beer‑Basted Crocolisk
+	PotId:    58090, // Earthen Potion
+	PrepotId: 58090, // Earthen Potion
 }

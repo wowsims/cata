@@ -1,6 +1,7 @@
 import { ItemSwapSettings } from './components/item_swap_picker';
 import Toast from './components/toast';
 import * as Mechanics from './constants/mechanics';
+import { CURRENT_API_VERSION } from './constants/other';
 import { SimSettingCategories } from './constants/sim_settings';
 import { MAX_PARTY_SIZE, Party } from './party';
 import { PlayerClass } from './player_class';
@@ -18,7 +19,7 @@ import {
 import { APLRotation, APLRotation_Type as APLRotationType, SimpleRotation } from './proto/apl';
 import {
 	Class,
-	Consumes,
+	ConsumesSpec,
 	Cooldowns,
 	Faction,
 	GemColor,
@@ -32,12 +33,12 @@ import {
 	PseudoStat,
 	Race,
 	ReforgeStat,
-	SimDatabase,
 	Spec,
 	Stat,
 	UnitReference,
 	UnitStats,
 } from './proto/common';
+import { SimDatabase } from './proto/db';
 import {
 	DungeonDifficulty,
 	RaidFilterOption,
@@ -62,7 +63,6 @@ import {
 	emptyUnitReference,
 	enchantAppliesToItem,
 	getMetaGemEffectEP,
-	getTalentTree,
 	getTalentTreePoints,
 	isPVPItem,
 	newUnitReference,
@@ -234,7 +234,7 @@ export class Player<SpecType extends Spec> {
 
 	private name = '';
 	private buffs: IndividualBuffs = IndividualBuffs.create();
-	private consumes: Consumes = Consumes.create();
+	private consumables: ConsumesSpec = ConsumesSpec.create();
 	private bonusStats: Stats = new Stats();
 	private gear: Gear = new Gear({});
 	//private bulkEquipmentSpec: BulkEquipmentSpec = BulkEquipmentSpec.create();
@@ -693,21 +693,21 @@ export class Player<SpecType extends Spec> {
 		this.buffsChangeEmitter.emit(eventID);
 	}
 
-	getConsumes(): Consumes {
+	getConsumes(): ConsumesSpec {
 		// Make a defensive copy
-		return Consumes.clone(this.consumes);
+		return ConsumesSpec.clone(this.consumables);
 	}
 
-	setConsumes(eventID: EventID, newConsumes: Consumes) {
-		if (Consumes.equals(this.consumes, newConsumes)) return;
+	setConsumes(eventID: EventID, newConsumes: ConsumesSpec) {
+		if (ConsumesSpec.equals(this.consumables, newConsumes)) return;
 
 		// Make a defensive copy
-		this.consumes = Consumes.clone(newConsumes);
+		this.consumables = ConsumesSpec.clone(newConsumes);
 		this.consumesChangeEmitter.emit(eventID);
 	}
 
 	canDualWield2H(): boolean {
-		return this.getSpec() == Spec.SpecFuryWarrior && (this.getTalents() as SpecTalents<Spec.SpecFuryWarrior>).titansGrip;
+		return this.getSpec() == Spec.SpecFuryWarrior;
 	}
 
 	equipItem(eventID: EventID, slot: ItemSlot, newItem: EquippedItem | null) {
@@ -780,14 +780,14 @@ export class Player<SpecType extends Spec> {
 		const remainingParryCap = Math.max(parryCap - expertise, 0.0);
 		const remainingExpertiseCap = remainingDodgeCap + remainingParryCap;
 
-		let specSpecificOffset = 0.0;
+		const specSpecificOffset = 0.0;
 
-		if (this.getSpec() === Spec.SpecEnhancementShaman) {
-			// Elemental Devastation uptime is near 100%
-			// TODO: Cata - Check this
-			const ranks = (this as unknown as Player<Spec.SpecEnhancementShaman>).getTalents().elementalDevastation;
-			specSpecificOffset = 3.0 * ranks;
-		}
+		// if (this.getSpec() === Spec.SpecEnhancementShaman) {
+		// 	// Elemental Devastation uptime is near 100%
+		// 	// TODO: Cata - Check this
+		// 	const ranks = (this as unknown as Player<Spec.SpecEnhancementShaman>).getTalents().elementalDevastation;
+		// 	specSpecificOffset = 3.0 * ranks;
+		// }
 
 		const baseCritCap = 100.0 - glancing + suppression - remainingMeleeHitCap - remainingExpertiseCap - specSpecificOffset;
 		const playerCritCapDelta = meleeCrit - baseCritCap;
@@ -909,10 +909,6 @@ export class Player<SpecType extends Spec> {
 		this.talentsString = newTalentsString;
 		this.talents = null;
 		this.talentsChangeEmitter.emit(eventID);
-	}
-
-	getTalentTree(): number {
-		return getTalentTree(this.getTalentsString());
 	}
 
 	getTalentTreePoints(): Array<number> {
@@ -1144,7 +1140,6 @@ export class Player<SpecType extends Spec> {
 
 		// For random suffix items, use the suffix option with the highest EP for the purposes of ranking items in the picker.
 		let maxSuffixEP = 0;
-
 		if (item.randomSuffixOptions.length > 0) {
 			const suffixEPs = item.randomSuffixOptions.map(id => this.computeRandomSuffixEP(this.sim.db.getRandomSuffixById(id)! || 0));
 			maxSuffixEP = (Math.max(...suffixEPs) * item.randPropPoints) / 10000;
@@ -1475,7 +1470,7 @@ export class Player<SpecType extends Spec> {
 		}
 		if (exportCategory(SimSettingCategories.Consumes)) {
 			PlayerProto.mergePartial(player, {
-				consumes: this.getConsumes(),
+				consumables: this.getConsumes(),
 			});
 		}
 		if (exportCategory(SimSettingCategories.Miscellaneous)) {
@@ -1502,9 +1497,11 @@ export class Player<SpecType extends Spec> {
 	}
 
 	fromProto(eventID: EventID, proto: PlayerProto, includeCategories?: Array<SimSettingCategories>) {
-		const loadCategory = (cat: SimSettingCategories) => !includeCategories || includeCategories.length == 0 || includeCategories.includes(cat);
-
+		// Fix potential out-of-date protos before importing
 		TypedEvent.freezeAllAndDo(() => {
+			Player.updateProtoVersion(proto);
+			const loadCategory = (cat: SimSettingCategories) => !includeCategories || includeCategories.length == 0 || includeCategories.includes(cat);
+			eventID = TypedEvent.nextEventID();
 			if (loadCategory(SimSettingCategories.Gear)) {
 				this.setGear(eventID, proto.equipment ? this.sim.db.lookupEquipmentSpec(proto.equipment) : new Gear({}));
 				this.itemSwapSettings.setItemSwapSettings(
@@ -1530,7 +1527,7 @@ export class Player<SpecType extends Spec> {
 				this.setAplRotation(eventID, proto.rotation || APLRotation.create());
 			}
 			if (loadCategory(SimSettingCategories.Consumes)) {
-				this.setConsumes(eventID, proto.consumes || Consumes.create());
+				this.setConsumes(eventID, proto.consumables || ConsumesSpec.create());
 			}
 			if (loadCategory(SimSettingCategories.Miscellaneous)) {
 				this.setSpecOptions(eventID, this.specTypeFunctions.optionsFromPlayer(proto));
@@ -1589,5 +1586,10 @@ export class Player<SpecType extends Spec> {
 
 	getMasteryPerPointModifier(): number {
 		return Mechanics.masteryPercentPerPoint.get(this.getSpec()) || 0;
+	}
+	static updateProtoVersion(proto: PlayerProto) {
+		if (!(proto.apiVersion < CURRENT_API_VERSION)) {
+			return;
+		}
 	}
 }

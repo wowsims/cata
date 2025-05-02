@@ -1,6 +1,6 @@
 import * as Mechanics from '../../core/constants/mechanics';
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, PseudoStat, RaidBuffs, Stat, TinkerHands } from '../../core/proto/common.js';
+import { ConsumesSpec, Debuffs, Glyphs, Profession, PseudoStat, RaidBuffs, Stat } from '../../core/proto/common.js';
 import {
 	AirTotem,
 	CallTotem,
@@ -72,14 +72,11 @@ export const P3_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		talentsString: '3022003-2333310013003012321',
+		talentsString: '',
 		glyphs: Glyphs.create({
 			major1: ShamanMajorGlyph.GlyphOfLightningShield,
 			major2: ShamanMajorGlyph.GlyphOfHealingStreamTotem,
 			major3: ShamanMajorGlyph.GlyphOfFireNova,
-			minor1: ShamanMinorGlyph.GlyphOfWaterWalking,
-			minor2: ShamanMinorGlyph.GlyphOfRenewedLife,
-			minor3: ShamanMinorGlyph.GlyphOfTheArcticWolf,
 		}),
 	}),
 };
@@ -124,12 +121,12 @@ export const OtherDefaults = {
 	profession2: Profession.Tailoring,
 };
 
-export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.PotionOfTheTolvir,
-	prepopPotion: Potions.PotionOfTheTolvir,
-	flask: Flask.FlaskOfTheWinds,
-	food: Food.FoodSeafoodFeast,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58087, // Flask of the Winds
+	foodId: 62290, // Seafood Magnifique Feast
+	potId: 58145, // Potion of the Tol'vir
+	prepotId: 58145, // Potion of the Tol'vir
+	tinkerId: 82174, // Synapse Springs
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({

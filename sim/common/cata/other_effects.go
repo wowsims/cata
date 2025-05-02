@@ -27,7 +27,7 @@ func init() {
 			DamageMultiplier:         1,
 			DamageMultiplierAdditive: 1,
 			ThreatMultiplier:         1,
-			CritMultiplier:           character.DefaultSpellCritMultiplier(),
+			CritMultiplier:           character.DefaultCritMultiplier(),
 			ProcMask:                 core.ProcMaskEmpty,
 			Flags:                    core.SpellFlagNoOnCastComplete,
 			Dot: core.DotConfig{
@@ -69,7 +69,7 @@ func init() {
 			ThreatMultiplier:         1,
 			ProcMask:                 core.ProcMaskEmpty,
 			Flags:                    core.SpellFlagNoOnCastComplete,
-			CritMultiplier:           character.DefaultSpellCritMultiplier(),
+			CritMultiplier:           character.DefaultCritMultiplier(),
 			Dot: core.DotConfig{
 				Aura: core.Aura{
 					Label: "Vengful Wisp - 1",
@@ -141,7 +141,7 @@ func init() {
 			DamageMultiplier:         1,
 			DamageMultiplierAdditive: 1,
 			ThreatMultiplier:         1,
-			CritMultiplier:           character.DefaultSpellCritMultiplier(),
+			CritMultiplier:           character.DefaultCritMultiplier(),
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Duration: time.Minute * 1,
@@ -867,7 +867,7 @@ func init() {
 				},
 
 				DamageMultiplier: 1,
-				CritMultiplier:   character.DefaultSpellCritMultiplier(),
+				CritMultiplier:   character.DefaultCritMultiplier(),
 				ThreatMultiplier: 1,
 
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -911,7 +911,7 @@ func init() {
 				Flags:       core.SpellFlagPassiveSpell,
 
 				DamageMultiplier: 1,
-				CritMultiplier:   character.DefaultMeleeCritMultiplier(), // even ranged procs use the melee Crit multiplier as of first PTR (1.5x for Hunters)
+				CritMultiplier:   character.DefaultCritMultiplier(), // even ranged procs use the melee Crit multiplier as of first PTR (1.5x for Hunters)
 				ThreatMultiplier: 1,
 
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -961,7 +961,7 @@ func init() {
 				Flags:       core.SpellFlagPassiveSpell,
 
 				DamageMultiplier: 1,
-				CritMultiplier:   character.DefaultMeleeCritMultiplier(),
+				CritMultiplier:   character.DefaultCritMultiplier(),
 				ThreatMultiplier: 1,
 
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -1015,7 +1015,7 @@ func init() {
 				MissileSpeed: 20,
 
 				DamageMultiplier: 1,
-				CritMultiplier:   character.DefaultSpellCritMultiplier(),
+				CritMultiplier:   character.DefaultCritMultiplier(),
 				ThreatMultiplier: 1,
 
 				BonusCoefficient: spMod,
@@ -1170,7 +1170,7 @@ func init() {
 				Flags:       core.SpellFlagPassiveSpell | core.SpellFlagHelpful,
 
 				DamageMultiplier: 1,
-				CritMultiplier:   character.DefaultSpellCritMultiplier(),
+				CritMultiplier:   character.DefaultCritMultiplier(),
 				ThreatMultiplier: 1,
 
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -1185,7 +1185,7 @@ func init() {
 				Flags:       core.SpellFlagPassiveSpell,
 
 				DamageMultiplier: 1,
-				CritMultiplier:   character.DefaultSpellCritMultiplier(),
+				CritMultiplier:   character.DefaultCritMultiplier(),
 				ThreatMultiplier: 1,
 
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -1250,7 +1250,7 @@ func init() {
 					MaxRange:    45,
 
 					DamageMultiplier: 1,
-					CritMultiplier:   character.DefaultSpellCritMultiplier(),
+					CritMultiplier:   character.DefaultCritMultiplier(),
 					ThreatMultiplier: 1,
 
 					ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -1335,7 +1335,7 @@ func init() {
 				},
 
 				DamageMultiplier: 1,
-				CritMultiplier:   character.DefaultSpellCritMultiplier(),
+				CritMultiplier:   character.DefaultCritMultiplier(),
 				ThreatMultiplier: 1,
 
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -1396,7 +1396,7 @@ func init() {
 				},
 
 				DamageMultiplier: 1,
-				CritMultiplier:   character.SpellCritMultiplier(1, 0),
+				CritMultiplier:   character.CritMultiplier(1, 0),
 				ThreatMultiplier: 1,
 
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

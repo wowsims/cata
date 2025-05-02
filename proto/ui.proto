@@ -6,6 +6,8 @@ option go_package = "./proto";
 import "api.proto";
 import "apl.proto";
 import "common.proto";
+import "db.proto";
+import "spell.proto";
 import "paladin.proto";
 
 // Holds all WoW data for the UI.
@@ -25,6 +27,9 @@ message UIDatabase {
 
 	repeated GlyphID glyph_ids = 7;
 	repeated ReforgeStat reforge_stats = 12;
+
+	repeated Consumable consumables = 13;
+	repeated SpellEffect spell_effects = 14;
 }
 
 message UIZone {
@@ -41,7 +46,7 @@ message UINPC {
 // Contains all information about an Item needed by the UI.
 // Generally this will include everything needed by the sim, plus some
 // additional data for displaying / filtering.
-// Next tag: 29.
+// Next tag: 30.
 message UIItem {
 	int32 id = 1;
 	string name = 2;
@@ -57,6 +62,8 @@ message UIItem {
 	repeated GemColor gem_sockets = 10;
 	repeated double socketBonus = 11;
 	repeated int32 random_suffix_options = 26;
+	int32 rand_prop_points = 27;
+
 
 	// Weapon stats, needed for computing proper EP for melee weapons
 	double weapon_damage_min = 12;
@@ -68,7 +75,6 @@ message UIItem {
 	ItemQuality quality = 17;
 	bool unique = 18;
 	bool heroic = 19;
-	int32 rand_prop_points = 27;
 
 	// Classes that are allowed to use the item. Empty indicates no special class restrictions.
 	repeated Class class_allowlist = 20;
@@ -89,6 +95,7 @@ message UIItem {
 	}
 
 	FactionRestriction faction_restriction = 25;
+	map<int32, ScalingItemProperties> scaling_options = 29; // keys are the other ilvl variants that this item could potentially have
 }
 
 enum Expansion {
@@ -383,7 +390,7 @@ message SavedSettings {
 	PartyBuffs party_buffs = 2;
 	Debuffs debuffs = 7;
 	IndividualBuffs player_buffs = 3;
-	Consumes consumes = 4;
+	ConsumesSpec consumables = 4;
 	Race race = 5;
 	repeated Profession professions = 9;
 	bool enable_item_swap = 18;

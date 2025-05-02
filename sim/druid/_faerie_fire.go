@@ -54,7 +54,7 @@ func (druid *Druid) registerFaerieFireSpell() {
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  flatThreatBonus,
 		DamageMultiplier: 1,
-		CritMultiplier:   druid.DefaultSpellCritMultiplier(),
+		CritMultiplier:   druid.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 0.0

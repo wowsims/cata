@@ -1,0 +1,45 @@
+syntax = "proto3";
+package proto;
+
+option go_package = "./proto";
+
+import "common.proto";
+
+message SpellEffect {
+    int32 id = 1;
+    int32 spell_id = 2;
+    int32 index = 3;
+    EffectType type = 4;
+    double min_effect_size = 5;
+	double effect_spread = 6;
+	oneof misc_value0 {
+		ResourceType resource_type = 7;
+		SpellSchool school = 8;
+		Stat stat = 9;
+	}
+}
+
+enum EffectType {
+	EffectTypeUnknown = 0;
+	EffectTypeHeal = 10;
+	EffectTypeResourceGain = 30;
+}
+
+enum ResourceType {
+	ResourceTypeNone = 0;
+	ResourceTypeMana = 1;
+	ResourceTypeEnergy = 2;
+	ResourceTypeRage = 3;
+	ResourceTypeComboPoints = 4;
+	ResourceTypeFocus = 5;
+	ResourceTypeHealth = 6;
+	ResourceTypeRunicPower = 7;
+	ResourceTypeBloodRune = 8;
+	ResourceTypeFrostRune = 9;
+	ResourceTypeUnholyRune = 10;
+	ResourceTypeDeathRune = 11;
+	ResourceTypeSolarEnergy = 12;
+	ResourceTypeLunarEnergy = 13;
+	ResourceTypeHolyPower = 14;
+	ResourceTypeChi = 15;
+}

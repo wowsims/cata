@@ -73,7 +73,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		epWeights: Presets.P3_EP_PRESET.epWeights,
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
+		consumables: Presets.DefaultConsumables,
 		// Default talents.
 		talents: Presets.StandardTalents.data,
 		// Default spec-specific settings.
@@ -173,7 +173,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 			spec: Spec.SpecProtectionWarrior,
 			talents: Presets.StandardTalents.data,
 			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
+			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceNightElf,

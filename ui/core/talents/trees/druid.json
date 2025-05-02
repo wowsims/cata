@@ -1,881 +1,168 @@
-[
-	{
-	  "name": "Balance",
-	  "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/752.jpg",
-	  "talents": [
+
+{
+	"backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/TODO.jpg",
+	"talents": [
 		{
-		  "fieldName": "naturesGrace",
-		  "fancyName": "Natures Grace",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			16880,
-			61345,
-			61346
-		  ],
-		  "maxPoints": 3
+			"fieldName": "felineSwiftness",
+			"fancyName": "Feline Swiftness",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 0
+			},
+			"spellId": 131768
 		},
 		{
-		  "fieldName": "starlightWrath",
-		  "fancyName": "Starlight Wrath",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			16814,
-			16815,
-			16816
-		  ],
-		  "maxPoints": 3
+			"fieldName": "displacerBeast",
+			"fancyName": "Displacer Beast",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 1
+			},
+			"spellId": 102280
 		},
 		{
-		  "fieldName": "naturesMajesty",
-		  "fancyName": "Natures Majesty",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			35363,
-			35364
-		  ],
-		  "maxPoints": 2
+			"fieldName": "wildCharge",
+			"fancyName": "Wild Charge",
+			"location": {
+				"rowIdx": 0,
+				"colIdx": 2
+			},
+			"spellId": 102401
 		},
 		{
-		  "fieldName": "genesis",
-		  "fancyName": "Genesis",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			57810,
-			57811,
-			57812
-		  ],
-		  "maxPoints": 3
+			"fieldName": "yserasGift",
+			"fancyName": "Ysera's Gift",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 0
+			},
+			"spellId": 145108
 		},
 		{
-		  "fieldName": "moonglow",
-		  "fancyName": "Moonglow",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			16845,
-			16846,
-			16847
-		  ],
-		  "maxPoints": 3
+			"fieldName": "renewal",
+			"fancyName": "Renewal",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 1
+			},
+			"spellId": 108238
 		},
 		{
-		  "fieldName": "balanceOfPower",
-		  "fancyName": "Balance Of Power",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			33592,
-			33596
-		  ],
-		  "maxPoints": 2
+			"fieldName": "cenarionWard",
+			"fancyName": "Cenarion Ward",
+			"location": {
+				"rowIdx": 1,
+				"colIdx": 2
+			},
+			"spellId": 102351
 		},
 		{
-		  "fieldName": "euphoria",
-		  "fancyName": "Euphoria",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			81061,
-			81062
-		  ],
-		  "maxPoints": 2
+			"fieldName": "faerieSwarm",
+			"fancyName": "Faerie Swarm",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 0
+			},
+			"spellId": 106707
 		},
 		{
-		  "fieldName": "moonkinForm",
-		  "fancyName": "Moonkin Form",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			24858
-		  ],
-		  "maxPoints": 1
+			"fieldName": "massEntanglement",
+			"fancyName": "Mass Entanglement",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 1
+			},
+			"spellId": 102359
 		},
 		{
-		  "fieldName": "typhoon",
-		  "fancyName": "Typhoon",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			50516
-		  ],
-		  "maxPoints": 1
+			"fieldName": "typhoon",
+			"fancyName": "Typhoon",
+			"location": {
+				"rowIdx": 2,
+				"colIdx": 2
+			},
+			"spellId": 132469
 		},
 		{
-		  "fieldName": "shootingStars",
-		  "fancyName": "Shooting Stars",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			93398,
-			93399
-		  ],
-		  "maxPoints": 2
+			"fieldName": "soulOfTheForest",
+			"fancyName": "Soul of the Forest",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 0
+			},
+			"spellId": 114107
 		},
 		{
-		  "fieldName": "owlkinFrenzy",
-		  "fancyName": "Owlkin Frenzy",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			48389,
-			48392,
-			48393
-		  ],
-		  "maxPoints": 3,
-		  "prereqLocation": {
-			"rowIdx": 2,
-			"colIdx": 1
-		  }
+			"fieldName": "incarnation",
+			"fancyName": "Incarnation",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 1
+			},
+			"spellId": 106731
 		},
 		{
-		  "fieldName": "galeWinds",
-		  "fancyName": "Gale Winds",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			48488,
-			48514
-		  ],
-		  "maxPoints": 2,
-		  "prereqLocation": {
-			"rowIdx": 2,
-			"colIdx": 2
-		  }
+			"fieldName": "forceOfNature",
+			"fancyName": "Force of Nature",
+			"location": {
+				"rowIdx": 3,
+				"colIdx": 2
+			},
+			"spellId": 106737
 		},
 		{
-		  "fieldName": "solarBeam",
-		  "fancyName": "Solar Beam",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			78675
-		  ],
-		  "maxPoints": 1
+			"fieldName": "disorientingRoar",
+			"fancyName": "Disorienting Roar",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 0
+			},
+			"spellId": 99
 		},
 		{
-		  "fieldName": "dreamstate",
-		  "fancyName": "Dreamstate",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			33597,
-			33599
-		  ],
-		  "maxPoints": 2,
-		  "prereqLocation": {
-			"rowIdx": 2,
-			"colIdx": 0
-		  }
+			"fieldName": "ursolsVortex",
+			"fancyName": "Ursol's Vortex",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 1
+			},
+			"spellId": 102793
 		},
 		{
-		  "fieldName": "forceOfNature",
-		  "fancyName": "Force Of Nature",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			33831
-		  ],
-		  "maxPoints": 1
+			"fieldName": "mightyBash",
+			"fancyName": "Mighty Bash",
+			"location": {
+				"rowIdx": 4,
+				"colIdx": 2
+			},
+			"spellId": 5211
 		},
 		{
-		  "fieldName": "sunfire",
-		  "fancyName": "Sunfire",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			93401
-		  ],
-		  "maxPoints": 1
+			"fieldName": "heartOfTheWild",
+			"fancyName": "Heart of the Wild",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 0
+			},
+			"spellId": 108288
 		},
 		{
-		  "fieldName": "earthAndMoon",
-		  "fancyName": "Earth And Moon",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			48506
-		  ],
-		  "maxPoints": 1
+			"fieldName": "dreamOfCenarius",
+			"fancyName": "Dream of Cenarius",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 1
+			},
+			"spellId": 108373
 		},
 		{
-		  "fieldName": "fungalGrowth",
-		  "fancyName": "Fungal Growth",
-		  "location": {
-			"rowIdx": 5,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			78788,
-			78789
-		  ],
-		  "maxPoints": 2,
-		  "prereqLocation": {
-			"rowIdx": 4,
-			"colIdx": 1
-		  }
-		},
-		{
-		  "fieldName": "lunarShower",
-		  "fancyName": "Lunar Shower",
-		  "location": {
-			"rowIdx": 5,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			33603,
-			33605,
-			33604
-		  ],
-		  "maxPoints": 3,
-		  "prereqLocation": {
-			"rowIdx": 4,
-			"colIdx": 2
-		  }
-		},
-		{
-		  "fieldName": "starfall",
-		  "fancyName": "Starfall",
-		  "location": {
-			"rowIdx": 6,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			48505
-		  ],
-		  "maxPoints": 1
+			"fieldName": "naturesVigil",
+			"fancyName": "Nature's Vigil",
+			"location": {
+				"rowIdx": 5,
+				"colIdx": 2
+			},
+			"spellId": 124974
 		}
-	  ]
-	},
-	{
-	  "name": "Feral Combat",
-	  "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/750.jpg",
-	  "talents": [
-		{
-		  "fieldName": "feralSwiftness",
-		  "fancyName": "Feral Swiftness",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			17002,
-			24866
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "furor",
-		  "fancyName": "Furor",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			17056,
-			17058,
-			17059
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "predatoryStrikes",
-		  "fancyName": "Predatory Strikes",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			16972,
-			16974
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "infectedWounds",
-		  "fancyName": "Infected Wounds",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			48483,
-			48484
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "furySwipes",
-		  "fancyName": "Fury Swipes",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			48532,
-			80552,
-			80553
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "primalFury",
-		  "fancyName": "Primal Fury",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			37116,
-			37117
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "feralAggression",
-		  "fancyName": "Feral Aggression",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			16858,
-			16859
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "kingOfTheJungle",
-		  "fancyName": "King Of The Jungle",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			48492,
-			48494,
-			48495
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "feralCharge",
-		  "fancyName": "Feral Charge",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			49377
-		  ],
-		  "maxPoints": 1
-		},
-		{
-		  "fieldName": "stampede",
-		  "fancyName": "Stampede",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			78892,
-			78893
-		  ],
-		  "maxPoints": 2,
-		  "prereqLocation": {
-			"rowIdx": 2,
-			"colIdx": 1
-		  }
-		},
-		{
-		  "fieldName": "thickHide",
-		  "fancyName": "Thick Hide",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			16929,
-			16930,
-			16931
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "leaderOfThePack",
-		  "fancyName": "Leader Of The Pack",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			17007
-		  ],
-		  "maxPoints": 1
-		},
-		{
-		  "fieldName": "brutalImpact",
-		  "fancyName": "Brutal Impact",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			16940,
-			16941
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "nurturingInstinct",
-		  "fancyName": "Nurturing Instinct",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			33872,
-			33873
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "primalMadness",
-		  "fancyName": "Primal Madness",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			80316,
-			80317
-		  ],
-		  "maxPoints": 2,
-		  "prereqLocation": {
-			"rowIdx": 2,
-			"colIdx": 0
-		  }
-		},
-		{
-		  "fieldName": "survivalInstincts",
-		  "fancyName": "Survival Instincts",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			61336
-		  ],
-		  "maxPoints": 1
-		},
-		{
-		  "fieldName": "endlessCarnage",
-		  "fancyName": "Endless Carnage",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			80314,
-			80315
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "naturalReaction",
-		  "fancyName": "Natural Reaction",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			57878,
-			57880
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "bloodInTheWater",
-		  "fancyName": "Blood In The Water",
-		  "location": {
-			"rowIdx": 5,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			80318,
-			80319
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "rendAndTear",
-		  "fancyName": "Rend And Tear",
-		  "location": {
-			"rowIdx": 5,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			48432,
-			48433,
-			48434
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "pulverize",
-		  "fancyName": "Pulverize",
-		  "location": {
-			"rowIdx": 5,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			80313
-		  ],
-		  "maxPoints": 1,
-		  "prereqLocation": {
-			"rowIdx": 5,
-			"colIdx": 1
-		  }
-		},
-		{
-		  "fieldName": "berserk",
-		  "fancyName": "Berserk",
-		  "location": {
-			"rowIdx": 6,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			50334
-		  ],
-		  "maxPoints": 1
-		}
-	  ]
-	},
-	{
-	  "name": "Restoration",
-	  "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/748.jpg",
-	  "talents": [
-		{
-		  "fieldName": "blessingOfTheGrove",
-		  "fancyName": "Blessing Of The Grove",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			78784,
-			78785
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "naturalShapeshifter",
-		  "fancyName": "Natural Shapeshifter",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			16833,
-			16834
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "naturalist",
-		  "fancyName": "Naturalist",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			17069,
-			17070
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "heartOfTheWild",
-		  "fancyName": "Heart Of The Wild",
-		  "location": {
-			"rowIdx": 0,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			17003,
-			17004,
-			17005
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "perseverance",
-		  "fancyName": "Perseverance",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			78734,
-			78736,
-			78735,
-			78737,
-			78738
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "masterShapeshifter",
-		  "fancyName": "Master Shapeshifter",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			48411
-		  ],
-		  "maxPoints": 1,
-		  "prereqLocation": {
-			"rowIdx": 0,
-			"colIdx": 1
-		  }
-		},
-		{
-		  "fieldName": "improvedRejuvenation",
-		  "fancyName": "Improved Rejuvenation",
-		  "location": {
-			"rowIdx": 1,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			17111,
-			17112,
-			17113
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "livingSeed",
-		  "fancyName": "Living Seed",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			48496,
-			48499,
-			48500
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "revitalize",
-		  "fancyName": "Revitalize",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			48539,
-			48544
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "naturesSwiftness",
-		  "fancyName": "Natures Swiftness",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			17116
-		  ],
-		  "maxPoints": 1
-		},
-		{
-		  "fieldName": "furyOfStormrage",
-		  "fancyName": "Fury Of Stormrage",
-		  "location": {
-			"rowIdx": 2,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			17104,
-			24943
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "naturesBounty",
-		  "fancyName": "Natures Bounty",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			17074,
-			17075,
-			17076
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "empoweredTouch",
-		  "fancyName": "Empowered Touch",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			33879,
-			33880
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "malfurionsGift",
-		  "fancyName": "Malfurions Gift",
-		  "location": {
-			"rowIdx": 3,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			92363,
-			92364
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "efflorescence",
-		  "fancyName": "Efflorescence",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			34151,
-			81274,
-			81275
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "wildGrowth",
-		  "fancyName": "Wild Growth",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			48438
-		  ],
-		  "maxPoints": 1
-		},
-		{
-		  "fieldName": "naturesCure",
-		  "fancyName": "Natures Cure",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			88423
-		  ],
-		  "maxPoints": 1
-		},
-		{
-		  "fieldName": "naturesWard",
-		  "fancyName": "Natures Ward",
-		  "location": {
-			"rowIdx": 4,
-			"colIdx": 3
-		  },
-		  "spellIds": [
-			33881,
-			33882
-		  ],
-		  "maxPoints": 2
-		},
-		{
-		  "fieldName": "giftOfTheEarthmother",
-		  "fancyName": "Gift Of The Earthmother",
-		  "location": {
-			"rowIdx": 5,
-			"colIdx": 0
-		  },
-		  "spellIds": [
-			51179,
-			51180,
-			51181
-		  ],
-		  "maxPoints": 3
-		},
-		{
-		  "fieldName": "swiftRejuvenation",
-		  "fancyName": "Swift Rejuvenation",
-		  "location": {
-			"rowIdx": 5,
-			"colIdx": 2
-		  },
-		  "spellIds": [
-			33886
-		  ],
-		  "maxPoints": 1
-		},
-		{
-		  "fieldName": "treeOfLife",
-		  "fancyName": "Tree Of Life",
-		  "location": {
-			"rowIdx": 6,
-			"colIdx": 1
-		  },
-		  "spellIds": [
-			33891
-		  ],
-		  "maxPoints": 1,
-		  "prereqLocation": {
-			"rowIdx": 4,
-			"colIdx": 1
-		  }
-		}
-	  ]
-	}
-  ]
+	]
+}

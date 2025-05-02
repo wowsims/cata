@@ -23,7 +23,7 @@ func (warlock *Warlock) registerSearingPain() {
 		},
 
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
+		CritMultiplier:           warlock.DefaultCritMultiplier(),
 		ThreatMultiplier:         1,
 		BonusCoefficient:         0.37799999118,
 

@@ -5,7 +5,7 @@ import { Encounter } from './encounter';
 import { Player } from './player';
 import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
 import {
-	Consumes,
+	ConsumesSpec,
 	Cooldowns,
 	Debuffs,
 	Encounter as EncounterProto,
@@ -38,8 +38,6 @@ export interface PresetGear extends PresetBase {
 	gear: EquipmentSpec;
 }
 export interface PresetGearOptions extends PresetOptionsBase, Pick<PresetBase, 'tooltip'> {
-	talentTree?: number;
-	talentTrees?: Array<number>;
 	faction?: Faction;
 }
 
@@ -57,7 +55,7 @@ export interface PresetRotation extends PresetBase {
 	rotation: SavedRotation;
 }
 export interface PresetRotationOptions extends Pick<PresetOptionsBase, 'onLoad'> {
-	talentTree?: number;
+	talents?: number[];
 }
 
 export interface PresetEpWeights extends PresetBase {
@@ -76,7 +74,7 @@ export interface PresetEncounter extends PresetBase {
 	raidBuffs?: RaidBuffs;
 	debuffs?: Debuffs;
 	buffs?: IndividualBuffs;
-	consumes?: Consumes;
+	consumes?: ConsumesSpec;
 }
 export interface PresetEncounterOptions extends PresetOptionsBase {}
 
@@ -101,12 +99,7 @@ export const makePresetGear = (name: string, gearJson: any, options?: PresetGear
 
 const makePresetGearHelper = (name: string, gear: EquipmentSpec, options: PresetGearOptions): PresetGear => {
 	const conditions: Array<(player: Player<any>) => boolean> = [];
-	if (options.talentTree !== undefined) {
-		conditions.push((player: Player<any>) => player.getTalentTree() == options.talentTree);
-	}
-	if (options.talentTrees !== undefined) {
-		conditions.push((player: Player<any>) => (options.talentTrees || []).includes(player.getTalentTree()));
-	}
+
 	if (options.faction !== undefined) {
 		conditions.push((player: Player<any>) => player.getFaction() == options.faction);
 	}
@@ -187,8 +180,8 @@ export const makePresetSimpleRotation = <SpecType extends Spec>(
 
 const makePresetRotationHelper = (name: string, rotation: SavedRotation, options?: PresetRotationOptions): PresetRotation => {
 	const conditions: Array<(player: Player<any>) => boolean> = [];
-	if (options?.talentTree != undefined) {
-		conditions.push((player: Player<any>) => player.getTalentTree() == options.talentTree);
+	if (options?.talents != undefined) {
+		conditions.push((player: Player<any>) => (options.talents || []).join('') === player.getTalentTreePoints().join(''));
 	}
 	return {
 		name,
@@ -215,7 +208,7 @@ export const makePresetEncounter = (name: string, encounter?: PresetEncounter['e
 		raidBuffs = settings?.raidBuffs;
 		debuffs = settings?.debuffs;
 		buffs = settings?.player?.buffs;
-		consumes = settings?.player?.consumes;
+		consumes = settings?.player?.consumables;
 	}
 
 	return {

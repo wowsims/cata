@@ -37,7 +37,7 @@ func (druid *Druid) registerWrathSpell() {
 
 		DamageMultiplier: 1,
 
-		CritMultiplier: druid.BalanceCritMultiplier(),
+		CritMultiplier: druid.DefaultCritMultiplier(),
 
 		ThreatMultiplier: 1,
 

@@ -173,7 +173,7 @@ func GetDRTSpellConfig(spell *core.Spell) core.SpellConfig {
 		ProcMask:                 core.ProcMaskSpellProc,
 		ApplyEffects:             spell.ApplyEffects,
 		ManaCost:                 core.ManaCostOptions{},
-		CritMultiplier:           spell.Unit.Env.Raid.GetPlayerFromUnit(spell.Unit).GetCharacter().DefaultSpellCritMultiplier(),
+		CritMultiplier:           spell.Unit.Env.Raid.GetPlayerFromUnit(spell.Unit).GetCharacter().DefaultCritMultiplier(),
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
 		MissileSpeed:             spell.MissileSpeed,

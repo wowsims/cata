@@ -51,7 +51,7 @@ func (shaman *Shaman) newStormstrikeHitSpell(isMH bool) *core.Spell {
 
 		ThreatMultiplier: 1,
 		DamageMultiplier: 2.25,
-		CritMultiplier:   shaman.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   shaman.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			var baseDamage float64

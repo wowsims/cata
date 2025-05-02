@@ -118,7 +118,7 @@ func (warlock *Warlock) registerBaneOfAgony() {
 		Cast:     core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}},
 
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
+		CritMultiplier:           warlock.DefaultCritMultiplier(),
 		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{
@@ -166,7 +166,7 @@ func (warlock *Warlock) registerBaneOfDoom() {
 		Cast:     core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}},
 
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
+		CritMultiplier:           warlock.DefaultCritMultiplier(),
 		ThreatMultiplier:         1,
 		FlatThreatBonus:          40,
 

@@ -49,7 +49,7 @@ func (warlock *Warlock) registerSoulFire() {
 		},
 
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
+		CritMultiplier:           warlock.DefaultCritMultiplier(),
 		ThreatMultiplier:         1,
 		BonusCoefficient:         0.72600001097,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

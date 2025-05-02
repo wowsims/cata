@@ -30,7 +30,7 @@ func TestAbort(t *testing.T) {
 			},
 		},
 		Glyphs:        &proto.Glyphs{},
-		TalentsString: "",
+		TalentsString: "000000",
 		Buffs:         &proto.IndividualBuffs{},
 	}
 

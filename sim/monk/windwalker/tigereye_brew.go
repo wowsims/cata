@@ -23,6 +23,13 @@ func (ww *WindwalkerMonk) registerTigereyeBrew() {
 		ww.outstandingChi = accumulatedChi
 	})
 
+	ww.TigereyeBrewStackAura = ww.RegisterAura(core.Aura{
+		Label:     "Tigereye Brew Stacks" + ww.Label,
+		ActionID:  stackActionID,
+		Duration:  time.Minute * 2,
+		MaxStacks: 20,
+	})
+
 	ww.Monk.RegisterOnNewBrewStacks(func(sim *core.Simulation, stacksToAdd int32) {
 		ww.TigereyeBrewStackAura.Activate(sim)
 
@@ -39,13 +46,6 @@ func (ww *WindwalkerMonk) registerTigereyeBrew() {
 		ww.TigereyeBrewStackAura.SetStacks(sim, ww.TigereyeBrewStackAura.GetStacks()+stacksToAdd)
 	})
 
-	ww.TigereyeBrewStackAura = ww.RegisterAura(core.Aura{
-		Label:     "Tigereye Brew Stacks" + ww.Label,
-		ActionID:  stackActionID,
-		Duration:  time.Minute * 2,
-		MaxStacks: 20,
-	})
-
 	var damageMultiplier float64
 	buffAura := ww.RegisterAura(core.Aura{
 		Label:    "Tigereye Brew Buff" + ww.Label,
@@ -54,6 +54,7 @@ func (ww *WindwalkerMonk) registerTigereyeBrew() {
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			stacksToConsume := min(10, ww.TigereyeBrewStackAura.GetStacks())
+
 			damageMultiplier = 1 + 0.06*float64(stacksToConsume)
 
 			ww.PseudoStats.DamageDealtMultiplier *= damageMultiplier

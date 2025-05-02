@@ -79,7 +79,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
+		consumables: Presets.DefaultConsumables,
 		// Default talents.
 		talents: Presets.AssassinationTalentsDefault.data,
 		// Default spec-specific settings.
@@ -167,7 +167,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_MUTILATE],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET_ASSASSINATION, Presets.P1_PRESET_ASSASSINATION, Presets.P1_PRESET_ASN_EXPERTISE, Presets.P3_PRESET_ASSASSINATION, Presets.P4_PRESET_ASSASSINATION],
+		gear: [
+			Presets.PRERAID_PRESET_ASSASSINATION,
+			Presets.P1_PRESET_ASSASSINATION,
+			Presets.P1_PRESET_ASN_EXPERTISE,
+			Presets.P3_PRESET_ASSASSINATION,
+			Presets.P4_PRESET_ASSASSINATION,
+		],
 	},
 
 	autoRotation: (player: Player<Spec.SpecAssassinationRogue>): APLRotation => {
@@ -184,7 +190,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 			spec: Spec.SpecAssassinationRogue,
 			talents: Presets.AssassinationTalentsDefault.data,
 			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
+			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceHuman,
@@ -219,7 +225,7 @@ export class AssassinationRogueSimUI extends IndividualSimUI<Spec.SpecAssassinat
 					} else {
 						return Presets.P1_EP_PRESET.epWeights;
 					}
-				}
+				},
 			});
 		});
 

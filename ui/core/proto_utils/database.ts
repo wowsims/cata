@@ -1,5 +1,7 @@
+import { Stats } from '../../core/proto_utils/stats';
 import { CHARACTER_LEVEL } from '../constants/mechanics.js';
 import {
+	ConsumableType,
 	EquipmentSpec,
 	GemColor,
 	ItemRandomSuffix,
@@ -9,8 +11,10 @@ import {
 	PresetEncounter,
 	PresetTarget,
 	ReforgeStat,
-	SimDatabase,
+	Stat,
 } from '../proto/common.js';
+import { Consumable, SimDatabase } from '../proto/db';
+import { SpellEffect } from '../proto/spell';
 import { GlyphID, IconData, UIDatabase, UIEnchant as Enchant, UIGem as Gem, UIItem as Item, UINPC as Npc, UIZone as Zone } from '../proto/ui.js';
 import { distinct } from '../utils.js';
 import { WOWHEAD_EXPANSION_ENV } from '../wowhead';
@@ -28,22 +32,37 @@ const READ_JSON = true;
 
 export class Database {
 	private static loadPromise: Promise<Database> | null = null;
-	static get(): Promise<Database> {
-		if (Database.loadPromise == null) {
-			if (READ_JSON) {
-				Database.loadPromise = fetch(dbUrlJson)
-					.then(response => response.json())
-					.then(json => new Database(UIDatabase.fromJson(json)));
-			} else {
-				Database.loadPromise = fetch(dbUrlBin)
-					.then(response => response.arrayBuffer())
-					.then(buffer => new Database(UIDatabase.fromBinary(new Uint8Array(buffer))));
-			}
+	private static instance: Database | null = null;
+
+	static async get(options: { signal?: AbortSignal } = {}): Promise<Database> {
+		if (!Database.loadPromise) {
+			Database.loadPromise = (async () => {
+				let dbData: UIDatabase;
+				if (READ_JSON) {
+					const resp = await fetch(dbUrlJson, { signal: options?.signal });
+					const json = await resp.json();
+					dbData = UIDatabase.fromJson(json);
+				} else {
+					const buf = await fetch(dbUrlBin, { signal: options?.signal }).then(r => r.arrayBuffer());
+					const bytes = new Uint8Array(buf);
+					dbData = UIDatabase.fromBinary(bytes);
+				}
+				const db = new Database(dbData);
+				Database.instance = db;
+				return db;
+			})();
 		}
 		return Database.loadPromise;
 	}
 
-	static getLeftovers(): Promise<UIDatabase> {
+	static getSync(): Database {
+		if (!Database.instance) {
+			throw new Error('Database not yet loaded; call `await Database.get()` before using getSync()');
+		}
+		return Database.instance;
+	}
+
+	static async getLeftovers(): Promise<UIDatabase> {
 		if (READ_JSON) {
 			return fetch(leftoversUrlJson)
 				.then(response => response.json())
@@ -83,6 +102,9 @@ export class Database {
 	private readonly itemIcons: Record<number, Promise<IconData>> = {};
 	private readonly spellIcons: Record<number, Promise<IconData>> = {};
 	private readonly glyphIds: Array<GlyphID> = [];
+	private readonly consumables = new Map<number, Consumable>();
+	private readonly spellEffects = new Map<number, SpellEffect>();
+
 	private loadedLeftovers = false;
 
 	private constructor(db: UIDatabase) {
@@ -91,7 +113,19 @@ export class Database {
 
 	// Add all data from the db proto into this database.
 	private loadProto(db: UIDatabase) {
-		db.items.forEach(item => this.items.set(item.id, item));
+		db.items.forEach(item => {
+			const itemCopy = { ...item };
+			// Pre populate the item with stats from the highest base state the item can have.
+			// We use this in EP calculations
+			const maxScaling = item.scalingOptions[Math.max(...Object.keys(item.scalingOptions).map(Number))];
+			itemCopy.weaponDamageMax = maxScaling.weaponDamageMax;
+			itemCopy.weaponDamageMin = maxScaling.weaponDamageMin;
+			itemCopy.randPropPoints = maxScaling.randPropPoints;
+			itemCopy.ilvl = maxScaling.ilvl;
+			itemCopy.stats = Stats.fromMap(maxScaling.stats).asProtoArray();
+
+			this.items.set(itemCopy.id, itemCopy);
+		});
 		db.randomSuffixes.forEach(randomSuffix => this.randomSuffixes.set(randomSuffix.id, randomSuffix));
 		db.reforgeStats.forEach(reforgeStat => this.reforgeStats.set(reforgeStat.id, reforgeStat));
 		db.enchants.forEach(enchant => {
@@ -136,6 +170,7 @@ export class Database {
 		db.itemIcons.forEach(data => (this.itemIcons[data.id] = Promise.resolve(data)));
 		db.spellIcons.forEach(data => (this.spellIcons[data.id] = Promise.resolve(data)));
 		db.glyphIds.forEach(id => this.glyphIds.push(id));
+		db.consumables.forEach(consumable => this.consumables.set(consumable.id, consumable));
 	}
 
 	getAllItems(): Array<Item> {
@@ -157,7 +192,21 @@ export class Database {
 	getItemIdsForSet(setId: number): Array<number> {
 		return this.getAllItemIds().filter(itemId => this.getItemById(itemId)!.setId === setId);
 	}
-
+	getSpellEffect(effectId: number): SpellEffect | undefined {
+		return this.spellEffects.get(effectId);
+	}
+	getConsumables(): Array<Consumable> {
+		return Array.from(this.consumables.values());
+	}
+	getConsumable(itemId: number): Consumable | undefined {
+		return this.consumables.get(itemId);
+	}
+	getConsumablesByType(type: ConsumableType): Array<Consumable> {
+		return this.getConsumables().filter(consume => consume.type == type);
+	}
+	getConsumablesByTypeAndStats(type: ConsumableType, stats: Array<Stat>): Array<Consumable> {
+		return this.getConsumablesByType(type).filter(consume => consume.buffsMainStat || stats.some(index => consume.stats[index] > 0));
+	}
 	getRandomSuffixById(id: number): ItemRandomSuffix | undefined {
 		return this.randomSuffixes.get(id);
 	}
@@ -295,32 +344,36 @@ export class Database {
 		return Array.from(this.presetTargets.values());
 	}
 
-	static async getItemIconData(itemId: number): Promise<IconData> {
-		const db = await Database.get();
-		if (!db.itemIcons[itemId]) {
-			db.itemIcons[itemId] = Database.getWowheadItemTooltipData(itemId);
+	static async getItemIconData(itemId: number, options: { signal?: AbortSignal } = {}): Promise<IconData> {
+		const db = await Database.get({ signal: options?.signal });
+		const data = await db.spellIcons[itemId];
+
+		if (!data?.icon) {
+			db.itemIcons[itemId] = Database.getWowheadItemTooltipData(itemId, { signal: options?.signal });
 		}
 		return await db.itemIcons[itemId];
 	}
 
-	static async getSpellIconData(spellId: number): Promise<IconData> {
-		const db = await Database.get();
-		if (!db.spellIcons[spellId]) {
-			db.spellIcons[spellId] = Database.getWowheadSpellTooltipData(spellId);
+	static async getSpellIconData(spellId: number, options: { signal?: AbortSignal } = {}): Promise<IconData> {
+		const db = await Database.get({ signal: options?.signal });
+		const data = await db.spellIcons[spellId];
+
+		if (!data?.icon) {
+			db.spellIcons[spellId] = Database.getWowheadSpellTooltipData(spellId, { signal: options?.signal });
 		}
-		return await db.spellIcons[spellId];
+		return db.spellIcons[spellId];
 	}
 
-	private static async getWowheadItemTooltipData(id: number): Promise<IconData> {
-		return Database.getWowheadTooltipData(id, 'item');
+	private static async getWowheadItemTooltipData(id: number, options: { signal?: AbortSignal } = {}): Promise<IconData> {
+		return Database.getWowheadTooltipData(id, 'item', { signal: options?.signal });
 	}
-	private static async getWowheadSpellTooltipData(id: number): Promise<IconData> {
-		return Database.getWowheadTooltipData(id, 'spell');
+	private static async getWowheadSpellTooltipData(id: number, options: { signal?: AbortSignal } = {}): Promise<IconData> {
+		return Database.getWowheadTooltipData(id, 'spell', { signal: options?.signal });
 	}
-	private static async getWowheadTooltipData(id: number, tooltipPostfix: string): Promise<IconData> {
+	private static async getWowheadTooltipData(id: number, tooltipPostfix: string, options: { signal?: AbortSignal } = {}): Promise<IconData> {
 		const url = `https://nether.wowhead.com/mop-classic/tooltip/${tooltipPostfix}/${id}?lvl=${CHARACTER_LEVEL}&dataEnv=${WOWHEAD_EXPANSION_ENV}`;
 		try {
-			const response = await fetch(url);
+			const response = await fetch(url, { signal: options?.signal });
 			const json = await response.json();
 			return IconData.create({
 				id: id,
@@ -329,6 +382,9 @@ export class Database {
 				hasBuff: json['buff'] !== '',
 			});
 		} catch (e) {
+			if (e instanceof DOMException && e.name === 'AbortError') {
+				return IconData.create();
+			}
 			console.error('Error while fetching url: ' + url + '\n\n' + e);
 			return IconData.create();
 		}
@@ -341,6 +397,8 @@ export class Database {
 			reforgeStats: distinct(db1.reforgeStats.concat(db2.reforgeStats), (a, b) => a.id == b.id),
 			enchants: distinct(db1.enchants.concat(db2.enchants), (a, b) => a.effectId == b.effectId),
 			gems: distinct(db1.gems.concat(db2.gems), (a, b) => a.id == b.id),
+			spellEffects: distinct(db1.spellEffects.concat(db2.spellEffects), (a, b) => a.id == b.id),
+			consumables: distinct(db1.consumables.concat(db2.consumables), (a, b) => a.id == b.id),
 		});
 	}
 }

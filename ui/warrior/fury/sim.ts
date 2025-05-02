@@ -71,7 +71,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
+		consumables: Presets.DefaultConsumables,
 		// Default talents.
 		talents: Presets.FuryTGTalents.data,
 		// Default spec-specific settings.
@@ -165,8 +165,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 			Presets.P4_BIS_FURY_TG_PRESET,
 			Presets.P4_BIS_FURY_SMF_PRESET,
 		],
-		itemSwaps: [Presets.P3_ITEM_SWAP_SMF, Presets.P3_ITEM_SWAP_TG, Presets.P4_ITEM_SWAP_TG,Presets.P4_ITEM_SWAP_SMF],
-		builds: [Presets.P1_PRESET_BUILD_SMF, Presets.P1_PRESET_BUILD_TG, Presets.P3_PRESET_BUILD_SMF, Presets.P3_PRESET_BUILD_TG, Presets.P4_PRESET_BUILD_TG, Presets.P4_PRESET_BUILD_SMF],
+		itemSwaps: [Presets.P3_ITEM_SWAP_SMF, Presets.P3_ITEM_SWAP_TG, Presets.P4_ITEM_SWAP_TG, Presets.P4_ITEM_SWAP_SMF],
+		builds: [
+			Presets.P1_PRESET_BUILD_SMF,
+			Presets.P1_PRESET_BUILD_TG,
+			Presets.P3_PRESET_BUILD_SMF,
+			Presets.P3_PRESET_BUILD_TG,
+			Presets.P4_PRESET_BUILD_TG,
+			Presets.P4_PRESET_BUILD_SMF,
+		],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecFuryWarrior>): APLRotation => {
@@ -178,7 +185,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 			spec: Spec.SpecFuryWarrior,
 			talents: Presets.FurySMFTalents.data,
 			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
+			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceWorgen,
@@ -216,9 +223,9 @@ export class FuryWarriorSimUI extends IndividualSimUI<Spec.SpecFuryWarrior> {
 						.getEquippedItems()
 						.some(item => (item?.item.phase || 0) >= 3);
 
-					if (player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeOneHand || !player.getTalents().titansGrip) {
-						return hasP3Setup ? Presets.P3_FURY_SMF_EP_PRESET.epWeights : Presets.P1_FURY_SMF_EP_PRESET.epWeights;
-					}
+					// if (player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeOneHand || !player.getTalents().titansGrip) {
+					// 	return hasP3Setup ? Presets.P3_FURY_SMF_EP_PRESET.epWeights : Presets.P1_FURY_SMF_EP_PRESET.epWeights;
+					// }
 					return hasP3Setup ? Presets.P3_FURY_TG_EP_PRESET.epWeights : Presets.P1_FURY_TG_EP_PRESET.epWeights;
 				},
 			});

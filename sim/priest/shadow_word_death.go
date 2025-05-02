@@ -21,7 +21,7 @@ func (priest *Priest) registerShadowWordDeathSpell() {
 
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
+		CritMultiplier:           priest.DefaultCritMultiplier(),
 		ThreatMultiplier:         1,
 		BonusCoefficient:         0.316,
 

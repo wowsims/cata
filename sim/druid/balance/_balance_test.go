@@ -23,7 +23,7 @@ func TestBalance(t *testing.T) {
 		},
 		Talents:     StandardTalents,
 		Glyphs:      StandardGlyphs,
-		Consumes:    FullConsumes,
+		Consumables: FullConsumesSpec,
 		SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsBalance},
 		Rotation:    core.GetAplRotation("../../../ui/druid/balance/apls", "t13"),
 		OtherRotations: []core.RotationCombo{
@@ -51,13 +51,12 @@ var PlayerOptionsBalance = &proto.Player_BalanceDruid{
 	},
 }
 
-var FullConsumes = &proto.Consumes{
-	Flask:         proto.Flask_FlaskOfTheDraconicMind,
-	Food:          proto.Food_FoodSeveredSagefish,
-	DefaultPotion: proto.Potions_VolcanicPotion,
-	PrepopPotion:  proto.Potions_VolcanicPotion,
+var FullConsumesSpec = &proto.ConsumesSpec{
+	FlaskId:  58086, // Flask of the Draconic Mind
+	FoodId:   62671, // Severed Sagefish Head
+	PotId:    58091, // Volcanic Potion
+	PrepotId: 58091, // Volcanic Potion
 }
-
 var ItemFilter = core.ItemFilter{
 	WeaponTypes: []proto.WeaponType{
 		proto.WeaponType_WeaponTypeDagger,
