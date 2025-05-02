@@ -1,10 +1,8 @@
 import * as Tooltips from '../../constants/tooltips.js';
 import { Encounter } from '../../encounter';
 import { IndividualSimUI, InputSection } from '../../individual_sim_ui';
-import { Consumes, ConsumesSpec, Debuffs, HealingModel, IndividualBuffs, ItemSwap, PartyBuffs, Profession, RaidBuffs } from '../../proto/common';
+import { ConsumesSpec, Debuffs, HealingModel, IndividualBuffs, ItemSwap, PartyBuffs, Profession, RaidBuffs } from '../../proto/common';
 import { SavedEncounter, SavedSettings } from '../../proto/ui';
-import { convertConsumesToSpec } from '../../proto_utils/consumes';
-import { Database } from '../../proto_utils/database';
 import { professionNames, raceNames } from '../../proto_utils/names';
 import { Stats } from '../../proto_utils/stats';
 import { EventID, TypedEvent } from '../../typed_event';
