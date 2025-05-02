@@ -37,9 +37,7 @@ import { PresetBuild, PresetEpWeights, PresetGear, PresetItemSwap, PresetRotatio
 import { StatWeightsResult } from './proto/api';
 import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
 import {
-    Class,
-	Consumes,
-	ConsumesSpec,
+    ConsumesSpec,
 	Cooldowns,
 	Debuffs,
 	Encounter as EncounterProto,
