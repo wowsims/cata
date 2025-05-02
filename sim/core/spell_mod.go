@@ -26,7 +26,7 @@ type SpellModConfig struct {
 	KeyValue     string
 	ApplyCustom  SpellModApply
 	RemoveCustom SpellModRemove
-	OnReset      SpellModOnReset
+	ResetCustom  SpellModOnReset
 }
 
 type SpellMod struct {
@@ -73,12 +73,8 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 
 		applyFn = config.ApplyCustom
 		removeFn = config.RemoveCustom
+		resetFn = config.ResetCustom
 
-		if config.OnReset != nil {
-			resetFn = config.OnReset
-		} else {
-			resetFn = functions.OnReset
-		}
 	} else {
 		applyFn = functions.Apply
 		removeFn = functions.Remove
