@@ -32,7 +32,7 @@ func (svHunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 				Duration: time.Second * 24,
 			},
 		},
-		DamageMultiplier: 1,
+		DamageMultiplier: 1.3,
 		ThreatMultiplier: 1,
 		CritMultiplier:   svHunter.DefaultCritMultiplier(),
 

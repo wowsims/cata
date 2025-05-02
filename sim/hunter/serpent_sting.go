@@ -8,22 +8,36 @@ import (
 )
 
 func (hunter *Hunter) registerSerpentStingSpell() {
-	ImprovedSerpentStingMultiplier := 1.5
 	IsSurvival := hunter.Spec == proto.Spec_SpecSurvivalHunter
-
+	focusMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 1978})
 	hunter.ImprovedSerpentSting = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:                 core.ActionID{SpellID: 82834},
 		SpellSchool:              core.SpellSchoolNature,
 		ProcMask:                 core.ProcMaskDirect,
 		ClassSpellMask:           HunterSpellSerpentSting,
 		Flags:                    core.SpellFlagPassiveSpell,
-		DamageMultiplier:         1,
+		DamageMultiplier:         core.TernaryFloat64(IsSurvival, 1.5, 1),
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           hunter.CritMultiplier(1, 0),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := (hunter.GetBaseDamageFromCoeff(2.599999905) + 0.1599999964*spell.RangedAttackPower(target)) * 5
-			dmg := baseDamage * core.TernaryFloat64(IsSurvival, ImprovedSerpentStingMultiplier, 1)
+			dmg := baseDamage
 			spell.CalcAndDealDamage(sim, target, dmg*0.15, spell.OutcomeMeleeSpecialCritOnly)
+		},
+	})
+
+	gainFocus := hunter.RegisterSpell(core.SpellConfig{
+		ActionID: core.ActionID{OtherID: 1978},
+		ProcMask: core.ProcMaskEmpty,
+		Flags:    core.SpellFlagNone,
+		Cast: core.CastConfig{
+			CD: core.Cooldown{
+				Timer:    hunter.NewTimer(),
+				Duration: time.Second * 3,
+			},
+		},
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			hunter.AddFocus(sim, 3, focusMetrics)
 		},
 	})
 
@@ -66,6 +80,9 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 				dot.Snapshot(target, baseDmg)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				if hunter.Spec == proto.Spec_SpecSurvivalHunter {
+					gainFocus.Cast(sim, target)
+				}
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickPhysicalCrit)
 			},
 		},
