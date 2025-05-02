@@ -6,6 +6,18 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
+// $stnc=$?a103985[${1.0}][${1.0}]
+// $dwm1=$?a108561[${1}][${0.898882275}]
+// $dwm=$?a115697[${1}][${$<dwm1>}]
+// $bm=$?s120267[${0.4}][${1}]
+// $offm1=$?a108561[${0}][${1}]
+// $offm=$?a115697[${0}][${$<offm1>}]
+// $apc=$?s120267[${$AP/11}][${$AP/14}]
+// $offlow=$?!s124146[${$mwb/2/$mws}][${$owb/2/$ows}]
+// $offhigh=$?!s124146[${$MWB/2/$mws}][${$OWB/2/$ows}]
+// $low=${$<stnc>*($<bm>*$<dwm>*(($mwb)/($MWS)+$<offm>*$<offlow>)+$<apc>-1)}
+// $high=${$<stnc>*($<bm>*$<dwm>*(($MWB)/($MWS)+$<offm>*$<offhigh>)+$<apc>+1)}
+
 func (monk *Monk) registerExpelHarm() {
 	actionID := core.ActionID{SpellID: 115072}
 	chiMetrics := monk.NewChiMetrics(actionID)
@@ -54,13 +66,12 @@ func (monk *Monk) registerExpelHarm() {
 			},
 		},
 
-		DamageMultiplier: 4.77,
+		DamageMultiplier: 7,
 		ThreatMultiplier: 1.0,
 		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := monk.CalculateMonkStrikeDamage(sim, spell)
-
 			hpBefore := spell.Unit.CurrentHealth()
 			// Can only target ourselves for now
 			spell.CalcAndDealHealing(sim, spell.Unit, baseDamage, spell.OutcomeHealing)
