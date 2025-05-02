@@ -32,8 +32,7 @@ func (monk *Monk) registerCracklingJadeLightning() {
 		MaxRange:       40,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: core.TernaryInt32(monk.StanceMatches(WiseSerpent), 157, 0),
-			PercentModifier: core.TernaryInt32(monk.StanceMatches(WiseSerpent), 1, 0), // 1% of 157 = 1.57%
+			BaseCostPercent: core.TernaryFloat64(monk.StanceMatches(WiseSerpent), 1.57, 0),
 		},
 
 		Cast: core.CastConfig{
