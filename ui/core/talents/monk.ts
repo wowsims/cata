@@ -117,7 +117,7 @@ export const monkGlyphsConfig: GlyphsConfig = {
 		},
 		[MonkMajorGlyph.GlyphOfTouchOfKarma]: {
 			name: "Glyph of Touch of Karma",
-			description: "Your Touch of Karma now has a ${$m1} yard range.",
+			description: "Your Touch of Karma now has a ${$m1+5} yard range.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_monk_touchofkarma.jpg",
 		},
 		[MonkMajorGlyph.GlyphOfTargetedExpulsion]: {

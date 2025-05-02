@@ -35,7 +35,7 @@ message SimItem {
 	string set_name = 11;
 	int32 set_id = 12;
 
-	map<int32, ScalingItemProperties> scaling_options = 13; // keys are the all ilvl variants that this item could potentially have
+	map<int32, ScalingItemProperties> scaling_options = 13; // keys are the all ItemLevelState variants that this item could potentially have
 }
 
 message Consumable {
