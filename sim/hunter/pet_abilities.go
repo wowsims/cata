@@ -106,11 +106,11 @@ func (hp *HunterPet) RegisterKillCommandSpell() *core.Spell {
 				GCD: time.Second * 0,
 			},
 		},
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           hp.CritMultiplier(1.0, 0.0),
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1.5,
+		CritMultiplier:   hp.CritMultiplier(1.0, 0.0),
+		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.516*spell.RangedAttackPower(target) + 923
+			baseDamage := 0.938*spell.RangedAttackPower(target) + 935
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 		},
 	})
@@ -132,7 +132,7 @@ func (hp *HunterPet) newPetDebuff(config PetDebuffSpellConfig) *core.Spell {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    hp.NewTimer(),
-				Duration: hp.hunterOwner.applyLongevity(config.CD),
+				Duration: config.CD,
 			},
 		},
 
@@ -251,7 +251,7 @@ func (hp *HunterPet) newSpecialAbility(config PetSpecialAbilityConfig) *core.Spe
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    hp.NewTimer(),
-				Duration: hp.hunterOwner.applyLongevity(config.CD),
+				Duration: config.CD,
 			},
 		},
 		ApplyEffects: applyEffects,

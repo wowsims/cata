@@ -50,30 +50,21 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	// base_focus_regen_per_second  = ( 24.5 / 4.0 );
 	// base_focus_regen_per_second *= 1.0 + o -> talents.bestial_discipline -> effect1().percent();
 	baseFocusPerSecond := 4.0 // As observed on logs
-	baseFocusPerSecond *= 1.0 + (0.10 * float64(hunter.Talents.BestialDiscipline))
 
-	WHFocusIncreaseMod := hp.AddDynamicMod(core.SpellModConfig{
-		Kind:     core.SpellMod_PowerCost_Pct,
-		ProcMask: core.ProcMaskMeleeMHSpecial,
-		IntValue: hp.Talents().WildHunt * 50,
-	})
+	// WHFocusIncreaseMod := hp.AddDynamicMod(core.SpellModConfig{
+	// 	Kind:     core.SpellMod_PowerCost_Pct,
+	// 	ProcMask: core.ProcMaskMeleeMHSpecial,
+	// 	IntValue: hp.Talents().WildHunt * 50,
+	// })
 
-	WHDamageMod := hp.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ProcMask:   core.ProcMaskMeleeMHSpecial,
-		FloatValue: float64(hp.Talents().WildHunt) * 0.6,
-	})
+	// WHDamageMod := hp.AddDynamicMod(core.SpellModConfig{
+	// 	Kind:       core.SpellMod_DamageDone_Flat,
+	// 	ProcMask:   core.ProcMaskMeleeMHSpecial,
+	// 	FloatValue: float64(hp.Talents().WildHunt) * 0.6,
+	// })
 
-	hp.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), baseFocusPerSecond, false, func(sim *core.Simulation, focus float64) {
-		if hp.Talents().WildHunt > 0 {
-			if focus >= 50 {
-				WHFocusIncreaseMod.Activate()
-				WHDamageMod.Activate()
-			} else {
-				WHFocusIncreaseMod.Deactivate()
-				WHDamageMod.Deactivate()
-			}
-		}
+	hp.EnableFocusBar(100+(core.TernaryFloat64(hp.hunterOwner.Spec == proto.Spec_SpecBeastMasteryHunter, 20, 0)), baseFocusPerSecond, false, func(sim *core.Simulation, focus float64) {
+
 	})
 
 	atkSpd := 2.0
@@ -107,13 +98,6 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 
 func (hp *HunterPet) GetPet() *core.Pet {
 	return &hp.Pet
-}
-
-func (hp *HunterPet) Talents() *proto.HunterPetTalents {
-	if talents := hp.hunterOwner.Options.PetTalents; talents != nil {
-		return talents
-	}
-	return &proto.HunterPetTalents{}
 }
 
 func (hp *HunterPet) Initialize() {

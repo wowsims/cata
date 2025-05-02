@@ -16,8 +16,10 @@ func (mmHunter *MarksmanshipHunter) registerAimedShotSpell() {
 		ProcMask:       core.ProcMaskRangedSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		MissileSpeed:   40,
+		MinRange:       0,
+		MaxRange:       40,
 		FocusCost: core.FocusCostOptions{
-			Cost: 50 - mmHunter.Talents.Efficiency*2,
+			Cost: 50,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -27,7 +29,7 @@ func (mmHunter *MarksmanshipHunter) registerAimedShotSpell() {
 			IgnoreHaste: true,
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				cast.CastTime = spell.CastTime()
-				// Aimed Shot on Beta currently is a full reset
+
 				mmHunter.AutoAttacks.StopRangedUntil(sim, sim.CurrentTime+spell.CastTime())
 			},
 
@@ -35,14 +37,14 @@ func (mmHunter *MarksmanshipHunter) registerAimedShotSpell() {
 				return time.Duration(float64(spell.DefaultCast.CastTime) / mmHunter.RangedSwingSpeed())
 			},
 		},
-		DamageMultiplier: 1.6,
+		DamageMultiplier: 4.5,
 		CritMultiplier:   mmHunter.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			wepDmg := spell.Unit.RangedNormalizedWeaponDamage(sim, spell.RangedAttackPower(target))
-			rap := spell.RangedAttackPower(target) * 0.723
-			baseDamage := (wepDmg + rap) + sim.Roll(776, 866)
+			baseDamage := wepDmg
+			baseDamage += 2604.9 + sim.RandomFloat("Aimed Shot")*2742
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 

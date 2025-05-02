@@ -8,10 +8,6 @@ import (
 )
 
 func (mmHunter *MarksmanshipHunter) registerChimeraShotSpell() {
-	if !mmHunter.Talents.ChimeraShot {
-		return
-	}
-
 	mmHunter.ChimeraShot = mmHunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 53209},
 		SpellSchool: core.SpellSchoolNature,
@@ -20,6 +16,8 @@ func (mmHunter *MarksmanshipHunter) registerChimeraShotSpell() {
 		ClassSpellMask: hunter.HunterSpellChimeraShot,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		MissileSpeed:   40,
+		MinRange:       0,
+		MaxRange:       40,
 
 		FocusCost: core.FocusCostOptions{
 			Cost: 50,
@@ -35,13 +33,13 @@ func (mmHunter *MarksmanshipHunter) registerChimeraShotSpell() {
 			},
 		},
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 2.65,
 		CritMultiplier:   mmHunter.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			wepDmg := mmHunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target))
-			baseDamage := 0.732*spell.RangedAttackPower(target) + 1620.33
+			baseDamage := mmHunter.GetBaseDamageFromCoeff(1.25)
 
 			result := spell.CalcDamage(sim, target, wepDmg+baseDamage, spell.OutcomeRangedHitAndCrit)
 

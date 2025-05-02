@@ -4,10 +4,11 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
-	bonusPeriodicDamageMultiplier := .10 * float64(hunter.Talents.TrapMastery)
+	bonusPeriodicDamageMultiplier := core.TernaryFloat64(hunter.Spec == proto.Spec_SpecSurvivalHunter, 0.30, 0)
 
 	hunter.ExplosiveTrap = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 13812},
@@ -42,7 +43,7 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 			TickLength:    time.Second * 2,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := 292 + 0.546*dot.Spell.RangedAttackPower(target)
+				baseDamage := (27) + (0.03819999844 * dot.Spell.RangedAttackPower(target))
 				dot.Spell.DamageMultiplierAdditive += bonusPeriodicDamageMultiplier
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, baseDamage/10, dot.Spell.OutcomeRangedHitAndCritNoBlock)
@@ -62,9 +63,9 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 				// instead of immediately.
 				core.StartDelayedAction(sim, core.DelayedActionOptions{
 					DoAt: 0,
-					OnAction: func(sim *core.Simulation) {
+					OnAction: func(sim *core.Simulation) { //109,4212673	125
 						for _, aoeTarget := range sim.Encounter.TargetUnits {
-							baseDamage := 292 + (0.0546 * spell.RangedAttackPower(aoeTarget))
+							baseDamage := (109 + sim.RandomFloat("Explosive Trap Initial")*125) + (0.03819999844 * spell.RangedAttackPower(aoeTarget))
 							baseDamage *= sim.Encounter.AOECapMultiplier()
 							spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeRangedHitAndCritNoBlock)
 						}

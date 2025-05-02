@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func (hunter *Hunter) registerSteadyShotSpell() {
@@ -18,7 +17,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		ProcMask:       core.ProcMaskRangedSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		MissileSpeed:   40,
-		MinRange:       5,
+		MinRange:       0,
 		MaxRange:       40,
 		FocusCost: core.FocusCostOptions{
 
@@ -39,27 +38,18 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 			},
 		},
 		BonusCritPercent:         0,
-		DamageMultiplierAdditive: 1 + core.TernaryFloat64(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfSteadyShot), 0.1, 0),
-		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		DamageMultiplier:         0.66,
 		CritMultiplier:           hunter.DefaultCritMultiplier(),
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) + (280.182 + (spell.RangedAttackPower(target) * 0.021))
-			intFocus := core.TernaryFloat64(hunter.T13_2pc.IsActive(), 9*2, 9)
+			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target))
+			baseDamage += hunter.GetBaseDamageFromCoeff(2.112)
 
-			if hunter.Talents.Termination != 0 && sim.IsExecutePhase25() {
-				intFocus += float64(hunter.Talents.Termination) * 3
-			}
-
-			if hunter.Talents.MasterMarksman != 0 {
-				procChance := float64(hunter.Talents.MasterMarksman) * 0.2
-				if sim.Proc(procChance, "Master Marksman Proc") && !hunter.MasterMarksmanCounterAura.IsActive() {
-					hunter.MasterMarksmanCounterAura.Activate(sim)
-				}
-			}
-
+			intFocus := 14.0
 			hunter.AddFocus(sim, intFocus, ssMetrics)
+
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {

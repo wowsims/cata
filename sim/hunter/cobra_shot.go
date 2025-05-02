@@ -19,14 +19,14 @@ func (hunter *Hunter) registerCobraShotSpell() {
 			Cost: 0,
 		},
 		MissileSpeed: 40,
-		MinRange:     5,
+		MinRange:     0,
 		MaxRange:     40,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      time.Second,
 				CastTime: time.Millisecond * 2000,
 			},
-			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
+			IgnoreHaste: true,
 			ModifyCast: func(_ *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				cast.CastTime = spell.CastTime()
 			},
@@ -35,16 +35,14 @@ func (hunter *Hunter) registerCobraShotSpell() {
 				return time.Duration(float64(spell.DefaultCast.CastTime) / ss)
 			},
 		},
-		DamageMultiplier: 1,
+		DamageMultiplier: 0.77,
 		CritMultiplier:   hunter.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) + (276.806 + spell.RangedAttackPower(target)*0.017)
-			intFocus := core.TernaryFloat64(hunter.T13_2pc.IsActive(), 9*2, 9)
-			if hunter.Talents.Termination != 0 && sim.IsExecutePhase25() {
-				intFocus += float64(hunter.Talents.Termination) * 3
-			}
+			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target))
+			intFocus := 14.0
+
 			hunter.AddFocus(sim, intFocus, csMetrics)
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)

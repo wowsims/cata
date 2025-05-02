@@ -5,7 +5,6 @@ import (
 )
 
 func (hunter *Hunter) registerHuntersMarkSpell() {
-	//core.Aura.Unit.NewEnemyAuraArray()
 	enemyHuntersMarks := hunter.NewEnemyAuraArray(core.HuntersMarkAura)
 
 	hunter.RegisterSpell(core.SpellConfig{

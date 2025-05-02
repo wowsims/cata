@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func (hunter *Hunter) registerMultiShotSpell() {
@@ -15,7 +16,7 @@ func (hunter *Hunter) registerMultiShotSpell() {
 		ClassSpellMask: HunterSpellMultiShot,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		MissileSpeed:   40,
-		MinRange:       5,
+		MinRange:       0,
 		MaxRange:       40,
 		FocusCost: core.FocusCostOptions{
 			Cost: 40,
@@ -28,7 +29,7 @@ func (hunter *Hunter) registerMultiShotSpell() {
 
 		BonusCritPercent:         0,
 		DamageMultiplierAdditive: 1,
-		DamageMultiplier:         1.21,
+		DamageMultiplier:         0.6,
 		CritMultiplier:           hunter.DefaultCritMultiplier(),
 		ThreatMultiplier:         1,
 
@@ -37,27 +38,27 @@ func (hunter *Hunter) registerMultiShotSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			numHits := hunter.Env.GetNumTargets() // Multi is uncapped in Cata
 
-			sharedDmg := hunter.AutoAttacks.Ranged().BaseDamage(sim)
+			sharedDmg := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target))
 
 			baseDamageArray := make([]*core.SpellResult, numHits)
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 				currentTarget := hunter.Env.GetTargetUnit(hitIndex)
-				baseDamage := sharedDmg + 0.2*spell.RangedAttackPower(currentTarget)
+				baseDamage := sharedDmg
 				baseDamageArray[hitIndex] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeRangedHitAndCrit)
-
 			}
+
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				curTarget := target
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 					spell.DealDamage(sim, baseDamageArray[hitIndex])
-					if hunter.Talents.SerpentSpread > 0 {
-						duration := time.Duration(3+(hunter.Talents.SerpentSpread*3)) * time.Second
+					if hunter.Spec == proto.Spec_SpecSurvivalHunter {
+						duration := 15 * time.Second
 
 						ss := hunter.SerpentSting.Dot(curTarget)
-						if hunter.Talents.ImprovedSerpentSting > 0 && (!ss.IsActive() || ss.RemainingDuration(sim) <= duration) {
+						if !ss.IsActive() || ss.RemainingDuration(sim) <= duration {
 							hunter.ImprovedSerpentSting.Cast(sim, curTarget)
 						}
-						ss.BaseTickCount = (3 + (hunter.Talents.SerpentSpread * 3)) / 2
+						ss.BaseTickCount = 5
 						ss.Apply(sim)
 					}
 					curTarget = sim.Environment.NextTargetUnit(curTarget)

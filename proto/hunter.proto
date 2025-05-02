@@ -201,21 +201,10 @@ message SurvivalHunter {
 		RotationType type = 9;
 		HunterStingType sting = 5;
 
-		bool trap_weave = 1;
-
-		// Switch to Aspect of the Viper when mana goes below this percent.
-		double viper_start_mana_percent = 6;
-		// Switch back to Aspect of the Hawk when mana goes above this percent.
-		double viper_stop_mana_percent = 7;
-
-		// Allow use of Explosive Shot Rank 3 during LNL procs.
-		bool allow_explosive_shot_downrank = 10;
-
 		bool multi_dot_serpent_sting = 11;
 	}
 	message Options {
 		HunterOptions class_options = 1;
-		double sniper_training_uptime = 2;
 	}
 	Options options = 1;
 }

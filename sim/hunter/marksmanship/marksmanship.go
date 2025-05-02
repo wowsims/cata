@@ -72,14 +72,14 @@ func NewMarksmanshipHunter(character *core.Character, options *proto.Player) *Ma
 func (mmHunter *MarksmanshipHunter) Initialize() {
 	mmHunter.Hunter.Initialize()
 	// MM Hunter Spec Bonus
-	mmHunter.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ProcMask:   core.ProcMaskRangedAuto,
-		FloatValue: 0.15,
-	})
+	// mmHunter.AddStaticMod(core.SpellModConfig{
+	// 	Kind:       core.SpellMod_DamageDone_Flat,
+	// 	ProcMask:   core.ProcMaskRangedAuto,
+	// 	FloatValue: 0.15,
+	// })
 
-	// mmHunter.registerAimedShotSpell()
-	// mmHunter.registerChimeraShotSpell()
+	mmHunter.registerAimedShotSpell()
+	mmHunter.registerChimeraShotSpell()
 	mmHunter.applyMastery()
 }
 

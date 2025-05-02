@@ -8,10 +8,6 @@ import (
 )
 
 func (svHunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
-	if !svHunter.Talents.BlackArrow {
-		return
-	}
-
 	actionID := core.ActionID{SpellID: 3674}
 
 	svHunter.Hunter.BlackArrow = svHunter.Hunter.RegisterSpell(core.SpellConfig{
@@ -24,7 +20,7 @@ func (svHunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 			Cost: 35,
 		},
 		MissileSpeed: 40,
-		MinRange:     5,
+		MinRange:     0,
 		MaxRange:     40,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -33,7 +29,7 @@ func (svHunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
 			CD: core.Cooldown{
 				Timer:    timer,
-				Duration: time.Second * 30,
+				Duration: time.Second * 24,
 			},
 		},
 		DamageMultiplier: 1,
@@ -48,8 +44,7 @@ func (svHunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 			TickLength:          time.Second * 2,
 			AffectedByCastSpeed: false,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				rap := dot.Spell.RangedAttackPower(target)
-				baseDmg := 285.245 + (0.0665 * rap)
+				baseDmg := svHunter.Hunter.GetBaseDamageFromCoeff(0.126) + 0.26*dot.Spell.RangedAttackPower(target)
 				dot.Snapshot(target, baseDmg)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {

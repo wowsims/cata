@@ -4,10 +4,12 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func (hunter *Hunter) registerSerpentStingSpell() {
-	noxiousStingsMultiplier := 1 + 0.05*float64(hunter.Talents.NoxiousStings)
+	ImprovedSerpentStingMultiplier := 1.5
+	IsSurvival := hunter.Spec == proto.Spec_SpecSurvivalHunter
 
 	hunter.ImprovedSerpentSting = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:                 core.ActionID{SpellID: 82834},
@@ -19,9 +21,9 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           hunter.CritMultiplier(1, 0),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := (460 * 5) + 0.40*spell.RangedAttackPower(target)
-			dmg := baseDamage * (float64(hunter.Talents.ImprovedSerpentSting) * 0.15)
-			spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMeleeSpecialCritOnly)
+			baseDamage := (hunter.GetBaseDamageFromCoeff(2.599999905) + 0.1599999964*spell.RangedAttackPower(target)) * 5
+			dmg := baseDamage * core.TernaryFloat64(IsSurvival, ImprovedSerpentStingMultiplier, 1)
+			spell.CalcAndDealDamage(sim, target, dmg*0.15, spell.OutcomeMeleeSpecialCritOnly)
 		},
 	})
 
@@ -32,10 +34,10 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 		ClassSpellMask: HunterSpellSerpentSting,
 		Flags:          core.SpellFlagAPL,
 		MissileSpeed:   40,
-		MinRange:       5,
+		MinRange:       0,
 		MaxRange:       40,
 		FocusCost: core.FocusCostOptions{
-			Cost: 25,
+			Cost: 15,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -55,29 +57,12 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 				ActionID: core.ActionID{SpellID: 1978},
 				Label:    "SerpentStingDot",
 				Tag:      "SerpentSting",
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier *= noxiousStingsMultiplier
-
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					if sim.GetRemainingDuration() > time.Millisecond*1 {
-						core.StartDelayedAction(sim, core.DelayedActionOptions{
-							Priority: core.ActionPriorityDOT - 1,
-							DoAt:     sim.CurrentTime + time.Millisecond*1,
-							OnAction: func(sim *core.Simulation) {
-								hunter.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier /= noxiousStingsMultiplier
-							},
-						})
-					} else {
-						hunter.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier /= noxiousStingsMultiplier
-					}
-				},
 			},
 
 			NumberOfTicks: 5,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				baseDmg := 460 + 0.08*dot.Spell.RangedAttackPower(target)
+				baseDmg := hunter.GetBaseDamageFromCoeff(2.6) + 0.16*dot.Spell.RangedAttackPower(target)
 				dot.Snapshot(target, baseDmg)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -92,7 +77,7 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				if result.Landed() {
 					spell.Dot(target).Apply(sim)
-					if hunter.Talents.ImprovedSerpentSting > 0 {
+					if IsSurvival {
 						hunter.ImprovedSerpentSting.Cast(sim, target)
 					}
 				}
