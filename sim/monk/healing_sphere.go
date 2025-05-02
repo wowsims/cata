@@ -97,7 +97,7 @@ func (monk *Monk) registerHealingSphere() {
 			Cost: core.TernaryInt32(monk.StanceMatches(WiseSerpent), 0, 40),
 		},
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: core.TernaryInt32(monk.StanceMatches(WiseSerpent), 2, 0),
+			BaseCostPercent: core.TernaryFloat64(monk.StanceMatches(WiseSerpent), 2, 0),
 		},
 
 		Cast: core.CastConfig{
