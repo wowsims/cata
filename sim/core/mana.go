@@ -297,9 +297,9 @@ func (mb *manaBar) EndOOMEvent(sim *Simulation) {
 }
 
 type ManaCostOptions struct {
-	BaseCostPercent int32 // The cost of the spell as a percentage (0-100) of the unit's base mana.
-	FlatCost        int32 // Alternative to BaseCostPercent for giving a flat value.
-	PercentModifier int32 // Will default to 100. PercentModifier stored as an int, e.g. 60 will apply a 40% discount (0.6 multiplier) to the base cost
+	BaseCostPercent float64 // The cost of the spell as a percentage (0-100) of the unit's base mana.
+	FlatCost        int32   // Alternative to BaseCostPercent for giving a flat value.
+	PercentModifier int32   // Will default to 100. PercentModifier stored as an int, e.g. 60 will apply a 40% discount (0.6 multiplier) to the base cost
 }
 type ManaCost struct {
 	ResourceMetrics *ResourceMetrics
@@ -308,7 +308,7 @@ type ManaCost struct {
 func newManaCost(spell *Spell, options ManaCostOptions) *SpellCost {
 	return &SpellCost{
 		spell:           spell,
-		BaseCost:        TernaryInt32(options.FlatCost > 0, options.FlatCost, int32(float64(options.BaseCostPercent)/100*spell.Unit.BaseMana)),
+		BaseCost:        TernaryInt32(options.FlatCost > 0, options.FlatCost, int32(options.BaseCostPercent*spell.Unit.BaseMana)/100),
 		PercentModifier: TernaryInt32(options.PercentModifier == 0, 100, options.PercentModifier),
 		ResourceCostImpl: &ManaCost{
 			ResourceMetrics: spell.Unit.NewManaMetrics(spell.ActionID),

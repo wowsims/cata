@@ -7,7 +7,7 @@ import (
 )
 
 // Shared logic for all shocks.
-func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellSchool, baseCostPercent int32, shockTimer *core.Timer, bonusCoefficient float64) core.SpellConfig {
+func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellSchool, baseCostPercent float64, shockTimer *core.Timer, bonusCoefficient float64) core.SpellConfig {
 	actionID := core.ActionID{SpellID: spellID}
 
 	return core.SpellConfig{
