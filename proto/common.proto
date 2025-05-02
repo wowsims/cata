@@ -74,7 +74,7 @@ enum Spec {
 	SpecArmsWarrior = 28;
 	SpecFuryWarrior = 29;
 	SpecProtectionWarrior = 30;
-	
+
 	SpecBrewmasterMonk = 32;
 	SpecMistweaverMonk = 33;
 	SpecWindwalkerMonk = 34;
