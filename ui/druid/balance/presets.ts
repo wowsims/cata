@@ -1,18 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import {
-	Consumes,
-	Debuffs,
-	Flask,
-	Food,
-	Glyphs,
-	IndividualBuffs,
-	PartyBuffs,
-	Potions,
-	Profession,
-	RaidBuffs,
-	Stat,
-	UnitReference,
-} from '../../core/proto/common.js';
+import { ConsumesSpec, Debuffs, Glyphs, IndividualBuffs, PartyBuffs, Profession, RaidBuffs, Stat, UnitReference } from '../../core/proto/common.js';
 import { BalanceDruid_Options as BalanceDruidOptions, DruidMajorGlyph, DruidMinorGlyph, DruidPrimeGlyph } from '../../core/proto/druid.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
@@ -75,13 +62,12 @@ export const DefaultOptions = BalanceDruidOptions.create({
 	},
 });
 
-export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfTheDraconicMind,
-	food: Food.FoodSeafoodFeast,
-	defaultPotion: Potions.VolcanicPotion,
-	prepopPotion: Potions.VolcanicPotion,
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58086, // Flask of the Draconic Mind
+	foodId: 62290, // Seafood Magnifique Feast
+	potId: 58091, // Volcanic Potion
+	prepotId: 58091, // Volcanic Potion
 });
-
 export const DefaultRaidBuffs = RaidBuffs.create({
 	arcaneBrilliance: true,
 	bloodlust: true,
@@ -143,7 +129,6 @@ export const PresetBuildT12 = PresetUtils.makePresetBuild('Balance T12', {
 	rotation: T12PresetRotation,
 	epWeights: StandardEPWeights,
 });
-
 
 export const PresetBuildT13 = PresetUtils.makePresetBuild('Balance T13', {
 	gear: T13PresetGear,

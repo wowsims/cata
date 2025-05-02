@@ -4,112 +4,117 @@ package proto;
 option go_package = "./proto";
 
 import "common.proto";
-
+// DO NOT REMOVE THE COMMENTS
+// BEGIN GENERATED
+// HunterTalents message.
 message HunterTalents {
-	// Beast Mastery
-	int32 improved_kill_command = 1;
-	int32 one_with_nature = 2;
-	int32 bestial_discipline = 3;
-	int32 pathfinding = 4;
-	int32 spirit_bond = 5;
-	int32 frenzy = 6;
-	int32 improved_mend_pet = 7;
-	int32 cobra_strikes = 8;
-	bool fervor = 9;
-	bool focus_fire = 10;
-	int32 longevity = 11;
-	int32 killing_streak = 12;
-	int32 crouching_tiger_hidden_chimera = 13;
-	bool bestial_wrath = 14;
-	bool ferocious_inspiration = 15;
-	int32 kindred_spirits = 16;
-	bool the_beast_within = 17;
-	int32 invigoration = 18;
-	bool beast_mastery = 19;
-
-	// Marksmanship
-	int32 go_for_the_throat = 20;
-	int32 efficiency = 21;
-	int32 rapid_killing = 22;
-	int32 sic_em = 23;
-	int32 improved_steady_shot = 24;
-	int32 careful_aim = 25;
-	bool silencing_shot = 26;
-	int32 concussive_barrage = 27;
-	int32 piercing_shots = 28;
-	int32 bombardment = 29;
-	bool trueshot_aura = 30;
-	int32 termination = 31;
-	int32 resistance_is_futile = 32;
-	int32 rapid_recuperation = 33;
-	int32 master_marksman = 34;
-	bool readiness = 35;
-	int32 posthaste = 36;
-	int32 marked_for_death = 37;
-	bool chimera_shot = 38;
-
-	// Survival
-	int32 hunter_vs_wild = 39;
-	int32 pathing = 40;
-	int32 improved_serpent_sting = 41;
-	int32 survival_tactics = 42;
-	int32 trap_mastery = 43;
-	int32 entrapment = 44;
-	int32 point_of_no_escape = 45;
-	int32 thrill_of_the_hunt = 46;
-	bool counterattack = 47;
-	int32 lock_and_load = 48;
-	int32 resourcefulness = 49;
-	int32 mirrored_blades = 50;
-	int32 t_n_t = 51;
-	int32 toxicology = 52;
-	bool wyvern_sting = 53;
-	int32 noxious_stings = 54;
-	bool hunting_party = 55;
-	int32 sniper_training = 56;
-	int32 serpent_spread = 57;
-	bool black_arrow = 58;
+    // Beast Mastery
+    int32 improved_kill_command = 1;
+    int32 one_with_nature = 2;
+    int32 bestial_discipline = 3;
+    int32 pathfinding = 4;
+    int32 spirit_bond = 5;
+    int32 frenzy = 6;
+    int32 improved_mend_pet = 7;
+    int32 cobra_strikes = 8;
+    bool fervor = 9;
+    bool focus_fire = 10;
+    int32 longevity = 11;
+    int32 killing_streak = 12;
+    int32 crouching_tiger_hidden_chimera = 13;
+    bool bestial_wrath = 14;
+    bool ferocious_inspiration = 15;
+    int32 kindred_spirits = 16;
+    bool the_beast_within = 17;
+    int32 invigoration = 18;
+    bool beast_mastery = 19;
+    // Marksmanship
+    int32 go_for_the_throat = 20;
+    int32 efficiency = 21;
+    int32 rapid_killing = 22;
+    int32 sic_em = 23;
+    int32 improved_steady_shot = 24;
+    int32 careful_aim = 25;
+    bool silencing_shot = 26;
+    int32 concussive_barrage = 27;
+    int32 piercing_shots = 28;
+    int32 bombardment = 29;
+    bool trueshot_aura = 30;
+    int32 termination = 31;
+    int32 resistance_is_futile = 32;
+    int32 rapid_recuperation = 33;
+    int32 master_marksman = 34;
+    bool readiness = 35;
+    int32 posthaste = 36;
+    int32 marked_for_death = 37;
+    bool chimera_shot = 38;
+    // Survival
+    int32 hunter_vs_wild = 39;
+    int32 pathing = 40;
+    int32 improved_serpent_sting = 41;
+    int32 survival_tactics = 42;
+    int32 trap_mastery = 43;
+    int32 entrapment = 44;
+    int32 point_of_no_escape = 45;
+    int32 thrill_of_the_hunt = 46;
+    bool counterattack = 47;
+    int32 lock_and_load = 48;
+    int32 resourcefulness = 49;
+    int32 mirrored_blades = 50;
+    int32 TNT = 51;
+    int32 toxicology = 52;
+    bool wyvern_sting = 53;
+    int32 noxious_stings = 54;
+    bool hunting_party = 55;
+    int32 sniper_training = 56;
+    int32 serpent_spread = 57;
+    bool black_arrow = 58;
 }
+
 enum HunterPrimeGlyph {
-	HunterPrimeGlyphNone = 0;
-	GlyphOfAimedShot = 42897;
-	GlyphOfArcaneShot = 42898;
-	GlyphOfChimeraShot = 45625;
-	GlyphOfDazzledPrey = 42909;
-	GlyphOfExplosiveShot = 45731;
-	GlyphOfKillCommand = 42915;
-	GlyphOfKillShot = 45732;
-	GlyphOfRapidFire = 42911;
-	GlyphOfSerpentSting = 42912;
-	GlyphOfSteadyShot = 42914;
+    HunterPrimeGlyphNone = 0;
+    GlyphOfAimedShot = 42897;
+    GlyphOfArcaneShot = 42898;
+    GlyphOfTheDazzledPrey = 42909;
+    GlyphOfRapidFire = 42911;
+    GlyphOfSerpentSting = 42912;
+    GlyphOfSteadyShot = 42914;
+    GlyphOfKillCommand = 42915;
+    GlyphOfChimeraShot = 45625;
+    GlyphOfExplosiveShot = 45731;
+    GlyphOfKillShot = 45732;
 }
+
 enum HunterMajorGlyph {
-	HunterMajorGlyphNone = 0;
-	GlyphOfBestialWrath = 42902;
-	GlyphOfConcussiveShot = 42901;
-	GlyphOfDeterrence = 42903;
-	GlyphOfDisengage = 42904;
-	GlyphOfFreezingTrap = 42905;
-	GlyphOfIceTrap = 42906;
-	GlyphOfImmolationTrap = 42908;
-	GlyphOfMasterSCall = 45733;
-	GlyphOfMending = 42900;
-	GlyphOfMisdirection = 42907;
-	GlyphOfRaptorStrike = 45735;
-	GlyphOfScatterShot = 45734;
-	GlyphOfSilencingShot = 42910;
-	GlyphOfSnakeTrap = 42913;
-	GlyphOfTrapLauncher = 42899;
-	GlyphOfWyvernSting = 42917;
+    HunterMajorGlyphNone = 0;
+    GlyphOfTrapLauncher = 42899;
+    GlyphOfMending = 42900;
+    GlyphOfConcussiveShot = 42901;
+    GlyphOfBestialWrath = 42902;
+    GlyphOfDeterrence = 42903;
+    GlyphOfDisengage = 42904;
+    GlyphOfFreezingTrap = 42905;
+    GlyphOfIceTrap = 42906;
+    GlyphOfMisdirection = 42907;
+    GlyphOfImmolationTrap = 42908;
+    GlyphOfSilencingShot = 42910;
+    GlyphOfSnakeTrap = 42913;
+    GlyphOfWyvernSting = 42917;
+    GlyphOfMastersCall = 45733;
+    GlyphOfScatterShot = 45734;
+    GlyphOfRaptorStrike = 45735;
 }
+
 enum HunterMinorGlyph {
-	HunterMinorGlyphNone = 0;
-	GlyphOfAspectOfThePack = 43355;
-	GlyphOfFeignDeath = 43351;
-	GlyphOfLesserProportion = 43350;
-	GlyphOfRevivePet = 43338;
-	GlyphOfScareBeast = 43356;
+    HunterMinorGlyphNone = 0;
+    GlyphOfRevivePet = 43338;
+    GlyphOfLesserProportion = 43350;
+    GlyphOfFeignDeath = 43351;
+    GlyphOfAspectOfThePack = 43355;
+    GlyphOfScareBeast = 43356;
 }
+
+// END GENERATED
 
 message HunterPetTalents {
 	// Ferocity

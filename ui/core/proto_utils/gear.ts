@@ -1,4 +1,5 @@
-import { EquipmentSpec, GemColor, HandType, ItemSlot, ItemSpec, ItemSwap, Profession, SimDatabase, SimEnchant, SimGem, SimItem } from '../proto/common.js';
+import { EquipmentSpec, GemColor, HandType, ItemSlot, ItemSpec, ItemSwap, Profession, SimEnchant, SimGem } from '../proto/common.js';
+import { SimDatabase, SimItem } from '../proto/db';
 import { UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../proto/ui.js';
 import { isBluntWeaponType, isSharpWeaponType } from '../proto_utils/utils.js';
 import { distinct, equalsOrBothNull, getEnumValues } from '../utils.js';
@@ -378,7 +379,7 @@ export class Gear extends BaseGear {
 		let setItemCount = 0;
 		for (const slot of validSetItemSlots) {
 			const item = this.getEquippedItem(slot);
-			if (item?.item?.setName === name || (alternativeName &&item?.item.setName === alternativeName)) setItemCount++;
+			if (item?.item?.setName === name || (alternativeName && item?.item.setName === alternativeName)) setItemCount++;
 		}
 
 		return setItemCount;

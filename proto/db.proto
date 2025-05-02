@@ -1,0 +1,51 @@
+syntax = "proto3";
+package proto;
+
+option go_package = "./proto";
+import "common.proto";
+import "spell.proto";
+
+message SimDatabase {
+	repeated SimItem items = 1;
+	repeated ItemRandomSuffix random_suffixes = 5;
+	repeated SimEnchant enchants = 2;
+	repeated SimGem gems = 3;
+	repeated ReforgeStat reforge_stats = 6;
+
+	repeated Consumable consumables = 7;
+	repeated SpellEffect spell_effects = 8;
+
+}
+
+// Contains only the Item info needed by the sim.
+message SimItem {
+	int32 id = 1;
+	string name = 2;
+
+	ItemType type = 3;
+	ArmorType armor_type = 4;
+	WeaponType weapon_type = 5;
+	HandType hand_type = 6;
+	RangedWeaponType ranged_weapon_type = 7;
+	repeated GemColor gem_sockets = 8;
+	repeated double socketBonus = 9;
+
+	double weapon_speed = 10;
+
+	string set_name = 11;
+	int32 set_id = 12;
+
+	map<int32, ScalingItemProperties> scaling_options = 13; // keys are the all ItemLevelState variants that this item could potentially have
+}
+
+message Consumable {
+	int32 id = 1;
+	ConsumableType type = 2;
+	repeated double stats = 3;
+	bool buffs_main_stat = 4;
+	string name = 5;
+	string icon = 6;
+	//In seconds
+	int32 buff_duration = 7;
+	repeated int32 effect_ids = 8;
+}

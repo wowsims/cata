@@ -429,12 +429,12 @@ func TestDemonology(t *testing.T) {
 		},
 	}
 
-	var fullConsumes = &proto.Consumes{
-		Flask:             proto.Flask_FlaskOfTheDraconicMind,
-		Food:              proto.Food_FoodSeveredSagefish,
-		DefaultPotion:     proto.Potions_VolcanicPotion,
-		ExplosiveBigDaddy: true,
-		TinkerHands:       proto.TinkerHands_TinkerHandsSynapseSprings,
+	var fullConsumesSpec = &proto.ConsumesSpec{
+		FlaskId:     58086, // Flask of the Draconic Mind
+		FoodId:      62671, // Severed Sagefish Head
+		PotId:       58091, // Volcanic Potion
+		ExplosiveId: 89637, // Big Daddy Explosive
+		TinkerId:    82174, // Synapse Springs
 	}
 
 	// Shadow Bolt
@@ -474,7 +474,7 @@ func TestDemonology(t *testing.T) {
 				Glyphs:  demonologyGlyphsShadowBolt,
 			},
 		},
-		Consumes:         fullConsumes,
+		Consumables:      fullConsumesSpec,
 		SpecOptions:      core.SpecOptionsCombo{Label: "Demonology Warlock", SpecOptions: defaultDemonologyWarlock},
 		OtherSpecOptions: []core.SpecOptionsCombo{},
 		Rotation:         core.GetAplRotation("../../../ui/warlock/demonology/apls", "incinerate"),

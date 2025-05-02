@@ -38,6 +38,7 @@ import { StatWeightsResult } from './proto/api';
 import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
 import {
 	Consumes,
+	ConsumesSpec,
 	Cooldowns,
 	Debuffs,
 	Encounter as EncounterProto,
@@ -96,8 +97,7 @@ export interface RaidSimPreset<SpecType extends Spec> {
 	spec: Spec;
 	talents: SavedTalents;
 	specOptions: SpecOptions<SpecType>;
-	consumes: Consumes;
-
+	consumables: ConsumesSpec;
 	defaultName?: string;
 	defaultFactionRaces: Record<Faction, Race>;
 	defaultGear: Record<Faction, Record<number, EquipmentSpec>>;
@@ -144,7 +144,7 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 		 * breakpoint for the second listed stat (if present), etc.
 		 */
 		softCapBreakpoints?: StatCap[];
-		consumes: Consumes;
+		consumables: ConsumesSpec;
 		talents: SavedTalents;
 		specOptions: SpecOptions<SpecType>;
 
@@ -203,6 +203,7 @@ export interface Settings {
 	partyBuffs: PartyBuffs;
 	individualBuffs: IndividualBuffs;
 	consumes: Consumes;
+	consumables: ConsumesSpec;
 	race: Race;
 	professions?: Array<Profession>;
 }
@@ -369,6 +370,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			if (savedSettings != null) {
 				try {
 					const settings = IndividualSimSettings.fromJsonString(savedSettings, { ignoreUnknownFields: true });
+
 					this.fromProto(initEventID, settings);
 				} catch (e) {
 					console.warn('Failed to parse saved settings: ' + e);
@@ -524,7 +526,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			this.player.applySharedDefaults(eventID);
 			this.player.setRace(eventID, this.player.getPlayerClass().races[0]);
 			this.player.setGear(eventID, this.sim.db.lookupEquipmentSpec(this.individualConfig.defaults.gear));
-			this.player.setConsumes(eventID, this.individualConfig.defaults.consumes);
+			this.player.setConsumes(eventID, this.individualConfig.defaults.consumables);
 			this.applyDefaultRotation(eventID);
 			this.player.setTalentsString(eventID, this.individualConfig.defaults.talents.talentsString);
 			this.player.setGlyphs(eventID, this.individualConfig.defaults.talents.glyphs || Glyphs.create());

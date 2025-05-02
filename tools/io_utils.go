@@ -86,6 +86,28 @@ func WriteFileLines(filePath string, lines []string) {
 	}
 }
 
+func WriteProtoArrayToBuffer[T googleProto.Message](arr []T, buffer *bytes.Buffer, name string) {
+	buffer.WriteString("\"")
+	buffer.WriteString(name)
+	buffer.WriteString("\":[\n")
+
+	for i, elem := range arr {
+		jsonBytes, err := protojson.MarshalOptions{UseEnumNumbers: true}.Marshal(elem)
+		if err != nil {
+			log.Printf("[ERROR] Failed to marshal: %s", err.Error())
+		}
+
+		// Format using Compact() so we get a stable output (no random diffs for version control).
+		json.Compact(buffer, jsonBytes)
+
+		if i != len(arr)-1 {
+			buffer.WriteString(",")
+		}
+		buffer.WriteString("\n")
+	}
+	buffer.WriteString("]")
+}
+
 func WriteMapSortByIntKey(filePath string, contents map[string]string) {
 	WriteMapCustomSort(filePath, contents, func(a, b string) int {
 		intA, err1 := strconv.Atoi(a)
@@ -122,28 +144,6 @@ func WriteMapCustomSort(filePath string, contents map[string]string, sortFunc fu
 	})
 
 	WriteFileLines(filePath, lines)
-}
-
-func WriteProtoArrayToBuffer[T googleProto.Message](arr []T, buffer *bytes.Buffer, name string) {
-	buffer.WriteString("\"")
-	buffer.WriteString(name)
-	buffer.WriteString("\":[\n")
-
-	for i, elem := range arr {
-		jsonBytes, err := protojson.MarshalOptions{UseEnumNumbers: true}.Marshal(elem)
-		if err != nil {
-			log.Printf("[ERROR] Failed to marshal: %s", err.Error())
-		}
-
-		// Format using Compact() so we get a stable output (no random diffs for version control).
-		json.Compact(buffer, jsonBytes)
-
-		if i != len(arr)-1 {
-			buffer.WriteString(",")
-		}
-		buffer.WriteString("\n")
-	}
-	buffer.WriteString("]")
 }
 
 // Fetches web results a single url, and returns the page contents as a string.

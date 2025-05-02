@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Conjured, Consumes, Flask, Food, Glyphs, Potions, PseudoStat, Stat } from '../../core/proto/common';
+import { ConsumesSpec, Glyphs, PseudoStat, Stat } from '../../core/proto/common';
 import { CombatRogue_Options as RogueOptions, RogueMajorGlyph, RogueOptions_PoisonImbue, RoguePrimeGlyph } from '../../core/proto/rogue';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
@@ -7,7 +7,7 @@ import CombatApl from './apls/combat.apl.json';
 import P1CombatGear from './gear_sets/p1_combat.gear.json';
 import P3CombatGear from './gear_sets/p3_combat.gear.json';
 import P4CombatGear from './gear_sets/p4_combat.gear.json';
-import PreraidCombatGear from './gear_sets/preraid_combat.gear.json'
+import PreraidCombatGear from './gear_sets/preraid_combat.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -28,7 +28,7 @@ export const CBAT_STANDARD_EP_PRESET = PresetUtils.makePresetEpWeights(
 			[Stat.StatAgility]: 2.85,
 			[Stat.StatStrength]: 1.05,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatCritRating]: 1.20,
+			[Stat.StatCritRating]: 1.2,
 			[Stat.StatHitRating]: 2.5,
 			[Stat.StatHasteRating]: 1.58,
 			[Stat.StatMasteryRating]: 1.41,
@@ -95,12 +95,12 @@ export const DefaultOptions = RogueOptions.create({
 	},
 });
 
-export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.PotionOfTheTolvir,
-	prepopPotion: Potions.PotionOfTheTolvir,
-	defaultConjured: Conjured.ConjuredRogueThistleTea,
-	flask: Flask.FlaskOfTheWinds,
-	food: Food.FoodSkeweredEel,
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58087, // Flask of the Winds
+	foodId: 62669, // Skewered Eel
+	potId: 58145, // Potion of the Tol'vir
+	prepotId: 58145, // Potion of the Tol'vir
+	conjuredId: 7676, // Thistle Tea
 });
 
 export const OtherDefaults = {

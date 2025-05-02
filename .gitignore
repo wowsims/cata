@@ -38,3 +38,6 @@ tmp/
 wowsimcata*.so
 wowsimcata*.dll
 wowsimcata*.h
+wowsims.db
+assets/db_inputs/dbc/
+cata.sln

@@ -1,11 +1,10 @@
-import * as Mechanics from '../../core/constants/mechanics';
 import * as PresetUtils from '../../core/preset_utils';
-import { Conjured, Consumes, Flask, Food, Glyphs, Potions, PseudoStat, Stat } from '../../core/proto/common';
+import { ConsumesSpec, Glyphs, PseudoStat, Stat } from '../../core/proto/common';
 import { RogueMajorGlyph, RogueOptions_PoisonImbue, RoguePrimeGlyph, SubtletyRogue_Options as RogueOptions } from '../../core/proto/rogue';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import SubtletyApl from './apls/subtlety.apl.json';
-import SubtletyMasteryApl from './apls/subtlety_mastery_prepull.apl.json'
+import SubtletyMasteryApl from './apls/subtlety_mastery_prepull.apl.json';
 import P1SubtletyGear from './gear_sets/p1_subtlety.gear.json';
 import P3SubtletyGear from './gear_sets/p3_subtlety.gear.json';
 import P4SubtletyGear from './gear_sets/p4_subtlety.gear.json';
@@ -21,7 +20,7 @@ export const PRERAID_PRESET_SUB = PresetUtils.makePresetGear('Pre-Raid Sub', Pre
 export const P4_PRESET_SUB = PresetUtils.makePresetGear('P4 Sub', P4SubtletyGear);
 
 export const ROTATION_PRESET_SUBTLETY = PresetUtils.makePresetAPLRotation('Subtlety', SubtletyApl);
-export const ROTATION_PRESET_SUBTLETY_MASTERY = PresetUtils.makePresetAPLRotation('Subtlety Mastery Prepull', SubtletyMasteryApl)
+export const ROTATION_PRESET_SUBTLETY_MASTERY = PresetUtils.makePresetAPLRotation('Subtlety Mastery Prepull', SubtletyMasteryApl);
 
 // Preset options for EP weights
 export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
@@ -98,12 +97,12 @@ export const DefaultOptions = RogueOptions.create({
 	honorAmongThievesCritRate: 400,
 });
 
-export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.PotionOfTheTolvir,
-	prepopPotion: Potions.PotionOfTheTolvir,
-	defaultConjured: Conjured.ConjuredRogueThistleTea,
-	flask: Flask.FlaskOfTheWinds,
-	food: Food.FoodSkeweredEel,
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58087, // Flask of the Winds
+	foodId: 62669, // Skewered Eel
+	potId: 58145, // Potion of the Tol'vir
+	prepotId: 58145, // Potion of the Tol'vir
+	conjuredId: 7676, // Thistle Tea
 });
 
 export const OtherDefaults = {

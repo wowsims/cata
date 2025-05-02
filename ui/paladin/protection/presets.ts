@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, Flask, Food, Potions, Profession, PseudoStat, Stat, TinkerHands } from '../../core/proto/common.js';
+import { ConsumesSpec, Profession, PseudoStat, Stat } from '../../core/proto/common.js';
 import {
 	PaladinAura as PaladinAura,
 	PaladinMajorGlyph,
@@ -58,17 +58,17 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const DefaultTalents = {
 	name: 'Default',
 	data: SavedTalents.create({
-		"talentsString": "-32023013122121101231-032032",
-		"glyphs": {
-		  "prime1": PaladinPrimeGlyph.GlyphOfShieldOfTheRighteous,
-		  "prime2": PaladinPrimeGlyph.GlyphOfCrusaderStrike,
-		  "prime3": PaladinPrimeGlyph.GlyphOfSealOfTruth,
-		  "major1": PaladinMajorGlyph.GlyphOfTheAsceticCrusader,
-		  "major2": PaladinMajorGlyph.GlyphOfLayOnHands,
-		  "major3": PaladinMajorGlyph.GlyphOfFocusedShield,
-		  "minor1": PaladinMinorGlyph.GlyphOfTruth,
-		  "minor2": PaladinMinorGlyph.GlyphOfBlessingOfMight,
-		  "minor3": PaladinMinorGlyph.GlyphOfInsight,
+		talentsString: '-32023013122121101231-032032',
+		glyphs: {
+			prime1: PaladinPrimeGlyph.GlyphOfShieldOfTheRighteous,
+			prime2: PaladinPrimeGlyph.GlyphOfCrusaderStrike,
+			prime3: PaladinPrimeGlyph.GlyphOfSealOfTruth,
+			major1: PaladinMajorGlyph.GlyphOfTheAsceticCrusader,
+			major2: PaladinMajorGlyph.GlyphOfLayOnHands,
+			major3: PaladinMajorGlyph.GlyphOfFocusedShield,
+			minor1: PaladinMinorGlyph.GlyphOfTruth,
+			minor2: PaladinMinorGlyph.GlyphOfBlessingOfMight,
+			minor3: PaladinMinorGlyph.GlyphOfInsight,
 		},
 	}),
 };
@@ -79,15 +79,13 @@ export const DefaultOptions = ProtectionPaladinOptions.create({
 		seal: PaladinSeal.Truth,
 	},
 });
-
-export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfSteelskin,
-	food: Food.FoodLavascaleMinestrone,
-	defaultPotion: Potions.GolembloodPotion,
-	prepopPotion: Potions.GolembloodPotion,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
+export const DefaultConsumables = ConsumesSpec.create({
+	flaskId: 58085, // Flask of Steelskin
+	foodId: 62663, // Lavascale Minestrone
+	potId: 58146, // Golemblood Potion
+	prepotId: 58146, // Golemblood Potion
+	tinkerId: 82174, // Synapse Springs
 });
-
 export const OtherDefaults = {
 	profession1: Profession.Engineering,
 	profession2: Profession.Leatherworking,

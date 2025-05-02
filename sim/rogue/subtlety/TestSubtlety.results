@@ -739,8 +739,8 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-Gladiator'sVestments"
  value: {
-  dps: 21122.45503
-  tps: 14996.94307
+  dps: 24597.6963
+  tps: 17464.36437
  }
 }
 dps_results: {
@@ -1362,22 +1362,22 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-AllItems-Rathrak,thePoisonousMind-77195"
  value: {
-  dps: 25516.16676
-  tps: 18116.4784
+  dps: 23446.7628
+  tps: 16647.20159
  }
 }
 dps_results: {
  key: "TestSubtlety-AllItems-Rathrak,thePoisonousMind-78475"
  value: {
-  dps: 26048.86912
-  tps: 18494.69707
+  dps: 23714.10748
+  tps: 16837.01631
  }
 }
 dps_results: {
  key: "TestSubtlety-AllItems-Rathrak,thePoisonousMind-78484"
  value: {
-  dps: 25042.88286
-  tps: 17780.44683
+  dps: 23211.11435
+  tps: 16479.89119
  }
 }
 dps_results: {

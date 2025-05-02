@@ -21,7 +21,7 @@ func TestMM(t *testing.T) {
 		GearSet:     core.GetGearSet("../../../ui/hunter/marksmanship/gear_sets", "preraid_mm"),
 		Talents:     MMTalents,
 		Glyphs:      MMGlyphs,
-		Consumes:    FullConsumes,
+		Consumables: FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
 		Rotation:    core.GetAplRotation("../../../ui/hunter/marksmanship/apls", "mm"),
 		OtherRotations: []core.RotationCombo{
@@ -59,7 +59,7 @@ func BenchmarkSimulate(b *testing.B) {
 				Race:           proto.Race_RaceOrc,
 				Class:          proto.Class_ClassHunter,
 				Equipment:      core.GetGearSet("../../../ui/hunter/marksmanship/gear_sets", "preraid_mm").GearSet,
-				Consumes:       FullConsumes,
+				Consumables:    FullConsumes,
 				Spec:           PlayerOptionsBasic,
 				Glyphs:         MMGlyphs,
 				TalentsString:  MMTalents,
@@ -81,9 +81,9 @@ func BenchmarkSimulate(b *testing.B) {
 	core.RaidBenchmark(b, rsr)
 }
 
-var FullConsumes = &proto.Consumes{
-	Flask:         proto.Flask_FlaskOfTheWinds,
-	DefaultPotion: proto.Potions_PotionOfTheTolvir,
+var FullConsumes = &proto.ConsumesSpec{
+	FlaskId: 58087,
+	PotId:   58145,
 }
 var MMTalents = "032002-2302320032120231221-03"
 

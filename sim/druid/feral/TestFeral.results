@@ -846,8 +846,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-Gladiator'sSanctuary"
  value: {
-  dps: 37563.56547
-  tps: 53567.86795
+  dps: 42436.19403
+  tps: 60471.19934
   hps: 26.66185
  }
 }
@@ -1582,24 +1582,24 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-Rathrak,thePoisonousMind-77195"
  value: {
-  dps: 45250.47408
-  tps: 63312.72857
+  dps: 42859.22887
+  tps: 60419.6289
   hps: 41.70547
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-Rathrak,thePoisonousMind-78475"
  value: {
-  dps: 45856.38209
-  tps: 64104.07141
+  dps: 43171.81359
+  tps: 60797.51805
   hps: 43.63119
  }
 }
 dps_results: {
  key: "TestFeral-AllItems-Rathrak,thePoisonousMind-78484"
  value: {
-  dps: 44704.99597
-  tps: 62652.10305
+  dps: 42588.34241
+  tps: 60091.22552
   hps: 39.99277
  }
 }
@@ -2342,8 +2342,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-Val'anyr,HammerofAncientKings-46017"
  value: {
-  dps: 42028.29565
-  tps: 58337.54479
+  dps: 41281.26964
+  tps: 57448.42718
   hps: 30.79918
  }
 }

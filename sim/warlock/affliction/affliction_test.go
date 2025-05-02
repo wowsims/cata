@@ -384,12 +384,12 @@ func TestAffliction(t *testing.T) {
 		},
 	}
 
-	var fullConsumes = &proto.Consumes{
-		Flask:             proto.Flask_FlaskOfTheDraconicMind,
-		Food:              proto.Food_FoodSeveredSagefish,
-		DefaultPotion:     proto.Potions_VolcanicPotion,
-		ExplosiveBigDaddy: true,
-		TinkerHands:       proto.TinkerHands_TinkerHandsSynapseSprings,
+	var fullConsumesSpec = &proto.ConsumesSpec{
+		FlaskId:     58086, // Flask of the Draconic Mind
+		FoodId:      62671, // Severed Sagefish Head
+		PotId:       58091, // Volcanic Potion
+		ExplosiveId: 89637, // Big Daddy Explosive
+		TinkerId:    82174, // Synapse Springs
 	}
 
 	var afflictionGlyphs = &proto.Glyphs{
@@ -408,7 +408,7 @@ func TestAffliction(t *testing.T) {
 		GearSet:          core.GetGearSet("../../../ui/warlock/affliction/gear_sets", "p4"),
 		Talents:          afflictionTalents,
 		Glyphs:           afflictionGlyphs,
-		Consumes:         fullConsumes,
+		Consumables:      fullConsumesSpec,
 		SpecOptions:      core.SpecOptionsCombo{Label: "Affliction Warlock", SpecOptions: defaultAfflictionWarlock},
 		OtherSpecOptions: []core.SpecOptionsCombo{},
 		Rotation:         core.GetAplRotation("../../../ui/warlock/affliction/apls", "default"),

@@ -1,7 +1,7 @@
 import { hasTouch } from '../shared/bootstrap_overrides';
 import { SimRequest } from '../worker/types';
 import { getBrowserLanguageCode, setLanguageCode } from './constants/lang';
-import * as OtherConstants from './constants/other';
+import { CURRENT_PHASE, LOCAL_STORAGE_PREFIX } from './constants/other';
 import { Encounter } from './encounter';
 import { Player, UnitMetadata } from './player';
 import {
@@ -27,13 +27,14 @@ import {
 	Profession,
 	PseudoStat,
 	RangedWeaponType,
-	SimDatabase,
 	Spec,
 	Stat,
 	UnitReference,
 	UnitReference_Type as UnitType,
 	WeaponType,
 } from './proto/common.js';
+import { Consumable, SimDatabase } from './proto/db';
+import { SpellEffect } from './proto/spell';
 import { DatabaseFilters, RaidFilterOption, SimSettings as SimSettingsProto, SourceFilterOption } from './proto/ui.js';
 import { Database } from './proto_utils/database.js';
 import { SimResult } from './proto_utils/sim_result.js';
@@ -41,7 +42,7 @@ import { Raid } from './raid.js';
 import { runConcurrentSim, runConcurrentStatWeights } from './sim_concurrent';
 import { RequestTypes, SimSignalManager } from './sim_signal_manager';
 import { EventID, TypedEvent } from './typed_event.js';
-import { getEnumValues, noop } from './utils.js';
+import { getEnumValues, isDevMode, noop } from './utils.js';
 import { generateRequestId, WorkerPool, WorkerProgressCallback } from './worker_pool.js';
 
 export type RaidSimData = {
@@ -59,7 +60,7 @@ interface SimProps {
 	type?: SimType;
 }
 
-const WASM_CONCURRENCY_STORAGE_KEY = `${OtherConstants.LOCAL_STORAGE_PREFIX}_wasmconcurrency`;
+const WASM_CONCURRENCY_STORAGE_KEY = `${LOCAL_STORAGE_PREFIX}_wasmconcurrency`;
 
 // Core Sim module which deals only with api types, no UI-related stuff.
 export class Sim {
@@ -67,7 +68,7 @@ export class Sim {
 
 	iterations = 12500;
 
-	private phase: number = OtherConstants.CURRENT_PHASE;
+	private phase: number = CURRENT_PHASE;
 	private faction: Faction = Faction.Alliance;
 	private fixedRngSeed = 0;
 	private filters: DatabaseFilters = Sim.defaultFilters();
@@ -212,6 +213,7 @@ export class Sim {
 	setModifyRaidProto(newModFn: (raidProto: RaidProto) => void) {
 		this.modifyRaidProto = newModFn;
 	}
+
 	getModifiedRaidProto(): RaidProto {
 		const raidProto = this.raid.toProto(false, true);
 		this.modifyRaidProto(raidProto);
@@ -243,6 +245,37 @@ export class Sim {
 				if (gearChanged) {
 					player.equipment = gear.asSpec();
 				}
+
+				// Include consumables in the player db
+				const pdb = player.database!;
+
+				const newConsumables: Consumable[] = [];
+				const newSpellEffects: SpellEffect[] = [];
+				const seenConsumableIds = new Set<number>();
+				const seenEffectIds = new Set<number>();
+				Object.entries(player.consumables ?? []).forEach(([field, cid]) => {
+					if (isDevMode()) {
+						console.log(field, cid);
+					}
+					if (!cid || seenConsumableIds.has(cid)) return;
+					const consume = this.db.getConsumable(cid);
+					if (!consume) return;
+					seenConsumableIds.add(consume.id);
+					newConsumables.push(consume);
+					for (const eid of consume.effectIds) {
+						if (seenEffectIds.has(eid)) continue;
+						const effect = this.db.getSpellEffect(eid);
+						if (!effect) continue;
+
+						seenEffectIds.add(effect.id);
+						newSpellEffects.push(effect);
+					}
+				});
+
+				// swap in the fresh arrays
+				pdb.consumables = newConsumables;
+				pdb.spellEffects = newSpellEffects;
+				player.database = pdb;
 			});
 		});
 
@@ -297,6 +330,8 @@ export class Sim {
 		playerDatabase.gems.push(...bulkItemsDb.gems);
 		playerDatabase.reforgeStats.push(...bulkItemsDb.reforgeStats);
 		playerDatabase.randomSuffixes.push(...bulkItemsDb.randomSuffixes);
+		playerDatabase.consumables.push(...bulkItemsDb.consumables);
+		playerDatabase.spellEffects.push(...bulkItemsDb.spellEffects);
 
 		this.bulkSimStartEmitter.emit(TypedEvent.nextEventID(), request);
 
@@ -439,18 +474,15 @@ export class Sim {
 		eventID = TypedEvent.nextEventID();
 
 		await this.waitForInit();
-
 		// Capture the current players so we avoid issues if something changes while
 		// request is in-flight.
-		const players = this.raid.getPlayers();
 
+		const players = this.raid.getPlayers();
 		const req = ComputeStatsRequest.create({
 			raid: this.getModifiedRaidProto(),
 			encounter: this.encounter.toProto(),
 		});
-
 		const result = await this.workerPool.computeStats(req);
-
 		if (result.errorResult != '') {
 			this.crashEmitter.emit(eventID, new SimError(result.errorResult));
 			return;
@@ -789,7 +821,7 @@ export class Sim {
 	fromProto(eventID: EventID, proto: SimSettingsProto) {
 		TypedEvent.freezeAllAndDo(() => {
 			this.setIterations(eventID, proto.iterations || 12500);
-			this.setPhase(eventID, proto.phase || OtherConstants.CURRENT_PHASE);
+			this.setPhase(eventID, proto.phase || CURRENT_PHASE);
 			this.setFixedRngSeed(eventID, Number(proto.fixedRngSeed));
 			this.setShowDamageMetrics(eventID, proto.showDamageMetrics);
 			this.setShowThreatMetrics(eventID, proto.showThreatMetrics);
@@ -832,7 +864,7 @@ export class Sim {
 			eventID,
 			SimSettingsProto.create({
 				iterations: 12500,
-				phase: OtherConstants.CURRENT_PHASE,
+				phase: CURRENT_PHASE,
 				faction: Faction.Alliance,
 				showDamageMetrics: !isHealingSim,
 				showThreatMetrics: isTankSim,

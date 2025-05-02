@@ -868,9 +868,9 @@ dps_results: {
 dps_results: {
  key: "TestProtectionWarrior-AllItems-Gladiator'sBattlegear"
  value: {
-  dps: 5957.85949
-  tps: 35398.1621
-  hps: 892.05722
+  dps: 6955.66277
+  tps: 41454.03519
+  hps: 1027.78345
  }
 }
 dps_results: {
@@ -1604,22 +1604,22 @@ dps_results: {
 dps_results: {
  key: "TestProtectionWarrior-AllItems-Rathrak,thePoisonousMind-77195"
  value: {
-  dps: 4712.51472
-  tps: 29353.72533
+  dps: 4254.11915
+  tps: 27061.74749
  }
 }
 dps_results: {
  key: "TestProtectionWarrior-AllItems-Rathrak,thePoisonousMind-78475"
  value: {
-  dps: 4830.5119
-  tps: 29943.71122
+  dps: 4313.33601
+  tps: 27357.83176
  }
 }
 dps_results: {
  key: "TestProtectionWarrior-AllItems-Rathrak,thePoisonousMind-78484"
  value: {
-  dps: 4607.67415
-  tps: 28829.52248
+  dps: 4201.91713
+  tps: 26800.7374
  }
 }
 dps_results: {
@@ -2329,8 +2329,8 @@ dps_results: {
 dps_results: {
  key: "TestProtectionWarrior-AllItems-Val'anyr,HammerofAncientKings-46017"
  value: {
-  dps: 4356.39432
-  tps: 27756.95771
+  dps: 4202.39413
+  tps: 26986.95676
  }
 }
 dps_results: {

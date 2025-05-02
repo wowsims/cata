@@ -5,7 +5,7 @@ import { Encounter } from './encounter';
 import { Player } from './player';
 import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
 import {
-	Consumes,
+	ConsumesSpec,
 	Cooldowns,
 	Debuffs,
 	Encounter as EncounterProto,
@@ -76,7 +76,7 @@ export interface PresetEncounter extends PresetBase {
 	raidBuffs?: RaidBuffs;
 	debuffs?: Debuffs;
 	buffs?: IndividualBuffs;
-	consumes?: Consumes;
+	consumes?: ConsumesSpec;
 }
 export interface PresetEncounterOptions extends PresetOptionsBase {}
 
@@ -215,7 +215,7 @@ export const makePresetEncounter = (name: string, encounter?: PresetEncounter['e
 		raidBuffs = settings?.raidBuffs;
 		debuffs = settings?.debuffs;
 		buffs = settings?.player?.buffs;
-		consumes = settings?.player?.consumes;
+		consumes = settings?.player?.consumables;
 	}
 
 	return {

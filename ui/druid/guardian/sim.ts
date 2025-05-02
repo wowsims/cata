@@ -97,7 +97,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
+
+		consumables: Presets.DefaultConsumables,
 		// Default rotation settings.
 		rotationType: APLRotationType.TypeSimple,
 		simpleRotation: Presets.DefaultSimpleRotation,
@@ -162,7 +163,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		rotations: [Presets.ROTATION_PRESET_SIMPLE, Presets.ROTATION_DEFAULT, Presets.ROTATION_CLEAVE, Presets.ROTATION_NEF],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
-		builds: [Presets.PRESET_BUILD_BOSS_DUMMY, Presets.PRESET_BUILD_MAGMAW, Presets.PRESET_BUILD_NEF, Presets.PRESET_BUILD_BETHTILAC, Presets.PRESET_BUILD_BALEROC_MT, Presets.PRESET_BUILD_BALEROC_OT, Presets.PRESET_BUILD_BLACKHORN_OT],
+		builds: [
+			Presets.PRESET_BUILD_BOSS_DUMMY,
+			Presets.PRESET_BUILD_MAGMAW,
+			Presets.PRESET_BUILD_NEF,
+			Presets.PRESET_BUILD_BETHTILAC,
+			Presets.PRESET_BUILD_BALEROC_MT,
+			Presets.PRESET_BUILD_BALEROC_OT,
+			Presets.PRESET_BUILD_BLACKHORN_OT,
+		],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecGuardianDruid>): APLRotation => {
@@ -250,7 +259,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 			spec: Spec.SpecGuardianDruid,
 			talents: Presets.StandardTalents.data,
 			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
+
+			consumables: Presets.DefaultConsumables,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceNightElf,
