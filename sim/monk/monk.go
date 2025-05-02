@@ -149,6 +149,7 @@ func (monk *Monk) registerSpells() {
 	monk.registerTigerPalm()
 	monk.registerCracklingJadeLightning()
 	monk.registerFortifyingBrew()
+	monk.registerTouchOfDeath()
 }
 
 func (monk *Monk) Reset(sim *core.Simulation) {
@@ -221,6 +222,7 @@ const (
 	MonkSpellCracklingJadeLightning
 	MonkSpellFortifyingBrew
 	MonkSpellHealingSphere
+	MonkSpellTouchOfDeath
 
 	// -- Talents
 	// Level 15
