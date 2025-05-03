@@ -7,6 +7,13 @@ import (
 	"github.com/wowsims/mop/sim/rogue"
 )
 
+// Damage Done By Caster setup
+const (
+	DDBC_SanguinaryVein = iota
+
+	DDBC_Total
+)
+
 func RegisterSubtletyRogue() {
 	core.RegisterAgentFactory(
 		proto.Player_SubtletyRogue{},
@@ -30,18 +37,15 @@ func (subRogue *SubtletyRogue) Initialize() {
 	subRogue.MasteryBaseValue = 0.2
 	subRogue.MasteryMultiplier = .025
 
-	// subRogue.registerHemorrhageSpell()
-	// subRogue.registerSanguinaryVein()
-	// subRogue.registerPremeditation()
-	// subRogue.registerHonorAmongThieves()
+	subRogue.registerHemorrhageSpell()
+	subRogue.registerSanguinaryVein()
+	subRogue.registerPremeditation()
+	subRogue.registerHonorAmongThieves()
 
-	// subRogue.applyInitiative()
-	// subRogue.applyFindWeakness()
+	subRogue.applyFindWeakness()
 
 	subRogue.registerMasterOfSubtletyCD()
-	// subRogue.registerShadowDanceCD()
-	// subRogue.registerPreparationCD()
-	subRogue.registerShadowstepCD()
+	subRogue.registerShadowDanceCD()
 
 	// Apply Mastery
 	masteryMod := subRogue.AddDynamicMod(core.SpellModConfig{

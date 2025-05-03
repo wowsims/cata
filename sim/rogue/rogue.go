@@ -46,8 +46,7 @@ type Rogue struct {
 	Hemorrhage       *core.Spell
 	GhostlyStrike    *core.Spell
 	HungerForBlood   *core.Spell
-	InstantPoison    [4]*core.Spell
-	WoundPoison      [4]*core.Spell
+	WoundPoison      *core.Spell
 	Mutilate         *core.Spell
 	MutilateMH       *core.Spell
 	MutilateOH       *core.Spell
@@ -66,6 +65,7 @@ type Rogue struct {
 	KillingSpree     *core.Spell
 	AdrenalineRush   *core.Spell
 	Gouge            *core.Spell
+	ShadowBlades     *core.Spell
 
 	Envenom      *core.Spell
 	Eviscerate   *core.Spell
@@ -74,11 +74,8 @@ type Rogue struct {
 	SliceAndDice *core.Spell
 	Recuperate   *core.Spell
 
-	lastDeadlyPoisonProcMask core.ProcMask
-
-	deadlyPoisonPPHM  [proto.ItemSlot_ItemSlotRanged + 1]*core.DynamicProcManager
-	instantPoisonPPMM [proto.ItemSlot_ItemSlotRanged + 1]*core.DynamicProcManager
-	woundPoisonPPMM   [proto.ItemSlot_ItemSlotRanged + 1]*core.DynamicProcManager
+	deadlyPoisonPPHM [proto.ItemSlot_ItemSlotOffHand + 1]*core.DynamicProcManager
+	woundPoisonPPHM  [proto.ItemSlot_ItemSlotOffHand + 1]*core.DynamicProcManager
 
 	AdrenalineRushAura   *core.Aura
 	BladeFlurryAura      *core.Aura
@@ -120,44 +117,35 @@ func (rogue *Rogue) AddPartyBuffs(_ *proto.PartyBuffs) {}
 
 // Apply the effect of successfully casting a finisher to combo points
 func (rogue *Rogue) ApplyFinisher(sim *core.Simulation, spell *core.Spell) {
-	// numPoints := rogue.ComboPoints()
-	// rogue.SpendComboPoints(sim, spell.ComboPointMetrics())
+	numPoints := rogue.ComboPoints()
+	rogue.SpendComboPoints(sim, spell.ComboPointMetrics())
 
-	// TODO: Fix this to work with the new talent system.
-	// if rogue.Talents.Ruthlessness > 0 && (spell.ClassSpellMask&RogueSpellDamagingFinisher != 0) {
-	// 	procChance := 0.2 * float64(rogue.Talents.Ruthlessness)
-	// 	if sim.Proc(procChance, "Ruthlessness") {
-	// 		rogue.AddComboPoints(sim, 1, rogue.ruthlessnessMetrics)
-	// 	}
-	// }
-	// if rogue.Talents.RelentlessStrikes > 0 {
-	// 	procChance := []float64{0.0, 0.07, 0.14, 0.2}[rogue.Talents.RelentlessStrikes] * float64(numPoints)
-	// 	if sim.Proc(procChance, "Relentless Strikes") {
-	// 		rogue.AddEnergy(sim, 25, rogue.relentlessStrikesMetrics)
-	// 	}
-	// }
-	// if rogue.Talents.RestlessBlades > 0 && (spell.ClassSpellMask&RogueSpellDamagingFinisher != 0) {
-	// 	cdReduction := time.Duration(rogue.Talents.RestlessBlades) * time.Second * time.Duration(numPoints)
+	if rogue.Spec == proto.Spec_SpecCombatRogue {
+		// Ruthlessness
+		if sim.Proc(0.2*float64(numPoints), "Ruthlessness") {
+			rogue.AddComboPoints(sim, 1, rogue.ruthlessnessMetrics)
+		}
 
-	// 	if rogue.KillingSpree != nil {
-	// 		ksNewTime := rogue.KillingSpree.CD.Timer.ReadyAt() - cdReduction
-	// 		rogue.KillingSpree.CD.Timer.Set(ksNewTime)
-	// 	}
-	// 	if rogue.AdrenalineRush != nil {
-	// 		arNewTime := rogue.AdrenalineRush.CD.Timer.ReadyAt() - cdReduction
-	// 		rogue.AdrenalineRush.CD.Timer.Set(arNewTime)
-	// 	}
-	// }
-	// if rogue.Talents.SerratedBlades > 0 && spell == rogue.Eviscerate {
-	// 	chancePerPoint := 0.1 * float64(rogue.Talents.SerratedBlades)
-	// 	procChance := float64(numPoints) * chancePerPoint
-	// 	if sim.Proc(procChance, "Serrated Blades") {
-	// 		rupAura := rogue.Rupture.Dot(spell.Unit.CurrentTarget)
-	// 		if rupAura.IsActive() {
-	// 			rupAura.Activate(sim)
-	// 		}
-	// 	}
-	// }
+		// Restless Blades
+		cdReduction := 2 * time.Second * time.Duration(numPoints)
+		if rogue.KillingSpree != nil {
+			ksNewTime := rogue.KillingSpree.CD.Timer.ReadyAt() - cdReduction
+			rogue.KillingSpree.CD.Timer.Set(ksNewTime)
+		}
+		if rogue.AdrenalineRush != nil {
+			arNewTime := rogue.AdrenalineRush.CD.Timer.ReadyAt() - cdReduction
+			rogue.AdrenalineRush.CD.Timer.Set(arNewTime)
+		}
+		if rogue.ShadowBlades != nil {
+			sbNewTime := rogue.ShadowBlades.CD.Timer.ReadyAt() - cdReduction
+			rogue.ShadowBlades.CD.Timer.Set(sbNewTime)
+		}
+	}
+
+	// Relentless Strikes
+	if sim.Proc(0.2*float64(numPoints), "Relentless Strikes") {
+		rogue.AddEnergy(sim, 25, rogue.relentlessStrikesMetrics)
+	}
 }
 
 func (rogue *Rogue) HasMajorGlyph(glyph proto.RogueMajorGlyph) bool {
@@ -174,29 +162,6 @@ func (rogue *Rogue) Initialize() {
 	rogue.AutoAttacks.OHConfig().CritMultiplier = rogue.CritMultiplier(false)
 	rogue.AutoAttacks.RangedConfig().CritMultiplier = rogue.CritMultiplier(false)
 
-	// rogue.registerStealthAura()
-	// rogue.registerVanishSpell()
-	rogue.registerFeintSpell()
-	// rogue.registerAmbushSpell()
-	// rogue.registerGarrote()
-	// rogue.registerSinisterStrikeSpell()
-	// rogue.registerBackstabSpell()
-	// rogue.registerRupture()
-	// rogue.registerSliceAndDice()
-	// rogue.registerEviscerate()
-	// rogue.registerEnvenom()
-	// rogue.registerExposeArmorSpell()
-	// rogue.registerRecuperate()
-	// rogue.registerFanOfKnives()
-	// rogue.registerTricksOfTheTradeSpell()
-	// rogue.registerDeadlyPoisonSpell()
-	// rogue.registerInstantPoisonSpell()
-	// rogue.registerWoundPoisonSpell()
-	// rogue.registerPoisonAuras()
-	// rogue.registerShivSpell()
-	rogue.registerThistleTeaCD()
-	// rogue.registerGougeSpell()
-
 	rogue.T12ToTLastBuff = 3
 
 	// re-configure poisons when performing an item swap
@@ -210,18 +175,13 @@ func (rogue *Rogue) Initialize() {
 			if mhWeaponSpeed <= ohWeaponSpeed {
 				rogue.Options.MhImbue = proto.RogueOptions_DeadlyPoison
 				rogue.Options.OhImbue = proto.RogueOptions_InstantPoison
-				rogue.lastDeadlyPoisonProcMask = core.ProcMaskMeleeMH
 			} else {
 				rogue.Options.MhImbue = proto.RogueOptions_InstantPoison
 				rogue.Options.OhImbue = proto.RogueOptions_DeadlyPoison
-				rogue.lastDeadlyPoisonProcMask = core.ProcMaskMeleeOH
 			}
-			// rogue.UpdateInstantPoisonPPM(0)
 		}
 	})
 }
-
-func (rogue *Rogue) ApplyTalents() {}
 
 func (rogue *Rogue) ApplyAdditiveEnergyRegenBonus(sim *core.Simulation, increment float64) {
 	oldBonus := rogue.AdditiveEnergyRegenBonus
@@ -242,10 +202,6 @@ func (rogue *Rogue) Reset(sim *core.Simulation) {
 
 func (rogue *Rogue) CritMultiplier(applyLethality bool) float64 {
 	secondaryModifier := 0.0
-	// TODO: Fix this to work with the new talent system.
-	// if applyLethality {
-	// 	secondaryModifier += 0.1 * float64(rogue.Talents.Lethality)
-	// }
 	return rogue.GetCharacter().CritMultiplier(1.0, secondaryModifier)
 }
 
@@ -284,7 +240,7 @@ func NewRogue(character *core.Character, options *proto.RogueOptions, talents st
 		Ranged:         rogue.WeaponFromRanged(0),
 		AutoSwingMelee: true,
 	})
-	// rogue.applyPoisons()
+	rogue.applyPoisons()
 
 	rogue.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 	rogue.AddStatDependency(stats.Agility, stats.AttackPower, 2)
@@ -292,19 +248,6 @@ func NewRogue(character *core.Character, options *proto.RogueOptions, talents st
 
 	return rogue
 }
-
-// Apply the effects of the Cut to the Chase talent
-// TODO: Put a fresh instance of SnD rather than use the original as per client
-// TODO (TheBackstabi, 3/16/2024) - Assassination only talent, to be moved?
-// func (rogue *Rogue) ApplyCutToTheChase(sim *core.Simulation) {
-// 	if rogue.Talents.CutToTheChase > 0 && rogue.SliceAndDiceAura.IsActive() {
-// 		procChance := []float64{0.0, 0.33, 0.67, 1.0}[rogue.Talents.CutToTheChase]
-// 		if procChance == 1 || sim.Proc(procChance, "Cut to the Chase") {
-// 			rogue.SliceAndDiceAura.Duration = rogue.sliceAndDiceDurations[5]
-// 			rogue.SliceAndDiceAura.Activate(sim)
-// 		}
-// 	}
-// }
 
 // Deactivate Stealth if it is active. This must be added to all abilities that cause Stealth to fade.
 func (rogue *Rogue) BreakStealth(sim *core.Simulation) {
@@ -329,14 +272,7 @@ func (rogue *Rogue) HasThrown() bool {
 
 // Check if the rogue is considered in "stealth" for the purpose of casting abilities
 func (rogue *Rogue) IsStealthed() bool {
-	if rogue.StealthAura.IsActive() {
-		return true
-	}
-	// TODO: Fix this to work with the new talent system.
-	// if rogue.Talents.ShadowDance && rogue.ShadowDanceAura.IsActive() {
-	// 	return true
-	// }
-	return false
+	return rogue.StealthAura.IsActive() || (rogue.ShadowDanceAura != nil && rogue.ShadowDanceAura.IsActive())
 }
 
 func (rogue *Rogue) GetMasteryBonus() float64 {
@@ -364,6 +300,7 @@ const (
 	RogueSpellGouge
 	RogueSpellRecuperate
 	RogueSpellRupture
+	RogueSpellCrimsonTempest
 	RogueSpellShiv
 	RogueSpellSinisterStrike
 	RogueSpellSliceAndDice
@@ -384,11 +321,13 @@ const (
 	RogueSpellRevealingStrike
 	RogueSpellColdBlood
 	RogueSpellMutilate
+	RogueSpellDispatch
 	RogueSpellVendetta
 	RogueSpellVenomousWounds
 	RogueSpellWoundPoison
 	RogueSpellInstantPoison
 	RogueSpellDeadlyPoison
+	RogueSpellShadowBlades
 
 	RogueSpellLast
 	RogueSpellsAll = RogueSpellLast<<1 - 1

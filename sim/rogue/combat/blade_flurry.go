@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/rogue"
 )
 
@@ -27,8 +26,7 @@ func (comRogue *CombatRogue) registerBladeFlurry() {
 		},
 	})
 
-	hasGlyph := comRogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfBladeFlurry)
-	energyReduction := core.TernaryFloat64(hasGlyph, -0.15, -0.3)
+	energyReduction := -0.2
 
 	comRogue.BladeFlurryAura = comRogue.RegisterAura(core.Aura{
 		Label:    "Blade Flurry",
@@ -55,8 +53,12 @@ func (comRogue *CombatRogue) registerBladeFlurry() {
 			// Undo armor reduction to get the raw damage value.
 			curDmg = result.Damage / result.ResistanceMultiplier
 
-			bfTarget := comRogue.Env.NextTargetUnit(result.Target)
-			bfHit.Cast(sim, bfTarget)
+			for enemyIndex := 0; enemyIndex < 3; enemyIndex++ {
+				if comRogue.Env.GetNumTargets()-1 <= int32(enemyIndex) {
+					bfTarget := comRogue.Env.GetTargetUnit(int32(enemyIndex))
+					bfHit.Cast(sim, bfTarget)
+				}
+			}
 		},
 	})
 
