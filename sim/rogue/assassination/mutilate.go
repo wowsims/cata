@@ -16,7 +16,8 @@ func (sinRogue *AssassinationRogue) newMutilateHitSpell(isMH bool) *core.Spell {
 		actionID = core.ActionID{SpellID: MutilateSpellID, Tag: 2}
 		procMask = core.ProcMaskMeleeOHSpecial
 	}
-	mutBaseDamage := sinRogue.ClassSpellScaling * 0.17900000513
+	mutBaseDamage := sinRogue.GetBaseDamageFromCoefficient(0.25)
+	mutWeaponPercent := 2.8
 
 	return sinRogue.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
@@ -25,7 +26,7 @@ func (sinRogue *AssassinationRogue) newMutilateHitSpell(isMH bool) *core.Spell {
 		Flags:          core.SpellFlagMeleeMetrics | rogue.SpellFlagBuilder | rogue.SpellFlagColdBlooded,
 		ClassSpellMask: rogue.RogueSpellMutilate,
 
-		DamageMultiplier:         1.86, // 84 * 1.3220000267 + 75
+		DamageMultiplier:         mutWeaponPercent,
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           sinRogue.CritMultiplier(true),
 		ThreatMultiplier:         1,

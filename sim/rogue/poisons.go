@@ -31,11 +31,13 @@ func (rogue *Rogue) UpdateLethalPoisonPPH(bonusChance float64) {
 }
 
 func (rogue *Rogue) registerDeadlyPoisonSpell() {
-	dot_baseDamage := 0.11999999732 * rogue.ClassSpellScaling
-	dot_apScaling := 0.03500000015
+	dot_baseDamage := rogue.GetBaseDamageFromCoefficient(0.60000002384)
+	dot_apScaling := 0.21299999952
 
-	hit_baseDamage := 263.0
-	hit_apScaling := 0.109
+	hit_baseDamage := rogue.GetBaseDamageFromCoefficient(0.31299999356)
+	hit_apScaling := 0.10899999738
+	hit_variance := 0.28000000119 * hit_baseDamage
+	hit_minimum := hit_baseDamage - hit_variance/2
 
 	rogue.DeadlyPoison = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 2818},
@@ -86,7 +88,9 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 
 			dot := spell.Dot(target)
 			if dot.IsActive() {
-				baseDamage := hit_baseDamage + hit_apScaling*spell.MeleeAttackPower()
+				baseDamage := hit_minimum +
+					sim.RandomFloat("Deadly Poison Hit")*hit_variance +
+					hit_apScaling*spell.MeleeAttackPower()
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
 			}
 

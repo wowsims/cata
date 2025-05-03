@@ -8,7 +8,8 @@ import (
 func (sinRogue *AssassinationRogue) registerVenomousWounds() {
 	vwActionID := core.ActionID{SpellID: 79134}
 
-	vwBaseTickDamage := 675.0
+	vwBaseTickDamage := sinRogue.GetBaseDamageFromCoefficient(0.55000001192)
+	vwAPCoeff := 0.15999999642
 	vwMetrics := sinRogue.NewEnergyMetrics(vwActionID)
 	vwProcChance := 0.75
 
@@ -50,7 +51,7 @@ func (sinRogue *AssassinationRogue) registerVenomousWounds() {
 		DamageMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			vwDamage := vwBaseTickDamage + 0.176*spell.MeleeAttackPower()
+			vwDamage := vwBaseTickDamage + vwAPCoeff*spell.MeleeAttackPower()
 			result := spell.CalcAndDealDamage(sim, target, vwDamage, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
 				sinRogue.AddEnergy(sim, 10, vwMetrics)

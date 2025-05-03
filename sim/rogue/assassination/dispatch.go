@@ -18,11 +18,6 @@ func (sinRogue *AssassinationRogue) registerDispatch() {
 		Flags:          core.SpellFlagMeleeMetrics | rogue.SpellFlagBuilder | rogue.SpellFlagColdBlooded | core.SpellFlagAPL,
 		ClassSpellMask: rogue.RogueSpellDispatch,
 
-		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           sinRogue.CritMultiplier(true),
-		ThreatMultiplier:         1,
-
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   30,
 			Refund: 0.8,
@@ -37,8 +32,13 @@ func (sinRogue *AssassinationRogue) registerDispatch() {
 			return sinRogue.HasDagger(core.MainHand) && (sim.IsExecutePhase35() || sinRogue.HasActiveAura("Blindside"))
 		},
 
+		DamageMultiplier:         weaponPercent,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           sinRogue.CritMultiplier(true),
+		ThreatMultiplier:         1,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())*weaponPercent + float64(addedDamage)
+			damage := addedDamage + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			outcome := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeSpecialHitAndCrit)
 			if outcome.Landed() {
 				sinRogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
