@@ -46,7 +46,6 @@ func (sinRogue *AssassinationRogue) Initialize() {
 	sinRogue.registerAllPassives()
 
 	// Apply Mastery
-	// As far as I am able to find, Asn's Mastery is an additive bonus. To be tested.
 	masteryMod := sinRogue.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Flat,
 		ClassMask:  rogue.RogueSpellWoundPoison | rogue.RogueSpellDeadlyPoison | rogue.RogueSpellEnvenom | rogue.RogueSpellVenomousWounds,
@@ -60,7 +59,7 @@ func (sinRogue *AssassinationRogue) Initialize() {
 
 	// Assassin's Resolve: +20% Multiplicative physical damage (confirmed)
 	// +20 Energy handled in base rogue
-	if sinRogue.GetMHWeapon() != nil && sinRogue.GetMHWeapon().WeaponType == proto.WeaponType_WeaponTypeDagger {
+	if sinRogue.HasDagger(core.MainHand) || sinRogue.HasDagger(core.OffHand) {
 		sinRogue.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.2
 	}
 }

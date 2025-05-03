@@ -227,9 +227,7 @@ func NewRogue(character *core.Character, options *proto.RogueOptions, talents st
 
 	maxEnergy := 100.0
 
-	if rogue.Spec == proto.Spec_SpecAssassinationRogue &&
-		rogue.GetMHWeapon() != nil &&
-		rogue.GetMHWeapon().WeaponType == proto.WeaponType_WeaponTypeDagger {
+	if rogue.Spec == proto.Spec_SpecAssassinationRogue && (rogue.HasDagger(core.MainHand) || rogue.HasDagger(core.OffHand)) {
 		maxEnergy += 20
 	}
 
@@ -265,10 +263,15 @@ func (rogue *Rogue) BreakStealth(sim *core.Simulation) {
 
 // Does the rogue have a dagger equipped in the specified hand (main or offhand)?
 func (rogue *Rogue) HasDagger(hand core.Hand) bool {
-	if hand == core.MainHand {
+	if hand == core.MainHand && rogue.MainHand() != nil {
 		return rogue.MainHand().WeaponType == proto.WeaponType_WeaponTypeDagger
 	}
-	return rogue.OffHand().WeaponType == proto.WeaponType_WeaponTypeDagger
+
+	if rogue.OffHand() != nil {
+		return rogue.OffHand().WeaponType == proto.WeaponType_WeaponTypeDagger
+	}
+
+	return false
 }
 
 // Does the rogue have a thrown weapon equipped in the ranged slot?

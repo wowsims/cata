@@ -34,7 +34,7 @@ func (sinRogue *AssassinationRogue) registerDispatch() {
 			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return sim.IsExecutePhase35() || sinRogue.HasActiveAura("Blindside") // Blindside Aura Check
+			return sinRogue.HasDagger(core.MainHand) && (sim.IsExecutePhase35() || sinRogue.HasActiveAura("Blindside"))
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

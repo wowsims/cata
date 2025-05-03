@@ -64,6 +64,9 @@ func (sinRogue *AssassinationRogue) registerMutilateSpell() {
 			},
 			IgnoreHaste: true,
 		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return sinRogue.HasDagger(core.MainHand) && sinRogue.HasDagger(core.OffHand)
+		},
 
 		ThreatMultiplier: 1,
 
