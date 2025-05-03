@@ -150,6 +150,7 @@ export default class SelectorModal extends BaseModal {
 						item: item,
 						id: item.id,
 						actionId: ActionId.fromItem(item),
+						ilvl: new EquippedItem({ item }).ilvl,
 						name: item.name,
 						quality: item.quality,
 						heroic: item.heroic,
