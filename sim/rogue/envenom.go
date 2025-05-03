@@ -16,10 +16,10 @@ func (rogue *Rogue) registerEnvenom() {
 		Label:    "Envenom",
 		ActionID: core.ActionID{SpellID: 32645},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.UpdateDeadlyPoisonPPH(0.15)
+			rogue.UpdateLethalPoisonPPH(0.15)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.UpdateDeadlyPoisonPPH(0.0)
+			rogue.UpdateLethalPoisonPPH(0.0)
 		},
 	})
 

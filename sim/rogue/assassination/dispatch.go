@@ -7,15 +7,15 @@ import (
 	"github.com/wowsims/mop/sim/rogue"
 )
 
-func (sinRogue *AssassinationRogue) registerDispatch() *core.Spell {
-	addedDamage := 655
-	weaponDamage := 645.0
+func (sinRogue *AssassinationRogue) registerDispatch() {
+	addedDamage := sinRogue.GetBaseDamageFromCoefficient(0.62900000811)
+	weaponPercent := 6.45
 
-	return sinRogue.RegisterSpell(core.SpellConfig{
+	sinRogue.Dispatch = sinRogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 111240},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | rogue.SpellFlagBuilder | rogue.SpellFlagColdBlooded,
+		Flags:          core.SpellFlagMeleeMetrics | rogue.SpellFlagBuilder | rogue.SpellFlagColdBlooded | core.SpellFlagAPL,
 		ClassSpellMask: rogue.RogueSpellDispatch,
 
 		DamageMultiplier:         1,
@@ -34,11 +34,11 @@ func (sinRogue *AssassinationRogue) registerDispatch() *core.Spell {
 			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return target.CurrentHealthPercent() <= 35.0 || false // Blindside Aura Check
+			return sim.IsExecutePhase35() || sinRogue.HasActiveAura("Blindside") // Blindside Aura Check
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := weaponDamage*spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + float64(addedDamage)
+			damage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())*weaponPercent + float64(addedDamage)
 			outcome := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeSpecialHitAndCrit)
 			if outcome.Landed() {
 				sinRogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())

@@ -9,6 +9,7 @@ import (
 func (rogue *Rogue) registerShadowBladesCD() {
 	mhHit := rogue.makeShadowBladeHit(true)
 	ohHit := rogue.makeShadowBladeHit(false)
+	cpMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: 121471})
 
 	sbAura := rogue.RegisterAura(core.Aura{
 		Label:    "Shadow Blades",
@@ -16,15 +17,21 @@ func (rogue *Rogue) registerShadowBladesCD() {
 		Duration: time.Second * 12,
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell == rogue.AutoAttacks.MHAuto() {
-				mhHit.Cast(sim, result.Target)
-			} else if spell == rogue.AutoAttacks.OHAuto() {
-				ohHit.Cast(sim, result.Target)
+			if result.Landed() {
+				if spell == rogue.AutoAttacks.MHAuto() {
+					mhHit.Cast(sim, result.Target)
+				} else if spell == rogue.AutoAttacks.OHAuto() {
+					ohHit.Cast(sim, result.Target)
+				}
+
+				if spell.Flags.Matches(SpellFlagBuilder) {
+					rogue.AddComboPoints(sim, 1, cpMetrics)
+				}
 			}
 		},
 	})
 
-	rogue.RegisterSpell(core.SpellConfig{
+	rogue.ShadowBlades = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 121471},
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: RogueSpellShadowBlades,

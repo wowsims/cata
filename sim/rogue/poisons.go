@@ -24,13 +24,9 @@ func (rogue *Rogue) GetLethalPoisonProcChance() float64 {
 	return 0.3 + core.TernaryFloat64(rogue.Spec == proto.Spec_SpecAssassinationRogue, 0.2, 0)
 }
 
-func (rogue *Rogue) UpdateDeadlyPoisonPPH(bonusChance float64) {
+func (rogue *Rogue) UpdateLethalPoisonPPH(bonusChance float64) {
 	pph := rogue.GetLethalPoisonProcChance() + bonusChance
 	rogue.deadlyPoisonPPHM = rogue.AutoAttacks.NewStaticDynamicProcManager(pph, core.ProcMaskMelee)
-}
-
-func (rogue *Rogue) UpdateWoundPoisonPPH(bonusChance float64) {
-	pph := rogue.GetLethalPoisonProcChance() + bonusChance
 	rogue.woundPoisonPPHM = rogue.AutoAttacks.NewStaticDynamicProcManager(pph, core.ProcMaskMelee)
 }
 
@@ -104,7 +100,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 func (rogue *Rogue) registerWoundPoisonSpell() {
 	woundPoisonDebuffAura := core.Aura{
 		Label:    "Wound Poison",
-		ActionID: core.ActionID{SpellID: 13219},
+		ActionID: core.ActionID{SpellID: 8680},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.MasterPoisonerDebuffAuras.Get(aura.Unit).Activate(sim)
@@ -120,7 +116,7 @@ func (rogue *Rogue) registerWoundPoisonSpell() {
 
 	wpBaseDamage := 0.24500000477 * rogue.ClassSpellScaling
 	rogue.WoundPoison = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 13218},
+		ActionID:       core.ActionID{SpellID: 8680},
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamageProc,
 		ClassSpellMask: RogueSpellWoundPoison,
@@ -133,8 +129,7 @@ func (rogue *Rogue) registerWoundPoisonSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := wpBaseDamage + 0.04*spell.MeleeAttackPower()
 
-			var result *core.SpellResult
-			result = spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
 				rogue.WoundPoisonDebuffAuras.Get(target).Activate(sim)
@@ -144,34 +139,37 @@ func (rogue *Rogue) registerWoundPoisonSpell() {
 }
 
 func (rogue *Rogue) applyDeadlyPoison() {
-	rogue.UpdateDeadlyPoisonPPH(0)
+	if rogue.Options.LethalPoison == proto.RogueOptions_DeadlyPoison {
+		rogue.UpdateLethalPoisonPPH(0)
 
-	core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
-		Name:     "Deadly Poison",
-		Outcome:  core.OutcomeLanded,
-		Callback: core.CallbackOnSpellHitDealt,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			procMask := core.Ternary(spell.SpellID == 86392, core.ProcMaskMeleeMH, spell.ProcMask)
-			if rogue.deadlyPoisonPPHM.Proc(sim, procMask, "Deadly Poison") {
-				rogue.DeadlyPoison.Cast(sim, result.Target)
-			}
-		},
-	})
-
+		core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
+			Name:     "Deadly Poison",
+			Outcome:  core.OutcomeLanded,
+			Callback: core.CallbackOnSpellHitDealt,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				procMask := core.Ternary(spell.SpellID == 86392, core.ProcMaskMeleeMH, spell.ProcMask)
+				if rogue.deadlyPoisonPPHM.Proc(sim, procMask, "Deadly Poison") {
+					rogue.DeadlyPoison.Cast(sim, result.Target)
+				}
+			},
+		})
+	}
 }
 
 func (rogue *Rogue) applyWoundPoison() {
-	rogue.UpdateWoundPoisonPPH(0)
+	if rogue.Options.LethalPoison == proto.RogueOptions_WoundPoison {
+		rogue.UpdateLethalPoisonPPH(0)
 
-	core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
-		Name:     "Wound Poison",
-		Outcome:  core.OutcomeLanded,
-		Callback: core.CallbackOnSpellHitDealt,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			procMask := core.Ternary(spell.SpellID == 86392, core.ProcMaskMeleeMH, spell.ProcMask)
-			if rogue.woundPoisonPPHM.Proc(sim, procMask, "Wound Poison") {
-				rogue.WoundPoison.Cast(sim, result.Target)
-			}
-		},
-	})
+		core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
+			Name:     "Wound Poison",
+			Outcome:  core.OutcomeLanded,
+			Callback: core.CallbackOnSpellHitDealt,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				procMask := core.Ternary(spell.SpellID == 86392, core.ProcMaskMeleeMH, spell.ProcMask)
+				if rogue.woundPoisonPPHM.Proc(sim, procMask, "Wound Poison") {
+					rogue.WoundPoison.Cast(sim, result.Target)
+				}
+			},
+		})
+	}
 }

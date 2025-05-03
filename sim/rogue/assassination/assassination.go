@@ -37,12 +37,14 @@ func (sinRogue *AssassinationRogue) Initialize() {
 	sinRogue.MasteryBaseValue = 0.28
 	sinRogue.MasteryMultiplier = 0.035
 
-	// sinRogue.registerMutilateSpell()
-	// sinRogue.registerOverkill()
-	// sinRogue.registerColdBloodCD()
-	// sinRogue.applySealFate()
-	// sinRogue.registerVenomousWounds()
-	// sinRogue.registerVendetta()
+	sinRogue.registerMutilateSpell()
+	sinRogue.registerDispatch()
+	sinRogue.registerOverkill()
+	sinRogue.registerColdBloodCD()
+	sinRogue.applySealFate()
+	sinRogue.registerVenomousWounds()
+	sinRogue.registerVendetta()
+	sinRogue.registerAllPassives()
 
 	// Apply Mastery
 	// As far as I am able to find, Asn's Mastery is an additive bonus. To be tested.

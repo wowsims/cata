@@ -50,12 +50,12 @@ func (sinRogue *AssassinationRogue) registerMutilateSpell() {
 	sinRogue.Mutilate = sinRogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: MutilateSpellID, Tag: 0},
 		SpellSchool:    core.SpellSchoolPhysical,
-		ProcMask:       core.ProcMaskEmpty,
+		ProcMask:       core.ProcMaskEmpty, // Mutilate (Cast) no longer appears to proc anything
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: rogue.RogueSpellMutilate,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   55,
+			Cost:   50,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -69,7 +69,7 @@ func (sinRogue *AssassinationRogue) registerMutilateSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			sinRogue.BreakStealth(sim)
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit) // Miss/Dodge/Parry/Hit
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 			if result.Landed() {
 				sinRogue.AddComboPoints(sim, 2, spell.ComboPointMetrics())
 				sinRogue.MutilateOH.Cast(sim, target)

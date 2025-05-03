@@ -55,6 +55,7 @@ func (combatRogue *CombatRogue) Initialize() {
 	combatRogue.AdditiveEnergyRegenBonus += 0.25
 	combatRogue.MultiplyStat(stats.AttackPower, 1.3)
 
+	combatRogue.registerSinisterStrikeSpell()
 	combatRogue.registerRevealingStrike()
 	combatRogue.registerBladeFlurry()
 	combatRogue.registerBanditsGuile()

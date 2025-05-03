@@ -47,6 +47,7 @@ type Rogue struct {
 	HungerForBlood   *core.Spell
 	WoundPoison      *core.Spell
 	Mutilate         *core.Spell
+	Dispatch         *core.Spell
 	MutilateMH       *core.Spell
 	MutilateOH       *core.Spell
 	Shiv             *core.Spell
@@ -155,6 +156,10 @@ func (rogue *Rogue) HasMinorGlyph(glyph proto.RogueMinorGlyph) bool {
 	return rogue.HasGlyph(int32(glyph))
 }
 
+func (rogue *Rogue) GetBaseDamageFromCoefficient(c float64) float64 {
+	return c * rogue.ClassSpellScaling
+}
+
 func (rogue *Rogue) Initialize() {
 	// Update auto crit multipliers now that we have the targets.
 	rogue.AutoAttacks.MHConfig().CritMultiplier = rogue.CritMultiplier(false)
@@ -176,8 +181,12 @@ func (rogue *Rogue) Initialize() {
 	rogue.registerDeadlyPoisonSpell()
 	rogue.registerWoundPoisonSpell()
 	rogue.registerPoisonAuras()
+	rogue.registerShadowBladesCD()
 
 	rogue.T12ToTLastBuff = 3
+
+	rogue.ruthlessnessMetrics = rogue.NewComboPointMetrics(core.ActionID{SpellID: 14161})
+	rogue.relentlessStrikesMetrics = rogue.NewEnergyMetrics(core.ActionID{SpellID: 58423})
 }
 
 func (rogue *Rogue) ApplyAdditiveEnergyRegenBonus(sim *core.Simulation, increment float64) {
