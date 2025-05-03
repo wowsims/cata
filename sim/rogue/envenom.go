@@ -40,11 +40,11 @@ func (rogue *Rogue) registerEnvenom() {
 			},
 			IgnoreHaste: true,
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				spell.SetMetricsSplit(spell.Unit.ComboPoints())
+				spell.SetMetricsSplit(rogue.GetCappedComboPoints())
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return rogue.ComboPoints() > 0
+			return rogue.GetCappedComboPoints() > 0
 		},
 
 		DamageMultiplier:         1,
