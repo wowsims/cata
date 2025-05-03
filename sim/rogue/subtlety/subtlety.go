@@ -48,29 +48,7 @@ func (subRogue *SubtletyRogue) Initialize() {
 	subRogue.registerMasterOfSubtletyCD()
 	subRogue.registerShadowDanceCD()
 
-	// Apply Mastery
-	masteryMod := subRogue.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  rogue.RogueSpellRupture | rogue.RogueSpellEviscerate,
-		FloatValue: subRogue.GetMasteryBonus(),
-	})
-
-	subRogue.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-		masteryMod.UpdateFloatValue(subRogue.GetMasteryBonus())
-	})
-
-	core.MakePermanent(subRogue.GetOrRegisterAura(core.Aura{
-		Label:    "Executioner",
-		ActionID: core.ActionID{SpellID: 76808},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			masteryMod.UpdateFloatValue(subRogue.GetMasteryBonus())
-			masteryMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			masteryMod.Deactivate()
-		},
-	}))
-
+	subRogue.applyPassives()
 }
 
 func NewSubtletyRogue(character *core.Character, options *proto.Player) *SubtletyRogue {
