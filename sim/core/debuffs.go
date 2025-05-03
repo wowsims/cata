@@ -492,32 +492,6 @@ func ShatteringThrowAura(target *Unit, actionTag int32) *Aura {
 	})
 }
 
-const HuntersMarkAuraTag = "HuntersMark"
-
-func HuntersMarkAura(target *Unit) *Aura {
-	bonus := 1772.0 // 443.000000 * 4 @ VoraciousGhost - Hunters Mark and Hawk uses the Unknown class in the SpellScaling
-	//Todo: Validate calculation
-
-	aura := target.GetOrRegisterAura(Aura{
-		Label:    "HuntersMark",
-		Tag:      HuntersMarkAuraTag,
-		ActionID: ActionID{SpellID: 1130},
-		Duration: NeverExpires,
-	})
-
-	aura.NewExclusiveEffect("HuntersMark", true, ExclusiveEffect{
-		Priority: bonus,
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.BonusRangedAttackPowerTaken += bonus
-		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.BonusRangedAttackPowerTaken -= bonus
-		},
-	})
-
-	return aura
-}
-
 func CurseOfWeaknessAura(target *Unit) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Curse of Weakness",
