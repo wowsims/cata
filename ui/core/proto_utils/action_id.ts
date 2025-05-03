@@ -1,6 +1,6 @@
 import { getWowheadLanguagePrefix } from '../constants/lang';
 import { CHARACTER_LEVEL } from '../constants/mechanics';
-import { ActionID as ActionIdProto, ItemRandomSuffix, OtherAction, ReforgeStat } from '../proto/common';
+import { ActionID as ActionIdProto, ItemLevelState, ItemRandomSuffix, OtherAction, ReforgeStat } from '../proto/common';
 import { ResourceType } from '../proto/spell';
 import { IconData, UIItem as Item } from '../proto/ui';
 import { buildWowheadTooltipDataset, WowheadTooltipItemParams, WowheadTooltipSpellParams } from '../wowhead';
@@ -9,11 +9,25 @@ import { Database } from './database';
 // If true uses wotlkdb.com, else uses wowhead.com.
 export const USE_WOTLK_DB = false;
 
+type ActionIdOptions = {
+	itemId?: number;
+	spellId?: number;
+	otherId?: OtherAction;
+	tag?: number;
+	baseName?: string;
+	name?: string;
+	iconUrl?: string;
+	randomSuffixId?: number;
+	reforgeId?: number;
+	upgradeStep?: number;
+};
+
 // Uniquely identifies a specific item / spell / thing in WoW. This object is immutable.
 export class ActionId {
 	readonly itemId: number;
 	readonly randomSuffixId: number;
 	readonly reforgeId: number;
+	readonly upgradeStep: ItemLevelState;
 	readonly spellId: number;
 	readonly otherId: OtherAction;
 	readonly tag: number;
@@ -23,23 +37,14 @@ export class ActionId {
 	readonly iconUrl: string;
 	readonly spellIdTooltipOverride: number | null;
 
-	private constructor(
-		itemId: number,
-		spellId: number,
-		otherId: OtherAction,
-		tag: number,
-		baseName: string,
-		name: string,
-		iconUrl: string,
-		randomSuffixId?: number,
-		reforgeId?: number,
-	) {
-		this.itemId = itemId;
-		this.randomSuffixId = randomSuffixId || 0;
-		this.reforgeId = reforgeId || 0;
-		this.spellId = spellId;
-		this.otherId = otherId;
-		this.tag = tag;
+	private constructor({ itemId, spellId, otherId, tag, baseName, name, iconUrl, randomSuffixId, reforgeId, upgradeStep }: ActionIdOptions = {}) {
+		this.itemId = itemId ?? 0;
+		this.randomSuffixId = randomSuffixId ?? 0;
+		this.reforgeId = reforgeId ?? 0;
+		this.upgradeStep = upgradeStep ?? 0;
+		this.spellId = spellId ?? 0;
+		this.otherId = otherId ?? OtherAction.OtherActionNone;
+		this.tag = tag ?? 0;
 
 		switch (otherId) {
 			case OtherAction.OtherActionNone:
@@ -76,20 +81,20 @@ export class ActionId {
 			case OtherAction.OtherActionAttack:
 				name = 'Attack';
 				iconUrl = 'https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg';
-				if (tag == 1) {
+				if (this.tag == 1) {
 					name += ' (Main Hand)';
-				} else if (tag == 2) {
+				} else if (this.tag == 2) {
 					name += ' (Off Hand)';
-				} else if (tag == 41570) {
+				} else if (this.tag == 41570) {
 					name += ' (Magmaw)';
-				} else if (tag == 49416) {
+				} else if (this.tag == 49416) {
 					name += ' (Blazing Bone Construct)';
-				} else if (tag == 56427) {
+				} else if (this.tag == 56427) {
 					name += ' (Warmaster Blackhorn)';
-				} else if (tag == 56781) {
+				} else if (this.tag == 56781) {
 					name += ' (Goriona)';
-				} else if (tag > 4191800) {
-					name += ` (Animated Bone Warrior ${(tag - 4191800).toFixed(0)})`;
+				} else if (this.tag > 4191800) {
+					name += ` (Animated Bone Warrior ${(this.tag - 4191800).toFixed(0)})`;
 				}
 				break;
 			case OtherAction.OtherActionShoot:
@@ -139,9 +144,9 @@ export class ActionId {
 				iconUrl = 'https://wow.zamimg.com/images/wow/icons/medium/inv_misc_pocketwatch_02.jpg';
 				break;
 		}
-		this.baseName = baseName;
-		this.name = name || baseName;
-		this.iconUrl = iconUrl;
+		this.baseName = baseName ?? '';
+		this.name = (name || baseName) ?? '';
+		this.iconUrl = iconUrl ?? '';
 		this.spellIdTooltipOverride = this.spellTooltipOverride?.spellId || null;
 	}
 
@@ -154,7 +159,13 @@ export class ActionId {
 	}
 
 	equalsIgnoringTag(other: ActionId): boolean {
-		return this.itemId == other.itemId && this.randomSuffixId == other.randomSuffixId && this.spellId == other.spellId && this.otherId == other.otherId;
+		return (
+			this.itemId == other.itemId &&
+			this.randomSuffixId == other.randomSuffixId &&
+			this.spellId == other.spellId &&
+			this.otherId == other.otherId &&
+			this.upgradeStep === other.upgradeStep
+		);
 	}
 
 	setBackground(elem: HTMLElement) {
@@ -163,12 +174,13 @@ export class ActionId {
 		}
 	}
 
-	static makeItemUrl(id: number, randomSuffixId?: number, reforgeId?: number): string {
+	static makeItemUrl(id: number, randomSuffixId?: number, reforgeId?: number, upgradeStep?: ItemLevelState): string {
 		const langPrefix = getWowheadLanguagePrefix();
 		const url = new URL(`https://wowhead.com/mop-classic/${langPrefix}item=${id}`);
 		url.searchParams.set('level', String(CHARACTER_LEVEL));
 		url.searchParams.set('rand', String(randomSuffixId || 0));
 		if (reforgeId) url.searchParams.set('forg', String(reforgeId));
+		if (typeof upgradeStep === 'number') url.searchParams.set('upgd', String(upgradeStep));
 		return url.toString();
 	}
 	static makeSpellUrl(id: number): string {
@@ -212,7 +224,7 @@ export class ActionId {
 
 	setWowheadHref(elem: HTMLAnchorElement) {
 		if (this.itemId) {
-			elem.href = ActionId.makeItemUrl(this.itemId, this.randomSuffixId, this.reforgeId);
+			elem.href = ActionId.makeItemUrl(this.itemId, this.randomSuffixId, this.reforgeId, this.upgradeStep);
 		} else if (this.spellId) {
 			elem.href = ActionId.makeSpellUrl(this.spellIdTooltipOverride || this.spellId);
 		}
@@ -752,7 +764,18 @@ export class ActionId {
 			iconUrl = ActionId.makeIconUrl(overrideTooltipData['icon']);
 		}
 
-		return new ActionId(this.itemId, this.spellId, this.otherId, this.tag, baseName, name, iconUrl, this.randomSuffixId, this.reforgeId);
+		return new ActionId({
+			itemId: this.itemId,
+			spellId: this.spellId,
+			otherId: this.otherId,
+			tag: this.tag,
+			baseName,
+			name,
+			iconUrl,
+			randomSuffixId: this.randomSuffixId,
+			reforgeId: this.reforgeId,
+			upgradeStep: this.upgradeStep,
+		});
 	}
 
 	toString(): string {
@@ -801,27 +824,48 @@ export class ActionId {
 	}
 
 	withoutTag(): ActionId {
-		return new ActionId(this.itemId, this.spellId, this.otherId, 0, this.baseName, this.baseName, this.iconUrl, this.randomSuffixId, this.reforgeId);
+		return new ActionId({
+			itemId: this.itemId,
+			spellId: this.spellId,
+			otherId: this.otherId,
+			baseName: this.baseName,
+			iconUrl: this.iconUrl,
+			randomSuffixId: this.randomSuffixId,
+			reforgeId: this.reforgeId,
+			upgradeStep: this.upgradeStep,
+		});
 	}
 
 	static fromEmpty(): ActionId {
-		return new ActionId(0, 0, OtherAction.OtherActionNone, 0, '', '', '');
+		return new ActionId();
 	}
 
-	static fromItemId(itemId: number, tag?: number, randomSuffixId?: number, reforgeId?: number): ActionId {
-		return new ActionId(itemId, 0, OtherAction.OtherActionNone, tag || 0, '', '', '', randomSuffixId, reforgeId);
+	static fromItemId(itemId: number, tag?: number, randomSuffixId?: number, reforgeId?: number, upgradeStep?: ItemLevelState): ActionId {
+		return new ActionId({
+			itemId,
+			tag,
+			randomSuffixId,
+			reforgeId,
+			upgradeStep,
+		});
 	}
 
 	static fromSpellId(spellId: number, tag?: number): ActionId {
-		return new ActionId(0, spellId, OtherAction.OtherActionNone, tag || 0, '', '', '');
+		return new ActionId({ spellId, tag });
 	}
 
 	static fromOtherId(otherId: OtherAction, tag?: number): ActionId {
-		return new ActionId(0, 0, otherId, tag || 0, '', '', '');
+		return new ActionId({ otherId, tag });
 	}
 
 	static fromPetName(petName: string): ActionId {
-		return petNameToActionId[petName] || new ActionId(0, 0, OtherAction.OtherActionPet, 0, petName, petName, petNameToIcon[petName] || '');
+		return (
+			petNameToActionId[petName] ||
+			new ActionId({
+				baseName: petName,
+				iconUrl: petNameToIcon[petName],
+			})
+		);
 	}
 
 	static fromItem(item: Item): ActionId {
@@ -834,6 +878,10 @@ export class ActionId {
 
 	static fromReforge(item: Item, reforge: ReforgeStat): ActionId {
 		return ActionId.fromItemId(item.id, 0, 0, reforge.id);
+	}
+
+	static fromUpgrade(item: Item, upgradeStep: ItemLevelState): ActionId {
+		return ActionId.fromItemId(item.id, 0, 0, 0, upgradeStep);
 	}
 
 	static fromProto(protoId: ActionIdProto): ActionId {
@@ -853,15 +901,12 @@ export class ActionId {
 	private static fromMatch(match: RegExpMatchArray): ActionId {
 		const idType = match[1];
 		const id = parseInt(match[5]);
-		return new ActionId(
-			idType == 'ItemID' ? id : 0,
-			idType == 'SpellID' ? id : 0,
-			idType == 'OtherID' ? id : 0,
-			match[7] ? parseInt(match[7]) : 0,
-			'',
-			'',
-			'',
-		);
+		return new ActionId({
+			itemId: idType == 'ItemID' ? id : undefined,
+			spellId: idType == 'SpellID' ? id : undefined,
+			otherId: idType == 'OtherID' ? id : undefined,
+			tag: match[7] ? parseInt(match[7]) : undefined,
+		});
 	}
 	static fromLogString(str: string): ActionId {
 		const match = str.match(ActionId.logRegex);

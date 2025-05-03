@@ -27,12 +27,14 @@ import {
 	HandType,
 	HealingModel,
 	IndividualBuffs,
+	ItemLevelState,
 	ItemRandomSuffix,
 	ItemSlot,
 	Profession,
 	PseudoStat,
 	Race,
 	ReforgeStat,
+	ScalingItemProperties,
 	Spec,
 	Stat,
 	UnitReference,
@@ -486,6 +488,14 @@ export class Player<SpecType extends Spec> {
 	// Returns all gems that this player can wear of the given color.
 	getGems(socketColor?: GemColor): Array<Gem> {
 		return this.sim.db.getGems(socketColor);
+	}
+
+	// Returns all possible upgrade steps for the given base item.
+	getUpgrades(equippedItem: EquippedItem): Record<number, ScalingItemProperties> {
+		const { scalingOptions } = equippedItem.item;
+		// Make sure to always exclude Challenge Mode scaling options as those are handled globally
+		delete scalingOptions[ItemLevelState.ChallengeMode];
+		return scalingOptions;
 	}
 
 	getEpWeights(): Stats {
@@ -1120,6 +1130,10 @@ export class Player<SpecType extends Spec> {
 		return this.computeStatsEP(stats);
 	}
 
+	computeUpgradeEP(upgradeStats: ScalingItemProperties): number {
+		return this.computeStatsEP(Stats.fromMap(upgradeStats.stats));
+	}
+
 	computeItemEP(item: Item, slot: ItemSlot): number {
 		if (item == null) return 0;
 
@@ -1190,6 +1204,7 @@ export class Player<SpecType extends Spec> {
 
 		equippedItem.asActionId().setWowheadDataset(elem, {
 			gemIds,
+			itemLevel: Number(equippedItem.ilvl),
 			enchantId: equippedItem.enchant?.effectId,
 			reforgeId: equippedItem.reforge?.id,
 			setPieceIds: this.gear
@@ -1197,6 +1212,7 @@ export class Player<SpecType extends Spec> {
 				.filter(ei => ei != null)
 				.map(ei => ei!.item.id),
 			hasExtraSocket: equippedItem.hasExtraSocket(isBlacksmithing),
+			upgradeStep: equippedItem.upgrade ?? undefined,
 		});
 
 		elem.dataset.whtticon = 'false';
