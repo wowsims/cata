@@ -481,9 +481,7 @@ export default class SelectorModal extends BaseModal {
 					actionId: ActionId.fromUpgrade(itemProto, upgradeStep as ItemLevelState),
 					name: (
 						<>
-							<div className="selector-modal-list-item-ilvl-upgrade-container">
-								{index > 0 ? `+${(itemUpgradesAsEntries[index][1].ilvl - itemUpgradesAsEntries[index - 1][1].ilvl) * index}` : 'Base'}{' '}
-							</div>
+							{index > 0 ? `+${(itemUpgradesAsEntries[index][1].ilvl - itemUpgradesAsEntries[index - 1][1].ilvl) * index}` : 'Base'}{' '}
 							<div className="selector-modal-list-item-upgrade-step-container ms-2">{`(${upgradeStep}/${numberOfUpgrades})`}</div>
 						</>
 					) as HTMLElement,
