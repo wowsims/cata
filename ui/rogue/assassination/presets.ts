@@ -1,6 +1,6 @@
 import * as PresetUtils from '../../core/preset_utils';
 import { ConsumesSpec, Glyphs, PseudoStat, Stat } from '../../core/proto/common';
-import { AssassinationRogue_Options as RogueOptions, RogueMajorGlyph, RogueOptions_PoisonImbue } from '../../core/proto/rogue';
+import { AssassinationRogue_Options as RogueOptions, RogueMajorGlyph, RogueOptions_PoisonOptions } from '../../core/proto/rogue';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import MutilateApl from './apls/mutilate.apl.json';
@@ -105,9 +105,7 @@ export const AssassinationTalentsDefault = {
 
 export const DefaultOptions = RogueOptions.create({
 	classOptions: {
-		mhImbue: RogueOptions_PoisonImbue.DeadlyPoison,
-		ohImbue: RogueOptions_PoisonImbue.InstantPoison,
-		thImbue: RogueOptions_PoisonImbue.DeadlyPoison,
+		lethalPoison: RogueOptions_PoisonOptions.DeadlyPoison,
 		applyPoisonsManually: false,
 		startingOverkillDuration: 20,
 		vanishBreakTime: 0.1,
@@ -119,7 +117,6 @@ export const DefaultConsumables = ConsumesSpec.create({
 	foodId: 62669, // Skewered Eel
 	potId: 58145, // Potion of the Tol'vir
 	prepotId: 58145, // Potion of the Tol'vir
-	conjuredId: 7676, // Thistle Tea
 });
 
 export const OtherDefaults = {

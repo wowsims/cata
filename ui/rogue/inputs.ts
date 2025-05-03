@@ -1,46 +1,21 @@
 import * as InputHelpers from '../core/components/input_helpers.js';
 import { PlayerSpec } from '../core/player_spec';
 import { Player } from '../core/proto/api';
-import { RogueOptions_PoisonImbue as Poison } from '../core/proto/rogue.js';
+import { RogueOptions_PoisonOptions as Poison } from '../core/proto/rogue.js';
 import { ActionId } from '../core/proto_utils/action_id.js';
 import { RogueSpecs } from '../core/proto_utils/utils';
 
 // Configuration for class-specific UI elements on the settings tab.
 // These don't need to be in a separate file but it keeps things cleaner.
 
-export const MainHandImbue = <SpecType extends RogueSpecs>() =>
+export const LethalPoison = <SpecType extends RogueSpecs>() =>
 	InputHelpers.makeClassOptionsEnumIconInput<SpecType, Poison>({
-		fieldName: 'mhImbue',
+		fieldName: 'lethalPoison',
 		numColumns: 1,
 		values: [
-			{ value: Poison.NoPoison, tooltip: 'No Main Hand Poison' },
-			{ actionId: ActionId.fromItemId(2892), value: Poison.DeadlyPoison },
-			{ actionId: ActionId.fromItemId(6947), value: Poison.InstantPoison },
-			{ actionId: ActionId.fromItemId(10918), value: Poison.WoundPoison },
-		],
-	});
-
-export const OffHandImbue = <SpecType extends RogueSpecs>() =>
-	InputHelpers.makeClassOptionsEnumIconInput<SpecType, Poison>({
-		fieldName: 'ohImbue',
-		numColumns: 1,
-		values: [
-			{ value: Poison.NoPoison, tooltip: 'No Off Hand Poison' },
-			{ actionId: ActionId.fromItemId(2892), value: Poison.DeadlyPoison },
-			{ actionId: ActionId.fromItemId(6947), value: Poison.InstantPoison },
-			{ actionId: ActionId.fromItemId(10918), value: Poison.WoundPoison },
-		],
-	});
-
-export const ThrownImbue = <SpecType extends RogueSpecs>() =>
-	InputHelpers.makeClassOptionsEnumIconInput<SpecType, Poison>({
-		fieldName: 'thImbue',
-		numColumns: 1,
-		values: [
-			{ value: Poison.NoPoison, tooltip: 'No Thrown Poison' },
-			{ actionId: ActionId.fromItemId(2892), value: Poison.DeadlyPoison },
-			{ actionId: ActionId.fromItemId(6947), value: Poison.InstantPoison },
-			{ actionId: ActionId.fromItemId(10918), value: Poison.WoundPoison },
+			{ value: Poison.NoPoison, tooltip: 'No Lethal Poison' },
+			{ actionId: ActionId.fromSpellId(129410), value: Poison.DeadlyPoison },
+			{ actionId: ActionId.fromSpellId(8679), value: Poison.WoundPoison },
 		],
 	});
 
@@ -60,14 +35,6 @@ export const ThrownImbue = <SpecType extends RogueSpecs>() =>
 // 		extraCssClasses: ['experimental'],
 // 		showWhen: (player: Player<SpecType>) => player.getTalents().overkill || player.getTalents().masterOfSubtlety > 0,
 // 	});
-
-export const AssumeBleedActive = <SpecType extends RogueSpecs>() =>
-	InputHelpers.makeClassOptionsBooleanInput<SpecType>({
-		fieldName: 'assumeBleedActive',
-		label: 'Assume Bleed Always Active',
-		labelTooltip: "Assume bleed always exists for 'Sanguinary Vein' activation. Otherwise will only calculate based on personal bleed effects.",
-		extraCssClasses: ['within-raid-sim-hide'],
-	});
 
 export const ApplyPoisonsManually = <SpecType extends RogueSpecs>() =>
 	InputHelpers.makeClassOptionsBooleanInput<SpecType>({

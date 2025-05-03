@@ -7,7 +7,7 @@ import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
-import { RogueOptions_PoisonImbue } from '../../core/proto/rogue';
+import { RogueOptions_PoisonOptions } from '../../core/proto/rogue';
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
 import * as RogueInputs from '../inputs';
@@ -115,7 +115,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		inputs: [RogueInputs.ApplyPoisonsManually()],
 	},
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [RogueInputs.MainHandImbue(), RogueInputs.OffHandImbue(), RogueInputs.ThrownImbue()],
+	playerIconInputs: [RogueInputs.LethalPoison()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
 		BuffDebuffInputs.CritBuff,
@@ -129,7 +129,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		inputs: [
 			// RogueInputs.StartingOverkillDuration(),
 			// RogueInputs.VanishBreakTime(),
-			RogueInputs.AssumeBleedActive(),
 			SubInputs.HonorAmongThievesCritRate,
 			// OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
@@ -226,36 +225,14 @@ export class SubtletyRogueSimUI extends IndividualSimUI<Spec.SpecSubtletyRogue> 
 		this.player.changeEmitter.on(c => {
 			const options = this.player.getSpecOptions();
 			if (!options.classOptions!.applyPoisonsManually) {
-				const mhWeaponSpeed = this.player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponSpeed;
-				const ohWeaponSpeed = this.player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponSpeed;
-				if (typeof mhWeaponSpeed == 'undefined' || typeof ohWeaponSpeed == 'undefined') {
-					return;
-				}
-				if (mhWeaponSpeed <= ohWeaponSpeed) {
-					options.classOptions!.mhImbue = RogueOptions_PoisonImbue.DeadlyPoison;
-					options.classOptions!.ohImbue = RogueOptions_PoisonImbue.InstantPoison;
-				} else {
-					options.classOptions!.mhImbue = RogueOptions_PoisonImbue.InstantPoison;
-					options.classOptions!.ohImbue = RogueOptions_PoisonImbue.DeadlyPoison;
-				}
+				options.classOptions!.lethalPoison = RogueOptions_PoisonOptions.DeadlyPoison
 			}
 			this.player.setSpecOptions(c, options);
 		});
 		this.sim.encounter.changeEmitter.on(c => {
 			const options = this.player.getSpecOptions();
 			if (!options.classOptions!.applyPoisonsManually) {
-				const mhWeaponSpeed = this.player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponSpeed;
-				const ohWeaponSpeed = this.player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponSpeed;
-				if (typeof mhWeaponSpeed == 'undefined' || typeof ohWeaponSpeed == 'undefined') {
-					return;
-				}
-				if (mhWeaponSpeed <= ohWeaponSpeed) {
-					options.classOptions!.mhImbue = RogueOptions_PoisonImbue.DeadlyPoison;
-					options.classOptions!.ohImbue = RogueOptions_PoisonImbue.InstantPoison;
-				} else {
-					options.classOptions!.mhImbue = RogueOptions_PoisonImbue.InstantPoison;
-					options.classOptions!.ohImbue = RogueOptions_PoisonImbue.DeadlyPoison;
-				}
+				options.classOptions!.lethalPoison = RogueOptions_PoisonOptions.DeadlyPoison
 			}
 			this.player.setSpecOptions(c, options);
 		});

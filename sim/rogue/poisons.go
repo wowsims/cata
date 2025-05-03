@@ -1,7 +1,6 @@
 package rogue
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
@@ -21,38 +20,18 @@ func (rogue *Rogue) registerPoisonAuras() {
 	})
 }
 
-func (rogue *Rogue) getPoisonProcMaskForSlot(imbue proto.RogueOptions_PoisonImbue, itemSlot proto.ItemSlot) core.ProcMask {
-	mask := core.ProcMaskUnknown
-	switch {
-	case itemSlot == proto.ItemSlot_ItemSlotMainHand && rogue.Options.MhImbue == imbue:
-		mask |= core.ProcMaskMeleeMH | core.ProcMaskMeleeProc
-	case itemSlot == proto.ItemSlot_ItemSlotOffHand && rogue.Options.OhImbue == imbue:
-		mask |= core.ProcMaskMeleeOH
-	case itemSlot == proto.ItemSlot_ItemSlotRanged && rogue.Options.ThImbue == imbue:
-		mask |= core.ProcMaskRanged
-	}
-
-	return mask
-}
-
 func (rogue *Rogue) GetLethalPoisonProcChance() float64 {
 	return 0.3 + core.TernaryFloat64(rogue.Spec == proto.Spec_SpecAssassinationRogue, 0.2, 0)
 }
 
 func (rogue *Rogue) UpdateDeadlyPoisonPPH(bonusChance float64) {
 	pph := rogue.GetLethalPoisonProcChance() + bonusChance
-	for _, itemSlot := range core.AllWeaponSlots() {
-		procMask := rogue.getPoisonProcMaskForSlot(proto.RogueOptions_DeadlyPoison, itemSlot)
-		rogue.deadlyPoisonPPHM[itemSlot] = rogue.AutoAttacks.NewStaticDynamicProcManager(pph, procMask)
-	}
+	rogue.deadlyPoisonPPHM = rogue.AutoAttacks.NewStaticDynamicProcManager(pph, core.ProcMaskMelee)
 }
 
 func (rogue *Rogue) UpdateWoundPoisonPPH(bonusChance float64) {
 	pph := rogue.GetLethalPoisonProcChance() + bonusChance
-	for _, itemSlot := range core.AllWeaponSlots() {
-		procMask := rogue.getPoisonProcMaskForSlot(proto.RogueOptions_WoundPoison, itemSlot)
-		rogue.deadlyPoisonPPHM[itemSlot] = rogue.AutoAttacks.NewStaticDynamicProcManager(pph, procMask)
-	}
+	rogue.woundPoisonPPHM = rogue.AutoAttacks.NewStaticDynamicProcManager(pph, core.ProcMaskMelee)
 }
 
 func (rogue *Rogue) registerDeadlyPoisonSpell() {
@@ -167,36 +146,32 @@ func (rogue *Rogue) registerWoundPoisonSpell() {
 func (rogue *Rogue) applyDeadlyPoison() {
 	rogue.UpdateDeadlyPoisonPPH(0)
 
-	for _, itemSlot := range core.AllWeaponSlots() {
-		core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
-			Name:     fmt.Sprintf("Deadly Poison %s", itemSlot),
-			Outcome:  core.OutcomeLanded,
-			Callback: core.CallbackOnSpellHitDealt,
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				procMask := core.Ternary(spell.SpellID == 86392, core.ProcMaskMeleeMH, spell.ProcMask)
-				if rogue.deadlyPoisonPPHM[itemSlot].Proc(sim, procMask, "Deadly Poison") {
-					rogue.DeadlyPoison.Cast(sim, result.Target)
-				}
-			},
-		})
-	}
+	core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
+		Name:     "Deadly Poison",
+		Outcome:  core.OutcomeLanded,
+		Callback: core.CallbackOnSpellHitDealt,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			procMask := core.Ternary(spell.SpellID == 86392, core.ProcMaskMeleeMH, spell.ProcMask)
+			if rogue.deadlyPoisonPPHM.Proc(sim, procMask, "Deadly Poison") {
+				rogue.DeadlyPoison.Cast(sim, result.Target)
+			}
+		},
+	})
 
 }
 
 func (rogue *Rogue) applyWoundPoison() {
 	rogue.UpdateWoundPoisonPPH(0)
 
-	for _, itemSlot := range core.AllWeaponSlots() {
-		core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
-			Name:     fmt.Sprintf("Wound Poison %s", itemSlot),
-			Outcome:  core.OutcomeLanded,
-			Callback: core.CallbackOnSpellHitDealt,
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				procMask := core.Ternary(spell.SpellID == 86392, core.ProcMaskMeleeMH, spell.ProcMask)
-				if rogue.woundPoisonPPHM[itemSlot].Proc(sim, procMask, "Wound Poison") {
-					rogue.WoundPoison.Cast(sim, result.Target)
-				}
-			},
-		})
-	}
+	core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
+		Name:     "Wound Poison",
+		Outcome:  core.OutcomeLanded,
+		Callback: core.CallbackOnSpellHitDealt,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			procMask := core.Ternary(spell.SpellID == 86392, core.ProcMaskMeleeMH, spell.ProcMask)
+			if rogue.woundPoisonPPHM.Proc(sim, procMask, "Wound Poison") {
+				rogue.WoundPoison.Cast(sim, result.Target)
+			}
+		},
+	})
 }

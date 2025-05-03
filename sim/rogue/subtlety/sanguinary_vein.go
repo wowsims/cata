@@ -28,9 +28,6 @@ func (subRogue *SubtletyRogue) registerSanguinaryVein() {
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				core.DisableDamageDoneByCaster(DDBC_SanguinaryVein, subRogue.AttackTables[aura.Unit.UnitIndex])
 			},
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				core.DisableDamageDoneByCaster(DDBC_SanguinaryVein, subRogue.AttackTables[aura.Unit.UnitIndex])
-			},
 		})
 	})
 

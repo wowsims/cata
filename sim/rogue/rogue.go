@@ -73,8 +73,8 @@ type Rogue struct {
 	SliceAndDice *core.Spell
 	Recuperate   *core.Spell
 
-	deadlyPoisonPPHM [proto.ItemSlot_ItemSlotOffHand + 1]*core.DynamicProcManager
-	woundPoisonPPHM  [proto.ItemSlot_ItemSlotOffHand + 1]*core.DynamicProcManager
+	deadlyPoisonPPHM *core.DynamicProcManager
+	woundPoisonPPHM  *core.DynamicProcManager
 
 	AdrenalineRushAura   *core.Aura
 	BladeFlurryAura      *core.Aura
@@ -160,6 +160,22 @@ func (rogue *Rogue) Initialize() {
 	rogue.AutoAttacks.MHConfig().CritMultiplier = rogue.CritMultiplier(false)
 	rogue.AutoAttacks.OHConfig().CritMultiplier = rogue.CritMultiplier(false)
 	rogue.AutoAttacks.RangedConfig().CritMultiplier = rogue.CritMultiplier(false)
+
+	rogue.registerStealthAura()
+	rogue.registerVanishSpell()
+	rogue.registerAmbushSpell()
+	rogue.registerGarrote()
+	rogue.registerBackstabSpell()
+	rogue.registerRupture()
+	rogue.registerSliceAndDice()
+	rogue.registerEviscerate()
+	rogue.registerEnvenom()
+	rogue.registerExposeArmorSpell()
+	rogue.registerFanOfKnives()
+	rogue.registerTricksOfTheTradeSpell()
+	rogue.registerDeadlyPoisonSpell()
+	rogue.registerWoundPoisonSpell()
+	rogue.registerPoisonAuras()
 
 	rogue.T12ToTLastBuff = 3
 }
