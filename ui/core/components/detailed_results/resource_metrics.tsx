@@ -1,3 +1,4 @@
+import { SecondaryResourceConfig } from '../../individual_sim_ui';
 import { ResourceType } from '../../proto/spell';
 import { resourceNames } from '../../proto_utils/names';
 import { ResourceMetrics } from '../../proto_utils/sim_result';
@@ -6,14 +7,19 @@ import { ColumnSortType, MetricsTable } from './metrics_table/metrics_table';
 import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component';
 
 export class ResourceMetricsTable extends ResultComponent {
-	constructor(config: ResultComponentConfig) {
+	constructor(config: ResultComponentConfig, secondaryResourceConfig?: SecondaryResourceConfig) {
 		config.rootCssClass = 'resource-metrics-root';
 		super(config);
 
 		orderedResourceTypes.forEach(resourceType => {
+			let resourceName = resourceNames.get(resourceType);
+			if (resourceType == ResourceType.ResourceTypeGenericResource && secondaryResourceConfig !== undefined) {
+				resourceName = secondaryResourceConfig.name
+			}
+
 			const containerElem = (
 				<div className="resource-metrics-table-container hide">
-					<span className="resource-metrics-table-title">{resourceNames.get(resourceType)}</span>
+					<span className="resource-metrics-table-title">{resourceName}</span>
 				</div>
 			) as HTMLElement;
 			this.rootElem.appendChild(containerElem);

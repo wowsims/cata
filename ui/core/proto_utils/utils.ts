@@ -2034,6 +2034,7 @@ export const orderedResourceTypes: Array<ResourceType> = [
 	ResourceType.ResourceTypeLunarEnergy,
 	ResourceType.ResourceTypeSolarEnergy,
 	ResourceType.ResourceTypeHolyPower,
+	ResourceType.ResourceTypeGenericResource,
 ];
 
 export const AL_CATEGORY_HARD_MODE = 'Hard Mode';

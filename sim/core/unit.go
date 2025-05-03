@@ -122,6 +122,8 @@ type Unit struct {
 	focusBar
 	runicPowerBar
 
+	SecondaryResourceBar SecondaryResourceBar
+
 	// All spells that can be cast by this unit.
 	Spellbook                 []*Spell
 	spellRegistrationHandlers []SpellRegisteredHandler
@@ -588,6 +590,10 @@ func (unit *Unit) reset(sim *Simulation, _ Agent) {
 	unit.rageBar.reset(sim)
 	unit.runicPowerBar.reset(sim)
 
+	if unit.SecondaryResourceBar != nil {
+		unit.SecondaryResourceBar.Reset(sim)
+	}
+
 	unit.AutoAttacks.reset(sim)
 
 	if unit.Rotation != nil {
@@ -709,4 +715,16 @@ func (unit *Unit) GetTotalAvoidanceChance(atkTable *AttackTable) float64 {
 	parry := unit.GetTotalParryChanceAsDefender(atkTable)
 	block := unit.GetTotalBlockChanceAsDefender(atkTable)
 	return miss + dodge + parry + block
+}
+
+func (unit *Unit) RegisterSecondaryResourceBar(config SecondaryResourceConfig) {
+	if unit.SecondaryResourceBar != nil {
+		panic("A secondary resource bar has already been registered.")
+	}
+
+	if unit.Env.State == Finalized {
+		panic("Can not add secondary resource bar after unit has been finalized")
+	}
+
+	unit.SecondaryResourceBar = unit.NewSecondaryResourceBar(config)
 }

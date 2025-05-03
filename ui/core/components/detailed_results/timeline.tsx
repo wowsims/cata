@@ -14,6 +14,7 @@ import { TypedEvent } from '../../typed_event';
 import { bucket, distinct, fragmentToString, maxIndex, stringComparator } from '../../utils';
 import { actionColors } from './color_settings';
 import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component';
+import { SecondaryResourceConfig } from '../../individual_sim_ui';
 
 type TooltipHandler = (dataPointIndex: number) => Element;
 
@@ -51,7 +52,9 @@ export class Timeline extends ResultComponent {
 		keysToKeep: 2,
 	});
 
-	constructor(config: ResultComponentConfig) {
+	private secondaryResourceConfig?: SecondaryResourceConfig;
+
+	constructor(config: ResultComponentConfig, secondaryResourceConfig?: SecondaryResourceConfig) {
 		config.rootCssClass = 'timeline-root';
 		super(config);
 		this.resultData = null;
@@ -59,6 +62,7 @@ export class Timeline extends ResultComponent {
 		this.rendered = false;
 		this.hiddenIds = [];
 		this.hiddenIdsChangeEmitter = new TypedEvent<void>();
+		this.secondaryResourceConfig = secondaryResourceConfig;
 
 		this.rootElem.appendChild(
 			<div className="timeline-disclaimer">
@@ -770,14 +774,22 @@ export class Timeline extends ResultComponent {
 
 			return group.maxValue;
 		};
+		
+		let resourceName = resourceNames.get(resourceType)
+		let resourceIcon = resourceTypeToIcon[resourceType]
+		if (resourceType == ResourceType.ResourceTypeGenericResource && this.secondaryResourceConfig !== undefined) {
+			resourceName = this.secondaryResourceConfig.name
+			resourceIcon = this.secondaryResourceConfig.icon
+		}
+
 		const labelElem = (
 			<div className="rotation-label rotation-row">
 				<a
 					className="rotation-label-icon"
 					style={{
-						backgroundImage: `url('${resourceTypeToIcon[resourceType]}')`,
+						backgroundImage: `url('${resourceIcon}')`,
 					}}></a>
-				<span className="rotation-label-text">{resourceNames.get(resourceType)}</span>
+				<span className="rotation-label-text">{resourceName}</span>
 			</div>
 		);
 

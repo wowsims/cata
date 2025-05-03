@@ -1,4 +1,5 @@
 import { REPO_NAME } from '../constants/other';
+import { IndividualSimUI } from '../individual_sim_ui';
 import { DetailedResultsUpdate, SimRun, SimRunData } from '../proto/ui';
 import { SimResult } from '../proto_utils/sim_result';
 import { SimUI } from '../sim_ui';
@@ -222,7 +223,7 @@ export abstract class DetailedResults extends Component {
 		new ResourceMetricsTable({
 			parent: this.rootElem.querySelector('.resource-metrics')!,
 			resultsEmitter: this.resultsEmitter,
-		});
+		}, simUI?.isIndividualSim ? (simUI as IndividualSimUI<any>).individualConfig.secondaryResource : undefined);
 		new PlayerDamageMetricsTable(
 			{ parent: this.rootElem.querySelector('.player-damage-metrics')!, resultsEmitter: this.resultsEmitter },
 			this.resultsFilter,
@@ -260,7 +261,7 @@ export abstract class DetailedResults extends Component {
 			parent: this.rootElem.querySelector('.timeline')!,
 			cssScheme: cssScheme,
 			resultsEmitter: this.resultsEmitter,
-		});
+		}, simUI?.isIndividualSim ? (simUI as IndividualSimUI<any>).individualConfig.secondaryResource : undefined);
 
 		const tabEl = document.querySelector('button[data-bs-target="#timelineTab"]');
 		tabEl?.addEventListener('shown.bs.tab', () => {
