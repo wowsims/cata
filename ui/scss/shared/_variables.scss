@@ -74,6 +74,7 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 $custom-alpha: (
 	black-alpha-30: rgba($black, 0.3),
 	black-alpha-50: rgba($black, 0.5),
+	black-alpha-75: rgba($black, 0.75),
 	gray-800-alpha-50: rgba($gray-800, 0.5),
 );
 $theme-colors: map-merge($theme-colors, $custom-alpha);

@@ -475,13 +475,14 @@ export default class SelectorModal extends BaseModal {
 			gearData,
 			itemData: itemUpgradesAsEntries.map(([upgradeStepString, upgradeData], index) => {
 				const upgradeStep = Number(upgradeStepString) as ItemLevelState;
+				const upgradeItem = new EquippedItem({ item: itemProto, upgrade: upgradeStep });
 				return {
 					item: Number(upgradeStep),
 					id: Number(upgradeStep),
 					actionId: ActionId.fromUpgrade(itemProto, upgradeStep as ItemLevelState),
 					name: (
 						<>
-							{index > 0 ? `+${(itemUpgradesAsEntries[index][1].ilvl - itemUpgradesAsEntries[index - 1][1].ilvl) * index}` : 'Base'}{' '}
+							{index > 0 ? <>+ {upgradeItem.ilvlFromPrevious * index}</> : <>Base</>}{' '}
 							<div className="selector-modal-list-item-upgrade-step-container ms-2">{`(${upgradeStep}/${numberOfUpgrades})`}</div>
 						</>
 					) as HTMLElement,

@@ -89,6 +89,16 @@ export class EquippedItem {
 	get ilvl(): number {
 		return typeof this.upgrade === 'number' ? this.item.scalingOptions[this.upgrade].ilvl : this.ilvl;
 	}
+	// Returns the ilvl difference from the previous upgrade step
+	get ilvlFromPrevious(): number {
+		if (!this.upgrade) return 0;
+		return this.item.scalingOptions[this.upgrade].ilvl - this.item.scalingOptions[this.upgrade - 1].ilvl;
+	}
+	// Returns the ilvl difference from the base item level
+	get ilvlFromBase(): number {
+		if (!this.upgrade) return 0;
+		return this.item.scalingOptions[this.upgrade].ilvl - this.item.scalingOptions[ItemLevelState.Base].ilvl;
+	}
 
 	getReforgeData(reforge?: ReforgeStat | null): ReforgeData | null {
 		reforge = reforge || this.reforge;

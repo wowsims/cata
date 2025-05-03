@@ -155,7 +155,12 @@ export class ItemRenderer extends Component {
 		const isEligibleForRandomSuffix = !!newItem.hasRandomSuffixOptions();
 		const hasRandomSuffix = !!newItem.randomSuffix;
 		this.nameElem.replaceChildren(nameSpan);
-		this.ilvlElem.textContent = newItem.ilvl.toString();
+		this.ilvlElem.replaceChildren(
+			<>
+				{newItem.ilvl.toString()}
+				{!!newItem.ilvlFromBase && <span className="item-quality-uncommon">+{newItem.ilvlFromBase}</span>}
+			</>,
+		);
 
 		if (hasRandomSuffix) {
 			nameSpan.textContent += ' ' + newItem.randomSuffix.name;
