@@ -54,7 +54,7 @@ func (rogue *Rogue) registerEnvenom() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			comboPoints := rogue.ComboPoints()
+			comboPoints := rogue.GetCappedComboPoints()
 			// - the aura is active even if the attack fails to land
 			// - the aura is applied before the hit effect
 			// See: https://github.com/where-fore/rogue-wotlk/issues/32

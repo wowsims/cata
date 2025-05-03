@@ -35,11 +35,11 @@ func (rogue *Rogue) registerRupture() {
 			},
 			IgnoreHaste: true,
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				spell.SetMetricsSplit(spell.Unit.ComboPoints())
+				spell.SetMetricsSplit(rogue.GetCappedComboPoints())
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return rogue.ComboPoints() > 0
+			return rogue.GetCappedComboPoints() > 0
 		},
 
 		DamageMultiplier: 1,
@@ -55,7 +55,7 @@ func (rogue *Rogue) registerRupture() {
 			TickLength:    time.Second * 2,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotPhysical(target, rogue.ruptureDamage(rogue.ComboPoints(), baseDamage, damagePerComboPoint))
+				dot.SnapshotPhysical(target, rogue.ruptureDamage(rogue.GetCappedComboPoints(), baseDamage, damagePerComboPoint))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
@@ -67,7 +67,7 @@ func (rogue *Rogue) registerRupture() {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 			if result.Landed() {
 				dot := spell.Dot(target)
-				dot.BaseTickCount = 2 + (2 * rogue.ComboPoints())
+				dot.BaseTickCount = 2 + (2 * rogue.GetCappedComboPoints())
 				dot.Apply(sim)
 				rogue.ApplyFinisher(sim, spell)
 				spell.DealOutcome(sim, result)

@@ -8,7 +8,9 @@ import (
 )
 
 func (rogue *Rogue) registerAmbushSpell() {
-	baseDamage := rogue.ClassSpellScaling * 0.32699999213
+	baseDamage := rogue.GetBaseDamageFromCoefficient(0.5)
+	weaponDamage := 3.25
+	daggerModifier := 1.447
 
 	rogue.Ambush = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 8676},
@@ -31,8 +33,7 @@ func (rogue *Rogue) registerAmbushSpell() {
 			return !rogue.PseudoStats.InFrontOfTarget && (rogue.IsStealthed() || rogue.HasActiveAura("Shadowmeld"))
 		},
 
-		DamageMultiplier: core.TernaryFloat64(rogue.HasDagger(core.MainHand), 2.86, 1.97), // 77 * 1.38999998569 + 90 (*1.45 for Dagger)
-		// Imp Ambush also Additive
+		DamageMultiplier:         core.TernaryFloat64(rogue.HasDagger(core.MainHand), weaponDamage*daggerModifier, weaponDamage),
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           rogue.CritMultiplier(false),
 		ThreatMultiplier:         1,
@@ -56,6 +57,6 @@ func (rogue *Rogue) registerAmbushSpell() {
 
 	rogue.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand}, func(s *core.Simulation, slot proto.ItemSlot) {
 		// Recalculate Ambush's multiplier in case the MH weapon changed.
-		rogue.Ambush.DamageMultiplier = core.TernaryFloat64(rogue.HasDagger(core.MainHand), 2.86, 1.97)
+		rogue.Ambush.DamageMultiplier = core.TernaryFloat64(rogue.HasDagger(core.MainHand), weaponDamage*daggerModifier, weaponDamage)
 	})
 }

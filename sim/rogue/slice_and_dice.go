@@ -9,6 +9,7 @@ import (
 
 func (rogue *Rogue) registerSliceAndDice() {
 	actionID := core.ActionID{SpellID: 5171}
+	energyMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 79152})
 
 	rogue.SliceAndDiceBonusFlat = 0.4
 	rogue.sliceAndDiceDurations = [6]time.Duration{
@@ -54,17 +55,36 @@ func (rogue *Rogue) registerSliceAndDice() {
 			},
 			IgnoreHaste: true,
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				spell.SetMetricsSplit(spell.Unit.ComboPoints())
+				spell.SetMetricsSplit(rogue.GetCappedComboPoints())
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return rogue.ComboPoints() > 0
+			return rogue.GetCappedComboPoints() > 0
+		},
+		Hot: core.DotConfig{ // Subtlety SnD restores 8 energy every 2 seconds; functions like a HoT w/ pandemic window
+			Aura: core.Aura{
+				Label:    "Slice and Dice",
+				Duration: rogue.sliceAndDiceDurations[5],
+			},
+			NumberOfTicks:       0,
+			TickLength:          time.Second * 2,
+			AffectedByCastSpeed: false,
+			BonusCoefficient:    1,
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				if rogue.Spec == proto.Spec_SpecSubtletyRogue {
+					rogue.AddEnergy(sim, 8, energyMetrics)
+				}
+			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			rogue.SliceAndDiceAura.Duration = rogue.sliceAndDiceDurations[rogue.ComboPoints()]
+			rogue.SliceAndDiceAura.Duration = rogue.sliceAndDiceDurations[rogue.GetCappedComboPoints()]
+			hot := spell.Hot(spell.Unit)
+			hot.Duration = rogue.SliceAndDiceAura.Duration
+			hot.BaseTickCount = 3 + 3*rogue.GetCappedComboPoints()
 			rogue.ApplyFinisher(sim, spell)
 			rogue.SliceAndDiceAura.Activate(sim)
+			hot.Activate(sim)
 		},
 	})
 }

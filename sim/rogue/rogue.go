@@ -92,7 +92,11 @@ type Rogue struct {
 	DirtyDeedsAura       *core.Aura
 	HonorAmongThieves    *core.Aura
 	StealthAura          *core.Aura
+	SubterfugeAura       *core.Aura
 	BanditsGuileAura     *core.Aura
+
+	NightstalkerMod *core.SpellMod
+	ShadowFocusMod  *core.SpellMod
 
 	MasterPoisonerDebuffAuras core.AuraArray
 	SavageCombatDebuffAuras   core.AuraArray
@@ -115,10 +119,14 @@ func (rogue *Rogue) GetRogue() *Rogue {
 func (rogue *Rogue) AddRaidBuffs(_ *proto.RaidBuffs)   {}
 func (rogue *Rogue) AddPartyBuffs(_ *proto.PartyBuffs) {}
 
+func (rogue *Rogue) GetCappedComboPoints() int32 {
+	return min(rogue.ComboPoints(), 5)
+}
+
 // Apply the effect of successfully casting a finisher to combo points
 func (rogue *Rogue) ApplyFinisher(sim *core.Simulation, spell *core.Spell) {
 	numPoints := rogue.ComboPoints()
-	rogue.SpendComboPoints(sim, spell.ComboPointMetrics())
+	rogue.SpendPartialComboPoints(sim, rogue.GetCappedComboPoints(), spell.ComboPointMetrics())
 
 	if rogue.Spec == proto.Spec_SpecCombatRogue {
 		// Ruthlessness
@@ -230,8 +238,9 @@ func NewRogue(character *core.Character, options *proto.RogueOptions, talents st
 		maxEnergy += 20
 	}
 
+	maxComboPoints := int32(core.Ternary(rogue.Talents.Anticipation, 10, 5))
 	rogue.EnableEnergyBar(core.EnergyBarOptions{
-		MaxComboPoints:      5,
+		MaxComboPoints:      maxComboPoints,
 		MaxEnergy:           maxEnergy,
 		StartingComboPoints: options.StartingComboPoints,
 		UnitClass:           proto.Class_ClassRogue,
@@ -280,7 +289,9 @@ func (rogue *Rogue) HasThrown() bool {
 
 // Check if the rogue is considered in "stealth" for the purpose of casting abilities
 func (rogue *Rogue) IsStealthed() bool {
-	return rogue.StealthAura.IsActive() || (rogue.ShadowDanceAura != nil && rogue.ShadowDanceAura.IsActive())
+	return rogue.StealthAura.IsActive() ||
+		(rogue.ShadowDanceAura != nil && rogue.ShadowDanceAura.IsActive()) ||
+		(rogue.Talents.Subterfuge && rogue.SubterfugeAura.IsActive())
 }
 
 func (rogue *Rogue) GetMasteryBonus() float64 {
@@ -335,6 +346,7 @@ const (
 	RogueSpellWoundPoison
 	RogueSpellDeadlyPoison
 	RogueSpellShadowBlades
+	RogueSpellMarkedForDeath
 
 	RogueSpellLast
 	RogueSpellsAll = RogueSpellLast<<1 - 1

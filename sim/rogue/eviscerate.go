@@ -34,7 +34,7 @@ func (rogue *Rogue) registerEviscerate() {
 			},
 			IgnoreHaste: true,
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				spell.SetMetricsSplit(spell.Unit.ComboPoints())
+				spell.SetMetricsSplit(rogue.GetCappedComboPoints())
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
@@ -51,7 +51,7 @@ func (rogue *Rogue) registerEviscerate() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
 
-			comboPoints := float64(rogue.ComboPoints())
+			comboPoints := float64(rogue.GetCappedComboPoints())
 			baseDamage := baseMinDamage +
 				sim.RandomFloat("Eviscerate")*avgBaseDamage +
 				damagePerComboPoint*comboPoints +
