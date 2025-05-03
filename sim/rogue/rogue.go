@@ -34,7 +34,6 @@ type Rogue struct {
 	AdditiveEnergyRegenBonus float64
 
 	sliceAndDiceDurations [6]time.Duration
-	exposeArmorDurations  [6]time.Duration
 
 	Backstab         *core.Spell
 	BladeFlurry      *core.Spell
@@ -163,24 +162,6 @@ func (rogue *Rogue) Initialize() {
 	rogue.AutoAttacks.RangedConfig().CritMultiplier = rogue.CritMultiplier(false)
 
 	rogue.T12ToTLastBuff = 3
-
-	// re-configure poisons when performing an item swap
-	rogue.RegisterItemSwapCallback(core.MeleeWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot) {
-		if !rogue.Options.ApplyPoisonsManually {
-			if rogue.MainHand() == nil || rogue.OffHand() == nil {
-				return
-			}
-			mhWeaponSpeed := rogue.MainHand().SwingSpeed
-			ohWeaponSpeed := rogue.OffHand().SwingSpeed
-			if mhWeaponSpeed <= ohWeaponSpeed {
-				rogue.Options.MhImbue = proto.RogueOptions_DeadlyPoison
-				rogue.Options.OhImbue = proto.RogueOptions_InstantPoison
-			} else {
-				rogue.Options.MhImbue = proto.RogueOptions_InstantPoison
-				rogue.Options.OhImbue = proto.RogueOptions_DeadlyPoison
-			}
-		}
-	})
 }
 
 func (rogue *Rogue) ApplyAdditiveEnergyRegenBonus(sim *core.Simulation, increment float64) {
@@ -325,14 +306,13 @@ const (
 	RogueSpellVendetta
 	RogueSpellVenomousWounds
 	RogueSpellWoundPoison
-	RogueSpellInstantPoison
 	RogueSpellDeadlyPoison
 	RogueSpellShadowBlades
 
 	RogueSpellLast
 	RogueSpellsAll = RogueSpellLast<<1 - 1
 
-	RogueSpellPoisons          = RogueSpellVenomousWounds | RogueSpellWoundPoison | RogueSpellInstantPoison | RogueSpellDeadlyPoison
+	RogueSpellPoisons          = RogueSpellVenomousWounds | RogueSpellWoundPoison | RogueSpellDeadlyPoison
 	RogueSpellDamagingFinisher = RogueSpellEnvenom | RogueSpellEviscerate | RogueSpellRupture
 	RogueSpellWeightedBlades   = RogueSpellSinisterStrike | RogueSpellRevealingStrike
 )

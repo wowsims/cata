@@ -94,7 +94,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 			OnSnapshot: func(_ *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				dot.SnapshotBaseDamage = (dot_baseDamage + dot_apScaling*dot.Spell.MeleeAttackPower())
 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
-				dot.SnapshotCritChance = dot.Spell.SpellCritChance(attackTable.Defender)
+				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
 			},
 
@@ -104,7 +104,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMeleeSpecialHitAndCrit)
 			if !result.Landed() {
 				return
 			}
@@ -155,7 +155,7 @@ func (rogue *Rogue) registerWoundPoisonSpell() {
 			baseDamage := wpBaseDamage + 0.04*spell.MeleeAttackPower()
 
 			var result *core.SpellResult
-			result = spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			result = spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
 				rogue.WoundPoisonDebuffAuras.Get(target).Activate(sim)

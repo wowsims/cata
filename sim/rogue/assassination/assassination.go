@@ -48,7 +48,7 @@ func (sinRogue *AssassinationRogue) Initialize() {
 	// As far as I am able to find, Asn's Mastery is an additive bonus. To be tested.
 	masteryMod := sinRogue.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  rogue.RogueSpellInstantPoison | rogue.RogueSpellWoundPoison | rogue.RogueSpellDeadlyPoison | rogue.RogueSpellEnvenom | rogue.RogueSpellVenomousWounds,
+		ClassMask:  rogue.RogueSpellWoundPoison | rogue.RogueSpellDeadlyPoison | rogue.RogueSpellEnvenom | rogue.RogueSpellVenomousWounds,
 		FloatValue: sinRogue.GetMasteryBonusFromRating(sinRogue.GetStat(stats.MasteryRating)),
 	})
 	masteryMod.Activate()
