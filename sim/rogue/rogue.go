@@ -170,7 +170,6 @@ func (rogue *Rogue) Initialize() {
 	rogue.registerVanishSpell()
 	rogue.registerAmbushSpell()
 	rogue.registerGarrote()
-	rogue.registerBackstabSpell()
 	rogue.registerRupture()
 	rogue.registerSliceAndDice()
 	rogue.registerEviscerate()

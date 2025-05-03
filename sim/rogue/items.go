@@ -217,17 +217,16 @@ var Tier13 = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Pulled from old Shadowcraft/SimC logic.
-// There exists Blizzard sourced numbers, but those were from MoP beta. TBD which is valid.
-// The final difference between the Blizzard numbers and old TC numbers is exceedingly small either way.
+// Against level 93 mobs, the proc rate gets halved
+// I could make this dynamic, but the items are dead anyways
 func getFangsProcRate(character *core.Character) float64 {
 	switch character.Spec {
 	case proto.Spec_SpecSubtletyRogue:
-		return 0.275
+		return 0.29223 * 0.5
 	case proto.Spec_SpecAssassinationRogue:
-		return 0.235
+		return 0.23139 * 0.5
 	default:
-		return 0.095
+		return 0.09438 * 0.5
 	}
 }
 

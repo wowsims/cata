@@ -37,6 +37,7 @@ func (subRogue *SubtletyRogue) Initialize() {
 	subRogue.MasteryBaseValue = 0.2
 	subRogue.MasteryMultiplier = .025
 
+	subRogue.registerBackstabSpell()
 	subRogue.registerHemorrhageSpell()
 	subRogue.registerSanguinaryVein()
 	subRogue.registerPremeditation()
