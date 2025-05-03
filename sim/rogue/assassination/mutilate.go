@@ -23,7 +23,7 @@ func (sinRogue *AssassinationRogue) newMutilateHitSpell(isMH bool) *core.Spell {
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       procMask,
-		Flags:          core.SpellFlagMeleeMetrics | rogue.SpellFlagBuilder | rogue.SpellFlagColdBlooded,
+		Flags:          core.SpellFlagMeleeMetrics | rogue.SpellFlagColdBlooded,
 		ClassSpellMask: rogue.RogueSpellMutilate,
 
 		DamageMultiplier:         mutWeaponPercent,
@@ -52,7 +52,7 @@ func (sinRogue *AssassinationRogue) registerMutilateSpell() {
 		ActionID:       core.ActionID{SpellID: MutilateSpellID, Tag: 0},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskEmpty, // Mutilate (Cast) no longer appears to proc anything
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | rogue.SpellFlagBuilder | core.SpellFlagAPL,
 		ClassSpellMask: rogue.RogueSpellMutilate,
 
 		EnergyCost: core.EnergyCostOptions{

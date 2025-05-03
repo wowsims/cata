@@ -8,7 +8,8 @@ import (
 )
 
 func (comRogue *CombatRogue) registerSinisterStrikeSpell() {
-	baseDamage := comRogue.ClassSpellScaling * 0.1780000031
+	baseDamage := comRogue.GetBaseDamageFromCoefficient(0.22499999404)
+	wepDamage := 2.4
 
 	comRogue.SinisterStrike = comRogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 1752},
@@ -28,7 +29,7 @@ func (comRogue *CombatRogue) registerSinisterStrikeSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier:         1.04, // 84 * .73500001431 + 42
+		DamageMultiplier:         wepDamage,
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           comRogue.CritMultiplier(true),
 		ThreatMultiplier:         1,

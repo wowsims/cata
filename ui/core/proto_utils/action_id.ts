@@ -390,8 +390,10 @@ export class ActionId {
 				}
 				break;
 			case 'Hemorrhage':
-				if (this.spellId == 89775) {
-					name += ' (DoT)';
+				if (tag == 1) {
+					name += ' (Hit)';
+				} else {
+					name += ' (DoT)'
 				}
 				break;
 			case 'Stormstrike':

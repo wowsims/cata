@@ -10,11 +10,11 @@ const RuptureEnergyCost = 25.0
 const RuptureSpellID = 1943
 
 func (rogue *Rogue) registerRupture() {
-	coefficient := 0.12600000203
-	resourceCoefficient := 0.01799999923
+	coefficient := 0.18500000238
+	resourceCoefficient := 0.02600000054
 
-	baseDamage := coefficient * rogue.ClassSpellScaling
-	damagePerComboPoint := resourceCoefficient * rogue.ClassSpellScaling
+	baseDamage := rogue.GetBaseDamageFromCoefficient(coefficient)
+	damagePerComboPoint := rogue.GetBaseDamageFromCoefficient(resourceCoefficient)
 
 	rogue.Rupture = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: RuptureSpellID},

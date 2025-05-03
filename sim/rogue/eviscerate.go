@@ -7,9 +7,9 @@ import (
 )
 
 func (rogue *Rogue) registerEviscerate() {
-	coefficient := 0.32600000501
-	resourceCoefficient := 0.47600001097
-	apScalingPerComboPoint := 0.091
+	coefficient := 0.5339999795
+	resourceCoefficient := 0.70700001717
+	apScalingPerComboPoint := 0.18
 
 	avgBaseDamage := coefficient * rogue.ClassSpellScaling
 	damagePerComboPoint := resourceCoefficient * rogue.ClassSpellScaling

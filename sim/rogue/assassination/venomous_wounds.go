@@ -52,7 +52,7 @@ func (sinRogue *AssassinationRogue) registerVenomousWounds() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			vwDamage := vwBaseTickDamage + vwAPCoeff*spell.MeleeAttackPower()
-			result := spell.CalcAndDealDamage(sim, target, vwDamage, spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, target, vwDamage, spell.OutcomeMeleeSpecialCritOnly)
 			if result.Landed() {
 				sinRogue.AddEnergy(sim, 10, vwMetrics)
 			}

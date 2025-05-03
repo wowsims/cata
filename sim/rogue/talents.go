@@ -17,7 +17,7 @@ func (rogue *Rogue) DWSMultiplier() float64 {
 }
 
 func (rogue *Rogue) ApplyCutToTheChase(sim *core.Simulation) {
-	if rogue.SliceAndDiceAura.IsActive() {
+	if rogue.Spec == proto.Spec_SpecAssassinationRogue && rogue.SliceAndDiceAura.IsActive() {
 		rogue.SliceAndDiceAura.Duration = rogue.sliceAndDiceDurations[5]
 		rogue.SliceAndDiceAura.Activate(sim)
 	}

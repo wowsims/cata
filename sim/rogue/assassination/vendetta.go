@@ -11,7 +11,7 @@ import (
 func (sinRogue *AssassinationRogue) registerVendetta() {
 	actionID := core.ActionID{SpellID: 79140}
 	hasGlyph := sinRogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfVendetta)
-	duration := time.Duration(core.TernaryFloat64(hasGlyph, 30, 20))
+	duration := time.Second * time.Duration(core.TernaryFloat64(hasGlyph, 30, 20))
 
 	vendettaAuras := sinRogue.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return target.GetOrRegisterAura(core.Aura{

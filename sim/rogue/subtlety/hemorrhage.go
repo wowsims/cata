@@ -9,8 +9,8 @@ import (
 )
 
 func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
-	hemoActionID := core.ActionID{SpellID: 16511}
-	hemoDotActionID := core.ActionID{SpellID: 89775}
+	hemoActionID := core.ActionID{SpellID: 16511, Tag: 1}
+	hemoDotActionID := core.ActionID{SpellID: 16511}
 	hasMinorGlyph := subRogue.HasMinorGlyph(proto.RogueMinorGlyph_GlyphOfHemorrhage)
 	hemoAuras := subRogue.NewEnemyAuraArray(core.HemorrhageAura)
 	var lastHemoDamage float64
@@ -30,7 +30,7 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 			Aura: core.Aura{
 				Label:    "Hemorrhage DoT",
 				Tag:      rogue.RogueBleedTag,
-				ActionID: core.ActionID{SpellID: 89775},
+				ActionID: hemoActionID,
 				Duration: time.Second * 24,
 			},
 			NumberOfTicks: 8,

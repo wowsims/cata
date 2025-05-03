@@ -10,6 +10,9 @@ import (
 func (comRogue *CombatRogue) registerRevealingStrike() {
 	multiplier := 1.35
 	actionID := core.ActionID{SpellID: 84617}
+	cpMetric := comRogue.NewComboPointMetrics(core.ActionID{SpellID: 1752}) // Sinister Strike spell ID
+
+	wepDamage := 1.6
 
 	// Enemy Debuff Aura for Finisher Damage
 	rvsAura := comRogue.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
@@ -31,8 +34,10 @@ func (comRogue *CombatRogue) registerRevealingStrike() {
 				aura.Deactivate(sim)
 			},
 			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && spell.Flags.Matches(rogue.SpellFlagFinisher) {
-					aura.Deactivate(sim)
+				if result.Landed() && spell.ClassSpellMask == rogue.RogueSpellSinisterStrike {
+					if sim.Proc(0.2, "Revealing Strike Extra Combo Point") {
+						comRogue.AddComboPoints(sim, 1, cpMetric)
+					}
 				}
 			},
 		})
@@ -55,7 +60,7 @@ func (comRogue *CombatRogue) registerRevealingStrike() {
 			Refund: 0.8,
 		},
 
-		DamageMultiplier: 1.29,
+		DamageMultiplier: wepDamage,
 		CritMultiplier:   comRogue.CritMultiplier(false),
 		ThreatMultiplier: 1,
 
