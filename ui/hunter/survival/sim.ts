@@ -5,23 +5,9 @@ import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
-import { APLAction, APLListItem, APLRotation } from '../../core/proto/apl';
-import {
-	Cooldowns,
-	Debuffs,
-	Faction,
-	IndividualBuffs,
-	ItemSlot,
-	PartyBuffs,
-	PseudoStat,
-	Race,
-	RaidBuffs,
-	RangedWeaponType,
-	RotationType,
-	Spec,
-	Stat,
-} from '../../core/proto/common';
-import { HunterStingType, SurvivalHunter_Rotation } from '../../core/proto/hunter';
+import { APLListItem, APLRotation } from '../../core/proto/apl';
+import { Cooldowns, Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
+import { SurvivalHunter_Rotation } from '../../core/proto/hunter';
 import { StatCapType } from '../../core/proto/ui';
 import * as AplUtils from '../../core/proto_utils/apl_utils';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';

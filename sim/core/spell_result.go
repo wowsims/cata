@@ -520,6 +520,10 @@ func (spell *Spell) TargetDamageMultiplier(sim *Simulation, attackTable *AttackT
 		multiplier *= attackTable.Defender.PseudoStats.PeriodicPhysicalDamageTakenMultiplier
 	}
 
+	if spell.Flags.Matches(SpellFlagRanged) {
+		multiplier *= attackTable.RangedDamageTakenMulitplier
+	}
+
 	if attackTable.DamageDoneByCasterMultiplier != nil {
 		multiplier *= attackTable.DamageDoneByCasterMultiplier(sim, spell, attackTable)
 	}

@@ -8,6 +8,10 @@ import (
 )
 
 func (hunter *Hunter) registerGlaiveTossSpell() {
+	if !hunter.Talents.GlaiveToss {
+		return
+	}
+
 	registerGlaive := func(spellID int32) *core.Spell {
 		return hunter.RegisterSpell(core.SpellConfig{
 			ActionID:                 core.ActionID{SpellID: spellID},
@@ -50,13 +54,13 @@ func (hunter *Hunter) registerGlaiveTossSpell() {
 	firstGlaive := registerGlaive(120755)
 	secondGlaive := registerGlaive(120756)
 
-	hunter.RegisterSpell(core.SpellConfig{
+	hunter.GlaiveToss = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 117050},
 		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskEmpty,
+		ProcMask:    core.ProcMaskProc,
 		Flags:       core.SpellFlagAPL,
-		MinRange:    0,
 		MaxRange:    40,
+		MinRange:    0,
 		FocusCost: core.FocusCostOptions{
 			Cost: 15,
 		},
@@ -69,6 +73,10 @@ func (hunter *Hunter) registerGlaiveTossSpell() {
 				Duration: 15 * time.Second,
 			},
 		},
+		DamageMultiplierAdditive: 1,
+
+		CritMultiplier:   hunter.DefaultCritMultiplier(),
+		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			firstGlaive.Cast(sim, target)
 			secondGlaive.Cast(sim, target)

@@ -635,7 +635,7 @@ func TrueShotAura(unit *Unit) *Aura {
 		"True Shot Aura",
 		ActionID{SpellID: 19506},
 		[]StatConfig{
-			{stats.AttackPower, 1.2, true},
+			{stats.AttackPower, 1.1, true},
 			{stats.RangedAttackPower, 1.1, true},
 		}})
 }

@@ -51,6 +51,8 @@ func (hunter *Hunter) registerMultiShotSpell() {
 				curTarget := target
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 					spell.DealDamage(sim, baseDamageArray[hitIndex])
+
+					//Serpent Spread
 					if hunter.Spec == proto.Spec_SpecSurvivalHunter {
 						duration := 15 * time.Second
 
@@ -61,6 +63,7 @@ func (hunter *Hunter) registerMultiShotSpell() {
 						ss.BaseTickCount = 5
 						ss.Apply(sim)
 					}
+
 					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}
 			})

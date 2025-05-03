@@ -1,12 +1,7 @@
 import * as PresetUtils from '../../core/preset_utils';
 import { APLRotation_Type as APLRotationType } from '../../core/proto/apl.js';
 import { ConsumesSpec, Glyphs, Profession, PseudoStat, Stat } from '../../core/proto/common';
-import {
-	HunterMajorGlyph as MajorGlyph,
-	HunterOptions_PetType as PetType,
-	HunterStingType,
-	SurvivalHunter_Options as HunterOptions,
-} from '../../core/proto/hunter';
+import { HunterMajorGlyph as MajorGlyph, HunterOptions_PetType as PetType, SurvivalHunter_Options as HunterOptions } from '../../core/proto/hunter';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import AoeApl from './apls/aoe.apl.json';
@@ -119,7 +114,6 @@ export const SVDefaultOptions = HunterOptions.create({
 		petType: PetType.Wolf,
 		petUptime: 1,
 	},
-	sniperTrainingUptime: 0.9,
 });
 
 export const DefaultConsumables = ConsumesSpec.create({

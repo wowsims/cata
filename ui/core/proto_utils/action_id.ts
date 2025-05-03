@@ -269,18 +269,6 @@ export class ActionId {
 			case 'Minor Speed':
 				name = 'Minor Run Speed (8%)';
 				break;
-			case 'Explosive Shot':
-				if (this.spellId == 53301) {
-					name += ' (First)';
-				} else if (this.spellId == 1215485) {
-					name += ' (Second)';
-				}
-				break;
-			case 'Explosive Trap':
-				if (tag == 1) {
-					name += ' (Weaving)';
-				}
-				break;
 			case 'Arcane Blast':
 				if (tag == 1) {
 					name += ' (No Stacks)';

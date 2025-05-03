@@ -4,15 +4,24 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/hunter"
 )
+
+func (survHunter *SurvivalHunter) ApplyMods() {
+	survHunter.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  hunter.HunterSpellSerpentSting,
+		FloatValue: 0.5,
+	})
+	survHunter.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  hunter.HunterSpellBlackArrow,
+		FloatValue: 0.3,
+	})
+}
 
 // Todo: Should we support precasting freezing/ice trap?
 func (hunter *SurvivalHunter) applyLNL() {
-	if hunter.Spec != proto.Spec_SpecSurvivalHunter {
-		return
-	}
-
 	actionID := core.ActionID{SpellID: 56343}
 	procChance := 0.20
 

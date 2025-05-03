@@ -7,7 +7,9 @@ import (
 )
 
 func (hunter *Hunter) registerPowerShotSpell() {
-
+	if !hunter.Talents.Powershot {
+		return
+	}
 	hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 19434},
 		SpellSchool: core.SpellSchoolPhysical,

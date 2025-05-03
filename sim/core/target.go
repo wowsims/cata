@@ -218,6 +218,7 @@ type AttackTable struct {
 	DamageDealtMultiplier        float64 // attacker buff, applied in applyAttackerModifiers()
 	DamageTakenMultiplier        float64 // defender debuff, applied in applyTargetModifiers()
 	HauntSEDamageTakenMultiplier float64
+	RangedDamageTakenMulitplier  float64
 	HealingDealtMultiplier       float64
 	IgnoreArmor                  bool    // Ignore defender's armor for specifically this attacker's attacks
 	ArmorIgnoreFactor            float64 // Percentage of armor to ignore for this attacker's attacks
@@ -240,6 +241,7 @@ func NewAttackTable(attacker *Unit, defender *Unit) *AttackTable {
 		DamageDealtMultiplier:        1,
 		DamageTakenMultiplier:        1,
 		HauntSEDamageTakenMultiplier: 1,
+		RangedDamageTakenMulitplier:  1,
 		HealingDealtMultiplier:       1,
 	}
 

@@ -1250,7 +1250,6 @@ const idToCategoryMap: Record<number, number> = {
 	[48463]: SPELL_ACTION_CATEGORY + 0.5, // Moonfire
 
 	// Hunter
-	[48996]: 0.1, // Raptor Strike
 	[53217]: 0.6, // Wild Quiver
 	[53209]: MELEE_ACTION_CATEGORY + 0.1, // Chimera Shot
 	[53353]: MELEE_ACTION_CATEGORY + 0.11, // Chimera Shot Serpent
@@ -1262,7 +1261,7 @@ const idToCategoryMap: Record<number, number> = {
 	[56641]: MELEE_ACTION_CATEGORY + 0.27, // Steady Shot
 	[53351]: MELEE_ACTION_CATEGORY + 0.28, // Kill Shot
 	[34490]: MELEE_ACTION_CATEGORY + 0.29, // Silencing Shot
-	[49001]: MELEE_ACTION_CATEGORY + 0.3, // Serpent Sting
+	[1978]: MELEE_ACTION_CATEGORY + 0.3, // Serpent Sting
 	[53238]: MELEE_ACTION_CATEGORY + 0.31, // Piercing Shots
 	[63672]: MELEE_ACTION_CATEGORY + 0.32, // Black Arrow
 	[49067]: MELEE_ACTION_CATEGORY + 0.33, // Explosive Trap

@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (hunter *Hunter) applyFervorCD() {
+func (hunter *Hunter) registerFervorSpell() {
 	if !hunter.Talents.Fervor {
 		return
 	}
@@ -15,7 +15,6 @@ func (hunter *Hunter) applyFervorCD() {
 	focusMetrics := hunter.NewFocusMetrics(actionID)
 	fervorSpell := hunter.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
-
 		FocusCost: core.FocusCostOptions{
 			Cost: 0,
 		},
@@ -34,7 +33,14 @@ func (hunter *Hunter) applyFervorCD() {
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			hunter.AddFocus(sim, 50, focusMetrics)
 			hunter.Pet.AddFocus(sim, 50, focusMetrics)
-			//Todo: Recurring over 10 sec
+			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+				NumTicks: 10,
+				Period:   time.Second * 10,
+				OnAction: func(sim *core.Simulation) {
+					hunter.AddFocus(sim, 5, focusMetrics)
+					hunter.Pet.AddFocus(sim, 5, focusMetrics)
+				},
+			})
 		},
 	})
 

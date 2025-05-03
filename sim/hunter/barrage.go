@@ -46,7 +46,10 @@ func (hunter *Hunter) getBarrageTickSpell() *core.Spell {
 	return hunter.RegisterSpell(config)
 }
 
-func (hunter *Hunter) registerBarrageSpell() *core.Spell {
+func (hunter *Hunter) registerBarrageSpell() {
+	if !hunter.Talents.Barrage {
+		return
+	}
 	barrageTickSpell := hunter.getBarrageTickSpell()
 
 	config := hunter.getBarrageConfig()
@@ -88,5 +91,5 @@ func (hunter *Hunter) registerBarrageSpell() *core.Spell {
 		return spell.CalcDamage(sim, target, sharedDmg, spell.OutcomeRangedHitAndCrit)
 	}
 
-	return hunter.RegisterSpell(config)
+	hunter.Barrage = hunter.RegisterSpell(config)
 }

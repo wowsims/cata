@@ -33,7 +33,7 @@ func (hunter *Hunter) registerAspectSpell(spellID int32, dependency *stats.StatD
 	return spell
 }
 func (hunter *Hunter) registerHawkSpell() {
-	hunter.registerAspectSpell(13165, hunter.NewDynamicMultiplyStat(stats.Agility, 1.35), "Aspect of the Hawk")
+	hunter.registerAspectSpell(13165, hunter.NewDynamicMultiplyStat(stats.RangedAttackPower, 1.35), "Aspect of the Hawk")
 }
 
 func (hunter *Hunter) applySharedAspectConfig(aura *core.Aura) {

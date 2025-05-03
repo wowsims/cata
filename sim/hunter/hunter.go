@@ -44,6 +44,10 @@ type Hunter struct {
 	ScorpidSting  *core.Spell
 	SilencingShot *core.Spell
 	TrapLauncher  *core.Spell
+	GlaiveToss    *core.Spell
+	Barrage       *core.Spell
+	Powershot     *core.Spell
+	AMOC          *core.Spell
 
 	// BM only spells
 
@@ -70,7 +74,8 @@ type Hunter struct {
 	MasterMarksmanAura            *core.Aura
 	MasterMarksmanCounterAura     *core.Aura
 	TrapLauncherAura              *core.Aura
-
+	HuntersMarkAura               core.AuraArray
+	HuntersMarkSpell              *core.Spell
 	// Item sets
 	T13_2pc *core.Aura
 }
@@ -131,6 +136,7 @@ func (hunter *Hunter) Initialize() {
 
 	// hunter.ApplyGlyphs()
 	hunter.RegisterSpells()
+	hunter.ApplyHotfixes()
 
 	// hunter.addBloodthirstyGloves()
 }
@@ -154,6 +160,11 @@ func (hunter *Hunter) RegisterSpells() {
 	hunter.registerRapidFireCD()
 	hunter.registerSilencingShotSpell()
 	hunter.registerHuntersMarkSpell()
+	hunter.registerAMOCSpell()
+	hunter.registerBarrageSpell()
+	hunter.registerGlaiveTossSpell()
+	hunter.registerBarrageSpell()
+	hunter.registerFervorSpell()
 }
 
 func (hunter *Hunter) AddStatDependencies() {
@@ -230,6 +241,7 @@ const (
 	HunterSpellRapidFire
 	HunterSpellBestialWrath
 	HunterPetFocusDump
+	HunterPetDamage
 	HunterSpellsTierTwelve = HunterSpellArcaneShot | HunterSpellKillCommand | HunterSpellChimeraShot | HunterSpellExplosiveShot |
 		HunterSpellMultiShot | HunterSpellAimedShot
 	HunterSpellsAll = HunterSpellSteadyShot | HunterSpellCobraShot |

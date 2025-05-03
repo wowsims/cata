@@ -9,14 +9,14 @@ import (
 
 func (hunter *Hunter) registerSerpentStingSpell() {
 	IsSurvival := hunter.Spec == proto.Spec_SpecSurvivalHunter
-	focusMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 1978})
+	focusMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 118976})
 	hunter.ImprovedSerpentSting = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:                 core.ActionID{SpellID: 82834},
 		SpellSchool:              core.SpellSchoolNature,
 		ProcMask:                 core.ProcMaskDirect,
 		ClassSpellMask:           HunterSpellSerpentSting,
 		Flags:                    core.SpellFlagPassiveSpell,
-		DamageMultiplier:         core.TernaryFloat64(IsSurvival, 1.5, 1),
+		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           hunter.CritMultiplier(1, 0),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -68,9 +68,8 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				ActionID: core.ActionID{SpellID: 1978},
-				Label:    "SerpentStingDot",
-				Tag:      "SerpentSting",
+				Label: "SerpentStingDot",
+				Tag:   "Serpent Sting",
 			},
 
 			NumberOfTicks: 5,

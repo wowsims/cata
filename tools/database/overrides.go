@@ -189,6 +189,7 @@ var ItemOverrides = []*proto.UIItem{
 // Keep these sorted by item ID.
 var ItemAllowList = map[int32]struct{}{
 	2140: {},
+	2505: {},
 	//Shaman Dungeon Set 3 Tidefury
 	27510: {}, // Tidefury Gauntlets
 	27802: {}, // Tidefury Shoulderguards

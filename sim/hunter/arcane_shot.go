@@ -37,7 +37,7 @@ func (hunter *Hunter) registerArcaneShotSpell() {
 			baseDamage := wepDmg + (hunter.ClassSpellScaling * 1.85)
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
-
+			hunter.HuntersMarkSpell.Cast(sim, target)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 			})

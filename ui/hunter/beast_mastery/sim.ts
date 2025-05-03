@@ -1,7 +1,6 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
-import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
@@ -16,7 +15,6 @@ import {
 	PseudoStat,
 	Race,
 	RaidBuffs,
-	RangedWeaponType,
 	RotationType,
 	Spec,
 	Stat,
