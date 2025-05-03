@@ -27,6 +27,7 @@ type EquippedItemOptions = {
 	randomSuffix?: ItemRandomSuffix | null;
 	reforge?: ReforgeStat | null;
 	upgrade?: ItemLevelState | null;
+	challengeModeOverride?: boolean;
 };
 
 /**
@@ -41,16 +42,18 @@ export class EquippedItem {
 	readonly _enchant: Enchant | null;
 	readonly _gems: Array<Gem | null>;
 	readonly _upgrade: ItemLevelState;
+	readonly _challengeModeOverride: boolean;
 
 	readonly numPossibleSockets: number;
 
-	constructor({ item, enchant, gems, randomSuffix, reforge, upgrade }: EquippedItemOptions) {
+	constructor({ item, enchant, gems, randomSuffix, reforge, upgrade, challengeModeOverride }: EquippedItemOptions) {
 		this._item = item;
 		this._enchant = enchant || null;
 		this._gems = gems || [];
 		this._randomSuffix = randomSuffix || null;
 		this._reforge = reforge || null;
 		this._upgrade = upgrade ?? ItemLevelState.Base;
+		this._challengeModeOverride = challengeModeOverride ?? false;
 
 		this.numPossibleSockets = this.numSockets(true);
 
@@ -83,8 +86,11 @@ export class EquippedItem {
 		// Make a defensive copy
 		return this._gems.map(gem => (gem == null ? null : Gem.clone(gem)));
 	}
-	get upgrade(): ItemLevelState | null {
-		return this._upgrade;
+	get upgrade(): ItemLevelState {
+		return this._challengeModeOverride && this._item.scalingOptions[ItemLevelState.ChallengeMode] ? ItemLevelState.ChallengeMode : this._upgrade;
+	}
+	get randomPropPoints(): number {
+		return this.item.scalingOptions[this.upgrade].randPropPoints || this.item.randPropPoints;
 	}
 	get ilvl(): number {
 		return typeof this.upgrade === 'number' ? this.item.scalingOptions[this.upgrade].ilvl : this.ilvl;
@@ -149,6 +155,8 @@ export class EquippedItem {
 
 		if (this._upgrade !== other.upgrade) return false;
 
+		if (this._challengeModeOverride !== other._challengeModeOverride) return false;
+
 		return true;
 	}
 
@@ -185,6 +193,7 @@ export class EquippedItem {
 			item,
 			enchant: newEnchant,
 			gems: newGems,
+			challengeModeOverride: this._challengeModeOverride,
 		});
 	}
 
@@ -199,6 +208,7 @@ export class EquippedItem {
 			randomSuffix: this._randomSuffix,
 			reforge: this._reforge,
 			upgrade: this._upgrade,
+			challengeModeOverride: this._challengeModeOverride,
 		});
 	}
 
@@ -213,6 +223,7 @@ export class EquippedItem {
 			randomSuffix: this._randomSuffix,
 			reforge,
 			upgrade: this._upgrade,
+			challengeModeOverride: this._challengeModeOverride,
 		});
 	}
 
@@ -227,6 +238,22 @@ export class EquippedItem {
 			randomSuffix: this._randomSuffix,
 			reforge: this._reforge,
 			upgrade,
+			challengeModeOverride: this._challengeModeOverride,
+		});
+	}
+
+	/**
+	 * Returns a new EquippedItem as if it was scaled for Challenge Mode
+	 */
+	withChallengeModeOverride(enabled: boolean): EquippedItem {
+		return new EquippedItem({
+			item: this._item,
+			enchant: this._enchant,
+			gems: this._gems,
+			randomSuffix: this._randomSuffix,
+			reforge: this._reforge,
+			upgrade: this._upgrade,
+			challengeModeOverride: enabled,
 		});
 	}
 
@@ -248,6 +275,7 @@ export class EquippedItem {
 			randomSuffix: this._randomSuffix,
 			reforge: this._reforge,
 			upgrade: this._upgrade,
+			challengeModeOverride: this._challengeModeOverride,
 		});
 	}
 
@@ -298,18 +326,15 @@ export class EquippedItem {
 			randomSuffix,
 			reforge: this._reforge,
 			upgrade: this._upgrade,
+			challengeModeOverride: this._challengeModeOverride,
 		});
-	}
-
-	getRandomPropPoints(): number {
-		return this.item.scalingOptions[this._upgrade].randPropPoints || this.item.randPropPoints;
 	}
 
 	getWithRandomSuffixStats() {
 		const item = this.item;
 		if (this._randomSuffix) {
 			item.stats = item.stats.map((stat, index) =>
-				this._randomSuffix!.stats[index] > 0 ? Math.floor((this._randomSuffix!.stats[index] * this.getRandomPropPoints()) / 10000) : stat,
+				this._randomSuffix!.stats[index] > 0 ? Math.floor((this._randomSuffix!.stats[index] * this.randomPropPoints) / 10000) : stat,
 			);
 		}
 
@@ -320,6 +345,7 @@ export class EquippedItem {
 			randomSuffix: this._randomSuffix,
 			reforge: this._reforge,
 			upgrade: this._upgrade,
+			challengeModeOverride: this._challengeModeOverride,
 		});
 	}
 

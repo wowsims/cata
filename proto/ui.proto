@@ -402,6 +402,7 @@ message SavedSettings {
 	double distance_from_target = 12;
 	HealingModel healing_model = 13;
 	double dark_intent_uptime = 19;
+	bool challenge_mode = 20;
 }
 
 message SavedTalents {

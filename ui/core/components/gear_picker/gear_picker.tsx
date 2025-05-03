@@ -3,7 +3,7 @@ import { ref } from 'tsx-vanilla';
 import { MISSING_RANDOM_SUFFIX_WARNING } from '../../constants/item_notices';
 import { setItemQualityCssClass } from '../../css_utils';
 import { Player } from '../../player';
-import { ItemSlot, ItemType } from '../../proto/common';
+import { ItemLevelState, ItemSlot, ItemType } from '../../proto/common';
 import { UIEnchant as Enchant, UIGem as Gem } from '../../proto/ui';
 import { ActionId } from '../../proto_utils/action_id';
 import { getEnchantDescription } from '../../proto_utils/enchants';
@@ -158,7 +158,9 @@ export class ItemRenderer extends Component {
 		this.ilvlElem.replaceChildren(
 			<>
 				{newItem.ilvl.toString()}
-				{!!newItem.ilvlFromBase && <span className="item-quality-uncommon">+{newItem.ilvlFromBase}</span>}
+				{!!(newItem.upgrade !== ItemLevelState.ChallengeMode && newItem.ilvlFromBase) && (
+					<span className="item-quality-uncommon">+{newItem.ilvlFromBase}</span>
+				)}
 			</>,
 		);
 

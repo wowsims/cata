@@ -168,9 +168,16 @@ abstract class BaseGear {
  *
  * This is an immutable type.
  */
+
+export type GearOptions = {
+	challengeModeOverride?: boolean;
+};
 export class Gear extends BaseGear {
-	constructor(gear: Partial<InternalGear>) {
+	challengeModeOverride = false;
+
+	constructor(gear: Partial<InternalGear>, { challengeModeOverride }: GearOptions = {}) {
 		super(gear);
+		this.challengeModeOverride = !!challengeModeOverride;
 	}
 
 	getItemSlots(): ItemSlot[] {
@@ -178,7 +185,7 @@ export class Gear extends BaseGear {
 	}
 
 	withEquippedItem(newSlot: ItemSlot, newItem: EquippedItem | null, canDualWield2H: boolean): Gear {
-		return new Gear(this.withEquippedItemInternal(newSlot, newItem, canDualWield2H));
+		return new Gear(this.withEquippedItemInternal(newSlot, newItem, canDualWield2H), { challengeModeOverride: this.challengeModeOverride });
 	}
 
 	asSpec(): EquipmentSpec {
@@ -234,6 +241,21 @@ export class Gear extends BaseGear {
 			yellow: gems.filter(gem => gemMatchesSocket(gem, GemColor.GemColorYellow)).length,
 			blue: gems.filter(gem => gemMatchesSocket(gem, GemColor.GemColorBlue)).length,
 		};
+	}
+
+	withChallengeModeOverride(enabled: boolean): Gear {
+		this.challengeModeOverride = enabled;
+		let curGear: Gear = this;
+
+		for (const slot of this.getItemSlots()) {
+			const item = this.getEquippedItem(slot);
+
+			if (item) {
+				curGear = curGear.withEquippedItem(slot, item.withChallengeModeOverride(enabled), true);
+			}
+		}
+
+		return curGear;
 	}
 
 	// Returns true if this gear set has a meta gem AND the other gems meet the meta's conditions.

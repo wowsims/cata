@@ -255,6 +255,7 @@ export class Player<SpecType extends Spec> {
 	private darkIntentUptime = 100;
 	private healingModel: HealingModel = HealingModel.create();
 	private healingEnabled = false;
+	private challengeModeEnabled = false;
 
 	private readonly autoRotationGenerator: AutoRotationGenerator<SpecType> | null = null;
 	private readonly simpleRotationGenerator: SimpleRotationGenerator<SpecType> | null = null;
@@ -737,9 +738,8 @@ export class Player<SpecType extends Spec> {
 	}
 
 	setGear(eventID: EventID, newGear: Gear) {
-		if (newGear.equals(this.gear)) return;
-
-		this.gear = newGear;
+		if (newGear.equals(this.gear) && this.challengeModeEnabled === this.gear.challengeModeOverride) return;
+		this.gear = newGear.withChallengeModeOverride(this.challengeModeEnabled);
 		this.gearChangeEmitter.emit(eventID);
 	}
 
@@ -1008,6 +1008,18 @@ export class Player<SpecType extends Spec> {
 		if (newDarkIntentUptime == this.darkIntentUptime) return;
 
 		this.darkIntentUptime = newDarkIntentUptime;
+		this.miscOptionsChangeEmitter.emit(eventID);
+	}
+
+	getChallengeModeEnabled(): boolean {
+		return this.challengeModeEnabled;
+	}
+
+	setChallengeModeEnabled(eventID: EventID, value: boolean) {
+		if (value === this.challengeModeEnabled) return;
+
+		this.challengeModeEnabled = value;
+		this.setGear(eventID, this.gear);
 		this.miscOptionsChangeEmitter.emit(eventID);
 	}
 
@@ -1500,6 +1512,7 @@ export class Player<SpecType extends Spec> {
 				inFrontOfTarget: this.getInFrontOfTarget(),
 				distanceFromTarget: this.getDistanceFromTarget(),
 				healingModel: this.getHealingModel(),
+				challengeMode: this.getChallengeModeEnabled(),
 				darkIntentUptime: this.getDarkIntentUptime(),
 			});
 			player = withSpec(this.getSpec(), player, this.getSpecOptions());
@@ -1519,7 +1532,14 @@ export class Player<SpecType extends Spec> {
 			const loadCategory = (cat: SimSettingCategories) => !includeCategories || includeCategories.length == 0 || includeCategories.includes(cat);
 			eventID = TypedEvent.nextEventID();
 			if (loadCategory(SimSettingCategories.Gear)) {
-				this.setGear(eventID, proto.equipment ? this.sim.db.lookupEquipmentSpec(proto.equipment) : new Gear({}));
+				this.setGear(
+					eventID,
+					proto.equipment
+						? this.sim.db.lookupEquipmentSpec(proto.equipment, {
+								challengeModeOverride: proto.challengeMode,
+						  })
+						: new Gear({}),
+				);
 				this.itemSwapSettings.setItemSwapSettings(
 					eventID,
 					proto.enableItemSwap,
@@ -1556,6 +1576,7 @@ export class Player<SpecType extends Spec> {
 				this.setInFrontOfTarget(eventID, proto.inFrontOfTarget);
 				this.setDistanceFromTarget(eventID, proto.distanceFromTarget);
 				this.setHealingModel(eventID, proto.healingModel || HealingModel.create());
+				this.setChallengeModeEnabled(eventID, proto.challengeMode);
 				this.setDarkIntentUptime(eventID, proto.darkIntentUptime);
 			}
 			if (loadCategory(SimSettingCategories.External)) {

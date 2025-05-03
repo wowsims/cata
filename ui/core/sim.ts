@@ -228,7 +228,7 @@ export class Sim {
 					return;
 				}
 
-				let gear = this.db.lookupEquipmentSpec(player.equipment);
+				let gear = this.db.lookupEquipmentSpec(player.equipment, { challengeModeOverride: player.challengeMode });
 				let gearChanged = false;
 
 				const isBlacksmith = [player.profession1, player.profession2].includes(Profession.Blacksmithing);
