@@ -356,20 +356,15 @@ export class ActionId {
 				break;
 			case 'Envenom':
 			case 'Eviscerate':
-			case 'Expose Armor':
 			case 'Rupture':
 			case 'Slice and Dice':
-			case 'Recuperate':
 				if (tag) name += ` (${tag} CP)`;
 				break;
-			case 'Instant Poison':
-			case 'Wound Poison':
-				if (tag == 1) {
-					name += ' (Deadly)';
-				} else if (tag == 2) {
-					name += ' (Shiv)';
-				} else if (tag == 3) {
-					name += ' (Fan of Knives)';
+			case 'Deadly Poison':
+				if (tag == 0) {
+					name += ' (DoT)';
+				} else {
+					name += ' (Hit)';
 				}
 				break;
 			case 'Fan of Knives':
@@ -953,6 +948,7 @@ const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 879, tag: 3 }), { spellId: 54934 }], // Paladin - Glyph of Exorcism
 	[JSON.stringify({ spellId: 49020, tag: 3 }), { spellId: 99000 }], // Death Knight - T12 4P Flaming Torment
 	[JSON.stringify({ spellId: 55090, tag: 3 }), { spellId: 99000 }], // Death Knight - T12 4P Flaming Torment
+	[JSON.stringify({ spellId: 2818, tag: 1 }), { spellId: 113780 }], // Rogue - Deadly Poison - Hit
 
 	// Off-Hand attacks
 	[JSON.stringify({ spellId: 45902, tag: 2 }), { spellId: 66215 }], // Death Knight - Blood Strike Off-Hand

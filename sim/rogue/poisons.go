@@ -39,6 +39,28 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 	hit_variance := 0.28000000119 * hit_baseDamage
 	hit_minimum := hit_baseDamage - hit_variance/2
 
+	// Register the hit as a distinct spell for Results UI separation
+	dpHit := rogue.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 2818, Tag: 1},
+		SpellSchool:    core.SpellSchoolNature,
+		ProcMask:       core.ProcMaskSpellDamageProc,
+		ClassSpellMask: RogueSpellDeadlyPoison,
+		Flags:          core.SpellFlagPassiveSpell,
+
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           rogue.CritMultiplier(false),
+		ThreatMultiplier:         1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := hit_minimum +
+				sim.RandomFloat("Deadly Poison Hit")*hit_variance +
+				hit_apScaling*spell.MeleeAttackPower()
+			// DoT spell already checked if we hit, just send the damage
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+		},
+	})
+
 	rogue.DeadlyPoison = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 2818},
 		SpellSchool:    core.SpellSchoolNature,
@@ -48,12 +70,12 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           1,
+		CritMultiplier:           rogue.CritMultiplier(false),
 		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label:     "Deadly Poison DoT",
+				Label:     "Deadly Poison",
 				MaxStacks: 1,
 				Duration:  time.Second * 12,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -81,22 +103,21 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 			if !result.Landed() {
 				return
 			}
 
 			dot := spell.Dot(target)
 			if dot.IsActive() {
-				baseDamage := hit_minimum +
-					sim.RandomFloat("Deadly Poison Hit")*hit_variance +
-					hit_apScaling*spell.MeleeAttackPower()
-				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
+				dpHit.Cast(sim, result.Target)
+				dot.Refresh(sim)
+				dot.TakeSnapshot(sim, false)
+			} else {
+				dot.Apply(sim)
+				dot.Refresh(sim)
+				dot.TakeSnapshot(sim, false)
 			}
-
-			dot.Apply(sim)
-			dot.Refresh(sim)
-			dot.TakeSnapshot(sim, false)
 		},
 	})
 }
@@ -118,7 +139,11 @@ func (rogue *Rogue) registerWoundPoisonSpell() {
 		return target.RegisterAura(woundPoisonDebuffAura)
 	})
 
-	wpBaseDamage := 0.24500000477 * rogue.ClassSpellScaling
+	wpBaseDamage := rogue.GetBaseDamageFromCoefficient(0.41699999571)
+	apScaling := 0.11999999732
+	variance := 0.28000000119 * wpBaseDamage
+	minBaseDamage := wpBaseDamage - variance/2
+
 	rogue.WoundPoison = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 8680},
 		SpellSchool:    core.SpellSchoolNature,
@@ -131,7 +156,9 @@ func (rogue *Rogue) registerWoundPoisonSpell() {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := wpBaseDamage + 0.04*spell.MeleeAttackPower()
+			baseDamage := minBaseDamage +
+				sim.RandomFloat("Wound Poison")*variance +
+				spell.MeleeAttackPower()*apScaling
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 

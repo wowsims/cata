@@ -7,10 +7,8 @@ import (
 )
 
 func (rogue *Rogue) registerEnvenom() {
-	coefficient := 0.21400000155
-	apScalingPerComboPoint := 0.09
-
-	baseDamage := coefficient * rogue.ClassSpellScaling
+	baseDamage := rogue.GetBaseDamageFromCoefficient(0.38499999046)
+	apScalingPerComboPoint := 0.112
 
 	rogue.EnvenomAura = rogue.RegisterAura(core.Aura{
 		Label:    "Envenom",
@@ -46,7 +44,7 @@ func (rogue *Rogue) registerEnvenom() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return rogue.ComboPoints() > 0 && rogue.DeadlyPoison.Dot(target).IsActive()
+			return rogue.ComboPoints() > 0
 		},
 
 		DamageMultiplier:         1,
@@ -63,7 +61,7 @@ func (rogue *Rogue) registerEnvenom() {
 			rogue.EnvenomAura.Duration = time.Second * time.Duration(1+comboPoints)
 			rogue.EnvenomAura.Activate(sim)
 
-			baseDamage := baseDamage +
+			baseDamage := baseDamage*float64(comboPoints) +
 				apScalingPerComboPoint*float64(comboPoints)*spell.MeleeAttackPower()
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
