@@ -6,26 +6,26 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (priest *Priest) registerShadowfiendSpell() {
-	if priest.Talents.Mindbender {
+func (priest *Priest) registerMindbenderSpell() {
+	if !priest.Talents.Mindbender {
 		return
 	}
 
-	actionID := core.ActionID{SpellID: 34433}
+	actionID := core.ActionID{SpellID: 123040}
 
 	// For timeline only
-	priest.ShadowfiendAura = priest.RegisterAura(core.Aura{
+	priest.MindbenderAura = priest.RegisterAura(core.Aura{
 		ActionID: actionID,
-		Label:    "Shadowfiend",
-		Duration: time.Second * 12.0,
+		Label:    "Mindbender",
+		Duration: time.Second * 15.0,
 	})
 
-	priest.Shadowfiend = priest.RegisterSpell(core.SpellConfig{
+	priest.MindBender = priest.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskEmpty,
 		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: PriestSpellShadowFiend,
+		ClassSpellMask: PriestSpellMindBender,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -38,8 +38,8 @@ func (priest *Priest) registerShadowfiendSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			priest.ShadowfiendPet.EnableWithTimeout(sim, priest.ShadowfiendPet, time.Second*12.0)
-			priest.ShadowfiendAura.Activate(sim)
+			priest.MindbenderPet.EnableWithTimeout(sim, priest.MindbenderPet, time.Second*15.0)
+			priest.MindbenderAura.Activate(sim)
 		},
 	})
 }

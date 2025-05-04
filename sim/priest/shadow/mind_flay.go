@@ -1,22 +1,24 @@
-package priest
+package shadow
 
 import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/priest"
 )
 
-func (priest *Priest) newMindFlaySpell() *core.Spell {
-	mindFlayCoefficient := 0.19799999893
-	return priest.RegisterSpell(core.SpellConfig{
+const MfCoeff = 0.5
+const MfScale = 1
+
+func (shadow *ShadowPriest) registerMindFlaySpell() *core.Spell {
+	return shadow.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 15407},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagChanneled | core.SpellFlagAPL,
-		ClassSpellMask: PriestSpellMindFlay,
+		ClassSpellMask: priest.PriestSpellMindFlay,
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 8,
-			PercentModifier: 100,
+			BaseCostPercent: 1,
 		},
 
 		Cast: core.CastConfig{
@@ -28,18 +30,18 @@ func (priest *Priest) newMindFlaySpell() *core.Spell {
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
 		ThreatMultiplier:         1,
-		CritMultiplier:           priest.DefaultCritMultiplier(),
+		CritMultiplier:           shadow.DefaultCritMultiplier(),
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "MindFlay-" + priest.Label,
+				Label: "MindFlay-" + shadow.Label,
 			},
 			NumberOfTicks:        3,
 			TickLength:           time.Second * 1,
 			AffectedByCastSpeed:  true,
 			HasteReducesDuration: true,
-			BonusCoefficient:     0.2879999876,
+			BonusCoefficient:     MfCoeff,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, priest.CalcScalingSpellDmg(mindFlayCoefficient))
+				dot.Snapshot(target, shadow.CalcScalingSpellDmg(MfScale))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
@@ -53,7 +55,7 @@ func (priest *Priest) newMindFlaySpell() *core.Spell {
 			}
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			return spell.CalcPeriodicDamage(sim, target, priest.CalcScalingSpellDmg(mindFlayCoefficient), spell.OutcomeExpectedMagicCrit)
+			return spell.CalcPeriodicDamage(sim, target, shadow.CalcScalingSpellDmg(MfScale), spell.OutcomeExpectedMagicCrit)
 		},
 	})
 }

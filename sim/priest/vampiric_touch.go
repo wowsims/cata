@@ -6,64 +6,64 @@ import (
 	"github.com/wowsims/mop/sim/core"
 )
 
-func (priest *Priest) registerDevouringPlagueSpell() {
-	actionID := core.ActionID{SpellID: 2944, Tag: 0}
-	priest.DevouringPlague = priest.RegisterSpell(core.SpellConfig{
-		ActionID:       actionID,
+const VtScaleCoeff = 0.071
+const VtSpellCoeff = 0.415
+
+func (priest *Priest) registerVampiricTouchSpell() {
+	priest.VampiricTouch = priest.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 34914},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagDisease | core.SpellFlagAPL,
-		ClassSpellMask: PriestSpellDevouringPlague,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: PriestSpellVampiricTouch,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 25,
+			BaseCostPercent: 3,
 			PercentModifier: 100,
 		},
+
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
-		ThreatMultiplier:         1,
 		CritMultiplier:           priest.DefaultCritMultiplier(),
+		ThreatMultiplier:         1,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD:      core.GCDDefault,
+				CastTime: time.Millisecond * 1500,
 			},
 		},
-
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "DevouringPlague",
+				Label: "VampiricTouch",
 			},
-
-			NumberOfTicks:       8,
+			NumberOfTicks:       5,
 			TickLength:          time.Second * 3,
 			AffectedByCastSpeed: true,
 
-			BonusCoefficient: 0.163,
+			BonusCoefficient: VtSpellCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.Snapshot(target, 0.144*priest.ClassSpellScaling)
+				dot.Snapshot(target, priest.CalcScalingSpellDmg(VtScaleCoeff))
 			},
+
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 			if result.Landed() {
 				spell.Dot(target).Apply(sim)
+				spell.DealOutcome(sim, result)
 			}
-
-			spell.DealOutcome(sim, result)
 		},
-
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
 			if useSnapshot {
 				dot := spell.Dot(target)
 				return dot.CalcSnapshotDamage(sim, target, dot.OutcomeExpectedMagicSnapshotCrit)
 			} else {
-				baseDamage := 0.144 * priest.ClassSpellScaling
-				return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicCrit)
+				return spell.CalcPeriodicDamage(sim, target, priest.CalcScalingSpellDmg(VtScaleCoeff), spell.OutcomeExpectedMagicCrit)
 			}
 		},
 	})

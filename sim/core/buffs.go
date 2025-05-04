@@ -299,7 +299,6 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 
 		registerUnholyFrenzyCD(agent, individualBuffs.UnholyFrenzyCount)
 		registerTricksOfTheTradeCD(agent, individualBuffs.TricksOfTheTrade)
-		registerPowerInfusionCD(agent, individualBuffs.PowerInfusionCount)
 		registerManaTideTotemCD(agent, raidBuffs.ManaTideTotemCount)
 		registerInnervateCD(agent, individualBuffs.InnervateCount)
 		registerDivineGuardianCD(agent, individualBuffs.DivineGuardianCount)
@@ -1221,7 +1220,7 @@ func registerBloodlustCD(agent Agent, spellID int32) {
 		Type:     CooldownTypeDPS,
 		ShouldActivate: func(sim *Simulation, character *Character) bool {
 			// Haste portion doesn't stack with Power Infusion, so prefer to wait.
-			return !character.HasActiveAuraWithTag(PowerInfusionAuraTag) && !character.HasActiveAura(SatedAuraLabel)
+			return !character.HasActiveAura(SatedAuraLabel)
 		},
 	})
 }
@@ -1262,68 +1261,11 @@ func BloodlustAura(character *Character, actionTag int32) *Aura {
 			aura.Unit.MultiplyResourceRegenSpeed(sim, 1/1.3)
 		},
 	})
-	multiplyCastSpeedEffect(aura, 1.3)
+	MultiplyCastSpeedEffect(aura, 1.3)
 	return aura
 }
 
-var PowerInfusionActionID = ActionID{SpellID: 10060}
-var PowerInfusionAuraTag = "PowerInfusion"
-
-const PowerInfusionDuration = time.Second * 15
-const PowerInfusionCD = time.Minute * 2
-
-func registerPowerInfusionCD(agent Agent, numPowerInfusions int32) {
-	if numPowerInfusions == 0 {
-		return
-	}
-
-	piAura := PowerInfusionAura(&agent.GetCharacter().Unit, -1)
-
-	registerExternalConsecutiveCDApproximation(
-		agent,
-		externalConsecutiveCDApproximation{
-			ActionID:         PowerInfusionActionID.WithTag(-1),
-			AuraTag:          PowerInfusionAuraTag,
-			CooldownPriority: CooldownPriorityDefault,
-			AuraDuration:     PowerInfusionDuration,
-			AuraCD:           PowerInfusionCD,
-			Type:             CooldownTypeDPS,
-
-			ShouldActivate: func(sim *Simulation, character *Character) bool {
-				// Haste portion doesn't stack with Bloodlust, so prefer to wait.
-				return !character.HasActiveAuraWithTag(BloodlustAuraTag)
-			},
-			AddAura: func(sim *Simulation, character *Character) { piAura.Activate(sim) },
-		},
-		numPowerInfusions)
-}
-
-func PowerInfusionAura(character *Unit, actionTag int32) *Aura {
-	actionID := ActionID{SpellID: 10060, Tag: actionTag}
-	aura := character.GetOrRegisterAura(Aura{
-		Label:    "PowerInfusion-" + actionID.String(),
-		Tag:      PowerInfusionAuraTag,
-		ActionID: actionID,
-		Duration: PowerInfusionDuration,
-	})
-	aura.NewExclusiveEffect("ManaCost", true, ExclusiveEffect{
-		Priority: -20,
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			if ee.Aura.Unit.HasManaBar() {
-				ee.Aura.Unit.PseudoStats.SpellCostPercentModifier -= 20
-			}
-		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			if ee.Aura.Unit.HasManaBar() {
-				ee.Aura.Unit.PseudoStats.SpellCostPercentModifier += 20
-			}
-		},
-	})
-	multiplyCastSpeedEffect(aura, 1.2)
-	return aura
-}
-
-func multiplyCastSpeedEffect(aura *Aura, multiplier float64) *ExclusiveEffect {
+func MultiplyCastSpeedEffect(aura *Aura, multiplier float64) *ExclusiveEffect {
 	return aura.NewExclusiveEffect("MultiplyCastSpeed", false, ExclusiveEffect{
 		Priority: multiplier,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {

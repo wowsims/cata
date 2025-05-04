@@ -1,24 +1,29 @@
-package priest
+package shadow
 
 import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/priest"
 )
 
-func (priest *Priest) registerMindBlastSpell() {
-	priest.RegisterSpell(core.SpellConfig{
+const mbScale = 2.638
+const mbCoeff = 1.909
+const mbVariance = 0.055
+
+func (shadow *ShadowPriest) registerMindBlastSpell() {
+	shadow.MindBlast = shadow.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 8092},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: PriestSpellMindBlast,
+		ClassSpellMask: priest.PriestSpellMindBlast,
 
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           priest.DefaultCritMultiplier(),
+		CritMultiplier:           shadow.DefaultCritMultiplier(),
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 17,
+			BaseCostPercent: 3,
 			PercentModifier: 100,
 		},
 
@@ -28,21 +33,21 @@ func (priest *Priest) registerMindBlastSpell() {
 				CastTime: time.Millisecond * 1500,
 			},
 			CD: core.Cooldown{
-				Timer:    priest.NewTimer(),
+				Timer:    shadow.NewTimer(),
 				Duration: time.Second * 8,
 			},
 		},
 		ThreatMultiplier: 1,
-		BonusCoefficient: 1.104,
+		BonusCoefficient: mbCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := priest.calcBaseDamage(sim, 1.557, 0.055)
+			baseDamage := shadow.CalcAndRollDamageRange(sim, mbScale, mbVariance)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			if result.Landed() {
+				shadow.ShadowOrbs.Gain(1, spell.ActionID, sim)
+			}
+
 			spell.DealDamage(sim, result)
-		},
-		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			baseDamage := priest.calcBaseDamage(sim, 1.557, 0.055)
-			return spell.CalcDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicHitAndCrit)
 		},
 	})
 }
