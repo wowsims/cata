@@ -76,7 +76,7 @@ func TestDamageReductionFromArmor(t *testing.T) {
 	// Major Multi
 	shatteringThrowAura := ShatteringThrowAura(&target, attacker.UnitIndex)
 	shatteringThrowAura.Activate(&sim)
-	expectedDamageReduction = 0.244387
+	expectedDamageReduction = 0.268757
 	if !WithinToleranceFloat64(1-expectedDamageReduction, attackTable.GetArmorDamageModifier(spell), tolerance) {
 		t.Fatalf("Expected major & shattering modifier to result in %f damage reduction got %f", expectedDamageReduction, 1-attackTable.GetArmorDamageModifier(spell))
 	}
