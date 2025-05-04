@@ -64,7 +64,7 @@ func TestDamageReductionFromArmor(t *testing.T) {
 	}
 
 	// Major
-	weakenedArmorAura := WeakenedBlowsAura(&target)
+	weakenedArmorAura := WeakenedArmorAura(&target)
 	weakenedArmorAura.Activate(&sim)
 	//weakenedArmorAura.SetStacks(&sim, 3)
 	expectedDamageReduction = 0.287895
