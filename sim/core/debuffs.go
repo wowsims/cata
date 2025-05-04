@@ -83,17 +83,12 @@ func PhysVulnerabilityAura(target *Unit) *Aura {
 
 // –4% Armor stacks 3
 func WeakenedArmorAura(target *Unit) *Aura {
-	var effect *ExclusiveEffect
 	aura := target.GetOrRegisterAura(Aura{
-		Label:     "Weakened Armor",
-		ActionID:  ActionID{SpellID: 113746},
-		Duration:  time.Second * 30,
-		MaxStacks: 3,
-		OnStacksChange: func(_ *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
-			effect.SetPriority(sim, 0.04*float64(newStacks))
-		},
+		Label:    "Weakened Armor",
+		ActionID: ActionID{SpellID: 113746},
+		Duration: time.Second * 30,
 	})
-	effect = registerMajorArpEffect(aura, 0)
+	registerMajorArpEffect(aura, 0.12)
 	return aura
 }
 
@@ -249,19 +244,6 @@ func PhysDamageReductionEffect(aura *Aura, dmgReduction float64) *ExclusiveEffec
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
 			ee.Aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= reductionMult
-		},
-	})
-}
-
-func apReductionEffect(aura *Aura, apReduction float64) *ExclusiveEffect {
-	statReduction := stats.Stats{stats.AttackPower: -apReduction}
-	return aura.NewExclusiveEffect("APReduction", false, ExclusiveEffect{
-		Priority: apReduction,
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.AddStatsDynamic(sim, statReduction)
-		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.AddStatsDynamic(sim, statReduction.Invert())
 		},
 	})
 }

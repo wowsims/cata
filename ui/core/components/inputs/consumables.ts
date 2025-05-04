@@ -26,27 +26,24 @@ function makeConsumeInputFactory<T extends number, SpecType extends Spec>(
 	args: ConsumeInputFactoryArgs<T>,
 ): (options: ConsumableStatOption<T>[], tooltip?: string) => InputHelpers.TypedIconEnumPickerConfig<Player<SpecType>, T> {
 	return (options: ConsumableStatOption<T>[], tooltip?: string) => {
+		const valueOptions = options.map(
+			option =>
+				({
+					actionId: option.config.actionId,
+					value: option.config.value,
+					showWhen: (player: Player<SpecType>) =>
+						(!option.config.showWhen || option.config.showWhen(player)) && (option.config.faction || player.getFaction()) == player.getFaction(),
+				}) satisfies IconEnumValueConfig<Player<SpecType>, T>,
+		);
 		return {
 			type: 'iconEnum',
 			tooltip: tooltip,
 			numColumns: options.length > 5 ? 2 : 1,
-			values: [{ value: 0 } as unknown as IconEnumValueConfig<Player<SpecType>, T>].concat(
-				options.map(option => {
-					const rtn = {
-						actionId: option.config.actionId,
-						value: option.config.value,
-						showWhen: (player: Player<SpecType>) =>
-							(!option.config.showWhen || option.config.showWhen(player)) &&
-							(option.config.faction || player.getFaction()) == player.getFaction(),
-					} as IconEnumValueConfig<Player<SpecType>, T>;
-
-					return rtn;
-				}),
-			),
+			values: [{ value: 0, iconUrl: '', tooltip: 'None' } as unknown as IconEnumValueConfig<Player<SpecType>, T>].concat(valueOptions),
 			equals: (a: T, b: T) => a == b,
 			zeroValue: 0 as T,
 			changedEvent: (player: Player<any>) => TypedEvent.onAny([player.consumesChangeEmitter, player.gearChangeEmitter, player.professionChangeEmitter]),
-			showWhen: (player: Player<any>) => !args.showWhen || args.showWhen(player),
+			showWhen: (player: Player<any>) => (!args.showWhen || args.showWhen(player)) && valueOptions.some(option => option.showWhen?.(player)),
 			getValue: (player: Player<any>) => player.getConsumes()[args.consumesFieldName] as T,
 			setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
 				const newConsumes = player.getConsumes();
@@ -158,22 +155,22 @@ export function makeConsumableInput(
 	options: ConsumableInputOptions,
 	tooltip?: string,
 ): InputHelpers.TypedIconEnumPickerConfig<Player<any>, number> {
+	const valueOptions = items.map(item => ({
+		value: item.id,
+		iconUrl: item.icon,
+		actionId: ActionId.fromItemId(item.id),
+		tooltip: item.name,
+	}));
 	return {
 		type: 'iconEnum',
 		tooltip: tooltip,
 		numColumns: items.length > 5 ? 2 : 1,
-		values: [{ value: 0, iconUrl: '', tooltip: 'None' }].concat(
-			items.map(item => ({
-				value: item.id,
-				iconUrl: item.icon,
-				actionId: ActionId.fromItemId(item.id),
-				tooltip: item.name,
-			})),
-		),
+		values: [{ value: 0, iconUrl: '', tooltip: 'None' }].concat(valueOptions),
 		equals: (a: number, b: number) => a === b,
 		zeroValue: 0,
 		changedEvent: (player: Player<any>) => player.consumesChangeEmitter,
 		getValue: (player: Player<any>) => player.getConsumes()[options.consumesFieldName] as number,
+		showWhen: (_: Player<any>) => !!valueOptions.length,
 		setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
 			if (options.setValue) {
 				options.setValue(eventID, player, newValue);

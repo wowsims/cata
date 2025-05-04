@@ -60,10 +60,13 @@ export class ConsumesPicker extends Component {
 		const conjuredOptions = ConsumablesInputs.makeConjuredInput(relevantStatOptions(ConsumablesInputs.CONJURED_CONFIG, this.simUI));
 		const conjuredPicker = buildIconInput(potionsElem, this.simUI.player, conjuredOptions);
 
+
 		const events = TypedEvent.onAny([this.simUI.player.professionChangeEmitter]).on(() =>
 			this.updateRow(row, [potionsPicker, conjuredPicker, prePotPicker]),
 		);
 		this.addOnDisposeCallback(() => events.dispose());
+
+		this.updateRow(row, [potionsPicker, conjuredPicker, prePotPicker]);
 	}
 
 	private buildElixirsPicker(): void {
@@ -128,7 +131,7 @@ export class ConsumesPicker extends Component {
 		const explosivesoptions = ConsumablesInputs.makeExplosivesInput(relevantStatOptions(ConsumablesInputs.EXPLOSIVE_CONFIG, this.simUI), 'Explosives');
 		const explosivePicker = buildIconInput(engiConsumesElem, this.simUI.player, explosivesoptions);
 
-		const events = TypedEvent.onAny([this.simUI.player.professionChangeEmitter]).on(() => this.updateRow(row, [explosivePicker, tinkerPicker]));
+		const events = this.simUI.player.professionChangeEmitter.on(() => this.updateRow(row, [explosivePicker, tinkerPicker]));
 		this.addOnDisposeCallback(() => events.dispose());
 
 		// Initial update of row based on current state.
@@ -151,6 +154,7 @@ export class ConsumesPicker extends Component {
 	}
 
 	private updateRow(rowElem: Element, pickers: (IconPicker<Player<any>, any> | IconEnumPicker<Player<any>, any>)[]) {
+		console.log('Updating consumes row', pickers);
 		rowElem.classList[!!pickers.find(p => p?.showWhen()) ? 'remove' : 'add']('hide');
 	}
 }

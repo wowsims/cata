@@ -232,8 +232,8 @@ export class ActionId {
 		this.setWowheadHref(elem);
 	}
 
-	async fillAndSet(elem: HTMLAnchorElement, setHref: boolean, setBackground: boolean): Promise<ActionId> {
-		const filled = await this.fill();
+	async fillAndSet(elem: HTMLAnchorElement, setHref: boolean, setBackground: boolean, options: { signal?: AbortSignal } = {}): Promise<ActionId> {
+		const filled = await this.fill(undefined, options);
 		if (setHref) {
 			filled.setWowheadHref(elem);
 		}

@@ -85,15 +85,10 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 		this.improvedAnchor2 = ia2.value!;
 		this.counterElem = ce.value!;
 
-		if (this.config.states >= 3 && this.config.improvedId) {
-			this.config.improvedId.fillAndSet(this.improvedAnchor, true, true);
-		}
-		if (this.config.states >= 4 && this.config.improvedId2) {
-			this.config.improvedId2.fillAndSet(this.improvedAnchor2, true, true);
-		}
+		this.updateButtonImage()
 
 		const event = this.config.changedEvent(this.modObject).on(() => {
-			this.config.actionId.fillAndSet(this.rootAnchor, true, true);
+			this.updateButtonImage()
 
 			if (this.showWhen()) {
 				this.rootElem.classList.remove('hide');
@@ -137,6 +132,17 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 		);
 
 		this.addOnDisposeCallback(() => event.dispose());
+	}
+
+	updateButtonImage() {
+		this.config.actionId.fillAndSet(this.rootAnchor, true, true);
+
+		if (this.config.states >= 3 && this.config.improvedId) {
+			this.config.improvedId.fillAndSet(this.improvedAnchor, true, true, { signal: this.signal });
+		}
+		if (this.config.states >= 4 && this.config.improvedId2) {
+			this.config.improvedId2.fillAndSet(this.improvedAnchor2, true, true, { signal: this.signal });
+		}
 	}
 
 	handleLeftClick() {
