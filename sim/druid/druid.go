@@ -268,7 +268,7 @@ func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *
 
 func (druid *Druid) Initialize() {
 	druid.form = druid.StartingForm
-	druid.BleedCategories = druid.GetEnemyExclusiveCategories(core.BleedEffectCategory)
+	//druid.BleedCategories = druid.GetEnemyExclusiveCategories(core.BleedEffectCategory)
 
 	druid.Env.RegisterPostFinalizeEffect(func() {
 		druid.MHAutoSpell = druid.AutoAttacks.MHAuto()

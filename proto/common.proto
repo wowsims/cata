@@ -550,52 +550,35 @@ message IndividualBuffs {
 }
 
 message Debuffs {
-	// 8% spell damage
-	bool curse_of_elements = 1;
-	bool ebon_plaguebringer = 2;
-	bool earth_and_moon = 3;
-	bool master_poisoner = 4;
-	bool fire_breath = 5;
-	bool lightning_breath = 6;
 
-	// 5% spell crit
-	bool critical_mass = 7;
-	bool shadow_and_flame = 8;
+	// –10% Physical damage dealt for 30s
+	// Physical‐damage‐dealt sources:
+	// Scarlet Fever, Thrash, Demoralizing Roar, Demoralizing Screech, Keg Smash,
+	//   Hammer of the Righteous, Earth Shock, Curse of Enfeeblement, Thunder Clap
+	bool weakened_blows = 1;
 
-	// 30% bleed damage
-	bool blood_frenzy = 9;
-	bool hemorrhage = 10;
-	bool mangle = 11;
-	bool stampede = 12;
+	// +4% Physical damage taken for 30s
+	// Gore, Stampede, Acid Spit, Ravage, Judgments of the Bold, Colossus Smash
+	bool physical_vulnerability = 2;
 
-	// Major armor
-	bool expose_armor = 13;
-	bool sunder_armor = 14;
-	bool faerie_fire = 15;
-	bool corrosive_spit = 16;
+	// –4% Armor for 30s, stacks 3 times
+	bool weakened_armor = 3;
+	bool mortal_wounds = 4;
 
-	// 4% physical dmg
-	bool savage_combat = 17;
-	bool brittle_bones = 18;
-	bool acid_spit = 19;
+	// Spell‐damage‐taken sources:
+	bool fire_breath              = 5;
+	bool lightning_breath         = 6;
+	bool master_poisoner          = 7;
+	bool curse_of_elements        = 8;
 
-	// -dmg %
-	bool curse_of_weakness = 20;
-	bool demoralizing_roar = 21;
-	bool demoralizing_shout = 22;
-	bool vindication = 23;
-	bool scarlet_fever = 24;
-	bool demoralizing_screech = 25;
-	bool keg_smask = 32;
-
-	// -attack speed
-	bool thunder_clap = 26;
-	bool frost_fever = 27;
-	bool infected_wounds = 28;
-	bool judgements_of_the_just = 29;
-	bool dust_cloud = 30;
-	bool earth_shock = 31;
-}
+	// Casting‐speed‐reduction sources:
+	bool necrotic_strike          = 9;
+	bool lava_breath              = 10;
+	bool spore_cloud              = 11;
+	bool slow                     = 12;
+	bool mind_numbing_poison      = 13;
+	bool curse_of_enfeeblement = 14;
+  }
 
 message ConsumesSpec {
 	int32 prepot_id = 1;

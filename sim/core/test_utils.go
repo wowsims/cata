@@ -72,20 +72,19 @@ var FullIndividualBuffs = &proto.IndividualBuffs{
 }
 
 var FullDebuffs = &proto.Debuffs{
-	BloodFrenzy:       true,
-	CurseOfElements:   true,
-	CurseOfWeakness:   true,
-	EarthAndMoon:      true,
-	EbonPlaguebringer: true,
-	ExposeArmor:       true,
-	FaerieFire:        true,
-	Mangle:            true,
-	SunderArmor:       true,
-	ThunderClap:       true,
-	Vindication:       true,
-	MasterPoisoner:    true,
-	CriticalMass:      true,
-	DemoralizingRoar:  true,
+	WeakenedBlows:         true,
+	PhysicalVulnerability: true,
+	WeakenedArmor:         true,
+	MortalWounds:          true,
+	FireBreath:            true,
+	LightningBreath:       true,
+	MasterPoisoner:        true,
+	CurseOfElements:       true,
+	NecroticStrike:        true,
+	LavaBreath:            true,
+	SporeCloud:            true,
+	Slow:                  true,
+	MindNumbingPoison:     true,
 }
 
 func NewDefaultTarget() *proto.Target {

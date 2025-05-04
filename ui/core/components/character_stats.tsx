@@ -4,7 +4,7 @@ import { ref } from 'tsx-vanilla';
 
 import * as Mechanics from '../constants/mechanics.js';
 import { Player } from '../player.js';
-import { Class, PseudoStat, Stat } from '../proto/common.js';
+import { Stat } from '../proto/common.js';
 import { ActionId } from '../proto_utils/action_id';
 import { getStatName, masterySpellIDs, masterySpellNames } from '../proto_utils/names.js';
 import { Stats, UnitStat } from '../proto_utils/stats.js';
@@ -287,21 +287,21 @@ export class CharacterStats extends Component {
 			derivedPercentOrPointsValue = derivedPercentOrPointsValue! + this.player.getBaseMastery();
 		}
 
-		const hideRootRating = (rootRatingValue === null) || ((rootRatingValue === 0) && (derivedPercentOrPointsValue !== null));
+		const hideRootRating = rootRatingValue === null || (rootRatingValue === 0 && derivedPercentOrPointsValue !== null);
 		const rootRatingString = hideRootRating ? '' : String(Math.round(rootRatingValue));
 		const percentOrPointsSuffix = unitStat.equalsStat(Stat.StatMasteryRating) ? ' Points' : '%';
-		const percentOrPointsString = (derivedPercentOrPointsValue === null) ? '' : (`${derivedPercentOrPointsValue.toFixed(2)}` + percentOrPointsSuffix);
-		const wrappedPercentOrPointsString = (hideRootRating || (derivedPercentOrPointsValue === null)) ? percentOrPointsString : ` (${percentOrPointsString})`;
+		const percentOrPointsString = derivedPercentOrPointsValue === null ? '' : `${derivedPercentOrPointsValue.toFixed(2)}` + percentOrPointsSuffix;
+		const wrappedPercentOrPointsString = hideRootRating || derivedPercentOrPointsValue === null ? percentOrPointsString : ` (${percentOrPointsString})`;
 		return rootRatingString + wrappedPercentOrPointsString;
 	}
 
 	private getDebuffStats(): Stats {
-		let debuffStats = new Stats();
+		const debuffStats = new Stats();
 
-		const debuffs = this.player.sim.raid.getDebuffs();
-		if (debuffs.criticalMass || debuffs.shadowAndFlame) {
-			debuffStats = debuffStats.addPseudoStat(PseudoStat.PseudoStatSpellCritPercent, 5);
-		}
+		// const debuffs = this.player.sim.raid.getDebuffs();
+		// if (debuffs.criticalMass || debuffs.shadowAndFlame) {
+		// 	debuffStats = debuffStats.addPseudoStat(PseudoStat.PseudoStatSpellCritPercent, 5);
+		// }
 
 		return debuffStats;
 	}
