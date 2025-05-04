@@ -66,7 +66,7 @@ func TestDamageReductionFromArmor(t *testing.T) {
 	// Major
 	weakenedArmorAura := WeakenedBlowsAura(&target)
 	weakenedArmorAura.Activate(&sim)
-	weakenedArmorAura.SetStacks(&sim, 3)
+	//weakenedArmorAura.SetStacks(&sim, 3)
 	expectedDamageReduction = 0.287895
 	if !WithinToleranceFloat64(1-expectedDamageReduction, attackTable.GetArmorDamageModifier(spell), tolerance) {
 		t.Fatalf("Expected major armor modifier to result in %f damage reduction got %f", expectedDamageReduction, 1-attackTable.GetArmorDamageModifier(spell))

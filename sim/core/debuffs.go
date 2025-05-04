@@ -29,7 +29,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		MakePermanent(FireBreathDebuff(target))
 	}
 	if debuffs.LightningBreath {
-		MakePermanent(LightningBreathAura(target))
+		MakePermanent(LightningBreathDebuff(target))
 	}
 	if debuffs.MasterPoisoner {
 		MakePermanent(MasterPoisonerDebuff(target))
@@ -105,7 +105,7 @@ func MortalWoundsArua(target *Unit) *Aura {
 func FireBreathDebuff(target *Unit) *Aura {
 	return spellDamageEffectAura(Aura{Label: "Fire Breath", ActionID: ActionID{SpellID: 34889}, Duration: time.Second * 45}, target, 1.05)
 }
-func LightningBreathAura(target *Unit) *Aura {
+func LightningBreathDebuff(target *Unit) *Aura {
 	return spellDamageEffectAura(Aura{Label: "Lightning Breath", ActionID: ActionID{SpellID: 24844}, Duration: time.Second * 45}, target, 1.05)
 }
 func MasterPoisonerDebuff(target *Unit) *Aura {

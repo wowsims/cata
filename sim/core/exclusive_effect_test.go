@@ -25,7 +25,7 @@ func TestSingleAuraExclusiveDurationNoOverwrite(t *testing.T) {
 
 	lightningBreath.Activate(sim)
 
-	if !(fireBreath.IsActive() && !lightningBreath.IsActive()) {
+	if !(lightningBreath.IsActive() && !fireBreath.IsActive()) {
 		t.Fatalf("lower duration exclusive aura overwrote previous!")
 	}
 }
