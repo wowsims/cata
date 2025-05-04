@@ -291,18 +291,14 @@ export class Database {
 			reforge = this.getReforgeById(itemSpec.reforging) || null;
 		}
 
-		let upgrade: ItemLevelState | null = null;
-		if (itemSpec.upgradeStep) {
-			upgrade = itemSpec.upgradeStep;
-		}
-
 		return new EquippedItem({
 			item,
 			enchant,
 			gems,
 			randomSuffix,
 			reforge,
-			upgrade,
+			upgrade: itemSpec.upgradeStep ?? ItemLevelState.Base,
+			challengeMode: itemSpec.challengeMode ?? false,
 		});
 	}
 

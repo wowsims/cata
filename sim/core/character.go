@@ -93,10 +93,6 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 		addToDatabase(player.Database)
 	}
 
-	if player.ChallengeMode {
-		applyChallengeModeOverride(player.Equipment)
-	}
-
 	character := Character{
 		Unit: Unit{
 			Type:        PlayerUnit,
@@ -187,12 +183,6 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 	character.EquipScalingManager = character.NewEquipScalingManager()
 
 	return character
-}
-
-func applyChallengeModeOverride(es *proto.EquipmentSpec) {
-	for _, item := range es.Items {
-		item.UpgradeStep = proto.ItemLevelState_ChallengeMode
-	}
 }
 
 type EquipScalingManager struct {
