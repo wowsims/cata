@@ -562,7 +562,11 @@ message Debuffs {
 	bool physical_vulnerability = 2;
 
 	// –4% Armor for 30s, stacks 3 times
+	// Faerie Fire, Tear Armor, Dust Cloud, Expose Armor, Sunder Armor
 	bool weakened_armor = 3;
+
+	//Healing reduction
+	//Widow Venom, Monstrous Bite, Rising Sun Kick, Wound Poison, Mortal Strike, Wild Strike
 	bool mortal_wounds = 4;
 
 	// Spell‐damage‐taken sources:
