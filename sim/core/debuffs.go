@@ -21,7 +21,11 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 
 	// –4% Armor for 30s, stacks 3 times
 	if debuffs.WeakenedArmor {
-		MakePermanent(WeakenedArmorAura(target))
+		aura := MakePermanent(WeakenedArmorAura(target))
+
+		aura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
+			aura.SetStacks(sim, 3)
+		})
 	}
 
 	// Spell‐damage‐taken sources
@@ -83,12 +87,17 @@ func PhysVulnerabilityAura(target *Unit) *Aura {
 
 // –4% Armor stacks 3
 func WeakenedArmorAura(target *Unit) *Aura {
+	var effect *ExclusiveEffect
 	aura := target.GetOrRegisterAura(Aura{
-		Label:    "Weakened Armor",
-		ActionID: ActionID{SpellID: 113746},
-		Duration: time.Second * 30,
+		Label:     "Weakened Armor",
+		ActionID:  ActionID{SpellID: 113746},
+		Duration:  time.Second * 30,
+		MaxStacks: 3,
+		OnStacksChange: func(_ *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
+			effect.SetPriority(sim, 0.04*float64(newStacks))
+		},
 	})
-	registerMajorArpEffect(aura, 0.12)
+	effect = registerMajorArpEffect(aura, 0)
 	return aura
 }
 
