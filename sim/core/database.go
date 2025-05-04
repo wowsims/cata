@@ -235,12 +235,13 @@ func GemFromProto(pData *proto.SimGem) Gem {
 }
 
 type ItemSpec struct {
-	ID           int32
-	RandomSuffix int32
-	Enchant      int32
-	Gems         []int32
-	Reforging    int32
-	UpgradeStep  proto.ItemLevelState
+	ID            int32
+	RandomSuffix  int32
+	Enchant       int32
+	Gems          []int32
+	Reforging     int32
+	UpgradeStep   proto.ItemLevelState
+	ChallengeMode bool
 }
 
 type Equipment [proto.ItemSlot_ItemSlotRanged + 1]Item
@@ -376,12 +377,13 @@ func ProtoToEquipmentSpec(es *proto.EquipmentSpec) EquipmentSpec {
 	var coreEquip EquipmentSpec
 	for i, item := range es.Items {
 		coreEquip[i] = ItemSpec{
-			ID:           item.Id,
-			RandomSuffix: item.RandomSuffix,
-			Enchant:      item.Enchant,
-			Gems:         item.Gems,
-			Reforging:    item.Reforging,
-			UpgradeStep:  item.UpgradeStep,
+			ID:            item.Id,
+			RandomSuffix:  item.RandomSuffix,
+			Enchant:       item.Enchant,
+			Gems:          item.Gems,
+			Reforging:     item.Reforging,
+			UpgradeStep:   item.UpgradeStep,
+			ChallengeMode: item.ChallengeMode,
 		}
 	}
 	return coreEquip
@@ -396,6 +398,10 @@ func NewItem(itemSpec ItemSpec) Item {
 	}
 
 	scalingOptions := item.ScalingOptions[int32(itemSpec.UpgradeStep)]
+	if scalingOptions == nil {
+		scalingOptions = item.ScalingOptions[int32(proto.ItemLevelState_Base)]
+	}
+
 	item.Stats = stats.FromProtoMap(scalingOptions.Stats)
 	item.WeaponDamageMax = scalingOptions.WeaponDamageMax
 	item.WeaponDamageMin = scalingOptions.WeaponDamageMin

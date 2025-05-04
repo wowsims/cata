@@ -21,7 +21,7 @@ import { GlyphID, IconData, UIDatabase, UIEnchant as Enchant, UIGem as Gem, UIIt
 import { distinct } from '../utils.js';
 import { WOWHEAD_EXPANSION_ENV } from '../wowhead';
 import { EquippedItem } from './equipped_item.js';
-import { Gear, GearOptions, ItemSwapGear } from './gear.js';
+import { Gear, ItemSwapGear } from './gear.js';
 import { gemEligibleForSocket, gemMatchesSocket } from './gems.js';
 import { getEligibleEnchantSlots, getEligibleItemSlots } from './utils.js';
 
@@ -306,7 +306,7 @@ export class Database {
 		});
 	}
 
-	lookupEquipmentSpec(equipSpec: EquipmentSpec, options?: GearOptions): Gear {
+	lookupEquipmentSpec(equipSpec: EquipmentSpec): Gear {
 		// EquipmentSpec is supposed to be indexed by slot, but here we assume
 		// it isn't just in case.
 		const gearMap: Partial<Record<ItemSlot, EquippedItem | null>> = {};
@@ -322,7 +322,7 @@ export class Database {
 			gearMap[assignedSlot] = item;
 		});
 
-		return new Gear(gearMap, options);
+		return new Gear(gearMap);
 	}
 
 	lookupItemSwap(itemSwap: ItemSwap): ItemSwapGear {

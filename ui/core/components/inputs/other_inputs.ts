@@ -105,7 +105,7 @@ export const ChallengeMode = {
 	type: 'boolean' as const,
 	label: 'Challenge Mode',
 	labelTooltip: 'Enables Challenge Mode',
-	changedEvent: (player: Player<any>) => player.miscOptionsChangeEmitter,
+	changedEvent: (player: Player<any>) => player.challengeModeChangeEmitter,
 	getValue: (player: Player<any>) => player.getChallengeModeEnabled(),
 	setValue: (eventID: EventID, player: Player<any>, value: boolean) => {
 		player.setChallengeModeEnabled(eventID, value);

@@ -27,7 +27,7 @@ type EquippedItemOptions = {
 	randomSuffix?: ItemRandomSuffix | null;
 	reforge?: ReforgeStat | null;
 	upgrade?: ItemLevelState | null;
-	challengeModeOverride?: boolean;
+	challengeMode?: boolean;
 };
 
 /**
@@ -42,18 +42,18 @@ export class EquippedItem {
 	readonly _enchant: Enchant | null;
 	readonly _gems: Array<Gem | null>;
 	readonly _upgrade: ItemLevelState;
-	readonly _challengeModeOverride: boolean;
+	readonly _challengeMode: boolean;
 
 	readonly numPossibleSockets: number;
 
-	constructor({ item, enchant, gems, randomSuffix, reforge, upgrade, challengeModeOverride }: EquippedItemOptions) {
+	constructor({ item, enchant, gems, randomSuffix, reforge, upgrade, challengeMode }: EquippedItemOptions) {
 		this._item = item;
 		this._enchant = enchant || null;
 		this._gems = gems || [];
 		this._randomSuffix = randomSuffix || null;
 		this._reforge = reforge || null;
 		this._upgrade = upgrade ?? ItemLevelState.Base;
-		this._challengeModeOverride = challengeModeOverride ?? false;
+		this._challengeMode = challengeMode ?? false;
 
 		this.numPossibleSockets = this.numSockets(true);
 
@@ -87,7 +87,7 @@ export class EquippedItem {
 		return this._gems.map(gem => (gem == null ? null : Gem.clone(gem)));
 	}
 	get upgrade(): ItemLevelState {
-		return this._challengeModeOverride && this._item.scalingOptions[ItemLevelState.ChallengeMode] ? ItemLevelState.ChallengeMode : this._upgrade;
+		return this._challengeMode && this._item.scalingOptions[ItemLevelState.ChallengeMode] ? ItemLevelState.ChallengeMode : this._upgrade;
 	}
 	get randomPropPoints(): number {
 		return this.item.scalingOptions[this.upgrade].randPropPoints || this.item.randPropPoints;
@@ -155,7 +155,7 @@ export class EquippedItem {
 
 		if (this._upgrade !== other.upgrade) return false;
 
-		if (this._challengeModeOverride !== other._challengeModeOverride) return false;
+		if (this._challengeMode !== other._challengeMode) return false;
 
 		return true;
 	}
@@ -193,7 +193,7 @@ export class EquippedItem {
 			item,
 			enchant: newEnchant,
 			gems: newGems,
-			challengeModeOverride: this._challengeModeOverride,
+			challengeMode: this._challengeMode,
 		});
 	}
 
@@ -208,7 +208,7 @@ export class EquippedItem {
 			randomSuffix: this._randomSuffix,
 			reforge: this._reforge,
 			upgrade: this._upgrade,
-			challengeModeOverride: this._challengeModeOverride,
+			challengeMode: this._challengeMode,
 		});
 	}
 
@@ -223,7 +223,7 @@ export class EquippedItem {
 			randomSuffix: this._randomSuffix,
 			reforge,
 			upgrade: this._upgrade,
-			challengeModeOverride: this._challengeModeOverride,
+			challengeMode: this._challengeMode,
 		});
 	}
 
@@ -238,14 +238,14 @@ export class EquippedItem {
 			randomSuffix: this._randomSuffix,
 			reforge: this._reforge,
 			upgrade,
-			challengeModeOverride: this._challengeModeOverride,
+			challengeMode: this._challengeMode,
 		});
 	}
 
 	/**
 	 * Returns a new EquippedItem as if it was scaled for Challenge Mode
 	 */
-	withChallengeModeOverride(enabled: boolean): EquippedItem {
+	withChallengeMode(enabled: boolean): EquippedItem {
 		return new EquippedItem({
 			item: this._item,
 			enchant: this._enchant,
@@ -253,7 +253,7 @@ export class EquippedItem {
 			randomSuffix: this._randomSuffix,
 			reforge: this._reforge,
 			upgrade: this._upgrade,
-			challengeModeOverride: enabled,
+			challengeMode: enabled,
 		});
 	}
 
@@ -275,7 +275,7 @@ export class EquippedItem {
 			randomSuffix: this._randomSuffix,
 			reforge: this._reforge,
 			upgrade: this._upgrade,
-			challengeModeOverride: this._challengeModeOverride,
+			challengeMode: this._challengeMode,
 		});
 	}
 
@@ -326,7 +326,7 @@ export class EquippedItem {
 			randomSuffix,
 			reforge: this._reforge,
 			upgrade: this._upgrade,
-			challengeModeOverride: this._challengeModeOverride,
+			challengeMode: this._challengeMode,
 		});
 	}
 
@@ -345,7 +345,7 @@ export class EquippedItem {
 			randomSuffix: this._randomSuffix,
 			reforge: this._reforge,
 			upgrade: this._upgrade,
-			challengeModeOverride: this._challengeModeOverride,
+			challengeMode: this._challengeMode,
 		});
 	}
 
@@ -362,7 +362,8 @@ export class EquippedItem {
 			enchant: this._enchant?.effectId,
 			gems: this._gems.map(gem => gem?.id || 0),
 			reforging: this._reforge?.id,
-			upgradeStep: this.upgrade,
+			upgradeStep: this._upgrade,
+			challengeMode: this._challengeMode,
 		});
 	}
 

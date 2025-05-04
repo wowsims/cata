@@ -168,16 +168,10 @@ abstract class BaseGear {
  *
  * This is an immutable type.
  */
-
-export type GearOptions = {
-	challengeModeOverride?: boolean;
-};
 export class Gear extends BaseGear {
-	challengeModeOverride = false;
 
-	constructor(gear: Partial<InternalGear>, { challengeModeOverride }: GearOptions = {}) {
+	constructor(gear: Partial<InternalGear>) {
 		super(gear);
-		this.challengeModeOverride = !!challengeModeOverride;
 	}
 
 	getItemSlots(): ItemSlot[] {
@@ -185,7 +179,7 @@ export class Gear extends BaseGear {
 	}
 
 	withEquippedItem(newSlot: ItemSlot, newItem: EquippedItem | null, canDualWield2H: boolean): Gear {
-		return new Gear(this.withEquippedItemInternal(newSlot, newItem, canDualWield2H), { challengeModeOverride: this.challengeModeOverride });
+		return new Gear(this.withEquippedItemInternal(newSlot, newItem, canDualWield2H));
 	}
 
 	asSpec(): EquipmentSpec {
@@ -243,15 +237,14 @@ export class Gear extends BaseGear {
 		};
 	}
 
-	withChallengeModeOverride(enabled: boolean): Gear {
-		this.challengeModeOverride = enabled;
+	withChallengeMode(enabled: boolean): Gear {
 		let curGear: Gear = this;
 
 		for (const slot of this.getItemSlots()) {
 			const item = this.getEquippedItem(slot);
 
 			if (item) {
-				curGear = curGear.withEquippedItem(slot, item.withChallengeModeOverride(enabled), true);
+				curGear = curGear.withEquippedItem(slot, item.withChallengeMode(enabled), true);
 			}
 		}
 

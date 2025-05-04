@@ -728,6 +728,7 @@ message ItemSpec {
 	repeated int32 gems = 4;
 	int32 reforging = 5; //reforging id
 	ItemLevelState upgrade_step = 7;
+	bool challenge_mode = 8;
 }
 
 

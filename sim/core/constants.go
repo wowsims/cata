@@ -7,6 +7,7 @@ import (
 )
 
 const CharacterLevel = 85
+const MaxChallengeModeIlvl = 460
 
 const GCDMin = time.Second * 1
 const GCDDefault = time.Millisecond * 1500

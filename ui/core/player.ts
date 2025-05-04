@@ -298,6 +298,7 @@ export class Player<SpecType extends Spec> {
 	readonly softCapBreakpointsChangeEmitter = new TypedEvent<void>('SoftCapBreakpoints');
 	readonly breakpointLimitsChangeEmitter = new TypedEvent<void>('BreakpointLimits');
 	readonly miscOptionsChangeEmitter = new TypedEvent<void>('PlayerMiscOptions');
+	readonly challengeModeChangeEmitter = new TypedEvent<void>('ChallengeMode');
 
 	readonly currentStatsEmitter = new TypedEvent<void>('PlayerCurrentStats');
 	readonly epRatiosChangeEmitter = new TypedEvent<void>('PlayerEpRatios');
@@ -334,6 +335,8 @@ export class Player<SpecType extends Spec> {
 
 		this.itemSwapSettings = new ItemSwapSettings(this);
 
+		this.bindChallengeModeChange();
+
 		this.changeEmitter = TypedEvent.onAny(
 			[
 				this.nameChangeEmitter,
@@ -356,9 +359,16 @@ export class Player<SpecType extends Spec> {
 				this.epRefStatChangeEmitter,
 				this.statCapsChangeEmitter,
 				this.breakpointLimitsChangeEmitter,
+				this.challengeModeChangeEmitter,
 			],
 			'PlayerChange',
 		);
+	}
+
+	bindChallengeModeChange() {
+		this.challengeModeChangeEmitter.on(() => {
+			this.setGear(TypedEvent.nextEventID(), this.gear.withChallengeMode(this.challengeModeEnabled));
+		});
 	}
 
 	getSpecIcon(): string {
@@ -738,8 +748,8 @@ export class Player<SpecType extends Spec> {
 	}
 
 	setGear(eventID: EventID, newGear: Gear) {
-		if (newGear.equals(this.gear) && this.challengeModeEnabled === this.gear.challengeModeOverride) return;
-		this.gear = newGear.withChallengeModeOverride(this.challengeModeEnabled);
+		if (newGear.equals(this.gear)) return;
+		this.gear = newGear;
 		this.gearChangeEmitter.emit(eventID);
 	}
 
@@ -1019,8 +1029,7 @@ export class Player<SpecType extends Spec> {
 		if (value === this.challengeModeEnabled) return;
 
 		this.challengeModeEnabled = value;
-		this.setGear(eventID, this.gear);
-		this.miscOptionsChangeEmitter.emit(eventID);
+		this.challengeModeChangeEmitter.emit(eventID);
 	}
 
 	getInFrontOfTarget(): boolean {
@@ -1532,14 +1541,7 @@ export class Player<SpecType extends Spec> {
 			const loadCategory = (cat: SimSettingCategories) => !includeCategories || includeCategories.length == 0 || includeCategories.includes(cat);
 			eventID = TypedEvent.nextEventID();
 			if (loadCategory(SimSettingCategories.Gear)) {
-				this.setGear(
-					eventID,
-					proto.equipment
-						? this.sim.db.lookupEquipmentSpec(proto.equipment, {
-								challengeModeOverride: proto.challengeMode,
-						  })
-						: new Gear({}),
-				);
+				this.setGear(eventID, proto.equipment ? this.sim.db.lookupEquipmentSpec(proto.equipment) : new Gear({}));
 				this.itemSwapSettings.setItemSwapSettings(
 					eventID,
 					proto.enableItemSwap,
