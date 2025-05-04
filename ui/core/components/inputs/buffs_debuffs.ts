@@ -198,70 +198,27 @@ export const ShatteringThrow = makeMultistateIndividualBuffInput({ actionId: Act
 //                                 DEBUFFS
 ///////////////////////////////////////////////////////////////////////////
 
-export const MajorArmorDebuff = InputHelpers.makeMultiIconInput(
+export const MajorArmorDebuff = makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(113746), fieldName: 'weakenedArmor' });
+
+export const DamageReduction = makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(115798), fieldName: 'weakenedBlows' });
+
+export const CastSpeedDebuff = InputHelpers.makeMultiIconInput(
 	[
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(7386), fieldName: 'sunderArmor' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(8647), fieldName: 'exposeArmor' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(770), fieldName: 'faerieFire' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(35387), fieldName: 'corrosiveSpit' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(73975), fieldName: 'necroticStrike' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(58604), fieldName: 'lavaBreath' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(50274), fieldName: 'sporeCloud' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(5761), fieldName: 'mindNumbingPoison' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(31589), fieldName: 'slow' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(109466), fieldName: 'curseOfEnfeeblement' }),
 	],
-	'-Armor %',
+	'Cast Speed',
 );
 
-export const DamageReduction = InputHelpers.makeMultiIconInput(
-	[
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(26017), fieldName: 'vindication' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(702), fieldName: 'curseOfWeakness' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(99), fieldName: 'demoralizingRoar' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(81130), fieldName: 'scarletFever' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(1160), fieldName: 'demoralizingShout' }),
-	],
-	'-Dmg %',
-);
-
-export const BleedDebuff = InputHelpers.makeMultiIconInput(
-	[
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(29859), fieldName: 'bloodFrenzy' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(33878), fieldName: 'mangle' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(57386), fieldName: 'stampede' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(16511), fieldName: 'hemorrhage' }),
-	],
-	'+Bleed %',
-);
-
-export const SpellCritDebuff = InputHelpers.makeMultiIconInput(
-	[
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(12873), fieldName: 'criticalMass' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(17801), fieldName: 'shadowAndFlame' }),
-	],
-	'Spell Crit',
-);
-
-export const MeleeAttackSpeedDebuff = InputHelpers.makeMultiIconInput(
-	[
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(6343), fieldName: 'thunderClap' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(59921), fieldName: 'frostFever' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(53696), fieldName: 'judgementsOfTheJust' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(48484), fieldName: 'infectedWounds' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(8042), fieldName: 'earthShock' }),
-	],
-	'Atk Speed',
-);
-
-export const PhysicalDamageDebuff = InputHelpers.makeMultiIconInput(
-	[
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(29859), fieldName: 'bloodFrenzy' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(58413), fieldName: 'savageCombat' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(81328), fieldName: 'brittleBones' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(55749), fieldName: 'acidSpit' }),
-	],
-	'Phys Vuln',
-);
+export const PhysicalDamageDebuff = makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(81326), fieldName: 'physicalVulnerability' });
 
 export const SpellDamageDebuff = InputHelpers.makeMultiIconInput(
 	[
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(51160), fieldName: 'ebonPlaguebringer' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(60433), fieldName: 'earthAndMoon' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(24844), fieldName: 'lightningBreath' }),
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(1490), fieldName: 'curseOfElements' }),
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(58410), fieldName: 'masterPoisoner' }),
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(34889), fieldName: 'fireBreath' }),
@@ -408,17 +365,12 @@ export const RAID_BUFFS_MISC_CONFIG = [
 export const DEBUFFS_CONFIG = [
 	{
 		config: MajorArmorDebuff,
-		picker: MultiIconPicker,
+		picker: IconPicker,
 		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower],
 	},
 	{
 		config: PhysicalDamageDebuff,
-		picker: MultiIconPicker,
-		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower],
-	},
-	{
-		config: BleedDebuff,
-		picker: MultiIconPicker,
+		picker: IconPicker,
 		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower],
 	},
 	{
@@ -427,18 +379,13 @@ export const DEBUFFS_CONFIG = [
 		stats: [Stat.StatSpellPower],
 	},
 	{
-		config: SpellCritDebuff,
-		picker: MultiIconPicker,
-		stats: [Stat.StatIntellect],
-	},
-	{
 		config: DamageReduction,
 		picker: MultiIconPicker,
 		stats: [Stat.StatArmor],
 	},
 	{
-		config: MeleeAttackSpeedDebuff,
-		picker: MultiIconPicker,
+		config: CastSpeedDebuff,
+		picker: IconPicker,
 		stats: [Stat.StatArmor],
 	},
 ] as PickerStatOptions[];
