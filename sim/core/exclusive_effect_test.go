@@ -15,15 +15,15 @@ func TestSingleAuraExclusiveDurationNoOverwrite(t *testing.T) {
 		auraTracker: newAuraTracker(),
 	}
 	fireBreath := FireBreathDebuff(&target)
-	lightningBreath := MakePermanent(LightningBreathAura(&target))
+	lightningBreath := MakePermanent(LightningBreathDebuff(&target))
 
 	// Trauma in this case should *never* be overwritten
 	// as its duration from 'MakePermanent' should make it non overwritable by 1 min duration mangles
-	fireBreath.Activate(sim)
+	lightningBreath.Activate(sim)
 
 	sim.CurrentTime = 1 * time.Second
 
-	lightningBreath.Activate(sim)
+	fireBreath.Activate(sim)
 
 	if !(lightningBreath.IsActive() && !fireBreath.IsActive()) {
 		t.Fatalf("lower duration exclusive aura overwrote previous!")
@@ -40,7 +40,7 @@ func TestSingleAuraExclusiveDurationOverwrite(t *testing.T) {
 		auraTracker: newAuraTracker(),
 	}
 	fireBreath := FireBreathDebuff(&target)
-	lightningBreath := LightningBreathAura(&target)
+	lightningBreath := LightningBreathDebuff(&target)
 
 	fireBreath.Activate(sim)
 
