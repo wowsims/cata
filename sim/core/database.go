@@ -396,9 +396,6 @@ func NewItem(itemSpec ItemSpec) Item {
 	}
 
 	scalingOptions := item.ScalingOptions[int32(itemSpec.UpgradeStep)]
-	if scalingOptions == nil {
-		scalingOptions = item.ScalingOptions[int32(proto.ItemLevelState_Base)]
-	}
 	item.Stats = stats.FromProtoMap(scalingOptions.Stats)
 	item.WeaponDamageMax = scalingOptions.WeaponDamageMax
 	item.WeaponDamageMin = scalingOptions.WeaponDamageMin

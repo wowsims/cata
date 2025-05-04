@@ -362,7 +362,7 @@ export class EquippedItem {
 			enchant: this._enchant?.effectId,
 			gems: this._gems.map(gem => gem?.id || 0),
 			reforging: this._reforge?.id,
-			upgradeStep: this._upgrade,
+			upgradeStep: this.upgrade,
 		});
 	}
 
