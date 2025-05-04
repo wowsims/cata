@@ -21,7 +21,9 @@ type Hunter struct {
 	MarksmanshipOptions *proto.MarksmanshipHunter_Options
 	SurvivalOptions     *proto.SurvivalHunter_Options
 
-	Pet *HunterPet
+	Pet          *HunterPet
+	StampedePet  []*HunterPet
+	DireBeastPet *HunterPet
 
 	// The most recent time at which moving could have started, for trap weaving.
 	mayMoveAt time.Duration
@@ -139,6 +141,13 @@ func (hunter *Hunter) Initialize() {
 	hunter.ApplyHotfixes()
 
 	// hunter.addBloodthirstyGloves()
+	// Add Stampede pets
+	hunter.StampedePet = make([]*HunterPet, 4)
+	for index := range 3 {
+		hunter.StampedePet[index] = hunter.NewStampedePet()
+	}
+	// Add Dire Beast pet
+	hunter.DireBeastPet = hunter.NewDireBeastPet()
 }
 
 func (hunter *Hunter) GetBaseDamageFromCoeff(coeff float64) float64 {
@@ -165,6 +174,8 @@ func (hunter *Hunter) RegisterSpells() {
 	hunter.registerGlaiveTossSpell()
 	hunter.registerBarrageSpell()
 	hunter.registerFervorSpell()
+	hunter.RegisterDireBeastSpell()
+	hunter.RegisterStampedeSpell()
 }
 
 func (hunter *Hunter) AddStatDependencies() {
