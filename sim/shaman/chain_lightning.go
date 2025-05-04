@@ -17,7 +17,7 @@ func (shaman *Shaman) registerChainLightningSpell() {
 }
 
 func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spell {
-	spellConfig := shaman.newElectricSpellConfig(core.ActionID{SpellID: 421}, 26, time.Second*2, isElementalOverload, 0.571)
+	spellConfig := shaman.newElectricSpellConfig(core.ActionID{SpellID: 421}, 30.5, time.Second*2, isElementalOverload, 0.51800000668)
 	spellConfig.ClassSpellMask = core.TernaryInt64(isElementalOverload, SpellMaskChainLightningOverload, SpellMaskChainLightning)
 
 	if !isElementalOverload {
@@ -36,7 +36,7 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 
 	spellConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		bounceReduction := core.TernaryFloat64(shaman.DungeonSet3.IsActive() && !isElementalOverload, 0.83, 0.7)
-		baseDamage := shaman.CalcAndRollDamageRange(sim, 1.08800005913, 0.13300000131)
+		baseDamage := shaman.CalcAndRollDamageRange(sim, 0.98900002241, 0.13300000131)
 		curTarget := target
 
 		// Damage calculation and DealDamage are in separate loops so that e.g. a spell power proc

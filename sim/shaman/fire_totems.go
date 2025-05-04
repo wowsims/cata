@@ -8,7 +8,7 @@ import (
 )
 
 func searingTickCount(shaman *Shaman, offset float64) int32 {
-	return int32(math.Ceil(40*(1.0+0.20*float64(shaman.Talents.TotemicFocus)+offset))) - 1
+	return int32(math.Ceil(40*(1.0+offset))) - 1
 }
 
 func (shaman *Shaman) registerSearingTotemSpell() {
@@ -19,8 +19,8 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 		Flags:          SpellFlagTotem | core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskSearingTotem,
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 5,
-			PercentModifier: 100 - (15 * shaman.Talents.TotemicFocus) - shaman.GetMentalQuicknessBonus(),
+			BaseCostPercent: 5.9,
+			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -30,7 +30,7 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultCritMultiplier(),
-		BonusCoefficient: 0.167,
+		BonusCoefficient: 0.1099999994,
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "SearingTotem",
@@ -41,7 +41,7 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 			NumberOfTicks: searingTickCount(shaman, 0),
 			TickLength:    time.Millisecond * (1500 + 20),
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := shaman.CalcAndRollDamageRange(sim, 0.09600000083, 0.30000001192)
+				baseDamage := shaman.CalcAndRollDamageRange(sim, 0.06300000101, 0.30000001192)
 				dot.Spell.CalcAndDealDamage(sim, target, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
 			},
 		},
@@ -65,7 +65,7 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 				spell.Dot(sim.GetTargetUnit(0)).BaseTickCount = searingTickCount(shaman, 0)
 				spell.Dot(sim.GetTargetUnit(0)).Apply(sim)
 			}
-			duration := 60 * (1.0 + 0.20*float64(shaman.Talents.TotemicFocus))
+			duration := 60
 			shaman.TotemExpirations[FireTotem] = sim.CurrentTime + time.Duration(duration)*time.Second
 		},
 	})
@@ -79,8 +79,8 @@ func (shaman *Shaman) registerMagmaTotemSpell() {
 		Flags:          SpellFlagTotem | core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskMagmaTotem,
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 18,
-			PercentModifier: 100 - (15 * shaman.Talents.TotemicFocus) - shaman.GetMentalQuicknessBonus(),
+			BaseCostPercent: 21.1,
+			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -96,7 +96,7 @@ func (shaman *Shaman) registerMagmaTotemSpell() {
 			Aura: core.Aura{
 				Label: "MagmaTotem",
 			},
-			NumberOfTicks:    int32(30 * (1.0 + 0.20*float64(shaman.Talents.TotemicFocus))),
+			NumberOfTicks:    30,
 			TickLength:       time.Second * 2,
 			BonusCoefficient: 0.06700000167,
 
@@ -120,7 +120,7 @@ func (shaman *Shaman) registerMagmaTotemSpell() {
 			shaman.FireElemental.Disable(sim)
 			spell.AOEDot().Apply(sim)
 
-			duration := 60 * (1.0 + 0.20*float64(shaman.Talents.TotemicFocus))
+			duration := 60
 			shaman.TotemExpirations[FireTotem] = sim.CurrentTime + time.Duration(duration)*time.Second
 		},
 	})

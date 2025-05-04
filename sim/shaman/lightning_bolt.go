@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func (shaman *Shaman) registerLightningBoltSpell() {
@@ -13,17 +12,15 @@ func (shaman *Shaman) registerLightningBoltSpell() {
 }
 
 func (shaman *Shaman) newLightningBoltSpellConfig(isElementalOverload bool) core.SpellConfig {
-	spellConfig := shaman.newElectricSpellConfig(core.ActionID{SpellID: 403}, 6, time.Millisecond*2500, isElementalOverload, 0.714)
+	spellConfig := shaman.newElectricSpellConfig(core.ActionID{SpellID: 403}, 7.1, time.Millisecond*2500, isElementalOverload, 0.73900002241)
 
-	if !isElementalOverload && shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfUnleashedLightning) {
-		spellConfig.Flags |= core.SpellFlagCanCastWhileMoving
-	}
+	spellConfig.Flags |= core.SpellFlagCanCastWhileMoving
 
 	spellConfig.ClassSpellMask = core.TernaryInt64(isElementalOverload, SpellMaskLightningBoltOverload, SpellMaskLightningBolt)
 	spellConfig.MissileSpeed = core.TernaryFloat64(isElementalOverload, 20, 35)
 
 	spellConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := shaman.CalcAndRollDamageRange(sim, 0.76700001955, 0.13300000131)
+		baseDamage := shaman.CalcAndRollDamageRange(sim, 1.13999998569, 0.13300000131)
 		result := shaman.calcDamageStormstrikeCritChance(sim, target, baseDamage, spell)
 
 		spell.WaitTravelTime(sim, func(sim *core.Simulation) {

@@ -1,17 +1,9 @@
 package shaman
 
-import (
-	"time"
-
-	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
-	"github.com/wowsims/mop/sim/core/stats"
-)
-
 // Dungeon Set 3 Tidefury Raiment
 // (2) Set: Your Chain Lightning Spell now only loses 17% of its damage per jump.
 // (4) Set: Your Water Shield ability grants an additional 56 mana each time it triggers and an additional 3 mana per 5 sec.
-var ItemSetTidefury = core.NewItemSet(core.ItemSet{
+/*var ItemSetTidefury = core.NewItemSet(core.ItemSet{
 	Name: "Tidefury Raiment",
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
@@ -28,7 +20,7 @@ var ItemSetTidefury = core.NewItemSet(core.ItemSet{
 			}
 		},
 	},
-})
+})*/
 
 // var ItemSetSkyshatterRegalia = core.NewItemSet(core.ItemSet{
 // 	Name: "Skyshatter Regalia",
@@ -73,7 +65,7 @@ var ItemSetTidefury = core.NewItemSet(core.ItemSet{
 // T11 elem
 // (2) Set: Increases the critical strike chance of your Flame Shock spell by 10%.
 // (4) Set: Reduces the cast time of your Lightning Bolt spell by 10%.
-var ItemSetRagingElementsRegalia = core.NewItemSet(core.ItemSet{
+/*var ItemSetRagingElementsRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Regalia of the Raging Elements",
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(_ core.Agent, setBonusAura *core.Aura) {
@@ -91,12 +83,12 @@ var ItemSetRagingElementsRegalia = core.NewItemSet(core.ItemSet{
 			})
 		},
 	},
-})
+})*/
 
 // T12 elem
 // (2) Set: Your Lightning Bolt has a 30% chance to reduce the remaining cooldown on your Fire Elemental Totem by 4 sec.
 // (4) Set: Your Lava Surge talent also makes Lava Burst instant when it triggers.
-var ItemSetVolcanicRegalia = core.NewItemSet(core.ItemSet{
+/*var ItemSetVolcanicRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Volcanic Regalia",
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
@@ -140,12 +132,12 @@ var ItemSetVolcanicRegalia = core.NewItemSet(core.ItemSet{
 			shaman.T12Ele4pc = setBonusAura
 		},
 	},
-})
+})*/
 
 // T13 elem
 // (2) Set: Elemental Mastery also grants you 2000 mastery rating 15 sec.
 // (4) Set: Each time Elemental Overload triggers, you gain 250 haste rating for 4 sec, stacking up to 3 times.
-var ItemSetSpiritwalkersRegalia = core.NewItemSet(core.ItemSet{
+/*var ItemSetSpiritwalkersRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Spiritwalker's Regalia",
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
@@ -192,12 +184,12 @@ var ItemSetSpiritwalkersRegalia = core.NewItemSet(core.ItemSet{
 			})
 		},
 	},
-})
+})*/
 
 // T13 Resto
 // (2) Set: After using Mana Tide Totem, the cost of your healing spells are reduced by 25% for 15 sec.
 // (4) Set: Increases the duration of Spiritwalker's Grace by 5 sec, and you gain 30% haste while Spiritwalker's grace is active.
-var ItemSetSpiritwalkersVestments = core.NewItemSet(core.ItemSet{
+/*var ItemSetSpiritwalkersVestments = core.NewItemSet(core.ItemSet{
 	Name: "Spiritwalker's Vestments",
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(_ core.Agent, _ *core.Aura) {
@@ -239,12 +231,12 @@ var ItemSetSpiritwalkersVestments = core.NewItemSet(core.ItemSet{
 			})
 		},
 	},
-})
+})*/
 
 // T11 enh
 // (2) Set: Increases damage done by your Lava Lash and Stormstrike abilities by 10%.
 // (4) Set: Increases the critical strike chance of your Lightning Bolt spell by 10%.
-var ItemSetRagingElementsBattlegear = core.NewItemSet(core.ItemSet{
+/*var ItemSetRagingElementsBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Battlegear of the Raging Elements",
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(_ core.Agent, setBonusAura *core.Aura) {
@@ -262,19 +254,19 @@ var ItemSetRagingElementsBattlegear = core.NewItemSet(core.ItemSet{
 			})
 		},
 	},
-})
+})*/
 
-func tier12StormstrikeBonus(_ *core.Simulation, spell *core.Spell, _ *core.AttackTable) float64 {
+/*func tier12StormstrikeBonus(_ *core.Simulation, spell *core.Spell, _ *core.AttackTable) float64 {
 	if spell.ClassSpellMask&(SpellMaskFire|SpellMaskFlametongueWeapon) > 0 {
 		return 1.06
 	}
 	return 1.0
-}
+}*/
 
 // T12 enh
 // (2) Set: Your Lava Lash gains an additional 5% damage increase per application of Searing Flames on the target.
 // (4) Set: Your Stormstrike ability also causes the target to take 6% increased damage from your Fire Nova, Flame Shock, Flametongue Weapon, Lava Burst, Lava Lash, and Unleash Flame abilities.
-var ItemSetVolcanicBattlegear = core.NewItemSet(core.ItemSet{
+/*var ItemSetVolcanicBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Volcanic Battlegear",
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
@@ -313,12 +305,12 @@ var ItemSetVolcanicBattlegear = core.NewItemSet(core.ItemSet{
 			})
 		},
 	},
-})
+})*/
 
 // T13 enh
 // 2 pieces: While you have any stacks of Maelstrom Weapon, your Lightning Bolt, Chain Lightning, and healing spells deal 20% more healing or damage.
 // 4 pieces: Your Feral Spirits have a 45% chance to grant you a charge of Maelstrom Weapon each time they deal damage.
-var ItemSetSpiritwalkersBattlegear = core.NewItemSet(core.ItemSet{
+/*var ItemSetSpiritwalkersBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Spiritwalker's Battlegear",
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
@@ -404,7 +396,7 @@ var ItemSetSpiritwalkersBattlegear = core.NewItemSet(core.ItemSet{
 			}
 		},
 	},
-})
+})*/
 
 func init() {
 }

@@ -7,7 +7,7 @@ import (
 )
 
 // Shared logic for all shocks.
-func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellSchool, baseCostPercent int32, shockTimer *core.Timer, bonusCoefficient float64) core.SpellConfig {
+func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellSchool, baseCostPercent float64, shockTimer *core.Timer, bonusCoefficient float64) core.SpellConfig {
 	actionID := core.ActionID{SpellID: spellID}
 
 	return core.SpellConfig{
@@ -18,7 +18,7 @@ func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellS
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: baseCostPercent,
-			PercentModifier: 100 - (5 * shaman.Talents.Convection) - shaman.GetMentalQuicknessBonus(),
+			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -26,7 +26,7 @@ func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellS
 			},
 			CD: core.Cooldown{
 				Timer:    shockTimer,
-				Duration: time.Second*6 - time.Millisecond*500*time.Duration(shaman.Talents.Reverberation),
+				Duration: time.Second * 6,
 			},
 		},
 
@@ -37,32 +37,21 @@ func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellS
 }
 
 func (shaman *Shaman) registerEarthShockSpell(shockTimer *core.Timer) {
-	config := shaman.newShockSpellConfig(8042, core.SpellSchoolNature, 18, shockTimer, 0.386)
+	config := shaman.newShockSpellConfig(8042, core.SpellSchoolNature, 14.4, shockTimer, 0.58099997044)
 	config.ClassSpellMask = SpellMaskEarthShock
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := shaman.CalcAndRollDamageRange(sim, 0.92699998617, 0.05299999937)
+		baseDamage := shaman.CalcAndRollDamageRange(sim, 1.92200005054, 0.1000000014)
 		result := shaman.calcDamageStormstrikeCritChance(sim, target, baseDamage, spell)
 		spell.DealDamage(sim, result)
-
-		if shaman.Talents.Fulmination && shaman.LightningShieldAura.GetStacks() > 3 {
-			shaman.Fulmination.Cast(sim, target)
-			shaman.LightningShieldAura.SetStacks(sim, 3)
-		}
 	}
 
 	shaman.EarthShock = shaman.RegisterSpell(config)
 }
 
 func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
-	config := shaman.newShockSpellConfig(8050, core.SpellSchoolFire, 17, shockTimer, 0.214)
+	config := shaman.newShockSpellConfig(8050, core.SpellSchoolFire, 11.9, shockTimer, 0.44900000095)
 
 	config.ClassSpellMask = SpellMaskFlameShockDirect
-
-	lavaBurstCritMod := shaman.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  SpellMaskLavaBurst | SpellMaskLavaBurstOverload,
-		Kind:       core.SpellMod_BonusCrit_Percent,
-		FloatValue: 100,
-	})
 
 	config.RelatedDotSpell = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 8050, Tag: 1},
@@ -76,19 +65,13 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "FlameShock",
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					lavaBurstCritMod.Activate()
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					lavaBurstCritMod.Deactivate()
-				},
 			},
-			NumberOfTicks:       6,
+			NumberOfTicks:       10,
 			TickLength:          time.Second * 3,
 			AffectedByCastSpeed: true,
-			BonusCoefficient:    0.1,
+			BonusCoefficient:    0.20999999344,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				baseDamage := shaman.ClassSpellScaling * 0.14200000465
+				baseDamage := shaman.ClassSpellScaling * 0.26100000739
 				dot.Snapshot(target, baseDamage)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -102,7 +85,7 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 	})
 
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := shaman.ClassSpellScaling * 0.52899998426
+		baseDamage := shaman.ClassSpellScaling * 0.97399997711
 		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		if result.Landed() {
 			spell.RelatedDotSpell.Cast(sim, target)
@@ -114,11 +97,11 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 }
 
 func (shaman *Shaman) registerFrostShockSpell(shockTimer *core.Timer) {
-	config := shaman.newShockSpellConfig(8056, core.SpellSchoolFrost, 18, shockTimer, 0.386)
+	config := shaman.newShockSpellConfig(8056, core.SpellSchoolFrost, 21.1, shockTimer, 0.50999999046)
 	config.ClassSpellMask = SpellMaskFrostShock
 	config.ThreatMultiplier *= 2
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := shaman.CalcAndRollDamageRange(sim, 0.86900001764, 0.05600000173)
+		baseDamage := shaman.CalcAndRollDamageRange(sim, 1.1210000515, 0.05600000173)
 		spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 	}
 

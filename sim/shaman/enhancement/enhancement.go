@@ -35,13 +35,8 @@ func NewEnhancementShaman(character *core.Character, options *proto.Player) *Enh
 		ImbueOH: enhOptions.ImbueOh,
 	}
 
-	totems := &proto.ShamanTotems{}
-	if enhOptions.ClassOptions.Totems != nil {
-		totems = enhOptions.ClassOptions.Totems
-	}
-
 	enh := &EnhancementShaman{
-		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, true),
+		Shaman: shaman.NewShaman(character, options.TalentsString, selfBuffs, true),
 	}
 
 	// Enable Auto Attacks for this spec
@@ -62,10 +57,10 @@ func NewEnhancementShaman(character *core.Character, options *proto.Player) *Enh
 		enh.SelfBuffs.ImbueOH = proto.ShamanImbue_NoImbue
 	}
 
-	// enh.SpiritWolves = &shaman.SpiritWolves{
-	// 	SpiritWolf1: enh.NewSpiritWolf(1),
-	// 	SpiritWolf2: enh.NewSpiritWolf(2),
-	// }
+	enh.SpiritWolves = &SpiritWolves{
+		SpiritWolf1: enh.NewSpiritWolf(1),
+		SpiritWolf2: enh.NewSpiritWolf(2),
+	}
 
 	return enh
 }
@@ -83,6 +78,8 @@ func (enh *EnhancementShaman) getImbueProcMask(imbue proto.ShamanImbue) core.Pro
 
 type EnhancementShaman struct {
 	*shaman.Shaman
+
+	SpiritWolves *SpiritWolves
 }
 
 func (enh *EnhancementShaman) GetShaman() *shaman.Shaman {
@@ -90,6 +87,7 @@ func (enh *EnhancementShaman) GetShaman() *shaman.Shaman {
 }
 
 func (enh *EnhancementShaman) ApplyTalents() {
+	enh.ApplyEnhancementTalents()
 	enh.Shaman.ApplyTalents()
 	enh.ApplyArmorSpecializationEffect(stats.Agility, proto.ArmorType_ArmorTypeMail, 86529)
 }
@@ -108,8 +106,9 @@ func (enh *EnhancementShaman) Initialize() {
 		})
 	}
 
+	//Mental Quickness
 	enh.GetSpellPowerValue = func(spell *core.Spell) float64 {
-		return spell.MeleeAttackPower() * 0.55
+		return spell.MeleeAttackPower() * 0.65
 	}
 
 	// Mastery: Enhanced Elements
@@ -133,34 +132,11 @@ func (enh *EnhancementShaman) Initialize() {
 			masteryMod.Deactivate()
 		},
 	}))
-
-	enh.applyPrimalWisdom()
 	// enh.registerLavaLashSpell()
 }
 
 func (enh EnhancementShaman) getMasteryBonus() float64 {
 	return 0.2 + 0.025*enh.GetMasteryPoints()
-}
-
-func (enh *EnhancementShaman) applyPrimalWisdom() {
-	manaMetrics := enh.NewManaMetrics(core.ActionID{SpellID: 63375})
-
-	enh.RegisterAura(core.Aura{
-		Label:    "Primal Wisdom",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskMelee) {
-				return
-			}
-
-			if sim.RandomFloat("Primal Wisdom") < 0.4 {
-				enh.AddMana(sim, 0.05*enh.BaseMana, manaMetrics)
-			}
-		},
-	})
 }
 
 func (enh *EnhancementShaman) Reset(sim *core.Simulation) {

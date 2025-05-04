@@ -11,7 +11,7 @@ func (shaman *Shaman) registerEarthElementalTotem() {
 
 	actionID := core.ActionID{SpellID: 2062}
 
-	totalDuration := time.Second * time.Duration(120*(1.0+0.20*float64(shaman.Talents.TotemicFocus)))
+	totalDuration := time.Second * 60
 
 	earthElementalAura := shaman.RegisterAura(core.Aura{
 		Label:    "Earth Elemental Totem",
@@ -27,7 +27,7 @@ func (shaman *Shaman) registerEarthElementalTotem() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskEarthElementalTotem,
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 24,
+			BaseCostPercent: 28.1,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -35,7 +35,11 @@ func (shaman *Shaman) registerEarthElementalTotem() {
 			},
 			CD: core.Cooldown{
 				Timer:    shaman.NewTimer(),
-				Duration: time.Minute * 10,
+				Duration: time.Minute * 5,
+			},
+			SharedCD: core.Cooldown{
+				Timer:    shaman.GetOrInitTimer(&shaman.ElementalSharedCDTimer),
+				Duration: time.Minute * 1,
 			},
 		},
 

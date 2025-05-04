@@ -14,7 +14,7 @@ func (shaman *Shaman) registerLightningShieldSpell() {
 
 	actionID := core.ActionID{SpellID: 324}
 
-	procSpell := shaman.RegisterSpell(core.SpellConfig{
+	shaman.LightningShieldDamage = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 26364},
 		SpellSchool:      core.SpellSchoolNature,
 		ProcMask:         core.ProcMaskEmpty,
@@ -22,9 +22,9 @@ func (shaman *Shaman) registerLightningShieldSpell() {
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1, //fix when spirit weapons is fixed
 		CritMultiplier:   shaman.DefaultCritMultiplier(),
-		BonusCoefficient: 0.267,
+		BonusCoefficient: 0.38800001144,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := shaman.ClassSpellScaling * 0.38899999857
+			baseDamage := shaman.ClassSpellScaling * 0.56499999762
 			result := shaman.calcDamageStormstrikeCritChance(sim, target, baseDamage, spell)
 			spell.DealDamage(sim, result)
 		},
@@ -35,31 +35,16 @@ func (shaman *Shaman) registerLightningShieldSpell() {
 		Duration: time.Millisecond * 3500,
 	}
 
-	icdStaticShock := core.Cooldown{
-		Timer:    shaman.NewTimer(),
-		Duration: time.Millisecond * 500,
-	}
-
 	shaman.LightningShieldAura = shaman.RegisterAura(core.Aura{
 		Label:     "Lightning Shield",
 		ActionID:  actionID,
-		Duration:  time.Minute * 10,
-		MaxStacks: 9,
+		Duration:  time.Minute * 60,
+		MaxStacks: 7,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.SetStacks(sim, 3)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !icdStaticShock.IsReady(sim) || !aura.IsActive() {
-				return
-			}
-			if shaman.Talents.StaticShock > 0 && spell == shaman.LavaLash || spell == shaman.Stormstrike || spell == shaman.PrimalStrike {
-				if sim.RandomFloat("Static Shock") < 0.15*float64(shaman.Talents.StaticShock) {
-					procSpell.Cast(sim, result.Target)
-				}
-			}
+			aura.SetStacks(sim, 1)
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !result.Landed() {
@@ -71,7 +56,7 @@ func (shaman *Shaman) registerLightningShieldSpell() {
 			icd.Use(sim)
 
 			aura.RemoveStack(sim)
-			procSpell.Cast(sim, spell.Unit)
+			shaman.LightningShieldDamage.Cast(sim, spell.Unit)
 		},
 	})
 

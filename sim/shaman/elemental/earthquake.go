@@ -1,35 +1,40 @@
-package shaman
+package elemental
 
 import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/shaman"
 )
 
-func (shaman *Shaman) registerEarthquakeSpell() {
+func (elemental *ElementalShaman) registerEarthquakeSpell() {
 
-	earthquakePulse := shaman.RegisterSpell(core.SpellConfig{
+	earthquakePulse := elemental.RegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 77478},
-		Flags:            SpellFlagFocusable | core.SpellFlagIgnoreResists,
+		Flags:            shaman.SpellFlagFocusable | core.SpellFlagIgnoreResists,
 		SpellSchool:      core.SpellSchoolPhysical,
-		ClassSpellMask:   SpellMaskEarthquake,
+		ClassSpellMask:   shaman.SpellMaskEarthquake,
 		ProcMask:         core.ProcMaskSpellProc,
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		CritMultiplier:   shaman.DefaultCritMultiplier(),
+		CritMultiplier:   elemental.DefaultCritMultiplier(),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.SpellMetrics[target.UnitIndex].Casts-- // Do not count pulses as casts
 			// Coefficient damage calculated manually because it's a Nature spell but deals Physical damage
-			baseDamage := shaman.ClassSpellScaling*0.32400000095 + 0.11*spell.SpellPower()
+			baseDamage := elemental.ClassSpellScaling*0.32400000095 + 0.1099999994*spell.SpellPower()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 		},
 	})
 
-	shaman.Earthquake = shaman.RegisterSpell(core.SpellConfig{
+	elemental.Earthquake = elemental.RegisterSpell(core.SpellConfig{
 		ActionID: core.ActionID{SpellID: 77478},
 		Flags:    core.SpellFlagAPL,
+		ManaCost: core.ManaCostOptions{
+			BaseCostPercent: 70.3,
+			PercentModifier: 100,
+		},
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -37,7 +42,7 @@ func (shaman *Shaman) registerEarthquakeSpell() {
 				GCD:      core.GCDDefault,
 			},
 			CD: core.Cooldown{
-				Timer:    shaman.NewTimer(),
+				Timer:    elemental.NewTimer(),
 				Duration: time.Second * 10,
 			},
 		},

@@ -1,41 +1,41 @@
-package shaman
+package elemental
 
 import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/shaman"
 )
 
-func (shaman *Shaman) registerShamanisticRageCD() {
-	if !shaman.Talents.ShamanisticRage {
-		return
-	}
+func (ele *ElementalShaman) registerShamanisticRageSpell() {
 
 	actionID := core.ActionID{SpellID: 30823}
-	srAura := shaman.RegisterAura(core.Aura{
+	srMod := ele.AddDynamicMod(core.SpellModConfig{
+		Kind:     core.SpellMod_PowerCost_Pct,
+		IntValue: -100,
+	})
+	srAura := ele.RegisterAura(core.Aura{
 		Label:    "Shamanistic Rage",
 		ActionID: actionID,
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageTakenMultiplier *= 0.7
-			shaman.PseudoStats.SpellCostPercentModifier -= 100
+			srMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageTakenMultiplier /= 0.7
-			shaman.PseudoStats.SpellCostPercentModifier += 100
+			srMod.Deactivate()
 		},
 	})
 
-	spell := shaman.RegisterSpell(core.SpellConfig{
+	spell := ele.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		ClassSpellMask: SpellMaskShamanisticRage,
+		ClassSpellMask: shaman.SpellMaskShamanisticRage,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
-				Timer:    shaman.NewTimer(),
+				Timer:    ele.NewTimer(),
 				Duration: time.Minute * 1,
 			},
 		},
@@ -45,7 +45,7 @@ func (shaman *Shaman) registerShamanisticRageCD() {
 		RelatedSelfBuff: srAura,
 	})
 
-	shaman.AddMajorCooldown(core.MajorCooldown{
+	ele.AddMajorCooldown(core.MajorCooldown{
 		Spell: spell,
 		Type:  core.CooldownTypeMana,
 	})

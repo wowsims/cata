@@ -1,4 +1,4 @@
-package shaman
+package enhancement
 
 import (
 	"math"
@@ -13,7 +13,7 @@ import (
 type SpiritWolf struct {
 	core.Pet
 
-	shamanOwner *Shaman
+	shamanOwner *EnhancementShaman
 }
 
 type SpiritWolves struct {
@@ -45,10 +45,10 @@ var spiritWolfBaseStats = stats.Stats{
 	stats.PhysicalCritPercent: 1.1515 + 1.8,
 }
 
-func (shaman *Shaman) NewSpiritWolf(index int) *SpiritWolf {
+func (enh *EnhancementShaman) NewSpiritWolf(index int) *SpiritWolf {
 	spiritWolf := &SpiritWolf{
-		Pet:         core.NewPet("Spirit Wolf "+strconv.Itoa(index), &shaman.Character, spiritWolfBaseStats, shaman.makeStatInheritance(), false, false),
-		shamanOwner: shaman,
+		Pet:         core.NewPet("Spirit Wolf "+strconv.Itoa(index), &enh.Character, spiritWolfBaseStats, enh.makeStatInheritance(), false, false),
+		shamanOwner: enh,
 	}
 
 	spiritWolf.EnableAutoAttacks(spiritWolf, core.AutoAttackOptions{
@@ -64,21 +64,21 @@ func (shaman *Shaman) NewSpiritWolf(index int) *SpiritWolf {
 	spiritWolf.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	spiritWolf.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, core.CritPerAgiMaxLevel[proto.Class_ClassWarrior])
 
-	shaman.AddPet(spiritWolf)
+	enh.AddPet(spiritWolf)
 
 	return spiritWolf
 }
 
 const PetExpertiseScale = 3.25
 
-func (shaman *Shaman) makeStatInheritance() core.PetStatInheritance {
+func (enh *EnhancementShaman) makeStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
 		flooredOwnerHitPercent := math.Floor(ownerStats[stats.PhysicalHitPercent])
 
 		return stats.Stats{
 			stats.Stamina:     ownerStats[stats.Stamina] * 0.3189,
 			stats.Armor:       ownerStats[stats.Armor] * 0.35,
-			stats.AttackPower: ownerStats[stats.AttackPower] * (core.TernaryFloat64(shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfFeralSpirit), 0.6296, 0.3296)),
+			stats.AttackPower: ownerStats[stats.AttackPower] * 0.3296,
 
 			stats.HitRating:       flooredOwnerHitPercent * core.PhysicalHitRatingPerHitPercent,
 			stats.ExpertiseRating: math.Floor(flooredOwnerHitPercent*PetExpertiseScale) * core.ExpertisePerQuarterPercentReduction,

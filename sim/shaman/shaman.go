@@ -26,14 +26,11 @@ const (
 	SpellFlagFocusable = core.SpellFlagAgentReserved4
 )
 
-func NewShaman(character *core.Character, talents string, totems *proto.ShamanTotems, selfBuffs SelfBuffs, thunderstormRange bool) *Shaman {
+func NewShaman(character *core.Character, talents string, selfBuffs SelfBuffs, thunderstormRange bool) *Shaman {
 	shaman := &Shaman{
 		Character:           *character,
 		Talents:             &proto.ShamanTalents{},
-		Totems:              totems,
-		TotemElements:       totems.Elements,
-		TotemsAncestors:     totems.Ancestors,
-		TotemsSpirits:       totems.Spirits,
+		Totems:              &proto.ShamanTotems{},
 		SelfBuffs:           selfBuffs,
 		ThunderstormInRange: thunderstormRange,
 		ClassSpellScaling:   core.GetClassSpellScalingCoefficient(proto.Class_ClassShaman),
@@ -57,7 +54,7 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 	}
 
 	if selfBuffs.Shield == proto.ShamanShield_WaterShield {
-		shaman.AddStat(stats.MP5, 354)
+		shaman.AddStat(stats.MP5, 2138)
 	}
 
 	shaman.FireElemental = shaman.NewFireElemental()
@@ -92,10 +89,7 @@ type Shaman struct {
 	Talents   *proto.ShamanTalents
 	SelfBuffs SelfBuffs
 
-	Totems          *proto.ShamanTotems
-	TotemElements   *proto.TotemSet
-	TotemsAncestors *proto.TotemSet
-	TotemsSpirits   *proto.TotemSet
+	Totems *proto.ShamanTotems
 
 	// The expiration time of each totem (earth, air, fire, water).
 	TotemExpirations [4]time.Duration
@@ -114,9 +108,12 @@ type Shaman struct {
 	Stormstrike       *core.Spell
 	PrimalStrike      *core.Spell
 
-	LightningShield     *core.Spell
-	LightningShieldAura *core.Aura
-	Fulmination         *core.Spell
+	LightningShield       *core.Spell
+	LightningShieldDamage *core.Spell
+	LightningShieldAura   *core.Aura
+	Fulmination           *core.Spell
+
+	ElementalBlast *core.Spell
 
 	Earthquake   *core.Spell
 	Thunderstorm *core.Spell
@@ -126,7 +123,6 @@ type Shaman struct {
 	FrostShock *core.Spell
 
 	FeralSpirit *core.Spell
-	// SpiritWolves *SpiritWolves
 
 	FireElemental      *FireElemental
 	FireElementalTotem *core.Spell
@@ -134,16 +130,12 @@ type Shaman struct {
 	EarthElemental      *EarthElemental
 	EarthElementalTotem *core.Spell
 
-	MagmaTotem           *core.Spell
-	ManaSpringTotem      *core.Spell
-	HealingStreamTotem   *core.Spell
-	SearingTotem         *core.Spell
-	StrengthOfEarthTotem *core.Spell
-	TremorTotem          *core.Spell
-	StoneskinTotem       *core.Spell
-	WindfuryTotem        *core.Spell
-	WrathOfAirTotem      *core.Spell
-	FlametongueTotem     *core.Spell
+	ElementalSharedCDTimer *core.Timer
+
+	MagmaTotem         *core.Spell
+	HealingStreamTotem *core.Spell
+	SearingTotem       *core.Spell
+	TremorTotem        *core.Spell
 
 	UnleashElements *core.Spell
 	UnleashLife     *core.Spell
@@ -197,36 +189,6 @@ func (shaman *Shaman) HasMinorGlyph(glyph proto.ShamanMinorGlyph) bool {
 }
 
 // func (shaman *Shaman) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-
-// 	if shaman.Totems.Fire != proto.FireTotem_NoFireTotem && shaman.Talents.TotemicWrath {
-// 		raidBuffs.TotemicWrath = true
-// 	}
-
-// 	if shaman.Totems.Fire == proto.FireTotem_FlametongueTotem {
-// 		raidBuffs.FlametongueTotem = true
-// 	}
-
-// 	if shaman.Totems.Water == proto.WaterTotem_ManaSpringTotem {
-// 		raidBuffs.ManaSpringTotem = true
-// 	}
-
-// 	if shaman.Talents.ManaTideTotem {
-// 		raidBuffs.ManaTideTotemCount++
-// 	}
-
-// 	switch shaman.Totems.Air {
-// 	case proto.AirTotem_WrathOfAirTotem:
-// 		raidBuffs.WrathOfAirTotem = true
-// 	case proto.AirTotem_WindfuryTotem:
-// 		raidBuffs.WindfuryTotem = true
-// 	}
-
-// 	switch shaman.Totems.Earth {
-// 	case proto.EarthTotem_StrengthOfEarthTotem:
-// 		raidBuffs.StrengthOfEarthTotem = true
-// 	case proto.EarthTotem_StoneskinTotem:
-// 		raidBuffs.StoneskinTotem = true
-// 	}
 
 // 	if shaman.Talents.UnleashedRage > 0 {
 // 		raidBuffs.UnleashedRage = true
@@ -297,10 +259,21 @@ func (shaman *Shaman) RegisterHealingSpells() {
 	// }
 }
 
-func (shaman *Shaman) ApplyTalents() {}
-
 func (shaman *Shaman) Reset(sim *core.Simulation) {
 
+}
+
+func (shaman *Shaman) calcDamageStormstrikeCritChance(sim *core.Simulation, target *core.Unit, baseDamage float64, spell *core.Spell) *core.SpellResult {
+	var result *core.SpellResult
+	if target.HasActiveAura("Stormstrike-" + shaman.Label) {
+		critPercentBonus := 25.0
+		spell.BonusCritPercent += critPercentBonus
+		result = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+		spell.BonusCritPercent -= critPercentBonus
+	} else {
+		result = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+	}
+	return result
 }
 
 func (shaman *Shaman) GetOverloadChance() float64 {
@@ -312,16 +285,6 @@ func (shaman *Shaman) GetOverloadChance() float64 {
 	}
 
 	return overloadChance
-}
-
-func (shaman *Shaman) GetMentalQuicknessBonus() int32 {
-	mentalQuicknessBonus := int32(0)
-
-	if shaman.Spec == proto.Spec_SpecEnhancementShaman {
-		mentalQuicknessBonus += 55
-	}
-
-	return mentalQuicknessBonus
 }
 
 const (
@@ -357,6 +320,7 @@ const (
 	SpellMaskElementalMastery
 	SpellMaskSpiritwalkersGrace
 	SpellMaskShamanisticRage
+	SpellMaskElementalBlast
 
 	SpellMaskStormstrike = SpellMaskStormstrikeCast | SpellMaskStormstrikeDamage
 	SpellMaskFlameShock  = SpellMaskFlameShockDirect | SpellMaskFlameShockDot
@@ -364,4 +328,6 @@ const (
 	SpellMaskNature      = SpellMaskLightningBolt | SpellMaskLightningBoltOverload | SpellMaskChainLightning | SpellMaskChainLightningOverload | SpellMaskEarthShock | SpellMaskThunderstorm | SpellMaskFulmination
 	SpellMaskFrost       = SpellMaskUnleashFrost | SpellMaskFrostShock
 	SpellMaskOverload    = SpellMaskLavaBurstOverload | SpellMaskLightningBoltOverload | SpellMaskChainLightningOverload
+	SpellMaskShock       = SpellMaskFlameShock | SpellMaskEarthShock | SpellMaskFrostShock
+	SpellMaskTotem       = SpellMaskMagmaTotem | SpellMaskSearingTotem | SpellMaskFireElementalTotem | SpellMaskEarthElementalTotem
 )

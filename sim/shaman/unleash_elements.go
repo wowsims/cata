@@ -9,12 +9,12 @@ import (
 
 func (shaman *Shaman) registerUnleashFlame() {
 
-	spellMask := SpellMaskLavaBurst | SpellMaskFlameShock | SpellMaskFireNova
+	spellMask := SpellMaskLavaBurst | SpellMaskFlameShock | SpellMaskFireNova | SpellMaskElementalBlast
 
 	unleashFlameMod := shaman.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Flat,
 		ClassMask:  spellMask,
-		FloatValue: 0.2 * (1 + 0.25*float64(shaman.Talents.ElementalWeapons)),
+		FloatValue: 0.3,
 	})
 
 	unleashFlameAura := shaman.RegisterAura(core.Aura{
@@ -81,9 +81,10 @@ func (shaman *Shaman) registerUnleashFrost() {
 	})
 }
 
+// TODO 90% weeapon damage per melee
 func (shaman *Shaman) registerUnleashWind() {
 
-	speedMultiplier := 1 + 0.4*(1+0.25*float64(shaman.Talents.ElementalWeapons))
+	speedMultiplier := 1 + 0.5
 
 	unleashWindAura := shaman.RegisterAura(core.Aura{
 		Label:     "Unleash Wind",
@@ -109,10 +110,10 @@ func (shaman *Shaman) registerUnleashWind() {
 		SpellSchool:      core.SpellSchoolPhysical,
 		ProcMask:         core.ProcMaskRangedSpecial,
 		Flags:            core.SpellFlagPassiveSpell,
-		DamageMultiplier: 1.75,
+		DamageMultiplier: 0.9,
 		CritMultiplier:   shaman.DefaultCritMultiplier(),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+			damage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeRangedHitAndCrit)
 			unleashWindAura.Activate(sim)
 		},
@@ -153,16 +154,14 @@ func (shaman *Shaman) registerUnleashLife() {
 		ProcMask:         core.ProcMaskSpellHealing,
 		Flags:            core.SpellFlagHelpful | core.SpellFlagPassiveSpell,
 		CritMultiplier:   shaman.DefaultCritMultiplier(),
-		BonusCoefficient: 0.201,
+		BonusCoefficient: 0.28600001335,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseHeal := shaman.ClassSpellScaling * 1.98699998856
+			baseHeal := shaman.ClassSpellScaling * 2.82999992371
 			result := spell.CalcAndDealHealing(sim, target, baseHeal, spell.OutcomeHealingCrit)
 
 			if result.Outcome.Matches(core.OutcomeCrit) {
-				if shaman.Talents.AncestralAwakening > 0 {
-					shaman.ancestralHealingAmount = result.Damage * 0.3
-					shaman.AncestralAwakening.Cast(sim, target)
-				}
+				shaman.ancestralHealingAmount = result.Damage * 0.3
+				shaman.AncestralAwakening.Cast(sim, target)
 			}
 			unleashLifeAura.Activate(sim)
 		},
@@ -181,8 +180,8 @@ func (shaman *Shaman) registerUnleashElements() {
 		Flags:    core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 7,
-			PercentModifier: 100 - (5 * shaman.Talents.Convection) - shaman.GetMentalQuicknessBonus(),
+			BaseCostPercent: 8.2,
+			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

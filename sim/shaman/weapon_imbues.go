@@ -30,7 +30,7 @@ import (
 // }
 
 func (shaman *Shaman) newWindfuryImbueSpell(isMH bool) *core.Spell {
-	apBonus := 4430.0
+	apBonus := shaman.CalcScalingSpellDmg(5.0)
 
 	tag := 1
 	procMask := core.ProcMaskMeleeMHSpecial
@@ -48,7 +48,7 @@ func (shaman *Shaman) newWindfuryImbueSpell(isMH bool) *core.Spell {
 		ProcMask:    procMask,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagPassiveSpell,
 
-		DamageMultiplier: []float64{1, 1.20, 1.40}[shaman.Talents.ElementalWeapons],
+		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
@@ -99,9 +99,6 @@ func (shaman *Shaman) RegisterWindfuryImbue(procMask core.ProcMask) {
 	var proc = 0.2
 	if procMask == core.ProcMaskMelee {
 		proc = 0.36
-	}
-	if shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfWindfuryWeapon) {
-		proc += 0.02
 	}
 
 	mhSpell := shaman.newWindfuryImbueSpell(true)
@@ -165,15 +162,12 @@ func (shaman *Shaman) ApplyFlametongueImbueToItem(item *core.Item) {
 		item.TempEnchant = enchantID
 		return
 	}
-	magicDamageBonus := 1.0 + (0.05 * (1 + 0.2*float64(shaman.Talents.ElementalWeapons)))
+
+	magicDamageBonus := 1.07
 
 	shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= magicDamageBonus
 	shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= magicDamageBonus
 	shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= magicDamageBonus
-
-	if shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfFlametongueWeapon) {
-		shaman.AddStat(stats.SpellCritPercent, 2)
-	}
 
 	item.TempEnchant = enchantID
 }
@@ -240,9 +234,6 @@ func (shaman *Shaman) RegisterFlametongueImbue(procMask core.ProcMask) {
 }
 
 func (shaman *Shaman) frostbrandDDBCHandler(sim *core.Simulation, spell *core.Spell, attackTable *core.AttackTable) float64 {
-	if spell.ClassSpellMask&(SpellMaskLightningBolt|SpellMaskChainLightning|SpellMaskLavaLash|SpellMaskEarthShock|SpellMaskFlameShock|SpellMaskFrostShock) > 0 {
-		return 1 + 0.05*float64(shaman.Talents.FrozenPower)
-	}
 	return 1.0
 }
 
@@ -272,7 +263,7 @@ func (shaman *Shaman) newFrostbrandImbueSpell() *core.Spell {
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
-		BonusCoefficient: 0.1,
+		BonusCoefficient: 0.10000000149,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := shaman.ClassSpellScaling * 0.60900002718 //spell id 8034
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
@@ -325,7 +316,6 @@ func (shaman *Shaman) RegisterFrostbrandImbue(procMask core.ProcMask) {
 }
 
 func (shaman *Shaman) newEarthlivingImbueSpell() *core.Spell {
-	glyphBonus := core.Ternary(shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfEarthlivingWeapon), 1.2, 1.0)
 
 	return shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 51730},
@@ -344,7 +334,7 @@ func (shaman *Shaman) newEarthlivingImbueSpell() *core.Spell {
 			NumberOfTicks: 4,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = (shaman.ClassSpellScaling*0.57400000095 + (0.038 * dot.Spell.HealingPower(target))) * glyphBonus
+				dot.SnapshotBaseDamage = (shaman.ClassSpellScaling*0.57400000095 + (0.038 * dot.Spell.HealingPower(target)))
 				dot.SnapshotAttackerMultiplier = dot.Spell.CasterHealingMultiplier()
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -365,7 +355,7 @@ func (shaman *Shaman) ApplyEarthlivingImbueToItem(item *core.Item) {
 		return
 	}
 
-	spBonus := 532.0 * (1.0 + float64(shaman.Talents.ElementalWeapons)*0.20)
+	spBonus := 780.0
 
 	newStats := stats.Stats{stats.SpellPower: spBonus}
 	item.Stats = item.Stats.Add(newStats)

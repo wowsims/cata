@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/shaman"
 )
 
@@ -12,10 +11,7 @@ func (elemental *ElementalShaman) registerThunderstormSpell() {
 	actionID := core.ActionID{SpellID: 51490}
 	manaMetrics := elemental.NewManaMetrics(actionID)
 
-	manaRestore := 0.08
-	if elemental.HasMinorGlyph(proto.ShamanMinorGlyph_GlyphOfThunderstorm) {
-		manaRestore = 0.02
-	}
+	manaRestore := 0.15
 
 	elemental.Thunderstorm = elemental.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
@@ -39,7 +35,7 @@ func (elemental *ElementalShaman) registerThunderstormSpell() {
 
 		DamageMultiplier: 1,
 		CritMultiplier:   elemental.DefaultCritMultiplier(),
-		BonusCoefficient: 0.571,
+		BonusCoefficient: 0.57099997997,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			elemental.AddMana(sim, elemental.MaxMana()*manaRestore, manaMetrics)
 

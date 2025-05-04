@@ -29,7 +29,7 @@ type APLValueTotemRemainingTime struct {
 }
 
 func (shaman *Shaman) newValueTotemRemainingTime(rot *core.APLRotation, config *proto.APLValueTotemRemainingTime, uuid *proto.UUID) core.APLValue {
-	if config.TotemType == proto.ShamanTotems_TypeUnknown {
+	if config.TotemType == proto.ShamanTotems_TypeUnknownTotem {
 		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "Totem Type required.")
 		return nil
 	}
@@ -97,7 +97,7 @@ type APLValueShamanFireElementalDuration struct {
 func (shaman *Shaman) newValueFireElementalDuration(_ *proto.APLValueShamanFireElementalDuration, _ *proto.UUID) core.APLValue {
 	return &APLValueShamanFireElementalDuration{
 		shaman:   shaman,
-		duration: time.Second * time.Duration(120*(1.0+0.20*float64(shaman.Talents.TotemicFocus))),
+		duration: time.Second * 60,
 	}
 }
 

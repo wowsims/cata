@@ -37,7 +37,7 @@ func (shaman *Shaman) registerSpiritwalkersGraceSpell() {
 		ClassSpellMask: SpellMaskSpiritwalkersGrace,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 12,
+			BaseCostPercent: 14.1,
 		},
 
 		Cast: core.CastConfig{

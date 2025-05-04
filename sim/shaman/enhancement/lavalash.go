@@ -44,13 +44,6 @@ func (enh *EnhancementShaman) registerLavaLashSpell() {
 			baseDamage := spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			searingFlamesBonus := 1.0
 
-			var searingFlames *core.Dot
-
-			if enh.Talents.SearingFlames > 0 {
-				searingFlames = enh.SearingFlames.Dot(target)
-				searingFlamesBonus += enh.getSearingFlamesMultiplier() * float64(searingFlames.GetStacks())
-			}
-
 			baseDamage *= searingFlamesBonus
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
@@ -58,7 +51,7 @@ func (enh *EnhancementShaman) registerLavaLashSpell() {
 				return
 			}
 
-			if enh.Talents.ImprovedLavaLash > 0 {
+			if !enh.HasMinorGlyph(proto.ShamanMinorGlyph_GlyphOfLavaLash) {
 				flameShockDot := enh.FlameShock.Dot(target)
 
 				if flameShockDot != nil && flameShockDot.IsActive() {
@@ -81,10 +74,6 @@ func (enh *EnhancementShaman) registerLavaLashSpell() {
 						}
 					}
 				}
-			}
-
-			if enh.Talents.SearingFlames > 0 && searingFlames.GetStacks() > 0 {
-				searingFlames.SetStacks(sim, 0)
 			}
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {

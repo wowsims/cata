@@ -11,7 +11,7 @@ func (shaman *Shaman) registerFireElementalTotem() {
 
 	actionID := core.ActionID{SpellID: 2894}
 
-	totalDuration := time.Second * time.Duration(120*(1.0+0.20*float64(shaman.Talents.TotemicFocus)))
+	totalDuration := time.Second * 60
 
 	fireElementalAura := shaman.RegisterAura(core.Aura{
 		Label:    "Fire Elemental Totem",
@@ -27,7 +27,7 @@ func (shaman *Shaman) registerFireElementalTotem() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskFireElementalTotem,
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 23,
+			BaseCostPercent: 26.9,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -35,7 +35,11 @@ func (shaman *Shaman) registerFireElementalTotem() {
 			},
 			CD: core.Cooldown{
 				Timer:    shaman.NewTimer(),
-				Duration: time.Minute * 10,
+				Duration: time.Minute * 5,
+			},
+			SharedCD: core.Cooldown{
+				Timer:    shaman.GetOrInitTimer(&shaman.ElementalSharedCDTimer),
+				Duration: time.Minute * 1,
 			},
 		},
 
