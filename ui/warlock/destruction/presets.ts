@@ -97,13 +97,13 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 });
 
 export const DefaultDebuffs = Debuffs.create({
-	bloodFrenzy: true,
-	sunderArmor: true,
-	ebonPlaguebringer: true,
-	mangle: true,
-	criticalMass: false,
-	demoralizingShout: true,
-	frostFever: true,
+	// bloodFrenzy: true,
+	// sunderArmor: true,
+	// ebonPlaguebringer: true,
+	// mangle: true,
+	// criticalMass: false,
+	// demoralizingShout: true,
+	// frostFever: true,
 });
 
 export const OtherDefaults = {

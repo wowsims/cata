@@ -1,15 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import {
-	ConsumesSpec,
-	Debuffs,
-	Glyphs,
-	IndividualBuffs,
-	PartyBuffs,
-	Profession,
-	RaidBuffs,
-	Stat,
-	UnitReference,
-} from '../../core/proto/common.js';
+import { ConsumesSpec, Debuffs, Glyphs, IndividualBuffs, PartyBuffs, Profession, RaidBuffs, Stat, UnitReference } from '../../core/proto/common.js';
 import { BalanceDruid_Options as BalanceDruidOptions, DruidMajorGlyph } from '../../core/proto/druid.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
@@ -95,13 +85,13 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 export const DefaultPartyBuffs = PartyBuffs.create({});
 
 export const DefaultDebuffs = Debuffs.create({
-	bloodFrenzy: true,
-	sunderArmor: true,
-	ebonPlaguebringer: true,
-	mangle: true,
-	criticalMass: true,
-	demoralizingShout: true,
-	frostFever: true,
+	// bloodFrenzy: true,
+	// sunderArmor: true,
+	// ebonPlaguebringer: true,
+	// mangle: true,
+	// criticalMass: true,
+	// demoralizingShout: true,
+	// frostFever: true,
 });
 
 export const OtherDefaults = {

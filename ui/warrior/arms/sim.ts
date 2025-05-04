@@ -86,11 +86,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			bloodFrenzy: true,
-			mangle: true,
-			faerieFire: true,
-			curseOfWeakness: true,
-			ebonPlaguebringer: true,
+			// bloodFrenzy: true,
+			// mangle: true,
+			// faerieFire: true,
+			// curseOfWeakness: true,
+			// ebonPlaguebringer: true,
 		}),
 	},
 

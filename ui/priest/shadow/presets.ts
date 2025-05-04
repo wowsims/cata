@@ -1,11 +1,6 @@
 import * as PresetUtils from '../../core/preset_utils';
 import { ConsumesSpec, Debuffs, Glyphs, IndividualBuffs, Profession, PseudoStat, Race, RaidBuffs, Stat } from '../../core/proto/common';
-import {
-	PriestMajorGlyph as MajorGlyph,
-	PriestMinorGlyph as MinorGlyph,
-	PriestOptions_Armor,
-	ShadowPriest_Options as Options,
-} from '../../core/proto/priest';
+import { PriestMajorGlyph as MajorGlyph, PriestMinorGlyph as MinorGlyph, PriestOptions_Armor, ShadowPriest_Options as Options } from '../../core/proto/priest';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats, UnitStat, UnitStatPresets } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
@@ -172,13 +167,13 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 });
 
 export const DefaultDebuffs = Debuffs.create({
-	bloodFrenzy: true,
-	sunderArmor: true,
-	ebonPlaguebringer: true,
-	mangle: true,
-	criticalMass: true,
-	demoralizingShout: true,
-	frostFever: true,
+	// bloodFrenzy: true,
+	// sunderArmor: true,
+	// ebonPlaguebringer: true,
+	// mangle: true,
+	// criticalMass: true,
+	// demoralizingShout: true,
+	// frostFever: true,
 });
 
 export const OtherDefaults = {

@@ -1,13 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import {
-	ConsumesSpec,
-	Debuffs,
-	Glyphs,
-	Profession,
-	RaidBuffs,
-	Stat,
-	UnitReference,
-} from '../../core/proto/common';
+import { ConsumesSpec, Debuffs, Glyphs, Profession, RaidBuffs, Stat, UnitReference } from '../../core/proto/common';
 import { ArcaneMage_Options as MageOptions, MageMajorGlyph as MajorGlyph } from '../../core/proto/mage';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
@@ -92,8 +84,8 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 });
 
 export const DefaultDebuffs = Debuffs.create({
-	ebonPlaguebringer: true,
-	shadowAndFlame: true,
+	// ebonPlaguebringer: true,
+	// shadowAndFlame: true,
 });
 
 export const OtherDefaults = {

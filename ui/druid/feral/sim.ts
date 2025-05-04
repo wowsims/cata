@@ -76,9 +76,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
-		debuffs: Debuffs.create({
-			bloodFrenzy: true,
-		}),
+		debuffs: Debuffs.create({}),
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.

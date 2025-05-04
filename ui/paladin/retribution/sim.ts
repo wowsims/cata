@@ -151,11 +151,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			communion: true,
 		}),
 		debuffs: Debuffs.create({
-			faerieFire: true,
-			bloodFrenzy: true,
-			mangle: true,
-			ebonPlaguebringer: true,
-			criticalMass: true,
+			// faerieFire: true,
+			// bloodFrenzy: true,
+			// mangle: true,
+			// ebonPlaguebringer: true,
+			// criticalMass: true,
 		}),
 		rotationType: APLRotation_Type.TypeAuto,
 	},
@@ -169,9 +169,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		BuffDebuffInputs.ManaBuff,
 		BuffDebuffInputs.SpellHasteBuff,
 		BuffDebuffInputs.PowerInfusion,
-		BuffDebuffInputs.SpellCritDebuff,
 	],
-	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff, BuffDebuffInputs.DamagePercentBuff],
+	excludeBuffDebuffInputs: [BuffDebuffInputs.DamagePercentBuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [RetributionInputs.StartingHolyPower(), OtherInputs.InputDelay, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],

@@ -101,12 +101,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 			heroicPresence: false,
 		}),
 		individualBuffs: IndividualBuffs.create({}),
-		debuffs: Debuffs.create({
-			faerieFire: true,
-			brittleBones: true,
-			ebonPlaguebringer: true,
-			shadowAndFlame: true,
-		}),
+		debuffs: Debuffs.create({}),
 	},
 
 	autoRotation: (player: Player<Spec.SpecFrostDeathKnight>): APLRotation => {
@@ -125,8 +120,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	playerIconInputs: [],
 	petConsumeInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff, BuffDebuffInputs.SpellCritDebuff],
-	excludeBuffDebuffInputs: [BuffDebuffInputs.DamageReduction, BuffDebuffInputs.MeleeAttackSpeedDebuff, BuffDebuffInputs.BleedDebuff],
+	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff],
+	excludeBuffDebuffInputs: [BuffDebuffInputs.DamageReduction, BuffDebuffInputs.CastSpeedDebuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [

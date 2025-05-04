@@ -98,8 +98,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 			vampiricTouch: true,
 		}),
 		debuffs: Debuffs.create({
-			curseOfElements: true,
-			shadowAndFlame: true,
+			// curseOfElements: true,
+			// shadowAndFlame: true,
 		}),
 	},
 	// IconInputs to include in the 'Player' section on the settings tab.

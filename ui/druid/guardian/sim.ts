@@ -119,10 +119,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			ebonPlaguebringer: true,
-			criticalMass: true,
-			bloodFrenzy: true,
-			frostFever: true,
+			// ebonPlaguebringer: true,
+			// criticalMass: true,
+			// bloodFrenzy: true,
+			// frostFever: true,
 		}),
 	},
 
@@ -131,7 +131,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: DruidInputs.GuardianDruidRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.SpellCritDebuff, BuffDebuffInputs.SpellDamageDebuff],
+	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {

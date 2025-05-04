@@ -98,28 +98,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMistweaverMonk, {
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			mangle: true,
-			sunderArmor: true,
-			shadowAndFlame: true,
-			earthAndMoon: true,
-			bloodFrenzy: true,
+			// mangle: true,
+			// sunderArmor: true,
+			// shadowAndFlame: true,
+			// earthAndMoon: true,
+			// bloodFrenzy: true,
 		}),
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-		BuffDebuffInputs.CritBuff,
-		BuffDebuffInputs.MajorArmorDebuff,
-	],
+	includeBuffDebuffInputs: [BuffDebuffInputs.CritBuff, BuffDebuffInputs.MajorArmorDebuff],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			OtherInputs.InFrontOfTarget,
-			OtherInputs.InputDelay,
-		],
+		inputs: [OtherInputs.InFrontOfTarget, OtherInputs.InputDelay],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -177,7 +171,7 @@ const getActiveEPWeight = (player: Player<Spec.SpecMistweaverMonk>, sim: Sim): S
 	} else {
 		return Presets.PREPATCH_EP_PRESET.epWeights;
 	}
-}
+};
 
 export class MistweaverMonkSimUI extends IndividualSimUI<Spec.SpecMistweaverMonk> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecMistweaverMonk>) {
@@ -197,11 +191,11 @@ export class MistweaverMonkSimUI extends IndividualSimUI<Spec.SpecMistweaverMonk
 							meleeSoftCap.breakpoints = [meleeSoftCap.breakpoints[0]];
 							meleeSoftCap.postCapEPs = [0];
 						} else if (ohWep) {
-							meleeSoftCap.postCapEPs = [initialEP/2, 0]
+							meleeSoftCap.postCapEPs = [initialEP / 2, 0];
 						}
 					}
 
-					return softCaps
+					return softCaps;
 				},
 				getEPDefaults: (player: Player<Spec.SpecMistweaverMonk>) => {
 					return getActiveEPWeight(player, this.sim);

@@ -147,11 +147,11 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 });
 
 export const DefaultDebuffs = Debuffs.create({
-	bloodFrenzy: true,
-	faerieFire: true,
-	ebonPlaguebringer: true,
-	mangle: true,
-	criticalMass: true,
-	demoralizingShout: true,
-	frostFever: true,
+	// bloodFrenzy: true,
+	// faerieFire: true,
+	// ebonPlaguebringer: true,
+	// mangle: true,
+	// criticalMass: true,
+	// demoralizingShout: true,
+	// frostFever: true,
 });

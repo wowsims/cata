@@ -107,11 +107,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 			vampiricTouch: true,
 		}),
 		debuffs: Debuffs.create({
-			sunderArmor: true,
-			faerieFire: true,
-			curseOfElements: true,
-			savageCombat: true,
-			bloodFrenzy: true,
+			// sunderArmor: true,
+			// faerieFire: true,
+			// curseOfElements: true,
+			// savageCombat: true,
+			// bloodFrenzy: true,
 		}),
 	},
 

@@ -104,11 +104,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			mangle: true,
-			faerieFire: true,
-			earthAndMoon: true,
-			bloodFrenzy: true,
-			shadowAndFlame: true,
+			// mangle: true,
+			// faerieFire: true,
+			// earthAndMoon: true,
+			// bloodFrenzy: true,
+			// shadowAndFlame: true,
 		}),
 	},
 
@@ -118,12 +118,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [RogueInputs.MainHandImbue(), RogueInputs.OffHandImbue(), RogueInputs.ThrownImbue()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-		BuffDebuffInputs.CritBuff,
-		BuffDebuffInputs.SpellCritDebuff,
-		BuffDebuffInputs.SpellDamageDebuff,
-		BuffDebuffInputs.MajorArmorDebuff,
-	],
+	includeBuffDebuffInputs: [BuffDebuffInputs.CritBuff, BuffDebuffInputs.SpellDamageDebuff, BuffDebuffInputs.MajorArmorDebuff],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {

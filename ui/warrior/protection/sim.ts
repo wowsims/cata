@@ -99,11 +99,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			faerieFire: true,
-			mangle: true,
-			vindication: true,
-			bloodFrenzy: true,
-			frostFever: true,
+			// faerieFire: true,
+			// mangle: true,
+			// vindication: true,
+			// bloodFrenzy: true,
+			// frostFever: true,
 		}),
 	},
 

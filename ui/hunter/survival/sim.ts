@@ -114,10 +114,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 			vampiricTouch: true,
 		}),
 		debuffs: Debuffs.create({
-			faerieFire: true,
-			curseOfElements: true,
-			savageCombat: true,
-			bloodFrenzy: true,
+			// faerieFire: true,
+			// curseOfElements: true,
+			// savageCombat: true,
+			// bloodFrenzy: true,
 		}),
 	},
 
