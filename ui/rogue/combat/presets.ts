@@ -5,24 +5,20 @@ import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import CombatApl from './apls/combat.apl.json';
 import P1CombatGear from './gear_sets/p1_combat.gear.json';
-import P3CombatGear from './gear_sets/p3_combat.gear.json';
-import P4CombatGear from './gear_sets/p4_combat.gear.json';
 import PreraidCombatGear from './gear_sets/preraid_combat.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const P1_PRESET_COMBAT = PresetUtils.makePresetGear('P1 Combat', P1CombatGear);
-export const P3_PRESET_COMBAT = PresetUtils.makePresetGear('P3 Combat', P3CombatGear);
 export const PRERAID_PRESET_COMBAT = PresetUtils.makePresetGear('Pre-Raid Combat', PreraidCombatGear);
-export const P4_PRESET_COMBAT = PresetUtils.makePresetGear('P4 Combat', P4CombatGear);
+export const P1_PRESET_COMBAT = PresetUtils.makePresetGear('P1 Combat', P1CombatGear);
 
 export const ROTATION_PRESET_COMBAT = PresetUtils.makePresetAPLRotation('Combat', CombatApl);
 
 // Preset options for EP weights
 export const CBAT_STANDARD_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'Combat Standard',
+	'Combat',
 	Stats.fromMap(
 		{
 			[Stat.StatAgility]: 2.85,
@@ -43,39 +39,14 @@ export const CBAT_STANDARD_EP_PRESET = PresetUtils.makePresetEpWeights(
 	),
 );
 
-// 4PT12 pushes Haste, Mastery, and Crit up moderately (Crit also gains from 2P but has no affect on reforging); Haste and Mastery overtake Hit for reforging entirely (Trends towards 10%-ish)
-export const CBAT_4PT12_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'Combat 4PT12',
-	Stats.fromMap(
-		{
-			[Stat.StatAgility]: 2.85,
-			[Stat.StatStrength]: 1.05,
-			[Stat.StatAttackPower]: 1,
-			[Stat.StatCritRating]: 1.16,
-			[Stat.StatHitRating]: 2.21,
-			[Stat.StatHasteRating]: 1.38,
-			[Stat.StatMasteryRating]: 1.28,
-			[Stat.StatExpertiseRating]: 2.1,
-		},
-		{
-			[PseudoStat.PseudoStatMainHandDps]: 4.31,
-			[PseudoStat.PseudoStatOffHandDps]: 1.32,
-			[PseudoStat.PseudoStatSpellHitPercent]: 46,
-			[PseudoStat.PseudoStatPhysicalHitPercent]: 230,
-		},
-	),
-);
-
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.
 
 export const CombatTalents = {
 	name: 'Combat',
 	data: SavedTalents.create({
-		talentsString: '',
+		talentsString: '300003',
 		glyphs: Glyphs.create({
-			major1: RogueMajorGlyph.GlyphOfBladeFlurry,
-			major3: RogueMajorGlyph.GlyphOfGouge,
 		}),
 	}),
 };

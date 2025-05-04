@@ -35,7 +35,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		PseudoStat.PseudoStatMainHandDps,
 		PseudoStat.PseudoStatOffHandDps,
 		PseudoStat.PseudoStatPhysicalHitPercent,
-		PseudoStat.PseudoStatSpellHitPercent,
 	],
 	// Reference stat against which to calculate EP.
 	epReferenceStat: Stat.StatAttackPower,
@@ -44,37 +43,29 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		[Stat.StatHealth, Stat.StatStamina, Stat.StatAgility, Stat.StatStrength, Stat.StatAttackPower, Stat.StatMasteryRating, Stat.StatExpertiseRating],
 		[
 			PseudoStat.PseudoStatPhysicalHitPercent,
-			PseudoStat.PseudoStatSpellHitPercent,
 			PseudoStat.PseudoStatPhysicalCritPercent,
-			PseudoStat.PseudoStatSpellCritPercent,
 			PseudoStat.PseudoStatMeleeHastePercent,
 		],
 	),
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P4_PRESET_SUB.gear,
+		gear: Presets.P1_PRESET_SUB.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Stat caps for reforge optimizer
 		statCaps: (() => {
-			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 7.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 			return expCap;
 		})(),
 		softCapBreakpoints: (() => {
-			const spellHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent, {
-				breakpoints: [17],
-				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0],
-			});
-
 			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
-				breakpoints: [8, 27],
+				breakpoints: [7.5, 26.5],
 				capType: StatCapType.TypeSoftCap,
 				postCapEPs: [98.02, 0],
 			});
 
-			return [meleeHitSoftCapConfig, spellHitSoftCapConfig];
+			return [meleeHitSoftCapConfig];
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
@@ -161,13 +152,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET, Presets.P4_EP_PRESET],
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.SubtletyTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_PRESET_SUBTLETY, Presets.ROTATION_PRESET_SUBTLETY_MASTERY],
+		rotations: [Presets.ROTATION_PRESET_SUBTLETY],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET_SUB, Presets.P1_PRESET_SUB, Presets.P3_PRESET_SUB, Presets.P4_PRESET_SUB],
+		gear: [Presets.PRERAID_PRESET_SUB, Presets.P1_PRESET_SUB],
 	},
 
 	autoRotation: (player: Player<Spec.SpecSubtletyRogue>): APLRotation => {
@@ -211,15 +202,7 @@ export class SubtletyRogueSimUI extends IndividualSimUI<Spec.SpecSubtletyRogue> 
 
 		// Auto Reforging
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, {
-				getEPDefaults: (player: Player<Spec.SpecSubtletyRogue>) => {
-					if (player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.id == 77949) {
-						return Presets.P4_EP_PRESET.epWeights;
-					} else {
-						return Presets.P1_EP_PRESET.epWeights;
-					}
-				},
-			});
+			new ReforgeOptimizer(this, {});
 		});
 
 		this.player.changeEmitter.on(c => {

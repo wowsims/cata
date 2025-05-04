@@ -35,7 +35,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 		PseudoStat.PseudoStatMainHandDps,
 		PseudoStat.PseudoStatOffHandDps,
 		PseudoStat.PseudoStatPhysicalHitPercent,
-		PseudoStat.PseudoStatSpellHitPercent,
 	],
 	// Reference stat against which to calculate EP.
 	epReferenceStat: Stat.StatAttackPower,
@@ -44,38 +43,29 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 		[Stat.StatHealth, Stat.StatStamina, Stat.StatAgility, Stat.StatStrength, Stat.StatAttackPower, Stat.StatMasteryRating, Stat.StatExpertiseRating],
 		[
 			PseudoStat.PseudoStatPhysicalHitPercent,
-			PseudoStat.PseudoStatSpellHitPercent,
 			PseudoStat.PseudoStatPhysicalCritPercent,
-			PseudoStat.PseudoStatSpellCritPercent,
 			PseudoStat.PseudoStatMeleeHastePercent,
 		],
 	),
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P4_PRESET_ASSASSINATION.gear,
+		gear: Presets.P1_PRESET_ASSASSINATION.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Presets.P1_EP_PRESET.epWeights,
+		epWeights: Presets.ASN_EP_PRESET.epWeights,
 		// Stat caps for reforge optimizer
 		statCaps: (() => {
-			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 7.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 			return expCap;
 		})(),
 		softCapBreakpoints: (() => {
-			// Running just under spell cap is typically preferrable to being over.
-			const spellHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent, {
-				breakpoints: [16.95, 16.96, 16.97, 16.98, 16.99, 17],
-				capType: StatCapType.TypeSoftCap,
-				postCapEPs: [0, 0, 0, 0, 0, 0],
-			});
-
 			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
-				breakpoints: [8, 27],
+				breakpoints: [7.5, 26.5],
 				capType: StatCapType.TypeSoftCap,
 				postCapEPs: [94.15, 0],
 			});
 
-			return [meleeHitSoftCapConfig, spellHitSoftCapConfig];
+			return [meleeHitSoftCapConfig];
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
@@ -161,27 +151,23 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 	},
 
 	presets: {
-		epWeights: [Presets.P1_EP_PRESET, Presets.P1_EP_EXPERTISE_PRESET, Presets.P4_EP_LEGENDARY_PRESET],
+		epWeights: [Presets.ASN_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.AssassinationTalentsDefault],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_PRESET_MUTILATE],
+		rotations: [Presets.ROTATION_PRESET_ASSASSINATION],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.PRERAID_PRESET_ASSASSINATION,
 			Presets.P1_PRESET_ASSASSINATION,
-			Presets.P1_PRESET_ASN_EXPERTISE,
-			Presets.P3_PRESET_ASSASSINATION,
-			Presets.P4_PRESET_ASSASSINATION,
 		],
 	},
 
 	autoRotation: (player: Player<Spec.SpecAssassinationRogue>): APLRotation => {
 		const numTargets = player.sim.encounter.targets.length;
 		if (numTargets >= 5) {
-			return Presets.ROTATION_PRESET_MUTILATE.rotation.rotation!;
+			return Presets.ROTATION_PRESET_ASSASSINATION.rotation.rotation!;
 		} else {
-			return Presets.ROTATION_PRESET_MUTILATE.rotation.rotation!;
+			return Presets.ROTATION_PRESET_ASSASSINATION.rotation.rotation!;
 		}
 	},
 
@@ -215,18 +201,7 @@ export class AssassinationRogueSimUI extends IndividualSimUI<Spec.SpecAssassinat
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			new ReforgeOptimizer(this, {
-				getEPDefaults: (player: Player<Spec.SpecAssassinationRogue>) => {
-					const mhWepId = player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.id;
-					const ohWepId = player.getEquippedItem(ItemSlot.ItemSlotOffHand)?.id;
-
-					if (mhWepId == 77949 && ohWepId == 77950) {
-						return Presets.P4_EP_LEGENDARY_PRESET.epWeights;
-					} else {
-						return Presets.P1_EP_PRESET.epWeights;
-					}
-				},
-			});
+			new ReforgeOptimizer(this, {});
 		});
 
 		// Poison selection

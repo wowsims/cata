@@ -56,7 +56,7 @@ func (sinRogue *AssassinationRogue) registerMutilateSpell() {
 		ClassSpellMask: rogue.RogueSpellMutilate,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   50,
+			Cost:   55,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

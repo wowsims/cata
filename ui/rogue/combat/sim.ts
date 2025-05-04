@@ -35,7 +35,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 		PseudoStat.PseudoStatMainHandDps,
 		PseudoStat.PseudoStatOffHandDps,
 		PseudoStat.PseudoStatPhysicalHitPercent,
-		PseudoStat.PseudoStatSpellHitPercent,
 	],
 	// Reference stat against which to calculate EP.
 	epReferenceStat: Stat.StatAttackPower,
@@ -44,40 +43,30 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 		[Stat.StatHealth, Stat.StatStamina, Stat.StatAgility, Stat.StatStrength, Stat.StatAttackPower, Stat.StatMasteryRating, Stat.StatExpertiseRating],
 		[
 			PseudoStat.PseudoStatPhysicalHitPercent,
-			PseudoStat.PseudoStatSpellHitPercent,
 			PseudoStat.PseudoStatPhysicalCritPercent,
-			PseudoStat.PseudoStatSpellCritPercent,
 			PseudoStat.PseudoStatMeleeHastePercent,
 		],
 	),
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P4_PRESET_COMBAT.gear,
+		gear: Presets.P1_PRESET_COMBAT.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.CBAT_STANDARD_EP_PRESET.epWeights,
 		// Stat caps for reforge optimizer
 		statCaps: (() => {
-			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+			const expCap = new Stats().withStat(Stat.StatExpertiseRating, 7.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 			return expCap;
 		})(),
 		softCapBreakpoints: (() => {
-			// Running just under spell cap is typically preferrable to being over.
-			const spellHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatSpellHitPercent, {
-				breakpoints: [16.95, 16.96, 16.97, 16.98, 16.99, 17],
-				capType: StatCapType.TypeSoftCap,
-				// These are set by the active EP weight in the updateSoftCaps callback
-				postCapEPs: [0, 0, 0, 0, 0, 0],
-			});
-
 			const meleeHitSoftCapConfig = StatCap.fromPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent, {
-				breakpoints: [8, 27],
+				breakpoints: [7.5, 26.5],
 				capType: StatCapType.TypeSoftCap,
 				// These are set by the active EP weight in the updateSoftCaps callback
-				postCapEPs: [0, 0],
+				postCapEPs: [90, 0],
 			});
 
-			return [meleeHitSoftCapConfig, spellHitSoftCapConfig];
+			return [meleeHitSoftCapConfig];
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
@@ -163,13 +152,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	},
 
 	presets: {
-		epWeights: [Presets.CBAT_STANDARD_EP_PRESET, Presets.CBAT_4PT12_EP_PRESET],
+		epWeights: [Presets.CBAT_STANDARD_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.CombatTalents],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_COMBAT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET_COMBAT, Presets.P1_PRESET_COMBAT, Presets.P3_PRESET_COMBAT, Presets.P4_PRESET_COMBAT],
+		gear: [Presets.PRERAID_PRESET_COMBAT, Presets.P1_PRESET_COMBAT],
 	},
 
 	autoRotation: (player: Player<Spec.SpecCombatRogue>): APLRotation => {
@@ -206,40 +195,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	],
 });
 
-const getActiveEPWeight = (player: Player<Spec.SpecCombatRogue>, sim: Sim): Stats => {
-	if (sim.getUseCustomEPValues()) {
-		return player.getEpWeights();
-	} else {
-		const playerGear = player.getGear();
-		if (playerGear.getItemSetCount('Vestments of the Dark Phoenix') >= 4) {
-			return Presets.CBAT_4PT12_EP_PRESET.epWeights;
-		} else {
-			return Presets.CBAT_STANDARD_EP_PRESET.epWeights;
-		}
-	}
-};
-
 export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecCombatRogue>) {
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
 			new ReforgeOptimizer(this, {
-				updateSoftCaps: (softCaps: StatCap[]) => {
-					const activeEPWeight = getActiveEPWeight(player, this.sim);
-
-					// Dynamic adjustments to the static Hit soft cap EP
-					const meleeSoftCap = softCaps.find(v => v.unitStat.equalsPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent));
-					if (meleeSoftCap) {
-						const initialEP = activeEPWeight.getPseudoStat(PseudoStat.PseudoStatPhysicalHitPercent);
-						meleeSoftCap.postCapEPs = [initialEP * 0.6, 0];
-					}
-
-					return softCaps;
-				},
-				getEPDefaults: (player: Player<Spec.SpecCombatRogue>) => {
-					return getActiveEPWeight(player, this.sim);
-				},
 				updateGearStatsModifier: (baseStats: Stats) => {
 					// Human/Orc racials for MH. Maxing Expertise for OH is a DPS loss when the MH matches the racial.
 					const mhWepType = player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponType;
@@ -249,6 +210,7 @@ export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 						(playerRace == Race.RaceOrc && (mhWepType == WeaponType.WeaponTypeAxe || mhWepType == WeaponType.WeaponTypeFist)) ||
 						(playerRace == Race.RaceGnome && (mhWepType == WeaponType.WeaponTypeDagger || mhWepType == WeaponType.WeaponTypeSword))
 					) {
+						// TODO (TheBackstabi): Update this for the expertise rating gained
 						return baseStats.addStat(Stat.StatExpertiseRating, 90);
 					}
 					return baseStats;
