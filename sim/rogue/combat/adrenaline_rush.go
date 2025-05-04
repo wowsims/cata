@@ -15,9 +15,9 @@ func (comRogue *CombatRogue) registerAdrenalineRushCD() {
 
 	// Reduces the GCD of Sinister Strike, Revealing Strike, Eviscerate, Slice and Dice, and Rupture by 0.2 sec
 	gcdReduction := comRogue.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_GlobalCooldown_Flat,
-		ClassMask:  rogue.RogueSpellRupture | rogue.RogueSpellEviscerate | rogue.RogueSpellSliceAndDice | rogue.RogueSpellRevealingStrike | rogue.RogueSpellSinisterStrike,
-		FloatValue: 0.2,
+		Kind:      core.SpellMod_GlobalCooldown_Flat,
+		ClassMask: rogue.RogueSpellRupture | rogue.RogueSpellEviscerate | rogue.RogueSpellSliceAndDice | rogue.RogueSpellRevealingStrike | rogue.RogueSpellSinisterStrike,
+		TimeValue: time.Millisecond * -200,
 	})
 
 	comRogue.AdrenalineRushAura = comRogue.RegisterAura(core.Aura{

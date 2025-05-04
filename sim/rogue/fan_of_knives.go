@@ -7,6 +7,13 @@ import (
 )
 
 func (rogue *Rogue) registerFanOfKnives() {
+	baseDamage := rogue.GetBaseDamageFromCoefficient(1.25)
+	apScaling := 0.17499999702
+	damageSpread := baseDamage * 0.40000000596
+	minDamage := baseDamage - damageSpread/2
+
+	cpMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: 51723})
+
 	fokSpell := rogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 51723},
 		SpellSchool:    core.SpellSchoolPhysical,
@@ -39,10 +46,16 @@ func (rogue *Rogue) registerFanOfKnives() {
 		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
 			for i, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := fokSpell.Unit.RangedWeaponDamage(sim, fokSpell.RangedAttackPower(aoeTarget))
-				baseDamage *= sim.Encounter.AOECapMultiplier()
+				damage := minDamage +
+					sim.RandomFloat("Fan of Knives")*damageSpread +
+					spell.MeleeAttackPower()*apScaling
 
-				results[i] = fokSpell.CalcAndDealDamage(sim, aoeTarget, baseDamage, fokSpell.OutcomeRangedHitAndCrit)
+				damage *= sim.Encounter.AOECapMultiplier()
+
+				results[i] = fokSpell.CalcAndDealDamage(sim, aoeTarget, damage, fokSpell.OutcomeMeleeSpecialNoBlockDodgeParry)
+				if results[i].Landed() && aoeTarget == rogue.CurrentTarget {
+					rogue.AddComboPoints(sim, 1, cpMetrics)
+				}
 			}
 		},
 	})

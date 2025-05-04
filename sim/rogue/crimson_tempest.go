@@ -7,13 +7,49 @@ import (
 )
 
 func (rogue *Rogue) registerCrimsonTempest() {
-	coefficient := 0.12600000203
-	resourceCoefficient := 0.01799999923
+	hit_baseDamage := rogue.GetBaseDamageFromCoefficient(0.47600001097)
+	hit_cpScaling := rogue.GetBaseDamageFromCoefficient(0.47600001097) // Same number...?
+	hit_apScaling := 0.0275
 
-	baseDamage := coefficient * rogue.ClassSpellScaling
-	damagePerComboPoint := resourceCoefficient * rogue.ClassSpellScaling
+	hit_minDamage := hit_baseDamage * 0.5
 
-	rogue.Rupture = rogue.RegisterSpell(core.SpellConfig{
+	dot_modifier := 2.4
+	var lastCTDamage []float64
+
+	// The DoT does not benefit from any external buff/debuff/passive
+	rogue.CrimsonTempestDoT = rogue.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 121411, Tag: 7},
+		SpellSchool: core.SpellSchoolPhysical,
+		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagIgnoreTargetModifiers | core.SpellFlagIgnoreAttackerModifiers | core.SpellFlagPassiveSpell,
+
+		DamageMultiplier: 1,
+		CritMultiplier:   rogue.CritMultiplier(false),
+		ThreatMultiplier: 1,
+
+		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label:    "Crimson Tempest",
+				Tag:      RogueBleedTag,
+				Duration: time.Second * 12,
+			},
+			NumberOfTicks: 6,
+			TickLength:    time.Second * 2,
+
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				dot.SnapshotPhysical(target, lastCTDamage[target.UnitIndex]/6)
+			},
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+			},
+		},
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.Dot(target).Apply(sim)
+			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHitNoHitCounter)
+		},
+	})
+
+	rogue.CrimsonTempest = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 121411},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
@@ -21,8 +57,12 @@ func (rogue *Rogue) registerCrimsonTempest() {
 		MetricSplits:   6,
 		ClassSpellMask: RogueSpellCrimsonTempest,
 
+		DamageMultiplier: 1,
+		CritMultiplier:   rogue.CritMultiplier(false),
+		ThreatMultiplier: 1,
+
 		EnergyCost: core.EnergyCostOptions{
-			Cost:          RuptureEnergyCost,
+			Cost:          35,
 			Refund:        0.8,
 			RefundMetrics: rogue.EnergyRefundMetrics,
 		},
@@ -32,52 +72,31 @@ func (rogue *Rogue) registerCrimsonTempest() {
 			},
 			IgnoreHaste: true,
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				spell.SetMetricsSplit(spell.Unit.ComboPoints())
+				spell.SetMetricsSplit(rogue.GetCappedComboPoints())
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return rogue.ComboPoints() > 0
-		},
-
-		DamageMultiplier: 1,
-		CritMultiplier:   rogue.CritMultiplier(false),
-		ThreatMultiplier: 1,
-
-		Dot: core.DotConfig{
-			Aura: core.Aura{
-				Label: "Crimson Tempest DoT",
-				Tag:   RogueBleedTag,
-			},
-			NumberOfTicks: 6,
-			TickLength:    time.Second * 2,
-
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotPhysical(target, rogue.ctDamage(rogue.ComboPoints(), baseDamage, damagePerComboPoint))
-			},
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
-			},
+			return rogue.GetCappedComboPoints() > 0
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			rogue.BreakStealth(sim)
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
-			if result.Landed() {
-				dot := spell.Dot(target)
-				dot.Apply(sim)
-				rogue.ApplyFinisher(sim, spell)
-				spell.DealOutcome(sim, result)
-			} else {
-				spell.DealOutcome(sim, result)
-				spell.IssueRefund(sim)
-			}
+			lastCTDamage = make([]float64, sim.GetNumTargets())
+			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				damage := hit_minDamage +
+					sim.RandomFloat("Crimson Tempest")*hit_baseDamage +
+					hit_cpScaling*float64(rogue.GetCappedComboPoints()) +
+					hit_apScaling*float64(rogue.GetCappedComboPoints())*spell.MeleeAttackPower()
 
+				result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
+				lastCTDamage[aoeTarget.UnitIndex] = result.Damage * dot_modifier
+
+				if result.Landed() {
+					rogue.CrimsonTempestDoT.Cast(sim, aoeTarget)
+					// Currently, CT is triggering a Relentless Strikes refund for _every single target hit_
+					// I'm assuming this to be a bug currently, but will model it should it stay for some time
+				}
+			}
+			rogue.ApplyFinisher(sim, spell)
 		},
 	})
-}
-
-func (rogue *Rogue) ctDamage(comboPoints int32, baseDamage float64, damagePerComboPoint float64) float64 {
-	return baseDamage +
-		damagePerComboPoint*float64(comboPoints) +
-		[]float64{0, 0.06 / 4, 0.12 / 5, 0.18 / 6, 0.24 / 7, 0.30 / 8}[comboPoints]*rogue.Rupture.MeleeAttackPower()
 }

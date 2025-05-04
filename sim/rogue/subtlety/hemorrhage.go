@@ -12,14 +12,14 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 	hemoActionID := core.ActionID{SpellID: 16511, Tag: 1}
 	hemoDotActionID := core.ActionID{SpellID: 16511}
 	hasMinorGlyph := subRogue.HasMinorGlyph(proto.RogueMinorGlyph_GlyphOfHemorrhage)
-	hemoAuras := subRogue.NewEnemyAuraArray(core.HemorrhageAura)
 	var lastHemoDamage float64
 
-	// Hemorrhage DoT has a chance to proc MH weapon effects/poisons, so must be defined as its own spell
+	weaponDamage := 1.6
+
 	hemoDot := subRogue.RegisterSpell(core.SpellConfig{
 		ActionID:    hemoDotActionID,
 		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
+		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagIgnoreAttackerModifiers | core.SpellFlagPassiveSpell, // From initial testing, Hemo DoT only benefits from debuffs on target, such as 30% bleed damage
 
 		ThreatMultiplier: 1,
@@ -30,7 +30,7 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 			Aura: core.Aura{
 				Label:    "Hemorrhage DoT",
 				Tag:      rogue.RogueBleedTag,
-				ActionID: hemoActionID,
+				ActionID: hemoDotActionID,
 				Duration: time.Second * 24,
 			},
 			NumberOfTicks: 8,
@@ -68,7 +68,7 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: core.TernaryFloat64(subRogue.HasDagger(core.MainHand), 2.32, 1.6),
+		DamageMultiplier: core.TernaryFloat64(subRogue.HasDagger(core.MainHand), weaponDamage*1.45, weaponDamage),
 		CritMultiplier:   subRogue.CritMultiplier(true),
 		ThreatMultiplier: 1,
 
@@ -83,22 +83,23 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 
 			if result.Landed() {
 				subRogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
-				hemoAuras.Get(target).Activate(sim)
 				lastHemoDamage = result.Damage
-				hemoDot.Cast(sim, target)
-				if hasMinorGlyph {
 
+				if hasMinorGlyph { // Prevents triggering the DoT unless Garrote/Rupture/Crimson Tempest are active
+					if target.HasAuraWithTag(rogue.RogueBleedTag) {
+						hemoDot.Cast(sim, target)
+					}
+				} else {
+					hemoDot.Cast(sim, target)
 				}
 			} else {
 				spell.IssueRefund(sim)
 			}
 		},
-
-		RelatedAuraArrays: hemoAuras.ToMap(),
 	})
 
 	subRogue.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand}, func(s *core.Simulation, slot proto.ItemSlot) {
 		// Recalculate Hemorrhage's multiplier in case the MH weapon changed.
-		subRogue.Hemorrhage.DamageMultiplier = core.TernaryFloat64(subRogue.HasDagger(core.MainHand), 2.32, 1.6)
+		subRogue.Hemorrhage.DamageMultiplier = core.TernaryFloat64(subRogue.HasDagger(core.MainHand), weaponDamage*1.45, weaponDamage)
 	})
 }

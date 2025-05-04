@@ -41,6 +41,9 @@ func (subRogue *SubtletyRogue) registerSanguinaryVein() {
 		if subRogue.Hemorrhage != nil && hasHemoGlyph {
 			subRogue.Hemorrhage.RelatedAuraArrays = subRogue.Hemorrhage.RelatedAuraArrays.Append(svDebuffArray)
 		}
+		if subRogue.CrimsonTempest != nil {
+			subRogue.CrimsonTempestDoT.RelatedAuraArrays = subRogue.CrimsonTempestDoT.RelatedAuraArrays.Append(svDebuffArray)
+		}
 	})
 
 	subRogue.RegisterAura(core.Aura{
@@ -54,7 +57,7 @@ func (subRogue *SubtletyRogue) registerSanguinaryVein() {
 				return
 			}
 
-			if spell == subRogue.Rupture || spell == subRogue.Garrote {
+			if spell == subRogue.Rupture || spell == subRogue.Garrote || spell == subRogue.CrimsonTempestDoT {
 				aura := svDebuffArray.Get(result.Target)
 				dot := spell.Dot(result.Target)
 				aura.Duration = dot.BaseTickLength * time.Duration(dot.BaseTickCount)

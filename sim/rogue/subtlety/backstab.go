@@ -8,7 +8,8 @@ import (
 )
 
 func (subRogue *SubtletyRogue) registerBackstabSpell() {
-	baseDamage := subRogue.ClassSpellScaling * .307
+	baseDamage := subRogue.GetBaseDamageFromCoefficient(0.36800000072)
+	weaponDamage := 3.8
 
 	subRogue.Backstab = subRogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 53},
@@ -18,7 +19,7 @@ func (subRogue *SubtletyRogue) registerBackstabSpell() {
 		ClassSpellMask: rogue.RogueSpellBackstab,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   60,
+			Cost:   35,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -31,7 +32,7 @@ func (subRogue *SubtletyRogue) registerBackstabSpell() {
 			return !subRogue.PseudoStats.InFrontOfTarget && subRogue.HasDagger(core.MainHand)
 		},
 
-		DamageMultiplierAdditive: 1,
+		DamageMultiplierAdditive: weaponDamage,
 		DamageMultiplier:         1,
 		CritMultiplier:           subRogue.CritMultiplier(true),
 		ThreatMultiplier:         1,

@@ -52,7 +52,8 @@ func (comRogue *CombatRogue) registerRevealingStrike() {
 		ClassSpellMask: rogue.RogueSpellRevealingStrike,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: time.Second,
+				GCD:    time.Second,
+				GCDMin: time.Millisecond * 800,
 			},
 		},
 		EnergyCost: core.EnergyCostOptions{

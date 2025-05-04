@@ -31,7 +31,8 @@ func (rogue *Rogue) registerRupture() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: time.Second,
+				GCD:    time.Second,
+				GCDMin: time.Millisecond * 800,
 			},
 			IgnoreHaste: true,
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {

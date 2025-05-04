@@ -67,12 +67,13 @@ type Rogue struct {
 	Gouge            *core.Spell
 	ShadowBlades     *core.Spell
 
-	Envenom      *core.Spell
-	Eviscerate   *core.Spell
-	ExposeArmor  *core.Spell
-	Rupture      *core.Spell
-	SliceAndDice *core.Spell
-	Recuperate   *core.Spell
+	Envenom           *core.Spell
+	Eviscerate        *core.Spell
+	ExposeArmor       *core.Spell
+	Rupture           *core.Spell
+	SliceAndDice      *core.Spell
+	CrimsonTempest    *core.Spell
+	CrimsonTempestDoT *core.Spell
 
 	deadlyPoisonPPHM *core.DynamicProcManager
 	woundPoisonPPHM  *core.DynamicProcManager
@@ -189,6 +190,7 @@ func (rogue *Rogue) Initialize() {
 	rogue.registerWoundPoisonSpell()
 	rogue.registerPoisonAuras()
 	rogue.registerShadowBladesCD()
+	rogue.registerCrimsonTempest()
 
 	rogue.T12ToTLastBuff = 3
 
@@ -352,6 +354,6 @@ const (
 	RogueSpellsAll = RogueSpellLast<<1 - 1
 
 	RogueSpellPoisons          = RogueSpellVenomousWounds | RogueSpellWoundPoison | RogueSpellDeadlyPoison
-	RogueSpellDamagingFinisher = RogueSpellEnvenom | RogueSpellEviscerate | RogueSpellRupture
+	RogueSpellDamagingFinisher = RogueSpellEnvenom | RogueSpellEviscerate | RogueSpellRupture | RogueSpellCrimsonTempest
 	RogueSpellWeightedBlades   = RogueSpellSinisterStrike | RogueSpellRevealingStrike
 )
