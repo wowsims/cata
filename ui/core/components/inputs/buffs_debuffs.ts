@@ -20,6 +20,8 @@ export const StatsBuff = InputHelpers.makeMultiIconInput(
 	[
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(20217), fieldName: 'blessingOfKings' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(1126), fieldName: 'markOfTheWild' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(90363), fieldName: 'embraceOfTheShaleSpider' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(115921), fieldName: 'legacyOfTheEmperor' }),
 	],
 	'Stats',
 );
@@ -40,6 +42,7 @@ export const AttackSpeedBuff = InputHelpers.makeMultiIconInput(
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(128433), fieldName: 'serpentsSwiftness' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(113742), fieldName: 'swiftbladesCunning' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(30809), fieldName: 'unleashedRage' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(128432), fieldName: 'cacklingHowl' }),
 	],
 	'Attack Speed',
 );
@@ -70,6 +73,8 @@ export const CritBuff = InputHelpers.makeMultiIconInput(
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(24604), fieldName: 'furiousHowl' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(90309), fieldName: 'terrifyingRoar' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(116781), fieldName: 'legacyOfTheWhiteTiger' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(1459), fieldName: 'arcaneBrilliance' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(126309), fieldName: 'stillWater' }),
 	],
 	'Crit %',
 );
@@ -86,6 +91,8 @@ export const MasteryBuff = InputHelpers.makeMultiIconInput(
 
 export const StaminaBuff = InputHelpers.makeMultiIconInput(
 	[
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(469), fieldName: 'commandingShout' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(109773), fieldName: 'darkIntent' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(21562), fieldName: 'powerWordFortitude' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(90364), fieldName: 'qirajiFortitude' }),
 	],
@@ -100,6 +107,7 @@ export const MajorHasteBuff = InputHelpers.makeMultiIconInput(
 	],
 	'Major Haste',
 );
+
 // TODO: Look at these, what we want and how to structure them for multiple available
 export const DefensiveCooldownBuff = InputHelpers.makeMultiIconInput(
 	[
