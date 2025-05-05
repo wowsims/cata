@@ -201,12 +201,9 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 		PowerWordFortitudeAura(u)
 	}
 
-	// Major Haste handled below
-	// Mana Tidal totem count handled below
-
 	// Stamina & Strength/Agility secondary grouping
 	applyStaminaBuffs(u, raidBuffs)
-	applyStrengthAgilityBuffs(u, raidBuffs)
+	applyStrengthAgilityIntellectBuffs(u, raidBuffs)
 
 	// Individual cooldowns and major buffs
 	if len(char.Env.Raid.AllPlayerUnits)-char.Env.Raid.NumTargetDummies == 1 {
@@ -256,16 +253,6 @@ func DarkIntentAura(unit *Unit, isWarlock bool) *Aura {
 	// proc this based on the uptime configuration
 	// We assume lock precasts dot so first tick might happen after 2 seconds already
 	ApplyFixedUptimeAura(procAura, unit.DarkIntentUptimePercent, time.Second*2, time.Second*2)
-
-	// var periodicHandler OnPeriodicDamage
-	// if selfBuff {
-	// 	periodicHandler = func(_ *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-	// 		if result.Outcome.Matches(OutcomeCrit) && spell.SchoolIndex > stats.SchoolIndexPhysical {
-	// 			procAura.Activate(sim)
-	// 			procAura.AddStack(sim)
-	// 		}
-	// 	}
-	// }
 
 	return unit.RegisterAura(Aura{
 		Label:    "Dark Intent",
@@ -319,18 +306,6 @@ func LegacyOfTheEmperorAura(unit *Unit) *Aura {
 func EmbraceOfTheShaleSpiderAura(u *Unit) *Aura {
 	return makeExclusiveAllStatPercentBuff(u, "Embrace of the Shale Spider", ActionID{SpellID: 0}, 1.05)
 }
-
-///////////////////////////////////////////////////////////////////////////
-//							Resistances
-///////////////////////////////////////////////////////////////////////////
-
-// https://www.wowhead.com/mop-classic/item=63140/drums-of-the-burning-wild
-// https://www.wowhead.com/mop-classic/spell=1126/mark-of-the-wild
-// https://www.wowhead.com/mop-classic/spell=20217/blessing-of-kings
-// https://www.wowhead.com/mop-classic/spell=8184/elemental-resistance-totem
-// https://www.wowhead.com/mop-classic/spell=19891/resistance-aura
-// https://www.wowhead.com/mop-classic/spell=20043/aspect-of-the-wild
-// https://www.wowhead.com/mop-classic/spell=27683/shadow-protection
 
 ///////////////////////////////////////////////////////////////////////////
 //							Stamina
@@ -462,7 +437,7 @@ func BattleShoutAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
 	return baseAura
 }
 
-func applyStrengthAgilityBuffs(u *Unit, raidBuffs *proto.RaidBuffs) {
+func applyStrengthAgilityIntellectBuffs(u *Unit, raidBuffs *proto.RaidBuffs) {
 	// +5% Strength & Agility, Int buffs
 	if raidBuffs.HornOfWinter {
 		MakePermanent(HornOfWinterAura(u, true, false))
