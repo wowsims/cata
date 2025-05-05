@@ -176,7 +176,7 @@ const SpellDamageEffectAuraTag = "SpellDamageAuraTag"
 func spellDamageEffectAura(auraConfig Aura, target *Unit, multiplier float64) *Aura {
 	auraConfig.Tag = SpellDamageEffectAuraTag
 	aura := target.GetOrRegisterAura(auraConfig)
-	aura.NewExclusiveEffect("SpellDamageTaken%", false, ExclusiveEffect{
+	aura.NewExclusiveEffect("SpellDamageTaken%", true, ExclusiveEffect{
 		Priority: multiplier,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
 			ee.Aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= multiplier
