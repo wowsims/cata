@@ -119,8 +119,7 @@ func (warlock *Warlock) Initialize() {
 }
 
 func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	raidBuffs.BloodPact = warlock.Options.Summon == proto.WarlockOptions_Imp
-	raidBuffs.FelIntelligence = warlock.Options.Summon == proto.WarlockOptions_Felhunter
+
 }
 
 func (warlock *Warlock) Reset(sim *core.Simulation) {

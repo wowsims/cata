@@ -134,7 +134,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 		BurningWrathAura(u)
 	}
 	if raidBuffs.DarkIntent {
-		MakePermanent(DarkIntentAura(u, char.Class == proto.Class_ClassWarlock))
+		MakePermanent(DarkIntentAura(u))
 	}
 
 	// +5% Spell Haste
@@ -193,17 +193,8 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 		BlessingOfKingsAura(u)
 	}
 
-	// +10% Stamina
-	if raidBuffs.QirajiFortitude {
-		QirajiFortitudeAura(u)
-	}
-	if raidBuffs.PowerWordFortitude {
-		PowerWordFortitudeAura(u)
-	}
-
 	// Stamina & Strength/Agility secondary grouping
 	applyStaminaBuffs(u, raidBuffs)
-	applyStrengthAgilityIntellectBuffs(u, raidBuffs)
 
 	// Individual cooldowns and major buffs
 	if len(char.Env.Raid.AllPlayerUnits)-char.Env.Raid.NumTargetDummies == 1 {
@@ -229,66 +220,9 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 	}
 }
 
-func DarkIntentAura(unit *Unit, isWarlock bool) *Aura {
-	var dotDmgEffect *ExclusiveEffect
-	procAura := unit.RegisterAura(Aura{
-		Label:     "Dark Intent Proc",
-		ActionID:  ActionID{SpellID: 85759},
-		Duration:  7 * time.Second,
-		MaxStacks: 3,
-		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks, newStacks int32) {
-			dotDmgEffect.SetPriority(sim, TernaryFloat64(isWarlock, 0.03, 0.01)*float64(newStacks))
-		},
-	})
-	dotDmgEffect = procAura.NewExclusiveEffect("DarkIntent", false, ExclusiveEffect{
-		Priority: 0,
-		OnGain: func(ee *ExclusiveEffect, s *Simulation) {
-			ee.Aura.Unit.PseudoStats.DotDamageMultiplierAdditive += ee.Priority
-		},
-		OnExpire: func(ee *ExclusiveEffect, s *Simulation) {
-			ee.Aura.Unit.PseudoStats.DotDamageMultiplierAdditive -= ee.Priority
-		},
-	})
-
-	// proc this based on the uptime configuration
-	// We assume lock precasts dot so first tick might happen after 2 seconds already
-	ApplyFixedUptimeAura(procAura, unit.DarkIntentUptimePercent, time.Second*2, time.Second*2)
-
-	return unit.RegisterAura(Aura{
-		Label:    "Dark Intent",
-		ActionID: ActionID{SpellID: 85767},
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.MultiplyCastSpeed(1.03)
-			aura.Unit.MultiplyAttackSpeed(sim, 1.03)
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.MultiplyCastSpeed(1 / 1.03)
-			aura.Unit.MultiplyAttackSpeed(sim, 1/1.03)
-		},
-		// OnPeriodicDamageDealt: periodicHandler,
-		BuildPhase: CharacterBuildPhaseBuffs,
-	})
-}
-
-func StoneskinTotem(unit *Unit) *Aura {
-	return makeExclusiveBuff(unit, BuffConfig{
-		"Stoneskin Totem",
-		ActionID{SpellID: 8071},
-		[]StatConfig{
-			{stats.Armor, 4075, false},
-		},
-	})
-}
-
-func DevotionAura(unit *Unit) *Aura {
-	return makeExclusiveBuff(unit, BuffConfig{
-		"Devotion Aura",
-		ActionID{SpellID: 465},
-		[]StatConfig{
-			{stats.Armor, 4075, false},
-		},
-	})
-}
+///////////////////////////////////////////////////////////////////////////
+//							Strength, Agility, Intellect 5%
+///////////////////////////////////////////////////////////////////////////
 
 func BlessingOfKingsAura(unit *Unit) *Aura {
 	return makeExclusiveAllStatPercentBuff(unit, "Blessing of Kings", ActionID{SpellID: 20217}, 1.05)
@@ -304,7 +238,7 @@ func LegacyOfTheEmperorAura(unit *Unit) *Aura {
 }
 
 func EmbraceOfTheShaleSpiderAura(u *Unit) *Aura {
-	return makeExclusiveAllStatPercentBuff(u, "Embrace of the Shale Spider", ActionID{SpellID: 0}, 1.05)
+	return makeExclusiveAllStatPercentBuff(u, "Embrace of the Shale Spider", ActionID{SpellID: 90363}, 1.05)
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -317,43 +251,13 @@ func PowerWordFortitudeAura(unit *Unit) *Aura {
 		"Power Word: Fortitude",
 		ActionID{SpellID: 21562},
 		[]StatConfig{
-			{stats.Stamina, 585.0, false},
+			{stats.Stamina, 0.10, true},
 		},
 	})
 }
 
 func QirajiFortitudeAura(u *Unit) *Aura {
-	return makeExclusiveBuff(u, BuffConfig{"Qiraji Fortitude", ActionID{SpellID: 0}, []StatConfig{{stats.Stamina, 0.10, true}}})
-}
-
-// https://www.wowhead.com/mop-classic/spell=6307/blood-pact
-func BloodPactAura(unit *Unit) *Aura {
-	return makeExclusiveBuff(unit, BuffConfig{
-		"Blood Pact",
-		ActionID{SpellID: 6307},
-		[]StatConfig{
-			{stats.Stamina, 585.0, false},
-		},
-	})
-}
-
-// https://www.wowhead.com/mop-classic/spell=469/commanding-shout
-func CommandingShoutAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
-	baseAura := makeExclusiveBuff(unit, BuffConfig{
-		"Commanding Shout",
-		ActionID{SpellID: 469},
-		[]StatConfig{
-			{stats.Stamina, 585.0, false},
-		},
-	})
-
-	if asExternal {
-		return baseAura
-	}
-
-	baseAura.OnReset = nil
-	baseAura.Duration = TernaryDuration(withGlyph, time.Minute*4, time.Minute*2)
-	return baseAura
+	return makeExclusiveBuff(u, BuffConfig{"Qiraji Fortitude", ActionID{SpellID: 90364}, []StatConfig{{stats.Stamina, 0.10, true}}})
 }
 
 func applyStaminaBuffs(u *Unit, raidBuffs *proto.RaidBuffs) {
@@ -364,106 +268,89 @@ func applyStaminaBuffs(u *Unit, raidBuffs *proto.RaidBuffs) {
 	if raidBuffs.QirajiFortitude {
 		QirajiFortitudeAura(u)
 	}
-	if raidBuffs.CommandingShout {
-		CommandingShoutAura(u, true, false)
-	}
 }
 
 //////// 3000 Mastery Rating
 
 func RoarOfCourageAura(u *Unit) *Aura {
-	return makeExclusiveBuff(u, BuffConfig{"Roar of Courage", ActionID{SpellID: 0}, []StatConfig{{stats.MasteryRating, 3000, false}}})
+	return makeExclusiveBuff(u, BuffConfig{"Roar of Courage", ActionID{SpellID: 93435}, []StatConfig{{stats.MasteryRating, 3000, false}}})
 }
 func SpiritBeastBlessingAura(u *Unit) *Aura {
-	return makeExclusiveBuff(u, BuffConfig{"Spirit Beast Blessing", ActionID{SpellID: 0}, []StatConfig{{stats.MasteryRating, 3000, false}}})
+	return makeExclusiveBuff(u, BuffConfig{"Spirit Beast Blessing", ActionID{SpellID: 128997}, []StatConfig{{stats.MasteryRating, 3000, false}}})
 }
 func BlessingOfMightAura(u *Unit) *Aura {
-	return makeExclusiveBuff(u, BuffConfig{"Blessing of Might", ActionID{SpellID: 0}, []StatConfig{{stats.MasteryRating, 3000, false}}})
+	return makeExclusiveBuff(u, BuffConfig{"Blessing of Might", ActionID{SpellID: 19740}, []StatConfig{{stats.MasteryRating, 3000, false}}})
 }
 func GraceOfAirAura(u *Unit) *Aura {
-	return makeExclusiveBuff(u, BuffConfig{"Grace of Air", ActionID{SpellID: 0}, []StatConfig{{stats.MasteryRating, 3000, false}}})
-}
-
-///////////////////////////////////////////////////////////////////////////
-//							Strength and Agility
-///////////////////////////////////////////////////////////////////////////
-
-// https://www.wowhead.com/mop-classic/spell=8075/strength-of-earth-totem
-func StrengthOfEarthTotemAura(unit *Unit) *Aura {
-	return makeExclusiveBuff(unit, BuffConfig{
-		"Strength of Earth Totem",
-		ActionID{SpellID: 8075},
-		[]StatConfig{
-			{stats.Agility, 549.0, false},
-			{stats.Strength, 549.0, false},
-		}})
-}
-
-// https://www.wowhead.com/mop-classic/spell=57330/horn-of-winter
-func HornOfWinterAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
-	baseAura := makeExclusiveBuff(unit, BuffConfig{
-		"Horn of Winter",
-		ActionID{SpellID: 57330},
-		[]StatConfig{
-			{stats.Agility, 549.0, false},
-			{stats.Strength, 549.0, false},
-		}})
-
-	if asExternal {
-		return baseAura
-	}
-
-	baseAura.OnReset = nil
-	baseAura.Duration = TernaryDuration(withGlyph, time.Minute*3, time.Minute*2)
-	return baseAura
-}
-
-// https://www.wowhead.com/mop-classic/spell=6673/battle-shout
-func BattleShoutAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
-	baseAura := makeExclusiveBuff(unit, BuffConfig{
-		"Battle Shout",
-		ActionID{SpellID: 6673},
-		[]StatConfig{
-			{stats.Agility, 549.0, false},
-			{stats.Strength, 549.0, false},
-		}})
-
-	if asExternal {
-		return baseAura
-	}
-
-	baseAura.OnReset = nil
-	baseAura.Duration = TernaryDuration(withGlyph, time.Minute*4, time.Minute*2)
-	return baseAura
-}
-
-func applyStrengthAgilityIntellectBuffs(u *Unit, raidBuffs *proto.RaidBuffs) {
-	// +5% Strength & Agility, Int buffs
-	if raidBuffs.HornOfWinter {
-		MakePermanent(HornOfWinterAura(u, true, false))
-	}
-	if raidBuffs.BattleShout {
-		MakePermanent(BattleShoutAura(u, true, false))
-	}
+	return makeExclusiveBuff(u, BuffConfig{"Grace of Air", ActionID{SpellID: 116956}, []StatConfig{{stats.MasteryRating, 3000, false}}})
 }
 
 ///////////////////////////////////////////////////////////////////////////
 //							Attack Power
 ///////////////////////////////////////////////////////////////////////////
 
-// https://www.wowhead.com/mop-classic/spell=30808/unleashed-rage
-// https://www.wowhead.com/mop-classic/spell=19506/trueshot-aura
-// https://www.wowhead.com/mop-classic/spell=53138/abominations-might
-// https://www.wowhead.com/mop-classic/spell=19740/blessing-of-might
-
 func TrueShotAura(unit *Unit) *Aura {
 	return makeExclusiveBuff(unit, BuffConfig{
-		"True Shot Aura",
+		"Trueshot Aura",
 		ActionID{SpellID: 19506},
 		[]StatConfig{
 			{stats.AttackPower, 1.1, true},
 			{stats.RangedAttackPower, 1.1, true},
 		}})
+}
+
+func HornOfWinterAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
+	baseAura := makeExclusiveBuff(unit, BuffConfig{
+		"Horn of Winter",
+		ActionID{SpellID: 57330},
+		[]StatConfig{
+			{stats.AttackPower, 1.1, true},
+			{stats.RangedAttackPower, 1.1, true},
+		}})
+
+	if asExternal {
+		return baseAura
+	}
+
+	baseAura.OnReset = nil
+	baseAura.Duration = time.Minute * 5
+	return baseAura
+}
+
+func BattleShoutAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
+	baseAura := makeExclusiveBuff(unit, BuffConfig{
+		"Battle Shout",
+		ActionID{SpellID: 6673},
+		[]StatConfig{
+			{stats.AttackPower, 1.1, true},
+			{stats.RangedAttackPower, 1.1, true},
+		}})
+
+	if asExternal {
+		return baseAura
+	}
+
+	baseAura.OnReset = nil
+	baseAura.Duration = time.Minute * 5
+	return baseAura
+}
+
+func CommandingShoutAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
+	baseAura := makeExclusiveBuff(unit, BuffConfig{
+		"Commanding Shout",
+		ActionID{SpellID: 469},
+		[]StatConfig{
+			{stats.AttackPower, 1.1, true},
+			{stats.RangedAttackPower, 1.1, true},
+			{stats.Stamina, 1.1, true},
+		}})
+	if asExternal {
+		return baseAura
+	}
+
+	baseAura.OnReset = nil
+	baseAura.Duration = time.Minute * 5
+	return baseAura
 }
 
 // /////////////////////////////////////////////////////////////////////////
@@ -482,27 +369,27 @@ func registerExclusiveMeleeHaste(aura *Aura, value float64) {
 	})
 }
 func UnholyAura(u *Unit) *Aura {
-	aura := makeExclusiveBuff(u, BuffConfig{"Unholy Aura", ActionID{SpellID: 0}, nil})
+	aura := makeExclusiveBuff(u, BuffConfig{"Unholy Aura", ActionID{SpellID: 55610}, nil})
 	registerExclusiveMeleeHaste(aura, 0.10)
 	return aura
 }
 func CacklingHowlAura(u *Unit) *Aura {
-	aura := makeExclusiveBuff(u, BuffConfig{"Cackling Howl", ActionID{SpellID: 0}, nil})
+	aura := makeExclusiveBuff(u, BuffConfig{"Cackling Howl", ActionID{SpellID: 128432}, nil})
 	registerExclusiveMeleeHaste(aura, 0.10)
 	return aura
 }
 func SerpentsSwiftnessAura(u *Unit) *Aura {
-	aura := makeExclusiveBuff(u, BuffConfig{"Serpent's Swiftness", ActionID{SpellID: 0}, nil})
+	aura := makeExclusiveBuff(u, BuffConfig{"Serpent's Swiftness", ActionID{SpellID: 128433}, nil})
 	registerExclusiveMeleeHaste(aura, 0.10)
 	return aura
 }
 func SwiftbladesCunningAura(u *Unit) *Aura {
-	aura := makeExclusiveBuff(u, BuffConfig{"Swiftblade's Cunning", ActionID{SpellID: 0}, nil})
+	aura := makeExclusiveBuff(u, BuffConfig{"Swiftblade's Cunning", ActionID{SpellID: 113742}, nil})
 	registerExclusiveMeleeHaste(aura, 0.10)
 	return aura
 }
 func UnleashedRageAura(u *Unit) *Aura {
-	return makeExclusiveBuff(u, BuffConfig{"Unleashed Rage", ActionID{SpellID: 30808}, []StatConfig{{stats.AttackPower, 1.2, true}, {stats.RangedAttackPower, 1.1, true}}})
+	return makeExclusiveBuff(u, BuffConfig{"Unleashed Rage", ActionID{SpellID: 30809}, []StatConfig{{stats.AttackPower, 1.2, true}, {stats.RangedAttackPower, 1.1, true}}})
 }
 
 // /////////////////////////////////////////////////////////////////////////
@@ -581,22 +468,25 @@ func registerExclusiveSpellHaste(aura *Aura, spellHastePercent float64) {
 func MoonkinAura(unit *Unit) *Aura {
 	aura := makeExclusiveBuff(unit, BuffConfig{
 		"Moonkin Aura",
-		ActionID{SpellID: 24858},
+		ActionID{SpellID: 24907},
 		[]StatConfig{}})
 
 	registerExclusiveSpellHaste(aura, 0.05)
 	return aura
 }
+
 func MindQuickeningAura(u *Unit) *Aura {
-	aura := makeExclusiveBuff(u, BuffConfig{"Mind Quickening", ActionID{SpellID: 0}, nil})
+	aura := makeExclusiveBuff(u, BuffConfig{"Mind Quickening", ActionID{SpellID: 49868}, nil})
 	registerExclusiveSpellHaste(aura, 0.05)
 	return aura
 }
+
 func ShadowFormAura(u *Unit) *Aura {
 	aura := makeExclusiveBuff(u, BuffConfig{"Shadow Form", ActionID{SpellID: 15473}, nil})
 	registerExclusiveSpellHaste(aura, 0.05)
 	return aura
 }
+
 func ElementalOath(u *Unit) *Aura {
 	aura := makeExclusiveBuff(u, BuffConfig{"Elemental Oath", ActionID{SpellID: 51470}, nil})
 	registerExclusiveSpellHaste(aura, 0.05)
@@ -610,31 +500,25 @@ func ElementalOath(u *Unit) *Aura {
 // /////////////////////////////////////////////////////////////////////////
 
 func StillWaterAura(u *Unit) *Aura {
-	return makeExclusiveBuff(u, BuffConfig{"Still Water", ActionID{SpellID: 0}, []StatConfig{{stats.SpellPower, 0.10, true}}})
+	return makeExclusiveBuff(u, BuffConfig{"Still Water", ActionID{SpellID: 126309},
+		[]StatConfig{
+			{stats.SpellPower, 0.10, true},
+			{stats.PhysicalCritPercent, 5, false},
+			{stats.SpellCritPercent, 5, false}}})
 }
 func ArcaneBrilliance(u *Unit) *Aura {
 	// Mages: +10% Spell Power
-	return makeExclusiveBuff(u, BuffConfig{"Arcane Brilliance", ActionID{SpellID: 1459}, []StatConfig{{stats.SpellPower, 0.10, true}}})
+	return makeExclusiveBuff(u, BuffConfig{"Arcane Brilliance", ActionID{SpellID: 1459},
+		[]StatConfig{
+			{stats.SpellPower, 0.10, true},
+			{stats.PhysicalCritPercent, 5, false},
+			{stats.SpellCritPercent, 5, false}}})
 }
 func BurningWrathAura(u *Unit) *Aura {
-	return makeExclusiveBuff(u, BuffConfig{"Burning Wrath", ActionID{SpellID: 0}, []StatConfig{{stats.SpellPower, 0.10, true}}})
+	return makeExclusiveBuff(u, BuffConfig{"Burning Wrath", ActionID{SpellID: 77747}, []StatConfig{{stats.SpellPower, 0.10, true}}})
 }
-
-// /////////////////////////////////////////////////////////////////////////
-//
-//	Damage Done%
-//
-// /////////////////////////////////////////////////////////////////////////
-func registerExclusiveDamageDone(aura *Aura, damageDoneMod float64) {
-	aura.NewExclusiveEffect("DamageDone%Buff", false, ExclusiveEffect{
-		Priority: damageDoneMod,
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.DamageDealtMultiplier *= (1 + ee.Priority)
-		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.DamageDealtMultiplier /= (1 + ee.Priority)
-		},
-	})
+func DarkIntentAura(u *Unit) *Aura {
+	return makeExclusiveBuff(u, BuffConfig{"Dark Intent", ActionID{SpellID: 109773}, []StatConfig{{stats.SpellPower, 0.10, true}, {stats.Stamina, 0.10, true}}})
 }
 
 /////////////
@@ -647,60 +531,15 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	if petAgent.GetPet().IsGuardian() {
 		return
 	}
-
 	raidBuffs = googleProto.Clone(raidBuffs).(*proto.RaidBuffs)
 	partyBuffs = googleProto.Clone(partyBuffs).(*proto.PartyBuffs)
 	individualBuffs = googleProto.Clone(individualBuffs).(*proto.IndividualBuffs)
 
-	// Remove buffs that do not apply to pets
-	// Or those that will be applied from the player (BL)
-	raidBuffs.Bloodlust = false
-	raidBuffs.Heroism = false
-	raidBuffs.TimeWarp = false
-	// Stam
-	raidBuffs.PowerWordFortitude = false
-	raidBuffs.CommandingShout = false
-	// Str/Agi
-	raidBuffs.HornOfWinter = false
-	raidBuffs.BattleShout = false
-	// Crit%
-	raidBuffs.LeaderOfThePack = false
-	raidBuffs.ElementalOath = false
-	raidBuffs.TerrifyingRoar = false
-	raidBuffs.FuriousHowl = false
-	raidBuffs.LegacyOfTheWhiteTiger = false
-	// AP%
-	raidBuffs.TrueshotAura = false
-	raidBuffs.UnleashedRage = false
-	raidBuffs.BlessingOfMight = false
-	// SP%
-	raidBuffs.ArcaneBrilliance = false
-	// +5% Spell haste
-	raidBuffs.ShadowForm = false
-	// Mana
-	// +Armor
-	// 10% Haste
-	// raidBuffs.HuntingParty = false
-	// raidBuffs.IcyTalons = false
-	// raidBuffs.WindfuryTotem = false
-	// +3% All Damage
-	// +Spell Resistances
-	// +5% Base Stats and Spell Resistances
-	raidBuffs.MarkOfTheWild = false
-	raidBuffs.BlessingOfKings = false
-	raidBuffs.LegacyOfTheEmperor = false
-
-	individualBuffs.HymnOfHopeCount = 0
-	individualBuffs.InnervateCount = 0
-	individualBuffs.PowerInfusionCount = 0
-	individualBuffs.DivineGuardianCount = 0
-	individualBuffs.GuardianSpiritCount = 0
-	individualBuffs.HandOfSacrificeCount = 0
-	individualBuffs.PainSuppressionCount = 0
-	individualBuffs.PowerInfusionCount = 0
-	individualBuffs.TricksOfTheTrade = proto.TristateEffect_TristateEffectMissing
-	individualBuffs.UnholyFrenzyCount = 0
-	individualBuffs.RallyingCryCount = 0
+	//Todo: Only cancel the buffs that are supposed to be cancelled
+	// Check beta when pets are better implemented?
+	raidBuffs = &proto.RaidBuffs{}
+	partyBuffs = &proto.PartyBuffs{}
+	individualBuffs = &proto.IndividualBuffs{}
 
 	if !petAgent.GetPet().enabledOnStart {
 		// What do we do with permanent pets that are not enabled at start?
