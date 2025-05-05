@@ -217,15 +217,6 @@ export class Database {
 		return this.reforgeStats.get(id);
 	}
 
-	getAvailableUpgrades(item: Item): ScalingItemProperties[] {
-		const { scalingOptions } = Item.clone(item);
-		// Make sure to always exclude Challenge Mode scaling options as those are handled globally
-		// and offset these options by 1 due to items always having a base option.
-		delete scalingOptions[ItemLevelState.ChallengeMode];
-
-		return Object.values(scalingOptions);
-	}
-
 	getAvailableReforges(item: Item): ReforgeStat[] {
 		return Array.from(this.reforgeStats.values()).filter(reforgeStat => item.stats[reforgeStat.fromStat] > 0 && item.stats[reforgeStat.toStat] == 0);
 	}

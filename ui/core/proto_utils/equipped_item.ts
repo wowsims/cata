@@ -2,7 +2,6 @@ import { GemColor, ItemLevelState, ItemRandomSuffix, ItemSpec, ItemType, Profess
 import { UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../proto/ui.js';
 import { distinct } from '../utils.js';
 import { ActionId } from './action_id.js';
-import { Database } from './database';
 import { gemEligibleForSocket, gemMatchesSocket } from './gems.js';
 import { Stats } from './stats.js';
 import { enchantAppliesToItem } from './utils.js';
@@ -404,7 +403,13 @@ export class EquippedItem {
 	}
 
 	hasUpgradeOptions() {
-		return Database.getSync().getAvailableUpgrades(this._item).length > 1;
+		const { scalingOptions } = this.item;
+		// Make sure to always exclude Challenge Mode scaling options as those are handled globally
+		// and offset these options by 1 due to items always having a base option.
+		delete scalingOptions[ItemLevelState.ChallengeMode];
+
+		return Object.values(scalingOptions);
+
 	}
 
 	hasExtraGem(): boolean {
