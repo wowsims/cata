@@ -217,12 +217,13 @@ export class Database {
 		return this.reforgeStats.get(id);
 	}
 
-	getUpgradeByStep(item: Item, upgradeStep: ItemLevelState): ScalingItemProperties | undefined {
-		return item.scalingOptions[upgradeStep];
-	}
-
 	getAvailableUpgrades(item: Item): ScalingItemProperties[] {
-		return Object.values(item.scalingOptions);
+		const { scalingOptions } = Item.clone(item);
+		// Make sure to always exclude Challenge Mode scaling options as those are handled globally
+		// and offset these options by 1 due to items always having a base option.
+		delete scalingOptions[ItemLevelState.ChallengeMode];
+
+		return Object.values(scalingOptions);
 	}
 
 	getAvailableReforges(item: Item): ReforgeStat[] {
@@ -293,7 +294,7 @@ export class Database {
 
 		let upgrade: ItemLevelState | null = null;
 		if (itemSpec.upgradeStep) {
-			upgrade = itemSpec.upgradeStep
+			upgrade = itemSpec.upgradeStep ?? ItemLevelState.Base;
 		}
 
 		return new EquippedItem({

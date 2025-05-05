@@ -264,6 +264,7 @@ export class Player<SpecType extends Spec> {
 	private gemEPCache = new Map<number, number>();
 	private randomSuffixEPCache = new Map<number, number>();
 	private enchantEPCache = new Map<number, number>();
+	private upgradeEPCache = new Map<string, number>();
 	private talents: SpecTalents<SpecType> | null = null;
 
 	readonly specTypeFunctions: SpecTypeFunctions<SpecType>;
@@ -490,14 +491,6 @@ export class Player<SpecType extends Spec> {
 		return this.sim.db.getGems(socketColor);
 	}
 
-	// Returns all possible upgrade steps for the given base item.
-	getUpgrades(equippedItem: EquippedItem): Record<number, ScalingItemProperties> {
-		const { scalingOptions } = equippedItem.item;
-		// Make sure to always exclude Challenge Mode scaling options as those are handled globally
-		delete scalingOptions[ItemLevelState.ChallengeMode];
-		return scalingOptions;
-	}
-
 	getEpWeights(): Stats {
 		return this.epWeights;
 	}
@@ -509,6 +502,7 @@ export class Player<SpecType extends Spec> {
 		this.gemEPCache = new Map();
 		this.enchantEPCache = new Map();
 		this.randomSuffixEPCache = new Map();
+		this.upgradeEPCache = new Map();
 		for (let i = 0; i < ItemSlot.ItemSlotRanged + 1; ++i) {
 			this.itemEPCache[i] = new Map();
 		}
@@ -1130,8 +1124,24 @@ export class Player<SpecType extends Spec> {
 		return this.computeStatsEP(stats);
 	}
 
-	computeUpgradeEP(upgradeStats: ScalingItemProperties): number {
-		return this.computeStatsEP(Stats.fromMap(upgradeStats.stats));
+	computeUpgradeEP(equippedItem: EquippedItem, upgradeLevel: ItemLevelState): number {
+		const cacheKey = `${equippedItem.id}-${equippedItem.randomSuffix?.id}-${upgradeLevel}`;
+		if (this.upgradeEPCache.has(cacheKey)) {
+			return this.upgradeEPCache.get(cacheKey)!;
+		}
+		const { item } = equippedItem;
+		const { item: upgradedItem } = equippedItem.withUpgrade(upgradeLevel).getWithRandomSuffixStats();
+
+		let stats = new Stats(upgradedItem.stats);
+		if (item.weaponSpeed > 0) {
+			const weaponDps = getWeaponDPS(item, upgradeLevel);
+			stats = stats.withPseudoStat(PseudoStat.PseudoStatMainHandDps, weaponDps);
+		}
+
+		const ep = this.computeStatsEP(stats);
+		this.upgradeEPCache.set(cacheKey, ep);
+
+		return ep;
 	}
 
 	computeItemEP(item: Item, slot: ItemSlot): number {
@@ -1207,6 +1217,7 @@ export class Player<SpecType extends Spec> {
 			itemLevel: Number(equippedItem.ilvl),
 			enchantId: equippedItem.enchant?.effectId,
 			reforgeId: equippedItem.reforge?.id,
+			randomEnchantmentId: equippedItem.randomSuffix?.id,
 			setPieceIds: this.gear
 				.asArray()
 				.filter(ei => ei != null)
