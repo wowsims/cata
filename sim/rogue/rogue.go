@@ -96,6 +96,7 @@ type Rogue struct {
 	SubterfugeAura       *core.Aura
 	BanditsGuileAura     *core.Aura
 	AnticipationAura     *core.Aura
+	ShadowBladesAura     *core.Aura
 
 	NightstalkerMod *core.SpellMod
 	ShadowFocusMod  *core.SpellMod
@@ -362,6 +363,7 @@ const (
 	RogueSpellWoundPoison
 	RogueSpellDeadlyPoison
 	RogueSpellShadowBlades
+	RogueSpellShadowBladesHit
 	RogueSpellMarkedForDeath
 
 	RogueSpellLast

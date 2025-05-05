@@ -11,7 +11,7 @@ func (rogue *Rogue) registerShadowBladesCD() {
 	ohHit := rogue.makeShadowBladeHit(false)
 	cpMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: 121471})
 
-	sbAura := rogue.RegisterAura(core.Aura{
+	rogue.ShadowBladesAura = rogue.RegisterAura(core.Aura{
 		Label:    "Shadow Blades",
 		ActionID: core.ActionID{SpellID: 121471},
 		Duration: time.Second * 12,
@@ -33,9 +33,7 @@ func (rogue *Rogue) registerShadowBladesCD() {
 					mhHit.Cast(sim, result.Target)
 				} else if spell == rogue.AutoAttacks.OHAuto() {
 					ohHit.Cast(sim, result.Target)
-				}
-
-				if spell.Flags.Matches(SpellFlagBuilder) {
+				} else if spell.Flags.Matches(SpellFlagBuilder) {
 					rogue.AddComboPoints(sim, 1, cpMetrics)
 				}
 			}
@@ -55,8 +53,9 @@ func (rogue *Rogue) registerShadowBladesCD() {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
-			sbAura.Activate(sim)
+			spell.RelatedSelfBuff.Activate(sim)
 		},
+		RelatedSelfBuff: rogue.ShadowBladesAura,
 	})
 
 	rogue.AddMajorCooldown(core.MajorCooldown{
@@ -71,7 +70,7 @@ func (rogue *Rogue) makeShadowBladeHit(isMH bool) *core.Spell {
 	tag := core.TernaryInt32(isMH, 1, 2)
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 121471, Tag: tag},
-		ClassSpellMask: RogueSpellShadowBlades,
+		ClassSpellMask: RogueSpellShadowBladesHit,
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       procMask,
 		Flags:          core.SpellFlagMeleeMetrics,

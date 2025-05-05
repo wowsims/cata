@@ -218,7 +218,7 @@ var Tier13 = core.NewItemSet(core.ItemSet{
 })
 
 // Against level 93 mobs, the proc rate gets halved
-// I could make this dynamic, but the items are dead anyways
+// I could make this dynamic, but the items are (probably) dead anyways
 func getFangsProcRate(character *core.Character) float64 {
 	switch character.Spec {
 	case proto.Spec_SpecSubtletyRogue:
@@ -403,6 +403,42 @@ func makeWeightedBladesModifier(itemID int32) {
 		})
 	})
 }
+
+var Tier14 = core.NewItemSet(core.ItemSet{
+	Name: "Battlegear of the Thousandfold Blades",
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Increases the damage done by your Venomous Wounds ability by 20%,
+			// increases the damage done by your Sinister Strike ability by 15%,
+			// and increases the damage done by your Backstab ability by 10%.
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:       core.SpellMod_DamageDone_Flat,
+				ClassMask:  RogueSpellVenomousWounds,
+				FloatValue: 0.2,
+			})
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:       core.SpellMod_DamageDone_Flat,
+				ClassMask:  RogueSpellSinisterStrike,
+				FloatValue: 0.15,
+			})
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:       core.SpellMod_DamageDone_Flat,
+				ClassMask:  RogueSpellBackstab,
+				FloatValue: 0.1,
+			})
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Increases the duration of your Shadow Blades ability by Combat: 6 /  Assassination,  Subtlety: 12 sec.
+			rogue := agent.(RogueAgent).GetRogue()
+			addTime := time.Second * time.Duration(core.Ternary(rogue.Spec == proto.Spec_SpecCombatRogue, 6, 12))
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:      core.SpellMod_BuffDuration_Flat,
+				ClassMask: RogueSpellShadowBlades,
+				TimeValue: addTime,
+			})
+		},
+	},
+})
 
 func init() {
 	makeWeightedBladesModifier(77945)
