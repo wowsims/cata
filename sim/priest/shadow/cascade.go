@@ -17,6 +17,41 @@ func (shadow *ShadowPriest) registerCascade() {
 	}
 
 	targets := []*core.Unit{}
+	cascadeHandler := func(damageMod float64, bounceSpell *core.Spell, target *core.Unit, sim *core.Simulation) {
+		bounceSpell.DamageMultiplier *= damageMod
+		bounceSpell.CalcAndDealDamage(sim, target, shadow.CalcScalingSpellDmg(cascadeScale), bounceSpell.OutcomeMagicHitAndCrit)
+		bounceSpell.DamageMultiplier /= damageMod
+
+		if len(targets) >= 31 {
+			return
+		}
+
+		bounceTargets := []*core.Unit{}
+		for _, unit := range sim.Encounter.TargetUnits {
+			if unit == target {
+				continue
+			}
+
+			if slices.Contains(targets, unit) {
+				continue
+			}
+
+			targets = append(targets, unit)
+			bounceTargets = append(bounceTargets, unit)
+			if len(bounceTargets) == 2 {
+				break
+			}
+		}
+
+		core.StartDelayedAction(sim, core.DelayedActionOptions{
+			DoAt: sim.CurrentTime + time.Millisecond*100,
+			OnAction: func(s *core.Simulation) {
+				for _, unit := range bounceTargets {
+					bounceSpell.Cast(sim, unit)
+				}
+			}})
+	}
+
 	bounceSpell := shadow.RegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 127632}.WithTag(1),
 		SpellSchool:      core.SpellSchoolShadow,
@@ -28,39 +63,7 @@ func (shadow *ShadowPriest) registerCascade() {
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damageMod := 0.4 // assume minimal distance for now
-
-			spell.DamageMultiplier *= damageMod
-			spell.CalcAndDealDamage(sim, target, shadow.CalcScalingSpellDmg(cascadeScale), spell.OutcomeMagicHitAndCrit)
-			spell.DamageMultiplier /= damageMod
-
-			if len(targets) >= 31 {
-				return
-			}
-
-			bounceTargets := []*core.Unit{}
-			for _, unit := range sim.Encounter.TargetUnits {
-				if unit == target {
-					continue
-				}
-
-				if slices.Contains(targets, unit) {
-					continue
-				}
-
-				targets = append(targets, unit)
-				bounceTargets = append(bounceTargets, unit)
-				if len(bounceTargets) == 2 {
-					break
-				}
-			}
-
-			core.StartDelayedAction(sim, core.DelayedActionOptions{
-				DoAt: sim.CurrentTime + time.Millisecond*100,
-				OnAction: func(s *core.Simulation) {
-					for _, unit := range bounceTargets {
-						spell.Cast(sim, unit)
-					}
-				}})
+			cascadeHandler(damageMod, spell, target, sim)
 		},
 	})
 
@@ -90,30 +93,7 @@ func (shadow *ShadowPriest) registerCascade() {
 			damageMod := math.Min(0.4+(30-shadow.DistanceFromTarget)/30, 1)
 			targets = []*core.Unit{target}
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
-				spell.DamageMultiplier *= damageMod
-				spell.CalcAndDealDamage(sim, target, shadow.CalcScalingSpellDmg(cascadeScale), spell.OutcomeMagicHitAndCrit)
-				spell.DamageMultiplier /= damageMod
-
-				bounceTargets := []*core.Unit{}
-				for _, unit := range sim.Encounter.TargetUnits {
-					if unit == target {
-						continue
-					}
-
-					if slices.Contains(targets, unit) {
-						continue
-					}
-
-					targets = append(targets, unit)
-					bounceTargets = append(bounceTargets, unit)
-					if len(bounceTargets) == 2 {
-						break
-					}
-				}
-
-				for _, unit := range bounceTargets {
-					bounceSpell.Cast(sim, unit)
-				}
+				cascadeHandler(damageMod, bounceSpell, target, sim)
 			})
 		},
 	})

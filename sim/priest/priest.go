@@ -54,8 +54,6 @@ type Priest struct {
 	WeakenedSouls core.AuraArray
 
 	ProcPrayerOfMending core.ApplySpellResults
-
-	ClassSpellScaling float64
 }
 
 type SelfBuffs struct {
@@ -116,10 +114,9 @@ func (priest *Priest) Reset(_ *core.Simulation) {
 
 func New(char *core.Character, selfBuffs SelfBuffs, talents string) *Priest {
 	priest := &Priest{
-		Character:         *char,
-		SelfBuffs:         selfBuffs,
-		Talents:           &proto.PriestTalents{},
-		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassPriest),
+		Character: *char,
+		SelfBuffs: selfBuffs,
+		Talents:   &proto.PriestTalents{},
 	}
 
 	core.FillTalentsProto(priest.Talents.ProtoReflect(), talents)

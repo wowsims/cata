@@ -76,7 +76,7 @@ func (priest *Priest) NewMindBender() *MindBender {
 			NormalizedSwingSpeed: 1.5,
 			CritMultiplier:       2,
 			SpellSchool:          core.SpellSchoolShadow,
-			AttackPowerPerDPS:    14,
+			AttackPowerPerDPS:    core.DefaultAttackPowerPerDPS,
 		},
 		AutoSwingMelee: true,
 	})
@@ -95,7 +95,7 @@ func (priest *Priest) mindbenderStatInheritance() core.PetStatInheritance {
 			stats.PhysicalCritPercent: ownerStats[stats.SpellCritPercent],
 			stats.Intellect:           (ownerStats[stats.Intellect] - 10) * 0.3,
 			stats.Stamina:             ownerStats[stats.Stamina] * 0.75,
-			stats.AttackPower:         0.88 * 14 / 1.5 * ownerStats[stats.SpellPower],
+			stats.AttackPower:         0.88 * core.DefaultAttackPowerPerDPS / 1.5 * ownerStats[stats.SpellPower],
 		}
 	}
 }

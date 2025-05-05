@@ -13,37 +13,23 @@ func (priest *Priest) registerPowerInfusionSpell() {
 	if !priest.Talents.PowerInfusion {
 		return
 	}
-
-	damageMod := priest.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: 0.05,
-	})
 	actionID := core.ActionID{SpellID: 10060}
 	piAura := priest.GetOrRegisterAura(core.Aura{
 		Label:    "PowerInfusion-Aura",
 		ActionID: actionID,
 		Duration: PowerInfusionDuration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			damageMod.Activate()
-			priest.MultiplyCastSpeed(1.2)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			damageMod.Deactivate()
-			priest.MultiplyCastSpeed(1 / 1.2)
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: 0.05,
+	}).AttachMultiplyCastSpeed(1.2)
 
 	piAura.NewExclusiveEffect("ManaCost", true, core.ExclusiveEffect{
 		Priority: -20,
 		OnGain: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
-			if ee.Aura.Unit.HasManaBar() {
-				ee.Aura.Unit.PseudoStats.SpellCostPercentModifier -= 20
-			}
+			ee.Aura.Unit.PseudoStats.SpellCostPercentModifier -= 20
 		},
 		OnExpire: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
-			if ee.Aura.Unit.HasManaBar() {
-				ee.Aura.Unit.PseudoStats.SpellCostPercentModifier += 20
-			}
+			ee.Aura.Unit.PseudoStats.SpellCostPercentModifier += 20
 		},
 	})
 
