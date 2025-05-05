@@ -41,8 +41,7 @@ func (monk *Monk) registerExpelHarm() {
 			Refund: 0.8,
 		},
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: core.TernaryInt32(monk.StanceMatches(WiseSerpent), 250, 0),
-			PercentModifier: core.TernaryInt32(monk.StanceMatches(WiseSerpent), 1, 0), // 1% of 250 = 2.5%
+			BaseCostPercent: core.TernaryFloat64(monk.StanceMatches(WiseSerpent), 2.5, 0),
 		},
 
 		Cast: core.CastConfig{

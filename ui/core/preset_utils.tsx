@@ -5,7 +5,6 @@ import { Encounter } from './encounter';
 import { Player } from './player';
 import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
 import {
-	Consumes,
 	ConsumesSpec,
 	Cooldowns,
 	Debuffs,

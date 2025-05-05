@@ -28,7 +28,7 @@ func TestShadow(t *testing.T) {
 
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
 
-		Rotation: core.GetAplRotation("../../../ui/priest/shadow/apls", "default"),
+		Rotation: core.GetAplRotation("../../../ui/priest/shadow/apls", "p4"),
 		OtherRotations: []core.RotationCombo{
 			core.GetAplRotation("../../../ui/priest/shadow/apls", "default"),
 		},

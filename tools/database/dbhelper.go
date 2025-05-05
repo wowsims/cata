@@ -3,7 +3,6 @@ package database
 import (
 	"database/sql"
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 	"sort"
@@ -32,22 +31,6 @@ func NewDBHelper() (*DBHelper, error) {
 
 func (d *DBHelper) Close() error {
 	return d.db.Close()
-}
-
-func (d *DBHelper) Query(query string, args ...interface{}) (*sql.Rows, error) {
-	return d.db.Query(query, args...)
-}
-
-func (d *DBHelper) QueryAndProcess(query string, process func(*sql.Rows) error, args ...interface{}) {
-	rows, err := d.Query(query, args...)
-	if err != nil {
-		log.Fatalf("query error: %v", err)
-	}
-	defer rows.Close()
-
-	if err := process(rows); err != nil {
-		log.Fatalf("processing error: %v", err)
-	}
 }
 
 func LoadRows[T any](db *sql.DB, query string, scanFunc func(*sql.Rows) (T, error), args ...interface{}) ([]T, error) {

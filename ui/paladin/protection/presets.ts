@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, ConsumesSpec, Flask, Food, Potions, Profession, PseudoStat, Stat, TinkerHands } from '../../core/proto/common.js';
+import { ConsumesSpec, Profession, PseudoStat, Stat } from '../../core/proto/common.js';
 import {
 	PaladinAura as PaladinAura,
 	PaladinMajorGlyph,
@@ -77,14 +77,6 @@ export const DefaultConsumables = ConsumesSpec.create({
 	prepotId: 58146, // Golemblood Potion
 	tinkerId: 82174, // Synapse Springs
 });
-export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfSteelskin,
-	food: Food.FoodLavascaleMinestrone,
-	defaultPotion: Potions.GolembloodPotion,
-	prepopPotion: Potions.GolembloodPotion,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
-});
-
 export const OtherDefaults = {
 	profession1: Profession.Engineering,
 	profession2: Profession.Leatherworking,

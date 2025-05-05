@@ -37,9 +37,7 @@ import { PresetBuild, PresetEpWeights, PresetGear, PresetItemSwap, PresetRotatio
 import { StatWeightsResult } from './proto/api';
 import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
 import {
-    Class,
-	Consumes,
-	ConsumesSpec,
+    ConsumesSpec,
 	Cooldowns,
 	Debuffs,
 	Encounter as EncounterProto,
@@ -367,6 +365,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			if (savedSettings != null) {
 				try {
 					const settings = IndividualSimSettings.fromJsonString(savedSettings, { ignoreUnknownFields: true });
+
 					this.fromProto(initEventID, settings);
 				} catch (e) {
 					console.warn('Failed to parse saved settings: ' + e);

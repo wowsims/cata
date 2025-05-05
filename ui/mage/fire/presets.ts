@@ -1,19 +1,14 @@
 import * as PresetUtils from '../../core/preset_utils';
 import {
-	Consumes,
 	ConsumesSpec,
 	Debuffs,
-	Flask,
-	Food,
 	Glyphs,
-	Potions,
 	Profession,
 	PseudoStat,
 	Race,
 	RaidBuffs,
 	Spec,
 	Stat,
-	TinkerHands,
 } from '../../core/proto/common';
 import { FireMage_Options as MageOptions, FireMage_Rotation, MageMajorGlyph as MajorGlyph, MageMinorGlyph as MinorGlyph } from '../../core/proto/mage';
 import { SavedTalents } from '../../core/proto/ui';

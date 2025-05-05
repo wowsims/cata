@@ -25,21 +25,21 @@ export class ConsumesPicker extends Component {
 		this.db = db;
 	}
 
-	public static async create(parentElem: HTMLElement, settingsTab: SettingsTab, simUI: IndividualSimUI<any>): Promise<ConsumesPicker> {
-		const instance = new ConsumesPicker(parentElem, settingsTab, simUI, await Database.get());
-		await instance.initAsync();
+	public static create(parentElem: HTMLElement, settingsTab: SettingsTab, simUI: IndividualSimUI<any>): ConsumesPicker {
+		const instance = new ConsumesPicker(parentElem, settingsTab, simUI, Database.getSync());
+		instance.init();
 		return instance;
 	}
 
-	private async initAsync(): Promise<void> {
-		await this.buildPotionsPicker();
-		await this.buildElixirsPicker();
-		await this.buildFoodPicker();
-		await this.buildEngPicker();
-		await this.buildPetPicker();
+	private init(): void {
+		this.buildPotionsPicker();
+		this.buildElixirsPicker();
+		this.buildFoodPicker();
+		this.buildEngPicker();
+		this.buildPetPicker();
 	}
 
-	private async buildPotionsPicker(): Promise<void> {
+	private buildPotionsPicker(): void {
 		const potionsRef = ref<HTMLDivElement>();
 
 		const row = this.rootElem.appendChild(
@@ -57,7 +57,6 @@ export class ConsumesPicker extends Component {
 
 		const potionsPicker = buildIconInput(potionsElem, this.simUI.player, potionsOptions);
 
-		// TODO: Move conjured to DBC
 		const conjuredOptions = ConsumablesInputs.makeConjuredInput(relevantStatOptions(ConsumablesInputs.CONJURED_CONFIG, this.simUI));
 		const conjuredPicker = buildIconInput(potionsElem, this.simUI.player, conjuredOptions);
 
@@ -67,7 +66,7 @@ export class ConsumesPicker extends Component {
 		this.addOnDisposeCallback(() => events.dispose());
 	}
 
-	private async buildElixirsPicker(): Promise<void> {
+	private buildElixirsPicker(): void {
 		const flaskRef = ref<HTMLDivElement>();
 		const battleElixirsRef = ref<HTMLDivElement>();
 		const guardianElixirsRef = ref<HTMLDivElement>();
@@ -90,10 +89,10 @@ export class ConsumesPicker extends Component {
 		const simpleFlasksOptions = ConsumablesInputs.makeConsumableInput(flasks, { consumesFieldName: 'flaskId' }, '');
 		buildIconInput(flasksElem, this.simUI.player, simpleFlasksOptions);
 
-		const battleElixirs = this.db.getConsumablesByType(ConsumableType.ConsumableTypeBattleElixir);
+		const battleElixirs = this.db.getConsumablesByTypeAndStats(ConsumableType.ConsumableTypeBattleElixir, this.simUI.individualConfig.epStats);
 		const battleElixirOptions = ConsumablesInputs.makeConsumableInput(battleElixirs, { consumesFieldName: 'battleElixirId' }, '');
 
-		const guardianElixirs = this.db.getConsumablesByType(ConsumableType.ConsumableTypeGuardianElixir);
+		const guardianElixirs = this.db.getConsumablesByTypeAndStats(ConsumableType.ConsumableTypeGuardianElixir, this.simUI.individualConfig.epStats);
 		const guardianElixirOptions = ConsumablesInputs.makeConsumableInput(guardianElixirs, { consumesFieldName: 'guardianElixirId' }, '');
 
 		buildIconInput(battleElixirsElem, this.simUI.player, battleElixirOptions);
@@ -101,7 +100,7 @@ export class ConsumesPicker extends Component {
 		buildIconInput(guardianElixirsElem, this.simUI.player, guardianElixirOptions);
 	}
 
-	private async buildFoodPicker(): Promise<void> {
+	private buildFoodPicker(): void {
 		const foodRef = ref<HTMLDivElement>();
 		this.rootElem.appendChild(
 			<ConsumeRow label="Food">
@@ -114,7 +113,7 @@ export class ConsumesPicker extends Component {
 		buildIconInput(foodsElem, this.simUI.player, foodsOptions);
 	}
 
-	private async buildEngPicker(): Promise<void> {
+	private buildEngPicker(): void {
 		const engiConsumesRef = ref<HTMLDivElement>();
 		const row = this.rootElem.appendChild(
 			<ConsumeRow label="Engineering">
@@ -123,23 +122,20 @@ export class ConsumesPicker extends Component {
 		);
 		const engiConsumesElem = engiConsumesRef.value!;
 
-		// TODO: make this from dbc as well
 		const tinkerOptions = ConsumablesInputs.makeTinkerHandsInput(relevantStatOptions(ConsumablesInputs.TINKERS_HANDS_CONFIG, this.simUI), 'Gloves Tinkers');
 		const tinkerPicker = buildIconInput(engiConsumesElem, this.simUI.player, tinkerOptions);
 
 		const explosivesoptions = ConsumablesInputs.makeExplosivesInput(relevantStatOptions(ConsumablesInputs.EXPLOSIVE_CONFIG, this.simUI), 'Explosives');
 		const explosivePicker = buildIconInput(engiConsumesElem, this.simUI.player, explosivesoptions);
 
-		//const explosivePicker = buildIconInput(engiConsumesElem, this.simUI.player, ConsumablesInputs.ExplosiveBigDaddy);
-		//const highpoweredBoltGunPicker = buildIconInput(engiConsumesElem, this.simUI.player, ConsumablesInputs.HighpoweredBoltGun);
-
 		const events = TypedEvent.onAny([this.simUI.player.professionChangeEmitter]).on(() => this.updateRow(row, [explosivePicker, tinkerPicker]));
 		this.addOnDisposeCallback(() => events.dispose());
+
 		// Initial update of row based on current state.
 		this.updateRow(row, [explosivePicker, tinkerPicker]);
 	}
 
-	private async buildPetPicker(): Promise<void> {
+	private buildPetPicker(): void {
 		if (this.simUI.individualConfig.petConsumeInputs?.length) {
 			const petConsumesRef = ref<HTMLDivElement>();
 			this.rootElem.appendChild(

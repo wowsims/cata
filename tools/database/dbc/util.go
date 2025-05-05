@@ -6,38 +6,12 @@ import (
 	"io"
 	"math"
 	"os"
+	"path/filepath"
 	"slices"
 
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
 )
-
-func SocketCost(level int) float64 {
-	cost := 0.0
-
-	if level >= 19 {
-		cost++
-	}
-	if level >= 31 {
-		cost++
-	}
-	if level >= 43 {
-		cost++
-	}
-	if level >= 55 {
-		cost++
-	}
-	if level >= 89 {
-		cost++
-	}
-	if level >= 100 {
-		cost++
-	}
-	if level >= 178 {
-		cost += 2
-	}
-	return cost
-}
 
 func GetProfession(id int) proto.Profession {
 	if profession, ok := MapProfessionIdToProfession[id]; ok {
@@ -48,7 +22,7 @@ func GetProfession(id int) proto.Profession {
 
 func GetClassesFromClassMask(mask int) []proto.Class {
 	var result []proto.Class
-	for _, class := range classes {
+	for _, class := range Classes {
 		if mask&(1<<(class.ID-1)) != 0 {
 			result = append(result, class.ProtoClass)
 		}
@@ -57,12 +31,26 @@ func GetClassesFromClassMask(mask int) []proto.Class {
 	return result
 }
 
-type DbcClass struct {
-	ProtoClass proto.Class
-	ID         int
-}
+func WriteGzipFile(filePath string, data []byte) error {
+	if err := os.MkdirAll(filepath.Dir(filePath), 0755); err != nil {
+		return fmt.Errorf("failed to create directories for %s: %w", filePath, err)
+	}
+	// Create the file
+	f, err := os.Create(filePath)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
 
-func readGzipFile(filename string) ([]byte, error) {
+	// Create a gzip writer on top of the file writer
+	gw := gzip.NewWriter(f)
+	defer gw.Close()
+
+	// Write the data to the gzip writer
+	_, err = gw.Write(data)
+	return err
+}
+func ReadGzipFile(filename string) ([]byte, error) {
 	f, err := os.Open(filename)
 	if err != nil {
 		return nil, DataLoadError{
@@ -110,9 +98,6 @@ func processEnchantmentEffects(
 		case ITEM_ENCHANTMENT_STAT:
 			stat, _ := MapBonusStatIndexToStat(effectArgs[i])
 			outStats[stat] = float64(effectPoints[i])
-			if effectPoints[i] == 72 {
-				fmt.Println("Add to AP", stat)
-			}
 			// If the bonus stat is attack power, copy it to ranged attack power
 			if addRanged && stat == proto.Stat_StatAttackPower {
 				if effectPoints[i] == 72 {

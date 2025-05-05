@@ -16,37 +16,6 @@ import (
 func DurationFromSeconds(numSeconds float64) time.Duration {
 	return time.Duration(float64(time.Second) * numSeconds)
 }
-func MapToFixedStatsArray(statsArr map[int32]float64) []float64 {
-	arr := make([]float64, stats.UnitStatsLen)
-	for k, v := range statsArr {
-		if int(k) >= stats.UnitStatsLen || k < 0 {
-			continue // skip out-of-range keys
-		}
-		arr[k] = v
-	}
-	return arr
-}
-
-func FirstMapEntry[K comparable, V any](m map[K]V) (K, V, bool) {
-	for k, v := range m {
-		return k, v, true
-	}
-	var zeroK K
-	var zeroV V
-	return zeroK, zeroV, false
-}
-
-func LastMapEntry[K comparable, V any](m map[K]V) (K, V, bool) {
-	var lastK K
-	var lastV V
-	found := false
-	for k, v := range m {
-		lastK = k
-		lastV = v
-		found = true
-	}
-	return lastK, lastV, found
-}
 
 func StringFromStatTypes(statTypes []stats.Stat) string {
 	statNames := MapSlice(statTypes, func(statType stats.Stat) string {

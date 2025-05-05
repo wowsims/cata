@@ -91,8 +91,7 @@ func (monk *Monk) registerSpinningCraneKick() {
 			Cost: core.TernaryInt32(isWiseSerpent, 0, 40),
 		},
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: core.TernaryInt32(isWiseSerpent, 715, 0),
-			PercentModifier: core.TernaryInt32(isWiseSerpent, 1, 0), // 1% of 715 = 7.15%
+			BaseCostPercent: core.TernaryFloat64(isWiseSerpent, 7.15, 0),
 		},
 
 		Cast: core.CastConfig{

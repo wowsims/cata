@@ -1,6 +1,6 @@
 import { Party } from '../party.js';
 import { Player } from '../player';
-import { Consumes, ConsumesSpec, Debuffs, Faction, IndividualBuffs, PartyBuffs, RaidBuffs, Spec } from '../proto/common.js';
+import { ConsumesSpec, Debuffs, Faction, IndividualBuffs, PartyBuffs, RaidBuffs, Spec } from '../proto/common.js';
 import { ActionId } from '../proto_utils/action_id.js';
 import { Raid } from '../raid';
 import { EventID, TypedEvent } from '../typed_event';

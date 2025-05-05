@@ -237,6 +237,14 @@ type EnchantMetaType struct {
 	WeaponType proto.WeaponType
 }
 
+var SpellSchoolToStat = map[SpellSchool]proto.Stat{
+	FIRE:     proto.Stat_StatFireResistance,
+	ARCANE:   proto.Stat_StatArcaneResistance,
+	NATURE:   proto.Stat_StatNatureResistance,
+	FROST:    proto.Stat_StatFrostResistance,
+	SHADOW:   proto.Stat_StatShadowResistance,
+	PHYSICAL: proto.Stat_StatArmor,
+}
 var MapInventoryTypeToEnchantMetaType = map[InventoryTypeFlag]EnchantMetaType{
 	HEAD:     {ItemType: proto.ItemType_ItemTypeHead, WeaponType: proto.WeaponType_WeaponTypeUnknown},
 	NECK:     {ItemType: proto.ItemType_ItemTypeNeck, WeaponType: proto.WeaponType_WeaponTypeUnknown},
@@ -277,11 +285,41 @@ var MapPowerTypeEnumToResourceType = map[int32]proto.ResourceType{
 	7:  proto.ResourceType_ResourceTypeNone, // Soulshards
 	8:  proto.ResourceType_ResourceTypeLunarEnergy,
 	9:  proto.ResourceType_ResourceTypeHolyPower,
+	12: proto.ResourceType_ResourceTypeChi,
 	20: proto.ResourceType_ResourceTypeBloodRune,
 	21: proto.ResourceType_ResourceTypeFrostRune,
 	22: proto.ResourceType_ResourceTypeUnholyRune,
+	29: proto.ResourceType_ResourceTypeDeathRune,
 }
 
+func ClassNameFromDBC(dbc DbcClass) string {
+	switch dbc.ID {
+	case 1:
+		return "Warrior"
+	case 2:
+		return "Paladin"
+	case 3:
+		return "Hunter"
+	case 4:
+		return "Rogue"
+	case 5:
+		return "Priest"
+	case 6:
+		return "Death_Knight"
+	case 7:
+		return "Shaman"
+	case 8:
+		return "Mage"
+	case 9:
+		return "Warlock"
+	case 10:
+		return "Monk"
+	case 11:
+		return "Druid"
+	default:
+		return "Unknown"
+	}
+}
 func getMatchingRatingMods(value int) []RatingModType {
 	allMods := []RatingModType{
 		RATING_MOD_DODGE,
@@ -344,7 +382,13 @@ var RatingModToStat = map[RatingModType]proto.Stat{
 	RATING_MOD_VERS_HEAL:   -1,
 	RATING_MOD_VERS_MITIG:  -1,
 }
-var classes = []DbcClass{
+
+type DbcClass struct {
+	ProtoClass proto.Class
+	ID         int
+}
+
+var Classes = []DbcClass{
 	{proto.Class_ClassWarrior, 1},
 	{proto.Class_ClassPaladin, 2},
 	{proto.Class_ClassHunter, 3},

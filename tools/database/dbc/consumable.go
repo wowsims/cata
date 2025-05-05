@@ -1,9 +1,10 @@
 package dbc
 
 import (
+	"slices"
+
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/core/stats"
-	"golang.org/x/exp/slices"
 )
 
 type Consumable struct {
@@ -70,10 +71,6 @@ func (s ConsumableClass) ToProto() proto.ConsumableType {
 	return proto.ConsumableType_ConsumableTypeUnknown
 }
 
-func GetConsumable(itemId int) Consumable {
-	return dbcInstance.Consumables[itemId]
-}
-
 func (consumable *Consumable) GetNonStatEffectIds() []int32 {
 	var effectIds []int32
 
@@ -95,7 +92,6 @@ func (consumable *Consumable) GetNonStatEffectIds() []int32 {
 		}
 	}
 	slices.Sort(effectIds)
-
 	return effectIds
 }
 func (consumable *Consumable) GetStatModifiers() *stats.Stats {

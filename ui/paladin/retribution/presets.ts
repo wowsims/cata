@@ -1,6 +1,6 @@
 import * as PresetUtils from '../../core/preset_utils.js';
 import { APLRotation_Type as APLRotationType } from '../../core/proto/apl.js';
-import { Consumes, ConsumesSpec, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Stat, TinkerHands } from '../../core/proto/common.js';
+import { ConsumesSpec, Glyphs, Profession, PseudoStat, Stat } from '../../core/proto/common.js';
 import {
 	PaladinAura as PaladinAura,
 	PaladinMajorGlyph,
@@ -132,7 +132,6 @@ export const DefaultOptions = RetributionPaladinOptions.create({
 		seal: PaladinSeal.Truth,
 	},
 });
-
 export const DefaultConsumables = ConsumesSpec.create({
 	flaskId: 58088, // Flask of Titanic Strength
 	foodId: 62670, // Beer-Basted Crocolisk

@@ -1,14 +1,5 @@
 import { Player } from '../../player';
-import {
-	Class,
-	Conjured,
-	ConsumesSpec,
-	Explosive,
-	Profession,
-	Spec,
-	Stat,
-	TinkerHands,
-} from '../../proto/common';
+import { Class, ConsumesSpec, Profession, Spec, Stat } from '../../proto/common';
 import { Consumable } from '../../proto/db';
 import { ActionId } from '../../proto_utils/action_id';
 import { EventID, TypedEvent } from '../../typed_event';
@@ -97,44 +88,9 @@ export const CONJURED_CONFIG = [
 	{ config: ConjuredRogueThistleTea, stats: [] },
 	{ config: ConjuredHealthstone, stats: [Stat.StatStamina] },
 	{ config: ConjuredDarkRune, stats: [Stat.StatIntellect] },
-] as ConsumableStatOption<Conjured>[];
+] as ConsumableStatOption<number>[];
 
 export const makeConjuredInput = makeConsumeInputFactory({ consumesFieldName: 'conjuredId' });
-
-///////////////////////////////////////////////////////////////////////////
-//                                 EXPLOSIVES
-///////////////////////////////////////////////////////////////////////////
-
-// WOTLK BOMBS
-// export const ExplosiveSaroniteBomb = {
-// 	actionId: ActionId.fromItemId(41119),
-// 	value: Explosive.ExplosiveSaroniteBomb,
-// };
-// export const ExplosiveCobaltFragBomb = {
-// 	actionId: ActionId.fromItemId(40771),
-// 	value: Explosive.ExplosiveCobaltFragBomb,
-// };
-
-// export const EXPLOSIVES_CONFIG = [
-// 	{ config: ExplosiveSaroniteBomb, stats: [] },
-// 	{ config: ExplosiveCobaltFragBomb, stats: [] },
-// ] as ConsumableStatOption<Explosive>[];
-
-// export const makeExplosivesInput = makeConsumeInputFactory({
-// 	consumesFieldName: 'fillerExplosive',
-// 	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
-// });
-
-// export const ThermalSapper = makeBooleanConsumeInput({
-// 	actionId: ActionId.fromItemId(42641),
-// 	fieldName: 'thermalSapper',
-// 	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
-// });
-// export const ExplosiveDecoy = makeBooleanConsumeInput({
-// 	actionId: ActionId.fromItemId(40536),
-// 	fieldName: 'explosiveDecoy',
-// 	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
-// });
 
 export const ExplosiveBigDaddy = {
 	actionId: ActionId.fromItemId(63396),
@@ -151,7 +107,7 @@ export const HighpoweredBoltGun = {
 export const EXPLOSIVE_CONFIG = [
 	{ config: ExplosiveBigDaddy, stats: [] },
 	{ config: HighpoweredBoltGun, stats: [] },
-] as ConsumableStatOption<Explosive>[];
+] as ConsumableStatOption<number>[];
 export const makeExplosivesInput = makeConsumeInputFactory({ consumesFieldName: 'explosiveId' });
 
 ///////////////////////////////////////////////////////////////////////////
@@ -185,7 +141,7 @@ export const TINKERS_HANDS_CONFIG = [
 	{ config: TinkerHandsTazikShocker, stats: [] },
 	{ config: TinkerHandsSpinalHealingInjector, stats: [] },
 	{ config: TinkerHandsZ50ManaGulper, stats: [] },
-] as ConsumableStatOption<TinkerHands>[];
+] as ConsumableStatOption<number>[];
 
 export const makeTinkerHandsInput = makeConsumeInputFactory({
 	consumesFieldName: 'tinkerId',

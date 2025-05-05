@@ -40,7 +40,7 @@ func (monk *Monk) registerJab() {
 			Refund: 0.8,
 		},
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: core.TernaryInt32(monk.StanceMatches(WiseSerpent), 8, 0),
+			BaseCostPercent: core.TernaryFloat64(monk.StanceMatches(WiseSerpent), 8, 0),
 		},
 
 		Cast: core.CastConfig{

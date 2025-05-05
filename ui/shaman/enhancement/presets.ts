@@ -1,19 +1,6 @@
 import * as Mechanics from '../../core/constants/mechanics';
 import * as PresetUtils from '../../core/preset_utils.js';
-import {
-	Consumes,
-	ConsumesSpec,
-	Debuffs,
-	Flask,
-	Food,
-	Glyphs,
-	Potions,
-	Profession,
-	PseudoStat,
-	RaidBuffs,
-	Stat,
-	TinkerHands,
-} from '../../core/proto/common.js';
+import { ConsumesSpec, Debuffs, Glyphs, Profession, PseudoStat, RaidBuffs, Stat } from '../../core/proto/common.js';
 import {
 	AirTotem,
 	CallTotem,
@@ -134,13 +121,6 @@ export const OtherDefaults = {
 	profession2: Profession.Tailoring,
 };
 
-export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.PotionOfTheTolvir,
-	prepopPotion: Potions.PotionOfTheTolvir,
-	flask: Flask.FlaskOfTheWinds,
-	food: Food.FoodSeafoodFeast,
-	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
-});
 export const DefaultConsumables = ConsumesSpec.create({
 	flaskId: 58087, // Flask of the Winds
 	foodId: 62290, // Seafood Magnifique Feast

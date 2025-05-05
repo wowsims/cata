@@ -80,14 +80,6 @@ func BenchmarkSimulate(b *testing.B) {
 	core.RaidBenchmark(b, rsr)
 }
 
-//	export const DefaultConsumables = ConsumesSpec.create({
-//		flaskId: 58087, // Flask of the Winds
-//		foodId: 62290, // Seafood Magnifique Feast
-//		potId: 58145, // Potion of the Tol'vir
-//		prepotId: 58145, // Potion of the Tol'vir
-//		conjuredId: 5512, // Conjured Healthstone
-//		tinkerId: 82174, // Synapse Springs
-//	});
 var FullConsumesSpec = &proto.ConsumesSpec{
 	FlaskId: 58087,
 	PotId:   58145,

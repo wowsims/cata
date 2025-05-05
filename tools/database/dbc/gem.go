@@ -19,11 +19,6 @@ type Gem struct {
 	Flags0       ItemStaticFlags0
 }
 
-// Todo: All dbc types should have a ToProto
-// Though we will need a data layer
-// func (gem Gem) ToProto() *proto.UIGem {
-
-// }
 func (gem *Gem) ToProto() *proto.UIGem {
 	uiGem := &proto.UIGem{
 		Id:   int32(gem.ItemId),
@@ -38,18 +33,7 @@ func (gem *Gem) ToProto() *proto.UIGem {
 		uiGem.RequiredProfession = proto.Profession_Jewelcrafting
 	}
 
-	gem.SetGemSpellEffects()
-
 	return uiGem
-}
-
-func (gem *Gem) SetGemSpellEffects() {
-	// For example spell pen
-	// or all stats
-	// etc.
-	//Todo: Unfinished
-	// Could append actual effects on the gem that is applied on sim start???
-	// Same for items and enchants hmmmm
 }
 
 func (gem *Gem) GetItemEnchantmentStats() stats.Stats {
