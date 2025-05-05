@@ -185,6 +185,7 @@ const (
 	PriestSpellPsychicScream
 	PriestSpellRenew
 	PriestSpellShadowOrbPassive
+	PriestSpellShadowyRecall
 	PriestSpellShadowWordDeath
 	PriestSpellShadowWordPain
 	PriestSpellShadowFiend

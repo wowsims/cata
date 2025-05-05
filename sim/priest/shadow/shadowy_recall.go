@@ -61,7 +61,8 @@ func (shadow *ShadowPriest) registerShadowyRecall() {
 			}
 
 			for _, dupeSpell := range spellList {
-				if dupeSpell.ClassSpellMask == spell.ClassSpellMask && spell != dupeSpell {
+				classMask := dupeSpell.ClassSpellMask &^ priest.PriestSpellShadowyRecall
+				if classMask == spell.ClassSpellMask && spell != dupeSpell {
 					if sim.Proc((shadow.GetMasteryPoints()*1.8+8*1.8)/100, "Shadowy Recall (Proc)") {
 						dupeSpell.Cast(sim, result.Target)
 					}
@@ -91,7 +92,7 @@ func (shadow *ShadowPriest) buildSingleTickSpell(spellId int32, scale float64, c
 		CritMultiplier:   shadow.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
 		DamageMultiplier: 1,
-		ClassSpellMask:   classMask,
+		ClassSpellMask:   classMask | priest.PriestSpellShadowyRecall,
 		ProcMask:         core.ProcMaskSpellDamage,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if customDamageMod != nil {

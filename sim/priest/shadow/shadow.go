@@ -39,6 +39,10 @@ func NewShadowPriest(character *core.Character, options *proto.Player) *ShadowPr
 		options: shadowOptions.Options,
 	}
 
+	spriest.ShadowOrbs = spriest.RegisterSecondaryResourceBar(core.SecondaryResourceConfig{
+		Type: core.ShadowOrbs,
+		Max:  3,
+	})
 	return spriest
 }
 
@@ -61,14 +65,9 @@ func (spriest *ShadowPriest) GetPriest() *priest.Priest {
 
 func (spriest *ShadowPriest) Initialize() {
 	spriest.Priest.Initialize()
-	spriest.RegisterSecondaryResourceBar(core.SecondaryResourceConfig{
-		Type: core.ShadowOrbs,
-		Max:  3,
-	})
 
 	spriest.AddStat(stats.HitRating, spriest.GetBaseStats()[stats.Spirit])
 	spriest.AddStatDependency(stats.Spirit, stats.HitRating, 1)
-	spriest.ShadowOrbs = spriest.SecondaryResourceBar
 	spriest.registerMindBlastSpell()
 	spriest.registerDevouringPlagueSpell()
 	spriest.registerMindSpike()
