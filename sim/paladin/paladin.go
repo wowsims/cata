@@ -308,6 +308,7 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 		}),
 		paladin: paladin,
 	}
+	paladin.Unit.SecondaryResourceBar = paladin.HolyPower
 
 	// Only retribution and holy are actually pets performing some kind of action
 	if paladin.Spec != proto.Spec_SpecProtectionPaladin {
