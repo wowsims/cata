@@ -138,6 +138,7 @@ enum ShamanImbue {
     FlametongueWeapon = 2;
     FrostbrandWeapon = 3;
 	EarthlivingWeapon = 4;
+    RockbiterWeapon = 5;
 }
 
 enum ShamanSyncType {

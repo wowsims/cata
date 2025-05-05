@@ -14,7 +14,7 @@ func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellS
 		ActionID:    actionID,
 		SpellSchool: spellSchool,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagShock | core.SpellFlagAPL,
+		Flags:       SpellFlagShamanSpell | SpellFlagShock | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: baseCostPercent,
@@ -57,7 +57,7 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 		ActionID:         core.ActionID{SpellID: 8050, Tag: 1},
 		SpellSchool:      core.SpellSchoolFire,
 		ProcMask:         core.ProcMaskSpellDamage,
-		Flags:            config.Flags & ^core.SpellFlagAPL | core.SpellFlagPassiveSpell,
+		Flags:            config.Flags & ^core.SpellFlagAPL & ^SpellFlagShamanSpell | core.SpellFlagPassiveSpell,
 		ClassSpellMask:   SpellMaskFlameShockDot,
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultCritMultiplier(),

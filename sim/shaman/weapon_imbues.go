@@ -124,7 +124,6 @@ func (shaman *Shaman) RegisterWindfuryImbue(procMask core.ProcMask) {
 	// shaman.RegisterOnItemSwapWithImbue(enchantID, &procMask, aura)
 }
 
-// TODO: Not sure on the base damage here wowhead does not seem to be correct. in testing with 1.3 weapon and 129 sp it was 109 damage
 func (shaman *Shaman) newFlametongueImbueSpell(weapon *core.Item) *core.Spell {
 	return shaman.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: int32(8024)},
@@ -139,7 +138,7 @@ func (shaman *Shaman) newFlametongueImbueSpell(weapon *core.Item) *core.Spell {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if weapon.SwingSpeed != 0 {
-				damage := weapon.SwingSpeed * (68.5 + 0.08/2.6*spell.MeleeAttackPower())
+				damage := weapon.SwingSpeed * (129.9 + 0.07477*spell.SpellPower()/2.4)
 				spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 			}
 		},

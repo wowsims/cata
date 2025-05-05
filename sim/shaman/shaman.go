@@ -15,15 +15,16 @@ const TotemRefreshTime5M = time.Second * 295
 const (
 	DDBC_4pcT12 int = iota
 	DDBC_FrostbrandWeapon
+	DDBC_UnleashedFury
 
 	DDBC_Total
 )
 
 const (
-	SpellFlagShock     = core.SpellFlagAgentReserved1
-	SpellFlagElectric  = core.SpellFlagAgentReserved2
-	SpellFlagTotem     = core.SpellFlagAgentReserved3
-	SpellFlagFocusable = core.SpellFlagAgentReserved4
+	SpellFlagShamanSpell = core.SpellFlagAgentReserved1
+	SpellFlagShock       = core.SpellFlagAgentReserved2
+	SpellFlagTotem       = core.SpellFlagAgentReserved3
+	SpellFlagFocusable   = core.SpellFlagAgentReserved4
 )
 
 func NewShaman(character *core.Character, talents string, selfBuffs SelfBuffs, thunderstormRange bool) *Shaman {
@@ -43,15 +44,12 @@ func NewShaman(character *core.Character, talents string, selfBuffs SelfBuffs, t
 	shaman.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 	shaman.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, core.CritPerAgiMaxLevel[shaman.Class])
 	shaman.EnableManaBarWithModifier(1.0)
-	if shaman.Spec == proto.Spec_SpecEnhancementShaman {
-		shaman.AddStat(stats.PhysicalHitPercent, 6)
-		shaman.AddStatDependency(stats.AttackPower, stats.SpellPower, 0.55)
-		shaman.AddStatDependency(stats.Agility, stats.AttackPower, 2.0)
-		shaman.AddStatDependency(stats.Strength, stats.AttackPower, 1.0)
-		shaman.PseudoStats.CanParry = true
-	} else if shaman.Spec == proto.Spec_SpecElementalShaman {
-		shaman.AddStatDependency(stats.Agility, stats.AttackPower, 2.0)
-	}
+
+	shaman.AddStatDependency(stats.Agility, stats.AttackPower, 2.0)
+	shaman.AddStat(stats.AttackPower, -20)
+
+	shaman.AddStatDependency(stats.Strength, stats.AttackPower, 1.0)
+	shaman.AddStat(stats.AttackPower, -10)
 
 	if selfBuffs.Shield == proto.ShamanShield_WaterShield {
 		shaman.AddStat(stats.MP5, 2138)
@@ -98,7 +96,6 @@ type Shaman struct {
 	LightningBoltOverload *core.Spell
 
 	ChainLightning          *core.Spell
-	ChainLightningHits      []*core.Spell
 	ChainLightningOverloads []*core.Spell
 
 	LavaBurst         *core.Spell
@@ -200,32 +197,16 @@ func (shaman *Shaman) HasMinorGlyph(glyph proto.ShamanMinorGlyph) bool {
 // }
 
 func (shaman *Shaman) Initialize() {
-	// shaman.registerChainLightningSpell()
-	// shaman.registerFireElementalTotem()
-	// shaman.registerEarthElementalTotem()
-	// shaman.registerFireNovaSpell()
-	// shaman.registerLavaBurstSpell()
-	// shaman.registerLightningBoltSpell()
-	// shaman.registerLightningShieldSpell()
+	shaman.registerChainLightningSpell()
+	shaman.registerFireElementalTotem()
+	shaman.registerEarthElementalTotem()
+	shaman.registerLightningBoltSpell()
+	shaman.registerLightningShieldSpell()
 	shaman.registerSpiritwalkersGraceSpell()
-	// shaman.registerMagmaTotemSpell()
-	// shaman.registerSearingTotemSpell()
-	// shaman.registerShocks()
-	// shaman.registerUnleashElements()
-
-	// shaman.registerStrengthOfEarthTotemSpell()
-	// shaman.registerFlametongueTotemSpell()
-	// shaman.registerTremorTotemSpell()
-	// shaman.registerStoneskinTotemSpell()
-	// shaman.registerWindfuryTotemSpell()
-	// shaman.registerWrathOfAirTotemSpell()
-	// shaman.registerManaSpringTotemSpell()
-	// shaman.registerHealingStreamTotemSpell()
-
-	// // This registration must come after all the totems are registered
-	// shaman.registerCallOfTheElements()
-	// shaman.registerCallOfTheAncestors()
-	// shaman.registerCallOfTheSpirits()
+	shaman.registerMagmaTotemSpell()
+	shaman.registerSearingTotemSpell()
+	shaman.registerShocks()
+	shaman.registerUnleashElements()
 
 	shaman.registerBloodlustCD()
 }
@@ -312,6 +293,7 @@ const (
 	SpellMaskEarthShield
 	SpellMaskFulmination
 	SpellMaskFrostShock
+	SpellMaskUnleashElements
 	SpellMaskUnleashFrost
 	SpellMaskUnleashFlame
 	SpellMaskEarthquake

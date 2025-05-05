@@ -11,7 +11,7 @@ func (elemental *ElementalShaman) registerEarthquakeSpell() {
 
 	earthquakePulse := elemental.RegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 77478},
-		Flags:            shaman.SpellFlagFocusable | core.SpellFlagIgnoreResists,
+		Flags:            shaman.SpellFlagShamanSpell | shaman.SpellFlagFocusable | core.SpellFlagIgnoreResists,
 		SpellSchool:      core.SpellSchoolPhysical,
 		ClassSpellMask:   shaman.SpellMaskEarthquake,
 		ProcMask:         core.ProcMaskSpellProc,
@@ -30,7 +30,7 @@ func (elemental *ElementalShaman) registerEarthquakeSpell() {
 
 	elemental.Earthquake = elemental.RegisterSpell(core.SpellConfig{
 		ActionID: core.ActionID{SpellID: 77478},
-		Flags:    core.SpellFlagAPL,
+		Flags:    shaman.SpellFlagShamanSpell | core.SpellFlagAPL,
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 70.3,
 			PercentModifier: 100,

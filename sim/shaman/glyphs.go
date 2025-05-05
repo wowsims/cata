@@ -17,7 +17,11 @@ func (shaman *Shaman) ApplyGlyphs() {
 	}
 
 	if shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfChainLightning) {
-
+		shaman.AddStaticMod(core.SpellModConfig{
+			ClassMask:  SpellMaskChainLightning | SpellMaskChainLightningOverload,
+			Kind:       core.SpellMod_DamageDone_Flat,
+			FloatValue: -0.1,
+		})
 	}
 
 	if shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfFrostShock) {

@@ -48,6 +48,8 @@ func (eleShaman *ElementalShaman) Initialize() {
 	eleShaman.Shaman.Initialize()
 
 	eleShaman.registerThunderstormSpell()
+	eleShaman.registerLavaBurstSpell()
+	eleShaman.registerEarthquakeSpell()
 }
 
 func (ele *ElementalShaman) ApplyTalents() {

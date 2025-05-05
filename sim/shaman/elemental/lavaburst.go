@@ -16,7 +16,7 @@ func (ele *ElementalShaman) newLavaBurstSpellConfig(isElementalOverload bool) co
 	actionID := core.ActionID{SpellID: 51505}
 
 	mask := core.ProcMaskSpellDamage
-	flags := shaman.SpellFlagFocusable
+	flags := shaman.SpellFlagShamanSpell | shaman.SpellFlagFocusable
 	if isElementalOverload {
 		mask = core.ProcMaskSpellProc
 		flags |= core.SpellFlagPassiveSpell

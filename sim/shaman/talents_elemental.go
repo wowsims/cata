@@ -22,7 +22,7 @@ func (shaman *Shaman) ApplyElementalTalents() {
 	})
 	shaman.AddStaticMod(core.SpellModConfig{
 		ClassMask:  SpellMaskChainLightning | SpellMaskLightningBolt | SpellMaskLightningBoltOverload | SpellMaskChainLightningOverload,
-		Kind:       core.SpellMod_DamageDone_Pct,
+		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: 0.7,
 	})
 	shaman.AddStaticMod(core.SpellModConfig{

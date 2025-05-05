@@ -29,7 +29,6 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 
 	numHits := int32(3)
 	if shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfChainLightning) {
-		spellConfig.DamageMultiplier *= 0.90
 		numHits += 2
 	}
 	numHits = min(numHits, shaman.Env.GetNumTargets())

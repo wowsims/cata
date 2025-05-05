@@ -17,7 +17,7 @@ func (shaman *Shaman) RegisterElementalBlastSpell() {
 		ActionID:       core.ActionID{SpellID: 117014},
 		SpellSchool:    core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL,
+		Flags:          SpellFlagShamanSpell | core.SpellFlagAPL,
 		MissileSpeed:   40,
 		ClassSpellMask: SpellMaskElementalBlast,
 		Cast: core.CastConfig{

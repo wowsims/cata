@@ -176,8 +176,9 @@ func (shaman *Shaman) registerUnleashElements() {
 	shaman.registerUnleashLife()
 
 	shaman.UnleashElements = shaman.RegisterSpell(core.SpellConfig{
-		ActionID: core.ActionID{SpellID: 73680},
-		Flags:    core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 73680},
+		Flags:          SpellFlagShamanSpell | core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskUnleashElements,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 8.2,

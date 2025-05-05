@@ -12,7 +12,7 @@ func (enh *EnhancementShaman) registerFireNovaSpell() {
 		ActionID:       core.ActionID{SpellID: 1535},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          shaman.SpellFlagFocusable | core.SpellFlagAPL,
+		Flags:          shaman.SpellFlagShamanSpell | shaman.SpellFlagFocusable | core.SpellFlagAPL,
 		ClassSpellMask: shaman.SpellMaskFireNova,
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: 13.7,

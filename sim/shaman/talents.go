@@ -4,9 +4,19 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func (shaman *Shaman) ApplyTalents() {
+
+	//"Hotfix (2013-09-23): Lightning Bolt's damage has been increased by 10%."
+	//Additive with shamanism
+	shaman.AddStaticMod(core.SpellModConfig{
+		ClassMask:  SpellMaskLightningBolt | SpellMaskLightningBoltOverload,
+		Kind:       core.SpellMod_DamageDone_Flat,
+		FloatValue: 0.1,
+	})
+
 	shaman.ApplyElementalMastery()
 	shaman.ApplyAncestralSwiftness()
 	shaman.ApplyEchoOfTheElements()
@@ -112,7 +122,19 @@ func (shaman *Shaman) ApplyEchoOfTheElements() {
 		return
 	}
 
-	//TODO like dtr 5%
+	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+		Name:       "Echo of The Elements Dummy",
+		Callback:   core.CallbackOnSpellHitDealt,
+		SpellFlags: SpellFlagShamanSpell,
+		Outcome:    core.OutcomeHit,
+		ProcChance: 0.05,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			tempFlags := spell.Flags
+			spell.Flags &= ^core.SpellFlagNoOnCastComplete
+			spell.SkipCastAndApplyEffects(sim, result.Target)
+			spell.Flags = tempFlags
+		},
+	})
 }
 
 func (shaman *Shaman) ApplyUnleashedFury() {
@@ -120,7 +142,71 @@ func (shaman *Shaman) ApplyUnleashedFury() {
 		return
 	}
 
-	//TODO
+	flametongueDebuffAura := shaman.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+		return target.GetOrRegisterAura(core.Aura{
+			Label:    "Unleashed Fury FT-" + shaman.Label,
+			ActionID: core.ActionID{SpellID: 118470},
+			Duration: time.Second * 10,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				core.EnableDamageDoneByCaster(DDBC_UnleashedFury, DDBC_Total, shaman.AttackTables[aura.Unit.Index], func(sim *core.Simulation, spell *core.Spell, attackTable *core.AttackTable) float64 {
+					if spell.ClassSpellMask&(SpellMaskLightningBolt|SpellMaskLightningBoltOverload) > 0 {
+						return 1.3
+					}
+					if spell.ClassSpellMask&(SpellMaskLavaBurst|SpellMaskLavaBurstOverload) > 0 {
+						return 1.1
+					}
+					return 1.0
+				})
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				core.DisableDamageDoneByCaster(DDBC_UnleashedFury, shaman.AttackTables[aura.Unit.Index])
+			},
+		})
+	})
+
+	windfuryProcAura := core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+		Name:     "Unleashed Fury WF Proc Aura",
+		Callback: core.CallbackOnSpellHitDealt,
+		ProcMask: core.ProcMaskMeleeWhiteHit,
+		Outcome:  core.OutcomeHit,
+		Duration: time.Second * 8,
+		ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
+			return shaman.SelfBuffs.Shield == proto.ShamanShield_LightningShield
+		},
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			shaman.LightningShieldDamage.Cast(sim, result.Target)
+		},
+	})
+
+	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+		Name:           "Unleashed Fury",
+		ActionID:       core.ActionID{SpellID: 117012},
+		Callback:       core.CallbackOnCastComplete,
+		ClassSpellMask: SpellMaskUnleashElements,
+		ProcChance:     1.0,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			switch shaman.SelfBuffs.ImbueMH {
+			case proto.ShamanImbue_FlametongueWeapon:
+				flametongueDebuffAura.Get(result.Target).Activate(sim)
+			case proto.ShamanImbue_WindfuryWeapon:
+				windfuryProcAura.Activate(sim)
+			case proto.ShamanImbue_EarthlivingWeapon:
+			case proto.ShamanImbue_FrostbrandWeapon:
+			case proto.ShamanImbue_RockbiterWeapon:
+			}
+			if shaman.SelfBuffs.ImbueOH != proto.ShamanImbue_NoImbue && shaman.SelfBuffs.ImbueOH != shaman.SelfBuffs.ImbueMH {
+				switch shaman.SelfBuffs.ImbueOH {
+				case proto.ShamanImbue_FlametongueWeapon:
+					flametongueDebuffAura.Get(result.Target).Activate(sim)
+				case proto.ShamanImbue_WindfuryWeapon:
+					windfuryProcAura.Activate(sim)
+				case proto.ShamanImbue_EarthlivingWeapon:
+				case proto.ShamanImbue_FrostbrandWeapon:
+				case proto.ShamanImbue_RockbiterWeapon:
+				}
+			}
+		},
+	})
 }
 
 func (shaman *Shaman) ApplyPrimalElementalist() {
