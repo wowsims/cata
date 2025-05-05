@@ -90,8 +90,9 @@ func (bm *BrewmasterMonk) registerStagger() {
 		avertHarmMultiplier := core.TernaryFloat64(avertHarmIsActive && !spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && spell.SpellSchool.Matches(core.SpellSchoolPhysical), 0.2, 0)
 		shuffleMultiplier := core.TernaryFloat64(bm.ShuffleAura.IsActive(), 0.2, 0)
 		fortifyingBrewMultiplier := core.TernaryFloat64(bm.FortifyingBrewAura.IsActive(), 0.2, 0)
+		t15Brewmaster2P := core.TernaryFloat64(bm.T15Brewmaster2P.IsActive(), 0.06, 0)
 
-		staggerMultiplier := min(1, bm.GetMasteryBonus()) + shuffleMultiplier + fortifyingBrewMultiplier + avertHarmMultiplier
+		staggerMultiplier := min(1, bm.GetMasteryBonus()) + shuffleMultiplier + fortifyingBrewMultiplier + avertHarmMultiplier + t15Brewmaster2P
 
 		staggeredDamage := result.Damage * staggerMultiplier
 		result.Damage -= staggeredDamage

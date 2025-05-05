@@ -176,8 +176,6 @@ func (monk *Monk) registerZenSphere() {
 		return
 	}
 
-	numTargets := monk.Env.GetNumTargets()
-
 	avgTickScaling := monk.CalcScalingSpellDmg(0.1040000021)
 	// The 15% extra is from a hotfix not represented in the tooltip.
 	avgTickBonusCoefficient := 0.09 * 1.15
@@ -340,7 +338,6 @@ func (monk *Monk) registerChiBurst() {
 		return
 	}
 
-	numTargets := monk.Env.GetNumTargets()
 	avgDmgScaling := monk.CalcScalingSpellDmg(1.2100000381)
 
 	chiBurstDamageSpell := monk.RegisterSpell(core.SpellConfig{

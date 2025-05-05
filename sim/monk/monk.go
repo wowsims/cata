@@ -30,11 +30,20 @@ type Monk struct {
 
 	Stance Stance
 
+	onStanceChanged OnStanceChanged
+	onChiSpent      OnChiSpent
+	onNewBrewStacks OnNewBrewStacks
+	chiBrewRecharge *core.PendingAction
+
 	StanceOfTheSturdyOx    *core.Spell
 	StanceOfTheWiseSerpent *core.Spell
 	StanceOfTheFierceTiger *core.Spell
 
 	HealingSphereSummon *core.Spell
+
+	// Brewmaster
+	ElusiveBrewAura   *core.Aura
+	ElusiveBrewStacks int32
 
 	XuenAura *core.Aura
 	XuenPet  *Xuen
@@ -52,10 +61,11 @@ type Monk struct {
 	PowerStrikesAura       *core.Aura
 	PowerStrikesChiMetrics *core.ResourceMetrics
 
-	onStanceChanged OnStanceChanged
-	onChiSpent      OnChiSpent
-	onNewBrewStacks OnNewBrewStacks
-	chiBrewRecharge *core.PendingAction
+	// Set Bonuses
+	T14Brewmaster4P *core.Aura
+	T15Windwalker4P *core.Aura
+	T15Brewmaster2P *core.Aura
+	T15Brewmaster4P *core.Aura
 }
 
 func (monk *Monk) ChangeStance(sim *core.Simulation, newStance Stance) {
@@ -157,6 +167,7 @@ func (monk *Monk) registerSpells() {
 
 func (monk *Monk) Reset(sim *core.Simulation) {
 	monk.ChangeStance(sim, monk.Stance)
+	monk.ElusiveBrewStacks = 0
 }
 
 func (monk *Monk) GetHandType() proto.HandType {

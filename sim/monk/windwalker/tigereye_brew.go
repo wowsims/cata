@@ -55,7 +55,8 @@ func (ww *WindwalkerMonk) registerTigereyeBrew() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			stacksToConsume := min(10, ww.TigereyeBrewStackAura.GetStacks())
 
-			damageMultiplier = 1 + 0.06*float64(stacksToConsume)
+			damagePerStack := 0.06 + core.TernaryFloat64(ww.T15Windwalker4P.IsActive(), 0.005, 0)
+			damageMultiplier = (1 + damagePerStack*float64(stacksToConsume))
 
 			ww.PseudoStats.DamageDealtMultiplier *= damageMultiplier
 

@@ -27,12 +27,16 @@ func (bm *BrewmasterMonk) registerPurifyingBrew() {
 		},
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return bm.StanceMatches(monk.SturdyOx) && bm.ComboPoints() >= 1
+			return bm.StanceMatches(monk.SturdyOx) && (bm.ComboPoints() >= 1 || bm.T15Brewmaster4P.IsActive())
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			bm.RefreshStagger(sim, &bm.Unit, 0.0)
-			bm.SpendChi(sim, 1, chiMetrics)
+			if bm.T15Brewmaster4P.IsActive() {
+				bm.T15Brewmaster4P.Deactivate(sim)
+			} else {
+				bm.SpendChi(sim, 1, chiMetrics)
+			}
 		},
 	})
 }

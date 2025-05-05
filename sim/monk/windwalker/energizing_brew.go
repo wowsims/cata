@@ -45,5 +45,6 @@ func (ww *WindwalkerMonk) registerEnergizingBrew() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			energizingBrewAura.Activate(sim)
 		},
+		RelatedSelfBuff: energizingBrewAura,
 	})
 }

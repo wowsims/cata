@@ -76,7 +76,7 @@ func (bm *BrewmasterMonk) registerElusiveBrew() {
 		MaxStacks: 15,
 	}))
 
-	buffAura := bm.RegisterAura(core.Aura{
+	bm.ElusiveBrewAura = bm.RegisterAura(core.Aura{
 		Label:    "Elusive Brew" + bm.Label,
 		ActionID: buffActionID,
 		Duration: 0,
@@ -128,10 +128,14 @@ func (bm *BrewmasterMonk) registerElusiveBrew() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			buffAura.Duration = time.Duration(stackingAura.GetStacks()) * time.Second
-			buffAura.Activate(sim)
+			stacks := stackingAura.GetStacks()
+			bm.ElusiveBrewAura.Duration = time.Duration(stacks) * time.Second
+			bm.ElusiveBrewStacks = stacks
+
+			bm.ElusiveBrewAura.Activate(sim)
 			stackingAura.SetStacks(sim, 0)
 		},
+		RelatedSelfBuff: bm.ElusiveBrewAura,
 	})
 
 	bm.AddMajorCooldown(core.MajorCooldown{
