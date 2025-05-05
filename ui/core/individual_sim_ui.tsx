@@ -187,13 +187,9 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 	};
 
 	raidSimPresets: Array<RaidSimPreset<SpecType>>;
-	secondaryResource?: SecondaryResourceConfig;
 }
 
-export interface SecondaryResourceConfig {
-	name: string;
-	icon: string;
-}
+
 
 export function registerSpecConfig<SpecType extends Spec>(spec: SpecType, config: IndividualSimUIConfig<SpecType>): IndividualSimUIConfig<SpecType> {
 	registerPlayerConfig(spec, config);
@@ -224,7 +220,6 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	dpsRefStat?: Stat;
 	healRefStat?: Stat;
 	tankRefStat?: Stat;
-	secondaryResourceConfig?: SecondaryResourceConfig;
 
 	readonly bt: BulkTab | null = null;
 

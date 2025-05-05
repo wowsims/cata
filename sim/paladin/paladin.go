@@ -266,24 +266,24 @@ func (paladin *Paladin) registerSpells() {
 }
 
 func (paladin *Paladin) Reset(sim *core.Simulation) {
-	switch paladin.Seal {
-	case proto.PaladinSeal_Truth:
-		paladin.CurrentJudgement = paladin.JudgementOfTruth
-		paladin.CurrentSeal = paladin.SealOfTruthAura
-		paladin.SealOfTruthAura.Activate(sim)
-	case proto.PaladinSeal_Insight:
-		paladin.CurrentJudgement = paladin.JudgementOfInsight
-		paladin.CurrentSeal = paladin.SealOfInsightAura
-		paladin.SealOfInsightAura.Activate(sim)
-	case proto.PaladinSeal_Righteousness:
-		paladin.CurrentJudgement = paladin.JudgementOfRighteousness
-		paladin.CurrentSeal = paladin.SealOfRighteousnessAura
-		paladin.SealOfRighteousnessAura.Activate(sim)
-	case proto.PaladinSeal_Justice:
-		paladin.CurrentJudgement = paladin.JudgementOfJustice
-		paladin.CurrentSeal = paladin.SealOfJusticeAura
-		paladin.SealOfJusticeAura.Activate(sim)
-	}
+	// switch paladin.Seal {
+	// case proto.PaladinSeal_Truth:
+	// 	paladin.CurrentJudgement = paladin.JudgementOfTruth
+	// 	paladin.CurrentSeal = paladin.SealOfTruthAura
+	// 	paladin.SealOfTruthAura.Activate(sim)
+	// case proto.PaladinSeal_Insight:
+	// 	paladin.CurrentJudgement = paladin.JudgementOfInsight
+	// 	paladin.CurrentSeal = paladin.SealOfInsightAura
+	// 	paladin.SealOfInsightAura.Activate(sim)
+	// case proto.PaladinSeal_Righteousness:
+	// 	paladin.CurrentJudgement = paladin.JudgementOfRighteousness
+	// 	paladin.CurrentSeal = paladin.SealOfRighteousnessAura
+	// 	paladin.SealOfRighteousnessAura.Activate(sim)
+	// case proto.PaladinSeal_Justice:
+	// 	paladin.CurrentJudgement = paladin.JudgementOfJustice
+	// 	paladin.CurrentSeal = paladin.SealOfJusticeAura
+	// 	paladin.SealOfJusticeAura.Activate(sim)
+	// }
 }
 
 func NewPaladin(character *core.Character, talentsStr string, options *proto.PaladinOptions) *Paladin {
@@ -302,7 +302,7 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 	paladin.EnableManaBar()
 	paladin.HolyPower = HolyPowerBar{
 		resourceBar: paladin.RegisterSecondaryResourceBar(core.SecondaryResourceConfig{
-			Type:    core.HolyPower,
+			Type:    proto.SecondaryResourceType_SecondaryResourceTypeHolyPower,
 			Max:     3,
 			Default: float64(paladin.StartingHolyPower),
 		}),

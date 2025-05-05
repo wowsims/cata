@@ -2,19 +2,10 @@
 // TODO: Check whether pre-pull OOC resource loss needs to be supported for DemonicFury
 package core
 
-import "math"
+import (
+	"math"
 
-type SecondaryResourceType int32
-
-const (
-	SoulShards    SecondaryResourceType = 117198
-	HolyPower     SecondaryResourceType = 138248
-	Maelstrom     SecondaryResourceType = 53817
-	Chi           SecondaryResourceType = 97272
-	ArcaneCharges SecondaryResourceType = 36032
-	ShadowOrbs    SecondaryResourceType = 95740
-	BurningEmbers SecondaryResourceType = 108647
-	DemonicFury   SecondaryResourceType = 104315
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 type OnGainCallback func(gain float64, realGain float64)
@@ -32,9 +23,9 @@ type SecondaryResourceBar interface {
 }
 
 type SecondaryResourceConfig struct {
-	Type    SecondaryResourceType // The type of resource the bar tracks
-	Max     float64               // The maximum amount the bar tracks
-	Default float64               // The default value this bar should be initialized with
+	Type    proto.SecondaryResourceType // The type of resource the bar tracks
+	Max     float64                     // The maximum amount the bar tracks
+	Default float64                     // The default value this bar should be initialized with
 }
 
 // Default implementation of SecondaryResourceBar
