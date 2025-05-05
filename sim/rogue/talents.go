@@ -72,6 +72,29 @@ func (rogue *Rogue) ApplyTalents() {
 			Priority: core.CooldownPriorityDefault,
 		})
 	}
+
+	// Anticipation
+	if rogue.Talents.Anticipation {
+		action := core.ActionID{SpellID: 114015}
+		antiMetrics := rogue.NewComboPointMetrics(action)
+
+		rogue.AnticipationAura = rogue.RegisterAura(core.Aura{
+			Label:     "Anticipation",
+			ActionID:  action,
+			Duration:  time.Second * 15,
+			MaxStacks: 5,
+
+			// Adding stacks is driven by rogue.AddComboPointsOrAnticipation()
+
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() && spell.Flags.Matches(SpellFlagFinisher) {
+					rogue.AddComboPoints(sim, aura.GetStacks(), antiMetrics)
+					aura.SetStacks(sim, 0)
+					aura.Deactivate(sim)
+				}
+			},
+		})
+	}
 }
 
 // DWSMultiplier returns the offhand damage multiplier

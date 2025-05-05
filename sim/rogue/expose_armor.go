@@ -12,6 +12,8 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 		return core.ExposeArmorAura(target, rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfExposeArmor))
 	})
 
+	cpMetric := rogue.NewComboPointMetrics(core.ActionID{SpellID: 8647})
+
 	rogue.ExposeArmor = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 8647},
 		SpellSchool:    core.SpellSchoolPhysical,
@@ -39,7 +41,7 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 				debuffAura := rogue.ExposeArmorAuras.Get(target)
 				debuffAura.Duration = time.Second * 30
 				debuffAura.Activate(sim)
-				rogue.ApplyFinisher(sim, spell)
+				rogue.AddComboPointsOrAnticipation(sim, 1, cpMetric)
 			} else {
 				spell.IssueRefund(sim)
 			}

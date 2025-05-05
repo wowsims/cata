@@ -47,7 +47,7 @@ func (subRogue *SubtletyRogue) registerBackstabSpell() {
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if result.Landed() {
-				subRogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+				subRogue.AddComboPointsOrAnticipation(sim, 1, spell.ComboPointMetrics())
 			} else {
 				spell.IssueRefund(sim)
 			}

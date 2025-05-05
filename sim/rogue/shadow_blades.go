@@ -16,6 +16,17 @@ func (rogue *Rogue) registerShadowBladesCD() {
 		ActionID: core.ActionID{SpellID: 121471},
 		Duration: time.Second * 12,
 
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			// Make auto attacks deal 0 damage for the duration of SB
+			// This allows for anything tied to autos (poisons, main gauche, etc) to still fire
+			rogue.AutoAttacks.MHAuto().DamageMultiplier = 0
+			rogue.AutoAttacks.OHAuto().DamageMultiplier = 0
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.AutoAttacks.MHAuto().DamageMultiplier = 1
+			rogue.AutoAttacks.OHAuto().DamageMultiplier = 1
+		},
+
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() {
 				if spell == rogue.AutoAttacks.MHAuto() {
@@ -57,8 +68,9 @@ func (rogue *Rogue) registerShadowBladesCD() {
 
 func (rogue *Rogue) makeShadowBladeHit(isMH bool) *core.Spell {
 	procMask := core.Ternary(isMH, core.ProcMaskMeleeMH, core.ProcMaskMeleeOH)
+	tag := core.TernaryInt32(isMH, 1, 2)
 	return rogue.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 121473},
+		ActionID:       core.ActionID{SpellID: 121471, Tag: tag},
 		ClassSpellMask: RogueSpellShadowBlades,
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       procMask,

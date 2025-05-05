@@ -23,7 +23,7 @@ func (subRogue *SubtletyRogue) registerHonorAmongThieves() {
 
 	maybeProc := func(sim *core.Simulation) {
 		if icd.IsReady(sim) && sim.Proc(procChance, "Honor Among Thieves") {
-			subRogue.AddComboPoints(sim, 1, comboMetrics)
+			subRogue.AddComboPointsOrAnticipation(sim, 1, comboMetrics)
 			icd.Use(sim)
 		}
 	}

@@ -72,11 +72,11 @@ func (rogue *Rogue) registerCrimsonTempest() {
 			},
 			IgnoreHaste: true,
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				spell.SetMetricsSplit(rogue.GetCappedComboPoints())
+				spell.SetMetricsSplit(rogue.ComboPoints())
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return rogue.GetCappedComboPoints() > 0
+			return rogue.ComboPoints() > 0
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -84,8 +84,8 @@ func (rogue *Rogue) registerCrimsonTempest() {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				damage := hit_minDamage +
 					sim.RandomFloat("Crimson Tempest")*hit_baseDamage +
-					hit_cpScaling*float64(rogue.GetCappedComboPoints()) +
-					hit_apScaling*float64(rogue.GetCappedComboPoints())*spell.MeleeAttackPower()
+					hit_cpScaling*float64(rogue.ComboPoints()) +
+					hit_apScaling*float64(rogue.ComboPoints())*spell.MeleeAttackPower()
 
 				result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 				lastCTDamage[aoeTarget.UnitIndex] = result.Damage * dot_modifier

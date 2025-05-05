@@ -31,7 +31,7 @@ func (subRogue *SubtletyRogue) registerPremeditation() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			subRogue.AddComboPoints(sim, 2, comboMetrics)
+			subRogue.AddComboPointsOrAnticipation(sim, 2, comboMetrics)
 		},
 	})
 

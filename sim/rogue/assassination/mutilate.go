@@ -75,7 +75,7 @@ func (sinRogue *AssassinationRogue) registerMutilateSpell() {
 			sinRogue.BreakStealth(sim)
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 			if result.Landed() {
-				sinRogue.AddComboPoints(sim, 2, spell.ComboPointMetrics())
+				sinRogue.AddComboPointsOrAnticipation(sim, 2, spell.ComboPointMetrics())
 				sinRogue.MutilateOH.Cast(sim, target)
 				sinRogue.MutilateMH.Cast(sim, target)
 			} else {

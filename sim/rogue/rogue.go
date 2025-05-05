@@ -95,6 +95,7 @@ type Rogue struct {
 	StealthAura          *core.Aura
 	SubterfugeAura       *core.Aura
 	BanditsGuileAura     *core.Aura
+	AnticipationAura     *core.Aura
 
 	NightstalkerMod *core.SpellMod
 	ShadowFocusMod  *core.SpellMod
@@ -120,14 +121,29 @@ func (rogue *Rogue) GetRogue() *Rogue {
 func (rogue *Rogue) AddRaidBuffs(_ *proto.RaidBuffs)   {}
 func (rogue *Rogue) AddPartyBuffs(_ *proto.PartyBuffs) {}
 
-func (rogue *Rogue) GetCappedComboPoints() int32 {
-	return min(rogue.ComboPoints(), 5)
+func (rogue *Rogue) AddComboPointsOrAnticipation(sim *core.Simulation, numPoints int32, metric *core.ResourceMetrics) {
+	if rogue.Talents.Anticipation && rogue.ComboPoints()+numPoints > 5 {
+		realPoints := 5 - rogue.ComboPoints()
+		antiPoints := rogue.AnticipationAura.GetStacks() + numPoints - realPoints
+
+		rogue.AddComboPoints(sim, realPoints, metric)
+
+		rogue.AnticipationAura.Activate(sim)
+		rogue.AnticipationAura.Refresh(sim)
+		rogue.AnticipationAura.SetStacks(sim, antiPoints)
+		if antiPoints > 5 {
+			// run AddComboPoints again to report the overcapping into UI
+			rogue.AddComboPoints(sim, antiPoints-5, metric)
+		}
+	} else {
+		rogue.AddComboPoints(sim, numPoints, metric)
+	}
 }
 
 // Apply the effect of successfully casting a finisher to combo points
 func (rogue *Rogue) ApplyFinisher(sim *core.Simulation, spell *core.Spell) {
 	numPoints := rogue.ComboPoints()
-	rogue.SpendPartialComboPoints(sim, rogue.GetCappedComboPoints(), spell.ComboPointMetrics())
+	rogue.SpendComboPoints(sim, spell.ComboPointMetrics())
 
 	if rogue.Spec == proto.Spec_SpecCombatRogue {
 		// Ruthlessness
@@ -182,7 +198,6 @@ func (rogue *Rogue) Initialize() {
 	rogue.registerRupture()
 	rogue.registerSliceAndDice()
 	rogue.registerEviscerate()
-	rogue.registerEnvenom()
 	rogue.registerExposeArmorSpell()
 	rogue.registerFanOfKnives()
 	rogue.registerTricksOfTheTradeSpell()
@@ -240,9 +255,8 @@ func NewRogue(character *core.Character, options *proto.RogueOptions, talents st
 		maxEnergy += 20
 	}
 
-	maxComboPoints := int32(core.Ternary(rogue.Talents.Anticipation, 10, 5))
 	rogue.EnableEnergyBar(core.EnergyBarOptions{
-		MaxComboPoints:      maxComboPoints,
+		MaxComboPoints:      5,
 		MaxEnergy:           maxEnergy,
 		StartingComboPoints: options.StartingComboPoints,
 		UnitClass:           proto.Class_ClassRogue,

@@ -54,7 +54,7 @@ func (rogue *Rogue) registerFanOfKnives() {
 
 				results[i] = fokSpell.CalcAndDealDamage(sim, aoeTarget, damage, fokSpell.OutcomeMeleeSpecialNoBlockDodgeParry)
 				if results[i].Landed() && aoeTarget == rogue.CurrentTarget {
-					rogue.AddComboPoints(sim, 1, cpMetrics)
+					rogue.AddComboPointsOrAnticipation(sim, 1, cpMetrics)
 				}
 			}
 		},

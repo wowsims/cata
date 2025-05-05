@@ -7,6 +7,8 @@ import (
 )
 
 func (rogue *Rogue) registerGarrote() {
+	baseDamage := rogue.GetBaseDamageFromCoefficient(0.11800000072)
+
 	rogue.Garrote = rogue.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 703},
 		SpellSchool:    core.SpellSchoolPhysical,
@@ -41,7 +43,7 @@ func (rogue *Rogue) registerGarrote() {
 			NumberOfTicks: 6,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotPhysical(target, 119+dot.Spell.MeleeAttackPower()*0.07)
+				dot.SnapshotPhysical(target, baseDamage+dot.Spell.MeleeAttackPower()*0.078)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
@@ -52,7 +54,7 @@ func (rogue *Rogue) registerGarrote() {
 			rogue.BreakStealth(sim)
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCrit)
 			if result.Landed() {
-				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+				rogue.AddComboPointsOrAnticipation(sim, 1, spell.ComboPointMetrics())
 				spell.Dot(target).Apply(sim)
 			} else {
 				spell.IssueRefund(sim)

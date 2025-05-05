@@ -43,6 +43,7 @@ func (sinRogue *AssassinationRogue) Initialize() {
 	sinRogue.applySealFate()
 	sinRogue.registerVenomousWounds()
 	sinRogue.registerVendetta()
+	sinRogue.registerEnvenom()
 	sinRogue.registerAllPassives()
 
 	// Apply Mastery
