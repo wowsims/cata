@@ -36,6 +36,9 @@ type Monk struct {
 
 	HealingSphereSummon *core.Spell
 
+	XuenAura *core.Aura
+	XuenPet  *Xuen
+
 	StanceOfTheFierceTigerAura *core.Aura
 	StanceOfTheSturdyOxAura    *core.Aura
 	StanceOfTheWiseSerpentAura *core.Aura
@@ -184,6 +187,7 @@ func NewMonk(character *core.Character, options *proto.MonkOptions, talents stri
 	core.FillTalentsProto(monk.Talents.ProtoReflect(), talents)
 
 	monk.PseudoStats.CanParry = true
+	monk.XuenPet = monk.NewXuen()
 
 	monk.EnableEnergyBar(core.EnergyBarOptions{
 		MaxComboPoints: 4,
@@ -247,6 +251,7 @@ const (
 	//Level 90
 	MonkSpellRushingJadeWind
 	MonkSpellInvokeXuenTheWhiteTiger
+	MonkSpellInvokeXuenTheWhiteTigerPet
 	MonkSpellChiTorpedo
 	// -- Talents
 

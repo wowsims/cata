@@ -835,6 +835,49 @@ func (monk *Monk) registerRushingJadeWind() {
 }
 
 func (monk *Monk) registerInvokeXuenTheWhiteTiger() {
+	if !monk.Talents.InvokeXuenTheWhiteTiger {
+		return
+	}
+
+	actionID := core.ActionID{SpellID: 123904}
+
+	// For timeline only
+	monk.XuenAura = monk.RegisterAura(core.Aura{
+		ActionID: actionID,
+		Label:    "Xuen, the White Tiger",
+		Duration: time.Second * 45.0,
+	})
+
+	spell := monk.RegisterSpell(core.SpellConfig{
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolNature,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: MonkSpellInvokeXuenTheWhiteTiger,
+
+		MaxRange: 40,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+			CD: core.Cooldown{
+				Timer:    monk.NewTimer(),
+				Duration: time.Minute * 3,
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			monk.XuenPet.EnableWithTimeout(sim, monk.XuenPet, time.Second*45.0)
+			monk.XuenAura.Activate(sim)
+		},
+	})
+
+	monk.AddMajorCooldown(core.MajorCooldown{
+		Spell: spell,
+		Type:  core.CooldownTypeDPS,
+	})
+
 }
 
 func (monk *Monk) registerChiTorpedo() {
