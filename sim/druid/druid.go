@@ -69,7 +69,6 @@ type Druid struct {
 	SwipeCat              *DruidSpell
 	TigersFury            *DruidSpell
 	Thrash                *DruidSpell
-	Typhoon               *DruidSpell
 	Wrath                 *DruidSpell
 	WildMushrooms         *DruidSpell
 	WildMushroomsDetonate *DruidSpell
@@ -129,26 +128,17 @@ type Druid struct {
 }
 
 const (
-	WrathBaseEnergyGain     float64 = 15
-	StarsurgeBaseEnergyGain float64 = 20
-	StarfireBaseEnergyGain  float64 = 20
-)
-
-const (
 	DruidSpellFlagNone int64 = 0
 	DruidSpellBarkskin int64 = 1 << iota
-	DruidSpellCyclone
-	DruidSpellEntanglingRoots
 	DruidSpellFearieFire
-	DruidSpellHibernate
 	DruidSpellHurricane
+	DruidSpellAstralStorm
 	DruidSpellInnervate
 	DruidSpellMangleBear
 	DruidSpellMangleCat
 	DruidSpellMaul
 	DruidSpellMoonfire
 	DruidSpellMoonfireDoT
-	DruidSpellNaturesGrasp
 	DruidSpellRavage
 	DruidSpellShred
 	DruidSpellStarfall
@@ -156,8 +146,6 @@ const (
 	DruidSpellStarsurge
 	DruidSpellSunfire
 	DruidSpellSunfireDoT
-	DruidSpellThorns
-	DruidSpellTyphoon
 	DruidSpellWildMushroom
 	DruidSpellWildMushroomDetonate
 	DruidSpellWrath
@@ -179,7 +167,7 @@ const (
 	DruidSpellInstant   = DruidSpellBarkskin | DruidSpellMoonfire | DruidSpellStarfall | DruidSpellSunfire | DruidSpellFearieFire | DruidSpellBarkskin
 	DruidSpellMangle    = DruidSpellMangleBear | DruidSpellMangleCat
 	DruidArcaneSpells   = DruidSpellMoonfire | DruidSpellMoonfireDoT | DruidSpellStarfire | DruidSpellStarsurge | DruidSpellStarfall
-	DruidNatureSpells   = DruidSpellWrath | DruidSpellStarsurge | DruidSpellSunfire | DruidSpellSunfireDoT | DruidSpellTyphoon | DruidSpellHurricane
+	DruidNatureSpells   = DruidSpellWrath | DruidSpellStarsurge | DruidSpellSunfire | DruidSpellSunfireDoT | DruidSpellHurricane
 	DruidHealingSpells  = DruidSpellHealingTouch | DruidSpellRegrowth | DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellNourish | DruidSpellSwiftmend
 	DruidDamagingSpells = DruidArcaneSpells | DruidNatureSpells
 )

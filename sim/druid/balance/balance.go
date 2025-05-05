@@ -1,10 +1,17 @@
 package balance
 
 import (
+	"time"
+
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
-	"github.com/wowsims/mop/sim/core/stats"
 	"github.com/wowsims/mop/sim/druid"
+)
+
+const (
+	WrathBaseEnergyGain     float64 = 15
+	StarsurgeBaseEnergyGain float64 = 20
+	StarfireBaseEnergyGain  float64 = 20
 )
 
 func RegisterBalanceDruid() {
@@ -41,14 +48,17 @@ func NewBalanceDruid(character *core.Character, options *proto.Player) *BalanceD
 	return moonkin
 }
 
-type BalanceOnUseTrinket struct {
-	Cooldown *core.MajorCooldown
-	Stat     stats.Stat
+func tryExtendDot(dot *core.Dot) {
+	if dot.IsActive() {
+		dot.UpdateExpires(dot.ExpiresAt() + time.Second*2)
+	}
 }
 
 type BalanceDruid struct {
 	*druid.Druid
 	Options *proto.BalanceDruid_Options
+
+	Starfire *druid.DruidSpell
 }
 
 func (moonkin *BalanceDruid) GetDruid() *druid.Druid {
