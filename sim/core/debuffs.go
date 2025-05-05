@@ -101,7 +101,7 @@ func WeakenedArmorAura(target *Unit) *Aura {
 	return aura
 }
 
-func MortalWoundsArua(target *Unit) *Aura {
+func MortalWoundsAura(target *Unit) *Aura {
 	return majorHealingReductionAura(target, "Mortal Wounds", 115804, 0.25)
 }
 
@@ -162,13 +162,6 @@ func castSpeedReductionAura(target *Unit, label string, spellID int32, multiplie
 		},
 	})
 	return aura
-}
-
-func ScheduledMajorArmorAura(aura *Aura, options PeriodicActionOptions, raid *proto.Raid) {
-	aura.OnReset = func(aura *Aura, sim *Simulation) {
-		aura.Duration = NeverExpires
-		StartPeriodicAction(sim, options)
-	}
 }
 
 const SpellDamageEffectAuraTag = "SpellDamageAuraTag"

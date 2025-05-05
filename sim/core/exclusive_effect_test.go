@@ -14,11 +14,11 @@ func TestSingleAuraExclusiveDurationNoOverwrite(t *testing.T) {
 		Level:       83,
 		auraTracker: newAuraTracker(),
 	}
-	fireBreath := FireBreathDebuff(&target)
 	lightningBreath := MakePermanent(LightningBreathDebuff(&target))
+	fireBreath := FireBreathDebuff(&target)
 
-	// Trauma in this case should *never* be overwritten
-	// as its duration from 'MakePermanent' should make it non overwritable by 1 min duration mangles
+	// Lightning Breath in this case should *never* be overwritten
+	// as its duration from 'MakePermanent' should make it non overwritable by Fire Breath
 	lightningBreath.Activate(sim)
 
 	sim.CurrentTime = 1 * time.Second
@@ -48,7 +48,7 @@ func TestSingleAuraExclusiveDurationOverwrite(t *testing.T) {
 
 	lightningBreath.Activate(sim)
 
-	// In this case mangle should overwrite trauma as mangle will give a greater duration
+	// In this case Lightning Breath should overwrite Fire Breath as Lightning Breath will give a greater duration
 
 	if !(lightningBreath.IsActive() && !fireBreath.IsActive()) {
 		t.Fatalf("longer duration exclusive aura failed to overwrite")

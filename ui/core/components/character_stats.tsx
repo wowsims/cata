@@ -102,7 +102,6 @@ export class CharacterStats extends Component {
 		const talentsStats = Stats.fromProto(playerStats.talentsStats);
 		const buffsStats = Stats.fromProto(playerStats.buffsStats);
 		const consumesStats = Stats.fromProto(playerStats.consumesStats);
-		const debuffStats = this.getDebuffStats();
 		const bonusStats = player.getBonusStats();
 
 		let baseDelta = baseStats.add(statMods.base || new Stats());
@@ -120,8 +119,7 @@ export class CharacterStats extends Component {
 			.add(statMods.talents || new Stats())
 			.add(statMods.buffs || new Stats())
 			.add(statMods.consumes || new Stats())
-			.add(statMods.final || new Stats())
-			.add(debuffStats);
+			.add(statMods.final || new Stats());
 
 		if (this.overwriteDisplayStats) {
 			const statOverwrites = this.overwriteDisplayStats(this.player);
@@ -196,12 +194,6 @@ export class CharacterStats extends Component {
 						<span>Consumes:</span>
 						<span>{this.statDisplayString(consumesDelta, unitStat)}</span>
 					</div>
-					{debuffStats.getUnitStat(unitStat) != 0 && (
-						<div className="character-stats-tooltip-row">
-							<span>Debuffs:</span>
-							<span>{this.statDisplayString(debuffStats, unitStat)}</span>
-						</div>
-					)}
 					{bonusStatValue !== 0 && (
 						<div className="character-stats-tooltip-row">
 							<span>Bonus:</span>
@@ -293,17 +285,6 @@ export class CharacterStats extends Component {
 		const percentOrPointsString = derivedPercentOrPointsValue === null ? '' : `${derivedPercentOrPointsValue.toFixed(2)}` + percentOrPointsSuffix;
 		const wrappedPercentOrPointsString = hideRootRating || derivedPercentOrPointsValue === null ? percentOrPointsString : ` (${percentOrPointsString})`;
 		return rootRatingString + wrappedPercentOrPointsString;
-	}
-
-	private getDebuffStats(): Stats {
-		const debuffStats = new Stats();
-
-		// const debuffs = this.player.sim.raid.getDebuffs();
-		// if (debuffs.criticalMass || debuffs.shadowAndFlame) {
-		// 	debuffStats = debuffStats.addPseudoStat(PseudoStat.PseudoStatSpellCritPercent, 5);
-		// }
-
-		return debuffStats;
 	}
 
 	private bonusStatsLink(unitStat: UnitStat): HTMLElement {
