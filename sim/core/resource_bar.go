@@ -71,6 +71,8 @@ func (bar *DefaultSecondaryResourceBarImpl) Gain(amount float64, action ActionID
 			bar.config.Max,
 		)
 	}
+
+	bar.invokeOnGain(amount, amountGained)
 }
 
 // Reset implements SecondaryResourceBar.
@@ -105,6 +107,7 @@ func (bar *DefaultSecondaryResourceBarImpl) Spend(amount float64, action ActionI
 	}
 
 	metrics.AddEvent(-amount, -amount)
+	bar.invokeOnSpend(amount)
 	bar.value -= amount
 }
 
@@ -178,10 +181,6 @@ func (unit *Unit) RegisterSecondaryResourceBar(config SecondaryResourceConfig) S
 
 	if unit.SecondaryResourceBar != nil {
 		panic("A secondary resource bar has already been registered.")
-	}
-
-	if unit.Env.State == Finalized {
-		panic("Can not add secondary resource bar after unit has been finalized")
 	}
 
 	unit.SecondaryResourceBar = &DefaultSecondaryResourceBarImpl{
