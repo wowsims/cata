@@ -31,24 +31,25 @@ type Priest struct {
 	SurgeOfLightProcAura *core.Aura
 
 	// might want to move these spell / talents into spec specific initialization
-	BindingHeal     *core.Spell
-	CircleOfHealing *core.Spell
-	FlashHeal       *core.Spell
-	GreaterHeal     *core.Spell
-	Penance         *core.Spell
-	PenanceHeal     *core.Spell
-	PowerWordShield *core.Spell
-	PrayerOfHealing *core.Spell
-	PrayerOfMending *core.Spell
-	Renew           *core.Spell
-	EmpoweredRenew  *core.Spell
-	InnerFocus      *core.Spell
-	HolyFire        *core.Spell
-	Smite           *core.Spell
-	ShadowWordPain  *core.Spell
-	Shadowfiend     *core.Spell
-	VampiricTouch   *core.Spell
-	MindBender      *core.Spell
+	BindingHeal       *core.Spell
+	CircleOfHealing   *core.Spell
+	FlashHeal         *core.Spell
+	GreaterHeal       *core.Spell
+	Penance           *core.Spell
+	PenanceHeal       *core.Spell
+	PowerWordShield   *core.Spell
+	PrayerOfHealing   *core.Spell
+	PrayerOfMending   *core.Spell
+	Renew             *core.Spell
+	EmpoweredRenew    *core.Spell
+	InnerFocus        *core.Spell
+	HolyFire          *core.Spell
+	Smite             *core.Spell
+	ShadowWordPain    *core.Spell
+	Shadowfiend       *core.Spell
+	VampiricTouch     *core.Spell
+	MindBender        *core.Spell
+	ShadowyApparition *core.Spell
 
 	WeakenedSouls core.AuraArray
 

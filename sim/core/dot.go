@@ -47,6 +47,7 @@ type Dot struct {
 
 	BaseTickCount  int32 // base tick count without haste applied
 	remainingTicks int32
+	tmpExtraTicks  int32 // extra ticks that are added during the runtime of the dot
 
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
 
@@ -97,6 +98,7 @@ func (dot *Dot) recomputeAuraDuration(sim *Simulation) {
 	nextTick := dot.TimeUntilNextTick(sim)
 
 	dot.remainingTicks = dot.BaseTickCount
+	dot.tmpExtraTicks = 0
 	if dot.affectedByCastSpeed {
 		// round the tickPeriod to the nearest full ms, same as ingame. This can best be seen ingame in how haste caps
 		// work. For example shadowflame should take 1009 haste rating with the 5%/3% haste buffs without rounding, but
@@ -159,7 +161,7 @@ func (dot *Dot) RemainingTicks() int32 {
 }
 
 func (dot *Dot) TickCount() int32 {
-	return dot.HastedTickCount() - dot.remainingTicks
+	return dot.HastedTickCount() + dot.tmpExtraTicks - dot.remainingTicks
 }
 
 func (dot *Dot) OutstandingDmg() float64 {
@@ -170,6 +172,17 @@ func (dot *Dot) BaseDuration() time.Duration {
 	return time.Duration(dot.BaseTickCount) * dot.BaseTickLength
 }
 
+// Adds a tick to the current active dot and extends it's duration
+func (dot *Dot) AddTick() {
+	if !dot.active {
+		return
+	}
+
+	dot.tmpExtraTicks++
+	dot.remainingTicks++
+	dot.UpdateExpires(dot.expires + dot.TickPeriod())
+}
+
 // Copy's the original DoT's period and duration to the current DoT.
 // This is only currently used for Mage's Impact DoT spreading and Enhancement's ImprovedLava Lash.
 func (dot *Dot) CopyDotAndApply(sim *Simulation, originaldot *Dot) {
@@ -178,6 +191,7 @@ func (dot *Dot) CopyDotAndApply(sim *Simulation, originaldot *Dot) {
 
 	dot.tickPeriod = originaldot.tickPeriod
 	dot.remainingTicks = originaldot.remainingTicks
+	dot.tmpExtraTicks = 0
 
 	// must be set before Activate
 	dot.Duration = originaldot.ExpiresAt() - sim.CurrentTime // originaldot.Duration

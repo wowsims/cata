@@ -9,7 +9,7 @@ func (shadow ShadowPriest) registerShadowyApparition() {
 	const apparitionScaling = 0.375
 	const apparitionCoeff = 0.375
 
-	spell := shadow.RegisterSpell(core.SpellConfig{
+	shadow.Priest.ShadowyApparition = shadow.RegisterSpell(core.SpellConfig{
 		ActionID:                 core.ActionID{SpellID: 148859},
 		MissileSpeed:             7,
 		ProcMask:                 core.ProcMaskEmpty, // summoned guardian, should not be able to proc stuff - verify
@@ -34,7 +34,7 @@ func (shadow ShadowPriest) registerShadowyApparition() {
 		Outcome:        core.OutcomeCrit,
 		ClassSpellMask: priest.PriestSpellShadowWordPain,
 		Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
-			spell.Cast(sim, result.Target)
+			shadow.Priest.ShadowyApparition.Cast(sim, result.Target)
 		},
 	})
 }

@@ -454,5 +454,66 @@ var ItemSetRegaliaOfDyingLight = core.NewItemSet(core.ItemSet{
 	},
 })
 
+// T14 - Shadow
+var ItemSetRegaliaOfTheGuardianSperpent = core.NewItemSet(core.ItemSet{
+	Name: "Regalia of the Guardian Serpent",
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:       core.SpellMod_BonusCrit_Percent,
+				ClassMask:  PriestSpellShadowWordPain,
+				FloatValue: 0.1,
+			})
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:      core.SpellMod_DotNumberOfTicks_Flat,
+				ClassMask: PriestSpellShadowWordPain | PriestSpellVampiricTouch,
+				IntValue:  1,
+			})
+		},
+	},
+})
+
+var ItemSetRegaliaOfTheExorcist = core.NewItemSet(core.ItemSet{
+	Name: "Regalia of the Exorcist",
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			priest := agent.(PriestAgent).GetPriest()
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
+				Name:           "Regalia of the Exorcist - 2P",
+				SpellFlags:     core.SpellFlagPassiveSpell,
+				ProcChance:     0.65,
+				ClassSpellMask: PriestSpellShadowyApparation,
+				Outcome:        core.OutcomeLanded,
+				Callback:       core.CallbackOnSpellHitDealt,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if priest.ShadowWordPain != nil && priest.ShadowWordPain.Dot(result.Target).IsActive() {
+						priest.ShadowWordPain.Dot(result.Target).AddTick()
+					}
+
+					if priest.VampiricTouch != nil && priest.VampiricTouch.Dot(result.Target).IsActive() {
+						priest.VampiricTouch.Dot(result.Target).AddTick()
+					}
+				},
+			})
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			priest := agent.(PriestAgent).GetPriest()
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
+				Name:           "Regalia of the Exorcist - 4P",
+				ProcMask:       core.ProcMaskSpellDamage,
+				ProcChance:     0.1,
+				ClassSpellMask: PriestSpellVampiricTouch,
+				Outcome:        core.OutcomeLanded,
+				Callback:       core.CallbackOnPeriodicDamageDealt,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					priest.ShadowyApparition.Cast(sim, result.Target)
+				},
+			})
+		},
+	},
+})
+
 func init() {
 }
