@@ -9,35 +9,30 @@ import (
 )
 
 func (monk *Monk) ApplyTalents() {
-	if monk.Level >= 15 {
-		monk.registerCelerity()
-		monk.registerTigersLust()
-		monk.registerMomentum()
-	}
+	// Level 15
+	monk.registerCelerity()
+	monk.registerTigersLust()
+	monk.registerMomentum()
 
-	if monk.Level >= 30 {
-		monk.registerChiWave()
-		monk.registerZenSphere()
-		monk.registerChiBurst()
-	}
+	// Level 30
+	monk.registerChiWave()
+	monk.registerZenSphere()
+	monk.registerChiBurst()
 
-	if monk.Level >= 45 {
-		monk.registerPowerStrikes()
-		monk.registerAscension()
-		monk.registerChiBrew()
-	}
+	// Level 45
+	monk.registerPowerStrikes()
+	monk.registerAscension()
+	monk.registerChiBrew()
 
-	if monk.Level >= 75 {
-		monk.registerHealingElixirs()
-		monk.registerDampenHarm()
-		monk.registerDiffuseMagic()
-	}
+	// Level 75
+	monk.registerHealingElixirs()
+	monk.registerDampenHarm()
+	monk.registerDiffuseMagic()
 
-	if monk.Level >= 90 {
-		monk.registerRushingJadeWind()
-		monk.registerInvokeXuenTheWhiteTiger()
-		monk.registerChiTorpedo()
-	}
+	// Level 90
+	monk.registerRushingJadeWind()
+	monk.registerInvokeXuenTheWhiteTiger()
+	monk.registerChiTorpedo()
 }
 
 func (monk *Monk) registerCelerity() {
