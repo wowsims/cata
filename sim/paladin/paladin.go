@@ -304,7 +304,7 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 		resourceBar: paladin.RegisterSecondaryResourceBar(core.SecondaryResourceConfig{
 			Type:    proto.SecondaryResourceType_SecondaryResourceTypeHolyPower,
 			Max:     3,
-			Default: float64(paladin.StartingHolyPower),
+			Default: paladin.StartingHolyPower,
 		}),
 		paladin: paladin,
 	}

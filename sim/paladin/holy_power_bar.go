@@ -18,12 +18,12 @@ func (h HolyPowerBar) RegisterOnSpend(callback core.OnSpendCallback) {
 }
 
 // CanSpend implements core.SecondaryResourceBar.
-func (h HolyPowerBar) CanSpend(limit float64) bool {
+func (h HolyPowerBar) CanSpend(limit int32) bool {
 	return h.Value() >= limit
 }
 
 // Gain implements core.SecondaryResourceBar.
-func (h HolyPowerBar) Gain(amount float64, action core.ActionID, sim *core.Simulation) {
+func (h HolyPowerBar) Gain(amount int32, action core.ActionID, sim *core.Simulation) {
 	h.resourceBar.Gain(amount, action, sim)
 }
 
@@ -33,7 +33,7 @@ func (h HolyPowerBar) Reset(sim *core.Simulation) {
 }
 
 // Spend implements core.SecondaryResourceBar.
-func (h HolyPowerBar) Spend(amount float64, action core.ActionID, sim *core.Simulation) {
+func (h HolyPowerBar) Spend(amount int32, action core.ActionID, sim *core.Simulation) {
 	if h.paladin.DivinePurposeAura.IsActive() {
 		return
 	}
@@ -42,7 +42,7 @@ func (h HolyPowerBar) Spend(amount float64, action core.ActionID, sim *core.Simu
 }
 
 // SpendUpTo implements core.SecondaryResourceBar.
-func (h HolyPowerBar) SpendUpTo(limit float64, action core.ActionID, sim *core.Simulation) float64 {
+func (h HolyPowerBar) SpendUpTo(limit int32, action core.ActionID, sim *core.Simulation) int32 {
 	if h.paladin.DivinePurposeAura.IsActive() {
 		return 3
 	}
@@ -51,7 +51,7 @@ func (h HolyPowerBar) SpendUpTo(limit float64, action core.ActionID, sim *core.S
 }
 
 // Value implements core.SecondaryResourceBar.
-func (h HolyPowerBar) Value() float64 {
+func (h HolyPowerBar) Value() int32 {
 	if h.paladin.DivinePurposeAura.IsActive() {
 		return 3
 	}

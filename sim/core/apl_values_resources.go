@@ -482,7 +482,7 @@ func (value *APLValueCurrentGenericResource) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeInt
 }
 func (value *APLValueCurrentGenericResource) GetInt(sim *Simulation) int32 {
-	return int32(value.unit.SecondaryResourceBar.Value())
+	return value.unit.SecondaryResourceBar.Value()
 }
 func (value *APLValueCurrentGenericResource) String() string {
 	return "Current {GENERIC_RESOURCE}"
