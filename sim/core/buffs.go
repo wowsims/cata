@@ -221,24 +221,14 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 			registerBloodlustCD(agent, 80353)
 		}
 
-		// Major Mana Replenishment
-		registerManaTideTotemCD(agent, raidBuffs.ManaTideTotemCount)
-
 		// Other individual CDs
 		registerUnholyFrenzyCD(agent, individual.UnholyFrenzyCount)
 		registerTricksOfTheTradeCD(agent, individual.TricksOfTheTrade)
-		registerPowerInfusionCD(agent, individual.PowerInfusionCount)
-		registerInnervateCD(agent, individual.InnervateCount)
-		registerDivineGuardianCD(agent, individual.DivineGuardianCount)
 		registerHandOfSacrificeCD(agent, individual.HandOfSacrificeCount)
 		registerPainSuppressionCD(agent, individual.PainSuppressionCount)
 		registerGuardianSpiritCD(agent, individual.GuardianSpiritCount)
 		registerRallyingCryCD(agent, individual.RallyingCryCount)
 		registerShatteringThrowCD(agent, individual.ShatteringThrowCount)
-
-		if individual.FocusMagic {
-			FocusMagicAura(nil, u)
-		}
 	}
 }
 
