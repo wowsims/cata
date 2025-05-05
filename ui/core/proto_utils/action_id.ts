@@ -880,10 +880,6 @@ export class ActionId {
 		return ActionId.fromItemId(item.id, 0, 0, reforge.id);
 	}
 
-	static fromUpgrade(item: Item, upgradeStep: ItemLevelState): ActionId {
-		return ActionId.fromItemId(item.id, 0, 0, 0, upgradeStep);
-	}
-
 	static fromProto(protoId: ActionIdProto): ActionId {
 		if (protoId.rawId.oneofKind == 'spellId') {
 			return ActionId.fromSpellId(protoId.rawId.spellId, protoId.tag);

@@ -6,8 +6,9 @@ import { gemEligibleForSocket, gemMatchesSocket } from './gems.js';
 import { Stats } from './stats.js';
 import { enchantAppliesToItem } from './utils.js';
 
-export function getWeaponDPS(item: Item): number {
-	return (item.weaponDamageMin + item.weaponDamageMax) / 2 / (item.weaponSpeed || 1);
+export function getWeaponDPS(item: Item, upgradeStep: ItemLevelState = ItemLevelState.Base): number {
+	const { weaponDamageMin, weaponDamageMax } = item.scalingOptions[upgradeStep];
+	return (weaponDamageMin + weaponDamageMax) / 2 / (item.weaponSpeed || 1);
 }
 
 export interface ReforgeData {
@@ -93,7 +94,7 @@ export class EquippedItem {
 		return this.item.scalingOptions[this.upgrade].randPropPoints || this.item.randPropPoints;
 	}
 	get ilvl(): number {
-		return typeof this.upgrade === 'number' ? this.item.scalingOptions[this.upgrade].ilvl : this.ilvl;
+		return typeof this.upgrade === 'number' ? this.item.scalingOptions[this.upgrade].ilvl : this.item.ilvl;
 	}
 	// Returns the ilvl difference from the previous upgrade step
 	get ilvlFromPrevious(): number {
@@ -128,6 +129,14 @@ export class EquippedItem {
 
 	getBaseScalingItemProperties(): ScalingItemProperties {
 		return this._item.scalingOptions[ItemLevelState.Base];
+	}
+
+	// Returns all possible upgrade steps for the given base item.
+	getUpgrades(): Record<number, ScalingItemProperties> {
+		const { scalingOptions } = this.item;
+		// Make sure to always exclude Challenge Mode scaling options as those are handled globally
+		delete scalingOptions[ItemLevelState.ChallengeMode];
+		return scalingOptions;
 	}
 
 	equals(other: EquippedItem) {
@@ -331,15 +340,29 @@ export class EquippedItem {
 	}
 
 	getWithRandomSuffixStats() {
+		return this._getWithDynamicStats();
+	}
+
+	getRandomPropPoints(): number {
+		return this.item.scalingOptions[this._upgrade]?.randPropPoints || this.item.randPropPoints;
+	}
+
+	getWithUpgradeStats() {
+		return this._getWithDynamicStats();
+	}
+
+	_getWithDynamicStats() {
 		const item = this.item;
+		if (typeof this._upgrade === 'number') item.stats = item.stats.map((stat, index) => this._item.scalingOptions[this._upgrade]!.stats[index] || stat);
 		if (this._randomSuffix) {
+			const randomPropPoints = this.getRandomPropPoints();
 			item.stats = item.stats.map((stat, index) =>
-				this._randomSuffix!.stats[index] > 0 ? Math.floor((this._randomSuffix!.stats[index] * this.randomPropPoints) / 10000) : stat,
+				this._randomSuffix!.stats[index] > 0 ? Math.floor((this._randomSuffix!.stats[index] * randomPropPoints) / 10000) : stat,
 			);
 		}
 
 		return new EquippedItem({
-			item: item,
+			item,
 			enchant: this._enchant,
 			gems: this._gems,
 			randomSuffix: this._randomSuffix,
@@ -350,9 +373,7 @@ export class EquippedItem {
 	}
 
 	asActionId(): ActionId {
-		if (this._randomSuffix) return ActionId.fromRandomSuffix(this._item, this._randomSuffix);
-
-		return ActionId.fromItemId(this._item.id, undefined, undefined, undefined, this._upgrade);
+		return ActionId.fromItemId(this._item.id, undefined, this._randomSuffix?.id || undefined, undefined, this._upgrade);
 	}
 
 	asSpec(): ItemSpec {
@@ -417,7 +438,9 @@ export class EquippedItem {
 		// Make sure to always exclude Challenge Mode scaling options as those are handled globally
 		// and offset these options by 1 due to items always having a base option.
 		delete scalingOptions[ItemLevelState.ChallengeMode];
-		return Object.keys(scalingOptions).length > 1;
+
+		return Object.values(scalingOptions);
+
 	}
 
 	hasExtraGem(): boolean {

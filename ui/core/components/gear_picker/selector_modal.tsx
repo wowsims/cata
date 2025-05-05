@@ -465,7 +465,7 @@ export default class SelectorModal extends BaseModal {
 		}
 
 		const itemProto = equippedItem.item;
-		const itemUpgrades = this.player.getUpgrades(equippedItem);
+		const itemUpgrades = equippedItem.getUpgrades();
 		const itemUpgradesAsEntries = Object.entries(itemUpgrades);
 		const numberOfUpgrades = Object.keys(itemUpgrades).length - 1;
 
@@ -479,7 +479,7 @@ export default class SelectorModal extends BaseModal {
 				return {
 					item: Number(upgradeStep),
 					id: Number(upgradeStep),
-					actionId: ActionId.fromUpgrade(itemProto, upgradeStep as ItemLevelState),
+					actionId: ActionId.fromItemId(itemProto.id, 0, equippedItem._randomSuffix?.id, 0, upgradeStep),
 					name: (
 						<>
 							{index > 0 ? <>+ {upgradeItem.ilvlFromPrevious * index}</> : <>Base</>}{' '}
@@ -499,7 +499,7 @@ export default class SelectorModal extends BaseModal {
 					},
 				};
 			}),
-			computeEP: (upgradeStep: ItemLevelState) => this.player.computeUpgradeEP(equippedItem._item.scalingOptions[upgradeStep]),
+			computeEP: (upgradeStep: ItemLevelState) => this.player.computeUpgradeEP(equippedItem, upgradeStep),
 			equippedToItemFn: (equippedItem: EquippedItem | null) => equippedItem?._upgrade,
 			onRemove: (eventID: number) => {
 				const equippedItem = gearData.getEquippedItem();
@@ -581,26 +581,29 @@ export default class SelectorModal extends BaseModal {
 			equippedToItemFn,
 			onRemove,
 			itemData => {
+				const prevItem = gearData.getEquippedItem();
 				const item = itemData;
 				itemData.onEquip(TypedEvent.nextEventID(), item.item);
 
 				const isItemChange = Item.is(item.item);
-				const isRandomSuffixChange = !!item.actionId.randomSuffixId;
+				const newItem = gearData.getEquippedItem();
+				const isRandomSuffixChange = prevItem?._randomSuffix?.id !== newItem?.randomSuffix?.id;
+
 				// If the item changes, then gem slots and random suffix options will also change, so remove and recreate these tabs.
 				if (isItemChange || isRandomSuffixChange) {
 					if (!isRandomSuffixChange) {
 						this.removeTabs(SelectorModalTabs.RandomSuffixes);
-						this.addRandomSuffixTab(gearData.getEquippedItem(), gearData);
+						this.addRandomSuffixTab(newItem, gearData);
 					}
 
 					this.removeTabs(SelectorModalTabs.Reforging);
-					this.addReforgingTab(gearData.getEquippedItem(), gearData);
+					this.addReforgingTab(newItem, gearData);
 
 					this.removeTabs(SelectorModalTabs.Upgrades);
-					this.addUpgradesTab(gearData.getEquippedItem(), gearData);
+					this.addUpgradesTab(newItem, gearData);
 
 					this.removeTabs('Gem');
-					this.addGemTabs(this.currentSlot, gearData.getEquippedItem(), gearData);
+					this.addGemTabs(this.currentSlot, newItem, gearData);
 				}
 			},
 		);

@@ -217,14 +217,6 @@ export class Database {
 		return this.reforgeStats.get(id);
 	}
 
-	getUpgradeByStep(item: Item, upgradeStep: ItemLevelState): ScalingItemProperties | undefined {
-		return item.scalingOptions[upgradeStep];
-	}
-
-	getAvailableUpgrades(item: Item): ScalingItemProperties[] {
-		return Object.values(item.scalingOptions);
-	}
-
 	getAvailableReforges(item: Item): ReforgeStat[] {
 		return Array.from(this.reforgeStats.values()).filter(reforgeStat => item.stats[reforgeStat.fromStat] > 0 && item.stats[reforgeStat.toStat] == 0);
 	}
