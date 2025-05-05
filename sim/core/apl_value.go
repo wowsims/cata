@@ -138,6 +138,8 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		value = rot.newValueEnergyTimeToTarget(config.GetEnergyTimeToTarget(), config.Uuid)
 	case *proto.APLValue_FocusTimeToTarget:
 		value = rot.newValueFocusTimeToTarget(config.GetFocusTimeToTarget(), config.Uuid)
+	case *proto.APLValue_CurrentGenericResource:
+		value = rot.newValueCurrentGenericResource(config.GetCurrentGenericResource(), config.Uuid)
 
 	// Resources Runes
 	case *proto.APLValue_CurrentRuneCount:
