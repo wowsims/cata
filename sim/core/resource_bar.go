@@ -17,6 +17,9 @@ const (
 	DemonicFury   SecondaryResourceType = 104315
 )
 
+type OnGainCallback func(gain float64, realGain float64)
+type OnSpendCallback func(amount float64)
+
 type SecondaryResourceBar interface {
 	CanSpend(limit float64) bool                                       // Check whether the current resource is available or not
 	Spend(amount float64, action ActionID, sim *Simulation)            // Spend the specified amount of resource
@@ -24,6 +27,8 @@ type SecondaryResourceBar interface {
 	Gain(amount float64, action ActionID, sim *Simulation)             // Gain the amount specified from the action
 	Reset(sim *Simulation)                                             // Resets the current resource bar
 	Value() float64                                                    // Returns the current amount of resource
+	RegisterOnGain(callback OnGainCallback)                            // Registers a callback that will be called. Gain = amount gained, realGain = actual amount gained due to caps
+	RegisterOnSpend(callback OnSpendCallback)                          // Registers a callback that will be called when the resource was spend
 }
 
 type SecondaryResourceConfig struct {
@@ -32,36 +37,36 @@ type SecondaryResourceConfig struct {
 	Default float64               // The default value this bar should be initialized with
 }
 
-type _SecondaryResourceBar struct {
+// Default implementation of SecondaryResourceBar
+// Use RegisterSecondaryResourceBar to intantiate the resource bar
+type DefaultSecondaryResourceBarImpl struct {
 	config  SecondaryResourceConfig
 	value   float64
 	unit    *Unit
 	metrics map[ActionID]*ResourceMetrics
+	onGain  []OnGainCallback
+	onSpend []OnSpendCallback
 }
 
 // CanSpend implements SecondaryResourceBar.
-func (bar *_SecondaryResourceBar) CanSpend(limit float64) bool {
+func (bar *DefaultSecondaryResourceBarImpl) CanSpend(limit float64) bool {
 	return bar.value >= limit
 }
 
 // Gain implements SecondaryResourceBar.
-func (bar *_SecondaryResourceBar) Gain(amount float64, action ActionID, sim *Simulation) {
-	bar.value += amount
-	baseAmount := amount
-	if bar.value > bar.config.Max {
-		amount -= bar.value - bar.config.Max
-		bar.value = bar.config.Max
-	}
-
+func (bar *DefaultSecondaryResourceBarImpl) Gain(amount float64, action ActionID, sim *Simulation) {
+	oldValue := bar.value
+	bar.value = min(bar.value+amount, bar.config.Max)
+	amountGained := bar.value - oldValue
 	metrics := bar.GetMetric(action)
-	metrics.AddEvent(baseAmount, amount)
+	metrics.AddEvent(amount, amountGained)
 	if sim.Log != nil {
 		bar.unit.Log(
 			sim,
 			"Gained %0.0f generic resource from %s (%0.0f --> %0.0f) of %0.0f total.",
-			amount,
+			amountGained,
 			action,
-			bar.value-amount,
+			oldValue,
 			bar.value,
 			bar.config.Max,
 		)
@@ -69,7 +74,7 @@ func (bar *_SecondaryResourceBar) Gain(amount float64, action ActionID, sim *Sim
 }
 
 // Reset implements SecondaryResourceBar.
-func (bar *_SecondaryResourceBar) Reset(sim *Simulation) {
+func (bar *DefaultSecondaryResourceBarImpl) Reset(sim *Simulation) {
 	bar.value = 0
 	if bar.config.Default > 0 {
 		bar.Gain(bar.config.Default, ActionID{SpellID: int32(bar.config.Type)}, sim)
@@ -77,9 +82,13 @@ func (bar *_SecondaryResourceBar) Reset(sim *Simulation) {
 }
 
 // Spend implements SecondaryResourceBar.
-func (bar *_SecondaryResourceBar) Spend(amount float64, action ActionID, sim *Simulation) {
+func (bar *DefaultSecondaryResourceBarImpl) Spend(amount float64, action ActionID, sim *Simulation) {
 	if amount > bar.value {
 		panic("Trying to spend more resource than is available.")
+	}
+
+	if amount < 0 {
+		panic("Trying to spend negative amount.")
 	}
 
 	metrics := bar.GetMetric(action)
@@ -100,7 +109,7 @@ func (bar *_SecondaryResourceBar) Spend(amount float64, action ActionID, sim *Si
 }
 
 // SpendUpTo implements SecondaryResourceBar.
-func (bar *_SecondaryResourceBar) SpendUpTo(limit float64, action ActionID, sim *Simulation) float64 {
+func (bar *DefaultSecondaryResourceBarImpl) SpendUpTo(limit float64, action ActionID, sim *Simulation) float64 {
 	if bar.value > limit {
 		bar.Spend(limit, action, sim)
 		return limit
@@ -112,11 +121,11 @@ func (bar *_SecondaryResourceBar) SpendUpTo(limit float64, action ActionID, sim 
 }
 
 // Value implements SecondaryResourceBar.
-func (bar *_SecondaryResourceBar) Value() float64 {
+func (bar *DefaultSecondaryResourceBarImpl) Value() float64 {
 	return bar.value
 }
 
-func (bar *_SecondaryResourceBar) GetMetric(action ActionID) *ResourceMetrics {
+func (bar *DefaultSecondaryResourceBarImpl) GetMetric(action ActionID) *ResourceMetrics {
 	metric, ok := bar.metrics[action]
 	if !ok {
 		metric = bar.unit.NewGenericMetric(action)
@@ -126,7 +135,35 @@ func (bar *_SecondaryResourceBar) GetMetric(action ActionID) *ResourceMetrics {
 	return metric
 }
 
-func (unit *Unit) NewSecondaryResourceBar(config SecondaryResourceConfig) SecondaryResourceBar {
+func (bar *DefaultSecondaryResourceBarImpl) RegisterOnGain(callback OnGainCallback) {
+	if callback == nil {
+		panic("Can not register nil callback")
+	}
+
+	bar.onGain = append(bar.onGain, callback)
+}
+
+func (bar *DefaultSecondaryResourceBarImpl) RegisterOnSpend(callback OnSpendCallback) {
+	if callback == nil {
+		panic("Can not register nil callback")
+	}
+
+	bar.onSpend = append(bar.onSpend, callback)
+}
+
+func (bar *DefaultSecondaryResourceBarImpl) invokeOnGain(gain float64, realGain float64) {
+	for _, callback := range bar.onGain {
+		callback(gain, realGain)
+	}
+}
+
+func (bar *DefaultSecondaryResourceBarImpl) invokeOnSpend(amount float64) {
+	for _, callback := range bar.onSpend {
+		callback(amount)
+	}
+}
+
+func (unit *Unit) RegisterSecondaryResourceBar(config SecondaryResourceConfig) SecondaryResourceBar {
 	if config.Type <= 0 {
 		panic("Invalid SecondaryResourceType given.")
 	}
@@ -139,5 +176,21 @@ func (unit *Unit) NewSecondaryResourceBar(config SecondaryResourceConfig) Second
 		panic("Invalid default value given for resource bar")
 	}
 
-	return &_SecondaryResourceBar{config: config, unit: unit, metrics: make(map[ActionID]*ResourceMetrics)}
+	if unit.SecondaryResourceBar != nil {
+		panic("A secondary resource bar has already been registered.")
+	}
+
+	if unit.Env.State == Finalized {
+		panic("Can not add secondary resource bar after unit has been finalized")
+	}
+
+	unit.SecondaryResourceBar = &DefaultSecondaryResourceBarImpl{
+		config:  config,
+		unit:    unit,
+		metrics: make(map[ActionID]*ResourceMetrics),
+		onGain:  []OnGainCallback{},
+		onSpend: []OnSpendCallback{},
+	}
+
+	return unit.SecondaryResourceBar
 }

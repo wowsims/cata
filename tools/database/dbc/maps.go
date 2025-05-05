@@ -284,7 +284,7 @@ var MapPowerTypeEnumToResourceType = map[int32]proto.ResourceType{
 	6:  proto.ResourceType_ResourceTypeRunicPower,
 	7:  proto.ResourceType_ResourceTypeNone, // Soulshards
 	8:  proto.ResourceType_ResourceTypeLunarEnergy,
-	9:  proto.ResourceType_ResourceTypeHolyPower,
+	9:  proto.ResourceType_ResourceTypeNone, // Holy Power
 	12: proto.ResourceType_ResourceTypeChi,
 	20: proto.ResourceType_ResourceTypeBloodRune,
 	21: proto.ResourceType_ResourceTypeFrostRune,

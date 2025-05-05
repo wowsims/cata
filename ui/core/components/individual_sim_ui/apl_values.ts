@@ -1,4 +1,5 @@
-import { Player } from '../../player.js';
+import { IndividualSimUIConfig } from '../../individual_sim_ui';
+import { getSpecConfig, Player } from '../../player.js';
 import {
 	APLValue,
 	APLValueAllTrinketStatProcsActive,
@@ -28,7 +29,7 @@ import {
 	APLValueCurrentFocus,
 	APLValueCurrentHealth,
 	APLValueCurrentHealthPercent,
-	APLValueCurrentHolyPower,
+	APLValueCurrentGenericResource,
 	APLValueCurrentLunarEnergy,
 	APLValueCurrentMana,
 	APLValueCurrentManaPercent,
@@ -862,12 +863,12 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() == Spec.SpecBalanceDruid,
 		fields: [AplHelpers.eclipseTypeFieldConfig('eclipsePhase')],
 	}),
-	currentHolyPower: inputBuilder({
-		label: 'Holy Power',
+	currentGenericResource: inputBuilder({
+		label: '{GENERIC}',
 		submenu: ['Resources'],
-		shortDescription: 'Amount of currently available Holy Power.',
-		newValue: APLValueCurrentHolyPower.create,
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassPaladin,
+		shortDescription: 'Amount of currently available {GENERIC}.',
+		newValue: APLValueCurrentGenericResource.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => true, // only if secondaryResourceConfig is set
 		fields: [],
 	}),
 

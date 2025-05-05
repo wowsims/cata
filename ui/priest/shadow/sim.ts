@@ -147,7 +147,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	],
 
 	secondaryResource: {
-		color: "#b8a8f0",
 		icon: "https://wow.zamimg.com/images/wow/icons/large/spell_priest_shadoworbs.jpg",
 		name: "Shadow Orb",
 	}

@@ -2033,7 +2033,6 @@ export const orderedResourceTypes: Array<ResourceType> = [
 	ResourceType.ResourceTypeDeathRune,
 	ResourceType.ResourceTypeLunarEnergy,
 	ResourceType.ResourceTypeSolarEnergy,
-	ResourceType.ResourceTypeHolyPower,
 	ResourceType.ResourceTypeGenericResource,
 ];
 
