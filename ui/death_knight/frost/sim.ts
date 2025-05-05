@@ -86,17 +86,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			devotionAura: true,
-			bloodlust: true,
-			markOfTheWild: true,
-			icyTalons: true,
-			leaderOfThePack: true,
-			powerWordFortitude: true,
-			hornOfWinter: true,
-			abominationsMight: true,
-			arcaneTactics: true,
-		}),
+		raidBuffs: RaidBuffs.create({}),
 		partyBuffs: PartyBuffs.create({
 			heroicPresence: false,
 		}),
