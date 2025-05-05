@@ -61,8 +61,12 @@ func (monk *Monk) NewXuen() *Xuen {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := monk.CalcScalingSpellDmg(0.293) + xuen.GetStat(stats.AttackPower)*spell.BonusCoefficient
-
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			for index, target := range sim.Encounter.TargetUnits {
+				if index > 3 {
+					break
+				}
+				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			}
 		},
 	})
 

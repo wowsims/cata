@@ -50,16 +50,9 @@ func (monk *Monk) registerSpinningCraneKick() {
 		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			results := make([]*core.SpellResult, numTargets)
-
-			for idx := int32(0); idx < numTargets; idx++ {
-				currentTarget := sim.Environment.GetTargetUnit(idx)
+			for _, target := range sim.Encounter.TargetUnits {
 				baseDamage := monk.CalculateMonkStrikeDamage(sim, spell)
-				results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-			}
-
-			for idx := int32(0); idx < numTargets; idx++ {
-				spell.DealDamage(sim, results[idx])
+				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			}
 		},
 	})

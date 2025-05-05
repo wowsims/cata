@@ -205,15 +205,8 @@ func (monk *Monk) registerZenSphere() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := avgDetonateDmgScaling + spell.MeleeAttackPower()*avgDetonateDmgBonusCoefficient
 
-			results := make([]*core.SpellResult, numTargets)
-
-			for idx := int32(0); idx < numTargets; idx++ {
-				currentTarget := sim.Environment.GetTargetUnit(idx)
-				results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-			}
-
-			for idx := int32(0); idx < numTargets; idx++ {
-				spell.DealDamage(sim, results[idx])
+			for _, target := range sim.Encounter.TargetUnits {
+				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 		},
 	})
@@ -365,16 +358,9 @@ func (monk *Monk) registerChiBurst() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := avgDmgScaling + spell.MeleeAttackPower()*1.21
 
-			results := make([]*core.SpellResult, numTargets)
-
-			for idx := int32(0); idx < numTargets; idx++ {
-				currentTarget := sim.Environment.GetTargetUnit(idx)
-				results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-			}
-
 			spell.WaitTravelTime(sim, func(simulation *core.Simulation) {
-				for idx := int32(0); idx < numTargets; idx++ {
-					spell.DealDamage(sim, results[idx])
+				for _, target := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 				}
 			})
 		},
@@ -730,6 +716,7 @@ func (monk *Monk) registerRushingJadeWind() {
 	actionID := core.ActionID{SpellID: 116847}
 	debuffActionID := core.ActionID{SpellID: 148187}
 	chiMetrics := monk.NewChiMetrics(actionID)
+
 	numTargets := monk.Env.GetNumTargets()
 
 	rushingJadeWindTickSpell := monk.RegisterSpell(core.SpellConfig{
@@ -745,16 +732,9 @@ func (monk *Monk) registerRushingJadeWind() {
 		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			results := make([]*core.SpellResult, numTargets)
-
-			for idx := int32(0); idx < numTargets; idx++ {
-				currentTarget := sim.Environment.GetTargetUnit(idx)
-				baseDamage := monk.CalculateMonkStrikeDamage(sim, spell)
-				results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-			}
-
-			for idx := int32(0); idx < numTargets; idx++ {
-				spell.DealDamage(sim, results[idx])
+			baseDamage := monk.CalculateMonkStrikeDamage(sim, spell)
+			for _, target := range sim.Encounter.TargetUnits {
+				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			}
 		},
 	})
