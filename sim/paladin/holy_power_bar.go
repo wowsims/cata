@@ -7,6 +7,16 @@ type HolyPowerBar struct {
 	paladin     *Paladin
 }
 
+// RegisterOnGain implements core.SecondaryResourceBar.
+func (h HolyPowerBar) RegisterOnGain(callback core.OnGainCallback) {
+	h.resourceBar.RegisterOnGain(callback)
+}
+
+// RegisterOnSpend implements core.SecondaryResourceBar.
+func (h HolyPowerBar) RegisterOnSpend(callback core.OnSpendCallback) {
+	h.resourceBar.RegisterOnSpend(callback)
+}
+
 // CanSpend implements core.SecondaryResourceBar.
 func (h HolyPowerBar) CanSpend(limit float64) bool {
 	return h.Value() >= limit
