@@ -46,22 +46,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 		specOptions: Presets.DefaultFrostOptions,
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			arcaneBrilliance: true,
-			bloodlust: true,
-			markOfTheWild: true,
-			icyTalons: true,
-			moonkinForm: true,
-			leaderOfThePack: true,
-			powerWordFortitude: true,
-			strengthOfEarthTotem: true,
-			trueshotAura: true,
-			wrathOfAirTotem: true,
-			demonicPact: true,
-			blessingOfKings: true,
-			blessingOfMight: true,
-			communion: true,
-		}),
+		raidBuffs: RaidBuffs.create({}),
 		partyBuffs: PartyBuffs.create({
 			manaTideTotems: 1,
 		}),

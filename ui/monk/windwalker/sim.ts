@@ -87,21 +87,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWindwalkerMonk, {
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			arcaneBrilliance: true,
-			bloodlust: true,
-			icyTalons: true,
-			moonkinForm: true,
-			powerWordFortitude: true,
-			strengthOfEarthTotem: true,
-			trueshotAura: true,
-			wrathOfAirTotem: true,
-			demonicPact: true,
-			blessingOfMight: true,
-			legacyOfTheEmperor: true,
-			legacyOfTheWhiteTiger: true,
-			communion: true,
-		}),
+		raidBuffs: RaidBuffs.create({}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({

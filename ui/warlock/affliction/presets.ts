@@ -70,22 +70,7 @@ export const DefaultConsumables = ConsumesSpec.create({
 	tinkerId: 82174, // Synapse Springs
 });
 
-export const DefaultRaidBuffs = RaidBuffs.create({
-	arcaneBrilliance: true,
-	bloodlust: true,
-	markOfTheWild: true,
-	icyTalons: true,
-	moonkinForm: true,
-	leaderOfThePack: true,
-	powerWordFortitude: true,
-	strengthOfEarthTotem: true,
-	trueshotAura: true,
-	wrathOfAirTotem: true,
-	demonicPact: true,
-	blessingOfKings: true,
-	blessingOfMight: true,
-	communion: true,
-});
+export const DefaultRaidBuffs = RaidBuffs.create({});
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
 	vampiricTouch: true,

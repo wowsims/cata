@@ -77,22 +77,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		specOptions: Presets.DefaultOptions,
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			arcaneBrilliance: true,
-			bloodlust: true,
-			markOfTheWild: true,
-			icyTalons: true,
-			moonkinForm: true,
-			leaderOfThePack: true,
-			powerWordFortitude: true,
-			strengthOfEarthTotem: true,
-			trueshotAura: true,
-			wrathOfAirTotem: true,
-			demonicPact: true,
-			blessingOfKings: true,
-			blessingOfMight: true,
-			communion: true,
-		}),
+		raidBuffs: RaidBuffs.create({}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
 			vampiricTouch: true,
@@ -105,7 +90,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [ShamanInputs.ShamanShieldInput()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.MP5Buff, BuffDebuffInputs.ReplenishmentBuff],
+	includeBuffDebuffInputs: [],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {

@@ -70,14 +70,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [DruidInputs.SelfInnervate()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-		BuffDebuffInputs.ReplenishmentBuff,
-		BuffDebuffInputs.CritBuff,
-		BuffDebuffInputs.MP5Buff,
-		BuffDebuffInputs.AttackPowerPercentBuff,
-		BuffDebuffInputs.StaminaBuff,
-		BuffDebuffInputs.ManaBuff,
-	],
+	includeBuffDebuffInputs: [],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
