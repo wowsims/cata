@@ -20,7 +20,7 @@ type APLValueCurrentHolyPower struct {
 }
 
 func (paladin *Paladin) newValueCurrentHolyPower(_ *proto.APLValueCurrentHolyPower, uuid *proto.UUID) core.APLValue {
-	if !paladin.HasHolyPowerBar() {
+	if paladin.HolyPower == nil {
 		return nil
 	}
 
@@ -32,7 +32,7 @@ func (value *APLValueCurrentHolyPower) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeInt
 }
 func (value *APLValueCurrentHolyPower) GetInt(sim *core.Simulation) int32 {
-	return value.paladin.CurrentHolyPower()
+	return int32(value.paladin.HolyPower.Value())
 }
 func (value *APLValueCurrentHolyPower) String() string {
 	return "Current Holy Power"

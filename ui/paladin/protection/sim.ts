@@ -203,6 +203,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			},
 		},
 	],
+
+	secondaryResource: {
+		icon: 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_holybolt.jpg',
+		name: 'Holy Power',
+	}
 });
 
 export class ProtectionPaladinSimUI extends IndividualSimUI<Spec.SpecProtectionPaladin> {

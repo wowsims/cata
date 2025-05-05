@@ -716,15 +716,3 @@ func (unit *Unit) GetTotalAvoidanceChance(atkTable *AttackTable) float64 {
 	block := unit.GetTotalBlockChanceAsDefender(atkTable)
 	return miss + dodge + parry + block
 }
-
-func (unit *Unit) RegisterSecondaryResourceBar(config SecondaryResourceConfig) {
-	if unit.SecondaryResourceBar != nil {
-		panic("A secondary resource bar has already been registered.")
-	}
-
-	if unit.Env.State == Finalized {
-		panic("Can not add secondary resource bar after unit has been finalized")
-	}
-
-	unit.SecondaryResourceBar = unit.NewSecondaryResourceBar(config)
-}

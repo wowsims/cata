@@ -124,10 +124,10 @@ const SpellMaskModifiedByZealOfTheCrusader = SpellMaskTemplarsVerdict |
 
 type Paladin struct {
 	core.Character
-	HolyPowerBar
 
 	PaladinAura proto.PaladinAura
 	Seal        proto.PaladinSeal
+	HolyPower   core.SecondaryResourceBar
 
 	Talents *proto.PaladinTalents
 
@@ -284,8 +284,6 @@ func (paladin *Paladin) Reset(sim *core.Simulation) {
 		paladin.CurrentSeal = paladin.SealOfJusticeAura
 		paladin.SealOfJusticeAura.Activate(sim)
 	}
-
-	paladin.HolyPowerBar.Reset()
 }
 
 func NewPaladin(character *core.Character, talentsStr string, options *proto.PaladinOptions) *Paladin {
@@ -302,7 +300,14 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 	paladin.PseudoStats.CanParry = true
 
 	paladin.EnableManaBar()
-	paladin.initializeHolyPowerBar()
+	paladin.HolyPower = HolyPowerBar{
+		resourceBar: paladin.RegisterSecondaryResourceBar(core.SecondaryResourceConfig{
+			Type:    core.HolyPower,
+			Max:     3,
+			Default: float64(paladin.StartingHolyPower),
+		}),
+		paladin: paladin,
+	}
 
 	// Only retribution and holy are actually pets performing some kind of action
 	if paladin.Spec != proto.Spec_SpecProtectionPaladin {

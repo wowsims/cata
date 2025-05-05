@@ -73,8 +73,6 @@ var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(agent core.Agent, setBonusAura *core.Aura) {
 			paladin := agent.(PaladinAgent).GetPaladin()
-			// Actual buff credited with the Holy Power gain is Virtuous Empowerment
-			hpMetrics := paladin.NewHolyPowerMetrics(core.ActionID{SpellID: 105767})
 
 			// Used for checking "Is Aura Known" in the APL
 			paladin.GetOrRegisterAura(core.Aura{
@@ -90,7 +88,7 @@ var ItemSetBattleplateOfRadiantGlory = core.NewItemSet(core.ItemSet{
 				ProcChance:     1,
 
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					paladin.GainHolyPower(sim, 1, hpMetrics)
+					paladin.HolyPower.Gain(1, core.ActionID{SpellID: 105765}, sim)
 				},
 			})
 		},

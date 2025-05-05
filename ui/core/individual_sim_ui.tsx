@@ -193,7 +193,6 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 export interface SecondaryResourceConfig {
 	name: string;
 	icon: string;
-	color: string;
 }
 
 export function registerSpecConfig<SpecType extends Spec>(spec: SpecType, config: IndividualSimUIConfig<SpecType>): IndividualSimUIConfig<SpecType> {
