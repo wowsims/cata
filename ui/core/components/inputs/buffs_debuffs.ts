@@ -94,8 +94,8 @@ export const StaminaBuff = InputHelpers.makeMultiIconInput(
 
 export const MajorHasteBuff = InputHelpers.makeMultiIconInput(
 	[
-		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(2825), fieldName: 'bloodlust', faction: Faction.Horde }),
-		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(32182), fieldName: 'heroism', faction: Faction.Alliance }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(2825), fieldName: 'bloodlust' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(32182), fieldName: 'heroism' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(80353), fieldName: 'timeWarp' }),
 	],
 	'Major Haste',
