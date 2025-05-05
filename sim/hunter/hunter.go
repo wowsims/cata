@@ -154,7 +154,11 @@ func (hunter *Hunter) GetBaseDamageFromCoeff(coeff float64) float64 {
 	return coeff * hunter.ClassSpellScaling
 }
 
-func (hunter *Hunter) ApplyTalents() {}
+func (hunter *Hunter) ApplyTalents() {
+
+	hunter.applyThrillOfTheHunt()
+	hunter.applyBlinkStrike()
+}
 
 func (hunter *Hunter) RegisterSpells() {
 	hunter.registerSteadyShotSpell()

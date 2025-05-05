@@ -80,33 +80,18 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		Pet:         core.NewPet(petConfig.Name, &hunter.Character, hunterPetBaseStats, hunter.makeStatInheritance(), true, false),
 		config:      petConfig,
 		hunterOwner: hunter,
-
-		//hasOwnerCooldown: petConfig.SpecialAbility == FuriousHowl || petConfig.SpecialAbility == SavageRend,
 	}
 
 	//Todo: Verify this
 	// base_focus_regen_per_second  = ( 24.5 / 4.0 );
 	// base_focus_regen_per_second *= 1.0 + o -> talents.bestial_discipline -> effect1().percent();
-	baseFocusPerSecond := 4.0 // As observed on logs
-
-	// WHFocusIncreaseMod := hp.AddDynamicMod(core.SpellModConfig{
-	// 	Kind:     core.SpellMod_PowerCost_Pct,
-	// 	ProcMask: core.ProcMaskMeleeMHSpecial,
-	// 	IntValue: hp.Talents().WildHunt * 50,
-	// })
-
-	// WHDamageMod := hp.AddDynamicMod(core.SpellModConfig{
-	// 	Kind:       core.SpellMod_DamageDone_Flat,
-	// 	ProcMask:   core.ProcMaskMeleeMHSpecial,
-	// 	FloatValue: float64(hp.Talents().WildHunt) * 0.6,
-	// })
+	baseFocusPerSecond := 5.0 // As observed on logs
 
 	hp.EnableFocusBar(100+(core.TernaryFloat64(hp.hunterOwner.Spec == proto.Spec_SpecBeastMasteryHunter, 20, 0)), baseFocusPerSecond, false, func(sim *core.Simulation, focus float64) {
 
 	})
 
 	atkSpd := 2.0
-	// Todo: Change for Cataclysm
 	hp.EnableAutoAttacks(hp, core.AutoAttackOptions{
 		MainHand: core.Weapon{
 			BaseDamageMin:  73,
@@ -117,23 +102,22 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		AutoSwingMelee: true,
 	})
 
-	// Happiness
-	// Todo:
-	hp.PseudoStats.DamageDealtMultiplier *= 1.25
-
-	// Pet family bonus is now the same for all pets.
-	//Todo: Should this stay?
 	hp.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.05
 
 	hp.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	hp.AddStatDependency(stats.Strength, stats.RangedAttackPower, 2)
 	hp.AddStatDependency(stats.Agility, stats.PhysicalCritPercent, 1/324.72)
 
+	hp.ApplySpecialization()
 	hunter.AddPet(hp)
-
 	return hp
 }
+func (hp *HunterPet) ApplySpecialization() {
+	hp.registerRabidCD()
+	hp.ApplyCombatExperience() // All pets have this
+	hp.ApplySpikedCollar()
 
+}
 func (hp *HunterPet) GetPet() *core.Pet {
 	return &hp.Pet
 }

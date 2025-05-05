@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 type PetAbilityType int
@@ -560,3 +561,46 @@ func (hp *HunterPet) newSpiritMend() *core.Spell      { panic("newSpiritMend not
 func (hp *HunterPet) newShellShield() *core.Spell    { panic("newShellShield not implemented") }
 func (hp *HunterPet) newHardenCarapace() *core.Spell { panic("newHardenCarapace not implemented") }
 func (hp *HunterPet) newSurfaceTrot() *core.Spell    { panic("newSurfaceTrot not implemented") }
+
+func (hp *HunterPet) registerRabidCD() {
+	hunter := hp.hunterOwner
+	if hunter.Options.PetSpec != proto.PetSpec_Ferocity {
+		return
+	}
+	actionID := core.ActionID{SpellID: 53401}
+
+	buffAura := hp.RegisterAura(core.Aura{
+		Label:    "Rabid",
+		ActionID: actionID,
+		Duration: time.Second * 20,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			hp.MultiplyAttackSpeed(sim, 1.7)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			hp.MultiplyAttackSpeed(sim, 1/1.7)
+		},
+	})
+
+	rabidSpell := hunter.RegisterSpell(core.SpellConfig{
+		ActionID: actionID,
+
+		Cast: core.CastConfig{
+			CD: core.Cooldown{
+				Timer:    hunter.NewTimer(),
+				Duration: time.Second * 90,
+			},
+		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return hp.IsEnabled()
+		},
+
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			buffAura.Activate(sim)
+		},
+	})
+
+	hunter.AddMajorCooldown(core.MajorCooldown{
+		Spell: rabidSpell,
+		Type:  core.CooldownTypeDPS,
+	})
+}
