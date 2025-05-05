@@ -1,20 +1,24 @@
-import { SecondaryResourceConfig } from '../../individual_sim_ui';
 import { ResourceType } from '../../proto/spell';
 import { resourceNames } from '../../proto_utils/names';
+import SecondaryResource from '../../proto_utils/secondary_resource';
 import { ResourceMetrics } from '../../proto_utils/sim_result';
 import { orderedResourceTypes } from '../../proto_utils/utils';
 import { ColumnSortType, MetricsTable } from './metrics_table/metrics_table';
 import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component';
 
+interface ResourceMetricsTableConfig extends ResultComponentConfig {
+	secondaryResource?: SecondaryResource | null;
+}
+
 export class ResourceMetricsTable extends ResultComponent {
-	constructor(config: ResultComponentConfig, secondaryResourceConfig?: SecondaryResourceConfig) {
+	constructor(config: ResourceMetricsTableConfig) {
 		config.rootCssClass = 'resource-metrics-root';
 		super(config);
 
 		orderedResourceTypes.forEach(resourceType => {
 			let resourceName = resourceNames.get(resourceType);
-			if (resourceType == ResourceType.ResourceTypeGenericResource && secondaryResourceConfig !== undefined) {
-				resourceName = secondaryResourceConfig.name
+			if (resourceType == ResourceType.ResourceTypeGenericResource && !!config.secondaryResource) {
+				resourceName = config.secondaryResource.name;
 			}
 
 			const containerElem = (
