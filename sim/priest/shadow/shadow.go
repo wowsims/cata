@@ -40,7 +40,7 @@ func NewShadowPriest(character *core.Character, options *proto.Player) *ShadowPr
 	}
 
 	spriest.ShadowOrbs = spriest.RegisterSecondaryResourceBar(core.SecondaryResourceConfig{
-		Type: core.ShadowOrbs,
+		Type: proto.SecondaryResourceType_SecondaryResourceTypeShadowOrbs,
 		Max:  3,
 	})
 	return spriest
