@@ -63,7 +63,6 @@ func makeExclusiveAllStatPercentBuff(unit *Unit, label string, actionID ActionID
 		[]StatConfig{
 			{stats.Agility, value, true},
 			{stats.Strength, value, true},
-			{stats.Stamina, value, true},
 			{stats.Intellect, value, true},
 		}})
 }
