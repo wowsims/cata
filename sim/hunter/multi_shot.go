@@ -54,12 +54,9 @@ func (hunter *Hunter) registerMultiShotSpell() {
 
 					//Serpent Spread
 					if hunter.Spec == proto.Spec_SpecSurvivalHunter {
-						duration := 15 * time.Second
 
 						ss := hunter.SerpentSting.Dot(curTarget)
-						if !ss.IsActive() || ss.RemainingDuration(sim) <= duration {
-							hunter.ImprovedSerpentSting.Cast(sim, curTarget)
-						}
+						hunter.ImprovedSerpentSting.Cast(sim, curTarget)
 						ss.BaseTickCount = 5
 						ss.Apply(sim)
 					}
