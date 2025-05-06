@@ -378,6 +378,7 @@ export class EquippedItem {
 
 		if (this._randomSuffix) {
 			const randomPropPoints = this.getRandomPropPoints();
+			item.randPropPoints = randomPropPoints;
 			item.stats = item.stats.map((stat, index) =>
 				this._randomSuffix!.stats[index] > 0 ? Math.floor((this._randomSuffix!.stats[index] * randomPropPoints) / 10000) : stat,
 			);
