@@ -82,7 +82,6 @@ export const OtherDefaults = {
 	distanceFromTarget: 20,
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
-	darkIntentUptime: 100,
 };
 
 export const PresetBuildPreraid = PresetUtils.makePresetBuild('Balance Pre-raid', {

@@ -165,7 +165,6 @@ export const OtherDefaults = {
 	distanceFromTarget: 20,
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
-	darkIntentUptime: 90,
 };
 
 export const P3_PRESET_BUILD = PresetUtils.makePresetBuild('P3 - Default', {

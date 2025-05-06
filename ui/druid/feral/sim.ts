@@ -86,7 +86,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
 			FeralInputs.CannotShredTarget,
-			OtherInputs.DarkIntentUptime,
 		],
 	},
 	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotHands, ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2],

@@ -91,7 +91,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAfflictionWarlock, {
 			WarlockInputs.DetonateSeed(),
 			OtherInputs.InputDelay,
 			OtherInputs.DistanceFromTarget,
-			OtherInputs.DarkIntentUptime,
 			OtherInputs.TankAssignment,
 			OtherInputs.ChannelClipDelay,
 		],

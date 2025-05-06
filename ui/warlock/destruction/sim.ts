@@ -69,7 +69,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 			WarlockInputs.DetonateSeed(),
 			OtherInputs.InputDelay,
 			OtherInputs.DistanceFromTarget,
-			OtherInputs.DarkIntentUptime,
 			OtherInputs.TankAssignment,
 			OtherInputs.ChannelClipDelay,
 		],

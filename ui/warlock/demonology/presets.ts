@@ -119,7 +119,6 @@ export const OtherDefaults = {
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
 	channelClipDelay: 150,
-	darkIntentUptime: 90,
 };
 
 export const PRESET_BUILD_SHADOWBOLT = PresetUtils.makePresetBuild('Shadow Bolt', {

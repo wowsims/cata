@@ -118,7 +118,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 			OtherInputs.DistanceFromTarget,
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
-			OtherInputs.DarkIntentUptime,
 		],
 	},
 	encounterPicker: {

@@ -98,7 +98,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 			WarlockInputs.DetonateSeed(),
 			OtherInputs.InputDelay,
 			OtherInputs.DistanceFromTarget,
-			OtherInputs.DarkIntentUptime,
 			OtherInputs.TankAssignment,
 			OtherInputs.ChannelClipDelay,
 			DemonologyInputs.AssumePrepullMasteryElixir,

@@ -296,7 +296,6 @@ export class SettingsTab extends SimTab {
 					simUI.player.setInFrontOfTarget(eventID, newSettings.inFrontOfTarget);
 					simUI.player.setDistanceFromTarget(eventID, newSettings.distanceFromTarget);
 					simUI.player.setHealingModel(eventID, newSettings.healingModel || HealingModel.create());
-					simUI.player.setDarkIntentUptime(eventID, newSettings.darkIntentUptime);
 				});
 			},
 			changeEmitters: [
@@ -353,7 +352,6 @@ export class SettingsTab extends SimTab {
 			inFrontOfTarget: this.simUI.player.getInFrontOfTarget(),
 			distanceFromTarget: this.simUI.player.getDistanceFromTarget(),
 			healingModel: this.simUI.player.getHealingModel(),
-			darkIntentUptime: this.simUI.player.getDarkIntentUptime(),
 		});
 	}
 

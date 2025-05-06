@@ -112,7 +112,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 			OtherInputs.BurstWindow,
 			OtherInputs.InFrontOfTarget,
 			DeathKnightInputs.StartingRunicPower(),
-			OtherInputs.DarkIntentUptime,
 		],
 	},
 	itemSwapSlots: [
