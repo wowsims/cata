@@ -21,13 +21,13 @@ type Shadowfiend struct {
 }
 
 var baseStats = stats.Stats{
-	stats.Strength:    0,
-	stats.Agility:     0,
-	stats.Stamina:     348,
-	stats.Intellect:   350,
-	stats.AttackPower: 896, // Level 85
-	// stats.Attackpower: 1077 // Level 90
-	stats.Mana: 12295,
+	stats.Strength:  0,
+	stats.Agility:   0,
+	stats.Stamina:   348,
+	stats.Intellect: 350,
+	// stats.AttackPower: 896, // Level 85
+	stats.AttackPower: 1077, // Level 90
+	stats.Mana:        12295,
 
 	// with 3% crit debuff, shadowfiend crits around 9-12% (TODO: verify and narrow down)
 	stats.PhysicalCritPercent: 8,

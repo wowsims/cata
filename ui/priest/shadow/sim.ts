@@ -50,7 +50,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P4_PRESET.gear,
+		gear: Presets.P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.P3_EP_PRESET.epWeights,
 		statCaps: (() => {
@@ -106,17 +106,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		epWeights: [Presets.P3_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents],
-		rotations: [Presets.ROTATION_PRESET_DEFAULT, Presets.P4_T13_4PC_PRESET_DEFAULT],
+		rotations: [Presets.ROTATION_PRESET_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRE_RAID, Presets.P1_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
-		itemSwaps: [Presets.P4_ITEM_SWAP],
-		builds: [Presets.P3_PRESET_BUILD, Presets.P4_PRESET_BUILD],
+		gear: [Presets.P1_PRESET],
+		itemSwaps: [],
+		builds: [],
 	},
 
 	autoRotation: (player: Player<Spec.SpecShadowPriest>): APLRotation => {
-		if (hasT134(player)) {
-			return Presets.P4_T13_4PC_PRESET_DEFAULT.rotation.rotation!;
-		}
 		return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
 
@@ -135,12 +132,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					0: Presets.PRE_RAID.gear,
-					1: Presets.P3_PRESET.gear,
+					1: Presets.P1_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					0: Presets.PRE_RAID.gear,
-					1: Presets.P3_PRESET.gear,
+					1: Presets.P1_PRESET.gear,
 				},
 			},
 		},
