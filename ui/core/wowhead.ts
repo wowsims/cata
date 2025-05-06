@@ -49,6 +49,11 @@ export type WowheadTooltipItemParams = {
 	 * */
 	reforgeId?: number;
 	/**
+	 * @description Upgrades
+	 * @see upgd - mapped value from wowhead
+	 * */
+	upgradeStep?: number;
+	/**
 	 * @description Transmogrified to
 	 * @see transmog - mapped value from wowhead
 	 * */
@@ -115,6 +120,9 @@ export const buildWowheadTooltipDataset = async (options: WowheadTooltipItemPara
 		}
 		if (options.randomEnchantmentId) {
 			params.set('rand', String(options.randomEnchantmentId));
+		}
+		if (typeof options.upgradeStep === 'number') {
+			params.set('upgd', String(options.upgradeStep));
 		}
 		if (options.setPieceIds?.length) {
 			params.set('pcs', options.setPieceIds.join(':'));
