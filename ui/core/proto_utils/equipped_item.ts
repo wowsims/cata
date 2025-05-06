@@ -342,12 +342,11 @@ export class EquippedItem {
 
 	getWithDynamicStats() {
 		const item = this.item;
-		if (typeof this._upgrade === 'number') {
-			const scalingOptions = this._item.scalingOptions[this._upgrade];
-			item.stats = item.stats.map((stat, index) => scalingOptions.stats[index] || stat);
-			item.weaponDamageMin = scalingOptions.weaponDamageMin;
-			item.weaponDamageMax = scalingOptions.weaponDamageMax;
-		}
+		const scalingOptions = this._item.scalingOptions[this._upgrade];
+		item.stats = item.stats.map((stat, index) => scalingOptions.stats[index] || stat);
+		item.weaponDamageMin = scalingOptions.weaponDamageMin;
+		item.weaponDamageMax = scalingOptions.weaponDamageMax;
+
 		if (this._randomSuffix) {
 			const randomPropPoints = this.getRandomPropPoints();
 			item.stats = item.stats.map((stat, index) =>
