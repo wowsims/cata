@@ -366,12 +366,12 @@ export class EquippedItem {
 	}
 
 	getRandomPropPoints(): number {
-		return this.item.scalingOptions[this._upgrade]?.randPropPoints || this.item.randPropPoints;
+		return this.item.scalingOptions[this.upgrade]?.randPropPoints || this.item.randPropPoints;
 	}
 
 	getWithDynamicStats() {
 		const item = this.item;
-		const scalingOptions = this._item.scalingOptions[this._upgrade];
+		const scalingOptions = this._item.scalingOptions[this.upgrade];
 		item.stats = item.stats.map((stat, index) => scalingOptions.stats[index] || stat);
 		item.weaponDamageMin = scalingOptions.weaponDamageMin;
 		item.weaponDamageMax = scalingOptions.weaponDamageMax;
