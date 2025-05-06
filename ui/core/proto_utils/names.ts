@@ -234,20 +234,20 @@ export const resourceColors: Map<ResourceType, string> = new Map([
 	[ResourceType.ResourceTypeGenericResource, '#ffffff'],
 ]);
 
-export function stringToResourceType(str: string): ResourceType {
+export function stringToResourceType(str: string): [ResourceType, SecondaryResourceType | undefined] {
 	for (const [key, val] of resourceNames) {
 		if (val.toLowerCase() == str.toLowerCase()) {
-			return key;
+			return [key, undefined];
 		}
 	}
 
 	for (const val of Object.keys(SecondaryResourceType).filter(key=> isNaN(Number(key)))) {
 		if (val.toLowerCase() == str.toLowerCase()) {
-			return ResourceType.ResourceTypeGenericResource;
+			return [ResourceType.ResourceTypeGenericResource, (<any>SecondaryResourceType)[val]];
 		}
 	}
 
-	return ResourceType.ResourceTypeNone;
+	return [ResourceType.ResourceTypeNone, undefined];
 }
 
 export const sourceNames: Map<SourceFilterOption, string> = new Map([

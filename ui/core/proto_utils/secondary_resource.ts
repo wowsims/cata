@@ -6,7 +6,7 @@ export interface SecondaryResourceConfig {
 	icon: string;
 }
 
-const SECONDARY_RESOURCES = new Map<SecondaryResourceType, SecondaryResourceConfig>([
+export const SECONDARY_RESOURCES = new Map<SecondaryResourceType, SecondaryResourceConfig>([
 	[
 		SecondaryResourceType.SecondaryResourceTypeArcaneCharges,
 		{
