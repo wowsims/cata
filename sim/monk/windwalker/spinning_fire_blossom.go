@@ -38,18 +38,21 @@ func (ww *WindwalkerMonk) registerSpinningFireBlossom() {
 		CritMultiplier:   ww.DefaultCritMultiplier(), // TODO: Spell or melee?
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return ww.ComboPoints() >= 1
+			return ww.GetChi() >= 1
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := ww.CalculateMonkStrikeDamage(sim, spell)
 
-			if ww.DistanceFromTarget >= 10 {
+			if target.DistanceFromTarget >= 10 {
 				baseDamage *= 1.5
 			}
 
+			spell.WaitTravelTime(sim, func(s *core.Simulation) {
+				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit) // TODO: Spell or melee?
+			})
+
 			ww.SpendChi(sim, 1, chiMetrics)
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit) // TODO: Spell or melee?
 		},
 	})
 }

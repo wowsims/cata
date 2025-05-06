@@ -12,22 +12,6 @@ func (monk *Monk) applyGlyphs() {
 		monk.registerGlyphOfFistsOfFury()
 	}
 
-	if monk.HasMajorGlyph(proto.MonkMajorGlyph_GlyphOfTargetedExpulsion) {
-		monk.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Pct,
-			ClassMask:  MonkSpellExpelHarm,
-			FloatValue: -0.5,
-		})
-	}
-
-	if monk.HasMajorGlyph(proto.MonkMajorGlyph_GlyphOfTargetedExpulsion) {
-		monk.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Pct,
-			ClassMask:  MonkSpellExpelHarm,
-			FloatValue: -0.5,
-		})
-	}
-
 	if monk.HasMajorGlyph(proto.MonkMajorGlyph_GlyphOfFortuitousSpheres) {
 		monk.registerGlyphOfFortuitousSpheres()
 	}

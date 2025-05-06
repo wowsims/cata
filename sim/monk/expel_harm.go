@@ -36,7 +36,9 @@ func (monk *Monk) registerExpelHarm() {
 		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealDamage(sim, target, healingDone, spell.OutcomeMagicHitAndCrit)
+			spell.WaitTravelTime(sim, func(s *core.Simulation) {
+				spell.CalcAndDealDamage(sim, target, healingDone, spell.OutcomeMagicHitAndCrit)
+			})
 		},
 	})
 

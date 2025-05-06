@@ -62,7 +62,7 @@ func (bm *BrewmasterMonk) registerGuard() {
 		},
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return bm.StanceMatches(monk.SturdyOx) && bm.ComboPoints() >= 2
+			return bm.StanceMatches(monk.SturdyOx) && bm.GetChi() >= 2
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

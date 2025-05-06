@@ -56,10 +56,10 @@ func (bm *BrewmasterMonk) registerBrewmasterTraining() {
 		Callback:       core.CallbackOnSpellHitDealt,
 		Outcome:        core.OutcomeLanded,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			wasActive := bm.ShuffleAura.IsActive()
-			bm.ShuffleAura.Activate(sim)
-			if wasActive {
+			if bm.ShuffleAura.IsActive() {
 				bm.ShuffleAura.UpdateExpires(bm.ShuffleAura.ExpiresAt() + 6*time.Second)
+			} else {
+				bm.ShuffleAura.Activate(sim)
 			}
 		},
 	})
@@ -72,7 +72,7 @@ func (bm *BrewmasterMonk) registerElusiveBrew() {
 	stackingAura := core.MakePermanent(bm.RegisterAura(core.Aura{
 		Label:     "Brewing: Elusive Brew" + bm.Label,
 		ActionID:  stackActionID,
-		Duration:  core.NeverExpires,
+		Duration:  30 * time.Second,
 		MaxStacks: 15,
 	}))
 
@@ -168,8 +168,6 @@ func (bm *BrewmasterMonk) registerGiftOfTheOx() {
 		DamageMultiplier: 1,
 		CritMultiplier:   1,
 
-		BonusCoefficient: 0.2508,
-
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				NonEmpty: true,
@@ -181,7 +179,7 @@ func (bm *BrewmasterMonk) registerGiftOfTheOx() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			heal := bm.CalcScalingSpellDmg(4.5) + spell.MeleeAttackPower()*spell.BonusCoefficient
+			heal := bm.CalcScalingSpellDmg(4.5) + spell.MeleeAttackPower()*0.2508
 			spell.CalcAndDealHealing(sim, spell.Unit, heal, spell.OutcomeHealing)
 			giftOfTheOxStackingAura.RemoveStack(sim)
 		},
@@ -201,7 +199,8 @@ func (bm *BrewmasterMonk) registerGiftOfTheOx() {
 			// https://www.wowhead.com/blue-tracker/topic/beta-class-balance-analysis-5889309137#59115992048
 			// https://web.archive.org/web/20130801205930/http://elitistjerks.com/f99/t131791-like_water_brewmasters_resource_8_1_13_a/#Gift_of_the_Ox
 			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) || spell.Matches(monk.MonkSpellTigerStrikes) {
-				procChance = core.Ternary(bm.HandType == proto.HandType_HandTypeOneHand, 0.051852, 0.06)
+				weapon := core.Ternary(spell.IsMH(), bm.MainHand(), bm.OffHand())
+				procChance = core.Ternary(bm.HandType == proto.HandType_HandTypeOneHand, 0.051852, 0.06) * weapon.SwingSpeed
 			} else if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) {
 				procChance = 0.10
 			}

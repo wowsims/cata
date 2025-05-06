@@ -57,10 +57,8 @@ func (monk *Monk) NewXuen() *Xuen {
 			},
 		},
 
-		BonusCoefficient: 0.505,
-
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := monk.CalcScalingSpellDmg(0.293) + xuen.GetStat(stats.AttackPower)*spell.BonusCoefficient
+			baseDamage := monk.CalcScalingSpellDmg(0.293) + xuen.GetStat(stats.AttackPower)*0.505
 			for index, target := range sim.Encounter.TargetUnits {
 				if index > 3 {
 					break

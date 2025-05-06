@@ -37,7 +37,7 @@ func (monk *Monk) registerTouchOfDeath() {
 		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return (hasGlyph || monk.ComboPoints() >= 3) && sim.GetRemainingDuration() <= time.Second*1
+			return (hasGlyph || monk.GetChi() >= 3) && sim.GetRemainingDuration() <= time.Second*1
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

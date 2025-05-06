@@ -28,7 +28,7 @@ func (bm *BrewmasterMonk) registerPurifyingBrew() {
 		},
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return bm.StanceMatches(monk.SturdyOx) && (bm.ComboPoints() >= 1 || bm.T15Brewmaster4P.IsActive())
+			return bm.StanceMatches(monk.SturdyOx) && (bm.GetChi() >= 1 || bm.T15Brewmaster4P.IsActive())
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

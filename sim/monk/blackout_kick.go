@@ -59,7 +59,7 @@ func (monk *Monk) registerBlackoutKick() {
 		CritMultiplier:   monk.DefaultCritMultiplier(),
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return monk.ComboPoints() >= 2 || monk.ComboBreakerBlackoutKickAura.IsActive()
+			return monk.GetChi() >= 2 || monk.ComboBreakerBlackoutKickAura.IsActive()
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

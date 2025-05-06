@@ -75,7 +75,7 @@ var ItemSetFireCharmBattlegear = core.NewItemSet(core.ItemSet{
 				ICD:        100 * time.Millisecond,
 				SpellFlags: SpellFlagBuilder,
 				Callback:   core.CallbackOnSpellHitDealt,
-				Outcome:    core.OutcomeHit,
+				Outcome:    core.OutcomeLanded,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					monk.AddEnergy(sim, 10, energyMetrics)
 				},

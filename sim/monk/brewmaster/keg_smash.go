@@ -45,27 +45,16 @@ func (bm *BrewmasterMonk) registerKegSmash() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := bm.CalculateMonkStrikeDamage(sim, spell)
-
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-
-			if !result.Landed() {
-				spell.IssueRefund(sim)
-				return
-			}
-
-			bm.AddChi(sim, spell, 2, chiMetrics)
-			spell.DealOutcome(sim, result)
-
-			bm.DizzyingHazeAuras.Get(target).Activate(sim)
-			for _, otherTarget := range sim.Encounter.TargetUnits {
-				if otherTarget != target {
-					result := spell.CalcAndDealDamage(sim, otherTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			spell.WaitTravelTime(sim, func(s *core.Simulation) {
+				for _, enemyTarget := range sim.Encounter.TargetUnits {
+					baseDamage := bm.CalculateMonkStrikeDamage(sim, spell)
+					result := spell.CalcAndDealDamage(sim, enemyTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 					if result.Landed() {
-						bm.DizzyingHazeAuras.Get(otherTarget).Activate(sim)
+						bm.DizzyingHazeAuras.Get(enemyTarget).Activate(sim)
 					}
 				}
-			}
+				bm.AddChi(sim, spell, 2, chiMetrics)
+			})
 		},
 	})
 }

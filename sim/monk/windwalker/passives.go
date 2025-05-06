@@ -83,58 +83,6 @@ func (ww *WindwalkerMonk) registerComboBreaker() {
 		118864,
 		monk.MonkSpellTigerPalm,
 	)
-
-	// ww.ComboBreakerBlackoutKickAura = ww.RegisterAura(core.Aura{
-	// 	Label:    "Combo Breaker: Blackout Kick" + ww.Label,
-	// 	ActionID: core.ActionID{SpellID: 116768},
-	// 	Duration: time.Second * 20,
-
-	// 	OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-	// 		if !spell.Matches(monk.MonkSpellBlackoutKick) || !result.Landed() {
-	// 			return
-	// 		}
-
-	// 		ww.ComboBreakerBlackoutKickAura.Deactivate(sim)
-	// 	},
-	// })
-
-	// ww.ComboBreakerTigerPalmAura = ww.RegisterAura(core.Aura{
-	// 	Label:    "Combo Breaker: Tiger Palm" + ww.Label,
-	// 	ActionID: core.ActionID{SpellID: 118864},
-	// 	Duration: time.Second * 20,
-
-	// 	OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-	// 		if !spell.Matches(monk.MonkSpellTigerPalm) || !result.Landed() {
-	// 			return
-	// 		}
-
-	// 		ww.ComboBreakerTigerPalmAura.Deactivate(sim)
-	// 	},
-	// })
-
-	// core.MakeProcTriggerAura(&ww.Unit, core.ProcTrigger{
-	// 	Name:           "Combo Breaker: Blackout Kick Trigger" + ww.Label,
-	// 	Callback:       core.CallbackOnSpellHitDealt,
-	// 	ClassSpellMask: monk.MonkSpellJab,
-	// 	Outcome:        core.OutcomeLanded,
-	// 	ProcChance:     0.12,
-
-	// 	Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-	// 		ww.ComboBreakerBlackoutKickAura.Activate(sim)
-	// 	},
-	// })
-
-	// core.MakeProcTriggerAura(&ww.Unit, core.ProcTrigger{
-	// 	Name:           "Combo Breaker: Tiger Palm Trigger" + ww.Label,
-	// 	Callback:       core.CallbackOnSpellHitDealt,
-	// 	ClassSpellMask: monk.MonkSpellJab,
-	// 	Outcome:        core.OutcomeLanded,
-	// 	ProcChance:     0.12,
-
-	// 	Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-	// 		ww.ComboBreakerTigerPalmAura.Activate(sim)
-	// 	},
-	// })
 }
 
 func (ww *WindwalkerMonk) registerTigerStrikes() {

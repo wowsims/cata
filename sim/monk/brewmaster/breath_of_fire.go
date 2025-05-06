@@ -34,7 +34,6 @@ func (bm *BrewmasterMonk) registerBreathOfFire() {
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		CritMultiplier:   bm.DefaultCritMultiplier(),
-		BonusCoefficient: 0.3626,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -44,10 +43,9 @@ func (bm *BrewmasterMonk) registerBreathOfFire() {
 			NumberOfTicks:       8,
 			TickLength:          time.Millisecond * 2000,
 			AffectedByCastSpeed: false,
-			BonusCoefficient:    0.1626,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				baseDamage := bm.CalcAndRollDamageRange(sim, 0.475, 0.242) + dot.BonusCoefficient*dot.Spell.MeleeAttackPower()
+				baseDamage := bm.CalcAndRollDamageRange(sim, 0.475, 0.242) + 0.1626*dot.Spell.MeleeAttackPower()
 				dot.Snapshot(target, baseDamage)
 			},
 
@@ -57,24 +55,23 @@ func (bm *BrewmasterMonk) registerBreathOfFire() {
 		},
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return bm.StanceMatches(monk.SturdyOx) && bm.ComboPoints() >= 2
+			return bm.StanceMatches(monk.SturdyOx) && bm.GetChi() >= 2
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := bm.CalcAndRollDamageRange(sim, 1.475, 0.242) + spell.BonusCoefficient*spell.MeleeAttackPower()
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			baseDamage := bm.CalcAndRollDamageRange(sim, 1.475, 0.242) + 0.3626*spell.MeleeAttackPower()
 
-			bm.SpendChi(sim, 2, chiMetrics)
-
-			if result.Landed() {
-				spell.DealDamage(sim, result)
-
-				for _, enemyTarget := range sim.Encounter.TargetUnits {
+			for _, enemyTarget := range sim.Encounter.TargetUnits {
+				result := spell.CalcDamage(sim, enemyTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				if result.Landed() {
+					spell.DealDamage(sim, result)
 					if bm.DizzyingHazeAuras.Get(enemyTarget).IsActive() {
 						spell.Dot(enemyTarget).Apply(sim)
 					}
 				}
 			}
+
+			bm.SpendChi(sim, 2, chiMetrics)
 		},
 	})
 }

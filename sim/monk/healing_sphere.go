@@ -62,8 +62,6 @@ func (monk *Monk) registerHealingSphere() {
 
 		DamageMultiplier: 1,
 
-		BonusCoefficient: 0.75,
-
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				NonEmpty: true,
@@ -75,7 +73,7 @@ func (monk *Monk) registerHealingSphere() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			heal := monk.CalcScalingSpellDmg(9.122) + spell.MeleeAttackPower()*spell.BonusCoefficient
+			heal := monk.CalcScalingSpellDmg(9.122) + spell.MeleeAttackPower()*0.75
 			spell.CalcAndDealHealing(sim, spell.Unit, heal, spell.OutcomeHealing)
 			removeHealingSphere(sim)
 		},

@@ -108,6 +108,9 @@ func (monk *Monk) SpendChi(sim *core.Simulation, chiToSpend int32, metrics *core
 		monk.onChiSpent(sim, chiToSpend)
 	}
 }
+func (monk *Monk) GetChi() int32 {
+	return monk.GetChi()
+}
 
 func (monk *Monk) RegisterOnChiSpent(onChiSpent OnChiSpent) {
 	monk.onChiSpent = onChiSpent

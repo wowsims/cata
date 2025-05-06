@@ -58,7 +58,7 @@ func (ww *WindwalkerMonk) registerRisingSunKick() {
 		CritMultiplier:   ww.DefaultCritMultiplier(),
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return ww.ComboPoints() >= 2
+			return ww.GetChi() >= 2
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
