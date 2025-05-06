@@ -30,7 +30,7 @@ func (monk *Monk) NewXuen() *Xuen {
 	}
 
 	xuen.OnPetEnable = func(sim *core.Simulation) {
-		xuen.AutoAttacks.PauseMeleeBy(sim, time.Duration(1))
+		xuen.AutoAttacks.PauseMeleeBy(sim, 500*time.Millisecond)
 	}
 
 	xuen.DelayInitialInheritance(time.Millisecond * 500)
