@@ -53,6 +53,7 @@ type Druid struct {
 	Maul                  *DruidSpell
 	MaulQueueSpell        *DruidSpell
 	Moonfire              *DruidSpell
+	NaturesVigil          *DruidSpell
 	Pulverize             *DruidSpell
 	Rebirth               *DruidSpell
 	Rake                  *DruidSpell
