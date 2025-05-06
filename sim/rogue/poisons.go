@@ -41,7 +41,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 
 	// Register the hit as a distinct spell for Results UI separation
 	dpHit := rogue.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 2818, Tag: 1},
+		ActionID:       core.ActionID{SpellID: 2818, Tag: 2},
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamageProc,
 		ClassSpellMask: RogueSpellDeadlyPoison,
@@ -62,7 +62,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 	})
 
 	rogue.DeadlyPoison = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 2818},
+		ActionID:       core.ActionID{SpellID: 2818, Tag: 1},
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamageProc,
 		ClassSpellMask: RogueSpellDeadlyPoison,

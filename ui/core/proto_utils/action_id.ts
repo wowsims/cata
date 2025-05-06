@@ -368,7 +368,7 @@ export class ActionId {
 				}
 				break;
 			case 'Deadly Poison':
-				if (tag == 0) {
+				if (tag == 1) {
 					name += ' (DoT)';
 				} else {
 					name += ' (Hit)';
@@ -963,7 +963,7 @@ const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([
 	[JSON.stringify({ spellId: 879, tag: 3 }), { spellId: 54934 }], // Paladin - Glyph of Exorcism
 	[JSON.stringify({ spellId: 49020, tag: 3 }), { spellId: 99000 }], // Death Knight - T12 4P Flaming Torment
 	[JSON.stringify({ spellId: 55090, tag: 3 }), { spellId: 99000 }], // Death Knight - T12 4P Flaming Torment
-	[JSON.stringify({ spellId: 2818, tag: 1 }), { spellId: 113780 }], // Rogue - Deadly Poison - Hit
+	[JSON.stringify({ spellId: 2818, tag: 2 }), { spellId: 113780 }], // Rogue - Deadly Poison - Hit
 	[JSON.stringify({ spellId: 121411, tag: 7 }), { spellId: 122233 }], // Rogue - Crimson Tempest - DoT
 	[JSON.stringify({ spellId: 121471, tag: 1 }), { spellId: 121473 }], // Rogue - Shadow Blade
 
