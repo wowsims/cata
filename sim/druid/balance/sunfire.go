@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	SunfireBonusCoeff = 2.388
+	SunfireBonusCoeff = 0.24
 
 	SunfireDotCoeff = 0.24
 

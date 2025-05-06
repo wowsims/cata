@@ -4,7 +4,15 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
+)
+
+const (
+	MoonfireBonusCoeff = 2.388
+
+	MoonfireDotCoeff = 0.24
+
+	MoonfireImpactCoeff    = 0.571
+	MoonfireImpactVariance = 0.2
 )
 
 func (druid *Druid) registerMoonfireSpell() {
@@ -28,14 +36,13 @@ func (druid *Druid) registerMoonfireDoTSpell() {
 			Aura: core.Aura{
 				Label: "Moonfire",
 			},
-			NumberOfTicks:       6,
+			NumberOfTicks:       7,
 			TickLength:          time.Second * 2,
 			AffectedByCastSpeed: true,
-			BonusCoefficient:    0.18,
+			BonusCoefficient:    MoonfireBonusCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				baseDamage := core.CalcScalingSpellAverageEffect(proto.Class_ClassDruid, 0.095)
-				dot.Snapshot(target, baseDamage)
+				dot.Snapshot(target, druid.CalcScalingSpellDmg(MoonfireDotCoeff))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
@@ -74,11 +81,10 @@ func (druid *Druid) registerMoonfireImpactSpell() {
 
 		CritMultiplier:   druid.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
-		BonusCoefficient: 0.18,
+		BonusCoefficient: MoonfireBonusCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			min, max := core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassDruid, 0.221, 0.2)
-			baseDamage := sim.Roll(min, max)
+			baseDamage := druid.CalcAndRollDamageRange(sim, MoonfireImpactCoeff, MoonfireImpactVariance)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
