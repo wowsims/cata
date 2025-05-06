@@ -48,7 +48,6 @@ enum SecondaryResourceType {
 	SecondaryResourceTypeNone          = 0;
 	SecondaryResourceTypeArcaneCharges  = 36032;
 	SecondaryResourceTypeShadowOrbs     = 95740;
-	SecondaryResourceTypeChi            = 97272;
 	SecondaryResourceTypeDemonicFury    = 104315;
 	SecondaryResourceTypeBurningEmbers  = 108647;
 	SecondaryResourceTypeSoulShards     = 117198;
