@@ -183,11 +183,11 @@ func (unit *Unit) NewDefaultSecondaryResourceBar(config SecondaryResourceConfig)
 }
 
 func (unit *Unit) RegisterSecondaryResourceBar(config SecondaryResourceBar) {
-	if unit.SecondaryResourceBar != nil {
+	if unit.secondaryResourceBar != nil {
 		panic("A secondary resource bar has already been registered.")
 	}
 
-	unit.SecondaryResourceBar = config
+	unit.secondaryResourceBar = config
 }
 
 func (unit *Unit) RegisterNewDefaultSecondaryResourceBar(config SecondaryResourceConfig) SecondaryResourceBar {
@@ -197,5 +197,5 @@ func (unit *Unit) RegisterNewDefaultSecondaryResourceBar(config SecondaryResourc
 }
 
 func (unit *Unit) GetSecondaryResourceBar() SecondaryResourceBar {
-	return unit.SecondaryResourceBar
+	return unit.secondaryResourceBar
 }
