@@ -1,28 +1,34 @@
-package druid
+package balance
 
 import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/druid"
 )
 
-func (druid *Druid) registerStarsurgeSpell() {
+const (
+	StarsurgeVariance   = 0.319
+	StarsurgeCoeff      = 4.54
+	StarsurgeBonusCoeff = 2.388
+)
+
+func (moonkin *BalanceDruid) registerStarsurgeSpell() {
 	//druid.SetSpellEclipseEnergy(DruidSpellStarsurge, StarsurgeBaseEnergyGain, StarsurgeBaseEnergyGain)
 
-	druid.Starsurge = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
+	moonkin.Starsurge = moonkin.RegisterSpell(druid.Humanoid|druid.Moonkin, core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 78674},
 		SpellSchool:    core.SpellSchoolArcane | core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
-		ClassSpellMask: DruidSpellStarsurge,
+		ClassSpellMask: druid.DruidSpellStarsurge,
 		Flags:          core.SpellFlagAPL,
 		MissileSpeed:   20,
 
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           druid.DefaultCritMultiplier(),
+		CritMultiplier:           moonkin.DefaultCritMultiplier(),
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 11,
+			BaseCostPercent: 15.5,
 			PercentModifier: 100,
 		},
 
@@ -32,24 +38,30 @@ func (druid *Druid) registerStarsurgeSpell() {
 				CastTime: time.Second * 2,
 			},
 			CD: core.Cooldown{
-				Timer:    druid.NewTimer(),
+				Timer:    moonkin.NewTimer(),
 				Duration: time.Second * 15,
 			},
 		},
 
 		ThreatMultiplier: 1,
 
-		BonusCoefficient: 1.228,
+		BonusCoefficient: StarsurgeBonusCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			min, max := core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassDruid, 1.228, 0.32)
-			baseDamage := sim.Roll(min, max)
+
+			baseDamage := moonkin.CalcAndRollDamageRange(sim, StarsurgeCoeff, StarsurgeVariance)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
-			if result.Landed() {
-				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-					spell.DealDamage(sim, result)
-				})
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				spell.DealDamage(sim, result)
+			})
+
+			if result.Landed() && result.DidCrit() {
+				sunfireDot := moonkin.Sunfire.Dot(target)
+				moonfireDot := moonkin.Moonfire.Dot(target)
+
+				tryExtendDot(moonfireDot)
+				tryExtendDot(sunfireDot)
 			}
 		},
 	})

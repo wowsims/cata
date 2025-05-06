@@ -4,13 +4,14 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/druid"
 )
 
-const variance = 0.25
-const coeff = 4.456
-const bonusCoeff = 2.166
+const (
+	StarfireVariance   = 0.25
+	StarfireCoeff      = 4.456
+	StarfireBonusCoeff = 2.166
+)
 
 func (moonkin *BalanceDruid) registerStarfireSpell() {
 	//druid.SetSpellEclipseEnergy(moonkin.Starfire, moonkin.StarfireBaseEnergyGain, moonkin.StarfireBaseEnergyGain)
@@ -34,7 +35,7 @@ func (moonkin *BalanceDruid) registerStarfireSpell() {
 			},
 		},
 
-		BonusCoefficient: bonusCoeff,
+		BonusCoefficient: StarfireBonusCoeff,
 
 		DamageMultiplier: 1,
 
@@ -43,18 +44,15 @@ func (moonkin *BalanceDruid) registerStarfireSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			min, max := core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassDruid, 1.383, 0.22)
-			baseDamage := sim.Roll(min, max)
+			baseDamage := moonkin.CalcAndRollDamageRange(sim, StarfireCoeff, StarfireVariance)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
-			if result.Landed() {
-				// starfire crits extend moonfire by one tick
-				// if result.DidCrit() {
-				// 	moonfireDot := druid.Moonfire.Dot(target)
-				// 	tryExtendDot(moonfireDot)
-				// }
+			spell.DealDamage(sim, result)
 
-				spell.DealDamage(sim, result)
+			if result.Landed() && result.DidCrit() {
+				moonfireDot := moonkin.Moonfire.Dot(target)
+
+				tryExtendDot(moonfireDot)
 			}
 		},
 	})

@@ -58,7 +58,9 @@ type BalanceDruid struct {
 	*druid.Druid
 	Options *proto.BalanceDruid_Options
 
-	Starfire *druid.DruidSpell
+	Starfire  *druid.DruidSpell
+	Starsurge *druid.DruidSpell
+	Sunfire   *druid.DruidSpell
 }
 
 func (moonkin *BalanceDruid) GetDruid() *druid.Druid {

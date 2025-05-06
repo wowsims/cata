@@ -32,7 +32,7 @@ func (moonkin *BalanceDruid) registerShootingStars() {
 		ActionID: core.ActionID{SpellID: 93400},
 		Duration: time.Second * 12,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask != druid.DruidSpellStarsurge {
+			if !spell.Matches(druid.DruidSpellStarsurge) {
 				return
 			}
 

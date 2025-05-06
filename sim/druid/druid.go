@@ -258,13 +258,13 @@ func (druid *Druid) Initialize() {
 func (druid *Druid) RegisterBalanceSpells() {
 	druid.registerHurricaneSpell()
 	druid.registerMoonfireSpell()
-	druid.registerSunfireSpell()
+	//druid.registerSunfireSpell()
 	// druid.registerStarfireSpell()
 	druid.registerWrathSpell()
 	// druid.registerStarfallSpell()
 	// druid.registerTyphoonSpell()
 	// druid.registerForceOfNature()
-	druid.registerStarsurgeSpell()
+	//druid.registerStarsurgeSpell()
 	druid.registerWildMushrooms()
 }
 

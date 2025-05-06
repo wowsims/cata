@@ -1,41 +1,49 @@
-package druid
+package balance
 
 import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/druid"
 )
 
-func (druid *Druid) registerSunfireSpell() {
-	druid.registerSunfireImpactSpell()
-	druid.registerSunfireDoTSpell()
+const (
+	SunfireBonusCoeff = 2.388
+
+	SunfireDotCoeff = 0.24
+
+	SunfireImpactCoeff    = 0.571
+	SunfireImpactVariance = 0.2
+)
+
+func (moonkin *BalanceDruid) registerSunfireSpell() {
+	moonkin.registerSunfireImpactSpell()
+	moonkin.registerSunfireDoTSpell()
 }
 
-func (druid *Druid) registerSunfireDoTSpell() {
-	druid.Sunfire.RelatedDotSpell = druid.Unit.RegisterSpell(core.SpellConfig{
+func (moonkin *BalanceDruid) registerSunfireDoTSpell() {
+	moonkin.Sunfire.RelatedDotSpell = moonkin.Unit.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 93402}.WithTag(1),
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
-		ClassSpellMask: DruidSpellSunfireDoT,
+		ClassSpellMask: druid.DruidSpellSunfireDoT,
 		Flags:          core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   druid.DefaultCritMultiplier(),
+		CritMultiplier:   moonkin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "Sunfire",
 			},
-			NumberOfTicks:       6,
+			NumberOfTicks:       7,
 			TickLength:          time.Second * 2,
 			AffectedByCastSpeed: true,
-			BonusCoefficient:    0.18,
+			BonusCoefficient:    SunfireBonusCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				baseDamage := core.CalcScalingSpellAverageEffect(proto.Class_ClassDruid, 0.095)
-				dot.Snapshot(target, baseDamage)
+				dot.Snapshot(target, moonkin.CalcScalingSpellDmg(SunfireDotCoeff))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
@@ -51,13 +59,13 @@ func (druid *Druid) registerSunfireDoTSpell() {
 	})
 }
 
-func (druid *Druid) registerSunfireImpactSpell() {
+func (moonkin *BalanceDruid) registerSunfireImpactSpell() {
 
-	druid.Sunfire = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
+	moonkin.Sunfire = moonkin.RegisterSpell(druid.Humanoid|druid.Moonkin, core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 93402},
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
-		ClassSpellMask: DruidSpellSunfire,
+		ClassSpellMask: druid.DruidSpellSunfire,
 		Flags:          core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
@@ -72,17 +80,16 @@ func (druid *Druid) registerSunfireImpactSpell() {
 
 		DamageMultiplier: 1,
 
-		CritMultiplier:   druid.DefaultCritMultiplier(),
+		CritMultiplier:   moonkin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
-		BonusCoefficient: 0.18,
+		BonusCoefficient: SunfireBonusCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			min, max := core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassDruid, 0.221, 0.2)
-			baseDamage := sim.Roll(min, max)
+			baseDamage := moonkin.CalcAndRollDamageRange(sim, SunfireImpactCoeff, SunfireImpactVariance)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
-				druid.Sunfire.RelatedDotSpell.Cast(sim, target)
+				moonkin.Sunfire.RelatedDotSpell.Cast(sim, target)
 			}
 
 			spell.DealDamage(sim, result)
