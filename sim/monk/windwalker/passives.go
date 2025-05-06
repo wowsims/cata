@@ -49,7 +49,7 @@ func (ww *WindwalkerMonk) registerComboBreaker() {
 		Duration: time.Second * 20,
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ClassSpellMask&monk.MonkSpellBlackoutKick == 0 || !result.Landed() {
+			if !spell.Matches(monk.MonkSpellBlackoutKick) || !result.Landed() {
 				return
 			}
 
@@ -63,7 +63,7 @@ func (ww *WindwalkerMonk) registerComboBreaker() {
 		Duration: time.Second * 20,
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ClassSpellMask&monk.MonkSpellTigerPalm == 0 || !result.Landed() {
+			if !spell.Matches(monk.MonkSpellTigerPalm) || !result.Landed() {
 				return
 			}
 
@@ -140,7 +140,7 @@ func (ww *WindwalkerMonk) registerTigerStrikes() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// TODO: Verify if it actually procs even on misses, seems so based on logs and simc
-			if !tigerStrikesBuff.IsActive() /*|| !result.Landed()*/ || spell.ClassSpellMask&monk.MonkSpellTigerStrikes != 0 {
+			if !tigerStrikesBuff.IsActive() /*|| !result.Landed()*/ || spell.Matches(monk.MonkSpellTigerStrikes) {
 				return
 			}
 
@@ -175,7 +175,7 @@ func (ww *WindwalkerMonk) registerTigerStrikes() {
 		ProcChance: 1,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ClassSpellMask&monk.MonkSpellTigerStrikes != 0 {
+			if spell.Matches(monk.MonkSpellTigerStrikes) {
 				return
 			}
 

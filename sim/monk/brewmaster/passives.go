@@ -200,7 +200,7 @@ func (bm *BrewmasterMonk) registerGiftOfTheOx() {
 			// https://www.wowhead.com/blue-tracker/topic/beta-class-balance-analysis-pt-ii-6397900436#2
 			// https://www.wowhead.com/blue-tracker/topic/beta-class-balance-analysis-5889309137#59115992048
 			// https://web.archive.org/web/20130801205930/http://elitistjerks.com/f99/t131791-like_water_brewmasters_resource_8_1_13_a/#Gift_of_the_Ox
-			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) || spell.ClassSpellMask == monk.MonkSpellTigerStrikes {
+			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) || spell.Matches(monk.MonkSpellTigerStrikes) {
 				procChance = core.Ternary(bm.HandType == proto.HandType_HandTypeOneHand, 0.051852, 0.06)
 			} else if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) {
 				procChance = 0.10
