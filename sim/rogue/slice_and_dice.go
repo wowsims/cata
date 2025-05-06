@@ -66,6 +66,7 @@ func (rogue *Rogue) registerSliceAndDice() {
 			Aura: core.Aura{
 				Label:    "Slice and Dice",
 				Duration: rogue.sliceAndDiceDurations[5],
+				ActionID: core.ActionID{SpellID: 79152},
 			},
 			NumberOfTicks:       0,
 			TickLength:          time.Second * 2,
@@ -79,13 +80,18 @@ func (rogue *Rogue) registerSliceAndDice() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			rogue.SliceAndDiceAura.Duration = rogue.sliceAndDiceDurations[rogue.ComboPoints()]
-			hot := spell.Hot(spell.Unit)
-			hot.Duration = rogue.SliceAndDiceAura.Duration
-			hot.BaseTickCount = 3 + 3*rogue.ComboPoints()
+			spell.RelatedSelfBuff.Duration = rogue.sliceAndDiceDurations[rogue.ComboPoints()]
 			rogue.ApplyFinisher(sim, spell)
-			rogue.SliceAndDiceAura.Activate(sim)
-			hot.Activate(sim)
+			spell.RelatedSelfBuff.Activate(sim)
+
+			if rogue.Spec == proto.Spec_SpecSubtletyRogue {
+				hot := spell.Hot(spell.Unit)
+				hot.Duration = rogue.SliceAndDiceAura.Duration
+				hot.BaseTickCount = 3 + 3*rogue.ComboPoints()
+				hot.Activate(sim)
+			}
 		},
+
+		RelatedSelfBuff: rogue.SliceAndDiceAura,
 	})
 }

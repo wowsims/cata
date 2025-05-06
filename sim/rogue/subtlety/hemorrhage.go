@@ -40,7 +40,7 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 				dot.SnapshotPhysical(target, lastHemoDamage*0.0625)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
 		},
 
