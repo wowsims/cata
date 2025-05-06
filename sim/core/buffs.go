@@ -1,9 +1,6 @@
 package core
 
 import (
-	"cmp"
-	"slices"
-	"strconv"
 	"time"
 
 	googleProto "google.golang.org/protobuf/proto"
@@ -66,7 +63,6 @@ func makeExclusiveAllStatPercentBuff(unit *Unit, label string, actionID ActionID
 		[]StatConfig{
 			{stats.Agility, value, true},
 			{stats.Strength, value, true},
-			{stats.Stamina, value, true},
 			{stats.Intellect, value, true},
 		}})
 }
@@ -91,304 +87,139 @@ func makeExclusiveBuff(unit *Unit, config BuffConfig) *Aura {
 }
 
 // Applies buffs that affect individual players.
-func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuffs, individualBuffs *proto.IndividualBuffs) {
-	character := agent.GetCharacter()
+func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuffs, individual *proto.IndividualBuffs) {
+	char := agent.GetCharacter()
+	u := &char.Unit
 
-	// % Stats Buffs
-	// https://www.wowhead.com/mop-classic/spell=1126/mark-of-the-wild
-	// https://www.wowhead.com/mop-classic/spell=20217/blessing-of-kings
-	// https://www.wowhead.com/mop-classic/item=63140/drums-of-the-burning-wild
-	if raidBuffs.BlessingOfKings {
-		BlessingOfKingsAura(&character.Unit)
+	// +10% Attack Power
+	if raidBuffs.HornOfWinter {
+		HornOfWinterAura(u, true, false)
 	}
-
-	if raidBuffs.DrumsOfTheBurningWild {
-		DrumsOfTheBurningWildAura(&character.Unit)
-	}
-
-	if raidBuffs.MarkOfTheWild {
-		MarkOfTheWildAura(&character.Unit)
-	}
-
-	if raidBuffs.LegacyOfTheEmperor {
-		LegacyOfTheEmperorAura(&character.Unit)
-	}
-
-	// Resistances
-	if raidBuffs.ResistanceAura {
-		ResistanceAura(&character.Unit)
-	}
-
-	if raidBuffs.ShadowProtection {
-		ShadowProtectionAura(&character.Unit)
-	}
-
-	if raidBuffs.AspectOfTheWild {
-		AspectOfTheWildAura(&character.Unit)
-	}
-
-	if raidBuffs.ElementalResistanceTotem {
-		ElementalResistanceTotemAura(&character.Unit)
-	}
-
-	// Stamina
-	applyStaminaBuffs(&character.Unit, raidBuffs)
-
-	// Strength and Agility
-	applyStrengthAgilityBuffs(&character.Unit, raidBuffs)
-
-	// Mana
-	if raidBuffs.ArcaneBrilliance {
-		ArcaneBrilliance(&character.Unit)
-	}
-
-	if raidBuffs.FelIntelligence {
-		FelIntelligence(&character.Unit)
-	}
-
-	// Melee haste
-	if raidBuffs.WindfuryTotem {
-		WindfuryTotem(&character.Unit)
-	}
-
-	if raidBuffs.IcyTalons {
-		IcyTalons(&character.Unit)
-	}
-
-	if raidBuffs.HuntingParty {
-		HuntingParty(&character.Unit)
-	}
-
-	// +Crit%
-	if raidBuffs.LeaderOfThePack {
-		LeaderOfThePack(&character.Unit)
-	}
-
-	if raidBuffs.Rampage {
-		Rampage(&character.Unit)
-	}
-
-	if raidBuffs.ElementalOath {
-		ElementalOath(&character.Unit)
-	}
-
-	if raidBuffs.HonorAmongThieves {
-		HonorAmongThieves(&character.Unit)
-	}
-
-	if raidBuffs.TerrifyingRoar {
-		TerrifyingRoar(&character.Unit)
-	}
-
-	if raidBuffs.FuriousHowl {
-		FuriousHowl(&character.Unit)
-	}
-
-	if raidBuffs.LegacyOfTheWhiteTiger {
-		LegacyOfTheWhiteTiger(&character.Unit)
-	}
-
-	// +% Attackpower
-	if raidBuffs.AbominationsMight {
-		AbominationsMightAura(&character.Unit)
-	}
-
-	if raidBuffs.UnleashedRage {
-		UnleashedRageAura(&character.Unit)
-	}
-
 	if raidBuffs.TrueshotAura {
-		TrueShotAura(&character.Unit)
+		TrueShotAura(u)
+	}
+	if raidBuffs.BattleShout {
+		BattleShoutAura(u, true, false)
 	}
 
-	if raidBuffs.BlessingOfMight {
-		BlessingOfMightAura(&character.Unit)
+	// +10% Melee and Ranged Attack Speed
+	if raidBuffs.UnholyAura {
+		UnholyAura(u)
+	}
+	if raidBuffs.CacklingHowl {
+		CacklingHowlAura(u)
+	}
+	if raidBuffs.SerpentsSwiftness {
+		SerpentsSwiftnessAura(u)
+	}
+	if raidBuffs.SwiftbladesCunning {
+		SwiftbladesCunningAura(u)
+	}
+	if raidBuffs.UnleashedRage {
+		UnleashedRageAura(u)
 	}
 
-	// Spell Haste
-	if raidBuffs.MoonkinForm {
-		MoonkinAura(&character.Unit)
+	// +10% Spell Power
+	if raidBuffs.StillWater {
+		StillWaterAura(u)
+	}
+	if raidBuffs.ArcaneBrilliance {
+		ArcaneBrilliance(u)
+	}
+	if raidBuffs.BurningWrath {
+		BurningWrathAura(u)
+	}
+	if raidBuffs.DarkIntent {
+		MakePermanent(DarkIntentAura(u))
 	}
 
+	// +5% Spell Haste
+	if raidBuffs.MoonkinAura {
+		MoonkinAura(u)
+	}
+	if raidBuffs.MindQuickening {
+		MindQuickeningAura(u)
+	}
 	if raidBuffs.ShadowForm {
-		ShadowFormAura(&character.Unit)
+		ShadowFormAura(u)
+	}
+	if raidBuffs.ElementalOath {
+		ElementalOath(u)
 	}
 
-	if raidBuffs.WrathOfAirTotem {
-		WrathOfAirAura(&character.Unit)
+	// +5% Critical Strike Chance
+	if raidBuffs.LeaderOfThePack {
+		LeaderOfThePack(u)
+	}
+	if raidBuffs.TerrifyingRoar {
+		TerrifyingRoar(u)
+	}
+	if raidBuffs.FuriousHowl {
+		FuriousHowl(u)
+	}
+	if raidBuffs.LegacyOfTheWhiteTiger {
+		LegacyOfTheWhiteTiger(u)
 	}
 
-	// Spell Power
-	if raidBuffs.FlametongueTotem {
-		FlametongueTotem(&character.Unit)
+	// +3000 Mastery Rating
+	if raidBuffs.RoarOfCourage {
+		RoarOfCourageAura(u)
+	}
+	if raidBuffs.SpiritBeastBlessing {
+		SpiritBeastBlessingAura(u)
+	}
+	if raidBuffs.BlessingOfMight {
+		BlessingOfMightAura(u)
+	}
+	if raidBuffs.GraceOfAir {
+		GraceOfAirAura(u)
 	}
 
-	// Arcane Brilliance already @Mana Buffs
-	if raidBuffs.DemonicPact {
-		DemonicPact(&character.Unit)
+	// +5% Strength, Agility, Intellect
+	if raidBuffs.MarkOfTheWild {
+		MarkOfTheWildAura(u)
+	}
+	if raidBuffs.EmbraceOfTheShaleSpider {
+		EmbraceOfTheShaleSpiderAura(u)
+	}
+	if raidBuffs.LegacyOfTheEmperor {
+		LegacyOfTheEmperorAura(u)
+	}
+	if raidBuffs.BlessingOfKings {
+		BlessingOfKingsAura(u)
 	}
 
-	if raidBuffs.TotemicWrath {
-		TotemicWrath(&character.Unit)
-	}
+	// Stamina & Strength/Agility secondary grouping
+	applyStaminaBuffs(u, raidBuffs)
 
-	// +DMG%
-	if raidBuffs.ArcaneTactics {
-		ArcaneTactics(&character.Unit)
-	}
-
-	if raidBuffs.FerociousInspiration {
-		FerociousInspiration(&character.Unit)
-	}
-
-	if raidBuffs.Communion {
-		Communion(&character.Unit)
-	}
-
-	// MP5
-	if raidBuffs.ManaSpringTotem {
-		ManaSpringTotem(&character.Unit)
-	}
-
-	// Armor
-	if raidBuffs.DevotionAura {
-		DevotionAura(&character.Unit)
-	}
-
-	if raidBuffs.StoneskinTotem {
-		StoneskinTotem(&character.Unit)
-	}
-
-	// Blessing Of Might @AttackPower&
-	// Fel Inteligenc @Mana+
-
-	var replenishmentActionID ActionID
-	if individualBuffs.VampiricTouch {
-		replenishmentActionID.SpellID = 34914
-	} else if individualBuffs.SoulLeach {
-		replenishmentActionID.SpellID = 30295
-	} else if individualBuffs.Revitalize {
-		replenishmentActionID.SpellID = 48544
-	} else if individualBuffs.EnduringWinter {
-		replenishmentActionID.SpellID = 44561
-	} else if individualBuffs.Communion {
-		replenishmentActionID.SpellID = 31876
-	}
-
-	if !(replenishmentActionID.IsEmptyAction()) {
-		MakePermanent(replenishmentAura(&character.Unit, replenishmentActionID))
-	}
-
-	// 	character.AddStats(stats.Stats{
-	// 		stats.Armor: GetTristateValueFloat(raidBuffs.DevotionAura, 1205, 1807.5),
-	// 	})
-	// }
-
-	if raidBuffs.RetributionAura {
-		RetributionAura(&character.Unit)
-	}
-
-	if len(character.Env.Raid.AllPlayerUnits)-character.Env.Raid.NumTargetDummies == 1 {
+	registerManaTideTotemCD(agent, raidBuffs.ManaTideTotemCount)
+	// Individual cooldowns and major buffs
+	if len(char.Env.Raid.AllPlayerUnits)-char.Env.Raid.NumTargetDummies == 1 {
+		// Major Haste
 		if raidBuffs.Bloodlust {
 			registerBloodlustCD(agent, 2825)
-		} else if raidBuffs.Heroism {
+		}
+		if raidBuffs.Heroism {
 			registerBloodlustCD(agent, 32182)
-		} else if raidBuffs.TimeWarp {
+		}
+		if raidBuffs.TimeWarp {
 			registerBloodlustCD(agent, 80353)
 		}
 
-		registerUnholyFrenzyCD(agent, individualBuffs.UnholyFrenzyCount)
-		registerTricksOfTheTradeCD(agent, individualBuffs.TricksOfTheTrade)
-		registerPowerInfusionCD(agent, individualBuffs.PowerInfusionCount)
-		registerManaTideTotemCD(agent, raidBuffs.ManaTideTotemCount)
-		registerInnervateCD(agent, individualBuffs.InnervateCount)
-		registerDivineGuardianCD(agent, individualBuffs.DivineGuardianCount)
-		registerHandOfSacrificeCD(agent, individualBuffs.HandOfSacrificeCount)
-		registerPainSuppressionCD(agent, individualBuffs.PainSuppressionCount)
-		registerGuardianSpiritCD(agent, individualBuffs.GuardianSpiritCount)
-		registerRallyingCryCD(agent, individualBuffs.RallyingCryCount)
-		registerShatteringThrowCD(agent, individualBuffs.ShatteringThrowCount)
-
-		if individualBuffs.FocusMagic {
-			FocusMagicAura(nil, &character.Unit)
-		}
-
-		if individualBuffs.DarkIntent && character.Unit.Type == PlayerUnit {
-			MakePermanent(DarkIntentAura(&character.Unit, character.Class == proto.Class_ClassWarlock))
-		}
+		// Other individual CDs
+		registerUnholyFrenzyCD(agent, individual.UnholyFrenzyCount)
+		registerTricksOfTheTradeCD(agent, individual.TricksOfTheTrade)
+		registerHandOfSacrificeCD(agent, individual.HandOfSacrificeCount)
+		registerPainSuppressionCD(agent, individual.PainSuppressionCount)
+		registerGuardianSpiritCD(agent, individual.GuardianSpiritCount)
+		registerRallyingCryCD(agent, individual.RallyingCryCount)
+		registerShatteringThrowCD(agent, individual.ShatteringThrowCount)
 	}
 }
 
-func DarkIntentAura(unit *Unit, isWarlock bool) *Aura {
-	var dotDmgEffect *ExclusiveEffect
-	procAura := unit.RegisterAura(Aura{
-		Label:     "Dark Intent Proc",
-		ActionID:  ActionID{SpellID: 85759},
-		Duration:  7 * time.Second,
-		MaxStacks: 3,
-		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks, newStacks int32) {
-			dotDmgEffect.SetPriority(sim, TernaryFloat64(isWarlock, 0.03, 0.01)*float64(newStacks))
-		},
-	})
-	dotDmgEffect = procAura.NewExclusiveEffect("DarkIntent", false, ExclusiveEffect{
-		Priority: 0,
-		OnGain: func(ee *ExclusiveEffect, s *Simulation) {
-			ee.Aura.Unit.PseudoStats.DotDamageMultiplierAdditive += ee.Priority
-		},
-		OnExpire: func(ee *ExclusiveEffect, s *Simulation) {
-			ee.Aura.Unit.PseudoStats.DotDamageMultiplierAdditive -= ee.Priority
-		},
-	})
-
-	// proc this based on the uptime configuration
-	// We assume lock precasts dot so first tick might happen after 2 seconds already
-	ApplyFixedUptimeAura(procAura, unit.DarkIntentUptimePercent, time.Second*2, time.Second*2)
-
-	// var periodicHandler OnPeriodicDamage
-	// if selfBuff {
-	// 	periodicHandler = func(_ *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-	// 		if result.Outcome.Matches(OutcomeCrit) && spell.SchoolIndex > stats.SchoolIndexPhysical {
-	// 			procAura.Activate(sim)
-	// 			procAura.AddStack(sim)
-	// 		}
-	// 	}
-	// }
-
-	return unit.RegisterAura(Aura{
-		Label:    "Dark Intent",
-		ActionID: ActionID{SpellID: 85767},
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.MultiplyCastSpeed(1.03)
-			aura.Unit.MultiplyAttackSpeed(sim, 1.03)
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.MultiplyCastSpeed(1 / 1.03)
-			aura.Unit.MultiplyAttackSpeed(sim, 1/1.03)
-		},
-		// OnPeriodicDamageDealt: periodicHandler,
-		BuildPhase: CharacterBuildPhaseBuffs,
-	})
-}
-
-func StoneskinTotem(unit *Unit) *Aura {
-	return makeExclusiveBuff(unit, BuffConfig{
-		"Stoneskin Totem",
-		ActionID{SpellID: 8071},
-		[]StatConfig{
-			{stats.Armor, 4075, false},
-		},
-	})
-}
-
-func DevotionAura(unit *Unit) *Aura {
-	return makeExclusiveBuff(unit, BuffConfig{
-		"Devotion Aura",
-		ActionID{SpellID: 465},
-		[]StatConfig{
-			{stats.Armor, 4075, false},
-		},
-	})
-}
+///////////////////////////////////////////////////////////////////////////
+//							Strength, Agility, Intellect 5%
+///////////////////////////////////////////////////////////////////////////
 
 func BlessingOfKingsAura(unit *Unit) *Aura {
 	return makeExclusiveAllStatPercentBuff(unit, "Blessing of Kings", ActionID{SpellID: 20217}, 1.05)
@@ -396,23 +227,6 @@ func BlessingOfKingsAura(unit *Unit) *Aura {
 
 func MarkOfTheWildAura(unit *Unit) *Aura {
 	aura := makeExclusiveAllStatPercentBuff(unit, "Mark of the Wild", ActionID{SpellID: 1126}, 1.05)
-	registerExlusiveEffects(aura, []StatConfig{
-		{stats.FireResistance, 97, false},
-		{stats.FrostResistance, 97, false},
-		{stats.ShadowResistance, 97, false},
-		{stats.NatureResistance, 97, false},
-	})
-	return aura
-}
-
-func DrumsOfTheBurningWildAura(unit *Unit) *Aura {
-	aura := makeExclusiveAllStatPercentBuff(unit, "Drums of the burning Wild", ActionID{ItemID: 63140}, 1.04)
-	registerExlusiveEffects(aura, []StatConfig{
-		{stats.FireResistance, 78, false},
-		{stats.FrostResistance, 78, false},
-		{stats.ShadowResistance, 78, false},
-		{stats.NatureResistance, 78, false},
-	})
 	return aura
 }
 
@@ -420,60 +234,8 @@ func LegacyOfTheEmperorAura(unit *Unit) *Aura {
 	return makeExclusiveAllStatPercentBuff(unit, "Legacy of the Emperor", ActionID{SpellID: 115921}, 1.05)
 }
 
-///////////////////////////////////////////////////////////////////////////
-//							Resistances
-///////////////////////////////////////////////////////////////////////////
-
-// https://www.wowhead.com/mop-classic/item=63140/drums-of-the-burning-wild
-// https://www.wowhead.com/mop-classic/spell=1126/mark-of-the-wild
-// https://www.wowhead.com/mop-classic/spell=20217/blessing-of-kings
-// https://www.wowhead.com/mop-classic/spell=8184/elemental-resistance-totem
-// https://www.wowhead.com/mop-classic/spell=19891/resistance-aura
-// https://www.wowhead.com/mop-classic/spell=20043/aspect-of-the-wild
-// https://www.wowhead.com/mop-classic/spell=27683/shadow-protection
-
-func ElementalResistanceTotemAura(unit *Unit) *Aura {
-	return makeExclusiveBuff(unit, BuffConfig{
-		"Elemental Resistance Totem",
-		ActionID{SpellID: 8184},
-		[]StatConfig{
-			{stats.FireResistance, 195, false},
-			{stats.FrostResistance, 195, false},
-			{stats.NatureResistance, 195, false},
-		},
-	})
-}
-
-func ResistanceAura(unit *Unit) *Aura {
-	return makeExclusiveBuff(unit, BuffConfig{
-		"Resistance Aura",
-		ActionID{SpellID: 19891},
-		[]StatConfig{
-			{stats.FireResistance, 195, false},
-			{stats.FrostResistance, 195, false},
-			{stats.ShadowResistance, 195, false},
-		},
-	})
-}
-
-func ShadowProtectionAura(unit *Unit) *Aura {
-	return makeExclusiveBuff(unit, BuffConfig{
-		"Shadow Protection",
-		ActionID{SpellID: 27683},
-		[]StatConfig{
-			{stats.ShadowResistance, 195, false},
-		},
-	})
-}
-
-func AspectOfTheWildAura(unit *Unit) *Aura {
-	return makeExclusiveBuff(unit, BuffConfig{
-		"Aspect of the Wild",
-		ActionID{SpellID: 20043},
-		[]StatConfig{
-			{stats.NatureResistance, 195, false},
-		},
-	})
+func EmbraceOfTheShaleSpiderAura(u *Unit) *Aura {
+	return makeExclusiveAllStatPercentBuff(u, "Embrace of the Shale Spider", ActionID{SpellID: 90363}, 1.05)
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -486,218 +248,105 @@ func PowerWordFortitudeAura(unit *Unit) *Aura {
 		"Power Word: Fortitude",
 		ActionID{SpellID: 21562},
 		[]StatConfig{
-			{stats.Stamina, 585.0, false},
+			{stats.Stamina, 1.1, true},
 		},
 	})
 }
 
-// https://www.wowhead.com/mop-classic/spell=6307/blood-pact
-func BloodPactAura(unit *Unit) *Aura {
-	return makeExclusiveBuff(unit, BuffConfig{
-		"Blood Pact",
-		ActionID{SpellID: 6307},
-		[]StatConfig{
-			{stats.Stamina, 585.0, false},
-		},
-	})
+func QirajiFortitudeAura(u *Unit) *Aura {
+	return makeExclusiveBuff(u, BuffConfig{"Qiraji Fortitude", ActionID{SpellID: 90364}, []StatConfig{{stats.Stamina, 1.1, true}}})
 }
-
-// https://www.wowhead.com/mop-classic/spell=469/commanding-shout
-func CommandingShoutAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
+func CommandingShoutAura(unit *Unit, asExternal bool) *Aura {
 	baseAura := makeExclusiveBuff(unit, BuffConfig{
 		"Commanding Shout",
 		ActionID{SpellID: 469},
 		[]StatConfig{
-			{stats.Stamina, 585.0, false},
-		},
-	})
-
+			{stats.Stamina, 1.1, true},
+		}})
 	if asExternal {
 		return baseAura
 	}
 
 	baseAura.OnReset = nil
-	baseAura.Duration = TernaryDuration(withGlyph, time.Minute*4, time.Minute*2)
+	baseAura.Duration = time.Minute * 5
 	return baseAura
 }
-
-func applyStaminaBuffs(unit *Unit, raidBuffs *proto.RaidBuffs) {
+func applyStaminaBuffs(u *Unit, raidBuffs *proto.RaidBuffs) {
+	// +10% Stamina buffs
 	if raidBuffs.PowerWordFortitude {
-		PowerWordFortitudeAura(unit)
+		PowerWordFortitudeAura(u)
 	}
-
+	if raidBuffs.QirajiFortitude {
+		QirajiFortitudeAura(u)
+	}
 	if raidBuffs.CommandingShout {
-		CommandingShoutAura(unit, true, false)
-	}
-
-	if raidBuffs.BloodPact {
-		BloodPactAura(unit)
+		CommandingShoutAura(u, false)
 	}
 }
 
-///////////////////////////////////////////////////////////////////////////
-//							Strength and Agility
-///////////////////////////////////////////////////////////////////////////
+//////// 3000 Mastery Rating
 
-// https://www.wowhead.com/mop-classic/spell=8075/strength-of-earth-totem
-func StrengthOfEarthTotemAura(unit *Unit) *Aura {
-	return makeExclusiveBuff(unit, BuffConfig{
-		"Strength of Earth Totem",
-		ActionID{SpellID: 8075},
-		[]StatConfig{
-			{stats.Agility, 549.0, false},
-			{stats.Strength, 549.0, false},
-		}})
+func RoarOfCourageAura(u *Unit) *Aura {
+	return makeExclusiveBuff(u, BuffConfig{"Roar of Courage", ActionID{SpellID: 93435}, []StatConfig{{stats.MasteryRating, 3000, false}}})
 }
-func RoarOfCourageAura(unit *Unit) *Aura {
-	return makeExclusiveBuff(unit, BuffConfig{
-		"Roar of Courage",
-		ActionID{SpellID: 93435},
-		[]StatConfig{
-			{stats.Agility, 549.0, false},
-			{stats.Strength, 549.0, false},
-		}})
+func SpiritBeastBlessingAura(u *Unit) *Aura {
+	return makeExclusiveBuff(u, BuffConfig{"Spirit Beast Blessing", ActionID{SpellID: 128997}, []StatConfig{{stats.MasteryRating, 3000, false}}})
 }
-
-// https://www.wowhead.com/mop-classic/spell=57330/horn-of-winter
-func HornOfWinterAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
-	baseAura := makeExclusiveBuff(unit, BuffConfig{
-		"Horn of Winter",
-		ActionID{SpellID: 57330},
-		[]StatConfig{
-			{stats.Agility, 549.0, false},
-			{stats.Strength, 549.0, false},
-		}})
-
-	if asExternal {
-		return baseAura
-	}
-
-	baseAura.OnReset = nil
-	baseAura.Duration = TernaryDuration(withGlyph, time.Minute*3, time.Minute*2)
-	return baseAura
+func BlessingOfMightAura(u *Unit) *Aura {
+	return makeExclusiveBuff(u, BuffConfig{"Blessing of Might", ActionID{SpellID: 19740}, []StatConfig{{stats.MasteryRating, 3000, false}}})
 }
-
-// https://www.wowhead.com/mop-classic/spell=6673/battle-shout
-func BattleShoutAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
-	baseAura := makeExclusiveBuff(unit, BuffConfig{
-		"Battle Shout",
-		ActionID{SpellID: 6673},
-		[]StatConfig{
-			{stats.Agility, 549.0, false},
-			{stats.Strength, 549.0, false},
-		}})
-
-	if asExternal {
-		return baseAura
-	}
-
-	baseAura.OnReset = nil
-	baseAura.Duration = TernaryDuration(withGlyph, time.Minute*4, time.Minute*2)
-	return baseAura
-}
-
-func applyStrengthAgilityBuffs(unit *Unit, raidBuffs *proto.RaidBuffs) {
-	if raidBuffs.StrengthOfEarthTotem {
-		MakePermanent(StrengthOfEarthTotemAura(unit))
-	}
-
-	if raidBuffs.HornOfWinter {
-		MakePermanent(HornOfWinterAura(unit, true, false))
-	}
-
-	if raidBuffs.BattleShout {
-		MakePermanent(BattleShoutAura(unit, true, false))
-	}
+func GraceOfAirAura(u *Unit) *Aura {
+	return makeExclusiveBuff(u, BuffConfig{"Grace of Air", ActionID{SpellID: 116956}, []StatConfig{{stats.MasteryRating, 3000, false}}})
 }
 
 ///////////////////////////////////////////////////////////////////////////
 //							Attack Power
 ///////////////////////////////////////////////////////////////////////////
 
-// https://www.wowhead.com/mop-classic/spell=30808/unleashed-rage
-// https://www.wowhead.com/mop-classic/spell=19506/trueshot-aura
-// https://www.wowhead.com/mop-classic/spell=53138/abominations-might
-// https://www.wowhead.com/mop-classic/spell=19740/blessing-of-might
-
-func UnleashedRageAura(unit *Unit) *Aura {
-	return makeExclusiveBuff(unit, BuffConfig{
-		"Unleashed Rage",
-		ActionID{SpellID: 30808},
-		[]StatConfig{
-			{stats.AttackPower, 1.2, true},
-			{stats.RangedAttackPower, 1.1, true},
-		}})
-}
-
 func TrueShotAura(unit *Unit) *Aura {
 	return makeExclusiveBuff(unit, BuffConfig{
-		"True Shot Aura",
+		"Trueshot Aura",
 		ActionID{SpellID: 19506},
 		[]StatConfig{
-			{stats.AttackPower, 1.2, true},
+			{stats.AttackPower, 1.1, true},
 			{stats.RangedAttackPower, 1.1, true},
 		}})
 }
 
-func AbominationsMightAura(unit *Unit) *Aura {
-	return makeExclusiveBuff(unit, BuffConfig{
-		"Abominations Might",
-		ActionID{SpellID: 53138},
+func HornOfWinterAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
+	baseAura := makeExclusiveBuff(unit, BuffConfig{
+		"Horn of Winter",
+		ActionID{SpellID: 57330},
 		[]StatConfig{
-			{stats.AttackPower, 1.2, true},
+			{stats.AttackPower, 1.1, true},
 			{stats.RangedAttackPower, 1.1, true},
 		}})
-}
 
-func BlessingOfMightAura(unit *Unit) *Aura {
-	return makeExclusiveBuff(unit, BuffConfig{
-		"Blessing of Might",
-		ActionID{SpellID: 19740},
-		[]StatConfig{
-			{stats.AttackPower, 1.2, true},
-			{stats.RangedAttackPower, 1.1, true},
-			{stats.MP5, 326, false},
-		}})
-}
-
-///////////////////////////////////////////////////////////////////////////
-//							Mp5
-///////////////////////////////////////////////////////////////////////////
-
-func FelIntelligence(unit *Unit) *Aura {
-	if !unit.HasManaBar() {
-		return nil
+	if asExternal {
+		return baseAura
 	}
-	return makeExclusiveBuff(unit, BuffConfig{
-		"Fel Intelligence",
-		ActionID{SpellID: 54424},
-		[]StatConfig{
-			{stats.Mana, 2126, false},
-			{stats.MP5, 326, false},
-		}})
+
+	baseAura.OnReset = nil
+	baseAura.Duration = time.Minute * 5
+	return baseAura
 }
 
-func ArcaneBrilliance(unit *Unit) *Aura {
-	if !unit.HasManaBar() {
-		return nil
+func BattleShoutAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
+	baseAura := makeExclusiveBuff(unit, BuffConfig{
+		"Battle Shout",
+		ActionID{SpellID: 6673},
+		[]StatConfig{
+			{stats.AttackPower, 1.1, true},
+			{stats.RangedAttackPower, 1.1, true},
+		}})
+
+	if asExternal {
+		return baseAura
 	}
-	return makeExclusiveBuff(unit, BuffConfig{
-		"Arcane Brilliance",
-		ActionID{SpellID: 1459},
-		[]StatConfig{
-			{stats.Mana, 2126, false},
-			{stats.SpellPower, 1.06, true},
-		}})
-}
 
-func ManaSpringTotem(unit *Unit) *Aura {
-	return makeExclusiveBuff(unit, BuffConfig{
-		"Mana Spring Totem",
-		ActionID{SpellID: 5675},
-		[]StatConfig{
-			{stats.MP5, 326, false},
-		}})
+	baseAura.OnReset = nil
+	baseAura.Duration = time.Minute * 5
+	return baseAura
 }
 
 // /////////////////////////////////////////////////////////////////////////
@@ -715,35 +364,28 @@ func registerExclusiveMeleeHaste(aura *Aura, value float64) {
 		},
 	})
 }
-
-func WindfuryTotem(unit *Unit) *Aura {
-	baseAura := makeExclusiveBuff(unit, BuffConfig{
-		"Windfury Totem",
-		ActionID{SpellID: 8512},
-		[]StatConfig{}})
-
-	registerExclusiveMeleeHaste(baseAura, 1.1)
-	return baseAura
+func UnholyAura(u *Unit) *Aura {
+	aura := makeExclusiveBuff(u, BuffConfig{"Unholy Aura", ActionID{SpellID: 55610}, nil})
+	registerExclusiveMeleeHaste(aura, 0.10)
+	return aura
 }
-
-func IcyTalons(unit *Unit) *Aura {
-	baseAura := makeExclusiveBuff(unit, BuffConfig{
-		"Icy Talons",
-		ActionID{SpellID: 55610},
-		[]StatConfig{}})
-
-	registerExclusiveMeleeHaste(baseAura, 1.1)
-	return baseAura
+func CacklingHowlAura(u *Unit) *Aura {
+	aura := makeExclusiveBuff(u, BuffConfig{"Cackling Howl", ActionID{SpellID: 128432}, nil})
+	registerExclusiveMeleeHaste(aura, 0.10)
+	return aura
 }
-
-func HuntingParty(unit *Unit) *Aura {
-	baseAura := makeExclusiveBuff(unit, BuffConfig{
-		"Hunting Party",
-		ActionID{SpellID: 53290},
-		[]StatConfig{}})
-
-	registerExclusiveMeleeHaste(baseAura, 1.1)
-	return baseAura
+func SerpentsSwiftnessAura(u *Unit) *Aura {
+	aura := makeExclusiveBuff(u, BuffConfig{"Serpent's Swiftness", ActionID{SpellID: 128433}, nil})
+	registerExclusiveMeleeHaste(aura, 0.10)
+	return aura
+}
+func SwiftbladesCunningAura(u *Unit) *Aura {
+	aura := makeExclusiveBuff(u, BuffConfig{"Swiftblade's Cunning", ActionID{SpellID: 113742}, nil})
+	registerExclusiveMeleeHaste(aura, 0.10)
+	return aura
+}
+func UnleashedRageAura(u *Unit) *Aura {
+	return makeExclusiveBuff(u, BuffConfig{"Unleashed Rage", ActionID{SpellID: 30809}, []StatConfig{{stats.AttackPower, 1.1, true}, {stats.RangedAttackPower, 1.1, true}}})
 }
 
 // /////////////////////////////////////////////////////////////////////////
@@ -756,42 +398,6 @@ func LeaderOfThePack(unit *Unit) *Aura {
 	baseAura := makeExclusiveBuff(unit, BuffConfig{
 		"Leader Of The Pack",
 		ActionID{SpellID: 17007},
-		[]StatConfig{
-			{stats.PhysicalCritPercent, 5, false},
-			{stats.SpellCritPercent, 5, false},
-		}})
-
-	return baseAura
-}
-
-func ElementalOath(unit *Unit) *Aura {
-	baseAura := makeExclusiveBuff(unit, BuffConfig{
-		"Elemental Oath",
-		ActionID{SpellID: 51470},
-		[]StatConfig{
-			{stats.PhysicalCritPercent, 5, false},
-			{stats.SpellCritPercent, 5, false},
-		}})
-
-	return baseAura
-}
-
-func HonorAmongThieves(unit *Unit) *Aura {
-	baseAura := makeExclusiveBuff(unit, BuffConfig{
-		"Honor Among Thieves",
-		ActionID{SpellID: 51701},
-		[]StatConfig{
-			{stats.PhysicalCritPercent, 5, false},
-			{stats.SpellCritPercent, 5, false},
-		}})
-
-	return baseAura
-}
-
-func Rampage(unit *Unit) *Aura {
-	baseAura := makeExclusiveBuff(unit, BuffConfig{
-		"Rampage",
-		ActionID{SpellID: 29801},
 		[]StatConfig{
 			{stats.PhysicalCritPercent, 5, false},
 			{stats.SpellCritPercent, 5, false},
@@ -858,29 +464,27 @@ func registerExclusiveSpellHaste(aura *Aura, spellHastePercent float64) {
 func MoonkinAura(unit *Unit) *Aura {
 	aura := makeExclusiveBuff(unit, BuffConfig{
 		"Moonkin Aura",
-		ActionID{SpellID: 24858},
+		ActionID{SpellID: 24907},
 		[]StatConfig{}})
 
 	registerExclusiveSpellHaste(aura, 0.05)
 	return aura
 }
 
-func WrathOfAirAura(unit *Unit) *Aura {
-	aura := makeExclusiveBuff(unit, BuffConfig{
-		"Wrath of Air",
-		ActionID{SpellID: 3738},
-		[]StatConfig{}})
-
+func MindQuickeningAura(u *Unit) *Aura {
+	aura := makeExclusiveBuff(u, BuffConfig{"Mind Quickening", ActionID{SpellID: 49868}, nil})
 	registerExclusiveSpellHaste(aura, 0.05)
 	return aura
 }
 
-func ShadowFormAura(unit *Unit) *Aura {
-	aura := makeExclusiveBuff(unit, BuffConfig{
-		"Shadow Form",
-		ActionID{SpellID: 15473},
-		[]StatConfig{}})
+func ShadowFormAura(u *Unit) *Aura {
+	aura := makeExclusiveBuff(u, BuffConfig{"Shadow Form", ActionID{SpellID: 15473}, nil})
+	registerExclusiveSpellHaste(aura, 0.05)
+	return aura
+}
 
+func ElementalOath(u *Unit) *Aura {
+	aura := makeExclusiveBuff(u, BuffConfig{"Elemental Oath", ActionID{SpellID: 51470}, nil})
 	registerExclusiveSpellHaste(aura, 0.05)
 	return aura
 }
@@ -890,66 +494,27 @@ func ShadowFormAura(unit *Unit) *Aura {
 //	Spell Power
 //
 // /////////////////////////////////////////////////////////////////////////
-func FlametongueTotem(unit *Unit) *Aura {
-	return makeExclusiveBuff(unit, BuffConfig{
-		"Flametongue Totem",
-		ActionID{SpellID: 8227},
+
+func StillWaterAura(u *Unit) *Aura {
+	return makeExclusiveBuff(u, BuffConfig{"Still Water", ActionID{SpellID: 126309},
 		[]StatConfig{
-			{stats.SpellPower, 1.06, true},
-		}})
+			{stats.SpellPower, 0.10, true},
+			{stats.PhysicalCritPercent, 5, false},
+			{stats.SpellCritPercent, 5, false}}})
 }
-
-func DemonicPact(unit *Unit) *Aura {
-	return makeExclusiveBuff(unit, BuffConfig{
-		"Demonic Pact",
-		ActionID{SpellID: 53646},
+func ArcaneBrilliance(u *Unit) *Aura {
+	// Mages: +10% Spell Power
+	return makeExclusiveBuff(u, BuffConfig{"Arcane Brilliance", ActionID{SpellID: 1459},
 		[]StatConfig{
-			{stats.SpellPower, 1.1, true},
-		}})
+			{stats.SpellPower, 0.10, true},
+			{stats.PhysicalCritPercent, 5, false},
+			{stats.SpellCritPercent, 5, false}}})
 }
-
-func TotemicWrath(unit *Unit) *Aura {
-	return makeExclusiveBuff(unit, BuffConfig{
-		"Totemic Wrath",
-		ActionID{SpellID: 77746},
-		[]StatConfig{
-			{stats.SpellPower, 1.1, true},
-		}})
+func BurningWrathAura(u *Unit) *Aura {
+	return makeExclusiveBuff(u, BuffConfig{"Burning Wrath", ActionID{SpellID: 77747}, []StatConfig{{stats.SpellPower, 0.10, true}}})
 }
-
-// /////////////////////////////////////////////////////////////////////////
-//
-//	Damage Done%
-//
-// /////////////////////////////////////////////////////////////////////////
-func registerExclusiveDamageDone(aura *Aura, damageDoneMod float64) {
-	aura.NewExclusiveEffect("DamageDone%Buff", false, ExclusiveEffect{
-		Priority: damageDoneMod,
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.DamageDealtMultiplier *= (1 + ee.Priority)
-		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.DamageDealtMultiplier /= (1 + ee.Priority)
-		},
-	})
-}
-
-func ArcaneTactics(unit *Unit) *Aura {
-	aura := makeExclusiveBuff(unit, BuffConfig{"Arcane Tactics", ActionID{SpellID: 82930}, []StatConfig{}})
-	registerExclusiveDamageDone(aura, 0.03)
-	return aura
-}
-
-func FerociousInspiration(unit *Unit) *Aura {
-	aura := makeExclusiveBuff(unit, BuffConfig{"Ferocious Inspiration", ActionID{SpellID: 34460}, []StatConfig{}})
-	registerExclusiveDamageDone(aura, 0.03)
-	return aura
-}
-
-func Communion(unit *Unit) *Aura {
-	aura := makeExclusiveBuff(unit, BuffConfig{"Communion", ActionID{SpellID: 31876}, []StatConfig{}})
-	registerExclusiveDamageDone(aura, 0.03)
-	return aura
+func DarkIntentAura(u *Unit) *Aura {
+	return makeExclusiveBuff(u, BuffConfig{"Dark Intent", ActionID{SpellID: 109773}, []StatConfig{{stats.SpellPower, 0.10, true}, {stats.Stamina, 0.10, true}}})
 }
 
 /////////////
@@ -962,148 +527,21 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	if petAgent.GetPet().IsGuardian() {
 		return
 	}
-
 	raidBuffs = googleProto.Clone(raidBuffs).(*proto.RaidBuffs)
 	partyBuffs = googleProto.Clone(partyBuffs).(*proto.PartyBuffs)
 	individualBuffs = googleProto.Clone(individualBuffs).(*proto.IndividualBuffs)
 
-	// Remove buffs that do not apply to pets
-	// Or those that will be applied from the player (BL)
-	raidBuffs.Bloodlust = false
-	raidBuffs.Heroism = false
-	raidBuffs.TimeWarp = false
-	// Stam
-	raidBuffs.PowerWordFortitude = false
-	raidBuffs.CommandingShout = false
-	raidBuffs.BloodPact = false // does apply to the imp itself, but not to any other pet
-	// Str/Agi
-	raidBuffs.StrengthOfEarthTotem = false
-	raidBuffs.HornOfWinter = false
-	raidBuffs.BattleShout = false
-	// Crit%
-	raidBuffs.LeaderOfThePack = false
-	raidBuffs.HonorAmongThieves = false
-	raidBuffs.ElementalOath = false
-	raidBuffs.Rampage = false
-	raidBuffs.TerrifyingRoar = false
-	raidBuffs.FuriousHowl = false
-	raidBuffs.LegacyOfTheWhiteTiger = false
-	// AP%
-	raidBuffs.TrueshotAura = false
-	raidBuffs.UnleashedRage = false
-	raidBuffs.AbominationsMight = false
-	raidBuffs.BlessingOfMight = false
-	// SP%
-	raidBuffs.ArcaneBrilliance = false
-	raidBuffs.DemonicPact = false
-	raidBuffs.TotemicWrath = false
-	raidBuffs.FlametongueTotem = false
-	// +5% Spell haste
-	raidBuffs.MoonkinForm = false
-	raidBuffs.ShadowForm = false
-	raidBuffs.WrathOfAirTotem = false
-	// Mana
-	raidBuffs.FelIntelligence = false // does apply to the fel hunter itself, but not to any other pet
-	// +Armor
-	raidBuffs.DevotionAura = false
-	raidBuffs.StoneskinTotem = false
-	// 10% Haste
-	// raidBuffs.HuntingParty = false
-	// raidBuffs.IcyTalons = false
-	// raidBuffs.WindfuryTotem = false
-	// +3% All Damage
-	raidBuffs.ArcaneTactics = false
-	raidBuffs.FerociousInspiration = false
-	raidBuffs.Communion = false
-	// +Spell Resistances
-	raidBuffs.ElementalResistanceTotem = false
-	raidBuffs.ResistanceAura = false
-	raidBuffs.ShadowProtection = false
-	raidBuffs.AspectOfTheWild = false
-	// +5% Base Stats and Spell Resistances
-	raidBuffs.MarkOfTheWild = false
-	raidBuffs.BlessingOfKings = false
-	raidBuffs.DrumsOfTheBurningWild = false
-	raidBuffs.LegacyOfTheEmperor = false
-
-	individualBuffs.HymnOfHopeCount = 0
-	individualBuffs.InnervateCount = 0
-	individualBuffs.PowerInfusionCount = 0
-	individualBuffs.DivineGuardianCount = 0
-	individualBuffs.GuardianSpiritCount = 0
-	individualBuffs.HandOfSacrificeCount = 0
-	individualBuffs.PainSuppressionCount = 0
-	individualBuffs.PowerInfusionCount = 0
-	individualBuffs.TricksOfTheTrade = proto.TristateEffect_TristateEffectMissing
-	individualBuffs.UnholyFrenzyCount = 0
-	individualBuffs.RallyingCryCount = 0
+	//Todo: Only cancel the buffs that are supposed to be cancelled
+	// Check beta when pets are better implemented?
+	raidBuffs = &proto.RaidBuffs{}
+	partyBuffs = &proto.PartyBuffs{}
+	individualBuffs = &proto.IndividualBuffs{}
 
 	if !petAgent.GetPet().enabledOnStart {
 		// What do we do with permanent pets that are not enabled at start?
 	}
 
 	applyBuffEffects(petAgent, raidBuffs, partyBuffs, individualBuffs)
-}
-
-func InspirationAura(unit *Unit, points int32) *Aura {
-	multiplier := 1 - []float64{0, .03, .07, .10}[points]
-
-	return unit.GetOrRegisterAura(Aura{
-		Label:    "Inspiration",
-		ActionID: ActionID{SpellID: 15357},
-		Duration: time.Second * 15,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] *= multiplier
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] /= multiplier
-		},
-	})
-}
-
-func ApplyInspiration(unit *Unit, uptime float64) {
-	if uptime <= 0 {
-		return
-	}
-	uptime = min(1, uptime)
-
-	inspirationAura := InspirationAura(unit, 3)
-
-	ApplyFixedUptimeAura(inspirationAura, uptime, time.Millisecond*2500, 1)
-}
-
-func RetributionAura(unit *Unit) *Aura {
-	actionID := ActionID{SpellID: 7294}
-
-	baseDamage := 116.0
-
-	procSpell := unit.RegisterSpell(SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: SpellSchoolHoly,
-		ProcMask:    ProcMaskEmpty,
-		Flags:       SpellFlagBinary,
-
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
-		},
-	})
-
-	return unit.RegisterAura(Aura{
-		Label:    "Retribution Aura",
-		ActionID: actionID,
-		Duration: NeverExpires,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			if result.Landed() && spell.SpellSchool.Matches(SpellSchoolPhysical) {
-				procSpell.Cast(sim, spell.Unit)
-			}
-		},
-	})
 }
 
 // Used for approximating cooldowns applied by other players to you, such as
@@ -1220,8 +658,7 @@ func registerBloodlustCD(agent Agent, spellID int32) {
 		Priority: CooldownPriorityBloodlust,
 		Type:     CooldownTypeDPS,
 		ShouldActivate: func(sim *Simulation, character *Character) bool {
-			// Haste portion doesn't stack with Power Infusion, so prefer to wait.
-			return !character.HasActiveAuraWithTag(PowerInfusionAuraTag) && !character.HasActiveAura(SatedAuraLabel)
+			return !character.HasActiveAura(SatedAuraLabel)
 		},
 	})
 }
@@ -1263,63 +700,6 @@ func BloodlustAura(character *Character, actionTag int32) *Aura {
 		},
 	})
 	multiplyCastSpeedEffect(aura, 1.3)
-	return aura
-}
-
-var PowerInfusionActionID = ActionID{SpellID: 10060}
-var PowerInfusionAuraTag = "PowerInfusion"
-
-const PowerInfusionDuration = time.Second * 15
-const PowerInfusionCD = time.Minute * 2
-
-func registerPowerInfusionCD(agent Agent, numPowerInfusions int32) {
-	if numPowerInfusions == 0 {
-		return
-	}
-
-	piAura := PowerInfusionAura(&agent.GetCharacter().Unit, -1)
-
-	registerExternalConsecutiveCDApproximation(
-		agent,
-		externalConsecutiveCDApproximation{
-			ActionID:         PowerInfusionActionID.WithTag(-1),
-			AuraTag:          PowerInfusionAuraTag,
-			CooldownPriority: CooldownPriorityDefault,
-			AuraDuration:     PowerInfusionDuration,
-			AuraCD:           PowerInfusionCD,
-			Type:             CooldownTypeDPS,
-
-			ShouldActivate: func(sim *Simulation, character *Character) bool {
-				// Haste portion doesn't stack with Bloodlust, so prefer to wait.
-				return !character.HasActiveAuraWithTag(BloodlustAuraTag)
-			},
-			AddAura: func(sim *Simulation, character *Character) { piAura.Activate(sim) },
-		},
-		numPowerInfusions)
-}
-
-func PowerInfusionAura(character *Unit, actionTag int32) *Aura {
-	actionID := ActionID{SpellID: 10060, Tag: actionTag}
-	aura := character.GetOrRegisterAura(Aura{
-		Label:    "PowerInfusion-" + actionID.String(),
-		Tag:      PowerInfusionAuraTag,
-		ActionID: actionID,
-		Duration: PowerInfusionDuration,
-	})
-	aura.NewExclusiveEffect("ManaCost", true, ExclusiveEffect{
-		Priority: -20,
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			if ee.Aura.Unit.HasManaBar() {
-				ee.Aura.Unit.PseudoStats.SpellCostPercentModifier -= 20
-			}
-		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			if ee.Aura.Unit.HasManaBar() {
-				ee.Aura.Unit.PseudoStats.SpellCostPercentModifier += 20
-			}
-		},
-	})
-	multiplyCastSpeedEffect(aura, 1.2)
 	return aura
 }
 
@@ -1443,53 +823,6 @@ func UnholyFrenzyAura(character *Unit, actionTag int32) *Aura {
 func RegisterPercentDamageModifierEffect(aura *Aura, percentDamageModifier float64) *ExclusiveEffect {
 	return aura.NewExclusiveEffect("PercentDamageModifier", true, ExclusiveEffect{
 		Priority: percentDamageModifier,
-	})
-}
-
-var DivineGuardianAuraTag = "DivineGuardian"
-
-const DivineGuardianDuration = time.Second * 6
-const DivineGuardianCD = time.Minute * 2
-
-func registerDivineGuardianCD(agent Agent, numDivineGuardians int32) {
-	if numDivineGuardians == 0 {
-		return
-	}
-
-	dgAura := DivineGuardianAura(agent.GetCharacter(), -1)
-
-	registerExternalConsecutiveCDApproximation(
-		agent,
-		externalConsecutiveCDApproximation{
-			ActionID:         ActionID{SpellID: 70940, Tag: -1},
-			AuraTag:          DivineGuardianAuraTag,
-			CooldownPriority: CooldownPriorityLow,
-			AuraDuration:     DivineGuardianDuration,
-			AuraCD:           DivineGuardianCD,
-			Type:             CooldownTypeSurvival,
-
-			ShouldActivate: func(sim *Simulation, character *Character) bool {
-				return true
-			},
-			AddAura: func(sim *Simulation, character *Character) { dgAura.Activate(sim) },
-		},
-		numDivineGuardians)
-}
-
-func DivineGuardianAura(character *Character, actionTag int32) *Aura {
-	actionID := ActionID{SpellID: 53530, Tag: actionTag}
-
-	return character.GetOrRegisterAura(Aura{
-		Label:    "DivineGuardian-" + actionID.String(),
-		Tag:      DivineGuardianAuraTag,
-		ActionID: actionID,
-		Duration: DivineGuardianDuration,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.DamageTakenMultiplier *= 0.8
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.DamageTakenMultiplier /= 0.8
-		},
 	})
 }
 
@@ -1734,75 +1067,6 @@ func registerShatteringThrowCD(agent Agent, numShatteringThrows int32) {
 		numShatteringThrows)
 }
 
-var InnervateAuraTag = "Innervate"
-
-const InnervateDuration = time.Second * 10
-const InnervateCD = time.Minute * 3
-
-func InnervateManaThreshold(character *Character) float64 {
-	if character.Class == proto.Class_ClassMage {
-		// Mages burn mana really fast so they need a higher threshold.
-		return character.MaxMana() * 0.7
-	} else {
-		return character.MaxMana() * 0.45
-	}
-}
-
-func registerInnervateCD(agent Agent, numInnervates int32) {
-	if numInnervates == 0 {
-		return
-	}
-
-	innervateThreshold := 0.0
-	var innervateAura *Aura
-
-	character := agent.GetCharacter()
-	character.Env.RegisterPostFinalizeEffect(func() {
-		innervateThreshold = InnervateManaThreshold(character)
-		innervateAura = InnervateAura(character, -1, 0.05)
-	})
-
-	registerExternalConsecutiveCDApproximation(
-		agent,
-		externalConsecutiveCDApproximation{
-			ActionID:         ActionID{SpellID: 29166, Tag: -1},
-			AuraTag:          InnervateAuraTag,
-			CooldownPriority: CooldownPriorityDefault,
-			AuraDuration:     InnervateDuration,
-			AuraCD:           InnervateCD,
-			Type:             CooldownTypeMana,
-			ShouldActivate: func(sim *Simulation, character *Character) bool {
-				// Only cast innervate when very low on mana, to make sure all other mana CDs are prioritized.
-				return character.CurrentMana() <= innervateThreshold
-			},
-			AddAura: func(sim *Simulation, character *Character) {
-				innervateAura.Activate(sim)
-			},
-		},
-		numInnervates)
-}
-
-func InnervateAura(character *Character, actionTag int32, reg float64) *Aura {
-	actionID := ActionID{SpellID: 29166, Tag: actionTag}
-	manaMetrics := character.NewManaMetrics(actionID)
-	return character.GetOrRegisterAura(Aura{
-		Label:    "Innervate-" + actionID.String(),
-		Tag:      InnervateAuraTag,
-		ActionID: actionID,
-		Duration: InnervateDuration,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			manaPerTick := aura.Unit.MaxMana() * reg / 10.0
-			StartPeriodicAction(sim, PeriodicActionOptions{
-				Period:   InnervateDuration / 10,
-				NumTicks: 10,
-				OnAction: func(sim *Simulation) {
-					character.AddMana(sim, manaPerTick, manaMetrics)
-				},
-			})
-		},
-	})
-}
-
 var ManaTideTotemActionID = ActionID{SpellID: 16190}
 var ManaTideTotemAuraTag = "ManaTideTotem"
 
@@ -1845,7 +1109,6 @@ func registerManaTideTotemCD(agent Agent, numManaTideTotems int32) {
 		numManaTideTotems)
 }
 
-// TODO: Should this be a raid aura on every character available?
 func ManaTideTotemAura(character *Character, actionTag int32) *Aura {
 	actionID := ManaTideTotemActionID.WithTag(actionTag)
 	dep := character.NewDynamicMultiplyStat(stats.Spirit, 2)
@@ -1861,169 +1124,4 @@ func ManaTideTotemAura(character *Character, actionTag int32) *Aura {
 			aura.Unit.DisableDynamicStatDep(sim, dep)
 		},
 	})
-}
-
-const ReplenishmentAuraDuration = time.Second * 15
-
-// Creates the actual replenishment aura for a unit.
-func replenishmentAura(unit *Unit, _ ActionID) *Aura {
-	if unit.ReplenishmentAura != nil {
-		return unit.ReplenishmentAura
-	}
-
-	replenishmentDep := unit.NewDynamicStatDependency(stats.Mana, stats.MP5, 0.005)
-
-	unit.ReplenishmentAura = unit.RegisterAura(Aura{
-		Label:    "Replenishment",
-		ActionID: ActionID{SpellID: 57669},
-		Duration: ReplenishmentAuraDuration,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.EnableDynamicStatDep(sim, replenishmentDep)
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.DisableDynamicStatDep(sim, replenishmentDep)
-		},
-	})
-
-	return unit.ReplenishmentAura
-}
-
-type ReplenishmentSource int
-
-// Returns a new aura whose activation will give the Replenishment buff to 10 party/raid members.
-func (raid *Raid) NewReplenishmentSource(actionID ActionID) ReplenishmentSource {
-	newReplSource := ReplenishmentSource(len(raid.curReplenishmentUnits))
-	raid.curReplenishmentUnits = append(raid.curReplenishmentUnits, []*Unit{})
-
-	if raid.replenishmentUnits != nil {
-		return newReplSource
-	}
-
-	// Get the list of all eligible units (party/raid members + their pets, but no guardians).
-	var manaUsers []*Unit
-	for _, party := range raid.Parties {
-		for _, player := range party.Players {
-			character := player.GetCharacter()
-			if character.HasManaBar() {
-				manaUsers = append(manaUsers, &character.Unit)
-			}
-		}
-		for _, petAgent := range party.Pets {
-			pet := petAgent.GetPet()
-			if pet.HasManaBar() && !pet.IsGuardian() {
-				manaUsers = append(manaUsers, &pet.Unit)
-			}
-		}
-	}
-	raid.replenishmentUnits = manaUsers
-
-	// Initialize replenishment aura for all applicable units.
-	for _, unit := range raid.replenishmentUnits {
-		replenishmentAura(unit, actionID)
-	}
-
-	return newReplSource
-}
-
-func (raid *Raid) resetReplenishment(_ *Simulation) {
-	raid.leftoverReplenishmentUnits = raid.replenishmentUnits
-	for i := 0; i < len(raid.curReplenishmentUnits); i++ {
-		raid.curReplenishmentUnits[i] = nil
-	}
-}
-
-func (raid *Raid) ProcReplenishment(sim *Simulation, src ReplenishmentSource) {
-	if sim.GetRemainingDuration() <= 0 {
-		return
-	}
-	// If the raid is fully covered by one or more replenishment sources, we can
-	// skip the mana sorting.
-	if len(raid.curReplenishmentUnits)*10 >= len(raid.replenishmentUnits) {
-		if len(raid.curReplenishmentUnits[src]) == 0 {
-			if len(raid.leftoverReplenishmentUnits) > 10 {
-				raid.curReplenishmentUnits[src] = raid.leftoverReplenishmentUnits[:10]
-				raid.leftoverReplenishmentUnits = raid.leftoverReplenishmentUnits[10:]
-			} else {
-				raid.curReplenishmentUnits[src] = raid.leftoverReplenishmentUnits
-				raid.leftoverReplenishmentUnits = nil
-			}
-		}
-		for _, unit := range raid.curReplenishmentUnits[src] {
-			unit.ReplenishmentAura.Activate(sim)
-		}
-		return
-	}
-
-	eligible := append(raid.curReplenishmentUnits[src], raid.leftoverReplenishmentUnits...)
-	slices.SortFunc(eligible, func(v1, v2 *Unit) int {
-		return cmp.Compare(v1.CurrentManaPercent(), v2.CurrentManaPercent())
-	})
-	raid.curReplenishmentUnits[src] = eligible[:10]
-	raid.leftoverReplenishmentUnits = eligible[10:]
-	for _, unit := range raid.curReplenishmentUnits[src] {
-		unit.ReplenishmentAura.Activate(sim)
-	}
-	for _, unit := range raid.leftoverReplenishmentUnits {
-		unit.ReplenishmentAura.Deactivate(sim)
-	}
-}
-
-func FocusMagicAura(caster *Unit, target *Unit) (*Aura, *Aura) {
-	actionID := ActionID{SpellID: 54648}
-
-	var casterAura *Aura
-	var onHitCallback OnSpellHit
-	casterIndex := -1
-	if caster != nil {
-		casterIndex = int(caster.Index)
-		casterAura = caster.GetOrRegisterAura(Aura{
-			Label:    "Focus Magic",
-			ActionID: actionID,
-			Duration: time.Second * 10,
-			OnGain: func(aura *Aura, sim *Simulation) {
-				aura.Unit.AddStatsDynamic(sim, stats.Stats{
-					stats.SpellCritPercent: 3,
-				})
-			},
-			OnExpire: func(aura *Aura, sim *Simulation) {
-				aura.Unit.AddStatsDynamic(sim, stats.Stats{
-					stats.SpellCritPercent: -3,
-				})
-			},
-		})
-
-		onHitCallback = func(_ *Aura, sim *Simulation, _ *Spell, result *SpellResult) {
-			if result.DidCrit() {
-				casterAura.Activate(sim)
-			}
-		}
-	}
-
-	var aura *Aura
-	if target != nil {
-		aura = target.GetOrRegisterAura(Aura{
-			Label:      "Focus Magic" + strconv.Itoa(casterIndex),
-			ActionID:   actionID.WithTag(int32(casterIndex)),
-			Duration:   NeverExpires,
-			BuildPhase: CharacterBuildPhaseBuffs,
-			OnReset: func(aura *Aura, sim *Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitDealt: onHitCallback,
-		})
-		aura.NewExclusiveEffect("FocusMagic", true, ExclusiveEffect{
-			OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-				ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
-					stats.SpellCritPercent: 3,
-				})
-			},
-			OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-				ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
-					stats.SpellCritPercent: -3,
-				})
-			},
-		})
-	}
-
-	return casterAura, aura
 }

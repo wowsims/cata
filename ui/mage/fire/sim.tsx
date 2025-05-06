@@ -94,17 +94,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: FireInputs.MageRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-		BuffDebuffInputs.ReplenishmentBuff,
-		BuffDebuffInputs.CritBuff,
-		BuffDebuffInputs.MP5Buff,
-		BuffDebuffInputs.StaminaBuff,
-		BuffDebuffInputs.ManaBuff,
-	],
+	includeBuffDebuffInputs: [],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [OtherInputs.InputDelay, OtherInputs.DistanceFromTarget, OtherInputs.TankAssignment, OtherInputs.DarkIntentUptime],
+		inputs: [OtherInputs.InputDelay, OtherInputs.DistanceFromTarget, OtherInputs.TankAssignment],
 	},
 	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotHands, ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2],
 	encounterPicker: {

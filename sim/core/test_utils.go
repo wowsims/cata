@@ -46,19 +46,37 @@ var DefaultTargetProto = &proto.Target{
 }
 
 var FullRaidBuffs = &proto.RaidBuffs{
-	BlessingOfKings:      true,
-	PowerWordFortitude:   true,
-	BlessingOfMight:      true,
-	MoonkinForm:          true,
-	ElementalOath:        true,
-	StrengthOfEarthTotem: true,
-	IcyTalons:            true,
-	ArcaneBrilliance:     true,
-	DemonicPact:          true,
-	Bloodlust:            true,
-	Communion:            true,
-	ShadowForm:           true,
+	// +10% Attack Power
+	TrueshotAura: true, // Hunters
+
+	// +10% Melee & Ranged Attack Speed
+	UnholyAura: true, // Frost/Unholy DKs
+
+	// +10% Spell Power
+	ArcaneBrilliance: true, // Mages
+
+	// +5% Spell Haste
+	ShadowForm: true, // Shadow Priests
+
+	// +5% Critical Strike Chance
+	LeaderOfThePack: true, // Feral/Guardian Druids
+
+	// +3000 Mastery Rating
+	BlessingOfMight: true, // Paladins
+
+	// +5% Strength, Agility, Intellect
+	BlessingOfKings: true, // Paladins
+
+	// +10% Stamina
+	PowerWordFortitude: true, // Priests
+
+	// Major Haste
+	Bloodlust: true,
+
+	// Major Mana Replenishment
+	ManaTideTotemCount: 1, // Shamans
 }
+
 var FullPartyBuffs = &proto.PartyBuffs{
 	//BraidedEterniumChain: true,
 	// ManaTideTotems: 1,

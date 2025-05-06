@@ -83,19 +83,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			retributionAura: true,
-			powerWordFortitude: true,
-			markOfTheWild: true,
-			icyTalons: true,
-			hornOfWinter: true,
-			abominationsMight: true,
-			leaderOfThePack: true,
-			bloodlust: true,
-			arcaneTactics: true,
-			devotionAura: true,
-			resistanceAura: true,
-		}),
+		raidBuffs: RaidBuffs.create({}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({}),
@@ -122,10 +110,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 			OtherInputs.HealingCadenceVariation,
 			OtherInputs.AbsorbFrac,
 			OtherInputs.BurstWindow,
-			OtherInputs.InspirationUptime,
 			OtherInputs.InFrontOfTarget,
 			DeathKnightInputs.StartingRunicPower(),
-			OtherInputs.DarkIntentUptime,
 		],
 	},
 	itemSwapSlots: [

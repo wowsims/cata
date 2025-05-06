@@ -98,26 +98,10 @@ export const DefaultConsumables = ConsumesSpec.create({
 	tinkerId: 82174, // Synapse Springs
 });
 
-export const DefaultRaidBuffs = RaidBuffs.create({
-	arcaneBrilliance: true,
-	bloodlust: true,
-	markOfTheWild: true,
-	icyTalons: true,
-	moonkinForm: true,
-	leaderOfThePack: true,
-	powerWordFortitude: true,
-	strengthOfEarthTotem: true,
-	trueshotAura: true,
-	wrathOfAirTotem: true,
-	demonicPact: true,
-	blessingOfKings: true,
-	blessingOfMight: true,
-	communion: true,
-});
+export const DefaultRaidBuffs = RaidBuffs.create({});
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
 	vampiricTouch: true,
-	darkIntent: true,
 });
 
 export const DefaultDebuffs = Debuffs.create({
@@ -135,7 +119,6 @@ export const OtherDefaults = {
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
 	channelClipDelay: 150,
-	darkIntentUptime: 90,
 };
 
 export const PRESET_BUILD_SHADOWBOLT = PresetUtils.makePresetBuild('Shadow Bolt', {

@@ -60,7 +60,6 @@ export class ConsumesPicker extends Component {
 		const conjuredOptions = ConsumablesInputs.makeConjuredInput(relevantStatOptions(ConsumablesInputs.CONJURED_CONFIG, this.simUI));
 		const conjuredPicker = buildIconInput(potionsElem, this.simUI.player, conjuredOptions);
 
-
 		const events = TypedEvent.onAny([this.simUI.player.professionChangeEmitter]).on(() =>
 			this.updateRow(row, [potionsPicker, conjuredPicker, prePotPicker]),
 		);
@@ -154,7 +153,6 @@ export class ConsumesPicker extends Component {
 	}
 
 	private updateRow(rowElem: Element, pickers: (IconPicker<Player<any>, any> | IconEnumPicker<Player<any>, any>)[]) {
-		console.log('Updating consumes row', pickers);
 		rowElem.classList[!!pickers.find(p => p?.showWhen()) ? 'remove' : 'add']('hide');
 	}
 }

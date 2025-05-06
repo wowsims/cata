@@ -101,7 +101,7 @@ func WeakenedArmorAura(target *Unit) *Aura {
 	return aura
 }
 
-func MortalWoundsArua(target *Unit) *Aura {
+func MortalWoundsAura(target *Unit) *Aura {
 	return majorHealingReductionAura(target, "Mortal Wounds", 115804, 0.25)
 }
 
@@ -164,19 +164,12 @@ func castSpeedReductionAura(target *Unit, label string, spellID int32, multiplie
 	return aura
 }
 
-func ScheduledMajorArmorAura(aura *Aura, options PeriodicActionOptions, raid *proto.Raid) {
-	aura.OnReset = func(aura *Aura, sim *Simulation) {
-		aura.Duration = NeverExpires
-		StartPeriodicAction(sim, options)
-	}
-}
-
 const SpellDamageEffectAuraTag = "SpellDamageAuraTag"
 
 func spellDamageEffectAura(auraConfig Aura, target *Unit, multiplier float64) *Aura {
 	auraConfig.Tag = SpellDamageEffectAuraTag
 	aura := target.GetOrRegisterAura(auraConfig)
-	aura.NewExclusiveEffect("SpellDamageTaken%", false, ExclusiveEffect{
+	aura.NewExclusiveEffect("SpellDamageTaken%", true, ExclusiveEffect{
 		Priority: multiplier,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
 			ee.Aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= multiplier

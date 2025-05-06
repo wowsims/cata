@@ -106,16 +106,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			powerWordFortitude: true,
-			markOfTheWild: true,
-			bloodlust: true,
-			strengthOfEarthTotem: true,
-			abominationsMight: true,
-			windfuryTotem: true,
-			communion: true,
-			devotionAura: true,
-		}),
+		raidBuffs: RaidBuffs.create({}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
@@ -143,7 +134,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 			OtherInputs.HealingCadenceVariation,
 			OtherInputs.AbsorbFrac,
 			OtherInputs.BurstWindow,
-			OtherInputs.InspirationUptime,
 			OtherInputs.HpPercentForDefensives,
 			DruidInputs.StartingRage,
 			OtherInputs.InFrontOfTarget,
