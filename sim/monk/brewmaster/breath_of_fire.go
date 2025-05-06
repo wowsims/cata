@@ -62,9 +62,11 @@ func (bm *BrewmasterMonk) registerBreathOfFire() {
 			baseDamage := bm.CalcAndRollDamageRange(sim, 1.475, 0.242) + 0.3626*spell.MeleeAttackPower()
 
 			for _, enemyTarget := range sim.Encounter.TargetUnits {
-				result := spell.CalcDamage(sim, enemyTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				result := spell.CalcOutcome(sim, enemyTarget, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCritNoHitCounter)
+
 				if result.Landed() {
-					spell.DealDamage(sim, result)
+					spell.CalcAndDealDamage(sim, enemyTarget, baseDamage, spell.OutcomeMagicCrit)
+
 					if bm.DizzyingHazeAuras.Get(enemyTarget).IsActive() {
 						spell.Dot(enemyTarget).Apply(sim)
 					}

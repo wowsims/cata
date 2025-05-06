@@ -11,12 +11,8 @@ func (bm *BrewmasterMonk) registerAvertHarm() {
 	actionID := core.ActionID{SpellID: 115213}
 	duration := 6 * time.Second
 
-	bm.AvertHarmAura = bm.RegisterAura(core.Aura{
-		Label:    "Avert Harm" + bm.Label,
-		ActionID: actionID,
-		Duration: duration,
-	}).AttachProcTrigger(core.ProcTrigger{
-		Name:     "Avert Harm Health Monitor" + bm.Label,
+	bm.AvertHarmAura = core.MakeProcTriggerAura(&bm.Unit, core.ProcTrigger{
+		Name:     "Avert Harm" + bm.Label,
 		ActionID: actionID,
 		Duration: duration,
 		Outcome:  core.OutcomeHit,

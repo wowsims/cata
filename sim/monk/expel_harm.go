@@ -27,7 +27,7 @@ func (monk *Monk) registerExpelHarm() {
 		ActionID:     core.ActionID{SpellID: 115129},
 		SpellSchool:  core.SpellSchoolNature,
 		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        core.SpellFlagPassiveSpell,
+		Flags:        core.SpellFlagPassiveSpell | core.SpellFlagIgnoreAttackerModifiers,
 		MissileSpeed: 20,
 		MaxRange:     10,
 
@@ -37,7 +37,7 @@ func (monk *Monk) registerExpelHarm() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
-				spell.CalcAndDealDamage(sim, target, healingDone, spell.OutcomeMagicHitAndCrit)
+				spell.CalcAndDealDamage(sim, target, healingDone, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCrit)
 			})
 		},
 	})

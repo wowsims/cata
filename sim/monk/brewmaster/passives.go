@@ -53,8 +53,7 @@ func (bm *BrewmasterMonk) registerBrewmasterTraining() {
 	core.MakeProcTriggerAura(&bm.Unit, core.ProcTrigger{
 		Name:           "Shuffle Trigger",
 		ClassSpellMask: monk.MonkSpellBlackoutKick,
-		Callback:       core.CallbackOnSpellHitDealt,
-		Outcome:        core.OutcomeLanded,
+		Callback:       core.CallbackOnCastComplete,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if bm.ShuffleAura.IsActive() {
 				bm.ShuffleAura.UpdateExpires(bm.ShuffleAura.ExpiresAt() + 6*time.Second)

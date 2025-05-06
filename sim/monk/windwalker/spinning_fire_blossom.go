@@ -49,7 +49,10 @@ func (ww *WindwalkerMonk) registerSpinningFireBlossom() {
 			}
 
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
-				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit) // TODO: Spell or melee?
+				result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCritNoHitCounter)
+				if result.Landed() {
+					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
+				}
 			})
 
 			ww.SpendChi(sim, 1, chiMetrics)

@@ -70,6 +70,7 @@ func (monk *Monk) registerChiWave() {
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagPassiveSpell,
 		ClassSpellMask: MonkSpellChiWave,
+		MaxRange:       40,
 		MissileSpeed:   8,
 
 		DamageMultiplier: 1.0,
@@ -79,18 +80,19 @@ func (monk *Monk) registerChiWave() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := avgScaling + spell.MeleeAttackPower()*0.45
 
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCritNoHitCounter)
 
-			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-				spell.DealDamage(sim, result)
+			if result.Landed() {
+				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
+					if tickIndex < 7 {
+						tickIndex++
 
-				if tickIndex < 7 {
-					tickIndex++
-
-					nextTarget = nextTarget.Env.NextTargetUnit(nextTarget)
-					chiWaveHealingSpell.Cast(sim, &monk.Unit)
-				}
-			})
+						nextTarget = nextTarget.Env.NextTargetUnit(nextTarget)
+						chiWaveHealingSpell.Cast(sim, &monk.Unit)
+					}
+				})
+			}
 		},
 	})
 
@@ -198,9 +200,15 @@ func (monk *Monk) registerZenSphere() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := avgDetonateDmgScaling + spell.MeleeAttackPower()*avgDetonateDmgBonusCoefficient
 
-			for _, target := range sim.Encounter.TargetUnits {
-				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			}
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				for _, target := range sim.Encounter.TargetUnits {
+					result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCritNoHitCounter)
+
+					if result.Landed() {
+						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
+					}
+				}
+			})
 		},
 	})
 
@@ -342,6 +350,7 @@ func (monk *Monk) registerChiBurst() {
 		Flags:          core.SpellFlagPassiveSpell,
 		ClassSpellMask: MonkSpellChiBurst,
 		MissileSpeed:   30,
+		MaxRange:       40,
 
 		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1.0,
@@ -352,9 +361,14 @@ func (monk *Monk) registerChiBurst() {
 
 			spell.WaitTravelTime(sim, func(simulation *core.Simulation) {
 				for _, target := range sim.Encounter.TargetUnits {
-					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+					result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCritNoHitCounter)
+
+					if result.Landed() {
+						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
+					}
 				}
 			})
+
 		},
 	})
 
