@@ -1,46 +1,48 @@
-package druid
+package balance
 
 import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
-	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/druid"
 )
 
-func (druid *Druid) registerStarfallSpell() {
-	if !druid.Talents.Starfall {
-		return
-	}
+const (
+	StarfallBonusCoeff = 0.364
+	StarfallCoeff      = 0.58
+	StarfallVariance   = 0.15
+)
 
-	numberOfTicks := core.TernaryInt32(druid.Env.GetNumTargets() > 1, 20, 10)
+func (moonkin *BalanceDruid) registerStarfallSpell() {
+
+	numberOfTicks := core.TernaryInt32(moonkin.Env.GetNumTargets() > 1, 20, 10)
 	tickLength := time.Second
 
-	starfallTickSpell := druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
+	starfallTickSpell := moonkin.RegisterSpell(druid.Humanoid|druid.Moonkin, core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 50288},
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
-		ClassSpellMask: DruidSpellStarfall,
-		Flags:          SpellFlagOmenTrigger,
+		ClassSpellMask: druid.DruidSpellStarfall,
+		Flags:          core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   druid.DefaultCritMultiplier(),
+		CritMultiplier:   moonkin.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
-		BonusCoefficient: 0.247,
+		BonusCoefficient: StarfallBonusCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			min, max := core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassDruid, 0.404, 0.15)
-			baseDamage := sim.Roll(min, max)
+			baseDamage := moonkin.CalcAndRollDamageRange(sim, StarfallCoeff, StarfallVariance)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
 
-	druid.Starfall = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
+	moonkin.Starfall = moonkin.RegisterSpell(druid.Humanoid|druid.Moonkin, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 48505},
 		SpellSchool: core.SpellSchoolArcane,
 		ProcMask:    core.ProcMaskSpellProc,
 		Flags:       core.SpellFlagAPL,
 		ManaCost: core.ManaCostOptions{
-			BaseCostPercent: 35,
+			BaseCostPercent: 32.6,
 			PercentModifier: 100,
 		},
 		Cast: core.CastConfig{
@@ -48,7 +50,7 @@ func (druid *Druid) registerStarfallSpell() {
 				GCD: core.GCDDefault,
 			},
 			CD: core.Cooldown{
-				Timer:    druid.NewTimer(),
+				Timer:    moonkin.NewTimer(),
 				Duration: time.Second * 90,
 			},
 		},

@@ -60,10 +60,6 @@ type Druid struct {
 	Rip                   *DruidSpell
 	SavageRoar            *DruidSpell
 	Shred                 *DruidSpell
-	Starfire              *DruidSpell
-	Starfall              *DruidSpell
-	Starsurge             *DruidSpell
-	Sunfire               *DruidSpell
 	SurvivalInstincts     *DruidSpell
 	SwipeBear             *DruidSpell
 	SwipeCat              *DruidSpell
