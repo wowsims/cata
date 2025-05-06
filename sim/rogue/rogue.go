@@ -207,6 +207,7 @@ func (rogue *Rogue) Initialize() {
 	rogue.registerPoisonAuras()
 	rogue.registerShadowBladesCD()
 	rogue.registerCrimsonTempest()
+	rogue.registerPreparationCD()
 
 	rogue.T12ToTLastBuff = 3
 
