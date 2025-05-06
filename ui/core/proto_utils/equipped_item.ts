@@ -1,3 +1,4 @@
+import { MAX_CHALLENGE_MODE_ILVL } from '../constants/mechanics';
 import {
 	GemColor,
 	ItemLevelState,
@@ -115,7 +116,15 @@ export class EquippedItem {
 		return this._gems.map(gem => (gem == null ? null : Gem.clone(gem)));
 	}
 	get upgrade(): ItemLevelState {
-		return this._challengeMode && this._item.scalingOptions[ItemLevelState.ChallengeMode] ? ItemLevelState.ChallengeMode : this._upgrade;
+		let upgradeLevel: ItemLevelState;
+		if (!this._challengeMode) {
+			upgradeLevel = this._upgrade;
+		} else if (this._item.scalingOptions[ItemLevelState.Base].ilvl <= MAX_CHALLENGE_MODE_ILVL) {
+			upgradeLevel = ItemLevelState.Base;
+		} else {
+			upgradeLevel = ItemLevelState.ChallengeMode;
+		}
+		return upgradeLevel;
 	}
 	get randomPropPoints(): number {
 		return this.item.scalingOptions[this.upgrade].randPropPoints || this.item.randPropPoints;
@@ -375,12 +384,11 @@ export class EquippedItem {
 		item.stats = item.stats.map((stat, index) => scalingOptions.stats[index] || stat);
 		item.weaponDamageMin = scalingOptions.weaponDamageMin;
 		item.weaponDamageMax = scalingOptions.weaponDamageMax;
+		item.randPropPoints = scalingOptions.randPropPoints;
 
 		if (this._randomSuffix) {
-			const randomPropPoints = this.getRandomPropPoints();
-			item.randPropPoints = randomPropPoints;
 			item.stats = item.stats.map((stat, index) =>
-				this._randomSuffix!.stats[index] > 0 ? Math.floor((this._randomSuffix!.stats[index] * randomPropPoints) / 10000) : stat,
+				this._randomSuffix!.stats[index] > 0 ? Math.floor((this._randomSuffix!.stats[index] * item.randPropPoints) / 10000) : stat,
 			);
 		}
 
@@ -396,7 +404,7 @@ export class EquippedItem {
 	}
 
 	asActionId(): ActionId {
-		return ActionId.fromItemId(this._item.id, undefined, this._randomSuffix?.id || undefined, undefined, this._upgrade);
+		return ActionId.fromItemId(this._item.id, undefined, this._randomSuffix?.id || undefined, undefined, this.upgrade);
 	}
 
 	asSpec(): ItemSpec {

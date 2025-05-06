@@ -108,7 +108,7 @@ message Player {
 	bool in_front_of_target = 47;
 	double distance_from_target = 48;
 	double dark_intent_uptime = 52;
-	bool challenge_mode = 59;
+	bool challenge_mode = 58;
 
 	HealingModel healing_model = 49;
 

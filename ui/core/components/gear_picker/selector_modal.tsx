@@ -146,11 +146,12 @@ export default class SelectorModal extends BaseModal {
 				label: SelectorModalTabs.Items,
 				gearData,
 				itemData: eligibleItems.map(item => {
+					const equippedItem = new EquippedItem({ item, challengeMode: this.player.getChallengeModeEnabled() });
 					return {
 						item: item,
 						id: item.id,
-						actionId: ActionId.fromItem(item),
-						ilvl: new EquippedItem({ item }).ilvl,
+						actionId: equippedItem.asActionId(),
+						ilvl: equippedItem.ilvl,
 						name: item.name,
 						quality: item.quality,
 						heroic: item.heroic,
@@ -504,10 +505,7 @@ export default class SelectorModal extends BaseModal {
 			onRemove: (eventID: number) => {
 				const equippedItem = gearData.getEquippedItem();
 				if (equippedItem) {
-					gearData.equipItem(
-						eventID,
-						equippedItem.withUpgrade(ItemLevelState.Base),
-					);
+					gearData.equipItem(eventID, equippedItem.withUpgrade(ItemLevelState.Base));
 				}
 			},
 		});
@@ -601,8 +599,6 @@ export default class SelectorModal extends BaseModal {
 
 					this.removeTabs(SelectorModalTabs.Upgrades);
 					this.addUpgradesTab(newItem, gearData);
-
-
 
 					this.removeTabs(SelectorModalTabs.Reforging);
 					this.addReforgingTab(newItem, gearData);

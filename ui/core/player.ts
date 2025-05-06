@@ -260,7 +260,7 @@ export class Player<SpecType extends Spec> {
 	private readonly simpleRotationGenerator: SimpleRotationGenerator<SpecType> | null = null;
 	readonly hiddenMCDs: Array<number>;
 
-	private itemEPCache = new Array<Map<number, number>>();
+	private itemEPCache = new Array<Map<string, number>>();
 	private gemEPCache = new Map<number, number>();
 	private randomSuffixEPCache = new Map<number, number>();
 	private enchantEPCache = new Map<number, number>();
@@ -1159,17 +1159,22 @@ export class Player<SpecType extends Spec> {
 
 	computeItemEP(item: Item, slot: ItemSlot): number {
 		if (item == null) return 0;
+		const cacheKey = `${item.id}-${this.challengeModeEnabled}`;
 
-		const cached = this.itemEPCache[slot].get(item.id);
+		const cached = this.itemEPCache[slot].get(cacheKey);
 		if (cached !== undefined) return cached;
 
-		const itemStats = new Stats(item.stats).add(getWeaponStatsBySlot(item, slot));
+		const equippedItem = new EquippedItem({
+			item,
+			challengeMode: this.challengeModeEnabled,
+		}).getWithDynamicStats();
+		const itemStats = new Stats(equippedItem._item.stats).add(getWeaponStatsBySlot(item, slot, equippedItem.upgrade));
 
 		// For random suffix items, use the suffix option with the highest EP for the purposes of ranking items in the picker.
 		let maxSuffixEP = 0;
 		if (item.randomSuffixOptions.length > 0) {
-			const suffixEPs = item.randomSuffixOptions.map(id => this.computeRandomSuffixEP(this.sim.db.getRandomSuffixById(id)! || 0));
-			maxSuffixEP = (Math.max(...suffixEPs) * item.randPropPoints) / 10000;
+			const suffixEPs = equippedItem.item.randomSuffixOptions.map(id => this.computeRandomSuffixEP(this.sim.db.getRandomSuffixById(id)! || 0));
+			maxSuffixEP = (Math.max(...suffixEPs) * equippedItem.item.randPropPoints) / 10000;
 		}
 
 		let ep = itemStats.computeEP(this.epWeights) + maxSuffixEP;
@@ -1207,7 +1212,7 @@ export class Player<SpecType extends Spec> {
 
 		ep += Math.max(bestGemEPMatchingSockets, bestGemEPNotMatchingSockets);
 
-		this.itemEPCache[slot].set(item.id, ep);
+		this.itemEPCache[slot].set(cacheKey, ep);
 		return ep;
 	}
 

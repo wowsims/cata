@@ -449,6 +449,7 @@ func toItem(itemSpec *proto.ItemSpec) Item {
 		Enchant:       itemSpec.Enchant,
 		RandomSuffix:  itemSpec.RandomSuffix,
 		Reforging:     itemSpec.Reforging,
+		UpgradeStep:   itemSpec.UpgradeStep,
 		ChallengeMode: itemSpec.ChallengeMode,
 	})
 }
