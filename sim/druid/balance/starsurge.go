@@ -8,9 +8,9 @@ import (
 )
 
 const (
-	StarsurgeVariance   = 0.319
-	StarsurgeCoeff      = 4.54
 	StarsurgeBonusCoeff = 2.388
+	StarsurgeCoeff      = 4.54
+	StarsurgeVariance   = 0.319
 )
 
 func (moonkin *BalanceDruid) registerStarsurgeSpell() {
@@ -55,14 +55,6 @@ func (moonkin *BalanceDruid) registerStarsurgeSpell() {
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 			})
-
-			if result.Landed() && result.DidCrit() {
-				sunfireDot := moonkin.Sunfire.Dot(target)
-				moonfireDot := moonkin.Moonfire.Dot(target)
-
-				tryExtendDot(moonfireDot)
-				tryExtendDot(sunfireDot)
-			}
 		},
 	})
 }

@@ -8,9 +8,9 @@ import (
 )
 
 const (
-	StarfireVariance   = 0.25
-	StarfireCoeff      = 4.456
 	StarfireBonusCoeff = 2.166
+	StarfireCoeff      = 4.456
+	StarfireVariance   = 0.25
 )
 
 func (moonkin *BalanceDruid) registerStarfireSpell() {
@@ -48,12 +48,6 @@ func (moonkin *BalanceDruid) registerStarfireSpell() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			spell.DealDamage(sim, result)
-
-			if result.Landed() && result.DidCrit() {
-				moonfireDot := moonkin.Moonfire.Dot(target)
-
-				tryExtendDot(moonfireDot)
-			}
 		},
 	})
 }

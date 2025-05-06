@@ -35,6 +35,11 @@ func (druid *Druid) registerMoonfireDoTSpell() {
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "Moonfire",
+				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if result.Landed() && result.DidCrit() && (spell.Matches(DruidSpellStarfire) || spell.Matches(DruidSpellStarsurge)) {
+						druid.Moonfire.Dot(aura.Unit).AddTick()
+					}
+				},
 			},
 			NumberOfTicks:       7,
 			TickLength:          time.Second * 2,

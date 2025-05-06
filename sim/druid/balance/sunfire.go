@@ -36,6 +36,11 @@ func (moonkin *BalanceDruid) registerSunfireDoTSpell() {
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "Sunfire",
+				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if result.Landed() && result.DidCrit() && (spell.Matches(druid.DruidSpellWrath) || spell.Matches(druid.DruidSpellStarsurge)) {
+						moonkin.Sunfire.Dot(aura.Unit).AddTick()
+					}
+				},
 			},
 			NumberOfTicks:       7,
 			TickLength:          time.Second * 2,
