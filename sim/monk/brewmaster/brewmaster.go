@@ -46,6 +46,7 @@ type BrewmasterMonk struct {
 
 	vengeance *core.VengeanceTracker
 
+	Stagger        *core.Spell
 	RefreshStagger func(sim *core.Simulation, target *core.Unit, damagePerTick float64)
 
 	// Auras

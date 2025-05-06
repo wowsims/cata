@@ -42,7 +42,8 @@ type WindwalkerMonk struct {
 
 	TigereyeBrewStackAura *core.Aura
 
-	outstandingChi int32
+	outstandingChi           int32
+	tigereyeBrewT164PTracker int32
 }
 
 func (ww *WindwalkerMonk) GetMonk() *monk.Monk {
@@ -60,6 +61,8 @@ func (ww *WindwalkerMonk) ApplyTalents() {
 }
 
 func (ww *WindwalkerMonk) Reset(sim *core.Simulation) {
+	ww.outstandingChi = 0
+	ww.tigereyeBrewT164PTracker = 0
 	ww.Monk.Reset(sim)
 }
 

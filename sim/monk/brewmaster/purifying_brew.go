@@ -10,6 +10,7 @@ import (
 func (bm *BrewmasterMonk) registerPurifyingBrew() {
 	actionID := core.ActionID{SpellID: 119582}
 	chiMetrics := bm.NewChiMetrics(actionID)
+	t16Brewmaster4PHeal := bm.NewHealthMetrics(core.ActionID{SpellID: 145056})
 
 	bm.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
@@ -31,11 +32,15 @@ func (bm *BrewmasterMonk) registerPurifyingBrew() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			outstandingDamage := bm.Stagger.SelfHot().OutstandingDmg()
 			bm.RefreshStagger(sim, &bm.Unit, 0.0)
 			if bm.T15Brewmaster4P.IsActive() {
 				bm.T15Brewmaster4P.Deactivate(sim)
 			} else {
 				bm.SpendChi(sim, 1, chiMetrics)
+			}
+			if bm.T16Brewmaster4P.IsActive() {
+				bm.GainHealth(sim, outstandingDamage*0.15, t16Brewmaster4PHeal)
 			}
 		},
 	})

@@ -138,5 +138,81 @@ var ItemSetFireCharmArmor = core.NewItemSet(core.ItemSet{
 	},
 })
 
+// T16 - Windwalker
+var ItemSetBattlegearOfTheSevenSacredSeals = core.NewItemSet(core.ItemSet{
+	Name: "Battlegear of the Seven Sacred Seals",
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			monk := agent.(MonkAgent).GetMonk()
+
+			registerComboBreakerDamageMod := func(spellID int32, spellMask int64) {
+				aura := monk.GetAuraByID(core.ActionID{SpellID: spellID})
+				if aura != nil {
+					damageMod := monk.AddDynamicMod(core.SpellModConfig{
+						Kind:       core.SpellMod_DamageDone_Pct,
+						ClassMask:  spellMask,
+						FloatValue: 0.4,
+					})
+
+					aura.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
+						if setBonusAura.IsActive() {
+							damageMod.Activate()
+						}
+					})
+
+					aura.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
+						damageMod.Deactivate()
+					})
+				}
+			}
+
+			registerComboBreakerDamageMod(118864, MonkSpellTigerPalm)
+			registerComboBreakerDamageMod(116768, MonkSpellBlackoutKick)
+
+			setBonusAura.ExposeToAPL(145004)
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Implemented in windwalker/tigereye_brew.go
+			monk := agent.(MonkAgent).GetMonk()
+			monk.T16Windwalker4P = monk.RegisterAura(core.Aura{
+				Label:    "Focus of Xuen" + monk.Label,
+				ActionID: core.ActionID{SpellID: 145024},
+				Duration: 10 * time.Second,
+			})
+
+			setBonusAura.ExposeToAPL(145022)
+		},
+	},
+})
+
+// T16 - Brewmaster
+var ItemSetArmorOfTheSevenSacredSeals = core.NewItemSet(core.ItemSet{
+	Name: "Armor of the Seven Sacred Seals",
+	Bonuses: map[int32]core.ApplySetBonus{
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Not implemented as not having Black Ox statue
+		},
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			// Implemented in windwalker/tigereye_brew.go
+			monk := agent.(MonkAgent).GetMonk()
+
+			monk.T16Brewmaster4P = monk.RegisterAura(core.Aura{
+				Label:    "Purified Healing" + monk.Label,
+				ActionID: core.ActionID{SpellID: 145056},
+				Duration: core.NeverExpires,
+			})
+
+			setBonusAura.ApplyOnGain(func(_ *core.Aura, sim *core.Simulation) {
+				monk.T16Brewmaster4P.Activate(sim)
+			})
+			setBonusAura.ApplyOnExpire(func(_ *core.Aura, sim *core.Simulation) {
+				monk.T16Brewmaster4P.Deactivate(sim)
+			})
+
+			setBonusAura.ExposeToAPL(145022)
+		},
+	},
+})
+
 func init() {
 }

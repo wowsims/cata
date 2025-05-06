@@ -11,7 +11,7 @@ import (
 func (bm *BrewmasterMonk) registerStagger() {
 	actionId := core.ActionID{SpellID: 124255}
 
-	staggerSpell := bm.RegisterSpell(core.SpellConfig{
+	bm.Stagger = bm.RegisterSpell(core.SpellConfig{
 		ActionID:         actionId,
 		SpellSchool:      core.SpellSchoolPhysical,
 		ProcMask:         core.ProcMaskSpellProc,
@@ -51,7 +51,7 @@ func (bm *BrewmasterMonk) registerStagger() {
 	})
 
 	bm.RefreshStagger = func(sim *core.Simulation, target *core.Unit, damagePerTick float64) {
-		dot := staggerSpell.SelfHot()
+		dot := bm.Stagger.SelfHot()
 		if damagePerTick <= 0 {
 			dot.Deactivate(sim)
 			if sim.Log != nil {
@@ -60,7 +60,7 @@ func (bm *BrewmasterMonk) registerStagger() {
 		} else {
 			oldDamagePerTick := dot.SnapshotBaseDamage
 			dot.SnapshotBaseDamage = damagePerTick
-			staggerSpell.Cast(sim, target)
+			bm.Stagger.Cast(sim, target)
 			dot.Aura.SetStacks(sim, int32(damagePerTick))
 
 			if sim.Log != nil && dot.Aura.IsActive() {
@@ -83,7 +83,7 @@ func (bm *BrewmasterMonk) registerStagger() {
 		}
 
 		target := result.Target
-		dot := staggerSpell.SelfHot()
+		dot := bm.Stagger.SelfHot()
 		outstandingDamage := dot.OutstandingDmg()
 
 		// Avert Harm will only gain 20% Stagger from Melee abilities (non-auto attacks)
