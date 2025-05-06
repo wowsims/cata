@@ -4,6 +4,7 @@ import {
 	ConsumableType,
 	EquipmentSpec,
 	GemColor,
+	ItemLevelState,
 	ItemRandomSuffix,
 	ItemSlot,
 	ItemSpec,
@@ -11,6 +12,7 @@ import {
 	PresetEncounter,
 	PresetTarget,
 	ReforgeStat,
+	ScalingItemProperties,
 	Stat,
 } from '../proto/common.js';
 import { Consumable, SimDatabase } from '../proto/db';
@@ -281,7 +283,19 @@ export class Database {
 			reforge = this.getReforgeById(itemSpec.reforging) || null;
 		}
 
-		return new EquippedItem(item, enchant, gems, randomSuffix, reforge);
+		let upgrade: ItemLevelState | null = null;
+		if (itemSpec.upgradeStep) {
+			upgrade = itemSpec.upgradeStep ?? ItemLevelState.Base;
+		}
+
+		return new EquippedItem({
+			item,
+			enchant,
+			gems,
+			randomSuffix,
+			reforge,
+			upgrade,
+		});
 	}
 
 	lookupEquipmentSpec(equipSpec: EquipmentSpec): Gear {
