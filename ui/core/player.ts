@@ -34,7 +34,6 @@ import {
 	PseudoStat,
 	Race,
 	ReforgeStat,
-	ScalingItemProperties,
 	Spec,
 	Stat,
 	UnitReference,
@@ -52,7 +51,7 @@ import {
 } from './proto/ui';
 import { ActionId } from './proto_utils/action_id';
 import { Database } from './proto_utils/database';
-import { EquippedItem, getWeaponDPS, ReforgeData } from './proto_utils/equipped_item';
+import { EquippedItem, getWeaponStatsBySlot, ReforgeData } from './proto_utils/equipped_item';
 import { Gear, ItemSwapGear } from './proto_utils/gear';
 import { gemMatchesSocket, isUnrestrictedGem } from './proto_utils/gems';
 import { StatCap, Stats } from './proto_utils/stats';
@@ -483,8 +482,7 @@ export class Player<SpecType extends Spec> {
 
 	// Returns all reforgings that are valid with a given item
 	getAvailableReforgings(equippedItem: EquippedItem): Array<ReforgeData> {
-		const withRandomSuffixStats = equippedItem.getWithRandomSuffixStats();
-		return this.sim.db.getAvailableReforges(withRandomSuffixStats.item).map(reforge => equippedItem.getReforgeData(reforge)!);
+		return this.sim.db.getAvailableReforges(equippedItem.getWithDynamicStats().item).map(reforge => equippedItem.getReforgeData(reforge)!);
 	}
 
 	// Returns reforge given an id
@@ -1145,19 +1143,16 @@ export class Player<SpecType extends Spec> {
 		return this.computeStatsEP(stats);
 	}
 
-	computeUpgradeEP(equippedItem: EquippedItem, upgradeLevel: ItemLevelState): number {
-		const cacheKey = `${equippedItem.id}-${equippedItem.randomSuffix?.id}-${upgradeLevel}`;
+	computeUpgradeEP(equippedItem: EquippedItem, upgradeLevel: ItemLevelState, slot: ItemSlot): number {
+		const cacheKey = `${equippedItem.id}-${slot}-${equippedItem.randomSuffix?.id}-${upgradeLevel}`;
 		if (this.upgradeEPCache.has(cacheKey)) {
 			return this.upgradeEPCache.get(cacheKey)!;
 		}
 		const { item } = equippedItem;
-		const { item: upgradedItem } = equippedItem.withUpgrade(upgradeLevel).getWithRandomSuffixStats();
+		const { item: upgradedItem } = equippedItem.withUpgrade(upgradeLevel).getWithDynamicStats();
 
 		let stats = new Stats(upgradedItem.stats);
-		if (item.weaponSpeed > 0) {
-			const weaponDps = getWeaponDPS(item, upgradeLevel);
-			stats = stats.withPseudoStat(PseudoStat.PseudoStatMainHandDps, weaponDps);
-		}
+		stats = getWeaponStatsBySlot(item, slot);
 
 		const ep = this.computeStatsEP(stats);
 		this.upgradeEPCache.set(cacheKey, ep);
@@ -1172,16 +1167,7 @@ export class Player<SpecType extends Spec> {
 		if (cached !== undefined) return cached;
 
 		let itemStats = new Stats(item.stats);
-		if (item.weaponSpeed > 0) {
-			const weaponDps = getWeaponDPS(item);
-			if (slot == ItemSlot.ItemSlotMainHand) {
-				itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatMainHandDps, weaponDps);
-			} else if (slot == ItemSlot.ItemSlotOffHand) {
-				itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatOffHandDps, weaponDps);
-			} else if (slot == ItemSlot.ItemSlotRanged) {
-				itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatRangedDps, weaponDps);
-			}
-		}
+		itemStats = getWeaponStatsBySlot(item, slot);
 
 		// For random suffix items, use the suffix option with the highest EP for the purposes of ranking items in the picker.
 		let maxSuffixEP = 0;
@@ -1244,7 +1230,7 @@ export class Player<SpecType extends Spec> {
 				.filter(ei => ei != null)
 				.map(ei => ei!.item.id),
 			hasExtraSocket: equippedItem.hasExtraSocket(isBlacksmithing),
-			upgradeStep: equippedItem.upgrade ?? undefined,
+			upgradeStep: equippedItem.upgrade,
 		});
 
 		elem.dataset.whtticon = 'false';
