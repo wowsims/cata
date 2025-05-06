@@ -488,6 +488,10 @@ message RaidBuffs {
 
 	// Major Mana Replenishment
 	int32 mana_tide_totem_count   = 35;
+
+	int32 stormlash_totem_count = 36;
+
+	int32 skull_banner_count = 37;
   }
 
 // Buffs that affect a single party.
@@ -832,13 +836,11 @@ message HealingModel {
 	// How often healing is applied.
 	double cadence_seconds = 2;
 	// Variation in the cadence.
-	double cadence_variation = 5;
+	double cadence_variation = 4;
 	// Fraction of each heal to model as an absorb shield.
-	double absorb_frac = 6;
-	// % Inspiration buff uptime
-	double inspiration_uptime = 3;
+	double absorb_frac = 5;
 	// TMI burst window bin size
-	int32 burst_window = 4;
+	int32 burst_window = 3;
 }
 
 message CustomRotation {

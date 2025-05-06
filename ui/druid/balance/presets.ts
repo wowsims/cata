@@ -64,7 +64,6 @@ export const DefaultRaidBuffs = RaidBuffs.create({});
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
 	vampiricTouch: true,
-	darkIntent: true,
 });
 
 export const DefaultPartyBuffs = PartyBuffs.create({});

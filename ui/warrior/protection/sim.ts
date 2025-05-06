@@ -107,7 +107,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 			OtherInputs.AbsorbFrac,
 			OtherInputs.BurstWindow,
 			OtherInputs.HpPercentForDefensives,
-			OtherInputs.InspirationUptime,
 			ProtectionWarriorInputs.StartingRage(),
 			OtherInputs.InFrontOfTarget,
 		],

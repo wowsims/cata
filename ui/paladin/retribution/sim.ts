@@ -132,9 +132,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({}),
 		partyBuffs: PartyBuffs.create({}),
-		individualBuffs: IndividualBuffs.create({
-			communion: true,
-		}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
 			// faerieFire: true,
 			// bloodFrenzy: true,

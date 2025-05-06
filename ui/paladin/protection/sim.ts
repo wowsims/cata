@@ -136,7 +136,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			OtherInputs.AbsorbFrac,
 			OtherInputs.BurstWindow,
 			OtherInputs.HpPercentForDefensives,
-			OtherInputs.InspirationUptime,
 			OtherInputs.InFrontOfTarget,
 		],
 	},

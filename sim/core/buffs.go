@@ -101,9 +101,6 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 	if raidBuffs.BattleShout {
 		BattleShoutAura(u, true, false)
 	}
-	if raidBuffs.CommandingShout {
-		CommandingShoutAura(u, true, false)
-	}
 
 	// +10% Melee and Ranged Attack Speed
 	if raidBuffs.UnholyAura {
@@ -250,15 +247,29 @@ func PowerWordFortitudeAura(unit *Unit) *Aura {
 		"Power Word: Fortitude",
 		ActionID{SpellID: 21562},
 		[]StatConfig{
-			{stats.Stamina, 0.10, true},
+			{stats.Stamina, 1.1, true},
 		},
 	})
 }
 
 func QirajiFortitudeAura(u *Unit) *Aura {
-	return makeExclusiveBuff(u, BuffConfig{"Qiraji Fortitude", ActionID{SpellID: 90364}, []StatConfig{{stats.Stamina, 0.10, true}}})
+	return makeExclusiveBuff(u, BuffConfig{"Qiraji Fortitude", ActionID{SpellID: 90364}, []StatConfig{{stats.Stamina, 1.1, true}}})
 }
+func CommandingShoutAura(unit *Unit, asExternal bool) *Aura {
+	baseAura := makeExclusiveBuff(unit, BuffConfig{
+		"Commanding Shout",
+		ActionID{SpellID: 469},
+		[]StatConfig{
+			{stats.Stamina, 1.1, true},
+		}})
+	if asExternal {
+		return baseAura
+	}
 
+	baseAura.OnReset = nil
+	baseAura.Duration = time.Minute * 5
+	return baseAura
+}
 func applyStaminaBuffs(u *Unit, raidBuffs *proto.RaidBuffs) {
 	// +10% Stamina buffs
 	if raidBuffs.PowerWordFortitude {
@@ -266,6 +277,9 @@ func applyStaminaBuffs(u *Unit, raidBuffs *proto.RaidBuffs) {
 	}
 	if raidBuffs.QirajiFortitude {
 		QirajiFortitudeAura(u)
+	}
+	if raidBuffs.CommandingShout {
+		CommandingShoutAura(u, false)
 	}
 }
 
@@ -334,24 +348,6 @@ func BattleShoutAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
 	return baseAura
 }
 
-func CommandingShoutAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
-	baseAura := makeExclusiveBuff(unit, BuffConfig{
-		"Commanding Shout",
-		ActionID{SpellID: 469},
-		[]StatConfig{
-			{stats.AttackPower, 1.1, true},
-			{stats.RangedAttackPower, 1.1, true},
-			{stats.Stamina, 1.1, true},
-		}})
-	if asExternal {
-		return baseAura
-	}
-
-	baseAura.OnReset = nil
-	baseAura.Duration = time.Minute * 5
-	return baseAura
-}
-
 // /////////////////////////////////////////////////////////////////////////
 //
 //	Melee Haste
@@ -388,7 +384,7 @@ func SwiftbladesCunningAura(u *Unit) *Aura {
 	return aura
 }
 func UnleashedRageAura(u *Unit) *Aura {
-	return makeExclusiveBuff(u, BuffConfig{"Unleashed Rage", ActionID{SpellID: 30809}, []StatConfig{{stats.AttackPower, 1.2, true}, {stats.RangedAttackPower, 1.1, true}}})
+	return makeExclusiveBuff(u, BuffConfig{"Unleashed Rage", ActionID{SpellID: 30809}, []StatConfig{{stats.AttackPower, 1.1, true}, {stats.RangedAttackPower, 1.1, true}}})
 }
 
 // /////////////////////////////////////////////////////////////////////////

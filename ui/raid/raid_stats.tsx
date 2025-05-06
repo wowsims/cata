@@ -458,7 +458,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Terrifying Roar',
 							actionId: ActionId.fromSpellId(90309),
-							playerData: playerClass(Class.ClassDruid),
+							playerData: playerClass(Class.ClassHunter),
 						},
 						{
 							label: 'Legacy of the White Tiger',
@@ -478,7 +478,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Roar of Courage',
 							actionId: ActionId.fromSpellId(93435),
-							playerData: playerClass(Class.ClassWarrior),
+							playerData: playerClass(Class.ClassHunter),
 						},
 						{
 							label: 'Spirit Beast Blessing',
@@ -503,7 +503,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Qiraji Fortitude',
 							actionId: ActionId.fromSpellId(90364),
-							playerData: playerClass(Class.ClassDruid),
+							playerData: playerClass(Class.ClassHunter),
 						},
 					],
 				},

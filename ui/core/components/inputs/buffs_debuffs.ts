@@ -122,7 +122,6 @@ export const DefensiveCooldownBuff = InputHelpers.makeMultiIconInput(
 
 // Misc Buffs
 export const ManaTideTotem = makeMultistateRaidBuffInput({ actionId: ActionId.fromSpellId(16190), numStates: 5, fieldName: 'manaTideTotemCount' });
-export const PowerInfusion = makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(10060), numStates: 11, fieldName: 'powerInfusionCount' });
 export const TricksOfTheTrade = makeTristateIndividualBuffInput({
 	actionId: ActionId.fromItemId(45767),
 	impId: ActionId.fromSpellId(57933),
@@ -172,7 +171,7 @@ export const RAID_BUFFS_CONFIG = [
 	{
 		config: StatsBuff,
 		picker: MultiIconPicker,
-		stats: [Stat.StatStrength, Stat.StatAgility, Stat.StatIntellect, Stat.StatStamina],
+		stats: [Stat.StatStrength, Stat.StatAgility, Stat.StatIntellect],
 	},
 	{
 		config: AttackPowerBuff,
@@ -182,7 +181,7 @@ export const RAID_BUFFS_CONFIG = [
 	{
 		config: AttackSpeedBuff,
 		picker: MultiIconPicker,
-		stats: [Stat.StatHasteRating],
+		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower],
 	},
 	{
 		config: SpellPowerBuff,
@@ -192,7 +191,7 @@ export const RAID_BUFFS_CONFIG = [
 	{
 		config: SpellHasteBuff,
 		picker: MultiIconPicker,
-		stats: [Stat.StatHasteRating],
+		stats: [Stat.StatSpellPower],
 	},
 	{
 		config: CritBuff,
@@ -225,12 +224,7 @@ export const RAID_BUFFS_MISC_CONFIG = [
 	{
 		config: ManaTideTotem,
 		picker: IconPicker,
-		stats: [Stat.StatMP5],
-	},
-	{
-		config: PowerInfusion,
-		picker: IconPicker,
-		stats: [Stat.StatMP5, Stat.StatSpellPower],
+		stats: [Stat.StatSpirit],
 	},
 	{
 		config: TricksOfTheTrade,
