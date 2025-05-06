@@ -3,6 +3,8 @@ package proto;
 
 option go_package = "./proto";
 
+import "google/protobuf/duration.proto";
+
 import "common.proto";
 enum ItemEffectType {
 	NONE   = 0;
