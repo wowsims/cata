@@ -120,16 +120,16 @@ export default class SelectorModal extends BaseModal {
 
 		const eligibleItems = this.player.getItems(selectedSlot);
 		const eligibleEnchants = this.player.getEnchants(selectedSlot);
-		const eligibleReforges = equippedItem?.item ? this.player.getAvailableReforgings(equippedItem.getWithDynamicStats()) : [];
-		const eligibleUpgrades = equippedItem?.item ? equippedItem.hasUpgradeOptions() : null;
+		const hasEligibleReforges = equippedItem?.item ? !!this.player.getAvailableReforgings(equippedItem.getWithDynamicStats()).length : false;
+		const hasEligibleUpgrades = equippedItem?.item ? equippedItem.hasUpgradeOptions() : false;
 
 		// If the enchant tab is selected but the item has no eligible enchants, default to items
 		// If the reforge tab is selected but the item has no eligible reforges, default to items
 		// If a gem tab is selected but the item has no eligible sockets, default to items
 		if (
 			(selectedTab === SelectorModalTabs.Enchants && !eligibleEnchants.length) ||
-			(selectedTab === SelectorModalTabs.Reforging && !eligibleReforges.length) ||
-			(selectedTab === SelectorModalTabs.Upgrades && !eligibleUpgrades) ||
+			(selectedTab === SelectorModalTabs.Reforging && !hasEligibleReforges) ||
+			(selectedTab === SelectorModalTabs.Upgrades && !hasEligibleUpgrades) ||
 			([SelectorModalTabs.Gem1, SelectorModalTabs.Gem2, SelectorModalTabs.Gem3].includes(selectedTab) &&
 				equippedItem?.numSockets(this.player.isBlacksmithing()) === 0)
 		) {
@@ -207,10 +207,10 @@ export default class SelectorModal extends BaseModal {
 
 		const hasRandomSuffixTab = !this.disabledTabs?.includes(SelectorModalTabs.RandomSuffixes);
 		if (hasRandomSuffixTab) this.addRandomSuffixTab(equippedItem, gearData);
-		const hasReforgingTab = !this.disabledTabs?.includes(SelectorModalTabs.Reforging);
-		if (hasReforgingTab) this.addReforgingTab(equippedItem, gearData);
 		const hasUpgradesTab = !this.disabledTabs?.includes(SelectorModalTabs.Upgrades);
 		if (hasUpgradesTab) this.addUpgradesTab(equippedItem, gearData);
+		const hasReforgingTab = !this.disabledTabs?.includes(SelectorModalTabs.Reforging);
+		if (hasReforgingTab) this.addReforgingTab(equippedItem, gearData);
 		const hasGemsTab = ![SelectorModalTabs.Gem1, SelectorModalTabs.Gem2, SelectorModalTabs.Gem3].some(gem => this.disabledTabs?.includes(gem));
 		if (hasGemsTab) this.addGemTabs(selectedSlot, equippedItem, gearData);
 
@@ -467,7 +467,7 @@ export default class SelectorModal extends BaseModal {
 		const itemProto = equippedItem.item;
 		const itemUpgrades = equippedItem.getUpgrades();
 		const itemUpgradesAsEntries = Object.entries(itemUpgrades);
-		const numberOfUpgrades = Object.keys(itemUpgrades).length - 1;
+		const numberOfUpgrades = itemUpgradesAsEntries.length - 1;
 
 		this.addTab<ItemLevelState>({
 			id: sanitizeId(`${this.options.id}-${SelectorModalTabs.Upgrades}`),
@@ -506,7 +506,7 @@ export default class SelectorModal extends BaseModal {
 				if (equippedItem) {
 					gearData.equipItem(
 						eventID,
-						equippedItem.withItem(equippedItem.item).withRandomSuffix(equippedItem.randomSuffix).withUpgrade(ItemLevelState.Base),
+						equippedItem.withUpgrade(ItemLevelState.Base),
 					);
 				}
 			},
@@ -599,12 +599,13 @@ export default class SelectorModal extends BaseModal {
 						this.addRandomSuffixTab(newItem, gearData);
 					}
 
-					this.removeTabs(SelectorModalTabs.Reforging);
-					this.addReforgingTab(newItem, gearData);
-
 					this.removeTabs(SelectorModalTabs.Upgrades);
 					this.addUpgradesTab(newItem, gearData);
 
+
+
+					this.removeTabs(SelectorModalTabs.Reforging);
+					this.addReforgingTab(newItem, gearData);
 					this.removeTabs('Gem');
 					this.addGemTabs(this.currentSlot, newItem, gearData);
 				}

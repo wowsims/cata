@@ -23,10 +23,10 @@ export const getWeaponDPS = (item: Item, upgradeStep: ItemLevelState = ItemLevel
 	return (weaponDamageMin + weaponDamageMax) / 2 / (item.weaponSpeed || 1);
 };
 
-export const getWeaponStatsBySlot = (item: Item, slot: ItemSlot) => {
+export const getWeaponStatsBySlot = (item: Item, slot: ItemSlot, upgradeStep: ItemLevelState = ItemLevelState.Base) => {
 	let itemStats = new Stats();
 	if (item.weaponSpeed > 0) {
-		const weaponDps = getWeaponDPS(item);
+		const weaponDps = getWeaponDPS(item, upgradeStep);
 		if (slot === ItemSlot.ItemSlotMainHand) {
 			itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatMainHandDps, weaponDps);
 		} else if (slot === ItemSlot.ItemSlotOffHand) {
@@ -342,7 +342,12 @@ export class EquippedItem {
 
 	getWithDynamicStats() {
 		const item = this.item;
-		if (typeof this._upgrade === 'number') item.stats = item.stats.map((stat, index) => this._item.scalingOptions[this._upgrade]!.stats[index] || stat);
+		if (typeof this._upgrade === 'number') {
+			const scalingOptions = this._item.scalingOptions[this._upgrade];
+			item.stats = item.stats.map((stat, index) => scalingOptions.stats[index] || stat);
+			item.weaponDamageMin = scalingOptions.weaponDamageMin;
+			item.weaponDamageMax = scalingOptions.weaponDamageMax;
+		}
 		if (this._randomSuffix) {
 			const randomPropPoints = this.getRandomPropPoints();
 			item.stats = item.stats.map((stat, index) =>
@@ -421,12 +426,9 @@ export class EquippedItem {
 	}
 
 	hasUpgradeOptions(): boolean {
-		const { scalingOptions } = this.item;
 		// Make sure to always exclude Challenge Mode scaling options as those are handled globally
 		// and offset these options by 1 due to items always having a base option.
-		delete scalingOptions[ItemLevelState.ChallengeMode];
-
-		return Object.keys(scalingOptions).length > 1;
+		return !!Object.keys(this._item.scalingOptions).filter(upgradeStep => Number(upgradeStep) > 0).length;
 	}
 
 	hasExtraGem(): boolean {

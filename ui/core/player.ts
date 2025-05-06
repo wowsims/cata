@@ -1127,11 +1127,8 @@ export class Player<SpecType extends Spec> {
 		if (this.upgradeEPCache.has(cacheKey)) {
 			return this.upgradeEPCache.get(cacheKey)!;
 		}
-		const { item } = equippedItem;
 		const { item: upgradedItem } = equippedItem.withUpgrade(upgradeLevel).getWithDynamicStats();
-
-		let stats = new Stats(upgradedItem.stats);
-		stats = getWeaponStatsBySlot(item, slot);
+		const stats = new Stats(upgradedItem.stats).add(getWeaponStatsBySlot(upgradedItem, slot, upgradeLevel));
 
 		const ep = this.computeStatsEP(stats);
 		this.upgradeEPCache.set(cacheKey, ep);
@@ -1145,8 +1142,7 @@ export class Player<SpecType extends Spec> {
 		const cached = this.itemEPCache[slot].get(item.id);
 		if (cached !== undefined) return cached;
 
-		let itemStats = new Stats(item.stats);
-		itemStats = getWeaponStatsBySlot(item, slot);
+		const itemStats = new Stats(item.stats).add(getWeaponStatsBySlot(item, slot));
 
 		// For random suffix items, use the suffix option with the highest EP for the purposes of ranking items in the picker.
 		let maxSuffixEP = 0;
