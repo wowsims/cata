@@ -471,7 +471,7 @@ type APLValueCurrentGenericResource struct {
 func (rot *APLRotation) newValueCurrentGenericResource(_ *proto.APLValueCurrentGenericResource, uuid *proto.UUID) APLValue {
 	unit := rot.unit
 	if unit.SecondaryResourceBar == nil {
-		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not a secondary resource", unit.Label)
+		rot.ValidationMessageByUUID(uuid, proto.LogLevel_Warning, "%s does not have secondary resource", unit.Label)
 		return nil
 	}
 	return &APLValueCurrentGenericResource{

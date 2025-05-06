@@ -285,7 +285,7 @@ func newEnergyCost(spell *Spell, options EnergyCostOptions, energyBar *energyBar
 			Refund:            options.Refund,
 			RefundMetrics:     options.RefundMetrics,
 			ResourceMetrics:   spell.Unit.NewEnergyMetrics(spell.ActionID),
-			ComboPointMetrics: Ternary(energyBar.ownerClass == proto.Class_ClassMonk, spell.Unit.NewChiMetrics(spell.ActionID), spell.Unit.NewComboPointMetrics(spell.ActionID)),
+			ComboPointMetrics: spell.Unit.NewComboPointMetrics(spell.ActionID),
 		},
 	}
 }
