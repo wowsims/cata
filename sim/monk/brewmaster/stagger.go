@@ -42,8 +42,6 @@ func (bm *BrewmasterMonk) registerStagger() {
 				if sim.Log != nil && dot.Aura.IsActive() {
 					bm.Log(sim, "[DEBUG] Stagger ticked for %0.0f Damage", damage)
 				}
-
-				dot.Aura.SetStacks(sim, int32(damage))
 			},
 		},
 
@@ -63,6 +61,8 @@ func (bm *BrewmasterMonk) registerStagger() {
 			oldDamagePerTick := dot.SnapshotBaseDamage
 			dot.SnapshotBaseDamage = damagePerTick
 			staggerSpell.Cast(sim, target)
+			dot.Aura.SetStacks(sim, int32(damagePerTick))
+
 			if sim.Log != nil && dot.Aura.IsActive() {
 				bm.Log(sim, "[DEBUG] Stagger tick refreshed from: %0.0f -> %0.0f", oldDamagePerTick, damagePerTick)
 			}
@@ -93,7 +93,6 @@ func (bm *BrewmasterMonk) registerStagger() {
 		t15Brewmaster2P := core.TernaryFloat64(bm.T15Brewmaster2P.IsActive(), 0.06, 0)
 
 		staggerMultiplier := min(1, bm.GetMasteryBonus()) + shuffleMultiplier + fortifyingBrewMultiplier + avertHarmMultiplier + t15Brewmaster2P
-
 		staggeredDamage := result.Damage * staggerMultiplier
 		result.Damage -= staggeredDamage
 
