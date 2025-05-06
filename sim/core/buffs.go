@@ -192,6 +192,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 	// Stamina & Strength/Agility secondary grouping
 	applyStaminaBuffs(u, raidBuffs)
 
+	registerManaTideTotemCD(agent, raidBuffs.ManaTideTotemCount)
 	// Individual cooldowns and major buffs
 	if len(char.Env.Raid.AllPlayerUnits)-char.Env.Raid.NumTargetDummies == 1 {
 		// Major Haste
@@ -1064,4 +1065,63 @@ func registerShatteringThrowCD(agent Agent, numShatteringThrows int32) {
 			},
 		},
 		numShatteringThrows)
+}
+
+var ManaTideTotemActionID = ActionID{SpellID: 16190}
+var ManaTideTotemAuraTag = "ManaTideTotem"
+
+const ManaTideTotemDuration = time.Second * 12
+const ManaTideTotemCD = time.Minute * 5
+
+func registerManaTideTotemCD(agent Agent, numManaTideTotems int32) {
+	if numManaTideTotems == 0 {
+		return
+	}
+
+	initialDelay := time.Duration(0)
+	var mttAura *Aura
+
+	character := agent.GetCharacter()
+	mttAura = ManaTideTotemAura(character, -1)
+
+	character.Env.RegisterPostFinalizeEffect(func() {
+		// Use first MTT at 60s, or halfway through the fight, whichever comes first.
+		initialDelay = min(character.Env.BaseDuration/2, time.Second*60)
+	})
+
+	registerExternalConsecutiveCDApproximation(
+		agent,
+		externalConsecutiveCDApproximation{
+			ActionID:         ManaTideTotemActionID.WithTag(-1),
+			AuraTag:          ManaTideTotemAuraTag,
+			CooldownPriority: CooldownPriorityDefault,
+			AuraDuration:     ManaTideTotemDuration,
+			AuraCD:           ManaTideTotemCD,
+			Type:             CooldownTypeMana,
+			ShouldActivate: func(sim *Simulation, character *Character) bool {
+				// A normal resto shaman would wait to use MTT.
+				return sim.CurrentTime >= initialDelay
+			},
+			AddAura: func(sim *Simulation, character *Character) {
+				mttAura.Activate(sim)
+			},
+		},
+		numManaTideTotems)
+}
+
+func ManaTideTotemAura(character *Character, actionTag int32) *Aura {
+	actionID := ManaTideTotemActionID.WithTag(actionTag)
+	dep := character.NewDynamicMultiplyStat(stats.Spirit, 2)
+	return character.GetOrRegisterAura(Aura{
+		Label:    "ManaTideTotem-" + actionID.String(),
+		Tag:      ManaTideTotemAuraTag,
+		ActionID: actionID,
+		Duration: ManaTideTotemDuration,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.EnableDynamicStatDep(sim, dep)
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.DisableDynamicStatDep(sim, dep)
+		},
+	})
 }
