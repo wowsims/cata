@@ -120,7 +120,7 @@ export default class SelectorModal extends BaseModal {
 
 		const eligibleItems = this.player.getItems(selectedSlot);
 		const eligibleEnchants = this.player.getEnchants(selectedSlot);
-		const eligibleReforges = equippedItem?.item ? this.player.getAvailableReforgings(equippedItem.getWithRandomSuffixStats()) : [];
+		const eligibleReforges = equippedItem?.item ? this.player.getAvailableReforgings(equippedItem.getWithDynamicStats()) : [];
 		const eligibleUpgrades = equippedItem?.item ? equippedItem.hasUpgradeOptions() : null;
 
 		// If the enchant tab is selected but the item has no eligible enchants, default to items
@@ -129,7 +129,7 @@ export default class SelectorModal extends BaseModal {
 		if (
 			(selectedTab === SelectorModalTabs.Enchants && !eligibleEnchants.length) ||
 			(selectedTab === SelectorModalTabs.Reforging && !eligibleReforges.length) ||
-			(selectedTab === SelectorModalTabs.Upgrades && !(eligibleUpgrades && Object.keys(eligibleUpgrades).length)) ||
+			(selectedTab === SelectorModalTabs.Upgrades && !eligibleUpgrades) ||
 			([SelectorModalTabs.Gem1, SelectorModalTabs.Gem2, SelectorModalTabs.Gem3].includes(selectedTab) &&
 				equippedItem?.numSockets(this.player.isBlacksmithing()) === 0)
 		) {
@@ -499,12 +499,15 @@ export default class SelectorModal extends BaseModal {
 					},
 				};
 			}),
-			computeEP: (upgradeStep: ItemLevelState) => this.player.computeUpgradeEP(equippedItem, upgradeStep),
+			computeEP: (upgradeStep: ItemLevelState) => this.player.computeUpgradeEP(equippedItem, upgradeStep, this.currentSlot),
 			equippedToItemFn: (equippedItem: EquippedItem | null) => equippedItem?._upgrade,
 			onRemove: (eventID: number) => {
 				const equippedItem = gearData.getEquippedItem();
 				if (equippedItem) {
-					gearData.equipItem(eventID, equippedItem.withItem(equippedItem.item).withUpgrade(ItemLevelState.Base));
+					gearData.equipItem(
+						eventID,
+						equippedItem.withItem(equippedItem.item).withRandomSuffix(equippedItem.randomSuffix).withUpgrade(ItemLevelState.Base),
+					);
 				}
 			},
 		});

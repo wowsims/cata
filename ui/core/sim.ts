@@ -256,7 +256,7 @@ export class Sim {
 				const newSpellEffects: SpellEffect[] = [];
 				const seenConsumableIds = new Set<number>();
 				const seenEffectIds = new Set<number>();
-				Object.entries(player.consumables ?? []).forEach(([_, cid]) => {
+				Object.values(player.consumables ?? []).forEach((cid: number) => {
 					if (!cid || seenConsumableIds.has(cid)) return;
 					const consume = this.db.getConsumable(cid);
 					if (!consume) return;
