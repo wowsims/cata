@@ -1,8 +1,6 @@
 package balance
 
 import (
-	"time"
-
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/sim/druid"
@@ -36,8 +34,9 @@ func NewBalanceDruid(character *core.Character, options *proto.Player) *BalanceD
 	selfBuffs := druid.SelfBuffs{}
 
 	moonkin := &BalanceDruid{
-		Druid:   druid.New(character, druid.Moonkin, selfBuffs, options.TalentsString),
-		Options: balanceOptions.Options,
+		Druid:            druid.New(character, druid.Moonkin, selfBuffs, options.TalentsString),
+		Options:          balanceOptions.Options,
+		EclipseEnergyMap: make(EclipseEnergyMap),
 	}
 
 	moonkin.SelfBuffs.InnervateTarget = &proto.UnitReference{}
@@ -48,15 +47,12 @@ func NewBalanceDruid(character *core.Character, options *proto.Player) *BalanceD
 	return moonkin
 }
 
-func tryExtendDot(dot *core.Dot) {
-	if dot.IsActive() {
-		dot.UpdateExpires(dot.ExpiresAt() + time.Second*2)
-	}
-}
-
 type BalanceDruid struct {
 	*druid.Druid
+	eclipseEnergyBar
 	Options *proto.BalanceDruid_Options
+
+	EclipseEnergyMap EclipseEnergyMap
 
 	Starfire  *druid.DruidSpell
 	Starsurge *druid.DruidSpell

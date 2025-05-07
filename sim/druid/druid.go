@@ -15,14 +15,11 @@ const (
 type Druid struct {
 	core.Character
 	SelfBuffs
-	// eclipseEnergyBar
 	Talents *proto.DruidTalents
 
 	ClassSpellScaling float64
 
 	StartingForm DruidForm
-
-	EclipseEnergyMap EclipseEnergyMap
 
 	RebirthUsed       bool
 	RebirthTiming     float64
@@ -334,7 +331,6 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 		StartingForm:      form,
 		form:              form,
 		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassDruid),
-		EclipseEnergyMap:  make(EclipseEnergyMap),
 	}
 
 	core.FillTalentsProto(druid.Talents.ProtoReflect(), talents)
