@@ -86,7 +86,6 @@ var FullIndividualBuffs = &proto.IndividualBuffs{
 	// BlessingOfSanctuary: true,
 	// BlessingOfWisdom:    true,
 	// JudgementsOfTheWise: true,
-	VampiricTouch: true,
 }
 
 var FullDebuffs = &proto.Debuffs{
