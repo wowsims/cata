@@ -476,8 +476,9 @@ export class Player<SpecType extends Spec> {
 
 	// Returns all random suffixes that this player would be interested in for the given base item.
 	getRandomSuffixes(item: Item): Array<ItemRandomSuffix> {
-		const allSuffixes = item.randomSuffixOptions.map(id => this.sim.db.getRandomSuffixById(id)!);
-		return allSuffixes.filter(suffix => this.computeRandomSuffixEP(suffix) > 0);
+		return item.randomSuffixOptions
+			.map(id => this.sim.db.getRandomSuffixById(id))
+			.filter((suffix): suffix is ItemRandomSuffix => !!suffix && this.computeRandomSuffixEP(suffix) > 0);
 	}
 
 	// Returns all reforgings that are valid with a given item
@@ -1140,6 +1141,7 @@ export class Player<SpecType extends Spec> {
 		let stats = new Stats([]);
 		stats = stats.addStat(reforging.fromStat, reforging.fromAmount);
 		stats = stats.addStat(reforging.toStat, reforging.toAmount);
+
 		return this.computeStatsEP(stats);
 	}
 
