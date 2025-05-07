@@ -421,6 +421,9 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 				return false
 			}
 		}
+		if strings.Contains(enchant.Name, "Template") {
+			return false
+		}
 		return !strings.HasPrefix(enchant.Name, "QA") && !strings.HasPrefix(enchant.Name, "Test") && !strings.HasPrefix(enchant.Name, "TEST")
 	})
 

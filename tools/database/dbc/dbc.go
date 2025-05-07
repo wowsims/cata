@@ -259,7 +259,7 @@ func (d *DBC) loadEnchants(filename string) error {
 
 	for i := range enchants {
 		enchant := enchants[i]
-		d.Enchants[enchant.EffectId] = enchant
+		d.Enchants[i] = enchant
 	}
 	return nil
 }
