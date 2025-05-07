@@ -84,7 +84,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		}),
 		individualBuffs: IndividualBuffs.create({
 			innervateCount: 0,
-			vampiricTouch: true,
 		}),
 		debuffs: Presets.DefaultDebuffs,
 	},
@@ -227,7 +226,6 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 				updateSoftCaps: softCaps => {
 					const raidBuffs = player.getRaid()?.getBuffs();
 					const hasBL = !!(raidBuffs?.bloodlust || raidBuffs?.timeWarp || raidBuffs?.heroism);
-					const hasPI = !!player.getBuffs().powerInfusionCount;
 					const hasBerserking = player.getRace() === Race.RaceTroll;
 
 					const modifyHaste = (oldHastePercent: number, modifier: number) =>
@@ -262,7 +260,7 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 										}
 									}
 								}
-								if (hasPI && !isExcludedFromPiZerk) {
+								if (!isExcludedFromPiZerk) {
 									const piBreakpoint = modifyHaste(breakpoint, 1.2);
 									if (piBreakpoint > 0) {
 										if (!hasCloseMatchingValue(piBreakpoint)) adjustedHastedBreakpoints.add(piBreakpoint);
@@ -284,17 +282,15 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 					[Stat.StatHasteRating]: () => {
 						const raidBuffs = player.getRaid()?.getBuffs();
 						const hasBL = !!(raidBuffs?.bloodlust || raidBuffs?.timeWarp || raidBuffs?.heroism);
-						const hasPI = !!player.getBuffs().powerInfusionCount;
 						const hasBerserking = player.getRace() === Race.RaceTroll;
 
 						return (
 							<>
-								{(hasBL || hasPI || hasBerserking) && (
+								{(hasBL || hasBerserking) && (
 									<>
 										<p className="mb-0">Additional breakpoints have been created using the following cooldowns:</p>
 										<ul className="mb-0">
 											{hasBL && <li>Bloodlust</li>}
-											{hasPI && <li>Power Infusion</li>}
 											{hasBerserking && <li>Berserking</li>}
 										</ul>
 									</>

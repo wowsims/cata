@@ -64,9 +64,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 		partyBuffs: PartyBuffs.create({
 			manaTideTotems: 1,
 		}),
-		individualBuffs: IndividualBuffs.create({
-			vampiricTouch: true,
-		}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Presets.DefaultDebuffs,
 	},
 
