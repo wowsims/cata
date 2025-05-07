@@ -27,6 +27,7 @@ import {
 	HandType,
 	HealingModel,
 	IndividualBuffs,
+	ItemLevelState,
 	ItemRandomSuffix,
 	ItemSlot,
 	Profession,
@@ -50,7 +51,7 @@ import {
 } from './proto/ui';
 import { ActionId } from './proto_utils/action_id';
 import { Database } from './proto_utils/database';
-import { EquippedItem, getWeaponDPS, ReforgeData } from './proto_utils/equipped_item';
+import { EquippedItem, getWeaponStatsBySlot, ReforgeData } from './proto_utils/equipped_item';
 import { Gear, ItemSwapGear } from './proto_utils/gear';
 import { gemMatchesSocket, isUnrestrictedGem } from './proto_utils/gems';
 import { StatCap, Stats } from './proto_utils/stats';
@@ -250,7 +251,6 @@ export class Player<SpecType extends Spec> {
 	private channelClipDelay = 0;
 	private inFrontOfTarget = false;
 	private distanceFromTarget = 0;
-	private darkIntentUptime = 100;
 	private healingModel: HealingModel = HealingModel.create();
 	private healingEnabled = false;
 
@@ -262,6 +262,7 @@ export class Player<SpecType extends Spec> {
 	private gemEPCache = new Map<number, number>();
 	private randomSuffixEPCache = new Map<number, number>();
 	private enchantEPCache = new Map<number, number>();
+	private upgradeEPCache = new Map<string, number>();
 	private talents: SpecTalents<SpecType> | null = null;
 
 	readonly specTypeFunctions: SpecTypeFunctions<SpecType>;
@@ -469,8 +470,7 @@ export class Player<SpecType extends Spec> {
 
 	// Returns all reforgings that are valid with a given item
 	getAvailableReforgings(equippedItem: EquippedItem): Array<ReforgeData> {
-		const withRandomSuffixStats = equippedItem.getWithRandomSuffixStats();
-		return this.sim.db.getAvailableReforges(withRandomSuffixStats.item).map(reforge => equippedItem.getReforgeData(reforge)!);
+		return this.sim.db.getAvailableReforges(equippedItem.getWithDynamicStats().item).map(reforge => equippedItem.getReforgeData(reforge)!);
 	}
 
 	// Returns reforge given an id
@@ -499,6 +499,7 @@ export class Player<SpecType extends Spec> {
 		this.gemEPCache = new Map();
 		this.enchantEPCache = new Map();
 		this.randomSuffixEPCache = new Map();
+		this.upgradeEPCache = new Map();
 		for (let i = 0; i < ItemSlot.ItemSlotRanged + 1; ++i) {
 			this.itemEPCache[i] = new Map();
 		}
@@ -990,17 +991,6 @@ export class Player<SpecType extends Spec> {
 		this.miscOptionsChangeEmitter.emit(eventID);
 	}
 
-	getDarkIntentUptime(): number {
-		return this.darkIntentUptime;
-	}
-
-	setDarkIntentUptime(eventID: EventID, newDarkIntentUptime: number) {
-		if (newDarkIntentUptime == this.darkIntentUptime) return;
-
-		this.darkIntentUptime = newDarkIntentUptime;
-		this.miscOptionsChangeEmitter.emit(eventID);
-	}
-
 	getInFrontOfTarget(): boolean {
 		return this.inFrontOfTarget;
 	}
@@ -1120,23 +1110,27 @@ export class Player<SpecType extends Spec> {
 		return this.computeStatsEP(stats);
 	}
 
+	computeUpgradeEP(equippedItem: EquippedItem, upgradeLevel: ItemLevelState, slot: ItemSlot): number {
+		const cacheKey = `${equippedItem.id}-${slot}-${equippedItem.randomSuffix?.id}-${upgradeLevel}`;
+		if (this.upgradeEPCache.has(cacheKey)) {
+			return this.upgradeEPCache.get(cacheKey)!;
+		}
+		const { item: upgradedItem } = equippedItem.withUpgrade(upgradeLevel).getWithDynamicStats();
+		const stats = new Stats(upgradedItem.stats).add(getWeaponStatsBySlot(upgradedItem, slot, upgradeLevel));
+
+		const ep = this.computeStatsEP(stats);
+		this.upgradeEPCache.set(cacheKey, ep);
+
+		return ep;
+	}
+
 	computeItemEP(item: Item, slot: ItemSlot): number {
 		if (item == null) return 0;
 
 		const cached = this.itemEPCache[slot].get(item.id);
 		if (cached !== undefined) return cached;
 
-		let itemStats = new Stats(item.stats);
-		if (item.weaponSpeed > 0) {
-			const weaponDps = getWeaponDPS(item);
-			if (slot == ItemSlot.ItemSlotMainHand) {
-				itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatMainHandDps, weaponDps);
-			} else if (slot == ItemSlot.ItemSlotOffHand) {
-				itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatOffHandDps, weaponDps);
-			} else if (slot == ItemSlot.ItemSlotRanged) {
-				itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatRangedDps, weaponDps);
-			}
-		}
+		const itemStats = new Stats(item.stats).add(getWeaponStatsBySlot(item, slot));
 
 		// For random suffix items, use the suffix option with the highest EP for the purposes of ranking items in the picker.
 		let maxSuffixEP = 0;
@@ -1190,13 +1184,16 @@ export class Player<SpecType extends Spec> {
 
 		equippedItem.asActionId().setWowheadDataset(elem, {
 			gemIds,
+			itemLevel: Number(equippedItem.ilvl),
 			enchantId: equippedItem.enchant?.effectId,
 			reforgeId: equippedItem.reforge?.id,
+			randomEnchantmentId: equippedItem.randomSuffix?.id,
 			setPieceIds: this.gear
 				.asArray()
 				.filter(ei => ei != null)
 				.map(ei => ei!.item.id),
 			hasExtraSocket: equippedItem.hasExtraSocket(isBlacksmithing),
+			upgradeStep: equippedItem.upgrade,
 		});
 
 		elem.dataset.whtticon = 'false';
@@ -1484,7 +1481,6 @@ export class Player<SpecType extends Spec> {
 				inFrontOfTarget: this.getInFrontOfTarget(),
 				distanceFromTarget: this.getDistanceFromTarget(),
 				healingModel: this.getHealingModel(),
-				darkIntentUptime: this.getDarkIntentUptime(),
 			});
 			player = withSpec(this.getSpec(), player, this.getSpecOptions());
 		}
@@ -1540,7 +1536,6 @@ export class Player<SpecType extends Spec> {
 				this.setInFrontOfTarget(eventID, proto.inFrontOfTarget);
 				this.setDistanceFromTarget(eventID, proto.distanceFromTarget);
 				this.setHealingModel(eventID, proto.healingModel || HealingModel.create());
-				this.setDarkIntentUptime(eventID, proto.darkIntentUptime);
 			}
 			if (loadCategory(SimSettingCategories.External)) {
 				this.setBuffs(eventID, proto.buffs || IndividualBuffs.create());

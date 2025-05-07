@@ -113,21 +113,6 @@ export const ChannelClipDelay = {
 	},
 };
 
-export const DarkIntentUptime = {
-	id: 'dark-intent-uptime',
-	type: 'number' as const,
-	label: 'Dark Intent Uptime',
-	labelTooltip: '% uptime on Dark Intent on the player (Only the stacking damage component)',
-	changedEvent: (player: Player<any>) => TypedEvent.onAny([player.buffsChangeEmitter, player.miscOptionsChangeEmitter]),
-	getValue: (player: Player<any>) => player.getDarkIntentUptime(),
-	setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
-		player.setDarkIntentUptime(eventID, newValue);
-	},
-	showWhen: (player: Player<any>) => {
-		return player.getBuffs().darkIntent;
-	},
-};
-
 export const InFrontOfTarget = {
 	id: 'in-front-of-target',
 	type: 'boolean' as const,
@@ -289,23 +274,5 @@ export const HpPercentForDefensives = {
 		const cooldowns = player.getSimpleCooldowns();
 		cooldowns.hpPercentForDefensives = newValue / 100;
 		player.setSimpleCooldowns(eventID, cooldowns);
-	},
-};
-
-export const InspirationUptime = {
-	id: 'inspiration-uptime',
-	type: 'number' as const,
-	float: true,
-	label: 'Inspiration % Uptime',
-	labelTooltip: `
-		<p>% average of Encounter Duration, during which you have the Inspiration buff.</p>
-		<p>If set to 0, the buff isn't applied.</p>
-	`,
-	changedEvent: (player: Player<any>) => player.healingModelChangeEmitter,
-	getValue: (player: Player<any>) => player.getHealingModel().inspirationUptime * 100,
-	setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
-		const healingModel = player.getHealingModel();
-		healingModel.inspirationUptime = newValue / 100;
-		player.setHealingModel(eventID, healingModel);
 	},
 };
