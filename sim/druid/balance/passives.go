@@ -65,6 +65,28 @@ func (moonkin *BalanceDruid) registerBalanceOfPower() {
 	moonkin.AddStatDependency(stats.Spirit, stats.SpellHitPercent, 1/core.SpellHitRatingPerHitPercent)
 }
 
+func (moonkin *BalanceDruid) registerNaturesGrace() {
+	ngAura := moonkin.RegisterAura(core.Aura{
+		Label:    "Nature's Grace",
+		ActionID: core.ActionID{SpellID: 16886},
+		Duration: time.Second * 15,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			moonkin.MultiplyCastSpeed(1.15)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			moonkin.MultiplyCastSpeed(1 / 1.15)
+		},
+	})
+
+	if moonkin.HasEclipseBar() {
+		moonkin.AddEclipseCallback(func(_ Eclipse, gained bool, sim *core.Simulation) {
+			if gained {
+				ngAura.Activate(sim)
+			}
+		})
+	}
+}
+
 func (moonkin *BalanceDruid) registerEuphoria() {}
 
 func (moonkin *BalanceDruid) registerOwlkinFrenzy() {}
@@ -77,4 +99,60 @@ func (moonkin *BalanceDruid) registerNaturalInsight() {}
 
 func (moonkin *BalanceDruid) registerTotalEclipse() {}
 
-func (moonkin *BalanceDruid) registerLunarShower() {}
+func (moonkin *BalanceDruid) registerLunarShower() {
+	lunarShowerDmgMod := moonkin.AddDynamicMod(core.SpellModConfig{
+		ClassMask: druid.DruidSpellMoonfire | druid.DruidSpellSunfire,
+		Kind:      core.SpellMod_DamageDone_Pct,
+	})
+
+	lunarShowerResourceMod := moonkin.AddDynamicMod(core.SpellModConfig{
+		ClassMask: druid.DruidSpellMoonfire | druid.DruidSpellSunfire,
+		Kind:      core.SpellMod_PowerCost_Pct,
+	})
+
+	var lunarShowerAura = moonkin.RegisterAura(core.Aura{
+		Label:     "Lunar Shower",
+		Duration:  time.Second * 3,
+		ActionID:  core.ActionID{SpellID: 81192},
+		MaxStacks: 3,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			lunarShowerDmgMod.UpdateFloatValue(float64(aura.GetStacks()) * 0.45)
+			lunarShowerDmgMod.Activate()
+
+			lunarShowerResourceMod.UpdateIntValue(aura.GetStacks() * -30)
+			lunarShowerResourceMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			lunarShowerDmgMod.Deactivate()
+			lunarShowerResourceMod.Deactivate()
+		},
+	})
+
+	moonkin.RegisterAura(core.Aura{
+		Label:    "Lunar Shower Handler",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.Matches(druid.DruidSpellMoonfire) && !spell.Matches(druid.DruidSpellSunfire) {
+				return
+			}
+
+			// does not proc off procs
+			if spell.ProcMask.Matches(core.ProcMaskProc) {
+				return
+			}
+
+			if lunarShowerAura.IsActive() {
+				if lunarShowerAura.GetStacks() < 3 {
+					lunarShowerAura.AddStack(sim)
+					lunarShowerAura.Refresh(sim)
+				}
+			} else {
+				lunarShowerAura.Activate(sim)
+				lunarShowerAura.SetStacks(sim, 1)
+			}
+		},
+	})
+}
