@@ -18,6 +18,7 @@ func (moonkin *BalanceDruid) RegisterBalancePassives() {
 	moonkin.registerNaturalInsight()
 	moonkin.registerTotalEclipse()
 	moonkin.registerLunarShower()
+	moonkin.registerNaturesGrace()
 }
 
 func (moonkin *BalanceDruid) registerShootingStars() {
@@ -135,7 +136,7 @@ func (moonkin *BalanceDruid) registerLunarShower() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.Matches(druid.DruidSpellMoonfire) && !spell.Matches(druid.DruidSpellSunfire) {
+			if !spell.Matches(druid.DruidSpellMoonfire | druid.DruidSpellSunfire) {
 				return
 			}
 

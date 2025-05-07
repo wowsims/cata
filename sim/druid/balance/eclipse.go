@@ -48,24 +48,24 @@ func (eb *eclipseEnergyBar) reset() {
 	eb.solarEnergy = 0
 
 	// in neutral state we can gain both
-	eb.gainMask = SolarEnergy | LunarEnergy
+	eb.gainMask = SolarAndLunarEnergy
 	eb.currentEclipse = NoEclipse
 }
 
 func (moonkin *BalanceDruid) EnableEclipseBar() {
 	moonkin.eclipseEnergyBar = eclipseEnergyBar{
 		moonkin:          moonkin,
-		gainMask:         SolarEnergy | LunarEnergy,
+		gainMask:         SolarAndLunarEnergy,
 		eclipseCallbacks: moonkin.eclipseEnergyBar.eclipseCallbacks,
 	}
 }
 
 func getEclipseMasteryBonus(masteryPoints float64) float64 {
-	return (16 + masteryPoints*2) / 100
+	return (15 + masteryPoints*2) / 100
 }
 
 func (moonkin *BalanceDruid) RegisterEclipseAuras() {
-	baselineEclipsePct := 0.25
+	baselineEclipsePct := 0.15
 	initialEclipseMasteryBonus := getEclipseMasteryBonus(moonkin.GetMasteryPoints())
 
 	lunarSpellMod := moonkin.AddDynamicMod(core.SpellModConfig{
@@ -80,11 +80,30 @@ func (moonkin *BalanceDruid) RegisterEclipseAuras() {
 		FloatValue: baselineEclipsePct + initialEclipseMasteryBonus,
 	})
 
+	moonkin.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
+		if !moonkin.IsInEclipse() {
+			return
+		}
+
+		masteryBonusDiff := getEclipseMasteryBonus(newMastery) - getEclipseMasteryBonus(oldMastery)
+
+		if lunarSpellMod.IsActive {
+			lunarSpellMod.UpdateFloatValue(lunarSpellMod.GetFloatValue() + masteryBonusDiff)
+		} else {
+			solarSpellMod.UpdateFloatValue(solarSpellMod.GetFloatValue() + masteryBonusDiff)
+		}
+	})
+
 	lunarEclipse := moonkin.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 48518},
 		Label:    "Eclipse (Lunar)",
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			if moonkin.DreamOfCenarius != nil && moonkin.DreamOfCenarius.IsActive() {
+				baselineEclipsePct += 0.25
+				moonkin.DreamOfCenarius.Deactivate(sim)
+			}
+
 			lunarSpellMod.UpdateFloatValue(baselineEclipsePct + getEclipseMasteryBonus(moonkin.GetMasteryPoints()))
 			lunarSpellMod.Activate()
 		},
@@ -98,6 +117,11 @@ func (moonkin *BalanceDruid) RegisterEclipseAuras() {
 		Label:    "Eclipse (Solar)",
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			if moonkin.DreamOfCenarius != nil && moonkin.DreamOfCenarius.IsActive() {
+				baselineEclipsePct += 0.25
+				moonkin.DreamOfCenarius.Deactivate(sim)
+			}
+
 			solarSpellMod.UpdateFloatValue(baselineEclipsePct + getEclipseMasteryBonus(moonkin.GetMasteryPoints()))
 			solarSpellMod.Activate()
 		},
@@ -135,14 +159,12 @@ func (moonkin *BalanceDruid) RegisterEclipseEnergyGainAura() {
 			aura.Activate(sim)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			var eclipseEnergyMultiplier float64 = 1.0
-
 			if energyGain := moonkin.GetSpellEclipseEnergy(spell.ClassSpellMask, moonkin.currentEclipse != NoEclipse); energyGain != 0 {
 				switch spell.ClassSpellMask {
 				case druid.DruidSpellStarfire:
-					moonkin.AddEclipseEnergy(energyGain*eclipseEnergyMultiplier, SolarEnergy, sim, solarMetric, spell)
+					moonkin.AddEclipseEnergy(energyGain, SolarEnergy, sim, solarMetric, spell)
 				case druid.DruidSpellWrath:
-					moonkin.AddEclipseEnergy(energyGain*eclipseEnergyMultiplier, LunarEnergy, sim, lunarMetric, spell)
+					moonkin.AddEclipseEnergy(energyGain, LunarEnergy, sim, lunarMetric, spell)
 				case druid.DruidSpellStarsurge:
 					if moonkin.CanGainEnergy(SolarEnergy) {
 						moonkin.AddEclipseEnergy(energyGain, SolarEnergy, sim, solarMetric, spell)
@@ -267,7 +289,7 @@ func (eb *eclipseEnergyBar) SetEclipse(eclipse Eclipse, sim *core.Simulation, sp
 		eb.invokeCallback(eclipse, true, sim)
 		eb.currentEclipse = eclipse
 	} else {
-		if spell.ClassSpellMask&druid.DruidSpellWrath > 0 {
+		if spell.Matches(druid.DruidSpellWrath) {
 			eb.eclipseTrigger = func(triggerSpell *core.Spell) bool {
 				if spell.ClassSpellMask == triggerSpell.ClassSpellMask && !(triggerSpell.ProcMask&core.ProcMaskSpellProc > 0) {
 					eb.invokeCallback(eb.currentEclipse, false, sim)

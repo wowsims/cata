@@ -58,6 +58,8 @@ type BalanceDruid struct {
 	Starsurge *druid.DruidSpell
 	Sunfire   *druid.DruidSpell
 	Starfall  *druid.DruidSpell
+
+	DreamOfCenarius *core.Aura
 }
 
 func (moonkin *BalanceDruid) GetDruid() *druid.Druid {
@@ -66,10 +68,20 @@ func (moonkin *BalanceDruid) GetDruid() *druid.Druid {
 
 func (moonkin *BalanceDruid) Initialize() {
 	moonkin.Druid.Initialize()
-
 	moonkin.RegisterBalancePassives()
-
 	moonkin.RegisterBalanceSpells()
+}
+
+func (moonkin *BalanceDruid) RegisterBalanceSpells() {
+	//druid.registerHurricaneSpell()
+	//druid.registerMoonfireSpell()
+	//druid.registerForceOfNature()
+	//druid.registerWildMushrooms()
+
+	moonkin.registerSunfireSpell()
+	moonkin.registerStarfireSpell()
+	moonkin.registerStarsurgeSpell()
+	moonkin.registerStarfallSpell()
 }
 
 func (moonkin *BalanceDruid) ApplyTalents() {

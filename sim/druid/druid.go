@@ -41,6 +41,7 @@ type Druid struct {
 	FerociousBite         *DruidSpell
 	ForceOfNature         *DruidSpell
 	FrenziedRegeneration  *DruidSpell
+	HealingTouch          *DruidSpell
 	Hurricane             *DruidSpell
 	HurricaneTickSpell    *DruidSpell
 	GiftOfTheWild         *DruidSpell
@@ -242,6 +243,8 @@ func (druid *Druid) Initialize() {
 		}
 	})
 
+	druid.RegisterBaselineSpells()
+
 	// druid.registerFaerieFireSpell()
 	// druid.registerRebirthSpell()
 	// druid.registerInnervateCD()
@@ -249,17 +252,10 @@ func (druid *Druid) Initialize() {
 	druid.applyOmenOfClarity()
 }
 
-func (druid *Druid) RegisterBalanceSpells() {
-	druid.registerHurricaneSpell()
+func (druid *Druid) RegisterBaselineSpells() {
 	druid.registerMoonfireSpell()
-	//druid.registerSunfireSpell()
-	// druid.registerStarfireSpell()
 	druid.registerWrathSpell()
-	// druid.registerStarfallSpell()
-	// druid.registerTyphoonSpell()
-	// druid.registerForceOfNature()
-	//druid.registerStarsurgeSpell()
-	druid.registerWildMushrooms()
+	druid.registerHealingTouchSpell()
 }
 
 func (druid *Druid) RegisterFeralCatSpells() {

@@ -9,6 +9,7 @@ import (
 
 func (moonkin *BalanceDruid) ApplyBalanceTalents() {
 	moonkin.registerIncarnation()
+	moonkin.registerDreamOfCenarius()
 }
 
 func (moonkin *BalanceDruid) registerIncarnation() {
@@ -64,4 +65,26 @@ func (moonkin *BalanceDruid) registerIncarnation() {
 			incarnationAura.Activate(sim)
 		},
 	})
+}
+
+func (moonkin *BalanceDruid) registerDreamOfCenarius() {
+	if !moonkin.Talents.DreamOfCenarius {
+		return
+	}
+
+	moonkin.DreamOfCenarius = moonkin.RegisterAura(core.Aura{
+		Label:    "Dream of Cenarius",
+		ActionID: core.ActionID{SpellID: 108381},
+		Duration: time.Second * 30,
+	})
+
+	core.MakeProcTriggerAura(&moonkin.Unit, core.ProcTrigger{
+		Name:           "Dream of Cenarius Trigger",
+		Callback:       core.CallbackOnCastComplete,
+		ClassSpellMask: druid.DruidSpellHealingTouch,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			moonkin.DreamOfCenarius.Activate(sim)
+		},
+	})
+
 }
