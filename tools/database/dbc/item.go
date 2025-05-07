@@ -62,7 +62,7 @@ func (item *Item) ToScaledUIItem(itemLevel int) *proto.UIItem {
 		WeaponType:          weaponType,
 		WeaponSpeed:         float64(item.ItemDelay) / 1000,
 		GemSockets:          item.GetGemSlots(),
-		SocketBonus:         item.GetGemBonus().ToProtoArray(),
+		SocketBonus:         NullFloat(item.GetGemBonus().ToProtoArray()),
 	}
 
 	item.ParseItemFlags(uiItem)

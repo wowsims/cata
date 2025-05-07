@@ -63,6 +63,8 @@ func newProtoShell(e *ItemEffect) *proto.ItemEffect {
 		Label:          sp.NameLang,
 		Type:           proto.ItemEffectType_NONE,
 		EffectDuration: int32(sp.Duration) / 1000,
+		MaxStacks:      int32(sp.MaxCharges),
+		//StackInterval:  int32(e.CoolDownMSec / 1000),
 		ScalingOptions: make(map[int32]*proto.ScalingItemEffectProperties),
 	}
 }
