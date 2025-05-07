@@ -274,6 +274,11 @@ func SpellSchoolFromProto(p proto.SpellSchool) SpellSchool {
 	}
 }
 
+const (
+	RPPM_HASTE = 1 << (iota)
+	RPPM_CRIT
+)
+
 /*
 outcome roll hit/miss/crit/glance (assigns Outcome mask) -> If Hit, Crit Roll -> damage (applies metrics) -> trigger proc
 

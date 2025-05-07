@@ -4,6 +4,45 @@ package proto;
 option go_package = "./proto";
 
 import "common.proto";
+enum ItemEffectType {
+	NONE   = 0;
+	PROC   = 1;
+	ON_USE = 2;
+  }
+message ScalingItemEffectProperties {
+	// keys are the numeric values of proto.common.Stat
+	map<int32, double> stats = 1;
+	double rppm_ilvl_modifier = 2;
+}
+  message ItemEffect {
+	int32            spell_id         = 1;
+	string label = 9;
+	ItemEffectType   type            = 2;
+	int32            effect_duration = 3;  // seconds
+
+	map<int32, ScalingItemEffectProperties> scaling_options        = 4;
+
+	oneof effect {
+	  ProcEffect  proc   = 7;
+	  OnUseEffect on_use = 8;
+	}
+  }
+
+  message ProcEffect {
+	double      proc_chance = 1;  // e.g. 0.20 = 20%
+	double 		rppm = 3;
+	int32 rppm_scale = 4;
+	map<int32, double> spec_modifiers = 5;
+	int32       icd         = 2;  // internal cooldown in seconds
+  }
+
+  message OnUseEffect {
+	int32 cooldown = 1;  // seconds between uses
+
+	int32 category_id = 11;
+
+	int32 category_cooldown = 8;
+  }
 
 message SpellEffect {
     int32 id = 1;
