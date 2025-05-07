@@ -1246,7 +1246,8 @@ func LoadAndWriteSpells(dbHelper *DBHelper, inputsDir string) ([]dbc.Spell, erro
 		LEFT JOIN SpellAuraOptions sao ON sao.SpellID = s.ID
 		LEFT JOIN SpellClassOptions sco ON s.ID = sco.SpellID
 		LEFT JOIN SpellShapeshift ssp ON ssp.SpellID = s.ID
-		WHERE sco.SpellClassSet is not null
+		LEFT JOIN SpellProcsPerMinute sppm ON sppm.ID = sao.SpellProcsPerMinuteID
+		LEFT JOIN SpellProcsPerMinuteMod sppmm ON sppmm.SpellProcsPerMinuteID = sao.SpellProcsPerMinuteID
 		GROUP BY s.ID
 `
 
