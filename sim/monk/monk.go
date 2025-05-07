@@ -109,7 +109,7 @@ func (monk *Monk) SpendChi(sim *core.Simulation, chiToSpend int32, metrics *core
 	}
 }
 func (monk *Monk) GetChi() int32 {
-	return monk.GetChi()
+	return monk.ComboPoints()
 }
 
 func (monk *Monk) RegisterOnChiSpent(onChiSpent OnChiSpent) {
