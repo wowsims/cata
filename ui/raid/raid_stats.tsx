@@ -360,11 +360,6 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							actionId: ActionId.fromSpellId(6673),
 							playerData: playerClass(Class.ClassWarrior),
 						},
-						{
-							label: 'Commanding Shout',
-							actionId: ActionId.fromSpellId(469),
-							playerData: playerClass(Class.ClassWarrior),
-						},
 					],
 				},
 				{
@@ -504,6 +499,11 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							label: 'Qiraji Fortitude',
 							actionId: ActionId.fromSpellId(90364),
 							playerData: playerClass(Class.ClassHunter),
+						},
+						{
+							label: 'Commanding Shout',
+							actionId: ActionId.fromSpellId(469),
+							playerData: playerClass(Class.ClassWarrior),
 						},
 					],
 				},

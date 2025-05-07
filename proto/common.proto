@@ -438,7 +438,6 @@ message RaidBuffs {
 	bool horn_of_winter           = 1;  // Death Knights
 	bool trueshot_aura            = 2;  // Hunters
 	bool battle_shout             = 3;  // Warriors
-	bool commanding_shout         = 4;  // Warriors
 
 	// +10% Melee and Ranged Attack Speed
 	bool unholy_aura              = 5;  // Frost/Unholy DKs
@@ -480,17 +479,16 @@ message RaidBuffs {
 	// +10% Stamina
 	bool qiraji_fortitude         = 30; // Silithid Pets
 	bool power_word_fortitude     = 31; // Priests
+	bool commanding_shout         = 4;  // Warriors
 
 	// Major Haste
 	bool bloodlust                = 32;
 	bool heroism                  = 33;
 	bool time_warp                = 34;
 
-	// Major Mana Replenishment
+	// Raid Cooldowns
 	int32 mana_tide_totem_count   = 35;
-
 	int32 stormlash_totem_count = 36;
-
 	int32 skull_banner_count = 37;
   }
 
@@ -508,15 +506,7 @@ message IndividualBuffs {
 	int32 innervate_count = 10;
 	int32 hymn_of_hope_count = 7;
 
-	// Minor Mana Replenishment
-	bool vampiric_touch = 14;
-	bool enduring_winter = 18;
-	bool soul_leach = 16;
-	bool revitalize = 17;
-	bool communion = 100;
-
 	// Other Buffs
-	int32 power_infusion_count = 11;
 	int32 unholy_frenzy_count = 12;
 	TristateEffect tricks_of_the_trade = 101; // "Regular" = Glyphed, "Improved" = un-Glyphed
 	int32 divine_guardian_count = 23;
@@ -525,8 +515,6 @@ message IndividualBuffs {
 	int32 guardian_spirit_count = 26;
 	int32 rallying_cry_count = 102;
 	int32 shattering_throw_count = 103;
-	bool focus_magic = 22;
-	bool dark_intent = 27;
 }
 
 message Debuffs {

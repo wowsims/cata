@@ -93,13 +93,13 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 
 	// +10% Attack Power
 	if raidBuffs.HornOfWinter {
-		HornOfWinterAura(u, true, false)
+		HornOfWinterAura(u, true)
 	}
 	if raidBuffs.TrueshotAura {
 		TrueShotAura(u)
 	}
 	if raidBuffs.BattleShout {
-		BattleShoutAura(u, true, false)
+		BattleShoutAura(u, true)
 	}
 
 	// +10% Melee and Ranged Attack Speed
@@ -280,7 +280,7 @@ func applyStaminaBuffs(u *Unit, raidBuffs *proto.RaidBuffs) {
 		QirajiFortitudeAura(u)
 	}
 	if raidBuffs.CommandingShout {
-		CommandingShoutAura(u, false)
+		CommandingShoutAura(u, true)
 	}
 }
 
@@ -313,7 +313,7 @@ func TrueShotAura(unit *Unit) *Aura {
 		}})
 }
 
-func HornOfWinterAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
+func HornOfWinterAura(unit *Unit, asExternal bool) *Aura {
 	baseAura := makeExclusiveBuff(unit, BuffConfig{
 		"Horn of Winter",
 		ActionID{SpellID: 57330},
@@ -331,7 +331,7 @@ func HornOfWinterAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
 	return baseAura
 }
 
-func BattleShoutAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
+func BattleShoutAura(unit *Unit, asExternal bool) *Aura {
 	baseAura := makeExclusiveBuff(unit, BuffConfig{
 		"Battle Shout",
 		ActionID{SpellID: 6673},
@@ -385,7 +385,9 @@ func SwiftbladesCunningAura(u *Unit) *Aura {
 	return aura
 }
 func UnleashedRageAura(u *Unit) *Aura {
-	return makeExclusiveBuff(u, BuffConfig{"Unleashed Rage", ActionID{SpellID: 30809}, []StatConfig{{stats.AttackPower, 1.1, true}, {stats.RangedAttackPower, 1.1, true}}})
+	aura := makeExclusiveBuff(u, BuffConfig{"Unleashed Rage", ActionID{SpellID: 30809}, nil})
+	registerExclusiveMeleeHaste(aura, 0.10)
+	return aura
 }
 
 // /////////////////////////////////////////////////////////////////////////
