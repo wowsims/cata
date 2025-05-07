@@ -1,10 +1,12 @@
+import { ref } from 'tsx-vanilla';
+
 import { Player } from '../../player.js';
 import { ActionId } from '../../proto_utils/action_id.js';
-import { SimUI } from '../../sim_ui.js';
+import { SimUI } from '../../sim_ui.jsx';
 import { TypedEvent } from '../../typed_event.js';
 import { existsInDOM, isRightClick } from '../../utils.js';
 import { Component } from '../component.js';
-import { IconPicker, IconPickerConfig } from './icon_picker.js';
+import { IconPicker, IconPickerConfig } from './icon_picker.jsx';
 
 export interface MultiIconPickerItemConfig<ModObject> extends IconPickerConfig<ModObject, any> {}
 
@@ -40,30 +42,39 @@ export class MultiIconPicker<ModObject> extends Component {
 		this.config = config;
 		this.currentValue = null;
 
-		this.rootElem.innerHTML = `
-			<div class="dropend">
-				<a
-					class="icon-picker-button"
-					role="button"
-					data-bs-toggle="dropdown"
-					aria-expanded="false"
-					data-disable-wowhead-touch-tooltip='true'
-					data-whtticon='false'
-				></a>
-				<ul class="dropdown-menu"></ul>
-			</div>
-			<label class="multi-icon-picker-label form-label"></label>
-    `;
+		const buttonRef = ref<HTMLAnchorElement>();
+		const dropdownRef = ref<HTMLUListElement>();
+		const labelRef = ref<HTMLLabelElement>();
 
-		const labelElem = this.rootElem.querySelector('.multi-icon-picker-label') as HTMLElement;
+		this.rootElem.replaceChildren(
+			<>
+				<div className="dropend">
+					<a
+						ref={buttonRef}
+						className="icon-picker-button"
+						attributes={{
+							role: 'button',
+							'aria-expanded': false,
+						}}
+						dataset={{
+							bsToggle: 'dropdown',
+							disableWowheadTouchTtooltip: true,
+						}}></a>
+					<ul ref={dropdownRef} className="dropdown-menu"></ul>
+				</div>
+				<label ref={labelRef} className="multi-icon-picker-label form-label"></label>
+			</>,
+		);
+
+		const labelElem = labelRef.value!;
 		if (config.label) {
 			labelElem.textContent = config.label;
 		} else {
 			labelElem.remove();
 		}
 
-		this.buttonElem = this.rootElem.querySelector('.icon-picker-button') as HTMLAnchorElement;
-		this.dropdownMenu = this.rootElem.querySelector('.dropdown-menu') as HTMLElement;
+		this.buttonElem = buttonRef.value!;
+		this.dropdownMenu = dropdownRef.value!;
 
 		this.buttonElem.addEventListener(
 			'hide.bs.dropdown',
@@ -148,14 +159,14 @@ export class MultiIconPicker<ModObject> extends Component {
 		if (this.currentValue) {
 			this.buttonElem.classList.add('active');
 			if (this.config.categoryId != null) {
-				this.config.categoryId.fillAndSet(this.buttonElem, false, true);
+				this.config.categoryId.fillAndSet(this.buttonElem, false, true, { signal: this.signal });
 			} else {
-				this.currentValue.fillAndSet(this.buttonElem, false, true);
+				this.currentValue.fillAndSet(this.buttonElem, false, true, { signal: this.signal });
 			}
 		} else {
 			this.buttonElem.classList.remove('active');
 			if (this.config.categoryId != null) {
-				this.config.categoryId.fillAndSet(this.buttonElem, false, true);
+				this.config.categoryId.fillAndSet(this.buttonElem, false, true, { signal: this.signal });
 			} else {
 				this.buttonElem.style.backgroundImage = '';
 			}

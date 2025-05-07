@@ -1,13 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import {
-	ConsumesSpec,
-	Debuffs,
-	Glyphs,
-	Profession,
-	RaidBuffs,
-	Stat,
-	UnitReference,
-} from '../../core/proto/common';
+import { ConsumesSpec, Debuffs, Glyphs, Profession, RaidBuffs, Stat, UnitReference } from '../../core/proto/common';
 import { ArcaneMage_Options as MageOptions, MageMajorGlyph as MajorGlyph } from '../../core/proto/mage';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
@@ -74,26 +66,11 @@ export const DefaultConsumables = ConsumesSpec.create({
 	prepotId: 58091, // Volcanic Potion
 	tinkerId: 82174, // Synapse Springs
 });
-export const DefaultRaidBuffs = RaidBuffs.create({
-	arcaneBrilliance: true,
-	bloodlust: true,
-	markOfTheWild: true,
-	icyTalons: true,
-	moonkinForm: true,
-	leaderOfThePack: true,
-	powerWordFortitude: true,
-	strengthOfEarthTotem: true,
-	trueshotAura: true,
-	wrathOfAirTotem: true,
-	demonicPact: true,
-	blessingOfKings: true,
-	blessingOfMight: true,
-	communion: true,
-});
+export const DefaultRaidBuffs = RaidBuffs.create({});
 
 export const DefaultDebuffs = Debuffs.create({
-	ebonPlaguebringer: true,
-	shadowAndFlame: true,
+	// ebonPlaguebringer: true,
+	// shadowAndFlame: true,
 });
 
 export const OtherDefaults = {

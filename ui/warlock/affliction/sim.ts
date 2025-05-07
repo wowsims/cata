@@ -82,17 +82,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAfflictionWarlock, {
 	playerIconInputs: [WarlockInputs.PetInput()],
 
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-		BuffDebuffInputs.ReplenishmentBuff,
-		BuffDebuffInputs.MajorArmorDebuff,
-		BuffDebuffInputs.PhysicalDamageDebuff,
-		BuffDebuffInputs.MeleeHasteBuff,
-		BuffDebuffInputs.CritBuff,
-		BuffDebuffInputs.MP5Buff,
-		BuffDebuffInputs.AttackPowerPercentBuff,
-		BuffDebuffInputs.StrengthAndAgilityBuff,
-		BuffDebuffInputs.StaminaBuff,
-	],
+	includeBuffDebuffInputs: [],
 	excludeBuffDebuffInputs: [],
 	petConsumeInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
@@ -101,7 +91,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAfflictionWarlock, {
 			WarlockInputs.DetonateSeed(),
 			OtherInputs.InputDelay,
 			OtherInputs.DistanceFromTarget,
-			OtherInputs.DarkIntentUptime,
 			OtherInputs.TankAssignment,
 			OtherInputs.ChannelClipDelay,
 		],

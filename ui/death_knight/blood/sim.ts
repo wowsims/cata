@@ -83,29 +83,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			retributionAura: true,
-			powerWordFortitude: true,
-			markOfTheWild: true,
-			icyTalons: true,
-			hornOfWinter: true,
-			abominationsMight: true,
-			leaderOfThePack: true,
-			bloodlust: true,
-			arcaneTactics: true,
-			devotionAura: true,
-			resistanceAura: true,
-		}),
+		raidBuffs: RaidBuffs.create({}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
-		debuffs: Debuffs.create({
-			bloodFrenzy: true,
-			faerieFire: true,
-			ebonPlaguebringer: true,
-			criticalMass: true,
-			vindication: true,
-			frostFever: true,
-		}),
+		debuffs: Debuffs.create({}),
 	},
 
 	// modifyDisplayStats: (player: Player<Spec.SpecBloodDeathKnight>) => {
@@ -116,8 +97,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: BloodInputs.BloodDeathKnightRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff, BuffDebuffInputs.SpellCritDebuff],
-	excludeBuffDebuffInputs: [BuffDebuffInputs.SpellHasteBuff, BuffDebuffInputs.BleedDebuff],
+	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff],
+	excludeBuffDebuffInputs: [BuffDebuffInputs.SpellHasteBuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
@@ -129,10 +110,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 			OtherInputs.HealingCadenceVariation,
 			OtherInputs.AbsorbFrac,
 			OtherInputs.BurstWindow,
-			OtherInputs.InspirationUptime,
 			OtherInputs.InFrontOfTarget,
 			DeathKnightInputs.StartingRunicPower(),
-			OtherInputs.DarkIntentUptime,
 		],
 	},
 	itemSwapSlots: [

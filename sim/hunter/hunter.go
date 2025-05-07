@@ -182,13 +182,6 @@ func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	if hunter.Options.PetType == proto.HunterOptions_CoreHound {
 		raidBuffs.Bloodlust = true
 	}
-	if hunter.Options.PetType == proto.HunterOptions_Silithid {
-		raidBuffs.BloodPact = true
-	}
-
-	if hunter.Options.PetType == proto.HunterOptions_Cat {
-		raidBuffs.StrengthOfEarthTotem = true
-	}
 
 	if hunter.Options.PetType == proto.HunterOptions_ShaleSpider {
 		raidBuffs.BlessingOfKings = true
