@@ -19,23 +19,26 @@ func (rogue *Rogue) registerShadowBladesCD() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			// Make auto attacks deal 0 damage for the duration of SB
 			// This allows for anything tied to autos (poisons, main gauche, etc) to still fire
-			rogue.AutoAttacks.MHAuto().DamageMultiplier = 0
-			rogue.AutoAttacks.OHAuto().DamageMultiplier = 0
+			rogue.AutoAttacks.SetReplaceMHSwing(func(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
+				return mhHit
+			})
+
+			rogue.AutoAttacks.SetReplaceOHSwing(func(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
+				return ohHit
+			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.AutoAttacks.MHAuto().DamageMultiplier = 1
-			rogue.AutoAttacks.OHAuto().DamageMultiplier = 1
+			rogue.AutoAttacks.SetReplaceMHSwing(nil)
+			rogue.AutoAttacks.SetReplaceOHSwing(nil)
+		},
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.AutoAttacks.SetReplaceMHSwing(nil)
+			rogue.AutoAttacks.SetReplaceOHSwing(nil)
 		},
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() {
-				if spell == rogue.AutoAttacks.MHAuto() {
-					mhHit.Cast(sim, result.Target)
-				} else if spell == rogue.AutoAttacks.OHAuto() {
-					ohHit.Cast(sim, result.Target)
-				} else if spell.Flags.Matches(SpellFlagBuilder) {
-					rogue.AddComboPoints(sim, 1, cpMetrics)
-				}
+			if result.Landed() && spell.Flags.Matches(SpellFlagBuilder) {
+				rogue.AddComboPoints(sim, 1, cpMetrics)
 			}
 		},
 	})
@@ -88,7 +91,7 @@ func (rogue *Rogue) makeShadowBladeHit(isMH bool) *core.Spell {
 				baseDamage = spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			}
 
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialBlockAndCrit)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWhiteNoGlance)
 		},
 	})
 }
