@@ -47,7 +47,7 @@ func (shaman *Shaman) ApplyGlyphs() {
 			ClassSpellMask: SpellMaskLightningBolt | SpellMaskLightningBoltOverload,
 			ProcChance:     1,
 			Callback:       core.CallbackOnSpellHitDealt,
-			Outcome:        core.OutcomeHit,
+			Outcome:        core.OutcomeLanded,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				amount := core.TernaryFloat64(shaman.Spec == proto.Spec_SpecElementalShaman, 0.02, 0.1)
 				shaman.AddMana(sim, amount*shaman.MaxMana(), shaman.NewManaMetrics(core.ActionID{SpellID: 55453}))

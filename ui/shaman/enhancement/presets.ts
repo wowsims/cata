@@ -2,19 +2,11 @@ import * as Mechanics from '../../core/constants/mechanics';
 import * as PresetUtils from '../../core/preset_utils.js';
 import { ConsumesSpec, Debuffs, Glyphs, Profession, PseudoStat, RaidBuffs, Stat } from '../../core/proto/common.js';
 import {
-	AirTotem,
-	CallTotem,
-	EarthTotem,
 	EnhancementShaman_Options as EnhancementShamanOptions,
-	FireTotem,
 	ShamanImbue,
 	ShamanMajorGlyph,
-	ShamanMinorGlyph,
 	ShamanShield,
 	ShamanSyncType,
-	ShamanTotems,
-	TotemSet,
-	WaterTotem,
 } from '../../core/proto/shaman.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
@@ -84,31 +76,6 @@ export const StandardTalents = {
 export const DefaultOptions = EnhancementShamanOptions.create({
 	classOptions: {
 		shield: ShamanShield.LightningShield,
-		call: CallTotem.Elements,
-		totems: ShamanTotems.create({
-			elements: TotemSet.create({
-				earth: EarthTotem.StrengthOfEarthTotem,
-				air: AirTotem.WrathOfAirTotem,
-				fire: FireTotem.SearingTotem,
-				water: WaterTotem.ManaSpringTotem,
-			}),
-			ancestors: TotemSet.create({
-				earth: EarthTotem.StrengthOfEarthTotem,
-				air: AirTotem.WrathOfAirTotem,
-				fire: FireTotem.SearingTotem,
-				water: WaterTotem.ManaSpringTotem,
-			}),
-			spirits: TotemSet.create({
-				earth: EarthTotem.StrengthOfEarthTotem,
-				air: AirTotem.WrathOfAirTotem,
-				fire: FireTotem.SearingTotem,
-				water: WaterTotem.ManaSpringTotem,
-			}),
-			earth: EarthTotem.StrengthOfEarthTotem,
-			air: AirTotem.WrathOfAirTotem,
-			fire: FireTotem.SearingTotem,
-			water: WaterTotem.ManaSpringTotem,
-		}),
 		imbueMh: ShamanImbue.WindfuryWeapon,
 	},
 	imbueOh: ShamanImbue.FlametongueWeapon,

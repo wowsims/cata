@@ -83,6 +83,8 @@ type EnhancementShaman struct {
 	*shaman.Shaman
 
 	SpiritWolves *SpiritWolves
+
+	StormStrikeDebuffAuras core.AuraArray
 }
 
 func (enh *EnhancementShaman) GetShaman() *shaman.Shaman {
@@ -139,6 +141,7 @@ func (enh *EnhancementShaman) Initialize() {
 	enh.registerLavaLashSpell()
 	enh.registerFireNovaSpell()
 	enh.registerStormstrikeSpell()
+	enh.registerStormblastSpell()
 }
 
 func (enh EnhancementShaman) getMasteryBonus() float64 {

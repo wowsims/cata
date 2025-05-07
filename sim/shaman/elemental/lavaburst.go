@@ -29,7 +29,7 @@ func (ele *ElementalShaman) newLavaBurstSpellConfig(isElementalOverload bool) co
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       mask,
 		Flags:          flags,
-		MissileSpeed:   24,
+		MissileSpeed:   40,
 		ClassSpellMask: core.TernaryInt64(isElementalOverload, shaman.SpellMaskLavaBurstOverload, shaman.SpellMaskLavaBurst),
 
 		ManaCost: core.ManaCostOptions{
@@ -45,6 +45,7 @@ func (ele *ElementalShaman) newLavaBurstSpellConfig(isElementalOverload bool) co
 
 		DamageMultiplier: 1,
 		CritMultiplier:   ele.DefaultCritMultiplier(),
+		BonusCritPercent: 100,
 		BonusCoefficient: 1,
 	}
 

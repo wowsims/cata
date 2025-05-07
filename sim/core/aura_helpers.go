@@ -94,7 +94,6 @@ func ApplyProcTriggerCallback(unit *Unit, procAura *Aura, config ProcTrigger) {
 			return
 		}
 		if icd.Duration != 0 && !icd.IsReady(sim) {
-			return
 		}
 		if config.ExtraCondition != nil && !config.ExtraCondition(sim, spell, result) {
 			return
@@ -471,6 +470,22 @@ func (parentAura *Aura) AttachAdditivePseudoStatBuff(fieldPointer *float64, bonu
 
 	if parentAura.IsActive() {
 		*fieldPointer += bonus
+	}
+
+	return parentAura
+}
+
+func (parentAura *Aura) AttachMultiplyCastSpeed(multiplier float64) *Aura {
+	parentAura.ApplyOnGain(func(_ *Aura, _ *Simulation) {
+		parentAura.Unit.MultiplyCastSpeed(multiplier)
+	})
+
+	parentAura.ApplyOnExpire(func(_ *Aura, _ *Simulation) {
+		parentAura.Unit.MultiplyCastSpeed(1 / multiplier)
+	})
+
+	if parentAura.IsActive() {
+		parentAura.Unit.MultiplyCastSpeed(multiplier)
 	}
 
 	return parentAura

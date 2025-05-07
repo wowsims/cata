@@ -16,16 +16,16 @@ func (shaman *Shaman) registerChainLightningSpell() {
 	}
 }
 
-func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spell {
-	spellConfig := shaman.newElectricSpellConfig(core.ActionID{SpellID: 421}, 30.5, time.Second*2, isElementalOverload, 0.51800000668)
+func (shaman *Shaman) NewChainSpellConfig(spellID int32, isElementalOverload bool, bounceReduction float64, bonusCoeff float64, coeff float64, variance float64, spellSchool core.SpellSchool, manaCost float64, overloads []*core.Spell) core.SpellConfig {
+	spellConfig := shaman.newElectricSpellConfig(core.ActionID{SpellID: spellID}, manaCost, time.Second*2, isElementalOverload, bonusCoeff)
 	spellConfig.ClassSpellMask = core.TernaryInt64(isElementalOverload, SpellMaskChainLightningOverload, SpellMaskChainLightning)
-
 	if !isElementalOverload {
 		spellConfig.Cast.CD = core.Cooldown{
 			Timer:    shaman.NewTimer(),
 			Duration: time.Second * 3,
 		}
 	}
+	spellConfig.SpellSchool = spellSchool
 
 	numHits := int32(3)
 	if shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfChainLightning) {
@@ -34,8 +34,7 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 	numHits = min(numHits, shaman.Env.GetNumTargets())
 
 	spellConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		bounceReduction := core.TernaryFloat64(shaman.DungeonSet3.IsActive() && !isElementalOverload, 0.83, 0.7)
-		baseDamage := shaman.CalcAndRollDamageRange(sim, 0.98900002241, 0.13300000131)
+		baseDamage := shaman.CalcAndRollDamageRange(sim, coeff, variance)
 		curTarget := target
 
 		// Damage calculation and DealDamage are in separate loops so that e.g. a spell power proc
@@ -51,7 +50,7 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 			if !spell.ProcMask.Matches(core.ProcMaskSpellProc) { //So that procs from DTR does not cast an overload
 				if !isElementalOverload && results[hitIndex].Landed() && sim.Proc(shaman.GetOverloadChance()/3, "Chain Lightning Elemental Overload") {
-					shaman.ChainLightningOverloads[hitIndex].Cast(sim, results[hitIndex].Target)
+					overloads[hitIndex].Cast(sim, results[hitIndex].Target)
 				}
 			}
 
@@ -59,6 +58,11 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 			spell.DamageMultiplier /= bounceReduction
 		}
 	}
+	return spellConfig
+}
+
+func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spell {
+	spellConfig := shaman.NewChainSpellConfig(421, isElementalOverload, 1.0, 0.51800000668, 0.98900002241, 0.13300000131, core.SpellSchoolNature, 30.5, shaman.ChainLightningOverloads)
 
 	return shaman.RegisterSpell(spellConfig)
 }

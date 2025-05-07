@@ -8,7 +8,6 @@ import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl.js';
 import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
 import { Stats, UnitStat } from '../../core/proto_utils/stats.js';
-import { TypedEvent } from '../../core/typed_event.js';
 import * as ShamanInputs from '../inputs.js';
 import * as ElementalInputs from './inputs.js';
 import * as Presets from './presets.js';
@@ -18,24 +17,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Shaman),
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: [],
-	warnings: [
-		// Warning to use all 4 totems if T6 2pc bonus is active.
-		(simUI: IndividualSimUI<Spec.SpecElementalShaman>) => {
-			return {
-				updateOn: TypedEvent.onAny([simUI.player.rotationChangeEmitter, simUI.player.currentStatsEmitter]),
-				getContent: () => {
-					const hasT62P = simUI.player.getCurrentStats().sets.includes('Skyshatter Regalia (2pc)');
-					const totems = simUI.player.getSpecOptions().classOptions?.totems;
-					const hasAll4Totems = totems && totems.earth && totems.air && totems.fire && totems.water;
-					if (hasT62P && !hasAll4Totems) {
-						return 'T6 2pc bonus is equipped, but inactive because not all 4 totem types are being used.';
-					} else {
-						return '';
-					}
-				},
-			};
-		},
-	],
+	warnings: [],
 
 	// All stats for which EP should be calculated.
 	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatHitRating, Stat.StatCritRating, Stat.StatHasteRating, Stat.StatMasteryRating],
@@ -125,7 +107,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		ItemSlot.ItemSlotTrinket2,
 		ItemSlot.ItemSlotMainHand,
 	],
-	customSections: [ShamanInputs.TotemsSection],
+	customSections: [],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,

@@ -1,17 +1,10 @@
 import * as PresetUtils from '../../core/preset_utils.js';
 import { ConsumesSpec, Glyphs, Profession, Stat } from '../../core/proto/common.js';
 import {
-	AirTotem,
-	CallTotem,
-	EarthTotem,
 	ElementalShaman_Options as ElementalShamanOptions,
-	FireTotem,
 	ShamanMajorGlyph,
 	ShamanMinorGlyph,
 	ShamanShield,
-	ShamanTotems,
-	TotemSet,
-	WaterTotem,
 } from '../../core/proto/shaman.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
@@ -106,29 +99,6 @@ export const TalentsAoE = {
 export const DefaultOptions = ElementalShamanOptions.create({
 	classOptions: {
 		shield: ShamanShield.LightningShield,
-		call: CallTotem.Elements,
-		totems: ShamanTotems.create({
-			elements: TotemSet.create({
-				earth: EarthTotem.StrengthOfEarthTotem,
-				air: AirTotem.WrathOfAirTotem,
-				fire: FireTotem.FlametongueTotem,
-				water: WaterTotem.ManaSpringTotem,
-			}),
-			ancestors: TotemSet.create({
-				earth: EarthTotem.EarthElementalTotem,
-				fire: FireTotem.FireElementalTotem,
-			}),
-			spirits: TotemSet.create({
-				earth: EarthTotem.StrengthOfEarthTotem,
-				air: AirTotem.WrathOfAirTotem,
-				fire: FireTotem.SearingTotem,
-				water: WaterTotem.ManaSpringTotem,
-			}),
-			earth: EarthTotem.StrengthOfEarthTotem,
-			air: AirTotem.WrathOfAirTotem,
-			fire: FireTotem.SearingTotem,
-			water: WaterTotem.ManaSpringTotem,
-		}),
 	},
 });
 

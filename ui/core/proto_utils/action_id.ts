@@ -408,11 +408,28 @@ export class ActionId {
 					name += ' (Off Hand)';
 				}
 				break;
+			case 'Elemental Blast':
+				if (tag == 1) {
+					name += ' (Mastery)';
+				} else if (tag == 2) {
+					name += ' (Haste)';
+				} else if (tag == 3) {
+					name += ' (Crit)';
+				}
+				if (tag == 6) {
+					name += ' (Overload)';
+				} else if (tag == 7) {
+					name += ' (Echo)'	
+				}
+				break;
 			case 'Chain Lightning':
 			case 'Lightning Bolt':
+			case 'Lava Beam':
 			case 'Lava Burst':
 				if (tag == 6) {
 					name += ' (Overload)';
+				} else if (tag == 7) {
+					name += ' (Echo)'	
 				} else if (tag) {
 					name += ` (${tag} MW)`;
 				}

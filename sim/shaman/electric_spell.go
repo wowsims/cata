@@ -55,6 +55,7 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCostPer
 
 	if isElementalOverload {
 		spell.ActionID.Tag = CastTagLightningOverload
+		spell.ManaCost.BaseCostPercent = 0
 		spell.Cast.DefaultCast.CastTime = 0
 		spell.Cast.DefaultCast.GCD = 0
 		spell.Cast.DefaultCast.Cost = 0

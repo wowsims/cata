@@ -106,7 +106,7 @@ func (shaman *Shaman) ApplyElementalTalents() {
 		},
 	})
 
-	shaman.RegisterAura(*core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
 		Name:           "Rolling Thunder",
 		ActionID:       actionID,
 		ClassSpellMask: SpellMaskChainLightning | SpellMaskChainLightningOverload | SpellMaskLightningBolt | SpellMaskLightningBoltOverload,
@@ -123,7 +123,7 @@ func (shaman *Shaman) ApplyElementalTalents() {
 			shaman.LightningShieldAura.Activate(sim)
 			shaman.LightningShieldAura.AddStack(sim)
 		},
-	}))
+	})
 
 	//Elemental Focus
 	var triggeringSpell *core.Spell
@@ -198,18 +198,19 @@ func (shaman *Shaman) ApplyElementalTalents() {
 	})
 
 	//Lava Surge
-	//TODO If it procs during lava burst cast time, lava burst won't get on cd so the proc can be used and not wasted
-	instantLavaBurstMod := shaman.AddDynamicMod(core.SpellModConfig{
+	procAura := shaman.RegisterAura(core.Aura{
+		Label:    "Lava Surge",
+		Duration: time.Second * 6,
+		ActionID: core.ActionID{SpellID: 77762},
+	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask:  SpellMaskLavaBurst,
 		Kind:       core.SpellMod_CastTime_Pct,
 		FloatValue: -1.0,
 	})
-	shaman.RegisterAura(core.Aura{
-		Label:    "Lava Surge",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
+		Label:           "Lava Surge Proc Aura",
+		ActionIDForProc: core.ActionID{SpellID: 77762},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			//TODO verify proc chance in game
 			if spell.ClassSpellMask != SpellMaskFlameShockDot || !sim.Proc(0.2, "LavaSurge") {
@@ -227,7 +228,7 @@ func (shaman *Shaman) ApplyElementalTalents() {
 
 				OnAction: func(sim *core.Simulation) {
 					shaman.LavaBurst.CD.Reset()
-					instantLavaBurstMod.Activate()
+					procAura.Activate(sim)
 				},
 			}
 			sim.AddPendingAction(pa)
@@ -242,14 +243,15 @@ func (shaman *Shaman) ApplyElementalTalents() {
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask != SpellMaskLavaBurst || !instantLavaBurstMod.IsActive {
+			if spell.ClassSpellMask != SpellMaskLavaBurst || !procAura.IsActive() {
 				return
 			}
-			//If lava surge procs during LvB cast time, it is not consumed
+			//If lava surge procs during LvB cast time, it is not consumed and lvb does not go on cd
 			if spell.CurCast.CastTime > 0 {
+				spell.CD.Reset()
 				return
 			}
-			instantLavaBurstMod.Deactivate()
+			procAura.Deactivate(sim)
 		},
-	})
+	}))
 }

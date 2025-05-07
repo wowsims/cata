@@ -346,14 +346,6 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 					label: 'Strength/Agility',
 					effects: [
 						{
-							label: 'Strength of Earth Totem',
-							actionId: ActionId.fromSpellId(8075),
-							playerData: playerClass(
-								Class.ClassShaman,
-								player => player.getSpecOptions().classOptions?.totems?.earth == EarthTotem.StrengthOfEarthTotem,
-							),
-						},
-						{
 							label: 'Horn of Winter',
 							actionId: ActionId.fromSpellId(57330),
 							playerData: playerClass(Class.ClassDeathKnight),
@@ -372,14 +364,6 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							label: 'Devotion Aura',
 							actionId: ActionId.fromSpellId(465),
 							playerData: playerClass(Class.ClassPaladin),
-						},
-						{
-							label: 'Stoneskin Totem',
-							actionId: ActionId.fromSpellId(8071),
-							playerData: playerClass(
-								Class.ClassShaman,
-								player => player.getSpecOptions().classOptions?.totems?.earth == EarthTotem.StoneskinTotem,
-							),
 						},
 					],
 				},
@@ -426,14 +410,6 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							actionId: ActionId.fromSpellId(1459),
 							playerData: playerClass(Class.ClassMage),
 						},
-						{
-							label: 'Flametongue Totem',
-							actionId: ActionId.fromSpellId(8227),
-							playerData: playerClass(
-								Class.ClassShaman,
-								player => player.getSpecOptions().classOptions?.totems?.fire == FireTotem.FlametongueTotem,
-							),
-						},
 					],
 				},
 				{
@@ -469,11 +445,6 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						// 	actionId: ActionId.fromSpellId(53290),
 						// 	playerData: playerClassAndTalent(Class.ClassHunter, 'huntingParty'),
 						// },
-						{
-							label: 'Windfury Totem',
-							actionId: ActionId.fromSpellId(8512),
-							playerData: playerClass(Class.ClassShaman, player => player.getSpecOptions().classOptions?.totems?.air == AirTotem.WindfuryTotem),
-						},
 					],
 				},
 				{
@@ -489,11 +460,6 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						// 	actionId: ActionId.fromSpellId(24858),
 						// 	playerData: playerClassAndTalent(Class.ClassDruid, 'moonkinForm'),
 						// },
-						{
-							label: 'Wrath of Air Totem',
-							actionId: ActionId.fromSpellId(3738),
-							playerData: playerClass(Class.ClassShaman, player => player.getSpecOptions().classOptions?.totems?.air == AirTotem.WrathOfAirTotem),
-						},
 					],
 				},
 				{
@@ -548,14 +514,6 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							label: 'Fel Intelligence',
 							actionId: ActionId.fromSpellId(54424),
 							playerData: playerClass(Class.ClassWarlock),
-						},
-						{
-							label: 'Mana Spring Totem',
-							actionId: ActionId.fromSpellId(5675),
-							playerData: playerClass(
-								Class.ClassShaman,
-								player => player.getSpecOptions().classOptions?.totems?.water == WaterTotem.ManaSpringTotem,
-							),
 						},
 					],
 				},
@@ -616,14 +574,6 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							label: 'Resistance Aura',
 							actionId: ActionId.fromSpellId(19891),
 							playerData: playerClass(Class.ClassPaladin),
-						},
-						{
-							label: 'Elemental Resistance Totem',
-							actionId: ActionId.fromSpellId(8184),
-							playerData: playerClass(
-								Class.ClassShaman,
-								player => player.getSpecOptions().classOptions?.totems?.water == WaterTotem.ElementalResistanceTotem,
-							),
 						},
 						{
 							label: 'Aspect of the Wild',

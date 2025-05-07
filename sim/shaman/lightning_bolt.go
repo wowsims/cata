@@ -17,7 +17,7 @@ func (shaman *Shaman) newLightningBoltSpellConfig(isElementalOverload bool) core
 	spellConfig.Flags |= core.SpellFlagCanCastWhileMoving
 
 	spellConfig.ClassSpellMask = core.TernaryInt64(isElementalOverload, SpellMaskLightningBoltOverload, SpellMaskLightningBolt)
-	spellConfig.MissileSpeed = core.TernaryFloat64(isElementalOverload, 20, 35)
+	spellConfig.MissileSpeed = core.TernaryFloat64(isElementalOverload, 30, 35)
 
 	spellConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		baseDamage := shaman.CalcAndRollDamageRange(sim, 1.13999998569, 0.13300000131)

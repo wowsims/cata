@@ -9,7 +9,7 @@ import (
 func (shaman *Shaman) newTotemSpellConfig(baseCostPercent int32, spellID int32) core.SpellConfig {
 	return core.SpellConfig{
 		ActionID: core.ActionID{SpellID: spellID},
-		Flags:    SpellFlagTotem | core.SpellFlagAPL,
+		Flags:    core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCostPercent: float64(baseCostPercent),

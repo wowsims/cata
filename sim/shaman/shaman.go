@@ -23,7 +23,7 @@ const (
 const (
 	SpellFlagShamanSpell = core.SpellFlagAgentReserved1
 	SpellFlagShock       = core.SpellFlagAgentReserved2
-	SpellFlagTotem       = core.SpellFlagAgentReserved3
+	SpellFlagIsEcho      = core.SpellFlagAgentReserved3
 	SpellFlagFocusable   = core.SpellFlagAgentReserved4
 )
 
@@ -98,19 +98,24 @@ type Shaman struct {
 	ChainLightning          *core.Spell
 	ChainLightningOverloads []*core.Spell
 
+	LavaBeam          *core.Spell
+	LavaBeamOverloads []*core.Spell
+
 	LavaBurst         *core.Spell
 	LavaBurstOverload *core.Spell
 	FireNova          *core.Spell
 	LavaLash          *core.Spell
 	Stormstrike       *core.Spell
 	PrimalStrike      *core.Spell
+	Stormblast        *core.Spell
 
 	LightningShield       *core.Spell
 	LightningShieldDamage *core.Spell
 	LightningShieldAura   *core.Aura
 	Fulmination           *core.Spell
 
-	ElementalBlast *core.Spell
+	ElementalBlast         *core.Spell
+	ElementalBlastOverload *core.Spell
 
 	Earthquake   *core.Spell
 	Thunderstorm *core.Spell
@@ -207,6 +212,7 @@ func (shaman *Shaman) Initialize() {
 	shaman.registerSearingTotemSpell()
 	shaman.registerShocks()
 	shaman.registerUnleashElements()
+	shaman.registerAscendanceSpell()
 
 	shaman.registerBloodlustCD()
 }
@@ -265,6 +271,8 @@ func (shaman *Shaman) GetOverloadChance() float64 {
 		overloadChance = 0.16 + masteryPoints*0.02
 	}
 
+	overloadChance = 0
+
 	return overloadChance
 }
 
@@ -281,6 +289,8 @@ const (
 	SpellMaskLightningBoltOverload
 	SpellMaskChainLightning
 	SpellMaskChainLightningOverload
+	SpellMaskLavaBeam
+	SpellMaskLavaBeamOverload
 	SpellMaskEarthShock
 	SpellMaskLightningShield
 	SpellMaskThunderstorm
@@ -300,6 +310,7 @@ const (
 	SpellMaskFlametongueWeapon
 	SpellMaskFeralSpirit
 	SpellMaskElementalMastery
+	SpellMaskAscendance
 	SpellMaskSpiritwalkersGrace
 	SpellMaskShamanisticRage
 	SpellMaskElementalBlast

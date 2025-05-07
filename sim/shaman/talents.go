@@ -35,16 +35,10 @@ func (shaman *Shaman) ApplyElementalMastery() {
 	eleMasterActionID := core.ActionID{SpellID: 16166}
 
 	buffAura := shaman.RegisterAura(core.Aura{
-		Label:    "Elemental Mastery Buff",
-		ActionID: core.ActionID{SpellID: 64701},
+		Label:    "Elemental Mastery",
+		ActionID: eleMasterActionID,
 		Duration: time.Second * 20,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.MultiplyCastSpeed(1.30)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.MultiplyCastSpeed(1 / 1.30)
-		},
-	})
+	}).AttachMultiplyCastSpeed(1.3)
 
 	eleMastSpell := shaman.RegisterSpell(core.SpellConfig{
 		ActionID:       eleMasterActionID,
@@ -71,21 +65,19 @@ func (shaman *Shaman) ApplyAncestralSwiftness() {
 		return
 	}
 
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
+		Label:      "Ancestral Swiftness Passive",
+		BuildPhase: core.CharacterBuildPhaseTalents,
+	}).AttachMultiplicativePseudoStatBuff(&shaman.PseudoStats.CastSpeedMultiplier, 1.05).AttachMultiplicativePseudoStatBuff(&shaman.PseudoStats.MeleeSpeedMultiplier, 1.1))
+
 	asCdTimer := shaman.NewTimer()
 	asCd := time.Second * 90
 
-	affectedSpells := SpellMaskLightningBolt | SpellMaskChainLightning | SpellMaskEarthShock | SpellMaskElementalBlast
-	AncestralSwiftnessBuffAura := core.MakePermanent(shaman.RegisterAura(core.Aura{
-		Label:    "Ancestral swiftness Buff",
-		ActionID: core.ActionID{SpellID: 64701},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.MultiplyCastSpeed(1.05)
-			shaman.MultiplyMeleeSpeed(sim, 1.1)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.MultiplyCastSpeed(1 / 1.30)
-			shaman.MultiplyMeleeSpeed(sim, 1/1.05)
-		},
+	affectedSpells := SpellMaskLightningBolt | SpellMaskChainLightning | SpellMaskElementalBlast
+	ancestralSwiftnessInstantaura := shaman.RegisterAura(core.Aura{
+		Label:    "Ancestral swiftness",
+		ActionID: core.ActionID{SpellID: 16188},
+		Duration: core.NeverExpires,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.ClassSpellMask&affectedSpells == 0 {
 				return
@@ -94,7 +86,11 @@ func (shaman *Shaman) ApplyAncestralSwiftness() {
 			shaman.UpdateMajorCooldowns()
 			aura.Deactivate(sim)
 		},
-	}))
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask:  affectedSpells,
+		Kind:       core.SpellMod_CastTime_Pct,
+		FloatValue: -100,
+	})
 
 	asSpell := shaman.RegisterSpell(core.SpellConfig{
 		ActionID: core.ActionID{SpellID: 16188},
@@ -107,7 +103,7 @@ func (shaman *Shaman) ApplyAncestralSwiftness() {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			AncestralSwiftnessBuffAura.Activate(sim)
+			ancestralSwiftnessInstantaura.Activate(sim)
 		},
 	})
 
@@ -122,17 +118,37 @@ func (shaman *Shaman) ApplyEchoOfTheElements() {
 		return
 	}
 
+	var copySpells = map[*core.Spell]*core.Spell{}
+
 	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
-		Name:       "Echo of The Elements Dummy",
-		Callback:   core.CallbackOnSpellHitDealt,
-		SpellFlags: SpellFlagShamanSpell,
-		Outcome:    core.OutcomeHit,
-		ProcChance: 0.05,
+		Name:              "Echo of The Elements Dummy",
+		Callback:          core.CallbackOnSpellHitDealt,
+		SpellFlags:        SpellFlagShamanSpell,
+		SpellFlagsExclude: SpellFlagIsEcho,
+		Outcome:           core.OutcomeLanded,
+		ProcChance:        0.05,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			tempFlags := spell.Flags
-			spell.Flags &= ^core.SpellFlagNoOnCastComplete
-			spell.SkipCastAndApplyEffects(sim, result.Target)
-			spell.Flags = tempFlags
+			if copySpells[spell] == nil {
+				copySpells[spell] = spell.Unit.RegisterSpell(core.SpellConfig{
+					ActionID:                 core.ActionID{SpellID: spell.SpellID, Tag: 7},
+					SpellSchool:              spell.SpellSchool,
+					ProcMask:                 core.ProcMaskSpellProc,
+					ApplyEffects:             spell.ApplyEffects,
+					ManaCost:                 core.ManaCostOptions{},
+					CritMultiplier:           spell.Unit.Env.Raid.GetPlayerFromUnit(spell.Unit).GetCharacter().DefaultCritMultiplier(),
+					BonusCritPercent:         spell.BonusCritPercent,
+					DamageMultiplier:         core.TernaryFloat64(spell.Tag == CastTagLightningOverload, 0.75, 1),
+					DamageMultiplierAdditive: 1,
+					MissileSpeed:             spell.MissileSpeed,
+					ClassSpellMask:           spell.ClassSpellMask,
+					BonusCoefficient:         spell.BonusCoefficient,
+					Flags:                    spell.Flags & ^core.SpellFlagAPL | core.SpellFlagNoOnCastComplete | SpellFlagIsEcho,
+					RelatedDotSpell:          spell.RelatedDotSpell,
+				})
+			}
+			copySpell := copySpells[spell]
+			copySpell.SpellMetrics[result.Target.UnitIndex].Casts--
+			copySpell.Cast(sim, result.Target)
 		},
 	})
 }
@@ -181,7 +197,7 @@ func (shaman *Shaman) ApplyUnleashedFury() {
 	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
 		Name:           "Unleashed Fury",
 		ActionID:       core.ActionID{SpellID: 117012},
-		Callback:       core.CallbackOnCastComplete,
+		Callback:       core.CallbackOnApplyEffects,
 		ClassSpellMask: SpellMaskUnleashElements,
 		ProcChance:     1.0,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -221,5 +237,5 @@ func (shaman *Shaman) ApplyElementalBlast() {
 	if !shaman.Talents.ElementalBlast {
 		return
 	}
-	shaman.RegisterElementalBlastSpell()
+	shaman.registerElementalBlastSpell()
 }
