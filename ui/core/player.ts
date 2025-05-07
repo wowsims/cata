@@ -51,7 +51,7 @@ import {
 } from './proto/ui';
 import { ActionId } from './proto_utils/action_id';
 import { Database } from './proto_utils/database';
-import { EquippedItem, getWeaponStatsBySlot, ReforgeData } from './proto_utils/equipped_item';
+import { EquippedItem, ReforgeData } from './proto_utils/equipped_item';
 import { Gear, ItemSwapGear } from './proto_utils/gear';
 import { gemMatchesSocket, isUnrestrictedGem } from './proto_utils/gems';
 import { StatCap, Stats } from './proto_utils/stats';
@@ -482,7 +482,7 @@ export class Player<SpecType extends Spec> {
 
 	// Returns all reforgings that are valid with a given item
 	getAvailableReforgings(equippedItem: EquippedItem): Array<ReforgeData> {
-		return this.sim.db.getAvailableReforges(equippedItem.getWithDynamicStats().item).map(reforge => equippedItem.getReforgeData(reforge)!);
+		return this.sim.db.getAvailableReforges(equippedItem.item).map(reforge => equippedItem.getReforgeData(reforge)!);
 	}
 
 	// Returns reforge given an id
@@ -1148,9 +1148,8 @@ export class Player<SpecType extends Spec> {
 		if (this.upgradeEPCache.has(cacheKey)) {
 			return this.upgradeEPCache.get(cacheKey)!;
 		}
-		const { item: upgradedItem } = equippedItem.withUpgrade(upgradeLevel).getWithDynamicStats();
-		const stats = new Stats(upgradedItem.stats).add(getWeaponStatsBySlot(upgradedItem, slot, upgradeLevel));
 
+		const stats = equippedItem.withUpgrade(upgradeLevel).calcStats(slot);
 		const ep = this.computeStatsEP(stats);
 		this.upgradeEPCache.set(cacheKey, ep);
 
@@ -1167,8 +1166,8 @@ export class Player<SpecType extends Spec> {
 		const equippedItem = new EquippedItem({
 			item,
 			challengeMode: this.challengeModeEnabled,
-		}).getWithDynamicStats();
-		const itemStats = new Stats(equippedItem._item.stats).add(getWeaponStatsBySlot(item, slot, equippedItem.upgrade));
+		}).withDynamicStats();
+		const itemStats = equippedItem.calcStats(slot);
 
 		// For random suffix items, use the suffix option with the highest EP for the purposes of ranking items in the picker.
 		let maxSuffixEP = 0;

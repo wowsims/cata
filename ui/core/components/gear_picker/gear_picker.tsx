@@ -321,7 +321,7 @@ export class ItemPicker extends Component {
 			equipItem: (eventID: EventID, equippedItem: EquippedItem | null) => {
 				this.player.equipItem(eventID, this.slot, equippedItem);
 			},
-			getEquippedItem: () => this.player.getEquippedItem(this.slot),
+			getEquippedItem: () => this.player.getEquippedItem(this.slot)?.withChallengeMode(this.player.getChallengeModeEnabled()).withDynamicStats() || null,
 			changeEvent: this.player.gearChangeEmitter,
 		};
 	}

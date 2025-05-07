@@ -120,7 +120,7 @@ export default class SelectorModal extends BaseModal {
 
 		const eligibleItems = this.player.getItems(selectedSlot);
 		const eligibleEnchants = this.player.getEnchants(selectedSlot);
-		const hasEligibleReforges = equippedItem?.item ? !!this.player.getAvailableReforgings(equippedItem.getWithDynamicStats()).length : false;
+		const hasEligibleReforges = equippedItem?.item ? !!this.player.getAvailableReforgings(equippedItem).length : false;
 		const hasEligibleUpgrades = equippedItem?.item ? equippedItem.hasUpgradeOptions() : false;
 
 		// If the enchant tab is selected but the item has no eligible enchants, default to items
@@ -476,7 +476,7 @@ export default class SelectorModal extends BaseModal {
 			gearData,
 			itemData: itemUpgradesAsEntries.map(([upgradeStepString, upgradeData], index) => {
 				const upgradeStep = Number(upgradeStepString) as ItemLevelState;
-				const upgradeItem = new EquippedItem({ item: itemProto, upgrade: upgradeStep });
+				const upgradeItem = equippedItem.withUpgrade(upgradeStep);
 				return {
 					item: Number(upgradeStep),
 					id: Number(upgradeStep),
@@ -587,7 +587,7 @@ export default class SelectorModal extends BaseModal {
 				itemData.onEquip(TypedEvent.nextEventID(), item.item);
 
 				const isItemChange = Item.is(item.item);
-				const newItem = gearData.getEquippedItem();
+				const newItem = gearData.getEquippedItem() || null;
 				const isRandomSuffixChange = prevItem?._randomSuffix?.id !== newItem?.randomSuffix?.id;
 
 				// If the item changes, then gem slots and random suffix options will also change, so remove and recreate these tabs.

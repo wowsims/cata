@@ -147,7 +147,7 @@ export class EquippedItem {
 		reforge = reforge || this.reforge;
 		if (!reforge) return null;
 		const { id, fromStat, toStat, multiplier } = reforge;
-		const item = this.getWithDynamicStats().item;
+		const item = this.item;
 		const fromAmount = Math.ceil(-item.stats[fromStat] * multiplier);
 		const toAmount = Math.floor(item.stats[fromStat] * multiplier);
 
@@ -374,13 +374,9 @@ export class EquippedItem {
 		});
 	}
 
-	getRandomPropPoints(): number {
-		return this.item.scalingOptions[this.upgrade]?.randPropPoints || this.item.randPropPoints;
-	}
-
-	getWithDynamicStats() {
+	withDynamicStats() {
 		const item = this.item;
-		const scalingOptions = this._item.scalingOptions[this.upgrade];
+		const scalingOptions = item.scalingOptions[this.upgrade];
 		item.stats = item.stats.map((stat, index) => scalingOptions.stats[index] || stat);
 		item.weaponDamageMin = scalingOptions.weaponDamageMin;
 		item.weaponDamageMax = scalingOptions.weaponDamageMax;
@@ -401,6 +397,15 @@ export class EquippedItem {
 			upgrade: this._upgrade,
 			challengeMode: this._challengeMode,
 		});
+	}
+
+	// Returns calculated stats
+	// if slot is provided it will include slot specific stats like weapon DPS
+	calcStats(slot?: ItemSlot): Stats {
+		const item = this.item;
+		let stats = new Stats(item.stats);
+		if (typeof slot === 'number') stats = stats.add(getWeaponStatsBySlot(item, slot, this.upgrade));
+		return stats;
 	}
 
 	asActionId(): ActionId {
