@@ -87,7 +87,7 @@ func (rogue *Rogue) registerCrimsonTempest() {
 					hit_cpScaling*float64(rogue.ComboPoints()) +
 					hit_apScaling*float64(rogue.ComboPoints())*spell.MeleeAttackPower()
 
-				result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
+				result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeSpecialHitAndCrit)
 				lastCTDamage[aoeTarget.UnitIndex] = result.Damage * dot_modifier
 
 				if result.Landed() {
