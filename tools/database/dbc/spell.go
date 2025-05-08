@@ -49,11 +49,9 @@ type RPPMModifier struct {
 	Param        int32
 }
 
-func (s *Spell) HasAttributeFlag(attr uint) bool {
-	bit := attr % 32
-	index := attr / 32
-	if index >= uint(len(s.Attributes)) {
+func (s *Spell) HasAttributeAt(index int, flag int) bool {
+	if index < 0 || index >= len(s.Attributes) {
 		return false
 	}
-	return (s.Attributes[index] & (1 << bit)) != 0
+	return (s.Attributes[index] & flag) != 0
 }

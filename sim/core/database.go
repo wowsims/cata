@@ -152,6 +152,7 @@ type Item struct {
 	ScalingOptions map[int32]*proto.ScalingItemProperties
 	RandPropPoints int32
 	UpgradeStep    proto.ItemLevelState
+	ItemEffects    []*proto.ItemEffect
 }
 
 func ItemFromProto(pData *proto.SimItem) Item {
@@ -169,6 +170,7 @@ func ItemFromProto(pData *proto.SimItem) Item {
 		SetName:          pData.SetName,
 		SetID:            pData.SetId,
 		ScalingOptions:   pData.ScalingOptions,
+		ItemEffects:      pData.ItemEffects,
 	}
 }
 
@@ -207,14 +209,16 @@ func RandomSuffixFromProto(pData *proto.ItemRandomSuffix) RandomSuffix {
 }
 
 type Enchant struct {
-	EffectID int32 // Used by UI to apply effect to tooltip
-	Stats    stats.Stats
+	EffectID      int32 // Used by UI to apply effect to tooltip
+	Stats         stats.Stats
+	EnchantEffect *proto.ItemEffect
 }
 
 func EnchantFromProto(pData *proto.SimEnchant) Enchant {
 	return Enchant{
-		EffectID: pData.EffectId,
-		Stats:    stats.FromProtoArray(pData.Stats),
+		EffectID:      pData.EffectId,
+		Stats:         stats.FromProtoArray(pData.Stats),
+		EnchantEffect: pData.EnchantEffect,
 	}
 }
 
@@ -359,6 +363,24 @@ func (equipment *Equipment) containsItemInSlots(itemID int32, possibleSlots []pr
 	return slices.ContainsFunc(possibleSlots, func(slot proto.ItemSlot) bool {
 		return equipment[slot].ID == itemID
 	})
+}
+
+func (equipment *Equipment) GetEnchantByEffectID(effectID int32) *Enchant {
+	for _, item := range equipment {
+		if item.Enchant.EffectID == effectID {
+			return &item.Enchant
+		}
+	}
+	return nil
+}
+
+func (equipment *Equipment) GetItemById(itemID int32) *Item {
+	for _, item := range equipment {
+		if item.ID == itemID {
+			return &item
+		}
+	}
+	return nil
 }
 
 func (equipment *Equipment) ToEquipmentSpecProto() *proto.EquipmentSpec {

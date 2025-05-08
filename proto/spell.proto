@@ -3,14 +3,19 @@ package proto;
 
 option go_package = "./proto";
 
-import "google/protobuf/duration.proto";
-
 import "common.proto";
 enum ItemEffectType {
 	NONE   = 0;
 	PROC   = 1;
 	ON_USE = 2;
   }
+  // Contains only the Enchant info needed by the sim.
+message SimEnchant {
+	int32 effect_id = 1;
+	repeated double stats = 2;
+	ItemEffect enchant_effect = 3;
+}
+
 message ScalingItemEffectProperties {
 	// keys are the numeric values of proto.common.Stat
 	map<int32, double> stats = 1;

@@ -1,6 +1,7 @@
 package shared
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -97,85 +98,106 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 
 	effectFn(effectID, func(agent core.Agent) {
 		character := agent.GetCharacter()
+
 		var eligibleSlots []proto.ItemSlot
+		var procEffect *proto.ItemEffect
 		if isEnchant {
 			eligibleSlots = character.ItemSwap.EligibleSlotsForEffect(effectID)
+
+			ench := core.EnchantsByEffectID[effectID]
+			if ench.EnchantEffect.GetProc() != nil {
+				procEffect = ench.EnchantEffect
+			}
 		} else {
 			eligibleSlots = character.ItemSwap.EligibleSlotsForItem(effectID)
-		}
 
-		procID := core.ActionID{SpellID: config.AuraID}
-		if procID.IsEmptyAction() {
-			procID = core.ActionID{ItemID: config.ItemID}
-		}
-		procAura := character.NewTemporaryStatsAura(config.Name+" Proc", procID, config.Bonus, config.Duration)
-
-		var dpm *core.DynamicProcManager
-		if (config.PPM != 0) && (config.ProcMask == core.ProcMaskUnknown) {
-			if isEnchant {
-				dpm = character.AutoAttacks.NewDynamicProcManagerForEnchant(effectID, config.PPM, 0)
-			} else {
-				dpm = character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(effectID, config.PPM, 0)
-			}
-		}
-
-		procAura.CustomProcCondition = config.CustomProcCondition
-
-		var customHandler CustomProcHandler
-		if config.CustomProcCondition != nil {
-			customHandler = func(sim *core.Simulation, procAura *core.StatBuffAura) {
-				if procAura.CanProc(sim) {
-					procAura.Activate(sim)
-				} else {
-					// reset ICD condition was not fulfilled
-					if procAura.Icd != nil && procAura.Icd.Duration != 0 {
-						procAura.Icd.Reset()
+			item := character.Equipment.GetItemById(effectID)
+			if item != nil && len(item.ItemEffects) > 0 {
+				for _, effect := range item.ItemEffects {
+					if effect.GetProc() != nil {
+						procEffect = effect
 					}
 				}
 			}
 		}
-
-		var procSpell ExtraSpellInfo
-		if extraSpell != nil {
-			procSpell = extraSpell(agent)
-		}
-
-		handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if customHandler != nil {
-				customHandler(sim, procAura)
-			} else {
-				procAura.Activate(sim)
-				if procSpell.Spell != nil {
-					procSpell.Trigger(sim, spell, result)
+		if procEffect != nil {
+			proc := procEffect.GetProc()
+			procAction := core.ActionID{SpellID: procEffect.SpellId}
+			procAura := character.NewTemporaryStatsAura(core.Ternary(config.Name != "", config.Name, procEffect.Label)+" Proc", procAction, stats.FromProtoMap(procEffect.ScalingOptions[0].Stats), time.Second*time.Duration(procEffect.EffectDuration))
+			var dpm *core.DynamicProcManager
+			if (config.PPM != 0) && (config.ProcMask == core.ProcMaskUnknown) {
+				if isEnchant {
+					dpm = character.AutoAttacks.NewDynamicProcManagerForEnchant(effectID, proc.Rppm, 0)
+				} else {
+					dpm = character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(effectID, proc.Rppm, 0)
 				}
 			}
+			procAura.CustomProcCondition = config.CustomProcCondition
+			var customHandler CustomProcHandler
+			if config.CustomProcCondition != nil {
+				customHandler = func(sim *core.Simulation, procAura *core.StatBuffAura) {
+					if procAura.CanProc(sim) {
+						procAura.Activate(sim)
+					} else {
+						// reset ICD condition was not fulfilled
+						if procAura.Icd != nil && procAura.Icd.Duration != 0 {
+							procAura.Icd.Reset()
+						}
+					}
+				}
+			}
+			var procSpell ExtraSpellInfo
+			if extraSpell != nil {
+				procSpell = extraSpell(agent)
+			}
+			handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if customHandler != nil {
+					customHandler(sim, procAura)
+				} else {
+					procAura.Activate(sim)
+					if procSpell.Spell != nil {
+						procSpell.Trigger(sim, spell, result)
+					}
+				}
+			}
+			triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				ActionID:   triggerActionID,
+				Name:       core.Ternary(config.Name != "", config.Name, procEffect.Label),
+				Callback:   config.Callback,
+				ProcMask:   config.ProcMask,
+				Outcome:    config.Outcome,
+				Harmful:    config.Harmful,
+				ProcChance: proc.ProcChance,
+				PPM:        proc.Rppm,
+				DPM:        dpm,
+				ICD:        time.Second * time.Duration(proc.Icd),
+				Handler:    handler,
+			})
+			if proc.Icd != 0 {
+				procAura.Icd = triggerAura.Icd
+			}
+			if procEffect.SpellId == 91366 {
+				fmt.Println(core.ProcTrigger{
+					ActionID:   triggerActionID,
+					Name:       config.Name,
+					Callback:   config.Callback,
+					ProcMask:   config.ProcMask,
+					Outcome:    config.Outcome,
+					Harmful:    config.Harmful,
+					ProcChance: proc.ProcChance,
+					PPM:        proc.Rppm,
+					ICD:        time.Second * time.Duration(proc.Icd),
+				})
+			}
+			if isEnchant {
+				character.ItemSwap.RegisterEnchantProcWithSlots(effectID, triggerAura, eligibleSlots)
+			} else {
+				character.ItemSwap.RegisterProcWithSlots(effectID, triggerAura, eligibleSlots)
+			}
+
+			character.AddStatProcBuff(effectID, procAura, isEnchant, eligibleSlots)
+			return
 		}
-
-		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID:   triggerActionID,
-			Name:       config.Name,
-			Callback:   config.Callback,
-			ProcMask:   config.ProcMask,
-			Outcome:    config.Outcome,
-			Harmful:    config.Harmful,
-			ProcChance: config.ProcChance,
-			PPM:        config.PPM,
-			DPM:        dpm,
-			ICD:        config.ICD,
-			Handler:    handler,
-		})
-
-		if config.ICD != 0 {
-			procAura.Icd = triggerAura.Icd
-		}
-
-		if isEnchant {
-			character.ItemSwap.RegisterEnchantProcWithSlots(effectID, triggerAura, eligibleSlots)
-		} else {
-			character.ItemSwap.RegisterProcWithSlots(effectID, triggerAura, eligibleSlots)
-		}
-
-		character.AddStatProcBuff(effectID, procAura, isEnchant, eligibleSlots)
 	})
 }
 
@@ -255,6 +277,7 @@ func NewParryActive(itemID int32, bonus float64, duration time.Duration, cooldow
 func NewMasteryActive(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
 	CreateOffensiveStatActive(itemID, duration, cooldown, stats.Stats{stats.MasteryRating: bonus})
 }
+func NewDbcStatsActive(itemID int32) {}
 
 type StackingStatBonusCD struct {
 	Name        string
