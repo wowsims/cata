@@ -357,7 +357,6 @@ func (stats Stats) ToProtoArray() []float64 {
 	// shared indices between the two.
 	return stats[:ProtoStatsLen]
 }
-
 func (stats Stats) ToProtoMap() map[int32]float64 {
 	m := make(map[int32]float64, ProtoStatsLen)
 	for i := 0; i < int(ProtoStatsLen); i++ {

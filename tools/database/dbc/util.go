@@ -19,7 +19,15 @@ func GetProfession(id int) proto.Profession {
 	}
 	return 0
 }
+func NullFloat(arr []float64) []float64 {
+	for _, v := range arr {
+		if v > 0 {
+			return arr
+		}
+	}
 
+	return nil
+}
 func GetClassesFromClassMask(mask int) []proto.Class {
 	var result []proto.Class
 	for _, class := range Classes {

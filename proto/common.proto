@@ -925,11 +925,6 @@ enum EnchantType {
 	EnchantTypeOffHand = 5;
 }
 
-// Contains only the Enchant info needed by the sim.
-message SimEnchant {
-	int32 effect_id = 1;
-	repeated double stats = 2;
-}
 
 // Contains only the Gem info needed by the sim.
 message SimGem {
