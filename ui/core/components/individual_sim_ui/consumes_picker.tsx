@@ -64,6 +64,8 @@ export class ConsumesPicker extends Component {
 			this.updateRow(row, [potionsPicker, conjuredPicker, prePotPicker]),
 		);
 		this.addOnDisposeCallback(() => events.dispose());
+
+		this.updateRow(row, [potionsPicker, conjuredPicker, prePotPicker]);
 	}
 
 	private buildElixirsPicker(): void {
@@ -128,7 +130,7 @@ export class ConsumesPicker extends Component {
 		const explosivesoptions = ConsumablesInputs.makeExplosivesInput(relevantStatOptions(ConsumablesInputs.EXPLOSIVE_CONFIG, this.simUI), 'Explosives');
 		const explosivePicker = buildIconInput(engiConsumesElem, this.simUI.player, explosivesoptions);
 
-		const events = TypedEvent.onAny([this.simUI.player.professionChangeEmitter]).on(() => this.updateRow(row, [explosivePicker, tinkerPicker]));
+		const events = this.simUI.player.professionChangeEmitter.on(() => this.updateRow(row, [explosivePicker, tinkerPicker]));
 		this.addOnDisposeCallback(() => events.dispose());
 
 		// Initial update of row based on current state.

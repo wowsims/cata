@@ -251,7 +251,6 @@ export class Player<SpecType extends Spec> {
 	private channelClipDelay = 0;
 	private inFrontOfTarget = false;
 	private distanceFromTarget = 0;
-	private darkIntentUptime = 100;
 	private healingModel: HealingModel = HealingModel.create();
 	private healingEnabled = false;
 	private challengeModeEnabled = false;
@@ -1003,17 +1002,6 @@ export class Player<SpecType extends Spec> {
 		this.miscOptionsChangeEmitter.emit(eventID);
 	}
 
-	getDarkIntentUptime(): number {
-		return this.darkIntentUptime;
-	}
-
-	setDarkIntentUptime(eventID: EventID, newDarkIntentUptime: number) {
-		if (newDarkIntentUptime == this.darkIntentUptime) return;
-
-		this.darkIntentUptime = newDarkIntentUptime;
-		this.miscOptionsChangeEmitter.emit(eventID);
-	}
-
 	getChallengeModeEnabled(): boolean {
 		return this.challengeModeEnabled;
 	}
@@ -1521,7 +1509,6 @@ export class Player<SpecType extends Spec> {
 				distanceFromTarget: this.getDistanceFromTarget(),
 				healingModel: this.getHealingModel(),
 				challengeMode: this.getChallengeModeEnabled(),
-				darkIntentUptime: this.getDarkIntentUptime(),
 			});
 			player = withSpec(this.getSpec(), player, this.getSpecOptions());
 		}
@@ -1578,7 +1565,6 @@ export class Player<SpecType extends Spec> {
 				this.setDistanceFromTarget(eventID, proto.distanceFromTarget);
 				this.setHealingModel(eventID, proto.healingModel || HealingModel.create());
 				this.setChallengeModeEnabled(eventID, proto.challengeMode);
-				this.setDarkIntentUptime(eventID, proto.darkIntentUptime);
 			}
 			if (loadCategory(SimSettingCategories.External)) {
 				this.setBuffs(eventID, proto.buffs || IndividualBuffs.create());
