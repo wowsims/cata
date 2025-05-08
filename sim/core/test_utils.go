@@ -75,19 +75,14 @@ var FullRaidBuffs = &proto.RaidBuffs{
 
 	// Major Mana Replenishment
 	ManaTideTotemCount: 1, // Shamans
+
+	// Crit Damage %
+	SkullBannerCount: 1, // Warrior
 }
 
-var FullPartyBuffs = &proto.PartyBuffs{
-	//BraidedEterniumChain: true,
-	// ManaTideTotems: 1,
-}
-var FullIndividualBuffs = &proto.IndividualBuffs{
-	// BlessingOfMight:     true,
-	// BlessingOfSanctuary: true,
-	// BlessingOfWisdom:    true,
-	// JudgementsOfTheWise: true,
-	VampiricTouch: true,
-}
+var FullPartyBuffs = &proto.PartyBuffs{}
+
+var FullIndividualBuffs = &proto.IndividualBuffs{}
 
 var FullDebuffs = &proto.Debuffs{
 	WeakenedBlows:         true,
@@ -103,6 +98,7 @@ var FullDebuffs = &proto.Debuffs{
 	SporeCloud:            true,
 	Slow:                  true,
 	MindNumbingPoison:     true,
+	CurseOfEnfeeblement:   true,
 }
 
 func NewDefaultTarget() *proto.Target {

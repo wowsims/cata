@@ -52,8 +52,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 		}),
 		individualBuffs: IndividualBuffs.create({
 			innervateCount: 0,
-			vampiricTouch: true,
-			focusMagic: true,
 		}),
 		debuffs: Debuffs.create({
 			// ebonPlaguebringer: true,

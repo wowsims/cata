@@ -73,9 +73,7 @@ export const DefaultConsumables = ConsumesSpec.create({
 });
 export const DefaultRaidBuffs = RaidBuffs.create({});
 
-export const DefaultIndividualBuffs = IndividualBuffs.create({
-	vampiricTouch: true,
-});
+export const DefaultIndividualBuffs = IndividualBuffs.create({});
 
 export const DefaultPartyBuffs = PartyBuffs.create({});
 

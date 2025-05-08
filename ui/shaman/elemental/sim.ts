@@ -79,9 +79,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({}),
 		partyBuffs: PartyBuffs.create({}),
-		individualBuffs: IndividualBuffs.create({
-			vampiricTouch: true,
-		}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
 			// curseOfElements: true,
 			// shadowAndFlame: true,
