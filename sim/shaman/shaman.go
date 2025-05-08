@@ -16,6 +16,7 @@ const (
 	DDBC_4pcT12 int = iota
 	DDBC_FrostbrandWeapon
 	DDBC_UnleashedFury
+	DDBC_2PT16
 
 	DDBC_Total
 )
@@ -134,6 +135,8 @@ type Shaman struct {
 
 	ElementalSharedCDTimer *core.Timer
 
+	Ascendance *core.Spell
+
 	MagmaTotem         *core.Spell
 	HealingStreamTotem *core.Spell
 	SearingTotem       *core.Spell
@@ -169,6 +172,7 @@ type Shaman struct {
 	DungeonSet3 *core.Aura
 	T12Enh2pc   *core.Aura
 	T12Ele4pc   *core.Aura
+	T14Ele4pc   *core.Aura
 }
 
 // Implemented by each Shaman spec.

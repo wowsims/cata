@@ -16,17 +16,17 @@ func (shaman *Shaman) ApplyElementalTalents() {
 
 	//Shamanism
 	shaman.AddStaticMod(core.SpellModConfig{
-		ClassMask: SpellMaskChainLightning | SpellMaskLightningBolt,
+		ClassMask: SpellMaskChainLightning | SpellMaskLightningBolt | SpellMaskLavaBeam,
 		Kind:      core.SpellMod_CastTime_Flat,
 		TimeValue: time.Millisecond * -500,
 	})
 	shaman.AddStaticMod(core.SpellModConfig{
-		ClassMask:  SpellMaskChainLightning | SpellMaskLightningBolt | SpellMaskLightningBoltOverload | SpellMaskChainLightningOverload,
+		ClassMask:  SpellMaskChainLightning | SpellMaskLightningBolt | SpellMaskLightningBoltOverload | SpellMaskChainLightningOverload | SpellMaskLavaBeam | SpellMaskLavaBeamOverload,
 		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: 0.7,
 	})
 	shaman.AddStaticMod(core.SpellModConfig{
-		ClassMask: SpellMaskChainLightning,
+		ClassMask: SpellMaskChainLightning | SpellMaskLavaBeam,
 		Kind:      core.SpellMod_Cooldown_Flat,
 		TimeValue: time.Second * -3,
 	})
@@ -94,34 +94,20 @@ func (shaman *Shaman) ApplyElementalTalents() {
 	actionID := core.ActionID{SpellID: 88765}
 	manaMetrics := shaman.NewManaMetrics(actionID)
 
-	wastedLSChargeAura := shaman.RegisterAura(core.Aura{
-		Label:    "Wasted Lightning Shield Charge",
-		Duration: core.NeverExpires,
-		ActionID: core.ActionID{
-			SpellID: 324,
-			Tag:     1,
-		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Deactivate(sim)
-		},
-	})
-
 	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
 		Name:           "Rolling Thunder",
 		ActionID:       actionID,
-		ClassSpellMask: SpellMaskChainLightning | SpellMaskChainLightningOverload | SpellMaskLightningBolt | SpellMaskLightningBoltOverload,
+		ClassSpellMask: SpellMaskChainLightning | SpellMaskChainLightningOverload | SpellMaskLightningBolt | SpellMaskLightningBoltOverload | SpellMaskLavaBeam | SpellMaskLavaBeamOverload,
 		Callback:       core.CallbackOnSpellHitDealt,
 		ProcChance:     0.6,
 		ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
 			return shaman.SelfBuffs.Shield == proto.ShamanShield_LightningShield
 		},
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			shaman.AddMana(sim, 0.02*shaman.MaxMana(), manaMetrics)
-			if shaman.LightningShieldAura.GetStacks() == 7 {
-				wastedLSChargeAura.Activate(sim)
-			}
+			nStack := core.TernaryInt32(shaman.T14Ele4pc.IsActive(), 2, 1)
+			shaman.AddMana(sim, 0.02*shaman.MaxMana()*float64(nStack), manaMetrics)
 			shaman.LightningShieldAura.Activate(sim)
-			shaman.LightningShieldAura.AddStack(sim)
+			shaman.LightningShieldAura.SetStacks(sim, shaman.LightningShieldAura.GetStacks()+nStack)
 		},
 	})
 

@@ -32,7 +32,7 @@ func (shaman *Shaman) registerAscendanceSpell() {
 		FloatValue: -1,
 	})
 
-	ascendanceSpell := shaman.RegisterSpell(core.SpellConfig{
+	shaman.Ascendance = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 114049},
 		SpellSchool:    core.SpellSchoolPhysical,
 		Flags:          core.SpellFlagAPL,
@@ -53,7 +53,7 @@ func (shaman *Shaman) registerAscendanceSpell() {
 	})
 
 	shaman.AddMajorCooldown(core.MajorCooldown{
-		Spell: ascendanceSpell,
+		Spell: shaman.Ascendance,
 		Type:  core.CooldownTypeDPS,
 	})
 }
