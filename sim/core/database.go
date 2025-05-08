@@ -152,6 +152,7 @@ type Item struct {
 	ScalingOptions map[int32]*proto.ScalingItemProperties
 	RandPropPoints int32
 	UpgradeStep    proto.ItemLevelState
+	ChallengeMode  bool
 }
 
 func ItemFromProto(pData *proto.SimItem) Item {
@@ -174,11 +175,12 @@ func ItemFromProto(pData *proto.SimItem) Item {
 
 func (item *Item) ToItemSpecProto() *proto.ItemSpec {
 	itemSpec := &proto.ItemSpec{
-		Id:           item.ID,
-		RandomSuffix: item.RandomSuffix.ID,
-		Enchant:      item.Enchant.EffectID,
-		Gems:         MapSlice(item.Gems, func(gem Gem) int32 { return gem.ID }),
-		UpgradeStep:  item.UpgradeStep,
+		Id:            item.ID,
+		RandomSuffix:  item.RandomSuffix.ID,
+		Enchant:       item.Enchant.EffectID,
+		Gems:          MapSlice(item.Gems, func(gem Gem) int32 { return gem.ID }),
+		UpgradeStep:   item.UpgradeStep,
+		ChallengeMode: item.ChallengeMode,
 	}
 
 	// Check if Reforging is not nil before accessing ID
@@ -235,12 +237,13 @@ func GemFromProto(pData *proto.SimGem) Gem {
 }
 
 type ItemSpec struct {
-	ID           int32
-	RandomSuffix int32
-	Enchant      int32
-	Gems         []int32
-	Reforging    int32
-	UpgradeStep  proto.ItemLevelState
+	ID            int32
+	RandomSuffix  int32
+	Enchant       int32
+	Gems          []int32
+	Reforging     int32
+	UpgradeStep   proto.ItemLevelState
+	ChallengeMode bool
 }
 
 type Equipment [proto.ItemSlot_ItemSlotRanged + 1]Item
@@ -376,12 +379,13 @@ func ProtoToEquipmentSpec(es *proto.EquipmentSpec) EquipmentSpec {
 	var coreEquip EquipmentSpec
 	for i, item := range es.Items {
 		coreEquip[i] = ItemSpec{
-			ID:           item.Id,
-			RandomSuffix: item.RandomSuffix,
-			Enchant:      item.Enchant,
-			Gems:         item.Gems,
-			Reforging:    item.Reforging,
-			UpgradeStep:  item.UpgradeStep,
+			ID:            item.Id,
+			RandomSuffix:  item.RandomSuffix,
+			Enchant:       item.Enchant,
+			Gems:          item.Gems,
+			Reforging:     item.Reforging,
+			UpgradeStep:   item.UpgradeStep,
+			ChallengeMode: item.ChallengeMode,
 		}
 	}
 	return coreEquip
@@ -395,7 +399,16 @@ func NewItem(itemSpec ItemSpec) Item {
 		panic(fmt.Sprintf("No item with id: %d", itemSpec.ID))
 	}
 
-	scalingOptions := item.ScalingOptions[int32(itemSpec.UpgradeStep)]
+	var itemLevelState proto.ItemLevelState
+	if !itemSpec.ChallengeMode {
+		itemLevelState = itemSpec.UpgradeStep
+	} else if item.ScalingOptions[0].Ilvl <= MaxChallengeModeIlvl {
+		itemLevelState = proto.ItemLevelState_Base
+	} else {
+		itemLevelState = proto.ItemLevelState_ChallengeMode
+	}
+
+	scalingOptions := item.ScalingOptions[int32(itemLevelState)]
 	item.Stats = stats.FromProtoMap(scalingOptions.Stats)
 	item.WeaponDamageMax = scalingOptions.WeaponDamageMax
 	item.WeaponDamageMin = scalingOptions.WeaponDamageMin

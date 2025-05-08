@@ -24,6 +24,7 @@ import { RotationTab } from './components/individual_sim_ui/rotation_tab';
 import { SettingsTab } from './components/individual_sim_ui/settings_tab';
 import { TalentsTab } from './components/individual_sim_ui/talents_tab';
 import * as InputHelpers from './components/input_helpers';
+import * as OtherInputs from './components/inputs/other_inputs';
 import { ItemNotice } from './components/item_notice/item_notice';
 import { addRaidSimAction, RaidSimResultsManager } from './components/raid_sim_action';
 import { SavedDataConfig } from './components/saved_data_manager';
@@ -230,7 +231,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		});
 		this.rootElem.classList.add('individual-sim-ui');
 		this.player = player;
-		this.individualConfig = config;
+		this.individualConfig = this.applyDefaultConfigOptions(config);
 		this.raidSimResultsManager = null;
 		this.prevEpIterations = 0;
 		this.prevEpSimResult = null;
@@ -354,6 +355,13 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 		this.addTopbarComponents();
 	}
+
+	applyDefaultConfigOptions(config: IndividualSimUIConfig<SpecType>): IndividualSimUIConfig<SpecType> {
+		config.otherInputs.inputs = [OtherInputs.ChallengeMode, ...config.otherInputs.inputs];
+
+		return config;
+	}
+
 
 	private loadSettings() {
 		const initEventID = TypedEvent.nextEventID();

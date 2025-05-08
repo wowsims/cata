@@ -51,7 +51,7 @@ import {
 } from './proto/ui';
 import { ActionId } from './proto_utils/action_id';
 import { Database } from './proto_utils/database';
-import { EquippedItem, getWeaponStatsBySlot, ReforgeData } from './proto_utils/equipped_item';
+import { EquippedItem, ReforgeData } from './proto_utils/equipped_item';
 import { Gear, ItemSwapGear } from './proto_utils/gear';
 import { gemMatchesSocket, isUnrestrictedGem } from './proto_utils/gems';
 import { StatCap, Stats } from './proto_utils/stats';
@@ -253,12 +253,13 @@ export class Player<SpecType extends Spec> {
 	private distanceFromTarget = 0;
 	private healingModel: HealingModel = HealingModel.create();
 	private healingEnabled = false;
+	private challengeModeEnabled = false;
 
 	private readonly autoRotationGenerator: AutoRotationGenerator<SpecType> | null = null;
 	private readonly simpleRotationGenerator: SimpleRotationGenerator<SpecType> | null = null;
 	readonly hiddenMCDs: Array<number>;
 
-	private itemEPCache = new Array<Map<number, number>>();
+	private itemEPCache = new Array<Map<string, number>>();
 	private gemEPCache = new Map<number, number>();
 	private randomSuffixEPCache = new Map<number, number>();
 	private enchantEPCache = new Map<number, number>();
@@ -296,6 +297,7 @@ export class Player<SpecType extends Spec> {
 	readonly softCapBreakpointsChangeEmitter = new TypedEvent<void>('SoftCapBreakpoints');
 	readonly breakpointLimitsChangeEmitter = new TypedEvent<void>('BreakpointLimits');
 	readonly miscOptionsChangeEmitter = new TypedEvent<void>('PlayerMiscOptions');
+	readonly challengeModeChangeEmitter = new TypedEvent<void>('ChallengeMode');
 
 	readonly currentStatsEmitter = new TypedEvent<void>('PlayerCurrentStats');
 	readonly epRatiosChangeEmitter = new TypedEvent<void>('PlayerEpRatios');
@@ -332,6 +334,8 @@ export class Player<SpecType extends Spec> {
 
 		this.itemSwapSettings = new ItemSwapSettings(this);
 
+		this.bindChallengeModeChange();
+
 		this.changeEmitter = TypedEvent.onAny(
 			[
 				this.nameChangeEmitter,
@@ -354,9 +358,16 @@ export class Player<SpecType extends Spec> {
 				this.epRefStatChangeEmitter,
 				this.statCapsChangeEmitter,
 				this.breakpointLimitsChangeEmitter,
+				this.challengeModeChangeEmitter,
 			],
 			'PlayerChange',
 		);
+	}
+
+	bindChallengeModeChange() {
+		this.challengeModeChangeEmitter.on(() => {
+			this.setGear(TypedEvent.nextEventID(), this.gear.withChallengeMode(this.challengeModeEnabled));
+		});
 	}
 
 	getSpecIcon(): string {
@@ -464,13 +475,14 @@ export class Player<SpecType extends Spec> {
 
 	// Returns all random suffixes that this player would be interested in for the given base item.
 	getRandomSuffixes(item: Item): Array<ItemRandomSuffix> {
-		const allSuffixes = item.randomSuffixOptions.map(id => this.sim.db.getRandomSuffixById(id)!);
-		return allSuffixes.filter(suffix => this.computeRandomSuffixEP(suffix) > 0);
+		return item.randomSuffixOptions
+			.map(id => this.sim.db.getRandomSuffixById(id))
+			.filter((suffix): suffix is ItemRandomSuffix => !!suffix && this.computeRandomSuffixEP(suffix) > 0);
 	}
 
 	// Returns all reforgings that are valid with a given item
 	getAvailableReforgings(equippedItem: EquippedItem): Array<ReforgeData> {
-		return this.sim.db.getAvailableReforges(equippedItem.getWithDynamicStats().item).map(reforge => equippedItem.getReforgeData(reforge)!);
+		return this.sim.db.getAvailableReforges(equippedItem.item).map(reforge => equippedItem.getReforgeData(reforge)!);
 	}
 
 	// Returns reforge given an id
@@ -729,7 +741,6 @@ export class Player<SpecType extends Spec> {
 
 	setGear(eventID: EventID, newGear: Gear) {
 		if (newGear.equals(this.gear)) return;
-
 		this.gear = newGear;
 		this.gearChangeEmitter.emit(eventID);
 	}
@@ -991,6 +1002,17 @@ export class Player<SpecType extends Spec> {
 		this.miscOptionsChangeEmitter.emit(eventID);
 	}
 
+	getChallengeModeEnabled(): boolean {
+		return this.challengeModeEnabled;
+	}
+
+	setChallengeModeEnabled(eventID: EventID, value: boolean) {
+		if (value === this.challengeModeEnabled) return;
+
+		this.challengeModeEnabled = value;
+		this.challengeModeChangeEmitter.emit(eventID);
+	}
+
 	getInFrontOfTarget(): boolean {
 		return this.inFrontOfTarget;
 	}
@@ -1107,6 +1129,7 @@ export class Player<SpecType extends Spec> {
 		let stats = new Stats([]);
 		stats = stats.addStat(reforging.fromStat, reforging.fromAmount);
 		stats = stats.addStat(reforging.toStat, reforging.toAmount);
+
 		return this.computeStatsEP(stats);
 	}
 
@@ -1115,9 +1138,8 @@ export class Player<SpecType extends Spec> {
 		if (this.upgradeEPCache.has(cacheKey)) {
 			return this.upgradeEPCache.get(cacheKey)!;
 		}
-		const { item: upgradedItem } = equippedItem.withUpgrade(upgradeLevel).getWithDynamicStats();
-		const stats = new Stats(upgradedItem.stats).add(getWeaponStatsBySlot(upgradedItem, slot, upgradeLevel));
 
+		const stats = equippedItem.withUpgrade(upgradeLevel).calcStats(slot);
 		const ep = this.computeStatsEP(stats);
 		this.upgradeEPCache.set(cacheKey, ep);
 
@@ -1126,17 +1148,22 @@ export class Player<SpecType extends Spec> {
 
 	computeItemEP(item: Item, slot: ItemSlot): number {
 		if (item == null) return 0;
+		const cacheKey = `${item.id}-${this.challengeModeEnabled}`;
 
-		const cached = this.itemEPCache[slot].get(item.id);
+		const cached = this.itemEPCache[slot].get(cacheKey);
 		if (cached !== undefined) return cached;
 
-		const itemStats = new Stats(item.stats).add(getWeaponStatsBySlot(item, slot));
+		const equippedItem = new EquippedItem({
+			item,
+			challengeMode: this.challengeModeEnabled,
+		}).withDynamicStats();
+		const itemStats = equippedItem.calcStats(slot);
 
 		// For random suffix items, use the suffix option with the highest EP for the purposes of ranking items in the picker.
 		let maxSuffixEP = 0;
 		if (item.randomSuffixOptions.length > 0) {
-			const suffixEPs = item.randomSuffixOptions.map(id => this.computeRandomSuffixEP(this.sim.db.getRandomSuffixById(id)! || 0));
-			maxSuffixEP = (Math.max(...suffixEPs) * item.randPropPoints) / 10000;
+			const suffixEPs = equippedItem.item.randomSuffixOptions.map(id => this.computeRandomSuffixEP(this.sim.db.getRandomSuffixById(id)! || 0));
+			maxSuffixEP = (Math.max(...suffixEPs) * equippedItem.item.randPropPoints) / 10000;
 		}
 
 		let ep = itemStats.computeEP(this.epWeights) + maxSuffixEP;
@@ -1174,7 +1201,7 @@ export class Player<SpecType extends Spec> {
 
 		ep += Math.max(bestGemEPMatchingSockets, bestGemEPNotMatchingSockets);
 
-		this.itemEPCache[slot].set(item.id, ep);
+		this.itemEPCache[slot].set(cacheKey, ep);
 		return ep;
 	}
 
@@ -1481,6 +1508,7 @@ export class Player<SpecType extends Spec> {
 				inFrontOfTarget: this.getInFrontOfTarget(),
 				distanceFromTarget: this.getDistanceFromTarget(),
 				healingModel: this.getHealingModel(),
+				challengeMode: this.getChallengeModeEnabled(),
 			});
 			player = withSpec(this.getSpec(), player, this.getSpecOptions());
 		}
@@ -1536,6 +1564,7 @@ export class Player<SpecType extends Spec> {
 				this.setInFrontOfTarget(eventID, proto.inFrontOfTarget);
 				this.setDistanceFromTarget(eventID, proto.distanceFromTarget);
 				this.setHealingModel(eventID, proto.healingModel || HealingModel.create());
+				this.setChallengeModeEnabled(eventID, proto.challengeMode);
 			}
 			if (loadCategory(SimSettingCategories.External)) {
 				this.setBuffs(eventID, proto.buffs || IndividualBuffs.create());
