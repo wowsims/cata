@@ -101,6 +101,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 
 		var eligibleSlots []proto.ItemSlot
 		var procEffect *proto.ItemEffect
+		scalingSelector := proto.ItemLevelState_Base
 		if isEnchant {
 			eligibleSlots = character.ItemSwap.EligibleSlotsForEffect(effectID)
 
@@ -112,6 +113,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 			eligibleSlots = character.ItemSwap.EligibleSlotsForItem(effectID)
 
 			item := character.Equipment.GetItemById(effectID)
+			scalingSelector = item.UpgradeStep
 			if item != nil && len(item.ItemEffects) > 0 {
 				for _, effect := range item.ItemEffects {
 					if effect.GetProc() != nil {
@@ -123,7 +125,7 @@ func factory_StatBonusEffect(config ProcStatBonusEffect, extraSpell func(agent c
 		if procEffect != nil {
 			proc := procEffect.GetProc()
 			procAction := core.ActionID{SpellID: procEffect.SpellId}
-			procAura := character.NewTemporaryStatsAura(core.Ternary(config.Name != "", config.Name, procEffect.Label)+" Proc", procAction, stats.FromProtoMap(procEffect.ScalingOptions[0].Stats), time.Second*time.Duration(procEffect.EffectDuration))
+			procAura := character.NewTemporaryStatsAura(core.Ternary(config.Name != "", config.Name, procEffect.Label)+" Proc", procAction, stats.FromProtoMap(procEffect.ScalingOptions[int32(scalingSelector)].Stats), time.Second*time.Duration(procEffect.EffectDuration))
 			var dpm *core.DynamicProcManager
 			if (config.PPM != 0) && (config.ProcMask == core.ProcMaskUnknown) {
 				if isEnchant {
