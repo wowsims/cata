@@ -65,7 +65,7 @@ export default class BulkItemPicker extends Component {
 	private setupHandlers() {
 		const slot = getEligibleItemSlots(this.item.item)[0];
 		const eligibleEnchants = this.simUI.sim.db.getEnchants(slot);
-		const eligibleReforges = this.item?.item ? this.simUI.player.getAvailableReforgings(this.item.getWithRandomSuffixStats()) : [];
+		const eligibleReforges = this.item?.item ? this.simUI.player.getAvailableReforgings(this.item.getWithDynamicStats()) : [];
 
 		const openItemSelector = (event: Event) => {
 			event.preventDefault();

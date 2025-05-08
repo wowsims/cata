@@ -37,7 +37,7 @@ import { PresetBuild, PresetEpWeights, PresetGear, PresetItemSwap, PresetRotatio
 import { StatWeightsResult } from './proto/api';
 import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
 import {
-    ConsumesSpec,
+	ConsumesSpec,
 	Cooldowns,
 	Debuffs,
 	Encounter as EncounterProto,
@@ -86,7 +86,6 @@ export interface OtherDefaults {
 	profession2?: Profession;
 	distanceFromTarget?: number;
 	channelClipDelay?: number;
-	darkIntentUptime?: number;
 	highHpThreshold?: number;
 	iterationCount?: number;
 }
@@ -554,7 +553,6 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 			this.player.setDistanceFromTarget(eventID, this.individualConfig.defaults.other?.distanceFromTarget || 0);
 			this.player.setChannelClipDelay(eventID, this.individualConfig.defaults.other?.channelClipDelay || 0);
-			this.player.setDarkIntentUptime(eventID, this.individualConfig.defaults.other?.darkIntentUptime || 100);
 
 			if (this.isWithinRaidSim) {
 				this.sim.raid.setTargetDummies(eventID, 0);
