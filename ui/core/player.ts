@@ -27,6 +27,7 @@ import {
 	HandType,
 	HealingModel,
 	IndividualBuffs,
+	ItemLevelState,
 	ItemRandomSuffix,
 	ItemSlot,
 	Profession,
@@ -50,9 +51,10 @@ import {
 } from './proto/ui';
 import { ActionId } from './proto_utils/action_id';
 import { Database } from './proto_utils/database';
-import { EquippedItem, getWeaponDPS, ReforgeData } from './proto_utils/equipped_item';
+import { EquippedItem, ReforgeData } from './proto_utils/equipped_item';
 import { Gear, ItemSwapGear } from './proto_utils/gear';
 import { gemMatchesSocket, isUnrestrictedGem } from './proto_utils/gems';
+import SecondaryResource from './proto_utils/secondary_resource';
 import { StatCap, Stats } from './proto_utils/stats';
 import {
 	AL_CATEGORY_HARD_MODE,
@@ -207,6 +209,7 @@ export interface PlayerConfig<SpecType extends Spec> {
 	autoRotation: AutoRotationGenerator<SpecType>;
 	simpleRotation?: SimpleRotationGenerator<SpecType>;
 	hiddenMCDs?: Array<number>; // spell IDs for any MCDs that should be omitted from the Simple Cooldowns UI
+	secondaryResource?: SecondaryResource | null;
 }
 
 const SPEC_CONFIGS: Partial<Record<Spec, PlayerConfig<any>>> = {};
@@ -217,6 +220,7 @@ export function registerSpecConfig<SpecType extends Spec>(spec: SpecType, config
 
 export function getSpecConfig<SpecType extends Spec>(spec: SpecType): PlayerConfig<SpecType> {
 	const config = SPEC_CONFIGS[spec] as PlayerConfig<SpecType>;
+	config.secondaryResource = SecondaryResource.create(spec);
 	if (!config) {
 		throw new Error('No config registered for Spec: ' + spec);
 	}
@@ -231,6 +235,7 @@ export class Player<SpecType extends Spec> {
 
 	readonly playerSpec: PlayerSpec<SpecType>;
 	readonly playerClass: PlayerClass<SpecClasses<SpecType>>;
+	readonly secondaryResource?: SecondaryResource | null;
 
 	private name = '';
 	private buffs: IndividualBuffs = IndividualBuffs.create();
@@ -250,18 +255,19 @@ export class Player<SpecType extends Spec> {
 	private channelClipDelay = 0;
 	private inFrontOfTarget = false;
 	private distanceFromTarget = 0;
-	private darkIntentUptime = 100;
 	private healingModel: HealingModel = HealingModel.create();
 	private healingEnabled = false;
+	private challengeModeEnabled = false;
 
 	private readonly autoRotationGenerator: AutoRotationGenerator<SpecType> | null = null;
 	private readonly simpleRotationGenerator: SimpleRotationGenerator<SpecType> | null = null;
 	readonly hiddenMCDs: Array<number>;
 
-	private itemEPCache = new Array<Map<number, number>>();
+	private itemEPCache = new Array<Map<string, number>>();
 	private gemEPCache = new Map<number, number>();
 	private randomSuffixEPCache = new Map<number, number>();
 	private enchantEPCache = new Map<number, number>();
+	private upgradeEPCache = new Map<string, number>();
 	private talents: SpecTalents<SpecType> | null = null;
 
 	readonly specTypeFunctions: SpecTypeFunctions<SpecType>;
@@ -295,6 +301,7 @@ export class Player<SpecType extends Spec> {
 	readonly softCapBreakpointsChangeEmitter = new TypedEvent<void>('SoftCapBreakpoints');
 	readonly breakpointLimitsChangeEmitter = new TypedEvent<void>('BreakpointLimits');
 	readonly miscOptionsChangeEmitter = new TypedEvent<void>('PlayerMiscOptions');
+	readonly challengeModeChangeEmitter = new TypedEvent<void>('ChallengeMode');
 
 	readonly currentStatsEmitter = new TypedEvent<void>('PlayerCurrentStats');
 	readonly epRatiosChangeEmitter = new TypedEvent<void>('PlayerEpRatios');
@@ -317,6 +324,8 @@ export class Player<SpecType extends Spec> {
 
 		const specConfig = getSpecConfig<SpecType>(this.getSpec());
 
+		this.secondaryResource = specConfig.secondaryResource;
+
 		this.autoRotationGenerator = specConfig.autoRotation;
 		if (specConfig.simpleRotation) {
 			this.simpleRotationGenerator = specConfig.simpleRotation;
@@ -330,6 +339,8 @@ export class Player<SpecType extends Spec> {
 		}
 
 		this.itemSwapSettings = new ItemSwapSettings(this);
+
+		this.bindChallengeModeChange();
 
 		this.changeEmitter = TypedEvent.onAny(
 			[
@@ -353,9 +364,16 @@ export class Player<SpecType extends Spec> {
 				this.epRefStatChangeEmitter,
 				this.statCapsChangeEmitter,
 				this.breakpointLimitsChangeEmitter,
+				this.challengeModeChangeEmitter,
 			],
 			'PlayerChange',
 		);
+	}
+
+	bindChallengeModeChange() {
+		this.challengeModeChangeEmitter.on(() => {
+			this.setGear(TypedEvent.nextEventID(), this.gear.withChallengeMode(this.challengeModeEnabled));
+		});
 	}
 
 	getSpecIcon(): string {
@@ -463,14 +481,14 @@ export class Player<SpecType extends Spec> {
 
 	// Returns all random suffixes that this player would be interested in for the given base item.
 	getRandomSuffixes(item: Item): Array<ItemRandomSuffix> {
-		const allSuffixes = item.randomSuffixOptions.map(id => this.sim.db.getRandomSuffixById(id)!);
-		return allSuffixes.filter(suffix => this.computeRandomSuffixEP(suffix) > 0);
+		return item.randomSuffixOptions
+			.map(id => this.sim.db.getRandomSuffixById(id))
+			.filter((suffix): suffix is ItemRandomSuffix => !!suffix && this.computeRandomSuffixEP(suffix) > 0);
 	}
 
 	// Returns all reforgings that are valid with a given item
 	getAvailableReforgings(equippedItem: EquippedItem): Array<ReforgeData> {
-		const withRandomSuffixStats = equippedItem.getWithRandomSuffixStats();
-		return this.sim.db.getAvailableReforges(withRandomSuffixStats.item).map(reforge => equippedItem.getReforgeData(reforge)!);
+		return this.sim.db.getAvailableReforges(equippedItem.item).map(reforge => equippedItem.getReforgeData(reforge)!);
 	}
 
 	// Returns reforge given an id
@@ -499,6 +517,7 @@ export class Player<SpecType extends Spec> {
 		this.gemEPCache = new Map();
 		this.enchantEPCache = new Map();
 		this.randomSuffixEPCache = new Map();
+		this.upgradeEPCache = new Map();
 		for (let i = 0; i < ItemSlot.ItemSlotRanged + 1; ++i) {
 			this.itemEPCache[i] = new Map();
 		}
@@ -728,7 +747,6 @@ export class Player<SpecType extends Spec> {
 
 	setGear(eventID: EventID, newGear: Gear) {
 		if (newGear.equals(this.gear)) return;
-
 		this.gear = newGear;
 		this.gearChangeEmitter.emit(eventID);
 	}
@@ -990,15 +1008,15 @@ export class Player<SpecType extends Spec> {
 		this.miscOptionsChangeEmitter.emit(eventID);
 	}
 
-	getDarkIntentUptime(): number {
-		return this.darkIntentUptime;
+	getChallengeModeEnabled(): boolean {
+		return this.challengeModeEnabled;
 	}
 
-	setDarkIntentUptime(eventID: EventID, newDarkIntentUptime: number) {
-		if (newDarkIntentUptime == this.darkIntentUptime) return;
+	setChallengeModeEnabled(eventID: EventID, value: boolean) {
+		if (value === this.challengeModeEnabled) return;
 
-		this.darkIntentUptime = newDarkIntentUptime;
-		this.miscOptionsChangeEmitter.emit(eventID);
+		this.challengeModeEnabled = value;
+		this.challengeModeChangeEmitter.emit(eventID);
 	}
 
 	getInFrontOfTarget(): boolean {
@@ -1117,32 +1135,41 @@ export class Player<SpecType extends Spec> {
 		let stats = new Stats([]);
 		stats = stats.addStat(reforging.fromStat, reforging.fromAmount);
 		stats = stats.addStat(reforging.toStat, reforging.toAmount);
+
 		return this.computeStatsEP(stats);
+	}
+
+	computeUpgradeEP(equippedItem: EquippedItem, upgradeLevel: ItemLevelState, slot: ItemSlot): number {
+		const cacheKey = `${equippedItem.id}-${slot}-${equippedItem.randomSuffix?.id}-${upgradeLevel}`;
+		if (this.upgradeEPCache.has(cacheKey)) {
+			return this.upgradeEPCache.get(cacheKey)!;
+		}
+
+		const stats = equippedItem.withUpgrade(upgradeLevel).calcStats(slot);
+		const ep = this.computeStatsEP(stats);
+		this.upgradeEPCache.set(cacheKey, ep);
+
+		return ep;
 	}
 
 	computeItemEP(item: Item, slot: ItemSlot): number {
 		if (item == null) return 0;
+		const cacheKey = `${item.id}-${this.challengeModeEnabled}`;
 
-		const cached = this.itemEPCache[slot].get(item.id);
+		const cached = this.itemEPCache[slot].get(cacheKey);
 		if (cached !== undefined) return cached;
 
-		let itemStats = new Stats(item.stats);
-		if (item.weaponSpeed > 0) {
-			const weaponDps = getWeaponDPS(item);
-			if (slot == ItemSlot.ItemSlotMainHand) {
-				itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatMainHandDps, weaponDps);
-			} else if (slot == ItemSlot.ItemSlotOffHand) {
-				itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatOffHandDps, weaponDps);
-			} else if (slot == ItemSlot.ItemSlotRanged) {
-				itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatRangedDps, weaponDps);
-			}
-		}
+		const equippedItem = new EquippedItem({
+			item,
+			challengeMode: this.challengeModeEnabled,
+		}).withDynamicStats();
+		const itemStats = equippedItem.calcStats(slot);
 
 		// For random suffix items, use the suffix option with the highest EP for the purposes of ranking items in the picker.
 		let maxSuffixEP = 0;
 		if (item.randomSuffixOptions.length > 0) {
-			const suffixEPs = item.randomSuffixOptions.map(id => this.computeRandomSuffixEP(this.sim.db.getRandomSuffixById(id)! || 0));
-			maxSuffixEP = (Math.max(...suffixEPs) * item.randPropPoints) / 10000;
+			const suffixEPs = equippedItem.item.randomSuffixOptions.map(id => this.computeRandomSuffixEP(this.sim.db.getRandomSuffixById(id)! || 0));
+			maxSuffixEP = (Math.max(...suffixEPs) * equippedItem.item.randPropPoints) / 10000;
 		}
 
 		let ep = itemStats.computeEP(this.epWeights) + maxSuffixEP;
@@ -1180,7 +1207,7 @@ export class Player<SpecType extends Spec> {
 
 		ep += Math.max(bestGemEPMatchingSockets, bestGemEPNotMatchingSockets);
 
-		this.itemEPCache[slot].set(item.id, ep);
+		this.itemEPCache[slot].set(cacheKey, ep);
 		return ep;
 	}
 
@@ -1190,13 +1217,16 @@ export class Player<SpecType extends Spec> {
 
 		equippedItem.asActionId().setWowheadDataset(elem, {
 			gemIds,
+			itemLevel: Number(equippedItem.ilvl),
 			enchantId: equippedItem.enchant?.effectId,
 			reforgeId: equippedItem.reforge?.id,
+			randomEnchantmentId: equippedItem.randomSuffix?.id,
 			setPieceIds: this.gear
 				.asArray()
 				.filter(ei => ei != null)
 				.map(ei => ei!.item.id),
 			hasExtraSocket: equippedItem.hasExtraSocket(isBlacksmithing),
+			upgradeStep: equippedItem.upgrade,
 		});
 
 		elem.dataset.whtticon = 'false';
@@ -1484,7 +1514,7 @@ export class Player<SpecType extends Spec> {
 				inFrontOfTarget: this.getInFrontOfTarget(),
 				distanceFromTarget: this.getDistanceFromTarget(),
 				healingModel: this.getHealingModel(),
-				darkIntentUptime: this.getDarkIntentUptime(),
+				challengeMode: this.getChallengeModeEnabled(),
 			});
 			player = withSpec(this.getSpec(), player, this.getSpecOptions());
 		}
@@ -1540,7 +1570,7 @@ export class Player<SpecType extends Spec> {
 				this.setInFrontOfTarget(eventID, proto.inFrontOfTarget);
 				this.setDistanceFromTarget(eventID, proto.distanceFromTarget);
 				this.setHealingModel(eventID, proto.healingModel || HealingModel.create());
-				this.setDarkIntentUptime(eventID, proto.darkIntentUptime);
+				this.setChallengeModeEnabled(eventID, proto.challengeMode);
 			}
 			if (loadCategory(SimSettingCategories.External)) {
 				this.setBuffs(eventID, proto.buffs || IndividualBuffs.create());

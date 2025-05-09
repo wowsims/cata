@@ -36,13 +36,6 @@ func NewProtectionPaladin(character *core.Character, options *proto.Player) *Pro
 		vengeance: &core.VengeanceTracker{},
 	}
 
-	healingModel := options.HealingModel
-	if healingModel != nil {
-		if healingModel.InspirationUptime > 0.0 {
-			core.ApplyInspiration(&prot.Unit, healingModel.InspirationUptime)
-		}
-	}
-
 	return prot
 }
 

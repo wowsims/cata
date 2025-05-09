@@ -19,7 +19,7 @@ import "shaman.proto";
 import "warlock.proto";
 import "warrior.proto";
 
-// NextIndex: 58
+// NextIndex: 59
 message Player {
 	// Proto version at the time Player were saved.
 	// A "breaking change" here is defined as anything that will break saved
@@ -108,6 +108,7 @@ message Player {
 	bool in_front_of_target = 47;
 	double distance_from_target = 48;
 	double dark_intent_uptime = 52;
+	bool challenge_mode = 58;
 
 	HealingModel healing_model = 49;
 

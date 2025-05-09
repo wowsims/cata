@@ -64,8 +64,8 @@ export default class BulkItemPicker extends Component {
 
 	private setupHandlers() {
 		const slot = getEligibleItemSlots(this.item.item)[0];
-		const eligibleEnchants = this.simUI.sim.db.getEnchants(slot);
-		const eligibleReforges = this.item?.item ? this.simUI.player.getAvailableReforgings(this.item.getWithRandomSuffixStats()) : [];
+		const hasEligibleEnchants = !!this.simUI.sim.db.getEnchants(slot).length;
+		const hasEligibleReforges = !!this.item?.item ? this.simUI.player.getAvailableReforgings(this.item) : [];
 
 		const openItemSelector = (event: Event) => {
 			event.preventDefault();
@@ -78,7 +78,7 @@ export default class BulkItemPicker extends Component {
 			event.preventDefault();
 			if (!this.isEditable()) return;
 
-			if (!!eligibleEnchants.length) {
+			if (hasEligibleEnchants) {
 				this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.Enchants, this.createGearData());
 			}
 		};
@@ -87,7 +87,7 @@ export default class BulkItemPicker extends Component {
 			event.preventDefault();
 			if (!this.isEditable()) return;
 
-			if (!!eligibleReforges.length) {
+			if (hasEligibleReforges.length) {
 				this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.Reforging, this.createGearData());
 			}
 		};
@@ -107,12 +107,7 @@ export default class BulkItemPicker extends Component {
 		this.itemElem.nameElem.addEventListener('click', openItemSelector, { signal: this.signal });
 		this.itemElem.enchantElem.addEventListener('click', openEnchantSelector, { signal: this.signal });
 		this.itemElem.reforgeElem.addEventListener('click', openReforgeSelector, { signal: this.signal });
-		this.itemElem.socketsElem.forEach(
-			(elem, idx) => {
-				elem.addEventListener('click', e => openGemSelector(e, idx));
-			},
-			{ signal: this.signal },
-		);
+		this.itemElem.socketsElem.forEach((elem, idx) => elem.addEventListener('click', e => openGemSelector(e, idx), { signal: this.signal }));
 	}
 
 	private createGearData(): GearData {

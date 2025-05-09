@@ -6,7 +6,7 @@ import { EP_TOOLTIP } from '../../constants/tooltips';
 import { setItemQualityCssClass } from '../../css_utils';
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { Player } from '../../player';
-import { Class, GemColor, ItemQuality, ItemRandomSuffix, ItemSlot, ItemSpec } from '../../proto/common';
+import { Class, GemColor, ItemLevelState, ItemQuality, ItemRandomSuffix, ItemSlot, ItemSpec } from '../../proto/common';
 import { DatabaseFilters, RepFaction, UIEnchant as Enchant, UIGem as Gem, UIItem as Item, UIItem_FactionRestriction } from '../../proto/ui';
 import { ActionId } from '../../proto_utils/action_id';
 import { getUniqueEnchantString } from '../../proto_utils/enchants';
@@ -38,7 +38,7 @@ export interface ItemData<T extends ItemListType> {
 	actionId: ActionId;
 	quality: ItemQuality;
 	phase: number;
-	baseEP: number;
+	ilvl?: number;
 	ignoreEPFilter: boolean;
 	heroic: boolean;
 	onEquip: (eventID: EventID, item: T) => void;
@@ -55,7 +55,7 @@ export interface GearData {
 	changeEvent: TypedEvent<any>;
 }
 
-export type ItemListType = Item | Enchant | Gem | ReforgeData | ItemRandomSuffix;
+export type ItemListType = Item | Enchant | Gem | ReforgeData | ItemRandomSuffix | ItemLevelState;
 enum ItemListSortBy {
 	EP,
 	ILVL,
@@ -162,14 +162,14 @@ export default class ItemList<T extends ItemListType> {
 						<small>{itemLabel}</small>
 					</span>
 					{label === SelectorModalTabs.Items && (
-						<>
-							<label className="source-label">
-								<small>Source</small>
-							</label>
-							<label className="ilvl-label interactive" onclick={sortByIlvl}>
-								<small>ILvl</small>
-							</label>
-						</>
+						<label className="source-label">
+							<small>Source</small>
+						</label>
+					)}
+					{(label === SelectorModalTabs.Items || label === SelectorModalTabs.Upgrades) && (
+						<label className="ilvl-label interactive" onclick={sortByIlvl}>
+							<small>ILvl</small>
+						</label>
 					)}
 					{showEPOptions && (
 						<span className="ep-label interactive" onclick={sortByEP}>
@@ -270,6 +270,9 @@ export default class ItemList<T extends ItemListType> {
 				case SelectorModalTabs.RandomSuffixes:
 					removeButton.textContent = 'Remove Random Suffix';
 					break;
+				case SelectorModalTabs.Upgrades:
+					removeButton.textContent = 'Remove Upgrade';
+					break;
 				case SelectorModalTabs.Gem1:
 				case SelectorModalTabs.Gem2:
 				case SelectorModalTabs.Gem3:
@@ -294,18 +297,19 @@ export default class ItemList<T extends ItemListType> {
 	}
 
 	private getItemIdByItemType(item: ItemListType | null | undefined) {
-		if (!item) return null;
 		switch (this.label) {
 			case SelectorModalTabs.Enchants:
-				return (item as Enchant).effectId;
+				return (item as Enchant)?.effectId;
 			case SelectorModalTabs.Reforging:
-				return (item as ReforgeData).reforge!.id;
+				return (item as ReforgeData)?.reforge!.id;
 			case SelectorModalTabs.Items:
 			case SelectorModalTabs.Gem1:
 			case SelectorModalTabs.Gem2:
 			case SelectorModalTabs.Gem3:
 			case SelectorModalTabs.RandomSuffixes:
-				return (item as Item | Gem | ItemRandomSuffix).id;
+				return (item as Item | Gem | ItemRandomSuffix)?.id;
+			case SelectorModalTabs.Upgrades:
+				return item as ItemLevelState;
 			default:
 				return null;
 		}
@@ -315,7 +319,7 @@ export default class ItemList<T extends ItemListType> {
 		const newEquippedItem = this.gearData.getEquippedItem();
 		const newItem = this.equippedToItemFn(newEquippedItem);
 		const newItemId = this.getItemIdByItemType(newItem);
-		const newEP = newItem ? this.computeEP(newItem) : 0;
+		const newEP = newItem !== undefined && newItem !== null ? this.computeEP(newItem) : 0;
 
 		this.scroller.elementUpdate(item => {
 			const idx = (item as HTMLElement).dataset.idx!;
@@ -327,7 +331,7 @@ export default class ItemList<T extends ItemListType> {
 			const epDeltaElem = item.querySelector<HTMLSpanElement>('.selector-modal-list-item-ep-delta');
 			if (epDeltaElem) {
 				epDeltaElem.textContent = '';
-				if (itemData.item) {
+				if (itemData.item !== null) {
 					const listItemEP = this.computeEP(itemData.item);
 					if (newEP !== listItemEP) {
 						formatDeltaTextElem(epDeltaElem, newEP, listItemEP, 0);
@@ -453,10 +457,10 @@ export default class ItemList<T extends ItemListType> {
 	private createItemElem(item: ItemDataWithIdx<T>): JSX.Element {
 		const itemData = item.data;
 		const itemEP = this.computeEP(itemData.item);
-
 		const equippedItem = this.equippedToItemFn(this.gearData.getEquippedItem());
+		const hasItem = equippedItem !== null && equippedItem !== undefined
 		const equippedItemID = this.getItemIdByItemType(equippedItem);
-		const equippedItemEP = equippedItem ? this.computeEP(equippedItem) : 0;
+		const equippedItemEP = hasItem ? this.computeEP(equippedItem) : 0;
 
 		const labelCellElem = ref<HTMLDivElement>();
 		const nameElem = ref<HTMLLabelElement>();
@@ -473,16 +477,16 @@ export default class ItemList<T extends ItemListType> {
 					<a className="selector-modal-list-item-link" ref={anchorElem} dataset={{ whtticon: 'false' }}>
 						<img className="selector-modal-list-item-icon" ref={iconElem}></img>
 						<label className="selector-modal-list-item-name" ref={nameElem}>
-							{itemData.name}
+							{typeof itemData.name === 'string' ? itemData.name : itemData.name.cloneNode(true)}
 							{itemData.heroic && createHeroicLabel()}
 						</label>
 					</a>
 				</div>
 				{this.label === SelectorModalTabs.Items && (
-					<>
-						<div className="selector-modal-list-item-source-container">{this.getSourceInfo(itemData.item as unknown as Item, this.player.sim)}</div>
-						<div className="selector-modal-list-item-ilvl-container">{(itemData.item as unknown as Item).ilvl}</div>
-					</>
+					<div className="selector-modal-list-item-source-container">{this.getSourceInfo(itemData.item as unknown as Item, this.player.sim)}</div>
+				)}
+				{(this.label === SelectorModalTabs.Items || this.label === SelectorModalTabs.Upgrades) && (
+					<div className="selector-modal-list-item-ilvl-container">{itemData.ilvl || (itemData.item as unknown as Item).ilvl}</div>
 				)}
 				{![ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2].includes(this.slot) && (
 					<div className="selector-modal-list-item-ep">
@@ -491,7 +495,7 @@ export default class ItemList<T extends ItemListType> {
 						</span>
 						<span
 							className="selector-modal-list-item-ep-delta"
-							ref={e => itemData.item && equippedItemEP !== itemEP && formatDeltaTextElem(e, equippedItemEP, itemEP, 0)}
+							ref={e => hasItem && equippedItemEP !== itemEP && formatDeltaTextElem(e, equippedItemEP, itemEP, 0)}
 						/>
 					</div>
 				)}
@@ -500,7 +504,7 @@ export default class ItemList<T extends ItemListType> {
 						<i ref={favoriteIconElem} className="far fa-star fa-xl" />
 					</button>
 				</div>
-				<div ref={compareContainer} className="selector-modal-list-item-compare-container">
+				<div ref={compareContainer} className="selector-modal-list-item-compare-container hide">
 					<button className="selector-modal-list-item-compare btn btn-link p-0" ref={compareButton}>
 						<i className="fas fa-arrow-right-arrow-left fa-xl" />
 					</button>
