@@ -88,7 +88,11 @@ func (moonkin *BalanceDruid) registerNaturesGrace() {
 	}
 }
 
-func (moonkin *BalanceDruid) registerEuphoria() {}
+func (moonkin *BalanceDruid) registerEuphoria() {
+	moonkin.SetSpellEclipseEnergy(druid.DruidSpellWrath, WrathBaseEnergyGain, WrathBaseEnergyGain*2)
+	moonkin.SetSpellEclipseEnergy(druid.DruidSpellStarfire, StarfireBaseEnergyGain, StarfireBaseEnergyGain*2)
+	moonkin.SetSpellEclipseEnergy(druid.DruidSpellStarsurge, StarsurgeBaseEnergyGain, StarsurgeBaseEnergyGain*2)
+}
 
 func (moonkin *BalanceDruid) registerOwlkinFrenzy() {}
 
