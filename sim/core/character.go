@@ -371,23 +371,6 @@ func (character *Character) GetBaseStats() stats.Stats {
 // https://github.com/TheGroxEmpire/TBC_DPS_Warrior_Sim/issues/30
 // TODO "primaryModifiers" could be modelled as a PseudoStat, since they're unit-specific. "secondaryModifiers" apply to a specific set of spells.
 func (character *Character) calculateCritMultiplier(normalCritDamage float64, primaryModifiers float64, secondaryModifiers float64) float64 {
-	// Cata
-	if character.HasMetaGemEquipped(52291) ||
-		character.HasMetaGemEquipped(52297) ||
-		character.HasMetaGemEquipped(68778) ||
-		character.HasMetaGemEquipped(68779) ||
-		character.HasMetaGemEquipped(68780) ||
-		// MOP
-		character.HasMetaGemEquipped(76884) ||
-		character.HasMetaGemEquipped(76885) ||
-		character.HasMetaGemEquipped(76886) ||
-		character.HasMetaGemEquipped(76884) ||
-		character.HasMetaGemEquipped(76888) ||
-		character.HasMetaGemEquipped(97937) ||
-		character.HasMetaGemEquipped(97534) ||
-		character.HasMetaGemEquipped(97306) {
-		primaryModifiers *= 1.03
-	}
 	return 1.0 + (normalCritDamage*primaryModifiers-1.0)*(1.0+secondaryModifiers)
 }
 func (character *Character) CritMultiplier(primaryModifiers float64, secondaryModifiers float64) float64 {
