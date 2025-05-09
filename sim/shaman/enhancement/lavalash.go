@@ -13,7 +13,7 @@ func (enh *EnhancementShaman) getSearingFlamesMultiplier() float64 {
 }
 
 func (enh *EnhancementShaman) registerLavaLashSpell() {
-	damageMultiplier := 2.6
+	damageMultiplier := 3.0
 	if enh.SelfBuffs.ImbueOH == proto.ShamanImbue_FlametongueWeapon {
 		damageMultiplier *= 1.4
 	}

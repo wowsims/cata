@@ -20,6 +20,8 @@ func (shaman *Shaman) ApplyElementalTalents() {
 		Kind:      core.SpellMod_CastTime_Flat,
 		TimeValue: time.Millisecond * -500,
 	})
+
+	//TODO : Might change to multiplicative if updated on beta
 	shaman.AddStaticMod(core.SpellModConfig{
 		ClassMask:  SpellMaskChainLightning | SpellMaskLightningBolt | SpellMaskLightningBoltOverload | SpellMaskChainLightningOverload | SpellMaskLavaBeam | SpellMaskLavaBeamOverload,
 		Kind:       core.SpellMod_DamageDone_Flat,
@@ -115,45 +117,18 @@ func (shaman *Shaman) ApplyElementalTalents() {
 	var triggeringSpell *core.Spell
 	var triggerTime time.Duration
 
-	canTriggerSpells := SpellMaskLightningBolt | SpellMaskChainLightning | SpellMaskLavaBurst | SpellMaskFireNova | SpellMaskEarthShock | SpellMaskFlameShock | SpellMaskFrostShock
-	canConsumeSpells := canTriggerSpells
-	costReductionMod := shaman.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_PowerCost_Pct,
-		ClassMask: canConsumeSpells,
-		IntValue:  -25,
-	})
-
-	damageMod := shaman.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		School:     core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolNature,
-		FloatValue: 0.2,
-	})
-	damageModEarthquake := shaman.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  SpellMaskEarthquake,
-		FloatValue: 0.2,
-	})
+	canConsumeSpells := SpellMaskLightningBolt | SpellMaskChainLightning | SpellMaskLavaBurst | SpellMaskFireNova | SpellMaskShock | SpellMaskElementalBlast | SpellMaskUnleashElements | SpellMaskEarthquake | SpellMaskLavaBeam
+	canTriggerSpells := canConsumeSpells | SpellMaskThunderstorm & ^SpellMaskEarthquake
 
 	maxStacks := int32(2)
 
-	// TODO: verify what procs and what consumes in game
 	clearcastingAura := shaman.RegisterAura(core.Aura{
 		Label:     "Clearcasting",
 		ActionID:  core.ActionID{SpellID: 16246},
 		Duration:  time.Second * 15,
 		MaxStacks: maxStacks,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			costReductionMod.Activate()
-			damageMod.Activate()
-			damageModEarthquake.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			costReductionMod.Deactivate()
-			damageMod.Deactivate()
-			damageModEarthquake.Deactivate()
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if !spell.Flags.Matches(SpellFlagShock|SpellFlagFocusable) || (spell.ClassSpellMask&(SpellMaskOverload|SpellMaskThunderstorm) != 0) {
+			if !spell.Matches(canConsumeSpells) {
 				return
 			}
 			if spell == triggeringSpell && sim.CurrentTime == triggerTime {
@@ -161,21 +136,26 @@ func (shaman *Shaman) ApplyElementalTalents() {
 			}
 			aura.RemoveStack(sim)
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask: canConsumeSpells,
+		IntValue:  -25,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		School:     core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolNature,
+		FloatValue: 0.2,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  SpellMaskEarthquake,
+		FloatValue: 0.2,
 	})
 
-	shaman.RegisterAura(core.Aura{
-		Label:    "Elemental Focus",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.Flags.Matches(SpellFlagShock|SpellFlagFocusable) || (spell.ClassSpellMask&(SpellMaskOverload|SpellMaskUnleashFlame|SpellMaskEarthquake) != 0) {
-				return
-			}
-			if !result.Outcome.Matches(core.OutcomeCrit) {
-				return
-			}
+	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+		Name:           "Elemental Focus",
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeCrit,
+		ClassSpellMask: canTriggerSpells,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			triggeringSpell = spell
 			triggerTime = sim.CurrentTime
 			clearcastingAura.Activate(sim)
@@ -198,7 +178,6 @@ func (shaman *Shaman) ApplyElementalTalents() {
 		Label:           "Lava Surge Proc Aura",
 		ActionIDForProc: core.ActionID{SpellID: 77762},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			//TODO verify proc chance in game
 			if spell.ClassSpellMask != SpellMaskFlameShockDot || !sim.Proc(0.2, "LavaSurge") {
 				return
 			}

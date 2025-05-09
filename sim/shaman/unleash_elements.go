@@ -11,25 +11,12 @@ func (shaman *Shaman) registerUnleashFlame() {
 
 	spellMask := SpellMaskLavaBurst | SpellMaskFlameShock | SpellMaskFireNova | SpellMaskElementalBlast
 
-	unleashFlameMod := shaman.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  spellMask,
-		FloatValue: 0.3,
-	})
-
 	unleashFlameAura := shaman.RegisterAura(core.Aura{
 		Label:    "Unleash Flame",
 		ActionID: core.ActionID{SpellID: 73683},
 		Duration: time.Second * 8,
-
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			unleashFlameMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			unleashFlameMod.Deactivate()
-		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spellMask&spell.ClassSpellMask > 0 && aura.StartedAt() < (sim.CurrentTime-spell.TravelTime()) { // In case unleash element is used during LvB travel time
+			if spellMask&spell.ClassSpellMask > 0 && aura.StartedAt() < (sim.CurrentTime-spell.TravelTime()) { // In case unleash element is used during LvB/EB travel time
 
 				//Unleash flame applies to both direct damage and dot,
 				//As the 2 parts are separated we wait to deactivate the aura
@@ -44,6 +31,10 @@ func (shaman *Shaman) registerUnleashFlame() {
 				sim.AddPendingAction(pa)
 			}
 		},
+	}).AttachSpellMod(core.SpellModConfig{ //TODO : Change this to multiplicative if it changes on beta
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  spellMask,
+		FloatValue: 0.3,
 	})
 
 	shaman.UnleashFlame = shaman.RegisterSpell(core.SpellConfig{
@@ -54,7 +45,7 @@ func (shaman *Shaman) registerUnleashFlame() {
 		ClassSpellMask:   SpellMaskUnleashFlame,
 		Flags:            SpellFlagFocusable | core.SpellFlagPassiveSpell,
 		DamageMultiplier: 1,
-		BonusCoefficient: 0.429,
+		BonusCoefficient: 0.42899999022,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := shaman.CalcAndRollDamageRange(sim, 1.11300003529, 0.17000000179)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
@@ -73,7 +64,7 @@ func (shaman *Shaman) registerUnleashFrost() {
 		Flags:            core.SpellFlagPassiveSpell,
 		CritMultiplier:   shaman.DefaultCritMultiplier(),
 		DamageMultiplier: 1,
-		BonusCoefficient: 0.386,
+		BonusCoefficient: 0.38600000739,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := shaman.CalcAndRollDamageRange(sim, 0.86900001764, 0.15000000596)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
@@ -81,7 +72,6 @@ func (shaman *Shaman) registerUnleashFrost() {
 	})
 }
 
-// TODO 90% weeapon damage per melee
 func (shaman *Shaman) registerUnleashWind() {
 
 	speedMultiplier := 1 + 0.5

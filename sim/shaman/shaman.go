@@ -173,6 +173,8 @@ type Shaman struct {
 	T12Enh2pc   *core.Aura
 	T12Ele4pc   *core.Aura
 	T14Ele4pc   *core.Aura
+	T14Enh4pc   *core.Aura
+	T15Enh2pc   *core.Aura
 }
 
 // Implemented by each Shaman spec.
@@ -194,16 +196,16 @@ func (shaman *Shaman) HasMinorGlyph(glyph proto.ShamanMinorGlyph) bool {
 	return shaman.HasGlyph(int32(glyph))
 }
 
-// func (shaman *Shaman) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-
-// 	if shaman.Talents.UnleashedRage > 0 {
-// 		raidBuffs.UnleashedRage = true
-// 	}
-
-// 	if shaman.Talents.ElementalOath > 0 {
-// 		raidBuffs.ElementalOath = true
-// 	}
-// }
+func (shaman *Shaman) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+	raidBuffs.GraceOfAir = true
+	raidBuffs.BurningWrath = true
+	if shaman.Spec == proto.Spec_SpecElementalShaman {
+		raidBuffs.ElementalOath = true
+	}
+	if shaman.Spec == proto.Spec_SpecEnhancementShaman {
+		raidBuffs.UnleashedRage = true
+	}
+}
 
 func (shaman *Shaman) Initialize() {
 	shaman.registerChainLightningSpell()
@@ -257,7 +259,7 @@ func (shaman *Shaman) Reset(sim *core.Simulation) {
 func (shaman *Shaman) calcDamageStormstrikeCritChance(sim *core.Simulation, target *core.Unit, baseDamage float64, spell *core.Spell) *core.SpellResult {
 	var result *core.SpellResult
 	if target.HasActiveAura("Stormstrike-" + shaman.Label) {
-		critPercentBonus := 25.0
+		critPercentBonus := core.TernaryFloat64(shaman.T14Enh4pc.IsActive(), 40.0, 25.0)
 		spell.BonusCritPercent += critPercentBonus
 		result = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		spell.BonusCritPercent -= critPercentBonus
@@ -274,8 +276,6 @@ func (shaman *Shaman) GetOverloadChance() float64 {
 		masteryPoints := shaman.GetMasteryPoints()
 		overloadChance = 0.16 + masteryPoints*0.02
 	}
-
-	overloadChance = 0
 
 	return overloadChance
 }
@@ -312,19 +312,21 @@ const (
 	SpellMaskUnleashFlame
 	SpellMaskEarthquake
 	SpellMaskFlametongueWeapon
+	SpellMaskWindfuryWeapon
 	SpellMaskFeralSpirit
 	SpellMaskElementalMastery
 	SpellMaskAscendance
 	SpellMaskSpiritwalkersGrace
 	SpellMaskShamanisticRage
 	SpellMaskElementalBlast
+	SpellMaskElementalBlastOverload
 
 	SpellMaskStormstrike = SpellMaskStormstrikeCast | SpellMaskStormstrikeDamage
 	SpellMaskFlameShock  = SpellMaskFlameShockDirect | SpellMaskFlameShockDot
-	SpellMaskFire        = SpellMaskFlameShock | SpellMaskLavaBurst | SpellMaskLavaBurstOverload | SpellMaskLavaLash | SpellMaskFireNova | SpellMaskUnleashFlame
-	SpellMaskNature      = SpellMaskLightningBolt | SpellMaskLightningBoltOverload | SpellMaskChainLightning | SpellMaskChainLightningOverload | SpellMaskEarthShock | SpellMaskThunderstorm | SpellMaskFulmination
-	SpellMaskFrost       = SpellMaskUnleashFrost | SpellMaskFrostShock
-	SpellMaskOverload    = SpellMaskLavaBurstOverload | SpellMaskLightningBoltOverload | SpellMaskChainLightningOverload
+	SpellMaskFire        = SpellMaskFlameShock | SpellMaskLavaBurst | SpellMaskLavaBurstOverload | SpellMaskLavaLash | SpellMaskFireNova | SpellMaskUnleashFlame | SpellMaskLavaBeam | SpellMaskLavaBeamOverload | SpellMaskElementalBlast | SpellMaskElementalBlastOverload
+	SpellMaskNature      = SpellMaskLightningBolt | SpellMaskLightningBoltOverload | SpellMaskChainLightning | SpellMaskChainLightningOverload | SpellMaskEarthShock | SpellMaskThunderstorm | SpellMaskFulmination | SpellMaskElementalBlast | SpellMaskElementalBlastOverload
+	SpellMaskFrost       = SpellMaskUnleashFrost | SpellMaskFrostShock | SpellMaskElementalBlast | SpellMaskElementalBlastOverload
+	SpellMaskOverload    = SpellMaskLavaBurstOverload | SpellMaskLightningBoltOverload | SpellMaskChainLightningOverload | SpellMaskElementalBlastOverload | SpellMaskLavaBeamOverload
 	SpellMaskShock       = SpellMaskFlameShock | SpellMaskEarthShock | SpellMaskFrostShock
 	SpellMaskTotem       = SpellMaskMagmaTotem | SpellMaskSearingTotem | SpellMaskFireElementalTotem | SpellMaskEarthElementalTotem
 )

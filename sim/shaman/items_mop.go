@@ -14,7 +14,7 @@ var ItemSetRegaliaOfTheFirebird = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(_ core.Agent, setBonusAura *core.Aura) {
 			setBonusAura.AttachSpellMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Flat,
+				Kind:       core.SpellMod_DamageDone_Flat, //TODO : Misght change to multiplicative is updated on beta
 				FloatValue: 0.05,
 				ClassMask:  SpellMaskLightningBolt | SpellMaskLightningBoltOverload,
 			})
@@ -74,7 +74,7 @@ var ItemSetRegaliaOfTheWitchDoctor = core.NewItemSet(core.ItemSet{
 				Callback:       core.CallbackOnCastComplete,
 				ClassSpellMask: SpellMaskLavaBurst,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					shaman.Ascendance.CD.Reduce(time.Second * 1)
+					shaman.Ascendance.CD.Reduce(time.Millisecond * 1500) //simc says 1.5s in a hotfix
 					shaman.UpdateMajorCooldowns()
 				},
 			})
@@ -146,10 +146,16 @@ var ItemSetBattlegearOfTheFirebird = core.NewItemSet(core.ItemSet{
 	Name: "Battlegear of the Firebird",
 	Bonuses: map[int32]core.ApplySetBonus{
 		2: func(_ core.Agent, setBonusAura *core.Aura) {
-
+			setBonusAura.AttachSpellMod(core.SpellModConfig{
+				Kind:       core.SpellMod_DamageDone_Flat,
+				ClassMask:  SpellMaskLavaLash,
+				FloatValue: 0.15,
+			})
 		},
-		4: func(_ core.Agent, setBonusAura *core.Aura) {
-
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			shaman.T14Enh4pc = setBonusAura
+			//in shaman.go
 		},
 	},
 })
@@ -160,11 +166,30 @@ var ItemSetBattlegearOfTheFirebird = core.NewItemSet(core.ItemSet{
 var ItemSetBattlegearOfTheWitchDoctor = core.NewItemSet(core.ItemSet{
 	Name: "Battlegear of the Witch Doctor",
 	Bonuses: map[int32]core.ApplySetBonus{
-		2: func(_ core.Agent, setBonusAura *core.Aura) {
-
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
+				Name:           "Battlegear of the Witch Doctor 2P",
+				Callback:       core.CallbackOnSpellHitDealt,
+				Outcome:        core.OutcomeLanded,
+				ClassSpellMask: SpellMaskStormstrikeCast,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					shaman.MaelstromWeaponAura.Activate(sim)
+					shaman.MaelstromWeaponAura.SetStacks(sim, shaman.MaelstromWeaponAura.GetStacks()+2)
+				},
+			})
 		},
-		4: func(_ core.Agent, setBonusAura *core.Aura) {
-
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
+				Name:           "Battlegear of the Witch Doctor 4P",
+				Callback:       core.CallbackOnCastComplete,
+				ClassSpellMask: SpellMaskWindfuryWeapon,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					shaman.FeralSpirit.CD.Reduce(time.Second * 8)
+					shaman.UpdateMajorCooldowns()
+				},
+			})
 		},
 	},
 })
@@ -175,11 +200,81 @@ var ItemSetBattlegearOfTheWitchDoctor = core.NewItemSet(core.ItemSet{
 var ItemSetCelesialHarmonyBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Celestial Harmony Battlegear",
 	Bonuses: map[int32]core.ApplySetBonus{
-		2: func(_ core.Agent, setBonusAura *core.Aura) {
-
+		2: func(agent core.Agent, setBonusAura *core.Aura) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			wfActionId := core.ActionID{SpellID: 8232}
+			ftActionId := core.ActionID{SpellID: 8024}
+			fbActionId := core.ActionID{SpellID: 8033}
+			var mhWindfurySpell *core.Spell
+			var ohWindfurySpell *core.Spell
+			var frostbrandSpell *core.Spell
+			var flametongueSpell *core.Spell
+			shaman.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.ActionID.WithTag(1) == wfActionId.WithTag(1) {
+					mhWindfurySpell = spell
+					return
+				}
+				if spell.ActionID.WithTag(2) == wfActionId.WithTag(2) {
+					ohWindfurySpell = spell
+					return
+				}
+				if spell.ActionID == fbActionId {
+					frostbrandSpell = spell
+					return
+				}
+				if spell.ActionID == ftActionId {
+					flametongueSpell = spell
+					return
+				}
+			})
+			procAura := core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+				Name:       "Celestial Harmony Battlegear 2P Proc",
+				Callback:   core.CallbackOnSpellHitDealt,
+				Outcome:    core.OutcomeLanded,
+				ProcMask:   core.ProcMaskMeleeOrMeleeProc,
+				ICD:        time.Millisecond * 100,
+				ProcChance: 0.1,
+				Duration:   time.Second * 10,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					rand := sim.RandomFloat("Celestial Harmony Battlegear 2P Proc")
+					if rand < 1.0/3.0 {
+						if spell.ProcMask.Matches(core.ProcMaskMeleeMH | core.ProcMaskMeleeProc) {
+							mhWindfurySpell.Cast(sim, result.Target)
+							return
+						}
+						ohWindfurySpell.Cast(sim, result.Target)
+						return
+					}
+					if rand < 2.0/3.0 {
+						flametongueSpell.Cast(sim, result.Target)
+						return
+					}
+					frostbrandSpell.Cast(sim, result.Target)
+				},
+			})
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
+				Name:           "Celestial Harmony Battlegear 2P",
+				Callback:       core.CallbackOnCastComplete,
+				ClassSpellMask: SpellMaskUnleashElements,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					procAura.Activate(sim)
+				},
+			})
 		},
-		4: func(_ core.Agent, setBonusAura *core.Aura) {
-
+		4: func(agent core.Agent, setBonusAura *core.Aura) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			setBonusAura.AttachProcTrigger(core.ProcTrigger{
+				Name:           "Celestial Harmony Battlegear 4P",
+				Callback:       core.CallbackOnPeriodicDamageDealt,
+				ClassSpellMask: SpellMaskFlameShockDot,
+				ProcChance:     0.05,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					sfAura := shaman.GetAura("Searing Flames")
+					sfAura.Activate(sim)
+					sfAura.SetStacks(sim, sfAura.GetStacks()+5)
+					shaman.LavaLash.CD.Reset()
+				},
+			})
 		},
 	},
 })

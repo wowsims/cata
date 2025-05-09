@@ -84,11 +84,8 @@ func (unit *Unit) CancelGCDTimer(sim *Simulation) {
 }
 
 func (unit *Unit) CancelHardcast(sim *Simulation) {
-	unit.hardcastAction.Cancel(sim)
-	unit.hardcastAction = nil
-	unit.Hardcast.Expires = sim.CurrentTime
-	unit.SetGCDTimer(sim, sim.CurrentTime)
-	unit.ReactToEvent(sim)
+	unit.Hardcast.Expires = startingCDTime
+	unit.SetGCDTimer(sim, sim.CurrentTime+unit.ReactionTime)
 }
 
 func (unit *Unit) WaitUntil(sim *Simulation, readyTime time.Duration) {

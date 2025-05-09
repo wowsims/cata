@@ -33,7 +33,7 @@ func (shaman *Shaman) newElementalBlastSpellConfig(isElementalOverload bool) cor
 		ProcMask:       mask,
 		Flags:          flags,
 		MissileSpeed:   40,
-		ClassSpellMask: SpellMaskElementalBlast,
+		ClassSpellMask: core.TernaryInt64(isElementalOverload, SpellMaskElementalBlastOverload, SpellMaskElementalBlast),
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				CastTime: time.Second * 2,

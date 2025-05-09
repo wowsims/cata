@@ -10,7 +10,7 @@ export const PHYSICAL_HIT_RATING_PER_HIT_PERCENT = 340;
 export const SPELL_HIT_RATING_PER_HIT_PERCENT = 340;
 export const DODGE_RATING_PER_DODGE_PERCENT = 885;
 export const PARRY_RATING_PER_PARRY_PERCENT = 885;
-export const MASTERY_RATING_PER_MASTERY_POINT = 0;
+export const MASTERY_RATING_PER_MASTERY_POINT = 600;
 
 // TODO: Adjust for MoP values
 // Mastery Ratings have various increments based on spec.

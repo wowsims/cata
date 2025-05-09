@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/mop/sim/core"
 	"github.com/wowsims/mop/sim/core/proto"
+	"github.com/wowsims/mop/sim/core/stats"
 )
 
 func (shaman *Shaman) ApplyEnhancementTalents() {
@@ -34,15 +35,16 @@ func (shaman *Shaman) ApplyEnhancementTalents() {
 	flurryProcAura := shaman.RegisterAura(core.Aura{
 		Label:     "Flurry Proc",
 		ActionID:  core.ActionID{SpellID: 16278},
-		Duration:  core.NeverExpires,
-		MaxStacks: 3,
+		Duration:  time.Second * 15,
+		MaxStacks: 5,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyMeleeSpeed(sim, 1.15)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyMeleeSpeed(sim, 1/1.15)
 		},
-	})
+	}).AttachStatBuff(stats.HasteRating, shaman.Equipment.Stats()[stats.HasteRating]*1.5)
+
 	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
 		Name:     "Flurry",
 		ProcMask: core.ProcMaskMelee | core.ProcMaskMeleeProc,
@@ -50,7 +52,7 @@ func (shaman *Shaman) ApplyEnhancementTalents() {
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Outcome.Matches(core.OutcomeCrit) {
 				flurryProcAura.Activate(sim)
-				flurryProcAura.SetStacks(sim, 3)
+				flurryProcAura.SetStacks(sim, 5)
 				return
 			}
 
@@ -98,7 +100,7 @@ func (shaman *Shaman) ApplyEnhancementTalents() {
 
 	//TODO fire ele melee also procs this
 	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
-		Name:           "Searing Flames",
+		Name:           "Searing Flames Dummy",
 		Callback:       core.CallbackOnSpellHitDealt,
 		ClassSpellMask: SpellMaskSearingTotem,
 		Outcome:        core.OutcomeLanded,
@@ -124,7 +126,7 @@ func (shaman *Shaman) ApplyEnhancementTalents() {
 		},
 	})
 
-	//Maelstrom Weapon
+	//Maelstr	om Weapon
 	mwAffectedSpells := SpellMaskLightningBolt | SpellMaskChainLightning | SpellMaskEarthShock | SpellMaskElementalBlast
 	mwCastTimemod := shaman.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  mwAffectedSpells,
@@ -159,7 +161,6 @@ func (shaman *Shaman) ApplyEnhancementTalents() {
 		},
 	})
 
-	// TODO: This was 2% per talent point and max of 10% proc in wotlk. Can't find data on proc chance in cata but the talent was reduced to 3 pts. Guessing it is 3/7/10 like other talents
 	dpm := shaman.AutoAttacks.NewPPMManager(10.0, core.ProcMaskMeleeOrMeleeProc)
 
 	// This aura is hidden, just applies stacks of the proc aura.

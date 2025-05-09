@@ -10,20 +10,13 @@ import (
 func (ele *ElementalShaman) registerShamanisticRageSpell() {
 
 	actionID := core.ActionID{SpellID: 30823}
-	srMod := ele.AddDynamicMod(core.SpellModConfig{
-		Kind:     core.SpellMod_PowerCost_Pct,
-		IntValue: -100,
-	})
 	srAura := ele.RegisterAura(core.Aura{
 		Label:    "Shamanistic Rage",
 		ActionID: actionID,
 		Duration: time.Second * 15,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			srMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			srMod.Deactivate()
-		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:     core.SpellMod_PowerCost_Pct,
+		IntValue: -100,
 	})
 
 	spell := ele.RegisterSpell(core.SpellConfig{

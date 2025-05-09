@@ -16,6 +16,7 @@ func (shaman *Shaman) ApplyGlyphs() {
 		})
 	}
 
+	//TODO : Might change to multiplicative ifupdated on beta
 	if shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfChainLightning) {
 		shaman.AddStaticMod(core.SpellModConfig{
 			ClassMask:  SpellMaskChainLightning | SpellMaskChainLightningOverload,
@@ -40,7 +41,6 @@ func (shaman *Shaman) ApplyGlyphs() {
 		})
 	}
 
-	//TODO verify in game
 	if shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfTelluricCurrents) {
 		core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
 			Name:           "Glyph of Telluric Currents",

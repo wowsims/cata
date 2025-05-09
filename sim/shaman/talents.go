@@ -10,11 +10,19 @@ import (
 func (shaman *Shaman) ApplyTalents() {
 
 	//"Hotfix (2013-09-23): Lightning Bolt's damage has been increased by 10%."
-	//Additive with shamanism
+	//TODO : Might change to multiplicative if updated on beta
 	shaman.AddStaticMod(core.SpellModConfig{
 		ClassMask:  SpellMaskLightningBolt | SpellMaskLightningBoltOverload,
 		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: 0.1,
+	})
+	//"Hotfix (2013-09-23): Flametongue Weapon's Flametongue Attack effect now deals 50% more damage."
+	//"Hotfix (2013-09-23): Windfury Weapon's Windfury Attack effect now deals 50% more damage."
+	//TODO : Might change to multiplicative if updated on beta
+	shaman.AddStaticMod(core.SpellModConfig{
+		ClassMask:  SpellMaskFlametongueWeapon | SpellMaskWindfuryWeapon,
+		Kind:       core.SpellMod_DamageDone_Flat,
+		FloatValue: 0.5,
 	})
 
 	shaman.ApplyElementalMastery()
@@ -120,14 +128,19 @@ func (shaman *Shaman) ApplyEchoOfTheElements() {
 
 	var copySpells = map[*core.Spell]*core.Spell{}
 
-	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
-		Name:              "Echo of The Elements Dummy",
-		Callback:          core.CallbackOnSpellHitDealt,
-		SpellFlags:        SpellFlagShamanSpell,
-		SpellFlagsExclude: SpellFlagIsEcho,
-		Outcome:           core.OutcomeLanded,
-		ProcChance:        0.05,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+	shaman.GetOrRegisterAura(core.Aura{
+		Label: "Echo of The Elements Dummy",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.Outcome.Matches(core.OutcomeLanded) || spell.Flags.Matches(SpellFlagIsEcho) || !spell.Flags.Matches(SpellFlagShamanSpell) {
+				return
+			}
+			procChance := core.TernaryFloat64(shaman.Spec == proto.Spec_SpecElementalShaman, 0.06, 0.3)
+			if spell.Matches(SpellMaskElementalBlast | SpellMaskElementalBlastOverload) {
+				procChance = 0.06
+			}
+			if !sim.Proc(procChance, "Echo of The Elements") {
+				return
+			}
 			if copySpells[spell] == nil {
 				copySpells[spell] = spell.Unit.RegisterSpell(core.SpellConfig{
 					ActionID:                 core.ActionID{SpellID: spell.SpellID, Tag: 7},
@@ -158,26 +171,22 @@ func (shaman *Shaman) ApplyUnleashedFury() {
 		return
 	}
 
+	unleashedFuryDDBCHandler := func(sim *core.Simulation, spell *core.Spell, attackTable *core.AttackTable) float64 {
+		if spell.ClassSpellMask&(SpellMaskLightningBolt|SpellMaskLightningBoltOverload) > 0 {
+			return 1.3
+		}
+		if spell.ClassSpellMask&(SpellMaskLavaBurst|SpellMaskLavaBurstOverload) > 0 {
+			return 1.1
+		}
+		return 1.0
+	}
+
 	flametongueDebuffAura := shaman.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return target.GetOrRegisterAura(core.Aura{
 			Label:    "Unleashed Fury FT-" + shaman.Label,
 			ActionID: core.ActionID{SpellID: 118470},
 			Duration: time.Second * 10,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				core.EnableDamageDoneByCaster(DDBC_UnleashedFury, DDBC_Total, shaman.AttackTables[aura.Unit.Index], func(sim *core.Simulation, spell *core.Spell, attackTable *core.AttackTable) float64 {
-					if spell.ClassSpellMask&(SpellMaskLightningBolt|SpellMaskLightningBoltOverload) > 0 {
-						return 1.3
-					}
-					if spell.ClassSpellMask&(SpellMaskLavaBurst|SpellMaskLavaBurstOverload) > 0 {
-						return 1.1
-					}
-					return 1.0
-				})
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				core.DisableDamageDoneByCaster(DDBC_UnleashedFury, shaman.AttackTables[aura.Unit.Index])
-			},
-		})
+		}).AttachDDBC(DDBC_UnleashedFury, DDBC_Total, shaman.AttackTables, unleashedFuryDDBCHandler)
 	})
 
 	windfuryProcAura := core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{

@@ -43,10 +43,11 @@ func (shaman *Shaman) newWindfuryImbueSpell(isMH bool) *core.Spell {
 	}
 
 	spellConfig := core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 8232, Tag: int32(tag)},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    procMask,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagPassiveSpell,
+		ActionID:       core.ActionID{SpellID: 8232, Tag: int32(tag)},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       procMask,
+		ClassSpellMask: SpellMaskWindfuryWeapon,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultCritMultiplier(),
@@ -132,14 +133,16 @@ func (shaman *Shaman) newFlametongueImbueSpell(weapon *core.Item) *core.Spell {
 		ClassSpellMask: SpellMaskFlametongueWeapon,
 		Flags:          core.SpellFlagPassiveSpell,
 
-		DamageMultiplier: 1,
+		DamageMultiplier: weapon.SwingSpeed / 2.6,
 		CritMultiplier:   shaman.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
+		BonusCoefficient: 0.05799999833,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if weapon.SwingSpeed != 0 {
-				damage := weapon.SwingSpeed * (129.9 + 0.07477*spell.SpellPower()/2.4)
-				spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+				scalingDamage := shaman.ClassSpellScaling * 7.75
+				baseDamage := (scalingDamage/77 + scalingDamage/25) / 2
+				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 		},
 	})
@@ -241,13 +244,7 @@ func (shaman *Shaman) FrostbrandDebuffAura(target *core.Unit) *core.Aura {
 		Label:    "Frostbrand Attack-" + shaman.Label,
 		ActionID: core.ActionID{SpellID: 8034},
 		Duration: time.Second * 8,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.EnableDamageDoneByCaster(DDBC_FrostbrandWeapon, DDBC_Total, shaman.AttackTables[aura.Unit.UnitIndex], shaman.frostbrandDDBCHandler)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.DisableDamageDoneByCaster(DDBC_FrostbrandWeapon, shaman.AttackTables[aura.Unit.UnitIndex])
-		},
-	})
+	}).AttachDDBC(DDBC_FrostbrandWeapon, DDBC_Total, shaman.AttackTables, shaman.frostbrandDDBCHandler)
 }
 
 func (shaman *Shaman) newFrostbrandImbueSpell() *core.Spell {
@@ -285,29 +282,22 @@ func (shaman *Shaman) RegisterFrostbrandImbue(procMask core.ProcMask) {
 	dpm := shaman.AutoAttacks.NewPPMManager(9.0, procMask)
 
 	mhSpell := shaman.newFrostbrandImbueSpell()
-	ohSpell := shaman.newFrostbrandImbueSpell()
+	//ohSpell := shaman.newFrostbrandImbueSpell() Is there a difference ?
 
 	fbDebuffAuras := shaman.NewEnemyAuraArray(shaman.FrostbrandDebuffAura)
 
-	aura := shaman.RegisterAura(core.Aura{
-		Label:    "Frostbrand Imbue",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() {
-				return
+	aura := core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+		Name:     "Frostbrand Imbue",
+		Callback: core.CallbackOnSpellHitDealt,
+		Outcome:  core.OutcomeLanded,
+		DPM:      dpm,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.IsMH() {
+				mhSpell.Cast(sim, result.Target)
+			} else {
+				mhSpell.Cast(sim, result.Target)
 			}
-
-			if dpm.Proc(sim, spell.ProcMask, "Frostbrand Weapon") {
-				if spell.IsMH() {
-					mhSpell.Cast(sim, result.Target)
-				} else {
-					ohSpell.Cast(sim, result.Target)
-				}
-				fbDebuffAuras.Get(result.Target).Activate(sim)
-			}
+			fbDebuffAuras.Get(result.Target).Activate(sim)
 		},
 	})
 
