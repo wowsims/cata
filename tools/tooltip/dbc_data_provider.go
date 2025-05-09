@@ -243,6 +243,40 @@ func (d DBCTooltipDataProvider) GetEffectScaledValue(spellId int64, effectIdx in
 		}
 	}
 
+	shouldScale := false
+	switch effect.EffectType {
+	case dbc.E_SCHOOL_DAMAGE:
+		shouldScale = true
+
+	case dbc.E_APPLY_AURA:
+		fallthrough
+	case dbc.E_APPLY_AREA_AURA_ENEMY:
+		fallthrough
+	case dbc.E_APPLY_AREA_AURA_FRIEND:
+		fallthrough
+	case dbc.E_APPLY_AREA_AURA_PARTY:
+		fallthrough
+	case dbc.E_APPLY_AREA_AURA_OWNER:
+		fallthrough
+	case dbc.E_APPLY_AREA_AURA_RAID:
+		fallthrough
+	case dbc.E_APPLY_AREA_AURA_PARTY_NONRANDOM:
+		fallthrough
+	case dbc.E_APPLY_AREA_AURA_PET:
+		fallthrough
+	case dbc.E_APPLY_AURA_ON_PET:
+		switch effect.EffectAura {
+		case dbc.A_PERIODIC_DAMAGE:
+			fallthrough
+		case dbc.A_PERIODIC_HEAL:
+			shouldScale = true
+		}
+	}
+
+	if !shouldScale {
+		return baseDamage
+	}
+
 	if effect.BonusCoefficientFromAP > 0 {
 		baseDamage += d.GetAttackPower() * effect.BonusCoefficientFromAP
 	}
