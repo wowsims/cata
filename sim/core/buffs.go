@@ -194,6 +194,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 
 	registerManaTideTotemCD(agent, raidBuffs.ManaTideTotemCount)
 	registerSkullBannerCD(agent, raidBuffs.SkullBannerCount)
+	registerStormLashCD(agent, raidBuffs.StormlashTotemCount)
 
 	// Individual cooldowns and major buffs
 	if len(char.Env.Raid.AllPlayerUnits)-char.Env.Raid.NumTargetDummies == 1 {
@@ -1143,4 +1144,152 @@ func ManaTideTotemAura(character *Character, actionTag int32) *Aura {
 		ActionID: actionID,
 		Duration: ManaTideTotemDuration,
 	}).AttachStatDependency(dep)
+}
+
+const StormLashAuraTag = "StormLash"
+const StormLashDuration = time.Second * 10
+const StormLashCD = time.Minute * 5
+
+func registerStormLashCD(agent Agent, numStormLashes int32) {
+	if numStormLashes == 0 {
+		return
+	}
+
+	sbAura := StormLashAura(agent.GetCharacter(), -1)
+
+	registerExternalConsecutiveCDApproximation(
+		agent,
+		externalConsecutiveCDApproximation{
+			ActionID:         ActionID{SpellID: 120668, Tag: -1},
+			AuraTag:          StormLashAuraTag,
+			CooldownPriority: CooldownPriorityDefault,
+			AuraDuration:     StormLashDuration,
+			AuraCD:           StormLashCD,
+			Type:             CooldownTypeDPS,
+
+			ShouldActivate: func(sim *Simulation, character *Character) bool {
+				return true
+			},
+			AddAura: func(sim *Simulation, character *Character) {
+				sbAura.Activate(sim)
+			},
+		},
+		numStormLashes)
+}
+
+var StormLashSpellExceptions = map[int32]float64{
+	1120:   2.0, // Drain Soul
+	45284:  2.0, // Lightnign Bolt
+	51505:  2.0, // Lava Burst
+	103103: 2.0, // Malefic Grasp
+	124468: 1.0, // Mind Flay
+}
+
+func StormLashAura(character *Character, actionTag int32) *Aura {
+	for _, pet := range character.Pets {
+		if !pet.IsGuardian() {
+			StormLashAura(&pet.Character, actionTag)
+		}
+	}
+
+	damage := 0.0
+
+	stormlashSpell := character.RegisterSpell(SpellConfig{
+		ActionID:    ActionID{SpellID: 120687, Tag: actionTag},
+		Flags:       SpellFlagNoOnCastComplete | SpellFlagPassiveSpell,
+		SpellSchool: SpellSchoolNature,
+		ProcMask:    ProcMaskEmpty,
+
+		DamageMultiplier: 1,
+		CritMultiplier:   1,
+
+		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
+			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+		},
+	})
+
+	getStormLashSpellOverride := func(spell *Spell) float64 {
+		return StormLashSpellExceptions[spell.ActionID.SpellID]
+	}
+
+	handler := func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+		if spell.ActionID.SpellID == 120687 || !aura.Icd.IsReady(sim) || !sim.Proc(0.5, "Stormlash") || !result.Landed() || !spell.ProcMask.Matches(ProcMaskDirect|ProcMaskSpecial) {
+			return
+		}
+
+		baseMultiplierOverride := getStormLashSpellOverride(spell)
+		ap := spell.Unit.GetStat(stats.AttackPower)
+		sp := spell.Unit.GetStat(stats.SpellPower)
+
+		baseDamage := max(ap*0.2, sp*0.3)
+		baseMultiplier := 2.0
+		speedMultiplier := 1.0
+		if baseMultiplierOverride != 0 {
+			baseMultiplier = baseMultiplier * baseMultiplierOverride
+		}
+		if spell.Unit.Type == PetUnit {
+			baseMultiplier *= 0.2
+		}
+
+		if spell.ProcMask.Matches(ProcMaskWhiteHit) {
+			swingSpeed := 0.0
+			if spell.IsOH() {
+				baseMultiplier *= 0.2
+				oh := spell.Unit.AutoAttacks.OH()
+				if oh != nil {
+					swingSpeed = spell.Unit.AutoAttacks.OH().SwingSpeed
+				}
+			} else {
+				baseMultiplier *= 0.4
+				mh := spell.Unit.AutoAttacks.MH()
+				if mh != nil {
+					swingSpeed = spell.Unit.AutoAttacks.MH().SwingSpeed
+				}
+			}
+			speedMultiplier = swingSpeed / 2.6
+		} else {
+			speedMultiplier = max(spell.DefaultCast.CastTime.Seconds(), 1.5) / 1.5
+		}
+
+		avg := baseDamage * baseMultiplier * speedMultiplier
+		min, max := ApplyVarianceMinMax(avg, 0.30)
+		damage = sim.RollWithLabel(min, max, StormLashAuraTag)
+
+		if sim.Log != nil {
+			var chosenStat = Ternary(ap > sp, stats.AttackPower, stats.SpellPower)
+			var statValue = Ternary(chosenStat == stats.AttackPower, ap, sp)
+
+			character.Log(sim, "[DEBUG] Damage portion for Stormlash procced by %s: Stat=%s, StatValue=%0.2f, BaseDamage=%0.2f, BaseMultiplier=%0.2f, SpeedMultiplier=%0.2f, PreOutcomeDamageAvg=%0.2f, PreOutcomeDamageMin=%0.2f, PreOutcomeDamageMax=%0.2f, PreOutcomeDamageActual=%0.2f",
+				spell.ActionID, chosenStat.StatName(), statValue, baseDamage, baseMultiplier, speedMultiplier, avg, min, max, damage)
+		}
+		stormlashSpell.Cast(sim, result.Target)
+		aura.Icd.Use(sim)
+	}
+
+	return character.RegisterAura(Aura{
+		Label:    "Stormlash Totem",
+		Tag:      StormLashAuraTag,
+		ActionID: ActionID{SpellID: 120668, Tag: actionTag},
+		Duration: StormLashDuration,
+		Icd: &Cooldown{
+			Timer:    character.NewTimer(),
+			Duration: time.Millisecond * 100,
+		},
+		OnGain: func(aura *Aura, sim *Simulation) {
+			for _, pet := range character.Pets {
+				if pet.IsEnabled() && !pet.IsGuardian() {
+					pet.GetAura(aura.Label).Activate(sim)
+				}
+			}
+		},
+		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+			handler(aura, sim, spell, result)
+		},
+		OnPeriodicDamageDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+			isValidDot := getStormLashSpellOverride(spell) != 0
+			if isValidDot {
+				handler(aura, sim, spell, result)
+			}
+		},
+	})
 }

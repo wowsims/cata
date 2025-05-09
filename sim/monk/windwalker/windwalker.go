@@ -7,6 +7,13 @@ import (
 	"github.com/wowsims/mop/sim/monk"
 )
 
+// Damage Done By Caster setup
+const (
+	DDBC_RisingSunKick int = iota
+
+	DDBC_Total
+)
+
 func RegisterWindwalkerMonk() {
 	core.RegisterAgentFactory(
 		proto.Player_WindwalkerMonk{},

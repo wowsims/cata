@@ -373,6 +373,13 @@ export class ActionId {
 					name += ` (self)`;
 				}
 				break;
+			case 'Stormlash':
+				if (tag === -1) {
+					name += ' (raid)';
+				} else {
+					name += ` (self)`;
+				}
+				break;
 			case 'Envenom':
 			case 'Eviscerate':
 			case 'Expose Armor':
