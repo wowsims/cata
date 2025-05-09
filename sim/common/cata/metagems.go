@@ -49,13 +49,13 @@ func init() {
 	})
 
 	// Chaotic Shadowspirit Diamond
-	core.NewItemEffect(52291, core.ApplyCriticalDamageEffect)
+	core.NewItemEffect(52291, core.ApplyMetaGemCriticalDamageEffect)
 	// Revitalizing Shadowspirit Diamond
-	core.NewItemEffect(52297, core.ApplyCriticalDamageEffect)
+	core.NewItemEffect(52297, core.ApplyMetaGemCriticalDamageEffect)
 	// Agile Shadowspirit Diamond
-	core.NewItemEffect(68778, core.ApplyCriticalDamageEffect)
+	core.NewItemEffect(68778, core.ApplyMetaGemCriticalDamageEffect)
 	// Reverberating Shadowspirit Diamond
-	core.NewItemEffect(68779, core.ApplyCriticalDamageEffect)
+	core.NewItemEffect(68779, core.ApplyMetaGemCriticalDamageEffect)
 	// Burning Shadowspirit Diamond
-	core.NewItemEffect(68780, core.ApplyCriticalDamageEffect)
+	core.NewItemEffect(68780, core.ApplyMetaGemCriticalDamageEffect)
 }
