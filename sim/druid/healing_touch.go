@@ -30,6 +30,7 @@ func (druid *Druid) registerHealingTouchSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// This is a dummy spell that doesn't actually heal
 			// It just triggers Dream of Cenarius if the talent is selected
+			spell.CalcAndDealHealing(sim, &druid.Unit, 0, spell.OutcomeHealing)
 		},
 	})
 }
