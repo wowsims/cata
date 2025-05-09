@@ -1217,15 +1217,15 @@ func StormLashAura(character *Character, actionTag int32) *Aura {
 			return
 		}
 
-		baseMultiplierOverride := getStormLashSpellOverride(spell)
+		baseMultiplierExtension := getStormLashSpellOverride(spell)
 		ap := spell.Unit.GetStat(stats.AttackPower)
 		sp := spell.Unit.GetStat(stats.SpellPower)
 
 		baseDamage := max(ap*0.2, sp*0.3)
 		baseMultiplier := 2.0
 		speedMultiplier := 1.0
-		if baseMultiplierOverride != 0 {
-			baseMultiplier = baseMultiplier * baseMultiplierOverride
+		if baseMultiplierExtension != 0 {
+			baseMultiplier = baseMultiplier * baseMultiplierExtension
 		}
 		if spell.Unit.Type == PetUnit {
 			baseMultiplier *= 0.2
