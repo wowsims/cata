@@ -1,5 +1,5 @@
 import { ArmorType, Class, ItemSlot, Profession, PseudoStat, Race, RangedWeaponType, Spec, Stat, WeaponType } from '../proto/common';
-import { ResourceType } from '../proto/spell';
+import { ResourceType, SecondaryResourceType } from '../proto/spell';
 import { DungeonDifficulty, RaidFilterOption, RepFaction, RepLevel, SourceFilterOption, StatCapType } from '../proto/ui';
 
 export const armorTypeNames: Map<ArmorType, string> = new Map([
@@ -212,7 +212,7 @@ export const resourceNames: Map<ResourceType, string> = new Map([
 	[ResourceType.ResourceTypeDeathRune, 'Death Rune'],
 	[ResourceType.ResourceTypeSolarEnergy, 'Solar Energy'],
 	[ResourceType.ResourceTypeLunarEnergy, 'Lunar Energy'],
-	[ResourceType.ResourceTypeHolyPower, 'Holy Power'],
+	[ResourceType.ResourceTypeGenericResource, 'Generic Resource'],
 ]);
 
 export const resourceColors: Map<ResourceType, string> = new Map([
@@ -231,16 +231,23 @@ export const resourceColors: Map<ResourceType, string> = new Map([
 	[ResourceType.ResourceTypeDeathRune, '#8b008b'],
 	[ResourceType.ResourceTypeSolarEnergy, '#d2952b'],
 	[ResourceType.ResourceTypeLunarEnergy, '#2c4f8f'],
-	[ResourceType.ResourceTypeHolyPower, '#ffa07b'],
+	[ResourceType.ResourceTypeGenericResource, '#ffffff'],
 ]);
 
-export function stringToResourceType(str: string): ResourceType {
+export function stringToResourceType(str: string): [ResourceType, SecondaryResourceType | undefined] {
 	for (const [key, val] of resourceNames) {
 		if (val.toLowerCase() == str.toLowerCase()) {
-			return key;
+			return [key, undefined];
 		}
 	}
-	return ResourceType.ResourceTypeNone;
+
+	for (const val of Object.keys(SecondaryResourceType).filter(key=> isNaN(Number(key)))) {
+		if (val.toLowerCase() == str.toLowerCase()) {
+			return [ResourceType.ResourceTypeGenericResource, (<any>SecondaryResourceType)[val]];
+		}
+	}
+
+	return [ResourceType.ResourceTypeNone, undefined];
 }
 
 export const sourceNames: Map<SourceFilterOption, string> = new Map([

@@ -873,4 +873,3 @@ enum LogLevel {
 
 	Undefined = -1;
 }
-

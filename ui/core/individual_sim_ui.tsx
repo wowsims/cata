@@ -189,6 +189,8 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 	raidSimPresets: Array<RaidSimPreset<SpecType>>;
 }
 
+
+
 export function registerSpecConfig<SpecType extends Spec>(spec: SpecType, config: IndividualSimUIConfig<SpecType>): IndividualSimUIConfig<SpecType> {
 	registerPlayerConfig(spec, config);
 	return config;
