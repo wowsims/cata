@@ -174,6 +174,16 @@ func (moonkin *BalanceDruid) RegisterEclipseEnergyGainAura() {
 				}
 			}
 		},
+		OnPeriodicHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			// Astral Communion handling
+			if !spell.Matches(druid.DruidSpellAstralCommunion) {
+				if moonkin.CanGainEnergy(SolarEnergy) {
+					moonkin.AddEclipseEnergy(25, SolarEnergy, sim, solarMetric, spell)
+				} else {
+					moonkin.AddEclipseEnergy(25, LunarEnergy, sim, lunarMetric, spell)
+				}
+			}
+		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// chekc if trigger is supposed to handle spell hit, then clear
 			if moonkin.eclipseTrigger != nil && moonkin.eclipseTrigger(spell) {

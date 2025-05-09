@@ -68,8 +68,14 @@ func (moonkin *BalanceDruid) GetDruid() *druid.Druid {
 
 func (moonkin *BalanceDruid) Initialize() {
 	moonkin.Druid.Initialize()
+
+	moonkin.EnableEclipseBar()
+	moonkin.RegisterEclipseAuras()
+	moonkin.RegisterEclipseEnergyGainAura()
+
 	moonkin.RegisterBalancePassives()
 	moonkin.RegisterBalanceSpells()
+	moonkin.ApplyBalanceTalents()
 }
 
 func (moonkin *BalanceDruid) RegisterBalanceSpells() {
@@ -82,6 +88,7 @@ func (moonkin *BalanceDruid) RegisterBalanceSpells() {
 	moonkin.registerStarfireSpell()
 	moonkin.registerStarsurgeSpell()
 	moonkin.registerStarfallSpell()
+	moonkin.registerAstralCommunionSpell()
 }
 
 func (moonkin *BalanceDruid) ApplyTalents() {

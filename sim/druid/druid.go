@@ -128,6 +128,7 @@ const (
 	DruidSpellFearieFire
 	DruidSpellHurricane
 	DruidSpellAstralStorm
+	DruidSpellAstralCommunion
 	DruidSpellInnervate
 	DruidSpellMangleBear
 	DruidSpellMangleCat
@@ -248,7 +249,7 @@ func (druid *Druid) Initialize() {
 	// druid.registerFaerieFireSpell()
 	// druid.registerRebirthSpell()
 	// druid.registerInnervateCD()
-	druid.registerTranquilityCD()
+	//druid.registerTranquilityCD()
 	druid.applyOmenOfClarity()
 }
 
