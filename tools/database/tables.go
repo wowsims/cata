@@ -527,8 +527,11 @@ func LoadAndWriteRandomPropAllocations(dbHelper *DBHelper, inputsDir string) (ma
 
 func ScanSpellEffect(rows *sql.Rows) (dbc.SpellEffect, error) {
 	var raw dbc.SpellEffect
+	raw.EffectMinRange = []float64{0, 0}
+	raw.EffectMaxRange = []float64{0, 0}
+
 	// Temporary strings to hold the concatenated JSON for grouped fields.
-	var miscValuesStr, radiusIndicesStr, spellClassMasksStr, implicitTargetsStr string
+	var miscValuesStr, spellClassMasksStr, implicitTargetsStr string
 	err := rows.Scan(
 		&raw.ID,
 		&raw.DifficultyID,
@@ -556,11 +559,14 @@ func ScanSpellEffect(rows *sql.Rows) (dbc.SpellEffect, error) {
 		&raw.ResourceCoefficient,
 		&raw.GroupSizeBasePointsCoefficient,
 		&miscValuesStr,
-		&radiusIndicesStr,
 		&spellClassMasksStr,
 		&implicitTargetsStr,
 		&raw.SpellID,
 		&raw.ScalingType,
+		&raw.EffectMinRange[0],
+		&raw.EffectMaxRange[0],
+		&raw.EffectMinRange[1],
+		&raw.EffectMaxRange[1],
 	)
 	if err != nil {
 		return raw, err
@@ -569,10 +575,6 @@ func ScanSpellEffect(rows *sql.Rows) (dbc.SpellEffect, error) {
 	raw.EffectMiscValues, err = parseIntArrayField(miscValuesStr, 2)
 	if err != nil {
 		return raw, fmt.Errorf("error parsing EffectMiscValues: %w", err)
-	}
-	raw.EffectRadiusIndices, err = parseIntArrayField(radiusIndicesStr, 2)
-	if err != nil {
-		return raw, fmt.Errorf("error parsing EffectRadiusIndices: %w", err)
 	}
 	raw.EffectSpellClassMasks, err = parseIntArrayField(spellClassMasksStr, 4)
 	if err != nil {
@@ -615,13 +617,18 @@ func LoadAndWriteRawSpellEffects(dbHelper *DBHelper, inputsDir string) (map[int]
 		se.ResourceCoefficient,
 		se.GroupSizeBasePointsCoefficient,
 		se.EffectMiscValue,
-		se.EffectRadiusIndex,
 		se.EffectSpellClassMask,
 		se.ImplicitTarget,
 		se.SpellID,
-		COALESCE(ss.Class, 0)
+		COALESCE(ss.Class, 0),
+		COALESCE(sr1.RadiusMin, 0),
+		COALESCE(sr1.RadiusMax, 0),
+		COALESCE(sr2.RadiusMin, 0),
+		COALESCE(sr2.RadiusMax, 0)
 	FROM SpellEffect se
 	LEFT JOIN SpellScaling ss ON se.SpellID = ss.SpellID
+	LEFT JOIN SpellRadius sr1 ON sr1.ID = se.EffectRadiusIndex_0
+	LEFT JOIN SpellRadius sr2 ON sr2.ID = se.EffectRadiusIndex_1
 	`
 	items, err := LoadRows(dbHelper.db, query, ScanSpellEffect)
 	if err != nil {
@@ -1052,6 +1059,8 @@ LEFT JOIN SpellName sn ON sn.ID = sm.SpellID;
 	return iconsByID, nil
 }
 
+var iconsMap, _ = LoadArtTexturePaths("./tools/DB2ToSqlite/listfile.csv")
+
 func ScanSpells(rows *sql.Rows) (dbc.Spell, error) {
 	var spell dbc.Spell
 
@@ -1061,6 +1070,7 @@ func ScanSpells(rows *sql.Rows) (dbc.Spell, error) {
 	var stringAuraIFlags string            //2
 	var stringChannelInterruptFlags string // 2
 	var stringShapeShift string            //2
+	var iconId int                         //
 
 	err := rows.Scan(
 		&spell.NameLang,
@@ -1078,7 +1088,8 @@ func ScanSpells(rows *sql.Rows) (dbc.Spell, error) {
 		&spell.MaxPassiveAuraLevel,
 		&spell.Cooldown,
 		&spell.GCD,
-		&spell.RangeIndex,
+		&spell.MinRange,
+		&spell.MaxRange,
 		&stringAttr,
 		&spell.CategoryFlags,
 		&spell.MaxCharges,
@@ -1090,7 +1101,7 @@ func ScanSpells(rows *sql.Rows) (dbc.Spell, error) {
 		&spell.ProcCharges,
 		&stringProcType,
 		&spell.ProcCategoryRecovery,
-		&spell.SpellProcsPerMinuteID,
+		&spell.SpellProcsPerMinute,
 		&spell.EquippedItemClass,
 		&spell.EquippedItemInvTypes,
 		&spell.EquippedItemSubclass,
@@ -1100,6 +1111,11 @@ func ScanSpells(rows *sql.Rows) (dbc.Spell, error) {
 		&stringAuraIFlags,
 		&stringChannelInterruptFlags,
 		&stringShapeShift,
+		&spell.Description,
+		&spell.Variables,
+		&spell.MaxCumulativeStacks,
+		&spell.MaxTargets,
+		&iconId,
 	)
 	if err != nil {
 		return spell, fmt.Errorf("scanning spell data: %w", err)
@@ -1131,12 +1147,13 @@ func ScanSpells(rows *sql.Rows) (dbc.Spell, error) {
 		return spell, fmt.Errorf("parsing stringShapeShift args for spell %d (%s): %w", spell.ID, stringShapeShift, err)
 	}
 
+	spell.IconPath = iconsMap[iconId]
 	return spell, nil
 }
 
 func LoadAndWriteSpells(dbHelper *DBHelper, inputsDir string) ([]dbc.Spell, error) {
 	query := `
-		SELECT DISTINCT
+	SELECT DISTINCT
 		sn.Name_lang,
 		sn.ID,
 		sm.SchoolMask,
@@ -1152,7 +1169,8 @@ func LoadAndWriteSpells(dbHelper *DBHelper, inputsDir string) ([]dbc.Spell, erro
 		COALESCE(sl.MaxPassiveAuraLevel, 0),
 		COALESCE(sc.RecoveryTime, 0),
 		COALESCE(sc.StartRecoveryTime, 0),
-		COALESCE(sm.RangeIndex, 0),
+		COALESCE(sr.RangeMin_0, 0.0),
+		COALESCE(sr.RangeMax_0, 0.0),
 		COALESCE(sm."Attributes", ""),
 		COALESCE(ssc.Flags, 0),
 		COALESCE(ssc.MaxCharges, 0),
@@ -1164,7 +1182,7 @@ func LoadAndWriteSpells(dbHelper *DBHelper, inputsDir string) ([]dbc.Spell, erro
 		COALESCE(sao.ProcCharges,0),
 		COALESCE(sao.ProcTypeMask, ""),
 		COALESCE(sao.ProcCategoryRecovery, 0),
-		COALESCE(sao.SpellProcsPerMinuteID, 0),
+		COALESCE(spm.BaseProcRate, 0),
 		COALESCE(sei.EquippedItemClass, 0),
 		COALESCE(sei.EquippedItemInvTypes, 0),
 		COALESCE(sei.EquippedItemSubclass,0),
@@ -1173,7 +1191,12 @@ func LoadAndWriteSpells(dbHelper *DBHelper, inputsDir string) ([]dbc.Spell, erro
 		COALESCE(sco.SpellClassSet, 0),
 		COALESCE(si.AuraInterruptFlags, ""),
 		COALESCE(si.ChannelInterruptFlags, ""),
-		COALESCE(ssp.ShapeshiftMask, "")
+		COALESCE(ssp.ShapeshiftMask, ""),
+		COALESCE(s.Description_lang, ""),
+		COALESCE(sdv.Variables, ""),
+		COALESCE(sao.CumulativeAura, 0),
+		COALESCE(str.MaxTargets, 0),
+		COALESCE(sm.SpellIconFileDataID, 0)
 		FROM Spell s
 		LEFT JOIN SpellName sn ON s.ID = sn.ID
 		LEFT JOIN SpellEffect se ON s.ID = se.SpellID
@@ -1191,6 +1214,11 @@ func LoadAndWriteSpells(dbHelper *DBHelper, inputsDir string) ([]dbc.Spell, erro
 		LEFT JOIN SpellAuraOptions sao ON sao.SpellID = s.ID
 		LEFT JOIN SpellClassOptions sco ON s.ID = sco.SpellID
 		LEFT JOIN SpellShapeshift ssp ON ssp.SpellID = s.ID
+		LEFT JOIN SpellXDescriptionVariables sxd ON s.ID = sxd.SpellID
+		LEFT JOIN SpellDescriptionVariables sdv ON sdv.ID = sxd.SpellDescriptionVariablesID
+		LEFT JOIN SpellTargetRestrictions str ON s.ID = str.SpellID
+		LEFT JOIN SpellRange sr ON sr.ID = sm.RangeIndex
+		LEFT JOIN SpellProcsPerMinute spm ON spm.ID = sao.SpellProcsPerMinuteID
 		WHERE sco.SpellClassSet is not null
 		GROUP BY s.ID
 `
