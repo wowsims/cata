@@ -45,13 +45,6 @@ func NewGuardianDruid(character *core.Character, options *proto.Player) *Guardia
 		AutoSwingMelee: true,
 	})
 
-	healingModel := options.HealingModel
-	if healingModel != nil {
-		if healingModel.InspirationUptime > 0.0 {
-			core.ApplyInspiration(&bear.Unit, healingModel.InspirationUptime)
-		}
-	}
-
 	bear.RegisterBearFormAura()
 
 	return bear

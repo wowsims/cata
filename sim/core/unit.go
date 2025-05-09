@@ -73,9 +73,6 @@ type Unit struct {
 	moveSpell               *Spell
 	movementAction          *MovementAction
 
-	// How much uptime of Dark Intent the unit will have
-	DarkIntentUptimePercent float64
-
 	// Environment in which this Unit exists. This will be nil until after the
 	// construction phase.
 	Env *Environment

@@ -169,6 +169,7 @@ abstract class BaseGear {
  * This is an immutable type.
  */
 export class Gear extends BaseGear {
+
 	constructor(gear: Partial<InternalGear>) {
 		super(gear);
 	}
@@ -234,6 +235,20 @@ export class Gear extends BaseGear {
 			yellow: gems.filter(gem => gemMatchesSocket(gem, GemColor.GemColorYellow)).length,
 			blue: gems.filter(gem => gemMatchesSocket(gem, GemColor.GemColorBlue)).length,
 		};
+	}
+
+	withChallengeMode(enabled: boolean): Gear {
+		let curGear: Gear = this;
+
+		for (const slot of this.getItemSlots()) {
+			const item = this.getEquippedItem(slot);
+
+			if (item) {
+				curGear = curGear.withEquippedItem(slot, item.withChallengeMode(enabled), true);
+			}
+		}
+
+		return curGear;
 	}
 
 	// Returns true if this gear set has a meta gem AND the other gems meet the meta's conditions.

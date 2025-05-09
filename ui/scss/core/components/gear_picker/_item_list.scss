@@ -132,6 +132,8 @@
 	.selector-modal-list-item-link {
 		display: flex;
 		align-items: center;
+		flex-grow: 1;
+		flex-shrink: 1;
 	}
 
 	.selector-modal-list-label-cell {
@@ -183,5 +185,15 @@
 	.selector-modal-list-item-ep-delta {
 		margin-left: var(--spacer-1);
 		font-size: 0.8rem;
+	}
+}
+
+/***
+ * Tab Overrides
+ */
+
+#gear-picker-selector-modal-upgrades {
+	.selector-modal-list-item-name {
+		display: flex;
 	}
 }
