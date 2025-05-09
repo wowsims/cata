@@ -14,35 +14,35 @@ import (
 )
 
 type TooltipDataProvider interface {
-	IsMaleGender() bool
-	GetEffectBaseDamage(spellId int64, effectIdx int64) float64
-	GetSpellRange(spellId int64) float64
-	GetStacks(spellId int64) int64                             // Should return SpellAuraOptions ProcCharges or CumulativeAura
-	GetEffectBaseValue(spellId int64, effectIdx int64) float64 // basePoints + ?
-	GetEffectRadius(spellId int64, effectIdx int64) float64
-	GetEffectPeriod(spellId int64, effectIdx int64) time.Duration
-	GetSpellDuration(spellId int64) time.Duration
-	GetEffectMaxTargets(spellId int64, effectIdx int64) int64
-	GetSpellMaxTargets(spellId int64) int64
-	HasAura(auraId int64) bool
-	HasPassive(auraId int64) bool
-	KnowsSpell(spellId int64) bool
-	GetSpellPower() float64
 	GetAttackPower() float64
-	GetSpellDescription(spellId int64) string
 	GetDescriptionVariableString(spellId int64) string
-	GetPlayerLevel() float64
-	GetSpellName(spellid int64) string
+	GetEffectAmplitude(spellId int64, effectIdx int64) float64
+	GetEffectScaledValue(spellId int64, effectIdx int64) float64
+	GetEffectBaseValue(spellId int64, effectIdx int64) float64 // basePoints + ?
+	GetEffectChainAmplitude(spellId int64, effectidx int64) float64
+	GetEffectMaxTargets(spellId int64, effectIdx int64) int64
+	GetEffectPeriod(spellId int64, effectIdx int64) time.Duration
+	GetEffectPointsPerResource(spellId int64, effectIdx int64) float64
+	GetEffectRadius(spellId int64, effectIdx int64) float64
 	GetMainHandWeapon() *core.Weapon
 	GetOffHandWeapon() *core.Weapon
-	GetSpellIcon(spellId int64) string
+	GetPlayerLevel() float64
 	GetSpecNum() int64 // The spec index for the class. Basically left to right in the talent window. i.E. Balance = 0, Guardian = 1, Feral = 2, Restoration = 4
-	GetProcChance(spellId int64) float64
-	GetEffectPointsPerResource(spellId int64, effectIdx int64) float64
-	GetEffectAmplitude(spellId int64, effectIdx int64) float64
-	GetEffectChainAmplitude(spellId int64, effectidx int64) float64
-	GetProcCooldown(spellId int64) time.Duration
-	GetPPM(spellId int64) float64
+	GetSpellDescription(spellId int64) string
+	GetSpellDuration(spellId int64) time.Duration
+	GetSpellIcon(spellId int64) string
+	GetSpellMaxTargets(spellId int64) int64
+	GetSpellName(spellid int64) string
+	GetSpellPower() float64
+	GetSpellPPM(spellId int64) float64
+	GetSpellProcChance(spellId int64) float64
+	GetSpellProcCooldown(spellId int64) time.Duration
+	GetSpellRange(spellId int64) float64
+	GetSpellStacks(spellId int64) int64 // Should return SpellAuraOptions ProcCharges or CumulativeAura
+	HasAura(auraId int64) bool
+	HasPassive(auraId int64) bool
+	IsMaleGender() bool
+	KnowsSpell(spellId int64) bool
 }
 
 // ****************************
@@ -632,11 +632,16 @@ func (s SimpleSpellValue) Eval(ctx *TooltipContext) float64 {
 	case "e":
 		return ctx.DataProvider.GetEffectAmplitude(s.getSpellId(ctx), s.Selector.EffectIndex-1)
 	case "h":
-		return ctx.DataProvider.GetProcChance(s.getSpellId(ctx))
+		return ctx.DataProvider.GetSpellProcChance(s.getSpellId(ctx))
 	case "d":
 		return float64(ctx.DataProvider.GetSpellDuration(s.getSpellId(ctx)))
+	case "w":
+		// This does not properly evaluate in client for Spell Descriptions. In theory it seems to refer to the specific extra values of a buff
+		// i.E. the actual stamina buffed by a priester to display it correctly client side
+		// So for Buff Tooltip rendering we want to treat at probably the same as scaled effect value
+		fallthrough
 	case "s":
-		return ctx.DataProvider.GetEffectBaseDamage(s.getSpellId(ctx), s.Selector.EffectIndex-1)
+		return ctx.DataProvider.GetEffectScaledValue(s.getSpellId(ctx), s.Selector.EffectIndex-1)
 	case "M":
 		fallthrough
 	case "m":
@@ -655,7 +660,7 @@ func (s SimpleSpellValue) Eval(ctx *TooltipContext) float64 {
 		return float64(ctx.DataProvider.GetEffectChainAmplitude(s.getSpellId(ctx), s.Selector.EffectIndex-1))
 	case "o":
 		spellId := s.getSpellId(ctx)
-		baseDamage := ctx.DataProvider.GetEffectBaseDamage(spellId, s.Selector.EffectIndex-1)
+		baseDamage := ctx.DataProvider.GetEffectScaledValue(spellId, s.Selector.EffectIndex-1)
 		period := ctx.DataProvider.GetEffectPeriod(spellId, s.Selector.EffectIndex-1)
 		if period == 0 {
 			return 0
@@ -686,7 +691,7 @@ func (s SimpleSpellValue) Eval(ctx *TooltipContext) float64 {
 	case "n":
 		fallthrough
 	case "u":
-		return float64(ctx.DataProvider.GetStacks(s.getSpellId(ctx)))
+		return float64(ctx.DataProvider.GetSpellStacks(s.getSpellId(ctx)))
 	case "b":
 		return float64(ctx.DataProvider.GetEffectPointsPerResource(s.getSpellId(ctx), s.Selector.EffectIndex-1))
 	case "V":
@@ -976,8 +981,8 @@ func ParseTooltip(tooltip string, dataProvider TooltipDataProvider, spellId int6
 		"SPH":          dataProvider.GetSpellPower(),
 		"pctH":         1,
 		"PL":           dataProvider.GetPlayerLevel(),
-		"proccooldown": dataProvider.GetProcChance(spellId),
-		"procrppm":     dataProvider.GetPPM(spellId),
+		"proccooldown": dataProvider.GetSpellProcChance(spellId),
+		"procrppm":     dataProvider.GetSpellPPM(spellId),
 	}
 
 	mhWeapon := dataProvider.GetMainHandWeapon()

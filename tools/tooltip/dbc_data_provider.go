@@ -13,8 +13,8 @@ type DBCTooltipDataProvider struct {
 	DBC *dbc.DBC
 }
 
-// GetPPM implements TooltipDataProvider.
-func (d DBCTooltipDataProvider) GetPPM(spellId int64) float64 {
+// GetSpellPPM implements TooltipDataProvider.
+func (d DBCTooltipDataProvider) GetSpellPPM(spellId int64) float64 {
 	spell, ok := d.DBC.Spells[int(spellId)]
 	if !ok {
 		return 1
@@ -23,8 +23,8 @@ func (d DBCTooltipDataProvider) GetPPM(spellId int64) float64 {
 	return float64(spell.SpellProcsPerMinute)
 }
 
-// GetProcCooldown implements TooltipDataProvider.
-func (d DBCTooltipDataProvider) GetProcCooldown(spellId int64) time.Duration {
+// GetSpellProcCooldown implements TooltipDataProvider.
+func (d DBCTooltipDataProvider) GetSpellProcCooldown(spellId int64) time.Duration {
 	spell, ok := d.DBC.Spells[int(spellId)]
 	if !ok {
 		return 1
@@ -99,8 +99,8 @@ func (d DBCTooltipDataProvider) GetEffectMaxTargets(spellId int64, effectIdx int
 	return int64(effect.EffectChainTargets)
 }
 
-// GetProcChance implements TooltipDataProvider.
-func (d DBCTooltipDataProvider) GetProcChance(spellId int64) float64 {
+// GetSpellProcChance implements TooltipDataProvider.
+func (d DBCTooltipDataProvider) GetSpellProcChance(spellId int64) float64 {
 	spellEntry, ok := d.DBC.Spells[int(spellId)]
 	if !ok {
 		return 0
@@ -203,7 +203,7 @@ func (d DBCTooltipDataProvider) GetClass(spellId int64) proto.Class {
 }
 
 // GetEffectBaseDamage implements TooltipDataProvider.
-func (d DBCTooltipDataProvider) GetEffectBaseDamage(spellId int64, effectIdx int64) float64 {
+func (d DBCTooltipDataProvider) GetEffectScaledValue(spellId int64, effectIdx int64) float64 {
 	effectEntries, ok := d.DBC.SpellEffects[int(spellId)]
 	class := d.GetClass(spellId)
 
@@ -339,7 +339,7 @@ func (d DBCTooltipDataProvider) GetSpellRange(spellId int64) float64 {
 }
 
 // GetStacks implements TooltipDataProvider.
-func (d DBCTooltipDataProvider) GetStacks(spellId int64) int64 {
+func (d DBCTooltipDataProvider) GetSpellStacks(spellId int64) int64 {
 	spell, ok := d.DBC.Spells[int(spellId)]
 	if !ok {
 		return 0

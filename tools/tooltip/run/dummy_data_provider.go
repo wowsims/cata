@@ -8,11 +8,51 @@ import (
 
 type DummyTooltipDataProvider struct{}
 
+// GetEffectAmplitude implements tooltip.TooltipDataProvider.
+func (d DummyTooltipDataProvider) GetEffectAmplitude(spellId int64, effectIdx int64) float64 {
+	return 2000
+}
+
+// GetEffectChainAmplitude implements tooltip.TooltipDataProvider.
+func (d DummyTooltipDataProvider) GetEffectChainAmplitude(spellId int64, effectidx int64) float64 {
+	return 3
+}
+
+// GetEffectMaxTargets implements tooltip.TooltipDataProvider.
+func (d DummyTooltipDataProvider) GetEffectMaxTargets(spellId int64, effectIdx int64) int64 {
+	return 3
+}
+
+// GetEffectPointsPerResource implements tooltip.TooltipDataProvider.
+func (d DummyTooltipDataProvider) GetEffectPointsPerResource(spellId int64, effectIdx int64) float64 {
+	return 20
+}
+
+// GetSpellMaxTargets implements tooltip.TooltipDataProvider.
+func (d DummyTooltipDataProvider) GetSpellMaxTargets(spellId int64) int64 {
+	return 5
+}
+
+// GetSpellPPM implements tooltip.TooltipDataProvider.
+func (d DummyTooltipDataProvider) GetSpellPPM(spellId int64) float64 {
+	return 0.85
+}
+
+// GetSpellProcCooldown implements tooltip.TooltipDataProvider.
+func (d DummyTooltipDataProvider) GetSpellProcCooldown(spellId int64) time.Duration {
+	return time.Second * 45
+}
+
+// GetSpellStacks implements tooltip.TooltipDataProvider.
+func (d DummyTooltipDataProvider) GetSpellStacks(spellId int64) int64 {
+	return 20
+}
+
 func (d DummyTooltipDataProvider) GetPlayerLevel() float64 {
 	return 90
 }
 
-func (d DummyTooltipDataProvider) GetProcChance(spellId int64) float64 {
+func (d DummyTooltipDataProvider) GetSpellProcChance(spellId int64) float64 {
 	return 0.5
 }
 
@@ -35,8 +75,8 @@ func (d DummyTooltipDataProvider) GetAttackPower() float64 {
 	return 1
 }
 
-// GetEffectBaseDamage implements TooltipDataProvider.
-func (d DummyTooltipDataProvider) GetEffectBaseDamage(spellId int64, effectIdx int64) float64 {
+// GetEffectScaledValue implements TooltipDataProvider.
+func (d DummyTooltipDataProvider) GetEffectScaledValue(spellId int64, effectIdx int64) float64 {
 	// Dummy level 90 priest
 	return 1045.69
 }
@@ -61,7 +101,7 @@ func (d DummyTooltipDataProvider) GetSpellPower() float64 {
 }
 
 // GetSpellRange implements TooltipDataProvider.
-func (d DummyTooltipDataProvider) GetSpellRange(spellId int64) int64 {
+func (d DummyTooltipDataProvider) GetSpellRange(spellId int64) float64 {
 	return 30
 }
 
