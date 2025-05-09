@@ -207,8 +207,8 @@ export class BulkTab extends SimTab {
 				});
 			};
 			loadEquippedItems();
-			this.simUI.player.gearChangeEmitter.on(() => loadEquippedItems());
 
+			TypedEvent.onAny([this.simUI.player.challengeModeChangeEmitter, this.simUI.player.gearChangeEmitter]).on(() => loadEquippedItems());
 			this.itemsChangedEmitter.on(() => this.storeSettings());
 
 			TypedEvent.onAny([this.itemsChangedEmitter, this.settingsChangedEmitter, this.simUI.sim.iterationsChangeEmitter]).on(() => {
@@ -340,7 +340,7 @@ export class BulkTab extends SimTab {
 	// Add items to their eligible bulk sim item slot(s). Mainly used for importing and search
 	addItems(items: ItemSpec[]) {
 		items.forEach(item => {
-			const equippedItem = this.simUI.sim.db.lookupItemSpec(item);
+			const equippedItem = this.simUI.sim.db.lookupItemSpec(item)?.withChallengeMode(this.simUI.player.getChallengeModeEnabled()).withDynamicStats();
 			if (!!equippedItem) {
 				getEligibleItemSlots(equippedItem.item, this.playerIsFuryWarrior).forEach(slot => {
 					// Avoid duplicating rings/trinkets/weapons
@@ -358,7 +358,7 @@ export class BulkTab extends SimTab {
 	}
 	// Add an item to a particular bulk sim item slot
 	addItemToSlot(item: ItemSpec, bulkSlot: BulkSimItemSlot) {
-		const equippedItem = this.simUI.sim.db.lookupItemSpec(item);
+		const equippedItem = this.simUI.sim.db.lookupItemSpec(item)?.withChallengeMode(this.simUI.player.getChallengeModeEnabled()).withDynamicStats();
 		if (!!equippedItem) {
 			const eligibleItemSlots = getEligibleItemSlots(equippedItem.item, this.playerIsFuryWarrior);
 			if (!canEquipItem(equippedItem.item, this.simUI.player.getPlayerSpec(), eligibleItemSlots[0])) return;
@@ -372,7 +372,7 @@ export class BulkTab extends SimTab {
 	}
 
 	updateItem(idx: number, newItem: ItemSpec) {
-		const equippedItem = this.simUI.sim.db.lookupItemSpec(newItem);
+		const equippedItem = this.simUI.sim.db.lookupItemSpec(newItem)?.withChallengeMode(this.simUI.player.getChallengeModeEnabled()).withDynamicStats();
 		if (!!equippedItem) {
 			this.items[idx] = newItem;
 
@@ -415,8 +415,8 @@ export class BulkTab extends SimTab {
 				const bulkSlot = getBulkItemSlotFromSlot(slot, this.playerCanDualWield);
 				const group = this.pickerGroups.get(bulkSlot)!;
 				group.remove(idx);
-				this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
 			});
+			this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
 		}
 	}
 

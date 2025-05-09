@@ -1,5 +1,5 @@
 import { getWowheadLanguagePrefix } from '../constants/lang';
-import { CHARACTER_LEVEL } from '../constants/mechanics';
+import { CHARACTER_LEVEL, MAX_CHALLENGE_MODE_ILVL } from '../constants/mechanics';
 import { ActionID as ActionIdProto, ItemLevelState, ItemRandomSuffix, OtherAction, ReforgeStat } from '../proto/common';
 import { ResourceType } from '../proto/spell';
 import { IconData, UIItem as Item } from '../proto/ui';
@@ -180,7 +180,11 @@ export class ActionId {
 		url.searchParams.set('level', String(CHARACTER_LEVEL));
 		url.searchParams.set('rand', String(randomSuffixId || 0));
 		if (reforgeId) url.searchParams.set('forg', String(reforgeId));
-		if (typeof upgradeStep === 'number') url.searchParams.set('upgd', String(upgradeStep));
+		if (upgradeStep === ItemLevelState.ChallengeMode) {
+			url.searchParams.set('ilvl', String(MAX_CHALLENGE_MODE_ILVL));
+		} else if (upgradeStep) {
+			url.searchParams.set('upgd', String(upgradeStep));
+		}
 		return url.toString();
 	}
 	static makeSpellUrl(id: number): string {
@@ -244,8 +248,8 @@ export class ActionId {
 		this.setWowheadHref(elem);
 	}
 
-	async fillAndSet(elem: HTMLAnchorElement, setHref: boolean, setBackground: boolean): Promise<ActionId> {
-		const filled = await this.fill();
+	async fillAndSet(elem: HTMLAnchorElement, setHref: boolean, setBackground: boolean, options: { signal?: AbortSignal } = {}): Promise<ActionId> {
+		const filled = await this.fill(undefined, options);
 		if (setHref) {
 			filled.setWowheadHref(elem);
 		}

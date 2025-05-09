@@ -100,6 +100,18 @@ export const InputDelay = {
 	},
 };
 
+export const ChallengeMode = {
+	id: 'challenge-mode',
+	type: 'boolean' as const,
+	label: 'Challenge Mode',
+	labelTooltip: 'Enables Challenge Mode',
+	changedEvent: (player: Player<any>) => player.challengeModeChangeEmitter,
+	getValue: (player: Player<any>) => player.getChallengeModeEnabled(),
+	setValue: (eventID: EventID, player: Player<any>, value: boolean) => {
+		player.setChallengeModeEnabled(eventID, value);
+	},
+};
+
 export const ChannelClipDelay = {
 	id: 'channel-clip-delay',
 	type: 'number' as const,
@@ -110,21 +122,6 @@ export const ChannelClipDelay = {
 	getValue: (player: Player<any>) => player.getChannelClipDelay(),
 	setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
 		player.setChannelClipDelay(eventID, newValue);
-	},
-};
-
-export const DarkIntentUptime = {
-	id: 'dark-intent-uptime',
-	type: 'number' as const,
-	label: 'Dark Intent Uptime',
-	labelTooltip: '% uptime on Dark Intent on the player (Only the stacking damage component)',
-	changedEvent: (player: Player<any>) => TypedEvent.onAny([player.buffsChangeEmitter, player.miscOptionsChangeEmitter]),
-	getValue: (player: Player<any>) => player.getDarkIntentUptime(),
-	setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
-		player.setDarkIntentUptime(eventID, newValue);
-	},
-	showWhen: (player: Player<any>) => {
-		return player.getBuffs().darkIntent;
 	},
 };
 
@@ -289,23 +286,5 @@ export const HpPercentForDefensives = {
 		const cooldowns = player.getSimpleCooldowns();
 		cooldowns.hpPercentForDefensives = newValue / 100;
 		player.setSimpleCooldowns(eventID, cooldowns);
-	},
-};
-
-export const InspirationUptime = {
-	id: 'inspiration-uptime',
-	type: 'number' as const,
-	float: true,
-	label: 'Inspiration % Uptime',
-	labelTooltip: `
-		<p>% average of Encounter Duration, during which you have the Inspiration buff.</p>
-		<p>If set to 0, the buff isn't applied.</p>
-	`,
-	changedEvent: (player: Player<any>) => player.healingModelChangeEmitter,
-	getValue: (player: Player<any>) => player.getHealingModel().inspirationUptime * 100,
-	setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
-		const healingModel = player.getHealingModel();
-		healingModel.inspirationUptime = newValue / 100;
-		player.setHealingModel(eventID, healingModel);
 	},
 };

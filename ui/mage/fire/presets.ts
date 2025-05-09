@@ -1,15 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import {
-	ConsumesSpec,
-	Debuffs,
-	Glyphs,
-	Profession,
-	PseudoStat,
-	Race,
-	RaidBuffs,
-	Spec,
-	Stat,
-} from '../../core/proto/common';
+import { ConsumesSpec, Debuffs, Glyphs, Profession, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { FireMage_Options as MageOptions, FireMage_Rotation, MageMajorGlyph as MajorGlyph, MageMinorGlyph as MinorGlyph } from '../../core/proto/mage';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats, UnitStat, UnitStatPresets } from '../../core/proto_utils/stats';
@@ -102,22 +92,7 @@ export const DefaultFireOptions = MageOptions.create({
 	classOptions: {},
 });
 
-export const DefaultRaidBuffs = RaidBuffs.create({
-	arcaneBrilliance: true,
-	bloodlust: true,
-	markOfTheWild: true,
-	icyTalons: true,
-	moonkinForm: true,
-	leaderOfThePack: true,
-	powerWordFortitude: true,
-	strengthOfEarthTotem: true,
-	trueshotAura: true,
-	wrathOfAirTotem: true,
-	demonicPact: true,
-	blessingOfKings: true,
-	blessingOfMight: true,
-	communion: true,
-});
+export const DefaultRaidBuffs = RaidBuffs.create({});
 
 export const DefaultFireConsumables = ConsumesSpec.create({
 	flaskId: 58086, // Flask of the Draconic Mind
@@ -128,8 +103,8 @@ export const DefaultFireConsumables = ConsumesSpec.create({
 });
 
 export const DefaultDebuffs = Debuffs.create({
-	ebonPlaguebringer: true,
-	shadowAndFlame: true,
+	// ebonPlaguebringer: true,
+	// shadowAndFlame: true,
 });
 
 export const OtherDefaults = {
