@@ -1273,7 +1273,7 @@ func StormLashAura(character *Character, actionTag int32) *Aura {
 		Duration: StormLashDuration,
 		Icd: &Cooldown{
 			Timer:    character.NewTimer(),
-			Duration: time.Millisecond * 100,
+			Duration: time.Millisecond * 70,
 		},
 		OnGain: func(aura *Aura, sim *Simulation) {
 			for _, pet := range character.Pets {
