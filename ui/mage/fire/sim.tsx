@@ -1,4 +1,3 @@
-import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
 import * as Mechanics from '../../core/constants/mechanics';
@@ -9,7 +8,6 @@ import { APLAction, APLListItem, APLRotation, APLRotation_Type, SimpleRotation }
 import { Cooldowns, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../../core/proto/common';
 import { StatCapType } from '../../core/proto/ui';
 import { StatCap, Stats, UnitStat } from '../../core/proto_utils/stats';
-import { TypedEvent } from '../../core/typed_event';
 import { formatToNumber } from '../../core/utils';
 import * as FireInputs from './inputs';
 import * as Presets from './presets';
@@ -238,15 +236,7 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 							const hasCloseMatchingValue = (value: number) =>
 								[...adjustedHastedBreakpoints.values()].find(bp => bp.toFixed(2) === value.toFixed(2));
 
-							// LvB/Pyro are not worth adjusting for
-							const excludedHasteBreakpoints = [
-								hasteBreakpoints.get('5-tick - LvB/Pyro')!,
-								hasteBreakpoints.get('6-tick - LvB/Pyro')!,
-								hasteBreakpoints.get('7-tick - LvB/Pyro')!,
-								hasteBreakpoints.get('8-tick - LvB/Pyro')!,
-							];
 							softCap.breakpoints.forEach(breakpoint => {
-								const isExcludedFromPiZerk = excludedHasteBreakpoints.includes(breakpoint);
 								if (hasBL) {
 									const blBreakpoint = modifyHaste(breakpoint, 1.3);
 
@@ -254,18 +244,6 @@ export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 										if (!hasCloseMatchingValue(blBreakpoint)) adjustedHastedBreakpoints.add(blBreakpoint);
 										if (hasBerserking) {
 											const berserkingBreakpoint = modifyHaste(blBreakpoint, 1.2);
-											if (berserkingBreakpoint > 0 && !hasCloseMatchingValue(berserkingBreakpoint)) {
-												adjustedHastedBreakpoints.add(berserkingBreakpoint);
-											}
-										}
-									}
-								}
-								if (!isExcludedFromPiZerk) {
-									const piBreakpoint = modifyHaste(breakpoint, 1.2);
-									if (piBreakpoint > 0) {
-										if (!hasCloseMatchingValue(piBreakpoint)) adjustedHastedBreakpoints.add(piBreakpoint);
-										if (hasBerserking) {
-											const berserkingBreakpoint = modifyHaste(piBreakpoint, 1.2);
 											if (berserkingBreakpoint > 0 && !hasCloseMatchingValue(berserkingBreakpoint)) {
 												adjustedHastedBreakpoints.add(berserkingBreakpoint);
 											}

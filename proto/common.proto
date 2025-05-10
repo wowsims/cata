@@ -549,7 +549,7 @@ message Debuffs {
 	bool spore_cloud              = 11;
 	bool slow                     = 12;
 	bool mind_numbing_poison      = 13;
-	bool curse_of_enfeeblement = 14;
+	bool curse_of_enfeeblement	  = 14;
   }
 
 message ConsumesSpec {

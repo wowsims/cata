@@ -193,6 +193,8 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 	applyStaminaBuffs(u, raidBuffs)
 
 	registerManaTideTotemCD(agent, raidBuffs.ManaTideTotemCount)
+	registerSkullBannerCD(agent, raidBuffs.SkullBannerCount)
+
 	// Individual cooldowns and major buffs
 	if len(char.Env.Raid.AllPlayerUnits)-char.Env.Raid.NumTargetDummies == 1 {
 		// Major Haste
@@ -747,7 +749,9 @@ func registerTricksOfTheTradeCD(agent Agent, tristateConfig proto.TristateEffect
 			ShouldActivate: func(sim *Simulation, character *Character) bool {
 				return !character.GetExclusiveEffectCategory("PercentDamageModifier").AnyActive()
 			},
-			AddAura: func(sim *Simulation, character *Character) { tricksAura.Activate(sim) },
+			AddAura: func(sim *Simulation, character *Character) {
+				tricksAura.Activate(sim)
+			},
 		},
 		1)
 }
@@ -760,13 +764,7 @@ func TricksOfTheTradeAura(character *Unit, actionTag int32, damageMult float64) 
 		Tag:      TricksOfTheTradeAuraTag,
 		ActionID: actionID,
 		Duration: time.Second * 6,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.DamageDealtMultiplier *= damageMult
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.DamageDealtMultiplier /= damageMult
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.DamageDealtMultiplier, damageMult)
 
 	RegisterPercentDamageModifierEffect(aura, damageMult)
 	return aura
@@ -819,6 +817,7 @@ func UnholyFrenzyAura(character *Unit, actionTag int32) *Aura {
 			aura.Unit.MultiplyResourceRegenSpeed(sim, 1/1.2)
 		},
 	})
+
 	return aura
 }
 
@@ -868,13 +867,7 @@ func HandOfSacrificeAura(character *Character, actionTag int32) *Aura {
 		Tag:      HandOfSacrificeAuraTag,
 		ActionID: actionID,
 		Duration: HandOfSacrificeDuration,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.DamageTakenMultiplier *= 0.7
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.DamageTakenMultiplier /= 0.7
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.DamageTakenMultiplier, 0.7)
 }
 
 var PainSuppressionAuraTag = "PainSuppression"
@@ -902,7 +895,9 @@ func registerPainSuppressionCD(agent Agent, numPainSuppressions int32) {
 			ShouldActivate: func(sim *Simulation, character *Character) bool {
 				return true
 			},
-			AddAura: func(sim *Simulation, character *Character) { psAura.Activate(sim) },
+			AddAura: func(sim *Simulation, character *Character) {
+				psAura.Activate(sim)
+			},
 		},
 		numPainSuppressions)
 }
@@ -915,13 +910,7 @@ func PainSuppressionAura(character *Character, actionTag int32) *Aura {
 		Tag:      PainSuppressionAuraTag,
 		ActionID: actionID,
 		Duration: PainSuppressionDuration,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.DamageTakenMultiplier *= 0.6
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.DamageTakenMultiplier /= 0.6
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.DamageTakenMultiplier, 0.6)
 }
 
 var GuardianSpiritAuraTag = "GuardianSpirit"
@@ -974,13 +963,7 @@ func GuardianSpiritAura(character *Character, actionTag int32) *Aura {
 		Tag:      GuardianSpiritAuraTag,
 		ActionID: actionID,
 		Duration: GuardianSpiritDuration,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.HealingTakenMultiplier *= 1.4
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.HealingTakenMultiplier /= 1.4
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.HealingTakenMultiplier, 1.4)
 }
 
 var RallyingCryAuraTag = "RallyingCry"
@@ -1069,6 +1052,46 @@ func registerShatteringThrowCD(agent Agent, numShatteringThrows int32) {
 		numShatteringThrows)
 }
 
+const SkullBannerAuraTag = "SkullBanner"
+const SkullBannerDuration = time.Second * 10
+const SkullBannerCD = time.Minute * 3
+
+func registerSkullBannerCD(agent Agent, numSkullBanners int32) {
+	if numSkullBanners == 0 {
+		return
+	}
+
+	sbAura := SkullBannerAura(agent.GetCharacter(), -1)
+
+	registerExternalConsecutiveCDApproximation(
+		agent,
+		externalConsecutiveCDApproximation{
+			ActionID:         ActionID{SpellID: 114207, Tag: -1},
+			AuraTag:          SkullBannerAuraTag,
+			CooldownPriority: CooldownPriorityDefault,
+			AuraDuration:     SkullBannerDuration,
+			AuraCD:           SkullBannerCD,
+			Type:             CooldownTypeDPS,
+
+			ShouldActivate: func(sim *Simulation, character *Character) bool {
+				return true
+			},
+			AddAura: func(sim *Simulation, character *Character) {
+				sbAura.Activate(sim)
+			},
+		},
+		numSkullBanners)
+}
+
+func SkullBannerAura(character *Character, actionTag int32) *Aura {
+	return character.GetOrRegisterAura(Aura{
+		Label:    "Skull Banner",
+		Tag:      SkullBannerAuraTag,
+		ActionID: ActionID{SpellID: 114206, Tag: actionTag},
+		Duration: SkullBannerDuration,
+	}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.CritDamageMultiplier, 1.2)
+}
+
 var ManaTideTotemActionID = ActionID{SpellID: 16190}
 var ManaTideTotemAuraTag = "ManaTideTotem"
 
@@ -1119,11 +1142,5 @@ func ManaTideTotemAura(character *Character, actionTag int32) *Aura {
 		Tag:      ManaTideTotemAuraTag,
 		ActionID: actionID,
 		Duration: ManaTideTotemDuration,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.EnableDynamicStatDep(sim, dep)
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.DisableDynamicStatDep(sim, dep)
-		},
-	})
+	}).AttachStatDependency(dep)
 }

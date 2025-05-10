@@ -370,6 +370,13 @@ export class ActionId {
 					name += ` (self)`;
 				}
 				break;
+			case 'Skull Banner':
+				if (tag === -1) {
+					name += ' (raid)';
+				} else {
+					name += ` (self)`;
+				}
+				break;
 			case 'Envenom':
 			case 'Eviscerate':
 			case 'Expose Armor':
