@@ -9,8 +9,30 @@ import (
 	"github.com/wowsims/mop/tools/database/dbc"
 )
 
+type EffectMap map[int]dbc.SpellEffect
 type DBCTooltipDataProvider struct {
 	DBC *dbc.DBC
+}
+
+func GetEffectByIndex(effects map[int]dbc.SpellEffect, index int) *dbc.SpellEffect {
+	if len(effects) <= index {
+		return nil
+	}
+
+	// quick check
+	effect := effects[index]
+	if effect.EffectIndex == index {
+		return &effect
+	}
+
+	// did not find
+	for _, e := range effects {
+		if e.EffectIndex == index {
+			return &e
+		}
+	}
+
+	return nil
 }
 
 // GetSpellPPM implements TooltipDataProvider.
@@ -48,8 +70,8 @@ func (d DBCTooltipDataProvider) GetEffectAmplitude(spellId int64, effectIdx int6
 		return 1
 	}
 
-	effect, ok := effectEntries[int(effectIdx)]
-	if !ok {
+	effect := GetEffectByIndex(effectEntries, int(effectIdx))
+	if effect == nil {
 		return 0
 	}
 
@@ -62,8 +84,8 @@ func (d DBCTooltipDataProvider) GetEffectChainAmplitude(spellId int64, effectIdx
 		return 1
 	}
 
-	effect, ok := effectEntries[int(effectIdx)]
-	if !ok {
+	effect := GetEffectByIndex(effectEntries, int(effectIdx))
+	if effect == nil {
 		return 0
 	}
 
@@ -76,8 +98,8 @@ func (d DBCTooltipDataProvider) GetEffectPointsPerResource(spellId int64, effect
 		return 1
 	}
 
-	effect, ok := effectEntries[int(effectIdx)]
-	if !ok {
+	effect := GetEffectByIndex(effectEntries, int(effectIdx))
+	if effect == nil {
 		return 0
 	}
 
@@ -91,8 +113,8 @@ func (d DBCTooltipDataProvider) GetEffectMaxTargets(spellId int64, effectIdx int
 		return 1
 	}
 
-	effect, ok := effectEntries[int(effectIdx)]
-	if !ok {
+	effect := GetEffectByIndex(effectEntries, int(effectIdx))
+	if effect == nil {
 		return 0
 	}
 
@@ -225,8 +247,8 @@ func (d DBCTooltipDataProvider) GetEffectScaledValue(spellId int64, effectIdx in
 		effectIdx = int64(len(effectEntries) - 1)
 	}
 
-	effect, ok := effectEntries[int(effectIdx)]
-	if !ok {
+	effect := GetEffectByIndex(effectEntries, int(effectIdx))
+	if effect == nil {
 		return 1
 	}
 
@@ -314,8 +336,8 @@ func (d DBCTooltipDataProvider) GetEffectBaseValue(spellId int64, effectIdx int6
 		return 0
 	}
 
-	effect, ok := effectEntries[int(effectIdx)]
-	if !ok {
+	effect := GetEffectByIndex(effectEntries, int(effectIdx))
+	if effect == nil {
 		return 0
 	}
 
@@ -329,8 +351,8 @@ func (d DBCTooltipDataProvider) GetEffectPeriod(spellId int64, effectIdx int64) 
 		return 0
 	}
 
-	effect, ok := effectEntries[int(effectIdx)]
-	if !ok {
+	effect := GetEffectByIndex(effectEntries, int(effectIdx))
+	if effect == nil {
 		return 0
 	}
 
@@ -344,8 +366,8 @@ func (d DBCTooltipDataProvider) GetEffectRadius(spellId int64, effectIdx int64) 
 		return 0
 	}
 
-	effect, ok := effectEntries[int(effectIdx)]
-	if !ok {
+	effect := GetEffectByIndex(effectEntries, int(effectIdx))
+	if effect == nil {
 		return 0
 	}
 
