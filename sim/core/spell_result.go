@@ -86,13 +86,19 @@ func (spell *Spell) RangedAttackPower(target *Unit) float64 {
 		target.PseudoStats.BonusRangedAttackPowerTaken
 }
 
-func (spell *Spell) DodgeParrySuppression() float64 {
-	// As of 06/20, Blizzard has changed Expertise to no longer truncate at quarter
-	// percent intervals. Note that in-game character sheet tooltips will still
-	// display the truncated values, but it has been tested to behave continuously in
-	// reality since the patch.
+func (spell *Spell) DodgeSuppression() float64 {
 	expertiseRating := spell.Unit.stats[stats.ExpertiseRating] + spell.BonusExpertiseRating
 	return expertiseRating / ExpertisePerQuarterPercentReduction / 400
+}
+
+// MoP reworked Parry. Rather than being innately ~2x Dodge chance, expertise now applies to Dodge first (down to 0), and then Parry.
+// The base chance for Dodge/Parry are both 7.5%, assuming a +3 target. The 7.5% Dodge chance must be fully suppressed before Parry will go down.
+// This makes the effect of each point of Expertise linear when attacking from the front
+func (spell *Spell) ParrySuppression() float64 {
+	expertiseRating := spell.Unit.stats[stats.ExpertiseRating] + spell.BonusExpertiseRating
+	parrySupp := expertiseRating / ExpertisePerQuarterPercentReduction / 400
+	parrySupp -= max(0, spell.DodgeSuppression())
+	return parrySupp
 }
 
 func (spell *Spell) PhysicalHitChance(attackTable *AttackTable) float64 {
