@@ -45,12 +45,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.T13PresetGear.gear,
+		gear: Presets.PreraidPresetGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Presets.StandardEPWeights.epWeights,
 		// Default stat caps for the Reforge optimizer
 		statCaps: (() => {
-			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 17);
+			return new Stats().withPseudoStat(PseudoStat.PseudoStatSpellHitPercent, 15);
 		})(),
 		// Default consumes settings.
 		consumables: Presets.DefaultConsumables,
@@ -86,15 +86,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		epWeights: [Presets.StandardEPWeights],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents],
-		rotations: [Presets.T11PresetRotation, Presets.T12PresetRotation, Presets.T13PresetRotation],
+		rotations: [Presets.StandardRotation],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PreraidPresetGear, Presets.T11PresetGear, Presets.T12PresetGear, Presets.T13PresetGear],
-		itemSwaps: [Presets.T13PresetItemSwapGear],
-		builds: [Presets.PresetBuildPreraid, Presets.PresetBuildT11, Presets.PresetBuildT12, Presets.PresetBuildT13],
+		gear: [Presets.PreraidPresetGear, Presets.T14PresetGear, Presets.T15PresetGear, Presets.T16PresetGear],
+		builds: [Presets.PresetPreraidBuild, Presets.T14PresetBuild, Presets.T15PresetBuild, Presets.T16PresetBuild],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecBalanceDruid>): APLRotation => {
-		return Presets.T13PresetRotation.rotation.rotation!;
+		return Presets.StandardRotation.rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -112,10 +111,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.T13PresetGear.gear,
+					1: Presets.PreraidPresetGear.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.T13PresetGear.gear,
+					1: Presets.PreraidPresetGear.gear,
 				},
 			},
 		},

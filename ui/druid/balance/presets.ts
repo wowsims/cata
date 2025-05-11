@@ -3,25 +3,18 @@ import { ConsumesSpec, Debuffs, Glyphs, IndividualBuffs, PartyBuffs, Profession,
 import { BalanceDruid_Options as BalanceDruidOptions, DruidMajorGlyph } from '../../core/proto/druid.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import { Stats } from '../../core/proto_utils/stats';
-import T11Apl from './apls/t11.apl.json';
-import T12Apl from './apls/t12.apl.json';
-import T13Apl from './apls/t13.apl.json';
+import StandardApl from './apls/standard.apl.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
-import T11Gear from './gear_sets/t11.gear.json';
-import T12Gear from './gear_sets/t12.gear.json';
-import T13Gear from './gear_sets/t13.gear.json';
-import T13ItemSwapGear from './gear_sets/t13_item_swap.gear.json';
+import T14Gear from './gear_sets/t14.gear.json';
+import T15Gear from './gear_sets/t15.gear.json';
+import T16Gear from './gear_sets/t16.gear.json';
 
 export const PreraidPresetGear = PresetUtils.makePresetGear('Pre-raid', PreraidGear);
-export const T11PresetGear = PresetUtils.makePresetGear('T11', T11Gear);
-export const T12PresetGear = PresetUtils.makePresetGear('T12', T12Gear);
-export const T13PresetGear = PresetUtils.makePresetGear('T13', T13Gear);
+export const T14PresetGear = PresetUtils.makePresetGear('T14', T14Gear);
+export const T15PresetGear = PresetUtils.makePresetGear('T15', T15Gear);
+export const T16PresetGear = PresetUtils.makePresetGear('T16', T16Gear);
 
-export const T13PresetItemSwapGear = PresetUtils.makePresetItemSwapGear('T13 - Item Swap', T13ItemSwapGear);
-
-export const T11PresetRotation = PresetUtils.makePresetAPLRotation('T11 4P', T11Apl);
-export const T12PresetRotation = PresetUtils.makePresetAPLRotation('T12', T12Apl);
-export const T13PresetRotation = PresetUtils.makePresetAPLRotation('T13', T13Apl);
+export const StandardRotation = PresetUtils.makePresetAPLRotation('Standard', StandardApl);
 
 export const StandardEPWeights = PresetUtils.makePresetEpWeights(
 	'Standard',
@@ -41,9 +34,11 @@ export const StandardEPWeights = PresetUtils.makePresetEpWeights(
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		talentsString: '',
+		talentsString: '113221',
 		glyphs: Glyphs.create({
-			major2: DruidMajorGlyph.GlyphOfRebirth,
+			major1: DruidMajorGlyph.GlyphOfStampedingRoar,
+			major2: DruidMajorGlyph.GlyphOfStampede,
+			major3: DruidMajorGlyph.GlyphOfRebirth,
 		}),
 	}),
 };
@@ -55,25 +50,27 @@ export const DefaultOptions = BalanceDruidOptions.create({
 });
 
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId: 58086, // Flask of the Draconic Mind
-	foodId: 62290, // Seafood Magnifique Feast
-	potId: 58091, // Volcanic Potion
-	prepotId: 58091, // Volcanic Potion
+	flaskId: 76085, 	// Flask of the Warm Sun
+	foodId: 74650, 		// Mogu Fish Stew
+	potId: 76093, 		// Potion of the Jade Serpent
+	prepotId: 76093, 	// Potion of the Jade Serpent
 });
-export const DefaultRaidBuffs = RaidBuffs.create({});
+
+export const DefaultRaidBuffs = RaidBuffs.create({
+	markOfTheWild: true,	// stats
+	darkIntent: true, 		// spell power
+	moonkinAura: true, 		// spell haste
+	leaderOfThePack: true, 	// crit %
+	blessingOfMight: true, 	// mastery
+	bloodlust: true,        // major haste
+});
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({});
 
 export const DefaultPartyBuffs = PartyBuffs.create({});
 
 export const DefaultDebuffs = Debuffs.create({
-	// bloodFrenzy: true,
-	// sunderArmor: true,
-	// ebonPlaguebringer: true,
-	// mangle: true,
-	// criticalMass: true,
-	// demoralizingShout: true,
-	// frostFever: true,
+	curseOfElements: true, // spell dmg taken
 });
 
 export const OtherDefaults = {
@@ -82,30 +79,30 @@ export const OtherDefaults = {
 	profession2: Profession.Tailoring,
 };
 
-export const PresetBuildPreraid = PresetUtils.makePresetBuild('Balance Pre-raid', {
+export const PresetPreraidBuild = PresetUtils.makePresetBuild('Balance Pre-raid', {
 	gear: PreraidPresetGear,
 	talents: StandardTalents,
-	rotation: T13PresetRotation,
+	rotation: StandardRotation,
 	epWeights: StandardEPWeights,
 });
 
-export const PresetBuildT11 = PresetUtils.makePresetBuild('Balance T11', {
-	gear: T11PresetGear,
+export const T14PresetBuild = PresetUtils.makePresetBuild('Balance T14', {
+	gear: T14PresetGear,
 	talents: StandardTalents,
-	rotation: T11PresetRotation,
+	rotation: StandardRotation,
 	epWeights: StandardEPWeights,
 });
 
-export const PresetBuildT12 = PresetUtils.makePresetBuild('Balance T12', {
-	gear: T12PresetGear,
+export const T15PresetBuild = PresetUtils.makePresetBuild('Balance T15', {
+	gear: T15PresetGear,
 	talents: StandardTalents,
-	rotation: T12PresetRotation,
+	rotation: StandardRotation,
 	epWeights: StandardEPWeights,
 });
 
-export const PresetBuildT13 = PresetUtils.makePresetBuild('Balance T13', {
-	gear: T13PresetGear,
+export const T16PresetBuild = PresetUtils.makePresetBuild('Balance T16', {
+	gear: T16PresetGear,
 	talents: StandardTalents,
-	rotation: T13PresetRotation,
+	rotation: StandardRotation,
 	epWeights: StandardEPWeights,
 });
