@@ -91,7 +91,7 @@ func (rogue *Rogue) makeShadowBladeHit(isMH bool) *core.Spell {
 				baseDamage = spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			}
 
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWhiteNoGlance)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},
 	})
 }

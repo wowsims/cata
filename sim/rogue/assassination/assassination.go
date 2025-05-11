@@ -39,7 +39,6 @@ func (sinRogue *AssassinationRogue) Initialize() {
 
 	sinRogue.registerMutilateSpell()
 	sinRogue.registerDispatch()
-	sinRogue.registerOverkill()
 	sinRogue.applySealFate()
 	sinRogue.registerVenomousWounds()
 	sinRogue.registerVendetta()

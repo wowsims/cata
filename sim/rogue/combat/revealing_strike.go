@@ -19,7 +19,7 @@ func (comRogue *CombatRogue) registerRevealingStrike() {
 		return target.GetOrRegisterAura(core.Aura{
 			Label:    "Revealing Strike",
 			ActionID: actionID,
-			Duration: 15 * time.Second,
+			Duration: 24 * time.Second,
 
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				core.EnableDamageDoneByCaster(DDBC_RevealingStrike, DDBC_Total, comRogue.AttackTables[aura.Unit.UnitIndex], func(sim *core.Simulation, spell *core.Spell, attackTable *core.AttackTable) float64 {

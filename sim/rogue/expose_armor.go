@@ -9,10 +9,11 @@ import (
 
 func (rogue *Rogue) registerExposeArmorSpell() {
 	rogue.ExposeArmorAuras = rogue.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-		return core.ExposeArmorAura(target, rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfExposeArmor))
+		return core.WeakenedArmorAura(target)
 	})
 
 	cpMetric := rogue.NewComboPointMetrics(core.ActionID{SpellID: 8647})
+	hasGlyph := rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfExposeArmor)
 
 	rogue.ExposeArmor = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 8647},
@@ -39,8 +40,14 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 			if result.Landed() {
 				debuffAura := rogue.ExposeArmorAuras.Get(target)
-				debuffAura.Duration = time.Second * 30
 				debuffAura.Activate(sim)
+				if hasGlyph {
+					// just set the stacks to 3
+					debuffAura.SetStacks(sim, 3)
+				} else {
+					debuffAura.AddStack(sim)
+				}
+
 				rogue.AddComboPointsOrAnticipation(sim, 1, cpMetric)
 			} else {
 				spell.IssueRefund(sim)

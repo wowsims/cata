@@ -84,7 +84,6 @@ type Rogue struct {
 	ExposeArmorAuras     core.AuraArray
 	HungerForBloodAura   *core.Aura
 	KillingSpreeAura     *core.Aura
-	OverkillAura         *core.Aura
 	SliceAndDiceAura     *core.Aura
 	RecuperateAura       *core.Aura
 	MasterOfSubtletyAura *core.Aura

@@ -16,10 +16,6 @@ func (rogue *Rogue) registerStealthAura() {
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			// Stealth triggered auras
-			if rogue.Spec == proto.Spec_SpecAssassinationRogue {
-				rogue.OverkillAura.Duration = core.NeverExpires
-				rogue.OverkillAura.Activate(sim)
-			}
 			if rogue.Spec == proto.Spec_SpecSubtletyRogue {
 				rogue.MasterOfSubtletyAura.Duration = core.NeverExpires
 				rogue.MasterOfSubtletyAura.Activate(sim)
@@ -32,11 +28,6 @@ func (rogue *Rogue) registerStealthAura() {
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if rogue.Spec == proto.Spec_SpecAssassinationRogue {
-				rogue.OverkillAura.Deactivate(sim)
-				rogue.OverkillAura.Duration = time.Second*20 + extraDuration
-				rogue.OverkillAura.Activate(sim)
-			}
 			if rogue.Spec == proto.Spec_SpecSubtletyRogue {
 				rogue.MasterOfSubtletyAura.Deactivate(sim)
 				rogue.MasterOfSubtletyAura.Duration = time.Second*6 + extraDuration

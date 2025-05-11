@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/mop/sim/core"
+	"github.com/wowsims/mop/sim/core/proto"
 )
 
 func (rogue *Rogue) registerFanOfKnives() {
@@ -13,6 +14,7 @@ func (rogue *Rogue) registerFanOfKnives() {
 	minDamage := baseDamage - damageSpread/2
 
 	cpMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: 51723})
+	hasGlyph := rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfSharpKnives)
 
 	fokSpell := rogue.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 51723},
@@ -55,6 +57,12 @@ func (rogue *Rogue) registerFanOfKnives() {
 				results[i] = fokSpell.CalcAndDealDamage(sim, aoeTarget, damage, fokSpell.OutcomeMeleeSpecialNoBlockDodgeParry)
 				if results[i].Landed() && aoeTarget == rogue.CurrentTarget {
 					rogue.AddComboPointsOrAnticipation(sim, 1, cpMetrics)
+
+					if hasGlyph {
+						sunder := rogue.ExposeArmorAuras.Get(aoeTarget)
+						sunder.Activate(sim)
+						sunder.AddStack(sim)
+					}
 				}
 			}
 		},
