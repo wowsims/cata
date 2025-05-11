@@ -1182,9 +1182,11 @@ var StormLashSpellExceptions = map[int32]float64{
 	45284:  2.0, // Lightning Bolt
 	51505:  2.0, // Lava Burst
 	103103: 2.0, // Malefic Grasp
-	124468: 1.0, // Mind Flay
+	15407:  1.0, // Mind Flay
+	129197: 1.0, // Mind Flay - Insanity
 }
 
+// Source: https://www.wowhead.com/mop-classic/spell=120668/stormlash-totem#comments
 func StormLashAura(character *Character, actionTag int32) *Aura {
 	for _, pet := range character.Pets {
 		if !pet.IsGuardian() {
@@ -1233,17 +1235,17 @@ func StormLashAura(character *Character, actionTag int32) *Aura {
 
 		if spell.ProcMask.Matches(ProcMaskWhiteHit) {
 			swingSpeed := 0.0
-			if spell.IsOH() {
-				baseMultiplier *= 0.2
-				oh := spell.Unit.AutoAttacks.OH()
-				if oh != nil {
-					swingSpeed = spell.Unit.AutoAttacks.OH().SwingSpeed
-				}
-			} else {
-				baseMultiplier *= 0.4
+			baseMultiplier *= 0.4
+			if spell.IsMH() {
 				mh := spell.Unit.AutoAttacks.MH()
 				if mh != nil {
 					swingSpeed = spell.Unit.AutoAttacks.MH().SwingSpeed
+				}
+			} else {
+				baseMultiplier /= 2
+				oh := spell.Unit.AutoAttacks.OH()
+				if oh != nil {
+					swingSpeed = spell.Unit.AutoAttacks.OH().SwingSpeed
 				}
 			}
 			speedMultiplier = swingSpeed / 2.6
