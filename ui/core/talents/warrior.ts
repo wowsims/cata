@@ -7,67 +7,67 @@ export const warriorGlyphsConfig: GlyphsConfig = {
 	majorGlyphs: {
 		[WarriorMajorGlyph.GlyphOfLongCharge]: {
 			name: "Glyph of Long Charge",
-			description: "Increases the range of your Charge ability by $58097s1 yards.",
+			description: "Increases the range of your Charge ability by 5 yards.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_charge.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfUnendingRage]: {
 			name: "Glyph of Unending Rage",
-			description: "Increases your maximum Rage by $/10;s1.",
+			description: "Increases your maximum Rage by 20.0.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_intensifyrage.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfEnragedSpeed]: {
 			name: "Glyph of Enraged Speed",
-			description: "While Enraged, you move $58355s1% faster.",
+			description: "While Enraged, you move 20% faster.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_racial_bloodrage.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfHinderingStrikes]: {
 			name: "Glyph of Hindering Strikes",
-			description: "Your Heroic Strike and Cleave now also reduce the target\'s movement speed by $129923s1% for $129923d.",
+			description: "Your Heroic Strike and Cleave now also reduce the target\'s movement speed by 50% for 8s.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_cleave.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfHeavyRepercussions]: {
 			name: "Glyph of Heavy Repercussions",
-			description: "While your Shield Block is active, your Shield Slam hits for an additional $58388s1% damage.",
+			description: "While your Shield Block is active, your Shield Slam hits for an additional 50% damage.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_defend.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfBloodthirst]: {
 			name: "Glyph of Bloodthirst",
-			description: "Increases the healing of Bloodthirst by $58367s2%.",
+			description: "Increases the healing of Bloodthirst by 100%.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_bloodlust.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfRudeInterruption]: {
 			name: "Glyph of Rude Interruption",
-			description: "Successfully interrupting a spell with Pummel increases your damage by $86663s1% for $86663d.",
+			description: "Successfully interrupting a spell with Pummel increases your damage by 6% for 20s.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_commandingshout.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfGagOrder]: {
 			name: "Glyph of Gag Order",
-			description: "Your Pummel and Heroic Throw also silence the target for $18498d.  Does not work against players.",
+			description: "Your Pummel and Heroic Throw also silence the target for 3s. Does not work against players.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_axe_66.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfBlitz]: {
 			name: "Glyph of Blitz",
-			description: "Your Charge also $?s103828[roots and snares ][stuns ]an additional $58377s1 nearby targets.",
+			description: "Your Charge also roots and snares an additional 2 nearby targets.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_victoryrush.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfMortalStrike]: {
 			name: "Glyph of Mortal Strike",
-			description: "When your Mortal Strike is affecting a target, healing effects on you are increased by $58368s1%.",
+			description: "When your Mortal Strike is affecting a target, healing effects on you are increased by 10%.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_savageblow.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfDieByTheSword]: {
 			name: "Glyph of Die by the Sword",
-			description: "While Die by the Sword is active, using Overpower increases its duration by $m1 sec and using Wild Strike increases its duration by $/10;m2 sec per use.",
+			description: "While Die by the Sword is active, using Overpower increases its duration by 1 sec and using Wild Strike increases its duration by 0.5 sec per use.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_challange.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfHamstring]: {
 			name: "Glyph of Hamstring",
-			description: "When you spend Rage to apply Hamstring, the Rage cost of your next Hamstring is reduced by $115945s1%.",
+			description: "When you spend Rage to apply Hamstring, the Rage cost of your next Hamstring is reduced by 100%.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_shockwave.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfHoldTheLine]: {
 			name: "Glyph of Hold the Line",
-			description: "Improves the damage of your next Revenge by $84619s1% following a successful parry.",
+			description: "Improves the damage of your next Revenge by 50% following a successful parry.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_revenge.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfShieldSlam]: {
@@ -77,52 +77,52 @@ export const warriorGlyphsConfig: GlyphsConfig = {
 		},
 		[WarriorMajorGlyph.GlyphOfHoarseVoice]: {
 			name: "Glyph of Hoarse Voice",
-			description: "Reduces the cooldown and Rage generation of your Battle and Commanding Shout by $58387s1%.",
+			description: "Reduces the cooldown and Rage generation of your Battle and Commanding Shout by 50%.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_battleshout.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfSweepingStrikes]: {
 			name: "Glyph of Sweeping Strikes",
-			description: "When you hit a target with Sweeping Strikes, you gain $/10;124333s1 Rage.",
+			description: "When you hit a target with Sweeping Strikes, you gain 1.0 Rage.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_rogue_slicedice.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfResonatingPower]: {
 			name: "Glyph of Resonating Power",
-			description: "Increases the damage and cooldown of Thunder Clap by $58356s1%.",
+			description: "Increases the damage and cooldown of Thunder Clap by 50%.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_thunderclap.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfVictoryRush]: {
 			name: "Glyph of Victory Rush",
-			description: "Increases the total healing provided by your Victory Rush by $58382s1%.  \u000D\u000AThis glyph has no effect if combined with the Impending Victory talent.",
+			description: "Increases the total healing provided by your Victory Rush by 50%.\u000D\u000A This glyph has no effect if combined with the Impending Victory talent.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_devastate.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfRagingWind]: {
 			name: "Glyph of Raging Wind",
-			description: "Your Raging Blow hits increase the damage of your next Whirlwind by $115317s1%.",
+			description: "Your Raging Blow hits increase the damage of your next Whirlwind by 10%.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_swiftstrike.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfWhirlwind]: {
 			name: "Glyph of Whirlwind",
-			description: "Increases the radius of Whirlwind by $s1 yards.",
+			description: "Increases the radius of Whirlwind by 4 yards.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_whirlwind.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfDeathFromAbove]: {
 			name: "Glyph of Death From Above",
-			description: "Reduces the cooldown on Heroic Leap by ${$63325m1/-1000} sec.",
+			description: "Reduces the cooldown on Heroic Leap by 15 sec.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_heroicleap.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfVictoriousThrow]: {
 			name: "Glyph of Victorious Throw",
-			description: "Increases the range of Victory Rush and Impending Victory by $s1 yards.",
+			description: "Increases the range of Victory Rush and Impending Victory by 15 yards.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_warrior_wildstrike.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfSpellReflection]: {
 			name: "Glyph of Spell Reflection",
-			description: "Reduces the cooldown on Spell Reflection by ${$63328m1/-1000} sec.",
+			description: "Reduces the cooldown on Spell Reflection by 5 sec.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_shieldreflection.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfShieldWall]: {
 			name: "Glyph of Shield Wall",
-			description: "Shield Wall now reduces damage taken by an additional $63329m2%, but its cooldown is increased by ${$63329m1/60000} min.",
+			description: "Shield Wall now reduces damage taken by an additional 20%, but its cooldown is increased by 2 min.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_shieldwall.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfColossusSmash]: {
@@ -132,12 +132,12 @@ export const warriorGlyphsConfig: GlyphsConfig = {
 		},
 		[WarriorMajorGlyph.GlyphOfBullRush]: {
 			name: "Glyph of Bull Rush",
-			description: "Your Charge generates $s1 additional Rage.",
+			description: "Your Charge generates 15 additional Rage.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/achievement_character_tauren_male.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfRecklessness]: {
 			name: "Glyph of Recklessness",
-			description: "Decreases the critical chance of Recklessness by $s1% but increases its duration by $s2%.",
+			description: "Decreases the critical chance of Recklessness by 12% but increases its duration by 50%.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_criticalstrike.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfIncite]: {
@@ -147,19 +147,19 @@ export const warriorGlyphsConfig: GlyphsConfig = {
 		},
 		[WarriorMajorGlyph.GlyphOfImpalingThrows]: {
 			name: "Glyph of Impaling Throws",
-			description: "Heroic Throw now leaves an axe in the target, which can be retrieved by moving within $s1 yards of the target to finish the cooldown of Heroic Throw.  This effect will only occur when Heroic Throw is cast from more than $s3 yards away from the target.",
+			description: "Heroic Throw now leaves an axe in the target, which can be retrieved by moving within 5 yards of the target to finish the cooldown of Heroic Throw. This effect will only occur when Heroic Throw is cast from more than 10 yards away from the target.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/inv_axe_05.jpg",
 		},
 		[WarriorMajorGlyph.GlyphOfTheExecutor]: {
 			name: "Glyph of the Executor",
-			description: "Killing an enemy with Execute grants you ${$147352m1/10} rage.",
+			description: "Killing an enemy with Execute grants you 30 rage.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/warrior_talent_icon_lambstotheslaughter.jpg",
 		},
 	},
 	minorGlyphs: {
 		[WarriorMinorGlyph.GlyphOfMysticShout]: {
 			name: "Glyph of Mystic Shout",
-			description: "Your Battle Shout and Commanding Shout cause you to hover in the air for $121186d.",
+			description: "Your Battle Shout and Commanding Shout cause you to hover in the air for 1s.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_battleshout.jpg",
 		},
 		[WarriorMinorGlyph.GlyphOfBloodcurdlingShout]: {
@@ -179,7 +179,7 @@ export const warriorGlyphsConfig: GlyphsConfig = {
 		},
 		[WarriorMinorGlyph.GlyphOfBloodyHealing]: {
 			name: "Glyph of Bloody Healing",
-			description: "Increases the healing you receive from bandages by $58369s1% while your Deep Wounds is active.",
+			description: "Increases the healing you receive from bandages by 20% while your Deep Wounds is active.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_backstab.jpg",
 		},
 		[WarriorMinorGlyph.GlyphOfIntimidatingShout]: {
@@ -209,7 +209,7 @@ export const warriorGlyphsConfig: GlyphsConfig = {
 		},
 		[WarriorMinorGlyph.GlyphOfTheRagingWhirlwind]: {
 			name: "Glyph of the Raging Whirlwind",
-			description: "Whirlwind gives you ${$147297m1*6/10} rage over $147297d, but for that time you no longer generate rage from autoattacks.",
+			description: "Whirlwind gives you 15 rage over 6s, but for that time you no longer generate rage from autoattacks.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_unleashedrage.jpg",
 		},
 		[WarriorMinorGlyph.GlyphOfTheSubtleDefender]: {
@@ -219,12 +219,12 @@ export const warriorGlyphsConfig: GlyphsConfig = {
 		},
 		[WarriorMinorGlyph.GlyphOfTheWatchfulEye]: {
 			name: "Glyph of the Watchful Eye",
-			description: "Intervene will now target the party or raid member with the lowest health within $3411A3 yards.",
+			description: "Intervene will now target the party or raid member with the lowest health within 25 yards.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_rogue_bloodyeye.jpg",
 		},
 		[WarriorMinorGlyph.GlyphOfTheWeaponmaster]: {
 			name: "Glyph of the Weaponmaster",
-			description: "Your Shout abilities cause the appearance of your weapon to change to that of a random weapon from your primary bag for $147367d.",
+			description: "Your Shout abilities cause the appearance of your weapon to change to that of a random weapon from your primary bag for 0ms.",
 			iconUrl: "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_weaponmastery.jpg",
 		},
 	},
