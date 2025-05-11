@@ -168,6 +168,15 @@ func (d DBCTooltipDataProvider) GetAttackPower() float64 {
 	return 1
 }
 
+func (d DBCTooltipDataProvider) ShouldUseBaseScaling(spellId int64) bool {
+	spellEntry, ok := d.DBC.Spells[int(spellId)]
+	if !ok {
+		return false
+	}
+
+	// need proper scaling entry
+	return spellEntry.SpellClassSet > 0
+}
 func (d DBCTooltipDataProvider) GetClass(spellId int64) proto.Class {
 	spellEntry, ok := d.DBC.Spells[int(spellId)]
 	if !ok {
@@ -224,7 +233,7 @@ func (d DBCTooltipDataProvider) GetEffectScaledValue(spellId int64, effectIdx in
 	baseDamage := 0.0
 
 	// using class scaling
-	if effect.Coefficient > 0 {
+	if effect.Coefficient > 0 && d.ShouldUseBaseScaling(spellId) {
 		baseValue := 0.0
 
 		// for now use generic unk13 scaling for level 90
@@ -408,4 +417,13 @@ func (d DBCTooltipDataProvider) IsMaleGender() bool {
 // KnowsSpell implements TooltipDataProvider.
 func (d DBCTooltipDataProvider) KnowsSpell(spellId int64) bool {
 	return true
+}
+
+func (d DBCTooltipDataProvider) GetEffectEnchantValue(enchantId int64, effectIdx int64) float64 {
+	enchantInfo, ok := d.DBC.Enchants[int(enchantId)]
+	if !ok {
+		return 0
+	}
+
+	return float64(enchantInfo.EffectPoints[effectIdx])
 }

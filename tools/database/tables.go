@@ -11,6 +11,7 @@ import (
 
 	"github.com/wowsims/mop/sim/core/proto"
 	"github.com/wowsims/mop/tools/database/dbc"
+	"github.com/wowsims/mop/tools/tooltip"
 )
 
 // Loading tables
@@ -1239,9 +1240,15 @@ func LoadAndWriteSpells(dbHelper *DBHelper, inputsDir string) ([]dbc.Spell, erro
 func LoadAndWriteEnchantDescriptions(outputPath string, db *WowDatabase, instance *dbc.DBC) error {
 	descriptions := make(map[int32]string)
 
+	dataProvider := tooltip.DBCTooltipDataProvider{DBC: instance}
 	for _, enchant := range db.Enchants {
 		dbcEnch := instance.Enchants[int(enchant.EffectId)]
-		descriptions[enchant.EffectId] = dbcEnch.EffectName
+		tooltip, err := tooltip.ParseTooltip(dbcEnch.EffectName, dataProvider, int64(enchant.EffectId))
+		if err != nil {
+			fmt.Printf("Could not parse enchant (%d), '%s'\n", enchant.EffectId, dbcEnch.EffectName)
+		} else {
+			descriptions[enchant.EffectId] = tooltip.String()
+		}
 	}
 
 	file, err := os.Create(outputPath)

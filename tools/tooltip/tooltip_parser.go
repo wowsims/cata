@@ -24,6 +24,7 @@ type TooltipDataProvider interface {
 	GetEffectPeriod(spellId int64, effectIdx int64) time.Duration
 	GetEffectPointsPerResource(spellId int64, effectIdx int64) float64
 	GetEffectRadius(spellId int64, effectIdx int64) float64
+	GetEffectEnchantValue(enchantId int64, effectidx int64) float64
 	GetMainHandWeapon() *core.Weapon
 	GetOffHandWeapon() *core.Weapon
 	GetPlayerLevel() float64
@@ -698,6 +699,8 @@ func (s SimpleSpellValue) Eval(ctx *TooltipContext) float64 {
 		fallthrough // Max Target Level SpelLTargetRestrictions.dbc
 	case "v":
 		return 0
+	case "k":
+		return ctx.DataProvider.GetEffectEnchantValue(s.getSpellId(ctx), s.Selector.EffectIndex-1)
 	default:
 		return 0.0
 	}
@@ -756,6 +759,8 @@ func (s SimpleSpellValue) String(ctx *TooltipContext) string {
 	case "M":
 		fallthrough
 	case "b":
+		fallthrough
+	case "k":
 		return fmt.Sprintf("%.0f", value)
 	default:
 		return "{UNK: " + s.Selector.EffectColumn + "}"
@@ -788,7 +793,15 @@ func (t TooltipAST) String(ctx *TooltipContext) string {
 		value := val.String(ctx)
 		if len(value) > 0 {
 			if len(tooltip) > 0 && !val.isPunctuation() {
-				tooltip += " "
+				lastChar := tooltip[len(tooltip)-1:]
+
+				// for now do not render a space after + or -
+				// might want to change lexing behaviour in root context
+				// later on if we find unaccaptable inconsistencies
+				if lastChar != "+" && lastChar != "-" {
+					tooltip += " "
+				}
+
 			}
 
 			tooltip += value
@@ -890,7 +903,7 @@ func getLexer() *lexer.StatefulDefinition {
 			{Name: "SpellLookup", Pattern: `\$@spellname`, Action: nil},
 			{Name: "IconLookup", Pattern: `\$@spellicon`, Action: nil},
 			lexer.Include("Shared"),
-			{Name: "Ident", Pattern: `[#a-zA-Z'0-9|()"][a-zA-Z'0-9"#|()-\\_]*`, Action: nil},
+			{Name: "Ident", Pattern: `[#a-zA-Z'0-9|()"&][a-zA-Z'0-9"#|()-\\_&]*`, Action: nil},
 			{Name: "Tok", Pattern: `[\[\]\{\}=?\<\>]`, Action: nil},
 			{Name: "Punct", Pattern: `[.,:\!?%;\]\r\n]`},
 			{Name: "SpellCond2", Pattern: `\?[aspc]\d{2,}`, Action: nil},
@@ -981,6 +994,7 @@ func ParseTooltip(tooltip string, dataProvider TooltipDataProvider, spellId int6
 		"SPH":          dataProvider.GetSpellPower(),
 		"pctH":         1,
 		"PL":           dataProvider.GetPlayerLevel(),
+		"pl":           dataProvider.GetPlayerLevel(),
 		"proccooldown": dataProvider.GetSpellProcChance(spellId),
 		"procrppm":     dataProvider.GetSpellPPM(spellId),
 	}

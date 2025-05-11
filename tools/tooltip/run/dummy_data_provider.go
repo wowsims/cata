@@ -156,3 +156,7 @@ func (d DummyTooltipDataProvider) GetOffHandWeapon() *core.Weapon {
 		SwingSpeed:    2.6,
 	}
 }
+
+func (d DummyTooltipDataProvider) GetEffectEnchantValue(enchantId int64, effectIdx int64) float64 {
+	return 10
+}
