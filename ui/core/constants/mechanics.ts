@@ -1,6 +1,6 @@
 import { Spec } from '../proto/common';
 
-export const CHARACTER_LEVEL = 85;
+export const CHARACTER_LEVEL = 90;
 export const BOSS_LEVEL = CHARACTER_LEVEL + 3;
 export const MAX_CHALLENGE_MODE_ILVL = 463;
 
