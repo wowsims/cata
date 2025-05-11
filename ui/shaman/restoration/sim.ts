@@ -46,29 +46,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			arcaneBrilliance: true,
-			bloodlust: true,
-			markOfTheWild: true,
-			icyTalons: true,
-			moonkinForm: true,
-			leaderOfThePack: true,
-			powerWordFortitude: true,
-			strengthOfEarthTotem: true,
-			trueshotAura: true,
-			wrathOfAirTotem: true,
-			demonicPact: true,
-			blessingOfKings: true,
-			blessingOfMight: true,
-			communion: true,
-		}),
+		raidBuffs: RaidBuffs.create({}),
 		partyBuffs: PartyBuffs.create({}),
-		individualBuffs: IndividualBuffs.create({
-			vampiricTouch: true,
-		}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			curseOfElements: true,
-			shadowAndFlame: true,
+			// curseOfElements: true,
+			// shadowAndFlame: true,
 		}),
 	},
 	// IconInputs to include in the 'Player' section on the settings tab.

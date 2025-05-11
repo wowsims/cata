@@ -77,42 +77,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			arcaneBrilliance: true,
-			bloodlust: true,
-			markOfTheWild: true,
-			icyTalons: true,
-			moonkinForm: true,
-			leaderOfThePack: true,
-			powerWordFortitude: true,
-			strengthOfEarthTotem: true,
-			trueshotAura: true,
-			wrathOfAirTotem: true,
-			demonicPact: true,
-			blessingOfKings: true,
-			blessingOfMight: true,
-			legacyOfTheEmperor: true,
-			legacyOfTheWhiteTiger: true,
-			communion: true,
-		}),
+		raidBuffs: RaidBuffs.create({}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			mangle: true,
-			sunderArmor: true,
-			shadowAndFlame: true,
-			earthAndMoon: true,
-			bloodFrenzy: true,
+			// mangle: true,
+			// sunderArmor: true,
+			// shadowAndFlame: true,
+			// earthAndMoon: true,
+			// bloodFrenzy: true,
 		}),
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-		BuffDebuffInputs.CritBuff,
-		BuffDebuffInputs.MajorArmorDebuff,
-	],
+	includeBuffDebuffInputs: [BuffDebuffInputs.CritBuff, BuffDebuffInputs.MajorArmorDebuff],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
@@ -125,7 +105,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBrewmasterMonk, {
 			OtherInputs.HealingCadenceVariation,
 			OtherInputs.AbsorbFrac,
 			OtherInputs.BurstWindow,
-			OtherInputs.InspirationUptime,
 			OtherInputs.InFrontOfTarget,
 		],
 	},
@@ -185,7 +164,7 @@ const getActiveEPWeight = (player: Player<Spec.SpecBrewmasterMonk>, sim: Sim): S
 	} else {
 		return Presets.PREPATCH_EP_PRESET.epWeights;
 	}
-}
+};
 
 export class BrewmasterMonkSimUI extends IndividualSimUI<Spec.SpecBrewmasterMonk> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecBrewmasterMonk>) {
@@ -205,11 +184,11 @@ export class BrewmasterMonkSimUI extends IndividualSimUI<Spec.SpecBrewmasterMonk
 							meleeSoftCap.breakpoints = [meleeSoftCap.breakpoints[0]];
 							meleeSoftCap.postCapEPs = [0];
 						} else if (ohWep) {
-							meleeSoftCap.postCapEPs = [initialEP/2, 0]
+							meleeSoftCap.postCapEPs = [initialEP / 2, 0];
 						}
 					}
 
-					return softCaps
+					return softCaps;
 				},
 				getEPDefaults: (player: Player<Spec.SpecBrewmasterMonk>) => {
 					return getActiveEPWeight(player, this.sim);

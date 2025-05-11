@@ -1,11 +1,6 @@
 import * as PresetUtils from '../../core/preset_utils';
 import { ConsumesSpec, Debuffs, Glyphs, IndividualBuffs, Profession, PseudoStat, Race, RaidBuffs, Stat } from '../../core/proto/common';
-import {
-	PriestMajorGlyph as MajorGlyph,
-	PriestMinorGlyph as MinorGlyph,
-	PriestOptions_Armor,
-	ShadowPriest_Options as Options,
-} from '../../core/proto/priest';
+import { PriestMajorGlyph as MajorGlyph, PriestMinorGlyph as MinorGlyph, PriestOptions_Armor, ShadowPriest_Options as Options } from '../../core/proto/priest';
 import { SavedTalents } from '../../core/proto/ui';
 import { Stats, UnitStat, UnitStatPresets } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
@@ -149,36 +144,18 @@ export const DefaultConsumables = ConsumesSpec.create({
 	tinkerId: 82174, // Synapse Springs
 });
 
-export const DefaultRaidBuffs = RaidBuffs.create({
-	arcaneBrilliance: true,
-	bloodlust: true,
-	markOfTheWild: true,
-	icyTalons: true,
-	moonkinForm: true,
-	leaderOfThePack: true,
-	powerWordFortitude: true,
-	strengthOfEarthTotem: true,
-	trueshotAura: true,
-	wrathOfAirTotem: true,
-	demonicPact: true,
-	blessingOfKings: true,
-	blessingOfMight: true,
-	communion: true,
-});
+export const DefaultRaidBuffs = RaidBuffs.create({});
 
-export const DefaultIndividualBuffs = IndividualBuffs.create({
-	vampiricTouch: true,
-	darkIntent: true,
-});
+export const DefaultIndividualBuffs = IndividualBuffs.create({});
 
 export const DefaultDebuffs = Debuffs.create({
-	bloodFrenzy: true,
-	sunderArmor: true,
-	ebonPlaguebringer: true,
-	mangle: true,
-	criticalMass: true,
-	demoralizingShout: true,
-	frostFever: true,
+	// bloodFrenzy: true,
+	// sunderArmor: true,
+	// ebonPlaguebringer: true,
+	// mangle: true,
+	// criticalMass: true,
+	// demoralizingShout: true,
+	// frostFever: true,
 });
 
 export const OtherDefaults = {
@@ -186,7 +163,6 @@ export const OtherDefaults = {
 	distanceFromTarget: 20,
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
-	darkIntentUptime: 90,
 };
 
 export const P3_PRESET_BUILD = PresetUtils.makePresetBuild('P3 - Default', {

@@ -48,10 +48,14 @@ func init() {
 		agent.GetCharacter().MultiplyStat(stats.Mana, 1.02)
 	})
 
-	// These are handled in character.go, but create empty effects so they are included in tests.
-	core.NewItemEffect(52291, func(_ core.Agent) {}) // Chaotic Shadowspirit Diamond
-	core.NewItemEffect(52297, func(_ core.Agent) {}) // Revitalizing Shadowspirit Diamond
-	core.NewItemEffect(68778, func(_ core.Agent) {}) // Agile Shadowspirit Diamond
-	core.NewItemEffect(68779, func(_ core.Agent) {}) // Reverberating Shadowspirit Diamond
-	core.NewItemEffect(68780, func(_ core.Agent) {}) // Burning Shadowspirit Diamond
+	// Chaotic Shadowspirit Diamond
+	core.NewItemEffect(52291, core.ApplyMetaGemCriticalDamageEffect)
+	// Revitalizing Shadowspirit Diamond
+	core.NewItemEffect(52297, core.ApplyMetaGemCriticalDamageEffect)
+	// Agile Shadowspirit Diamond
+	core.NewItemEffect(68778, core.ApplyMetaGemCriticalDamageEffect)
+	// Reverberating Shadowspirit Diamond
+	core.NewItemEffect(68779, core.ApplyMetaGemCriticalDamageEffect)
+	// Burning Shadowspirit Diamond
+	core.NewItemEffect(68780, core.ApplyMetaGemCriticalDamageEffect)
 }

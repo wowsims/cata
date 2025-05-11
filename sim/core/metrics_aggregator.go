@@ -333,6 +333,10 @@ func (unit *Unit) NewFocusMetrics(actionID ActionID) *ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeFocus)
 }
 
+func (unit *Unit) NewGenericMetric(actionID ActionID) *ResourceMetrics {
+	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeGenericResource)
+}
+
 // Adds the results of a spell to the character metrics.
 func (unitMetrics *UnitMetrics) addSpellMetrics(spell *Spell, actionID ActionID, spellMetrics []SpellMetrics) {
 	actionMetrics, ok := unitMetrics.actions[actionID]

@@ -124,7 +124,7 @@ message APLValue {
         APLValueCurrentRunicPower current_runic_power = 25;
         APLValueCurrentSolarEnergy current_solar_energy = 68;
         APLValueCurrentLunarEnergy current_lunar_energy = 69;
-		APLValueCurrentHolyPower current_holy_power = 75;
+		APLValueCurrentGenericResource current_generic_resource = 75;
 		APLValueMaxComboPoints max_combo_points = 94;
 		APLValueMaxEnergy max_energy = 88;
 		APLValueMaxFocus max_focus = 89;
@@ -470,7 +470,7 @@ message APLValueCurrentComboPoints {}
 message APLValueCurrentRunicPower {}
 message APLValueCurrentSolarEnergy {}
 message APLValueCurrentLunarEnergy {}
-message APLValueCurrentHolyPower {}
+message APLValueCurrentGenericResource {}
 message APLValueMaxComboPoints {}
 message APLValueMaxEnergy {}
 message APLValueMaxFocus {}

@@ -78,25 +78,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			devotionAura: true,
-			bloodlust: true,
-			markOfTheWild: true,
-			icyTalons: true,
-			leaderOfThePack: true,
-			powerWordFortitude: true,
-			hornOfWinter: true,
-			abominationsMight: true,
-			arcaneTactics: true,
-		}),
+		raidBuffs: RaidBuffs.create({}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
-		debuffs: Debuffs.create({
-			faerieFire: true,
-			brittleBones: true,
-			ebonPlaguebringer: true,
-			shadowAndFlame: true,
-		}),
+		debuffs: Debuffs.create({}),
 	},
 
 	autoRotation: (_: Player<Spec.SpecUnholyDeathKnight>): APLRotation => Presets.DEFAULT_ROTATION_PRESET.rotation.rotation!,
@@ -105,8 +90,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	playerIconInputs: [],
 	petConsumeInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff, BuffDebuffInputs.SpellCritDebuff],
-	excludeBuffDebuffInputs: [BuffDebuffInputs.DamageReduction, BuffDebuffInputs.MeleeAttackSpeedDebuff, BuffDebuffInputs.BleedDebuff],
+	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff],
+	excludeBuffDebuffInputs: [BuffDebuffInputs.DamageReduction, BuffDebuffInputs.CastSpeedDebuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
@@ -119,7 +104,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 			// OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
 			OtherInputs.InputDelay,
-			OtherInputs.DarkIntentUptime,
 		],
 	},
 	itemSwapSlots: [

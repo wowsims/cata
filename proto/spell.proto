@@ -40,6 +40,16 @@ enum ResourceType {
 	ResourceTypeDeathRune = 11;
 	ResourceTypeSolarEnergy = 12;
 	ResourceTypeLunarEnergy = 13;
-	ResourceTypeHolyPower = 14;
-	ResourceTypeChi = 15;
+	ResourceTypeChi = 14;
+	ResourceTypeGenericResource = 15;
+}
+
+enum SecondaryResourceType {
+	SecondaryResourceTypeNone          = 0;
+	SecondaryResourceTypeArcaneCharges  = 36032;
+	SecondaryResourceTypeShadowOrbs     = 95740;
+	SecondaryResourceTypeDemonicFury    = 104315;
+	SecondaryResourceTypeBurningEmbers  = 108647;
+	SecondaryResourceTypeSoulShards     = 117198;
+	SecondaryResourceTypeHolyPower      = 138248;
 }
