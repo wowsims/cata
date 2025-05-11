@@ -90,7 +90,7 @@ func (shadow *ShadowPriest) registerSolaceAndInstanity() {
 				dot := spell.Dot(target)
 				if dot != nil {
 					dot.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-						dmgMod.UpdateFloatValue(shadow.orbsConsumed * 1 / 3)
+						dmgMod.UpdateFloatValue(float64(shadow.orbsConsumed) * 1 / 3)
 						dmgMod.Activate()
 					})
 					dot.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {

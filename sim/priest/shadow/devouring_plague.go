@@ -37,9 +37,9 @@ func (shadow *ShadowPriest) registerDevouringPlagueSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			shadow.orbsConsumed = shadow.ShadowOrbs.Value()
-			spell.DamageMultiplier *= shadow.orbsConsumed
+			spell.DamageMultiplier *= float64(shadow.orbsConsumed)
 			result := spell.CalcDamage(sim, target, shadow.CalcScalingSpellDmg(dpImpactScale), spell.OutcomeMagicHitAndCrit)
-			spell.DamageMultiplier /= shadow.orbsConsumed
+			spell.DamageMultiplier /= float64(shadow.orbsConsumed)
 			if result.Landed() {
 				shadow.ShadowOrbs.Spend(shadow.orbsConsumed, actionID, sim)
 				spell.RelatedDotSpell.Cast(sim, target)
@@ -75,9 +75,9 @@ func (shadow *ShadowPriest) registerDevouringPlagueSpell() {
 			BonusCoefficient:    DpDotCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Spell.DamageMultiplier *= shadow.orbsConsumed
+				dot.Spell.DamageMultiplier *= float64(shadow.orbsConsumed)
 				dot.Snapshot(target, shadow.CalcScalingSpellDmg(DpDotScale))
-				dot.Spell.DamageMultiplier /= shadow.orbsConsumed
+				dot.Spell.DamageMultiplier /= float64(shadow.orbsConsumed)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)

@@ -39,10 +39,11 @@ func NewShadowPriest(character *core.Character, options *proto.Player) *ShadowPr
 		options: shadowOptions.Options,
 	}
 
-	spriest.ShadowOrbs = spriest.RegisterSecondaryResourceBar(core.SecondaryResourceConfig{
+	spriest.ShadowOrbs = spriest.NewDefaultSecondaryResourceBar(core.SecondaryResourceConfig{
 		Type: proto.SecondaryResourceType_SecondaryResourceTypeShadowOrbs,
 		Max:  3,
 	})
+	spriest.RegisterSecondaryResourceBar(spriest.ShadowOrbs)
 	return spriest
 }
 
@@ -50,7 +51,7 @@ type ShadowPriest struct {
 	*priest.Priest
 	options      *proto.ShadowPriest_Options
 	ShadowOrbs   core.SecondaryResourceBar
-	orbsConsumed float64 // Number of orbs consumed by the last devouring plague cast
+	orbsConsumed int32 // Number of orbs consumed by the last devouring plague cast
 
 	// Shadow Spells
 	DevouringPlague *core.Spell
@@ -97,6 +98,8 @@ func (spriest *ShadowPriest) ApplyTalents() {
 			SpellID: 15473,
 		},
 	}))
+
+	core.MakePermanent(core.MindQuickeningAura(&spriest.Unit))
 
 	spriest.registerTwistOfFate()
 	spriest.registerSolaceAndInstanity()

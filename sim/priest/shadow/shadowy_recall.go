@@ -48,7 +48,7 @@ func (shadow *ShadowPriest) registerShadowyRecall() {
 		0,
 		priest.PriestSpellDevouringPlagueDoT,
 		func() float64 {
-			return shadow.orbsConsumed
+			return float64(shadow.orbsConsumed)
 		},
 	)
 
@@ -89,7 +89,7 @@ func (shadow *ShadowPriest) buildSingleTickSpell(spellId int32, scale float64, c
 		SpellSchool:      core.SpellSchoolShadow,
 		Flags:            core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 		BonusCoefficient: coeff,
-		CritMultiplier:   shadow.DefaultSpellCritMultiplier(),
+		CritMultiplier:   shadow.DefaultCritMultiplier(),
 		ThreatMultiplier: 1,
 		DamageMultiplier: 1,
 		ClassSpellMask:   classMask | priest.PriestSpellShadowyRecall,

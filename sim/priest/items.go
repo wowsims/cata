@@ -533,8 +533,8 @@ var ItemSetRegaliaOfTheTernionGlory = core.NewItemSet(core.ItemSet{
 				ClassMask:  PriestSpellShadowWordDeath | PriestSpellMindSpike | PriestSpellMindBlast,
 			})
 
-			orbsSpend := 0.0
-			priest.Unit.SecondaryResourceBar.RegisterOnSpend(func(amount float64) {
+			var orbsSpend int32 = 0
+			priest.Unit.GetSecondaryResourceBar().RegisterOnSpend(func(amount int32) {
 				orbsSpend = amount
 			})
 
@@ -543,7 +543,7 @@ var ItemSetRegaliaOfTheTernionGlory = core.NewItemSet(core.ItemSet{
 				ActionID: core.ActionID{SpellID: 145180},
 				Duration: time.Second * 12,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					mod.UpdateFloatValue(0.2 * orbsSpend)
+					mod.UpdateFloatValue(0.2 * float64(orbsSpend))
 					mod.Activate()
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
