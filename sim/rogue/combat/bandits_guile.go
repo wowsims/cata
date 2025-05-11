@@ -8,9 +8,7 @@ import (
 )
 
 func (comRogue *CombatRogue) registerBanditsGuile() {
-	chanceToProc := 1.0
 	attackCounter := int32(0)
-	var lastAttacked *core.Unit
 	var bgDamageAuras [3]*core.Aura
 	currentInsightIndex := -1
 
@@ -29,7 +27,13 @@ func (comRogue *CombatRogue) registerBanditsGuile() {
 			actionID = core.ActionID{SpellID: 84747}
 		}
 
-		damageBonus := []float64{1.1, 1.2, 1.3}[index]
+		damageBonus := []float64{0.1, 0.2, 0.3}[index]
+
+		bgDamageMod := comRogue.AddDynamicMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Pct,
+			ClassMask:  rogue.RogueSpellsAll,
+			FloatValue: damageBonus,
+		})
 
 		bgDamageAuras[index] = comRogue.RegisterAura(core.Aura{
 			Label:    label,
@@ -37,15 +41,14 @@ func (comRogue *CombatRogue) registerBanditsGuile() {
 			Duration: time.Second * 15,
 
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				core.EnableDamageDoneByCaster(DDBC_BanditsGuile, DDBC_Total, comRogue.AttackTables[comRogue.CurrentTarget.UnitIndex], func(sim *core.Simulation, spell *core.Spell, attackTable *core.AttackTable) float64 {
-					if spell.Matches(rogue.RogueSpellsAll) || spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
-						return damageBonus
-					}
-					return 1.0
-				})
+				comRogue.AutoAttacks.MHAuto().DamageMultiplier *= (1 + damageBonus)
+				comRogue.AutoAttacks.OHAuto().DamageMultiplier *= (1 + damageBonus)
+				bgDamageMod.Activate()
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				core.DisableDamageDoneByCaster(0, comRogue.AttackTables[comRogue.CurrentTarget.UnitIndex])
+				comRogue.AutoAttacks.MHAuto().DamageMultiplier /= (1 + damageBonus)
+				comRogue.AutoAttacks.OHAuto().DamageMultiplier /= (1 + damageBonus)
+				bgDamageMod.Deactivate()
 				if currentInsightIndex == 2 {
 					currentInsightIndex = -1
 					attackCounter = 0
@@ -65,38 +68,26 @@ func (comRogue *CombatRogue) registerBanditsGuile() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if currentInsightIndex < 2 && result.Landed() && (spell == comRogue.SinisterStrike || spell == comRogue.RevealingStrike) {
-				if lastAttacked != result.Target {
-					// Reset back to no insight, no casts
+				attackCounter += 1
+
+				if attackCounter == 4 {
 					attackCounter = 0
+					// Deactivate previous aura
 					if currentInsightIndex >= 0 {
 						bgDamageAuras[currentInsightIndex].Deactivate(sim)
 					}
-					currentInsightIndex = -1
-				}
-				lastAttacked = result.Target
-
-				if chanceToProc == 1 || sim.Proc(chanceToProc, "Bandit's Guile") {
-					attackCounter += 1
-					comRogue.BanditsGuileAura.SetStacks(sim, attackCounter+1)
-					if attackCounter == 4 {
-						attackCounter = 0
-						comRogue.BanditsGuileAura.SetStacks(sim, attackCounter+1)
-						// Deactivate previous aura
-						if currentInsightIndex >= 0 {
-							bgDamageAuras[currentInsightIndex].Deactivate(sim)
-						}
-						currentInsightIndex += 1
-						// Activate next aura
+					currentInsightIndex += 1
+					// Activate next aura
+					bgDamageAuras[currentInsightIndex].Activate(sim)
+				} else {
+					// Refresh duration of existing aura
+					if currentInsightIndex >= 0 {
+						bgDamageAuras[currentInsightIndex].Duration = time.Second * 15
 						bgDamageAuras[currentInsightIndex].Activate(sim)
-					} else {
-						// Refresh duration of existing aura
-						if currentInsightIndex >= 0 {
-							bgDamageAuras[currentInsightIndex].Duration = time.Second * 15
-							bgDamageAuras[currentInsightIndex].Activate(sim)
-						}
 					}
 				}
 
+				comRogue.BanditsGuileAura.SetStacks(sim, attackCounter+1)
 			}
 		},
 	})
