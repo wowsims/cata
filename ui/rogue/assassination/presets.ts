@@ -43,7 +43,7 @@ export const ASN_EP_PRESET = PresetUtils.makePresetEpWeights(
 export const AssassinationTalentsDefault = {
 	name: 'Assassination',
 	data: SavedTalents.create({
-		talentsString: '300003',
+		talentsString: '321232',
 		glyphs: Glyphs.create({
 			major1: RogueMajorGlyph.GlyphOfVendetta,
 		}),
@@ -60,10 +60,10 @@ export const DefaultOptions = RogueOptions.create({
 });
 
 export const DefaultConsumables = ConsumesSpec.create({
-	flaskId: 58087, // Flask of the Winds
-	foodId: 62669, // Skewered Eel
-	potId: 58145, // Potion of the Tol'vir
-	prepotId: 58145, // Potion of the Tol'vir
+	flaskId: 76084, // Flask of the Winds
+	foodId: 74648, // Skewered Eel
+	potId: 76089, // Potion of the Tol'vir
+	prepotId: 76089, // Potion of the Tol'vir
 });
 
 export const OtherDefaults = {

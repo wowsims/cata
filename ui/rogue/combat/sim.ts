@@ -76,15 +76,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({}),
+		raidBuffs: RaidBuffs.create({
+			blessingOfKings: true,
+			trueshotAura: true,
+			swiftbladesCunning: true,
+			legacyOfTheWhiteTiger: true,
+			blessingOfMight: true,
+			bloodlust: true,
+		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			// mangle: true,
-			// faerieFire: true,
-			// shadowAndFlame: true,
-			// earthAndMoon: true,
-			// bloodFrenzy: true,
+			weakenedArmor: true,
+			physicalVulnerability: true,
+			masterPoisoner: true,
 		}),
 	},
 
@@ -99,12 +104,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
-			// RogueInputs.StartingOverkillDuration(),
-			// RogueInputs.VanishBreakTime(),
-			// RogueInputs.AssumeBleedActive(),
-			// OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
 			OtherInputs.InputDelay,
+			RogueInputs.StartingComboPoints(),
 		],
 	},
 	itemSwapSlots: [
