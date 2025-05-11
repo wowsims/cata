@@ -67,7 +67,7 @@ func (spriest *ShadowPriest) GetPriest() *priest.Priest {
 func (spriest *ShadowPriest) Initialize() {
 	spriest.Priest.Initialize()
 
-	spriest.AddStat(stats.HitRating, spriest.GetBaseStats()[stats.Spirit])
+	spriest.AddStat(stats.HitRating, -spriest.GetBaseStats()[stats.Spirit])
 	spriest.AddStatDependency(stats.Spirit, stats.HitRating, 1)
 	spriest.registerMindBlastSpell()
 	spriest.registerDevouringPlagueSpell()
