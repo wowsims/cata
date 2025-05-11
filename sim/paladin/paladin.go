@@ -124,10 +124,10 @@ const SpellMaskModifiedByZealOfTheCrusader = SpellMaskTemplarsVerdict |
 
 type Paladin struct {
 	core.Character
-	HolyPowerBar
 
 	PaladinAura proto.PaladinAura
 	Seal        proto.PaladinSeal
+	HolyPower   core.SecondaryResourceBar
 
 	Talents *proto.PaladinTalents
 
@@ -266,26 +266,24 @@ func (paladin *Paladin) registerSpells() {
 }
 
 func (paladin *Paladin) Reset(sim *core.Simulation) {
-	switch paladin.Seal {
-	case proto.PaladinSeal_Truth:
-		paladin.CurrentJudgement = paladin.JudgementOfTruth
-		paladin.CurrentSeal = paladin.SealOfTruthAura
-		paladin.SealOfTruthAura.Activate(sim)
-	case proto.PaladinSeal_Insight:
-		paladin.CurrentJudgement = paladin.JudgementOfInsight
-		paladin.CurrentSeal = paladin.SealOfInsightAura
-		paladin.SealOfInsightAura.Activate(sim)
-	case proto.PaladinSeal_Righteousness:
-		paladin.CurrentJudgement = paladin.JudgementOfRighteousness
-		paladin.CurrentSeal = paladin.SealOfRighteousnessAura
-		paladin.SealOfRighteousnessAura.Activate(sim)
-	case proto.PaladinSeal_Justice:
-		paladin.CurrentJudgement = paladin.JudgementOfJustice
-		paladin.CurrentSeal = paladin.SealOfJusticeAura
-		paladin.SealOfJusticeAura.Activate(sim)
-	}
-
-	paladin.HolyPowerBar.Reset()
+	// switch paladin.Seal {
+	// case proto.PaladinSeal_Truth:
+	// 	paladin.CurrentJudgement = paladin.JudgementOfTruth
+	// 	paladin.CurrentSeal = paladin.SealOfTruthAura
+	// 	paladin.SealOfTruthAura.Activate(sim)
+	// case proto.PaladinSeal_Insight:
+	// 	paladin.CurrentJudgement = paladin.JudgementOfInsight
+	// 	paladin.CurrentSeal = paladin.SealOfInsightAura
+	// 	paladin.SealOfInsightAura.Activate(sim)
+	// case proto.PaladinSeal_Righteousness:
+	// 	paladin.CurrentJudgement = paladin.JudgementOfRighteousness
+	// 	paladin.CurrentSeal = paladin.SealOfRighteousnessAura
+	// 	paladin.SealOfRighteousnessAura.Activate(sim)
+	// case proto.PaladinSeal_Justice:
+	// 	paladin.CurrentJudgement = paladin.JudgementOfJustice
+	// 	paladin.CurrentSeal = paladin.SealOfJusticeAura
+	// 	paladin.SealOfJusticeAura.Activate(sim)
+	// }
 }
 
 func NewPaladin(character *core.Character, talentsStr string, options *proto.PaladinOptions) *Paladin {
@@ -302,7 +300,15 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 	paladin.PseudoStats.CanParry = true
 
 	paladin.EnableManaBar()
-	paladin.initializeHolyPowerBar()
+	paladin.HolyPower = HolyPowerBar{
+		DefaultSecondaryResourceBarImpl: paladin.NewDefaultSecondaryResourceBar(core.SecondaryResourceConfig{
+			Type:    proto.SecondaryResourceType_SecondaryResourceTypeHolyPower,
+			Max:     3,
+			Default: paladin.StartingHolyPower,
+		}),
+		paladin: paladin,
+	}
+	paladin.RegisterSecondaryResourceBar(paladin.HolyPower)
 
 	// Only retribution and holy are actually pets performing some kind of action
 	if paladin.Spec != proto.Spec_SpecProtectionPaladin {

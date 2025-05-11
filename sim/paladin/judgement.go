@@ -22,7 +22,7 @@ func (paladin *Paladin) registerJudgement() {
 			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
-				Timer:    paladin.paladin.NewTimer(),
+				Timer:    paladin.NewTimer(),
 				Duration: time.Second * 10,
 			},
 		},

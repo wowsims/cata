@@ -533,26 +533,6 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 					],
 				},
 				{
-					label: 'Power Infusion',
-					effects: [
-						{
-							label: 'Power Infusion',
-							actionId: ActionId.fromSpellId(10060),
-							playerData: playerClassAndTalent(Class.ClassPriest, 'powerInfusion'),
-						},
-					],
-				},
-				{
-					label: 'Focus Magic',
-					effects: [
-						// {
-						// 	label: 'Focus Magic',
-						// 	actionId: ActionId.fromSpellId(54648),
-						// 	playerData: playerClassAndTalent(Class.ClassMage, 'focusMagic'),
-						// },
-					],
-				},
-				{
 					label: 'Tricks of the Trade',
 					effects: [
 						{

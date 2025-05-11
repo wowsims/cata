@@ -58,7 +58,6 @@ export const SpellPowerBuff = InputHelpers.makeMultiIconInput(
 
 export const SpellHasteBuff = InputHelpers.makeMultiIconInput(
 	[
-		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(15473), fieldName: 'shadowForm' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(24907), fieldName: 'moonkinAura' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(49868), fieldName: 'mindQuickening' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(51470), fieldName: 'elementalOath' }),
@@ -128,6 +127,7 @@ export const TricksOfTheTrade = makeTristateIndividualBuffInput({
 });
 export const UnholyFrenzy = makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(49016), numStates: 11, fieldName: 'unholyFrenzyCount' });
 export const ShatteringThrow = makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(64382), numStates: 11, fieldName: 'shatteringThrowCount' });
+export const Skullbanner = makeMultistateRaidBuffInput({ actionId: ActionId.fromSpellId(114207), numStates: 11, fieldName: 'skullBannerCount' });
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 DEBUFFS
@@ -220,6 +220,11 @@ export const RAID_BUFFS_CONFIG = [
 ] as PickerStatOptions[];
 
 export const RAID_BUFFS_MISC_CONFIG = [
+	{
+		config: Skullbanner,
+		picker: IconPicker,
+		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower, Stat.StatSpellPower],
+	},
 	{
 		config: ManaTideTotem,
 		picker: IconPicker,
