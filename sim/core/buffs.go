@@ -481,12 +481,6 @@ func MindQuickeningAura(u *Unit) *Aura {
 	return aura
 }
 
-func ShadowFormAura(u *Unit) *Aura {
-	aura := makeExclusiveBuff(u, BuffConfig{"Shadow Form", ActionID{SpellID: 15473}, nil})
-	registerExclusiveSpellHaste(aura, 0.05)
-	return aura
-}
-
 func ElementalOath(u *Unit) *Aura {
 	aura := makeExclusiveBuff(u, BuffConfig{"Elemental Oath", ActionID{SpellID: 51470}, nil})
 	registerExclusiveSpellHaste(aura, 0.05)
@@ -502,7 +496,7 @@ func ElementalOath(u *Unit) *Aura {
 func StillWaterAura(u *Unit) *Aura {
 	return makeExclusiveBuff(u, BuffConfig{"Still Water", ActionID{SpellID: 126309},
 		[]StatConfig{
-			{stats.SpellPower, 0.10, true},
+			{stats.SpellPower, 1.10, true},
 			{stats.PhysicalCritPercent, 5, false},
 			{stats.SpellCritPercent, 5, false}}})
 }
@@ -510,15 +504,15 @@ func ArcaneBrilliance(u *Unit) *Aura {
 	// Mages: +10% Spell Power
 	return makeExclusiveBuff(u, BuffConfig{"Arcane Brilliance", ActionID{SpellID: 1459},
 		[]StatConfig{
-			{stats.SpellPower, 0.10, true},
+			{stats.SpellPower, 1.10, true},
 			{stats.PhysicalCritPercent, 5, false},
 			{stats.SpellCritPercent, 5, false}}})
 }
 func BurningWrathAura(u *Unit) *Aura {
-	return makeExclusiveBuff(u, BuffConfig{"Burning Wrath", ActionID{SpellID: 77747}, []StatConfig{{stats.SpellPower, 0.10, true}}})
+	return makeExclusiveBuff(u, BuffConfig{"Burning Wrath", ActionID{SpellID: 77747}, []StatConfig{{stats.SpellPower, 1.10, true}}})
 }
 func DarkIntentAura(u *Unit) *Aura {
-	return makeExclusiveBuff(u, BuffConfig{"Dark Intent", ActionID{SpellID: 109773}, []StatConfig{{stats.SpellPower, 0.10, true}, {stats.Stamina, 0.10, true}}})
+	return makeExclusiveBuff(u, BuffConfig{"Dark Intent", ActionID{SpellID: 109773}, []StatConfig{{stats.SpellPower, 1.10, true}, {stats.Stamina, 1.10, true}}})
 }
 
 /////////////
