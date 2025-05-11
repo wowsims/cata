@@ -36,7 +36,7 @@ func (comRogue *CombatRogue) registerKillingSpreeCD() {
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
 		ClassSpellMask: rogue.RogueSpellKillingSpreeHit,
 
-		DamageMultiplier: 1 * comRogue.DWSMultiplier(),
+		DamageMultiplier: 1.75, // Combat has a 1.75x OH damage multiplier
 		CritMultiplier:   comRogue.CritMultiplier(false),
 		ThreatMultiplier: 1,
 

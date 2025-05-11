@@ -97,12 +97,6 @@ func (rogue *Rogue) ApplyTalents() {
 	}
 }
 
-// DWSMultiplier returns the offhand damage multiplier
-func (rogue *Rogue) DWSMultiplier() float64 {
-	// DWS (Now named Ambidexterity) is now a Combat rogue passive
-	return core.TernaryFloat64(rogue.Spec == proto.Spec_SpecCombatRogue, 1.75, 1)
-}
-
 func (rogue *Rogue) ApplyCutToTheChase(sim *core.Simulation) {
 	if rogue.Spec == proto.Spec_SpecAssassinationRogue && rogue.SliceAndDiceAura.IsActive() {
 		rogue.SliceAndDiceAura.Duration = rogue.sliceAndDiceDurations[5]
