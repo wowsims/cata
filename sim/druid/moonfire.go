@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	MoonfireBonusCoeff = 2.388
+	MoonfireBonusCoeff = 0.24
 
 	MoonfireDotCoeff = 0.24
 

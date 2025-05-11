@@ -245,6 +245,7 @@ func (druid *Druid) Initialize() {
 	})
 
 	druid.RegisterBaselineSpells()
+	druid.ApplyTalents()
 
 	// druid.registerFaerieFireSpell()
 	// druid.registerRebirthSpell()
