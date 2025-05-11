@@ -222,16 +222,6 @@ const externalCDSpells: Array<{ id: number; name: string; class: Class; applyFun
 		},
 	},
 	{
-		id: 10060,
-		name: 'Power Infusion',
-		class: Class.ClassPriest,
-		applyFunc: (player: Player<any>, raidTarget: UnitReference) => {
-			const options = player.getSpecOptions() as SpecOptions<Spec.SpecDisciplinePriest>;
-			options.powerInfusionTarget = raidTarget;
-			return options;
-		},
-	},
-	{
 		id: 57933,
 		name: 'Tricks of the Trade',
 		class: Class.ClassRogue,

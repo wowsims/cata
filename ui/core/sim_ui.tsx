@@ -68,6 +68,7 @@ export abstract class SimUI extends Component {
 		this.cssClass = config.cssClass;
 		this.cssScheme = config.cssScheme;
 		this.isWithinRaidSim = this.rootElem.closest('.within-raid-sim') != null;
+
 		const container = (
 			<>
 				<div className="sim-root">

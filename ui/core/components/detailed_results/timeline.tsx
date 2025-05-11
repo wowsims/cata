@@ -8,6 +8,7 @@ import { ResourceType } from '../../proto/spell';
 import { ActionId, buffAuraToSpellIdMap, resourceTypeToIcon } from '../../proto_utils/action_id';
 import { AuraUptimeLog, CastLog, DpsLog, ResourceChangedLogGroup, SimLog, ThreatLogGroup } from '../../proto_utils/logs_parser';
 import { resourceNames } from '../../proto_utils/names';
+import SecondaryResource from '../../proto_utils/secondary_resource';
 import { UnitMetrics } from '../../proto_utils/sim_result';
 import { orderedResourceTypes } from '../../proto_utils/utils';
 import { TypedEvent } from '../../typed_event';
@@ -22,6 +23,10 @@ const manaColor = '#2E93fA';
 const threatColor = '#b56d07';
 
 const cachedSpellCastIcon = new CacheHandler<HTMLAnchorElement>();
+
+interface TimelineConfig extends ResultComponentConfig {
+	secondaryResource?: SecondaryResource | null;
+}
 
 export class Timeline extends ResultComponent {
 	private readonly dpsResourcesPlotElem: HTMLElement;
@@ -51,7 +56,9 @@ export class Timeline extends ResultComponent {
 		keysToKeep: 2,
 	});
 
-	constructor(config: ResultComponentConfig) {
+	private secondaryResource?: SecondaryResource | null;
+
+	constructor(config: TimelineConfig) {
 		config.rootCssClass = 'timeline-root';
 		super(config);
 		this.resultData = null;
@@ -59,6 +66,7 @@ export class Timeline extends ResultComponent {
 		this.rendered = false;
 		this.hiddenIds = [];
 		this.hiddenIdsChangeEmitter = new TypedEvent<void>();
+		this.secondaryResource = config.secondaryResource;
 
 		this.rootElem.appendChild(
 			<div className="timeline-disclaimer">
@@ -309,7 +317,7 @@ export class Timeline extends ResultComponent {
 
 		this.dpsResourcesPlot.updateOptions(options);
 
-		this.rotationTimelineTimeRulerElem?.toBlob(blob => {
+		this.rotationTimelineTimeRulerElem?.toBlob(() => {
 			this.cacheHandler.set(this.resultData!.result.request.requestId, {
 				dpsResourcesPlotOptions: options,
 				rotationLabels: this.rotationLabels.cloneNode(true) as HTMLElement,
@@ -770,14 +778,22 @@ export class Timeline extends ResultComponent {
 
 			return group.maxValue;
 		};
+
+		let resourceName = resourceNames.get(resourceType);
+		let resourceIcon = resourceTypeToIcon[resourceType];
+		if (resourceType == ResourceType.ResourceTypeGenericResource && !!this.secondaryResource) {
+			resourceName = this.secondaryResource.name;
+			resourceIcon = this.secondaryResource.icon || '';
+		}
+
 		const labelElem = (
 			<div className="rotation-label rotation-row">
 				<a
 					className="rotation-label-icon"
 					style={{
-						backgroundImage: `url('${resourceTypeToIcon[resourceType]}')`,
+						backgroundImage: `url('${resourceIcon}')`,
 					}}></a>
-				<span className="rotation-label-text">{resourceNames.get(resourceType)}</span>
+				<span className="rotation-label-text">{resourceName}</span>
 			</div>
 		);
 
